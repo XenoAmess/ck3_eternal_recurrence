@@ -80,7 +80,7 @@ ck3_query_vanilla_event_knowledge_v1(
 ```
 
 当前 checkout 的预期结果是 `status=available`，且 `contract` 与 `analysis` 均非空；该调用不应
-启动或访问 CK3。当前数据快照共有 **157 条 timeline contract 和 157 条 analysis**。这里的 `157`
+启动或访问 CK3。合同与分析库存数量以当前 checkout 的 `plan` 输出为准；两者数量及 keyset 必须一致，
 只是本仓库 revision 的数据事实，不是 MCP ABI、覆盖率目标或客户端应硬编码的常量；稳定接口仍是
 `xar.ck3.vanilla-event-knowledge` schema v1、逐 `event_definition_key` 查询及其
 available/unavailable 语义。

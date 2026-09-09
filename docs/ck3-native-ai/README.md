@@ -80,14 +80,15 @@
   stable key 已由 formatter/serializer/affordability 三链闭合并接入 pending query，明确标记 actor 在 on-send 已支付。
   effect typed row/root 与 special-war dynamic outcome rows 仍是观测依赖，当前不得把 legality、已付成本或 WarID 绑定
   冒充 semantic decision readiness。
-- [static-ready complete analysis + six production-live primitives + current retained RED] [vanilla-event-knowledge-registry.md](vanilla-event-knowledge-registry.md)
-  已组合默认 `160 contracts / 160 analysis / 9 observation keys` 的 exact-build 原版事件表并发布离线
+- [static-ready complete analysis + seven production-live primitives + current retained RED] [vanilla-event-knowledge-registry.md](vanilla-event-knowledge-registry.md)
+  已组合默认 `160 contracts / 160 analysis / 10 observation keys` 的 exact-build 原版事件表并发布离线
   `ck3_query_vanilla_event_knowledge_v1`；production runtime 当前消费 `299` 条事件合同。R372 的 `TGP0160`、
   `great_holy_war.0011`、`TGP0020`、`TGP0001` 已分别完成共享查询、真实选择与 advance，属于四条 production-live
   primitive。`stress_threshold.1721` 保留真实 RED：reload 已生效，根因是提交阶段重新按 base contract 解析；补丁提交为
   `039a509`、`e6ab3d4`。`epidemic_events.1064` 随后以同 PID 选择 reviewed native0 并完成 advance，成为第五条
   production-live primitive；R374 又将 `natural_disaster.7031` authored3/native2 同 PID drain 并验证 instance `978` advance，成为第六条。
-  其 observation 仍保留选择前 RED；当前 `ep3_story_cycle_admin_eunuch.1001` instance `988` 动作前 RED 已按 exact-build 定义迁移为通用合同、analysis 与 observation。
+  其 observation 仍保留选择前 RED；R374 随后又将 `ep3_story_cycle_admin_eunuch.1001` authored2/native1 同 PID drain 并验证 instance `988` advance，成为第七条。
+  当前 `tribute_mission.1005` instance `1007` 动作前 RED 已按 exact-build 定义迁移为可移植合同、analysis 与 observation。
   两条 prebootstrap context profile 不混入扁平表；缺少既有 source hash 的旧分析只标 migration-only，不编造 hash。
   上述状态不表示 160 条全部 live；
   `361/626` 全树覆盖也不是 T0、其它 mod、CI 或发布门。T0 仍为 `50% / stage 8/11 / source 3/4 / P2 LOCKED`。

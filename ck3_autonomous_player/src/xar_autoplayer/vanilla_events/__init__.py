@@ -19,7 +19,10 @@ from .records_analysis_embedded_b import (
 )
 from .records_analysis_embedded_c import VANILLA_EMBEDDED_C_ANALYSIS
 from .records_analysis_manager_a import MANAGER_A_VANILLA_EVENT_ANALYSIS
-from .records_analysis_manager_b import MANAGER_VANILLA_ANALYSIS_B
+from .records_analysis_manager_b import (
+    MANAGER_VANILLA_ANALYSIS_B,
+    MANAGER_VANILLA_OBSERVATIONS_B,
+)
 from .records_analysis_vanilla_shards import (
     VANILLA_SHARD_ANALYSIS,
     VANILLA_SHARD_OBSERVATIONS,
@@ -91,6 +94,7 @@ DEFAULT_VANILLA_EVENT_ANALYSIS: Final = _merge_metadata_tables(
 DEFAULT_VANILLA_EVENT_OBSERVATIONS: Final = _merge_metadata_tables(
     ("vanilla_shards", VANILLA_SHARD_OBSERVATIONS),
     ("manager_holy_war", MANAGER_HOLY_WAR_OBSERVATIONS),
+    ("manager_b", MANAGER_VANILLA_OBSERVATIONS_B),
     ("embedded_a", VANILLA_EMBEDDED_A_OBSERVATIONS),
     ("embedded_b", VANILLA_EMBEDDED_B_OBSERVATIONS),
     ("epidemic", VANILLA_EPIDEMIC_OBSERVATIONS),

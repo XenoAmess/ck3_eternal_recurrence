@@ -10,6 +10,8 @@ from __future__ import annotations
 
 from typing import Final
 
+from .registry import PLAYER_SENTINEL
+
 
 # Migrated from tools/zg361_phase2_promotion_manager_imperial_contracts.py.
 MANAGER_IMPERIAL_TIMELINE_CONTRACTS: Final[
@@ -1143,8 +1145,8 @@ def _resource_reward_scope_variant(resource_type: str) -> dict[str, object]:
             "decided_on_treasury_reward",
         ),
         "unique_character_scope_excludes": {
-            "actor": (29037,),
-            "tributary_scope": (29037,),
+            "actor": (PLAYER_SENTINEL,),
+            "tributary_scope": (PLAYER_SENTINEL,),
         },
         "character_scope_matches_any": {
             "tributary_scope": ("actor",),
@@ -1307,20 +1309,22 @@ MANAGER_TRIBUTE_TIMELINE_CONTRACTS: Final[
         # AI tributary without a player resource cost. Tribute missions can
         # recur for the same receiving ruler, so the event has no lifecycle
         # occurrence ceiling inside one product-observation window.
-        "date_raw": 53150184,
         "date_policy": "product-observation-window",
-        "root_character_id": 29037,
+        "root_character_id": PLAYER_SENTINEL,
         "character_scopes": {
-            "recipient": 29037,
-            "tribute_mission_target": 29037,
-            "overlord_scope": 29037,
-            "receiving_character": 29037,
+            "recipient": PLAYER_SENTINEL,
+            "tribute_mission_target": PLAYER_SENTINEL,
+            "overlord_scope": PLAYER_SENTINEL,
+            "receiving_character": PLAYER_SENTINEL,
         },
         "unique_character_scope_excludes": {
-            "actor": (29037,),
-            "secondary_recipient": (29037,),
-            "tributary_scope": (29037,),
-            "human_tribute": (29037,),
+            "actor": (PLAYER_SENTINEL,),
+            "secondary_recipient": (PLAYER_SENTINEL,),
+            "tributary_scope": (PLAYER_SENTINEL,),
+            "human_tribute": (PLAYER_SENTINEL,),
+        },
+        "optional_unique_character_scope_excludes": {
+            "eunuch_character": (PLAYER_SENTINEL,),
         },
         "character_scope_matches_any": {
             "tributary_scope": ("actor",),
@@ -1331,6 +1335,13 @@ MANAGER_TRIBUTE_TIMELINE_CONTRACTS: Final[
             "human_tribute": (
                 "secondary_recipient",
                 "concubine_character",
+                "eunuch_character",
+            ),
+        },
+        "optional_character_scope_matches_any": {
+            "eunuch_character": (
+                "secondary_recipient",
+                "human_tribute",
             ),
         },
         "unavailable_character_scopes": (
@@ -1346,6 +1357,8 @@ MANAGER_TRIBUTE_TIMELINE_CONTRACTS: Final[
         "optional_scope_types": {
             "concubine_character": "character",
             "rejected_concubine": "flag",
+            "eunuch_character": "character",
+            "rejected_eunuch": "flag",
         },
         "boolean_scopes": (),
         "saved_scope_name_sets": (
@@ -1383,6 +1396,24 @@ MANAGER_TRIBUTE_TIMELINE_CONTRACTS: Final[
                 "saved_innovation",
                 "decided_on_treasury_reward",
             ),
+            (
+                "actor",
+                "recipient",
+                "secondary_actor",
+                "secondary_recipient",
+                "intermediary",
+                "tribute_mission_target",
+                "tributary_scope",
+                "overlord_scope",
+                "receiving_character",
+                "opinion_of_tributary",
+                "eunuch_character",
+                "human_tribute",
+                "tribute_reward_type_treasury",
+                "saved_innovation",
+                "rejected_eunuch",
+                "decided_on_treasury_reward",
+            ),
         ),
         "scope_variants": ({
             # Direct non-human route without interaction option booleans.
@@ -1402,15 +1433,38 @@ MANAGER_TRIBUTE_TIMELINE_CONTRACTS: Final[
                 "decided_on_treasury_reward",
             ),
             "unique_character_scope_excludes": {
-                "actor": (29037,),
-                "secondary_recipient": (29037,),
-                "tributary_scope": (29037,),
+                "actor": (PLAYER_SENTINEL,),
+                "secondary_recipient": (PLAYER_SENTINEL,),
+                "tributary_scope": (PLAYER_SENTINEL,),
             },
             "character_scope_matches_any": {
                 "tributary_scope": ("actor",),
             },
             "saved_scope_count": 13,
-        },) + tuple(
+        }, {
+            # R374 rejected-eunuch route from .1002. The interaction carries
+            # all three aliases plus the branch-specific rejection flag into
+            # this reward event; no other human-tribute envelope is admitted.
+            "saved_scope_names": (
+                "actor",
+                "recipient",
+                "secondary_actor",
+                "secondary_recipient",
+                "intermediary",
+                "tribute_mission_target",
+                "tributary_scope",
+                "overlord_scope",
+                "receiving_character",
+                "opinion_of_tributary",
+                "eunuch_character",
+                "human_tribute",
+                "tribute_reward_type_treasury",
+                "saved_innovation",
+                "rejected_eunuch",
+                "decided_on_treasury_reward",
+            ),
+            "saved_scope_count": 16,
+        }) + tuple(
             # Character-interaction routes retain all three typed option
             # booleans. R188 observed gold; herd is its exact source sibling.
             _resource_reward_scope_variant(resource_type)

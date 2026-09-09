@@ -11,6 +11,7 @@ sys.path.insert(0, str(PROJECT_ROOT / "src"))
 
 from xar_autoplayer.vanilla_events.records_analysis_manager_b import (  # noqa: E402
     MANAGER_VANILLA_ANALYSIS_B,
+    MANAGER_VANILLA_OBSERVATIONS_B,
 )
 from xar_autoplayer.vanilla_events.records_manager_b import (  # noqa: E402
     MANAGER_VANILLA_TIMELINE_CONTRACTS_B,
@@ -46,7 +47,16 @@ class VanillaEventAnalysisManagerBTests(unittest.TestCase):
         }
         for event_key, analysis in MANAGER_VANILLA_ANALYSIS_B.items():
             with self.subTest(event_key=event_key):
-                self.assertEqual(required, set(analysis))
+                if event_key == "tribute_mission.1005":
+                    self.assertTrue(required.issubset(analysis))
+                    self.assertEqual(
+                        analysis["review_basis"],
+                        "exact-build-original-definition-and-r374-live-red",
+                    )
+                    self.assertEqual(analysis["definition_lines"], "1975-2348")
+                    self.assertTrue(analysis["source_sha256"])
+                else:
+                    self.assertEqual(required, set(analysis))
                 self.assertEqual(
                     {
                         "game_version": EXACT_CK3_BUILD,
@@ -55,14 +65,27 @@ class VanillaEventAnalysisManagerBTests(unittest.TestCase):
                     analysis["exact_build"],
                 )
                 self.assertTrue(analysis["migrated_from"].startswith("tools/"))
-                self.assertEqual(
-                    "existing-contract-comments-docs-and-focused-tests",
-                    analysis["review_basis"],
-                )
+                if event_key != "tribute_mission.1005":
+                    self.assertEqual(
+                        "existing-contract-comments-docs-and-focused-tests",
+                        analysis["review_basis"],
+                    )
                 self.assertTrue(analysis["review_summary"])
                 self.assertTrue(analysis["scope_boundary"])
                 self.assertTrue(analysis["option_boundary"])
-                self.assertNotIn("source_sha256", analysis)
+                if event_key != "tribute_mission.1005":
+                    self.assertNotIn("source_sha256", analysis)
+
+    def test_r374_tribute_observation_is_json_safe(self) -> None:
+        event_key = "tribute_mission.1005"
+        self.assertEqual(list(MANAGER_VANILLA_OBSERVATIONS_B), [event_key])
+        exemplar = MANAGER_VANILLA_OBSERVATIONS_B[event_key]["exemplars"][0]
+
+        self.assertEqual(exemplar["event_instance_id"], 1007)
+        self.assertEqual(exemplar["date_raw"], 53536032)
+        self.assertEqual(len(exemplar["saved_scope_raw_types"]), 16)
+        self.assertFalse(exemplar["selection_attempted"])
+        json.dumps(MANAGER_VANILLA_OBSERVATIONS_B, allow_nan=False)
 
     def test_preferred_safe_options_remain_compatible_with_contracts(self) -> None:
         for event_key, contract in MANAGER_VANILLA_TIMELINE_CONTRACTS_B.items():
