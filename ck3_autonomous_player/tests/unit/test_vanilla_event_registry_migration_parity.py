@@ -39,6 +39,9 @@ from xar_autoplayer.vanilla_events.records_tgp_dynastic_cycle import (  # noqa: 
 from xar_autoplayer.vanilla_events.records_tgp_movement import (  # noqa: E402
     VANILLA_TGP_MOVEMENT_TIMELINE_CONTRACTS,
 )
+from xar_autoplayer.vanilla_events.records_tgp_treasury import (  # noqa: E402
+    VANILLA_TGP_TREASURY_TIMELINE_CONTRACTS,
+)
 from xar_autoplayer.vanilla_events.records_trait_specific import (  # noqa: E402
     VANILLA_TRAIT_SPECIFIC_TIMELINE_CONTRACTS,
 )
@@ -71,7 +74,7 @@ SEED_CAPTURE_ENTRY = ROOT / "tools" / "run_zg361_phase2_seed_capture.py"
 
 EXPECTED_BUCKET_COUNTS = {
     "vanilla_shards": 20,
-    "manager_original": 57,
+    "manager_original": 56,
     "embedded_original": 79,
     "prebootstrap": 2,
 }
@@ -145,7 +148,6 @@ LEGACY_MANAGER_SOURCES = (
     ("zg361_phase2_promotion_manager_debate_contracts", "MANAGER_DEBATE_TIMELINE_CONTRACTS"),
     ("zg361_phase2_promotion_manager_tgp_petition_contracts", "MANAGER_TGP_PETITION_TIMELINE_CONTRACTS"),
     ("zg361_phase2_promotion_manager_tgp_interaction_contracts", "MANAGER_TGP_INTERACTION_TIMELINE_CONTRACTS"),
-    ("zg361_phase2_promotion_manager_tgp_ministry_contracts", "MANAGER_TGP_MINISTRY_TIMELINE_CONTRACTS"),
     ("zg361_phase2_promotion_manager_tribute_contracts", "MANAGER_TRIBUTE_TIMELINE_CONTRACTS"),
     ("zg361_phase2_promotion_manager_nickname_contracts", "MANAGER_NICKNAME_TIMELINE_CONTRACTS"),
     ("zg361_phase2_promotion_manager_spymaster_contracts", "MANAGER_SPYMASTER_TIMELINE_CONTRACTS"),
@@ -321,6 +323,7 @@ class VanillaEventRegistryMigrationParityTests(unittest.TestCase):
             VANILLA_TRAIT_SPECIFIC_TIMELINE_CONTRACTS,
             VANILLA_DEATH_MANAGEMENT_TIMELINE_CONTRACTS,
             VANILLA_FACTION_DEMAND_TIMELINE_CONTRACTS,
+            VANILLA_TGP_TREASURY_TIMELINE_CONTRACTS,
         )
         self.assertEqual(DEFAULT_VANILLA_EVENT_CONTRACT_GROUPS, default_groups)
         key_memberships: defaultdict[str, list[int]] = defaultdict(list)
@@ -417,7 +420,7 @@ class VanillaEventRegistryMigrationParityTests(unittest.TestCase):
             if len(bucket_names) > 1
         }
         self.assertEqual(actual_overlaps, EXPECTED_INTENTIONAL_OVERLAPS)
-        self.assertEqual(len(memberships), 156)
+        self.assertEqual(len(memberships), 155)
 
 
 if __name__ == "__main__":

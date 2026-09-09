@@ -50,7 +50,6 @@ SOURCE_TABLES = (
     MANAGER_PRISON_TIMELINE_CONTRACTS,
     MANAGER_SPYMASTER_TIMELINE_CONTRACTS,
     MANAGER_TGP_INTERACTION_TIMELINE_CONTRACTS,
-    MANAGER_TGP_MINISTRY_TIMELINE_CONTRACTS,
     MANAGER_TGP_PETITION_TIMELINE_CONTRACTS,
     MANAGER_TRAIT_TIMELINE_CONTRACTS,
     MANAGER_TRIBUTE_TIMELINE_CONTRACTS,
@@ -91,6 +90,14 @@ class VanillaEventRecordsManagerBTests(unittest.TestCase):
         self.assertEqual(
             set(records.MANAGER_VANILLA_TIMELINE_CONTRACTS_B),
             set().union(*(set(table) for table in SOURCE_TABLES)),
+        )
+        self.assertIs(
+            records.MANAGER_TGP_MINISTRY_TIMELINE_CONTRACTS,
+            MANAGER_TGP_MINISTRY_TIMELINE_CONTRACTS,
+        )
+        self.assertNotIn(
+            "tgp_china_ministry.0100",
+            records.MANAGER_VANILLA_TIMELINE_CONTRACTS_B,
         )
 
     def test_aggregate_rejects_duplicate_event_definition_keys(self) -> None:

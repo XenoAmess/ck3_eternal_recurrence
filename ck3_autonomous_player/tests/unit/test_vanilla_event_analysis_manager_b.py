@@ -23,8 +23,8 @@ from xar_autoplayer.vanilla_events.registry import (  # noqa: E402
 
 
 class VanillaEventAnalysisManagerBTests(unittest.TestCase):
-    def test_analysis_covers_exactly_the_21_migrated_contracts(self) -> None:
-        self.assertEqual(21, len(MANAGER_VANILLA_ANALYSIS_B))
+    def test_analysis_covers_exactly_the_20_migrated_contracts(self) -> None:
+        self.assertEqual(20, len(MANAGER_VANILLA_ANALYSIS_B))
         self.assertEqual(
             set(MANAGER_VANILLA_TIMELINE_CONTRACTS_B),
             set(MANAGER_VANILLA_ANALYSIS_B),

@@ -144,14 +144,13 @@ class ManagerRecoveryTgpInterruptTests(unittest.TestCase):
             "repeatable-within-product-observation-window",
         )
         self.assertNotIn("max_occurrences", contract)
-        military_variant = next(
-            variant
-            for variant in contract["scope_variants"]
-            if "military_budget" in variant["saved_scope_names"]
+        self.assertIn(
+            ("treasury_ruler", "steward", "military_budget"),
+            contract["saved_scope_name_sets"],
         )
         self.assertEqual(
-            military_variant["character_scopes"],
-            {"treasury_ruler": 32904, "military_budget": 32904},
+            contract["optional_scope_types"]["military_budget"],
+            "character",
         )
 
     def test_repeatable_military_aid_notice_uses_only_acknowledgement(self) -> None:

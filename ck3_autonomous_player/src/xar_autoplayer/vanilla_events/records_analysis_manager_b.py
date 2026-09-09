@@ -1,4 +1,4 @@
-﻿"""Reusable analysis metadata for the 21 manager-B vanilla events.
+﻿"""Reusable analysis metadata for the 20 manager-B vanilla events.
 
 This module migrates conclusions already recorded in the manager-B contracts,
 their comments, and focused tests.  It does not claim a fresh exhaustive source
@@ -55,9 +55,6 @@ _PRISON_SOURCE = "tools/zg361_phase2_promotion_manager_prison_contracts.py"
 _SPYMASTER_SOURCE = "tools/zg361_phase2_promotion_manager_spymaster_contracts.py"
 _TGP_INTERACTION_SOURCE = (
     "tools/zg361_phase2_promotion_manager_tgp_interaction_contracts.py"
-)
-_TGP_MINISTRY_SOURCE = (
-    "tools/zg361_phase2_promotion_manager_tgp_ministry_contracts.py"
 )
 _TGP_PETITION_SOURCE = (
     "tools/zg361_phase2_promotion_manager_tgp_petition_contracts.py"
@@ -311,23 +308,6 @@ MANAGER_VANILLA_ANALYSIS_B: Final[dict[str, dict[str, object]]] = {
             "war-response frame for each independent delivery."
         ),
         option_boundary="Exactly one authored acknowledgement, native 0, is visible.",
-    ),
-    "tgp_china_ministry.0100": _analysis(
-        migrated_from=_TGP_MINISTRY_SOURCE,
-        review_summary=(
-            "The treasury-budget renewal offers a picker, current-allocation "
-            "retention, or enactment of the steward's saved preference."
-        ),
-        safe_native_option_index=1,
-        safe_option_number=2,
-        safe_option_rationale=(
-            "Native 1 preserves the current allocation and terminates the prompt."
-        ),
-        scope_boundary=(
-            "Bind the player treasury aliases, typed third-party steward, and "
-            "exactly one reviewed celestial or meritocratic preference scope."
-        ),
-        option_boundary="Exactly native options 0, 1, and 2 are visible.",
     ),
     "tgp_decision_events.0101": _analysis(
         migrated_from=_TGP_PETITION_SOURCE,
