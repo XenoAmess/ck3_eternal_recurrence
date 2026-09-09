@@ -72,7 +72,7 @@
     "ck3_autonomous_player/native_bridge/research/prepare_g2_postwar_retention_expiry_capture.py": "EA4B81A037C59B20F64E3E6800E9BEC7E4DE8EC856C1D0029639EDF620498E04",
     "ck3_autonomous_player/src/xar_autoplayer/bridge/native_driver.py": "18826574D16E7BFB424709A5A7A07B66E7CCEFA5867C442984F57D8B8CBB069C",
     "ck3_autonomous_player/src/xar_autoplayer/bridge/raiktor_actual_truce_expiry_contract.py": "55FE165E5C001CD6858C4C47345FC8343DC270C9D77B7DB9678E2D5596CF405C",
-    "ck3_autonomous_player/src/xar_autoplayer/bridge/raiktor_surrender_truce_contract.py": "63E43DF082AFA941C0842DC4A74934D17FD4BAE6EB834200B4DD0CDEF1A9A561",
+    "ck3_autonomous_player/src/xar_autoplayer/bridge/raiktor_surrender_truce_contract.py": "6D65BDD53CCABFA260D09853990115698201DC0BC84CFA514AAB9F1B29A9C506",
     "ck3_autonomous_player/src/xar_autoplayer/bridge/raiktor_war_bound_loss_cleanup_contract.py": "11C7B77842676251BDB1516472CB15D4115105D4A7B3AB5B994B3430F5F48C61"
   },
   "build_contract": {
