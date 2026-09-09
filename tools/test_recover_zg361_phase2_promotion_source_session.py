@@ -3,6 +3,7 @@
 
 from __future__ import annotations
 
+import copy
 import hashlib
 import importlib.machinery
 import importlib.util
@@ -463,6 +464,7 @@ class RecoveryTests(unittest.TestCase):
             supervisor = runner.start_phase2_native_session_supervisor(
                 types.SimpleNamespace(state_dir=Path("state")),
                 final_bridge,
+                runtime_timeout_seconds=43_200.0,
                 frontend_first_load_save_name="autosave",
                 frontend_first_timeout_seconds=7.0,
                 frontend_first_warmup_bridge=warmup_bridge,
@@ -482,7 +484,171 @@ class RecoveryTests(unittest.TestCase):
             supervisor["startup_slot0_probe_output"],
             str(probe_output.resolve()),
         )
+        self.assertEqual(keywords["timeout_seconds"], 43_200.0)
+        self.assertEqual(supervisor["runtime_timeout_seconds"], 43_200.0)
         self.assertFalse(keywords["cold_start_checkpoint"])
+
+    def test_phase2_supervisor_runtime_timeout_default_and_validation(self) -> None:
+        bridge = runner.NativeBridgeLaunchConfig(
+            mode=runner.NATIVE_BRIDGE_MODE,
+            pipe_name=r"\\.\pipe\xar_ck3_bridge_zg361_" + "3" * 32,
+            dll_path=Path("final.dll"),
+            injector_path=Path("final.exe"),
+        )
+        with mock.patch.object(
+            runner, "native_session", return_value={"result": "stopped"}
+        ) as native_session_call:
+            supervisor = runner.start_phase2_native_session_supervisor(
+                types.SimpleNamespace(state_dir=Path("state")), bridge
+            )
+            supervisor["session_thread"].join(timeout=1.0)
+        self.assertEqual(
+            native_session_call.call_args.kwargs["timeout_seconds"],
+            runner.PHASE2_SUPERVISOR_RUNTIME_TIMEOUT_S,
+        )
+        self.assertEqual(
+            supervisor["runtime_timeout_seconds"],
+            runner.PHASE2_SUPERVISOR_RUNTIME_TIMEOUT_S,
+        )
+
+        for invalid in (True, 0, -1, float("nan"), float("inf"), "3600"):
+            with self.subTest(invalid=invalid):
+                with mock.patch.object(runner, "native_session") as native_session:
+                    with self.assertRaisesRegex(
+                        runner.acceptance.RunnerError,
+                        "runtime timeout must be finite and positive",
+                    ):
+                        runner.start_phase2_native_session_supervisor(
+                            types.SimpleNamespace(state_dir=Path("state")),
+                            bridge,
+                            runtime_timeout_seconds=invalid,
+                        )
+                native_session.assert_not_called()
+
+    def test_phase2_timeout_cleanup_is_cleanup_only_and_fail_closed(self) -> None:
+        pipe = r"\\.\pipe\xar_ck3_bridge_zg361_" + "4" * 32
+
+        def shutdown(pid: int) -> dict[str, object]:
+            return {
+                "ck3_pid": pid,
+                "ok": True,
+                "cleanup_proven": True,
+                "tree_gone": True,
+                "job_active_processes_final": 0,
+                "final_ck3_inventory": {"processes": []},
+                "watchdog_state_after": "absent",
+                "control_files_absent": {
+                    "pid": True,
+                    "ready": True,
+                    "watchdog_error": True,
+                    "unsafe": True,
+                },
+                "contract_errors": [],
+            }
+
+        timeout_report = {
+            "kind": "ck3_native_headless_session",
+            "mode": runner.NATIVE_BRIDGE_MODE,
+            "pipe": pipe,
+            "pid": 4321,
+            "exit_reason": "timeout",
+            "process_exit_code": 1,
+            "shutdown": shutdown(4321),
+            "restart_count": 0,
+            "restart_shutdowns": [],
+            "ok": True,
+        }
+        disconnected = {
+            "diagnostics": {
+                "connected": False,
+                "bridge_pid": None,
+                "connection_generation": 0,
+            }
+        }
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            green_dir = root / "timeout-green"
+            green_dir.mkdir()
+            cleanup = runner.prove_phase2_native_session_cleanup(
+                timeout_report,
+                green_dir,
+                initial_pid=4321,
+                initial_generation=4,
+                expected_pipe=pipe,
+                scenario_evidence={},
+                final_capabilities=disconnected,
+                session_error=None,
+                supervisor_stopped=True,
+            )
+            self.assertEqual(cleanup["result"], "GREEN")
+            self.assertEqual(cleanup["acceptance_scope"], "cleanup_only")
+            self.assertEqual(cleanup["session_result"], "TIMEOUT")
+            self.assertEqual(cleanup["product_result"], "INCOMPLETE")
+            self.assertTrue(cleanup["resume_required"])
+            self.assertFalse(cleanup["timeout_accepted_as_gameplay_success"])
+            self.assertTrue(cleanup["checks"]["session_exit_reason_timeout"])
+            self.assertTrue(
+                cleanup["checks"]["session_process_exit_code_recorded"]
+            )
+            self.assertTrue(cleanup["checks"]["final_capabilities_disconnected"])
+
+            red_report = copy.deepcopy(timeout_report)
+            red_report["shutdown"]["job_active_processes_final"] = 1
+            red_dir = root / "timeout-red"
+            red_dir.mkdir()
+            with self.assertRaisesRegex(
+                runner.acceptance.RunnerError,
+                "initial_pid_shutdown_job_empty",
+            ):
+                runner.prove_phase2_native_session_cleanup(
+                    red_report,
+                    red_dir,
+                    initial_pid=4321,
+                    initial_generation=4,
+                    expected_pipe=pipe,
+                    scenario_evidence={},
+                    final_capabilities=disconnected,
+                    session_error=None,
+                    supervisor_stopped=True,
+                )
+            red_evidence = json.loads(
+                (red_dir / "09_phase2_native_session_cleanup.json").read_text(
+                    encoding="utf-8"
+                )
+            )
+            self.assertEqual(red_evidence["result"], "RED")
+            self.assertFalse(
+                red_evidence["checks"]["initial_pid_shutdown_job_empty"]
+            )
+
+            stop_report = copy.deepcopy(timeout_report)
+            stop_report["exit_reason"] = "stop"
+            stop_report["process_exit_code"] = None
+            connected = {
+                "diagnostics": {
+                    "connected": True,
+                    "bridge_pid": 4321,
+                    "connection_generation": 4,
+                }
+            }
+            stop_dir = root / "stop-green"
+            stop_dir.mkdir()
+            stop_cleanup = runner.prove_phase2_native_session_cleanup(
+                stop_report,
+                stop_dir,
+                initial_pid=4321,
+                initial_generation=4,
+                expected_pipe=pipe,
+                scenario_evidence={},
+                final_capabilities=connected,
+                session_error=None,
+                supervisor_stopped=True,
+            )
+            self.assertEqual(stop_cleanup["result"], "GREEN")
+            self.assertTrue(stop_cleanup["checks"]["session_exit_reason_stop"])
+            self.assertTrue(stop_cleanup["checks"]["final_capabilities_connected"])
+            self.assertNotIn("acceptance_scope", stop_cleanup)
+            self.assertNotIn("timeout_accepted_as_gameplay_success", stop_cleanup)
 
     def test_tasklist_denial_uses_exact_toolhelp_fallback(self) -> None:
         denied = types.SimpleNamespace(

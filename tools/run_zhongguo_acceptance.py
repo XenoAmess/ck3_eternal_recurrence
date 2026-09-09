@@ -6957,6 +6957,7 @@ def start_phase2_native_session_supervisor(
     spec: EnvironmentSpec,
     native_bridge: NativeBridgeLaunchConfig,
     *,
+    runtime_timeout_seconds: float = PHASE2_SUPERVISOR_RUNTIME_TIMEOUT_S,
     frontend_first_load_save_name: str | None = None,
     frontend_first_timeout_seconds: float = (
         NATIVE_SESSION_FRONTEND_FIRST_DEFAULT_TIMEOUT_SECONDS
@@ -6966,6 +6967,16 @@ def start_phase2_native_session_supervisor(
 ) -> dict[str, object]:
     """Start the production pure-native lifecycle owner for phase two only."""
 
+    if (
+        isinstance(runtime_timeout_seconds, bool)
+        or not isinstance(runtime_timeout_seconds, (int, float))
+        or not math.isfinite(float(runtime_timeout_seconds))
+        or runtime_timeout_seconds <= 0
+    ):
+        raise acceptance.RunnerError(
+            "phase-two supervisor runtime timeout must be finite and positive"
+        )
+    runtime_timeout_seconds = float(runtime_timeout_seconds)
     _validate_phase2_frontend_first_options(
         frontend_first_load_save_name,
         frontend_first_timeout_seconds,
@@ -7003,7 +7014,7 @@ def start_phase2_native_session_supervisor(
                 )
             session_state["report"] = native_session(
                 spec,
-                timeout_seconds=PHASE2_SUPERVISOR_RUNTIME_TIMEOUT_S,
+                timeout_seconds=runtime_timeout_seconds,
                 native_bridge=native_bridge,
                 input_stream=None,
                 output_stream=None,
@@ -7033,6 +7044,7 @@ def start_phase2_native_session_supervisor(
         "session_done": session_done,
         "session_state": session_state,
         "session_thread": session_thread,
+        "runtime_timeout_seconds": runtime_timeout_seconds,
         "frontend_first_load_save_name": frontend_first_load_save_name,
         "frontend_first_timeout_seconds": (
             float(frontend_first_timeout_seconds)
@@ -8143,6 +8155,9 @@ def prove_phase2_native_session_cleanup(
         if restore_expected and generation_lineage
         else initial_generation
     )
+    timeout_cleanup = (
+        report.get("ok") is True and report.get("exit_reason") == "timeout"
+    )
     checks: dict[str, bool] = {
         "supervisor_stopped": supervisor_stopped is True,
         "session_error_absent": session_error is None,
@@ -8151,9 +8166,6 @@ def prove_phase2_native_session_cleanup(
         "session_mode": report.get("mode") == NATIVE_BRIDGE_MODE,
         "session_pipe": report.get("pipe") == expected_pipe,
         "session_report_ok": report.get("ok") is True,
-        "session_exit_reason_stop": report.get("exit_reason") == "stop",
-        "session_process_exit_code_clean": report.get("process_exit_code")
-        in (None, 0),
         "initial_pid_positive": isinstance(initial_pid, int)
         and not isinstance(initial_pid, bool)
         and initial_pid > 0,
@@ -8161,15 +8173,48 @@ def prove_phase2_native_session_cleanup(
         and not isinstance(initial_generation, bool)
         and initial_generation > 0,
         "final_capabilities_object": isinstance(final_capabilities, dict),
-        "final_capabilities_connected": final_diagnostics.get("connected")
-        is True,
-        "final_capabilities_pid_matches": final_diagnostics.get("bridge_pid")
-        == expected_final_pid,
-        "final_capabilities_generation_matches": final_diagnostics.get(
-            "connection_generation"
-        )
-        == expected_final_generation,
     }
+    if timeout_cleanup:
+        checks.update(
+            {
+                "session_exit_reason_timeout": report.get("exit_reason")
+                == "timeout",
+                "session_process_exit_code_recorded": report.get(
+                    "process_exit_code"
+                )
+                is None
+                or (
+                    isinstance(report.get("process_exit_code"), int)
+                    and not isinstance(report.get("process_exit_code"), bool)
+                ),
+                "final_capabilities_disconnected": final_diagnostics.get(
+                    "connected"
+                )
+                is False,
+            }
+        )
+    else:
+        checks.update(
+            {
+                "session_exit_reason_stop": report.get("exit_reason") == "stop",
+                "session_process_exit_code_clean": report.get(
+                    "process_exit_code"
+                )
+                in (None, 0),
+                "final_capabilities_connected": final_diagnostics.get(
+                    "connected"
+                )
+                is True,
+                "final_capabilities_pid_matches": final_diagnostics.get(
+                    "bridge_pid"
+                )
+                == expected_final_pid,
+                "final_capabilities_generation_matches": final_diagnostics.get(
+                    "connection_generation"
+                )
+                == expected_final_generation,
+            }
+        )
     restart_count = report.get("restart_count")
     if restore_expected:
         checks.update(
@@ -8445,6 +8490,16 @@ def prove_phase2_native_session_cleanup(
             else "phase-two native_session cleanup RED: " + ", ".join(failed)
         ),
     }
+    if timeout_cleanup:
+        evidence.update(
+            {
+                "acceptance_scope": "cleanup_only",
+                "session_result": "TIMEOUT",
+                "product_result": "INCOMPLETE",
+                "resume_required": True,
+                "timeout_accepted_as_gameplay_success": False,
+            }
+        )
     write_json(evidence_path, evidence)
     if failed:
         raise acceptance.RunnerError(str(evidence["failure_reason"]))
