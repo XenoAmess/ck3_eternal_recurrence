@@ -144,12 +144,16 @@ matrix 仍 blocked：AI-owned case ready；Incident X ready 但 N/A；B2 PIP、I
 沉淀为 CK3 自动玩家与其他 mod 可共同消费的共享 registry asset；完成 cutover 后，项目专用 runner 只引用或投影该资产，
 不重复维护互相漂移的私有结论。
 
-当前 cutover 状态为 **`static-ready / integrated-tested`，尚非 `production-live`**。共享 registry 已提供 156 条默认记录，MCP
-真实 `list/call` 已接通；production runtime 已接入 295 条共享记录且内容 hash 保持不变，17 个 literal 与 31 个 wrapper 已完成
-切换。vanilla focused 回归在 normal / `-O` 下各为 `36 passed, 68 subtests`，promotion checkpoint runner 为 `90/90`
-normal / `-O` GREEN；旧消费者复跑在 normal / `-O` 下也各为 `160 passed, 1 skipped, 61 subtests`。本批根仓提交仍待
-Git 收口后补 SHA；R372 的 TGP 帧仍只是 paused
-exemplar，尚未通过新 cutover 路径 retry，因此不得把上述静态/集成证据升级为 registry-backed production-live。T2
+当前 cutover 状态为首个 **`production-live primitive`**。共享 registry 已提供 157 条默认合同及 `157/157` JSON-safe 分析记录，
+MCP 真实 `list/call` 已接通；production runtime 已接入 296 条记录，17 个 literal 与 31 个 wrapper 已完成切换。vanilla migration
+全集在 normal / `-O` 下各为 `60 passed, 271 subtests`，promotion checkpoint runner 为 `90/90` normal / `-O` GREEN；旧消费者复跑
+在 normal / `-O` 下也各为 `160 passed, 1 skipped, 61 subtests`。shared-registry cutover、tuple-preservation、GHW repeatable、
+TGP0020 合同及历史分析迁移分别由 `fc84f4c`、`081ca93`、`09f7b43`、`23049d9` 收口并推送。R372 已在同一 PID/session 对
+`TGP0160`、`great_holy_war.0011` 与 `tgp_dynastic_cycle_events.0020` 完成真实选择、旧 instance advance 和后续推进；TGP0020
+retry-7 冻结快照为
+`_runtime/p2r372-post-bound-continuation-live/driver-state-hot-retry-7-snapshot.json`，SHA-256
+`07E292E84DCD56E1917EDF6043D2138A0FCD1F8ADC6EFBF028CCA8C1FD4BDA65`。这个状态只证明自然遇到的首批 event slice，不能外推为
+157 条合同全部实机覆盖，也不改变 T0 百分比。T2
 `open_kaishek` 初始能力提交 `6b38d9c` 后，BOM source hash 重绑提交 `edcd1ba` 已推送，API 语义不变；父仓 pin verifier
 normal / `-O` GREEN。
 
