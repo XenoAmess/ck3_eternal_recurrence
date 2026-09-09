@@ -2070,3 +2070,26 @@ final PID `199412` 获得 loader `303/303`、fatal `0`、Load Save、paused/map/
 R285/R286 还证明：已知事件 occurrence/identity 在任何选择前 fail-closed 时，直接清理健康 PID 会令下一次 fresh 启动重新随机化时间线，显著妨碍同一首错的修复验证。recovery 现用专用 `PromotionKnownInterruptContractError` 只标记 occurrence-bound 或 identity-check 两类明确 `selection_attempted=false` 的失败；它们写出完整 snapshot/event/query/failed-check evidence，并在 map/bridge/PID 健康门通过后保留 session 供原 resume client 连接。选择前 revision 漂移、选择后 postcondition 失败、产品 runtime diagnostic 等其他 RED 仍不进入该分支。
 
 R286 report / loader / entry / cleanup / relay SHA-256 分别为 `BC26E32BF2B64D76D187AA1F1041203A6D9C12D15D10739F9AB67638498243E1` / `733D09E3B22F3E67E01538E93EAA14C7512AA8DE75C9E77D59A86A32AF3CE44A` / `A91325573004F710D490355A47763E1BFA8BAAD41AD86E311C47F5F1EC1D81E6` / `C697EBD18F7A685EFA041CB9162BAC92622F396CB63984BAFF53068EB3B493AD` / `5A9667BE98AF600D231BAA160DE0B2693BAF3D7859C3A4C0BF5B0B5179CDF412`。cleanup 后实时 CK3/injector 槽为空；此轮仍为 harness RED，不能计作 agenda live 归零。
+
+### R371–R372：恢复存档追赶段与固定 observation-window（2026-09-09）
+
+从 autosave 启动新的有限观测窗口时，存档实际载入日期可能早于为新窗口配置的
+timeline origin。非 `exact-authored-anchor` 中断合同的日期下界必须取本轮首次真实
+载入的 `starting_date_raw`，上界仍取配置 origin 加固定预算；不能把 origin 同时
+用作下界，否则会误拒绝恢复后的追赶段事件，也不能用每次 reconnect 日期重算上界，
+否则会靠重连续期。R371 的实际三元组为 loaded `53383440`、origin `53391336`、
+absolute end `53635896`；原版 `ep3_decisions_event.2001` 在 `53385312` 出现，除
+日期外所有 identity check 均已通过。修复后同一帧的日期检查也 GREEN，并继续排空
+后续中断。`exact-authored-anchor` 仍只接受原锚；yearly pulse 仍同时要求窗口范围与
+原版周期同余。
+
+热恢复模块 reload 还必须保留同一运行的 origin 与 absolute end。production entry
+从 caller 持有的 evidence 对象复用这两个值；任何 runtime deadline probe 也必须绑定
+同一不可变边界，不能在 reload 后重新读取模块默认常量。R371 的自定义 probe 未做到
+后一点，因此在旧 canonical end `53391576` 错误终止；该轮保留为 harness RED，不能
+冒充第四类 source。R372 改由 runner 闭包持有固定第二窗口边界后再启动。
+
+跨窗口的目标 occurrence 只有在旧窗口已真实出现同一 target 时才需要继承。R370 的
+159 条 drain 中 `zg361we.356` 为零，且其 autosave 恢复到 `central_stage_9`；所以
+R372 从零起算、记录前两次 `.356` 并在第三次停下是本次 lineage 的正确语义，不需要
+为尚未发生的跨窗口欠计数扩改实现。
