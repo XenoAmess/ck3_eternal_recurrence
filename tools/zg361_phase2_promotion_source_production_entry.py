@@ -604,6 +604,36 @@ KNOWN_TIMELINE_INTERRUPTS: dict[str, dict[str, object]] = {
         "selected_native_option_index": 2,
         "occurrence_policy": "repeatable-within-product-observation-window",
     },
+    "martial_authority_special.3000": {
+        # CK3 1.19.0.6, exact EXE SHA 2D00FF31...; source
+        # events/lifestyles/warfare_lifestyle/martial_authority_events.txt
+        # SHA 3E4FDE26..., lines 1962-2087. R408 instance 2160 binds the
+        # quarter value and one known friend. Both routes grant the same minor
+        # lifestyle XP; option 1/native 0 confines its extra effect to the
+        # friend's positive opinion and avoids option 2's two-year troop or
+        # capital-province modifier.
+        "date_policy": "product-observation-window",
+        "root_character_id": 33596113,
+        "character_scopes": {
+            "martial_authority_friend": 16847101,
+        },
+        "scope_types": {
+            "quarter": "value",
+            "martial_authority_friend": "character",
+        },
+        "boolean_scopes": (),
+        "saved_scope_name_sets": ((
+            "quarter",
+            "martial_authority_friend",
+        ),),
+        "saved_scope_count": 2,
+        "option_count": 2,
+        "snapshot_option_count": 2,
+        "native_option_indices": (0, 1),
+        "selected_option_number": 1,
+        "selected_native_option_index": 0,
+        "occurrence_policy": "repeatable-within-product-observation-window",
+    },
     "zg361b2.40": {
         "date_raw": 53147040,
         "date_policy": "exact-authored-anchor",

@@ -363,6 +363,69 @@ class ManagerRecoveryInterruptTests(unittest.TestCase):
         self.assertNotIn("forbid_agent_from_scheme_effect", third_option)
         self.assertNotIn("agent_treatment", third_option)
 
+    def test_martial_authority_friend_avoids_province_modifier(self) -> None:
+        event_key = "martial_authority_special.3000"
+        contract = production._manager_recovery_contract(
+            production.KNOWN_TIMELINE_INTERRUPTS[event_key],
+            player=33596113,
+            event_key=event_key,
+        )
+        contract = production._timeline_contract_for_window(
+            contract,
+            starting_date=54008952,
+        )
+        context = _context(
+            event_key=event_key,
+            instance_id=2160,
+            date_raw=54011856,
+            player=33596113,
+            scopes=[
+                _scope("quarter", "value"),
+                _scope(
+                    "martial_authority_friend", "character", 16847101
+                ),
+            ],
+            native_option_indices=(0, 1),
+        )
+        checks = production._known_interrupt_checks(
+            snapshot={
+                "date_raw": 54011856,
+                "active_event": {"option_count": 2},
+            },
+            event={"event_instance_id": 2160},
+            context=context,
+            event_key=event_key,
+            contract=contract,
+        )
+        self.assertTrue(all(checks.values()), checks)
+        self.assertEqual(contract["selected_option_number"], 1)
+        self.assertEqual(contract["selected_native_option_index"], 0)
+
+        game_root = ROOT / "Crusader Kings III"
+        if not game_root.is_dir():
+            game_root = ROOT.parent / "Crusader Kings III"
+        source_path = (
+            game_root
+            / "game/events/lifestyles/warfare_lifestyle"
+            / "martial_authority_events.txt"
+        )
+        self.assertEqual(
+            hashlib.sha256(source_path.read_bytes()).hexdigest().upper(),
+            "3E4FDE26E066AF2DBE52C6166F1CDBDF6D509B5E5188B3F35A9B3EF7D0FDB360",
+        )
+        source_block = _extract_block(
+            source_path.read_text(encoding="utf-8-sig"),
+            "martial_authority_special.3000 =",
+        )
+        self.assertEqual(source_block.count("\n\toption = {"), 2)
+        first_option = source_block.split("\n\toption = {")[1].split(
+            "\n\toption = {", 1
+        )[0]
+        self.assertIn("add_martial_lifestyle_xp = minor_lifestyle_xp", first_option)
+        self.assertIn("modifier = respect_opinion", first_option)
+        self.assertNotIn("add_province_modifier", first_option)
+        self.assertNotIn("add_character_modifier", first_option)
+
     def test_cold_import_preserves_existing_canonical_contract_identity(
         self,
     ) -> None:

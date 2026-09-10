@@ -167,8 +167,8 @@ class EmbeddedVanillaTimelineContractsTests(unittest.TestCase):
         tree = _production_tree()
         literal_keys = _production_literal_keys(tree)
 
-        self.assertEqual(len(literal_keys), 21)
-        self.assertEqual(len(set(literal_keys)), 21)
+        self.assertEqual(len(literal_keys), 22)
+        self.assertEqual(len(set(literal_keys)), 22)
         self.assertEqual(
             [key for key in literal_keys if not key.startswith("zg361")],
             [
@@ -176,6 +176,7 @@ class EmbeddedVanillaTimelineContractsTests(unittest.TestCase):
                 "childhood.2010",
                 "coming_of_age.1002",
                 "hostile_scheme_discovery.1001",
+                "martial_authority_special.3000",
             ],
         )
         self.assertEqual(
