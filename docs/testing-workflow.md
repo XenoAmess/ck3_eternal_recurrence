@@ -1932,6 +1932,15 @@ R93 首次把这条策略跑通。新的 Python pipe server 必须异步等待 D
 query/validate/select 流程。年度 `zg361.40` 之类的重复事件按源码锚点和 8,760 小时周期
 绑定到当前观察窗口，不能把最初两次实测日期硬编码成永远的完整集合。
 
+若某项验收明确要求在**同一** `connection_generation` 内续跑，则不能套用上面的跨 client
+重连：`NativeNamedPipeServer` 以 `CreateNamedPipeW(..., max_instances=1, ...)` 建立单客户端
+endpoint，DLL 每次新连接都会递增 `connection_generation`。这类热续跑必须由当前 pipe owner
+复用既有 service 原位调用后续 choreography；关闭 owner 再 attach，即使 CK3 PID 未变，也已是
+新 generation。反之，要求证明 cold restore 的 `g -> g+1` 时，应让同一 Python endpoint 跨旧
+CK3 停止与新 CK3 启动继续存活，以一次真实 reconnect 观测递增。若 owner 由 operator MCP 启动且
+stdin 被隔离为 `DEVNULL`，必须用启动时冻结的自动续跑参数或等价的可审计控制面，不能依赖事后向
+交互提示写入命令。
+
 R93 冷启动及两次同 PID 接续从 `date_raw=53147016` 推进到 `53177160`，累计 1,256
 游戏日、296 次玩家 progress 查询和 10 次精确事件处理；全程玩家均为
 `B1=true / Central=false / PP=false`。这证明 550 日窗口不足不是剩余解释。旧产品日志在
