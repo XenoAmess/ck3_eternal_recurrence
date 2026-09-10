@@ -249,6 +249,32 @@ class _FrontendServiceDriver:
 
 
 class CoatOfArmsSourceProbeV1ContractTests(unittest.TestCase):
+    def test_native_hook_bootstraps_before_gameplay_snapshot_gate(self) -> None:
+        bridge_source = (
+            PROJECT_ROOT / "native_bridge" / "src" / "bridge.cpp"
+        ).read_text(encoding="utf-8")
+        worker = bridge_source.index("DWORD WINAPI WorkerMain(void *) noexcept")
+        install = bridge_source.index(
+            "InstallCoatOfArmsDesignerProbeHookV1(", worker
+        )
+        gameplay_lifetime = bridge_source.index(
+            "WarEntryApplicationMainMailboxWorkerLifetime mailbox_lifetime",
+            worker,
+        )
+        self.assertLess(worker, install)
+        self.assertLess(install, gameplay_lifetime)
+
+        maybe_install = bridge_source.index(
+            "void MaybeInstall(const xar::game::Snapshot &snapshot) noexcept"
+        )
+        lifetime_destructor = bridge_source.index(
+            "~WarEntryApplicationMainMailboxWorkerLifetime()", maybe_install
+        )
+        self.assertNotIn(
+            "InstallCoatOfArmsDesignerProbeHookV1(",
+            bridge_source[maybe_install:lifetime_destructor],
+        )
+
     def test_probe_never_enters_planner_action_steps(self) -> None:
         self.assertEqual(
             _action_steps([PROBE_COAT_OF_ARMS_SOURCE_V1_CAPABILITY]),

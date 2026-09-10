@@ -4915,9 +4915,6 @@ public:
         &xar::ck3_11906::ExecuteSetPlayedCharacterMailboxV1;
     environment.permitted_executor_novemvigintary =
         &xar::ck3_11906::ExecuteZhongguoB1CycleSnapshotMailboxQueryV1;
-    xar::ck3_11906::InstallCoatOfArmsDesignerProbeHookV1(
-        g_coat_of_arms_designer_probe_hook_v1,
-        environment.module_base, environment.exact_build_admitted);
     installed_ = xar::ck3_11906::InstallMainThreadQueryMailboxV1(
         g_main_thread_query_mailbox_v1, environment);
   }
@@ -10725,6 +10722,14 @@ DWORD WINAPI WorkerMain(void *) noexcept {
   if (game == nullptr) {
     return 1;
   }
+  const bool exact_ck3_build =
+      game->enabled() &&
+      game->descriptor().adapter_id ==
+          xar::ck3_11906::kMainThreadQueryMailboxV1AdapterId;
+  xar::ck3_11906::InstallCoatOfArmsDesignerProbeHookV1(
+      g_coat_of_arms_designer_probe_hook_v1,
+      reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr)),
+      exact_ck3_build);
   WarEntryApplicationMainMailboxWorkerLifetime mailbox_lifetime(*game);
   WorkerState state{};
   state.zhongguo_scoreboard_provider_session_id = NewProviderSessionId();
