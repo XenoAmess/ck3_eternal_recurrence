@@ -172,6 +172,10 @@ class ProductOuterDescriptorTests(unittest.TestCase):
         effects = (
             xqol.FIXTURE / "common" / "scripted_effects" / "zqa_effects.txt"
         ).read_text(encoding="utf-8-sig")
+        death_setup = effects.split(
+            "NOT = { has_character_flag = zqa_control_incumbent_subject }", 1
+        )[1].split("zqa_verify_death_settlement_effect = {", 1)[0]
+        self.assertIn("is_ai = yes", death_setup)
         verifier = effects.split("zqa_verify_death_settlement_effect = {", 1)[
             1
         ].split("zqa_verify_disabled_matrix_effect = {", 1)[0]

@@ -163,6 +163,7 @@ zqa_run_enabled_matrix_effect = {
 
 	random_vassal = {
 		limit = {
+			is_ai = yes
 			is_landed = yes
 			NOT = { has_character_flag = zqa_preexisting_guard_subject }
 			NOT = { has_character_flag = zqa_owned_guard_subject }
