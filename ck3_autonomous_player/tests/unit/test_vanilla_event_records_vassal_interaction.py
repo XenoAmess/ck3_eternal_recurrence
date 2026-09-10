@@ -162,13 +162,13 @@ class VassalInteractionEventRecordTests(unittest.TestCase):
             self.assertNotIn(str(observation_only), contract_repr)
 
     def test_default_registry_mcp_and_runtime_include_record(self) -> None:
-        self.assertEqual(len(DEFAULT_VANILLA_EVENT_TIMELINE_CONTRACTS), 174)
-        self.assertEqual(len(DEFAULT_VANILLA_EVENT_ANALYSIS), 174)
+        self.assertEqual(len(DEFAULT_VANILLA_EVENT_TIMELINE_CONTRACTS), 175)
+        self.assertEqual(len(DEFAULT_VANILLA_EVENT_ANALYSIS), 175)
         self.assertIs(
             DEFAULT_VANILLA_EVENT_OBSERVATIONS[EVENT_KEY],
             VANILLA_VASSAL_INTERACTION_OBSERVATIONS[EVENT_KEY],
         )
-        self.assertEqual(len(production.KNOWN_TIMELINE_INTERRUPTS), 320)
+        self.assertEqual(len(production.KNOWN_TIMELINE_INTERRUPTS), 321)
         self.assertIs(
             production.KNOWN_TIMELINE_INTERRUPTS[EVENT_KEY],
             VANILLA_VASSAL_INTERACTION_TIMELINE_CONTRACTS[EVENT_KEY],

@@ -2,18 +2,18 @@
   "audit": {
     "ambiguous_definition_count": 0,
     "caller_candidate_file_count": 77,
-    "caller_candidate_reference_count": 506,
-    "definition_file_count": 67,
-    "external_caller_event_count": 141,
+    "caller_candidate_reference_count": 508,
+    "definition_file_count": 68,
+    "external_caller_event_count": 142,
     "missing_definition_count": 0,
     "namespace_mismatch_count": 0,
-    "registered_event_count": 174,
+    "registered_event_count": 175,
     "same_file_only_caller_event_count": 33,
-    "unique_definition_count": 174
+    "unique_definition_count": 175
   },
   "ck3_build": "1.19.0.6",
   "ck3_exe_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
-  "dataset_sha256": "ACDA87ACD0D653D0CAA356700EDEAFF5031887D64359CDB8B3710C2D42437E03",
+  "dataset_sha256": "495550164BACA056CBF60566E5FF8F60A3796DB69290E2F8A13DBA847F7B9D3F",
   "events": {
     "adultery.0002": {
       "caller_candidate_resolution": "same-definition-file-only",
@@ -147,6 +147,31 @@
         "relative_path": "events/dlc/bp1/bp1_house_feud.txt"
       },
       "namespace": "bp1_house_feud"
+    },
+    "bp1_yearly.1040": {
+      "caller_candidate_resolution": "external-definition-file",
+      "caller_candidates": [
+        {
+          "column": 9,
+          "file_sha256": "D916E482A780F26CC1B1B27B582B675F90945AB808EB461A54A906EAAD0147C5",
+          "kind": "exact-token-lexical-candidate",
+          "line": 204,
+          "relative_path": "common/on_action/yearly_groups_on_actions.txt"
+        },
+        {
+          "column": 9,
+          "file_sha256": "0FC85A284224A68D1CA0A4EF071D4F4A4F49896753AEC463975A12EE4E1116FA",
+          "kind": "exact-token-lexical-candidate",
+          "line": 3354,
+          "relative_path": "common/on_action/yearly_on_actions.txt"
+        }
+      ],
+      "definition": {
+        "file_sha256": "F79A3224CFB74804BD489D626E121A883CB0217895D136BB61B9A96880EA3EE4",
+        "line": 2467,
+        "relative_path": "events/dlc/bp1/bp1_yearly_events_claudia.txt"
+      },
+      "namespace": "bp1_yearly"
     },
     "bp1_yearly.5725": {
       "caller_candidate_resolution": "external-definition-file",
