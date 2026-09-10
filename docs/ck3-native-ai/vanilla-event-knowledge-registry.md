@@ -9,7 +9,7 @@
 - [static-ready analysis / mixed live evidence] 当前 package 同时发布 **179 条 analysis** 与 **179 条 observation metadata**，其中 **35 个 key** 含非 legacy 的 paused/live observation。缺少已冻结 source hash 的旧结论只按既有合同注释、docs/tests 标为 migration-only，不编造 hash；新出现的事件边界均按 harness-route RED 保留，在各自动作完成前不是新增 production-live primitive。
 - [static-ready context profiles] prebootstrap 的 `spymaster_task.0381`、`spymaster_task.0399` 两条记录继续作为 seed-capture 上下文 profile 保存，不混入默认扁平 registry。它们与默认 manager 合同使用相同 event key、但冻结不同阶段的精确存档 shape，强行压平会造成有意义的合同冲突。
 
-当前状态表示 registry、默认数据组合和只读 MCP 可以被静态消费者使用，不表示 179 条记录都已有独立 production-live exemplar，也不表示 CK3 自动玩家已经具备完整事件效用判断。production runtime 当前 package 组合 `325` 条事件合同；共享 registry 的 production-live 标签只落在已有选择与 advance 证据的切片。R416 已从 R414 partial checkpoint 冷恢复，并在同一 PID 连续越过既有与新增中断，包括 `health.1006 → health.3001 → health.3101 → health.3103 → health.3102` 路线与 `bp1_yearly.4000`；当前 retry 11 暂停于 `health.2202` 无医师康复通知 RED。当前 T0 产品进度不变。最新原版树见 [health-consumption-diagnosis.md](health-consumption-diagnosis.md) 与 [bp1-yearly-family-memory.md](bp1-yearly-family-memory.md)。
+当前状态表示 registry、默认数据组合和只读 MCP 可以被静态消费者使用，不表示 179 条记录都已有独立 production-live exemplar，也不表示 CK3 自动玩家已经具备完整事件效用判断。production runtime 当前 package 组合 `325` 条事件合同；共享 registry 的 production-live 标签只落在已有选择与 advance 证据的切片。R418 已从 R416 partial checkpoint 在新 PID 冷恢复并闭合 `health.2202`；当前暂停于后续九 scope `health.3101` 选择前 RED。当前 T0 产品进度不变。最新原版树见 [health-consumption-diagnosis.md](health-consumption-diagnosis.md) 与 [bp1-yearly-family-memory.md](bp1-yearly-family-memory.md)。
 
 T0 当前仍为 `50%`、canonical stage `8/11`，source checkpoint `3/4` 且只缺 `capture_cross_cycle_endgame`；T0-P1 未签收，T0-P2 继续 `LOCKED`。`strict 4/361` 与 `definitions 106/626` 只是非阻塞 backlog。
 
@@ -89,7 +89,7 @@ R390 在 `date_raw=53589168` 暂停于 instance `1089`，原始 RED 原样保留
 
 CK3 `1.19.0.6` exact-build 定义位于 `events/lifestyles/statecraft_lifestyle/diplomacy_majesty_events.txt:968`。`.4033` 只由 `.4030` 的 option B 直接触发；上游是每年四次的 diplomacy lifestyle pulse 及概率事件池，不是 daily pulse。`.4033` 自身只检查 `thinker` 仍存活，没有独立随机分支或后续事件。唯一 authored option 1/native `0` 给接收者五年 `+1 diplomacy/+1 martial` modifier、对 thinker 的 `+25` opinion，并在需要时建立 potential-friend 关系；没有资源、压力、囚禁、受伤、死亡、战争或头衔代价。因此最小安全合同选择该唯一终止路线，同时仍要求 exact saved-scope shape、玩家/第三方关系、选项投影及提交前 revision 重绑定全部通过。
 
-portable evidence bundle 当前为 `262` 个唯一 evidence blob、`1030` 条引用，其中 generated definition reference `179` 条、lexical caller candidate `515` 条、人工审阅 source `248` 条、observation artifact reference `88` 条；`78` 份唯一 observation artifact 包含 R416 retry 11。manifest SHA-256 为 `EEC9A29B5FB502D3E733D60AA0037C4B846416C36A0488D568B8542F166FF42A`。retry 11 artifact SHA-256 为 `E4DC093D890449A3F9FAE85FD40BE733FBDDBB7322CF31EBBA314E2F0E57D51F`；共享合同是 Python-only 数据，既有 continuation 会重新加载 canonical registry，可在保留同一 CK3 PID 的条件下热恢复。
+portable evidence bundle 当前为 `263` 个唯一 evidence blob、`1032` 条引用，其中 generated definition reference `179` 条、lexical caller candidate `515` 条、人工审阅 source `248` 条、observation artifact reference `90` 条；`79` 份唯一 observation artifact 包含 R418 attempt 01。manifest SHA-256 为 `C37FC7DFEDFBA50BCBF48B2E935EA8A968F934B54D145DFCDBE5F6F64CA142A3`。attempt 01 artifact SHA-256 为 `52047D6F9008C4DA49471E6DB5627F0A3652769EEC46D466BC448DD342ADE3B3`；共享合同是 Python-only 数据，既有 continuation 会重新加载 canonical registry，可在保留同一 CK3 PID 的条件下热恢复。
 
 ### R416 `bp1_yearly.1040` 最小合同
 
@@ -105,11 +105,13 @@ R416 retry 10 在 `date_raw=53902032` 暂停于 instance `1090`，选择前 RED 
 
 exact-build 原版树见 [bp1-yearly-family-memory.md](bp1-yearly-family-memory.md)。`family_first` 和存活参与者分支仅有源码结论，尚未准入当前 live contract。R416 retry 11 已在同一 PID/generation 选择 authored `2` / native `1`，instance `1090 -> null`、snapshot `native:1499 -> native:1500`、revision `1500 -> 1501`，`postcondition_verified=true`，因此该死亡参与者投影现为 production-live primitive。
 
-### R416 `health.2202` 无医师康复通知
+### R416–R418 `health.2202` 无医师康复通知与后续治疗周期
 
 R416 retry 11 在 `date_raw=53905680` 暂停于 instance `1091`。root 是玩家，`sick_character` 是第三方廷臣 `88187`；saved scopes 严格为 `epidemic:epidemic`、`disease_type:flag` 与 `sick_character:character`，没有旧合同要求的 `physician`。唯一 native `0` shown/enabled，选择前 RED 已保留。
 
-exact-build 原版树见 [health-consumption-diagnosis.md](health-consumption-diagnosis.md)。`recover_from_disease_effect` 自己只保存疾病和患者，医师只能由上游上下文继承，因此三 scope 是源码允许的独立 variant。疾病已经在窗口 immediate 中移除，唯一 authored1/native0 只确认结果及执行源代码限定的可选婚床 modifier 清理；动作与 instance advance 等待下一次同 PID 热恢复。
+exact-build 原版树见 [health-consumption-diagnosis.md](health-consumption-diagnosis.md)。`recover_from_disease_effect` 自己只保存疾病和患者，医师只能由上游上下文继承，因此三 scope 是源码允许的独立 variant。疾病已经在窗口 immediate 中移除，唯一 authored1/native0 只确认结果及执行源代码限定的可选婚床 modifier 清理。
+
+R418 在新 PID `204536` / generation `1` 冷恢复同一 partial checkpoint 后选择 authored1/native0，instance `1091 -> null`、snapshot `native:3 -> native:4`、revision `4 -> 5`，`postcondition_verified=true`。随后在 `date_raw=53908728` 出现下一轮 `health.3101` instance `1092`：既有八 scope 疫情治疗形态额外保留 `treatment_picker=玩家`，native `0/1/3` 与所有人物关系不变。该九 scope 形态已按选择前 RED 冻结并加入精确 variant，动作仍待同 PID 热恢复。
 
 ### R416 `tgp_movement_events.0110` 最小合同
 

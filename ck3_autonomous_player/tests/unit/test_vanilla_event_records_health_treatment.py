@@ -116,7 +116,7 @@ class HealthTreatmentEventRecordTests(unittest.TestCase):
         self.assertEqual(contract["character_scope_matches_any"], {
             "physician": ("high_skill_option",),
         })
-        inherited = contract["scope_variants"][0]
+        inherited, later_cycle = contract["scope_variants"]
         self.assertEqual(inherited["saved_scope_count"], 8)
         self.assertEqual(inherited["saved_scope_names"], (
             "epidemic",
@@ -127,6 +127,21 @@ class HealthTreatmentEventRecordTests(unittest.TestCase):
             "low_skill_option",
             "physician",
             "background_terrain_scope",
+        ))
+        self.assertEqual(later_cycle["saved_scope_count"], 9)
+        self.assertEqual(later_cycle["character_scopes"], {
+            "treatment_picker": PLAYER_SENTINEL,
+        })
+        self.assertEqual(later_cycle["saved_scope_names"], (
+            "epidemic",
+            "disease_type",
+            "sick_character",
+            "new_memory",
+            "high_skill_option",
+            "low_skill_option",
+            "physician",
+            "background_terrain_scope",
+            "treatment_picker",
         ))
 
         materialized = materialize_vanilla_timeline_contract(contract, 32904)
@@ -147,7 +162,9 @@ class HealthTreatmentEventRecordTests(unittest.TestCase):
             self.assertRegex(digest, SHA256_PATTERN)
 
     def test_r198_and_r416_observations_remain_outside_contract(self) -> None:
-        r198, r416, retry08 = VANILLA_HEALTH_OBSERVATIONS[EVENT_KEY]["exemplars"]
+        r198, r416, retry08, r418 = (
+            VANILLA_HEALTH_OBSERVATIONS[EVENT_KEY]["exemplars"]
+        )
         contract_repr = repr(MANAGER_HEALTH_TIMELINE_CONTRACTS[EVENT_KEY])
 
         self.assertEqual(r198["rendered_native_option_indices"], [0, 1, 3])
@@ -168,6 +185,11 @@ class HealthTreatmentEventRecordTests(unittest.TestCase):
         self.assertEqual(retry08["observed_result_event"], "health.3103")
         self.assertTrue(retry08["postcondition_verified"])
         self.assertRegex(retry08["artifact_sha256"], SHA256_PATTERN)
+        self.assertEqual(r418["event_instance_id"], 1092)
+        self.assertEqual(r418["saved_character_ids"]["treatment_picker"], 32904)
+        self.assertEqual(r418["rendered_native_option_indices"], [0, 1, 3])
+        self.assertFalse(r418["selection_attempted"])
+        self.assertRegex(r418["artifact_sha256"], SHA256_PATTERN)
         for observation_only in (
             53177016,
             53864832,
@@ -211,6 +233,29 @@ class HealthTreatmentEventRecordTests(unittest.TestCase):
                 self.assertEqual(resolved["saved_scope_count"], 8 if inherited else 6)
                 self.assertEqual(resolved["selected_option_number"], 1)
                 self.assertEqual(resolved["selected_native_option_index"], 0)
+
+        later_cycle_context = _context(inherited_diagnosis_scopes=True)
+        later_cycle_context["current_event_instance_id"] = 1092
+        later_cycle_context["date_raw"] = 53908728
+        later_cycle_context["saved_scopes"].append(
+            _scope("treatment_picker", "character", character_id=32904)
+        )
+        later_cycle_checks = production._known_interrupt_checks(
+            snapshot={
+                "date_raw": 53908728,
+                "active_event": {"option_count": 4},
+            },
+            event={"event_instance_id": 1092},
+            context=later_cycle_context,
+            event_key=EVENT_KEY,
+            contract=contract,
+        )
+        self.assertTrue(all(later_cycle_checks.values()), later_cycle_checks)
+        resolved = production._interrupt_contract_for_context(
+            later_cycle_context, contract
+        )
+        self.assertEqual(resolved["saved_scope_count"], 9)
+        self.assertEqual(resolved["character_scopes"]["treatment_picker"], 32904)
 
     def test_registry_runtime_source_and_evidence_share_reviewed_record(self) -> None:
         self.assertIs(DEFAULT_VANILLA_EVENT_ANALYSIS[EVENT_KEY], (

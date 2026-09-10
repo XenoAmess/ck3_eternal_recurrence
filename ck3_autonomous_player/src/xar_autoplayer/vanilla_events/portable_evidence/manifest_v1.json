@@ -3828,6 +3828,38 @@
       "sha256": "51adeea52f9a93406156abafa6608b0425003f63098f0cb033a5cb515c90f493"
     },
     {
+      "blob_bytes": 18523,
+      "blob_path": "blobs/52047d6f9008c4da49471e6db5627f0a3652769eec46d466bc448dd342ade3b3.gz",
+      "blob_sha256": "6f6ae948505453cb3f3d87e1abca48c2dad5dd938fde04f7345ee396db45e627",
+      "bytes": 199273,
+      "evidence_id": "52047d6f9008c4da49471e6db5627f0a3652769eec46d466bc448dd342ade3b3",
+      "kind": "observation_artifact",
+      "media_type": "application/json",
+      "references": [
+        {
+          "caller_candidate_resolution": null,
+          "event_definition_key": "health.2202",
+          "logical_path": "_runtime/p1-terminal-resume-r418-20260911/live-artifacts/terminal-stages-red-attempt-01.json",
+          "origin": "runtime",
+          "provenance": "captured-observation-artifact",
+          "role": "artifact",
+          "source_column": null,
+          "source_line": null
+        },
+        {
+          "caller_candidate_resolution": null,
+          "event_definition_key": "health.3101",
+          "logical_path": "_runtime/p1-terminal-resume-r418-20260911/live-artifacts/terminal-stages-red-attempt-01.json",
+          "origin": "runtime",
+          "provenance": "captured-observation-artifact",
+          "role": "artifact",
+          "source_column": null,
+          "source_line": null
+        }
+      ],
+      "sha256": "52047d6f9008c4da49471e6db5627f0a3652769eec46d466bc448dd342ade3b3"
+    },
+    {
       "blob_bytes": 6139,
       "blob_path": "blobs/52d172c10a8164b007382f9df79a48de462cf6b390438158fd37c9b34df8f75c.gz",
       "blob_sha256": "2077fb9f05ef7b276d6ff856ce4a6e65e5cd3b0804fd2148eeb8757ab8deed70",
@@ -13455,13 +13487,13 @@
   "schema": "xar.ck3.vanilla-event-portable-evidence-manifest",
   "schema_version": 1,
   "statistics": {
-    "evidence": 262,
+    "evidence": 263,
     "generated_definition_references": 179,
     "lexical_caller_candidate_references": 515,
     "manually_reviewed_analysis_source_references": 248,
-    "observation_artifact_references": 88,
-    "observation_artifacts": 78,
-    "references": 1030,
+    "observation_artifact_references": 90,
+    "observation_artifacts": 79,
+    "references": 1032,
     "source_definitions": 184
   }
 }

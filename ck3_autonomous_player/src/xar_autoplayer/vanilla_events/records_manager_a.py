@@ -1474,6 +1474,8 @@ _LEGACY_MANAGER_HEALTH_TIMELINE_CONTRACTS: Final[
         # frames, so native 2 is hidden and the projection is 0/1/3. R416
         # proved that the health.1006 route retains epidemic/new_memory through
         # recruitment into this event; admit that exact eight-scope variant.
+        # R418 reached the next treatment cycle after recovery was acknowledged;
+        # it retained treatment_picker == the played patient as a ninth scope.
         # The physician must remain the preceding high-skill candidate. Select
         # native 0's source-labelled safe treatment to avoid the riskier branch
         # and the certain no-treatment route.
@@ -1525,6 +1527,28 @@ _LEGACY_MANAGER_HEALTH_TIMELINE_CONTRACTS: Final[
                 "background_terrain_scope",
             ),
             "saved_scope_count": 8,
+        }, {
+            "scope_types": {
+                "epidemic": "epidemic",
+                "disease_type": "flag",
+                "new_memory": "character_memory",
+                "background_terrain_scope": "province",
+            },
+            "character_scopes": {
+                "treatment_picker": PLAYER_SENTINEL,
+            },
+            "saved_scope_names": (
+                "epidemic",
+                "disease_type",
+                "sick_character",
+                "new_memory",
+                "high_skill_option",
+                "low_skill_option",
+                "physician",
+                "background_terrain_scope",
+                "treatment_picker",
+            ),
+            "saved_scope_count": 9,
         },),
         "option_count": 3,
         "snapshot_option_count": 4,

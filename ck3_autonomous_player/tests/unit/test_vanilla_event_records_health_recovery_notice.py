@@ -124,8 +124,8 @@ class HealthRecoveryNoticeEventRecordTests(unittest.TestCase):
         for digest in analysis["source_sha256"].values():
             self.assertRegex(digest, SHA256_PATTERN)
 
-    def test_r416_red_and_legacy_binding_remain_observations(self) -> None:
-        legacy, red = VANILLA_HEALTH_OBSERVATIONS[EVENT_KEY]["exemplars"]
+    def test_r416_red_and_r418_green_remain_observations(self) -> None:
+        legacy, red, green = VANILLA_HEALTH_OBSERVATIONS[EVENT_KEY]["exemplars"]
         contract_repr = repr(MANAGER_HEALTH_TIMELINE_CONTRACTS[EVENT_KEY])
 
         self.assertEqual(legacy["run"], "legacy-migrated")
@@ -140,6 +140,12 @@ class HealthRecoveryNoticeEventRecordTests(unittest.TestCase):
         self.assertEqual(red["rendered_native_option_indices"], [0])
         self.assertFalse(red["selection_attempted"])
         self.assertRegex(red["artifact_sha256"], SHA256_PATTERN)
+        self.assertEqual(green["run"], "R418-attempt-01")
+        self.assertEqual(green["event_instance_id"], 1091)
+        self.assertIsNone(green["ending_event_instance_id"])
+        self.assertEqual(green["selected_native_option_index"], 0)
+        self.assertTrue(green["postcondition_verified"])
+        self.assertRegex(green["artifact_sha256"], SHA256_PATTERN)
         for observation_only in (53905680, 1091, 32904, 88187, 174656):
             self.assertNotIn(str(observation_only), contract_repr)
 

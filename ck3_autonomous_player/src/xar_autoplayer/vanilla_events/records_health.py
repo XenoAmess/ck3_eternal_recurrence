@@ -303,7 +303,9 @@ VANILLA_HEALTH_ANALYSIS: Final[dict[str, dict[str, object]]] = {
             "the reviewed base shape carries the sick player, disease, high and low "
             "recruitment candidates, the physician matching the high-skill candidate, "
             "and the physician location. R416 legally retains epidemic and new_memory "
-            "as an exact eight-scope variant without changing options"
+            "as an exact eight-scope variant without changing options. R418 proves a "
+            "later-cycle nine-scope variant that additionally retains treatment_picker "
+            "as the same played patient"
         ),
         "option_semantics": {
             0: (
@@ -535,6 +537,30 @@ VANILLA_HEALTH_OBSERVATIONS: Final[dict[str, dict[str, object]]] = {
             "ocr_used": False,
             "coordinates_used": False,
             "console_used": False,
+        }, {
+            "run": "R418-attempt-01",
+            "kind": "cold-restore-live-green",
+            "artifact": (
+                "_runtime/p1-terminal-resume-r418-20260911/live-artifacts/"
+                "terminal-stages-red-attempt-01.json"
+            ),
+            "artifact_sha256": (
+                "52047D6F9008C4DA49471E6DB5627F0A3652769EEC46D466BC448DD342ADE3B3"
+            ),
+            "date_raw": 53905680,
+            "event_instance_id": 1091,
+            "ending_event_instance_id": None,
+            "root_character_id": 32904,
+            "starting_snapshot_id": "native:3",
+            "starting_revision": 4,
+            "ending_snapshot_id": "native:4",
+            "ending_revision": 5,
+            "selected_option_number": 1,
+            "selected_native_option_index": 0,
+            "postcondition_verified": True,
+            "connection_generation": 1,
+            "bridge_pid": 204536,
+            "process_restart_required": True,
         }],
     },
     "health.1006": {
@@ -796,6 +822,55 @@ VANILLA_HEALTH_OBSERVATIONS: Final[dict[str, dict[str, object]]] = {
             "connection_generation": 1,
             "bridge_pid": 174656,
             "process_restart_required": False,
+        }, {
+            "run": "R418-attempt-01",
+            "kind": "cold-restore-live-contract-red",
+            "red_classification": "harness-route-red",
+            "product_failure_proven": False,
+            "artifact": (
+                "_runtime/p1-terminal-resume-r418-20260911/live-artifacts/"
+                "terminal-stages-red-attempt-01.json"
+            ),
+            "artifact_sha256": (
+                "52047D6F9008C4DA49471E6DB5627F0A3652769EEC46D466BC448DD342ADE3B3"
+            ),
+            "date_raw": 53908728,
+            "event_instance_id": 1092,
+            "root_character_id": 32904,
+            "snapshot_id": "native:40",
+            "revision": 41,
+            "native_revision": 40,
+            "saved_character_ids": {
+                "sick_character": 32904,
+                "high_skill_option": 33648496,
+                "low_skill_option": 16889335,
+                "physician": 33648496,
+                "treatment_picker": 32904,
+            },
+            "saved_scope_raw_types": {
+                "epidemic": 50,
+                "disease_type": 3,
+                "sick_character": 4,
+                "new_memory": 34,
+                "high_skill_option": 4,
+                "low_skill_option": 4,
+                "physician": 4,
+                "background_terrain_scope": 8,
+                "treatment_picker": 4,
+            },
+            "rendered_native_option_indices": [0, 1, 3],
+            "selected_option_number": None,
+            "selected_native_option_index": None,
+            "selection_attempted": False,
+            "retained_red": True,
+            "process_id": 204536,
+            "connection_generation": 1,
+            "process_restart_required": True,
+            "mcp_only": True,
+            "fixture_used": False,
+            "ocr_used": False,
+            "coordinates_used": False,
+            "console_used": False,
         }],
     },
     "health.3102": {
