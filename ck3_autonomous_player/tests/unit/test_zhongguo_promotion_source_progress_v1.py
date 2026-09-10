@@ -1142,7 +1142,16 @@ def test_unavailable_progress_reports_native_reason_and_widgets() -> None:
         )
 
 
-def test_runtime_probe_rebinds_exact_snapshot_publication_race() -> None:
+@pytest.mark.parametrize(
+    "native_error",
+    (
+        "ZhongGuo B1-cycle snapshot changed or is not ready",
+        "ZhongGuo B1-cycle snapshot revision is stale",
+    ),
+)
+def test_runtime_probe_rebinds_exact_snapshot_publication_race(
+    native_error: str,
+) -> None:
     class _ProbeService:
         def __init__(self) -> None:
             self.revision = 7
@@ -1174,8 +1183,7 @@ def test_runtime_probe_rebinds_exact_snapshot_publication_race() -> None:
         calls += 1
         if calls == 1:
             raise production.BridgeUnavailableError(
-                "native gameplay step failed: ZhongGuo B1-cycle snapshot "
-                "changed or is not ready"
+                f"native gameplay step failed: {native_error}"
             )
         return None
 
@@ -1200,11 +1208,9 @@ def test_runtime_probe_rebinds_exact_snapshot_publication_race() -> None:
             "attempt": 1,
             "error": (
                 "BridgeUnavailableError: native gameplay step failed: "
-                "ZhongGuo B1-cycle snapshot changed or is not ready"
+                f"{native_error}"
             ),
-            "native_error": (
-                "ZhongGuo B1-cycle snapshot changed or is not ready"
-            ),
+            "native_error": native_error,
             "before": {
                 "snapshot_id": "native:3",
                 "revision": 7,

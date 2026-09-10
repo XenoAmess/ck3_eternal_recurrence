@@ -1068,8 +1068,14 @@ the published snapshot, so the B1 admission gate correctly returned
 `ZhongGuo B1-cycle snapshot changed or is not ready` before submitting the
 application-main query.
 
-This exact rejection is a read-only diagnostic-probe rebind, not a product B1
-result. The promotion runner may settle and retry it only under the same player
+The same read-only window can instead return
+`ZhongGuo B1-cycle snapshot revision is stale` when a heartbeat advances after
+the Python driver takes its source frame but before native admission compares
+the requested revision. R384 observed this second exact variant after the first
+hot recovery; it is likewise pre-query and carries no B1 result or mutation.
+
+These two exact rejections are read-only diagnostic-probe rebinds, not product
+B1 results. The promotion runner may settle and retry them only under the same player
 and connection generation, records before/after bindings plus
 `state_mutation_submitted=false`, and keeps a finite four-attempt limit. Any
 other bridge error, or exhaustion of the exact retry, remains RED. After the

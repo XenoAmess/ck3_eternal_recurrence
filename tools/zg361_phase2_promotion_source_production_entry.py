@@ -223,6 +223,7 @@ _TRANSIENT_PROGRESS_BINDING_ERRORS = (
 )
 _TRANSIENT_RUNTIME_DIAGNOSTIC_PROBE_NATIVE_ERRORS = (
     "ZhongGuo B1-cycle snapshot changed or is not ready",
+    "ZhongGuo B1-cycle snapshot revision is stale",
 )
 
 
