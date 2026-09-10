@@ -43,6 +43,23 @@ describe('CK3 companion client', () => {
     expect(JSON.parse(fetchMock.mock.calls[1][1].body)).toEqual({ expectedRevision: 8 })
   })
 
+  it('encodes an exact manifest asset name', async () => {
+    const fetchMock = vi.fn().mockResolvedValue(new Response(JSON.stringify({
+      schema: 'ck3-coat-of-arms-resource-asset-v1',
+      asset_base64: 'RERTIA==',
+    }), { status: 200 }))
+    vi.stubGlobal('fetch', fetchMock)
+
+    await createCk3CompanionClient('http://localhost:8080').asset(
+      'colored_emblem',
+      'ce lion&crown.dds',
+    )
+
+    const requestUrl = new URL(fetchMock.mock.calls[0][0])
+    expect(requestUrl.searchParams.get('kind')).toBe('colored_emblem')
+    expect(requestUrl.searchParams.get('name')).toBe('ce lion&crown.dds')
+  })
+
   it('surfaces the companion error message', async () => {
     vi.stubGlobal('fetch', vi.fn().mockResolvedValue(new Response(
       JSON.stringify({ message: 'CK3 bridge is unavailable' }),

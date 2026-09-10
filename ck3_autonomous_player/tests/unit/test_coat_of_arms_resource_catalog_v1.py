@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import base64
 import hashlib
 import importlib.util
 from pathlib import Path
@@ -46,7 +47,8 @@ pattern_missing.dds = { colors = 3 }
 """.strip(),
             encoding="utf-8",
         )
-        (patterns / "pattern_alpha.dds").write_bytes(b"pattern-alpha")
+        self.pattern_alpha = self.dds(four_cc=b"DXT1", width=16, height=8)
+        (patterns / "pattern_alpha.dds").write_bytes(self.pattern_alpha)
         (patterns / "pattern_hidden.dds").write_bytes(b"pattern-hidden")
         (emblems / "50_coa_designer_emblems.txt").write_text(
             """
@@ -55,7 +57,8 @@ ce_beta.dds = { colors = 1 category = abstract visible = no }
 """.strip(),
             encoding="utf-8",
         )
-        (emblems / "ce_alpha.dds").write_bytes(b"emblem-alpha")
+        self.emblem_alpha = self.dds(four_cc=b"DXT5", width=32, height=16)
+        (emblems / "ce_alpha.dds").write_bytes(self.emblem_alpha)
         (emblems / "ce_beta.dds").write_bytes(b"emblem-beta")
         (palettes / "50_coa_designer_palettes.txt").write_text(
             """
@@ -77,6 +80,27 @@ coa_designer_background_colors = {
                 str(self.root), kind, **kwargs
             )
 
+    def read(self, kind: str, name: str) -> dict[str, object]:
+        with patch.object(
+            resources,
+            "CK3_COAT_OF_ARMS_RESOURCE_CATALOG_V1_EXE_SHA256",
+            self.executable_sha256,
+        ):
+            return resources.read_coat_of_arms_resource_asset_v1(
+                str(self.root), kind, name
+            )
+
+    @staticmethod
+    def dds(*, four_cc: bytes, width: int, height: int) -> bytes:
+        data = bytearray(128)
+        data[:4] = b"DDS "
+        data[4:8] = (124).to_bytes(4, "little")
+        data[12:16] = height.to_bytes(4, "little")
+        data[16:20] = width.to_bytes(4, "little")
+        data[28:32] = (1).to_bytes(4, "little")
+        data[84:88] = four_cc
+        return bytes(data) + b"fixture-payload"
+
 
 class CoatOfArmsResourceCatalogV1Tests(unittest.TestCase):
     def test_pattern_page_preserves_designer_order_and_asset_identity(self) -> None:
@@ -93,7 +117,7 @@ class CoatOfArmsResourceCatalogV1Tests(unittest.TestCase):
         self.assertTrue(first["asset_exists"])
         self.assertEqual(
             first["asset_sha256"],
-            hashlib.sha256(b"pattern-alpha").hexdigest().upper(),
+            hashlib.sha256(fixture.pattern_alpha).hexdigest().upper(),
         )
         self.assertFalse(missing["asset_exists"])
         self.assertIsNone(missing["asset_sha256"])
@@ -142,6 +166,25 @@ class CoatOfArmsResourceCatalogV1Tests(unittest.TestCase):
                 fixture.query("textured_emblem")
             with self.assertRaises(ValueError):
                 fixture.query("pattern", limit=201)
+
+    def test_asset_read_is_manifest_owned_and_reports_dds_identity(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            fixture = _Fixture(Path(directory))
+            result = fixture.read("colored_emblem", "ce_alpha.dds")
+        self.assertEqual(result["schema"], "ck3-coat-of-arms-resource-asset-v1")
+        self.assertEqual(result["dds"]["four_cc"], "DXT5")
+        self.assertEqual(result["dds"]["width"], 32)
+        self.assertEqual(result["dds"]["height"], 16)
+        self.assertEqual(base64.b64decode(result["asset_base64"]), fixture.emblem_alpha)
+        self.assertFalse(result["provenance"]["engine_registration_observed"])
+
+    def test_asset_read_rejects_non_manifest_names_and_non_asset_kinds(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            fixture = _Fixture(Path(directory))
+            with self.assertRaises(resources.CoatOfArmsResourceCatalogError):
+                fixture.read("pattern", "..\\binaries\\ck3.exe")
+            with self.assertRaises(ValueError):
+                fixture.read("color", "red")
 
 
 @unittest.skipIf(
@@ -192,6 +235,23 @@ class CoatOfArmsResourceCatalogV1McpTests(unittest.IsolatedAsyncioTestCase):
                         },
                     )
                     self.assertTrue(rejected.is_error)
+
+                    asset_tool = tools[
+                        "ck3_read_coat_of_arms_resource_asset_v1"
+                    ]
+                    self.assertFalse(asset_tool.input_schema["additionalProperties"])
+                    asset = await client.call_tool(
+                        "ck3_read_coat_of_arms_resource_asset_v1",
+                        {
+                            "game_directory": str(fixture.root),
+                            "kind": "pattern",
+                            "name": "pattern_alpha.dds",
+                        },
+                    )
+                    self.assertFalse(asset.is_error)
+                    self.assertEqual(
+                        asset.structured_content["dds"]["four_cc"], "DXT1"
+                    )
 
 
 if __name__ == "__main__":

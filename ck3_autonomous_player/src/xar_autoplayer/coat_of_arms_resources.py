@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import base64
 from dataclasses import dataclass
 import hashlib
 from pathlib import Path
@@ -18,6 +19,7 @@ CK3_COAT_OF_ARMS_RESOURCE_KINDS: Final = (
     "color",
 )
 _MAX_MANIFEST_BYTES: Final = 2 * 1024 * 1024
+_MAX_ASSET_BYTES: Final = 1024 * 1024
 _MAX_PAGE_SIZE: Final = 200
 _MANIFESTS: Final = {
     "pattern": Path(
@@ -371,6 +373,100 @@ def query_coat_of_arms_resource_catalog_v1(
             "executable_sha256": executable_sha256,
             "manifest_relative_path": manifest_relative.as_posix(),
             "manifest_bytes": manifest.stat().st_size,
+            "manifest_sha256": _sha256(manifest),
+            "engine_registration_observed": False,
+            "dlc_and_mod_overrides_included": False,
+        },
+    }
+
+
+def read_coat_of_arms_resource_asset_v1(
+    game_directory: str,
+    kind: str,
+    name: str,
+) -> dict[str, object]:
+    """Return one manifest-owned base-game DDS asset as bounded base64."""
+
+    if not isinstance(game_directory, str) or not game_directory.strip():
+        raise ValueError("game_directory must be a non-empty string")
+    if kind not in _ASSET_DIRECTORIES:
+        raise ValueError("kind must be pattern or colored_emblem")
+    if not isinstance(name, str) or not name or len(name) > 128:
+        raise ValueError("name must be a non-empty string of at most 128 characters")
+
+    game_root = Path(game_directory).expanduser().resolve()
+    executable = game_root / "binaries" / "ck3.exe"
+    manifest_relative = _MANIFESTS[kind]
+    manifest = game_root / manifest_relative
+    if not executable.is_file() or not manifest.is_file():
+        raise CoatOfArmsResourceCatalogError(
+            "game_directory lacks the CK3 executable or designer manifest"
+        )
+    executable_sha256 = _sha256(executable)
+    if executable_sha256 != CK3_COAT_OF_ARMS_RESOURCE_CATALOG_V1_EXE_SHA256:
+        raise CoatOfArmsResourceCatalogError(
+            "CK3 executable does not match the frozen 1.19.0.6 catalog build"
+        )
+
+    matches = [
+        resource
+        for resource in _designer_entries(kind, manifest)
+        if resource["name"] == name
+    ]
+    if len(matches) != 1:
+        raise CoatOfArmsResourceCatalogError(
+            "asset name is not uniquely owned by the designer manifest"
+        )
+    resource = matches[0]
+    asset_relative = _ASSET_DIRECTORIES[kind] / name
+    asset = game_root / asset_relative
+    if not asset.is_file():
+        raise CoatOfArmsResourceCatalogError(
+            "designer manifest asset is missing"
+        )
+    size = asset.stat().st_size
+    if size < 128 or size > _MAX_ASSET_BYTES:
+        raise CoatOfArmsResourceCatalogError(
+            "designer DDS size is outside the v1 asset contract"
+        )
+    data = asset.read_bytes()
+    if data[:4] != b"DDS " or int.from_bytes(data[4:8], "little") != 124:
+        raise CoatOfArmsResourceCatalogError(
+            "designer asset is not a supported DDS container"
+        )
+    four_cc_bytes = data[84:88]
+    try:
+        four_cc = four_cc_bytes.decode("ascii")
+    except UnicodeDecodeError as error:
+        raise CoatOfArmsResourceCatalogError(
+            "designer DDS FourCC is not ASCII"
+        ) from error
+
+    return {
+        "schema": "ck3-coat-of-arms-resource-asset-v1",
+        "schema_version": 1,
+        "status": "read",
+        "ck3_build": CK3_COAT_OF_ARMS_RESOURCE_CATALOG_V1_BUILD,
+        "kind": kind,
+        "name": name,
+        "colors": resource["colors"],
+        "visible": resource["visible"],
+        "category": resource["category"],
+        "relative_path": asset_relative.as_posix(),
+        "content_type": "application/octet-stream",
+        "asset_bytes": size,
+        "asset_sha256": hashlib.sha256(data).hexdigest().upper(),
+        "asset_base64": base64.b64encode(data).decode("ascii"),
+        "dds": {
+            "width": int.from_bytes(data[16:20], "little"),
+            "height": int.from_bytes(data[12:16], "little"),
+            "mipmap_count": max(1, int.from_bytes(data[28:32], "little")),
+            "four_cc": four_cc,
+        },
+        "provenance": {
+            "mode": "base-game-designer-manifest-static",
+            "executable_sha256": executable_sha256,
+            "manifest_relative_path": manifest_relative.as_posix(),
             "manifest_sha256": _sha256(manifest),
             "engine_registration_observed": False,
             "dlc_and_mod_overrides_included": False,

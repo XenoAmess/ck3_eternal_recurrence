@@ -38,6 +38,29 @@ export interface CoatOfArmsResourceCatalog {
   }
 }
 
+export interface CoatOfArmsResourceAsset {
+  schema: 'ck3-coat-of-arms-resource-asset-v1'
+  schema_version: 1
+  status: 'read'
+  ck3_build: string
+  kind: Exclude<CoatOfArmsResourceKind, 'color'>
+  name: string
+  colors: number
+  visible: boolean
+  category: string | null
+  relative_path: string
+  content_type: 'application/octet-stream'
+  asset_bytes: number
+  asset_sha256: string
+  asset_base64: string
+  dds: {
+    width: number
+    height: number
+    mipmap_count: number
+    four_cc: string
+  }
+}
+
 export interface Ck3SessionSnapshot {
   revision: number
   source?: string
@@ -121,6 +144,10 @@ export function createCk3CompanionClient(
       })
       if (parameters.query) query.set('query', parameters.query)
       return get<CoatOfArmsResourceCatalog>(`/resources?${query}`)
+    },
+    asset: (kind: 'pattern' | 'colored_emblem', name: string) => {
+      const query = new URLSearchParams({ kind, name })
+      return get<CoatOfArmsResourceAsset>(`/asset?${query}`)
     },
     probe: (source: string, expectedRevision: number, apply = false) =>
       post<CoatOfArmsProbeResult>('/probe', { source, expectedRevision, apply }),

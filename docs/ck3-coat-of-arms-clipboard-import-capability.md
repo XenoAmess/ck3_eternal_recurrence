@@ -52,7 +52,7 @@ designer 的 working state。
 用实际安装的 Python MCP SDK `2.0.0` 连接现有 stdio server 时，补能力前共列出 62 个工具，
 没有 coat-of-arms、clipboard 或 designer 工具。也就是说，旧 MCP 无法回答本报告的核心问题。
 
-本轮先后新增两个原生工具和一个离线资源工具：
+本轮先后新增两个原生工具和两个离线资源工具：
 
 ```text
 ck3_probe_coat_of_arms_source_v1(
@@ -72,6 +72,12 @@ ck3_query_coat_of_arms_resource_catalog_v1(
     visible_only: boolean = true,
     offset: integer = 0,
     limit: integer = 50
+)
+
+ck3_read_coat_of_arms_resource_asset_v1(
+    game_directory: string,
+    kind: "pattern" | "colored_emblem",
+    name: string
 )
 ```
 
@@ -107,6 +113,10 @@ resource catalog 不启动 CK3，也不经过视觉路线。它先校验 `binari
 名称、颜色通道数、可见性、分类、相对路径以及当前页 DDS 的大小和 SHA-256。结果明确标记
 `engine_registration_observed=false`、`dlc_and_mod_overrides_included=false`：它证明 exact 1.19.0.6 基础游戏磁盘资源，
 不冒充运行时注册表或玩家当前 playset。
+
+asset reader 只接受上述 manifest 中唯一存在的精确名称，再读取对应 DDS；返回 bounded base64、字节数、SHA-256、宽高、
+mipmap 数与 FourCC，并复用同一 exact-build/provenance 边界。它不接受调用方提供相对路径，当前本机样本证明 pattern 为
+DXT1、colored emblem 为 DXT5。这个工具用于后续浏览器像素预览，仍不声称与 CK3 shader 最终合成逐像素一致。
 
 ### 3.2 每条 MCP 结果提供什么证据
 

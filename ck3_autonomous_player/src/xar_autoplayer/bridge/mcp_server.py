@@ -9,6 +9,7 @@ from pathlib import Path
 
 from xar_autoplayer.coat_of_arms_resources import (
     query_coat_of_arms_resource_catalog_v1,
+    read_coat_of_arms_resource_asset_v1,
 )
 from xar_autoplayer.vanilla_events import (
     ck3_list_vanilla_event_knowledge_v1 as list_vanilla_event_knowledge_v1,
@@ -140,6 +141,19 @@ def _ck3_query_coat_of_arms_resource_catalog_v1(
         visible_only=visible_only,
         offset=offset,
         limit=limit,
+    )
+
+
+def _ck3_read_coat_of_arms_resource_asset_v1(
+    game_directory: str,
+    kind: str,
+    name: str,
+) -> dict[str, object]:
+    """Read one exact-build manifest-owned CoA DDS asset."""
+    return read_coat_of_arms_resource_asset_v1(
+        game_directory,
+        kind,
+        name,
     )
 
 
@@ -1349,6 +1363,19 @@ def create_server(driver: GameplayBridgeDriver):
         )
 
     @server.tool()
+    def ck3_read_coat_of_arms_resource_asset_v1(
+        game_directory: str,
+        kind: str,
+        name: str,
+    ) -> dict[str, object]:
+        """Read one manifest-owned base-game CoA DDS; no runtime claim."""
+        return _ck3_read_coat_of_arms_resource_asset_v1(
+            game_directory,
+            kind,
+            name,
+        )
+
+    @server.tool()
     def ck3_query_loaded_feature_manifest_v1(
         expected_revision: int,
     ) -> dict[str, object]:
@@ -1701,6 +1728,9 @@ def create_server(driver: GameplayBridgeDriver):
     )
     _forbid_unknown_tool_arguments_v1(
         server, "ck3_query_coat_of_arms_resource_catalog_v1"
+    )
+    _forbid_unknown_tool_arguments_v1(
+        server, "ck3_read_coat_of_arms_resource_asset_v1"
     )
     return server
 

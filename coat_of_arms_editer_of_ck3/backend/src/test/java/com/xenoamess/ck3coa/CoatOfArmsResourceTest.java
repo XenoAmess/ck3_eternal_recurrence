@@ -57,6 +57,28 @@ class CoatOfArmsResourceTest {
     }
 
     @Test
+    void resourceAssetIsReadThroughTheMcpTool() {
+        when(mcp.callTool(
+                        eq("ck3_read_coat_of_arms_resource_asset_v1"),
+                        eq(Map.of(
+                                "game_directory", "fixture-game",
+                                "kind", "pattern",
+                                "name", "pattern_alpha.dds"))))
+                .thenReturn(Map.of(
+                        "schema", "ck3-coat-of-arms-resource-asset-v1",
+                        "asset_base64", "RERTIA=="));
+
+        given()
+                .queryParam("kind", "pattern")
+                .queryParam("name", "pattern_alpha.dds")
+                .when().get("/api/ck3/coat-of-arms/asset")
+                .then()
+                .statusCode(200)
+                .body("schema", equalTo("ck3-coat-of-arms-resource-asset-v1"))
+                .body("asset_base64", equalTo("RERTIA=="));
+    }
+
+    @Test
     void probeAndExportKeepTheirTypedMcpArguments() {
         when(mcp.callTool(
                         eq("ck3_probe_coat_of_arms_source_v1"),

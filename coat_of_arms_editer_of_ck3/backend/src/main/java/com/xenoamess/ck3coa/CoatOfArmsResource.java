@@ -63,6 +63,30 @@ public class CoatOfArmsResource {
                 arguments);
     }
 
+    @GET
+    @Path("/asset")
+    public Object asset(
+            @QueryParam("kind") String kind,
+            @QueryParam("name") String name) {
+        if (kind == null || kind.isBlank()) {
+            throw new BadRequestException("kind is required");
+        }
+        if (name == null || name.isBlank()) {
+            throw new BadRequestException("name is required");
+        }
+        return mcp.callTool(
+                "ck3_read_coat_of_arms_resource_asset_v1",
+                Map.of(
+                        "game_directory",
+                        configuration.gameDirectory().orElseThrow(() ->
+                                new McpGatewayException(
+                                        "missing companion configuration: gameDirectory")),
+                        "kind",
+                        kind,
+                        "name",
+                        name));
+    }
+
     @POST
     @Path("/probe")
     public Object probe(ProbeRequest request) {

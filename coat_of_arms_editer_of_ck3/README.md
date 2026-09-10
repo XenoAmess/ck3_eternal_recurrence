@@ -25,7 +25,7 @@ pnpm dev
 ```
 
 浏览器不能直接启动本机 stdio MCP，所以 `backend/` 提供必要且很薄的 Maven + Java + Quarkus 伴随服务。它只允许调用
-`ck3_take_snapshot` 和三项 CoA MCP 工具，不实现第二套解析器，也不触碰 OCR、鼠标或屏幕。
+`ck3_take_snapshot` 和四项 CoA MCP 工具，不实现第二套解析器，也不触碰 OCR、鼠标或屏幕。
 
 ## 启动伴随服务
 
@@ -44,6 +44,7 @@ mvn -f backend/pom.xml quarkus:dev
 | REST | MCP | 是否需要已运行的 CK3 |
 |---|---|---:|
 | `GET /api/ck3/coat-of-arms/resources` | `ck3_query_coat_of_arms_resource_catalog_v1` | 否，只读安装目录 |
+| `GET /api/ck3/coat-of-arms/asset` | `ck3_read_coat_of_arms_resource_asset_v1` | 否，只读 manifest 内的精确 DDS |
 | `GET /api/ck3/coat-of-arms/session` | `ck3_take_snapshot` | 是 |
 | `POST /api/ck3/coat-of-arms/probe` | `ck3_probe_coat_of_arms_source_v1` | 是，且需打开纹章设计器 |
 | `POST /api/ck3/coat-of-arms/export` | `ck3_export_coat_of_arms_source_v1` | 是，且需打开纹章设计器 |
