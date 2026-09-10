@@ -283,6 +283,7 @@ class VanillaEventRegistryMigrationParityTests(unittest.TestCase):
                 "epidemic_events.0110",
                 "health.1006",
                 "health.3001",
+                "health.3101",
             },
         )
         self.assertEqual(

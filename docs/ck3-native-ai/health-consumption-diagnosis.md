@@ -1,4 +1,4 @@
-# CK3 1.19.0.6 `health.1006 → health.3001` 肺痨诊断与医师招募决策树
+# CK3 1.19.0.6 `health.1006 → health.3001 → health.3101` 肺痨诊断、医师招募与治疗树
 
 ## 状态与证据边界
 
@@ -12,12 +12,16 @@
 - [production-live primitive] R416 retry 06 在相同 PID / generation 选择 authored `1` / native `0`，instance
   `1084 -> null`、snapshot `native:1026 -> native:1027`、revision `1027 -> 1028`，且
   `postcondition_verified=true`。这证明无医师恢复路线已经越过真实诊断窗口。
-- [paused live RED] 同次 retry 随后按原版延迟进入 `health.3001` instance `1085`，`date_raw=53864784`。
+- [paused live RED → production-live primitive] 同次 retry 随后按原版延迟进入 `health.3001` instance `1085`，`date_raw=53864784`。
   root/player 为 `32904`，高技能候选为 `33648496`，低技能候选为 `16889335`；native `1/2/4` 均
-  shown/enabled，尚未提交选择。旧合同没有接受从诊断链继承的 `epidemic,new_memory`，因此保留 RED。
-- [counter-policy static-ready, live action pending] `health.3001` 当前投影选择 authored `2` / native `1`
-  招募高技能候选。现有医师投影仍选择 authored `4` / native `3` 的安全治疗。动作 ACK 不能代替
-  instance advance。
+  shown/enabled。旧合同没有接受从诊断链继承的 `epidemic,new_memory`，因此先保留 RED；retry 07 随后在同一
+  PID / generation 选择 authored `2` / native `1`，instance `1085 -> null`、snapshot
+  `native:1032 -> native:1033`、revision `1033 -> 1034`，且 `postcondition_verified=true`。
+- [paused live RED] 原版紧接着打开 `health.3101` instance `1086`，`date_raw=53864832`。新任医师与
+  `high_skill_option` 都是 `33648496`；native `0/1/3` 均 shown/enabled。旧合同再次没有接受继承的
+  `epidemic,new_memory`，未提交治疗选择。
+- [counter-policy static-ready, live action pending] `health.3101` 当前投影选择 authored `1` / native `0`
+  的原版 safe treatment。该路线仍有随机成功或失败，不能表述为必定治愈。动作 ACK 不能代替 instance advance。
 
 ## 原版状态与入口
 
@@ -100,16 +104,47 @@ flowchart TD
 `health.3101` 治疗链；native `2` 任命较低技能候选；native `4` 不招募任何人。此次路线不需要读取信仰内容；
 mystic 分支仍保持未准入，若以后真实出现则冻结新 RED 后单列投影。
 
+## `health.3101` 治疗选择树
+
+`health.3101` 要求玩家仍有可治疗疾病且宫廷医师可用。其 `immediate` 重新保存当前医师，保存玩家最严重的疾病为
+`disease_type`，并在医师有 location 时保存 `background_terrain_scope`。在 R416 中，`physician` 与刚刚招募的
+`high_skill_option` 同为 `33648496`，所以招募到治疗的身份连续性成立。
+
+```mermaid
+flowchart TD
+    A[health.3101 暂停窗口] --> B{exact scopes、医师身份与 native 0/1/3 是否匹配?}
+    B -- 否 --> R[保留 RED，不提交]
+    B -- 是 --> C[authored 1 / native 0<br/>safe_disease_treatment_effect]
+    C --> D{原版随机治疗结果}
+    D -- 成功 --> E[health.3103]
+    D -- 失败或医师故意失败 --> F[health.3104]
+    B -- 是，但选 native 1 --> G[risky_disease_treatment_effect<br/>包含更严厉失败结果]
+    B -- 是，但选 native 3 --> H[no_disease_treatment_effect<br/>不治疗]
+```
+
+旧 R198 形态有六个 scope：`sick_character,disease_type,high_skill_option,low_skill_option,physician,background_terrain_scope`。
+R416 继续继承 `epidemic,new_memory`，形成八 scope 形态；两者都渲染 native `0/1/3`，因为当前医师没有满足 mystic
+option 的特质。合同把八 scope 形态作为独立 variant，仍要求 `sick_character == player`、`physician ==
+high_skill_option`、高低技能候选彼此不同且都不是玩家。
+
+native `0` 是原版命名的安全治疗，但效果不是确定性成功：源码以医师能力等修正 success/failure 权重，且敌对医师
+可以进入故意失败分支。选择它的依据是避免 native `1` 风险治疗的更严厉结果范围，以及 native `3` 确定不治疗；
+后续究竟进入 `health.3103` 还是 `health.3104` 必须以实机窗口为准。
+
 ## exact-build 来源
 
 - `events/health_events.txt:2135-2334`，SHA-256
   `8CAB7F230E09A37C15F7C088383D40752D970918D44D86762FDD068EE168EFEB`。
 - 同文件 `health.3001` 定义在 `6667-7276`，候选搜索为 `6705-7075`，五个 option 为
   `7077-7257`，after 为 `7259-7275`。
+- 同文件 `health.3101` 定义在 `7314-7524`，trigger 为 `7471-7474`，immediate 为
+  `7480-7486`，四个 option 为 `7488-7523`。
 - `common/scripted_effects/20_health_effects.txt:127-691,2093-2107`，SHA-256
   `6D7DEF1245D899DE4DEBC42136815BC7F4D14F6A467A8320355507AD03528F12`。
 - 同文件 `set_court_physician_effect` 位于 `1308-1408`；它负责任命医师并在玩家仍需治疗时调度
   `health.3101`。
+- 同文件 safe/risky/mystic/no-treatment effect 分别位于 `1581-1713`、`1716-1897`、
+  `1899-2087`、`2089-2091`。
 - `common/on_action/health_on_actions.txt:343-357`，SHA-256
   `253988DA3E14BE7CC9B86CAB2A3C15843B0CB8B273B2B4BC391EB287AEF0C94C`。
 - `events/travel_events/travel_events_filippa.txt:8622-8674`，SHA-256
@@ -123,6 +158,9 @@ mystic 分支仍保持未准入，若以后真实出现则冻结新 RED 后单�
 - R416 retry 06 同时包含 `health.1006` 的选择后置条件和 `health.3001` 的选择前 RED：
   `_runtime/p1-terminal-resume-r416-20260911/live-artifacts/terminal-stages-red-attempt-06.json`，SHA-256
   `0A19C4E378730320173A6F34A99C3724D043432E6529D8496715CA920C30569B`。
+- R416 retry 07 同时包含 `health.3001` 的选择后置条件和 `health.3101` 的选择前 RED：
+  `_runtime/p1-terminal-resume-r416-20260911/live-artifacts/terminal-stages-red-attempt-07.json`，SHA-256
+  `EDBE88226F5CB6C31632359164BC050E9ACD7B84687864EE7A368B7125B9F799`。
 
 R97 下游死亡边界见
 [`promotion-source-checkpoint-choreography-forensics-2026-09-04.md`](../phase2-promo/promotion-source-checkpoint-choreography-forensics-2026-09-04.md)。

@@ -19,6 +19,7 @@ _EXCLUDED_EVENTS: Final = frozenset({
     "great_holy_war.0011",
     "health.1006",
     "health.3001",
+    "health.3101",
 })
 
 
@@ -108,7 +109,6 @@ _register_origin(
         "health.1112",
         "health.1001",
         "health.1015",
-        "health.3101",
         "health.3103",
         "health.3104",
         "health.1101",
@@ -219,9 +219,6 @@ _REVIEW_SUMMARY_BY_EVENT: Final[dict[str, str]] = {
     "health.1015": (
         "Disease and immunity are already applied; native 3 is the conservative "
         "treatment route into the reviewed result contracts."
-    ),
-    "health.3101": (
-        "Native 0 is safe treatment and avoids the riskier available treatment branch."
     ),
     "health.3103": (
         "Treatment effects are already applied; the only authored option acknowledges "
