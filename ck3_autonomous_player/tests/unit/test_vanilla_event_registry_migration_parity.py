@@ -282,6 +282,7 @@ class VanillaEventRegistryMigrationParityTests(unittest.TestCase):
                 "great_holy_war.0011",
                 "epidemic_events.0110",
                 "health.1006",
+                "health.2202",
                 "health.3001",
                 "health.3101",
                 "health.3102",

@@ -18,6 +18,7 @@ _EXCLUDED_EVENTS: Final = frozenset({
     "epidemic_events.0110",
     "great_holy_war.0011",
     "health.1006",
+    "health.2202",
     "health.3001",
     "health.3101",
     "health.3102",
@@ -106,7 +107,6 @@ _register_origin(
     (
         "health.7100",
         "health.2201",
-        "health.2202",
         "health.1110",
         "health.1112",
         "health.1001",
@@ -200,10 +200,6 @@ _REVIEW_SUMMARY_BY_EVENT: Final[dict[str, str]] = {
     "health.2201": (
         "Without a physician, native 6 avoids a hiring follow-up; with a physician, "
         "the reviewed variant selects native 0 safe treatment."
-    ),
-    "health.2202": (
-        "Recovery is applied before the modal; the sole option only acknowledges the "
-        "completed result and limited cleanup."
     ),
     "health.1110": (
         "Recovery, immunity and treatment cleanup precede the modal; its only option "

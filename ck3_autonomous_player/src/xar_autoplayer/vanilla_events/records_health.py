@@ -8,6 +8,68 @@ from .registry import EXACT_CK3_BUILD, EXACT_CK3_EXE_SHA256
 
 
 VANILLA_HEALTH_ANALYSIS: Final[dict[str, dict[str, object]]] = {
+    "health.2202": {
+        "exact_build": {
+            "game_version": EXACT_CK3_BUILD,
+            "ck3_executable_sha256": EXACT_CK3_EXE_SHA256,
+            "steam_build_id": 23530548,
+            "branch": "titus/release/1.19.0",
+        },
+        "source_sha256": {
+            "events/health_events.txt": (
+                "8CAB7F230E09A37C15F7C088383D40752D970918D44D86762FDD068EE168EFEB"
+            ),
+            "common/scripted_effects/20_health_effects.txt": (
+                "6D7DEF1245D899DE4DEBC42136815BC7F4D14F6A467A8320355507AD03528F12"
+            ),
+            "localization/english/event_localization/health_events_l_english.yml": (
+                "043216116C522B5D108315A3730DA12C5D7B2EDDB8CF60D67D0967AF4AFE23D0"
+            ),
+            "localization/simp_chinese/event_localization/"
+            "health_events_l_simp_chinese.yml": (
+                "AFDC39A947F036A140288CC565EDE0B2CC29B1DCD27AF191A7CC0F91A026A0E4"
+            ),
+        },
+        "definition_lines": "6333-6565",
+        "trigger_lines": "6451-6453",
+        "immediate_effect_lines": "6455-6514",
+        "option_lines": "6516-6564",
+        "recover_from_disease_effect_lines": "694-887",
+        "recovery_dispatch_lines": "791-863",
+        "caller_semantics": (
+            "recover_from_disease_effect saves disease_type and sick_character, "
+            "builds the playable close-relative and heir notification list, and "
+            "dispatches health.2202 to a qualifying recipient before removing the "
+            "patient's disease trait and applying disease-specific immunity"
+        ),
+        "trigger_boundary": "the saved sick_character must still be alive",
+        "immediate_effect": (
+            "removes the saved disease trait from sick_character inside the modal's "
+            "shown tooltip. Disease recovery and notification routing were already "
+            "decided before the option is presented"
+        ),
+        "scope_boundary": (
+            "the legacy smallpox observation retained epidemic and physician. R416 "
+            "proves a natural-recovery shape with epidemic, disease_type, and a "
+            "distinct third-party sick_character but no physician; the source helper "
+            "does not create a physician scope"
+        ),
+        "option_semantics": {
+            0: (
+                "the sole authored acknowledgement has a trigger-selected label. It "
+                "only removes rejected_from_marriage_bed_modifier when recovery from "
+                "an authored STD leaves the patient with no STD"
+            ),
+        },
+        "native_ai_weights": {0: "sole authored acknowledgement; no ai_chance block"},
+        "after_effect": None,
+        "follow_up_event": None,
+        "safe_option_rationale": (
+            "authored option 1/native 0 is the sole shown and enabled row. Recovery "
+            "has already been applied in immediate, so dismissal only acknowledges "
+            "the result plus the source-bounded optional marriage-bed cleanup"
+        ),
+    },
     "health.1006": {
         "exact_build": {
             "game_version": EXACT_CK3_BUILD,
@@ -422,6 +484,59 @@ VANILLA_HEALTH_ANALYSIS: Final[dict[str, dict[str, object]]] = {
 
 
 VANILLA_HEALTH_OBSERVATIONS: Final[dict[str, dict[str, object]]] = {
+    "health.2202": {
+        "exemplars": [{
+            "run": "legacy-migrated",
+            "kind": "legacy-live-binding",
+            "review_kind": "migration-only",
+            "date_raw": 53342400,
+            "root_character_id": 29037,
+            "character_scopes": {},
+            "unique_character_scope_excludes": {
+                "physician": (29037,),
+                "sick_character": (29037,),
+            },
+        }, {
+            "run": "R416-retry-11",
+            "kind": "retained-live-contract-red",
+            "red_classification": "harness-route-red",
+            "product_failure_proven": False,
+            "artifact": (
+                "_runtime/p1-terminal-resume-r416-20260911/live-artifacts/"
+                "terminal-stages-red-attempt-11.json"
+            ),
+            "artifact_sha256": (
+                "E4DC093D890449A3F9FAE85FD40BE733FBDDBB7322CF31EBBA314E2F0E57D51F"
+            ),
+            "date_raw": 53905680,
+            "event_instance_id": 1091,
+            "root_character_id": 32904,
+            "snapshot_id": "native:1545",
+            "revision": 1546,
+            "native_revision": 1545,
+            "saved_character_ids": {
+                "sick_character": 88187,
+            },
+            "saved_scope_raw_types": {
+                "epidemic": 50,
+                "disease_type": 3,
+                "sick_character": 4,
+            },
+            "rendered_native_option_indices": [0],
+            "selected_option_number": None,
+            "selected_native_option_index": None,
+            "selection_attempted": False,
+            "retained_red": True,
+            "process_id": 174656,
+            "connection_generation": 1,
+            "process_restart_required": False,
+            "mcp_only": True,
+            "fixture_used": False,
+            "ocr_used": False,
+            "coordinates_used": False,
+            "console_used": False,
+        }],
+    },
     "health.1006": {
         "exemplars": [{
             "run": "R97",

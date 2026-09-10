@@ -4,12 +4,13 @@
 
 - [static-confirmed] 本专题绑定 CK3 `1.19.0.6`、Steam build `23530548` 与 `ck3.exe` SHA-256
   `2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86`。
-- [paused live RED] R416 retry 10 在 PID `174656` / connection generation `1`、`date_raw=53902032`
+- [paused live RED → production-live primitive] R416 retry 10 在 PID `174656` / connection generation `1`、`date_raw=53902032`
   暂停于 instance `1090`。root 是玩家 `32904`；saved scopes 严格为
   `family_memory:character_memory` raw `34` 与非玩家 `family_memory_participant:character` raw `4` / ID
-  `67046`；snapshot 含五个 authored option，当前只渲染 native `1/3`，两者均 shown/enabled。未提交选择。
-- [counter-policy static-ready, live action pending] 当前精确投影选择 authored `2` / native `1`。该分支只承受
-  确定性的 minor stress gain，不进入 native `3` 的外交掷骰、可能的 medium stress gain 与后续事件。
+  `67046`；snapshot 含五个 authored option，当前只渲染 native `1/3`，两者均 shown/enabled。retry 10 保留选择前
+  RED；retry 11 随后在同一 PID / generation 选择 authored `2` / native `1`，instance `1090 -> null`、snapshot
+  `native:1499 -> native:1500`、revision `1500 -> 1501`，且 `postcondition_verified=true`。该分支只承受
+  确定性的 minor stress gain，没有进入 native `3` 的外交掷骰与后续事件。
 
 ## 原版入口与取样
 
@@ -65,4 +66,6 @@ native `1` 的收益并不高；选择它的原因是当前目标需要确定地
 - 选择前 RED：
   `_runtime/p1-terminal-resume-r416-20260911/live-artifacts/terminal-stages-red-attempt-10.json`，SHA-256
   `F05201BCDD0D441F199C56D65D8BF8CF59E1B1F7570226101985BA4E2A29D62F`。
-
+- 同 PID 热恢复 GREEN 与下一项 `health.2202` 选择前 RED：
+  `_runtime/p1-terminal-resume-r416-20260911/live-artifacts/terminal-stages-red-attempt-11.json`，SHA-256
+  `E4DC093D890449A3F9FAE85FD40BE733FBDDBB7322CF31EBBA314E2F0E57D51F`。

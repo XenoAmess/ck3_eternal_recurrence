@@ -136,9 +136,10 @@
   以 authored1/native0 完成安全治疗选择与 advance，随机结果为成功；`health.3103` 十二 scope 继承形态也已在
   retry 09 完成唯一确认与 advance。`health.3102` 八 scope / native `0/1/3/4` 投影也已在 retry 10 以
   authored1/native0 完成安全治疗与 advance；exact-build 五段决策树见
-  [health-consumption-diagnosis.md](health-consumption-diagnosis.md)。当前暂停在新的 `bp1_yearly.4000`
-  家族回忆 RED；死亡参与者的两行投影与 authored2/native1 确定性路线见
-  [bp1-yearly-family-memory.md](bp1-yearly-family-memory.md)。artifact 树见
+  [health-consumption-diagnosis.md](health-consumption-diagnosis.md)。`bp1_yearly.4000` 家族回忆也已在 retry 11
+  以 authored2/native1 完成选择与 advance；死亡参与者的两行投影见
+  [bp1-yearly-family-memory.md](bp1-yearly-family-memory.md)。当前暂停在 `health.2202` 无医师三 scope 康复通知
+  RED；唯一确认路线及 source boundary 已纳入前述 health 专题。artifact 树见
   [artifact-expert-improvement.md](artifact-expert-improvement.md)。上述状态不表示 179 条全部 live；
   `361/626` 全树覆盖也不是 T0、其它 mod、CI 或发布门。T0 仍为 `50% / stage 8/11 / source 3/4 / P2 LOCKED`。
 - [static-confirmed + marriage/alliance production-live loop + call-ally blocker live / fallback static-ready]
