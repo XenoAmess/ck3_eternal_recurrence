@@ -170,12 +170,9 @@ zg361_publish_scoreboard_effect = {
 		# The durable roster was pruned immediately before settlement, so order
 		# that exact list directly and keep the full case identity filter here.
 		ordered_in_list = {
-			list = zg361_b1_subjects
+			variable = zg361_b1_subjects
 			order_by = var:zg361_kpi
-			max = {
-				value = list_size:zg361_b1_subjects
-				max = 80
-			}
+			max = 80
 			limit = {
 				has_variable = zg361_b1_case_owner
 				has_variable = zg361_b1_cycle_serial

@@ -3111,71 +3111,70 @@ class B1RuntimeFoundationTests(unittest.TestCase):
         ):
             self.assertIn(field, common)
 
-    def test_cycle8_consecutive_rebuilds_clear_temporary_quota_lists(self) -> None:
+    def test_cycle8_recounts_persistent_roster_before_bounded_additions(self) -> None:
         fixture = json.loads(
             CYCLE8_QUOTA_DOMAIN_FIXTURE.read_text(encoding="utf-8")
         )
         self.assertEqual(fixture["manager_cycle_serial"], 8)
         self.assertEqual(fixture["manager_case_serial"], 8)
         self.assertEqual(fixture["runtime_cycle_state"], 7)
-        self.assertEqual(fixture["first_rebuild_candidate_count"], 52)
-        self.assertEqual(fixture["second_rebuild_live_candidate_count"], 80)
+        self.assertEqual(fixture["frozen_roster_count"], 76)
         self.assertEqual(
-            fixture["first_rebuild_candidate_count"]
-            + fixture["second_rebuild_live_candidate_count"],
-            fixture["stale_combined_candidate_count"],
+            fixture["frozen_roster_count"] - fixture["unavailable_roster_count"],
+            fixture["retained_roster_count"],
         )
-        self.assertEqual(fixture["stale_combined_candidate_count"], 132)
-        self.assertEqual(fixture["stale_combined_unique_count"], 132)
-        self.assertEqual(fixture["bounded_processing_roster_count"], 80)
-        stale_counts = compute_quota(132).effective_counts
+        self.assertEqual(
+            fixture["review_backfill_count"] + fixture["late_join_capacity"],
+            fixture["accepted_new_members"],
+        )
+        self.assertEqual(
+            fixture["retained_roster_count"] + fixture["accepted_new_members"],
+            fixture["bounded_roster_count"],
+        )
+        self.assertEqual(
+            fixture["eligible_new_members"] - fixture["accepted_new_members"],
+            fixture["rejected_by_capacity_count"],
+        )
+        self.assertEqual(
+            fixture["retained_roster_count"] + fixture["eligible_new_members"],
+            fixture["broken_persistent_roster_count"],
+        )
+        broken_counts = compute_quota(
+            fixture["broken_persistent_roster_count"]
+        ).effective_counts
         self.assertEqual(
             {
-                "top": stale_counts.top,
-                "middle": stale_counts.middle,
-                "bottom": stale_counts.bottom,
+                "top": broken_counts.top,
+                "middle": broken_counts.middle,
+                "bottom": broken_counts.bottom,
             },
-            fixture["stale_combined_quota_counts"],
-        )
-        self.assertEqual(
-            sum(fixture["bounded_processing_counts"].values()),
-            fixture["bounded_processing_roster_count"],
+            fixture["broken_quota_counts"],
         )
         self.assertNotEqual(
-            fixture["stale_combined_quota_counts"],
-            fixture["bounded_processing_counts"],
+            fixture["broken_quota_counts"], fixture["observed_broken_recount"]
         )
-        self.assertEqual(fixture["expected_second_rebuild_candidate_count"], 80)
-        repaired_counts = compute_quota(80).effective_counts
+        repaired_counts = compute_quota(fixture["bounded_roster_count"]).effective_counts
         self.assertEqual(
             {
                 "top": repaired_counts.top,
                 "middle": repaired_counts.middle,
                 "bottom": repaired_counts.bottom,
             },
-            fixture["expected_second_rebuild_quota_counts"],
+            fixture["expected_repaired_quota_counts"],
+        )
+        self.assertEqual(
+            fixture["initial_amendment_count"]
+            + fixture["unavailable_roster_count"]
+            + fixture["accepted_new_members"],
+            fixture["expected_amendment_count"],
+        )
+        self.assertEqual(
+            fixture["initial_audit_version"]
+            + fixture["unavailable_roster_count"]
+            + fixture["accepted_new_members"],
+            fixture["expected_audit_version"],
         )
         self.assertTrue(fixture["expected_conservation_valid"])
-
-        first_rows = list(range(fixture["first_rebuild_candidate_count"]))
-        second_rows = list(
-            range(
-                fixture["first_rebuild_candidate_count"],
-                fixture["stale_combined_candidate_count"],
-            )
-        )
-        self.assertEqual(
-            len(set(first_rows + second_rows)),
-            fixture["stale_combined_unique_count"],
-        )
-        scratch = first_rows.copy()
-        for row in tuple(scratch):
-            scratch.remove(row)
-        self.assertEqual(scratch, [])
-        scratch.extend(second_rows)
-        self.assertEqual(
-            len(scratch), fixture["expected_second_rebuild_candidate_count"]
-        )
 
         local = top_level_block(
             self.effects, "zg361_b1_rebuild_local_quota_effect"
@@ -3283,8 +3282,8 @@ class B1RuntimeFoundationTests(unittest.TestCase):
         )
         self.assertEqual(
             prune.count("scope:zg361_b1_prune_manager = {"),
-            4,
-            "both manager-owned lists must be rebuilt on the explicit manager scope",
+            5,
+            "persistent rows must be counted and both manager-owned lists rebuilt on the explicit manager scope",
         )
         self.assertNotIn(
             "root = {\n\t\t\t\tadd_to_variable_list",
@@ -3296,7 +3295,10 @@ class B1RuntimeFoundationTests(unittest.TestCase):
             "limit = { is_alive = yes }",
             "name = zg361_b1_available_subjects",
             "clear_variable_list = zg361_b1_subjects",
-            "name = zg361_b1_subject_n value = list_size:zg361_b1_subjects",
+            "name = zg361_b1_roster_before_prune_n value = 0",
+            "name = zg361_b1_subject_n value = 0",
+            "name = zg361_b1_roster_before_prune_n add = 1",
+            "name = zg361_b1_subject_n add = 1",
             "name = zg361_b1_m040_review_vacancy_n add = var:zg361_b1_roster_pruned_n",
             "name = zg361_b1_roster_amendment_n add = var:zg361_b1_roster_pruned_n",
             "name = zg361_b1_roster_reopen_required value = 1",
@@ -3308,6 +3310,8 @@ class B1RuntimeFoundationTests(unittest.TestCase):
         )
         self.assertNotIn("limit = { exists = this }", prune)
         self.assertNotIn("is_landed", prune)
+        self.assertNotIn("list_size:zg361_b1_subjects", prune)
+        self.assertNotIn("list_size:zg361_b1_processing_subjects", prune)
         for event_id, first_consumer in (
             (100, "zg361_b1_midcycle_dispatcher_effect"),
             (102, "zg361_b1_prepare_facts_effect"),
@@ -3416,7 +3420,8 @@ class B1RuntimeFoundationTests(unittest.TestCase):
             "limit = { is_alive = yes }",
             "name = zg361_b1_available_processing_subjects",
             "clear_variable_list = zg361_b1_processing_subjects",
-            "name = zg361_b1_processing_n value = list_size:zg361_b1_processing_subjects",
+            "name = zg361_b1_processing_n value = 0",
+            "name = zg361_b1_processing_n add = 1",
         ):
             self.assertIn(token, prune)
         for consumer_name in (
@@ -3445,6 +3450,7 @@ class B1RuntimeFoundationTests(unittest.TestCase):
             "max = { value = var:zg361_b1_ready_manager_n max = 80 }",
             "max = { value = var:zg361_b1_rerank_n max = 80 }",
             "max = { value = var:zg361_b1_rerank_bottom_candidate_n max = 80 }",
+            "max = { value = var:zg361_b1_band_middle_n max = 80 }",
         ):
             self.assertIn(token, self.effects)
         self.assertEqual(self.effects.count("check_range_bounds = no"), 15)
@@ -3558,6 +3564,19 @@ class B1RuntimeFoundationTests(unittest.TestCase):
             "name = zg361_b1_subjects",
         ):
             self.assertIn(marker, additions)
+        self.assertEqual(
+            additions.count(
+                "change_variable = { name = zg361_b1_subject_n add = 1 }"
+            ),
+            1,
+            "backfills and late joins must both occupy a counted roster slot",
+        )
+        self.assertNotRegex(
+            additions,
+            r"limit\s*=\s*\{\s*scope:zg361_b1_roster_add_subject\.var:"
+            r"zg361_b1_backfill_route\s*=\s*0\s*\}\s*"
+            r"change_variable\s*=\s*\{\s*name\s*=\s*zg361_b1_subject_n",
+        )
         archive_owner_guard = (
             "limit = { var:zg361_b1_reorg_archive_owner = { is_alive = yes } }"
         )
@@ -3758,9 +3777,9 @@ class B1RuntimeFoundationTests(unittest.TestCase):
         self.assertIn("zg361_b1_apply_departed_grade_effect = yes", b1_settle)
 
         publish = top_level_block(self.core, "zg361_publish_scoreboard_effect")
-        self.assertEqual(publish.count("variable = zg361_b1_subjects"), 1)
+        self.assertEqual(publish.count("variable = zg361_b1_subjects"), 2)
         self.assertNotIn("zg361_scoreboard_candidates", publish)
-        self.assertIn("list = zg361_b1_subjects", publish)
+        self.assertNotIn("list_size:zg361_b1_subjects", publish)
         self.assertIn("ordered_vassal = {", publish)
         self.assertIn("add_to_list = zg361_scoreboard_recipients", publish)
         self.assertIn("var:zg361_b1_roster_included = 1", publish)

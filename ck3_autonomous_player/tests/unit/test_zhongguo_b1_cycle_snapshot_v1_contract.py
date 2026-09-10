@@ -361,7 +361,19 @@ class B1CycleContractTests(unittest.TestCase):
     def test_generator_owns_monotonic_rebuild_generation(self) -> None:
         generator = (ROOT.parent / "mod_zhongguo_style" / "tools" / "gen_361_b1_runtime.py").read_text(encoding="utf-8-sig")
         self.assertIn("name = zg361_b1_quota_rebuild_generation value = 0", generator)
-        self.assertIn("name = zg361_b1_quota_rebuild_generation add = 1", generator)
+        rebuild = generator.split("zg361_b1_rebuild_local_quota_effect = {", 1)[1].split(
+            "zg361_b1_settle_due_debt_effect = {", 1
+        )[0]
+        presence_guard = "limit = { has_variable = zg361_b1_quota_rebuild_generation }"
+        increment = "name = zg361_b1_quota_rebuild_generation add = 1"
+        legacy_first_generation = (
+            "name = zg361_b1_quota_rebuild_generation value = 1"
+        )
+        self.assertIn(presence_guard, rebuild)
+        self.assertIn(increment, rebuild)
+        self.assertIn(legacy_first_generation, rebuild)
+        self.assertLess(rebuild.index(presence_guard), rebuild.index(increment))
+        self.assertLess(rebuild.index(increment), rebuild.index(legacy_first_generation))
 
     def test_mcp_wrapper_and_portable_setup(self) -> None:
         class Service:

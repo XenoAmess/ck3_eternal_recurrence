@@ -524,7 +524,7 @@ zg361_b1_freeze_band_order_effect = {
 		ordered_in_list = {
 			variable = zg361_b1_subjects
 			order_by = var:zg361_b1_band_order_sort_key
-			max = { value = list_size:zg361_b1_subjects max = 80 }
+			max = { value = var:zg361_b1_band_middle_n max = 80 }
 			limit = { var:zg361_b1_case_owner = root var:zg361_b1_case_state = 7 var:zg361_b1_case_active = 1 var:zg361_b1_roster_included = 1 var:zg361_pending_grade = 2 }
 			root = { change_variable = { name = zg361_b1_band_cursor add = 1 } }
 			set_variable = { name = zg361_b1_band_order_object_available value = 1 }

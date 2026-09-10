@@ -1160,13 +1160,12 @@ class ScoreboardSnapshotTests(unittest.TestCase):
             product_effects,
             re.compile(
                 r"ordered_in_list\s*=\s*\{.*?"
-                r"list\s*=\s*zg361_b1_subjects.*?"
-                r"max\s*=\s*\{\s*"
-                r"value\s*=\s*list_size:zg361_b1_subjects\s+"
-                r"max\s*=\s*80\s*\}",
+                r"variable\s*=\s*zg361_b1_subjects.*?"
+                r"max\s*=\s*80",
                 re.S,
             ),
         )
+        self.assertNotIn("list_size:zg361_b1_subjects", product_effects)
         self.assertNotIn("zg361_scoreboard_candidates", product_effects)
         self.assertNotIn(
             "var:zg361_scoreboard_managed_shown_n > 80", product_effects

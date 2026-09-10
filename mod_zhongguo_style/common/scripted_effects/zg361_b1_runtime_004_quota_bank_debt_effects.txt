@@ -645,10 +645,9 @@ zg361_b1_audit_locked_roster_additions_effect = {
 					}
 				}
 				scope:zg361_b1_roster_add_manager = {
-					if = {
-						limit = { scope:zg361_b1_roster_add_subject.var:zg361_b1_backfill_route = 0 }
-						change_variable = { name = zg361_b1_subject_n add = 1 }
-					}
+					# Backfills and late joins both occupy one durable roster slot.
+					# Count every successful append so the 80-row cap remains exact.
+					change_variable = { name = zg361_b1_subject_n add = 1 }
 					change_variable = { name = zg361_b1_roster_amendment_n add = 1 }
 					change_variable = { name = zg361_b1_roster_audit_version add = 1 }
 					set_variable = { name = zg361_b1_roster_reopen_required value = 1 }
@@ -662,7 +661,14 @@ zg361_b1_audit_locked_roster_additions_effect = {
 }
 
 zg361_b1_rebuild_local_quota_effect = {
-	change_variable = { name = zg361_b1_quota_rebuild_generation add = 1 }
+	# A cycle opened before this observer field existed has no numeric value to
+	# increment. Its first rebuild materializes generation 1; current cycles
+	# still advance monotonically from their explicit zero initializer.
+	if = {
+		limit = { has_variable = zg361_b1_quota_rebuild_generation }
+		change_variable = { name = zg361_b1_quota_rebuild_generation add = 1 }
+	}
+	else = { set_variable = { name = zg361_b1_quota_rebuild_generation value = 1 } }
 	# These are same-tick temporary lists. D+340 can invoke this effect twice;
 	# remove every prior row with the engine's native temporary-list operation
 	# before rebuilding the next exact candidate domain. Seed each container

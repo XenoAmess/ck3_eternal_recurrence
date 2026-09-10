@@ -225,21 +225,27 @@ zg361_b1_prune_unavailable_subjects_effect = {
 	# scratch space and rebuilt rows always stay on the manager who owns them.
 	save_temporary_scope_as = zg361_b1_prune_manager
 	set_variable = { name = zg361_b1_roster_pruned_n value = 0 }
+	set_variable = { name = zg361_b1_roster_before_prune_n value = 0 }
+	set_variable = { name = zg361_b1_subject_n value = 0 }
 	if = {
 		limit = { has_variable_list = zg361_b1_subjects }
-		set_variable = { name = zg361_b1_roster_before_prune_n value = list_size:zg361_b1_subjects }
 		if = {
 			limit = { has_variable_list = zg361_b1_available_subjects }
 			clear_variable_list = zg361_b1_available_subjects
 		}
 		every_in_list = {
 			variable = zg361_b1_subjects
-			limit = { is_alive = yes }
-			save_temporary_scope_as = zg361_b1_available_subject
 			scope:zg361_b1_prune_manager = {
-				add_to_variable_list = {
-					name = zg361_b1_available_subjects
-					target = scope:zg361_b1_available_subject
+				change_variable = { name = zg361_b1_roster_before_prune_n add = 1 }
+			}
+			if = {
+				limit = { is_alive = yes }
+				save_temporary_scope_as = zg361_b1_available_subject
+				scope:zg361_b1_prune_manager = {
+					add_to_variable_list = {
+						name = zg361_b1_available_subjects
+						target = scope:zg361_b1_available_subject
+					}
 				}
 			}
 		}
@@ -254,11 +260,11 @@ zg361_b1_prune_unavailable_subjects_effect = {
 						name = zg361_b1_subjects
 						target = scope:zg361_b1_available_subject
 					}
+					change_variable = { name = zg361_b1_subject_n add = 1 }
 				}
 			}
 			clear_variable_list = zg361_b1_available_subjects
 		}
-		set_variable = { name = zg361_b1_subject_n value = list_size:zg361_b1_subjects }
 		set_variable = {
 			name = zg361_b1_roster_pruned_n
 			value = { value = var:zg361_b1_roster_before_prune_n subtract = var:zg361_b1_subject_n min = 0 }
@@ -275,6 +281,7 @@ zg361_b1_prune_unavailable_subjects_effect = {
 	# The ranking list is materialized only after D+300 and then survives several
 	# independent delayed callbacks. Rebuild it under the same boundary. The
 	# roster block above is the sole owner of vacancy receipts.
+	set_variable = { name = zg361_b1_processing_n value = 0 }
 	if = {
 		limit = { has_variable_list = zg361_b1_processing_subjects }
 		if = {
@@ -303,11 +310,11 @@ zg361_b1_prune_unavailable_subjects_effect = {
 						name = zg361_b1_processing_subjects
 						target = scope:zg361_b1_available_processing_subject
 					}
+					change_variable = { name = zg361_b1_processing_n add = 1 }
 				}
 			}
 			clear_variable_list = zg361_b1_available_processing_subjects
 		}
-		set_variable = { name = zg361_b1_processing_n value = list_size:zg361_b1_processing_subjects }
 	}
 }
 

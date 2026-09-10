@@ -2186,21 +2186,27 @@ zg361_b1_prune_unavailable_subjects_effect = {
 	# scratch space and rebuilt rows always stay on the manager who owns them.
 	save_temporary_scope_as = zg361_b1_prune_manager
 	set_variable = { name = zg361_b1_roster_pruned_n value = 0 }
+	set_variable = { name = zg361_b1_roster_before_prune_n value = 0 }
+	set_variable = { name = zg361_b1_subject_n value = 0 }
 	if = {
 		limit = { has_variable_list = zg361_b1_subjects }
-		set_variable = { name = zg361_b1_roster_before_prune_n value = list_size:zg361_b1_subjects }
 		if = {
 			limit = { has_variable_list = zg361_b1_available_subjects }
 			clear_variable_list = zg361_b1_available_subjects
 		}
 		every_in_list = {
 			variable = zg361_b1_subjects
-			limit = { is_alive = yes }
-			save_temporary_scope_as = zg361_b1_available_subject
 			scope:zg361_b1_prune_manager = {
-				add_to_variable_list = {
-					name = zg361_b1_available_subjects
-					target = scope:zg361_b1_available_subject
+				change_variable = { name = zg361_b1_roster_before_prune_n add = 1 }
+			}
+			if = {
+				limit = { is_alive = yes }
+				save_temporary_scope_as = zg361_b1_available_subject
+				scope:zg361_b1_prune_manager = {
+					add_to_variable_list = {
+						name = zg361_b1_available_subjects
+						target = scope:zg361_b1_available_subject
+					}
 				}
 			}
 		}
@@ -2215,11 +2221,11 @@ zg361_b1_prune_unavailable_subjects_effect = {
 						name = zg361_b1_subjects
 						target = scope:zg361_b1_available_subject
 					}
+					change_variable = { name = zg361_b1_subject_n add = 1 }
 				}
 			}
 			clear_variable_list = zg361_b1_available_subjects
 		}
-		set_variable = { name = zg361_b1_subject_n value = list_size:zg361_b1_subjects }
 		set_variable = {
 			name = zg361_b1_roster_pruned_n
 			value = { value = var:zg361_b1_roster_before_prune_n subtract = var:zg361_b1_subject_n min = 0 }
@@ -2236,6 +2242,7 @@ zg361_b1_prune_unavailable_subjects_effect = {
 	# The ranking list is materialized only after D+300 and then survives several
 	# independent delayed callbacks. Rebuild it under the same boundary. The
 	# roster block above is the sole owner of vacancy receipts.
+	set_variable = { name = zg361_b1_processing_n value = 0 }
 	if = {
 		limit = { has_variable_list = zg361_b1_processing_subjects }
 		if = {
@@ -2264,11 +2271,11 @@ zg361_b1_prune_unavailable_subjects_effect = {
 						name = zg361_b1_processing_subjects
 						target = scope:zg361_b1_available_processing_subject
 					}
+					change_variable = { name = zg361_b1_processing_n add = 1 }
 				}
 			}
 			clear_variable_list = zg361_b1_available_processing_subjects
 		}
-		set_variable = { name = zg361_b1_processing_n value = list_size:zg361_b1_processing_subjects }
 	}
 }
 
@@ -3881,10 +3888,9 @@ zg361_b1_audit_locked_roster_additions_effect = {
 					}
 				}
 				scope:zg361_b1_roster_add_manager = {
-					if = {
-						limit = { scope:zg361_b1_roster_add_subject.var:zg361_b1_backfill_route = 0 }
-						change_variable = { name = zg361_b1_subject_n add = 1 }
-					}
+					# Backfills and late joins both occupy one durable roster slot.
+					# Count every successful append so the 80-row cap remains exact.
+					change_variable = { name = zg361_b1_subject_n add = 1 }
 					change_variable = { name = zg361_b1_roster_amendment_n add = 1 }
 					change_variable = { name = zg361_b1_roster_audit_version add = 1 }
 					set_variable = { name = zg361_b1_roster_reopen_required value = 1 }
@@ -3898,7 +3904,14 @@ zg361_b1_audit_locked_roster_additions_effect = {
 }
 
 zg361_b1_rebuild_local_quota_effect = {
-	change_variable = { name = zg361_b1_quota_rebuild_generation add = 1 }
+	# A cycle opened before this observer field existed has no numeric value to
+	# increment. Its first rebuild materializes generation 1; current cycles
+	# still advance monotonically from their explicit zero initializer.
+	if = {
+		limit = { has_variable = zg361_b1_quota_rebuild_generation }
+		change_variable = { name = zg361_b1_quota_rebuild_generation add = 1 }
+	}
+	else = { set_variable = { name = zg361_b1_quota_rebuild_generation value = 1 } }
 	# These are same-tick temporary lists. D+340 can invoke this effect twice;
 	# remove every prior row with the engine's native temporary-list operation
 	# before rebuilding the next exact candidate domain. Seed each container
@@ -8158,7 +8171,7 @@ zg361_b1_freeze_band_order_effect = {
 		ordered_in_list = {
 			variable = zg361_b1_subjects
 			order_by = var:zg361_b1_band_order_sort_key
-			max = { value = list_size:zg361_b1_subjects max = 80 }
+			max = { value = var:zg361_b1_band_middle_n max = 80 }
 			limit = { var:zg361_b1_case_owner = root var:zg361_b1_case_state = 7 var:zg361_b1_case_active = 1 var:zg361_b1_roster_included = 1 var:zg361_pending_grade = 2 }
 			root = { change_variable = { name = zg361_b1_band_cursor add = 1 } }
 			set_variable = { name = zg361_b1_band_order_object_available value = 1 }

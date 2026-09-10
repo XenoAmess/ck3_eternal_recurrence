@@ -1,30 +1,38 @@
 {
   "kind": "zg361_b1_cycle8_roster_domain_regression",
-  "source_run": "R374",
+  "source_run": "R384",
   "manager_cycle_serial": 8,
   "manager_case_serial": 8,
   "runtime_cycle_state": 7,
   "seam": "D+340",
-  "first_rebuild_candidate_count": 52,
-  "second_rebuild_live_candidate_count": 80,
-  "stale_combined_candidate_count": 132,
-  "stale_combined_unique_count": 132,
-  "bounded_processing_roster_count": 80,
-  "stale_combined_quota_counts": {
+  "frozen_roster_count": 76,
+  "unavailable_roster_count": 5,
+  "retained_roster_count": 71,
+  "eligible_new_members": 61,
+  "review_backfill_count": 5,
+  "late_join_capacity": 4,
+  "accepted_new_members": 9,
+  "rejected_by_capacity_count": 52,
+  "broken_persistent_roster_count": 132,
+  "bounded_roster_count": 80,
+  "broken_quota_counts": {
     "top": 40,
     "middle": 79,
     "bottom": 13
   },
-  "bounded_processing_counts": {
+  "observed_broken_recount": {
     "top": 25,
-    "middle": 46,
-    "bottom": 9
+    "middle": 45,
+    "bottom": 10
   },
-  "expected_second_rebuild_quota_counts": {
+  "expected_repaired_quota_counts": {
     "top": 24,
     "middle": 48,
     "bottom": 8
   },
-  "expected_second_rebuild_candidate_count": 80,
+  "initial_amendment_count": 0,
+  "initial_audit_version": 1,
+  "expected_amendment_count": 14,
+  "expected_audit_version": 15,
   "expected_conservation_valid": true
 }

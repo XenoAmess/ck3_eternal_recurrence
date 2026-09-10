@@ -2369,12 +2369,22 @@ R375 尾段不能再笼统归类为“未等到第三次 `.356` 的产品 RED”
 `SCENARIO_INVALID / NOT_EVALUATED`，retained old drain 也会触发同一失效，不发送新的玩法输入。对应修复由
 `9caf735` 与 `734ddbc` 分别收口产品早停和通用 registry / product overlay 边界；normal/`-O` runner 与 parity 均 GREEN。
 
-同一 lineage 中仍有独立、真实的 B1 liveness RED。D340 tick 两次调用
-`zg361_b1_rebuild_local_quota_effect` 时复用了命名 temporary list：第一次 52 人、第二次 80 人累计为 132 个唯一角色，
-配额目标 `40/79/13`，但 processing roster 80 人的重计为 `25/46/9`，守恒无法闭合。固定 diagnostic subject `30938`
-不在 B1 roster 中，不是根因。commit `95f6824` 在每次 rebuild 入口以真实 manager anchor 和
-`every_in_list/remove_from_list` 排空 scratch list；生成器 `--check`、B1 normal/`-O` `76/76` 与 `validate_local.py`
-均 GREEN，但这仍是 static-ready，不能冒充实机关闭。
+同一 lineage 中仍有独立、真实的 B1 liveness RED。早期根据 R374 中间帧提出的“同 tick 两次 temporary list
+累计为 132 人”只是假设；R384 固定 400 天回放取得完整 D+403 帧后已经推翻该归因。真实链为：冻结 roster 76 人，
+prune 应剔除 5 个失效 weak row 并保留 71 人；脚本却用只适用于 temporary list 的
+`list_size:zg361_b1_subjects` / `list_size:zg361_b1_processing_subjects` 读取持久 variable list，两个显式计数都落成 0。
+于是 61 个 eligible new member 全部通过错误容量门，持久 roster 变成 132 人，配额目标为 `40/79/13`；后续只处理
+上限内 80 人，D+403 重计为 `25/45/10`，state 7 持续 291 游戏日，closure/calibration/reward 均未发生。
+
+exact-build 原版 `game/tests/event_target_lists_tests.txt:217-231`（SHA-256
+`E7971460148847A2736CFEFA7032A12B998E220EAC045935083FAD1501974FE8`）明确以
+`variable_list_size = { name = ... value = ... }` 读取 persistent variable list；`list_size:<name>` 不能用于这类容器。
+最小修复不重写配额算法：prune 遍历时显式累计原名单、保留名单和 processing 名单；每次成功 backfill/late-join
+都递增 roster count；旧存档缺少 `zg361_b1_quota_rebuild_generation` 时显式建立 generation 1；band 排序上限复用
+已经显式计算的 `zg361_b1_band_middle_n`。生成器 `--check`、B1 normal/`-O` `76/76`、quota model normal/`-O`
+`74/74`、MCP B1 contract normal/`-O` `13/13`、本地静态校验和 release build/check 均 GREEN；状态仍仅为
+`static-ready`，必须从同一冻结 checkpoint fresh load，在新的唯一 CK3 轮次中证明 roster=80、quota=`24/48/8`
+并进入 state 8 后才关闭产品 RED。commit `95f6824` 的 temporary-list 清理可作为独立防回归保留，但不再记录为本次根因修复。
 
 最晚可自然重放的 checkpoint 是
 `_runtime/p2r374-active-boundary-continuation-state/profile/save games/autosave_2.ck3`：
@@ -2387,4 +2397,5 @@ Python-only 热重跑已证明 `.0081` 会即时变为 `SCENARIO_INVALID / NOT_E
 更新后的 rolling report SHA-256 为
 `EE1C4F4D2696CB2D9B380EABE265043E40C8049A23D2863431DA5BE18B943381`。该轮旧的一次性 wrapper 随后仍用陈旧
 event instance `1058` 尝试 park，触发 `BridgeUnavailableError` 并由 supervisor 清理 CK3。因此这是 wrapper cleanup RED，
-不推翻场景失效成功；当前 CK3 槽为空。只有完成 B1 新脚本与 MCP/DLL 后才启动一个新的独占 CK3 PID。
+不推翻场景失效成功。后续 R384 / PID `38864` 已由 operator MCP 自主启动并成为当前唯一实例，现停在上述 D+403
+产品 RED；游戏脚本已经变化，故提交推送后须先受控清理 R384、再次确认零实例，再递增轮次做 fresh replay，不能热恢复冒充验证。

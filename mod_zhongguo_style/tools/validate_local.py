@@ -557,14 +557,14 @@ def check_runtime_invariants() -> None:
         err("scoreboard shown count must clamp in one tooltip-safe assignment")
     if not re.search(
         r"ordered_in_list\s*=\s*\{.*?"
-        r"list\s*=\s*zg361_b1_subjects.*?"
-        r"max\s*=\s*\{\s*"
-        r"value\s*=\s*list_size:zg361_b1_subjects\s+"
-        r"max\s*=\s*80\s*\}",
+        r"variable\s*=\s*zg361_b1_subjects.*?"
+        r"max\s*=\s*80",
         effects,
         re.S,
     ):
-        err("scoreboard ordered list must cap against its live list size")
+        err("scoreboard must iterate the persistent B1 roster with an 80-row cap")
+    if "list_size:zg361_b1_subjects" in effects:
+        err("persistent B1 roster must not use temporary-list list_size syntax")
     if "zg361_scoreboard_candidates" in effects:
         err("scoreboard must not retain a weak temporary candidate list")
     if "var:zg361_scoreboard_managed_shown_n > 80" in effects:
