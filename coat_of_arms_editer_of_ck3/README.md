@@ -81,5 +81,6 @@ shader 源文件、15 个原版命名颜色和 256×256 DXT1 surface mask；本�
 
 configured-resource catalog 在此基础上解析目录模组及 ZIP archive 内的 designer manifest，标出同名候选并保留配置顺序；
 archive 通过中央目录有界直读，不解压到磁盘。asset reader
-只能接受 catalog 返回且仍属于当前配置的 opaque candidate ID。前端目前显示候选计数，但在引擎 precedence/merge 尚未取得
-原生证据前，不会擅自把某个同名候选选成 effective winner，也不会把这些候选混入基础游戏下拉框。
+只能接受 catalog 返回且仍属于当前配置的 opaque candidate ID。前端用独立候选表显示来源与同名冲突，并允许用户显式选择
+某个候选做精确 DDS 预览；在引擎 precedence/merge 尚未取得原生证据前，它不会擅自选 effective winner，也不会把候选
+混入基础游戏下拉框。

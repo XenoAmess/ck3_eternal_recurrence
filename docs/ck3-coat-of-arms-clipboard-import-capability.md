@@ -165,6 +165,8 @@ mod/descriptor/manifest provenance、
 配置顺序、描述符或 manifest 字节变化后
 旧 ID 会失效。两者仍固定声明 `resource_merge_applied=false`、`load_order_precedence_applied=false`。因此现阶段 Web 编辑器可审计
 “哪些目录/ZIP 模组声称提供哪些纹章资源”及其精确 DDS，但不会把这个集合冒充引擎最终 effective registry。
+Vue 编辑器把这些来源放在独立候选表中：用户可显式选定某个 opaque candidate 做预览，序列化结果仍只写 CK3 资源名，
+同名冲突不会被 UI 静默消解。
 
 ### 3.2 每条 MCP 结果提供什么证据
 

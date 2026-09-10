@@ -3,6 +3,7 @@ import { computed, ref } from 'vue'
 import { ElMessage } from 'element-plus'
 import {
   createCk3CompanionClient,
+  type CoatOfArmsConfiguredResourceItem,
   type CoatOfArmsResourceItem,
 } from './api/ck3Companion'
 import { decodeDdsBase64, decodedDdsToDataUrl, type DecodedDds } from './domain/dds'
@@ -73,6 +74,8 @@ const configuredModCount = ref<number | null>(null)
 const configuredPatternCount = ref<number | null>(null)
 const configuredEmblemCount = ref<number | null>(null)
 const configuredArchiveCount = ref(0)
+const configuredPatternResources = ref<CoatOfArmsConfiguredResourceItem[]>([])
+const configuredEmblemResources = ref<CoatOfArmsConfiguredResourceItem[]>([])
 
 const output = computed(() => serializeCoatOfArms(coatOfArms.value))
 const activeEmblem = computed(() => coatOfArms.value.coloredEmblems[selectedEmblem.value])
@@ -257,6 +260,8 @@ async function loadResourceCatalog() {
     configuredModCount.value = loadConfiguration?.enabled_mod_count ?? null
     configuredPatternCount.value = configuredPatterns?.total ?? null
     configuredEmblemCount.value = configuredEmblems?.total ?? null
+    configuredPatternResources.value = configuredPatterns?.items ?? []
+    configuredEmblemResources.value = configuredEmblems?.items ?? []
     configuredArchiveCount.value = Math.max(
       configuredPatterns?.provenance.archive_mods_enumerated ?? 0,
       configuredEmblems?.provenance.archive_mods_enumerated ?? 0,
@@ -296,6 +301,58 @@ async function readTexturePreview(
     throw new Error(`DDS 元数据与解码结果不一致：${name}`)
   }
   return { decoded, preview: decodedDdsToDataUrl(decoded) }
+}
+
+async function readConfiguredTexturePreview(
+  item: CoatOfArmsConfiguredResourceItem,
+): Promise<{ decoded: DecodedDds, preview: string }> {
+  if (item.kind !== 'pattern' && item.kind !== 'colored_emblem') {
+    throw new Error(`不支持的 configured DDS 类型：${item.kind}`)
+  }
+  const asset = await companion.configuredAsset(item.kind, item.candidate_id)
+  const decoded = decodeDdsBase64(asset.asset_base64)
+  if (
+    decoded.width !== asset.dds.width
+    || decoded.height !== asset.dds.height
+    || decoded.fourCC !== asset.dds.four_cc
+  ) {
+    throw new Error(`Configured DDS 元数据与解码结果不一致：${item.name}`)
+  }
+  return { decoded, preview: decodedDdsToDataUrl(decoded) }
+}
+
+async function useConfiguredPattern(item: CoatOfArmsConfiguredResourceItem) {
+  textureBusy.value = true
+  try {
+    const { decoded, preview } = await readConfiguredTexturePreview(item)
+    coatOfArms.value.pattern = item.name
+    patternTexture.value = decoded
+    patternPreviewUrl.value = preview
+    ElMessage.success(`已使用 ${item.mod_name ?? item.registry_path} 的 pattern 候选`)
+  } catch (error) {
+    ElMessage.error(`Configured pattern 读取失败：${errorMessage(error)}`)
+  } finally {
+    textureBusy.value = false
+  }
+}
+
+async function useConfiguredEmblem(item: CoatOfArmsConfiguredResourceItem) {
+  if (!activeEmblem.value) {
+    ElMessage.warning('请先添加或选择一个 colored emblem 图层')
+    return
+  }
+  textureBusy.value = true
+  try {
+    const { decoded, preview } = await readConfiguredTexturePreview(item)
+    activeEmblem.value.texture = item.name
+    emblemTextures.value = { ...emblemTextures.value, [item.name]: decoded }
+    emblemPreviewUrls.value = { ...emblemPreviewUrls.value, [item.name]: preview }
+    ElMessage.success(`已使用 ${item.mod_name ?? item.registry_path} 的 emblem 候选`)
+  } catch (error) {
+    ElMessage.error(`Configured emblem 读取失败：${errorMessage(error)}`)
+  } finally {
+    textureBusy.value = false
+  }
 }
 
 async function loadPatternTexture(name: string) {
@@ -475,7 +532,7 @@ importSource()
       <section class="editor-pane panel">
         <div class="panel-title">
           <div><span class="step">03</span><h2>结构化编辑</h2></div>
-          <el-button size="small" :loading="catalogBusy" @click="loadResourceCatalog">读取原版资源</el-button>
+          <el-button size="small" :loading="catalogBusy" @click="loadResourceCatalog">读取资源</el-button>
         </div>
         <el-scrollbar height="690px">
           <div class="resource-search">
@@ -496,6 +553,63 @@ importSource()
               启动配置未读取，暂不包含 DLC/mod 覆盖，也不冒充运行时注册状态。
             </template>
           </p>
+          <el-collapse
+            v-if="configuredPatternResources.length || configuredEmblemResources.length"
+            class="configured-candidates"
+          >
+            <el-collapse-item
+              v-if="configuredPatternResources.length"
+              :title="`Configured pattern 候选（当前页 ${configuredPatternResources.length}）`"
+              name="configured-patterns"
+            >
+              <p class="candidate-warning">
+                显式选择只决定本编辑器使用哪份 DDS 做预览；导出的 CK3 代码仍只包含资源名，不声明引擎最终胜者。
+              </p>
+              <el-table :data="configuredPatternResources" size="small" max-height="220">
+                <el-table-column prop="name" label="资源名" min-width="180" show-overflow-tooltip />
+                <el-table-column prop="mod_name" label="来源 mod" min-width="150" show-overflow-tooltip />
+                <el-table-column label="冲突" width="82">
+                  <template #default="{ row }">
+                    <el-tag v-if="row.potential_configured_name_conflict" type="warning" size="small">
+                      {{ row.same_name_configured_candidate_count }} 项
+                    </el-tag>
+                    <span v-else>—</span>
+                  </template>
+                </el-table-column>
+                <el-table-column label="" width="82" fixed="right">
+                  <template #default="{ row }">
+                    <el-button size="small" text type="primary" @click="useConfiguredPattern(row)">使用</el-button>
+                  </template>
+                </el-table-column>
+              </el-table>
+            </el-collapse-item>
+            <el-collapse-item
+              v-if="configuredEmblemResources.length"
+              :title="`Configured emblem 候选（当前页 ${configuredEmblemResources.length}）`"
+              name="configured-emblems"
+            >
+              <p class="candidate-warning">
+                选择后写入当前 emblem 图层，并按该 opaque candidate ID 读取目录/ZIP 内的精确 DDS。
+              </p>
+              <el-table :data="configuredEmblemResources" size="small" max-height="260">
+                <el-table-column prop="name" label="资源名" min-width="180" show-overflow-tooltip />
+                <el-table-column prop="mod_name" label="来源 mod" min-width="150" show-overflow-tooltip />
+                <el-table-column label="冲突" width="82">
+                  <template #default="{ row }">
+                    <el-tag v-if="row.potential_configured_name_conflict" type="warning" size="small">
+                      {{ row.same_name_configured_candidate_count }} 项
+                    </el-tag>
+                    <span v-else>—</span>
+                  </template>
+                </el-table-column>
+                <el-table-column label="" width="82" fixed="right">
+                  <template #default="{ row }">
+                    <el-button size="small" text type="primary" @click="useConfiguredEmblem(row)">使用</el-button>
+                  </template>
+                </el-table-column>
+              </el-table>
+            </el-collapse-item>
+          </el-collapse>
           <el-form label-position="top">
             <div class="form-grid">
               <el-form-item label="Pattern 资源名">
