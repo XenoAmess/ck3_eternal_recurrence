@@ -476,6 +476,35 @@ KNOWN_TIMELINE_INTERRUPTS: dict[str, dict[str, object]] = {
         "selected_native_option_index": 2,
         "occurrence_policy": "repeatable-within-product-observation-window",
     },
+    "childhood.2010": {
+        # CK3 1.19.0.6, exact EXE SHA 2D00FF31...; source
+        # events/education_and_childhood/childhood_events.txt SHA
+        # 014214D8..., lines 6607-6726. R406 instance 2155 binds the played
+        # guardian and one distinct ward. Authored option 1 creates a favor
+        # hook and schedules childhood.2011; option 2 confines the outcome to
+        # the source-authored relationship progress and trait-dependent stress.
+        "date_policy": "product-observation-window",
+        "root_character_id": 33596113,
+        "character_scopes": {
+            "guardian": 33596113,
+        },
+        "unique_character_scope_excludes": {
+            "ward": (33596113,),
+        },
+        "scope_types": {
+            "guardian": "character",
+            "ward": "character",
+        },
+        "boolean_scopes": (),
+        "saved_scope_name_sets": (("guardian", "ward"),),
+        "saved_scope_count": 2,
+        "option_count": 2,
+        "snapshot_option_count": 2,
+        "native_option_indices": (0, 1),
+        "selected_option_number": 2,
+        "selected_native_option_index": 1,
+        "occurrence_policy": "repeatable-within-product-observation-window",
+    },
     "zg361b2.40": {
         "date_raw": 53147040,
         "date_policy": "exact-authored-anchor",

@@ -177,6 +177,64 @@ class ManagerRecoveryInterruptTests(unittest.TestCase):
         self.assertEqual(contract["selected_option_number"], 3)
         self.assertEqual(contract["selected_native_option_index"], 2)
 
+    def test_guardian_ward_interrupt_avoids_hook_and_followup(self) -> None:
+        event_key = "childhood.2010"
+        contract = production._manager_recovery_contract(
+            production.KNOWN_TIMELINE_INTERRUPTS[event_key],
+            player=33596113,
+            event_key=event_key,
+        )
+        contract = production._timeline_contract_for_window(
+            contract,
+            starting_date=53998728,
+        )
+        context = _context(
+            event_key=event_key,
+            instance_id=2155,
+            date_raw=54003936,
+            player=33596113,
+            scopes=[
+                _scope("guardian", "character", 33596113),
+                _scope("ward", "character", 83929566),
+            ],
+            native_option_indices=(0, 1),
+        )
+        checks = production._known_interrupt_checks(
+            snapshot={
+                "date_raw": 54003936,
+                "active_event": {"option_count": 2},
+            },
+            event={"event_instance_id": 2155},
+            context=context,
+            event_key=event_key,
+            contract=contract,
+        )
+        self.assertTrue(all(checks.values()), checks)
+        self.assertEqual(contract["character_scopes"], {
+            "guardian": 33596113,
+        })
+        self.assertEqual(contract["selected_option_number"], 2)
+        self.assertEqual(contract["selected_native_option_index"], 1)
+
+        game_root = ROOT / "Crusader Kings III"
+        if not game_root.is_dir():
+            game_root = ROOT.parent / "Crusader Kings III"
+        source_path = (
+            game_root
+            / "game/events/education_and_childhood"
+            / "childhood_events.txt"
+        )
+        self.assertEqual(
+            hashlib.sha256(source_path.read_bytes()).hexdigest().upper(),
+            "014214D8E4399259127ACCB236C385421F7CB27EB43A53239458DCD8C6537151",
+        )
+        source_block = _extract_block(
+            source_path.read_text(encoding="utf-8-sig"),
+            "childhood.2010 =",
+        )
+        self.assertIn("trigger_event = childhood.2011", source_block)
+        self.assertIn("progress_towards_friend_effect", source_block)
+
     def test_cold_import_preserves_existing_canonical_contract_identity(
         self,
     ) -> None:
