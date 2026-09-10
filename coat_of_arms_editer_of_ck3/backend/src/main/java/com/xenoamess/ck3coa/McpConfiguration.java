@@ -19,6 +19,8 @@ public interface McpConfiguration {
 
     Optional<String> gameDirectory();
 
+    Optional<String> userDirectory();
+
     Optional<String> pipeName();
 
     @WithDefault("15S")

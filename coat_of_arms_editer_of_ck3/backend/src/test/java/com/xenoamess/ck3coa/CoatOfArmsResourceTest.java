@@ -96,6 +96,24 @@ class CoatOfArmsResourceTest {
     }
 
     @Test
+    void loadConfigurationIsReadThroughTheMcpTool() {
+        when(mcp.callTool(
+                        eq("ck3_query_coat_of_arms_load_configuration_v1"),
+                        eq(Map.of("user_directory", "fixture-user"))))
+                .thenReturn(Map.of(
+                        "schema", "ck3-coat-of-arms-load-configuration-v1",
+                        "enabled_mod_count", 2));
+
+        given()
+                .when().get("/api/ck3/coat-of-arms/load-configuration")
+                .then()
+                .statusCode(200)
+                .body("schema", equalTo(
+                        "ck3-coat-of-arms-load-configuration-v1"))
+                .body("enabled_mod_count", equalTo(2));
+    }
+
+    @Test
     void probeAndExportKeepTheirTypedMcpArguments() {
         when(mcp.callTool(
                         eq("ck3_probe_coat_of_arms_source_v1"),

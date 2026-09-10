@@ -7,6 +7,9 @@ import importlib
 import os
 from pathlib import Path
 
+from xar_autoplayer.coat_of_arms_load_configuration import (
+    query_coat_of_arms_load_configuration_v1,
+)
 from xar_autoplayer.coat_of_arms_resources import (
     query_coat_of_arms_resource_catalog_v1,
     read_coat_of_arms_render_support_v1,
@@ -163,6 +166,13 @@ def _ck3_read_coat_of_arms_render_support_v1(
 ) -> dict[str, object]:
     """Read exact-build shader provenance, named colors, and surface mask."""
     return read_coat_of_arms_render_support_v1(game_directory)
+
+
+def _ck3_query_coat_of_arms_load_configuration_v1(
+    user_directory: str,
+) -> dict[str, object]:
+    """Project configured CoA mod candidates without claiming engine mount."""
+    return query_coat_of_arms_load_configuration_v1(user_directory)
 
 
 def load_driver(
@@ -1391,6 +1401,13 @@ def create_server(driver: GameplayBridgeDriver):
         return _ck3_read_coat_of_arms_render_support_v1(game_directory)
 
     @server.tool()
+    def ck3_query_coat_of_arms_load_configuration_v1(
+        user_directory: str,
+    ) -> dict[str, object]:
+        """Read dlc_load.json CoA candidates; does not claim engine VFS state."""
+        return _ck3_query_coat_of_arms_load_configuration_v1(user_directory)
+
+    @server.tool()
     def ck3_query_loaded_feature_manifest_v1(
         expected_revision: int,
     ) -> dict[str, object]:
@@ -1749,6 +1766,9 @@ def create_server(driver: GameplayBridgeDriver):
     )
     _forbid_unknown_tool_arguments_v1(
         server, "ck3_read_coat_of_arms_render_support_v1"
+    )
+    _forbid_unknown_tool_arguments_v1(
+        server, "ck3_query_coat_of_arms_load_configuration_v1"
     )
     return server
 

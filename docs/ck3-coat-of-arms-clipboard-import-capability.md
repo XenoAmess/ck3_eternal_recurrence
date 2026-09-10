@@ -52,7 +52,7 @@ designer 的 working state。
 用实际安装的 Python MCP SDK `2.0.0` 连接现有 stdio server 时，补能力前共列出 62 个工具，
 没有 coat-of-arms、clipboard 或 designer 工具。也就是说，旧 MCP 无法回答本报告的核心问题。
 
-本轮先后新增两个原生工具和三个离线资源/渲染工具：
+本轮先后新增两个原生工具和四个离线资源/渲染工具：
 
 ```text
 ck3_probe_coat_of_arms_source_v1(
@@ -82,6 +82,10 @@ ck3_read_coat_of_arms_resource_asset_v1(
 
 ck3_read_coat_of_arms_render_support_v1(
     game_directory: string
+)
+
+ck3_query_coat_of_arms_load_configuration_v1(
+    user_directory: string
 )
 ```
 
@@ -127,6 +131,17 @@ render-support 工具继续沿用 exact EXE SHA 门禁，返回 `coa_mask_textur
 SHA-256。它把 pattern/emblem 通道顺序、mask 通道隔离、surface detail、transform 顺序与 alpha blend 投影成结构化合同；
 不返回或复制第三方实现。当前唯一明确未从随附源码闭合的 shader 常量是引擎如何绑定 `FallbackColor`，最终 GPU 采样与色彩空间
 也仍需以后用原生像素 primitive 对照。
+
+load-configuration 工具只读当前 CK3 用户目录的 `dlc_load.json`，按其中的 `enabled_mods` 顺序解析 `.mod` 描述符，
+为目录模组列出九类 `common/coat_of_arms` / `gfx/coat_of_arms` 直接候选文件、DDS 数量、`replace_path`、描述符与配置哈希。
+archive 模组只报告路径与存在性，当前不解压枚举。结果固定标记 `launcher_database_used=false`、
+`engine_mount_observed=false`、`resource_merge_applied=false`：它补齐“当前启动配置里有哪些候选资源”，尚未补齐
+Clausewitz/Jomini VFS 的覆盖、合并和运行时注册语义。
+
+本机静态交叉检查解释了为什么不把启动器 SQLite 当作权威输入：当前 `dlc_load.json` 精确为 38 bytes、SHA-256
+`B28A99338A45655C4A25CFEE44602A56451960142C9DD9E767B78C21A08C91BB`，配置启用模组为零；同一时刻启动器库中
+“Initial playset”仍保存 82 个 enabled 条目，但该 playset 的 `isActive=0`，另两个 playset 也没有 active 标记。
+这组数据证明数据库可保留非当前播放集，不能反向覆盖 `dlc_load.json` 的直接配置事实。
 
 ### 3.2 每条 MCP 结果提供什么证据
 
@@ -191,6 +206,10 @@ export 的公开结果为闭合 schema，包含 `status`、`designer_observed`�
   返回 15 个命名颜色、五份 shader provenance 和 256×256 DXT1 surface mask；其 base64 解码后仍为 43,832 bytes，SHA-256
   `5FA2A49DC59AEEBA19709B6BB3F9D0B017ACDE7DC576793705EAF85C7F33691E`。官方 Python MCP SDK 9/9、Quarkus 5/5、
   前端 18/18 与 production build GREEN；全过程使用 `vision-report` 离线 driver，没有调用 session/probe/export；
+- 新增 load-configuration MCP 后，普通 Python 聚焦测试 5 项通过、其中官方 SDK 用例按环境跳过；安装 MCP SDK 2.0.0 的
+  专用环境 5/5 通过，并验证 tool schema 拒绝未知字段。对当前真实用户目录的官方 MCP 调用列出 76 个工具并返回
+  `enabled_mod_count=0`、`disabled_dlcs=[]`、上述 38 bytes/SHA-256；Quarkus REST 映射 6/6、前端 19/19 和 production
+  build GREEN。该次调用没有启动、连接或操作 CK3，也没有读取启动器 SQLite；
 - CK3 frontend exact-build 握手：已真实取得，并广告新 capability；
 - 隔离 attempt 5 补齐 `frontend_snapshot` 绑定；attempt 6 暴露剪贴板函数槽的瞬时初始化状态；attempt 8 又证明
   gameplay 生命周期门禁会让角色设计器永远无法安装 hook。现在 hook 在 exact adapter 选定后即于 frontend 启动，瞬时槽缺失仍在

@@ -75,6 +75,26 @@ describe('CK3 companion client', () => {
       .toBe('/api/ck3/coat-of-arms/render-support')
   })
 
+  it('reads configured mods without treating them as engine-mounted', async () => {
+    const payload = {
+      schema: 'ck3-coat-of-arms-load-configuration-v1',
+      enabled_mod_count: 2,
+      provenance: { engine_mount_observed: false },
+    }
+    const fetchMock = vi.fn().mockResolvedValue(new Response(JSON.stringify(payload), {
+      status: 200,
+      headers: { 'Content-Type': 'application/json' },
+    }))
+    vi.stubGlobal('fetch', fetchMock)
+
+    const result = await createCk3CompanionClient('http://localhost:8080')
+      .loadConfiguration()
+
+    expect(result).toEqual(payload)
+    expect(new URL(fetchMock.mock.calls[0][0]).pathname)
+      .toBe('/api/ck3/coat-of-arms/load-configuration')
+  })
+
   it('surfaces the companion error message', async () => {
     vi.stubGlobal('fetch', vi.fn().mockResolvedValue(new Response(
       JSON.stringify({ message: 'CK3 bridge is unavailable' }),

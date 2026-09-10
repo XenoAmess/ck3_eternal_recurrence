@@ -99,6 +99,18 @@ public class CoatOfArmsResource {
                                         "missing companion configuration: gameDirectory"))));
     }
 
+    @GET
+    @Path("/load-configuration")
+    public Object loadConfiguration() {
+        return mcp.callTool(
+                "ck3_query_coat_of_arms_load_configuration_v1",
+                Map.of(
+                        "user_directory",
+                        configuration.userDirectory().orElseThrow(() ->
+                                new McpGatewayException(
+                                        "missing companion configuration: userDirectory"))));
+    }
+
     @POST
     @Path("/probe")
     public Object probe(ProbeRequest request) {

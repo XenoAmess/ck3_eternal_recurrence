@@ -101,6 +101,36 @@ export interface CoatOfArmsRenderSupport {
   }
 }
 
+export interface CoatOfArmsLoadConfiguration {
+  schema: 'ck3-coat-of-arms-load-configuration-v1'
+  schema_version: 1
+  status: 'configured'
+  enabled_mod_count: number
+  disabled_dlcs: string[]
+  mods: Array<{
+    load_order: number
+    registry_path: string
+    name: string | null
+    content_kind: 'directory' | 'archive'
+    coa_replace_paths: string[]
+    resource_candidates: Record<string, {
+      relative_directory: string
+      directory_exists: boolean
+      txt: string[]
+      dds_count: number
+    }>
+  }>
+  provenance: {
+    mode: string
+    load_configuration_sha256: string
+    launcher_database_used: false
+    engine_mount_observed: false
+    resource_merge_applied: false
+    archive_resource_enumeration_supported: false
+    candidate_scan_depth: 'direct-files-only'
+  }
+}
+
 export interface Ck3SessionSnapshot {
   revision: number
   source?: string
@@ -190,6 +220,8 @@ export function createCk3CompanionClient(
       return get<CoatOfArmsResourceAsset>(`/asset?${query}`)
     },
     renderSupport: () => get<CoatOfArmsRenderSupport>('/render-support'),
+    loadConfiguration: () =>
+      get<CoatOfArmsLoadConfiguration>('/load-configuration'),
     probe: (source: string, expectedRevision: number, apply = false) =>
       post<CoatOfArmsProbeResult>('/probe', { source, expectedRevision, apply }),
     exportSource: (expectedRevision: number) =>

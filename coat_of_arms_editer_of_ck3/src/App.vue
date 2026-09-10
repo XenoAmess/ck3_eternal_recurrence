@@ -69,6 +69,7 @@ const emblemTextures = ref<Record<string, DecodedDds>>({})
 const surfaceMask = ref<DecodedDds>()
 const shaderNamedColors = ref<NamedColorMap>({})
 const shaderSourceCount = ref(0)
+const configuredModCount = ref<number | null>(null)
 
 const output = computed(() => serializeCoatOfArms(coatOfArms.value))
 const activeEmblem = computed(() => coatOfArms.value.coloredEmblems[selectedEmblem.value])
@@ -225,7 +226,7 @@ async function exportFromCk3() {
 async function loadResourceCatalog() {
   catalogBusy.value = true
   try {
-    const [patterns, emblems, renderSupport] = await Promise.all([
+    const [patterns, emblems, renderSupport, loadConfiguration] = await Promise.all([
       companion.resources({ kind: 'pattern', limit: 200 }),
       companion.resources({
         kind: 'colored_emblem',
@@ -233,9 +234,11 @@ async function loadResourceCatalog() {
         limit: 200,
       }),
       companion.renderSupport(),
+      companion.loadConfiguration().catch(() => null),
     ])
     patternResources.value = patterns.items
     emblemResources.value = emblems.items
+    configuredModCount.value = loadConfiguration?.enabled_mod_count ?? null
     const decodedSurfaceMask = decodeDdsBase64(renderSupport.surface_mask.asset_base64)
     if (
       decodedSurfaceMask.width !== renderSupport.surface_mask.dds.width
@@ -458,7 +461,13 @@ importSource()
             <el-button :loading="catalogBusy" @click="loadResourceCatalog">刷新目录</el-button>
           </div>
           <p class="resource-note">
-            目录只证明 exact 1.19.0.6 基础游戏磁盘资源；暂不包含 DLC/mod 覆盖，也不冒充运行时注册状态。
+            目录只证明 exact 1.19.0.6 基础游戏磁盘资源；
+            <template v-if="configuredModCount !== null">
+              `dlc_load.json` 当前配置 {{ configuredModCount }} 个 mod，仍未执行资源 merge，也不冒充引擎 mount 状态。
+            </template>
+            <template v-else>
+              启动配置未读取，暂不包含 DLC/mod 覆盖，也不冒充运行时注册状态。
+            </template>
           </p>
           <el-form label-position="top">
             <div class="form-grid">
