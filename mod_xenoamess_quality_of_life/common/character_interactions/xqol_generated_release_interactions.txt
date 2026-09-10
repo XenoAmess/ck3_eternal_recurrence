@@ -14,6 +14,7 @@ xqol_mass_conversion_courtier_interaction = {
 	}
 
 	is_valid = {
+		scope:actor = { xqol_human_ruler_trigger = yes }
 		scope:actor = {
 			is_character_interaction_valid = {
 				recipient = scope:recipient
@@ -39,7 +40,6 @@ xqol_mass_conversion_courtier_interaction = {
 		xqol_mass_conversion_declined_effect = yes
 	}
 
-	ai_will_do = { base = 0 }
 }
 
 xqol_mass_conversion_ruler_interaction = {
@@ -56,6 +56,7 @@ xqol_mass_conversion_ruler_interaction = {
 	}
 
 	is_valid = {
+		scope:actor = { xqol_human_ruler_trigger = yes }
 		scope:actor = {
 			is_character_interaction_valid = {
 				recipient = scope:recipient
@@ -81,7 +82,6 @@ xqol_mass_conversion_ruler_interaction = {
 		xqol_mass_conversion_declined_effect = yes
 	}
 
-	ai_will_do = { base = 0 }
 }
 
 xqol_release_hook_recruit_conversion_interaction = {
@@ -90,6 +90,7 @@ xqol_release_hook_recruit_conversion_interaction = {
 	use_diplomatic_range = no
 
 	is_shown = {
+		scope:actor = { xqol_human_ruler_trigger = yes }
 		scope:recipient = {
 			xqol_release_base_valid_trigger = yes
 			xqol_release_hook_valid_trigger = yes
@@ -99,6 +100,7 @@ xqol_release_hook_recruit_conversion_interaction = {
 	}
 
 	is_valid = {
+		scope:actor = { xqol_human_ruler_trigger = yes }
 		scope:recipient = {
 			xqol_release_base_valid_trigger = yes
 			xqol_release_hook_valid_trigger = yes
@@ -167,7 +169,6 @@ xqol_release_hook_recruit_conversion_interaction = {
 		}
 	}
 
-	ai_will_do = { base = 0 }
 }
 
 xqol_release_hook_recruit_interaction = {
@@ -176,6 +177,7 @@ xqol_release_hook_recruit_interaction = {
 	use_diplomatic_range = no
 
 	is_shown = {
+		scope:actor = { xqol_human_ruler_trigger = yes }
 		scope:recipient = {
 			xqol_release_base_valid_trigger = yes
 			xqol_release_hook_valid_trigger = yes
@@ -184,6 +186,7 @@ xqol_release_hook_recruit_interaction = {
 	}
 
 	is_valid = {
+		scope:actor = { xqol_human_ruler_trigger = yes }
 		scope:recipient = {
 			xqol_release_base_valid_trigger = yes
 			xqol_release_hook_valid_trigger = yes
@@ -227,7 +230,6 @@ xqol_release_hook_recruit_interaction = {
 		}
 	}
 
-	ai_will_do = { base = 0 }
 }
 
 xqol_release_hook_conversion_interaction = {
@@ -236,6 +238,7 @@ xqol_release_hook_conversion_interaction = {
 	use_diplomatic_range = no
 
 	is_shown = {
+		scope:actor = { xqol_human_ruler_trigger = yes }
 		scope:recipient = {
 			xqol_release_base_valid_trigger = yes
 			xqol_release_hook_valid_trigger = yes
@@ -244,6 +247,7 @@ xqol_release_hook_conversion_interaction = {
 	}
 
 	is_valid = {
+		scope:actor = { xqol_human_ruler_trigger = yes }
 		scope:recipient = {
 			xqol_release_base_valid_trigger = yes
 			xqol_release_hook_valid_trigger = yes
@@ -302,7 +306,6 @@ xqol_release_hook_conversion_interaction = {
 		}
 	}
 
-	ai_will_do = { base = 0 }
 }
 
 xqol_release_recruit_conversion_interaction = {
@@ -311,6 +314,7 @@ xqol_release_recruit_conversion_interaction = {
 	use_diplomatic_range = no
 
 	is_shown = {
+		scope:actor = { xqol_human_ruler_trigger = yes }
 		scope:recipient = {
 			xqol_release_base_valid_trigger = yes
 			xqol_release_recruit_valid_trigger = yes
@@ -319,6 +323,7 @@ xqol_release_recruit_conversion_interaction = {
 	}
 
 	is_valid = {
+		scope:actor = { xqol_human_ruler_trigger = yes }
 		scope:recipient = {
 			xqol_release_base_valid_trigger = yes
 			xqol_release_recruit_valid_trigger = yes
@@ -376,7 +381,6 @@ xqol_release_recruit_conversion_interaction = {
 		}
 	}
 
-	ai_will_do = { base = 0 }
 }
 
 xqol_release_hook_interaction = {
@@ -385,6 +389,7 @@ xqol_release_hook_interaction = {
 	use_diplomatic_range = no
 
 	is_shown = {
+		scope:actor = { xqol_human_ruler_trigger = yes }
 		scope:recipient = {
 			xqol_release_base_valid_trigger = yes
 			xqol_release_hook_valid_trigger = yes
@@ -392,6 +397,7 @@ xqol_release_hook_interaction = {
 	}
 
 	is_valid = {
+		scope:actor = { xqol_human_ruler_trigger = yes }
 		scope:recipient = {
 			xqol_release_base_valid_trigger = yes
 			xqol_release_hook_valid_trigger = yes
@@ -425,7 +431,6 @@ xqol_release_hook_interaction = {
 		}
 	}
 
-	ai_will_do = { base = 0 }
 }
 
 xqol_release_recruit_interaction = {
@@ -434,6 +439,7 @@ xqol_release_recruit_interaction = {
 	use_diplomatic_range = no
 
 	is_shown = {
+		scope:actor = { xqol_human_ruler_trigger = yes }
 		scope:recipient = {
 			xqol_release_base_valid_trigger = yes
 			xqol_release_recruit_valid_trigger = yes
@@ -441,6 +447,7 @@ xqol_release_recruit_interaction = {
 	}
 
 	is_valid = {
+		scope:actor = { xqol_human_ruler_trigger = yes }
 		scope:recipient = {
 			xqol_release_base_valid_trigger = yes
 			xqol_release_recruit_valid_trigger = yes
@@ -473,7 +480,6 @@ xqol_release_recruit_interaction = {
 		}
 	}
 
-	ai_will_do = { base = 0 }
 }
 
 xqol_release_conversion_interaction = {
@@ -482,6 +488,7 @@ xqol_release_conversion_interaction = {
 	use_diplomatic_range = no
 
 	is_shown = {
+		scope:actor = { xqol_human_ruler_trigger = yes }
 		scope:recipient = {
 			xqol_release_base_valid_trigger = yes
 			xqol_release_conversion_valid_trigger = yes
@@ -489,6 +496,7 @@ xqol_release_conversion_interaction = {
 	}
 
 	is_valid = {
+		scope:actor = { xqol_human_ruler_trigger = yes }
 		scope:recipient = {
 			xqol_release_base_valid_trigger = yes
 			xqol_release_conversion_valid_trigger = yes
@@ -536,5 +544,4 @@ xqol_release_conversion_interaction = {
 		}
 	}
 
-	ai_will_do = { base = 0 }
 }

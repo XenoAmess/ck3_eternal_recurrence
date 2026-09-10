@@ -166,8 +166,12 @@ def check_scripts(errors: list[str]) -> None:
         errors.append(
             "scripted-only hidden interactions must not opt into autonomous AI scheduling"
         )
-    if interactions.count("ai_will_do = { base = 0 }") != 9:
-        errors.append("all nine hidden scripted interactions must have zero AI weight")
+    if "ai_will_do" in interactions:
+        errors.append(
+            "scripted-only hidden interactions must not let actor AI desire block run_interaction"
+        )
+    if interactions.count("scope:actor = { xqol_human_ruler_trigger = yes }") != 18:
+        errors.append("all nine hidden scripted interactions must require a human actor")
     if "FloatToInt(" in slider:
         errors.append("slider must not use the unavailable FloatToInt data function")
     if "GetProgressBarValueMaxScaled(" not in slider:

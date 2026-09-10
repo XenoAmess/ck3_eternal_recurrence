@@ -114,12 +114,14 @@ def render_release_interaction(name: str, hook: bool, recruit: bool, conversion:
 \tuse_diplomatic_range = no
 
 \tis_shown = {{
+\t\tscope:actor = {{ xqol_human_ruler_trigger = yes }}
 \t\tscope:recipient = {{
 {validity_text}
 \t\t}}
 \t}}
 
 \tis_valid = {{
+\t\tscope:actor = {{ xqol_human_ruler_trigger = yes }}
 \t\tscope:recipient = {{
 {validity_text}
 \t\t}}
@@ -137,7 +139,6 @@ def render_release_interaction(name: str, hook: bool, recruit: bool, conversion:
 \t\t}}
 \t}}
 
-\tai_will_do = {{ base = 0 }}
 }}"""
 
 
@@ -169,6 +170,7 @@ def render_conversion_interaction(kind: str, minimum_days: int, maximum_days: in
 \t}}
 
 \tis_valid = {{
+\t\tscope:actor = {{ xqol_human_ruler_trigger = yes }}
 \t\tscope:actor = {{
 \t\t\tis_character_interaction_valid = {{
 \t\t\t\trecipient = scope:recipient
@@ -194,7 +196,6 @@ def render_conversion_interaction(kind: str, minimum_days: int, maximum_days: in
 \t\txqol_mass_conversion_declined_effect = yes
 \t}}
 
-\tai_will_do = {{ base = 0 }}
 }}"""
 
 

@@ -199,6 +199,10 @@ xqol_bulk_conversion_threshold_effect = {
 	}
 
 	if = {
+		limit = { NOT = { has_variable = xqol_mass_conversion_pending } }
+		xqol_mass_conversion_finish_effect = yes
+	}
+	else_if = {
 		limit = { var:xqol_mass_conversion_pending <= 0 }
 		xqol_mass_conversion_finish_effect = yes
 	}
