@@ -106,27 +106,35 @@ burn-down 没有变化。责任在我的估时和汇报，不在验收标准“�
 
 | 上海时间 | 目标 | 时间上限 / 退出条件 |
 |---|---|---|
-| 21:58–22:15 | 复盘提交；复核 Stage 11/AF5 runtime 包 | CK3 保持 0；profile、checkpoint、projection、DLL 哈希全部 GREEN |
-| 22:15–23:10 | 串行 frontend warm-up + Stage 11 首入复验 | 到 `zg361we.242` 停车；旧 5 变量/15 诊断为 0；不冒充 terminal |
-| 23:10–00:00 | AF5 独立 checkpoint | `.147` → `zg361comp.1` authored 42/native 41 → provider terminal；否则保留精确 RED |
-| 00:00–00:45 | legacy celestial 存档的 1.19.0.6 无 mod 准入与 MCP 重存 | 15 分钟准入失败即切备选，不在旧存档上展开逆向 |
-| 00:45–02:30 | 当前候选下的 stage 9、10、11 terminal | 三个独立 provider receipt；每个 stage 25 分钟无前进即停车取证 |
-| 02:30–03:15 | terminal cold restore、全窗 error scan、最终 cleanup、L0 与 manifest | 四域前后相同、blocking diagnostics 为空、cleanup GREEN、最终 `9/9` |
+| 21:58–22:30 | 复盘提交；修正 Stage 11 no-launch game-root 预检 | CK3 保持 0；profile、checkpoint、projection、DLL、原版 rule 文件哈希全部 GREEN |
+| 22:30–23:25 | 串行 frontend warm-up + Stage 11 首入复验 | 到 `zg361we.242` 停车；旧 5 变量/15 诊断为 0；不冒充 terminal |
+| 23:25–00:15 | AF5 独立 checkpoint | `.147` → `zg361comp.1` authored 42/native 41 → provider terminal；否则保留精确 RED |
+| 00:15–01:00 | legacy celestial 存档的 1.19.0.6 无 mod 准入与 MCP 重存 | 15 分钟准入失败即切备选，不在旧存档上展开逆向 |
+| 01:00–02:45 | 当前候选下的 stage 9、10、11 terminal | 三个独立 provider receipt；每个 stage 25 分钟无前进即停车取证 |
+| 02:45–03:30 | terminal cold restore、全窗 error scan、最终 cleanup、L0 与 manifest | 四域前后相同、blocking diagnostics 为空、cleanup GREEN、最终 `9/9` |
 
-最佳无新 RED 目标为 03:15，恢复缓冲截止为 04:00。若出现真实产品 RED，完成时间由该 RED 的
-最小闭环决定；04:00 必须给出精确未闭合门、artifact 和新节点，禁止继续沿用失效 ETA。
+最佳无新产品 RED 目标修订为 03:30，恢复缓冲截止为 04:15。若出现真实产品 RED，完成时间由该 RED 的
+最小闭环决定；04:15 必须给出精确未闭合门、artifact 和新节点，禁止继续沿用失效 ETA。
 
 当前可立即执行的输入：Stage 11 runtime-only MCP 包已在
 `_runtime/r391-stage11-smoke-mcp/` 完成 normal/`-O` 各 `6/6` 与 operator preflight，manifest
 SHA-256 为 `DAD054B7281D6267535784EDF723934F4C5DD76DE2ADF79FB4B7A8428A429505`；当前 CK3 inventory
 为空。该包会诚实记录 frontend warm-up 与 loaded-save 为两个递增轮次，始终只保留一个 PID。
 
+22:10 的首次 MCP control 在 CK3 启动前保留了 harness RED：wrapper 从隔离 worktree 错推原版
+`00_game_rules.txt`，而真实文件位于仓库根的游戏目录。artifact SHA-256 为
+`3FFAA8AB1A325FE252A31BDC31A691967007699A63DBC719024FED5A9AA6BF11`，包含错误文本的 operator
+stdout SHA-256 为 `430722ADDD59B2891BBB3EE95B4FC3FC3F820C2B1E6195D0E00476EAA83C2FDE`；
+`launch_count=0`、`product_result=NOT_EVALUATED`、CK3=0，故没有创建新轮次。该失败暴露了 preflight
+遗漏，修复仅允许把 exact game root/rule 文件作为 profile 的 hash-bound 输入并补 no-launch 测试，不能扩成
+新 MCP 架构。Stage 11 窗口因此顺延 15 分钟，P2 的 09-11 18:00目标暂不变。
+
 ## 从 P1 到最终宣传片的补救交付计划
 
 9 月 9 日交付目标已经失败。新的主目标不是“本周内”，而是 **9 月 11 日 18:00 前完成机器可控的
 P1、P2 制作、导出与发布链**。这个目标建立在“至多一个新的产品 RED、至多一次视频重制、所需发布会话
-和具名人工签核可用”的条件上；不是无条件保证。若没有新产品 RED，P1 目标为 09-11 03:15，缓冲到
-04:00；若出现一个可热恢复的最小合同 RED，P1 恢复目标为 09-11 10:00。
+和具名人工签核可用”的条件上；不是无条件保证。若没有新产品 RED，P1 目标修订为 09-11 03:30，缓冲到
+04:15；若出现一个可热恢复的最小合同 RED，P1 恢复目标为 09-11 10:00。
 
 P1 GREEN 以前继续严格执行视频硬锁。解锁后按固定顺序推进，不能把历史工具版本检查冒充本次前置：
 
