@@ -30,6 +30,7 @@ import zg361_phase2_promotion_source_production_entry as production  # noqa: E40
 
 
 EVENT_KEY = "trait_specific.4001"
+HERBALIST_EVENT_KEY = "trait_specific.8001"
 SHA256_PATTERN = re.compile(r"^[0-9A-F]{64}$")
 
 
@@ -77,6 +78,84 @@ def _boolean_scope(name: str) -> dict[str, object]:
 
 
 class TraitSpecificEventRecordTests(unittest.TestCase):
+    def test_herbalist_seed_event_uses_deterministic_gold_route(self) -> None:
+        contract = VANILLA_TRAIT_SPECIFIC_TIMELINE_CONTRACTS[
+            HERBALIST_EVENT_KEY
+        ]
+        analysis = VANILLA_TRAIT_SPECIFIC_ANALYSIS[HERBALIST_EVENT_KEY]
+        exemplar = VANILLA_TRAIT_SPECIFIC_OBSERVATIONS[
+            HERBALIST_EVENT_KEY
+        ]["exemplars"][0]
+
+        self.assertEqual(contract["root_character_id"], PLAYER_SENTINEL)
+        self.assertEqual(contract["saved_scope_name_sets"], ((),))
+        self.assertEqual(contract["saved_scope_count"], 0)
+        self.assertEqual(contract["native_option_indices"], (0, 1))
+        self.assertEqual(contract["selected_option_number"], 2)
+        self.assertEqual(contract["selected_native_option_index"], 1)
+        self.assertEqual(
+            contract["occurrence_policy"],
+            "repeatable-within-product-observation-window",
+        )
+        self.assertIn("ten years", analysis["option_semantics"][0])
+        self.assertIn("deterministic positive gold", analysis["safe_option_rationale"])
+        self.assertEqual(exemplar["run"], "R414-attempt-06")
+        self.assertEqual(exemplar["event_instance_id"], 1075)
+        self.assertEqual(exemplar["snapshot_id"], "native:1913")
+        self.assertFalse(exemplar["selection_attempted"])
+        self.assertRegex(exemplar["artifact_sha256"], SHA256_PATTERN)
+
+        materialized = materialize_vanilla_timeline_contract(contract, 32904)
+        self.assertEqual(materialized["root_character_id"], 32904)
+        self.assertEqual(contract["root_character_id"], PLAYER_SENTINEL)
+
+    def test_herbalist_seed_live_shape_passes_production_checks(self) -> None:
+        contract = production._manager_recovery_contract(
+            production.KNOWN_TIMELINE_INTERRUPTS[HERBALIST_EVENT_KEY],
+            player=32904,
+            event_key=HERBALIST_EVENT_KEY,
+        )
+        contract = production._timeline_contract_for_window(
+            contract,
+            starting_date=53780000,
+        )
+        context = {
+            "schema": "current-event-window-context-v1",
+            "schema_version": 1,
+            "status": "available",
+            "window_match_count": 1,
+            "event_definition_key": HERBALIST_EVENT_KEY,
+            "current_event_instance_id": 1075,
+            "date_raw": 53783472,
+            "root_scope": _character_scope("root", 32904)["scope"],
+            "saved_scopes": [],
+            "options": [
+                {
+                    "rendered_index": index,
+                    "native_option_index": index,
+                    "shown": True,
+                    "enabled": True,
+                    "fallback": False,
+                    "cancel": False,
+                }
+                for index in range(2)
+            ],
+        }
+        checks = production._known_interrupt_checks(
+            snapshot={
+                "date_raw": 53783472,
+                "active_event": {"option_count": 2},
+            },
+            event={"event_instance_id": 1075},
+            context=context,
+            event_key=HERBALIST_EVENT_KEY,
+            contract=contract,
+        )
+
+        self.assertTrue(all(checks.values()), checks)
+        self.assertEqual(contract["selected_option_number"], 2)
+        self.assertEqual(contract["selected_native_option_index"], 1)
+
     def test_contract_is_portable_and_selects_non_conversion_route(self) -> None:
         contract = VANILLA_TRAIT_SPECIFIC_TIMELINE_CONTRACTS[EVENT_KEY]
 
@@ -190,13 +269,13 @@ class TraitSpecificEventRecordTests(unittest.TestCase):
             self.assertNotIn(str(observation_only), contract_repr)
 
     def test_default_registry_mcp_and_runtime_include_record(self) -> None:
-        self.assertEqual(len(DEFAULT_VANILLA_EVENT_TIMELINE_CONTRACTS), 173)
-        self.assertEqual(len(DEFAULT_VANILLA_EVENT_ANALYSIS), 173)
+        self.assertEqual(len(DEFAULT_VANILLA_EVENT_TIMELINE_CONTRACTS), 174)
+        self.assertEqual(len(DEFAULT_VANILLA_EVENT_ANALYSIS), 174)
         self.assertIs(
             DEFAULT_VANILLA_EVENT_OBSERVATIONS[EVENT_KEY],
             VANILLA_TRAIT_SPECIFIC_OBSERVATIONS[EVENT_KEY],
         )
-        self.assertEqual(len(production.KNOWN_TIMELINE_INTERRUPTS), 319)
+        self.assertEqual(len(production.KNOWN_TIMELINE_INTERRUPTS), 320)
         self.assertIs(
             production.KNOWN_TIMELINE_INTERRUPTS[EVENT_KEY],
             VANILLA_TRAIT_SPECIFIC_TIMELINE_CONTRACTS[EVENT_KEY],

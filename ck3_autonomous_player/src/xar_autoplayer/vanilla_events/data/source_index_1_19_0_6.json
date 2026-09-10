@@ -2,18 +2,18 @@
   "audit": {
     "ambiguous_definition_count": 0,
     "caller_candidate_file_count": 77,
-    "caller_candidate_reference_count": 505,
+    "caller_candidate_reference_count": 506,
     "definition_file_count": 67,
-    "external_caller_event_count": 140,
+    "external_caller_event_count": 141,
     "missing_definition_count": 0,
     "namespace_mismatch_count": 0,
-    "registered_event_count": 173,
+    "registered_event_count": 174,
     "same_file_only_caller_event_count": 33,
-    "unique_definition_count": 173
+    "unique_definition_count": 174
   },
   "ck3_build": "1.19.0.6",
   "ck3_exe_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
-  "dataset_sha256": "69FF3330B16C69B0B8ACDA5D402B55DF319596BD9E760B371CACC1C809118F46",
+  "dataset_sha256": "ACDA87ACD0D653D0CAA356700EDEAFF5031887D64359CDB8B3710C2D42437E03",
   "events": {
     "adultery.0002": {
       "caller_candidate_resolution": "same-definition-file-only",
@@ -5230,6 +5230,24 @@
       "definition": {
         "file_sha256": "A4882239AB219EFB2BB082C983403E6E24B8C9DD481E5643ADFE3321ACAC43F7",
         "line": 584,
+        "relative_path": "events/trait_specific_events/trait_specific_events.txt"
+      },
+      "namespace": "trait_specific"
+    },
+    "trait_specific.8001": {
+      "caller_candidate_resolution": "external-definition-file",
+      "caller_candidates": [
+        {
+          "column": 9,
+          "file_sha256": "0FC85A284224A68D1CA0A4EF071D4F4A4F49896753AEC463975A12EE4E1116FA",
+          "kind": "exact-token-lexical-candidate",
+          "line": 3029,
+          "relative_path": "common/on_action/yearly_on_actions.txt"
+        }
+      ],
+      "definition": {
+        "file_sha256": "A4882239AB219EFB2BB082C983403E6E24B8C9DD481E5643ADFE3321ACAC43F7",
+        "line": 1148,
         "relative_path": "events/trait_specific_events/trait_specific_events.txt"
       },
       "namespace": "trait_specific"

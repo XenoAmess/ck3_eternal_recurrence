@@ -301,7 +301,7 @@ class TgpMovementEventRecordTests(unittest.TestCase):
         self.assertTrue(all(checks.values()), checks)
         self.assertEqual(contract["selected_option_number"], 2)
         self.assertEqual(contract["selected_native_option_index"], 1)
-        self.assertEqual(len(production.KNOWN_TIMELINE_INTERRUPTS), 319)
+        self.assertEqual(len(production.KNOWN_TIMELINE_INTERRUPTS), 320)
 
 
 if __name__ == "__main__":

@@ -102,12 +102,22 @@ MANAGER_TRANSITION_CONTINUATION_MODE = "active_manager_transition_checkpoint"
 MANAGER_TRANSITION_CHECKPOINT_KIND = (
     "zg361_phase2_active_manager_transition_checkpoint"
 )
+REJECTED_MANAGER_SOURCE_SAVE_ATTEMPTS = {
+    # R119 was copied forward into R128.  Both attempts proved this exact
+    # five-player save is not an admissible manager route source.
+    "bf5960b7194e1222029add884743c688fee0d86f95559670c587317461519e74": (
+        "R119",
+        "R128",
+    ),
+    # R410 independently reproduced the same direct-load failure with a later
+    # SAV0102 five-player source.  R411's offline one-player derivative repeated
+    # the failure in R412, so the original source must be rejected before CK3.
+    "2c9278d4f5a2707ad23e577d6677ee69673e77876e2f6232349972657cc02261": (
+        "R410",
+    ),
+}
 REJECTED_MANAGER_SOURCE_SAVE_SHA256S = frozenset(
-    {
-        # R119 was copied forward into R128.  Both attempts proved this exact
-        # five-player save is not an admissible manager route source.
-        "bf5960b7194e1222029add884743c688fee0d86f95559670c587317461519e74",
-    }
+    REJECTED_MANAGER_SOURCE_SAVE_ATTEMPTS
 )
 KNOWN_PRE_BOOTSTRAP_EVENT = {
     "source_save_sha256": (
@@ -2266,14 +2276,15 @@ def _snapshot_played_character_id(snapshot: dict[str, Any]) -> int | None:
 
 def _enforce_allowed_manager_source_save(source_save_sha256: str) -> None:
     digest = source_save_sha256.lower()
-    if digest in REJECTED_MANAGER_SOURCE_SAVE_SHA256S:
+    rejected_attempts = REJECTED_MANAGER_SOURCE_SAVE_ATTEMPTS.get(digest)
+    if rejected_attempts is not None:
         raise SeedCaptureError(
-            "known R119/R128 manager source save is forbidden before launch",
+            "known manager source save is forbidden before launch",
             {
                 "stage": "manager_source_save_prelaunch",
                 "result": "RED",
                 "source_save_sha256": digest,
-                "rejected_attempts": ["R119", "R128"],
+                "rejected_attempts": list(rejected_attempts),
             },
         )
 
