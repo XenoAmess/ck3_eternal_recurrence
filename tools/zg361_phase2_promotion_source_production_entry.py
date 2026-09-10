@@ -505,6 +505,54 @@ KNOWN_TIMELINE_INTERRUPTS: dict[str, dict[str, object]] = {
         "selected_native_option_index": 1,
         "occurrence_policy": "repeatable-within-product-observation-window",
     },
+    "coming_of_age.1002": {
+        # CK3 1.19.0.6, exact EXE SHA 2D00FF31...; source
+        # events/education_and_childhood/coming_of_age_events.txt SHA
+        # A474DBF3..., lines 2284-2328. R406 instance 2157 is the parent
+        # notification with one authored acknowledgement. Its option only
+        # shows the already-resolved ward/education/return-to-court tooltips.
+        "date_policy": "product-observation-window",
+        "root_character_id": 33596113,
+        "character_scopes": {
+            "friend": 16874345,
+            "educator": 117518868,
+            "court_tutor": 33655492,
+            "educated_child": 50414849,
+            "guardian": 117518868,
+            "father": 33596113,
+            "mother": 33605404,
+        },
+        "character_scope_matches_any": {
+            "educator": ("guardian",),
+            "guardian": ("educator",),
+        },
+        "scope_types": {
+            "friend": "character",
+            "educator": "character",
+            "court_tutor": "character",
+            "educated_child": "character",
+            "guardian": "character",
+            "father": "character",
+            "mother": "character",
+        },
+        "boolean_scopes": (),
+        "saved_scope_name_sets": ((
+            "friend",
+            "educator",
+            "court_tutor",
+            "educated_child",
+            "guardian",
+            "father",
+            "mother",
+        ),),
+        "saved_scope_count": 7,
+        "option_count": 1,
+        "snapshot_option_count": 1,
+        "native_option_indices": (0,),
+        "selected_option_number": 1,
+        "selected_native_option_index": 0,
+        "occurrence_policy": "repeatable-within-product-observation-window",
+    },
     "zg361b2.40": {
         "date_raw": 53147040,
         "date_policy": "exact-authored-anchor",

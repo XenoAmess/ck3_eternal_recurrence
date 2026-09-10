@@ -167,11 +167,15 @@ class EmbeddedVanillaTimelineContractsTests(unittest.TestCase):
         tree = _production_tree()
         literal_keys = _production_literal_keys(tree)
 
-        self.assertEqual(len(literal_keys), 19)
-        self.assertEqual(len(set(literal_keys)), 19)
+        self.assertEqual(len(literal_keys), 20)
+        self.assertEqual(len(set(literal_keys)), 20)
         self.assertEqual(
             [key for key in literal_keys if not key.startswith("zg361")],
-            ["study_confucian_classics_outcome.1030", "childhood.2010"],
+            [
+                "study_confucian_classics_outcome.1030",
+                "childhood.2010",
+                "coming_of_age.1002",
+            ],
         )
         self.assertEqual(
             sum(key.startswith("zg361") for key in literal_keys), 17

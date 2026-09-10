@@ -152,7 +152,7 @@ class DeathManagementEventRecordTests(unittest.TestCase):
             DEFAULT_VANILLA_EVENT_OBSERVATIONS[EVENT_KEY],
             VANILLA_DEATH_MANAGEMENT_OBSERVATIONS[EVENT_KEY],
         )
-        self.assertEqual(len(production.KNOWN_TIMELINE_INTERRUPTS), 311)
+        self.assertEqual(len(production.KNOWN_TIMELINE_INTERRUPTS), 312)
         self.assertIs(
             production.KNOWN_TIMELINE_INTERRUPTS[EVENT_KEY],
             VANILLA_DEATH_MANAGEMENT_TIMELINE_CONTRACTS[EVENT_KEY],

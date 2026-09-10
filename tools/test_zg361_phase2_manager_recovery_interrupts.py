@@ -235,6 +235,67 @@ class ManagerRecoveryInterruptTests(unittest.TestCase):
         self.assertIn("trigger_event = childhood.2011", source_block)
         self.assertIn("progress_towards_friend_effect", source_block)
 
+    def test_parent_coming_of_age_notification_is_one_option_ack(self) -> None:
+        event_key = "coming_of_age.1002"
+        contract = production._manager_recovery_contract(
+            production.KNOWN_TIMELINE_INTERRUPTS[event_key],
+            player=33596113,
+            event_key=event_key,
+        )
+        contract = production._timeline_contract_for_window(
+            contract,
+            starting_date=53998728,
+        )
+        context = _context(
+            event_key=event_key,
+            instance_id=2157,
+            date_raw=54006840,
+            player=33596113,
+            scopes=[
+                _scope("friend", "character", 16874345),
+                _scope("educator", "character", 117518868),
+                _scope("court_tutor", "character", 33655492),
+                _scope("educated_child", "character", 50414849),
+                _scope("guardian", "character", 117518868),
+                _scope("father", "character", 33596113),
+                _scope("mother", "character", 33605404),
+            ],
+            native_option_indices=(0,),
+        )
+        checks = production._known_interrupt_checks(
+            snapshot={
+                "date_raw": 54006840,
+                "active_event": {"option_count": 1},
+            },
+            event={"event_instance_id": 2157},
+            context=context,
+            event_key=event_key,
+            contract=contract,
+        )
+        self.assertTrue(all(checks.values()), checks)
+        self.assertEqual(contract["character_scopes"], {"father": 33596113})
+        self.assertEqual(contract["selected_option_number"], 1)
+        self.assertEqual(contract["selected_native_option_index"], 0)
+
+        game_root = ROOT / "Crusader Kings III"
+        if not game_root.is_dir():
+            game_root = ROOT.parent / "Crusader Kings III"
+        source_path = (
+            game_root
+            / "game/events/education_and_childhood"
+            / "coming_of_age_events.txt"
+        )
+        self.assertEqual(
+            hashlib.sha256(source_path.read_bytes()).hexdigest().upper(),
+            "A474DBF30CF10005CA7F00F93973221C6988F897DA6FDD91B001DCA6ECA5AC0C",
+        )
+        source_block = _extract_block(
+            source_path.read_text(encoding="utf-8-sig"),
+            "coming_of_age.1002 =",
+        )
+        self.assertEqual(source_block.count("\n\toption = {"), 1)
+        self.assertIn("show_as_tooltip = { remove_relation_ward", source_block)
+
     def test_cold_import_preserves_existing_canonical_contract_identity(
         self,
     ) -> None:
