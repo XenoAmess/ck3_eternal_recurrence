@@ -391,6 +391,7 @@ def open_xqol_decision_detail(
     *,
     scroll_steps: int = 0,
 ) -> tuple[int, int]:
+    acceptance.ensure_game_paused(artifacts, f"{stem}_pre_decision")
     isolated.ensure_decisions_panel(artifacts, stem)
     width, height = acceptance.pyautogui.size()
     if scroll_steps:
@@ -447,6 +448,7 @@ def click_decision(
         scroll_steps=scroll_steps,
     )
     acceptance.click_until_text_disappears(confirm, confirm_label, acceptance.FULL_SCREEN_REGION, artifacts, attempts=2)
+    acceptance.ensure_game_paused(artifacts, f"{stem}_post_decision")
 
 
 def execute_mass_conversion_slider(artifacts: Path) -> None:
@@ -455,7 +457,6 @@ def execute_mass_conversion_slider(artifacts: Path) -> None:
         "设定门槛",
         artifacts,
         "14_conversion",
-        contains=False,
     )
     acceptance.click_until_ocr_appears(
         confirm,
