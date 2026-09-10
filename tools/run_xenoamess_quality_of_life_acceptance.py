@@ -69,6 +69,21 @@ REQUIRED_MARKERS = (
     "ZQA: TEST PASS product_disable_decisions",
     "ZQA: TEST PASS disabled_vanilla_heir_restored",
     "ZQA: TEST PASS transfer_guard_disabled_and_preexisting_preserved",
+    "ZQA: TEST PASS payment_full_only",
+    "ZQA: TEST PASS payment_any_above_one_only",
+    "ZQA: TEST PASS payment_matrix_done",
+    "ZQA: TEST PASS conversion_threshold_50_filtered",
+    "ZQA: TEST PASS ransom_full_only",
+    "ZQA: TEST PASS ransom_any_one_gold",
+    "ZQA: TEST PASS release_priority_matrix",
+    "ZQA: TEST PASS phase2_interaction_matrices_done",
+    "ZQA: TEST PASS defense_fixture_setup",
+    "ZQA: TEST PASS defense_regular_ally_called",
+    "ZQA: TEST PASS defense_overlap_ally_called",
+    "ZQA: TEST PASS defense_paid_dynasty_member_excluded",
+    "ZQA: TEST PASS defense_overlap_dedup_and_replay_idempotent",
+    "ZQA: TEST PASS defense_resources_not_decreased",
+    "ZQA: TEST PASS defense_matrix_done",
     "ZQA: TEST DONE xqol",
 )
 REMOTE_FILE_ID_LINE = re.compile(
@@ -374,24 +389,19 @@ def click_decision(
     artifacts: Path,
     stem: str,
     *,
-    scroll_to_bottom: bool = False,
+    scroll_steps: int = 0,
 ) -> None:
-    if scroll_to_bottom:
+    if scroll_steps:
         isolated.ensure_decisions_panel(artifacts, stem)
         width, height = acceptance.pyautogui.size()
-        scrollbar_x = int(width * 0.9705)
         acceptance.focus_ck3()
         acceptance.pyautogui.moveTo(
-            scrollbar_x, int(height * 0.30), duration=0.2
+            int(width * 0.90), int(height * 0.70), duration=0.2
         )
-        acceptance.pyautogui.mouseDown()
-        acceptance.pyautogui.moveTo(
-            scrollbar_x, int(height * 0.80), duration=0.8
-        )
-        acceptance.pyautogui.mouseUp()
+        acceptance.pyautogui.scroll(scroll_steps)
         time.sleep(0.6)
         acceptance.ImageGrab.grab().save(
-            artifacts / f"{stem}_decisions_scrolled_bottom.png"
+            artifacts / f"{stem}_decisions_scrolled_{scroll_steps}.png"
         )
         row = acceptance.wait_for_ocr_text(
             title,
@@ -419,6 +429,137 @@ def click_decision(
             title, confirm_label, artifacts, stem, contains=False
         )
     acceptance.click_until_text_disappears(confirm, confirm_label, acceptance.FULL_SCREEN_REGION, artifacts, attempts=2)
+
+
+def execute_mass_conversion_slider(artifacts: Path) -> None:
+    confirm = isolated.open_decision_detail(
+        "批量要求领内改信",
+        "设定门槛",
+        artifacts,
+        "14_conversion",
+        contains=False,
+    )
+    acceptance.click_until_ocr_appears(
+        confirm,
+        "mass conversion decision",
+        "设定改信接受门槛",
+        acceptance.FULL_SCREEN_REGION,
+        artifacts,
+        "14_conversion_event.png",
+        attempts=2,
+        timeout_s=8,
+        contains=False,
+    )
+    percentage_50 = acceptance.wait_for_ocr_text(
+        "50%",
+        acceptance.FULL_SCREEN_REGION,
+        8,
+        artifacts,
+        "14_conversion_default_50.png",
+        contains=False,
+        stable_hits=1,
+    )
+    help_text = acceptance.wait_for_ocr_text(
+        "拖动或点击横条",
+        acceptance.FULL_SCREEN_REGION,
+        8,
+        artifacts,
+        "14_conversion_slider_help.png",
+        contains=True,
+        stable_hits=1,
+    )
+    track_y = (percentage_50[1] + help_text[1]) // 2
+    acceptance.deliberate_click(
+        (percentage_50[0] + 60, track_y), "conversion slider 65 percent"
+    )
+    acceptance.wait_for_ocr_text(
+        "65%",
+        acceptance.FULL_SCREEN_REGION,
+        8,
+        artifacts,
+        "14_conversion_slider_65.png",
+        contains=False,
+        stable_hits=1,
+    )
+    acceptance.deliberate_click(
+        (percentage_50[0], track_y), "conversion slider 50 percent"
+    )
+    acceptance.wait_for_ocr_text(
+        "50%",
+        acceptance.FULL_SCREEN_REGION,
+        8,
+        artifacts,
+        "14_conversion_slider_returned_50.png",
+        contains=False,
+        stable_hits=1,
+    )
+    submit = acceptance.wait_for_ocr_text(
+        "发出全部合资格要求",
+        acceptance.FULL_SCREEN_REGION,
+        8,
+        artifacts,
+        "14_conversion_submit.png",
+        contains=True,
+        stable_hits=1,
+    )
+    acceptance.click_until_text_disappears(
+        submit,
+        "发出全部合资格要求",
+        acceptance.FULL_SCREEN_REGION,
+        artifacts,
+        attempts=2,
+    )
+
+
+def advance_until_marker(
+    service: GameplayBridgeService,
+    stream: MarkerStream,
+    artifacts: Path,
+    stem: str,
+    marker: str,
+    timeout_s: float,
+) -> dict[str, object]:
+    before = service.snapshot()
+    if before.get("paused") is not True:
+        raise acceptance.RunnerError(f"{stem} precondition is not paused")
+    resume_ack = service.execute_step(
+        "resume-map", expected_revision=int(before["revision"])
+    )
+    wait_error: BaseException | None = None
+    try:
+        stream.wait(marker, timeout_s)
+    except BaseException as error:
+        wait_error = error
+    running = service.snapshot()
+    pause_ack: dict[str, object] | None = None
+    paused = running
+    if running.get("paused") is not True:
+        pause_ack = service.execute_step(
+            "pause-map", expected_revision=int(running["revision"])
+        )
+        deadline = time.monotonic() + 5
+        while time.monotonic() < deadline:
+            paused = service.snapshot()
+            if paused.get("paused") is True:
+                break
+            time.sleep(0.1)
+        else:
+            raise acceptance.RunnerError(f"{stem} did not return to paused state")
+    evidence = {
+        "schema_version": 1,
+        "result": "GREEN" if wait_error is None else "RED",
+        "marker": marker,
+        "before": before,
+        "resume_ack": resume_ack,
+        "after_running": running,
+        "pause_ack": pause_ack,
+        "after_paused": paused,
+        "error": None if wait_error is None else str(wait_error),
+    }
+    write_json(artifacts / f"{stem}.json", evidence)
+    if wait_error is not None:
+        raise wait_error
+    return evidence
 
 
 def settle_queued_death_succession(
@@ -504,14 +645,12 @@ def run_scenario(service: GameplayBridgeService, stream: MarkerStream, artifacts
         "唯才是举",
         artifacts,
         "07_enable_appointment",
-        scroll_to_bottom=True,
     )
     click_decision(
         "开启：别把封臣给我",
         "各安其位",
         artifacts,
         "08_enable_transfer_guard",
-        scroll_to_bottom=True,
     )
     click_decision("开启自动召集防御援军", "唤来所有援手", artifacts, "08_enable_auto_defenders")
     stream.wait("ZQA: TEST PASS removal_transferred_to_scored_heir", 45)
@@ -525,17 +664,79 @@ def run_scenario(service: GameplayBridgeService, stream: MarkerStream, artifacts
         "恢复旧制",
         artifacts,
         "10_disable_appointment",
-        scroll_to_bottom=True,
     )
     click_decision(
         "关闭：别把封臣给我",
         "照旧接收",
         artifacts,
         "11_disable_transfer_guard",
-        scroll_to_bottom=True,
     )
     click_decision("关闭自动召集防御援军", "由我亲自召集", artifacts, "11_disable_auto_defenders")
-    stream.wait("ZQA: TEST DONE xqol", 45)
+    stream.wait("ZQA: TEST READY payment_full", 30)
+    click_decision(
+        "批量索取足额牵制款",
+        "收齐所有足额欠款",
+        artifacts,
+        "12_payment_full",
+    )
+    stream.wait("ZQA: TEST READY payment_any", 30)
+    click_decision(
+        "批量索取现有牵制款",
+        "有多少便取多少",
+        artifacts,
+        "13_payment_any",
+    )
+    stream.wait("ZQA: TEST READY conversion_threshold_50", 30)
+    execute_mass_conversion_slider(artifacts)
+    conversion_advance = advance_until_marker(
+        service,
+        stream,
+        artifacts,
+        "15_conversion_reply_advance",
+        "ZQA: TEST PASS conversion_threshold_50_filtered",
+        120,
+    )
+    acceptance.wait_for_ocr_text(
+        "领内改信答复完毕",
+        acceptance.FULL_SCREEN_REGION,
+        8,
+        artifacts,
+        "15_conversion_result_toast.png",
+        contains=True,
+        stable_hits=1,
+    )
+    stream.wait("ZQA: TEST READY ransom_full", 30)
+    click_decision(
+        "批量足额赎回囚犯",
+        "收取全部足额赎金",
+        artifacts,
+        "16_ransom_full",
+        scroll_steps=-14,
+    )
+    stream.wait("ZQA: TEST READY ransom_any_one_gold", 30)
+    click_decision(
+        "批量按现有钱财赎回囚犯",
+        "榨尽所有钱袋",
+        artifacts,
+        "17_ransom_any",
+        scroll_steps=-14,
+    )
+    stream.wait("ZQA: TEST READY release_priority_matrix", 30)
+    click_decision(
+        "按最优条款批量释放囚犯",
+        "提出最强条款",
+        artifacts,
+        "18_release_terms",
+        scroll_steps=-24,
+    )
+    defense_advance = advance_until_marker(
+        service,
+        stream,
+        artifacts,
+        "19_defense_war_advance",
+        "ZQA: TEST DONE xqol",
+        120,
+    )
     final_snapshot = service.snapshot()
     if final_snapshot.get("paused") is not True:
         service.execute_step("pause-map", expected_revision=int(final_snapshot["revision"]))
@@ -552,6 +753,8 @@ def run_scenario(service: GameplayBridgeService, stream: MarkerStream, artifacts
         "mcp_first": True,
         "mcp_controlled_operations": ["readiness", "snapshot-before", "resume-death-settlement", "pause-after-death-settlement", "snapshot-after-enable", "snapshot-final", "pause-map-if-needed"],
         "death_settlement": death_settlement,
+        "conversion_advance": conversion_advance,
+        "defense_advance": defense_advance,
         "fixture_fallback_reason": "the current MCP schema does not expose CK3 succession appointment scores, character variables, or character flags",
         "fixture_engine_assertions": list(REQUIRED_MARKERS),
         "initial_snapshot_id": before.get("snapshot_id"),

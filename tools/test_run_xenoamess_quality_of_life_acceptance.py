@@ -29,11 +29,78 @@ class ProductOuterDescriptorTests(unittest.TestCase):
         self.assertIn("开启自动召集防御援军", runner)
         self.assertIn("关闭自动召集防御援军", runner)
 
-    def test_phase_one_decisions_scroll_below_phase_two_rows(self) -> None:
+    def test_phase_one_decisions_remain_at_the_top_of_the_product_group(self) -> None:
         runner = Path(xqol.__file__).read_text(encoding="utf-8")
-        self.assertEqual(4, runner.count("scroll_to_bottom=True"))
-        self.assertIn("scrollbar_x = int(width * 0.9705)", runner)
-        self.assertIn("int(height * 0.80), duration=0.8", runner)
+        decisions = (
+            xqol.ROOT
+            / "mod_xenoamess_quality_of_life"
+            / "common"
+            / "decisions"
+            / "xqol_decisions.txt"
+        ).read_text(encoding="utf-8-sig")
+        self.assertNotIn("scroll_to_bottom=True", runner)
+        self.assertIn("sort_order = 100", decisions)
+        self.assertIn("sort_order = 90", decisions)
+        self.assertIn("sort_order = 80", decisions)
+        self.assertIn("acceptance.pyautogui.scroll(scroll_steps)", runner)
+
+    def test_phase_two_payment_matrix_is_live_driven(self) -> None:
+        fixture = (
+            xqol.FIXTURE / "common" / "scripted_effects" / "zqa_effects.txt"
+        ).read_text(encoding="utf-8-sig")
+        runner = Path(xqol.__file__).read_text(encoding="utf-8")
+        for token in (
+            "golden_obligations_perk",
+            "golden_obligation_value",
+            "has_usable_hook",
+            "payment_full_only",
+            "payment_any_above_one_only",
+        ):
+            self.assertIn(token, fixture)
+        self.assertIn("批量索取足额牵制款", runner)
+        self.assertIn("批量索取现有牵制款", runner)
+
+    def test_phase_two_remaining_matrices_are_live_driven(self) -> None:
+        interaction_fixture = (
+            xqol.FIXTURE
+            / "common"
+            / "scripted_effects"
+            / "zqa_phase2_interaction_effects.txt"
+        ).read_text(encoding="utf-8-sig")
+        defense_fixture = (
+            xqol.FIXTURE
+            / "common"
+            / "scripted_effects"
+            / "zqa_phase2_defense_effects.txt"
+        ).read_text(encoding="utf-8-sig")
+        bridge = (xqol.FIXTURE / "gui" / "zqa_bridge.gui").read_text(
+            encoding="utf-8-sig"
+        )
+        runner = Path(xqol.__file__).read_text(encoding="utf-8")
+        for token in (
+            "conversion_threshold_50_filtered",
+            "ransom_full_only",
+            "ransom_any_one_gold",
+            "release_priority_matrix",
+        ):
+            self.assertIn(token, interaction_fixture)
+            self.assertIn(token, runner)
+        for token in (
+            "defense_regular_ally_called",
+            "defense_overlap_dedup_and_replay_idempotent",
+            "defense_paid_dynasty_member_excluded",
+            "defense_resources_not_decreased",
+        ):
+            self.assertIn(token, defense_fixture)
+            self.assertIn(token, runner)
+        self.assertIn("zqa_phase2_conversion_verify_gui", bridge)
+        self.assertIn("zqa_phase2_defense_verify_gui", bridge)
+        self.assertIn('"65%"', runner)
+        self.assertIn('"50%"', runner)
+        self.assertIn("领内改信答复完毕", runner)
+        self.assertIn("批量足额赎回囚犯", runner)
+        self.assertIn("批量按现有钱财赎回囚犯", runner)
+        self.assertIn("按最优条款批量释放囚犯", runner)
 
     def test_workshop_identity_is_recorded_but_not_loaded_in_isolated_runtime(self) -> None:
         with tempfile.TemporaryDirectory() as raw:

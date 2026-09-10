@@ -1,0 +1,16 @@
+﻿zqa_phase2_defense_verify_gui = {
+	scope = character
+	is_shown = {
+		is_ai = no
+		has_character_flag = zqa_phase2_await_defense_verify
+		has_variable = zqa_phase2_defense_war
+		has_variable = zqa_phase2_attacker
+		has_variable = xqol_last_auto_called_count
+		var:xqol_last_auto_called_count >= 0
+		var:zqa_phase2_defense_war = {
+			primary_attacker = root.var:zqa_phase2_attacker
+			primary_defender = root
+		}
+	}
+	effect = { zqa_verify_defense_matrix_effect = yes }
+}

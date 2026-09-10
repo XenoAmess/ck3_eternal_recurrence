@@ -46,3 +46,23 @@ zqa_disabled_matrix_gui = {
 	}
 	effect = { zqa_verify_disabled_matrix_effect = yes }
 }
+
+zqa_payment_full_gui = {
+	scope = character
+	is_shown = {
+		is_ai = no
+		has_character_flag = zqa_await_payment_full
+		var:xqol_last_bulk_payment_count = 1
+	}
+	effect = { zqa_verify_payment_full_effect = yes }
+}
+
+zqa_payment_any_gui = {
+	scope = character
+	is_shown = {
+		is_ai = no
+		has_character_flag = zqa_await_payment_any
+		var:xqol_last_bulk_payment_count = 1
+	}
+	effect = { zqa_verify_payment_any_effect = yes }
+}

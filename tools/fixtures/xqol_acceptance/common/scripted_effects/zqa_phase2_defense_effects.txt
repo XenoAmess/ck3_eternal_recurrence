@@ -1,0 +1,404 @@
+﻿# Phase-two defensive auto-call acceptance matrix.
+#
+# This fixture deliberately does not fabricate a Mandala suzerain or tributary.
+# The exact-build start_tributary/subject-contract construction has not yet been
+# proven stable in a local CK3 run, so this file makes no Mandala coverage claim.
+
+zqa_phase2_break_alliances_effect = {
+	save_temporary_scope_as = zqa_phase2_alliance_owner
+	every_ally = {
+		save_temporary_scope_as = zqa_phase2_alliance_other
+		scope:zqa_phase2_alliance_owner = {
+			break_alliance = scope:zqa_phase2_alliance_other
+		}
+	}
+}
+
+zqa_phase2_defense_finish_effect = {
+	if = {
+		limit = { NOT = { has_character_flag = zqa_phase2_defense_finished } }
+		add_character_flag = zqa_phase2_defense_finished
+		remove_character_flag = zqa_phase2_await_defense_verify
+		if = {
+			limit = { var:zqa_phase2_defense_failures = 0 }
+			debug_log = "ZQA: TEST PASS defense_matrix_done"
+		}
+		else = { debug_log = "ZQA: TEST FAIL defense_matrix_done" }
+		debug_log = "ZQA: TEST DONE xqol"
+	}
+}
+
+# Called by the preceding acceptance stage on the current human Song emperor.
+# Relationship fabrication and the claim are completed before resource capture;
+# only the real defensive-war start and product auto-call are under measurement.
+zqa_setup_defense_matrix_effect = {
+	set_variable = { name = zqa_phase2_defense_failures value = 0 }
+	remove_character_flag = zqa_phase2_await_defense_verify
+	remove_character_flag = zqa_phase2_defense_finished
+
+	if = {
+		limit = {
+			is_ai = no
+			is_ruler = yes
+			is_landed = yes
+			is_at_war = no
+			is_dynast = yes
+			exists = dynasty
+			exists = house
+			title:c_bianzhou = { holder = root }
+		}
+
+		save_scope_as = zqa_phase2_defender
+		set_variable = { name = xqol_auto_call_defenders_enabled value = 1 }
+		set_variable = { name = xqol_last_auto_called_count value = -1 }
+
+		# Remove historical alliances so the two fabricated alliance roles are
+		# always present and independently identifiable in the resulting war.
+		zqa_phase2_break_alliances_effect = yes
+
+		ordered_independent_ruler = {
+			limit = {
+				is_ai = yes
+				is_alive = yes
+				is_adult = yes
+				is_landed = yes
+				is_playable_character = yes
+				is_at_war = no
+				this != root
+				highest_held_title_tier <= tier_kingdom
+				NOT = { has_character_flag = zqa_phase2_defense_role }
+				NOT = { government_has_flag = government_is_mercenary }
+				NOT = { government_has_flag = government_is_holy_order }
+				NOT = { dynasty = root.dynasty }
+			}
+			order_by = current_military_strength
+			position = 0
+			save_scope_as = zqa_phase2_regular_ally
+			add_character_flag = zqa_phase2_defense_role
+		}
+
+		ordered_independent_ruler = {
+			limit = {
+				is_ai = yes
+				is_alive = yes
+				is_adult = yes
+				is_landed = yes
+				is_playable_character = yes
+				is_at_war = no
+				this != root
+				highest_held_title_tier <= tier_kingdom
+				NOT = { has_character_flag = zqa_phase2_defense_role }
+				NOT = { government_has_flag = government_is_mercenary }
+				NOT = { government_has_flag = government_is_holy_order }
+			}
+			order_by = current_military_strength
+			position = 0
+			save_scope_as = zqa_phase2_overlap_ally
+			add_character_flag = zqa_phase2_defense_role
+		}
+
+		ordered_independent_ruler = {
+			limit = {
+				is_ai = yes
+				is_alive = yes
+				is_adult = yes
+				is_landed = yes
+				is_playable_character = yes
+				is_at_war = no
+				this != root
+				highest_held_title_tier <= tier_kingdom
+				NOT = { has_character_flag = zqa_phase2_defense_role }
+				NOT = { government_has_flag = government_is_mercenary }
+				NOT = { government_has_flag = government_is_holy_order }
+			}
+			order_by = current_military_strength
+			position = 0
+			save_scope_as = zqa_phase2_paid_dynasty_member
+			add_character_flag = zqa_phase2_defense_role
+		}
+
+		ordered_independent_ruler = {
+			limit = {
+				is_ai = yes
+				is_alive = yes
+				is_adult = yes
+				is_landed = yes
+				is_playable_character = yes
+				is_at_war = no
+				this != root
+				highest_held_title_tier <= tier_kingdom
+				NOT = { has_character_flag = zqa_phase2_defense_role }
+				NOT = { government_has_flag = government_is_mercenary }
+				NOT = { government_has_flag = government_is_holy_order }
+				NOT = { dynasty = root.dynasty }
+			}
+			order_by = current_military_strength
+			position = 0
+			save_scope_as = zqa_phase2_attacker
+			add_character_flag = zqa_phase2_defense_role
+		}
+
+		if = {
+			limit = {
+				exists = scope:zqa_phase2_regular_ally
+				exists = scope:zqa_phase2_overlap_ally
+				exists = scope:zqa_phase2_paid_dynasty_member
+				exists = scope:zqa_phase2_attacker
+			}
+
+			scope:zqa_phase2_regular_ally = { zqa_phase2_break_alliances_effect = yes }
+			scope:zqa_phase2_overlap_ally = { zqa_phase2_break_alliances_effect = yes }
+			scope:zqa_phase2_paid_dynasty_member = { zqa_phase2_break_alliances_effect = yes }
+			scope:zqa_phase2_attacker = { zqa_phase2_break_alliances_effect = yes }
+
+			house = { save_scope_as = zqa_phase2_defense_house }
+			house = { set_house_head = root }
+
+			scope:zqa_phase2_overlap_ally = {
+				set_house = root.house
+				set_character_faith = root.faith
+			}
+			scope:zqa_phase2_paid_dynasty_member = {
+				set_house = root.house
+				set_character_faith = root.faith
+				create_cadet_branch = { save_scope_as = zqa_phase2_paid_dynasty_house }
+			}
+
+			create_alliance = {
+				target = scope:zqa_phase2_regular_ally
+				allied_through_owner = root
+				allied_through_target = scope:zqa_phase2_regular_ally
+			}
+			create_alliance = {
+				target = scope:zqa_phase2_overlap_ally
+				allied_through_owner = root
+				allied_through_target = scope:zqa_phase2_overlap_ally
+			}
+
+			# The paid dynasty interaction must be genuinely affordable so its
+			# exclusion cannot be explained by insufficient dynasty prestige.
+			dynasty = { add_dynasty_prestige = 1000 }
+
+			set_variable = { name = zqa_phase2_regular_ally value = scope:zqa_phase2_regular_ally }
+			set_variable = { name = zqa_phase2_overlap_ally value = scope:zqa_phase2_overlap_ally }
+			set_variable = { name = zqa_phase2_paid_dynasty_member value = scope:zqa_phase2_paid_dynasty_member }
+			set_variable = { name = zqa_phase2_attacker value = scope:zqa_phase2_attacker }
+
+			if = {
+				limit = {
+					exists = scope:zqa_phase2_defense_house
+					exists = scope:zqa_phase2_paid_dynasty_house
+					house = scope:zqa_phase2_defense_house
+					is_house_head = yes
+					is_dynast = yes
+					scope:zqa_phase2_regular_ally = {
+						is_allied_to = root
+						house != root.house
+					}
+					scope:zqa_phase2_overlap_ally = {
+						is_allied_to = root
+						house = root.house
+						dynasty = root.dynasty
+						faith = root.faith
+					}
+					scope:zqa_phase2_paid_dynasty_member = {
+						dynasty = root.dynasty
+						house = scope:zqa_phase2_paid_dynasty_house
+						house != root.house
+						faith = root.faith
+					}
+					dynasty = { dynasty_prestige >= medium_dynasty_prestige_value }
+				}
+
+				set_variable = { name = zqa_phase2_defense_gold_before value = gold }
+				set_variable = { name = zqa_phase2_defense_prestige_before value = prestige }
+				set_variable = { name = zqa_phase2_defense_piety_before value = piety }
+				dynasty = {
+					set_variable = {
+						name = zqa_phase2_defense_dynasty_prestige_before
+						value = dynasty_prestige
+					}
+				}
+
+				scope:zqa_phase2_attacker = {
+					add_pressed_claim = title:c_bianzhou
+					start_war = {
+						cb = claim_cb
+						target = root
+						claimant = scope:zqa_phase2_attacker
+						target_title = title:c_bianzhou
+					}
+				}
+
+				random_character_war = {
+					limit = {
+						using_cb = claim_cb
+						primary_attacker = scope:zqa_phase2_attacker
+						primary_defender = root
+					}
+					save_scope_as = zqa_phase2_defense_war
+				}
+
+				if = {
+					limit = { exists = scope:zqa_phase2_defense_war }
+					set_variable = { name = zqa_phase2_defense_war value = scope:zqa_phase2_defense_war }
+					add_character_flag = zqa_phase2_await_defense_verify
+					debug_log = "ZQA: TEST PASS defense_fixture_setup"
+					debug_log = "ZQA: TEST READY defense_auto_call"
+				}
+				else = {
+					change_variable = { name = zqa_phase2_defense_failures add = 1 }
+					debug_log = "ZQA: TEST FAIL defense_fixture_setup"
+					zqa_phase2_defense_finish_effect = yes
+				}
+			}
+			else = {
+				change_variable = { name = zqa_phase2_defense_failures add = 1 }
+				debug_log = "ZQA: TEST FAIL defense_fixture_setup"
+				zqa_phase2_defense_finish_effect = yes
+			}
+		}
+		else = {
+			change_variable = { name = zqa_phase2_defense_failures add = 1 }
+			debug_log = "ZQA: TEST FAIL defense_fixture_setup"
+			zqa_phase2_defense_finish_effect = yes
+		}
+	}
+	else = {
+		change_variable = { name = zqa_phase2_defense_failures add = 1 }
+		debug_log = "ZQA: TEST FAIL defense_fixture_preconditions"
+		zqa_phase2_defense_finish_effect = yes
+	}
+}
+
+zqa_verify_defense_matrix_effect = {
+	if = {
+		limit = {
+			has_character_flag = zqa_phase2_await_defense_verify
+			has_variable = zqa_phase2_defense_war
+			has_variable = zqa_phase2_regular_ally
+			has_variable = zqa_phase2_overlap_ally
+			has_variable = zqa_phase2_paid_dynasty_member
+			has_variable = zqa_phase2_attacker
+		}
+		remove_character_flag = zqa_phase2_await_defense_verify
+		save_scope_as = actor
+		var:zqa_phase2_defense_war = { save_scope_as = target }
+
+		if = {
+			limit = {
+				var:xqol_last_auto_called_count >= 2
+				var:zqa_phase2_regular_ally = {
+					is_allied_to = root
+					house != root.house
+				}
+				var:zqa_phase2_defense_war = {
+					primary_attacker = root.var:zqa_phase2_attacker
+					primary_defender = root
+					is_participant = root.var:zqa_phase2_regular_ally
+					was_called = root.var:zqa_phase2_regular_ally
+				}
+			}
+			debug_log = "ZQA: TEST PASS defense_regular_ally_called"
+		}
+		else = {
+			change_variable = { name = zqa_phase2_defense_failures add = 1 }
+			debug_log = "ZQA: TEST FAIL defense_regular_ally_called"
+		}
+
+		if = {
+			limit = {
+				var:zqa_phase2_overlap_ally = {
+					is_allied_to = root
+					house = root.house
+					dynasty = root.dynasty
+				}
+				var:zqa_phase2_defense_war = {
+					is_participant = root.var:zqa_phase2_overlap_ally
+					was_called = root.var:zqa_phase2_overlap_ally
+				}
+			}
+			debug_log = "ZQA: TEST PASS defense_overlap_ally_called"
+		}
+		else = {
+			change_variable = { name = zqa_phase2_defense_failures add = 1 }
+			debug_log = "ZQA: TEST FAIL defense_overlap_ally_called"
+		}
+
+		if = {
+			limit = {
+				var:zqa_phase2_paid_dynasty_member = {
+					is_ai = yes
+					is_ruler = yes
+					dynasty = root.dynasty
+					house != root.house
+				}
+				is_character_interaction_valid = {
+					recipient = var:zqa_phase2_paid_dynasty_member
+					interaction = call_dynasty_member_to_war_interaction
+				}
+				var:zqa_phase2_defense_war = {
+					NOT = { is_participant = root.var:zqa_phase2_paid_dynasty_member }
+					NOT = { was_called = root.var:zqa_phase2_paid_dynasty_member }
+				}
+			}
+			debug_log = "ZQA: TEST PASS defense_paid_dynasty_member_excluded"
+		}
+		else = {
+			change_variable = { name = zqa_phase2_defense_failures add = 1 }
+			debug_log = "ZQA: TEST FAIL defense_paid_dynasty_member_excluded"
+		}
+
+		set_variable = {
+			name = zqa_phase2_defense_first_call_count
+			value = var:xqol_last_auto_called_count
+		}
+		set_variable = { name = xqol_last_auto_called_count value = -1 }
+		var:zqa_phase2_defense_war = { save_scope_as = target }
+		save_scope_as = actor
+		xqol_auto_call_free_defenders_effect = yes
+
+		if = {
+			limit = {
+				var:xqol_last_auto_called_count = 0
+				var:zqa_phase2_defense_first_call_count >= 2
+				var:zqa_phase2_defense_war = {
+					is_participant = root.var:zqa_phase2_regular_ally
+					was_called = root.var:zqa_phase2_regular_ally
+					is_participant = root.var:zqa_phase2_overlap_ally
+					was_called = root.var:zqa_phase2_overlap_ally
+					NOT = { is_participant = root.var:zqa_phase2_paid_dynasty_member }
+					NOT = { was_called = root.var:zqa_phase2_paid_dynasty_member }
+				}
+				is_character_interaction_valid = {
+					recipient = var:zqa_phase2_paid_dynasty_member
+					interaction = call_dynasty_member_to_war_interaction
+				}
+			}
+			debug_log = "ZQA: TEST PASS defense_overlap_dedup_and_replay_idempotent"
+		}
+		else = {
+			change_variable = { name = zqa_phase2_defense_failures add = 1 }
+			debug_log = "ZQA: TEST FAIL defense_overlap_dedup_and_replay_idempotent"
+		}
+
+		if = {
+			limit = {
+				gold >= var:zqa_phase2_defense_gold_before
+				prestige >= var:zqa_phase2_defense_prestige_before
+				piety >= var:zqa_phase2_defense_piety_before
+				dynasty = {
+					has_variable = zqa_phase2_defense_dynasty_prestige_before
+					dynasty_prestige >= var:zqa_phase2_defense_dynasty_prestige_before
+				}
+			}
+			debug_log = "ZQA: TEST PASS defense_resources_not_decreased"
+		}
+		else = {
+			change_variable = { name = zqa_phase2_defense_failures add = 1 }
+			debug_log = "ZQA: TEST FAIL defense_resources_not_decreased"
+		}
+
+		zqa_phase2_defense_finish_effect = yes
+	}
+}

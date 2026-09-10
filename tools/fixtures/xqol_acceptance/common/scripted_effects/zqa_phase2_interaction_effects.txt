@@ -1,0 +1,946 @@
+﻿# External acceptance fixture for XQOL phase-two character interactions.
+# This file is copied only into the isolated acceptance userdir.
+
+# -----------------------------------------------------------------------------
+# Mass conversion: two eligible targets (one courtier and one ruler) plus two
+# valid but below-threshold controls.  The live decision uses its default 50
+# threshold; the fixture verifies the same stock interaction predicates first.
+# -----------------------------------------------------------------------------
+
+zqa_setup_conversion_matrix_effect = {
+	save_scope_as = actor
+	remove_variable = xqol_mass_conversion_threshold
+	remove_variable = xqol_mass_conversion_threshold_draft
+	remove_variable = xqol_mass_conversion_pending
+	remove_variable = xqol_mass_conversion_accepted
+	remove_variable = xqol_mass_conversion_refused
+	remove_variable = zqa_conversion_result_count
+
+	# Use two existing landed AI vassals so the ruler interaction retains its
+	# exact vanilla liege/vassal contract.
+	random_vassal = {
+		limit = {
+			is_ai = yes
+			is_alive = yes
+			is_adult = yes
+			is_landed = yes
+			is_imprisoned = no
+			NOT = { is_at_war_with = root }
+			NOT = { has_strong_hook = root }
+			NOT = { has_trait = devoted }
+			NOT = { has_trait = order_member }
+			NOT = { has_trait = heresiarch }
+		}
+		save_scope_as = zqa_conversion_ruler_high
+	}
+	random_vassal = {
+		limit = {
+			is_ai = yes
+			is_alive = yes
+			is_adult = yes
+			is_landed = yes
+			is_imprisoned = no
+			NOT = { this = scope:zqa_conversion_ruler_high }
+			NOT = { is_at_war_with = root }
+			NOT = { has_strong_hook = root }
+			NOT = { has_trait = devoted }
+			NOT = { has_trait = order_member }
+			NOT = { has_trait = heresiarch }
+		}
+		save_scope_as = zqa_conversion_ruler_low
+	}
+
+	if = {
+		limit = {
+			exists = scope:zqa_conversion_ruler_high
+			exists = scope:zqa_conversion_ruler_low
+			NOT = { faith = faith:catholic }
+		}
+
+		# Remove unrelated conversion candidates from the isolated fixture state.
+		every_courtier = {
+			limit = { is_ai = yes }
+			set_character_faith = root.faith
+			if = {
+				limit = {
+					has_opinion_modifier = {
+						target = root
+						modifier = demanded_my_conversion_opinion
+					}
+				}
+				remove_opinion = {
+					target = root
+					modifier = demanded_my_conversion_opinion
+				}
+			}
+		}
+		every_vassal_or_below = {
+			limit = { is_ai = yes }
+			set_character_faith = root.faith
+			if = {
+				limit = {
+					has_opinion_modifier = {
+						target = root
+						modifier = demanded_my_conversion_opinion
+					}
+				}
+				remove_opinion = {
+					target = root
+					modifier = demanded_my_conversion_opinion
+				}
+			}
+		}
+		every_tributary = {
+			limit = { is_ai = yes }
+			set_character_faith = root.faith
+			if = {
+				limit = {
+					has_opinion_modifier = {
+						target = root
+						modifier = demanded_my_conversion_opinion
+					}
+				}
+				remove_opinion = {
+					target = root
+					modifier = demanded_my_conversion_opinion
+				}
+			}
+		}
+
+		create_character = {
+			name = "ZQA Conversion High Courtier"
+			gender = male
+			age = 30
+			random_traits = no
+			location = root.capital_province
+			culture = root.culture
+			faith = faith:catholic
+			trait = cynical
+			trait = fickle
+			save_scope_as = zqa_conversion_courtier_high
+		}
+		create_character = {
+			name = "ZQA Conversion Low Courtier"
+			gender = male
+			age = 30
+			random_traits = no
+			location = root.capital_province
+			culture = root.culture
+			faith = faith:catholic
+			trait = zealous
+			trait = stubborn
+			save_scope_as = zqa_conversion_courtier_low
+		}
+		add_courtier = scope:zqa_conversion_courtier_high
+		add_courtier = scope:zqa_conversion_courtier_low
+
+		scope:zqa_conversion_courtier_high = {
+			add_opinion = {
+				target = root
+				modifier = love_opinion
+				opinion = 200
+			}
+		}
+		scope:zqa_conversion_courtier_low = {
+			add_opinion = {
+				target = root
+				modifier = hate_opinion
+				opinion = -200
+			}
+		}
+		scope:zqa_conversion_ruler_high = {
+			set_character_faith = faith:catholic
+			remove_trait = zealous
+			remove_trait = stubborn
+			add_trait = cynical
+			add_trait = fickle
+			add_opinion = {
+				target = root
+				modifier = love_opinion
+				opinion = 200
+			}
+		}
+		scope:zqa_conversion_ruler_low = {
+			set_character_faith = faith:catholic
+			remove_trait = cynical
+			remove_trait = fickle
+			add_trait = zealous
+			add_trait = stubborn
+			add_opinion = {
+				target = root
+				modifier = hate_opinion
+				opinion = -200
+			}
+		}
+
+		# Saved scopes do not survive separate scripted-GUI executions reliably;
+		# persist every target as a variable on the player.
+		set_variable = {
+			name = zqa_conversion_courtier_high
+			value = scope:zqa_conversion_courtier_high
+		}
+		set_variable = {
+			name = zqa_conversion_courtier_low
+			value = scope:zqa_conversion_courtier_low
+		}
+		set_variable = {
+			name = zqa_conversion_ruler_high
+			value = scope:zqa_conversion_ruler_high
+		}
+		set_variable = {
+			name = zqa_conversion_ruler_low
+			value = scope:zqa_conversion_ruler_low
+		}
+
+		# Count the product's exact three candidate domains with the stock
+		# threshold predicate.  Isolation above makes the expected result exactly 2.
+		set_variable = { name = zqa_conversion_eligible_count value = 0 }
+		every_courtier = {
+			limit = {
+				is_ai = yes
+				root = {
+					is_character_interaction_potentially_accepted = {
+						recipient = prev
+						interaction = ask_for_conversion_courtier_interaction
+						ai_accept = 50
+					}
+				}
+			}
+			root = {
+				change_variable = { name = zqa_conversion_eligible_count add = 1 }
+			}
+		}
+		every_vassal_or_below = {
+			limit = {
+				is_ai = yes
+				root = {
+					is_character_interaction_potentially_accepted = {
+						recipient = prev
+						interaction = demand_conversion_vassal_ruler_interaction
+						ai_accept = 50
+					}
+				}
+			}
+			root = {
+				change_variable = { name = zqa_conversion_eligible_count add = 1 }
+			}
+		}
+		every_tributary = {
+			limit = {
+				is_ai = yes
+				root = {
+					is_character_interaction_potentially_accepted = {
+						recipient = prev
+						interaction = demand_conversion_vassal_ruler_interaction
+						ai_accept = 50
+					}
+				}
+			}
+			root = {
+				change_variable = { name = zqa_conversion_eligible_count add = 1 }
+			}
+		}
+
+		if = {
+			limit = {
+				var:zqa_conversion_eligible_count = 2
+				is_character_interaction_valid = {
+					recipient = var:zqa_conversion_courtier_high
+					interaction = ask_for_conversion_courtier_interaction
+				}
+				is_character_interaction_potentially_accepted = {
+					recipient = var:zqa_conversion_courtier_high
+					interaction = ask_for_conversion_courtier_interaction
+					ai_accept = 50
+				}
+				is_character_interaction_valid = {
+					recipient = var:zqa_conversion_courtier_low
+					interaction = ask_for_conversion_courtier_interaction
+				}
+				NOT = {
+					is_character_interaction_potentially_accepted = {
+						recipient = var:zqa_conversion_courtier_low
+						interaction = ask_for_conversion_courtier_interaction
+						ai_accept = 50
+					}
+				}
+				is_character_interaction_valid = {
+					recipient = var:zqa_conversion_ruler_high
+					interaction = demand_conversion_vassal_ruler_interaction
+				}
+				is_character_interaction_potentially_accepted = {
+					recipient = var:zqa_conversion_ruler_high
+					interaction = demand_conversion_vassal_ruler_interaction
+					ai_accept = 50
+				}
+				is_character_interaction_valid = {
+					recipient = var:zqa_conversion_ruler_low
+					interaction = demand_conversion_vassal_ruler_interaction
+				}
+				NOT = {
+					is_character_interaction_potentially_accepted = {
+						recipient = var:zqa_conversion_ruler_low
+						interaction = demand_conversion_vassal_ruler_interaction
+						ai_accept = 50
+					}
+				}
+				var:zqa_conversion_courtier_high = {
+					faith = faith:catholic
+					NOT = {
+						has_opinion_modifier = {
+							target = root
+							modifier = demanded_my_conversion_opinion
+						}
+					}
+				}
+				var:zqa_conversion_courtier_low = {
+					faith = faith:catholic
+					NOT = {
+						has_opinion_modifier = {
+							target = root
+							modifier = demanded_my_conversion_opinion
+						}
+					}
+				}
+			}
+			add_character_flag = zqa_await_conversion_matrix
+			debug_log = "ZQA: TEST READY conversion_threshold_50"
+		}
+		else = {
+			debug_log = "ZQA: TEST FAIL conversion_fixture_acceptance_matrix"
+		}
+	}
+	else = {
+		debug_log = "ZQA: TEST FAIL conversion_fixture_missing_rulers_or_foreign_faith"
+	}
+}
+
+zqa_verify_conversion_matrix_effect = {
+	if = {
+		limit = { has_character_flag = zqa_await_conversion_matrix }
+		remove_character_flag = zqa_await_conversion_matrix
+		set_variable = {
+			name = zqa_conversion_result_count
+			value = var:xqol_mass_conversion_accepted
+		}
+		change_variable = {
+			name = zqa_conversion_result_count
+			add = var:xqol_mass_conversion_refused
+		}
+		if = {
+			limit = {
+				NOT = { has_variable = xqol_mass_conversion_pending }
+				var:xqol_mass_conversion_threshold = 50
+				var:zqa_conversion_result_count = 2
+				OR = {
+					var:zqa_conversion_courtier_high = { faith = root.faith }
+					var:zqa_conversion_courtier_high = {
+						faith = faith:catholic
+						has_opinion_modifier = {
+							target = root
+							modifier = demanded_my_conversion_opinion
+						}
+					}
+				}
+				OR = {
+					var:zqa_conversion_ruler_high = { faith = root.faith }
+					var:zqa_conversion_ruler_high = {
+						faith = faith:catholic
+						has_opinion_modifier = {
+							target = root
+							modifier = demanded_my_conversion_opinion
+						}
+					}
+				}
+				var:zqa_conversion_courtier_low = {
+					faith = faith:catholic
+					NOT = {
+						has_opinion_modifier = {
+							target = root
+							modifier = demanded_my_conversion_opinion
+						}
+					}
+				}
+				var:zqa_conversion_ruler_low = {
+					faith = faith:catholic
+					NOT = {
+						has_opinion_modifier = {
+							target = root
+							modifier = demanded_my_conversion_opinion
+						}
+					}
+				}
+			}
+			debug_log = "ZQA: TEST PASS conversion_threshold_50_filtered"
+		}
+		else = {
+			debug_log = "ZQA: TEST FAIL conversion_threshold_50_filtered"
+		}
+		remove_variable = zqa_conversion_courtier_high
+		remove_variable = zqa_conversion_courtier_low
+		remove_variable = zqa_conversion_eligible_count
+		remove_variable = zqa_conversion_result_count
+		zqa_setup_ransom_matrix_effect = yes
+	}
+}
+
+# -----------------------------------------------------------------------------
+# Ransom: two landed self-payers make vanilla acceptance deterministic.  One
+# has exactly the full normal/increased cost; the other has exactly one gold.
+# -----------------------------------------------------------------------------
+
+zqa_setup_ransom_matrix_effect = {
+	save_scope_as = actor
+
+	# Isolate the prison scan.  The two persisted ruler controls from the
+	# conversion stage are reused as explicit self-paying prisoners.
+	every_prisoner = { release_from_prison = yes }
+
+	if = {
+		limit = {
+			exists = var:zqa_conversion_ruler_high
+			exists = var:zqa_conversion_ruler_low
+			var:zqa_conversion_ruler_high = {
+				is_alive = yes
+				is_ai = yes
+				is_landed = yes
+				is_imprisoned = no
+			}
+			var:zqa_conversion_ruler_low = {
+				is_alive = yes
+				is_ai = yes
+				is_landed = yes
+				is_imprisoned = no
+			}
+		}
+		var:zqa_conversion_ruler_high = { save_scope_as = zqa_ransom_full_target }
+		var:zqa_conversion_ruler_low = { save_scope_as = zqa_ransom_one_gold_target }
+
+		scope:zqa_ransom_full_target = {
+			add_gold = { value = gold multiply = -1 }
+		}
+		scope:zqa_ransom_one_gold_target = {
+			add_gold = { value = gold multiply = -1 }
+			add_gold = 1
+		}
+		if = {
+			limit = { dynasty ?= { has_dynasty_perk = fp1_pillage_legacy_3 } }
+			scope:zqa_ransom_full_target = { add_gold = increased_ransom_cost_value }
+		}
+		else = {
+			scope:zqa_ransom_full_target = { add_gold = ransom_cost_value }
+		}
+
+		imprison = { target = scope:zqa_ransom_full_target type = dungeon }
+		imprison = { target = scope:zqa_ransom_one_gold_target type = dungeon }
+
+		set_variable = {
+			name = zqa_ransom_full_target
+			value = scope:zqa_ransom_full_target
+		}
+		set_variable = {
+			name = zqa_ransom_one_gold_target
+			value = scope:zqa_ransom_one_gold_target
+		}
+		set_variable = { name = zqa_ransom_expected_gold value = gold }
+		change_variable = {
+			name = zqa_ransom_expected_gold
+			add = scope:zqa_ransom_full_target.gold
+		}
+		set_variable = { name = xqol_last_bulk_ransom_count value = -1 }
+
+		if = {
+			limit = {
+				is_character_interaction_valid = {
+					recipient = var:zqa_ransom_full_target
+					interaction = ransom_interaction
+				}
+				is_character_interaction_potentially_accepted = {
+					recipient = var:zqa_ransom_full_target
+					interaction = ransom_interaction
+				}
+				is_character_interaction_valid = {
+					recipient = var:zqa_ransom_one_gold_target
+					interaction = ransom_interaction
+				}
+				is_character_interaction_potentially_accepted = {
+					recipient = var:zqa_ransom_one_gold_target
+					interaction = ransom_interaction
+				}
+				var:zqa_ransom_full_target = {
+					is_imprisoned_by = root
+					xqol_ransom_payer_can_pay_full_trigger = yes
+					ransom_cost_value > 1
+					trigger_if = {
+						limit = { root.dynasty ?= { has_dynasty_perk = fp1_pillage_legacy_3 } }
+						gold >= increased_ransom_cost_value
+					}
+					trigger_else = { gold >= ransom_cost_value }
+				}
+				var:zqa_ransom_one_gold_target = {
+					is_imprisoned_by = root
+					xqol_ransom_payer_has_gold_trigger = yes
+					NOT = { xqol_ransom_payer_can_pay_full_trigger = yes }
+					ransom_cost_value > 1
+					gold >= 1
+					NOT = { gold > 1 }
+				}
+				NOT = {
+					any_prisoner = {
+						NOR = {
+							this = root.var:zqa_ransom_full_target
+							this = root.var:zqa_ransom_one_gold_target
+						}
+					}
+				}
+			}
+			add_character_flag = zqa_await_ransom_full
+			debug_log = "ZQA: TEST READY ransom_full"
+		}
+		else = {
+			debug_log = "ZQA: TEST FAIL ransom_fixture_acceptance_matrix"
+		}
+	}
+	else = {
+		debug_log = "ZQA: TEST FAIL ransom_fixture_missing_payers"
+	}
+}
+
+zqa_verify_ransom_full_effect = {
+	if = {
+		limit = { has_character_flag = zqa_await_ransom_full }
+		remove_character_flag = zqa_await_ransom_full
+		if = {
+			limit = {
+				var:xqol_last_bulk_ransom_count = 1
+				gold >= var:zqa_ransom_expected_gold
+				NOT = { gold > var:zqa_ransom_expected_gold }
+				var:zqa_ransom_full_target = {
+					is_imprisoned = no
+					gold < 1
+				}
+				var:zqa_ransom_one_gold_target = {
+					is_imprisoned_by = root
+					gold >= 1
+					NOT = { gold > 1 }
+				}
+			}
+			debug_log = "ZQA: TEST PASS ransom_full_only"
+		}
+		else = {
+			debug_log = "ZQA: TEST FAIL ransom_full_only"
+		}
+		set_variable = { name = zqa_ransom_expected_gold value = gold }
+		change_variable = { name = zqa_ransom_expected_gold add = 1 }
+		set_variable = { name = xqol_last_bulk_ransom_count value = -1 }
+		add_character_flag = zqa_await_ransom_any
+		debug_log = "ZQA: TEST READY ransom_any_one_gold"
+	}
+}
+
+zqa_verify_ransom_any_effect = {
+	if = {
+		limit = { has_character_flag = zqa_await_ransom_any }
+		remove_character_flag = zqa_await_ransom_any
+		if = {
+			limit = {
+				var:xqol_last_bulk_ransom_count = 1
+				gold >= var:zqa_ransom_expected_gold
+				NOT = { gold > var:zqa_ransom_expected_gold }
+				var:zqa_ransom_one_gold_target = {
+					is_imprisoned = no
+					gold < 1
+				}
+			}
+			debug_log = "ZQA: TEST PASS ransom_any_one_gold"
+		}
+		else = {
+			debug_log = "ZQA: TEST FAIL ransom_any_one_gold"
+		}
+		remove_variable = zqa_conversion_ruler_high
+		remove_variable = zqa_conversion_ruler_low
+		remove_variable = zqa_ransom_full_target
+		remove_variable = zqa_ransom_one_gold_target
+		remove_variable = zqa_ransom_expected_gold
+		zqa_setup_release_matrix_effect = yes
+	}
+}
+
+# -----------------------------------------------------------------------------
+# Conditional release: exercise all seven priority branches and one rejection.
+# The HR target is deliberately also eligible for HC and RC, proving HR wins.
+# -----------------------------------------------------------------------------
+
+zqa_setup_release_matrix_effect = {
+	save_scope_as = actor
+	every_prisoner = { release_from_prison = yes }
+
+	create_character = {
+		name = "ZQA Release HRC"
+		gender = male
+		age = 30
+		random_traits = no
+		location = root.capital_province
+		culture = root.culture
+		faith = faith:catholic
+		save_scope_as = zqa_release_hrc_target
+	}
+	create_character = {
+		name = "ZQA Release HR Priority"
+		gender = male
+		age = 30
+		random_traits = no
+		location = root.capital_province
+		culture = root.culture
+		faith = faith:catholic
+		trait = wrathful
+		save_scope_as = zqa_release_hr_target
+	}
+	create_character = {
+		name = "ZQA Release HC"
+		gender = male
+		age = 30
+		random_traits = no
+		location = root.capital_province
+		culture = root.culture
+		faith = faith:catholic
+		save_scope_as = zqa_release_hc_target
+	}
+	create_character = {
+		name = "ZQA Release RC"
+		gender = male
+		age = 30
+		random_traits = no
+		location = root.capital_province
+		culture = root.culture
+		faith = faith:catholic
+		save_scope_as = zqa_release_rc_target
+	}
+	create_character = {
+		name = "ZQA Release H"
+		gender = male
+		age = 30
+		random_traits = no
+		location = root.capital_province
+		culture = root.culture
+		faith = root.faith
+		save_scope_as = zqa_release_h_target
+	}
+	create_character = {
+		name = "ZQA Release R"
+		gender = male
+		age = 30
+		random_traits = no
+		location = root.capital_province
+		culture = root.culture
+		faith = root.faith
+		save_scope_as = zqa_release_r_target
+	}
+	create_character = {
+		name = "ZQA Release C"
+		gender = male
+		age = 30
+		random_traits = no
+		location = root.capital_province
+		culture = root.culture
+		faith = faith:catholic
+		save_scope_as = zqa_release_c_target
+	}
+	create_character = {
+		name = "ZQA Release Reject"
+		gender = male
+		age = 30
+		random_traits = no
+		location = root.capital_province
+		culture = root.culture
+		faith = faith:catholic
+		trait = zealous
+		trait = ambitious
+		save_scope_as = zqa_release_reject_target
+	}
+
+	# Court membership disables recruitment for HC/H/C/reject.  Strong hooks
+	# disable new-hook terms for RC/R/C/reject.
+	add_courtier = scope:zqa_release_hc_target
+	add_courtier = scope:zqa_release_h_target
+	add_courtier = scope:zqa_release_c_target
+	add_courtier = scope:zqa_release_reject_target
+	add_hook = { type = strong_favor_hook target = scope:zqa_release_rc_target }
+	add_hook = { type = strong_favor_hook target = scope:zqa_release_r_target }
+	add_hook = { type = strong_favor_hook target = scope:zqa_release_c_target }
+	add_hook = { type = strong_favor_hook target = scope:zqa_release_reject_target }
+
+	imprison = { target = scope:zqa_release_hrc_target type = dungeon }
+	imprison = { target = scope:zqa_release_hr_target type = dungeon }
+	imprison = { target = scope:zqa_release_hc_target type = dungeon }
+	imprison = { target = scope:zqa_release_rc_target type = dungeon }
+	imprison = { target = scope:zqa_release_h_target type = dungeon }
+	imprison = { target = scope:zqa_release_r_target type = dungeon }
+	imprison = { target = scope:zqa_release_c_target type = dungeon }
+	imprison = { target = scope:zqa_release_reject_target type = dungeon }
+
+	set_variable = { name = zqa_release_hrc_target value = scope:zqa_release_hrc_target }
+	set_variable = { name = zqa_release_hr_target value = scope:zqa_release_hr_target }
+	set_variable = { name = zqa_release_hc_target value = scope:zqa_release_hc_target }
+	set_variable = { name = zqa_release_rc_target value = scope:zqa_release_rc_target }
+	set_variable = { name = zqa_release_h_target value = scope:zqa_release_h_target }
+	set_variable = { name = zqa_release_r_target value = scope:zqa_release_r_target }
+	set_variable = { name = zqa_release_c_target value = scope:zqa_release_c_target }
+	set_variable = { name = zqa_release_reject_target value = scope:zqa_release_reject_target }
+	set_variable = { name = xqol_last_bulk_release_count value = -1 }
+
+	if = {
+		limit = {
+			NOT = { faith = faith:catholic }
+			NOT = { any_prisoner = { NOR = {
+				this = root.var:zqa_release_hrc_target
+				this = root.var:zqa_release_hr_target
+				this = root.var:zqa_release_hc_target
+				this = root.var:zqa_release_rc_target
+				this = root.var:zqa_release_h_target
+				this = root.var:zqa_release_r_target
+				this = root.var:zqa_release_c_target
+				this = root.var:zqa_release_reject_target
+			} } }
+
+			# HRC: first branch accepts.
+			is_character_interaction_potentially_accepted = {
+				recipient = var:zqa_release_hrc_target
+				interaction = xqol_release_hook_recruit_conversion_interaction
+			}
+
+			# HR priority collision: HRC rejects, but HR, HC and RC all accept.
+			is_character_interaction_valid = {
+				recipient = var:zqa_release_hr_target
+				interaction = xqol_release_hook_recruit_conversion_interaction
+			}
+			NOT = { is_character_interaction_potentially_accepted = {
+				recipient = var:zqa_release_hr_target
+				interaction = xqol_release_hook_recruit_conversion_interaction
+			} }
+			is_character_interaction_potentially_accepted = {
+				recipient = var:zqa_release_hr_target
+				interaction = xqol_release_hook_recruit_interaction
+			}
+			is_character_interaction_potentially_accepted = {
+				recipient = var:zqa_release_hr_target
+				interaction = xqol_release_hook_conversion_interaction
+			}
+			is_character_interaction_potentially_accepted = {
+				recipient = var:zqa_release_hr_target
+				interaction = xqol_release_recruit_conversion_interaction
+			}
+
+			# HC: HRC/HR invalid, then HC accepts.
+			NOT = { is_character_interaction_potentially_accepted = {
+				recipient = var:zqa_release_hc_target
+				interaction = xqol_release_hook_recruit_conversion_interaction
+			} }
+			NOT = { is_character_interaction_potentially_accepted = {
+				recipient = var:zqa_release_hc_target
+				interaction = xqol_release_hook_recruit_interaction
+			} }
+			is_character_interaction_potentially_accepted = {
+				recipient = var:zqa_release_hc_target
+				interaction = xqol_release_hook_conversion_interaction
+			}
+
+			# RC: all hook-bearing branches invalid, then RC accepts.
+			NOT = { is_character_interaction_potentially_accepted = {
+				recipient = var:zqa_release_rc_target
+				interaction = xqol_release_hook_recruit_conversion_interaction
+			} }
+			NOT = { is_character_interaction_potentially_accepted = {
+				recipient = var:zqa_release_rc_target
+				interaction = xqol_release_hook_recruit_interaction
+			} }
+			NOT = { is_character_interaction_potentially_accepted = {
+				recipient = var:zqa_release_rc_target
+				interaction = xqol_release_hook_conversion_interaction
+			} }
+			is_character_interaction_potentially_accepted = {
+				recipient = var:zqa_release_rc_target
+				interaction = xqol_release_recruit_conversion_interaction
+			}
+
+			# H: every multi-term branch is unavailable, then H accepts.
+			NOT = { is_character_interaction_potentially_accepted = {
+				recipient = var:zqa_release_h_target
+				interaction = xqol_release_hook_recruit_conversion_interaction
+			} }
+			NOT = { is_character_interaction_potentially_accepted = {
+				recipient = var:zqa_release_h_target
+				interaction = xqol_release_hook_recruit_interaction
+			} }
+			NOT = { is_character_interaction_potentially_accepted = {
+				recipient = var:zqa_release_h_target
+				interaction = xqol_release_hook_conversion_interaction
+			} }
+			NOT = { is_character_interaction_potentially_accepted = {
+				recipient = var:zqa_release_h_target
+				interaction = xqol_release_recruit_conversion_interaction
+			} }
+			is_character_interaction_potentially_accepted = {
+				recipient = var:zqa_release_h_target
+				interaction = xqol_release_hook_interaction
+			}
+
+			# R: all earlier branches and H are unavailable, then R accepts.
+			NOT = { is_character_interaction_potentially_accepted = {
+				recipient = var:zqa_release_r_target
+				interaction = xqol_release_hook_recruit_conversion_interaction
+			} }
+			NOT = { is_character_interaction_potentially_accepted = {
+				recipient = var:zqa_release_r_target
+				interaction = xqol_release_hook_recruit_interaction
+			} }
+			NOT = { is_character_interaction_potentially_accepted = {
+				recipient = var:zqa_release_r_target
+				interaction = xqol_release_hook_conversion_interaction
+			} }
+			NOT = { is_character_interaction_potentially_accepted = {
+				recipient = var:zqa_release_r_target
+				interaction = xqol_release_recruit_conversion_interaction
+			} }
+			NOT = { is_character_interaction_potentially_accepted = {
+				recipient = var:zqa_release_r_target
+				interaction = xqol_release_hook_interaction
+			} }
+			is_character_interaction_potentially_accepted = {
+				recipient = var:zqa_release_r_target
+				interaction = xqol_release_recruit_interaction
+			}
+
+			# C: only conversion accepts.
+			NOT = { is_character_interaction_potentially_accepted = {
+				recipient = var:zqa_release_c_target
+				interaction = xqol_release_hook_recruit_conversion_interaction
+			} }
+			NOT = { is_character_interaction_potentially_accepted = {
+				recipient = var:zqa_release_c_target
+				interaction = xqol_release_hook_recruit_interaction
+			} }
+			NOT = { is_character_interaction_potentially_accepted = {
+				recipient = var:zqa_release_c_target
+				interaction = xqol_release_hook_conversion_interaction
+			} }
+			NOT = { is_character_interaction_potentially_accepted = {
+				recipient = var:zqa_release_c_target
+				interaction = xqol_release_recruit_conversion_interaction
+			} }
+			NOT = { is_character_interaction_potentially_accepted = {
+				recipient = var:zqa_release_c_target
+				interaction = xqol_release_hook_interaction
+			} }
+			NOT = { is_character_interaction_potentially_accepted = {
+				recipient = var:zqa_release_c_target
+				interaction = xqol_release_recruit_interaction
+			} }
+			is_character_interaction_potentially_accepted = {
+				recipient = var:zqa_release_c_target
+				interaction = xqol_release_conversion_interaction
+			}
+
+			# Reject: all seven branches reject or are invalid.
+			is_character_interaction_valid = {
+				recipient = var:zqa_release_reject_target
+				interaction = xqol_release_conversion_interaction
+			}
+			NOT = { is_character_interaction_potentially_accepted = {
+				recipient = var:zqa_release_reject_target
+				interaction = xqol_release_hook_recruit_conversion_interaction
+			} }
+			NOT = { is_character_interaction_potentially_accepted = {
+				recipient = var:zqa_release_reject_target
+				interaction = xqol_release_hook_recruit_interaction
+			} }
+			NOT = { is_character_interaction_potentially_accepted = {
+				recipient = var:zqa_release_reject_target
+				interaction = xqol_release_hook_conversion_interaction
+			} }
+			NOT = { is_character_interaction_potentially_accepted = {
+				recipient = var:zqa_release_reject_target
+				interaction = xqol_release_recruit_conversion_interaction
+			} }
+			NOT = { is_character_interaction_potentially_accepted = {
+				recipient = var:zqa_release_reject_target
+				interaction = xqol_release_hook_interaction
+			} }
+			NOT = { is_character_interaction_potentially_accepted = {
+				recipient = var:zqa_release_reject_target
+				interaction = xqol_release_recruit_interaction
+			} }
+			NOT = { is_character_interaction_potentially_accepted = {
+				recipient = var:zqa_release_reject_target
+				interaction = xqol_release_conversion_interaction
+			} }
+		}
+		add_character_flag = zqa_await_release_matrix
+		debug_log = "ZQA: TEST READY release_priority_matrix"
+	}
+	else = {
+		debug_log = "ZQA: TEST FAIL release_fixture_acceptance_matrix"
+	}
+}
+
+zqa_verify_release_matrix_effect = {
+	if = {
+		limit = { has_character_flag = zqa_await_release_matrix }
+		remove_character_flag = zqa_await_release_matrix
+		if = {
+			limit = {
+				var:xqol_last_bulk_release_count = 7
+				var:zqa_release_hrc_target = { is_imprisoned = no }
+				var:zqa_release_hr_target = {
+					is_imprisoned = no
+					faith = faith:catholic
+				}
+				var:zqa_release_hc_target = { is_imprisoned = no }
+				var:zqa_release_rc_target = { is_imprisoned = no }
+				var:zqa_release_h_target = { is_imprisoned = no }
+				var:zqa_release_r_target = { is_imprisoned = no }
+				var:zqa_release_c_target = { is_imprisoned = no }
+				var:zqa_release_reject_target = {
+					is_imprisoned_by = root
+					faith = faith:catholic
+				}
+
+				# Hook-bearing outcomes (all four started without a hook).
+				has_hook = var:zqa_release_hrc_target
+				has_hook = var:zqa_release_hr_target
+				has_hook = var:zqa_release_hc_target
+				has_hook = var:zqa_release_h_target
+
+				# Recruit-bearing outcomes.
+				var:zqa_release_hrc_target = { is_courtier_of = root }
+				var:zqa_release_hr_target = { is_courtier_of = root }
+				var:zqa_release_rc_target = { is_courtier_of = root }
+				var:zqa_release_r_target = { is_courtier_of = root }
+
+				# Conversion-bearing outcomes.  HR remaining Catholic proves the
+				# equal-size HR branch beat the later HC and RC branches.
+				var:zqa_release_hrc_target = { faith = root.faith }
+				var:zqa_release_hc_target = { faith = root.faith }
+				var:zqa_release_rc_target = { faith = root.faith }
+				var:zqa_release_c_target = { faith = root.faith }
+				var:zqa_release_h_target = { faith = root.faith }
+				var:zqa_release_r_target = { faith = root.faith }
+			}
+			debug_log = "ZQA: TEST PASS release_priority_matrix"
+			debug_log = "ZQA: TEST PASS phase2_interaction_matrices_done"
+		}
+		else = {
+			debug_log = "ZQA: TEST FAIL release_priority_matrix"
+		}
+
+		remove_variable = zqa_release_hrc_target
+		remove_variable = zqa_release_hr_target
+		remove_variable = zqa_release_hc_target
+		remove_variable = zqa_release_rc_target
+		remove_variable = zqa_release_h_target
+		remove_variable = zqa_release_r_target
+		remove_variable = zqa_release_c_target
+		remove_variable = zqa_release_reject_target
+		zqa_setup_defense_matrix_effect = yes
+	}
+}

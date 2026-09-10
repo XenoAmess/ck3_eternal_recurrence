@@ -1,0 +1,41 @@
+﻿zqa_phase2_conversion_verify_gui = {
+	scope = character
+	is_shown = {
+		is_ai = no
+		has_character_flag = zqa_await_conversion_matrix
+		NOT = { has_variable = xqol_mass_conversion_pending }
+		has_variable = xqol_mass_conversion_accepted
+		has_variable = xqol_mass_conversion_refused
+	}
+	effect = { zqa_verify_conversion_matrix_effect = yes }
+}
+
+zqa_phase2_ransom_full_verify_gui = {
+	scope = character
+	is_shown = {
+		is_ai = no
+		has_character_flag = zqa_await_ransom_full
+		var:xqol_last_bulk_ransom_count = 1
+	}
+	effect = { zqa_verify_ransom_full_effect = yes }
+}
+
+zqa_phase2_ransom_any_verify_gui = {
+	scope = character
+	is_shown = {
+		is_ai = no
+		has_character_flag = zqa_await_ransom_any
+		var:xqol_last_bulk_ransom_count = 1
+	}
+	effect = { zqa_verify_ransom_any_effect = yes }
+}
+
+zqa_phase2_release_verify_gui = {
+	scope = character
+	is_shown = {
+		is_ai = no
+		has_character_flag = zqa_await_release_matrix
+		var:xqol_last_bulk_release_count >= 0
+	}
+	effect = { zqa_verify_release_matrix_effect = yes }
+}
