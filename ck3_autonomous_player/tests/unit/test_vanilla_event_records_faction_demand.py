@@ -239,7 +239,7 @@ class FactionDemandEventRecordTests(unittest.TestCase):
             DEFAULT_VANILLA_EVENT_OBSERVATIONS[CLAIMANT_EVENT_KEY],
             VANILLA_FACTION_DEMAND_OBSERVATIONS[CLAIMANT_EVENT_KEY],
         )
-        self.assertEqual(len(production.KNOWN_TIMELINE_INTERRUPTS), 312)
+        self.assertEqual(len(production.KNOWN_TIMELINE_INTERRUPTS), 313)
         self.assertIs(
             production.KNOWN_TIMELINE_INTERRUPTS[CLAIMANT_EVENT_KEY],
             VANILLA_FACTION_DEMAND_TIMELINE_CONTRACTS[CLAIMANT_EVENT_KEY],

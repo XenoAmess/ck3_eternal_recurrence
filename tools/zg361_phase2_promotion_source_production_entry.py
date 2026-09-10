@@ -553,6 +553,57 @@ KNOWN_TIMELINE_INTERRUPTS: dict[str, dict[str, object]] = {
         "selected_native_option_index": 0,
         "occurrence_policy": "repeatable-within-product-observation-window",
     },
+    "hostile_scheme_discovery.1001": {
+        # CK3 1.19.0.6, exact EXE SHA 2D00FF31...; source
+        # events/scheme_events/hostile_scheme_discovery_events.txt SHA
+        # C5232383..., lines 21-233. R408 instance 2159 is the player's
+        # discovery of one agent in a third-party hostile scheme. Native 1 is
+        # disabled in this delivery. Authored option 3/native 2 lets the agent
+        # go and avoids imprisonment, the forbid-agent penalty, and the owner
+        # notification scheduled by the two accusation routes.
+        "date_policy": "product-observation-window",
+        "root_character_id": 33596113,
+        "character_scopes": {
+            "owner": 67150551,
+            "target": 33644539,
+            "spymaster": 16847101,
+            "agent": 103031,
+            "targeted_courtier": 33644539,
+        },
+        "character_scope_matches_any": {
+            "target": ("targeted_courtier",),
+            "targeted_courtier": ("target",),
+        },
+        "scope_types": {
+            "scheme": "scheme",
+            "owner": "character",
+            "artifact": "artifact",
+            "target": "character",
+            "spymaster": "character",
+            "discovery_chance": "value",
+            "agent": "character",
+            "targeted_courtier": "character",
+        },
+        "boolean_scopes": (),
+        "saved_scope_name_sets": ((
+            "scheme",
+            "owner",
+            "artifact",
+            "target",
+            "spymaster",
+            "discovery_chance",
+            "agent",
+            "targeted_courtier",
+        ),),
+        "saved_scope_count": 8,
+        "option_count": 3,
+        "snapshot_option_count": 3,
+        "native_option_indices": (0, 1, 2),
+        "disabled_native_option_indices": (1,),
+        "selected_option_number": 3,
+        "selected_native_option_index": 2,
+        "occurrence_policy": "repeatable-within-product-observation-window",
+    },
     "zg361b2.40": {
         "date_raw": 53147040,
         "date_policy": "exact-authored-anchor",

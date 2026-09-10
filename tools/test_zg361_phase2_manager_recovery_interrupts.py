@@ -296,6 +296,73 @@ class ManagerRecoveryInterruptTests(unittest.TestCase):
         self.assertEqual(source_block.count("\n\toption = {"), 1)
         self.assertIn("show_as_tooltip = { remove_relation_ward", source_block)
 
+    def test_discovered_hostile_agent_takes_non_accusation_route(self) -> None:
+        event_key = "hostile_scheme_discovery.1001"
+        contract = production._manager_recovery_contract(
+            production.KNOWN_TIMELINE_INTERRUPTS[event_key],
+            player=33596113,
+            event_key=event_key,
+        )
+        contract = production._timeline_contract_for_window(
+            contract,
+            starting_date=54006840,
+        )
+        context = _context(
+            event_key=event_key,
+            instance_id=2159,
+            date_raw=54008952,
+            player=33596113,
+            scopes=[
+                _scope("scheme", "scheme"),
+                _scope("owner", "character", 67150551),
+                _scope("artifact", "artifact"),
+                _scope("target", "character", 33644539),
+                _scope("spymaster", "character", 16847101),
+                _scope("discovery_chance", "value"),
+                _scope("agent", "character", 103031),
+                _scope("targeted_courtier", "character", 33644539),
+            ],
+            native_option_indices=(0, 1, 2),
+        )
+        context["options"][1]["enabled"] = False
+        checks = production._known_interrupt_checks(
+            snapshot={
+                "date_raw": 54008952,
+                "active_event": {"option_count": 3},
+            },
+            event={"event_instance_id": 2159},
+            context=context,
+            event_key=event_key,
+            contract=contract,
+        )
+        self.assertTrue(all(checks.values()), checks)
+        self.assertEqual(contract["selected_option_number"], 3)
+        self.assertEqual(contract["selected_native_option_index"], 2)
+
+        game_root = ROOT / "Crusader Kings III"
+        if not game_root.is_dir():
+            game_root = ROOT.parent / "Crusader Kings III"
+        source_path = (
+            game_root
+            / "game/events/scheme_events"
+            / "hostile_scheme_discovery_events.txt"
+        )
+        self.assertEqual(
+            hashlib.sha256(source_path.read_bytes()).hexdigest().upper(),
+            "C5232383E70F16D125347FA124F260974CF61334CE42EFA4F87981C86DDE736D",
+        )
+        source_block = _extract_block(
+            source_path.read_text(encoding="utf-8-sig"),
+            "hostile_scheme_discovery.1001 =",
+        )
+        self.assertEqual(source_block.count("\n\toption = {"), 3)
+        third_option = source_block.split("\n\toption = {")[3].split(
+            "\n\n\tafter = {", 1
+        )[0]
+        self.assertIn("expose_scheme_agent = scope:agent", third_option)
+        self.assertNotIn("forbid_agent_from_scheme_effect", third_option)
+        self.assertNotIn("agent_treatment", third_option)
+
     def test_cold_import_preserves_existing_canonical_contract_identity(
         self,
     ) -> None:
