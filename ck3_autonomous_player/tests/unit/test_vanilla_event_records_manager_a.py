@@ -114,7 +114,10 @@ _PORTABLE_EXCLUSIONS = {
     "epidemic_events.0110",
     "great_holy_war.0011",
 }
-_MIGRATED_OBSERVATION_EXCLUSIONS = _PORTABLE_EXCLUSIONS | {"health.1006"}
+_MIGRATED_OBSERVATION_EXCLUSIONS = _PORTABLE_EXCLUSIONS | {
+    "health.1006",
+    "health.3001",
+}
 _LEGACY_BINDING_KEYS = (
     "date_raw",
     "date_raw_range",
@@ -252,7 +255,7 @@ class VanillaEventRecordsManagerATests(unittest.TestCase):
             for event_key, contract in _LEGACY_CONTRACTS.items()
             if event_key not in _MIGRATED_OBSERVATION_EXCLUSIONS
         }
-        self.assertEqual(len(expected_sources), 33)
+        self.assertEqual(len(expected_sources), 32)
         self.assertEqual(
             set(migrated.MANAGER_VANILLA_OBSERVATIONS_A),
             set(expected_sources),
