@@ -135,13 +135,13 @@ class PayHomageEventRecordTests(unittest.TestCase):
             self.assertNotIn(str(observation_only), contract_repr)
 
     def test_default_registry_mcp_and_runtime_share_canonical_record(self) -> None:
-        self.assertEqual(len(DEFAULT_VANILLA_EVENT_TIMELINE_CONTRACTS), 173)
-        self.assertEqual(len(DEFAULT_VANILLA_EVENT_ANALYSIS), 173)
+        self.assertEqual(len(DEFAULT_VANILLA_EVENT_TIMELINE_CONTRACTS), 174)
+        self.assertEqual(len(DEFAULT_VANILLA_EVENT_ANALYSIS), 174)
         self.assertIs(
             DEFAULT_VANILLA_EVENT_OBSERVATIONS[EVENT_KEY],
             VANILLA_PAY_HOMAGE_OBSERVATIONS[EVENT_KEY],
         )
-        self.assertEqual(len(production.KNOWN_TIMELINE_INTERRUPTS), 319)
+        self.assertEqual(len(production.KNOWN_TIMELINE_INTERRUPTS), 320)
         self.assertIs(
             production.KNOWN_TIMELINE_INTERRUPTS[EVENT_KEY],
             VANILLA_PAY_HOMAGE_TIMELINE_CONTRACTS[EVENT_KEY],

@@ -5252,22 +5252,39 @@ def test_r156_materialized_manager_carrier_binds_clean_boundary_date() -> None:
         raise AssertionError("drifted manager carrier target false-GREENed")
 
 
-def test_r129_rejects_r119_r128_source_before_launch() -> None:
-    digest = "bf5960b7194e1222029add884743c688fee0d86f95559670c587317461519e74"
-    try:
-        capture._enforce_allowed_manager_source_save(digest)
-    except capture.SeedCaptureError as error:
-        require(
-            error.evidence == {
-                "stage": "manager_source_save_prelaunch",
-                "result": "RED",
-                "source_save_sha256": digest,
-                "rejected_attempts": ["R119", "R128"],
-            },
-            f"rejected source evidence drifted: {error.evidence}",
-        )
-    else:
-        raise AssertionError("known R119/R128 source passed the prelaunch gate")
+def test_rejects_known_manager_sources_before_launch() -> None:
+    rejected = {
+        "bf5960b7194e1222029add884743c688fee0d86f95559670c587317461519e74": [
+            "R119",
+            "R128",
+        ],
+        "2c9278d4f5a2707ad23e577d6677ee69673e77876e2f6232349972657cc02261": [
+            "R410",
+        ],
+    }
+    for digest, attempts in rejected.items():
+        try:
+            capture._enforce_allowed_manager_source_save(digest.upper())
+        except capture.SeedCaptureError as error:
+            require(
+                error.evidence == {
+                    "stage": "manager_source_save_prelaunch",
+                    "result": "RED",
+                    "source_save_sha256": digest,
+                    "rejected_attempts": attempts,
+                },
+                f"rejected source evidence drifted: {error.evidence}",
+            )
+        else:
+            raise AssertionError(
+                f"known manager source passed the prelaunch gate: {digest}"
+            )
+
+    digest = next(
+        value
+        for value, attempts in rejected.items()
+        if attempts == ["R410"]
+    )
 
     with tempfile.TemporaryDirectory() as raw:
         fixture = Fixture(Path(raw))
@@ -5434,7 +5451,7 @@ def main() -> int:
     test_manager_recovery_classifies_terminal_owner_without_rebinding()
     test_r129_transition_checkpoint_then_clean_manager_continuation()
     test_r156_materialized_manager_carrier_binds_clean_boundary_date()
-    test_r129_rejects_r119_r128_source_before_launch()
+    test_rejects_known_manager_sources_before_launch()
     test_static_contract()
     print("GREEN: reusable phase-two seed capture is MCP-only and bounded")
     return 0

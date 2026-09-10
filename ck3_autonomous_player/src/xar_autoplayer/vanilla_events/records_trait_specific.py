@@ -61,6 +61,24 @@ VANILLA_TRAIT_SPECIFIC_TIMELINE_CONTRACTS: Final[
         "selected_native_option_index": 1,
         "occurrence_policy": "repeatable-within-product-observation-window",
     },
+    "trait_specific.8001": {
+        # The event has no immediate or after effect and saves no scopes.  The
+        # second option is a deterministic minor-gold gain; the first starts a
+        # learning duel that can add a trait, a ten-year modifier, or nothing.
+        "date_policy": "product-observation-window",
+        "root_character_id": PLAYER_SENTINEL,
+        "character_scopes": {},
+        "scope_types": {},
+        "saved_scope_name_sets": ((),),
+        "saved_scope_count": 0,
+        "boolean_scopes": (),
+        "option_count": 2,
+        "snapshot_option_count": 2,
+        "native_option_indices": (0, 1),
+        "selected_option_number": 2,
+        "selected_native_option_index": 1,
+        "occurrence_policy": "repeatable-within-product-observation-window",
+    },
 }
 
 
@@ -206,6 +224,48 @@ VANILLA_TRAIT_SPECIFIC_ANALYSIS: Final[
             "general faith, doctrine, conversion, or religious policy is inferred"
         ),
     },
+    "trait_specific.8001": {
+        "exact_build": {
+            "game_version": EXACT_CK3_BUILD,
+            "ck3_executable_sha256": EXACT_CK3_EXE_SHA256,
+        },
+        "source_sha256": {
+            "events/trait_specific_events/trait_specific_events.txt": (
+                "A4882239AB219EFB2BB082C983403E6E24B8C9DD481E5643ADFE3321ACAC43F7"
+            ),
+            "common/on_action/yearly_on_actions.txt": (
+                "0FC85A284224A68D1CA0A4EF071D4F4A4F49896753AEC463975A12EE4E1116FA"
+            ),
+        },
+        "definition_lines": "1148-1226",
+        "on_yearly_pool_entry_line": "3029",
+        "caller_semantics": (
+            "the general yearly event pool lists this event at weight one "
+            "hundred after the outer yearly playable pulse and pool gates"
+        ),
+        "trigger_boundary": (
+            "root is not a landless adventurer and does not already have the "
+            "lifestyle_herbalist trait; learning increases event weight"
+        ),
+        "immediate_effect": None,
+        "option_semantics": {
+            0: (
+                "runs a learning duel against average skill: one outcome adds "
+                "lifestyle_herbalist, one adds seeker_of_knowledge for ten years, "
+                "and one has no scripted gameplay effect; result toasts are UI"
+            ),
+            1: "adds the source-defined minor_gold_value to root",
+        },
+        "after_effect": None,
+        "repeatability": (
+            "the event defines no cooldown or one-shot flag; choosing native1 "
+            "does not add herbalist, so a later yearly pool can select it again"
+        ),
+        "safe_option_rationale": (
+            "native1 is deterministic positive gold and avoids native0's random "
+            "trait or ten-year modifier mutation"
+        ),
+    },
 }
 
 
@@ -292,6 +352,40 @@ VANILLA_TRAIT_SPECIFIC_OBSERVATIONS: Final[
             "bridge_pid": 202268,
             "snapshot_id": "native:660",
             "revision": 661,
+            "process_restart_required": False,
+            "retained_red": True,
+            "mcp_only": True,
+            "fixture_used": False,
+            "ocr_used": False,
+            "coordinates_used": False,
+            "console_used": False,
+        }],
+    },
+    "trait_specific.8001": {
+        "exemplars": [{
+            "run": "R414-attempt-06",
+            "kind": "pre-selection-live-red",
+            "red_classification": "harness-route-red",
+            "product_failure_proven": False,
+            "artifact": (
+                "_runtime/p1-post-chaos-terminal-r414-20260911/live-artifacts/"
+                "terminal-stages-red-attempt-06.json"
+            ),
+            "artifact_sha256": (
+                "BEEB7C1C2FE0A30FA056ABCED1C28EA83BD0739DC0D1225BE4CA1C3C738700E6"
+            ),
+            "date_raw": 53783472,
+            "event_instance_id": 1075,
+            "root_character_id": 32904,
+            "saved_scope_raw_types": {},
+            "rendered_native_option_indices": [0, 1],
+            "selected_option_number": None,
+            "selected_native_option_index": None,
+            "selection_attempted": False,
+            "connection_generation": 1,
+            "bridge_pid": 202268,
+            "snapshot_id": "native:1913",
+            "revision": 1914,
             "process_restart_required": False,
             "retained_red": True,
             "mcp_only": True,

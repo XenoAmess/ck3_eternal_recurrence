@@ -22,6 +22,44 @@ from test_zg361_phase2_manager_recovery_interrupts import (
 
 
 class ManagerRecoveryTraitInterruptTests(unittest.TestCase):
+    def test_herbalist_seeds_use_deterministic_gold_route(self) -> None:
+        event_key = "trait_specific.8001"
+        contract = production._resolve_timeline_interrupt_contract(
+            event_key,
+            player=32904,
+            starting_date=53780000,
+            stop_at_clean_review_boundary=False,
+            continue_to_pause_target=True,
+        )
+        self.assertIsNotNone(contract)
+        assert contract is not None
+        context = _context(
+            event_key=event_key,
+            instance_id=1075,
+            date_raw=53783472,
+            player=32904,
+            scopes=[],
+            native_option_indices=(0, 1),
+        )
+        checks = production._known_interrupt_checks(
+            snapshot={
+                "date_raw": 53783472,
+                "active_event": {"option_count": 2},
+            },
+            event={"event_instance_id": 1075},
+            context=context,
+            event_key=event_key,
+            contract=contract,
+        )
+
+        self.assertTrue(all(checks.values()), checks)
+        self.assertEqual(contract["selected_option_number"], 2)
+        self.assertEqual(contract["selected_native_option_index"], 1)
+        self.assertEqual(
+            contract["occurrence_policy"],
+            "repeatable-within-product-observation-window",
+        )
+
     def test_depressed_criticism_uses_low_impact_insult_reply(self) -> None:
         event_key = "trait_specific_ongoing.3015"
         contract = _manager_contract(event_key, player=32904)

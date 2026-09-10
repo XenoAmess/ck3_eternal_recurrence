@@ -1084,6 +1084,26 @@
         },
         {
           "caller_candidate_resolution": "external-definition-file",
+          "event_definition_key": "trait_specific.8001",
+          "logical_path": "common/on_action/yearly_on_actions.txt",
+          "origin": "ck3_game",
+          "provenance": "lexical-caller-candidate-not-proven-runtime-caller",
+          "role": "caller_candidate",
+          "source_column": 9,
+          "source_line": 3029
+        },
+        {
+          "caller_candidate_resolution": null,
+          "event_definition_key": "trait_specific.8001",
+          "logical_path": "common/on_action/yearly_on_actions.txt",
+          "origin": "ck3_game",
+          "provenance": "manually-reviewed-analysis-source",
+          "role": "analysis_source",
+          "source_column": null,
+          "source_line": null
+        },
+        {
+          "caller_candidate_resolution": "external-definition-file",
           "event_definition_key": "trait_specific_ongoing.2001",
           "logical_path": "common/on_action/yearly_on_actions.txt",
           "origin": "ck3_game",
@@ -8509,6 +8529,26 @@
           "role": "analysis_source",
           "source_column": null,
           "source_line": null
+        },
+        {
+          "caller_candidate_resolution": null,
+          "event_definition_key": "trait_specific.8001",
+          "logical_path": "events/trait_specific_events/trait_specific_events.txt",
+          "origin": "ck3_game",
+          "provenance": "generated-definition-index",
+          "role": "event_definition",
+          "source_column": null,
+          "source_line": 1148
+        },
+        {
+          "caller_candidate_resolution": null,
+          "event_definition_key": "trait_specific.8001",
+          "logical_path": "events/trait_specific_events/trait_specific_events.txt",
+          "origin": "ck3_game",
+          "provenance": "manually-reviewed-analysis-source",
+          "role": "analysis_source",
+          "source_column": null,
+          "source_line": null
         }
       ],
       "sha256": "a4882239ab219efb2bb082c983403e6e24b8c9dd481e5643adfe3321acac43f7"
@@ -9868,6 +9908,28 @@
         }
       ],
       "sha256": "bc9ed32d243b861e7263fc303e6f3ad30570da3dcef77bfb27925c6421a9a112"
+    },
+    {
+      "blob_bytes": 125322,
+      "blob_path": "blobs/beeb7c1c2fe0a30fa056abced1c28ea83bd0739dc0d1225be4ca1c3c738700e6.gz",
+      "blob_sha256": "817a0be7522ec7e8105b7e902a63a3b71ad0a62bce6209ccd2d2acc98f887f89",
+      "bytes": 2338816,
+      "evidence_id": "beeb7c1c2fe0a30fa056abced1c28ea83bd0739dc0d1225be4ca1c3c738700e6",
+      "kind": "observation_artifact",
+      "media_type": "application/json",
+      "references": [
+        {
+          "caller_candidate_resolution": null,
+          "event_definition_key": "trait_specific.8001",
+          "logical_path": "_runtime/p1-post-chaos-terminal-r414-20260911/live-artifacts/terminal-stages-red-attempt-06.json",
+          "origin": "runtime",
+          "provenance": "captured-observation-artifact",
+          "role": "artifact",
+          "source_column": null,
+          "source_line": null
+        }
+      ],
+      "sha256": "beeb7c1c2fe0a30fa056abced1c28ea83bd0739dc0d1225be4ca1c3c738700e6"
     },
     {
       "blob_bytes": 3505,
@@ -12325,13 +12387,13 @@
   "schema": "xar.ck3.vanilla-event-portable-evidence-manifest",
   "schema_version": 1,
   "statistics": {
-    "evidence": 237,
-    "generated_definition_references": 173,
-    "lexical_caller_candidate_references": 505,
-    "manually_reviewed_analysis_source_references": 202,
-    "observation_artifact_references": 67,
-    "observation_artifacts": 66,
-    "references": 947,
+    "evidence": 238,
+    "generated_definition_references": 174,
+    "lexical_caller_candidate_references": 506,
+    "manually_reviewed_analysis_source_references": 204,
+    "observation_artifact_references": 68,
+    "observation_artifacts": 67,
+    "references": 952,
     "source_definitions": 171
   }
 }
