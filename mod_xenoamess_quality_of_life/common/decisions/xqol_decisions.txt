@@ -1,7 +1,7 @@
 ﻿xqol_enable_auto_appointment_decision = {
 	picture = { reference = "gfx/interface/illustrations/decisions/decision_dynasty_house.dds" }
 	decision_group_type = xqol_quality_of_life
-	sort_order = 10
+	sort_order = 100
 	ai_check_interval = 0
 	desc = xqol_enable_auto_appointment_decision_desc
 	selection_tooltip = xqol_enable_auto_appointment_decision_tooltip
@@ -22,7 +22,7 @@
 xqol_disable_auto_appointment_decision = {
 	picture = { reference = "gfx/interface/illustrations/decisions/decision_dynasty_house.dds" }
 	decision_group_type = xqol_quality_of_life
-	sort_order = 11
+	sort_order = 101
 	ai_check_interval = 0
 	desc = xqol_disable_auto_appointment_decision_desc
 	selection_tooltip = xqol_disable_auto_appointment_decision_tooltip
@@ -43,7 +43,7 @@ xqol_disable_auto_appointment_decision = {
 xqol_enable_no_vassal_transfers_decision = {
 	picture = { reference = "gfx/interface/illustrations/decisions/decision_realm.dds" }
 	decision_group_type = xqol_quality_of_life
-	sort_order = 20
+	sort_order = 90
 	ai_check_interval = 0
 	desc = xqol_enable_no_vassal_transfers_decision_desc
 	selection_tooltip = xqol_enable_no_vassal_transfers_decision_tooltip
@@ -65,7 +65,7 @@ xqol_enable_no_vassal_transfers_decision = {
 xqol_disable_no_vassal_transfers_decision = {
 	picture = { reference = "gfx/interface/illustrations/decisions/decision_realm.dds" }
 	decision_group_type = xqol_quality_of_life
-	sort_order = 21
+	sort_order = 91
 	ai_check_interval = 0
 	desc = xqol_disable_no_vassal_transfers_decision_desc
 	selection_tooltip = xqol_disable_no_vassal_transfers_decision_tooltip
@@ -87,7 +87,7 @@ xqol_disable_no_vassal_transfers_decision = {
 xqol_enable_auto_call_defenders_decision = {
 	picture = { reference = "gfx/interface/illustrations/decisions/decision_siege_warfare.dds" }
 	decision_group_type = xqol_quality_of_life
-	sort_order = 30
+	sort_order = 80
 	ai_check_interval = 0
 	desc = xqol_enable_auto_call_defenders_decision_desc
 	selection_tooltip = xqol_enable_auto_call_defenders_decision_tooltip
@@ -107,7 +107,7 @@ xqol_enable_auto_call_defenders_decision = {
 xqol_disable_auto_call_defenders_decision = {
 	picture = { reference = "gfx/interface/illustrations/decisions/decision_siege_warfare.dds" }
 	decision_group_type = xqol_quality_of_life
-	sort_order = 31
+	sort_order = 81
 	ai_check_interval = 0
 	desc = xqol_disable_auto_call_defenders_decision_desc
 	selection_tooltip = xqol_disable_auto_call_defenders_decision_tooltip
@@ -127,7 +127,7 @@ xqol_disable_auto_call_defenders_decision = {
 xqol_mass_conversion_decision = {
 	picture = { reference = "gfx/interface/illustrations/decisions/decision_major_religion.dds" }
 	decision_group_type = xqol_quality_of_life
-	sort_order = 40
+	sort_order = 70
 	ai_check_interval = 0
 	desc = xqol_mass_conversion_decision_desc
 	selection_tooltip = xqol_mass_conversion_decision_tooltip
@@ -144,7 +144,7 @@ xqol_mass_conversion_decision = {
 xqol_bulk_demand_payment_full_decision = {
 	picture = { reference = "gfx/interface/illustrations/decisions/decision_spend_money.dds" }
 	decision_group_type = xqol_quality_of_life
-	sort_order = 50
+	sort_order = 60
 	ai_check_interval = 0
 	desc = xqol_bulk_demand_payment_full_decision_desc
 	selection_tooltip = xqol_bulk_demand_payment_full_decision_tooltip
@@ -158,7 +158,7 @@ xqol_bulk_demand_payment_full_decision = {
 xqol_bulk_demand_payment_any_decision = {
 	picture = { reference = "gfx/interface/illustrations/decisions/decision_spend_money.dds" }
 	decision_group_type = xqol_quality_of_life
-	sort_order = 51
+	sort_order = 61
 	ai_check_interval = 0
 	desc = xqol_bulk_demand_payment_any_decision_desc
 	selection_tooltip = xqol_bulk_demand_payment_any_decision_tooltip
@@ -172,7 +172,7 @@ xqol_bulk_demand_payment_any_decision = {
 xqol_bulk_ransom_full_decision = {
 	picture = { reference = "gfx/interface/illustrations/decisions/decision_prison.dds" }
 	decision_group_type = xqol_quality_of_life
-	sort_order = 60
+	sort_order = 50
 	ai_check_interval = 0
 	desc = xqol_bulk_ransom_full_decision_desc
 	selection_tooltip = xqol_bulk_ransom_full_decision_tooltip
@@ -186,7 +186,7 @@ xqol_bulk_ransom_full_decision = {
 xqol_bulk_ransom_any_decision = {
 	picture = { reference = "gfx/interface/illustrations/decisions/decision_prison.dds" }
 	decision_group_type = xqol_quality_of_life
-	sort_order = 61
+	sort_order = 51
 	ai_check_interval = 0
 	desc = xqol_bulk_ransom_any_decision_desc
 	selection_tooltip = xqol_bulk_ransom_any_decision_tooltip
@@ -200,7 +200,7 @@ xqol_bulk_ransom_any_decision = {
 xqol_bulk_release_terms_decision = {
 	picture = { reference = "gfx/interface/illustrations/decisions/decision_prison.dds" }
 	decision_group_type = xqol_quality_of_life
-	sort_order = 70
+	sort_order = 40
 	ai_check_interval = 0
 	desc = xqol_bulk_release_terms_decision_desc
 	selection_tooltip = xqol_bulk_release_terms_decision_tooltip

@@ -162,8 +162,12 @@ def check_scripts(errors: list[str]) -> None:
         errors.append("custom decision group must use the rendered big_button GUI tag")
     if decisions.count("ai_potential = { always = no }") != 12:
         errors.append("all twelve decisions must be impossible for AI")
-    if interactions.count("ai_frequency = 1") != 9:
-        errors.append("all nine hidden scripted interactions must declare an AI frequency")
+    if "ai_frequency" in interactions or "ai_potential" in interactions:
+        errors.append(
+            "scripted-only hidden interactions must not opt into autonomous AI scheduling"
+        )
+    if interactions.count("ai_will_do = { base = 0 }") != 9:
+        errors.append("all nine hidden scripted interactions must have zero AI weight")
     if "FloatToInt(" in slider:
         errors.append("slider must not use the unavailable FloatToInt data function")
     if "GetProgressBarValueMaxScaled(" not in slider:
