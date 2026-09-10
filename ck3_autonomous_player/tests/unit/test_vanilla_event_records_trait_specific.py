@@ -62,6 +62,20 @@ def _secret_scope(name: str) -> dict[str, object]:
     }
 
 
+def _boolean_scope(name: str) -> dict[str, object]:
+    return {
+        "name": name,
+        "scope": {
+            "status": "available",
+            "type_key": "boolean",
+            "typed_identity": {
+                "status": "unavailable",
+                "reason": "generic_scope_payload_identity_not_closed",
+            },
+        },
+    }
+
+
 class TraitSpecificEventRecordTests(unittest.TestCase):
     def test_contract_is_portable_and_selects_non_conversion_route(self) -> None:
         contract = VANILLA_TRAIT_SPECIFIC_TIMELINE_CONTRACTS[EVENT_KEY]
@@ -69,19 +83,27 @@ class TraitSpecificEventRecordTests(unittest.TestCase):
         self.assertEqual(contract["root_character_id"], PLAYER_SENTINEL)
         self.assertNotIn("date_raw", contract)
         self.assertEqual(contract["unique_character_scope_excludes"], {
-            "created_witch": (PLAYER_SENTINEL,),
             "witch": (PLAYER_SENTINEL,),
         })
-        self.assertEqual(contract["character_scope_matches_any"], {
+        self.assertEqual(contract["optional_unique_character_scope_excludes"], {
+            "created_witch": (PLAYER_SENTINEL,),
+        })
+        self.assertEqual(contract["optional_character_scope_matches_any"], {
             "created_witch": ("witch",),
-            "witch": ("created_witch",),
         })
         self.assertEqual(contract["scope_types"], {
-            "created_witch": "character",
-            "witch_secret": "secret",
             "witch": "character",
         })
-        self.assertEqual(contract["saved_scope_count"], 3)
+        self.assertEqual(contract["optional_scope_types"], {
+            "created_witch": "character",
+            "witch_secret": "secret",
+            "old_courtier": "boolean",
+        })
+        self.assertEqual(contract["boolean_scope_name_sets"], (
+            (),
+            ("old_courtier",),
+        ))
+        self.assertEqual(contract["saved_scope_counts"], (1, 2, 3))
         self.assertEqual(contract["native_option_indices"], (0, 1))
         self.assertEqual(contract["selected_option_number"], 2)
         self.assertEqual(contract["selected_native_option_index"], 1)
@@ -94,7 +116,11 @@ class TraitSpecificEventRecordTests(unittest.TestCase):
         self.assertEqual(materialized["root_character_id"], 32904)
         self.assertEqual(
             materialized["unique_character_scope_excludes"],
-            {"created_witch": (32904,), "witch": (32904,)},
+            {"witch": (32904,)},
+        )
+        self.assertEqual(
+            materialized["optional_unique_character_scope_excludes"],
+            {"created_witch": (32904,)},
         )
         self.assertEqual(contract["root_character_id"], PLAYER_SENTINEL)
 
@@ -106,6 +132,7 @@ class TraitSpecificEventRecordTests(unittest.TestCase):
         self.assertEqual(analysis["on_yearly_pool_entry_line"], "3019")
         self.assertIn("not a daily event", analysis["frequency_boundary"])
         self.assertIn("same-culture, same-faith witch", analysis["immediate_effect"])
+        self.assertIn("existing-courtier branch", analysis["source_scope_variants"])
         self.assertIn("learning plus one", analysis["option_semantics"][0])
         self.assertIn("one hundred", analysis["option_semantics"][1])
         self.assertIn(
@@ -119,32 +146,47 @@ class TraitSpecificEventRecordTests(unittest.TestCase):
             self.assertRegex(digest, SHA256_PATTERN)
 
     def test_r374_values_remain_observation_only(self) -> None:
-        exemplar, = VANILLA_TRAIT_SPECIFIC_OBSERVATIONS[EVENT_KEY]["exemplars"]
+        r374, r414 = VANILLA_TRAIT_SPECIFIC_OBSERVATIONS[EVENT_KEY]["exemplars"]
         contract_repr = repr(VANILLA_TRAIT_SPECIFIC_TIMELINE_CONTRACTS[EVENT_KEY])
 
-        self.assertEqual(exemplar["event_instance_id"], 1040)
-        self.assertEqual(exemplar["date_raw"], 53583192)
-        self.assertEqual(exemplar["saved_character_ids"], {
+        self.assertEqual(r374["event_instance_id"], 1040)
+        self.assertEqual(r374["date_raw"], 53583192)
+        self.assertEqual(r374["saved_character_ids"], {
             "created_witch": 94245,
             "witch": 94245,
         })
-        self.assertEqual(exemplar["saved_scope_raw_types"], {
+        self.assertEqual(r374["saved_scope_raw_types"], {
             "created_witch": 4,
             "witch_secret": 7,
             "witch": 4,
         })
-        self.assertEqual(exemplar["rendered_native_option_indices"], [0, 1])
-        self.assertFalse(exemplar["selection_attempted"])
-        self.assertFalse(exemplar["process_restart_required"])
-        self.assertEqual(exemplar["snapshot_id"], "native:1669")
-        self.assertEqual(exemplar["revision"], 1670)
+        self.assertEqual(r374["rendered_native_option_indices"], [0, 1])
+        self.assertFalse(r374["selection_attempted"])
+        self.assertFalse(r374["process_restart_required"])
+        self.assertEqual(r374["snapshot_id"], "native:1669")
+        self.assertEqual(r374["revision"], 1670)
         for field in (
             "artifact_sha256",
             "park_artifact_sha256",
             "driver_state_artifact_sha256",
         ):
-            self.assertRegex(exemplar[field], SHA256_PATTERN)
-        for observation_only in (1040, 53583192, 94245, 32904, 51852, 1669):
+            self.assertRegex(r374[field], SHA256_PATTERN)
+
+        self.assertEqual(r414["run"], "R414")
+        self.assertEqual(r414["saved_scope_raw_types"], {
+            "old_courtier": 2,
+            "witch": 4,
+        })
+        self.assertEqual(r414["saved_character_ids"], {"witch": 94245})
+        self.assertEqual(r414["snapshot_id"], "native:660")
+        self.assertFalse(r414["selection_attempted"])
+        self.assertFalse(r414["product_failure_proven"])
+        self.assertTrue(r414["retained_red"])
+        self.assertRegex(r414["artifact_sha256"], SHA256_PATTERN)
+
+        for observation_only in (
+            1040, 1067, 53583192, 53681976, 94245, 32904, 51852, 202268, 1669,
+        ):
             self.assertNotIn(str(observation_only), contract_repr)
 
     def test_default_registry_mcp_and_runtime_include_record(self) -> None:
@@ -154,7 +196,7 @@ class TraitSpecificEventRecordTests(unittest.TestCase):
             DEFAULT_VANILLA_EVENT_OBSERVATIONS[EVENT_KEY],
             VANILLA_TRAIT_SPECIFIC_OBSERVATIONS[EVENT_KEY],
         )
-        self.assertEqual(len(production.KNOWN_TIMELINE_INTERRUPTS), 316)
+        self.assertEqual(len(production.KNOWN_TIMELINE_INTERRUPTS), 318)
         self.assertIs(
             production.KNOWN_TIMELINE_INTERRUPTS[EVENT_KEY],
             VANILLA_TRAIT_SPECIFIC_TIMELINE_CONTRACTS[EVENT_KEY],
@@ -221,6 +263,64 @@ class TraitSpecificEventRecordTests(unittest.TestCase):
                 "active_event": {"option_count": 2},
             },
             event={"event_instance_id": 1040},
+            context=context,
+            event_key=EVENT_KEY,
+            contract=contract,
+        )
+
+        self.assertTrue(all(checks.values()), checks)
+        self.assertEqual(contract["selected_option_number"], 2)
+        self.assertEqual(contract["selected_native_option_index"], 1)
+
+    def test_existing_courtier_live_shape_passes_production_checks(self) -> None:
+        contract = production._manager_recovery_contract(
+            production.KNOWN_TIMELINE_INTERRUPTS[EVENT_KEY],
+            player=32904,
+            event_key=EVENT_KEY,
+        )
+        contract = production._timeline_contract_for_window(
+            contract,
+            starting_date=53680000,
+        )
+        context = {
+            "schema": "current-event-window-context-v1",
+            "schema_version": 1,
+            "status": "available",
+            "window_match_count": 1,
+            "event_definition_key": EVENT_KEY,
+            "current_event_instance_id": 1067,
+            "date_raw": 53681976,
+            "root_scope": {
+                "status": "available",
+                "type_key": "character",
+                "typed_identity": {
+                    "status": "available",
+                    "kind": "character",
+                    "character_id": 32904,
+                },
+            },
+            "saved_scopes": [
+                _boolean_scope("old_courtier"),
+                _character_scope("witch", 94245),
+            ],
+            "options": [
+                {
+                    "rendered_index": index,
+                    "native_option_index": index,
+                    "shown": True,
+                    "enabled": True,
+                    "fallback": False,
+                    "cancel": False,
+                }
+                for index in range(2)
+            ],
+        }
+        checks = production._known_interrupt_checks(
+            snapshot={
+                "date_raw": 53681976,
+                "active_event": {"option_count": 2},
+            },
+            event={"event_instance_id": 1067},
             context=context,
             event_key=EVENT_KEY,
             contract=contract,
