@@ -114,12 +114,25 @@ def _frame() -> tuple[dict[str, object], dict[str, object], dict[str, object]]:
     )
 
 
+def _bound_contract() -> dict[str, object]:
+    event_key = "diarchy.8042"
+    rebound = production._manager_recovery_contract(
+        diarchy.VANILLA_DIARCHY_TIMELINE_CONTRACTS[event_key],
+        player=32904,
+        event_key=event_key,
+    )
+    return production._timeline_contract_for_window(
+        rebound, starting_date=53366952,
+    )
+
+
 class VanillaDiarchyInterruptContractTests(unittest.TestCase):
     def test_r368_recipient_letter_selects_empty_acknowledgement(self) -> None:
-        contract = diarchy.VANILLA_DIARCHY_TIMELINE_CONTRACTS["diarchy.8042"]
+        reusable = diarchy.VANILLA_DIARCHY_TIMELINE_CONTRACTS["diarchy.8042"]
         self.assertIs(
-            production.KNOWN_TIMELINE_INTERRUPTS["diarchy.8042"], contract,
+            production.KNOWN_TIMELINE_INTERRUPTS["diarchy.8042"], reusable,
         )
+        contract = _bound_contract()
         snapshot, event, context = _frame()
         checks = production._known_interrupt_checks(
             snapshot=snapshot,
@@ -138,7 +151,7 @@ class VanillaDiarchyInterruptContractTests(unittest.TestCase):
         self.assertNotIn("max_occurrences", contract)
 
     def test_r368_recipient_letter_rejects_scope_drift(self) -> None:
-        contract = diarchy.VANILLA_DIARCHY_TIMELINE_CONTRACTS["diarchy.8042"]
+        contract = _bound_contract()
         snapshot, event, context = _frame()
         variants = []
 

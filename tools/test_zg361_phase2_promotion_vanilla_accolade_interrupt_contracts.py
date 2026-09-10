@@ -90,17 +90,30 @@ def _frame() -> tuple[dict[str, object], dict[str, object], dict[str, object]]:
     )
 
 
+def _bound_contract() -> dict[str, object]:
+    event_key = "ep2_accolade_events.0300"
+    rebound = production._manager_recovery_contract(
+        accolade.VANILLA_ACCOLADE_TIMELINE_CONTRACTS[event_key],
+        player=32904,
+        event_key=event_key,
+    )
+    return production._timeline_contract_for_window(
+        rebound, starting_date=53380128,
+    )
+
+
 class VanillaAccoladeInterruptContractTests(unittest.TestCase):
     def test_r368_root_reveler_training_selects_only_option(self) -> None:
-        contract = accolade.VANILLA_ACCOLADE_TIMELINE_CONTRACTS[
+        reusable = accolade.VANILLA_ACCOLADE_TIMELINE_CONTRACTS[
             "ep2_accolade_events.0300"
         ]
         self.assertIs(
             production.KNOWN_TIMELINE_INTERRUPTS[
                 "ep2_accolade_events.0300"
             ],
-            contract,
+            reusable,
         )
+        contract = _bound_contract()
         snapshot, event, context = _frame()
         checks = production._known_interrupt_checks(
             snapshot=snapshot,
@@ -115,9 +128,7 @@ class VanillaAccoladeInterruptContractTests(unittest.TestCase):
         self.assertNotIn("max_occurrences", contract)
 
     def test_r368_root_reveler_training_rejects_identity_drift(self) -> None:
-        contract = accolade.VANILLA_ACCOLADE_TIMELINE_CONTRACTS[
-            "ep2_accolade_events.0300"
-        ]
+        contract = _bound_contract()
         snapshot, event, context = _frame()
 
         variants = []

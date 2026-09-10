@@ -11,6 +11,7 @@ sys.path.insert(0, str(ROOT / "ck3_autonomous_player" / "src"))
 
 from xar_autoplayer.vanilla_events import (  # noqa: E402
     DEFAULT_VANILLA_EVENT_OBSERVATIONS,
+    query_vanilla_event_knowledge_v1,
 )
 from xar_autoplayer.vanilla_events.records_analysis_vanilla_shards import (  # noqa: E402
     VANILLA_SHARD_ANALYSIS,
@@ -18,6 +19,7 @@ from xar_autoplayer.vanilla_events.records_analysis_vanilla_shards import (  # n
 )
 from xar_autoplayer.vanilla_events.records_vanilla_shards import (  # noqa: E402
     VANILLA_SHARD_LEGACY_LIVE_OBSERVATIONS_A,
+    VANILLA_SHARD_LEGACY_LIVE_OBSERVATIONS_B,
     VANILLA_SHARD_TIMELINE_CONTRACTS,
 )
 from xar_autoplayer.vanilla_events.registry import (  # noqa: E402
@@ -30,7 +32,11 @@ from xar_autoplayer.vanilla_events.registry import (  # noqa: E402
 
 EXPECTED_KEY_COUNT = 20
 HASHED_EVENT_KEYS = {
+    "ep2_accolade_events.0300",
+    "ep3_story_cycle_admin_eunuch.8010",
+    "diarchy.8042",
     "tgp_dynastic_cycle.0091",
+    "ep1_flavor.1000",
     "ep3_emperor_yearly.2170",
     "ep3_emperor_yearly.2211",
     "ep3_powerful_families.8012",
@@ -41,6 +47,11 @@ HASHED_EVENT_KEYS = {
     "natural_disaster.7031",
     "natural_disaster.6901",
     "travel_danger_events.3002",
+    "secrets.0108",
+    "secrets.0112",
+    "secrets.0122",
+    "seduce_outcome.4900",
+    "seduce_outcome.3901",
 }
 PORTABLE_PACKAGE_A_KEYS = {
     "tgp_dynastic_cycle.0091",
@@ -54,6 +65,18 @@ PORTABLE_PACKAGE_A_KEYS = {
     "natural_disaster.6901",
     "travel_danger_events.3002",
 }
+PORTABLE_PACKAGE_B_KEYS = {
+    "ep2_accolade_events.0300",
+    "ep3_story_cycle_admin_eunuch.8010",
+    "diarchy.8042",
+    "ep1_flavor.1000",
+    "secrets.0108",
+    "secrets.0112",
+    "secrets.0122",
+    "seduce_outcome.4900",
+    "seduce_outcome.3901",
+}
+PORTABLE_KEYS = set(VANILLA_SHARD_TIMELINE_CONTRACTS)
 PACKAGE_A_SAFE_OPTIONS = {
     "tgp_dynastic_cycle.0091": (1, 0),
     "ep3_emperor_yearly.2170": (1, 0),
@@ -66,11 +89,24 @@ PACKAGE_A_SAFE_OPTIONS = {
     "natural_disaster.6901": (1, 0),
     "travel_danger_events.3002": (2, 1),
 }
+PACKAGE_B_SAFE_OPTIONS = {
+    "ep2_accolade_events.0300": (1, 0),
+    "ep3_story_cycle_admin_eunuch.8010": (3, 2),
+    "diarchy.8042": (1, 0),
+    "ep1_flavor.1000": (3, 2),
+    "secrets.0108": (1, 0),
+    "secrets.0112": (1, 0),
+    "secrets.0122": (3, 2),
+    "seduce_outcome.4900": (1, 0),
+    "seduce_outcome.3901": (1, 0),
+}
+SAFE_OPTIONS = {**PACKAGE_A_SAFE_OPTIONS, **PACKAGE_B_SAFE_OPTIONS}
+SAFE_OPTIONS["natural_disaster.7031"] = (3, 2)
 
 
 class VanillaEventShardAnalysisTests(unittest.TestCase):
-    def test_package_a_contracts_are_campaign_neutral(self) -> None:
-        for event_key in PORTABLE_PACKAGE_A_KEYS:
+    def test_all_shard_contracts_are_campaign_neutral(self) -> None:
+        for event_key in PORTABLE_KEYS:
             with self.subTest(event_key=event_key):
                 contract = VANILLA_SHARD_TIMELINE_CONTRACTS[event_key]
                 self.assertNotIn("date_raw", contract)
@@ -86,7 +122,7 @@ class VanillaEventShardAnalysisTests(unittest.TestCase):
                         contract["selected_option_number"],
                         contract["selected_native_option_index"],
                     ),
-                    PACKAGE_A_SAFE_OPTIONS[event_key],
+                    SAFE_OPTIONS[event_key],
                 )
 
     def test_package_a_player_relationships_materialize_portably(self) -> None:
@@ -155,6 +191,42 @@ class VanillaEventShardAnalysisTests(unittest.TestCase):
                     DEFAULT_VANILLA_EVENT_OBSERVATIONS[event_key], metadata
                 )
 
+    def test_package_b_legacy_bindings_are_complete_migration_evidence(
+        self,
+    ) -> None:
+        self.assertEqual(
+            set(VANILLA_SHARD_LEGACY_LIVE_OBSERVATIONS_B),
+            PORTABLE_PACKAGE_B_KEYS,
+        )
+        json.dumps(
+            VANILLA_SHARD_LEGACY_LIVE_OBSERVATIONS_B,
+            allow_nan=False,
+            sort_keys=True,
+        )
+        for event_key, metadata in (
+            VANILLA_SHARD_LEGACY_LIVE_OBSERVATIONS_B.items()
+        ):
+            with self.subTest(event_key=event_key):
+                exemplar = metadata["exemplars"][0]
+                self.assertEqual(exemplar["kind"], "legacy-live-binding")
+                self.assertEqual(exemplar["review_kind"], "migration-only")
+                self.assertIsInstance(exemplar["date_raw"], int)
+                self.assertIn(exemplar["root_character_id"], (29037, 32904))
+                self.assertIn("character_scopes", exemplar)
+                self.assertIn("unique_character_scope_excludes", exemplar)
+
+    def test_package_b_is_portable_through_mcp_facing_query(self) -> None:
+        for event_key in PORTABLE_PACKAGE_B_KEYS:
+            with self.subTest(event_key=event_key):
+                response = query_vanilla_event_knowledge_v1(event_key)
+                self.assertEqual(response["status"], "available")
+                self.assertEqual(
+                    response["contract"]["root_character_id"],
+                    PLAYER_SENTINEL,
+                )
+                self.assertNotIn("date_raw", response["contract"])
+                self.assertTrue(response["analysis"]["source_sha256"])
+
     def test_analysis_covers_every_migrated_shard(self) -> None:
         self.assertEqual(EXPECTED_KEY_COUNT, len(VANILLA_SHARD_ANALYSIS))
         self.assertEqual(
@@ -199,7 +271,7 @@ class VanillaEventShardAnalysisTests(unittest.TestCase):
                 else:
                     self.assertNotIn("saved_scope_count", scope_boundary)
 
-    def test_only_previously_frozen_source_hashes_are_promoted(self) -> None:
+    def test_only_frozen_source_hashes_are_promoted(self) -> None:
         actual = {
             event_key
             for event_key, analysis in VANILLA_SHARD_ANALYSIS.items()

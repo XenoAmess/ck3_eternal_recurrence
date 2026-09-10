@@ -1,8 +1,8 @@
 ﻿"""Reusable analysis metadata for the migrated vanilla-event shards.
 
-This module only promotes conclusions already encoded in the legacy contracts,
-their source-review comments, and their focused tests.  It deliberately does
-not claim a source hash where the prior review did not freeze one.
+This module promotes conclusions encoded in the legacy contracts, their
+source-review comments, focused tests, and exact-build definitions whose
+paths and hashes were frozen during portable migration.
 """
 
 from __future__ import annotations
@@ -24,6 +24,11 @@ _REVIEW_ROWS: Final[dict[str, dict[str, object]]] = {
             "has one unavoidable terminal option, grants lifestyle_reveler "
             "to the root trainee, may reduce stress, and sends no follow-up."
         ),
+        "source_sha256": {
+            "events/dlc/ep2/ep2_accolade_events.txt": (
+                "843791DE8BB26CA87D66DB99817F1220B57C13131AA1672C68A7D3DA66EEA353"
+            ),
+        },
     },
     "ep3_story_cycle_admin_eunuch.8010": {
         "migrated_from": (
@@ -35,6 +40,11 @@ _REVIEW_ROWS: Final[dict[str, dict[str, object]]] = {
             "replace the deceased eunuch; the selected third route only "
             "clears the liege modifier and terminates the story."
         ),
+        "source_sha256": {
+            "events/dlc/ep3/ep3_story_cycle_admin_eunuch_events.txt": (
+                "AD0EAC903C87FBE869A70709F8C674C6557862B28E14BD242B6EF0FB3D946734"
+            ),
+        },
     },
     "diarchy.8042": {
         "migrated_from": (
@@ -46,6 +56,11 @@ _REVIEW_ROWS: Final[dict[str, dict[str, object]]] = {
             "before dispatch, while the recipient sees one empty authored "
             "acknowledgement after the complete interaction carry is bound."
         ),
+        "source_sha256": {
+            "events/diarchy_events/diarchy_events.txt": (
+                "A7E2B196D63A57329219AC81FC44EEE92F1CAAACF8E18E760C606911B068DAB2"
+            ),
+        },
     },
     "tgp_dynastic_cycle.0091": {
         "migrated_from": (
@@ -76,6 +91,11 @@ _REVIEW_ROWS: Final[dict[str, dict[str, object]]] = {
             "selected native2 declines, moves the visitor to the preselected "
             "pool court, and schedules no follow-up."
         ),
+        "source_sha256": {
+            "events/dlc/ep1/ep1_flavor_events.txt": (
+                "CC4CD67B77F9FA7B83E3B7A5534045F0DBFC1E724C53182E19ED7884BAD10924"
+            ),
+        },
     },
     "ep3_emperor_yearly.2170": {
         "migrated_from": (
@@ -243,6 +263,11 @@ _REVIEW_ROWS: Final[dict[str, dict[str, object]]] = {
             "in the reviewed projections, so native0 is the sole rendered "
             "route and its option body is empty."
         ),
+        "source_sha256": {
+            "events/secret_events/secrets_events.txt": (
+                "A8492FCBBDB7ABD049BA02BAACF5A5A0F50037192B7DC9D08331E17139B734EF"
+            ),
+        },
     },
     "secrets.0112": {
         "migrated_from": (
@@ -254,6 +279,11 @@ _REVIEW_ROWS: Final[dict[str, dict[str, object]]] = {
             "occur before dispatch, while native0 is the sole rendered empty "
             "acknowledgement in both reviewed scope shapes."
         ),
+        "source_sha256": {
+            "events/secret_events/secrets_events.txt": (
+                "A8492FCBBDB7ABD049BA02BAACF5A5A0F50037192B7DC9D08331E17139B734EF"
+            ),
+        },
     },
     "secrets.0122": {
         "migrated_from": (
@@ -265,6 +295,11 @@ _REVIEW_ROWS: Final[dict[str, dict[str, object]]] = {
             "an opinion effect and trait-dependent stress, avoiding authored "
             "B's imprisonment and the larger unrelated realm mutation."
         ),
+        "source_sha256": {
+            "events/secret_events/secrets_events.txt": (
+                "A8492FCBBDB7ABD049BA02BAACF5A5A0F50037192B7DC9D08331E17139B734EF"
+            ),
+        },
     },
     "seduce_outcome.4900": {
         "migrated_from": (
@@ -276,6 +311,12 @@ _REVIEW_ROWS: Final[dict[str, dict[str, object]]] = {
             "unavoidable and applies the already-determined publicised-crime "
             "outcome after the complete scheme scope carry is bound."
         ),
+        "source_sha256": {
+            "events/scheme_events/seduce_scheme/"
+            "seduce_scheme_outcome_events.txt": (
+                "8562D31D9A0F244B4B2C8D926B7BB1D2CB942B1244D7CFCA76BB1CB7B127C151"
+            ),
+        },
     },
     "seduce_outcome.3901": {
         "migrated_from": (
@@ -287,6 +328,12 @@ _REVIEW_ROWS: Final[dict[str, dict[str, object]]] = {
             "sole native0 route applies the authored discovery effect and "
             "has no inert alternative."
         ),
+        "source_sha256": {
+            "events/scheme_events/seduce_scheme/"
+            "seduce_scheme_outcome_events.txt": (
+                "8562D31D9A0F244B4B2C8D926B7BB1D2CB942B1244D7CFCA76BB1CB7B127C151"
+            ),
+        },
     },
 }
 

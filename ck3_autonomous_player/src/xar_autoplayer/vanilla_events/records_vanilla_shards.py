@@ -4,7 +4,7 @@ from __future__ import annotations
 
 # Reusable contracts bind the active player through ``$player`` and contain no
 # campaign date or character identity. The legacy live bindings removed from
-# package-A contracts are retained separately below as observations.
+# migrated contracts are retained separately below as observations.
 
 from typing import Final
 
@@ -19,14 +19,13 @@ VANILLA_ACCOLADE_TIMELINE_CONTRACTS: Final[dict[str, dict[str, object]]] = {
         # grants lifestyle_reveler to new_reveler (root), may reduce stress,
         # and does not dispatch a follow-up event. Bind the acclaimed knight
         # and root trainee before taking that sole terminal route.
-        "date_raw": 53380128,
         "date_policy": "product-observation-window",
-        "root_character_id": 32904,
+        "root_character_id": PLAYER_SENTINEL,
         "character_scopes": {
-            "new_reveler": 32904,
+            "new_reveler": PLAYER_SENTINEL,
         },
         "unique_character_scope_excludes": {
-            "master_of_revels": (32904,),
+            "master_of_revels": (PLAYER_SENTINEL,),
         },
         "character_scope_differs_from": {
             "master_of_revels": ("new_reveler",),
@@ -61,16 +60,15 @@ VANILLA_ADMIN_EUNUCH_TIMELINE_CONTRACTS: Final[
         # The first two options replace the deceased eunuch with the saved
         # student or rival. The third option only clears the liege modifier
         # and ends this story, making it the bounded terminal route.
-        "date_raw": 53316816,
         "date_policy": "product-observation-window",
-        "root_character_id": 32904,
+        "root_character_id": PLAYER_SENTINEL,
         "character_scopes": {
-            "emperor": 32904,
+            "emperor": PLAYER_SENTINEL,
         },
         "unique_character_scope_excludes": {
-            "eunuch": (32904,),
-            "student": (32904,),
-            "rival": (32904,),
+            "eunuch": (PLAYER_SENTINEL,),
+            "student": (PLAYER_SENTINEL,),
+            "rival": (PLAYER_SENTINEL,),
         },
         "character_scope_differs_from": {
             "eunuch": ("student", "rival"),
@@ -114,14 +112,13 @@ VANILLA_DIARCHY_TIMELINE_CONTRACTS: Final[dict[str, dict[str, object]]] = {
         # authored option A is rendered and its body is empty. Bind the exact
         # interaction carry, including unavailable optional participant
         # identities and all four result flags, before acknowledging it.
-        "date_raw": 53366952,
         "date_policy": "product-observation-window",
-        "root_character_id": 32904,
+        "root_character_id": PLAYER_SENTINEL,
         "character_scopes": {
-            "recipient": 32904,
+            "recipient": PLAYER_SENTINEL,
         },
         "unique_character_scope_excludes": {
-            "actor": (32904,),
+            "actor": (PLAYER_SENTINEL,),
         },
         "character_scope_differs_from": {
             "actor": ("recipient",),
@@ -208,12 +205,11 @@ VANILLA_EP1_FLAVOR_TIMELINE_CONTRACTS: Final[
         # consequences. Native option 2 declines, moves the visitor to the
         # already-selected pool court, and terminates without a follow-up.
         # R347b observed this exact three-scope, three-option projection.
-        "date_raw": 53205336,
         "date_policy": "product-observation-window",
-        "root_character_id": 29037,
+        "root_character_id": PLAYER_SENTINEL,
         "character_scopes": {},
         "unique_character_scope_excludes": {
-            "eunuch_target": (29037,),
+            "eunuch_target": (PLAYER_SENTINEL,),
         },
         "scope_types": {
             "eunuch_target_culture": "culture",
@@ -704,11 +700,11 @@ _VANILLA_SECRET_0122_SAVED_SCOPE_NAMES: Final = (
 )
 
 _VANILLA_SECRET_0122_CHARACTER_SCOPES: Final = {
-    "secret_target": 32904,
-    "siphoned_treasury_victim": 32904,
-    "victim": 32904,
-    "exposed_secret_target": 32904,
-    "liege": 32904,
+    "secret_target": PLAYER_SENTINEL,
+    "siphoned_treasury_victim": PLAYER_SENTINEL,
+    "victim": PLAYER_SENTINEL,
+    "exposed_secret_target": PLAYER_SENTINEL,
+    "liege": PLAYER_SENTINEL,
 }
 
 
@@ -719,12 +715,11 @@ VANILLA_SECRET_TIMELINE_CONTRACTS: Final[dict[str, dict[str, object]]] = {
         # is legal, so authored option A is the sole rendered route and has no
         # option-body effect. Independent exposed secrets can notify the
         # player repeatedly; validate every delivery without a global cap.
-        "date_raw": 53358504,
         "date_policy": "product-observation-window",
-        "root_character_id": 32904,
-        "character_scopes": {"event_root": 32904},
+        "root_character_id": PLAYER_SENTINEL,
+        "character_scopes": {"event_root": PLAYER_SENTINEL},
         "unique_character_scope_excludes": {
-            name: (32904,)
+            name: (PLAYER_SENTINEL,)
             for name in (
                 "secret_owner",
                 "secret_target",
@@ -802,7 +797,7 @@ VANILLA_SECRET_TIMELINE_CONTRACTS: Final[dict[str, dict[str, object]]] = {
                 "lower_right_portrait",
             ),
             "unique_character_scope_excludes": {
-                name: (32904,)
+                name: (PLAYER_SENTINEL,)
                 for name in (
                     "secret_owner", "secret_target", "secret_exposer",
                     "target", "owner", "primary_character",
@@ -854,12 +849,11 @@ VANILLA_SECRET_TIMELINE_CONTRACTS: Final[dict[str, dict[str, object]]] = {
         # body is empty; the secret type applied gameplay consequences before
         # dispatching this notification. Independent secrets can produce it any
         # number of times, so each delivery is revalidated without a cap.
-        "date_raw": 53358504,
         "date_policy": "product-observation-window",
-        "root_character_id": 32904,
+        "root_character_id": PLAYER_SENTINEL,
         "character_scopes": {},
         "unique_character_scope_excludes": {
-            name: (32904,)
+            name: (PLAYER_SENTINEL,)
             for name in (
                 "secret_owner",
                 "secret_target",
@@ -932,7 +926,7 @@ VANILLA_SECRET_TIMELINE_CONTRACTS: Final[dict[str, dict[str, object]]] = {
                 "sex_partner_spouse", "target",
             ),
             "unique_character_scope_excludes": {
-                name: (32904,)
+                name: (PLAYER_SENTINEL,)
                 for name in (
                     "secret_owner", "secret_target", "secret_exposer",
                     "owner", "child", "mother", "real_father",
@@ -995,15 +989,14 @@ VANILLA_SECRET_TIMELINE_CONTRACTS: Final[dict[str, dict[str, object]]] = {
         # realm mutation. Each independently exposed siphoned-treasury secret
         # can notify its victim through 0121 -> 0122; vanilla has no global
         # one-shot gate, so validate every later delivery with this same frame.
-        "date_raw": 53187480,
         "date_policy": "product-observation-window",
-        "root_character_id": 32904,
+        "root_character_id": PLAYER_SENTINEL,
         "character_scopes": _VANILLA_SECRET_0122_CHARACTER_SCOPES,
         "unique_character_scope_excludes": {
-            "secret_owner": (32904,),
+            "secret_owner": (PLAYER_SENTINEL,),
             "secret_exposer": (),
-            "embezzler": (32904,),
-            "local_secret_owner": (32904,),
+            "embezzler": (PLAYER_SENTINEL,),
+            "local_secret_owner": (PLAYER_SENTINEL,),
         },
         "character_scope_matches_any": {
             "embezzler": ("secret_owner",),
@@ -1041,15 +1034,14 @@ VANILLA_SEDUCE_TIMELINE_CONTRACTS: Final[
         # one option; it applies the already-determined publicised-crime
         # outcome and offers no alternative branch. Bind the complete saved
         # scope set before acknowledging that sole terminal option.
-        "date_raw": 53215752,
         "date_policy": "product-observation-window",
-        "root_character_id": 32904,
+        "root_character_id": PLAYER_SENTINEL,
         "character_scopes": {
-            "target_liege": 32904,
+            "target_liege": PLAYER_SENTINEL,
         },
         "unique_character_scope_excludes": {
-            "owner": (32904,),
-            "target": (32904,),
+            "owner": (PLAYER_SENTINEL,),
+            "target": (PLAYER_SENTINEL,),
         },
         "character_scope_differs_from": {
             "owner": ("target", "target_liege"),
@@ -1097,15 +1089,14 @@ VANILLA_SEDUCE_TIMELINE_CONTRACTS: Final[
         # scope whose bridge identity is intentionally unavailable. Each
         # independent discovered seduction may send this notification, so it
         # is repeatable inside the bounded product observation window.
-        "date_raw": 53248656,
         "date_policy": "product-observation-window",
-        "root_character_id": 32904,
+        "root_character_id": PLAYER_SENTINEL,
         "character_scopes": {
-            "target_liege": 32904,
+            "target_liege": PLAYER_SENTINEL,
         },
         "unique_character_scope_excludes": {
-            "owner": (32904,),
-            "target": (32904,),
+            "owner": (PLAYER_SENTINEL,),
+            "target": (PLAYER_SENTINEL,),
         },
         "character_scope_differs_from": {
             "owner": ("target", "target_liege"),
@@ -1285,6 +1276,177 @@ VANILLA_SHARD_LEGACY_LIVE_OBSERVATIONS_A: Final[
 }
 
 
+# Package B retains every campaign-specific field removed from the reusable
+# contracts. These exemplars are evidence only; they must never be used as
+# portable matching constraints by a different campaign, operator, or host.
+VANILLA_SHARD_LEGACY_LIVE_OBSERVATIONS_B: Final[
+    dict[str, dict[str, object]]
+] = {
+    "ep2_accolade_events.0300": {
+        "exemplars": [{
+            "run": "R368",
+            "kind": "legacy-live-binding",
+            "review_kind": "migration-only",
+            "date_raw": 53380128,
+            "root_character_id": 32904,
+            "character_scopes": {"new_reveler": 32904},
+            "unique_character_scope_excludes": {
+                "master_of_revels": (32904,),
+            },
+        }],
+    },
+    "ep3_story_cycle_admin_eunuch.8010": {
+        "exemplars": [{
+            "run": "R369",
+            "kind": "legacy-live-binding",
+            "review_kind": "migration-only",
+            "date_raw": 53316816,
+            "root_character_id": 32904,
+            "character_scopes": {"emperor": 32904},
+            "unique_character_scope_excludes": {
+                "eunuch": (32904,),
+                "student": (32904,),
+                "rival": (32904,),
+            },
+        }],
+    },
+    "diarchy.8042": {
+        "exemplars": [{
+            "run": "R368",
+            "kind": "legacy-live-binding",
+            "review_kind": "migration-only",
+            "date_raw": 53366952,
+            "root_character_id": 32904,
+            "character_scopes": {"recipient": 32904},
+            "unique_character_scope_excludes": {"actor": (32904,)},
+        }],
+    },
+    "ep1_flavor.1000": {
+        "exemplars": [{
+            "run": "R347b",
+            "kind": "legacy-live-binding",
+            "review_kind": "migration-only",
+            "date_raw": 53205336,
+            "root_character_id": 29037,
+            "character_scopes": {},
+            "unique_character_scope_excludes": {
+                "eunuch_target": (29037,),
+            },
+        }],
+    },
+    "secrets.0108": {
+        "exemplars": [{
+            "run": "legacy-migrated",
+            "kind": "legacy-live-binding",
+            "review_kind": "migration-only",
+            "date_raw": 53358504,
+            "root_character_id": 32904,
+            "character_scopes": {"event_root": 32904},
+            "unique_character_scope_excludes": {
+                name: (32904,)
+                for name in (
+                    "secret_owner", "secret_target", "secret_exposer",
+                    "target", "owner", "local_secret_owner", "sex_partner",
+                    "adulterer_check", "primary_character",
+                    "secondary_character", "left_portrait", "right_portrait",
+                )
+            },
+            "scope_variant_bindings": [{
+                "index": 0,
+                "unique_character_scope_excludes": {
+                    name: (32904,)
+                    for name in (
+                        "secret_owner", "secret_target", "secret_exposer",
+                        "target", "owner", "primary_character",
+                        "secondary_character", "left_portrait",
+                        "right_portrait", "lower_right_portrait",
+                    )
+                },
+            }],
+        }],
+    },
+    "secrets.0112": {
+        "exemplars": [{
+            "run": "legacy-migrated",
+            "kind": "legacy-live-binding",
+            "review_kind": "migration-only",
+            "date_raw": 53358504,
+            "root_character_id": 32904,
+            "character_scopes": {},
+            "unique_character_scope_excludes": {
+                name: (32904,)
+                for name in (
+                    "secret_owner", "secret_target", "secret_exposer",
+                    "owner", "child", "mother", "real_father",
+                    "local_secret_owner", "target",
+                )
+            },
+            "scope_variant_bindings": [{
+                "index": 0,
+                "unique_character_scope_excludes": {
+                    name: (32904,)
+                    for name in (
+                        "secret_owner", "secret_target", "secret_exposer",
+                        "owner", "child", "mother", "real_father",
+                        "local_secret_owner", "target",
+                    )
+                },
+            }],
+        }],
+    },
+    "secrets.0122": {
+        "exemplars": [{
+            "run": "R231",
+            "kind": "legacy-live-binding",
+            "review_kind": "migration-only",
+            "date_raw": 53187480,
+            "root_character_id": 32904,
+            "character_scopes": {
+                "secret_target": 32904,
+                "siphoned_treasury_victim": 32904,
+                "victim": 32904,
+                "exposed_secret_target": 32904,
+                "liege": 32904,
+            },
+            "unique_character_scope_excludes": {
+                "secret_owner": (32904,),
+                "secret_exposer": (),
+                "embezzler": (32904,),
+                "local_secret_owner": (32904,),
+            },
+        }],
+    },
+    "seduce_outcome.4900": {
+        "exemplars": [{
+            "run": "R328",
+            "kind": "legacy-live-binding",
+            "review_kind": "migration-only",
+            "date_raw": 53215752,
+            "root_character_id": 32904,
+            "character_scopes": {"target_liege": 32904},
+            "unique_character_scope_excludes": {
+                "owner": (32904,),
+                "target": (32904,),
+            },
+        }],
+    },
+    "seduce_outcome.3901": {
+        "exemplars": [{
+            "run": "R355",
+            "kind": "legacy-live-binding",
+            "review_kind": "migration-only",
+            "date_raw": 53248656,
+            "root_character_id": 32904,
+            "character_scopes": {"target_liege": 32904},
+            "unique_character_scope_excludes": {
+                "owner": (32904,),
+                "target": (32904,),
+            },
+        }],
+    },
+}
+
+
 __all__ = [
     "VANILLA_ACCOLADE_TIMELINE_CONTRACTS",
     "VANILLA_ADMIN_EUNUCH_TIMELINE_CONTRACTS",
@@ -1298,5 +1460,6 @@ __all__ = [
     "VANILLA_SECRET_TIMELINE_CONTRACTS",
     "VANILLA_SEDUCE_TIMELINE_CONTRACTS",
     "VANILLA_SHARD_LEGACY_LIVE_OBSERVATIONS_A",
+    "VANILLA_SHARD_LEGACY_LIVE_OBSERVATIONS_B",
     "VANILLA_SHARD_TIMELINE_CONTRACTS",
 ]

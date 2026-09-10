@@ -109,6 +109,18 @@ def _frame() -> tuple[dict[str, object], dict[str, object], dict[str, object]]:
     )
 
 
+def _bound_8010_contract() -> dict[str, object]:
+    event_key = "ep3_story_cycle_admin_eunuch.8010"
+    rebound = production._manager_recovery_contract(
+        admin_eunuch.VANILLA_ADMIN_EUNUCH_TIMELINE_CONTRACTS[event_key],
+        player=32904,
+        event_key=event_key,
+    )
+    return production._timeline_contract_for_window(
+        rebound, starting_date=53316816,
+    )
+
+
 def _frame_1001(
     saved_scopes: list[dict[str, object]],
     native_indices: tuple[int, ...] = (0, 1),
@@ -412,15 +424,16 @@ class VanillaAdminEunuchInterruptContractTests(unittest.TestCase):
         )
 
     def test_r369_eunuch_death_ends_story_through_native_option_two(self) -> None:
-        contract = admin_eunuch.VANILLA_ADMIN_EUNUCH_TIMELINE_CONTRACTS[
+        reusable = admin_eunuch.VANILLA_ADMIN_EUNUCH_TIMELINE_CONTRACTS[
             "ep3_story_cycle_admin_eunuch.8010"
         ]
         self.assertIs(
             production.KNOWN_TIMELINE_INTERRUPTS[
                 "ep3_story_cycle_admin_eunuch.8010"
             ],
-            contract,
+            reusable,
         )
+        contract = _bound_8010_contract()
         snapshot, event, context = _frame()
         checks = production._known_interrupt_checks(
             snapshot=snapshot,
@@ -435,9 +448,7 @@ class VanillaAdminEunuchInterruptContractTests(unittest.TestCase):
         self.assertNotIn("max_occurrences", contract)
 
     def test_r369_eunuch_death_rejects_scope_and_option_drift(self) -> None:
-        contract = admin_eunuch.VANILLA_ADMIN_EUNUCH_TIMELINE_CONTRACTS[
-            "ep3_story_cycle_admin_eunuch.8010"
-        ]
+        contract = _bound_8010_contract()
         snapshot, event, context = _frame()
 
         variants = []

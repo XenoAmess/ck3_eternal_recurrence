@@ -70,10 +70,23 @@ def _scope(
     }
 
 
+def _bound_contract(
+    event_key: str, *, starting_date: int,
+) -> dict[str, object]:
+    rebound = production._manager_recovery_contract(
+        secret.VANILLA_SECRET_TIMELINE_CONTRACTS[event_key],
+        player=32904,
+        event_key=event_key,
+    )
+    return production._timeline_contract_for_window(
+        rebound, starting_date=starting_date,
+    )
+
+
 class VanillaSecretInterruptContractTests(unittest.TestCase):
     def test_r368_lover_notice_selects_the_only_empty_acknowledgement(self) -> None:
         event_key = "secrets.0108"
-        contract = secret.VANILLA_SECRET_TIMELINE_CONTRACTS[event_key]
+        contract = _bound_contract(event_key, starting_date=53358504)
         owner_names = {
             "secret_owner", "secret_exposer", "owner", "local_secret_owner",
             "adulterer_check", "primary_character", "left_portrait",
@@ -158,10 +171,7 @@ class VanillaSecretInterruptContractTests(unittest.TestCase):
 
     def test_r369_lover_notice_accepts_third_party_exposure_story(self) -> None:
         event_key = "secrets.0108"
-        contract = production._timeline_contract_for_window(
-            secret.VANILLA_SECRET_TIMELINE_CONTRACTS[event_key],
-            starting_date=53147016,
-        )
+        contract = _bound_contract(event_key, starting_date=53147016)
         identities = {
             "secret_owner": 68059,
             "secret_target": 33366,
@@ -289,7 +299,7 @@ class VanillaSecretInterruptContractTests(unittest.TestCase):
 
     def test_r368_bastardy_notice_selects_the_only_empty_acknowledgement(self) -> None:
         event_key = "secrets.0112"
-        contract = secret.VANILLA_SECRET_TIMELINE_CONTRACTS[event_key]
+        contract = _bound_contract(event_key, starting_date=53358504)
         identities = {
             "secret_owner": 65723,
             "secret_target": 16852984,
@@ -387,10 +397,11 @@ class VanillaSecretInterruptContractTests(unittest.TestCase):
             "target": 33606148,
         }
         r370_context = copy.deepcopy(context)
-        # The live session rebound product-observation-window date_raw to
-        # 53358648.  Unit-level checks exercise the static anchor date while
-        # preserving the exact live scope shape.
-        r370_context["date_raw"] = contract["date_raw"]
+        # R370 is a later delivery inside the same portable observation
+        # window, so preserve its actual live date without restoring an
+        # absolute date to the reusable contract.
+        r370_date_raw = 53358648
+        r370_context["date_raw"] = r370_date_raw
         r370_context["current_event_instance_id"] = 455
         r370_context["saved_scopes"] = [
             _scope(name, "character", r370_identities[name])
@@ -399,7 +410,7 @@ class VanillaSecretInterruptContractTests(unittest.TestCase):
             for name in r370_variant["saved_scope_names"]
         ]
         r370_checks = production._known_interrupt_checks(
-            snapshot={"date_raw": contract["date_raw"], "active_event": {"option_count": 3}},
+            snapshot={"date_raw": r370_date_raw, "active_event": {"option_count": 3}},
             event={"event_instance_id": 455},
             context=r370_context,
             event_key=event_key,
@@ -413,7 +424,7 @@ class VanillaSecretInterruptContractTests(unittest.TestCase):
             if row["name"] == "sex_partner"
         )["scope"]["typed_identity"]["character_id"] = 33367
         alias_checks = production._known_interrupt_checks(
-            snapshot={"date_raw": contract["date_raw"], "active_event": {"option_count": 3}},
+            snapshot={"date_raw": r370_date_raw, "active_event": {"option_count": 3}},
             event={"event_instance_id": 455},
             context=wrong_adultery_alias,
             event_key=event_key,
@@ -427,7 +438,7 @@ class VanillaSecretInterruptContractTests(unittest.TestCase):
             if row["name"] == "fornicator_check"
         )["scope"]["typed_identity"]["character_id"] = 68060
         fornicator_checks = production._known_interrupt_checks(
-            snapshot={"date_raw": contract["date_raw"], "active_event": {"option_count": 3}},
+            snapshot={"date_raw": r370_date_raw, "active_event": {"option_count": 3}},
             event={"event_instance_id": 455},
             context=wrong_fornicator_alias,
             event_key=event_key,
@@ -438,7 +449,9 @@ class VanillaSecretInterruptContractTests(unittest.TestCase):
     def _frame(self, *, secret_owner_id: int = 28093) -> tuple[
         dict[str, object], dict[str, object], dict[str, object]
     ]:
-        contract = secret.VANILLA_SECRET_TIMELINE_CONTRACTS["secrets.0122"]
+        contract = _bound_contract(
+            "secrets.0122", starting_date=53187480,
+        )
         character_scopes = contract["character_scopes"]
         scope_types = contract["scope_types"]
         dynamic_character_scopes = {
@@ -489,10 +502,13 @@ class VanillaSecretInterruptContractTests(unittest.TestCase):
             set(secret.VANILLA_SECRET_TIMELINE_CONTRACTS),
             {"secrets.0108", "secrets.0112", "secrets.0122"},
         )
-        contract = secret.VANILLA_SECRET_TIMELINE_CONTRACTS["secrets.0122"]
+        reusable = secret.VANILLA_SECRET_TIMELINE_CONTRACTS["secrets.0122"]
         self.assertIs(
             production.KNOWN_TIMELINE_INTERRUPTS["secrets.0122"],
-            contract,
+            reusable,
+        )
+        contract = _bound_contract(
+            "secrets.0122", starting_date=53187480,
         )
         snapshot, event, context = self._frame()
         checks = production._known_interrupt_checks(
@@ -515,7 +531,9 @@ class VanillaSecretInterruptContractTests(unittest.TestCase):
         self.assertNotIn("max_occurrences", contract)
 
     def test_r290_dynamic_secret_owner_aliases_select_authored_forgive(self) -> None:
-        contract = secret.VANILLA_SECRET_TIMELINE_CONTRACTS["secrets.0122"]
+        contract = _bound_contract(
+            "secrets.0122", starting_date=53187480,
+        )
         snapshot, event, context = self._frame(secret_owner_id=27275)
         checks = production._known_interrupt_checks(
             snapshot=snapshot,
@@ -531,7 +549,9 @@ class VanillaSecretInterruptContractTests(unittest.TestCase):
         self.assertTrue(checks["scope:local_secret_owner:matches_any"])
 
     def test_r231_frame_rejects_date_scope_alias_and_option_drift(self) -> None:
-        contract = secret.VANILLA_SECRET_TIMELINE_CONTRACTS["secrets.0122"]
+        contract = _bound_contract(
+            "secrets.0122", starting_date=53187480,
+        )
         snapshot, event, context = self._frame()
 
         variants = []

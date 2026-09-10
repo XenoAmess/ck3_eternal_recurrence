@@ -4393,10 +4393,7 @@ if new_event_key not in reloaded.KNOWN_TIMELINE_INTERRUPTS:
 
     def test_seduce_outcome_binds_the_complete_mandatory_notification(self) -> None:
         event_key = "seduce_outcome.4900"
-        contract = production._timeline_contract_for_window(
-            production.KNOWN_TIMELINE_INTERRUPTS[event_key],
-            starting_date=53199480,
-        )
+        contract = _manager_contract(event_key, player=32904)
         contexts = (
             _context(
                 event_key=event_key,
@@ -4491,10 +4488,7 @@ if new_event_key not in reloaded.KNOWN_TIMELINE_INTERRUPTS:
 
     def test_seduce_discovery_binds_liege_and_complete_scope_stack(self) -> None:
         event_key = "seduce_outcome.3901"
-        contract = production._timeline_contract_for_window(
-            production.KNOWN_TIMELINE_INTERRUPTS[event_key],
-            starting_date=53199480,
-        )
+        contract = _manager_contract(event_key, player=32904)
         context = _context(
             event_key=event_key,
             instance_id=401,
