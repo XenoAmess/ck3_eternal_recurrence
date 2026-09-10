@@ -2,8 +2,8 @@
 
 ## 结论
 
-正式候选片已完成制作，技术、素材血缘、术语、抽帧语义与自动证据审计均为 **GREEN**。当前状态是
-`pending-human-review`：自动审计不等于人工签核，尚未把任何 approval 写入 run，也未向外部视频平台发布。
+正式成片已完成制作，技术、素材血缘、术语、抽帧语义与自动证据审计均为 **GREEN**。仓库所有者随后回复
+“通过”，其 approval 已按精确成片字节写入 native run，并生成离线正式交付包。未向外部视频平台发布。
 
 候选片：
 
@@ -55,12 +55,18 @@
 - 自动审计：`automated-audit-a02/audit-report.json`，状态 `passed`，18/18 个计划样本具备完整 SHA-256 绑定证据。
 - 项目语义审计：`project-semantic-audit-a03.json`，状态 `passed-pending-human-review`。
 - 人工审片包：`D:\workspace\ck3_reclaim_promo_work\renders\reclaim-promo-candidate-20260910-a03\review-package-a01`
-  ，含 34 张首尾、章节边界与关键内边界帧；包状态明确为 `pending-human-review`、`approval_granted=false`。
+  ，含 34 张首尾、章节边界与关键内边界帧；该不可变预审包仍忠实保留生成时的
+  `pending-human-review`、`approval_granted=false` 状态，后续 approval 记录在 run 的独立 signoff 中。
+- 人工签核：`signoff-000001`，reviewer `repository-owner`，decision `approved`，时间
+  `2026-09-10T00:51:13Z`，绑定上述精确 SHA-256。
+- 离线正式交付：`D:\workspace\ck3_reclaim_promo_work\exports\reclaim-promo-release-20260910-a01\reclaim-the-motherland-promo.mp4`；
+  export 为 GREEN，成片 SHA-256 不变，`release-bundle-manifest.json` SHA-256 为
+  `D7C1BE5DD997C4D88386B8923CE86590D90AEB8A9A311170CABA7A23CA1E530B`。
 
 以下 RED 尝试均保留且未覆盖：a01（GOP 解码后章节乱序）、a02（割据段误用印度地图）、首个自动审计尝试
 （evidence bundle 根目录与 native run 不一致）。它们都不构成最终候选。
 
-## 最后一道门
+## 人工签核与发布边界
 
-仓库所有者醒来后需对上述精确 SHA-256 的 MP4 进行一次连续 1× 完整观看，并明确“通过”或指出问题。
-只有此后才可执行 `xar-promo signoff`；任何重新编码都会改变字节并使旧审阅失效。未获得单独发布授权前，也不把视频上传到外部平台。
+仓库所有者已在连续 1× 审片请求后明确回复“通过”，`xar-promo signoff` 与离线 export 均已完成。
+任何重新编码仍会改变字节并使本次签核失效。签核只批准该成片，不等于指定或授权外部视频平台上传；本轮没有执行网络发布。
