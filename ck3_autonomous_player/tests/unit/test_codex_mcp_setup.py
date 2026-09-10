@@ -185,8 +185,8 @@ class PortableCodexMcpSetupTests(unittest.TestCase):
             knowledge["schema"], "xar.ck3.vanilla-event-knowledge"
         )
         self.assertEqual(knowledge["schema_version"], 1)
-        self.assertEqual(knowledge["current_contract_count"], 167)
-        self.assertEqual(knowledge["current_analysis_count"], 167)
+        self.assertEqual(knowledge["current_contract_count"], 168)
+        self.assertEqual(knowledge["current_analysis_count"], 168)
         self.assertEqual(len(knowledge["knowledge_dataset_sha256"]), 64)
         self.assertGreater(knowledge["portable_evidence_count"], 0)
         self.assertEqual(
@@ -326,11 +326,11 @@ class PortableCodexMcpSetupTests(unittest.TestCase):
         self.assertTrue(report["native_session_assets_ready"])
         self.assertEqual(
             report["offline_vanilla_event_knowledge"]["contract_count"],
-            167,
+            168,
         )
         self.assertEqual(
             report["offline_vanilla_event_knowledge"]["analysis_count"],
-            167,
+            168,
         )
         self.assertFalse(report["launches_ck3"])
         self.assertEqual(len(runner.commands), 4)
@@ -384,7 +384,7 @@ class PortableCodexMcpSetupTests(unittest.TestCase):
             report["offline_vanilla_event_knowledge"][
                 "expected_current_analysis_count"
             ],
-            167,
+            168,
         )
 
     @unittest.skipUnless(
@@ -413,8 +413,8 @@ class PortableCodexMcpSetupTests(unittest.TestCase):
         self.assertTrue(passed, detail)
         self.assertTrue(payload["tool_listed"])
         self.assertTrue(payload["all_offline_tools_listed"])
-        self.assertEqual(payload["contract_count"], 167)
-        self.assertEqual(payload["analysis_count"], 167)
+        self.assertEqual(payload["contract_count"], 168)
+        self.assertEqual(payload["analysis_count"], 168)
         self.assertEqual(payload["query_status"], "available")
         self.assertTrue(payload["query_analysis_non_null"])
         self.assertEqual(payload["knowledge_list_status"], "available")

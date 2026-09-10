@@ -81,9 +81,9 @@
   effect typed row/root 与 special-war dynamic outcome rows 仍是观测依赖，当前不得把 legality、已付成本或 WarID 绑定
   冒充 semantic decision readiness。
 - [static-ready complete analysis + twelve production-live primitives] [vanilla-event-knowledge-registry.md](vanilla-event-knowledge-registry.md)
-  本包组合默认 `165 contracts / 165 analysis / 15 observation keys` 的 exact-build 原版事件表；既有迁移基线仍为
-  `156 + 8 = 164`、embedded bucket 仍为 `79`，本次是在该冻结基线外追加 `.1101`。离线只读
-  `ck3_query_vanilla_event_knowledge_v1` 保持既有 schema，production runtime 当前消费 `304` 条事件合同。R372 的 `TGP0160`、
+  本包组合默认 `168 contracts / 168 analysis / 20 observation keys` 的 exact-build 原版事件表；既有迁移基线与
+  embedded bucket 仍保持冻结，R384 新增 `pay_homage.0101` 的 exact-build Smooth 合同和选择前 RED。离线只读
+  `ck3_query_vanilla_event_knowledge_v1` 保持既有 schema，production runtime 当前消费 `307` 条事件合同。R372 的 `TGP0160`、
   `great_holy_war.0011`、`TGP0020`、`TGP0001` 已分别完成共享查询、真实选择与 advance，属于四条 production-live
   primitive。`stress_threshold.1721` 保留真实 RED：reload 已生效，根因是提交阶段重新按 base contract 解析；补丁提交为
   `039a509`、`e6ab3d4`。`epidemic_events.1064` 随后以同 PID 选择 reviewed native0 并完成 advance，成为第五条

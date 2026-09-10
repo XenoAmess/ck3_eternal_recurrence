@@ -5,11 +5,11 @@
 - [static-ready] 共享 registry 已实现在
   `ck3_autonomous_player/src/xar_autoplayer/vanilla_events/`。它提供合同构建、冲突检测、`$player` 物化和 JSON-safe 查询；全部能力均为离线只读，不依赖已启动的 CK3。
 - [static-ready] `ck3_query_vanilla_event_knowledge_v1` 已注册到正式 MCP server。它只按 stable event key 与 CK3 build 查询知识，不选择按钮、不推进时间、不修改存档或 registry。
-- [static-ready] 本包默认扁平 registry 为 **167 个 unique vanilla event key**。原冻结迁移 key 集不变：`tgp_china_ministry.0100` 从 manager-original 抽成独立通用 owner 后，当前 legacy buckets 为 20 个 vanilla shard、56 个 manager-original、79 个 embedded-original，另由独立 records 接回同一 stable key；该抽取不新增 key。`tgp_dynastic_cycle.0081` 与 `ep3_landless_admin.1000` 是本轮两个新增 key，因此总数由 165 增至 167；数量由 registry/migration 测试冻结。
-- [static-ready analysis / mixed live evidence] 当前 package 同时发布 **167 条 analysis** 与 **19 个 observation keys**。缺少已冻结 source hash 的旧结论只按既有合同注释、docs/tests 标为 migration-only，不编造 hash；R372/R374 的十三条 live 切片之后，R375 又以纯 MCP 完成 `tgp_china_ministry.0100`、`tgp_dynastic_cycle.0081`、`epidemic_events.0110`、`stress_threshold.1721` 与 `ep3_landless_admin.1000` 的真实 drain/advance。`epidemic_events.5009` 的第二次合法出现和所有既有选择前 RED observations 继续保留；第十六个 observation key 的 R374 `.0100` foreground UI identity RED 不因 R375 GREEN 删除，第十七个 observation key 是 `.0081` 的选择前 native RED，第十八个由 commit `0a65adf` 接入 `.0110` 同 PID GREEN，第十九个是 `.1000` 选择前 RED。`.1000` 的后续 GREEN 由独立不可变 sidecar 冻结，不把原 RED 覆盖掉。
+- [static-ready] 本包默认扁平 registry 为 **168 个 unique vanilla event key**。原冻结迁移 key 集不变：`tgp_china_ministry.0100` 从 manager-original 抽成独立通用 owner 后，当前 legacy buckets 为 20 个 vanilla shard、56 个 manager-original、79 个 embedded-original，另由独立 records 接回同一 stable key；该抽取不新增 key。`tgp_dynastic_cycle.0081`、`ep3_landless_admin.1000` 与 R384 实机遇到的 `pay_homage.0101` 是冻结基线后的三个新增 key；数量由 registry/migration 测试冻结。
+- [static-ready analysis / mixed live evidence] 当前 package 同时发布 **168 条 analysis** 与 **20 个 observation keys**。缺少已冻结 source hash 的旧结论只按既有合同注释、docs/tests 标为 migration-only，不编造 hash；R384 的 `pay_homage.0101` 选择前 RED 已作为第二十个 observation key 冻结，当前只登记实见的无 faux-pas Smooth 投影。它在动作完成前仍不是新增 production-live primitive。
 - [static-ready context profiles] prebootstrap 的 `spymaster_task.0381`、`spymaster_task.0399` 两条记录继续作为 seed-capture 上下文 profile 保存，不混入默认扁平 registry。它们与默认 manager 合同使用相同 event key、但冻结不同阶段的精确存档 shape，强行压平会造成有意义的合同冲突。
 
-当前状态表示 registry、默认数据组合和只读 MCP 可以被静态消费者使用，不表示 167 条记录都已有独立 production-live exemplar，也不表示 CK3 自动玩家已经具备完整事件效用判断。production runtime 当前 package 组合 `306` 条事件合同；共享 registry 的 production-live 标签严格只落在十八条已完成选择与 advance 的切片。R375 的 `.0100`、`.0081`、`.0110`、`.1721`、`.1000` 依次是第十四至十八条，因此还有 `149` 条非 live 记录。该增量不改变 T0 产品进度。
+当前状态表示 registry、默认数据组合和只读 MCP 可以被静态消费者使用，不表示 168 条记录都已有独立 production-live exemplar，也不表示 CK3 自动玩家已经具备完整事件效用判断。production runtime 当前 package 组合 `307` 条事件合同；共享 registry 的 production-live 标签严格只落在十八条已完成选择与 advance 的切片。R384 的 `.0101` 仍停在选择前 RED，必须在同 PID 热恢复并验证 instance advance 后才可增加 live 计数。该增量不改变 T0 产品进度。
 
 T0 当前仍为 `50%`、canonical stage `8/11`，source checkpoint `3/4` 且只缺 `capture_cross_cycle_endgame`；T0-P1 未签收，T0-P2 继续 `LOCKED`。`strict 4/361` 与 `definitions 106/626` 只是非阻塞 backlog。
 
@@ -39,6 +39,7 @@ Registry v1 只支持：
 - `records_tgp_dynastic_cycle.py`：独立 TGP dynastic-cycle 合同及其分析/观察元数据，包括 `.0081` 的 phase-transition acknowledgement 合同；
 - `records_tgp_treasury.py`：从旧 manager 条目抽出的 TGP 国库预算通用合同、exact-build 分析、R374 foreground UI identity RED 与 R375 MCP live 切片；
 - `records_ep3_landless_admin.py`：EP3 无地行政角色事件 `.1000` 的 exact-build 合同、选择语义与 R375 选择前 RED；
+- `records_pay_homage.py`：效忠礼 liege 事件 `.0101` 的 exact-build 调用链、当前 Smooth 投影、最小安全选择与 R384 选择前 RED；
 - `records_vassal_interaction.py`：自动接受的封臣头衔索取信件的通用合同、exact-build 分析与选择前观察；
 - `records_trait_specific.py`：按需登记的 trait-specific 原版事件合同、exact-build 调用/效果分析与实机观察；
 - `records_death_management.py`：按需登记的新 death-management 原版事件合同、exact-build 调用/效果分析与实机观察；
@@ -76,7 +77,15 @@ v1 的 156 条迁移基线以保持现有 T0 合同逐值 parity 为首要目标
 - `VANILLA_TGP_MOVEMENT_ANALYSIS`：exact build/EXE、四个原版来源文件 SHA-256、定义行号、yearly caller 与十年 cooldown、三个选项语义、`after_effect=None` 和 safe-option rationale；
 - `VANILLA_TGP_MOVEMENT_OBSERVATIONS`：R372 paused-live exemplar，包括 artifact/hash、`date_raw=53436720`、instance `668`、本局人物 ID、scope raw type 和 `selection_attempted=false`。
 
-R372/R374/R375 的日期、instance 和人物 ID 不进入新建或已触达迁移后的通用 timeline contract。当前 MCP v1 的既有 knowledge envelope 以彼此独立的 `contract`、`analysis`、`observations` 字段返回这三层；本包全部 167 条记录已有 analysis，十九条拥有 observation metadata。元数据不会混入选择合同或被物化成当前人物约束。`.0100`、`.0081`、`.0110` 与 `.1000` 均已进入默认静态组合，实际 MCP 查询返回 `available` 且三层投影均可严格 JSON 往返。
+R372/R374/R375/R384 的日期、instance 和人物 ID 不进入新建或已触达迁移后的通用 timeline contract。当前 MCP v1 的既有 knowledge envelope 以彼此独立的 `contract`、`analysis`、`observations` 字段返回这三层；本包全部 168 条记录已有 analysis，二十条拥有 observation metadata。元数据不会混入选择合同或被物化成当前人物约束。`.0100`、`.0081`、`.0110`、`.1000` 与 `pay_homage.0101` 均已进入默认静态组合，实际查询可返回 `available` 且三层投影均可严格 JSON 往返。
+
+### R384 `pay_homage.0101` 最小合同
+
+R384 / PID `38864` / generation `1` 在 `date_raw=53590944` 暂停于 instance `1046`。原生 snapshot 报告三个 source-authored option 槽，但 current-event query 只发布一个 shown/enabled row：native `0`。七个 saved scopes 为四个 `pay_homage_*` boolean、玩家 liege、非玩家 vassal 与 `opinion_of_petitioner` value；没有任何 `homage_faux_pas_*` scope，因此 source 中只有 Smooth 合法。合同选择 authored `1` / native `0`，但仍要求选择前重新绑定同一日期、instance 和 revision；漂移继续 RED。
+
+该记录冻结了 CK3 `1.19.0.6` 的 event、decision、EP1 on_action 与中英 localization 来源 SHA-256。未来真实出现 faux-pas 时不会复用当前 shape 假装通过，而是重新保留 RED，再把 observed options 扩成独立 variant。source-reviewed 策略只允许无 faux-pas 走 native `0`；有 faux-pas 时最低伤害候选为 Brush Off/native `1`，Insult/native `2` 默认禁止。faith 只参与上游可选 infatuation 候选，`.0101` 合同仅消费 opaque presence bit，不展开宗教域。
+
+portable evidence bundle 随此记录更新为 `221` 个唯一 evidence blob、`913` 条引用，其中 exact-build definition `168` 条、lexical caller candidate `499` 条、人工审阅 source `186` 条、observation artifact `59` 份。R384 三份不可变 RED 证据分别固定 report、park 与 driver-state，热恢复不会覆盖这些选择前字节。
 
 R372 已在同一 PID/session 上把 `TGP0160`、`great_holy_war.0011`、`tgp_dynastic_cycle_events.0020`、`tgp_dynastic_cycle_events.0001` 与 `epidemic_events.1064` 从共享记录解析到真实 option submission，并验证旧 instance 消失或 advance；R374 又把 `.7031` authored3/native2、`.1001` authored2/native1、`.1005` authored6/native5、`.0040` authored1/native0、`.4001` authored2/native1、`.1007` authored1/native0、`.2001` authored3/native2 与 `.1101` authored1/native0 依次同 PID drain 并验证 instances `978`、`988`、`1007`、`1038`、`1040`、`1046`、`1050`、`1055` advance，因此十三条均为 `production-live primitive`。`.1007` 的动作后 snapshot `native:1779 -> native:1780`、revision `1780 -> 1781`；`.2001` 的动作后 snapshot `native:1847 -> native:1848`、revision `1848 -> 1849`；`.1101` 的动作后 snapshot `native:2057 -> native:2058`、revision `2058 -> 2059`，三者 postcondition 均 GREEN。`stress_threshold.1721` observation 保留前一次真实 RED：共享模块 reload 实际已经生效，错误是 submission 阶段再次按 base contract 解析，导致提交了 base route；这不是 reload failure。`.5009` 的第一次交付曾真实 GREEN，第二次交付则证明旧 `max_occurrences=1` 错误。选择前 RED observations 不因后续 GREEN 删除。
 

@@ -51,16 +51,16 @@ def test_checked_in_bundle_is_complete_and_strictly_self_validating() -> None:
     manifest = _manifest()
 
     assert result["status"] == "available"
-    assert result["validated_evidence"] == 213
+    assert result["validated_evidence"] == 221
     assert result["statistics"] == {
-        "evidence": 213,
-        "generated_definition_references": 167,
-        "lexical_caller_candidate_references": 497,
-        "manually_reviewed_analysis_source_references": 181,
-        "observation_artifacts": 56,
-        "observation_artifact_references": 57,
-        "references": 902,
-        "source_definitions": 157,
+        "evidence": 221,
+        "generated_definition_references": 168,
+        "lexical_caller_candidate_references": 499,
+        "manually_reviewed_analysis_source_references": 186,
+        "observation_artifacts": 59,
+        "observation_artifact_references": 60,
+        "references": 913,
+        "source_definitions": 162,
     }
     assert result["manifest_sha256"] == hashlib.sha256(
         MANIFEST.read_bytes()
@@ -68,7 +68,7 @@ def test_checked_in_bundle_is_complete_and_strictly_self_validating() -> None:
     Draft202012Validator(
         _schema("vanilla-event-portable-evidence-manifest-v1.schema.json")
     ).validate(manifest)
-    assert len(list((BUNDLE / "blobs").glob("*.gz"))) == 213
+    assert len(list((BUNDLE / "blobs").glob("*.gz"))) == 221
 
 
 def test_wheel_package_data_includes_source_index_and_evidence_bundle() -> None:
@@ -128,10 +128,10 @@ def test_manifest_preserves_honest_source_provenance_for_all_indexed_events() ->
 
     assert portable_event_keys_v1() == frozenset(source_index["events"])
     assert provenance_counts == {
-        "captured-observation-artifact": 57,
-        "generated-definition-index": 167,
-        "lexical-caller-candidate-not-proven-runtime-caller": 497,
-        "manually-reviewed-analysis-source": 181,
+        "captured-observation-artifact": 60,
+        "generated-definition-index": 168,
+        "lexical-caller-candidate-not-proven-runtime-caller": 499,
+        "manually-reviewed-analysis-source": 186,
     }
     lexical = [
         reference
@@ -291,4 +291,4 @@ def test_offline_check_ignores_unavailable_external_roots() -> None:
     assert completed.returncode == 0, completed.stderr
     result = json.loads(completed.stdout)
     assert result["status"] == "available"
-    assert result["validated_evidence"] == 213
+    assert result["validated_evidence"] == 221

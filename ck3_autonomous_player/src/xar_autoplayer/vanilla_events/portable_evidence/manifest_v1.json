@@ -1796,6 +1796,28 @@
       "sha256": "2bfbbf903d55a2417c988caf1479ef0ff91719c55128ce6357bca3d2c8e9b25f"
     },
     {
+      "blob_bytes": 4870,
+      "blob_path": "blobs/2c78e6a600ff2f0ad0c78d4dda927b189b2e7c85fd29fc1b7dd941bc82ba527b.gz",
+      "blob_sha256": "42f92841d7d2d519e7879f62bd1d7b701995eae2017b3864a16ddd1841652ec2",
+      "bytes": 13709,
+      "evidence_id": "2c78e6a600ff2f0ad0c78d4dda927b189b2e7c85fd29fc1b7dd941bc82ba527b",
+      "kind": "source_definition",
+      "media_type": "application/yaml; charset=utf-8",
+      "references": [
+        {
+          "caller_candidate_resolution": null,
+          "event_definition_key": "pay_homage.0101",
+          "logical_path": "localization/simp_chinese/event_localization/activities/pay_homage_events_l_simp_chinese.yml",
+          "origin": "ck3_game",
+          "provenance": "manually-reviewed-analysis-source",
+          "role": "analysis_source",
+          "source_column": null,
+          "source_line": null
+        }
+      ],
+      "sha256": "2c78e6a600ff2f0ad0c78d4dda927b189b2e7c85fd29fc1b7dd941bc82ba527b"
+    },
+    {
       "blob_bytes": 24889,
       "blob_path": "blobs/2d4291e8293079d009a5f983ce074246d7b9b6ceb6b6569f336a118af50bab0f.gz",
       "blob_sha256": "a07b9ce4755f8c63f6fcc259eeba72aab224d83149aece5f4cfcfea8daffe0f1",
@@ -2202,6 +2224,58 @@
         }
       ],
       "sha256": "381858facbad07092d4876f59d85cac69607b497a108872f361ac0c078724fce"
+    },
+    {
+      "blob_bytes": 4953,
+      "blob_path": "blobs/391ec1d01719ae94b902e8ac3b0fbe7d49f52f0896cd7a3846e28032f2aaddeb.gz",
+      "blob_sha256": "4f5e536c4f379f7fe2630fe22faf02217e25df946a0b8e34bbf3c1e3c00b10db",
+      "bytes": 34998,
+      "evidence_id": "391ec1d01719ae94b902e8ac3b0fbe7d49f52f0896cd7a3846e28032f2aaddeb",
+      "kind": "source_definition",
+      "media_type": "text/plain; charset=utf-8",
+      "references": [
+        {
+          "caller_candidate_resolution": null,
+          "event_definition_key": "pay_homage.0101",
+          "logical_path": "events/decisions_events/pay_homage_events.txt",
+          "origin": "ck3_game",
+          "provenance": "generated-definition-index",
+          "role": "event_definition",
+          "source_column": null,
+          "source_line": 686
+        },
+        {
+          "caller_candidate_resolution": "same-definition-file-only",
+          "event_definition_key": "pay_homage.0101",
+          "logical_path": "events/decisions_events/pay_homage_events.txt",
+          "origin": "ck3_game",
+          "provenance": "lexical-caller-candidate-not-proven-runtime-caller",
+          "role": "caller_candidate",
+          "source_column": 22,
+          "source_line": 65
+        },
+        {
+          "caller_candidate_resolution": "same-definition-file-only",
+          "event_definition_key": "pay_homage.0101",
+          "logical_path": "events/decisions_events/pay_homage_events.txt",
+          "origin": "ck3_game",
+          "provenance": "lexical-caller-candidate-not-proven-runtime-caller",
+          "role": "caller_candidate",
+          "source_column": 42,
+          "source_line": 171
+        },
+        {
+          "caller_candidate_resolution": null,
+          "event_definition_key": "pay_homage.0101",
+          "logical_path": "events/decisions_events/pay_homage_events.txt",
+          "origin": "ck3_game",
+          "provenance": "manually-reviewed-analysis-source",
+          "role": "analysis_source",
+          "source_column": null,
+          "source_line": null
+        }
+      ],
+      "sha256": "391ec1d01719ae94b902e8ac3b0fbe7d49f52f0896cd7a3846e28032f2aaddeb"
     },
     {
       "blob_bytes": 523,
@@ -6022,6 +6096,28 @@
       "sha256": "6148f1c0f0aa1eea6fc68bb9908c6b59eac3a50c23183405cdb1bfb4c338bea8"
     },
     {
+      "blob_bytes": 6803,
+      "blob_path": "blobs/62515e9392cbcbde98688a00213df98e3e5250c97ac3f54da70392a05cc83d94.gz",
+      "blob_sha256": "006b0f60a0f4e2df80ecca2115f83f26d7734dbb707c62dfcca8108bb186ed59",
+      "bytes": 116914,
+      "evidence_id": "62515e9392cbcbde98688a00213df98e3e5250c97ac3f54da70392a05cc83d94",
+      "kind": "observation_artifact",
+      "media_type": "application/json",
+      "references": [
+        {
+          "caller_candidate_resolution": null,
+          "event_definition_key": "pay_homage.0101",
+          "logical_path": "_runtime/p2r383-b1-replay-live/r384-pay-homage-0101-driver-state.json",
+          "origin": "runtime",
+          "provenance": "captured-observation-artifact",
+          "role": "driver_state_artifact",
+          "source_column": null,
+          "source_line": null
+        }
+      ],
+      "sha256": "62515e9392cbcbde98688a00213df98e3e5250c97ac3f54da70392a05cc83d94"
+    },
+    {
       "blob_bytes": 4515,
       "blob_path": "blobs/63feb33c8c5bf825e3d186e841d07235c98d6aed27c47375e495ea832255c52b.gz",
       "blob_sha256": "7c0dc3d374b10132e187f400c16e02d99828cdcd61f67b138c88fef20593da30",
@@ -6616,6 +6712,28 @@
       "sha256": "6d7def1245d899de4debc42136815bc7f4d14f6a467a8320355507ad03528f12"
     },
     {
+      "blob_bytes": 1519,
+      "blob_path": "blobs/6e3ff78c8633ce50809303f4a253076a248b35bf4794653ed67c6647659ac1c2.gz",
+      "blob_sha256": "d8aa22791cc055a24127a9dcdd6a9869d1698af105375ff437b9d5a12cb79445",
+      "bytes": 8686,
+      "evidence_id": "6e3ff78c8633ce50809303f4a253076a248b35bf4794653ed67c6647659ac1c2",
+      "kind": "source_definition",
+      "media_type": "text/plain; charset=utf-8",
+      "references": [
+        {
+          "caller_candidate_resolution": null,
+          "event_definition_key": "pay_homage.0101",
+          "logical_path": "common/on_action/dlc/ep1/ep1_pay_homage_on_actions.txt",
+          "origin": "ck3_game",
+          "provenance": "manually-reviewed-analysis-source",
+          "role": "analysis_source",
+          "source_column": null,
+          "source_line": null
+        }
+      ],
+      "sha256": "6e3ff78c8633ce50809303f4a253076a248b35bf4794653ed67c6647659ac1c2"
+    },
+    {
       "blob_bytes": 22827,
       "blob_path": "blobs/6e9823c47b8c8427b509ad6e4b9c62a30ead0392940452c3ded8c669e751e8fe.gz",
       "blob_sha256": "783eb9ad643d660bc174d8aab2022f032584a4d59f59aaac722c3bb994be27b0",
@@ -6904,6 +7022,50 @@
         }
       ],
       "sha256": "7b426465fced71a6d6aa96b34c8924b91990d0be144fe4bfaa57681bb7fa6ea5"
+    },
+    {
+      "blob_bytes": 396,
+      "blob_path": "blobs/7c0567d6f37db922d31a2af8ae69405bc4ca8aaa5c835dadb8fc92a801c7aa89.gz",
+      "blob_sha256": "9f5850f316ae7c5b6ccd2737c71b70be729738265994efbce39e8208df9bc662",
+      "bytes": 990,
+      "evidence_id": "7c0567d6f37db922d31a2af8ae69405bc4ca8aaa5c835dadb8fc92a801c7aa89",
+      "kind": "observation_artifact",
+      "media_type": "application/json",
+      "references": [
+        {
+          "caller_candidate_resolution": null,
+          "event_definition_key": "pay_homage.0101",
+          "logical_path": "_runtime/p2r383-b1-replay-live/r384-pay-homage-0101-red-park.json",
+          "origin": "runtime",
+          "provenance": "captured-observation-artifact",
+          "role": "park_artifact",
+          "source_column": null,
+          "source_line": null
+        }
+      ],
+      "sha256": "7c0567d6f37db922d31a2af8ae69405bc4ca8aaa5c835dadb8fc92a801c7aa89"
+    },
+    {
+      "blob_bytes": 2476,
+      "blob_path": "blobs/7d366988081a0e6cbd9e583ff767aebc71f6cc599f80b1d0784964ce8646e089.gz",
+      "blob_sha256": "f93486a3de9e82465c3cde1e88babfff03011c706f7bb35085a0cbf7339223e0",
+      "bytes": 10114,
+      "evidence_id": "7d366988081a0e6cbd9e583ff767aebc71f6cc599f80b1d0784964ce8646e089",
+      "kind": "source_definition",
+      "media_type": "text/plain; charset=utf-8",
+      "references": [
+        {
+          "caller_candidate_resolution": null,
+          "event_definition_key": "pay_homage.0101",
+          "logical_path": "common/decisions/30_court_decisions.txt",
+          "origin": "ck3_game",
+          "provenance": "manually-reviewed-analysis-source",
+          "role": "analysis_source",
+          "source_column": null,
+          "source_line": null
+        }
+      ],
+      "sha256": "7d366988081a0e6cbd9e583ff767aebc71f6cc599f80b1d0784964ce8646e089"
     },
     {
       "blob_bytes": 598,
@@ -8436,6 +8598,28 @@
         }
       ],
       "sha256": "ab7f5179d120578badaa307605cc9f5fa2b3e6845a43f773954d230dd67be993"
+    },
+    {
+      "blob_bytes": 48698,
+      "blob_path": "blobs/ac3e7f8616020056d9e8af652be091617110e2f1c30a9b3b3ff39be87491c5ac.gz",
+      "blob_sha256": "ad564915f076f96addf7241551d8e260d53742750d5d77b2dceb4740afc3ff2a",
+      "bytes": 702513,
+      "evidence_id": "ac3e7f8616020056d9e8af652be091617110e2f1c30a9b3b3ff39be87491c5ac",
+      "kind": "observation_artifact",
+      "media_type": "application/json",
+      "references": [
+        {
+          "caller_candidate_resolution": null,
+          "event_definition_key": "pay_homage.0101",
+          "logical_path": "_runtime/p2r383-b1-replay-live/r384-pay-homage-0101-red-report.json",
+          "origin": "runtime",
+          "provenance": "captured-observation-artifact",
+          "role": "artifact",
+          "source_column": null,
+          "source_line": null
+        }
+      ],
+      "sha256": "ac3e7f8616020056d9e8af652be091617110e2f1c30a9b3b3ff39be87491c5ac"
     },
     {
       "blob_bytes": 1150781,
@@ -11100,6 +11284,28 @@
       "sha256": "ebe10909d2618ae9b6360c738397f6304c6d61fa597dba16232772c05b4e0613"
     },
     {
+      "blob_bytes": 4201,
+      "blob_path": "blobs/eebf7c730fa2e09b3390320d0b9f3276455d7fc6ee7b6c16e282f371847392a2.gz",
+      "blob_sha256": "15cfca5228357a2532b9cec702998fc15c95c49e69577f5fd208b3aaabdf3831",
+      "bytes": 13896,
+      "evidence_id": "eebf7c730fa2e09b3390320d0b9f3276455d7fc6ee7b6c16e282f371847392a2",
+      "kind": "source_definition",
+      "media_type": "application/yaml; charset=utf-8",
+      "references": [
+        {
+          "caller_candidate_resolution": null,
+          "event_definition_key": "pay_homage.0101",
+          "logical_path": "localization/english/event_localization/activities/pay_homage_events_l_english.yml",
+          "origin": "ck3_game",
+          "provenance": "manually-reviewed-analysis-source",
+          "role": "analysis_source",
+          "source_column": null,
+          "source_line": null
+        }
+      ],
+      "sha256": "eebf7c730fa2e09b3390320d0b9f3276455d7fc6ee7b6c16e282f371847392a2"
+    },
+    {
       "blob_bytes": 368,
       "blob_path": "blobs/f2265333d99b4e996cbaafd5f31c616291e03438a976e3d85cd4262d4c9889d0.gz",
       "blob_sha256": "d80285780387518cda634f51ec5c610f929b8e77955850c9d92310c8899813a7",
@@ -11587,13 +11793,13 @@
   "schema": "xar.ck3.vanilla-event-portable-evidence-manifest",
   "schema_version": 1,
   "statistics": {
-    "evidence": 213,
-    "generated_definition_references": 167,
-    "lexical_caller_candidate_references": 497,
-    "manually_reviewed_analysis_source_references": 181,
-    "observation_artifact_references": 57,
-    "observation_artifacts": 56,
-    "references": 902,
-    "source_definitions": 157
+    "evidence": 221,
+    "generated_definition_references": 168,
+    "lexical_caller_candidate_references": 499,
+    "manually_reviewed_analysis_source_references": 186,
+    "observation_artifact_references": 60,
+    "observation_artifacts": 59,
+    "references": 913,
+    "source_definitions": 162
   }
 }
