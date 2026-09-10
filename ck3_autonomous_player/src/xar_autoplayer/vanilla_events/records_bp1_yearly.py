@@ -179,6 +179,31 @@ VANILLA_BP1_YEARLY_OBSERVATIONS: Final[dict[str, dict[str, object]]] = {
             "ocr_used": False,
             "coordinates_used": False,
             "console_used": False,
+        }, {
+            "run": "R416-retry-03",
+            "kind": "same-process-hot-recovery-green",
+            "artifact": (
+                "_runtime/p1-terminal-resume-r416-20260911/live-artifacts/"
+                "terminal-stages-red-attempt-03.json"
+            ),
+            "artifact_sha256": (
+                "7F2523869BEAFBC279D9ACDE65CB48661CCD1773D6CE40EB366E5EC5C9CB109A"
+            ),
+            "date_raw": 53804184,
+            "event_instance_id": 1078,
+            "root_character_id": 32904,
+            "starting_snapshot_id": "native:271",
+            "starting_revision": 272,
+            "ending_snapshot_id": "native:272",
+            "ending_revision": 273,
+            "selected_option_number": 3,
+            "selected_native_option_index": 2,
+            "postcondition_verified": True,
+            "next_event_definition_key": "tgp_movement_events.0110",
+            "next_event_instance_id": 1079,
+            "connection_generation": 1,
+            "bridge_pid": 174656,
+            "process_restart_required": False,
         }],
     },
 }

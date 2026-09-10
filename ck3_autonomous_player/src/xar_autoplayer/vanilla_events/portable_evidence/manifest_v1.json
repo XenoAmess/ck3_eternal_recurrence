@@ -1054,6 +1054,26 @@
         },
         {
           "caller_candidate_resolution": "external-definition-file",
+          "event_definition_key": "tgp_movement_events.0110",
+          "logical_path": "common/on_action/yearly_on_actions.txt",
+          "origin": "ck3_game",
+          "provenance": "lexical-caller-candidate-not-proven-runtime-caller",
+          "role": "caller_candidate",
+          "source_column": 9,
+          "source_line": 3752
+        },
+        {
+          "caller_candidate_resolution": null,
+          "event_definition_key": "tgp_movement_events.0110",
+          "logical_path": "common/on_action/yearly_on_actions.txt",
+          "origin": "ck3_game",
+          "provenance": "manually-reviewed-analysis-source",
+          "role": "analysis_source",
+          "source_column": null,
+          "source_line": null
+        },
+        {
+          "caller_candidate_resolution": "external-definition-file",
           "event_definition_key": "tgp_movement_events.0150",
           "logical_path": "common/on_action/yearly_on_actions.txt",
           "origin": "ck3_game",
@@ -3193,6 +3213,26 @@
           "role": "caller_candidate",
           "source_column": 9,
           "source_line": 21
+        },
+        {
+          "caller_candidate_resolution": "external-definition-file",
+          "event_definition_key": "tgp_movement_events.0110",
+          "logical_path": "common/on_action/dlc/tgp/tgp_china_yearly_on_actions.txt",
+          "origin": "ck3_game",
+          "provenance": "lexical-caller-candidate-not-proven-runtime-caller",
+          "role": "caller_candidate",
+          "source_column": 9,
+          "source_line": 24
+        },
+        {
+          "caller_candidate_resolution": null,
+          "event_definition_key": "tgp_movement_events.0110",
+          "logical_path": "common/on_action/dlc/tgp/tgp_china_yearly_on_actions.txt",
+          "origin": "ck3_game",
+          "provenance": "manually-reviewed-analysis-source",
+          "role": "analysis_source",
+          "source_column": null,
+          "source_line": null
         },
         {
           "caller_candidate_resolution": "external-definition-file",
@@ -7070,6 +7110,28 @@
       "sha256": "6f0f849c88ec48d78803b27b6bde94c334fdd94f61024aa1baa48ec88e2f4508"
     },
     {
+      "blob_bytes": 28867,
+      "blob_path": "blobs/712b4d4be351a7c2dcec0292e9bb4df8462080e87a0bb42a3f7d7dc0cb73ce4b.gz",
+      "blob_sha256": "c6facb1ffb3935eaa4a16c0a3b14462a972cad2ef56749c3a0c7f08068fd5dd2",
+      "bytes": 396550,
+      "evidence_id": "712b4d4be351a7c2dcec0292e9bb4df8462080e87a0bb42a3f7d7dc0cb73ce4b",
+      "kind": "source_definition",
+      "media_type": "text/plain; charset=utf-8",
+      "references": [
+        {
+          "caller_candidate_resolution": null,
+          "event_definition_key": "tgp_movement_events.0110",
+          "logical_path": "common/scripted_effects/00_ep1_artifact_creation_effects.txt",
+          "origin": "ck3_game",
+          "provenance": "manually-reviewed-analysis-source",
+          "role": "analysis_source",
+          "source_column": null,
+          "source_line": null
+        }
+      ],
+      "sha256": "712b4d4be351a7c2dcec0292e9bb4df8462080e87a0bb42a3f7d7dc0cb73ce4b"
+    },
+    {
       "blob_bytes": 27817,
       "blob_path": "blobs/716f014cdcc11119d652a7f20f80dd98d74a8a3ebd2af9873d8e0dff140913e3.gz",
       "blob_sha256": "222c37519c523c04e8c763c9fd177be5c39b33dc6377413e00e8ec46cc9917be",
@@ -7100,6 +7162,28 @@
         }
       ],
       "sha256": "716f014cdcc11119d652a7f20f80dd98d74a8a3ebd2af9873d8e0dff140913e3"
+    },
+    {
+      "blob_bytes": 4556,
+      "blob_path": "blobs/745099651760eb450dec4d5439c73d44f4dea19bf246a522297c42ae889a47f5.gz",
+      "blob_sha256": "4ed95dd20420d84e10f0043b7f5ce798a8de6f1e6a3b62fdf99b173259bccf27",
+      "bytes": 33041,
+      "evidence_id": "745099651760eb450dec4d5439c73d44f4dea19bf246a522297c42ae889a47f5",
+      "kind": "source_definition",
+      "media_type": "text/plain; charset=utf-8",
+      "references": [
+        {
+          "caller_candidate_resolution": null,
+          "event_definition_key": "tgp_movement_events.0110",
+          "logical_path": "common/scripted_effects/00_relation_effects.txt",
+          "origin": "ck3_game",
+          "provenance": "manually-reviewed-analysis-source",
+          "role": "analysis_source",
+          "source_column": null,
+          "source_line": null
+        }
+      ],
+      "sha256": "745099651760eb450dec4d5439c73d44f4dea19bf246a522297c42ae889a47f5"
     },
     {
       "blob_bytes": 6840,
@@ -7350,6 +7434,38 @@
         }
       ],
       "sha256": "7d366988081a0e6cbd9e583ff767aebc71f6cc599f80b1d0784964ce8646e089"
+    },
+    {
+      "blob_bytes": 45857,
+      "blob_path": "blobs/7f2523869beafbc279d9acde65cb48661ccd1773d6ce40eb366e5ec5c9cb109a.gz",
+      "blob_sha256": "df6826d5433bd0190495a8c8882de3d1f9c195484ecc0878d8eefd86f3fd256a",
+      "bytes": 715569,
+      "evidence_id": "7f2523869beafbc279d9acde65cb48661ccd1773d6ce40eb366e5ec5c9cb109a",
+      "kind": "observation_artifact",
+      "media_type": "application/json",
+      "references": [
+        {
+          "caller_candidate_resolution": null,
+          "event_definition_key": "bp1_yearly.1040",
+          "logical_path": "_runtime/p1-terminal-resume-r416-20260911/live-artifacts/terminal-stages-red-attempt-03.json",
+          "origin": "runtime",
+          "provenance": "captured-observation-artifact",
+          "role": "artifact",
+          "source_column": null,
+          "source_line": null
+        },
+        {
+          "caller_candidate_resolution": null,
+          "event_definition_key": "tgp_movement_events.0110",
+          "logical_path": "_runtime/p1-terminal-resume-r416-20260911/live-artifacts/terminal-stages-red-attempt-03.json",
+          "origin": "runtime",
+          "provenance": "captured-observation-artifact",
+          "role": "artifact",
+          "source_column": null,
+          "source_line": null
+        }
+      ],
+      "sha256": "7f2523869beafbc279d9acde65cb48661ccd1773d6ce40eb366e5ec5c9cb109a"
     },
     {
       "blob_bytes": 598,
@@ -11428,6 +11544,26 @@
         },
         {
           "caller_candidate_resolution": null,
+          "event_definition_key": "tgp_movement_events.0110",
+          "logical_path": "events/dlc/tgp/tgp_movement_events.txt",
+          "origin": "ck3_game",
+          "provenance": "generated-definition-index",
+          "role": "event_definition",
+          "source_column": null,
+          "source_line": 2428
+        },
+        {
+          "caller_candidate_resolution": null,
+          "event_definition_key": "tgp_movement_events.0110",
+          "logical_path": "events/dlc/tgp/tgp_movement_events.txt",
+          "origin": "ck3_game",
+          "provenance": "manually-reviewed-analysis-source",
+          "role": "analysis_source",
+          "source_column": null,
+          "source_line": null
+        },
+        {
+          "caller_candidate_resolution": null,
           "event_definition_key": "tgp_movement_events.0150",
           "logical_path": "events/dlc/tgp/tgp_movement_events.txt",
           "origin": "ck3_game",
@@ -11640,6 +11776,28 @@
         }
       ],
       "sha256": "da8b840bd0a71705421abe2fb1c743c451253156917bab1dc0f6165074194789"
+    },
+    {
+      "blob_bytes": 16845,
+      "blob_path": "blobs/dbabe31b564910aed332829b85edac8e7770b0f7fa73342a54edb3335604933e.gz",
+      "blob_sha256": "0bc4c9cd9cb2bba21bb55dd48e9b221649f3ab493c3c4ee3fb5ba1a902e9443f",
+      "bytes": 183464,
+      "evidence_id": "dbabe31b564910aed332829b85edac8e7770b0f7fa73342a54edb3335604933e",
+      "kind": "source_definition",
+      "media_type": "text/plain; charset=utf-8",
+      "references": [
+        {
+          "caller_candidate_resolution": null,
+          "event_definition_key": "tgp_movement_events.0110",
+          "logical_path": "common/scripted_effects/01_ep1_court_artifact_creation_effects.txt",
+          "origin": "ck3_game",
+          "provenance": "manually-reviewed-analysis-source",
+          "role": "analysis_source",
+          "source_column": null,
+          "source_line": null
+        }
+      ],
+      "sha256": "dbabe31b564910aed332829b85edac8e7770b0f7fa73342a54edb3335604933e"
     },
     {
       "blob_bytes": 2686,
@@ -12515,13 +12673,13 @@
   "schema": "xar.ck3.vanilla-event-portable-evidence-manifest",
   "schema_version": 1,
   "statistics": {
-    "evidence": 242,
-    "generated_definition_references": 175,
-    "lexical_caller_candidate_references": 508,
-    "manually_reviewed_analysis_source_references": 207,
-    "observation_artifact_references": 70,
-    "observation_artifacts": 69,
-    "references": 960,
-    "source_definitions": 173
+    "evidence": 246,
+    "generated_definition_references": 176,
+    "lexical_caller_candidate_references": 510,
+    "manually_reviewed_analysis_source_references": 213,
+    "observation_artifact_references": 72,
+    "observation_artifacts": 70,
+    "references": 971,
+    "source_definitions": 176
   }
 }

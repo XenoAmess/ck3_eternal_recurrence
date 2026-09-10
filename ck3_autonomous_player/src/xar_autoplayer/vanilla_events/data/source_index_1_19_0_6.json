@@ -2,18 +2,18 @@
   "audit": {
     "ambiguous_definition_count": 0,
     "caller_candidate_file_count": 77,
-    "caller_candidate_reference_count": 508,
+    "caller_candidate_reference_count": 510,
     "definition_file_count": 68,
-    "external_caller_event_count": 142,
+    "external_caller_event_count": 143,
     "missing_definition_count": 0,
     "namespace_mismatch_count": 0,
-    "registered_event_count": 175,
+    "registered_event_count": 176,
     "same_file_only_caller_event_count": 33,
-    "unique_definition_count": 175
+    "unique_definition_count": 176
   },
   "ck3_build": "1.19.0.6",
   "ck3_exe_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
-  "dataset_sha256": "495550164BACA056CBF60566E5FF8F60A3796DB69290E2F8A13DBA847F7B9D3F",
+  "dataset_sha256": "04E283301CC4ECA420C463AFF0A253043981540DC5B86A8B84634F2426BC3FC3",
   "events": {
     "adultery.0002": {
       "caller_candidate_resolution": "same-definition-file-only",
@@ -5187,6 +5187,31 @@
       "definition": {
         "file_sha256": "D9B172FC6C9F81216BE580C1B65DA7720CAA6EF21F049AB316361E17D3710BC6",
         "line": 1599,
+        "relative_path": "events/dlc/tgp/tgp_movement_events.txt"
+      },
+      "namespace": "tgp_movement_events"
+    },
+    "tgp_movement_events.0110": {
+      "caller_candidate_resolution": "external-definition-file",
+      "caller_candidates": [
+        {
+          "column": 9,
+          "file_sha256": "4D6F5379E40304B56C5C1A914E8A0EE3998E8023174DC52F7E5072F7CFA40454",
+          "kind": "exact-token-lexical-candidate",
+          "line": 24,
+          "relative_path": "common/on_action/dlc/tgp/tgp_china_yearly_on_actions.txt"
+        },
+        {
+          "column": 9,
+          "file_sha256": "0FC85A284224A68D1CA0A4EF071D4F4A4F49896753AEC463975A12EE4E1116FA",
+          "kind": "exact-token-lexical-candidate",
+          "line": 3752,
+          "relative_path": "common/on_action/yearly_on_actions.txt"
+        }
+      ],
+      "definition": {
+        "file_sha256": "D9B172FC6C9F81216BE580C1B65DA7720CAA6EF21F049AB316361E17D3710BC6",
+        "line": 2428,
         "relative_path": "events/dlc/tgp/tgp_movement_events.txt"
       },
       "namespace": "tgp_movement_events"
