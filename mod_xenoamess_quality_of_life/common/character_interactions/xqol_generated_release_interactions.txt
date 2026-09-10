@@ -40,6 +40,7 @@ xqol_mass_conversion_courtier_interaction = {
 	}
 
 	ai_potential = { always = no }
+	ai_frequency = 0
 	ai_will_do = { base = 0 }
 }
 
@@ -83,6 +84,7 @@ xqol_mass_conversion_ruler_interaction = {
 	}
 
 	ai_potential = { always = no }
+	ai_frequency = 0
 	ai_will_do = { base = 0 }
 }
 
@@ -170,6 +172,7 @@ xqol_release_hook_recruit_conversion_interaction = {
 	}
 
 	ai_potential = { always = no }
+	ai_frequency = 0
 	ai_will_do = { base = 0 }
 }
 
@@ -231,6 +234,7 @@ xqol_release_hook_recruit_interaction = {
 	}
 
 	ai_potential = { always = no }
+	ai_frequency = 0
 	ai_will_do = { base = 0 }
 }
 
@@ -307,6 +311,7 @@ xqol_release_hook_conversion_interaction = {
 	}
 
 	ai_potential = { always = no }
+	ai_frequency = 0
 	ai_will_do = { base = 0 }
 }
 
@@ -382,6 +387,7 @@ xqol_release_recruit_conversion_interaction = {
 	}
 
 	ai_potential = { always = no }
+	ai_frequency = 0
 	ai_will_do = { base = 0 }
 }
 
@@ -432,6 +438,7 @@ xqol_release_hook_interaction = {
 	}
 
 	ai_potential = { always = no }
+	ai_frequency = 0
 	ai_will_do = { base = 0 }
 }
 
@@ -481,6 +488,7 @@ xqol_release_recruit_interaction = {
 	}
 
 	ai_potential = { always = no }
+	ai_frequency = 0
 	ai_will_do = { base = 0 }
 }
 
@@ -545,5 +553,6 @@ xqol_release_conversion_interaction = {
 	}
 
 	ai_potential = { always = no }
+	ai_frequency = 0
 	ai_will_do = { base = 0 }
 }

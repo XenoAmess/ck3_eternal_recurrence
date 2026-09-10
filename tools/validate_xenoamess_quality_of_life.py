@@ -148,6 +148,12 @@ def check_localization(errors: list[str], *, release_localization: bool = False)
 
 def check_scripts(errors: list[str]) -> None:
     decisions = read_utf8(MOD / "common/decisions/xqol_decisions.txt")
+    interactions = read_utf8(
+        MOD / "common/character_interactions/xqol_generated_release_interactions.txt"
+    )
+    slider = read_utf8(
+        MOD / "gui/event_window_widgets/xqol_conversion_threshold_slider.gui"
+    )
     triggers = read_utf8(MOD / "common/scripted_triggers/xqol_triggers.txt")
     effects = read_utf8(MOD / "common/scripted_effects/xqol_effects.txt")
     on_actions = read_utf8(MOD / "common/on_action/xqol_on_actions.txt")
@@ -156,6 +162,14 @@ def check_scripts(errors: list[str]) -> None:
         errors.append("custom decision group must use the rendered big_button GUI tag")
     if decisions.count("ai_potential = { always = no }") != 12:
         errors.append("all twelve decisions must be impossible for AI")
+    if interactions.count("ai_frequency = 0") != 9:
+        errors.append("all nine hidden scripted interactions must disable AI scheduling")
+    if "FloatToInt(" in slider:
+        errors.append("slider must not use the unavailable FloatToInt data function")
+    if "GetProgressBarValueMaxScaled(" not in slider:
+        errors.append("slider must route its value through a supported int32 scaler")
+    if "raw_text = \"[GetPlayer.MakeScope.Var('xqol_mass_conversion_threshold_draft')" not in slider:
+        errors.append("slider's dynamic percentage must use raw_text")
     for variable in (
         "xqol_auto_appoint_successors_enabled",
         "xqol_no_vassal_transfers_enabled",

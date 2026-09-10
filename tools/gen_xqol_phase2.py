@@ -138,6 +138,7 @@ def render_release_interaction(name: str, hook: bool, recruit: bool, conversion:
 \t}}
 
 \tai_potential = {{ always = no }}
+\tai_frequency = 0
 \tai_will_do = {{ base = 0 }}
 }}"""
 
@@ -196,6 +197,7 @@ def render_conversion_interaction(kind: str, minimum_days: int, maximum_days: in
 \t}}
 
 \tai_potential = {{ always = no }}
+\tai_frequency = 0
 \tai_will_do = {{ base = 0 }}
 }}"""
 
@@ -258,10 +260,11 @@ def render_slider_widget() -> str:
     )
     callback = (
         "[GetVariableSystem.Set('xqol_conversion_threshold_route', "
-        "IntToString(FloatToInt(Min_float(Max_float(Multiply_float(Divide_float("
+        "IntToString(GetProgressBarValueMaxScaled(Min_float(Max_float(Multiply_float(Divide_float("
         "Subtract_float(GetX_CVector2f(PdxGuiWidget.GetScaledMousePosition), '(float)2'), "
         "Subtract_float(IntToFloat(GetX_CVector2i(PdxGetWidgetScreenSize(PdxGuiWidget.Self))), "
-        "'(float)4')), '(float)100'), '(float)0'), '(float)100'))))]"
+        "'(float)4')), '(float)100'), '(float)0'), '(float)100'), "
+        "'(float)100', '(int32)100')))]"
     )
     return f"""# GENERATED FILE. Edit tools/gen_xqol_phase2.py, then regenerate.
 
@@ -281,7 +284,7 @@ vbox = {{
 
 \ttext_single = {{
 \t\tlayoutpolicy_horizontal = expanding
-\t\ttext = \"[GetPlayer.MakeScope.Var('xqol_mass_conversion_threshold_draft').GetValue|0]%\"
+\t\traw_text = \"[GetPlayer.MakeScope.Var('xqol_mass_conversion_threshold_draft').GetValue|0]%\"
 \t\talign = center|nobaseline
 \t\tdefault_format = \"#V\"
 \t}}
