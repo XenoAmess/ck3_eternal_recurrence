@@ -166,9 +166,9 @@ def check_scripts(errors: list[str]) -> None:
         errors.append(
             "scripted-only hidden interactions must not opt into autonomous AI scheduling"
         )
-    if "ai_will_do" in interactions:
+    if interactions.count("ai_will_do = { base = 100 }") != 9:
         errors.append(
-            "scripted-only hidden interactions must not let actor AI desire block run_interaction"
+            "all nine hidden interactions must opt scripted run_interaction into AI replies"
         )
     if interactions.count("scope:actor = { xqol_human_ruler_trigger = yes }") != 18:
         errors.append("all nine hidden scripted interactions must require a human actor")
@@ -184,6 +184,10 @@ def check_scripts(errors: list[str]) -> None:
         errors.append("slider must not subtract two cursor positions")
     if "raw_text = \"[GetPlayer.MakeScope.Var('xqol_mass_conversion_threshold_draft')" not in slider:
         errors.append("slider's dynamic percentage must use raw_text")
+    if "size = { 404 28 }" in slider:
+        errors.append("slider container must derive its size from its child scrollbar")
+    if 'default_format = "#weak"' in slider:
+        errors.append("slider help must not concatenate weak with nested dynamic formatting")
     for variable in (
         "xqol_auto_appoint_successors_enabled",
         "xqol_no_vassal_transfers_enabled",

@@ -23,7 +23,6 @@ vbox = {
 
 	container = {
 		layoutpolicy_horizontal = expanding
-		size = { 404 28 }
 
 		scrollbar = {
 			name = "xqol_conversion_threshold_scrollbar"
@@ -68,7 +67,6 @@ vbox = {
 		text = xqol_mass_conversion_threshold_help
 		align = center|nobaseline
 		autoresize = yes
-		default_format = "#weak"
 	}
 
 	state = {

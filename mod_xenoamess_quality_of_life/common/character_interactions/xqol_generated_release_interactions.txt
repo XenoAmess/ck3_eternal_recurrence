@@ -7,6 +7,7 @@ xqol_mass_conversion_courtier_interaction = {
 	can_send_despite_rejection = yes
 	ai_min_reply_days = 1
 	ai_max_reply_days = 5
+	ai_will_do = { base = 100 }
 
 	is_shown = {
 		scope:actor = { xqol_human_ruler_trigger = yes }
@@ -49,6 +50,7 @@ xqol_mass_conversion_ruler_interaction = {
 	can_send_despite_rejection = yes
 	ai_min_reply_days = 4
 	ai_max_reply_days = 9
+	ai_will_do = { base = 100 }
 
 	is_shown = {
 		scope:actor = { xqol_human_ruler_trigger = yes }
@@ -88,6 +90,7 @@ xqol_release_hook_recruit_conversion_interaction = {
 	hidden = yes
 	common_interaction = no
 	use_diplomatic_range = no
+	ai_will_do = { base = 100 }
 
 	is_shown = {
 		scope:actor = { xqol_human_ruler_trigger = yes }
@@ -175,6 +178,7 @@ xqol_release_hook_recruit_interaction = {
 	hidden = yes
 	common_interaction = no
 	use_diplomatic_range = no
+	ai_will_do = { base = 100 }
 
 	is_shown = {
 		scope:actor = { xqol_human_ruler_trigger = yes }
@@ -236,6 +240,7 @@ xqol_release_hook_conversion_interaction = {
 	hidden = yes
 	common_interaction = no
 	use_diplomatic_range = no
+	ai_will_do = { base = 100 }
 
 	is_shown = {
 		scope:actor = { xqol_human_ruler_trigger = yes }
@@ -312,6 +317,7 @@ xqol_release_recruit_conversion_interaction = {
 	hidden = yes
 	common_interaction = no
 	use_diplomatic_range = no
+	ai_will_do = { base = 100 }
 
 	is_shown = {
 		scope:actor = { xqol_human_ruler_trigger = yes }
@@ -387,6 +393,7 @@ xqol_release_hook_interaction = {
 	hidden = yes
 	common_interaction = no
 	use_diplomatic_range = no
+	ai_will_do = { base = 100 }
 
 	is_shown = {
 		scope:actor = { xqol_human_ruler_trigger = yes }
@@ -437,6 +444,7 @@ xqol_release_recruit_interaction = {
 	hidden = yes
 	common_interaction = no
 	use_diplomatic_range = no
+	ai_will_do = { base = 100 }
 
 	is_shown = {
 		scope:actor = { xqol_human_ruler_trigger = yes }
@@ -486,6 +494,7 @@ xqol_release_conversion_interaction = {
 	hidden = yes
 	common_interaction = no
 	use_diplomatic_range = no
+	ai_will_do = { base = 100 }
 
 	is_shown = {
 		scope:actor = { xqol_human_ruler_trigger = yes }

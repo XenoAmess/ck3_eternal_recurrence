@@ -112,6 +112,7 @@ def render_release_interaction(name: str, hook: bool, recruit: bool, conversion:
 \thidden = yes
 \tcommon_interaction = no
 \tuse_diplomatic_range = no
+\tai_will_do = {{ base = 100 }}
 
 \tis_shown = {{
 \t\tscope:actor = {{ xqol_human_ruler_trigger = yes }}
@@ -163,6 +164,7 @@ def render_conversion_interaction(kind: str, minimum_days: int, maximum_days: in
 \tcan_send_despite_rejection = yes
 \tai_min_reply_days = {minimum_days}
 \tai_max_reply_days = {maximum_days}
+\tai_will_do = {{ base = 100 }}
 
 \tis_shown = {{
 \t\tscope:actor = {{ xqol_human_ruler_trigger = yes }}
@@ -286,7 +288,6 @@ vbox = {{
 
 \tcontainer = {{
 \t\tlayoutpolicy_horizontal = expanding
-\t\tsize = {{ 404 28 }}
 
 \t\tscrollbar = {{
 \t\t\tname = \"xqol_conversion_threshold_scrollbar\"
@@ -331,7 +332,6 @@ vbox = {{
 \t\ttext = xqol_mass_conversion_threshold_help
 \t\talign = center|nobaseline
 \t\tautoresize = yes
-\t\tdefault_format = \"#weak\"
 \t}}
 
 {states}
