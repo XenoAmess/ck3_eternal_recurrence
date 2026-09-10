@@ -123,7 +123,7 @@ def check_localization(errors: list[str], *, release_localization: bool = False)
         if language_keys != keys["english"]:
             errors.append(f"localization key set differs from English: {language}")
     required_keys = {
-        "xqol_quality_of_life",
+        "decision_group_type_xqol_quality_of_life",
         "xqol_auto_appointment_score_penalty_desc",
         "xqol_enable_auto_appointment_decision",
         "xqol_disable_auto_appointment_decision",

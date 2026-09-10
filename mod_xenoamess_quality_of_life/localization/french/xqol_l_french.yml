@@ -1,5 +1,5 @@
 ﻿l_french:
- xqol_quality_of_life:0 "Qualité de vie de XenoAmess"
+ decision_group_type_xqol_quality_of_life:0 "Qualité de vie de XenoAmess"
  xqol_enable_auto_appointment_decision:0 "Activer les nominations automatiques"
  xqol_enable_auto_appointment_decision_desc:0 "Empêcher le souverain de devenir l'héritier par défaut des charges administratives subordonnées. La loi de succession par nomination existante choisira à sa place le candidat éligible ayant le score de candidature le plus élevé."
  xqol_enable_auto_appointment_decision_tooltip:0 "Les gouvernorats administratifs reviendront au candidat éligible ayant le score de candidature le plus élevé en cas de décès ou de destitution."

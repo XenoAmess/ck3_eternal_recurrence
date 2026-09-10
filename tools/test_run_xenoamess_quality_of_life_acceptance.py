@@ -43,6 +43,27 @@ class ProductOuterDescriptorTests(unittest.TestCase):
         self.assertIn("sort_order = 90", decisions)
         self.assertIn("sort_order = 80", decisions)
         self.assertIn("acceptance.pyautogui.scroll(scroll_steps)", runner)
+        self.assertIn("int(width * 0.55), int(height * 0.05)", runner)
+
+    def test_product_decision_group_uses_ck3_localization_key(self) -> None:
+        for language in (
+            "english",
+            "french",
+            "german",
+            "japanese",
+            "korean",
+            "polish",
+            "russian",
+            "simp_chinese",
+            "spanish",
+        ):
+            text = (
+                xqol.SOURCE
+                / "localization"
+                / language
+                / f"xqol_l_{language}.yml"
+            ).read_text(encoding="utf-8-sig")
+            self.assertIn("decision_group_type_xqol_quality_of_life:0", text)
 
     def test_phase_two_payment_matrix_is_live_driven(self) -> None:
         fixture = (

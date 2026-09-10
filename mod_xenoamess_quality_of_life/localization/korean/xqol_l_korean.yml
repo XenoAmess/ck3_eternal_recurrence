@@ -1,5 +1,5 @@
 ﻿l_korean:
- xqol_quality_of_life:0 "XenoAmess 편의성 개선"
+ decision_group_type_xqol_quality_of_life:0 "XenoAmess 편의성 개선"
  xqol_enable_auto_appointment_decision:0 "자동 임명 활성화"
  xqol_enable_auto_appointment_decision_desc:0 "군주 본인이 하위 행정 관직의 대체 후계자가 되지 않게 합니다. 기존 임명 승계법에 따라 후보 점수가 가장 높은 적격 후보가 선출됩니다."
  xqol_enable_auto_appointment_decision_tooltip:0 "행정제 총독직은 사망 또는 해임 시 후보 점수가 가장 높은 적격 후보에게 승계됩니다."

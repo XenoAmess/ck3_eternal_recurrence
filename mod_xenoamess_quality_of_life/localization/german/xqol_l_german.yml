@@ -1,5 +1,5 @@
 ﻿l_german:
- xqol_quality_of_life:0 "XenoAmess – Lebensqualität"
+ decision_group_type_xqol_quality_of_life:0 "XenoAmess – Lebensqualität"
  xqol_enable_auto_appointment_decision:0 "Automatische Ernennungen aktivieren"
  xqol_enable_auto_appointment_decision_desc:0 "Verhindert, dass der Herrscher selbst zum Ersatznachfolger untergeordneter Verwaltungsämter wird. Stattdessen wählt das bestehende Ernennungsnachfolgerecht den geeigneten Kandidaten mit dem höchsten Kandidatenwert aus."
  xqol_enable_auto_appointment_decision_tooltip:0 "Statthaltertümer einer Verwaltungsregierung gehen bei Tod oder Absetzung an den geeigneten Kandidaten mit dem höchsten Kandidatenwert über."

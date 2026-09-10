@@ -383,17 +383,17 @@ def wait_native_readiness(service: GameplayBridgeService, pid: int) -> dict[str,
     raise acceptance.RunnerError("MCP readiness timed out: " + last)
 
 
-def click_decision(
+def open_xqol_decision_detail(
     title: str,
     confirm_label: str,
     artifacts: Path,
     stem: str,
     *,
     scroll_steps: int = 0,
-) -> None:
+) -> tuple[int, int]:
+    isolated.ensure_decisions_panel(artifacts, stem)
+    width, height = acceptance.pyautogui.size()
     if scroll_steps:
-        isolated.ensure_decisions_panel(artifacts, stem)
-        width, height = acceptance.pyautogui.size()
         acceptance.focus_ck3()
         acceptance.pyautogui.moveTo(
             int(width * 0.90), int(height * 0.70), duration=0.2
@@ -403,36 +403,54 @@ def click_decision(
         acceptance.ImageGrab.grab().save(
             artifacts / f"{stem}_decisions_scrolled_{scroll_steps}.png"
         )
-        row = acceptance.wait_for_ocr_text(
-            title,
-            acceptance.FULL_SCREEN_REGION,
-            15,
-            artifacts,
-            f"{stem}_decision.png",
-            contains=False,
-            stable_hits=1,
-        )
-        acceptance.deliberate_click(
-            (int(width * 0.90), row[1]), f"native decision row {title}"
-        )
-        confirm = acceptance.wait_for_ocr_text(
-            confirm_label,
-            acceptance.FULL_SCREEN_REGION,
-            15,
-            artifacts,
-            f"{stem}_confirm.png",
-            contains=True,
-            stable_hits=1,
-        )
-    else:
-        confirm = isolated.open_decision_detail(
-            title, confirm_label, artifacts, stem, contains=False
-        )
+    row = acceptance.wait_for_ocr_text(
+        title,
+        acceptance.FULL_SCREEN_REGION,
+        15,
+        artifacts,
+        f"{stem}_decision.png",
+        contains=False,
+        stable_hits=1,
+    )
+    acceptance.deliberate_click(
+        (int(width * 0.90), row[1]), f"native decision row {title}"
+    )
+    # Long decision tooltips can cover the confirm label while the pointer
+    # remains on the list row.  Move into the unused top-center map area before
+    # asking OCR to prove that the detail page opened.
+    acceptance.pyautogui.moveTo(int(width * 0.55), int(height * 0.05), duration=0.2)
+    time.sleep(0.5)
+    return acceptance.wait_for_ocr_text(
+        confirm_label,
+        acceptance.FULL_SCREEN_REGION,
+        15,
+        artifacts,
+        f"{stem}_confirm.png",
+        contains=True,
+        stable_hits=1,
+    )
+
+
+def click_decision(
+    title: str,
+    confirm_label: str,
+    artifacts: Path,
+    stem: str,
+    *,
+    scroll_steps: int = 0,
+) -> None:
+    confirm = open_xqol_decision_detail(
+        title,
+        confirm_label,
+        artifacts,
+        stem,
+        scroll_steps=scroll_steps,
+    )
     acceptance.click_until_text_disappears(confirm, confirm_label, acceptance.FULL_SCREEN_REGION, artifacts, attempts=2)
 
 
 def execute_mass_conversion_slider(artifacts: Path) -> None:
-    confirm = isolated.open_decision_detail(
+    confirm = open_xqol_decision_detail(
         "批量要求领内改信",
         "设定门槛",
         artifacts,

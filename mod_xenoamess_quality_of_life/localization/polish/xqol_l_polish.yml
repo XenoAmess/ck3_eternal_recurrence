@@ -1,5 +1,5 @@
 ﻿l_polish:
- xqol_quality_of_life:0 "XenoAmess — ulepszenia jakości życia"
+ decision_group_type_xqol_quality_of_life:0 "XenoAmess — ulepszenia jakości życia"
  xqol_enable_auto_appointment_decision:0 "Włącz automatyczne mianowania"
  xqol_enable_auto_appointment_decision_desc:0 "Nie pozwala, by władca został zastępczym dziedzicem podległych urzędów administracyjnych. Obowiązujące prawo sukcesyjne mianowania wybierze zamiast niego uprawnioną osobę o najwyższym wyniku kandydata."
  xqol_enable_auto_appointment_decision_tooltip:0 "Gubernatorstwa administracyjne przejdą po śmierci lub odwołaniu na uprawnioną osobę o najwyższym wyniku kandydata."

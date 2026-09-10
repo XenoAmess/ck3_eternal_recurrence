@@ -1,5 +1,5 @@
 ﻿l_spanish:
- xqol_quality_of_life:0 "Calidad de vida de XenoAmess"
+ decision_group_type_xqol_quality_of_life:0 "Calidad de vida de XenoAmess"
  xqol_enable_auto_appointment_decision:0 "Activar nombramientos automáticos"
  xqol_enable_auto_appointment_decision_desc:0 "Impide que el soberano sea el heredero suplente de los cargos administrativos subordinados. La ley de sucesión por nombramiento vigente escogerá al candidato apto con mayor puntuación de candidatura."
  xqol_enable_auto_appointment_decision_tooltip:0 "Las gobernaciones administrativas pasarán al candidato apto con mayor puntuación de candidatura tras una muerte o destitución."

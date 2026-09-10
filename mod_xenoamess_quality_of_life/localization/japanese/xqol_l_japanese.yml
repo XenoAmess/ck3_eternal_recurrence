@@ -1,5 +1,5 @@
 ﻿l_japanese:
- xqol_quality_of_life:0 "XenoAmess 生活の質"
+ decision_group_type_xqol_quality_of_life:0 "XenoAmess 生活の質"
  xqol_enable_auto_appointment_decision:0 "自動任命を有効化"
  xqol_enable_auto_appointment_decision_desc:0 "君主本人が下位の行政官職の予備継承者になることを防ぐ。各官職は既存の任命継承法に基づき、候補者スコアが最も高い適格者を選出する。"
  xqol_enable_auto_appointment_decision_tooltip:0 "官僚制の属州総督位は、死亡または解任時に候補者スコアが最も高い適格者へ継承される。"

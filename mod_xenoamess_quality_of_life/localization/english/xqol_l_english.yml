@@ -1,5 +1,5 @@
 ﻿l_english:
- xqol_quality_of_life:0 "XenoAmess Quality of Life"
+ decision_group_type_xqol_quality_of_life:0 "XenoAmess Quality of Life"
  xqol_enable_auto_appointment_decision:0 "Enable Automatic Appointments"
  xqol_enable_auto_appointment_decision_desc:0 "Stop the sovereign from becoming the fallback heir to subordinate administrative offices. Their existing appointment law will instead select its highest-scoring eligible candidate."
  xqol_enable_auto_appointment_decision_tooltip:0 "Administrative governorships will pass to their best eligible candidate on death or removal."
