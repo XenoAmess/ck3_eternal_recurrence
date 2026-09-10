@@ -52,7 +52,7 @@ designer 的 working state。
 用实际安装的 Python MCP SDK `2.0.0` 连接现有 stdio server 时，补能力前共列出 62 个工具，
 没有 coat-of-arms、clipboard 或 designer 工具。也就是说，旧 MCP 无法回答本报告的核心问题。
 
-本轮先后新增两个显式工具：
+本轮先后新增两个原生工具和一个离线资源工具：
 
 ```text
 ck3_probe_coat_of_arms_source_v1(
@@ -63,6 +63,15 @@ ck3_probe_coat_of_arms_source_v1(
 
 ck3_export_coat_of_arms_source_v1(
     expected_revision: integer
+)
+
+ck3_query_coat_of_arms_resource_catalog_v1(
+    game_directory: string,
+    kind: "pattern" | "colored_emblem" | "color",
+    query?: string,
+    visible_only: boolean = true,
+    offset: integer = 0,
+    limit: integer = 50
 )
 ```
 
@@ -92,6 +101,12 @@ MCP 合同明确区分三种绑定：
 
 Hybrid 后端中的两个工具都强制直达 native，
 不会回退到 OCR、坐标或视觉驱动。
+
+resource catalog 不启动 CK3，也不经过视觉路线。它先校验 `binaries/ck3.exe` 的 exact-build SHA-256，然后读取原版
+`50_coa_designer_patterns.txt`、`50_coa_designer_emblems.txt` 与 `50_coa_designer_palettes.txt`，按原版设计器顺序分页返回
+名称、颜色通道数、可见性、分类、相对路径以及当前页 DDS 的大小和 SHA-256。结果明确标记
+`engine_registration_observed=false`、`dlc_and_mod_overrides_included=false`：它证明 exact 1.19.0.6 基础游戏磁盘资源，
+不冒充运行时注册表或玩家当前 playset。
 
 ### 3.2 每条 MCP 结果提供什么证据
 
@@ -138,12 +153,14 @@ export 的公开结果为闭合 schema，包含 `status`、`designer_observed`�
 
 ### 3.3 验证状态
 
-- Python contract、service、native driver、hybrid 和真实 MCP SDK tools/list/call：21 项聚焦测试 GREEN；
-  不带 MCP SDK 的普通 Python 环境同组测试 21 项 GREEN，其中 2 项 SDK 集成测试按设计跳过；
+- Python contract、service、native driver、hybrid、离线资源索引和真实 MCP SDK tools/list/call：26 项聚焦测试 GREEN；
+  不带 MCP SDK 的普通 Python 环境同组测试 26 项 GREEN，其中 3 项 SDK 集成测试按设计跳过；
 - native bridge fresh build：成功；
 - native protocol 与 adapter registry CTest：2/2 GREEN；
 - Copy/export MCP primitive 已完成 closed-schema 注册、exact-build RVA/prologue 身份校验、UI-thread 调用、剪贴板读取、
   SHA-256 与 exact binding 投影，当前为 `mcp-static-ready`；遵守用户当前“不占用 CK3/主屏幕”的要求，live 结果明确待验；
+- 离线 resource catalog 已对本机 exact 1.19.0.6 安装执行：基础游戏 manifest 共定义 42 个 pattern（38 个 designer 可见）、
+  1,578 个 colored emblem（1,576 个可见）和 13 个背景色；该结果不含 DLC/mod override，也不是运行时注册证明；
 - CK3 frontend exact-build 握手：已真实取得，并广告新 capability；
 - 隔离 attempt 5 补齐 `frontend_snapshot` 绑定；attempt 6 暴露剪贴板函数槽的瞬时初始化状态；attempt 8 又证明
   gameplay 生命周期门禁会让角色设计器永远无法安装 hook。现在 hook 在 exact adapter 选定后即于 frontend 启动，瞬时槽缺失仍在
@@ -404,11 +421,12 @@ Web 端若要提供随机生成，应在自己的数据模型中完成选择，�
 ## 8. 目前 MCP 能力仍缺什么
 
 本轮已实机闭合“输入源码 → 原生检测/预览 → 可选应用”，并补齐 frontend 生命周期与 Windows 换行规范化。
-游戏自身 Copy/export 已通过 MCP/原生实现并完成静态验收，但尚未取得 live 证据。仍未通过 MCP 暴露的能力有：
+游戏自身 Copy/export 已通过 MCP/原生实现并完成静态验收，但尚未取得 live 证据；基础游戏 designer manifest 资源目录也已
+通过离线 MCP 工具分页暴露。仍未通过 MCP 暴露的能力有：
 
 - 读取 preview 的最终像素或直接导出 PNG；
 - 完成角色设计器上层 Finish；
-- 枚举游戏当前实际注册的 pattern/emblem/color 资源；
+- 枚举游戏当前运行时实际注册且已合并 DLC/mod override 的 pattern/emblem/color 资源；
 - 跨 CK3 build 自动适配 RVA 与字段。
 
 按 MCP-first 原则，后续若需要 canonical round-trip、资源清单或截图无关的视觉验收，应继续补这些原生/MCP primitive，
@@ -442,7 +460,7 @@ CoatOfArms
 
 尚未接入的下一阶段能力：
 
-- 绑定 exact CK3 version/DLC/mod set 的真实 pattern/emblem/color 资源索引；
+- 把 exact 1.19.0.6 基础游戏 resource catalog 接入编辑器，并继续补 DLC/mod playset 合并与运行时注册证据；
 - 通过 MCP 调用 `ck3_probe_coat_of_arms_source_v1` 的“发送到游戏”，不模拟 UI 点击；
 - 把已静态就绪的 `ck3_export_coat_of_arms_source_v1` 接入编辑器，并在重新获准占用 CK3 后完成 live 验收；
 - PNG/像素验证 primitive；
@@ -489,11 +507,15 @@ CoatOfArms
 | attempt 8 MCP live artifact（27 条原生请求、cleanup GREEN） | `B40E16DD700EEB0FD0703B909955563F04D5810543D2E28D9D72E0DDE081CD2F` |
 | attempt 8 `xar_ck3_bridge.dll`（2,507,776 bytes） | `EC534B8D4D3BFA16FCA9BCA8DA4DD2CF393019C86892AFAD0BCF372E541C59CD` |
 | Copy/export static build `xar_ck3_bridge.dll`（2,551,808 bytes；rebase 后 exact master） | `F28BFFA0F82A6F9C51DC0E8491DE93578B443A00957F73E6B11BCB660C395FF8` |
+| `50_coa_designer_patterns.txt`（42 项/38 可见） | `3BAA46C11BD24E7D9F9F6D1DF3E51403D016AB4CAC7290A6541ED25561425B7B` |
+| `50_coa_designer_emblems.txt`（1,578 项/1,576 可见） | `3D6529702F91FA352E07B0C64E4C33A88E5F86C2AAF0EF2D0CEB69CF6D600F3C` |
+| `50_coa_designer_palettes.txt`（13 色） | `3AE2EA0F3B751D61C08A06408FA2EDA2ADC3FF6FBF204298D3D8CDC9613B87B4` |
 
 当前实现与证据入口：
 
 - `ck3_autonomous_player/src/xar_autoplayer/bridge/coat_of_arms_source_probe_contract.py`；
 - `ck3_autonomous_player/src/xar_autoplayer/bridge/coat_of_arms_source_export_contract.py`；
+- `ck3_autonomous_player/src/xar_autoplayer/coat_of_arms_resources.py`；
 - `ck3_autonomous_player/native_bridge/src/coat_of_arms_designer_probe_v1.cpp`；
 - `ck3_autonomous_player/tests/unit/test_coat_of_arms_source_probe_v1_bridge.py`；
 - `artifacts/coa-clipboard-probe-2026-09-08/`（过程资产，不进 Git）。

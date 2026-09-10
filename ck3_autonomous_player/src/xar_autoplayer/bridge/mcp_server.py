@@ -6,6 +6,10 @@ import argparse
 import importlib
 import os
 from pathlib import Path
+
+from xar_autoplayer.coat_of_arms_resources import (
+    query_coat_of_arms_resource_catalog_v1,
+)
 from xar_autoplayer.vanilla_events import (
     ck3_list_vanilla_event_knowledge_v1 as list_vanilla_event_knowledge_v1,
     list_vanilla_event_evidence_v1,
@@ -118,6 +122,25 @@ def _ck3_query_vanilla_event_source_provenance_v1(
 ) -> dict[str, object]:
     """Read generated source provenance and unproven lexical caller hits."""
     return query_vanilla_event_source_provenance_v1(key, build)
+
+
+def _ck3_query_coat_of_arms_resource_catalog_v1(
+    game_directory: str,
+    kind: str,
+    query: str | None = None,
+    visible_only: bool = True,
+    offset: int = 0,
+    limit: int = 50,
+) -> dict[str, object]:
+    """Index one page of exact-build base-game CoA designer resources."""
+    return query_coat_of_arms_resource_catalog_v1(
+        game_directory,
+        kind,
+        query=query,
+        visible_only=visible_only,
+        offset=offset,
+        limit=limit,
+    )
 
 
 def load_driver(
@@ -1283,6 +1306,25 @@ def create_server(driver: GameplayBridgeDriver):
         )
 
     @server.tool()
+    def ck3_query_coat_of_arms_resource_catalog_v1(
+        game_directory: str,
+        kind: str,
+        query: str | None = None,
+        visible_only: bool = True,
+        offset: int = 0,
+        limit: int = 50,
+    ) -> dict[str, object]:
+        """Index base-game designer manifests; does not claim engine registration."""
+        return _ck3_query_coat_of_arms_resource_catalog_v1(
+            game_directory,
+            kind,
+            query,
+            visible_only,
+            offset,
+            limit,
+        )
+
+    @server.tool()
     def ck3_query_loaded_feature_manifest_v1(
         expected_revision: int,
     ) -> dict[str, object]:
@@ -1628,6 +1670,9 @@ def create_server(driver: GameplayBridgeDriver):
     )
     _forbid_unknown_tool_arguments_v1(
         server, "ck3_export_coat_of_arms_source_v1"
+    )
+    _forbid_unknown_tool_arguments_v1(
+        server, "ck3_query_coat_of_arms_resource_catalog_v1"
     )
     return server
 

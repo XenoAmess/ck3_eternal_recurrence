@@ -28,3 +28,6 @@ Maven + Java + Quarkus 伴随服务。
 
 仓库内的原生 `ck3_export_coat_of_arms_source_v1` MCP Copy/export primitive 已完成静态构建与 closed-schema 测试，
 尚未在真实 CK3 进程中验收，也尚未接入这个浏览器界面。浏览器不会用 OCR 或屏幕自动化冒充该能力。
+
+`ck3_query_coat_of_arms_resource_catalog_v1` 已能在不启动 CK3 的情况下分页读取 exact 1.19.0.6 基础游戏 designer manifest；
+它尚未接入前端，并明确不声称包含 DLC/mod 覆盖或运行时资源注册状态。
