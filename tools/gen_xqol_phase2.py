@@ -111,7 +111,9 @@ def render_release_interaction(name: str, hook: bool, recruit: bool, conversion:
     return f"""xqol_release_{name}_interaction = {{
 \thidden = yes
 \tcommon_interaction = no
+\tcategory = interaction_category_prison
 \tuse_diplomatic_range = no
+\tignores_pending_interaction_block = yes
 \tai_will_do = {{ base = 100 }}
 
 \tis_shown = {{
@@ -159,7 +161,9 @@ def render_conversion_interaction(kind: str, minimum_days: int, maximum_days: in
         raise ValueError(f"unsupported conversion interaction kind: {kind}")
     return f"""xqol_mass_conversion_{kind}_interaction = {{
 \thidden = yes
+\tcategory = interaction_category_religion
 \tuse_diplomatic_range = no
+\tignores_pending_interaction_block = yes
 \tai_maybe = yes
 \tcan_send_despite_rejection = yes
 \tai_min_reply_days = {minimum_days}

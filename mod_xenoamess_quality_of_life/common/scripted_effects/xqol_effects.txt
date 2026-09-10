@@ -140,16 +140,8 @@ xqol_bulk_conversion_threshold_effect = {
 				}
 			}
 		}
-		save_temporary_scope_as = xqol_conversion_candidate
-		scope:actor = {
-			change_variable = { name = xqol_mass_conversion_pending add = 1 }
-			run_interaction = {
-				interaction = xqol_mass_conversion_courtier_interaction
-				actor = scope:actor
-				recipient = scope:xqol_conversion_candidate
-				send_threshold = decline
-			}
-		}
+		add_to_list = xqol_conversion_courtier_candidates
+		scope:actor = { change_variable = { name = xqol_mass_conversion_pending add = 1 } }
 	}
 
 	every_vassal_or_below = {
@@ -163,21 +155,14 @@ xqol_bulk_conversion_threshold_effect = {
 				}
 			}
 		}
-		save_temporary_scope_as = xqol_conversion_candidate
-		scope:actor = {
-			change_variable = { name = xqol_mass_conversion_pending add = 1 }
-			run_interaction = {
-				interaction = xqol_mass_conversion_ruler_interaction
-				actor = scope:actor
-				recipient = scope:xqol_conversion_candidate
-				send_threshold = decline
-			}
-		}
+		add_to_list = xqol_conversion_ruler_candidates
+		scope:actor = { change_variable = { name = xqol_mass_conversion_pending add = 1 } }
 	}
 
 	every_tributary = {
 		limit = {
 			is_ai = yes
+			NOT = { is_in_list = xqol_conversion_ruler_candidates }
 			scope:actor = {
 				is_character_interaction_potentially_accepted = {
 					recipient = prev
@@ -186,25 +171,39 @@ xqol_bulk_conversion_threshold_effect = {
 				}
 			}
 		}
-		save_temporary_scope_as = xqol_conversion_candidate
-		scope:actor = {
-			change_variable = { name = xqol_mass_conversion_pending add = 1 }
-			run_interaction = {
-				interaction = xqol_mass_conversion_ruler_interaction
-				actor = scope:actor
-				recipient = scope:xqol_conversion_candidate
-				send_threshold = decline
-			}
-		}
+		add_to_list = xqol_conversion_ruler_candidates
+		scope:actor = { change_variable = { name = xqol_mass_conversion_pending add = 1 } }
 	}
 
 	if = {
-		limit = { NOT = { has_variable = xqol_mass_conversion_pending } }
-		xqol_mass_conversion_finish_effect = yes
-	}
-	else_if = {
 		limit = { var:xqol_mass_conversion_pending <= 0 }
 		xqol_mass_conversion_finish_effect = yes
+	}
+	else = {
+		every_in_list = {
+			list = xqol_conversion_courtier_candidates
+			save_temporary_scope_as = xqol_conversion_candidate
+			scope:actor = {
+				run_interaction = {
+					interaction = xqol_mass_conversion_courtier_interaction
+					actor = scope:actor
+					recipient = scope:xqol_conversion_candidate
+					send_threshold = decline
+				}
+			}
+		}
+		every_in_list = {
+			list = xqol_conversion_ruler_candidates
+			save_temporary_scope_as = xqol_conversion_candidate
+			scope:actor = {
+				run_interaction = {
+					interaction = xqol_mass_conversion_ruler_interaction
+					actor = scope:actor
+					recipient = scope:xqol_conversion_candidate
+					send_threshold = decline
+				}
+			}
+		}
 	}
 }
 
