@@ -221,6 +221,100 @@ _TRANSIENT_PROGRESS_BINDING_ERRORS = (
     "ZhongGuo promotion source progress revision is stale",
     "promotion source progress is not bound to the requested frame",
 )
+_TRANSIENT_RUNTIME_DIAGNOSTIC_PROBE_NATIVE_ERRORS = (
+    "ZhongGuo B1-cycle snapshot changed or is not ready",
+)
+
+
+def _runtime_diagnostic_probe_binding(
+    snapshot: Mapping[str, object],
+) -> dict[str, object]:
+    """Project only the fields that prove a diagnostic probe was rebound."""
+
+    played = snapshot.get("played_character")
+    diagnostics = snapshot.get("diagnostics")
+    active_event = snapshot.get("active_event")
+    return {
+        "snapshot_id": snapshot.get("snapshot_id"),
+        "revision": snapshot.get("revision"),
+        "native_revision": snapshot.get("native_revision"),
+        "date_raw": snapshot.get("date_raw"),
+        "paused": snapshot.get("paused"),
+        "speed": snapshot.get("speed"),
+        "player_character_id": (
+            played.get("character_id") if isinstance(played, Mapping) else None
+        ),
+        "connection_generation": (
+            diagnostics.get("connection_generation")
+            if isinstance(diagnostics, Mapping)
+            else None
+        ),
+        "active_event_instance_id": (
+            active_event.get("instance_id")
+            if isinstance(active_event, Mapping)
+            else None
+        ),
+    }
+
+
+def _run_runtime_diagnostic_probe(
+    service: PromotionProductionEntryService,
+    probe: Callable[[], str | None],
+    *,
+    player: int,
+    connection_generation: int,
+    evidence: dict[str, object],
+    sleeper: Callable[[float], None],
+) -> str | None:
+    """Retry only a proven read-only probe race against snapshot publication."""
+
+    rebinds = evidence.get("runtime_diagnostic_probe_rebinds")
+    if not isinstance(rebinds, list):
+        raise PromotionProductionEntryError(
+            "runtime diagnostic probe rebind audit storage is invalid"
+        )
+    for attempt in range(1, MAX_PRE_SUBMISSION_REBIND_ATTEMPTS + 1):
+        before, _ = _binding(
+            service.snapshot(),
+            player=player,
+            connection_generation=connection_generation,
+        )
+        try:
+            return probe()
+        except BridgeUnavailableError as error:
+            native_error = getattr(error, "native_error", None)
+            exact_error = next(
+                (
+                    marker
+                    for marker in _TRANSIENT_RUNTIME_DIAGNOSTIC_PROBE_NATIVE_ERRORS
+                    if native_error == marker
+                    or str(error) == f"native gameplay step failed: {marker}"
+                ),
+                None,
+            )
+            if exact_error is None:
+                raise
+            sleeper(PAUSED_PROGRESS_SETTLE_SECONDS)
+            after, _ = _binding(
+                service.snapshot(),
+                player=player,
+                connection_generation=connection_generation,
+            )
+            before_binding = _runtime_diagnostic_probe_binding(before)
+            after_binding = _runtime_diagnostic_probe_binding(after)
+            rebinds.append({
+                "attempt": attempt,
+                "error": f"{type(error).__name__}: {error}",
+                "native_error": exact_error,
+                "before": before_binding,
+                "after": after_binding,
+                "binding_changed": before_binding != after_binding,
+                "query_submitted": True,
+                "state_mutation_submitted": False,
+            })
+            if attempt == MAX_PRE_SUBMISSION_REBIND_ATTEMPTS:
+                raise
+    raise AssertionError("finite runtime diagnostic probe retry exhausted")
 
 
 def _optional_scope_name_sets(
@@ -3395,6 +3489,7 @@ def enter_promotion_source_checkpoint_v1(
         "progress_observations": [],
         "pre_submission_revision_rebinds": [],
         "progress_query_rebinds": [],
+        "runtime_diagnostic_probe_rebinds": [],
         "initial_known_interrupt": None,
         "zg361_6_retain_wait": None,
         "seed_invalid": None,
@@ -3455,7 +3550,21 @@ def enter_promotion_source_checkpoint_v1(
         )
         raise PromotionScenarioInvalidatingInterrupt(invalidation)
     if runtime_diagnostic_probe is not None:
-        diagnostic = runtime_diagnostic_probe()
+        diagnostic = _run_runtime_diagnostic_probe(
+            service,
+            runtime_diagnostic_probe,
+            player=player,
+            connection_generation=generation,
+            evidence=evidence,
+            sleeper=sleeper,
+        )
+        initial, initial_event = _binding(
+            service.snapshot(),
+            player=player,
+            connection_generation=generation,
+        )
+        starting_date = int(initial["date_raw"])
+        evidence["starting_date_raw"] = starting_date
         if diagnostic:
             _raise_runtime_diagnostic(
                 service,
@@ -3646,7 +3755,19 @@ def enter_promotion_source_checkpoint_v1(
             connection_generation=generation,
         )
         if runtime_diagnostic_probe is not None:
-            diagnostic = runtime_diagnostic_probe()
+            diagnostic = _run_runtime_diagnostic_probe(
+                service,
+                runtime_diagnostic_probe,
+                player=player,
+                connection_generation=generation,
+                evidence=evidence,
+                sleeper=sleeper,
+            )
+            snapshot, event = _binding(
+                service.snapshot(),
+                player=player,
+                connection_generation=generation,
+            )
             if diagnostic:
                 _raise_runtime_diagnostic(
                     service,
@@ -4203,7 +4324,14 @@ def enter_promotion_source_checkpoint_v1(
         if poll_interval_seconds:
             sleeper(poll_interval_seconds)
     if runtime_diagnostic_probe is not None:
-        diagnostic = runtime_diagnostic_probe()
+        diagnostic = _run_runtime_diagnostic_probe(
+            service,
+            runtime_diagnostic_probe,
+            player=player,
+            connection_generation=generation,
+            evidence=evidence,
+            sleeper=sleeper,
+        )
         if diagnostic:
             snapshot, _ = _binding(
                 service.snapshot(), player=player,

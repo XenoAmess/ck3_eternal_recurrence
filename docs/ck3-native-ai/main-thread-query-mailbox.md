@@ -1056,3 +1056,23 @@ returned an available frame, but a second raw-only normalization in the service
 rejected the driver's two derived fields. This was a Python consumer-composition
 RED, not a wire/schema/DLL failure. The repair is Python-only and keeps the native
 wire, public JSON schema, variable allowlist, MCP tool and CK3 process unchanged.
+
+### Read-only probe admission versus asynchronous map control
+
+[live-confirmed, R384] A successful `resume-map` submission is not a barrier
+that guarantees the next 250 ms heartbeat has replaced the last paused public
+snapshot. R384 observed three available B1 queries on one paused frame, then a
+`resume-map` ACK followed by a query built from that still-cached paused frame.
+The worker-side revision matched, but the native direct read no longer equalled
+the published snapshot, so the B1 admission gate correctly returned
+`ZhongGuo B1-cycle snapshot changed or is not ready` before submitting the
+application-main query.
+
+This exact rejection is a read-only diagnostic-probe rebind, not a product B1
+result. The promotion runner may settle and retry it only under the same player
+and connection generation, records before/after bindings plus
+`state_mutation_submitted=false`, and keeps a finite four-attempt limit. Any
+other bridge error, or exhaustion of the exact retry, remains RED. After the
+probe returns, the runner rebinds the full snapshot before handling a modal or
+issuing another action. The native wire, readiness fields and MCP surface do
+not change.

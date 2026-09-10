@@ -17,6 +17,7 @@ from xar_autoplayer.bridge.zhongguo_promotion_source_progress_contract import ( 
     parse_query_promotion_source_progress_v1_step,
     query_promotion_source_progress_v1_step,
 )
+import zg361_phase2_promotion_source_production_entry as production  # noqa: E402
 from zg361_phase2_promotion_source_production_entry import (  # noqa: E402
     B1_AUTHORED_ADVANCE_DAYS,
     KNOWN_TIMELINE_INTERRUPTS,
@@ -1139,6 +1140,166 @@ def test_unavailable_progress_reports_native_reason_and_widgets() -> None:
         enter_promotion_source_checkpoint_v1(
             _UnavailableService(), poll_interval_seconds=0
         )
+
+
+def test_runtime_probe_rebinds_exact_snapshot_publication_race() -> None:
+    class _ProbeService:
+        def __init__(self) -> None:
+            self.revision = 7
+            self.native_revision = 3
+            self.date_raw = 53584968
+            self.paused = True
+            self.active_event: dict[str, object] | None = None
+
+        def snapshot(self) -> dict[str, object]:
+            return {
+                "snapshot_id": f"native:{self.native_revision}",
+                "revision": self.revision,
+                "native_revision": self.native_revision,
+                "date_raw": self.date_raw,
+                "paused": self.paused,
+                "speed": 5,
+                "map_ready": True,
+                "played_character": {"character_id": 32904},
+                "diagnostics": {"connection_generation": 1},
+                "active_event": self.active_event,
+            }
+
+    service = _ProbeService()
+    calls = 0
+    evidence: dict[str, object] = {"runtime_diagnostic_probe_rebinds": []}
+
+    def probe() -> str | None:
+        nonlocal calls
+        calls += 1
+        if calls == 1:
+            raise production.BridgeUnavailableError(
+                "native gameplay step failed: ZhongGuo B1-cycle snapshot "
+                "changed or is not ready"
+            )
+        return None
+
+    def settle(_seconds: float) -> None:
+        service.revision = 10
+        service.native_revision = 10
+        service.date_raw = 53585040
+        service.paused = False
+        service.active_event = {"instance_id": 1041, "option_count": 3}
+
+    assert production._run_runtime_diagnostic_probe(
+        service,
+        probe,
+        player=32904,
+        connection_generation=1,
+        evidence=evidence,
+        sleeper=settle,
+    ) is None
+    assert calls == 2
+    assert evidence["runtime_diagnostic_probe_rebinds"] == [
+        {
+            "attempt": 1,
+            "error": (
+                "BridgeUnavailableError: native gameplay step failed: "
+                "ZhongGuo B1-cycle snapshot changed or is not ready"
+            ),
+            "native_error": (
+                "ZhongGuo B1-cycle snapshot changed or is not ready"
+            ),
+            "before": {
+                "snapshot_id": "native:3",
+                "revision": 7,
+                "native_revision": 3,
+                "date_raw": 53584968,
+                "paused": True,
+                "speed": 5,
+                "player_character_id": 32904,
+                "connection_generation": 1,
+                "active_event_instance_id": None,
+            },
+            "after": {
+                "snapshot_id": "native:10",
+                "revision": 10,
+                "native_revision": 10,
+                "date_raw": 53585040,
+                "paused": False,
+                "speed": 5,
+                "player_character_id": 32904,
+                "connection_generation": 1,
+                "active_event_instance_id": 1041,
+            },
+            "binding_changed": True,
+            "query_submitted": True,
+            "state_mutation_submitted": False,
+        }
+    ]
+
+
+def test_runtime_probe_keeps_stable_or_unknown_rejection_red() -> None:
+    snapshot = {
+        "snapshot_id": "native:3",
+        "revision": 7,
+        "native_revision": 3,
+        "date_raw": 53584968,
+        "paused": True,
+        "speed": 5,
+        "map_ready": True,
+        "played_character": {"character_id": 32904},
+        "diagnostics": {"connection_generation": 1},
+        "active_event": None,
+    }
+
+    class _StableService:
+        @staticmethod
+        def snapshot() -> dict[str, object]:
+            return snapshot
+
+    evidence: dict[str, object] = {"runtime_diagnostic_probe_rebinds": []}
+
+    def exact_rejection() -> str | None:
+        raise production.BridgeUnavailableError(
+            "native gameplay step failed: ZhongGuo B1-cycle snapshot "
+            "changed or is not ready"
+        )
+
+    with pytest.raises(
+        production.BridgeUnavailableError,
+        match="B1-cycle snapshot changed or is not ready",
+    ):
+        production._run_runtime_diagnostic_probe(
+            _StableService(),
+            exact_rejection,
+            player=32904,
+            connection_generation=1,
+            evidence=evidence,
+            sleeper=lambda _seconds: None,
+        )
+    assert len(evidence["runtime_diagnostic_probe_rebinds"]) == 4
+    assert all(
+        row["binding_changed"] is False
+        and row["state_mutation_submitted"] is False
+        for row in evidence["runtime_diagnostic_probe_rebinds"]
+    )
+
+    unknown_evidence: dict[str, object] = {
+        "runtime_diagnostic_probe_rebinds": []
+    }
+
+    def unknown_rejection() -> str | None:
+        raise production.BridgeUnavailableError("different native failure")
+
+    with pytest.raises(
+        production.BridgeUnavailableError,
+        match="different native failure",
+    ):
+        production._run_runtime_diagnostic_probe(
+            _StableService(),
+            unknown_rejection,
+            player=32904,
+            connection_generation=1,
+            evidence=unknown_evidence,
+            sleeper=lambda _seconds: None,
+        )
+    assert unknown_evidence["runtime_diagnostic_probe_rebinds"] == []
 
 
 def test_source_contract_and_product_share_exact_entry() -> None:
