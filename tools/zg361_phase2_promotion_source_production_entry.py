@@ -430,6 +430,47 @@ _MANAGER_RECOVERY_WORKFORCE_OPTION_COUNTS: dict[int, int] = {
 # the paused date, played root, typed saved scopes and complete enabled option
 # shape before one fixed, source-reviewed option is sent.
 KNOWN_TIMELINE_INTERRUPTS: dict[str, dict[str, object]] = {
+    "study_confucian_classics_outcome.1030": {
+        # CK3 1.19.0.6, exact EXE SHA 2D00FF31...; source
+        # events/scheme_events/study_confucian_classics_scheme/
+        # study_confucian_classics_events.txt SHA 28E247F0..., lines
+        # 1822-1938. R406 instance 2153 exposed all three authored options
+        # with this five-scope shape. Authored option 3/native 2 only grants
+        # miniscule piety (plus its source-authored cynical stress impact); it
+        # avoids option 1's gold payment and options 1/2's durable scheme and
+        # priest-opinion mutations.
+        "date_policy": "product-observation-window",
+        "root_character_id": 33596113,
+        "character_scopes": {
+            "owner": 33596113,
+            "target": 33596113,
+        },
+        "unique_character_scope_excludes": {
+            "priest": (33596113,),
+        },
+        "scope_types": {
+            "scheme": "scheme",
+            "owner": "character",
+            "artifact": "artifact",
+            "target": "character",
+            "priest": "character",
+        },
+        "boolean_scopes": (),
+        "saved_scope_name_sets": ((
+            "scheme",
+            "owner",
+            "artifact",
+            "target",
+            "priest",
+        ),),
+        "saved_scope_count": 5,
+        "option_count": 3,
+        "snapshot_option_count": 3,
+        "native_option_indices": (0, 1, 2),
+        "selected_option_number": 3,
+        "selected_native_option_index": 2,
+        "occurrence_policy": "repeatable-within-product-observation-window",
+    },
     "zg361b2.40": {
         "date_raw": 53147040,
         "date_policy": "exact-authored-anchor",

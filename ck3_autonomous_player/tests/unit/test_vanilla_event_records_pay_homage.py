@@ -141,7 +141,7 @@ class PayHomageEventRecordTests(unittest.TestCase):
             DEFAULT_VANILLA_EVENT_OBSERVATIONS[EVENT_KEY],
             VANILLA_PAY_HOMAGE_OBSERVATIONS[EVENT_KEY],
         )
-        self.assertEqual(len(production.KNOWN_TIMELINE_INTERRUPTS), 309)
+        self.assertEqual(len(production.KNOWN_TIMELINE_INTERRUPTS), 310)
         self.assertIs(
             production.KNOWN_TIMELINE_INTERRUPTS[EVENT_KEY],
             VANILLA_PAY_HOMAGE_TIMELINE_CONTRACTS[EVENT_KEY],

@@ -133,6 +133,50 @@ def _human_tribute_scopes() -> list[dict[str, object]]:
 
 
 class ManagerRecoveryInterruptTests(unittest.TestCase):
+    def test_confucian_classics_prayer_uses_minimal_option_three(self) -> None:
+        event_key = "study_confucian_classics_outcome.1030"
+        contract = production._manager_recovery_contract(
+            production.KNOWN_TIMELINE_INTERRUPTS[event_key],
+            player=33596113,
+            event_key=event_key,
+        )
+        contract = production._timeline_contract_for_window(
+            contract,
+            starting_date=53998728,
+        )
+        context = _context(
+            event_key=event_key,
+            instance_id=2153,
+            date_raw=54001920,
+            player=33596113,
+            scopes=[
+                _scope("scheme", "scheme"),
+                _scope("owner", "character", 33596113),
+                _scope("artifact", "artifact"),
+                _scope("target", "character", 33596113),
+                _scope("priest", "character", 90219),
+            ],
+            native_option_indices=(0, 1, 2),
+        )
+        checks = production._known_interrupt_checks(
+            snapshot={
+                "date_raw": 54001920,
+                "active_event": {"option_count": 3},
+            },
+            event={"event_instance_id": 2153},
+            context=context,
+            event_key=event_key,
+            contract=contract,
+        )
+
+        self.assertTrue(all(checks.values()), checks)
+        self.assertEqual(contract["character_scopes"], {
+            "owner": 33596113,
+            "target": 33596113,
+        })
+        self.assertEqual(contract["selected_option_number"], 3)
+        self.assertEqual(contract["selected_native_option_index"], 2)
+
     def test_cold_import_preserves_existing_canonical_contract_identity(
         self,
     ) -> None:
