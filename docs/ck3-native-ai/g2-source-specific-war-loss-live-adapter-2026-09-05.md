@@ -199,6 +199,20 @@ Without `--authorize-private-live`, the command stops after no-launch
 preflight. Artifact and userdir paths must be fresh. A RED attempt must be
 preserved and must end with the same owned-process cleanup proof.
 
+### 2026-09-10 portable operator MCP no-launch entry
+
+The adapter's explicit game/runtime path overrides are now consumed by a
+generic profile generator. Each operator or machine supplies its own target
+identity, endpoint, clone and byte-identical runtime paths; the generated
+operator profile hash-binds every input and exposes only this adapter's
+`--verify-only` command. It contains no live authorization, artifact/userdir,
+stdin control, account constant, host-root constant or fixed CK3 round.
+
+See
+[the G2 operator MCP no-launch profile record](g2-source-specific-operator-mcp-preflight-2026-09-10.md).
+This closes deployment assembly only. No live lifecycle was run and all G2
+source-specific/readiness boundaries remain unchanged.
+
 ## Verification and remaining boundary
 
 The adapter suite is GREEN in normal and optimized Python. The combined

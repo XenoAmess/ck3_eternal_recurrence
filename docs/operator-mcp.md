@@ -60,3 +60,17 @@ client 配置；已经运行的 session 不会因仓库内新增 server 代码�
 - 可迁移对象：CK3 自动玩家、天朝二期、其他 mod 实机验收，以及其他机器的 MCP 查询调用方
 
 复制到新操作者或机器时，只替换仓库外 profile 与 endpoint 注册；代码、tool 名和响应 schema 不变。
+
+## G2 source-specific 的 no-launch-first 入口
+
+G2 source-specific lifecycle 使用
+`ck3_autonomous_player/native_bridge/research/prepare_g2_source_specific_operator_profile.py`
+生成每台 target 的仓库外 profile。生成器要求显式提供 target identity、endpoint、当前 clone、Python、
+exact-build 游戏文件、可重定位 runtime bundle、完整 settings + warm shadercache 和输出目录；仓库内不保存
+固定操作者、机器路径或固定 `R{n}`。
+
+该 profile 只有 `g2-source-specific-no-launch-preflight`：命令固定为 live adapter 的 `--verify-only`，
+没有 `--authorize-private-live`、CK3 stdin control 或游戏进程独占门，因而不能启动或控制 CK3。
+所有文件输入均在 operator preflight 中复核 size/SHA-256；adapter 随后再次按冻结 manifest 检查依赖和
+完整 warm profile。部署命令、测试边界与 readiness 口径见
+[G2 operator MCP no-launch profile](ck3-native-ai/g2-source-specific-operator-mcp-preflight-2026-09-10.md)。
