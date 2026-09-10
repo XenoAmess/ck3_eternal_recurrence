@@ -2,18 +2,18 @@
   "audit": {
     "ambiguous_definition_count": 0,
     "caller_candidate_file_count": 77,
-    "caller_candidate_reference_count": 503,
+    "caller_candidate_reference_count": 505,
     "definition_file_count": 67,
-    "external_caller_event_count": 139,
+    "external_caller_event_count": 140,
     "missing_definition_count": 0,
     "namespace_mismatch_count": 0,
-    "registered_event_count": 172,
+    "registered_event_count": 173,
     "same_file_only_caller_event_count": 33,
-    "unique_definition_count": 172
+    "unique_definition_count": 173
   },
   "ck3_build": "1.19.0.6",
   "ck3_exe_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
-  "dataset_sha256": "312146BCDAE99357FF17BAEF6270E2252F2D28665BBAB455D06166A38769826E",
+  "dataset_sha256": "69FF3330B16C69B0B8ACDA5D402B55DF319596BD9E760B371CACC1C809118F46",
   "events": {
     "adultery.0002": {
       "caller_candidate_resolution": "same-definition-file-only",
@@ -5033,6 +5033,31 @@
         "relative_path": "events/dlc/tgp/tgp_interaction_events.txt"
       },
       "namespace": "tgp_interaction_event"
+    },
+    "tgp_movement_events.0030": {
+      "caller_candidate_resolution": "external-definition-file",
+      "caller_candidates": [
+        {
+          "column": 9,
+          "file_sha256": "4D6F5379E40304B56C5C1A914E8A0EE3998E8023174DC52F7E5072F7CFA40454",
+          "kind": "exact-token-lexical-candidate",
+          "line": 16,
+          "relative_path": "common/on_action/dlc/tgp/tgp_china_yearly_on_actions.txt"
+        },
+        {
+          "column": 9,
+          "file_sha256": "0FC85A284224A68D1CA0A4EF071D4F4A4F49896753AEC463975A12EE4E1116FA",
+          "kind": "exact-token-lexical-candidate",
+          "line": 3744,
+          "relative_path": "common/on_action/yearly_on_actions.txt"
+        }
+      ],
+      "definition": {
+        "file_sha256": "D9B172FC6C9F81216BE580C1B65DA7720CAA6EF21F049AB316361E17D3710BC6",
+        "line": 649,
+        "relative_path": "events/dlc/tgp/tgp_movement_events.txt"
+      },
+      "namespace": "tgp_movement_events"
     },
     "tgp_movement_events.0050": {
       "caller_candidate_resolution": "external-definition-file",

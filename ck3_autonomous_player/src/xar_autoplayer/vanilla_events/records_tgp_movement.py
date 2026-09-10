@@ -19,6 +19,30 @@ from .registry import (
 VANILLA_TGP_MOVEMENT_TIMELINE_CONTRACTS: Final[
     dict[str, dict[str, object]]
 ] = {
+    "tgp_movement_events.0030": {
+        # Both choices are terminal and beneficial.  Native 1 changes only
+        # the player's influence; native 0 also changes another ruler's merit
+        # and advances a friendship, so native 1 is the narrower recovery.
+        "date_policy": "product-observation-window",
+        "root_character_id": PLAYER_SENTINEL,
+        "character_scopes": {},
+        "unique_character_scope_excludes": {
+            "other_ruler": (PLAYER_SENTINEL,),
+        },
+        "scope_types": {
+            "my_movement": "situation_participant_group",
+            "other_ruler": "character",
+        },
+        "saved_scope_name_sets": (("my_movement", "other_ruler"),),
+        "saved_scope_count": 2,
+        "boolean_scopes": (),
+        "option_count": 2,
+        "snapshot_option_count": 2,
+        "native_option_indices": (0, 1),
+        "selected_option_number": 2,
+        "selected_native_option_index": 1,
+        "occurrence_policy": "repeatable-within-product-observation-window",
+    },
     "tgp_movement_events.0160": {
         # The yearly TGP movement pulse may select this event again after its
         # ten-year event cooldown.  Bind recurrence to the caller's bounded
@@ -56,6 +80,58 @@ VANILLA_TGP_MOVEMENT_TIMELINE_CONTRACTS: Final[
 
 
 VANILLA_TGP_MOVEMENT_ANALYSIS: Final[dict[str, dict[str, object]]] = {
+    "tgp_movement_events.0030": {
+        "exact_build": {
+            "game_version": EXACT_CK3_BUILD,
+            "ck3_executable_sha256": EXACT_CK3_EXE_SHA256,
+        },
+        "source_sha256": {
+            "events/dlc/tgp/tgp_movement_events.txt": (
+                "D9B172FC6C9F81216BE580C1B65DA7720CAA6EF21F049AB316361E17D3710BC6"
+            ),
+            "common/on_action/dlc/tgp/tgp_china_yearly_on_actions.txt": (
+                "4D6F5379E40304B56C5C1A914E8A0EE3998E8023174DC52F7E5072F7CFA40454"
+            ),
+            "common/on_action/yearly_on_actions.txt": (
+                "0FC85A284224A68D1CA0A4EF071D4F4A4F49896753AEC463975A12EE4E1116FA"
+            ),
+            "localization/simp_chinese/dlc/tgp/"
+            "tgp_movement_events_l_simp_chinese.yml": (
+                "A2ADDB9940D72F79E57BC266EA62A11CB3D0C5318E79D5F93CB8F5EE01B3943F"
+            ),
+        },
+        "definition_lines": "649-734",
+        "trigger_boundary": (
+            "root is an available adult with TGP, celestial government and "
+            "a dynastic-cycle participant group; at least one other eligible "
+            "ruler must be in the same movement"
+        ),
+        "caller_semantics": (
+            "yearly random-event pools; the event has a five-year cooldown"
+        ),
+        "immediate_effect": (
+            "saves root's dynastic-cycle participant group as my_movement, "
+            "then selects an eligible other ruler with extra weight for a "
+            "potential friend, family member, friend, lover, or disciple"
+        ),
+        "option_semantics": {
+            0: (
+                "grants medium merit to root and other_ruler, then progresses "
+                "root toward friendship with other_ruler"
+            ),
+            1: "grants major influence to root and has no other authored effect",
+        },
+        "native_ai_semantics": (
+            "both options have base weight one hundred; gregarious or generous "
+            "doubles native 0, while deceitful, callous, or arrogant doubles "
+            "native 1"
+        ),
+        "after_effect": None,
+        "safe_option_rationale": (
+            "native1 is terminal and changes only the player's influence; it "
+            "does not change another ruler's merit or create friendship state"
+        ),
+    },
     "tgp_movement_events.0160": {
         "exact_build": {
             "game_version": EXACT_CK3_BUILD,
@@ -95,6 +171,44 @@ VANILLA_TGP_MOVEMENT_ANALYSIS: Final[dict[str, dict[str, object]]] = {
 
 
 VANILLA_TGP_MOVEMENT_OBSERVATIONS: Final[dict[str, dict[str, object]]] = {
+    "tgp_movement_events.0030": {
+        "exemplars": [{
+            "run": "R414",
+            "kind": "pre-selection-live-red",
+            "red_classification": "harness-route-red",
+            "product_failure_proven": False,
+            "artifact": (
+                "_runtime/p1-post-chaos-terminal-r414-20260911/live-artifacts/"
+                "terminal-stages-red-attempt-04.json"
+            ),
+            "artifact_sha256": (
+                "CC9AD4AE45201F1AA3693626975DAADBEE395F448A76BB9E3DCD303A350AB013"
+            ),
+            "date_raw": 53733456,
+            "event_instance_id": 1072,
+            "root_character_id": 32904,
+            "saved_character_ids": {"other_ruler": 33621094},
+            "saved_scope_raw_types": {
+                "my_movement": 61,
+                "other_ruler": 4,
+            },
+            "rendered_native_option_indices": [0, 1],
+            "selected_option_number": None,
+            "selected_native_option_index": None,
+            "selection_attempted": False,
+            "connection_generation": 1,
+            "bridge_pid": 202268,
+            "snapshot_id": "native:1287",
+            "revision": 1288,
+            "process_restart_required": False,
+            "retained_red": True,
+            "mcp_only": True,
+            "fixture_used": False,
+            "ocr_used": False,
+            "coordinates_used": False,
+            "console_used": False,
+        }],
+    },
     "tgp_movement_events.0160": {
         "exemplars": [{
             "run": "R372",
