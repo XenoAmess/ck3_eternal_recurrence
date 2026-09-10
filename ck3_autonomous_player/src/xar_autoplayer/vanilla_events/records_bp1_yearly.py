@@ -1,4 +1,4 @@
-"""Reusable CK3 1.19.0.6 record for BP1 yearly bathhouse events."""
+"""Reusable CK3 1.19.0.6 records for reviewed BP1 yearly events."""
 
 from __future__ import annotations
 
@@ -31,6 +31,33 @@ VANILLA_BP1_YEARLY_TIMELINE_CONTRACTS: Final[
         "native_option_indices": (0, 2),
         "selected_option_number": 3,
         "selected_native_option_index": 2,
+        "occurrence_policy": "repeatable-within-product-observation-window",
+    },
+    "bp1_yearly.4000": {
+        # The dead-participant projection exposes the deterministic grief row
+        # and the diplomacy-duel poem row.  Bind that exact live shape and take
+        # the deterministic branch rather than speculating on the duel result.
+        "date_policy": "product-observation-window",
+        "root_character_id": PLAYER_SENTINEL,
+        "character_scopes": {},
+        "unique_character_scope_excludes": {
+            "family_memory_participant": (PLAYER_SENTINEL,),
+        },
+        "scope_types": {
+            "family_memory": "character_memory",
+            "family_memory_participant": "character",
+        },
+        "boolean_scopes": (),
+        "saved_scope_name_sets": ((
+            "family_memory",
+            "family_memory_participant",
+        ),),
+        "saved_scope_count": 2,
+        "option_count": 2,
+        "snapshot_option_count": 5,
+        "native_option_indices": (1, 3),
+        "selected_option_number": 2,
+        "selected_native_option_index": 1,
         "occurrence_policy": "repeatable-within-product-observation-window",
     },
 }
@@ -137,6 +164,108 @@ VANILLA_BP1_YEARLY_ANALYSIS: Final[dict[str, dict[str, object]]] = {
             "opinion and listed trait-dependent stress"
         ),
     },
+    "bp1_yearly.4000": {
+        "exact_build": {
+            "game_version": EXACT_CK3_BUILD,
+            "ck3_executable_sha256": EXACT_CK3_EXE_SHA256,
+            "steam_build_id": 23530548,
+            "branch": "titus/release/1.19.0",
+        },
+        "source_sha256": {
+            "events/dlc/bp1/bp1_yearly_oltner.txt": (
+                "2D8DAB35EF9630F3A0206CE8F3DEC91AAE0442D80434A66955D7B3B7134A1CC6"
+            ),
+            "common/on_action/yearly_on_actions.txt": (
+                "0FC85A284224A68D1CA0A4EF071D4F4A4F49896753AEC463975A12EE4E1116FA"
+            ),
+            "common/on_action/yearly_groups_on_actions.txt": (
+                "D916E482A780F26CC1B1B27B582B675F90945AB808EB461A54A906EAAD0147C5"
+            ),
+            "localization/english/dlc/bp1/"
+            "dlc_bp1_oltner_yearly_events_l_english.yml": (
+                "14718DDCABE8FE5AA53BE00C1FEEA6788842E21E0D417764A3B04EA08CE9F4D2"
+            ),
+            "localization/simp_chinese/dlc/bp1/"
+            "dlc_bp1_oltner_yearly_events_l_simp_chinese.yml": (
+                "A922EB18E96A803CF7F216CB9D974F5B9160D1E9D8CABBF0D398C6D70F122CB9"
+            ),
+        },
+        "definition_lines": "22-292",
+        "trigger_lines": "95-107",
+        "immediate_effect_lines": "109-132",
+        "option_lines": "134-291",
+        "on_yearly_pool_entry_line": "3377",
+        "yearly_group_pool_entry_line": "227",
+        "caller_semantics": (
+            "the event is a weight-one-hundred candidate in both reviewed yearly "
+            "event pools. When selected, it reflects on one appropriate family "
+            "memory after the event's own trigger and five-year cooldown pass"
+        ),
+        "frequency_boundary": (
+            "the exact annual probability depends on the surrounding valid groups "
+            "and candidates. The event itself declares a five-year cooldown"
+        ),
+        "trigger_boundary": (
+            "Friends and Foes must be active; ROOT must have a house and positive "
+            "stress, must be neither callous nor sadistic, and must own at least "
+            "one appropriate family memory"
+        ),
+        "immediate_effect": (
+            "randomly saves one appropriate memory as family_memory, then saves one "
+            "non-rival participant from ROOT's house as family_memory_participant"
+        ),
+        "scope_boundary": (
+            "R416 proves a distinct dead family_memory_participant plus the opaque "
+            "character_memory scope. The alive-participant and family_first option "
+            "projections remain source-known but are not admitted by this contract"
+        ),
+        "option_semantics": {
+            0: (
+                "requires family_first, grants minor dynasty prestige, and applies "
+                "minor stress loss; this row was not rendered in R416"
+            ),
+            1: (
+                "requires the participant to be dead and applies a deterministic "
+                "minor stress gain with no other authored effect"
+            ),
+            2: (
+                "requires the participant to be alive and applies minuscule stress "
+                "loss; this row was not rendered in R416"
+            ),
+            3: (
+                "requires the participant to be dead and runs a diplomacy-10 duel. "
+                "Success triggers bp1_yearly.4001, reduces stress, and gives close "
+                "family opinion; failure triggers the same follow-up and adds medium "
+                "stress. Several traits add further stress to choosing the row"
+            ),
+            4: (
+                "requires the participant to be alive, pays that character minor "
+                "gold, progresses friendship, grants grateful opinion, and usually "
+                "reduces stress; this row was not rendered in R416"
+            ),
+        },
+        "native_ai_weights": {
+            0: "base 1000",
+            1: "base 100",
+            2: "base 100",
+            3: "base 100, reduced to zero for shy or cynical AI",
+            4: (
+                "base 25, reduced to zero below major_gold_value or for greedy, "
+                "honest, or arbitrary AI"
+            ),
+        },
+        "after_effect": None,
+        "follow_up_event": (
+            "only authored option 4/native 3 triggers bp1_yearly.4001 after its "
+            "diplomacy duel; the selected native 1 branch has no follow-up"
+        ),
+        "repeatability": "the event declares a five-year cooldown",
+        "safe_option_rationale": (
+            "authored option 2/native 1 is the only rendered route with a fully "
+            "deterministic source effect. It accepts minor stress gain and avoids "
+            "native 3's diplomacy duel, possible medium stress gain, and follow-up"
+        ),
+    },
 }
 
 
@@ -204,6 +333,47 @@ VANILLA_BP1_YEARLY_OBSERVATIONS: Final[dict[str, dict[str, object]]] = {
             "connection_generation": 1,
             "bridge_pid": 174656,
             "process_restart_required": False,
+        }],
+    },
+    "bp1_yearly.4000": {
+        "exemplars": [{
+            "run": "R416-retry-10",
+            "kind": "retained-live-contract-red",
+            "red_classification": "harness-route-red",
+            "product_failure_proven": False,
+            "artifact": (
+                "_runtime/p1-terminal-resume-r416-20260911/live-artifacts/"
+                "terminal-stages-red-attempt-10.json"
+            ),
+            "artifact_sha256": (
+                "F05201BCDD0D441F199C56D65D8BF8CF59E1B1F7570226101985BA4E2A29D62F"
+            ),
+            "date_raw": 53902032,
+            "event_instance_id": 1090,
+            "root_character_id": 32904,
+            "snapshot_id": "native:1498",
+            "revision": 1499,
+            "native_revision": 1498,
+            "saved_character_ids": {
+                "family_memory_participant": 67046,
+            },
+            "saved_scope_raw_types": {
+                "family_memory": 34,
+                "family_memory_participant": 4,
+            },
+            "rendered_native_option_indices": [1, 3],
+            "selected_option_number": None,
+            "selected_native_option_index": None,
+            "selection_attempted": False,
+            "retained_red": True,
+            "process_id": 174656,
+            "connection_generation": 1,
+            "process_restart_required": False,
+            "mcp_only": True,
+            "fixture_used": False,
+            "ocr_used": False,
+            "coordinates_used": False,
+            "console_used": False,
         }],
     },
 }

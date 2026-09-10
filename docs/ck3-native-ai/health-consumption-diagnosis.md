@@ -27,11 +27,11 @@
   招募形态与 R332 八 scope 既有医师形态，因此先保留 RED；retry 09 随后在同一 PID / generation 选择 authored
   `1` / native `0`，instance `1087 -> null`、snapshot `native:1038 -> native:1039`、revision `1039 -> 1040`，
   且 `postcondition_verified=true`。
-- [paused live RED] 继续推进到 `date_raw=53865048` 后，原版为患病廷臣 `88187` 打开 liege 代选治疗事件
+- [paused live RED → production-live primitive] 继续推进到 `date_raw=53865048` 后，原版为患病廷臣 `88187` 打开 liege 代选治疗事件
   `health.3102` instance `1088`。root 是玩家 `32904`，医师仍是高技能候选 `33648496`，native `0/1/3/4`
-  均 shown/enabled；未提交选择。
-- [counter-policy static-ready, live action pending] `health.3102` 当前投影选择 authored `1` / native `0` 的安全治疗。
-  这会治疗实见的第三方患者，并避免风险治疗、拒绝治疗或把选择推迟给患者；仍以 instance advance 作为后置条件。
+  均 shown/enabled；attempt 09 保留选择前 RED。retry 10 随后在同一 PID / generation 选择 authored `1` /
+  native `0`，instance `1088 -> null`、snapshot `native:1045 -> native:1046`、revision `1046 -> 1047`，
+  且 `postcondition_verified=true`。这条安全治疗路线已经越过真实第三方患者窗口。
 
 ## 原版状态与入口
 
@@ -238,6 +238,9 @@ flowchart TD
 - R416 retry 09 同时包含 `health.3103` 的选择后置条件和 `health.3102` 的选择前 RED：
   `_runtime/p1-terminal-resume-r416-20260911/live-artifacts/terminal-stages-red-attempt-09.json`，SHA-256
   `5E630E4EF04B137F132627470B27D67BA8B4148C5B9F171D5117227A9FF49DFC`。
+- R416 retry 10 包含 `health.3102` 的选择后置条件以及下一项 `bp1_yearly.4000` 的选择前 RED：
+  `_runtime/p1-terminal-resume-r416-20260911/live-artifacts/terminal-stages-red-attempt-10.json`，SHA-256
+  `F05201BCDD0D441F199C56D65D8BF8CF59E1B1F7570226101985BA4E2A29D62F`。
 
 R97 下游死亡边界见
 [`promotion-source-checkpoint-choreography-forensics-2026-09-04.md`](../phase2-promo/promotion-source-checkpoint-choreography-forensics-2026-09-04.md)。

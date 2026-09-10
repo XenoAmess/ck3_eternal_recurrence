@@ -128,7 +128,7 @@ class HealthLiegeTreatmentEventRecordTests(unittest.TestCase):
             self.assertRegex(digest, SHA256_PATTERN)
 
     def test_r416_red_observation_remains_outside_contract(self) -> None:
-        (r416,) = VANILLA_HEALTH_OBSERVATIONS[EVENT_KEY]["exemplars"]
+        r416, recovery = VANILLA_HEALTH_OBSERVATIONS[EVENT_KEY]["exemplars"]
         contract_repr = repr(MANAGER_HEALTH_TIMELINE_CONTRACTS[EVENT_KEY])
 
         self.assertEqual(r416["event_instance_id"], 1088)
@@ -147,6 +147,15 @@ class HealthLiegeTreatmentEventRecordTests(unittest.TestCase):
             174656,
         ):
             self.assertNotIn(str(observation_only), contract_repr)
+
+        self.assertEqual(recovery["run"], "R416-retry-10")
+        self.assertEqual(recovery["event_instance_id"], 1088)
+        self.assertEqual(recovery["selected_option_number"], 1)
+        self.assertEqual(recovery["selected_native_option_index"], 0)
+        self.assertTrue(recovery["postcondition_verified"])
+        self.assertEqual(recovery["starting_snapshot_id"], "native:1045")
+        self.assertEqual(recovery["ending_snapshot_id"], "native:1046")
+        self.assertRegex(recovery["artifact_sha256"], SHA256_PATTERN)
 
     def test_live_shape_passes_production_checks(self) -> None:
         base = production._manager_recovery_contract(

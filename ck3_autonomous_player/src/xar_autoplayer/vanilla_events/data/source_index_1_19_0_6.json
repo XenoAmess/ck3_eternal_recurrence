@@ -2,18 +2,18 @@
   "audit": {
     "ambiguous_definition_count": 0,
     "caller_candidate_file_count": 77,
-    "caller_candidate_reference_count": 513,
-    "definition_file_count": 69,
-    "external_caller_event_count": 145,
+    "caller_candidate_reference_count": 515,
+    "definition_file_count": 70,
+    "external_caller_event_count": 146,
     "missing_definition_count": 0,
     "namespace_mismatch_count": 0,
-    "registered_event_count": 178,
+    "registered_event_count": 179,
     "same_file_only_caller_event_count": 33,
-    "unique_definition_count": 178
+    "unique_definition_count": 179
   },
   "ck3_build": "1.19.0.6",
   "ck3_exe_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
-  "dataset_sha256": "F41ADB10BE0BCAD36CC3819C23D3D4BD5FA9243A1D16DEE624EDC9373F63163D",
+  "dataset_sha256": "935B7410AFB5261D26FB62B4D92548B6030E4CA33C14E57F4EA31C642159165E",
   "events": {
     "adultery.0002": {
       "caller_candidate_resolution": "same-definition-file-only",
@@ -188,6 +188,31 @@
         "file_sha256": "F79A3224CFB74804BD489D626E121A883CB0217895D136BB61B9A96880EA3EE4",
         "line": 2467,
         "relative_path": "events/dlc/bp1/bp1_yearly_events_claudia.txt"
+      },
+      "namespace": "bp1_yearly"
+    },
+    "bp1_yearly.4000": {
+      "caller_candidate_resolution": "external-definition-file",
+      "caller_candidates": [
+        {
+          "column": 9,
+          "file_sha256": "D916E482A780F26CC1B1B27B582B675F90945AB808EB461A54A906EAAD0147C5",
+          "kind": "exact-token-lexical-candidate",
+          "line": 227,
+          "relative_path": "common/on_action/yearly_groups_on_actions.txt"
+        },
+        {
+          "column": 9,
+          "file_sha256": "0FC85A284224A68D1CA0A4EF071D4F4A4F49896753AEC463975A12EE4E1116FA",
+          "kind": "exact-token-lexical-candidate",
+          "line": 3377,
+          "relative_path": "common/on_action/yearly_on_actions.txt"
+        }
+      ],
+      "definition": {
+        "file_sha256": "2D8DAB35EF9630F3A0206CE8F3DEC91AAE0442D80434A66955D7B3B7134A1CC6",
+        "line": 22,
+        "relative_path": "events/dlc/bp1/bp1_yearly_oltner.txt"
       },
       "namespace": "bp1_yearly"
     },
