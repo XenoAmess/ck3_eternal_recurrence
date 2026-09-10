@@ -383,7 +383,33 @@ def wait_native_readiness(service: GameplayBridgeService, pid: int) -> dict[str,
     raise acceptance.RunnerError("MCP readiness timed out: " + last)
 
 
+def ensure_bridge_paused(
+    service: GameplayBridgeService, artifacts: Path, stem: str
+) -> None:
+    snapshot = service.snapshot()
+    if snapshot.get("paused") is not True:
+        service.execute_step(
+            "pause-map", expected_revision=int(snapshot["revision"])
+        )
+        deadline = time.monotonic() + 5
+        while time.monotonic() < deadline:
+            snapshot = service.snapshot()
+            if snapshot.get("paused") is True:
+                break
+            time.sleep(0.1)
+        else:
+            raise acceptance.RunnerError(
+                f"MCP pause timed out before {stem}"
+            )
+        log(f"xqol: MCP paused game before {stem}")
+    else:
+        log(f"xqol: MCP confirmed game already paused before {stem}")
+    write_json(artifacts / f"{stem}_mcp_paused.json", snapshot)
+    acceptance.ImageGrab.grab().save(artifacts / f"{stem}_mcp_paused.png")
+
+
 def open_xqol_decision_detail(
+    service: GameplayBridgeService,
     title: str,
     confirm_label: str,
     artifacts: Path,
@@ -391,7 +417,7 @@ def open_xqol_decision_detail(
     *,
     scroll_steps: int = 0,
 ) -> tuple[int, int]:
-    acceptance.ensure_game_paused(artifacts, f"{stem}_pre_decision")
+    ensure_bridge_paused(service, artifacts, f"{stem}_pre_decision")
     isolated.ensure_decisions_panel(artifacts, stem)
     width, height = acceptance.pyautogui.size()
     if scroll_steps:
@@ -433,6 +459,7 @@ def open_xqol_decision_detail(
 
 
 def click_decision(
+    service: GameplayBridgeService,
     title: str,
     confirm_label: str,
     artifacts: Path,
@@ -441,6 +468,7 @@ def click_decision(
     scroll_steps: int = 0,
 ) -> None:
     confirm = open_xqol_decision_detail(
+        service,
         title,
         confirm_label,
         artifacts,
@@ -450,8 +478,11 @@ def click_decision(
     acceptance.click_until_text_disappears(confirm, confirm_label, acceptance.FULL_SCREEN_REGION, artifacts, attempts=2)
 
 
-def execute_mass_conversion_slider(artifacts: Path) -> None:
+def execute_mass_conversion_slider(
+    service: GameplayBridgeService, artifacts: Path
+) -> None:
     confirm = open_xqol_decision_detail(
+        service,
         "批量要求领内改信",
         "设定门槛",
         artifacts,
@@ -652,25 +683,27 @@ def project_diagnostics(userdir: Path, artifacts: Path) -> list[str]:
 def run_scenario(service: GameplayBridgeService, stream: MarkerStream, artifacts: Path) -> dict[str, object]:
     before = service.snapshot()
     write_json(artifacts / "05_mcp_before_fixture.json", before)
-    click_decision("开始体验优化实机验收", "切换至宋帝", artifacts, "05_initialize")
+    click_decision(service, "开始体验优化实机验收", "切换至宋帝", artifacts, "05_initialize")
     stream.wait("ZQA: TEST PASS switched_to_supported_player")
     isolated.wait_for_gameplay_hud(artifacts)
     switched = service.snapshot()
     write_json(artifacts / "06_mcp_supported_player.json", switched)
 
     click_decision(
+        service,
         "开启自动选择继任",
         "唯才是举",
         artifacts,
         "07_enable_appointment",
     )
     click_decision(
+        service,
         "开启：别把封臣给我",
         "各安其位",
         artifacts,
         "08_enable_transfer_guard",
     )
-    click_decision("开启自动召集防御援军", "唤来所有援手", artifacts, "08_enable_auto_defenders")
+    click_decision(service, "开启自动召集防御援军", "唤来所有援手", artifacts, "08_enable_auto_defenders")
     stream.wait("ZQA: TEST PASS removal_transferred_to_scored_heir", 45)
     death_settlement = settle_queued_death_succession(service, stream, artifacts)
     enabled = service.snapshot()
@@ -678,20 +711,23 @@ def run_scenario(service: GameplayBridgeService, stream: MarkerStream, artifacts
     acceptance.ImageGrab.grab().save(artifacts / "09_enabled_matrix_complete.png")
 
     click_decision(
+        service,
         "关闭自动选择继任",
         "恢复旧制",
         artifacts,
         "10_disable_appointment",
     )
     click_decision(
+        service,
         "关闭：别把封臣给我",
         "照旧接收",
         artifacts,
         "11_disable_transfer_guard",
     )
-    click_decision("关闭自动召集防御援军", "由我亲自召集", artifacts, "11_disable_auto_defenders")
+    click_decision(service, "关闭自动召集防御援军", "由我亲自召集", artifacts, "11_disable_auto_defenders")
     stream.wait("ZQA: TEST READY payment_full", 30)
     click_decision(
+        service,
         "批量索取足额牵制款",
         "收齐所有足额欠款",
         artifacts,
@@ -699,13 +735,14 @@ def run_scenario(service: GameplayBridgeService, stream: MarkerStream, artifacts
     )
     stream.wait("ZQA: TEST READY payment_any", 30)
     click_decision(
+        service,
         "批量索取现有牵制款",
         "有多少便取多少",
         artifacts,
         "13_payment_any",
     )
     stream.wait("ZQA: TEST READY conversion_threshold_50", 30)
-    execute_mass_conversion_slider(artifacts)
+    execute_mass_conversion_slider(service, artifacts)
     conversion_advance = advance_until_marker(
         service,
         stream,
@@ -725,6 +762,7 @@ def run_scenario(service: GameplayBridgeService, stream: MarkerStream, artifacts
     )
     stream.wait("ZQA: TEST READY ransom_full", 30)
     click_decision(
+        service,
         "批量足额赎回囚犯",
         "收取全部足额赎金",
         artifacts,
@@ -733,6 +771,7 @@ def run_scenario(service: GameplayBridgeService, stream: MarkerStream, artifacts
     )
     stream.wait("ZQA: TEST READY ransom_any_one_gold", 30)
     click_decision(
+        service,
         "批量按现有钱财赎回囚犯",
         "榨尽所有钱袋",
         artifacts,
@@ -741,6 +780,7 @@ def run_scenario(service: GameplayBridgeService, stream: MarkerStream, artifacts
     )
     stream.wait("ZQA: TEST READY release_priority_matrix", 30)
     click_decision(
+        service,
         "按最优条款批量释放囚犯",
         "提出最强条款",
         artifacts,

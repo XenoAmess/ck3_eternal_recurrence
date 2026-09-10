@@ -44,7 +44,8 @@ class ProductOuterDescriptorTests(unittest.TestCase):
         self.assertIn("sort_order = 80", decisions)
         self.assertIn("acceptance.pyautogui.scroll(scroll_steps)", runner)
         self.assertIn("int(width * 0.55), int(height * 0.05)", runner)
-        self.assertIn('acceptance.ensure_game_paused(artifacts, f"{stem}_pre_decision")', runner)
+        self.assertIn('ensure_bridge_paused(service, artifacts, f"{stem}_pre_decision")', runner)
+        self.assertIn('"pause-map", expected_revision=int(snapshot["revision"])', runner)
         self.assertNotIn('"14_conversion",\n        contains=False,', runner)
 
     def test_product_decision_group_uses_ck3_localization_key(self) -> None:
