@@ -3485,8 +3485,14 @@ def enter_promotion_source_checkpoint_v1(
     sleeper: Callable[[float], None] = time.sleep,
     evidence_out: dict[str, object] | None = None,
     runtime_diagnostic_probe: Callable[[], str | None] | None = None,
+    terminal_observation_probe: Callable[[Mapping[str, object]], Mapping[str, object] | None] | None = None,
 ) -> dict[str, object]:
-    """Drive the product timeline and stop before the requested target."""
+    """Drive the timeline to an event or an independently observed terminal.
+
+    The optional terminal probe runs on paused frames before further input.
+    This lets a legitimate N/A close stop without waiting for an event that
+    the product does not emit. Returning None continues the existing driver.
+    """
     if timeout_seconds <= 0 or poll_interval_seconds < 0:
         raise ValueError("promotion entry timing is invalid")
     if pause_on_event_definition_key is not None and not (
@@ -3588,7 +3594,21 @@ def enter_promotion_source_checkpoint_v1(
         "pause_on_event_definition_key": pause_on_event_definition_key,
         "pause_on_event_occurrence": pause_on_event_occurrence,
         "pause_on_event_option_number": pause_on_event_option_number,
+        "terminal_observation": None,
     })
+
+    def observed_terminal(snapshot: Mapping[str, object]) -> bool:
+        if terminal_observation_probe is None or snapshot.get("paused") is not True:
+            return False
+        observation = terminal_observation_probe(snapshot)
+        if observation is None:
+            return False
+        if not isinstance(observation, Mapping):
+            raise PromotionProductionEntryError("terminal observation probe returned a non-object")
+        evidence["terminal_observation"] = copy.deepcopy(dict(observation))
+        evidence["result"] = "GREEN"
+        evidence["readiness"] = "paused-independent-terminal-observation"
+        return True
     retained_invalidating_drain = next(
         (
             copy.deepcopy(dict(row))
@@ -3678,6 +3698,12 @@ def enter_promotion_source_checkpoint_v1(
             snapshot=initial,
             player=player,
         )
+    if observed_terminal(initial):
+        return evidence
+    if terminal_observation_probe is not None:
+        initial, initial_event = _binding(
+            service.snapshot(), player=player, connection_generation=generation,
+        )
     initial_clean_boundary_event = False
     if initial_event is not None:
         key, initial_event_query = _event_definition(service, initial_event, sleeper=sleeper)
@@ -3754,6 +3780,12 @@ def enter_promotion_source_checkpoint_v1(
             service.snapshot(), player=player,
             connection_generation=generation,
         )
+        if observed_terminal(initial):
+            return evidence
+        if terminal_observation_probe is not None:
+            initial, initial_event = _binding(
+                service.snapshot(), player=player, connection_generation=generation,
+            )
     before = service.query_zhongguo_promotion_source_progress_v1(
         "promo.entry.before", expected_revision=int(initial["revision"])
     )
@@ -3971,6 +4003,13 @@ def enter_promotion_source_checkpoint_v1(
                     sleeper(poll_interval_seconds)
                 continue
 
+        if observed_terminal(snapshot):
+            return evidence
+        if terminal_observation_probe is not None:
+            snapshot, event = _binding(
+                service.snapshot(), player=player, connection_generation=generation,
+            )
+            date_raw = int(snapshot["date_raw"])
         should_sample_progress = (
             date_raw > last_progress_date_raw
             or event is not None

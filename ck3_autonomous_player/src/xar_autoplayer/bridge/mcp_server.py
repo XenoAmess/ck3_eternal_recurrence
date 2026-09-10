@@ -406,6 +406,18 @@ def _ck3_query_zhongguo_compensation_af5_snapshot_v1(
     )
 
 
+def _ck3_query_zhongguo_workforce_owner_snapshot_v1(
+    service: GameplayBridgeService,
+    request_nonce: str,
+    expected_revision: int,
+) -> dict[str, object]:
+    """Observe standalone owner-view Workforce state and terminal receipts."""
+    return service.query_zhongguo_workforce_owner_snapshot_v1(
+        request_nonce,
+        expected_revision=expected_revision,
+    )
+
+
 def _ck3_query_zhongguo_projects_metrics_postcondition_v1(
     service: GameplayBridgeService,
     request_nonce: str,
@@ -1108,6 +1120,18 @@ def create_server(driver: GameplayBridgeDriver):
         )
 
     @server.tool()
+    def ck3_query_zhongguo_workforce_owner_snapshot_v1(
+        request_nonce: str,
+        expected_revision: int,
+    ) -> dict[str, object]:
+        """Read one correlated Workforce owner business receipt."""
+        return _ck3_query_zhongguo_workforce_owner_snapshot_v1(
+            service,
+            request_nonce,
+            expected_revision,
+        )
+
+    @server.tool()
     def ck3_query_zhongguo_projects_metrics_postcondition_v1(
         request_nonce: str,
         expected_revision: int,
@@ -1617,6 +1641,10 @@ def create_server(driver: GameplayBridgeDriver):
     _forbid_unknown_tool_arguments_v1(
         server,
         "ck3_query_zhongguo_compensation_af5_snapshot_v1",
+    )
+    _forbid_unknown_tool_arguments_v1(
+        server,
+        "ck3_query_zhongguo_workforce_owner_snapshot_v1",
     )
     _forbid_unknown_tool_arguments_v1(
         server,

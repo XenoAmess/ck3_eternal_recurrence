@@ -190,6 +190,14 @@ from .zhongguo_compensation_af5_snapshot_contract import (
     normalize_native_zhongguo_compensation_af5_snapshot_v1,
     parse_query_zhongguo_compensation_af5_snapshot_v1_step,
 )
+from .zhongguo_workforce_owner_snapshot_contract import (
+    QUERY_ZHONGGUO_WORKFORCE_OWNER_SNAPSHOT_V1_CAPABILITY,
+    QUERY_ZHONGGUO_WORKFORCE_OWNER_SNAPSHOT_V1_STEP,
+    QUERY_ZHONGGUO_WORKFORCE_OWNER_SNAPSHOT_V1_STEP_PREFIX,
+    ZhongguoWorkforceOwnerSnapshotQueryV1,
+    normalize_native_zhongguo_workforce_owner_snapshot_v1,
+    parse_query_zhongguo_workforce_owner_snapshot_v1_step,
+)
 from .zhongguo_promotion_source_progress_contract import (
     ACTIVATE_REVIEW_NOW_V1_STEP,
     ACTIVATE_REVIEW_NOW_V1_TRANSPORT_CAPABILITY,
@@ -1720,6 +1728,10 @@ class NativeHeadlessGameplayDriver:
                 QUERY_ZHONGGUO_COMPENSATION_AF5_SNAPSHOT_V1_CAPABILITY
                 in bridge_capabilities
             ),
+            "zhongguo_workforce_owner_snapshot_v1_query_supported": (
+                QUERY_ZHONGGUO_WORKFORCE_OWNER_SNAPSHOT_V1_CAPABILITY
+                in bridge_capabilities
+            ),
             "zhongguo_projects_metrics_v1_query_supported": (
                 QUERY_ZHONGGUO_PROJECTS_METRICS_V1_CAPABILITY
                 in bridge_capabilities
@@ -2075,6 +2087,10 @@ class NativeHeadlessGameplayDriver:
             ),
             "zhongguo_compensation_af5_snapshot_v1_query_supported": (
                 QUERY_ZHONGGUO_COMPENSATION_AF5_SNAPSHOT_V1_CAPABILITY
+                in bridge_capabilities
+            ),
+            "zhongguo_workforce_owner_snapshot_v1_query_supported": (
+                QUERY_ZHONGGUO_WORKFORCE_OWNER_SNAPSHOT_V1_CAPABILITY
                 in bridge_capabilities
             ),
             "zhongguo_projects_metrics_v1_query_supported": (
@@ -3765,6 +3781,19 @@ class NativeHeadlessGameplayDriver:
             raise UnsupportedStepError(
                 "malformed ZhongGuo compensation AF5 v1 query step"
             )
+        zhongguo_workforce_owner_snapshot_query = (
+            parse_query_zhongguo_workforce_owner_snapshot_v1_step(step)
+        )
+        if (
+            isinstance(step, str)
+            and step.startswith(
+                QUERY_ZHONGGUO_WORKFORCE_OWNER_SNAPSHOT_V1_STEP_PREFIX
+            )
+            and zhongguo_workforce_owner_snapshot_query is None
+        ):
+            raise UnsupportedStepError(
+                "malformed ZhongGuo Workforce owner v1 query step"
+            )
         zhongguo_projects_metrics_query = (
             parse_query_zhongguo_projects_metrics_v1_step(step)
         )
@@ -4138,6 +4167,22 @@ class NativeHeadlessGameplayDriver:
                 )
             return self._execute_zhongguo_compensation_af5_snapshot_v1_query(
                 zhongguo_compensation_af5_snapshot_query,
+                expected_revision=expected_revision,
+            )
+        if zhongguo_workforce_owner_snapshot_query is not None:
+            bridge_capabilities = set(
+                _string_list(capabilities.get("bridge_capabilities"))
+            )
+            if (
+                QUERY_ZHONGGUO_WORKFORCE_OWNER_SNAPSHOT_V1_CAPABILITY
+                not in bridge_capabilities
+            ):
+                raise UnsupportedStepError(
+                    "native DLL does not advertise the ZhongGuo "
+                    "Workforce owner postcondition query"
+                )
+            return self._execute_zhongguo_workforce_owner_snapshot_v1_query(
+                zhongguo_workforce_owner_snapshot_query,
                 expected_revision=expected_revision,
             )
         if zhongguo_projects_metrics_query is not None:
@@ -9890,6 +9935,148 @@ class NativeHeadlessGameplayDriver:
             "queried_connection_generation": connection_generation,
         }
 
+    def _execute_zhongguo_workforce_owner_snapshot_v1_query(
+        self,
+        query: ZhongguoWorkforceOwnerSnapshotQueryV1,
+        *,
+        expected_revision: int | None,
+    ) -> dict[str, object]:
+        """Read one paused, player-owned Workforce owner receipt."""
+        starting = self.take_snapshot()
+        if starting.get("paused") is not True:
+            raise BridgeUnavailableError(
+                "native ZhongGuo Workforce owner query requires a "
+                "paused snapshot"
+            )
+        date_raw = _date_raw(
+            starting, "ZhongGuo Workforce owner starting snapshot"
+        )
+        if not -(2**31) <= date_raw <= 2**31 - 1:
+            raise BridgeUnavailableError(
+                "native ZhongGuo Workforce owner query lacks an "
+                "int32 date"
+            )
+        native_revision = starting.get("native_revision")
+        snapshot_id = starting.get("snapshot_id")
+        played_character = starting.get("played_character")
+        player_character_id = (
+            played_character.get("character_id")
+            if isinstance(played_character, dict)
+            else None
+        )
+        diagnostics = starting.get("diagnostics")
+        connection_generation = (
+            diagnostics.get("connection_generation")
+            if isinstance(diagnostics, dict)
+            else None
+        )
+        if (
+            isinstance(native_revision, bool)
+            or not isinstance(native_revision, int)
+            or not 1 <= native_revision <= 2**64 - 1
+            or not isinstance(snapshot_id, str)
+            or not snapshot_id
+            or isinstance(player_character_id, bool)
+            or not isinstance(player_character_id, int)
+            or not 1 <= player_character_id <= 2**31 - 1
+            or isinstance(connection_generation, bool)
+            or not isinstance(connection_generation, int)
+            or not 1 <= connection_generation <= 2**64 - 1
+        ):
+            raise BridgeUnavailableError(
+                "native ZhongGuo Workforce owner query lacks its "
+                "paused snapshot binding"
+            )
+        selected_revision = (
+            expected_revision
+            if expected_revision is not None
+            else int(starting["revision"])
+        )
+        result = self._execute_primitive_step(
+            QUERY_ZHONGGUO_WORKFORCE_OWNER_SNAPSHOT_V1_STEP,
+            expected_revision=selected_revision,
+            required_capability=(
+                QUERY_ZHONGGUO_WORKFORCE_OWNER_SNAPSHOT_V1_CAPABILITY
+            ),
+            request_fields={
+                "owner_character_id": query.owner_character_id,
+                "request_nonce": query.request_nonce,
+            },
+        )
+        expected_keys = {
+            "step", "accepted", "status", "query_sequence",
+            "snapshot_revision", "zhongguo_workforce_owner_snapshot",
+            "backend_id",
+        }
+        if (
+            set(result) != expected_keys
+            or result.get("step")
+            != QUERY_ZHONGGUO_WORKFORCE_OWNER_SNAPSHOT_V1_STEP
+            or result.get("accepted") is not True
+            or result.get("snapshot_revision") != native_revision
+        ):
+            raise BridgeUnavailableError(
+                "native ZhongGuo Workforce owner query returned a "
+                "malformed envelope"
+            )
+        query_sequence = result.get("query_sequence")
+        if (
+            isinstance(query_sequence, bool)
+            or not isinstance(query_sequence, int)
+            or not 1 <= query_sequence <= 2**64 - 1
+        ):
+            raise BridgeUnavailableError(
+                "native ZhongGuo Workforce owner query lacks "
+                "query_sequence"
+            )
+        try:
+            normalized = normalize_native_zhongguo_workforce_owner_snapshot_v1(
+                result.get(
+                    "zhongguo_workforce_owner_snapshot"
+                ),
+                expected_query=query,
+                expected_snapshot_revision=native_revision,
+                expected_date_raw=date_raw,
+                expected_player_character_id=player_character_id,
+            )
+        except ValueError as error:
+            raise BridgeUnavailableError(
+                "native ZhongGuo Workforce owner frame is malformed: "
+                f"{error}"
+            ) from error
+        if result.get("status") != normalized["status"]:
+            raise BridgeUnavailableError(
+                "native ZhongGuo Workforce owner envelope status "
+                "disagrees with frame"
+            )
+        current = self.take_snapshot()
+        current_played = current.get("played_character")
+        current_player_id = (
+            current_played.get("character_id")
+            if isinstance(current_played, dict)
+            else None
+        )
+        if not (
+            _same_paused_native_frame(starting, current)
+            and starting.get("revision") == current.get("revision")
+            and starting.get("date_raw") == current.get("date_raw")
+            and current_player_id == player_character_id
+        ):
+            raise BridgeUnavailableError(
+                "native ZhongGuo Workforce owner query crossed a "
+                "snapshot revision"
+            )
+        return {
+            **result,
+            "status": normalized["status"],
+            "zhongguo_workforce_owner_snapshot": normalized,
+            "query_sequence": query_sequence,
+            "queried_snapshot_id": snapshot_id,
+            "queried_revision": starting.get("revision"),
+            "queried_native_revision": native_revision,
+            "queried_connection_generation": connection_generation,
+        }
+
     def _execute_zhongguo_projects_metrics_v1_query(
         self,
         query: ZhongguoProjectsMetricsQueryV1,
@@ -15115,6 +15302,7 @@ class ConfiguredHybridFallbackDriver:
             QUERY_ZHONGGUO_B2_PIP_SNAPSHOT_V1_CAPABILITY,
             QUERY_ZHONGGUO_PROMOTION_COMPENSATION_V1_CAPABILITY,
             QUERY_ZHONGGUO_COMPENSATION_AF5_SNAPSHOT_V1_CAPABILITY,
+            QUERY_ZHONGGUO_WORKFORCE_OWNER_SNAPSHOT_V1_CAPABILITY,
             QUERY_ZHONGGUO_WORKFORCE_COLLECTIVE_SNAPSHOT_V1_CAPABILITY,
             QUERY_ZHONGGUO_WORKFORCE_NORMAL_EXIT_SNAPSHOT_V1_CAPABILITY,
             QUERY_ZHONGGUO_INCIDENT_SNAPSHOT_V1_CAPABILITY,
@@ -15958,6 +16146,19 @@ class ConfiguredHybridFallbackDriver:
             raise UnsupportedStepError(
                 "malformed ZhongGuo compensation AF5 v1 query step"
             )
+        zhongguo_workforce_owner_snapshot_query = (
+            parse_query_zhongguo_workforce_owner_snapshot_v1_step(step)
+        )
+        if (
+            isinstance(step, str)
+            and step.startswith(
+                QUERY_ZHONGGUO_WORKFORCE_OWNER_SNAPSHOT_V1_STEP_PREFIX
+            )
+            and zhongguo_workforce_owner_snapshot_query is None
+        ):
+            raise UnsupportedStepError(
+                "malformed ZhongGuo Workforce owner v1 query step"
+            )
         zhongguo_projects_metrics_query = (
             parse_query_zhongguo_projects_metrics_v1_step(step)
         )
@@ -15988,6 +16189,7 @@ class ConfiguredHybridFallbackDriver:
             or zhongguo_b2_pip_query is not None
             or zhongguo_promotion_compensation_query is not None
             or zhongguo_compensation_af5_snapshot_query is not None
+            or zhongguo_workforce_owner_snapshot_query is not None
             or zhongguo_projects_metrics_query is not None
             or zhongguo_career_hc_workforce_query is not None
             or zhongguo_workforce_collective_query is not None
@@ -16050,6 +16252,10 @@ class ConfiguredHybridFallbackDriver:
             if zhongguo_compensation_af5_snapshot_query is not None:
                 required_capability = (
                     QUERY_ZHONGGUO_COMPENSATION_AF5_SNAPSHOT_V1_CAPABILITY
+                )
+            if zhongguo_workforce_owner_snapshot_query is not None:
+                required_capability = (
+                    QUERY_ZHONGGUO_WORKFORCE_OWNER_SNAPSHOT_V1_CAPABILITY
                 )
             if zhongguo_career_hc_workforce_query is not None:
                 required_capability = (
@@ -20027,6 +20233,13 @@ def _action_steps(
         elif (
             capability
             == QUERY_ZHONGGUO_COMPENSATION_AF5_SNAPSHOT_V1_CAPABILITY
+        ):
+            # Owner and nonce are explicit MCP inputs. Default descriptors do
+            # not advertise this until a paused production artifact exists.
+            continue
+        elif (
+            capability
+            == QUERY_ZHONGGUO_WORKFORCE_OWNER_SNAPSHOT_V1_CAPABILITY
         ):
             # Owner and nonce are explicit MCP inputs. Default descriptors do
             # not advertise this until a paused production artifact exists.

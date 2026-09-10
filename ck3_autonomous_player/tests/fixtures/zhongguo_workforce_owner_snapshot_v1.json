@@ -1,0 +1,862 @@
+{
+  "schema_version": 1,
+  "evidence_kind": "synthetic_contract_fixture_not_live",
+  "frames": {
+    "pre_action": {
+      "schema_version": 1,
+      "status": "available",
+      "capability": "game.command.query-zhongguo-workforce-owner-snapshot-v1",
+      "source_backend_id": "ck3-1.19.0.6-native-zhongguo-workforce-owner-snapshot-v1",
+      "request_nonce": "workforce.14",
+      "snapshot_revision": 51,
+      "date_raw": 800,
+      "paused": true,
+      "player_character_id": 147,
+      "subject_character_id": 361,
+      "workforce": {
+        "central": {
+          "subject_character_id": {
+            "status": "available",
+            "value": 361,
+            "unavailable_reason": null
+          },
+          "cycle_serial": {
+            "status": "available",
+            "value": 9,
+            "unavailable_reason": null
+          },
+          "case_serial": {
+            "status": "available",
+            "value": 14,
+            "unavailable_reason": null
+          },
+          "stage11_status": {
+            "status": "available",
+            "value": 1,
+            "unavailable_reason": null
+          }
+        },
+        "source": {
+          "status": {
+            "status": "available",
+            "value": 1,
+            "unavailable_reason": null
+          },
+          "owner_character_id": {
+            "status": "available",
+            "value": 147,
+            "unavailable_reason": null
+          },
+          "subject_character_id": {
+            "status": "available",
+            "value": 361,
+            "unavailable_reason": null
+          },
+          "p2c_cycle_serial": {
+            "status": "available",
+            "value": 9,
+            "unavailable_reason": null
+          },
+          "p2c_case_serial": {
+            "status": "available",
+            "value": 14,
+            "unavailable_reason": null
+          },
+          "al_cycle_serial": {
+            "status": "available",
+            "value": 9,
+            "unavailable_reason": null
+          },
+          "al_case_serial": {
+            "status": "available",
+            "value": 214,
+            "unavailable_reason": null
+          }
+        },
+        "al_case": {
+          "owner_character_id": {
+            "status": "available",
+            "value": 147,
+            "unavailable_reason": null
+          },
+          "subject_character_id": {
+            "status": "available",
+            "value": 361,
+            "unavailable_reason": null
+          },
+          "cycle_serial": {
+            "status": "available",
+            "value": 9,
+            "unavailable_reason": null
+          },
+          "case_serial": {
+            "status": "available",
+            "value": 214,
+            "unavailable_reason": null
+          },
+          "state": {
+            "status": "available",
+            "value": 4,
+            "unavailable_reason": null
+          },
+          "active": {
+            "status": "available",
+            "value": true,
+            "unavailable_reason": null
+          },
+          "revision": {
+            "status": "available",
+            "value": 3,
+            "unavailable_reason": null
+          }
+        },
+        "m360_receipt": {
+          "owner_character_id": {
+            "status": "unavailable",
+            "value": null,
+            "unavailable_reason": "variable_absent"
+          },
+          "subject_character_id": {
+            "status": "unavailable",
+            "value": null,
+            "unavailable_reason": "variable_absent"
+          },
+          "cycle_serial": {
+            "status": "unavailable",
+            "value": null,
+            "unavailable_reason": "variable_absent"
+          },
+          "case_serial": {
+            "status": "unavailable",
+            "value": null,
+            "unavailable_reason": "variable_absent"
+          },
+          "state": {
+            "status": "unavailable",
+            "value": null,
+            "unavailable_reason": "variable_absent"
+          },
+          "choice": {
+            "status": "unavailable",
+            "value": null,
+            "unavailable_reason": "variable_absent"
+          }
+        },
+        "portfolio": {
+          "closed": {
+            "status": "available",
+            "value": false,
+            "unavailable_reason": null
+          },
+          "status": {
+            "status": "available",
+            "value": 4,
+            "unavailable_reason": null
+          },
+          "cycle_serial": {
+            "status": "available",
+            "value": 9,
+            "unavailable_reason": null
+          },
+          "final_conservation_ok": {
+            "status": "available",
+            "value": false,
+            "unavailable_reason": null
+          },
+          "terminal_history_accruing": {
+            "status": "unavailable",
+            "value": null,
+            "unavailable_reason": "variable_absent"
+          },
+          "history_cycle_count": {
+            "status": "unavailable",
+            "value": null,
+            "unavailable_reason": "variable_absent"
+          },
+          "terminal_success": {
+            "status": "unavailable",
+            "value": null,
+            "unavailable_reason": "variable_absent"
+          },
+          "terminal_na": {
+            "status": "unavailable",
+            "value": null,
+            "unavailable_reason": "variable_absent"
+          },
+          "terminal_reason": {
+            "status": "unavailable",
+            "value": null,
+            "unavailable_reason": "variable_absent"
+          },
+          "terminal_owned_operations": {
+            "status": "unavailable",
+            "value": null,
+            "unavailable_reason": "variable_absent"
+          },
+          "terminal_skipped_manager_only": {
+            "status": "unavailable",
+            "value": null,
+            "unavailable_reason": "variable_absent"
+          },
+          "terminal_skipped_charter": {
+            "status": "unavailable",
+            "value": null,
+            "unavailable_reason": "variable_absent"
+          }
+        }
+      },
+      "readiness": {
+        "case_identity_ready": true,
+        "player_owner_binding_ready": true,
+        "portfolio_subject_binding_ready": true,
+        "ready": true,
+        "same_frame_ready": true
+      },
+      "terminal": false,
+      "terminal_kind": "none",
+      "unavailable_reason": null
+    },
+    "success": {
+      "schema_version": 1,
+      "status": "available",
+      "capability": "game.command.query-zhongguo-workforce-owner-snapshot-v1",
+      "source_backend_id": "ck3-1.19.0.6-native-zhongguo-workforce-owner-snapshot-v1",
+      "request_nonce": "workforce.14",
+      "snapshot_revision": 51,
+      "date_raw": 800,
+      "paused": true,
+      "player_character_id": 147,
+      "subject_character_id": 361,
+      "workforce": {
+        "central": {
+          "subject_character_id": {
+            "status": "available",
+            "value": 361,
+            "unavailable_reason": null
+          },
+          "cycle_serial": {
+            "status": "available",
+            "value": 9,
+            "unavailable_reason": null
+          },
+          "case_serial": {
+            "status": "available",
+            "value": 14,
+            "unavailable_reason": null
+          },
+          "stage11_status": {
+            "status": "available",
+            "value": 1,
+            "unavailable_reason": null
+          }
+        },
+        "source": {
+          "status": {
+            "status": "available",
+            "value": 1,
+            "unavailable_reason": null
+          },
+          "owner_character_id": {
+            "status": "available",
+            "value": 147,
+            "unavailable_reason": null
+          },
+          "subject_character_id": {
+            "status": "available",
+            "value": 361,
+            "unavailable_reason": null
+          },
+          "p2c_cycle_serial": {
+            "status": "available",
+            "value": 9,
+            "unavailable_reason": null
+          },
+          "p2c_case_serial": {
+            "status": "available",
+            "value": 14,
+            "unavailable_reason": null
+          },
+          "al_cycle_serial": {
+            "status": "available",
+            "value": 9,
+            "unavailable_reason": null
+          },
+          "al_case_serial": {
+            "status": "available",
+            "value": 214,
+            "unavailable_reason": null
+          }
+        },
+        "al_case": {
+          "owner_character_id": {
+            "status": "available",
+            "value": 147,
+            "unavailable_reason": null
+          },
+          "subject_character_id": {
+            "status": "available",
+            "value": 361,
+            "unavailable_reason": null
+          },
+          "cycle_serial": {
+            "status": "available",
+            "value": 9,
+            "unavailable_reason": null
+          },
+          "case_serial": {
+            "status": "available",
+            "value": 214,
+            "unavailable_reason": null
+          },
+          "state": {
+            "status": "available",
+            "value": 8,
+            "unavailable_reason": null
+          },
+          "active": {
+            "status": "available",
+            "value": false,
+            "unavailable_reason": null
+          },
+          "revision": {
+            "status": "available",
+            "value": 6,
+            "unavailable_reason": null
+          }
+        },
+        "m360_receipt": {
+          "owner_character_id": {
+            "status": "available",
+            "value": 147,
+            "unavailable_reason": null
+          },
+          "subject_character_id": {
+            "status": "available",
+            "value": 361,
+            "unavailable_reason": null
+          },
+          "cycle_serial": {
+            "status": "available",
+            "value": 9,
+            "unavailable_reason": null
+          },
+          "case_serial": {
+            "status": "available",
+            "value": 214,
+            "unavailable_reason": null
+          },
+          "state": {
+            "status": "available",
+            "value": 4,
+            "unavailable_reason": null
+          },
+          "choice": {
+            "status": "available",
+            "value": 2,
+            "unavailable_reason": null
+          }
+        },
+        "portfolio": {
+          "closed": {
+            "status": "available",
+            "value": true,
+            "unavailable_reason": null
+          },
+          "status": {
+            "status": "available",
+            "value": 6,
+            "unavailable_reason": null
+          },
+          "cycle_serial": {
+            "status": "available",
+            "value": 9,
+            "unavailable_reason": null
+          },
+          "final_conservation_ok": {
+            "status": "available",
+            "value": true,
+            "unavailable_reason": null
+          },
+          "terminal_history_accruing": {
+            "status": "available",
+            "value": false,
+            "unavailable_reason": null
+          },
+          "history_cycle_count": {
+            "status": "available",
+            "value": 3,
+            "unavailable_reason": null
+          },
+          "terminal_success": {
+            "status": "available",
+            "value": true,
+            "unavailable_reason": null
+          },
+          "terminal_na": {
+            "status": "unavailable",
+            "value": null,
+            "unavailable_reason": "variable_absent"
+          },
+          "terminal_reason": {
+            "status": "unavailable",
+            "value": null,
+            "unavailable_reason": "variable_absent"
+          },
+          "terminal_owned_operations": {
+            "status": "available",
+            "value": 40,
+            "unavailable_reason": null
+          },
+          "terminal_skipped_manager_only": {
+            "status": "unavailable",
+            "value": null,
+            "unavailable_reason": "variable_absent"
+          },
+          "terminal_skipped_charter": {
+            "status": "available",
+            "value": 0,
+            "unavailable_reason": null
+          }
+        }
+      },
+      "readiness": {
+        "case_identity_ready": true,
+        "player_owner_binding_ready": true,
+        "portfolio_subject_binding_ready": true,
+        "ready": true,
+        "same_frame_ready": true
+      },
+      "terminal": true,
+      "terminal_kind": "success",
+      "unavailable_reason": null
+    },
+    "history_accruing": {
+      "schema_version": 1,
+      "status": "available",
+      "capability": "game.command.query-zhongguo-workforce-owner-snapshot-v1",
+      "source_backend_id": "ck3-1.19.0.6-native-zhongguo-workforce-owner-snapshot-v1",
+      "request_nonce": "workforce.14",
+      "snapshot_revision": 51,
+      "date_raw": 800,
+      "paused": true,
+      "player_character_id": 147,
+      "subject_character_id": 361,
+      "workforce": {
+        "central": {
+          "subject_character_id": {
+            "status": "available",
+            "value": 361,
+            "unavailable_reason": null
+          },
+          "cycle_serial": {
+            "status": "available",
+            "value": 9,
+            "unavailable_reason": null
+          },
+          "case_serial": {
+            "status": "available",
+            "value": 14,
+            "unavailable_reason": null
+          },
+          "stage11_status": {
+            "status": "available",
+            "value": 1,
+            "unavailable_reason": null
+          }
+        },
+        "source": {
+          "status": {
+            "status": "available",
+            "value": 1,
+            "unavailable_reason": null
+          },
+          "owner_character_id": {
+            "status": "available",
+            "value": 147,
+            "unavailable_reason": null
+          },
+          "subject_character_id": {
+            "status": "available",
+            "value": 361,
+            "unavailable_reason": null
+          },
+          "p2c_cycle_serial": {
+            "status": "available",
+            "value": 9,
+            "unavailable_reason": null
+          },
+          "p2c_case_serial": {
+            "status": "available",
+            "value": 14,
+            "unavailable_reason": null
+          },
+          "al_cycle_serial": {
+            "status": "available",
+            "value": 9,
+            "unavailable_reason": null
+          },
+          "al_case_serial": {
+            "status": "available",
+            "value": 214,
+            "unavailable_reason": null
+          }
+        },
+        "al_case": {
+          "owner_character_id": {
+            "status": "available",
+            "value": 147,
+            "unavailable_reason": null
+          },
+          "subject_character_id": {
+            "status": "available",
+            "value": 361,
+            "unavailable_reason": null
+          },
+          "cycle_serial": {
+            "status": "available",
+            "value": 9,
+            "unavailable_reason": null
+          },
+          "case_serial": {
+            "status": "available",
+            "value": 214,
+            "unavailable_reason": null
+          },
+          "state": {
+            "status": "available",
+            "value": 8,
+            "unavailable_reason": null
+          },
+          "active": {
+            "status": "available",
+            "value": false,
+            "unavailable_reason": null
+          },
+          "revision": {
+            "status": "available",
+            "value": 6,
+            "unavailable_reason": null
+          }
+        },
+        "m360_receipt": {
+          "owner_character_id": {
+            "status": "available",
+            "value": 147,
+            "unavailable_reason": null
+          },
+          "subject_character_id": {
+            "status": "available",
+            "value": 361,
+            "unavailable_reason": null
+          },
+          "cycle_serial": {
+            "status": "available",
+            "value": 9,
+            "unavailable_reason": null
+          },
+          "case_serial": {
+            "status": "available",
+            "value": 214,
+            "unavailable_reason": null
+          },
+          "state": {
+            "status": "available",
+            "value": 4,
+            "unavailable_reason": null
+          },
+          "choice": {
+            "status": "available",
+            "value": 2,
+            "unavailable_reason": null
+          }
+        },
+        "portfolio": {
+          "closed": {
+            "status": "available",
+            "value": true,
+            "unavailable_reason": null
+          },
+          "status": {
+            "status": "available",
+            "value": 8,
+            "unavailable_reason": null
+          },
+          "cycle_serial": {
+            "status": "available",
+            "value": 9,
+            "unavailable_reason": null
+          },
+          "final_conservation_ok": {
+            "status": "available",
+            "value": true,
+            "unavailable_reason": null
+          },
+          "terminal_history_accruing": {
+            "status": "available",
+            "value": true,
+            "unavailable_reason": null
+          },
+          "history_cycle_count": {
+            "status": "available",
+            "value": 1,
+            "unavailable_reason": null
+          },
+          "terminal_success": {
+            "status": "available",
+            "value": false,
+            "unavailable_reason": null
+          },
+          "terminal_na": {
+            "status": "unavailable",
+            "value": null,
+            "unavailable_reason": "variable_absent"
+          },
+          "terminal_reason": {
+            "status": "unavailable",
+            "value": null,
+            "unavailable_reason": "variable_absent"
+          },
+          "terminal_owned_operations": {
+            "status": "available",
+            "value": 39,
+            "unavailable_reason": null
+          },
+          "terminal_skipped_manager_only": {
+            "status": "unavailable",
+            "value": null,
+            "unavailable_reason": "variable_absent"
+          },
+          "terminal_skipped_charter": {
+            "status": "available",
+            "value": 1,
+            "unavailable_reason": null
+          }
+        }
+      },
+      "readiness": {
+        "case_identity_ready": true,
+        "player_owner_binding_ready": true,
+        "portfolio_subject_binding_ready": true,
+        "ready": true,
+        "same_frame_ready": true
+      },
+      "terminal": true,
+      "terminal_kind": "history_accruing",
+      "unavailable_reason": null
+    },
+    "not_applicable_without_m360_source": {
+      "schema_version": 1,
+      "status": "available",
+      "capability": "game.command.query-zhongguo-workforce-owner-snapshot-v1",
+      "source_backend_id": "ck3-1.19.0.6-native-zhongguo-workforce-owner-snapshot-v1",
+      "request_nonce": "workforce.14",
+      "snapshot_revision": 51,
+      "date_raw": 800,
+      "paused": true,
+      "player_character_id": 147,
+      "subject_character_id": 361,
+      "workforce": {
+        "central": {
+          "subject_character_id": {
+            "status": "available",
+            "value": 361,
+            "unavailable_reason": null
+          },
+          "cycle_serial": {
+            "status": "available",
+            "value": 9,
+            "unavailable_reason": null
+          },
+          "case_serial": {
+            "status": "available",
+            "value": 14,
+            "unavailable_reason": null
+          },
+          "stage11_status": {
+            "status": "available",
+            "value": 3,
+            "unavailable_reason": null
+          }
+        },
+        "source": {
+          "status": {
+            "status": "unavailable",
+            "value": null,
+            "unavailable_reason": "variable_absent"
+          },
+          "owner_character_id": {
+            "status": "unavailable",
+            "value": null,
+            "unavailable_reason": "variable_absent"
+          },
+          "subject_character_id": {
+            "status": "unavailable",
+            "value": null,
+            "unavailable_reason": "variable_absent"
+          },
+          "p2c_cycle_serial": {
+            "status": "unavailable",
+            "value": null,
+            "unavailable_reason": "variable_absent"
+          },
+          "p2c_case_serial": {
+            "status": "unavailable",
+            "value": null,
+            "unavailable_reason": "variable_absent"
+          },
+          "al_cycle_serial": {
+            "status": "unavailable",
+            "value": null,
+            "unavailable_reason": "variable_absent"
+          },
+          "al_case_serial": {
+            "status": "unavailable",
+            "value": null,
+            "unavailable_reason": "variable_absent"
+          }
+        },
+        "al_case": {
+          "owner_character_id": {
+            "status": "available",
+            "value": 147,
+            "unavailable_reason": null
+          },
+          "subject_character_id": {
+            "status": "available",
+            "value": 361,
+            "unavailable_reason": null
+          },
+          "cycle_serial": {
+            "status": "available",
+            "value": 9,
+            "unavailable_reason": null
+          },
+          "case_serial": {
+            "status": "available",
+            "value": 214,
+            "unavailable_reason": null
+          },
+          "state": {
+            "status": "available",
+            "value": 8,
+            "unavailable_reason": null
+          },
+          "active": {
+            "status": "available",
+            "value": false,
+            "unavailable_reason": null
+          },
+          "revision": {
+            "status": "available",
+            "value": 6,
+            "unavailable_reason": null
+          }
+        },
+        "m360_receipt": {
+          "owner_character_id": {
+            "status": "unavailable",
+            "value": null,
+            "unavailable_reason": "variable_absent"
+          },
+          "subject_character_id": {
+            "status": "unavailable",
+            "value": null,
+            "unavailable_reason": "variable_absent"
+          },
+          "cycle_serial": {
+            "status": "unavailable",
+            "value": null,
+            "unavailable_reason": "variable_absent"
+          },
+          "case_serial": {
+            "status": "unavailable",
+            "value": null,
+            "unavailable_reason": "variable_absent"
+          },
+          "state": {
+            "status": "unavailable",
+            "value": null,
+            "unavailable_reason": "variable_absent"
+          },
+          "choice": {
+            "status": "unavailable",
+            "value": null,
+            "unavailable_reason": "variable_absent"
+          }
+        },
+        "portfolio": {
+          "closed": {
+            "status": "available",
+            "value": true,
+            "unavailable_reason": null
+          },
+          "status": {
+            "status": "available",
+            "value": 7,
+            "unavailable_reason": null
+          },
+          "cycle_serial": {
+            "status": "available",
+            "value": 9,
+            "unavailable_reason": null
+          },
+          "final_conservation_ok": {
+            "status": "available",
+            "value": true,
+            "unavailable_reason": null
+          },
+          "terminal_history_accruing": {
+            "status": "available",
+            "value": false,
+            "unavailable_reason": null
+          },
+          "history_cycle_count": {
+            "status": "available",
+            "value": 1,
+            "unavailable_reason": null
+          },
+          "terminal_success": {
+            "status": "available",
+            "value": false,
+            "unavailable_reason": null
+          },
+          "terminal_na": {
+            "status": "available",
+            "value": true,
+            "unavailable_reason": null
+          },
+          "terminal_reason": {
+            "status": "available",
+            "value": 360361,
+            "unavailable_reason": null
+          },
+          "terminal_owned_operations": {
+            "status": "available",
+            "value": 38,
+            "unavailable_reason": null
+          },
+          "terminal_skipped_manager_only": {
+            "status": "available",
+            "value": 2,
+            "unavailable_reason": null
+          },
+          "terminal_skipped_charter": {
+            "status": "available",
+            "value": 1,
+            "unavailable_reason": null
+          }
+        }
+      },
+      "readiness": {
+        "case_identity_ready": true,
+        "player_owner_binding_ready": true,
+        "portfolio_subject_binding_ready": true,
+        "ready": true,
+        "same_frame_ready": true
+      },
+      "terminal": true,
+      "terminal_kind": "not_applicable",
+      "unavailable_reason": null
+    }
+  }
+}

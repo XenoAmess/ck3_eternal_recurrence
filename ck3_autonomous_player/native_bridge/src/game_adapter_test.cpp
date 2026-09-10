@@ -371,12 +371,20 @@ int main() {
   }
 #endif
 #if defined(XAR_CK3_ENABLE_ZHONGGUO_CAREER_HC_WORKFORCE_CANDIDATE_V1)
+  if (!Contains(known.capabilities,
+                "game.command.query-zhongguo-workforce-owner-snapshot-v1")) {
+    return Fail("private candidate omitted workforce owner snapshot");
+  }
   if (!Contains(
           known.capabilities,
           "game.command.query-zhongguo-career-hc-workforce-postcondition-v1")) {
     return Fail("private candidate omitted career-HC/workforce provider");
   }
 #else
+  if (Contains(known.capabilities,
+               "game.command.query-zhongguo-workforce-owner-snapshot-v1")) {
+    return Fail("default adapter advertised unproven workforce owner snapshot");
+  }
   if (Contains(
           known.capabilities,
           "game.command.query-zhongguo-career-hc-workforce-postcondition-v1")) {

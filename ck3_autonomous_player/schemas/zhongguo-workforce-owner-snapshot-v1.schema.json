@@ -1,0 +1,586 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://xar.local/schemas/zhongguo-workforce-owner-snapshot-v1.schema.json",
+  "title": "ZhongGuo played-owner Workforce snapshot v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "status",
+    "capability",
+    "source_backend_id",
+    "request_nonce",
+    "snapshot_revision",
+    "date_raw",
+    "paused",
+    "player_character_id",
+    "subject_character_id",
+    "unavailable_reason",
+    "readiness",
+    "terminal",
+    "workforce",
+    "terminal_kind"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": 1
+    },
+    "status": {
+      "enum": [
+        "available",
+        "unavailable"
+      ]
+    },
+    "capability": {
+      "const": "game.command.query-zhongguo-workforce-owner-snapshot-v1"
+    },
+    "source_backend_id": {
+      "enum": [
+        "ck3-1.19.0.6-native-zhongguo-workforce-owner-snapshot-v1",
+        "native-headless"
+      ]
+    },
+    "request_nonce": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,63}$"
+    },
+    "snapshot_revision": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "date_raw": {
+      "type": "integer",
+      "minimum": -2147483648,
+      "maximum": 2147483647
+    },
+    "paused": {
+      "const": true
+    },
+    "player_character_id": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "subject_character_id": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "unavailable_reason": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "readiness": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "case_identity_ready",
+        "player_owner_binding_ready",
+        "portfolio_subject_binding_ready",
+        "ready",
+        "same_frame_ready"
+      ],
+      "properties": {
+        "case_identity_ready": {
+          "type": "boolean"
+        },
+        "player_owner_binding_ready": {
+          "type": "boolean"
+        },
+        "portfolio_subject_binding_ready": {
+          "type": "boolean"
+        },
+        "ready": {
+          "type": "boolean"
+        },
+        "same_frame_ready": {
+          "type": "boolean"
+        }
+      }
+    },
+    "terminal": {
+      "type": "boolean"
+    },
+    "build": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "version",
+        "exe_sha256"
+      ],
+      "properties": {
+        "version": {
+          "const": "1.19.0.6"
+        },
+        "exe_sha256": {
+          "const": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86"
+        }
+      }
+    },
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "bridge_version",
+        "game_adapter_id",
+        "backend_id",
+        "connection_generation",
+        "snapshot_id",
+        "revision",
+        "native_revision",
+        "date_raw",
+        "paused",
+        "player_character_id"
+      ],
+      "properties": {
+        "bridge_version": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "game_adapter_id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "backend_id": {
+          "const": "native-headless"
+        },
+        "connection_generation": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "snapshot_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "revision": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "native_revision": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "date_raw": {
+          "type": "integer",
+          "minimum": -2147483648,
+          "maximum": 2147483647
+        },
+        "paused": {
+          "const": true
+        },
+        "player_character_id": {
+          "type": "integer",
+          "minimum": 1
+        }
+      }
+    },
+    "binding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "request_nonce",
+        "connection_generation",
+        "snapshot_id",
+        "revision",
+        "native_revision",
+        "date_raw",
+        "paused",
+        "player_character_id",
+        "subject_character_id",
+        "owner_character_id",
+        "expected_revision"
+      ],
+      "properties": {
+        "request_nonce": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,63}$"
+        },
+        "connection_generation": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "snapshot_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "revision": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "native_revision": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "date_raw": {
+          "type": "integer",
+          "minimum": -2147483648,
+          "maximum": 2147483647
+        },
+        "paused": {
+          "const": true
+        },
+        "player_character_id": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "subject_character_id": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "owner_character_id": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "expected_revision": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+    "workforce": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "central",
+        "source",
+        "al_case",
+        "m360_receipt",
+        "portfolio"
+      ],
+      "properties": {
+        "central": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "subject_character_id",
+            "cycle_serial",
+            "case_serial",
+            "stage11_status"
+          ],
+          "properties": {
+            "subject_character_id": {
+              "$ref": "#/$defs/typed_integer"
+            },
+            "cycle_serial": {
+              "$ref": "#/$defs/typed_integer"
+            },
+            "case_serial": {
+              "$ref": "#/$defs/typed_integer"
+            },
+            "stage11_status": {
+              "$ref": "#/$defs/typed_integer"
+            }
+          }
+        },
+        "source": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "status",
+            "owner_character_id",
+            "subject_character_id",
+            "p2c_cycle_serial",
+            "p2c_case_serial",
+            "al_cycle_serial",
+            "al_case_serial"
+          ],
+          "properties": {
+            "status": {
+              "$ref": "#/$defs/typed_integer"
+            },
+            "owner_character_id": {
+              "$ref": "#/$defs/typed_integer"
+            },
+            "subject_character_id": {
+              "$ref": "#/$defs/typed_integer"
+            },
+            "p2c_cycle_serial": {
+              "$ref": "#/$defs/typed_integer"
+            },
+            "p2c_case_serial": {
+              "$ref": "#/$defs/typed_integer"
+            },
+            "al_cycle_serial": {
+              "$ref": "#/$defs/typed_integer"
+            },
+            "al_case_serial": {
+              "$ref": "#/$defs/typed_integer"
+            }
+          }
+        },
+        "al_case": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "owner_character_id",
+            "subject_character_id",
+            "cycle_serial",
+            "case_serial",
+            "state",
+            "active",
+            "revision"
+          ],
+          "properties": {
+            "owner_character_id": {
+              "$ref": "#/$defs/typed_integer"
+            },
+            "subject_character_id": {
+              "$ref": "#/$defs/typed_integer"
+            },
+            "cycle_serial": {
+              "$ref": "#/$defs/typed_integer"
+            },
+            "case_serial": {
+              "$ref": "#/$defs/typed_integer"
+            },
+            "state": {
+              "$ref": "#/$defs/typed_integer"
+            },
+            "active": {
+              "$ref": "#/$defs/typed_boolean"
+            },
+            "revision": {
+              "$ref": "#/$defs/typed_integer"
+            }
+          }
+        },
+        "m360_receipt": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "owner_character_id",
+            "subject_character_id",
+            "cycle_serial",
+            "case_serial",
+            "state",
+            "choice"
+          ],
+          "properties": {
+            "owner_character_id": {
+              "$ref": "#/$defs/typed_integer"
+            },
+            "subject_character_id": {
+              "$ref": "#/$defs/typed_integer"
+            },
+            "cycle_serial": {
+              "$ref": "#/$defs/typed_integer"
+            },
+            "case_serial": {
+              "$ref": "#/$defs/typed_integer"
+            },
+            "state": {
+              "$ref": "#/$defs/typed_integer"
+            },
+            "choice": {
+              "$ref": "#/$defs/typed_integer"
+            }
+          }
+        },
+        "portfolio": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "closed",
+            "status",
+            "cycle_serial",
+            "final_conservation_ok",
+            "terminal_history_accruing",
+            "history_cycle_count",
+            "terminal_success",
+            "terminal_na",
+            "terminal_reason",
+            "terminal_owned_operations",
+            "terminal_skipped_manager_only",
+            "terminal_skipped_charter"
+          ],
+          "properties": {
+            "closed": {
+              "$ref": "#/$defs/typed_boolean"
+            },
+            "status": {
+              "$ref": "#/$defs/typed_integer"
+            },
+            "cycle_serial": {
+              "$ref": "#/$defs/typed_integer"
+            },
+            "final_conservation_ok": {
+              "$ref": "#/$defs/typed_boolean"
+            },
+            "terminal_history_accruing": {
+              "$ref": "#/$defs/typed_boolean"
+            },
+            "history_cycle_count": {
+              "$ref": "#/$defs/typed_integer"
+            },
+            "terminal_success": {
+              "$ref": "#/$defs/typed_boolean"
+            },
+            "terminal_na": {
+              "$ref": "#/$defs/typed_boolean"
+            },
+            "terminal_reason": {
+              "$ref": "#/$defs/typed_integer"
+            },
+            "terminal_owned_operations": {
+              "$ref": "#/$defs/typed_integer"
+            },
+            "terminal_skipped_manager_only": {
+              "$ref": "#/$defs/typed_integer"
+            },
+            "terminal_skipped_charter": {
+              "$ref": "#/$defs/typed_integer"
+            }
+          }
+        }
+      }
+    },
+    "terminal_kind": {
+      "enum": [
+        "none",
+        "success",
+        "history_accruing",
+        "not_applicable"
+      ]
+    }
+  },
+  "$defs": {
+    "typed_integer": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "status",
+        "value",
+        "unavailable_reason"
+      ],
+      "properties": {
+        "status": {
+          "enum": [
+            "available",
+            "unavailable"
+          ]
+        },
+        "value": {
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "unavailable_reason": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "oneOf": [
+        {
+          "properties": {
+            "status": {
+              "const": "available"
+            },
+            "value": {
+              "type": "integer"
+            },
+            "unavailable_reason": {
+              "type": "null"
+            }
+          }
+        },
+        {
+          "properties": {
+            "status": {
+              "const": "unavailable"
+            },
+            "value": {
+              "type": "null"
+            },
+            "unavailable_reason": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        }
+      ]
+    },
+    "typed_boolean": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "status",
+        "value",
+        "unavailable_reason"
+      ],
+      "properties": {
+        "status": {
+          "enum": [
+            "available",
+            "unavailable"
+          ]
+        },
+        "value": {
+          "type": [
+            "boolean",
+            "null"
+          ]
+        },
+        "unavailable_reason": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "oneOf": [
+        {
+          "properties": {
+            "status": {
+              "const": "available"
+            },
+            "value": {
+              "type": "boolean"
+            },
+            "unavailable_reason": {
+              "type": "null"
+            }
+          }
+        },
+        {
+          "properties": {
+            "status": {
+              "const": "unavailable"
+            },
+            "value": {
+              "type": "null"
+            },
+            "unavailable_reason": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        }
+      ]
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "source_backend_id": {
+            "const": "native-headless"
+          }
+        }
+      },
+      "then": {
+        "required": [
+          "build",
+          "source",
+          "binding"
+        ]
+      }
+    }
+  ]
+}

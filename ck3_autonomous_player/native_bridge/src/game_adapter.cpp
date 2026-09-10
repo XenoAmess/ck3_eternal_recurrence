@@ -29,6 +29,7 @@
 #include "xar_bridge/zhongguo_scoreboard_action_v1_mailbox.hpp"
 #include "xar_bridge/zhongguo_scoreboard_state_v1_mailbox.hpp"
 #include "xar_bridge/zhongguo_workforce_collective_snapshot_v1_mailbox.hpp"
+#include "xar_bridge/zhongguo_workforce_owner_snapshot_v1_mailbox.hpp"
 #include "xar_bridge/zhongguo_workforce_normal_exit_snapshot_v1_mailbox.hpp"
 #include "xar_bridge/zhongguo_result_case_snapshot_v1_mailbox.hpp"
 
@@ -352,6 +353,8 @@ bool GameAdapter::supports_step(std::string_view step) const noexcept {
       ck3_11906::ParseZhongguoPromotionSourceProgressV1Step(step)) {
     capability =
         ck3_11906::kZhongguoPromotionSourceProgressV1TransportCapability;
+  } else if (ck3_11906::ParseZhongguoWorkforceOwnerSnapshotV1Step(step)) {
+    capability = ck3_11906::kZhongguoWorkforceOwnerSnapshotV1Capability;
   } else if (ck3_11906::ParseZhongguoReviewNowActionV1Step(step)) {
     capability = ck3_11906::kZhongguoReviewNowActionV1TransportCapability;
   } else if (

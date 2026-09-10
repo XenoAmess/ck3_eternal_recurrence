@@ -132,4 +132,4 @@ print(json.dumps({'result':'GREEN','evidence_kind':'native_synthetic_serializer_
 
 结果 exit 0、GREEN：nonce=`af5-fixture`，revision=41，player=200，subject=100，AF case=214，result case=14，domain typed unavailable，ready=true，terminal=true。这证明当前 C++ serializer 与 Python contract/schema 的实际互通，不代表游戏内冷恢复通过。
 
-待完成：用新 native 候选取得真实 paused AF5 前态、执行 authored/native `42/41`、取得独立终态与 checkpoint。取得上述实机证据前，本查询只记 static-ready，不记 fixture-live、production-live primitive、production-live loop 或完整 P1 签收。
+01:11 追加：R402 已取得真实 paused 前态与 authored/native `42/41` 后独立终态，query 升为 `production-live primitive`；围绕它的 AF5 单元已完成有界实机循环。owner32904/subject27448/cycle2/AF case1/result case58 保持，state5→6、revision19→22、m299/m300 route3 consumed=true。原生存档、全日志扫描与受管清理 GREEN；精确 commit、DLL、artifact 与 hash 见[实机结果](../phase2-promo/r400-af5-stage-order-and-terminal-observation-2026-09-11.md#r401r402-实机结果0111-追加)。真实冷恢复仍待验收，合成冷态不升级为 live。

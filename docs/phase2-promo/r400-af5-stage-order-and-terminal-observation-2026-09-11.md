@@ -1,6 +1,6 @@
 # R400 AF5 路线勘误与独立终态观测
 
-记录日期：2026-09-11（Asia/Shanghai）。本记录承接[方法论评估](../autonomous-agent-progress/retrospectives/2026-09-11-t0-methodology-review.md)，用户已授权执行。以下为产品源码与历史 artifact 的核对结论；新 AF5 实机验收尚未完成，P1 仍为 1/9，P2 LOCKED。
+记录日期：2026-09-11（Asia/Shanghai）。本记录承接[方法论评估](../autonomous-agent-progress/retrospectives/2026-09-11-t0-methodology-review.md)，用户已授权执行。初版为源码归因；01:11 更新：R402 已完成真实 AF5 终态与保存，gameplay 日志及受管清理 GREEN。完整 P1 仍待组合签收，P2 LOCKED。
 
 ## 已闭合的归因
 
@@ -52,3 +52,37 @@ flowchart LR
 ## 交付边界
 
 本轮不改变产品业务顺序，不扩展 361/626 矩阵。AF5 receipt 按现有独立 P1 gate 签收，不附加 `.147` 源动作。整体业务结果、checkpoint 保存与 cleanup 分别保留；cleanup 成功不覆盖业务 RED。实际 live 结果将在取得后追加，之前只报告源码归因与实现进度。
+
+## R401/R402 实机结果（01:11 追加）
+
+代码 `262026d325e3d137e1cf03c46d723aad8bd57f3a` 已提交并推送；执行冻结于 `Z:/ck3_mod_rewrite/_runtime/r401-af5-code-20260911`。产品仍为上文 88076DBF 投影，新 DLL 为 `42149B9A9308812673E002FA193D203AE5C573AEDEEA6F12C89F42AE8CDBDE84`。MCP job `579bc3c4-fad6-49ea-bab7-8db3d4de4d97` 的 preflight 证明 CK3 数量为零；R401 warmup PID 69348 受管退出后，R402 gameplay PID 166928/generation 1 独占执行。
+
+实机从 date_raw 53181960 到 53183280，恰好 55 游戏日；复用原生合同处理 `befriend_outcome.0002` option 3，再执行 AF4 option 37/native 36，并停在 AF5 instance 85。没有回到 `.147`，没有控制台、fixture、OCR 或坐标动作。
+
+| 观测 | 选择前 | 42/41 选择后 |
+|---|---:|---:|
+| owner / subject / cycle | 32904 / 27448 / 2 | 相同 |
+| AF case / result case | 1 / 58 | 相同 |
+| case state / active | 5 / true | 6 / false |
+| case revision | 19 | 22 |
+| last operation / route | 298 / 1 | 300 / 3 |
+| portfolio domain | 3 | 4 |
+| m299 与 m300 | 尚无 receipt，consumed=false | receipt_state=5、route=3、active=true、consumed=true |
+
+终态 `repurchase_resolved=true`、`unit_conserved=true`，新 provider 的 readiness 与 terminal 均 true。结果来自独立 native 读回；选择 ACK 单独保留，不用于代替业务后置。
+
+证据统一目录：`Z:/ck3_mod_rewrite/_runtime/r401-af5-mcp-20260911/live-artifacts/`。
+
+| 文件 | SHA-256 | 结果 |
+|---|---|---|
+| `af5-terminal-green.json` | `9408A0962A4A227FA859FF2A36291F0C8BF4B3A5A900C85DF98F98613BE6D6C8` | AF5 GREEN |
+| `af5-terminal.ck3` | `FE5BD1D76DE4D0A8B30B1DF58FCCC484693DB58C6BCFC03DB164B5A68B00625C` | 77,617,651 bytes，原生保存并归档 |
+| `af5-gameplay-error-scan.json` | `0174D54B530EBB616A99D75E7A64607B1B6DBFF2DEBE4405BD5DB934AA774581` | 本轮完整日志从 byte 0 扫描，blocking diagnostics=0 |
+| `09_phase2_native_session_cleanup.json` | `69C841671FAF09FDF730E6F707561180D285307CE7C43E4DCAC19293B7A447B3` | canonical cleanup GREEN |
+| `af5-managed-cleanup.json` | `EE76F328CA5640815BEEC37824CF104C29401B10B91AB120FD969DD06E65ABAE` | product GREEN、cleanup GREEN、ck3_pids_after=[] |
+
+本轮完成一个真实 AF5 观察→选择→操作→验证循环。尚未证明该终态存档的冷恢复，也不把本轮 scan/cleanup 冒充全部 P1 的最终收口。下一实机从 R403 递增；由于后续使用不同旧档和新观测候选，R402 已正常受管清理。
+
+组合清单勘误：交接沿用的 L0 计数尚未绑定当前88076DBF候选。已找到的718a60d差异L0为旧8A260E2E产品，旧 assembler引用更早5fad产品；因此暂不直接把交接1/9加成2/9。AF5单项已满足现有门字段，当前候选的L0证据正在按真实增量刷新。
+
+准备阶段出现一次延迟；主线程导入探针 1.2 秒、工作线程导入探针 3.2 秒完成，当前任务随后正常进入 loader。两次短探针没有稳定复现故障，未为此修改导入框架。原始输出保留在本轮 runtime，未改写 R400 失败记录。

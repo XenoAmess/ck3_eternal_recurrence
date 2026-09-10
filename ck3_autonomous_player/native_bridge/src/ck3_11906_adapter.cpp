@@ -21,6 +21,7 @@
 #include "xar_bridge/zhongguo_promotion_source_progress_v1.hpp"
 #include "xar_bridge/zhongguo_scoreboard_state_v1.hpp"
 #include "xar_bridge/zhongguo_workforce_collective_snapshot_v1.hpp"
+#include "xar_bridge/zhongguo_workforce_owner_snapshot_v1.hpp"
 #include "xar_bridge/zhongguo_workforce_normal_exit_snapshot_v1.hpp"
 #include "xar_bridge/zhongguo_result_case_snapshot_v1.hpp"
 #include "xar_bridge/zhongguo_projects_metrics_postcondition_v1.hpp"
@@ -47,7 +48,7 @@ constexpr std::size_t kCapabilityCount =
     + 1
 #endif
 #if defined(XAR_CK3_ENABLE_ZHONGGUO_CAREER_HC_WORKFORCE_CANDIDATE_V1)
-    + 1
+    + 2
 #endif
     ;
 
@@ -126,6 +127,7 @@ constexpr std::array<std::string_view, kCapabilityCount> kCapabilities{
 #endif
 #if defined(XAR_CK3_ENABLE_ZHONGGUO_CAREER_HC_WORKFORCE_CANDIDATE_V1)
     ck3_11906::kZhongguoCareerHcWorkforcePostconditionV1Capability,
+    ck3_11906::kZhongguoWorkforceOwnerSnapshotV1Capability,
 #endif
     "game.command.query-loaded-feature-manifest-v1",
     "game.command.query-pending-character-interaction-context-v1",
