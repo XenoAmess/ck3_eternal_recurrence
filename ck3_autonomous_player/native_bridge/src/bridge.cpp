@@ -4833,6 +4833,8 @@ public:
         &xar::ck3_11906::ExecuteZhongguoPromotionSourceMailboxV1;
     environment.permitted_executor_octovigintary =
         &xar::ck3_11906::ExecuteSetPlayedCharacterMailboxV1;
+    environment.permitted_executor_novemvigintary =
+        &xar::ck3_11906::ExecuteZhongguoB1CycleSnapshotMailboxQueryV1;
     installed_ = xar::ck3_11906::InstallMainThreadQueryMailboxV1(
         g_main_thread_query_mailbox_v1, environment);
   }

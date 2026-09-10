@@ -345,6 +345,12 @@ bool ExecuteOctovigintary(
   return Execute(opaque, stamp);
 }
 
+bool ExecuteNovemvigintary(
+    void *opaque,
+    const xar::ck3_11906::MainThreadExecutionStampV1 &stamp) noexcept {
+  return Execute(opaque, stamp);
+}
+
 struct BlockingExecutorContext {
   HANDLE entered = nullptr;
   HANDLE release = nullptr;
@@ -1140,7 +1146,7 @@ bool TestMailboxStateMachine() {
     return false;
   }
 
-  // Production exposes twenty-six exact typed identities, never a generic
+  // Production exposes twenty-nine exact typed identities, never a generic
   // callback slot. Every admitted identity executes normally; any other
   // callback is rejected before it can enter the queue.
   auto typed_environment =
@@ -1178,6 +1184,8 @@ bool TestMailboxStateMachine() {
       &ExecuteSeptemvigintary;
   typed_environment.permitted_executor_octovigintary =
       &ExecuteOctovigintary;
+  typed_environment.permitted_executor_novemvigintary =
+      &ExecuteNovemvigintary;
   g_failure_stage = "typed_executor_registry";
   if (!InstallMainThreadQueryMailboxV1(mailbox, typed_environment) ||
       ObserveMainThreadPumpAndDrainV1(
@@ -1195,7 +1203,7 @@ bool TestMailboxStateMachine() {
           MainThreadQuerySubmitResultV1::invalid_request) {
     return false;
   }
-  constexpr std::array<MainThreadQueryExecutorV1, 28> typed_executors{
+  constexpr std::array<MainThreadQueryExecutorV1, 29> typed_executors{
       &Execute, &ExecuteSecondary, &ExecuteTertiary, &ExecuteQuaternary,
       &ExecuteQuinary, &ExecuteSenary, &ExecuteSeptenary, &ExecuteOctonary,
       &ExecuteNonary, &ExecuteDenary, &ExecuteUndenary,
@@ -1205,7 +1213,7 @@ bool TestMailboxStateMachine() {
       &ExecuteUnvigintary, &ExecuteDuovigintary, &ExecuteTrivigintary,
       &ExecuteQuattuorvigintary, &ExecuteQuinquevigintary,
       &ExecuteSexvigintary, &ExecuteSeptemvigintary,
-      &ExecuteOctovigintary};
+      &ExecuteOctovigintary, &ExecuteNovemvigintary};
   for (const auto executor : typed_executors) {
     MainThreadQueryTicketV1 typed_ticket{};
     if (TrySubmitMainThreadQueryV1(mailbox, executor, &typed_context,
@@ -1271,7 +1279,7 @@ bool TestSourceContract(int argc, char **argv) {
     std::fprintf(stderr, "mailbox compile-time identity contract failed\n");
     return false;
   }
-  constexpr std::array<std::string_view, 66> source_tokens{
+  constexpr std::array<std::string_view, 67> source_tokens{
       "InterlockedCompareExchangePointer",
       "kPeekMessageWIatSlotRva",
       "kSdlWindowsPumpFirstPeekReturnRva",
@@ -1336,6 +1344,7 @@ bool TestSourceContract(int argc, char **argv) {
       "mailbox.permitted_executor_quattuorvigintary",
       "mailbox.permitted_executor_quinquevigintary",
       "mailbox.permitted_executor_sexvigintary",
+      "mailbox.permitted_executor_novemvigintary",
       "Process-lifetime pin",
       "mailbox.failure_flags.load(std::memory_order_acquire) != 0",
   };
@@ -1346,7 +1355,7 @@ bool TestSourceContract(int argc, char **argv) {
       return false;
     }
   }
-  constexpr std::array<std::string_view, 71> contract_tokens{
+  constexpr std::array<std::string_view, 72> contract_tokens{
       "0x3FD2EE8", "USER32!PeekMessageW", "0x3CE41E0",
       "0x3CE421C", "0x3CE4222", "0x3CFE7AB", "0x3CD3600",
       "0x3CD366C", "0x3CD3763", "0x3CD3D84", "0x3CD40D6",
@@ -1379,6 +1388,7 @@ bool TestSourceContract(int argc, char **argv) {
       "ExecuteZhongguoWorkforceNormalExitSnapshotMailboxQueryV1",
       "ExecuteZhongguoPromotionSourceMailboxV1",
       "ExecuteSetPlayedCharacterMailboxV1",
+      "ExecuteZhongguoB1CycleSnapshotMailboxQueryV1",
   };
   for (const auto token : contract_tokens) {
     if (!Contains(abi, token) && !Contains(fixture, token) &&
@@ -1403,7 +1413,7 @@ bool TestSourceContract(int argc, char **argv) {
     return false;
   }
 
-  constexpr std::array<std::string_view, 102> bridge_tokens{
+  constexpr std::array<std::string_view, 104> bridge_tokens{
       "HeartbeatFrame",
       "main_thread_query_mailbox_v1",
       "installed",
@@ -1459,6 +1469,7 @@ bool TestSourceContract(int argc, char **argv) {
       "kZhongguoCareerHcWorkforcePostconditionV1Step",
       "ExecuteZhongguoPromotionSourceMailboxV1",
       "ExecuteSetPlayedCharacterMailboxV1",
+      "ExecuteZhongguoB1CycleSnapshotMailboxQueryV1",
       "kTitleMapNavigationV1Step",
       "ParseTitleMapNavigationRequestV1",
       "request.expected_snapshot_revision != state_revision",
@@ -1497,6 +1508,7 @@ bool TestSourceContract(int argc, char **argv) {
       "permitted_executor_sexvigintary",
       "permitted_executor_septemvigintary",
       "permitted_executor_octovigintary",
+      "permitted_executor_novemvigintary",
       "kWarEntryAssessmentsV1FirstLiveMaximumTargets",
       "CaptureWarEntryBridgeFrame",
       "ReadSnapshot(*context->game",

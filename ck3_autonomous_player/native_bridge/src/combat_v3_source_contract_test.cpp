@@ -191,7 +191,7 @@ int main(int argc, char **argv) {
   if (!ContainsAll(
           ck3_adapter_source,
           {
-              "constexpr std::size_t kBaseCapabilityCount = 79",
+              "constexpr std::size_t kBaseCapabilityCount = 80",
               "std::array<std::string_view, kCapabilityCount> kCapabilities",
               "game.command.query-battle-reinforcement-assignment-v1-N",
               "game.command.query-combat-simulation-inputs-v3-N",

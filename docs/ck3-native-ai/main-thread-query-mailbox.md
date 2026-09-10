@@ -2,7 +2,7 @@
 
 ## Result and scope
 
-`main_thread_query_mailbox_v1` now has twenty-eight fixed typed executor slots;
+`main_thread_query_mailbox_v1` now has twenty-nine fixed typed executor slots;
 default-off transports remain unadvertised pending their own live evidence:
 `query-war-entry-assessments-v1`, `query-route-contact-horizon-v1-N`,
 `query-actual-contact-scope-v1-N`, `query-combat-simulation-inputs-v3-N`,
@@ -1008,7 +1008,7 @@ unobserved.
 | Application-main paused boundary | true | live pump plus TLS gate; RNG mismatch recorded as provenance |
 | War-entry direct-call graph excludes RNG/effect VM | true | independent depth-12 review |
 | Fresh before/middle/after frame capture | true in build | deterministic source/fixture checks |
-| Only permitted executors | true in build | twenty-eight fixed slots plus submit identity gate; slot 27 is the promotion-source transport and slot 28 is the exact typed played-character rebind event |
+| Only permitted executors | true in build | twenty-nine fixed slots plus submit identity gate; slot 27 is the promotion-source transport, slot 28 is the exact typed played-character rebind event, and slot 29 is the full B1-cycle snapshot |
 | Ongoing battle-control executor | true | fifth typed slot; cold checkpoint maneuver→main ledger acceptance and managed cleanup are live-confirmed in [ongoing-battle-frame.md](ongoing-battle-frame.md) |
 | By-CombatID lifecycle executor | true in build | sixth typed slot; direct full-ID combat resolution, stable double sample, phase/winner/result and ordered sides; live acceptance pending |
 | Campaign-root executor | true | ninth typed slot; exact-build player/title/capital/liege/government/rules query is production-live confirmed in [campaign-root-context.md](campaign-root-context.md) |
@@ -1030,6 +1030,7 @@ unobserved.
 | ZhongGuo career-HC/workforce postcondition executor | static/fixture-ready | twenty-sixth typed slot; fixed 14-variable M360 route-B receipt, six-bucket HC conservation and zero manager-cost projection; default adapter does not advertise it and no live claim is made |
 | ZhongGuo promotion-source executor | static/fixture-ready | twenty-seventh typed slot; fixed source observation/action transport, not a generic native call |
 | Played-character rebind executor | static-ready | twenty-eighth typed slot; accepts one positive CharacterID, calls CK3's exact-build `set_player_character` event handler on application-main, and requires immediate native played-character readback; live status is tracked in the dedicated contract |
+| ZhongGuo B1-cycle snapshot executor | static-ready | twenty-ninth typed slot; the 2026-09-10 R378 RED proved that capability advertisement without this exact allowlist registration returns `invalid_request`; the new slot admits only `ExecuteZhongguoB1CycleSnapshotMailboxQueryV1`, with fresh live revalidation required |
 | First-live one-target result | pending | deploy this artifact and query one declarable target while paused |
 | First-live route-contact result | true | 2.466 s available result; `executed_requests 0 -> 1`; one-day advance completed |
 | Actual contact sides/order | true | P0 live frame and cold restore preserve CombatID, Province and native side order |
