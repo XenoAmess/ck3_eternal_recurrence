@@ -1448,13 +1448,15 @@ _LEGACY_MANAGER_HEALTH_TIMELINE_CONTRACTS: Final[
         "selected_native_option_index": 1,
     },
     "health.3101": {
-        # R198 exact treatment picker opened immediately after health.3001
-        # hired the high-skill candidate. Vanilla authors safe, risky, mystic,
-        # and no-treatment branches; the physician is not a mystic here, so
-        # native 2 is hidden and the rendered projection is 0/1/3. The
-        # physician alias must resolve to the exact high-skill candidate from
-        # the preceding search. Select native 0's safe treatment to preserve
-        # the sick acceptance owner without the risky branch's harsher range.
+        # Exact treatment picker opened immediately after health.3001 hired
+        # the high-skill candidate. Vanilla authors safe, risky, mystic, and
+        # no-treatment branches; the physician is not a mystic in the reviewed
+        # frames, so native 2 is hidden and the projection is 0/1/3. R416
+        # proved that the health.1006 route retains epidemic/new_memory through
+        # recruitment into this event; admit that exact eight-scope variant.
+        # The physician must remain the preceding high-skill candidate. Select
+        # native 0's source-labelled safe treatment to avoid the riskier branch
+        # and the certain no-treatment route.
         "date_raw": 53177016,
         "date_policy": "product-observation-window",
         "root_character_id": 32904,
@@ -1485,6 +1487,25 @@ _LEGACY_MANAGER_HEALTH_TIMELINE_CONTRACTS: Final[
             "background_terrain_scope",
         ),),
         "saved_scope_count": 6,
+        "scope_variants": ({
+            "scope_types": {
+                "epidemic": "epidemic",
+                "disease_type": "flag",
+                "new_memory": "character_memory",
+                "background_terrain_scope": "province",
+            },
+            "saved_scope_names": (
+                "epidemic",
+                "disease_type",
+                "sick_character",
+                "new_memory",
+                "high_skill_option",
+                "low_skill_option",
+                "physician",
+                "background_terrain_scope",
+            ),
+            "saved_scope_count": 8,
+        },),
         "option_count": 3,
         "snapshot_option_count": 4,
         "native_option_indices": (0, 1, 3),
@@ -2055,7 +2076,7 @@ MANAGER_VANILLA_OBSERVATIONS_A: Final[dict[str, dict[str, object]]] = {
     for _source_name, contracts in _MANAGER_A_LEGACY_GROUPS
     for event_key, contract in contracts.items()
     if contract.get("root_character_id") in {29037, 32904}
-    and event_key not in {"health.1006", "health.3001"}
+    and event_key not in {"health.1006", "health.3001", "health.3101"}
 }
 
 MANAGER_BEFRIEND_TIMELINE_CONTRACTS: Final = _neutralize_group(

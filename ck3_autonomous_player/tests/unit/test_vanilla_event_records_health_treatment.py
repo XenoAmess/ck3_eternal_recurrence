@@ -36,7 +36,7 @@ from xar_autoplayer.vanilla_events.source_index import (  # noqa: E402
 )
 
 
-EVENT_KEY = "health.3001"
+EVENT_KEY = "health.3101"
 SHA256_PATTERN = re.compile(r"^[0-9A-F]{64}$")
 
 
@@ -62,27 +62,27 @@ def _scope(
 def _context(*, inherited_diagnosis_scopes: bool) -> dict[str, object]:
     scopes = []
     if inherited_diagnosis_scopes:
-        scopes.extend((
-            _scope("epidemic", "epidemic"),
-            _scope("disease_type", "flag"),
-        ))
-    scopes.append(_scope("sick_character", "character", character_id=32904))
+        scopes.append(_scope("epidemic", "epidemic"))
+    scopes.extend((
+        _scope("disease_type", "flag"),
+        _scope("sick_character", "character", character_id=32904),
+    ))
     if inherited_diagnosis_scopes:
         scopes.append(_scope("new_memory", "character_memory"))
     scopes.extend((
         _scope("high_skill_option", "character", character_id=33648496),
         _scope("low_skill_option", "character", character_id=16889335),
+        _scope("physician", "character", character_id=33648496),
+        _scope("background_terrain_scope", "province"),
     ))
-    if not inherited_diagnosis_scopes:
-        scopes.insert(1, _scope("disease_type", "flag"))
     return {
         "schema": "current-event-window-context-v1",
         "schema_version": 1,
         "status": "available",
         "window_match_count": 1,
         "event_definition_key": EVENT_KEY,
-        "current_event_instance_id": 1085,
-        "date_raw": 53864784,
+        "current_event_instance_id": 1086,
+        "date_raw": 53864832,
         "root_scope": _scope(
             "root", "character", character_id=32904
         )["scope"],
@@ -96,12 +96,12 @@ def _context(*, inherited_diagnosis_scopes: bool) -> dict[str, object]:
                 "fallback": False,
                 "cancel": False,
             }
-            for rendered, native in enumerate((1, 2, 4))
+            for rendered, native in enumerate((0, 1, 3))
         ],
     }
 
 
-class HealthPhysicianSearchEventRecordTests(unittest.TestCase):
+class HealthTreatmentEventRecordTests(unittest.TestCase):
     def test_contract_admits_base_and_inherited_scope_shapes(self) -> None:
         contract = MANAGER_HEALTH_TIMELINE_CONTRACTS[EVENT_KEY]
 
@@ -109,12 +109,15 @@ class HealthPhysicianSearchEventRecordTests(unittest.TestCase):
         self.assertEqual(contract["character_scopes"], {
             "sick_character": PLAYER_SENTINEL,
         })
-        self.assertEqual(contract["native_option_indices"], (1, 2, 4))
-        self.assertEqual(contract["selected_option_number"], 2)
-        self.assertEqual(contract["selected_native_option_index"], 1)
-        self.assertEqual(contract["saved_scope_count"], 4)
+        self.assertEqual(contract["native_option_indices"], (0, 1, 3))
+        self.assertEqual(contract["selected_option_number"], 1)
+        self.assertEqual(contract["selected_native_option_index"], 0)
+        self.assertEqual(contract["saved_scope_count"], 6)
+        self.assertEqual(contract["character_scope_matches_any"], {
+            "physician": ("high_skill_option",),
+        })
         inherited = contract["scope_variants"][0]
-        self.assertEqual(inherited["saved_scope_count"], 6)
+        self.assertEqual(inherited["saved_scope_count"], 8)
         self.assertEqual(inherited["saved_scope_names"], (
             "epidemic",
             "disease_type",
@@ -122,6 +125,8 @@ class HealthPhysicianSearchEventRecordTests(unittest.TestCase):
             "new_memory",
             "high_skill_option",
             "low_skill_option",
+            "physician",
+            "background_terrain_scope",
         ))
 
         materialized = materialize_vanilla_timeline_contract(contract, 32904)
@@ -129,44 +134,38 @@ class HealthPhysicianSearchEventRecordTests(unittest.TestCase):
             "sick_character": 32904,
         })
 
-    def test_exact_source_review_covers_candidate_search_and_hiring(self) -> None:
+    def test_exact_source_review_keeps_safe_treatment_honest(self) -> None:
         analysis = VANILLA_HEALTH_ANALYSIS[EVENT_KEY]
 
-        self.assertEqual(analysis["definition_lines"], "6667-7276")
-        self.assertIn("high- and low-skill", analysis["immediate_effect"])
-        self.assertIn("court physician", analysis["option_semantics"][1])
-        self.assertIn("health.3101", analysis["follow_up_event"])
-        self.assertIn("epidemic and new_memory", analysis["scope_boundary"])
+        self.assertEqual(analysis["definition_lines"], "7314-7524")
+        self.assertIn("still stochastic", analysis["option_semantics"][0])
+        self.assertIn("health.3103", analysis["follow_up_event"])
+        self.assertIn("health.3104", analysis["follow_up_event"])
+        self.assertIn("does not guarantee", analysis["safe_option_rationale"])
+        self.assertIsNone(analysis["after_effect"])
         for digest in analysis["source_sha256"].values():
             self.assertRegex(digest, SHA256_PATTERN)
 
-    def test_r197_and_r416_observations_remain_outside_contract(self) -> None:
-        r197, r416, r416_green = VANILLA_HEALTH_OBSERVATIONS[EVENT_KEY][
-            "exemplars"
-        ]
+    def test_r198_and_r416_observations_remain_outside_contract(self) -> None:
+        r198, r416 = VANILLA_HEALTH_OBSERVATIONS[EVENT_KEY]["exemplars"]
         contract_repr = repr(MANAGER_HEALTH_TIMELINE_CONTRACTS[EVENT_KEY])
 
-        self.assertEqual(r197["rendered_native_option_indices"], [1, 2, 4])
-        self.assertEqual(r197["selected_native_option_index"], 1)
-        self.assertEqual(r416["event_instance_id"], 1085)
+        self.assertEqual(r198["rendered_native_option_indices"], [0, 1, 3])
+        self.assertEqual(r198["selected_native_option_index"], 0)
+        self.assertEqual(r416["event_instance_id"], 1086)
         self.assertEqual(r416["saved_character_ids"], {
             "sick_character": 32904,
             "high_skill_option": 33648496,
             "low_skill_option": 16889335,
+            "physician": 33648496,
         })
-        self.assertEqual(r416["rendered_native_option_indices"], [1, 2, 4])
+        self.assertEqual(r416["rendered_native_option_indices"], [0, 1, 3])
         self.assertFalse(r416["selection_attempted"])
         self.assertRegex(r416["artifact_sha256"], SHA256_PATTERN)
-        self.assertEqual(r416_green["event_instance_id"], 1085)
-        self.assertEqual(r416_green["selected_native_option_index"], 1)
-        self.assertEqual(r416_green["starting_snapshot_id"], "native:1032")
-        self.assertEqual(r416_green["ending_snapshot_id"], "native:1033")
-        self.assertTrue(r416_green["postcondition_verified"])
-        self.assertRegex(r416_green["artifact_sha256"], SHA256_PATTERN)
         for observation_only in (
-            53176968,
-            53864784,
-            1085,
+            53177016,
+            53864832,
+            1086,
             49718,
             36369,
             33648496,
@@ -191,10 +190,10 @@ class HealthPhysicianSearchEventRecordTests(unittest.TestCase):
                 context = _context(inherited_diagnosis_scopes=inherited)
                 checks = production._known_interrupt_checks(
                     snapshot={
-                        "date_raw": 53864784,
-                        "active_event": {"option_count": 5},
+                        "date_raw": 53864832,
+                        "active_event": {"option_count": 4},
                     },
-                    event={"event_instance_id": 1085},
+                    event={"event_instance_id": 1086},
                     context=context,
                     event_key=EVENT_KEY,
                     contract=contract,
@@ -203,9 +202,9 @@ class HealthPhysicianSearchEventRecordTests(unittest.TestCase):
                 resolved = production._interrupt_contract_for_context(
                     context, contract
                 )
-                self.assertEqual(resolved["saved_scope_count"], 6 if inherited else 4)
-                self.assertEqual(resolved["selected_option_number"], 2)
-                self.assertEqual(resolved["selected_native_option_index"], 1)
+                self.assertEqual(resolved["saved_scope_count"], 8 if inherited else 6)
+                self.assertEqual(resolved["selected_option_number"], 1)
+                self.assertEqual(resolved["selected_native_option_index"], 0)
 
     def test_registry_runtime_source_and_evidence_share_reviewed_record(self) -> None:
         self.assertIs(DEFAULT_VANILLA_EVENT_ANALYSIS[EVENT_KEY], (
@@ -221,10 +220,10 @@ class HealthPhysicianSearchEventRecordTests(unittest.TestCase):
 
         response = query_vanilla_event_knowledge_v1(EVENT_KEY)
         self.assertEqual(response["status"], "available")
-        self.assertEqual(response["contract"]["native_option_indices"], [1, 2, 4])
+        self.assertEqual(response["contract"]["native_option_indices"], [0, 1, 3])
         source = query_vanilla_event_source_provenance_v1(EVENT_KEY)
         self.assertEqual(source["status"], "available")
-        self.assertEqual(source["definition"]["line"], 6667)
+        self.assertEqual(source["definition"]["line"], 7314)
         portable = query_vanilla_event_evidence_index_v1(EVENT_KEY)
         self.assertEqual(portable["status"], "available")
         self.assertEqual(

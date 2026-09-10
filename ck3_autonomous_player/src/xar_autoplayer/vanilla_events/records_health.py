@@ -194,6 +194,88 @@ VANILLA_HEALTH_ANALYSIS: Final[dict[str, dict[str, object]]] = {
             "the already sick player untreated"
         ),
     },
+    "health.3101": {
+        "exact_build": {
+            "game_version": EXACT_CK3_BUILD,
+            "ck3_executable_sha256": EXACT_CK3_EXE_SHA256,
+            "steam_build_id": 23530548,
+            "branch": "titus/release/1.19.0",
+        },
+        "source_sha256": {
+            "events/health_events.txt": (
+                "8CAB7F230E09A37C15F7C088383D40752D970918D44D86762FDD068EE168EFEB"
+            ),
+            "common/scripted_effects/20_health_effects.txt": (
+                "6D7DEF1245D899DE4DEBC42136815BC7F4D14F6A467A8320355507AD03528F12"
+            ),
+            "localization/english/event_localization/health_events_l_english.yml": (
+                "043216116C522B5D108315A3730DA12C5D7B2EDDB8CF60D67D0967AF4AFE23D0"
+            ),
+            "localization/simp_chinese/event_localization/"
+            "health_events_l_simp_chinese.yml": (
+                "AFDC39A947F036A140288CC565EDE0B2CC29B1DCD27AF191A7CC0F91A026A0E4"
+            ),
+        },
+        "definition_lines": "7314-7524",
+        "trigger_lines": "7471-7474",
+        "immediate_effect_lines": "7480-7486",
+        "option_lines": "7488-7523",
+        "safe_treatment_effect_lines": "1581-1713",
+        "risky_treatment_effect_lines": "1716-1897",
+        "mystic_treatment_effect_lines": "1899-2087",
+        "no_treatment_effect_lines": "2089-2091",
+        "caller_semantics": (
+            "a newly appointed physician schedules this event for a treatable "
+            "player without recent treatment. The R416 delivery follows "
+            "health.1006 native 0 and health.3001 native 1 in the same event frame"
+        ),
+        "trigger_boundary": (
+            "ROOT must still have a treatable disease and an available court physician"
+        ),
+        "immediate_effect": (
+            "re-saves the available court physician, saves ROOT's worst disease as "
+            "disease_type, and saves the physician's location as "
+            "background_terrain_scope when available"
+        ),
+        "scope_boundary": (
+            "the reviewed base shape carries the sick player, disease, high and low "
+            "recruitment candidates, the physician matching the high-skill candidate, "
+            "and the physician location. R416 legally retains epidemic and new_memory "
+            "as an exact eight-scope variant without changing options"
+        ),
+        "option_semantics": {
+            0: (
+                "runs safe_disease_treatment_effect. Its result is still stochastic: "
+                "the source weights ordinary success against failure and permits a "
+                "hostile physician to fail deliberately"
+            ),
+            1: (
+                "runs risky_disease_treatment_effect, whose source-authored outcome "
+                "range includes stronger successes and harsher failures"
+            ),
+            2: (
+                "runs mystic_disease_treatment_effect and is visible only when the "
+                "physician has a mystic lifestyle trait"
+            ),
+            3: "runs no_disease_treatment_effect and provides no treatment",
+        },
+        "native_ai_weights": {
+            0: "base 10",
+            1: "base 1",
+            2: "base 0.5, reduced to zero when AI zeal is nonnegative",
+            3: "base 0",
+        },
+        "after_effect": None,
+        "follow_up_event": (
+            "safe treatment schedules health.3103 on success or health.3104 on "
+            "failure; the exact branch remains random and must be observed"
+        ),
+        "safe_option_rationale": (
+            "authored option 1/native 0 is the source-labelled safe treatment. It "
+            "does not guarantee success, but it avoids the risky route's harsher "
+            "outcome range and native 3's certain absence of treatment"
+        ),
+    },
 }
 
 
@@ -332,6 +414,94 @@ VANILLA_HEALTH_OBSERVATIONS: Final[dict[str, dict[str, object]]] = {
                 "low_skill_option": 4,
             },
             "rendered_native_option_indices": [1, 2, 4],
+            "selected_option_number": None,
+            "selected_native_option_index": None,
+            "selection_attempted": False,
+            "retained_red": True,
+            "process_id": 174656,
+            "connection_generation": 1,
+            "process_restart_required": False,
+            "mcp_only": True,
+            "fixture_used": False,
+            "ocr_used": False,
+            "coordinates_used": False,
+            "console_used": False,
+        }, {
+            "run": "R416-retry-07",
+            "kind": "same-process-hot-recovery-green",
+            "artifact": (
+                "_runtime/p1-terminal-resume-r416-20260911/live-artifacts/"
+                "terminal-stages-red-attempt-07.json"
+            ),
+            "artifact_sha256": (
+                "EDBE88226F5CB6C31632359164BC050E9ACD7B84687864EE7A368B7125B9F799"
+            ),
+            "date_raw": 53864784,
+            "event_instance_id": 1085,
+            "root_character_id": 32904,
+            "starting_snapshot_id": "native:1032",
+            "starting_revision": 1033,
+            "ending_snapshot_id": "native:1033",
+            "ending_revision": 1034,
+            "selected_option_number": 2,
+            "selected_native_option_index": 1,
+            "postcondition_verified": True,
+            "connection_generation": 1,
+            "bridge_pid": 174656,
+            "process_restart_required": False,
+        }],
+    },
+    "health.3101": {
+        "exemplars": [{
+            "run": "R198",
+            "kind": "legacy-live-binding",
+            "review_kind": "source-correlated-historical-live",
+            "date_raw": 53177016,
+            "root_character_id": 32904,
+            "saved_character_ids": {
+                "sick_character": 32904,
+                "high_skill_option": 49718,
+                "low_skill_option": 36369,
+                "physician": 49718,
+            },
+            "rendered_native_option_indices": [0, 1, 3],
+            "selected_option_number": 1,
+            "selected_native_option_index": 0,
+        }, {
+            "run": "R416-retry-07",
+            "kind": "retained-live-contract-red",
+            "red_classification": "harness-route-red",
+            "product_failure_proven": False,
+            "artifact": (
+                "_runtime/p1-terminal-resume-r416-20260911/live-artifacts/"
+                "terminal-stages-red-attempt-07.json"
+            ),
+            "artifact_sha256": (
+                "EDBE88226F5CB6C31632359164BC050E9ACD7B84687864EE7A368B7125B9F799"
+            ),
+            "date_raw": 53864832,
+            "event_instance_id": 1086,
+            "root_character_id": 32904,
+            "snapshot_id": "native:1035",
+            "revision": 1036,
+            "native_revision": 1035,
+            "saved_character_ids": {
+                "sick_character": 32904,
+                "high_skill_option": 33648496,
+                "low_skill_option": 16889335,
+                "physician": 33648496,
+            },
+            "saved_scope_raw_types": {
+                "epidemic": 50,
+                "disease_type": 3,
+                "sick_character": 4,
+                "new_memory": 34,
+                "high_skill_option": 4,
+                "low_skill_option": 4,
+                "physician": 4,
+                "background_terrain_scope": 8,
+            },
+            "rendered_native_option_indices": [0, 1, 3],
             "selected_option_number": None,
             "selected_native_option_index": None,
             "selection_attempted": False,
