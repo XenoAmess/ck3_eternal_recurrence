@@ -37,7 +37,7 @@ def _validate(result: dict[str, object]) -> None:
     json.dumps(result, ensure_ascii=False, allow_nan=False)
 
 
-def test_all_179_keys_are_stably_keyset_paginated() -> None:
+def test_all_180_keys_are_stably_keyset_paginated() -> None:
     expected = sorted(DEFAULT_VANILLA_EVENT_TIMELINE_CONTRACTS)
     found: list[str] = []
     after_key = None
@@ -50,8 +50,8 @@ def test_all_179_keys_are_stably_keyset_paginated() -> None:
         )
         _validate(result)
         assert result["status"] == "available"
-        assert result["total_matches"] == 179
-        assert result["dataset_summary"]["total_events"] == 179
+        assert result["total_matches"] == 180
+        assert result["dataset_summary"]["total_events"] == 180
         if dataset_sha256 is None:
             dataset_sha256 = result["dataset_sha256"]
         assert result["dataset_sha256"] == dataset_sha256
@@ -61,7 +61,7 @@ def test_all_179_keys_are_stably_keyset_paginated() -> None:
             break
 
     assert found == expected
-    assert len(found) == len(set(found)) == 179
+    assert len(found) == len(set(found)) == 180
 
 
 def test_filters_search_and_counts_match_the_canonical_metadata() -> None:
@@ -91,10 +91,10 @@ def test_filters_search_and_counts_match_the_canonical_metadata() -> None:
 
     assert source["total_matches"] == len(source_expected)
     assert source["match_summary"]["migration_only_events"] == 0
-    assert migration["total_matches"] == 179 - len(source_expected)
+    assert migration["total_matches"] == 180 - len(source_expected)
     assert migration["match_summary"]["source_reviewed_events"] == 0
     assert observed["total_matches"] == len(observation_expected)
-    assert unobserved["total_matches"] == 179 - len(observation_expected)
+    assert unobserved["total_matches"] == 180 - len(observation_expected)
 
     namespace = ck3_list_vanilla_event_knowledge_v1(
         namespace="tgp_dynastic_cycle",

@@ -4,10 +4,108 @@ from __future__ import annotations
 
 from typing import Final
 
-from .registry import EXACT_CK3_BUILD, EXACT_CK3_EXE_SHA256
+from .registry import EXACT_CK3_BUILD, EXACT_CK3_EXE_SHA256, PLAYER_SENTINEL
+
+
+VANILLA_HEALTH_TIMELINE_CONTRACTS: Final[dict[str, dict[str, object]]] = {
+    "health.1106": {
+        # R418 exact played-character recovery from consumption. Vanilla's
+        # immediate block removes consumption, dispatches care notifications,
+        # and clears obsolete disease-treatment modifiers before the modal is
+        # shown. The sole authored option only acknowledges that completed
+        # recovery through a tooltip, so bind the complete three-scope frame.
+        "date_policy": "product-observation-window",
+        "root_character_id": PLAYER_SENTINEL,
+        "character_scopes": {
+            "sick_character": PLAYER_SENTINEL,
+        },
+        "scope_types": {
+            "epidemic": "epidemic",
+            "disease_type": "flag",
+        },
+        "boolean_scopes": (),
+        "saved_scope_name_sets": ((
+            "epidemic",
+            "disease_type",
+            "sick_character",
+        ),),
+        "saved_scope_count": 3,
+        "option_count": 1,
+        "snapshot_option_count": 1,
+        "native_option_indices": (0,),
+        "selected_option_number": 1,
+        "selected_native_option_index": 0,
+        "occurrence_policy": "repeatable-within-product-observation-window",
+    },
+}
 
 
 VANILLA_HEALTH_ANALYSIS: Final[dict[str, dict[str, object]]] = {
+    "health.1106": {
+        "exact_build": {
+            "game_version": EXACT_CK3_BUILD,
+            "ck3_executable_sha256": EXACT_CK3_EXE_SHA256,
+            "steam_build_id": 23530548,
+            "branch": "titus/release/1.19.0",
+        },
+        "source_sha256": {
+            "events/health_events.txt": (
+                "8CAB7F230E09A37C15F7C088383D40752D970918D44D86762FDD068EE168EFEB"
+            ),
+            "common/scripted_effects/20_health_effects.txt": (
+                "6D7DEF1245D899DE4DEBC42136815BC7F4D14F6A467A8320355507AD03528F12"
+            ),
+            "localization/english/event_localization/health_events_l_english.yml": (
+                "043216116C522B5D108315A3730DA12C5D7B2EDDB8CF60D67D0967AF4AFE23D0"
+            ),
+            "localization/simp_chinese/event_localization/"
+            "health_events_l_simp_chinese.yml": (
+                "AFDC39A947F036A140288CC565EDE0B2CC29B1DCD27AF191A7CC0F91A026A0E4"
+            ),
+        },
+        "definition_lines": "4395-4428",
+        "trigger_lines": "4409-4411",
+        "immediate_effect_lines": "4414-4420",
+        "option_lines": "4422-4427",
+        "ordinary_recovery_schedule_lines": "317-322",
+        "notify_recovery_schedule_lines": "892-920",
+        "recover_from_disease_effect_lines": "694-887",
+        "remove_disease_treatment_effect_lines": "3580-3595",
+        "caller_semantics": (
+            "the ordinary disease lifecycle can schedule health.1106 after one to "
+            "six years, while recover_from_disease_notify_effect can schedule it "
+            "after five to fifteen days. R418 reached the ordinary delayed route "
+            "after the player's retained consumption treatment cycle"
+        ),
+        "trigger_boundary": "ROOT must still have the consumption trait",
+        "immediate_effect": (
+            "runs recover_from_disease_effect for consumption, which removes the "
+            "trait, applies disease-specific recovery state, and notifies qualifying "
+            "characters through health.2202; then clears treatment modifiers when "
+            "no treatable disease remains, all before the option is presented"
+        ),
+        "scope_boundary": (
+            "R418 retains epidemic and disease_type from the earlier disease frame; "
+            "sick_character is the played ROOT. No physician or treatment-picker "
+            "scope is present in this exact recovery window"
+        ),
+        "option_semantics": {
+            0: (
+                "the sole authored acknowledgement only repeats removal of the "
+                "consumption trait as a tooltip; recovery already occurred in immediate"
+            ),
+        },
+        "native_ai_weights": {0: "sole authored acknowledgement; no ai_chance block"},
+        "after_effect": None,
+        "follow_up_event": (
+            "recover_from_disease_effect can notify qualifying caring characters "
+            "through health.2202 before this modal is acknowledged"
+        ),
+        "safe_option_rationale": (
+            "authored option 1/native 0 is the sole shown and enabled row and only "
+            "acknowledges the recovery already completed by immediate"
+        ),
+    },
     "health.2202": {
         "exact_build": {
             "game_version": EXACT_CK3_BUILD,
@@ -486,6 +584,48 @@ VANILLA_HEALTH_ANALYSIS: Final[dict[str, dict[str, object]]] = {
 
 
 VANILLA_HEALTH_OBSERVATIONS: Final[dict[str, dict[str, object]]] = {
+    "health.1106": {
+        "exemplars": [{
+            "run": "R418-retry-02",
+            "kind": "retained-live-contract-red",
+            "red_classification": "harness-route-red",
+            "product_failure_proven": False,
+            "artifact": (
+                "_runtime/p1-terminal-resume-r418-20260911/live-artifacts/"
+                "terminal-stages-red-attempt-02.json"
+            ),
+            "artifact_sha256": (
+                "7976147C48739863B4FA136CAEB4AEA5665C91477A59FFB3B1C4ECACA5AD54B1"
+            ),
+            "date_raw": 53915424,
+            "event_instance_id": 1094,
+            "root_character_id": 32904,
+            "snapshot_id": "native:123",
+            "revision": 124,
+            "native_revision": 123,
+            "saved_character_ids": {
+                "sick_character": 32904,
+            },
+            "saved_scope_raw_types": {
+                "epidemic": 50,
+                "disease_type": 3,
+                "sick_character": 4,
+            },
+            "rendered_native_option_indices": [0],
+            "selected_option_number": None,
+            "selected_native_option_index": None,
+            "selection_attempted": False,
+            "retained_red": True,
+            "process_id": 204536,
+            "connection_generation": 1,
+            "process_restart_required": False,
+            "mcp_only": True,
+            "fixture_used": False,
+            "ocr_used": False,
+            "coordinates_used": False,
+            "console_used": False,
+        }],
+    },
     "health.2202": {
         "exemplars": [{
             "run": "legacy-migrated",
@@ -871,6 +1011,31 @@ VANILLA_HEALTH_OBSERVATIONS: Final[dict[str, dict[str, object]]] = {
             "ocr_used": False,
             "coordinates_used": False,
             "console_used": False,
+        }, {
+            "run": "R418-retry-02",
+            "kind": "same-process-hot-recovery-green",
+            "artifact": (
+                "_runtime/p1-terminal-resume-r418-20260911/live-artifacts/"
+                "terminal-stages-red-attempt-02.json"
+            ),
+            "artifact_sha256": (
+                "7976147C48739863B4FA136CAEB4AEA5665C91477A59FFB3B1C4ECACA5AD54B1"
+            ),
+            "date_raw": 53908728,
+            "event_instance_id": 1092,
+            "ending_event_instance_id": 1093,
+            "root_character_id": 32904,
+            "starting_snapshot_id": "native:41",
+            "starting_revision": 42,
+            "ending_snapshot_id": "native:42",
+            "ending_revision": 43,
+            "selected_option_number": 1,
+            "selected_native_option_index": 0,
+            "observed_result_event": "health.3103",
+            "postcondition_verified": True,
+            "connection_generation": 1,
+            "bridge_pid": 204536,
+            "process_restart_required": False,
         }],
     },
     "health.3102": {
@@ -1043,6 +1208,30 @@ VANILLA_HEALTH_OBSERVATIONS: Final[dict[str, dict[str, object]]] = {
             "connection_generation": 1,
             "bridge_pid": 174656,
             "process_restart_required": False,
+        }, {
+            "run": "R418-retry-02",
+            "kind": "same-process-hot-recovery-green",
+            "artifact": (
+                "_runtime/p1-terminal-resume-r418-20260911/live-artifacts/"
+                "terminal-stages-red-attempt-02.json"
+            ),
+            "artifact_sha256": (
+                "7976147C48739863B4FA136CAEB4AEA5665C91477A59FFB3B1C4ECACA5AD54B1"
+            ),
+            "date_raw": 53908728,
+            "event_instance_id": 1093,
+            "ending_event_instance_id": None,
+            "root_character_id": 32904,
+            "starting_snapshot_id": "native:42",
+            "starting_revision": 43,
+            "ending_snapshot_id": "native:43",
+            "ending_revision": 44,
+            "selected_option_number": 1,
+            "selected_native_option_index": 0,
+            "postcondition_verified": True,
+            "connection_generation": 1,
+            "bridge_pid": 204536,
+            "process_restart_required": False,
         }],
     },
 }
@@ -1051,4 +1240,5 @@ VANILLA_HEALTH_OBSERVATIONS: Final[dict[str, dict[str, object]]] = {
 __all__ = [
     "VANILLA_HEALTH_ANALYSIS",
     "VANILLA_HEALTH_OBSERVATIONS",
+    "VANILLA_HEALTH_TIMELINE_CONTRACTS",
 ]

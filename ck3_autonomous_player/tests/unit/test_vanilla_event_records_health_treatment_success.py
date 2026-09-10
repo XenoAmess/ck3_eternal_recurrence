@@ -158,7 +158,9 @@ class HealthTreatmentSuccessEventRecordTests(unittest.TestCase):
             self.assertRegex(digest, SHA256_PATTERN)
 
     def test_r199_and_r416_observations_remain_outside_contract(self) -> None:
-        r199, r416, retry09 = VANILLA_HEALTH_OBSERVATIONS[EVENT_KEY]["exemplars"]
+        r199, r416, retry09, r418 = (
+            VANILLA_HEALTH_OBSERVATIONS[EVENT_KEY]["exemplars"]
+        )
         contract_repr = repr(MANAGER_HEALTH_TIMELINE_CONTRACTS[EVENT_KEY])
 
         self.assertEqual(r199["selected_native_option_index"], 0)
@@ -175,6 +177,12 @@ class HealthTreatmentSuccessEventRecordTests(unittest.TestCase):
         self.assertEqual(retry09["selected_native_option_index"], 0)
         self.assertTrue(retry09["postcondition_verified"])
         self.assertRegex(retry09["artifact_sha256"], SHA256_PATTERN)
+        self.assertEqual(r418["run"], "R418-retry-02")
+        self.assertEqual(r418["event_instance_id"], 1093)
+        self.assertIsNone(r418["ending_event_instance_id"])
+        self.assertEqual(r418["selected_native_option_index"], 0)
+        self.assertTrue(r418["postcondition_verified"])
+        self.assertRegex(r418["artifact_sha256"], SHA256_PATTERN)
         for observation_only in (
             53177016,
             53864832,

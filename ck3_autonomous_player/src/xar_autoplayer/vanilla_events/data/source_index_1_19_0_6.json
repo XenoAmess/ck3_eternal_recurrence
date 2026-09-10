@@ -2,18 +2,18 @@
   "audit": {
     "ambiguous_definition_count": 0,
     "caller_candidate_file_count": 77,
-    "caller_candidate_reference_count": 515,
+    "caller_candidate_reference_count": 517,
     "definition_file_count": 70,
-    "external_caller_event_count": 146,
+    "external_caller_event_count": 147,
     "missing_definition_count": 0,
     "namespace_mismatch_count": 0,
-    "registered_event_count": 179,
+    "registered_event_count": 180,
     "same_file_only_caller_event_count": 33,
-    "unique_definition_count": 179
+    "unique_definition_count": 180
   },
   "ck3_build": "1.19.0.6",
   "ck3_exe_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
-  "dataset_sha256": "935B7410AFB5261D26FB62B4D92548B6030E4CA33C14E57F4EA31C642159165E",
+  "dataset_sha256": "1B692E696EDD283EA18312027856F62EE084D2BDFABAFDCF0D9B20FE75756713",
   "events": {
     "adultery.0002": {
       "caller_candidate_resolution": "same-definition-file-only",
@@ -2028,6 +2028,31 @@
       "definition": {
         "file_sha256": "8CAB7F230E09A37C15F7C088383D40752D970918D44D86762FDD068EE168EFEB",
         "line": 4250,
+        "relative_path": "events/health_events.txt"
+      },
+      "namespace": "health"
+    },
+    "health.1106": {
+      "caller_candidate_resolution": "external-definition-file",
+      "caller_candidates": [
+        {
+          "column": 10,
+          "file_sha256": "6D7DEF1245D899DE4DEBC42136815BC7F4D14F6A467A8320355507AD03528F12",
+          "kind": "exact-token-lexical-candidate",
+          "line": 320,
+          "relative_path": "common/scripted_effects/20_health_effects.txt"
+        },
+        {
+          "column": 26,
+          "file_sha256": "6D7DEF1245D899DE4DEBC42136815BC7F4D14F6A467A8320355507AD03528F12",
+          "kind": "exact-token-lexical-candidate",
+          "line": 916,
+          "relative_path": "common/scripted_effects/20_health_effects.txt"
+        }
+      ],
+      "definition": {
+        "file_sha256": "8CAB7F230E09A37C15F7C088383D40752D970918D44D86762FDD068EE168EFEB",
+        "line": 4395,
         "relative_path": "events/health_events.txt"
       },
       "namespace": "health"
