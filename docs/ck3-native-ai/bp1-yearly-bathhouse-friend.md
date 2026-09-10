@@ -7,9 +7,10 @@
 - [paused live RED] R416 attempt 2 在 PID `174656` / connection generation `1` 的真实暂停帧命中 instance
   `1078`。ROOT 是玩家；唯一 saved scope 是非玩家 `new_friend:character`；原生定义有三个选项，当前窗口只投影
   shown/enabled 的 native `0` 与 `2`。没有提交选择。
-- [counter-policy static-ready, live action pending] 可移植合同严格绑定当前稀疏投影并选择 authored `3` / native `2`。
-  RED 的直接原因是恢复 harness 尚未登记这个原版事件，不证明天朝二期产品失败。必须在旧 instance 消失或前进后，
-  才能升级为 production-live primitive。
+- [production-live primitive] 提交 `31e9601dd4eaac84c970e64376906994929ee249` 后，R416 retry 03 在同一 PID /
+  generation 严格重绑该稀疏投影，选择 authored `3` / native `2`。instance `1078 -> null`、snapshot
+  `native:271 -> native:272`、revision `272 -> 273`，`postcondition_verified=true`；随后前进到新事件
+  `tgp_movement_events.0110`，证明旧窗口已经退出。
 
 ## 原版入口与决策树
 
@@ -66,5 +67,8 @@ native `(0, 2)` 以及最新 revision。ACK 不算完成；必须观察旧 insta
 - R416 选择前 RED：
   `_runtime/p1-terminal-resume-r416-20260911/live-artifacts/terminal-stages-red-attempt-02.json`，SHA-256
   `1D965717FBA5B1FEA8654060091431BA23086BEF22375B1A44AEC67DDBE1F22C`。
+- R416 同 PID 动作与 advance 证据包含在下一条保留 RED：
+  `_runtime/p1-terminal-resume-r416-20260911/live-artifacts/terminal-stages-red-attempt-03.json`，SHA-256
+  `7F2523869BEAFBC279D9ACDE65CB48661CCD1773D6CE40EB366E5EC5C9CB109A`。
 - 可移植合同、analysis 与 observation：
   `ck3_autonomous_player/src/xar_autoplayer/vanilla_events/records_bp1_yearly.py`。
