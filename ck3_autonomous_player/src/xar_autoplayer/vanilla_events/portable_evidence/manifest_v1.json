@@ -8014,6 +8014,28 @@
       "sha256": "8ecd76790d3908ee1e93fb46a25a1123a935f18a91e91352b1cae7173db23d5d"
     },
     {
+      "blob_bytes": 19306,
+      "blob_path": "blobs/8f1b7c8d055a0edc4508454d161dd5b15677536db0404a60f57463ede38bb3e6.gz",
+      "blob_sha256": "17b9750fb2710b6773bbecbcd5f68627e35398f4d160af1e2a768d66dbf93920",
+      "bytes": 213056,
+      "evidence_id": "8f1b7c8d055a0edc4508454d161dd5b15677536db0404a60f57463ede38bb3e6",
+      "kind": "observation_artifact",
+      "media_type": "application/json",
+      "references": [
+        {
+          "caller_candidate_resolution": null,
+          "event_definition_key": "bp1_house_feud.0014",
+          "logical_path": "_runtime/p1-terminal-resume-r416-20260911/live-artifacts/terminal-stages-red-attempt-01.json",
+          "origin": "runtime",
+          "provenance": "captured-observation-artifact",
+          "role": "artifact",
+          "source_column": null,
+          "source_line": null
+        }
+      ],
+      "sha256": "8f1b7c8d055a0edc4508454d161dd5b15677536db0404a60f57463ede38bb3e6"
+    },
+    {
       "blob_bytes": 20017,
       "blob_path": "blobs/920fbe1bc3b5b3a46a009ecdd0c6c48aa2b5b5c676781530bbc289dc70fa928d.gz",
       "blob_sha256": "b598734e2aa7a981088a9d83c783914db0f56ed0fc4f415891734244d7d70c12",
@@ -12387,13 +12409,13 @@
   "schema": "xar.ck3.vanilla-event-portable-evidence-manifest",
   "schema_version": 1,
   "statistics": {
-    "evidence": 238,
+    "evidence": 239,
     "generated_definition_references": 174,
     "lexical_caller_candidate_references": 506,
     "manually_reviewed_analysis_source_references": 204,
-    "observation_artifact_references": 68,
-    "observation_artifacts": 67,
-    "references": 952,
+    "observation_artifact_references": 69,
+    "observation_artifacts": 68,
+    "references": 953,
     "source_definitions": 171
   }
 }
