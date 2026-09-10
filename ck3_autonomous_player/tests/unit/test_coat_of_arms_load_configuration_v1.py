@@ -53,6 +53,7 @@ def _write_directory_mod(user_root: Path) -> Path:
         "\n".join(
             (
                 'version="1.0"',
+                'tags={ "Gameplay" "Utilities" }',
                 'name="Fixture CoA"',
                 f'path="{content_root.as_posix()}"',
                 'replace_path="gfx/coat_of_arms/patterns"',
@@ -85,6 +86,7 @@ class CoatOfArmsLoadConfigurationV1Tests(unittest.TestCase):
                 hashlib.sha256(descriptor.read_bytes()).hexdigest().upper(),
             )
             self.assertEqual(mod["name"], "Fixture CoA")
+            self.assertEqual(mod["version"], "1.0")
             self.assertEqual(mod["remote_file_id"], "123")
             self.assertEqual(mod["content_kind"], "directory")
             self.assertTrue(mod["content_root_exists"])

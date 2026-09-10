@@ -9,9 +9,6 @@ from typing import Final
 
 from .coat_of_arms_resources import (
     CoatOfArmsResourceCatalogError,
-    _Parser,
-    _Scalar,
-    _Value,
     _sha256,
     _tokenize,
 )
@@ -34,16 +31,19 @@ _COA_DIRECTORIES: Final = {
 }
 
 
-def _scalar_values(entries: tuple[tuple[str, _Value], ...], key: str) -> list[str]:
+_DescriptorEntries = tuple[tuple[str, str | None], ...]
+
+
+def _scalar_values(entries: _DescriptorEntries, key: str) -> list[str]:
     return [
-        value.value
+        value
         for entry_key, value in entries
-        if entry_key == key and isinstance(value, _Scalar)
+        if entry_key == key and value is not None
     ]
 
 
 def _single_scalar(
-    entries: tuple[tuple[str, _Value], ...],
+    entries: _DescriptorEntries,
     key: str,
 ) -> str | None:
     values = _scalar_values(entries, key)
@@ -54,13 +54,57 @@ def _single_scalar(
     return values[0] if values else None
 
 
-def _read_descriptor(path: Path) -> tuple[tuple[str, _Value], ...]:
+def _parse_descriptor(text: str) -> _DescriptorEntries:
+    tokens = _tokenize(text)
+    entries: list[tuple[str, str | None]] = []
+    index = 0
+    while index < len(tokens):
+        key = tokens[index]
+        if key.value in "{}=":
+            raise CoatOfArmsResourceCatalogError(
+                f"invalid descriptor key at {key.line}:{key.column}"
+            )
+        index += 1
+        if index >= len(tokens) or tokens[index].value != "=":
+            raise CoatOfArmsResourceCatalogError(
+                f"expected '=' after descriptor key at {key.line}:{key.column}"
+            )
+        index += 1
+        if index >= len(tokens):
+            raise CoatOfArmsResourceCatalogError(
+                "unexpected end of mod descriptor"
+            )
+        value = tokens[index]
+        index += 1
+        if value.value == "{":
+            depth = 1
+            while index < len(tokens) and depth:
+                if tokens[index].value == "{":
+                    depth += 1
+                elif tokens[index].value == "}":
+                    depth -= 1
+                index += 1
+            if depth:
+                raise CoatOfArmsResourceCatalogError(
+                    f"unterminated descriptor block at {value.line}:{value.column}"
+                )
+            entries.append((key.value, None))
+        elif value.value in "}=":
+            raise CoatOfArmsResourceCatalogError(
+                f"invalid descriptor value at {value.line}:{value.column}"
+            )
+        else:
+            entries.append((key.value, value.value))
+    return tuple(entries)
+
+
+def _read_descriptor(path: Path) -> _DescriptorEntries:
     if not path.is_file() or not 0 < path.stat().st_size <= _MAX_DESCRIPTOR_BYTES:
         raise CoatOfArmsResourceCatalogError(
             "enabled mod descriptor is missing or outside the size contract"
-        )
+    )
     try:
-        return _Parser(_tokenize(path.read_text(encoding="utf-8-sig"))).document()
+        return _parse_descriptor(path.read_text(encoding="utf-8-sig"))
     except UnicodeError as error:
         raise CoatOfArmsResourceCatalogError(
             "enabled mod descriptor is not UTF-8"
