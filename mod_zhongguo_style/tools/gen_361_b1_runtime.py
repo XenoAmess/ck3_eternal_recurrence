@@ -7147,7 +7147,10 @@ zg361_b1_compact_final_survivor_domain_effect = {
 				trigger_if = {
 					limit = { var:zg361_b1_agenda_mode != 3 }
 					var:zg361_b1_agenda_n = var:zg361_b1_processing_n
-					var:zg361_b1_agenda_n = { value = var:zg361_b1_agenda_reviewed_n add = var:zg361_b1_agenda_skipped_n }
+					AND = {
+						var:zg361_b1_agenda_n >= { value = var:zg361_b1_agenda_reviewed_n add = var:zg361_b1_agenda_skipped_n }
+						var:zg361_b1_agenda_n <= { value = var:zg361_b1_agenda_reviewed_n add = var:zg361_b1_agenda_skipped_n }
+					}
 				}
 				trigger_else = { var:zg361_b1_agenda_n = 0 }
 			}
