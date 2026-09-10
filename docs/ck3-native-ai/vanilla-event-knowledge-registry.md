@@ -9,7 +9,7 @@
 - [static-ready analysis / mixed live evidence] 当前 package 同时发布 **173 条 analysis** 与 **173 条 observation metadata**，其中 **25 个 key** 含非 legacy 的 paused/live observation。缺少已冻结 source hash 的旧结论只按既有合同注释、docs/tests 标为 migration-only，不编造 hash；R414 新出现的事件边界均按 harness-route RED 保留，在各自动作完成前不是新增 production-live primitive。
 - [static-ready context profiles] prebootstrap 的 `spymaster_task.0381`、`spymaster_task.0399` 两条记录继续作为 seed-capture 上下文 profile 保存，不混入默认扁平 registry。它们与默认 manager 合同使用相同 event key、但冻结不同阶段的精确存档 shape，强行压平会造成有意义的合同冲突。
 
-当前状态表示 registry、默认数据组合和只读 MCP 可以被静态消费者使用，不表示 173 条记录都已有独立 production-live exemplar，也不表示 CK3 自动玩家已经具备完整事件效用判断。production runtime 当前 package 组合 `319` 条事件合同；共享 registry 的 production-live 标签只落在已有选择与 advance 证据的切片。R414 已同 PID 越过 `yearly.0003`、`bp1_house_feud.0014` 与 `trait_specific.4001` 的既有廷臣变体，attempt 4 仍暂停于 `tgp_movement_events.0030` 的选择前 RED。女巫变体不重复增加该事件已经取得的 live 计数；新思潮事件也必须完成动作与 advance 后才记 live，当前 T0 产品进度不变。
+当前状态表示 registry、默认数据组合和只读 MCP 可以被静态消费者使用，不表示 173 条记录都已有独立 production-live exemplar，也不表示 CK3 自动玩家已经具备完整事件效用判断。production runtime 当前 package 组合 `319` 条事件合同；共享 registry 的 production-live 标签只落在已有选择与 advance 证据的切片。R414 已同 PID 越过 `yearly.0003`、`bp1_house_feud.0014`、`trait_specific.4001` 的既有廷臣变体与 `tgp_movement_events.0030`；attempt 5 暂停于 `tgp_dynastic_cycle_events.0001` 的无关系 scope 选择前 RED。女巫变体不重复增加该事件已经取得的 live 计数；`.0001` 在 R372 已有 production-live primitive，本轮新形态必须完成动作与 advance 后才能把该形态标为 live，当前 T0 产品进度不变。其原版决策树与三种关系分支见 [tgp-dynastic-cycle-advancement.md](tgp-dynastic-cycle-advancement.md)。
 
 T0 当前仍为 `50%`、canonical stage `8/11`，source checkpoint `3/4` 且只缺 `capture_cross_cycle_endgame`；T0-P1 未签收，T0-P2 继续 `LOCKED`。`strict 4/361` 与 `definitions 106/626` 只是非阻塞 backlog。
 
@@ -86,7 +86,7 @@ R390 在 `date_raw=53589168` 暂停于 instance `1089`，原始 RED 原样保留
 
 CK3 `1.19.0.6` exact-build 定义位于 `events/lifestyles/statecraft_lifestyle/diplomacy_majesty_events.txt:968`。`.4033` 只由 `.4030` 的 option B 直接触发；上游是每年四次的 diplomacy lifestyle pulse 及概率事件池，不是 daily pulse。`.4033` 自身只检查 `thinker` 仍存活，没有独立随机分支或后续事件。唯一 authored option 1/native `0` 给接收者五年 `+1 diplomacy/+1 martial` modifier、对 thinker 的 `+25` opinion，并在需要时建立 potential-friend 关系；没有资源、压力、囚禁、受伤、死亡、战争或头衔代价。因此最小安全合同选择该唯一终止路线，同时仍要求 exact saved-scope shape、玩家/第三方关系、选项投影及提交前 revision 重绑定全部通过。
 
-portable evidence bundle 随 R414 attempt 4 更新为 `236` 个唯一 evidence blob、`946` 条引用，其中 exact-build definition `173` 条、lexical caller candidate `505` 条、人工审阅 source `202` 条、observation artifact reference `66` 条；65 份唯一 observation artifact 包含本轮四份保留 RED。attempt 4 不可变 RED 的 SHA-256 为 `CC9AD4AE45201F1AA3693626975DAADBEE395F448A76BB9E3DCD303A350AB013`；共享合同是 Python-only 数据，既有 continuation 会重新加载 canonical registry，可在保留同一 CK3 PID 的条件下热恢复。
+portable evidence bundle 随 R414 attempt 5 更新为 `237` 个唯一 evidence blob、`947` 条引用，其中 exact-build definition `173` 条、lexical caller candidate `505` 条、人工审阅 source `202` 条、observation artifact reference `67` 条；66 份唯一 observation artifact 包含本轮五份保留 RED。attempt 5 不可变 RED 的 SHA-256 为 `4B43409F75BE2C1DA59FA37D79A793124E5161D24C092F5BFF556CAA433EE288`；共享合同是 Python-only 数据，既有 continuation 会重新加载 canonical registry，可在保留同一 CK3 PID 的条件下热恢复。
 
 ### R384 `pay_homage.0101` 最小合同
 
