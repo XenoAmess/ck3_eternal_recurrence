@@ -680,6 +680,65 @@ KNOWN_TIMELINE_INTERRUPTS: dict[str, dict[str, object]] = {
         "selected_native_option_index": 3,
         "occurrence_policy": "repeatable-within-product-observation-window",
     },
+    "tgp_dynastic_cycle.0082": {
+        # CK3 1.19.0.6, exact EXE SHA 2D00FF31...; source
+        # events/dlc/tgp/tgp_dynastic_cycle_events.txt SHA C9904AAA...,
+        # lines 1159-1389. R408 instance 2188 is the non-root player notice
+        # emitted only after .0081 has already run tgp_chaos_shattering_effect.
+        # Its sole authored option is an acknowledgement, but the product
+        # realm/manager lineage was irreversibly invalidated before this window.
+        "date_policy": "product-observation-window",
+        "root_character_id": 33596113,
+        "character_scopes": {
+            "huangdi": 16863885,
+            "minister_should_lose_ministry_title": 50398811,
+            "possible_conqueror": 50398811,
+            "new_liege": 33624351,
+            "member": 98272,
+            "tributary_loc": 16821769,
+            "suzerain_loc": 33610851,
+            "relevant_character": 33596113,
+        },
+        "character_scope_matches_any": {
+            "minister_should_lose_ministry_title": ("possible_conqueror",),
+            "possible_conqueror": ("minister_should_lose_ministry_title",),
+        },
+        "scope_types": {
+            "situation": "situation",
+            "situation_sub_region": "situation_sub_region",
+            "huangdi": "character",
+            "minister_should_lose_ministry_title": "character",
+            "possible_conqueror": "character",
+            "new_liege": "character",
+            "member": "character",
+            "tributary_loc": "character",
+            "suzerain_loc": "character",
+            "relevant_character": "character",
+            "chaos_new_vassals_count": "value",
+            "chaos_new_tributaries_count": "value",
+        },
+        "boolean_scopes": (),
+        "saved_scope_name_sets": ((
+            "situation",
+            "situation_sub_region",
+            "huangdi",
+            "minister_should_lose_ministry_title",
+            "possible_conqueror",
+            "new_liege",
+            "member",
+            "tributary_loc",
+            "suzerain_loc",
+            "relevant_character",
+            "chaos_new_vassals_count",
+            "chaos_new_tributaries_count",
+        ),),
+        "saved_scope_count": 12,
+        "option_count": 1,
+        "snapshot_option_count": 1,
+        "native_option_indices": (0,),
+        "selected_option_number": 1,
+        "selected_native_option_index": 0,
+    },
     "zg361b2.40": {
         "date_raw": 53147040,
         "date_policy": "exact-authored-anchor",
@@ -1553,6 +1612,7 @@ KNOWN_TIMELINE_INTERRUPTS.update(MANAGER_ELIMINATION_TIMELINE_CONTRACTS)
 # Keep this product policy outside the portable registry so other CK3 agents
 # and mod runners continue to receive the reusable vanilla event contract.
 _DYNASTIC_CHAOS_EVENT = "tgp_dynastic_cycle.0081"
+_DYNASTIC_CHAOS_NOTIFICATION_EVENT = "tgp_dynastic_cycle.0082"
 _PRODUCT_SCENARIO_INVALIDATION_OVERLAYS: dict[str, dict[str, object]] = {
     _DYNASTIC_CHAOS_EVENT: {
         "handling_policy": "scenario-invalidating-fail-closed",
@@ -1563,6 +1623,20 @@ _PRODUCT_SCENARIO_INVALIDATION_OVERLAYS: dict[str, dict[str, object]] = {
             "the event's unconditional immediate block has already destroyed or "
             "reorganized the realm and manager lineage required by this product "
             "scenario; its sole acknowledgement cannot restore that state"
+        ),
+        "invalidated_precondition": (
+            "stable_product_realm_and_manager_lineage_before_chaos_shattering"
+        ),
+    },
+    _DYNASTIC_CHAOS_NOTIFICATION_EVENT: {
+        "handling_policy": "scenario-invalidating-fail-closed",
+        "scenario_invalidation_reason_code": (
+            "dynastic_cycle_chaos_notification_follows_shattered_product_lineage"
+        ),
+        "scenario_invalidation_reason": (
+            "this non-root player notification is emitted only after the chaos "
+            "event has already run its realm-shattering effect; its sole "
+            "acknowledgement cannot restore the product manager lineage"
         ),
         "invalidated_precondition": (
             "stable_product_realm_and_manager_lineage_before_chaos_shattering"

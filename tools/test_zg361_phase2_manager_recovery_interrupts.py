@@ -491,6 +491,99 @@ class ManagerRecoveryInterruptTests(unittest.TestCase):
         self.assertNotIn("trigger_event", opt_out)
         self.assertNotIn("add_opinion", opt_out)
 
+    def test_dynastic_chaos_nonroot_notice_invalidates_without_ack(self) -> None:
+        event_key = "tgp_dynastic_cycle.0082"
+        contract = production._resolve_timeline_interrupt_contract(
+            event_key,
+            player=33596113,
+            starting_date=54012072,
+            stop_at_clean_review_boundary=False,
+            continue_to_pause_target=True,
+        )
+        self.assertIsNotNone(contract)
+        assert contract is not None
+        self.assertEqual(
+            contract["handling_policy"],
+            "scenario-invalidating-fail-closed",
+        )
+        context = _context(
+            event_key=event_key,
+            instance_id=2188,
+            date_raw=54014184,
+            player=33596113,
+            scopes=[
+                _scope("situation", "situation"),
+                _scope("situation_sub_region", "situation_sub_region"),
+                _scope("huangdi", "character", 16863885),
+                _scope(
+                    "minister_should_lose_ministry_title",
+                    "character",
+                    50398811,
+                ),
+                _scope("possible_conqueror", "character", 50398811),
+                _scope("new_liege", "character", 33624351),
+                _scope("member", "character", 98272),
+                _scope("tributary_loc", "character", 16821769),
+                _scope("suzerain_loc", "character", 33610851),
+                _scope("relevant_character", "character", 33596113),
+                _scope("chaos_new_vassals_count", "value"),
+                _scope("chaos_new_tributaries_count", "value"),
+            ],
+            native_option_indices=(0,),
+        )
+
+        class NoMutationService:
+            def snapshot(self) -> dict[str, object]:
+                raise AssertionError("invalidated notification must stay paused")
+
+            def select_event_option(
+                self, *_args: object, **_kwargs: object
+            ) -> None:
+                raise AssertionError("invalidated notification must not be clicked")
+
+        with self.assertRaises(
+            production.PromotionScenarioInvalidatingInterrupt
+        ) as raised:
+            production._drain_known_timeline_interrupt(
+                NoMutationService(),
+                snapshot={
+                    "date_raw": 54014184,
+                    "active_event": {"option_count": 1},
+                },
+                event={"event_instance_id": 2188},
+                query={"current_event_window_context": context},
+                event_key=event_key,
+                contract=contract,
+                player=33596113,
+                connection_generation=1,
+            )
+        invalidation = raised.exception.evidence
+        self.assertEqual(invalidation["event_definition_key"], event_key)
+        self.assertEqual(
+            invalidation["reason_code"],
+            "dynastic_cycle_chaos_notification_follows_shattered_product_lineage",
+        )
+        self.assertFalse(invalidation["selection_attempted"])
+        self.assertEqual(invalidation["product_result"], "NOT_EVALUATED")
+
+        game_root = ROOT / "Crusader Kings III"
+        if not game_root.is_dir():
+            game_root = ROOT.parent / "Crusader Kings III"
+        source_path = (
+            game_root / "game/events/dlc/tgp/tgp_dynastic_cycle_events.txt"
+        )
+        source = source_path.read_text(encoding="utf-8-sig")
+        self.assertEqual(
+            hashlib.sha256(source_path.read_bytes()).hexdigest().upper(),
+            "C9904AAA01ABC8583E67D07866FAE8EF89274708BDA3929498DDDB2F24FC2153",
+        )
+        self.assertLess(
+            source.index("tgp_chaos_shattering_effect = yes"),
+            source.index("trigger_event = tgp_dynastic_cycle.0082"),
+        )
+        notification = _extract_block(source, "tgp_dynastic_cycle.0082 =")
+        self.assertEqual(notification.count("\n\toption = {"), 1)
+
     def test_cold_import_preserves_existing_canonical_contract_identity(
         self,
     ) -> None:
