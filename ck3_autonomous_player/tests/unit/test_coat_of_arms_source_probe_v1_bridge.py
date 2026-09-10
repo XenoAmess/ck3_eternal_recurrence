@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import base64
 import copy
 import importlib.util
 from pathlib import Path
@@ -340,6 +341,7 @@ class CoatOfArmsSourceProbeV1ContractTests(unittest.TestCase):
             None,
             b"source",
             "",
+            "coa={\0}",
             "蓝色",
             "x" * (COAT_OF_ARMS_SOURCE_V1_MAX_BYTES + 1),
             "\ud800",
@@ -347,6 +349,24 @@ class CoatOfArmsSourceProbeV1ContractTests(unittest.TestCase):
             with self.subTest(invalid=type(invalid).__name__):
                 with self.assertRaises(ValueError):
                     encode_coat_of_arms_source_v1(invalid)
+
+    def test_source_line_endings_are_canonical_windows_crlf(self) -> None:
+        lf = encode_coat_of_arms_source_v1("coa = {\n color1 = blue\n}\n")
+        crlf = encode_coat_of_arms_source_v1(
+            "coa = {\r\n color1 = blue\r\n}\r\n"
+        )
+        legacy_cr = encode_coat_of_arms_source_v1(
+            "coa = {\r color1 = blue\r}\r"
+        )
+
+        self.assertEqual(lf, crlf)
+        self.assertEqual(lf, legacy_cr)
+        self.assertEqual(lf.source, "coa = {\r\n color1 = blue\r\n}\r\n")
+        self.assertEqual(
+            base64.b64decode(lf.source_base64),
+            lf.source.encode("ascii"),
+        )
+        self.assertEqual(lf.source_bytes, len(lf.source.encode("ascii")))
 
     def test_public_envelope_is_exact_and_semantically_bound(self) -> None:
         encoded = encode_coat_of_arms_source_v1(SOURCE)

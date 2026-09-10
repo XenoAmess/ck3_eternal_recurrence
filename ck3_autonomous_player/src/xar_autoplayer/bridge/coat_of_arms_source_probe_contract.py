@@ -117,11 +117,20 @@ class EncodedCoatOfArmsSourceV1:
 def encode_coat_of_arms_source_v1(
     source: object,
 ) -> EncodedCoatOfArmsSourceV1:
-    """Validate the vanilla reader's non-empty ASCII source boundary."""
+    """Validate and canonicalize source for the Windows clipboard reader."""
     if not isinstance(source, str):
         raise ValueError("source must be a UTF-8 string")
     if not source:
         raise ValueError("source must not be empty")
+    if "\0" in source:
+        raise ValueError("source must not contain NUL")
+    # CF_UNICODETEXT normalizes line endings to CRLF when CK3 reads the
+    # clipboard back.  Bind the wire bytes and result hash to that canonical
+    # Windows form so ordinary LF-only editor text still has exact read-back
+    # identity instead of producing a false clipboard_readback_mismatch.
+    source = source.replace("\r\n", "\n").replace("\r", "\n").replace(
+        "\n", "\r\n"
+    )
     try:
         encoded = source.encode("ascii")
     except UnicodeEncodeError as error:

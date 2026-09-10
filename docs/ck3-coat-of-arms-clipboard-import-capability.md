@@ -1,6 +1,6 @@
 # CK3 纹章设计器剪贴板导入能力报告
 
-> 调研日期：2026-09-08
+> 调研日期：2026-09-08 至 2026-09-10
 >
 > 页面：角色设计器 → 自定义纹章 → 设计你自己的纹章 → 从剪贴板粘贴
 >
@@ -108,8 +108,9 @@ source_bytes
 binding
 ```
 
-输入先限制为非空 ASCII、无 NUL、最多 128 KiB，并以 base64 通过 named pipe；Python 绑定源字节 SHA-256，
-原生侧写系统剪贴板后立刻 read-back 比较。该 ASCII 限制来自当前 CK3 reader 的真实行为：高位 UTF-8 字节会令外层函数提前退出，
+输入先限制为非空 ASCII、无 NUL、最多 128 KiB，并以 base64 通过 named pipe；API 在编码前把 LF、CRLF、旧式 CR
+统一为 Windows 剪贴板实际回读的 CRLF，SHA-256 与字节数绑定这份规范文本。原生侧写系统剪贴板后立刻 read-back 比较。
+该 ASCII 限制来自当前 CK3 reader 的真实行为：高位 UTF-8 字节会令外层函数提前退出，
 而且可能留下旧的 `CanPaste` 状态；首版若允许任意 Unicode 会制造假阳性。
 
 状态只有：
@@ -124,15 +125,18 @@ binding
 
 ### 3.3 验证状态
 
-- Python contract、service、native driver、hybrid 和真实 MCP SDK tools/list/call：14 项聚焦测试 GREEN；
+- Python contract、service、native driver、hybrid 和真实 MCP SDK tools/list/call：15 项聚焦测试 GREEN（1 项依赖可选 SDK 的测试跳过）；
 - native bridge fresh build：成功；
 - native protocol 与 adapter registry CTest：2/2 GREEN；
 - CK3 frontend exact-build 握手：已真实取得，并广告新 capability；
-- 隔离 attempt 5 实际暴露并补齐了 `frontend_snapshot` 绑定缺口；attempt 6 到达完整纹章编辑器后又证明，
-  CK3 的剪贴板函数槽在早期注入时可能尚未初始化，旧实现会把这一瞬时状态永久记为 unavailable。原生桥已改为仅对此
-  瞬时失败在 heartbeat 上延迟重试，并公开 installed/failure/observed/executed 诊断；精确构建或入口身份失败仍永久拒绝。
-- 逐载荷 MCP 实机矩阵仍待新 DLL 的下一隔离 attempt；旧 DLL 返回的 `unavailable` 是桥接初始化 RED，不能算任何载荷的
-  `not_detected`，也没有被写进第 5 节语法结论。
+- 隔离 attempt 5 补齐 `frontend_snapshot` 绑定；attempt 6 暴露剪贴板函数槽的瞬时初始化状态；attempt 8 又证明
+  gameplay 生命周期门禁会让角色设计器永远无法安装 hook。现在 hook 在 exact adapter 选定后即于 frontend 启动，瞬时槽缺失仍在
+  heartbeat 延迟重试；精确构建或入口身份失败保持永久拒绝。
+- attempt 8 在完整纹章编辑器执行 27 条原生 probe 请求：25 条不同载荷加 2 条重复/应用复核，另有前后 capability 与 snapshot；
+  hook 诊断最终为 `installed=true`、`failure=0`、`executed_requests=27`。会话绑定 CK3 PID `11348`、snapshot `native:3`、
+  public revision `4`、connection generation `1`，结束时 `cleanup_proven=true` 且进程树为零。
+- attempt 8 的 LF-only 多行载荷真实暴露 `CF_UNICODETEXT` 回读会转为 CRLF；同一载荷改用 CRLF 后为 `detected`。
+  MCP 合同随后补成调用方换行规范化，避免把有效语法误报成 `clipboard_readback_mismatch`。
 
 ## 4. 原版实际调用链
 
@@ -194,18 +198,19 @@ apply 的后置条件是 `+0xEC == 1` 且 `+0xE8 == paste 前的 +0xF0`。
 
 | 层级 | 语法 | 实际含义 | 当前等级 |
 |---|---|---|---|
-| 外层 | `name = { ... }` | 定义一个候选纹章；任意普通名字在辅助实机中可接受，复制时会规范化 | `engine-static + legacy-ui` |
-| 根 | `pattern = "pattern_*.dds"` | 选择已注册底图 | `engine-static + legacy-ui` |
-| 根 | `color1`、`color2`、`color3` | 底图通道颜色 | `engine-static + legacy-ui` |
-| 根 | 重复 `colored_emblem = { ... }` | 添加一个或多个彩色图案层 | `engine-static + legacy-ui` |
-| emblem | `texture = "ce_*.dds"` | 选择已注册 colored emblem 纹理 | `engine-static + legacy-ui` |
-| emblem | `color1`、`color2`、`color3` | emblem 通道颜色 | `engine-static + legacy-ui` |
-| emblem | `mask = { ... }` | 选择 pattern 分区遮罩；确切合法值域不应从单个样例外推 | `engine-static + legacy-ui` |
-| emblem | 重复 `instance = { ... }` | 同一纹理的多个实例 | `engine-static + legacy-ui` |
-| instance | `position = { x y }` | 归一化位置 | `engine-static + legacy-ui` |
-| instance | `scale = { x y }` | X/Y 缩放；负值可镜像 | `engine-static + legacy-ui` |
-| instance | `rotation = number` | 旋转；可为小数或负数 | `engine-static + legacy-ui` |
-| instance | `depth = number` | 层叠顺序参数 | `engine-static + legacy-ui` |
+| 外层 | `name = { ... }` | 定义候选纹章；普通标识符、`coa` 和数字 key 均被接受 | `mcp-detected` |
+| 根 | `pattern = "pattern_*.dds"` | 选择底图；reader 接受名字不等于资源一定存在 | `mcp-applied` |
+| 根 | `color1`、`color2`、`color3` | 底图通道颜色 | `mcp-applied` |
+| 根 | 重复 `colored_emblem = { ... }` | 添加一个或多个彩色图案层 | `mcp-applied` |
+| 根 | `textured_emblem = { ... }` | 受限的纹理图案层；当前仅验证 reader 接受 `_default.dds` | `mcp-detected` |
+| emblem | `texture = "ce_*.dds"` | 选择 colored emblem 纹理；资源存在性需另验 | `mcp-applied` |
+| emblem | `color1`、`color2`、`color3` | emblem 通道颜色 | `mcp-applied` |
+| emblem | `mask = { ... }` | pattern 分区遮罩；`{ 1 }` 已应用，`{ 1 2 3 }` 已检测 | `mcp-applied` |
+| emblem | 重复 `instance = { ... }` | 同一纹理的多个实例 | `mcp-applied` |
+| instance | `position = { x y }` | 归一化位置 | `mcp-applied` |
+| instance | `scale = { x y }` | X/Y 缩放；负值可镜像 | `mcp-applied` |
+| instance | `rotation = number` | 旋转；可为小数或负数 | `mcp-applied` |
+| instance | `depth = number` | 层叠顺序参数 | `mcp-applied` |
 
 原版直接语料可见于：
 
@@ -213,7 +218,8 @@ apply 的后置条件是 `+0xEC == 1` 且 `+0xE8 == paste 前的 +0xF0`。
 - `common/coat_of_arms/coat_of_arms/01_landed_titles.txt`：mask 与负 scale；
 - `common/coat_of_arms/coat_of_arms/01_holy_order_coas.txt`：rotation。
 
-在 MCP 实机矩阵完成前，表中没有把这些辅助观察冒充 `mcp-detected`。
+这些核心字段在一个完整载荷中共同取得 `status=applied`；这证明原版 paste 已把候选写进 designer working state，
+但不单独证明每个字段的最终像素值，也不代替资源存在性检查。
 
 ### 5.2 字面量和排版
 
@@ -227,13 +233,14 @@ rotation = -150
 depth = 1.01
 ```
 
-原版最终纹章语料使用引号/不引号字符串、整数、小数、负数、空白和紧凑 `key=value`。早期辅助实机还观察到：
+原版最终纹章语料使用引号/不引号字符串、整数、小数、负数、空白和紧凑 `key=value`。MCP 实机已经确认：
 
-- `#` 注释可接受，复制回去时注释丢失；
-- `hsv { ... }` 可接受，复制时规范化成 `rgb { ... }`；
-- 重复 `colored_emblem` 与重复 `instance` 均生效。
+- `#` 行尾注释和 `hsv { ... }` 可被 reader 接受；
+- 引号/不引号颜色、`rgb { ... }`、整数、小数、负数与紧凑等号可被接受；
+- 重复 `colored_emblem` 与重复 `instance` 可共同应用；
+- 多行源码经 MCP 统一为 CRLF 后再写入 Windows 剪贴板。
 
-这些项会继续由 MCP exact-source probe 复核。
+“注释在 copy-back 丢失”和“HSV 被 copy-back 规范化成 RGB”仍来自早期辅助观察，需待原生 Copy/export MCP primitive 复核。
 
 ### 5.3 推荐的最小输出
 
@@ -288,27 +295,56 @@ coa = {
 
 | 输入 | 已知行为 | 产品建议 |
 |---|---|---|
-| `textured_emblem` | reader 可接受；测试 `_default.dds` 在设计器中呈占位/问号，编辑面板支持有限 | 可导入但标“有限支持”，不进 v1 默认生成面板 |
-| 任意普通 outer name | 辅助实机可接受，copy-back 会规范化 | 导出固定用 `coa` |
-| 多个顶层对象 | 辅助实机只采用第一个，后续对象被忽略 | 拒绝歧义输入 |
-| 无效 texture | 文法可能接受，但资源查找失败并显示占位，同时产生 graphics 诊断 | 将“语法合法”和“资源存在”分开校验 |
-| body-only，无 outer wrapper | 旧观察相互冲突 | v1 必须要求 wrapper |
-| 重复普通标量、未知键、`parent`、`@变量` | 没有足够稳定的提交语义 | 报错或 warning，不进入默认导出 |
-| `color4` | 随机模板中偶见，但最终模型/UI 核心证据不足 | 不进 v1 |
+| `textured_emblem` | `_default.dds` 载荷为 `mcp-detected`；早期设计器中呈占位/问号，编辑面板支持有限 | 可导入但标“有限支持”，不进 v1 默认生成面板 |
+| 普通或数字 outer key | `custom_name={...}` 与 `79={...}` 均为 `mcp-detected` | 导出仍固定用 `coa`，减少无意义差异 |
+| 多个顶层对象 | 整段为 `mcp-detected`；本轮没有 canonical copy-back 证明究竟采用哪一个 | 拒绝歧义输入 |
+| 空块、无 pattern | `coa={}` 与 `coa={ color1=blue }` 均为 `mcp-detected` | 允许解析，产品层警告“不完整/可能依赖默认值” |
+| 不存在的 pattern/emblem texture 名 | 两类载荷均为 `mcp-detected` | 将“reader 接受”和“资源存在”分开校验 |
+| body-only，无 outer wrapper | 精确载荷为 `not_detected` | v1 必须要求 wrapper |
+| 重复普通标量 | 两个 `color1` 为 `mcp-detected`，但优先级未通过 copy-back 证明 | 警告并拒绝默认导出 |
+| `parent = c_england` | 与普通字段共存或单独存在均为 `mcp-detected`；继承是否解析、最终值为何尚未证明 | 只保留/警告，不进确定性 serializer |
+| 静态 `@chosen = blue` + `color1=@chosen` | 为 `mcp-applied`；说明 reader 接受这类静态替换语法，不证明游戏 scope 变量能力 | 可导入并保留，默认导出展开成确定字面量 |
+| 任意未知键 | 同一载荷连续两次均为 `not_detected` | 报错 |
+| `color4` | 根级与 emblem 级组合载荷为 `not_detected` | 不进 v1 |
+
+### 5.6 attempt 8 精确载荷矩阵
+
+下表全部来自同一 exact-build、同一 snapshot/revision 的 MCP 会话；`detected` 只表示原版 reader 生成了有效 preview，
+`applied` 才表示继续调用了原版 paste。
+
+| 载荷/特征 | 结果 |
+|---|---|
+| `this is not coa syntax` | `not_detected` |
+| `coa={ pattern="pattern_solid.dds" color1=blue }` | `detected` |
+| 第 5.4 节的 RGB、三通道、多实例、负 scale、rotation、depth 组合 | `applied` |
+| 在一个成功载荷后输入 `this is broken {` | `not_detected`，排除了残留 `CanPaste` 假阳性 |
+| `custom_name={ # comment ... color1=hsv { ... } }`（CRLF） | `detected` |
+| `pattern=... color1=blue`（无 outer wrapper） | `not_detected` |
+| `coa={}`、无 pattern、数字 outer key | `detected` |
+| 两个顶层对象 | `detected`，采用规则未解析 |
+| `textured_emblem={ texture="_default.dds" }` | `detected` |
+| 未知键、`color4` | `not_detected` |
+| `effect={ add_gold=1000 }`、`trigger={ always=yes }`、`event={ id=test.1 }` | 均为 `not_detected` |
+| `color1=list "normal_colors"` | `not_detected` |
+| 不存在的 pattern texture、不存在的 emblem texture | 均为 `detected`，证明资源校验是另一层 |
+| 重复 `color1` | `detected`，优先级未解析 |
+| `@chosen=blue ... color1=@chosen` | `applied` |
+| `parent=c_england`（与字段共存或单独存在） | `detected`，继承语义未解析 |
+| `mask={ 1 2 3 }` + 完整 instance | `detected` |
 
 ## 6. 哪些 CK3 语法不能在这里执行
 
 | 语法族 | 能否执行 | 结论依据 |
 |---|---:|---|
 | 本文第 5 节的 render-description 字段 | 是，只产生纹章数据语义 | 专用 CoA reader/renderer |
-| `effect = { ... }`、scripted effect | 否 | 无 effect VM；辅助实机中整段不形成 preview |
-| `trigger = { ... }` | 否 | 无 scope/trigger evaluator；辅助实机拒绝 |
-| `event`、`decision`、`interaction` | 否 | 无对应数据库或队列调用 |
-| `script_value`、scope link、变量操作 | 否 | render description 没有游戏 scope |
+| `effect = { ... }`、scripted effect | 否 | 无 effect VM；精确 MCP 载荷为 `not_detected` |
+| `trigger = { ... }` | 否 | 无 scope/trigger evaluator；精确 MCP 载荷为 `not_detected` |
+| `event`、`decision`、`interaction` | 否 | `event` 精确 MCP 载荷为 `not_detected`，且无对应数据库或队列调用 |
+| `script_value`、scope link、变量操作 | 否 | render description 没有游戏 scope；静态 `@name=value` 文本替换虽可接受，但不是 scope 变量读写 |
 | GUI 表达式、`GetScriptedGui(...).Execute(...)` | 否 | 输入没有进入 GUI 表达式解释器 |
 | console command、`run file.txt` | 否 | 无控制台 dispatcher |
 | localization 表达式 | 否 | 无 loc 求值路径 |
-| template 的 `list`、weighted list、trigger | 否 | 辅助实机 `list` 拒绝；这是随机生成阶段 DSL |
+| template 的 `list`、weighted list、trigger | 否 | 精确 MCP `list "normal_colors"` 载荷为 `not_detected`；这是随机生成阶段 DSL |
 | include、任意磁盘读写、进程或网络调用 | 否 | 只解析内存文本并按名字查已注册 CoA 资源 |
 
 反例：
@@ -321,7 +357,7 @@ coa = {
 }
 ```
 
-这不会给 `add_gold` 一个执行上下文。当前辅助实机中该输入没有有效 preview；即使将来发现 reader 会忽略某个未知字段，
+这不会给 `add_gold` 一个执行上下文。当前 MCP 实机中该输入没有有效 preview；即使将来发现 reader 会忽略某个未知字段，
 那也只证明 reader 容错，不能证明字段被执行。
 
 ## 7. 为什么模板 DSL 不属于剪贴板能力
@@ -343,14 +379,15 @@ template = {
 - `template = { ... }`；
 - `list "normal_colors"` 与 weighted texture list；
 - `special_selection`、template trigger；
-- `parent`、数据库 alias；
-- `@变量` 声明与引用。
+- `parent`、数据库 alias（reader 会接受，但继承解析和确定结果未证明）；
+- `@变量` 声明与引用（简单静态替换会接受甚至应用，但产品应先展开为确定字面量）。
 
 Web 端若要提供随机生成，应在自己的数据模型中完成选择，再导出确定的纹理、颜色与实例。
 
 ## 8. 目前 MCP 能力仍缺什么
 
-本轮优先补了“输入源码 → 原生检测/预览 → 可选应用”闭环。仍未通过 MCP 暴露的能力有：
+本轮已实机闭合“输入源码 → 原生检测/预览 → 可选应用”，并补齐 frontend 生命周期与 Windows 换行规范化。
+仍未通过 MCP 暴露的能力有：
 
 - 调用游戏自己的 Copy/export，并返回规范化 source；
 - 读取 preview 的最终像素或直接导出 PNG；
@@ -422,7 +459,9 @@ v1 应做到：
 | `D995A0..D99A0D` inner reader | `696BB6B97536366849ADA406F06610CF047752F31D1D9FED398B0364CF789FDD` |
 | attempt 6 live artifact | `DF12B49B29227683DDB2637D587F5B1E8948395A1CAA85CC8A4B2BB3EE495786` |
 | 09 月 09 日 `xar_ck3_bridge.dll`（2,462,208 bytes） | `297E8786C3D1834C640973755936679D60AF0C9DE2C8CECA8D2C66CE95F3C279` |
-| 09 月 10 日衔接 `origin/master` 后的 `xar_ck3_bridge.dll`（2,507,776 bytes） | `EE1C2C6B5AD60ECD3442720F7D3F9CE98293FC8AF6333D79FD01705B1548B580` |
+| attempt 7 live artifact（CK3 在菜单前以 `0xC0000374` 退出，无 probe 执行） | `81E73231272A64EB0AA9A4A0ABD15CDFD4B93BE73E34D000F5EE8047621E11AF` |
+| attempt 8 MCP live artifact（27 条原生请求、cleanup GREEN） | `B40E16DD700EEB0FD0703B909955563F04D5810543D2E28D9D72E0DDE081CD2F` |
+| attempt 8 `xar_ck3_bridge.dll`（2,507,776 bytes） | `EC534B8D4D3BFA16FCA9BCA8DA4DD2CF393019C86892AFAD0BCF372E541C59CD` |
 
 当前实现与证据入口：
 
