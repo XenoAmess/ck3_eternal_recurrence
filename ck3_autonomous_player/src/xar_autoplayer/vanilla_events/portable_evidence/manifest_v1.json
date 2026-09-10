@@ -974,6 +974,26 @@
         },
         {
           "caller_candidate_resolution": "external-definition-file",
+          "event_definition_key": "tgp_movement_events.0030",
+          "logical_path": "common/on_action/yearly_on_actions.txt",
+          "origin": "ck3_game",
+          "provenance": "lexical-caller-candidate-not-proven-runtime-caller",
+          "role": "caller_candidate",
+          "source_column": 9,
+          "source_line": 3744
+        },
+        {
+          "caller_candidate_resolution": null,
+          "event_definition_key": "tgp_movement_events.0030",
+          "logical_path": "common/on_action/yearly_on_actions.txt",
+          "origin": "ck3_game",
+          "provenance": "manually-reviewed-analysis-source",
+          "role": "analysis_source",
+          "source_column": null,
+          "source_line": null
+        },
+        {
+          "caller_candidate_resolution": "external-definition-file",
           "event_definition_key": "tgp_movement_events.0050",
           "logical_path": "common/on_action/yearly_on_actions.txt",
           "origin": "ck3_game",
@@ -3029,6 +3049,26 @@
           "role": "caller_candidate",
           "source_column": 9,
           "source_line": 36
+        },
+        {
+          "caller_candidate_resolution": "external-definition-file",
+          "event_definition_key": "tgp_movement_events.0030",
+          "logical_path": "common/on_action/dlc/tgp/tgp_china_yearly_on_actions.txt",
+          "origin": "ck3_game",
+          "provenance": "lexical-caller-candidate-not-proven-runtime-caller",
+          "role": "caller_candidate",
+          "source_column": 9,
+          "source_line": 16
+        },
+        {
+          "caller_candidate_resolution": null,
+          "event_definition_key": "tgp_movement_events.0030",
+          "logical_path": "common/on_action/dlc/tgp/tgp_china_yearly_on_actions.txt",
+          "origin": "ck3_game",
+          "provenance": "manually-reviewed-analysis-source",
+          "role": "analysis_source",
+          "source_column": null,
+          "source_line": null
         },
         {
           "caller_candidate_resolution": "external-definition-file",
@@ -8376,6 +8416,16 @@
       "references": [
         {
           "caller_candidate_resolution": null,
+          "event_definition_key": "tgp_movement_events.0030",
+          "logical_path": "localization/simp_chinese/dlc/tgp/tgp_movement_events_l_simp_chinese.yml",
+          "origin": "ck3_game",
+          "provenance": "manually-reviewed-analysis-source",
+          "role": "analysis_source",
+          "source_column": null,
+          "source_line": null
+        },
+        {
+          "caller_candidate_resolution": null,
           "event_definition_key": "tgp_movement_events.0160",
           "logical_path": "localization/simp_chinese/dlc/tgp/tgp_movement_events_l_simp_chinese.yml",
           "origin": "ck3_game",
@@ -10442,6 +10492,28 @@
       "sha256": "cc4cd67b77f9fa7b83e3b7a5534045f0dbfc1e724c53182e19ed7884bad10924"
     },
     {
+      "blob_bytes": 82987,
+      "blob_path": "blobs/cc9ad4ae45201f1aa3693626975daadbee395f448a76bb9e3dcd303a350ab013.gz",
+      "blob_sha256": "bbef9f4906d4ae864650664a4884ab0b59b33d1477e9dc87252ff621f0021b4a",
+      "bytes": 1466644,
+      "evidence_id": "cc9ad4ae45201f1aa3693626975daadbee395f448a76bb9e3dcd303a350ab013",
+      "kind": "observation_artifact",
+      "media_type": "application/json",
+      "references": [
+        {
+          "caller_candidate_resolution": null,
+          "event_definition_key": "tgp_movement_events.0030",
+          "logical_path": "_runtime/p1-post-chaos-terminal-r414-20260911/live-artifacts/terminal-stages-red-attempt-04.json",
+          "origin": "runtime",
+          "provenance": "captured-observation-artifact",
+          "role": "artifact",
+          "source_column": null,
+          "source_line": null
+        }
+      ],
+      "sha256": "cc9ad4ae45201f1aa3693626975daadbee395f448a76bb9e3dcd303a350ab013"
+    },
+    {
       "blob_bytes": 218971,
       "blob_path": "blobs/cca408ed129acf96769413d23abea69ba82ca251ba685f69796a3ea3e50b9e0c.gz",
       "blob_sha256": "afad495e47e1791a77bdfa244b912bd2067b61a211e34278a9909394a1c58648",
@@ -11114,6 +11186,26 @@
       "kind": "source_definition",
       "media_type": "text/plain; charset=utf-8",
       "references": [
+        {
+          "caller_candidate_resolution": null,
+          "event_definition_key": "tgp_movement_events.0030",
+          "logical_path": "events/dlc/tgp/tgp_movement_events.txt",
+          "origin": "ck3_game",
+          "provenance": "generated-definition-index",
+          "role": "event_definition",
+          "source_column": null,
+          "source_line": 649
+        },
+        {
+          "caller_candidate_resolution": null,
+          "event_definition_key": "tgp_movement_events.0030",
+          "logical_path": "events/dlc/tgp/tgp_movement_events.txt",
+          "origin": "ck3_game",
+          "provenance": "manually-reviewed-analysis-source",
+          "role": "analysis_source",
+          "source_column": null,
+          "source_line": null
+        },
         {
           "caller_candidate_resolution": null,
           "event_definition_key": "tgp_movement_events.0050",
@@ -12211,13 +12303,13 @@
   "schema": "xar.ck3.vanilla-event-portable-evidence-manifest",
   "schema_version": 1,
   "statistics": {
-    "evidence": 235,
-    "generated_definition_references": 172,
-    "lexical_caller_candidate_references": 503,
-    "manually_reviewed_analysis_source_references": 198,
-    "observation_artifact_references": 65,
-    "observation_artifacts": 64,
-    "references": 938,
+    "evidence": 236,
+    "generated_definition_references": 173,
+    "lexical_caller_candidate_references": 505,
+    "manually_reviewed_analysis_source_references": 202,
+    "observation_artifact_references": 66,
+    "observation_artifacts": 65,
+    "references": 946,
     "source_definitions": 171
   }
 }

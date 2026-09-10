@@ -1,15 +1,15 @@
-# CK3 1.19.0.6 原版事件知识 Registry
+﻿# CK3 1.19.0.6 原版事件知识 Registry
 
 ## 当前状态
 
 - [static-ready] 共享 registry 已实现在
   `ck3_autonomous_player/src/xar_autoplayer/vanilla_events/`。它提供合同构建、冲突检测、`$player` 物化和 JSON-safe 查询；全部能力均为离线只读，不依赖已启动的 CK3。
 - [static-ready] `ck3_query_vanilla_event_knowledge_v1` 已注册到正式 MCP server。它只按 stable event key 与 CK3 build 查询知识，不选择按钮、不推进时间、不修改存档或 registry。
-- [static-ready] 本包默认扁平 registry 为 **172 个 unique vanilla event key**。原冻结迁移 key 集不变；随后只按真实中断增量加入独立 records，最新新增 key 是 R414 attempt 2 的 `bp1_house_feud.0014`。attempt 3 的 `trait_specific.4001` 是既有 key 的新 scope observation，不改变计数。数量由 registry/migration 测试冻结。
-- [static-ready analysis / mixed live evidence] 当前 package 同时发布 **172 条 analysis** 与 **172 条 observation metadata**，其中 **24 个 key** 含非 legacy 的 paused/live observation。缺少已冻结 source hash 的旧结论只按既有合同注释、docs/tests 标为 migration-only，不编造 hash；R414 新出现的三次事件边界均按 harness-route RED 保留，在各自动作完成前不是新增 production-live primitive。
+- [static-ready] 本包默认扁平 registry 为 **173 个 unique vanilla event key**。原冻结迁移 key 集不变；随后只按真实中断增量加入独立 records，最新新增 key 是 R414 attempt 4 的 `tgp_movement_events.0030`。attempt 3 的 `trait_specific.4001` 是既有 key 的新 scope observation，不改变计数。数量由 registry/migration 测试冻结。
+- [static-ready analysis / mixed live evidence] 当前 package 同时发布 **173 条 analysis** 与 **173 条 observation metadata**，其中 **25 个 key** 含非 legacy 的 paused/live observation。缺少已冻结 source hash 的旧结论只按既有合同注释、docs/tests 标为 migration-only，不编造 hash；R414 新出现的事件边界均按 harness-route RED 保留，在各自动作完成前不是新增 production-live primitive。
 - [static-ready context profiles] prebootstrap 的 `spymaster_task.0381`、`spymaster_task.0399` 两条记录继续作为 seed-capture 上下文 profile 保存，不混入默认扁平 registry。它们与默认 manager 合同使用相同 event key、但冻结不同阶段的精确存档 shape，强行压平会造成有意义的合同冲突。
 
-当前状态表示 registry、默认数据组合和只读 MCP 可以被静态消费者使用，不表示 172 条记录都已有独立 production-live exemplar，也不表示 CK3 自动玩家已经具备完整事件效用判断。production runtime 当前 package 组合 `318` 条事件合同；共享 registry 的 production-live 标签只落在已有选择与 advance 证据的切片。R414 已同 PID 越过 `yearly.0003` 与 `bp1_house_feud.0014`，attempt 3 的 `trait_specific.4001` 既有廷臣分支仍保留选择前 RED。该 event 在 R374 已有生成分支选择与 advance，所以本次热恢复只验证 scope variant，不重复增加 live 计数，也不改变 T0 产品进度。
+当前状态表示 registry、默认数据组合和只读 MCP 可以被静态消费者使用，不表示 173 条记录都已有独立 production-live exemplar，也不表示 CK3 自动玩家已经具备完整事件效用判断。production runtime 当前 package 组合 `319` 条事件合同；共享 registry 的 production-live 标签只落在已有选择与 advance 证据的切片。R414 已同 PID 越过 `yearly.0003`、`bp1_house_feud.0014` 与 `trait_specific.4001` 的既有廷臣变体，attempt 4 仍暂停于 `tgp_movement_events.0030` 的选择前 RED。女巫变体不重复增加该事件已经取得的 live 计数；新思潮事件也必须完成动作与 advance 后才记 live，当前 T0 产品进度不变。
 
 T0 当前仍为 `50%`、canonical stage `8/11`，source checkpoint `3/4` 且只缺 `capture_cross_cycle_endgame`；T0-P1 未签收，T0-P2 继续 `LOCKED`。`strict 4/361` 与 `definitions 106/626` 只是非阻塞 backlog。
 
@@ -78,7 +78,7 @@ v1 的 156 条迁移基线以保持现有 T0 合同逐值 parity 为首要目标
 - `VANILLA_TGP_MOVEMENT_ANALYSIS`：exact build/EXE、四个原版来源文件 SHA-256、定义行号、yearly caller 与十年 cooldown、三个选项语义、`after_effect=None` 和 safe-option rationale；
 - `VANILLA_TGP_MOVEMENT_OBSERVATIONS`：R372 paused-live exemplar，包括 artifact/hash、`date_raw=53436720`、instance `668`、本局人物 ID、scope raw type 和 `selection_attempted=false`。
 
-各轮实机日期、instance 和人物 ID 不进入新建或已触达迁移后的通用 timeline contract。当前 MCP v1 的既有 knowledge envelope 以彼此独立的 `contract`、`analysis`、`observations` 字段返回这三层；本包全部 172 条记录已有 analysis 与 observation metadata，其中 24 个 key 含非 legacy 的 paused/live observation。元数据不会混入选择合同或被物化成当前人物约束。`yearly.0003` 与 `bp1_house_feud.0014` 已进入默认静态组合，实际查询可返回 `available` 且三层投影均可严格 JSON 往返。
+各轮实机日期、instance 和人物 ID 不进入新建或已触达迁移后的通用 timeline contract。当前 MCP v1 的既有 knowledge envelope 以彼此独立的 `contract`、`analysis`、`observations` 字段返回这三层；本包全部 173 条记录已有 analysis 与 observation metadata，其中 25 个 key 含非 legacy 的 paused/live observation。元数据不会混入选择合同或被物化成当前人物约束。`yearly.0003`、`bp1_house_feud.0014` 与 `tgp_movement_events.0030` 已进入默认静态组合，实际查询可返回 `available` 且三层投影均可严格 JSON 往返。
 
 ### R390 `diplomacy_majesty.4033` 最小合同
 
@@ -86,7 +86,7 @@ R390 在 `date_raw=53589168` 暂停于 instance `1089`，原始 RED 原样保留
 
 CK3 `1.19.0.6` exact-build 定义位于 `events/lifestyles/statecraft_lifestyle/diplomacy_majesty_events.txt:968`。`.4033` 只由 `.4030` 的 option B 直接触发；上游是每年四次的 diplomacy lifestyle pulse 及概率事件池，不是 daily pulse。`.4033` 自身只检查 `thinker` 仍存活，没有独立随机分支或后续事件。唯一 authored option 1/native `0` 给接收者五年 `+1 diplomacy/+1 martial` modifier、对 thinker 的 `+25` opinion，并在需要时建立 potential-friend 关系；没有资源、压力、囚禁、受伤、死亡、战争或头衔代价。因此最小安全合同选择该唯一终止路线，同时仍要求 exact saved-scope shape、玩家/第三方关系、选项投影及提交前 revision 重绑定全部通过。
 
-portable evidence bundle 随 R414 attempt 3 更新为 `235` 个唯一 evidence blob、`938` 条引用，其中 exact-build definition `172` 条、lexical caller candidate `503` 条、人工审阅 source `198` 条、observation artifact reference `65` 条；64 份唯一 observation artifact 中含 `trait_specific.4001` 的 R374 生成分支与 R414 既有廷臣分支。attempt 3 不可变 RED 的 SHA-256 为 `ADD23E60298C513E31B8E663CF2362B4579CFFE81FDF35F9A77822498A2EDBFB`；共享合同是 Python-only 数据，既有 continuation 会重新加载 canonical registry，可在保留同一 CK3 PID 的条件下热恢复。
+portable evidence bundle 随 R414 attempt 4 更新为 `236` 个唯一 evidence blob、`946` 条引用，其中 exact-build definition `173` 条、lexical caller candidate `505` 条、人工审阅 source `202` 条、observation artifact reference `66` 条；65 份唯一 observation artifact 包含本轮四份保留 RED。attempt 4 不可变 RED 的 SHA-256 为 `CC9AD4AE45201F1AA3693626975DAADBEE395F448A76BB9E3DCD303A350AB013`；共享合同是 Python-only 数据，既有 continuation 会重新加载 canonical registry，可在保留同一 CK3 PID 的条件下热恢复。
 
 ### R384 `pay_homage.0101` 最小合同
 
@@ -102,7 +102,7 @@ park8 的 `faction_demand.2001` #1050 在 PID `51852` / generation `1` 选择 au
 
 park9 的 `faction_demand.1101` #1055 动作前状态为 PID `51852` / generation `1`、date `53607792`、root/player `32904`、snapshot `native:2057`、revision `2058`、paused，且 `selection_attempted=false`、`process_restart_required=false`。四个实见 scope 为 `faction` faction/raw25、`peasant_county` landed_title/raw5、`peasant_leader` character `33633057`/raw4 与 `new_title` landed_title/raw5；native0/native1 均 shown/enabled、非 fallback/cancel。合同允许有限产品观察窗口内重复出现，并选择 authored1/native0。原版不是 daily pulse：满足不满门后按月检查，普通积累约 50 个月，高不满加成时约 7 个月，`MAX_DEMAND_DELAY_DAYS` 另保证最多 90 eligible days 后更新。接受在有效条件下损失 50 legitimacy；top-liege 路线对成员县扣 75 control、施加十年 modifier 并销毁派系，Dynastic Cycle 的 lower-liege 合法变体会升级为面向 top liege 的派系但不会在该按钮边界立即开战。拒绝则立即开农民战争、各成员县扣 25 control、生成军队，并由 CB 另扣 100 legitimacy。选择接受是避免立即战争的有界路线，不代表零代价。leader setup/war tail 中出现的 faith/struggle/Mandala 仅是附带语义，不扩展通用宗教策略。产品绝对 deadline `53635896`，动作前尚余 `28104` 小时、即 `1171` game days。commit `0880b4d579b92685be0696df5a5a32d701db5ed2` 推送且 Official Runner GREEN 后，R374 同 PID/generation 选择 authored1/native0，old instance `1055 -> null`、snapshot `native:2057 -> native:2058`、revision `2058 -> 2059`、`postcondition_verified=true`，所以该条已是第十三条 live。
 
-`.1101` 的 exact-build analysis 冻结以下九份原版 source SHA-256：`events/factions/faction_demands.txt` = `B06241E67B6692F51FCFC6021E4DBE085C9E25A50B9CD08957CBCC9E25AEBEA9`；`common/factions/00_peasant_faction_new.txt` = `3B54AA8E610EC8F767B86F33F75A7D90A64FA199B0AC1AE37D59A476B4EC04E2`；`common/factions/_factions.info` = `FB47457AABE7C7DF78555B4DFBA74B8932DAE468C45EBB2D1381CADDC2B7E019`；`common/defines/00_defines.txt` = `C1ECA141C71EC1E741CA5336E01BB538EEFAEC05B0684EDEC477CFC9053C3807`；`common/scripted_effects/00_faction_effects.txt` = `C8E0B3C57665F775973BC8559166CD1F6414471CA25017800777C3C6466DC5D3`；`common/scripted_effects/06_dlc_ce1_legitimacy_effects.txt` = `DEE9D48221B49EF41490D04451ACD6DBFD4994A50EAD9D006F831F41A6247A83`；`common/script_values/00_faction_values.txt` = `4EE4098080B8C4536E74B047801F8715DD5EB0BCDCBAC04A8E3BF563D6555932`；`common/script_values/00_legitimacy_values.txt` = `13E43166356B5DD99358F435330B03CB9BE95AB5913280318B01681186E23A2E`；`common/casus_belli_types/00_peasant_war_new.txt` = `3429D8884AA45F09291B807B6931D7FCAA629458ECCEE59AE2EA682D69F46AAF`。park9 immutable report / driver-state / hot-recovery SHA-256 为 `BA39B64ACC3224E8F1F5D5C04719A04106430D7F2F2551DEC52CCEC514FC3AA6` / `78C84C846ED9D2F05AF153EC9302C4C3A85C645FD0B33316CD212B10E342C494` / `4E3B59B3EB6328939D2008BD2DD4138546C0224F76D62297D19415138DF577E6`。实际 MCP list/call 返回 available、三投影和 authored1/native0 JSON roundtrip；T2 为 `NO-CODE-CHANGE`，Python normal/`-O` 各 `42/42`、open_kaishek `3/3` GREEN。commit `0880b4d579b92685be0696df5a5a32d701db5ed2` 已按 rebase-only push；Official Runner run `34408112586` / job `102655870657` completed/success，约 3 分 31 秒、失败步骤为空；同 PID live retry 如上 GREEN。
+`.1101` 的 exact-build analysis 冻结以下九份原版 source SHA-256：`events/factions/faction_demands.txt` = `B06241E67B6692F51FCFC6021E4DBE085C9E25A50B9CD08957CBCC9E25AEBEA9`；`common/factions/00_peasant_faction_new.txt` = `3B54AA8E610EC8F767B86F33F75A7D90A64FA199B0AC1AE37D59A476B4EC04E2`；`common/factions/_factions.info` = `FB47457AABE7C7DF78555B4DFBA74B8932DAE468C45EBB2D1381CADDC2B7E019`；`common/defines/00_defines.txt` = `C1ECA141C71EC1E741CA5336E01BB538EEFAEC05B0684EDEC477CFC9053C3807`；`common/scripted_effects/00_faction_effects.txt` = `C8E0B3C57665F775973BC8559166CD1F6414471CA25017800777C3C6466DC5D3`；`common/scripted_effects/06_dlc_ce1_legitimacy_effects.txt` = `DEE9D48221B49EF41490D04451ACD6DBFD4994A50EAD9D006F831F41A6247A83`；`common/script_values/00_faction_values.txt` = `4EE4098080B8C4536E74B047801F8715DD5EB0BCDCBAC04A8E3BF563D6555932`；`common/script_values/00_legitimacy_values.txt` = `13E43166356B5DD99358F435330B03CB9BE95AB5913280319B01681186E23A2E`；`common/casus_belli_types/00_peasant_war_new.txt` = `3429D8884AA45F09291B807B6931D7FCAA629458ECCEE59AE2EA682D69F46AAF`。park9 immutable report / driver-state / hot-recovery SHA-256 为 `BA39B64ACC3224E8F1F5D5C04719A04106430D7F2F2551DEC52CCEC514FC3AA6` / `78C84C846ED9D2F05AF153EC9302C4C3A85C645FD0B33316CD212B10E342C494` / `4E3B59B3EB6328939D2008BD2DD4138546C0224F76D62297D19415138DF577E6`。实际 MCP list/call 返回 available、三投影和 authored1/native0 JSON roundtrip；T2 为 `NO-CODE-CHANGE`，Python normal/`-O` 各 `42/42`、open_kaishek `3/3` GREEN。commit `0880b4d579b92685be0696df5a5a32d701db5ed2` 已按 rebase-only push；Official Runner run `34408112586` / job `102655870657` completed/success，约 3 分 31 秒、失败步骤为空；同 PID live retry 如上 GREEN。
 
 `.1101` 动作后，CK3 前景可见 `tgp_china_ministry.0100`“宋国库”及三条简中选项，但 native publisher 仍给出 `paused=false / active_event=null`。截图 `_runtime/p2r374-active-boundary-continuation-live/park9-post-selection-ck3-screen.png` 的 SHA-256 为 `B2E57E4B90EC82EBA96500B7D0B1F963A6EE46F521E4E5250C1A3BE113C7047B`；它只以标题与三项 localization 精确匹配证明前景 UI identity，不能提供 event instance、date、root、saved scopes 或 option-state，也不能冒充 paused live observation。exact-build source SHA-256 已审阅：`events/dlc/tgp/tgp_china_ministry_events.txt` = `87358436D60431BC80DA0376DD1BB2C47696EFCDE813148C69883768439980EE`；`common/on_action/yearly_on_actions.txt` = `0FC85A284224A68D1CA0A4EF071D4F4A4F49896753AEC463975A12EE4E1116FA`；`common/scripted_effects/10_dlc_tgp_scripted_effects.txt` = `AEF36B884DC5E315DD5C655BC96012FF9FA8BB46BB0AF2C18FA878C890907747`；`common/scripted_triggers/10_tgp_triggers.txt` = `8294C1D72ECC909428ABFBA27D6F10B127D796D2BEE350D1BB95024F36D60C99`；简中 localization = `6AD38C15CAE1CD3EAC713EDBC1566C7D42D8CE3B94291139F976C439020F8210`。source-reviewed 终止路线是 authored2/native1“维持原有分配方案”。该路线后来只为解开前景遮挡而通过明确标注的 visual-coordinate fallback 执行；随后以坐标关闭宣战通知、activity detail、唯一选项胜利窗并用 Windows `SendInput` 发送空格。以上都不是 MCP action，不能给 `.0100` 记 live；native instance/date/root/scopes/option-state 仍缺。该通用包已由远端 commit `b51ccd9` 推送；它从既有 manager key 抽取，因此 contract/analysis 总数仍为 `165/165`，新增的 identity-only RED 使 observation keys 变为 `16`。
 
@@ -157,7 +157,7 @@ Registry 是离线静态数据，因此另一台机器只需取得同一仓库/p
 
 ### T0 天朝二期 validator
 
-T0 的 migration parity 测试逐 bucket 对照旧合同，并继续冻结旧 bucket；加上按真实中断维护的独立 records 后，默认合同与 analysis 均为 172。后续 T0 consumer 应按实际产品路径查询或物化所引用的记录，并继续用产品自己的 window、occurrence、source checkpoint 和业务后置条件验收。
+T0 的 migration parity 测试逐 bucket 对照旧合同，并继续冻结旧 bucket；加上按真实中断维护的独立 records 后，默认合同与 analysis 均为 173。后续 T0 consumer 应按实际产品路径查询或物化所引用的记录，并继续用产品自己的 window、occurrence、source checkpoint 和业务后置条件验收。
 
 共享 registry GREEN 只说明引用的原版中断知识可解析且与迁移基线一致；它不能提升 T0 stage、四类 source、full-tree 或媒体 readiness。Prebootstrap validator 必须显式选择对应 profile，不能从默认扁平 lookup 取得 seed-capture shape。
 
@@ -198,7 +198,7 @@ unavailable_reason = null
 ## Migration 与兼容
 
 - Schema 当前为 `xar.ck3.vanilla-event-knowledge` v1。消费者必须检查 schema version；未来破坏性字段语义变更应使用新版本，不能静默复用 v1。
-- 迁移测试保证 legacy buckets 逐值相等、默认合同与 analysis 均精确覆盖 172 key，并拒绝意外 duplicate/conflict；默认组合故意不加入两条 prebootstrap context profile。
+- 迁移测试保证 legacy buckets 逐值相等、默认合同与 analysis 均精确覆盖 173 key，并拒绝意外 duplicate/conflict；默认组合故意不加入两条 prebootstrap context profile。
 - `$player` materializer 只替换值完全等于 sentinel 的字段，不改写包含该字样的普通字符串，并返回独立副本。
 - 查询边界统一将 tuple 投影为 JSON array，从而允许原 Python consumer 保持旧合同类型，同时让 MCP 跨进程、跨机器稳定序列化。
 - 新 CK3 build、改变的原版 definition 或 mod override 都需要显式新证据；v1 不提供“相似版本大概兼容”的 fallback。
@@ -206,7 +206,7 @@ unavailable_reason = null
 
 ## 明确不是 `361/626` exhaustive gate
 
-默认 172 key 是当前按需积累的复用资产，不是覆盖率目标。Registry 不要求在继续 T0、运行其它 mod、CI 或发布前枚举全部 `361` 个场景或 `626` 个 definition。
+默认 173 key 是当前按需积累的复用资产，不是覆盖率目标。Registry 不要求在继续 T0、运行其它 mod、CI 或发布前枚举全部 `361` 个场景或 `626` 个 definition。
 
 - `known/total` 只可作为 discovery telemetry，不能换算产品完成百分比；
 - 未遇到、未引用的 definition 不进入发布或实机前置门；

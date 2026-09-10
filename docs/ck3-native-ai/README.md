@@ -84,10 +84,10 @@
   effect typed row/root 与 special-war dynamic outcome rows 仍是观测依赖，当前不得把 legality、已付成本或 WarID 绑定
   冒充 semantic decision readiness。
 - [static-ready complete analysis + twelve production-live primitives] [vanilla-event-knowledge-registry.md](vanilla-event-knowledge-registry.md)
-  本包组合默认 `172 contracts / 172 analysis / 172 observation metadata rows` 的 exact-build 原版事件表，其中
-  `24` 个 key 含非 legacy 的 paused/live observation；既有迁移基线与
+  本包组合默认 `173 contracts / 173 analysis / 173 observation metadata rows` 的 exact-build 原版事件表，其中
+  `25` 个 key 含非 legacy 的 paused/live observation；既有迁移基线与
   embedded bucket 仍保持冻结，R384 新增 `pay_homage.0101` 的 exact-build Smooth 合同和选择前 RED。离线只读
-  `ck3_query_vanilla_event_knowledge_v1` 保持既有 schema，production runtime 当前消费 `318` 条事件合同。R372 的 `TGP0160`、
+  `ck3_query_vanilla_event_knowledge_v1` 保持既有 schema，production runtime 当前消费 `319` 条事件合同。R372 的 `TGP0160`、
   `great_holy_war.0011`、`TGP0020`、`TGP0001` 已分别完成共享查询、真实选择与 advance，属于四条 production-live
   primitive。`stress_threshold.1721` 保留真实 RED：reload 已生效，根因是提交阶段重新按 base contract 解析；补丁提交为
   `039a509`、`e6ab3d4`。`epidemic_events.1064` 随后以同 PID 选择 reviewed native0 并完成 advance，成为第五条
@@ -125,8 +125,10 @@
   [house-feud-cuckold-reveal.md](house-feud-cuckold-reveal.md)。两者已被同 PID 热恢复越过。attempt 3 进入
   stage 9 后又实见 `trait_specific.4001` 的既有廷臣 scope variant；原版可证明的四种 exact shape、R374
   生成分支与 R414 既有廷臣分支见 [trait-specific-witch-encounter.md](trait-specific-witch-encounter.md)。
-  本次变体仍待同 PID 动作与 advance，不重复增加该事件已经取得的 production-live primitive 计数。
-  上述状态不表示 172 条全部 live；
+  该变体已在 attempt 4 同 PID drain；继续推进后停在新事件 `tgp_movement_events.0030`，其两个 scope、两个
+  shown/enabled option、原生 AI 权重与 authored2/native1 最小状态改动路线见
+  [tgp-movement-support-letter.md](tgp-movement-support-letter.md)。该条仍待同 PID 动作与 advance。
+  上述状态不表示 173 条全部 live；
   `361/626` 全树覆盖也不是 T0、其它 mod、CI 或发布门。T0 仍为 `50% / stage 8/11 / source 3/4 / P2 LOCKED`。
 - [static-confirmed + marriage/alliance production-live loop + call-ally blocker live / fallback static-ready]
   [marriage-and-alliance.md](marriage-and-alliance.md) 冻结 stock
