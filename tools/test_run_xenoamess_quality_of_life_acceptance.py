@@ -166,6 +166,7 @@ class ProductOuterDescriptorTests(unittest.TestCase):
         self.assertIn("has_variable = zqa_death_incumbent", death_gui)
         self.assertIn("has_variable = zqa_death_successor", death_gui)
         self.assertIn("exists = holder", death_gui)
+        self.assertIn("NOT = { holder = root }", death_gui)
         self.assertIn("NOT = { holder = root.var:zqa_death_incumbent }", death_gui)
 
         effects = (

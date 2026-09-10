@@ -29,6 +29,7 @@ zqa_death_matrix_gui = {
 		has_variable = zqa_death_successor
 		var:zqa_death_title = {
 			exists = holder
+			NOT = { holder = root }
 			NOT = { holder = root.var:zqa_death_incumbent }
 		}
 	}
