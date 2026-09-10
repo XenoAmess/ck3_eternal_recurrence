@@ -398,8 +398,10 @@ MANAGER_HOLY_WAR_ANALYSIS: Final[dict[str, dict[str, object]]] = {
             "current reviewed live projection renders only native option 3"
         ),
         "scope_boundary": (
-            "faith identity stays opaque; only the GHW notice scopes required by "
-            "the authorized holy-war exception are contracted"
+            "faith identity stays opaque; the campaign-neutral contract binds "
+            "ROOT through $player and admits only the GHW notice relationships "
+            "required by the authorized holy-war exception; campaign dates and "
+            "numeric identities remain observation-only"
         ),
     },
 }
@@ -407,10 +409,20 @@ MANAGER_HOLY_WAR_ANALYSIS: Final[dict[str, dict[str, object]]] = {
 
 MANAGER_HOLY_WAR_OBSERVATIONS: Final[dict[str, dict[str, object]]] = {
     "great_holy_war.0011": {
+        "legacy_contract_binding": {
+            "kind": "legacy-live-binding",
+            "date_raw": 53223552,
+            "root_character_id": 29037,
+            "unique_character_scope_excludes": {
+                "ghw_first_sponsor": [29037],
+                "background_temple_scope": [29037],
+            },
+        },
         "exemplars": [
             {
                 "run": "R342",
                 "kind": "pre-selection-live-red",
+                "binding_kind": "legacy-live-binding",
                 "evidence": "docs/phase2-promo/r342-great-holy-war-notice-2026-09-08.md",
                 "report_sha256": (
                     "D6ECB1FC51396B30555F298FA1BC891EE7D4806F0ABFACEF54C41ACDAFF9207D"
@@ -428,6 +440,7 @@ MANAGER_HOLY_WAR_OBSERVATIONS: Final[dict[str, dict[str, object]]] = {
             {
                 "run": "R372",
                 "kind": "repeat-occurrence-live-red",
+                "binding_kind": "legacy-live-binding",
                 "artifact": (
                     "_runtime/p2r372-post-bound-continuation-live/"
                     "great-holy-war-0011-occurrence-bound-report.json"
@@ -1849,13 +1862,12 @@ MANAGER_HOLY_WAR_TIMELINE_CONTRACTS: Final[
         # authored option 4/native 3 is the sole visible acknowledgement.
         # Keep faith opaque and bind only the war-notice data required by the
         # project's explicitly allowed holy-war exception.
-        "date_raw": 53223552,
         "date_policy": "product-observation-window",
-        "root_character_id": 29037,
+        "root_character_id": PLAYER_SENTINEL,
         "character_scopes": {},
         "unique_character_scope_excludes": {
-            "ghw_first_sponsor": (29037,),
-            "background_temple_scope": (29037,),
+            "ghw_first_sponsor": (PLAYER_SENTINEL,),
+            "background_temple_scope": (PLAYER_SENTINEL,),
         },
         "character_scope_matches_any": {
             "ghw_first_sponsor": ("background_temple_scope",),

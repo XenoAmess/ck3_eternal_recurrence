@@ -16,6 +16,10 @@ from xar_autoplayer.vanilla_events import records_manager_a as migrated  # noqa:
 from xar_autoplayer.vanilla_events import (  # noqa: E402
     query_vanilla_event_knowledge_v1,
 )
+from xar_autoplayer.vanilla_events.registry import (  # noqa: E402
+    PLAYER_SENTINEL,
+    materialize_vanilla_timeline_contract,
+)
 from zg361_phase2_promotion_manager_befriend_contracts import (  # noqa: E402
     MANAGER_BEFRIEND_TIMELINE_CONTRACTS as SOURCE_BEFRIEND,
 )
@@ -131,19 +135,64 @@ class VanillaEventRecordsManagerATests(unittest.TestCase):
         ]
 
         self.assertNotIn("max_occurrences", contract)
+        self.assertNotIn("date_raw", contract)
+        self.assertEqual(contract["root_character_id"], PLAYER_SENTINEL)
+        self.assertEqual(contract["character_scopes"], {})
+        self.assertEqual(
+            contract["unique_character_scope_excludes"],
+            {
+                "ghw_first_sponsor": (PLAYER_SENTINEL,),
+                "background_temple_scope": (PLAYER_SENTINEL,),
+            },
+        )
+        self.assertEqual(
+            contract["character_scope_matches_any"],
+            {
+                "ghw_first_sponsor": ("background_temple_scope",),
+                "background_temple_scope": ("ghw_first_sponsor",),
+            },
+        )
         self.assertEqual(
             contract["occurrence_policy"],
             "repeatable-within-product-observation-window",
         )
+        self.assertEqual(contract["selected_option_number"], 4)
+        self.assertEqual(contract["selected_native_option_index"], 3)
         self.assertEqual(analysis["exact_build"]["game_version"], "1.19.0.6")
         self.assertIn("every_player", analysis["production_caller"])
         self.assertIn("no gameplay effect", analysis["option_semantics"][3])
+        self.assertIn("$player", analysis["scope_boundary"])
         self.assertEqual([row["run"] for row in exemplars], ["R342", "R372"])
+        self.assertEqual(
+            {row["binding_kind"] for row in exemplars},
+            {"legacy-live-binding"},
+        )
         self.assertEqual(
             exemplars[1]["prior_same_run_occurrence"]["event_instance_id"],
             606,
         )
         self.assertEqual(exemplars[1]["event_instance_id"], 670)
+
+        legacy = migrated.MANAGER_HOLY_WAR_OBSERVATIONS[event_key][
+            "legacy_contract_binding"
+        ]
+        self.assertEqual(legacy["kind"], "legacy-live-binding")
+        self.assertEqual(legacy["date_raw"], 53223552)
+        self.assertEqual(legacy["root_character_id"], 29037)
+        contract_repr = repr(contract)
+        for observation_only in (53223552, 29037, 32904, 32201, 36145):
+            self.assertNotIn(str(observation_only), contract_repr)
+
+        materialized = materialize_vanilla_timeline_contract(contract, 47001)
+        self.assertEqual(materialized["root_character_id"], 47001)
+        self.assertEqual(
+            materialized["unique_character_scope_excludes"],
+            {
+                "ghw_first_sponsor": (47001,),
+                "background_temple_scope": (47001,),
+            },
+        )
+        self.assertEqual(contract["root_character_id"], PLAYER_SENTINEL)
 
         response = query_vanilla_event_knowledge_v1(event_key)
         self.assertEqual(response["status"], "available")
@@ -151,6 +200,8 @@ class VanillaEventRecordsManagerATests(unittest.TestCase):
             response["contract"]["occurrence_policy"],
             "repeatable-within-product-observation-window",
         )
+        self.assertEqual(response["contract"]["root_character_id"], "$player")
+        self.assertNotIn("date_raw", response["contract"])
         self.assertEqual(
             response["analysis"]["source_sha256"][
                 "events/religion_events/great_holy_war_events.txt"
