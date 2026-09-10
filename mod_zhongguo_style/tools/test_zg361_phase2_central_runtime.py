@@ -470,6 +470,31 @@ class Phase2CentralRuntimeTests(unittest.TestCase):
         self.assertIn("count/baron", self.spec)
         self.assertIn("公爵及以上", self.spec)
 
+    def test_stage11_first_entry_reads_workforce_state_lazily(self) -> None:
+        body = block(self.effects, "zg361_p2c_stage_11_workforce_endgame_effect")
+        # A fresh subject reaches this effect before the Workforce adapter has
+        # initialized its portfolio.  CK3 does not short-circuit sibling
+        # conditions, so every optional var read needs its own presence-backed
+        # trigger_if boundary instead of a flat has_variable/var pair.
+        for field in (
+            "zg361_we_portfolio_closed",
+            "zg361_we_portfolio_status",
+            "zg361_we_portfolio_cycle",
+            "zg361_we_final_conservation_ok",
+            "zg361_p2c_m360_source_status",
+            "zg361_case_ab_active",
+            "zg361_case_ac_active",
+            "zg361_case_ad_active",
+            "zg361_case_al_active",
+        ):
+            self.assertGreater(body.count(f"var:{field}"), 0, field)
+            self.assertEqual(
+                body.count(f"var:{field}"),
+                body.count(f"has_variable = {field}"),
+                field,
+            )
+        self.assertIn("trigger_else = { always = no }", body)
+
     def test_frozen_five_tuple_and_primary_stale_abort(self) -> None:
         hook = block(self.effects, "zg361_p2c_on_review_published_effect")
         for token in (

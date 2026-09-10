@@ -26,8 +26,8 @@ EFFECT_SHARD_GLOB = "zg361_phase2_central_*_effects.txt"
 # R362: stage-nine now calls one domain-owned reconciliation adapter before
 # reading completion counters, so dead or otherwise invalid frozen reports are
 # terminally cancelled instead of leaving Central busy forever.
-HISTORICAL_EFFECT_BYTES = 138_086
-HISTORICAL_EFFECT_SHA256 = "9A67E851F75A038006E2EB74898862DB3C429DE3AF4A6A832814327994AB7F21"
+HISTORICAL_EFFECT_BYTES = 143_715
+HISTORICAL_EFFECT_SHA256 = "1BD32A606BDE969C2709F4A95E62A5D49BF74D6F503043EB516396C285BE8A0F"
 HISTORICAL_EFFECT_COUNT = 34
 EFFECT_TARGET_MAX = 10
 EFFECT_HARD_MAX = 20
@@ -2284,14 +2284,26 @@ zg361_p2c_stage_11_workforce_endgame_effect = {
     if = {
         limit = {
             var:zg361_p2c_subject = {
-                var:zg361_we_portfolio_closed = 1
-                var:zg361_we_portfolio_status = 6
-                var:zg361_we_portfolio_cycle = root.var:zg361_p2c_cycle
-                var:zg361_we_final_conservation_ok = 1
+                trigger_if = {
+                    limit = {
+                        has_variable = zg361_we_portfolio_closed
+                        has_variable = zg361_we_portfolio_status
+                        has_variable = zg361_we_portfolio_cycle
+                        has_variable = zg361_we_final_conservation_ok
+                    }
+                    var:zg361_we_portfolio_closed = 1
+                    var:zg361_we_portfolio_status = 6
+                    var:zg361_we_portfolio_cycle = root.var:zg361_p2c_cycle
+                    var:zg361_we_final_conservation_ok = 1
+                }
+                trigger_else = { always = no }
             }
         }
         if = {
-            limit = { var:zg361_p2c_m360_source_status = 1 }
+            limit = {
+                trigger_if = { limit = { has_variable = zg361_p2c_m360_source_status } var:zg361_p2c_m360_source_status = 1 }
+                trigger_else = { always = no }
+            }
             set_variable = { name = zg361_p2c_m360_source_status value = 2 }
         }
         zg361_p2c_record_stage_effect = { STATUS = 2 STAGE_VAR = zg361_p2c_stage_11_status }
@@ -2302,22 +2314,41 @@ zg361_p2c_stage_11_workforce_endgame_effect = {
         # history-accruing close, not RED and not fabricated success.
         limit = {
             var:zg361_p2c_subject = {
-                var:zg361_we_portfolio_closed = 1
-                var:zg361_we_portfolio_status = 8
-                var:zg361_we_portfolio_cycle = root.var:zg361_p2c_cycle
-                var:zg361_we_portfolio_terminal_history_accruing = 1
-                var:zg361_we_portfolio_history_cycle_count >= 1
-                var:zg361_we_portfolio_history_cycle_count <= 3
-                var:zg361_we_portfolio_terminal_owned_operations = 39
-                var:zg361_we_portfolio_terminal_skipped_charter = 1
-                var:zg361_we_portfolio_terminal_success = 0
-                var:zg361_we_final_conservation_ok = 1
-                var:zg361_case_al_active = 0
-                var:zg361_case_al_state = 8
+                trigger_if = {
+                    limit = {
+                        has_variable = zg361_we_portfolio_closed
+                        has_variable = zg361_we_portfolio_status
+                        has_variable = zg361_we_portfolio_cycle
+                        has_variable = zg361_we_portfolio_terminal_history_accruing
+                        has_variable = zg361_we_portfolio_history_cycle_count
+                        has_variable = zg361_we_portfolio_terminal_owned_operations
+                        has_variable = zg361_we_portfolio_terminal_skipped_charter
+                        has_variable = zg361_we_portfolio_terminal_success
+                        has_variable = zg361_we_final_conservation_ok
+                        has_variable = zg361_case_al_active
+                        has_variable = zg361_case_al_state
+                    }
+                    var:zg361_we_portfolio_closed = 1
+                    var:zg361_we_portfolio_status = 8
+                    var:zg361_we_portfolio_cycle = root.var:zg361_p2c_cycle
+                    var:zg361_we_portfolio_terminal_history_accruing = 1
+                    var:zg361_we_portfolio_history_cycle_count >= 1
+                    var:zg361_we_portfolio_history_cycle_count <= 3
+                    var:zg361_we_portfolio_terminal_owned_operations = 39
+                    var:zg361_we_portfolio_terminal_skipped_charter = 1
+                    var:zg361_we_portfolio_terminal_success = 0
+                    var:zg361_we_final_conservation_ok = 1
+                    var:zg361_case_al_active = 0
+                    var:zg361_case_al_state = 8
+                }
+                trigger_else = { always = no }
             }
         }
         if = {
-            limit = { var:zg361_p2c_m360_source_status = 1 }
+            limit = {
+                trigger_if = { limit = { has_variable = zg361_p2c_m360_source_status } var:zg361_p2c_m360_source_status = 1 }
+                trigger_else = { always = no }
+            }
             set_variable = { name = zg361_p2c_m360_source_status value = 2 }
         }
         zg361_p2c_record_stage_effect = { STATUS = 2 STAGE_VAR = zg361_p2c_stage_11_status }
@@ -2328,19 +2359,34 @@ zg361_p2c_stage_11_workforce_endgame_effect = {
         # N/A rather than business success.
         limit = {
             var:zg361_p2c_subject = {
-                var:zg361_we_portfolio_closed = 1
-                var:zg361_we_portfolio_status = 7
-                var:zg361_we_portfolio_cycle = root.var:zg361_p2c_cycle
-                var:zg361_we_portfolio_terminal_na = 1
-                OR = {
-                    var:zg361_we_portfolio_terminal_reason = 360361
-                    var:zg361_we_portfolio_terminal_reason = 360362
+                trigger_if = {
+                    limit = {
+                        has_variable = zg361_we_portfolio_closed
+                        has_variable = zg361_we_portfolio_status
+                        has_variable = zg361_we_portfolio_cycle
+                        has_variable = zg361_we_portfolio_terminal_na
+                        has_variable = zg361_we_portfolio_terminal_reason
+                        has_variable = zg361_we_portfolio_terminal_owned_operations
+                        has_variable = zg361_we_portfolio_terminal_skipped_manager_only
+                        has_variable = zg361_we_portfolio_terminal_success
+                        has_variable = zg361_we_final_conservation_ok
+                        has_variable = zg361_case_al_active
+                    }
+                    var:zg361_we_portfolio_closed = 1
+                    var:zg361_we_portfolio_status = 7
+                    var:zg361_we_portfolio_cycle = root.var:zg361_p2c_cycle
+                    var:zg361_we_portfolio_terminal_na = 1
+                    OR = {
+                        var:zg361_we_portfolio_terminal_reason = 360361
+                        var:zg361_we_portfolio_terminal_reason = 360362
+                    }
+                    var:zg361_we_portfolio_terminal_owned_operations = 38
+                    var:zg361_we_portfolio_terminal_skipped_manager_only = 2
+                    var:zg361_we_portfolio_terminal_success = 0
+                    var:zg361_we_final_conservation_ok = 1
+                    var:zg361_case_al_active = 0
                 }
-                var:zg361_we_portfolio_terminal_owned_operations = 38
-                var:zg361_we_portfolio_terminal_skipped_manager_only = 2
-                var:zg361_we_portfolio_terminal_success = 0
-                var:zg361_we_final_conservation_ok = 1
-                var:zg361_case_al_active = 0
+                trigger_else = { always = no }
             }
         }
         zg361_p2c_record_stage_effect = { STATUS = 3 STAGE_VAR = zg361_p2c_stage_11_status }
@@ -2348,9 +2394,17 @@ zg361_p2c_stage_11_workforce_endgame_effect = {
     else_if = {
         limit = {
             var:zg361_p2c_subject = {
-                var:zg361_we_portfolio_status = 5
-                var:zg361_we_awaiting_al_357_359 = 1
-                var:zg361_we_portfolio_cycle = root.var:zg361_p2c_cycle
+                trigger_if = {
+                    limit = {
+                        has_variable = zg361_we_portfolio_status
+                        has_variable = zg361_we_awaiting_al_357_359
+                        has_variable = zg361_we_portfolio_cycle
+                    }
+                    var:zg361_we_portfolio_status = 5
+                    var:zg361_we_awaiting_al_357_359 = 1
+                    var:zg361_we_portfolio_cycle = root.var:zg361_p2c_cycle
+                }
+                trigger_else = { always = no }
             }
         }
         # The only automatic resume attempt consumes source receipts minted by
@@ -2387,15 +2441,24 @@ zg361_p2c_stage_11_workforce_endgame_effect = {
             }
             zg361_p2c_prepare_m360_source_effect = yes
             if = {
-                limit = { var:zg361_p2c_m360_source_status = 1 }
+                limit = {
+                    trigger_if = { limit = { has_variable = zg361_p2c_m360_source_status } var:zg361_p2c_m360_source_status = 1 }
+                    trigger_else = { always = no }
+                }
                 zg361_p2c_schedule_m360_resume_effect = yes
             }
             else_if = {
-                limit = { var:zg361_p2c_m360_source_status = 5 }
+                limit = {
+                    trigger_if = { limit = { has_variable = zg361_p2c_m360_source_status } var:zg361_p2c_m360_source_status = 5 }
+                    trigger_else = { always = no }
+                }
                 zg361_p2c_mark_external_wait_effect = { REASON = 360410 STAGE_VAR = zg361_p2c_stage_11_status }
             }
             else_if = {
-                limit = { var:zg361_p2c_m360_source_status = 7 }
+                limit = {
+                    trigger_if = { limit = { has_variable = zg361_p2c_m360_source_status } var:zg361_p2c_m360_source_status = 7 }
+                    trigger_else = { always = no }
+                }
                 var:zg361_p2c_subject = {
                     zg361_we_finalize_manager_collective_na_effect = {
                         TICKET_OWNER = root
@@ -2408,11 +2471,21 @@ zg361_p2c_stage_11_workforce_endgame_effect = {
                 if = {
                     limit = {
                         var:zg361_p2c_subject = {
-                            var:zg361_we_portfolio_closed = 1
-                            var:zg361_we_portfolio_status = 7
-                            var:zg361_we_portfolio_terminal_reason = 360362
-                            var:zg361_we_final_conservation_ok = 1
-                            var:zg361_case_al_active = 0
+                            trigger_if = {
+                                limit = {
+                                    has_variable = zg361_we_portfolio_closed
+                                    has_variable = zg361_we_portfolio_status
+                                    has_variable = zg361_we_portfolio_terminal_reason
+                                    has_variable = zg361_we_final_conservation_ok
+                                    has_variable = zg361_case_al_active
+                                }
+                                var:zg361_we_portfolio_closed = 1
+                                var:zg361_we_portfolio_status = 7
+                                var:zg361_we_portfolio_terminal_reason = 360362
+                                var:zg361_we_final_conservation_ok = 1
+                                var:zg361_case_al_active = 0
+                            }
+                            trigger_else = { always = no }
                         }
                     }
                     zg361_p2c_record_stage_effect = { STATUS = 3 STAGE_VAR = zg361_p2c_stage_11_status }
@@ -2436,8 +2509,18 @@ zg361_p2c_stage_11_workforce_endgame_effect = {
     else_if = {
         limit = {
             var:zg361_p2c_subject = {
-                var:zg361_we_portfolio_cycle = root.var:zg361_p2c_cycle
-                OR = { var:zg361_case_ab_active = 1 var:zg361_case_ac_active = 1 var:zg361_case_ad_active = 1 var:zg361_case_al_active = 1 }
+                trigger_if = { limit = { has_variable = zg361_we_portfolio_cycle } var:zg361_we_portfolio_cycle = root.var:zg361_p2c_cycle }
+                trigger_else = { always = no }
+                OR = {
+                    trigger_if = { limit = { has_variable = zg361_case_ab_active } var:zg361_case_ab_active = 1 }
+                    trigger_else = { always = no }
+                    trigger_if = { limit = { has_variable = zg361_case_ac_active } var:zg361_case_ac_active = 1 }
+                    trigger_else = { always = no }
+                    trigger_if = { limit = { has_variable = zg361_case_ad_active } var:zg361_case_ad_active = 1 }
+                    trigger_else = { always = no }
+                    trigger_if = { limit = { has_variable = zg361_case_al_active } var:zg361_case_al_active = 1 }
+                    trigger_else = { always = no }
+                }
             }
         }
         zg361_p2c_mark_lane_busy_effect = yes
@@ -2448,9 +2531,17 @@ zg361_p2c_stage_11_workforce_endgame_effect = {
         limit = {
             var:zg361_p2c_stage_status = 1
             var:zg361_p2c_subject = {
-                var:zg361_we_portfolio_closed = 0
-                var:zg361_we_portfolio_cycle = root.var:zg361_p2c_cycle
-                NOT = { var:zg361_we_portfolio_status = 5 }
+                trigger_if = {
+                    limit = {
+                        has_variable = zg361_we_portfolio_closed
+                        has_variable = zg361_we_portfolio_cycle
+                        has_variable = zg361_we_portfolio_status
+                    }
+                    var:zg361_we_portfolio_closed = 0
+                    var:zg361_we_portfolio_cycle = root.var:zg361_p2c_cycle
+                    NOT = { var:zg361_we_portfolio_status = 5 }
+                }
+                trigger_else = { always = no }
             }
         }
         zg361_p2c_mark_lane_busy_effect = yes
@@ -2472,11 +2563,21 @@ zg361_p2c_stage_11_workforce_endgame_effect = {
         if = {
             limit = {
                 var:zg361_p2c_subject = {
-                    var:zg361_we_portfolio_cycle = root.var:zg361_p2c_cycle
-                    var:zg361_case_ab_owner = root
-                    var:zg361_case_ab_subject = this
-                    var:zg361_case_ab_cycle_serial = root.var:zg361_p2c_cycle
-                    var:zg361_case_ab_active = 1
+                    trigger_if = {
+                        limit = {
+                            has_variable = zg361_we_portfolio_cycle
+                            has_variable = zg361_case_ab_owner
+                            has_variable = zg361_case_ab_subject
+                            has_variable = zg361_case_ab_cycle_serial
+                            has_variable = zg361_case_ab_active
+                        }
+                        var:zg361_we_portfolio_cycle = root.var:zg361_p2c_cycle
+                        var:zg361_case_ab_owner = root
+                        var:zg361_case_ab_subject = this
+                        var:zg361_case_ab_cycle_serial = root.var:zg361_p2c_cycle
+                        var:zg361_case_ab_active = 1
+                    }
+                    trigger_else = { always = no }
                 }
             }
             zg361_p2c_mark_lane_busy_effect = yes
