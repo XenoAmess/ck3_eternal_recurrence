@@ -1040,3 +1040,19 @@ unobserved.
 Machine-readable authority:
 `native_bridge/research/main_thread_query_mailbox_v1_abi.json`; fixture:
 `native_bridge/research/fixtures/main_thread_query_mailbox_v1_source_contract.json`.
+
+### B1 raw-frame and normalized-frame boundary
+
+The native B1 serializer owns the strict 18-field wire frame. The Python native
+driver validates that frame and adds the derived `invariants` and `anomalies`
+facts before returning it to `GameplayBridgeService`. A service may therefore
+receive either the raw 18-field frame (fixture/alternate driver) or the canonical
+20-field normalized frame (the production native driver). The shared normalizer
+accepts exactly those two shapes, recomputes all derived facts, and rejects any
+supplied invariant or anomaly that differs from the recomputed value.
+
+R380 proved why this boundary is required: the native command succeeded and
+returned an available frame, but a second raw-only normalization in the service
+rejected the driver's two derived fields. This was a Python consumer-composition
+RED, not a wire/schema/DLL failure. The repair is Python-only and keeps the native
+wire, public JSON schema, variable allowlist, MCP tool and CK3 process unchanged.

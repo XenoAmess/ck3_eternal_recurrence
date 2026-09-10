@@ -264,6 +264,40 @@ class B1CycleContractTests(unittest.TestCase):
         self.assertTrue(normalized["invariants"]["quota_target_matches_recount"])
         self.assertEqual([], normalized["anomalies"])
 
+    def test_normalizer_is_idempotent_and_rejects_derived_fact_drift(self) -> None:
+        query = parse_query_zhongguo_b1_cycle_snapshot_v1_step(
+            query_zhongguo_b1_cycle_snapshot_v1_step("portable-1")
+        )
+        expected = {
+            "expected_query": query,
+            "expected_snapshot_revision": 77,
+            "expected_date_raw": 123456,
+            "expected_player_character_id": 100,
+        }
+        normalized = normalize_native_zhongguo_b1_cycle_snapshot_v1(
+            frame(), **expected
+        )
+        self.assertEqual(
+            normalized,
+            normalize_native_zhongguo_b1_cycle_snapshot_v1(
+                copy.deepcopy(normalized), **expected
+            ),
+        )
+
+        bad_invariants = copy.deepcopy(normalized)
+        bad_invariants["invariants"]["quota_target_conserved"] = False
+        with self.assertRaisesRegex(ValueError, "derived invariants changed"):
+            normalize_native_zhongguo_b1_cycle_snapshot_v1(
+                bad_invariants, **expected
+            )
+
+        bad_anomalies = copy.deepcopy(normalized)
+        bad_anomalies["anomalies"] = ["active_zero_roster"]
+        with self.assertRaisesRegex(ValueError, "derived anomalies changed"):
+            normalize_native_zhongguo_b1_cycle_snapshot_v1(
+                bad_anomalies, **expected
+            )
+
     def test_normalizer_flags_zero_roster_liveness(self) -> None:
         value = frame()
         value["roster"]["subject_count"] = typed(0)
@@ -387,6 +421,38 @@ class B1CycleContractTests(unittest.TestCase):
             "variable_name",
         ):
             self.assertNotIn(forbidden, sent)
+
+    def test_native_driver_output_composes_with_service_normalization(self) -> None:
+        driver, endpoint = native_driver()
+
+        def answer(request: dict[str, object]) -> None:
+            endpoint.publish(
+                {
+                    "type": "command_result",
+                    "protocol_version": 1,
+                    "request_id": request["request_id"],
+                    "ok": True,
+                    "result": {
+                        "step": QUERY_ZHONGGUO_B1_CYCLE_SNAPSHOT_V1_STEP,
+                        "accepted": True,
+                        "status": "available",
+                        "query_sequence": 9,
+                        "snapshot_revision": 77,
+                        "zhongguo_b1_cycle_snapshot": copy.deepcopy(frame()),
+                    },
+                }
+            )
+
+        endpoint.send_hook = answer
+        snapshot = driver.take_snapshot()
+        result = GameplayBridgeService(
+            driver
+        ).query_zhongguo_b1_cycle_snapshot_v1(
+            "portable-1", expected_revision=int(snapshot["revision"])
+        )
+        self.assertEqual(100, result["binding"]["manager_character_id"])
+        self.assertTrue(result["invariants"]["quota_target_matches_recount"])
+        self.assertEqual([], result["anomalies"])
 
     def test_service_returns_played_manager_binding_and_derived_facts(self) -> None:
         result = GameplayBridgeService(

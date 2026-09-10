@@ -132,6 +132,7 @@ _FRAME = {
     "manager_character_id", *_GROUPS, "readiness", "unavailable_reason",
     "provenance",
 }
+_NORMALIZED_FRAME = _FRAME | {"invariants", "anomalies"}
 
 
 @dataclass(frozen=True)
@@ -305,7 +306,15 @@ def normalize_native_zhongguo_b1_cycle_snapshot_v1(
     expected_date_raw: int,
     expected_player_character_id: int,
 ) -> dict[str, object]:
-    frame = _exact(value, _FRAME, "b1_cycle_snapshot")
+    already_normalized = isinstance(value, dict) and set(value) == _NORMALIZED_FRAME
+    if already_normalized:
+        supplied_invariants = value["invariants"]
+        supplied_anomalies = value["anomalies"]
+        frame = {key: value[key] for key in _FRAME}
+    else:
+        supplied_invariants = None
+        supplied_anomalies = None
+        frame = _exact(value, _FRAME, "b1_cycle_snapshot")
     if (
         frame["schema_version"] != 1
         or frame["case_kind"] != ZHONGGUO_B1_CYCLE_CASE_KIND_V1
@@ -363,6 +372,24 @@ def normalize_native_zhongguo_b1_cycle_snapshot_v1(
     else:
         raise ValueError("invalid B1 cycle status")
     invariants, anomalies = _derive(groups)
+    if already_normalized:
+        prior_invariants = _exact(
+            supplied_invariants,
+            set(invariants),
+            "b1_cycle_snapshot.invariants",
+        )
+        if any(
+            type(prior_invariants[key]) is not type(expected)
+            or prior_invariants[key] != expected
+            for key, expected in invariants.items()
+        ):
+            raise ValueError("B1 cycle derived invariants changed")
+        if (
+            not isinstance(supplied_anomalies, list)
+            or any(not isinstance(item, str) for item in supplied_anomalies)
+            or supplied_anomalies != anomalies
+        ):
+            raise ValueError("B1 cycle derived anomalies changed")
     return {
         **frame,
         **groups,
