@@ -4,8 +4,12 @@ from __future__ import annotations
 
 from typing import Final
 
+from .registry import PLAYER_SENTINEL
 
-EMBEDDED_C_VANILLA_TIMELINE_CONTRACTS: Final[dict[str, dict[str, object]]] = {
+
+_LEGACY_EMBEDDED_C_VANILLA_TIMELINE_CONTRACTS: Final[
+    dict[str, dict[str, object]]
+] = {
     "tgp_dynastic_cycle_events.0040": {
         # Independent vanilla Silk Road investment event.  Options 1 and 2
         # spend treasury/gold and add a long modifier or fascination progress;
@@ -717,4 +721,223 @@ EMBEDDED_C_VANILLA_TIMELINE_CONTRACTS: Final[dict[str, dict[str, object]]] = {
 }
 
 
-__all__ = ["EMBEDDED_C_VANILLA_TIMELINE_CONTRACTS"]
+_LEGACY_BINDING_KEYS: Final = (
+    "date_raw",
+    "date_raw_range",
+    "root_character_id",
+    "character_scopes",
+    "unique_character_scope_excludes",
+)
+
+
+def _clone_record_value(value: object) -> object:
+    """Clone one JSON-shaped value without changing sequence semantics."""
+
+    if isinstance(value, dict):
+        return {
+            str(key): _clone_record_value(item)
+            for key, item in value.items()
+        }
+    if isinstance(value, tuple):
+        return tuple(_clone_record_value(item) for item in value)
+    if isinstance(value, list):
+        return [_clone_record_value(item) for item in value]
+    return value
+
+
+def _legacy_binding_fields(contract: dict[str, object]) -> dict[str, object]:
+    """Retain every removed live binding verbatim as migration evidence."""
+
+    binding = {
+        key: _clone_record_value(contract[key])
+        for key in _LEGACY_BINDING_KEYS
+        if key in contract
+    }
+    for variant_key in ("scope_variants", "option_variants"):
+        variants: list[dict[str, object]] = []
+        for index, raw_variant in enumerate(contract.get(variant_key, ())):
+            if not isinstance(raw_variant, dict):
+                raise TypeError(f"{variant_key}[{index}] must be a dictionary")
+            variant_binding = {
+                key: _clone_record_value(raw_variant[key])
+                for key in _LEGACY_BINDING_KEYS
+                if key in raw_variant
+            }
+            if variant_binding:
+                variants.append({"variant_index": index, **variant_binding})
+        if variants:
+            binding[f"{variant_key}_bindings"] = tuple(variants)
+    return binding
+
+
+def _append_relation(
+    relations: dict[str, list[str]],
+    scope_name: str,
+    related_name: str,
+) -> None:
+    values = relations.setdefault(scope_name, [])
+    if related_name != scope_name and related_name not in values:
+        values.append(related_name)
+
+
+def _portable_character_bindings(
+    contract: dict[str, object],
+    legacy_root: object,
+) -> dict[str, object]:
+    """Replace allocator IDs with player-relative role/alias constraints."""
+
+    raw_scopes = contract.get("character_scopes", {})
+    raw_excludes = contract.get("unique_character_scope_excludes", {})
+    if not isinstance(raw_scopes, dict):
+        raise TypeError("character_scopes must be a dictionary")
+    if not isinstance(raw_excludes, dict):
+        raise TypeError("unique_character_scope_excludes must be a dictionary")
+
+    identities: dict[object, list[str]] = {}
+    player_scopes: dict[str, object] = {}
+    excludes: dict[str, list[object]] = {}
+    for raw_name, identity in raw_scopes.items():
+        name = str(raw_name)
+        identities.setdefault(identity, []).append(name)
+        if identity in {legacy_root, PLAYER_SENTINEL}:
+            player_scopes[name] = PLAYER_SENTINEL
+        else:
+            excludes.setdefault(name, []).append(PLAYER_SENTINEL)
+
+    matches: dict[str, list[str]] = {
+        str(name): [str(related) for related in related_names]
+        for name, related_names in dict(
+            contract.get("character_scope_matches_any", {})
+        ).items()
+    }
+    differs: dict[str, list[str]] = {
+        str(name): [str(related) for related in related_names]
+        for name, related_names in dict(
+            contract.get("character_scope_differs_from", {})
+        ).items()
+    }
+
+    # A repeated non-player numeric ID was an implicit role alias in the old
+    # capture. Publish that relation explicitly, never the allocator output.
+    for identity, names in identities.items():
+        if identity in {legacy_root, PLAYER_SENTINEL} or len(names) < 2:
+            continue
+        for name in names:
+            for related_name in names:
+                _append_relation(matches, name, related_name)
+
+    # Translate exclusions of a known captured role into role-to-role
+    # inequalities. Unknown historical identities remain observation-only.
+    for raw_name, raw_identities in raw_excludes.items():
+        name = str(raw_name)
+        if not isinstance(raw_identities, (tuple, list)):
+            raise TypeError(
+                "unique character scope exclusions must be a sequence"
+            )
+        for identity in raw_identities:
+            if identity in {legacy_root, PLAYER_SENTINEL}:
+                values = excludes.setdefault(name, [])
+                if PLAYER_SENTINEL not in values:
+                    values.append(PLAYER_SENTINEL)
+                continue
+            for related_name in identities.get(identity, ()):
+                _append_relation(differs, name, related_name)
+                _append_relation(differs, related_name, name)
+
+    result: dict[str, object] = {"character_scopes": player_scopes}
+    if excludes:
+        result["unique_character_scope_excludes"] = {
+            name: tuple(values) for name, values in excludes.items()
+        }
+    if matches:
+        result["character_scope_matches_any"] = {
+            name: tuple(values) for name, values in matches.items()
+        }
+    if differs:
+        result["character_scope_differs_from"] = {
+            name: tuple(values) for name, values in differs.items()
+        }
+    return result
+
+
+def _neutralize_contract_value(value: object, legacy_root: object) -> object:
+    """Remove campaign dates and IDs from nested variant contracts."""
+
+    if isinstance(value, tuple):
+        return tuple(
+            _neutralize_contract_value(item, legacy_root) for item in value
+        )
+    if isinstance(value, list):
+        return [
+            _neutralize_contract_value(item, legacy_root) for item in value
+        ]
+    if not isinstance(value, dict):
+        return value
+
+    binding_keys = {
+        "date_raw",
+        "date_raw_range",
+        "root_character_id",
+        "character_scopes",
+        "unique_character_scope_excludes",
+        "character_scope_matches_any",
+        "character_scope_differs_from",
+    }
+    if binding_keys.isdisjoint(value):
+        return {
+            str(key): _neutralize_contract_value(item, legacy_root)
+            for key, item in value.items()
+        }
+
+    character_fields = _portable_character_bindings(value, legacy_root)
+    neutral: dict[str, object] = {}
+    for key, item in value.items():
+        if key in binding_keys:
+            continue
+        neutral[str(key)] = _neutralize_contract_value(item, legacy_root)
+    if "root_character_id" in value:
+        neutral["root_character_id"] = PLAYER_SENTINEL
+    neutral.update(character_fields)
+    return neutral
+
+
+def _neutralize_contract(contract: dict[str, object]) -> dict[str, object]:
+    legacy_root = contract.get("root_character_id")
+    if legacy_root != 29037:
+        raise ValueError(f"unexpected embedded-C legacy root: {legacy_root!r}")
+    neutral = _neutralize_contract_value(contract, legacy_root)
+    if not isinstance(neutral, dict):  # pragma: no cover - mapping guard
+        raise TypeError("neutralized embedded-C contract must be a dictionary")
+    neutral.setdefault("date_policy", "product-observation-window")
+    return neutral
+
+
+EMBEDDED_C_VANILLA_OBSERVATIONS: Final[dict[str, dict[str, object]]] = {
+    event_key: {
+        "exemplars": [{
+            "run": "legacy-migrated",
+            "kind": "legacy-live-binding",
+            "review_kind": "migration-only",
+            **_legacy_binding_fields(contract),
+        }],
+    }
+    for event_key, contract in (
+        _LEGACY_EMBEDDED_C_VANILLA_TIMELINE_CONTRACTS.items()
+    )
+}
+
+
+EMBEDDED_C_VANILLA_TIMELINE_CONTRACTS: Final[
+    dict[str, dict[str, object]]
+] = {
+    event_key: _neutralize_contract(contract)
+    for event_key, contract in (
+        _LEGACY_EMBEDDED_C_VANILLA_TIMELINE_CONTRACTS.items()
+    )
+}
+
+
+__all__ = [
+    "EMBEDDED_C_VANILLA_OBSERVATIONS",
+    "EMBEDDED_C_VANILLA_TIMELINE_CONTRACTS",
+]

@@ -1,8 +1,9 @@
 ﻿"""Reusable analysis metadata for embedded vanilla-event slice 54-79.
 
 This module migrates only evidence already recorded in the legacy timeline
-contracts, their comments, regression tests, and project reports.  It does not
-claim a new exhaustive review of the corresponding vanilla definitions.
+contracts, their comments, regression tests, and project reports.  Exact-build
+source hashes make that knowledge portable without claiming an exhaustive
+review of every definition or caller.
 """
 
 from __future__ import annotations
@@ -41,6 +42,114 @@ EMBEDDED_C_EVENT_KEYS: Final[tuple[str, ...]] = (
     "realm_maintenance.2001",
     "sway_outcome.2001",
 )
+
+
+_SOURCE_FILE_BY_EVENT: Final[dict[str, tuple[str, str]]] = {
+    "tgp_dynastic_cycle_events.0040": (
+        "events/dlc/tgp/tgp_dynastic_cycle_flavor_events.txt",
+        "2260A2AC3F568B3135588E12E4C817846A03AA4BDB16A71C4828490D45F696F3",
+    ),
+    "tgp_china_yearly.0010": (
+        "events/dlc/tgp/tgp_china_yearly_events.txt",
+        "4E722C41EE880085BD81E4793BADE40CC75B32933E7DC9AE6ED860C9879CB227",
+    ),
+    "tgp_china_yearly.0005": (
+        "events/dlc/tgp/tgp_china_yearly_events.txt",
+        "4E722C41EE880085BD81E4793BADE40CC75B32933E7DC9AE6ED860C9879CB227",
+    ),
+    "tgp_china_yearly.0015": (
+        "events/dlc/tgp/tgp_china_yearly_events.txt",
+        "4E722C41EE880085BD81E4793BADE40CC75B32933E7DC9AE6ED860C9879CB227",
+    ),
+    "tgp_china_yearly.0020": (
+        "events/dlc/tgp/tgp_china_yearly_events.txt",
+        "4E722C41EE880085BD81E4793BADE40CC75B32933E7DC9AE6ED860C9879CB227",
+    ),
+    "ep3_emperor_yearly.2200": (
+        "events/dlc/ep3/ep3_emperor_yearly_2.txt",
+        "5B59252EF885BB605529B1AE76964A03BA447255DB77951CDBF2CB2AE267BDCD",
+    ),
+    "ep3_emperor_yearly.2240": (
+        "events/dlc/ep3/ep3_emperor_yearly_2.txt",
+        "5B59252EF885BB605529B1AE76964A03BA447255DB77951CDBF2CB2AE267BDCD",
+    ),
+    "ep1_flavor.1200": (
+        "events/dlc/ep1/ep1_flavor_events.txt",
+        "CC4CD67B77F9FA7B83E3B7A5534045F0DBFC1E724C53182E19ED7884BAD10924",
+    ),
+    "ep3_governor_yearly.3060": (
+        "events/dlc/ep3/ep3_governor_yearly_3.txt",
+        "2D4291E8293079D009A5F983CE074246D7B9B6CEB6B6569F336A118AF50BAB0F",
+    ),
+    "ep3_governor_yearly.8130": (
+        "events/dlc/ep3/ep3_governor_yearly_8.txt",
+        "DA8B840BD0A71705421ABE2FB1C743C451253156917BAB1DC0F6165074194789",
+    ),
+    "ep3_governor_yearly.8160": (
+        "events/dlc/ep3/ep3_governor_yearly_8.txt",
+        "DA8B840BD0A71705421ABE2FB1C743C451253156917BAB1DC0F6165074194789",
+    ),
+    "ep3_governor_yearly.8170": (
+        "events/dlc/ep3/ep3_governor_yearly_8.txt",
+        "DA8B840BD0A71705421ABE2FB1C743C451253156917BAB1DC0F6165074194789",
+    ),
+    "chancellor_task.1104": (
+        "events/councillor_task_events/chancellor_task_events.txt",
+        "EAF95612E4AEC6BF0CEDBC1ACA1C66C8087DD280BC42A60296F824437A5A46EB",
+    ),
+    "bp1_yearly.9006": (
+        "events/yearly_events/bp1_yearly_james.txt",
+        "013A6B602C8C344D27944D99020D1DA11E088C00354A542A97C0AE96FED0401B",
+    ),
+    "yearly.5050": (
+        "events/dlc/bp2/bp2_yearly_5.txt",
+        "A90ACC2CB8C2933F672737F24C7C81FF5EF0C21EEE057448F9EDFE2CC3EA5636",
+    ),
+    "yearly.1040": (
+        "events/yearly_events/yearly_events_2.txt",
+        "64B778B7B3DFE1056EB0151A7ED3AA7CFB3E6E738E68144006BAF97E93E0A3E8",
+    ),
+    "yearly.1041": (
+        "events/yearly_events/yearly_events_2.txt",
+        "64B778B7B3DFE1056EB0151A7ED3AA7CFB3E6E738E68144006BAF97E93E0A3E8",
+    ),
+    "ep3_governor_yearly.8080": (
+        "events/dlc/ep3/ep3_governor_yearly_8.txt",
+        "DA8B840BD0A71705421ABE2FB1C743C451253156917BAB1DC0F6165074194789",
+    ),
+    "sway_ongoing.1002": (
+        "events/scheme_events/sway_scheme/sway_ongoing_events.txt",
+        "F646FAE510A66A87A01B464140F7206921B141E6F3D3D06CE20570C18C7B9759",
+    ),
+    "sway_ongoing.5011": (
+        "events/scheme_events/sway_scheme/sway_ongoing_events.txt",
+        "F646FAE510A66A87A01B464140F7206921B141E6F3D3D06CE20570C18C7B9759",
+    ),
+    "sway_outcome.1001": (
+        "events/scheme_events/sway_scheme/sway_outcome_events.txt",
+        "44AA74F211D47F225BA5AF3CE7E6A23D6BC08B8691856BC14975A7D37DFC39BC",
+    ),
+    "tgp_interaction_event.0016": (
+        "events/dlc/tgp/tgp_interaction_events.txt",
+        "C845EBEB53A7D80E5155AF1D6FC42D03A86931C7088613CFA39A19B0DF468C75",
+    ),
+    "tgp_interaction_event.0030": (
+        "events/dlc/tgp/tgp_interaction_events.txt",
+        "C845EBEB53A7D80E5155AF1D6FC42D03A86931C7088613CFA39A19B0DF468C75",
+    ),
+    "scheme_critical_moments.1134": (
+        "events/scheme_events/scheme_critical_moments_events.txt",
+        "A51C5D0ED3CE9B475A25B7857829B098A4D5A38B4D89044C68C4813CC32EEA26",
+    ),
+    "realm_maintenance.2001": (
+        "events/realm_maintenance_events.txt",
+        "A4ED406F9ADFB9AE6A49C3299198F5D19DAA683535E43BF76FDEA0348E32659D",
+    ),
+    "sway_outcome.2001": (
+        "events/scheme_events/sway_scheme/sway_outcome_events.txt",
+        "44AA74F211D47F225BA5AF3CE7E6A23D6BC08B8691856BC14975A7D37DFC39BC",
+    ),
+}
 
 
 _REVIEW_SUMMARIES: Final[dict[str, str]] = {
@@ -248,6 +357,7 @@ def _existing_boundaries(contract: dict[str, object]) -> dict[str, object]:
 
 def _record(event_key: str, order: int) -> dict[str, object]:
     contract = EMBEDDED_C_VANILLA_TIMELINE_CONTRACTS[event_key]
+    source_path, source_sha256 = _SOURCE_FILE_BY_EVENT[event_key]
     return {
         "exact_build": {
             "game_version": EXACT_CK3_BUILD,
@@ -260,6 +370,7 @@ def _record(event_key: str, order: int) -> dict[str, object]:
             "evidence": "existing contract comments, tests, and project reports",
         },
         "review_summary": _REVIEW_SUMMARIES[event_key],
+        "source_sha256": {source_path: source_sha256},
         "safe_option": {
             "selected_option_number": contract["selected_option_number"],
             "selected_native_option_index": contract[
