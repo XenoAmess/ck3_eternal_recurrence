@@ -86,6 +86,7 @@ from .records_vassal_interaction import (
 )
 from .records_vanilla_shards import (
     VANILLA_SHARD_LEGACY_LIVE_OBSERVATIONS_A,
+    VANILLA_SHARD_LEGACY_LIVE_OBSERVATIONS_B,
     VANILLA_SHARD_TIMELINE_CONTRACTS,
 )
 
@@ -146,6 +147,10 @@ DEFAULT_VANILLA_EVENT_OBSERVATIONS: Final = _merge_metadata_tables(
     (
         "vanilla_shards_legacy_live_a",
         VANILLA_SHARD_LEGACY_LIVE_OBSERVATIONS_A,
+    ),
+    (
+        "vanilla_shards_legacy_live_b",
+        VANILLA_SHARD_LEGACY_LIVE_OBSERVATIONS_B,
     ),
     ("manager_holy_war", MANAGER_HOLY_WAR_OBSERVATIONS),
     ("manager_a_legacy_live", MANAGER_VANILLA_OBSERVATIONS_A),
