@@ -6729,6 +6729,16 @@ class PromotionSourceCheckpointRunnerTests(unittest.TestCase):
         snapshot = {"date_raw": 53168904, "active_event": {"option_count": 7}}
         event = {"event_instance_id": 27}
         contract = production.KNOWN_TIMELINE_INTERRUPTS[event_key]
+        contract = production._manager_recovery_contract(
+            contract,
+            player=29037,
+            event_key=event_key,
+        )
+        contract = production._timeline_contract_for_window(
+            contract,
+            starting_date=53168904,
+            absolute_end_date=53169000,
+        )
 
         def checks_for(candidate: dict[str, object]) -> dict[str, bool]:
             return production._known_interrupt_checks(
@@ -6741,8 +6751,14 @@ class PromotionSourceCheckpointRunnerTests(unittest.TestCase):
 
         checks = checks_for(context)
         self.assertTrue(all(checks.values()), checks)
-        self.assertEqual(contract["selected_option_number"], 4)
-        self.assertEqual(contract["selected_native_option_index"], 3)
+        self.assertEqual(contract["selected_option_number"], 1)
+        self.assertEqual(contract["selected_native_option_index"], 0)
+        self.assertEqual(
+            contract["option_variants"][0]["selected_option_number"], 4
+        )
+        self.assertEqual(
+            contract["option_variants"][0]["selected_native_option_index"], 3
+        )
 
         wrong_projection = copy.deepcopy(context)
         wrong_projection["options"][-1]["native_option_index"] = 5
