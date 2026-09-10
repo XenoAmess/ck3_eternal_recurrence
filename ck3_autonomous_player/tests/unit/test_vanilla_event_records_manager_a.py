@@ -73,6 +73,26 @@ _GROUPS = (
     ("holy_war", SOURCE_HOLY_WAR, migrated.MANAGER_HOLY_WAR_TIMELINE_CONTRACTS),
 )
 
+_LEGACY_GROUPS = (
+    ("befriend", migrated._LEGACY_MANAGER_BEFRIEND_TIMELINE_CONTRACTS),
+    ("birth", migrated._LEGACY_MANAGER_BIRTH_TIMELINE_CONTRACTS),
+    ("chancellor", migrated._LEGACY_MANAGER_CHANCELLOR_TIMELINE_CONTRACTS),
+    (
+        "council_claim",
+        migrated._LEGACY_MANAGER_COUNCIL_CLAIM_TIMELINE_CONTRACTS,
+    ),
+    ("court", migrated._LEGACY_MANAGER_COURT_TIMELINE_CONTRACTS),
+    ("death", migrated._LEGACY_MANAGER_DEATH_TIMELINE_CONTRACTS),
+    ("debate", migrated._LEGACY_MANAGER_DEBATE_TIMELINE_CONTRACTS),
+    ("health_aging", migrated._LEGACY_MANAGER_HEALTH_AGING_TIMELINE_CONTRACTS),
+    ("health", migrated._LEGACY_MANAGER_HEALTH_TIMELINE_CONTRACTS),
+)
+_LEGACY_CONTRACTS = {
+    event_key: contract
+    for _source_name, contracts in _LEGACY_GROUPS
+    for event_key, contract in contracts.items()
+}
+
 EXPECTED_EXPORTS = {
     "MANAGER_BEFRIEND_TIMELINE_CONTRACTS",
     "MANAGER_BIRTH_TIMELINE_CONTRACTS",
@@ -86,8 +106,84 @@ EXPECTED_EXPORTS = {
     "MANAGER_HOLY_WAR_ANALYSIS",
     "MANAGER_HOLY_WAR_OBSERVATIONS",
     "MANAGER_HOLY_WAR_TIMELINE_CONTRACTS",
+    "MANAGER_VANILLA_OBSERVATIONS_A",
     "MANAGER_VANILLA_TIMELINE_CONTRACTS_A",
 }
+
+_PORTABLE_EXCLUSIONS = {
+    "epidemic_events.0110",
+    "great_holy_war.0011",
+}
+_LEGACY_BINDING_KEYS = (
+    "date_raw",
+    "date_raw_range",
+    "root_character_id",
+    "character_scopes",
+    "unique_character_scope_excludes",
+)
+def _legacy_binding_fields(contract: dict[str, object]) -> dict[str, object]:
+    binding = {
+        key: contract[key]
+        for key in _LEGACY_BINDING_KEYS
+        if key in contract
+    }
+    for variant_key in ("scope_variants", "option_variants"):
+        variants = []
+        for index, variant in enumerate(contract.get(variant_key, ())):
+            variant_binding = {
+                key: variant[key]
+                for key in _LEGACY_BINDING_KEYS
+                if key in variant
+            }
+            if variant_binding:
+                variants.append({"variant_index": index, **variant_binding})
+        if variants:
+            binding[f"{variant_key}_bindings"] = tuple(variants)
+    return binding
+
+
+def _without_campaign_bindings(value: object) -> object:
+    if isinstance(value, dict):
+        return {
+            key: _without_campaign_bindings(item)
+            for key, item in value.items()
+            if key not in _LEGACY_BINDING_KEYS
+        }
+    if isinstance(value, tuple):
+        return tuple(_without_campaign_bindings(item) for item in value)
+    if isinstance(value, list):
+        return [_without_campaign_bindings(item) for item in value]
+    return value
+
+
+def _assert_no_campaign_identity(
+    testcase: unittest.TestCase,
+    value: object,
+    *,
+    path: str,
+) -> None:
+    if isinstance(value, dict):
+        for key, item in value.items():
+            _assert_no_campaign_identity(
+                testcase,
+                item,
+                path=f"{path}.{key}",
+            )
+        return
+    if isinstance(value, (tuple, list)):
+        for index, item in enumerate(value):
+            _assert_no_campaign_identity(
+                testcase,
+                item,
+                path=f"{path}[{index}]",
+            )
+        return
+    if type(value) is int:
+        testcase.assertNotIn(
+            value,
+            {29037, 32904, 49718, 36369, 29889},
+            path,
+        )
 
 
 class VanillaEventRecordsManagerATests(unittest.TestCase):
@@ -97,27 +193,123 @@ class VanillaEventRecordsManagerATests(unittest.TestCase):
             with self.subTest(export_name=export_name):
                 self.assertIsNotNone(getattr(migrated, export_name))
 
-    def test_every_source_group_has_exact_migrated_keys_and_content(self) -> None:
-        expected: dict[str, dict[str, object]] = {}
+    def test_every_source_group_has_exact_keys_and_portable_contracts(self) -> None:
+        expected_keys: set[str] = set()
         expected_order: list[str] = []
         for source_name, source_contracts, migrated_contracts in _GROUPS:
             with self.subTest(source_name=source_name):
                 self.assertEqual(list(source_contracts), list(migrated_contracts))
-                self.assertEqual(source_contracts, migrated_contracts)
-                self.assertTrue(set(expected).isdisjoint(source_contracts))
-            expected.update(source_contracts)
+                self.assertTrue(expected_keys.isdisjoint(source_contracts))
+            expected_keys.update(source_contracts)
             expected_order.extend(source_contracts)
 
         self.assertEqual(
             expected_order,
             list(migrated.MANAGER_VANILLA_TIMELINE_CONTRACTS_A),
         )
+        self.assertEqual(len(expected_keys), 36)
+        self.assertFalse(any(key.startswith("zg361.") for key in expected_keys))
+
+        for source_name, source_contracts, migrated_contracts in _GROUPS:
+            for event_key, contract in migrated_contracts.items():
+                if event_key in _PORTABLE_EXCLUSIONS:
+                    continue
+                with self.subTest(source=source_name, event=event_key):
+                    self.assertNotIn("date_raw", contract)
+                    self.assertNotIn("date_raw_range", contract)
+                    self.assertEqual(
+                        contract["date_policy"],
+                        "product-observation-window",
+                    )
+                    self.assertEqual(
+                        contract["root_character_id"], PLAYER_SENTINEL
+                    )
+                    _assert_no_campaign_identity(
+                        self,
+                        contract,
+                        path=event_key,
+                    )
+
+                    source_contract = _LEGACY_CONTRACTS[event_key]
+                    source_semantics = _without_campaign_bindings(
+                        source_contract
+                    )
+                    self.assertIsInstance(source_semantics, dict)
+                    source_semantics.setdefault(
+                        "date_policy", "product-observation-window"
+                    )
+                    self.assertEqual(
+                        _without_campaign_bindings(contract),
+                        source_semantics,
+                    )
+
+    def test_legacy_campaign_bindings_are_verbatim_migration_observations(
+        self,
+    ) -> None:
+        expected_sources = {
+            event_key: contract
+            for event_key, contract in _LEGACY_CONTRACTS.items()
+            if event_key not in _PORTABLE_EXCLUSIONS
+        }
+        self.assertEqual(len(expected_sources), 34)
         self.assertEqual(
-            expected,
-            migrated.MANAGER_VANILLA_TIMELINE_CONTRACTS_A,
+            set(migrated.MANAGER_VANILLA_OBSERVATIONS_A),
+            set(expected_sources),
         )
-        self.assertEqual(len(expected), 36)
-        self.assertFalse(any(key.startswith("zg361.") for key in expected))
+        for event_key, source_contract in expected_sources.items():
+            with self.subTest(event=event_key):
+                exemplars = migrated.MANAGER_VANILLA_OBSERVATIONS_A[event_key][
+                    "exemplars"
+                ]
+                self.assertEqual(len(exemplars), 1)
+                exemplar = exemplars[0]
+                self.assertEqual(exemplar["run"], "legacy-migrated")
+                self.assertEqual(exemplar["kind"], "legacy-live-binding")
+                self.assertEqual(exemplar["review_kind"], "migration-only")
+                observed_binding = {
+                    key: value
+                    for key, value in exemplar.items()
+                    if key not in {"run", "kind", "review_kind"}
+                }
+                self.assertEqual(
+                    observed_binding,
+                    _legacy_binding_fields(source_contract),
+                )
+
+    def test_player_relations_materialize_for_unrelated_campaign_identity(
+        self,
+    ) -> None:
+        materialized = materialize_vanilla_timeline_contract(
+            migrated.MANAGER_BIRTH_TIMELINE_CONTRACTS["birth.3032"],
+            47001,
+        )
+        self.assertEqual(materialized["root_character_id"], 47001)
+        self.assertEqual(
+            materialized["character_scopes"],
+            {"father": 47001, "real_father": 47001},
+        )
+        self.assertEqual(
+            materialized["unique_character_scope_excludes"],
+            {"child": (47001,), "mother": (47001,)},
+        )
+
+        physician = materialize_vanilla_timeline_contract(
+            migrated.MANAGER_HEALTH_TIMELINE_CONTRACTS["health.3103"],
+            47001,
+        )
+        self.assertEqual(
+            physician["character_scopes"],
+            {"sick_character": 47001, "treatment_picker": 47001},
+        )
+        self.assertNotIn("high_skill_option", physician["character_scopes"])
+        self.assertEqual(
+            physician["character_scope_matches_any"],
+            {
+                "physician": ("high_skill_option", "portrait"),
+                "high_skill_option": ("physician", "portrait"),
+                "portrait": ("physician", "high_skill_option"),
+            },
+        )
 
     def test_aggregate_rejects_duplicate_keys(self) -> None:
         with self.assertRaisesRegex(ValueError, "duplicate vanilla event contract key"):

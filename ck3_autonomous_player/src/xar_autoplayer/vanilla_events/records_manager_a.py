@@ -8,7 +8,7 @@ from .registry import EXACT_CK3_BUILD, EXACT_CK3_EXE_SHA256, PLAYER_SENTINEL
 
 
 # Migrated from tools/zg361_phase2_promotion_manager_befriend_contracts.py
-MANAGER_BEFRIEND_TIMELINE_CONTRACTS: Final[
+_LEGACY_MANAGER_BEFRIEND_TIMELINE_CONTRACTS: Final[
     dict[str, dict[str, object]]
 ] = {
     "befriend_outcome.0002": {
@@ -108,7 +108,7 @@ _BIRTH_BOOLEAN_SCOPES = (
 )
 
 
-MANAGER_BIRTH_TIMELINE_CONTRACTS: Final[
+_LEGACY_MANAGER_BIRTH_TIMELINE_CONTRACTS: Final[
     dict[str, dict[str, object]]
 ] = {
     "birth.3035": {
@@ -311,7 +311,7 @@ MANAGER_BIRTH_TIMELINE_CONTRACTS: Final[
 
 
 # Migrated from tools/zg361_phase2_promotion_manager_chancellor_contracts.py
-MANAGER_CHANCELLOR_TIMELINE_CONTRACTS: Final[
+_LEGACY_MANAGER_CHANCELLOR_TIMELINE_CONTRACTS: Final[
     dict[str, dict[str, object]]
 ] = {
     "chancellor_task.1002": {
@@ -478,7 +478,7 @@ MANAGER_HOLY_WAR_OBSERVATIONS: Final[dict[str, dict[str, object]]] = {
 
 
 # Migrated from tools/zg361_phase2_promotion_manager_council_claim_contracts.py
-MANAGER_COUNCIL_CLAIM_TIMELINE_CONTRACTS: Final[
+_LEGACY_MANAGER_COUNCIL_CLAIM_TIMELINE_CONTRACTS: Final[
     dict[str, dict[str, object]]
 ] = {
     "court_chaplain_task.0313": {
@@ -539,7 +539,7 @@ MANAGER_COUNCIL_CLAIM_TIMELINE_CONTRACTS: Final[
 
 
 # Migrated from tools/zg361_phase2_promotion_manager_court_contracts.py
-MANAGER_COURT_TIMELINE_CONTRACTS: Final[
+_LEGACY_MANAGER_COURT_TIMELINE_CONTRACTS: Final[
     dict[str, dict[str, object]]
 ] = {
     "major_decisions.2011": {
@@ -635,7 +635,9 @@ MANAGER_COURT_TIMELINE_CONTRACTS: Final[
 
 
 # Migrated from tools/zg361_phase2_promotion_manager_death_contracts.py
-MANAGER_DEATH_TIMELINE_CONTRACTS: Final[dict[str, dict[str, object]]] = {
+_LEGACY_MANAGER_DEATH_TIMELINE_CONTRACTS: Final[
+    dict[str, dict[str, object]]
+] = {
     "death_management.1000": {
         # Vanilla spouse-death notification. The three authored options are
         # mutually exclusive like/neutral/dislike projections. R176 observed
@@ -815,7 +817,7 @@ MANAGER_DEATH_TIMELINE_CONTRACTS: Final[dict[str, dict[str, object]]] = {
 
 
 # Migrated from tools/zg361_phase2_promotion_manager_debate_contracts.py
-MANAGER_DEBATE_TIMELINE_CONTRACTS: Final[
+_LEGACY_MANAGER_DEBATE_TIMELINE_CONTRACTS: Final[
     dict[str, dict[str, object]]
 ] = {
     "debate_event.5110": {
@@ -1012,7 +1014,7 @@ MANAGER_DEBATE_TIMELINE_CONTRACTS: Final[
 
 
 # Migrated from tools/zg361_phase2_promotion_manager_health_aging_contracts.py
-MANAGER_HEALTH_AGING_TIMELINE_CONTRACTS: Final[
+_LEGACY_MANAGER_HEALTH_AGING_TIMELINE_CONTRACTS: Final[
     dict[str, dict[str, object]]
 ] = {
     "health.7000": {
@@ -1075,7 +1077,9 @@ MANAGER_HEALTH_AGING_TIMELINE_CONTRACTS: Final[
 
 
 # Migrated from tools/zg361_phase2_promotion_manager_health_contracts.py
-MANAGER_HEALTH_TIMELINE_CONTRACTS: Final[dict[str, dict[str, object]]] = {
+_LEGACY_MANAGER_HEALTH_TIMELINE_CONTRACTS: Final[
+    dict[str, dict[str, object]]
+] = {
     "health.7100": {
         # CK3 1.19.0.6 infirm-health pulse. Immediate only freezes the
         # one-time flag; the sole authored option necessarily adds depressed_1.
@@ -1850,6 +1854,192 @@ MANAGER_HEALTH_TIMELINE_CONTRACTS: Final[dict[str, dict[str, object]]] = {
 }
 
 
+# The 34 records below predate the portable event registry and originally
+# carried exact dates and character IDs from one acceptance campaign.  Keep
+# those values as observation evidence, but publish only player-relative
+# contracts so another save, operator, or machine can reuse them.
+_MANAGER_A_LEGACY_GROUPS: Final[
+    tuple[tuple[str, dict[str, dict[str, object]]], ...]
+] = (
+    ("befriend", _LEGACY_MANAGER_BEFRIEND_TIMELINE_CONTRACTS),
+    ("birth", _LEGACY_MANAGER_BIRTH_TIMELINE_CONTRACTS),
+    ("chancellor", _LEGACY_MANAGER_CHANCELLOR_TIMELINE_CONTRACTS),
+    ("council_claim", _LEGACY_MANAGER_COUNCIL_CLAIM_TIMELINE_CONTRACTS),
+    ("court", _LEGACY_MANAGER_COURT_TIMELINE_CONTRACTS),
+    ("death", _LEGACY_MANAGER_DEATH_TIMELINE_CONTRACTS),
+    ("debate", _LEGACY_MANAGER_DEBATE_TIMELINE_CONTRACTS),
+    ("health_aging", _LEGACY_MANAGER_HEALTH_AGING_TIMELINE_CONTRACTS),
+    ("health", _LEGACY_MANAGER_HEALTH_TIMELINE_CONTRACTS),
+)
+
+_LEGACY_BINDING_KEYS: Final = (
+    "date_raw",
+    "date_raw_range",
+    "root_character_id",
+    "character_scopes",
+    "unique_character_scope_excludes",
+)
+
+
+def _clone_record_value(value: object) -> object:
+    """Clone the JSON-shaped record without changing tuple/list semantics."""
+
+    if isinstance(value, dict):
+        return {str(key): _clone_record_value(item) for key, item in value.items()}
+    if isinstance(value, tuple):
+        return tuple(_clone_record_value(item) for item in value)
+    if isinstance(value, list):
+        return [_clone_record_value(item) for item in value]
+    return value
+
+
+def _legacy_binding_fields(contract: dict[str, object]) -> dict[str, object]:
+    """Extract the removed campaign binding verbatim for migration review."""
+
+    binding = {
+        key: _clone_record_value(contract[key])
+        for key in _LEGACY_BINDING_KEYS
+        if key in contract
+    }
+    for variant_key in ("scope_variants", "option_variants"):
+        variants: list[dict[str, object]] = []
+        for index, raw_variant in enumerate(contract.get(variant_key, ())):
+            if not isinstance(raw_variant, dict):
+                raise TypeError(f"{variant_key}[{index}] must be a dictionary")
+            variant_binding = {
+                key: _clone_record_value(raw_variant[key])
+                for key in _LEGACY_BINDING_KEYS
+                if key in raw_variant
+            }
+            if variant_binding:
+                variants.append({"variant_index": index, **variant_binding})
+        if variants:
+            binding[f"{variant_key}_bindings"] = tuple(variants)
+    return binding
+
+
+def _neutralize_contract_value(value: object, legacy_root: object) -> object:
+    """Remove one campaign's dates/IDs while preserving role relations."""
+
+    if isinstance(value, tuple):
+        return tuple(
+            _neutralize_contract_value(item, legacy_root) for item in value
+        )
+    if isinstance(value, list):
+        return [
+            _neutralize_contract_value(item, legacy_root) for item in value
+        ]
+    if not isinstance(value, dict):
+        return value
+
+    neutral: dict[str, object] = {}
+    for key, item in value.items():
+        if key in {"date_raw", "date_raw_range"}:
+            continue
+        if key == "root_character_id":
+            neutral[key] = PLAYER_SENTINEL
+            continue
+        if key == "character_scopes":
+            if not isinstance(item, dict):
+                raise TypeError("character_scopes must be a dictionary")
+            neutral[key] = {
+                str(scope_name): PLAYER_SENTINEL
+                for scope_name, character_id in item.items()
+                if character_id in {legacy_root, PLAYER_SENTINEL}
+            }
+            continue
+        if key == "unique_character_scope_excludes":
+            if not isinstance(item, dict):
+                raise TypeError(
+                    "unique_character_scope_excludes must be a dictionary"
+                )
+            exclusions: dict[str, tuple[object, ...]] = {}
+            for scope_name, raw_ids in item.items():
+                if not isinstance(raw_ids, (tuple, list)):
+                    raise TypeError(
+                        "unique character scope exclusions must be a sequence"
+                    )
+                portable_ids = tuple(
+                    PLAYER_SENTINEL
+                    for character_id in raw_ids
+                    if character_id in {legacy_root, PLAYER_SENTINEL}
+                )
+                if portable_ids:
+                    exclusions[str(scope_name)] = portable_ids
+            neutral[key] = exclusions
+            continue
+        neutral[str(key)] = _neutralize_contract_value(item, legacy_root)
+    return neutral
+
+
+def _neutralize_contract(contract: dict[str, object]) -> dict[str, object]:
+    legacy_root = contract.get("root_character_id")
+    if legacy_root == PLAYER_SENTINEL:
+        cloned = _clone_record_value(contract)
+        if not isinstance(cloned, dict):  # pragma: no cover - mapping input guard
+            raise TypeError("cloned manager-A contract must be a dictionary")
+        return cloned
+    if legacy_root not in {29037, 32904}:
+        raise ValueError(f"unexpected manager-A legacy root: {legacy_root!r}")
+    neutral = _neutralize_contract_value(contract, legacy_root)
+    if not isinstance(neutral, dict):  # pragma: no cover - mapping input guard
+        raise TypeError("neutralized manager-A contract must be a dictionary")
+    neutral.setdefault("date_policy", "product-observation-window")
+    return neutral
+
+
+def _neutralize_group(
+    contracts: dict[str, dict[str, object]],
+) -> dict[str, dict[str, object]]:
+    return {
+        event_key: _neutralize_contract(contract)
+        for event_key, contract in contracts.items()
+    }
+
+
+MANAGER_VANILLA_OBSERVATIONS_A: Final[dict[str, dict[str, object]]] = {
+    event_key: {
+        "exemplars": [{
+            "run": "legacy-migrated",
+            "kind": "legacy-live-binding",
+            "review_kind": "migration-only",
+            **_legacy_binding_fields(contract),
+        }],
+    }
+    for _source_name, contracts in _MANAGER_A_LEGACY_GROUPS
+    for event_key, contract in contracts.items()
+    if contract.get("root_character_id") in {29037, 32904}
+}
+
+MANAGER_BEFRIEND_TIMELINE_CONTRACTS: Final = _neutralize_group(
+    _LEGACY_MANAGER_BEFRIEND_TIMELINE_CONTRACTS
+)
+MANAGER_BIRTH_TIMELINE_CONTRACTS: Final = _neutralize_group(
+    _LEGACY_MANAGER_BIRTH_TIMELINE_CONTRACTS
+)
+MANAGER_CHANCELLOR_TIMELINE_CONTRACTS: Final = _neutralize_group(
+    _LEGACY_MANAGER_CHANCELLOR_TIMELINE_CONTRACTS
+)
+MANAGER_COUNCIL_CLAIM_TIMELINE_CONTRACTS: Final = _neutralize_group(
+    _LEGACY_MANAGER_COUNCIL_CLAIM_TIMELINE_CONTRACTS
+)
+MANAGER_COURT_TIMELINE_CONTRACTS: Final = _neutralize_group(
+    _LEGACY_MANAGER_COURT_TIMELINE_CONTRACTS
+)
+MANAGER_DEATH_TIMELINE_CONTRACTS: Final = _neutralize_group(
+    _LEGACY_MANAGER_DEATH_TIMELINE_CONTRACTS
+)
+MANAGER_DEBATE_TIMELINE_CONTRACTS: Final = _neutralize_group(
+    _LEGACY_MANAGER_DEBATE_TIMELINE_CONTRACTS
+)
+MANAGER_HEALTH_AGING_TIMELINE_CONTRACTS: Final = _neutralize_group(
+    _LEGACY_MANAGER_HEALTH_AGING_TIMELINE_CONTRACTS
+)
+MANAGER_HEALTH_TIMELINE_CONTRACTS: Final = _neutralize_group(
+    _LEGACY_MANAGER_HEALTH_TIMELINE_CONTRACTS
+)
+
+
 # Migrated from tools/zg361_phase2_promotion_manager_holy_war_contracts.py
 MANAGER_HOLY_WAR_TIMELINE_CONTRACTS: Final[
     dict[str, dict[str, object]]
@@ -1941,5 +2131,6 @@ __all__ = [
     "MANAGER_HOLY_WAR_ANALYSIS",
     "MANAGER_HOLY_WAR_OBSERVATIONS",
     "MANAGER_HOLY_WAR_TIMELINE_CONTRACTS",
+    "MANAGER_VANILLA_OBSERVATIONS_A",
     "MANAGER_VANILLA_TIMELINE_CONTRACTS_A",
 ]
