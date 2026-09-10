@@ -1,0 +1,30 @@
+{
+  "kind": "zg361_b1_cycle8_roster_domain_regression",
+  "source_run": "R374",
+  "manager_cycle_serial": 8,
+  "manager_case_serial": 8,
+  "runtime_cycle_state": 7,
+  "seam": "D+340",
+  "first_rebuild_candidate_count": 52,
+  "second_rebuild_live_candidate_count": 80,
+  "stale_combined_candidate_count": 132,
+  "stale_combined_unique_count": 132,
+  "bounded_processing_roster_count": 80,
+  "stale_combined_quota_counts": {
+    "top": 40,
+    "middle": 79,
+    "bottom": 13
+  },
+  "bounded_processing_counts": {
+    "top": 25,
+    "middle": 46,
+    "bottom": 9
+  },
+  "expected_second_rebuild_quota_counts": {
+    "top": 24,
+    "middle": 48,
+    "bottom": 8
+  },
+  "expected_second_rebuild_candidate_count": 80,
+  "expected_conservation_valid": true
+}

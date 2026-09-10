@@ -3895,6 +3895,25 @@ zg361_b1_audit_locked_roster_additions_effect = {
 }
 
 zg361_b1_rebuild_local_quota_effect = {
+	# These are same-tick temporary lists. D+340 can invoke this effect twice;
+	# remove every prior row with the engine's native temporary-list operation
+	# before rebuilding the next exact candidate domain. Seed each container
+	# with this real manager first so even a previously empty list has a setter.
+	save_temporary_scope_as = zg361_b1_local_quota_scratch_anchor
+	scope:zg361_b1_local_quota_scratch_anchor = {
+		add_to_list = zg361_b1_local_candidates
+	}
+	every_in_list = {
+		list = zg361_b1_local_candidates
+		remove_from_list = zg361_b1_local_candidates
+	}
+	scope:zg361_b1_local_quota_scratch_anchor = {
+		add_to_list = zg361_b1_local_bottom_candidates
+	}
+	every_in_list = {
+		list = zg361_b1_local_bottom_candidates
+		remove_from_list = zg361_b1_local_bottom_candidates
+	}
 	zg361_b1_prune_unavailable_subjects_effect = yes
 	zg361_b1_audit_frozen_roster_effect = yes
 	set_variable = { name = zg361_b1_local_candidate_n value = 0 }

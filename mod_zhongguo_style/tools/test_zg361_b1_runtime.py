@@ -52,6 +52,12 @@ B1_EFFECT_FILES = tuple(
     )
 )
 
+CYCLE8_QUOTA_DOMAIN_FIXTURE = (
+    Path(__file__).parent
+    / "fixtures"
+    / "zg361_b1_cycle8_quota_domain_132_80.json"
+)
+
 
 def read_b1_effects() -> str:
     return "\n".join(read(relative) for relative in B1_EFFECT_FILES)
@@ -3013,6 +3019,7 @@ class B1RuntimeFoundationTests(unittest.TestCase):
             },
             expected,
         )
+
         self.assertEqual(sum((3, 4)), 7)
         exact = top_level_block(
             self.effects, "zg361_b1_compute_exact_quota_effect"
@@ -3103,6 +3110,108 @@ class B1RuntimeFoundationTests(unittest.TestCase):
             "zg361_b1_quota_pool_conservation_check",
         ):
             self.assertIn(field, common)
+
+    def test_cycle8_consecutive_rebuilds_clear_temporary_quota_lists(self) -> None:
+        fixture = json.loads(
+            CYCLE8_QUOTA_DOMAIN_FIXTURE.read_text(encoding="utf-8")
+        )
+        self.assertEqual(fixture["manager_cycle_serial"], 8)
+        self.assertEqual(fixture["manager_case_serial"], 8)
+        self.assertEqual(fixture["runtime_cycle_state"], 7)
+        self.assertEqual(fixture["first_rebuild_candidate_count"], 52)
+        self.assertEqual(fixture["second_rebuild_live_candidate_count"], 80)
+        self.assertEqual(
+            fixture["first_rebuild_candidate_count"]
+            + fixture["second_rebuild_live_candidate_count"],
+            fixture["stale_combined_candidate_count"],
+        )
+        self.assertEqual(fixture["stale_combined_candidate_count"], 132)
+        self.assertEqual(fixture["stale_combined_unique_count"], 132)
+        self.assertEqual(fixture["bounded_processing_roster_count"], 80)
+        stale_counts = compute_quota(132).effective_counts
+        self.assertEqual(
+            {
+                "top": stale_counts.top,
+                "middle": stale_counts.middle,
+                "bottom": stale_counts.bottom,
+            },
+            fixture["stale_combined_quota_counts"],
+        )
+        self.assertEqual(
+            sum(fixture["bounded_processing_counts"].values()),
+            fixture["bounded_processing_roster_count"],
+        )
+        self.assertNotEqual(
+            fixture["stale_combined_quota_counts"],
+            fixture["bounded_processing_counts"],
+        )
+        self.assertEqual(fixture["expected_second_rebuild_candidate_count"], 80)
+        repaired_counts = compute_quota(80).effective_counts
+        self.assertEqual(
+            {
+                "top": repaired_counts.top,
+                "middle": repaired_counts.middle,
+                "bottom": repaired_counts.bottom,
+            },
+            fixture["expected_second_rebuild_quota_counts"],
+        )
+        self.assertTrue(fixture["expected_conservation_valid"])
+
+        first_rows = list(range(fixture["first_rebuild_candidate_count"]))
+        second_rows = list(
+            range(
+                fixture["first_rebuild_candidate_count"],
+                fixture["stale_combined_candidate_count"],
+            )
+        )
+        self.assertEqual(
+            len(set(first_rows + second_rows)),
+            fixture["stale_combined_unique_count"],
+        )
+        scratch = first_rows.copy()
+        for row in tuple(scratch):
+            scratch.remove(row)
+        self.assertEqual(scratch, [])
+        scratch.extend(second_rows)
+        self.assertEqual(
+            len(scratch), fixture["expected_second_rebuild_candidate_count"]
+        )
+
+        local = top_level_block(
+            self.effects, "zg361_b1_rebuild_local_quota_effect"
+        )
+        anchor = "save_temporary_scope_as = zg361_b1_local_quota_scratch_anchor"
+        self.assertEqual(local.count(anchor), 1)
+        self.assertEqual(
+            local.count("scope:zg361_b1_local_quota_scratch_anchor = {"), 2
+        )
+        for list_name in (
+            "zg361_b1_local_candidates",
+            "zg361_b1_local_bottom_candidates",
+        ):
+            cleanup = (
+                "every_in_list = {\n"
+                f"\t\tlist = {list_name}\n"
+                f"\t\tremove_from_list = {list_name}\n"
+                "\t}"
+            )
+            self.assertEqual(local.count(cleanup), 1)
+            anchor_write = f"add_to_list = {list_name}"
+            self.assertEqual(local.count(anchor_write), 2)
+            cleanup_index = local.index(cleanup)
+            self.assertLess(
+                local.index(anchor_write),
+                cleanup_index,
+            )
+            self.assertLess(
+                cleanup_index,
+                local.index(anchor_write, cleanup_index + len(cleanup)),
+            )
+        self.assertNotIn("clear_variable_list = zg361_b1_local_", local)
+        self.assertLess(
+            local.index("remove_from_list = zg361_b1_local_candidates"),
+            local.index("zg361_b1_prune_unavailable_subjects_effect = yes"),
+        )
 
     def test_dual_role_diagnostics_are_guarded_temporary_observations(self) -> None:
         initialize = top_level_block(
