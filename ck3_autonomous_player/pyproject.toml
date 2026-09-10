@@ -51,3 +51,7 @@ where = ["src"]
 
 [tool.setuptools.package-data]
 "xar_autoplayer.simulation" = ["data/*.json"]
+"xar_autoplayer.vanilla_events" = [
+  "portable_evidence/manifest_v1.json",
+  "portable_evidence/blobs/*.gz",
+]

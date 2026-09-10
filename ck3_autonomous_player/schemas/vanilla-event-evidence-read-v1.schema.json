@@ -1,0 +1,89 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://xenoamess.example/schemas/vanilla-event-evidence-read-v1.schema.json",
+  "title": "Vanilla event portable evidence chunk v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "schema_version",
+    "status",
+    "ck3_build",
+    "ck3_exe_sha256",
+    "evidence_id",
+    "sha256",
+    "kind",
+    "media_type",
+    "offset",
+    "content_bytes",
+    "total_bytes",
+    "content_base64",
+    "eof",
+    "unavailable_reason"
+  ],
+  "properties": {
+    "schema": {
+      "const": "xar.ck3.vanilla-event-evidence-read"
+    },
+    "schema_version": {
+      "const": 1
+    },
+    "status": {
+      "enum": ["available", "unavailable"]
+    },
+    "ck3_build": {
+      "const": "1.19.0.6"
+    },
+    "ck3_exe_sha256": {
+      "const": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86"
+    },
+    "evidence_id": {
+      "type": ["string", "null"]
+    },
+    "sha256": {
+      "oneOf": [
+        {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "kind": {
+      "enum": ["source_definition", "observation_artifact", null]
+    },
+    "media_type": {
+      "enum": [
+        "application/json",
+        "application/yaml; charset=utf-8",
+        "image/png",
+        "text/plain; charset=utf-8",
+        null
+      ]
+    },
+    "offset": {
+      "type": ["integer", "null"],
+      "minimum": 0
+    },
+    "content_bytes": {
+      "type": ["integer", "null"],
+      "minimum": 0,
+      "maximum": 65536
+    },
+    "total_bytes": {
+      "type": ["integer", "null"],
+      "minimum": 0
+    },
+    "content_base64": {
+      "type": ["string", "null"]
+    },
+    "eof": {
+      "type": ["boolean", "null"]
+    },
+    "unavailable_reason": {
+      "type": ["string", "null"]
+    }
+  }
+}

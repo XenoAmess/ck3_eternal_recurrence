@@ -1,0 +1,2773 @@
+{
+  "ck3_build": "1.19.0.6",
+  "ck3_exe_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+  "compression": {
+    "algorithm": "gzip",
+    "filename": "",
+    "mtime": 0
+  },
+  "evidence": [
+    {
+      "blob_bytes": 105211,
+      "blob_path": "blobs/02ccaa03ad0549cd69708209a39e63e92cb1f57cd342aa428ad41c9e04bedb1f.gz",
+      "blob_sha256": "352a417d0dedfd9d3842610a9c3a29e3356158dcfed1101e387622c20a43c88c",
+      "bytes": 5600508,
+      "evidence_id": "02ccaa03ad0549cd69708209a39e63e92cb1f57cd342aa428ad41c9e04bedb1f",
+      "kind": "observation_artifact",
+      "media_type": "application/json",
+      "references": [
+        {
+          "event_definition_key": "tribute_mission.1005",
+          "logical_path": "_runtime/p2r374-active-boundary-continuation-live/driver-state-park-3-snapshot.json",
+          "origin": "runtime",
+          "role": "driver_state_artifact"
+        }
+      ],
+      "sha256": "02ccaa03ad0549cd69708209a39e63e92cb1f57cd342aa428ad41c9e04bedb1f"
+    },
+    {
+      "blob_bytes": 14021,
+      "blob_path": "blobs/0742fc261c844979e9b6311b297502172400b8b5a6a70743122ddb30de8b632d.gz",
+      "blob_sha256": "73e7bf8f5a89e61786868b90418cc49d0bf59f8f9d307b340166de6aea3bcefb",
+      "bytes": 207931,
+      "evidence_id": "0742fc261c844979e9b6311b297502172400b8b5a6a70743122ddb30de8b632d",
+      "kind": "source_definition",
+      "media_type": "text/plain; charset=utf-8",
+      "references": [
+        {
+          "event_definition_key": "historical_char_creation_events.1",
+          "logical_path": "common/scripted_effects/00_historical_characters_scripted_effects.txt",
+          "origin": "ck3_game",
+          "role": "source_definition"
+        }
+      ],
+      "sha256": "0742fc261c844979e9b6311b297502172400b8b5a6a70743122ddb30de8b632d"
+    },
+    {
+      "blob_bytes": 34030,
+      "blob_path": "blobs/079f0ab5c4224c505ab9f25bca80d8df296e5899bfab26049ce5fe794dc0b042.gz",
+      "blob_sha256": "305ca3cd57cfcd9471518d9c3ca7b37d0328fba6e4d2c9be6a23728618ab9a2e",
+      "bytes": 306016,
+      "evidence_id": "079f0ab5c4224c505ab9f25bca80d8df296e5899bfab26049ce5fe794dc0b042",
+      "kind": "source_definition",
+      "media_type": "text/plain; charset=utf-8",
+      "references": [
+        {
+          "event_definition_key": "stress_threshold.1721",
+          "logical_path": "common/traits/00_traits.txt",
+          "origin": "ck3_game",
+          "role": "source_definition"
+        }
+      ],
+      "sha256": "079f0ab5c4224c505ab9f25bca80d8df296e5899bfab26049ce5fe794dc0b042"
+    },
+    {
+      "blob_bytes": 202638,
+      "blob_path": "blobs/07e292e84dcd56e1917edf6043d2138a0fcd1f8adc6efbf028cca8c1fd4bda65.gz",
+      "blob_sha256": "56f942a90ee0581034f8f9e83cfdf80593bd0a0f9de5b80a2d42f1d7200f8161",
+      "bytes": 9603158,
+      "evidence_id": "07e292e84dcd56e1917edf6043d2138a0fcd1f8adc6efbf028cca8c1fd4bda65",
+      "kind": "observation_artifact",
+      "media_type": "application/json",
+      "references": [
+        {
+          "event_definition_key": "tgp_dynastic_cycle_events.0020",
+          "logical_path": "_runtime/p2r372-post-bound-continuation-live/driver-state-hot-retry-7-snapshot.json",
+          "origin": "runtime",
+          "role": "artifact"
+        }
+      ],
+      "sha256": "07e292e84dcd56e1917edf6043d2138a0fcd1f8adc6efbf028cca8c1fd4bda65"
+    },
+    {
+      "blob_bytes": 5646,
+      "blob_path": "blobs/090607ac30e86817a709a6a8f5f2b5fc785af11c352873b823cf2c3aa5a77e7f.gz",
+      "blob_sha256": "22075f9f58c199f3f413fa9e9596073c75c43100668c53de5427cc98125b4aca",
+      "bytes": 58445,
+      "evidence_id": "090607ac30e86817a709a6a8f5f2b5fc785af11c352873b823cf2c3aa5a77e7f",
+      "kind": "source_definition",
+      "media_type": "text/plain; charset=utf-8",
+      "references": [
+        {
+          "event_definition_key": "epidemic_events.0110",
+          "logical_path": "common/epidemics/00_epidemics.txt",
+          "origin": "ck3_game",
+          "role": "source_definition"
+        },
+        {
+          "event_definition_key": "epidemic_events.1064",
+          "logical_path": "common/epidemics/00_epidemics.txt",
+          "origin": "ck3_game",
+          "role": "source_definition"
+        },
+        {
+          "event_definition_key": "epidemic_events.5009",
+          "logical_path": "common/epidemics/00_epidemics.txt",
+          "origin": "ck3_game",
+          "role": "source_definition"
+        }
+      ],
+      "sha256": "090607ac30e86817a709a6a8f5f2b5fc785af11c352873b823cf2c3aa5a77e7f"
+    },
+    {
+      "blob_bytes": 24567,
+      "blob_path": "blobs/09544a655713b856d5add0df35f7276d6f2ea246cf1eee224d4c5d8807103a79.gz",
+      "blob_sha256": "e1f603d364c0a399c2f889a5a9321364179a972c0d1e3ff4b0aa89c0eebfd33a",
+      "bytes": 64610,
+      "evidence_id": "09544a655713b856d5add0df35f7276d6f2ea246cf1eee224d4c5d8807103a79",
+      "kind": "source_definition",
+      "media_type": "application/yaml; charset=utf-8",
+      "references": [
+        {
+          "event_definition_key": "epidemic_events.0110",
+          "logical_path": "localization/simp_chinese/dlc/ce1/ce1_epidemic_events_l_simp_chinese.yml",
+          "origin": "ck3_game",
+          "role": "source_definition"
+        }
+      ],
+      "sha256": "09544a655713b856d5add0df35f7276d6f2ea246cf1eee224d4c5d8807103a79"
+    },
+    {
+      "blob_bytes": 6151,
+      "blob_path": "blobs/0a47171476811dd16ebd44a7335eaebd17376fd87e41290f72b5c6785365b276.gz",
+      "blob_sha256": "7c3fb7e9a48025665c0e113af1f39572ca36156085ca5c386153a6bcd2da10d8",
+      "bytes": 35256,
+      "evidence_id": "0a47171476811dd16ebd44a7335eaebd17376fd87e41290f72b5c6785365b276",
+      "kind": "source_definition",
+      "media_type": "text/plain; charset=utf-8",
+      "references": [
+        {
+          "event_definition_key": "faction_demand.2001",
+          "logical_path": "common/factions/00_factions.txt",
+          "origin": "ck3_game",
+          "role": "source_definition"
+        }
+      ],
+      "sha256": "0a47171476811dd16ebd44a7335eaebd17376fd87e41290f72b5c6785365b276"
+    },
+    {
+      "blob_bytes": 3402,
+      "blob_path": "blobs/0e27972d9f66348e462130f1ef0351bb18a4c646db6e23db237d79068e65de98.gz",
+      "blob_sha256": "9efa7e27a3db416f711950fccea0b74b8b75650893eff3b4771b1b59c34b0274",
+      "bytes": 21831,
+      "evidence_id": "0e27972d9f66348e462130f1ef0351bb18a4c646db6e23db237d79068e65de98",
+      "kind": "source_definition",
+      "media_type": "text/plain; charset=utf-8",
+      "references": [
+        {
+          "event_definition_key": "epidemic_events.0110",
+          "logical_path": "common/scripted_effects/06_dlc_ce1_epidemics_effects.txt",
+          "origin": "ck3_game",
+          "role": "source_definition"
+        }
+      ],
+      "sha256": "0e27972d9f66348e462130f1ef0351bb18a4c646db6e23db237d79068e65de98"
+    },
+    {
+      "blob_bytes": 31138,
+      "blob_path": "blobs/0fc85a284224a68d1ca0a4ef071d4f4a4f49896753aec463975a12ee4e1116fa.gz",
+      "blob_sha256": "0b043d8f431ca5ea47e3450c8689c05d1af7edf7ae6c166f96e85ab44d8fd60c",
+      "bytes": 124324,
+      "evidence_id": "0fc85a284224a68d1ca0a4ef071d4f4a4f49896753aec463975a12ee4e1116fa",
+      "kind": "source_definition",
+      "media_type": "text/plain; charset=utf-8",
+      "references": [
+        {
+          "event_definition_key": "ep3_landless_admin.1000",
+          "logical_path": "common/on_action/yearly_on_actions.txt",
+          "origin": "ck3_game",
+          "role": "source_definition"
+        },
+        {
+          "event_definition_key": "ep3_story_cycle_admin_eunuch.1001",
+          "logical_path": "common/on_action/yearly_on_actions.txt",
+          "origin": "ck3_game",
+          "role": "source_definition"
+        },
+        {
+          "event_definition_key": "tgp_china_ministry.0100",
+          "logical_path": "common/on_action/yearly_on_actions.txt",
+          "origin": "ck3_game",
+          "role": "source_definition"
+        },
+        {
+          "event_definition_key": "tgp_dynastic_cycle_events.0001",
+          "logical_path": "common/on_action/yearly_on_actions.txt",
+          "origin": "ck3_game",
+          "role": "source_definition"
+        },
+        {
+          "event_definition_key": "tgp_dynastic_cycle_events.0020",
+          "logical_path": "common/on_action/yearly_on_actions.txt",
+          "origin": "ck3_game",
+          "role": "source_definition"
+        },
+        {
+          "event_definition_key": "tgp_movement_events.0160",
+          "logical_path": "common/on_action/yearly_on_actions.txt",
+          "origin": "ck3_game",
+          "role": "source_definition"
+        },
+        {
+          "event_definition_key": "trait_specific.4001",
+          "logical_path": "common/on_action/yearly_on_actions.txt",
+          "origin": "ck3_game",
+          "role": "source_definition"
+        }
+      ],
+      "sha256": "0fc85a284224a68d1ca0a4ef071d4f4a4f49896753aec463975a12ee4e1116fa"
+    },
+    {
+      "blob_bytes": 1242,
+      "blob_path": "blobs/104a7ef94ee9da1092f23aeb2fd9dc971b08c695415f3b7ebfb628f381d26395.gz",
+      "blob_sha256": "05e14b9ac599e9ae0f452bc6933d2c3f2acf915f9e09ef19e96ed6bad12c7bd4",
+      "bytes": 3853,
+      "evidence_id": "104a7ef94ee9da1092f23aeb2fd9dc971b08c695415f3b7ebfb628f381d26395",
+      "kind": "source_definition",
+      "media_type": "text/plain; charset=utf-8",
+      "references": [
+        {
+          "event_definition_key": "death_management.1007",
+          "logical_path": "common/script_values/00_stress_values.txt",
+          "origin": "ck3_game",
+          "role": "source_definition"
+        },
+        {
+          "event_definition_key": "stress_threshold.1721",
+          "logical_path": "common/script_values/00_stress_values.txt",
+          "origin": "ck3_game",
+          "role": "source_definition"
+        }
+      ],
+      "sha256": "104a7ef94ee9da1092f23aeb2fd9dc971b08c695415f3b7ebfb628f381d26395"
+    },
+    {
+      "blob_bytes": 5154,
+      "blob_path": "blobs/107d8695bfe25daf20e058d5eb34579fdb586a172e81d30e052a4662d8e90ea1.gz",
+      "blob_sha256": "c439b77e9e35bff89ba245fb22a2e857c1c2d7860cda94fb7779f4bdc3d6fb19",
+      "bytes": 14174,
+      "evidence_id": "107d8695bfe25daf20e058d5eb34579fdb586a172e81d30e052a4662d8e90ea1",
+      "kind": "source_definition",
+      "media_type": "text/plain; charset=utf-8",
+      "references": [
+        {
+          "event_definition_key": "ep3_landless_admin.1000",
+          "logical_path": "common/on_action/ep3_on_actions.txt",
+          "origin": "ck3_game",
+          "role": "source_definition"
+        },
+        {
+          "event_definition_key": "ep3_story_cycle_admin_eunuch.1001",
+          "logical_path": "common/on_action/ep3_on_actions.txt",
+          "origin": "ck3_game",
+          "role": "source_definition"
+        }
+      ],
+      "sha256": "107d8695bfe25daf20e058d5eb34579fdb586a172e81d30e052a4662d8e90ea1"
+    },
+    {
+      "blob_bytes": 14642,
+      "blob_path": "blobs/1249cac40138d48210a07245746c4a6683c5f58f3141c04a20db2c00b6375bf8.gz",
+      "blob_sha256": "dffa635df70c7185c3085126be269f0033f3a1f2373e642f5ad7c96f496d9c31",
+      "bytes": 89993,
+      "evidence_id": "1249cac40138d48210a07245746c4a6683c5f58f3141c04a20db2c00b6375bf8",
+      "kind": "source_definition",
+      "media_type": "text/plain; charset=utf-8",
+      "references": [
+        {
+          "event_definition_key": "vassal_interaction.0040",
+          "logical_path": "common/character_interactions/00_vassal_interactions.txt",
+          "origin": "ck3_game",
+          "role": "source_definition"
+        }
+      ],
+      "sha256": "1249cac40138d48210a07245746c4a6683c5f58f3141c04a20db2c00b6375bf8"
+    },
+    {
+      "blob_bytes": 786,
+      "blob_path": "blobs/13067098532f4f96e41f0ebce4917f08c900957313e864f6734c6652e29951e5.gz",
+      "blob_sha256": "ded3a9e2c5ba074e6162226d99df7ee4831faa02bcb8af34a7e4dbea4ba8a2a4",
+      "bytes": 3234,
+      "evidence_id": "13067098532f4f96e41f0ebce4917f08c900957313e864f6734c6652e29951e5",
+      "kind": "source_definition",
+      "media_type": "text/plain; charset=utf-8",
+      "references": [
+        {
+          "event_definition_key": "death_management.1007",
+          "logical_path": "common/scripted_triggers/00_death_management_triggers.txt",
+          "origin": "ck3_game",
+          "role": "source_definition"
+        }
+      ],
+      "sha256": "13067098532f4f96e41f0ebce4917f08c900957313e864f6734c6652e29951e5"
+    },
+    {
+      "blob_bytes": 4287,
+      "blob_path": "blobs/13e43166356b5dd99358f435330b03cb9be95ab5913280318b01681186e23a2e.gz",
+      "blob_sha256": "5baa0d2e02aecf339e7179179ddfdd88a0f0700d801893e77122cc1b7768cf11",
+      "bytes": 27465,
+      "evidence_id": "13e43166356b5dd99358f435330b03cb9be95ab5913280318b01681186e23a2e",
+      "kind": "source_definition",
+      "media_type": "text/plain; charset=utf-8",
+      "references": [
+        {
+          "event_definition_key": "faction_demand.1101",
+          "logical_path": "common/script_values/00_legitimacy_values.txt",
+          "origin": "ck3_game",
+          "role": "source_definition"
+        }
+      ],
+      "sha256": "13e43166356b5dd99358f435330b03cb9be95ab5913280318b01681186e23a2e"
+    },
+    {
+      "blob_bytes": 1442,
+      "blob_path": "blobs/158984b899b9a8aa2667b2f67581c2c1c087b48db9d14a3d934a68aec4720e18.gz",
+      "blob_sha256": "ff33e9c0d19ba3e218856265ed70914dc00cf9905f3ec3a98ef3d04728c41f02",
+      "bytes": 10185,
+      "evidence_id": "158984b899b9a8aa2667b2f67581c2c1c087b48db9d14a3d934a68aec4720e18",
+      "kind": "source_definition",
+      "media_type": "text/plain; charset=utf-8",
+      "references": [
+        {
+          "event_definition_key": "natural_disaster.6901",
+          "logical_path": "common/situation/situations/tgp_natural_disaster.txt",
+          "origin": "ck3_game",
+          "role": "source_definition"
+        },
+        {
+          "event_definition_key": "natural_disaster.7021",
+          "logical_path": "common/situation/situations/tgp_natural_disaster.txt",
+          "origin": "ck3_game",
+          "role": "source_definition"
+        },
+        {
+          "event_definition_key": "natural_disaster.7031",
+          "logical_path": "common/situation/situations/tgp_natural_disaster.txt",
+          "origin": "ck3_game",
+          "role": "source_definition"
+        },
+        {
+          "event_definition_key": "natural_disaster.8001",
+          "logical_path": "common/situation/situations/tgp_natural_disaster.txt",
+          "origin": "ck3_game",
+          "role": "source_definition"
+        }
+      ],
+      "sha256": "158984b899b9a8aa2667b2f67581c2c1c087b48db9d14a3d934a68aec4720e18"
+    },
+    {
+      "blob_bytes": 1823,
+      "blob_path": "blobs/19860e8323136e2eed1209428ba56d09f1c4175e4250e90b43fb4aa27d0a3c35.gz",
+      "blob_sha256": "4fda3ec8855601194c78eb1c104f84921154bc2bb26923cdbb3858b6519aea10",
+      "bytes": 6194,
+      "evidence_id": "19860e8323136e2eed1209428ba56d09f1c4175e4250e90b43fb4aa27d0a3c35",
+      "kind": "observation_artifact",
+      "media_type": "application/json",
+      "references": [
+        {
+          "event_definition_key": "tgp_dynastic_cycle.0081",
+          "logical_path": "_runtime/p2r375-post-publisher-fix-live/r375-tgp-dynastic-cycle-0081-red-freeze.json",
+          "origin": "runtime",
+          "role": "artifact"
+        }
+      ],
+      "sha256": "19860e8323136e2eed1209428ba56d09f1c4175e4250e90b43fb4aa27d0a3c35"
+    },
+    {
+      "blob_bytes": 2142154,
+      "blob_path": "blobs/198af299c3d45d0f5979d61843fd7a6d9b0e0be76814178c63d578bb78a2ae17.gz",
+      "blob_sha256": "cce2c5501d0eeec922a3b0d337cebac3d114adc2ee9d51334b97f9c9d3d861be",
+      "bytes": 57900348,
+      "evidence_id": "198af299c3d45d0f5979d61843fd7a6d9b0e0be76814178c63d578bb78a2ae17",
+      "kind": "observation_artifact",
+      "media_type": "application/json",
+      "references": [
+        {
+          "event_definition_key": "epidemic_events.1064",
+          "logical_path": "_runtime/p2r372-post-bound-continuation-live/epidemic-events-1064-red-report.json",
+          "origin": "runtime",
+          "role": "artifact"
+        }
+      ],
+      "sha256": "198af299c3d45d0f5979d61843fd7a6d9b0e0be76814178c63d578bb78a2ae17"
+    },
+    {
+      "blob_bytes": 1769,
+      "blob_path": "blobs/1c96d13a88d9f96575ca6dd78e5e02c0483ecb1adc09505949868ec387994eef.gz",
+      "blob_sha256": "88ea0d504d542282075484c76331280e486387e306307e5e8964a7d2543796b8",
+      "bytes": 5868,
+      "evidence_id": "1c96d13a88d9f96575ca6dd78e5e02c0483ecb1adc09505949868ec387994eef",
+      "kind": "observation_artifact",
+      "media_type": "application/json",
+      "references": [
+        {
+          "event_definition_key": "epidemic_events.0110",
+          "logical_path": "_runtime/p2r375-post-publisher-fix-live/r375-live-016-epidemic-events-0110-green.json",
+          "origin": "runtime",
+          "role": "artifact"
+        }
+      ],
+      "sha256": "1c96d13a88d9f96575ca6dd78e5e02c0483ecb1adc09505949868ec387994eef"
+    },
+    {
+      "blob_bytes": 2421,
+      "blob_path": "blobs/1cd3dec1ed7db6f3c7dbe8d485dc2b38753f1d7e1d90bd9e8fa99a8adadc7448.gz",
+      "blob_sha256": "7882979a233ab90a8005e623eeeb2308f518553da9ec5355bd4f3fa37e534c00",
+      "bytes": 7466,
+      "evidence_id": "1cd3dec1ed7db6f3c7dbe8d485dc2b38753f1d7e1d90bd9e8fa99a8adadc7448",
+      "kind": "observation_artifact",
+      "media_type": "application/json",
+      "references": [
+        {
+          "event_definition_key": "epidemic_events.0110",
+          "logical_path": "_runtime/p2r375-post-publisher-fix-live/r375-epidemic-events-0110-red-freeze.json",
+          "origin": "runtime",
+          "role": "artifact"
+        }
+      ],
+      "sha256": "1cd3dec1ed7db6f3c7dbe8d485dc2b38753f1d7e1d90bd9e8fa99a8adadc7448"
+    },
+    {
+      "blob_bytes": 17909,
+      "blob_path": "blobs/1ce764cfeb02858bf5d978ed10da7c1e68be48a2281374f1ffe86c0f6dc4bbbe.gz",
+      "blob_sha256": "1949408ac62dfad9d05cbaf37a2a3a8aa82a5d4e367e73d23fe5829bd6610324",
+      "bytes": 55185,
+      "evidence_id": "1ce764cfeb02858bf5d978ed10da7c1e68be48a2281374f1ffe86c0f6dc4bbbe",
+      "kind": "source_definition",
+      "media_type": "application/yaml; charset=utf-8",
+      "references": [
+        {
+          "event_definition_key": "ep3_emperor_yearly.2211",
+          "logical_path": "localization/english/dlc/ep3/ep3_emperor_yearly_2_l_english.yml",
+          "origin": "ck3_game",
+          "role": "source_definition"
+        }
+      ],
+      "sha256": "1ce764cfeb02858bf5d978ed10da7c1e68be48a2281374f1ffe86c0f6dc4bbbe"
+    },
+    {
+      "blob_bytes": 3682,
+      "blob_path": "blobs/2260a2ac3f568b3135588e12e4c817846a03aa4bdb16a71c4828490d45f696f3.gz",
+      "blob_sha256": "d076770074347b87778025a28f7662b0a5e39ce2540fc204c264cf5662c51f78",
+      "bytes": 22493,
+      "evidence_id": "2260a2ac3f568b3135588e12e4c817846a03aa4bdb16a71c4828490d45f696f3",
+      "kind": "source_definition",
+      "media_type": "text/plain; charset=utf-8",
+      "references": [
+        {
+          "event_definition_key": "tgp_dynastic_cycle_events.0001",
+          "logical_path": "events/dlc/tgp/tgp_dynastic_cycle_flavor_events.txt",
+          "origin": "ck3_game",
+          "role": "source_definition"
+        },
+        {
+          "event_definition_key": "tgp_dynastic_cycle_events.0020",
+          "logical_path": "events/dlc/tgp/tgp_dynastic_cycle_flavor_events.txt",
+          "origin": "ck3_game",
+          "role": "source_definition"
+        }
+      ],
+      "sha256": "2260a2ac3f568b3135588e12e4c817846a03aa4bdb16a71c4828490d45f696f3"
+    },
+    {
+      "blob_bytes": 2272,
+      "blob_path": "blobs/2aa4f3f637bf5a824b14fd74c9b6f30507c76c6be9d26cfe40e493c84dae775c.gz",
+      "blob_sha256": "28de7f4c8f01f2b8021b39752de61c6cce106674a1ff5139f19edc3c543f7ac2",
+      "bytes": 8886,
+      "evidence_id": "2aa4f3f637bf5a824b14fd74c9b6f30507c76c6be9d26cfe40e493c84dae775c",
+      "kind": "source_definition",
+      "media_type": "text/plain; charset=utf-8",
+      "references": [
+        {
+          "event_definition_key": "stress_threshold.1721",
+          "logical_path": "common/scripted_triggers/00_stress_triggers.txt",
+          "origin": "ck3_game",
+          "role": "source_definition"
+        }
+      ],
+      "sha256": "2aa4f3f637bf5a824b14fd74c9b6f30507c76c6be9d26cfe40e493c84dae775c"
+    },
+    {
+      "blob_bytes": 2327,
+      "blob_path": "blobs/2bfbbf903d55a2417c988caf1479ef0ff91719c55128ce6357bca3d2c8e9b25f.gz",
+      "blob_sha256": "13a1371760e68f07866072f1ecefdfe7ee65350eedad4a882f74f1bae247d1b8",
+      "bytes": 5863,
+      "evidence_id": "2bfbbf903d55a2417c988caf1479ef0ff91719c55128ce6357bca3d2c8e9b25f",
+      "kind": "source_definition",
+      "media_type": "text/plain; charset=utf-8",
+      "references": [
+        {
+          "event_definition_key": "trait_specific.4001",
+          "logical_path": "common/on_action/_on_actions.info",
+          "origin": "ck3_game",
+          "role": "source_definition"
+        }
+      ],
+      "sha256": "2bfbbf903d55a2417c988caf1479ef0ff91719c55128ce6357bca3d2c8e9b25f"
+    },
+    {
+      "blob_bytes": 13913,
+      "blob_path": "blobs/31591a2f2d3a61e65853cc43b9bef4b001feb75ea1502861d2fb9ac054ab1fb7.gz",
+      "blob_sha256": "1a21fa16b95e7f7f8e2fea855531c808f721617b9396460ca3489e89d768d8a2",
+      "bytes": 148121,
+      "evidence_id": "31591a2f2d3a61e65853cc43b9bef4b001feb75ea1502861d2fb9ac054ab1fb7",
+      "kind": "source_definition",
+      "media_type": "text/plain; charset=utf-8",
+      "references": [
+        {
+          "event_definition_key": "death_management.1007",
+          "logical_path": "events/death_events/death_management_events.txt",
+          "origin": "ck3_game",
+          "role": "source_definition"
+        }
+      ],
+      "sha256": "31591a2f2d3a61e65853cc43b9bef4b001feb75ea1502861d2fb9ac054ab1fb7"
+    },
+    {
+      "blob_bytes": 6057,
+      "blob_path": "blobs/3345f8ddb93f72bfc20acf6e2590c43dd884bfd91fe27525ffdb1c3286e3049f.gz",
+      "blob_sha256": "4c669e20c52a0b31eab4e1a8cd066f57cba5c1fe0e9a864a73e82643ecfbe3c7",
+      "bytes": 38020,
+      "evidence_id": "3345f8ddb93f72bfc20acf6e2590c43dd884bfd91fe27525ffdb1c3286e3049f",
+      "kind": "source_definition",
+      "media_type": "text/plain; charset=utf-8",
+      "references": [
+        {
+          "event_definition_key": "travel_danger_events.3002",
+          "logical_path": "events/travel_events/travel_danger_events_klank.txt",
+          "origin": "ck3_game",
+          "role": "source_definition"
+        }
+      ],
+      "sha256": "3345f8ddb93f72bfc20acf6e2590c43dd884bfd91fe27525ffdb1c3286e3049f"
+    },
+    {
+      "blob_bytes": 1585,
+      "blob_path": "blobs/3429d8884aa45f09291b807b6931d7fcaa629458eccee59ae2ea682d69f46aaf.gz",
+      "blob_sha256": "43d5d9a0a8b122ad05a041bf8d4d7e125c09ec8b60d44e5a23ee019bcb82dca1",
+      "bytes": 5688,
+      "evidence_id": "3429d8884aa45f09291b807b6931d7fcaa629458eccee59ae2ea682d69f46aaf",
+      "kind": "source_definition",
+      "media_type": "text/plain; charset=utf-8",
+      "references": [
+        {
+          "event_definition_key": "faction_demand.1101",
+          "logical_path": "common/casus_belli_types/00_peasant_war_new.txt",
+          "origin": "ck3_game",
+          "role": "source_definition"
+        }
+      ],
+      "sha256": "3429d8884aa45f09291b807b6931d7fcaa629458eccee59ae2ea682d69f46aaf"
+    },
+    {
+      "blob_bytes": 1499,
+      "blob_path": "blobs/35a9b8fc8fe6cde91eaad06f9c90ad6fcd41beefd317bff77d3a68430e5dd839.gz",
+      "blob_sha256": "461abaaae0528c92f638d1dabadad199c13b664b1548c86d8f590e67a016b69d",
+      "bytes": 5832,
+      "evidence_id": "35a9b8fc8fe6cde91eaad06f9c90ad6fcd41beefd317bff77d3a68430e5dd839",
+      "kind": "source_definition",
+      "media_type": "text/plain; charset=utf-8",
+      "references": [
+        {
+          "event_definition_key": "stress_threshold.1721",
+          "logical_path": "common/on_action/stress_on_actions.txt",
+          "origin": "ck3_game",
+          "role": "source_definition"
+        }
+      ],
+      "sha256": "35a9b8fc8fe6cde91eaad06f9c90ad6fcd41beefd317bff77d3a68430e5dd839"
+    },
+    {
+      "blob_bytes": 358,
+      "blob_path": "blobs/381858facbad07092d4876f59d85cac69607b497a108872f361ac0c078724fce.gz",
+      "blob_sha256": "aff524041c7c1ae66b5f9905055c4de3f3ab57b772d2d71b6d125e69224e537a",
+      "bytes": 748,
+      "evidence_id": "381858facbad07092d4876f59d85cac69607b497a108872f361ac0c078724fce",
+      "kind": "observation_artifact",
+      "media_type": "application/json",
+      "references": [
+        {
+          "event_definition_key": "tribute_mission.1005",
+          "logical_path": "_runtime/p2r374-active-boundary-continuation-live/hot-recovery-park-3.json",
+          "origin": "runtime",
+          "role": "park_artifact"
+        }
+      ],
+      "sha256": "381858facbad07092d4876f59d85cac69607b497a108872f361ac0c078724fce"
+    },
+    {
+      "blob_bytes": 3413,
+      "blob_path": "blobs/3b54aa8e610ec8f767b86f33f75a7d90a64fa199b0ac1ae37d59a476b4ec04e2.gz",
+      "blob_sha256": "02a9f225fbd3b54b9fb5565b635be422ad3e5fad521562ad08ae9dd032d4ea56",
+      "bytes": 17932,
+      "evidence_id": "3b54aa8e610ec8f767b86f33f75a7d90a64fa199b0ac1ae37d59a476b4ec04e2",
+      "kind": "source_definition",
+      "media_type": "text/plain; charset=utf-8",
+      "references": [
+        {
+          "event_definition_key": "faction_demand.1101",
+          "logical_path": "common/factions/00_peasant_faction_new.txt",
+          "origin": "ck3_game",
+          "role": "source_definition"
+        }
+      ],
+      "sha256": "3b54aa8e610ec8f767b86f33f75a7d90a64fa199b0ac1ae37d59a476b4ec04e2"
+    },
+    {
+      "blob_bytes": 4659,
+      "blob_path": "blobs/3cd9f4f5f800e8c94d31f1841c93eb70f430b00064afae61d7c388f50bd7e612.gz",
+      "blob_sha256": "f577cd428b9ae095e20f39fcc780e25dcff59ebe0978e5038ef2ceff82fd7f73",
+      "bytes": 24998,
+      "evidence_id": "3cd9f4f5f800e8c94d31f1841c93eb70f430b00064afae61d7c388f50bd7e612",
+      "kind": "source_definition",
+      "media_type": "text/plain; charset=utf-8",
+      "references": [
+        {
+          "event_definition_key": "stress_threshold.1721",
+          "logical_path": "common/scripted_effects/00_stress_effects.txt",
+          "origin": "ck3_game",
+          "role": "source_definition"
+        }
+      ],
+      "sha256": "3cd9f4f5f800e8c94d31f1841c93eb70f430b00064afae61d7c388f50bd7e612"
+    },
+    {
+      "blob_bytes": 360,
+      "blob_path": "blobs/3d0bbb7c7afce08003329df248301bad4216d8be47fbe4f24703a4e89e5d0e68.gz",
+      "blob_sha256": "07c0ae9556e6e824d866bb8122fbb4fc682bc1324c47ebcc4a80601ac297a86d",
+      "bytes": 751,
+      "evidence_id": "3d0bbb7c7afce08003329df248301bad4216d8be47fbe4f24703a4e89e5d0e68",
+      "kind": "observation_artifact",
+      "media_type": "application/json",
+      "references": [
+        {
+          "event_definition_key": "tgp_movement_events.0160",
+          "logical_path": "_runtime/p2r372-post-bound-continuation-live/hot-recovery-park-4.json",
+          "origin": "runtime",
+          "role": "artifact"
+        }
+      ],
+      "sha256": "3d0bbb7c7afce08003329df248301bad4216d8be47fbe4f24703a4e89e5d0e68"
+    },
+    {
+      "blob_bytes": 96437,
+      "blob_path": "blobs/446605fc4ab05d1dded330929e57b2d04a73e91a601e58b4320d6e2037ed9548.gz",
+      "blob_sha256": "40b95b32e616ed91cf2a2bddfa3d3f260213435e5471d4bbc2905c085a87a72a",
+      "bytes": 5348133,
+      "evidence_id": "446605fc4ab05d1dded330929e57b2d04a73e91a601e58b4320d6e2037ed9548",
+      "kind": "observation_artifact",
+      "media_type": "application/json",
+      "references": [
+        {
+          "event_definition_key": "ep3_story_cycle_admin_eunuch.1001",
+          "logical_path": "_runtime/p2r374-active-boundary-continuation-live/driver-state-park-2-snapshot.json",
+          "origin": "runtime",
+          "role": "driver_state_artifact"
+        }
+      ],
+      "sha256": "446605fc4ab05d1dded330929e57b2d04a73e91a601e58b4320d6e2037ed9548"
+    },
+    {
+      "blob_bytes": 4971,
+      "blob_path": "blobs/48483cb13cf885203c43316c4990b684bc9d6ed5b5b3a664ccf228f59eae44d7.gz",
+      "blob_sha256": "db448619b429010d4fd1f7a9d4574a2fdb1fba45b461750318846fbcf6b58f1f",
+      "bytes": 27564,
+      "evidence_id": "48483cb13cf885203c43316c4990b684bc9d6ed5b5b3a664ccf228f59eae44d7",
+      "kind": "source_definition",
+      "media_type": "text/plain; charset=utf-8",
+      "references": [
+        {
+          "event_definition_key": "natural_disaster.6901",
+          "logical_path": "common/scripted_effects/10_dlc_tgp_natural_disaster_scripted_effects.txt",
+          "origin": "ck3_game",
+          "role": "source_definition"
+        },
+        {
+          "event_definition_key": "natural_disaster.7021",
+          "logical_path": "common/scripted_effects/10_dlc_tgp_natural_disaster_scripted_effects.txt",
+          "origin": "ck3_game",
+          "role": "source_definition"
+        },
+        {
+          "event_definition_key": "natural_disaster.7031",
+          "logical_path": "common/scripted_effects/10_dlc_tgp_natural_disaster_scripted_effects.txt",
+          "origin": "ck3_game",
+          "role": "source_definition"
+        },
+        {
+          "event_definition_key": "natural_disaster.8001",
+          "logical_path": "common/scripted_effects/10_dlc_tgp_natural_disaster_scripted_effects.txt",
+          "origin": "ck3_game",
+          "role": "source_definition"
+        }
+      ],
+      "sha256": "48483cb13cf885203c43316c4990b684bc9d6ed5b5b3a664ccf228f59eae44d7"
+    },
+    {
+      "blob_bytes": 3318,
+      "blob_path": "blobs/490c3784ee1555a49f7a4adc9baabb8522485f1af6e1c837961e299a88695b5e.gz",
+      "blob_sha256": "77ae589bd1c90f15056ad400bed159c8bb4eb797f1332384fb2fec3e740457d9",
+      "bytes": 14623,
+      "evidence_id": "490c3784ee1555a49f7a4adc9baabb8522485f1af6e1c837961e299a88695b5e",
+      "kind": "source_definition",
+      "media_type": "text/plain; charset=utf-8",
+      "references": [
+        {
+          "event_definition_key": "tgp_dynastic_cycle.0081",
+          "logical_path": "common/scripted_triggers/00_scripted_triggers.txt",
+          "origin": "ck3_game",
+          "role": "source_definition"
+        }
+      ],
+      "sha256": "490c3784ee1555a49f7a4adc9baabb8522485f1af6e1c837961e299a88695b5e"
+    },
+    {
+      "blob_bytes": 977,
+      "blob_path": "blobs/4d6f5379e40304b56c5c1a914e8a0ee3998e8023174dc52f7e5072f7cfa40454.gz",
+      "blob_sha256": "85a5c18b1285c645f96f93f9f67be707c0e61f2d5a40aa3dfa7135a2a6cd6251",
+      "bytes": 2545,
+      "evidence_id": "4d6f5379e40304b56c5c1a914e8a0ee3998e8023174dc52f7e5072f7cfa40454",
+      "kind": "source_definition",
+      "media_type": "text/plain; charset=utf-8",
+      "references": [
+        {
+          "event_definition_key": "tgp_dynastic_cycle_events.0001",
+          "logical_path": "common/on_action/dlc/tgp/tgp_china_yearly_on_actions.txt",
+          "origin": "ck3_game",
+          "role": "source_definition"
+        },
+        {
+          "event_definition_key": "tgp_dynastic_cycle_events.0020",
+          "logical_path": "common/on_action/dlc/tgp/tgp_china_yearly_on_actions.txt",
+          "origin": "ck3_game",
+          "role": "source_definition"
+        },
+        {
+          "event_definition_key": "tgp_movement_events.0160",
+          "logical_path": "common/on_action/dlc/tgp/tgp_china_yearly_on_actions.txt",
+          "origin": "ck3_game",
+          "role": "source_definition"
+        }
+      ],
+      "sha256": "4d6f5379e40304b56c5c1a914e8a0ee3998e8023174dc52f7e5072f7cfa40454"
+    },
+    {
+      "blob_bytes": 2480,
+      "blob_path": "blobs/4e01d8d6ecfcfeea3a02e95fffb81de1dd575d4a0f9594b8c698989a7b975418.gz",
+      "blob_sha256": "3b05039cee0933c66fe6f845da220b99a3aaecfb15c0ddd90647f3c6ab54ca80",
+      "bytes": 9277,
+      "evidence_id": "4e01d8d6ecfcfeea3a02e95fffb81de1dd575d4a0f9594b8c698989a7b975418",
+      "kind": "source_definition",
+      "media_type": "text/plain; charset=utf-8",
+      "references": [
+        {
+          "event_definition_key": "trait_specific.4001",
+          "logical_path": "common/schemes/scheme_types/convert_to_witchcraft_scheme.txt",
+          "origin": "ck3_game",
+          "role": "source_definition"
+        }
+      ],
+      "sha256": "4e01d8d6ecfcfeea3a02e95fffb81de1dd575d4a0f9594b8c698989a7b975418"
+    },
+    {
+      "blob_bytes": 358,
+      "blob_path": "blobs/4e3b59b3eb6328939d2008bd2dd4138546c0224f76d62297d19415138df577e6.gz",
+      "blob_sha256": "f556468f396232f3793021c8d0db1957df59bc68941122d60f45dc07b6dfb7eb",
+      "bytes": 747,
+      "evidence_id": "4e3b59b3eb6328939d2008bd2dd4138546c0224f76d62297d19415138df577e6",
+      "kind": "observation_artifact",
+      "media_type": "application/json",
+      "references": [
+        {
+          "event_definition_key": "faction_demand.1101",
+          "logical_path": "_runtime/p2r374-active-boundary-continuation-live/hot-recovery-park-9.json",
+          "origin": "runtime",
+          "role": "park_artifact"
+        }
+      ],
+      "sha256": "4e3b59b3eb6328939d2008bd2dd4138546c0224f76d62297d19415138df577e6"
+    },
+    {
+      "blob_bytes": 1606,
+      "blob_path": "blobs/4ee4098080b8c4536e74b047801f8715dd5eb0bcdcbac04a8e3bf563d6555932.gz",
+      "blob_sha256": "ba8f0112eac2962c2df177f90738891c61b449d3321842b61cfcd23999c4e71d",
+      "bytes": 4775,
+      "evidence_id": "4ee4098080b8c4536e74b047801f8715dd5eb0bcdcbac04a8e3bf563d6555932",
+      "kind": "source_definition",
+      "media_type": "text/plain; charset=utf-8",
+      "references": [
+        {
+          "event_definition_key": "faction_demand.1101",
+          "logical_path": "common/script_values/00_faction_values.txt",
+          "origin": "ck3_game",
+          "role": "source_definition"
+        },
+        {
+          "event_definition_key": "faction_demand.2001",
+          "logical_path": "common/script_values/00_faction_values.txt",
+          "origin": "ck3_game",
+          "role": "source_definition"
+        }
+      ],
+      "sha256": "4ee4098080b8c4536e74b047801f8715dd5eb0bcdcbac04a8e3bf563d6555932"
+    },
+    {
+      "blob_bytes": 2060639,
+      "blob_path": "blobs/4f1a0ea8e43255b7c3399cc3b7f90623f56d8cb0688769d906ab6045efed838d.gz",
+      "blob_sha256": "ac9ed7574ce7144418f0d0d702df77d1969f28f7901aceb65c8bd08f48cebbfb",
+      "bytes": 55421865,
+      "evidence_id": "4f1a0ea8e43255b7c3399cc3b7f90623f56d8cb0688769d906ab6045efed838d",
+      "kind": "observation_artifact",
+      "media_type": "application/json",
+      "references": [
+        {
+          "event_definition_key": "tgp_dynastic_cycle_events.0001",
+          "logical_path": "_runtime/p2r372-post-bound-continuation-live/tgp-dynastic-cycle-0001-red-report.json",
+          "origin": "runtime",
+          "role": "artifact"
+        }
+      ],
+      "sha256": "4f1a0ea8e43255b7c3399cc3b7f90623f56d8cb0688769d906ab6045efed838d"
+    },
+    {
+      "blob_bytes": 6139,
+      "blob_path": "blobs/52d172c10a8164b007382f9df79a48de462cf6b390438158fd37c9b34df8f75c.gz",
+      "blob_sha256": "2077fb9f05ef7b276d6ff856ce4a6e65e5cd3b0804fd2148eeb8757ab8deed70",
+      "bytes": 27361,
+      "evidence_id": "52d172c10a8164b007382f9df79a48de462cf6b390438158fd37c9b34df8f75c",
+      "kind": "source_definition",
+      "media_type": "text/plain; charset=utf-8",
+      "references": [
+        {
+          "event_definition_key": "great_holy_war.0011",
+          "logical_path": "common/on_action/religion_on_actions.txt",
+          "origin": "ck3_game",
+          "role": "source_definition"
+        }
+      ],
+      "sha256": "52d172c10a8164b007382f9df79a48de462cf6b390438158fd37c9b34df8f75c"
+    },
+    {
+      "blob_bytes": 3907,
+      "blob_path": "blobs/546adc3af9413031228928c0621829791f843d7e93450c9eec2c5e2cec18187e.gz",
+      "blob_sha256": "69bc93fd34f9fc57aca03400a42577dc2c5bec110568b088349c80de338f47da",
+      "bytes": 19681,
+      "evidence_id": "546adc3af9413031228928c0621829791f843d7e93450c9eec2c5e2cec18187e",
+      "kind": "source_definition",
+      "media_type": "text/plain; charset=utf-8",
+      "references": [
+        {
+          "event_definition_key": "trait_specific.4001",
+          "logical_path": "common/modifiers/00_event_modifiers.txt",
+          "origin": "ck3_game",
+          "role": "source_definition"
+        }
+      ],
+      "sha256": "546adc3af9413031228928c0621829791f843d7e93450c9eec2c5e2cec18187e"
+    },
+    {
+      "blob_bytes": 2204,
+      "blob_path": "blobs/5566a89a7d93bfb80dcf5a2f065be0f058be13e0b84470d1182b82d8d6384a44.gz",
+      "blob_sha256": "9a4e02a9b1ebec9fb2fa71a0d7f94e02c5f3ac675c073842ea24f751105654b7",
+      "bytes": 25903,
+      "evidence_id": "5566a89a7d93bfb80dcf5a2f065be0f058be13e0b84470d1182b82d8d6384a44",
+      "kind": "source_definition",
+      "media_type": "text/plain; charset=utf-8",
+      "references": [
+        {
+          "event_definition_key": "ep3_landless_admin.1000",
+          "logical_path": "common/scripted_triggers/00_available_for_events_triggers.txt",
+          "origin": "ck3_game",
+          "role": "source_definition"
+        },
+        {
+          "event_definition_key": "trait_specific.4001",
+          "logical_path": "common/scripted_triggers/00_available_for_events_triggers.txt",
+          "origin": "ck3_game",
+          "role": "source_definition"
+        }
+      ],
+      "sha256": "5566a89a7d93bfb80dcf5a2f065be0f058be13e0b84470d1182b82d8d6384a44"
+    },
+    {
+      "blob_bytes": 275395,
+      "blob_path": "blobs/556c21fe0ed6eb2a4b8efb1bb54a16ed9e25161a323fa1291a00572ed12484f4.gz",
+      "blob_sha256": "7240c03a9eac91be47e0ca91323c4b1b9a75f421e2cb227295c9052da02b5784",
+      "bytes": 12333322,
+      "evidence_id": "556c21fe0ed6eb2a4b8efb1bb54a16ed9e25161a323fa1291a00572ed12484f4",
+      "kind": "observation_artifact",
+      "media_type": "application/json",
+      "references": [
+        {
+          "event_definition_key": "epidemic_events.1064",
+          "logical_path": "_runtime/p2r372-post-bound-continuation-live/driver-state-park-11-snapshot.json",
+          "origin": "runtime",
+          "role": "driver_state_artifact"
+        }
+      ],
+      "sha256": "556c21fe0ed6eb2a4b8efb1bb54a16ed9e25161a323fa1291a00572ed12484f4"
+    },
+    {
+      "blob_bytes": 1717,
+      "blob_path": "blobs/573992bd13e2373db3a827698b770d703263ec678ecdee98595c0d48c6671789.gz",
+      "blob_sha256": "d6c8b944a72a51c5326c38a531e609eda2a3929326f6fb80215da51d68726849",
+      "bytes": 7041,
+      "evidence_id": "573992bd13e2373db3a827698b770d703263ec678ecdee98595c0d48c6671789",
+      "kind": "observation_artifact",
+      "media_type": "application/json",
+      "references": [
+        {
+          "event_definition_key": "tgp_dynastic_cycle.0081",
+          "logical_path": "_runtime/p2r375-post-publisher-fix-live/r375-live-015-tgp-dynastic-cycle-0081-green.json",
+          "origin": "runtime",
+          "role": "artifact"
+        }
+      ],
+      "sha256": "573992bd13e2373db3a827698b770d703263ec678ecdee98595c0d48c6671789"
+    },
+    {
+      "blob_bytes": 33495,
+      "blob_path": "blobs/5ad7971bdcc91e97682179242d73445155075c3324261be169dbc0ba09934e4c.gz",
+      "blob_sha256": "92978c5419e13e5a4f7c20b284e1d9806ee0c35f4d9f3480fe63b86ad921ad9a",
+      "bytes": 495030,
+      "evidence_id": "5ad7971bdcc91e97682179242d73445155075c3324261be169dbc0ba09934e4c",
+      "kind": "observation_artifact",
+      "media_type": "application/json",
+      "references": [
+        {
+          "event_definition_key": "epidemic_events.0110",
+          "logical_path": "_runtime/p2r334endgamesource/report.json",
+          "origin": "runtime",
+          "role": "artifact"
+        }
+      ],
+      "sha256": "5ad7971bdcc91e97682179242d73445155075c3324261be169dbc0ba09934e4c"
+    },
+    {
+      "blob_bytes": 21548,
+      "blob_path": "blobs/5b59252ef885bb605529b1ae76964a03ba447255db77951cdbf2cb2ae267bdcd.gz",
+      "blob_sha256": "af046e67e4b68b714185efbacbe692dd8d17365d22549370619a96e7a9e3f738",
+      "bytes": 153143,
+      "evidence_id": "5b59252ef885bb605529b1ae76964a03ba447255db77951cdbf2cb2ae267bdcd",
+      "kind": "source_definition",
+      "media_type": "text/plain; charset=utf-8",
+      "references": [
+        {
+          "event_definition_key": "ep3_emperor_yearly.2170",
+          "logical_path": "events/dlc/ep3/ep3_emperor_yearly_2.txt",
+          "origin": "ck3_game",
+          "role": "source_definition"
+        },
+        {
+          "event_definition_key": "ep3_emperor_yearly.2211",
+          "logical_path": "events/dlc/ep3/ep3_emperor_yearly_2.txt",
+          "origin": "ck3_game",
+          "role": "source_definition"
+        }
+      ],
+      "sha256": "5b59252ef885bb605529b1ae76964a03ba447255db77951cdbf2cb2ae267bdcd"
+    },
+    {
+      "blob_bytes": 360,
+      "blob_path": "blobs/60c00a7986b1767e4d33a628d604238ea597a66e4e41e65df1a2955f3af157d7.gz",
+      "blob_sha256": "b29beca20de2b322250e2408d7039c3ecf2d21ab60677b78bd4fd34f5ac2f259",
+      "bytes": 746,
+      "evidence_id": "60c00a7986b1767e4d33a628d604238ea597a66e4e41e65df1a2955f3af157d7",
+      "kind": "observation_artifact",
+      "media_type": "application/json",
+      "references": [
+        {
+          "event_definition_key": "great_holy_war.0011",
+          "logical_path": "_runtime/p2r372-post-bound-continuation-live/hot-recovery-park-6.json",
+          "origin": "runtime",
+          "role": "park_artifact"
+        }
+      ],
+      "sha256": "60c00a7986b1767e4d33a628d604238ea597a66e4e41e65df1a2955f3af157d7"
+    },
+    {
+      "blob_bytes": 10377,
+      "blob_path": "blobs/6148f1c0f0aa1eea6fc68bb9908c6b59eac3a50c23183405cdb1bfb4c338bea8.gz",
+      "blob_sha256": "2e64a3a6fdb15686b43957642bd7306ab174b3b14c54783e9646b5c14013884d",
+      "bytes": 65834,
+      "evidence_id": "6148f1c0f0aa1eea6fc68bb9908c6b59eac3a50c23183405cdb1bfb4c338bea8",
+      "kind": "source_definition",
+      "media_type": "text/plain; charset=utf-8",
+      "references": [
+        {
+          "event_definition_key": "trait_specific.4001",
+          "logical_path": "common/scripted_effects/00_secret_effects.txt",
+          "origin": "ck3_game",
+          "role": "source_definition"
+        }
+      ],
+      "sha256": "6148f1c0f0aa1eea6fc68bb9908c6b59eac3a50c23183405cdb1bfb4c338bea8"
+    },
+    {
+      "blob_bytes": 4515,
+      "blob_path": "blobs/63feb33c8c5bf825e3d186e841d07235c98d6aed27c47375e495ea832255c52b.gz",
+      "blob_sha256": "7c0dc3d374b10132e187f400c16e02d99828cdcd61f67b138c88fef20593da30",
+      "bytes": 24136,
+      "evidence_id": "63feb33c8c5bf825e3d186e841d07235c98d6aed27c47375e495ea832255c52b",
+      "kind": "source_definition",
+      "media_type": "text/plain; charset=utf-8",
+      "references": [
+        {
+          "event_definition_key": "epidemic_events.1064",
+          "logical_path": "common/modifiers/06_ce1_modifiers.txt",
+          "origin": "ck3_game",
+          "role": "source_definition"
+        }
+      ],
+      "sha256": "63feb33c8c5bf825e3d186e841d07235c98d6aed27c47375e495ea832255c52b"
+    },
+    {
+      "blob_bytes": 1009,
+      "blob_path": "blobs/644f0d24a17f21ab1686e05a1753244a5bfbbc4686631f16914803fbdcf7c5cf.gz",
+      "blob_sha256": "cf15a0172fd51acbeeab7c7ecf65265325a16d23b8c22ad72db09ac190e0fc64",
+      "bytes": 2787,
+      "evidence_id": "644f0d24a17f21ab1686e05a1753244a5bfbbc4686631f16914803fbdcf7c5cf",
+      "kind": "source_definition",
+      "media_type": "text/plain; charset=utf-8",
+      "references": [
+        {
+          "event_definition_key": "death_management.1007",
+          "logical_path": "common/character_memory_types/_character_memories.info",
+          "origin": "ck3_game",
+          "role": "source_definition"
+        }
+      ],
+      "sha256": "644f0d24a17f21ab1686e05a1753244a5bfbbc4686631f16914803fbdcf7c5cf"
+    },
+    {
+      "blob_bytes": 529623,
+      "blob_path": "blobs/65d685d64ec4016e952a8f439a40f0406a9afbff459340ca71ad8564b90063dd.gz",
+      "blob_sha256": "ba4c9e74f8568d19d2412e3939ac5144f2ac0bb1b44ee54e7245bcceed00d432",
+      "bytes": 13839003,
+      "evidence_id": "65d685d64ec4016e952a8f439a40f0406a9afbff459340ca71ad8564b90063dd",
+      "kind": "observation_artifact",
+      "media_type": "application/json",
+      "references": [
+        {
+          "event_definition_key": "tribute_mission.1005",
+          "logical_path": "_runtime/p2r374-active-boundary-continuation-live/tribute-mission-1005-rejected-eunuch-red-report.json",
+          "origin": "runtime",
+          "role": "artifact"
+        }
+      ],
+      "sha256": "65d685d64ec4016e952a8f439a40f0406a9afbff459340ca71ad8564b90063dd"
+    },
+    {
+      "blob_bytes": 39755,
+      "blob_path": "blobs/66538a8fe8c894a52d8ec89b2fc4a45b85b8d1b9464802263e45d582ce1ca42b.gz",
+      "blob_sha256": "f0c6460ac8b7d6a51e8796ef20d9d58294d6b5b8dce9fd9d4e1199744c18b33d",
+      "bytes": 431822,
+      "evidence_id": "66538a8fe8c894a52d8ec89b2fc4a45b85b8d1b9464802263e45d582ce1ca42b",
+      "kind": "source_definition",
+      "media_type": "text/plain; charset=utf-8",
+      "references": [
+        {
+          "event_definition_key": "stress_threshold.1721",
+          "logical_path": "events/stress_events/stress_threshold_events.txt",
+          "origin": "ck3_game",
+          "role": "source_definition"
+        }
+      ],
+      "sha256": "66538a8fe8c894a52d8ec89b2fc4a45b85b8d1b9464802263e45d582ce1ca42b"
+    },
+    {
+      "blob_bytes": 3034,
+      "blob_path": "blobs/6ad38c15cae1cd3eac713edbc1566c7d42d8ce3b94291139f976c439020f8210.gz",
+      "blob_sha256": "6b2f613f71208df54988adcb14dd7357fae481c3a7f06325f0e477cf6ac91bc5",
+      "bytes": 10313,
+      "evidence_id": "6ad38c15cae1cd3eac713edbc1566c7d42d8ce3b94291139f976c439020f8210",
+      "kind": "source_definition",
+      "media_type": "application/yaml; charset=utf-8",
+      "references": [
+        {
+          "event_definition_key": "tgp_china_ministry.0100",
+          "logical_path": "localization/simp_chinese/dlc/tgp/tgp_ministry_events_l_simp_chinese.yml",
+          "origin": "ck3_game",
+          "role": "source_definition"
+        }
+      ],
+      "sha256": "6ad38c15cae1cd3eac713edbc1566c7d42d8ce3b94291139f976c439020f8210"
+    },
+    {
+      "blob_bytes": 1564,
+      "blob_path": "blobs/6c1407af00d2e767fa201da2411619d5724c86951bb5ceff006dab50abc6c779.gz",
+      "blob_sha256": "18e9e8d731246ab7dd348245c448173869aec16138bbca0eeda891e85ed549d9",
+      "bytes": 6039,
+      "evidence_id": "6c1407af00d2e767fa201da2411619d5724c86951bb5ceff006dab50abc6c779",
+      "kind": "observation_artifact",
+      "media_type": "application/json",
+      "references": [
+        {
+          "event_definition_key": "tgp_china_ministry.0100",
+          "logical_path": "_runtime/p2r375-post-publisher-fix-live/r375-live-014-tgp-china-ministry-0100-green.json",
+          "origin": "runtime",
+          "role": "artifact"
+        }
+      ],
+      "sha256": "6c1407af00d2e767fa201da2411619d5724c86951bb5ceff006dab50abc6c779"
+    },
+    {
+      "blob_bytes": 7061,
+      "blob_path": "blobs/6c48afc2d30213a878b03f5d3ff0ad11a32188e241b3293d947adb2120bb5836.gz",
+      "blob_sha256": "ea552757507d5f90947bd3ba4a65071c33706525569f7dc6b2d719263d9fa3fe",
+      "bytes": 20150,
+      "evidence_id": "6c48afc2d30213a878b03f5d3ff0ad11a32188e241b3293d947adb2120bb5836",
+      "kind": "source_definition",
+      "media_type": "application/yaml; charset=utf-8",
+      "references": [
+        {
+          "event_definition_key": "tgp_dynastic_cycle.0081",
+          "logical_path": "localization/simp_chinese/dlc/tgp/dlc_tgp_situation_decision_events_l_simp_chinese.yml",
+          "origin": "ck3_game",
+          "role": "source_definition"
+        }
+      ],
+      "sha256": "6c48afc2d30213a878b03f5d3ff0ad11a32188e241b3293d947adb2120bb5836"
+    },
+    {
+      "blob_bytes": 2360,
+      "blob_path": "blobs/6f0f849c88ec48d78803b27b6bde94c334fdd94f61024aa1baa48ec88e2f4508.gz",
+      "blob_sha256": "9048b6c03b1982a6ced6bef55e60396c665216a6aafd331eb2232b5b2be78460",
+      "bytes": 8921,
+      "evidence_id": "6f0f849c88ec48d78803b27b6bde94c334fdd94f61024aa1baa48ec88e2f4508",
+      "kind": "observation_artifact",
+      "media_type": "application/json",
+      "references": [
+        {
+          "event_definition_key": "stress_threshold.1721",
+          "logical_path": "_runtime/p2r375-post-publisher-fix-live/r375-stress-threshold-1721-red-freeze.json",
+          "origin": "runtime",
+          "role": "artifact"
+        }
+      ],
+      "sha256": "6f0f849c88ec48d78803b27b6bde94c334fdd94f61024aa1baa48ec88e2f4508"
+    },
+    {
+      "blob_bytes": 6840,
+      "blob_path": "blobs/748f2af8cbdf97e01182fefadf0b975e62aece57d09ab1515c02e112db56faea.gz",
+      "blob_sha256": "11be0fe5cd4234415150b0ea8e5ab32d6164340166f4c63a2737884af2f466b6",
+      "bytes": 70048,
+      "evidence_id": "748f2af8cbdf97e01182fefadf0b975e62aece57d09ab1515c02e112db56faea",
+      "kind": "source_definition",
+      "media_type": "text/plain; charset=utf-8",
+      "references": [
+        {
+          "event_definition_key": "tgp_dynastic_cycle.0081",
+          "logical_path": "common/situation/situations/tgp_dynastic_cycle.txt",
+          "origin": "ck3_game",
+          "role": "source_definition"
+        },
+        {
+          "event_definition_key": "tgp_dynastic_cycle.0091",
+          "logical_path": "common/situation/situations/tgp_dynastic_cycle.txt",
+          "origin": "ck3_game",
+          "role": "source_definition"
+        }
+      ],
+      "sha256": "748f2af8cbdf97e01182fefadf0b975e62aece57d09ab1515c02e112db56faea"
+    },
+    {
+      "blob_bytes": 123957,
+      "blob_path": "blobs/750eeeb9ac789f075cca2c9f5ac2e2619d3f6dabe9e12744fe26d25e3c1292ed.gz",
+      "blob_sha256": "1b0280343e69c40f4f330111c3ad16672a3e64396fa45c9d8c04a44ab8a5bace",
+      "bytes": 6308036,
+      "evidence_id": "750eeeb9ac789f075cca2c9f5ac2e2619d3f6dabe9e12744fe26d25e3c1292ed",
+      "kind": "observation_artifact",
+      "media_type": "application/json",
+      "references": [
+        {
+          "event_definition_key": "trait_specific.4001",
+          "logical_path": "_runtime/p2r374-active-boundary-continuation-live/driver-state-park-6-snapshot.json",
+          "origin": "runtime",
+          "role": "driver_state_artifact"
+        }
+      ],
+      "sha256": "750eeeb9ac789f075cca2c9f5ac2e2619d3f6dabe9e12744fe26d25e3c1292ed"
+    },
+    {
+      "blob_bytes": 132110,
+      "blob_path": "blobs/78c84c846ed9d2f05af153ec9302c4c3a85c645fd0b33316cd212b10e342c494.gz",
+      "blob_sha256": "8d3346490391913d30617db825a0b9454e45e4bb9b51372b3364049f5351b6cd",
+      "bytes": 6549607,
+      "evidence_id": "78c84c846ed9d2f05af153ec9302c4c3a85c645fd0b33316cd212b10e342c494",
+      "kind": "observation_artifact",
+      "media_type": "application/json",
+      "references": [
+        {
+          "event_definition_key": "faction_demand.1101",
+          "logical_path": "_runtime/p2r374-active-boundary-continuation-live/driver-state-park-9-snapshot.json",
+          "origin": "runtime",
+          "role": "driver_state_artifact"
+        }
+      ],
+      "sha256": "78c84c846ed9d2f05af153ec9302c4c3a85c645fd0b33316cd212b10e342c494"
+    },
+    {
+      "blob_bytes": 976412,
+      "blob_path": "blobs/7b1db1cb63cd309288faa7774e122d74fe16e11cf3b0d6e51eb112949c21d4e9.gz",
+      "blob_sha256": "d4ee58b20b7fbd741650ee73a0c987040e87ed1302b0678019b904feead1f1ec",
+      "bytes": 25590642,
+      "evidence_id": "7b1db1cb63cd309288faa7774e122d74fe16e11cf3b0d6e51eb112949c21d4e9",
+      "kind": "observation_artifact",
+      "media_type": "application/json",
+      "references": [
+        {
+          "event_definition_key": "natural_disaster.7031",
+          "logical_path": "_runtime/p2r374-active-boundary-continuation-live/natural-disaster-7031-red-report.json",
+          "origin": "runtime",
+          "role": "artifact"
+        }
+      ],
+      "sha256": "7b1db1cb63cd309288faa7774e122d74fe16e11cf3b0d6e51eb112949c21d4e9"
+    },
+    {
+      "blob_bytes": 16773,
+      "blob_path": "blobs/7b426465fced71a6d6aa96b34c8924b91990d0be144fe4bfaa57681bb7fa6ea5.gz",
+      "blob_sha256": "a504fcdb172ff648160362abc7169016a7e840a3cf48c8f159efc0697b74cdbe",
+      "bytes": 122109,
+      "evidence_id": "7b426465fced71a6d6aa96b34c8924b91990d0be144fe4bfaa57681bb7fa6ea5",
+      "kind": "source_definition",
+      "media_type": "text/plain; charset=utf-8",
+      "references": [
+        {
+          "event_definition_key": "vassal_interaction.0040",
+          "logical_path": "common/scripted_effects/00_interaction_effects.txt",
+          "origin": "ck3_game",
+          "role": "source_definition"
+        }
+      ],
+      "sha256": "7b426465fced71a6d6aa96b34c8924b91990d0be144fe4bfaa57681bb7fa6ea5"
+    },
+    {
+      "blob_bytes": 598,
+      "blob_path": "blobs/7fa3f8ba729baa8d4ce716f0db88a19d8ce4d86c9be441a6324759780e5f8d95.gz",
+      "blob_sha256": "f018302f97d59fb3b00a9c7fb984fb5b89e5096b9efe2b8c45cdf82c2a139a17",
+      "bytes": 2083,
+      "evidence_id": "7fa3f8ba729baa8d4ce716f0db88a19d8ce4d86c9be441a6324759780e5f8d95",
+      "kind": "source_definition",
+      "media_type": "text/plain; charset=utf-8",
+      "references": [
+        {
+          "event_definition_key": "natural_disaster.6901",
+          "logical_path": "common/on_action/dlc/tgp/tgp_natural_disaster_on_actions.txt",
+          "origin": "ck3_game",
+          "role": "source_definition"
+        },
+        {
+          "event_definition_key": "natural_disaster.7021",
+          "logical_path": "common/on_action/dlc/tgp/tgp_natural_disaster_on_actions.txt",
+          "origin": "ck3_game",
+          "role": "source_definition"
+        },
+        {
+          "event_definition_key": "natural_disaster.7031",
+          "logical_path": "common/on_action/dlc/tgp/tgp_natural_disaster_on_actions.txt",
+          "origin": "ck3_game",
+          "role": "source_definition"
+        },
+        {
+          "event_definition_key": "natural_disaster.8001",
+          "logical_path": "common/on_action/dlc/tgp/tgp_natural_disaster_on_actions.txt",
+          "origin": "ck3_game",
+          "role": "source_definition"
+        }
+      ],
+      "sha256": "7fa3f8ba729baa8d4ce716f0db88a19d8ce4d86c9be441a6324759780e5f8d95"
+    },
+    {
+      "blob_bytes": 5089,
+      "blob_path": "blobs/8294c1d72ecc909428abfba27d6f10b127d796d2bee350d1bb95024f36d60c99.gz",
+      "blob_sha256": "783daeec0eda435923f9c7f82b310bdbc32a46e6d58c67348d47d39195d98b3b",
+      "bytes": 27237,
+      "evidence_id": "8294c1d72ecc909428abfba27d6f10b127d796d2bee350d1bb95024f36d60c99",
+      "kind": "source_definition",
+      "media_type": "text/plain; charset=utf-8",
+      "references": [
+        {
+          "event_definition_key": "tgp_china_ministry.0100",
+          "logical_path": "common/scripted_triggers/10_tgp_triggers.txt",
+          "origin": "ck3_game",
+          "role": "source_definition"
+        }
+      ],
+      "sha256": "8294c1d72ecc909428abfba27d6f10b127d796d2bee350d1bb95024f36d60c99"
+    },
+    {
+      "blob_bytes": 8886,
+      "blob_path": "blobs/86574fb7ce246ef6d1b2741b211785d282ad39659e8771e0e5c714acdc001782.gz",
+      "blob_sha256": "fe8595a06de0b0cd1a9fdbbdd83db3ecd219ba459c805cfff6127135cfe4a950",
+      "bytes": 77345,
+      "evidence_id": "86574fb7ce246ef6d1b2741b211785d282ad39659e8771e0e5c714acdc001782",
+      "kind": "source_definition",
+      "media_type": "text/plain; charset=utf-8",
+      "references": [
+        {
+          "event_definition_key": "tgp_dynastic_cycle.0081",
+          "logical_path": "common/scripted_effects/10_dlc_tgp_dynastic_cycle_scripted_effects.txt",
+          "origin": "ck3_game",
+          "role": "source_definition"
+        }
+      ],
+      "sha256": "86574fb7ce246ef6d1b2741b211785d282ad39659e8771e0e5c714acdc001782"
+    },
+    {
+      "blob_bytes": 1961,
+      "blob_path": "blobs/869bfe72b6ff2abef55ff3f4191f13d3a9f57e696f02b011367527256ad57ef3.gz",
+      "blob_sha256": "ca1547d5b915b40e4c103b7d1f6e14b9aaab30fd3c964ca17a2d9bbf0bf72c77",
+      "bytes": 7648,
+      "evidence_id": "869bfe72b6ff2abef55ff3f4191f13d3a9f57e696f02b011367527256ad57ef3",
+      "kind": "observation_artifact",
+      "media_type": "application/json",
+      "references": [
+        {
+          "event_definition_key": "stress_threshold.1721",
+          "logical_path": "_runtime/p2r375-post-publisher-fix-live/r375-live-017-stress-threshold-1721-green.json",
+          "origin": "runtime",
+          "role": "artifact"
+        }
+      ],
+      "sha256": "869bfe72b6ff2abef55ff3f4191f13d3a9f57e696f02b011367527256ad57ef3"
+    },
+    {
+      "blob_bytes": 358,
+      "blob_path": "blobs/86f39d782d159fb58278726255e0862254c221e54882d2b0c8a69baca964fe57.gz",
+      "blob_sha256": "47aaf6b86d73548b2ba1546c765ae1d0b0d4f17f738dd326d8467f6116dab10e",
+      "bytes": 748,
+      "evidence_id": "86f39d782d159fb58278726255e0862254c221e54882d2b0c8a69baca964fe57",
+      "kind": "observation_artifact",
+      "media_type": "application/json",
+      "references": [
+        {
+          "event_definition_key": "natural_disaster.7031",
+          "logical_path": "_runtime/p2r374-active-boundary-continuation-live/hot-recovery-park-1.json",
+          "origin": "runtime",
+          "role": "park_artifact"
+        }
+      ],
+      "sha256": "86f39d782d159fb58278726255e0862254c221e54882d2b0c8a69baca964fe57"
+    },
+    {
+      "blob_bytes": 127331,
+      "blob_path": "blobs/8702894c65aaf57e0d943c7baa2fc4d613e4d8c5bddfc2e4c70db165c774a5c6.gz",
+      "blob_sha256": "c3dd4146357b433a70cbe4e26b47af6f7389b47d39dc0fb6d98cf55521d8b0cc",
+      "bytes": 6402457,
+      "evidence_id": "8702894c65aaf57e0d943c7baa2fc4d613e4d8c5bddfc2e4c70db165c774a5c6",
+      "kind": "observation_artifact",
+      "media_type": "application/json",
+      "references": [
+        {
+          "event_definition_key": "death_management.1007",
+          "logical_path": "_runtime/p2r374-active-boundary-continuation-live/driver-state-park-7-snapshot.json",
+          "origin": "runtime",
+          "role": "driver_state_artifact"
+        }
+      ],
+      "sha256": "8702894c65aaf57e0d943c7baa2fc4d613e4d8c5bddfc2e4c70db165c774a5c6"
+    },
+    {
+      "blob_bytes": 5089,
+      "blob_path": "blobs/87358436d60431bc80da0376dd1bb2c47696efcde813148c69883768439980ee.gz",
+      "blob_sha256": "80fed441ea18066684f749c90d84cbcd824c6f8e090b6e50a1b64a29712b166a",
+      "bytes": 34255,
+      "evidence_id": "87358436d60431bc80da0376dd1bb2c47696efcde813148c69883768439980ee",
+      "kind": "source_definition",
+      "media_type": "text/plain; charset=utf-8",
+      "references": [
+        {
+          "event_definition_key": "tgp_china_ministry.0100",
+          "logical_path": "events/dlc/tgp/tgp_china_ministry_events.txt",
+          "origin": "ck3_game",
+          "role": "source_definition"
+        }
+      ],
+      "sha256": "87358436d60431bc80da0376dd1bb2c47696efcde813148c69883768439980ee"
+    },
+    {
+      "blob_bytes": 510,
+      "blob_path": "blobs/879a7e089411a5a36f84cc7e19f93b033622a92161584a248330e809d23a2abd.gz",
+      "blob_sha256": "55a1998f270abe6c751a10af0a81248b8c4cc08aa5dea2fa98fcb77793c87e1d",
+      "bytes": 1563,
+      "evidence_id": "879a7e089411a5a36f84cc7e19f93b033622a92161584a248330e809d23a2abd",
+      "kind": "source_definition",
+      "media_type": "text/plain; charset=utf-8",
+      "references": [
+        {
+          "event_definition_key": "trait_specific.4001",
+          "logical_path": "common/scripted_triggers/00_crime_triggers.txt",
+          "origin": "ck3_game",
+          "role": "source_definition"
+        }
+      ],
+      "sha256": "879a7e089411a5a36f84cc7e19f93b033622a92161584a248330e809d23a2abd"
+    },
+    {
+      "blob_bytes": 357,
+      "blob_path": "blobs/89b4f2f8f6add2243c0cad803766eb6b82491d0ef8e3c3bccc6b55e5bc41b561.gz",
+      "blob_sha256": "13cc18dc390cc189a4e643e3526413dc59ee890b6dace90c3e6059dba7aa5c55",
+      "bytes": 747,
+      "evidence_id": "89b4f2f8f6add2243c0cad803766eb6b82491d0ef8e3c3bccc6b55e5bc41b561",
+      "kind": "observation_artifact",
+      "media_type": "application/json",
+      "references": [
+        {
+          "event_definition_key": "faction_demand.2001",
+          "logical_path": "_runtime/p2r374-active-boundary-continuation-live/hot-recovery-park-8.json",
+          "origin": "runtime",
+          "role": "park_artifact"
+        }
+      ],
+      "sha256": "89b4f2f8f6add2243c0cad803766eb6b82491d0ef8e3c3bccc6b55e5bc41b561"
+    },
+    {
+      "blob_bytes": 92796,
+      "blob_path": "blobs/8a63bbb6a611508b782335b4384a6f95ec189a0d7353e5c3e21ec22f8940011d.gz",
+      "blob_sha256": "d247cc398a2ce75372cf158b254a0996f8187069dfe4bfac904a8c1c736bb5c6",
+      "bytes": 5235883,
+      "evidence_id": "8a63bbb6a611508b782335b4384a6f95ec189a0d7353e5c3e21ec22f8940011d",
+      "kind": "observation_artifact",
+      "media_type": "application/json",
+      "references": [
+        {
+          "event_definition_key": "natural_disaster.7031",
+          "logical_path": "_runtime/p2r374-active-boundary-continuation-live/driver-state-park-1-snapshot.json",
+          "origin": "runtime",
+          "role": "driver_state_artifact"
+        }
+      ],
+      "sha256": "8a63bbb6a611508b782335b4384a6f95ec189a0d7353e5c3e21ec22f8940011d"
+    },
+    {
+      "blob_bytes": 2727,
+      "blob_path": "blobs/8ecd76790d3908ee1e93fb46a25a1123a935f18a91e91352b1cae7173db23d5d.gz",
+      "blob_sha256": "ee90f33be1e11161b8c31e08b2546ef7b7948fe9b0b99807224627d63b078dc7",
+      "bytes": 11035,
+      "evidence_id": "8ecd76790d3908ee1e93fb46a25a1123a935f18a91e91352b1cae7173db23d5d",
+      "kind": "source_definition",
+      "media_type": "text/plain; charset=utf-8",
+      "references": [
+        {
+          "event_definition_key": "tgp_dynastic_cycle.0081",
+          "logical_path": "common/scripted_triggers/10_tgp_dynastic_cycle_triggers.txt",
+          "origin": "ck3_game",
+          "role": "source_definition"
+        }
+      ],
+      "sha256": "8ecd76790d3908ee1e93fb46a25a1123a935f18a91e91352b1cae7173db23d5d"
+    },
+    {
+      "blob_bytes": 20017,
+      "blob_path": "blobs/920fbe1bc3b5b3a46a009ecdd0c6c48aa2b5b5c676781530bbc289dc70fa928d.gz",
+      "blob_sha256": "b598734e2aa7a981088a9d83c783914db0f56ed0fc4f415891734244d7d70c12",
+      "bytes": 51989,
+      "evidence_id": "920fbe1bc3b5b3a46a009ecdd0c6c48aa2b5b5c676781530bbc289dc70fa928d",
+      "kind": "source_definition",
+      "media_type": "application/yaml; charset=utf-8",
+      "references": [
+        {
+          "event_definition_key": "ep3_emperor_yearly.2211",
+          "logical_path": "localization/simp_chinese/dlc/ep3/ep3_emperor_yearly_2_l_simp_chinese.yml",
+          "origin": "ck3_game",
+          "role": "source_definition"
+        }
+      ],
+      "sha256": "920fbe1bc3b5b3a46a009ecdd0c6c48aa2b5b5c676781530bbc289dc70fa928d"
+    },
+    {
+      "blob_bytes": 458,
+      "blob_path": "blobs/921f06a614ca254eead3f57b4eb57f569f0b16b90369575a020461ce1877c397.gz",
+      "blob_sha256": "f9f23e205be0a47a839a86bd6e5104ce84b21a32c946d05004116b9b44e0276e",
+      "bytes": 1990,
+      "evidence_id": "921f06a614ca254eead3f57b4eb57f569f0b16b90369575a020461ce1877c397",
+      "kind": "source_definition",
+      "media_type": "text/plain; charset=utf-8",
+      "references": [
+        {
+          "event_definition_key": "death_management.1007",
+          "logical_path": "common/scripted_effects/00_death_management_effects.txt",
+          "origin": "ck3_game",
+          "role": "source_definition"
+        }
+      ],
+      "sha256": "921f06a614ca254eead3f57b4eb57f569f0b16b90369575a020461ce1877c397"
+    },
+    {
+      "blob_bytes": 8206,
+      "blob_path": "blobs/9268a54f0e425d409d9d0f20d884e0a3d0a89df85a0b6644d56133c0c4cb0096.gz",
+      "blob_sha256": "82b9ac1ebb866fe2bf6e51cfdb7a0c56c5d2f93e13f05d2e55ec5fe1f82cde22",
+      "bytes": 47113,
+      "evidence_id": "9268a54f0e425d409d9d0f20d884e0a3d0a89df85a0b6644d56133c0c4cb0096",
+      "kind": "source_definition",
+      "media_type": "text/plain; charset=utf-8",
+      "references": [
+        {
+          "event_definition_key": "trait_specific.4001",
+          "logical_path": "common/script_values/00_basic_values.txt",
+          "origin": "ck3_game",
+          "role": "source_definition"
+        }
+      ],
+      "sha256": "9268a54f0e425d409d9d0f20d884e0a3d0a89df85a0b6644d56133c0c4cb0096"
+    },
+    {
+      "blob_bytes": 7480,
+      "blob_path": "blobs/9595a5c28c14765142e83229efc215fe06d457c447dc733537677629ad97df68.gz",
+      "blob_sha256": "3e977c6116cdff474528b47e9e66632dc7f2dfe270fcf64feb076b460ca4fa48",
+      "bytes": 57246,
+      "evidence_id": "9595a5c28c14765142e83229efc215fe06d457c447dc733537677629ad97df68",
+      "kind": "source_definition",
+      "media_type": "text/plain; charset=utf-8",
+      "references": [
+        {
+          "event_definition_key": "natural_disaster.6901",
+          "logical_path": "events/situation_events/tgp_natural_disaster_events.txt",
+          "origin": "ck3_game",
+          "role": "source_definition"
+        },
+        {
+          "event_definition_key": "natural_disaster.7021",
+          "logical_path": "events/situation_events/tgp_natural_disaster_events.txt",
+          "origin": "ck3_game",
+          "role": "source_definition"
+        },
+        {
+          "event_definition_key": "natural_disaster.7031",
+          "logical_path": "events/situation_events/tgp_natural_disaster_events.txt",
+          "origin": "ck3_game",
+          "role": "source_definition"
+        },
+        {
+          "event_definition_key": "natural_disaster.8001",
+          "logical_path": "events/situation_events/tgp_natural_disaster_events.txt",
+          "origin": "ck3_game",
+          "role": "source_definition"
+        }
+      ],
+      "sha256": "9595a5c28c14765142e83229efc215fe06d457c447dc733537677629ad97df68"
+    },
+    {
+      "blob_bytes": 3208,
+      "blob_path": "blobs/96b42fa1a542836171a2a608b7155a8a80d30b0d8f8d9742ebe8aff231b85e16.gz",
+      "blob_sha256": "c099301c570412ae229e185ea629f11e0c048eedc9ce3dc5ca5a6e06c8870512",
+      "bytes": 10141,
+      "evidence_id": "96b42fa1a542836171a2a608b7155a8a80d30b0d8f8d9742ebe8aff231b85e16",
+      "kind": "source_definition",
+      "media_type": "text/plain; charset=utf-8",
+      "references": [
+        {
+          "event_definition_key": "epidemic_events.1064",
+          "logical_path": "common/on_action/ce1_on_actions.txt",
+          "origin": "ck3_game",
+          "role": "source_definition"
+        },
+        {
+          "event_definition_key": "epidemic_events.5009",
+          "logical_path": "common/on_action/ce1_on_actions.txt",
+          "origin": "ck3_game",
+          "role": "source_definition"
+        }
+      ],
+      "sha256": "96b42fa1a542836171a2a608b7155a8a80d30b0d8f8d9742ebe8aff231b85e16"
+    },
+    {
+      "blob_bytes": 277389,
+      "blob_path": "blobs/9779f9dc345e08f550312b4fb77c45b711bbc6db91b9591e027cb6601d322940.gz",
+      "blob_sha256": "347a2b4376380f89558c691dc35042bb2a585ec1c6ea7a984109e0eac414617e",
+      "bytes": 12395866,
+      "evidence_id": "9779f9dc345e08f550312b4fb77c45b711bbc6db91b9591e027cb6601d322940",
+      "kind": "observation_artifact",
+      "media_type": "application/json",
+      "references": [
+        {
+          "event_definition_key": "epidemic_events.1064",
+          "logical_path": "_runtime/p2r372-post-bound-continuation-live/driver-state-park-12-snapshot.json",
+          "origin": "runtime",
+          "role": "artifact"
+        },
+        {
+          "event_definition_key": "epidemic_events.5009",
+          "logical_path": "_runtime/p2r372-post-bound-continuation-live/driver-state-park-12-snapshot.json",
+          "origin": "runtime",
+          "role": "driver_state_artifact"
+        }
+      ],
+      "sha256": "9779f9dc345e08f550312b4fb77c45b711bbc6db91b9591e027cb6601d322940"
+    },
+    {
+      "blob_bytes": 2710,
+      "blob_path": "blobs/97c706c9ec1cf5b3a6520c27a6683b68eb94d89ef9dbad3d745c3ed4386ed247.gz",
+      "blob_sha256": "004ab30f25989a586959c8a6de45c978fdb828ccca82432f7897b68f7a00e69f",
+      "bytes": 27172,
+      "evidence_id": "97c706c9ec1cf5b3a6520c27a6683b68eb94d89ef9dbad3d745c3ed4386ed247",
+      "kind": "source_definition",
+      "media_type": "text/plain; charset=utf-8",
+      "references": [
+        {
+          "event_definition_key": "vassal_interaction.0040",
+          "logical_path": "events/interaction_events/vassal_interaction_events.txt",
+          "origin": "ck3_game",
+          "role": "source_definition"
+        }
+      ],
+      "sha256": "97c706c9ec1cf5b3a6520c27a6683b68eb94d89ef9dbad3d745c3ed4386ed247"
+    },
+    {
+      "blob_bytes": 249963,
+      "blob_path": "blobs/9a5fce5d0109e2b009826a15474bd469aa59ee6ea368a2fd00d40d1496ad02c3.gz",
+      "blob_sha256": "a29f140b8b6b5f4434cc117556fd3a61b65772074a302862f691c2b23f5a4c42",
+      "bytes": 11800870,
+      "evidence_id": "9a5fce5d0109e2b009826a15474bd469aa59ee6ea368a2fd00d40d1496ad02c3",
+      "kind": "observation_artifact",
+      "media_type": "application/json",
+      "references": [
+        {
+          "event_definition_key": "stress_threshold.1721",
+          "logical_path": "_runtime/p2r372-post-bound-continuation-live/driver-state-hot-retry-8-snapshot.json",
+          "origin": "runtime",
+          "role": "artifact"
+        }
+      ],
+      "sha256": "9a5fce5d0109e2b009826a15474bd469aa59ee6ea368a2fd00d40d1496ad02c3"
+    },
+    {
+      "blob_bytes": 1130258,
+      "blob_path": "blobs/9fdf93d053e001c73d9dc469dde37bc44c3da8f1872ac3e587c10241ea27fb51.gz",
+      "blob_sha256": "fa8b9b143531199e3a6bd198ed6d3cbfad12264a938b283e2f182b44e3e5b283",
+      "bytes": 30355423,
+      "evidence_id": "9fdf93d053e001c73d9dc469dde37bc44c3da8f1872ac3e587c10241ea27fb51",
+      "kind": "observation_artifact",
+      "media_type": "application/json",
+      "references": [
+        {
+          "event_definition_key": "trait_specific.4001",
+          "logical_path": "_runtime/p2r374-active-boundary-continuation-live/trait-specific-4001-red-report.json",
+          "origin": "runtime",
+          "role": "artifact"
+        }
+      ],
+      "sha256": "9fdf93d053e001c73d9dc469dde37bc44c3da8f1872ac3e587c10241ea27fb51"
+    },
+    {
+      "blob_bytes": 6692,
+      "blob_path": "blobs/a2addb9940d72f79e57bc266ea62a11cb3d0c5318e79d5f93cb8f5ee01b3943f.gz",
+      "blob_sha256": "93f27a1ed7bc058a878e03595e73b762a01c4efa0fbb264da2d3fec88b19cfbc",
+      "bytes": 19352,
+      "evidence_id": "a2addb9940d72f79e57bc266ea62a11cb3d0c5318e79d5f93cb8f5ee01b3943f",
+      "kind": "source_definition",
+      "media_type": "application/yaml; charset=utf-8",
+      "references": [
+        {
+          "event_definition_key": "tgp_movement_events.0160",
+          "logical_path": "localization/simp_chinese/dlc/tgp/tgp_movement_events_l_simp_chinese.yml",
+          "origin": "ck3_game",
+          "role": "source_definition"
+        }
+      ],
+      "sha256": "a2addb9940d72f79e57bc266ea62a11cb3d0c5318e79d5f93cb8f5ee01b3943f"
+    },
+    {
+      "blob_bytes": 360,
+      "blob_path": "blobs/a2e63cf1ebb67adb0987f9360b023e1f0f4659242ee048d51a8ca1219674dee6.gz",
+      "blob_sha256": "0a8580d6f58bdaf4f6a0bc5be4799d7b06292bf0fc243e0601e34dec0ddcf9df",
+      "bytes": 749,
+      "evidence_id": "a2e63cf1ebb67adb0987f9360b023e1f0f4659242ee048d51a8ca1219674dee6",
+      "kind": "observation_artifact",
+      "media_type": "application/json",
+      "references": [
+        {
+          "event_definition_key": "death_management.1007",
+          "logical_path": "_runtime/p2r374-active-boundary-continuation-live/hot-recovery-park-7.json",
+          "origin": "runtime",
+          "role": "park_artifact"
+        }
+      ],
+      "sha256": "a2e63cf1ebb67adb0987f9360b023e1f0f4659242ee048d51a8ca1219674dee6"
+    },
+    {
+      "blob_bytes": 5962,
+      "blob_path": "blobs/a4882239ab219efb2bb082c983403e6e24b8c9dd481e5643adfe3321acac43f7.gz",
+      "blob_sha256": "8edc4b7f52186e55bbe40433fb168a7449f6618f3f0dbbbf58b7028cb5c73cc3",
+      "bytes": 30533,
+      "evidence_id": "a4882239ab219efb2bb082c983403e6e24b8c9dd481e5643adfe3321acac43f7",
+      "kind": "source_definition",
+      "media_type": "text/plain; charset=utf-8",
+      "references": [
+        {
+          "event_definition_key": "trait_specific.4001",
+          "logical_path": "events/trait_specific_events/trait_specific_events.txt",
+          "origin": "ck3_game",
+          "role": "source_definition"
+        }
+      ],
+      "sha256": "a4882239ab219efb2bb082c983403e6e24b8c9dd481e5643adfe3321acac43f7"
+    },
+    {
+      "blob_bytes": 746,
+      "blob_path": "blobs/a4e3eda2f31cb08d29deae1a1cdbd89256973a81fc1a1d4df00d9cf5bbcb68fb.gz",
+      "blob_sha256": "451d0d6f582cdf607ca2a182d535803cd6951d6dd47e07efdbb7fee1fbc23534",
+      "bytes": 2895,
+      "evidence_id": "a4e3eda2f31cb08d29deae1a1cdbd89256973a81fc1a1d4df00d9cf5bbcb68fb",
+      "kind": "source_definition",
+      "media_type": "text/plain; charset=utf-8",
+      "references": [
+        {
+          "event_definition_key": "faction_demand.2001",
+          "logical_path": "common/on_action/faction_on_actions.txt",
+          "origin": "ck3_game",
+          "role": "source_definition"
+        }
+      ],
+      "sha256": "a4e3eda2f31cb08d29deae1a1cdbd89256973a81fc1a1d4df00d9cf5bbcb68fb"
+    },
+    {
+      "blob_bytes": 1170,
+      "blob_path": "blobs/a7aac7fdede0448309cc5b861e5b7fa60748650fe1d2d4daf0d3d3d9e1593f56.gz",
+      "blob_sha256": "9bd0ae33022ac5aeec5451145b22a79dda051c79eae1edb2ce676239bed866e7",
+      "bytes": 4522,
+      "evidence_id": "a7aac7fdede0448309cc5b861e5b7fa60748650fe1d2d4daf0d3d3d9e1593f56",
+      "kind": "source_definition",
+      "media_type": "text/plain; charset=utf-8",
+      "references": [
+        {
+          "event_definition_key": "trait_specific.4001",
+          "logical_path": "common/scripted_effects/00_witch_effects.txt",
+          "origin": "ck3_game",
+          "role": "source_definition"
+        }
+      ],
+      "sha256": "a7aac7fdede0448309cc5b861e5b7fa60748650fe1d2d4daf0d3d3d9e1593f56"
+    },
+    {
+      "blob_bytes": 12001,
+      "blob_path": "blobs/a936e09f448ef715580a918165eab89a9368ad2d3014e425c998cd9d4f0e8d7d.gz",
+      "blob_sha256": "6724c7fafa1e37844b3c995db04168344b7d5e5b767a17f8009b49c61876f460",
+      "bytes": 72475,
+      "evidence_id": "a936e09f448ef715580a918165eab89a9368ad2d3014e425c998cd9d4f0e8d7d",
+      "kind": "source_definition",
+      "media_type": "text/plain; charset=utf-8",
+      "references": [
+        {
+          "event_definition_key": "faction_demand.2001",
+          "logical_path": "common/scripted_effects/00_war_effects.txt",
+          "origin": "ck3_game",
+          "role": "source_definition"
+        }
+      ],
+      "sha256": "a936e09f448ef715580a918165eab89a9368ad2d3014e425c998cd9d4f0e8d7d"
+    },
+    {
+      "blob_bytes": 359,
+      "blob_path": "blobs/a94103b7788591ffd3379beb418e6ec7de675aa0fc4bb252ddb658086bed6a49.gz",
+      "blob_sha256": "613437c5bc9cc511dec95b562108230eddeb17b12f25d192291c0fa3b89f8a3e",
+      "bytes": 747,
+      "evidence_id": "a94103b7788591ffd3379beb418e6ec7de675aa0fc4bb252ddb658086bed6a49",
+      "kind": "observation_artifact",
+      "media_type": "application/json",
+      "references": [
+        {
+          "event_definition_key": "trait_specific.4001",
+          "logical_path": "_runtime/p2r374-active-boundary-continuation-live/hot-recovery-park-6.json",
+          "origin": "runtime",
+          "role": "park_artifact"
+        }
+      ],
+      "sha256": "a94103b7788591ffd3379beb418e6ec7de675aa0fc4bb252ddb658086bed6a49"
+    },
+    {
+      "blob_bytes": 6559,
+      "blob_path": "blobs/ab7f5179d120578badaa307605cc9f5fa2b3e6845a43f773954d230dd67be993.gz",
+      "blob_sha256": "27dfdf5f5804d44bdec0570bf0b489665f659697ecbeb5d9d3793c76f8f44bc1",
+      "bytes": 53142,
+      "evidence_id": "ab7f5179d120578badaa307605cc9f5fa2b3e6845a43f773954d230dd67be993",
+      "kind": "source_definition",
+      "media_type": "text/plain; charset=utf-8",
+      "references": [
+        {
+          "event_definition_key": "ep3_landless_admin.1000",
+          "logical_path": "events/dlc/ep3/ep3_landless_admin_events.txt",
+          "origin": "ck3_game",
+          "role": "source_definition"
+        }
+      ],
+      "sha256": "ab7f5179d120578badaa307605cc9f5fa2b3e6845a43f773954d230dd67be993"
+    },
+    {
+      "blob_bytes": 1150781,
+      "blob_path": "blobs/ac7ef0a37844a7f0b252917dab0922b77721f0cae6fb2a7416bc0f4420bcf9ca.gz",
+      "blob_sha256": "8b82d9418062d1b975d4c13421e177d246a1bc439953422d35b53a28162fb8b3",
+      "bytes": 31010661,
+      "evidence_id": "ac7ef0a37844a7f0b252917dab0922b77721f0cae6fb2a7416bc0f4420bcf9ca",
+      "kind": "observation_artifact",
+      "media_type": "application/json",
+      "references": [
+        {
+          "event_definition_key": "faction_demand.2001",
+          "logical_path": "_runtime/p2r374-active-boundary-continuation-live/faction-demand-2001-red-report.json",
+          "origin": "runtime",
+          "role": "artifact"
+        }
+      ],
+      "sha256": "ac7ef0a37844a7f0b252917dab0922b77721f0cae6fb2a7416bc0f4420bcf9ca"
+    },
+    {
+      "blob_bytes": 1816,
+      "blob_path": "blobs/ace7b285d613419b17f2ec52bc1ce81a2daaa8515b7cc159e0dc1e34ba4acc8b.gz",
+      "blob_sha256": "56722b365042d4b7d256a01cf42bf0e2201d9b2f75d3df8a2e66363661918f5e",
+      "bytes": 8847,
+      "evidence_id": "ace7b285d613419b17f2ec52bc1ce81a2daaa8515b7cc159e0dc1e34ba4acc8b",
+      "kind": "source_definition",
+      "media_type": "text/plain; charset=utf-8",
+      "references": [
+        {
+          "event_definition_key": "historical_char_creation_events.1",
+          "logical_path": "events/historical_character_events.txt",
+          "origin": "ck3_game",
+          "role": "source_definition"
+        }
+      ],
+      "sha256": "ace7b285d613419b17f2ec52bc1ce81a2daaa8515b7cc159e0dc1e34ba4acc8b"
+    },
+    {
+      "blob_bytes": 18377,
+      "blob_path": "blobs/ad0eac903c87fbe869a70709f8c674c6557862b28e14bd242b6ef0fb3d946734.gz",
+      "blob_sha256": "e45eac8bf9f7792dbef40496e48446b94069d7d122486c2eb55b16678e490264",
+      "bytes": 163326,
+      "evidence_id": "ad0eac903c87fbe869a70709f8c674c6557862b28e14bd242b6ef0fb3d946734",
+      "kind": "source_definition",
+      "media_type": "text/plain; charset=utf-8",
+      "references": [
+        {
+          "event_definition_key": "ep3_story_cycle_admin_eunuch.1001",
+          "logical_path": "events/dlc/ep3/ep3_story_cycle_admin_eunuch_events.txt",
+          "origin": "ck3_game",
+          "role": "source_definition"
+        }
+      ],
+      "sha256": "ad0eac903c87fbe869a70709f8c674c6557862b28e14bd242b6ef0fb3d946734"
+    },
+    {
+      "blob_bytes": 641,
+      "blob_path": "blobs/ad113cd4280b4a3bebbd43433e5130321624d6159307ec65525872408917b83e.gz",
+      "blob_sha256": "31bf1fd39619d18f76f01c01f7a4bb4bacf1cd2fd99c4d408c69977681bc39e7",
+      "bytes": 1791,
+      "evidence_id": "ad113cd4280b4a3bebbd43433e5130321624d6159307ec65525872408917b83e",
+      "kind": "source_definition",
+      "media_type": "text/plain; charset=utf-8",
+      "references": [
+        {
+          "event_definition_key": "epidemic_events.1064",
+          "logical_path": "common/story_cycles/ce1_story_cycle_plague_witch_hunt.txt",
+          "origin": "ck3_game",
+          "role": "source_definition"
+        }
+      ],
+      "sha256": "ad113cd4280b4a3bebbd43433e5130321624d6159307ec65525872408917b83e"
+    },
+    {
+      "blob_bytes": 3545,
+      "blob_path": "blobs/aebdedb774d20329390b44ef9376bf90b1ceeab5307c5d04415b02b56e066d98.gz",
+      "blob_sha256": "ca33a18327e49ea91eddfae164c2a88ee66f657617dac3a34777ad3f9696168c",
+      "bytes": 8522,
+      "evidence_id": "aebdedb774d20329390b44ef9376bf90b1ceeab5307c5d04415b02b56e066d98",
+      "kind": "source_definition",
+      "media_type": "application/yaml; charset=utf-8",
+      "references": [
+        {
+          "event_definition_key": "ep3_landless_admin.1000",
+          "logical_path": "localization/simp_chinese/dlc/ep3/ep3_landless_admin_l_simp_chinese.yml",
+          "origin": "ck3_game",
+          "role": "source_definition"
+        }
+      ],
+      "sha256": "aebdedb774d20329390b44ef9376bf90b1ceeab5307c5d04415b02b56e066d98"
+    },
+    {
+      "blob_bytes": 26714,
+      "blob_path": "blobs/aef36b884dc5e315dd5c655bc96012ff9fa8bb46bb0af2c18fa878c890907747.gz",
+      "blob_sha256": "9ec2da7db92b2c924bd33bdee470a99254ca28eb4290d4ac75cf6f6e09517ad8",
+      "bytes": 282894,
+      "evidence_id": "aef36b884dc5e315dd5c655bc96012ff9fa8bb46bb0af2c18fa878c890907747",
+      "kind": "source_definition",
+      "media_type": "text/plain; charset=utf-8",
+      "references": [
+        {
+          "event_definition_key": "tgp_china_ministry.0100",
+          "logical_path": "common/scripted_effects/10_dlc_tgp_scripted_effects.txt",
+          "origin": "ck3_game",
+          "role": "source_definition"
+        }
+      ],
+      "sha256": "aef36b884dc5e315dd5c655bc96012ff9fa8bb46bb0af2c18fa878c890907747"
+    },
+    {
+      "blob_bytes": 13505,
+      "blob_path": "blobs/b06241e67b6692f51fcfc6021e4dbe085c9e25a50b9cd08957cbcc9e25aebea9.gz",
+      "blob_sha256": "979b96f7ce0db0a2c8a4ab6c037efd378c8efc9918d5577b2846c5edfb0320fe",
+      "bytes": 102812,
+      "evidence_id": "b06241e67b6692f51fcfc6021e4dbe085c9e25a50b9cd08957cbcc9e25aebea9",
+      "kind": "source_definition",
+      "media_type": "text/plain; charset=utf-8",
+      "references": [
+        {
+          "event_definition_key": "faction_demand.1101",
+          "logical_path": "events/factions/faction_demands.txt",
+          "origin": "ck3_game",
+          "role": "source_definition"
+        },
+        {
+          "event_definition_key": "faction_demand.2001",
+          "logical_path": "events/factions/faction_demands.txt",
+          "origin": "ck3_game",
+          "role": "source_definition"
+        }
+      ],
+      "sha256": "b06241e67b6692f51fcfc6021e4dbe085c9e25a50b9cd08957cbcc9e25aebea9"
+    },
+    {
+      "blob_bytes": 4722608,
+      "blob_path": "blobs/b2e57e4b90ec82eba96500b7d0b1f963a6ee46f521e4e5250c1a3be113c7047b.gz",
+      "blob_sha256": "2db68944b4619cb7184f0af4632bfe4c753dd0ffccbe08bccc3ddee2f040fc1c",
+      "bytes": 4721150,
+      "evidence_id": "b2e57e4b90ec82eba96500b7d0b1f963a6ee46f521e4e5250c1a3be113c7047b",
+      "kind": "observation_artifact",
+      "media_type": "image/png",
+      "references": [
+        {
+          "event_definition_key": "tgp_china_ministry.0100",
+          "logical_path": "_runtime/p2r374-active-boundary-continuation-live/park9-post-selection-ck3-screen.png",
+          "origin": "runtime",
+          "role": "artifact"
+        }
+      ],
+      "sha256": "b2e57e4b90ec82eba96500b7d0b1f963a6ee46f521e4e5250c1a3be113c7047b"
+    },
+    {
+      "blob_bytes": 1142858,
+      "blob_path": "blobs/b69243825168b01f11c0cbdebc321c277e3ac22ceec2f50650abb9c0994d1d64.gz",
+      "blob_sha256": "72f8501916a2a61669bfc5cc1f694e3f6bb2d3372fd3aa69aad0935730dbde0b",
+      "bytes": 30774313,
+      "evidence_id": "b69243825168b01f11c0cbdebc321c277e3ac22ceec2f50650abb9c0994d1d64",
+      "kind": "observation_artifact",
+      "media_type": "application/json",
+      "references": [
+        {
+          "event_definition_key": "death_management.1007",
+          "logical_path": "_runtime/p2r374-active-boundary-continuation-live/death-management-1007-red-report.json",
+          "origin": "runtime",
+          "role": "artifact"
+        }
+      ],
+      "sha256": "b69243825168b01f11c0cbdebc321c277e3ac22ceec2f50650abb9c0994d1d64"
+    },
+    {
+      "blob_bytes": 1163840,
+      "blob_path": "blobs/ba39b64acc3224e8f1f5d5c04719a04106430d7f2f2551dec52ccec514fc3aa6.gz",
+      "blob_sha256": "a5e2e985909e829ff79456b4478805a493f7373a209f0b1f5ac67c0f088935a3",
+      "bytes": 31439118,
+      "evidence_id": "ba39b64acc3224e8f1f5d5c04719a04106430d7f2f2551dec52ccec514fc3aa6",
+      "kind": "observation_artifact",
+      "media_type": "application/json",
+      "references": [
+        {
+          "event_definition_key": "faction_demand.1101",
+          "logical_path": "_runtime/p2r374-active-boundary-continuation-live/faction-demand-1101-red-report.json",
+          "origin": "runtime",
+          "role": "artifact"
+        }
+      ],
+      "sha256": "ba39b64acc3224e8f1f5d5c04719a04106430d7f2f2551dec52ccec514fc3aa6"
+    },
+    {
+      "blob_bytes": 360,
+      "blob_path": "blobs/bc9ed32d243b861e7263fc303e6f3ad30570da3dcef77bfb27925c6421a9a112.gz",
+      "blob_sha256": "f293a783a100d61fb94575f165e86f2d606969e3fda6388ada6b79a2a17d889d",
+      "bytes": 752,
+      "evidence_id": "bc9ed32d243b861e7263fc303e6f3ad30570da3dcef77bfb27925c6421a9a112",
+      "kind": "observation_artifact",
+      "media_type": "application/json",
+      "references": [
+        {
+          "event_definition_key": "tgp_dynastic_cycle.0081",
+          "logical_path": "_runtime/p2r375-post-publisher-fix-live/hot-recovery-park-1.json",
+          "origin": "runtime",
+          "role": "park_artifact"
+        }
+      ],
+      "sha256": "bc9ed32d243b861e7263fc303e6f3ad30570da3dcef77bfb27925c6421a9a112"
+    },
+    {
+      "blob_bytes": 38157,
+      "blob_path": "blobs/c1eca141c71ec1e741ca5336e01bb538eefaec05b0684edec477cfc9053c3807.gz",
+      "blob_sha256": "6e8ace1ec0db4bd9eb5a010b9d5db226a04718cfa5ea486a967ddbe3c9c8feba",
+      "bytes": 119477,
+      "evidence_id": "c1eca141c71ec1e741ca5336e01bb538eefaec05b0684edec477cfc9053c3807",
+      "kind": "source_definition",
+      "media_type": "text/plain; charset=utf-8",
+      "references": [
+        {
+          "event_definition_key": "faction_demand.1101",
+          "logical_path": "common/defines/00_defines.txt",
+          "origin": "ck3_game",
+          "role": "source_definition"
+        },
+        {
+          "event_definition_key": "faction_demand.2001",
+          "logical_path": "common/defines/00_defines.txt",
+          "origin": "ck3_game",
+          "role": "source_definition"
+        }
+      ],
+      "sha256": "c1eca141c71ec1e741ca5336e01bb538eefaec05b0684edec477cfc9053c3807"
+    },
+    {
+      "blob_bytes": 360,
+      "blob_path": "blobs/c382b9dd4c8abc45664b68bafeacf63b9ab718d2e8d0433db558f0bacaac9e01.gz",
+      "blob_sha256": "a995ef10aa67d304ab23d7f61010574038503fb82950d7cd59bafab9dd120feb",
+      "bytes": 752,
+      "evidence_id": "c382b9dd4c8abc45664b68bafeacf63b9ab718d2e8d0433db558f0bacaac9e01",
+      "kind": "observation_artifact",
+      "media_type": "application/json",
+      "references": [
+        {
+          "event_definition_key": "ep3_landless_admin.1000",
+          "logical_path": "_runtime/p2r375-post-publisher-fix-live/hot-recovery-park-4.json",
+          "origin": "runtime",
+          "role": "park_artifact"
+        }
+      ],
+      "sha256": "c382b9dd4c8abc45664b68bafeacf63b9ab718d2e8d0433db558f0bacaac9e01"
+    },
+    {
+      "blob_bytes": 29920,
+      "blob_path": "blobs/c63c02464dde0473c3a7943a803d122107c19e36733bbb446fbc6d25afa724a4.gz",
+      "blob_sha256": "765d5710fc65105805b156c40ad9351c91235de7476a28f039bda2c3b852de2d",
+      "bytes": 738236,
+      "evidence_id": "c63c02464dde0473c3a7943a803d122107c19e36733bbb446fbc6d25afa724a4",
+      "kind": "observation_artifact",
+      "media_type": "application/json",
+      "references": [
+        {
+          "event_definition_key": "epidemic_events.0110",
+          "logical_path": "_runtime/p2r368-p3-rehire-guard-live/report.json",
+          "origin": "runtime",
+          "role": "artifact"
+        }
+      ],
+      "sha256": "c63c02464dde0473c3a7943a803d122107c19e36733bbb446fbc6d25afa724a4"
+    },
+    {
+      "blob_bytes": 12797,
+      "blob_path": "blobs/c8413c1de5eb1b29bc37a6f5a8a730290499a8fae75578dbc6c085639b5c6248.gz",
+      "blob_sha256": "0260932a65978753bbda9c61ecf223b52e854add1d57bdeed1efb1f6f0a0fe12",
+      "bytes": 81474,
+      "evidence_id": "c8413c1de5eb1b29bc37a6f5a8a730290499a8fae75578dbc6c085639b5c6248",
+      "kind": "source_definition",
+      "media_type": "text/plain; charset=utf-8",
+      "references": [
+        {
+          "event_definition_key": "intrigue_temptation.3020",
+          "logical_path": "events/lifestyles/intrigue_lifestyle/intrigue_temptation_events.txt",
+          "origin": "ck3_game",
+          "role": "source_definition"
+        }
+      ],
+      "sha256": "c8413c1de5eb1b29bc37a6f5a8a730290499a8fae75578dbc6c085639b5c6248"
+    },
+    {
+      "blob_bytes": 9257,
+      "blob_path": "blobs/c8e0b3c57665f775973bc8559166cd1f6414471ca25017800777c3c6466dc5d3.gz",
+      "blob_sha256": "3b4e4c64c3d56da080038c8840c3f539f923bd1ef281e0ad4c175f6d70f5257d",
+      "bytes": 51680,
+      "evidence_id": "c8e0b3c57665f775973bc8559166cd1f6414471ca25017800777c3c6466dc5d3",
+      "kind": "source_definition",
+      "media_type": "text/plain; charset=utf-8",
+      "references": [
+        {
+          "event_definition_key": "faction_demand.1101",
+          "logical_path": "common/scripted_effects/00_faction_effects.txt",
+          "origin": "ck3_game",
+          "role": "source_definition"
+        },
+        {
+          "event_definition_key": "faction_demand.2001",
+          "logical_path": "common/scripted_effects/00_faction_effects.txt",
+          "origin": "ck3_game",
+          "role": "source_definition"
+        }
+      ],
+      "sha256": "c8e0b3c57665f775973bc8559166cd1f6414471ca25017800777c3c6466dc5d3"
+    },
+    {
+      "blob_bytes": 7420,
+      "blob_path": "blobs/c9904aaa01abc8583e67d07866fae8ef89274708bda3929498dddb2f24fc2153.gz",
+      "blob_sha256": "da1fb081f8c46f45421f520e9599955a68da1b19ebdf872db90d73e42854907c",
+      "bytes": 72821,
+      "evidence_id": "c9904aaa01abc8583e67d07866fae8ef89274708bda3929498dddb2f24fc2153",
+      "kind": "source_definition",
+      "media_type": "text/plain; charset=utf-8",
+      "references": [
+        {
+          "event_definition_key": "tgp_dynastic_cycle.0081",
+          "logical_path": "events/dlc/tgp/tgp_dynastic_cycle_events.txt",
+          "origin": "ck3_game",
+          "role": "source_definition"
+        },
+        {
+          "event_definition_key": "tgp_dynastic_cycle.0091",
+          "logical_path": "events/dlc/tgp/tgp_dynastic_cycle_events.txt",
+          "origin": "ck3_game",
+          "role": "source_definition"
+        }
+      ],
+      "sha256": "c9904aaa01abc8583e67d07866fae8ef89274708bda3929498dddb2f24fc2153"
+    },
+    {
+      "blob_bytes": 5441,
+      "blob_path": "blobs/ca19d38cd1c45783e32cf59e21a212642ea407b2ddd8ede2467df50ed9f7bc7a.gz",
+      "blob_sha256": "c36f61ea815264e984ffe57729b22b3c8b342d2d1bf03472596f58ce9e76dd33",
+      "bytes": 44580,
+      "evidence_id": "ca19d38cd1c45783e32cf59e21a212642ea407b2ddd8ede2467df50ed9f7bc7a",
+      "kind": "source_definition",
+      "media_type": "text/plain; charset=utf-8",
+      "references": [
+        {
+          "event_definition_key": "ep3_powerful_families.8012",
+          "logical_path": "events/dlc/ep3/ep3_powerful_families_8.txt",
+          "origin": "ck3_game",
+          "role": "source_definition"
+        }
+      ],
+      "sha256": "ca19d38cd1c45783e32cf59e21a212642ea407b2ddd8ede2467df50ed9f7bc7a"
+    },
+    {
+      "blob_bytes": 358,
+      "blob_path": "blobs/cb31fb25ce0e25ab59059123c215f5b9aab635a4e22a496f146a14eccfade175.gz",
+      "blob_sha256": "0be95542d119fc655b3ed85724fee60a8203abc9866a5bf4478d821631e2eca8",
+      "bytes": 748,
+      "evidence_id": "cb31fb25ce0e25ab59059123c215f5b9aab635a4e22a496f146a14eccfade175",
+      "kind": "observation_artifact",
+      "media_type": "application/json",
+      "references": [
+        {
+          "event_definition_key": "epidemic_events.5009",
+          "logical_path": "_runtime/p2r372-post-bound-continuation-live/hot-recovery-park-12.json",
+          "origin": "runtime",
+          "role": "park_artifact"
+        }
+      ],
+      "sha256": "cb31fb25ce0e25ab59059123c215f5b9aab635a4e22a496f146a14eccfade175"
+    },
+    {
+      "blob_bytes": 218971,
+      "blob_path": "blobs/cca408ed129acf96769413d23abea69ba82ca251ba685f69796a3ea3e50b9e0c.gz",
+      "blob_sha256": "afad495e47e1791a77bdfa244b912bd2067b61a211e34278a9909394a1c58648",
+      "bytes": 5772368,
+      "evidence_id": "cca408ed129acf96769413d23abea69ba82ca251ba685f69796a3ea3e50b9e0c",
+      "kind": "observation_artifact",
+      "media_type": "application/json",
+      "references": [
+        {
+          "event_definition_key": "great_holy_war.0011",
+          "logical_path": "_runtime/p2r372-post-bound-continuation-live/great-holy-war-0011-occurrence-bound-report.json",
+          "origin": "runtime",
+          "role": "artifact"
+        }
+      ],
+      "sha256": "cca408ed129acf96769413d23abea69ba82ca251ba685f69796a3ea3e50b9e0c"
+    },
+    {
+      "blob_bytes": 17803,
+      "blob_path": "blobs/cd3daa9da33c3dfd15934ca30c1b2d7381e0b3968337bf52a7cbc2f9f2237102.gz",
+      "blob_sha256": "2828fecf13b053b675962b1fbc086f950363482e0a0047ba6da56a34af36a58d",
+      "bytes": 121477,
+      "evidence_id": "cd3daa9da33c3dfd15934ca30c1b2d7381e0b3968337bf52a7cbc2f9f2237102",
+      "kind": "source_definition",
+      "media_type": "text/plain; charset=utf-8",
+      "references": [
+        {
+          "event_definition_key": "faction_demand.2001",
+          "logical_path": "common/scripted_modifiers/00_faction_modifiers.txt",
+          "origin": "ck3_game",
+          "role": "source_definition"
+        }
+      ],
+      "sha256": "cd3daa9da33c3dfd15934ca30c1b2d7381e0b3968337bf52a7cbc2f9f2237102"
+    },
+    {
+      "blob_bytes": 19602,
+      "blob_path": "blobs/ce127f15422e121d74f0f417bcc5448d31afd65a7c03db9fd4bd1e6d35089cba.gz",
+      "blob_sha256": "8344cf1e41d1632d8417d092dc3e2bc3b3e86e875da17c6515ddcc7ed3763d6d",
+      "bytes": 130186,
+      "evidence_id": "ce127f15422e121d74f0f417bcc5448d31afd65a7c03db9fd4bd1e6d35089cba",
+      "kind": "source_definition",
+      "media_type": "text/plain; charset=utf-8",
+      "references": [
+        {
+          "event_definition_key": "tribute_mission.1005",
+          "logical_path": "events/dlc/tgp/tgp_tribute_mission_events.txt",
+          "origin": "ck3_game",
+          "role": "source_definition"
+        }
+      ],
+      "sha256": "ce127f15422e121d74f0f417bcc5448d31afd65a7c03db9fd4bd1e6d35089cba"
+    },
+    {
+      "blob_bytes": 7515,
+      "blob_path": "blobs/cff84009e58f5d6386a6d7501cff084cb206a542e7d0cfa221ed2cc050a9da68.gz",
+      "blob_sha256": "651cda3354f021828f24821985171b61a4f921f5abc87448dfe4a1d2de566ef1",
+      "bytes": 64006,
+      "evidence_id": "cff84009e58f5d6386a6d7501cff084cb206a542e7d0cfa221ed2cc050a9da68",
+      "kind": "source_definition",
+      "media_type": "text/plain; charset=utf-8",
+      "references": [
+        {
+          "event_definition_key": "faction_demand.2001",
+          "logical_path": "common/casus_belli_types/00_civil_war.txt",
+          "origin": "ck3_game",
+          "role": "source_definition"
+        }
+      ],
+      "sha256": "cff84009e58f5d6386a6d7501cff084cb206a542e7d0cfa221ed2cc050a9da68"
+    },
+    {
+      "blob_bytes": 122655,
+      "blob_path": "blobs/d0137f8780beb0e6a18a4a4e25abe9e1436fd683a4473cc025ce6258b22fa1e1.gz",
+      "blob_sha256": "c7eb9e304ec706502c94b07bc7a5f629642b324af0c5aadda2e90e5c1baca6c2",
+      "bytes": 6260068,
+      "evidence_id": "d0137f8780beb0e6a18a4a4e25abe9e1436fd683a4473cc025ce6258b22fa1e1",
+      "kind": "observation_artifact",
+      "media_type": "application/json",
+      "references": [
+        {
+          "event_definition_key": "vassal_interaction.0040",
+          "logical_path": "_runtime/p2r374-active-boundary-continuation-live/driver-state-park-5-snapshot.json",
+          "origin": "runtime",
+          "role": "driver_state_artifact"
+        }
+      ],
+      "sha256": "d0137f8780beb0e6a18a4a4e25abe9e1436fd683a4473cc025ce6258b22fa1e1"
+    },
+    {
+      "blob_bytes": 1032753,
+      "blob_path": "blobs/d07bb242c09933b238d977a8fa9f93097115a0ae1831f5dc7c97a83d5561e532.gz",
+      "blob_sha256": "1ca7314b4ce23253c535b7d619c7026fe1925478df24720416c3169f46752b6a",
+      "bytes": 27137749,
+      "evidence_id": "d07bb242c09933b238d977a8fa9f93097115a0ae1831f5dc7c97a83d5561e532",
+      "kind": "observation_artifact",
+      "media_type": "application/json",
+      "references": [
+        {
+          "event_definition_key": "stress_threshold.1721",
+          "logical_path": "_runtime/p2r372-post-bound-continuation-live/stress-threshold-1721-no-confidant-red-report.json",
+          "origin": "runtime",
+          "role": "artifact"
+        }
+      ],
+      "sha256": "d07bb242c09933b238d977a8fa9f93097115a0ae1831f5dc7c97a83d5561e532"
+    },
+    {
+      "blob_bytes": 359,
+      "blob_path": "blobs/d1aaa5bc7ef52304dbc2155b7e16679346bd4d2ef66728a970a5f4b3bc0ae607.gz",
+      "blob_sha256": "85fc4c8b27b54b6100e0e8336bc11e044236726fda618292899ec687513b6439",
+      "bytes": 748,
+      "evidence_id": "d1aaa5bc7ef52304dbc2155b7e16679346bd4d2ef66728a970a5f4b3bc0ae607",
+      "kind": "observation_artifact",
+      "media_type": "application/json",
+      "references": [
+        {
+          "event_definition_key": "epidemic_events.1064",
+          "logical_path": "_runtime/p2r372-post-bound-continuation-live/hot-recovery-park-11.json",
+          "origin": "runtime",
+          "role": "park_artifact"
+        }
+      ],
+      "sha256": "d1aaa5bc7ef52304dbc2155b7e16679346bd4d2ef66728a970a5f4b3bc0ae607"
+    },
+    {
+      "blob_bytes": 360,
+      "blob_path": "blobs/d1ca6da488048cf7f77a81f53290f57af4ba36d15abcd6e502a9b080b2627293.gz",
+      "blob_sha256": "2e33f5597203db0888279e7f0876898da0a0933663634293eb810f85d360f4c0",
+      "bytes": 751,
+      "evidence_id": "d1ca6da488048cf7f77a81f53290f57af4ba36d15abcd6e502a9b080b2627293",
+      "kind": "observation_artifact",
+      "media_type": "application/json",
+      "references": [
+        {
+          "event_definition_key": "vassal_interaction.0040",
+          "logical_path": "_runtime/p2r374-active-boundary-continuation-live/hot-recovery-park-5.json",
+          "origin": "runtime",
+          "role": "park_artifact"
+        }
+      ],
+      "sha256": "d1ca6da488048cf7f77a81f53290f57af4ba36d15abcd6e502a9b080b2627293"
+    },
+    {
+      "blob_bytes": 358,
+      "blob_path": "blobs/d2b3caef5c3e1f59756ddbf1246251cbdccf4fde2df7c74f256ce574eda8dc73.gz",
+      "blob_sha256": "2fcd1c4c539e4ac2fdf6efe8d10fe73b3d45fffaf7e4366590eb6c85052256e9",
+      "bytes": 749,
+      "evidence_id": "d2b3caef5c3e1f59756ddbf1246251cbdccf4fde2df7c74f256ce574eda8dc73",
+      "kind": "observation_artifact",
+      "media_type": "application/json",
+      "references": [
+        {
+          "event_definition_key": "epidemic_events.0110",
+          "logical_path": "_runtime/p2r375-post-publisher-fix-live/hot-recovery-park-2.json",
+          "origin": "runtime",
+          "role": "park_artifact"
+        }
+      ],
+      "sha256": "d2b3caef5c3e1f59756ddbf1246251cbdccf4fde2df7c74f256ce574eda8dc73"
+    },
+    {
+      "blob_bytes": 42628,
+      "blob_path": "blobs/d2f5fe80e7bc000a749642cd26bde1626dbea7409c39314b8583547ae43db43d.gz",
+      "blob_sha256": "cb3abfb807d65b6e6f0cc628a0dfec3f0c665b0ad035c7e18227bb7deab886ce",
+      "bytes": 336452,
+      "evidence_id": "d2f5fe80e7bc000a749642cd26bde1626dbea7409c39314b8583547ae43db43d",
+      "kind": "source_definition",
+      "media_type": "text/plain; charset=utf-8",
+      "references": [
+        {
+          "event_definition_key": "ep3_story_cycle_admin_eunuch.1001",
+          "logical_path": "common/scripted_effects/07_dlc_ep3_scripted_effects.txt",
+          "origin": "ck3_game",
+          "role": "source_definition"
+        }
+      ],
+      "sha256": "d2f5fe80e7bc000a749642cd26bde1626dbea7409c39314b8583547ae43db43d"
+    },
+    {
+      "blob_bytes": 1421861,
+      "blob_path": "blobs/d4503d4ee7fc2a4ab8c22f91bcaa7d1e5642293d034e2ad96848e9e19bef89ab.gz",
+      "blob_sha256": "90abb576a94b8143c4f439053c266d5ed479575bf0296a11dc54a68b01da393c",
+      "bytes": 38117623,
+      "evidence_id": "d4503d4ee7fc2a4ab8c22f91bcaa7d1e5642293d034e2ad96848e9e19bef89ab",
+      "kind": "observation_artifact",
+      "media_type": "application/json",
+      "references": [
+        {
+          "event_definition_key": "tgp_dynastic_cycle_events.0020",
+          "logical_path": "_runtime/p2r372-post-bound-continuation-live/tgp-dynastic-cycle-0020-red-report.json",
+          "origin": "runtime",
+          "role": "artifact"
+        }
+      ],
+      "sha256": "d4503d4ee7fc2a4ab8c22f91bcaa7d1e5642293d034e2ad96848e9e19bef89ab"
+    },
+    {
+      "blob_bytes": 4860,
+      "blob_path": "blobs/d462c424c6e2bdddc042e91d3b1b95f1ef6c39dfcec252fd69e5fcb5b79fa837.gz",
+      "blob_sha256": "f4d5ee06bad4c986a5394fd4db6cd8f551309d4c3e259b7e1bbab2bc5dfc7ee7",
+      "bytes": 37419,
+      "evidence_id": "d462c424c6e2bdddc042e91d3b1b95f1ef6c39dfcec252fd69e5fcb5b79fa837",
+      "kind": "source_definition",
+      "media_type": "text/plain; charset=utf-8",
+      "references": [
+        {
+          "event_definition_key": "epidemic_events.0110",
+          "logical_path": "common/script_values/06_ce1_epidemics_values.txt",
+          "origin": "ck3_game",
+          "role": "source_definition"
+        }
+      ],
+      "sha256": "d462c424c6e2bdddc042e91d3b1b95f1ef6c39dfcec252fd69e5fcb5b79fa837"
+    },
+    {
+      "blob_bytes": 3396,
+      "blob_path": "blobs/d57865b72018b1e024b6dcb5cf319091da25b27ae390f7ef8f8769c4458151bb.gz",
+      "blob_sha256": "c6434d7af759c2499f2b9bbaf922b5cbd77ed081b545165eeb87da7edf773de0",
+      "bytes": 23882,
+      "evidence_id": "d57865b72018b1e024b6dcb5cf319091da25b27ae390f7ef8f8769c4458151bb",
+      "kind": "source_definition",
+      "media_type": "text/plain; charset=utf-8",
+      "references": [
+        {
+          "event_definition_key": "great_holy_war.0011",
+          "logical_path": "common/character_interactions/00_test_interactions.txt",
+          "origin": "ck3_game",
+          "role": "source_definition"
+        }
+      ],
+      "sha256": "d57865b72018b1e024b6dcb5cf319091da25b27ae390f7ef8f8769c4458151bb"
+    },
+    {
+      "blob_bytes": 365,
+      "blob_path": "blobs/d5d27d04b2f211aee353c6896029285988aac54e123122b2b7ab8fb609f31274.gz",
+      "blob_sha256": "5e7ee245e667d7d89eb9581c695db0919fab61c4db0768180bb90344d806aaa2",
+      "bytes": 757,
+      "evidence_id": "d5d27d04b2f211aee353c6896029285988aac54e123122b2b7ab8fb609f31274",
+      "kind": "observation_artifact",
+      "media_type": "application/json",
+      "references": [
+        {
+          "event_definition_key": "tgp_dynastic_cycle_events.0020",
+          "logical_path": "_runtime/p2r372-post-bound-continuation-live/hot-recovery-park-7.json",
+          "origin": "runtime",
+          "role": "park_artifact"
+        }
+      ],
+      "sha256": "d5d27d04b2f211aee353c6896029285988aac54e123122b2b7ab8fb609f31274"
+    },
+    {
+      "blob_bytes": 358,
+      "blob_path": "blobs/d5f18f8970b9d3a21c7ab5e72df744d81dc85ad0e4cb55a340f97828b3ee40ce.gz",
+      "blob_sha256": "a0edf5fd385dedf0a8d889224b42c6e67c57db80957f2c9e2081db2f57703f15",
+      "bytes": 750,
+      "evidence_id": "d5f18f8970b9d3a21c7ab5e72df744d81dc85ad0e4cb55a340f97828b3ee40ce",
+      "kind": "observation_artifact",
+      "media_type": "application/json",
+      "references": [
+        {
+          "event_definition_key": "stress_threshold.1721",
+          "logical_path": "_runtime/p2r375-post-publisher-fix-live/hot-recovery-park-3.json",
+          "origin": "runtime",
+          "role": "park_artifact"
+        }
+      ],
+      "sha256": "d5f18f8970b9d3a21c7ab5e72df744d81dc85ad0e4cb55a340f97828b3ee40ce"
+    },
+    {
+      "blob_bytes": 321,
+      "blob_path": "blobs/d8bafd1f582d4a34e61afb03cfe5384f9912e1b101614c3e441ba348dab5992e.gz",
+      "blob_sha256": "a42e793a0387078390f58cdba8f6d71b97f69b62e40b7d6de0d2ee2af1af97f0",
+      "bytes": 583,
+      "evidence_id": "d8bafd1f582d4a34e61afb03cfe5384f9912e1b101614c3e441ba348dab5992e",
+      "kind": "source_definition",
+      "media_type": "text/plain; charset=utf-8",
+      "references": [
+        {
+          "event_definition_key": "epidemic_events.1064",
+          "logical_path": "common/on_action/story_cycles/story_cycle_witch_trial_on_actions.txt",
+          "origin": "ck3_game",
+          "role": "source_definition"
+        }
+      ],
+      "sha256": "d8bafd1f582d4a34e61afb03cfe5384f9912e1b101614c3e441ba348dab5992e"
+    },
+    {
+      "blob_bytes": 10771,
+      "blob_path": "blobs/d9b172fc6c9f81216be580c1b65da7720caa6ef21f049ab316361e17d3710bc6.gz",
+      "blob_sha256": "d3e7b75c42210ede17812898be35e88a1174fd060b27723ad5b05d6ca3e9193d",
+      "bytes": 85544,
+      "evidence_id": "d9b172fc6c9f81216be580c1b65da7720caa6ef21f049ab316361e17d3710bc6",
+      "kind": "source_definition",
+      "media_type": "text/plain; charset=utf-8",
+      "references": [
+        {
+          "event_definition_key": "tgp_movement_events.0160",
+          "logical_path": "events/dlc/tgp/tgp_movement_events.txt",
+          "origin": "ck3_game",
+          "role": "source_definition"
+        }
+      ],
+      "sha256": "d9b172fc6c9f81216be580c1b65da7720caa6ef21f049ab316361e17d3710bc6"
+    },
+    {
+      "blob_bytes": 2686,
+      "blob_path": "blobs/dee9d48221b49ef41490d04451acd6dbfd4994a50ead9d006f831f41a6247a83.gz",
+      "blob_sha256": "80dd7a6fafd522a5fd3c08c1a3a9c5d33acc3af8e1f1445188c02c40e1ea90b2",
+      "bytes": 13491,
+      "evidence_id": "dee9d48221b49ef41490d04451acd6dbfd4994a50ead9d006f831f41a6247a83",
+      "kind": "source_definition",
+      "media_type": "text/plain; charset=utf-8",
+      "references": [
+        {
+          "event_definition_key": "faction_demand.1101",
+          "logical_path": "common/scripted_effects/06_dlc_ce1_legitimacy_effects.txt",
+          "origin": "ck3_game",
+          "role": "source_definition"
+        },
+        {
+          "event_definition_key": "faction_demand.2001",
+          "logical_path": "common/scripted_effects/06_dlc_ce1_legitimacy_effects.txt",
+          "origin": "ck3_game",
+          "role": "source_definition"
+        }
+      ],
+      "sha256": "dee9d48221b49ef41490d04451acd6dbfd4994a50ead9d006f831f41a6247a83"
+    },
+    {
+      "blob_bytes": 1084078,
+      "blob_path": "blobs/e2cdbe9e37ea73ddfe30ad212618b20852c7cb04d9609a972f49c885d99f4802.gz",
+      "blob_sha256": "78edccfbd8c82980bb6c2a7d96aa8f66650e76a51a48f4e1cdb02ccbcd14894d",
+      "bytes": 28724780,
+      "evidence_id": "e2cdbe9e37ea73ddfe30ad212618b20852c7cb04d9609a972f49c885d99f4802",
+      "kind": "observation_artifact",
+      "media_type": "application/json",
+      "references": [
+        {
+          "event_definition_key": "epidemic_events.5009",
+          "logical_path": "_runtime/p2r372-post-bound-continuation-live/epidemic-events-5009-repeat-red-report.json",
+          "origin": "runtime",
+          "role": "artifact"
+        }
+      ],
+      "sha256": "e2cdbe9e37ea73ddfe30ad212618b20852c7cb04d9609a972f49c885d99f4802"
+    },
+    {
+      "blob_bytes": 15895,
+      "blob_path": "blobs/e431a0e2fdff5e49fb572b7184de9b498f982b95aed875334ad1432d0f88cba7.gz",
+      "blob_sha256": "575b75142adcaabd1f6950a9615034ed7c64048f1bd200e6915b31a1d0a51c9b",
+      "bytes": 115065,
+      "evidence_id": "e431a0e2fdff5e49fb572b7184de9b498f982b95aed875334ad1432d0f88cba7",
+      "kind": "source_definition",
+      "media_type": "text/plain; charset=utf-8",
+      "references": [
+        {
+          "event_definition_key": "great_holy_war.0011",
+          "logical_path": "events/religion_events/great_holy_war_events.txt",
+          "origin": "ck3_game",
+          "role": "source_definition"
+        }
+      ],
+      "sha256": "e431a0e2fdff5e49fb572b7184de9b498f982b95aed875334ad1432d0f88cba7"
+    },
+    {
+      "blob_bytes": 1125782,
+      "blob_path": "blobs/e6e1d565aa74a004b5f995457d4db52af5e6829430b2dcb14b16a69f4b7fb529.gz",
+      "blob_sha256": "374e1fa80fe7066acc6f3edde7491a2c3294a73d8ceab085269ca3aadd4eecfb",
+      "bytes": 30151101,
+      "evidence_id": "e6e1d565aa74a004b5f995457d4db52af5e6829430b2dcb14b16a69f4b7fb529",
+      "kind": "observation_artifact",
+      "media_type": "application/json",
+      "references": [
+        {
+          "event_definition_key": "vassal_interaction.0040",
+          "logical_path": "_runtime/p2r374-active-boundary-continuation-live/vassal-interaction-0040-red-report.json",
+          "origin": "runtime",
+          "role": "artifact"
+        }
+      ],
+      "sha256": "e6e1d565aa74a004b5f995457d4db52af5e6829430b2dcb14b16a69f4b7fb529"
+    },
+    {
+      "blob_bytes": 2200,
+      "blob_path": "blobs/e90b02c7e82f9d6b45bd4494db5a4ad47e48c10232c3c1cf26bbfe9375eba9ca.gz",
+      "blob_sha256": "f5fc69b7ad89c41574dc3ae7ebce916a375c05829d5b77f7987273f89e4208fe",
+      "bytes": 6130,
+      "evidence_id": "e90b02c7e82f9d6b45bd4494db5a4ad47e48c10232c3c1cf26bbfe9375eba9ca",
+      "kind": "source_definition",
+      "media_type": "text/plain; charset=utf-8",
+      "references": [
+        {
+          "event_definition_key": "intrigue_temptation.3020",
+          "logical_path": "common/on_action/lifestyles/intrigue_lifestyle_on_actions.txt",
+          "origin": "ck3_game",
+          "role": "source_definition"
+        }
+      ],
+      "sha256": "e90b02c7e82f9d6b45bd4494db5a4ad47e48c10232c3c1cf26bbfe9375eba9ca"
+    },
+    {
+      "blob_bytes": 360,
+      "blob_path": "blobs/e9110611b7474ba6e648bdc9c89d34f63db608c3f11acf0cbbfb25010dcb40cf.gz",
+      "blob_sha256": "2676cd7edd1785ea5fb9927bd55f525fd4ef81487142059b14deddd2da5eb3a9",
+      "bytes": 748,
+      "evidence_id": "e9110611b7474ba6e648bdc9c89d34f63db608c3f11acf0cbbfb25010dcb40cf",
+      "kind": "observation_artifact",
+      "media_type": "application/json",
+      "references": [
+        {
+          "event_definition_key": "stress_threshold.1721",
+          "logical_path": "_runtime/p2r372-post-bound-continuation-live/hot-recovery-park-8.json",
+          "origin": "runtime",
+          "role": "park_artifact"
+        }
+      ],
+      "sha256": "e9110611b7474ba6e648bdc9c89d34f63db608c3f11acf0cbbfb25010dcb40cf"
+    },
+    {
+      "blob_bytes": 13640,
+      "blob_path": "blobs/e9dd1797228a8d9de342232eb3ab6f16c46914178a313f793749f1dca36ffa79.gz",
+      "blob_sha256": "482a9d7ec3323cf87a514a8545cde25c7c6f75fe1066bcf3f808b39f5357efdd",
+      "bytes": 91190,
+      "evidence_id": "e9dd1797228a8d9de342232eb3ab6f16c46914178a313f793749f1dca36ffa79",
+      "kind": "source_definition",
+      "media_type": "text/plain; charset=utf-8",
+      "references": [
+        {
+          "event_definition_key": "trait_specific.4001",
+          "logical_path": "events/witch_events.txt",
+          "origin": "ck3_game",
+          "role": "source_definition"
+        }
+      ],
+      "sha256": "e9dd1797228a8d9de342232eb3ab6f16c46914178a313f793749f1dca36ffa79"
+    },
+    {
+      "blob_bytes": 368,
+      "blob_path": "blobs/f2265333d99b4e996cbaafd5f31c616291e03438a976e3d85cd4262d4c9889d0.gz",
+      "blob_sha256": "d80285780387518cda634f51ec5c610f929b8e77955850c9d92310c8899813a7",
+      "bytes": 760,
+      "evidence_id": "f2265333d99b4e996cbaafd5f31c616291e03438a976e3d85cd4262d4c9889d0",
+      "kind": "observation_artifact",
+      "media_type": "application/json",
+      "references": [
+        {
+          "event_definition_key": "ep3_story_cycle_admin_eunuch.1001",
+          "logical_path": "_runtime/p2r374-active-boundary-continuation-live/hot-recovery-park-2.json",
+          "origin": "runtime",
+          "role": "park_artifact"
+        }
+      ],
+      "sha256": "f2265333d99b4e996cbaafd5f31c616291e03438a976e3d85cd4262d4c9889d0"
+    },
+    {
+      "blob_bytes": 1995,
+      "blob_path": "blobs/f74447fe01ddb9bc890c757578dba477373167ea0da862bb987d26a61904dfa1.gz",
+      "blob_sha256": "a61f36f660b86245bef8cc7188b2a9534e01d3a0af09c7020c25c72a6913a516",
+      "bytes": 6439,
+      "evidence_id": "f74447fe01ddb9bc890c757578dba477373167ea0da862bb987d26a61904dfa1",
+      "kind": "observation_artifact",
+      "media_type": "application/json",
+      "references": [
+        {
+          "event_definition_key": "ep3_landless_admin.1000",
+          "logical_path": "_runtime/p2r375-post-publisher-fix-live/r375-ep3-landless-admin-1000-red-freeze.json",
+          "origin": "runtime",
+          "role": "artifact"
+        }
+      ],
+      "sha256": "f74447fe01ddb9bc890c757578dba477373167ea0da862bb987d26a61904dfa1"
+    },
+    {
+      "blob_bytes": 12099,
+      "blob_path": "blobs/f9d596e05a84c42e7370b63874b5172cecb574190541ad67606c68c387f5a041.gz",
+      "blob_sha256": "70bbb4bd41f6fe08380adccee48e7eed3a704e0cd7fc6f28ca3995dd9045e55a",
+      "bytes": 55463,
+      "evidence_id": "f9d596e05a84c42e7370b63874b5172cecb574190541ad67606c68c387f5a041",
+      "kind": "source_definition",
+      "media_type": "text/plain; charset=utf-8",
+      "references": [
+        {
+          "event_definition_key": "death_management.1007",
+          "logical_path": "common/on_action/death.txt",
+          "origin": "ck3_game",
+          "role": "source_definition"
+        }
+      ],
+      "sha256": "f9d596e05a84c42e7370b63874b5172cecb574190541ad67606c68c387f5a041"
+    },
+    {
+      "blob_bytes": 511246,
+      "blob_path": "blobs/faefef7a2f09099a697ce4a0215aecf6cce080013d2822bbfd65bbb8b38b7116.gz",
+      "blob_sha256": "ac897388fad17ab5e4c897eccf44dd669a367e7da37963f08a34aad674247657",
+      "bytes": 13234604,
+      "evidence_id": "faefef7a2f09099a697ce4a0215aecf6cce080013d2822bbfd65bbb8b38b7116",
+      "kind": "observation_artifact",
+      "media_type": "application/json",
+      "references": [
+        {
+          "event_definition_key": "ep3_story_cycle_admin_eunuch.1001",
+          "logical_path": "_runtime/p2r374-active-boundary-continuation-live/ep3-story-cycle-admin-eunuch-1001-red-report.json",
+          "origin": "runtime",
+          "role": "artifact"
+        }
+      ],
+      "sha256": "faefef7a2f09099a697ce4a0215aecf6cce080013d2822bbfd65bbb8b38b7116"
+    },
+    {
+      "blob_bytes": 2824,
+      "blob_path": "blobs/fb47457aabe7c7df78555b4dfba74b8932dae468c45ebb2d1381caddc2b7e019.gz",
+      "blob_sha256": "4d28d069cd1a620ec67c08e3542d950ecfd28e9e48d95fe91a1d6b784d7c3be8",
+      "bytes": 10781,
+      "evidence_id": "fb47457aabe7c7df78555b4dfba74b8932dae468c45ebb2d1381caddc2b7e019",
+      "kind": "source_definition",
+      "media_type": "text/plain; charset=utf-8",
+      "references": [
+        {
+          "event_definition_key": "faction_demand.1101",
+          "logical_path": "common/factions/_factions.info",
+          "origin": "ck3_game",
+          "role": "source_definition"
+        },
+        {
+          "event_definition_key": "faction_demand.2001",
+          "logical_path": "common/factions/_factions.info",
+          "origin": "ck3_game",
+          "role": "source_definition"
+        }
+      ],
+      "sha256": "fb47457aabe7c7df78555b4dfba74b8932dae468c45ebb2d1381caddc2b7e019"
+    },
+    {
+      "blob_bytes": 366,
+      "blob_path": "blobs/fd2f6794f380603a9a1b1aefa52fdc98ea3e59d98fa29b544e4a30b0113b4ec6.gz",
+      "blob_sha256": "0873361ba43a169409841bce102ede6eb351969ec093051958a299df6b8b01f6",
+      "bytes": 757,
+      "evidence_id": "fd2f6794f380603a9a1b1aefa52fdc98ea3e59d98fa29b544e4a30b0113b4ec6",
+      "kind": "observation_artifact",
+      "media_type": "application/json",
+      "references": [
+        {
+          "event_definition_key": "tgp_dynastic_cycle_events.0001",
+          "logical_path": "_runtime/p2r372-post-bound-continuation-live/hot-recovery-park-9.json",
+          "origin": "runtime",
+          "role": "park_artifact"
+        }
+      ],
+      "sha256": "fd2f6794f380603a9a1b1aefa52fdc98ea3e59d98fa29b544e4a30b0113b4ec6"
+    },
+    {
+      "blob_bytes": 129043,
+      "blob_path": "blobs/fdfd7c0b2ab7df6dc936b9fc01d611f1f5425ba6e571cbb74942bf08a68a9f28.gz",
+      "blob_sha256": "b676eed445159731a74617e9b971e743803f32d05ea25f1a0c4745184a456e7b",
+      "bytes": 6454485,
+      "evidence_id": "fdfd7c0b2ab7df6dc936b9fc01d611f1f5425ba6e571cbb74942bf08a68a9f28",
+      "kind": "observation_artifact",
+      "media_type": "application/json",
+      "references": [
+        {
+          "event_definition_key": "faction_demand.2001",
+          "logical_path": "_runtime/p2r374-active-boundary-continuation-live/driver-state-park-8-snapshot.json",
+          "origin": "runtime",
+          "role": "driver_state_artifact"
+        }
+      ],
+      "sha256": "fdfd7c0b2ab7df6dc936b9fc01d611f1f5425ba6e571cbb74942bf08a68a9f28"
+    },
+    {
+      "blob_bytes": 26829,
+      "blob_path": "blobs/fef2972bd4f778818cd3a414c337d036f5132c1598febab0e2623e0252db7a1e.gz",
+      "blob_sha256": "78df2726f90a10e3d0ee6c8aa8b373f6d963c9b6ef41d079f8e3f2470dd332fd",
+      "bytes": 207042,
+      "evidence_id": "fef2972bd4f778818cd3a414c337d036f5132c1598febab0e2623e0252db7a1e",
+      "kind": "source_definition",
+      "media_type": "text/plain; charset=utf-8",
+      "references": [
+        {
+          "event_definition_key": "epidemic_events.0110",
+          "logical_path": "events/dlc/ce1/epidemic_events.txt",
+          "origin": "ck3_game",
+          "role": "source_definition"
+        },
+        {
+          "event_definition_key": "epidemic_events.1064",
+          "logical_path": "events/dlc/ce1/epidemic_events.txt",
+          "origin": "ck3_game",
+          "role": "source_definition"
+        },
+        {
+          "event_definition_key": "epidemic_events.5009",
+          "logical_path": "events/dlc/ce1/epidemic_events.txt",
+          "origin": "ck3_game",
+          "role": "source_definition"
+        }
+      ],
+      "sha256": "fef2972bd4f778818cd3a414c337d036f5132c1598febab0e2623e0252db7a1e"
+    }
+  ],
+  "schema": "xar.ck3.vanilla-event-portable-evidence-manifest",
+  "schema_version": 1,
+  "statistics": {
+    "evidence": 140,
+    "observation_artifacts": 56,
+    "references": 179,
+    "source_definitions": 84
+  }
+}
