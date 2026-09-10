@@ -20,33 +20,40 @@ VANILLA_TRAIT_SPECIFIC_TIMELINE_CONTRACTS: Final[
     dict[str, dict[str, object]]
 ] = {
     "trait_specific.4001": {
-        # The observed creation branch aliases created_witch and witch.  Bind
-        # both identities and the generated secret before choosing the source-
-        # authored refusal, which only grants piety and does not start the
-        # conversion scheme attached to native option 0.
+        # Every source-authored immediate branch produces witch.  An existing
+        # courtier also produces old_courtier, while only the generated branch
+        # produces created_witch and can additionally produce witch_secret.
+        # Bind each exact shape before choosing the source-authored refusal,
+        # which only grants piety and does not start native option 0's scheme.
         "date_policy": "product-observation-window",
         "root_character_id": PLAYER_SENTINEL,
         "character_scopes": {},
         "unique_character_scope_excludes": {
-            "created_witch": (PLAYER_SENTINEL,),
             "witch": (PLAYER_SENTINEL,),
         },
-        "character_scope_matches_any": {
+        "optional_unique_character_scope_excludes": {
+            "created_witch": (PLAYER_SENTINEL,),
+        },
+        "optional_character_scope_matches_any": {
             "created_witch": ("witch",),
-            "witch": ("created_witch",),
         },
         "scope_types": {
-            "created_witch": "character",
-            "witch_secret": "secret",
             "witch": "character",
         },
+        "optional_scope_types": {
+            "created_witch": "character",
+            "witch_secret": "secret",
+            "old_courtier": "boolean",
+        },
         "boolean_scopes": (),
-        "saved_scope_name_sets": ((
-            "created_witch",
-            "witch_secret",
-            "witch",
-        ),),
-        "saved_scope_count": 3,
+        "boolean_scope_name_sets": ((), ("old_courtier",)),
+        "saved_scope_name_sets": (
+            ("witch",),
+            ("old_courtier", "witch"),
+            ("created_witch", "witch"),
+            ("created_witch", "witch_secret", "witch"),
+        ),
+        "saved_scope_counts": (1, 2, 3),
         "option_count": 2,
         "snapshot_option_count": 2,
         "native_option_indices": (0, 1),
@@ -140,6 +147,13 @@ VANILLA_TRAIT_SPECIFIC_ANALYSIS: Final[
             "may make sexuality compatible with root, gives the witch trait or "
             "witch secret according to faith criminality, saves created_witch, "
             "aliases it as witch, and adds it as root's courtier"
+        ),
+        "source_scope_variants": (
+            "the existing-courtier branch saves boolean old_courtier plus "
+            "character witch; the pool-character branch saves only witch; "
+            "the generated branch saves character created_witch and aliases "
+            "it as witch, with witch_secret additionally present when the "
+            "creation effect uses the secret path"
         ),
         "generated_witch_side_effects": (
             "the generated character can receive secret_witch instead of the "
@@ -243,6 +257,48 @@ VANILLA_TRAIT_SPECIFIC_OBSERVATIONS: Final[
             "revision": 1670,
             "remaining_game_days": 2196,
             "process_restart_required": False,
+            "mcp_only": True,
+            "fixture_used": False,
+            "ocr_used": False,
+            "coordinates_used": False,
+            "console_used": False,
+        }, {
+            "run": "R414",
+            "kind": "scope-variant-pre-selection-live-red",
+            "red_classification": "harness-route-red",
+            "product_failure_proven": False,
+            "artifact": (
+                "_runtime/p1-post-chaos-terminal-r414-20260911/live-artifacts/"
+                "terminal-stages-red-attempt-03.json"
+            ),
+            "artifact_sha256": (
+                "ADD23E60298C513E31B8E663CF2362B4579CFFE81FDF35F9A77822498A2EDBFB"
+            ),
+            "date_raw": 53681976,
+            "event_instance_id": 1067,
+            "root_character_id": 32904,
+            "saved_character_ids": {
+                "witch": 94245,
+            },
+            "saved_scope_raw_types": {
+                "old_courtier": 2,
+                "witch": 4,
+            },
+            "rendered_native_option_indices": [0, 1],
+            "selected_option_number": None,
+            "selected_native_option_index": None,
+            "selection_attempted": False,
+            "connection_generation": 1,
+            "bridge_pid": 202268,
+            "snapshot_id": "native:660",
+            "revision": 661,
+            "process_restart_required": False,
+            "retained_red": True,
+            "mcp_only": True,
+            "fixture_used": False,
+            "ocr_used": False,
+            "coordinates_used": False,
+            "console_used": False,
         }],
     },
 }

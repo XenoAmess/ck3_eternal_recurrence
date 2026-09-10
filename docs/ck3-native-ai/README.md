@@ -120,9 +120,12 @@
   commit/rebase/push 与同 PID live retry 尚待，因此 production-live 仍为十二条。
   两条 prebootstrap context profile 不混入扁平表；缺少既有 source hash 的旧分析只标 migration-only，不编造 hash。
   R414 新遇到的 `yearly.0003` 已完成 exact-source 决策树、三 scope/四 authored option/三 rendered option
-  合同和选择前 RED 冻结；参见 [yearly-forbidden-love.md](yearly-forbidden-love.md)。它仍待同 PID 热恢复，
-  不能增加 production-live 计数。R414 attempt 2 随后遇到的 `bp1_house_feud.0014` 也已按实机 scope
-  形状收口到 authored3/native2；参见 [house-feud-cuckold-reveal.md](house-feud-cuckold-reveal.md)。
+  合同和选择前 RED 冻结；参见 [yearly-forbidden-love.md](yearly-forbidden-love.md)。attempt 2 随后遇到的
+  `bp1_house_feud.0014` 也已按实机 scope 形状收口到 authored3/native2；参见
+  [house-feud-cuckold-reveal.md](house-feud-cuckold-reveal.md)。两者已被同 PID 热恢复越过。attempt 3 进入
+  stage 9 后又实见 `trait_specific.4001` 的既有廷臣 scope variant；原版可证明的四种 exact shape、R374
+  生成分支与 R414 既有廷臣分支见 [trait-specific-witch-encounter.md](trait-specific-witch-encounter.md)。
+  本次变体仍待同 PID 动作与 advance，不重复增加该事件已经取得的 production-live primitive 计数。
   上述状态不表示 172 条全部 live；
   `361/626` 全树覆盖也不是 T0、其它 mod、CI 或发布门。T0 仍为 `50% / stage 8/11 / source 3/4 / P2 LOCKED`。
 - [static-confirmed + marriage/alliance production-live loop + call-ally blocker live / fallback static-ready]

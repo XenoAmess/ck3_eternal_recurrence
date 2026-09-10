@@ -5,11 +5,11 @@
 - [static-ready] 共享 registry 已实现在
   `ck3_autonomous_player/src/xar_autoplayer/vanilla_events/`。它提供合同构建、冲突检测、`$player` 物化和 JSON-safe 查询；全部能力均为离线只读，不依赖已启动的 CK3。
 - [static-ready] `ck3_query_vanilla_event_knowledge_v1` 已注册到正式 MCP server。它只按 stable event key 与 CK3 build 查询知识，不选择按钮、不推进时间、不修改存档或 registry。
-- [static-ready] 本包默认扁平 registry 为 **172 个 unique vanilla event key**。原冻结迁移 key 集不变；随后只按真实中断增量加入独立 records，最新一条是 R414 attempt 2 的 `bp1_house_feud.0014`。数量由 registry/migration 测试冻结。
-- [static-ready analysis / mixed live evidence] 当前 package 同时发布 **172 条 analysis** 与 **172 条 observation metadata**，其中 **24 个 key** 含非 legacy 的 paused/live observation。缺少已冻结 source hash 的旧结论只按既有合同注释、docs/tests 标为 migration-only，不编造 hash；R414 的两次未知事件均为 harness-route RED，在各自动作完成前不是新增 production-live primitive。
+- [static-ready] 本包默认扁平 registry 为 **172 个 unique vanilla event key**。原冻结迁移 key 集不变；随后只按真实中断增量加入独立 records，最新新增 key 是 R414 attempt 2 的 `bp1_house_feud.0014`。attempt 3 的 `trait_specific.4001` 是既有 key 的新 scope observation，不改变计数。数量由 registry/migration 测试冻结。
+- [static-ready analysis / mixed live evidence] 当前 package 同时发布 **172 条 analysis** 与 **172 条 observation metadata**，其中 **24 个 key** 含非 legacy 的 paused/live observation。缺少已冻结 source hash 的旧结论只按既有合同注释、docs/tests 标为 migration-only，不编造 hash；R414 新出现的三次事件边界均按 harness-route RED 保留，在各自动作完成前不是新增 production-live primitive。
 - [static-ready context profiles] prebootstrap 的 `spymaster_task.0381`、`spymaster_task.0399` 两条记录继续作为 seed-capture 上下文 profile 保存，不混入默认扁平 registry。它们与默认 manager 合同使用相同 event key、但冻结不同阶段的精确存档 shape，强行压平会造成有意义的合同冲突。
 
-当前状态表示 registry、默认数据组合和只读 MCP 可以被静态消费者使用，不表示 172 条记录都已有独立 production-live exemplar，也不表示 CK3 自动玩家已经具备完整事件效用判断。production runtime 当前 package 组合 `318` 条事件合同；共享 registry 的 production-live 标签只落在已有选择与 advance 证据的切片。R414 的 `bp1_house_feud.0014` 仍保留选择前 RED，必须在同 PID 热恢复并验证 instance advance 后才可增加 live 计数。该增量不改变 T0 产品进度。
+当前状态表示 registry、默认数据组合和只读 MCP 可以被静态消费者使用，不表示 172 条记录都已有独立 production-live exemplar，也不表示 CK3 自动玩家已经具备完整事件效用判断。production runtime 当前 package 组合 `318` 条事件合同；共享 registry 的 production-live 标签只落在已有选择与 advance 证据的切片。R414 已同 PID 越过 `yearly.0003` 与 `bp1_house_feud.0014`，attempt 3 的 `trait_specific.4001` 既有廷臣分支仍保留选择前 RED。该 event 在 R374 已有生成分支选择与 advance，所以本次热恢复只验证 scope variant，不重复增加 live 计数，也不改变 T0 产品进度。
 
 T0 当前仍为 `50%`、canonical stage `8/11`，source checkpoint `3/4` 且只缺 `capture_cross_cycle_endgame`；T0-P1 未签收，T0-P2 继续 `LOCKED`。`strict 4/361` 与 `definitions 106/626` 只是非阻塞 backlog。
 
@@ -86,7 +86,7 @@ R390 在 `date_raw=53589168` 暂停于 instance `1089`，原始 RED 原样保留
 
 CK3 `1.19.0.6` exact-build 定义位于 `events/lifestyles/statecraft_lifestyle/diplomacy_majesty_events.txt:968`。`.4033` 只由 `.4030` 的 option B 直接触发；上游是每年四次的 diplomacy lifestyle pulse 及概率事件池，不是 daily pulse。`.4033` 自身只检查 `thinker` 仍存活，没有独立随机分支或后续事件。唯一 authored option 1/native `0` 给接收者五年 `+1 diplomacy/+1 martial` modifier、对 thinker 的 `+25` opinion，并在需要时建立 potential-friend 关系；没有资源、压力、囚禁、受伤、死亡、战争或头衔代价。因此最小安全合同选择该唯一终止路线，同时仍要求 exact saved-scope shape、玩家/第三方关系、选项投影及提交前 revision 重绑定全部通过。
 
-portable evidence bundle 随此记录更新为 `234` 个唯一 evidence blob、`937` 条引用，其中 exact-build definition `172` 条、lexical caller candidate `503` 条、人工审阅 source `198` 条、observation artifact reference `64` 条。R414 attempt 2 不可变 RED 的 SHA-256 为 `A0837453C72CB67300AE07EB76EB2B53A75CB511838543696F2891BD2AF80346`；共享合同是 Python-only 数据，既有 continuation 会重新加载 canonical registry，可在保留同一 CK3 PID 的条件下热恢复。
+portable evidence bundle 随 R414 attempt 3 更新为 `235` 个唯一 evidence blob、`938` 条引用，其中 exact-build definition `172` 条、lexical caller candidate `503` 条、人工审阅 source `198` 条、observation artifact reference `65` 条；64 份唯一 observation artifact 中含 `trait_specific.4001` 的 R374 生成分支与 R414 既有廷臣分支。attempt 3 不可变 RED 的 SHA-256 为 `ADD23E60298C513E31B8E663CF2362B4579CFFE81FDF35F9A77822498A2EDBFB`；共享合同是 Python-only 数据，既有 continuation 会重新加载 canonical registry，可在保留同一 CK3 PID 的条件下热恢复。
 
 ### R384 `pay_homage.0101` 最小合同
 
