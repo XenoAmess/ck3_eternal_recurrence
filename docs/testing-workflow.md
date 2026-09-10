@@ -2351,3 +2351,31 @@ absolute end `53635896`；原版 `ep3_decisions_event.2001` 在 `53385312` 出�
 159 条 drain 中 `zg361we.356` 为零，且其 autosave 恢复到 `central_stage_9`；所以
 R372 从零起算、记录前两次 `.356` 并在第三次停下是本次 lineage 的正确语义，不需要
 为尚未发生的跨窗口欠计数扩改实现。
+
+### R375：产品场景失效、B1 配额根因与冻结重放点（2026-09-10）
+
+R375 尾段不能再笼统归类为“未等到第三次 `.356` 的产品 RED”。第三次 `.356` 只是一条可选的第三周期业务证据，
+不再是 P1 source-readiness 的硬门禁；前两条独立 `.355 -> .356` 已覆盖可重复事件链。随后出现的
+`tgp_dynastic_cycle.0081` 属于会改变经理/场景身份的产品中断：production resolver 现在会在任何选项输入前把该轮标为
+`SCENARIO_INVALID / NOT_EVALUATED`，retained old drain 也会触发同一失效，不发送新的玩法输入。对应修复由
+`9caf735` 与 `734ddbc` 分别收口产品早停和通用 registry / product overlay 边界；normal/`-O` runner 与 parity 均 GREEN。
+
+同一 lineage 中仍有独立、真实的 B1 liveness RED。D340 tick 两次调用
+`zg361_b1_rebuild_local_quota_effect` 时复用了命名 temporary list：第一次 52 人、第二次 80 人累计为 132 个唯一角色，
+配额目标 `40/79/13`，但 processing roster 80 人的重计为 `25/46/9`，守恒无法闭合。固定 diagnostic subject `30938`
+不在 B1 roster 中，不是根因。commit `95f6824` 在每次 rebuild 入口以真实 manager anchor 和
+`every_in_list/remove_from_list` 排空 scratch list；生成器 `--check`、B1 normal/`-O` `76/76` 与 `validate_local.py`
+均 GREEN，但这仍是 static-ready，不能冒充实机关闭。
+
+最晚可自然重放的 checkpoint 是
+`_runtime/p2r374-active-boundary-continuation-state/profile/save games/autosave_2.ck3`：
+SHA-256 `F1188E048188AA37FAF42168E64F5E56E8413358E26D627BC6EFEA09FC452CBB`，`141176400` bytes，
+`date_raw=53584920` / 1117.1.1，cycle 8 / case 8 / state 3 / active，配额 `23/46/7=76` 且 conservation valid；
+D340 watchdog 距离 1117.4.4 还有 93 天。后续 fresh runtime 必须使用当前产品树和新 DLL，从该存档验证第二次 rebuild
+后 target/recount 都绑定同一 80 人域，并同时查询通用 B1 MCP snapshot。
+
+Python-only 热重跑已证明 `.0081` 会即时变为 `SCENARIO_INVALID / NOT_EVALUATED`、`product_red=false` 且不再输入；
+更新后的 rolling report SHA-256 为
+`EE1C4F4D2696CB2D9B380EABE265043E40C8049A23D2863431DA5BE18B943381`。该轮旧的一次性 wrapper 随后仍用陈旧
+event instance `1058` 尝试 park，触发 `BridgeUnavailableError` 并由 supervisor 清理 CK3。因此这是 wrapper cleanup RED，
+不推翻场景失效成功；当前 CK3 槽为空。只有完成 B1 新脚本与 MCP/DLL 后才启动一个新的独占 CK3 PID。
