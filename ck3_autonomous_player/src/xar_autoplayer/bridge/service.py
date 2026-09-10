@@ -236,6 +236,10 @@ from .coat_of_arms_source_probe_contract import (
     normalize_coat_of_arms_source_v1_result,
     validate_coat_of_arms_source_probe_apply,
 )
+from .coat_of_arms_source_export_contract import (
+    EXPORT_COAT_OF_ARMS_SOURCE_V1_CAPABILITY,
+    normalize_coat_of_arms_source_export_v1_result,
+)
 from .loaded_feature_manifest_contract import (
     QUERY_LOADED_FEATURE_MANIFEST_V1_CAPABILITY,
     QUERY_LOADED_FEATURE_MANIFEST_V1_STEP,
@@ -6011,6 +6015,86 @@ class GameplayBridgeService:
         if current_binding != binding:
             raise BridgeUnavailableError(
                 "coat-of-arms probe crossed its revision binding"
+            )
+        return normalized
+
+    def export_coat_of_arms_source_v1(
+        self,
+        *,
+        expected_revision: int,
+    ) -> dict[str, object]:
+        """Export current designer source through CK3's typed Copy path."""
+
+        if (
+            isinstance(expected_revision, bool)
+            or not isinstance(expected_revision, int)
+            or not 0 <= expected_revision <= 2**64 - 1
+        ):
+            raise ValueError("expected_revision must be a non-negative uint64")
+        capabilities = self.capabilities()
+        bridge_capabilities = capabilities.get("bridge_capabilities")
+        typed_export = getattr(
+            self.driver, "export_coat_of_arms_source_v1", None
+        )
+        if not (
+            isinstance(bridge_capabilities, list)
+            and EXPORT_COAT_OF_ARMS_SOURCE_V1_CAPABILITY
+            in bridge_capabilities
+            and callable(typed_export)
+        ):
+            raise UnsupportedStepError(
+                "capability_not_available: selected backend cannot export "
+                "coat-of-arms source"
+            )
+        frontend = expected_revision == 0
+        if frontend:
+            try:
+                binding = coat_of_arms_source_frontend_binding_from_capabilities(
+                    capabilities
+                )
+            except ValueError as error:
+                raise BridgeUnavailableError(
+                    "frontend coat-of-arms export lacks an exact native "
+                    f"binding: {error}"
+                ) from error
+        else:
+            snapshot = self.snapshot()
+            try:
+                binding = _coat_of_arms_source_probe_binding(snapshot)
+            except ValueError as error:
+                raise BridgeUnavailableError(
+                    f"coat-of-arms export lacks a complete binding: {error}"
+                ) from error
+            if binding["revision"] != expected_revision:
+                raise PreSubmissionRevisionMismatchError(
+                    "coat-of-arms export revision mismatch: expected "
+                    f"{expected_revision}, current {binding['revision']}"
+                )
+        result = typed_export(expected_revision=expected_revision)
+        try:
+            normalized = normalize_coat_of_arms_source_export_v1_result(
+                result,
+                expected_binding=binding,
+            )
+        except ValueError as error:
+            raise BridgeUnavailableError(
+                f"coat-of-arms export result is malformed: {error}"
+            ) from error
+        try:
+            current_binding = (
+                coat_of_arms_source_frontend_binding_from_capabilities(
+                    self.capabilities()
+                )
+                if frontend
+                else _coat_of_arms_source_probe_binding(self.snapshot())
+            )
+        except ValueError as error:
+            raise BridgeUnavailableError(
+                f"coat-of-arms export lost its session binding: {error}"
+            ) from error
+        if current_binding != binding:
+            raise BridgeUnavailableError(
+                "coat-of-arms export crossed its revision binding"
             )
         return normalized
 

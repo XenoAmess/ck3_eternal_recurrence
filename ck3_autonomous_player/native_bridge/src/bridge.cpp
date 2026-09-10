@@ -4397,6 +4397,57 @@ std::string CoatOfArmsDesignerProbeResultFrame(
   return result;
 }
 
+std::string CoatOfArmsDesignerExportResultFrame(
+    std::string_view request_id, std::uint64_t query_sequence,
+    const xar::ck3_11906::CoatOfArmsDesignerProbeResultV1 &result_value) {
+  const bool exported = result_value.designer_observed &&
+                        result_value.copy_invoked &&
+                        result_value.clipboard_read &&
+                        !result_value.exported_source.empty();
+  const std::string_view status = exported ? "exported" : "unavailable";
+  std::string result =
+      "{\"type\":\"command_result\",\"protocol_version\":1,"
+      "\"request_id\":";
+  AppendJsonString(result, request_id);
+  result += ",\"ok\":true,\"result\":{\"step\":";
+  AppendJsonString(result,
+                   xar::ck3_11906::kCoatOfArmsDesignerExportV1Step);
+  result += ",\"accepted\":true,\"status\":";
+  AppendJsonString(result, status);
+  result += ",\"query_sequence\":" + Number(query_sequence);
+  result += ",\"snapshot_revision\":" +
+            Number(result_value.snapshot_revision);
+  result += ",\"coat_of_arms_export\":{\"schema\":";
+  AppendJsonString(result, "xar.ck3.coat-of-arms-designer-export.v1");
+  result += ",\"schema_version\":1,\"status\":";
+  AppendJsonString(result, status);
+  result += ",\"date_raw\":" + SignedNumber(result_value.date_raw);
+  result += ",\"source_bytes\":" + Number(result_value.source_bytes);
+  result += ",\"designer_observed\":";
+  result += result_value.designer_observed ? "true" : "false";
+  result += ",\"copy_invoked\":";
+  result += result_value.copy_invoked ? "true" : "false";
+  result += ",\"clipboard_read\":";
+  result += result_value.clipboard_read ? "true" : "false";
+  result += ",\"source\":";
+  if (exported) {
+    AppendJsonString(result, result_value.exported_source);
+  } else {
+    result += "null";
+  }
+  result += ",\"reason\":";
+  if (result_value.reason.empty()) {
+    result += "null";
+  } else {
+    AppendJsonString(result, result_value.reason);
+  }
+  result += ",\"provenance\":{\"backend_id\":";
+  AppendJsonString(result,
+                   xar::ck3_11906::kCoatOfArmsDesignerExportV1BackendId);
+  result += "}},\"backend_id\":\"native-headless\"}}";
+  return result;
+}
+
 std::string SaveCheckpointResultFrame(std::string_view request_id,
                                       const CheckpointSubmission &checkpoint) {
   std::string result =
@@ -8458,6 +8509,108 @@ void RunConnectedSession(
                       request_id, step, false,
                       "application-main pending-interaction context result "
                       "was not reclaimable");
+                }
+                connected = xar::bridge::WriteFrame(pipe, response);
+              }
+            }
+          }
+        } else if (step ==
+                   xar::ck3_11906::kCoatOfArmsDesignerExportV1Step) {
+          std::uint64_t expected_revision = 0;
+          const bool request_valid = xar::bridge::JsonUnsignedField(
+              incoming.payload, "expected_revision", expected_revision);
+          if (!request_valid) {
+            connected = xar::bridge::WriteFrame(
+                pipe, CommandResultFrame(
+                          request_id, step, false,
+                          "coat-of-arms export request is malformed"));
+          } else if (expected_revision != state_revision) {
+            connected = xar::bridge::WriteFrame(
+                pipe, CommandResultFrame(
+                          request_id, step, false,
+                          "coat-of-arms export snapshot revision is stale"));
+          } else {
+            xar::game::Snapshot current_snapshot{};
+            const bool gameplay_bound = state_revision != 0;
+            const bool starting_binding_stable =
+                gameplay_bound
+                    ? previous_snapshot.has_value() &&
+                          xar::game::ReadSnapshot(game, current_snapshot) &&
+                          current_snapshot == previous_snapshot.value()
+                    : !previous_snapshot.has_value();
+            if (!starting_binding_stable) {
+              connected = xar::bridge::WriteFrame(
+                  pipe, CommandResultFrame(
+                            request_id, step, false,
+                            "coat-of-arms export snapshot changed"));
+            } else {
+              xar::ck3_11906::CoatOfArmsDesignerProbeRequestV1 query{};
+              query.expected_snapshot_revision = expected_revision;
+              query.date_raw = gameplay_bound ? current_snapshot.date_raw : 0;
+              query.operation = xar::ck3_11906::
+                  CoatOfArmsDesignerOperationV1::export_current;
+              const auto submit =
+                  xar::ck3_11906::TrySubmitCoatOfArmsDesignerProbeV1(
+                      g_coat_of_arms_designer_probe_hook_v1, query);
+              if (submit != xar::ck3_11906::
+                                CoatOfArmsDesignerProbeSubmitResultV1::
+                                    submitted) {
+                std::string_view error =
+                    "coat-of-arms designer export is unavailable";
+                if (submit == xar::ck3_11906::
+                                  CoatOfArmsDesignerProbeSubmitResultV1::busy) {
+                  error = "coat-of-arms designer export is busy";
+                } else if (submit == xar::ck3_11906::
+                                         CoatOfArmsDesignerProbeSubmitResultV1::
+                                             invalid_request) {
+                  error = "coat-of-arms designer export request is invalid";
+                }
+                connected = xar::bridge::WriteFrame(
+                    pipe, CommandResultFrame(request_id, step, false, error));
+              } else {
+                auto wait =
+                    xar::ck3_11906::WaitForCoatOfArmsDesignerProbeV1(
+                        query,
+                        xar::ck3_11906::
+                            kCoatOfArmsDesignerProbeQueuedWaitBudgetMillisecondsV1);
+                while (wait == xar::ck3_11906::
+                                   CoatOfArmsDesignerProbeWaitResultV1::
+                                       timeout_executor_already_running) {
+                  wait = xar::ck3_11906::WaitForCoatOfArmsDesignerProbeV1(
+                      query,
+                      xar::ck3_11906::
+                          kCoatOfArmsDesignerProbeExecutingWaitSliceMillisecondsV1);
+                }
+                xar::game::Snapshot completion_snapshot{};
+                const bool completion_snapshot_stable =
+                    wait == xar::ck3_11906::
+                                CoatOfArmsDesignerProbeWaitResultV1::completed &&
+                    (!gameplay_bound ||
+                     (xar::game::ReadSnapshot(game, completion_snapshot) &&
+                      completion_snapshot == current_snapshot));
+                std::string response;
+                if (completion_snapshot_stable) {
+                  response = CoatOfArmsDesignerExportResultFrame(
+                      request_id,
+                      coat_of_arms_designer_probe_query_sequence + 1,
+                      query.result);
+                  ++coat_of_arms_designer_probe_query_sequence;
+                } else {
+                  const auto error = xar::ck3_11906::
+                      CoatOfArmsDesignerProbeFailureMessageV1(wait);
+                  response = CommandResultFrame(
+                      request_id, step, false,
+                      wait != xar::ck3_11906::
+                                  CoatOfArmsDesignerProbeWaitResultV1::completed
+                          ? error
+                          : std::string_view{
+                                "coat-of-arms export completion snapshot changed"});
+                }
+                if (!xar::ck3_11906::ReclaimCoatOfArmsDesignerProbeV1(
+                        g_coat_of_arms_designer_probe_hook_v1, query)) {
+                  response = CommandResultFrame(
+                      request_id, step, false,
+                      "coat-of-arms designer export was not reclaimable");
                 }
                 connected = xar::bridge::WriteFrame(pipe, response);
               }

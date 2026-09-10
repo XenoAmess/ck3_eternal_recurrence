@@ -299,6 +299,12 @@ from .coat_of_arms_source_probe_contract import (
     normalize_native_coat_of_arms_source_v1_result,
     validate_coat_of_arms_source_probe_apply,
 )
+from .coat_of_arms_source_export_contract import (
+    EXPORT_COAT_OF_ARMS_SOURCE_V1_CAPABILITY,
+    EXPORT_COAT_OF_ARMS_SOURCE_V1_STEP,
+    normalize_coat_of_arms_source_export_v1_result,
+    normalize_native_coat_of_arms_source_export_v1_result,
+)
 from .loaded_feature_manifest_contract import (
     QUERY_LOADED_FEATURE_MANIFEST_V1_CAPABILITY,
     QUERY_LOADED_FEATURE_MANIFEST_V1_STEP,
@@ -3371,6 +3377,94 @@ class NativeHeadlessGameplayDriver:
         except ValueError as error:
             raise BridgeUnavailableError(
                 f"native coat-of-arms probe projection is malformed: {error}"
+            ) from error
+
+    def export_coat_of_arms_source_v1(
+        self,
+        *,
+        expected_revision: int,
+    ) -> dict[str, object]:
+        """Invoke CK3's own designer Copy action and return its source."""
+
+        _validate_revision(expected_revision, "expected_revision")
+        frontend = expected_revision == 0
+        if frontend:
+            try:
+                binding = coat_of_arms_source_frontend_binding_from_capabilities(
+                    self.capabilities()
+                )
+            except ValueError as error:
+                raise BridgeUnavailableError(
+                    f"native frontend coat-of-arms export lacks a binding: {error}"
+                ) from error
+            expected_native_revision = 0
+            expected_date_raw = 0
+        else:
+            starting = self.take_snapshot()
+            try:
+                binding = _coat_of_arms_source_probe_binding_from_snapshot(
+                    starting
+                )
+            except ValueError as error:
+                raise BridgeUnavailableError(
+                    f"native coat-of-arms export lacks a binding: {error}"
+                ) from error
+            if binding["revision"] != expected_revision:
+                raise PreSubmissionRevisionMismatchError(
+                    "native coat-of-arms export revision mismatch: expected "
+                    f"{expected_revision}, current {binding['revision']}"
+                )
+            expected_native_revision = int(binding["native_revision"])
+            expected_date_raw = int(binding["date_raw"])
+        raw = self._execute_primitive_step(
+            EXPORT_COAT_OF_ARMS_SOURCE_V1_STEP,
+            expected_revision=expected_revision,
+            required_capability=EXPORT_COAT_OF_ARMS_SOURCE_V1_CAPABILITY,
+            allow_frontend_revision_zero=frontend,
+        )
+        try:
+            native = normalize_native_coat_of_arms_source_export_v1_result(
+                raw,
+                expected_native_revision=expected_native_revision,
+                expected_date_raw=expected_date_raw,
+            )
+        except ValueError as error:
+            raise BridgeUnavailableError(
+                f"native coat-of-arms export returned malformed data: {error}"
+            ) from error
+        try:
+            current_binding = (
+                coat_of_arms_source_frontend_binding_from_capabilities(
+                    self.capabilities()
+                )
+                if frontend
+                else _coat_of_arms_source_probe_binding_from_snapshot(
+                    self.take_snapshot()
+                )
+            )
+        except ValueError as error:
+            raise BridgeUnavailableError(
+                f"native coat-of-arms export lost its binding: {error}"
+            ) from error
+        if current_binding != binding:
+            raise BridgeUnavailableError(
+                "native coat-of-arms export crossed its revision binding"
+            )
+        public = {
+            "schema": "coat-of-arms-source-export-v1",
+            "schema_version": 1,
+            "step": EXPORT_COAT_OF_ARMS_SOURCE_V1_STEP,
+            **native,
+            "binding": binding,
+        }
+        try:
+            return normalize_coat_of_arms_source_export_v1_result(
+                public,
+                expected_binding=binding,
+            )
+        except ValueError as error:
+            raise BridgeUnavailableError(
+                f"native coat-of-arms export projection is malformed: {error}"
             ) from error
 
     def _center_map_on_landed_title_v1_unrecorded(
@@ -15395,6 +15489,100 @@ class ConfiguredHybridFallbackDriver:
         except ValueError as error:
             raise BridgeUnavailableError(
                 f"hybrid coat-of-arms probe projection is malformed: {error}"
+            ) from error
+
+    def export_coat_of_arms_source_v1(
+        self,
+        *,
+        expected_revision: int,
+    ) -> dict[str, object]:
+        """Keep CK3's designer Copy/export path on native only."""
+
+        _validate_revision(expected_revision, "expected_revision")
+        native_capabilities = set(
+            _string_list(
+                self.native.capabilities().get("bridge_capabilities")
+            )
+        )
+        if EXPORT_COAT_OF_ARMS_SOURCE_V1_CAPABILITY not in native_capabilities:
+            raise UnsupportedStepError(
+                "capability_not_available: coat-of-arms export is pure "
+                "native and will not use fallback"
+            )
+        if expected_revision == 0:
+            try:
+                binding = coat_of_arms_source_frontend_binding_from_capabilities(
+                    self.native.capabilities()
+                )
+            except ValueError as error:
+                raise BridgeUnavailableError(
+                    "hybrid frontend coat-of-arms export lacks a native "
+                    f"binding: {error}"
+                ) from error
+            result = self.native.export_coat_of_arms_source_v1(
+                expected_revision=0
+            )
+            try:
+                ending_binding = coat_of_arms_source_frontend_binding_from_capabilities(
+                    self.native.capabilities()
+                )
+            except ValueError as error:
+                raise BridgeUnavailableError(
+                    "hybrid frontend coat-of-arms export lost its native "
+                    f"binding: {error}"
+                ) from error
+        else:
+            starting = self.take_snapshot()
+            try:
+                binding = _coat_of_arms_source_probe_binding_from_snapshot(
+                    starting
+                )
+            except ValueError as error:
+                raise BridgeUnavailableError(
+                    f"hybrid coat-of-arms export lacks a binding: {error}"
+                ) from error
+            if binding["revision"] != expected_revision:
+                raise PreSubmissionRevisionMismatchError(
+                    "hybrid coat-of-arms export revision mismatch: expected "
+                    f"{expected_revision}, current {binding['revision']}"
+                )
+            backend_revisions = starting.get("backend_revisions")
+            native_revision = (
+                backend_revisions.get("fast")
+                if isinstance(backend_revisions, dict)
+                else None
+            )
+            if (
+                isinstance(native_revision, bool)
+                or not isinstance(native_revision, int)
+                or native_revision < 0
+            ):
+                raise BridgeUnavailableError(
+                    "hybrid coat-of-arms export lacks the native revision"
+                )
+            result = self.native.export_coat_of_arms_source_v1(
+                expected_revision=native_revision
+            )
+            try:
+                ending_binding = _coat_of_arms_source_probe_binding_from_snapshot(
+                    self.take_snapshot()
+                )
+            except ValueError as error:
+                raise BridgeUnavailableError(
+                    f"hybrid coat-of-arms export lost its binding: {error}"
+                ) from error
+        if ending_binding != binding:
+            raise BridgeUnavailableError(
+                "hybrid coat-of-arms export crossed its native binding"
+            )
+        try:
+            return normalize_coat_of_arms_source_export_v1_result(
+                {**result, "binding": binding},
+                expected_binding=binding,
+            )
+        except ValueError as error:
+            raise BridgeUnavailableError(
+                f"hybrid coat-of-arms export projection is malformed: {error}"
             ) from error
 
     def query_pending_character_interaction_context_v1(

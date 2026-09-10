@@ -571,6 +571,16 @@ def _ck3_probe_coat_of_arms_source_v1(
     )
 
 
+def _ck3_export_coat_of_arms_source_v1(
+    service: GameplayBridgeService,
+    expected_revision: int,
+) -> dict[str, object]:
+    """Export the current design through CK3's native Copy action."""
+    return service.export_coat_of_arms_source_v1(
+        expected_revision=expected_revision,
+    )
+
+
 def _ck3_query_loaded_feature_manifest_v1(
     service: GameplayBridgeService,
     expected_revision: int,
@@ -1263,6 +1273,16 @@ def create_server(driver: GameplayBridgeDriver):
         )
 
     @server.tool()
+    def ck3_export_coat_of_arms_source_v1(
+        expected_revision: int,
+    ) -> dict[str, object]:
+        """Return CK3's canonical source for the active designer coat of arms."""
+        return _ck3_export_coat_of_arms_source_v1(
+            service,
+            expected_revision,
+        )
+
+    @server.tool()
     def ck3_query_loaded_feature_manifest_v1(
         expected_revision: int,
     ) -> dict[str, object]:
@@ -1605,6 +1625,9 @@ def create_server(driver: GameplayBridgeDriver):
     )
     _forbid_unknown_tool_arguments_v1(
         server, "ck3_probe_coat_of_arms_source_v1"
+    )
+    _forbid_unknown_tool_arguments_v1(
+        server, "ck3_export_coat_of_arms_source_v1"
     )
     return server
 

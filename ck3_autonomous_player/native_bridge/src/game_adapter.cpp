@@ -391,6 +391,8 @@ bool GameAdapter::supports_step(std::string_view step) const noexcept {
     capability = ck3_11906::kEventWindowContextV1Capability;
   } else if (step == ck3_11906::kCoatOfArmsDesignerProbeV1Step) {
     capability = ck3_11906::kCoatOfArmsDesignerProbeV1Capability;
+  } else if (step == ck3_11906::kCoatOfArmsDesignerExportV1Step) {
+    capability = ck3_11906::kCoatOfArmsDesignerExportV1Capability;
   } else if (step == ck3_11906::kTitleMapNavigationV1Step) {
     capability = ck3_11906::kTitleMapNavigationV1Capability;
   } else if (ck3_11906::ParseSetPlayedCharacterV1Step(step).has_value()) {

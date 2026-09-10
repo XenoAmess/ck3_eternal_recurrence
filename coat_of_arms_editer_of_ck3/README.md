@@ -25,3 +25,6 @@ pnpm dev
 
 当前不需要后端。未来只有在索引用户选择的 CK3/DLC/mod 资源、转换 DDS 或连接本机 MCP 会话时，才考虑增加
 Maven + Java + Quarkus 伴随服务。
+
+仓库内的原生 `ck3_export_coat_of_arms_source_v1` MCP Copy/export primitive 已完成静态构建与 closed-schema 测试，
+尚未在真实 CK3 进程中验收，也尚未接入这个浏览器界面。浏览器不会用 OCR 或屏幕自动化冒充该能力。

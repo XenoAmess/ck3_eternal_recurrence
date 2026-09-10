@@ -1,6 +1,6 @@
 # CK3 纹章设计器剪贴板导入能力报告
 
-> 调研日期：2026-09-08 至 2026-09-10
+> 调研日期：2026-09-08 至 2026-09-11
 >
 > 页面：角色设计器 → 自定义纹章 → 设计你自己的纹章 → 从剪贴板粘贴
 >
@@ -36,6 +36,7 @@ designer 的 working state。
 | 状态 | 含义 |
 |---|---|
 | `engine-static` | 本机构建的 GUI、EXE 控制流、字段或原版语料已经确认 |
+| `mcp-static-ready` | MCP/原生能力、闭合 schema 与自动测试已实现，但尚未在真实 CK3 进程中执行；不能作为语法结论 |
 | `mcp-detected` | MCP 精确绑定到本次 CK3 进程，写入并回读相同源码，原生 `CanPaste` 为真且取得 preview handle |
 | `mcp-applied` | 在 `mcp-detected` 基础上调用原生 paste，并验证 designer working state 已切到候选纹章 |
 | `legacy-ui` | 早期人工/UI 辅助观察；仅作补充，不作为 MCP-first 最终证据 |
@@ -51,7 +52,7 @@ designer 的 working state。
 用实际安装的 Python MCP SDK `2.0.0` 连接现有 stdio server 时，补能力前共列出 62 个工具，
 没有 coat-of-arms、clipboard 或 designer 工具。也就是说，旧 MCP 无法回答本报告的核心问题。
 
-本轮新增显式工具：
+本轮先后新增两个显式工具：
 
 ```text
 ck3_probe_coat_of_arms_source_v1(
@@ -59,15 +60,21 @@ ck3_probe_coat_of_arms_source_v1(
     expected_revision: integer,
     apply: boolean
 )
+
+ck3_export_coat_of_arms_source_v1(
+    expected_revision: integer
+)
 ```
 
 对应原生 capability：
 
 ```text
 game.command.probe-coat-of-arms-source-v1
+game.command.export-coat-of-arms-source-v1
 ```
 
-它不属于自动游玩 planner 的无参数 action 集合，只能由调用方显式提供源码。为了覆盖角色设计器所在的开局前流程，
+probe 不属于自动游玩 planner 的无参数 action 集合，只能由调用方显式提供源码；export 则调用游戏自己的
+`CoatOfArmsDesigner.OnCopyToClipboard` 路径，读取当前设计器写回系统剪贴板的源码。为了覆盖角色设计器所在的开局前流程，
 MCP 合同明确区分三种绑定：
 
 - `frontend`：尚无 semantic snapshot，必须使用 `expected_revision=0`；
@@ -83,7 +90,7 @@ MCP 合同明确区分三种绑定：
 - EXE SHA-256 与版本完全匹配；
 - `ck3_build_match=true` 且 capability 由同一 hello 广告。
 
-Hybrid 后端中的本工具也强制直达 native，
+Hybrid 后端中的两个工具都强制直达 native，
 不会回退到 OCR、坐标或视觉驱动。
 
 ### 3.2 每条 MCP 结果提供什么证据
@@ -123,11 +130,20 @@ binding
 
 查询会覆盖 OS 剪贴板并改变游戏里的 paste preview，因此不是无副作用的纯读操作。
 
+export 的公开结果为闭合 schema，包含 `status`、`designer_observed`、`copy_invoked`、`clipboard_read`、
+`source`、`source_sha256`、`source_bytes`、`reason` 与同一 exact binding。成功状态只有 `exported`；已进入 designer callback
+但未能调用 Copy 或未能读取剪贴板时返回 `unavailable`，不会泄露上一次成功结果；超时未观察到 designer 则整次命令失败。
+当前实现限制输出为非空 ASCII、
+无 NUL、最多 128 KiB。它已经达到 `mcp-static-ready`，尚未在真实 CK3 中执行，因此本报告仍不使用它改写任何语法结论。
+
 ### 3.3 验证状态
 
-- Python contract、service、native driver、hybrid 和真实 MCP SDK tools/list/call：15 项聚焦测试 GREEN（1 项依赖可选 SDK 的测试跳过）；
+- Python contract、service、native driver、hybrid 和真实 MCP SDK tools/list/call：21 项聚焦测试 GREEN；
+  不带 MCP SDK 的普通 Python 环境同组测试 21 项 GREEN，其中 2 项 SDK 集成测试按设计跳过；
 - native bridge fresh build：成功；
 - native protocol 与 adapter registry CTest：2/2 GREEN；
+- Copy/export MCP primitive 已完成 closed-schema 注册、exact-build RVA/prologue 身份校验、UI-thread 调用、剪贴板读取、
+  SHA-256 与 exact binding 投影，当前为 `mcp-static-ready`；遵守用户当前“不占用 CK3/主屏幕”的要求，live 结果明确待验；
 - CK3 frontend exact-build 握手：已真实取得，并广告新 capability；
 - 隔离 attempt 5 补齐 `frontend_snapshot` 绑定；attempt 6 暴露剪贴板函数槽的瞬时初始化状态；attempt 8 又证明
   gameplay 生命周期门禁会让角色设计器永远无法安装 hook。现在 hook 在 exact adapter 选定后即于 frontend 启动，瞬时槽缺失仍在
@@ -240,7 +256,8 @@ depth = 1.01
 - 重复 `colored_emblem` 与重复 `instance` 可共同应用；
 - 多行源码经 MCP 统一为 CRLF 后再写入 Windows 剪贴板。
 
-“注释在 copy-back 丢失”和“HSV 被 copy-back 规范化成 RGB”仍来自早期辅助观察，需待原生 Copy/export MCP primitive 复核。
+“注释在 copy-back 丢失”和“HSV 被 copy-back 规范化成 RGB”仍来自早期辅助观察；Copy/export MCP primitive 已静态就绪，
+但尚未实机执行，所以仍需等待 live 复核。
 
 ### 5.3 推荐的最小输出
 
@@ -387,9 +404,8 @@ Web 端若要提供随机生成，应在自己的数据模型中完成选择，�
 ## 8. 目前 MCP 能力仍缺什么
 
 本轮已实机闭合“输入源码 → 原生检测/预览 → 可选应用”，并补齐 frontend 生命周期与 Windows 换行规范化。
-仍未通过 MCP 暴露的能力有：
+游戏自身 Copy/export 已通过 MCP/原生实现并完成静态验收，但尚未取得 live 证据。仍未通过 MCP 暴露的能力有：
 
-- 调用游戏自己的 Copy/export，并返回规范化 source；
 - 读取 preview 的最终像素或直接导出 PNG；
 - 完成角色设计器上层 Finish；
 - 枚举游戏当前实际注册的 pattern/emblem/color 资源；
@@ -428,7 +444,8 @@ CoatOfArms
 
 - 绑定 exact CK3 version/DLC/mod set 的真实 pattern/emblem/color 资源索引；
 - 通过 MCP 调用 `ck3_probe_coat_of_arms_source_v1` 的“发送到游戏”，不模拟 UI 点击；
-- CK3 canonical Copy/export 与 PNG/像素验证 primitive；
+- 把已静态就绪的 `ck3_export_coat_of_arms_source_v1` 接入编辑器，并在重新获准占用 CK3 后完成 live 验收；
+- PNG/像素验证 primitive；
 - 基于真实 DDS 资源的预览，而不是当前的几何近似符号。
 
 浏览器若需要读取用户显式选择的本机 CK3 目录、转换 DDS 或建立素材缓存，才引入 Maven + Java + Quarkus 伴随服务。
@@ -471,10 +488,12 @@ CoatOfArms
 | attempt 7 live artifact（CK3 在菜单前以 `0xC0000374` 退出，无 probe 执行） | `81E73231272A64EB0AA9A4A0ABD15CDFD4B93BE73E34D000F5EE8047621E11AF` |
 | attempt 8 MCP live artifact（27 条原生请求、cleanup GREEN） | `B40E16DD700EEB0FD0703B909955563F04D5810543D2E28D9D72E0DDE081CD2F` |
 | attempt 8 `xar_ck3_bridge.dll`（2,507,776 bytes） | `EC534B8D4D3BFA16FCA9BCA8DA4DD2CF393019C86892AFAD0BCF372E541C59CD` |
+| Copy/export static build `xar_ck3_bridge.dll`（2,551,808 bytes；rebase 后 exact master） | `F28BFFA0F82A6F9C51DC0E8491DE93578B443A00957F73E6B11BCB660C395FF8` |
 
 当前实现与证据入口：
 
 - `ck3_autonomous_player/src/xar_autoplayer/bridge/coat_of_arms_source_probe_contract.py`；
+- `ck3_autonomous_player/src/xar_autoplayer/bridge/coat_of_arms_source_export_contract.py`；
 - `ck3_autonomous_player/native_bridge/src/coat_of_arms_designer_probe_v1.cpp`；
 - `ck3_autonomous_player/tests/unit/test_coat_of_arms_source_probe_v1_bridge.py`；
 - `artifacts/coa-clipboard-probe-2026-09-08/`（过程资产，不进 Git）。

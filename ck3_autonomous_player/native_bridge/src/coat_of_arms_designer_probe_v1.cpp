@@ -8,6 +8,7 @@ namespace {
 
 using NativeUpdatePasteContentsV1 = void(__fastcall *)(void *);
 using NativePasteFromClipboardV1 = void(__fastcall *)(void *);
+using NativeCopyToClipboardV1 = void(__fastcall *)(void *);
 using NativeClipboardWriteV1 = void(__fastcall *)(const char *);
 using NativeClipboardReadV1 = char *(__fastcall *)();
 using NativeClipboardFreeV1 = void(__fastcall *)(char *);
@@ -22,6 +23,10 @@ constexpr std::array<std::uint8_t, kCoatOfArmsUpdatePastePatchBytesV1>
 constexpr std::array<std::uint8_t, 23> kExpectedPastePrologueV1{
     0x48, 0x89, 0x5C, 0x24, 0x18, 0x57, 0x48, 0x81, 0xEC, 0x90, 0x00, 0x00,
     0x00, 0x48, 0x8B, 0xF9, 0x80, 0xB9, 0xEF, 0x00, 0x00, 0x00, 0x00,
+};
+constexpr std::array<std::uint8_t, 22> kExpectedCopyPrologueV1{
+    0x48, 0x89, 0x5C, 0x24, 0x10, 0x48, 0x89, 0x74, 0x24, 0x18, 0x57,
+    0x48, 0x81, 0xEC, 0xD0, 0x00, 0x00, 0x00, 0x48, 0x8B, 0xF1,
 };
 
 constexpr std::size_t kAbsoluteJumpBytesV1 = 14;
@@ -103,6 +108,38 @@ bool ClipboardReadbackMatches(const CoatOfArmsDesignerProbeHookStateV1 &hook,
   return matches;
 }
 
+bool ClipboardReadText(const CoatOfArmsDesignerProbeHookStateV1 &hook,
+                       std::string &output) noexcept {
+  const auto read = reinterpret_cast<NativeClipboardReadV1>(
+      *static_cast<void *const *>(hook.clipboard_read_slot));
+  const auto free = reinterpret_cast<NativeClipboardFreeV1>(
+      *static_cast<void *const *>(hook.clipboard_free_slot));
+  char *const text = read();
+  if (text == nullptr)
+    return false;
+  bool valid = false;
+  output.clear();
+  if (IsReadableRange(text, 1)) {
+    for (std::size_t index = 0;
+         index <= kCoatOfArmsProbeMaximumSourceBytesV1; ++index) {
+      if (!IsReadableRange(text + index, 1))
+        break;
+      const auto byte = static_cast<unsigned char>(text[index]);
+      if (byte == 0) {
+        valid = !output.empty();
+        break;
+      }
+      if (byte >= 0x80U)
+        break;
+      output.push_back(static_cast<char>(byte));
+    }
+  }
+  free(text);
+  if (!valid)
+    output.clear();
+  return valid;
+}
+
 void CompleteRequest(CoatOfArmsDesignerProbeHookStateV1 &hook,
                      CoatOfArmsDesignerProbeRequestV1 &request) noexcept {
   request.state.store(CoatOfArmsDesignerProbeRequestStateV1::completed,
@@ -135,6 +172,8 @@ bool InstallCoatOfArmsDesignerProbeHookV1(
       module_base + kCoatOfArmsUpdatePasteContentsRvaV1);
   auto *const paste_target = reinterpret_cast<std::uint8_t *>(
       module_base + kCoatOfArmsPasteFromClipboardRvaV1);
+  auto *const copy_target = reinterpret_cast<std::uint8_t *>(
+      module_base + kCoatOfArmsCopyToClipboardRvaV1);
   auto *const write_slot =
       reinterpret_cast<void **>(module_base + kClipboardWriteFunctionSlotRvaV1);
   auto *const read_slot =
@@ -154,6 +193,14 @@ bool InstallCoatOfArmsDesignerProbeHookV1(
                   kExpectedPastePrologueV1.size()) != 0) {
     state.failure_flags.fetch_or(
         coat_of_arms_probe_install_failure_paste_target_identity,
+        std::memory_order_release);
+    return false;
+  }
+  if (!IsReadableRange(copy_target, kExpectedCopyPrologueV1.size()) ||
+      std::memcmp(copy_target, kExpectedCopyPrologueV1.data(),
+                  kExpectedCopyPrologueV1.size()) != 0) {
+    state.failure_flags.fetch_or(
+        coat_of_arms_probe_install_failure_copy_target_identity,
         std::memory_order_release);
     return false;
   }
@@ -195,6 +242,7 @@ bool InstallCoatOfArmsDesignerProbeHookV1(
   state.update_target = update_target;
   state.update_trampoline = trampoline;
   state.paste_from_clipboard = paste_target;
+  state.copy_to_clipboard = copy_target;
   g_active_hook_state.store(&state, std::memory_order_release);
   WriteAbsoluteJump(update_target, &XarCoatOfArmsUpdatePasteContentsHookV1);
   for (std::size_t index = kAbsoluteJumpBytesV1;
@@ -229,9 +277,15 @@ CoatOfArmsDesignerProbeSubmitResultV1 TrySubmitCoatOfArmsDesignerProbeV1(
       hook.failure_flags.load(std::memory_order_acquire) != 0) {
     return CoatOfArmsDesignerProbeSubmitResultV1::hook_unavailable;
   }
-  if (request.source.empty() ||
-      request.source.size() > kCoatOfArmsProbeMaximumSourceBytesV1 ||
-      request.source.find('\0') != std::string::npos ||
+  const bool valid_probe =
+      request.operation == CoatOfArmsDesignerOperationV1::probe_source &&
+      !request.source.empty() &&
+      request.source.size() <= kCoatOfArmsProbeMaximumSourceBytesV1 &&
+      request.source.find('\0') == std::string::npos;
+  const bool valid_export =
+      request.operation == CoatOfArmsDesignerOperationV1::export_current &&
+      request.source.empty() && !request.apply;
+  if ((!valid_probe && !valid_export) ||
       request.state.load(std::memory_order_acquire) !=
           CoatOfArmsDesignerProbeRequestStateV1::idle ||
       request.completion_event != nullptr) {
@@ -351,6 +405,27 @@ XarCoatOfArmsUpdatePasteContentsHookV1(void *designer) noexcept {
   }
 
   request->result.designer_observed = true;
+  if (request->operation == CoatOfArmsDesignerOperationV1::export_current) {
+    update(designer);
+    if (!ClipboardFunctionsAvailable(*hook) ||
+        hook->copy_to_clipboard == nullptr) {
+      request->result.reason = "clipboard_functions_unavailable";
+    } else {
+      const auto copy = reinterpret_cast<NativeCopyToClipboardV1>(
+          hook->copy_to_clipboard);
+      copy(designer);
+      request->result.copy_invoked = true;
+      request->result.clipboard_read =
+          ClipboardReadText(*hook, request->result.exported_source);
+      request->result.source_bytes = request->result.exported_source.size();
+      if (!request->result.clipboard_read)
+        request->result.reason = "clipboard_export_read_failed";
+    }
+    hook->executed_requests.fetch_add(1, std::memory_order_acq_rel);
+    hook->active_hook_calls.fetch_sub(1, std::memory_order_acq_rel);
+    CompleteRequest(*hook, *request);
+    return;
+  }
   if (!ClipboardFunctionsAvailable(*hook)) {
     request->result.reason = "clipboard_functions_unavailable";
     update(designer);

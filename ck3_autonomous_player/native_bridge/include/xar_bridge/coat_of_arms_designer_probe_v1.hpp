@@ -15,10 +15,17 @@ inline constexpr std::string_view kCoatOfArmsDesignerProbeV1Capability =
     "game.command.probe-coat-of-arms-source-v1";
 inline constexpr std::string_view kCoatOfArmsDesignerProbeV1Step =
     "probe-coat-of-arms-source-v1";
+inline constexpr std::string_view kCoatOfArmsDesignerExportV1Capability =
+    "game.command.export-coat-of-arms-source-v1";
+inline constexpr std::string_view kCoatOfArmsDesignerExportV1Step =
+    "export-coat-of-arms-source-v1";
 inline constexpr std::string_view kCoatOfArmsDesignerProbeV1BackendId =
     "ck3-1.19.0.6-native-coat-of-arms-designer-probe-v1";
+inline constexpr std::string_view kCoatOfArmsDesignerExportV1BackendId =
+    "ck3-1.19.0.6-native-coat-of-arms-designer-export-v1";
 inline constexpr std::uintptr_t kCoatOfArmsUpdatePasteContentsRvaV1 = 0xB73500;
 inline constexpr std::uintptr_t kCoatOfArmsPasteFromClipboardRvaV1 = 0xB71F00;
+inline constexpr std::uintptr_t kCoatOfArmsCopyToClipboardRvaV1 = 0xB71E50;
 inline constexpr std::uintptr_t kClipboardWriteFunctionSlotRvaV1 = 0x4FE09A8;
 inline constexpr std::uintptr_t kClipboardReadFunctionSlotRvaV1 = 0x4FE09B0;
 inline constexpr std::uintptr_t kClipboardFreeFunctionSlotRvaV1 = 0x4FE1260;
@@ -38,6 +45,12 @@ enum CoatOfArmsDesignerProbeInstallFailureV1 : std::uint32_t {
   coat_of_arms_probe_install_failure_clipboard_functions = 1U << 3,
   coat_of_arms_probe_install_failure_trampoline = 1U << 4,
   coat_of_arms_probe_install_failure_page_protect = 1U << 5,
+  coat_of_arms_probe_install_failure_copy_target_identity = 1U << 6,
+};
+
+enum class CoatOfArmsDesignerOperationV1 : std::uint32_t {
+  probe_source = 0,
+  export_current = 1,
 };
 
 enum class CoatOfArmsDesignerProbeRequestStateV1 : std::uint32_t {
@@ -74,10 +87,13 @@ struct CoatOfArmsDesignerProbeResultV1 {
   bool apply_requested = false;
   bool paste_invoked = false;
   bool applied = false;
+  bool copy_invoked = false;
+  bool clipboard_read = false;
   std::uint32_t candidate_index = 0;
   std::uint32_t preview_coat_of_arms_handle = 0;
   std::uint32_t active_coat_of_arms_index = 0;
   std::string reason;
+  std::string exported_source;
 };
 
 struct CoatOfArmsDesignerProbeRequestV1 {
@@ -86,6 +102,8 @@ struct CoatOfArmsDesignerProbeRequestV1 {
   HANDLE completion_event = nullptr;
   std::uint64_t expected_snapshot_revision = 0;
   std::int32_t date_raw = 0;
+  CoatOfArmsDesignerOperationV1 operation =
+      CoatOfArmsDesignerOperationV1::probe_source;
   std::string source;
   bool apply = false;
   CoatOfArmsDesignerProbeResultV1 result{};
@@ -109,6 +127,7 @@ struct CoatOfArmsDesignerProbeHookStateV1 {
   void *update_target = nullptr;
   void *update_trampoline = nullptr;
   void *paste_from_clipboard = nullptr;
+  void *copy_to_clipboard = nullptr;
   void *clipboard_write_slot = nullptr;
   void *clipboard_read_slot = nullptr;
   void *clipboard_free_slot = nullptr;
