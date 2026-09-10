@@ -6,6 +6,7 @@
 #include <cstddef>
 #include <cstdint>
 #include <optional>
+#include <span>
 #include <string>
 #include <string_view>
 
@@ -293,6 +294,22 @@ struct ZhongguoCaseAccessV1 {
   ValidateZhongguoCharacterV1 validate_character = nullptr;
   ReadZhongguoAllowlistedVariableV1 read_allowlisted_variable = nullptr;
 };
+
+// Shared exact-build variable ABI used by closed, product-shaped projections.
+// Callers compile their allowlist into the provider; no transport request may
+// supply a variable name.
+enum class ReadZhongguoFixedVariableSetResultV1 : std::uint32_t {
+  unavailable = 0,
+  available = 1,
+};
+
+bool IsZhongguoVariableAbiExactV1(
+    const ZhongguoCaseNativeEnvironmentV1 &environment) noexcept;
+ReadZhongguoFixedVariableSetResultV1 ReadZhongguoFixedVariableSetV1(
+    const ZhongguoCaseNativeEnvironmentV1 &environment,
+    const ZhongguoCaseAccessV1 &access, std::int32_t character_id,
+    std::span<const std::string_view> compiled_allowlist,
+    std::span<ZhongguoRawVariableV1> output) noexcept;
 
 struct ZhongguoCaseSnapshotRequestV1 {
   std::uint64_t expected_snapshot_revision = 0;

@@ -41,6 +41,9 @@ SET_PLAYED_CHARACTER_TOOL: Final = "ck3_set_played_character_v1"
 VANILLA_EVENT_KNOWLEDGE_TOOL: Final = (
     "ck3_query_vanilla_event_knowledge_v1"
 )
+ZHONGGUO_B1_CYCLE_SNAPSHOT_TOOL: Final = (
+    "ck3_query_zhongguo_b1_cycle_snapshot_v1"
+)
 VANILLA_EVENT_KNOWLEDGE_PROBE_KEY: Final = "health.1010"
 EXACT_CK3_VERSION: Final = "1.19.0.6"
 EXACT_CK3_SHA256: Final = (
@@ -425,6 +428,16 @@ def render_plan(layout: PortableMcpLayout) -> dict[str, object]:
             "provider_reused": True,
             "exact_ck3_version": EXACT_CK3_VERSION,
             "exact_ck3_sha256": EXACT_CK3_SHA256,
+        },
+        "portable_b1_cycle_snapshot": {
+            "tool": ZHONGGUO_B1_CYCLE_SNAPSHOT_TOOL,
+            "arguments": ["request_nonce", "expected_revision"],
+            "manager_binding": "paused_played_character",
+            "accepts_character_ids": False,
+            "accepts_variable_names": False,
+            "exact_ck3_version": EXACT_CK3_VERSION,
+            "exact_ck3_sha256": EXACT_CK3_SHA256,
+            "requires_ck3": True,
         },
         "offline_vanilla_event_knowledge": (
             current_vanilla_event_knowledge_manifest()

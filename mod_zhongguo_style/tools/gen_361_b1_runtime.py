@@ -2038,6 +2038,9 @@ zg361_b1_open_cycle_effect = {
 		set_variable = { name = zg361_b1_roster_reopen_required value = 0 }
 		set_variable = { name = zg361_b1_quota_built_serial value = 0 }
 		set_variable = { name = zg361_b1_quota_book_version value = 0 }
+		# Monotonic manager-owned generation for read-only MCP observers.  Zero
+		# means no exact local quota rebuild invocation has started in this cycle.
+		set_variable = { name = zg361_b1_quota_rebuild_generation value = 0 }
 		set_variable = { name = zg361_b1_quota_pool_membership value = 0 }
 		set_variable = { name = zg361_b1_quota_trade_applied value = 0 }
 		set_variable = { name = zg361_b1_must_review_manager_link_available value = 0 }
@@ -3895,6 +3898,7 @@ zg361_b1_audit_locked_roster_additions_effect = {
 }
 
 zg361_b1_rebuild_local_quota_effect = {
+	change_variable = { name = zg361_b1_quota_rebuild_generation add = 1 }
 	# These are same-tick temporary lists. D+340 can invoke this effect twice;
 	# remove every prior row with the engine's native temporary-list operation
 	# before rebuilding the next exact candidate domain. Seed each container

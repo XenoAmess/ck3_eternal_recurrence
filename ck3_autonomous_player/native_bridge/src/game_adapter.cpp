@@ -15,6 +15,7 @@
 #include "xar_bridge/set_played_character_v1_mailbox.hpp"
 #include "xar_bridge/title_map_navigation_v1.hpp"
 #include "xar_bridge/zhongguo_ai_owned_case_snapshot_v1_mailbox.hpp"
+#include "xar_bridge/zhongguo_b1_cycle_snapshot_v1_mailbox.hpp"
 #include "xar_bridge/zhongguo_case_snapshot_v1_mailbox.hpp"
 #include "xar_bridge/zhongguo_b2_pip_snapshot_v1_mailbox.hpp"
 #include "xar_bridge/zhongguo_incident_snapshot_v1_mailbox.hpp"
@@ -324,6 +325,8 @@ bool GameAdapter::supports_step(std::string_view step) const noexcept {
     capability = ck3_11906::kCampaignRootContextV1Capability;
   } else if (ck3_11906::ParseZhongguoCaseSnapshotV1Step(step)) {
     capability = ck3_11906::kZhongguoCaseSnapshotV1Capability;
+  } else if (ck3_11906::ParseZhongguoB1CycleSnapshotV1Step(step)) {
+    capability = ck3_11906::kZhongguoB1CycleSnapshotV1Capability;
   } else if (ck3_11906::ParseZhongguoResultCaseSnapshotV1Step(step)) {
     capability = ck3_11906::kZhongguoResultCaseSnapshotV1Capability;
   } else if (ck3_11906::ParseZhongguoB2PipSnapshotV1Step(step)) {

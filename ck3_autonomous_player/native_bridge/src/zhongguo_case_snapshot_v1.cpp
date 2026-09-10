@@ -522,6 +522,43 @@ ZhongguoCaseNativeEnvironmentV1 BindZhongguoCaseNativeEnvironmentV1(
   return output;
 }
 
+bool IsZhongguoVariableAbiExactV1(
+    const ZhongguoCaseNativeEnvironmentV1 &environment) noexcept {
+  return EnvironmentIsExact(environment);
+}
+
+ReadZhongguoFixedVariableSetResultV1 ReadZhongguoFixedVariableSetV1(
+    const ZhongguoCaseNativeEnvironmentV1 &environment,
+    const ZhongguoCaseAccessV1 &access, std::int32_t character_id,
+    std::span<const std::string_view> compiled_allowlist,
+    std::span<ZhongguoRawVariableV1> output) noexcept {
+  try {
+    if (!EnvironmentIsExact(environment) || character_id <= 0 ||
+        compiled_allowlist.empty() ||
+        compiled_allowlist.size() != output.size() ||
+        !ValidateCharacter(environment, access, character_id)) {
+      return ReadZhongguoFixedVariableSetResultV1::unavailable;
+    }
+    for (std::size_t index = 0; index < compiled_allowlist.size(); ++index) {
+      const auto key = compiled_allowlist[index];
+      const bool read = environment.offline_fixture_function_overrides
+                            ? access.read_allowlisted_variable != nullptr &&
+                                  access.read_allowlisted_variable(
+                                      access.context, character_id, key,
+                                      output[index])
+                            : ReadAllowlistedVariableNative(
+                                  environment, access, character_id, key,
+                                  output[index]);
+      if (!read) {
+        return ReadZhongguoFixedVariableSetResultV1::unavailable;
+      }
+    }
+    return ReadZhongguoFixedVariableSetResultV1::available;
+  } catch (...) {
+    return ReadZhongguoFixedVariableSetResultV1::unavailable;
+  }
+}
+
 game::ReadZhongguoCaseSnapshotResultV1 ReadZhongguoCaseSnapshotV1(
     const ZhongguoCaseNativeEnvironmentV1 &environment,
     const ZhongguoCaseAccessV1 &access,

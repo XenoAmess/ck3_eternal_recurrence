@@ -87,6 +87,13 @@ from .zhongguo_case_snapshot_contract import (
     parse_query_zhongguo_case_snapshot_v1_step,
     query_zhongguo_case_snapshot_v1_step,
 )
+from .zhongguo_b1_cycle_snapshot_contract import (
+    QUERY_ZHONGGUO_B1_CYCLE_SNAPSHOT_V1_CAPABILITY,
+    QUERY_ZHONGGUO_B1_CYCLE_SNAPSHOT_V1_STEP,
+    normalize_native_zhongguo_b1_cycle_snapshot_v1,
+    parse_query_zhongguo_b1_cycle_snapshot_v1_step,
+    query_zhongguo_b1_cycle_snapshot_v1_step,
+)
 from .zhongguo_ai_owned_case_snapshot_contract import (
     QUERY_ZHONGGUO_AI_OWNED_CASE_SNAPSHOT_V1_CAPABILITY,
     QUERY_ZHONGGUO_AI_OWNED_CASE_SNAPSHOT_V1_STEP,
@@ -1789,6 +1796,136 @@ class GameplayBridgeService:
                 "ready"
             ],
             "campaign_root_context": normalized,
+        }
+
+    def query_zhongguo_b1_cycle_snapshot_v1(
+        self,
+        request_nonce: str,
+        *,
+        expected_revision: int,
+    ) -> dict[str, object]:
+        """Read the paused played character's manager-owned B1 cycle."""
+        if (
+            isinstance(expected_revision, bool)
+            or not isinstance(expected_revision, int)
+            or not 0 <= expected_revision <= 2**64 - 1
+        ):
+            raise ValueError("expected_revision must be a non-negative uint64")
+        snapshot = self.snapshot()
+        if snapshot.get("paused") is not True:
+            raise BridgeUnavailableError(
+                "ZhongGuo B1-cycle queries require a paused CK3 snapshot"
+            )
+        revision = snapshot.get("revision")
+        if revision != expected_revision:
+            raise BridgeUnavailableError(
+                f"ZhongGuo B1-cycle revision mismatch: expected {expected_revision}, current {revision}"
+            )
+        native_revision = snapshot.get("native_revision")
+        date_raw = snapshot.get("date_raw")
+        snapshot_id = snapshot.get("snapshot_id")
+        played = snapshot.get("played_character")
+        player_id = played.get("character_id") if isinstance(played, dict) else None
+        diagnostics = snapshot.get("diagnostics")
+        generation = diagnostics.get("connection_generation") if isinstance(diagnostics, dict) else None
+        if (
+            isinstance(native_revision, bool)
+            or not isinstance(native_revision, int)
+            or native_revision <= 0
+            or isinstance(date_raw, bool)
+            or not isinstance(date_raw, int)
+            or not isinstance(snapshot_id, str)
+            or not snapshot_id
+            or isinstance(player_id, bool)
+            or not isinstance(player_id, int)
+            or player_id <= 0
+            or isinstance(generation, bool)
+            or not isinstance(generation, int)
+            or generation <= 0
+        ):
+            raise BridgeUnavailableError(
+                "ZhongGuo B1-cycle query lacks stable portable bindings"
+            )
+        capabilities = self.capabilities().get("bridge_capabilities")
+        if not isinstance(capabilities, list) or (
+            QUERY_ZHONGGUO_B1_CYCLE_SNAPSHOT_V1_CAPABILITY not in capabilities
+        ):
+            raise UnsupportedStepError(
+                "selected backend cannot query the ZhongGuo B1 cycle"
+            )
+        step = query_zhongguo_b1_cycle_snapshot_v1_step(request_nonce)
+        query = parse_query_zhongguo_b1_cycle_snapshot_v1_step(step)
+        assert query is not None
+        result = self.execute_step(step, expected_revision=expected_revision)
+        expected_keys = {
+            "step", "accepted", "status", "query_sequence",
+            "snapshot_revision", "zhongguo_b1_cycle_snapshot", "backend_id",
+            "queried_snapshot_id", "queried_revision", "queried_native_revision",
+            "queried_connection_generation",
+        }
+        if (
+            not isinstance(result, dict)
+            or set(result) != expected_keys
+            or result.get("step") != QUERY_ZHONGGUO_B1_CYCLE_SNAPSHOT_V1_STEP
+            or result.get("accepted") is not True
+            or result.get("snapshot_revision") != native_revision
+            or result.get("queried_snapshot_id") != snapshot_id
+            or result.get("queried_revision") != revision
+            or result.get("queried_native_revision") != native_revision
+            or result.get("queried_connection_generation") != generation
+        ):
+            raise BridgeUnavailableError(
+                "ZhongGuo B1-cycle backend returned a malformed binding"
+            )
+        try:
+            normalized = normalize_native_zhongguo_b1_cycle_snapshot_v1(
+                result.get("zhongguo_b1_cycle_snapshot"),
+                expected_query=query,
+                expected_snapshot_revision=native_revision,
+                expected_date_raw=date_raw,
+                expected_player_character_id=player_id,
+            )
+        except ValueError as error:
+            raise BridgeUnavailableError(
+                f"ZhongGuo B1-cycle result is malformed: {error}"
+            ) from error
+        current = self.snapshot()
+        current_diagnostics = current.get("diagnostics")
+        if not (
+            current.get("paused") is True
+            and current.get("snapshot_id") == snapshot_id
+            and current.get("revision") == revision
+            and current.get("native_revision") == native_revision
+            and current.get("date_raw") == date_raw
+            and current.get("played_character") == played
+            and isinstance(current_diagnostics, dict)
+            and current_diagnostics.get("connection_generation") == generation
+        ):
+            raise BridgeUnavailableError(
+                "ZhongGuo B1-cycle query crossed its paused snapshot binding"
+            )
+        return {
+            **normalized,
+            "query_sequence": result["query_sequence"],
+            "build": {
+                "version": normalized["provenance"]["game_version"],
+                "exe_sha256": normalized["provenance"]["executable_sha256"],
+            },
+            "bridge_source": {
+                "backend_id": result["backend_id"],
+                "connection_generation": generation,
+                "snapshot_id": snapshot_id,
+                "revision": revision,
+                "native_revision": native_revision,
+                "date_raw": date_raw,
+                "paused": True,
+                "player_character_id": player_id,
+            },
+            "binding": {
+                "request_nonce": query.request_nonce,
+                "expected_revision": expected_revision,
+                "manager_character_id": player_id,
+            },
         }
 
     def query_zhongguo_case_snapshot_v1(

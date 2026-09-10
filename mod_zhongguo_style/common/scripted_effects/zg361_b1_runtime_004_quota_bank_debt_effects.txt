@@ -662,6 +662,7 @@ zg361_b1_audit_locked_roster_additions_effect = {
 }
 
 zg361_b1_rebuild_local_quota_effect = {
+	change_variable = { name = zg361_b1_quota_rebuild_generation add = 1 }
 	# These are same-tick temporary lists. D+340 can invoke this effect twice;
 	# remove every prior row with the engine's native temporary-list operation
 	# before rebuilding the next exact candidate domain. Seed each container

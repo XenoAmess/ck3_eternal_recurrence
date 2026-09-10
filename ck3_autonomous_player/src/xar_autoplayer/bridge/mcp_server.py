@@ -229,6 +229,18 @@ def _ck3_query_zhongguo_case_snapshot_v1(
     )
 
 
+def _ck3_query_zhongguo_b1_cycle_snapshot_v1(
+    service: GameplayBridgeService,
+    request_nonce: str,
+    expected_revision: int,
+) -> dict[str, object]:
+    """Observe the played manager's closed B1 cycle projection."""
+    return service.query_zhongguo_b1_cycle_snapshot_v1(
+        request_nonce,
+        expected_revision=expected_revision,
+    )
+
+
 def _ck3_query_zhongguo_ai_owned_case_snapshot_v1(
     service: GameplayBridgeService,
     owner_character_id: int,
@@ -883,6 +895,18 @@ def create_server(driver: GameplayBridgeDriver):
         )
 
     @server.tool()
+    def ck3_query_zhongguo_b1_cycle_snapshot_v1(
+        request_nonce: str,
+        expected_revision: int,
+    ) -> dict[str, object]:
+        """Read the played manager's B1 cycle, roster, quota and closure."""
+        return _ck3_query_zhongguo_b1_cycle_snapshot_v1(
+            service,
+            request_nonce,
+            expected_revision,
+        )
+
+    @server.tool()
     def ck3_query_zhongguo_ai_owned_case_snapshot_v1(
         owner_character_id: int,
         subject_character_id: int,
@@ -1327,6 +1351,9 @@ def create_server(driver: GameplayBridgeDriver):
 
     _forbid_unknown_tool_arguments_v1(
         server, "ck3_query_zhongguo_ai_owned_case_snapshot_v1"
+    )
+    _forbid_unknown_tool_arguments_v1(
+        server, "ck3_query_zhongguo_b1_cycle_snapshot_v1"
     )
     _forbid_unknown_tool_arguments_v1(
         server, "ck3_query_zhongguo_result_case_snapshot_v1"

@@ -1,0 +1,34 @@
+{
+  "schema_version": 1,
+  "contract": "zhongguo_b1_cycle_snapshot_v1",
+  "capability": "game.command.query-zhongguo-b1-cycle-snapshot-v1",
+  "step": "query-zhongguo-b1-cycle-snapshot-v1",
+  "result_payload_key": "zhongguo_b1_cycle_snapshot",
+  "build": {
+    "game_version": "1.19.0.6",
+    "executable_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86"
+  },
+  "binding": {
+    "manager": "paused_played_character",
+    "caller_character_ids": false,
+    "caller_variable_names": false,
+    "same_frame": "frame_before_fixed_allowlist_twice_frame_after"
+  },
+  "frozen_native_abi": {
+    "source_contract": "zhongguo_case_snapshot_v1",
+    "variable_context_for_scope_rva": "0x3329A40",
+    "variable_identifier_table_rva": "0x3B971A0",
+    "variable_identifier_lookup_rva": "0x3B97020",
+    "variable_identifier_name_rva": "0x3B97090",
+    "character_storage_slot_rva": "0x570C130",
+    "numeric_kind": 1,
+    "numeric_scale": 100000
+  },
+  "projection": ["cycle", "roster", "processing", "quota", "closure", "pending", "invariants", "anomalies"],
+  "quota_projection": {
+    "target": ["zg361_pending_375_n", "zg361_pending_35_n", "zg361_pending_325_n"],
+    "recount": ["zg361_b1_quota_recount_top", "zg361_b1_quota_recount_middle", "zg361_b1_quota_recount_bottom"]
+  },
+  "write_capability": false,
+  "readiness": "static-ready"
+}

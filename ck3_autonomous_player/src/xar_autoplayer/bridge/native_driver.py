@@ -142,6 +142,14 @@ from .zhongguo_case_snapshot_contract import (
     normalize_native_zhongguo_case_snapshot_v1,
     parse_query_zhongguo_case_snapshot_v1_step,
 )
+from .zhongguo_b1_cycle_snapshot_contract import (
+    QUERY_ZHONGGUO_B1_CYCLE_SNAPSHOT_V1_CAPABILITY,
+    QUERY_ZHONGGUO_B1_CYCLE_SNAPSHOT_V1_STEP,
+    QUERY_ZHONGGUO_B1_CYCLE_SNAPSHOT_V1_STEP_PREFIX,
+    ZhongguoB1CycleQueryV1,
+    normalize_native_zhongguo_b1_cycle_snapshot_v1,
+    parse_query_zhongguo_b1_cycle_snapshot_v1_step,
+)
 from .zhongguo_ai_owned_case_snapshot_contract import (
     QUERY_ZHONGGUO_AI_OWNED_CASE_SNAPSHOT_V1_CAPABILITY,
     QUERY_ZHONGGUO_AI_OWNED_CASE_SNAPSHOT_V1_STEP,
@@ -1664,6 +1672,10 @@ class NativeHeadlessGameplayDriver:
                 QUERY_ZHONGGUO_CASE_SNAPSHOT_V1_CAPABILITY
                 in bridge_capabilities
             ),
+            "zhongguo_b1_cycle_snapshot_v1_query_supported": (
+                QUERY_ZHONGGUO_B1_CYCLE_SNAPSHOT_V1_CAPABILITY
+                in bridge_capabilities
+            ),
             "zhongguo_ai_owned_case_snapshot_v1_query_supported": (
                 QUERY_ZHONGGUO_AI_OWNED_CASE_SNAPSHOT_V1_CAPABILITY
                 in bridge_capabilities
@@ -2011,6 +2023,10 @@ class NativeHeadlessGameplayDriver:
             ),
             "zhongguo_case_snapshot_v1_query_supported": (
                 QUERY_ZHONGGUO_CASE_SNAPSHOT_V1_CAPABILITY
+                in bridge_capabilities
+            ),
+            "zhongguo_b1_cycle_snapshot_v1_query_supported": (
+                QUERY_ZHONGGUO_B1_CYCLE_SNAPSHOT_V1_CAPABILITY
                 in bridge_capabilities
             ),
             "zhongguo_ai_owned_case_snapshot_v1_query_supported": (
@@ -3428,6 +3444,17 @@ class NativeHeadlessGameplayDriver:
             raise UnsupportedStepError(
                 "malformed ZhongGuo case snapshot v1 query step"
             )
+        zhongguo_b1_cycle_query = (
+            parse_query_zhongguo_b1_cycle_snapshot_v1_step(step)
+        )
+        if (
+            isinstance(step, str)
+            and step.startswith(QUERY_ZHONGGUO_B1_CYCLE_SNAPSHOT_V1_STEP_PREFIX)
+            and zhongguo_b1_cycle_query is None
+        ):
+            raise UnsupportedStepError(
+                "malformed ZhongGuo B1-cycle snapshot v1 query step"
+            )
         zhongguo_ai_owned_case_query = (
             parse_query_zhongguo_ai_owned_case_snapshot_v1_step(step)
         )
@@ -3759,6 +3786,21 @@ class NativeHeadlessGameplayDriver:
                 )
             return self._execute_zhongguo_case_snapshot_v1_query(
                 zhongguo_case_query,
+                expected_revision=expected_revision,
+            )
+        if zhongguo_b1_cycle_query is not None:
+            bridge_capabilities = set(
+                _string_list(capabilities.get("bridge_capabilities"))
+            )
+            if (
+                QUERY_ZHONGGUO_B1_CYCLE_SNAPSHOT_V1_CAPABILITY
+                not in bridge_capabilities
+            ):
+                raise UnsupportedStepError(
+                    "native DLL cannot query the ZhongGuo B1 cycle"
+                )
+            return self._execute_zhongguo_b1_cycle_snapshot_v1_query(
+                zhongguo_b1_cycle_query,
                 expected_revision=expected_revision,
             )
         if zhongguo_ai_owned_case_query is not None:
@@ -8565,6 +8607,116 @@ class NativeHeadlessGameplayDriver:
             "queried_snapshot_id": starting.get("snapshot_id"),
             "queried_revision": starting.get("revision"),
             "queried_native_revision": native_revision,
+        }
+
+    def _execute_zhongguo_b1_cycle_snapshot_v1_query(
+        self,
+        query: ZhongguoB1CycleQueryV1,
+        *,
+        expected_revision: int | None,
+    ) -> dict[str, object]:
+        """Read the played manager's allowlisted B1 cycle while paused."""
+        starting = self.take_snapshot()
+        if starting.get("paused") is not True:
+            raise BridgeUnavailableError(
+                "native ZhongGuo B1-cycle query requires a paused snapshot"
+            )
+        date_raw = _date_raw(starting, "ZhongGuo B1-cycle starting snapshot")
+        native_revision = starting.get("native_revision")
+        if (
+            isinstance(native_revision, bool)
+            or not isinstance(native_revision, int)
+            or not 1 <= native_revision <= 2**64 - 1
+        ):
+            raise BridgeUnavailableError(
+                "native ZhongGuo B1-cycle query lacks a native revision"
+            )
+        snapshot_id = starting.get("snapshot_id")
+        played = starting.get("played_character")
+        player_id = played.get("character_id") if isinstance(played, dict) else None
+        diagnostics = starting.get("diagnostics")
+        generation = (
+            diagnostics.get("connection_generation")
+            if isinstance(diagnostics, dict)
+            else None
+        )
+        if (
+            not isinstance(snapshot_id, str)
+            or not snapshot_id
+            or isinstance(player_id, bool)
+            or not isinstance(player_id, int)
+            or player_id <= 0
+            or isinstance(generation, bool)
+            or not isinstance(generation, int)
+            or generation <= 0
+        ):
+            raise BridgeUnavailableError(
+                "native ZhongGuo B1-cycle query lacks portable frame bindings"
+            )
+        selected_revision = (
+            expected_revision
+            if expected_revision is not None
+            else int(starting["revision"])
+        )
+        result = self._execute_primitive_step(
+            QUERY_ZHONGGUO_B1_CYCLE_SNAPSHOT_V1_STEP,
+            expected_revision=selected_revision,
+            required_capability=QUERY_ZHONGGUO_B1_CYCLE_SNAPSHOT_V1_CAPABILITY,
+            request_fields={"request_nonce": query.request_nonce},
+        )
+        expected_keys = {
+            "step", "accepted", "status", "query_sequence",
+            "snapshot_revision", "zhongguo_b1_cycle_snapshot", "backend_id",
+        }
+        if (
+            set(result) != expected_keys
+            or result.get("step") != QUERY_ZHONGGUO_B1_CYCLE_SNAPSHOT_V1_STEP
+            or result.get("accepted") is not True
+            or result.get("snapshot_revision") != native_revision
+        ):
+            raise BridgeUnavailableError(
+                "native ZhongGuo B1-cycle query returned a malformed envelope"
+            )
+        sequence = result.get("query_sequence")
+        if isinstance(sequence, bool) or not isinstance(sequence, int) or sequence <= 0:
+            raise BridgeUnavailableError(
+                "native ZhongGuo B1-cycle query lacks a query sequence"
+            )
+        try:
+            normalized = normalize_native_zhongguo_b1_cycle_snapshot_v1(
+                result.get("zhongguo_b1_cycle_snapshot"),
+                expected_query=query,
+                expected_snapshot_revision=native_revision,
+                expected_date_raw=date_raw,
+                expected_player_character_id=player_id,
+            )
+        except ValueError as error:
+            raise BridgeUnavailableError(
+                "native ZhongGuo B1-cycle contract rejected the frame"
+            ) from error
+        ending = self.take_snapshot()
+        ending_diagnostics = ending.get("diagnostics")
+        if not (
+            ending.get("paused") is True
+            and ending.get("snapshot_id") == snapshot_id
+            and ending.get("revision") == starting.get("revision")
+            and ending.get("native_revision") == native_revision
+            and ending.get("date_raw") == date_raw
+            and ending.get("played_character") == played
+            and isinstance(ending_diagnostics, dict)
+            and ending_diagnostics.get("connection_generation") == generation
+        ):
+            raise BridgeUnavailableError(
+                "native ZhongGuo B1-cycle query crossed a snapshot revision"
+            )
+        return {
+            **result,
+            "status": normalized["status"],
+            "zhongguo_b1_cycle_snapshot": normalized,
+            "queried_snapshot_id": snapshot_id,
+            "queried_revision": starting.get("revision"),
+            "queried_native_revision": native_revision,
+            "queried_connection_generation": generation,
         }
 
     def _execute_zhongguo_case_snapshot_v1_query(
@@ -14865,6 +15017,17 @@ class ConfiguredHybridFallbackDriver:
             raise UnsupportedStepError(
                 "malformed ZhongGuo case snapshot v1 query step"
             )
+        zhongguo_b1_cycle_query = (
+            parse_query_zhongguo_b1_cycle_snapshot_v1_step(step)
+        )
+        if (
+            isinstance(step, str)
+            and step.startswith(QUERY_ZHONGGUO_B1_CYCLE_SNAPSHOT_V1_STEP_PREFIX)
+            and zhongguo_b1_cycle_query is None
+        ):
+            raise UnsupportedStepError(
+                "malformed ZhongGuo B1-cycle snapshot v1 query step"
+            )
         zhongguo_ai_owned_case_query = (
             parse_query_zhongguo_ai_owned_case_snapshot_v1_step(step)
         )
@@ -15064,6 +15227,59 @@ class ConfiguredHybridFallbackDriver:
                 "queried_revision": starting.get("revision"),
                 "queried_native_revision": starting.get("native_revision"),
                 "queried_connection_generation": connection_generation,
+            }
+        if zhongguo_b1_cycle_query is not None:
+            native_capabilities = set(
+                _string_list(self.native.capabilities().get("bridge_capabilities"))
+            )
+            if QUERY_ZHONGGUO_B1_CYCLE_SNAPSHOT_V1_CAPABILITY not in native_capabilities:
+                raise UnsupportedStepError(
+                    "ZhongGuo B1-cycle queries are pure native and will not use fallback"
+                )
+            starting = self.take_snapshot()
+            if expected_revision is not None:
+                _validate_revision(expected_revision, "expected_revision")
+                if expected_revision != starting.get("revision"):
+                    raise BridgeUnavailableError(
+                        "hybrid B1-cycle revision mismatch"
+                    )
+            diagnostics = starting.get("diagnostics")
+            generation = diagnostics.get("connection_generation") if isinstance(diagnostics, dict) else None
+            backend_revisions = starting.get("backend_revisions")
+            native_revision = (
+                int(backend_revisions["fast"])
+                if isinstance(backend_revisions, dict)
+                and isinstance(backend_revisions.get("fast"), int)
+                else None
+            )
+            result = self.native.execute_step(
+                step, expected_revision=native_revision
+            )
+            if result.get("queried_connection_generation") != generation:
+                raise BridgeUnavailableError(
+                    "hybrid B1-cycle result crossed a connection"
+                )
+            ending = self.take_snapshot()
+            ending_diagnostics = ending.get("diagnostics")
+            if not (
+                ending.get("paused") is True
+                and ending.get("snapshot_id") == starting.get("snapshot_id")
+                and ending.get("revision") == starting.get("revision")
+                and ending.get("native_revision") == starting.get("native_revision")
+                and ending.get("date_raw") == starting.get("date_raw")
+                and ending.get("played_character") == starting.get("played_character")
+                and isinstance(ending_diagnostics, dict)
+                and ending_diagnostics.get("connection_generation") == generation
+            ):
+                raise BridgeUnavailableError(
+                    "hybrid B1-cycle query crossed a snapshot revision"
+                )
+            return {
+                **result,
+                "queried_snapshot_id": starting.get("snapshot_id"),
+                "queried_revision": starting.get("revision"),
+                "queried_native_revision": starting.get("native_revision"),
+                "queried_connection_generation": generation,
             }
         zhongguo_promotion_compensation_query = (
             parse_query_zhongguo_promotion_compensation_v1_step(step)

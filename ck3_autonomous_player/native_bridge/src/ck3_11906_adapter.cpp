@@ -7,6 +7,7 @@
 #endif
 #include "xar_bridge/title_map_navigation_v1.hpp"
 #include "xar_bridge/zhongguo_ai_owned_case_snapshot_v1.hpp"
+#include "xar_bridge/zhongguo_b1_cycle_snapshot_v1.hpp"
 #include "xar_bridge/zhongguo_case_snapshot_v1.hpp"
 #include "xar_bridge/zhongguo_b2_pip_snapshot_v1.hpp"
 #include "xar_bridge/zhongguo_career_hc_workforce_postcondition_v1.hpp"
@@ -28,7 +29,7 @@
 namespace xar::game {
 namespace {
 
-constexpr std::size_t kBaseCapabilityCount = 79;
+constexpr std::size_t kBaseCapabilityCount = 80;
 constexpr std::size_t kCapabilityCount =
     kBaseCapabilityCount
 #if defined(XAR_CK3_ENABLE_G2_ACTUAL_TRUCE_EXPIRY_CANDIDATE_V1)
@@ -101,6 +102,7 @@ constexpr std::array<std::string_view, kCapabilityCount> kCapabilities{
     "game.command.query-army-strengths-v1",
     "game.command.query-campaign-root-context-v1",
     ck3_11906::kZhongguoCaseSnapshotV1Capability,
+    ck3_11906::kZhongguoB1CycleSnapshotV1Capability,
     ck3_11906::kZhongguoResultCaseSnapshotV1Capability,
     ck3_11906::kZhongguoB2PipSnapshotV1Capability,
     ck3_11906::kZhongguoIncidentSnapshotV1Capability,
