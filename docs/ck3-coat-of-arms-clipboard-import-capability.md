@@ -163,8 +163,8 @@ export 的公开结果为闭合 schema，包含 `status`、`designer_observed`�
 
 ### 3.3 验证状态
 
-- Python contract、service、native driver、hybrid、离线资源索引和真实 MCP SDK tools/list/call：26 项聚焦测试 GREEN；
-  不带 MCP SDK 的普通 Python 环境同组测试 26 项 GREEN，其中 3 项 SDK 集成测试按设计跳过；
+- Python contract、service、native driver、hybrid、离线资源索引/读取和真实 MCP SDK tools/list/call：28 项聚焦测试 GREEN；
+  不带 MCP SDK 的普通 Python 环境同组测试 28 项 GREEN，其中 3 项 SDK 集成测试按设计跳过；
 - native bridge fresh build：成功；
 - native protocol 与 adapter registry CTest：2/2 GREEN；
 - Copy/export MCP primitive 已完成 closed-schema 注册、exact-build RVA/prologue 身份校验、UI-thread 调用、剪贴板读取、
@@ -174,6 +174,9 @@ export 的公开结果为闭合 schema，包含 `status`、`designer_observed`�
 - Web 编辑器的 Quarkus 伴随服务已完成真实后台贯通：`REST → MCP Java SDK 2.0.1 stdio client → Python MCP server →`
   `ck3_query_coat_of_arms_resource_catalog_v1` 返回 exact-build 两项 pattern 和完整 provenance；该贯通未启动或操作 CK3，
   也没有使用 OCR。Quarkus REST 映射 3/3、前端 API/parser 8/8、production build GREEN；
+- 新增 manifest-owned asset reader 后，同一后台链路读取 `ce_martlet.dds` 的 87,536 bytes DXT5，base64 解码 SHA 与
+  `25EFE25D83047430EF09C1E6490CA48BD2A79865CCCF668EED0844381B3F7BA3` 完全一致；Quarkus 4/4、前端 API/parser/DDS
+  decoder 12/12 与 production build GREEN。`pattern__solid_designer.dds` 则为 128×128 DXT1；
 - CK3 frontend exact-build 握手：已真实取得，并广告新 capability；
 - 隔离 attempt 5 补齐 `frontend_snapshot` 绑定；attempt 6 暴露剪贴板函数槽的瞬时初始化状态；attempt 8 又证明
   gameplay 生命周期门禁会让角色设计器永远无法安装 hook。现在 hook 在 exact adapter 选定后即于 frontend 启动，瞬时槽缺失仍在
@@ -472,7 +475,9 @@ CoatOfArms
 - 提供图层/实例结构化表单与浏览器近似预览，且明确不冒充 CK3 renderer；
 - 基础游戏 pattern/emblem 目录已经接入结构化选择器，并可按名字筛选首批 200 个 emblem；
 - 必要的 Quarkus 伴随服务使用官方 Java MCP SDK 连接现有 Python stdio server，前端可刷新 session revision、执行原生
-  detect/apply，以及载入原生 Copy/export 返回源码；伴随服务只允许四个相关 MCP 工具。
+  detect/apply，以及载入原生 Copy/export 返回源码；伴随服务只允许五个相关 MCP 工具；
+- manifest-owned 单素材读取已接入浏览器 DXT1/DXT5 顶层 mip 解码；预览用真实原版纹理通道替代几何占位符，但仍明确不是
+  CK3 shader 的最终调色/mask 合成。
 
 尚未完成的下一阶段能力：
 
@@ -480,7 +485,7 @@ CoatOfArms
 - 在重新获准占用 CK3 后，对编辑器的 detect/apply/Copy-export 做 live round-trip 验收；当前只是接口与静态实现 GREEN，
   不把 REST mock 或离线 catalog 贯通写成 designer live；
 - PNG/像素验证 primitive；
-- 基于真实 DDS 资源的预览，而不是当前的几何近似符号。
+- 复刻 CK3 多通道调色、pattern mask 与 shader 合成；当前 DDS 通道预览只比几何占位更接近真实素材。
 
 浏览器无法直接启动本机 stdio MCP，因此已引入 Maven + Java + Quarkus 伴随服务。后端只负责 REST/MCP 会话转接与
 本机资源索引，不承担“执行 CK3 脚本”的虚构能力；当前也没有 DDS 转换或素材缓存。

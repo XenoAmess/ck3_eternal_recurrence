@@ -10,7 +10,8 @@ coat-of-arms render description，不把该入口描述成任意 CK3 脚本执�
 - 编辑 position、scale、rotation、depth，并生成稳定 CRLF CK3 文本；
 - 展开简单静态 `@变量`，诊断多顶层、重复标量、`parent` 与未知字段；
 - 浏览器构图近似预览，明确不冒充 CK3 最终渲染；
-- 通过本机 Quarkus 伴随服务调用 typed MCP：读取基础游戏资源目录、获取 session revision、原生检测/应用和 Copy/export。
+- 通过本机 Quarkus 伴随服务调用 typed MCP：读取基础游戏资源目录与单个 DDS、获取 session revision、原生检测/应用和 Copy/export；
+- 在浏览器解码原版 DXT1 pattern / DXT5 colored emblem 的顶层 mip，显示真实纹理通道近似；调色、mask 与 CK3 shader 仍不冒充逐像像素一致。
 
 引擎证据与完整正反例矩阵见
 [`../docs/ck3-coat-of-arms-clipboard-import-capability.md`](../docs/ck3-coat-of-arms-clipboard-import-capability.md)。

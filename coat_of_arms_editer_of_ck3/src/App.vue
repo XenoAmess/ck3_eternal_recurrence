@@ -5,6 +5,7 @@ import {
   createCk3CompanionClient,
   type CoatOfArmsResourceItem,
 } from './api/ck3Companion'
+import { decodeDdsBase64, decodedDdsToDataUrl } from './domain/dds'
 import { parseCoatOfArms } from './domain/parser'
 import { serializeCoatOfArms } from './domain/serializer'
 import {
@@ -50,10 +51,13 @@ const selectedEmblem = ref(0)
 const companion = createCk3CompanionClient()
 const mcpBusy = ref(false)
 const catalogBusy = ref(false)
+const textureBusy = ref(false)
 const mcpStatus = ref('未连接')
 const patternResources = ref<CoatOfArmsResourceItem[]>([])
 const emblemResources = ref<CoatOfArmsResourceItem[]>([])
 const emblemSearch = ref('')
+const patternPreviewUrl = ref('')
+const emblemPreviewUrls = ref<Record<string, string>>({})
 
 const output = computed(() => serializeCoatOfArms(coatOfArms.value))
 const activeEmblem = computed(() => coatOfArms.value.coloredEmblems[selectedEmblem.value])
@@ -77,6 +81,8 @@ function importSource() {
   coatOfArms.value = result.coatOfArms
   diagnostics.value = result.diagnostics
   selectedEmblem.value = 0
+  patternPreviewUrl.value = ''
+  emblemPreviewUrls.value = {}
   if (result.diagnostics.some((item) => item.severity === 'error')) {
     ElMessage.error('已解析，但存在阻止确定性导出的诊断')
   } else {
@@ -98,6 +104,8 @@ function reset() {
   coatOfArms.value = createCoatOfArms()
   diagnostics.value = []
   selectedEmblem.value = 0
+  patternPreviewUrl.value = ''
+  emblemPreviewUrls.value = {}
 }
 
 function addEmblem() {
@@ -199,10 +207,79 @@ async function loadResourceCatalog() {
     patternResources.value = patterns.items
     emblemResources.value = emblems.items
     ElMessage.success(`已索引 ${patterns.returned} 个 pattern、${emblems.returned} 个 emblem`)
+    await loadCurrentTexturePreviews()
   } catch (error) {
     ElMessage.error(`资源目录读取失败：${errorMessage(error)}`)
   } finally {
     catalogBusy.value = false
+  }
+}
+
+async function readTexturePreview(
+  kind: 'pattern' | 'colored_emblem',
+  name: string,
+): Promise<string> {
+  const asset = await companion.asset(kind, name)
+  const decoded = decodeDdsBase64(asset.asset_base64)
+  if (
+    decoded.width !== asset.dds.width
+    || decoded.height !== asset.dds.height
+    || decoded.fourCC !== asset.dds.four_cc
+  ) {
+    throw new Error(`DDS 元数据与解码结果不一致：${name}`)
+  }
+  return decodedDdsToDataUrl(decoded)
+}
+
+async function loadPatternTexture(name: string) {
+  if (!name) return
+  textureBusy.value = true
+  try {
+    const preview = await readTexturePreview('pattern', name)
+    if (coatOfArms.value.pattern === name) patternPreviewUrl.value = preview
+  } catch (error) {
+    patternPreviewUrl.value = ''
+    ElMessage.warning(`Pattern 预览读取失败：${errorMessage(error)}`)
+  } finally {
+    textureBusy.value = false
+  }
+}
+
+async function loadEmblemTexture(name: string) {
+  if (!name) return
+  textureBusy.value = true
+  try {
+    const preview = await readTexturePreview('colored_emblem', name)
+    emblemPreviewUrls.value = { ...emblemPreviewUrls.value, [name]: preview }
+  } catch (error) {
+    ElMessage.warning(`Emblem 预览读取失败：${errorMessage(error)}`)
+  } finally {
+    textureBusy.value = false
+  }
+}
+
+async function loadCurrentTexturePreviews() {
+  textureBusy.value = true
+  const names = [...new Set(coatOfArms.value.coloredEmblems
+    .map((emblem) => emblem.texture)
+    .filter(Boolean))]
+  try {
+    const requests: Promise<void>[] = []
+    if (coatOfArms.value.pattern) {
+      requests.push(readTexturePreview('pattern', coatOfArms.value.pattern).then((preview) => {
+        patternPreviewUrl.value = preview
+      }))
+    }
+    for (const name of names) {
+      requests.push(readTexturePreview('colored_emblem', name).then((preview) => {
+        emblemPreviewUrls.value = { ...emblemPreviewUrls.value, [name]: preview }
+      }))
+    }
+    const results = await Promise.allSettled(requests)
+    const failed = results.filter((result) => result.status === 'rejected').length
+    if (failed) ElMessage.warning(`${failed} 个纹理没有生成浏览器预览`)
+  } finally {
+    textureBusy.value = false
   }
 }
 
@@ -266,29 +343,46 @@ importSource()
       <section class="preview-pane panel">
         <div class="panel-title">
           <div><span class="step">02</span><h2>构图预览</h2></div>
-          <el-tag effect="plain" type="warning">浏览器近似</el-tag>
+          <el-tag effect="plain" :type="patternPreviewUrl ? 'success' : 'warning'">
+            {{ patternPreviewUrl ? '原版 DDS 通道近似' : '浏览器几何近似' }}
+          </el-tag>
         </div>
         <div class="preview-stage">
           <div class="shield" :style="{ '--shield-color': cssColor(coatOfArms.colors[0]) }">
+            <img v-if="patternPreviewUrl" class="pattern-texture" :src="patternPreviewUrl" alt="原版 pattern DDS 通道图" />
             <div class="shield-light" :style="{ background: cssColor(coatOfArms.colors[1]) }" />
             <div
               v-for="(emblem, emblemIndex) in coatOfArms.coloredEmblems"
               :key="`${emblem.texture}-${emblemIndex}`"
               class="emblem-group"
             >
-              <div
-                v-for="(instance, instanceIndex) in emblem.instances"
-                :key="instanceIndex"
-                class="emblem-glyph"
-                :style="{
-                  left: `${instance.position[0] * 100}%`,
-                  top: `${instance.position[1] * 100}%`,
-                  color: cssColor(emblem.colors[0]),
-                  transform: `translate(-50%, -50%) rotate(${instance.rotation}deg) scale(${instance.scale[0]}, ${instance.scale[1]})`,
-                  zIndex: Math.round(instance.depth * 10),
-                }"
-                :title="emblem.texture"
-              >✦</div>
+              <template v-for="(instance, instanceIndex) in emblem.instances" :key="instanceIndex">
+                <img
+                  v-if="emblemPreviewUrls[emblem.texture]"
+                  class="emblem-texture"
+                  :src="emblemPreviewUrls[emblem.texture]"
+                  :alt="emblem.texture"
+                  :style="{
+                    left: `${instance.position[0] * 100}%`,
+                    top: `${instance.position[1] * 100}%`,
+                    transform: `translate(-50%, -50%) rotate(${instance.rotation}deg) scale(${instance.scale[0]}, ${instance.scale[1]})`,
+                    zIndex: Math.round(instance.depth * 10),
+                  }"
+                  :title="emblem.texture"
+                />
+                <div
+                  v-else
+                  class="emblem-glyph"
+                  :style="{
+                    left: `${instance.position[0] * 100}%`,
+                    top: `${instance.position[1] * 100}%`,
+                    color: cssColor(emblem.colors[0]),
+                    transform: `translate(-50%, -50%) rotate(${instance.rotation}deg) scale(${instance.scale[0]}, ${instance.scale[1]})`,
+                    zIndex: Math.round(instance.depth * 10),
+                  }"
+                  :title="emblem.texture"
+                >✦</div>
+              </template>
             </div>
           </div>
         </div>
@@ -296,8 +390,9 @@ importSource()
           <strong>{{ coatOfArms.pattern || '未指定 pattern' }}</strong>
           <span>{{ coatOfArms.coloredEmblems.length }} 个彩色图层 · {{ coatOfArms.coloredEmblems.reduce((sum, item) => sum + item.instances.length, 0) }} 个实例</span>
         </div>
+        <el-button class="preview-load" :loading="textureBusy" @click="loadCurrentTexturePreviews">加载当前原版 DDS</el-button>
         <el-alert type="info" :closable="false" show-icon>
-          <template #title>真正的纹理、mask 和渲染结果以 CK3 原生 MCP 检测为准。</template>
+          <template #title>DDS 解码显示真实顶层 mip 通道；调色、mask 和最终 shader 结果仍以 CK3 原生 MCP 检测为准。</template>
         </el-alert>
       </section>
 
@@ -317,7 +412,7 @@ importSource()
           <el-form label-position="top">
             <div class="form-grid">
               <el-form-item label="Pattern 资源名">
-                <el-select v-model="coatOfArms.pattern" filterable allow-create default-first-option>
+                <el-select v-model="coatOfArms.pattern" filterable allow-create default-first-option @change="loadPatternTexture">
                   <el-option
                     v-for="item in patternResources"
                     :key="item.name"
@@ -342,7 +437,7 @@ importSource()
             <template v-if="activeEmblem">
               <div class="form-grid">
                 <el-form-item label="Texture 资源名" class="wide">
-                  <el-select v-model="activeEmblem.texture" filterable allow-create default-first-option>
+                  <el-select v-model="activeEmblem.texture" filterable allow-create default-first-option @change="loadEmblemTexture">
                     <el-option
                       v-for="item in emblemResources"
                       :key="item.name"

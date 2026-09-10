@@ -67,12 +67,15 @@ h1 { margin: 0; font-family: Georgia, "Noto Serif SC", serif; font-weight: 500; 
 .preview-stage { min-height: 475px; display: grid; place-items: center; border: 1px solid var(--line); background: radial-gradient(circle, rgba(170,135,76,.13), transparent 48%), #151311; overflow: hidden; }
 .shield { --shield-color: #315b9a; position: relative; width: 260px; height: 315px; overflow: hidden; background: var(--shield-color); border: 5px solid #c1a463; box-shadow: 0 0 0 2px #55452d, 0 28px 45px rgba(0,0,0,.45); clip-path: polygon(4% 0, 96% 0, 96% 65%, 82% 83%, 50% 100%, 18% 83%, 4% 65%); }
 .shield::after { content: ''; position: absolute; inset: 0; z-index: 100; pointer-events: none; background: linear-gradient(110deg, rgba(255,255,255,.13), transparent 28%, rgba(0,0,0,.18) 80%), repeating-linear-gradient(30deg, transparent 0 7px, rgba(255,255,255,.018) 7px 8px); }
+.pattern-texture { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: fill; opacity: .72; }
 .shield-light { position: absolute; inset: 0 50% 0 0; opacity: .22; }
 .emblem-group { position: absolute; inset: 0; }
 .emblem-glyph { position: absolute; font-family: Georgia, serif; font-size: 112px; line-height: 1; transform-origin: center; text-shadow: 0 3px 2px rgba(0,0,0,.28); }
+.emblem-texture { position: absolute; width: 260px; height: 260px; object-fit: contain; transform-origin: center; filter: drop-shadow(0 3px 2px rgba(0,0,0,.28)); }
 .preview-caption { padding: 16px 2px; display: flex; flex-direction: column; gap: 5px; }
 .preview-caption strong { font-family: "Cascadia Code", Consolas, monospace; font-size: 13px; color: #dfc992; }
 .preview-caption span { color: #8f8579; font-size: 12px; }
+.preview-load { width: 100%; margin-bottom: 10px; }
 
 .editor-pane { padding-right: 8px; }
 .editor-pane .panel-title { padding-right: 12px; }
