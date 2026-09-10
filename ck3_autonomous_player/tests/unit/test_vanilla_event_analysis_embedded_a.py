@@ -14,6 +14,7 @@ from xar_autoplayer.vanilla_events.records_analysis_embedded_a import (  # noqa:
     VANILLA_EMBEDDED_A_OBSERVATIONS,
 )
 from xar_autoplayer.vanilla_events.records_embedded_a import (  # noqa: E402
+    EMBEDDED_A_VANILLA_OBSERVATIONS,
     EMBEDDED_A_VANILLA_TIMELINE_CONTRACTS,
 )
 from xar_autoplayer.vanilla_events.registry import (  # noqa: E402
@@ -57,6 +58,28 @@ def test_each_record_carries_exact_build_and_migration_boundary() -> None:
         assert record["review_summary"]
         assert record["safe_option"]["rationale"]
         assert record["existing_boundaries"]["boundary_note"]
+        assert record["existing_boundaries"][
+            "campaign_specific_binding_fields"
+        ] == []
+        assert record["existing_boundaries"]["date_policy"] == (
+            "product-observation-window"
+        )
+
+
+def test_migration_observations_join_existing_live_evidence() -> None:
+    assert len(EMBEDDED_A_VANILLA_OBSERVATIONS) == 26
+    assert len(VANILLA_EMBEDDED_A_OBSERVATIONS) == 27
+    for event_key, observation in EMBEDDED_A_VANILLA_OBSERVATIONS.items():
+        assert VANILLA_EMBEDDED_A_OBSERVATIONS[event_key] == observation
+        exemplar = observation["exemplars"][0]
+        assert exemplar["run"] == "legacy-migrated"
+        assert exemplar["kind"] == "legacy-live-binding"
+        assert exemplar["review_kind"] == "migration-only"
+
+    assert "stress_threshold.1721" not in EMBEDDED_A_VANILLA_OBSERVATIONS
+    assert VANILLA_EMBEDDED_A_OBSERVATIONS[
+        "stress_threshold.1721"
+    ]["exemplars"][0]["run"] == "R372"
 
 
 def test_safe_option_and_occurrence_fields_match_existing_contracts() -> None:

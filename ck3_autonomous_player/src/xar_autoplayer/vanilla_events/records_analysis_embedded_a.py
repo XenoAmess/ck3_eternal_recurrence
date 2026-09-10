@@ -10,7 +10,10 @@ from __future__ import annotations
 
 from typing import Final
 
-from .records_embedded_a import EMBEDDED_A_VANILLA_TIMELINE_CONTRACTS
+from .records_embedded_a import (
+    EMBEDDED_A_VANILLA_OBSERVATIONS as _LEGACY_MIGRATION_OBSERVATIONS,
+    EMBEDDED_A_VANILLA_TIMELINE_CONTRACTS,
+)
 from .registry import EXACT_CK3_BUILD, EXACT_CK3_EXE_SHA256
 
 
@@ -234,6 +237,7 @@ _SCOPE_KEYS: Final[tuple[str, ...]] = (
 )
 _CAMPAIGN_BINDING_KEYS: Final[tuple[str, ...]] = (
     "date_raw",
+    "date_raw_range",
     "root_character_id",
     "character_scopes",
     "unique_character_scope_excludes",
@@ -258,6 +262,19 @@ def _selected_fields(
         for name in names
         if name in contract
     }
+
+
+def _contains_numeric_campaign_identity(value: object) -> bool:
+    if type(value) is int:
+        return True
+    if isinstance(value, dict):
+        return any(
+            _contains_numeric_campaign_identity(item)
+            for item in value.values()
+        )
+    if isinstance(value, (list, tuple)):
+        return any(_contains_numeric_campaign_identity(item) for item in value)
+    return False
 
 
 def _occurrence_boundary(contract: dict[str, object]) -> dict[str, object]:
@@ -308,11 +325,16 @@ def _build_analysis() -> dict[str, dict[str, object]]:
                 "occurrence": _occurrence_boundary(contract),
                 "scope_shape": _selected_fields(contract, _SCOPE_KEYS),
                 "campaign_specific_binding_fields": [
-                    name for name in _CAMPAIGN_BINDING_KEYS if name in contract
+                    name
+                    for name in _CAMPAIGN_BINDING_KEYS
+                    if name in contract
+                    and _contains_numeric_campaign_identity(contract[name])
                 ],
                 "boundary_note": (
-                    "Campaign IDs and dates remain legacy live-contract bindings; "
-                    "this metadata does not promote them to universal event facts."
+                    "The reusable contract binds player identity through $player "
+                    "and otherwise relies on typed roles and scope relations. "
+                    "Campaign dates and numeric identities remain migration-only "
+                    "observations, not universal event facts."
                 ),
             },
         }
@@ -429,7 +451,9 @@ VANILLA_EMBEDDED_A_ANALYSIS: Final[dict[str, dict[str, object]]] = (
 )
 
 
-VANILLA_EMBEDDED_A_OBSERVATIONS: Final[dict[str, dict[str, object]]] = {
+_STRESS_THRESHOLD_1721_OBSERVATIONS: Final[
+    dict[str, dict[str, object]]
+] = {
     "stress_threshold.1721": {
         "exemplars": [{
             "run": "R372",
@@ -560,6 +584,14 @@ VANILLA_EMBEDDED_A_OBSERVATIONS: Final[dict[str, dict[str, object]]] = {
             "console_used": False,
         }],
     },
+}
+
+
+VANILLA_EMBEDDED_A_OBSERVATIONS: Final[
+    dict[str, dict[str, object]]
+] = {
+    **_LEGACY_MIGRATION_OBSERVATIONS,
+    **_STRESS_THRESHOLD_1721_OBSERVATIONS,
 }
 
 
