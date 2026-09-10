@@ -130,8 +130,10 @@
   [tgp-movement-support-letter.md](tgp-movement-support-letter.md)。R414 后续已越过该事件、无关系 scope 的
   `tgp_dynastic_cycle_events.0001` 和 `trait_specific.8001`。R416 从 partial checkpoint 冷恢复后再次越过草药种子事件，
   并用热更新合同越过 `bp1_house_feud.0014` 的 relation-scope 形态与 `bp1_yearly.1040`；浴场事件现为 production-live
-  primitive；赠书与 artifact 事件随后也在同 PID 完成各自选择与 advance。当前暂停在 `health.1006` 的无医师
-  投影 RED，exact-build 双形态与 authored1/native0 路线见 [health-consumption-diagnosis.md](health-consumption-diagnosis.md)。
+  primitive；赠书与 artifact 事件随后也在同 PID 完成各自选择与 advance。`health.1006` 无医师投影也已在
+  retry 06 以 authored1/native0 完成选择与 advance，并按原版延迟进入 `health.3001`；当前暂停在后者继承
+  `epidemic,new_memory` 的六 scope RED，exact-build 两段决策树与 authored2/native1 路线见
+  [health-consumption-diagnosis.md](health-consumption-diagnosis.md)。
   artifact 树见 [artifact-expert-improvement.md](artifact-expert-improvement.md)。上述状态不表示 177 条全部 live；
   `361/626` 全树覆盖也不是 T0、其它 mod、CI 或发布门。T0 仍为 `50% / stage 8/11 / source 3/4 / P2 LOCKED`。
 - [static-confirmed + marriage/alliance production-live loop + call-ally blocker live / fallback static-ready]

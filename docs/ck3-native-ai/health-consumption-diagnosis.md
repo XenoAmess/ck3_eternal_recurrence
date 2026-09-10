@@ -1,4 +1,4 @@
-# CK3 1.19.0.6 `health.1006` 肺痨诊断决策树
+# CK3 1.19.0.6 `health.1006 → health.3001` 肺痨诊断与医师招募决策树
 
 ## 状态与证据边界
 
@@ -9,8 +9,15 @@
 - [paused live RED] R416 attempt 05 在 PID `174656` / generation `1`、`date_raw=53864592` 命中 instance
   `1084`。root 与 `sick_character` 都是玩家 `32904`；没有 `physician` scope；native `0/6` shown/enabled；
   未提交选择。
-- [counter-policy static-ready, live action pending] 当前无医师投影选择 authored `1` / native `0`，进入寻找
-  宫廷医师链。现有医师投影仍选择 authored `4` / native `3` 的安全治疗。动作 ACK 不能代替 instance advance。
+- [production-live primitive] R416 retry 06 在相同 PID / generation 选择 authored `1` / native `0`，instance
+  `1084 -> null`、snapshot `native:1026 -> native:1027`、revision `1027 -> 1028`，且
+  `postcondition_verified=true`。这证明无医师恢复路线已经越过真实诊断窗口。
+- [paused live RED] 同次 retry 随后按原版延迟进入 `health.3001` instance `1085`，`date_raw=53864784`。
+  root/player 为 `32904`，高技能候选为 `33648496`，低技能候选为 `16889335`；native `1/2/4` 均
+  shown/enabled，尚未提交选择。旧合同没有接受从诊断链继承的 `epidemic,new_memory`，因此保留 RED。
+- [counter-policy static-ready, live action pending] `health.3001` 当前投影选择 authored `2` / native `1`
+  招募高技能候选。现有医师投影仍选择 authored `4` / native `3` 的安全治疗。动作 ACK 不能代替
+  instance advance。
 
 ## 原版状态与入口
 
@@ -58,12 +65,51 @@ flowchart TD
 玩家死亡的实机结果，所以保留原有安全治疗选择。宗教只可能影响未准入的 mystic 选择权重；本策略不读取或扩展
 faith/doctrine 域。
 
+## `health.3001` 医师搜索树
+
+`health.3001` 只要求 ROOT 仍有首都省份。窗口 `immediate` 对玩家执行候选搜索：只有学习生活方式或达到高学习
+门槛的统治者才创建 `excellent_skill_option`；`high_skill_option` 与 `low_skill_option` 总会搜索或兜底生成；
+`mystic_option` 只在池中有合法候选时存在。R416 没有 excellent/mystic 候选，因此五个 authored option 中只渲染
+native `1/2/4`。
+
+```mermaid
+flowchart TD
+    A[health.3001 暂停窗口] --> B{exact scopes 与 native 1/2/4 是否匹配?}
+    B -- 否 --> R[保留 RED，不提交]
+    B -- 是 --> C[authored 2 / native 1<br/>招募 high_skill_option]
+    C --> D[支付 high_skill_court_physician_cost]
+    D --> E[set_court_physician_effect<br/>任命宫廷医师]
+    E --> F{玩家有可治疗疾病且无近期治疗?}
+    F -- 是 --> G[按配置延迟调度 health.3101]
+    F -- 否 --> H[完成招募]
+    B -- 是，但选 native 2 --> I[招募低技能候选]
+    B -- 是，但选 native 4 --> J[不招募，患者继续无医师]
+```
+
+旧 R197 样本只携带 `sick_character,disease_type,high_skill_option,low_skill_option`。R416 从
+`health.1006` 进入时，原版事件上下文继续携带 `epidemic,new_memory`，并在当前事件的 `immediate` 后追加高、低技能
+候选，形成六 scope 形态：
+
+| 形态 | saved scopes | rendered native options | 选择 |
+|---|---|---|---|
+| 普通医师搜索，R197 | `sick_character,disease_type,high_skill_option,low_skill_option` | `1,2,4` | authored `2` / native `1` |
+| 疫情诊断继承，R416 | 上述四项加 `epidemic,new_memory` | `1,2,4` | authored `2` / native `1` |
+
+两个继承 scope 不参与当前三项按钮的显隐，也不改变招募效果；合同以独立 exact scope variant 接受它们，不放宽候选
+身份关系或 option 投影。high/low 候选必须互不相同且都不是患病玩家。native `1` 任命高技能候选并进入已审阅的
+`health.3101` 治疗链；native `2` 任命较低技能候选；native `4` 不招募任何人。此次路线不需要读取信仰内容；
+mystic 分支仍保持未准入，若以后真实出现则冻结新 RED 后单列投影。
+
 ## exact-build 来源
 
 - `events/health_events.txt:2135-2334`，SHA-256
   `8CAB7F230E09A37C15F7C088383D40752D970918D44D86762FDD068EE168EFEB`。
+- 同文件 `health.3001` 定义在 `6667-7276`，候选搜索为 `6705-7075`，五个 option 为
+  `7077-7257`，after 为 `7259-7275`。
 - `common/scripted_effects/20_health_effects.txt:127-691,2093-2107`，SHA-256
   `6D7DEF1245D899DE4DEBC42136815BC7F4D14F6A467A8320355507AD03528F12`。
+- 同文件 `set_court_physician_effect` 位于 `1308-1408`；它负责任命医师并在玩家仍需治疗时调度
+  `health.3101`。
 - `common/on_action/health_on_actions.txt:343-357`，SHA-256
   `253988DA3E14BE7CC9B86CAB2A3C15843B0CB8B273B2B4BC391EB287AEF0C94C`。
 - `events/travel_events/travel_events_filippa.txt:8622-8674`，SHA-256
@@ -74,6 +120,9 @@ faith/doctrine 域。
 - R416 attempt 05 RED：
   `_runtime/p1-terminal-resume-r416-20260911/live-artifacts/terminal-stages-red-attempt-05.json`，SHA-256
   `0BFAB9EF8D38AE9C74F783FE3E4B3672222E5289F760D21074BD04D5683692AA`。
+- R416 retry 06 同时包含 `health.1006` 的选择后置条件和 `health.3001` 的选择前 RED：
+  `_runtime/p1-terminal-resume-r416-20260911/live-artifacts/terminal-stages-red-attempt-06.json`，SHA-256
+  `0A19C4E378730320173A6F34A99C3724D043432E6529D8496715CA920C30569B`。
 
 R97 下游死亡边界见
 [`promotion-source-checkpoint-choreography-forensics-2026-09-04.md`](../phase2-promo/promotion-source-checkpoint-choreography-forensics-2026-09-04.md)。

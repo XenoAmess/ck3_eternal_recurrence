@@ -140,8 +140,10 @@ class HealthConsumptionEventRecordTests(unittest.TestCase):
         for digest in analysis["source_sha256"].values():
             self.assertRegex(digest, SHA256_PATTERN)
 
-    def test_r416_shape_and_r97_outcome_remain_observations(self) -> None:
-        r97, r416 = VANILLA_HEALTH_OBSERVATIONS[EVENT_KEY]["exemplars"]
+    def test_r416_shape_green_and_r97_outcome_remain_observations(self) -> None:
+        r97, r416, r416_green = VANILLA_HEALTH_OBSERVATIONS[EVENT_KEY][
+            "exemplars"
+        ]
         contract_repr = repr(MANAGER_HEALTH_TIMELINE_CONTRACTS[EVENT_KEY])
 
         self.assertEqual(r97["rendered_native_option_indices"], [3, 4, 6])
@@ -151,6 +153,12 @@ class HealthConsumptionEventRecordTests(unittest.TestCase):
         self.assertEqual(r416["rendered_native_option_indices"], [0, 6])
         self.assertFalse(r416["selection_attempted"])
         self.assertRegex(r416["artifact_sha256"], SHA256_PATTERN)
+        self.assertEqual(r416_green["event_instance_id"], 1084)
+        self.assertEqual(r416_green["selected_native_option_index"], 0)
+        self.assertEqual(r416_green["starting_snapshot_id"], "native:1026")
+        self.assertEqual(r416_green["ending_snapshot_id"], "native:1027")
+        self.assertTrue(r416_green["postcondition_verified"])
+        self.assertRegex(r416_green["artifact_sha256"], SHA256_PATTERN)
         for observation_only in (53168904, 53864592, 1084, 56656, 174656):
             self.assertNotIn(str(observation_only), contract_repr)
 

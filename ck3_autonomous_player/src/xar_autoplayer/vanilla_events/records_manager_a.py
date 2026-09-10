@@ -1393,13 +1393,15 @@ _LEGACY_MANAGER_HEALTH_TIMELINE_CONTRACTS: Final[
         "max_occurrences": 1,
     },
     "health.3001": {
-        # R197 exact delayed physician-search result opened by health.1001's
-        # no-physician route. Vanilla authored five branches, but this frame
-        # has only the high-skill candidate, low-skill candidate, and decline
-        # branches visible (native 1/2/4). Both candidate aliases are exact
-        # live character scopes. Native 1 hires the high-skill candidate and
-        # is the strongest source-authored route for preserving the sick
-        # acceptance owner; native 4 would leave that owner untreated.
+        # Exact delayed physician-search result opened by a no-physician
+        # diagnosis route. Vanilla authored five branches, but the reviewed
+        # frames have only the high-skill candidate, low-skill candidate, and
+        # decline branches visible (native 1/2/4). R416 proved that health.1006
+        # legally carries epidemic/new_memory into this same projection; keep
+        # that six-scope source shape as an explicit variant. Native 1 hires
+        # the high-skill candidate and is the strongest source-authored route
+        # for preserving the sick acceptance owner; native 4 leaves that owner
+        # untreated.
         "date_raw": 53176968,
         "date_policy": "product-observation-window",
         "root_character_id": 32904,
@@ -1423,6 +1425,22 @@ _LEGACY_MANAGER_HEALTH_TIMELINE_CONTRACTS: Final[
             "low_skill_option",
         ),),
         "saved_scope_count": 4,
+        "scope_variants": ({
+            "scope_types": {
+                "epidemic": "epidemic",
+                "disease_type": "flag",
+                "new_memory": "character_memory",
+            },
+            "saved_scope_names": (
+                "epidemic",
+                "disease_type",
+                "sick_character",
+                "new_memory",
+                "high_skill_option",
+                "low_skill_option",
+            ),
+            "saved_scope_count": 6,
+        },),
         "option_count": 3,
         "snapshot_option_count": 5,
         "native_option_indices": (1, 2, 4),
@@ -2037,7 +2055,7 @@ MANAGER_VANILLA_OBSERVATIONS_A: Final[dict[str, dict[str, object]]] = {
     for _source_name, contracts in _MANAGER_A_LEGACY_GROUPS
     for event_key, contract in contracts.items()
     if contract.get("root_character_id") in {29037, 32904}
-    and event_key != "health.1006"
+    and event_key not in {"health.1006", "health.3001"}
 }
 
 MANAGER_BEFRIEND_TIMELINE_CONTRACTS: Final = _neutralize_group(

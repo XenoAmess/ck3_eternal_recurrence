@@ -278,7 +278,12 @@ class VanillaEventRegistryMigrationParityTests(unittest.TestCase):
         self.assertEqual(
             set(MANAGER_VANILLA_OBSERVATIONS_A),
             set(MANAGER_VANILLA_TIMELINE_CONTRACTS_A)
-            - {"great_holy_war.0011", "epidemic_events.0110", "health.1006"},
+            - {
+                "great_holy_war.0011",
+                "epidemic_events.0110",
+                "health.1006",
+                "health.3001",
+            },
         )
         self.assertEqual(
             set(MANAGER_VANILLA_LEGACY_OBSERVATIONS_B),
