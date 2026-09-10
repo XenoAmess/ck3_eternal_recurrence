@@ -601,6 +601,16 @@
           "source_line": 3285
         },
         {
+          "caller_candidate_resolution": null,
+          "event_definition_key": "diplomacy_majesty.4033",
+          "logical_path": "common/on_action/yearly_on_actions.txt",
+          "origin": "ck3_game",
+          "provenance": "manually-reviewed-analysis-source",
+          "role": "analysis_source",
+          "source_column": null,
+          "source_line": null
+        },
+        {
           "caller_candidate_resolution": "external-definition-file",
           "event_definition_key": "ep1_flavor.0021",
           "logical_path": "common/on_action/yearly_on_actions.txt",
@@ -2202,6 +2212,28 @@
         }
       ],
       "sha256": "35a9b8fc8fe6cde91eaad06f9c90ad6fcd41beefd317bff77d3a68430e5dd839"
+    },
+    {
+      "blob_bytes": 274576,
+      "blob_path": "blobs/37513f94afe1672408b86fe719607c972e9d2f5c66dec4d9ae2bfaa861244945.gz",
+      "blob_sha256": "5adaf11609a6f28d9a4394a426c6f71975f96ca7872195d56c9747641edd7e3f",
+      "bytes": 7040591,
+      "evidence_id": "37513f94afe1672408b86fe719607c972e9d2f5c66dec4d9ae2bfaa861244945",
+      "kind": "observation_artifact",
+      "media_type": "application/json",
+      "references": [
+        {
+          "caller_candidate_resolution": null,
+          "event_definition_key": "diplomacy_majesty.4033",
+          "logical_path": "_runtime/p2r390-t0-critical-continuation-live/r390-diplomacy-majesty-4033-red-state.json",
+          "origin": "runtime",
+          "provenance": "captured-observation-artifact",
+          "role": "artifact",
+          "source_column": null,
+          "source_line": null
+        }
+      ],
+      "sha256": "37513f94afe1672408b86fe719607c972e9d2f5c66dec4d9ae2bfaa861244945"
     },
     {
       "blob_bytes": 358,
@@ -8140,6 +8172,28 @@
       "sha256": "9ba6ce044f29b12ef65abcccdee6fab97c8f35712b6ae876244dc60360ab0fab"
     },
     {
+      "blob_bytes": 8053,
+      "blob_path": "blobs/9eba356e98f54a79af19ff55ec47040adffc29753fc2f5c15bc351fc49676426.gz",
+      "blob_sha256": "221c5d318c3f85b56d8f6f800f98e68cdd8b5401fc633b50b053c0a6bff4d4df",
+      "bytes": 22356,
+      "evidence_id": "9eba356e98f54a79af19ff55ec47040adffc29753fc2f5c15bc351fc49676426",
+      "kind": "source_definition",
+      "media_type": "application/yaml; charset=utf-8",
+      "references": [
+        {
+          "caller_candidate_resolution": null,
+          "event_definition_key": "diplomacy_majesty.4033",
+          "logical_path": "localization/simp_chinese/event_localization/lifestyle/statecraft/diplomacy_majesty_events_l_simp_chinese.yml",
+          "origin": "ck3_game",
+          "provenance": "manually-reviewed-analysis-source",
+          "role": "analysis_source",
+          "source_column": null,
+          "source_line": null
+        }
+      ],
+      "sha256": "9eba356e98f54a79af19ff55ec47040adffc29753fc2f5c15bc351fc49676426"
+    },
+    {
       "blob_bytes": 1130258,
       "blob_path": "blobs/9fdf93d053e001c73d9dc469dde37bc44c3da8f1872ac3e587c10241ea27fb51.gz",
       "blob_sha256": "fa8b9b143531199e3a6bd198ed6d3cbfad12264a938b283e2f182b44e3e5b283",
@@ -8342,6 +8396,28 @@
         }
       ],
       "sha256": "a51c5d0ed3ce9b475a25b7857829b098a4d5a38b4d89044c68c4813cc32eea26"
+    },
+    {
+      "blob_bytes": 2403,
+      "blob_path": "blobs/a7a85c90d27e2d5b4e221338277b60ea3560baebeacd971aeaeb7711cb97e390.gz",
+      "blob_sha256": "cd7debb6f5ee1b1917e43d1c1181d8440ea0539f2e6597159d7edc738b584009",
+      "bytes": 6992,
+      "evidence_id": "a7a85c90d27e2d5b4e221338277b60ea3560baebeacd971aeaeb7711cb97e390",
+      "kind": "source_definition",
+      "media_type": "text/plain; charset=utf-8",
+      "references": [
+        {
+          "caller_candidate_resolution": null,
+          "event_definition_key": "diplomacy_majesty.4033",
+          "logical_path": "common/on_action/lifestyles/diplomacy_lifestyle_on_actions.txt",
+          "origin": "ck3_game",
+          "provenance": "manually-reviewed-analysis-source",
+          "role": "analysis_source",
+          "source_column": null,
+          "source_line": null
+        }
+      ],
+      "sha256": "a7a85c90d27e2d5b4e221338277b60ea3560baebeacd971aeaeb7711cb97e390"
     },
     {
       "blob_bytes": 1170,
@@ -9658,6 +9734,28 @@
       "sha256": "c1eca141c71ec1e741ca5336e01bb538eefaec05b0684edec477cfc9053c3807"
     },
     {
+      "blob_bytes": 7113,
+      "blob_path": "blobs/c324ac167f63ff1fa1b7b7f733db137df630e2369827d909a0510ebb445ceb08.gz",
+      "blob_sha256": "48db5fdf109c55d112c1c27c1d0bcf0d7b134232c097bbc562c547544135fabe",
+      "bytes": 22991,
+      "evidence_id": "c324ac167f63ff1fa1b7b7f733db137df630e2369827d909a0510ebb445ceb08",
+      "kind": "source_definition",
+      "media_type": "application/yaml; charset=utf-8",
+      "references": [
+        {
+          "caller_candidate_resolution": null,
+          "event_definition_key": "diplomacy_majesty.4033",
+          "logical_path": "localization/english/event_localization/lifestyle/statecraft/diplomacy_majesty_events_l_english.yml",
+          "origin": "ck3_game",
+          "provenance": "manually-reviewed-analysis-source",
+          "role": "analysis_source",
+          "source_column": null,
+          "source_line": null
+        }
+      ],
+      "sha256": "c324ac167f63ff1fa1b7b7f733db137df630e2369827d909a0510ebb445ceb08"
+    },
+    {
       "blob_bytes": 360,
       "blob_path": "blobs/c382b9dd4c8abc45664b68bafeacf63b9ab718d2e8d0433db558f0bacaac9e01.gz",
       "blob_sha256": "a995ef10aa67d304ab23d7f61010574038503fb82950d7cd59bafab9dd120feb",
@@ -9678,6 +9776,48 @@
         }
       ],
       "sha256": "c382b9dd4c8abc45664b68bafeacf63b9ab718d2e8d0433db558f0bacaac9e01"
+    },
+    {
+      "blob_bytes": 11631,
+      "blob_path": "blobs/c3fb744b621e6e4c9f62919ab8b006c6ebb716aef233cc923d2b9318802f8516.gz",
+      "blob_sha256": "ae81bd4bec8c7c26fae110cac06243bceb85889b2b1ce00d3c1886b41825b2ab",
+      "bytes": 94178,
+      "evidence_id": "c3fb744b621e6e4c9f62919ab8b006c6ebb716aef233cc923d2b9318802f8516",
+      "kind": "source_definition",
+      "media_type": "text/plain; charset=utf-8",
+      "references": [
+        {
+          "caller_candidate_resolution": null,
+          "event_definition_key": "diplomacy_majesty.4033",
+          "logical_path": "events/lifestyles/statecraft_lifestyle/diplomacy_majesty_events.txt",
+          "origin": "ck3_game",
+          "provenance": "generated-definition-index",
+          "role": "event_definition",
+          "source_column": null,
+          "source_line": 968
+        },
+        {
+          "caller_candidate_resolution": "same-definition-file-only",
+          "event_definition_key": "diplomacy_majesty.4033",
+          "logical_path": "events/lifestyles/statecraft_lifestyle/diplomacy_majesty_events.txt",
+          "origin": "ck3_game",
+          "provenance": "lexical-caller-candidate-not-proven-runtime-caller",
+          "role": "caller_candidate",
+          "source_column": 27,
+          "source_line": 886
+        },
+        {
+          "caller_candidate_resolution": null,
+          "event_definition_key": "diplomacy_majesty.4033",
+          "logical_path": "events/lifestyles/statecraft_lifestyle/diplomacy_majesty_events.txt",
+          "origin": "ck3_game",
+          "provenance": "manually-reviewed-analysis-source",
+          "role": "analysis_source",
+          "source_column": null,
+          "source_line": null
+        }
+      ],
+      "sha256": "c3fb744b621e6e4c9f62919ab8b006c6ebb716aef233cc923d2b9318802f8516"
     },
     {
       "blob_bytes": 2755,
@@ -11360,6 +11500,28 @@
       "sha256": "f4984713b39dc4436a495dae8d2264d6a6e179d0dbead0897124b97805d20ae7"
     },
     {
+      "blob_bytes": 415,
+      "blob_path": "blobs/f60f1b1dc82728304cdc68684af6ed829587c73d2b42d0a5247eaa59635ea4b1.gz",
+      "blob_sha256": "7d8a35416632c6e960579bdc5e8ef22ef2f839a497e7ab96fac2e79401628fdf",
+      "bytes": 1349,
+      "evidence_id": "f60f1b1dc82728304cdc68684af6ed829587c73d2b42d0a5247eaa59635ea4b1",
+      "kind": "source_definition",
+      "media_type": "text/plain; charset=utf-8",
+      "references": [
+        {
+          "caller_candidate_resolution": null,
+          "event_definition_key": "diplomacy_majesty.4033",
+          "logical_path": "common/modifiers/00_diplomacy_lifestyle_modifiers.txt",
+          "origin": "ck3_game",
+          "provenance": "manually-reviewed-analysis-source",
+          "role": "analysis_source",
+          "source_column": null,
+          "source_line": null
+        }
+      ],
+      "sha256": "f60f1b1dc82728304cdc68684af6ed829587c73d2b42d0a5247eaa59635ea4b1"
+    },
+    {
       "blob_bytes": 7341,
       "blob_path": "blobs/f646fae510a66a87a01b464140f7206921b141e6f3d3d06ce20570c18c7b9759.gz",
       "blob_sha256": "0995f0b22d8dd4662f69d4d7d85d8f5acca513c652371a42f1c2c1b53869428a",
@@ -11793,13 +11955,13 @@
   "schema": "xar.ck3.vanilla-event-portable-evidence-manifest",
   "schema_version": 1,
   "statistics": {
-    "evidence": 221,
-    "generated_definition_references": 168,
-    "lexical_caller_candidate_references": 499,
-    "manually_reviewed_analysis_source_references": 186,
-    "observation_artifact_references": 60,
-    "observation_artifacts": 59,
-    "references": 913,
-    "source_definitions": 162
+    "evidence": 227,
+    "generated_definition_references": 169,
+    "lexical_caller_candidate_references": 500,
+    "manually_reviewed_analysis_source_references": 192,
+    "observation_artifact_references": 61,
+    "observation_artifacts": 60,
+    "references": 922,
+    "source_definitions": 167
   }
 }

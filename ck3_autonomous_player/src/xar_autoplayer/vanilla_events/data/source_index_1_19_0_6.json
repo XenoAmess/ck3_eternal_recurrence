@@ -1,19 +1,19 @@
 {
   "audit": {
     "ambiguous_definition_count": 0,
-    "caller_candidate_file_count": 74,
-    "caller_candidate_reference_count": 499,
-    "definition_file_count": 64,
+    "caller_candidate_file_count": 75,
+    "caller_candidate_reference_count": 500,
+    "definition_file_count": 65,
     "external_caller_event_count": 137,
     "missing_definition_count": 0,
     "namespace_mismatch_count": 0,
-    "registered_event_count": 168,
-    "same_file_only_caller_event_count": 31,
-    "unique_definition_count": 168
+    "registered_event_count": 169,
+    "same_file_only_caller_event_count": 32,
+    "unique_definition_count": 169
   },
   "ck3_build": "1.19.0.6",
   "ck3_exe_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
-  "dataset_sha256": "7AC71B9F6E354F3183CABDD0240AE5FC6E200A5182A47AA128CC5BA7D4609375",
+  "dataset_sha256": "45809783A346213FC7883FAD7B833064F867E83312256DCDBB211ED7A3C14E6E",
   "events": {
     "adultery.0002": {
       "caller_candidate_resolution": "same-definition-file-only",
@@ -506,6 +506,24 @@
         "relative_path": "events/diarchy_events/diarchy_events.txt"
       },
       "namespace": "diarchy"
+    },
+    "diplomacy_majesty.4033": {
+      "caller_candidate_resolution": "same-definition-file-only",
+      "caller_candidates": [
+        {
+          "column": 27,
+          "file_sha256": "C3FB744B621E6E4C9F62919AB8B006C6EBB716AEF233CC923D2B9318802F8516",
+          "kind": "exact-token-lexical-candidate",
+          "line": 886,
+          "relative_path": "events/lifestyles/statecraft_lifestyle/diplomacy_majesty_events.txt"
+        }
+      ],
+      "definition": {
+        "file_sha256": "C3FB744B621E6E4C9F62919AB8B006C6EBB716AEF233CC923D2B9318802F8516",
+        "line": 968,
+        "relative_path": "events/lifestyles/statecraft_lifestyle/diplomacy_majesty_events.txt"
+      },
+      "namespace": "diplomacy_majesty"
     },
     "ep1_flavor.0021": {
       "caller_candidate_resolution": "external-definition-file",

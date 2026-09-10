@@ -5,11 +5,11 @@
 - [static-ready] 共享 registry 已实现在
   `ck3_autonomous_player/src/xar_autoplayer/vanilla_events/`。它提供合同构建、冲突检测、`$player` 物化和 JSON-safe 查询；全部能力均为离线只读，不依赖已启动的 CK3。
 - [static-ready] `ck3_query_vanilla_event_knowledge_v1` 已注册到正式 MCP server。它只按 stable event key 与 CK3 build 查询知识，不选择按钮、不推进时间、不修改存档或 registry。
-- [static-ready] 本包默认扁平 registry 为 **168 个 unique vanilla event key**。原冻结迁移 key 集不变：`tgp_china_ministry.0100` 从 manager-original 抽成独立通用 owner 后，当前 legacy buckets 为 20 个 vanilla shard、56 个 manager-original、79 个 embedded-original，另由独立 records 接回同一 stable key；该抽取不新增 key。`tgp_dynastic_cycle.0081`、`ep3_landless_admin.1000` 与 R384 实机遇到的 `pay_homage.0101` 是冻结基线后的三个新增 key；数量由 registry/migration 测试冻结。
-- [static-ready analysis / mixed live evidence] 当前 package 同时发布 **168 条 analysis** 与 **20 个 observation keys**。缺少已冻结 source hash 的旧结论只按既有合同注释、docs/tests 标为 migration-only，不编造 hash；R384 的 `pay_homage.0101` 选择前 RED 已作为第二十个 observation key 冻结，当前只登记实见的无 faux-pas Smooth 投影。它在动作完成前仍不是新增 production-live primitive。
+- [static-ready] 本包默认扁平 registry 为 **169 个 unique vanilla event key**。原冻结迁移 key 集不变：`tgp_china_ministry.0100` 从 manager-original 抽成独立通用 owner 后，当前 legacy buckets 为 20 个 vanilla shard、56 个 manager-original、79 个 embedded-original，另由独立 records 接回同一 stable key；该抽取不新增 key。`tgp_dynastic_cycle.0081`、`ep3_landless_admin.1000`、R384 实机遇到的 `pay_homage.0101` 与 R390 实机遇到的 `diplomacy_majesty.4033` 是冻结基线后的四个新增 key；数量由 registry/migration 测试冻结。
+- [static-ready analysis / mixed live evidence] 当前 package 同时发布 **169 条 analysis** 与 **21 个 observation keys**。缺少已冻结 source hash 的旧结论只按既有合同注释、docs/tests 标为 migration-only，不编造 hash；R390 的 `diplomacy_majesty.4033` 选择前 RED 已作为第二十一个 observation key 冻结。它在动作完成前仍不是新增 production-live primitive。
 - [static-ready context profiles] prebootstrap 的 `spymaster_task.0381`、`spymaster_task.0399` 两条记录继续作为 seed-capture 上下文 profile 保存，不混入默认扁平 registry。它们与默认 manager 合同使用相同 event key、但冻结不同阶段的精确存档 shape，强行压平会造成有意义的合同冲突。
 
-当前状态表示 registry、默认数据组合和只读 MCP 可以被静态消费者使用，不表示 168 条记录都已有独立 production-live exemplar，也不表示 CK3 自动玩家已经具备完整事件效用判断。production runtime 当前 package 组合 `307` 条事件合同；共享 registry 的 production-live 标签严格只落在十八条已完成选择与 advance 的切片。R384 的 `.0101` 仍停在选择前 RED，必须在同 PID 热恢复并验证 instance advance 后才可增加 live 计数。该增量不改变 T0 产品进度。
+当前状态表示 registry、默认数据组合和只读 MCP 可以被静态消费者使用，不表示 169 条记录都已有独立 production-live exemplar，也不表示 CK3 自动玩家已经具备完整事件效用判断。production runtime 当前 package 组合 `308` 条事件合同；共享 registry 的 production-live 标签严格只落在十八条已完成选择与 advance 的切片。R390 的 `.4033` 仍保留选择前 RED，必须在同 PID 热恢复并验证 instance advance 后才可增加 live 计数。该增量不改变 T0 产品进度。
 
 T0 当前仍为 `50%`、canonical stage `8/11`，source checkpoint `3/4` 且只缺 `capture_cross_cycle_endgame`；T0-P1 未签收，T0-P2 继续 `LOCKED`。`strict 4/361` 与 `definitions 106/626` 只是非阻塞 backlog。
 
@@ -38,6 +38,7 @@ Registry v1 只支持：
 - `records_tgp_movement.py`：当前独立 TGP movement 合同及其分析/观察元数据；
 - `records_tgp_dynastic_cycle.py`：独立 TGP dynastic-cycle 合同及其分析/观察元数据，包括 `.0081` 的 phase-transition acknowledgement 合同；
 - `records_tgp_treasury.py`：从旧 manager 条目抽出的 TGP 国库预算通用合同、exact-build 分析、R374 foreground UI identity RED 与 R375 MCP live 切片；
+- `records_diplomacy_majesty.py`：Majesty 构想交接事件 `.4033` 的 exact-build 调用链、唯一安全选项、R390 选择前 RED 与 campaign-neutral scope 合同；
 - `records_ep3_landless_admin.py`：EP3 无地行政角色事件 `.1000` 的 exact-build 合同、选择语义与 R375 选择前 RED；
 - `records_pay_homage.py`：效忠礼 liege 事件 `.0101` 的 exact-build 调用链、当前 Smooth 投影、最小安全选择与 R384 选择前 RED；
 - `records_vassal_interaction.py`：自动接受的封臣头衔索取信件的通用合同、exact-build 分析与选择前观察；
@@ -77,7 +78,15 @@ v1 的 156 条迁移基线以保持现有 T0 合同逐值 parity 为首要目标
 - `VANILLA_TGP_MOVEMENT_ANALYSIS`：exact build/EXE、四个原版来源文件 SHA-256、定义行号、yearly caller 与十年 cooldown、三个选项语义、`after_effect=None` 和 safe-option rationale；
 - `VANILLA_TGP_MOVEMENT_OBSERVATIONS`：R372 paused-live exemplar，包括 artifact/hash、`date_raw=53436720`、instance `668`、本局人物 ID、scope raw type 和 `selection_attempted=false`。
 
-R372/R374/R375/R384 的日期、instance 和人物 ID 不进入新建或已触达迁移后的通用 timeline contract。当前 MCP v1 的既有 knowledge envelope 以彼此独立的 `contract`、`analysis`、`observations` 字段返回这三层；本包全部 168 条记录已有 analysis，二十条拥有 observation metadata。元数据不会混入选择合同或被物化成当前人物约束。`.0100`、`.0081`、`.0110`、`.1000` 与 `pay_homage.0101` 均已进入默认静态组合，实际查询可返回 `available` 且三层投影均可严格 JSON 往返。
+R372/R374/R375/R384/R390 的日期、instance 和人物 ID 不进入新建或已触达迁移后的通用 timeline contract。当前 MCP v1 的既有 knowledge envelope 以彼此独立的 `contract`、`analysis`、`observations` 字段返回这三层；本包全部 169 条记录已有 analysis，二十一条拥有 observation metadata。元数据不会混入选择合同或被物化成当前人物约束。`.0100`、`.0081`、`.0110`、`.1000`、`pay_homage.0101` 与 `diplomacy_majesty.4033` 均已进入默认静态组合，实际查询可返回 `available` 且三层投影均可严格 JSON 往返。
+
+### R390 `diplomacy_majesty.4033` 最小合同
+
+R390 在 `date_raw=53589168` 暂停于 instance `1089`，原始 RED 原样保留，且没有尝试选择。native current-event 查询发布唯一窗口：root 为当前玩家；saved scopes 严格为 `quarter:value`、非玩家 `thinker:character` 与等于玩家的 `event_target:character`；唯一 option 为 shown/enabled 的 native `0`。这些 R390 身份只进入 observation，不进入可复用合同。
+
+CK3 `1.19.0.6` exact-build 定义位于 `events/lifestyles/statecraft_lifestyle/diplomacy_majesty_events.txt:968`。`.4033` 只由 `.4030` 的 option B 直接触发；上游是每年四次的 diplomacy lifestyle pulse 及概率事件池，不是 daily pulse。`.4033` 自身只检查 `thinker` 仍存活，没有独立随机分支或后续事件。唯一 authored option 1/native `0` 给接收者五年 `+1 diplomacy/+1 martial` modifier、对 thinker 的 `+25` opinion，并在需要时建立 potential-friend 关系；没有资源、压力、囚禁、受伤、死亡、战争或头衔代价。因此最小安全合同选择该唯一终止路线，同时仍要求 exact saved-scope shape、玩家/第三方关系、选项投影及提交前 revision 重绑定全部通过。
+
+portable evidence bundle 随此记录更新为 `227` 个唯一 evidence blob、`922` 条引用，其中 exact-build definition `169` 条、lexical caller candidate `500` 条、人工审阅 source `192` 条、observation artifact `60` 份。R390 不可变 RED state 的 SHA-256 为 `37513F94AFE1672408B86FE719607C972E9D2F5C66DEC4D9AE2BFAA861244945`；共享合同是 Python-only 数据，既有 continuation 会重新加载 canonical registry，可在保留同一 CK3 PID 的条件下热恢复。
 
 ### R384 `pay_homage.0101` 最小合同
 
