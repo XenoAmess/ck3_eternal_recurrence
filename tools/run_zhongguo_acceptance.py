@@ -142,6 +142,7 @@ from zg361_phase2_promotion_source_checkpoint_capture import (
 )
 from zg361_phase2_promotion_source_production_entry import (
     PromotionScenarioInvalidatingInterrupt,
+    THIRD_WORKFORCE_SOURCE_SAMPLE_REQUIRED_FOR_READINESS,
     enter_promotion_source_checkpoint_v1,
 )
 from zg361_phase2_loader_stage import (
@@ -11945,7 +11946,12 @@ def _phase2_promo_receipt_sources(
 def _phase2_endgame_natural_entry_contract(
     value: Mapping[str, object],
 ) -> dict[str, object]:
-    """Reduce the natural third-#356 entry to its formal lineage witness."""
+    """Reduce an optional third-cycle entry to its business-lineage witness.
+
+    Two independent .355 -> .356 live paths already cover the repeated source
+    event. This focused mode remains available to validate the distinct third-
+    cycle business chain, but it is not a product/source-readiness gate.
+    """
 
     target_event = "zg361we.356"
     stage_nine_digest = "zg361cl.390"
@@ -11979,7 +11985,7 @@ def _phase2_endgame_natural_entry_contract(
             and value.get("pause_on_event_definition_key") == target_event
             and isinstance(value.get("target_binding"), Mapping)
         ),
-        "third_source_occurrence_requested": (
+        "optional_third_cycle_business_evidence_requested": (
             value.get("pause_on_event_occurrence") == 3
             and value.get("target_occurrence_index") == 3
         ),
@@ -12010,6 +12016,13 @@ def _phase2_endgame_natural_entry_contract(
         "schema_version": 1,
         "kind": "zg361_phase2_endgame_natural_source_entry_lineage",
         "result": result,
+        "required_for_product_source_readiness": (
+            THIRD_WORKFORCE_SOURCE_SAMPLE_REQUIRED_FOR_READINESS
+        ),
+        "source_readiness_basis": (
+            "two-independent-live-zg361we.355-to-zg361we.356-paths"
+        ),
+        "third_cycle_evidence_role": "optional-business-chain-validation",
         "entry_kind": value.get("kind"),
         "target_event_definition_key": target_event,
         "pause_on_event_occurrence": value.get("pause_on_event_occurrence"),
@@ -12049,7 +12062,7 @@ def run_phase2_endgame_source_capture_scenario(
     executable_sha256: str,
     production_entry_timeout_seconds: float = 300.0,
 ) -> dict[str, object]:
-    """Naturally reach the third real #356 source, then capture without acting."""
+    """Optionally reach third-cycle #356 business evidence and capture it."""
 
     evidence_path = artifacts / "05_endgame_source_capture.json"
     production_entry_path = (
@@ -12062,6 +12075,8 @@ def run_phase2_endgame_source_capture_scenario(
         "readiness": "live-pending",
         "source_checkpoint_captured": False,
         "phase2_complete": False,
+        "required_for_product_source_readiness": False,
+        "third_cycle_evidence_role": "optional-business-chain-validation",
         "fixture_used": False,
         "console_used": False,
         "action_ack_only": False,
@@ -21464,7 +21479,7 @@ def run_cell(
             except PromotionScenarioInvalidatingInterrupt as error:
                 promotion_entry.update(
                     result="SCENARIO_INVALID",
-                    readiness="scenario-invalid-manager-roster-precondition",
+                    readiness="scenario-invalid-product-precondition",
                     product_result="NOT_EVALUATED",
                     product_red=False,
                     scenario_invalidating_interrupt=copy.deepcopy(
@@ -22293,6 +22308,9 @@ def run_cell(
         and result == "GREEN"
         and evidence.get("result") == "GREEN"
         and evidence.get("readiness") == "live-pending"
+        and evidence.get("required_for_product_source_readiness") is False
+        and evidence.get("third_cycle_evidence_role")
+        == "optional-business-chain-validation"
         and evidence.get("source_checkpoint_captured") is True
         and evidence.get("phase2_complete") is False
         and evidence.get("fixture_used") is False
@@ -22410,6 +22428,9 @@ def run_cell(
         ),
         "phase2_endgame_source_capture_live": (
             phase2_endgame_source_capture_live
+        ),
+        "third_workforce_source_sample_required_for_readiness": (
+            THIRD_WORKFORCE_SOURCE_SAMPLE_REQUIRED_FOR_READINESS
         ),
         "phase2_incident_source_checkpoint_capture": (
             phase2_incident_source_checkpoint_capture
@@ -23419,6 +23440,10 @@ def main(
         and report.get("gameplay_green_claimed") is False
         and phase2_scenario.get("result") == "GREEN"
         and phase2_scenario.get("readiness") == "live-pending"
+        and phase2_scenario.get("required_for_product_source_readiness")
+        is False
+        and phase2_scenario.get("third_cycle_evidence_role")
+        == "optional-business-chain-validation"
         and phase2_scenario.get("source_checkpoint_captured") is True
         and phase2_scenario.get("phase2_complete") is False
         and phase2_scenario.get("fixture_used") is False
@@ -23521,6 +23546,9 @@ def main(
         ),
         "phase2_endgame_source_capture_live": (
             phase2_endgame_source_capture_live
+        ),
+        "third_workforce_source_sample_required_for_readiness": (
+            THIRD_WORKFORCE_SOURCE_SAMPLE_REQUIRED_FOR_READINESS
         ),
         "phase2_incident_source_checkpoint_capture": (
             phase2_incident_source_checkpoint_capture
@@ -23711,7 +23739,7 @@ def main(
         print("gameplay GREEN claim    NONE")
     elif phase2_endgame_source_capture_live:
         print(
-            "#356 source registry     "
+            "optional cycle-3 proof   "
             + (
                 "GREEN"
                 if matrix["phase2_endgame_source_capture_complete"] is True
@@ -23849,10 +23877,10 @@ if __name__ == "__main__":
         "--phase2-endgame-source-capture-live",
         action="store_true",
         help=(
-            "drive the managed product-only natural timeline through stage "
-            "nine to the third owner-facing zg361we.356 occurrence, save its "
-            "real bytes, append the fourth source receipt, and write the "
-            "schema-2 registry without selecting that third source"
+            "optionally validate the distinct third-cycle business chain by "
+            "driving through stage nine to owner-facing zg361we.356, saving "
+            "its real bytes, and writing the schema-2 registry; this focused "
+            "capture is not required for product/source readiness"
         ),
     )
     parser.add_argument(
@@ -23860,8 +23888,8 @@ if __name__ == "__main__":
         type=float,
         default=300.0,
         help=(
-            "bounded natural product-timeline wait before the third "
-            "zg361we.356 source capture"
+            "bounded natural product-timeline wait for the optional "
+            "third-cycle business-evidence capture"
         ),
     )
     parser.add_argument(

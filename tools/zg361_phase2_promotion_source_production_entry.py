@@ -184,15 +184,15 @@ PRE_WORKFORCE_MAX_ADVANCE_DAYS = (
     PRODUCT_CYCLE_OPPORTUNITIES * B1_AUTHORED_ADVANCE_DAYS
     + POST_PUBLICATION_OBSERVATION_DAYS
 )
-# The cross-cycle source contract intentionally pauses on the third real
-# zg361we.356 occurrence. R355 reached the first Workforce AB entry at D+4950,
-# proving that the former D+5000 cap covered only the pre-Workforce critical
-# path. The exact-build endgame seam already bounds one natural Workforce
-# receipt/history opportunity to 730 days. Reserve three such finite windows
-# from the same canonical seed; retained-client reconnects still cannot renew
-# any part of the budget.
+# The optional cross-cycle business-evidence capture can still traverse three
+# real Workforce cycles.  The third zg361we.356 is not a product/source
+# readiness requirement: two independent .355 -> .356 live paths already
+# cover that repeated event shape, while the third cycle remains available to
+# prove its distinct terminal business chain.  Retained-client reconnects
+# still cannot renew any part of this finite observation budget.
 WORKFORCE_CYCLE_OBSERVATION_DAYS = 730
 ENDGAME_TARGET_WORKFORCE_CYCLES = 3
+THIRD_WORKFORCE_SOURCE_SAMPLE_REQUIRED_FOR_READINESS = False
 # R364 fixed a real stage-nine liveness defect after the frozen production save
 # had already consumed almost all of the old 7190-day envelope. The repaired
 # live lineage first opened Workforce at D+7864, not R355's historical D+4950.
@@ -1128,6 +1128,32 @@ KNOWN_TIMELINE_INTERRUPTS.update(CAREER_LEARNING_TIMELINE_CONTRACTS)
 KNOWN_TIMELINE_INTERRUPTS.update(MANAGER_ANNUAL_SUMMARY_TIMELINE_CONTRACTS)
 KNOWN_TIMELINE_INTERRUPTS.update(MANAGER_ELIMINATION_TIMELINE_CONTRACTS)
 
+# Exact-build source review proves that this fullscreen acknowledgement is
+# rendered only after its immediate block has already run the irreversible
+# chaos shattering: empire/landed-title destruction, vassal reorganization,
+# ministry cleanup and participant reseeding.  The generic reusable event
+# contract correctly describes native0 as an effect-free acknowledgement, but
+# this product runner has a stronger scenario boundary: acknowledging cannot
+# restore the stable realm/manager lineage required by the acceptance run.
+# Overlay only the runner-local copy so other CK3 agents may still use the
+# portable event contract for ordinary gameplay.
+_DYNASTIC_CHAOS_EVENT = "tgp_dynastic_cycle.0081"
+KNOWN_TIMELINE_INTERRUPTS[_DYNASTIC_CHAOS_EVENT] = {
+    **copy.deepcopy(KNOWN_TIMELINE_INTERRUPTS[_DYNASTIC_CHAOS_EVENT]),
+    "handling_policy": "scenario-invalidating-fail-closed",
+    "scenario_invalidation_reason_code": (
+        "dynastic_cycle_chaos_immediate_shattered_product_lineage"
+    ),
+    "scenario_invalidation_reason": (
+        "the event's unconditional immediate block has already destroyed or "
+        "reorganized the realm and manager lineage required by this product "
+        "scenario; its sole acknowledgement cannot restore that state"
+    ),
+    "invalidated_precondition": (
+        "stable_product_realm_and_manager_lineage_before_chaos_shattering"
+    ),
+}
+
 
 class PromotionProductionEntryService(Protocol):
     def snapshot(self) -> dict[str, object]: ...
@@ -1177,6 +1203,12 @@ def _runtime_diagnostic_evidence(
         "date_raw": snapshot.get("date_raw"),
         "player_character_id": player,
         "subject_character_id": PRODUCT_TIMELINE_SUBJECT_CHARACTER_ID,
+        "diagnostic_subject": {
+            "character_id": PRODUCT_TIMELINE_SUBJECT_CHARACTER_ID,
+            "classification": "stale-historical-diagnostic-target",
+            "product_attribution": False,
+            "identity_switch_allowed": False,
+        },
         "state_mutation_submitted": False,
         "queries": {},
     }
@@ -1258,115 +1290,18 @@ def _runtime_diagnostic_evidence(
         owner_character_id=player,
         subject_character_id=PRODUCT_TIMELINE_SUBJECT_CHARACTER_ID,
     )
-    workforce_query = getattr(
-        service, "query_zhongguo_workforce_collective_snapshot_v1", None
-    )
-    switch_player = getattr(service, "set_player_character_v1", None)
-    if not callable(workforce_query):
-        queries["workforce_collective"] = {
-            "status": "unavailable",
-            "unavailable_reason": "service_method_not_exposed",
-        }
-    elif (
-        PRODUCT_TIMELINE_SUBJECT_CHARACTER_ID == player
-        or not callable(switch_player)
-    ):
-        capture(
-            "workforce_collective",
-            "query_zhongguo_workforce_collective_snapshot_v1",
-            owner_character_id=player,
-        )
-    else:
-        before_switch = service.snapshot()
-        revision = (
-            before_switch.get("revision")
-            if isinstance(before_switch, Mapping)
-            else None
-        )
-        before_date = (
-            before_switch.get("date_raw")
-            if isinstance(before_switch, Mapping)
-            else None
-        )
-        if isinstance(revision, bool) or not isinstance(revision, int):
-            queries["workforce_collective"] = {
-                "status": "unavailable",
-                "unavailable_reason": "paused_revision_unavailable",
-            }
-        else:
-            switch_evidence: dict[str, object] = {}
-            evidence["workforce_subject_switch"] = switch_evidence
-            try:
-                evidence["state_mutation_submitted"] = True
-                switch_evidence["to_subject"] = copy.deepcopy(
-                    switch_player(
-                        PRODUCT_TIMELINE_SUBJECT_CHARACTER_ID,
-                        expected_revision=revision,
-                    )
-                )
-                subject_snapshot = service.snapshot()
-                subject_player = subject_snapshot.get("played_character")
-                subject_player = (
-                    subject_player.get("character_id")
-                    if isinstance(subject_player, Mapping)
-                    else None
-                )
-                if (
-                    subject_player != PRODUCT_TIMELINE_SUBJECT_CHARACTER_ID
-                    or subject_snapshot.get("date_raw") != before_date
-                    or subject_snapshot.get("paused") is not True
-                ):
-                    raise PromotionProductionEntryError(
-                        "workforce diagnostic subject switch crossed the "
-                        "paused product frame"
-                    )
-                capture(
-                    "workforce_collective",
-                    "query_zhongguo_workforce_collective_snapshot_v1",
-                    owner_character_id=player,
-                )
-            except Exception as error:
-                queries["workforce_collective"] = {
-                    "status": "query_error",
-                    "error": f"{type(error).__name__}: {error}",
-                }
-            finally:
-                current = service.snapshot()
-                current_player = current.get("played_character")
-                current_player = (
-                    current_player.get("character_id")
-                    if isinstance(current_player, Mapping)
-                    else None
-                )
-                current_revision = current.get("revision")
-                if (
-                    current_player == PRODUCT_TIMELINE_SUBJECT_CHARACTER_ID
-                    and isinstance(current_revision, int)
-                    and not isinstance(current_revision, bool)
-                ):
-                    try:
-                        switch_evidence["to_owner"] = copy.deepcopy(
-                            switch_player(
-                                player,
-                                expected_revision=current_revision,
-                            )
-                        )
-                    except Exception as error:
-                        switch_evidence["restore_error"] = (
-                            f"{type(error).__name__}: {error}"
-                        )
-                restored = service.snapshot()
-                restored_player = restored.get("played_character")
-                restored_player = (
-                    restored_player.get("character_id")
-                    if isinstance(restored_player, Mapping)
-                    else None
-                )
-                switch_evidence["restored_owner_frame"] = (
-                    restored_player == player
-                    and restored.get("date_raw") == before_date
-                    and restored.get("paused") is True
-                )
+    # R370 already established that the immutable seed's former subject can
+    # be dead while Central continues normally.  Switching the played identity
+    # to that historical ID therefore diagnoses the stale fixture, not current
+    # product state, and can never justify a product failure attribution.
+    # Preserve the paused RED without issuing the rejected target-dead command.
+    queries["workforce_collective"] = {
+        "status": "skipped",
+        "unavailable_reason": "stale_historical_diagnostic_target",
+        "subject_character_id": PRODUCT_TIMELINE_SUBJECT_CHARACTER_ID,
+        "product_attribution": False,
+        "identity_switch_attempted": False,
+    }
     return evidence
 
 
@@ -3460,6 +3395,46 @@ def enter_promotion_source_checkpoint_v1(
         "pause_on_event_definition_key": pause_on_event_definition_key,
         "pause_on_event_occurrence": pause_on_event_occurrence,
     })
+    retained_invalidating_drain = next(
+        (
+            copy.deepcopy(dict(row))
+            for row in retained_timeline_interrupt_drains
+            if isinstance(row, Mapping)
+            and row.get("event_definition_key") == _DYNASTIC_CHAOS_EVENT
+        ),
+        None,
+    )
+    if retained_invalidating_drain is not None:
+        contract = KNOWN_TIMELINE_INTERRUPTS[_DYNASTIC_CHAOS_EVENT]
+        invalidation = {
+            "classification": "scenario-invalidating-interrupt",
+            "handling": "fail-closed-no-further-input",
+            "product_result": "NOT_EVALUATED",
+            "product_red": False,
+            "event_definition_key": _DYNASTIC_CHAOS_EVENT,
+            "date_raw": retained_invalidating_drain.get("date_raw"),
+            "event_instance_id": retained_invalidating_drain.get(
+                "event_instance_id"
+            ),
+            "reason_code": contract.get(
+                "scenario_invalidation_reason_code"
+            ),
+            "reason": contract.get("scenario_invalidation_reason"),
+            "invalidated_precondition": contract.get(
+                "invalidated_precondition"
+            ),
+            "detected_from_retained_drain": True,
+            "prior_drain": retained_invalidating_drain,
+            "selection_attempted": False,
+        }
+        evidence["result"] = "SCENARIO_INVALID"
+        evidence["readiness"] = "scenario-invalid-product-precondition"
+        evidence["product_result"] = "NOT_EVALUATED"
+        evidence["product_red"] = False
+        evidence["scenario_invalidating_interrupt"] = copy.deepcopy(
+            invalidation
+        )
+        raise PromotionScenarioInvalidatingInterrupt(invalidation)
     if runtime_diagnostic_probe is not None:
         diagnostic = runtime_diagnostic_probe()
         if diagnostic:
@@ -3488,7 +3463,10 @@ def enter_promotion_source_checkpoint_v1(
             pause_on_event_definition_key=pause_on_event_definition_key,
             timeline_interrupt_drains=evidence["timeline_interrupt_drains"],
         )
-        if target_occurrence_index == pause_on_event_occurrence:
+        if (
+            target_occurrence_index == pause_on_event_occurrence
+            and key != _DYNASTIC_CHAOS_EVENT
+        ):
             evidence["result"] = "GREEN"
             evidence["readiness"] = f"paused-real-{key}"
             evidence["target_binding"] = initial_event
@@ -3912,7 +3890,10 @@ def enter_promotion_source_checkpoint_v1(
                 pause_on_event_definition_key=pause_on_event_definition_key,
                 timeline_interrupt_drains=evidence["timeline_interrupt_drains"],
             )
-            if target_occurrence_index == pause_on_event_occurrence:
+            if (
+                target_occurrence_index == pause_on_event_occurrence
+                and key != _DYNASTIC_CHAOS_EVENT
+            ):
                 evidence["result"] = "GREEN"
                 evidence["readiness"] = f"paused-real-{key}"
                 evidence["target_binding"] = copy.deepcopy(event)
@@ -4112,7 +4093,7 @@ def enter_promotion_source_checkpoint_v1(
                 except PromotionScenarioInvalidatingInterrupt as error:
                     evidence["result"] = "SCENARIO_INVALID"
                     evidence["readiness"] = (
-                        "scenario-invalid-manager-roster-precondition"
+                        "scenario-invalid-product-precondition"
                     )
                     evidence["product_result"] = "NOT_EVALUATED"
                     evidence["product_red"] = False
@@ -4238,6 +4219,7 @@ __all__ = [
     "POST_PUBLICATION_OBSERVATION_DAYS",
     "PRODUCT_CYCLE_OPPORTUNITIES",
     "PRODUCT_TIMELINE_SUBJECT_CHARACTER_ID",
+    "THIRD_WORKFORCE_SOURCE_SAMPLE_REQUIRED_FOR_READINESS",
     "PromotionMapControlPostconditionError",
     "PromotionProductionEntryError",
     "PromotionScenarioInvalidatingInterrupt",

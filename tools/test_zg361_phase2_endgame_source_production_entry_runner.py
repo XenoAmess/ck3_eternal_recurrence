@@ -77,7 +77,7 @@ def natural_entry() -> dict[str, object]:
 
 
 class EndgameSourceProductionEntryRunnerTests(unittest.TestCase):
-    def test_natural_third_source_entry_precedes_capture_and_binds_lineage(
+    def test_optional_third_cycle_entry_precedes_capture_and_binds_lineage(
         self,
     ) -> None:
         calls: list[str] = []
@@ -155,6 +155,23 @@ class EndgameSourceProductionEntryRunnerTests(unittest.TestCase):
         lineage = capture_call.call_args.kwargs["runtime_capture_lineage"]
         contract = lineage["endgame_production_entry"]
         self.assertEqual(contract["result"], "GREEN")
+        self.assertFalse(contract["required_for_product_source_readiness"])
+        self.assertEqual(
+            contract["source_readiness_basis"],
+            "two-independent-live-zg361we.355-to-zg361we.356-paths",
+        )
+        self.assertEqual(
+            contract["third_cycle_evidence_role"],
+            "optional-business-chain-validation",
+        )
+        self.assertTrue(
+            contract["checks"][
+                "optional_third_cycle_business_evidence_requested"
+            ]
+        )
+        self.assertNotIn(
+            "third_source_occurrence_requested", contract["checks"]
+        )
         self.assertEqual(contract["stage_nine_digest_drain_ordinal"], 1)
         self.assertEqual(contract["prior_endgame_source_drain_ordinals"], [3, 5])
         self.assertFalse(contract["fixture_used"])
@@ -164,6 +181,11 @@ class EndgameSourceProductionEntryRunnerTests(unittest.TestCase):
             entry_artifact["natural_entry_contract"], contract
         )
         self.assertTrue(entry_artifact["runner_call_completed"])
+        self.assertFalse(result["required_for_product_source_readiness"])
+        self.assertEqual(
+            result["third_cycle_evidence_role"],
+            "optional-business-chain-validation",
+        )
 
     def test_invalid_natural_entry_never_reaches_capture(self) -> None:
         invalid_entries = {}
@@ -342,6 +364,10 @@ class EndgameSourceProductionEntryRunnerTests(unittest.TestCase):
         )
         self.assertIn(
             "--phase2-endgame-production-entry-timeout-seconds",
+            runner_source,
+        )
+        self.assertIn(
+            "capture is not required for product/source readiness",
             runner_source,
         )
 

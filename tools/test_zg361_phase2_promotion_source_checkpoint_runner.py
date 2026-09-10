@@ -881,6 +881,133 @@ class PromotionSourceCheckpointRunnerTests(unittest.TestCase):
             },
         )
 
+    def test_dynastic_chaos_immediate_invalidates_before_acknowledgement(
+        self,
+    ) -> None:
+        event_key = "tgp_dynastic_cycle.0081"
+        contract = production._resolve_timeline_interrupt_contract(
+            event_key,
+            player=32904,
+            starting_date=53611224,
+            stop_at_clean_review_boundary=False,
+            continue_to_pause_target=True,
+        )
+        self.assertIsNotNone(contract)
+        assert contract is not None
+        self.assertEqual(
+            contract["handling_policy"],
+            "scenario-invalidating-fail-closed",
+        )
+        self.assertEqual(
+            contract["scenario_invalidation_reason_code"],
+            "dynastic_cycle_chaos_immediate_shattered_product_lineage",
+        )
+        self.assertEqual(contract["selected_native_option_index"], 0)
+
+        class NoMutationService:
+            def snapshot(self) -> dict[str, object]:
+                raise AssertionError("invalidated chaos frame must stay paused")
+
+            def select_event_option(self, *_args: object, **_kwargs: object) -> None:
+                raise AssertionError("effect-free acknowledgement must not be clicked")
+
+        snapshot = {
+            "date_raw": 53611224,
+            "active_event": {"option_count": 1},
+        }
+        event = {"event_instance_id": 1058}
+        with (
+            mock.patch.object(
+                production,
+                "_known_interrupt_checks",
+                return_value={"exact_build_frame": True},
+            ),
+            self.assertRaises(
+                production.PromotionScenarioInvalidatingInterrupt
+            ) as raised,
+        ):
+            production._drain_known_timeline_interrupt(
+                NoMutationService(),
+                snapshot=snapshot,
+                event=event,
+                query={"current_event_window_context": {"saved_scopes": []}},
+                event_key=event_key,
+                contract=contract,
+                player=32904,
+                connection_generation=1,
+            )
+
+        invalidation = raised.exception.evidence
+        self.assertEqual(invalidation["event_definition_key"], event_key)
+        self.assertEqual(invalidation["event_instance_id"], 1058)
+        self.assertEqual(
+            invalidation["invalidated_precondition"],
+            "stable_product_realm_and_manager_lineage_before_chaos_shattering",
+        )
+        self.assertEqual(invalidation["product_result"], "NOT_EVALUATED")
+        self.assertFalse(invalidation["product_red"])
+        self.assertFalse(invalidation["selection_attempted"])
+
+    def test_hot_retry_stops_on_retained_dynastic_chaos_drain(self) -> None:
+        class NoFurtherInputService:
+            @staticmethod
+            def snapshot() -> dict[str, object]:
+                return {
+                    "map_ready": True,
+                    "revision": 428,
+                    "native_revision": 427,
+                    "snapshot_id": "native:427",
+                    "date_raw": 53611248,
+                    "paused": True,
+                    "speed": 5,
+                    "played_character": {"character_id": 32904},
+                    "diagnostics": {
+                        "connection_generation": 1,
+                        "bridge_pid": 180544,
+                    },
+                }
+
+            def __getattr__(self, name: str) -> object:
+                raise AssertionError(
+                    f"retained invalid scenario attempted service call {name}"
+                )
+
+        retained_drain = {
+            "event_definition_key": "tgp_dynastic_cycle.0081",
+            "date_raw": 53611224,
+            "event_instance_id": 1058,
+            "result": "GREEN",
+            "selection": {"option_number": 1, "option_index": 0},
+        }
+        evidence: dict[str, object] = {
+            "timeline_interrupt_drains": [copy.deepcopy(retained_drain)],
+        }
+        with self.assertRaises(
+            production.PromotionScenarioInvalidatingInterrupt
+        ) as raised:
+            production.enter_promotion_source_checkpoint_v1(
+                NoFurtherInputService(),
+                evidence_out=evidence,
+                runtime_diagnostic_probe=lambda: (
+                    "must not supersede scenario invalidation"
+                ),
+            )
+
+        self.assertEqual(evidence["result"], "SCENARIO_INVALID")
+        self.assertEqual(
+            evidence["readiness"],
+            "scenario-invalid-product-precondition",
+        )
+        self.assertEqual(evidence["product_result"], "NOT_EVALUATED")
+        self.assertFalse(evidence["product_red"])
+        invalidation = raised.exception.evidence
+        self.assertTrue(invalidation["detected_from_retained_drain"])
+        self.assertEqual(invalidation["prior_drain"], retained_drain)
+        self.assertFalse(invalidation["selection_attempted"])
+        self.assertEqual(
+            evidence["scenario_invalidating_interrupt"], invalidation
+        )
+
     def test_new_governorship_notice_binds_dynamic_previous_holder_alias(self) -> None:
         def scope(
             name: str, type_key: str, character_id: int | None = None
@@ -2095,13 +2222,20 @@ class PromotionSourceCheckpointRunnerTests(unittest.TestCase):
                     "unavailable_reason": "service_method_not_exposed",
                 },
                 "workforce_collective": {
-                    "status": "unavailable",
-                    "unavailable_reason": "service_method_not_exposed",
+                    "status": "skipped",
+                    "unavailable_reason": (
+                        "stale_historical_diagnostic_target"
+                    ),
+                    "subject_character_id": (
+                        production.PRODUCT_TIMELINE_SUBJECT_CHARACTER_ID
+                    ),
+                    "product_attribution": False,
+                    "identity_switch_attempted": False,
                 },
             },
         )
 
-    def test_runtime_product_error_reads_last_reached_domains(self) -> None:
+    def test_runtime_product_error_skips_stale_subject_identity_switch(self) -> None:
         calls: list[tuple[str, str, dict[str, object]]] = []
 
         class Service:
@@ -2182,13 +2316,26 @@ class PromotionSourceCheckpointRunnerTests(unittest.TestCase):
             evidence["queries"]["manager_governance"]["unavailable_reason"],
             "lifecycle_not_reached",
         )
+        workforce = evidence["queries"]["workforce_collective"]
+        self.assertEqual(workforce["status"], "skipped")
         self.assertEqual(
-            evidence["queries"]["workforce_collective"]["marker"],
-            "route-a-reached",
+            workforce["unavailable_reason"],
+            "stale_historical_diagnostic_target",
         )
-        self.assertTrue(evidence["state_mutation_submitted"])
-        self.assertTrue(
-            evidence["workforce_subject_switch"]["restored_owner_frame"]
+        self.assertFalse(workforce["product_attribution"])
+        self.assertFalse(workforce["identity_switch_attempted"])
+        self.assertFalse(evidence["state_mutation_submitted"])
+        self.assertNotIn("workforce_subject_switch", evidence)
+        self.assertEqual(
+            evidence["diagnostic_subject"],
+            {
+                "character_id": (
+                    production.PRODUCT_TIMELINE_SUBJECT_CHARACTER_ID
+                ),
+                "classification": "stale-historical-diagnostic-target",
+                "product_attribution": False,
+                "identity_switch_allowed": False,
+            },
         )
         self.assertEqual(Service.player, 32904)
         expected_binding = {
@@ -2210,24 +2357,6 @@ class PromotionSourceCheckpointRunnerTests(unittest.TestCase):
                     "manager_governance",
                     "promo.horizon.manager_governance",
                     expected_binding,
-                ),
-                (
-                    "switch_player",
-                    str(production.PRODUCT_TIMELINE_SUBJECT_CHARACTER_ID),
-                    {"expected_revision": 47},
-                ),
-                (
-                    "workforce_collective",
-                    "promo.horizon.workforce_collective",
-                    {
-                        "expected_revision": 48,
-                        "owner_character_id": 32904,
-                    },
-                ),
-                (
-                    "switch_player",
-                    "32904",
-                    {"expected_revision": 48},
                 ),
             ],
         )
