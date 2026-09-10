@@ -448,7 +448,6 @@ def click_decision(
         scroll_steps=scroll_steps,
     )
     acceptance.click_until_text_disappears(confirm, confirm_label, acceptance.FULL_SCREEN_REGION, artifacts, attempts=2)
-    acceptance.ensure_game_paused(artifacts, f"{stem}_post_decision")
 
 
 def execute_mass_conversion_slider(artifacts: Path) -> None:
