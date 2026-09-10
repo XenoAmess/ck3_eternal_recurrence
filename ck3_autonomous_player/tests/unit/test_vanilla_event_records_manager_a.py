@@ -116,6 +116,7 @@ _PORTABLE_EXCLUSIONS = {
 }
 _MIGRATED_OBSERVATION_EXCLUSIONS = _PORTABLE_EXCLUSIONS | {
     "health.1006",
+    "health.2202",
     "health.3001",
     "health.3101",
     "health.3102",
@@ -258,7 +259,7 @@ class VanillaEventRecordsManagerATests(unittest.TestCase):
             for event_key, contract in _LEGACY_CONTRACTS.items()
             if event_key not in _MIGRATED_OBSERVATION_EXCLUSIONS
         }
-        self.assertEqual(len(expected_sources), 30)
+        self.assertEqual(len(expected_sources), 29)
         self.assertEqual(
             set(migrated.MANAGER_VANILLA_OBSERVATIONS_A),
             set(expected_sources),

@@ -1,4 +1,4 @@
-# CK3 1.19.0.6 `health.1006 → health.3001 → health.3101 → health.3103 → health.3102` 肺痨诊断、医师招募与治疗树
+# CK3 1.19.0.6 `health.1006 → health.3001 → health.3101 → health.3103 → health.3102 → health.2202` 肺痨诊断、医师招募、治疗与康复通知树
 
 ## 状态与证据边界
 
@@ -32,6 +32,11 @@
   均 shown/enabled；attempt 09 保留选择前 RED。retry 10 随后在同一 PID / generation 选择 authored `1` /
   native `0`，instance `1088 -> null`、snapshot `native:1045 -> native:1046`、revision `1046 -> 1047`，
   且 `postcondition_verified=true`。这条安全治疗路线已经越过真实第三方患者窗口。
+- [paused live RED] R416 retry 11 继续推进到 `date_raw=53905680`，同一廷臣 `88187` 康复并向玩家打开
+  `health.2202` instance `1091`。saved scopes 为 `epidemic,disease_type,sick_character`，没有 `physician`；唯一
+  native `0` shown/enabled。旧合同只接受带医师的四 scope 小痘康复形状，因此在选择前保留 RED。
+- [counter-policy static-ready, live action pending] 新增的三 scope variant 仍选择唯一 authored `1` / native `0`。
+  疾病移除已经在窗口 `immediate` 中执行；按钮只确认结果，并保留原版对性病康复的有限婚床 modifier 清理。
 
 ## 原版状态与入口
 
@@ -194,6 +199,29 @@ flowchart TD
 医师；native `3` 明确拒绝治疗；native `4` 在 5–10 日后让患者进入自己的 `health.3101`。当前合同只准入 R416
 实见八 scope / 四按钮形态，并保持 `physician == high_skill_option` 与所有实见人物分离关系。
 
+## `health.2202` 第三方康复通知树
+
+`recover_from_disease_effect` 保存 `disease_type` 与 `sick_character`，建立应收到通知的可玩近亲/继承人列表，向符合条件的
+接收者发送 `health.2202`，随后移除患者疾病并按疾病类型添加免疫。事件自身只要求患者仍存活；`immediate` 再以 tooltip
+形式移除对应疾病 trait，因此在按钮出现时康复结果已经确定。
+
+```mermaid
+flowchart TD
+    A[recover_from_disease_effect] --> B[保存 disease_type 与 sick_character]
+    B --> C[建立近亲/继承人通知列表]
+    C --> D[health.2202 打开]
+    D --> E{exact scope 投影匹配?}
+    E -- 否 --> R[保留 RED，不提交]
+    E -- 三 scope 无 physician --> F[authored 1 / native 0]
+    E -- 四 scope 含 physician --> F
+    F --> G[确认已发生的康复<br/>必要时清理婚床 modifier]
+    G --> H[验证 instance advance]
+```
+
+旧实机小痘路径保留 `epidemic,disease_type,physician,sick_character`；R416 的自然康复通知只有
+`epidemic,disease_type,sick_character`。源码 helper 并不创建 `physician`，所以缺少医师是合法形状，不是观测失败。
+两个形状都只有 native `0`；三 scope variant 仍要求患者不是玩家，未放宽 root 或其他人物关系。
+
 ## exact-build 来源
 
 - `events/health_events.txt:2135-2334`，SHA-256
@@ -206,12 +234,15 @@ flowchart TD
   authored option 为 `7645-7707`。
 - 同文件 `health.3103` 定义在 `7712-7797`，无独立 trigger，immediate 为 `7774-7781`，唯一 option 为
   `7783-7785`，after 为 `7787-7796`。
+- 同文件 `health.2202` 定义在 `6333-6565`，trigger 为 `6451-6453`，immediate 为 `6455-6514`，唯一
+  option 为 `6516-6564`。
 - `common/scripted_effects/20_health_effects.txt:127-691,2093-2107`，SHA-256
   `6D7DEF1245D899DE4DEBC42136815BC7F4D14F6A467A8320355507AD03528F12`。
 - 同文件 `set_court_physician_effect` 位于 `1308-1408`；它负责任命医师并在玩家仍需治疗时调度
   `health.3101`。
 - 同文件 `decide_who_picks_disease_treatment_effect` 位于 `3546-3564`，
   `liege_picks_treatment_effect` 位于 `3566-3578`；两者可调度 `health.3102`。
+- 同文件 `recover_from_disease_effect` 位于 `694-887`，`health.2202` 通知 dispatch 为 `791-863`。
 - 同文件 safe/risky/mystic/no-treatment effect 分别位于 `1581-1713`、`1716-1897`、
   `1899-2087`、`2089-2091`。
 - 同文件 `disease_treatment_results_effect` 位于 `2746-3128`，
@@ -241,6 +272,9 @@ flowchart TD
 - R416 retry 10 包含 `health.3102` 的选择后置条件以及下一项 `bp1_yearly.4000` 的选择前 RED：
   `_runtime/p1-terminal-resume-r416-20260911/live-artifacts/terminal-stages-red-attempt-10.json`，SHA-256
   `F05201BCDD0D441F199C56D65D8BF8CF59E1B1F7570226101985BA4E2A29D62F`。
+- R416 retry 11 包含 `bp1_yearly.4000` 的选择后置条件以及 `health.2202` 的选择前 RED：
+  `_runtime/p1-terminal-resume-r416-20260911/live-artifacts/terminal-stages-red-attempt-11.json`，SHA-256
+  `E4DC093D890449A3F9FAE85FD40BE733FBDDBB7322CF31EBBA314E2F0E57D51F`。
 
 R97 下游死亡边界见
 [`promotion-source-checkpoint-choreography-forensics-2026-09-04.md`](../phase2-promo/promotion-source-checkpoint-choreography-forensics-2026-09-04.md)。

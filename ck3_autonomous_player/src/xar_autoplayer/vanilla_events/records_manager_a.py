@@ -1228,6 +1228,26 @@ _LEGACY_MANAGER_HEALTH_TIMELINE_CONTRACTS: Final[
         "native_option_indices": (0,),
         "selected_option_number": 1,
         "selected_native_option_index": 0,
+        "scope_variants": ({
+            # R416 natural-recovery notification inherited the epidemic but
+            # no physician. The recovery helper itself only saves the disease
+            # and sick character, so physician is not an invariant scope.
+            "unique_character_scope_excludes": {
+                "sick_character": (29037,),
+            },
+            "character_scope_differs_from": {},
+            "scope_types": {
+                "epidemic": "epidemic",
+                "disease_type": "flag",
+                "sick_character": "character",
+            },
+            "saved_scope_names": (
+                "epidemic",
+                "disease_type",
+                "sick_character",
+            ),
+            "saved_scope_count": 3,
+        },),
         "occurrence_policy": "repeatable-within-product-observation-window",
     },
     "health.1110": {
@@ -2172,6 +2192,7 @@ MANAGER_VANILLA_OBSERVATIONS_A: Final[dict[str, dict[str, object]]] = {
         "health.3101",
         "health.3102",
         "health.3103",
+        "health.2202",
     }
 }
 
