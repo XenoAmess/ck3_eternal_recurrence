@@ -320,8 +320,11 @@ backlog；真实遇到的变体则按上一条闭环。
 variants 应登记为 CK3 自动玩家与其他 mod 均可消费的 registry asset。完成 cutover 后，天朝专用 runner 可以增加项目约束，
 但不得复制一份会与共享定义漂移的私有原版结论。
 
-当前状态（2026-09-10）是 **共享资产完整、实机切片按条目分层**：本包默认 registry 为 `165 contracts / 165 analysis / 16
-observation keys`；`tgp_china_ministry.0100` 从旧 manager 条目抽为独立通用 owner，不新增 stable key；`.1101` 仍是上一轮唯一新增 key。embedded `79` 不变。正式 MCP `list/call` 已接通；production runtime 当前消费 `304` 条事件合同。`TGP0160`、
+当前状态（2026-09-10）是 **共享资产完整、实机切片按条目分层**：本包默认 registry 为 `167 contracts / 167 analysis / 19
+observation keys`；`tgp_china_ministry.0100` 从旧 manager 条目抽为独立通用 owner，不新增 stable key，`.0081` 新增第十七个
+observation key，commit `0a65adf` 再接入 `.0110` 同 PID GREEN 作为第十八个 key，`.1000` package 新增第十九个
+observation key。embedded `79` 不变。正式 MCP `list/call` 已接通；production runtime 当前消费 `306` 条事件合同。选择与 advance
+已完成 `18` 条 production-live primitive，剩余 `149` 条 non-live。`TGP0160`、
 `great_holy_war.0011`、`TGP0020` 与 `TGP0001` 已在 R372 同一 PID/session 上完成 shared-registry → MCP → production
 runner 的真实 drain/advance；`epidemic_events.1064` 也已同 PID 选择 reviewed native0 并完成 advance，R374 又将
 `natural_disaster.7031` authored3/native2、`ep3_story_cycle_admin_eunuch.1001` authored2/native1、`tribute_mission.1005` authored6/native5 与 `vassal_interaction.0040` authored1/native0 同 PID drain 并验证 instances `978`、`988`、`1007`、`1038` advance，合计九条
@@ -335,12 +338,15 @@ instance `1050 -> null`、snapshot `native:1847 -> native:1848`、revision `1848
 随后 `.1101` package commit `0880b4d579b92685be0696df5a5a32d701db5ed2` 推送并通过 Official Runner；同一
 PID/generation 选择 authored1/native0，instance `1055 -> null`、snapshot `native:2057 -> native:2058`、
 revision `2058 -> 2059`、postcondition GREEN，因此当前合计十三条。
+R375 又通过纯 MCP 将 `tgp_china_ministry.0100` authored2/native1、`tgp_dynastic_cycle.0081` authored1/native0、
+`epidemic_events.0110` authored3/native2 与 `stress_threshold.1721` authored10/native9 依次同 PID drain，并各自验证
+旧 instance 消失与 native/revision advance，因此当前合计十七条。
 `stress_threshold.1721` 保留为真实 RED observation：reload
 已经生效，错误发生在提交阶段重新按 base contract 解析、从而选到 base route，并非 reload 未生效；对应最小修复与 TGP0001
 合同由提交 `039a509`、`e6ab3d4` 收口。R374 的 `natural_disaster.7031`、`ep3_story_cycle_admin_eunuch.1001`、
 `tribute_mission.1005`、`vassal_interaction.0040`、`trait_specific.4001` observations 均保留其选择前 RED，后续 drains 已 GREEN；`.1005` 只在既有精确 variants 之外
-新增实测 rejected-eunuch 十六 scope shape。这里的 production-live 只属于十三条实证切片，绝不表示 165 条都已实机验证；
-其余 `152` 条保持非 live。
+新增实测 rejected-eunuch 十六 scope shape。这里的 production-live 只属于十七条实证切片，绝不表示 167 条都已实机验证；
+其余 `150` 条保持非 live。
 
 R374 随后在产品私有 `zg361p2c.2` 的第三次跨周期 summary 处 park4。该窗口由冻结 central tuple 失效后的 typed-RED
 terminal 触发；summary 本身的唯一选项仅清理 `summary_pending`。历史合同的 `max_occurrences=2` 是样本上限，不是生命周期
@@ -455,10 +461,83 @@ keys 增至 `16`，并不增加 production-live 计数。Python bounded no-spin 
 normal/`-O` driver 与 production-entry 定向测试均 GREEN，Official Runner 也已 GREEN。R375 恢复基线为 `autosave`
 `date_raw=53602440`、`144254384` bytes、SHA-256
 `2B683351CF79ADE9DD5A931090DE8E6AF1D4F57FD65FFAFBB3CF18B7436BD97E`。R374 report 的
-`target_progression.timeline_interrupt_drains` 共 `455` 条；按 `date_raw < 53602440` 严格裁切后保留 `453` 条，边界及
-之后的 `travel_danger_events.3002`、`debate_event.5110` 两条丢弃并重采。`.1101` 尚未写入该 ledger，故是额外第三个
-重放事件；总回放窗口约 `223` game days / `3` events。新 DLL 必须通过受管重启装载，重新取得
-native 同帧、MCP selection 与 advance 后才可提升 `.0100`。
+`target_progression.timeline_interrupt_drains` 实际 list length 为 `456`；其中
+`retained_timeline_interrupt_drain_count=455` 是落后一条的内部计数，不能作 final ledger 总数。按
+`date_raw < 53602440` 严格裁切后保留 `453` 条 durable seed，丢弃 R374 indices `453..455`：
+`travel_danger_events.3002@53603376`、`debate_event.5110@53605080`、`faction_demand.1101@53607792`。
+`.1101` 已写入 R374 final ledger，只是尚未进入源 autosave。新 DLL 已由 R375 受管重启装载，并重新取得 native 同帧、
+MCP selection 与 advance。
+
+R375 从 `453` 条 durable seed 追加五条全 GREEN drain：`travel_danger_events.3002` instances `1053/1054`、
+`debate_event.5110` #1055、`faction_demand.1101` #1056、`tgp_china_ministry.0100` #1057。`.0100` query command
+`#291` 在 `native:356 / revision 357` 取得唯一窗口、root `32904`、三项 exact saved scopes 和三项 shown/enabled
+native options；command `#292` 选择 authored2/native1，instance `1057 -> null`、snapshot
+`native:356 -> native:357`、revision `357 -> 358`、postcondition GREEN。不可变 GREEN sidecar
+`_runtime/p2r375-post-publisher-fix-live/r375-live-014-tgp-china-ministry-0100-green.json` SHA-256 为
+`6C1407AF00D2E767FA201DA2411619D5724C86951BB5CEFF006DAB50ABC6C779`，因此这是第十四条 live；R374 的 UI-only
+RED 继续保留。源 autosave 到 `.0100` 的真实回放窗口为 `312` game days。
+
+新 DLL 的 map-control 同帧边界由 command `#343` 实证：`pause-map=already_paused` 的后置从
+`native:424 / revision 425` 前进到 `native:425 / revision 426`，在同一 `date_raw=53611224` 保持
+`paused=true`，rejected state frames 为 `0`；紧邻 event snapshot 为 `native:426 / revision 427`。随后 `.0081`
+exact-build 通用包由 commit `862fc7fc89e61a290295a25dcdf2ca31434509be` 推送，同一 PID/generation 原位热恢复
+authored1/native0，instance `1058 -> null`、snapshot `native:426 -> native:427`、revision `427 -> 428`、
+postcondition GREEN。不可变 GREEN sidecar
+`_runtime/p2r375-post-publisher-fix-live/r375-live-015-tgp-dynastic-cycle-0081-green.json` SHA-256 为
+`573992BD13E2373DB3A827698B770D703263EC678ECDEE98595C0D48C6671789`，这是第十五条 live。
+
+`epidemic_events.0110` #1059 的选择前 RED 位于 `date_raw=53611320`、snapshot `native:432`、revision `433`；实见
+saved scopes 只有 `epidemic`，与旧合同另要求 `new_preferred_capital` 的形状不符，失败项为
+`saved_scope_count`、`saved_scope_names_exact`、`scope:new_preferred_capital:type`，且
+`selection_attempted=false`。不可变 RED freeze
+`_runtime/p2r375-post-publisher-fix-live/r375-epidemic-events-0110-red-freeze.json` SHA-256 为
+`1CD3DEC1ED7DB6F3C7DBE8D485DC2B38753F1D7E1D90BD9E8FA99A8ADADC7448`。commit
+`6fc2ef2167f4af1dbb2ff4bb1be7fa70825203ea` 收口 exact-build 最小合同后，同一 PID/generation 原位热恢复
+authored3/native2，instance `1059 -> null`、snapshot `native:432 -> native:433`、revision `433 -> 434`、
+postcondition GREEN。不可变 GREEN sidecar
+`_runtime/p2r375-post-publisher-fix-live/r375-live-016-epidemic-events-0110-green.json` SHA-256 为
+`1C96D13A88D9F96575CA6DD78E5E02C0483ECB1ADC09505949868EC387994EEF`，并由 commit `0a65adf` 接入 MCP
+observations，因此它是第十六条 live。
+
+`stress_threshold.1721` #1060 的选择前 RED 位于 `date_raw=53611536`、snapshot `native:440`、revision `441`；实见
+rendered native indices 为 `(7,9,12)`，旧合同期望 `(7,10,12)`，唯一 failed check 为 `authored_options_exact`，
+`selection_attempted=false`。不可变 RED freeze
+`_runtime/p2r375-post-publisher-fix-live/r375-stress-threshold-1721-red-freeze.json` SHA-256 为
+`6F0F849C88EC48D78803B27B6BDE94C334FDD94F61024AA1BAA48EC88E2F4508`。commit
+`27921a9b96c40043ddb70c89b1614f170e4ba192` 收口 exact-build 最小 variant 后，同一 PID/generation 原位热恢复
+authored10/native9，instance `1060 -> null`、snapshot `native:440 -> native:441`、revision `441 -> 442`、
+postcondition GREEN。query `#371`、select `#372` 的不可变 GREEN sidecar
+`_runtime/p2r375-post-publisher-fix-live/r375-live-017-stress-threshold-1721-green.json` SHA-256 为
+`869BFE72B6FF2ABEF55FF3F4191F13D3A9F57E696F02B011367527256AD57EF3`，并由 commit `76f9a83` 接入 MCP
+observations，因此它是第十七条 live。
+
+`ep3_landless_admin.1000` #1062 的选择前 RED 位于 PID `180544` / generation `1`、
+`date_raw=53619912`、snapshot `native:720`、revision `721`；saved scope 为 `proposed_councillor` character
+`33643335`，三个 rendered native indices `(0,1,2)` 均 shown/enabled，`selection_attempted=false`。不可变 RED freeze
+`_runtime/p2r375-post-publisher-fix-live/r375-ep3-landless-admin-1000-red-freeze.json` SHA-256 为
+`F74447FE01DDB9BC890C757578DBA477373167EA0DA862BB987D26A61904DFA1`；其绑定的 report / driver / park4 SHA-256 为
+`AB75764DE8E02157A8E21B69C20F9081AFB59162C70044FD401260C8D9E57FF4` /
+`20F2186105B53050504C6FCA09E910A6F01F6CD2BD9D5B6AA74D167443758976` /
+`C382B9DD4C8ABC45664B68BAFEACF63B9AB718D2E8D0433DB558F0BACAAC9E01`。exact-build 分析已闭合：默认
+authored3/native2 是不花钱、不招募、不进入随机 duel 的确定性拒绝路线；通用 package 已通过 normal/`-O` 回归并由
+commit `5c8a526` rebase-only 推送。同一 PID/generation 随后以 query `#602`、select `#603` 原位热恢复，instance
+`1062 -> null`、snapshot `native:720 -> native:721`、revision `721 -> 722`、postcondition GREEN。不可变 GREEN sidecar
+`_runtime/p2r375-post-publisher-fix-live/r375-live-018-ep3-landless-admin-1000-green.json` SHA-256 为
+`F545AC8E85102FBFE83B6EFEC23AEB47978844B9EF3F8FE4538C720369BAA8C4`，因此它是第十八条 live；选择前 RED 继续保留。
+
+R375 最终 rolling drain list 实际为 `464` 条，即 durable seed `453` 后新增 `11` 条 GREEN drains；sidecar 的 retained count
+`462` 是尾段写入前的滞后字段，不能作 final ledger。runner 最终在 `date_raw=53635920`、无 active event 时超过 exact bound
+`53635896`：`10190-day product observation bound` 已覆盖两个 400-day authored B1 opportunities、一个 4200-day
+post-publication critical-path tail 与三个有限 730-day Workforce windows，但
+`production_capability_advertised=false / production_live_ready=false`。不可变 RED sidecar
+`_runtime/p2r375-post-publisher-fix-live/r375-product-observation-bound-red.json` SHA-256 为
+`C3D4503117ED687D3289AD612B25C1AA36A0FA1329572D607E604E0CE7EAA9F8`；final report / driver / park5 SHA-256 为
+`19969B3802F038C9AA7EFFF65BE78C8E0FEC73C2FE7914F86930C09618CCE4FF` /
+`78BC8A47A1F874D56194846C00FB8055FD65274B8A5B801A513362C1AC555914` /
+`3338D5779E51D8C75B705475C91F408E9755EA13D41AB31A12D91D036417BD6D`。该结论是关键产品 liveness RED，
+不是随机/穷举门禁或 harness 故障；第三次 `.356` 是三周期首次解锁 `.361` 的必要边界。下一项施工是补 B1 周期/名单只读观测，再据实收口死亡或 unavailable 名单的 liveness 修复；固定 product timeline subject 的 `target_dead` 尚不能单独证明其为当前 B1 名单成员。
+当前 `autosave.ck3` / `last_save.ck3` 只到 `date_raw=53611200`、`144950977` bytes、SHA-256
+`F67B86E41A566EB0622A4108B44634DBDFBD2F9277A85B5B04487B1515D4EB43`，不得冒充 `.0081`、`.0110`、`.1721`、`.1000` 或终态 bound 的同帧存档。
 
 TGP0001 与 epidemic1064 同 PID 热恢复成功后，长跑继续推进，并在 `epidemic_events.5009` instance `871` 的第二次合法
 出现处 park12 动作前 RED 停住。原版定义有十年 cooldown 且无 one-shot；当前 RED 来自旧合同的单次上限，不是异常高频触发。
