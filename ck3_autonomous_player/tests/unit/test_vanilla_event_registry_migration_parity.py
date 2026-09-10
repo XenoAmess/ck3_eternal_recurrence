@@ -66,6 +66,9 @@ from xar_autoplayer.vanilla_events.records_vanilla_shards import (  # noqa: E402
 from xar_autoplayer.vanilla_events.records_vassal_interaction import (  # noqa: E402
     VANILLA_VASSAL_INTERACTION_TIMELINE_CONTRACTS,
 )
+from xar_autoplayer.vanilla_events.records_yearly import (  # noqa: E402
+    VANILLA_YEARLY_TIMELINE_CONTRACTS,
+)
 from xar_autoplayer.vanilla_events import (  # noqa: E402
     DEFAULT_VANILLA_EVENT_CONTRACT_GROUPS,
     DEFAULT_VANILLA_EVENT_TIMELINE_CONTRACTS,
@@ -322,6 +325,7 @@ class VanillaEventRegistryMigrationParityTests(unittest.TestCase):
             VANILLA_DIPLOMACY_MAJESTY_TIMELINE_CONTRACTS,
             VANILLA_FACTION_DEMAND_TIMELINE_CONTRACTS,
             VANILLA_TGP_TREASURY_TIMELINE_CONTRACTS,
+            VANILLA_YEARLY_TIMELINE_CONTRACTS,
         )
         self.assertEqual(DEFAULT_VANILLA_EVENT_CONTRACT_GROUPS, default_groups)
         key_memberships: defaultdict[str, list[int]] = defaultdict(list)
@@ -329,8 +333,8 @@ class VanillaEventRegistryMigrationParityTests(unittest.TestCase):
             for event_key in records:
                 key_memberships[event_key].append(group_index)
 
-        self.assertEqual(sum(map(len, default_groups)), 170)
-        self.assertEqual(len(key_memberships), 170)
+        self.assertEqual(sum(map(len, default_groups)), 171)
+        self.assertEqual(len(key_memberships), 171)
         self.assertEqual(
             {
                 event_key: indexes
@@ -364,8 +368,22 @@ class VanillaEventRegistryMigrationParityTests(unittest.TestCase):
         if not isinstance(literal_value, ast.Dict):
             self.fail("production KNOWN_TIMELINE_INTERRUPTS is not a dict")
         literal_keys = tuple(ast.literal_eval(key) for key in literal_value.keys)
-        self.assertEqual(len(literal_keys), 17)
-        self.assertTrue(all(key.startswith("zg361") for key in literal_keys))
+        self.assertEqual(len(literal_keys), 24)
+        literal_stock_interrupts = {
+            key for key in literal_keys if not key.startswith("zg361")
+        }
+        self.assertEqual(
+            literal_stock_interrupts,
+            {
+                "study_confucian_classics_outcome.1030",
+                "childhood.2010",
+                "coming_of_age.1002",
+                "hostile_scheme_discovery.1001",
+                "martial_authority_special.3000",
+                "imperial_examination.7100",
+                "tgp_dynastic_cycle.0082",
+            },
+        )
 
         production_contracts = import_module(
             "zg361_phase2_promotion_source_production_entry"
@@ -373,7 +391,10 @@ class VanillaEventRegistryMigrationParityTests(unittest.TestCase):
         production_vanilla = {
             event_key: contract
             for event_key, contract in production_contracts.items()
-            if not event_key.startswith("zg361")
+            if (
+                not event_key.startswith("zg361")
+                and event_key not in literal_stock_interrupts
+            )
         }
         self.assertEqual(
             production_vanilla,

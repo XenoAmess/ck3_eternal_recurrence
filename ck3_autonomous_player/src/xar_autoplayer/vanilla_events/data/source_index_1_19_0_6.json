@@ -2,18 +2,18 @@
   "audit": {
     "ambiguous_definition_count": 0,
     "caller_candidate_file_count": 76,
-    "caller_candidate_reference_count": 501,
-    "definition_file_count": 65,
-    "external_caller_event_count": 137,
+    "caller_candidate_reference_count": 502,
+    "definition_file_count": 66,
+    "external_caller_event_count": 138,
     "missing_definition_count": 0,
     "namespace_mismatch_count": 0,
-    "registered_event_count": 170,
+    "registered_event_count": 171,
     "same_file_only_caller_event_count": 33,
-    "unique_definition_count": 170
+    "unique_definition_count": 171
   },
   "ck3_build": "1.19.0.6",
   "ck3_exe_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
-  "dataset_sha256": "0D062FB90DFF62E0F45322E8FDA5514FB5DB55A0A9AF844E206C626B6C586797",
+  "dataset_sha256": "0DCCAB4B2BD65E59FD326E8FC904C8F49A2EE6D4FC64218FB6AC3A677C0D44F5",
   "events": {
     "adultery.0002": {
       "caller_candidate_resolution": "same-definition-file-only",
@@ -5337,6 +5337,24 @@
         "relative_path": "events/interaction_events/vassal_interaction_events.txt"
       },
       "namespace": "vassal_interaction"
+    },
+    "yearly.0003": {
+      "caller_candidate_resolution": "external-definition-file",
+      "caller_candidates": [
+        {
+          "column": 8,
+          "file_sha256": "0FC85A284224A68D1CA0A4EF071D4F4A4F49896753AEC463975A12EE4E1116FA",
+          "kind": "exact-token-lexical-candidate",
+          "line": 2940,
+          "relative_path": "common/on_action/yearly_on_actions.txt"
+        }
+      ],
+      "definition": {
+        "file_sha256": "FBBD29C7C9ECDCB84342EF4F00E92358412781B27E0686DCC220592996FEF0E5",
+        "line": 766,
+        "relative_path": "events/yearly_events/yearly_events.txt"
+      },
+      "namespace": "yearly"
     },
     "yearly.1040": {
       "caller_candidate_resolution": "external-definition-file",

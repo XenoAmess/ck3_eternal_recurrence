@@ -5,11 +5,11 @@
 - [static-ready] 共享 registry 已实现在
   `ck3_autonomous_player/src/xar_autoplayer/vanilla_events/`。它提供合同构建、冲突检测、`$player` 物化和 JSON-safe 查询；全部能力均为离线只读，不依赖已启动的 CK3。
 - [static-ready] `ck3_query_vanilla_event_knowledge_v1` 已注册到正式 MCP server。它只按 stable event key 与 CK3 build 查询知识，不选择按钮、不推进时间、不修改存档或 registry。
-- [static-ready] 本包默认扁平 registry 为 **169 个 unique vanilla event key**。原冻结迁移 key 集不变：`tgp_china_ministry.0100` 从 manager-original 抽成独立通用 owner 后，当前 legacy buckets 为 20 个 vanilla shard、56 个 manager-original、79 个 embedded-original，另由独立 records 接回同一 stable key；该抽取不新增 key。`tgp_dynastic_cycle.0081`、`ep3_landless_admin.1000`、R384 实机遇到的 `pay_homage.0101` 与 R390 实机遇到的 `diplomacy_majesty.4033` 是冻结基线后的四个新增 key；数量由 registry/migration 测试冻结。
-- [static-ready analysis / mixed live evidence] 当前 package 同时发布 **169 条 analysis** 与 **21 个 observation keys**。缺少已冻结 source hash 的旧结论只按既有合同注释、docs/tests 标为 migration-only，不编造 hash；R390 的 `diplomacy_majesty.4033` 选择前 RED 已作为第二十一个 observation key 冻结。它在动作完成前仍不是新增 production-live primitive。
+- [static-ready] 本包默认扁平 registry 为 **171 个 unique vanilla event key**。原冻结迁移 key 集不变；随后只按真实中断增量加入独立 records，最新一条是 R414 的 `yearly.0003`。数量由 registry/migration 测试冻结。
+- [static-ready analysis / mixed live evidence] 当前 package 同时发布 **171 条 analysis** 与 **171 条 observation metadata**，其中 **23 个 key** 含非 legacy 的 paused/live observation。缺少已冻结 source hash 的旧结论只按既有合同注释、docs/tests 标为 migration-only，不编造 hash；R414 的 `yearly.0003` 选择前 RED 是 harness-route RED，在动作完成前不是新增 production-live primitive。
 - [static-ready context profiles] prebootstrap 的 `spymaster_task.0381`、`spymaster_task.0399` 两条记录继续作为 seed-capture 上下文 profile 保存，不混入默认扁平 registry。它们与默认 manager 合同使用相同 event key、但冻结不同阶段的精确存档 shape，强行压平会造成有意义的合同冲突。
 
-当前状态表示 registry、默认数据组合和只读 MCP 可以被静态消费者使用，不表示 169 条记录都已有独立 production-live exemplar，也不表示 CK3 自动玩家已经具备完整事件效用判断。production runtime 当前 package 组合 `308` 条事件合同；共享 registry 的 production-live 标签严格只落在十八条已完成选择与 advance 的切片。R390 的 `.4033` 仍保留选择前 RED，必须在同 PID 热恢复并验证 instance advance 后才可增加 live 计数。该增量不改变 T0 产品进度。
+当前状态表示 registry、默认数据组合和只读 MCP 可以被静态消费者使用，不表示 171 条记录都已有独立 production-live exemplar，也不表示 CK3 自动玩家已经具备完整事件效用判断。production runtime 当前 package 组合 `317` 条事件合同；共享 registry 的 production-live 标签只落在已有选择与 advance 证据的切片。R414 的 `yearly.0003` 仍保留选择前 RED，必须在同 PID 热恢复并验证 instance advance 后才可增加 live 计数。该增量不改变 T0 产品进度。
 
 T0 当前仍为 `50%`、canonical stage `8/11`，source checkpoint `3/4` 且只缺 `capture_cross_cycle_endgame`；T0-P1 未签收，T0-P2 继续 `LOCKED`。`strict 4/361` 与 `definitions 106/626` 只是非阻塞 backlog。
 
@@ -78,7 +78,7 @@ v1 的 156 条迁移基线以保持现有 T0 合同逐值 parity 为首要目标
 - `VANILLA_TGP_MOVEMENT_ANALYSIS`：exact build/EXE、四个原版来源文件 SHA-256、定义行号、yearly caller 与十年 cooldown、三个选项语义、`after_effect=None` 和 safe-option rationale；
 - `VANILLA_TGP_MOVEMENT_OBSERVATIONS`：R372 paused-live exemplar，包括 artifact/hash、`date_raw=53436720`、instance `668`、本局人物 ID、scope raw type 和 `selection_attempted=false`。
 
-R372/R374/R375/R384/R390 的日期、instance 和人物 ID 不进入新建或已触达迁移后的通用 timeline contract。当前 MCP v1 的既有 knowledge envelope 以彼此独立的 `contract`、`analysis`、`observations` 字段返回这三层；本包全部 169 条记录已有 analysis，二十一条拥有 observation metadata。元数据不会混入选择合同或被物化成当前人物约束。`.0100`、`.0081`、`.0110`、`.1000`、`pay_homage.0101` 与 `diplomacy_majesty.4033` 均已进入默认静态组合，实际查询可返回 `available` 且三层投影均可严格 JSON 往返。
+各轮实机日期、instance 和人物 ID 不进入新建或已触达迁移后的通用 timeline contract。当前 MCP v1 的既有 knowledge envelope 以彼此独立的 `contract`、`analysis`、`observations` 字段返回这三层；本包全部 171 条记录已有 analysis 与 observation metadata，其中 23 个 key 含非 legacy 的 paused/live observation。元数据不会混入选择合同或被物化成当前人物约束。`yearly.0003` 已进入默认静态组合，实际查询可返回 `available` 且三层投影均可严格 JSON 往返。
 
 ### R390 `diplomacy_majesty.4033` 最小合同
 
@@ -86,7 +86,7 @@ R390 在 `date_raw=53589168` 暂停于 instance `1089`，原始 RED 原样保留
 
 CK3 `1.19.0.6` exact-build 定义位于 `events/lifestyles/statecraft_lifestyle/diplomacy_majesty_events.txt:968`。`.4033` 只由 `.4030` 的 option B 直接触发；上游是每年四次的 diplomacy lifestyle pulse 及概率事件池，不是 daily pulse。`.4033` 自身只检查 `thinker` 仍存活，没有独立随机分支或后续事件。唯一 authored option 1/native `0` 给接收者五年 `+1 diplomacy/+1 martial` modifier、对 thinker 的 `+25` opinion，并在需要时建立 potential-friend 关系；没有资源、压力、囚禁、受伤、死亡、战争或头衔代价。因此最小安全合同选择该唯一终止路线，同时仍要求 exact saved-scope shape、玩家/第三方关系、选项投影及提交前 revision 重绑定全部通过。
 
-portable evidence bundle 随此记录更新为 `227` 个唯一 evidence blob、`922` 条引用，其中 exact-build definition `169` 条、lexical caller candidate `500` 条、人工审阅 source `192` 条、observation artifact `60` 份。R390 不可变 RED state 的 SHA-256 为 `37513F94AFE1672408B86FE719607C972E9D2F5C66DEC4D9AE2BFAA861244945`；共享合同是 Python-only 数据，既有 continuation 会重新加载 canonical registry，可在保留同一 CK3 PID 的条件下热恢复。
+portable evidence bundle 随此记录更新为 `230` 个唯一 evidence blob、`931` 条引用，其中 exact-build definition `171` 条、lexical caller candidate `502` 条、人工审阅 source `195` 条、observation artifact reference `63` 条。R414 不可变 RED state 的 SHA-256 为 `7C41E07DA8BD1ACA6F3DB14EF208E35030A63EEAD99D86B7179638FB1A328279`；共享合同是 Python-only 数据，既有 continuation 会重新加载 canonical registry，可在保留同一 CK3 PID 的条件下热恢复。
 
 ### R384 `pay_homage.0101` 最小合同
 
@@ -157,7 +157,7 @@ Registry 是离线静态数据，因此另一台机器只需取得同一仓库/p
 
 ### T0 天朝二期 validator
 
-T0 的 migration parity 测试逐 bucket 对照旧合同，并冻结 `20/57/79` 数量、156 个迁移 unique key，以及两条 prebootstrap 有意 overlap；再加八个独立记录（含本包 `faction_demand.2001`），默认合同与 analysis 均为 164。后续 T0 consumer 应按实际产品路径查询或物化所引用的记录，并继续用产品自己的 window、occurrence、source checkpoint 和业务后置条件验收。
+T0 的 migration parity 测试逐 bucket 对照旧合同，并继续冻结旧 bucket；加上按真实中断维护的独立 records 后，默认合同与 analysis 均为 171。后续 T0 consumer 应按实际产品路径查询或物化所引用的记录，并继续用产品自己的 window、occurrence、source checkpoint 和业务后置条件验收。
 
 共享 registry GREEN 只说明引用的原版中断知识可解析且与迁移基线一致；它不能提升 T0 stage、四类 source、full-tree 或媒体 readiness。Prebootstrap validator 必须显式选择对应 profile，不能从默认扁平 lookup 取得 seed-capture shape。
 
@@ -198,7 +198,7 @@ unavailable_reason = null
 ## Migration 与兼容
 
 - Schema 当前为 `xar.ck3.vanilla-event-knowledge` v1。消费者必须检查 schema version；未来破坏性字段语义变更应使用新版本，不能静默复用 v1。
-- 迁移测试保证 legacy buckets 逐值相等、默认合同与 analysis 均精确覆盖 164 key，并拒绝意外 duplicate/conflict；默认组合故意不加入两条 prebootstrap context profile。
+- 迁移测试保证 legacy buckets 逐值相等、默认合同与 analysis 均精确覆盖 171 key，并拒绝意外 duplicate/conflict；默认组合故意不加入两条 prebootstrap context profile。
 - `$player` materializer 只替换值完全等于 sentinel 的字段，不改写包含该字样的普通字符串，并返回独立副本。
 - 查询边界统一将 tuple 投影为 JSON array，从而允许原 Python consumer 保持旧合同类型，同时让 MCP 跨进程、跨机器稳定序列化。
 - 新 CK3 build、改变的原版 definition 或 mod override 都需要显式新证据；v1 不提供“相似版本大概兼容”的 fallback。
@@ -206,7 +206,7 @@ unavailable_reason = null
 
 ## 明确不是 `361/626` exhaustive gate
 
-默认 164 key 是当前按需积累的复用资产，不是覆盖率目标。Registry 不要求在继续 T0、运行其它 mod、CI 或发布前枚举全部 `361` 个场景或 `626` 个 definition。
+默认 171 key 是当前按需积累的复用资产，不是覆盖率目标。Registry 不要求在继续 T0、运行其它 mod、CI 或发布前枚举全部 `361` 个场景或 `626` 个 definition。
 
 - `known/total` 只可作为 discovery telemetry，不能换算产品完成百分比；
 - 未遇到、未引用的 definition 不进入发布或实机前置门；
