@@ -25,7 +25,9 @@ public class StdioCoatOfArmsMcpClient implements CoatOfArmsMcpClient {
             "ck3_query_coat_of_arms_resource_catalog_v1",
             "ck3_read_coat_of_arms_resource_asset_v1",
             "ck3_read_coat_of_arms_render_support_v1",
-            "ck3_query_coat_of_arms_load_configuration_v1");
+            "ck3_query_coat_of_arms_load_configuration_v1",
+            "ck3_query_coat_of_arms_configured_resource_catalog_v1",
+            "ck3_read_coat_of_arms_configured_resource_asset_v1");
 
     private final McpConfiguration configuration;
     private McpSyncClient client;

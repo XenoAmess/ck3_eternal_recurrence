@@ -131,6 +131,74 @@ export interface CoatOfArmsLoadConfiguration {
   }
 }
 
+export interface CoatOfArmsConfiguredResourceItem {
+  index: number
+  candidate_id: string
+  load_order: number
+  registry_path: string
+  mod_name: string | null
+  descriptor_sha256: string
+  manifest_relative_path: string
+  manifest_sha256: string
+  kind: CoatOfArmsResourceKind
+  name: string
+  colors: number | null
+  visible: boolean
+  category: string | null
+  asset_relative_path: string | null
+  asset_exists: boolean | null
+  asset_bytes: number | null
+  asset_sha256: string | null
+  same_name_configured_candidate_count: number
+  potential_configured_name_conflict: boolean
+}
+
+export interface CoatOfArmsConfiguredResourceCatalog {
+  schema: 'ck3-coat-of-arms-configured-resource-catalog-v1'
+  schema_version: 1
+  status: 'indexed'
+  kind: CoatOfArmsResourceKind
+  total: number
+  returned: number
+  has_more: boolean
+  next_offset: number | null
+  items: CoatOfArmsConfiguredResourceItem[]
+  skipped_archives: Array<{
+    load_order: number
+    registry_path: string
+    name: string | null
+  }>
+  provenance: {
+    mode: string
+    enabled_mod_count: number
+    configured_candidate_count: number
+    archive_mods_skipped: number
+    base_game_resources_included: false
+    engine_registration_observed: false
+    resource_merge_applied: false
+    load_order_precedence_applied: false
+  }
+}
+
+export interface CoatOfArmsConfiguredResourceAsset {
+  schema: 'ck3-coat-of-arms-configured-resource-asset-v1'
+  schema_version: 1
+  status: 'read'
+  kind: 'pattern' | 'colored_emblem'
+  candidate_id: string
+  name: string
+  content_type: 'application/octet-stream'
+  asset_bytes: number
+  asset_sha256: string
+  asset_base64: string
+  dds: {
+    width: number
+    height: number
+    mipmap_count: number
+    four_cc: string
+  }
+}
+
 export interface Ck3SessionSnapshot {
   revision: number
   source?: string
@@ -222,6 +290,29 @@ export function createCk3CompanionClient(
     renderSupport: () => get<CoatOfArmsRenderSupport>('/render-support'),
     loadConfiguration: () =>
       get<CoatOfArmsLoadConfiguration>('/load-configuration'),
+    configuredResources: (parameters: {
+      kind: CoatOfArmsResourceKind
+      query?: string
+      visibleOnly?: boolean
+      offset?: number
+      limit?: number
+    }) => {
+      const query = new URLSearchParams({
+        kind: parameters.kind,
+        visibleOnly: String(parameters.visibleOnly ?? true),
+        offset: String(parameters.offset ?? 0),
+        limit: String(parameters.limit ?? 50),
+      })
+      if (parameters.query) query.set('query', parameters.query)
+      return get<CoatOfArmsConfiguredResourceCatalog>(`/configured-resources?${query}`)
+    },
+    configuredAsset: (
+      kind: 'pattern' | 'colored_emblem',
+      candidateId: string,
+    ) => {
+      const query = new URLSearchParams({ kind, candidateId })
+      return get<CoatOfArmsConfiguredResourceAsset>(`/configured-asset?${query}`)
+    },
     probe: (source: string, expectedRevision: number, apply = false) =>
       post<CoatOfArmsProbeResult>('/probe', { source, expectedRevision, apply }),
     exportSource: (expectedRevision: number) =>

@@ -111,6 +111,59 @@ public class CoatOfArmsResource {
                                         "missing companion configuration: userDirectory"))));
     }
 
+    @GET
+    @Path("/configured-resources")
+    public Object configuredResources(
+            @QueryParam("kind") String kind,
+            @QueryParam("query") String query,
+            @QueryParam("visibleOnly") @DefaultValue("true") boolean visibleOnly,
+            @QueryParam("offset") @DefaultValue("0") int offset,
+            @QueryParam("limit") @DefaultValue("50") int limit) {
+        if (kind == null || kind.isBlank()) {
+            throw new BadRequestException("kind is required");
+        }
+        Map<String, Object> arguments = new LinkedHashMap<>();
+        arguments.put(
+                "user_directory",
+                configuration.userDirectory().orElseThrow(() ->
+                        new McpGatewayException(
+                                "missing companion configuration: userDirectory")));
+        arguments.put("kind", kind);
+        if (query != null) {
+            arguments.put("query", query);
+        }
+        arguments.put("visible_only", visibleOnly);
+        arguments.put("offset", offset);
+        arguments.put("limit", limit);
+        return mcp.callTool(
+                "ck3_query_coat_of_arms_configured_resource_catalog_v1",
+                arguments);
+    }
+
+    @GET
+    @Path("/configured-asset")
+    public Object configuredAsset(
+            @QueryParam("kind") String kind,
+            @QueryParam("candidateId") String candidateId) {
+        if (kind == null || kind.isBlank()) {
+            throw new BadRequestException("kind is required");
+        }
+        if (candidateId == null || candidateId.isBlank()) {
+            throw new BadRequestException("candidateId is required");
+        }
+        return mcp.callTool(
+                "ck3_read_coat_of_arms_configured_resource_asset_v1",
+                Map.of(
+                        "user_directory",
+                        configuration.userDirectory().orElseThrow(() ->
+                                new McpGatewayException(
+                                        "missing companion configuration: userDirectory")),
+                        "kind",
+                        kind,
+                        "candidate_id",
+                        candidateId));
+    }
+
     @POST
     @Path("/probe")
     public Object probe(ProbeRequest request) {

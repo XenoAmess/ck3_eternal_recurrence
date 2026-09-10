@@ -114,6 +114,59 @@ class CoatOfArmsResourceTest {
     }
 
     @Test
+    void configuredCatalogPreservesFiltersAndCandidateProvenance() {
+        when(mcp.callTool(
+                        eq("ck3_query_coat_of_arms_configured_resource_catalog_v1"),
+                        eq(Map.of(
+                                "user_directory", "fixture-user",
+                                "kind", "pattern",
+                                "query", "lion",
+                                "visible_only", true,
+                                "offset", 0,
+                                "limit", 25))))
+                .thenReturn(Map.of(
+                        "schema",
+                        "ck3-coat-of-arms-configured-resource-catalog-v1",
+                        "total",
+                        2));
+
+        given()
+                .queryParam("kind", "pattern")
+                .queryParam("query", "lion")
+                .queryParam("limit", 25)
+                .when().get("/api/ck3/coat-of-arms/configured-resources")
+                .then()
+                .statusCode(200)
+                .body("schema", equalTo(
+                        "ck3-coat-of-arms-configured-resource-catalog-v1"))
+                .body("total", equalTo(2));
+    }
+
+    @Test
+    void configuredAssetUsesOpaqueCandidateIdentity() {
+        String candidateId = "A".repeat(64);
+        when(mcp.callTool(
+                        eq("ck3_read_coat_of_arms_configured_resource_asset_v1"),
+                        eq(Map.of(
+                                "user_directory", "fixture-user",
+                                "kind", "colored_emblem",
+                                "candidate_id", candidateId))))
+                .thenReturn(Map.of(
+                        "schema", "ck3-coat-of-arms-configured-resource-asset-v1",
+                        "candidate_id", candidateId));
+
+        given()
+                .queryParam("kind", "colored_emblem")
+                .queryParam("candidateId", candidateId)
+                .when().get("/api/ck3/coat-of-arms/configured-asset")
+                .then()
+                .statusCode(200)
+                .body("schema", equalTo(
+                        "ck3-coat-of-arms-configured-resource-asset-v1"))
+                .body("candidate_id", equalTo(candidateId));
+    }
+
+    @Test
     void probeAndExportKeepTheirTypedMcpArguments() {
         when(mcp.callTool(
                         eq("ck3_probe_coat_of_arms_source_v1"),

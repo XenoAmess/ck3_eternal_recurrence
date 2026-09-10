@@ -95,6 +95,33 @@ describe('CK3 companion client', () => {
       .toBe('/api/ck3/coat-of-arms/load-configuration')
   })
 
+  it('encodes configured candidate filters and opaque asset identities', async () => {
+    const fetchMock = vi.fn()
+      .mockResolvedValueOnce(new Response(JSON.stringify({
+        schema: 'ck3-coat-of-arms-configured-resource-catalog-v1',
+        items: [],
+      }), { status: 200 }))
+      .mockResolvedValueOnce(new Response(JSON.stringify({
+        schema: 'ck3-coat-of-arms-configured-resource-asset-v1',
+        asset_base64: 'RERTIA==',
+      }), { status: 200 }))
+    vi.stubGlobal('fetch', fetchMock)
+    const client = createCk3CompanionClient('http://localhost:8080')
+
+    await client.configuredResources({
+      kind: 'colored_emblem', query: 'lion & crown', limit: 25,
+    })
+    await client.configuredAsset('colored_emblem', 'A'.repeat(64))
+
+    const catalogUrl = new URL(fetchMock.mock.calls[0][0])
+    const assetUrl = new URL(fetchMock.mock.calls[1][0])
+    expect(catalogUrl.pathname).toBe('/api/ck3/coat-of-arms/configured-resources')
+    expect(catalogUrl.searchParams.get('query')).toBe('lion & crown')
+    expect(catalogUrl.searchParams.get('limit')).toBe('25')
+    expect(assetUrl.pathname).toBe('/api/ck3/coat-of-arms/configured-asset')
+    expect(assetUrl.searchParams.get('candidateId')).toBe('A'.repeat(64))
+  })
+
   it('surfaces the companion error message', async () => {
     vi.stubGlobal('fetch', vi.fn().mockResolvedValue(new Response(
       JSON.stringify({ message: 'CK3 bridge is unavailable' }),

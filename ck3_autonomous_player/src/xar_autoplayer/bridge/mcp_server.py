@@ -7,6 +7,10 @@ import importlib
 import os
 from pathlib import Path
 
+from xar_autoplayer.coat_of_arms_configured_resources import (
+    query_coat_of_arms_configured_resource_catalog_v1,
+    read_coat_of_arms_configured_resource_asset_v1,
+)
 from xar_autoplayer.coat_of_arms_load_configuration import (
     query_coat_of_arms_load_configuration_v1,
 )
@@ -173,6 +177,38 @@ def _ck3_query_coat_of_arms_load_configuration_v1(
 ) -> dict[str, object]:
     """Project configured CoA mod candidates without claiming engine mount."""
     return query_coat_of_arms_load_configuration_v1(user_directory)
+
+
+def _ck3_query_coat_of_arms_configured_resource_catalog_v1(
+    user_directory: str,
+    kind: str,
+    query: str | None = None,
+    visible_only: bool = True,
+    offset: int = 0,
+    limit: int = 50,
+) -> dict[str, object]:
+    """Page configured mod candidates without choosing an engine winner."""
+    return query_coat_of_arms_configured_resource_catalog_v1(
+        user_directory,
+        kind,
+        query=query,
+        visible_only=visible_only,
+        offset=offset,
+        limit=limit,
+    )
+
+
+def _ck3_read_coat_of_arms_configured_resource_asset_v1(
+    user_directory: str,
+    kind: str,
+    candidate_id: str,
+) -> dict[str, object]:
+    """Read one configured mod DDS by opaque manifest candidate identity."""
+    return read_coat_of_arms_configured_resource_asset_v1(
+        user_directory,
+        kind,
+        candidate_id,
+    )
 
 
 def load_driver(
@@ -1408,6 +1444,38 @@ def create_server(driver: GameplayBridgeDriver):
         return _ck3_query_coat_of_arms_load_configuration_v1(user_directory)
 
     @server.tool()
+    def ck3_query_coat_of_arms_configured_resource_catalog_v1(
+        user_directory: str,
+        kind: str,
+        query: str | None = None,
+        visible_only: bool = True,
+        offset: int = 0,
+        limit: int = 50,
+    ) -> dict[str, object]:
+        """Page configured mod candidates; does not claim VFS precedence."""
+        return _ck3_query_coat_of_arms_configured_resource_catalog_v1(
+            user_directory,
+            kind,
+            query,
+            visible_only,
+            offset,
+            limit,
+        )
+
+    @server.tool()
+    def ck3_read_coat_of_arms_configured_resource_asset_v1(
+        user_directory: str,
+        kind: str,
+        candidate_id: str,
+    ) -> dict[str, object]:
+        """Read one configured manifest-owned DDS; no VFS winner claim."""
+        return _ck3_read_coat_of_arms_configured_resource_asset_v1(
+            user_directory,
+            kind,
+            candidate_id,
+        )
+
+    @server.tool()
     def ck3_query_loaded_feature_manifest_v1(
         expected_revision: int,
     ) -> dict[str, object]:
@@ -1769,6 +1837,12 @@ def create_server(driver: GameplayBridgeDriver):
     )
     _forbid_unknown_tool_arguments_v1(
         server, "ck3_query_coat_of_arms_load_configuration_v1"
+    )
+    _forbid_unknown_tool_arguments_v1(
+        server, "ck3_query_coat_of_arms_configured_resource_catalog_v1"
+    )
+    _forbid_unknown_tool_arguments_v1(
+        server, "ck3_read_coat_of_arms_configured_resource_asset_v1"
     )
     return server
 

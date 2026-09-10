@@ -70,6 +70,9 @@ const surfaceMask = ref<DecodedDds>()
 const shaderNamedColors = ref<NamedColorMap>({})
 const shaderSourceCount = ref(0)
 const configuredModCount = ref<number | null>(null)
+const configuredPatternCount = ref<number | null>(null)
+const configuredEmblemCount = ref<number | null>(null)
+const configuredArchiveSkipCount = ref(0)
 
 const output = computed(() => serializeCoatOfArms(coatOfArms.value))
 const activeEmblem = computed(() => coatOfArms.value.coloredEmblems[selectedEmblem.value])
@@ -226,7 +229,14 @@ async function exportFromCk3() {
 async function loadResourceCatalog() {
   catalogBusy.value = true
   try {
-    const [patterns, emblems, renderSupport, loadConfiguration] = await Promise.all([
+    const [
+      patterns,
+      emblems,
+      renderSupport,
+      loadConfiguration,
+      configuredPatterns,
+      configuredEmblems,
+    ] = await Promise.all([
       companion.resources({ kind: 'pattern', limit: 200 }),
       companion.resources({
         kind: 'colored_emblem',
@@ -235,10 +245,22 @@ async function loadResourceCatalog() {
       }),
       companion.renderSupport(),
       companion.loadConfiguration().catch(() => null),
+      companion.configuredResources({ kind: 'pattern', limit: 200 }).catch(() => null),
+      companion.configuredResources({
+        kind: 'colored_emblem',
+        query: emblemSearch.value.trim() || undefined,
+        limit: 200,
+      }).catch(() => null),
     ])
     patternResources.value = patterns.items
     emblemResources.value = emblems.items
     configuredModCount.value = loadConfiguration?.enabled_mod_count ?? null
+    configuredPatternCount.value = configuredPatterns?.total ?? null
+    configuredEmblemCount.value = configuredEmblems?.total ?? null
+    configuredArchiveSkipCount.value = Math.max(
+      configuredPatterns?.provenance.archive_mods_skipped ?? 0,
+      configuredEmblems?.provenance.archive_mods_skipped ?? 0,
+    )
     const decodedSurfaceMask = decodeDdsBase64(renderSupport.surface_mask.asset_base64)
     if (
       decodedSurfaceMask.width !== renderSupport.surface_mask.dds.width
@@ -463,7 +485,12 @@ importSource()
           <p class="resource-note">
             目录只证明 exact 1.19.0.6 基础游戏磁盘资源；
             <template v-if="configuredModCount !== null">
-              `dlc_load.json` 当前配置 {{ configuredModCount }} 个 mod，仍未执行资源 merge，也不冒充引擎 mount 状态。
+              `dlc_load.json` 当前配置 {{ configuredModCount }} 个 mod；
+              <template v-if="configuredPatternCount !== null && configuredEmblemCount !== null">
+                已枚举 {{ configuredPatternCount }} 个 pattern、{{ configuredEmblemCount }} 个 emblem 目录候选，
+                跳过 {{ configuredArchiveSkipCount }} 个 archive mod。
+              </template>
+              仍未应用资源 precedence/merge，也不冒充引擎 mount 状态。
             </template>
             <template v-else>
               启动配置未读取，暂不包含 DLC/mod 覆盖，也不冒充运行时注册状态。
