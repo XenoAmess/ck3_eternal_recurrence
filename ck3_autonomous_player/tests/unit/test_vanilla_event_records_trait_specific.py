@@ -148,10 +148,10 @@ class TraitSpecificEventRecordTests(unittest.TestCase):
             self.assertNotIn(str(observation_only), contract_repr)
 
     def test_default_registry_mcp_and_runtime_include_record(self) -> None:
-        self.assertEqual(len(DEFAULT_VANILLA_EVENT_TIMELINE_CONTRACTS), 166)
-        self.assertEqual(len(DEFAULT_VANILLA_EVENT_ANALYSIS), 166)
-        self.assertEqual(len(DEFAULT_VANILLA_EVENT_OBSERVATIONS), 18)
-        self.assertEqual(len(production.KNOWN_TIMELINE_INTERRUPTS), 305)
+        self.assertEqual(len(DEFAULT_VANILLA_EVENT_TIMELINE_CONTRACTS), 167)
+        self.assertEqual(len(DEFAULT_VANILLA_EVENT_ANALYSIS), 167)
+        self.assertEqual(len(DEFAULT_VANILLA_EVENT_OBSERVATIONS), 19)
+        self.assertEqual(len(production.KNOWN_TIMELINE_INTERRUPTS), 306)
         self.assertIs(
             production.KNOWN_TIMELINE_INTERRUPTS[EVENT_KEY],
             VANILLA_TRAIT_SPECIFIC_TIMELINE_CONTRACTS[EVENT_KEY],
