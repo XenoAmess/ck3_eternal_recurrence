@@ -19,7 +19,7 @@ button, input, textarea { font: inherit; }
 .eyebrow { margin: 0 0 7px; color: var(--gold); text-transform: uppercase; letter-spacing: .16em; font-size: 12px; }
 h1 { margin: 0; font-family: Georgia, "Noto Serif SC", serif; font-weight: 500; font-size: 36px; letter-spacing: .08em; }
 .subtitle { margin: 7px 0 0; color: #a99e90; }
-.top-actions { display: flex; gap: 10px; }
+.top-actions { display: flex; align-items: center; gap: 10px; }
 
 .workspace { max-width: 1820px; margin: 0 auto; display: grid; grid-template-columns: minmax(340px, .92fr) minmax(360px, .9fr) minmax(510px, 1.35fr); gap: 16px; align-items: start; }
 .panel { min-height: 780px; padding: 20px; border: 1px solid var(--line); background: var(--panel); box-shadow: 0 22px 60px rgba(0, 0, 0, .22); backdrop-filter: blur(16px); }
@@ -48,6 +48,13 @@ h1 { margin: 0; font-family: Georgia, "Noto Serif SC", serif; font-weight: 500; 
 }
 .code-input .el-textarea__inner:focus { box-shadow: 0 0 0 1px var(--gold) inset; }
 .import-button { width: 100%; margin-top: 12px; }
+.mcp-panel { margin-top: 14px; padding: 10px 12px; border: 1px solid var(--line); background: rgba(15,13,11,.34); }
+.mcp-panel .section-heading { margin: 0 0 10px; }
+.mcp-panel .section-heading > div { display: grid; gap: 3px; }
+.mcp-panel small, .mcp-panel p, .resource-note { color: #8f8579; font-size: 11px; line-height: 1.5; }
+.mcp-panel p { margin: 9px 0 0; }
+.mcp-actions { display: flex; flex-wrap: wrap; gap: 7px; }
+.mcp-actions .el-button { margin-left: 0; }
 .diagnostics { margin-top: 15px; display: grid; gap: 7px; }
 .diagnostic { display: flex; gap: 9px; padding: 8px 10px; border-left: 2px solid; background: rgba(0,0,0,.12); font-size: 12px; }
 .diagnostic > span { min-width: 48px; font-size: 9px; letter-spacing: .08em; padding-top: 3px; }
@@ -70,7 +77,10 @@ h1 { margin: 0; font-family: Georgia, "Noto Serif SC", serif; font-weight: 500; 
 .editor-pane { padding-right: 8px; }
 .editor-pane .panel-title { padding-right: 12px; }
 .editor-pane .el-scrollbar__view { padding-right: 12px; }
+.resource-search { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 8px; }
+.resource-note { margin: 7px 0 14px; }
 .form-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 12px; }
+.form-grid .el-select { width: 100%; }
 .wide { grid-column: 1 / -1; }
 .section-heading { margin: 12px 0; justify-content: space-between; }
 .instance-list { display: grid; gap: 10px; }

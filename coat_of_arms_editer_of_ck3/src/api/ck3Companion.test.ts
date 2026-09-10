@@ -1,0 +1,56 @@
+import { afterEach, describe, expect, it, vi } from 'vitest'
+import { CompanionRequestError, createCk3CompanionClient } from './ck3Companion'
+
+afterEach(() => vi.unstubAllGlobals())
+
+describe('CK3 companion client', () => {
+  it('encodes catalog filters and preserves the structured response', async () => {
+    const payload = { schema: 'ck3-coat-of-arms-resource-catalog-v1', items: [] }
+    const fetchMock = vi.fn().mockResolvedValue(new Response(JSON.stringify(payload), {
+      status: 200,
+      headers: { 'Content-Type': 'application/json' },
+    }))
+    vi.stubGlobal('fetch', fetchMock)
+
+    const result = await createCk3CompanionClient('http://127.0.0.1:9090/').resources({
+      kind: 'colored_emblem',
+      query: 'lion rampant',
+      limit: 200,
+    })
+
+    expect(result).toEqual(payload)
+    const requestUrl = new URL(fetchMock.mock.calls[0][0])
+    expect(requestUrl.origin).toBe('http://127.0.0.1:9090')
+    expect(requestUrl.pathname).toBe('/api/ck3/coat-of-arms/resources')
+    expect(requestUrl.searchParams.get('kind')).toBe('colored_emblem')
+    expect(requestUrl.searchParams.get('query')).toBe('lion rampant')
+    expect(requestUrl.searchParams.get('limit')).toBe('200')
+  })
+
+  it('sends typed probe and export bodies', async () => {
+    const fetchMock = vi.fn()
+      .mockResolvedValueOnce(new Response(JSON.stringify({ status: 'detected' }), { status: 200 }))
+      .mockResolvedValueOnce(new Response(JSON.stringify({ status: 'exported', source: 'coa={}' }), { status: 200 }))
+    vi.stubGlobal('fetch', fetchMock)
+    const client = createCk3CompanionClient('http://localhost:8080')
+
+    await client.probe('coa={}', 7, true)
+    await client.exportSource(8)
+
+    expect(JSON.parse(fetchMock.mock.calls[0][1].body)).toEqual({
+      source: 'coa={}', expectedRevision: 7, apply: true,
+    })
+    expect(JSON.parse(fetchMock.mock.calls[1][1].body)).toEqual({ expectedRevision: 8 })
+  })
+
+  it('surfaces the companion error message', async () => {
+    vi.stubGlobal('fetch', vi.fn().mockResolvedValue(new Response(
+      JSON.stringify({ message: 'CK3 bridge is unavailable' }),
+      { status: 503, headers: { 'Content-Type': 'application/json' } },
+    )))
+
+    await expect(createCk3CompanionClient().session()).rejects.toEqual(
+      new CompanionRequestError('CK3 bridge is unavailable', 503),
+    )
+  })
+})

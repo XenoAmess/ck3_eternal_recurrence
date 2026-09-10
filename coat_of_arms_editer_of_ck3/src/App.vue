@@ -1,6 +1,10 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 import { ElMessage } from 'element-plus'
+import {
+  createCk3CompanionClient,
+  type CoatOfArmsResourceItem,
+} from './api/ck3Companion'
 import { parseCoatOfArms } from './domain/parser'
 import { serializeCoatOfArms } from './domain/serializer'
 import {
@@ -43,6 +47,13 @@ const source = ref(sample)
 const coatOfArms = ref<CoatOfArms>(createCoatOfArms())
 const diagnostics = ref<Diagnostic[]>([])
 const selectedEmblem = ref(0)
+const companion = createCk3CompanionClient()
+const mcpBusy = ref(false)
+const catalogBusy = ref(false)
+const mcpStatus = ref('未连接')
+const patternResources = ref<CoatOfArmsResourceItem[]>([])
+const emblemResources = ref<CoatOfArmsResourceItem[]>([])
+const emblemSearch = ref('')
 
 const output = computed(() => serializeCoatOfArms(coatOfArms.value))
 const activeEmblem = computed(() => coatOfArms.value.coloredEmblems[selectedEmblem.value])
@@ -104,6 +115,97 @@ function parseMask(value: string) {
   activeEmblem.value.mask = value.split(/[\s,]+/).map(Number).filter(Number.isFinite)
 }
 
+function errorMessage(error: unknown): string {
+  return error instanceof Error ? error.message : String(error)
+}
+
+async function getCurrentRevision(): Promise<number> {
+  const snapshot = await companion.session()
+  if (!Number.isSafeInteger(snapshot.revision) || snapshot.revision < 0) {
+    throw new Error('MCP snapshot 没有有效 revision')
+  }
+  mcpStatus.value = `已连接 · revision ${snapshot.revision}`
+  return snapshot.revision
+}
+
+async function refreshSession() {
+  mcpBusy.value = true
+  try {
+    await getCurrentRevision()
+    ElMessage.success('已连接本机 CK3 MCP')
+  } catch (error) {
+    mcpStatus.value = '不可用'
+    ElMessage.error(`MCP 连接失败：${errorMessage(error)}`)
+  } finally {
+    mcpBusy.value = false
+  }
+}
+
+async function probeInCk3(apply: boolean) {
+  if (errorCount.value > 0) {
+    ElMessage.error('请先修复解析错误，再发送确定性导出')
+    return
+  }
+  mcpBusy.value = true
+  try {
+    const revision = await getCurrentRevision()
+    const result = await companion.probe(output.value, revision, apply)
+    mcpStatus.value = `${result.status} · revision ${revision}`
+    if (result.status === 'detected' || result.status === 'applied') {
+      ElMessage.success(apply ? 'CK3 原生设计器已应用候选纹章' : 'CK3 原生 reader 已识别此纹章')
+    } else {
+      ElMessage.warning(`CK3 返回 ${result.status}${result.reason ? `：${result.reason}` : ''}`)
+    }
+  } catch (error) {
+    mcpStatus.value = '请求失败'
+    ElMessage.error(`MCP 请求失败：${errorMessage(error)}`)
+  } finally {
+    mcpBusy.value = false
+  }
+}
+
+async function exportFromCk3() {
+  mcpBusy.value = true
+  try {
+    const revision = await getCurrentRevision()
+    const result = await companion.exportSource(revision)
+    mcpStatus.value = `${result.status} · revision ${revision}`
+    if (result.status !== 'exported' || !result.source) {
+      ElMessage.warning(`CK3 导出不可用${result.reason ? `：${result.reason}` : ''}`)
+      return
+    }
+    source.value = result.source
+    importSource()
+    ElMessage.success('已从 CK3 原生 Copy 结果载入编辑器')
+  } catch (error) {
+    mcpStatus.value = '请求失败'
+    ElMessage.error(`CK3 导出失败：${errorMessage(error)}`)
+  } finally {
+    mcpBusy.value = false
+  }
+}
+
+async function loadResourceCatalog() {
+  catalogBusy.value = true
+  try {
+    const [patterns, emblems] = await Promise.all([
+      companion.resources({ kind: 'pattern', limit: 200 }),
+      companion.resources({
+        kind: 'colored_emblem',
+        query: emblemSearch.value.trim() || undefined,
+        limit: 200,
+      }),
+    ])
+    patternResources.value = patterns.items
+    emblemResources.value = emblems.items
+    ElMessage.success(`已索引 ${patterns.returned} 个 pattern、${emblems.returned} 个 emblem`)
+  } catch (error) {
+    ElMessage.error(`资源目录读取失败：${errorMessage(error)}`)
+  } finally {
+    catalogBusy.value = false
+  }
+}
+
 importSource()
 </script>
 
@@ -116,6 +218,9 @@ importSource()
         <p class="subtitle">结构化编辑原版可导入的静态纹章数据，不执行任意 CK3 脚本。</p>
       </div>
       <div class="top-actions">
+        <el-tag :type="mcpStatus.startsWith('已连接') ? 'success' : 'info'" effect="plain">
+          {{ mcpStatus }}
+        </el-tag>
         <el-button @click="reset">重置</el-button>
         <el-button type="primary" :disabled="errorCount > 0" @click="copyOutput">复制 CK3 代码</el-button>
       </div>
@@ -132,6 +237,22 @@ importSource()
         </div>
         <el-input v-model="source" type="textarea" :rows="21" resize="none" spellcheck="false" class="code-input" />
         <el-button class="import-button" type="primary" @click="importSource">解析并载入</el-button>
+
+        <div class="mcp-panel">
+          <div class="section-heading">
+            <div>
+              <h3>CK3 原生 MCP</h3>
+              <small>只调用 typed MCP，不使用 OCR 或屏幕自动化</small>
+            </div>
+            <el-button size="small" :loading="mcpBusy" @click="refreshSession">连接</el-button>
+          </div>
+          <div class="mcp-actions">
+            <el-button :loading="mcpBusy" :disabled="errorCount > 0" @click="probeInCk3(false)">原生检测</el-button>
+            <el-button type="primary" plain :loading="mcpBusy" :disabled="errorCount > 0" @click="probeInCk3(true)">应用到设计器</el-button>
+            <el-button :loading="mcpBusy" @click="exportFromCk3">从 CK3 读取</el-button>
+          </div>
+          <p>检测和应用需要 CK3 已停在纹章设计器；“应用”只改变 working state，不等于上层保存。</p>
+        </div>
 
         <div v-if="diagnostics.length" class="diagnostics">
           <div v-for="(item, index) in diagnostics" :key="index" :class="['diagnostic', item.severity]">
@@ -181,12 +302,29 @@ importSource()
       </section>
 
       <section class="editor-pane panel">
-        <div class="panel-title"><div><span class="step">03</span><h2>结构化编辑</h2></div></div>
+        <div class="panel-title">
+          <div><span class="step">03</span><h2>结构化编辑</h2></div>
+          <el-button size="small" :loading="catalogBusy" @click="loadResourceCatalog">读取原版资源</el-button>
+        </div>
         <el-scrollbar height="690px">
+          <div class="resource-search">
+            <el-input v-model="emblemSearch" clearable placeholder="筛选 emblem 名；留空取前 200 项" @keyup.enter="loadResourceCatalog" />
+            <el-button :loading="catalogBusy" @click="loadResourceCatalog">刷新目录</el-button>
+          </div>
+          <p class="resource-note">
+            目录只证明 exact 1.19.0.6 基础游戏磁盘资源；暂不包含 DLC/mod 覆盖，也不冒充运行时注册状态。
+          </p>
           <el-form label-position="top">
             <div class="form-grid">
               <el-form-item label="Pattern 资源名">
-                <el-input v-model="coatOfArms.pattern" />
+                <el-select v-model="coatOfArms.pattern" filterable allow-create default-first-option>
+                  <el-option
+                    v-for="item in patternResources"
+                    :key="item.name"
+                    :label="`${item.name} · ${item.colors ?? '?'} 色`"
+                    :value="item.name"
+                  />
+                </el-select>
               </el-form-item>
               <el-form-item v-for="index in 3" :key="index" :label="`底色 ${index}`">
                 <el-input v-model="coatOfArms.colors[index - 1]" />
@@ -204,7 +342,14 @@ importSource()
             <template v-if="activeEmblem">
               <div class="form-grid">
                 <el-form-item label="Texture 资源名" class="wide">
-                  <el-input v-model="activeEmblem.texture" />
+                  <el-select v-model="activeEmblem.texture" filterable allow-create default-first-option>
+                    <el-option
+                      v-for="item in emblemResources"
+                      :key="item.name"
+                      :label="`${item.name} · ${item.colors ?? '?'} 色`"
+                      :value="item.name"
+                    />
+                  </el-select>
                 </el-form-item>
                 <el-form-item v-for="index in 3" :key="index" :label="`图案颜色 ${index}`">
                   <el-input v-model="activeEmblem.colors[index - 1]" />

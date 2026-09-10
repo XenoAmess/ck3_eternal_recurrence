@@ -161,6 +161,9 @@ export 的公开结果为闭合 schema，包含 `status`、`designer_observed`�
   SHA-256 与 exact binding 投影，当前为 `mcp-static-ready`；遵守用户当前“不占用 CK3/主屏幕”的要求，live 结果明确待验；
 - 离线 resource catalog 已对本机 exact 1.19.0.6 安装执行：基础游戏 manifest 共定义 42 个 pattern（38 个 designer 可见）、
   1,578 个 colored emblem（1,576 个可见）和 13 个背景色；该结果不含 DLC/mod override，也不是运行时注册证明；
+- Web 编辑器的 Quarkus 伴随服务已完成真实后台贯通：`REST → MCP Java SDK 2.0.1 stdio client → Python MCP server →`
+  `ck3_query_coat_of_arms_resource_catalog_v1` 返回 exact-build 两项 pattern 和完整 provenance；该贯通未启动或操作 CK3，
+  也没有使用 OCR。Quarkus REST 映射 3/3、前端 API/parser 8/8、production build GREEN；
 - CK3 frontend exact-build 握手：已真实取得，并广告新 capability；
 - 隔离 attempt 5 补齐 `frontend_snapshot` 绑定；attempt 6 暴露剪贴板函数槽的瞬时初始化状态；attempt 8 又证明
   gameplay 生命周期门禁会让角色设计器永远无法安装 hook。现在 hook 在 exact adapter 选定后即于 frontend 启动，瞬时槽缺失仍在
@@ -456,18 +459,21 @@ CoatOfArms
 - 多顶层、重复标量、body-only、模板 DSL 默认拒绝；
 - 简单静态 `@变量` 在导入时展开，`parent` 保留为诊断而不混进确定性导出；
 - 导出固定使用 `coa` wrapper、已实机验证的字段白名单和 CRLF；
-- 提供图层/实例结构化表单与浏览器近似预览，且明确不冒充 CK3 renderer。
+- 提供图层/实例结构化表单与浏览器近似预览，且明确不冒充 CK3 renderer；
+- 基础游戏 pattern/emblem 目录已经接入结构化选择器，并可按名字筛选首批 200 个 emblem；
+- 必要的 Quarkus 伴随服务使用官方 Java MCP SDK 连接现有 Python stdio server，前端可刷新 session revision、执行原生
+  detect/apply，以及载入原生 Copy/export 返回源码；伴随服务只允许四个相关 MCP 工具。
 
-尚未接入的下一阶段能力：
+尚未完成的下一阶段能力：
 
-- 把 exact 1.19.0.6 基础游戏 resource catalog 接入编辑器，并继续补 DLC/mod playset 合并与运行时注册证据；
-- 通过 MCP 调用 `ck3_probe_coat_of_arms_source_v1` 的“发送到游戏”，不模拟 UI 点击；
-- 把已静态就绪的 `ck3_export_coat_of_arms_source_v1` 接入编辑器，并在重新获准占用 CK3 后完成 live 验收；
+- 继续补 DLC/mod playset 合并与运行时注册证据；
+- 在重新获准占用 CK3 后，对编辑器的 detect/apply/Copy-export 做 live round-trip 验收；当前只是接口与静态实现 GREEN，
+  不把 REST mock 或离线 catalog 贯通写成 designer live；
 - PNG/像素验证 primitive；
 - 基于真实 DDS 资源的预览，而不是当前的几何近似符号。
 
-浏览器若需要读取用户显式选择的本机 CK3 目录、转换 DDS 或建立素材缓存，才引入 Maven + Java + Quarkus 伴随服务。
-后端只负责文件索引/转换/MCP 会话，不承担“执行 CK3 脚本”的虚构能力。
+浏览器无法直接启动本机 stdio MCP，因此已引入 Maven + Java + Quarkus 伴随服务。后端只负责 REST/MCP 会话转接与
+本机资源索引，不承担“执行 CK3 脚本”的虚构能力；当前也没有 DDS 转换或素材缓存。
 
 首版有 Vitest parser/serializer 回归和 Vite production build 验收。后续扩展仍以本文的原生 MCP 证据为协议来源，
 不会把旧 UI 观察或第三方 parser 行为固化成 CK3 引擎事实。
