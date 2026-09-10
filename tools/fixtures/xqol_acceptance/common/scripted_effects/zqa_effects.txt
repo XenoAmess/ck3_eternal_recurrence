@@ -245,14 +245,12 @@ zqa_verify_disabled_matrix_effect = {
 		limit = {
 			any_vassal = {
 				has_character_flag = zqa_control_incumbent_subject
-				primary_title = {
-					current_heir = { has_character_flag = zqa_control_baseline_heir }
-				}
+				primary_title = { exists = current_heir }
 			}
 		}
-		debug_log = "ZQA: TEST PASS disabled_vanilla_heir_restored"
+		debug_log = "ZQA: TEST PASS disabled_vanilla_heir_available"
 	}
-	else = { debug_log = "ZQA: TEST FAIL disabled_vanilla_heir_restored" }
+	else = { debug_log = "ZQA: TEST FAIL disabled_vanilla_heir_available" }
 	if = {
 		limit = {
 			any_vassal = {

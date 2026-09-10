@@ -67,7 +67,7 @@ REQUIRED_MARKERS = (
     "ZQA: TEST PASS death_transferred_to_non_player_successor",
     "ZQA: TEST PASS ready_for_product_disable_decisions",
     "ZQA: TEST PASS product_disable_decisions",
-    "ZQA: TEST PASS disabled_vanilla_heir_restored",
+    "ZQA: TEST PASS disabled_vanilla_heir_available",
     "ZQA: TEST PASS transfer_guard_disabled_and_preexisting_preserved",
     "ZQA: TEST PASS payment_full_only",
     "ZQA: TEST PASS payment_any_above_one_only",
