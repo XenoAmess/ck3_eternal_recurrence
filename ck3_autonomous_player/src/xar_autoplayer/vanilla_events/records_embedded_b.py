@@ -23,7 +23,9 @@ def _optional_scope_name_sets(
     )
 
 
-EMBEDDED_B_VANILLA_TIMELINE_CONTRACTS: Final[dict[str, dict[str, object]]] = {
+_LEGACY_EMBEDDED_B_VANILLA_TIMELINE_CONTRACTS: Final[
+    dict[str, dict[str, object]]
+] = {
     "epidemic_events.5007": {
         # CK3 1.19.0.6 plague-yearly accusation against a court herbalist.
         # Native option 0 is visible only when root has a related lifestyle
@@ -1494,6 +1496,204 @@ EMBEDDED_B_VANILLA_TIMELINE_CONTRACTS: Final[dict[str, dict[str, object]]] = {
         "selected_option_number": 2,
         "selected_native_option_index": 1,
     },
+}
+
+
+_LEGACY_BINDING_KEYS: Final = (
+    "date_raw",
+    "date_raw_range",
+    "root_character_id",
+    "character_scopes",
+    "unique_character_scope_excludes",
+    "optional_unique_character_scope_excludes",
+)
+_LEGACY_CAMPAIGN_ROOTS: Final = frozenset({29037, 32904})
+
+
+def _clone_record_value(value: object) -> object:
+    """Clone JSON-shaped contract data while preserving tuple semantics."""
+
+    if isinstance(value, dict):
+        return {str(key): _clone_record_value(item) for key, item in value.items()}
+    if isinstance(value, tuple):
+        return tuple(_clone_record_value(item) for item in value)
+    if isinstance(value, list):
+        return [_clone_record_value(item) for item in value]
+    return value
+
+
+def _legacy_binding_fields(contract: dict[str, object]) -> dict[str, object]:
+    """Return the complete campaign binding removed from a runtime contract."""
+
+    binding = {
+        key: _clone_record_value(contract[key])
+        for key in _LEGACY_BINDING_KEYS
+        if key in contract
+    }
+    for variant_key in ("scope_variants", "option_variants"):
+        variants: list[dict[str, object]] = []
+        for index, raw_variant in enumerate(contract.get(variant_key, ())):
+            if not isinstance(raw_variant, dict):
+                raise TypeError(f"{variant_key}[{index}] must be a dictionary")
+            variant_binding = {
+                key: _clone_record_value(raw_variant[key])
+                for key in _LEGACY_BINDING_KEYS
+                if key in raw_variant
+            }
+            if variant_binding:
+                variants.append({"variant_index": index, **variant_binding})
+        if variants:
+            binding[f"{variant_key}_bindings"] = tuple(variants)
+    return binding
+
+
+def _append_scope_relation(
+    contract: dict[str, object],
+    relation_key: str,
+    scope_name: str,
+    related_scope: str,
+) -> None:
+    raw_relations = contract.setdefault(relation_key, {})
+    if not isinstance(raw_relations, dict):
+        raise TypeError(f"{relation_key} must be a dictionary")
+    current = tuple(raw_relations.get(scope_name, ()))
+    if related_scope not in current:
+        raw_relations[scope_name] = (*current, related_scope)
+
+
+def _append_player_exclusion(
+    contract: dict[str, object], scope_name: str
+) -> None:
+    raw_exclusions = contract.setdefault("unique_character_scope_excludes", {})
+    if not isinstance(raw_exclusions, dict):
+        raise TypeError("unique_character_scope_excludes must be a dictionary")
+    current = tuple(raw_exclusions.get(scope_name, ()))
+    if PLAYER_SENTINEL not in current:
+        raw_exclusions[scope_name] = (*current, PLAYER_SENTINEL)
+
+
+def _neutralize_contract(
+    event_id: str,
+    contract: dict[str, object],
+) -> dict[str, object]:
+    """Replace one campaign's identities with source-role constraints."""
+
+    portable = _clone_record_value(contract)
+    if not isinstance(portable, dict):  # pragma: no cover - mapping input guard
+        raise TypeError("cloned embedded-B contract must be a dictionary")
+
+    legacy_root = portable.get("root_character_id")
+    if legacy_root == PLAYER_SENTINEL:
+        return portable
+    if legacy_root not in _LEGACY_CAMPAIGN_ROOTS:
+        raise ValueError(f"unexpected embedded-B legacy root: {legacy_root!r}")
+
+    portable.pop("date_raw", None)
+    portable.pop("date_raw_range", None)
+    portable["date_policy"] = "product-observation-window"
+    portable["root_character_id"] = PLAYER_SENTINEL
+
+    raw_character_scopes = portable.get("character_scopes", {})
+    if not isinstance(raw_character_scopes, dict):
+        raise TypeError("character_scopes must be a dictionary")
+    portable_character_scopes: dict[str, object] = {}
+    dynamic_character_scopes: list[str] = []
+    for scope_name, character_id in raw_character_scopes.items():
+        name = str(scope_name)
+        if character_id in {legacy_root, PLAYER_SENTINEL}:
+            portable_character_scopes[name] = PLAYER_SENTINEL
+        else:
+            dynamic_character_scopes.append(name)
+    portable["character_scopes"] = portable_character_scopes
+
+    raw_scope_types = portable.setdefault("scope_types", {})
+    if not isinstance(raw_scope_types, dict):
+        raise TypeError("scope_types must be a dictionary")
+    for scope_name in dynamic_character_scopes:
+        raw_scope_types.setdefault(scope_name, "character")
+
+    for exclusion_key in (
+        "unique_character_scope_excludes",
+        "optional_unique_character_scope_excludes",
+    ):
+        raw_exclusions = portable.get(exclusion_key)
+        if raw_exclusions is None:
+            continue
+        if not isinstance(raw_exclusions, dict):
+            raise TypeError(f"{exclusion_key} must be a dictionary")
+        normalized: dict[str, tuple[object, ...]] = {}
+        for scope_name, raw_ids in raw_exclusions.items():
+            if not isinstance(raw_ids, (tuple, list)):
+                raise TypeError(f"{exclusion_key}.{scope_name} must be a sequence")
+            player_only = tuple(
+                PLAYER_SENTINEL
+                for character_id in raw_ids
+                if character_id in {legacy_root, PLAYER_SENTINEL}
+            )
+            if player_only:
+                normalized[str(scope_name)] = player_only
+        portable[exclusion_key] = normalized
+
+    # These three late governor records were the only embedded-B contracts
+    # whose required character roles were represented solely by fixed NPC IDs.
+    # Preserve the relationships proved by their exact-build selectors, not
+    # the incidental people selected in the legacy campaign.
+    if event_id == "ep3_governor_yearly.8010":
+        _append_player_exclusion(portable, "governor")
+    elif event_id == "ep3_governor_yearly.8100":
+        for scope_name in (
+            "target_family_member",
+            "governor",
+            "neighboring_promoted_char",
+        ):
+            _append_player_exclusion(portable, scope_name)
+        for scope_name in ("governor", "neighboring_promoted_char"):
+            _append_scope_relation(
+                portable,
+                "character_scope_differs_from",
+                scope_name,
+                "target_family_member",
+            )
+    elif event_id == "ep3_governor_yearly.8110":
+        for scope_name in ("governor_1", "governor_2"):
+            _append_player_exclusion(portable, scope_name)
+        _append_scope_relation(
+            portable,
+            "character_scope_differs_from",
+            "governor_1",
+            "governor_2",
+        )
+        _append_scope_relation(
+            portable,
+            "character_scope_differs_from",
+            "governor_2",
+            "governor_1",
+        )
+
+    return portable
+
+
+EMBEDDED_B_LEGACY_BINDING_OBSERVATIONS: Final[
+    dict[str, dict[str, object]]
+] = {
+    event_id: {
+        "exemplars": [{
+            "run": "legacy-migrated",
+            "kind": "legacy-live-binding",
+            "review_kind": "migration-only",
+            **_legacy_binding_fields(contract),
+        }],
+    }
+    for event_id, contract in _LEGACY_EMBEDDED_B_VANILLA_TIMELINE_CONTRACTS.items()
+    if contract.get("root_character_id") in _LEGACY_CAMPAIGN_ROOTS
+}
+
+
+EMBEDDED_B_VANILLA_TIMELINE_CONTRACTS: Final[
+    dict[str, dict[str, object]]
+] = {
+    event_id: _neutralize_contract(event_id, contract)
+    for event_id, contract in _LEGACY_EMBEDDED_B_VANILLA_TIMELINE_CONTRACTS.items()
 }
 
 

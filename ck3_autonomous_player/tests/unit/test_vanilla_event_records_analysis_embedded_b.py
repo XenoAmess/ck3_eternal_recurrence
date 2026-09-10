@@ -52,33 +52,23 @@ class EmbeddedBAnalysisTests(unittest.TestCase):
                 )
                 self.assertTrue(analysis["review_summary"])
                 self.assertTrue(analysis["existing_boundaries"])
-                if event_id in (
-                    "epidemic_events.5009",
-                    "ep3_story_cycle_admin_eunuch.1001",
-                ):
-                    self.assertTrue(
-                        analysis["migrated_from"]["review_kind"].startswith(
-                            "exact-build-original-definition-and-live-"
-                        )
-                    )
-                    self.assertTrue(analysis["source_sha256"])
-                    self.assertEqual(
-                        analysis["existing_boundaries"][
-                            "campaign_specific_binding_fields"
-                        ],
-                        [],
-                    )
-                else:
-                    self.assertIn(
-                        "no new exhaustive vanilla-definition review",
-                        analysis["existing_boundaries"]["notes"][0],
-                    )
-                    self.assertNotIn("source_sha256", analysis)
+                self.assertTrue(analysis["source_sha256"])
+                self.assertEqual(
+                    analysis["existing_boundaries"][
+                        "campaign_specific_binding_fields"
+                    ],
+                    [],
+                )
+                for source_path, source_sha256 in analysis[
+                    "source_sha256"
+                ].items():
+                    self.assertTrue(source_path.endswith(".txt"))
+                    self.assertRegex(source_sha256, SHA256_PATTERN)
                 json.dumps(analysis, allow_nan=False)
 
-    def test_admin_eunuch_live_observation_is_json_safe(self) -> None:
+    def test_legacy_and_admin_eunuch_observations_are_json_safe(self) -> None:
         event_id = "ep3_story_cycle_admin_eunuch.1001"
-        self.assertEqual(list(VANILLA_EMBEDDED_B_OBSERVATIONS), [event_id])
+        self.assertEqual(len(VANILLA_EMBEDDED_B_OBSERVATIONS), 25)
         exemplar = VANILLA_EMBEDDED_B_OBSERVATIONS[event_id]["exemplars"][0]
 
         self.assertEqual(exemplar["event_instance_id"], 988)
@@ -92,6 +82,33 @@ class EmbeddedBAnalysisTests(unittest.TestCase):
         ):
             self.assertRegex(exemplar[field], SHA256_PATTERN)
         json.dumps(VANILLA_EMBEDDED_B_OBSERVATIONS, allow_nan=False)
+
+    def test_every_event_uses_its_exact_definition_file_fingerprint(self) -> None:
+        expected_paths = {
+            "epidemic_events.": "events/dlc/ce1/epidemic_events.txt",
+            "learn_language_outcome.": (
+                "events/scheme_events/learn_language_scheme/"
+                "learn_language_outcome_events.txt"
+            ),
+            "hostile_scheme_discovery.": (
+                "events/scheme_events/hostile_scheme_discovery_events.txt"
+            ),
+            "ep3_story_cycle_admin_eunuch.": (
+                "events/dlc/ep3/ep3_story_cycle_admin_eunuch_events.txt"
+            ),
+            "ep3_interactions_events.": (
+                "events/dlc/ep3/ep3_interactions_events.txt"
+            ),
+            "ep3_admin_events.": "events/dlc/ep3/ep3_admin_events.txt",
+            "ep3_governor_yearly.": (
+                "events/dlc/ep3/ep3_governor_yearly_8.txt"
+            ),
+        }
+        for event_id, analysis in VANILLA_EMBEDDED_B_ANALYSIS.items():
+            prefix = next(
+                value for value in expected_paths if event_id.startswith(value)
+            )
+            self.assertIn(expected_paths[prefix], analysis["source_sha256"])
 
     def test_safe_options_match_the_existing_contracts(self) -> None:
         fail_closed_event = "ep3_interactions_events.0630"

@@ -1,21 +1,26 @@
 ﻿"""Reusable analysis metadata for embedded vanilla-event records 28--53.
 
-This module migrates only conclusions already recorded in the legacy embedded
-contracts.  It deliberately does not claim a fresh exhaustive definition
-review and does not invent source-file hashes.
+This module migrates conclusions already recorded in the legacy embedded
+contracts.  It does not claim a fresh exhaustive definition review; each
+record does carry the exact-build definition-file fingerprint needed to
+detect source drift on another machine.
 """
 
 from __future__ import annotations
 
 from typing import Final
 
-from .records_embedded_b import EMBEDDED_B_VANILLA_TIMELINE_CONTRACTS
-from .registry import EXACT_CK3_BUILD, EXACT_CK3_EXE_SHA256
+from .records_embedded_b import (
+    EMBEDDED_B_LEGACY_BINDING_OBSERVATIONS,
+    EMBEDDED_B_VANILLA_TIMELINE_CONTRACTS,
+)
+from .registry import EXACT_CK3_BUILD, EXACT_CK3_EXE_SHA256, PLAYER_SENTINEL
 
 
 _MIGRATION_BOUNDARY = (
     "Migrated from the existing embedded contract comment and contract shape; "
-    "no new exhaustive vanilla-definition review was performed."
+    "the exact-build definition file was fingerprinted, but no new exhaustive "
+    "option or caller review was performed."
 )
 
 
@@ -369,9 +374,16 @@ def _existing_boundaries(
         "occurrence": occurrence,
         "option_projection": option_projection,
         "campaign_specific_binding_fields": [
-            key
-            for key in ("date_raw", "date_raw_range", "root_character_id")
-            if key in contract
+            *[
+                key
+                for key in ("date_raw", "date_raw_range")
+                if key in contract
+            ],
+            *(
+                ["root_character_id"]
+                if contract.get("root_character_id") != PLAYER_SENTINEL
+                else []
+            ),
         ],
         "notes": list(notes),
     }
@@ -402,6 +414,70 @@ def _finalize_analysis() -> dict[str, dict[str, object]]:
 VANILLA_EMBEDDED_B_ANALYSIS: Final[dict[str, dict[str, object]]] = (
     _finalize_analysis()
 )
+
+_SOURCE_SHA256_BY_PREFIX: Final[
+    tuple[tuple[str, str, str], ...]
+] = (
+    (
+        "epidemic_events.",
+        "events/dlc/ce1/epidemic_events.txt",
+        "FEF2972BD4F778818CD3A414C337D036F5132C1598FEBAB0E2623E0252DB7A1E",
+    ),
+    (
+        "learn_language_outcome.",
+        (
+            "events/scheme_events/learn_language_scheme/"
+            "learn_language_outcome_events.txt"
+        ),
+        "6C3947B39A48C18E674207FF10D257C6853D126B6697AC6DFEC924FADBF39131",
+    ),
+    (
+        "hostile_scheme_discovery.",
+        "events/scheme_events/hostile_scheme_discovery_events.txt",
+        "C5232383E70F16D125347FA124F260974CF61334CE42EFA4F87981C86DDE736D",
+    ),
+    (
+        "ep3_story_cycle_admin_eunuch.",
+        "events/dlc/ep3/ep3_story_cycle_admin_eunuch_events.txt",
+        "AD0EAC903C87FBE869A70709F8C674C6557862B28E14BD242B6EF0FB3D946734",
+    ),
+    (
+        "ep3_interactions_events.",
+        "events/dlc/ep3/ep3_interactions_events.txt",
+        "B36D7898D6F60983CD3EA359C768925EFE26DB6E9A0734D99A4C614EDE8AB1C4",
+    ),
+    (
+        "ep3_admin_events.",
+        "events/dlc/ep3/ep3_admin_events.txt",
+        "FC11520AC7D3C9FE500A36F0B6DADFDA38B1EDEE7BB19CDEA65EE7E60BE355FB",
+    ),
+    (
+        "ep3_governor_yearly.",
+        "events/dlc/ep3/ep3_governor_yearly_8.txt",
+        "DA8B840BD0A71705421ABE2FB1C743C451253156917BAB1DC0F6165074194789",
+    ),
+)
+
+
+def _definition_source_sha256(event_id: str) -> dict[str, str]:
+    for prefix, source_path, source_sha256 in _SOURCE_SHA256_BY_PREFIX:
+        if event_id.startswith(prefix):
+            return {source_path: source_sha256}
+    raise RuntimeError(f"missing embedded-B source fingerprint: {event_id}")
+
+
+for _event_id, _analysis in VANILLA_EMBEDDED_B_ANALYSIS.items():
+    _analysis.setdefault("source_sha256", _definition_source_sha256(_event_id))
+    _analysis["existing_boundaries"]["campaign_specific_binding_fields"] = []
+    if _analysis["migrated_from"]["review_kind"] == (
+        "migration-only-no-new-full-definition-review"
+    ):
+        _analysis["migrated_from"]["review_kind"] = (
+            "migration-with-exact-build-definition-fingerprint"
+        )
+        _analysis["migrated_from"]["evidence"] = (
+            "existing contract review plus exact-build definition-file SHA-256"
+        )
 
 _epidemic_5009 = VANILLA_EMBEDDED_B_ANALYSIS["epidemic_events.5009"]
 _epidemic_5009["migrated_from"]["review_kind"] = (
@@ -551,78 +627,87 @@ _admin_eunuch_1001.update({
 })
 
 
-VANILLA_EMBEDDED_B_OBSERVATIONS: Final[dict[str, dict[str, object]]] = {
-    "ep3_story_cycle_admin_eunuch.1001": {
-        "exemplars": [{
-            "run": "R374",
-            "kind": "pre-selection-live-red",
-            "artifact": (
-                "_runtime/p2r374-active-boundary-continuation-live/"
-                "ep3-story-cycle-admin-eunuch-1001-red-report.json"
-            ),
-            "artifact_sha256": (
-                "FAEFEF7A2F09099A697CE4A0215AECF6CCE080013D2822BBFD65BBB8B38B7116"
-            ),
-            "park_artifact": (
-                "_runtime/p2r374-active-boundary-continuation-live/"
-                "hot-recovery-park-2.json"
-            ),
-            "park_artifact_sha256": (
-                "F2265333D99B4E996CBAAFD5F31C616291E03438A976E3D85CD4262D4C9889D0"
-            ),
-            "driver_state_artifact": (
-                "_runtime/p2r374-active-boundary-continuation-live/"
-                "driver-state-park-2-snapshot.json"
-            ),
-            "driver_state_artifact_sha256": (
-                "446605FC4AB05D1DDED330929E57B2D04A73E91A601E58B4320D6E2037ED9548"
-            ),
-            "date_raw": 53513184,
-            "event_instance_id": 988,
-            "root_character_id": 32904,
-            "saved_character_ids": {
-                "origin_liege": 63082,
-                "eunuch": 16850194,
-                "parent": 67186091,
-                "eunuch_father": 67186091,
-                "newly_created_character": 67186058,
-                "family_head": 67186091,
-                "new_noble_family_holder": 67186091,
-                "government_giver": 67186091,
-                "noble_family_head": 67186091,
-                "liege": 32904,
-                "candidate": 16850194,
-            },
-            "saved_scope_raw_types": {
-                "origin_liege": 4,
-                "origin": 5,
-                "eunuch": 4,
-                "parent_min_age": 1,
-                "parent_max_age": 1,
-                "parent": 4,
-                "eunuch_father": 4,
-                "count": 1,
-                "min_age": 1,
-                "max_age": 1,
-                "newly_created_character": 4,
-                "story": 17,
-                "family_head": 4,
-                "new_noble_family_holder": 4,
-                "government_giver": 4,
-                "new_title": 5,
-                "noble_family_head": 4,
-                "liege": 4,
-                "candidate": 4,
-                "modifier_type": 3,
-            },
-            "rendered_native_option_indices": [0, 1],
-            "selection_attempted": False,
-            "connection_generation": 1,
-            "bridge_pid": 51852,
-            "process_restart_required": False,
-        }],
-    },
+_ADMIN_EUNUCH_LIVE_OBSERVATION: Final[dict[str, object]] = {
+    "exemplars": [{
+        "run": "R374",
+        "kind": "pre-selection-live-red",
+        "artifact": (
+            "_runtime/p2r374-active-boundary-continuation-live/"
+            "ep3-story-cycle-admin-eunuch-1001-red-report.json"
+        ),
+        "artifact_sha256": (
+            "FAEFEF7A2F09099A697CE4A0215AECF6CCE080013D2822BBFD65BBB8B38B7116"
+        ),
+        "park_artifact": (
+            "_runtime/p2r374-active-boundary-continuation-live/"
+            "hot-recovery-park-2.json"
+        ),
+        "park_artifact_sha256": (
+            "F2265333D99B4E996CBAAFD5F31C616291E03438A976E3D85CD4262D4C9889D0"
+        ),
+        "driver_state_artifact": (
+            "_runtime/p2r374-active-boundary-continuation-live/"
+            "driver-state-park-2-snapshot.json"
+        ),
+        "driver_state_artifact_sha256": (
+            "446605FC4AB05D1DDED330929E57B2D04A73E91A601E58B4320D6E2037ED9548"
+        ),
+        "date_raw": 53513184,
+        "event_instance_id": 988,
+        "root_character_id": 32904,
+        "saved_character_ids": {
+            "origin_liege": 63082,
+            "eunuch": 16850194,
+            "parent": 67186091,
+            "eunuch_father": 67186091,
+            "newly_created_character": 67186058,
+            "family_head": 67186091,
+            "new_noble_family_holder": 67186091,
+            "government_giver": 67186091,
+            "noble_family_head": 67186091,
+            "liege": 32904,
+            "candidate": 16850194,
+        },
+        "saved_scope_raw_types": {
+            "origin_liege": 4,
+            "origin": 5,
+            "eunuch": 4,
+            "parent_min_age": 1,
+            "parent_max_age": 1,
+            "parent": 4,
+            "eunuch_father": 4,
+            "count": 1,
+            "min_age": 1,
+            "max_age": 1,
+            "newly_created_character": 4,
+            "story": 17,
+            "family_head": 4,
+            "new_noble_family_holder": 4,
+            "government_giver": 4,
+            "new_title": 5,
+            "noble_family_head": 4,
+            "liege": 4,
+            "candidate": 4,
+            "modifier_type": 3,
+        },
+        "rendered_native_option_indices": [0, 1],
+        "selection_attempted": False,
+        "connection_generation": 1,
+        "bridge_pid": 51852,
+        "process_restart_required": False,
+    }],
 }
+
+
+VANILLA_EMBEDDED_B_OBSERVATIONS: Final[dict[str, dict[str, object]]] = {
+    event_id: {
+        "exemplars": [dict(exemplar) for exemplar in observation["exemplars"]]
+    }
+    for event_id, observation in EMBEDDED_B_LEGACY_BINDING_OBSERVATIONS.items()
+}
+VANILLA_EMBEDDED_B_OBSERVATIONS[
+    "ep3_story_cycle_admin_eunuch.1001"
+] = _ADMIN_EUNUCH_LIVE_OBSERVATION
 
 
 __all__ = [
