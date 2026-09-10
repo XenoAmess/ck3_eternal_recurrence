@@ -5,11 +5,11 @@
 - [static-ready] 共享 registry 已实现在
   `ck3_autonomous_player/src/xar_autoplayer/vanilla_events/`。它提供合同构建、冲突检测、`$player` 物化和 JSON-safe 查询；全部能力均为离线只读，不依赖已启动的 CK3。
 - [static-ready] `ck3_query_vanilla_event_knowledge_v1` 已注册到正式 MCP server。它只按 stable event key 与 CK3 build 查询知识，不选择按钮、不推进时间、不修改存档或 registry。
-- [static-ready] 本包默认扁平 registry 为 **176 个 unique vanilla event key**。原冻结迁移 key 集不变；随后只按真实中断增量加入独立 records，最新新增 key 是 R416 attempt 3 的 `tgp_movement_events.0110`。attempt 2 的 `bp1_yearly.1040` 已完成同 PID 动作与 advance。数量由 registry/migration 测试冻结。
-- [static-ready analysis / mixed live evidence] 当前 package 同时发布 **176 条 analysis** 与 **176 条 observation metadata**，其中 **28 个 key** 含非 legacy 的 paused/live observation。缺少已冻结 source hash 的旧结论只按既有合同注释、docs/tests 标为 migration-only，不编造 hash；新出现的事件边界均按 harness-route RED 保留，在各自动作完成前不是新增 production-live primitive。
+- [static-ready] 本包默认扁平 registry 为 **177 个 unique vanilla event key**。原冻结迁移 key 集不变；随后只按真实中断增量加入独立 records，最新新增 key 是 R416 attempt 04 的 `artifact.4040`。`bp1_yearly.1040` 与 `tgp_movement_events.0110` 均已完成同 PID 动作与 advance。数量由 registry/migration 测试冻结。
+- [static-ready analysis / mixed live evidence] 当前 package 同时发布 **177 条 analysis** 与 **177 条 observation metadata**，其中 **29 个 key** 含非 legacy 的 paused/live observation。缺少已冻结 source hash 的旧结论只按既有合同注释、docs/tests 标为 migration-only，不编造 hash；新出现的事件边界均按 harness-route RED 保留，在各自动作完成前不是新增 production-live primitive。
 - [static-ready context profiles] prebootstrap 的 `spymaster_task.0381`、`spymaster_task.0399` 两条记录继续作为 seed-capture 上下文 profile 保存，不混入默认扁平 registry。它们与默认 manager 合同使用相同 event key、但冻结不同阶段的精确存档 shape，强行压平会造成有意义的合同冲突。
 
-当前状态表示 registry、默认数据组合和只读 MCP 可以被静态消费者使用，不表示 176 条记录都已有独立 production-live exemplar，也不表示 CK3 自动玩家已经具备完整事件效用判断。production runtime 当前 package 组合 `322` 条事件合同；共享 registry 的 production-live 标签只落在已有选择与 advance 证据的切片。R416 已从 R414 partial checkpoint 冷恢复，在同一 PID 越过 `trait_specific.8001`、`bp1_house_feud.0014` 的 relation-scope 形态与 `bp1_yearly.1040`；当前 attempt 3 暂停于新事件 `tgp_movement_events.0110` 的选择前 RED。赠书事件仍须完成动作与 advance 后才是 live，当前 T0 产品进度不变。最新两条原版树见 [bp1-yearly-bathhouse-friend.md](bp1-yearly-bathhouse-friend.md) 与 [tgp-movement-book-gift.md](tgp-movement-book-gift.md)。
+当前状态表示 registry、默认数据组合和只读 MCP 可以被静态消费者使用，不表示 177 条记录都已有独立 production-live exemplar，也不表示 CK3 自动玩家已经具备完整事件效用判断。production runtime 当前 package 组合 `323` 条事件合同；共享 registry 的 production-live 标签只落在已有选择与 advance 证据的切片。R416 已从 R414 partial checkpoint 冷恢复，在同一 PID 越过 `trait_specific.8001`、`bp1_house_feud.0014`、`bp1_yearly.1040` 与 `tgp_movement_events.0110`；当前 attempt 04 暂停于新事件 `artifact.4040` 的选择前 RED。当前 T0 产品进度不变。最新原版树见 [tgp-movement-book-gift.md](tgp-movement-book-gift.md) 与 [artifact-expert-improvement.md](artifact-expert-improvement.md)。
 
 T0 当前仍为 `50%`、canonical stage `8/11`，source checkpoint `3/4` 且只缺 `capture_cross_cycle_endgame`；T0-P1 未签收，T0-P2 继续 `LOCKED`。`strict 4/361` 与 `definitions 106/626` 只是非阻塞 backlog。
 
@@ -36,6 +36,7 @@ Registry v1 只支持：
 - `records_manager_a.py`、`records_manager_b.py`：57 条 manager-original；
 - `records_embedded.py`：79 条原先内嵌于 T0 runner 的 vanilla 合同；
 - `records_tgp_movement.py`：当前独立 TGP movement 合同及其分析/观察元数据；
+- `records_artifact.py`：按真实中断登记的宝物事件合同、exact-build 分析与实机观察；
 - `records_tgp_dynastic_cycle.py`：独立 TGP dynastic-cycle 合同及其分析/观察元数据，包括 `.0081` 的 phase-transition acknowledgement 合同；
 - `records_tgp_treasury.py`：从旧 manager 条目抽出的 TGP 国库预算通用合同、exact-build 分析、R374 foreground UI identity RED 与 R375 MCP live 切片；
 - `records_diplomacy_majesty.py`：Majesty 构想交接事件 `.4033` 的 exact-build 调用链、唯一安全选项、R390 选择前 RED 与 campaign-neutral scope 合同；
@@ -79,7 +80,7 @@ v1 的 156 条迁移基线以保持现有 T0 合同逐值 parity 为首要目标
 - `VANILLA_TGP_MOVEMENT_ANALYSIS`：exact build/EXE、四个原版来源文件 SHA-256、定义行号、yearly caller 与十年 cooldown、三个选项语义、`after_effect=None` 和 safe-option rationale；
 - `VANILLA_TGP_MOVEMENT_OBSERVATIONS`：R372 paused-live exemplar，包括 artifact/hash、`date_raw=53436720`、instance `668`、本局人物 ID、scope raw type 和 `selection_attempted=false`。
 
-各轮实机日期、instance 和人物 ID 不进入新建或已触达迁移后的通用 timeline contract。当前 MCP v1 的既有 knowledge envelope 以彼此独立的 `contract`、`analysis`、`observations` 字段返回这三层；本包全部 176 条记录已有 analysis 与 observation metadata，其中 28 个 key 含非 legacy 的 paused/live observation。元数据不会混入选择合同或被物化成当前人物约束。`yearly.0003`、`bp1_house_feud.0014`、`tgp_movement_events.0030`、`trait_specific.8001`、`bp1_yearly.1040` 与 `tgp_movement_events.0110` 已进入默认静态组合，实际查询可返回 `available` 且三层投影均可严格 JSON 往返。
+各轮实机日期、instance 和人物 ID 不进入新建或已触达迁移后的通用 timeline contract。当前 MCP v1 的既有 knowledge envelope 以彼此独立的 `contract`、`analysis`、`observations` 字段返回这三层；本包全部 177 条记录已有 analysis 与 observation metadata，其中 29 个 key 含非 legacy 的 paused/live observation。元数据不会混入选择合同或被物化成当前人物约束。`yearly.0003`、`bp1_house_feud.0014`、`tgp_movement_events.0030`、`trait_specific.8001`、`bp1_yearly.1040`、`tgp_movement_events.0110` 与 `artifact.4040` 已进入默认静态组合，实际查询可返回 `available` 且三层投影均可严格 JSON 往返。
 
 ### R390 `diplomacy_majesty.4033` 最小合同
 
@@ -87,7 +88,7 @@ R390 在 `date_raw=53589168` 暂停于 instance `1089`，原始 RED 原样保留
 
 CK3 `1.19.0.6` exact-build 定义位于 `events/lifestyles/statecraft_lifestyle/diplomacy_majesty_events.txt:968`。`.4033` 只由 `.4030` 的 option B 直接触发；上游是每年四次的 diplomacy lifestyle pulse 及概率事件池，不是 daily pulse。`.4033` 自身只检查 `thinker` 仍存活，没有独立随机分支或后续事件。唯一 authored option 1/native `0` 给接收者五年 `+1 diplomacy/+1 martial` modifier、对 thinker 的 `+25` opinion，并在需要时建立 potential-friend 关系；没有资源、压力、囚禁、受伤、死亡、战争或头衔代价。因此最小安全合同选择该唯一终止路线，同时仍要求 exact saved-scope shape、玩家/第三方关系、选项投影及提交前 revision 重绑定全部通过。
 
-portable evidence bundle 随 R416 赠书 RED 更新为 `246` 个唯一 evidence blob、`971` 条引用，其中 exact-build definition `176` 条、lexical caller candidate `510` 条、人工审阅 source `213` 条、observation artifact reference `72` 条；70 份唯一 observation artifact 包含 R414 的六份保留 RED 与 R416 的三份新增 RED。R416 bathhouse RED 的 SHA-256 为 `1D965717FBA5B1FEA8654060091431BA23086BEF22375B1A44AEC67DDBE1F22C`，赠书 RED 为 `7F2523869BEAFBC279D9ACDE65CB48661CCD1773D6CE40EB366E5EC5C9CB109A`；共享合同是 Python-only 数据，既有 continuation 会重新加载 canonical registry，可在保留同一 CK3 PID 的条件下热恢复。
+portable evidence bundle 随 R416 artifact RED 更新为 `250` 个唯一 evidence blob、`979` 条引用，其中 generated definition reference `177` 条、lexical caller candidate `511` 条、人工审阅 source `217` 条、observation artifact reference `74` 条；`71` 份唯一 observation artifact 包含 R416 attempt 04。manifest SHA-256 为 `84fcc87716da337cfd46c9ddd6e441581117acf979b77d89ecd5b93f08f9a701`。R416 bathhouse、赠书与 artifact RED 的 SHA-256 分别为 `1D965717FBA5B1FEA8654060091431BA23086BEF22375B1A44AEC67DDBE1F22C`、`7F2523869BEAFBC279D9ACDE65CB48661CCD1773D6CE40EB366E5EC5C9CB109A` 与 `CFD57E5C381D35EE6E1DE166D9FF656A1E6D6F4FC7D3194BCC74393EB3B4EE6A`；共享合同是 Python-only 数据，既有 continuation 会重新加载 canonical registry，可在保留同一 CK3 PID 的条件下热恢复。
 
 ### R416 `bp1_yearly.1040` 最小合同
 
@@ -101,7 +102,11 @@ R416 retry 03 已在同一 PID/generation 选择 authored `3` / native `2`，ins
 
 R416 attempt 3 在 `date_raw=53814264` 暂停于 instance `1079`。native 查询发布 11 个 saved scopes：玩家别名 `root_scope`、运动 `my_movement`、非玩家 `other_ruler`，以及建书 helper 产生的 owner/author、三个质量与财富 value、artifact、skill_base 和内容质量 value。两个 native option 均 shown/enabled，未尝试选择。
 
-exact-build 原版树见 [tgp-movement-book-gift.md](tgp-movement-book-gift.md)。书籍在 immediate 中创建并设为 masterwork，after 对任一选项都转交给玩家；authored `2` / native `1` 在这个不可避免的共同后果外只增加 prestige，避免 authored `1` 的友谊推进。当前仅为 static-ready counter-policy，尚待同 PID 动作与 advance。
+exact-build 原版树见 [tgp-movement-book-gift.md](tgp-movement-book-gift.md)。书籍在 immediate 中创建并设为 masterwork，after 对任一选项都转交给玩家；authored `2` / native `1` 在这个不可避免的共同后果外只增加 prestige，避免 authored `1` 的友谊推进。R416 retry 04 已在相同 PID / generation 选择该路线，instance `1079 -> null`、snapshot `native:397 -> native:398`、revision `398 -> 399` 且 `postcondition_verified=true`，因此本条现为 production-live primitive。
+
+### R416 `artifact.4040` 最小合同
+
+R416 attempt 04 在 `date_raw=53832072` 暂停于 instance `1081`。native 查询发布 `this_artifact:artifact` raw `31` 与非玩家 `helpful:character` raw `4` / ID `79104`；两个 native option 均 shown/enabled，尚未尝试选择。exact-build 树见 [artifact-expert-improvement.md](artifact-expert-improvement.md)。authored `1` / native `0` 总会增加一项军事宝物词条，代价是 `helpful` 获得对玩家的 favor hook，或在 hook 不合法时支付小额金钱；authored `2` 没有收益。当前只到 static-ready counter-policy，仍待同 PID 动作与 advance。
 
 ### R384 `pay_homage.0101` 最小合同
 

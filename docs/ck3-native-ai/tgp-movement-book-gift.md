@@ -6,8 +6,9 @@
   `2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86`。
 - [paused live RED] R416 attempt 3 在 PID `174656` / generation `1` 的真实暂停帧命中 instance `1079`。
   ROOT 是玩家；11 个 saved scopes 与原版建书 helper 一致；native `0/1` 均 shown/enabled；没有提交选择。
-- [counter-policy static-ready, live action pending] 可移植合同选择 authored `2` / native `1`。当前 RED 是恢复 harness
-  缺少原版事件合同，不证明天朝二期产品失败；旧 instance 消失或前进前不升级为 production-live primitive。
+- [production-live primitive] 可移植合同选择 authored `2` / native `1`。R416 retry 04 已在相同 PID / generation
+  提交该选项，instance `1079 -> null`、snapshot `native:397 -> native:398`、revision `398 -> 399`，
+  `postcondition_verified=true`。选择前 RED 继续保留。
 
 ## 原版入口与 scope 树
 
@@ -67,3 +68,6 @@ flowchart TD
 - R416 选择前 RED：
   `_runtime/p1-terminal-resume-r416-20260911/live-artifacts/terminal-stages-red-attempt-03.json`，SHA-256
   `7F2523869BEAFBC279D9ACDE65CB48661CCD1773D6CE40EB366E5EC5C9CB109A`。
+- R416 retry 04 动作与 advance 证据位于随后保留的 RED：
+  `_runtime/p1-terminal-resume-r416-20260911/live-artifacts/terminal-stages-red-attempt-04.json`，SHA-256
+  `CFD57E5C381D35EE6E1DE166D9FF656A1E6D6F4FC7D3194BCC74393EB3B4EE6A`。

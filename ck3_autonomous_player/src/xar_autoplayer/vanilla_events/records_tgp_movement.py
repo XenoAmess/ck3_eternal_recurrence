@@ -412,6 +412,29 @@ VANILLA_TGP_MOVEMENT_OBSERVATIONS: Final[dict[str, dict[str, object]]] = {
             "ocr_used": False,
             "coordinates_used": False,
             "console_used": False,
+        }, {
+            "run": "R416-retry-04",
+            "kind": "same-process-hot-recovery-green",
+            "artifact": (
+                "_runtime/p1-terminal-resume-r416-20260911/live-artifacts/"
+                "terminal-stages-red-attempt-04.json"
+            ),
+            "artifact_sha256": (
+                "CFD57E5C381D35EE6E1DE166D9FF656A1E6D6F4FC7D3194BCC74393EB3B4EE6A"
+            ),
+            "date_raw": 53814264,
+            "event_instance_id": 1079,
+            "root_character_id": 32904,
+            "starting_snapshot_id": "native:397",
+            "starting_revision": 398,
+            "ending_snapshot_id": "native:398",
+            "ending_revision": 399,
+            "selected_option_number": 2,
+            "selected_native_option_index": 1,
+            "postcondition_verified": True,
+            "connection_generation": 1,
+            "bridge_pid": 174656,
+            "process_restart_required": False,
         }],
     },
     "tgp_movement_events.0160": {
