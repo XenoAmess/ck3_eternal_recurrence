@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+﻿#!/usr/bin/env python3
 """Purpose-split contracts for health manager-recovery interrupts."""
 
 from __future__ import annotations
@@ -325,10 +325,19 @@ class ManagerRecoveryHealthInterruptTests(unittest.TestCase):
         self.assertEqual(contract["selected_option_number"], 3)
         self.assertEqual(contract["selected_native_option_index"], 2)
 
+        no_relocation_candidate = copy.deepcopy(context)
+        no_relocation_candidate["saved_scopes"] = [
+            _scope("epidemic", "epidemic"),
+        ]
+        no_candidate_checks = checks_for(no_relocation_candidate)
+        self.assertTrue(all(no_candidate_checks.values()), no_candidate_checks)
+
         wrong_scope_type = copy.deepcopy(context)
         wrong_scope_type["saved_scopes"][1]["scope"]["type_key"] = "county"
         self.assertFalse(
-            checks_for(wrong_scope_type)["scope:new_preferred_capital:type"]
+            checks_for(wrong_scope_type)[
+                "scope:new_preferred_capital:optional_type"
+            ]
         )
 
         missing_epidemic = copy.deepcopy(context)

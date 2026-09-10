@@ -33,6 +33,7 @@ import zg361_phase2_promotion_source_production_entry as production  # noqa: E40
 
 
 EVENT_KEY = "epidemic_events.1064"
+RECOVERY_EVENT_KEY = "epidemic_events.0110"
 SHA256_PATTERN = re.compile(r"^[0-9A-F]{64}$")
 
 
@@ -44,6 +45,94 @@ def _scope(name: str, type_key: str) -> dict[str, object]:
 
 
 class EpidemicEventRecordTests(unittest.TestCase):
+    def test_recovery_contract_is_portable_and_accepts_both_source_scopes(
+        self,
+    ) -> None:
+        contract = DEFAULT_VANILLA_EVENT_TIMELINE_CONTRACTS[
+            RECOVERY_EVENT_KEY
+        ]
+
+        self.assertEqual(contract["root_character_id"], PLAYER_SENTINEL)
+        self.assertNotIn("date_raw", contract)
+        self.assertEqual(contract["scope_types"], {"epidemic": "epidemic"})
+        self.assertEqual(
+            contract["optional_scope_types"],
+            {"new_preferred_capital": "landed_title"},
+        )
+        self.assertEqual(
+            contract["saved_scope_name_sets"],
+            (
+                ("epidemic",),
+                ("epidemic", "new_preferred_capital"),
+            ),
+        )
+        self.assertEqual(contract["saved_scope_counts"], (1, 2))
+        self.assertEqual(contract["native_option_indices"], (1, 2))
+        self.assertEqual(contract["selected_option_number"], 3)
+        self.assertEqual(contract["selected_native_option_index"], 2)
+        self.assertNotIn("max_occurrences", contract)
+        self.assertEqual(
+            contract["occurrence_policy"],
+            "repeatable-within-product-observation-window",
+        )
+
+        materialized = materialize_vanilla_timeline_contract(contract, 47001)
+        self.assertEqual(materialized["root_character_id"], 47001)
+        self.assertEqual(contract["root_character_id"], PLAYER_SENTINEL)
+
+    def test_recovery_exact_analysis_and_observations_are_reusable(self) -> None:
+        analysis = VANILLA_EPIDEMIC_ANALYSIS[RECOVERY_EVENT_KEY]
+        exemplars = VANILLA_EPIDEMIC_OBSERVATIONS[RECOVERY_EVENT_KEY][
+            "exemplars"
+        ]
+
+        self.assertEqual(analysis["definition_lines"], "151-413")
+        self.assertIn("seven vanilla epidemic types", analysis["direct_caller"])
+        self.assertIn("optional", analysis["scope_boundary"])
+        self.assertIn("no one-shot flag", analysis["repeatability"])
+        self.assertIn("treasury or gold", analysis["safe_option_rationale"])
+        for digest in analysis["source_sha256"].values():
+            self.assertRegex(digest, SHA256_PATTERN)
+
+        self.assertEqual(
+            [row["run"] for row in exemplars],
+            ["R334", "R368", "R375"],
+        )
+        self.assertEqual(
+            exemplars[0]["saved_scope_raw_types"],
+            {"epidemic": 50, "new_preferred_capital": 5},
+        )
+        self.assertTrue(exemplars[1]["postcondition_verified"])
+        self.assertEqual(exemplars[2]["saved_scope_raw_types"], {"epidemic": 50})
+        self.assertFalse(exemplars[2]["selection_attempted"])
+        self.assertTrue(exemplars[2]["artifact"].endswith("-red-freeze.json"))
+        for exemplar in exemplars:
+            self.assertRegex(exemplar["artifact_sha256"], SHA256_PATTERN)
+        self.assertRegex(exemplars[2]["park_artifact_sha256"], SHA256_PATTERN)
+
+        contract_repr = repr(
+            DEFAULT_VANILLA_EVENT_TIMELINE_CONTRACTS[RECOVERY_EVENT_KEY]
+        )
+        for observation_only in (53208120, 206, 53611320, 1059, 32904):
+            self.assertNotIn(str(observation_only), contract_repr)
+
+    def test_recovery_mcp_returns_canonical_contract_and_evidence(self) -> None:
+        response = query_vanilla_event_knowledge_v1(RECOVERY_EVENT_KEY)
+
+        self.assertEqual(response["status"], "available")
+        self.assertEqual(response["contract"]["root_character_id"], "$player")
+        self.assertEqual(response["contract"]["saved_scope_counts"], [1, 2])
+        self.assertEqual(response["analysis"]["definition_lines"], "151-413")
+        self.assertEqual(
+            [row["run"] for row in response["observations"]["exemplars"]],
+            ["R334", "R368", "R375"],
+        )
+        self.assertIs(
+            production.KNOWN_TIMELINE_INTERRUPTS[RECOVERY_EVENT_KEY],
+            DEFAULT_VANILLA_EVENT_TIMELINE_CONTRACTS[RECOVERY_EVENT_KEY],
+        )
+        json.dumps(response, allow_nan=False)
+
     def test_contract_is_portable_and_selects_high_piety_duel(self) -> None:
         contract = VANILLA_EPIDEMIC_TIMELINE_CONTRACTS[EVENT_KEY]
 
@@ -93,7 +182,7 @@ class EpidemicEventRecordTests(unittest.TestCase):
     def test_default_registry_mcp_and_production_runtime_include_record(self) -> None:
         self.assertEqual(len(DEFAULT_VANILLA_EVENT_TIMELINE_CONTRACTS), 166)
         self.assertEqual(len(DEFAULT_VANILLA_EVENT_ANALYSIS), 166)
-        self.assertEqual(len(DEFAULT_VANILLA_EVENT_OBSERVATIONS), 17)
+        self.assertEqual(len(DEFAULT_VANILLA_EVENT_OBSERVATIONS), 18)
         self.assertEqual(len(production.KNOWN_TIMELINE_INTERRUPTS), 305)
         self.assertIs(
             production.KNOWN_TIMELINE_INTERRUPTS[EVENT_KEY],

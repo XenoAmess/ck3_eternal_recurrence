@@ -48,6 +48,106 @@ VANILLA_EPIDEMIC_TIMELINE_CONTRACTS: Final[
 
 
 VANILLA_EPIDEMIC_ANALYSIS: Final[dict[str, dict[str, object]]] = {
+    "epidemic_events.0110": {
+        "exact_build": {
+            "game_version": EXACT_CK3_BUILD,
+            "ck3_executable_sha256": EXACT_CK3_EXE_SHA256,
+        },
+        "source_sha256": {
+            "events/dlc/ce1/epidemic_events.txt": (
+                "FEF2972BD4F778818CD3A414C337D036F5132C1598FEBAB0E2623E0252DB7A1E"
+            ),
+            "common/scripted_effects/06_dlc_ce1_epidemics_effects.txt": (
+                "0E27972D9F66348E462130F1EF0351BB18A4C646DB6E23DB237D79068E65DE98"
+            ),
+            "common/epidemics/00_epidemics.txt": (
+                "090607AC30E86817A709A6A8F5F2B5FC785AF11C352873B823CF2C3AA5A77E7F"
+            ),
+            "common/script_values/06_ce1_epidemics_values.txt": (
+                "D462C424C6E2BDDDC042E91D3B1B95F1EF6C39DFCEC252FD69E5FCB5B79FA837"
+            ),
+            "localization/simp_chinese/dlc/ce1/"
+            "ce1_epidemic_events_l_simp_chinese.yml": (
+                "09544A655713B856D5ADD0DF35F7276D6F2EA246CF1EEE224D4C5D8807103A79"
+            ),
+        },
+        "definition_lines": "151-413",
+        "trigger_lines": "169-188",
+        "immediate_lines": "190-259",
+        "option_lines": "261-408",
+        "after_lines": "410-412",
+        "direct_caller_lines": "854-885",
+        "epidemic_caller_lines": (
+            "314",
+            "771",
+            "1146",
+            "1563",
+            "1944",
+            "2278",
+            "2697",
+        ),
+        "direct_caller": (
+            "all seven vanilla epidemic types invoke "
+            "plague_recovery_event_effect from on_province_recovered; it "
+            "records the recovered county on county.holder.liege, records "
+            "that liege on scope:epidemic, then schedules "
+            "epidemic_events.0110 after one day for each alive unflagged "
+            "liege and applies a ten-day notification flag"
+        ),
+        "trigger_boundary": (
+            "the event requires epidemic, no currently infected sub-realm "
+            "county, no already chosen preferred capital, a nonempty "
+            "formerly_infected_counties list, and no two-year recovery "
+            "cooldown unless the epidemic is apocalyptic bubonic plague"
+        ),
+        "scope_boundary": (
+            "epidemic is always inherited; new_preferred_capital is optional "
+            "because immediate saves it only for a kingdom-or-higher ruler "
+            "when an eligible formerly infected non-capital duchy capital is "
+            "found. R334 observed both scopes and R375 observed epidemic only"
+        ),
+        "immediate_effect": (
+            "sets the two-year recovery cooldown and, when eligible, chooses "
+            "a development-weighted duchy capital, saves it as "
+            "new_preferred_capital and marks it chosen for two years"
+        ),
+        "option_semantics": {
+            0: (
+                "shown only to a human with new_preferred_capital and a "
+                "major-or-worse epidemic; spends recovery plus minor treasury "
+                "or gold, transfers the county if needed, moves the capital, "
+                "and applies the strongest capital-specific recovery"
+            ),
+            1: (
+                "spends epidemic_fromdust_value for apocalyptic or major "
+                "recovery, or half that value for a smaller epidemic, then "
+                "applies the corresponding strong, medium or minor five-year "
+                "county recovery modifier"
+            ),
+            2: (
+                "spends nothing and applies minor recovery for major-or-worse "
+                "epidemics or tiny recovery otherwise; when legitimacy exists "
+                "it also applies miniscule_legitimacy_loss"
+            ),
+        },
+        "after_effect": "clears the formerly_infected_counties variable list",
+        "repeatability": (
+            "the seven independent epidemic recovery callers and this event "
+            "define no one-shot flag; ordinary recurrence is gated for two "
+            "years, while apocalyptic bubonic plague bypasses that cooldown"
+        ),
+        "safe_option_rationale": (
+            "authored option 3/native 2 avoids every treasury or gold cost, "
+            "capital move and title transfer; the accepted weaker recovery "
+            "and possible miniscule legitimacy loss are bounded and terminal"
+        ),
+        "unreviewed_projection_boundary": (
+            "source permits native tuple (0, 1, 2) when the optional capital "
+            "exists and the epidemic is major or worse, but the reusable live "
+            "contract admits only the R334/R368/R375-observed tuple (1, 2); "
+            "the full projection remains RED until independently observed"
+        ),
+    },
     "epidemic_events.1064": {
         "exact_build": {
             "game_version": EXACT_CK3_BUILD,
@@ -139,6 +239,79 @@ VANILLA_EPIDEMIC_ANALYSIS: Final[dict[str, dict[str, object]]] = {
 
 
 VANILLA_EPIDEMIC_OBSERVATIONS: Final[dict[str, dict[str, object]]] = {
+    "epidemic_events.0110": {
+        "exemplars": [{
+            "run": "R334",
+            "kind": "pre-selection-live-red",
+            "artifact": "_runtime/p2r334endgamesource/report.json",
+            "artifact_sha256": (
+                "5AD7971BDCC91E97682179242D73445155075C3324261BE169DBC0BA09934E4C"
+            ),
+            "date_raw": 53208120,
+            "event_instance_id": 206,
+            "root_character_id": 32904,
+            "saved_scope_raw_types": {
+                "epidemic": 50,
+                "new_preferred_capital": 5,
+            },
+            "rendered_native_option_indices": [1, 2],
+            "selection_attempted": False,
+            "connection_generation": 1,
+            "bridge_pid": 204224,
+        }, {
+            "run": "R368",
+            "kind": "same-process-hot-recovery-green",
+            "artifact": (
+                "_runtime/p2r368-p3-rehire-guard-live/report.json"
+            ),
+            "artifact_sha256": (
+                "C63C02464DDE0473C3A7943A803D122107C19E36733BBB446FBC6D25AFA724A4"
+            ),
+            "date_raw": 53343552,
+            "event_instance_id": 439,
+            "root_character_id": 32904,
+            "saved_scope_raw_types": {
+                "epidemic": 50,
+                "new_preferred_capital": 5,
+            },
+            "rendered_native_option_indices": [1, 2],
+            "selected_option_number": 3,
+            "selected_native_option_index": 2,
+            "postcondition_verified": True,
+            "connection_generation": 1,
+            "bridge_pid": 201320,
+            "process_restart_required": False,
+        }, {
+            "run": "R375",
+            "kind": "scope-variant-pre-selection-live-red",
+            "artifact": (
+                "_runtime/p2r375-post-publisher-fix-live/"
+                "r375-epidemic-events-0110-red-freeze.json"
+            ),
+            "artifact_sha256": (
+                "1CD3DEC1ED7DB6F3C7DBE8D485DC2B38753F1D7E1D90BD9E8FA99A8ADADC7448"
+            ),
+            "park_artifact": (
+                "_runtime/p2r375-post-publisher-fix-live/"
+                "hot-recovery-park-2.json"
+            ),
+            "park_artifact_sha256": (
+                "D2B3CAEF5C3E1F59756DDBF1246251CBDCCF4FDE2DF7C74F256CE574EDA8DC73"
+            ),
+            "date_raw": 53611320,
+            "event_instance_id": 1059,
+            "root_character_id": 32904,
+            "saved_scope_raw_types": {
+                "epidemic": 50,
+            },
+            "rendered_native_option_indices": [1, 2],
+            "selection_attempted": False,
+            "paused": True,
+            "connection_generation": 1,
+            "bridge_pid": 180544,
+            "process_restart_required": False,
+        }],
+    },
     "epidemic_events.1064": {
         "exemplars": [{
             "run": "R372",
