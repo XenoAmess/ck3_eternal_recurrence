@@ -2016,6 +2016,38 @@
       "sha256": "2e8d69158a9a10c901084628074eba33a0655048a982825f006fa439548234c8"
     },
     {
+      "blob_bytes": 5881,
+      "blob_path": "blobs/30f4823a7a77c3ff6d96c5e43f3f4fc3f531d4a8584edc8e99177a2bfe468adb.gz",
+      "blob_sha256": "6506f93e45d10b9da4de141a99e4bfff015f917e8516d09d18a141fbdb688814",
+      "bytes": 34373,
+      "evidence_id": "30f4823a7a77c3ff6d96c5e43f3f4fc3f531d4a8584edc8e99177a2bfe468adb",
+      "kind": "source_definition",
+      "media_type": "text/plain; charset=utf-8",
+      "references": [
+        {
+          "caller_candidate_resolution": "external-definition-file",
+          "event_definition_key": "bp1_house_feud.0014",
+          "logical_path": "common/scripted_effects/03_bp1_scripted_effects.txt",
+          "origin": "ck3_game",
+          "provenance": "lexical-caller-candidate-not-proven-runtime-caller",
+          "role": "caller_candidate",
+          "source_column": 14,
+          "source_line": 522
+        },
+        {
+          "caller_candidate_resolution": null,
+          "event_definition_key": "bp1_house_feud.0014",
+          "logical_path": "common/scripted_effects/03_bp1_scripted_effects.txt",
+          "origin": "ck3_game",
+          "provenance": "manually-reviewed-analysis-source",
+          "role": "analysis_source",
+          "source_column": null,
+          "source_line": null
+        }
+      ],
+      "sha256": "30f4823a7a77c3ff6d96c5e43f3f4fc3f531d4a8584edc8e99177a2bfe468adb"
+    },
+    {
       "blob_bytes": 13913,
       "blob_path": "blobs/31591a2f2d3a61e65853cc43b9bef4b001feb75ea1502861d2fb9ac054ab1fb7.gz",
       "blob_sha256": "1a21fa16b95e7f7f8e2fea855531c808f721617b9396460ca3489e89d768d8a2",
@@ -2276,6 +2308,38 @@
         }
       ],
       "sha256": "37513f94afe1672408b86fe719607c972e9d2f5c66dec4d9ae2bfaa861244945"
+    },
+    {
+      "blob_bytes": 13255,
+      "blob_path": "blobs/37b6e662c4fc388e51d5b8ebc6f0fbce7ae3fdcb825bfe121d23b971966469da.gz",
+      "blob_sha256": "2fd34f10761d12ed26cad3c40cdc1867b00eff534f3aad7ea35f79522dc1313f",
+      "bytes": 127120,
+      "evidence_id": "37b6e662c4fc388e51d5b8ebc6f0fbce7ae3fdcb825bfe121d23b971966469da",
+      "kind": "source_definition",
+      "media_type": "text/plain; charset=utf-8",
+      "references": [
+        {
+          "caller_candidate_resolution": null,
+          "event_definition_key": "bp1_house_feud.0014",
+          "logical_path": "events/dlc/bp1/bp1_house_feud.txt",
+          "origin": "ck3_game",
+          "provenance": "generated-definition-index",
+          "role": "event_definition",
+          "source_column": null,
+          "source_line": 2310
+        },
+        {
+          "caller_candidate_resolution": null,
+          "event_definition_key": "bp1_house_feud.0014",
+          "logical_path": "events/dlc/bp1/bp1_house_feud.txt",
+          "origin": "ck3_game",
+          "provenance": "manually-reviewed-analysis-source",
+          "role": "analysis_source",
+          "source_column": null,
+          "source_line": null
+        }
+      ],
+      "sha256": "37b6e662c4fc388e51d5b8ebc6f0fbce7ae3fdcb825bfe121d23b971966469da"
     },
     {
       "blob_bytes": 358,
@@ -8280,6 +8344,28 @@
       "sha256": "9fdf93d053e001c73d9dc469dde37bc44c3da8f1872ac3e587c10241ea27fb51"
     },
     {
+      "blob_bytes": 33618,
+      "blob_path": "blobs/a0837453c72cb67300ae07eb76eb2b53a75cb511838543696f2891bd2af80346.gz",
+      "blob_sha256": "03dff6526e91d64975aa58258d33fd99f3dba63a895e6e0011e1739fea6c9457",
+      "bytes": 493027,
+      "evidence_id": "a0837453c72cb67300ae07eb76eb2b53a75cb511838543696f2891bd2af80346",
+      "kind": "observation_artifact",
+      "media_type": "application/json",
+      "references": [
+        {
+          "caller_candidate_resolution": null,
+          "event_definition_key": "bp1_house_feud.0014",
+          "logical_path": "_runtime/p1-post-chaos-terminal-r414-20260911/live-artifacts/terminal-stages-red-attempt-02.json",
+          "origin": "runtime",
+          "provenance": "captured-observation-artifact",
+          "role": "artifact",
+          "source_column": null,
+          "source_line": null
+        }
+      ],
+      "sha256": "a0837453c72cb67300ae07eb76eb2b53a75cb511838543696f2891bd2af80346"
+    },
+    {
       "blob_bytes": 6692,
       "blob_path": "blobs/a2addb9940d72f79e57bc266ea62a11cb3d0c5318e79d5f93cb8f5ee01b3943f.gz",
       "blob_sha256": "93f27a1ed7bc058a878e03595e73b762a01c4efa0fbb264da2d3fec88b19cfbc",
@@ -10534,6 +10620,28 @@
       "sha256": "cf783e658f91d0d2eaa532663b6137ce640b1039f00478b53e7f92e104b15df0"
     },
     {
+      "blob_bytes": 556,
+      "blob_path": "blobs/cf91227abbabec17d456bbface9fe68b7ff86c49a5990d26215ec41cd74002ce.gz",
+      "blob_sha256": "b5626188ef8002a57c1740c34f0196d3a55b88a1a26c79f5f5ea7342ec124300",
+      "bytes": 2192,
+      "evidence_id": "cf91227abbabec17d456bbface9fe68b7ff86c49a5990d26215ec41cd74002ce",
+      "kind": "source_definition",
+      "media_type": "text/plain; charset=utf-8",
+      "references": [
+        {
+          "caller_candidate_resolution": null,
+          "event_definition_key": "bp1_house_feud.0014",
+          "logical_path": "common/opinion_modifiers/01_dlc_bp1_opinions.txt",
+          "origin": "ck3_game",
+          "provenance": "manually-reviewed-analysis-source",
+          "role": "analysis_source",
+          "source_column": null,
+          "source_line": null
+        }
+      ],
+      "sha256": "cf91227abbabec17d456bbface9fe68b7ff86c49a5990d26215ec41cd74002ce"
+    },
+    {
       "blob_bytes": 7515,
       "blob_path": "blobs/cff84009e58f5d6386a6d7501cff084cb206a542e7d0cfa221ed2cc050a9da68.gz",
       "blob_sha256": "651cda3354f021828f24821985171b61a4f921f5abc87448dfe4a1d2de566ef1",
@@ -12081,13 +12189,13 @@
   "schema": "xar.ck3.vanilla-event-portable-evidence-manifest",
   "schema_version": 1,
   "statistics": {
-    "evidence": 230,
-    "generated_definition_references": 171,
-    "lexical_caller_candidate_references": 502,
-    "manually_reviewed_analysis_source_references": 195,
-    "observation_artifact_references": 63,
-    "observation_artifacts": 62,
-    "references": 931,
-    "source_definitions": 168
+    "evidence": 234,
+    "generated_definition_references": 172,
+    "lexical_caller_candidate_references": 503,
+    "manually_reviewed_analysis_source_references": 198,
+    "observation_artifact_references": 64,
+    "observation_artifacts": 63,
+    "references": 937,
+    "source_definitions": 171
   }
 }

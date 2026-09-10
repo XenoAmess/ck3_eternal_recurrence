@@ -54,16 +54,16 @@ def test_frozen_index_covers_unique_exact_build_definitions_and_candidates() -> 
         DEFAULT_VANILLA_EVENT_TIMELINE_CONTRACTS
     )
     assert audit == {
-        "registered_event_count": 171,
-        "unique_definition_count": 171,
-        "definition_file_count": 66,
+        "registered_event_count": 172,
+        "unique_definition_count": 172,
+        "definition_file_count": 67,
         "missing_definition_count": 0,
         "ambiguous_definition_count": 0,
         "namespace_mismatch_count": 0,
-        "caller_candidate_reference_count": 502,
-        "external_caller_event_count": 138,
+        "caller_candidate_reference_count": 503,
+        "external_caller_event_count": 139,
         "same_file_only_caller_event_count": 33,
-        "caller_candidate_file_count": 76,
+        "caller_candidate_file_count": 77,
     }
     for event_key, row in source_index["events"].items():
         assert row["namespace"] == event_key.rsplit(".", 1)[0]
