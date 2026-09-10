@@ -167,9 +167,15 @@ class EmbeddedVanillaTimelineContractsTests(unittest.TestCase):
         tree = _production_tree()
         literal_keys = _production_literal_keys(tree)
 
-        self.assertEqual(len(literal_keys), 17)
-        self.assertEqual(len(set(literal_keys)), 17)
-        self.assertTrue(all(key.startswith("zg361") for key in literal_keys))
+        self.assertEqual(len(literal_keys), 18)
+        self.assertEqual(len(set(literal_keys)), 18)
+        self.assertEqual(
+            [key for key in literal_keys if not key.startswith("zg361")],
+            ["study_confucian_classics_outcome.1030"],
+        )
+        self.assertEqual(
+            sum(key.startswith("zg361") for key in literal_keys), 17
+        )
         self.assertEqual(_shared_aggregate_update_count(tree), 1)
         self.assertEqual(len(DEFAULT_VANILLA_EVENT_TIMELINE_CONTRACTS), 170)
 

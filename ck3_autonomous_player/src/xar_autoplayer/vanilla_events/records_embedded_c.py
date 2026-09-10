@@ -11,9 +11,13 @@ _LEGACY_EMBEDDED_C_VANILLA_TIMELINE_CONTRACTS: Final[
     dict[str, dict[str, object]]
 ] = {
     "tgp_dynastic_cycle_events.0040": {
-        # Independent vanilla Silk Road investment event.  Options 1 and 2
-        # spend treasury/gold and add a long modifier or fascination progress;
-        # option 3 only retains its vanilla trait-dependent stress impact.
+        # Independent vanilla Silk Road investment event.  Authored option 1
+        # is visible only during the dynastic-cycle stability-advancement
+        # phase.  R406 source/live review observed the ordinary two-choice
+        # projection (native indices 1/2); the earlier full projection remains
+        # valid in advancement.  Options 1 and 2 spend treasury/gold and add a
+        # long modifier or fascination progress; authored option 3 only retains
+        # its vanilla trait-dependent stress impact in either projection.
         "date_raw": 53147520,
         "root_character_id": 29037,
         "character_scopes": {"steward": 31003},
@@ -25,8 +29,26 @@ _LEGACY_EMBEDDED_C_VANILLA_TIMELINE_CONTRACTS: Final[
         "boolean_scopes": (),
         "saved_scope_count": 4,
         "option_count": 3,
+        "snapshot_option_count": 3,
+        "native_option_indices": (0, 1, 2),
         "selected_option_number": 3,
         "selected_native_option_index": 2,
+        "option_variants": (
+            {
+                "option_count": 3,
+                "snapshot_option_count": 3,
+                "native_option_indices": (0, 1, 2),
+                "selected_option_number": 3,
+                "selected_native_option_index": 2,
+            },
+            {
+                "option_count": 2,
+                "snapshot_option_count": 3,
+                "native_option_indices": (1, 2),
+                "selected_option_number": 3,
+                "selected_native_option_index": 2,
+            },
+        ),
     },
     "tgp_china_yearly.0010": {
         # Independent vanilla charlatan-poet event.  Authored option 4 is

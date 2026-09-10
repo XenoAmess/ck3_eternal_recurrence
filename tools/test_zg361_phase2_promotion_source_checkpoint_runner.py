@@ -1341,6 +1341,37 @@ class PromotionSourceCheckpointRunnerTests(unittest.TestCase):
             production._contract_date_matches(53173752, authored_contract)
         )
 
+    def test_silk_road_interrupt_resolves_both_source_valid_projections(self) -> None:
+        contract = production._timeline_contract_for_window(
+            production.KNOWN_TIMELINE_INTERRUPTS[
+                "tgp_dynastic_cycle_events.0040"
+            ],
+            starting_date=54002424,
+        )
+        for native_indices in ((0, 1, 2), (1, 2)):
+            with self.subTest(native_indices=native_indices):
+                effective = production._option_contract_for_context(
+                    [
+                        {
+                            "rendered_index": rendered_index,
+                            "native_option_index": native_index,
+                            "shown": True,
+                            "enabled": True,
+                            "fallback": False,
+                            "cancel": False,
+                        }
+                        for rendered_index, native_index in enumerate(native_indices)
+                    ],
+                    contract,
+                )
+                self.assertEqual(effective["option_count"], len(native_indices))
+                self.assertEqual(
+                    effective["native_option_indices"], native_indices
+                )
+                self.assertEqual(effective["snapshot_option_count"], 3)
+                self.assertEqual(effective["selected_option_number"], 3)
+                self.assertEqual(effective["selected_native_option_index"], 2)
+
     def test_retained_client_binds_exact_state_pipe_seed_and_loader(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
             root = Path(temporary)

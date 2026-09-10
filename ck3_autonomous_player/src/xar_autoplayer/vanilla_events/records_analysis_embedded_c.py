@@ -154,8 +154,9 @@ _SOURCE_FILE_BY_EVENT: Final[dict[str, tuple[str, str]]] = {
 
 _REVIEW_SUMMARIES: Final[dict[str, str]] = {
     "tgp_dynastic_cycle_events.0040": (
-        "Silk Road investment prompt; the existing review distinguishes the "
-        "treasury/modifier and fascination branches from the bounded opt-out."
+        "Silk Road investment prompt; exact source and R406 live evidence bind "
+        "both the advancement-only full projection and ordinary two-choice "
+        "projection to the same bounded opt-out."
     ),
     "tgp_china_yearly.0010": (
         "Charlatan-poet prompt with one hidden authored option; the existing "
