@@ -1,0 +1,95 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://xar.local/schemas/vanilla-event-knowledge-index-v1.schema.json",
+  "title": "Vanilla Event Knowledge Index V1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema", "schema_version", "status", "ck3_build", "ck3_exe_sha256",
+    "query", "namespace", "evidence_class", "has_observations", "after_key",
+    "limit", "dataset_sha256", "dataset_summary", "match_summary",
+    "total_matches", "items", "next_after_key", "unavailable_reason",
+    "invalid_parameter"
+  ],
+  "properties": {
+    "schema": {"const": "xar.ck3.vanilla-event-knowledge-index"},
+    "schema_version": {"const": 1},
+    "status": {"enum": ["available", "unavailable"]},
+    "ck3_build": {"type": ["string", "null"]},
+    "ck3_exe_sha256": {
+      "type": ["string", "null"],
+      "pattern": "^[0-9A-F]{64}$"
+    },
+    "query": {"type": ["string", "null"]},
+    "namespace": {"type": ["string", "null"]},
+    "evidence_class": {
+      "type": ["string", "null"],
+      "enum": ["any", "source-reviewed", "migration-only", null]
+    },
+    "has_observations": {"type": ["boolean", "null"]},
+    "after_key": {"type": ["string", "null"]},
+    "limit": {"type": ["integer", "null"], "minimum": 1, "maximum": 100},
+    "dataset_sha256": {
+      "type": ["string", "null"],
+      "pattern": "^[0-9A-F]{64}$"
+    },
+    "dataset_summary": {"$ref": "#/$defs/summary"},
+    "match_summary": {"$ref": "#/$defs/summary"},
+    "total_matches": {"type": "integer", "minimum": 0},
+    "items": {
+      "type": "array",
+      "maxItems": 100,
+      "items": {"$ref": "#/$defs/item"}
+    },
+    "next_after_key": {"type": ["string", "null"]},
+    "unavailable_reason": {
+      "type": ["string", "null"],
+      "enum": [
+        "unsupported_ck3_build", "invalid_filter", "invalid_limit",
+        "invalid_cursor", null
+      ]
+    },
+    "invalid_parameter": {
+      "type": ["string", "null"],
+      "enum": [
+        "build", "query", "namespace", "evidence_class",
+        "has_observations", "limit", "after_key", null
+      ]
+    }
+  },
+  "$defs": {
+    "summary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "total_events", "source_reviewed_events", "migration_only_events",
+        "events_with_observations", "portable_events"
+      ],
+      "properties": {
+        "total_events": {"type": "integer", "minimum": 0},
+        "source_reviewed_events": {"type": "integer", "minimum": 0},
+        "migration_only_events": {"type": "integer", "minimum": 0},
+        "events_with_observations": {"type": "integer", "minimum": 0},
+        "portable_events": {"type": "integer", "minimum": 0}
+      }
+    },
+    "item": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "event_definition_key", "namespace", "evidence_class",
+        "review_summary", "source_file_count", "observation_count",
+        "portable_evidence_count"
+      ],
+      "properties": {
+        "event_definition_key": {"type": "string", "minLength": 1},
+        "namespace": {"type": "string", "minLength": 1},
+        "evidence_class": {"enum": ["source-reviewed", "migration-only"]},
+        "review_summary": {"type": "string"},
+        "source_file_count": {"type": "integer", "minimum": 0},
+        "observation_count": {"type": "integer", "minimum": 0},
+        "portable_evidence_count": {"type": "integer", "minimum": 0}
+      }
+    }
+  }
+}
