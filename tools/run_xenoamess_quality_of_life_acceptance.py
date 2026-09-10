@@ -374,14 +374,25 @@ def click_decision(
     artifacts: Path,
     stem: str,
     *,
-    scroll_from_top: int = 0,
+    scroll_to_bottom: bool = False,
 ) -> None:
-    if scroll_from_top:
+    if scroll_to_bottom:
         isolated.ensure_decisions_panel(artifacts, stem)
         width, height = acceptance.pyautogui.size()
-        acceptance.pyautogui.moveTo(int(width * 0.90), int(height * 0.70))
-        acceptance.pyautogui.scroll(-scroll_from_top)
+        scrollbar_x = int(width * 0.9705)
+        acceptance.focus_ck3()
+        acceptance.pyautogui.moveTo(
+            scrollbar_x, int(height * 0.30), duration=0.2
+        )
+        acceptance.pyautogui.mouseDown()
+        acceptance.pyautogui.moveTo(
+            scrollbar_x, int(height * 0.80), duration=0.8
+        )
+        acceptance.pyautogui.mouseUp()
         time.sleep(0.6)
+        acceptance.ImageGrab.grab().save(
+            artifacts / f"{stem}_decisions_scrolled_bottom.png"
+        )
         row = acceptance.wait_for_ocr_text(
             title,
             acceptance.FULL_SCREEN_REGION,
@@ -493,14 +504,14 @@ def run_scenario(service: GameplayBridgeService, stream: MarkerStream, artifacts
         "唯才是举",
         artifacts,
         "07_enable_appointment",
-        scroll_from_top=20,
+        scroll_to_bottom=True,
     )
     click_decision(
         "开启：别把封臣给我",
         "各安其位",
         artifacts,
         "08_enable_transfer_guard",
-        scroll_from_top=20,
+        scroll_to_bottom=True,
     )
     click_decision("开启自动召集防御援军", "唤来所有援手", artifacts, "08_enable_auto_defenders")
     stream.wait("ZQA: TEST PASS removal_transferred_to_scored_heir", 45)
@@ -514,14 +525,14 @@ def run_scenario(service: GameplayBridgeService, stream: MarkerStream, artifacts
         "恢复旧制",
         artifacts,
         "10_disable_appointment",
-        scroll_from_top=20,
+        scroll_to_bottom=True,
     )
     click_decision(
         "关闭：别把封臣给我",
         "照旧接收",
         artifacts,
         "11_disable_transfer_guard",
-        scroll_from_top=20,
+        scroll_to_bottom=True,
     )
     click_decision("关闭自动召集防御援军", "由我亲自召集", artifacts, "11_disable_auto_defenders")
     stream.wait("ZQA: TEST DONE xqol", 45)

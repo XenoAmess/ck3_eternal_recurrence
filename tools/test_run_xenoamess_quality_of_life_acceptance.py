@@ -31,8 +31,9 @@ class ProductOuterDescriptorTests(unittest.TestCase):
 
     def test_phase_one_decisions_scroll_below_phase_two_rows(self) -> None:
         runner = Path(xqol.__file__).read_text(encoding="utf-8")
-        self.assertEqual(4, runner.count("scroll_from_top=20"))
-        self.assertIn("acceptance.pyautogui.scroll(-scroll_from_top)", runner)
+        self.assertEqual(4, runner.count("scroll_to_bottom=True"))
+        self.assertIn("scrollbar_x = int(width * 0.9705)", runner)
+        self.assertIn("int(height * 0.80), duration=0.8", runner)
 
     def test_workshop_identity_is_recorded_but_not_loaded_in_isolated_runtime(self) -> None:
         with tempfile.TemporaryDirectory() as raw:

@@ -138,7 +138,7 @@ def render_release_interaction(name: str, hook: bool, recruit: bool, conversion:
 \t}}
 
 \tai_potential = {{ always = no }}
-\tai_frequency = 0
+\tai_frequency = 1
 \tai_will_do = {{ base = 0 }}
 }}"""
 
@@ -197,7 +197,7 @@ def render_conversion_interaction(kind: str, minimum_days: int, maximum_days: in
 \t}}
 
 \tai_potential = {{ always = no }}
-\tai_frequency = 0
+\tai_frequency = 1
 \tai_will_do = {{ base = 0 }}
 }}"""
 
