@@ -60,6 +60,7 @@ const companion = createCk3CompanionClient()
 const mcpBusy = ref(false)
 const catalogBusy = ref(false)
 const textureBusy = ref(false)
+const clipboardBusy = ref(false)
 const mcpStatus = ref('未连接')
 const patternResources = ref<CoatOfArmsResourceItem[]>([])
 const emblemResources = ref<CoatOfArmsResourceItem[]>([])
@@ -129,6 +130,23 @@ function importSource() {
 async function copyOutput() {
   await navigator.clipboard.writeText(output.value)
   ElMessage.success('CK3 纹章代码已复制；多行换行使用 CRLF')
+}
+
+async function pasteSource() {
+  clipboardBusy.value = true
+  try {
+    if (!navigator.clipboard?.readText) {
+      throw new Error('当前浏览器或页面上下文不允许读取剪贴板')
+    }
+    const pasted = await navigator.clipboard.readText()
+    if (!pasted.trim()) throw new Error('剪贴板中没有可导入的文本')
+    source.value = pasted
+    importSource()
+  } catch (error) {
+    ElMessage.error(`剪贴板读取失败：${errorMessage(error)}`)
+  } finally {
+    clipboardBusy.value = false
+  }
 }
 
 function loadSample() {
@@ -451,7 +469,10 @@ importSource()
             <span class="step">01</span>
             <h2>导入代码</h2>
           </div>
-          <el-button text link type="primary" @click="loadSample">载入实机样例</el-button>
+          <div class="source-actions">
+            <el-button :loading="clipboardBusy" @click="pasteSource">从剪贴板粘贴</el-button>
+            <el-button text link type="primary" @click="loadSample">载入实机样例</el-button>
+          </div>
         </div>
         <el-input v-model="source" type="textarea" :rows="21" resize="none" spellcheck="false" class="code-input" />
         <el-button class="import-button" type="primary" @click="importSource">解析并载入</el-button>
@@ -697,7 +718,7 @@ importSource()
             <el-alert type="warning" :closable="false" show-icon>
               <template #title>
                 当前实机只证明 `textured_emblem = { texture = "_default.dds" }` 可被 reader 接受；本区只保真解析/导出 texture，
-                不为未验证字段生成 UI，也暂不加入合成预览。
+                不为未验证字段生成 UI；行内只显示 exact 原始 DDS，不冒充最终合成预览。
               </template>
             </el-alert>
             <div v-if="coatOfArms.texturedEmblems.length" class="textured-list">

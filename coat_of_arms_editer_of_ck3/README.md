@@ -6,6 +6,7 @@ coat-of-arms render description，不把该入口描述成任意 CK3 脚本执�
 ## 当前能力
 
 - 解析 `name = { ... }`、注释、紧凑/多行排版和 `rgb` / `hsv` typed block；
+- 通过浏览器 Clipboard API 一键读取剪贴板文本并立即进入同一解析/诊断流程；浏览器权限或安全上下文不满足时明确报错；
 - 编辑 pattern、三通道颜色、重复 `colored_emblem`、mask 和重复 instance；
 - 对唯一已由原生 MCP 检测的 `textured_emblem = { texture = "_default.dds" }` 提供明确标限的解析、编辑、原始纹理预览和导出；不生成未验证字段，也暂不把该层合成进最终家徽；
 - 编辑 position、scale、rotation、depth，并生成稳定 CRLF CK3 文本；

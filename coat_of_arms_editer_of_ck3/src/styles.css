@@ -25,6 +25,7 @@ h1 { margin: 0; font-family: Georgia, "Noto Serif SC", serif; font-weight: 500; 
 .panel { min-height: 780px; padding: 20px; border: 1px solid var(--line); background: var(--panel); box-shadow: 0 22px 60px rgba(0, 0, 0, .22); backdrop-filter: blur(16px); }
 .panel-title { min-height: 42px; margin-bottom: 16px; display: flex; align-items: center; justify-content: space-between; }
 .panel-title > div, .section-heading { display: flex; align-items: center; gap: 11px; }
+.source-actions { display: flex; align-items: center; gap: 8px; }
 .panel h2, .panel h3 { margin: 0; font-family: Georgia, "Noto Serif SC", serif; font-weight: 500; }
 .panel h2 { font-size: 20px; }
 .panel h3 { font-size: 16px; }
