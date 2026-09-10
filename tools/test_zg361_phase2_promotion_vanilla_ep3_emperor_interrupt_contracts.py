@@ -76,8 +76,22 @@ def _ck3_source(relative_path: str) -> Path | None:
 class VanillaEp3EmperorInterruptContractTests(unittest.TestCase):
     def test_r366_powerful_family_offer_uses_non_war_refusal(self) -> None:
         event_key = "ep3_powerful_families.8012"
-        contract = emperor.VANILLA_EP3_EMPEROR_TIMELINE_CONTRACTS[event_key]
-        self.assertIs(production.KNOWN_TIMELINE_INTERRUPTS[event_key], contract)
+        source_contract = emperor.VANILLA_EP3_EMPEROR_TIMELINE_CONTRACTS[
+            event_key
+        ]
+        self.assertIs(
+            production.KNOWN_TIMELINE_INTERRUPTS[event_key],
+            source_contract,
+        )
+        contract = production._resolve_timeline_interrupt_contract(
+            event_key,
+            player=32904,
+            starting_date=53300000,
+            absolute_end_date=53350000,
+            stop_at_clean_review_boundary=False,
+        )
+        self.assertIsNotNone(contract)
+        assert contract is not None
         context = _context(
             event_key=event_key,
             instance_id=429,
@@ -194,15 +208,24 @@ class VanillaEp3EmperorInterruptContractTests(unittest.TestCase):
         if REPORT.is_file():
             self.assertEqual(_sha256(REPORT), REPORT_SHA256)
 
-        contract = emperor.VANILLA_EP3_EMPEROR_TIMELINE_CONTRACTS[
+        source_contract = emperor.VANILLA_EP3_EMPEROR_TIMELINE_CONTRACTS[
             "ep3_emperor_yearly.2211"
         ]
         self.assertIs(
             production.KNOWN_TIMELINE_INTERRUPTS[
                 "ep3_emperor_yearly.2211"
             ],
-            contract,
+            source_contract,
         )
+        contract = production._resolve_timeline_interrupt_contract(
+            "ep3_emperor_yearly.2211",
+            player=32904,
+            starting_date=53199480,
+            absolute_end_date=53260000,
+            stop_at_clean_review_boundary=False,
+        )
+        self.assertIsNotNone(contract)
+        assert contract is not None
         snapshot, event, context = self._r250_frame()
         checks = production._known_interrupt_checks(
             snapshot=snapshot,
@@ -230,13 +253,14 @@ class VanillaEp3EmperorInterruptContractTests(unittest.TestCase):
         self.assertNotIn("max_occurrences", contract)
 
     def test_r355_two_option_frame_selects_same_terminal_route(self) -> None:
-        source_contract = emperor.VANILLA_EP3_EMPEROR_TIMELINE_CONTRACTS[
-            "ep3_emperor_yearly.2211"
-        ]
-        contract = production._timeline_contract_for_window(
-            source_contract,
+        contract = production._resolve_timeline_interrupt_contract(
+            "ep3_emperor_yearly.2211",
+            player=32904,
             starting_date=53147016,
+            stop_at_clean_review_boundary=False,
         )
+        self.assertIsNotNone(contract)
+        assert contract is not None
         snapshot, event, context = self._r355_frame()
         checks = production._known_interrupt_checks(
             snapshot=snapshot,
@@ -254,15 +278,21 @@ class VanillaEp3EmperorInterruptContractTests(unittest.TestCase):
         self.assertEqual(effective["selected_option_number"], 4)
         self.assertEqual(effective["selected_native_option_index"], 3)
 
-    def test_r250_frame_rejects_date_scope_and_option_drift(self) -> None:
-        contract = emperor.VANILLA_EP3_EMPEROR_TIMELINE_CONTRACTS[
-            "ep3_emperor_yearly.2211"
-        ]
+    def test_r250_frame_rejects_window_scope_and_option_drift(self) -> None:
+        contract = production._resolve_timeline_interrupt_contract(
+            "ep3_emperor_yearly.2211",
+            player=32904,
+            starting_date=53199480,
+            absolute_end_date=53260000,
+            stop_at_clean_review_boundary=False,
+        )
+        self.assertIsNotNone(contract)
+        assert contract is not None
         snapshot, event, context = self._r250_frame()
 
         variants = []
         wrong_date = copy.deepcopy(context)
-        wrong_date["date_raw"] = 53206488
+        wrong_date["date_raw"] = 53199456
         variants.append((wrong_date, "context_date_raw"))
         wrong_vassal = copy.deepcopy(context)
         wrong_vassal["saved_scopes"][2] = _scope(
@@ -296,15 +326,24 @@ class VanillaEp3EmperorInterruptContractTests(unittest.TestCase):
         if R287_REPORT.is_file():
             self.assertEqual(_sha256(R287_REPORT), R287_REPORT_SHA256)
 
-        contract = emperor.VANILLA_EP3_EMPEROR_TIMELINE_CONTRACTS[
+        source_contract = emperor.VANILLA_EP3_EMPEROR_TIMELINE_CONTRACTS[
             "ep3_emperor_yearly.2170"
         ]
         self.assertIs(
             production.KNOWN_TIMELINE_INTERRUPTS[
                 "ep3_emperor_yearly.2170"
             ],
-            contract,
+            source_contract,
         )
+        contract = production._resolve_timeline_interrupt_contract(
+            "ep3_emperor_yearly.2170",
+            player=32904,
+            starting_date=53199480,
+            absolute_end_date=53260000,
+            stop_at_clean_review_boundary=False,
+        )
+        self.assertIsNotNone(contract)
+        assert contract is not None
         snapshot, event, context = self._r287_frame()
         checks = production._known_interrupt_checks(
             snapshot=snapshot,
@@ -325,9 +364,15 @@ class VanillaEp3EmperorInterruptContractTests(unittest.TestCase):
         self.assertEqual(contract["max_occurrences"], 1)
 
     def test_r287_frame_rejects_scope_and_option_drift(self) -> None:
-        contract = emperor.VANILLA_EP3_EMPEROR_TIMELINE_CONTRACTS[
-            "ep3_emperor_yearly.2170"
-        ]
+        contract = production._resolve_timeline_interrupt_contract(
+            "ep3_emperor_yearly.2170",
+            player=32904,
+            starting_date=53199480,
+            absolute_end_date=53260000,
+            stop_at_clean_review_boundary=False,
+        )
+        self.assertIsNotNone(contract)
+        assert contract is not None
         snapshot, event, context = self._r287_frame()
 
         variants = []

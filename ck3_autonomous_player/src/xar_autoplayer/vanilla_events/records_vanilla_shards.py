@@ -2,6 +2,10 @@
 
 from __future__ import annotations
 
+# Reusable contracts bind the active player through ``$player`` and contain no
+# campaign date or character identity. The legacy live bindings removed from
+# package-A contracts are retained separately below as observations.
+
 from typing import Final
 
 from .registry import PLAYER_SENTINEL
@@ -170,9 +174,8 @@ VANILLA_DYNASTIC_CYCLE_TIMELINE_CONTRACTS: Final[
         # empty acknowledgement. A later dynastic cycle can enter Instability
         # again, so recurrence is bounded by the observation window rather
         # than by one frozen campaign occurrence.
-        "date_raw": 53436024,
         "date_policy": "product-observation-window",
-        "root_character_id": 32904,
+        "root_character_id": PLAYER_SENTINEL,
         "character_scopes": {},
         "scope_types": {
             "situation": "situation",
@@ -246,9 +249,8 @@ VANILLA_EP3_EMPEROR_TIMELINE_CONTRACTS: Final[
         # cross-system character state and only adds influence when the
         # current government exposes that resource. R287 observed the exact
         # one-title/two-option frame on the switched manager lineage.
-        "date_raw": 53205336,
         "date_policy": "product-observation-window",
-        "root_character_id": 32904,
+        "root_character_id": PLAYER_SENTINEL,
         "character_scopes": {},
         "scope_types": {
             "our_county": "landed_title",
@@ -278,14 +280,13 @@ VANILLA_EP3_EMPEROR_TIMELINE_CONTRACTS: Final[
         # relation instead of one seed ID. Since independent vassals enter
         # .2210 through the vanilla yearly pool and own its cooldown, multiple
         # requests to the same liege remain valid within the product window.
-        "date_raw": 53206512,
         "date_policy": "product-observation-window",
-        "root_character_id": 32904,
+        "root_character_id": PLAYER_SENTINEL,
         "character_scopes": {
-            "liege": 32904,
+            "liege": PLAYER_SENTINEL,
         },
         "unique_character_scope_excludes": {
-            "vassal": (32904,),
+            "vassal": (PLAYER_SENTINEL,),
         },
         "scope_types": {
             "potential_title": "landed_title",
@@ -329,14 +330,13 @@ VANILLA_EP3_EMPEROR_TIMELINE_CONTRACTS: Final[
         # no follow-up. R366 observed this exact three-scope/two-option frame.
         # Source SHA-256:
         # CA19D38CD1C45783E32CF59E21A212642EA407B2DDD8EDE2467DF50ED9F7BC7A.
-        "date_raw": 53328600,
         "date_policy": "product-observation-window",
-        "root_character_id": 32904,
+        "root_character_id": PLAYER_SENTINEL,
         "character_scopes": {
-            "liege": 32904,
+            "liege": PLAYER_SENTINEL,
         },
         "unique_character_scope_excludes": {
-            "generous_family": (32904,),
+            "generous_family": (PLAYER_SENTINEL,),
         },
         "scope_types": {
             "generous_family": "character",
@@ -371,13 +371,12 @@ VANILLA_HISTORICAL_CHARACTER_TIMELINE_CONTRACTS: Final[
         # pulse context; the four background scopes are authored immediately
         # before the window is rendered.  Other exact vanilla scope shapes
         # must be reviewed as separate variants when they are observed.
-        "date_raw": 53436024,
         "date_policy": "product-observation-window",
-        "root_character_id": 32904,
+        "root_character_id": PLAYER_SENTINEL,
         "character_scopes": {},
         "unique_character_scope_excludes": {
-            "historical_character": (32904,),
-            "major": (32904,),
+            "historical_character": (PLAYER_SENTINEL,),
+            "major": (PLAYER_SENTINEL,),
         },
         "character_scope_differs_from": {
             "historical_character": ("major",),
@@ -428,9 +427,8 @@ VANILLA_INTRIGUE_TEMPTATION_TIMELINE_CONTRACTS: Final[
         # product timeline, 48 in-game hours after the last clean observation.
         # Take terminal native1 so the unrelated story cannot occupy the
         # promotion-source timeline.
-        "date_raw": 53170824,
         "date_policy": "product-observation-window",
-        "root_character_id": 29037,
+        "root_character_id": PLAYER_SENTINEL,
         "character_scopes": {},
         "scope_types": {
             "quarter": "value",
@@ -488,12 +486,11 @@ VANILLA_NATURAL_DISASTER_TIMELINE_CONTRACTS: Final[
         # situations may legitimately send this event again, so recurrence is
         # bounded by the product observation window rather than a whole-run
         # occurrence count.
-        "date_raw": 53204688,
         "date_policy": "product-observation-window",
-        "root_character_id": 32904,
+        "root_character_id": PLAYER_SENTINEL,
         "character_scopes": {
-            "ruler": 32904,
-            "disaster_province_ruler": 32904,
+            "ruler": PLAYER_SENTINEL,
+            "disaster_province_ruler": PLAYER_SENTINEL,
         },
         "scope_types": _NATURAL_DISASTER_8001_SCOPE_TYPES,
         "saved_scope_name_sets": (
@@ -527,9 +524,8 @@ VANILLA_NATURAL_DISASTER_TIMELINE_CONTRACTS: Final[
         # after block records that the first warning was received. R355 shows
         # the exact first-warning projection with native options (0, 2), so
         # choose terminal native2 and bind the complete flood scope stack.
-        "date_raw": 53255112,
         "date_policy": "product-observation-window",
-        "root_character_id": 32904,
+        "root_character_id": PLAYER_SENTINEL,
         "character_scopes": {},
         "scope_types": {
             "situation": "situation",
@@ -611,9 +607,8 @@ VANILLA_NATURAL_DISASTER_TIMELINE_CONTRACTS: Final[
         # this event. Its sole authored option is empty, so native0 is the
         # unavoidable terminal acknowledgement. Independent disasters may
         # legitimately deliver the event again within the bounded timeline.
-        "date_raw": 53256312,
         "date_policy": "product-observation-window",
-        "root_character_id": 32904,
+        "root_character_id": PLAYER_SENTINEL,
         "character_scopes": {},
         "scope_types": {
             "situation": "situation",
@@ -644,9 +639,8 @@ VANILLA_NATURAL_DISASTER_TIMELINE_CONTRACTS: Final[
         # observation. The traveler, optional travel leader, and news bearer
         # are dynamically selected for each avalanche and therefore bind by
         # native type, not one frozen campaign identity.
-        "date_raw": 53373936,
         "date_policy": "product-observation-window",
-        "root_character_id": 32904,
+        "root_character_id": PLAYER_SENTINEL,
         "character_scopes": {},
         "scope_types": {
             "travel_plan": "travel_plan",
@@ -1196,6 +1190,101 @@ VANILLA_SHARD_TIMELINE_CONTRACTS: Final[dict[str, dict[str, object]]] = (
 )
 
 
+# The shared observation aggregator imports this package during serial
+# integration. Keeping the evidence next to the contracts makes the removed
+# values reviewable without constraining a future game, operator, or machine.
+VANILLA_SHARD_LEGACY_LIVE_OBSERVATIONS_A: Final[
+    dict[str, dict[str, object]]
+] = {
+    "tgp_dynastic_cycle.0091": {
+        "exemplars": [{
+            "run": "legacy-migrated",
+            "kind": "legacy-live-binding",
+            "date_raw": 53436024,
+            "root_character_id": 32904,
+        }],
+    },
+    "ep3_emperor_yearly.2170": {
+        "exemplars": [{
+            "run": "R287",
+            "kind": "legacy-live-binding",
+            "date_raw": 53205336,
+            "root_character_id": 32904,
+        }],
+    },
+    "ep3_emperor_yearly.2211": {
+        "exemplars": [{
+            "run": "R250",
+            "kind": "legacy-live-binding",
+            "date_raw": 53206512,
+            "root_character_id": 32904,
+            "saved_character_ids": {"liege": 32904},
+        }],
+    },
+    "ep3_powerful_families.8012": {
+        "exemplars": [{
+            "run": "R366",
+            "kind": "legacy-live-binding",
+            "date_raw": 53328600,
+            "root_character_id": 32904,
+            "saved_character_ids": {"liege": 32904},
+        }],
+    },
+    "historical_char_creation_events.1": {
+        "exemplars": [{
+            "run": "R372",
+            "kind": "legacy-live-binding",
+            "date_raw": 53436024,
+            "root_character_id": 32904,
+        }],
+    },
+    "intrigue_temptation.3020": {
+        "exemplars": [{
+            "run": "R322",
+            "kind": "legacy-live-binding",
+            "date_raw": 53170824,
+            "root_character_id": 29037,
+        }],
+    },
+    "natural_disaster.8001": {
+        "exemplars": [{
+            "run": "R247",
+            "kind": "legacy-live-binding",
+            "date_raw": 53204688,
+            "root_character_id": 32904,
+            "saved_character_ids": {
+                "ruler": 32904,
+                "disaster_province_ruler": 32904,
+            },
+        }],
+    },
+    "natural_disaster.7021": {
+        "exemplars": [{
+            "run": "R355",
+            "kind": "legacy-live-binding",
+            "date_raw": 53255112,
+            "root_character_id": 32904,
+        }],
+    },
+    "natural_disaster.6901": {
+        "exemplars": [{
+            "run": "legacy-migrated",
+            "kind": "legacy-live-binding",
+            "date_raw": 53256312,
+            "root_character_id": 32904,
+        }],
+    },
+    "travel_danger_events.3002": {
+        "exemplars": [{
+            "run": "legacy-migrated",
+            "kind": "legacy-live-binding",
+            "date_raw": 53373936,
+            "root_character_id": 32904,
+        }],
+    },
+}
+
+
 __all__ = [
     "VANILLA_ACCOLADE_TIMELINE_CONTRACTS",
     "VANILLA_ADMIN_EUNUCH_TIMELINE_CONTRACTS",
@@ -1208,5 +1297,6 @@ __all__ = [
     "VANILLA_NATURAL_DISASTER_TIMELINE_CONTRACTS",
     "VANILLA_SECRET_TIMELINE_CONTRACTS",
     "VANILLA_SEDUCE_TIMELINE_CONTRACTS",
+    "VANILLA_SHARD_LEGACY_LIVE_OBSERVATIONS_A",
     "VANILLA_SHARD_TIMELINE_CONTRACTS",
 ]

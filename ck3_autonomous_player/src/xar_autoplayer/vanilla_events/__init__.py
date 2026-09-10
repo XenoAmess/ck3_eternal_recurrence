@@ -79,7 +79,10 @@ from .records_vassal_interaction import (
     VANILLA_VASSAL_INTERACTION_OBSERVATIONS,
     VANILLA_VASSAL_INTERACTION_TIMELINE_CONTRACTS,
 )
-from .records_vanilla_shards import VANILLA_SHARD_TIMELINE_CONTRACTS
+from .records_vanilla_shards import (
+    VANILLA_SHARD_LEGACY_LIVE_OBSERVATIONS_A,
+    VANILLA_SHARD_TIMELINE_CONTRACTS,
+)
 
 
 DEFAULT_VANILLA_EVENT_CONTRACT_GROUPS: Final = (
@@ -135,6 +138,10 @@ DEFAULT_VANILLA_EVENT_ANALYSIS: Final = _merge_metadata_tables(
 )
 DEFAULT_VANILLA_EVENT_OBSERVATIONS: Final = _merge_metadata_tables(
     ("vanilla_shards", VANILLA_SHARD_OBSERVATIONS),
+    (
+        "vanilla_shards_legacy_live_a",
+        VANILLA_SHARD_LEGACY_LIVE_OBSERVATIONS_A,
+    ),
     ("manager_holy_war", MANAGER_HOLY_WAR_OBSERVATIONS),
     ("manager_b", MANAGER_VANILLA_OBSERVATIONS_B),
     ("embedded_a", VANILLA_EMBEDDED_A_OBSERVATIONS),

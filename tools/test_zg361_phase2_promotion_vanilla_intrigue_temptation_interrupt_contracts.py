@@ -266,16 +266,20 @@ class VanillaIntrigueTemptationInterruptContractTests(unittest.TestCase):
         self.assertEqual(contract["selected_native_option_index"], 1)
         self.assertEqual(contract["max_occurrences"], 1)
 
-    def test_r322_frame_rejects_root_scope_and_option_drift(self) -> None:
-        contract = (
-            temptation.VANILLA_INTRIGUE_TEMPTATION_TIMELINE_CONTRACTS
-            ["intrigue_temptation.3020"]
+    def test_r322_frame_rejects_window_root_scope_and_option_drift(self) -> None:
+        contract = production._resolve_timeline_interrupt_contract(
+            "intrigue_temptation.3020",
+            player=29037,
+            starting_date=53164440,
+            stop_at_clean_review_boundary=False,
         )
+        self.assertIsNotNone(contract)
+        assert contract is not None
         snapshot, event, context = self._r322_frame()
 
         variants = []
         wrong_date = copy.deepcopy(context)
-        wrong_date["date_raw"] = 53170800
+        wrong_date["date_raw"] = 53164416
         variants.append((wrong_date, "context_date_raw"))
         missing_scope = copy.deepcopy(context)
         missing_scope["saved_scopes"] = []

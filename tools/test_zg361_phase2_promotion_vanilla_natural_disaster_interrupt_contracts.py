@@ -124,13 +124,33 @@ def _ck3_source(relative_path: str) -> Path | None:
     return None
 
 
+def _resolved_contract(
+    event_key: str,
+    *,
+    starting_date: int,
+    absolute_end_date: int | None = None,
+) -> dict[str, object]:
+    contract = production._resolve_timeline_interrupt_contract(
+        event_key,
+        player=32904,
+        starting_date=starting_date,
+        absolute_end_date=absolute_end_date,
+        stop_at_clean_review_boundary=False,
+    )
+    if not isinstance(contract, dict):
+        raise AssertionError(f"contract did not resolve: {event_key}")
+    return contract
+
+
 class VanillaNaturalDisasterInterruptContractTests(unittest.TestCase):
     def _r247_frame(self) -> tuple[
         dict[str, object], dict[str, object], dict[str, object]
     ]:
-        contract = disaster.VANILLA_NATURAL_DISASTER_TIMELINE_CONTRACTS[
-            "natural_disaster.8001"
-        ]
+        contract = _resolved_contract(
+            "natural_disaster.8001",
+            starting_date=53199480,
+            absolute_end_date=53260000,
+        )
         character_scopes = contract["character_scopes"]
         scope_types = contract["scope_types"]
         scopes = [
@@ -181,12 +201,17 @@ class VanillaNaturalDisasterInterruptContractTests(unittest.TestCase):
                 "travel_danger_events.3002",
             },
         )
-        contract = disaster.VANILLA_NATURAL_DISASTER_TIMELINE_CONTRACTS[
+        source_contract = disaster.VANILLA_NATURAL_DISASTER_TIMELINE_CONTRACTS[
             "natural_disaster.8001"
         ]
         self.assertIs(
             production.KNOWN_TIMELINE_INTERRUPTS["natural_disaster.8001"],
-            contract,
+            source_contract,
+        )
+        contract = _resolved_contract(
+            "natural_disaster.8001",
+            starting_date=53199480,
+            absolute_end_date=53260000,
         )
         snapshot, event, context = self._r247_frame()
         checks = production._known_interrupt_checks(
@@ -209,11 +234,9 @@ class VanillaNaturalDisasterInterruptContractTests(unittest.TestCase):
         self.assertNotIn("max_occurrences", contract)
 
     def test_r355_flood_frame_binds_exact_river_region_sibling(self) -> None:
-        contract = disaster.VANILLA_NATURAL_DISASTER_TIMELINE_CONTRACTS[
-            "natural_disaster.8001"
-        ]
-        contract = production._timeline_contract_for_window(
-            contract, starting_date=53199480
+        contract = _resolved_contract(
+            "natural_disaster.8001",
+            starting_date=53199480,
         )
         snapshot, event, context = self._r247_frame()
         snapshot["date_raw"] = 53254632
@@ -333,8 +356,8 @@ class VanillaNaturalDisasterInterruptContractTests(unittest.TestCase):
 
     def test_r355_river_warning_uses_terminal_native_option_two(self) -> None:
         event_key = "natural_disaster.7021"
-        contract = production._timeline_contract_for_window(
-            disaster.VANILLA_NATURAL_DISASTER_TIMELINE_CONTRACTS[event_key],
+        contract = _resolved_contract(
+            event_key,
             starting_date=53199480,
         )
         context = {
@@ -395,8 +418,8 @@ class VanillaNaturalDisasterInterruptContractTests(unittest.TestCase):
 
     def test_r355_recovery_start_uses_empty_terminal_acknowledgement(self) -> None:
         event_key = "natural_disaster.6901"
-        contract = production._timeline_contract_for_window(
-            disaster.VANILLA_NATURAL_DISASTER_TIMELINE_CONTRACTS[event_key],
+        contract = _resolved_contract(
+            event_key,
             starting_date=53199480,
         )
         context = {
@@ -458,8 +481,8 @@ class VanillaNaturalDisasterInterruptContractTests(unittest.TestCase):
 
     def test_r364c_avalanche_followup_uses_short_nonpersistent_route(self) -> None:
         event_key = "travel_danger_events.3002"
-        contract = production._timeline_contract_for_window(
-            disaster.VANILLA_NATURAL_DISASTER_TIMELINE_CONTRACTS[event_key],
+        contract = _resolved_contract(
+            event_key,
             starting_date=53147016,
         )
         context = {
@@ -526,15 +549,17 @@ class VanillaNaturalDisasterInterruptContractTests(unittest.TestCase):
         )
         self.assertTrue(all(variant_checks.values()), variant_checks)
 
-    def test_r247_frame_rejects_scope_identity_type_and_option_drift(self) -> None:
-        contract = disaster.VANILLA_NATURAL_DISASTER_TIMELINE_CONTRACTS[
-            "natural_disaster.8001"
-        ]
+    def test_r247_frame_rejects_window_scope_type_and_option_drift(self) -> None:
+        contract = _resolved_contract(
+            "natural_disaster.8001",
+            starting_date=53199480,
+            absolute_end_date=53260000,
+        )
         snapshot, event, context = self._r247_frame()
 
         variants = []
         wrong_date = copy.deepcopy(context)
-        wrong_date["date_raw"] = 53204664
+        wrong_date["date_raw"] = 53199456
         variants.append((wrong_date, "context_date_raw"))
         missing_scope = copy.deepcopy(context)
         missing_scope["saved_scopes"] = missing_scope["saved_scopes"][:-1]

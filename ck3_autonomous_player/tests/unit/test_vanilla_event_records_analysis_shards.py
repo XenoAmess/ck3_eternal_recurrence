@@ -9,16 +9,22 @@ import unittest
 ROOT = Path(__file__).resolve().parents[3]
 sys.path.insert(0, str(ROOT / "ck3_autonomous_player" / "src"))
 
+from xar_autoplayer.vanilla_events import (  # noqa: E402
+    DEFAULT_VANILLA_EVENT_OBSERVATIONS,
+)
 from xar_autoplayer.vanilla_events.records_analysis_vanilla_shards import (  # noqa: E402
     VANILLA_SHARD_ANALYSIS,
     VANILLA_SHARD_OBSERVATIONS,
 )
 from xar_autoplayer.vanilla_events.records_vanilla_shards import (  # noqa: E402
+    VANILLA_SHARD_LEGACY_LIVE_OBSERVATIONS_A,
     VANILLA_SHARD_TIMELINE_CONTRACTS,
 )
 from xar_autoplayer.vanilla_events.registry import (  # noqa: E402
     EXACT_CK3_BUILD,
     EXACT_CK3_EXE_SHA256,
+    PLAYER_SENTINEL,
+    materialize_vanilla_timeline_contract,
 )
 
 
@@ -36,9 +42,119 @@ HASHED_EVENT_KEYS = {
     "natural_disaster.6901",
     "travel_danger_events.3002",
 }
+PORTABLE_PACKAGE_A_KEYS = {
+    "tgp_dynastic_cycle.0091",
+    "ep3_emperor_yearly.2170",
+    "ep3_emperor_yearly.2211",
+    "ep3_powerful_families.8012",
+    "historical_char_creation_events.1",
+    "intrigue_temptation.3020",
+    "natural_disaster.8001",
+    "natural_disaster.7021",
+    "natural_disaster.6901",
+    "travel_danger_events.3002",
+}
+PACKAGE_A_SAFE_OPTIONS = {
+    "tgp_dynastic_cycle.0091": (1, 0),
+    "ep3_emperor_yearly.2170": (1, 0),
+    "ep3_emperor_yearly.2211": (4, 3),
+    "ep3_powerful_families.8012": (2, 1),
+    "historical_char_creation_events.1": (3, 2),
+    "intrigue_temptation.3020": (2, 1),
+    "natural_disaster.8001": (1, 0),
+    "natural_disaster.7021": (3, 2),
+    "natural_disaster.6901": (1, 0),
+    "travel_danger_events.3002": (2, 1),
+}
 
 
 class VanillaEventShardAnalysisTests(unittest.TestCase):
+    def test_package_a_contracts_are_campaign_neutral(self) -> None:
+        for event_key in PORTABLE_PACKAGE_A_KEYS:
+            with self.subTest(event_key=event_key):
+                contract = VANILLA_SHARD_TIMELINE_CONTRACTS[event_key]
+                self.assertNotIn("date_raw", contract)
+                self.assertEqual(
+                    contract["root_character_id"],
+                    PLAYER_SENTINEL,
+                )
+                serialized = json.dumps(contract, allow_nan=False)
+                self.assertNotIn("29037", serialized)
+                self.assertNotIn("32904", serialized)
+                self.assertEqual(
+                    (
+                        contract["selected_option_number"],
+                        contract["selected_native_option_index"],
+                    ),
+                    PACKAGE_A_SAFE_OPTIONS[event_key],
+                )
+
+    def test_package_a_player_relationships_materialize_portably(self) -> None:
+        player = 88001
+        contracts = VANILLA_SHARD_TIMELINE_CONTRACTS
+
+        prophecy = materialize_vanilla_timeline_contract(
+            contracts["ep3_emperor_yearly.2211"], player
+        )
+        self.assertEqual(prophecy["character_scopes"]["liege"], player)
+        self.assertEqual(
+            prophecy["unique_character_scope_excludes"]["vassal"],
+            (player,),
+        )
+
+        family = materialize_vanilla_timeline_contract(
+            contracts["ep3_powerful_families.8012"], player
+        )
+        self.assertEqual(family["character_scopes"]["liege"], player)
+        self.assertEqual(
+            family["unique_character_scope_excludes"]["generous_family"],
+            (player,),
+        )
+
+        historical = materialize_vanilla_timeline_contract(
+            contracts["historical_char_creation_events.1"], player
+        )
+        self.assertEqual(
+            historical["unique_character_scope_excludes"],
+            {
+                "historical_character": (player,),
+                "major": (player,),
+            },
+        )
+
+        warning = materialize_vanilla_timeline_contract(
+            contracts["natural_disaster.8001"], player
+        )
+        self.assertEqual(
+            warning["character_scopes"],
+            {
+                "ruler": player,
+                "disaster_province_ruler": player,
+            },
+        )
+
+    def test_package_a_legacy_live_bindings_are_observations(self) -> None:
+        self.assertEqual(
+            set(VANILLA_SHARD_LEGACY_LIVE_OBSERVATIONS_A),
+            PORTABLE_PACKAGE_A_KEYS,
+        )
+        json.dumps(
+            VANILLA_SHARD_LEGACY_LIVE_OBSERVATIONS_A,
+            allow_nan=False,
+            sort_keys=True,
+        )
+        for event_key, metadata in (
+            VANILLA_SHARD_LEGACY_LIVE_OBSERVATIONS_A.items()
+        ):
+            with self.subTest(event_key=event_key):
+                exemplar = metadata["exemplars"][0]
+                self.assertEqual(exemplar["kind"], "legacy-live-binding")
+                self.assertIsInstance(exemplar["date_raw"], int)
+                self.assertIn(exemplar["root_character_id"], (29037, 32904))
+                self.assertEqual(
+                    DEFAULT_VANILLA_EVENT_OBSERVATIONS[event_key], metadata
+                )
+
     def test_analysis_covers_every_migrated_shard(self) -> None:
         self.assertEqual(EXPECTED_KEY_COUNT, len(VANILLA_SHARD_ANALYSIS))
         self.assertEqual(
