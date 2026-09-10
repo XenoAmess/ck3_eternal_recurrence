@@ -197,6 +197,21 @@ def _write_self_contained_manifest(
     )
 
 
+def _relocate_runtime_binaries(
+    manifest_path: Path,
+    destination: Path,
+) -> dict[str, Path]:
+    manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+    destination.mkdir()
+    relocated: dict[str, Path] = {}
+    for name in ("capture_executable", "bridge_dll", "bridge_injector"):
+        source = Path(manifest["paths"][name])
+        target = destination / source.name
+        target.write_bytes(source.read_bytes())
+        relocated[name] = target
+    return relocated
+
+
 class G2SourceSpecificWarLossLiveAdapterTests(unittest.TestCase):
     def test_inventory_falls_back_to_toolhelp_when_wmi_is_denied(self) -> None:
         fallback = [{"Name": "ck3.exe", "ProcessId": PID}]
@@ -394,6 +409,116 @@ class G2SourceSpecificWarLossLiveAdapterTests(unittest.TestCase):
             checked["bookmark_events"]["path_source"],
             "explicit-bookmark-events",
         )
+
+    def test_explicit_runtime_binaries_override_manifest_paths(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            (
+                manifest_path,
+                game_root,
+                _game_executable,
+                _bookmark_events,
+                expected_game_sha256,
+            ) = _write_self_contained_manifest(root)
+            relocated = _relocate_runtime_binaries(
+                manifest_path, root / "relocated-runtime"
+            )
+            with mock.patch.object(
+                ADAPTER, "EXPECTED_EXE_SHA256", expected_game_sha256
+            ):
+                _manifest, paths, _timeouts, checked = ADAPTER._load_manifest(
+                    manifest_path,
+                    repo_root=root,
+                    game_root=game_root,
+                    capture_executable=relocated["capture_executable"],
+                    bridge_dll=relocated["bridge_dll"],
+                    bridge_injector=relocated["bridge_injector"],
+                )
+
+        self.assertEqual(
+            paths.capture_executable, relocated["capture_executable"].resolve()
+        )
+        self.assertEqual(paths.bridge_dll, relocated["bridge_dll"].resolve())
+        self.assertEqual(
+            paths.bridge_injector, relocated["bridge_injector"].resolve()
+        )
+        self.assertEqual(
+            checked["capture_executable"]["path_source"],
+            "explicit-capture-executable",
+        )
+        self.assertEqual(
+            checked["bridge_dll"]["path_source"], "explicit-bridge-dll"
+        )
+        self.assertEqual(
+            checked["bridge_injector"]["path_source"],
+            "explicit-bridge-injector",
+        )
+
+    def test_explicit_runtime_binary_hash_drift_is_rejected(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            (
+                manifest_path,
+                game_root,
+                _game_executable,
+                _bookmark_events,
+                expected_game_sha256,
+            ) = _write_self_contained_manifest(root)
+            relocated = _relocate_runtime_binaries(
+                manifest_path, root / "relocated-runtime"
+            )
+            relocated["bridge_dll"].write_bytes(b"wrong-bridge-dll")
+            with (
+                mock.patch.object(
+                    ADAPTER, "EXPECTED_EXE_SHA256", expected_game_sha256
+                ),
+                self.assertRaisesRegex(
+                    ADAPTER.LiveAdapterError,
+                    "manifest dependency drifted: bridge_dll",
+                ),
+            ):
+                ADAPTER._load_manifest(
+                    manifest_path,
+                    repo_root=root,
+                    game_root=game_root,
+                    capture_executable=relocated["capture_executable"],
+                    bridge_dll=relocated["bridge_dll"],
+                    bridge_injector=relocated["bridge_injector"],
+                )
+
+    def test_manifest_runtime_binary_paths_remain_the_default(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            (
+                manifest_path,
+                game_root,
+                _game_executable,
+                _bookmark_events,
+                expected_game_sha256,
+            ) = _write_self_contained_manifest(root)
+            manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+            with mock.patch.object(
+                ADAPTER, "EXPECTED_EXE_SHA256", expected_game_sha256
+            ):
+                _manifest, paths, _timeouts, checked = ADAPTER._load_manifest(
+                    manifest_path,
+                    repo_root=root,
+                    game_root=game_root,
+                )
+
+        self.assertEqual(
+            paths.capture_executable,
+            Path(manifest["paths"]["capture_executable"]).resolve(),
+        )
+        self.assertEqual(
+            paths.bridge_dll, Path(manifest["paths"]["bridge_dll"]).resolve()
+        )
+        self.assertEqual(
+            paths.bridge_injector,
+            Path(manifest["paths"]["bridge_injector"]).resolve(),
+        )
+        for name in ("capture_executable", "bridge_dll", "bridge_injector"):
+            self.assertEqual(checked[name]["path_source"], "manifest")
 
     def test_profile_asset_failure_blocks_before_popen_and_writes_evidence(self) -> None:
         with tempfile.TemporaryDirectory() as temp:
@@ -655,6 +780,9 @@ class G2SourceSpecificWarLossLiveAdapterTests(unittest.TestCase):
         explicit_game_root = Path("explicit-game")
         explicit_game_executable = Path("explicit-ck3.exe")
         explicit_bookmark_events = Path("explicit-bookmark-events.txt")
+        explicit_capture_executable = Path("explicit-capture.exe")
+        explicit_bridge_dll = Path("explicit-bridge.dll")
+        explicit_bridge_injector = Path("explicit-injector.exe")
         parsed = parser.parse_args(
             [
                 "--manifest", str(MANIFEST),
@@ -664,12 +792,18 @@ class G2SourceSpecificWarLossLiveAdapterTests(unittest.TestCase):
                 "--game-root", str(explicit_game_root),
                 "--game-executable", str(explicit_game_executable),
                 "--bookmark-events", str(explicit_bookmark_events),
+                "--capture-executable", str(explicit_capture_executable),
+                "--bridge-dll", str(explicit_bridge_dll),
+                "--bridge-injector", str(explicit_bridge_injector),
                 "--verify-only",
             ]
         )
         self.assertEqual(parsed.game_root, explicit_game_root)
         self.assertEqual(parsed.game_executable, explicit_game_executable)
         self.assertEqual(parsed.bookmark_events, explicit_bookmark_events)
+        self.assertEqual(parsed.capture_executable, explicit_capture_executable)
+        self.assertEqual(parsed.bridge_dll, explicit_bridge_dll)
+        self.assertEqual(parsed.bridge_injector, explicit_bridge_injector)
         with self.assertRaisesRegex(
             ADAPTER.LiveAdapterError, "outside the repository"
         ):
@@ -695,6 +829,37 @@ class G2SourceSpecificWarLossLiveAdapterTests(unittest.TestCase):
             )
         self.assertEqual(result, 2)
         preflight.assert_not_called()
+
+        preflight = mock.Mock(return_value={"status": ADAPTER.PREFLIGHT_STATUS})
+        with (
+            tempfile.TemporaryDirectory() as temporary,
+            mock.patch.object(ADAPTER, "run_no_launch_preflight", preflight),
+        ):
+            root = Path(temporary)
+            result = ADAPTER.main(
+                [
+                    "--manifest", str(MANIFEST),
+                    "--preflight-output", str(root / "preflight.json"),
+                    "--profile-settings-template", str(root / "pdx_settings.txt"),
+                    "--expected-war-id", str(ADAPTER.EXPECTED_LIVE_WAR_ID),
+                    "--capture-executable", str(explicit_capture_executable),
+                    "--bridge-dll", str(explicit_bridge_dll),
+                    "--bridge-injector", str(explicit_bridge_injector),
+                    "--verify-only",
+                ]
+            )
+        self.assertEqual(result, 0)
+        self.assertEqual(
+            preflight.call_args.kwargs["capture_executable"],
+            explicit_capture_executable,
+        )
+        self.assertEqual(
+            preflight.call_args.kwargs["bridge_dll"], explicit_bridge_dll
+        )
+        self.assertEqual(
+            preflight.call_args.kwargs["bridge_injector"],
+            explicit_bridge_injector,
+        )
 
     def test_bridge_pid_or_pause_drift_never_returns_a_driver(self) -> None:
         with tempfile.TemporaryDirectory() as temp:

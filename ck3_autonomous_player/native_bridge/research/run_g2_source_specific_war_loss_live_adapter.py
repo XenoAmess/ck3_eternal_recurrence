@@ -123,6 +123,9 @@ def _resolve_runtime_dependency(
     game_root: Path | None,
     game_executable: Path | None,
     bookmark_events: Path | None,
+    capture_executable: Path | None,
+    bridge_dll: Path | None,
+    bridge_injector: Path | None,
 ) -> tuple[Path, str]:
     if name == "game_executable":
         if game_executable is not None:
@@ -143,6 +146,18 @@ def _resolve_runtime_dependency(
                 / "bookmark_events.txt",
                 "explicit-game-root",
             )
+    explicit_runtime_paths = {
+        "capture_executable": (
+            capture_executable,
+            "explicit-capture-executable",
+        ),
+        "bridge_dll": (bridge_dll, "explicit-bridge-dll"),
+        "bridge_injector": (bridge_injector, "explicit-bridge-injector"),
+    }
+    if name in explicit_runtime_paths:
+        explicit_path, source = explicit_runtime_paths[name]
+        if explicit_path is not None:
+            return explicit_path.expanduser().resolve(), source
     return _resolve(manifest_value, repo_root=repo_root), "manifest"
 
 
@@ -461,6 +476,9 @@ def _load_manifest(
     game_root: Path | None = None,
     game_executable: Path | None = None,
     bookmark_events: Path | None = None,
+    capture_executable: Path | None = None,
+    bridge_dll: Path | None = None,
+    bridge_injector: Path | None = None,
 ) -> tuple[dict[str, object], AdapterPaths, AdapterTimeouts, dict[str, dict[str, object]]]:
     manifest = _object(
         json.loads(manifest_path.read_text(encoding="utf-8-sig")), "manifest"
@@ -517,6 +535,9 @@ def _load_manifest(
             game_root=game_root,
             game_executable=game_executable,
             bookmark_events=bookmark_events,
+            capture_executable=capture_executable,
+            bridge_dll=bridge_dll,
+            bridge_injector=bridge_injector,
         )
         expected = _sha256_text(hashes[name], f"{name} SHA-256")
         if not path.is_file():
@@ -612,6 +633,9 @@ def run_no_launch_preflight(
     game_root: Path | None = None,
     game_executable: Path | None = None,
     bookmark_events: Path | None = None,
+    capture_executable: Path | None = None,
+    bridge_dll: Path | None = None,
+    bridge_injector: Path | None = None,
 ) -> dict[str, object]:
     if output_path.exists():
         raise LiveAdapterError(f"output path already exists: {output_path}")
@@ -621,6 +645,9 @@ def run_no_launch_preflight(
         game_root=game_root,
         game_executable=game_executable,
         bookmark_events=bookmark_events,
+        capture_executable=capture_executable,
+        bridge_dll=bridge_dll,
+        bridge_injector=bridge_injector,
     )
     before = copy.deepcopy(process_inventory())
     after = copy.deepcopy(process_inventory())
@@ -1319,6 +1346,30 @@ def _parser() -> argparse.ArgumentParser:
             "--game-root and must match the manifest SHA-256"
         ),
     )
+    parser.add_argument(
+        "--capture-executable",
+        type=Path,
+        help=(
+            "explicit private source-capture executable; overrides the manifest "
+            "path but must match its SHA-256"
+        ),
+    )
+    parser.add_argument(
+        "--bridge-dll",
+        type=Path,
+        help=(
+            "explicit MCP bridge DLL; overrides the manifest path but must match "
+            "its SHA-256"
+        ),
+    )
+    parser.add_argument(
+        "--bridge-injector",
+        type=Path,
+        help=(
+            "explicit MCP bridge injector; overrides the manifest path but must "
+            "match its SHA-256"
+        ),
+    )
     parser.add_argument("--expected-character-id", type=int)
     parser.add_argument("--expected-war-id", type=int, required=True)
     parser.add_argument("--postwar-timeout", type=float, default=45.0)
@@ -1344,6 +1395,9 @@ def main(argv: list[str] | None = None) -> int:
             game_root=args.game_root,
             game_executable=args.game_executable,
             bookmark_events=args.bookmark_events,
+            capture_executable=args.capture_executable,
+            bridge_dll=args.bridge_dll,
+            bridge_injector=args.bridge_injector,
         )
         if args.verify_only:
             print(json.dumps(preflight, ensure_ascii=False, indent=2))
@@ -1363,6 +1417,9 @@ def main(argv: list[str] | None = None) -> int:
             game_root=args.game_root,
             game_executable=args.game_executable,
             bookmark_events=args.bookmark_events,
+            capture_executable=args.capture_executable,
+            bridge_dll=args.bridge_dll,
+            bridge_injector=args.bridge_injector,
         )
         operations = ConcreteLiveOperations(
             paths=paths,

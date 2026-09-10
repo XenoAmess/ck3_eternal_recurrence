@@ -61,8 +61,8 @@ pins the adapter and every executable/source dependency. Important hashes:
 
 | Input | SHA-256 |
 | --- | --- |
-| adapter | `480BD5AC20AA50A3A439E0F0AC50DF722B360580558F865E8CBCDB601599A23C` |
-| manifest | `58F9677E0CE03829D80063A14C7450028A68A8C1AFDDFA7A09F7F28BCA9D77AE` |
+| adapter | `94E179F41D9BAB852D9A8E5CB50D9D1E7ED9C69F792C4650E93B626BE267E9F7` |
+| manifest | `056D765A29707D206432973960E4863D011C6132ECB5C87F97C72D0A7A4AAA9A` |
 | source capture executable | `B8328D5C0B52AF667BB71D2BBE660C803BF46EC0A7549A514083B7DBB8BA5A72` |
 | bridge DLL | `4D839524098891BD997009663E189929722746AB0404D88C1E91F7546EFE238B` |
 | bridge injector | `43983E28CE3FBFC5EA1F26786834AD5E9133E59807BDCB18FB244BA8E830E08D` |
@@ -158,6 +158,22 @@ Receipt:
 This closes only the isolated-worktree preflight path gap; all live/readiness
 fields remain unchanged.
 
+### Relocatable runtime binaries
+
+The adapter also accepts explicit `--capture-executable`, `--bridge-dll`, and
+`--bridge-injector` paths. These arguments let another operator or machine use
+a byte-identical frozen runtime bundle without editing the manifest's local
+default paths. An explicit path takes precedence only for its named dependency;
+the manifest remains the source of the expected SHA-256, and a relocated file
+with different bytes is rejected before any launch or attachment.
+
+Omitting all three arguments preserves the original manifest-path behavior.
+The no-launch test matrix covers explicit-path precedence, a fully relocated
+fake bundle, hash-drift rejection, default fallback, and CLI forwarding. This
+is a launch-wrapper portability change only: it does not alter the native
+bridge or MCP schema/API, create production evidence, or advance any G2
+readiness field.
+
 After the coordinator grants an exclusive CK3 slot, the concrete default-OFF
 command is:
 
@@ -170,6 +186,9 @@ command is:
   --userdir "<fresh-empty-userdir>" `
   --profile-settings-template "<known-good-profile>\pdx_settings.txt" `
   --game-root "<CK3-install-root>" `
+  --capture-executable "<runtime-bundle>\xar_ck3_raiktor_war_bound_private_capture_v1.exe" `
+  --bridge-dll "<runtime-bundle>\xar_ck3_bridge.dll" `
+  --bridge-injector "<runtime-bundle>\xar_ck3_bridge_injector.exe" `
   --expected-character-id 29829 `
   --expected-war-id 50331699 `
   --postwar-timeout 45 `
