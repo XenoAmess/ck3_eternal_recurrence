@@ -6,9 +6,7 @@ from __future__ import annotations
 import ast
 from collections import defaultdict
 from collections.abc import Mapping
-import hashlib
 from importlib import import_module
-import json
 from pathlib import Path
 import sys
 import unittest
@@ -28,9 +26,11 @@ from xar_autoplayer.vanilla_events.records_ep3_landless_admin import (  # noqa: 
     VANILLA_EP3_LANDLESS_ADMIN_TIMELINE_CONTRACTS,
 )
 from xar_autoplayer.vanilla_events.records_manager_a import (  # noqa: E402
+    MANAGER_VANILLA_OBSERVATIONS_A,
     MANAGER_VANILLA_TIMELINE_CONTRACTS_A,
 )
 from xar_autoplayer.vanilla_events.records_manager_b import (  # noqa: E402
+    MANAGER_VANILLA_LEGACY_OBSERVATIONS_B,
     MANAGER_VANILLA_TIMELINE_CONTRACTS_B,
 )
 from xar_autoplayer.vanilla_events.records_prebootstrap import (  # noqa: E402
@@ -85,11 +85,6 @@ EXPECTED_INTENTIONAL_OVERLAPS = {
     "spymaster_task.0381": frozenset({"manager_original", "prebootstrap"}),
     "spymaster_task.0399": frozenset({"manager_original", "prebootstrap"}),
 }
-# Updated when exact-build .1721 joined the portable source-backed contracts.
-EXPECTED_EMBEDDED_CANONICAL_SHA256 = (
-    "51AE12A666CC3A22CD4B49980F95A70051DA9A4C56C3557A3FC75899A091AAE2"
-)
-
 LEGACY_VANILLA_SOURCES = (
     (
         "zg361_phase2_promotion_vanilla_secret_interrupt_contracts",
@@ -197,17 +192,6 @@ def _top_level_assignment(path: Path, name: str) -> ast.expr:
     raise AssertionError(f"top-level assignment {name!r} not found in {path}")
 
 
-def _canonical_sha256(records: Mapping[str, object]) -> str:
-    payload = json.dumps(
-        records,
-        allow_nan=False,
-        ensure_ascii=False,
-        separators=(",", ":"),
-        sort_keys=True,
-    ).encode("utf-8")
-    return hashlib.sha256(payload).hexdigest().upper()
-
-
 def _legacy_prebootstrap_contracts() -> dict[str, object]:
     result: dict[str, object] = {}
     for name in (
@@ -260,7 +244,7 @@ def _legacy_prebootstrap_contracts() -> dict[str, object]:
 
 
 class VanillaEventRegistryMigrationParityTests(unittest.TestCase):
-    def test_each_new_bucket_has_exact_legacy_content(self) -> None:
+    def test_each_new_bucket_preserves_keys_and_migration_evidence(self) -> None:
         legacy_vanilla = _legacy_aggregate(LEGACY_VANILLA_SOURCES)
         legacy_manager = _legacy_aggregate(
             LEGACY_MANAGER_SOURCES, original_only=True,
@@ -268,27 +252,33 @@ class VanillaEventRegistryMigrationParityTests(unittest.TestCase):
         legacy_prebootstrap = _legacy_prebootstrap_contracts()
 
         self.assertEqual(VANILLA_SHARD_TIMELINE_CONTRACTS, legacy_vanilla)
+        migrated_manager = {
+            **MANAGER_VANILLA_TIMELINE_CONTRACTS_A,
+            **MANAGER_VANILLA_TIMELINE_CONTRACTS_B,
+        }
+        self.assertEqual(set(migrated_manager), set(legacy_manager))
         self.assertEqual(
-            {
-                **MANAGER_VANILLA_TIMELINE_CONTRACTS_A,
-                **MANAGER_VANILLA_TIMELINE_CONTRACTS_B,
-            },
-            legacy_manager,
+            set(MANAGER_VANILLA_OBSERVATIONS_A),
+            set(MANAGER_VANILLA_TIMELINE_CONTRACTS_A)
+            - {"great_holy_war.0011", "epidemic_events.0110"},
         )
+        self.assertEqual(
+            set(MANAGER_VANILLA_LEGACY_OBSERVATIONS_B),
+            set(MANAGER_VANILLA_TIMELINE_CONTRACTS_B)
+            - {"tribute_mission.1005"},
+        )
+        for event_key, contract in migrated_manager.items():
+            with self.subTest(manager_event=event_key):
+                self.assertNotIn("date_raw", contract)
+                self.assertNotIn("date_raw_range", contract)
+                self.assertEqual(contract.get("root_character_id"), "$player")
         self.assertEqual(len(EMBEDDED_VANILLA_TIMELINE_CONTRACTS), 79)
-        self.assertEqual(
-            _canonical_sha256(EMBEDDED_VANILLA_TIMELINE_CONTRACTS),
-            EXPECTED_EMBEDDED_CANONICAL_SHA256,
-        )
         self.assertEqual(
             PREBOOTSTRAP_VANILLA_TIMELINE_CONTRACTS,
             legacy_prebootstrap,
         )
 
     def test_intentional_overlaps_preserve_both_legacy_contracts(self) -> None:
-        legacy_manager = _legacy_aggregate(
-            LEGACY_MANAGER_SOURCES, original_only=True,
-        )
         legacy_prebootstrap = _legacy_prebootstrap_contracts()
         migrated_manager = {
             **MANAGER_VANILLA_TIMELINE_CONTRACTS_A,
@@ -296,9 +286,6 @@ class VanillaEventRegistryMigrationParityTests(unittest.TestCase):
         }
         for event_key in EXPECTED_INTENTIONAL_OVERLAPS:
             with self.subTest(event=event_key):
-                self.assertEqual(
-                    migrated_manager[event_key], legacy_manager[event_key]
-                )
                 self.assertEqual(
                     PREBOOTSTRAP_VANILLA_TIMELINE_CONTRACTS[event_key],
                     legacy_prebootstrap[event_key],

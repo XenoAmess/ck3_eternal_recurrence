@@ -51,9 +51,13 @@ from .records_ep3_landless_admin import (
 from .records_manager_a import (
     MANAGER_HOLY_WAR_ANALYSIS,
     MANAGER_HOLY_WAR_OBSERVATIONS,
+    MANAGER_VANILLA_OBSERVATIONS_A,
     MANAGER_VANILLA_TIMELINE_CONTRACTS_A,
 )
-from .records_manager_b import MANAGER_VANILLA_TIMELINE_CONTRACTS_B
+from .records_manager_b import (
+    MANAGER_VANILLA_LEGACY_OBSERVATIONS_B,
+    MANAGER_VANILLA_TIMELINE_CONTRACTS_B,
+)
 from .records_tgp_dynastic_cycle import (
     VANILLA_TGP_DYNASTIC_CYCLE_ANALYSIS,
     VANILLA_TGP_DYNASTIC_CYCLE_OBSERVATIONS,
@@ -143,7 +147,9 @@ DEFAULT_VANILLA_EVENT_OBSERVATIONS: Final = _merge_metadata_tables(
         VANILLA_SHARD_LEGACY_LIVE_OBSERVATIONS_A,
     ),
     ("manager_holy_war", MANAGER_HOLY_WAR_OBSERVATIONS),
+    ("manager_a_legacy_live", MANAGER_VANILLA_OBSERVATIONS_A),
     ("manager_b", MANAGER_VANILLA_OBSERVATIONS_B),
+    ("manager_b_legacy_live", MANAGER_VANILLA_LEGACY_OBSERVATIONS_B),
     ("embedded_a", VANILLA_EMBEDDED_A_OBSERVATIONS),
     ("embedded_b", VANILLA_EMBEDDED_B_OBSERVATIONS),
     ("epidemic", VANILLA_EPIDEMIC_OBSERVATIONS),

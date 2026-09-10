@@ -91,10 +91,15 @@ def test_package_import_registers_one_disjoint_default_catalog() -> None:
     assert query_vanilla_event_knowledge_v1("prison_notification.2002")[
         "status"
     ] == "available"
-    manager_contract = query_vanilla_event_knowledge_v1("spymaster_task.0381")[
-        "contract"
-    ]
-    assert manager_contract["date_raw"] == [53148768, 53152656]
+    manager_response = query_vanilla_event_knowledge_v1("spymaster_task.0381")
+    manager_contract = manager_response["contract"]
+    assert "date_raw" not in manager_contract
+    assert "date_raw_range" not in manager_contract
+    assert manager_contract["root_character_id"] == "$player"
+    manager_legacy = manager_response["observations"]["exemplars"][0]
+    assert manager_legacy["kind"] == "legacy-live-binding"
+    assert manager_legacy["date_raw"] == [53148768, 53152656]
+    assert manager_legacy["root_character_id"] == 29037
     for event_key in DEFAULT_VANILLA_EVENT_TIMELINE_CONTRACTS:
         response = query_vanilla_event_knowledge_v1(event_key)
         assert response["status"] == "available"
