@@ -19,6 +19,57 @@ from .registry import (
 VANILLA_FACTION_DEMAND_TIMELINE_CONTRACTS: Final[
     dict[str, dict[str, object]]
 ] = {
+    "faction_demand.0099": {
+        # An affected vassal is only being asked whether to join the already
+        # active populist war.  Authored option 3 (native 2) takes no side, so
+        # it avoids conversion and avoids adding the player to either army.
+        # Option 1 is conditional; bind both exact rendered projections while
+        # retaining the source-authored three-slot snapshot shape.
+        "date_policy": "product-observation-window",
+        "root_character_id": PLAYER_SENTINEL,
+        "character_scopes": {},
+        "unique_character_scope_excludes": {
+            "faction_target": (PLAYER_SENTINEL,),
+            "peasant_leader": (PLAYER_SENTINEL,),
+        },
+        "scope_types": {
+            "faction": "faction",
+            "peasant_county": "landed_title",
+            "faction_target": "character",
+            "target_title": "landed_title",
+            "peasant_leader": "character",
+            "populist_war": "war",
+        },
+        "boolean_scopes": (),
+        "saved_scope_name_sets": ((
+            "faction",
+            "peasant_county",
+            "faction_target",
+            "target_title",
+            "peasant_leader",
+            "populist_war",
+        ),),
+        "saved_scope_count": 6,
+        "option_count": 2,
+        "snapshot_option_count": 3,
+        "native_option_indices": (1, 2),
+        "selected_option_number": 3,
+        "selected_native_option_index": 2,
+        "option_variants": ({
+            "option_count": 2,
+            "snapshot_option_count": 3,
+            "native_option_indices": (1, 2),
+            "selected_option_number": 3,
+            "selected_native_option_index": 2,
+        }, {
+            "option_count": 3,
+            "snapshot_option_count": 3,
+            "native_option_indices": (0, 1, 2),
+            "selected_option_number": 3,
+            "selected_native_option_index": 2,
+        }),
+        "occurrence_policy": "repeatable-within-product-observation-window",
+    },
     "faction_demand.1101": {
         # Accepting is the bounded product route: it avoids immediately
         # starting a peasant war and leaves any later faction lifecycle to a
@@ -96,6 +147,57 @@ VANILLA_FACTION_DEMAND_TIMELINE_CONTRACTS: Final[
 VANILLA_FACTION_DEMAND_ANALYSIS: Final[
     dict[str, dict[str, object]]
 ] = {
+    "faction_demand.0099": {
+        "exact_build": {
+            "game_version": EXACT_CK3_BUILD,
+            "ck3_executable_sha256": EXACT_CK3_EXE_SHA256,
+        },
+        "source_sha256": {
+            "events/factions/faction_demands.txt": (
+                "B06241E67B6692F51FCFC6021E4DBE085C9E25A50B9CD08957CBCC9E25AEBEA9"
+            ),
+        },
+        "definition_lines": "1466-1765",
+        "caller_lines": "1382-1393",
+        "caller_semantics": (
+            "after a populist demand is refused and its war starts, every "
+            "affected vassal receives this letter and chooses a side"
+        ),
+        "trigger_boundary": (
+            "the saved faction and peasant leader must still exist, and the "
+            "leader must remain a member of that faction"
+        ),
+        "immediate_effect": (
+            "saves the faction's already-active war as populist_war"
+        ),
+        "option_semantics": {
+            0: (
+                "conditionally adopts the peasant leader's culture and faith, "
+                "pays the authored prestige/piety-level penalties, and joins "
+                "the attacking side"
+            ),
+            1: "joins the defending side alongside the current liege",
+            2: "takes no side and applies no scripted state mutation",
+        },
+        "after_effect": None,
+        "war_ooda_boundary": (
+            "native option 2 leaves the already-active populist war to its "
+            "existing participants and creates no new military commitment for "
+            "the player"
+        ),
+        "religion_scope_boundary": (
+            "faith only gates and supplies the explicitly rejected conversion "
+            "route; selecting no side does not inspect or change faith policy"
+        ),
+        "repeatability": (
+            "each affected vassal receives its own occurrence, and later "
+            "populist wars can generate new occurrences"
+        ),
+        "safe_option_rationale": (
+            "native option 2 is the source-authored no-op route: it avoids "
+            "culture/faith conversion and avoids joining either war side"
+        ),
+    },
     "faction_demand.1101": {
         "exact_build": {
             "game_version": EXACT_CK3_BUILD,
@@ -333,6 +435,42 @@ VANILLA_FACTION_DEMAND_ANALYSIS: Final[
 VANILLA_FACTION_DEMAND_OBSERVATIONS: Final[
     dict[str, dict[str, object]]
 ] = {
+    "faction_demand.0099": {
+        "exemplars": [{
+            "run": "R406",
+            "kind": "pre-selection-live-red",
+            "artifact": (
+                "_runtime/p1-terminal-stages-mcp-20260911/live-artifacts/"
+                "terminal-stages-red.json"
+            ),
+            "artifact_sha256": (
+                "0566A837947FE94EE0F90F09435F8F8AFABC7E55462732368578B6A6C2ACC085"
+            ),
+            "date_raw": 54001392,
+            "event_instance_id": 2152,
+            "root_character_id": 33596113,
+            "saved_character_ids": {
+                "faction_target": 16863885,
+                "peasant_leader": 117494968,
+            },
+            "saved_scope_raw_types": {
+                "faction": 25,
+                "peasant_county": 5,
+                "faction_target": 4,
+                "target_title": 5,
+                "peasant_leader": 4,
+                "populist_war": 16,
+            },
+            "rendered_native_option_indices": [1, 2],
+            "enabled_native_option_indices": [1, 2],
+            "selection_attempted": False,
+            "connection_generation": 1,
+            "bridge_pid": 30984,
+            "snapshot_id": "native:175",
+            "revision": 176,
+            "process_restart_required": False,
+        }],
+    },
     "faction_demand.1101": {
         "exemplars": [{
             "run": "R374",

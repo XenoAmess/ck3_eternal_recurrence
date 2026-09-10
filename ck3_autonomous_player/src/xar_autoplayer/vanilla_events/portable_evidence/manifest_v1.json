@@ -94,6 +94,28 @@
       "sha256": "02ccaa03ad0549cd69708209a39e63e92cb1f57cd342aa428ad41c9e04bedb1f"
     },
     {
+      "blob_bytes": 21369,
+      "blob_path": "blobs/0566a837947fe94ee0f90f09435f8f8afabc7e55462732368578b6a6c2acc085.gz",
+      "blob_sha256": "8ebae146f1fa08da132c5610d386acacb1813a061651de7a0acba3ba3fcaa52c",
+      "bytes": 327268,
+      "evidence_id": "0566a837947fe94ee0f90f09435f8f8afabc7e55462732368578b6a6c2acc085",
+      "kind": "observation_artifact",
+      "media_type": "application/json",
+      "references": [
+        {
+          "caller_candidate_resolution": null,
+          "event_definition_key": "faction_demand.0099",
+          "logical_path": "_runtime/p1-terminal-stages-mcp-20260911/live-artifacts/terminal-stages-red.json",
+          "origin": "runtime",
+          "provenance": "captured-observation-artifact",
+          "role": "artifact",
+          "source_column": null,
+          "source_line": null
+        }
+      ],
+      "sha256": "0566a837947fe94ee0f90f09435f8f8afabc7e55462732368578b6a6c2acc085"
+    },
+    {
       "blob_bytes": 14021,
       "blob_path": "blobs/0742fc261c844979e9b6311b297502172400b8b5a6a70743122ddb30de8b632d.gz",
       "blob_sha256": "73e7bf8f5a89e61786868b90418cc49d0bf59f8f9d307b340166de6aea3bcefb",
@@ -9222,6 +9244,36 @@
       "references": [
         {
           "caller_candidate_resolution": null,
+          "event_definition_key": "faction_demand.0099",
+          "logical_path": "events/factions/faction_demands.txt",
+          "origin": "ck3_game",
+          "provenance": "generated-definition-index",
+          "role": "event_definition",
+          "source_column": null,
+          "source_line": 1466
+        },
+        {
+          "caller_candidate_resolution": "same-definition-file-only",
+          "event_definition_key": "faction_demand.0099",
+          "logical_path": "events/factions/faction_demands.txt",
+          "origin": "ck3_game",
+          "provenance": "lexical-caller-candidate-not-proven-runtime-caller",
+          "role": "caller_candidate",
+          "source_column": 21,
+          "source_line": 1391
+        },
+        {
+          "caller_candidate_resolution": null,
+          "event_definition_key": "faction_demand.0099",
+          "logical_path": "events/factions/faction_demands.txt",
+          "origin": "ck3_game",
+          "provenance": "manually-reviewed-analysis-source",
+          "role": "analysis_source",
+          "source_column": null,
+          "source_line": null
+        },
+        {
+          "caller_candidate_resolution": null,
           "event_definition_key": "faction_demand.0101",
           "logical_path": "events/factions/faction_demands.txt",
           "origin": "ck3_game",
@@ -11955,13 +12007,13 @@
   "schema": "xar.ck3.vanilla-event-portable-evidence-manifest",
   "schema_version": 1,
   "statistics": {
-    "evidence": 227,
-    "generated_definition_references": 169,
-    "lexical_caller_candidate_references": 500,
-    "manually_reviewed_analysis_source_references": 192,
-    "observation_artifact_references": 61,
-    "observation_artifacts": 60,
-    "references": 922,
+    "evidence": 228,
+    "generated_definition_references": 170,
+    "lexical_caller_candidate_references": 501,
+    "manually_reviewed_analysis_source_references": 193,
+    "observation_artifact_references": 62,
+    "observation_artifacts": 61,
+    "references": 926,
     "source_definitions": 167
   }
 }

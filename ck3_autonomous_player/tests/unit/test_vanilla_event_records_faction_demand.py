@@ -31,6 +31,7 @@ import zg361_phase2_promotion_source_production_entry as production  # noqa: E40
 
 CLAIMANT_EVENT_KEY = "faction_demand.2001"
 PEASANT_EVENT_KEY = "faction_demand.1101"
+POPULIST_VASSAL_EVENT_KEY = "faction_demand.0099"
 SHA256_PATTERN = re.compile(r"^[0-9A-F]{64}$")
 
 
@@ -64,6 +65,79 @@ def _character_scope(name: str, character_id: int) -> dict[str, object]:
 
 
 class FactionDemandEventRecordTests(unittest.TestCase):
+    def test_populist_vassal_no_side_route_matches_r406(self) -> None:
+        contract = production._manager_recovery_contract(
+            production.KNOWN_TIMELINE_INTERRUPTS[POPULIST_VASSAL_EVENT_KEY],
+            player=33596113,
+            event_key=POPULIST_VASSAL_EVENT_KEY,
+        )
+        contract = production._timeline_contract_for_window(
+            contract,
+            starting_date=53998728,
+        )
+        context = {
+            "schema": "current-event-window-context-v1",
+            "schema_version": 1,
+            "status": "available",
+            "window_match_count": 1,
+            "event_definition_key": POPULIST_VASSAL_EVENT_KEY,
+            "current_event_instance_id": 2152,
+            "date_raw": 54001392,
+            "root_scope": {
+                "status": "available",
+                "type_key": "character",
+                "typed_identity": {
+                    "status": "available",
+                    "kind": "character",
+                    "character_id": 33596113,
+                },
+            },
+            "saved_scopes": [
+                _generic_scope("faction", "faction"),
+                _generic_scope("peasant_county", "landed_title"),
+                _character_scope("faction_target", 16863885),
+                _generic_scope("target_title", "landed_title"),
+                _character_scope("peasant_leader", 117494968),
+                _generic_scope("populist_war", "war"),
+            ],
+            "options": [
+                {
+                    "rendered_index": rendered,
+                    "native_option_index": native,
+                    "shown": True,
+                    "enabled": True,
+                    "fallback": False,
+                    "cancel": False,
+                }
+                for rendered, native in enumerate((1, 2))
+            ],
+        }
+        checks = production._known_interrupt_checks(
+            snapshot={
+                "date_raw": 54001392,
+                "active_event": {"option_count": 3},
+            },
+            event={"event_instance_id": 2152},
+            context=context,
+            event_key=POPULIST_VASSAL_EVENT_KEY,
+            contract=contract,
+        )
+
+        self.assertTrue(all(checks.values()), checks)
+        self.assertEqual(contract["selected_option_number"], 3)
+        self.assertEqual(contract["selected_native_option_index"], 2)
+        self.assertIn(
+            "no-op route",
+            VANILLA_FACTION_DEMAND_ANALYSIS[POPULIST_VASSAL_EVENT_KEY][
+                "safe_option_rationale"
+            ],
+        )
+        exemplar, = VANILLA_FACTION_DEMAND_OBSERVATIONS[
+            POPULIST_VASSAL_EVENT_KEY
+        ]["exemplars"]
+        self.assertEqual(exemplar["event_instance_id"], 2152)
+        self.assertFalse(exemplar["selection_attempted"])
+
     def test_contract_is_portable_and_selects_war_ooda_route(self) -> None:
         contract = VANILLA_FACTION_DEMAND_TIMELINE_CONTRACTS[
             CLAIMANT_EVENT_KEY
@@ -159,13 +233,13 @@ class FactionDemandEventRecordTests(unittest.TestCase):
             self.assertNotIn(str(observation_only), contract_repr)
 
     def test_default_registry_mcp_and_runtime_include_record(self) -> None:
-        self.assertEqual(len(DEFAULT_VANILLA_EVENT_TIMELINE_CONTRACTS), 169)
-        self.assertEqual(len(DEFAULT_VANILLA_EVENT_ANALYSIS), 169)
+        self.assertEqual(len(DEFAULT_VANILLA_EVENT_TIMELINE_CONTRACTS), 170)
+        self.assertEqual(len(DEFAULT_VANILLA_EVENT_ANALYSIS), 170)
         self.assertIs(
             DEFAULT_VANILLA_EVENT_OBSERVATIONS[CLAIMANT_EVENT_KEY],
             VANILLA_FACTION_DEMAND_OBSERVATIONS[CLAIMANT_EVENT_KEY],
         )
-        self.assertEqual(len(production.KNOWN_TIMELINE_INTERRUPTS), 308)
+        self.assertEqual(len(production.KNOWN_TIMELINE_INTERRUPTS), 309)
         self.assertIs(
             production.KNOWN_TIMELINE_INTERRUPTS[CLAIMANT_EVENT_KEY],
             VANILLA_FACTION_DEMAND_TIMELINE_CONTRACTS[CLAIMANT_EVENT_KEY],
