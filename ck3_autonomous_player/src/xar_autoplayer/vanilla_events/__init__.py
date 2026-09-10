@@ -28,6 +28,7 @@ from .records_analysis_vanilla_shards import (
     VANILLA_SHARD_OBSERVATIONS,
 )
 from .records_embedded import EMBEDDED_VANILLA_TIMELINE_CONTRACTS
+from .records_embedded_c import EMBEDDED_C_VANILLA_OBSERVATIONS
 from .records_death_management import (
     VANILLA_DEATH_MANAGEMENT_ANALYSIS,
     VANILLA_DEATH_MANAGEMENT_OBSERVATIONS,
@@ -152,6 +153,7 @@ DEFAULT_VANILLA_EVENT_OBSERVATIONS: Final = _merge_metadata_tables(
     ("manager_b_legacy_live", MANAGER_VANILLA_LEGACY_OBSERVATIONS_B),
     ("embedded_a", VANILLA_EMBEDDED_A_OBSERVATIONS),
     ("embedded_b", VANILLA_EMBEDDED_B_OBSERVATIONS),
+    ("embedded_c", EMBEDDED_C_VANILLA_OBSERVATIONS),
     ("epidemic", VANILLA_EPIDEMIC_OBSERVATIONS),
     ("ep3_landless_admin", VANILLA_EP3_LANDLESS_ADMIN_OBSERVATIONS),
     ("tgp_dynastic_cycle", VANILLA_TGP_DYNASTIC_CYCLE_OBSERVATIONS),

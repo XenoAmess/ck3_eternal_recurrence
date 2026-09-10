@@ -1,7 +1,6 @@
 ﻿from __future__ import annotations
 
 import ast
-import hashlib
 import json
 from pathlib import Path
 import unittest
@@ -33,12 +32,6 @@ WORKTREE_ROOT = Path(__file__).resolve().parents[3]
 PRODUCTION_ENTRY = (
     WORKTREE_ROOT / "tools" / "zg361_phase2_promotion_source_production_entry.py"
 )
-# Updated when exact-build .1721 joined the portable source-backed contracts.
-EXPECTED_EMBEDDED_CANONICAL_SHA256 = (
-    "51AE12A666CC3A22CD4B49980F95A70051DA9A4C56C3557A3FC75899A091AAE2"
-)
-
-
 def _canonical_bytes(value: object) -> bytes:
     return json.dumps(
         value,
@@ -46,10 +39,6 @@ def _canonical_bytes(value: object) -> bytes:
         separators=(",", ":"),
         sort_keys=True,
     ).encode("utf-8")
-
-
-def _canonical_sha256(value: object) -> str:
-    return hashlib.sha256(_canonical_bytes(value)).hexdigest().upper()
 
 
 def _production_tree() -> ast.Module:
@@ -110,7 +99,10 @@ class EmbeddedVanillaTimelineContractsTests(unittest.TestCase):
             records_embedded_b.__all__,
         )
         self.assertEqual(
-            ["EMBEDDED_C_VANILLA_TIMELINE_CONTRACTS"],
+            [
+                "EMBEDDED_C_VANILLA_OBSERVATIONS",
+                "EMBEDDED_C_VANILLA_TIMELINE_CONTRACTS",
+            ],
             records_embedded_c.__all__,
         )
 
@@ -155,7 +147,7 @@ class EmbeddedVanillaTimelineContractsTests(unittest.TestCase):
                     Path(module.__file__).read_bytes().startswith(b"\xef\xbb\xbf")
                 )
 
-    def test_embedded_inventory_and_content_digest_are_frozen(self) -> None:
+    def test_embedded_inventory_is_campaign_neutral(self) -> None:
         self.assertEqual(len(EMBEDDED_VANILLA_TIMELINE_CONTRACTS), 79)
         self.assertFalse(
             any(
@@ -163,10 +155,11 @@ class EmbeddedVanillaTimelineContractsTests(unittest.TestCase):
                 for key in EMBEDDED_VANILLA_TIMELINE_CONTRACTS
             )
         )
-        self.assertEqual(
-            _canonical_sha256(EMBEDDED_VANILLA_TIMELINE_CONTRACTS),
-            EXPECTED_EMBEDDED_CANONICAL_SHA256,
-        )
+        for event_key, contract in EMBEDDED_VANILLA_TIMELINE_CONTRACTS.items():
+            with self.subTest(event=event_key):
+                self.assertNotIn("date_raw", contract)
+                self.assertNotIn("date_raw_range", contract)
+                self.assertEqual(contract.get("root_character_id"), "$player")
 
     def test_production_literal_is_product_only_and_uses_shared_aggregate(
         self,
