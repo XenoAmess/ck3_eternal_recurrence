@@ -634,6 +634,52 @@ KNOWN_TIMELINE_INTERRUPTS: dict[str, dict[str, object]] = {
         "selected_native_option_index": 0,
         "occurrence_policy": "repeatable-within-product-observation-window",
     },
+    "imperial_examination.7100": {
+        # CK3 1.19.0.6, exact EXE SHA 2D00FF31...; source
+        # events/activities/imperial_examination_activity/
+        # imperial_examination_events.txt SHA 346473CE..., lines 8627-9104.
+        # R408 instance 2161 renders authored native options 0 and 3 from the
+        # four-option event. Native 3 is the explicit opt-out: it only applies
+        # the authored minor stress relief and avoids all follow-up events and
+        # family-member opinion mutations in options 0-2.
+        "date_policy": "product-observation-window",
+        "root_character_id": 33596113,
+        "character_scopes": {
+            "host": 16863885,
+            "palace_entrant": 83959613,
+            "house_member": 83959613,
+        },
+        "character_scope_matches_any": {
+            "palace_entrant": ("house_member",),
+            "house_member": ("palace_entrant",),
+        },
+        "scope_types": {
+            "activity": "activity",
+            "host": "character",
+            "province": "province",
+            "new_memory": "character_memory",
+            "location": "province",
+            "palace_entrant": "character",
+            "house_member": "character",
+        },
+        "boolean_scopes": (),
+        "saved_scope_name_sets": ((
+            "activity",
+            "host",
+            "province",
+            "new_memory",
+            "location",
+            "palace_entrant",
+            "house_member",
+        ),),
+        "saved_scope_count": 7,
+        "option_count": 2,
+        "snapshot_option_count": 4,
+        "native_option_indices": (0, 3),
+        "selected_option_number": 4,
+        "selected_native_option_index": 3,
+        "occurrence_policy": "repeatable-within-product-observation-window",
+    },
     "zg361b2.40": {
         "date_raw": 53147040,
         "date_policy": "exact-authored-anchor",

@@ -426,6 +426,71 @@ class ManagerRecoveryInterruptTests(unittest.TestCase):
         self.assertNotIn("add_province_modifier", first_option)
         self.assertNotIn("add_character_modifier", first_option)
 
+    def test_imperial_examination_family_notice_uses_opt_out(self) -> None:
+        event_key = "imperial_examination.7100"
+        contract = production._manager_recovery_contract(
+            production.KNOWN_TIMELINE_INTERRUPTS[event_key],
+            player=33596113,
+            event_key=event_key,
+        )
+        contract = production._timeline_contract_for_window(
+            contract,
+            starting_date=54011856,
+        )
+        context = _context(
+            event_key=event_key,
+            instance_id=2161,
+            date_raw=54012072,
+            player=33596113,
+            scopes=[
+                _scope("activity", "activity"),
+                _scope("host", "character", 16863885),
+                _scope("province", "province"),
+                _scope("new_memory", "character_memory"),
+                _scope("location", "province"),
+                _scope("palace_entrant", "character", 83959613),
+                _scope("house_member", "character", 83959613),
+            ],
+            native_option_indices=(0, 3),
+        )
+        checks = production._known_interrupt_checks(
+            snapshot={
+                "date_raw": 54012072,
+                "active_event": {"option_count": 4},
+            },
+            event={"event_instance_id": 2161},
+            context=context,
+            event_key=event_key,
+            contract=contract,
+        )
+        self.assertTrue(all(checks.values()), checks)
+        self.assertEqual(contract["selected_option_number"], 4)
+        self.assertEqual(contract["selected_native_option_index"], 3)
+
+        game_root = ROOT / "Crusader Kings III"
+        if not game_root.is_dir():
+            game_root = ROOT.parent / "Crusader Kings III"
+        source_path = (
+            game_root
+            / "game/events/activities/imperial_examination_activity"
+            / "imperial_examination_events.txt"
+        )
+        self.assertEqual(
+            hashlib.sha256(source_path.read_bytes()).hexdigest().upper(),
+            "346473CEC077E2035D364322DFDB3BE9ED20F9925EEB1D5926FDD26B9FC4726A",
+        )
+        source_block = _extract_block(
+            source_path.read_text(encoding="utf-8-sig"),
+            "imperial_examination.7100 =",
+        )
+        self.assertEqual(source_block.count("\n\toption = {"), 4)
+        opt_out = source_block.split("\n\toption = {")[4].split(
+            "\n\n\tafter = {", 1
+        )[0]
+        self.assertIn("minor_stress_impact_loss", opt_out)
+        self.assertNotIn("trigger_event", opt_out)
+        self.assertNotIn("add_opinion", opt_out)
+
     def test_cold_import_preserves_existing_canonical_contract_identity(
         self,
     ) -> None:
