@@ -102,8 +102,8 @@ _SOURCE_FILE_BY_EVENT: Final[dict[str, tuple[str, str]]] = {
         "013A6B602C8C344D27944D99020D1DA11E088C00354A542A97C0AE96FED0401B",
     ),
     "yearly.5050": (
-        "events/dlc/bp2/bp2_yearly_5.txt",
-        "A90ACC2CB8C2933F672737F24C7C81FF5EF0C21EEE057448F9EDFE2CC3EA5636",
+        "events/yearly_events/yearly_events_5.txt",
+        "BA47BA01C55CF9C7E73F469F9FC1C5F1F439B86AC33EF7C31292B821197F3CC5",
     ),
     "yearly.1040": (
         "events/yearly_events/yearly_events_2.txt",

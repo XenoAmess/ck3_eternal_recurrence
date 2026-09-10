@@ -145,6 +145,16 @@ class EmbeddedAnalysisCSliceTests(unittest.TestCase):
                 )
                 self.assertTrue(safe_option["rationale"])
 
+    def test_yearly_5050_uses_the_exact_build_definition_source(self) -> None:
+        self.assertEqual(
+            VANILLA_EMBEDDED_C_ANALYSIS["yearly.5050"]["source_sha256"],
+            {
+                "events/yearly_events/yearly_events_5.txt": (
+                    "BA47BA01C55CF9C7E73F469F9FC1C5F1F439B86AC33EF7C31292B821197F3CC5"
+                )
+            },
+        )
+
     def test_contracts_are_campaign_neutral_and_build_bound(self) -> None:
         self.assertEqual(
             tuple(_LEGACY_EMBEDDED_C_VANILLA_TIMELINE_CONTRACTS),
