@@ -3599,20 +3599,6 @@ class NativeHeadlessGameplayDriver:
                 "malformed ZhongGuo manager/subordinate selector v1 query "
                 "step"
             )
-        zhongguo_manager_subordinate_selector_query = (
-            parse_query_zhongguo_manager_subordinate_selector_v1_step(step)
-        )
-        if (
-            isinstance(step, str)
-            and step.startswith(
-                QUERY_ZHONGGUO_MANAGER_SUBORDINATE_SELECTOR_V1_STEP_PREFIX
-            )
-            and zhongguo_manager_subordinate_selector_query is None
-        ):
-            raise UnsupportedStepError(
-                "malformed ZhongGuo manager/subordinate selector v1 query "
-                "step"
-            )
         zhongguo_scoreboard_query = (
             parse_query_zhongguo_scoreboard_state_v1_step(step)
         )
@@ -14971,6 +14957,20 @@ class ConfiguredHybridFallbackDriver:
         ):
             raise UnsupportedStepError(
                 "malformed ZhongGuo manager-governance snapshot v1 query "
+                "step"
+            )
+        zhongguo_manager_subordinate_selector_query = (
+            parse_query_zhongguo_manager_subordinate_selector_v1_step(step)
+        )
+        if (
+            isinstance(step, str)
+            and step.startswith(
+                QUERY_ZHONGGUO_MANAGER_SUBORDINATE_SELECTOR_V1_STEP_PREFIX
+            )
+            and zhongguo_manager_subordinate_selector_query is None
+        ):
+            raise UnsupportedStepError(
+                "malformed ZhongGuo manager/subordinate selector v1 query "
                 "step"
             )
         zhongguo_scoreboard_query = (
