@@ -1,6 +1,6 @@
 # 天朝二期验收用例索引
 
-状态：**滚动维护；T0 `50%`、canonical stage `8/11`、source `3/4`，P1 尚未签收，P2 `LOCKED`**。
+状态：**滚动维护；下文 T0 `50%`、canonical stage `8/11`、source `3/4` 是历史快照；现行 P1 按九项机器门签收，P2 `LOCKED`**。
 
 本文把分散在生成器测试、静态合同、CK3 runner、source registry 和宣传制作
 文档中的用例统一编址。它是执行索引，不替代各专题的字段级权威定义。
@@ -35,23 +35,36 @@
 
 通过数量不能换算为代码行覆盖率；项目当前没有 coverage.py/分支覆盖率报告。
 
-## T0-P1 四项验收门（2026-09-09 当前账本）
+## T0-P1 九项现行机器门（2026-09-10 owner revision）
 
-| P1 gate | 当前证据 | 当前状态 | 真实剩余项 |
-|---|---|---|---|
-| 1. 当前候选完整 L0 | 生成器/static/release deterministic 门持续运行；`fb99dbd`、`a176cc1` 已恢复 Official Runner master CI，最新合同提交 `d0051ce` 的 Official Runner run `34368907153` / job `102524733797` 也是 `completed/success` | `GREEN_ON_LISTED_COMMITS / final-candidate-rerun-required` | P1 其它门闭合后的最终候选必须再跑同一完整 L0；旧成功不能替代最终字节 |
-| 2. Canonical product 关键链 | loader/recovery、B1–B8 多个 product slice 与 stage 1–8 已有真实证据；R326 把 source 推进到 `3/4` | `LIVE_PARTIAL / stage 8/11` | 完成 stage 9–11 与三次真实 Workforce 周期；冻结 `zg361we.356`、验证 owner `.361` 与 subject-side carried debt/default/charter；把 source 补至 `4/4` |
-| 3. 代表性高风险实机切片 | 动态 owner/subject、跨角色 checkpoint、玩家/AI 闸门、资源/receipt identity 与真实随机 RED 已有 live slices | `LIVE_PARTIAL` | 以 cross-cycle/endgame 同 lineage 覆盖剩余跨周期/跨存档高风险路径，并闭合下列尚未 GREEN 的业务 postconditions；不扩成 361/626 穷举 |
-| 4. 真实 encountered RED 闭环 | 每个长跑 RED 均先保存未选择 artifact，再做 exact-build 最小修复与同 PID 热恢复；`039a509`、`e6ab3d4`、`d0051ce` 等修复提交均已 push/CI success | `ACTIVE / path-not-yet-terminal` | 继续处理 canonical path 实际撞到的 RED，直到 stage 9–11、source 4/4 与关键后置条件结束时没有未闭合 RED；不主动制造未遇到场景 |
+`tools/run_zhongguo_acceptance.py --phase2-live-batch` 默认只执行 critical-path 路由：绑定当前 paused
+candidate 的 loaded-feature manifest 与 seed，再消费 `--phase2-p1-evidence-manifest` 指定的真实证据包。只有以下九项能决定 P1：
+
+| # | P1 硬项 | 必须证明的结果 |
+|---:|---|---|
+| 1 | 当前 B1 fix live | production-live 后置 GREEN，当前产品 RED 已消失 |
+| 2 | AF5 终态 | `zg361comp.1` authored `42` / native `41`，独立 provider 回读终态；ACK 不算结果 |
+| 3 | Central stage 9 | `zg361cl.390` 真实 provider terminal GREEN |
+| 4 | Central stage 10 | `zg361mg.120` 真实 provider terminal GREEN |
+| 5 | Central stage 11 | 真实 Workforce provider terminal GREEN（正常 close 或合法 N/A close）；`.361` 宪章/制度债及跨周期后续只作非阻塞 coverage |
+| 6 | 代表性终态 cold restore | 真实 save receipt、不同 PID/递增 generation 的 cold restore receipt，以及 B1、AF5、Central、Workforce 的 identity/state/receipt 前后相同回读 |
+| 7 | gameplay-window error scan | 完整目标时间窗扫描且 `blocking_diagnostics=[]` |
+| 8 | managed cleanup | cleanup GREEN、contract error 为空 |
+| 9 | final candidate L0 | 完整 L0 GREEN，tested SHA-256 与待签收 candidate 完全相同 |
+
+九项之外的 source `3/4→4/4`、第三次 `.356`、三次 Workforce 周期、旧 exact `7 action + 4 observation`、全树
+definition/场景与 footage 都不能制造 P1 歧义或把 P1 判 RED。它们继续作为带原始状态的 `NON_BLOCKING` coverage/backlog
+记录；确有真实 encountered RED 时仍按 SOP 闭环，但不得借此扩张 P1 blocker。历史“四项总门”及其剩余项描述自本节起
+`POLICY_SUPERSEDED`。显式 legacy coverage 命令可为自身诊断失败返回 RED；该结果不回写独立 P1 gate。
 
 R326 的当前 source receipt 是
 `Z:\ck3_mod_rewrite\_runtime\p2r326incidentsource\phase2-source-capture-three-of-four-v3.json`，SHA-256
 `0828ED6F8BD2364145506ED452394B62570F837374086AEE8847420F9D339644`；incident checkpoint 为 `73,156,969` bytes，
 SHA-256 `5E9A7687AFAF104CB6B68759F2960BEF85A886EF1908382C50528A5D17BAC550`，原始输入 checkpoint hash 前后不变且 cleanup
 GREEN。当前四类 source 中 promotion、projects/metrics、incidents/operations 已完成，**唯一缺项是
-`capture_cross_cycle_endgame`**。
+`capture_cross_cycle_endgame`**；这是历史 coverage 状态，不是现行 P1 缺项。
 
-`strict 4/361` 与 `definitions 106/626` 只保留为 discovery telemetry：它们不是上述四项 P1 gate，不是 P2 解锁条件，也
+`strict 4/361` 与 `definitions 106/626` 只保留为 discovery telemetry：它们不是上述九项 P1 gate，不是 P2 解锁条件，也
 不得换算为 T0 剩余百分比。P1 未完成期间，最终宣传视频与宣传工具本轮更新前置都保持硬锁；T0-P2 继续 `LOCKED`。
 
 ## 产品与批次用例
@@ -101,13 +114,13 @@ GREEN。当前四类 source 中 promotion、projects/metrics、incidents/operati
 | `P2-REG-001` | promotion `.147` schema-2 source checkpoint；下游 compensation 业务 postcondition 另按 span 门验收 | `1/1`，`LIVE_GREEN`：R294b 已捕获；checkpoint SHA-256 `D4F625C84E900966E0B70CA8FD65CD33D63205B479A3CBC15BC0DF4B02B319F0` |
 | `P2-REG-002` | projects `.26` schema-2 source checkpoint；以独立 `.229` provider postcondition 互证同一 contribution receipt | `1/1`，`LIVE_GREEN`：R313 source capture + R303 provider postcondition；R313 checkpoint SHA-256 `72FB7D0F04C8B584555C35AC87313A5581FA8610344F72ABA4758904BC4C433B` |
 | `P2-REG-003` | incident `.50` schema-v3 source checkpoint + strict receipt；`.190/.290/.390` 下游业务 transition 另由 B7/postcondition 验收 | `1/1`，`LIVE_GREEN`：R326 checkpoint SHA-256 `5E9A7687AFAF104CB6B68759F2960BEF85A886EF1908382C50528A5D17BAC550` |
-| `P2-REG-004` | cross-cycle `.356` + owner `.361` + subject Workforce state | `0/1` |
-| `P2-REG-ALL` | 上述四项组成 canonical registry，路径/字节/SHA/不可变性复核 | `3/4`，`LIVE_PARTIAL / incomplete`：R326 three-of-four schema-v3 artifact SHA-256 `0828ED6F8BD2364145506ED452394B62570F837374086AEE8847420F9D339644`；只缺 cross-cycle/endgame |
-| `P2-FULL-001` | B1–B8 production projection 一次启动、共享表面抽样、三周期长测、release staging | `LIVE_PARTIAL / stage 8/11`；stage 9–11、三周期成熟度与最终 release-identical 回归未完成，不得用 focused GREEN 代替 |
+| `P2-REG-004` | cross-cycle `.356` + owner `.361` + subject Workforce state | `0/1 / NON_BLOCKING COVERAGE` |
+| `P2-REG-ALL` | 上述四项组成 historical canonical registry，路径/字节/SHA/不可变性复核 | `3/4 / NON_BLOCKING COVERAGE`：R326 three-of-four schema-v3 artifact SHA-256 `0828ED6F8BD2364145506ED452394B62570F837374086AEE8847420F9D339644`；cross-cycle/endgame 未采集，但不阻塞 P1 |
+| `P2-FULL-001` | 旧 B1–B8 全域矩阵、共享表面抽样与三周期长测 | `POLICY_SUPERSEDED / OPTIONAL COVERAGE`；默认 critical-path runner 不执行此矩阵，只有显式 `--phase2-legacy-full-tree-coverage` 才采样；其中 stage 9–11 另由现行九项硬门独立验收 |
 | `P2-R74-ERR` | 已实证的产品运行时错误在同类时间窗归零 | 只看 loader GREEN 或隐藏日志均不得通过；必须扫描完整 gameplay error log | `LIVE_RED -> STATIC_GREEN / R102 pending`：R101 证明单用 live `list_size` 仍不能覆盖迭代内过滤；两个 filtered walk 的范围检查修复需 fresh 同类窗口归零 |
-| `P2-CAP-001` | 八个 canonical gameplay spans 均通过 source intake | `0/8` |
-| `P2-VIDEO-001` | 人物版完整 build、媒体抽检、双语字幕、安全区、全片审阅、SHA | `0/1` |
-| `P2-VIDEO-002` | 制度群像版独立完成同一套门禁 | `0/1` |
+| `P2-CAP-001` | 八个 canonical gameplay spans 均通过 source intake | `0/8 / P2-ONLY`；P1 签收前锁定，不参与 P1 判定 |
+| `P2-VIDEO-001` | 人物版完整 build、媒体抽检、双语字幕、安全区、全片审阅、SHA | `0/1 / P2 LOCKED` |
+| `P2-VIDEO-002` | 制度群像版独立完成同一套门禁 | `0/1 / P2 LOCKED` |
 
 ## 当前执行命令
 

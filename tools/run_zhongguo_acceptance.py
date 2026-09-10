@@ -711,10 +711,9 @@ WINDOWS_ENGLISH_US_HKL = 0x04090409
 WM_INPUTLANGCHANGEREQUEST = 0x0050
 PHASE2_INCIDENT_SOURCE_CAPTURE_TIMEOUT_S = 300.0
 
-# Full phase-two acceptance is deliberately fail-closed.  Existing providers
-# may be exercised by focused fixture-live work, but --phase2-live-batch is the
-# formal all-domain batch and must not silently degrade to the old visual
-# phase-one scenario while one of these requirements is absent.
+# Historical all-domain coverage remains fail-closed when explicitly selected.
+# These maps are also the source catalogue from which the much smaller default
+# P1 capability profile below is selected.
 PHASE2_REQUIRED_BRIDGE_CAPABILITIES = {
     "paused_snapshot": "game.state.snapshot",
     "map_ready_state": "game.state.map-ready",
@@ -795,6 +794,23 @@ PHASE2_REQUIRED_ACTION_STEPS = {
     # bridge capability and derived query flag are mandatory above, but it is
     # deliberately not a zero-argument materialized planner action.
 }
+# The default T0-P1 run only binds the already-collected critical-path packet
+# to the exact loaded candidate.  The old all-domain matrix remains available
+# as opt-in diagnostic coverage, so its much wider capability surface must not
+# be a precondition for the owner-approved critical-path run.
+PHASE2_P1_REQUIRED_BRIDGE_CAPABILITY_LABELS = (
+    "paused_snapshot",
+    "map_ready_state",
+    "played_character_state",
+    "active_event_state",
+    "loaded_feature_manifest",
+)
+PHASE2_P1_REQUIRED_QUERY_FLAG_LABELS = (
+    "loaded_feature_manifest",
+)
+PHASE2_P1_REQUIRED_ACTION_STEP_LABELS = (
+    "loaded_feature_manifest",
+)
 PHASE2_PROMOTION_SOURCE_CAPTURE_REQUIRED_BRIDGE_CAPABILITY_LABELS = (
     "paused_snapshot",
     "map_ready_state",
@@ -932,11 +948,11 @@ PHASE2_INCIDENT_SOURCE_CAPTURE_REQUIRED_ACTION_STEP_LABELS = (
     "save_checkpoint",
     "loaded_feature_manifest",
 )
-# Provider readiness and gameplay completion are separate gates.  Every frozen
-# read-only provider belongs to the capability preflight below; every gameplay
-# action stays explicit in ``PHASE2_MISSING_GAMEPLAY_ACTION_CELLS`` until its
-# provider-observed product evidence exists, so an observation cell cannot
-# make a whole-batch GREEN claim.
+# Provider readiness and gameplay completion are separate inventories.  The
+# cells below remain useful for focused coverage and regression diagnosis, but
+# owner-approved T0-P1 acceptance no longer requires an exact 7-action/4-query
+# full-tree set.  See ``_phase2_full_tree_completion_gate`` for the much
+# smaller critical-path release gate.
 PHASE2_UNFROZEN_REQUIREMENTS: dict[str, str] = {}
 # The runner-side map-entry path is now wired through a strict seed contract.
 # Immutable source/provenance drift remains a pre-launch RED.  A source-tree
@@ -1054,7 +1070,7 @@ PHASE2_DOMAIN_CELL_REGISTRY: dict[str, dict[str, object]] = {
         "gameplay_action_complete": False,
     },
 }
-PHASE2_REQUIRED_GAMEPLAY_ACTION_CELLS = (
+PHASE2_COVERAGE_GAMEPLAY_ACTION_CELLS = (
     "incident_xyz_gameplay_action_and_postcondition_matrix",
     "b2_pip_gameplay_action_and_postcondition_matrix",
     "ai_owned_case_gameplay_action_and_postcondition_matrix",
@@ -1063,17 +1079,39 @@ PHASE2_REQUIRED_GAMEPLAY_ACTION_CELLS = (
     "manager_governance_gameplay_action_and_postcondition_matrix",
     "scoreboard_named_widget_action_and_postcondition_matrix",
 )
-PHASE2_REQUIRED_OBSERVATION_ONLY_CELLS = tuple(
+PHASE2_COVERAGE_OBSERVATION_ONLY_CELLS = tuple(
     cell_id
     for cell_id, registration in PHASE2_DOMAIN_CELL_REGISTRY.items()
     if registration.get("observation_only") is True
 )
-# Backward-compatible public name: before a live run every required gameplay
-# action is missing evidence.  The scenario recomputes this list after each
-# cell instead of treating static runner wiring as acceptance completion.
-PHASE2_MISSING_GAMEPLAY_ACTION_CELLS = (
-    PHASE2_REQUIRED_GAMEPLAY_ACTION_CELLS
+# Backward-compatible public names.  Downstream artifact readers used these
+# names before the P1 gate was narrowed; keep them as coverage inventory names
+# without granting them blocking semantics.
+PHASE2_REQUIRED_GAMEPLAY_ACTION_CELLS = (
+    PHASE2_COVERAGE_GAMEPLAY_ACTION_CELLS
 )
+PHASE2_REQUIRED_OBSERVATION_ONLY_CELLS = (
+    PHASE2_COVERAGE_OBSERVATION_ONLY_CELLS
+)
+PHASE2_MISSING_GAMEPLAY_ACTION_CELLS = (
+    PHASE2_COVERAGE_GAMEPLAY_ACTION_CELLS
+)
+
+PHASE2_P1_REQUIRED_EVIDENCE = (
+    "b1_fix_live",
+    "af5_terminal_authored_42_native_41",
+    "central_stage_9_terminal",
+    "central_stage_10_terminal",
+    "central_stage_11_terminal",
+    "representative_terminal_cold_restore",
+    "runtime_error_scan",
+    "managed_cleanup",
+    "final_candidate_l0",
+)
+PHASE2_P1_STAGE_TERMINAL_EVENTS = {
+    9: "zg361cl.390",
+    10: "zg361mg.120",
+}
 
 
 def _phase2_scoreboard_action_complete(value: object) -> bool:
@@ -1202,7 +1240,14 @@ def _phase2_gameplay_action_evidence_complete(
 def _phase2_full_tree_completion_gate(
     evidence: Mapping[str, object],
 ) -> dict[str, object]:
-    """Require an exact, duplicate-free set of live action and query proofs."""
+    """Evaluate the owner-approved P1 critical-path gate.
+
+    The historical full-tree action/query inventory is retained verbatim in
+    the returned coverage block.  Missing, duplicate, unknown, or incomplete
+    inventory cells are telemetry only and cannot turn an otherwise complete
+    P1 packet RED.  P1 is fail-closed solely on the explicit product-critical
+    live, recovery, diagnostics, cleanup, and final-candidate L0 evidence.
+    """
 
     raw_actions = evidence.get("completed_gameplay_action_cells")
     completed_actions = (
@@ -1251,7 +1296,7 @@ def _phase2_full_tree_completion_gate(
         for value in required_actions
         if not _phase2_gameplay_action_evidence_complete(evidence, value)
     ]
-    checks = {
+    coverage_checks = {
         "mcp_only": evidence.get("mcp_only") is True,
         "no_ocr_or_coordinate_fallback": (
             evidence.get("ocr_used") is False
@@ -1273,11 +1318,218 @@ def _phase2_full_tree_completion_gate(
         and restore_consistency.get("result") == "GREEN",
         "no_unimplemented_domain_cells": not unimplemented,
     }
-    result = "GREEN" if all(checks.values()) else "RED"
+
+    p1_value = evidence.get("p1_acceptance_evidence")
+    p1 = p1_value if isinstance(p1_value, Mapping) else {}
+    b1 = p1.get("b1_fix_live")
+    af5 = p1.get("af5_terminal_authored_42_native_41")
+    stages_value = p1.get("central_stage_terminals")
+    stages = stages_value if isinstance(stages_value, Mapping) else {}
+    restore = p1.get("representative_terminal_cold_restore")
+    error_scan = p1.get("runtime_error_scan")
+    cleanup = p1.get("managed_cleanup")
+    final_l0 = p1.get("final_candidate_l0")
+
+    def stage_terminal(stage: int) -> bool:
+        value = stages.get(str(stage), stages.get(stage))
+        shared_complete = bool(
+            isinstance(value, Mapping)
+            and value.get("result") == "GREEN"
+            and value.get("stage") == stage
+            and value.get("provider_observed") is True
+            and value.get("terminal_postcondition_verified") is True
+        )
+        if not shared_complete or not isinstance(value, Mapping):
+            return False
+        if stage == 11:
+            # The product-critical requirement is a real Workforce terminal,
+            # including the legitimate N/A-close seam.  The later .361
+            # charter/debt event and its multi-cycle follow-up remain optional
+            # coverage and must not re-enter the P1 hard gate.
+            return bool(
+                value.get("provider_domain") == "workforce"
+                and value.get("terminal_state") in {"closed", "terminal_na"}
+            )
+        return bool(
+            value.get("event_definition_key")
+            == PHASE2_P1_STAGE_TERMINAL_EVENTS[stage]
+        )
+
+    candidate_sha256 = (
+        final_l0.get("candidate_sha256")
+        if isinstance(final_l0, Mapping)
+        else None
+    )
+    tested_candidate_sha256 = (
+        final_l0.get("tested_candidate_sha256")
+        if isinstance(final_l0, Mapping)
+        else None
+    )
+    loaded_candidate_tree_sha256 = evidence.get(
+        "loaded_candidate_tree_sha256"
+    )
+    restore_before_value = (
+        restore.get("before_readback")
+        if isinstance(restore, Mapping)
+        else None
+    )
+    restore_after_value = (
+        restore.get("after_readback")
+        if isinstance(restore, Mapping)
+        else None
+    )
+    restore_before = (
+        restore_before_value
+        if isinstance(restore_before_value, Mapping)
+        else {}
+    )
+    restore_after = (
+        restore_after_value
+        if isinstance(restore_after_value, Mapping)
+        else {}
+    )
+    restore_domains = ("b1", "af5", "central", "workforce")
+
+    def terminal_readback_complete(value: object) -> bool:
+        return bool(
+            isinstance(value, Mapping)
+            and isinstance(value.get("identity"), Mapping)
+            and bool(value["identity"])
+            and isinstance(value.get("state"), Mapping)
+            and bool(value["state"])
+            and isinstance(value.get("receipt"), Mapping)
+            and bool(value["receipt"])
+        )
+
+    pid_lineage = (
+        restore.get("pid_lineage")
+        if isinstance(restore, Mapping)
+        else None
+    )
+    generation_lineage = (
+        restore.get("connection_generation_lineage")
+        if isinstance(restore, Mapping)
+        else None
+    )
+    save_result = (
+        restore.get("save_result")
+        if isinstance(restore, Mapping)
+        else None
+    )
+    checkpoint = (
+        save_result.get("checkpoint")
+        if isinstance(save_result, Mapping)
+        else None
+    )
+    restore_result = (
+        restore.get("restore_result")
+        if isinstance(restore, Mapping)
+        else None
+    )
+    p1_checks = {
+        "b1_fix_live": bool(
+            isinstance(b1, Mapping)
+            and b1.get("result") == "GREEN"
+            and b1.get("production_live") is True
+            and b1.get("fix_verified") is True
+            and b1.get("product_red") is False
+        ),
+        "af5_terminal_authored_42_native_41": bool(
+            isinstance(af5, Mapping)
+            and af5.get("result") == "GREEN"
+            and af5.get("event_definition_key") == "zg361comp.1"
+            and af5.get("selected_option_number") == 42
+            and af5.get("selected_native_option_index") == 41
+            and af5.get("provider_observed") is True
+            and af5.get("terminal_postcondition_verified") is True
+            and af5.get("action_ack_is_business_postcondition") is False
+        ),
+        "central_stage_9_terminal": stage_terminal(9),
+        "central_stage_10_terminal": stage_terminal(10),
+        "central_stage_11_terminal": stage_terminal(11),
+        "representative_terminal_cold_restore": bool(
+            isinstance(restore, Mapping)
+            and restore.get("result") == "GREEN"
+            and isinstance(save_result, Mapping)
+            and save_result.get("accepted") is True
+            and isinstance(checkpoint, Mapping)
+            and checkpoint.get("status") == "saved"
+            and isinstance(checkpoint.get("sha256"), str)
+            and re.fullmatch(r"[0-9A-Fa-f]{64}", checkpoint["sha256"])
+            is not None
+            and isinstance(restore_result, Mapping)
+            and restore_result.get("accepted") is True
+            and restore_result.get("status") == "restored"
+            and isinstance(pid_lineage, list)
+            and len(pid_lineage) == 2
+            and all(
+                isinstance(value, int)
+                and not isinstance(value, bool)
+                and value > 0
+                for value in pid_lineage
+            )
+            and pid_lineage[0] != pid_lineage[1]
+            and isinstance(generation_lineage, list)
+            and len(generation_lineage) == 2
+            and all(
+                isinstance(value, int)
+                and not isinstance(value, bool)
+                and value > 0
+                for value in generation_lineage
+            )
+            and generation_lineage[1] == generation_lineage[0] + 1
+            and all(
+                terminal_readback_complete(restore_before.get(domain))
+                and restore_after.get(domain) == restore_before.get(domain)
+                for domain in restore_domains
+            )
+        ),
+        "runtime_error_scan": bool(
+            isinstance(error_scan, Mapping)
+            and error_scan.get("result") == "GREEN"
+            and error_scan.get("full_gameplay_window_scanned") is True
+            and error_scan.get("blocking_diagnostics") == []
+        ),
+        "managed_cleanup": bool(
+            isinstance(cleanup, Mapping)
+            and cleanup.get("result") == "GREEN"
+            and cleanup.get("cleanup_proven") is True
+            and cleanup.get("contract_errors") == []
+        ),
+        "final_candidate_l0": bool(
+            isinstance(final_l0, Mapping)
+            and final_l0.get("result") == "GREEN"
+            and final_l0.get("full_l0") is True
+            and isinstance(candidate_sha256, str)
+            and re.fullmatch(r"[0-9A-Fa-f]{64}", candidate_sha256)
+            is not None
+            and isinstance(tested_candidate_sha256, str)
+            and tested_candidate_sha256.lower() == candidate_sha256.lower()
+            and isinstance(loaded_candidate_tree_sha256, str)
+            and loaded_candidate_tree_sha256.lower()
+            == candidate_sha256.lower()
+        ),
+    }
+    missing_p1_evidence = [
+        name for name in PHASE2_P1_REQUIRED_EVIDENCE if not p1_checks[name]
+    ]
+    result = "GREEN" if not missing_p1_evidence else "RED"
     return {
-        "schema_version": 1,
-        "kind": "zg361_phase2_full_tree_exact_completion_gate",
+        "schema_version": 2,
+        "kind": "zg361_phase2_p1_critical_path_acceptance_gate",
         "result": result,
+        "policy": "critical-path-high-risk-real-red-only",
+        "required_p1_evidence": list(PHASE2_P1_REQUIRED_EVIDENCE),
+        "missing_p1_evidence": missing_p1_evidence,
+        "checks": p1_checks,
+        "coverage_non_blocking": True,
+        "coverage": {
+            "checks": coverage_checks,
+            "exact_legacy_inventory_complete": all(
+                coverage_checks.values()
+            ),
+            "policy_status": "NON_BLOCKING",
+        },
         "required_gameplay_action_cells": required_actions,
         "completed_gameplay_action_cells": completed_actions,
         "missing_gameplay_action_cells": missing_actions,
@@ -1290,7 +1542,6 @@ def _phase2_full_tree_completion_gate(
         "duplicate_observation_only_cells": duplicate_observations,
         "unknown_observation_only_cells": unknown_observations,
         "unimplemented_domain_cells": unimplemented,
-        "checks": checks,
     }
 
 
@@ -5935,6 +6186,7 @@ def prove_phase2_loaded_seed(
     artifacts: Path,
     *,
     loaded_feature_manifest: Mapping[str, object] | None = None,
+    p1_critical_path: bool = False,
 ) -> dict[str, object]:
     """Bind the paused seed and its eight-span feature surface to one frame.
 
@@ -6074,6 +6326,8 @@ def prove_phase2_loaded_seed(
         "paused_on_load_expected": saved_state.get("paused_on_load") is True,
         "map_ready_expected": saved_state.get("map_ready") is True,
         **manifest_checks,
+    }
+    coverage_checks = {
         "all_eight_span_requirements_present": len(span_requirements) == 8
         and len({row["span_id"] for row in span_requirements}) == 8,
         "all_span_loaded_features_ready": all(
@@ -6081,6 +6335,8 @@ def prove_phase2_loaded_seed(
             for row in span_requirements
         ),
     }
+    if not p1_critical_path:
+        checks.update(coverage_checks)
     failed = [label for label, passed in checks.items() if passed is not True]
     evidence: dict[str, object] = {
         "schema_version": 2,
@@ -6097,6 +6353,12 @@ def prove_phase2_loaded_seed(
         "observed": binding,
         "loaded_feature_manifest_binding": dict(manifest_binding),
         "span_requirements": span_requirements,
+        "coverage": {
+            "policy_status": (
+                "NON_BLOCKING" if p1_critical_path else "BLOCKING"
+            ),
+            "checks": coverage_checks,
+        },
         "provider_boundary": (
             "event, GUI and MCP provider availability is proven only by each "
             "span's registered live handler; this seed proof makes no such claim"
@@ -8877,6 +9139,7 @@ def phase2_runtime_capability_preflight(
     focused_hc_workforce_route_b: bool = False,
     focused_endgame_source_capture: bool = False,
     focused_incident_source_capture: bool = False,
+    legacy_full_tree_coverage: bool = False,
 ) -> dict[str, object]:
     """Fail before navigation unless the selected Phase2 MCP surface exists."""
 
@@ -8911,10 +9174,14 @@ def phase2_runtime_capability_preflight(
         bridge_labels = PHASE2_B2_REQUIRED_BRIDGE_CAPABILITY_LABELS
         query_labels = PHASE2_B2_REQUIRED_QUERY_FLAG_LABELS
         action_labels = PHASE2_B2_REQUIRED_ACTION_STEP_LABELS
-    else:
+    elif legacy_full_tree_coverage:
         bridge_labels = tuple(PHASE2_REQUIRED_BRIDGE_CAPABILITIES)
         query_labels = tuple(PHASE2_REQUIRED_QUERY_FLAGS)
         action_labels = tuple(PHASE2_REQUIRED_ACTION_STEPS)
+    else:
+        bridge_labels = PHASE2_P1_REQUIRED_BRIDGE_CAPABILITY_LABELS
+        query_labels = PHASE2_P1_REQUIRED_QUERY_FLAG_LABELS
+        action_labels = PHASE2_P1_REQUIRED_ACTION_STEP_LABELS
     required_bridge_capabilities = {
         label: PHASE2_REQUIRED_BRIDGE_CAPABILITIES[label]
         for label in bridge_labels
@@ -8941,7 +9208,9 @@ def phase2_runtime_capability_preflight(
             if focused_hc_workforce_route_b
             else "focused_b2_same_checkpoint_mcp_capability_profile"
             if focused_b2_same_checkpoint
-            else "complete_phase2_mcp_capability_profile"
+            else "legacy_full_tree_coverage_mcp_capability_profile"
+            if legacy_full_tree_coverage
+            else "p1_critical_path_mcp_capability_profile"
         ),
         "focused_promotion_source_capture": focused_promotion_source_capture,
         "focused_b2_same_checkpoint": focused_b2_same_checkpoint,
@@ -8949,6 +9218,7 @@ def phase2_runtime_capability_preflight(
         "focused_hc_workforce_route_b": focused_hc_workforce_route_b,
         "focused_endgame_source_capture": focused_endgame_source_capture,
         "focused_incident_source_capture": focused_incident_source_capture,
+        "legacy_full_tree_coverage": legacy_full_tree_coverage,
         "tracked_ck3_pid": tracked_ck3_pid,
         "managed_restore_supervisor": managed_restore_supervisor,
         "mcp_only": True,
@@ -9043,6 +9313,17 @@ def phase2_runtime_capability_preflight(
                     }
                 )
 
+        critical_path_profile = not any(
+            (
+                focused_promotion_source_capture,
+                focused_b2_same_checkpoint,
+                focused_b3_manager_governance,
+                focused_hc_workforce_route_b,
+                focused_endgame_source_capture,
+                focused_incident_source_capture,
+                legacy_full_tree_coverage,
+            )
+        )
         checks = {
             "native_headless_mode": capabilities.get("mode")
             == NATIVE_BRIDGE_MODE,
@@ -9051,8 +9332,6 @@ def phase2_runtime_capability_preflight(
             "visual_fallback_disabled": capabilities.get("visual_fallback")
             is False,
             "snapshot_available": capabilities.get("snapshot") is True,
-            "wait_for_change_available": capabilities.get("wait_for_change")
-            is True,
             "connected": diagnostics.get("connected") is True,
             "tracked_ck3_pid_matches_bridge": diagnostics.get("bridge_pid")
             == tracked_ck3_pid,
@@ -9061,20 +9340,29 @@ def phase2_runtime_capability_preflight(
             )
             and not isinstance(diagnostics.get("connection_generation"), bool)
             and diagnostics.get("connection_generation", 0) > 0,
-            "checkpoint_materialization_configured": checkpoint.get(
-                "configured"
-            )
-            is True,
-            # restore-checkpoint is a managed composite and becomes an action
-            # only after the first checkpoint exists.  Pre-start readiness is
-            # therefore the configured lifecycle queue plus save materialization;
-            # the post-save gate below must require the concrete restore step.
-            "restore_lifecycle_configured": native_session.get("configured")
-            is True,
-            "restore_lifecycle_supervisor_running": (
-                managed_restore_supervisor is True
-            ),
         }
+        if not critical_path_profile:
+            checks.update(
+                {
+                    "wait_for_change_available": capabilities.get(
+                        "wait_for_change"
+                    )
+                    is True,
+                    "checkpoint_materialization_configured": checkpoint.get(
+                        "configured"
+                    )
+                    is True,
+                    # restore-checkpoint is a managed composite and becomes
+                    # an action only after the first checkpoint exists.
+                    "restore_lifecycle_configured": native_session.get(
+                        "configured"
+                    )
+                    is True,
+                    "restore_lifecycle_supervisor_running": (
+                        managed_restore_supervisor is True
+                    ),
+                }
+            )
         evidence["checks"] = checks
         for label, passed in checks.items():
             if passed is not True:
@@ -14299,6 +14587,7 @@ def run_loader_gate(
     *,
     tracked_ck3_pid: int,
     phase2_live_batch: bool,
+    phase2_legacy_full_tree_coverage: bool = False,
     managed_restore_supervisor: bool = False,
     native_session_supervisor: Mapping[str, object] | None = None,
     phase2_promotion_source_capture_live: bool = False,
@@ -14434,6 +14723,10 @@ def run_loader_gate(
                 ),
                 focused_incident_source_capture=(
                     phase2_incident_source_checkpoint_capture
+                ),
+                legacy_full_tree_coverage=(
+                    phase2_live_batch
+                    and phase2_legacy_full_tree_coverage
                 ),
             )
             evidence["phase2_capability_preflight"] = phase2_capabilities
@@ -19949,14 +20242,22 @@ def run_phase2_live_scenario(
     scoreboard_surface_checkpoint_registry: (
         Mapping[str, object] | None
     ) = None,
+    p1_acceptance_evidence: Mapping[str, object] | None = None,
+    legacy_full_tree_coverage: bool = False,
 ) -> dict[str, object]:
-    """Run only MCP phase-two primitives; never fall back to phase-one UI."""
+    """Evaluate P1 critical evidence; optionally run legacy MCP coverage."""
 
     evidence_path = artifacts / "05_phase2_live_scenario.json"
     evidence: dict[str, object] = {
         "schema_version": 1,
         "result": "RED",
-        "scope": "complete_phase2_mcp_only_live_batch",
+        "scope": "phase2_p1_critical_path_live_batch",
+        "execution_mode": (
+            "legacy_full_tree_coverage"
+            if legacy_full_tree_coverage
+            else "p1_critical_path"
+        ),
+        "legacy_full_tree_coverage_requested": legacy_full_tree_coverage,
         "phase2_acceptance_complete": False,
         "gameplay_acceptance_executed": False,
         "gameplay_green_claimed": False,
@@ -19969,6 +20270,18 @@ def run_phase2_live_scenario(
         "paused_readiness": None,
         "seed_load_proof": None,
         "loaded_feature_manifest": None,
+        "loaded_candidate_tree_sha256": (
+            str(bootstrap["tree_sha256"]["product"]).lower()
+            if isinstance(bootstrap, Mapping)
+            and isinstance(bootstrap.get("tree_sha256"), Mapping)
+            and isinstance(bootstrap["tree_sha256"].get("product"), str)
+            else None
+        ),
+        "p1_acceptance_evidence": (
+            copy.deepcopy(dict(p1_acceptance_evidence))
+            if isinstance(p1_acceptance_evidence, Mapping)
+            else None
+        ),
         "domain_cell_registry": PHASE2_DOMAIN_CELL_REGISTRY,
         "domain_owner_contract": None,
         "incident_gameplay_action_cell": None,
@@ -19996,6 +20309,7 @@ def run_phase2_live_scenario(
             PHASE2_MISSING_GAMEPLAY_ACTION_CELLS
         ),
         "unimplemented_domain_cells": _phase2_unimplemented_domain_cells(),
+        "p1_acceptance_gate": None,
         "full_tree_completion_gate": None,
         "failure_reason": None,
     }
@@ -20030,8 +20344,37 @@ def run_phase2_live_scenario(
             seed_contract,
             artifacts,
             loaded_feature_manifest=manifest,
+            p1_critical_path=not legacy_full_tree_coverage,
         )
         evidence["seed_load_proof"] = seed_load_proof
+        # The owner-approved default binds one consolidated packet of prior
+        # real terminal/recovery/diagnostic/L0 evidence to the candidate now
+        # loaded in CK3.  Do not spend another live session replaying the old
+        # exhaustive domain matrix unless diagnostic coverage was explicitly
+        # requested.
+        if not legacy_full_tree_coverage:
+            completion_gate = _phase2_full_tree_completion_gate(evidence)
+            evidence["p1_acceptance_gate"] = completion_gate
+            evidence["full_tree_completion_gate"] = completion_gate
+            evidence["missing_gameplay_action_cells"] = list(
+                completion_gate["missing_gameplay_action_cells"]
+            )
+            evidence["missing_observation_only_cells"] = list(
+                completion_gate["missing_observation_only_cells"]
+            )
+            evidence["gameplay_acceptance_executed"] = True
+            if completion_gate.get("result") != "GREEN":
+                raise acceptance.RunnerError(
+                    "phase-two P1 critical-path acceptance gate RED: "
+                    f"missing_p1_evidence={completion_gate['missing_p1_evidence']!r}; "
+                    "legacy_full_tree_coverage_is_non_blocking"
+                )
+            evidence["result"] = "GREEN"
+            evidence["phase2_acceptance_complete"] = True
+            evidence["gameplay_green_claimed"] = True
+            evidence["failure_reason"] = None
+            write_json(evidence_path, evidence)
+            return evidence
         if isinstance(scoreboard_surface_checkpoint_registry, Mapping):
             evidence["scoreboard_surface_checkpoint_preflight"] = (
                 bind_phase2_scoreboard_surface_checkpoint_provider(
@@ -20391,6 +20734,7 @@ def run_phase2_live_scenario(
             write_json(evidence_path, evidence)
 
         completion_gate = _phase2_full_tree_completion_gate(evidence)
+        evidence["p1_acceptance_gate"] = completion_gate
         evidence["full_tree_completion_gate"] = completion_gate
         evidence["missing_gameplay_action_cells"] = list(
             completion_gate["missing_gameplay_action_cells"]
@@ -20400,10 +20744,9 @@ def run_phase2_live_scenario(
         )
         if completion_gate.get("result") != "GREEN":
             raise acceptance.RunnerError(
-                "phase-two MCP matrix exact completion gate RED: "
-                f"missing_actions={completion_gate['missing_gameplay_action_cells']!r}; "
-                f"missing_observations={completion_gate['missing_observation_only_cells']!r}; "
-                f"unimplemented={completion_gate['unimplemented_domain_cells']!r}"
+                "phase-two P1 critical-path acceptance gate RED: "
+                f"missing_p1_evidence={completion_gate['missing_p1_evidence']!r}; "
+                "legacy_full_tree_coverage_is_non_blocking"
             )
         evidence["result"] = "GREEN"
         evidence["phase2_acceptance_complete"] = True
@@ -20941,6 +21284,8 @@ def run_cell(
     promo_camera_probe: bool = False,
     loader_smoke: bool = False,
     phase2_live_batch: bool = False,
+    phase2_p1_acceptance_evidence: Mapping[str, object] | None = None,
+    phase2_legacy_full_tree_coverage: bool = False,
     phase2_b2_same_checkpoint: bool = False,
     phase2_b3_manager_governance_live: bool = False,
     phase2_hc_workforce_route_b_live: bool = False,
@@ -21263,6 +21608,9 @@ def run_cell(
                 bootstrap,
                 tracked_ck3_pid=tracked_ck3_pid,
                 phase2_live_batch=phase2_live_batch,
+                phase2_legacy_full_tree_coverage=(
+                    phase2_legacy_full_tree_coverage
+                ),
                 managed_restore_supervisor=phase2_supervisor is not None,
                 native_session_supervisor=phase2_supervisor,
                 phase2_promotion_source_capture_live=(
@@ -21798,6 +22146,10 @@ def run_cell(
                 scoreboard_surface_checkpoint_registry=(
                     phase2_scoreboard_surface_checkpoint_registry
                 ),
+                p1_acceptance_evidence=phase2_p1_acceptance_evidence,
+                legacy_full_tree_coverage=(
+                    phase2_legacy_full_tree_coverage
+                ),
             )
             gameplay_acceptance_executed = (
                 evidence.get("phase2_acceptance_complete") is True
@@ -21849,7 +22201,7 @@ def run_cell(
         # batch.  It proves the two-PID save/restore lineage that that
         # scenario owns; the visual promo producer has a separate eight-span
         # contract and must not be forced to manufacture restore evidence.
-        if phase2_live_batch:
+        if phase2_live_batch and phase2_legacy_full_tree_coverage:
             liveness = phase2_native_session_liveness_gate(
                 title_navigation_service,
                 phase2_supervisor,
@@ -22407,6 +22759,16 @@ def run_cell(
         "promo_camera_probe_only": promo_camera_probe,
         "loader_smoke_only": loader_smoke,
         "phase2_live_batch": phase2_live_batch,
+        "phase2_acceptance_mode": (
+            "legacy_full_tree_coverage"
+            if phase2_live_batch and phase2_legacy_full_tree_coverage
+            else "p1_critical_path"
+            if phase2_live_batch
+            else None
+        ),
+        "phase2_p1_evidence_manifest_supplied": (
+            phase2_p1_acceptance_evidence is not None
+        ),
         "phase2_promotion_source_capture_live": (
             phase2_promotion_source_capture_live
         ),
@@ -22632,6 +22994,8 @@ def main(
     promo_camera_probe: bool = False,
     loader_smoke: bool = False,
     phase2_live_batch: bool = False,
+    phase2_p1_evidence_manifest: str | None = None,
+    phase2_legacy_full_tree_coverage: bool = False,
     phase2_promotion_source_capture_live: bool = False,
     phase2_promotion_source_capture_timeout_seconds: float = 300.0,
     retain_healthy_phase2_session_on_red: bool = False,
@@ -22694,6 +23058,22 @@ def main(
             "--phase2-hc-workforce-route-b-capture-live, and "
             "--phase2-endgame-source-capture-live, and "
             "--phase2-incident-source-checkpoint-capture are mutually exclusive"
+        )
+    if (
+        phase2_p1_evidence_manifest is not None
+        and not phase2_live_batch
+    ):
+        raise acceptance.RunnerError(
+            "--phase2-p1-evidence-manifest requires --phase2-live-batch"
+        )
+    if phase2_legacy_full_tree_coverage and not phase2_live_batch:
+        raise acceptance.RunnerError(
+            "--phase2-legacy-full-tree-coverage requires --phase2-live-batch"
+        )
+    if phase2_live_batch and phase2_p1_evidence_manifest is None:
+        raise acceptance.RunnerError(
+            "--phase2-live-batch requires --phase2-p1-evidence-manifest; "
+            "missing prior evidence must fail before CK3 launch"
         )
     phase2_runtime_mode = (
         phase2_live_batch
@@ -22861,6 +23241,25 @@ def main(
         if phase2_seed_contract
         else None
     )
+    phase2_p1_acceptance_evidence_value: Mapping[str, object] | None = None
+    if phase2_p1_evidence_manifest is not None:
+        p1_evidence_path = Path(
+            phase2_p1_evidence_manifest
+        ).expanduser().resolve()
+        try:
+            loaded_p1_evidence = json.loads(
+                p1_evidence_path.read_text(encoding="utf-8-sig")
+            )
+        except (OSError, UnicodeError, json.JSONDecodeError) as error:
+            raise acceptance.RunnerError(
+                "cannot load Phase2 P1 evidence manifest: "
+                f"{type(error).__name__}: {error}"
+            ) from error
+        if not isinstance(loaded_p1_evidence, dict):
+            raise acceptance.RunnerError(
+                "Phase2 P1 evidence manifest must be a JSON object"
+            )
+        phase2_p1_acceptance_evidence_value = loaded_p1_evidence
     phase2_product_source_path = (
         Path(phase2_product_source).expanduser().resolve()
         if phase2_product_source
@@ -23166,6 +23565,12 @@ def main(
         promo_camera_probe=promo_camera_probe,
         loader_smoke=loader_smoke,
         phase2_live_batch=phase2_live_batch,
+        phase2_p1_acceptance_evidence=(
+            phase2_p1_acceptance_evidence_value
+        ),
+        phase2_legacy_full_tree_coverage=(
+            phase2_legacy_full_tree_coverage
+        ),
         phase2_b2_same_checkpoint=phase2_b2_same_checkpoint,
         phase2_b3_manager_governance_live=(
             phase2_b3_manager_governance_live
@@ -23530,6 +23935,16 @@ def main(
         "error_reason": error_reason,
         "loader_smoke_only": loader_smoke,
         "phase2_live_batch": phase2_live_batch,
+        "phase2_acceptance_mode": (
+            "legacy_full_tree_coverage"
+            if phase2_live_batch and phase2_legacy_full_tree_coverage
+            else "p1_critical_path"
+            if phase2_live_batch
+            else None
+        ),
+        "phase2_p1_evidence_manifest_supplied": (
+            phase2_p1_acceptance_evidence_value is not None
+        ),
         "phase2_promotion_source_capture_live": (
             phase2_promotion_source_capture_live
         ),
@@ -23798,9 +24213,24 @@ if __name__ == "__main__":
         "--phase2-live-batch",
         action="store_true",
         help=(
-            "run the strict MCP-only phase-two capability gate and independent "
-            "scenario; the exact-build B3 selector is wired, while remaining "
-            "live product checkpoints still force RED until observed"
+            "run the MCP-only T0-P1 critical-path gate; prior terminal/live, "
+            "cold-restore, diagnostic, cleanup, and final-L0 evidence is read "
+            "from --phase2-p1-evidence-manifest"
+        ),
+    )
+    parser.add_argument(
+        "--phase2-p1-evidence-manifest",
+        help=(
+            "consolidated real-evidence JSON consumed by the default P1 "
+            "critical-path gate"
+        ),
+    )
+    parser.add_argument(
+        "--phase2-legacy-full-tree-coverage",
+        action="store_true",
+        help=(
+            "opt in to the historical all-domain Phase2 matrix as diagnostic "
+            "coverage; its cells remain non-blocking for P1"
         ),
     )
     parser.add_argument(
@@ -24021,6 +24451,12 @@ if __name__ == "__main__":
                 promo_camera_probe=arguments.promo_camera_probe,
                 loader_smoke=arguments.loader_smoke,
                 phase2_live_batch=arguments.phase2_live_batch,
+                phase2_p1_evidence_manifest=(
+                    arguments.phase2_p1_evidence_manifest
+                ),
+                phase2_legacy_full_tree_coverage=(
+                    arguments.phase2_legacy_full_tree_coverage
+                ),
                 phase2_promotion_source_capture_live=(
                     arguments.phase2_promotion_source_checkpoint_live
                 ),

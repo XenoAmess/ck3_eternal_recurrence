@@ -2501,6 +2501,7 @@ def main() -> int:
             phase2_capability_artifacts,
             tracked_ck3_pid=4321,
             managed_restore_supervisor=True,
+            legacy_full_tree_coverage=True,
         )
         assert phase2_capability_green["result"] == "GREEN"
         phase2_persisted_green = json.loads(
@@ -2587,6 +2588,7 @@ def main() -> int:
                     missing_dir,
                     tracked_ck3_pid=4321,
                     managed_restore_supervisor=True,
+                    legacy_full_tree_coverage=True,
                 )
             except capture.acceptance.RunnerError as error:
                 assert "MCP capability RED" in str(error)
@@ -2617,6 +2619,7 @@ def main() -> int:
                     missing_dir,
                     tracked_ck3_pid=4321,
                     managed_restore_supervisor=True,
+                    legacy_full_tree_coverage=True,
                 )
             except capture.acceptance.RunnerError as error:
                 assert "MCP capability RED" in str(error)
@@ -2636,6 +2639,7 @@ def main() -> int:
                     missing_dir,
                     tracked_ck3_pid=4321,
                     managed_restore_supervisor=True,
+                    legacy_full_tree_coverage=True,
                 )
             except capture.acceptance.RunnerError as error:
                 assert "MCP capability RED" in str(error)
@@ -2698,6 +2702,7 @@ def main() -> int:
                     missing_dir,
                     tracked_ck3_pid=4321,
                     managed_restore_supervisor=True,
+                    legacy_full_tree_coverage=True,
                 )
             except capture.acceptance.RunnerError as error:
                 assert "MCP capability RED" in str(error)
@@ -2723,6 +2728,7 @@ def main() -> int:
                 missing_supervisor_dir,
                 tracked_ck3_pid=4321,
                 managed_restore_supervisor=False,
+                legacy_full_tree_coverage=True,
             )
         except capture.acceptance.RunnerError as error:
             assert "MCP capability RED" in str(error)
@@ -4852,6 +4858,7 @@ def main() -> int:
                     scenario_artifacts,
                     tracked_ck3_pid=4321,
                     seed_contract=missing_domain_seed,
+                    legacy_full_tree_coverage=True,
                 )
             except capture.acceptance.RunnerError as error:
                 assert "domain matrix RED" in str(error)
@@ -5108,6 +5115,7 @@ def main() -> int:
                     wired_scenario_artifacts,
                     tracked_ck3_pid=4321,
                     seed_contract=wired_seed_contract,
+                    legacy_full_tree_coverage=True,
                 )
             except capture.acceptance.RunnerError as error:
                 assert "runner preflight GREEN" in str(error)
@@ -6185,6 +6193,8 @@ def main() -> int:
             '{"registry_kind":"unit-scoreboard-surfaces"}\n',
             encoding="utf-8",
         )
+        p1_evidence_manifest_path = temporary_root / "p1-evidence.json"
+        p1_evidence_manifest_path.write_text("{}\n", encoding="utf-8")
         phase2_cell_report = {
             "result": "RED",
             "error_reason": "MCP capability RED: workforce collective missing",
@@ -6239,6 +6249,9 @@ def main() -> int:
                 artifacts_dir=str(phase2_launch_artifacts),
                 keep_userdir=True,
                 phase2_live_batch=True,
+                phase2_p1_evidence_manifest=str(
+                    p1_evidence_manifest_path
+                ),
                 phase2_scoreboard_surface_checkpoint_registry=str(
                     scoreboard_surface_registry_path
                 ),
@@ -6251,6 +6264,9 @@ def main() -> int:
             "require_visual_tools"
         ] is True
         assert phase2_run_cell.call_args.kwargs["phase2_live_batch"] is True
+        assert phase2_run_cell.call_args.kwargs[
+            "phase2_p1_acceptance_evidence"
+        ] == {}
         assert phase2_run_cell.call_args.kwargs[
             "phase2_scoreboard_surface_checkpoint_registry"
         ] == {"registry_kind": "unit-scoreboard-surfaces"}
@@ -6327,6 +6343,9 @@ def main() -> int:
                 artifacts_dir=str(false_green_artifacts),
                 keep_userdir=True,
                 phase2_live_batch=True,
+                phase2_p1_evidence_manifest=str(
+                    p1_evidence_manifest_path
+                ),
                 bridge_dll=str(dll),
                 bridge_injector=str(injector),
                 bridge_pipe=explicit_pipe,
@@ -6488,6 +6507,15 @@ def main() -> int:
         assert "mutually exclusive" in str(error)
     else:
         raise AssertionError("phase-two batch accepted loader-smoke mode")
+    try:
+        capture.main(
+            preflight_only=True,
+            phase2_live_batch=True,
+        )
+    except capture.acceptance.RunnerError as error:
+        assert "requires --phase2-p1-evidence-manifest" in str(error)
+    else:
+        raise AssertionError("phase-two batch accepted no P1 evidence manifest")
 
     shared_open_drawer = inspect.getsource(capture.isolated.ensure_decisions_panel)
     for token in (

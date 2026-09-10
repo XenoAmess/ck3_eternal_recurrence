@@ -1,5 +1,33 @@
 # 天朝二期双宣传片导演方案
 
+## T0-P1 现行验收硬门（2026-09-10，替代旧 full-tree 门）
+
+P1 现在只由产品关键链、代表性高风险路径和真实 encountered RED 决定。以下九项必须全部 GREEN：
+
+1. 当前 B1 配额重建修复取得 production-live 后置；
+2. `zg361comp.1` 的 AF5 选择 authored `42` / native `41`，并由独立 provider 证明 portfolio 进入终态；
+3. Central stage `9/10` 分别以 `zg361cl.390`、`zg361mg.120` 取得真实终态；stage `11` 取得真实 Workforce provider terminal（正常 close 或合法 N/A close），不要求 `.361` 宪章/制度债事件或其跨周期后续；
+4. 从一个代表性终态生成 save，执行一次真正 cold restore，并回读相同终态；
+5. 覆盖完整 gameplay 时间窗的 error scan 为 GREEN；
+6. managed cleanup 为 GREEN；
+7. 与待签收字节 SHA-256 完全相同的最终候选通过完整 L0。
+
+这里的 stage `9/10/11` 分别计三项，因此机器门共有九个布尔检查。`tools/run_zhongguo_acceptance.py` 仍在 artifact 中保留旧
+`7 action + 4 observation`、source registry、第三次 `.356`、三周期和全树 definition 统计，但它们现在明确是
+`NON_BLOCKING` coverage。缺少任意这些 coverage cell 不会把 P1 变 RED。`8/8` clean footage 和两条成片只属于 P2；P1
+签收前 P2 继续硬锁定，既不能以 footage 缺失阻塞 P1，也不得提前检查/更新宣传工具或制作视频。
+
+下文在 2026-09-10 以前形成的 `source 3/4`、第三次 `.356`、三周期、`7+4 exact` 与 `footage 0/8` “P1 剩余”表述均作为
+历史计划和 coverage 快照保留；其 P1 阻塞语义已被本节 supersede，不得再据此推导当前签收结论。
+
+正式入口 `tools/run_zhongguo_acceptance.py --phase2-live-batch --phase2-p1-evidence-manifest <json>` 默认只做当前
+paused candidate 的 manifest/seed 绑定并判定上述九项，不再依次跑旧 Incident/B2/manager/scoreboard/Workforce/promotion
+全矩阵。证据 JSON 必须保存现有 provider/receipt 内容；cold restore 项必须包含真实 save/restore receipt、两 PID/递增
+generation，以及 B1、AF5、Central、Workforce 的 identity/state/receipt 前后回读。旧矩阵只有显式增加
+`--phase2-legacy-full-tree-coverage` 才运行，结果只记 `NON_BLOCKING` coverage。九项以外的问题照常记录和处理真实 RED，
+但不能扩大 P1 blocker；因此 P1 判定没有“还差一个历史 cell”之类的隐含口径。显式 legacy 诊断命令本身仍可因其
+coverage 失败返回 RED，但该诊断 RED 不回写、不改变独立的 P1 九项判定。
+
 ## 现行 effect 文件边界（2026-09-05）
 
 单文件过大现按强制缺陷处理，不再讨论是否拆分或等待性能触发。canonical source 已退役 mechanism、B1 runtime 与 core 的四类旧聚合 owner，改为 `186 + 12 + 4` 个用途分片；当前全树 `626 files / 3721 effects / maximum 10 / >20=0 / exceptions=0`。后续 production 与 CK3 验收只允许使用拆分布局，详见
@@ -9,14 +37,15 @@
 [`phase2-acceptance-case-index.md`](phase2-acceptance-case-index.md)；361 项批次权威定义仍以
 `mod_zhongguo_style/docs/361-phase2-full-implementation-program.md` 为准。
 
-## 当前 source registry 与 T0 门（2026-09-10）
+## Source registry 与 T0 历史快照（2026-09-10；P1 门语义已 superseded）
 
-当前 canonical source registry 为 `3/4`：promotion/compensation、projects/metrics 与 incidents/operations 已有真实 paused
-source checkpoint，**只缺 `capture_cross_cycle_endgame`**。R303/R313 以下段落保留各自历史增量；R326 已把
-incidents/operations 纳入 schema-v3 多分支联合前缀，不能再沿用当时的 `2/4` 作为当前状态。
+本节记录当时 canonical source registry 的 `3/4` coverage 快照：promotion/compensation、projects/metrics 与
+incidents/operations 已有真实 paused source checkpoint，当时尚无 `capture_cross_cycle_endgame`。R303/R313 以下段落保留各自
+历史增量；R326 已把 incidents/operations 纳入 schema-v3 多分支联合前缀。source `4/4` 已不再是 P1 硬门。
 
-T0 当前仍为 `50%`、canonical stage `8/11`；T0-P1 未签收，所以最终宣传片 T0-P2 继续硬锁定。`strict 4/361` 与
-`definitions 106/626` 是非阻塞发现 backlog，不是 P1 完成门，也不得换算为剩余工作百分比。
+该时点 T0 账本为 `50%`、canonical stage `8/11`；这是历史进度快照，不是现行 gate 算法。`strict 4/361` 与
+`definitions 106/626` 是非阻塞发现 backlog，不是 P1 完成门，也不得换算为剩余工作百分比。P1 未签收前最终宣传片
+T0-P2 继续硬锁定。
 
 共享原版事件资产本包为 `165 contracts / 165 analysis / 15 observation keys`，production runtime 为 `304`；冻结迁移基线
 `156 + 8 = 164` 与 embedded bucket `79` 不变，`.1101` 是其后新增记录。R372 已在同一
@@ -83,8 +112,8 @@ subject 并原生保存；checkpoint 为 `89,548,228` bytes，SHA-256
 
 以上是 R313 时点的历史 `2/4` 基线：当时 promotion `1/1`、projects `1/1`，two-of-four artifact SHA-256 为
 `8128750541EE7683EAB5CAD83CFDAF11FCCE47F8017019E3B5541A76F1AD603A`。registry checkpoint 是取证输入，不是成片素材；
-当前已由 R326 推进至 `3/4`，只缺 cross-cycle/endgame；真实 footage 仍为 `0/8`、两条 MP4 仍为 `0/2`，T0-P2 继续
-`LOCKED`。
+当前已由 R326 推进至 `3/4`；缺少 cross-cycle/endgame source 只影响 coverage，不再阻塞 P1。该时点真实 footage 为
+`0/8`、两条 MP4 为 `0/2`；它们属于仍被硬锁定的 P2。
 
 这里是天朝二期两条正式宣传片路线的权威导演文档入口。用户已明确要求：**两个版本都保留、都制作、都分别交付成片。**二者不存在“主方案/废案”或“长版/短版”的从属关系。
 
@@ -153,8 +182,8 @@ cleanup GREEN。这是 material/call-graph closure RED，不是文件大小因�
 
 | 工作包 | 当前进度 | 下一项 | 预计时间点 |
 |---|---|---|---|
-| 二期产品代码与发布树 | T0 `50%`、stage `8/11`；source registry `3/4`，只缺 cross-cycle/endgame。`4/361` 与 `106/626` 仅为非阻塞 backlog | 捕获 cross-cycle/endgame source，再闭合 stage 9–11、产品关键链与真实 RED 回归 | 不预写全量 ETA；以最后一项 source、stage 9–11 与关键链实证为准 |
-| Canonical source registry | promotion、projects/metrics、incidents/operations 各 `1/1`；合计 `3/4 incomplete` | `capture_cross_cycle_endgame` → 四项整体不可变性复核 | 仍需该真实业务帧；不把 registry 计作 footage |
+| 二期产品代码与发布树 | 该表形成时为 T0 `50%`、stage `8/11`；source registry `3/4` 仅作 coverage | 先闭合 B1 live、AF5 `42/41` terminal 与 stage 9–11；再做一次代表性终态 cold restore、error scan、cleanup 和最终候选 L0 | 以九项现行硬门为准；source `4/4`、全树计数和素材不参与 P1 判定 |
+| Canonical source registry | promotion、projects/metrics、incidents/operations 各 `1/1`；合计 `3/4 incomplete` | 可在非冲突资源下继续补 `capture_cross_cycle_endgame`，但不得占用关键链或延后 P1 | 非阻塞 coverage；不计作 footage，也不再是 P1 前置 |
 | 人物版最终片 | 导演稿、独立配置、authoring ledger、审片模板已完成；真实 footage `0/8`，尚无 MP4 | 取得 8 段 clean spans → 具名 source review → fresh-update promo tool → TTS/build/review/export | 素材齐备后再估；候选制作约 45–90 分钟，另加两轮真人审阅 |
 | 制度群像版最终片 | 导演稿、独立配置、独立回切编排、authoring ledger、审片模板已完成；真实 footage `0/8`，尚无 MP4 | 同上，但独立生成旁白、候选、审阅和导出 | 素材齐备后再估；候选制作约 45–90 分钟，另加两轮真人审阅 |
 | 宣传工具 | 历史 fresh clone 曾冻结于 `57c42fca13ea459432c1caf76e069a1fbccf602c`；这只是历史准备证据，不算当前 P2 前置完成 | T0-P1 通过后才允许重新检查版本、rebase/pull 到远端 main 并验证，再把 fresh checkout 注入 builder | T0-P2 当前硬锁定，尚未进入本轮更新门 |
