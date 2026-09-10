@@ -87,7 +87,7 @@
   本包组合默认 `177 contracts / 177 analysis / 177 observation metadata rows` 的 exact-build 原版事件表，其中
   `30` 个 key 含非 legacy 的 paused/live observation；既有迁移基线与
   embedded bucket 仍保持冻结，R384 新增 `pay_homage.0101` 的 exact-build Smooth 合同和选择前 RED。离线只读
-  `ck3_query_vanilla_event_knowledge_v1` 保持既有 schema，production runtime 当前消费 `323` 条事件合同。R372 的 `TGP0160`、
+  `ck3_query_vanilla_event_knowledge_v1` 保持既有 schema，production runtime 当前消费 `325` 条事件合同。R372 的 `TGP0160`、
   `great_holy_war.0011`、`TGP0020`、`TGP0001` 已分别完成共享查询、真实选择与 advance，属于四条 production-live
   primitive。`stress_threshold.1721` 保留真实 RED：reload 已生效，根因是提交阶段重新按 base contract 解析；补丁提交为
   `039a509`、`e6ab3d4`。`epidemic_events.1064` 随后以同 PID 选择 reviewed native0 并完成 advance，成为第五条
@@ -134,10 +134,12 @@
   retry 06 以 authored1/native0 完成选择与 advance，并按原版延迟进入 `health.3001`；后者的六 scope
   形态也已在 retry 07 以 authored2/native1 完成招募与 advance。`health.3101` 的八 scope 继承形态已在 retry 08
   以 authored1/native0 完成安全治疗选择与 advance，随机结果为成功；`health.3103` 十二 scope 继承形态也已在
-  retry 09 完成唯一确认与 advance。当前暂停在为廷臣 `88187` 代选治疗的 `health.3102` 八 scope / native
-  `0/1/3/4` RED；exact-build 五段决策树与 authored1/native0 安全治疗路线见
-  [health-consumption-diagnosis.md](health-consumption-diagnosis.md)。
-  artifact 树见 [artifact-expert-improvement.md](artifact-expert-improvement.md)。上述状态不表示 177 条全部 live；
+  retry 09 完成唯一确认与 advance。`health.3102` 八 scope / native `0/1/3/4` 投影也已在 retry 10 以
+  authored1/native0 完成安全治疗与 advance；exact-build 五段决策树见
+  [health-consumption-diagnosis.md](health-consumption-diagnosis.md)。当前暂停在新的 `bp1_yearly.4000`
+  家族回忆 RED；死亡参与者的两行投影与 authored2/native1 确定性路线见
+  [bp1-yearly-family-memory.md](bp1-yearly-family-memory.md)。artifact 树见
+  [artifact-expert-improvement.md](artifact-expert-improvement.md)。上述状态不表示 179 条全部 live；
   `361/626` 全树覆盖也不是 T0、其它 mod、CI 或发布门。T0 仍为 `50% / stage 8/11 / source 3/4 / P2 LOCKED`。
 - [static-confirmed + marriage/alliance production-live loop + call-ally blocker live / fallback static-ready]
   [marriage-and-alliance.md](marriage-and-alliance.md) 冻结 stock

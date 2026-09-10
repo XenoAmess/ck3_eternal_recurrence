@@ -731,6 +731,31 @@ VANILLA_HEALTH_OBSERVATIONS: Final[dict[str, dict[str, object]]] = {
             "ocr_used": False,
             "coordinates_used": False,
             "console_used": False,
+        }, {
+            "run": "R416-retry-10",
+            "kind": "same-process-hot-recovery-green",
+            "artifact": (
+                "_runtime/p1-terminal-resume-r416-20260911/live-artifacts/"
+                "terminal-stages-red-attempt-10.json"
+            ),
+            "artifact_sha256": (
+                "F05201BCDD0D441F199C56D65D8BF8CF59E1B1F7570226101985BA4E2A29D62F"
+            ),
+            "date_raw": 53865048,
+            "event_instance_id": 1088,
+            "root_character_id": 32904,
+            "starting_snapshot_id": "native:1045",
+            "starting_revision": 1046,
+            "ending_snapshot_id": "native:1046",
+            "ending_revision": 1047,
+            "selected_option_number": 1,
+            "selected_native_option_index": 0,
+            "postcondition_verified": True,
+            "next_event_definition_key": "ep3_emperor_yearly.2240",
+            "next_event_instance_id": 1089,
+            "connection_generation": 1,
+            "bridge_pid": 174656,
+            "process_restart_required": False,
         }],
     },
     "health.3103": {
