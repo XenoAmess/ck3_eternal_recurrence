@@ -2085,6 +2085,7 @@ class PromotionSourceCheckpointRunnerTests(unittest.TestCase):
             "before this retained-client reconnect",
         ) as caught:
             production.enter_promotion_source_checkpoint_v1(service)
+        self.assertIn("10190-day product observation bound", str(caught.exception))
         self.assertEqual(
             caught.exception.evidence["kind"],
             "zg361_phase2_product_runtime_diagnostic",
@@ -2095,6 +2096,41 @@ class PromotionSourceCheckpointRunnerTests(unittest.TestCase):
             ],
             "service_method_not_exposed",
         )
+
+    def test_custom_retained_bound_reports_its_actual_duration(self) -> None:
+        origin = 53_584_920
+        absolute_end = origin + 400 * production.HOURS_PER_DAY
+        evidence = {
+            "timeline_origin_date_raw": origin,
+            "absolute_end_date_raw": absolute_end,
+        }
+        service = SimpleNamespace(snapshot=lambda: {
+            "map_ready": True,
+            "revision": 1,
+            "date_raw": absolute_end + 72,
+            "played_character": {"character_id": 32904},
+            "diagnostics": {"connection_generation": 1},
+            "paused": True,
+            "speed": 5,
+        })
+
+        with self.assertRaisesRegex(
+            production.PromotionProductionEntryError,
+            "400-day configured observation bound",
+        ) as caught:
+            production.enter_promotion_source_checkpoint_v1(
+                service, evidence_out=evidence
+            )
+
+        self.assertNotIn("10190-day", str(caught.exception))
+        self.assertEqual(evidence["advance_bound"], {
+            "basis": "retained-origin-and-absolute-deadline",
+            "configured_hours": 400 * production.HOURS_PER_DAY,
+            "total_days": 400,
+            "canonical_product_total_days": production.MAX_ADVANCE_DAYS,
+        })
+        self.assertEqual(evidence["timeline_origin_date_raw"], origin)
+        self.assertEqual(evidence["absolute_end_date_raw"], absolute_end)
 
     def test_restored_save_catchup_uses_loaded_lower_and_fixed_upper_bound(self) -> None:
         loaded_date = 53_383_440

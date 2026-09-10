@@ -227,6 +227,74 @@ _TRANSIENT_RUNTIME_DIAGNOSTIC_PROBE_NATIVE_ERRORS = (
 )
 
 
+def _observation_bound_metadata(
+    *, timeline_origin_date: int, absolute_end_date: int
+) -> dict[str, object]:
+    """Describe the retained deadline without replacing it with the default."""
+
+    duration_hours = absolute_end_date - timeline_origin_date
+    configured_days: int | float = duration_hours / HOURS_PER_DAY
+    if duration_hours % HOURS_PER_DAY == 0:
+        configured_days = duration_hours // HOURS_PER_DAY
+    canonical_end_date = (
+        PRODUCT_TIMELINE_ORIGIN_DATE_RAW
+        + MAX_ADVANCE_DAYS * HOURS_PER_DAY
+    )
+    if (
+        timeline_origin_date == PRODUCT_TIMELINE_ORIGIN_DATE_RAW
+        and absolute_end_date == canonical_end_date
+    ):
+        return {
+            "cycle_opportunities": PRODUCT_CYCLE_OPPORTUNITIES,
+            "b1_authored_days": B1_AUTHORED_ADVANCE_DAYS,
+            "post_publication_observation_days": (
+                POST_PUBLICATION_OBSERVATION_DAYS
+            ),
+            "pre_workforce_total_days": PRE_WORKFORCE_MAX_ADVANCE_DAYS,
+            "endgame_target_workforce_cycles": (
+                ENDGAME_TARGET_WORKFORCE_CYCLES
+            ),
+            "workforce_cycle_observation_days": (
+                WORKFORCE_CYCLE_OBSERVATION_DAYS
+            ),
+            "total_days": MAX_ADVANCE_DAYS,
+        }
+    return {
+        "basis": "retained-origin-and-absolute-deadline",
+        "configured_hours": duration_hours,
+        "total_days": configured_days,
+        "canonical_product_total_days": MAX_ADVANCE_DAYS,
+    }
+
+
+def _observation_bound_label(
+    *, timeline_origin_date: int, absolute_end_date: int
+) -> str:
+    metadata = _observation_bound_metadata(
+        timeline_origin_date=timeline_origin_date,
+        absolute_end_date=absolute_end_date,
+    )
+    if metadata.get("basis") == "retained-origin-and-absolute-deadline":
+        duration_hours = int(metadata["configured_hours"])
+        if duration_hours % HOURS_PER_DAY == 0:
+            duration_label = f"{duration_hours // HOURS_PER_DAY}-day"
+        else:
+            duration_label = f"{duration_hours}-hour"
+        return (
+            f"{duration_label} configured observation bound "
+            f"(retained origin {timeline_origin_date} to absolute deadline "
+            f"{absolute_end_date})"
+        )
+    return (
+        f"{MAX_ADVANCE_DAYS}-day product observation bound "
+        f"({PRODUCT_CYCLE_OPPORTUNITIES} complete "
+        f"{B1_AUTHORED_ADVANCE_DAYS}-day authored B1 opportunities plus one "
+        f"{POST_PUBLICATION_OBSERVATION_DAYS}-day post-publication "
+        f"critical-path tail plus {ENDGAME_TARGET_WORKFORCE_CYCLES} finite "
+        f"{WORKFORCE_CYCLE_OBSERVATION_DAYS}-day Workforce windows)"
+    )
+
+
 def _runtime_diagnostic_probe_binding(
     snapshot: Mapping[str, object],
 ) -> dict[str, object]:
@@ -3454,21 +3522,10 @@ def enter_promotion_source_checkpoint_v1(
         "starting_date_raw": starting_date,
         "timeline_origin_date_raw": timeline_origin_date,
         "absolute_end_date_raw": absolute_end_date,
-        "advance_bound": {
-            "cycle_opportunities": PRODUCT_CYCLE_OPPORTUNITIES,
-            "b1_authored_days": B1_AUTHORED_ADVANCE_DAYS,
-            "post_publication_observation_days": (
-                POST_PUBLICATION_OBSERVATION_DAYS
-            ),
-            "pre_workforce_total_days": PRE_WORKFORCE_MAX_ADVANCE_DAYS,
-            "endgame_target_workforce_cycles": (
-                ENDGAME_TARGET_WORKFORCE_CYCLES
-            ),
-            "workforce_cycle_observation_days": (
-                WORKFORCE_CYCLE_OBSERVATION_DAYS
-            ),
-            "total_days": MAX_ADVANCE_DAYS,
-        },
+        "advance_bound": _observation_bound_metadata(
+            timeline_origin_date=timeline_origin_date,
+            absolute_end_date=absolute_end_date,
+        ),
         "paused_progress_settle_seconds": PAUSED_PROGRESS_SETTLE_SECONDS,
         "review_action": None,
         "review_action_postcondition": None,
@@ -3578,7 +3635,11 @@ def enter_promotion_source_checkpoint_v1(
             service,
             diagnostic=(
                 "promotion path already exceeded its absolute "
-                f"{MAX_ADVANCE_DAYS}-day product observation bound before "
+                + _observation_bound_label(
+                    timeline_origin_date=timeline_origin_date,
+                    absolute_end_date=absolute_end_date,
+                )
+                + " before "
                 "this retained-client reconnect"
             ),
             snapshot=initial,
@@ -3782,15 +3843,10 @@ def enter_promotion_source_checkpoint_v1(
                 service,
                 diagnostic=(
                     "promotion path exceeded its "
-                    f"{MAX_ADVANCE_DAYS}-day product observation bound "
-                    f"({PRODUCT_CYCLE_OPPORTUNITIES} complete "
-                    f"{B1_AUTHORED_ADVANCE_DAYS}-day authored B1 "
-                    f"opportunities plus one "
-                    f"{POST_PUBLICATION_OBSERVATION_DAYS}-day "
-                    "post-publication critical-path tail plus "
-                    f"{ENDGAME_TARGET_WORKFORCE_CYCLES} finite "
-                    f"{WORKFORCE_CYCLE_OBSERVATION_DAYS}-day Workforce "
-                    "windows)"
+                    + _observation_bound_label(
+                        timeline_origin_date=timeline_origin_date,
+                        absolute_end_date=absolute_end_date,
+                    )
                 ),
                 snapshot=snapshot,
                 player=player,
@@ -3866,15 +3922,10 @@ def enter_promotion_source_checkpoint_v1(
                     service,
                     diagnostic=(
                         "promotion path exceeded its "
-                        f"{MAX_ADVANCE_DAYS}-day product observation bound "
-                        f"({PRODUCT_CYCLE_OPPORTUNITIES} complete "
-                        f"{B1_AUTHORED_ADVANCE_DAYS}-day authored B1 "
-                        f"opportunities plus one "
-                        f"{POST_PUBLICATION_OBSERVATION_DAYS}-day "
-                        "post-publication critical-path tail plus "
-                        f"{ENDGAME_TARGET_WORKFORCE_CYCLES} finite "
-                        f"{WORKFORCE_CYCLE_OBSERVATION_DAYS}-day Workforce "
-                        "windows)"
+                        + _observation_bound_label(
+                            timeline_origin_date=timeline_origin_date,
+                            absolute_end_date=absolute_end_date,
+                        )
                     ),
                     snapshot=snapshot,
                     player=player,
