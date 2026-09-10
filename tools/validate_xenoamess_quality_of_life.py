@@ -168,6 +168,8 @@ def check_scripts(errors: list[str]) -> None:
         errors.append("slider must not use the unavailable FloatToInt data function")
     if "GetProgressBarValueMaxScaled(" not in slider:
         errors.append("slider must route its value through a supported int32 scaler")
+    if "GetX_CVector2i(PdxGetWidgetScreenSize" in slider:
+        errors.append("widget screen size must be read as the float vector returned by CK3")
     if "raw_text = \"[GetPlayer.MakeScope.Var('xqol_mass_conversion_threshold_draft')" not in slider:
         errors.append("slider's dynamic percentage must use raw_text")
     for variable in (

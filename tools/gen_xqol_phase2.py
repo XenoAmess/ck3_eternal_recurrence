@@ -262,7 +262,7 @@ def render_slider_widget() -> str:
         "[GetVariableSystem.Set('xqol_conversion_threshold_route', "
         "IntToString(GetProgressBarValueMaxScaled(Min_float(Max_float(Multiply_float(Divide_float("
         "Subtract_float(GetX_CVector2f(PdxGuiWidget.GetScaledMousePosition), '(float)2'), "
-        "Subtract_float(IntToFloat(GetX_CVector2i(PdxGetWidgetScreenSize(PdxGuiWidget.Self))), "
+        "Subtract_float(GetX_CVector2f(PdxGetWidgetScreenSize(PdxGuiWidget.Self)), "
         "'(float)4')), '(float)100'), '(float)0'), '(float)100'), "
         "'(float)100', '(int32)100')))]"
     )
