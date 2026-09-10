@@ -147,6 +147,37 @@ export interface CoatOfArmsLoadConfiguration {
   }
 }
 
+export interface CoatOfArmsInstalledDlcSources {
+  schema: 'ck3-coat-of-arms-installed-dlc-sources-v1'
+  schema_version: 1
+  status: 'indexed'
+  ck3_build: string
+  installed_descriptor_count: number
+  dlc_with_coa_candidates: number
+  coa_txt_file_count: number
+  coa_dds_file_count: number
+  items: Array<{
+    descriptor_relative_path: string
+    descriptor_sha256: string
+    name: string | null
+    localizable_name: string | null
+    steam_id: string | null
+    content_relative_path: string
+    content_root_exists: boolean
+    has_coa_candidates: boolean
+    coa_txt_file_count: number
+    coa_dds_file_count: number
+  }>
+  provenance: {
+    mode: string
+    installed_files_observed: true
+    store_entitlement_observed: false
+    dlc_load_disabled_list_applied: false
+    engine_mount_observed: false
+    resource_merge_applied: false
+  }
+}
+
 export interface CoatOfArmsConfiguredResourceItem {
   index: number
   candidate_id: string
@@ -318,6 +349,8 @@ export function createCk3CompanionClient(
     renderSupport: () => get<CoatOfArmsRenderSupport>('/render-support'),
     loadConfiguration: () =>
       get<CoatOfArmsLoadConfiguration>('/load-configuration'),
+    installedDlcSources: () =>
+      get<CoatOfArmsInstalledDlcSources>('/dlc-sources'),
     configuredResources: (parameters: {
       kind: CoatOfArmsResourceKind
       query?: string

@@ -95,6 +95,27 @@ describe('CK3 companion client', () => {
       .toBe('/api/ck3/coat-of-arms/load-configuration')
   })
 
+  it('reads installed DLC files without treating them as entitlement', async () => {
+    const payload = {
+      schema: 'ck3-coat-of-arms-installed-dlc-sources-v1',
+      installed_descriptor_count: 29,
+      dlc_with_coa_candidates: 0,
+      provenance: { store_entitlement_observed: false },
+    }
+    const fetchMock = vi.fn().mockResolvedValue(new Response(JSON.stringify(payload), {
+      status: 200,
+      headers: { 'Content-Type': 'application/json' },
+    }))
+    vi.stubGlobal('fetch', fetchMock)
+
+    const result = await createCk3CompanionClient('http://localhost:8080')
+      .installedDlcSources()
+
+    expect(result).toEqual(payload)
+    expect(new URL(fetchMock.mock.calls[0][0]).pathname)
+      .toBe('/api/ck3/coat-of-arms/dlc-sources')
+  })
+
   it('encodes configured candidate filters and opaque asset identities', async () => {
     const fetchMock = vi.fn()
       .mockResolvedValueOnce(new Response(JSON.stringify({

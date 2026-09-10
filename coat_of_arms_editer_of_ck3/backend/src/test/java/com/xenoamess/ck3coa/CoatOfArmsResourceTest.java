@@ -114,6 +114,26 @@ class CoatOfArmsResourceTest {
     }
 
     @Test
+    void installedDlcSourcesKeepTheirStaticProvenance() {
+        when(mcp.callTool(
+                        eq("ck3_query_coat_of_arms_installed_dlc_sources_v1"),
+                        eq(Map.of("game_directory", "fixture-game"))))
+                .thenReturn(Map.of(
+                        "schema", "ck3-coat-of-arms-installed-dlc-sources-v1",
+                        "installed_descriptor_count", 29,
+                        "dlc_with_coa_candidates", 0));
+
+        given()
+                .when().get("/api/ck3/coat-of-arms/dlc-sources")
+                .then()
+                .statusCode(200)
+                .body("schema", equalTo(
+                        "ck3-coat-of-arms-installed-dlc-sources-v1"))
+                .body("installed_descriptor_count", equalTo(29))
+                .body("dlc_with_coa_candidates", equalTo(0));
+    }
+
+    @Test
     void configuredCatalogPreservesFiltersAndCandidateProvenance() {
         when(mcp.callTool(
                         eq("ck3_query_coat_of_arms_configured_resource_catalog_v1"),

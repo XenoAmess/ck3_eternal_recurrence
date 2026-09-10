@@ -28,7 +28,7 @@ pnpm dev
 ```
 
 浏览器不能直接启动本机 stdio MCP，所以 `backend/` 提供必要且很薄的 Maven + Java + Quarkus 伴随服务。它只允许调用
-`ck3_take_snapshot` 和八项 CoA MCP 工具，不实现第二套后端解析器，也不触碰 OCR、鼠标或屏幕。
+`ck3_take_snapshot` 和九项 CoA MCP 工具，不实现第二套后端解析器，也不触碰 OCR、鼠标或屏幕。
 
 ## 启动伴随服务
 
@@ -51,6 +51,7 @@ mvn -f backend/pom.xml quarkus:dev
 | `GET /api/ck3/coat-of-arms/asset` | `ck3_read_coat_of_arms_resource_asset_v1` | 否，只读 manifest 内的精确 DDS |
 | `GET /api/ck3/coat-of-arms/render-support` | `ck3_read_coat_of_arms_render_support_v1` | 否，只读 shader、命名颜色、surface mask 与 `_default.dds` |
 | `GET /api/ck3/coat-of-arms/load-configuration` | `ck3_query_coat_of_arms_load_configuration_v1` | 否，只读 `dlc_load.json`、描述符与目录模组候选 |
+| `GET /api/ck3/coat-of-arms/dlc-sources` | `ck3_query_coat_of_arms_installed_dlc_sources_v1` | 否，只读安装树 `.dlc` 描述符与九类 CoA 目录；不证明授权或 mount |
 | `GET /api/ck3/coat-of-arms/configured-resources` | `ck3_query_coat_of_arms_configured_resource_catalog_v1` | 否，分页读取目录/ZIP 模组 manifest 候选与同名冲突 |
 | `GET /api/ck3/coat-of-arms/configured-asset` | `ck3_read_coat_of_arms_configured_resource_asset_v1` | 否，以绑定当前配置的 opaque ID 读取模组 DDS |
 | `GET /api/ck3/coat-of-arms/session` | `ck3_take_snapshot` | 是 |
@@ -81,6 +82,10 @@ shader 源文件、15 个原版命名颜色、256×256 DXT1 surface mask，以�
 `ck3_query_coat_of_arms_load_configuration_v1` 只把当前 `dlc_load.json` 的有序 `enabled_mods` 映射到 `.mod`
 描述符，并枚举目录模组九类 `common/gfx/coat_of_arms` 直接候选文件。它不读取启动器 SQLite，不解压 archive，不执行
 资源覆盖/merge，也不把启动配置冒充为引擎已经 mount 的运行时状态。
+
+`ck3_query_coat_of_arms_installed_dlc_sources_v1` 另行扫描 exact 安装树的 `.dlc` 描述符及其内容根。本机 29 份描述符中，
+九类 `common/gfx/coat_of_arms` 直接目录候选为 0 个 TXT、0 个 DDS；这说明当前 CoA designer 素材不由这些 DLC 内容树追加，
+但不证明用户商店授权，也不证明引擎是否 mount 某个 DLC。
 
 configured-resource catalog 在此基础上解析目录模组及 ZIP archive 内的 designer manifest，标出同名候选并保留配置顺序；
 archive 通过中央目录有界直读，不解压到磁盘。asset reader

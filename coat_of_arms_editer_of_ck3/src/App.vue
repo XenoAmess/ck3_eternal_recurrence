@@ -74,6 +74,8 @@ const texturedDefaultPreviewUrl = ref('')
 const shaderNamedColors = ref<NamedColorMap>({})
 const shaderSourceCount = ref(0)
 const configuredModCount = ref<number | null>(null)
+const installedDlcDescriptorCount = ref<number | null>(null)
+const dlcCoaSourceCount = ref<number | null>(null)
 const configuredPatternCount = ref<number | null>(null)
 const configuredEmblemCount = ref<number | null>(null)
 const configuredArchiveCount = ref(0)
@@ -257,6 +259,7 @@ async function loadResourceCatalog() {
       emblems,
       renderSupport,
       loadConfiguration,
+      installedDlcSources,
       configuredPatterns,
       configuredEmblems,
     ] = await Promise.all([
@@ -268,6 +271,7 @@ async function loadResourceCatalog() {
       }),
       companion.renderSupport(),
       companion.loadConfiguration().catch(() => null),
+      companion.installedDlcSources().catch(() => null),
       companion.configuredResources({ kind: 'pattern', limit: 200 }).catch(() => null),
       companion.configuredResources({
         kind: 'colored_emblem',
@@ -278,6 +282,8 @@ async function loadResourceCatalog() {
     patternResources.value = patterns.items
     emblemResources.value = emblems.items
     configuredModCount.value = loadConfiguration?.enabled_mod_count ?? null
+    installedDlcDescriptorCount.value = installedDlcSources?.installed_descriptor_count ?? null
+    dlcCoaSourceCount.value = installedDlcSources?.dlc_with_coa_candidates ?? null
     configuredPatternCount.value = configuredPatterns?.total ?? null
     configuredEmblemCount.value = configuredEmblems?.total ?? null
     configuredPatternResources.value = configuredPatterns?.items ?? []
@@ -573,6 +579,10 @@ importSource()
           </div>
           <p class="resource-note">
             目录只证明 exact 1.19.0.6 基础游戏磁盘资源；
+            <template v-if="installedDlcDescriptorCount !== null && dlcCoaSourceCount !== null">
+              安装树含 {{ installedDlcDescriptorCount }} 份 DLC 描述符，其中 {{ dlcCoaSourceCount }} 份有直接 CoA 候选；
+              该数字不证明商店授权或引擎 mount。
+            </template>
             <template v-if="configuredModCount !== null">
               `dlc_load.json` 当前配置 {{ configuredModCount }} 个 mod；
               <template v-if="configuredPatternCount !== null && configuredEmblemCount !== null">

@@ -108,7 +108,19 @@ public class CoatOfArmsResource {
                         "user_directory",
                         configuration.userDirectory().orElseThrow(() ->
                                 new McpGatewayException(
-                                        "missing companion configuration: userDirectory"))));
+                                "missing companion configuration: userDirectory"))));
+    }
+
+    @GET
+    @Path("/dlc-sources")
+    public Object dlcSources() {
+        return mcp.callTool(
+                "ck3_query_coat_of_arms_installed_dlc_sources_v1",
+                Map.of(
+                        "game_directory",
+                        configuration.gameDirectory().orElseThrow(() ->
+                                new McpGatewayException(
+                                        "missing companion configuration: gameDirectory"))));
     }
 
     @GET

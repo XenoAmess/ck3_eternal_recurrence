@@ -52,7 +52,7 @@ designer 的 working state。
 用实际安装的 Python MCP SDK `2.0.0` 连接现有 stdio server 时，补能力前共列出 62 个工具，
 没有 coat-of-arms、clipboard 或 designer 工具。也就是说，旧 MCP 无法回答本报告的核心问题。
 
-本轮先后新增两个原生工具和六个离线资源/渲染工具：
+本轮先后新增两个原生工具和七个离线资源/渲染工具：
 
 ```text
 ck3_probe_coat_of_arms_source_v1(
@@ -86,6 +86,10 @@ ck3_read_coat_of_arms_render_support_v1(
 
 ck3_query_coat_of_arms_load_configuration_v1(
     user_directory: string
+)
+
+ck3_query_coat_of_arms_installed_dlc_sources_v1(
+    game_directory: string
 )
 
 ck3_query_coat_of_arms_configured_resource_catalog_v1(
@@ -153,6 +157,13 @@ load-configuration 工具只读当前 CK3 用户目录的 `dlc_load.json`，按�
 archive 模组只报告路径与存在性，当前不解压枚举。结果固定标记 `launcher_database_used=false`、
 `engine_mount_observed=false`、`resource_merge_applied=false`：它补齐“当前启动配置里有哪些候选资源”，尚未补齐
 Clausewitz/Jomini VFS 的覆盖、合并和运行时注册语义。
+
+exact EXE 的静态字符串把 `enabled_mods`、`disabled_dlcs`、`dlc_load.json` 与
+`clausewitzlib/dlc.cpp` 绑定在同一诊断簇，并单独包含 `replace_path not implemented for MSGR_DLC`；这证明 store DLC 与普通
+mod 至少存在不同处理分支，但字符串证据本身不能给出完整 mount 顺序。为避免把磁盘安装误当授权，新
+installed-DLC-sources MCP 只在 exact-build 门后枚举 `game/dlc/*/*.dlc` 及其内容根九类 CoA 直接目录，并固定声明
+`store_entitlement_observed=false`、`engine_mount_observed=false`。本机 29 份 `.dlc` 描述符的结果为
+`dlc_with_coa_candidates=0`、CoA TXT/DDS 均为 0；因此本机 designer 清单中的 DLC 风格资源名不能据此解释为独立 DLC 树覆盖。
 
 本机静态交叉检查解释了为什么不把启动器 SQLite 当作权威输入：当前 `dlc_load.json` 精确为 38 bytes、SHA-256
 `B28A99338A45655C4A25CFEE44602A56451960142C9DD9E767B78C21A08C91BB`，配置启用模组为零；同一时刻启动器库中
@@ -245,6 +256,9 @@ export 的公开结果为闭合 schema，包含 `status`、`designer_observed`�
   configured catalog 正确返回 `total=0`、`manifest_count=0`，同时保持 `resource_merge_applied=false`、
   `load_order_precedence_applied=false`。双模组夹具另外验证同名候选保留而不选胜者、配置顺序投影、opaque ID DDS 读取、
   配置变更令旧 ID 失效；随后同组又补齐 ZIP archive 中 manifest/DDS 的有界直读，archive 不再需要落盘解压；
+- 新增 installed-DLC-sources MCP 后，真实安装的官方 MCP 调用列出 79 个工具并读取 29 份 `.dlc` 描述符，九类 CoA
+  内容目录命中 0、TXT/DDS 均为 0；四组离线资源 MCP 21/21、Quarkus 9/9、前端 23/23 与 production build GREEN。
+  全过程只读本地安装文件，不启动或连接 CK3；
 - CK3 frontend exact-build 握手：已真实取得，并广告新 capability；
 - 隔离 attempt 5 补齐 `frontend_snapshot` 绑定；attempt 6 暴露剪贴板函数槽的瞬时初始化状态；attempt 8 又证明
   gameplay 生命周期门禁会让角色设计器永远无法安装 hook。现在 hook 在 exact adapter 选定后即于 frontend 启动，瞬时槽缺失仍在

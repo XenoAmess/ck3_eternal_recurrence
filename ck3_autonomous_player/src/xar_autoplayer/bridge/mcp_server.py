@@ -11,6 +11,9 @@ from xar_autoplayer.coat_of_arms_configured_resources import (
     query_coat_of_arms_configured_resource_catalog_v1,
     read_coat_of_arms_configured_resource_asset_v1,
 )
+from xar_autoplayer.coat_of_arms_dlc_sources import (
+    query_coat_of_arms_installed_dlc_sources_v1,
+)
 from xar_autoplayer.coat_of_arms_load_configuration import (
     query_coat_of_arms_load_configuration_v1,
 )
@@ -177,6 +180,13 @@ def _ck3_query_coat_of_arms_load_configuration_v1(
 ) -> dict[str, object]:
     """Project configured CoA mod candidates without claiming engine mount."""
     return query_coat_of_arms_load_configuration_v1(user_directory)
+
+
+def _ck3_query_coat_of_arms_installed_dlc_sources_v1(
+    game_directory: str,
+) -> dict[str, object]:
+    """Project installed DLC CoA files without claiming ownership or mount."""
+    return query_coat_of_arms_installed_dlc_sources_v1(game_directory)
 
 
 def _ck3_query_coat_of_arms_configured_resource_catalog_v1(
@@ -1444,6 +1454,13 @@ def create_server(driver: GameplayBridgeDriver):
         return _ck3_query_coat_of_arms_load_configuration_v1(user_directory)
 
     @server.tool()
+    def ck3_query_coat_of_arms_installed_dlc_sources_v1(
+        game_directory: str,
+    ) -> dict[str, object]:
+        """List installed DLC CoA files; does not claim entitlement or mount."""
+        return _ck3_query_coat_of_arms_installed_dlc_sources_v1(game_directory)
+
+    @server.tool()
     def ck3_query_coat_of_arms_configured_resource_catalog_v1(
         user_directory: str,
         kind: str,
@@ -1837,6 +1854,9 @@ def create_server(driver: GameplayBridgeDriver):
     )
     _forbid_unknown_tool_arguments_v1(
         server, "ck3_query_coat_of_arms_load_configuration_v1"
+    )
+    _forbid_unknown_tool_arguments_v1(
+        server, "ck3_query_coat_of_arms_installed_dlc_sources_v1"
     )
     _forbid_unknown_tool_arguments_v1(
         server, "ck3_query_coat_of_arms_configured_resource_catalog_v1"
