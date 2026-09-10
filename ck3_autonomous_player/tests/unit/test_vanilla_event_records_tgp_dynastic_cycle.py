@@ -221,6 +221,16 @@ class TgpDynasticCycleEventRecordTests(unittest.TestCase):
         self.assertEqual(exemplar["context_native_revision"], 426)
         self.assertEqual(exemplar["rendered_native_option_indices"], [0])
         self.assertFalse(exemplar["selection_attempted"])
+        self.assertTrue(exemplar["artifact"].endswith(
+            "r375-tgp-dynastic-cycle-0081-red-freeze.json"
+        ))
+        self.assertEqual(
+            exemplar["artifact_sha256"],
+            "19860E8323136E2EED1209428BA56D09F1C4175E4250E90B43FB4AA27D0A3C35",
+        )
+        self.assertTrue(exemplar["park_artifact"].endswith(
+            "hot-recovery-park-1.json"
+        ))
         self.assertRegex(exemplar["artifact_sha256"], SHA256_PATTERN)
         self.assertRegex(exemplar["park_artifact_sha256"], SHA256_PATTERN)
 

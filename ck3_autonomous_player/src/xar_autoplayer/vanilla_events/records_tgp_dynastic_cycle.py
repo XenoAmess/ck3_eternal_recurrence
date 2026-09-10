@@ -425,10 +425,11 @@ VANILLA_TGP_DYNASTIC_CYCLE_OBSERVATIONS: Final[
             "run": "R375",
             "kind": "pre-selection-live-red",
             "artifact": (
-                "_runtime/p2r375-post-publisher-fix-live/report.json"
+                "_runtime/p2r375-post-publisher-fix-live/"
+                "r375-tgp-dynastic-cycle-0081-red-freeze.json"
             ),
             "artifact_sha256": (
-                "AC7207E23F9C55154C1A6C65738746E8A91879E3AA1C653528FDA5B84574AC68"
+                "19860E8323136E2EED1209428BA56D09F1C4175E4250E90B43FB4AA27D0A3C35"
             ),
             "park_artifact": (
                 "_runtime/p2r375-post-publisher-fix-live/"
