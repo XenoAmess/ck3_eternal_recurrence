@@ -5,8 +5,14 @@ import {
   createCk3CompanionClient,
   type CoatOfArmsResourceItem,
 } from './api/ck3Companion'
-import { decodeDdsBase64, decodedDdsToDataUrl } from './domain/dds'
+import { decodeDdsBase64, decodedDdsToDataUrl, type DecodedDds } from './domain/dds'
 import { parseCoatOfArms } from './domain/parser'
+import {
+  renderCoatOfArms,
+  renderedCoatOfArmsToDataUrl,
+  resolveColor,
+  type NamedColorMap,
+} from './domain/renderer'
 import { serializeCoatOfArms } from './domain/serializer'
 import {
   createCoatOfArms,
@@ -58,19 +64,38 @@ const emblemResources = ref<CoatOfArmsResourceItem[]>([])
 const emblemSearch = ref('')
 const patternPreviewUrl = ref('')
 const emblemPreviewUrls = ref<Record<string, string>>({})
+const patternTexture = ref<DecodedDds>()
+const emblemTextures = ref<Record<string, DecodedDds>>({})
+const surfaceMask = ref<DecodedDds>()
+const shaderNamedColors = ref<NamedColorMap>({})
+const shaderSourceCount = ref(0)
 
 const output = computed(() => serializeCoatOfArms(coatOfArms.value))
 const activeEmblem = computed(() => coatOfArms.value.coloredEmblems[selectedEmblem.value])
 const errorCount = computed(() => diagnostics.value.filter((item) => item.severity === 'error').length)
+const renderedPreviewUrl = computed(() => {
+  const rendered = renderCoatOfArms(
+    coatOfArms.value,
+    {
+      pattern: patternTexture.value,
+      coloredEmblems: emblemTextures.value,
+      surfaceMask: surfaceMask.value,
+    },
+    shaderNamedColors.value,
+  )
+  return rendered ? renderedCoatOfArmsToDataUrl(rendered) : ''
+})
 
-const namedColors: Record<string, string> = {
+const fallbackNamedColors: Record<string, string> = {
   black: '#22201e', blue: '#315b9a', green: '#497554', red: '#9b3c35',
   white: '#eee7d8', yellow: '#d2a84b', orange: '#bb6b38', purple: '#6b4b7e',
 }
 
 function cssColor(value: string): string {
   const normalized = value.trim().replaceAll('"', '').toLowerCase()
-  if (namedColors[normalized]) return namedColors[normalized]
+  const resolved = resolveColor(value, shaderNamedColors.value)
+  if (resolved) return `rgb(${resolved.map((channel) => Math.round(channel * 255)).join(' ')})`
+  if (fallbackNamedColors[normalized]) return fallbackNamedColors[normalized]
   const rgb = normalized.match(/^rgb\s*\{\s*(\d+)\s+(\d+)\s+(\d+)\s*}$/)
   if (rgb) return `rgb(${rgb[1]} ${rgb[2]} ${rgb[3]})`
   return '#6f6254'
@@ -83,6 +108,8 @@ function importSource() {
   selectedEmblem.value = 0
   patternPreviewUrl.value = ''
   emblemPreviewUrls.value = {}
+  patternTexture.value = undefined
+  emblemTextures.value = {}
   if (result.diagnostics.some((item) => item.severity === 'error')) {
     ElMessage.error('已解析，但存在阻止确定性导出的诊断')
   } else {
@@ -106,6 +133,8 @@ function reset() {
   selectedEmblem.value = 0
   patternPreviewUrl.value = ''
   emblemPreviewUrls.value = {}
+  patternTexture.value = undefined
+  emblemTextures.value = {}
 }
 
 function addEmblem() {
@@ -196,17 +225,30 @@ async function exportFromCk3() {
 async function loadResourceCatalog() {
   catalogBusy.value = true
   try {
-    const [patterns, emblems] = await Promise.all([
+    const [patterns, emblems, renderSupport] = await Promise.all([
       companion.resources({ kind: 'pattern', limit: 200 }),
       companion.resources({
         kind: 'colored_emblem',
         query: emblemSearch.value.trim() || undefined,
         limit: 200,
       }),
+      companion.renderSupport(),
     ])
     patternResources.value = patterns.items
     emblemResources.value = emblems.items
-    ElMessage.success(`已索引 ${patterns.returned} 个 pattern、${emblems.returned} 个 emblem`)
+    const decodedSurfaceMask = decodeDdsBase64(renderSupport.surface_mask.asset_base64)
+    if (
+      decodedSurfaceMask.width !== renderSupport.surface_mask.dds.width
+      || decodedSurfaceMask.height !== renderSupport.surface_mask.dds.height
+      || decodedSurfaceMask.fourCC !== renderSupport.surface_mask.dds.four_cc
+    ) throw new Error('CoA surface mask 元数据与解码结果不一致')
+    surfaceMask.value = decodedSurfaceMask
+    shaderNamedColors.value = Object.fromEntries(
+      renderSupport.named_colors.map((item) => [item.name, item.rgb]),
+    )
+    const sources = renderSupport.provenance.shader_sources
+    shaderSourceCount.value = Array.isArray(sources) ? sources.length : 0
+    ElMessage.success(`已索引 ${patterns.returned} 个 pattern、${emblems.returned} 个 emblem，并绑定原版 shader`)
     await loadCurrentTexturePreviews()
   } catch (error) {
     ElMessage.error(`资源目录读取失败：${errorMessage(error)}`)
@@ -218,7 +260,7 @@ async function loadResourceCatalog() {
 async function readTexturePreview(
   kind: 'pattern' | 'colored_emblem',
   name: string,
-): Promise<string> {
+): Promise<{ decoded: DecodedDds, preview: string }> {
   const asset = await companion.asset(kind, name)
   const decoded = decodeDdsBase64(asset.asset_base64)
   if (
@@ -228,15 +270,18 @@ async function readTexturePreview(
   ) {
     throw new Error(`DDS 元数据与解码结果不一致：${name}`)
   }
-  return decodedDdsToDataUrl(decoded)
+  return { decoded, preview: decodedDdsToDataUrl(decoded) }
 }
 
 async function loadPatternTexture(name: string) {
   if (!name) return
   textureBusy.value = true
   try {
-    const preview = await readTexturePreview('pattern', name)
-    if (coatOfArms.value.pattern === name) patternPreviewUrl.value = preview
+    const { decoded, preview } = await readTexturePreview('pattern', name)
+    if (coatOfArms.value.pattern === name) {
+      patternTexture.value = decoded
+      patternPreviewUrl.value = preview
+    }
   } catch (error) {
     patternPreviewUrl.value = ''
     ElMessage.warning(`Pattern 预览读取失败：${errorMessage(error)}`)
@@ -249,7 +294,8 @@ async function loadEmblemTexture(name: string) {
   if (!name) return
   textureBusy.value = true
   try {
-    const preview = await readTexturePreview('colored_emblem', name)
+    const { decoded, preview } = await readTexturePreview('colored_emblem', name)
+    emblemTextures.value = { ...emblemTextures.value, [name]: decoded }
     emblemPreviewUrls.value = { ...emblemPreviewUrls.value, [name]: preview }
   } catch (error) {
     ElMessage.warning(`Emblem 预览读取失败：${errorMessage(error)}`)
@@ -266,12 +312,14 @@ async function loadCurrentTexturePreviews() {
   try {
     const requests: Promise<void>[] = []
     if (coatOfArms.value.pattern) {
-      requests.push(readTexturePreview('pattern', coatOfArms.value.pattern).then((preview) => {
+      requests.push(readTexturePreview('pattern', coatOfArms.value.pattern).then(({ decoded, preview }) => {
+        patternTexture.value = decoded
         patternPreviewUrl.value = preview
       }))
     }
     for (const name of names) {
-      requests.push(readTexturePreview('colored_emblem', name).then((preview) => {
+      requests.push(readTexturePreview('colored_emblem', name).then(({ decoded, preview }) => {
+        emblemTextures.value = { ...emblemTextures.value, [name]: decoded }
         emblemPreviewUrls.value = { ...emblemPreviewUrls.value, [name]: preview }
       }))
     }
@@ -343,47 +391,50 @@ importSource()
       <section class="preview-pane panel">
         <div class="panel-title">
           <div><span class="step">02</span><h2>构图预览</h2></div>
-          <el-tag effect="plain" :type="patternPreviewUrl ? 'success' : 'warning'">
-            {{ patternPreviewUrl ? '原版 DDS 通道近似' : '浏览器几何近似' }}
+          <el-tag effect="plain" :type="renderedPreviewUrl ? 'success' : 'warning'">
+            {{ renderedPreviewUrl ? `原版 shader 源码模型 · ${shaderSourceCount} 源文件` : '浏览器几何近似' }}
           </el-tag>
         </div>
         <div class="preview-stage">
-          <div class="shield" :style="{ '--shield-color': cssColor(coatOfArms.colors[0]) }">
-            <img v-if="patternPreviewUrl" class="pattern-texture" :src="patternPreviewUrl" alt="原版 pattern DDS 通道图" />
-            <div class="shield-light" :style="{ background: cssColor(coatOfArms.colors[1]) }" />
-            <div
-              v-for="(emblem, emblemIndex) in coatOfArms.coloredEmblems"
-              :key="`${emblem.texture}-${emblemIndex}`"
-              class="emblem-group"
-            >
-              <template v-for="(instance, instanceIndex) in emblem.instances" :key="instanceIndex">
-                <img
-                  v-if="emblemPreviewUrls[emblem.texture]"
-                  class="emblem-texture"
-                  :src="emblemPreviewUrls[emblem.texture]"
-                  :alt="emblem.texture"
-                  :style="{
-                    left: `${instance.position[0] * 100}%`,
-                    top: `${instance.position[1] * 100}%`,
-                    transform: `translate(-50%, -50%) rotate(${instance.rotation}deg) scale(${instance.scale[0]}, ${instance.scale[1]})`,
-                    zIndex: Math.round(instance.depth * 10),
-                  }"
-                  :title="emblem.texture"
-                />
-                <div
-                  v-else
-                  class="emblem-glyph"
-                  :style="{
-                    left: `${instance.position[0] * 100}%`,
-                    top: `${instance.position[1] * 100}%`,
-                    color: cssColor(emblem.colors[0]),
-                    transform: `translate(-50%, -50%) rotate(${instance.rotation}deg) scale(${instance.scale[0]}, ${instance.scale[1]})`,
-                    zIndex: Math.round(instance.depth * 10),
-                  }"
-                  :title="emblem.texture"
-                >✦</div>
-              </template>
-            </div>
+          <div :class="['shield', { 'shader-bound': renderedPreviewUrl }]" :style="{ '--shield-color': cssColor(coatOfArms.colors[0]) }">
+            <img v-if="renderedPreviewUrl" class="shader-preview" :src="renderedPreviewUrl" alt="原版 shader 源码模型预览" />
+            <template v-else>
+              <img v-if="patternPreviewUrl" class="pattern-texture" :src="patternPreviewUrl" alt="原版 pattern DDS 通道图" />
+              <div class="shield-light" :style="{ background: cssColor(coatOfArms.colors[1]) }" />
+              <div
+                v-for="(emblem, emblemIndex) in coatOfArms.coloredEmblems"
+                :key="`${emblem.texture}-${emblemIndex}`"
+                class="emblem-group"
+              >
+                <template v-for="(instance, instanceIndex) in emblem.instances" :key="instanceIndex">
+                  <img
+                    v-if="emblemPreviewUrls[emblem.texture]"
+                    class="emblem-texture"
+                    :src="emblemPreviewUrls[emblem.texture]"
+                    :alt="emblem.texture"
+                    :style="{
+                      left: `${instance.position[0] * 100}%`,
+                      top: `${instance.position[1] * 100}%`,
+                      transform: `translate(-50%, -50%) rotate(${instance.rotation}deg) scale(${instance.scale[0]}, ${instance.scale[1]})`,
+                      zIndex: Math.round(instance.depth * 10),
+                    }"
+                    :title="emblem.texture"
+                  />
+                  <div
+                    v-else
+                    class="emblem-glyph"
+                    :style="{
+                      left: `${instance.position[0] * 100}%`,
+                      top: `${instance.position[1] * 100}%`,
+                      color: cssColor(emblem.colors[0]),
+                      transform: `translate(-50%, -50%) rotate(${instance.rotation}deg) scale(${instance.scale[0]}, ${instance.scale[1]})`,
+                      zIndex: Math.round(instance.depth * 10),
+                    }"
+                    :title="emblem.texture"
+                  >✦</div>
+                </template>
+              </div>
+            </template>
           </div>
         </div>
         <div class="preview-caption">
@@ -392,7 +443,7 @@ importSource()
         </div>
         <el-button class="preview-load" :loading="textureBusy" @click="loadCurrentTexturePreviews">加载当前原版 DDS</el-button>
         <el-alert type="info" :closable="false" show-icon>
-          <template #title>DDS 解码显示真实顶层 mip 通道；调色、mask 和最终 shader 结果仍以 CK3 原生 MCP 检测为准。</template>
+          <template #title>预览翻译 exact 1.19.0.6 随附 shader 的通道、mask、transform、surface detail 与 blend；FallbackColor 绑定、GPU 采样/色彩空间仍待以后原生像素对照。</template>
         </el-alert>
       </section>
 

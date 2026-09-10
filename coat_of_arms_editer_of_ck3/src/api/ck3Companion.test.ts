@@ -60,6 +60,21 @@ describe('CK3 companion client', () => {
     expect(requestUrl.searchParams.get('name')).toBe('ce lion&crown.dds')
   })
 
+  it('reads shader-grounded render support from its dedicated endpoint', async () => {
+    const payload = { schema: 'ck3-coat-of-arms-render-support-v1', named_colors: [] }
+    const fetchMock = vi.fn().mockResolvedValue(new Response(JSON.stringify(payload), {
+      status: 200,
+      headers: { 'Content-Type': 'application/json' },
+    }))
+    vi.stubGlobal('fetch', fetchMock)
+
+    const result = await createCk3CompanionClient('http://localhost:8080').renderSupport()
+
+    expect(result).toEqual(payload)
+    expect(new URL(fetchMock.mock.calls[0][0]).pathname)
+      .toBe('/api/ck3/coat-of-arms/render-support')
+  })
+
   it('surfaces the companion error message', async () => {
     vi.stubGlobal('fetch', vi.fn().mockResolvedValue(new Response(
       JSON.stringify({ message: 'CK3 bridge is unavailable' }),

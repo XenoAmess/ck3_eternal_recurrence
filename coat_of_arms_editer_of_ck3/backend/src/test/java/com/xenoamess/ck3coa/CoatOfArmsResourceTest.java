@@ -79,6 +79,23 @@ class CoatOfArmsResourceTest {
     }
 
     @Test
+    void renderSupportIsReadThroughTheMcpTool() {
+        when(mcp.callTool(
+                        eq("ck3_read_coat_of_arms_render_support_v1"),
+                        eq(Map.of("game_directory", "fixture-game"))))
+                .thenReturn(Map.of(
+                        "schema", "ck3-coat-of-arms-render-support-v1",
+                        "ck3_build", "1.19.0.6"));
+
+        given()
+                .when().get("/api/ck3/coat-of-arms/render-support")
+                .then()
+                .statusCode(200)
+                .body("schema", equalTo("ck3-coat-of-arms-render-support-v1"))
+                .body("ck3_build", equalTo("1.19.0.6"));
+    }
+
+    @Test
     void probeAndExportKeepTheirTypedMcpArguments() {
         when(mcp.callTool(
                         eq("ck3_probe_coat_of_arms_source_v1"),

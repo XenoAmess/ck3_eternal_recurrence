@@ -52,7 +52,7 @@ designer 的 working state。
 用实际安装的 Python MCP SDK `2.0.0` 连接现有 stdio server 时，补能力前共列出 62 个工具，
 没有 coat-of-arms、clipboard 或 designer 工具。也就是说，旧 MCP 无法回答本报告的核心问题。
 
-本轮先后新增两个原生工具和两个离线资源工具：
+本轮先后新增两个原生工具和三个离线资源/渲染工具：
 
 ```text
 ck3_probe_coat_of_arms_source_v1(
@@ -78,6 +78,10 @@ ck3_read_coat_of_arms_resource_asset_v1(
     game_directory: string,
     kind: "pattern" | "colored_emblem",
     name: string
+)
+
+ck3_read_coat_of_arms_render_support_v1(
+    game_directory: string
 )
 ```
 
@@ -117,6 +121,12 @@ resource catalog 不启动 CK3，也不经过视觉路线。它先校验 `binari
 asset reader 只接受上述 manifest 中唯一存在的精确名称，再读取对应 DDS；返回 bounded base64、字节数、SHA-256、宽高、
 mipmap 数与 FourCC，并复用同一 exact-build/provenance 边界。它不接受调用方提供相对路径，当前本机样本证明 pattern 为
 DXT1、colored emblem 为 DXT5。这个工具用于后续浏览器像素预览，仍不声称与 CK3 shader 最终合成逐像素一致。
+
+render-support 工具继续沿用 exact EXE SHA 门禁，返回 `coa_mask_texture.dds` 的 bounded base64、15 个
+`default_colors.txt` 命名颜色的原始模型/分量与 RGB 解算，以及五份 Clausewitz/Jomini/game shader 源文件的路径、大小和
+SHA-256。它把 pattern/emblem 通道顺序、mask 通道隔离、surface detail、transform 顺序与 alpha blend 投影成结构化合同；
+不返回或复制第三方实现。当前唯一明确未从随附源码闭合的 shader 常量是引擎如何绑定 `FallbackColor`，最终 GPU 采样与色彩空间
+也仍需以后用原生像素 primitive 对照。
 
 ### 3.2 每条 MCP 结果提供什么证据
 
@@ -163,8 +173,8 @@ export 的公开结果为闭合 schema，包含 `status`、`designer_observed`�
 
 ### 3.3 验证状态
 
-- Python contract、service、native driver、hybrid、离线资源索引/读取和真实 MCP SDK tools/list/call：28 项聚焦测试 GREEN；
-  不带 MCP SDK 的普通 Python 环境同组测试 28 项 GREEN，其中 3 项 SDK 集成测试按设计跳过；
+- Python contract、service、native driver、hybrid、离线资源索引/读取和真实 MCP SDK tools/list/call：30 项聚焦测试 GREEN；
+  不带 MCP SDK 的普通 Python 环境同组测试 30 项 GREEN，其中 3 项 SDK 集成测试按设计跳过；
 - native bridge fresh build：成功；
 - native protocol 与 adapter registry CTest：2/2 GREEN；
 - Copy/export MCP primitive 已完成 closed-schema 注册、exact-build RVA/prologue 身份校验、UI-thread 调用、剪贴板读取、
@@ -177,6 +187,10 @@ export 的公开结果为闭合 schema，包含 `status`、`designer_observed`�
 - 新增 manifest-owned asset reader 后，同一后台链路读取 `ce_martlet.dds` 的 87,536 bytes DXT5，base64 解码 SHA 与
   `25EFE25D83047430EF09C1E6490CA48BD2A79865CCCF668EED0844381B3F7BA3` 完全一致；Quarkus 4/4、前端 API/parser/DDS
   decoder 12/12 与 production build GREEN。`pattern__solid_designer.dds` 则为 128×128 DXT1；
+- 新增 render-support MCP 后，后台 `REST → Java MCP SDK → Python stdio MCP → exact game/Jomini/Clausewitz files`
+  返回 15 个命名颜色、五份 shader provenance 和 256×256 DXT1 surface mask；其 base64 解码后仍为 43,832 bytes，SHA-256
+  `5FA2A49DC59AEEBA19709B6BB3F9D0B017ACDE7DC576793705EAF85C7F33691E`。官方 Python MCP SDK 9/9、Quarkus 5/5、
+  前端 18/18 与 production build GREEN；全过程使用 `vision-report` 离线 driver，没有调用 session/probe/export；
 - CK3 frontend exact-build 握手：已真实取得，并广告新 capability；
 - 隔离 attempt 5 补齐 `frontend_snapshot` 绑定；attempt 6 暴露剪贴板函数槽的瞬时初始化状态；attempt 8 又证明
   gameplay 生命周期门禁会让角色设计器永远无法安装 hook。现在 hook 在 exact adapter 选定后即于 frontend 启动，瞬时槽缺失仍在
@@ -240,6 +254,23 @@ MCP 原生实现挂在 RVA `0xB73500` 的 19-byte 完整指令边界，在同一
 apply 的后置条件是 `+0xEC == 1` 且 `+0xE8 == paste 前的 +0xF0`。
 
 这条链中没有 effect VM、trigger evaluator、event queue、console dispatcher 或 GUI expression evaluator 的调用。
+
+### 4.3 随游戏发布的渲染公式
+
+渲染不是只能靠画面猜测。exact 1.19.0.6 安装同时发布了 Clausewitz `utility.fxh`、Jomini CoA `.fxh` 和 game CoA
+`.shader` 源文件，可以直接证明：
+
+- pattern 以 `FallbackColor` 起步，依次按纹理 R/G/B 向 `Color1/2/3` 做 `lerp`；
+- colored emblem 以 `Color1` 起步，按纹理 G 混入 `Color2`，再按 R 混入 `Color3`；纹理 B 经 `GetOverlay(..., 1.0)`
+  提供明暗，纹理 alpha 控制透明度；
+- pattern mask 先变为 `r=clamp(r-g-b)`、`g=clamp(g-b)`、`b=b`，再与 `MaskColor` 相乘并求饱和和；
+- 非 portrait 路径还用全局 `coa_mask_texture.dds` 的 B 通道做 0.2 强度 overlay，emblem alpha 再乘其 G 通道×2；
+- instance 顶点变换顺序为负 scale 镜像、rotation、scale、position；最终使用 `src_alpha / inv_src_alpha` 混合；
+- Clausewitz 的 `GetOverlay` 函数体也在安装目录中：为兼容旧行为，它调用 `Overlay(OverlayColor, Color)`，即特意交换通常理解的
+  base/overlay 参数，不能用普通 CSS blend mode 直接替代。
+
+这些是静态源码事实，不等于浏览器已经得到 CK3 GPU 的逐像素输出；特别是 `FallbackColor` 的 CPU 侧绑定、采样边界和 GPU
+色彩空间仍需以后通过原生像素读取闭合。
 
 ## 5. 哪些语法能导入并实际生效
 
@@ -440,7 +471,7 @@ Web 端若要提供随机生成，应在自己的数据模型中完成选择，�
 游戏自身 Copy/export 已通过 MCP/原生实现并完成静态验收，但尚未取得 live 证据；基础游戏 designer manifest 资源目录也已
 通过离线 MCP 工具分页暴露。仍未通过 MCP 暴露的能力有：
 
-- 读取 preview 的最终像素或直接导出 PNG；
+- 读取 CK3 原生 preview 的最终像素或直接导出 PNG（浏览器已能按随附 shader 源码离线合成，但不替代 native pixel）；
 - 完成角色设计器上层 Finish；
 - 枚举游戏当前运行时实际注册且已合并 DLC/mod override 的 pattern/emblem/color 资源；
 - 跨 CK3 build 自动适配 RVA 与字段。
@@ -475,17 +506,17 @@ CoatOfArms
 - 提供图层/实例结构化表单与浏览器近似预览，且明确不冒充 CK3 renderer；
 - 基础游戏 pattern/emblem 目录已经接入结构化选择器，并可按名字筛选首批 200 个 emblem；
 - 必要的 Quarkus 伴随服务使用官方 Java MCP SDK 连接现有 Python stdio server，前端可刷新 session revision、执行原生
-  detect/apply，以及载入原生 Copy/export 返回源码；伴随服务只允许五个相关 MCP 工具；
-- manifest-owned 单素材读取已接入浏览器 DXT1/DXT5 顶层 mip 解码；预览用真实原版纹理通道替代几何占位符，但仍明确不是
-  CK3 shader 的最终调色/mask 合成。
+  detect/apply，以及载入原生 Copy/export 返回源码；伴随服务只允许六个相关工具（snapshot + 五个 CoA MCP）；
+- manifest-owned 单素材与 render-support 已接入浏览器：除 DXT1/DXT5 顶层 mip 解码外，现按随游戏发布的 shader 源码合成
+  三通道调色、mask、实例变换、surface detail 和 blend；仍明确不冒充 native GPU 像素完全一致。
 
 尚未完成的下一阶段能力：
 
 - 继续补 DLC/mod playset 合并与运行时注册证据；
 - 在重新获准占用 CK3 后，对编辑器的 detect/apply/Copy-export 做 live round-trip 验收；当前只是接口与静态实现 GREEN，
   不把 REST mock 或离线 catalog 贯通写成 designer live；
-- PNG/像素验证 primitive；
-- 复刻 CK3 多通道调色、pattern mask 与 shader 合成；当前 DDS 通道预览只比几何占位更接近真实素材。
+- CK3 原生 PNG/像素验证 primitive，用于闭合浏览器源码模型与 native GPU 的差异；
+- 解析/验证 textured emblem 的完整资源与渲染路径；当前源码模型优先覆盖 designer 主路径 colored emblem。
 
 浏览器无法直接启动本机 stdio MCP，因此已引入 Maven + Java + Quarkus 伴随服务。后端只负责 REST/MCP 会话转接与
 本机资源索引，不承担“执行 CK3 脚本”的虚构能力；当前也没有 DDS 转换或素材缓存。
@@ -531,6 +562,10 @@ CoatOfArms
 | `50_coa_designer_patterns.txt`（42 项/38 可见） | `3BAA46C11BD24E7D9F9F6D1DF3E51403D016AB4CAC7290A6541ED25561425B7B` |
 | `50_coa_designer_emblems.txt`（1,578 项/1,576 可见） | `3D6529702F91FA352E07B0C64E4C33A88E5F86C2AAF0EF2D0CEB69CF6D600F3C` |
 | `50_coa_designer_palettes.txt`（13 色） | `3AE2EA0F3B751D61C08A06408FA2EDA2ADC3FF6FBF204298D3D8CDC9613B87B4` |
+| `coa_mask_texture.dds`（256×256 DXT1，43,832 bytes） | `5FA2A49DC59AEEBA19709B6BB3F9D0B017ACDE7DC576793705EAF85C7F33691E` |
+| Clausewitz `utility.fxh`（含 `GetOverlay`） | `ABD382499457D6616597E41647983B982A44AEA7A0A3392927693827201CAB1B` |
+| Jomini `coat_of_arms_pattern.fxh` | `46EBB391EF78CEC706EAABA809F3F90E0BF931793655E91EB56517A761006960` |
+| Jomini `coat_of_arms_textured_emblem.fxh` | `432202D6A4FF73743B9445EF802C5B7EEC3346F0D0A51DDBF49C5940B884ABD6` |
 
 当前实现与证据入口：
 

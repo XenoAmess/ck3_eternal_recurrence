@@ -87,6 +87,18 @@ public class CoatOfArmsResource {
                         name));
     }
 
+    @GET
+    @Path("/render-support")
+    public Object renderSupport() {
+        return mcp.callTool(
+                "ck3_read_coat_of_arms_render_support_v1",
+                Map.of(
+                        "game_directory",
+                        configuration.gameDirectory().orElseThrow(() ->
+                                new McpGatewayException(
+                                        "missing companion configuration: gameDirectory"))));
+    }
+
     @POST
     @Path("/probe")
     public Object probe(ProbeRequest request) {

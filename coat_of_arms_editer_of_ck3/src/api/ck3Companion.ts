@@ -61,6 +61,46 @@ export interface CoatOfArmsResourceAsset {
   }
 }
 
+export interface CoatOfArmsNamedColor {
+  name: string
+  model: 'rgb' | 'hsv' | 'hsv360'
+  components: [number, number, number]
+  rgb: [number, number, number]
+  rgb_255: [number, number, number]
+}
+
+export interface CoatOfArmsRenderSupport {
+  schema: 'ck3-coat-of-arms-render-support-v1'
+  schema_version: 1
+  status: 'read'
+  ck3_build: string
+  named_colors: CoatOfArmsNamedColor[]
+  surface_mask: {
+    relative_path: string
+    content_type: 'application/octet-stream'
+    asset_bytes: number
+    asset_sha256: string
+    asset_base64: string
+    dds: {
+      width: number
+      height: number
+      mipmap_count: number
+      four_cc: string
+    }
+  }
+  render_contract: {
+    overlay_function_body_available: boolean
+    fallback_color_binding_available: boolean
+    [key: string]: unknown
+  }
+  provenance: {
+    mode: string
+    executable_sha256: string
+    limits: string[]
+    [key: string]: unknown
+  }
+}
+
 export interface Ck3SessionSnapshot {
   revision: number
   source?: string
@@ -149,6 +189,7 @@ export function createCk3CompanionClient(
       const query = new URLSearchParams({ kind, name })
       return get<CoatOfArmsResourceAsset>(`/asset?${query}`)
     },
+    renderSupport: () => get<CoatOfArmsRenderSupport>('/render-support'),
     probe: (source: string, expectedRevision: number, apply = false) =>
       post<CoatOfArmsProbeResult>('/probe', { source, expectedRevision, apply }),
     exportSource: (expectedRevision: number) =>

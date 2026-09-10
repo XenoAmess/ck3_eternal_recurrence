@@ -3,9 +3,11 @@
 from __future__ import annotations
 
 import base64
+import colorsys
 from dataclasses import dataclass
 import hashlib
 from pathlib import Path
+import re
 from typing import Final
 
 
@@ -36,6 +38,22 @@ _ASSET_DIRECTORIES: Final = {
     "pattern": Path("game/gfx/coat_of_arms/patterns"),
     "colored_emblem": Path("game/gfx/coat_of_arms/colored_emblems"),
 }
+_RENDER_MASK: Final = Path("game/gfx/coat_of_arms/coa_mask_texture.dds")
+_NAMED_COLORS: Final = Path("game/common/named_colors/default_colors.txt")
+_RENDER_SHADER_SOURCES: Final = (
+    Path("clausewitz/gfx/FX/cw/utility.fxh"),
+    Path("jomini/gfx/FX/coat_of_arms/coat_of_arms_pattern.fxh"),
+    Path("jomini/gfx/FX/coat_of_arms/coat_of_arms_textured_emblem.fxh"),
+    Path("game/gfx/FX/coat_of_arms/coat_of_arms_pattern.shader"),
+    Path("game/gfx/FX/coat_of_arms/coat_of_arms_textured_emblem.shader"),
+)
+_NAMED_COLOR_LINE = re.compile(
+    r"^\s*([A-Za-z_][A-Za-z0-9_]*)\s*=\s*"
+    r"(hsv360|hsv|rgb)?\s*\{\s*"
+    r"([-+]?(?:\d+(?:\.\d*)?|\.\d+))\s+"
+    r"([-+]?(?:\d+(?:\.\d*)?|\.\d+))\s+"
+    r"([-+]?(?:\d+(?:\.\d*)?|\.\d+))\s*\}"
+)
 
 
 class CoatOfArmsResourceCatalogError(RuntimeError):
@@ -68,6 +86,75 @@ def _sha256(path: Path) -> str:
         for chunk in iter(lambda: source.read(1024 * 1024), b""):
             digest.update(chunk)
     return digest.hexdigest().upper()
+
+
+def _dds_metadata(data: bytes) -> dict[str, object]:
+    if len(data) < 128 or data[:4] != b"DDS ":
+        raise CoatOfArmsResourceCatalogError("render support asset is not DDS")
+    if int.from_bytes(data[4:8], "little") != 124:
+        raise CoatOfArmsResourceCatalogError("render support DDS header is invalid")
+    try:
+        four_cc = data[84:88].decode("ascii")
+    except UnicodeDecodeError as error:
+        raise CoatOfArmsResourceCatalogError(
+            "render support DDS FourCC is not ASCII"
+        ) from error
+    return {
+        "width": int.from_bytes(data[16:20], "little"),
+        "height": int.from_bytes(data[12:16], "little"),
+        "mipmap_count": max(1, int.from_bytes(data[28:32], "little")),
+        "four_cc": four_cc,
+    }
+
+
+def _named_colors(path: Path) -> list[dict[str, object]]:
+    if not path.is_file() or not 0 < path.stat().st_size <= _MAX_MANIFEST_BYTES:
+        raise CoatOfArmsResourceCatalogError(
+            "default named-color source is missing or outside the size contract"
+        )
+    try:
+        text = path.read_text(encoding="utf-8-sig")
+    except UnicodeError as error:
+        raise CoatOfArmsResourceCatalogError(
+            "default named-color source is not UTF-8"
+        ) from error
+    result: list[dict[str, object]] = []
+    for line in text.splitlines():
+        match = _NAMED_COLOR_LINE.match(line)
+        if not match:
+            continue
+        name, model, first, second, third = match.groups()
+        components = tuple(float(value) for value in (first, second, third))
+        if model == "hsv360":
+            hue, saturation, value = (
+                components[0] / 360.0,
+                components[1] / 100.0,
+                components[2] / 100.0,
+            )
+            rgb = colorsys.hsv_to_rgb(hue, saturation, value)
+        elif model == "hsv":
+            rgb = colorsys.hsv_to_rgb(*components)
+        else:
+            divisor = 255.0 if any(value > 1.0 for value in components) else 1.0
+            rgb = tuple(value / divisor for value in components)
+        if any(value < 0.0 or value > 1.0 for value in rgb):
+            raise CoatOfArmsResourceCatalogError(
+                f"named color {name} resolves outside RGB 0..1"
+            )
+        result.append(
+            {
+                "name": name,
+                "model": model or "rgb",
+                "components": list(components),
+                "rgb": [round(value, 9) for value in rgb],
+                "rgb_255": [round(value * 255) for value in rgb],
+            }
+        )
+    if not result:
+        raise CoatOfArmsResourceCatalogError(
+            "default named-color source contains no supported definitions"
+        )
+    return result
 
 
 def _tokenize(text: str) -> tuple[_Token, ...]:
@@ -470,5 +557,116 @@ def read_coat_of_arms_resource_asset_v1(
             "manifest_sha256": _sha256(manifest),
             "engine_registration_observed": False,
             "dlc_and_mod_overrides_included": False,
+        },
+    }
+
+
+def read_coat_of_arms_render_support_v1(
+    game_directory: str,
+) -> dict[str, object]:
+    """Return exact-build shader provenance and bounded offline render inputs."""
+
+    if not isinstance(game_directory, str) or not game_directory.strip():
+        raise ValueError("game_directory must be a non-empty string")
+    game_root = Path(game_directory).expanduser().resolve()
+    executable = game_root / "binaries" / "ck3.exe"
+    if not executable.is_file():
+        raise CoatOfArmsResourceCatalogError(
+            "game_directory lacks the CK3 executable"
+        )
+    executable_sha256 = _sha256(executable)
+    if executable_sha256 != CK3_COAT_OF_ARMS_RESOURCE_CATALOG_V1_EXE_SHA256:
+        raise CoatOfArmsResourceCatalogError(
+            "CK3 executable does not match the frozen 1.19.0.6 render build"
+        )
+
+    required = (_RENDER_MASK, _NAMED_COLORS, *_RENDER_SHADER_SOURCES)
+    missing = [
+        path.as_posix()
+        for path in required
+        if not (game_root / path).is_file()
+    ]
+    if missing:
+        raise CoatOfArmsResourceCatalogError(
+            "game_directory lacks render support files: " + ", ".join(missing)
+        )
+    mask_path = game_root / _RENDER_MASK
+    if not 128 <= mask_path.stat().st_size <= _MAX_ASSET_BYTES:
+        raise CoatOfArmsResourceCatalogError(
+            "coat-of-arms mask is outside the v1 size contract"
+        )
+    mask_data = mask_path.read_bytes()
+    named_colors_path = game_root / _NAMED_COLORS
+    shader_sources = [
+        {
+            "relative_path": path.as_posix(),
+            "bytes": (game_root / path).stat().st_size,
+            "sha256": _sha256(game_root / path),
+        }
+        for path in _RENDER_SHADER_SOURCES
+    ]
+    return {
+        "schema": "ck3-coat-of-arms-render-support-v1",
+        "schema_version": 1,
+        "status": "read",
+        "ck3_build": CK3_COAT_OF_ARMS_RESOURCE_CATALOG_V1_BUILD,
+        "named_colors": _named_colors(named_colors_path),
+        "surface_mask": {
+            "relative_path": _RENDER_MASK.as_posix(),
+            "content_type": "application/octet-stream",
+            "asset_bytes": len(mask_data),
+            "asset_sha256": hashlib.sha256(mask_data).hexdigest().upper(),
+            "asset_base64": base64.b64encode(mask_data).decode("ascii"),
+            "dds": _dds_metadata(mask_data),
+        },
+        "render_contract": {
+            "pattern_color_steps": [
+                {"mask_channel": "r", "target": "color1"},
+                {"mask_channel": "g", "target": "color2"},
+                {"mask_channel": "b", "target": "color3"},
+            ],
+            "colored_emblem_color_steps": [
+                {"initial": "color1"},
+                {"mask_channel": "g", "target": "color2"},
+                {"mask_channel": "r", "target": "color3"},
+                {"overlay_channel": "b", "strength": 1.0},
+            ],
+            "pattern_mask_channel_isolation": [
+                "r=clamp(r-g-b,0,1)",
+                "g=clamp(g-b,0,1)",
+                "b=b",
+            ],
+            "surface_detail": {
+                "overlay_channel": "surface_mask.b",
+                "overlay_strength": 0.2,
+                "emblem_alpha_multiplier": "surface_mask.g*2",
+                "portrait_effects_skip_surface_detail": True,
+            },
+            "transform_order": ["flip", "rotate", "scale", "translate"],
+            "blend": {
+                "source": "src_alpha",
+                "destination": "inv_src_alpha",
+                "write_mask": ["red", "green", "blue"],
+            },
+            "overlay": {
+                "formula": "lerp(color,Overlay(overlay_color,color),strength)",
+                "branch": "base<0.5 ? 2*base*blend : 1-2*(1-base)*(1-blend)",
+                "legacy_parameter_flip": True,
+            },
+            "overlay_function_body_available": True,
+            "fallback_color_binding_available": False,
+        },
+        "provenance": {
+            "mode": "base-game-clausewitz-jomini-shader-source-static",
+            "executable_sha256": executable_sha256,
+            "named_colors_relative_path": _NAMED_COLORS.as_posix(),
+            "named_colors_sha256": _sha256(named_colors_path),
+            "shader_sources": shader_sources,
+            "engine_registration_observed": False,
+            "dlc_and_mod_overrides_included": False,
+            "limits": [
+                "the engine-side FallbackColor binding is not exposed by shipped shader source",
+                "GPU sampling and color-space identity require later native pixel comparison",
+            ],
         },
     }

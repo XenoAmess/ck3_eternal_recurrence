@@ -9,6 +9,7 @@ from pathlib import Path
 
 from xar_autoplayer.coat_of_arms_resources import (
     query_coat_of_arms_resource_catalog_v1,
+    read_coat_of_arms_render_support_v1,
     read_coat_of_arms_resource_asset_v1,
 )
 from xar_autoplayer.vanilla_events import (
@@ -155,6 +156,13 @@ def _ck3_read_coat_of_arms_resource_asset_v1(
         kind,
         name,
     )
+
+
+def _ck3_read_coat_of_arms_render_support_v1(
+    game_directory: str,
+) -> dict[str, object]:
+    """Read exact-build shader provenance, named colors, and surface mask."""
+    return read_coat_of_arms_render_support_v1(game_directory)
 
 
 def load_driver(
@@ -1376,6 +1384,13 @@ def create_server(driver: GameplayBridgeDriver):
         )
 
     @server.tool()
+    def ck3_read_coat_of_arms_render_support_v1(
+        game_directory: str,
+    ) -> dict[str, object]:
+        """Read shader-grounded offline render inputs; no runtime claim."""
+        return _ck3_read_coat_of_arms_render_support_v1(game_directory)
+
+    @server.tool()
     def ck3_query_loaded_feature_manifest_v1(
         expected_revision: int,
     ) -> dict[str, object]:
@@ -1731,6 +1746,9 @@ def create_server(driver: GameplayBridgeDriver):
     )
     _forbid_unknown_tool_arguments_v1(
         server, "ck3_read_coat_of_arms_resource_asset_v1"
+    )
+    _forbid_unknown_tool_arguments_v1(
+        server, "ck3_read_coat_of_arms_render_support_v1"
     )
     return server
 

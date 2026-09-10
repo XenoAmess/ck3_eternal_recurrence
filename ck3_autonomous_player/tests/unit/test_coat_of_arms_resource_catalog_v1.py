@@ -70,6 +70,34 @@ coa_designer_background_colors = {
             encoding="utf-8",
         )
 
+        named_colors = root / "game" / "common" / "named_colors"
+        named_colors.mkdir(parents=True)
+        (named_colors / "default_colors.txt").write_text(
+            """
+colors = {
+    red = hsv { 0.02 0.8 0.45 }
+    brown = hsv360 { 21 74 45 }
+}
+""".strip(),
+            encoding="utf-8",
+        )
+        game_shaders = root / "game" / "gfx" / "FX" / "coat_of_arms"
+        jomini_shaders = root / "jomini" / "gfx" / "FX" / "coat_of_arms"
+        clausewitz_shaders = root / "clausewitz" / "gfx" / "FX" / "cw"
+        game_shaders.mkdir(parents=True)
+        jomini_shaders.mkdir(parents=True)
+        clausewitz_shaders.mkdir(parents=True)
+        for path in (
+            clausewitz_shaders / "utility.fxh",
+            game_shaders / "coat_of_arms_pattern.shader",
+            game_shaders / "coat_of_arms_textured_emblem.shader",
+            jomini_shaders / "coat_of_arms_pattern.fxh",
+            jomini_shaders / "coat_of_arms_textured_emblem.fxh",
+        ):
+            path.write_text(f"fixture shader {path.name}\n", encoding="utf-8")
+        self.surface_mask = self.dds(four_cc=b"DXT1", width=64, height=64)
+        (coa / "coa_mask_texture.dds").write_bytes(self.surface_mask)
+
     def query(self, kind: str, **kwargs: object) -> dict[str, object]:
         with patch.object(
             resources,
@@ -89,6 +117,14 @@ coa_designer_background_colors = {
             return resources.read_coat_of_arms_resource_asset_v1(
                 str(self.root), kind, name
             )
+
+    def render_support(self) -> dict[str, object]:
+        with patch.object(
+            resources,
+            "CK3_COAT_OF_ARMS_RESOURCE_CATALOG_V1_EXE_SHA256",
+            self.executable_sha256,
+        ):
+            return resources.read_coat_of_arms_render_support_v1(str(self.root))
 
     @staticmethod
     def dds(*, four_cc: bytes, width: int, height: int) -> bytes:
@@ -186,6 +222,33 @@ class CoatOfArmsResourceCatalogV1Tests(unittest.TestCase):
             with self.assertRaises(ValueError):
                 fixture.read("color", "red")
 
+    def test_render_support_binds_shader_sources_colors_and_surface_mask(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            fixture = _Fixture(Path(directory))
+            result = fixture.render_support()
+        self.assertEqual(result["schema"], "ck3-coat-of-arms-render-support-v1")
+        self.assertEqual(
+            base64.b64decode(result["surface_mask"]["asset_base64"]),
+            fixture.surface_mask,
+        )
+        self.assertEqual(result["surface_mask"]["dds"]["four_cc"], "DXT1")
+        self.assertEqual(len(result["provenance"]["shader_sources"]), 5)
+        colors = {item["name"]: item for item in result["named_colors"]}
+        self.assertEqual(colors["red"]["model"], "hsv")
+        self.assertEqual(colors["red"]["rgb"], [0.45, 0.1332, 0.09])
+        self.assertEqual(colors["brown"]["model"], "hsv360")
+        self.assertTrue(
+            result["render_contract"]["overlay_function_body_available"]
+        )
+
+    def test_render_support_fails_closed_when_a_shader_source_is_missing(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            fixture = _Fixture(Path(directory))
+            (fixture.root / "jomini" / "gfx" / "FX" / "coat_of_arms"
+             / "coat_of_arms_pattern.fxh").unlink()
+            with self.assertRaises(resources.CoatOfArmsResourceCatalogError):
+                fixture.render_support()
+
 
 @unittest.skipIf(
     importlib.util.find_spec("mcp") is None,
@@ -251,6 +314,15 @@ class CoatOfArmsResourceCatalogV1McpTests(unittest.IsolatedAsyncioTestCase):
                     self.assertFalse(asset.is_error)
                     self.assertEqual(
                         asset.structured_content["dds"]["four_cc"], "DXT1"
+                    )
+                    support = await client.call_tool(
+                        "ck3_read_coat_of_arms_render_support_v1",
+                        {"game_directory": str(fixture.root)},
+                    )
+                    self.assertFalse(support.is_error)
+                    self.assertEqual(
+                        support.structured_content["surface_mask"]["dds"]["width"],
+                        64,
                     )
 
 
