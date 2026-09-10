@@ -1513,6 +1513,66 @@ _LEGACY_MANAGER_HEALTH_TIMELINE_CONTRACTS: Final[
         "selected_native_option_index": 0,
         "occurrence_policy": "repeatable-within-product-observation-window",
     },
+    "health.3102": {
+        # R416 exact liege-choice window opened after the newly appointed
+        # physician began treating an ill courtier. Root is the played liege;
+        # sick_character is the third-party patient. The preceding consumption
+        # and recruitment scopes remain in the event frame, and the appointed
+        # physician still matches high_skill_option. Select the source-labelled
+        # safe treatment while keeping the hidden mystic row out of the exact
+        # four-row rendered projection.
+        "date_policy": "product-observation-window",
+        "root_character_id": PLAYER_SENTINEL,
+        "character_scopes": {},
+        "unique_character_scope_excludes": {
+            "sick_character": (PLAYER_SENTINEL,),
+            "high_skill_option": (PLAYER_SENTINEL,),
+            "low_skill_option": (PLAYER_SENTINEL,),
+            "physician": (PLAYER_SENTINEL,),
+        },
+        "character_scope_matches_any": {
+            "physician": ("high_skill_option",),
+            "high_skill_option": ("physician",),
+        },
+        "character_scope_differs_from": {
+            "sick_character": (
+                "high_skill_option",
+                "low_skill_option",
+                "physician",
+            ),
+            "high_skill_option": ("sick_character", "low_skill_option"),
+            "low_skill_option": (
+                "sick_character",
+                "high_skill_option",
+                "physician",
+            ),
+            "physician": ("sick_character", "low_skill_option"),
+        },
+        "scope_types": {
+            "epidemic": "epidemic",
+            "disease_type": "flag",
+            "new_memory": "character_memory",
+            "background_terrain_scope": "province",
+        },
+        "boolean_scopes": (),
+        "saved_scope_name_sets": ((
+            "epidemic",
+            "disease_type",
+            "sick_character",
+            "new_memory",
+            "high_skill_option",
+            "low_skill_option",
+            "physician",
+            "background_terrain_scope",
+        ),),
+        "saved_scope_count": 8,
+        "option_count": 4,
+        "snapshot_option_count": 5,
+        "native_option_indices": (0, 1, 3, 4),
+        "selected_option_number": 1,
+        "selected_native_option_index": 0,
+        "occurrence_policy": "repeatable-within-product-observation-window",
+    },
     "health.3103": {
         # R199 exact safe-treatment success result opened by health.3101.
         # Vanilla applies treatment modifiers and informs relatives in the
@@ -2110,6 +2170,7 @@ MANAGER_VANILLA_OBSERVATIONS_A: Final[dict[str, dict[str, object]]] = {
         "health.1006",
         "health.3001",
         "health.3101",
+        "health.3102",
         "health.3103",
     }
 }

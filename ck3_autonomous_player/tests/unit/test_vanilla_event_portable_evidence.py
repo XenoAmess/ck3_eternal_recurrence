@@ -51,15 +51,15 @@ def test_checked_in_bundle_is_complete_and_strictly_self_validating() -> None:
     manifest = _manifest()
 
     assert result["status"] == "available"
-    assert result["validated_evidence"] == 256
+    assert result["validated_evidence"] == 257
     assert result["statistics"] == {
-        "evidence": 256,
-        "generated_definition_references": 177,
-        "lexical_caller_candidate_references": 511,
-        "manually_reviewed_analysis_source_references": 235,
-        "observation_artifacts": 75,
-        "observation_artifact_references": 82,
-        "references": 1005,
+        "evidence": 257,
+        "generated_definition_references": 178,
+        "lexical_caller_candidate_references": 513,
+        "manually_reviewed_analysis_source_references": 239,
+        "observation_artifacts": 76,
+        "observation_artifact_references": 84,
+        "references": 1014,
         "source_definitions": 181,
     }
     assert result["manifest_sha256"] == hashlib.sha256(
@@ -68,7 +68,7 @@ def test_checked_in_bundle_is_complete_and_strictly_self_validating() -> None:
     Draft202012Validator(
         _schema("vanilla-event-portable-evidence-manifest-v1.schema.json")
     ).validate(manifest)
-    assert len(list((BUNDLE / "blobs").glob("*.gz"))) == 256
+    assert len(list((BUNDLE / "blobs").glob("*.gz"))) == 257
 
 
 def test_wheel_package_data_includes_source_index_and_evidence_bundle() -> None:
@@ -128,10 +128,10 @@ def test_manifest_preserves_honest_source_provenance_for_all_indexed_events() ->
 
     assert portable_event_keys_v1() == frozenset(source_index["events"])
     assert provenance_counts == {
-        "captured-observation-artifact": 82,
-        "generated-definition-index": 177,
-        "lexical-caller-candidate-not-proven-runtime-caller": 511,
-        "manually-reviewed-analysis-source": 235,
+        "captured-observation-artifact": 84,
+        "generated-definition-index": 178,
+        "lexical-caller-candidate-not-proven-runtime-caller": 513,
+        "manually-reviewed-analysis-source": 239,
     }
     lexical = [
         reference

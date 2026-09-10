@@ -118,6 +118,7 @@ _MIGRATED_OBSERVATION_EXCLUSIONS = _PORTABLE_EXCLUSIONS | {
     "health.1006",
     "health.3001",
     "health.3101",
+    "health.3102",
     "health.3103",
 }
 _LEGACY_BINDING_KEYS = (
@@ -213,7 +214,7 @@ class VanillaEventRecordsManagerATests(unittest.TestCase):
             expected_order,
             list(migrated.MANAGER_VANILLA_TIMELINE_CONTRACTS_A),
         )
-        self.assertEqual(len(expected_keys), 36)
+        self.assertEqual(len(expected_keys), 37)
         self.assertFalse(any(key.startswith("zg361.") for key in expected_keys))
 
         for source_name, source_contracts, migrated_contracts in _GROUPS:
