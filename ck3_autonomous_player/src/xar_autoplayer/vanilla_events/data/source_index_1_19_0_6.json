@@ -1,19 +1,19 @@
 {
   "audit": {
     "ambiguous_definition_count": 0,
-    "caller_candidate_file_count": 76,
-    "caller_candidate_reference_count": 502,
-    "definition_file_count": 66,
-    "external_caller_event_count": 138,
+    "caller_candidate_file_count": 77,
+    "caller_candidate_reference_count": 503,
+    "definition_file_count": 67,
+    "external_caller_event_count": 139,
     "missing_definition_count": 0,
     "namespace_mismatch_count": 0,
-    "registered_event_count": 171,
+    "registered_event_count": 172,
     "same_file_only_caller_event_count": 33,
-    "unique_definition_count": 171
+    "unique_definition_count": 172
   },
   "ck3_build": "1.19.0.6",
   "ck3_exe_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
-  "dataset_sha256": "0DCCAB4B2BD65E59FD326E8FC904C8F49A2EE6D4FC64218FB6AC3A677C0D44F5",
+  "dataset_sha256": "312146BCDAE99357FF17BAEF6270E2252F2D28665BBAB455D06166A38769826E",
   "events": {
     "adultery.0002": {
       "caller_candidate_resolution": "same-definition-file-only",
@@ -129,6 +129,24 @@
         "relative_path": "events/birth_events.txt"
       },
       "namespace": "birth"
+    },
+    "bp1_house_feud.0014": {
+      "caller_candidate_resolution": "external-definition-file",
+      "caller_candidates": [
+        {
+          "column": 14,
+          "file_sha256": "30F4823A7A77C3FF6D96C5E43F3F4FC3F531D4A8584EDC8E99177A2BFE468ADB",
+          "kind": "exact-token-lexical-candidate",
+          "line": 522,
+          "relative_path": "common/scripted_effects/03_bp1_scripted_effects.txt"
+        }
+      ],
+      "definition": {
+        "file_sha256": "37B6E662C4FC388E51D5B8EBC6F0FBCE7AE3FDCB825BFE121D23B971966469DA",
+        "line": 2310,
+        "relative_path": "events/dlc/bp1/bp1_house_feud.txt"
+      },
+      "namespace": "bp1_house_feud"
     },
     "bp1_yearly.5725": {
       "caller_candidate_resolution": "external-definition-file",

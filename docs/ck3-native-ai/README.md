@@ -84,10 +84,10 @@
   effect typed row/root 与 special-war dynamic outcome rows 仍是观测依赖，当前不得把 legality、已付成本或 WarID 绑定
   冒充 semantic decision readiness。
 - [static-ready complete analysis + twelve production-live primitives] [vanilla-event-knowledge-registry.md](vanilla-event-knowledge-registry.md)
-  本包组合默认 `171 contracts / 171 analysis / 171 observation metadata rows` 的 exact-build 原版事件表，其中
-  `23` 个 key 含非 legacy 的 paused/live observation；既有迁移基线与
+  本包组合默认 `172 contracts / 172 analysis / 172 observation metadata rows` 的 exact-build 原版事件表，其中
+  `24` 个 key 含非 legacy 的 paused/live observation；既有迁移基线与
   embedded bucket 仍保持冻结，R384 新增 `pay_homage.0101` 的 exact-build Smooth 合同和选择前 RED。离线只读
-  `ck3_query_vanilla_event_knowledge_v1` 保持既有 schema，production runtime 当前消费 `317` 条事件合同。R372 的 `TGP0160`、
+  `ck3_query_vanilla_event_knowledge_v1` 保持既有 schema，production runtime 当前消费 `318` 条事件合同。R372 的 `TGP0160`、
   `great_holy_war.0011`、`TGP0020`、`TGP0001` 已分别完成共享查询、真实选择与 advance，属于四条 production-live
   primitive。`stress_threshold.1721` 保留真实 RED：reload 已生效，根因是提交阶段重新按 base contract 解析；补丁提交为
   `039a509`、`e6ab3d4`。`epidemic_events.1064` 随后以同 PID 选择 reviewed native0 并完成 advance，成为第五条
@@ -121,7 +121,9 @@
   两条 prebootstrap context profile 不混入扁平表；缺少既有 source hash 的旧分析只标 migration-only，不编造 hash。
   R414 新遇到的 `yearly.0003` 已完成 exact-source 决策树、三 scope/四 authored option/三 rendered option
   合同和选择前 RED 冻结；参见 [yearly-forbidden-love.md](yearly-forbidden-love.md)。它仍待同 PID 热恢复，
-  不能增加 production-live 计数。上述状态不表示 171 条全部 live；
+  不能增加 production-live 计数。R414 attempt 2 随后遇到的 `bp1_house_feud.0014` 也已按实机 scope
+  形状收口到 authored3/native2；参见 [house-feud-cuckold-reveal.md](house-feud-cuckold-reveal.md)。
+  上述状态不表示 172 条全部 live；
   `361/626` 全树覆盖也不是 T0、其它 mod、CI 或发布门。T0 仍为 `50% / stage 8/11 / source 3/4 / P2 LOCKED`。
 - [static-confirmed + marriage/alliance production-live loop + call-ally blocker live / fallback static-ready]
   [marriage-and-alliance.md](marriage-and-alliance.md) 冻结 stock
