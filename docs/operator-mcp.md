@@ -12,6 +12,7 @@
 - `target.expected.token_user` 必须原样填写目标 server 的 `operator_get_status` 实测 `token_user`，不得自行补域前缀；
 - MCP endpoint；
 - 可交付 job 的完整 command、working directory、独占进程名；
+- 可选的命名 stdin controls；每个 control 的 UTF-8 payload 完全由 profile 冻结；
 - handoff 前必须存在并可选 size/SHA-256 复核的输入，以及必须尚不存在的输出。
 
 MCP 调用者不能提交任意命令。公开接口只有：
@@ -21,6 +22,12 @@ MCP 调用者不能提交任意命令。公开接口只有：
 - `operator_preflight_job`：只读检查 target identity、命令、输入、输出和独占进程；
 - `operator_handoff_job`：在同一次调用内重新 preflight，并只启动 profile 冻结的 command。
   `request_id` 对同一 server 实例幂等，返回 `server_instance_id / job_id / PID / log paths`。
+- `operator_control_job`：只向仍在运行、且 `target_id / job_name / job_id` 全部匹配的 job 发送 profile
+  中按名冻结的 stdin payload。调用方不能提交任意 stdin；同一 `request_id` 重放不会二次写入。
+  写入或 flush 失败会保留为 `RED` 结果，幂等重放也不会偷偷重试。
+
+未配置 `controls` 的 job 继续使用 `DEVNULL` stdin；配置了 controls 的 job 才保留 pipe，避免等待交互的
+wrapper 因 stdin 永久 EOF 而错误退出。capabilities/status 只披露 control 名，不返回 payload。
 
 ## 目标操作者侧一次性 bootstrap
 
@@ -43,12 +50,12 @@ Bootstrap 的唯一人工/外部边界是：首次让 server 本身运行在目�
 
 本仓通用部署约定是由本地 MCP client 连接 target-side Streamable HTTP server，endpoint 注册属于
 client 配置；已经运行的 session 不会因仓库内新增 server 代码而自动出现新工具。
-因此 bootstrap 与 client MCP 注册完成后，必须以实际 tool listing 验证四个 `operator_*` 工具可调用。
+因此 bootstrap 与 client MCP 注册完成后，必须以实际 tool listing 验证五个 `operator_*` 工具可调用。
 
 ## 版本与复用
 
 - profile schema：`1`
-- server/tool contract：`1.0.0`
+- server/tool contract：`1.1.0`（profile schema 1 的向后兼容可选 controls）
 - transport：MCP Python SDK `2.0.0` 的 stdio 或 Streamable HTTP
 - 可迁移对象：CK3 自动玩家、天朝二期、其他 mod 实机验收，以及其他机器的 MCP 查询调用方
 

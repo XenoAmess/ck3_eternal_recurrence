@@ -26,7 +26,7 @@ import uuid
 
 
 PROFILE_SCHEMA_VERSION = 1
-SERVER_VERSION = "1.0.0"
+SERVER_VERSION = "1.1.0"
 _IDENTIFIER = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._-]{0,127}$")
 _PROCESS_NAME = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._-]{0,127}$")
 
@@ -55,6 +55,7 @@ class OperatorJobProfile:
     exclusive_process_names: tuple[str, ...]
     required_paths: tuple[RequiredPath, ...]
     absent_paths: tuple[Path, ...]
+    controls: Mapping[str, bytes]
 
 
 @dataclass(frozen=True)
@@ -88,6 +89,7 @@ class ProcessInspector(Protocol):
 
 class ChildProcess(Protocol):
     pid: int
+    stdin: object | None
 
     def poll(self) -> int | None: ...
 
@@ -101,6 +103,15 @@ class _JobRecord:
     started_unix: float
     stdout_path: Path
     stderr_path: Path
+
+
+@dataclass(frozen=True)
+class _ControlRecord:
+    target_id: str
+    job_name: str
+    job_id: str
+    control_name: str
+    response: Mapping[str, object]
 
 
 def _require_mapping(value: object, label: str) -> Mapping[str, object]:
@@ -135,6 +146,19 @@ def _string_list(value: object, label: str) -> tuple[str, ...]:
     ):
         raise OperatorProfileError(f"{label} must be a string array")
     return tuple(value)
+
+
+def _load_controls(value: object, label: str) -> Mapping[str, bytes]:
+    if value is None:
+        return {}
+    rows = _require_mapping(value, label)
+    controls: dict[str, bytes] = {}
+    for raw_name, raw_payload in rows.items():
+        name = _require_identifier(raw_name, f"{label} key")
+        if not isinstance(raw_payload, str):
+            raise OperatorProfileError(f"{label}.{name} must be a string")
+        controls[name] = raw_payload.encode("utf-8")
+    return controls
 
 
 def _load_required_path(value: object, label: str) -> RequiredPath:
@@ -246,6 +270,7 @@ def load_operator_profile(path: str | os.PathLike[str]) -> OperatorProfile:
             exclusive_process_names=process_names,
             required_paths=required_paths,
             absent_paths=absent_paths,
+            controls=_load_controls(job.get("controls"), f"jobs.{name}.controls"),
         )
 
     return OperatorProfile(
@@ -392,6 +417,10 @@ def _job_spec_sha256(job: OperatorJobProfile) -> str:
             for item in job.required_paths
         ],
         "absent_paths": [str(item) for item in job.absent_paths],
+        "controls": {
+            name: hashlib.sha256(payload).hexdigest().upper()
+            for name, payload in sorted(job.controls.items())
+        },
     }
     encoded = json.dumps(
         payload, ensure_ascii=False, sort_keys=True, separators=(",", ":")
@@ -422,6 +451,7 @@ class OperatorService:
         self._lock = threading.RLock()
         self._jobs: dict[str, _JobRecord] = {}
         self._requests: dict[str, str] = {}
+        self._control_requests: dict[str, _ControlRecord] = {}
 
     def _identity(self) -> HostIdentity:
         return self._identity_probe()
@@ -465,11 +495,16 @@ class OperatorService:
             "profile_sha256": self.profile.source_sha256,
             "endpoint": endpoint,
             "jobs": sorted(self.profile.jobs),
+            "job_controls": {
+                name: sorted(job.controls)
+                for name, job in sorted(self.profile.jobs.items())
+            },
             "tools": [
                 "operator_get_capabilities",
                 "operator_get_status",
                 "operator_preflight_job",
                 "operator_handoff_job",
+                "operator_control_job",
             ],
             "caller_supplied_commands": False,
             "operator_bootstrap_required": True,
@@ -477,6 +512,7 @@ class OperatorService:
 
     def _record_payload(self, record: _JobRecord) -> dict[str, object]:
         exit_code = record.process.poll()
+        job = self.profile.jobs[record.job_name]
         return {
             "job_id": record.job_id,
             "request_id": record.request_id,
@@ -487,6 +523,7 @@ class OperatorService:
             "started_unix": record.started_unix,
             "stdout_path": str(record.stdout_path),
             "stderr_path": str(record.stderr_path),
+            "available_controls": sorted(job.controls),
         }
 
     def status(self, target_id: str) -> dict[str, object]:
@@ -664,7 +701,7 @@ class OperatorService:
                 process = self._popen_factory(
                     list(job.command),
                     cwd=str(job.working_directory),
-                    stdin=subprocess.DEVNULL,
+                    stdin=subprocess.PIPE if job.controls else subprocess.DEVNULL,
                     stdout=stdout,
                     stderr=stderr,
                     close_fds=True,
@@ -705,6 +742,93 @@ class OperatorService:
                 "job": self._record_payload(record),
             }
 
+    def control_job(
+        self,
+        target_id: str,
+        job_name: str,
+        job_id: str,
+        control_name: str,
+        request_id: str,
+    ) -> dict[str, object]:
+        """Send one profile-frozen stdin control to the matching live job."""
+        self._assert_target(target_id)
+        if not isinstance(job_id, str) or not _IDENTIFIER.fullmatch(job_id):
+            raise OperatorHandoffError("job_id must be a portable identifier")
+        if not isinstance(control_name, str) or not _IDENTIFIER.fullmatch(
+            control_name
+        ):
+            raise OperatorHandoffError("control_name must be a portable identifier")
+        if not isinstance(request_id, str) or not _IDENTIFIER.fullmatch(request_id):
+            raise OperatorHandoffError("request_id must be a portable identifier")
+        job = self._job(job_name)
+        with self._lock:
+            prior = self._control_requests.get(request_id)
+            if prior is not None:
+                if (
+                    prior.target_id != target_id
+                    or prior.job_name != job_name
+                    or prior.job_id != job_id
+                    or prior.control_name != control_name
+                ):
+                    raise OperatorHandoffError(
+                        "request_id is already bound to a different job control"
+                    )
+                return {**prior.response, "idempotent_replay": True}
+
+            try:
+                record = self._jobs[job_id]
+            except KeyError as error:
+                raise OperatorHandoffError(
+                    f"operator job does not exist: {job_id}"
+                ) from error
+            if record.job_name != job_name:
+                raise OperatorHandoffError("job_id is bound to a different job")
+            try:
+                payload = job.controls[control_name]
+            except KeyError as error:
+                raise OperatorHandoffError(
+                    f"control is not configured for job {job_name}: {control_name}"
+                ) from error
+            exit_code = record.process.poll()
+            if exit_code is not None:
+                raise OperatorHandoffError(
+                    f"operator job already exited with code {exit_code}"
+                )
+
+            response: dict[str, object] = {
+                "schema_version": 1,
+                "result": "ACCEPTED",
+                "idempotent_replay": False,
+                "target_id": target_id,
+                "profile_sha256": self.profile.source_sha256,
+                "job_id": job_id,
+                "job_name": job_name,
+                "control_name": control_name,
+                "payload_bytes": len(payload),
+            }
+            try:
+                stream = record.process.stdin
+                if stream is None:
+                    raise BrokenPipeError("configured job has no stdin pipe")
+                written = stream.write(payload)  # type: ignore[attr-defined]
+                if written != len(payload):
+                    raise OSError(
+                        f"short stdin write: {written!r} of {len(payload)} bytes"
+                    )
+                stream.flush()  # type: ignore[attr-defined]
+            except (OSError, ValueError) as error:
+                response["result"] = "RED"
+                response["error"] = f"{type(error).__name__}: {error}"
+            control_record = _ControlRecord(
+                target_id=target_id,
+                job_name=job_name,
+                job_id=job_id,
+                control_name=control_name,
+                response=response,
+            )
+            self._control_requests[request_id] = control_record
+            return dict(response)
+
 
 def create_operator_server(service: OperatorService):
     """Build the generic target-side MCP server lazily."""
@@ -722,7 +846,7 @@ def create_operator_server(service: OperatorService):
         instructions=(
             "Select the configured target_id, read capabilities/status, then run "
             "operator_preflight_job. Call operator_handoff_job only for a GREEN "
-            "preflight. Commands and operator identity are target-profile data."
+            "preflight. Job commands and stdin controls are target-profile data."
         ),
     )
     read_only = ToolAnnotations(
@@ -761,6 +885,19 @@ def create_operator_server(service: OperatorService):
     ) -> dict[str, object]:
         """Start one profile-frozen job; request_id makes retries idempotent."""
         return service.handoff_job(target_id, job_name, request_id)
+
+    @server.tool(annotations=handoff)
+    def operator_control_job(
+        target_id: str,
+        job_name: str,
+        job_id: str,
+        control_name: str,
+        request_id: str,
+    ) -> dict[str, object]:
+        """Send one profile-frozen control to the matching running job."""
+        return service.control_job(
+            target_id, job_name, job_id, control_name, request_id
+        )
 
     @server.resource("operator://capabilities")
     def operator_capabilities_resource() -> dict[str, object]:

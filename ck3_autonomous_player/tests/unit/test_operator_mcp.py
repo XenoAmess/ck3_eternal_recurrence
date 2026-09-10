@@ -4,6 +4,7 @@ import hashlib
 import importlib.util
 import json
 from pathlib import Path
+import subprocess
 import sys
 import tempfile
 import unittest
@@ -34,23 +35,48 @@ class _Process:
     def __init__(self, pid: int = 4242) -> None:
         self.pid = pid
         self.exit_code: int | None = None
+        self.stdin: _Stdin | None = None
 
     def poll(self) -> int | None:
         return self.exit_code
 
 
 class _Popen:
-    def __init__(self) -> None:
+    def __init__(self, *, stdin: "_Stdin | None" = None) -> None:
         self.calls: list[tuple[list[str], dict[str, object]]] = []
         self.process = _Process()
+        self.configured_stdin = stdin or _Stdin()
 
     def __call__(self, command: list[str], **kwargs: object) -> _Process:
         self.calls.append((command, kwargs))
+        if kwargs.get("stdin") == subprocess.PIPE:
+            self.process.stdin = self.configured_stdin
         return self.process
 
 
+class _Stdin:
+    def __init__(
+        self, *, fail_on_write: bool = False, fail_on_flush: bool = False
+    ) -> None:
+        self.writes: list[bytes] = []
+        self.flush_count = 0
+        self.fail_on_write = fail_on_write
+        self.fail_on_flush = fail_on_flush
+
+    def write(self, payload: bytes) -> int:
+        if self.fail_on_write:
+            raise BrokenPipeError("fixture write failure")
+        self.writes.append(payload)
+        return len(payload)
+
+    def flush(self) -> None:
+        self.flush_count += 1
+        if self.fail_on_flush:
+            raise BrokenPipeError("fixture flush failure")
+
+
 class OperatorMcpTests(unittest.TestCase):
-    def _profile(self, root: Path):
+    def _profile(self, root: Path, *, controls: dict[str, str] | None = None):
         executable = root / "python.exe"
         executable.write_bytes(b"exe")
         wrapper = root / "managed_replay.py"
@@ -94,6 +120,8 @@ class OperatorMcpTests(unittest.TestCase):
                 }
             },
         }
+        if controls is not None:
+            payload["jobs"]["replay"]["controls"] = controls
         profile_path = root / "operator.json"
         profile_path.write_text(json.dumps(payload), encoding="utf-8")
         return load_operator_profile(profile_path), state
@@ -179,6 +207,7 @@ class OperatorMcpTests(unittest.TestCase):
                 popen.calls[0][1]["cwd"],
                 str(profile.jobs["replay"].working_directory),
             )
+            self.assertEqual(popen.calls[0][1]["stdin"], subprocess.DEVNULL)
             self.assertTrue(
                 Path(first["job"]["stdout_path"]).is_relative_to(state)
             )
@@ -206,6 +235,126 @@ class OperatorMcpTests(unittest.TestCase):
             with self.assertRaisesRegex(OperatorHandoffError, "preflight RED"):
                 service.handoff_job("operator-a", "replay", "request-1")
 
+    def test_named_control_uses_pipe_and_retry_writes_only_once(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            profile, _state = self._profile(
+                Path(temporary), controls={"resume": "resume\n", "stop": "stop\n"}
+            )
+            popen = _Popen()
+            service = OperatorService(
+                profile,
+                identity_probe=self._identity,
+                process_inspector=_Inspector(),
+                popen_factory=popen,
+            )
+            handed_off = service.handoff_job("operator-a", "replay", "launch-1")
+            job_id = handed_off["job"]["job_id"]
+            self.assertEqual(popen.calls[0][1]["stdin"], subprocess.PIPE)
+            self.assertEqual(
+                handed_off["job"]["available_controls"], ["resume", "stop"]
+            )
+
+            first = service.control_job(
+                "operator-a", "replay", job_id, "resume", "control-1"
+            )
+            popen.process.exit_code = 0
+            second = service.control_job(
+                "operator-a", "replay", job_id, "resume", "control-1"
+            )
+            self.assertEqual(first["result"], "ACCEPTED")
+            self.assertFalse(first["idempotent_replay"])
+            self.assertTrue(second["idempotent_replay"])
+            self.assertEqual(popen.configured_stdin.writes, [b"resume\n"])
+            self.assertEqual(popen.configured_stdin.flush_count, 1)
+            with self.assertRaisesRegex(OperatorHandoffError, "different job control"):
+                service.control_job(
+                    "operator-a", "replay", job_id, "stop", "control-1"
+                )
+            self.assertEqual(
+                service.capabilities()["job_controls"],
+                {"replay": ["resume", "stop"]},
+            )
+            self.assertEqual(
+                service.status("operator-a")["jobs"][0]["available_controls"],
+                ["resume", "stop"],
+            )
+
+    def test_control_rejects_unknown_exited_wrong_job_and_wrong_target(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            profile, _state = self._profile(
+                Path(temporary), controls={"resume": "resume\n"}
+            )
+            popen = _Popen()
+            service = OperatorService(
+                profile,
+                identity_probe=self._identity,
+                process_inspector=_Inspector(),
+                popen_factory=popen,
+            )
+            job_id = service.handoff_job(
+                "operator-a", "replay", "launch-1"
+            )["job"]["job_id"]
+            with self.assertRaisesRegex(OperatorHandoffError, "target mismatch"):
+                service.control_job(
+                    "operator-b", "replay", job_id, "resume", "control-target"
+                )
+            with self.assertRaisesRegex(OperatorHandoffError, "not configured"):
+                service.control_job(
+                    "operator-a", "other", job_id, "resume", "control-job"
+                )
+            with self.assertRaisesRegex(OperatorHandoffError, "does not exist"):
+                service.control_job(
+                    "operator-a", "replay", "missing-job", "resume", "control-id"
+                )
+            with self.assertRaisesRegex(OperatorHandoffError, "not configured"):
+                service.control_job(
+                    "operator-a", "replay", job_id, "unknown", "control-name"
+                )
+            popen.process.exit_code = 9
+            with self.assertRaisesRegex(OperatorHandoffError, "already exited"):
+                service.control_job(
+                    "operator-a", "replay", job_id, "resume", "control-exited"
+                )
+            self.assertEqual(popen.configured_stdin.writes, [])
+
+    def test_control_write_or_flush_failure_is_red_and_not_retried(self) -> None:
+        for failure in ("write", "flush"):
+            with (
+                self.subTest(failure=failure),
+                tempfile.TemporaryDirectory() as temporary,
+            ):
+                profile, _state = self._profile(
+                    Path(temporary), controls={"resume": "resume\n"}
+                )
+                stream = _Stdin(
+                    fail_on_write=failure == "write",
+                    fail_on_flush=failure == "flush",
+                )
+                popen = _Popen(stdin=stream)
+                service = OperatorService(
+                    profile,
+                    identity_probe=self._identity,
+                    process_inspector=_Inspector(),
+                    popen_factory=popen,
+                )
+                job_id = service.handoff_job(
+                    "operator-a", "replay", "launch-1"
+                )["job"]["job_id"]
+                first = service.control_job(
+                    "operator-a", "replay", job_id, "resume", "control-red"
+                )
+                second = service.control_job(
+                    "operator-a", "replay", job_id, "resume", "control-red"
+                )
+                self.assertEqual(first["result"], "RED")
+                self.assertIn("BrokenPipeError", first["error"])
+                self.assertTrue(second["idempotent_replay"])
+                self.assertEqual(
+                    stream.writes,
+                    [] if failure == "write" else [b"resume\n"],
+                )
+                self.assertEqual(stream.flush_count, 0 if failure == "write" else 1)
+
 
 @unittest.skipIf(importlib.util.find_spec("mcp") is None, "optional MCP SDK not installed")
 class OperatorMcpSdkTests(unittest.IsolatedAsyncioTestCase):
@@ -214,11 +363,15 @@ class OperatorMcpSdkTests(unittest.IsolatedAsyncioTestCase):
 
         with tempfile.TemporaryDirectory() as temporary:
             fixture = OperatorMcpTests()
-            profile, _state = fixture._profile(Path(temporary))
+            profile, _state = fixture._profile(
+                Path(temporary), controls={"resume": "resume\n"}
+            )
+            popen = _Popen()
             service = OperatorService(
                 profile,
                 identity_probe=fixture._identity,
                 process_inspector=_Inspector(),
+                popen_factory=popen,
             )
             server = create_operator_server(service)
             async with Client(server) as client:
@@ -230,6 +383,7 @@ class OperatorMcpSdkTests(unittest.IsolatedAsyncioTestCase):
                         "operator_get_status",
                         "operator_preflight_job",
                         "operator_handoff_job",
+                        "operator_control_job",
                     },
                 )
                 tools = {tool.name: tool for tool in listed.tools}
@@ -245,6 +399,12 @@ class OperatorMcpSdkTests(unittest.IsolatedAsyncioTestCase):
                 self.assertTrue(
                     tools["operator_handoff_job"].annotations.idempotent_hint
                 )
+                self.assertFalse(
+                    tools["operator_control_job"].annotations.read_only_hint
+                )
+                self.assertTrue(
+                    tools["operator_control_job"].annotations.idempotent_hint
+                )
                 capabilities = await client.call_tool(
                     "operator_get_capabilities", {}
                 )
@@ -258,6 +418,28 @@ class OperatorMcpSdkTests(unittest.IsolatedAsyncioTestCase):
                 )
                 self.assertFalse(preflight.is_error)
                 self.assertEqual(preflight.structured_content["result"], "GREEN")
+                handoff = await client.call_tool(
+                    "operator_handoff_job",
+                    {
+                        "target_id": "operator-a",
+                        "job_name": "replay",
+                        "request_id": "launch-1",
+                    },
+                )
+                self.assertFalse(handoff.is_error)
+                control = await client.call_tool(
+                    "operator_control_job",
+                    {
+                        "target_id": "operator-a",
+                        "job_name": "replay",
+                        "job_id": handoff.structured_content["job"]["job_id"],
+                        "control_name": "resume",
+                        "request_id": "control-1",
+                    },
+                )
+                self.assertFalse(control.is_error)
+                self.assertEqual(control.structured_content["result"], "ACCEPTED")
+                self.assertEqual(popen.configured_stdin.writes, [b"resume\n"])
 
 
 if __name__ == "__main__":

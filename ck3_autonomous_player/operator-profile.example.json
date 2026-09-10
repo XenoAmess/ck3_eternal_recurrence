@@ -37,7 +37,11 @@
       ],
       "absent_paths": [
         "C:\\workspace\\runtime\\managed-replay-live"
-      ]
+      ],
+      "controls": {
+        "resume": "resume\n",
+        "stop": "stop\n"
+      }
     }
   }
 }
