@@ -28,8 +28,13 @@ def _reload_loaded_contract_modules() -> None:
         leaf = name.rsplit(".", 1)[-1]
         if leaf == "registry":
             return (0, name)
-        if leaf.startswith("records_analysis_"):
+        if leaf in {"records_embedded", "records_vanilla_shards"}:
+            # These compatibility modules aggregate the adjacent record
+            # shards. They must observe refreshed leaf mappings rather than
+            # copying the previous generation during a same-PID repair.
             return (2, name)
+        if leaf.startswith("records_analysis_"):
+            return (3, name)
         if leaf.startswith("records_"):
             return (1, name)
         return (0, name)

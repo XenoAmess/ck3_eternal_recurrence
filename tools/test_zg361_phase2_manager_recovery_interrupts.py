@@ -226,7 +226,11 @@ sys.path.insert(0, str(root / "ck3_autonomous_player" / "src"))
 import zg361_phase2_promotion_source_production_entry as production
 import zg361_phase2_promotion_central_contracts as central
 import zg361_phase2_promotion_career_hc_contracts as career_hc
-from xar_autoplayer.vanilla_events import records_embedded, records_tgp_dynastic_cycle
+from xar_autoplayer.vanilla_events import (
+    records_embedded,
+    records_embedded_c,
+    records_tgp_dynastic_cycle,
+)
 
 event_key = "stress_threshold.1721"
 before = production.KNOWN_TIMELINE_INTERRUPTS[event_key]
@@ -265,6 +269,25 @@ if no_confidant["selected_option_number"] != 11:
     raise SystemExit("wrong no-confidant authored option")
 if no_confidant["selected_native_option_index"] != 10:
     raise SystemExit("wrong no-confidant native option")
+
+# Reproduce the R406 stale-shard failure: the aggregate and embedded-C leaf
+# initially share this nested contract. A reload must reconstruct the leaf
+# before the aggregate copies it, restoring the source-backed projections.
+silk_event_key = "tgp_dynastic_cycle_events.0040"
+records_embedded_c.EMBEDDED_C_VANILLA_TIMELINE_CONTRACTS[
+    silk_event_key
+]["option_variants"] = ()
+reloaded = importlib.reload(production)
+silk_contract = reloaded.KNOWN_TIMELINE_INTERRUPTS[silk_event_key]
+if tuple(
+    variant["native_option_indices"]
+    for variant in silk_contract["option_variants"]
+) != ((0, 1, 2), (1, 2)):
+    raise SystemExit("reload retained stale embedded-C option projections")
+if silk_contract is not (
+    records_embedded.EMBEDDED_VANILLA_TIMELINE_CONTRACTS[silk_event_key]
+):
+    raise SystemExit("production Silk Road contract is not refreshed aggregate")
 
 # A live process may reload from an older module generation that predates the
 # initialization sentinel. Its existing contract mapping is the durable reload
