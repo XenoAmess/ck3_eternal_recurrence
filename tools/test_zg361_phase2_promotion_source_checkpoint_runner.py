@@ -885,6 +885,13 @@ class PromotionSourceCheckpointRunnerTests(unittest.TestCase):
         self,
     ) -> None:
         event_key = "tgp_dynastic_cycle.0081"
+        portable_contract = production.KNOWN_TIMELINE_INTERRUPTS[event_key]
+        self.assertNotIn("handling_policy", portable_contract)
+        self.assertNotIn(
+            "scenario_invalidation_reason_code",
+            portable_contract,
+        )
+        self.assertNotIn("invalidated_precondition", portable_contract)
         contract = production._resolve_timeline_interrupt_contract(
             event_key,
             player=32904,
@@ -902,6 +909,7 @@ class PromotionSourceCheckpointRunnerTests(unittest.TestCase):
             contract["scenario_invalidation_reason_code"],
             "dynastic_cycle_chaos_immediate_shattered_product_lineage",
         )
+        self.assertIsNot(contract, portable_contract)
         self.assertEqual(contract["selected_native_option_index"], 0)
 
         class NoMutationService:

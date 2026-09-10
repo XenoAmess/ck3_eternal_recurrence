@@ -1135,23 +1135,24 @@ KNOWN_TIMELINE_INTERRUPTS.update(MANAGER_ELIMINATION_TIMELINE_CONTRACTS)
 # contract correctly describes native0 as an effect-free acknowledgement, but
 # this product runner has a stronger scenario boundary: acknowledging cannot
 # restore the stable realm/manager lineage required by the acceptance run.
-# Overlay only the runner-local copy so other CK3 agents may still use the
-# portable event contract for ordinary gameplay.
+# Keep this product policy outside the portable registry so other CK3 agents
+# and mod runners continue to receive the reusable vanilla event contract.
 _DYNASTIC_CHAOS_EVENT = "tgp_dynastic_cycle.0081"
-KNOWN_TIMELINE_INTERRUPTS[_DYNASTIC_CHAOS_EVENT] = {
-    **copy.deepcopy(KNOWN_TIMELINE_INTERRUPTS[_DYNASTIC_CHAOS_EVENT]),
-    "handling_policy": "scenario-invalidating-fail-closed",
-    "scenario_invalidation_reason_code": (
-        "dynastic_cycle_chaos_immediate_shattered_product_lineage"
-    ),
-    "scenario_invalidation_reason": (
-        "the event's unconditional immediate block has already destroyed or "
-        "reorganized the realm and manager lineage required by this product "
-        "scenario; its sole acknowledgement cannot restore that state"
-    ),
-    "invalidated_precondition": (
-        "stable_product_realm_and_manager_lineage_before_chaos_shattering"
-    ),
+_PRODUCT_SCENARIO_INVALIDATION_OVERLAYS: dict[str, dict[str, object]] = {
+    _DYNASTIC_CHAOS_EVENT: {
+        "handling_policy": "scenario-invalidating-fail-closed",
+        "scenario_invalidation_reason_code": (
+            "dynastic_cycle_chaos_immediate_shattered_product_lineage"
+        ),
+        "scenario_invalidation_reason": (
+            "the event's unconditional immediate block has already destroyed or "
+            "reorganized the realm and manager lineage required by this product "
+            "scenario; its sole acknowledgement cannot restore that state"
+        ),
+        "invalidated_precondition": (
+            "stable_product_realm_and_manager_lineage_before_chaos_shattering"
+        ),
+    },
 }
 
 
@@ -2374,11 +2375,18 @@ def _resolve_timeline_interrupt_contract(
         contract.pop("max_occurrences", None)
     if contract is None:
         return None
-    return _timeline_contract_for_window(
+    materialized = _timeline_contract_for_window(
         contract,
         starting_date=starting_date,
         absolute_end_date=absolute_end_date,
     )
+    product_overlay = _PRODUCT_SCENARIO_INVALIDATION_OVERLAYS.get(event_key)
+    if product_overlay is not None:
+        materialized = {
+            **materialized,
+            **copy.deepcopy(product_overlay),
+        }
+    return materialized
 
 
 def _manager_recovery_occurrence_contract(
@@ -3405,7 +3413,18 @@ def enter_promotion_source_checkpoint_v1(
         None,
     )
     if retained_invalidating_drain is not None:
-        contract = KNOWN_TIMELINE_INTERRUPTS[_DYNASTIC_CHAOS_EVENT]
+        contract = _resolve_timeline_interrupt_contract(
+            _DYNASTIC_CHAOS_EVENT,
+            player=player,
+            starting_date=timeline_origin_date,
+            absolute_end_date=absolute_end_date,
+            stop_at_clean_review_boundary=stop_at_clean_review_boundary,
+            continue_to_pause_target=continue_to_pause_target,
+        )
+        if contract is None:
+            raise PromotionProductionEntryError(
+                "dynastic chaos product invalidation contract is unavailable"
+            )
         invalidation = {
             "classification": "scenario-invalidating-interrupt",
             "handling": "fail-closed-no-further-input",
