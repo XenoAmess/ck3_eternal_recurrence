@@ -24,6 +24,7 @@ _SCOPE_NAMES: Final = (
     "house_feud_attacker",
     "house_feud_victim",
 )
+_SCOPE_NAMES_WITH_RELATION: Final = (*_SCOPE_NAMES, "relation")
 
 
 VANILLA_BP1_HOUSE_FEUD_TIMELINE_CONTRACTS: Final[
@@ -70,6 +71,23 @@ VANILLA_BP1_HOUSE_FEUD_TIMELINE_CONTRACTS: Final[
         "boolean_scopes": ("is_child_of_concubine", "matrilineal"),
         "saved_scope_name_sets": (_SCOPE_NAMES,),
         "saved_scope_count": 15,
+        "scope_variants": ({
+            # save_ongoing_house_relation_effect conditionally publishes the
+            # current house relation used by the event description.  R416
+            # observed that source-authored shape after the R414 no-relation
+            # shape, while all character aliases and the selected route stayed
+            # identical.
+            "saved_scope_names": _SCOPE_NAMES_WITH_RELATION,
+            "saved_scope_count": 16,
+            "scope_types": {
+                name: (
+                    "boolean"
+                    if name in {"is_child_of_concubine", "matrilineal"}
+                    else "house_relation" if name == "relation" else "character"
+                )
+                for name in _SCOPE_NAMES_WITH_RELATION
+            },
+        },),
         "option_count": 3,
         "snapshot_option_count": 3,
         "native_option_indices": (0, 1, 2),
@@ -131,7 +149,10 @@ VANILLA_BP1_HOUSE_FEUD_ANALYSIS: Final[dict[str, dict[str, object]]] = {
         "scope_boundary": (
             "R414 inherited fifteen exact scopes from the secret-exposure chain. "
             "They resolve into three distinct non-ROOT character alias groups "
-            "plus is_child_of_concubine and matrilineal boolean scopes"
+            "plus is_child_of_concubine and matrilineal boolean scopes. When "
+            "save_ongoing_house_relation_effect finds an existing relation, the "
+            "source-authored immediate also publishes relation as a house_relation; "
+            "R416 observed that sixteen-scope form"
         ),
         "option_semantics": {
             0: (
@@ -203,6 +224,51 @@ VANILLA_BP1_HOUSE_FEUD_OBSERVATIONS: Final[dict[str, dict[str, object]]] = {
             "saved_scope_raw_types": {
                 name: (2 if name in {"is_child_of_concubine", "matrilineal"} else 4)
                 for name in _SCOPE_NAMES
+            },
+            "rendered_native_option_indices": [0, 1, 2],
+            "selected_option_number": None,
+            "selected_native_option_index": None,
+            "selection_attempted": False,
+            "retained_red": True,
+            "process_restart_required": False,
+            "mcp_only": True,
+            "fixture_used": False,
+            "ocr_used": False,
+            "coordinates_used": False,
+            "console_used": False,
+        }, {
+            "run": "R416",
+            "kind": "retained-live-contract-red",
+            "red_classification": "harness-route-red",
+            "product_failure_proven": False,
+            "artifact": (
+                "_runtime/p1-terminal-resume-r416-20260911/live-artifacts/"
+                "terminal-stages-red-attempt-01.json"
+            ),
+            "artifact_sha256": (
+                "8F1B7C8D055A0EDC4508454D161DD5B15677536DB0404A60F57463EDE38BB3E6"
+            ),
+            "date_raw": 53785920,
+            "event_instance_id": 1076,
+            "root_character_id": 32904,
+            "snapshot_id": "native:38",
+            "revision": 39,
+            "native_revision": 38,
+            "saved_character_ids": {
+                "mother": 81924,
+                "father": 33606629,
+                "real_father": 16850404,
+            },
+            "saved_scope_raw_types": {
+                **{
+                    name: (
+                        2
+                        if name in {"is_child_of_concubine", "matrilineal"}
+                        else 4
+                    )
+                    for name in _SCOPE_NAMES
+                },
+                "relation": 22,
             },
             "rendered_native_option_indices": [0, 1, 2],
             "selected_option_number": None,

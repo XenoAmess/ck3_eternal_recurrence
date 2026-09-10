@@ -83,6 +83,9 @@ class Bp1HouseFeudEventRecordTests(unittest.TestCase):
         self.assertEqual(contract["root_character_id"], PLAYER_SENTINEL)
         self.assertNotIn("date_raw", contract)
         self.assertEqual(contract["saved_scope_count"], 15)
+        relation_variant, = contract["scope_variants"]
+        self.assertEqual(relation_variant["saved_scope_count"], 16)
+        self.assertEqual(relation_variant["scope_types"]["relation"], "house_relation")
         self.assertEqual(
             contract["boolean_scopes"],
             ("is_child_of_concubine", "matrilineal"),
@@ -120,16 +123,19 @@ class Bp1HouseFeudEventRecordTests(unittest.TestCase):
             self.assertRegex(digest, SHA256_PATTERN)
 
     def test_r414_ids_and_harness_red_remain_observation_only(self) -> None:
-        exemplar, = VANILLA_BP1_HOUSE_FEUD_OBSERVATIONS[EVENT_KEY]["exemplars"]
+        r414, r416 = VANILLA_BP1_HOUSE_FEUD_OBSERVATIONS[EVENT_KEY]["exemplars"]
         contract_repr = repr(VANILLA_BP1_HOUSE_FEUD_TIMELINE_CONTRACTS[EVENT_KEY])
 
-        self.assertEqual(exemplar["run"], "R414")
-        self.assertEqual(exemplar["red_classification"], "harness-route-red")
-        self.assertFalse(exemplar["product_failure_proven"])
-        self.assertEqual(exemplar["rendered_native_option_indices"], [0, 1, 2])
-        self.assertFalse(exemplar["selection_attempted"])
-        self.assertRegex(exemplar["artifact_sha256"], SHA256_PATTERN)
-        for observation_only in (53671224, 1066, 32904, 81924, 33606629, 16850404):
+        self.assertEqual(r414["run"], "R414")
+        self.assertEqual(r416["run"], "R416")
+        self.assertEqual(r416["saved_scope_raw_types"]["relation"], 22)
+        for exemplar in (r414, r416):
+            self.assertEqual(exemplar["red_classification"], "harness-route-red")
+            self.assertFalse(exemplar["product_failure_proven"])
+            self.assertEqual(exemplar["rendered_native_option_indices"], [0, 1, 2])
+            self.assertFalse(exemplar["selection_attempted"])
+            self.assertRegex(exemplar["artifact_sha256"], SHA256_PATTERN)
+        for observation_only in (53671224, 1066, 53785920, 1076, 32904, 81924, 33606629, 16850404):
             self.assertNotIn(str(observation_only), contract_repr)
 
     def test_default_registry_runtime_and_evidence_share_record(self) -> None:
@@ -240,6 +246,65 @@ class Bp1HouseFeudEventRecordTests(unittest.TestCase):
             contract=contract,
         )
 
+        self.assertTrue(all(checks.values()), checks)
+
+    def test_r416_live_relation_shape_passes_production_recovery_checks(self) -> None:
+        source = VANILLA_BP1_HOUSE_FEUD_TIMELINE_CONTRACTS[EVENT_KEY]
+        contract = production._manager_recovery_contract(
+            source,
+            player=32904,
+            event_key=EVENT_KEY,
+        )
+        contract = production._timeline_contract_for_window(
+            contract,
+            starting_date=53783472,
+            absolute_end_date=53958720,
+        )
+        scopes = [
+            _scope(name, "character", character_id)
+            for name, character_id in ALIASES.items()
+        ] + [
+            _scope("is_child_of_concubine", "boolean"),
+            _scope("matrilineal", "boolean"),
+            _scope("relation", "house_relation"),
+        ]
+        order = source["scope_variants"][0]["saved_scope_names"]
+        by_name = {scope["name"]: scope for scope in scopes}
+        context = {
+            "schema": "current-event-window-context-v1",
+            "schema_version": 1,
+            "status": "available",
+            "window_match_count": 1,
+            "event_definition_key": EVENT_KEY,
+            "current_event_instance_id": 1076,
+            "date_raw": 53785920,
+            "root_scope": _scope("root", "character", 32904)["scope"],
+            "saved_scopes": [by_name[name] for name in order],
+            "options": [
+                {
+                    "rendered_index": index,
+                    "native_option_index": index,
+                    "shown": True,
+                    "enabled": True,
+                    "fallback": False,
+                    "cancel": False,
+                }
+                for index in range(3)
+            ],
+        }
+        resolved = production._interrupt_contract_for_context(context, contract)
+        checks = production._known_interrupt_checks(
+            snapshot={
+                "date_raw": 53785920,
+                "active_event": {"option_count": 3},
+            },
+            event={"event_instance_id": 1076},
+            context=context,
+            event_key=EVENT_KEY,
+            contract=resolved,
+        )
+
+        self.assertEqual(resolved["saved_scope_count"], 16)
         self.assertTrue(all(checks.values()), checks)
 
 

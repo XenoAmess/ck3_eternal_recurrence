@@ -86,7 +86,7 @@ R390 在 `date_raw=53589168` 暂停于 instance `1089`，原始 RED 原样保留
 
 CK3 `1.19.0.6` exact-build 定义位于 `events/lifestyles/statecraft_lifestyle/diplomacy_majesty_events.txt:968`。`.4033` 只由 `.4030` 的 option B 直接触发；上游是每年四次的 diplomacy lifestyle pulse 及概率事件池，不是 daily pulse。`.4033` 自身只检查 `thinker` 仍存活，没有独立随机分支或后续事件。唯一 authored option 1/native `0` 给接收者五年 `+1 diplomacy/+1 martial` modifier、对 thinker 的 `+25` opinion，并在需要时建立 potential-friend 关系；没有资源、压力、囚禁、受伤、死亡、战争或头衔代价。因此最小安全合同选择该唯一终止路线，同时仍要求 exact saved-scope shape、玩家/第三方关系、选项投影及提交前 revision 重绑定全部通过。
 
-portable evidence bundle 随 R414 attempt 6 更新为 `238` 个唯一 evidence blob、`952` 条引用，其中 exact-build definition `174` 条、lexical caller candidate `506` 条、人工审阅 source `204` 条、observation artifact reference `68` 条；67 份唯一 observation artifact 包含本轮六份保留 RED。attempt 6 不可变 RED 的 SHA-256 为 `BEEB7C1C2FE0A30FA056ABCED1C28EA83BD0739DC0D1225BE4CA1C3C738700E6`；共享合同是 Python-only 数据，既有 continuation 会重新加载 canonical registry，可在保留同一 CK3 PID 的条件下热恢复。
+portable evidence bundle 随 R416 relation-scope RED 更新为 `239` 个唯一 evidence blob、`953` 条引用，其中 exact-build definition `174` 条、lexical caller candidate `506` 条、人工审阅 source `204` 条、observation artifact reference `69` 条；68 份唯一 observation artifact 包含 R414 的六份保留 RED 与 R416 的新变体。R414 attempt 6 不可变 RED 的 SHA-256 为 `BEEB7C1C2FE0A30FA056ABCED1C28EA83BD0739DC0D1225BE4CA1C3C738700E6`，R416 relation-scope RED 的 SHA-256 为 `8F1B7C8D055A0EDC4508454D161DD5B15677536DB0404A60F57463EDE38BB3E6`；共享合同是 Python-only 数据，既有 continuation 会重新加载 canonical registry，可在保留同一 CK3 PID 的条件下热恢复。
 
 ### R384 `pay_homage.0101` 最小合同
 
