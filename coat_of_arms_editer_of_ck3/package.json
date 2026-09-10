@@ -1,0 +1,24 @@
+{
+  "name": "coat_of_arms_editer_of_ck3",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vue-tsc -b && vite build",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "element-plus": "2.14.5",
+    "vue": "3.5.42"
+  },
+  "devDependencies": {
+    "@types/node": "25.5.0",
+    "@vitejs/plugin-vue": "6.0.8",
+    "typescript": "5.9.3",
+    "vite": "8.3.0",
+    "vitest": "5.0.0",
+    "vue-tsc": "3.3.11"
+  },
+  "packageManager": "pnpm@10.12.1"
+}

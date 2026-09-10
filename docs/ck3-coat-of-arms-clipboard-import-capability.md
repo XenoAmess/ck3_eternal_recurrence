@@ -398,10 +398,10 @@ Web 端若要提供随机生成，应在自己的数据模型中完成选择，�
 按 MCP-first 原则，后续若需要 canonical round-trip、资源清单或截图无关的视觉验收，应继续补这些原生/MCP primitive，
 而不是用 OCR 猜文字、按钮状态或 copy-back 内容。
 
-## 9. 对 `coat_of_arms_editer_of_ck3` 的约束
+## 9. `coat_of_arms_editer_of_ck3` 的实现约束与当前状态
 
-后续应用按用户指定目录名 `coat_of_arms_editer_of_ck3`，前端采用 Vue 3 + Element Plus + TypeScript。
-仅解析、编辑和生成纹章源码不需要后端。
+应用已经按指定目录名 `coat_of_arms_editer_of_ck3` 建立，采用 Vue 3 + Element Plus + TypeScript；
+当前纯前端即可完成解析、结构化编辑和源码生成，不需要后端。
 
 建议模型：
 
@@ -415,18 +415,27 @@ CoatOfArms
 └─ texturedEmblems[]  (experimental)
 ```
 
-v1 应做到：
+当前首个可运行基线已经做到：
 
-- parser 保留未知字段用于诊断，但默认 serializer 只输出稳定白名单；
+- parser 识别未知字段并给出带位置诊断，serializer 只输出稳定白名单；
 - 语法合法、资源存在、引擎检测、designer 应用是四个不同状态；
 - 多顶层、重复标量、body-only、模板 DSL 默认拒绝；
-- 资源索引绑定 exact CK3 version/DLC/mod set；
-- 可选“发送到游戏”通过 MCP 调新工具，不让前端模拟点击 paste。
+- 简单静态 `@变量` 在导入时展开，`parent` 保留为诊断而不混进确定性导出；
+- 导出固定使用 `coa` wrapper、已实机验证的字段白名单和 CRLF；
+- 提供图层/实例结构化表单与浏览器近似预览，且明确不冒充 CK3 renderer。
+
+尚未接入的下一阶段能力：
+
+- 绑定 exact CK3 version/DLC/mod set 的真实 pattern/emblem/color 资源索引；
+- 通过 MCP 调用 `ck3_probe_coat_of_arms_source_v1` 的“发送到游戏”，不模拟 UI 点击；
+- CK3 canonical Copy/export 与 PNG/像素验证 primitive；
+- 基于真实 DDS 资源的预览，而不是当前的几何近似符号。
 
 浏览器若需要读取用户显式选择的本机 CK3 目录、转换 DDS 或建立素材缓存，才引入 Maven + Java + Quarkus 伴随服务。
 后端只负责文件索引/转换/MCP 会话，不承担“执行 CK3 脚本”的虚构能力。
 
-本轮不创建该应用目录；当前交付先冻结引擎事实与 MCP 能力边界，避免把旧 UI 推断固化成编辑器协议。
+首版有 Vitest parser/serializer 回归和 Vite production build 验收。后续扩展仍以本文的原生 MCP 证据为协议来源，
+不会把旧 UI 观察或第三方 parser 行为固化成 CK3 引擎事实。
 
 ## 10. 辅助参考边界
 
