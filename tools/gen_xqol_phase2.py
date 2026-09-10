@@ -260,11 +260,10 @@ def render_slider_widget() -> str:
     )
     callback = (
         "[GetVariableSystem.Set('xqol_conversion_threshold_route', "
-        "IntToString(GetProgressBarValueMaxScaled(Min_float(Max_float(Multiply_float(Divide_float("
-        "Subtract_float(GetX_CVector2f(PdxGuiWidget.GetScaledMousePosition), '(float)2'), "
-        "Subtract_float(GetX_CVector2f(PdxGetWidgetScreenSize(PdxGuiWidget.Self)), "
-        "'(float)4')), '(float)100'), '(float)0'), '(float)100'), "
-        "'(float)100', '(int32)100')))]"
+        "IntToString(GetProgressBarValueMaxScaled(Min_float(Max_float(Subtract_float("
+        "GetX_CVector2f(PdxGuiWidget.GetScaledMousePosition), "
+        "GetX_CVector2f(PdxGuiWidget.FindChild('xqol_conversion_threshold_handle').GetScaledMousePosition)), "
+        "'(float)0'), '(float)400'), '(float)400', '(int32)100')))]"
     )
     return f"""# GENERATED FILE. Edit tools/gen_xqol_phase2.py, then regenerate.
 
