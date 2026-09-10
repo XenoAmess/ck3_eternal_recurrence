@@ -30,7 +30,15 @@ from zhongguo_phase2_workforce_action import (  # noqa: E402
 )
 
 EVENTS = {9: "zg361cl.390", 10: "zg361mg.120", 11: "zg361we.360"}
-ENTRY_TIMEOUT_SECONDS = 300.0
+# R406 showed that daily paused-frame native progress reads can consume the
+# whole five-minute wall-clock window while only eleven healthy product days
+# elapse.  Terminal navigation samples the unchanged observer once per product
+# month and retains the existing finite absolute game-date horizon.  After the
+# one allowed M360 action, daily reads resume so its Central callback is caught
+# at the first durable terminal frame.
+ENTRY_TIMEOUT_SECONDS = 1800.0
+NAVIGATION_PROGRESS_SAMPLE_DAYS = 30
+POST_M360_PROGRESS_SAMPLE_DAYS = 1
 
 
 class TerminalStagesError(RuntimeError):
@@ -122,7 +130,7 @@ def run_terminal_stages(
 ) -> dict[str, object]:
     """Collect stage gate rows; resume this directory on the same live binding.
 
-    Each navigation attempt uses the existing 300-second entry window. The
+    Each navigation attempt uses a bounded thirty-minute entry window. The
     persisted product-date horizon and progress survive an entry timeout.
     No method in this function launches, stops or loads CK3.
     """
@@ -169,6 +177,11 @@ def run_terminal_stages(
         try:
             navigation = entry.enter_promotion_source_checkpoint_v1(
                 service, timeout_seconds=ENTRY_TIMEOUT_SECONDS,
+                progress_sample_interval_days=(
+                    POST_M360_PROGRESS_SAMPLE_DAYS
+                    if stage == 11 and state.get("stage11_action") is not None
+                    else NAVIGATION_PROGRESS_SAMPLE_DAYS
+                ),
                 prefer_natural_cycle=True, pause_on_event_definition_key=EVENTS[stage],
                 evidence_out=progress, terminal_observation_probe=terminal_probe,
             )

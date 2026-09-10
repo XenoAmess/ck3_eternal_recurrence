@@ -41,6 +41,7 @@ class Service:
         self.visits = []
         self.actions = []
         self.progress_inputs = []
+        self.entry_kwargs = []
         self.manager_queries = []
         self.saves = []
 
@@ -61,6 +62,7 @@ class Service:
         stage = next(stage for stage, key in cell.EVENTS.items()
                      if key == kwargs["pause_on_event_definition_key"])
         self.visits.append(stage)
+        self.entry_kwargs.append(copy.deepcopy(kwargs))
         progress = kwargs["evidence_out"]
         self.progress_inputs.append(copy.deepcopy(progress))
         progress["timeline_interrupt_drains"].append({"synthetic_progress_to_stage": stage})
@@ -144,6 +146,10 @@ class TerminalStagesTests(unittest.TestCase):
             directory = Path(temporary)
             result = self.run_cell(service, directory)
             self.assertEqual(service.visits, [9, 10, 11])
+            self.assertEqual(
+                [row["progress_sample_interval_days"] for row in service.entry_kwargs],
+                [cell.NAVIGATION_PROGRESS_SAMPLE_DAYS] * 3,
+            )
             self.assertEqual(service.actions, [(9, 1), (10, 1)])
             self.assertEqual(service.manager_queries[0][0], "synthetic.terminal.10")
             receipts = result["p1_acceptance_evidence"]["central_stage_terminals"]
@@ -225,6 +231,7 @@ class OwnerService(Service):
         self.owner_ready = True
         self.fail_after_action_once = False
         self.callback_reads = []
+        self.stage11_direct_kwargs = []
         self._frames = json.loads((cell.ROOT / "ck3_autonomous_player/tests/fixtures/zhongguo_workforce_owner_snapshot_v1.json").read_text())["frames"]
 
     def query_zhongguo_workforce_owner_snapshot_v1(self, nonce: str, *, expected_revision: int) -> dict[str, object]:
@@ -249,6 +256,7 @@ class OwnerService(Service):
     def enter(self, service: object, **kwargs: object) -> dict[str, object]:
         if kwargs["pause_on_event_definition_key"] != cell.EVENTS[11]:
             return super().enter(service, **kwargs)
+        self.stage11_direct_kwargs.append(copy.deepcopy(kwargs))
         probe = kwargs["terminal_observation_probe"]
         result = probe(self.snapshot())
         if result is not None:
@@ -333,6 +341,18 @@ class OwnerTerminalTests(unittest.TestCase):
             self.assertEqual((directory / "attempt-001.json").read_bytes(), first)
         self.assertEqual(result["result"], "GREEN")
         self.assertEqual(service.actions.count((11, 1)), 1)
+        self.assertEqual(
+            [row["progress_sample_interval_days"] for row in service.entry_kwargs],
+            [cell.NAVIGATION_PROGRESS_SAMPLE_DAYS] * 3,
+        )
+        self.assertEqual(
+            [row["progress_sample_interval_days"] for row in service.stage11_direct_kwargs],
+            [
+                cell.NAVIGATION_PROGRESS_SAMPLE_DAYS,
+                cell.POST_M360_PROGRESS_SAMPLE_DAYS,
+                cell.POST_M360_PROGRESS_SAMPLE_DAYS,
+            ],
+        )
 
 
 class ProductionTerminalTimelineTests(unittest.TestCase):

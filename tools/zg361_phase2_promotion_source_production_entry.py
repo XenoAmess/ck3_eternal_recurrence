@@ -3598,6 +3598,7 @@ def enter_promotion_source_checkpoint_v1(
     *,
     timeout_seconds: float = 300.0,
     poll_interval_seconds: float = 0.05,
+    progress_sample_interval_days: int = 1,
     prefer_natural_cycle: bool = False,
     stop_at_clean_review_boundary: bool = False,
     clean_boundary_event_definition_key: str | None = None,
@@ -3618,6 +3619,12 @@ def enter_promotion_source_checkpoint_v1(
     """
     if timeout_seconds <= 0 or poll_interval_seconds < 0:
         raise ValueError("promotion entry timing is invalid")
+    if (
+        isinstance(progress_sample_interval_days, bool)
+        or not isinstance(progress_sample_interval_days, int)
+        or progress_sample_interval_days <= 0
+    ):
+        raise ValueError("progress sample interval must be a positive integer day count")
     if pause_on_event_definition_key is not None and not (
         isinstance(pause_on_event_definition_key, str)
         and pause_on_event_definition_key.strip()
@@ -3688,6 +3695,7 @@ def enter_promotion_source_checkpoint_v1(
             absolute_end_date=absolute_end_date,
         ),
         "paused_progress_settle_seconds": PAUSED_PROGRESS_SETTLE_SECONDS,
+        "progress_sample_interval_days": progress_sample_interval_days,
         "review_action": None,
         "review_action_postcondition": None,
         "prefer_natural_cycle": prefer_natural_cycle,
@@ -3999,6 +4007,7 @@ def enter_promotion_source_checkpoint_v1(
 
     deadline = clock() + timeout_seconds
     last_progress_date_raw = starting_date
+    progress_sample_interval_raw = progress_sample_interval_days * HOURS_PER_DAY
     consecutive_progress_query_rebinds = 0
     zg361_6_wait_state: dict[str, object] | None = None
     post_interrupt_progress_due = False
@@ -4085,7 +4094,7 @@ def enter_promotion_source_checkpoint_v1(
         if (
             snapshot.get("paused") is not True
             and not has_active_event_surface
-            and date_raw <= last_progress_date_raw
+            and date_raw < last_progress_date_raw + progress_sample_interval_raw
         ):
             if poll_interval_seconds:
                 sleeper(poll_interval_seconds)
@@ -4134,7 +4143,7 @@ def enter_promotion_source_checkpoint_v1(
             )
             date_raw = int(snapshot["date_raw"])
         should_sample_progress = (
-            date_raw > last_progress_date_raw
+            date_raw >= last_progress_date_raw + progress_sample_interval_raw
             or event is not None
             or post_interrupt_progress_due
         )

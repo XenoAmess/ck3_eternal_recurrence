@@ -38,6 +38,7 @@ class ScheduledCompensationService:
         self.pending_events: list[tuple[int, int, tuple[int, ...]]] = []
         self.actions: list[str] = []
         self.event_queries: list[tuple[int, tuple[int, ...]]] = []
+        self.progress_query_dates: list[int] = []
         self.observed_paused_null = False
         self.running_days = 0
 
@@ -107,6 +108,7 @@ class ScheduledCompensationService:
         self._require_revision(expected_revision)
         if not self.paused:
             raise AssertionError("progress observation requires a paused frame")
+        self.progress_query_dates.append(self.date_raw)
         return {
             "status": "available",
             "query_sequence": self.revision,
@@ -225,6 +227,34 @@ class AF5TimelineTests(unittest.TestCase):
                 self.assertEqual(service.running_days, 0)
                 self.assertEqual(service.snapshot(), before)
                 self.assertEqual(service.event_queries, [(85, indices)])
+
+    def test_sparse_progress_sampling_still_stops_on_the_first_target_event(self) -> None:
+        class DelayedAf5Service(ScheduledCompensationService):
+            def select_event_option(self, *args: object, **kwargs: object) -> dict[str, object]:
+                result = super().select_event_option(*args, **kwargs)
+                _, instance, indices = self.pending_events[0]
+                self.pending_events[0] = (self.date_raw + 45 * 24, instance, indices)
+                return result
+
+        service = DelayedAf5Service()
+        result = production.enter_promotion_source_checkpoint_v1(
+            service,
+            timeout_seconds=4.0,
+            poll_interval_seconds=0.05,
+            progress_sample_interval_days=30,
+            pause_on_event_definition_key="zg361comp.1",
+            pause_on_event_option_number=42,
+            clock=lambda: service.elapsed,
+            sleeper=service.sleep,
+        )
+        self.assertEqual(result["result"], "GREEN")
+        self.assertEqual(result["progress_sample_interval_days"], 30)
+        self.assertEqual(service.running_days, 45)
+        self.assertEqual(
+            service.progress_query_dates,
+            [53183256, 53183256, 53183256, 53183976, 53184336],
+        )
+        self.assertEqual(result["target_binding"]["event_instance_id"], 85)
 
 
 if __name__ == "__main__":
