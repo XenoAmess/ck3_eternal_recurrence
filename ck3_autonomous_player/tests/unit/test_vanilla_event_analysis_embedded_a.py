@@ -19,6 +19,9 @@ from xar_autoplayer.vanilla_events.records_embedded import (  # noqa: E402
 from xar_autoplayer.vanilla_events.registry import (  # noqa: E402
     EXACT_CK3_BUILD,
     EXACT_CK3_EXE_SHA256,
+    PLAYER_SENTINEL,
+    materialize_vanilla_timeline_contract,
+    query_vanilla_event_knowledge_v1,
 )
 
 
@@ -100,17 +103,46 @@ def test_known_multi_projection_records_preserve_json_safe_variants() -> None:
 
 
 def test_impostor_break_exact_review_and_live_red_are_query_safe() -> None:
+    contract = EMBEDDED_VANILLA_TIMELINE_CONTRACTS["stress_threshold.1721"]
     record = VANILLA_EMBEDDED_A_ANALYSIS["stress_threshold.1721"]
+    assert contract["root_character_id"] == PLAYER_SENTINEL
+    assert contract["character_scopes"]["stress_character"] == PLAYER_SENTINEL
+    assert "date_raw" not in contract
+    assert "max_occurrences" not in contract
+    assert contract["occurrence_policy"] == (
+        "repeatable-within-product-observation-window"
+    )
+    materialized = materialize_vanilla_timeline_contract(contract, 47001)
+    assert materialized["root_character_id"] == 47001
+    assert materialized["character_scopes"]["stress_character"] == 47001
+    assert contract["root_character_id"] == PLAYER_SENTINEL
+
     assert record["option_semantics"]["10"].startswith("minor stress loss")
     assert "starvation" in record["safe_option"]["rationale"]
+    assert record["existing_boundaries"][
+        "campaign_specific_binding_fields"
+    ] == []
     scope_variant = record["existing_boundaries"]["scope_shape"][
         "scope_variants"
     ][0]
     assert scope_variant["native_option_indices"] == [7, 10, 12]
     assert scope_variant["selected_native_option_index"] == 10
-    exemplar, failed_retry = VANILLA_EMBEDDED_A_OBSERVATIONS["stress_threshold.1721"][
-        "exemplars"
+    assert scope_variant["option_variants"][0]["native_option_indices"] == [
+        7,
+        9,
+        12,
     ]
+    assert scope_variant["option_variants"][0][
+        "selected_native_option_index"
+    ] == 9
+    assert [
+        route["selected_native_option_index"]
+        for route in record["safe_routes_by_live_projection"]
+    ] == [9, 10, 9]
+
+    exemplar, failed_retry, current_red = VANILLA_EMBEDDED_A_OBSERVATIONS[
+        "stress_threshold.1721"
+    ]["exemplars"]
     assert exemplar["kind"] == "pre-selection-live-red"
     assert exemplar["rendered_native_option_indices"] == [7, 10, 12]
     assert exemplar["selection_attempted"] is False
@@ -125,3 +157,24 @@ def test_impostor_break_exact_review_and_live_red_are_query_safe() -> None:
     assert failed_retry["selected_native_option_index"] == 9
     assert failed_retry["expected_reviewed_native_option_index"] == 10
     assert failed_retry["postcondition_verified"] is True
+    assert current_red["run"] == "R375"
+    assert current_red["artifact"].endswith("-red-freeze.json")
+    assert current_red["saved_scope_raw_types"] == {
+        "stress_character": 4,
+        "deceased_character": 4,
+    }
+    assert current_red["rendered_native_option_indices"] == [7, 9, 12]
+    assert current_red["selection_attempted"] is False
+
+    contract_repr = repr(contract)
+    for observation_only in (53387208, 53611536, 627, 1060, 32904, 37337):
+        assert str(observation_only) not in contract_repr
+
+    response = query_vanilla_event_knowledge_v1("stress_threshold.1721")
+    assert response["status"] == "available"
+    assert response["contract"]["root_character_id"] == "$player"
+    assert response["contract"]["scope_variants"][0]["option_variants"][0][
+        "selected_native_option_index"
+    ] == 9
+    assert response["observations"]["exemplars"][2]["event_instance_id"] == 1060
+    json.dumps(response, allow_nan=False)

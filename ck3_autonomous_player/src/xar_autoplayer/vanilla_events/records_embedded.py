@@ -504,18 +504,18 @@ EMBEDDED_VANILLA_TIMELINE_CONTRACTS: Final[dict[str, dict[str, object]]] = {
         # it lowers stress and may strengthen the selected friend relation.
         # A later no-confidant projection offers inappetetic (native7), drunkard
         # (native10), and stress gain (native12). Its live indicators show that
-        # inappetetic is already owned, and native7 always advances starvation;
-        # native10 is the narrowest deterministic route because it lowers stress
-        # and adds drunkard instead of escalating starvation or gaining stress.
-        "date_raw": 53387208,
+        # inappetetic is already owned, so native10 avoids advancing starvation.
+        # R375 proves that the same two-scope shape may instead offer confider
+        # (native9); that route lowers stress and remains safe without a retained
+        # confidant scope because its optional friend effect may simply be absent.
         "date_policy": "product-observation-window",
-        "root_character_id": 32904,
+        "root_character_id": PLAYER_SENTINEL,
         "character_scopes": {
-            "stress_character": 32904,
+            "stress_character": PLAYER_SENTINEL,
         },
         "unique_character_scope_excludes": {
-            "deceased_character": (32904,),
-            "confidant": (32904,),
+            "deceased_character": (PLAYER_SENTINEL,),
+            "confidant": (PLAYER_SENTINEL,),
         },
         "character_scope_differs_from": {
             "deceased_character": ("confidant",),
@@ -545,10 +545,10 @@ EMBEDDED_VANILLA_TIMELINE_CONTRACTS: Final[dict[str, dict[str, object]]] = {
                 ),
                 "saved_scope_count": 2,
                 "character_scopes": {
-                    "stress_character": 32904,
+                    "stress_character": PLAYER_SENTINEL,
                 },
                 "unique_character_scope_excludes": {
-                    "deceased_character": (32904,),
+                    "deceased_character": (PLAYER_SENTINEL,),
                 },
                 "character_scope_differs_from": {
                     "deceased_character": ("stress_character",),
@@ -556,14 +556,23 @@ EMBEDDED_VANILLA_TIMELINE_CONTRACTS: Final[dict[str, dict[str, object]]] = {
                 "scope_types": {
                     "deceased_character": "character",
                 },
-                # Couple the no-confidant shape to its exact rendered choices;
-                # do not admit a scope/option Cartesian product.
+                # Couple the no-confidant shape to both source-valid live
+                # projections; do not admit a scope/option Cartesian product.
                 "option_count": 3,
                 "snapshot_option_count": 14,
                 "native_option_indices": (7, 10, 12),
                 "selected_option_number": 11,
                 "selected_native_option_index": 10,
-                "option_variants": (),
+                "option_variants": ({
+                    # R375 can offer confider even without a retained
+                    # confidant scope. Its option trigger depends on the
+                    # immediate flag; the friend relation is optional.
+                    "option_count": 3,
+                    "snapshot_option_count": 14,
+                    "native_option_indices": (7, 9, 12),
+                    "selected_option_number": 10,
+                    "selected_native_option_index": 9,
+                },),
             },
         ),
         # A later stress threshold may legally choose this event again. Its

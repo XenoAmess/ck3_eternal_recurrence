@@ -137,8 +137,8 @@ _REVIEW_NOTES: Final[dict[str, tuple[str, str]]] = {
         "stress under the recorded no-rival boundary.",
     ),
     "stress_threshold.1721": (
-        "Impostor-syndrome break with source-reviewed confidant and no-confidant "
-        "live projections; later stress thresholds may select it again.",
+        "Impostor-syndrome break with three source-reviewed live projections; "
+        "later stress thresholds may select it again.",
         "Use native 9 when confider is rendered. In the recorded no-confidant "
         "projection, native 10 lowers stress and avoids both advancing the "
         "already-owned inappetetic starvation chain and native 12 stress gain.",
@@ -378,11 +378,49 @@ def _build_analysis() -> dict[str, dict[str, object]]:
             "matching personality-description flag for ten years"
         ),
         "live_variant_boundary": (
-            "native (7,9,12) includes confidant; native (7,10,12) has no "
-            "confidant and the live indicator proves drunkard would be newly "
-            "added while native7 carries no add-trait indicator"
+            "native (7,9,12) is legal both with and without the unrelated "
+            "retained confidant scope; the confider option is enabled by the "
+            "event-local flag and its friend relation is optional. Native "
+            "(7,10,12) is the other observed two-scope projection, where the "
+            "live indicator proves drunkard would be newly added while "
+            "native7 carries no add-trait indicator"
         ),
+        "safe_routes_by_live_projection": [{
+            "saved_scope_names": [
+                "stress_character",
+                "deceased_character",
+                "confidant",
+            ],
+            "rendered_native_option_indices": [7, 9, 12],
+            "selected_authored_option_number": 10,
+            "selected_native_option_index": 9,
+        }, {
+            "saved_scope_names": [
+                "stress_character",
+                "deceased_character",
+            ],
+            "rendered_native_option_indices": [7, 10, 12],
+            "selected_authored_option_number": 11,
+            "selected_native_option_index": 10,
+        }, {
+            "saved_scope_names": [
+                "stress_character",
+                "deceased_character",
+            ],
+            "rendered_native_option_indices": [7, 9, 12],
+            "selected_authored_option_number": 10,
+            "selected_native_option_index": 9,
+        }],
     })
+    stress_analysis["existing_boundaries"][
+        "campaign_specific_binding_fields"
+    ] = []
+    stress_analysis["existing_boundaries"]["boundary_note"] = (
+        "The reusable contract binds the root and stress_character through "
+        "$player, keeps campaign dates and numeric identities in observations "
+        "only, and couples each reviewed saved-scope shape to its exact option "
+        "projection."
+    )
     return analysis
 
 
@@ -441,6 +479,44 @@ VANILLA_EMBEDDED_A_OBSERVATIONS: Final[dict[str, dict[str, object]]] = {
             "connection_generation": 1,
             "bridge_pid": 28772,
             "subsequent_event_instance_id": 853,
+            "process_restart_required": False,
+        }, {
+            "run": "R375",
+            "kind": "scope-option-variant-pre-selection-live-red",
+            "artifact": (
+                "_runtime/p2r375-post-publisher-fix-live/"
+                "r375-stress-threshold-1721-red-freeze.json"
+            ),
+            "artifact_sha256": (
+                "6F0F849C88EC48D78803B27B6BDE94C334FDD94F61024AA1BAA48EC88E2F4508"
+            ),
+            "park_artifact": (
+                "_runtime/p2r375-post-publisher-fix-live/"
+                "hot-recovery-park-3.json"
+            ),
+            "park_artifact_sha256": (
+                "D5F18F8970B9D3A21C7AB5E72DF744D81DC85AD0E4CB55A340F97828B3EE40CE"
+            ),
+            "date_raw": 53611536,
+            "event_instance_id": 1060,
+            "root_character_id": 32904,
+            "saved_character_ids": {
+                "stress_character": 32904,
+                "deceased_character": 37337,
+            },
+            "saved_scope_raw_types": {
+                "stress_character": 4,
+                "deceased_character": 4,
+            },
+            "rendered_native_option_indices": [7, 9, 12],
+            "selection_attempted": False,
+            "snapshot_option_count": 14,
+            "snapshot_id": "native:440",
+            "native_revision": 440,
+            "revision": 441,
+            "query_sequence": 16,
+            "connection_generation": 1,
+            "bridge_pid": 180544,
             "process_restart_required": False,
         }],
     },

@@ -1803,6 +1803,37 @@ if new_event_key not in reloaded.KNOWN_TIMELINE_INTERRUPTS:
             no_confidant_effective["selected_native_option_index"], 10
         )
 
+        current_no_confidant = _context(
+            event_key=event_key,
+            instance_id=1060,
+            date_raw=53611536,
+            player=32904,
+            scopes=[
+                _scope("stress_character", "character", 32904),
+                _scope("deceased_character", "character", 37337),
+            ],
+            native_option_indices=(7, 9, 12),
+        )
+        current_checks = production._known_interrupt_checks(
+            snapshot={
+                "date_raw": 53611536,
+                "active_event": {"option_count": 14},
+            },
+            event={"event_instance_id": 1060},
+            context=current_no_confidant,
+            event_key=event_key,
+            contract=current_contract,
+        )
+        self.assertTrue(all(current_checks.values()), current_checks)
+        current_effective = production._option_contract_for_context(
+            current_no_confidant["options"],
+            production._scope_contract_for_context(
+                current_no_confidant["saved_scopes"], current_contract
+            ),
+        )
+        self.assertEqual(current_effective["selected_option_number"], 10)
+        self.assertEqual(current_effective["selected_native_option_index"], 9)
+
         class Service:
             def snapshot(self) -> dict[str, object]:
                 return {
