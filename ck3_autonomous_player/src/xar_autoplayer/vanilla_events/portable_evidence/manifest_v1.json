@@ -574,6 +574,26 @@
       "references": [
         {
           "caller_candidate_resolution": "external-definition-file",
+          "event_definition_key": "artifact.4040",
+          "logical_path": "common/on_action/yearly_on_actions.txt",
+          "origin": "ck3_game",
+          "provenance": "lexical-caller-candidate-not-proven-runtime-caller",
+          "role": "caller_candidate",
+          "source_column": 8,
+          "source_line": 3275
+        },
+        {
+          "caller_candidate_resolution": null,
+          "event_definition_key": "artifact.4040",
+          "logical_path": "common/on_action/yearly_on_actions.txt",
+          "origin": "ck3_game",
+          "provenance": "manually-reviewed-analysis-source",
+          "role": "analysis_source",
+          "source_column": null,
+          "source_line": null
+        },
+        {
+          "caller_candidate_resolution": "external-definition-file",
           "event_definition_key": "bp1_yearly.1040",
           "logical_path": "common/on_action/yearly_on_actions.txt",
           "origin": "ck3_game",
@@ -2252,6 +2272,38 @@
       "sha256": "31591a2f2d3a61e65853cc43b9bef4b001feb75ea1502861d2fb9ac054ab1fb7"
     },
     {
+      "blob_bytes": 11722,
+      "blob_path": "blobs/32d30d9e2bccb953b8760a5129754155bdbec829d696bcb5adda43393b8b82a7.gz",
+      "blob_sha256": "31e95b6b48861593a7ce95d1017af0d4eef575e9e7bdbb53de7ca452f772e705",
+      "bytes": 98731,
+      "evidence_id": "32d30d9e2bccb953b8760a5129754155bdbec829d696bcb5adda43393b8b82a7",
+      "kind": "source_definition",
+      "media_type": "text/plain; charset=utf-8",
+      "references": [
+        {
+          "caller_candidate_resolution": null,
+          "event_definition_key": "artifact.4040",
+          "logical_path": "events/artifacts/artifact_events.txt",
+          "origin": "ck3_game",
+          "provenance": "generated-definition-index",
+          "role": "event_definition",
+          "source_column": null,
+          "source_line": 3066
+        },
+        {
+          "caller_candidate_resolution": null,
+          "event_definition_key": "artifact.4040",
+          "logical_path": "events/artifacts/artifact_events.txt",
+          "origin": "ck3_game",
+          "provenance": "manually-reviewed-analysis-source",
+          "role": "analysis_source",
+          "source_column": null,
+          "source_line": null
+        }
+      ],
+      "sha256": "32d30d9e2bccb953b8760a5129754155bdbec829d696bcb5adda43393b8b82a7"
+    },
+    {
       "blob_bytes": 6057,
       "blob_path": "blobs/3345f8ddb93f72bfc20acf6e2590c43dd884bfd91fe27525ffdb1c3286e3049f.gz",
       "blob_sha256": "4c669e20c52a0b31eab4e1a8cd066f57cba5c1fe0e9a864a73e82643ecfbe3c7",
@@ -2928,6 +2980,28 @@
       "sha256": "478f4b1b9d94f28e33b83b8453f6bbcfd239830d821196d68120d5727723f6df"
     },
     {
+      "blob_bytes": 9508,
+      "blob_path": "blobs/479ff00978c954d2b0cdc8d33776b49007fab8ea46c613c51024d4b47b0bf9cc.gz",
+      "blob_sha256": "4cf6fdcb952281969b7747266a5ab80f1dc94110e945bb02dc24e3559b9288e7",
+      "bytes": 27683,
+      "evidence_id": "479ff00978c954d2b0cdc8d33776b49007fab8ea46c613c51024d4b47b0bf9cc",
+      "kind": "source_definition",
+      "media_type": "application/yaml; charset=utf-8",
+      "references": [
+        {
+          "caller_candidate_resolution": null,
+          "event_definition_key": "artifact.4040",
+          "logical_path": "localization/simp_chinese/event_localization/artifact_events_l_simp_chinese.yml",
+          "origin": "ck3_game",
+          "provenance": "manually-reviewed-analysis-source",
+          "role": "analysis_source",
+          "source_column": null,
+          "source_line": null
+        }
+      ],
+      "sha256": "479ff00978c954d2b0cdc8d33776b49007fab8ea46c613c51024d4b47b0bf9cc"
+    },
+    {
       "blob_bytes": 43835,
       "blob_path": "blobs/48216aa6beae44771f5eeef82c39b3de6ca3ba0a4a9c0d4d5f9187c538fe8c0d.gz",
       "blob_sha256": "26e73b49e8f1d6a49acbfe66d394dd826d3cbb4febb4002b866d8b470bafeeb6",
@@ -3032,6 +3106,28 @@
         }
       ],
       "sha256": "490c3784ee1555a49f7a4adc9baabb8522485f1af6e1c837961e299a88695b5e"
+    },
+    {
+      "blob_bytes": 8514,
+      "blob_path": "blobs/49d9f28ece0aff971474a47ce6d71b65e1575fbd23f1d4d22c3b512651d9d10b.gz",
+      "blob_sha256": "e190c13f7f203f18661d744ed6ed51d0d962b8256a459419c1707a2e16aa2993",
+      "bytes": 28775,
+      "evidence_id": "49d9f28ece0aff971474a47ce6d71b65e1575fbd23f1d4d22c3b512651d9d10b",
+      "kind": "source_definition",
+      "media_type": "application/yaml; charset=utf-8",
+      "references": [
+        {
+          "caller_candidate_resolution": null,
+          "event_definition_key": "artifact.4040",
+          "logical_path": "localization/english/event_localization/artifact_events_l_english.yml",
+          "origin": "ck3_game",
+          "provenance": "manually-reviewed-analysis-source",
+          "role": "analysis_source",
+          "source_column": null,
+          "source_line": null
+        }
+      ],
+      "sha256": "49d9f28ece0aff971474a47ce6d71b65e1575fbd23f1d4d22c3b512651d9d10b"
     },
     {
       "blob_bytes": 76994,
@@ -11022,6 +11118,38 @@
       "sha256": "cf91227abbabec17d456bbface9fe68b7ff86c49a5990d26215ec41cd74002ce"
     },
     {
+      "blob_bytes": 56539,
+      "blob_path": "blobs/cfd57e5c381d35ee6e1de166d9ff656a1e6d6f4fc7d3194bcc74393eb3b4ee6a.gz",
+      "blob_sha256": "4523a284f4fdd3216444a6af0f902d29fd9f48e7ad9b33cde8595cbc3eb173eb",
+      "bytes": 946671,
+      "evidence_id": "cfd57e5c381d35ee6e1de166d9ff656a1e6d6f4fc7d3194bcc74393eb3b4ee6a",
+      "kind": "observation_artifact",
+      "media_type": "application/json",
+      "references": [
+        {
+          "caller_candidate_resolution": null,
+          "event_definition_key": "artifact.4040",
+          "logical_path": "_runtime/p1-terminal-resume-r416-20260911/live-artifacts/terminal-stages-red-attempt-04.json",
+          "origin": "runtime",
+          "provenance": "captured-observation-artifact",
+          "role": "artifact",
+          "source_column": null,
+          "source_line": null
+        },
+        {
+          "caller_candidate_resolution": null,
+          "event_definition_key": "tgp_movement_events.0110",
+          "logical_path": "_runtime/p1-terminal-resume-r416-20260911/live-artifacts/terminal-stages-red-attempt-04.json",
+          "origin": "runtime",
+          "provenance": "captured-observation-artifact",
+          "role": "artifact",
+          "source_column": null,
+          "source_line": null
+        }
+      ],
+      "sha256": "cfd57e5c381d35ee6e1de166d9ff656a1e6d6f4fc7d3194bcc74393eb3b4ee6a"
+    },
+    {
       "blob_bytes": 7515,
       "blob_path": "blobs/cff84009e58f5d6386a6d7501cff084cb206a542e7d0cfa221ed2cc050a9da68.gz",
       "blob_sha256": "651cda3354f021828f24821985171b61a4f921f5abc87448dfe4a1d2de566ef1",
@@ -12673,13 +12801,13 @@
   "schema": "xar.ck3.vanilla-event-portable-evidence-manifest",
   "schema_version": 1,
   "statistics": {
-    "evidence": 246,
-    "generated_definition_references": 176,
-    "lexical_caller_candidate_references": 510,
-    "manually_reviewed_analysis_source_references": 213,
-    "observation_artifact_references": 72,
-    "observation_artifacts": 70,
-    "references": 971,
-    "source_definitions": 176
+    "evidence": 250,
+    "generated_definition_references": 177,
+    "lexical_caller_candidate_references": 511,
+    "manually_reviewed_analysis_source_references": 217,
+    "observation_artifact_references": 74,
+    "observation_artifacts": 71,
+    "references": 979,
+    "source_definitions": 179
   }
 }
