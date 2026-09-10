@@ -284,6 +284,7 @@ class VanillaEventRegistryMigrationParityTests(unittest.TestCase):
                 "health.1006",
                 "health.3001",
                 "health.3101",
+                "health.3103",
             },
         )
         self.assertEqual(

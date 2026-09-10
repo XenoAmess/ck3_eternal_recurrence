@@ -132,8 +132,9 @@
   并用热更新合同越过 `bp1_house_feud.0014` 的 relation-scope 形态与 `bp1_yearly.1040`；浴场事件现为 production-live
   primitive；赠书与 artifact 事件随后也在同 PID 完成各自选择与 advance。`health.1006` 无医师投影也已在
   retry 06 以 authored1/native0 完成选择与 advance，并按原版延迟进入 `health.3001`；后者的六 scope
-  形态也已在 retry 07 以 authored2/native1 完成招募与 advance。当前暂停在 `health.3101` 继承
-  `epidemic,new_memory` 的八 scope RED，exact-build 三段决策树与 authored1/native0 safe-treatment 路线见
+  形态也已在 retry 07 以 authored2/native1 完成招募与 advance。`health.3101` 的八 scope 继承形态已在 retry 08
+  以 authored1/native0 完成安全治疗选择与 advance，随机结果为成功。当前暂停在 `health.3103` 继承
+  `epidemic,new_memory` 的十二 scope RED；exact-build 四段决策树与唯一 authored1/native0 确认路线见
   [health-consumption-diagnosis.md](health-consumption-diagnosis.md)。
   artifact 树见 [artifact-expert-improvement.md](artifact-expert-improvement.md)。上述状态不表示 177 条全部 live；
   `361/626` 全树覆盖也不是 T0、其它 mod、CI 或发布门。T0 仍为 `50% / stage 8/11 / source 3/4 / P2 LOCKED`。
