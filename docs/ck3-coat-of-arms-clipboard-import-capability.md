@@ -425,7 +425,7 @@ coa = {
 
 | 输入 | 已知行为 | 产品建议 |
 |---|---|---|
-| `textured_emblem` | `_default.dds` 载荷为 `mcp-detected`；早期设计器中呈占位/问号，编辑面板支持有限 | 可导入但标“有限支持”，不进 v1 默认生成面板 |
+| `textured_emblem` | `_default.dds` 载荷为 `mcp-detected`；早期设计器中呈占位/问号 | 独立受限面板只保真 `texture` 的解析/编辑/导出；不生成未验证字段，也不进入当前合成预览 |
 | 普通或数字 outer key | `custom_name={...}` 与 `79={...}` 均为 `mcp-detected` | 导出仍固定用 `coa`，减少无意义差异 |
 | 多个顶层对象 | 整段为 `mcp-detected`；本轮没有 canonical copy-back 证明究竟采用哪一个 | 拒绝歧义输入 |
 | 空块、无 pattern | `coa={}` 与 `coa={ color1=blue }` 均为 `mcp-detected` | 允许解析，产品层警告“不完整/可能依赖默认值” |

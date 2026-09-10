@@ -43,4 +43,16 @@ describe('CK3 coat of arms parser', () => {
     expect(template.diagnostics.some((item) => item.severity === 'error')).toBe(true)
     expect(duplicate.diagnostics.some((item) => item.severity === 'error')).toBe(true)
   })
+
+  it('round-trips the only live-detected textured emblem shape', () => {
+    const result = parseCoatOfArms(
+      'coa={pattern="pattern_solid.dds" textured_emblem={texture="_default.dds"}}',
+    )
+    const output = serializeCoatOfArms(result.coatOfArms)
+
+    expect(result.diagnostics.filter((item) => item.severity === 'error')).toEqual([])
+    expect(result.coatOfArms.texturedEmblems).toEqual([{ texture: '_default.dds' }])
+    expect(output).toContain('textured_emblem = {\r\n')
+    expect(output).toContain('texture = "_default.dds"')
+  })
 })

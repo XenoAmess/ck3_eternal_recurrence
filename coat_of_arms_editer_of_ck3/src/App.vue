@@ -19,6 +19,7 @@ import {
   createCoatOfArms,
   createColoredEmblem,
   createInstance,
+  createTexturedEmblem,
   type CoatOfArms,
   type Diagnostic,
 } from './domain/types'
@@ -521,7 +522,7 @@ importSource()
         </div>
         <div class="preview-caption">
           <strong>{{ coatOfArms.pattern || '未指定 pattern' }}</strong>
-          <span>{{ coatOfArms.coloredEmblems.length }} 个彩色图层 · {{ coatOfArms.coloredEmblems.reduce((sum, item) => sum + item.instances.length, 0) }} 个实例</span>
+          <span>{{ coatOfArms.coloredEmblems.length }} 个彩色图层 · {{ coatOfArms.coloredEmblems.reduce((sum, item) => sum + item.instances.length, 0) }} 个实例 · {{ coatOfArms.texturedEmblems.length }} 个受限纹理层</span>
         </div>
         <el-button class="preview-load" :loading="textureBusy" @click="loadCurrentTexturePreviews">加载当前原版 DDS</el-button>
         <el-alert type="info" :closable="false" show-icon>
@@ -676,6 +677,33 @@ importSource()
                 <el-button type="danger" plain @click="removeEmblem(selectedEmblem)">删除当前图层</el-button>
               </div>
             </template>
+
+            <div class="section-heading textured-heading">
+              <h3>Textured emblems（受限）</h3>
+              <el-button size="small" plain @click="coatOfArms.texturedEmblems.push(createTexturedEmblem())">
+                添加受限层
+              </el-button>
+            </div>
+            <el-alert type="warning" :closable="false" show-icon>
+              <template #title>
+                当前实机只证明 `textured_emblem = { texture = "_default.dds" }` 可被 reader 接受；本区只保真解析/导出 texture，
+                不为未验证字段生成 UI，也暂不加入合成预览。
+              </template>
+            </el-alert>
+            <div v-if="coatOfArms.texturedEmblems.length" class="textured-list">
+              <div
+                v-for="(emblem, index) in coatOfArms.texturedEmblems"
+                :key="index"
+                class="textured-row"
+              >
+                <el-input v-model="emblem.texture" placeholder="_default.dds" />
+                <el-button
+                  type="danger"
+                  plain
+                  @click="coatOfArms.texturedEmblems.splice(index, 1)"
+                >删除</el-button>
+              </div>
+            </div>
           </el-form>
 
           <div class="output-block">

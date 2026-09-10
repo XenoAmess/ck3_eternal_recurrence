@@ -86,6 +86,9 @@ h1 { margin: 0; font-family: Georgia, "Noto Serif SC", serif; font-weight: 500; 
 .resource-note { margin: 7px 0 14px; }
 .configured-candidates { margin: 0 0 16px; }
 .candidate-warning { margin: 0 0 10px; color: #8f8579; font-size: 11px; line-height: 1.5; }
+.textured-heading { margin-top: 20px; }
+.textured-list { display: grid; gap: 8px; margin-top: 10px; }
+.textured-row { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 8px; }
 .form-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 12px; }
 .form-grid .el-select { width: 100%; }
 .wide { grid-column: 1 / -1; }

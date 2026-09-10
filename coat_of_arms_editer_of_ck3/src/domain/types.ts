@@ -50,6 +50,9 @@ export const createColoredEmblem = (): ColoredEmblem => ({
   mask: [1],
   instances: [createInstance()],
 })
+export const createTexturedEmblem = (): TexturedEmblem => ({
+  texture: '_default.dds',
+})
 
 export const createCoatOfArms = (): CoatOfArms => ({
   outerKey: 'coa',
