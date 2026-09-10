@@ -468,6 +468,39 @@ VANILLA_TGP_DYNASTIC_CYCLE_OBSERVATIONS: Final[
             },
             "rendered_native_option_indices": [0],
             "selection_attempted": False,
+        }, {
+            "run": "R375",
+            "kind": "same-process-hot-recovery-green",
+            "production_live_ordinal": 15,
+            "artifact": (
+                "_runtime/p2r375-post-publisher-fix-live/"
+                "r375-live-015-tgp-dynastic-cycle-0081-green.json"
+            ),
+            "artifact_sha256": (
+                "573992BD13E2373DB3A827698B770D703263EC678ECDEE98595C0D48C6671789"
+            ),
+            "date_raw": 53611224,
+            "event_instance_id": 1058,
+            "root_character_id": 32904,
+            "bridge_pid": 180544,
+            "connection_generation": 1,
+            "context_query_driver_command_index": 348,
+            "selection_driver_command_index": 349,
+            "context_query_sequence": 10,
+            "context_snapshot_id": "native:426",
+            "context_native_revision": 426,
+            "rendered_native_option_indices": [0],
+            "selected_option_number": 1,
+            "selected_native_option_index": 0,
+            "postcondition_verified": True,
+            "ending_snapshot_id": "native:427",
+            "ending_revision": 428,
+            "process_restart_required": False,
+            "mcp_only": True,
+            "fixture_used": False,
+            "ocr_used": False,
+            "coordinates_used": False,
+            "console_used": False,
         }],
     },
 }

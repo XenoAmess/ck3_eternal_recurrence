@@ -249,6 +249,57 @@ class TgpDynasticCycleEventRecordTests(unittest.TestCase):
         ):
             self.assertNotIn(str(observation_only), contract_repr)
 
+    def test_chaos_r375_same_process_recovery_is_mcp_only_and_portable(self) -> None:
+        red, recovery = VANILLA_TGP_DYNASTIC_CYCLE_OBSERVATIONS[
+            CHAOS_EVENT_KEY
+        ]["exemplars"]
+        contract_repr = repr(VANILLA_TGP_DYNASTIC_CYCLE_TIMELINE_CONTRACTS[
+            CHAOS_EVENT_KEY
+        ])
+
+        self.assertEqual(recovery["kind"], "same-process-hot-recovery-green")
+        self.assertEqual(recovery["production_live_ordinal"], 15)
+        self.assertTrue(recovery["artifact"].endswith(
+            "r375-live-015-tgp-dynastic-cycle-0081-green.json"
+        ))
+        self.assertEqual(
+            recovery["artifact_sha256"],
+            "573992BD13E2373DB3A827698B770D703263EC678ECDEE98595C0D48C6671789",
+        )
+        self.assertEqual(recovery["event_instance_id"], 1058)
+        self.assertEqual(recovery["event_instance_id"], red["event_instance_id"])
+        self.assertEqual(recovery["bridge_pid"], red["bridge_pid"])
+        self.assertEqual(
+            recovery["connection_generation"],
+            red["connection_generation"],
+        )
+        self.assertEqual(recovery["context_query_driver_command_index"], 348)
+        self.assertEqual(recovery["selection_driver_command_index"], 349)
+        self.assertEqual(recovery["selected_option_number"], 1)
+        self.assertEqual(recovery["selected_native_option_index"], 0)
+        self.assertTrue(recovery["postcondition_verified"])
+        self.assertEqual(recovery["ending_snapshot_id"], "native:427")
+        self.assertFalse(recovery["process_restart_required"])
+        self.assertTrue(recovery["mcp_only"])
+        for forbidden_mode in (
+            "fixture_used",
+            "ocr_used",
+            "coordinates_used",
+            "console_used",
+        ):
+            self.assertFalse(recovery[forbidden_mode])
+        self.assertRegex(recovery["artifact_sha256"], SHA256_PATTERN)
+
+        for observation_only in (
+            53611224,
+            1058,
+            32904,
+            180544,
+            "native:426",
+            "native:427",
+        ):
+            self.assertNotIn(str(observation_only), contract_repr)
+
     def test_chaos_mcp_query_is_detached_and_exposes_red_evidence(self) -> None:
         response = query_vanilla_event_knowledge_v1(CHAOS_EVENT_KEY)
 
@@ -263,6 +314,13 @@ class TgpDynasticCycleEventRecordTests(unittest.TestCase):
         )
         self.assertFalse(
             response["observations"]["exemplars"][0]["selection_attempted"]
+        )
+        self.assertEqual(
+            response["observations"]["exemplars"][1]["kind"],
+            "same-process-hot-recovery-green",
+        )
+        self.assertTrue(
+            response["observations"]["exemplars"][1]["postcondition_verified"]
         )
         json.dumps(response, allow_nan=False)
 

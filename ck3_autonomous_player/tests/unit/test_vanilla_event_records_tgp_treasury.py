@@ -164,7 +164,7 @@ class TgpTreasuryEventRecordTests(unittest.TestCase):
             self.assertRegex(digest, SHA256_PATTERN)
 
     def test_r374_observation_is_identity_only_and_does_not_invent_context(self) -> None:
-        exemplar, = VANILLA_TGP_TREASURY_OBSERVATIONS[EVENT_KEY]["exemplars"]
+        exemplar = VANILLA_TGP_TREASURY_OBSERVATIONS[EVENT_KEY]["exemplars"][0]
         contract_repr = repr(VANILLA_TGP_TREASURY_TIMELINE_CONTRACTS[EVENT_KEY])
 
         self.assertEqual(exemplar["kind"], "foreground-ui-identity-red")
@@ -179,6 +179,47 @@ class TgpTreasuryEventRecordTests(unittest.TestCase):
         self.assertRegex(exemplar["artifact_sha256"], SHA256_PATTERN)
         for campaign_only in (53163168, 29037):
             self.assertNotIn(str(campaign_only), contract_repr)
+
+    def test_r375_production_live_observation_is_mcp_only_and_portable(self) -> None:
+        live = VANILLA_TGP_TREASURY_OBSERVATIONS[EVENT_KEY]["exemplars"][1]
+        contract_repr = repr(VANILLA_TGP_TREASURY_TIMELINE_CONTRACTS[EVENT_KEY])
+
+        self.assertEqual(live["kind"], "production-live-primitive")
+        self.assertEqual(live["production_live_ordinal"], 14)
+        self.assertTrue(live["artifact"].endswith(
+            "r375-live-014-tgp-china-ministry-0100-green.json"
+        ))
+        self.assertEqual(
+            live["artifact_sha256"],
+            "6C1407AF00D2E767FA201DA2411619D5724C86951BB5CEFF006DAB50ABC6C779",
+        )
+        self.assertEqual(live["event_instance_id"], 1057)
+        self.assertEqual(live["context_query_driver_command_index"], 291)
+        self.assertEqual(live["selection_driver_command_index"], 292)
+        self.assertEqual(live["selected_option_number"], 2)
+        self.assertEqual(live["selected_native_option_index"], 1)
+        self.assertTrue(live["postcondition_verified"])
+        self.assertEqual(live["ending_snapshot_id"], "native:357")
+        self.assertTrue(live["mcp_only"])
+        for forbidden_mode in (
+            "fixture_used",
+            "ocr_used",
+            "coordinates_used",
+            "console_used",
+        ):
+            self.assertFalse(live[forbidden_mode])
+        self.assertRegex(live["artifact_sha256"], SHA256_PATTERN)
+
+        for observation_only in (
+            53609928,
+            1057,
+            32904,
+            38076,
+            180544,
+            "native:356",
+            "native:357",
+        ):
+            self.assertNotIn(str(observation_only), contract_repr)
 
     def test_default_registry_mcp_and_compatibility_export_use_new_record(self) -> None:
         self.assertIs(
@@ -210,6 +251,10 @@ class TgpTreasuryEventRecordTests(unittest.TestCase):
         self.assertEqual(
             response["observations"]["exemplars"][0]["kind"],
             "foreground-ui-identity-red",
+        )
+        self.assertEqual(
+            response["observations"]["exemplars"][1]["kind"],
+            "production-live-primitive",
         )
         json.dumps(response, allow_nan=False)
 

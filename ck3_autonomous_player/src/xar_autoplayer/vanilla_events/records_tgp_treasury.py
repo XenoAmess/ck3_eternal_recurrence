@@ -1,8 +1,7 @@
 ﻿"""Reusable CK3 1.19.0.6 records for the TGP treasury renewal prompt.
 
-The contract is source-shaped and campaign-neutral.  The R374 observation only
-freezes the visible identity proof because the native current-event publisher
-did not expose a trustworthy context frame for that foreground window.
+The contract is source-shaped and campaign-neutral.  R374 freezes a visible
+identity-only RED, while R375 freezes the later native MCP selection GREEN.
 """
 
 from __future__ import annotations
@@ -191,6 +190,47 @@ VANILLA_TGP_TREASURY_OBSERVATIONS: Final[dict[str, dict[str, object]]] = {
                 "saved-scope set, or option-state projection is frozen here"
             ),
             "selection_attempted": False,
+        }, {
+            "run": "R375",
+            "kind": "production-live-primitive",
+            "production_live_ordinal": 14,
+            "artifact": (
+                "_runtime/p2r375-post-publisher-fix-live/"
+                "r375-live-014-tgp-china-ministry-0100-green.json"
+            ),
+            "artifact_sha256": (
+                "6C1407AF00D2E767FA201DA2411619D5724C86951BB5CEFF006DAB50ABC6C779"
+            ),
+            "date_raw": 53609928,
+            "event_instance_id": 1057,
+            "root_character_id": 32904,
+            "bridge_pid": 180544,
+            "connection_generation": 1,
+            "context_query_driver_command_index": 291,
+            "selection_driver_command_index": 292,
+            "context_snapshot_id": "native:356",
+            "context_native_revision": 356,
+            "saved_character_ids": {
+                "treasury_ruler": 32904,
+                "steward": 38076,
+                "military_budget": 32904,
+            },
+            "saved_scope_raw_types": {
+                "treasury_ruler": 4,
+                "steward": 4,
+                "military_budget": 4,
+            },
+            "rendered_native_option_indices": [0, 1, 2],
+            "selected_option_number": 2,
+            "selected_native_option_index": 1,
+            "postcondition_verified": True,
+            "ending_snapshot_id": "native:357",
+            "ending_revision": 358,
+            "mcp_only": True,
+            "fixture_used": False,
+            "ocr_used": False,
+            "coordinates_used": False,
+            "console_used": False,
         }],
     },
 }
