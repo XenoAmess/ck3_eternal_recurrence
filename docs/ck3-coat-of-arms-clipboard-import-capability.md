@@ -158,12 +158,13 @@ Clausewitz/Jomini VFS 的覆盖、合并和运行时注册语义。
 “Initial playset”仍保存 82 个 enabled 条目，但该 playset 的 `isActive=0`，另两个 playset 也没有 active 标记。
 这组数据证明数据库可保留非当前播放集，不能反向覆盖 `dlc_load.json` 的直接配置事实。
 
-configured-resource catalog 继续解析目录模组的 designer manifest，分页返回配置顺序、mod/descriptor/manifest provenance、
+configured-resource catalog 继续解析目录模组及 ZIP archive 内的 designer manifest，分页返回配置顺序、
+mod/descriptor/manifest provenance、
 资源字段与同名候选计数；它只报告 potential conflict，不推导同名胜者。configured asset reader 不接受调用方路径或裸资源名，
 只接受由当前 `dlc_load.json`、描述符 hash、manifest 路径/hash、条目序号、kind/name 共同派生的 opaque candidate ID；
 配置顺序、描述符或 manifest 字节变化后
 旧 ID 会失效。两者仍固定声明 `resource_merge_applied=false`、`load_order_precedence_applied=false`。因此现阶段 Web 编辑器可审计
-“哪些目录模组声称提供哪些纹章资源”及其精确 DDS，但不会把这个集合冒充引擎最终 effective registry。
+“哪些目录/ZIP 模组声称提供哪些纹章资源”及其精确 DDS，但不会把这个集合冒充引擎最终 effective registry。
 
 ### 3.2 每条 MCP 结果提供什么证据
 
@@ -236,7 +237,7 @@ export 的公开结果为闭合 schema，包含 `status`、`designer_observed`�
   前端 20/20 和 production build GREEN。真实用户目录的官方 MCP 调用列出 78 个工具；因当前配置启用模组为零，pattern
   configured catalog 正确返回 `total=0`、`manifest_count=0`，同时保持 `resource_merge_applied=false`、
   `load_order_precedence_applied=false`。双模组夹具另外验证同名候选保留而不选胜者、配置顺序投影、opaque ID DDS 读取、
-  配置变更令旧 ID 失效，以及 archive 显式跳过；
+  配置变更令旧 ID 失效；随后同组又补齐 ZIP archive 中 manifest/DDS 的有界直读，archive 不再需要落盘解压；
 - CK3 frontend exact-build 握手：已真实取得，并广告新 capability；
 - 隔离 attempt 5 补齐 `frontend_snapshot` 绑定；attempt 6 暴露剪贴板函数槽的瞬时初始化状态；attempt 8 又证明
   gameplay 生命周期门禁会让角色设计器永远无法安装 hook。现在 hook 在 exact adapter 选定后即于 frontend 启动，瞬时槽缺失仍在

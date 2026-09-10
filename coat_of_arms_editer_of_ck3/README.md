@@ -9,7 +9,7 @@ coat-of-arms render description，不把该入口描述成任意 CK3 脚本执�
 - 编辑 pattern、三通道颜色、重复 `colored_emblem`、mask 和重复 instance；
 - 编辑 position、scale、rotation、depth，并生成稳定 CRLF CK3 文本；
 - 展开简单静态 `@变量`，诊断多顶层、重复标量、`parent` 与未知字段；
-- 通过本机 Quarkus 伴随服务调用 typed MCP：读取基础游戏资源目录、单个 DDS、渲染支撑数据、当前 `dlc_load.json` 以及目录模组 manifest/DDS 候选，获取 session revision，执行原生检测/应用和 Copy/export；
+- 通过本机 Quarkus 伴随服务调用 typed MCP：读取基础游戏资源目录、单个 DDS、渲染支撑数据、当前 `dlc_load.json` 以及目录/ZIP 模组 manifest 与 DDS 候选，获取 session revision，执行原生检测/应用和 Copy/export；
 - 在浏览器解码原版 DXT1 pattern / DXT5 colored emblem 与 `coa_mask_texture.dds` 的顶层 mip；
 - 按 CK3 随附的 Clausewitz/Jomini shader 源码翻译三通道调色、pattern mask、flip→rotate→scale→translate、surface detail 和 alpha blend；GPU 采样/色彩空间及引擎未公开的 `FallbackColor` 绑定仍不冒充逐像素一致。
 
@@ -49,7 +49,7 @@ mvn -f backend/pom.xml quarkus:dev
 | `GET /api/ck3/coat-of-arms/asset` | `ck3_read_coat_of_arms_resource_asset_v1` | 否，只读 manifest 内的精确 DDS |
 | `GET /api/ck3/coat-of-arms/render-support` | `ck3_read_coat_of_arms_render_support_v1` | 否，只读 shader、命名颜色与 surface mask |
 | `GET /api/ck3/coat-of-arms/load-configuration` | `ck3_query_coat_of_arms_load_configuration_v1` | 否，只读 `dlc_load.json`、描述符与目录模组候选 |
-| `GET /api/ck3/coat-of-arms/configured-resources` | `ck3_query_coat_of_arms_configured_resource_catalog_v1` | 否，分页读取目录模组 manifest 候选与同名冲突 |
+| `GET /api/ck3/coat-of-arms/configured-resources` | `ck3_query_coat_of_arms_configured_resource_catalog_v1` | 否，分页读取目录/ZIP 模组 manifest 候选与同名冲突 |
 | `GET /api/ck3/coat-of-arms/configured-asset` | `ck3_read_coat_of_arms_configured_resource_asset_v1` | 否，以绑定当前配置的 opaque ID 读取模组 DDS |
 | `GET /api/ck3/coat-of-arms/session` | `ck3_take_snapshot` | 是 |
 | `POST /api/ck3/coat-of-arms/probe` | `ck3_probe_coat_of_arms_source_v1` | 是，且需打开纹章设计器 |
@@ -79,6 +79,7 @@ shader 源文件、15 个原版命名颜色和 256×256 DXT1 surface mask；本�
 描述符，并枚举目录模组九类 `common/gfx/coat_of_arms` 直接候选文件。它不读取启动器 SQLite，不解压 archive，不执行
 资源覆盖/merge，也不把启动配置冒充为引擎已经 mount 的运行时状态。
 
-configured-resource catalog 在此基础上解析目录模组自己的 designer manifest，标出同名候选并保留配置顺序；asset reader
+configured-resource catalog 在此基础上解析目录模组及 ZIP archive 内的 designer manifest，标出同名候选并保留配置顺序；
+archive 通过中央目录有界直读，不解压到磁盘。asset reader
 只能接受 catalog 返回且仍属于当前配置的 opaque candidate ID。前端目前显示候选计数，但在引擎 precedence/merge 尚未取得
 原生证据前，不会擅自把某个同名候选选成 effective winner，也不会把这些候选混入基础游戏下拉框。

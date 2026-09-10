@@ -5,8 +5,9 @@ from __future__ import annotations
 import base64
 from collections import Counter
 import hashlib
-from pathlib import Path
+from pathlib import Path, PurePosixPath
 from typing import Final
+import zipfile
 
 from .coat_of_arms_load_configuration import (
     query_coat_of_arms_load_configuration_v1,
@@ -15,6 +16,7 @@ from .coat_of_arms_resources import (
     CK3_COAT_OF_ARMS_RESOURCE_KINDS,
     CoatOfArmsResourceCatalogError,
     _designer_entries,
+    _designer_entries_text,
     _sha256,
 )
 
@@ -23,17 +25,22 @@ _MAX_PAGE_SIZE: Final = 200
 _MAX_CONFIGURED_MANIFESTS: Final = 512
 _MAX_CONFIGURED_RESOURCES: Final = 20_000
 _MAX_ASSET_BYTES: Final = 1024 * 1024
+_MAX_MANIFEST_BYTES: Final = 2 * 1024 * 1024
+_MAX_ARCHIVE_MEMBERS: Final = 50_000
 _KIND_DIRECTORIES: Final = {
     "pattern": (
         "pattern_assets",
+        Path("gfx/coat_of_arms/patterns"),
         Path("gfx/coat_of_arms/patterns"),
     ),
     "colored_emblem": (
         "colored_emblem_assets",
         Path("gfx/coat_of_arms/colored_emblems"),
+        Path("gfx/coat_of_arms/colored_emblems"),
     ),
     "color": (
         "color_palette_definitions",
+        Path("gfx/coat_of_arms/color_palettes"),
         None,
     ),
 }
@@ -108,22 +115,160 @@ def _direct_asset_path(
 def _collect_configured_candidates(
     user_directory: str,
     kind: str,
-) -> tuple[list[dict[str, object]], dict[str, object], list[dict[str, object]]]:
+) -> tuple[
+    list[dict[str, object]],
+    dict[str, object],
+    list[dict[str, object]],
+    list[dict[str, object]],
+]:
     configuration = query_coat_of_arms_load_configuration_v1(user_directory)
-    directory_key, asset_directory = _KIND_DIRECTORIES[kind]
+    directory_key, manifest_directory, asset_directory = _KIND_DIRECTORIES[kind]
     load_sha256 = str(configuration["provenance"]["load_configuration_sha256"])
     candidates: list[dict[str, object]] = []
     skipped_archives: list[dict[str, object]] = []
+    archive_sources: list[dict[str, object]] = []
     manifest_count = 0
     for mod in configuration["mods"]:
         if mod["content_kind"] == "archive":
-            skipped_archives.append(
-                {
-                    "load_order": mod["load_order"],
-                    "registry_path": mod["registry_path"],
-                    "name": mod["name"],
-                }
-            )
+            archive_path = Path(str(mod["archive_path"])).resolve()
+            if not archive_path.is_file():
+                raise CoatOfArmsResourceCatalogError(
+                    "configured CoA archive is missing"
+                )
+            try:
+                with zipfile.ZipFile(archive_path) as archive:
+                    members = archive.infolist()
+                    if len(members) > _MAX_ARCHIVE_MEMBERS:
+                        raise CoatOfArmsResourceCatalogError(
+                            "configured CoA archive member count exceeds the v1 contract"
+                        )
+                    names = [member.filename for member in members]
+                    duplicates = {
+                        name
+                        for name, count in Counter(names).items()
+                        if count > 1
+                    }
+                    relevant_prefix = manifest_directory.as_posix() + "/"
+                    relevant_duplicates = [
+                        name
+                        for name in duplicates
+                        if name.startswith(relevant_prefix)
+                    ]
+                    if relevant_duplicates:
+                        raise CoatOfArmsResourceCatalogError(
+                            "configured CoA archive repeats a relevant member name"
+                        )
+                    members_by_name = {
+                        member.filename: member
+                        for member in members
+                        if not member.is_dir()
+                    }
+                    manifests = sorted(
+                        (
+                            member
+                            for member in members
+                            if not member.is_dir()
+                            and PurePosixPath(member.filename).parent
+                            == PurePosixPath(manifest_directory.as_posix())
+                            and PurePosixPath(member.filename).suffix.casefold()
+                            == ".txt"
+                        ),
+                        key=lambda member: member.filename.casefold(),
+                    )
+                    archive_sources.append(
+                        {
+                            "load_order": mod["load_order"],
+                            "registry_path": mod["registry_path"],
+                            "name": mod["name"],
+                            "archive_bytes": archive_path.stat().st_size,
+                            "member_count": len(members),
+                            "kind_manifest_count": len(manifests),
+                        }
+                    )
+                    for manifest_member in manifests:
+                        manifest_count += 1
+                        if manifest_count > _MAX_CONFIGURED_MANIFESTS:
+                            raise CoatOfArmsResourceCatalogError(
+                                "configured CoA manifest count exceeds the v1 contract"
+                            )
+                        if not 0 < manifest_member.file_size <= _MAX_MANIFEST_BYTES:
+                            raise CoatOfArmsResourceCatalogError(
+                                "configured archive manifest size is outside the v1 contract"
+                            )
+                        manifest_data = archive.read(manifest_member)
+                        try:
+                            manifest_text = manifest_data.decode("utf-8-sig")
+                        except UnicodeError as error:
+                            raise CoatOfArmsResourceCatalogError(
+                                "configured archive manifest is not UTF-8"
+                            ) from error
+                        manifest_sha256 = hashlib.sha256(
+                            manifest_data
+                        ).hexdigest().upper()
+                        for resource_index, resource in enumerate(
+                            _designer_entries_text(kind, manifest_text)
+                        ):
+                            if len(candidates) >= _MAX_CONFIGURED_RESOURCES:
+                                raise CoatOfArmsResourceCatalogError(
+                                    "configured CoA resource count exceeds the v1 contract"
+                                )
+                            name = str(resource["name"])
+                            asset_member_name = (
+                                f"{asset_directory.as_posix()}/{name}"
+                                if asset_directory is not None
+                                and _direct_asset_path(Path("."), asset_directory, name)
+                                is not None
+                                else None
+                            )
+                            asset_member = (
+                                members_by_name.get(asset_member_name)
+                                if asset_member_name is not None
+                                else None
+                            )
+                            candidates.append(
+                                {
+                                    "candidate_id": _candidate_id(
+                                        load_sha256,
+                                        str(mod["descriptor_sha256"]),
+                                        int(mod["load_order"]),
+                                        manifest_member.filename,
+                                        manifest_sha256,
+                                        resource_index,
+                                        kind,
+                                        name,
+                                    ),
+                                    "load_order": mod["load_order"],
+                                    "registry_path": mod["registry_path"],
+                                    "mod_name": mod["name"],
+                                    "descriptor_sha256": mod["descriptor_sha256"],
+                                    "content_kind": "archive",
+                                    "content_root": None,
+                                    "archive_path": str(archive_path),
+                                    "archive_bytes": archive_path.stat().st_size,
+                                    "manifest_relative_path": manifest_member.filename,
+                                    "manifest_bytes": manifest_member.file_size,
+                                    "manifest_sha256": manifest_sha256,
+                                    "manifest_resource_index": resource_index,
+                                    "kind": kind,
+                                    **resource,
+                                    "asset_directory": (
+                                        asset_directory.as_posix()
+                                        if asset_directory is not None
+                                        else None
+                                    ),
+                                    "archive_asset_member": asset_member_name,
+                                    "archive_asset_exists": asset_member is not None,
+                                    "archive_asset_bytes": (
+                                        asset_member.file_size
+                                        if asset_member is not None
+                                        else None
+                                    ),
+                                }
+                            )
+            except zipfile.BadZipFile as error:
+                raise CoatOfArmsResourceCatalogError(
+                    "configured CoA archive is not a readable ZIP"
+                ) from error
             continue
         content_root = Path(str(mod["content_root"])).resolve()
         source = mod["resource_candidates"][directory_key]
@@ -163,7 +308,10 @@ def _collect_configured_candidates(
                         "registry_path": mod["registry_path"],
                         "mod_name": mod["name"],
                         "descriptor_sha256": mod["descriptor_sha256"],
+                        "content_kind": "directory",
                         "content_root": str(content_root),
+                        "archive_path": None,
+                        "archive_bytes": None,
                         "manifest_relative_path": manifest_relative,
                         "manifest_bytes": manifest.stat().st_size,
                         "manifest_sha256": manifest_sha256,
@@ -175,22 +323,41 @@ def _collect_configured_candidates(
                             if asset_directory is not None
                             else None
                         ),
+                        "archive_asset_member": None,
+                        "archive_asset_exists": None,
+                        "archive_asset_bytes": None,
                     }
                 )
-    return candidates, configuration, skipped_archives
+    return candidates, configuration, skipped_archives, archive_sources
 
 
 def _catalog_item(candidate: dict[str, object]) -> dict[str, object]:
+    public = {
+        key: value
+        for key, value in candidate.items()
+        if key
+        not in {
+            "content_root",
+            "archive_path",
+            "asset_directory",
+            "archive_asset_member",
+            "archive_asset_exists",
+            "archive_asset_bytes",
+        }
+    }
+    if candidate["content_kind"] == "archive":
+        return public | {
+            "asset_relative_path": candidate["archive_asset_member"],
+            "asset_exists": candidate["archive_asset_exists"],
+            "asset_bytes": candidate["archive_asset_bytes"],
+            "asset_sha256": None,
+        }
     root = Path(str(candidate["content_root"]))
     directory_value = candidate["asset_directory"]
     asset_directory = Path(str(directory_value)) if directory_value else None
     asset = _direct_asset_path(root, asset_directory, str(candidate["name"]))
     asset_exists = asset.is_file() if asset is not None else None
-    return {
-        key: value
-        for key, value in candidate.items()
-        if key not in {"content_root", "asset_directory"}
-    } | {
+    return public | {
         "asset_relative_path": (
             asset.relative_to(root).as_posix() if asset is not None else None
         ),
@@ -214,10 +381,13 @@ def query_coat_of_arms_configured_resource_catalog_v1(
     if not isinstance(user_directory, str) or not user_directory.strip():
         raise ValueError("user_directory must be a non-empty string")
     _validate_catalog_arguments(kind, query, visible_only, offset, limit)
-    directory_key, _ = _KIND_DIRECTORIES[kind]
-    candidates, configuration, skipped_archives = _collect_configured_candidates(
-        user_directory, kind
-    )
+    directory_key, _, _ = _KIND_DIRECTORIES[kind]
+    (
+        candidates,
+        configuration,
+        skipped_archives,
+        archive_sources,
+    ) = _collect_configured_candidates(user_directory, kind)
     name_counts = Counter(str(candidate["name"]) for candidate in candidates)
     needle = (query or "").casefold().strip()
     filtered = [
@@ -260,8 +430,9 @@ def query_coat_of_arms_configured_resource_catalog_v1(
         "next_offset": next_offset if has_more else None,
         "items": items,
         "skipped_archives": skipped_archives,
+        "archive_sources": archive_sources,
         "provenance": {
-            "mode": "configured-directory-mod-candidates-static",
+            "mode": "configured-mod-candidates-static",
             "load_configuration_sha256": configuration["provenance"][
                 "load_configuration_sha256"
             ],
@@ -275,6 +446,7 @@ def query_coat_of_arms_configured_resource_catalog_v1(
             ),
             "configured_candidate_count": len(candidates),
             "archive_mods_skipped": len(skipped_archives),
+            "archive_mods_enumerated": len(archive_sources),
             "base_game_resources_included": False,
             "engine_registration_observed": False,
             "resource_merge_applied": False,
@@ -319,7 +491,7 @@ def read_coat_of_arms_configured_resource_asset_v1(
         or any(character not in "0123456789ABCDEF" for character in candidate_id)
     ):
         raise ValueError("candidate_id must be 64 uppercase hexadecimal characters")
-    candidates, configuration, _ = _collect_configured_candidates(
+    candidates, configuration, _, _ = _collect_configured_candidates(
         user_directory, kind
     )
     matches = [
@@ -332,22 +504,52 @@ def read_coat_of_arms_configured_resource_asset_v1(
             "candidate_id is not uniquely present in the current configuration"
         )
     candidate = matches[0]
-    root = Path(str(candidate["content_root"]))
-    asset = _direct_asset_path(
-        root,
-        Path(str(candidate["asset_directory"])),
-        str(candidate["name"]),
-    )
-    if asset is None or not asset.is_file():
-        raise CoatOfArmsResourceCatalogError(
-            "configured manifest asset is missing or outside the direct asset contract"
+    if candidate["content_kind"] == "archive":
+        member_name = candidate["archive_asset_member"]
+        if not isinstance(member_name, str):
+            raise CoatOfArmsResourceCatalogError(
+                "configured archive manifest asset is outside the direct asset contract"
+            )
+        archive_path = Path(str(candidate["archive_path"]))
+        try:
+            with zipfile.ZipFile(archive_path) as archive:
+                try:
+                    member = archive.getinfo(member_name)
+                except KeyError as error:
+                    raise CoatOfArmsResourceCatalogError(
+                        "configured archive manifest asset is missing"
+                    ) from error
+                size = member.file_size
+                if not 128 <= size <= _MAX_ASSET_BYTES:
+                    raise CoatOfArmsResourceCatalogError(
+                        "configured DDS size is outside the v1 asset contract"
+                    )
+                data = archive.read(member)
+        except zipfile.BadZipFile as error:
+            raise CoatOfArmsResourceCatalogError(
+                "configured CoA archive is not a readable ZIP"
+            ) from error
+        asset_relative_path = member_name
+        provenance_mode = "configured-archive-mod-manifest-candidate-static"
+    else:
+        root = Path(str(candidate["content_root"]))
+        asset = _direct_asset_path(
+            root,
+            Path(str(candidate["asset_directory"])),
+            str(candidate["name"]),
         )
-    size = asset.stat().st_size
-    if not 128 <= size <= _MAX_ASSET_BYTES:
-        raise CoatOfArmsResourceCatalogError(
-            "configured DDS size is outside the v1 asset contract"
-        )
-    data = asset.read_bytes()
+        if asset is None or not asset.is_file():
+            raise CoatOfArmsResourceCatalogError(
+                "configured manifest asset is missing or outside the direct asset contract"
+            )
+        size = asset.stat().st_size
+        if not 128 <= size <= _MAX_ASSET_BYTES:
+            raise CoatOfArmsResourceCatalogError(
+                "configured DDS size is outside the v1 asset contract"
+            )
+        data = asset.read_bytes()
+        asset_relative_path = asset.relative_to(root).as_posix()
+        provenance_mode = "configured-directory-mod-manifest-candidate-static"
     metadata = _dds_metadata(data)
     return {
         "schema": "ck3-coat-of-arms-configured-resource-asset-v1",
@@ -362,14 +564,15 @@ def read_coat_of_arms_configured_resource_asset_v1(
         "load_order": candidate["load_order"],
         "registry_path": candidate["registry_path"],
         "mod_name": candidate["mod_name"],
-        "asset_relative_path": asset.relative_to(root).as_posix(),
+        "asset_relative_path": asset_relative_path,
         "content_type": "application/octet-stream",
         "asset_bytes": size,
         "asset_sha256": hashlib.sha256(data).hexdigest().upper(),
         "asset_base64": base64.b64encode(data).decode("ascii"),
         "dds": metadata,
         "provenance": {
-            "mode": "configured-directory-mod-manifest-candidate-static",
+            "mode": provenance_mode,
+            "content_kind": candidate["content_kind"],
             "load_configuration_sha256": configuration["provenance"][
                 "load_configuration_sha256"
             ],

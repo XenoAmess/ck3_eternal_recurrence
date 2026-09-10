@@ -286,18 +286,7 @@ def _property(block: _Block, name: str) -> str | None:
     return values[0] if values else None
 
 
-def _designer_entries(kind: str, manifest: Path) -> list[dict[str, object]]:
-    size = manifest.stat().st_size
-    if size <= 0 or size > _MAX_MANIFEST_BYTES:
-        raise CoatOfArmsResourceCatalogError(
-            "designer manifest size is outside the v1 contract"
-        )
-    try:
-        text = manifest.read_text(encoding="utf-8-sig")
-    except UnicodeError as error:
-        raise CoatOfArmsResourceCatalogError(
-            "designer manifest is not UTF-8"
-        ) from error
+def _designer_entries_text(kind: str, text: str) -> list[dict[str, object]]:
     entries = _Parser(_tokenize(text)).document()
     if kind == "color":
         palettes = [
@@ -353,6 +342,21 @@ def _designer_entries(kind: str, manifest: Path) -> list[dict[str, object]]:
             }
         )
     return result
+
+
+def _designer_entries(kind: str, manifest: Path) -> list[dict[str, object]]:
+    size = manifest.stat().st_size
+    if size <= 0 or size > _MAX_MANIFEST_BYTES:
+        raise CoatOfArmsResourceCatalogError(
+            "designer manifest size is outside the v1 contract"
+        )
+    try:
+        text = manifest.read_text(encoding="utf-8-sig")
+    except UnicodeError as error:
+        raise CoatOfArmsResourceCatalogError(
+            "designer manifest is not UTF-8"
+        ) from error
+    return _designer_entries_text(kind, text)
 
 
 def query_coat_of_arms_resource_catalog_v1(

@@ -7,6 +7,7 @@ import json
 from pathlib import Path
 import tempfile
 import unittest
+import zipfile
 
 from xar_autoplayer.bridge.mcp_server import create_server
 from xar_autoplayer.coat_of_arms_configured_resources import (
@@ -175,10 +176,19 @@ class CoatOfArmsConfiguredResourcesV1Tests(unittest.TestCase):
                     str(root), "pattern", candidate_id
                 )
 
-    def test_reports_archive_mod_as_skipped(self) -> None:
+    def test_enumerates_archive_manifest_and_reads_its_asset(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
-            (root / "fixture.zip").write_bytes(b"not-enumerated")
+            expected = _dds(b"DXT1", width=64, height=32)
+            with zipfile.ZipFile(root / "fixture.zip", "w") as archive:
+                archive.writestr(
+                    "gfx/coat_of_arms/patterns/50_archive_patterns.txt",
+                    "pattern_archive.dds = { colors = 2 }",
+                )
+                archive.writestr(
+                    "gfx/coat_of_arms/patterns/pattern_archive.dds",
+                    expected,
+                )
             descriptor_root = root / "mod"
             descriptor_root.mkdir()
             (descriptor_root / "archive.mod").write_text(
@@ -191,9 +201,22 @@ class CoatOfArmsConfiguredResourcesV1Tests(unittest.TestCase):
                 str(root), "pattern"
             )
 
-            self.assertEqual(result["total"], 0)
-            self.assertEqual(result["provenance"]["archive_mods_skipped"], 1)
-            self.assertEqual(result["skipped_archives"][0]["load_order"], 0)
+            self.assertEqual(result["total"], 1)
+            self.assertEqual(result["provenance"]["archive_mods_skipped"], 0)
+            self.assertEqual(result["provenance"]["archive_mods_enumerated"], 1)
+            self.assertEqual(result["archive_sources"][0]["load_order"], 0)
+            item = result["items"][0]
+            self.assertEqual(item["content_kind"], "archive")
+            self.assertTrue(item["asset_exists"])
+            self.assertIsNone(item["asset_sha256"])
+            asset = read_coat_of_arms_configured_resource_asset_v1(
+                str(root), "pattern", item["candidate_id"]
+            )
+            self.assertEqual(
+                asset["asset_base64"], base64.b64encode(expected).decode()
+            )
+            self.assertEqual(asset["dds"]["width"], 64)
+            self.assertEqual(asset["provenance"]["content_kind"], "archive")
 
     @unittest.skipIf(
         importlib.util.find_spec("mcp") is None,

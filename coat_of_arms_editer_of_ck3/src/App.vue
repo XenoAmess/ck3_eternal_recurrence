@@ -72,7 +72,7 @@ const shaderSourceCount = ref(0)
 const configuredModCount = ref<number | null>(null)
 const configuredPatternCount = ref<number | null>(null)
 const configuredEmblemCount = ref<number | null>(null)
-const configuredArchiveSkipCount = ref(0)
+const configuredArchiveCount = ref(0)
 
 const output = computed(() => serializeCoatOfArms(coatOfArms.value))
 const activeEmblem = computed(() => coatOfArms.value.coloredEmblems[selectedEmblem.value])
@@ -257,9 +257,9 @@ async function loadResourceCatalog() {
     configuredModCount.value = loadConfiguration?.enabled_mod_count ?? null
     configuredPatternCount.value = configuredPatterns?.total ?? null
     configuredEmblemCount.value = configuredEmblems?.total ?? null
-    configuredArchiveSkipCount.value = Math.max(
-      configuredPatterns?.provenance.archive_mods_skipped ?? 0,
-      configuredEmblems?.provenance.archive_mods_skipped ?? 0,
+    configuredArchiveCount.value = Math.max(
+      configuredPatterns?.provenance.archive_mods_enumerated ?? 0,
+      configuredEmblems?.provenance.archive_mods_enumerated ?? 0,
     )
     const decodedSurfaceMask = decodeDdsBase64(renderSupport.surface_mask.asset_base64)
     if (
@@ -487,8 +487,8 @@ importSource()
             <template v-if="configuredModCount !== null">
               `dlc_load.json` 当前配置 {{ configuredModCount }} 个 mod；
               <template v-if="configuredPatternCount !== null && configuredEmblemCount !== null">
-                已枚举 {{ configuredPatternCount }} 个 pattern、{{ configuredEmblemCount }} 个 emblem 目录候选，
-                跳过 {{ configuredArchiveSkipCount }} 个 archive mod。
+                已枚举 {{ configuredPatternCount }} 个 pattern、{{ configuredEmblemCount }} 个 emblem 资源候选，
+                其中读取 {{ configuredArchiveCount }} 个 archive mod。
               </template>
               仍未应用资源 precedence/merge，也不冒充引擎 mount 状态。
             </template>

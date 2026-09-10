@@ -137,6 +137,8 @@ export interface CoatOfArmsConfiguredResourceItem {
   load_order: number
   registry_path: string
   mod_name: string | null
+  content_kind: 'directory' | 'archive'
+  archive_bytes: number | null
   descriptor_sha256: string
   manifest_relative_path: string
   manifest_sha256: string
@@ -168,11 +170,20 @@ export interface CoatOfArmsConfiguredResourceCatalog {
     registry_path: string
     name: string | null
   }>
+  archive_sources: Array<{
+    load_order: number
+    registry_path: string
+    name: string | null
+    archive_bytes: number
+    member_count: number
+    kind_manifest_count: number
+  }>
   provenance: {
     mode: string
     enabled_mod_count: number
     configured_candidate_count: number
     archive_mods_skipped: number
+    archive_mods_enumerated: number
     base_game_resources_included: false
     engine_registration_observed: false
     resource_merge_applied: false
