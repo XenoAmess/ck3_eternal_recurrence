@@ -54,14 +54,14 @@ def test_frozen_index_covers_unique_exact_build_definitions_and_candidates() -> 
         DEFAULT_VANILLA_EVENT_TIMELINE_CONTRACTS
     )
     assert audit == {
-        "registered_event_count": 170,
-        "unique_definition_count": 170,
-        "definition_file_count": 65,
+        "registered_event_count": 171,
+        "unique_definition_count": 171,
+        "definition_file_count": 66,
         "missing_definition_count": 0,
         "ambiguous_definition_count": 0,
         "namespace_mismatch_count": 0,
-        "caller_candidate_reference_count": 501,
-        "external_caller_event_count": 137,
+        "caller_candidate_reference_count": 502,
+        "external_caller_event_count": 138,
         "same_file_only_caller_event_count": 33,
         "caller_candidate_file_count": 76,
     }

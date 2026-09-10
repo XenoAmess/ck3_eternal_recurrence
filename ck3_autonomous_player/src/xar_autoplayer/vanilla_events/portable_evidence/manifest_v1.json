@@ -1094,6 +1094,26 @@
         },
         {
           "caller_candidate_resolution": "external-definition-file",
+          "event_definition_key": "yearly.0003",
+          "logical_path": "common/on_action/yearly_on_actions.txt",
+          "origin": "ck3_game",
+          "provenance": "lexical-caller-candidate-not-proven-runtime-caller",
+          "role": "caller_candidate",
+          "source_column": 8,
+          "source_line": 2940
+        },
+        {
+          "caller_candidate_resolution": null,
+          "event_definition_key": "yearly.0003",
+          "logical_path": "common/on_action/yearly_on_actions.txt",
+          "origin": "ck3_game",
+          "provenance": "manually-reviewed-analysis-source",
+          "role": "analysis_source",
+          "source_column": null,
+          "source_line": null
+        },
+        {
+          "caller_candidate_resolution": "external-definition-file",
           "event_definition_key": "yearly.1040",
           "logical_path": "common/on_action/yearly_on_actions.txt",
           "origin": "ck3_game",
@@ -7100,6 +7120,28 @@
       "sha256": "7c0567d6f37db922d31a2af8ae69405bc4ca8aaa5c835dadb8fc92a801c7aa89"
     },
     {
+      "blob_bytes": 17084,
+      "blob_path": "blobs/7c41e07da8bd1aca6f3db14ef208e35030a63eead99d86b7179638fb1a328279.gz",
+      "blob_sha256": "9c9ab9b755565308196a5589b53eb44ed7eaf2f62d6bcbc1e95502d99232c098",
+      "bytes": 186181,
+      "evidence_id": "7c41e07da8bd1aca6f3db14ef208e35030a63eead99d86b7179638fb1a328279",
+      "kind": "observation_artifact",
+      "media_type": "application/json",
+      "references": [
+        {
+          "caller_candidate_resolution": null,
+          "event_definition_key": "yearly.0003",
+          "logical_path": "_runtime/p1-post-chaos-terminal-r414-20260911/live-artifacts/terminal-stages-red.json",
+          "origin": "runtime",
+          "provenance": "captured-observation-artifact",
+          "role": "artifact",
+          "source_column": null,
+          "source_line": null
+        }
+      ],
+      "sha256": "7c41e07da8bd1aca6f3db14ef208e35030a63eead99d86b7179638fb1a328279"
+    },
+    {
       "blob_bytes": 2476,
       "blob_path": "blobs/7d366988081a0e6cbd9e583ff767aebc71f6cc599f80b1d0784964ce8646e089.gz",
       "blob_sha256": "f93486a3de9e82465c3cde1e88babfff03011c706f7bb35085a0cbf7339223e0",
@@ -11746,6 +11788,38 @@
       "sha256": "fb47457aabe7c7df78555b4dfba74b8932dae468c45ebb2d1381caddc2b7e019"
     },
     {
+      "blob_bytes": 9869,
+      "blob_path": "blobs/fbbd29c7c9ecdcb84342ef4f00e92358412781b27e0686dcc220592996fef0e5.gz",
+      "blob_sha256": "e544dd2c6a1a7e7cf299849b35dbf0ff6f69824f98f2bca5f06001a7c2ff095d",
+      "bytes": 67137,
+      "evidence_id": "fbbd29c7c9ecdcb84342ef4f00e92358412781b27e0686dcc220592996fef0e5",
+      "kind": "source_definition",
+      "media_type": "text/plain; charset=utf-8",
+      "references": [
+        {
+          "caller_candidate_resolution": null,
+          "event_definition_key": "yearly.0003",
+          "logical_path": "events/yearly_events/yearly_events.txt",
+          "origin": "ck3_game",
+          "provenance": "generated-definition-index",
+          "role": "event_definition",
+          "source_column": null,
+          "source_line": 766
+        },
+        {
+          "caller_candidate_resolution": null,
+          "event_definition_key": "yearly.0003",
+          "logical_path": "events/yearly_events/yearly_events.txt",
+          "origin": "ck3_game",
+          "provenance": "manually-reviewed-analysis-source",
+          "role": "analysis_source",
+          "source_column": null,
+          "source_line": null
+        }
+      ],
+      "sha256": "fbbd29c7c9ecdcb84342ef4f00e92358412781b27e0686dcc220592996fef0e5"
+    },
+    {
       "blob_bytes": 3305,
       "blob_path": "blobs/fc11520ac7d3c9fe500a36f0b6dadfda38b1edee7bb19cdea65ee7e60be355fb.gz",
       "blob_sha256": "19a16bf1b470b8e6bf4f2ebd886e9261bee9dea218fd9a8f579678092d66b269",
@@ -12007,13 +12081,13 @@
   "schema": "xar.ck3.vanilla-event-portable-evidence-manifest",
   "schema_version": 1,
   "statistics": {
-    "evidence": 228,
-    "generated_definition_references": 170,
-    "lexical_caller_candidate_references": 501,
-    "manually_reviewed_analysis_source_references": 193,
-    "observation_artifact_references": 62,
-    "observation_artifacts": 61,
-    "references": 926,
-    "source_definitions": 167
+    "evidence": 230,
+    "generated_definition_references": 171,
+    "lexical_caller_candidate_references": 502,
+    "manually_reviewed_analysis_source_references": 195,
+    "observation_artifact_references": 63,
+    "observation_artifacts": 62,
+    "references": 931,
+    "source_definitions": 168
   }
 }
