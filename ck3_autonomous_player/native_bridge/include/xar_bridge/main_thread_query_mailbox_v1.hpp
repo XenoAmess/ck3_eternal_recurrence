@@ -240,6 +240,7 @@ struct MainThreadQueryInstallEnvironmentV1 {
   MainThreadQueryExecutorV1 permitted_executor_septemvigintary = nullptr;
   MainThreadQueryExecutorV1 permitted_executor_octovigintary = nullptr;
   MainThreadQueryExecutorV1 permitted_executor_novemvigintary = nullptr;
+  MainThreadQueryExecutorV1 permitted_executor_trigintary = nullptr;
 };
 
 struct MainThreadQueryMailboxDiagnosticsV1 {
@@ -340,6 +341,7 @@ struct MainThreadQueryMailboxV1 {
   MainThreadQueryExecutorV1 permitted_executor_septemvigintary = nullptr;
   MainThreadQueryExecutorV1 permitted_executor_octovigintary = nullptr;
   MainThreadQueryExecutorV1 permitted_executor_novemvigintary = nullptr;
+  MainThreadQueryExecutorV1 permitted_executor_trigintary = nullptr;
 
   // Written only inside the exact-return drain guard.  The worker consumes
   // only the atomic consecutive count; this stamp never crosses threads.

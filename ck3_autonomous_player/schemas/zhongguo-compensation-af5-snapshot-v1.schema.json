@@ -1,0 +1,568 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://xar.local/schemas/zhongguo-compensation-af5-snapshot-v1.schema.json",
+  "title": "ZhongGuo standalone compensation AF5 snapshot v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "status",
+    "capability",
+    "source_backend_id",
+    "request_nonce",
+    "snapshot_revision",
+    "date_raw",
+    "paused",
+    "player_character_id",
+    "subject_character_id",
+    "unavailable_reason",
+    "af5",
+    "readiness",
+    "terminal"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": 1
+    },
+    "status": {
+      "enum": [
+        "available",
+        "unavailable"
+      ]
+    },
+    "capability": {
+      "const": "game.command.query-zhongguo-compensation-af5-snapshot-v1"
+    },
+    "source_backend_id": {
+      "enum": [
+        "ck3-1.19.0.6-native-zhongguo-compensation-af5-snapshot-v1",
+        "native-headless"
+      ]
+    },
+    "request_nonce": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,63}$"
+    },
+    "snapshot_revision": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "date_raw": {
+      "type": "integer",
+      "minimum": -2147483648,
+      "maximum": 2147483647
+    },
+    "paused": {
+      "const": true
+    },
+    "player_character_id": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "subject_character_id": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "unavailable_reason": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "af5": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "portfolio",
+        "case",
+        "m299",
+        "m300"
+      ],
+      "properties": {
+        "portfolio": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "domain",
+            "stage",
+            "completed_cycle",
+            "visible_pending",
+            "result_identity"
+          ],
+          "properties": {
+            "domain": {
+              "$ref": "#/$defs/typed_integer"
+            },
+            "stage": {
+              "$ref": "#/$defs/typed_integer"
+            },
+            "completed_cycle": {
+              "$ref": "#/$defs/typed_integer"
+            },
+            "visible_pending": {
+              "$ref": "#/$defs/typed_boolean"
+            },
+            "result_identity": {
+              "$ref": "#/$defs/identity"
+            }
+          }
+        },
+        "case": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "identity",
+            "state",
+            "last_operation",
+            "last_route",
+            "active",
+            "repurchase_resolved",
+            "unit_conserved",
+            "result_case_serial"
+          ],
+          "properties": {
+            "identity": {
+              "$ref": "#/$defs/case_identity"
+            },
+            "state": {
+              "$ref": "#/$defs/typed_integer"
+            },
+            "last_operation": {
+              "$ref": "#/$defs/typed_integer"
+            },
+            "last_route": {
+              "$ref": "#/$defs/typed_integer"
+            },
+            "active": {
+              "$ref": "#/$defs/typed_boolean"
+            },
+            "repurchase_resolved": {
+              "$ref": "#/$defs/typed_boolean"
+            },
+            "unit_conserved": {
+              "$ref": "#/$defs/typed_boolean"
+            },
+            "result_case_serial": {
+              "$ref": "#/$defs/typed_integer"
+            }
+          }
+        },
+        "m299": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "identity",
+            "state",
+            "route",
+            "active",
+            "consumed"
+          ],
+          "properties": {
+            "identity": {
+              "$ref": "#/$defs/identity"
+            },
+            "state": {
+              "$ref": "#/$defs/typed_integer"
+            },
+            "route": {
+              "$ref": "#/$defs/typed_integer"
+            },
+            "active": {
+              "$ref": "#/$defs/typed_boolean"
+            },
+            "consumed": {
+              "$ref": "#/$defs/typed_boolean"
+            }
+          }
+        },
+        "m300": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "identity",
+            "state",
+            "route",
+            "active",
+            "consumed"
+          ],
+          "properties": {
+            "identity": {
+              "$ref": "#/$defs/identity"
+            },
+            "state": {
+              "$ref": "#/$defs/typed_integer"
+            },
+            "route": {
+              "$ref": "#/$defs/typed_integer"
+            },
+            "active": {
+              "$ref": "#/$defs/typed_boolean"
+            },
+            "consumed": {
+              "$ref": "#/$defs/typed_boolean"
+            }
+          }
+        }
+      }
+    },
+    "readiness": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "player_owner_binding_ready",
+        "portfolio_subject_binding_ready",
+        "same_case_identity_ready",
+        "same_frame_ready",
+        "ready"
+      ],
+      "properties": {
+        "player_owner_binding_ready": {
+          "type": "boolean"
+        },
+        "portfolio_subject_binding_ready": {
+          "type": "boolean"
+        },
+        "same_case_identity_ready": {
+          "type": "boolean"
+        },
+        "same_frame_ready": {
+          "type": "boolean"
+        },
+        "ready": {
+          "type": "boolean"
+        }
+      }
+    },
+    "terminal": {
+      "type": "boolean"
+    },
+    "build": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "version",
+        "exe_sha256"
+      ],
+      "properties": {
+        "version": {
+          "const": "1.19.0.6"
+        },
+        "exe_sha256": {
+          "const": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86"
+        }
+      }
+    },
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "bridge_version",
+        "game_adapter_id",
+        "backend_id",
+        "connection_generation",
+        "snapshot_id",
+        "revision",
+        "native_revision",
+        "date_raw",
+        "paused",
+        "player_character_id"
+      ],
+      "properties": {
+        "bridge_version": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "game_adapter_id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "backend_id": {
+          "const": "native-headless"
+        },
+        "connection_generation": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "snapshot_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "revision": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "native_revision": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "date_raw": {
+          "type": "integer",
+          "minimum": -2147483648,
+          "maximum": 2147483647
+        },
+        "paused": {
+          "const": true
+        },
+        "player_character_id": {
+          "type": "integer",
+          "minimum": 1
+        }
+      }
+    },
+    "binding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "request_nonce",
+        "connection_generation",
+        "snapshot_id",
+        "revision",
+        "native_revision",
+        "date_raw",
+        "paused",
+        "player_character_id",
+        "subject_character_id",
+        "owner_character_id",
+        "expected_revision"
+      ],
+      "properties": {
+        "request_nonce": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,63}$"
+        },
+        "connection_generation": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "snapshot_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "revision": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "native_revision": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "date_raw": {
+          "type": "integer",
+          "minimum": -2147483648,
+          "maximum": 2147483647
+        },
+        "paused": {
+          "const": true
+        },
+        "player_character_id": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "subject_character_id": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "owner_character_id": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "expected_revision": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    }
+  },
+  "$defs": {
+    "typed_integer": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "status",
+        "value",
+        "unavailable_reason"
+      ],
+      "properties": {
+        "status": {
+          "enum": [
+            "available",
+            "unavailable"
+          ]
+        },
+        "value": {
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "unavailable_reason": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "oneOf": [
+        {
+          "properties": {
+            "status": {
+              "const": "available"
+            },
+            "value": {
+              "type": "integer"
+            },
+            "unavailable_reason": {
+              "type": "null"
+            }
+          }
+        },
+        {
+          "properties": {
+            "status": {
+              "const": "unavailable"
+            },
+            "value": {
+              "type": "null"
+            },
+            "unavailable_reason": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        }
+      ]
+    },
+    "typed_boolean": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "status",
+        "value",
+        "unavailable_reason"
+      ],
+      "properties": {
+        "status": {
+          "enum": [
+            "available",
+            "unavailable"
+          ]
+        },
+        "value": {
+          "type": [
+            "boolean",
+            "null"
+          ]
+        },
+        "unavailable_reason": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "oneOf": [
+        {
+          "properties": {
+            "status": {
+              "const": "available"
+            },
+            "value": {
+              "type": "boolean"
+            },
+            "unavailable_reason": {
+              "type": "null"
+            }
+          }
+        },
+        {
+          "properties": {
+            "status": {
+              "const": "unavailable"
+            },
+            "value": {
+              "type": "null"
+            },
+            "unavailable_reason": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        }
+      ]
+    },
+    "identity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "owner_character_id",
+        "subject_character_id",
+        "cycle_serial",
+        "case_serial"
+      ],
+      "properties": {
+        "owner_character_id": {
+          "$ref": "#/$defs/typed_integer"
+        },
+        "subject_character_id": {
+          "$ref": "#/$defs/typed_integer"
+        },
+        "cycle_serial": {
+          "$ref": "#/$defs/typed_integer"
+        },
+        "case_serial": {
+          "$ref": "#/$defs/typed_integer"
+        }
+      }
+    },
+    "case_identity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "owner_character_id",
+        "subject_character_id",
+        "cycle_serial",
+        "case_serial",
+        "revision"
+      ],
+      "properties": {
+        "owner_character_id": {
+          "$ref": "#/$defs/typed_integer"
+        },
+        "subject_character_id": {
+          "$ref": "#/$defs/typed_integer"
+        },
+        "cycle_serial": {
+          "$ref": "#/$defs/typed_integer"
+        },
+        "case_serial": {
+          "$ref": "#/$defs/typed_integer"
+        },
+        "revision": {
+          "$ref": "#/$defs/typed_integer"
+        }
+      }
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "source_backend_id": {
+            "const": "native-headless"
+          }
+        }
+      },
+      "then": {
+        "required": [
+          "build",
+          "source",
+          "binding"
+        ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,663 @@
+{
+  "schema_version": 1,
+  "evidence_kind": "synthetic_contract_fixture_not_live",
+  "frames": {
+    "pre_action": {
+      "schema_version": 1,
+      "status": "available",
+      "capability": "game.command.query-zhongguo-compensation-af5-snapshot-v1",
+      "source_backend_id": "ck3-1.19.0.6-native-zhongguo-compensation-af5-snapshot-v1",
+      "request_nonce": "af5.14",
+      "snapshot_revision": 51,
+      "date_raw": 800,
+      "paused": true,
+      "player_character_id": 147,
+      "subject_character_id": 361,
+      "af5": {
+        "portfolio": {
+          "domain": {
+            "status": "available",
+            "value": 3,
+            "unavailable_reason": null
+          },
+          "stage": {
+            "status": "available",
+            "value": 5,
+            "unavailable_reason": null
+          },
+          "completed_cycle": {
+            "status": "available",
+            "value": 8,
+            "unavailable_reason": null
+          },
+          "visible_pending": {
+            "status": "available",
+            "value": true,
+            "unavailable_reason": null
+          },
+          "result_identity": {
+            "owner_character_id": {
+              "status": "available",
+              "value": 147,
+              "unavailable_reason": null
+            },
+            "subject_character_id": {
+              "status": "available",
+              "value": 361,
+              "unavailable_reason": null
+            },
+            "cycle_serial": {
+              "status": "available",
+              "value": 9,
+              "unavailable_reason": null
+            },
+            "case_serial": {
+              "status": "available",
+              "value": 14,
+              "unavailable_reason": null
+            }
+          }
+        },
+        "case": {
+          "identity": {
+            "owner_character_id": {
+              "status": "available",
+              "value": 147,
+              "unavailable_reason": null
+            },
+            "subject_character_id": {
+              "status": "available",
+              "value": 361,
+              "unavailable_reason": null
+            },
+            "cycle_serial": {
+              "status": "available",
+              "value": 9,
+              "unavailable_reason": null
+            },
+            "case_serial": {
+              "status": "available",
+              "value": 214,
+              "unavailable_reason": null
+            },
+            "revision": {
+              "status": "available",
+              "value": 3,
+              "unavailable_reason": null
+            }
+          },
+          "state": {
+            "status": "available",
+            "value": 5,
+            "unavailable_reason": null
+          },
+          "active": {
+            "status": "available",
+            "value": true,
+            "unavailable_reason": null
+          },
+          "last_operation": {
+            "status": "available",
+            "value": 297,
+            "unavailable_reason": null
+          },
+          "last_route": {
+            "status": "available",
+            "value": 3,
+            "unavailable_reason": null
+          },
+          "repurchase_resolved": {
+            "status": "available",
+            "value": false,
+            "unavailable_reason": null
+          },
+          "unit_conserved": {
+            "status": "available",
+            "value": true,
+            "unavailable_reason": null
+          },
+          "result_case_serial": {
+            "status": "available",
+            "value": 14,
+            "unavailable_reason": null
+          }
+        },
+        "m299": {
+          "identity": {
+            "owner_character_id": {
+              "status": "unavailable",
+              "value": null,
+              "unavailable_reason": "variable_absent"
+            },
+            "subject_character_id": {
+              "status": "unavailable",
+              "value": null,
+              "unavailable_reason": "variable_absent"
+            },
+            "cycle_serial": {
+              "status": "unavailable",
+              "value": null,
+              "unavailable_reason": "variable_absent"
+            },
+            "case_serial": {
+              "status": "unavailable",
+              "value": null,
+              "unavailable_reason": "variable_absent"
+            }
+          },
+          "state": {
+            "status": "unavailable",
+            "value": null,
+            "unavailable_reason": "variable_absent"
+          },
+          "active": {
+            "status": "unavailable",
+            "value": null,
+            "unavailable_reason": "variable_absent"
+          },
+          "consumed": {
+            "status": "unavailable",
+            "value": null,
+            "unavailable_reason": "variable_absent"
+          },
+          "route": {
+            "status": "unavailable",
+            "value": null,
+            "unavailable_reason": "variable_absent"
+          }
+        },
+        "m300": {
+          "identity": {
+            "owner_character_id": {
+              "status": "unavailable",
+              "value": null,
+              "unavailable_reason": "variable_absent"
+            },
+            "subject_character_id": {
+              "status": "unavailable",
+              "value": null,
+              "unavailable_reason": "variable_absent"
+            },
+            "cycle_serial": {
+              "status": "unavailable",
+              "value": null,
+              "unavailable_reason": "variable_absent"
+            },
+            "case_serial": {
+              "status": "unavailable",
+              "value": null,
+              "unavailable_reason": "variable_absent"
+            }
+          },
+          "state": {
+            "status": "unavailable",
+            "value": null,
+            "unavailable_reason": "variable_absent"
+          },
+          "active": {
+            "status": "unavailable",
+            "value": null,
+            "unavailable_reason": "variable_absent"
+          },
+          "consumed": {
+            "status": "unavailable",
+            "value": null,
+            "unavailable_reason": "variable_absent"
+          },
+          "route": {
+            "status": "unavailable",
+            "value": null,
+            "unavailable_reason": "variable_absent"
+          }
+        }
+      },
+      "readiness": {
+        "player_owner_binding_ready": true,
+        "portfolio_subject_binding_ready": true,
+        "same_case_identity_ready": true,
+        "same_frame_ready": true,
+        "ready": true
+      },
+      "terminal": false,
+      "unavailable_reason": null
+    },
+    "immediate_terminal_domain4": {
+      "schema_version": 1,
+      "status": "available",
+      "capability": "game.command.query-zhongguo-compensation-af5-snapshot-v1",
+      "source_backend_id": "ck3-1.19.0.6-native-zhongguo-compensation-af5-snapshot-v1",
+      "request_nonce": "af5.14",
+      "snapshot_revision": 51,
+      "date_raw": 800,
+      "paused": true,
+      "player_character_id": 147,
+      "subject_character_id": 361,
+      "af5": {
+        "portfolio": {
+          "domain": {
+            "status": "available",
+            "value": 4,
+            "unavailable_reason": null
+          },
+          "stage": {
+            "status": "available",
+            "value": 5,
+            "unavailable_reason": null
+          },
+          "completed_cycle": {
+            "status": "available",
+            "value": 8,
+            "unavailable_reason": null
+          },
+          "visible_pending": {
+            "status": "available",
+            "value": false,
+            "unavailable_reason": null
+          },
+          "result_identity": {
+            "owner_character_id": {
+              "status": "available",
+              "value": 147,
+              "unavailable_reason": null
+            },
+            "subject_character_id": {
+              "status": "available",
+              "value": 361,
+              "unavailable_reason": null
+            },
+            "cycle_serial": {
+              "status": "available",
+              "value": 9,
+              "unavailable_reason": null
+            },
+            "case_serial": {
+              "status": "available",
+              "value": 14,
+              "unavailable_reason": null
+            }
+          }
+        },
+        "case": {
+          "identity": {
+            "owner_character_id": {
+              "status": "available",
+              "value": 147,
+              "unavailable_reason": null
+            },
+            "subject_character_id": {
+              "status": "available",
+              "value": 361,
+              "unavailable_reason": null
+            },
+            "cycle_serial": {
+              "status": "available",
+              "value": 9,
+              "unavailable_reason": null
+            },
+            "case_serial": {
+              "status": "available",
+              "value": 214,
+              "unavailable_reason": null
+            },
+            "revision": {
+              "status": "available",
+              "value": 6,
+              "unavailable_reason": null
+            }
+          },
+          "state": {
+            "status": "available",
+            "value": 6,
+            "unavailable_reason": null
+          },
+          "active": {
+            "status": "available",
+            "value": false,
+            "unavailable_reason": null
+          },
+          "last_operation": {
+            "status": "available",
+            "value": 300,
+            "unavailable_reason": null
+          },
+          "last_route": {
+            "status": "available",
+            "value": 3,
+            "unavailable_reason": null
+          },
+          "repurchase_resolved": {
+            "status": "available",
+            "value": true,
+            "unavailable_reason": null
+          },
+          "unit_conserved": {
+            "status": "available",
+            "value": true,
+            "unavailable_reason": null
+          },
+          "result_case_serial": {
+            "status": "available",
+            "value": 14,
+            "unavailable_reason": null
+          }
+        },
+        "m299": {
+          "identity": {
+            "owner_character_id": {
+              "status": "available",
+              "value": 147,
+              "unavailable_reason": null
+            },
+            "subject_character_id": {
+              "status": "available",
+              "value": 361,
+              "unavailable_reason": null
+            },
+            "cycle_serial": {
+              "status": "available",
+              "value": 9,
+              "unavailable_reason": null
+            },
+            "case_serial": {
+              "status": "available",
+              "value": 214,
+              "unavailable_reason": null
+            }
+          },
+          "state": {
+            "status": "available",
+            "value": 5,
+            "unavailable_reason": null
+          },
+          "active": {
+            "status": "available",
+            "value": true,
+            "unavailable_reason": null
+          },
+          "consumed": {
+            "status": "available",
+            "value": true,
+            "unavailable_reason": null
+          },
+          "route": {
+            "status": "available",
+            "value": 3,
+            "unavailable_reason": null
+          }
+        },
+        "m300": {
+          "identity": {
+            "owner_character_id": {
+              "status": "available",
+              "value": 147,
+              "unavailable_reason": null
+            },
+            "subject_character_id": {
+              "status": "available",
+              "value": 361,
+              "unavailable_reason": null
+            },
+            "cycle_serial": {
+              "status": "available",
+              "value": 9,
+              "unavailable_reason": null
+            },
+            "case_serial": {
+              "status": "available",
+              "value": 214,
+              "unavailable_reason": null
+            }
+          },
+          "state": {
+            "status": "available",
+            "value": 5,
+            "unavailable_reason": null
+          },
+          "active": {
+            "status": "available",
+            "value": true,
+            "unavailable_reason": null
+          },
+          "consumed": {
+            "status": "available",
+            "value": true,
+            "unavailable_reason": null
+          },
+          "route": {
+            "status": "available",
+            "value": 3,
+            "unavailable_reason": null
+          }
+        }
+      },
+      "readiness": {
+        "player_owner_binding_ready": true,
+        "portfolio_subject_binding_ready": true,
+        "same_case_identity_ready": true,
+        "same_frame_ready": true,
+        "ready": true
+      },
+      "terminal": true,
+      "unavailable_reason": null
+    },
+    "closed_portfolio_terminal": {
+      "schema_version": 1,
+      "status": "available",
+      "capability": "game.command.query-zhongguo-compensation-af5-snapshot-v1",
+      "source_backend_id": "ck3-1.19.0.6-native-zhongguo-compensation-af5-snapshot-v1",
+      "request_nonce": "af5.14",
+      "snapshot_revision": 51,
+      "date_raw": 800,
+      "paused": true,
+      "player_character_id": 147,
+      "subject_character_id": 361,
+      "af5": {
+        "portfolio": {
+          "domain": {
+            "status": "unavailable",
+            "value": null,
+            "unavailable_reason": "variable_absent"
+          },
+          "stage": {
+            "status": "unavailable",
+            "value": null,
+            "unavailable_reason": "variable_absent"
+          },
+          "completed_cycle": {
+            "status": "available",
+            "value": 9,
+            "unavailable_reason": null
+          },
+          "visible_pending": {
+            "status": "available",
+            "value": false,
+            "unavailable_reason": null
+          },
+          "result_identity": {
+            "owner_character_id": {
+              "status": "available",
+              "value": 147,
+              "unavailable_reason": null
+            },
+            "subject_character_id": {
+              "status": "available",
+              "value": 361,
+              "unavailable_reason": null
+            },
+            "cycle_serial": {
+              "status": "available",
+              "value": 9,
+              "unavailable_reason": null
+            },
+            "case_serial": {
+              "status": "available",
+              "value": 14,
+              "unavailable_reason": null
+            }
+          }
+        },
+        "case": {
+          "identity": {
+            "owner_character_id": {
+              "status": "available",
+              "value": 147,
+              "unavailable_reason": null
+            },
+            "subject_character_id": {
+              "status": "available",
+              "value": 361,
+              "unavailable_reason": null
+            },
+            "cycle_serial": {
+              "status": "available",
+              "value": 9,
+              "unavailable_reason": null
+            },
+            "case_serial": {
+              "status": "available",
+              "value": 214,
+              "unavailable_reason": null
+            },
+            "revision": {
+              "status": "available",
+              "value": 6,
+              "unavailable_reason": null
+            }
+          },
+          "state": {
+            "status": "available",
+            "value": 6,
+            "unavailable_reason": null
+          },
+          "active": {
+            "status": "available",
+            "value": false,
+            "unavailable_reason": null
+          },
+          "last_operation": {
+            "status": "available",
+            "value": 300,
+            "unavailable_reason": null
+          },
+          "last_route": {
+            "status": "available",
+            "value": 3,
+            "unavailable_reason": null
+          },
+          "repurchase_resolved": {
+            "status": "available",
+            "value": true,
+            "unavailable_reason": null
+          },
+          "unit_conserved": {
+            "status": "available",
+            "value": true,
+            "unavailable_reason": null
+          },
+          "result_case_serial": {
+            "status": "available",
+            "value": 14,
+            "unavailable_reason": null
+          }
+        },
+        "m299": {
+          "identity": {
+            "owner_character_id": {
+              "status": "available",
+              "value": 147,
+              "unavailable_reason": null
+            },
+            "subject_character_id": {
+              "status": "available",
+              "value": 361,
+              "unavailable_reason": null
+            },
+            "cycle_serial": {
+              "status": "available",
+              "value": 9,
+              "unavailable_reason": null
+            },
+            "case_serial": {
+              "status": "available",
+              "value": 214,
+              "unavailable_reason": null
+            }
+          },
+          "state": {
+            "status": "available",
+            "value": 5,
+            "unavailable_reason": null
+          },
+          "active": {
+            "status": "available",
+            "value": true,
+            "unavailable_reason": null
+          },
+          "consumed": {
+            "status": "available",
+            "value": true,
+            "unavailable_reason": null
+          },
+          "route": {
+            "status": "available",
+            "value": 3,
+            "unavailable_reason": null
+          }
+        },
+        "m300": {
+          "identity": {
+            "owner_character_id": {
+              "status": "available",
+              "value": 147,
+              "unavailable_reason": null
+            },
+            "subject_character_id": {
+              "status": "available",
+              "value": 361,
+              "unavailable_reason": null
+            },
+            "cycle_serial": {
+              "status": "available",
+              "value": 9,
+              "unavailable_reason": null
+            },
+            "case_serial": {
+              "status": "available",
+              "value": 214,
+              "unavailable_reason": null
+            }
+          },
+          "state": {
+            "status": "available",
+            "value": 5,
+            "unavailable_reason": null
+          },
+          "active": {
+            "status": "available",
+            "value": true,
+            "unavailable_reason": null
+          },
+          "consumed": {
+            "status": "available",
+            "value": true,
+            "unavailable_reason": null
+          },
+          "route": {
+            "status": "available",
+            "value": 3,
+            "unavailable_reason": null
+          }
+        }
+      },
+      "readiness": {
+        "player_owner_binding_ready": true,
+        "portfolio_subject_binding_ready": true,
+        "same_case_identity_ready": true,
+        "same_frame_ready": true,
+        "ready": true
+      },
+      "terminal": true,
+      "unavailable_reason": null
+    }
+  }
+}

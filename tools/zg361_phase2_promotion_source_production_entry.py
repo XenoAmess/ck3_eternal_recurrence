@@ -3449,6 +3449,27 @@ def _pause_target_occurrence_index(
     )
 
 
+def _pause_target_matches(
+    occurrence_index: int | None,
+    requested_occurrence: int,
+    event_query: Mapping[str, object],
+    option_number: int | None,
+) -> bool:
+    if occurrence_index is None:
+        return False
+    if option_number is None:
+        return occurrence_index == requested_occurrence
+    context = event_query.get("current_event_window_context")
+    options = context.get("options") if isinstance(context, Mapping) else None
+    return isinstance(options, list) and any(
+        isinstance(row, Mapping)
+        and row.get("native_option_index") == option_number - 1
+        and row.get("shown") is True
+        and row.get("enabled") is True
+        for row in options
+    )
+
+
 def enter_promotion_source_checkpoint_v1(
     service: PromotionProductionEntryService,
     *,
@@ -3459,6 +3480,7 @@ def enter_promotion_source_checkpoint_v1(
     clean_boundary_event_definition_key: str | None = None,
     pause_on_event_definition_key: str | None = None,
     pause_on_event_occurrence: int = 1,
+    pause_on_event_option_number: int | None = None,
     clock: Callable[[], float] = time.monotonic,
     sleeper: Callable[[float], None] = time.sleep,
     evidence_out: dict[str, object] | None = None,
@@ -3483,6 +3505,14 @@ def enter_promotion_source_checkpoint_v1(
         )
     ):
         raise ValueError("pause target occurrence must be a positive integer")
+    if pause_on_event_option_number is not None and (
+        isinstance(pause_on_event_option_number, bool)
+        or not isinstance(pause_on_event_option_number, int)
+        or not 1 <= pause_on_event_option_number <= 64
+        or pause_on_event_definition_key is None
+        or pause_on_event_occurrence != 1
+    ):
+        raise ValueError("option-filtered pause requires an event key and no occurrence override")
     continue_to_pause_target = (
         pause_on_event_definition_key not in (None, M147)
     )
@@ -3557,6 +3587,7 @@ def enter_promotion_source_checkpoint_v1(
         "clean_review_boundary": None,
         "pause_on_event_definition_key": pause_on_event_definition_key,
         "pause_on_event_occurrence": pause_on_event_occurrence,
+        "pause_on_event_option_number": pause_on_event_option_number,
     })
     retained_invalidating_drain = next(
         (
@@ -3649,14 +3680,17 @@ def enter_promotion_source_checkpoint_v1(
         )
     initial_clean_boundary_event = False
     if initial_event is not None:
-        key, _ = _event_definition(service, initial_event, sleeper=sleeper)
+        key, initial_event_query = _event_definition(service, initial_event, sleeper=sleeper)
         target_occurrence_index = _pause_target_occurrence_index(
             key,
             pause_on_event_definition_key=pause_on_event_definition_key,
             timeline_interrupt_drains=evidence["timeline_interrupt_drains"],
         )
         if (
-            target_occurrence_index == pause_on_event_occurrence
+            _pause_target_matches(
+                target_occurrence_index, pause_on_event_occurrence,
+                initial_event_query, pause_on_event_option_number,
+            )
             and key != _DYNASTIC_CHAOS_EVENT
         ):
             evidence["result"] = "GREEN"
@@ -4085,7 +4119,10 @@ def enter_promotion_source_checkpoint_v1(
                 timeline_interrupt_drains=evidence["timeline_interrupt_drains"],
             )
             if (
-                target_occurrence_index == pause_on_event_occurrence
+                _pause_target_matches(
+                    target_occurrence_index, pause_on_event_occurrence,
+                    event_query, pause_on_event_option_number,
+                )
                 and key != _DYNASTIC_CHAOS_EVENT
             ):
                 evidence["result"] = "GREEN"

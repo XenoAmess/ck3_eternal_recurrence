@@ -336,12 +336,20 @@ int main() {
     return Fail("known adapter advertised the unclosed scoreboard action");
   }
 #if defined(XAR_CK3_ENABLE_ZHONGGUO_PROMOTION_COMPENSATION_CANDIDATE_V1)
+  if (!Contains(known.capabilities,
+                "game.command.query-zhongguo-compensation-af5-snapshot-v1")) {
+    return Fail("private candidate omitted AF5 compensation snapshot");
+  }
   if (!Contains(
           known.capabilities,
           "game.command.query-zhongguo-promotion-compensation-postcondition-v1")) {
     return Fail("private candidate omitted promotion/compensation provider");
   }
 #else
+  if (Contains(known.capabilities,
+               "game.command.query-zhongguo-compensation-af5-snapshot-v1")) {
+    return Fail("default adapter advertised unproven AF5 compensation snapshot");
+  }
   if (Contains(
           known.capabilities,
           "game.command.query-zhongguo-promotion-compensation-postcondition-v1")) {

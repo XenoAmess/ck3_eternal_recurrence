@@ -462,7 +462,8 @@ bool InstallMainThreadQueryMailboxV1(
       environment.permitted_executor_sexvigintary == nullptr &&
       environment.permitted_executor_septemvigintary == nullptr &&
       environment.permitted_executor_octovigintary == nullptr &&
-      environment.permitted_executor_novemvigintary == nullptr) {
+      environment.permitted_executor_novemvigintary == nullptr &&
+      environment.permitted_executor_trigintary == nullptr) {
     AddFailure(mailbox, main_thread_query_failure_request_identity);
     return false;
   }
@@ -637,6 +638,8 @@ bool InstallMainThreadQueryMailboxV1(
       environment.permitted_executor_octovigintary;
   mailbox.permitted_executor_novemvigintary =
       environment.permitted_executor_novemvigintary;
+  mailbox.permitted_executor_trigintary =
+      environment.permitted_executor_trigintary;
   mailbox.executor = nullptr;
   mailbox.executor_context = nullptr;
   mailbox.executor_succeeded = false;
@@ -797,7 +800,8 @@ MainThreadQuerySubmitResultV1 TrySubmitMainThreadQueryV1(
        mailbox.permitted_executor_sexvigintary != nullptr ||
        mailbox.permitted_executor_septemvigintary != nullptr ||
        mailbox.permitted_executor_octovigintary != nullptr ||
-       mailbox.permitted_executor_novemvigintary != nullptr) &&
+       mailbox.permitted_executor_novemvigintary != nullptr ||
+       mailbox.permitted_executor_trigintary != nullptr) &&
       executor != mailbox.permitted_executor &&
       executor != mailbox.permitted_executor_secondary &&
       executor != mailbox.permitted_executor_tertiary &&
@@ -826,7 +830,8 @@ MainThreadQuerySubmitResultV1 TrySubmitMainThreadQueryV1(
       executor != mailbox.permitted_executor_sexvigintary &&
       executor != mailbox.permitted_executor_septemvigintary &&
       executor != mailbox.permitted_executor_octovigintary &&
-      executor != mailbox.permitted_executor_novemvigintary) {
+      executor != mailbox.permitted_executor_novemvigintary &&
+      executor != mailbox.permitted_executor_trigintary) {
     return MainThreadQuerySubmitResultV1::invalid_request;
   }
   if (!mailbox.executor_submission_enabled) {

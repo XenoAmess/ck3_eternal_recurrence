@@ -324,6 +324,8 @@ add_library(xar_ck3_bridge SHARED
   src/zhongguo_manager_subordinate_selector_v1_serializer.cpp
   src/zhongguo_promotion_compensation_postcondition_v1.cpp
   src/zhongguo_promotion_compensation_postcondition_v1_mailbox.cpp
+  src/zhongguo_compensation_af5_snapshot_v1.cpp
+  src/zhongguo_compensation_af5_snapshot_v1_mailbox.cpp
   src/zhongguo_promotion_source_progress_v1_mailbox.cpp
   src/zhongguo_career_hc_workforce_postcondition_v1.cpp
   src/zhongguo_career_hc_workforce_postcondition_v1_serializer.cpp
@@ -737,6 +739,8 @@ if(BUILD_TESTING)
     src/zhongguo_manager_subordinate_selector_v1.cpp
     src/zhongguo_promotion_compensation_postcondition_v1.cpp
     src/zhongguo_promotion_compensation_postcondition_v1_mailbox.cpp
+    src/zhongguo_compensation_af5_snapshot_v1.cpp
+    src/zhongguo_compensation_af5_snapshot_v1_mailbox.cpp
     src/zhongguo_promotion_source_progress_v1_mailbox.cpp
     src/zhongguo_career_hc_workforce_postcondition_v1.cpp
     src/zhongguo_career_hc_workforce_postcondition_v1_mailbox.cpp
@@ -1724,6 +1728,24 @@ if(BUILD_TESTING)
     NAME xar_ck3_native_bridge_zhongguo_workforce_normal_exit_snapshot_v1
     COMMAND xar_ck3_zhongguo_workforce_normal_exit_snapshot_v1_test
   )
+
+
+  add_executable(xar_ck3_zhongguo_compensation_af5_snapshot_v1_test
+    src/main_thread_query_mailbox_v1.cpp
+    src/zhongguo_case_snapshot_v1.cpp
+    src/zhongguo_compensation_af5_snapshot_v1.cpp
+    src/zhongguo_compensation_af5_snapshot_v1_mailbox.cpp
+    src/zhongguo_compensation_af5_snapshot_v1_test.cpp
+  )
+  target_include_directories(xar_ck3_zhongguo_compensation_af5_snapshot_v1_test PRIVATE include)
+  target_compile_definitions(xar_ck3_zhongguo_compensation_af5_snapshot_v1_test PRIVATE
+    NOMINMAX WIN32_LEAN_AND_MEAN UNICODE _UNICODE)
+  if(MSVC)
+    target_compile_options(xar_ck3_zhongguo_compensation_af5_snapshot_v1_test PRIVATE
+      /W4 /permissive- /EHsc /UNDEBUG)
+  endif()
+  add_test(NAME xar_ck3_native_bridge_zhongguo_compensation_af5_snapshot_v1
+    COMMAND xar_ck3_zhongguo_compensation_af5_snapshot_v1_test)
 
   add_executable(xar_ck3_zhongguo_promotion_compensation_postcondition_v1_test
     src/zhongguo_promotion_compensation_postcondition_v1.cpp
