@@ -1,0 +1,43 @@
+{
+  "schema_version": 1,
+  "target": {
+    "id": "operator-target",
+    "display_name": "Interactive operator target",
+    "expected": {
+      "token_user": "operator",
+      "desktop": "WinSta0\\Default",
+      "machine": "TARGET-HOST"
+    }
+  },
+  "endpoint": {
+    "transport": "streamable-http",
+    "host": "127.0.0.1",
+    "port": 8766,
+    "advertised_url": "http://127.0.0.1:8766/mcp"
+  },
+  "state_directory": "C:\\operator-mcp-state",
+  "jobs": {
+    "managed-replay": {
+      "command": [
+        "C:\\Python\\python.exe",
+        "C:\\workspace\\runtime\\managed_replay.py",
+        "--launch"
+      ],
+      "working_directory": "C:\\workspace",
+      "exclusive_process_names": [
+        "ck3.exe"
+      ],
+      "required_paths": [
+        {
+          "path": "C:\\workspace\\runtime\\managed_replay.py",
+          "kind": "file",
+          "size": 12345,
+          "sha256": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+        }
+      ],
+      "absent_paths": [
+        "C:\\workspace\\runtime\\managed-replay-live"
+      ]
+    }
+  }
+}
