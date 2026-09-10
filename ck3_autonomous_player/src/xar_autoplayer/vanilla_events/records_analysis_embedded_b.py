@@ -9,7 +9,7 @@ from __future__ import annotations
 
 from typing import Final
 
-from .records_embedded import EMBEDDED_VANILLA_TIMELINE_CONTRACTS
+from .records_embedded_b import EMBEDDED_B_VANILLA_TIMELINE_CONTRACTS
 from .registry import EXACT_CK3_BUILD, EXACT_CK3_EXE_SHA256
 
 
@@ -378,7 +378,7 @@ def _existing_boundaries(
 
 
 def _finalize_analysis() -> dict[str, dict[str, object]]:
-    expected = tuple(EMBEDDED_VANILLA_TIMELINE_CONTRACTS)[27:53]
+    expected = tuple(EMBEDDED_B_VANILLA_TIMELINE_CONTRACTS)
     if EMBEDDED_B_EVENT_KEYS != expected:
         raise RuntimeError(
             "embedded-B analysis no longer matches default records 28 through 53"
@@ -392,7 +392,7 @@ def _finalize_analysis() -> dict[str, dict[str, object]]:
         migrated_from["default_order_1_based"] = order
         record["migrated_from"] = migrated_from
         record["existing_boundaries"] = _existing_boundaries(
-            EMBEDDED_VANILLA_TIMELINE_CONTRACTS[event_id],
+            EMBEDDED_B_VANILLA_TIMELINE_CONTRACTS[event_id],
             notes,
         )
         result[event_id] = record

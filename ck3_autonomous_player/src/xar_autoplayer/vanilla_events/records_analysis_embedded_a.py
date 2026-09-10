@@ -10,7 +10,7 @@ from __future__ import annotations
 
 from typing import Final
 
-from .records_embedded import EMBEDDED_VANILLA_TIMELINE_CONTRACTS
+from .records_embedded_a import EMBEDDED_A_VANILLA_TIMELINE_CONTRACTS
 from .registry import EXACT_CK3_BUILD, EXACT_CK3_EXE_SHA256
 
 
@@ -269,7 +269,7 @@ def _occurrence_boundary(contract: dict[str, object]) -> dict[str, object]:
 
 
 def _build_analysis() -> dict[str, dict[str, object]]:
-    actual_prefix = tuple(EMBEDDED_VANILLA_TIMELINE_CONTRACTS)[:27]
+    actual_prefix = tuple(EMBEDDED_A_VANILLA_TIMELINE_CONTRACTS)
     if actual_prefix != EMBEDDED_A_EVENT_KEYS:
         raise RuntimeError(
             "embedded analysis slice no longer matches the first 27 keys"
@@ -281,7 +281,7 @@ def _build_analysis() -> dict[str, dict[str, object]]:
 
     analysis: dict[str, dict[str, object]] = {}
     for event_key in EMBEDDED_A_EVENT_KEYS:
-        contract = EMBEDDED_VANILLA_TIMELINE_CONTRACTS[event_key]
+        contract = EMBEDDED_A_VANILLA_TIMELINE_CONTRACTS[event_key]
         review_summary, rationale = _REVIEW_NOTES[event_key]
         safe_option = _selected_fields(contract, _OPTION_KEYS)
         safe_option["rationale"] = rationale

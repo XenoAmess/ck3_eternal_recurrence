@@ -15,21 +15,15 @@ from xar_autoplayer.vanilla_events.records_analysis_embedded_b import (
     VANILLA_EMBEDDED_B_ANALYSIS,
     VANILLA_EMBEDDED_B_OBSERVATIONS,
 )
-from xar_autoplayer.vanilla_events.records_embedded import (
-    EMBEDDED_VANILLA_TIMELINE_CONTRACTS,
+from xar_autoplayer.vanilla_events.records_embedded_b import (
+    EMBEDDED_B_VANILLA_TIMELINE_CONTRACTS,
 )
 
 
 SHA256_PATTERN = re.compile(r"^[0-9A-F]{64}$")
-SLICE_START = 27
-SLICE_STOP = 53
-
-
 class EmbeddedBAnalysisTests(unittest.TestCase):
     def test_analysis_strictly_covers_embedded_records_28_through_53(self) -> None:
-        expected = list(EMBEDDED_VANILLA_TIMELINE_CONTRACTS)[
-            SLICE_START:SLICE_STOP
-        ]
+        expected = list(EMBEDDED_B_VANILLA_TIMELINE_CONTRACTS)
 
         self.assertEqual(list(VANILLA_EMBEDDED_B_ANALYSIS), expected)
         self.assertEqual(list(EMBEDDED_B_EVENT_KEYS), expected)
@@ -103,7 +97,7 @@ class EmbeddedBAnalysisTests(unittest.TestCase):
         fail_closed_event = "ep3_interactions_events.0630"
 
         for event_id, analysis in VANILLA_EMBEDDED_B_ANALYSIS.items():
-            contract = EMBEDDED_VANILLA_TIMELINE_CONTRACTS[event_id]
+            contract = EMBEDDED_B_VANILLA_TIMELINE_CONTRACTS[event_id]
             with self.subTest(event_id=event_id):
                 if event_id == fail_closed_event:
                     self.assertIsNone(analysis["safe_option"])

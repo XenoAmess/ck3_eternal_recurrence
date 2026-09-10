@@ -13,8 +13,8 @@ from xar_autoplayer.vanilla_events.records_analysis_embedded_a import (  # noqa:
     VANILLA_EMBEDDED_A_ANALYSIS,
     VANILLA_EMBEDDED_A_OBSERVATIONS,
 )
-from xar_autoplayer.vanilla_events.records_embedded import (  # noqa: E402
-    EMBEDDED_VANILLA_TIMELINE_CONTRACTS,
+from xar_autoplayer.vanilla_events.records_embedded_a import (  # noqa: E402
+    EMBEDDED_A_VANILLA_TIMELINE_CONTRACTS,
 )
 from xar_autoplayer.vanilla_events.registry import (  # noqa: E402
     EXACT_CK3_BUILD,
@@ -26,7 +26,7 @@ from xar_autoplayer.vanilla_events.registry import (  # noqa: E402
 
 
 def test_analysis_exactly_covers_first_27_embedded_keys() -> None:
-    expected = tuple(EMBEDDED_VANILLA_TIMELINE_CONTRACTS)[:27]
+    expected = tuple(EMBEDDED_A_VANILLA_TIMELINE_CONTRACTS)
     assert EMBEDDED_A_EVENT_KEYS == expected
     assert tuple(VANILLA_EMBEDDED_A_ANALYSIS) == expected
     assert len(VANILLA_EMBEDDED_A_ANALYSIS) == 27
@@ -61,7 +61,7 @@ def test_each_record_carries_exact_build_and_migration_boundary() -> None:
 
 def test_safe_option_and_occurrence_fields_match_existing_contracts() -> None:
     for event_key, record in VANILLA_EMBEDDED_A_ANALYSIS.items():
-        contract = EMBEDDED_VANILLA_TIMELINE_CONTRACTS[event_key]
+        contract = EMBEDDED_A_VANILLA_TIMELINE_CONTRACTS[event_key]
         safe_option = record["safe_option"]
         assert safe_option["selected_option_number"] == contract[
             "selected_option_number"
@@ -103,7 +103,9 @@ def test_known_multi_projection_records_preserve_json_safe_variants() -> None:
 
 
 def test_impostor_break_exact_review_and_live_red_are_query_safe() -> None:
-    contract = EMBEDDED_VANILLA_TIMELINE_CONTRACTS["stress_threshold.1721"]
+    contract = EMBEDDED_A_VANILLA_TIMELINE_CONTRACTS[
+        "stress_threshold.1721"
+    ]
     record = VANILLA_EMBEDDED_A_ANALYSIS["stress_threshold.1721"]
     assert contract["root_character_id"] == PLAYER_SENTINEL
     assert contract["character_scopes"]["stress_character"] == PLAYER_SENTINEL

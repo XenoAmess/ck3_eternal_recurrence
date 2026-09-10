@@ -13,12 +13,12 @@ from xar_autoplayer.vanilla_events.records_analysis_embedded_c import (
     EMBEDDED_C_EVENT_KEYS,
     VANILLA_EMBEDDED_C_ANALYSIS,
 )
-from xar_autoplayer.vanilla_events.records_embedded import (
-    EMBEDDED_VANILLA_TIMELINE_CONTRACTS,
+from xar_autoplayer.vanilla_events.records_embedded_c import (
+    EMBEDDED_C_VANILLA_TIMELINE_CONTRACTS,
 )
 
 
-EXPECTED_KEYS = tuple(EMBEDDED_VANILLA_TIMELINE_CONTRACTS)[53:79]
+EXPECTED_KEYS = tuple(EMBEDDED_C_VANILLA_TIMELINE_CONTRACTS)
 
 
 class EmbeddedAnalysisCSliceTests(unittest.TestCase):
@@ -55,7 +55,7 @@ class EmbeddedAnalysisCSliceTests(unittest.TestCase):
     def test_safe_options_match_existing_contracts(self) -> None:
         for event_key in EXPECTED_KEYS:
             with self.subTest(event_key=event_key):
-                contract = EMBEDDED_VANILLA_TIMELINE_CONTRACTS[event_key]
+                contract = EMBEDDED_C_VANILLA_TIMELINE_CONTRACTS[event_key]
                 safe_option = VANILLA_EMBEDDED_C_ANALYSIS[event_key]["safe_option"]
                 self.assertEqual(
                     safe_option["selected_option_number"],

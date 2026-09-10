@@ -9,9 +9,23 @@ import unittest
 from xar_autoplayer.vanilla_events import (
     DEFAULT_VANILLA_EVENT_TIMELINE_CONTRACTS,
 )
-from xar_autoplayer.vanilla_events import records_embedded
+from xar_autoplayer.vanilla_events import (
+    records_embedded,
+    records_embedded_a,
+    records_embedded_b,
+    records_embedded_c,
+)
 from xar_autoplayer.vanilla_events.records_embedded import (
     EMBEDDED_VANILLA_TIMELINE_CONTRACTS,
+)
+from xar_autoplayer.vanilla_events.records_embedded_a import (
+    EMBEDDED_A_VANILLA_TIMELINE_CONTRACTS,
+)
+from xar_autoplayer.vanilla_events.records_embedded_b import (
+    EMBEDDED_B_VANILLA_TIMELINE_CONTRACTS,
+)
+from xar_autoplayer.vanilla_events.records_embedded_c import (
+    EMBEDDED_C_VANILLA_TIMELINE_CONTRACTS,
 )
 
 
@@ -25,14 +39,17 @@ EXPECTED_EMBEDDED_CANONICAL_SHA256 = (
 )
 
 
-def _canonical_sha256(value: object) -> str:
-    payload = json.dumps(
+def _canonical_bytes(value: object) -> bytes:
+    return json.dumps(
         value,
         ensure_ascii=False,
         separators=(",", ":"),
         sort_keys=True,
     ).encode("utf-8")
-    return hashlib.sha256(payload).hexdigest().upper()
+
+
+def _canonical_sha256(value: object) -> str:
+    return hashlib.sha256(_canonical_bytes(value)).hexdigest().upper()
 
 
 def _production_tree() -> ast.Module:
@@ -84,6 +101,59 @@ class EmbeddedVanillaTimelineContractsTests(unittest.TestCase):
             EMBEDDED_VANILLA_TIMELINE_CONTRACTS,
             records_embedded.EMBEDDED_VANILLA_TIMELINE_CONTRACTS,
         )
+        self.assertEqual(
+            ["EMBEDDED_A_VANILLA_TIMELINE_CONTRACTS"],
+            records_embedded_a.__all__,
+        )
+        self.assertEqual(
+            ["EMBEDDED_B_VANILLA_TIMELINE_CONTRACTS"],
+            records_embedded_b.__all__,
+        )
+        self.assertEqual(
+            ["EMBEDDED_C_VANILLA_TIMELINE_CONTRACTS"],
+            records_embedded_c.__all__,
+        )
+
+    def test_shards_preserve_order_content_and_canonical_bytes(self) -> None:
+        shards = (
+            EMBEDDED_A_VANILLA_TIMELINE_CONTRACTS,
+            EMBEDDED_B_VANILLA_TIMELINE_CONTRACTS,
+            EMBEDDED_C_VANILLA_TIMELINE_CONTRACTS,
+        )
+        self.assertEqual(tuple(map(len, shards)), (27, 26, 26))
+
+        combined: dict[str, dict[str, object]] = {}
+        for shard in shards:
+            self.assertTrue(combined.keys().isdisjoint(shard))
+            combined.update(shard)
+
+        self.assertEqual(combined, EMBEDDED_VANILLA_TIMELINE_CONTRACTS)
+        self.assertEqual(
+            tuple(combined),
+            tuple(EMBEDDED_VANILLA_TIMELINE_CONTRACTS),
+        )
+        for event_key, contract in combined.items():
+            self.assertIs(
+                contract,
+                EMBEDDED_VANILLA_TIMELINE_CONTRACTS[event_key],
+            )
+        self.assertEqual(
+            _canonical_bytes(combined),
+            _canonical_bytes(EMBEDDED_VANILLA_TIMELINE_CONTRACTS),
+        )
+
+    def test_aggregate_and_shards_retain_utf8_bom(self) -> None:
+        modules = (
+            records_embedded,
+            records_embedded_a,
+            records_embedded_b,
+            records_embedded_c,
+        )
+        for module in modules:
+            with self.subTest(module=module.__name__):
+                self.assertTrue(
+                    Path(module.__file__).read_bytes().startswith(b"\xef\xbb\xbf")
+                )
 
     def test_embedded_inventory_and_content_digest_are_frozen(self) -> None:
         self.assertEqual(len(EMBEDDED_VANILLA_TIMELINE_CONTRACTS), 79)

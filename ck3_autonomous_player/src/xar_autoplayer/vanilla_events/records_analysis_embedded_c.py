@@ -9,7 +9,7 @@ from __future__ import annotations
 
 from typing import Final
 
-from .records_embedded import EMBEDDED_VANILLA_TIMELINE_CONTRACTS
+from .records_embedded_c import EMBEDDED_C_VANILLA_TIMELINE_CONTRACTS
 from .registry import EXACT_CK3_BUILD, EXACT_CK3_EXE_SHA256
 
 
@@ -247,7 +247,7 @@ def _existing_boundaries(contract: dict[str, object]) -> dict[str, object]:
 
 
 def _record(event_key: str, order: int) -> dict[str, object]:
-    contract = EMBEDDED_VANILLA_TIMELINE_CONTRACTS[event_key]
+    contract = EMBEDDED_C_VANILLA_TIMELINE_CONTRACTS[event_key]
     return {
         "exact_build": {
             "game_version": EXACT_CK3_BUILD,
