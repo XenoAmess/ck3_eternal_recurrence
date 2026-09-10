@@ -29,6 +29,11 @@ class ProductOuterDescriptorTests(unittest.TestCase):
         self.assertIn("开启自动召集防御援军", runner)
         self.assertIn("关闭自动召集防御援军", runner)
 
+    def test_phase_one_decisions_scroll_below_phase_two_rows(self) -> None:
+        runner = Path(xqol.__file__).read_text(encoding="utf-8")
+        self.assertEqual(4, runner.count("scroll_from_top=20"))
+        self.assertIn("acceptance.pyautogui.scroll(-scroll_from_top)", runner)
+
     def test_workshop_identity_is_recorded_but_not_loaded_in_isolated_runtime(self) -> None:
         with tempfile.TemporaryDirectory() as raw:
             root = Path(raw)

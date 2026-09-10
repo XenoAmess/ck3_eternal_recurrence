@@ -368,8 +368,45 @@ def wait_native_readiness(service: GameplayBridgeService, pid: int) -> dict[str,
     raise acceptance.RunnerError("MCP readiness timed out: " + last)
 
 
-def click_decision(title: str, confirm_label: str, artifacts: Path, stem: str) -> None:
-    confirm = isolated.open_decision_detail(title, confirm_label, artifacts, stem, contains=False)
+def click_decision(
+    title: str,
+    confirm_label: str,
+    artifacts: Path,
+    stem: str,
+    *,
+    scroll_from_top: int = 0,
+) -> None:
+    if scroll_from_top:
+        isolated.ensure_decisions_panel(artifacts, stem)
+        width, height = acceptance.pyautogui.size()
+        acceptance.pyautogui.moveTo(int(width * 0.90), int(height * 0.70))
+        acceptance.pyautogui.scroll(-scroll_from_top)
+        time.sleep(0.6)
+        row = acceptance.wait_for_ocr_text(
+            title,
+            acceptance.FULL_SCREEN_REGION,
+            15,
+            artifacts,
+            f"{stem}_decision.png",
+            contains=False,
+            stable_hits=1,
+        )
+        acceptance.deliberate_click(
+            (int(width * 0.90), row[1]), f"native decision row {title}"
+        )
+        confirm = acceptance.wait_for_ocr_text(
+            confirm_label,
+            acceptance.FULL_SCREEN_REGION,
+            15,
+            artifacts,
+            f"{stem}_confirm.png",
+            contains=True,
+            stable_hits=1,
+        )
+    else:
+        confirm = isolated.open_decision_detail(
+            title, confirm_label, artifacts, stem, contains=False
+        )
     acceptance.click_until_text_disappears(confirm, confirm_label, acceptance.FULL_SCREEN_REGION, artifacts, attempts=2)
 
 
@@ -451,8 +488,20 @@ def run_scenario(service: GameplayBridgeService, stream: MarkerStream, artifacts
     switched = service.snapshot()
     write_json(artifacts / "06_mcp_supported_player.json", switched)
 
-    click_decision("开启自动选择继任", "唯才是举", artifacts, "07_enable_appointment")
-    click_decision("开启：别把封臣给我", "各安其位", artifacts, "08_enable_transfer_guard")
+    click_decision(
+        "开启自动选择继任",
+        "唯才是举",
+        artifacts,
+        "07_enable_appointment",
+        scroll_from_top=20,
+    )
+    click_decision(
+        "开启：别把封臣给我",
+        "各安其位",
+        artifacts,
+        "08_enable_transfer_guard",
+        scroll_from_top=20,
+    )
     click_decision("开启自动召集防御援军", "唤来所有援手", artifacts, "08_enable_auto_defenders")
     stream.wait("ZQA: TEST PASS removal_transferred_to_scored_heir", 45)
     death_settlement = settle_queued_death_succession(service, stream, artifacts)
@@ -460,8 +509,20 @@ def run_scenario(service: GameplayBridgeService, stream: MarkerStream, artifacts
     write_json(artifacts / "09_mcp_enabled_matrix_complete.json", enabled)
     acceptance.ImageGrab.grab().save(artifacts / "09_enabled_matrix_complete.png")
 
-    click_decision("关闭自动选择继任", "恢复旧制", artifacts, "10_disable_appointment")
-    click_decision("关闭：别把封臣给我", "照旧接收", artifacts, "11_disable_transfer_guard")
+    click_decision(
+        "关闭自动选择继任",
+        "恢复旧制",
+        artifacts,
+        "10_disable_appointment",
+        scroll_from_top=20,
+    )
+    click_decision(
+        "关闭：别把封臣给我",
+        "照旧接收",
+        artifacts,
+        "11_disable_transfer_guard",
+        scroll_from_top=20,
+    )
     click_decision("关闭自动召集防御援军", "由我亲自召集", artifacts, "11_disable_auto_defenders")
     stream.wait("ZQA: TEST DONE xqol", 45)
     final_snapshot = service.snapshot()
