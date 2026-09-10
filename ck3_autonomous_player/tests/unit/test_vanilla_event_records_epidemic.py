@@ -96,7 +96,7 @@ class EpidemicEventRecordTests(unittest.TestCase):
 
         self.assertEqual(
             [row["run"] for row in exemplars],
-            ["R334", "R368", "R375"],
+            ["R334", "R368", "R375", "R375"],
         )
         self.assertEqual(
             exemplars[0]["saved_scope_raw_types"],
@@ -106,6 +106,8 @@ class EpidemicEventRecordTests(unittest.TestCase):
         self.assertEqual(exemplars[2]["saved_scope_raw_types"], {"epidemic": 50})
         self.assertFalse(exemplars[2]["selection_attempted"])
         self.assertTrue(exemplars[2]["artifact"].endswith("-red-freeze.json"))
+        self.assertTrue(exemplars[3]["postcondition_verified"])
+        self.assertEqual(exemplars[3]["saved_scope_raw_types"], {"epidemic": 50})
         for exemplar in exemplars:
             self.assertRegex(exemplar["artifact_sha256"], SHA256_PATTERN)
         self.assertRegex(exemplars[2]["park_artifact_sha256"], SHA256_PATTERN)
@@ -114,6 +116,61 @@ class EpidemicEventRecordTests(unittest.TestCase):
             DEFAULT_VANILLA_EVENT_TIMELINE_CONTRACTS[RECOVERY_EVENT_KEY]
         )
         for observation_only in (53208120, 206, 53611320, 1059, 32904):
+            self.assertNotIn(str(observation_only), contract_repr)
+
+    def test_r375_recovery_green_is_same_process_mcp_only_and_portable(
+        self,
+    ) -> None:
+        red, green = VANILLA_EPIDEMIC_OBSERVATIONS[RECOVERY_EVENT_KEY][
+            "exemplars"
+        ][2:]
+        contract_repr = repr(
+            DEFAULT_VANILLA_EVENT_TIMELINE_CONTRACTS[RECOVERY_EVENT_KEY]
+        )
+
+        self.assertEqual(green["kind"], "same-process-hot-recovery-green")
+        self.assertEqual(green["production_live_ordinal"], 16)
+        self.assertTrue(green["artifact"].endswith(
+            "r375-live-016-epidemic-events-0110-green.json"
+        ))
+        self.assertEqual(
+            green["artifact_sha256"],
+            "1C96D13A88D9F96575CA6DD78E5E02C0483ECB1ADC09505949868EC387994EEF",
+        )
+        self.assertEqual(green["event_instance_id"], red["event_instance_id"])
+        self.assertEqual(green["bridge_pid"], red["bridge_pid"])
+        self.assertEqual(
+            green["connection_generation"],
+            red["connection_generation"],
+        )
+        self.assertEqual(green["saved_scope_raw_types"], {"epidemic": 50})
+        self.assertEqual(green["context_query_driver_command_index"], 360)
+        self.assertEqual(green["selection_driver_command_index"], 361)
+        self.assertEqual(green["selected_option_number"], 3)
+        self.assertEqual(green["selected_native_option_index"], 2)
+        self.assertTrue(green["postcondition_verified"])
+        self.assertEqual(green["ending_snapshot_id"], "native:433")
+        self.assertFalse(green["process_restart_required"])
+        self.assertTrue(green["mcp_only"])
+        for forbidden_mode in (
+            "fixture_used",
+            "ocr_used",
+            "coordinates_used",
+            "console_used",
+        ):
+            self.assertFalse(green[forbidden_mode])
+        self.assertRegex(green["artifact_sha256"], SHA256_PATTERN)
+
+        for observation_only in (
+            53611320,
+            1059,
+            32904,
+            180544,
+            360,
+            361,
+            "native:432",
+            "native:433",
+        ):
             self.assertNotIn(str(observation_only), contract_repr)
 
     def test_recovery_mcp_returns_canonical_contract_and_evidence(self) -> None:
@@ -125,7 +182,11 @@ class EpidemicEventRecordTests(unittest.TestCase):
         self.assertEqual(response["analysis"]["definition_lines"], "151-413")
         self.assertEqual(
             [row["run"] for row in response["observations"]["exemplars"]],
-            ["R334", "R368", "R375"],
+            ["R334", "R368", "R375", "R375"],
+        )
+        self.assertEqual(
+            response["observations"]["exemplars"][3]["kind"],
+            "same-process-hot-recovery-green",
         )
         self.assertIs(
             production.KNOWN_TIMELINE_INTERRUPTS[RECOVERY_EVENT_KEY],

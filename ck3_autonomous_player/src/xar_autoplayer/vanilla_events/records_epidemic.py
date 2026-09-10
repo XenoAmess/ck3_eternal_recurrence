@@ -310,6 +310,40 @@ VANILLA_EPIDEMIC_OBSERVATIONS: Final[dict[str, dict[str, object]]] = {
             "connection_generation": 1,
             "bridge_pid": 180544,
             "process_restart_required": False,
+        }, {
+            "run": "R375",
+            "kind": "same-process-hot-recovery-green",
+            "production_live_ordinal": 16,
+            "artifact": (
+                "_runtime/p2r375-post-publisher-fix-live/"
+                "r375-live-016-epidemic-events-0110-green.json"
+            ),
+            "artifact_sha256": (
+                "1C96D13A88D9F96575CA6DD78E5E02C0483ECB1ADC09505949868EC387994EEF"
+            ),
+            "date_raw": 53611320,
+            "event_instance_id": 1059,
+            "root_character_id": 32904,
+            "saved_scope_raw_types": {
+                "epidemic": 50,
+            },
+            "rendered_native_option_indices": [1, 2],
+            "context_query_driver_command_index": 360,
+            "selection_driver_command_index": 361,
+            "selected_option_number": 3,
+            "selected_native_option_index": 2,
+            "postcondition_verified": True,
+            "starting_snapshot_id": "native:432",
+            "ending_snapshot_id": "native:433",
+            "ending_revision": 434,
+            "connection_generation": 1,
+            "bridge_pid": 180544,
+            "process_restart_required": False,
+            "mcp_only": True,
+            "fixture_used": False,
+            "ocr_used": False,
+            "coordinates_used": False,
+            "console_used": False,
         }],
     },
     "epidemic_events.1064": {
