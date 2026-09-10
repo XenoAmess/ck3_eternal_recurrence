@@ -165,6 +165,7 @@ class CoatOfArmsConfiguredResourcesV1Tests(unittest.TestCase):
 
             self.assertEqual(result["asset_base64"], base64.b64encode(expected).decode())
             self.assertEqual(result["dds"]["four_cc"], "DXT1")
+            self.assertEqual(result["dds"]["format"], "DXT1")
             self.assertEqual(result["dds"]["width"], 16)
             self.assertFalse(result["provenance"]["resource_merge_applied"])
 

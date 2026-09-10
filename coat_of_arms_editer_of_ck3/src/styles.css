@@ -88,7 +88,9 @@ h1 { margin: 0; font-family: Georgia, "Noto Serif SC", serif; font-weight: 500; 
 .candidate-warning { margin: 0 0 10px; color: #8f8579; font-size: 11px; line-height: 1.5; }
 .textured-heading { margin-top: 20px; }
 .textured-list { display: grid; gap: 8px; margin-top: 10px; }
-.textured-row { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 8px; }
+.textured-row { display: grid; grid-template-columns: 56px minmax(0, 1fr) auto; gap: 8px; align-items: center; }
+.textured-raw-preview { width: 52px; height: 52px; object-fit: contain; border: 1px solid #c5b69e; border-radius: 4px; background: #171411; }
+.textured-preview-placeholder { display: grid; place-items: center; width: 52px; height: 52px; border: 1px dashed #8f8579; border-radius: 4px; color: #8f8579; }
 .form-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 12px; }
 .form-grid .el-select { width: 100%; }
 .wide { grid-column: 1 / -1; }

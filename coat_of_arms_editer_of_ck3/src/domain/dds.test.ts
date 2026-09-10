@@ -12,6 +12,22 @@ function dds(fourCC: 'DXT1' | 'DXT5', block: number[]): Uint8Array {
   return data
 }
 
+function bgra8(pixel: [number, number, number, number]): Uint8Array {
+  const data = new Uint8Array(128 + 4 * 4 * 4)
+  data.set([0x44, 0x44, 0x53, 0x20])
+  const view = new DataView(data.buffer)
+  view.setUint32(4, 124, true)
+  view.setUint32(12, 4, true)
+  view.setUint32(16, 4, true)
+  view.setUint32(88, 32, true)
+  view.setUint32(92, 0x00ff0000, true)
+  view.setUint32(96, 0x0000ff00, true)
+  view.setUint32(100, 0x000000ff, true)
+  view.setUint32(104, 0xff000000, true)
+  for (let offset = 128; offset < data.length; offset += 4) data.set(pixel, offset)
+  return data
+}
+
 describe('DDS decoder', () => {
   it('decodes a DXT1 RGB565 block', () => {
     const decoded = decodeDds(dds('DXT1', [
@@ -34,6 +50,14 @@ describe('DDS decoder', () => {
 
     expect(decoded.fourCC).toBe('DXT5')
     expect([...decoded.pixels.slice(0, 4)]).toEqual([0, 0, 255, 255])
+  })
+
+  it('decodes the uncompressed BGRA8 layout used by _default.dds', () => {
+    const decoded = decodeDds(bgra8([10, 20, 30, 40]))
+
+    expect(decoded.fourCC).toBe('BGRA8')
+    expect([...decoded.pixels.slice(0, 4)]).toEqual([30, 20, 10, 40])
+    expect([...decoded.pixels.slice(-4)]).toEqual([30, 20, 10, 40])
   })
 
   it('rejects unsupported or truncated files', () => {

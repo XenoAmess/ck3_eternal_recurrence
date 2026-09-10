@@ -466,11 +466,22 @@ def _dds_metadata(data: bytes) -> dict[str, object]:
         raise CoatOfArmsResourceCatalogError(
             "configured DDS FourCC is not ASCII"
         ) from error
+    dds_format = four_cc
+    if (
+        four_cc == "\0\0\0\0"
+        and int.from_bytes(data[88:92], "little") == 32
+        and int.from_bytes(data[92:96], "little") == 0x00FF0000
+        and int.from_bytes(data[96:100], "little") == 0x0000FF00
+        and int.from_bytes(data[100:104], "little") == 0x000000FF
+        and int.from_bytes(data[104:108], "little") == 0xFF000000
+    ):
+        dds_format = "BGRA8"
     return {
         "width": int.from_bytes(data[16:20], "little"),
         "height": int.from_bytes(data[12:16], "little"),
         "mipmap_count": max(1, int.from_bytes(data[28:32], "little")),
         "four_cc": four_cc,
+        "format": dds_format,
     }
 
 

@@ -1,7 +1,7 @@
 export interface DecodedDds {
   width: number
   height: number
-  fourCC: 'DXT1' | 'DXT5'
+  fourCC: 'DXT1' | 'DXT5' | 'BGRA8'
   pixels: Uint8ClampedArray
 }
 
@@ -125,6 +125,24 @@ export function decodeDds(data: Uint8Array): DecodedDds {
     throw new Error('DDS 尺寸超出预览范围')
   }
   const fourCC = String.fromCharCode(...data.subarray(84, 88))
+  const bgra8 = fourCC === '\0\0\0\0'
+    && uint32(data, 88) === 32
+    && uint32(data, 92) === 0x00ff0000
+    && uint32(data, 96) === 0x0000ff00
+    && uint32(data, 100) === 0x000000ff
+    && uint32(data, 104) === 0xff000000
+  if (bgra8) {
+    const required = 128 + width * height * 4
+    if (data.byteLength < required) throw new Error('DDS 顶层 mip 数据不完整')
+    const pixels = new Uint8ClampedArray(width * height * 4)
+    for (let source = 128, target = 0; source < required; source += 4, target += 4) {
+      pixels[target] = data[source + 2]
+      pixels[target + 1] = data[source + 1]
+      pixels[target + 2] = data[source]
+      pixels[target + 3] = data[source + 3]
+    }
+    return { width, height, fourCC: 'BGRA8', pixels }
+  }
   if (fourCC !== 'DXT1' && fourCC !== 'DXT5') {
     throw new Error(`暂不支持 DDS ${fourCC || 'unknown'} 压缩`)
   }

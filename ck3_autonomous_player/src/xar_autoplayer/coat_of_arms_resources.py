@@ -39,6 +39,9 @@ _ASSET_DIRECTORIES: Final = {
     "colored_emblem": Path("game/gfx/coat_of_arms/colored_emblems"),
 }
 _RENDER_MASK: Final = Path("game/gfx/coat_of_arms/coa_mask_texture.dds")
+_TEXTURED_EMBLEM_DEFAULT: Final = Path(
+    "game/gfx/coat_of_arms/textured_emblems/_default.dds"
+)
 _NAMED_COLORS: Final = Path("game/common/named_colors/default_colors.txt")
 _RENDER_SHADER_SOURCES: Final = (
     Path("clausewitz/gfx/FX/cw/utility.fxh"),
@@ -99,11 +102,22 @@ def _dds_metadata(data: bytes) -> dict[str, object]:
         raise CoatOfArmsResourceCatalogError(
             "render support DDS FourCC is not ASCII"
         ) from error
+    dds_format = four_cc
+    if (
+        four_cc == "\0\0\0\0"
+        and int.from_bytes(data[88:92], "little") == 32
+        and int.from_bytes(data[92:96], "little") == 0x00FF0000
+        and int.from_bytes(data[96:100], "little") == 0x0000FF00
+        and int.from_bytes(data[100:104], "little") == 0x000000FF
+        and int.from_bytes(data[104:108], "little") == 0xFF000000
+    ):
+        dds_format = "BGRA8"
     return {
         "width": int.from_bytes(data[16:20], "little"),
         "height": int.from_bytes(data[12:16], "little"),
         "mipmap_count": max(1, int.from_bytes(data[28:32], "little")),
         "four_cc": four_cc,
+        "format": dds_format,
     }
 
 
@@ -553,6 +567,7 @@ def read_coat_of_arms_resource_asset_v1(
             "height": int.from_bytes(data[12:16], "little"),
             "mipmap_count": max(1, int.from_bytes(data[28:32], "little")),
             "four_cc": four_cc,
+            "format": four_cc,
         },
         "provenance": {
             "mode": "base-game-designer-manifest-static",
@@ -584,7 +599,12 @@ def read_coat_of_arms_render_support_v1(
             "CK3 executable does not match the frozen 1.19.0.6 render build"
         )
 
-    required = (_RENDER_MASK, _NAMED_COLORS, *_RENDER_SHADER_SOURCES)
+    required = (
+        _RENDER_MASK,
+        _TEXTURED_EMBLEM_DEFAULT,
+        _NAMED_COLORS,
+        *_RENDER_SHADER_SOURCES,
+    )
     missing = [
         path.as_posix()
         for path in required
@@ -600,6 +620,12 @@ def read_coat_of_arms_render_support_v1(
             "coat-of-arms mask is outside the v1 size contract"
         )
     mask_data = mask_path.read_bytes()
+    textured_default_path = game_root / _TEXTURED_EMBLEM_DEFAULT
+    if not 128 <= textured_default_path.stat().st_size <= _MAX_ASSET_BYTES:
+        raise CoatOfArmsResourceCatalogError(
+            "default textured emblem is outside the v1 size contract"
+        )
+    textured_default_data = textured_default_path.read_bytes()
     named_colors_path = game_root / _NAMED_COLORS
     shader_sources = [
         {
@@ -622,6 +648,16 @@ def read_coat_of_arms_render_support_v1(
             "asset_sha256": hashlib.sha256(mask_data).hexdigest().upper(),
             "asset_base64": base64.b64encode(mask_data).decode("ascii"),
             "dds": _dds_metadata(mask_data),
+        },
+        "textured_emblem_default": {
+            "relative_path": _TEXTURED_EMBLEM_DEFAULT.as_posix(),
+            "content_type": "application/octet-stream",
+            "asset_bytes": len(textured_default_data),
+            "asset_sha256": hashlib.sha256(
+                textured_default_data
+            ).hexdigest().upper(),
+            "asset_base64": base64.b64encode(textured_default_data).decode("ascii"),
+            "dds": _dds_metadata(textured_default_data),
         },
         "render_contract": {
             "pattern_color_steps": [

@@ -58,6 +58,7 @@ export interface CoatOfArmsResourceAsset {
     height: number
     mipmap_count: number
     four_cc: string
+    format: string
   }
 }
 
@@ -86,6 +87,21 @@ export interface CoatOfArmsRenderSupport {
       height: number
       mipmap_count: number
       four_cc: string
+      format: string
+    }
+  }
+  textured_emblem_default: {
+    relative_path: string
+    content_type: 'application/octet-stream'
+    asset_bytes: number
+    asset_sha256: string
+    asset_base64: string
+    dds: {
+      width: number
+      height: number
+      mipmap_count: number
+      four_cc: string
+      format: string
     }
   }
   render_contract: {
@@ -207,6 +223,7 @@ export interface CoatOfArmsConfiguredResourceAsset {
     height: number
     mipmap_count: number
     four_cc: string
+    format: string
   }
 }
 

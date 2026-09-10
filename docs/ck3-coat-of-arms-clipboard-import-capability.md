@@ -141,11 +141,12 @@ asset reader 只接受上述 manifest 中唯一存在的精确名称，再读取
 mipmap 数与 FourCC，并复用同一 exact-build/provenance 边界。它不接受调用方提供相对路径，当前本机样本证明 pattern 为
 DXT1、colored emblem 为 DXT5。这个工具用于后续浏览器像素预览，仍不声称与 CK3 shader 最终合成逐像素一致。
 
-render-support 工具继续沿用 exact EXE SHA 门禁，返回 `coa_mask_texture.dds` 的 bounded base64、15 个
+render-support 工具继续沿用 exact EXE SHA 门禁，返回 `coa_mask_texture.dds` 与原版 `_default.dds` 的 bounded base64、15 个
 `default_colors.txt` 命名颜色的原始模型/分量与 RGB 解算，以及五份 Clausewitz/Jomini/game shader 源文件的路径、大小和
 SHA-256。它把 pattern/emblem 通道顺序、mask 通道隔离、surface detail、transform 顺序与 alpha blend 投影成结构化合同；
-不返回或复制第三方实现。当前唯一明确未从随附源码闭合的 shader 常量是引擎如何绑定 `FallbackColor`，最终 GPU 采样与色彩空间
-也仍需以后用原生像素 primitive 对照。
+不返回或复制第三方实现。离线官方 MCP SDK 对 exact 安装读取 `_default.dds` 的结果为 96×96、7 mip、49,272 bytes、
+无压缩 BGRA8；前端据此显示原始纹理，但尚未把 `textured_emblem` 合成进成品。当前唯一明确未从随附源码闭合的 shader 常量是
+引擎如何绑定 `FallbackColor`，最终 GPU 采样与色彩空间也仍需以后用原生像素 primitive 对照。
 
 load-configuration 工具只读当前 CK3 用户目录的 `dlc_load.json`，按其中的 `enabled_mods` 顺序解析 `.mod` 描述符，
 为目录模组列出九类 `common/coat_of_arms` / `gfx/coat_of_arms` 直接候选文件、DDS 数量、`replace_path`、描述符与配置哈希。
@@ -231,6 +232,10 @@ export 的公开结果为闭合 schema，包含 `status`、`designer_observed`�
   返回 15 个命名颜色、五份 shader provenance 和 256×256 DXT1 surface mask；其 base64 解码后仍为 43,832 bytes，SHA-256
   `5FA2A49DC59AEEBA19709B6BB3F9D0B017ACDE7DC576793705EAF85C7F33691E`。官方 Python MCP SDK 9/9、Quarkus 5/5、
   前端 18/18 与 production build GREEN；全过程使用 `vision-report` 离线 driver，没有调用 session/probe/export；
+- render-support MCP 随后补入唯一原版 textured-emblem 素材 `_default.dds`。真实安装的离线官方 MCP 调用返回
+  96×96、7 mip、49,272 bytes、BGRA8，SHA-256
+  `697430F86ABD26B5056A8779E4BF78C7CB526A57B5AD13F02898BA64B89526CC`；Python 资源组 14/14、前端 22/22 与 production
+  build GREEN。该调用只读安装文件，没有启动、连接或操作 CK3；
 - 新增 load-configuration MCP 后，普通 Python 聚焦测试 5 项通过、其中官方 SDK 用例按环境跳过；安装 MCP SDK 2.0.0 的
   专用环境 5/5 通过，并验证 tool schema 拒绝未知字段。对当前真实用户目录的官方 MCP 调用列出 76 个工具并返回
   `enabled_mod_count=0`、`disabled_dlcs=[]`、上述 38 bytes/SHA-256；Quarkus REST 映射 6/6、前端 19/19 和 production
@@ -555,9 +560,10 @@ CoatOfArms
 - 提供图层/实例结构化表单与浏览器近似预览，且明确不冒充 CK3 renderer；
 - 基础游戏 pattern/emblem 目录已经接入结构化选择器，并可按名字筛选首批 200 个 emblem；
 - 必要的 Quarkus 伴随服务使用官方 Java MCP SDK 连接现有 Python stdio server，前端可刷新 session revision、执行原生
-  detect/apply，以及载入原生 Copy/export 返回源码；伴随服务只允许六个相关工具（snapshot + 五个 CoA MCP）；
-- manifest-owned 单素材与 render-support 已接入浏览器：除 DXT1/DXT5 顶层 mip 解码外，现按随游戏发布的 shader 源码合成
-  三通道调色、mask、实例变换、surface detail 和 blend；仍明确不冒充 native GPU 像素完全一致。
+  detect/apply，以及载入原生 Copy/export 返回源码；伴随服务只允许九个相关工具（snapshot + 八个 CoA MCP）；
+- manifest-owned 单素材与 render-support 已接入浏览器：除 DXT1/DXT5 顶层 mip 解码外，还能解码 `_default.dds` 使用的
+  无压缩 BGRA8 并在受限 `textured_emblem` 行内显示原始纹理；主路径按随游戏发布的 shader 源码合成三通道调色、mask、
+  实例变换、surface detail 和 blend，仍明确不冒充 native GPU 像素完全一致。
 
 尚未完成的下一阶段能力：
 
@@ -565,7 +571,7 @@ CoatOfArms
 - 在重新获准占用 CK3 后，对编辑器的 detect/apply/Copy-export 做 live round-trip 验收；当前只是接口与静态实现 GREEN，
   不把 REST mock 或离线 catalog 贯通写成 designer live；
 - CK3 原生 PNG/像素验证 primitive，用于闭合浏览器源码模型与 native GPU 的差异；
-- 解析/验证 textured emblem 的完整资源与渲染路径；当前源码模型优先覆盖 designer 主路径 colored emblem。
+- 解析/验证 textured emblem 的完整字段与最终合成路径；当前只闭合已实机检测的 `texture="_default.dds"` 形态和素材原始像素。
 
 浏览器无法直接启动本机 stdio MCP，因此已引入 Maven + Java + Quarkus 伴随服务。后端只负责 REST/MCP 会话转接与
 本机资源索引，不承担“执行 CK3 脚本”的虚构能力；当前也没有 DDS 转换或素材缓存。
@@ -612,6 +618,7 @@ CoatOfArms
 | `50_coa_designer_emblems.txt`（1,578 项/1,576 可见） | `3D6529702F91FA352E07B0C64E4C33A88E5F86C2AAF0EF2D0CEB69CF6D600F3C` |
 | `50_coa_designer_palettes.txt`（13 色） | `3AE2EA0F3B751D61C08A06408FA2EDA2ADC3FF6FBF204298D3D8CDC9613B87B4` |
 | `coa_mask_texture.dds`（256×256 DXT1，43,832 bytes） | `5FA2A49DC59AEEBA19709B6BB3F9D0B017ACDE7DC576793705EAF85C7F33691E` |
+| `textured_emblems/_default.dds`（96×96 BGRA8，7 mip，49,272 bytes） | `697430F86ABD26B5056A8779E4BF78C7CB526A57B5AD13F02898BA64B89526CC` |
 | Clausewitz `utility.fxh`（含 `GetOverlay`） | `ABD382499457D6616597E41647983B982A44AEA7A0A3392927693827201CAB1B` |
 | Jomini `coat_of_arms_pattern.fxh` | `46EBB391EF78CEC706EAABA809F3F90E0BF931793655E91EB56517A761006960` |
 | Jomini `coat_of_arms_textured_emblem.fxh` | `432202D6A4FF73743B9445EF802C5B7EEC3346F0D0A51DDBF49C5940B884ABD6` |

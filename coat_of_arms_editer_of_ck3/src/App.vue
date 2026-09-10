@@ -69,6 +69,7 @@ const emblemPreviewUrls = ref<Record<string, string>>({})
 const patternTexture = ref<DecodedDds>()
 const emblemTextures = ref<Record<string, DecodedDds>>({})
 const surfaceMask = ref<DecodedDds>()
+const texturedDefaultPreviewUrl = ref('')
 const shaderNamedColors = ref<NamedColorMap>({})
 const shaderSourceCount = ref(0)
 const configuredModCount = ref<number | null>(null)
@@ -271,9 +272,18 @@ async function loadResourceCatalog() {
     if (
       decodedSurfaceMask.width !== renderSupport.surface_mask.dds.width
       || decodedSurfaceMask.height !== renderSupport.surface_mask.dds.height
-      || decodedSurfaceMask.fourCC !== renderSupport.surface_mask.dds.four_cc
+      || decodedSurfaceMask.fourCC !== renderSupport.surface_mask.dds.format
     ) throw new Error('CoA surface mask 元数据与解码结果不一致')
     surfaceMask.value = decodedSurfaceMask
+    const decodedTexturedDefault = decodeDdsBase64(
+      renderSupport.textured_emblem_default.asset_base64,
+    )
+    if (
+      decodedTexturedDefault.width !== renderSupport.textured_emblem_default.dds.width
+      || decodedTexturedDefault.height !== renderSupport.textured_emblem_default.dds.height
+      || decodedTexturedDefault.fourCC !== renderSupport.textured_emblem_default.dds.format
+    ) throw new Error('Textured emblem 默认 DDS 元数据与解码结果不一致')
+    texturedDefaultPreviewUrl.value = decodedDdsToDataUrl(decodedTexturedDefault)
     shaderNamedColors.value = Object.fromEntries(
       renderSupport.named_colors.map((item) => [item.name, item.rgb]),
     )
@@ -297,7 +307,7 @@ async function readTexturePreview(
   if (
     decoded.width !== asset.dds.width
     || decoded.height !== asset.dds.height
-    || decoded.fourCC !== asset.dds.four_cc
+    || decoded.fourCC !== asset.dds.format
   ) {
     throw new Error(`DDS 元数据与解码结果不一致：${name}`)
   }
@@ -315,7 +325,7 @@ async function readConfiguredTexturePreview(
   if (
     decoded.width !== asset.dds.width
     || decoded.height !== asset.dds.height
-    || decoded.fourCC !== asset.dds.four_cc
+    || decoded.fourCC !== asset.dds.format
   ) {
     throw new Error(`Configured DDS 元数据与解码结果不一致：${item.name}`)
   }
@@ -696,6 +706,13 @@ importSource()
                 :key="index"
                 class="textured-row"
               >
+                <img
+                  v-if="emblem.texture === '_default.dds' && texturedDefaultPreviewUrl"
+                  :src="texturedDefaultPreviewUrl"
+                  alt="_default.dds 原始纹理"
+                  class="textured-raw-preview"
+                />
+                <div v-else class="textured-preview-placeholder">?</div>
                 <el-input v-model="emblem.texture" placeholder="_default.dds" />
                 <el-button
                   type="danger"

@@ -97,6 +97,10 @@ colors = {
             path.write_text(f"fixture shader {path.name}\n", encoding="utf-8")
         self.surface_mask = self.dds(four_cc=b"DXT1", width=64, height=64)
         (coa / "coa_mask_texture.dds").write_bytes(self.surface_mask)
+        textured = coa / "textured_emblems"
+        textured.mkdir()
+        self.textured_default = self.bgra_dds(width=8, height=4)
+        (textured / "_default.dds").write_bytes(self.textured_default)
 
     def query(self, kind: str, **kwargs: object) -> dict[str, object]:
         with patch.object(
@@ -136,6 +140,23 @@ colors = {
         data[28:32] = (1).to_bytes(4, "little")
         data[84:88] = four_cc
         return bytes(data) + b"fixture-payload"
+
+    @staticmethod
+    def bgra_dds(*, width: int, height: int) -> bytes:
+        data = bytearray(128)
+        data[:4] = b"DDS "
+        data[4:8] = (124).to_bytes(4, "little")
+        data[12:16] = height.to_bytes(4, "little")
+        data[16:20] = width.to_bytes(4, "little")
+        data[28:32] = (1).to_bytes(4, "little")
+        data[76:80] = (32).to_bytes(4, "little")
+        data[80:84] = (0x41).to_bytes(4, "little")
+        data[88:92] = (32).to_bytes(4, "little")
+        data[92:96] = (0x00FF0000).to_bytes(4, "little")
+        data[96:100] = (0x0000FF00).to_bytes(4, "little")
+        data[100:104] = (0x000000FF).to_bytes(4, "little")
+        data[104:108] = (0xFF000000).to_bytes(4, "little")
+        return bytes(data) + bytes([10, 20, 30, 255]) * (width * height)
 
 
 class CoatOfArmsResourceCatalogV1Tests(unittest.TestCase):
@@ -232,6 +253,16 @@ class CoatOfArmsResourceCatalogV1Tests(unittest.TestCase):
             fixture.surface_mask,
         )
         self.assertEqual(result["surface_mask"]["dds"]["four_cc"], "DXT1")
+        self.assertEqual(
+            base64.b64decode(result["textured_emblem_default"]["asset_base64"]),
+            fixture.textured_default,
+        )
+        self.assertEqual(
+            result["textured_emblem_default"]["dds"]["four_cc"], "\0\0\0\0"
+        )
+        self.assertEqual(
+            result["textured_emblem_default"]["dds"]["format"], "BGRA8"
+        )
         self.assertEqual(len(result["provenance"]["shader_sources"]), 5)
         colors = {item["name"]: item for item in result["named_colors"]}
         self.assertEqual(colors["red"]["model"], "hsv")
