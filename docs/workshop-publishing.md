@@ -50,9 +50,10 @@ Steam。仓库源、正式 manifest 与 GitHub ZIP 仍必须保持无 ID；上�
 
 2026-08-29 复核 Valve 官方合同：新物品必须让 `publishedfileid` 缺省或为 `0`，已有 ID 才表示更新；标题、描述、
 可见性、内容目录和预览图都属于同一次 item update，提交后没有取消接口。新物品还可能因尚未接受 Workshop
-Legal Agreement 而保持隐藏。因此本项目首次发布继续坚持“先创建全新隐藏物品 → 记录返回 ID → 新鲜缓存复验 →
-由物品所有者确认协议后再公开”；若出现新的法律协议确认页，自动流程必须停在该页等待所有者处理，绝不代为接受，
-也绝不拿其他产品 ID 试上传。来源：
+Legal Agreement 而保持隐藏。因此首次发布在上传器提供选择时请求隐藏，随后记录返回 ID、新鲜缓存复验，再由物品所有者
+确认公开；但不能把“默认隐藏”当作门禁。2026-09-09 实测中，Reclaim 首传保持隐藏，而 XQOL 首传在未出现协议页时直接成为
+公开物品。每次上传后必须立即用匿名 API 和公开页面读取实际可见性。若出现新的法律协议确认页，自动流程必须停在该页等待
+所有者处理，绝不代为接受，也绝不拿其他产品 ID 试上传。来源：
 [Steam Workshop Implementation Guide](https://partner.steamgames.com/doc/features/workshop/implementation?l=english)、
 [ISteamUGC](https://partner.steamgames.com/doc/api/ISteamUGC)。
 
@@ -65,8 +66,8 @@ Legal Agreement 而保持隐藏。因此本项目首次发布继续坚持“先�
 5. GitHub 候选发布附加同一次构建的 `.zip` 和 `.manifest.json`；记录 commit、manifest SHA-256
    与工坊物品 ID，使 GitHub 与 Steam 使用同一 staging 内容。
 6. 上传后重建 staging 以移除启动器注入的内层 `remote_file_id`，再把用户目录外层 `.mod` 的 `path=` 恢复为开发目录，避免后续游戏误加载旧 staging。
-7. 工坊网页：描述用 BBCode（`[h1]`/`[list]`，**不渲染 markdown**——别直接贴 README）；
-   可见性默认"隐藏"，确认后改公开。
+7. 工坊网页：描述用 BBCode（`[h1]`/`[list]`，**不渲染 markdown**——别直接贴 README）；按发布计划请求隐藏或公开，
+   上传后立即回读实际状态，不推断默认可见性。
 8. Steam 刷新缓存后运行 `py tools/build_release.py --verify <workshop-cache> --manifest <versioned-manifest> --workshop-cache`。该模式只规范化启动器对内层 descriptor 的 LF/CRLF 与末尾换行重写，以及其强制注入的唯一
    `remote_file_id="<manifest workshop_item_id>"` 行；规范化后的 descriptor 及其余 84 个文件仍要求大小/SHA-256 完全一致，任何字段、顺序、ID、其他 mismatch 或 extra 继续判 RED。通过后再发布 GitHub draft 与工坊可见性。
 

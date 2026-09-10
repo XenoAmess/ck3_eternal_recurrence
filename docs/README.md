@@ -2,8 +2,12 @@
 
 本目录沉淀琉焰卿的永恒轮回开发过程中验证过的机制与教训。除文内明确标注“源码证据”“待实测”“未查明”或“架构预研”的项目外，结论均经过 1.19.0.6 日志或游戏内验证；预研文档以各自声明的证据等级为准，不受这项默认实测声明覆盖。
 
+## 总纲
+
+- [ck3-mod-development-paradigm.md](ck3-mod-development-paradigm.md) — **新建、维护与发布 CK3 Mod 的统一行为范式**：玩家行为合同、原版优先、垂直切片、单一权威来源、L0–L3、fresh-cache 发布闭环与 Definition of Done
 - [consolidation-inventory-2026-08-30.md](consolidation-inventory-2026-08-30.md) — 全产品、分支与脏工作树的 master 收口分类（merged / already-contained / superseded / unfinished-preserved）
 - [branch-management.md](branch-management.md) — master 单一集成线、短命分支 ledger、冻结证据 sidecar 与跨 common-dir/独立 clone 的完整清理流程
+- [codex-task-bus.md](codex-task-bus.md) — 同机 Codex 任务状态、共享资源与完成通知约定
 
 ## 机制篇
 
