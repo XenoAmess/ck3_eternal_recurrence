@@ -519,7 +519,7 @@ def execute_mass_conversion_slider(
     )
     track_y = (percentage_50[1] + help_text[1]) // 2
     acceptance.deliberate_click(
-        (percentage_50[0] + 60, track_y), "conversion slider 65 percent"
+        (percentage_50[0] + 75, track_y), "conversion slider 65 percent"
     )
     acceptance.wait_for_ocr_text(
         "65%",

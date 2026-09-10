@@ -174,8 +174,10 @@ def check_scripts(errors: list[str]) -> None:
         errors.append("slider must route its value through a supported int32 scaler")
     if "PdxGetWidgetScreenSize" in slider:
         errors.append("slider must not mix local mouse coordinates with scaled screen dimensions")
-    if "FindChild('xqol_conversion_threshold_handle').GetScaledMousePosition" not in slider:
-        errors.append("slider must derive its route from the actual handle position")
+    if "GetX_CVector2f(PdxGuiWidget.GetScaledMousePosition)" not in slider:
+        errors.append("slider must derive its route from the scrollbar-local mouse position")
+    if "FindChild('xqol_conversion_threshold_handle').GetScaledMousePosition" in slider:
+        errors.append("slider must not subtract two cursor positions")
     if "raw_text = \"[GetPlayer.MakeScope.Var('xqol_mass_conversion_threshold_draft')" not in slider:
         errors.append("slider's dynamic percentage must use raw_text")
     for variable in (

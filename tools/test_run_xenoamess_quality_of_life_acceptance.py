@@ -121,6 +121,7 @@ class ProductOuterDescriptorTests(unittest.TestCase):
         self.assertIn("zqa_phase2_defense_verify_gui", bridge)
         self.assertIn('"65%"', runner)
         self.assertIn('"50%"', runner)
+        self.assertIn("percentage_50[0] + 75", runner)
         self.assertIn("领内改信答复完毕", runner)
         self.assertIn("批量足额赎回囚犯", runner)
         self.assertIn("批量按现有钱财赎回囚犯", runner)
