@@ -84,8 +84,8 @@
   effect typed row/root 与 special-war dynamic outcome rows 仍是观测依赖，当前不得把 legality、已付成本或 WarID 绑定
   冒充 semantic decision readiness。
 - [static-ready complete analysis + mixed production-live primitives] [vanilla-event-knowledge-registry.md](vanilla-event-knowledge-registry.md)
-  本包组合默认 `177 contracts / 177 analysis / 177 observation metadata rows` 的 exact-build 原版事件表，其中
-  `30` 个 key 含非 legacy 的 paused/live observation；既有迁移基线与
+  本包组合默认 `179 contracts / 179 analysis / 179 observation metadata rows` 的 exact-build 原版事件表，其中
+  `35` 个 key 含非 legacy 的 paused/live observation；既有迁移基线与
   embedded bucket 仍保持冻结，R384 新增 `pay_homage.0101` 的 exact-build Smooth 合同和选择前 RED。离线只读
   `ck3_query_vanilla_event_knowledge_v1` 保持既有 schema，production runtime 当前消费 `325` 条事件合同。R372 的 `TGP0160`、
   `great_holy_war.0011`、`TGP0020`、`TGP0001` 已分别完成共享查询、真实选择与 advance，属于四条 production-live
@@ -138,8 +138,9 @@
   authored1/native0 完成安全治疗与 advance；exact-build 五段决策树见
   [health-consumption-diagnosis.md](health-consumption-diagnosis.md)。`bp1_yearly.4000` 家族回忆也已在 retry 11
   以 authored2/native1 完成选择与 advance；死亡参与者的两行投影见
-  [bp1-yearly-family-memory.md](bp1-yearly-family-memory.md)。当前暂停在 `health.2202` 无医师三 scope 康复通知
-  RED；唯一确认路线及 source boundary 已纳入前述 health 专题。artifact 树见
+  [bp1-yearly-family-memory.md](bp1-yearly-family-memory.md)。R418 已从 partial checkpoint 在新 PID 冷恢复并以
+  authored1/native0 闭合 `health.2202` 无医师三 scope 康复通知；当前暂停在后续九 scope `health.3101`
+  选择前 RED，精确 variant 与 source boundary 已纳入前述 health 专题。artifact 树见
   [artifact-expert-improvement.md](artifact-expert-improvement.md)。上述状态不表示 179 条全部 live；
   `361/626` 全树覆盖也不是 T0、其它 mod、CI 或发布门。T0 仍为 `50% / stage 8/11 / source 3/4 / P2 LOCKED`。
 - [static-confirmed + marriage/alliance production-live loop + call-ally blocker live / fallback static-ready]

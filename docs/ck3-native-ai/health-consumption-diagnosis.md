@@ -35,8 +35,15 @@
 - [paused live RED] R416 retry 11 继续推进到 `date_raw=53905680`，同一廷臣 `88187` 康复并向玩家打开
   `health.2202` instance `1091`。saved scopes 为 `epidemic,disease_type,sick_character`，没有 `physician`；唯一
   native `0` shown/enabled。旧合同只接受带医师的四 scope 小痘康复形状，因此在选择前保留 RED。
-- [counter-policy static-ready, live action pending] 新增的三 scope variant 仍选择唯一 authored `1` / native `0`。
-  疾病移除已经在窗口 `immediate` 中执行；按钮只确认结果，并保留原版对性病康复的有限婚床 modifier 清理。
+- [production-live primitive] R418 从 R416 partial checkpoint 冷启动恢复后，在新 PID `204536` / generation `1`
+  选择 `health.2202` authored `1` / native `0`；instance `1091 -> null`、snapshot `native:3 -> native:4`、
+  revision `4 -> 5`，且 `postcondition_verified=true`。这闭合了无医师三 scope 康复通知路线，也证明 partial
+  checkpoint 能跨进程恢复该事件。
+- [paused live RED] R418 随后推进到 `date_raw=53908728`，玩家下一轮治疗窗口 `health.3101` instance `1092`
+  继承 `treatment_picker=32904`，形成九 scope 形态。患者仍是玩家，医师仍等于高技能候选，native `0/1/3`
+  均 shown/enabled；旧合同只接受六/八 scope，故在选择前保留 RED。
+- [counter-policy static-ready, live action pending] 新增九 scope variant 仍选择 authored `1` / native `0` 的安全治疗；
+  只额外绑定 `treatment_picker` 为玩家，不放宽其他人物关系或 option 投影。
 
 ## 原版状态与入口
 
@@ -141,6 +148,10 @@ flowchart TD
 R416 继续继承 `epidemic,new_memory`，形成八 scope 形态；两者都渲染 native `0/1/3`，因为当前医师没有满足 mystic
 option 的特质。合同把八 scope 形态作为独立 variant，仍要求 `sick_character == player`、`physician ==
 high_skill_option`、高低技能候选彼此不同且都不是玩家。
+
+R418 的下一治疗周期重新进入 `health.3101` 时，原版保留上轮治疗的 `treatment_picker`。因此该窗口是既有八 scope
+疫情诊断形态再加 `treatment_picker=玩家` 的精确九 scope variant；患者、医师、候选关系和 native `0/1/3`
+投影均未变化。该继承字段来自已发生的治疗周期，不表示新增按钮语义，也不需要扩展宗教域。
 
 native `0` 是原版命名的安全治疗，但效果不是确定性成功：源码以医师能力等修正 success/failure 权重，且敌对医师
 可以进入故意失败分支。选择它的依据是避免 native `1` 风险治疗的更严厉结果范围，以及 native `3` 确定不治疗；
@@ -275,6 +286,9 @@ flowchart TD
 - R416 retry 11 包含 `bp1_yearly.4000` 的选择后置条件以及 `health.2202` 的选择前 RED：
   `_runtime/p1-terminal-resume-r416-20260911/live-artifacts/terminal-stages-red-attempt-11.json`，SHA-256
   `E4DC093D890449A3F9FAE85FD40BE733FBDDBB7322CF31EBBA314E2F0E57D51F`。
+- R418 attempt 01 同时包含 `health.2202` 的冷恢复选择后置条件和九 scope `health.3101` 的选择前 RED：
+  `_runtime/p1-terminal-resume-r418-20260911/live-artifacts/terminal-stages-red-attempt-01.json`，SHA-256
+  `52047D6F9008C4DA49471E6DB5627F0A3652769EEC46D466BC448DD342ADE3B3`。
 
 R97 下游死亡边界见
 [`promotion-source-checkpoint-choreography-forensics-2026-09-04.md`](../phase2-promo/promotion-source-checkpoint-choreography-forensics-2026-09-04.md)。
