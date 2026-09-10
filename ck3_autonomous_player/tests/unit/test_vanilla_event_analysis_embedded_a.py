@@ -140,9 +140,12 @@ def test_impostor_break_exact_review_and_live_red_are_query_safe() -> None:
         for route in record["safe_routes_by_live_projection"]
     ] == [9, 10, 9]
 
-    exemplar, failed_retry, current_red = VANILLA_EMBEDDED_A_OBSERVATIONS[
-        "stress_threshold.1721"
-    ]["exemplars"]
+    (
+        exemplar,
+        failed_retry,
+        current_red,
+        current_green,
+    ) = VANILLA_EMBEDDED_A_OBSERVATIONS["stress_threshold.1721"]["exemplars"]
     assert exemplar["kind"] == "pre-selection-live-red"
     assert exemplar["rendered_native_option_indices"] == [7, 10, 12]
     assert exemplar["selection_attempted"] is False
@@ -165,9 +168,49 @@ def test_impostor_break_exact_review_and_live_red_are_query_safe() -> None:
     }
     assert current_red["rendered_native_option_indices"] == [7, 9, 12]
     assert current_red["selection_attempted"] is False
+    assert current_green["kind"] == "same-process-hot-recovery-green"
+    assert current_green["production_live_ordinal"] == 17
+    assert current_green["artifact"].endswith(
+        "r375-live-017-stress-threshold-1721-green.json"
+    )
+    assert current_green["artifact_sha256"] == (
+        "869BFE72B6FF2ABEF55FF3F4191F13D3A9F57E696F02B011367527256AD57EF3"
+    )
+    assert current_green["event_instance_id"] == current_red["event_instance_id"]
+    assert current_green["bridge_pid"] == current_red["bridge_pid"]
+    assert current_green["connection_generation"] == (
+        current_red["connection_generation"]
+    )
+    assert current_green["context_query_driver_command_index"] == 371
+    assert current_green["selection_driver_command_index"] == 372
+    assert current_green["selected_option_number"] == 10
+    assert current_green["selected_native_option_index"] == 9
+    assert current_green["postcondition_verified"] is True
+    assert current_green["ending_snapshot_id"] == "native:441"
+    assert current_green["process_restart_required"] is False
+    assert current_green["mcp_only"] is True
+    for forbidden_mode in (
+        "fixture_used",
+        "ocr_used",
+        "coordinates_used",
+        "console_used",
+    ):
+        assert current_green[forbidden_mode] is False
 
     contract_repr = repr(contract)
-    for observation_only in (53387208, 53611536, 627, 1060, 32904, 37337):
+    for observation_only in (
+        53387208,
+        53611536,
+        627,
+        1060,
+        32904,
+        37337,
+        180544,
+        371,
+        372,
+        "native:440",
+        "native:441",
+    ):
         assert str(observation_only) not in contract_repr
 
     response = query_vanilla_event_knowledge_v1("stress_threshold.1721")
@@ -177,4 +220,10 @@ def test_impostor_break_exact_review_and_live_red_are_query_safe() -> None:
         "selected_native_option_index"
     ] == 9
     assert response["observations"]["exemplars"][2]["event_instance_id"] == 1060
+    assert response["observations"]["exemplars"][3]["kind"] == (
+        "same-process-hot-recovery-green"
+    )
+    assert response["observations"]["exemplars"][3][
+        "postcondition_verified"
+    ] is True
     json.dumps(response, allow_nan=False)

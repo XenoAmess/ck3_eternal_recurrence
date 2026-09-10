@@ -518,6 +518,46 @@ VANILLA_EMBEDDED_A_OBSERVATIONS: Final[dict[str, dict[str, object]]] = {
             "connection_generation": 1,
             "bridge_pid": 180544,
             "process_restart_required": False,
+        }, {
+            "run": "R375",
+            "kind": "same-process-hot-recovery-green",
+            "production_live_ordinal": 17,
+            "artifact": (
+                "_runtime/p2r375-post-publisher-fix-live/"
+                "r375-live-017-stress-threshold-1721-green.json"
+            ),
+            "artifact_sha256": (
+                "869BFE72B6FF2ABEF55FF3F4191F13D3A9F57E696F02B011367527256AD57EF3"
+            ),
+            "date_raw": 53611536,
+            "event_instance_id": 1060,
+            "root_character_id": 32904,
+            "saved_character_ids": {
+                "stress_character": 32904,
+                "deceased_character": 37337,
+            },
+            "saved_scope_raw_types": {
+                "stress_character": 4,
+                "deceased_character": 4,
+            },
+            "rendered_native_option_indices": [7, 9, 12],
+            "context_query_driver_command_index": 371,
+            "selection_driver_command_index": 372,
+            "query_sequence": 20,
+            "selected_option_number": 10,
+            "selected_native_option_index": 9,
+            "postcondition_verified": True,
+            "starting_snapshot_id": "native:440",
+            "ending_snapshot_id": "native:441",
+            "ending_revision": 442,
+            "connection_generation": 1,
+            "bridge_pid": 180544,
+            "process_restart_required": False,
+            "mcp_only": True,
+            "fixture_used": False,
+            "ocr_used": False,
+            "coordinates_used": False,
+            "console_used": False,
         }],
     },
 }
