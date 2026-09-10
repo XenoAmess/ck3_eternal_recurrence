@@ -85,7 +85,7 @@
   冒充 semantic decision readiness。
 - [static-ready complete analysis + mixed production-live primitives] [vanilla-event-knowledge-registry.md](vanilla-event-knowledge-registry.md)
   本包组合默认 `177 contracts / 177 analysis / 177 observation metadata rows` 的 exact-build 原版事件表，其中
-  `29` 个 key 含非 legacy 的 paused/live observation；既有迁移基线与
+  `30` 个 key 含非 legacy 的 paused/live observation；既有迁移基线与
   embedded bucket 仍保持冻结，R384 新增 `pay_homage.0101` 的 exact-build Smooth 合同和选择前 RED。离线只读
   `ck3_query_vanilla_event_knowledge_v1` 保持既有 schema，production runtime 当前消费 `323` 条事件合同。R372 的 `TGP0160`、
   `great_holy_war.0011`、`TGP0020`、`TGP0001` 已分别完成共享查询、真实选择与 advance，属于四条 production-live
@@ -130,9 +130,9 @@
   [tgp-movement-support-letter.md](tgp-movement-support-letter.md)。R414 后续已越过该事件、无关系 scope 的
   `tgp_dynastic_cycle_events.0001` 和 `trait_specific.8001`。R416 从 partial checkpoint 冷恢复后再次越过草药种子事件，
   并用热更新合同越过 `bp1_house_feud.0014` 的 relation-scope 形态与 `bp1_yearly.1040`；浴场事件现为 production-live
-  primitive；赠书事件随后也在同 PID 完成 authored2/native1 与 advance。当前暂停在新事件 `artifact.4040` 的选择前 RED，
-  exact-build 树与 authored1/native0 路线见 [artifact-expert-improvement.md](artifact-expert-improvement.md)。赠书树见
-  [tgp-movement-book-gift.md](tgp-movement-book-gift.md)。上述状态不表示 177 条全部 live；
+  primitive；赠书与 artifact 事件随后也在同 PID 完成各自选择与 advance。当前暂停在 `health.1006` 的无医师
+  投影 RED，exact-build 双形态与 authored1/native0 路线见 [health-consumption-diagnosis.md](health-consumption-diagnosis.md)。
+  artifact 树见 [artifact-expert-improvement.md](artifact-expert-improvement.md)。上述状态不表示 177 条全部 live；
   `361/626` 全树覆盖也不是 T0、其它 mod、CI 或发布门。T0 仍为 `50% / stage 8/11 / source 3/4 / P2 LOCKED`。
 - [static-confirmed + marriage/alliance production-live loop + call-ally blocker live / fallback static-ready]
   [marriage-and-alliance.md](marriage-and-alliance.md) 冻结 stock

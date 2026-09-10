@@ -1684,33 +1684,61 @@ _LEGACY_MANAGER_HEALTH_TIMELINE_CONTRACTS: Final[
         },),
     },
     "health.1006": {
-        # Vanilla consumption diagnosis.  The disease is applied in immediate
-        # before the window opens, so no option can avoid that state change.
-        # This live frame exposes authored treatment options 4/5 plus authored
-        # option 7.  R97 proved that declining treatment lets the played owner
-        # die within 27 days and invalidates the character-bound Phase2 path.
-        # Authored option 4 is the conservative physician treatment and is the
-        # least disruptive branch that preserves a viable acceptance owner.
+        # Vanilla consumption diagnosis. The disease is applied in immediate,
+        # so the option only controls treatment. Without a physician, start the
+        # source-authored physician search instead of taking no treatment. The
+        # retained R97 physician projection still selects safe treatment.
         "date_raw": 53168904,
         "root_character_id": 29037,
         "character_scopes": {
             "sick_character": 29037,
         },
-        "unique_character_scope_excludes": {
-            "physician": (29037,),
-        },
+        "unique_character_scope_excludes": {},
         "scope_types": {
             "epidemic": "epidemic",
             "disease_type": "flag",
             "new_memory": "character_memory",
         },
         "boolean_scopes": (),
-        "saved_scope_count": 5,
-        "option_count": 3,
+        "saved_scope_name_sets": ((
+            "epidemic",
+            "disease_type",
+            "sick_character",
+            "new_memory",
+        ),),
+        "saved_scope_count": 4,
+        "option_count": 2,
         "snapshot_option_count": 7,
-        "native_option_indices": (3, 4, 6),
-        "selected_option_number": 4,
-        "selected_native_option_index": 3,
+        "native_option_indices": (0, 6),
+        "selected_option_number": 1,
+        "selected_native_option_index": 0,
+        "scope_variants": ({
+            "unique_character_scope_excludes": {
+                "physician": (29037,),
+            },
+            "scope_types": {
+                "epidemic": "epidemic",
+                "disease_type": "flag",
+                "physician": "character",
+                "new_memory": "character_memory",
+            },
+            "saved_scope_names": (
+                "epidemic",
+                "disease_type",
+                "physician",
+                "sick_character",
+                "new_memory",
+            ),
+            "saved_scope_count": 5,
+        },),
+        "option_variants": ({
+            "option_count": 3,
+            "snapshot_option_count": 7,
+            "native_option_indices": (3, 4, 6),
+            "selected_option_number": 4,
+            "selected_native_option_index": 3,
+        },),
+        "occurrence_policy": "repeatable-within-product-observation-window",
     },
     "epidemic_events.0110": {
         # Exact-build R334/R375 post-epidemic recovery prompt. The epidemic
@@ -2009,6 +2037,7 @@ MANAGER_VANILLA_OBSERVATIONS_A: Final[dict[str, dict[str, object]]] = {
     for _source_name, contracts in _MANAGER_A_LEGACY_GROUPS
     for event_key, contract in contracts.items()
     if contract.get("root_character_id") in {29037, 32904}
+    and event_key != "health.1006"
 }
 
 MANAGER_BEFRIEND_TIMELINE_CONTRACTS: Final = _neutralize_group(

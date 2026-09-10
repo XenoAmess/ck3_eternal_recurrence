@@ -17,6 +17,7 @@ from .registry import EXACT_CK3_BUILD, EXACT_CK3_EXE_SHA256
 _EXCLUDED_EVENTS: Final = frozenset({
     "epidemic_events.0110",
     "great_holy_war.0011",
+    "health.1006",
 })
 
 
@@ -111,7 +112,6 @@ _register_origin(
         "health.3103",
         "health.3104",
         "health.1101",
-        "health.1006",
         "epidemic_events.5001",
         "epidemic_events.1020",
         "epidemic_events.1050",
@@ -238,10 +238,6 @@ _REVIEW_SUMMARY_BY_EVENT: Final[dict[str, str]] = {
     "health.1101": (
         "Illness and treatment state are removed before the modal; the sole option "
         "acknowledges the completed recovery."
-    ),
-    "health.1006": (
-        "Disease is already applied; native 3 is conservative treatment and the "
-        "reviewed decline route proved fatal to the acceptance owner."
     ),
     "epidemic_events.5001": (
         "Native 0 is the terminal relief route, spending minor gold for supplies, "

@@ -156,6 +156,29 @@ VANILLA_ARTIFACT_OBSERVATIONS: Final[dict[str, dict[str, object]]] = {
             "ocr_used": False,
             "coordinates_used": False,
             "console_used": False,
+        }, {
+            "run": "R416-retry-05",
+            "kind": "same-process-hot-recovery-green",
+            "artifact": (
+                "_runtime/p1-terminal-resume-r416-20260911/live-artifacts/"
+                "terminal-stages-red-attempt-05.json"
+            ),
+            "artifact_sha256": (
+                "0BFAB9EF8D38AE9C74F783FE3E4B3672222E5289F760D21074BD04D5683692AA"
+            ),
+            "date_raw": 53832072,
+            "event_instance_id": 1081,
+            "root_character_id": 32904,
+            "starting_snapshot_id": "native:626",
+            "starting_revision": 627,
+            "ending_snapshot_id": "native:627",
+            "ending_revision": 628,
+            "selected_option_number": 1,
+            "selected_native_option_index": 0,
+            "postcondition_verified": True,
+            "connection_generation": 1,
+            "bridge_pid": 174656,
+            "process_restart_required": False,
         }],
     },
 }

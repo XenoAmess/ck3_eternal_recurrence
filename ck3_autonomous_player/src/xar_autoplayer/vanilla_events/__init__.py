@@ -66,6 +66,10 @@ from .records_faction_demand import (
     VANILLA_FACTION_DEMAND_OBSERVATIONS,
     VANILLA_FACTION_DEMAND_TIMELINE_CONTRACTS,
 )
+from .records_health import (
+    VANILLA_HEALTH_ANALYSIS,
+    VANILLA_HEALTH_OBSERVATIONS,
+)
 from .records_epidemic import (
     VANILLA_EPIDEMIC_ANALYSIS,
     VANILLA_EPIDEMIC_OBSERVATIONS,
@@ -190,6 +194,7 @@ DEFAULT_VANILLA_EVENT_ANALYSIS: Final = _merge_metadata_tables(
     ("bp1_house_feud", VANILLA_BP1_HOUSE_FEUD_ANALYSIS),
     ("bp1_yearly", VANILLA_BP1_YEARLY_ANALYSIS),
     ("artifact", VANILLA_ARTIFACT_ANALYSIS),
+    ("health", VANILLA_HEALTH_ANALYSIS),
 )
 DEFAULT_VANILLA_EVENT_OBSERVATIONS: Final = _merge_metadata_tables(
     ("vanilla_shards", VANILLA_SHARD_OBSERVATIONS),
@@ -223,6 +228,7 @@ DEFAULT_VANILLA_EVENT_OBSERVATIONS: Final = _merge_metadata_tables(
     ("bp1_house_feud", VANILLA_BP1_HOUSE_FEUD_OBSERVATIONS),
     ("bp1_yearly", VANILLA_BP1_YEARLY_OBSERVATIONS),
     ("artifact", VANILLA_ARTIFACT_OBSERVATIONS),
+    ("health", VANILLA_HEALTH_OBSERVATIONS),
 )
 
 

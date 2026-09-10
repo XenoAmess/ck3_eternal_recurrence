@@ -7,9 +7,9 @@
 - [paused live RED] R416 attempt 04 在 PID `174656` / generation `1` 的真实暂停帧命中 instance `1081`：
   `date_raw=53832072`、root/player `32904`、`this_artifact:artifact` raw `31`、`helpful:character`
   raw `4` / ID `79104`；native `0/1` 均 shown/enabled，尚未提交选择。
-- [counter-policy static-ready, live action pending] 可移植合同选择 authored `1` / native `0`。当前 RED 是恢复
-  harness 缺少该原版事件合同，不证明产品机制失败；必须等同 PID 动作与 instance advance 后才能升级为
-  production-live primitive。
+- [production-live primitive] 可移植合同选择 authored `1` / native `0`。R416 retry 05 已在相同 PID / generation
+  提交该选项，instance `1081 -> null`、snapshot `native:626 -> native:627`、revision `627 -> 628`，
+  `postcondition_verified=true`。选择前 RED 继续保留。
 
 ## 原版入口与约束
 
@@ -61,3 +61,6 @@ hook 或一笔 `minor_gold_value`；authored `2` 没有补偿。此选择不需�
 - R416 attempt 04 RED：
   `_runtime/p1-terminal-resume-r416-20260911/live-artifacts/terminal-stages-red-attempt-04.json`，SHA-256
   `CFD57E5C381D35EE6E1DE166D9FF656A1E6D6F4FC7D3194BCC74393EB3B4EE6A`。
+- R416 retry 05 动作与 advance 证据位于随后保留的 RED：
+  `_runtime/p1-terminal-resume-r416-20260911/live-artifacts/terminal-stages-red-attempt-05.json`，SHA-256
+  `0BFAB9EF8D38AE9C74F783FE3E4B3672222E5289F760D21074BD04D5683692AA`。
