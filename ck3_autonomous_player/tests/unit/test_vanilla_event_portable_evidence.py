@@ -8,6 +8,7 @@ import os
 from pathlib import Path
 import subprocess
 import sys
+import tomllib
 
 from jsonschema import Draft202012Validator
 
@@ -19,9 +20,14 @@ sys.path.insert(0, str(SRC))
 
 from xar_autoplayer.vanilla_events.portable_evidence import (  # noqa: E402
     MAX_EVIDENCE_READ_BYTES,
+    list_vanilla_event_evidence_v1,
+    portable_event_keys_v1,
     query_vanilla_event_evidence_index_v1,
     read_vanilla_event_evidence_v1,
     validate_portable_evidence_bundle_v1,
+)
+from xar_autoplayer.vanilla_events.source_index import (  # noqa: E402
+    load_vanilla_event_source_index,
 )
 
 
@@ -45,12 +51,16 @@ def test_checked_in_bundle_is_complete_and_strictly_self_validating() -> None:
     manifest = _manifest()
 
     assert result["status"] == "available"
-    assert result["validated_evidence"] == 140
+    assert result["validated_evidence"] == 213
     assert result["statistics"] == {
-        "evidence": 140,
+        "evidence": 213,
+        "generated_definition_references": 167,
+        "lexical_caller_candidate_references": 497,
+        "manually_reviewed_analysis_source_references": 181,
         "observation_artifacts": 56,
-        "references": 179,
-        "source_definitions": 84,
+        "observation_artifact_references": 57,
+        "references": 902,
+        "source_definitions": 157,
     }
     assert result["manifest_sha256"] == hashlib.sha256(
         MANIFEST.read_bytes()
@@ -58,7 +68,17 @@ def test_checked_in_bundle_is_complete_and_strictly_self_validating() -> None:
     Draft202012Validator(
         _schema("vanilla-event-portable-evidence-manifest-v1.schema.json")
     ).validate(manifest)
-    assert len(list((BUNDLE / "blobs").glob("*.gz"))) == 140
+    assert len(list((BUNDLE / "blobs").glob("*.gz"))) == 213
+
+
+def test_wheel_package_data_includes_source_index_and_evidence_bundle() -> None:
+    project = tomllib.loads((PLAYER / "pyproject.toml").read_text(encoding="utf-8"))
+    package_data = project["tool"]["setuptools"]["package-data"]
+    resources = package_data["xar_autoplayer.vanilla_events"]
+
+    assert "data/source_index_1_19_0_6.json" in resources
+    assert "portable_evidence/manifest_v1.json" in resources
+    assert "portable_evidence/blobs/*.gz" in resources
 
 
 def test_gzip_is_deterministic_and_contains_no_filename() -> None:
@@ -93,6 +113,86 @@ def test_index_is_event_addressable_and_schema_valid() -> None:
     ).validate(response)
 
 
+def test_manifest_preserves_honest_source_provenance_for_all_indexed_events() -> None:
+    manifest = _manifest()
+    source_index = load_vanilla_event_source_index()
+    references = [
+        reference
+        for entry in manifest["evidence"]
+        for reference in entry["references"]
+    ]
+    provenance_counts: dict[str, int] = {}
+    for reference in references:
+        provenance = reference["provenance"]
+        provenance_counts[provenance] = provenance_counts.get(provenance, 0) + 1
+
+    assert portable_event_keys_v1() == frozenset(source_index["events"])
+    assert provenance_counts == {
+        "captured-observation-artifact": 57,
+        "generated-definition-index": 167,
+        "lexical-caller-candidate-not-proven-runtime-caller": 497,
+        "manually-reviewed-analysis-source": 181,
+    }
+    lexical = [
+        reference
+        for reference in references
+        if reference["provenance"]
+        == "lexical-caller-candidate-not-proven-runtime-caller"
+    ]
+    assert all(reference["role"] == "caller_candidate" for reference in lexical)
+    assert all(reference["source_line"] >= 1 for reference in lexical)
+    assert all(reference["source_column"] >= 1 for reference in lexical)
+    assert all(
+        reference["caller_candidate_resolution"]
+        in {"external-definition-file", "same-definition-file-only"}
+        for reference in lexical
+    )
+
+
+def test_portable_list_uses_stable_content_hash_pagination() -> None:
+    schema = _schema("vanilla-event-evidence-list-v1.schema.json")
+    validator = Draft202012Validator(schema)
+    first = list_vanilla_event_evidence_v1(limit=3)
+    second = list_vanilla_event_evidence_v1(
+        after_evidence_id=first["next_after_evidence_id"],
+        limit=3,
+    )
+
+    validator.validate(first)
+    validator.validate(second)
+    assert first["status"] == "available"
+    assert first["dataset_sha256"] == second["dataset_sha256"]
+    assert first["total_matches"] >= 6
+    assert len(first["evidence"]) == len(second["evidence"]) == 3
+    assert {
+        row["evidence_id"] for row in first["evidence"]
+    }.isdisjoint(row["evidence_id"] for row in second["evidence"])
+    assert all(
+        not Path(reference["logical_path"]).is_absolute()
+        and "\\" not in reference["logical_path"]
+        for page in (first, second)
+        for row in page["evidence"]
+        for reference in row["references"]
+    )
+
+
+def test_portable_list_returns_typed_unavailable_without_paths() -> None:
+    validator = Draft202012Validator(
+        _schema("vanilla-event-evidence-list-v1.schema.json")
+    )
+    responses = (
+        list_vanilla_event_evidence_v1(ck3_build="1.19.0.5"),
+        list_vanilla_event_evidence_v1(limit=0),
+        list_vanilla_event_evidence_v1(after_evidence_id="bad"),
+        list_vanilla_event_evidence_v1("not_registered.1"),
+    )
+    for response in responses:
+        validator.validate(response)
+        assert response["status"] == "unavailable"
+        assert response["evidence"] == []
+        assert "bundle_root" not in response
+
+
 def test_read_returns_verified_chunks_no_larger_than_64_kib() -> None:
     manifest = _manifest()
     entry = next(row for row in manifest["evidence"] if row["bytes"] > 131072)
@@ -102,6 +202,9 @@ def test_read_returns_verified_chunks_no_larger_than_64_kib() -> None:
     )
 
     assert first["status"] == "available"
+    assert first["historical_artifact_may_contain_nonportable_locators"] == (
+        entry["kind"] == "observation_artifact"
+    )
     assert first["content_bytes"] == MAX_EVIDENCE_READ_BYTES
     assert len(base64.b64decode(first["content_base64"], validate=True)) == 65536
     assert first["eof"] is False
@@ -111,6 +214,31 @@ def test_read_returns_verified_chunks_no_larger_than_64_kib() -> None:
     Draft202012Validator(
         _schema("vanilla-event-evidence-read-v1.schema.json")
     ).validate(first)
+
+
+def test_read_labels_raw_historical_artifacts_without_rewriting_their_hash() -> None:
+    manifest = _manifest()
+    observation = next(
+        row for row in manifest["evidence"]
+        if row["kind"] == "observation_artifact"
+    )
+    source = next(
+        row for row in manifest["evidence"] if row["kind"] == "source_definition"
+    )
+
+    observation_read = read_vanilla_event_evidence_v1(
+        observation["evidence_id"], max_bytes=1
+    )
+    source_read = read_vanilla_event_evidence_v1(source["evidence_id"], max_bytes=1)
+
+    assert observation_read["sha256"] == observation["evidence_id"]
+    assert observation_read[
+        "historical_artifact_may_contain_nonportable_locators"
+    ] is True
+    assert source_read["sha256"] == source["evidence_id"]
+    assert source_read[
+        "historical_artifact_may_contain_nonportable_locators"
+    ] is False
 
 
 def test_index_and_read_fail_closed_with_typed_unavailable_rows(
@@ -163,4 +291,4 @@ def test_offline_check_ignores_unavailable_external_roots() -> None:
     assert completed.returncode == 0, completed.stderr
     result = json.loads(completed.stdout)
     assert result["status"] == "available"
-    assert result["validated_evidence"] == 140
+    assert result["validated_evidence"] == 213

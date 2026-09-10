@@ -14,6 +14,7 @@
     "sha256",
     "kind",
     "media_type",
+    "historical_artifact_may_contain_nonportable_locators",
     "offset",
     "content_bytes",
     "total_bytes",
@@ -62,6 +63,9 @@
         "text/plain; charset=utf-8",
         null
       ]
+    },
+    "historical_artifact_may_contain_nonportable_locators": {
+      "type": ["boolean", "null"]
     },
     "offset": {
       "type": ["integer", "null"],

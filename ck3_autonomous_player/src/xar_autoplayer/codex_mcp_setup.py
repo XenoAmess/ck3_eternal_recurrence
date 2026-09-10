@@ -24,6 +24,10 @@ from typing import Callable, Final, Sequence
 from .vanilla_events import (
     DEFAULT_VANILLA_EVENT_ANALYSIS,
     DEFAULT_VANILLA_EVENT_TIMELINE_CONTRACTS,
+    ck3_list_vanilla_event_knowledge_v1,
+    list_vanilla_event_evidence_v1,
+    portable_event_keys_v1,
+    query_vanilla_event_source_provenance_v1,
 )
 from .vanilla_events.registry import (
     VANILLA_EVENT_KNOWLEDGE_SCHEMA,
@@ -40,6 +44,25 @@ SET_PLAYED_CHARACTER_CAPABILITY: Final = (
 SET_PLAYED_CHARACTER_TOOL: Final = "ck3_set_played_character_v1"
 VANILLA_EVENT_KNOWLEDGE_TOOL: Final = (
     "ck3_query_vanilla_event_knowledge_v1"
+)
+VANILLA_EVENT_KNOWLEDGE_LIST_TOOL: Final = (
+    "ck3_list_vanilla_event_knowledge_v1"
+)
+VANILLA_EVENT_EVIDENCE_LIST_TOOL: Final = (
+    "ck3_list_vanilla_event_evidence_v1"
+)
+VANILLA_EVENT_EVIDENCE_READ_TOOL: Final = (
+    "ck3_read_vanilla_event_evidence_v1"
+)
+VANILLA_EVENT_SOURCE_PROVENANCE_TOOL: Final = (
+    "ck3_query_vanilla_event_source_provenance_v1"
+)
+VANILLA_EVENT_OFFLINE_TOOLS: Final = (
+    VANILLA_EVENT_KNOWLEDGE_TOOL,
+    VANILLA_EVENT_KNOWLEDGE_LIST_TOOL,
+    VANILLA_EVENT_EVIDENCE_LIST_TOOL,
+    VANILLA_EVENT_EVIDENCE_READ_TOOL,
+    VANILLA_EVENT_SOURCE_PROVENANCE_TOOL,
 )
 ZHONGGUO_B1_CYCLE_SNAPSHOT_TOOL: Final = (
     "ck3_query_zhongguo_b1_cycle_snapshot_v1"
@@ -303,8 +326,25 @@ def fresh_native_build_command(layout: PortableMcpLayout) -> list[str]:
 def current_vanilla_event_knowledge_manifest() -> dict[str, object]:
     """Describe the current checkout's offline dataset, not a frozen ABI size."""
 
+    knowledge = ck3_list_vanilla_event_knowledge_v1(
+        limit=1,
+        portable_event_keys=portable_event_keys_v1(),
+    )
+    evidence = list_vanilla_event_evidence_v1(limit=1)
+    source = query_vanilla_event_source_provenance_v1(
+        VANILLA_EVENT_KNOWLEDGE_PROBE_KEY
+    )
+    if not all(
+        payload.get("status") == "available"
+        for payload in (knowledge, evidence, source)
+    ):
+        raise PortableMcpSetupError(
+            "offline vanilla-event datasets are not readable in this checkout"
+        )
+
     return {
         "tool": VANILLA_EVENT_KNOWLEDGE_TOOL,
+        "tools": list(VANILLA_EVENT_OFFLINE_TOOLS),
         "schema": VANILLA_EVENT_KNOWLEDGE_SCHEMA,
         "schema_version": VANILLA_EVENT_KNOWLEDGE_SCHEMA_VERSION,
         "exact_ck3_build": EXACT_CK3_VERSION,
@@ -313,6 +353,10 @@ def current_vanilla_event_knowledge_manifest() -> dict[str, object]:
             DEFAULT_VANILLA_EVENT_TIMELINE_CONTRACTS
         ),
         "current_analysis_count": len(DEFAULT_VANILLA_EVENT_ANALYSIS),
+        "knowledge_dataset_sha256": knowledge["dataset_sha256"],
+        "portable_evidence_count": evidence["total_matches"],
+        "portable_evidence_dataset_sha256": evidence["dataset_sha256"],
+        "source_provenance_dataset_sha256": source["dataset_sha256"],
         "count_semantics": "current-revision-data-fact-not-abi",
         "requires_ck3": False,
     }
@@ -350,14 +394,37 @@ def offline_vanilla_event_knowledge_smoke_command(
         "        listed = await client.list_tools()",
         "        names = {tool.name for tool in listed.tools}",
         f"        tool_name = {VANILLA_EVENT_KNOWLEDGE_TOOL!r}",
+        f"        required_tools = {list(VANILLA_EVENT_OFFLINE_TOOLS)!r}",
         f"        event_key = {VANILLA_EVENT_KNOWLEDGE_PROBE_KEY!r}",
         "        result = await client.call_tool(",
         "            tool_name,",
         "            {'event_definition_key': event_key},",
         "        )",
         "        payload = result.structured_content or {}",
+        "        knowledge_list = await client.call_tool(",
+        f"            {VANILLA_EVENT_KNOWLEDGE_LIST_TOOL!r},",
+        "            {'query': event_key, 'limit': 1},",
+        "        )",
+        "        knowledge_list_payload = knowledge_list.structured_content or {}",
+        "        evidence_list = await client.call_tool(",
+        f"            {VANILLA_EVENT_EVIDENCE_LIST_TOOL!r},",
+        "            {'limit': 1},",
+        "        )",
+        "        evidence_list_payload = evidence_list.structured_content or {}",
+        "        evidence_id = evidence_list_payload['evidence'][0]['evidence_id']",
+        "        evidence_read = await client.call_tool(",
+        f"            {VANILLA_EVENT_EVIDENCE_READ_TOOL!r},",
+        "            {'evidence_id': evidence_id, 'max_bytes': 32},",
+        "        )",
+        "        evidence_read_payload = evidence_read.structured_content or {}",
+        "        source = await client.call_tool(",
+        f"            {VANILLA_EVENT_SOURCE_PROVENANCE_TOOL!r},",
+        "            {'key': event_key},",
+        "        )",
+        "        source_payload = source.structured_content or {}",
         "        report = {",
         "            'tool_listed': tool_name in names,",
+        "            'all_offline_tools_listed': set(required_tools) <= names,",
         "            'contract_count': len(",
         "                DEFAULT_VANILLA_EVENT_TIMELINE_CONTRACTS",
         "            ),",
@@ -373,6 +440,20 @@ def offline_vanilla_event_knowledge_smoke_command(
         "            'query_status': payload.get('status'),",
         "            'query_contract_non_null': payload.get('contract') is not None,",
         "            'query_analysis_non_null': payload.get('analysis') is not None,",
+        "            'knowledge_list_is_error': knowledge_list.is_error,",
+        "            'knowledge_list_status': knowledge_list_payload.get('status'),",
+        "            'knowledge_dataset_sha256': knowledge_list_payload.get('dataset_sha256'),",
+        "            'evidence_list_is_error': evidence_list.is_error,",
+        "            'evidence_list_status': evidence_list_payload.get('status'),",
+        "            'evidence_count': evidence_list_payload.get('total_matches'),",
+        "            'evidence_dataset_sha256': evidence_list_payload.get('dataset_sha256'),",
+        "            'evidence_read_is_error': evidence_read.is_error,",
+        "            'evidence_read_status': evidence_read_payload.get('status'),",
+        "            'evidence_read_id_matches': evidence_read_payload.get('evidence_id') == evidence_id,",
+        "            'source_is_error': source.is_error,",
+        "            'source_status': source_payload.get('status'),",
+        "            'source_dataset_sha256': source_payload.get('dataset_sha256'),",
+        "            'source_candidates_lexical_only': source_payload.get('caller_candidates_are_lexical_only'),",
         "            'requires_ck3': False,",
         "        }",
         "        print(json.dumps(report, sort_keys=True))",
@@ -748,9 +829,22 @@ def _check_offline_vanilla_event_knowledge(
     payload["expected_current_analysis_count"] = expected[
         "current_analysis_count"
     ]
+    payload["expected_knowledge_dataset_sha256"] = expected[
+        "knowledge_dataset_sha256"
+    ]
+    payload["expected_portable_evidence_count"] = expected[
+        "portable_evidence_count"
+    ]
+    payload["expected_portable_evidence_dataset_sha256"] = expected[
+        "portable_evidence_dataset_sha256"
+    ]
+    payload["expected_source_provenance_dataset_sha256"] = expected[
+        "source_provenance_dataset_sha256"
+    ]
     payload["count_semantics"] = expected["count_semantics"]
     passed = all((
         payload.get("tool_listed") is True,
+        payload.get("all_offline_tools_listed") is True,
         payload.get("contract_count") == expected["current_contract_count"],
         payload.get("analysis_count") == expected["current_analysis_count"],
         payload.get("analysis_keyset_matches_contracts") is True,
@@ -760,6 +854,23 @@ def _check_offline_vanilla_event_knowledge(
         payload.get("query_status") == "available",
         payload.get("query_contract_non_null") is True,
         payload.get("query_analysis_non_null") is True,
+        payload.get("knowledge_list_is_error") is False,
+        payload.get("knowledge_list_status") == "available",
+        payload.get("knowledge_dataset_sha256")
+        == expected["knowledge_dataset_sha256"],
+        payload.get("evidence_list_is_error") is False,
+        payload.get("evidence_list_status") == "available",
+        payload.get("evidence_count") == expected["portable_evidence_count"],
+        payload.get("evidence_dataset_sha256")
+        == expected["portable_evidence_dataset_sha256"],
+        payload.get("evidence_read_is_error") is False,
+        payload.get("evidence_read_status") == "available",
+        payload.get("evidence_read_id_matches") is True,
+        payload.get("source_is_error") is False,
+        payload.get("source_status") == "available",
+        payload.get("source_dataset_sha256")
+        == expected["source_provenance_dataset_sha256"],
+        payload.get("source_candidates_lexical_only") is True,
         payload.get("requires_ck3") is False,
     ))
     return passed, json.dumps(payload, sort_keys=True), payload

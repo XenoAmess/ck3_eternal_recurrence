@@ -49,26 +49,51 @@ repository-local bootstrap 加载，不复制源码，也不会为纯 native MCP
 Codex 在每个 Windows 账户自己的 `~/.codex/config.toml` 中维护注册。完成注册后新开一个 Codex
 会话，让该会话重新发现 MCP 工具。
 
-## 无 CK3 的 vanilla-event knowledge smoke
+## 无 CK3 的 vanilla-event knowledge 与证据 smoke
 
 原版事件知识查询是仓库内静态、只读的数据能力，不要求 CK3 已安装或正在运行，也不要求 native
-DLL/injector。`plan` 的机器可读输出通过 `offline_vanilla_event_knowledge` 记录工具名、schema、exact
-build、探针 key、当前 contract/analysis 数量及 `requires_ck3=false`。其中
+DLL/injector。任意操作者或机器从同一 checkout 注册后可使用以下五个 MCP 工具：
+
+```text
+ck3_query_vanilla_event_knowledge_v1
+ck3_list_vanilla_event_knowledge_v1
+ck3_list_vanilla_event_evidence_v1
+ck3_read_vanilla_event_evidence_v1
+ck3_query_vanilla_event_source_provenance_v1
+```
+
+知识列表使用 `after_key`，证据列表使用 `after_evidence_id`；两者都是稳定 keyset 分页，并返回当前数据集
+SHA-256。证据正文只能用未压缩内容的 SHA-256 `evidence_id` 寻址、按不超过 64 KiB 的块读取。MCP 输入
+不提供 bundle root、文件路径或写操作；索引只返回 POSIX 相对逻辑路径，不返回本机绝对路径。
+历史 observation artifact 保留采样时的原始字节，因此正文可能包含当时机器的 locator 或 named pipe；
+read envelope 用 `historical_artifact_may_contain_nonportable_locators=true` 明示这一事实。这些字符串不是当前
+MCP 的查找路径或运行依赖，客户端不得尝试在另一台机器解析；source definition 的该字段固定为 `false`。
+
+source provenance 返回生成索引中的 definition 相对路径、文件 SHA-256、行号和 namespace。其
+`caller_candidates` 只是 exact-token 词法候选，响应固定返回
+`caller_candidates_are_lexical_only=true` 与
+`caller_candidates_review_status=not_manually_reviewed_as_call_edges`；不得将候选冒充人工确认的运行时调用链。
+
+`plan` 的机器可读输出通过 `offline_vanilla_event_knowledge` 记录工具集、schema、exact build、探针 key、
+当前 contract/analysis/evidence 数量、三个数据集 SHA-256 及 `requires_ck3=false`。其中
 `count_semantics=current-revision-data-fact-not-abi` 明确禁止把当前条目数量当成 ABI。
 
 完成上述 `setup` 后先运行 `doctor`。它会使用新建的 per-user venv 创建官方 MCP client，在不连接
-gameplay backend 的情况下实际执行一次 tool list 和 `health.1010` 查询；只有以下条件同时成立，
+gameplay backend 的情况下实际执行一次 tool list，并调用知识单条查询、知识列表、证据列表、证据分块读取和
+source provenance；只有以下条件同时成立，
 `offline_vanilla_event_knowledge` 检查才为 GREEN：
 
-- 工具列表包含 `ck3_query_vanilla_event_knowledge_v1`；
+- 工具列表包含上述五个只读工具；
 - 当前 checkout 的 timeline contract 与 analysis 数量分别和探针进程一致，且两者 keyset 相同；
 - `health.1010` 返回 `status=available`，`contract` 与 `analysis` 均非空；
+- 两个列表、证据读取与 source provenance 均为 `available`，数据集 SHA-256 与当前 checkout 一致；
+- source provenance 明确把 caller candidates 标为词法候选；
 - 探针明确报告 `requires_ck3=false`。
 
 随后新开一个 Codex 会话并执行 `/mcp`，做操作者侧确认：
 
 - `xar-ck3-native-<account-slug>` 已连接；
-- 工具列表包含 `ck3_query_vanilla_event_knowledge_v1`。
+- 工具列表包含上述五个只读工具。
 
 随后让 Codex 调用：
 

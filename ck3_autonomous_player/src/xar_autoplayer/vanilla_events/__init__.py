@@ -9,6 +9,13 @@ from .registry import (
     materialize_vanilla_timeline_contract,
     query_vanilla_event_knowledge_v1,
 )
+from .discovery import ck3_list_vanilla_event_knowledge_v1
+from .portable_evidence import (
+    list_vanilla_event_evidence_v1,
+    portable_event_keys_v1,
+    read_vanilla_event_evidence_v1,
+)
+from .source_index import query_vanilla_event_source_provenance_v1
 from .records_analysis_embedded_a import (
     VANILLA_EMBEDDED_A_ANALYSIS,
     VANILLA_EMBEDDED_A_OBSERVATIONS,
@@ -210,6 +217,11 @@ __all__ = [
     "EXACT_CK3_EXE_SHA256",
     "VANILLA_EVENT_TIMELINE_CONTRACTS",
     "build_vanilla_event_registry",
+    "ck3_list_vanilla_event_knowledge_v1",
+    "list_vanilla_event_evidence_v1",
     "materialize_vanilla_timeline_contract",
+    "portable_event_keys_v1",
     "query_vanilla_event_knowledge_v1",
+    "query_vanilla_event_source_provenance_v1",
+    "read_vanilla_event_evidence_v1",
 ]

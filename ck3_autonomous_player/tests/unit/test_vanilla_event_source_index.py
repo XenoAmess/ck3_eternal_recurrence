@@ -32,6 +32,7 @@ from xar_autoplayer.vanilla_events.source_index import (  # noqa: E402
     VanillaEventSourceIndexError,
     compute_source_index_dataset_sha256,
     load_vanilla_event_source_index,
+    query_vanilla_event_source_provenance_v1,
     query_vanilla_event_source_v1,
     validate_vanilla_event_source_index,
 )
@@ -163,6 +164,51 @@ def test_query_is_detached_and_marks_references_as_candidates() -> None:
     assert unavailable["source"] is None
     assert unavailable["unavailable_reason"] == "event_definition_key_not_indexed"
     json.dumps(unavailable, allow_nan=False)
+
+
+def test_portable_provenance_query_is_schema_valid_and_typed() -> None:
+    from jsonschema import Draft202012Validator
+
+    schema = json.loads(
+        (
+            AUTOPLAYER_ROOT
+            / "schemas"
+            / "vanilla-event-source-provenance-v1.schema.json"
+        ).read_text(encoding="utf-8")
+    )
+    validator = Draft202012Validator(schema)
+    response = query_vanilla_event_source_provenance_v1(
+        "health.1001",
+        EXACT_CK3_BUILD,
+    )
+
+    validator.validate(response)
+    assert response["status"] == "available"
+    assert response["namespace"] == "health"
+    assert response["definition"]["relative_path"].startswith("events/")
+    assert response["caller_candidates"]
+    assert response["caller_candidates_are_lexical_only"] is True
+    assert response["caller_candidates_review_status"] == (
+        "not_manually_reviewed_as_call_edges"
+    )
+    assert all(
+        row["kind"] == "exact-token-lexical-candidate"
+        for row in response["caller_candidates"]
+    )
+    assert all(
+        not Path(row["relative_path"]).is_absolute()
+        for row in [response["definition"], *response["caller_candidates"]]
+    )
+
+    for unavailable in (
+        query_vanilla_event_source_provenance_v1("missing.1"),
+        query_vanilla_event_source_provenance_v1("", EXACT_CK3_BUILD),
+        query_vanilla_event_source_provenance_v1(
+            "health.1001", "1.19.0.5"
+        ),
+    ):
+        validator.validate(unavailable)
+        assert unavailable["status"] == "unavailable"
 
 
 def test_validation_rejects_tampering_and_absolute_paths() -> None:

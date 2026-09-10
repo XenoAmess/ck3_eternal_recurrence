@@ -39,6 +39,10 @@ from xar_autoplayer.vanilla_events.registry import (  # noqa: E402
     EXACT_CK3_BUILD,
     EXACT_CK3_EXE_SHA256,
 )
+from xar_autoplayer.vanilla_events.source_index import (  # noqa: E402
+    load_vanilla_event_source_index,
+    validate_vanilla_event_source_index,
+)
 
 
 DEFAULT_OUTPUT: Final = (
@@ -132,19 +136,25 @@ def _find_root(
     raise EvidencePackagingError(f"unable to locate {label}")
 
 
-def _load_current_catalog() -> tuple[Mapping[str, object], Mapping[str, object]]:
+def _load_current_catalog() -> tuple[
+    Mapping[str, object], Mapping[str, object], Mapping[str, object]
+]:
     from xar_autoplayer.vanilla_events import (  # noqa: PLC0415
         DEFAULT_VANILLA_EVENT_ANALYSIS,
         DEFAULT_VANILLA_EVENT_OBSERVATIONS,
     )
 
-    return DEFAULT_VANILLA_EVENT_ANALYSIS, DEFAULT_VANILLA_EVENT_OBSERVATIONS
+    return (
+        DEFAULT_VANILLA_EVENT_ANALYSIS,
+        DEFAULT_VANILLA_EVENT_OBSERVATIONS,
+        load_vanilla_event_source_index(),
+    )
 
 
 def _source_references(
     analysis: Mapping[str, object],
-) -> list[tuple[str, str, str, str]]:
-    rows: list[tuple[str, str, str, str]] = []
+) -> list[dict[str, object]]:
+    rows: list[dict[str, object]] = []
     for event_key in sorted(analysis):
         metadata = analysis[event_key]
         if not isinstance(metadata, Mapping):
@@ -163,14 +173,91 @@ def _source_references(
                 raw_digest,
                 context=f"analysis[{event_key!r}].source_sha256[{path!r}]",
             )
-            rows.append((event_key, "source_definition", path, digest))
+            rows.append(
+                {
+                    "caller_candidate_resolution": None,
+                    "digest": digest,
+                    "event_key": event_key,
+                    "logical_path": path,
+                    "provenance": "manually-reviewed-analysis-source",
+                    "role": "analysis_source",
+                    "source_column": None,
+                    "source_line": None,
+                }
+            )
     return rows
+
+
+def _indexed_source_references(
+    source_index: Mapping[str, object],
+) -> tuple[list[dict[str, object]], list[dict[str, object]]]:
+    validated = validate_vanilla_event_source_index(source_index)
+    events = validated["events"]
+    assert isinstance(events, Mapping)
+    definitions: list[dict[str, object]] = []
+    candidates: list[dict[str, object]] = []
+    for event_key, raw_event in events.items():
+        assert isinstance(event_key, str)
+        assert isinstance(raw_event, Mapping)
+        resolution = raw_event["caller_candidate_resolution"]
+        assert isinstance(resolution, str)
+        definition = raw_event["definition"]
+        assert isinstance(definition, Mapping)
+        definitions.append(
+            {
+                "caller_candidate_resolution": None,
+                "digest": _expected_digest(
+                    definition["file_sha256"],
+                    context=f"source_index.events[{event_key!r}].definition",
+                ),
+                "event_key": event_key,
+                "logical_path": _safe_relative_path(
+                    definition["relative_path"],
+                    context=f"source_index.events[{event_key!r}].definition",
+                ).as_posix(),
+                "provenance": "generated-definition-index",
+                "role": "event_definition",
+                "source_column": None,
+                "source_line": definition["line"],
+            }
+        )
+        raw_candidates = raw_event["caller_candidates"]
+        assert isinstance(raw_candidates, list)
+        for index, candidate in enumerate(raw_candidates):
+            assert isinstance(candidate, Mapping)
+            candidates.append(
+                {
+                    "caller_candidate_resolution": resolution,
+                    "digest": _expected_digest(
+                        candidate["file_sha256"],
+                        context=(
+                            f"source_index.events[{event_key!r}]"
+                            f".caller_candidates[{index}]"
+                        ),
+                    ),
+                    "event_key": event_key,
+                    "logical_path": _safe_relative_path(
+                        candidate["relative_path"],
+                        context=(
+                            f"source_index.events[{event_key!r}]"
+                            f".caller_candidates[{index}]"
+                        ),
+                    ).as_posix(),
+                    "provenance": (
+                        "lexical-caller-candidate-not-proven-runtime-caller"
+                    ),
+                    "role": "caller_candidate",
+                    "source_column": candidate["column"],
+                    "source_line": candidate["line"],
+                }
+            )
+    return definitions, candidates
 
 
 def _observation_references(
     observations: Mapping[str, object],
-) -> list[tuple[str, str, str, str]]:
-    rows: list[tuple[str, str, str, str]] = []
+) -> list[dict[str, object]]:
+    rows: list[dict[str, object]] = []
 
     def visit(event_key: str, value: object, *, context: str) -> None:
         if isinstance(value, Mapping):
@@ -195,7 +282,18 @@ def _observation_references(
                         value[digest_key],
                         context=f"{context}.{digest_key}",
                     )
-                    rows.append((event_key, key, path, digest))
+                    rows.append(
+                        {
+                            "caller_candidate_resolution": None,
+                            "digest": digest,
+                            "event_key": event_key,
+                            "logical_path": path,
+                            "provenance": "captured-observation-artifact",
+                            "role": key,
+                            "source_column": None,
+                            "source_line": None,
+                        }
+                    )
                 visit(event_key, child, context=f"{context}.{key}")
         elif isinstance(value, (list, tuple)):
             for index, child in enumerate(value):
@@ -227,12 +325,20 @@ def _event_reference(
     origin: str,
     role: str,
     logical_path: str,
-) -> dict[str, str]:
+    provenance: str,
+    source_line: int | None,
+    source_column: int | None,
+    caller_candidate_resolution: str | None,
+) -> dict[str, object]:
     return {
+        "caller_candidate_resolution": caller_candidate_resolution,
         "event_definition_key": event_key,
         "logical_path": logical_path,
         "origin": origin,
+        "provenance": provenance,
         "role": role,
+        "source_column": source_column,
+        "source_line": source_line,
     }
 
 
@@ -240,6 +346,7 @@ def build_bundle(
     *,
     analysis: Mapping[str, object],
     observations: Mapping[str, object],
+    source_index: Mapping[str, object],
     game_root: Path,
     runtime_root: Path,
     output_root: Path = DEFAULT_OUTPUT,
@@ -264,6 +371,10 @@ def build_bundle(
         expected_digest: str,
         source_path: Path,
         origin: str,
+        provenance: str,
+        source_line: int | None,
+        source_column: int | None,
+        caller_candidate_resolution: str | None,
     ) -> None:
         media_type = _media_type_for_path(logical_path)
         payload = _read_exact_payload(
@@ -283,6 +394,10 @@ def build_bundle(
             origin=origin,
             role=role,
             logical_path=logical_path,
+            provenance=provenance,
+            source_line=source_line,
+            source_column=source_column,
+            caller_candidate_resolution=caller_candidate_resolution,
         )
         if evidence_id not in metadata_by_id:
             payload_by_id[evidence_id] = payload
@@ -302,8 +417,14 @@ def build_bundle(
         if reference not in references:
             references.append(reference)
 
-    source_rows = _source_references(analysis)
-    for event_key, role, logical_path, digest in source_rows:
+    analysis_source_rows = _source_references(analysis)
+    definition_rows, candidate_rows = _indexed_source_references(source_index)
+    source_rows = [*definition_rows, *candidate_rows, *analysis_source_rows]
+    for row in source_rows:
+        event_key = str(row["event_key"])
+        role = str(row["role"])
+        logical_path = str(row["logical_path"])
+        digest = str(row["digest"])
         add(
             event_key=event_key,
             kind="source_definition",
@@ -312,9 +433,17 @@ def build_bundle(
             expected_digest=digest,
             source_path=game_root / "game" / Path(*PurePosixPath(logical_path).parts),
             origin="ck3_game",
+            provenance=str(row["provenance"]),
+            source_line=row["source_line"],  # type: ignore[arg-type]
+            source_column=row["source_column"],  # type: ignore[arg-type]
+            caller_candidate_resolution=row["caller_candidate_resolution"],  # type: ignore[arg-type]
         )
     observation_rows = _observation_references(observations)
-    for event_key, role, logical_path, digest in observation_rows:
+    for row in observation_rows:
+        event_key = str(row["event_key"])
+        role = str(row["role"])
+        logical_path = str(row["logical_path"])
+        digest = str(row["digest"])
         relative = PurePosixPath(logical_path)
         runtime_relative = PurePosixPath(*relative.parts[1:])
         add(
@@ -325,6 +454,10 @@ def build_bundle(
             expected_digest=digest,
             source_path=runtime_root / Path(*runtime_relative.parts),
             origin="runtime",
+            provenance=str(row["provenance"]),
+            source_line=None,
+            source_column=None,
+            caller_candidate_resolution=None,
         )
 
     output_root.mkdir(parents=True, exist_ok=True)
@@ -342,8 +475,11 @@ def build_bundle(
             key=lambda item: (
                 item["event_definition_key"],
                 item["origin"],
+                item["provenance"],
                 item["role"],
                 item["logical_path"],
+                item["source_line"] if item["source_line"] is not None else 0,
+                item["source_column"] if item["source_column"] is not None else 0,
             )
         )
         blob_name = f"{evidence_id}.gz"
@@ -365,8 +501,14 @@ def build_bundle(
             }
         )
 
+    resolved_blob_root = blob_root.resolve()
     for stale in blob_root.glob("*.gz"):
         if stale.name not in expected_blob_names:
+            resolved_stale = stale.resolve()
+            if stale.is_symlink() or resolved_stale.parent != resolved_blob_root:
+                raise EvidencePackagingError(
+                    "refusing to remove an unsafe orphan evidence blob"
+                )
             stale.unlink()
     manifest: dict[str, object] = {
         "schema": EVIDENCE_MANIFEST_SCHEMA,
@@ -384,6 +526,12 @@ def build_bundle(
                 entry["kind"] == "observation_artifact" for entry in entries
             ),
             "references": len(source_rows) + len(observation_rows),
+            "generated_definition_references": len(definition_rows),
+            "lexical_caller_candidate_references": len(candidate_rows),
+            "manually_reviewed_analysis_source_references": len(
+                analysis_source_rows
+            ),
+            "observation_artifact_references": len(observation_rows),
             "source_definitions": sum(
                 entry["kind"] == "source_definition" for entry in entries
             ),
@@ -407,7 +555,7 @@ def build_bundle(
 
 
 def _build_from_current_catalog(args: argparse.Namespace) -> dict[str, object]:
-    analysis, observations = _load_current_catalog()
+    analysis, observations, source_index = _load_current_catalog()
     game_root = _find_root(
         args.game_root,
         _candidate_game_roots(),
@@ -426,6 +574,7 @@ def _build_from_current_catalog(args: argparse.Namespace) -> dict[str, object]:
     return build_bundle(
         analysis=analysis,
         observations=observations,
+        source_index=source_index,
         game_root=game_root,
         runtime_root=runtime_root,
         output_root=args.output,

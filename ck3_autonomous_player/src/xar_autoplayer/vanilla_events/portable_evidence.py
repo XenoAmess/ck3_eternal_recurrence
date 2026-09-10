@@ -22,6 +22,7 @@ EVIDENCE_MANIFEST_SCHEMA: Final = (
     "xar.ck3.vanilla-event-portable-evidence-manifest"
 )
 EVIDENCE_INDEX_SCHEMA: Final = "xar.ck3.vanilla-event-evidence-index"
+EVIDENCE_LIST_SCHEMA: Final = "xar.ck3.vanilla-event-evidence-list"
 EVIDENCE_READ_SCHEMA: Final = "xar.ck3.vanilla-event-evidence-read"
 EVIDENCE_SCHEMA_VERSION: Final = 1
 MAX_EVIDENCE_READ_BYTES: Final = 64 * 1024
@@ -130,22 +131,91 @@ def _load_manifest(bundle_root: Path) -> dict[str, object]:
     return manifest
 
 
-def _validate_reference(reference: object) -> dict[str, str]:
+def _validate_reference(reference: object) -> dict[str, object]:
     if not isinstance(reference, dict) or set(reference) != {
+        "caller_candidate_resolution",
         "event_definition_key",
         "logical_path",
         "origin",
+        "provenance",
         "role",
+        "source_column",
+        "source_line",
     }:
         raise EvidenceBundleError("invalid evidence reference")
-    if not all(isinstance(value, str) and value for value in reference.values()):
-        raise EvidenceBundleError("evidence reference values must be non-empty strings")
+    for key in ("event_definition_key", "logical_path", "origin", "provenance", "role"):
+        if not isinstance(reference[key], str) or not reference[key]:
+            raise EvidenceBundleError(
+                "evidence reference identity values must be non-empty strings"
+            )
     origin = reference["origin"]
     if origin not in {"ck3_game", "runtime"}:
         raise EvidenceBundleError("invalid evidence reference origin")
+    provenance = reference["provenance"]
+    allowed_provenance = {
+        "captured-observation-artifact",
+        "generated-definition-index",
+        "lexical-caller-candidate-not-proven-runtime-caller",
+        "manually-reviewed-analysis-source",
+    }
+    if provenance not in allowed_provenance:
+        raise EvidenceBundleError("invalid evidence reference provenance")
     logical = PurePosixPath(reference["logical_path"])
     if logical.is_absolute() or ".." in logical.parts:
         raise EvidenceBundleError("unsafe evidence logical path")
+    line = reference["source_line"]
+    column = reference["source_column"]
+    resolution = reference["caller_candidate_resolution"]
+    if line is not None and (not _is_plain_int(line) or line < 1):
+        raise EvidenceBundleError("invalid evidence reference source line")
+    if column is not None and (not _is_plain_int(column) or column < 1):
+        raise EvidenceBundleError("invalid evidence reference source column")
+    if resolution not in {
+        None,
+        "external-definition-file",
+        "same-definition-file-only",
+    }:
+        raise EvidenceBundleError("invalid caller candidate resolution")
+    shape = (reference["role"], line, column, resolution, origin)
+    expected_shapes = {
+        "generated-definition-index": (
+            "event_definition",
+            "positive",
+            None,
+            None,
+            "ck3_game",
+        ),
+        "lexical-caller-candidate-not-proven-runtime-caller": (
+            "caller_candidate",
+            "positive",
+            "positive",
+            "resolution",
+            "ck3_game",
+        ),
+        "manually-reviewed-analysis-source": (
+            "analysis_source",
+            None,
+            None,
+            None,
+            "ck3_game",
+        ),
+    }
+    if provenance == "captured-observation-artifact":
+        if origin != "runtime" or any(
+            value is not None for value in (line, column, resolution)
+        ):
+            raise EvidenceBundleError("invalid captured observation provenance shape")
+    else:
+        expected = expected_shapes[provenance]
+        normalized_shape = (
+            shape[0],
+            "positive" if line is not None else None,
+            "positive" if column is not None else None,
+            "resolution" if resolution is not None else None,
+            shape[4],
+        )
+        if normalized_shape != expected:
+            raise EvidenceBundleError("invalid source provenance shape")
     return {key: reference[key] for key in sorted(reference)}
 
 
@@ -160,6 +230,12 @@ def _validated_entries(
     reference_count = 0
     source_count = 0
     observation_count = 0
+    provenance_counts = {
+        "generated-definition-index": 0,
+        "lexical-caller-candidate-not-proven-runtime-caller": 0,
+        "manually-reviewed-analysis-source": 0,
+        "captured-observation-artifact": 0,
+    }
     for raw_entry in manifest["evidence"]:  # type: ignore[index]
         if not isinstance(raw_entry, dict):
             raise EvidenceBundleError("portable evidence row must be an object")
@@ -219,8 +295,11 @@ def _validated_entries(
             key=lambda item: (
                 item["event_definition_key"],
                 item["origin"],
+                item["provenance"],
                 item["role"],
                 item["logical_path"],
+                item["source_line"] if item["source_line"] is not None else 0,
+                item["source_column"] if item["source_column"] is not None else 0,
             ),
         )
         if references != canonical_refs or len(
@@ -233,6 +312,7 @@ def _validated_entries(
                 raise EvidenceBundleError("portable evidence kind/origin mismatch")
             if _media_type_for_path(reference["logical_path"]) != media_type:
                 raise EvidenceBundleError("portable evidence path/media type mismatch")
+            provenance_counts[str(reference["provenance"])] += 1
         reference_count += len(references)
         if kind == "source_definition":
             source_count += 1
@@ -247,7 +327,19 @@ def _validated_entries(
     stats = manifest.get("statistics")
     expected_stats = {
         "evidence": len(entries),
+        "generated_definition_references": provenance_counts[
+            "generated-definition-index"
+        ],
+        "lexical_caller_candidate_references": provenance_counts[
+            "lexical-caller-candidate-not-proven-runtime-caller"
+        ],
+        "manually_reviewed_analysis_source_references": provenance_counts[
+            "manually-reviewed-analysis-source"
+        ],
         "observation_artifacts": observation_count,
+        "observation_artifact_references": provenance_counts[
+            "captured-observation-artifact"
+        ],
         "references": reference_count,
         "source_definitions": source_count,
     }
@@ -332,7 +424,11 @@ def _index_response(
         "event_definition_key": (
             event_definition_key if isinstance(event_definition_key, str) else None
         ),
-        "kind": kind if isinstance(kind, str) else None,
+        "kind": (
+            kind
+            if kind in {"source_definition", "observation_artifact"}
+            else None
+        ),
         "evidence": _json_clone(evidence),
         "unavailable_reason": unavailable_reason,
     }
@@ -429,6 +525,225 @@ def query_vanilla_event_evidence_index_v1(
     )
 
 
+def _list_response(
+    *,
+    status: str,
+    event_definition_key: object,
+    kind: object,
+    after_evidence_id: object,
+    limit: object,
+    dataset_sha256: str | None,
+    total_matches: int,
+    evidence: object,
+    next_after_evidence_id: str | None,
+    unavailable_reason: str | None,
+    invalid_parameter: str | None,
+) -> dict[str, JsonValue]:
+    return {
+        "schema": EVIDENCE_LIST_SCHEMA,
+        "schema_version": EVIDENCE_SCHEMA_VERSION,
+        "status": status,
+        "ck3_build": EXACT_CK3_BUILD,
+        "ck3_exe_sha256": EXACT_CK3_EXE_SHA256,
+        "event_definition_key": (
+            event_definition_key
+            if isinstance(event_definition_key, str)
+            else None
+        ),
+        "kind": (
+            kind
+            if kind in {"source_definition", "observation_artifact"}
+            else None
+        ),
+        "after_evidence_id": (
+            after_evidence_id
+            if isinstance(after_evidence_id, str)
+            and _SHA256.fullmatch(after_evidence_id) is not None
+            else None
+        ),
+        "limit": limit if _is_plain_int(limit) and 1 <= limit <= 100 else None,
+        "dataset_sha256": dataset_sha256,
+        "total_matches": total_matches,
+        "evidence": _json_clone(evidence),
+        "next_after_evidence_id": next_after_evidence_id,
+        "unavailable_reason": unavailable_reason,
+        "invalid_parameter": invalid_parameter,
+    }
+
+
+def list_vanilla_event_evidence_v1(
+    event_definition_key: object = None,
+    *,
+    kind: object = None,
+    after_evidence_id: object = None,
+    limit: object = 50,
+    ck3_build: object = EXACT_CK3_BUILD,
+    bundle_root: str | Path | None = None,
+) -> dict[str, JsonValue]:
+    """List portable evidence through a stable content-hash cursor.
+
+    Only logical, repository-relative provenance is returned.  Blob paths and
+    the machine-local bundle root are deliberately absent from this response.
+    The dataset identity is the SHA-256 of the checked-in manifest bytes.
+    """
+    invalid_parameter: str | None = None
+    unavailable_reason: str | None = None
+    if not isinstance(ck3_build, str) or ck3_build != EXACT_CK3_BUILD:
+        unavailable_reason = "unsupported_ck3_build"
+        invalid_parameter = "ck3_build"
+    elif event_definition_key is not None and (
+        not isinstance(event_definition_key, str)
+        or not event_definition_key.strip()
+    ):
+        unavailable_reason = "invalid_event_definition_key"
+        invalid_parameter = "event_definition_key"
+    elif kind not in {None, "source_definition", "observation_artifact"}:
+        unavailable_reason = "invalid_evidence_kind"
+        invalid_parameter = "kind"
+    elif (
+        after_evidence_id is not None
+        and (
+            not isinstance(after_evidence_id, str)
+            or _SHA256.fullmatch(after_evidence_id) is None
+        )
+    ):
+        unavailable_reason = "invalid_cursor"
+        invalid_parameter = "after_evidence_id"
+    elif not _is_plain_int(limit) or not 1 <= limit <= 100:
+        unavailable_reason = "invalid_limit"
+        invalid_parameter = "limit"
+    if unavailable_reason is not None:
+        return _list_response(
+            status="unavailable",
+            event_definition_key=event_definition_key,
+            kind=kind,
+            after_evidence_id=after_evidence_id,
+            limit=limit,
+            dataset_sha256=None,
+            total_matches=0,
+            evidence=[],
+            next_after_evidence_id=None,
+            unavailable_reason=unavailable_reason,
+            invalid_parameter=invalid_parameter,
+        )
+
+    root = Path(bundle_root) if bundle_root is not None else _BUNDLE_ROOT
+    try:
+        _, entries = _validated_entries(root, verify_payloads=False)
+        manifest_sha256 = _sha256((root / "manifest_v1.json").read_bytes()).upper()
+    except (EvidenceBundleError, OSError):
+        return _list_response(
+            status="unavailable",
+            event_definition_key=event_definition_key,
+            kind=kind,
+            after_evidence_id=after_evidence_id,
+            limit=limit,
+            dataset_sha256=None,
+            total_matches=0,
+            evidence=[],
+            next_after_evidence_id=None,
+            unavailable_reason="bundle_integrity_error",
+            invalid_parameter=None,
+        )
+    if after_evidence_id is not None and after_evidence_id not in entries:
+        return _list_response(
+            status="unavailable",
+            event_definition_key=event_definition_key,
+            kind=kind,
+            after_evidence_id=after_evidence_id,
+            limit=limit,
+            dataset_sha256=None,
+            total_matches=0,
+            evidence=[],
+            next_after_evidence_id=None,
+            unavailable_reason="invalid_cursor",
+            invalid_parameter="after_evidence_id",
+        )
+
+    rows: list[dict[str, object]] = []
+    event_seen = False
+    for evidence_id, entry in entries.items():
+        references = entry["references"]
+        assert isinstance(references, list)
+        if event_definition_key is not None:
+            selected_references = [
+                reference
+                for reference in references
+                if reference["event_definition_key"] == event_definition_key
+            ]
+            if selected_references:
+                event_seen = True
+            if not selected_references:
+                continue
+        else:
+            selected_references = references
+        if kind is not None and entry["kind"] != kind:
+            continue
+        rows.append(
+            {
+                "bytes": entry["bytes"],
+                "evidence_id": evidence_id,
+                "kind": entry["kind"],
+                "media_type": entry["media_type"],
+                "references": selected_references,
+                "sha256": entry["sha256"],
+            }
+        )
+    if event_definition_key is not None and not event_seen:
+        return _list_response(
+            status="unavailable",
+            event_definition_key=event_definition_key,
+            kind=kind,
+            after_evidence_id=after_evidence_id,
+            limit=limit,
+            dataset_sha256=None,
+            total_matches=0,
+            evidence=[],
+            next_after_evidence_id=None,
+            unavailable_reason="event_definition_key_not_indexed",
+            invalid_parameter="event_definition_key",
+        )
+
+    assert _is_plain_int(limit)
+    page_candidates = (
+        rows
+        if after_evidence_id is None
+        else [row for row in rows if row["evidence_id"] > after_evidence_id]
+    )
+    page = page_candidates[:limit]
+    next_after_evidence_id = (
+        str(page[-1]["evidence_id"])
+        if len(page_candidates) > limit and page
+        else None
+    )
+    return _list_response(
+        status="available",
+        event_definition_key=event_definition_key,
+        kind=kind,
+        after_evidence_id=after_evidence_id,
+        limit=limit,
+        dataset_sha256=manifest_sha256,
+        total_matches=len(rows),
+        evidence=page,
+        next_after_evidence_id=next_after_evidence_id,
+        unavailable_reason=None,
+        invalid_parameter=None,
+    )
+
+
+def portable_event_keys_v1(
+    bundle_root: str | Path | None = None,
+) -> frozenset[str]:
+    """Return event keys represented by the validated portable manifest."""
+    root = Path(bundle_root) if bundle_root is not None else _BUNDLE_ROOT
+    _, entries = _validated_entries(root, verify_payloads=False)
+    return frozenset(
+        reference["event_definition_key"]
+        for entry in entries.values()
+        for reference in entry["references"]  # type: ignore[union-attr]
+    )
+
+
 def _read_response(
     *,
     status: str,
@@ -449,6 +764,11 @@ def _read_response(
         "sha256": entry["sha256"] if entry is not None else None,
         "kind": entry["kind"] if entry is not None else None,
         "media_type": entry["media_type"] if entry is not None else None,
+        "historical_artifact_may_contain_nonportable_locators": (
+            entry["kind"] == "observation_artifact"
+            if entry is not None
+            else None
+        ),
         "offset": offset if _is_plain_int(offset) and offset >= 0 else None,
         "content_bytes": len(content) if content is not None else None,
         "total_bytes": entry["bytes"] if entry is not None else None,
@@ -562,11 +882,14 @@ def read_vanilla_event_evidence_v1(
 
 __all__ = [
     "EVIDENCE_INDEX_SCHEMA",
+    "EVIDENCE_LIST_SCHEMA",
     "EVIDENCE_MANIFEST_SCHEMA",
     "EVIDENCE_READ_SCHEMA",
     "EVIDENCE_SCHEMA_VERSION",
     "EvidenceBundleError",
     "MAX_EVIDENCE_READ_BYTES",
+    "list_vanilla_event_evidence_v1",
+    "portable_event_keys_v1",
     "query_vanilla_event_evidence_index_v1",
     "read_vanilla_event_evidence_v1",
     "validate_portable_evidence_bundle_v1",

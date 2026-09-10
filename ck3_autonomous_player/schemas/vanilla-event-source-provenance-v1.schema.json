@@ -1,0 +1,132 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://xenoamess.example/schemas/vanilla-event-source-provenance-v1.schema.json",
+  "title": "Vanilla event source provenance v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "schema_version",
+    "status",
+    "key",
+    "build",
+    "ck3_exe_sha256",
+    "dataset_sha256",
+    "namespace",
+    "definition",
+    "caller_candidate_resolution",
+    "caller_candidates",
+    "caller_candidates_are_lexical_only",
+    "caller_candidates_review_status",
+    "unavailable_reason",
+    "invalid_parameter"
+  ],
+  "properties": {
+    "schema": {
+      "const": "xar.ck3.vanilla-event-source-provenance"
+    },
+    "schema_version": {
+      "const": 1
+    },
+    "status": {
+      "enum": ["available", "unavailable"]
+    },
+    "key": {
+      "type": ["string", "null"]
+    },
+    "build": {
+      "type": ["string", "null"]
+    },
+    "ck3_exe_sha256": {
+      "type": ["string", "null"],
+      "pattern": "^[0-9A-F]{64}$"
+    },
+    "dataset_sha256": {
+      "type": ["string", "null"],
+      "pattern": "^[0-9A-F]{64}$"
+    },
+    "namespace": {
+      "type": ["string", "null"]
+    },
+    "definition": {
+      "oneOf": [
+        {"$ref": "#/$defs/source_record"},
+        {"type": "null"}
+      ]
+    },
+    "caller_candidate_resolution": {
+      "enum": [
+        "external-definition-file",
+        "same-definition-file-only",
+        null
+      ]
+    },
+    "caller_candidates": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/caller_candidate"
+      }
+    },
+    "caller_candidates_are_lexical_only": {
+      "const": true
+    },
+    "caller_candidates_review_status": {
+      "const": "not_manually_reviewed_as_call_edges"
+    },
+    "unavailable_reason": {
+      "type": ["string", "null"],
+      "enum": [
+        "unsupported_ck3_build",
+        "invalid_event_definition_key",
+        "source_index_integrity_error",
+        "event_definition_key_not_indexed",
+        null
+      ]
+    },
+    "invalid_parameter": {
+      "type": ["string", "null"],
+      "enum": ["key", "build", null]
+    }
+  },
+  "$defs": {
+    "portable_path": {
+      "type": "string",
+      "minLength": 1,
+      "not": {
+        "pattern": "^(?:[A-Za-z]:|/|\\\\)"
+      }
+    },
+    "sha256": {
+      "type": "string",
+      "pattern": "^[0-9A-F]{64}$"
+    },
+    "source_record": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["relative_path", "line", "file_sha256"],
+      "properties": {
+        "relative_path": {"$ref": "#/$defs/portable_path"},
+        "line": {"type": "integer", "minimum": 1},
+        "file_sha256": {"$ref": "#/$defs/sha256"}
+      }
+    },
+    "caller_candidate": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "relative_path",
+        "line",
+        "column",
+        "file_sha256",
+        "kind"
+      ],
+      "properties": {
+        "relative_path": {"$ref": "#/$defs/portable_path"},
+        "line": {"type": "integer", "minimum": 1},
+        "column": {"type": "integer", "minimum": 1},
+        "file_sha256": {"$ref": "#/$defs/sha256"},
+        "kind": {"const": "exact-token-lexical-candidate"}
+      }
+    }
+  }
+}

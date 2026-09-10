@@ -15,6 +15,7 @@ from .registry import EXACT_CK3_BUILD, EXACT_CK3_EXE_SHA256
 
 SOURCE_INDEX_SCHEMA: Final = "xar.ck3.vanilla-event-source-index"
 SOURCE_INDEX_SCHEMA_VERSION: Final = 1
+SOURCE_PROVENANCE_SCHEMA: Final = "xar.ck3.vanilla-event-source-provenance"
 SOURCE_INDEX_RESOURCE: Final = "data/source_index_1_19_0_6.json"
 _SHA256_PATTERN: Final = re.compile(r"^[0-9A-F]{64}$")
 
@@ -258,13 +259,109 @@ def query_vanilla_event_source_v1(
     }
 
 
+def query_vanilla_event_source_provenance_v1(
+    key: object,
+    build: object = EXACT_CK3_BUILD,
+    *,
+    source_index: Mapping[str, object] | None = None,
+) -> dict[str, object]:
+    """Return portable provenance without promoting lexical hits to call edges."""
+    invalid_parameter: str | None = None
+    unavailable_reason: str | None = None
+    if not isinstance(build, str) or build != EXACT_CK3_BUILD:
+        invalid_parameter = "build"
+        unavailable_reason = "unsupported_ck3_build"
+    elif not isinstance(key, str) or not key.strip():
+        invalid_parameter = "key"
+        unavailable_reason = "invalid_event_definition_key"
+    if unavailable_reason is not None:
+        return {
+            "schema": SOURCE_PROVENANCE_SCHEMA,
+            "schema_version": SOURCE_INDEX_SCHEMA_VERSION,
+            "status": "unavailable",
+            "key": key if isinstance(key, str) else None,
+            "build": build if isinstance(build, str) else None,
+            "ck3_exe_sha256": (
+                EXACT_CK3_EXE_SHA256 if build == EXACT_CK3_BUILD else None
+            ),
+            "dataset_sha256": None,
+            "namespace": None,
+            "definition": None,
+            "caller_candidate_resolution": None,
+            "caller_candidates": [],
+            "caller_candidates_are_lexical_only": True,
+            "caller_candidates_review_status": "not_manually_reviewed_as_call_edges",
+            "unavailable_reason": unavailable_reason,
+            "invalid_parameter": invalid_parameter,
+        }
+
+    assert isinstance(key, str)
+    try:
+        document = (
+            load_vanilla_event_source_index()
+            if source_index is None
+            else validate_vanilla_event_source_index(source_index)
+        )
+    except (OSError, VanillaEventSourceIndexError):
+        return {
+            "schema": SOURCE_PROVENANCE_SCHEMA,
+            "schema_version": SOURCE_INDEX_SCHEMA_VERSION,
+            "status": "unavailable",
+            "key": key,
+            "build": build,
+            "ck3_exe_sha256": EXACT_CK3_EXE_SHA256,
+            "dataset_sha256": None,
+            "namespace": None,
+            "definition": None,
+            "caller_candidate_resolution": None,
+            "caller_candidates": [],
+            "caller_candidates_are_lexical_only": True,
+            "caller_candidates_review_status": "not_manually_reviewed_as_call_edges",
+            "unavailable_reason": "source_index_integrity_error",
+            "invalid_parameter": None,
+        }
+    events = _require_mapping(document["events"], path="source_index.events")
+    raw_event = events.get(key)
+    event = _require_mapping(
+        raw_event,
+        path=f"source_index.events[{key!r}]",
+    ) if raw_event is not None else None
+    return {
+        "schema": SOURCE_PROVENANCE_SCHEMA,
+        "schema_version": SOURCE_INDEX_SCHEMA_VERSION,
+        "status": "available" if event is not None else "unavailable",
+        "key": key,
+        "build": build,
+        "ck3_exe_sha256": EXACT_CK3_EXE_SHA256,
+        "dataset_sha256": document["dataset_sha256"],
+        "namespace": event["namespace"] if event is not None else None,
+        "definition": (
+            deepcopy(event["definition"]) if event is not None else None
+        ),
+        "caller_candidate_resolution": (
+            event["caller_candidate_resolution"] if event is not None else None
+        ),
+        "caller_candidates": (
+            deepcopy(event["caller_candidates"]) if event is not None else []
+        ),
+        "caller_candidates_are_lexical_only": True,
+        "caller_candidates_review_status": "not_manually_reviewed_as_call_edges",
+        "unavailable_reason": (
+            None if event is not None else "event_definition_key_not_indexed"
+        ),
+        "invalid_parameter": None,
+    }
+
+
 __all__ = [
     "SOURCE_INDEX_RESOURCE",
     "SOURCE_INDEX_SCHEMA",
     "SOURCE_INDEX_SCHEMA_VERSION",
+    "SOURCE_PROVENANCE_SCHEMA",
     "VanillaEventSourceIndexError",
     "compute_source_index_dataset_sha256",
     "load_vanilla_event_source_index",
     "query_vanilla_event_source_v1",
+    "query_vanilla_event_source_provenance_v1",
     "validate_vanilla_event_source_index",
 ]

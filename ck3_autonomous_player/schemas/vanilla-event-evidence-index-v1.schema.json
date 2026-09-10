@@ -56,12 +56,19 @@
       "type": "object",
       "additionalProperties": false,
       "required": [
+        "caller_candidate_resolution",
         "event_definition_key",
         "logical_path",
         "origin",
-        "role"
+        "provenance",
+        "role",
+        "source_column",
+        "source_line"
       ],
       "properties": {
+        "caller_candidate_resolution": {
+          "enum": ["external-definition-file", "same-definition-file-only", null]
+        },
         "event_definition_key": {
           "type": "string",
           "minLength": 1
@@ -73,9 +80,25 @@
         "origin": {
           "enum": ["ck3_game", "runtime"]
         },
+        "provenance": {
+          "enum": [
+            "captured-observation-artifact",
+            "generated-definition-index",
+            "lexical-caller-candidate-not-proven-runtime-caller",
+            "manually-reviewed-analysis-source"
+          ]
+        },
         "role": {
           "type": "string",
           "minLength": 1
+        },
+        "source_column": {
+          "type": ["integer", "null"],
+          "minimum": 1
+        },
+        "source_line": {
+          "type": ["integer", "null"],
+          "minimum": 1
         }
       }
     },

@@ -55,6 +55,7 @@ def _offline_knowledge_payload(
     manifest = setup.current_vanilla_event_knowledge_manifest()
     return json.dumps({
         "tool_listed": tool_listed,
+        "all_offline_tools_listed": True,
         "contract_count": (
             manifest["current_contract_count"]
             if contract_count is None
@@ -73,6 +74,24 @@ def _offline_knowledge_payload(
         "query_status": "available",
         "query_contract_non_null": True,
         "query_analysis_non_null": True,
+        "knowledge_list_is_error": False,
+        "knowledge_list_status": "available",
+        "knowledge_dataset_sha256": manifest["knowledge_dataset_sha256"],
+        "evidence_list_is_error": False,
+        "evidence_list_status": "available",
+        "evidence_count": manifest["portable_evidence_count"],
+        "evidence_dataset_sha256": manifest[
+            "portable_evidence_dataset_sha256"
+        ],
+        "evidence_read_is_error": False,
+        "evidence_read_status": "available",
+        "evidence_read_id_matches": True,
+        "source_is_error": False,
+        "source_status": "available",
+        "source_dataset_sha256": manifest[
+            "source_provenance_dataset_sha256"
+        ],
+        "source_candidates_lexical_only": True,
         "requires_ck3": False,
     })
 
@@ -159,11 +178,23 @@ class PortableCodexMcpSetupTests(unittest.TestCase):
             knowledge["tool"], setup.VANILLA_EVENT_KNOWLEDGE_TOOL
         )
         self.assertEqual(
+            set(knowledge["tools"]),
+            set(setup.VANILLA_EVENT_OFFLINE_TOOLS),
+        )
+        self.assertEqual(
             knowledge["schema"], "xar.ck3.vanilla-event-knowledge"
         )
         self.assertEqual(knowledge["schema_version"], 1)
         self.assertEqual(knowledge["current_contract_count"], 167)
         self.assertEqual(knowledge["current_analysis_count"], 167)
+        self.assertEqual(len(knowledge["knowledge_dataset_sha256"]), 64)
+        self.assertGreater(knowledge["portable_evidence_count"], 0)
+        self.assertEqual(
+            len(knowledge["portable_evidence_dataset_sha256"]), 64
+        )
+        self.assertEqual(
+            len(knowledge["source_provenance_dataset_sha256"]), 64
+        )
         self.assertEqual(
             knowledge["count_semantics"],
             "current-revision-data-fact-not-abi",
@@ -381,10 +412,16 @@ class PortableCodexMcpSetupTests(unittest.TestCase):
             )
         self.assertTrue(passed, detail)
         self.assertTrue(payload["tool_listed"])
+        self.assertTrue(payload["all_offline_tools_listed"])
         self.assertEqual(payload["contract_count"], 167)
         self.assertEqual(payload["analysis_count"], 167)
         self.assertEqual(payload["query_status"], "available")
         self.assertTrue(payload["query_analysis_non_null"])
+        self.assertEqual(payload["knowledge_list_status"], "available")
+        self.assertEqual(payload["evidence_list_status"], "available")
+        self.assertEqual(payload["evidence_read_status"], "available")
+        self.assertEqual(payload["source_status"], "available")
+        self.assertTrue(payload["source_candidates_lexical_only"])
         self.assertFalse(payload["requires_ck3"])
 
 

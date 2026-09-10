@@ -6,7 +6,15 @@ import argparse
 import importlib
 import os
 from pathlib import Path
-from xar_autoplayer.vanilla_events import query_vanilla_event_knowledge_v1
+from xar_autoplayer.vanilla_events import (
+    ck3_list_vanilla_event_knowledge_v1 as list_vanilla_event_knowledge_v1,
+    list_vanilla_event_evidence_v1,
+    portable_event_keys_v1,
+    query_vanilla_event_knowledge_v1,
+    query_vanilla_event_source_provenance_v1,
+    read_vanilla_event_evidence_v1,
+)
+from xar_autoplayer.vanilla_events.portable_evidence import EvidenceBundleError
 
 from .driver import (
     DevelopmentReportDriver,
@@ -44,6 +52,72 @@ def _ck3_query_vanilla_event_knowledge_v1(
         event_definition_key,
         ck3_build=ck3_build,
     )
+
+
+def _ck3_list_vanilla_event_knowledge_v1(
+    ck3_build: str = "1.19.0.6",
+    query: str | None = None,
+    namespace: str | None = None,
+    evidence_class: str = "any",
+    has_observations: bool | None = None,
+    after_key: str | None = None,
+    limit: int = 50,
+) -> dict[str, object]:
+    """Discover frozen event records with stable keyset pagination."""
+    try:
+        portable_keys = portable_event_keys_v1()
+    except EvidenceBundleError:
+        portable_keys = frozenset()
+    return list_vanilla_event_knowledge_v1(
+        build=ck3_build,
+        query=query,
+        namespace=namespace,
+        evidence_class=evidence_class,
+        has_observations=has_observations,
+        after_key=after_key,
+        limit=limit,
+        portable_event_keys=portable_keys,
+    )
+
+
+def _ck3_list_vanilla_event_evidence_v1(
+    event_definition_key: str | None = None,
+    kind: str | None = None,
+    after_evidence_id: str | None = None,
+    limit: int = 50,
+    ck3_build: str = "1.19.0.6",
+) -> dict[str, object]:
+    """List content-addressed portable evidence without host paths."""
+    return list_vanilla_event_evidence_v1(
+        event_definition_key,
+        kind=kind,
+        after_evidence_id=after_evidence_id,
+        limit=limit,
+        ck3_build=ck3_build,
+    )
+
+
+def _ck3_read_vanilla_event_evidence_v1(
+    evidence_id: str,
+    offset: int = 0,
+    max_bytes: int = 64 * 1024,
+    ck3_build: str = "1.19.0.6",
+) -> dict[str, object]:
+    """Read one verified, bounded chunk by its uncompressed SHA-256."""
+    return read_vanilla_event_evidence_v1(
+        evidence_id,
+        offset=offset,
+        max_bytes=max_bytes,
+        ck3_build=ck3_build,
+    )
+
+
+def _ck3_query_vanilla_event_source_provenance_v1(
+    key: str,
+    build: str = "1.19.0.6",
+) -> dict[str, object]:
+    """Read generated source provenance and unproven lexical caller hits."""
+    return query_vanilla_event_source_provenance_v1(key, build)
 
 
 def load_driver(
@@ -1182,6 +1256,67 @@ def create_server(driver: GameplayBridgeDriver):
         )
 
     @server.tool()
+    def ck3_list_vanilla_event_knowledge_v1(
+        ck3_build: str = "1.19.0.6",
+        query: str | None = None,
+        namespace: str | None = None,
+        evidence_class: str = "any",
+        has_observations: bool | None = None,
+        after_key: str | None = None,
+        limit: int = 50,
+    ) -> dict[str, object]:
+        """Discover offline event knowledge with a stable dataset cursor."""
+        return _ck3_list_vanilla_event_knowledge_v1(
+            ck3_build=ck3_build,
+            query=query,
+            namespace=namespace,
+            evidence_class=evidence_class,
+            has_observations=has_observations,
+            after_key=after_key,
+            limit=limit,
+        )
+
+    @server.tool()
+    def ck3_list_vanilla_event_evidence_v1(
+        event_definition_key: str | None = None,
+        kind: str | None = None,
+        after_evidence_id: str | None = None,
+        limit: int = 50,
+        ck3_build: str = "1.19.0.6",
+    ) -> dict[str, object]:
+        """List portable evidence metadata; paths remain repository-relative."""
+        return _ck3_list_vanilla_event_evidence_v1(
+            event_definition_key,
+            kind=kind,
+            after_evidence_id=after_evidence_id,
+            limit=limit,
+            ck3_build=ck3_build,
+        )
+
+    @server.tool()
+    def ck3_read_vanilla_event_evidence_v1(
+        evidence_id: str,
+        offset: int = 0,
+        max_bytes: int = 64 * 1024,
+        ck3_build: str = "1.19.0.6",
+    ) -> dict[str, object]:
+        """Read one verified evidence chunk by content SHA-256."""
+        return _ck3_read_vanilla_event_evidence_v1(
+            evidence_id,
+            offset=offset,
+            max_bytes=max_bytes,
+            ck3_build=ck3_build,
+        )
+
+    @server.tool()
+    def ck3_query_vanilla_event_source_provenance_v1(
+        key: str,
+        build: str = "1.19.0.6",
+    ) -> dict[str, object]:
+        """Read definition provenance and lexical, unproven caller candidates."""
+        return _ck3_query_vanilla_event_source_provenance_v1(key, build)
+
+    @server.tool()
     def ck3_preview_active_combat_retreat_v1(
         selected_public_cunit_id: int,
         target_province_id: int,
@@ -1399,6 +1534,18 @@ def create_server(driver: GameplayBridgeDriver):
     )
     _forbid_unknown_tool_arguments_v1(
         server, "ck3_query_vanilla_event_knowledge_v1"
+    )
+    _forbid_unknown_tool_arguments_v1(
+        server, "ck3_list_vanilla_event_knowledge_v1"
+    )
+    _forbid_unknown_tool_arguments_v1(
+        server, "ck3_list_vanilla_event_evidence_v1"
+    )
+    _forbid_unknown_tool_arguments_v1(
+        server, "ck3_read_vanilla_event_evidence_v1"
+    )
+    _forbid_unknown_tool_arguments_v1(
+        server, "ck3_query_vanilla_event_source_provenance_v1"
     )
     return server
 

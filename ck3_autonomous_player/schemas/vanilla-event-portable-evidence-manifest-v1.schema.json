@@ -38,13 +38,21 @@
       "additionalProperties": false,
       "required": [
         "evidence",
+        "generated_definition_references",
+        "lexical_caller_candidate_references",
+        "manually_reviewed_analysis_source_references",
         "observation_artifacts",
+        "observation_artifact_references",
         "references",
         "source_definitions"
       ],
       "properties": {
         "evidence": {"type": "integer", "minimum": 0},
+        "generated_definition_references": {"type": "integer", "minimum": 0},
+        "lexical_caller_candidate_references": {"type": "integer", "minimum": 0},
+        "manually_reviewed_analysis_source_references": {"type": "integer", "minimum": 0},
         "observation_artifacts": {"type": "integer", "minimum": 0},
+        "observation_artifact_references": {"type": "integer", "minimum": 0},
         "references": {"type": "integer", "minimum": 0},
         "source_definitions": {"type": "integer", "minimum": 0}
       }
@@ -86,12 +94,34 @@
             "items": {
               "type": "object",
               "additionalProperties": false,
-              "required": ["event_definition_key", "logical_path", "origin", "role"],
+              "required": [
+                "caller_candidate_resolution",
+                "event_definition_key",
+                "logical_path",
+                "origin",
+                "provenance",
+                "role",
+                "source_column",
+                "source_line"
+              ],
               "properties": {
+                "caller_candidate_resolution": {
+                  "enum": ["external-definition-file", "same-definition-file-only", null]
+                },
                 "event_definition_key": {"type": "string", "minLength": 1},
                 "logical_path": {"type": "string", "minLength": 1},
                 "origin": {"enum": ["ck3_game", "runtime"]},
-                "role": {"type": "string", "minLength": 1}
+                "provenance": {
+                  "enum": [
+                    "captured-observation-artifact",
+                    "generated-definition-index",
+                    "lexical-caller-candidate-not-proven-runtime-caller",
+                    "manually-reviewed-analysis-source"
+                  ]
+                },
+                "role": {"type": "string", "minLength": 1},
+                "source_column": {"type": ["integer", "null"], "minimum": 1},
+                "source_line": {"type": ["integer", "null"], "minimum": 1}
               }
             }
           },
