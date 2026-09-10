@@ -46,7 +46,8 @@ event-target list 的计数接口不同。
 - 每次成功 backfill 或 late join 都递增 `zg361_b1_subject_n`，让 80 人容量门真实生效。
 - generation 已存在时递增；旧存档缺失时显式 materialize 为 1。
 - band ordered max 使用已显式计算的 `zg361_b1_band_middle_n`，不再读取 persistent list_size。
-- 结算 scoreboard 使用 `ordered_in_list variable = zg361_b1_subjects` 和固定 80 行上限，不再以 temporary-list
+- 结算 scoreboard 使用 `ordered_in_list variable = zg361_b1_subjects`；R386 进一步证明上限必须钳制到当前
+  `zg361_cohort_n`（最高 80），不能向短于 80 的持久名单提交固定 `max=80`；不再以 temporary-list
   selector/size 读取持久 roster；否则 state 8 后仍可能发布空榜单。
 - 不重写 quota 架构；commit `95f6824` 的 temporary-list 清理作为独立防回归保留。
 

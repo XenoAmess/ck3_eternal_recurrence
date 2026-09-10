@@ -558,11 +558,12 @@ def check_runtime_invariants() -> None:
     if not re.search(
         r"ordered_in_list\s*=\s*\{.*?"
         r"variable\s*=\s*zg361_b1_subjects.*?"
-        r"max\s*=\s*80",
+        r"max\s*=\s*\{\s*value\s*=\s*var:zg361_cohort_n\s+max\s*=\s*80\s*\}.*?"
+        r"check_range_bounds\s*=\s*no",
         effects,
         re.S,
     ):
-        err("scoreboard must iterate the persistent B1 roster with an 80-row cap")
+        err("scoreboard must iterate the persistent B1 roster with its dynamic bounded row count")
     if "list_size:zg361_b1_subjects" in effects:
         err("persistent B1 roster must not use temporary-list list_size syntax")
     if "zg361_scoreboard_candidates" in effects:

@@ -1161,7 +1161,8 @@ class ScoreboardSnapshotTests(unittest.TestCase):
             re.compile(
                 r"ordered_in_list\s*=\s*\{.*?"
                 r"variable\s*=\s*zg361_b1_subjects.*?"
-                r"max\s*=\s*80",
+                r"max\s*=\s*\{\s*value\s*=\s*var:zg361_cohort_n\s+max\s*=\s*80\s*\}.*?"
+                r"check_range_bounds\s*=\s*no",
                 re.S,
             ),
         )

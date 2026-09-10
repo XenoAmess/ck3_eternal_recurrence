@@ -1143,14 +1143,16 @@ def test_unavailable_progress_reports_native_reason_and_widgets() -> None:
 
 
 @pytest.mark.parametrize(
-    "native_error",
+    ("native_error", "direct_message"),
     (
-        "ZhongGuo B1-cycle snapshot changed or is not ready",
-        "ZhongGuo B1-cycle snapshot revision is stale",
+        ("ZhongGuo B1-cycle snapshot changed or is not ready", False),
+        ("ZhongGuo B1-cycle snapshot revision is stale", False),
+        ("native ZhongGuo B1-cycle query requires a paused snapshot", True),
     ),
 )
 def test_runtime_probe_rebinds_exact_snapshot_publication_race(
     native_error: str,
+    direct_message: bool,
 ) -> None:
     class _ProbeService:
         def __init__(self) -> None:
@@ -1182,9 +1184,12 @@ def test_runtime_probe_rebinds_exact_snapshot_publication_race(
         nonlocal calls
         calls += 1
         if calls == 1:
-            raise production.BridgeUnavailableError(
-                f"native gameplay step failed: {native_error}"
+            message = (
+                native_error
+                if direct_message
+                else f"native gameplay step failed: {native_error}"
             )
+            raise production.BridgeUnavailableError(message)
         return None
 
     def settle(_seconds: float) -> None:
@@ -1206,9 +1211,10 @@ def test_runtime_probe_rebinds_exact_snapshot_publication_race(
     assert evidence["runtime_diagnostic_probe_rebinds"] == [
         {
             "attempt": 1,
-            "error": (
-                "BridgeUnavailableError: native gameplay step failed: "
-                f"{native_error}"
+            "error": "BridgeUnavailableError: " + (
+                native_error
+                if direct_message
+                else f"native gameplay step failed: {native_error}"
             ),
             "native_error": native_error,
             "before": {
@@ -1263,13 +1269,12 @@ def test_runtime_probe_keeps_stable_or_unknown_rejection_red() -> None:
 
     def exact_rejection() -> str | None:
         raise production.BridgeUnavailableError(
-            "native gameplay step failed: ZhongGuo B1-cycle snapshot "
-            "changed or is not ready"
+            "native ZhongGuo B1-cycle query requires a paused snapshot"
         )
 
     with pytest.raises(
         production.BridgeUnavailableError,
-        match="B1-cycle snapshot changed or is not ready",
+        match="requires a paused snapshot",
     ):
         production._run_runtime_diagnostic_probe(
             _StableService(),

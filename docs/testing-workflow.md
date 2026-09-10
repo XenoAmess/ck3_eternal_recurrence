@@ -2399,3 +2399,19 @@ Python-only 热重跑已证明 `.0081` 会即时变为 `SCENARIO_INVALID / NOT_E
 event instance `1058` 尝试 park，触发 `BridgeUnavailableError` 并由 supervisor 清理 CK3。因此这是 wrapper cleanup RED，
 不推翻场景失效成功。后续 R384 / PID `38864` 已由 operator MCP 自主启动并成为当前唯一实例，现停在上述 D+403
 产品 RED；游戏脚本已经变化，故提交推送后须先受控清理 R384、再次确认零实例，再递增轮次做 fresh replay，不能热恢复冒充验证。
+
+### B1 最终 callback 后的 survivor compaction（R386）
+
+R386 证明 quota/agenda 在进入 state 7 时可以完整守恒，但 `.122` 的最后一个独立 callback 仍可能晚于某个 weak
+Character row 的失效。resolver 在这个 final barrier prune 后不得直接 finish，也不得把 MCP anomaly 当成 observer 假阳性。
+若 `closure=1 / pending=0 / processed=expected`，应以 pruned `processing_subjects` 压缩最终域：保留幸存 grade 与
+`processing_order`；target 取幸存档位 recount；重建 agenda 审计/list/hash；重封 board/reward receipt；再次 conservation
+通过后才能发布。该路径不属于第二次 quota rebuild，禁止递增 rebuild generation，也禁止因死亡 rerank 其他人。
+
+持久名单的 `ordered_in_list max` 还必须小于等于该次实际名单长度。最高容量 80 不是可直接提交的固定 max；scoreboard
+应使用当前 cohort 数并钳制到 80，同时保留 `check_range_bounds=no`。R386 的 73 行名单配固定 `max=80` 已产生真实 range error。
+
+`resume-map` 提交后，外层旧 paused frame 与内层 fresh running frame 可能短暂交错；直接文本
+`native ZhongGuo B1-cycle query requires a paused snapshot` 只允许进入精确白名单、最多四次、零状态写的 probe rebind。
+若绑定稳定且连续四次仍拒绝，保持 harness RED；未知错误立即 RED。Python-only 合同可以同 PID 热加载，但若同一工作包还
+修改了 CK3 游戏脚本，最终产品复验仍必须清理旧实例并递增轮次 fresh launch。

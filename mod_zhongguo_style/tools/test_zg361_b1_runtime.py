@@ -185,8 +185,8 @@ class B1RuntimeFoundationTests(unittest.TestCase):
         self.assertEqual(keys_by_part[5][0], EFFECT_SPLIT_KEY)
         self.assertNotIn(EFFECT_SPLIT_KEY, keys_by_part[0])
         all_keys = tuple(key for part in keys_by_part for key in part)
-        self.assertEqual(len(all_keys), 81)
-        self.assertEqual(len(set(all_keys)), 81)
+        self.assertEqual(len(all_keys), 82)
+        self.assertEqual(len(set(all_keys)), 82)
 
         observed_blocks = []
         for relative in B1_EFFECT_FILES:
@@ -3402,6 +3402,41 @@ class B1RuntimeFoundationTests(unittest.TestCase):
                 "zg361_b1_prune_unavailable_subjects_effect = yes"
             ),
             reopen_resolver.index("variable = zg361_b1_processing_subjects"),
+        )
+
+        compact = top_level_block(
+            self.effects, "zg361_b1_compact_final_survivor_domain_effect"
+        )
+        for target, recount in (
+            ("zg361_pending_375_n", "zg361_b1_quota_recount_top"),
+            ("zg361_pending_35_n", "zg361_b1_quota_recount_middle"),
+            ("zg361_pending_325_n", "zg361_b1_quota_recount_bottom"),
+        ):
+            self.assertIn(f"name = {target} value = var:{recount}", compact)
+        for token in (
+            "clear_variable_list = zg361_b1_agenda_subjects",
+            "name = zg361_b1_agenda_n value = 0",
+            "name = zg361_b1_agenda_reviewed_n value = 0",
+            "name = zg361_b1_agenda_skipped_n value = 0",
+            "name = zg361_b1_agenda_hash",
+            "name = zg361_b1_agenda_new_hash value = var:zg361_b1_agenda_hash",
+            "name = zg361_b1_sealed_board_hash",
+            "name = zg361_b1_reward_snapshot_hash",
+            "name = zg361_b1_pending_reward_expected_n value = 0",
+            "name = zg361_b1_final_survivor_compaction_valid value = 1",
+        ):
+            self.assertIn(token, compact)
+        self.assertNotIn("zg361_b1_rebuild_local_quota_effect", compact)
+        self.assertNotIn("zg361_b1_rerank_frozen_quota_book_effect", compact)
+        self.assertNotIn("zg361_b1_quota_rebuild_generation", compact)
+        self.assertNotRegex(compact, r"name = zg361_pending_grade\s+value")
+        self.assertLess(
+            reopen_resolver.index("zg361_b1_prune_unavailable_subjects_effect = yes"),
+            reopen_resolver.index("zg361_b1_compact_final_survivor_domain_effect = yes"),
+        )
+        self.assertLess(
+            reopen_resolver.index("zg361_b1_compact_final_survivor_domain_effect = yes"),
+            reopen_resolver.index("var:zg361_b1_final_survivor_compaction_valid = 1"),
         )
 
         reopen_callback = top_level_block(self.events, "zg361b1.122")

@@ -224,6 +224,7 @@ _TRANSIENT_PROGRESS_BINDING_ERRORS = (
 _TRANSIENT_RUNTIME_DIAGNOSTIC_PROBE_NATIVE_ERRORS = (
     "ZhongGuo B1-cycle snapshot changed or is not ready",
     "ZhongGuo B1-cycle snapshot revision is stale",
+    "native ZhongGuo B1-cycle query requires a paused snapshot",
 )
 
 
@@ -357,6 +358,7 @@ def _run_runtime_diagnostic_probe(
                     marker
                     for marker in _TRANSIENT_RUNTIME_DIAGNOSTIC_PROBE_NATIVE_ERRORS
                     if native_error == marker
+                    or str(error) == marker
                     or str(error) == f"native gameplay step failed: {marker}"
                 ),
                 None,

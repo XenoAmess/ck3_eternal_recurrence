@@ -172,7 +172,8 @@ zg361_publish_scoreboard_effect = {
 		ordered_in_list = {
 			variable = zg361_b1_subjects
 			order_by = var:zg361_kpi
-			max = 80
+			max = { value = var:zg361_cohort_n max = 80 }
+			check_range_bounds = no
 			limit = {
 				has_variable = zg361_b1_case_owner
 				has_variable = zg361_b1_cycle_serial

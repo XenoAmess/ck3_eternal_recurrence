@@ -196,6 +196,13 @@ R79 fresh split product 实机确认上述签名归零。
 | character_event 窗口右半边空着 | 窗口类型固定布局：左文本列 + 右立绘区，无立绘角色就空 | 把人物合成进背景图右半（tools/compose_avatar.py）；或改用 `type = letter_event` 窄窗（信纸风，无大图背景） |
 | 事件窗口尺寸想改 | window 类型由事件 type 决定，theme 只管图标/标题底/音效/默认背景 | 不想覆盖全局 GUI 就别动；用构图迁就窗口 |
 
+## 持久名单的动态排序上限
+
+| 现象 | 原因 | 解法 |
+|---|---|---|
+| `ordered_in_list max is bigger than list size`，即使产品容量上限固定为 80 | `max=80` 是本次迭代数量，不是容量声明；prune 后持久 `variable_list` 可能只有 73 行 | 先维护 owner 上的真实行数，再用 `max = { value = var:<count> max = 80 }`；需要时加 `check_range_bounds = no`，但不能依赖它掩盖固定 max 越界 |
+| state 7 的 quota/agenda 已封板，最后 callback prune 后仍进入 state 8 | final resolver 只清 weak row，没有重新核对封板域，历史 target/agenda 与幸存 processing 分裂 | 在 finish 前做 survivor compact/reseal：不 rerank幸存者；target 取实际 recount；agenda/hash/reward receipt 全部绑定同一 pruned processing 域；再次 conservation 失败就保留 RED |
+
 ## 调试技巧速查
 
 - 解析验证：启动到主菜单 → 读 `error.log`
