@@ -33,3 +33,494 @@ xqol_reconcile_character_transfer_guard_effect = {
 		remove_character_flag = ai_should_not_transfer
 	}
 }
+
+xqol_try_call_free_ally_effect = {
+	$CANDIDATE$ = { save_scope_as = recipient }
+	if = {
+		limit = {
+			scope:recipient = {
+				is_ai = yes
+				is_ruler = yes
+			}
+			is_character_interaction_valid = {
+				recipient = scope:recipient
+				interaction = call_ally_interaction
+			}
+			xqol_free_call_target_valid_trigger = yes
+		}
+		call_ally_interaction_effect = yes
+		change_variable = { name = xqol_last_auto_called_count add = 1 }
+	}
+}
+
+xqol_try_call_free_house_member_effect = {
+	$CANDIDATE$ = { save_scope_as = recipient }
+	if = {
+		limit = {
+			scope:recipient = { is_ai = yes }
+			is_character_interaction_valid = {
+				recipient = scope:recipient
+				interaction = call_house_member_to_war_interaction
+			}
+			xqol_free_house_call_target_valid_trigger = yes
+		}
+		call_house_member_to_war_interaction_effect = yes
+		change_variable = { name = xqol_last_auto_called_count add = 1 }
+	}
+}
+
+xqol_auto_call_free_defenders_effect = {
+	set_variable = { name = xqol_last_auto_called_count value = 0 }
+
+	every_ally = {
+		save_temporary_scope_as = xqol_call_candidate
+		scope:actor = {
+			xqol_try_call_free_ally_effect = { CANDIDATE = scope:xqol_call_candidate }
+		}
+	}
+	if = {
+		limit = { exists = liege }
+		liege = { save_temporary_scope_as = xqol_call_candidate }
+		xqol_try_call_free_ally_effect = { CANDIDATE = scope:xqol_call_candidate }
+	}
+	if = {
+		limit = { exists = diarch }
+		diarch = { save_temporary_scope_as = xqol_call_candidate }
+		xqol_try_call_free_ally_effect = { CANDIDATE = scope:xqol_call_candidate }
+	}
+	if = {
+		limit = { exists = suzerain }
+		suzerain = { save_temporary_scope_as = xqol_call_candidate }
+		xqol_try_call_free_ally_effect = { CANDIDATE = scope:xqol_call_candidate }
+	}
+	every_tributary = {
+		save_temporary_scope_as = xqol_call_candidate
+		scope:actor = {
+			xqol_try_call_free_ally_effect = { CANDIDATE = scope:xqol_call_candidate }
+		}
+	}
+	if = {
+		limit = {
+			is_house_head = yes
+			exists = house
+		}
+		house = {
+			every_house_member = {
+				save_temporary_scope_as = xqol_call_candidate
+				scope:actor = {
+					xqol_try_call_free_house_member_effect = { CANDIDATE = scope:xqol_call_candidate }
+				}
+			}
+		}
+	}
+	if = {
+		limit = { var:xqol_last_auto_called_count > 0 }
+		send_interface_toast = {
+			type = event_war_good
+			title = xqol_auto_call_defenders_result_title
+			desc = xqol_auto_call_defenders_result_desc
+		}
+	}
+}
+
+xqol_bulk_conversion_threshold_effect = {
+	save_scope_as = actor
+	set_variable = { name = xqol_mass_conversion_accepted value = 0 }
+	set_variable = { name = xqol_mass_conversion_refused value = 0 }
+	set_variable = { name = xqol_mass_conversion_pending value = 0 }
+
+	every_courtier = {
+		limit = {
+			is_ai = yes
+			scope:actor = {
+				is_character_interaction_potentially_accepted = {
+					recipient = prev
+					interaction = ask_for_conversion_courtier_interaction
+					ai_accept = $THRESHOLD$
+				}
+			}
+		}
+		save_temporary_scope_as = xqol_conversion_candidate
+		scope:actor = {
+			change_variable = { name = xqol_mass_conversion_pending add = 1 }
+			run_interaction = {
+				interaction = xqol_mass_conversion_courtier_interaction
+				actor = scope:actor
+				recipient = scope:xqol_conversion_candidate
+				send_threshold = decline
+			}
+		}
+	}
+
+	every_vassal_or_below = {
+		limit = {
+			is_ai = yes
+			scope:actor = {
+				is_character_interaction_potentially_accepted = {
+					recipient = prev
+					interaction = demand_conversion_vassal_ruler_interaction
+					ai_accept = $THRESHOLD$
+				}
+			}
+		}
+		save_temporary_scope_as = xqol_conversion_candidate
+		scope:actor = {
+			change_variable = { name = xqol_mass_conversion_pending add = 1 }
+			run_interaction = {
+				interaction = xqol_mass_conversion_ruler_interaction
+				actor = scope:actor
+				recipient = scope:xqol_conversion_candidate
+				send_threshold = decline
+			}
+		}
+	}
+
+	every_tributary = {
+		limit = {
+			is_ai = yes
+			scope:actor = {
+				is_character_interaction_potentially_accepted = {
+					recipient = prev
+					interaction = demand_conversion_vassal_ruler_interaction
+					ai_accept = $THRESHOLD$
+				}
+			}
+		}
+		save_temporary_scope_as = xqol_conversion_candidate
+		scope:actor = {
+			change_variable = { name = xqol_mass_conversion_pending add = 1 }
+			run_interaction = {
+				interaction = xqol_mass_conversion_ruler_interaction
+				actor = scope:actor
+				recipient = scope:xqol_conversion_candidate
+				send_threshold = decline
+			}
+		}
+	}
+
+	if = {
+		limit = { var:xqol_mass_conversion_pending <= 0 }
+		xqol_mass_conversion_finish_effect = yes
+	}
+}
+
+xqol_mass_conversion_courtier_accepted_effect = {
+	demand_conversion_interaction_effect = yes
+	accept_faith_conversion_add_clan_unity_effect = yes
+	state_faith_conversion_add_piety_effect = yes
+	xqol_mass_conversion_record_accepted_effect = yes
+}
+
+xqol_mass_conversion_ruler_accepted_effect = {
+	demand_conversion_vassal_ruler_interaction_effect = yes
+	accept_faith_conversion_add_clan_unity_effect = yes
+	state_faith_conversion_add_piety_effect = yes
+	xqol_mass_conversion_record_accepted_effect = yes
+}
+
+xqol_mass_conversion_declined_effect = {
+	scope:recipient = {
+		add_opinion = {
+			modifier = demanded_my_conversion_opinion
+			target = scope:actor
+			opinion = -10
+		}
+	}
+	refuse_faith_conversion_add_clan_unity_effect = yes
+	state_faith_refuse_conversion_add_piety_effect = yes
+	xqol_mass_conversion_record_refused_effect = yes
+}
+
+xqol_mass_conversion_record_accepted_effect = {
+	scope:actor = {
+		change_variable = { name = xqol_mass_conversion_accepted add = 1 }
+		change_variable = { name = xqol_mass_conversion_pending add = -1 }
+		if = {
+			limit = { var:xqol_mass_conversion_pending <= 0 }
+			xqol_mass_conversion_finish_effect = yes
+		}
+	}
+}
+
+xqol_mass_conversion_record_refused_effect = {
+	scope:actor = {
+		change_variable = { name = xqol_mass_conversion_refused add = 1 }
+		change_variable = { name = xqol_mass_conversion_pending add = -1 }
+		if = {
+			limit = { var:xqol_mass_conversion_pending <= 0 }
+			xqol_mass_conversion_finish_effect = yes
+		}
+	}
+}
+
+xqol_mass_conversion_finish_effect = {
+	send_interface_toast = {
+		type = event_religious_good
+		title = xqol_mass_conversion_results_title
+		desc = xqol_mass_conversion_results_desc
+	}
+	remove_variable = xqol_mass_conversion_pending
+}
+
+xqol_bulk_demand_payment_full_effect = {
+	save_scope_as = actor
+	set_variable = { name = xqol_last_bulk_payment_count value = 0 }
+	every_hooked_character = {
+		limit = {
+			gold >= golden_obligation_value
+			scope:actor = {
+				is_character_interaction_potentially_accepted = {
+					recipient = prev
+					interaction = demand_payment_interaction
+				}
+			}
+		}
+		save_temporary_scope_as = xqol_payment_candidate
+		scope:actor = {
+			run_interaction = {
+				interaction = demand_payment_interaction
+				actor = scope:actor
+				recipient = scope:xqol_payment_candidate
+				execute_threshold = accept
+			}
+			change_variable = { name = xqol_last_bulk_payment_count add = 1 }
+		}
+	}
+	xqol_bulk_payment_finish_effect = yes
+}
+
+xqol_bulk_demand_payment_any_effect = {
+	save_scope_as = actor
+	set_variable = { name = xqol_last_bulk_payment_count value = 0 }
+	every_hooked_character = {
+		limit = {
+			gold > 1
+			scope:actor = {
+				is_character_interaction_potentially_accepted = {
+					recipient = prev
+					interaction = demand_payment_interaction
+				}
+			}
+		}
+		save_temporary_scope_as = xqol_payment_candidate
+		scope:actor = {
+			run_interaction = {
+				interaction = demand_payment_interaction
+				actor = scope:actor
+				recipient = scope:xqol_payment_candidate
+				execute_threshold = accept
+			}
+			change_variable = { name = xqol_last_bulk_payment_count add = 1 }
+		}
+	}
+	xqol_bulk_payment_finish_effect = yes
+}
+
+xqol_bulk_payment_finish_effect = {
+	send_interface_toast = {
+		type = event_toast_effect_good
+		title = xqol_bulk_payment_results_title
+		desc = xqol_bulk_payment_results_desc
+	}
+}
+
+xqol_bulk_ransom_full_effect = {
+	save_scope_as = actor
+	set_variable = { name = xqol_last_bulk_ransom_count value = 0 }
+	every_prisoner = {
+		save_scope_as = recipient
+		if = {
+			limit = {
+				xqol_ransom_payer_can_pay_full_trigger = yes
+				scope:actor = {
+					is_character_interaction_potentially_accepted = {
+						recipient = scope:recipient
+						interaction = ransom_interaction
+					}
+				}
+			}
+			scope:actor = {
+				run_interaction = {
+					interaction = ransom_interaction
+					actor = scope:actor
+					recipient = scope:recipient
+					execute_threshold = accept
+				}
+				change_variable = { name = xqol_last_bulk_ransom_count add = 1 }
+			}
+		}
+	}
+	xqol_bulk_ransom_finish_effect = yes
+}
+
+xqol_bulk_ransom_any_effect = {
+	save_scope_as = actor
+	set_variable = { name = xqol_last_bulk_ransom_count value = 0 }
+	every_prisoner = {
+		save_scope_as = recipient
+		if = {
+			limit = {
+				xqol_ransom_payer_has_gold_trigger = yes
+				scope:actor = {
+					is_character_interaction_potentially_accepted = {
+						recipient = scope:recipient
+						interaction = ransom_interaction
+					}
+				}
+			}
+			scope:actor = {
+				run_interaction = {
+					interaction = ransom_interaction
+					actor = scope:actor
+					recipient = scope:recipient
+					execute_threshold = accept
+				}
+				change_variable = { name = xqol_last_bulk_ransom_count add = 1 }
+			}
+		}
+	}
+	xqol_bulk_ransom_finish_effect = yes
+}
+
+xqol_bulk_ransom_finish_effect = {
+	send_interface_toast = {
+		type = event_prison_good
+		title = xqol_bulk_ransom_results_title
+		desc = xqol_bulk_ransom_results_desc
+	}
+}
+
+xqol_release_prisoner_terms_effect = {
+	if = {
+		limit = { scope:recipient = { has_character_modifier = allowed_to_go_outside } }
+		scope:recipient = { remove_character_modifier = allowed_to_go_outside }
+	}
+	if = {
+		limit = { scope:recipient = { has_character_modifier = moldy_gruel_diet } }
+		scope:recipient = { remove_character_modifier = moldy_gruel_diet }
+	}
+	scope:recipient = { release_from_prison = yes }
+
+	if = {
+		limit = { always = $CONVERSION$ }
+		scope:recipient = {
+			demand_conversion_interaction_effect = yes
+			add_opinion = {
+				modifier = demanded_my_conversion_opinion
+				target = scope:actor
+			}
+		}
+	}
+	if = {
+		limit = { always = $RECRUIT$ }
+		if = {
+			limit = {
+				scope:actor = {
+					culture = { has_cultural_parameter = can_recruit_prisoners_easily }
+				}
+			}
+			scope:recipient = {
+				add_opinion = { modifier = loyal_servant target = scope:actor }
+			}
+			scope:actor = {
+				if = {
+					limit = {
+						can_add_hook = { target = scope:recipient type = loyalty_hook }
+					}
+					add_hook = { type = loyalty_hook target = scope:recipient }
+				}
+			}
+		}
+		else = {
+			scope:recipient = {
+				add_opinion = { modifier = demanded_recruitment target = scope:actor }
+			}
+		}
+		if = {
+			limit = {
+				scope:actor.faith = { has_doctrine = tenet_communal_possessions }
+				scope:recipient = { has_trait = peasant_leader }
+			}
+			scope:actor = { add_piety = medium_piety_gain }
+		}
+		scope:actor = { add_courtier = scope:recipient }
+	}
+	if = {
+		limit = { always = $HOOK$ }
+		scope:recipient = {
+			add_opinion = { modifier = demanded_hook target = scope:actor }
+		}
+		scope:actor = {
+			add_hook = { target = scope:recipient type = favor_hook }
+		}
+	}
+}
+
+xqol_bulk_release_terms_effect = {
+	save_scope_as = actor
+	set_variable = { name = xqol_last_bulk_release_count value = 0 }
+	every_prisoner = {
+		save_scope_as = recipient
+		if = {
+			limit = {
+				scope:actor = {
+					is_character_interaction_potentially_accepted = {
+						recipient = scope:recipient
+						interaction = xqol_release_hook_recruit_conversion_interaction
+					}
+				}
+			}
+			scope:actor = {
+				run_interaction = { interaction = xqol_release_hook_recruit_conversion_interaction actor = scope:actor recipient = scope:recipient execute_threshold = accept }
+				change_variable = { name = xqol_last_bulk_release_count add = 1 }
+			}
+		}
+		else_if = {
+			limit = { scope:actor = { is_character_interaction_potentially_accepted = { recipient = scope:recipient interaction = xqol_release_hook_recruit_interaction } } }
+			scope:actor = {
+				run_interaction = { interaction = xqol_release_hook_recruit_interaction actor = scope:actor recipient = scope:recipient execute_threshold = accept }
+				change_variable = { name = xqol_last_bulk_release_count add = 1 }
+			}
+		}
+		else_if = {
+			limit = { scope:actor = { is_character_interaction_potentially_accepted = { recipient = scope:recipient interaction = xqol_release_hook_conversion_interaction } } }
+			scope:actor = {
+				run_interaction = { interaction = xqol_release_hook_conversion_interaction actor = scope:actor recipient = scope:recipient execute_threshold = accept }
+				change_variable = { name = xqol_last_bulk_release_count add = 1 }
+			}
+		}
+		else_if = {
+			limit = { scope:actor = { is_character_interaction_potentially_accepted = { recipient = scope:recipient interaction = xqol_release_recruit_conversion_interaction } } }
+			scope:actor = {
+				run_interaction = { interaction = xqol_release_recruit_conversion_interaction actor = scope:actor recipient = scope:recipient execute_threshold = accept }
+				change_variable = { name = xqol_last_bulk_release_count add = 1 }
+			}
+		}
+		else_if = {
+			limit = { scope:actor = { is_character_interaction_potentially_accepted = { recipient = scope:recipient interaction = xqol_release_hook_interaction } } }
+			scope:actor = {
+				run_interaction = { interaction = xqol_release_hook_interaction actor = scope:actor recipient = scope:recipient execute_threshold = accept }
+				change_variable = { name = xqol_last_bulk_release_count add = 1 }
+			}
+		}
+		else_if = {
+			limit = { scope:actor = { is_character_interaction_potentially_accepted = { recipient = scope:recipient interaction = xqol_release_recruit_interaction } } }
+			scope:actor = {
+				run_interaction = { interaction = xqol_release_recruit_interaction actor = scope:actor recipient = scope:recipient execute_threshold = accept }
+				change_variable = { name = xqol_last_bulk_release_count add = 1 }
+			}
+		}
+		else_if = {
+			limit = { scope:actor = { is_character_interaction_potentially_accepted = { recipient = scope:recipient interaction = xqol_release_conversion_interaction } } }
+			scope:actor = {
+				run_interaction = { interaction = xqol_release_conversion_interaction actor = scope:actor recipient = scope:recipient execute_threshold = accept }
+				change_variable = { name = xqol_last_bulk_release_count add = 1 }
+			}
+		}
+	}
+	send_interface_toast = {
+		type = event_prison_good
+		title = xqol_bulk_release_results_title
+		desc = xqol_bulk_release_results_desc
+	}
+}

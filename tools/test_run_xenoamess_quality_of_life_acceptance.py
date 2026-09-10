@@ -15,6 +15,20 @@ class ProductOuterDescriptorTests(unittest.TestCase):
     def test_boot_timeout_allows_slow_local_machine_startup(self) -> None:
         self.assertEqual(xqol.BOOT_TIMEOUT_S, 30 * 60)
 
+    def test_phase_two_toggle_is_part_of_the_live_regression(self) -> None:
+        fixture_effects = (
+            xqol.FIXTURE / "common" / "scripted_effects" / "zqa_effects.txt"
+        ).read_text(encoding="utf-8-sig")
+        fixture_guis = (
+            xqol.FIXTURE / "common" / "scripted_guis" / "zqa_guis.txt"
+        ).read_text(encoding="utf-8-sig")
+        runner = Path(xqol.__file__).read_text(encoding="utf-8")
+        self.assertIn("has_variable = xqol_auto_call_defenders_enabled", fixture_effects)
+        self.assertIn("NOT = { has_variable = xqol_auto_call_defenders_enabled }", fixture_effects)
+        self.assertIn("has_variable = xqol_auto_call_defenders_enabled", fixture_guis)
+        self.assertIn("开启自动召集防御援军", runner)
+        self.assertIn("关闭自动召集防御援军", runner)
+
     def test_workshop_identity_is_recorded_but_not_loaded_in_isolated_runtime(self) -> None:
         with tempfile.TemporaryDirectory() as raw:
             root = Path(raw)

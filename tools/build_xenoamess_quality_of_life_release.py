@@ -28,13 +28,18 @@ RUNTIME_FILES = frozenset(
     {
         "common/decision_group_types/xqol_decision_group_types.txt",
         "common/decisions/xqol_decisions.txt",
+        "common/character_interactions/xqol_generated_release_interactions.txt",
         "common/on_action/xqol_on_actions.txt",
         "common/scripted_effects/xqol_effects.txt",
+        "common/scripted_effects/xqol_generated_conversion_dispatch.txt",
+        "common/scripted_guis/xqol_generated_conversion_threshold_guis.txt",
         "common/scripted_triggers/xqol_triggers.txt",
         "common/succession_appointment/admin_governor.txt",
         "common/succession_appointment/celestial_governor.txt",
         "common/succession_appointment/meritocratic_governor.txt",
         "descriptor.mod",
+        "events/xqol_events.txt",
+        "gui/event_window_widgets/xqol_conversion_threshold_slider.gui",
         "thumbnail.png",
         "localization/english/xqol_l_english.yml",
         "localization/french/xqol_l_french.yml",
@@ -56,10 +61,12 @@ SOURCE_ONLY_FILES = frozenset(
         "docs/acceptance-report.md",
         "docs/art.md",
         "docs/mechanics.md",
+        "docs/phase-two-vanilla-contract.md",
+        "docs/phase-two-offline-preflight-2026-09-10.md",
         "images/thumbnail_source.png",
     }
 )
-TEXT_SUFFIXES = {".mod", ".txt", ".yml"}
+TEXT_SUFFIXES = {".gui", ".mod", ".txt", ".yml"}
 FORBIDDEN_CACHE_SUFFIXES = {".pyc", ".pyo"}
 FORBIDDEN_WORKSHOP_ITEM_IDS = frozenset({"3784706360", "3787304042"})
 FULL_GIT_SHA = re.compile(r"[0-9a-f]{40}")

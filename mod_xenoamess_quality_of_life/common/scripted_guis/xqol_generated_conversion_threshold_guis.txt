@@ -1,0 +1,1718 @@
+﻿# GENERATED FILE. Edit tools/gen_xqol_phase2.py, then regenerate.
+
+xqol_set_conversion_threshold_0_gui = {
+	scope = character
+	is_shown = {
+		is_ai = no
+		has_variable = xqol_mass_conversion_threshold_draft
+	}
+	effect = {
+		if = {
+			limit = {
+				is_ai = no
+				has_variable = xqol_mass_conversion_threshold_draft
+			}
+			set_variable = { name = xqol_mass_conversion_threshold_draft value = 0 }
+		}
+	}
+}
+
+xqol_set_conversion_threshold_1_gui = {
+	scope = character
+	is_shown = {
+		is_ai = no
+		has_variable = xqol_mass_conversion_threshold_draft
+	}
+	effect = {
+		if = {
+			limit = {
+				is_ai = no
+				has_variable = xqol_mass_conversion_threshold_draft
+			}
+			set_variable = { name = xqol_mass_conversion_threshold_draft value = 1 }
+		}
+	}
+}
+
+xqol_set_conversion_threshold_2_gui = {
+	scope = character
+	is_shown = {
+		is_ai = no
+		has_variable = xqol_mass_conversion_threshold_draft
+	}
+	effect = {
+		if = {
+			limit = {
+				is_ai = no
+				has_variable = xqol_mass_conversion_threshold_draft
+			}
+			set_variable = { name = xqol_mass_conversion_threshold_draft value = 2 }
+		}
+	}
+}
+
+xqol_set_conversion_threshold_3_gui = {
+	scope = character
+	is_shown = {
+		is_ai = no
+		has_variable = xqol_mass_conversion_threshold_draft
+	}
+	effect = {
+		if = {
+			limit = {
+				is_ai = no
+				has_variable = xqol_mass_conversion_threshold_draft
+			}
+			set_variable = { name = xqol_mass_conversion_threshold_draft value = 3 }
+		}
+	}
+}
+
+xqol_set_conversion_threshold_4_gui = {
+	scope = character
+	is_shown = {
+		is_ai = no
+		has_variable = xqol_mass_conversion_threshold_draft
+	}
+	effect = {
+		if = {
+			limit = {
+				is_ai = no
+				has_variable = xqol_mass_conversion_threshold_draft
+			}
+			set_variable = { name = xqol_mass_conversion_threshold_draft value = 4 }
+		}
+	}
+}
+
+xqol_set_conversion_threshold_5_gui = {
+	scope = character
+	is_shown = {
+		is_ai = no
+		has_variable = xqol_mass_conversion_threshold_draft
+	}
+	effect = {
+		if = {
+			limit = {
+				is_ai = no
+				has_variable = xqol_mass_conversion_threshold_draft
+			}
+			set_variable = { name = xqol_mass_conversion_threshold_draft value = 5 }
+		}
+	}
+}
+
+xqol_set_conversion_threshold_6_gui = {
+	scope = character
+	is_shown = {
+		is_ai = no
+		has_variable = xqol_mass_conversion_threshold_draft
+	}
+	effect = {
+		if = {
+			limit = {
+				is_ai = no
+				has_variable = xqol_mass_conversion_threshold_draft
+			}
+			set_variable = { name = xqol_mass_conversion_threshold_draft value = 6 }
+		}
+	}
+}
+
+xqol_set_conversion_threshold_7_gui = {
+	scope = character
+	is_shown = {
+		is_ai = no
+		has_variable = xqol_mass_conversion_threshold_draft
+	}
+	effect = {
+		if = {
+			limit = {
+				is_ai = no
+				has_variable = xqol_mass_conversion_threshold_draft
+			}
+			set_variable = { name = xqol_mass_conversion_threshold_draft value = 7 }
+		}
+	}
+}
+
+xqol_set_conversion_threshold_8_gui = {
+	scope = character
+	is_shown = {
+		is_ai = no
+		has_variable = xqol_mass_conversion_threshold_draft
+	}
+	effect = {
+		if = {
+			limit = {
+				is_ai = no
+				has_variable = xqol_mass_conversion_threshold_draft
+			}
+			set_variable = { name = xqol_mass_conversion_threshold_draft value = 8 }
+		}
+	}
+}
+
+xqol_set_conversion_threshold_9_gui = {
+	scope = character
+	is_shown = {
+		is_ai = no
+		has_variable = xqol_mass_conversion_threshold_draft
+	}
+	effect = {
+		if = {
+			limit = {
+				is_ai = no
+				has_variable = xqol_mass_conversion_threshold_draft
+			}
+			set_variable = { name = xqol_mass_conversion_threshold_draft value = 9 }
+		}
+	}
+}
+
+xqol_set_conversion_threshold_10_gui = {
+	scope = character
+	is_shown = {
+		is_ai = no
+		has_variable = xqol_mass_conversion_threshold_draft
+	}
+	effect = {
+		if = {
+			limit = {
+				is_ai = no
+				has_variable = xqol_mass_conversion_threshold_draft
+			}
+			set_variable = { name = xqol_mass_conversion_threshold_draft value = 10 }
+		}
+	}
+}
+
+xqol_set_conversion_threshold_11_gui = {
+	scope = character
+	is_shown = {
+		is_ai = no
+		has_variable = xqol_mass_conversion_threshold_draft
+	}
+	effect = {
+		if = {
+			limit = {
+				is_ai = no
+				has_variable = xqol_mass_conversion_threshold_draft
+			}
+			set_variable = { name = xqol_mass_conversion_threshold_draft value = 11 }
+		}
+	}
+}
+
+xqol_set_conversion_threshold_12_gui = {
+	scope = character
+	is_shown = {
+		is_ai = no
+		has_variable = xqol_mass_conversion_threshold_draft
+	}
+	effect = {
+		if = {
+			limit = {
+				is_ai = no
+				has_variable = xqol_mass_conversion_threshold_draft
+			}
+			set_variable = { name = xqol_mass_conversion_threshold_draft value = 12 }
+		}
+	}
+}
+
+xqol_set_conversion_threshold_13_gui = {
+	scope = character
+	is_shown = {
+		is_ai = no
+		has_variable = xqol_mass_conversion_threshold_draft
+	}
+	effect = {
+		if = {
+			limit = {
+				is_ai = no
+				has_variable = xqol_mass_conversion_threshold_draft
+			}
+			set_variable = { name = xqol_mass_conversion_threshold_draft value = 13 }
+		}
+	}
+}
+
+xqol_set_conversion_threshold_14_gui = {
+	scope = character
+	is_shown = {
+		is_ai = no
+		has_variable = xqol_mass_conversion_threshold_draft
+	}
+	effect = {
+		if = {
+			limit = {
+				is_ai = no
+				has_variable = xqol_mass_conversion_threshold_draft
+			}
+			set_variable = { name = xqol_mass_conversion_threshold_draft value = 14 }
+		}
+	}
+}
+
+xqol_set_conversion_threshold_15_gui = {
+	scope = character
+	is_shown = {
+		is_ai = no
+		has_variable = xqol_mass_conversion_threshold_draft
+	}
+	effect = {
+		if = {
+			limit = {
+				is_ai = no
+				has_variable = xqol_mass_conversion_threshold_draft
+			}
+			set_variable = { name = xqol_mass_conversion_threshold_draft value = 15 }
+		}
+	}
+}
+
+xqol_set_conversion_threshold_16_gui = {
+	scope = character
+	is_shown = {
+		is_ai = no
+		has_variable = xqol_mass_conversion_threshold_draft
+	}
+	effect = {
+		if = {
+			limit = {
+				is_ai = no
+				has_variable = xqol_mass_conversion_threshold_draft
+			}
+			set_variable = { name = xqol_mass_conversion_threshold_draft value = 16 }
+		}
+	}
+}
+
+xqol_set_conversion_threshold_17_gui = {
+	scope = character
+	is_shown = {
+		is_ai = no
+		has_variable = xqol_mass_conversion_threshold_draft
+	}
+	effect = {
+		if = {
+			limit = {
+				is_ai = no
+				has_variable = xqol_mass_conversion_threshold_draft
+			}
+			set_variable = { name = xqol_mass_conversion_threshold_draft value = 17 }
+		}
+	}
+}
+
+xqol_set_conversion_threshold_18_gui = {
+	scope = character
+	is_shown = {
+		is_ai = no
+		has_variable = xqol_mass_conversion_threshold_draft
+	}
+	effect = {
+		if = {
+			limit = {
+				is_ai = no
+				has_variable = xqol_mass_conversion_threshold_draft
+			}
+			set_variable = { name = xqol_mass_conversion_threshold_draft value = 18 }
+		}
+	}
+}
+
+xqol_set_conversion_threshold_19_gui = {
+	scope = character
+	is_shown = {
+		is_ai = no
+		has_variable = xqol_mass_conversion_threshold_draft
+	}
+	effect = {
+		if = {
+			limit = {
+				is_ai = no
+				has_variable = xqol_mass_conversion_threshold_draft
+			}
+			set_variable = { name = xqol_mass_conversion_threshold_draft value = 19 }
+		}
+	}
+}
+
+xqol_set_conversion_threshold_20_gui = {
+	scope = character
+	is_shown = {
+		is_ai = no
+		has_variable = xqol_mass_conversion_threshold_draft
+	}
+	effect = {
+		if = {
+			limit = {
+				is_ai = no
+				has_variable = xqol_mass_conversion_threshold_draft
+			}
+			set_variable = { name = xqol_mass_conversion_threshold_draft value = 20 }
+		}
+	}
+}
+
+xqol_set_conversion_threshold_21_gui = {
+	scope = character
+	is_shown = {
+		is_ai = no
+		has_variable = xqol_mass_conversion_threshold_draft
+	}
+	effect = {
+		if = {
+			limit = {
+				is_ai = no
+				has_variable = xqol_mass_conversion_threshold_draft
+			}
+			set_variable = { name = xqol_mass_conversion_threshold_draft value = 21 }
+		}
+	}
+}
+
+xqol_set_conversion_threshold_22_gui = {
+	scope = character
+	is_shown = {
+		is_ai = no
+		has_variable = xqol_mass_conversion_threshold_draft
+	}
+	effect = {
+		if = {
+			limit = {
+				is_ai = no
+				has_variable = xqol_mass_conversion_threshold_draft
+			}
+			set_variable = { name = xqol_mass_conversion_threshold_draft value = 22 }
+		}
+	}
+}
+
+xqol_set_conversion_threshold_23_gui = {
+	scope = character
+	is_shown = {
+		is_ai = no
+		has_variable = xqol_mass_conversion_threshold_draft
+	}
+	effect = {
+		if = {
+			limit = {
+				is_ai = no
+				has_variable = xqol_mass_conversion_threshold_draft
+			}
+			set_variable = { name = xqol_mass_conversion_threshold_draft value = 23 }
+		}
+	}
+}
+
+xqol_set_conversion_threshold_24_gui = {
+	scope = character
+	is_shown = {
+		is_ai = no
+		has_variable = xqol_mass_conversion_threshold_draft
+	}
+	effect = {
+		if = {
+			limit = {
+				is_ai = no
+				has_variable = xqol_mass_conversion_threshold_draft
+			}
+			set_variable = { name = xqol_mass_conversion_threshold_draft value = 24 }
+		}
+	}
+}
+
+xqol_set_conversion_threshold_25_gui = {
+	scope = character
+	is_shown = {
+		is_ai = no
+		has_variable = xqol_mass_conversion_threshold_draft
+	}
+	effect = {
+		if = {
+			limit = {
+				is_ai = no
+				has_variable = xqol_mass_conversion_threshold_draft
+			}
+			set_variable = { name = xqol_mass_conversion_threshold_draft value = 25 }
+		}
+	}
+}
+
+xqol_set_conversion_threshold_26_gui = {
+	scope = character
+	is_shown = {
+		is_ai = no
+		has_variable = xqol_mass_conversion_threshold_draft
+	}
+	effect = {
+		if = {
+			limit = {
+				is_ai = no
+				has_variable = xqol_mass_conversion_threshold_draft
+			}
+			set_variable = { name = xqol_mass_conversion_threshold_draft value = 26 }
+		}
+	}
+}
+
+xqol_set_conversion_threshold_27_gui = {
+	scope = character
+	is_shown = {
+		is_ai = no
+		has_variable = xqol_mass_conversion_threshold_draft
+	}
+	effect = {
+		if = {
+			limit = {
+				is_ai = no
+				has_variable = xqol_mass_conversion_threshold_draft
+			}
+			set_variable = { name = xqol_mass_conversion_threshold_draft value = 27 }
+		}
+	}
+}
+
+xqol_set_conversion_threshold_28_gui = {
+	scope = character
+	is_shown = {
+		is_ai = no
+		has_variable = xqol_mass_conversion_threshold_draft
+	}
+	effect = {
+		if = {
+			limit = {
+				is_ai = no
+				has_variable = xqol_mass_conversion_threshold_draft
+			}
+			set_variable = { name = xqol_mass_conversion_threshold_draft value = 28 }
+		}
+	}
+}
+
+xqol_set_conversion_threshold_29_gui = {
+	scope = character
+	is_shown = {
+		is_ai = no
+		has_variable = xqol_mass_conversion_threshold_draft
+	}
+	effect = {
+		if = {
+			limit = {
+				is_ai = no
+				has_variable = xqol_mass_conversion_threshold_draft
+			}
+			set_variable = { name = xqol_mass_conversion_threshold_draft value = 29 }
+		}
+	}
+}
+
+xqol_set_conversion_threshold_30_gui = {
+	scope = character
+	is_shown = {
+		is_ai = no
+		has_variable = xqol_mass_conversion_threshold_draft
+	}
+	effect = {
+		if = {
+			limit = {
+				is_ai = no
+				has_variable = xqol_mass_conversion_threshold_draft
+			}
+			set_variable = { name = xqol_mass_conversion_threshold_draft value = 30 }
+		}
+	}
+}
+
+xqol_set_conversion_threshold_31_gui = {
+	scope = character
+	is_shown = {
+		is_ai = no
+		has_variable = xqol_mass_conversion_threshold_draft
+	}
+	effect = {
+		if = {
+			limit = {
+				is_ai = no
+				has_variable = xqol_mass_conversion_threshold_draft
+			}
+			set_variable = { name = xqol_mass_conversion_threshold_draft value = 31 }
+		}
+	}
+}
+
+xqol_set_conversion_threshold_32_gui = {
+	scope = character
+	is_shown = {
+		is_ai = no
+		has_variable = xqol_mass_conversion_threshold_draft
+	}
+	effect = {
+		if = {
+			limit = {
+				is_ai = no
+				has_variable = xqol_mass_conversion_threshold_draft
+			}
+			set_variable = { name = xqol_mass_conversion_threshold_draft value = 32 }
+		}
+	}
+}
+
+xqol_set_conversion_threshold_33_gui = {
+	scope = character
+	is_shown = {
+		is_ai = no
+		has_variable = xqol_mass_conversion_threshold_draft
+	}
+	effect = {
+		if = {
+			limit = {
+				is_ai = no
+				has_variable = xqol_mass_conversion_threshold_draft
+			}
+			set_variable = { name = xqol_mass_conversion_threshold_draft value = 33 }
+		}
+	}
+}
+
+xqol_set_conversion_threshold_34_gui = {
+	scope = character
+	is_shown = {
+		is_ai = no
+		has_variable = xqol_mass_conversion_threshold_draft
+	}
+	effect = {
+		if = {
+			limit = {
+				is_ai = no
+				has_variable = xqol_mass_conversion_threshold_draft
+			}
+			set_variable = { name = xqol_mass_conversion_threshold_draft value = 34 }
+		}
+	}
+}
+
+xqol_set_conversion_threshold_35_gui = {
+	scope = character
+	is_shown = {
+		is_ai = no
+		has_variable = xqol_mass_conversion_threshold_draft
+	}
+	effect = {
+		if = {
+			limit = {
+				is_ai = no
+				has_variable = xqol_mass_conversion_threshold_draft
+			}
+			set_variable = { name = xqol_mass_conversion_threshold_draft value = 35 }
+		}
+	}
+}
+
+xqol_set_conversion_threshold_36_gui = {
+	scope = character
+	is_shown = {
+		is_ai = no
+		has_variable = xqol_mass_conversion_threshold_draft
+	}
+	effect = {
+		if = {
+			limit = {
+				is_ai = no
+				has_variable = xqol_mass_conversion_threshold_draft
+			}
+			set_variable = { name = xqol_mass_conversion_threshold_draft value = 36 }
+		}
+	}
+}
+
+xqol_set_conversion_threshold_37_gui = {
+	scope = character
+	is_shown = {
+		is_ai = no
+		has_variable = xqol_mass_conversion_threshold_draft
+	}
+	effect = {
+		if = {
+			limit = {
+				is_ai = no
+				has_variable = xqol_mass_conversion_threshold_draft
+			}
+			set_variable = { name = xqol_mass_conversion_threshold_draft value = 37 }
+		}
+	}
+}
+
+xqol_set_conversion_threshold_38_gui = {
+	scope = character
+	is_shown = {
+		is_ai = no
+		has_variable = xqol_mass_conversion_threshold_draft
+	}
+	effect = {
+		if = {
+			limit = {
+				is_ai = no
+				has_variable = xqol_mass_conversion_threshold_draft
+			}
+			set_variable = { name = xqol_mass_conversion_threshold_draft value = 38 }
+		}
+	}
+}
+
+xqol_set_conversion_threshold_39_gui = {
+	scope = character
+	is_shown = {
+		is_ai = no
+		has_variable = xqol_mass_conversion_threshold_draft
+	}
+	effect = {
+		if = {
+			limit = {
+				is_ai = no
+				has_variable = xqol_mass_conversion_threshold_draft
+			}
+			set_variable = { name = xqol_mass_conversion_threshold_draft value = 39 }
+		}
+	}
+}
+
+xqol_set_conversion_threshold_40_gui = {
+	scope = character
+	is_shown = {
+		is_ai = no
+		has_variable = xqol_mass_conversion_threshold_draft
+	}
+	effect = {
+		if = {
+			limit = {
+				is_ai = no
+				has_variable = xqol_mass_conversion_threshold_draft
+			}
+			set_variable = { name = xqol_mass_conversion_threshold_draft value = 40 }
+		}
+	}
+}
+
+xqol_set_conversion_threshold_41_gui = {
+	scope = character
+	is_shown = {
+		is_ai = no
+		has_variable = xqol_mass_conversion_threshold_draft
+	}
+	effect = {
+		if = {
+			limit = {
+				is_ai = no
+				has_variable = xqol_mass_conversion_threshold_draft
+			}
+			set_variable = { name = xqol_mass_conversion_threshold_draft value = 41 }
+		}
+	}
+}
+
+xqol_set_conversion_threshold_42_gui = {
+	scope = character
+	is_shown = {
+		is_ai = no
+		has_variable = xqol_mass_conversion_threshold_draft
+	}
+	effect = {
+		if = {
+			limit = {
+				is_ai = no
+				has_variable = xqol_mass_conversion_threshold_draft
+			}
+			set_variable = { name = xqol_mass_conversion_threshold_draft value = 42 }
+		}
+	}
+}
+
+xqol_set_conversion_threshold_43_gui = {
+	scope = character
+	is_shown = {
+		is_ai = no
+		has_variable = xqol_mass_conversion_threshold_draft
+	}
+	effect = {
+		if = {
+			limit = {
+				is_ai = no
+				has_variable = xqol_mass_conversion_threshold_draft
+			}
+			set_variable = { name = xqol_mass_conversion_threshold_draft value = 43 }
+		}
+	}
+}
+
+xqol_set_conversion_threshold_44_gui = {
+	scope = character
+	is_shown = {
+		is_ai = no
+		has_variable = xqol_mass_conversion_threshold_draft
+	}
+	effect = {
+		if = {
+			limit = {
+				is_ai = no
+				has_variable = xqol_mass_conversion_threshold_draft
+			}
+			set_variable = { name = xqol_mass_conversion_threshold_draft value = 44 }
+		}
+	}
+}
+
+xqol_set_conversion_threshold_45_gui = {
+	scope = character
+	is_shown = {
+		is_ai = no
+		has_variable = xqol_mass_conversion_threshold_draft
+	}
+	effect = {
+		if = {
+			limit = {
+				is_ai = no
+				has_variable = xqol_mass_conversion_threshold_draft
+			}
+			set_variable = { name = xqol_mass_conversion_threshold_draft value = 45 }
+		}
+	}
+}
+
+xqol_set_conversion_threshold_46_gui = {
+	scope = character
+	is_shown = {
+		is_ai = no
+		has_variable = xqol_mass_conversion_threshold_draft
+	}
+	effect = {
+		if = {
+			limit = {
+				is_ai = no
+				has_variable = xqol_mass_conversion_threshold_draft
+			}
+			set_variable = { name = xqol_mass_conversion_threshold_draft value = 46 }
+		}
+	}
+}
+
+xqol_set_conversion_threshold_47_gui = {
+	scope = character
+	is_shown = {
+		is_ai = no
+		has_variable = xqol_mass_conversion_threshold_draft
+	}
+	effect = {
+		if = {
+			limit = {
+				is_ai = no
+				has_variable = xqol_mass_conversion_threshold_draft
+			}
+			set_variable = { name = xqol_mass_conversion_threshold_draft value = 47 }
+		}
+	}
+}
+
+xqol_set_conversion_threshold_48_gui = {
+	scope = character
+	is_shown = {
+		is_ai = no
+		has_variable = xqol_mass_conversion_threshold_draft
+	}
+	effect = {
+		if = {
+			limit = {
+				is_ai = no
+				has_variable = xqol_mass_conversion_threshold_draft
+			}
+			set_variable = { name = xqol_mass_conversion_threshold_draft value = 48 }
+		}
+	}
+}
+
+xqol_set_conversion_threshold_49_gui = {
+	scope = character
+	is_shown = {
+		is_ai = no
+		has_variable = xqol_mass_conversion_threshold_draft
+	}
+	effect = {
+		if = {
+			limit = {
+				is_ai = no
+				has_variable = xqol_mass_conversion_threshold_draft
+			}
+			set_variable = { name = xqol_mass_conversion_threshold_draft value = 49 }
+		}
+	}
+}
+
+xqol_set_conversion_threshold_50_gui = {
+	scope = character
+	is_shown = {
+		is_ai = no
+		has_variable = xqol_mass_conversion_threshold_draft
+	}
+	effect = {
+		if = {
+			limit = {
+				is_ai = no
+				has_variable = xqol_mass_conversion_threshold_draft
+			}
+			set_variable = { name = xqol_mass_conversion_threshold_draft value = 50 }
+		}
+	}
+}
+
+xqol_set_conversion_threshold_51_gui = {
+	scope = character
+	is_shown = {
+		is_ai = no
+		has_variable = xqol_mass_conversion_threshold_draft
+	}
+	effect = {
+		if = {
+			limit = {
+				is_ai = no
+				has_variable = xqol_mass_conversion_threshold_draft
+			}
+			set_variable = { name = xqol_mass_conversion_threshold_draft value = 51 }
+		}
+	}
+}
+
+xqol_set_conversion_threshold_52_gui = {
+	scope = character
+	is_shown = {
+		is_ai = no
+		has_variable = xqol_mass_conversion_threshold_draft
+	}
+	effect = {
+		if = {
+			limit = {
+				is_ai = no
+				has_variable = xqol_mass_conversion_threshold_draft
+			}
+			set_variable = { name = xqol_mass_conversion_threshold_draft value = 52 }
+		}
+	}
+}
+
+xqol_set_conversion_threshold_53_gui = {
+	scope = character
+	is_shown = {
+		is_ai = no
+		has_variable = xqol_mass_conversion_threshold_draft
+	}
+	effect = {
+		if = {
+			limit = {
+				is_ai = no
+				has_variable = xqol_mass_conversion_threshold_draft
+			}
+			set_variable = { name = xqol_mass_conversion_threshold_draft value = 53 }
+		}
+	}
+}
+
+xqol_set_conversion_threshold_54_gui = {
+	scope = character
+	is_shown = {
+		is_ai = no
+		has_variable = xqol_mass_conversion_threshold_draft
+	}
+	effect = {
+		if = {
+			limit = {
+				is_ai = no
+				has_variable = xqol_mass_conversion_threshold_draft
+			}
+			set_variable = { name = xqol_mass_conversion_threshold_draft value = 54 }
+		}
+	}
+}
+
+xqol_set_conversion_threshold_55_gui = {
+	scope = character
+	is_shown = {
+		is_ai = no
+		has_variable = xqol_mass_conversion_threshold_draft
+	}
+	effect = {
+		if = {
+			limit = {
+				is_ai = no
+				has_variable = xqol_mass_conversion_threshold_draft
+			}
+			set_variable = { name = xqol_mass_conversion_threshold_draft value = 55 }
+		}
+	}
+}
+
+xqol_set_conversion_threshold_56_gui = {
+	scope = character
+	is_shown = {
+		is_ai = no
+		has_variable = xqol_mass_conversion_threshold_draft
+	}
+	effect = {
+		if = {
+			limit = {
+				is_ai = no
+				has_variable = xqol_mass_conversion_threshold_draft
+			}
+			set_variable = { name = xqol_mass_conversion_threshold_draft value = 56 }
+		}
+	}
+}
+
+xqol_set_conversion_threshold_57_gui = {
+	scope = character
+	is_shown = {
+		is_ai = no
+		has_variable = xqol_mass_conversion_threshold_draft
+	}
+	effect = {
+		if = {
+			limit = {
+				is_ai = no
+				has_variable = xqol_mass_conversion_threshold_draft
+			}
+			set_variable = { name = xqol_mass_conversion_threshold_draft value = 57 }
+		}
+	}
+}
+
+xqol_set_conversion_threshold_58_gui = {
+	scope = character
+	is_shown = {
+		is_ai = no
+		has_variable = xqol_mass_conversion_threshold_draft
+	}
+	effect = {
+		if = {
+			limit = {
+				is_ai = no
+				has_variable = xqol_mass_conversion_threshold_draft
+			}
+			set_variable = { name = xqol_mass_conversion_threshold_draft value = 58 }
+		}
+	}
+}
+
+xqol_set_conversion_threshold_59_gui = {
+	scope = character
+	is_shown = {
+		is_ai = no
+		has_variable = xqol_mass_conversion_threshold_draft
+	}
+	effect = {
+		if = {
+			limit = {
+				is_ai = no
+				has_variable = xqol_mass_conversion_threshold_draft
+			}
+			set_variable = { name = xqol_mass_conversion_threshold_draft value = 59 }
+		}
+	}
+}
+
+xqol_set_conversion_threshold_60_gui = {
+	scope = character
+	is_shown = {
+		is_ai = no
+		has_variable = xqol_mass_conversion_threshold_draft
+	}
+	effect = {
+		if = {
+			limit = {
+				is_ai = no
+				has_variable = xqol_mass_conversion_threshold_draft
+			}
+			set_variable = { name = xqol_mass_conversion_threshold_draft value = 60 }
+		}
+	}
+}
+
+xqol_set_conversion_threshold_61_gui = {
+	scope = character
+	is_shown = {
+		is_ai = no
+		has_variable = xqol_mass_conversion_threshold_draft
+	}
+	effect = {
+		if = {
+			limit = {
+				is_ai = no
+				has_variable = xqol_mass_conversion_threshold_draft
+			}
+			set_variable = { name = xqol_mass_conversion_threshold_draft value = 61 }
+		}
+	}
+}
+
+xqol_set_conversion_threshold_62_gui = {
+	scope = character
+	is_shown = {
+		is_ai = no
+		has_variable = xqol_mass_conversion_threshold_draft
+	}
+	effect = {
+		if = {
+			limit = {
+				is_ai = no
+				has_variable = xqol_mass_conversion_threshold_draft
+			}
+			set_variable = { name = xqol_mass_conversion_threshold_draft value = 62 }
+		}
+	}
+}
+
+xqol_set_conversion_threshold_63_gui = {
+	scope = character
+	is_shown = {
+		is_ai = no
+		has_variable = xqol_mass_conversion_threshold_draft
+	}
+	effect = {
+		if = {
+			limit = {
+				is_ai = no
+				has_variable = xqol_mass_conversion_threshold_draft
+			}
+			set_variable = { name = xqol_mass_conversion_threshold_draft value = 63 }
+		}
+	}
+}
+
+xqol_set_conversion_threshold_64_gui = {
+	scope = character
+	is_shown = {
+		is_ai = no
+		has_variable = xqol_mass_conversion_threshold_draft
+	}
+	effect = {
+		if = {
+			limit = {
+				is_ai = no
+				has_variable = xqol_mass_conversion_threshold_draft
+			}
+			set_variable = { name = xqol_mass_conversion_threshold_draft value = 64 }
+		}
+	}
+}
+
+xqol_set_conversion_threshold_65_gui = {
+	scope = character
+	is_shown = {
+		is_ai = no
+		has_variable = xqol_mass_conversion_threshold_draft
+	}
+	effect = {
+		if = {
+			limit = {
+				is_ai = no
+				has_variable = xqol_mass_conversion_threshold_draft
+			}
+			set_variable = { name = xqol_mass_conversion_threshold_draft value = 65 }
+		}
+	}
+}
+
+xqol_set_conversion_threshold_66_gui = {
+	scope = character
+	is_shown = {
+		is_ai = no
+		has_variable = xqol_mass_conversion_threshold_draft
+	}
+	effect = {
+		if = {
+			limit = {
+				is_ai = no
+				has_variable = xqol_mass_conversion_threshold_draft
+			}
+			set_variable = { name = xqol_mass_conversion_threshold_draft value = 66 }
+		}
+	}
+}
+
+xqol_set_conversion_threshold_67_gui = {
+	scope = character
+	is_shown = {
+		is_ai = no
+		has_variable = xqol_mass_conversion_threshold_draft
+	}
+	effect = {
+		if = {
+			limit = {
+				is_ai = no
+				has_variable = xqol_mass_conversion_threshold_draft
+			}
+			set_variable = { name = xqol_mass_conversion_threshold_draft value = 67 }
+		}
+	}
+}
+
+xqol_set_conversion_threshold_68_gui = {
+	scope = character
+	is_shown = {
+		is_ai = no
+		has_variable = xqol_mass_conversion_threshold_draft
+	}
+	effect = {
+		if = {
+			limit = {
+				is_ai = no
+				has_variable = xqol_mass_conversion_threshold_draft
+			}
+			set_variable = { name = xqol_mass_conversion_threshold_draft value = 68 }
+		}
+	}
+}
+
+xqol_set_conversion_threshold_69_gui = {
+	scope = character
+	is_shown = {
+		is_ai = no
+		has_variable = xqol_mass_conversion_threshold_draft
+	}
+	effect = {
+		if = {
+			limit = {
+				is_ai = no
+				has_variable = xqol_mass_conversion_threshold_draft
+			}
+			set_variable = { name = xqol_mass_conversion_threshold_draft value = 69 }
+		}
+	}
+}
+
+xqol_set_conversion_threshold_70_gui = {
+	scope = character
+	is_shown = {
+		is_ai = no
+		has_variable = xqol_mass_conversion_threshold_draft
+	}
+	effect = {
+		if = {
+			limit = {
+				is_ai = no
+				has_variable = xqol_mass_conversion_threshold_draft
+			}
+			set_variable = { name = xqol_mass_conversion_threshold_draft value = 70 }
+		}
+	}
+}
+
+xqol_set_conversion_threshold_71_gui = {
+	scope = character
+	is_shown = {
+		is_ai = no
+		has_variable = xqol_mass_conversion_threshold_draft
+	}
+	effect = {
+		if = {
+			limit = {
+				is_ai = no
+				has_variable = xqol_mass_conversion_threshold_draft
+			}
+			set_variable = { name = xqol_mass_conversion_threshold_draft value = 71 }
+		}
+	}
+}
+
+xqol_set_conversion_threshold_72_gui = {
+	scope = character
+	is_shown = {
+		is_ai = no
+		has_variable = xqol_mass_conversion_threshold_draft
+	}
+	effect = {
+		if = {
+			limit = {
+				is_ai = no
+				has_variable = xqol_mass_conversion_threshold_draft
+			}
+			set_variable = { name = xqol_mass_conversion_threshold_draft value = 72 }
+		}
+	}
+}
+
+xqol_set_conversion_threshold_73_gui = {
+	scope = character
+	is_shown = {
+		is_ai = no
+		has_variable = xqol_mass_conversion_threshold_draft
+	}
+	effect = {
+		if = {
+			limit = {
+				is_ai = no
+				has_variable = xqol_mass_conversion_threshold_draft
+			}
+			set_variable = { name = xqol_mass_conversion_threshold_draft value = 73 }
+		}
+	}
+}
+
+xqol_set_conversion_threshold_74_gui = {
+	scope = character
+	is_shown = {
+		is_ai = no
+		has_variable = xqol_mass_conversion_threshold_draft
+	}
+	effect = {
+		if = {
+			limit = {
+				is_ai = no
+				has_variable = xqol_mass_conversion_threshold_draft
+			}
+			set_variable = { name = xqol_mass_conversion_threshold_draft value = 74 }
+		}
+	}
+}
+
+xqol_set_conversion_threshold_75_gui = {
+	scope = character
+	is_shown = {
+		is_ai = no
+		has_variable = xqol_mass_conversion_threshold_draft
+	}
+	effect = {
+		if = {
+			limit = {
+				is_ai = no
+				has_variable = xqol_mass_conversion_threshold_draft
+			}
+			set_variable = { name = xqol_mass_conversion_threshold_draft value = 75 }
+		}
+	}
+}
+
+xqol_set_conversion_threshold_76_gui = {
+	scope = character
+	is_shown = {
+		is_ai = no
+		has_variable = xqol_mass_conversion_threshold_draft
+	}
+	effect = {
+		if = {
+			limit = {
+				is_ai = no
+				has_variable = xqol_mass_conversion_threshold_draft
+			}
+			set_variable = { name = xqol_mass_conversion_threshold_draft value = 76 }
+		}
+	}
+}
+
+xqol_set_conversion_threshold_77_gui = {
+	scope = character
+	is_shown = {
+		is_ai = no
+		has_variable = xqol_mass_conversion_threshold_draft
+	}
+	effect = {
+		if = {
+			limit = {
+				is_ai = no
+				has_variable = xqol_mass_conversion_threshold_draft
+			}
+			set_variable = { name = xqol_mass_conversion_threshold_draft value = 77 }
+		}
+	}
+}
+
+xqol_set_conversion_threshold_78_gui = {
+	scope = character
+	is_shown = {
+		is_ai = no
+		has_variable = xqol_mass_conversion_threshold_draft
+	}
+	effect = {
+		if = {
+			limit = {
+				is_ai = no
+				has_variable = xqol_mass_conversion_threshold_draft
+			}
+			set_variable = { name = xqol_mass_conversion_threshold_draft value = 78 }
+		}
+	}
+}
+
+xqol_set_conversion_threshold_79_gui = {
+	scope = character
+	is_shown = {
+		is_ai = no
+		has_variable = xqol_mass_conversion_threshold_draft
+	}
+	effect = {
+		if = {
+			limit = {
+				is_ai = no
+				has_variable = xqol_mass_conversion_threshold_draft
+			}
+			set_variable = { name = xqol_mass_conversion_threshold_draft value = 79 }
+		}
+	}
+}
+
+xqol_set_conversion_threshold_80_gui = {
+	scope = character
+	is_shown = {
+		is_ai = no
+		has_variable = xqol_mass_conversion_threshold_draft
+	}
+	effect = {
+		if = {
+			limit = {
+				is_ai = no
+				has_variable = xqol_mass_conversion_threshold_draft
+			}
+			set_variable = { name = xqol_mass_conversion_threshold_draft value = 80 }
+		}
+	}
+}
+
+xqol_set_conversion_threshold_81_gui = {
+	scope = character
+	is_shown = {
+		is_ai = no
+		has_variable = xqol_mass_conversion_threshold_draft
+	}
+	effect = {
+		if = {
+			limit = {
+				is_ai = no
+				has_variable = xqol_mass_conversion_threshold_draft
+			}
+			set_variable = { name = xqol_mass_conversion_threshold_draft value = 81 }
+		}
+	}
+}
+
+xqol_set_conversion_threshold_82_gui = {
+	scope = character
+	is_shown = {
+		is_ai = no
+		has_variable = xqol_mass_conversion_threshold_draft
+	}
+	effect = {
+		if = {
+			limit = {
+				is_ai = no
+				has_variable = xqol_mass_conversion_threshold_draft
+			}
+			set_variable = { name = xqol_mass_conversion_threshold_draft value = 82 }
+		}
+	}
+}
+
+xqol_set_conversion_threshold_83_gui = {
+	scope = character
+	is_shown = {
+		is_ai = no
+		has_variable = xqol_mass_conversion_threshold_draft
+	}
+	effect = {
+		if = {
+			limit = {
+				is_ai = no
+				has_variable = xqol_mass_conversion_threshold_draft
+			}
+			set_variable = { name = xqol_mass_conversion_threshold_draft value = 83 }
+		}
+	}
+}
+
+xqol_set_conversion_threshold_84_gui = {
+	scope = character
+	is_shown = {
+		is_ai = no
+		has_variable = xqol_mass_conversion_threshold_draft
+	}
+	effect = {
+		if = {
+			limit = {
+				is_ai = no
+				has_variable = xqol_mass_conversion_threshold_draft
+			}
+			set_variable = { name = xqol_mass_conversion_threshold_draft value = 84 }
+		}
+	}
+}
+
+xqol_set_conversion_threshold_85_gui = {
+	scope = character
+	is_shown = {
+		is_ai = no
+		has_variable = xqol_mass_conversion_threshold_draft
+	}
+	effect = {
+		if = {
+			limit = {
+				is_ai = no
+				has_variable = xqol_mass_conversion_threshold_draft
+			}
+			set_variable = { name = xqol_mass_conversion_threshold_draft value = 85 }
+		}
+	}
+}
+
+xqol_set_conversion_threshold_86_gui = {
+	scope = character
+	is_shown = {
+		is_ai = no
+		has_variable = xqol_mass_conversion_threshold_draft
+	}
+	effect = {
+		if = {
+			limit = {
+				is_ai = no
+				has_variable = xqol_mass_conversion_threshold_draft
+			}
+			set_variable = { name = xqol_mass_conversion_threshold_draft value = 86 }
+		}
+	}
+}
+
+xqol_set_conversion_threshold_87_gui = {
+	scope = character
+	is_shown = {
+		is_ai = no
+		has_variable = xqol_mass_conversion_threshold_draft
+	}
+	effect = {
+		if = {
+			limit = {
+				is_ai = no
+				has_variable = xqol_mass_conversion_threshold_draft
+			}
+			set_variable = { name = xqol_mass_conversion_threshold_draft value = 87 }
+		}
+	}
+}
+
+xqol_set_conversion_threshold_88_gui = {
+	scope = character
+	is_shown = {
+		is_ai = no
+		has_variable = xqol_mass_conversion_threshold_draft
+	}
+	effect = {
+		if = {
+			limit = {
+				is_ai = no
+				has_variable = xqol_mass_conversion_threshold_draft
+			}
+			set_variable = { name = xqol_mass_conversion_threshold_draft value = 88 }
+		}
+	}
+}
+
+xqol_set_conversion_threshold_89_gui = {
+	scope = character
+	is_shown = {
+		is_ai = no
+		has_variable = xqol_mass_conversion_threshold_draft
+	}
+	effect = {
+		if = {
+			limit = {
+				is_ai = no
+				has_variable = xqol_mass_conversion_threshold_draft
+			}
+			set_variable = { name = xqol_mass_conversion_threshold_draft value = 89 }
+		}
+	}
+}
+
+xqol_set_conversion_threshold_90_gui = {
+	scope = character
+	is_shown = {
+		is_ai = no
+		has_variable = xqol_mass_conversion_threshold_draft
+	}
+	effect = {
+		if = {
+			limit = {
+				is_ai = no
+				has_variable = xqol_mass_conversion_threshold_draft
+			}
+			set_variable = { name = xqol_mass_conversion_threshold_draft value = 90 }
+		}
+	}
+}
+
+xqol_set_conversion_threshold_91_gui = {
+	scope = character
+	is_shown = {
+		is_ai = no
+		has_variable = xqol_mass_conversion_threshold_draft
+	}
+	effect = {
+		if = {
+			limit = {
+				is_ai = no
+				has_variable = xqol_mass_conversion_threshold_draft
+			}
+			set_variable = { name = xqol_mass_conversion_threshold_draft value = 91 }
+		}
+	}
+}
+
+xqol_set_conversion_threshold_92_gui = {
+	scope = character
+	is_shown = {
+		is_ai = no
+		has_variable = xqol_mass_conversion_threshold_draft
+	}
+	effect = {
+		if = {
+			limit = {
+				is_ai = no
+				has_variable = xqol_mass_conversion_threshold_draft
+			}
+			set_variable = { name = xqol_mass_conversion_threshold_draft value = 92 }
+		}
+	}
+}
+
+xqol_set_conversion_threshold_93_gui = {
+	scope = character
+	is_shown = {
+		is_ai = no
+		has_variable = xqol_mass_conversion_threshold_draft
+	}
+	effect = {
+		if = {
+			limit = {
+				is_ai = no
+				has_variable = xqol_mass_conversion_threshold_draft
+			}
+			set_variable = { name = xqol_mass_conversion_threshold_draft value = 93 }
+		}
+	}
+}
+
+xqol_set_conversion_threshold_94_gui = {
+	scope = character
+	is_shown = {
+		is_ai = no
+		has_variable = xqol_mass_conversion_threshold_draft
+	}
+	effect = {
+		if = {
+			limit = {
+				is_ai = no
+				has_variable = xqol_mass_conversion_threshold_draft
+			}
+			set_variable = { name = xqol_mass_conversion_threshold_draft value = 94 }
+		}
+	}
+}
+
+xqol_set_conversion_threshold_95_gui = {
+	scope = character
+	is_shown = {
+		is_ai = no
+		has_variable = xqol_mass_conversion_threshold_draft
+	}
+	effect = {
+		if = {
+			limit = {
+				is_ai = no
+				has_variable = xqol_mass_conversion_threshold_draft
+			}
+			set_variable = { name = xqol_mass_conversion_threshold_draft value = 95 }
+		}
+	}
+}
+
+xqol_set_conversion_threshold_96_gui = {
+	scope = character
+	is_shown = {
+		is_ai = no
+		has_variable = xqol_mass_conversion_threshold_draft
+	}
+	effect = {
+		if = {
+			limit = {
+				is_ai = no
+				has_variable = xqol_mass_conversion_threshold_draft
+			}
+			set_variable = { name = xqol_mass_conversion_threshold_draft value = 96 }
+		}
+	}
+}
+
+xqol_set_conversion_threshold_97_gui = {
+	scope = character
+	is_shown = {
+		is_ai = no
+		has_variable = xqol_mass_conversion_threshold_draft
+	}
+	effect = {
+		if = {
+			limit = {
+				is_ai = no
+				has_variable = xqol_mass_conversion_threshold_draft
+			}
+			set_variable = { name = xqol_mass_conversion_threshold_draft value = 97 }
+		}
+	}
+}
+
+xqol_set_conversion_threshold_98_gui = {
+	scope = character
+	is_shown = {
+		is_ai = no
+		has_variable = xqol_mass_conversion_threshold_draft
+	}
+	effect = {
+		if = {
+			limit = {
+				is_ai = no
+				has_variable = xqol_mass_conversion_threshold_draft
+			}
+			set_variable = { name = xqol_mass_conversion_threshold_draft value = 98 }
+		}
+	}
+}
+
+xqol_set_conversion_threshold_99_gui = {
+	scope = character
+	is_shown = {
+		is_ai = no
+		has_variable = xqol_mass_conversion_threshold_draft
+	}
+	effect = {
+		if = {
+			limit = {
+				is_ai = no
+				has_variable = xqol_mass_conversion_threshold_draft
+			}
+			set_variable = { name = xqol_mass_conversion_threshold_draft value = 99 }
+		}
+	}
+}
+
+xqol_set_conversion_threshold_100_gui = {
+	scope = character
+	is_shown = {
+		is_ai = no
+		has_variable = xqol_mass_conversion_threshold_draft
+	}
+	effect = {
+		if = {
+			limit = {
+				is_ai = no
+				has_variable = xqol_mass_conversion_threshold_draft
+			}
+			set_variable = { name = xqol_mass_conversion_threshold_draft value = 100 }
+		}
+	}
+}

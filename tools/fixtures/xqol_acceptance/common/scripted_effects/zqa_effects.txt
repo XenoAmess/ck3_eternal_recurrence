@@ -80,6 +80,7 @@ zqa_run_enabled_matrix_effect = {
 			xqol_supported_player_trigger = yes
 			has_variable = xqol_auto_appoint_successors_enabled
 			has_variable = xqol_no_vassal_transfers_enabled
+			has_variable = xqol_auto_call_defenders_enabled
 		}
 		debug_log = "ZQA: TEST PASS product_enable_decisions"
 	}
@@ -235,6 +236,7 @@ zqa_verify_disabled_matrix_effect = {
 		limit = {
 			NOT = { has_variable = xqol_auto_appoint_successors_enabled }
 			NOT = { has_variable = xqol_no_vassal_transfers_enabled }
+			NOT = { has_variable = xqol_auto_call_defenders_enabled }
 		}
 		debug_log = "ZQA: TEST PASS product_disable_decisions"
 	}

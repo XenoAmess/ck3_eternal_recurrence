@@ -1,0 +1,549 @@
+﻿# GENERATED FILE. Edit tools/gen_xqol_phase2.py, then regenerate.
+
+xqol_mass_conversion_courtier_interaction = {
+	hidden = yes
+	use_diplomatic_range = no
+	ai_maybe = yes
+	can_send_despite_rejection = yes
+	ai_min_reply_days = 1
+	ai_max_reply_days = 5
+
+	is_shown = {
+		scope:actor = { xqol_human_ruler_trigger = yes }
+		scope:recipient = { is_ai = yes }
+	}
+
+	is_valid = {
+		scope:actor = {
+			is_character_interaction_valid = {
+				recipient = scope:recipient
+				interaction = ask_for_conversion_courtier_interaction
+			}
+		}
+	}
+
+	ai_accept = {
+		base = 0
+		modifier = {
+			add = 50
+			desc = EDUCATE_CHILD_ACTOR_IS_MY_LIEGE
+		}
+		religion_demand_conversion_default_modifier = yes
+	}
+
+	on_accept = {
+		xqol_mass_conversion_courtier_accepted_effect = yes
+	}
+
+	on_decline = {
+		xqol_mass_conversion_declined_effect = yes
+	}
+
+	ai_potential = { always = no }
+	ai_will_do = { base = 0 }
+}
+
+xqol_mass_conversion_ruler_interaction = {
+	hidden = yes
+	use_diplomatic_range = no
+	ai_maybe = yes
+	can_send_despite_rejection = yes
+	ai_min_reply_days = 4
+	ai_max_reply_days = 9
+
+	is_shown = {
+		scope:actor = { xqol_human_ruler_trigger = yes }
+		scope:recipient = { is_ai = yes }
+	}
+
+	is_valid = {
+		scope:actor = {
+			is_character_interaction_valid = {
+				recipient = scope:recipient
+				interaction = demand_conversion_vassal_ruler_interaction
+			}
+		}
+	}
+
+	ai_accept = {
+		base = 0
+		modifier = {
+			add = 50
+			desc = EDUCATE_CHILD_ACTOR_IS_MY_LIEGE
+		}
+		religion_demand_conversion_default_modifier = yes
+	}
+
+	on_accept = {
+		xqol_mass_conversion_ruler_accepted_effect = yes
+	}
+
+	on_decline = {
+		xqol_mass_conversion_declined_effect = yes
+	}
+
+	ai_potential = { always = no }
+	ai_will_do = { base = 0 }
+}
+
+xqol_release_hook_recruit_conversion_interaction = {
+	hidden = yes
+	common_interaction = no
+	use_diplomatic_range = no
+
+	is_shown = {
+		scope:recipient = {
+			xqol_release_base_valid_trigger = yes
+			xqol_release_hook_valid_trigger = yes
+			xqol_release_recruit_valid_trigger = yes
+			xqol_release_conversion_valid_trigger = yes
+		}
+	}
+
+	is_valid = {
+		scope:recipient = {
+			xqol_release_base_valid_trigger = yes
+			xqol_release_hook_valid_trigger = yes
+			xqol_release_recruit_valid_trigger = yes
+			xqol_release_conversion_valid_trigger = yes
+		}
+	}
+
+	ai_accept = {
+	base = 100
+	modifier = {
+		add = -20
+		scope:recipient = { has_trait = ambitious }
+		desc = RECIPIENT_IS_AMBITIOUS
+	}
+	modifier = {
+		add = -20
+		scope:recipient = { ai_zeal <= 20 }
+		desc = CONVERSION_NEGATIVE_REASON
+	}
+	modifier = {
+		add = {
+			value = scope:recipient.ai_zeal
+			if = {
+				limit = {
+					scope:recipient.faith = {
+						faith_hostility_level = {
+							target = scope:actor.faith
+							value = faith_astray_level
+						}
+					}
+				}
+				multiply = -1
+			}
+			else = { multiply = -2 }
+		}
+		scope:recipient = { ai_zeal > 20 }
+		desc = CONVERSION_NEGATIVE_REASON
+	}
+	modifier = {
+		add = {
+			value = -50
+			if = {
+				limit = { scope:recipient = { ai_vengefulness > 0 } }
+				subtract = scope:recipient.ai_vengefulness
+			}
+		}
+		desc = GAIN_HOOK_NEGATIVE_REASON
+	}
+	modifier = {
+		add = -10
+		NOT = {
+			scope:actor = {
+				culture = { has_cultural_parameter = can_recruit_prisoners_easily }
+			}
+		}
+		desc = RECRUITMET_NEGATIVE_REASON
+	}
+	}
+
+	on_accept = {
+		xqol_release_prisoner_terms_effect = {
+			HOOK = yes
+			RECRUIT = yes
+			CONVERSION = yes
+		}
+	}
+
+	ai_potential = { always = no }
+	ai_will_do = { base = 0 }
+}
+
+xqol_release_hook_recruit_interaction = {
+	hidden = yes
+	common_interaction = no
+	use_diplomatic_range = no
+
+	is_shown = {
+		scope:recipient = {
+			xqol_release_base_valid_trigger = yes
+			xqol_release_hook_valid_trigger = yes
+			xqol_release_recruit_valid_trigger = yes
+		}
+	}
+
+	is_valid = {
+		scope:recipient = {
+			xqol_release_base_valid_trigger = yes
+			xqol_release_hook_valid_trigger = yes
+			xqol_release_recruit_valid_trigger = yes
+		}
+	}
+
+	ai_accept = {
+	base = 100
+	modifier = {
+		add = -20
+		scope:recipient = { has_trait = ambitious }
+		desc = RECIPIENT_IS_AMBITIOUS
+	}
+	modifier = {
+		add = {
+			value = -50
+			if = {
+				limit = { scope:recipient = { ai_vengefulness > 0 } }
+				subtract = scope:recipient.ai_vengefulness
+			}
+		}
+		desc = GAIN_HOOK_NEGATIVE_REASON
+	}
+	modifier = {
+		add = -10
+		NOT = {
+			scope:actor = {
+				culture = { has_cultural_parameter = can_recruit_prisoners_easily }
+			}
+		}
+		desc = RECRUITMET_NEGATIVE_REASON
+	}
+	}
+
+	on_accept = {
+		xqol_release_prisoner_terms_effect = {
+			HOOK = yes
+			RECRUIT = yes
+			CONVERSION = no
+		}
+	}
+
+	ai_potential = { always = no }
+	ai_will_do = { base = 0 }
+}
+
+xqol_release_hook_conversion_interaction = {
+	hidden = yes
+	common_interaction = no
+	use_diplomatic_range = no
+
+	is_shown = {
+		scope:recipient = {
+			xqol_release_base_valid_trigger = yes
+			xqol_release_hook_valid_trigger = yes
+			xqol_release_conversion_valid_trigger = yes
+		}
+	}
+
+	is_valid = {
+		scope:recipient = {
+			xqol_release_base_valid_trigger = yes
+			xqol_release_hook_valid_trigger = yes
+			xqol_release_conversion_valid_trigger = yes
+		}
+	}
+
+	ai_accept = {
+	base = 100
+	modifier = {
+		add = -20
+		scope:recipient = { has_trait = ambitious }
+		desc = RECIPIENT_IS_AMBITIOUS
+	}
+	modifier = {
+		add = -20
+		scope:recipient = { ai_zeal <= 20 }
+		desc = CONVERSION_NEGATIVE_REASON
+	}
+	modifier = {
+		add = {
+			value = scope:recipient.ai_zeal
+			if = {
+				limit = {
+					scope:recipient.faith = {
+						faith_hostility_level = {
+							target = scope:actor.faith
+							value = faith_astray_level
+						}
+					}
+				}
+				multiply = -1
+			}
+			else = { multiply = -2 }
+		}
+		scope:recipient = { ai_zeal > 20 }
+		desc = CONVERSION_NEGATIVE_REASON
+	}
+	modifier = {
+		add = {
+			value = -50
+			if = {
+				limit = { scope:recipient = { ai_vengefulness > 0 } }
+				subtract = scope:recipient.ai_vengefulness
+			}
+		}
+		desc = GAIN_HOOK_NEGATIVE_REASON
+	}
+	}
+
+	on_accept = {
+		xqol_release_prisoner_terms_effect = {
+			HOOK = yes
+			RECRUIT = no
+			CONVERSION = yes
+		}
+	}
+
+	ai_potential = { always = no }
+	ai_will_do = { base = 0 }
+}
+
+xqol_release_recruit_conversion_interaction = {
+	hidden = yes
+	common_interaction = no
+	use_diplomatic_range = no
+
+	is_shown = {
+		scope:recipient = {
+			xqol_release_base_valid_trigger = yes
+			xqol_release_recruit_valid_trigger = yes
+			xqol_release_conversion_valid_trigger = yes
+		}
+	}
+
+	is_valid = {
+		scope:recipient = {
+			xqol_release_base_valid_trigger = yes
+			xqol_release_recruit_valid_trigger = yes
+			xqol_release_conversion_valid_trigger = yes
+		}
+	}
+
+	ai_accept = {
+	base = 100
+	modifier = {
+		add = -20
+		scope:recipient = { has_trait = ambitious }
+		desc = RECIPIENT_IS_AMBITIOUS
+	}
+	modifier = {
+		add = -20
+		scope:recipient = { ai_zeal <= 20 }
+		desc = CONVERSION_NEGATIVE_REASON
+	}
+	modifier = {
+		add = {
+			value = scope:recipient.ai_zeal
+			if = {
+				limit = {
+					scope:recipient.faith = {
+						faith_hostility_level = {
+							target = scope:actor.faith
+							value = faith_astray_level
+						}
+					}
+				}
+				multiply = -1
+			}
+			else = { multiply = -2 }
+		}
+		scope:recipient = { ai_zeal > 20 }
+		desc = CONVERSION_NEGATIVE_REASON
+	}
+	modifier = {
+		add = -10
+		NOT = {
+			scope:actor = {
+				culture = { has_cultural_parameter = can_recruit_prisoners_easily }
+			}
+		}
+		desc = RECRUITMET_NEGATIVE_REASON
+	}
+	}
+
+	on_accept = {
+		xqol_release_prisoner_terms_effect = {
+			HOOK = no
+			RECRUIT = yes
+			CONVERSION = yes
+		}
+	}
+
+	ai_potential = { always = no }
+	ai_will_do = { base = 0 }
+}
+
+xqol_release_hook_interaction = {
+	hidden = yes
+	common_interaction = no
+	use_diplomatic_range = no
+
+	is_shown = {
+		scope:recipient = {
+			xqol_release_base_valid_trigger = yes
+			xqol_release_hook_valid_trigger = yes
+		}
+	}
+
+	is_valid = {
+		scope:recipient = {
+			xqol_release_base_valid_trigger = yes
+			xqol_release_hook_valid_trigger = yes
+		}
+	}
+
+	ai_accept = {
+	base = 100
+	modifier = {
+		add = -20
+		scope:recipient = { has_trait = ambitious }
+		desc = RECIPIENT_IS_AMBITIOUS
+	}
+	modifier = {
+		add = {
+			value = -50
+			if = {
+				limit = { scope:recipient = { ai_vengefulness > 0 } }
+				subtract = scope:recipient.ai_vengefulness
+			}
+		}
+		desc = GAIN_HOOK_NEGATIVE_REASON
+	}
+	}
+
+	on_accept = {
+		xqol_release_prisoner_terms_effect = {
+			HOOK = yes
+			RECRUIT = no
+			CONVERSION = no
+		}
+	}
+
+	ai_potential = { always = no }
+	ai_will_do = { base = 0 }
+}
+
+xqol_release_recruit_interaction = {
+	hidden = yes
+	common_interaction = no
+	use_diplomatic_range = no
+
+	is_shown = {
+		scope:recipient = {
+			xqol_release_base_valid_trigger = yes
+			xqol_release_recruit_valid_trigger = yes
+		}
+	}
+
+	is_valid = {
+		scope:recipient = {
+			xqol_release_base_valid_trigger = yes
+			xqol_release_recruit_valid_trigger = yes
+		}
+	}
+
+	ai_accept = {
+	base = 100
+	modifier = {
+		add = -20
+		scope:recipient = { has_trait = ambitious }
+		desc = RECIPIENT_IS_AMBITIOUS
+	}
+	modifier = {
+		add = -10
+		NOT = {
+			scope:actor = {
+				culture = { has_cultural_parameter = can_recruit_prisoners_easily }
+			}
+		}
+		desc = RECRUITMET_NEGATIVE_REASON
+	}
+	}
+
+	on_accept = {
+		xqol_release_prisoner_terms_effect = {
+			HOOK = no
+			RECRUIT = yes
+			CONVERSION = no
+		}
+	}
+
+	ai_potential = { always = no }
+	ai_will_do = { base = 0 }
+}
+
+xqol_release_conversion_interaction = {
+	hidden = yes
+	common_interaction = no
+	use_diplomatic_range = no
+
+	is_shown = {
+		scope:recipient = {
+			xqol_release_base_valid_trigger = yes
+			xqol_release_conversion_valid_trigger = yes
+		}
+	}
+
+	is_valid = {
+		scope:recipient = {
+			xqol_release_base_valid_trigger = yes
+			xqol_release_conversion_valid_trigger = yes
+		}
+	}
+
+	ai_accept = {
+	base = 100
+	modifier = {
+		add = -20
+		scope:recipient = { has_trait = ambitious }
+		desc = RECIPIENT_IS_AMBITIOUS
+	}
+	modifier = {
+		add = -20
+		scope:recipient = { ai_zeal <= 20 }
+		desc = CONVERSION_NEGATIVE_REASON
+	}
+	modifier = {
+		add = {
+			value = scope:recipient.ai_zeal
+			if = {
+				limit = {
+					scope:recipient.faith = {
+						faith_hostility_level = {
+							target = scope:actor.faith
+							value = faith_astray_level
+						}
+					}
+				}
+				multiply = -1
+			}
+			else = { multiply = -2 }
+		}
+		scope:recipient = { ai_zeal > 20 }
+		desc = CONVERSION_NEGATIVE_REASON
+	}
+	}
+
+	on_accept = {
+		xqol_release_prisoner_terms_effect = {
+			HOOK = no
+			RECRUIT = no
+			CONVERSION = yes
+		}
+	}
+
+	ai_potential = { always = no }
+	ai_will_do = { base = 0 }
+}

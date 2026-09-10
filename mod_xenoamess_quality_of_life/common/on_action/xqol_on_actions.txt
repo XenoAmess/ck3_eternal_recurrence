@@ -1,6 +1,7 @@
 ﻿on_game_start_after_lobby = { on_actions = { xqol_on_game_start } }
 on_vassal_change = { on_actions = { xqol_on_vassal_change } }
 yearly_playable_pulse = { on_actions = { xqol_yearly_player_maintenance } }
+on_war_started = { on_actions = { xqol_on_war_started } }
 
 xqol_on_game_start = {
 	effect = {
@@ -19,6 +20,25 @@ xqol_yearly_player_maintenance = {
 		if = {
 			limit = { is_ai = no }
 			xqol_refresh_no_vassal_transfer_flags_effect = yes
+		}
+	}
+}
+
+xqol_on_war_started = {
+	effect = {
+		if = {
+			limit = {
+				scope:defender = {
+					is_ai = no
+					has_variable = xqol_auto_call_defenders_enabled
+				}
+				scope:war = { primary_defender = scope:defender }
+			}
+			scope:war = { save_scope_as = target }
+			scope:defender = {
+				save_scope_as = actor
+				xqol_auto_call_free_defenders_effect = yes
+			}
 		}
 	}
 }

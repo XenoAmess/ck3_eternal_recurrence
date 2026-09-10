@@ -83,3 +83,130 @@ xqol_disable_no_vassal_transfers_decision = {
 	ai_potential = { always = no }
 	ai_will_do = { base = 0 }
 }
+
+xqol_enable_auto_call_defenders_decision = {
+	picture = { reference = "gfx/interface/illustrations/decisions/decision_siege_warfare.dds" }
+	decision_group_type = xqol_quality_of_life
+	sort_order = 30
+	ai_check_interval = 0
+	desc = xqol_enable_auto_call_defenders_decision_desc
+	selection_tooltip = xqol_enable_auto_call_defenders_decision_tooltip
+	is_shown = {
+		xqol_human_ruler_trigger = yes
+		NOT = { has_variable = xqol_auto_call_defenders_enabled }
+	}
+	is_valid_showing_failures_only = { xqol_human_ruler_trigger = yes }
+	effect = {
+		set_variable = xqol_auto_call_defenders_enabled
+		custom_tooltip = xqol_auto_call_defenders_enabled_tt
+	}
+	ai_potential = { always = no }
+	ai_will_do = { base = 0 }
+}
+
+xqol_disable_auto_call_defenders_decision = {
+	picture = { reference = "gfx/interface/illustrations/decisions/decision_siege_warfare.dds" }
+	decision_group_type = xqol_quality_of_life
+	sort_order = 31
+	ai_check_interval = 0
+	desc = xqol_disable_auto_call_defenders_decision_desc
+	selection_tooltip = xqol_disable_auto_call_defenders_decision_tooltip
+	is_shown = {
+		xqol_human_ruler_trigger = yes
+		has_variable = xqol_auto_call_defenders_enabled
+	}
+	is_valid_showing_failures_only = { xqol_human_ruler_trigger = yes }
+	effect = {
+		remove_variable = xqol_auto_call_defenders_enabled
+		custom_tooltip = xqol_auto_call_defenders_disabled_tt
+	}
+	ai_potential = { always = no }
+	ai_will_do = { base = 0 }
+}
+
+xqol_mass_conversion_decision = {
+	picture = { reference = "gfx/interface/illustrations/decisions/decision_major_religion.dds" }
+	decision_group_type = xqol_quality_of_life
+	sort_order = 40
+	ai_check_interval = 0
+	desc = xqol_mass_conversion_decision_desc
+	selection_tooltip = xqol_mass_conversion_decision_tooltip
+	is_shown = { xqol_human_ruler_trigger = yes }
+	is_valid_showing_failures_only = {
+		xqol_human_ruler_trigger = yes
+		NOT = { has_variable = xqol_mass_conversion_pending }
+	}
+	effect = { trigger_event = xqol.100 }
+	ai_potential = { always = no }
+	ai_will_do = { base = 0 }
+}
+
+xqol_bulk_demand_payment_full_decision = {
+	picture = { reference = "gfx/interface/illustrations/decisions/decision_spend_money.dds" }
+	decision_group_type = xqol_quality_of_life
+	sort_order = 50
+	ai_check_interval = 0
+	desc = xqol_bulk_demand_payment_full_decision_desc
+	selection_tooltip = xqol_bulk_demand_payment_full_decision_tooltip
+	is_shown = { xqol_human_ruler_trigger = yes }
+	is_valid_showing_failures_only = { xqol_human_ruler_trigger = yes }
+	effect = { xqol_bulk_demand_payment_full_effect = yes }
+	ai_potential = { always = no }
+	ai_will_do = { base = 0 }
+}
+
+xqol_bulk_demand_payment_any_decision = {
+	picture = { reference = "gfx/interface/illustrations/decisions/decision_spend_money.dds" }
+	decision_group_type = xqol_quality_of_life
+	sort_order = 51
+	ai_check_interval = 0
+	desc = xqol_bulk_demand_payment_any_decision_desc
+	selection_tooltip = xqol_bulk_demand_payment_any_decision_tooltip
+	is_shown = { xqol_human_ruler_trigger = yes }
+	is_valid_showing_failures_only = { xqol_human_ruler_trigger = yes }
+	effect = { xqol_bulk_demand_payment_any_effect = yes }
+	ai_potential = { always = no }
+	ai_will_do = { base = 0 }
+}
+
+xqol_bulk_ransom_full_decision = {
+	picture = { reference = "gfx/interface/illustrations/decisions/decision_prison.dds" }
+	decision_group_type = xqol_quality_of_life
+	sort_order = 60
+	ai_check_interval = 0
+	desc = xqol_bulk_ransom_full_decision_desc
+	selection_tooltip = xqol_bulk_ransom_full_decision_tooltip
+	is_shown = { xqol_human_ruler_trigger = yes }
+	is_valid_showing_failures_only = { xqol_human_ruler_trigger = yes }
+	effect = { xqol_bulk_ransom_full_effect = yes }
+	ai_potential = { always = no }
+	ai_will_do = { base = 0 }
+}
+
+xqol_bulk_ransom_any_decision = {
+	picture = { reference = "gfx/interface/illustrations/decisions/decision_prison.dds" }
+	decision_group_type = xqol_quality_of_life
+	sort_order = 61
+	ai_check_interval = 0
+	desc = xqol_bulk_ransom_any_decision_desc
+	selection_tooltip = xqol_bulk_ransom_any_decision_tooltip
+	is_shown = { xqol_human_ruler_trigger = yes }
+	is_valid_showing_failures_only = { xqol_human_ruler_trigger = yes }
+	effect = { xqol_bulk_ransom_any_effect = yes }
+	ai_potential = { always = no }
+	ai_will_do = { base = 0 }
+}
+
+xqol_bulk_release_terms_decision = {
+	picture = { reference = "gfx/interface/illustrations/decisions/decision_prison.dds" }
+	decision_group_type = xqol_quality_of_life
+	sort_order = 70
+	ai_check_interval = 0
+	desc = xqol_bulk_release_terms_decision_desc
+	selection_tooltip = xqol_bulk_release_terms_decision_tooltip
+	is_shown = { xqol_human_ruler_trigger = yes }
+	is_valid_showing_failures_only = { xqol_human_ruler_trigger = yes }
+	effect = { xqol_bulk_release_terms_effect = yes }
+	ai_potential = { always = no }
+	ai_will_do = { base = 0 }
+}

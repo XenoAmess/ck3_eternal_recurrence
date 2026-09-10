@@ -11,6 +11,7 @@ from pathlib import Path
 from PIL import Image
 
 import build_xenoamess_quality_of_life_release as release
+import gen_xqol_phase2
 
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -128,6 +129,15 @@ def check_localization(errors: list[str], *, release_localization: bool = False)
         "xqol_disable_auto_appointment_decision",
         "xqol_enable_no_vassal_transfers_decision",
         "xqol_disable_no_vassal_transfers_decision",
+        "xqol_enable_auto_call_defenders_decision",
+        "xqol_disable_auto_call_defenders_decision",
+        "xqol_mass_conversion_decision",
+        "xqol_bulk_demand_payment_full_decision",
+        "xqol_bulk_demand_payment_any_decision",
+        "xqol_bulk_ransom_full_decision",
+        "xqol_bulk_ransom_any_decision",
+        "xqol_bulk_release_terms_decision",
+        "xqol_mass_conversion_results_desc",
     }
     missing = required_keys - keys["english"]
     if missing:
@@ -144,11 +154,12 @@ def check_scripts(errors: list[str]) -> None:
     decision_group = read_utf8(MOD / "common/decision_group_types/xqol_decision_group_types.txt")
     if "gui_tags = { big_button }" not in decision_group:
         errors.append("custom decision group must use the rendered big_button GUI tag")
-    if decisions.count("ai_potential = { always = no }") != 4:
-        errors.append("all four decisions must be impossible for AI")
+    if decisions.count("ai_potential = { always = no }") != 12:
+        errors.append("all twelve decisions must be impossible for AI")
     for variable in (
         "xqol_auto_appoint_successors_enabled",
         "xqol_no_vassal_transfers_enabled",
+        "xqol_auto_call_defenders_enabled",
     ):
         if f"set_variable = {variable}" not in decisions or f"remove_variable = {variable}" not in decisions:
             errors.append(f"decision toggle is not symmetric: {variable}")
@@ -172,13 +183,106 @@ def check_scripts(errors: list[str]) -> None:
         errors.append("transfer ownership flag must have exactly one add site")
     if effects.count("remove_character_flag = xqol_no_vassal_transfer_guard") != 2:
         errors.append("transfer ownership flag must be cleared by decision and reconciliation")
-    for hook in ("on_game_start_after_lobby", "on_vassal_change", "yearly_playable_pulse"):
+    for hook in ("on_game_start_after_lobby", "on_vassal_change", "yearly_playable_pulse", "on_war_started"):
         if hook not in on_actions:
             errors.append(f"maintenance hook missing: {hook}")
     vanilla_interaction = read_utf8(GAME / "common/character_interactions/00_vassal_interactions.txt")
     if "grant_vassal_interaction" not in vanilla_interaction or "has_character_flag = ai_should_not_transfer" not in vanilla_interaction:
         errors.append("exact-build vanilla grant-vassal AI guard contract is missing")
-    for path in (MOD / "common").rglob("*.txt"):
+
+    generated = gen_xqol_phase2.generated_payloads()
+    for relative, text in generated.items():
+        expected = b"\xef\xbb\xbf" + text.replace("\r\n", "\n").encode("utf-8")
+        if (MOD / relative).read_bytes() != expected:
+            errors.append(f"generated phase-two runtime drift: {relative}")
+
+    release_interactions = read_utf8(
+        MOD / "common/character_interactions/xqol_generated_release_interactions.txt"
+    )
+    for interaction in (
+        "xqol_mass_conversion_courtier_interaction",
+        "xqol_mass_conversion_ruler_interaction",
+        "xqol_release_hook_recruit_conversion_interaction",
+        "xqol_release_hook_recruit_interaction",
+        "xqol_release_hook_conversion_interaction",
+        "xqol_release_recruit_conversion_interaction",
+        "xqol_release_hook_interaction",
+        "xqol_release_recruit_interaction",
+        "xqol_release_conversion_interaction",
+    ):
+        if release_interactions.count(f"{interaction} = {{") != 1:
+            errors.append(f"generated interaction missing or duplicated: {interaction}")
+    threshold_guis = read_utf8(
+        MOD / "common/scripted_guis/xqol_generated_conversion_threshold_guis.txt"
+    )
+    if len(re.findall(r"(?m)^xqol_set_conversion_threshold_\d+_gui = \{$", threshold_guis)) != 101:
+        errors.append("conversion threshold GUI must contain 101 literal setters")
+    dispatch = read_utf8(
+        MOD / "common/scripted_effects/xqol_generated_conversion_dispatch.txt"
+    )
+    if len(re.findall(r"(?m)^\t\t\d+ = \{", dispatch)) != 101:
+        errors.append("conversion threshold dispatcher must contain 101 literal cases")
+    for token in (
+        "run_interaction = {",
+        "interaction = demand_payment_interaction",
+        "interaction = ransom_interaction",
+        "send_threshold = decline",
+        "execute_threshold = accept",
+        "xqol_release_hook_recruit_conversion_interaction",
+        "xqol_mass_conversion_pending",
+    ):
+        if token not in effects:
+            errors.append(f"phase-two runtime token missing: {token}")
+    invalid_auto_call_check = re.compile(
+        r"is_character_interaction_potentially_accepted\s*=\s*\{\s*"
+        r"recipient\s*=\s*scope:recipient\s*"
+        r"interaction\s*=\s*call_(?:ally|house_member_to_war)_interaction"
+    )
+    if invalid_auto_call_check.search(effects):
+        errors.append("automatic calls must use interaction validity, not AI acceptance")
+    for token in (
+        "xqol_free_call_target_valid_trigger = yes",
+        "xqol_free_house_call_target_valid_trigger = yes",
+        "NOT = { was_called = scope:recipient }",
+        "joiner_not_already_in_another_war_with_any_target_war_participants_trigger",
+        "can_join_war_liege_vassal_check_trigger",
+        "diarch_callable_in_internal_war_trigger = yes",
+    ):
+        if token not in triggers + effects:
+            errors.append(f"automatic-call target gate missing: {token}")
+
+    vanilla_contracts = {
+        "common/on_action/war_on_actions.txt": ("on_war_started = {",),
+        "common/character_interactions/00_alliance.txt": (
+            "call_ally_interaction = {",
+            "call_ally_interaction_effect = yes",
+        ),
+        "common/character_interactions/00_religious_interactions.txt": (
+            "ask_for_conversion_courtier_interaction = {",
+            "demand_conversion_vassal_ruler_interaction = {",
+            "religion_demand_conversion_default_modifier = yes",
+        ),
+        "common/character_interactions/00_perk_interactions.txt": (
+            "demand_payment_interaction = {",
+            "golden_obligation_value",
+        ),
+        "common/character_interactions/00_prison_interactions.txt": (
+            "ransom_interaction = {",
+            "release_from_prison_interaction = {",
+            "send_options_exclusive = no",
+        ),
+        "common/scripted_effects/00_prison_effects.txt": ("ransom_interaction_effect = {",),
+    }
+    for relative, required in vanilla_contracts.items():
+        vanilla = read_utf8(GAME / relative)
+        for token in required:
+            if token not in vanilla:
+                errors.append(f"exact-build phase-two vanilla contract missing {token!r}: {relative}")
+
+    for relative in sorted(release.RUNTIME_FILES):
+        path = MOD / relative
+        if path.suffix.lower() not in {".gui", ".txt"}:
+            continue
         if not balanced_braces(read_utf8(path)):
             errors.append(f"unbalanced braces: {path.relative_to(MOD)}")
 
@@ -186,7 +290,7 @@ def check_scripts(errors: list[str]) -> None:
 def check_assets_and_descriptor(errors: list[str]) -> None:
     descriptor = read_utf8(MOD / "descriptor.mod")
     for token in (
-        'version="1.0.2"',
+        'version="1.1.0"',
         'name="XenoAmess的体验优化"',
         'picture="thumbnail.png"',
         'supported_version="1.19.0.6"',
@@ -216,10 +320,9 @@ def main(argv: list[str] | None = None) -> int:
     args = parser.parse_args(argv)
     errors = release.release_source_errors(MOD)
     runtime_text = [
-        path
-        for path in MOD.rglob("*")
-        if path.is_file() and path.suffix.lower() in {".txt", ".yml"}
-        and ("common" in path.parts or "localization" in path.parts)
+        MOD / relative
+        for relative in release.RUNTIME_FILES
+        if Path(relative).suffix.lower() in {".gui", ".txt", ".yml"}
     ]
     for path in runtime_text:
         if not has_utf8_bom(path):

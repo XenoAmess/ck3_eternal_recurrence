@@ -20,3 +20,173 @@ xqol_should_guard_vassal_transfer_trigger = {
 		}
 	}
 }
+
+xqol_human_ruler_trigger = {
+	is_ai = no
+	is_ruler = yes
+}
+
+xqol_free_call_target_valid_trigger = {
+	scope:target = {
+		is_war_leader = scope:actor
+		primary_defender = scope:actor
+		NOT = { was_called = scope:recipient }
+		NOR = {
+			any_war_attacker = { this = scope:recipient }
+			any_war_defender = { this = scope:recipient }
+		}
+		trigger_if = {
+			limit = {
+				OR = {
+					using_cb = undirected_great_holy_war
+					using_cb = directed_great_holy_war
+				}
+			}
+			primary_attacker.faith != scope:recipient.faith
+		}
+		trigger_if = {
+			limit = { scope:recipient ?= scope:actor.diarch }
+			diarch_callable_in_internal_war_trigger = yes
+		}
+		NOT = {
+			primary_attacker = {
+				is_tributary_of_suzerain_or_above = scope:recipient
+			}
+		}
+		NOT = {
+			scope:recipient = {
+				is_tributary_of_suzerain_or_above = scope:target.primary_attacker
+			}
+		}
+	}
+	joiner_not_already_in_another_war_with_any_target_war_participants_trigger = {
+		WARRIOR = scope:actor
+		JOINER = scope:recipient
+	}
+	can_join_war_liege_vassal_check_trigger = {
+		WARRIOR = scope:actor
+		JOINER = scope:recipient
+	}
+}
+
+xqol_free_house_call_target_valid_trigger = {
+	scope:target = {
+		is_war_leader = scope:actor
+		primary_defender = scope:actor
+		NOT = { was_called = scope:recipient }
+		NOR = {
+			any_war_attacker = { this = scope:recipient }
+			any_war_defender = { this = scope:recipient }
+		}
+	}
+	joiner_not_already_in_another_war_with_any_target_war_participants_trigger = {
+		WARRIOR = scope:actor
+		JOINER = scope:recipient
+	}
+	can_join_war_liege_vassal_check_trigger = {
+		WARRIOR = scope:actor
+		JOINER = scope:recipient
+	}
+}
+
+xqol_release_base_valid_trigger = {
+	is_ai = yes
+	is_imprisoned_by = scope:actor
+	NOT = { has_character_flag = is_being_tortured }
+	NOT = { has_character_flag = is_currently_being_purged }
+	cannot_release_former_regent_whilst_old_regent_holds_power_trigger = {
+		PRISONER = this
+		REGENT = var:imprisoned_by_diarch
+	}
+}
+
+xqol_release_hook_valid_trigger = {
+	scope:actor = {
+		can_add_hook = {
+			type = favor_hook
+			target = scope:recipient
+		}
+	}
+}
+
+xqol_release_recruit_valid_trigger = {
+	is_ruler = no
+	NOT = { is_courtier_of = scope:actor }
+	OR = {
+		is_adult = yes
+		AND = {
+			is_adult = no
+			OR = {
+				AND = {
+					exists = liege
+					NOT = { is_heir_of = liege }
+				}
+				NOT = { exists = liege }
+			}
+		}
+	}
+}
+
+xqol_release_conversion_valid_trigger = {
+	faith != scope:actor.faith
+	trigger_if = {
+		limit = { is_playable_character = yes }
+		is_vassal_or_below_of = scope:actor
+	}
+	NAND = {
+		exists = faith.religious_head
+		faith.religious_head = this
+	}
+	NAND = {
+		exists = faith
+		faith = { any_faith_holy_order = { leader = scope:recipient } }
+	}
+}
+
+xqol_ransom_ai_payer_trigger = {
+	trigger_if = {
+		limit = {
+			is_ruler = no
+			exists = liege
+		}
+		liege = { is_ai = yes }
+	}
+	trigger_else = { is_ai = yes }
+}
+
+xqol_ransom_payer_has_gold_trigger = {
+	xqol_ransom_ai_payer_trigger = yes
+	trigger_if = {
+		limit = {
+			is_ruler = no
+			exists = liege
+		}
+		liege = { gold >= 1 }
+	}
+	trigger_else = { gold >= 1 }
+}
+
+xqol_ransom_payer_can_pay_full_trigger = {
+	xqol_ransom_ai_payer_trigger = yes
+	trigger_if = {
+		limit = { scope:actor.dynasty ?= { has_dynasty_perk = fp1_pillage_legacy_3 } }
+		trigger_if = {
+			limit = {
+				is_ruler = no
+				exists = liege
+			}
+			liege = { gold >= scope:recipient.increased_ransom_cost_value }
+		}
+		trigger_else = { gold >= increased_ransom_cost_value }
+	}
+	trigger_else = {
+		trigger_if = {
+			limit = {
+				is_ruler = no
+				exists = liege
+			}
+			liege = { gold >= scope:recipient.ransom_cost_value }
+		}
+		trigger_else = { gold >= ransom_cost_value }
+	}
+}

@@ -164,6 +164,7 @@ def fixture_errors() -> list[str]:
         "death = { death_reason = death_natural_causes }",
         "xqol_reconcile_character_transfer_guard_effect = yes",
         "ai_should_not_transfer",
+        "xqol_auto_call_defenders_enabled",
     ):
         if token not in scenario:
             errors.append(f"fixture scenario contract missing {token}")
@@ -452,6 +453,7 @@ def run_scenario(service: GameplayBridgeService, stream: MarkerStream, artifacts
 
     click_decision("开启自动选择继任", "唯才是举", artifacts, "07_enable_appointment")
     click_decision("开启：别把封臣给我", "各安其位", artifacts, "08_enable_transfer_guard")
+    click_decision("开启自动召集防御援军", "唤来所有援手", artifacts, "08_enable_auto_defenders")
     stream.wait("ZQA: TEST PASS removal_transferred_to_scored_heir", 45)
     death_settlement = settle_queued_death_succession(service, stream, artifacts)
     enabled = service.snapshot()
@@ -460,6 +462,7 @@ def run_scenario(service: GameplayBridgeService, stream: MarkerStream, artifacts
 
     click_decision("关闭自动选择继任", "恢复旧制", artifacts, "10_disable_appointment")
     click_decision("关闭：别把封臣给我", "照旧接收", artifacts, "11_disable_transfer_guard")
+    click_decision("关闭自动召集防御援军", "由我亲自召集", artifacts, "11_disable_auto_defenders")
     stream.wait("ZQA: TEST DONE xqol", 45)
     final_snapshot = service.snapshot()
     if final_snapshot.get("paused") is not True:

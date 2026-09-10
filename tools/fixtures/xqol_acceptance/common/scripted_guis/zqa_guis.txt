@@ -14,6 +14,7 @@ zqa_enabled_matrix_gui = {
 		has_character_flag = zqa_await_product_toggles
 		has_variable = xqol_auto_appoint_successors_enabled
 		has_variable = xqol_no_vassal_transfers_enabled
+		has_variable = xqol_auto_call_defenders_enabled
 	}
 	effect = { zqa_run_enabled_matrix_effect = yes }
 }
@@ -41,6 +42,7 @@ zqa_disabled_matrix_gui = {
 		has_character_flag = zqa_await_product_disables
 		NOT = { has_variable = xqol_auto_appoint_successors_enabled }
 		NOT = { has_variable = xqol_no_vassal_transfers_enabled }
+		NOT = { has_variable = xqol_auto_call_defenders_enabled }
 	}
 	effect = { zqa_verify_disabled_matrix_effect = yes }
 }

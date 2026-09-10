@@ -1,0 +1,46 @@
+﻿namespace = xqol
+
+xqol.100 = {
+	type = character_event
+	title = xqol_mass_conversion_event_title
+	desc = xqol_mass_conversion_event_desc
+	theme = faith
+
+	immediate = {
+		if = {
+			limit = { has_variable = xqol_mass_conversion_threshold }
+			set_variable = {
+				name = xqol_mass_conversion_threshold_draft
+				value = var:xqol_mass_conversion_threshold
+			}
+		}
+		else = {
+			set_variable = { name = xqol_mass_conversion_threshold_draft value = 50 }
+		}
+	}
+
+	widget = {
+		gui = "xqol_conversion_threshold_slider"
+		container = "custom_widgets_container"
+	}
+
+	option = {
+		name = xqol_mass_conversion_event_confirm
+		trigger = {
+			xqol_human_ruler_trigger = yes
+			has_variable = xqol_mass_conversion_threshold_draft
+			NOT = { has_variable = xqol_mass_conversion_pending }
+		}
+		set_variable = {
+			name = xqol_mass_conversion_threshold
+			value = var:xqol_mass_conversion_threshold_draft
+		}
+		xqol_bulk_conversion_dispatch_effect = yes
+		remove_variable = xqol_mass_conversion_threshold_draft
+	}
+
+	option = {
+		name = xqol_mass_conversion_event_cancel
+		remove_variable = xqol_mass_conversion_threshold_draft
+	}
+}

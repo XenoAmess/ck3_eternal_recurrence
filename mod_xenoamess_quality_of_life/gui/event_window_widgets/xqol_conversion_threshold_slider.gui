@@ -1,0 +1,781 @@
+﻿# GENERATED FILE. Edit tools/gen_xqol_phase2.py, then regenerate.
+
+vbox = {
+	name = "xqol_conversion_threshold_slider"
+	layoutpolicy_horizontal = expanding
+	spacing = 8
+
+	divider_light = { layoutpolicy_horizontal = expanding }
+
+	text_single = {
+		layoutpolicy_horizontal = expanding
+		text = xqol_mass_conversion_threshold_label
+		align = center|nobaseline
+		default_format = "#T"
+	}
+
+	text_single = {
+		layoutpolicy_horizontal = expanding
+		text = "[GetPlayer.MakeScope.Var('xqol_mass_conversion_threshold_draft').GetValue|0]%"
+		align = center|nobaseline
+		default_format = "#V"
+	}
+
+	container = {
+		layoutpolicy_horizontal = expanding
+		size = { 404 28 }
+
+		scrollbar = {
+			name = "xqol_conversion_threshold_scrollbar"
+			parentanchor = center
+			direction = horizontal
+			size = { 404 20 }
+			min = 0
+			max = 100
+			step = 1
+			page = 10
+			wheelstep = 0
+			tracknavigation = direct
+			value = "[FixedPointToFloat(GetPlayer.MakeScope.Var('xqol_mass_conversion_threshold_draft').GetValue)]"
+			onchangestart = "[GetVariableSystem.Clear('xqol_conversion_threshold_route')]"
+			onchangefinish = "[GetVariableSystem.Set('xqol_conversion_threshold_route', IntToString(FloatToInt(Min_float(Max_float(Multiply_float(Divide_float(Subtract_float(GetX_CVector2f(PdxGuiWidget.GetScaledMousePosition), '(float)2'), Subtract_float(IntToFloat(GetX_CVector2i(PdxGetWidgetScreenSize(PdxGuiWidget.Self))), '(float)4')), '(float)100'), '(float)0'), '(float)100'))))]"
+
+			track = {
+				button = {
+					size = { 404 14 }
+					texture = "gfx/interface/progressbars/progress_black.dds"
+					effectname = "NoHighlight"
+					spriteType = Corneredtiled
+					spriteborder = { 6 6 }
+				}
+			}
+
+			slider = {
+				button = {
+					name = "xqol_conversion_threshold_handle"
+					size = { 4 20 }
+					texture = "gfx/interface/scrollbars/scrollbar_slider.dds"
+					spriteType = Corneredstretched
+					spriteborder = { 3 3 }
+					framesize = { 12 40 }
+				}
+			}
+		}
+	}
+
+	text_multi = {
+		layoutpolicy_horizontal = expanding
+		text = xqol_mass_conversion_threshold_help
+		align = center|nobaseline
+		autoresize = yes
+		default_format = "#weak"
+	}
+
+	state = {
+		name = "xqol_conversion_threshold_route_0"
+		trigger_when = "[GetVariableSystem.HasValue('xqol_conversion_threshold_route', '0')]"
+		on_start = "[GetScriptedGui('xqol_set_conversion_threshold_0_gui').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+		on_start = "[GetVariableSystem.Clear('xqol_conversion_threshold_route')]"
+		duration = 0.01
+	}
+	state = {
+		name = "xqol_conversion_threshold_route_1"
+		trigger_when = "[GetVariableSystem.HasValue('xqol_conversion_threshold_route', '1')]"
+		on_start = "[GetScriptedGui('xqol_set_conversion_threshold_1_gui').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+		on_start = "[GetVariableSystem.Clear('xqol_conversion_threshold_route')]"
+		duration = 0.01
+	}
+	state = {
+		name = "xqol_conversion_threshold_route_2"
+		trigger_when = "[GetVariableSystem.HasValue('xqol_conversion_threshold_route', '2')]"
+		on_start = "[GetScriptedGui('xqol_set_conversion_threshold_2_gui').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+		on_start = "[GetVariableSystem.Clear('xqol_conversion_threshold_route')]"
+		duration = 0.01
+	}
+	state = {
+		name = "xqol_conversion_threshold_route_3"
+		trigger_when = "[GetVariableSystem.HasValue('xqol_conversion_threshold_route', '3')]"
+		on_start = "[GetScriptedGui('xqol_set_conversion_threshold_3_gui').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+		on_start = "[GetVariableSystem.Clear('xqol_conversion_threshold_route')]"
+		duration = 0.01
+	}
+	state = {
+		name = "xqol_conversion_threshold_route_4"
+		trigger_when = "[GetVariableSystem.HasValue('xqol_conversion_threshold_route', '4')]"
+		on_start = "[GetScriptedGui('xqol_set_conversion_threshold_4_gui').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+		on_start = "[GetVariableSystem.Clear('xqol_conversion_threshold_route')]"
+		duration = 0.01
+	}
+	state = {
+		name = "xqol_conversion_threshold_route_5"
+		trigger_when = "[GetVariableSystem.HasValue('xqol_conversion_threshold_route', '5')]"
+		on_start = "[GetScriptedGui('xqol_set_conversion_threshold_5_gui').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+		on_start = "[GetVariableSystem.Clear('xqol_conversion_threshold_route')]"
+		duration = 0.01
+	}
+	state = {
+		name = "xqol_conversion_threshold_route_6"
+		trigger_when = "[GetVariableSystem.HasValue('xqol_conversion_threshold_route', '6')]"
+		on_start = "[GetScriptedGui('xqol_set_conversion_threshold_6_gui').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+		on_start = "[GetVariableSystem.Clear('xqol_conversion_threshold_route')]"
+		duration = 0.01
+	}
+	state = {
+		name = "xqol_conversion_threshold_route_7"
+		trigger_when = "[GetVariableSystem.HasValue('xqol_conversion_threshold_route', '7')]"
+		on_start = "[GetScriptedGui('xqol_set_conversion_threshold_7_gui').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+		on_start = "[GetVariableSystem.Clear('xqol_conversion_threshold_route')]"
+		duration = 0.01
+	}
+	state = {
+		name = "xqol_conversion_threshold_route_8"
+		trigger_when = "[GetVariableSystem.HasValue('xqol_conversion_threshold_route', '8')]"
+		on_start = "[GetScriptedGui('xqol_set_conversion_threshold_8_gui').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+		on_start = "[GetVariableSystem.Clear('xqol_conversion_threshold_route')]"
+		duration = 0.01
+	}
+	state = {
+		name = "xqol_conversion_threshold_route_9"
+		trigger_when = "[GetVariableSystem.HasValue('xqol_conversion_threshold_route', '9')]"
+		on_start = "[GetScriptedGui('xqol_set_conversion_threshold_9_gui').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+		on_start = "[GetVariableSystem.Clear('xqol_conversion_threshold_route')]"
+		duration = 0.01
+	}
+	state = {
+		name = "xqol_conversion_threshold_route_10"
+		trigger_when = "[GetVariableSystem.HasValue('xqol_conversion_threshold_route', '10')]"
+		on_start = "[GetScriptedGui('xqol_set_conversion_threshold_10_gui').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+		on_start = "[GetVariableSystem.Clear('xqol_conversion_threshold_route')]"
+		duration = 0.01
+	}
+	state = {
+		name = "xqol_conversion_threshold_route_11"
+		trigger_when = "[GetVariableSystem.HasValue('xqol_conversion_threshold_route', '11')]"
+		on_start = "[GetScriptedGui('xqol_set_conversion_threshold_11_gui').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+		on_start = "[GetVariableSystem.Clear('xqol_conversion_threshold_route')]"
+		duration = 0.01
+	}
+	state = {
+		name = "xqol_conversion_threshold_route_12"
+		trigger_when = "[GetVariableSystem.HasValue('xqol_conversion_threshold_route', '12')]"
+		on_start = "[GetScriptedGui('xqol_set_conversion_threshold_12_gui').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+		on_start = "[GetVariableSystem.Clear('xqol_conversion_threshold_route')]"
+		duration = 0.01
+	}
+	state = {
+		name = "xqol_conversion_threshold_route_13"
+		trigger_when = "[GetVariableSystem.HasValue('xqol_conversion_threshold_route', '13')]"
+		on_start = "[GetScriptedGui('xqol_set_conversion_threshold_13_gui').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+		on_start = "[GetVariableSystem.Clear('xqol_conversion_threshold_route')]"
+		duration = 0.01
+	}
+	state = {
+		name = "xqol_conversion_threshold_route_14"
+		trigger_when = "[GetVariableSystem.HasValue('xqol_conversion_threshold_route', '14')]"
+		on_start = "[GetScriptedGui('xqol_set_conversion_threshold_14_gui').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+		on_start = "[GetVariableSystem.Clear('xqol_conversion_threshold_route')]"
+		duration = 0.01
+	}
+	state = {
+		name = "xqol_conversion_threshold_route_15"
+		trigger_when = "[GetVariableSystem.HasValue('xqol_conversion_threshold_route', '15')]"
+		on_start = "[GetScriptedGui('xqol_set_conversion_threshold_15_gui').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+		on_start = "[GetVariableSystem.Clear('xqol_conversion_threshold_route')]"
+		duration = 0.01
+	}
+	state = {
+		name = "xqol_conversion_threshold_route_16"
+		trigger_when = "[GetVariableSystem.HasValue('xqol_conversion_threshold_route', '16')]"
+		on_start = "[GetScriptedGui('xqol_set_conversion_threshold_16_gui').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+		on_start = "[GetVariableSystem.Clear('xqol_conversion_threshold_route')]"
+		duration = 0.01
+	}
+	state = {
+		name = "xqol_conversion_threshold_route_17"
+		trigger_when = "[GetVariableSystem.HasValue('xqol_conversion_threshold_route', '17')]"
+		on_start = "[GetScriptedGui('xqol_set_conversion_threshold_17_gui').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+		on_start = "[GetVariableSystem.Clear('xqol_conversion_threshold_route')]"
+		duration = 0.01
+	}
+	state = {
+		name = "xqol_conversion_threshold_route_18"
+		trigger_when = "[GetVariableSystem.HasValue('xqol_conversion_threshold_route', '18')]"
+		on_start = "[GetScriptedGui('xqol_set_conversion_threshold_18_gui').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+		on_start = "[GetVariableSystem.Clear('xqol_conversion_threshold_route')]"
+		duration = 0.01
+	}
+	state = {
+		name = "xqol_conversion_threshold_route_19"
+		trigger_when = "[GetVariableSystem.HasValue('xqol_conversion_threshold_route', '19')]"
+		on_start = "[GetScriptedGui('xqol_set_conversion_threshold_19_gui').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+		on_start = "[GetVariableSystem.Clear('xqol_conversion_threshold_route')]"
+		duration = 0.01
+	}
+	state = {
+		name = "xqol_conversion_threshold_route_20"
+		trigger_when = "[GetVariableSystem.HasValue('xqol_conversion_threshold_route', '20')]"
+		on_start = "[GetScriptedGui('xqol_set_conversion_threshold_20_gui').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+		on_start = "[GetVariableSystem.Clear('xqol_conversion_threshold_route')]"
+		duration = 0.01
+	}
+	state = {
+		name = "xqol_conversion_threshold_route_21"
+		trigger_when = "[GetVariableSystem.HasValue('xqol_conversion_threshold_route', '21')]"
+		on_start = "[GetScriptedGui('xqol_set_conversion_threshold_21_gui').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+		on_start = "[GetVariableSystem.Clear('xqol_conversion_threshold_route')]"
+		duration = 0.01
+	}
+	state = {
+		name = "xqol_conversion_threshold_route_22"
+		trigger_when = "[GetVariableSystem.HasValue('xqol_conversion_threshold_route', '22')]"
+		on_start = "[GetScriptedGui('xqol_set_conversion_threshold_22_gui').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+		on_start = "[GetVariableSystem.Clear('xqol_conversion_threshold_route')]"
+		duration = 0.01
+	}
+	state = {
+		name = "xqol_conversion_threshold_route_23"
+		trigger_when = "[GetVariableSystem.HasValue('xqol_conversion_threshold_route', '23')]"
+		on_start = "[GetScriptedGui('xqol_set_conversion_threshold_23_gui').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+		on_start = "[GetVariableSystem.Clear('xqol_conversion_threshold_route')]"
+		duration = 0.01
+	}
+	state = {
+		name = "xqol_conversion_threshold_route_24"
+		trigger_when = "[GetVariableSystem.HasValue('xqol_conversion_threshold_route', '24')]"
+		on_start = "[GetScriptedGui('xqol_set_conversion_threshold_24_gui').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+		on_start = "[GetVariableSystem.Clear('xqol_conversion_threshold_route')]"
+		duration = 0.01
+	}
+	state = {
+		name = "xqol_conversion_threshold_route_25"
+		trigger_when = "[GetVariableSystem.HasValue('xqol_conversion_threshold_route', '25')]"
+		on_start = "[GetScriptedGui('xqol_set_conversion_threshold_25_gui').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+		on_start = "[GetVariableSystem.Clear('xqol_conversion_threshold_route')]"
+		duration = 0.01
+	}
+	state = {
+		name = "xqol_conversion_threshold_route_26"
+		trigger_when = "[GetVariableSystem.HasValue('xqol_conversion_threshold_route', '26')]"
+		on_start = "[GetScriptedGui('xqol_set_conversion_threshold_26_gui').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+		on_start = "[GetVariableSystem.Clear('xqol_conversion_threshold_route')]"
+		duration = 0.01
+	}
+	state = {
+		name = "xqol_conversion_threshold_route_27"
+		trigger_when = "[GetVariableSystem.HasValue('xqol_conversion_threshold_route', '27')]"
+		on_start = "[GetScriptedGui('xqol_set_conversion_threshold_27_gui').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+		on_start = "[GetVariableSystem.Clear('xqol_conversion_threshold_route')]"
+		duration = 0.01
+	}
+	state = {
+		name = "xqol_conversion_threshold_route_28"
+		trigger_when = "[GetVariableSystem.HasValue('xqol_conversion_threshold_route', '28')]"
+		on_start = "[GetScriptedGui('xqol_set_conversion_threshold_28_gui').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+		on_start = "[GetVariableSystem.Clear('xqol_conversion_threshold_route')]"
+		duration = 0.01
+	}
+	state = {
+		name = "xqol_conversion_threshold_route_29"
+		trigger_when = "[GetVariableSystem.HasValue('xqol_conversion_threshold_route', '29')]"
+		on_start = "[GetScriptedGui('xqol_set_conversion_threshold_29_gui').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+		on_start = "[GetVariableSystem.Clear('xqol_conversion_threshold_route')]"
+		duration = 0.01
+	}
+	state = {
+		name = "xqol_conversion_threshold_route_30"
+		trigger_when = "[GetVariableSystem.HasValue('xqol_conversion_threshold_route', '30')]"
+		on_start = "[GetScriptedGui('xqol_set_conversion_threshold_30_gui').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+		on_start = "[GetVariableSystem.Clear('xqol_conversion_threshold_route')]"
+		duration = 0.01
+	}
+	state = {
+		name = "xqol_conversion_threshold_route_31"
+		trigger_when = "[GetVariableSystem.HasValue('xqol_conversion_threshold_route', '31')]"
+		on_start = "[GetScriptedGui('xqol_set_conversion_threshold_31_gui').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+		on_start = "[GetVariableSystem.Clear('xqol_conversion_threshold_route')]"
+		duration = 0.01
+	}
+	state = {
+		name = "xqol_conversion_threshold_route_32"
+		trigger_when = "[GetVariableSystem.HasValue('xqol_conversion_threshold_route', '32')]"
+		on_start = "[GetScriptedGui('xqol_set_conversion_threshold_32_gui').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+		on_start = "[GetVariableSystem.Clear('xqol_conversion_threshold_route')]"
+		duration = 0.01
+	}
+	state = {
+		name = "xqol_conversion_threshold_route_33"
+		trigger_when = "[GetVariableSystem.HasValue('xqol_conversion_threshold_route', '33')]"
+		on_start = "[GetScriptedGui('xqol_set_conversion_threshold_33_gui').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+		on_start = "[GetVariableSystem.Clear('xqol_conversion_threshold_route')]"
+		duration = 0.01
+	}
+	state = {
+		name = "xqol_conversion_threshold_route_34"
+		trigger_when = "[GetVariableSystem.HasValue('xqol_conversion_threshold_route', '34')]"
+		on_start = "[GetScriptedGui('xqol_set_conversion_threshold_34_gui').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+		on_start = "[GetVariableSystem.Clear('xqol_conversion_threshold_route')]"
+		duration = 0.01
+	}
+	state = {
+		name = "xqol_conversion_threshold_route_35"
+		trigger_when = "[GetVariableSystem.HasValue('xqol_conversion_threshold_route', '35')]"
+		on_start = "[GetScriptedGui('xqol_set_conversion_threshold_35_gui').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+		on_start = "[GetVariableSystem.Clear('xqol_conversion_threshold_route')]"
+		duration = 0.01
+	}
+	state = {
+		name = "xqol_conversion_threshold_route_36"
+		trigger_when = "[GetVariableSystem.HasValue('xqol_conversion_threshold_route', '36')]"
+		on_start = "[GetScriptedGui('xqol_set_conversion_threshold_36_gui').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+		on_start = "[GetVariableSystem.Clear('xqol_conversion_threshold_route')]"
+		duration = 0.01
+	}
+	state = {
+		name = "xqol_conversion_threshold_route_37"
+		trigger_when = "[GetVariableSystem.HasValue('xqol_conversion_threshold_route', '37')]"
+		on_start = "[GetScriptedGui('xqol_set_conversion_threshold_37_gui').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+		on_start = "[GetVariableSystem.Clear('xqol_conversion_threshold_route')]"
+		duration = 0.01
+	}
+	state = {
+		name = "xqol_conversion_threshold_route_38"
+		trigger_when = "[GetVariableSystem.HasValue('xqol_conversion_threshold_route', '38')]"
+		on_start = "[GetScriptedGui('xqol_set_conversion_threshold_38_gui').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+		on_start = "[GetVariableSystem.Clear('xqol_conversion_threshold_route')]"
+		duration = 0.01
+	}
+	state = {
+		name = "xqol_conversion_threshold_route_39"
+		trigger_when = "[GetVariableSystem.HasValue('xqol_conversion_threshold_route', '39')]"
+		on_start = "[GetScriptedGui('xqol_set_conversion_threshold_39_gui').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+		on_start = "[GetVariableSystem.Clear('xqol_conversion_threshold_route')]"
+		duration = 0.01
+	}
+	state = {
+		name = "xqol_conversion_threshold_route_40"
+		trigger_when = "[GetVariableSystem.HasValue('xqol_conversion_threshold_route', '40')]"
+		on_start = "[GetScriptedGui('xqol_set_conversion_threshold_40_gui').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+		on_start = "[GetVariableSystem.Clear('xqol_conversion_threshold_route')]"
+		duration = 0.01
+	}
+	state = {
+		name = "xqol_conversion_threshold_route_41"
+		trigger_when = "[GetVariableSystem.HasValue('xqol_conversion_threshold_route', '41')]"
+		on_start = "[GetScriptedGui('xqol_set_conversion_threshold_41_gui').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+		on_start = "[GetVariableSystem.Clear('xqol_conversion_threshold_route')]"
+		duration = 0.01
+	}
+	state = {
+		name = "xqol_conversion_threshold_route_42"
+		trigger_when = "[GetVariableSystem.HasValue('xqol_conversion_threshold_route', '42')]"
+		on_start = "[GetScriptedGui('xqol_set_conversion_threshold_42_gui').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+		on_start = "[GetVariableSystem.Clear('xqol_conversion_threshold_route')]"
+		duration = 0.01
+	}
+	state = {
+		name = "xqol_conversion_threshold_route_43"
+		trigger_when = "[GetVariableSystem.HasValue('xqol_conversion_threshold_route', '43')]"
+		on_start = "[GetScriptedGui('xqol_set_conversion_threshold_43_gui').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+		on_start = "[GetVariableSystem.Clear('xqol_conversion_threshold_route')]"
+		duration = 0.01
+	}
+	state = {
+		name = "xqol_conversion_threshold_route_44"
+		trigger_when = "[GetVariableSystem.HasValue('xqol_conversion_threshold_route', '44')]"
+		on_start = "[GetScriptedGui('xqol_set_conversion_threshold_44_gui').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+		on_start = "[GetVariableSystem.Clear('xqol_conversion_threshold_route')]"
+		duration = 0.01
+	}
+	state = {
+		name = "xqol_conversion_threshold_route_45"
+		trigger_when = "[GetVariableSystem.HasValue('xqol_conversion_threshold_route', '45')]"
+		on_start = "[GetScriptedGui('xqol_set_conversion_threshold_45_gui').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+		on_start = "[GetVariableSystem.Clear('xqol_conversion_threshold_route')]"
+		duration = 0.01
+	}
+	state = {
+		name = "xqol_conversion_threshold_route_46"
+		trigger_when = "[GetVariableSystem.HasValue('xqol_conversion_threshold_route', '46')]"
+		on_start = "[GetScriptedGui('xqol_set_conversion_threshold_46_gui').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+		on_start = "[GetVariableSystem.Clear('xqol_conversion_threshold_route')]"
+		duration = 0.01
+	}
+	state = {
+		name = "xqol_conversion_threshold_route_47"
+		trigger_when = "[GetVariableSystem.HasValue('xqol_conversion_threshold_route', '47')]"
+		on_start = "[GetScriptedGui('xqol_set_conversion_threshold_47_gui').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+		on_start = "[GetVariableSystem.Clear('xqol_conversion_threshold_route')]"
+		duration = 0.01
+	}
+	state = {
+		name = "xqol_conversion_threshold_route_48"
+		trigger_when = "[GetVariableSystem.HasValue('xqol_conversion_threshold_route', '48')]"
+		on_start = "[GetScriptedGui('xqol_set_conversion_threshold_48_gui').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+		on_start = "[GetVariableSystem.Clear('xqol_conversion_threshold_route')]"
+		duration = 0.01
+	}
+	state = {
+		name = "xqol_conversion_threshold_route_49"
+		trigger_when = "[GetVariableSystem.HasValue('xqol_conversion_threshold_route', '49')]"
+		on_start = "[GetScriptedGui('xqol_set_conversion_threshold_49_gui').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+		on_start = "[GetVariableSystem.Clear('xqol_conversion_threshold_route')]"
+		duration = 0.01
+	}
+	state = {
+		name = "xqol_conversion_threshold_route_50"
+		trigger_when = "[GetVariableSystem.HasValue('xqol_conversion_threshold_route', '50')]"
+		on_start = "[GetScriptedGui('xqol_set_conversion_threshold_50_gui').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+		on_start = "[GetVariableSystem.Clear('xqol_conversion_threshold_route')]"
+		duration = 0.01
+	}
+	state = {
+		name = "xqol_conversion_threshold_route_51"
+		trigger_when = "[GetVariableSystem.HasValue('xqol_conversion_threshold_route', '51')]"
+		on_start = "[GetScriptedGui('xqol_set_conversion_threshold_51_gui').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+		on_start = "[GetVariableSystem.Clear('xqol_conversion_threshold_route')]"
+		duration = 0.01
+	}
+	state = {
+		name = "xqol_conversion_threshold_route_52"
+		trigger_when = "[GetVariableSystem.HasValue('xqol_conversion_threshold_route', '52')]"
+		on_start = "[GetScriptedGui('xqol_set_conversion_threshold_52_gui').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+		on_start = "[GetVariableSystem.Clear('xqol_conversion_threshold_route')]"
+		duration = 0.01
+	}
+	state = {
+		name = "xqol_conversion_threshold_route_53"
+		trigger_when = "[GetVariableSystem.HasValue('xqol_conversion_threshold_route', '53')]"
+		on_start = "[GetScriptedGui('xqol_set_conversion_threshold_53_gui').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+		on_start = "[GetVariableSystem.Clear('xqol_conversion_threshold_route')]"
+		duration = 0.01
+	}
+	state = {
+		name = "xqol_conversion_threshold_route_54"
+		trigger_when = "[GetVariableSystem.HasValue('xqol_conversion_threshold_route', '54')]"
+		on_start = "[GetScriptedGui('xqol_set_conversion_threshold_54_gui').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+		on_start = "[GetVariableSystem.Clear('xqol_conversion_threshold_route')]"
+		duration = 0.01
+	}
+	state = {
+		name = "xqol_conversion_threshold_route_55"
+		trigger_when = "[GetVariableSystem.HasValue('xqol_conversion_threshold_route', '55')]"
+		on_start = "[GetScriptedGui('xqol_set_conversion_threshold_55_gui').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+		on_start = "[GetVariableSystem.Clear('xqol_conversion_threshold_route')]"
+		duration = 0.01
+	}
+	state = {
+		name = "xqol_conversion_threshold_route_56"
+		trigger_when = "[GetVariableSystem.HasValue('xqol_conversion_threshold_route', '56')]"
+		on_start = "[GetScriptedGui('xqol_set_conversion_threshold_56_gui').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+		on_start = "[GetVariableSystem.Clear('xqol_conversion_threshold_route')]"
+		duration = 0.01
+	}
+	state = {
+		name = "xqol_conversion_threshold_route_57"
+		trigger_when = "[GetVariableSystem.HasValue('xqol_conversion_threshold_route', '57')]"
+		on_start = "[GetScriptedGui('xqol_set_conversion_threshold_57_gui').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+		on_start = "[GetVariableSystem.Clear('xqol_conversion_threshold_route')]"
+		duration = 0.01
+	}
+	state = {
+		name = "xqol_conversion_threshold_route_58"
+		trigger_when = "[GetVariableSystem.HasValue('xqol_conversion_threshold_route', '58')]"
+		on_start = "[GetScriptedGui('xqol_set_conversion_threshold_58_gui').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+		on_start = "[GetVariableSystem.Clear('xqol_conversion_threshold_route')]"
+		duration = 0.01
+	}
+	state = {
+		name = "xqol_conversion_threshold_route_59"
+		trigger_when = "[GetVariableSystem.HasValue('xqol_conversion_threshold_route', '59')]"
+		on_start = "[GetScriptedGui('xqol_set_conversion_threshold_59_gui').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+		on_start = "[GetVariableSystem.Clear('xqol_conversion_threshold_route')]"
+		duration = 0.01
+	}
+	state = {
+		name = "xqol_conversion_threshold_route_60"
+		trigger_when = "[GetVariableSystem.HasValue('xqol_conversion_threshold_route', '60')]"
+		on_start = "[GetScriptedGui('xqol_set_conversion_threshold_60_gui').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+		on_start = "[GetVariableSystem.Clear('xqol_conversion_threshold_route')]"
+		duration = 0.01
+	}
+	state = {
+		name = "xqol_conversion_threshold_route_61"
+		trigger_when = "[GetVariableSystem.HasValue('xqol_conversion_threshold_route', '61')]"
+		on_start = "[GetScriptedGui('xqol_set_conversion_threshold_61_gui').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+		on_start = "[GetVariableSystem.Clear('xqol_conversion_threshold_route')]"
+		duration = 0.01
+	}
+	state = {
+		name = "xqol_conversion_threshold_route_62"
+		trigger_when = "[GetVariableSystem.HasValue('xqol_conversion_threshold_route', '62')]"
+		on_start = "[GetScriptedGui('xqol_set_conversion_threshold_62_gui').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+		on_start = "[GetVariableSystem.Clear('xqol_conversion_threshold_route')]"
+		duration = 0.01
+	}
+	state = {
+		name = "xqol_conversion_threshold_route_63"
+		trigger_when = "[GetVariableSystem.HasValue('xqol_conversion_threshold_route', '63')]"
+		on_start = "[GetScriptedGui('xqol_set_conversion_threshold_63_gui').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+		on_start = "[GetVariableSystem.Clear('xqol_conversion_threshold_route')]"
+		duration = 0.01
+	}
+	state = {
+		name = "xqol_conversion_threshold_route_64"
+		trigger_when = "[GetVariableSystem.HasValue('xqol_conversion_threshold_route', '64')]"
+		on_start = "[GetScriptedGui('xqol_set_conversion_threshold_64_gui').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+		on_start = "[GetVariableSystem.Clear('xqol_conversion_threshold_route')]"
+		duration = 0.01
+	}
+	state = {
+		name = "xqol_conversion_threshold_route_65"
+		trigger_when = "[GetVariableSystem.HasValue('xqol_conversion_threshold_route', '65')]"
+		on_start = "[GetScriptedGui('xqol_set_conversion_threshold_65_gui').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+		on_start = "[GetVariableSystem.Clear('xqol_conversion_threshold_route')]"
+		duration = 0.01
+	}
+	state = {
+		name = "xqol_conversion_threshold_route_66"
+		trigger_when = "[GetVariableSystem.HasValue('xqol_conversion_threshold_route', '66')]"
+		on_start = "[GetScriptedGui('xqol_set_conversion_threshold_66_gui').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+		on_start = "[GetVariableSystem.Clear('xqol_conversion_threshold_route')]"
+		duration = 0.01
+	}
+	state = {
+		name = "xqol_conversion_threshold_route_67"
+		trigger_when = "[GetVariableSystem.HasValue('xqol_conversion_threshold_route', '67')]"
+		on_start = "[GetScriptedGui('xqol_set_conversion_threshold_67_gui').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+		on_start = "[GetVariableSystem.Clear('xqol_conversion_threshold_route')]"
+		duration = 0.01
+	}
+	state = {
+		name = "xqol_conversion_threshold_route_68"
+		trigger_when = "[GetVariableSystem.HasValue('xqol_conversion_threshold_route', '68')]"
+		on_start = "[GetScriptedGui('xqol_set_conversion_threshold_68_gui').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+		on_start = "[GetVariableSystem.Clear('xqol_conversion_threshold_route')]"
+		duration = 0.01
+	}
+	state = {
+		name = "xqol_conversion_threshold_route_69"
+		trigger_when = "[GetVariableSystem.HasValue('xqol_conversion_threshold_route', '69')]"
+		on_start = "[GetScriptedGui('xqol_set_conversion_threshold_69_gui').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+		on_start = "[GetVariableSystem.Clear('xqol_conversion_threshold_route')]"
+		duration = 0.01
+	}
+	state = {
+		name = "xqol_conversion_threshold_route_70"
+		trigger_when = "[GetVariableSystem.HasValue('xqol_conversion_threshold_route', '70')]"
+		on_start = "[GetScriptedGui('xqol_set_conversion_threshold_70_gui').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+		on_start = "[GetVariableSystem.Clear('xqol_conversion_threshold_route')]"
+		duration = 0.01
+	}
+	state = {
+		name = "xqol_conversion_threshold_route_71"
+		trigger_when = "[GetVariableSystem.HasValue('xqol_conversion_threshold_route', '71')]"
+		on_start = "[GetScriptedGui('xqol_set_conversion_threshold_71_gui').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+		on_start = "[GetVariableSystem.Clear('xqol_conversion_threshold_route')]"
+		duration = 0.01
+	}
+	state = {
+		name = "xqol_conversion_threshold_route_72"
+		trigger_when = "[GetVariableSystem.HasValue('xqol_conversion_threshold_route', '72')]"
+		on_start = "[GetScriptedGui('xqol_set_conversion_threshold_72_gui').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+		on_start = "[GetVariableSystem.Clear('xqol_conversion_threshold_route')]"
+		duration = 0.01
+	}
+	state = {
+		name = "xqol_conversion_threshold_route_73"
+		trigger_when = "[GetVariableSystem.HasValue('xqol_conversion_threshold_route', '73')]"
+		on_start = "[GetScriptedGui('xqol_set_conversion_threshold_73_gui').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+		on_start = "[GetVariableSystem.Clear('xqol_conversion_threshold_route')]"
+		duration = 0.01
+	}
+	state = {
+		name = "xqol_conversion_threshold_route_74"
+		trigger_when = "[GetVariableSystem.HasValue('xqol_conversion_threshold_route', '74')]"
+		on_start = "[GetScriptedGui('xqol_set_conversion_threshold_74_gui').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+		on_start = "[GetVariableSystem.Clear('xqol_conversion_threshold_route')]"
+		duration = 0.01
+	}
+	state = {
+		name = "xqol_conversion_threshold_route_75"
+		trigger_when = "[GetVariableSystem.HasValue('xqol_conversion_threshold_route', '75')]"
+		on_start = "[GetScriptedGui('xqol_set_conversion_threshold_75_gui').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+		on_start = "[GetVariableSystem.Clear('xqol_conversion_threshold_route')]"
+		duration = 0.01
+	}
+	state = {
+		name = "xqol_conversion_threshold_route_76"
+		trigger_when = "[GetVariableSystem.HasValue('xqol_conversion_threshold_route', '76')]"
+		on_start = "[GetScriptedGui('xqol_set_conversion_threshold_76_gui').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+		on_start = "[GetVariableSystem.Clear('xqol_conversion_threshold_route')]"
+		duration = 0.01
+	}
+	state = {
+		name = "xqol_conversion_threshold_route_77"
+		trigger_when = "[GetVariableSystem.HasValue('xqol_conversion_threshold_route', '77')]"
+		on_start = "[GetScriptedGui('xqol_set_conversion_threshold_77_gui').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+		on_start = "[GetVariableSystem.Clear('xqol_conversion_threshold_route')]"
+		duration = 0.01
+	}
+	state = {
+		name = "xqol_conversion_threshold_route_78"
+		trigger_when = "[GetVariableSystem.HasValue('xqol_conversion_threshold_route', '78')]"
+		on_start = "[GetScriptedGui('xqol_set_conversion_threshold_78_gui').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+		on_start = "[GetVariableSystem.Clear('xqol_conversion_threshold_route')]"
+		duration = 0.01
+	}
+	state = {
+		name = "xqol_conversion_threshold_route_79"
+		trigger_when = "[GetVariableSystem.HasValue('xqol_conversion_threshold_route', '79')]"
+		on_start = "[GetScriptedGui('xqol_set_conversion_threshold_79_gui').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+		on_start = "[GetVariableSystem.Clear('xqol_conversion_threshold_route')]"
+		duration = 0.01
+	}
+	state = {
+		name = "xqol_conversion_threshold_route_80"
+		trigger_when = "[GetVariableSystem.HasValue('xqol_conversion_threshold_route', '80')]"
+		on_start = "[GetScriptedGui('xqol_set_conversion_threshold_80_gui').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+		on_start = "[GetVariableSystem.Clear('xqol_conversion_threshold_route')]"
+		duration = 0.01
+	}
+	state = {
+		name = "xqol_conversion_threshold_route_81"
+		trigger_when = "[GetVariableSystem.HasValue('xqol_conversion_threshold_route', '81')]"
+		on_start = "[GetScriptedGui('xqol_set_conversion_threshold_81_gui').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+		on_start = "[GetVariableSystem.Clear('xqol_conversion_threshold_route')]"
+		duration = 0.01
+	}
+	state = {
+		name = "xqol_conversion_threshold_route_82"
+		trigger_when = "[GetVariableSystem.HasValue('xqol_conversion_threshold_route', '82')]"
+		on_start = "[GetScriptedGui('xqol_set_conversion_threshold_82_gui').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+		on_start = "[GetVariableSystem.Clear('xqol_conversion_threshold_route')]"
+		duration = 0.01
+	}
+	state = {
+		name = "xqol_conversion_threshold_route_83"
+		trigger_when = "[GetVariableSystem.HasValue('xqol_conversion_threshold_route', '83')]"
+		on_start = "[GetScriptedGui('xqol_set_conversion_threshold_83_gui').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+		on_start = "[GetVariableSystem.Clear('xqol_conversion_threshold_route')]"
+		duration = 0.01
+	}
+	state = {
+		name = "xqol_conversion_threshold_route_84"
+		trigger_when = "[GetVariableSystem.HasValue('xqol_conversion_threshold_route', '84')]"
+		on_start = "[GetScriptedGui('xqol_set_conversion_threshold_84_gui').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+		on_start = "[GetVariableSystem.Clear('xqol_conversion_threshold_route')]"
+		duration = 0.01
+	}
+	state = {
+		name = "xqol_conversion_threshold_route_85"
+		trigger_when = "[GetVariableSystem.HasValue('xqol_conversion_threshold_route', '85')]"
+		on_start = "[GetScriptedGui('xqol_set_conversion_threshold_85_gui').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+		on_start = "[GetVariableSystem.Clear('xqol_conversion_threshold_route')]"
+		duration = 0.01
+	}
+	state = {
+		name = "xqol_conversion_threshold_route_86"
+		trigger_when = "[GetVariableSystem.HasValue('xqol_conversion_threshold_route', '86')]"
+		on_start = "[GetScriptedGui('xqol_set_conversion_threshold_86_gui').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+		on_start = "[GetVariableSystem.Clear('xqol_conversion_threshold_route')]"
+		duration = 0.01
+	}
+	state = {
+		name = "xqol_conversion_threshold_route_87"
+		trigger_when = "[GetVariableSystem.HasValue('xqol_conversion_threshold_route', '87')]"
+		on_start = "[GetScriptedGui('xqol_set_conversion_threshold_87_gui').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+		on_start = "[GetVariableSystem.Clear('xqol_conversion_threshold_route')]"
+		duration = 0.01
+	}
+	state = {
+		name = "xqol_conversion_threshold_route_88"
+		trigger_when = "[GetVariableSystem.HasValue('xqol_conversion_threshold_route', '88')]"
+		on_start = "[GetScriptedGui('xqol_set_conversion_threshold_88_gui').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+		on_start = "[GetVariableSystem.Clear('xqol_conversion_threshold_route')]"
+		duration = 0.01
+	}
+	state = {
+		name = "xqol_conversion_threshold_route_89"
+		trigger_when = "[GetVariableSystem.HasValue('xqol_conversion_threshold_route', '89')]"
+		on_start = "[GetScriptedGui('xqol_set_conversion_threshold_89_gui').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+		on_start = "[GetVariableSystem.Clear('xqol_conversion_threshold_route')]"
+		duration = 0.01
+	}
+	state = {
+		name = "xqol_conversion_threshold_route_90"
+		trigger_when = "[GetVariableSystem.HasValue('xqol_conversion_threshold_route', '90')]"
+		on_start = "[GetScriptedGui('xqol_set_conversion_threshold_90_gui').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+		on_start = "[GetVariableSystem.Clear('xqol_conversion_threshold_route')]"
+		duration = 0.01
+	}
+	state = {
+		name = "xqol_conversion_threshold_route_91"
+		trigger_when = "[GetVariableSystem.HasValue('xqol_conversion_threshold_route', '91')]"
+		on_start = "[GetScriptedGui('xqol_set_conversion_threshold_91_gui').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+		on_start = "[GetVariableSystem.Clear('xqol_conversion_threshold_route')]"
+		duration = 0.01
+	}
+	state = {
+		name = "xqol_conversion_threshold_route_92"
+		trigger_when = "[GetVariableSystem.HasValue('xqol_conversion_threshold_route', '92')]"
+		on_start = "[GetScriptedGui('xqol_set_conversion_threshold_92_gui').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+		on_start = "[GetVariableSystem.Clear('xqol_conversion_threshold_route')]"
+		duration = 0.01
+	}
+	state = {
+		name = "xqol_conversion_threshold_route_93"
+		trigger_when = "[GetVariableSystem.HasValue('xqol_conversion_threshold_route', '93')]"
+		on_start = "[GetScriptedGui('xqol_set_conversion_threshold_93_gui').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+		on_start = "[GetVariableSystem.Clear('xqol_conversion_threshold_route')]"
+		duration = 0.01
+	}
+	state = {
+		name = "xqol_conversion_threshold_route_94"
+		trigger_when = "[GetVariableSystem.HasValue('xqol_conversion_threshold_route', '94')]"
+		on_start = "[GetScriptedGui('xqol_set_conversion_threshold_94_gui').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+		on_start = "[GetVariableSystem.Clear('xqol_conversion_threshold_route')]"
+		duration = 0.01
+	}
+	state = {
+		name = "xqol_conversion_threshold_route_95"
+		trigger_when = "[GetVariableSystem.HasValue('xqol_conversion_threshold_route', '95')]"
+		on_start = "[GetScriptedGui('xqol_set_conversion_threshold_95_gui').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+		on_start = "[GetVariableSystem.Clear('xqol_conversion_threshold_route')]"
+		duration = 0.01
+	}
+	state = {
+		name = "xqol_conversion_threshold_route_96"
+		trigger_when = "[GetVariableSystem.HasValue('xqol_conversion_threshold_route', '96')]"
+		on_start = "[GetScriptedGui('xqol_set_conversion_threshold_96_gui').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+		on_start = "[GetVariableSystem.Clear('xqol_conversion_threshold_route')]"
+		duration = 0.01
+	}
+	state = {
+		name = "xqol_conversion_threshold_route_97"
+		trigger_when = "[GetVariableSystem.HasValue('xqol_conversion_threshold_route', '97')]"
+		on_start = "[GetScriptedGui('xqol_set_conversion_threshold_97_gui').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+		on_start = "[GetVariableSystem.Clear('xqol_conversion_threshold_route')]"
+		duration = 0.01
+	}
+	state = {
+		name = "xqol_conversion_threshold_route_98"
+		trigger_when = "[GetVariableSystem.HasValue('xqol_conversion_threshold_route', '98')]"
+		on_start = "[GetScriptedGui('xqol_set_conversion_threshold_98_gui').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+		on_start = "[GetVariableSystem.Clear('xqol_conversion_threshold_route')]"
+		duration = 0.01
+	}
+	state = {
+		name = "xqol_conversion_threshold_route_99"
+		trigger_when = "[GetVariableSystem.HasValue('xqol_conversion_threshold_route', '99')]"
+		on_start = "[GetScriptedGui('xqol_set_conversion_threshold_99_gui').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+		on_start = "[GetVariableSystem.Clear('xqol_conversion_threshold_route')]"
+		duration = 0.01
+	}
+	state = {
+		name = "xqol_conversion_threshold_route_100"
+		trigger_when = "[GetVariableSystem.HasValue('xqol_conversion_threshold_route', '100')]"
+		on_start = "[GetScriptedGui('xqol_set_conversion_threshold_100_gui').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+		on_start = "[GetVariableSystem.Clear('xqol_conversion_threshold_route')]"
+		duration = 0.01
+	}
+}
