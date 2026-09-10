@@ -1606,6 +1606,36 @@ _LEGACY_MANAGER_HEALTH_TIMELINE_CONTRACTS: Final[
                 "background_terrain_scope": "province",
             },
             "saved_scope_count": 8,
+        }, {
+            # R416 entered the safe-treatment success from the complete
+            # consumption -> physician-search -> treatment chain. The result
+            # retains both epidemic/new_memory and the recruitment candidate
+            # identities. Couple that exact twelve-scope carry to the same
+            # sole acknowledgement; all base player and physician relations
+            # remain in force.
+            "saved_scope_names": (
+                "epidemic",
+                "disease_type",
+                "sick_character",
+                "new_memory",
+                "high_skill_option",
+                "low_skill_option",
+                "physician",
+                "background_terrain_scope",
+                "treatment_picker",
+                "treatment",
+                "outcome",
+                "portrait",
+            ),
+            "scope_types": {
+                "epidemic": "epidemic",
+                "disease_type": "flag",
+                "new_memory": "character_memory",
+                "background_terrain_scope": "province",
+                "treatment": "flag",
+                "outcome": "flag",
+            },
+            "saved_scope_count": 12,
         },),
     },
     "health.3104": {
@@ -2076,7 +2106,12 @@ MANAGER_VANILLA_OBSERVATIONS_A: Final[dict[str, dict[str, object]]] = {
     for _source_name, contracts in _MANAGER_A_LEGACY_GROUPS
     for event_key, contract in contracts.items()
     if contract.get("root_character_id") in {29037, 32904}
-    and event_key not in {"health.1006", "health.3001", "health.3101"}
+    and event_key not in {
+        "health.1006",
+        "health.3001",
+        "health.3101",
+        "health.3103",
+    }
 }
 
 MANAGER_BEFRIEND_TIMELINE_CONTRACTS: Final = _neutralize_group(

@@ -26,15 +26,16 @@ from xar_autoplayer.vanilla_events.registry import (  # noqa: E402
 
 
 class ManagerAAnalysisTests(unittest.TestCase):
-    def test_exactly_the_31_legacy_analysis_contracts_are_migrated(self) -> None:
+    def test_exactly_the_30_legacy_analysis_contracts_are_migrated(self) -> None:
         expected = set(MANAGER_VANILLA_TIMELINE_CONTRACTS_A) - {
             "epidemic_events.0110",
             "great_holy_war.0011",
             "health.1006",
             "health.3001",
             "health.3101",
+            "health.3103",
         }
-        self.assertEqual(len(expected), 31)
+        self.assertEqual(len(expected), 30)
         self.assertEqual(set(MANAGER_A_VANILLA_EVENT_ANALYSIS), expected)
 
     def test_records_are_json_safe_and_build_bound_without_source_claims(self) -> None:

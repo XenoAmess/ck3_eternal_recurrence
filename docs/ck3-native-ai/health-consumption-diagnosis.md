@@ -1,4 +1,4 @@
-# CK3 1.19.0.6 `health.1006 → health.3001 → health.3101` 肺痨诊断、医师招募与治疗树
+# CK3 1.19.0.6 `health.1006 → health.3001 → health.3101 → health.3103` 肺痨诊断、医师招募与治疗树
 
 ## 状态与证据边界
 
@@ -17,11 +17,16 @@
   shown/enabled。旧合同没有接受从诊断链继承的 `epidemic,new_memory`，因此先保留 RED；retry 07 随后在同一
   PID / generation 选择 authored `2` / native `1`，instance `1085 -> null`、snapshot
   `native:1032 -> native:1033`、revision `1033 -> 1034`，且 `postcondition_verified=true`。
-- [paused live RED] 原版紧接着打开 `health.3101` instance `1086`，`date_raw=53864832`。新任医师与
-  `high_skill_option` 都是 `33648496`；native `0/1/3` 均 shown/enabled。旧合同再次没有接受继承的
-  `epidemic,new_memory`，未提交治疗选择。
-- [counter-policy static-ready, live action pending] `health.3101` 当前投影选择 authored `1` / native `0`
-  的原版 safe treatment。该路线仍有随机成功或失败，不能表述为必定治愈。动作 ACK 不能代替 instance advance。
+- [paused live RED → production-live primitive] 原版紧接着打开 `health.3101` instance `1086`，`date_raw=53864832`。
+  新任医师与 `high_skill_option` 都是 `33648496`；native `0/1/3` 均 shown/enabled。旧合同再次没有接受继承的
+  `epidemic,new_memory`，先保留 RED；retry 08 随后在同一 PID / generation 选择 authored `1` / native `0`，
+  snapshot `native:1036 -> native:1037`、revision `1037 -> 1038`，原 instance `1086` 已消失并打开结果 instance
+  `1087`，`postcondition_verified=true`。随机治疗结果为成功。
+- [paused live RED] `health.3103` instance `1087` 保留完整十二个 scope：既有患者、候选、医师、治疗结果和画像，
+  另继承 `epidemic,new_memory`；唯一 native `0` shown/enabled。旧合同只有十 scope 招募形态与 R332 八 scope
+  既有医师形态，因此未提交确认按钮。该 RED 是 harness-route RED，不证明产品动作失败。
+- [counter-policy static-ready, live action pending] `health.3103` 当前投影选择唯一的 authored `1` / native `0`。
+  成功修正与通知已在窗口 `immediate` 执行，按钮只负责确认关闭；动作 ACK 仍不能代替 instance advance。
 
 ## 原版状态与入口
 
@@ -131,6 +136,31 @@ native `0` 是原版命名的安全治疗，但效果不是确定性成功：源
 可以进入故意失败分支。选择它的依据是避免 native `1` 风险治疗的更严厉结果范围，以及 native `3` 确定不治疗；
 后续究竟进入 `health.3103` 还是 `health.3104` 必须以实机窗口为准。
 
+## `health.3103` 安全治疗成功结果树
+
+`health.3103` 没有独立 trigger。窗口出现前，`immediate` 已调用 `disease_treatment_results_effect` 写入安全治疗成功
+修正并安排后续复诊，再调用 `inform_liege_about_disease_treatment_effect` 保存 `treatment=safe`、`outcome=success`，
+按责任关系发送通知，并在医师与患者不同时把医师保存为 `portrait`。窗口自身唯一 authored option 没有 effect；
+after 只在全局教程已完成时给玩家添加 `force_court_positions_tutorial`。
+
+```mermaid
+flowchart TD
+    A[health.3101 authored 1 / native 0] --> B{原版随机结果}
+    B -- success --> C[health.3103 immediate<br/>成功修正、复诊调度与通知已执行]
+    C --> D{exact scope 投影是否匹配?}
+    D -- 否 --> R[保留 RED，不提交]
+    D -- 十 scope 招募形态 --> E[authored 1 / native 0<br/>确认关闭]
+    D -- 八 scope 既有医师形态 --> E
+    D -- 十二 scope 肺痨链继承形态 --> E
+    E --> F[验证 instance advance]
+    B -- failure --> G[health.3104<br/>沿既有失败结果合同处理]
+```
+
+三种投影都保持患者和 `treatment_picker` 为玩家；十/十二 scope 招募形态还要求 `physician == high_skill_option ==
+portrait`、高低技能候选不同且都不是玩家。R416 的十二 scope 只比十 scope 形态多出实见的
+`epidemic,new_memory`，没有放宽人物关系或 option 投影。R332 八 scope 既有医师形态继续单列，要求
+`physician == portrait` 且医师不是玩家。
+
 ## exact-build 来源
 
 - `events/health_events.txt:2135-2334`，SHA-256
@@ -139,12 +169,16 @@ native `0` 是原版命名的安全治疗，但效果不是确定性成功：源
   `7077-7257`，after 为 `7259-7275`。
 - 同文件 `health.3101` 定义在 `7314-7524`，trigger 为 `7471-7474`，immediate 为
   `7480-7486`，四个 option 为 `7488-7523`。
+- 同文件 `health.3103` 定义在 `7712-7797`，无独立 trigger，immediate 为 `7774-7781`，唯一 option 为
+  `7783-7785`，after 为 `7787-7796`。
 - `common/scripted_effects/20_health_effects.txt:127-691,2093-2107`，SHA-256
   `6D7DEF1245D899DE4DEBC42136815BC7F4D14F6A467A8320355507AD03528F12`。
 - 同文件 `set_court_physician_effect` 位于 `1308-1408`；它负责任命医师并在玩家仍需治疗时调度
   `health.3101`。
 - 同文件 safe/risky/mystic/no-treatment effect 分别位于 `1581-1713`、`1716-1897`、
   `1899-2087`、`2089-2091`。
+- 同文件 `disease_treatment_results_effect` 位于 `2746-3128`，
+  `inform_liege_about_disease_treatment_effect` 位于 `3940-4030`。
 - `common/on_action/health_on_actions.txt:343-357`，SHA-256
   `253988DA3E14BE7CC9B86CAB2A3C15843B0CB8B273B2B4BC391EB287AEF0C94C`。
 - `events/travel_events/travel_events_filippa.txt:8622-8674`，SHA-256
@@ -161,6 +195,9 @@ native `0` 是原版命名的安全治疗，但效果不是确定性成功：源
 - R416 retry 07 同时包含 `health.3001` 的选择后置条件和 `health.3101` 的选择前 RED：
   `_runtime/p1-terminal-resume-r416-20260911/live-artifacts/terminal-stages-red-attempt-07.json`，SHA-256
   `EDBE88226F5CB6C31632359164BC050E9ACD7B84687864EE7A368B7125B9F799`。
+- R416 retry 08 同时包含 `health.3101` 的选择后置条件、随机成功结果和 `health.3103` 的选择前 RED：
+  `_runtime/p1-terminal-resume-r416-20260911/live-artifacts/terminal-stages-red-attempt-08.json`，SHA-256
+  `450A3848A536FF28CFB470A7E3690341831805F4B17178C66B82DB8257905654`。
 
 R97 下游死亡边界见
 [`promotion-source-checkpoint-choreography-forensics-2026-09-04.md`](../phase2-promo/promotion-source-checkpoint-choreography-forensics-2026-09-04.md)。

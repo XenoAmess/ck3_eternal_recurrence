@@ -131,6 +131,16 @@
           "role": "analysis_source",
           "source_column": null,
           "source_line": null
+        },
+        {
+          "caller_candidate_resolution": null,
+          "event_definition_key": "health.3103",
+          "logical_path": "localization/english/event_localization/health_events_l_english.yml",
+          "origin": "ck3_game",
+          "provenance": "manually-reviewed-analysis-source",
+          "role": "analysis_source",
+          "source_column": null,
+          "source_line": null
         }
       ],
       "sha256": "043216116c522b5d108315a3730da12c5d7b2eddb8cf60d67d0967af4afe23d0"
@@ -3072,6 +3082,38 @@
         }
       ],
       "sha256": "44aa74f211d47f225ba5af3ce7e6a23d6bc08b8691856bc14975a7d37dfc39bc"
+    },
+    {
+      "blob_bytes": 83916,
+      "blob_path": "blobs/450a3848a536ff28cfb470a7e3690341831805f4b17178c66b82db8257905654.gz",
+      "blob_sha256": "6de406cdfd70a4fac46c330e163bdc52fa219eefd7563908f05b05fa0c45e0ef",
+      "bytes": 1571159,
+      "evidence_id": "450a3848a536ff28cfb470a7e3690341831805f4b17178c66b82db8257905654",
+      "kind": "observation_artifact",
+      "media_type": "application/json",
+      "references": [
+        {
+          "caller_candidate_resolution": null,
+          "event_definition_key": "health.3101",
+          "logical_path": "_runtime/p1-terminal-resume-r416-20260911/live-artifacts/terminal-stages-red-attempt-08.json",
+          "origin": "runtime",
+          "provenance": "captured-observation-artifact",
+          "role": "artifact",
+          "source_column": null,
+          "source_line": null
+        },
+        {
+          "caller_candidate_resolution": null,
+          "event_definition_key": "health.3103",
+          "logical_path": "_runtime/p1-terminal-resume-r416-20260911/live-artifacts/terminal-stages-red-attempt-08.json",
+          "origin": "runtime",
+          "provenance": "captured-observation-artifact",
+          "role": "artifact",
+          "source_column": null,
+          "source_line": null
+        }
+      ],
+      "sha256": "450a3848a536ff28cfb470a7e3690341831805f4b17178c66b82db8257905654"
     },
     {
       "blob_bytes": 28988,
@@ -7233,6 +7275,16 @@
           "source_line": 1674
         },
         {
+          "caller_candidate_resolution": null,
+          "event_definition_key": "health.3103",
+          "logical_path": "common/scripted_effects/20_health_effects.txt",
+          "origin": "ck3_game",
+          "provenance": "manually-reviewed-analysis-source",
+          "role": "analysis_source",
+          "source_column": null,
+          "source_line": null
+        },
+        {
           "caller_candidate_resolution": "external-definition-file",
           "event_definition_key": "health.3104",
           "logical_path": "common/scripted_effects/20_health_effects.txt",
@@ -8357,6 +8409,16 @@
           "role": "event_definition",
           "source_column": null,
           "source_line": 7712
+        },
+        {
+          "caller_candidate_resolution": null,
+          "event_definition_key": "health.3103",
+          "logical_path": "events/health_events.txt",
+          "origin": "ck3_game",
+          "provenance": "manually-reviewed-analysis-source",
+          "role": "analysis_source",
+          "source_column": null,
+          "source_line": null
         },
         {
           "caller_candidate_resolution": null,
@@ -9979,6 +10041,16 @@
         {
           "caller_candidate_resolution": null,
           "event_definition_key": "health.3101",
+          "logical_path": "localization/simp_chinese/event_localization/health_events_l_simp_chinese.yml",
+          "origin": "ck3_game",
+          "provenance": "manually-reviewed-analysis-source",
+          "role": "analysis_source",
+          "source_column": null,
+          "source_line": null
+        },
+        {
+          "caller_candidate_resolution": null,
+          "event_definition_key": "health.3103",
           "logical_path": "localization/simp_chinese/event_localization/health_events_l_simp_chinese.yml",
           "origin": "ck3_game",
           "provenance": "manually-reviewed-analysis-source",
@@ -13061,13 +13133,13 @@
   "schema": "xar.ck3.vanilla-event-portable-evidence-manifest",
   "schema_version": 1,
   "statistics": {
-    "evidence": 255,
+    "evidence": 256,
     "generated_definition_references": 177,
     "lexical_caller_candidate_references": 511,
-    "manually_reviewed_analysis_source_references": 231,
-    "observation_artifact_references": 80,
-    "observation_artifacts": 74,
-    "references": 999,
+    "manually_reviewed_analysis_source_references": 235,
+    "observation_artifact_references": 82,
+    "observation_artifacts": 75,
+    "references": 1005,
     "source_definitions": 181
   }
 }

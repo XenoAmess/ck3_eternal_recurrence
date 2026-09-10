@@ -276,6 +276,71 @@ VANILLA_HEALTH_ANALYSIS: Final[dict[str, dict[str, object]]] = {
             "outcome range and native 3's certain absence of treatment"
         ),
     },
+    "health.3103": {
+        "exact_build": {
+            "game_version": EXACT_CK3_BUILD,
+            "ck3_executable_sha256": EXACT_CK3_EXE_SHA256,
+            "steam_build_id": 23530548,
+            "branch": "titus/release/1.19.0",
+        },
+        "source_sha256": {
+            "events/health_events.txt": (
+                "8CAB7F230E09A37C15F7C088383D40752D970918D44D86762FDD068EE168EFEB"
+            ),
+            "common/scripted_effects/20_health_effects.txt": (
+                "6D7DEF1245D899DE4DEBC42136815BC7F4D14F6A467A8320355507AD03528F12"
+            ),
+            "localization/english/event_localization/health_events_l_english.yml": (
+                "043216116C522B5D108315A3730DA12C5D7B2EDDB8CF60D67D0967AF4AFE23D0"
+            ),
+            "localization/simp_chinese/event_localization/"
+            "health_events_l_simp_chinese.yml": (
+                "AFDC39A947F036A140288CC565EDE0B2CC29B1DCD27AF191A7CC0F91A026A0E4"
+            ),
+        },
+        "definition_lines": "7712-7797",
+        "trigger_lines": None,
+        "immediate_effect_lines": "7774-7781",
+        "option_lines": "7783-7785",
+        "after_effect_lines": "7787-7796",
+        "disease_treatment_results_effect_lines": "2746-3128",
+        "inform_liege_effect_lines": "3940-4030",
+        "caller_semantics": (
+            "safe_disease_treatment_effect schedules this result when its weighted "
+            "outcome is success. R416 reached it immediately after health.3101 "
+            "authored option 1/native 0 in the same event frame"
+        ),
+        "trigger_boundary": "the event defines no trigger block of its own",
+        "immediate_effect": (
+            "applies the source-authored safe-treatment success modifiers, schedules "
+            "the later return visit, informs a responsible liege when applicable, "
+            "saves treatment/outcome, saves the physician as portrait when distinct "
+            "from the patient, and refreshes the physician-location background"
+        ),
+        "scope_boundary": (
+            "the reviewed recruitment shape keeps the sick player, high/low "
+            "candidates, appointed physician, treatment picker, disease, result, "
+            "portrait, and background. R332 proves an existing-physician eight-scope "
+            "variant; R416 additionally proves the exact twelve-scope consumption "
+            "variant retaining epidemic and new_memory"
+        ),
+        "option_semantics": {
+            0: (
+                "the only authored option acknowledges a success whose treatment "
+                "effects were already applied in immediate; it has no authored body"
+            ),
+        },
+        "native_ai_weights": {0: "sole authored acknowledgement; no ai_chance block"},
+        "after_effect": (
+            "when the global tutorial completion variable exists, adds "
+            "force_court_positions_tutorial to ROOT"
+        ),
+        "safe_option_rationale": (
+            "authored option 1/native 0 is the sole visible and enabled row. Because "
+            "the success effects already ran before rendering, dismissal only closes "
+            "the result window"
+        ),
+    },
 }
 
 
@@ -502,6 +567,104 @@ VANILLA_HEALTH_OBSERVATIONS: Final[dict[str, dict[str, object]]] = {
                 "background_terrain_scope": 8,
             },
             "rendered_native_option_indices": [0, 1, 3],
+            "selected_option_number": None,
+            "selected_native_option_index": None,
+            "selection_attempted": False,
+            "retained_red": True,
+            "process_id": 174656,
+            "connection_generation": 1,
+            "process_restart_required": False,
+            "mcp_only": True,
+            "fixture_used": False,
+            "ocr_used": False,
+            "coordinates_used": False,
+            "console_used": False,
+        }, {
+            "run": "R416-retry-08",
+            "kind": "same-process-hot-recovery-green",
+            "artifact": (
+                "_runtime/p1-terminal-resume-r416-20260911/live-artifacts/"
+                "terminal-stages-red-attempt-08.json"
+            ),
+            "artifact_sha256": (
+                "450A3848A536FF28CFB470A7E3690341831805F4B17178C66B82DB8257905654"
+            ),
+            "date_raw": 53864832,
+            "event_instance_id": 1086,
+            "ending_event_instance_id": 1087,
+            "root_character_id": 32904,
+            "starting_snapshot_id": "native:1036",
+            "starting_revision": 1037,
+            "ending_snapshot_id": "native:1037",
+            "ending_revision": 1038,
+            "selected_option_number": 1,
+            "selected_native_option_index": 0,
+            "observed_result_event": "health.3103",
+            "postcondition_verified": True,
+            "connection_generation": 1,
+            "bridge_pid": 174656,
+            "process_restart_required": False,
+        }],
+    },
+    "health.3103": {
+        "exemplars": [{
+            "run": "R199",
+            "kind": "legacy-live-binding",
+            "review_kind": "source-correlated-historical-live",
+            "date_raw": 53177016,
+            "root_character_id": 32904,
+            "saved_character_ids": {
+                "sick_character": 32904,
+                "high_skill_option": 49718,
+                "low_skill_option": 36369,
+                "physician": 49718,
+                "treatment_picker": 32904,
+                "portrait": 49718,
+            },
+            "rendered_native_option_indices": [0],
+            "selected_option_number": 1,
+            "selected_native_option_index": 0,
+        }, {
+            "run": "R416-retry-08",
+            "kind": "retained-live-contract-red",
+            "red_classification": "harness-route-red",
+            "product_failure_proven": False,
+            "artifact": (
+                "_runtime/p1-terminal-resume-r416-20260911/live-artifacts/"
+                "terminal-stages-red-attempt-08.json"
+            ),
+            "artifact_sha256": (
+                "450A3848A536FF28CFB470A7E3690341831805F4B17178C66B82DB8257905654"
+            ),
+            "date_raw": 53864832,
+            "event_instance_id": 1087,
+            "root_character_id": 32904,
+            "snapshot_id": "native:1037",
+            "revision": 1038,
+            "native_revision": 1037,
+            "saved_character_ids": {
+                "sick_character": 32904,
+                "high_skill_option": 33648496,
+                "low_skill_option": 16889335,
+                "physician": 33648496,
+                "treatment_picker": 32904,
+                "portrait": 33648496,
+            },
+            "saved_scope_raw_types": {
+                "epidemic": 50,
+                "disease_type": 3,
+                "sick_character": 4,
+                "new_memory": 34,
+                "high_skill_option": 4,
+                "low_skill_option": 4,
+                "physician": 4,
+                "background_terrain_scope": 8,
+                "treatment_picker": 4,
+                "treatment": 3,
+                "outcome": 3,
+                "portrait": 4,
+            },
+            "rendered_native_option_indices": [0],
             "selected_option_number": None,
             "selected_native_option_index": None,
             "selection_attempted": False,
