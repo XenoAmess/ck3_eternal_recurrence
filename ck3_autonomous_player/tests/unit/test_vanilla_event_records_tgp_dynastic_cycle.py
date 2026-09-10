@@ -51,20 +51,34 @@ class TgpDynasticCycleEventRecordTests(unittest.TestCase):
             materialized["unique_character_scope_excludes"],
             {"servant": (32904,), "potential_friend": (32904,)},
         )
+        self.assertEqual(len(contract["scope_variants"]), 2)
+        self.assertEqual(
+            contract["scope_variants"][0]["saved_scope_names"],
+            ("my_situation", "my_movement", "servant", "friend"),
+        )
+        self.assertEqual(
+            contract["scope_variants"][1]["saved_scope_names"],
+            ("my_situation", "my_movement", "servant"),
+        )
 
     def test_advancement_event_analysis_and_live_red_are_separate(self) -> None:
         analysis = VANILLA_TGP_DYNASTIC_CYCLE_ANALYSIS[
             ADVANCEMENT_EVENT_KEY
         ]
-        exemplar = VANILLA_TGP_DYNASTIC_CYCLE_OBSERVATIONS[
+        r372, r414 = VANILLA_TGP_DYNASTIC_CYCLE_OBSERVATIONS[
             ADVANCEMENT_EVENT_KEY
-        ]["exemplars"][0]
+        ]["exemplars"]
         self.assertEqual(analysis["definition_lines"], "21-216")
         self.assertIn("twenty years", analysis["option_semantics"]["2"])
         self.assertIn("stress loss", analysis["option_semantics"]["3"])
-        self.assertEqual(exemplar["event_instance_id"], 853)
-        self.assertEqual(exemplar["rendered_native_option_indices"], [1, 2, 3])
-        self.assertFalse(exemplar["selection_attempted"])
+        self.assertEqual(r372["event_instance_id"], 853)
+        self.assertEqual(r372["rendered_native_option_indices"], [1, 2, 3])
+        self.assertFalse(r372["selection_attempted"])
+        self.assertEqual(r414["run"], "R414-attempt-05")
+        self.assertEqual(r414["event_instance_id"], 1074)
+        self.assertEqual(r414["saved_character_ids"], {"servant": 107353})
+        self.assertEqual(r414["rendered_native_option_indices"], [1, 2, 3])
+        self.assertFalse(r414["selection_attempted"])
         for digest in analysis["source_sha256"].values():
             self.assertRegex(digest, SHA256_PATTERN)
         json.dumps(

@@ -38,6 +38,46 @@ VANILLA_TGP_DYNASTIC_CYCLE_TIMELINE_CONTRACTS: Final[
             "potential_friend",
         ),),
         "saved_scope_count": 4,
+        "scope_variants": (
+            {
+                # The relation lookup may fall through to an existing friend.
+                "saved_scope_names": (
+                    "my_situation",
+                    "my_movement",
+                    "servant",
+                    "friend",
+                ),
+                "saved_scope_count": 4,
+                "scope_types": {
+                    "my_situation": "situation",
+                    "my_movement": "situation_participant_group",
+                    "servant": "character",
+                    "friend": "character",
+                },
+                "unique_character_scope_excludes": {
+                    "servant": (PLAYER_SENTINEL,),
+                    "friend": (PLAYER_SENTINEL,),
+                },
+            },
+            {
+                # R414 exercised the source-authored fallthrough where neither
+                # an eligible potential friend nor an eligible friend exists.
+                "saved_scope_names": (
+                    "my_situation",
+                    "my_movement",
+                    "servant",
+                ),
+                "saved_scope_count": 3,
+                "scope_types": {
+                    "my_situation": "situation",
+                    "my_movement": "situation_participant_group",
+                    "servant": "character",
+                },
+                "unique_character_scope_excludes": {
+                    "servant": (PLAYER_SENTINEL,),
+                },
+            },
+        ),
         "boolean_scopes": (),
         "option_count": 3,
         "snapshot_option_count": 4,
@@ -207,6 +247,11 @@ VANILLA_TGP_DYNASTIC_CYCLE_ANALYSIS: Final[
             "modifier; native0 is absent from the observed non-Advancement "
             "movement projection"
         ),
+        "scope_variant_semantics": (
+            "the immediate branch saves potential_friend when eligible, otherwise "
+            "friend when eligible, otherwise no relation scope; R414 observed the "
+            "three-scope no-relation fallthrough"
+        ),
     },
     "tgp_dynastic_cycle_events.0020": {
         "exact_build": {
@@ -332,39 +377,67 @@ VANILLA_TGP_DYNASTIC_CYCLE_OBSERVATIONS: Final[
     dict[str, dict[str, object]]
 ] = {
     "tgp_dynastic_cycle_events.0001": {
-        "exemplars": [{
-            "run": "R372",
-            "kind": "pre-selection-live-red",
-            "artifact": (
-                "_runtime/p2r372-post-bound-continuation-live/"
-                "tgp-dynastic-cycle-0001-red-report.json"
-            ),
-            "artifact_sha256": (
-                "4F1A0EA8E43255B7C3399CC3B7F90623F56D8CB0688769D906AB6045EFED838D"
-            ),
-            "park_artifact": (
-                "_runtime/p2r372-post-bound-continuation-live/"
-                "hot-recovery-park-9.json"
-            ),
-            "park_artifact_sha256": (
-                "FD2F6794F380603A9A1B1AEFA52FDC98EA3E59D98FA29B544E4A30B0113B4EC6"
-            ),
-            "date_raw": 53473824,
-            "event_instance_id": 853,
-            "root_character_id": 32904,
-            "saved_character_ids": {
-                "servant": 86270,
-                "potential_friend": 49718,
+        "exemplars": [
+            {
+                "run": "R372",
+                "kind": "pre-selection-live-red",
+                "artifact": (
+                    "_runtime/p2r372-post-bound-continuation-live/"
+                    "tgp-dynastic-cycle-0001-red-report.json"
+                ),
+                "artifact_sha256": (
+                    "4F1A0EA8E43255B7C3399CC3B7F90623F56D8CB0688769D906AB6045EFED838D"
+                ),
+                "park_artifact": (
+                    "_runtime/p2r372-post-bound-continuation-live/"
+                    "hot-recovery-park-9.json"
+                ),
+                "park_artifact_sha256": (
+                    "FD2F6794F380603A9A1B1AEFA52FDC98EA3E59D98FA29B544E4A30B0113B4EC6"
+                ),
+                "date_raw": 53473824,
+                "event_instance_id": 853,
+                "root_character_id": 32904,
+                "saved_character_ids": {
+                    "servant": 86270,
+                    "potential_friend": 49718,
+                },
+                "saved_scope_raw_types": {
+                    "my_situation": 60,
+                    "my_movement": 61,
+                    "servant": 4,
+                    "potential_friend": 4,
+                },
+                "rendered_native_option_indices": [1, 2, 3],
+                "selection_attempted": False,
             },
-            "saved_scope_raw_types": {
-                "my_situation": 60,
-                "my_movement": 61,
-                "servant": 4,
-                "potential_friend": 4,
+            {
+                "run": "R414-attempt-05",
+                "kind": "pre-selection-live-red",
+                "artifact": (
+                    "_runtime/p1-post-chaos-terminal-r414-20260911/live-artifacts/"
+                    "terminal-stages-red-attempt-05.json"
+                ),
+                "artifact_sha256": (
+                    "4B43409F75BE2C1DA59FA37D79A793124E5161D24C092F5BFF556CAA433EE288"
+                ),
+                "date_raw": 53767200,
+                "event_instance_id": 1074,
+                "root_character_id": 32904,
+                "bridge_pid": 202268,
+                "connection_generation": 1,
+                "context_snapshot_id": "native:1711",
+                "context_native_revision": 1711,
+                "saved_character_ids": {"servant": 107353},
+                "saved_scope_raw_types": {
+                    "my_situation": 60,
+                    "my_movement": 61,
+                    "servant": 4,
+                },
+                "rendered_native_option_indices": [1, 2, 3],
+                "selection_attempted": False,
             },
-            "rendered_native_option_indices": [1, 2, 3],
-            "selection_attempted": False,
-        }],
+        ],
     },
     "tgp_dynastic_cycle_events.0020": {
         "exemplars": [
