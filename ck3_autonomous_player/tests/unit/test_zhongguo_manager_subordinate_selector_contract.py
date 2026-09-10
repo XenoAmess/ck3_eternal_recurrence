@@ -16,7 +16,10 @@ from xar_autoplayer.bridge.mcp_server import (
     _ck3_query_zhongguo_manager_subordinate_selector_v1,
     create_server,
 )
-from xar_autoplayer.bridge.native_driver import NativeHeadlessGameplayDriver
+from xar_autoplayer.bridge.native_driver import (
+    ConfiguredHybridFallbackDriver,
+    NativeHeadlessGameplayDriver,
+)
 from xar_autoplayer.bridge.service import GameplayBridgeService
 from xar_autoplayer.bridge.zhongguo_manager_subordinate_selector_contract import (
     QUERY_ZHONGGUO_MANAGER_SUBORDINATE_SELECTOR_V1_CAPABILITY,
@@ -239,6 +242,59 @@ class ZhongguoManagerSubordinateSelectorTests(unittest.TestCase):
         )
         self.assertEqual(calls, [{"request_nonce": NONCE}])
         self.assertEqual(result["manager_character_id"], MANAGER)
+
+    def test_hybrid_driver_initializes_and_delegates_selector_query(self) -> None:
+        class NativeSelectorDriver:
+            def __init__(self) -> None:
+                self.calls: list[tuple[str, int | None]] = []
+
+            def capabilities(self) -> dict[str, object]:
+                return {
+                    "bridge_capabilities": [
+                        QUERY_ZHONGGUO_MANAGER_SUBORDINATE_SELECTOR_V1_CAPABILITY
+                    ]
+                }
+
+            def execute_step(
+                self, step: str, *, expected_revision: int | None = None
+            ) -> dict[str, object]:
+                self.calls.append((step, expected_revision))
+                return {
+                    "accepted": True,
+                    "status": "available",
+                    "queried_connection_generation": 4,
+                    "zhongguo_manager_subordinate_selector": _frame(),
+                }
+
+        native = NativeSelectorDriver()
+        driver = object.__new__(ConfiguredHybridFallbackDriver)
+        driver.native = native
+        hybrid_snapshot = {
+            "paused": True,
+            "snapshot_id": SNAPSHOT_ID,
+            "revision": PUBLIC_REVISION,
+            "native_revision": NATIVE_REVISION,
+            "date_raw": DATE_RAW,
+            "played_character": {"character_id": PLAYER},
+            "diagnostics": {"connection_generation": 4},
+            "backend_revisions": {"fast": 12},
+        }
+        driver.take_snapshot = lambda: copy.deepcopy(hybrid_snapshot)
+
+        step = query_zhongguo_manager_subordinate_selector_v1_step(NONCE)
+        result = driver.execute_step(step, expected_revision=PUBLIC_REVISION)
+
+        self.assertEqual(native.calls, [(step, 12)])
+        self.assertEqual(result["queried_snapshot_id"], SNAPSHOT_ID)
+        self.assertEqual(result["queried_revision"], PUBLIC_REVISION)
+        self.assertEqual(result["queried_native_revision"], NATIVE_REVISION)
+        self.assertEqual(result["queried_connection_generation"], 4)
+        self.assertEqual(
+            result["zhongguo_manager_subordinate_selector"]["selection"][
+                "manager_character_id"
+            ],
+            MANAGER,
+        )
 
     def test_exact_build_source_contract_and_transport_are_frozen(self) -> None:
         bridge_root = PROJECT_ROOT / "native_bridge"
