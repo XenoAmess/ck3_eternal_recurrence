@@ -1,13 +1,13 @@
 ﻿"""Pure-original manager interrupt records, batch B.
 
-The source-reviewed records remain exactly represented by their Python values
-here so runtime consumers can move away from acceptance-tool modules.
-Product-authored annual-summary and elimination records intentionally do not
-belong to this vanilla batch.
+Runtime contracts are campaign-neutral; historical live dates and character
+identities survive only in the migration observation table. Product-authored
+annual-summary and elimination records intentionally do not belong here.
 """
 
 from __future__ import annotations
 
+from copy import deepcopy
 from typing import Final
 
 from .registry import PLAYER_SENTINEL
@@ -15,7 +15,7 @@ from .records_tgp_treasury import VANILLA_TGP_TREASURY_TIMELINE_CONTRACTS
 
 
 # Migrated from tools/zg361_phase2_promotion_manager_imperial_contracts.py.
-MANAGER_IMPERIAL_TIMELINE_CONTRACTS: Final[
+_LEGACY_MANAGER_IMPERIAL_TIMELINE_CONTRACTS: Final[
     dict[str, dict[str, object]]
 ] = {
     "ep3_emperor_yearly.8010": {
@@ -162,7 +162,7 @@ MANAGER_IMPERIAL_TIMELINE_CONTRACTS: Final[
 
 
 # Migrated from tools/zg361_phase2_promotion_manager_nickname_contracts.py.
-MANAGER_NICKNAME_TIMELINE_CONTRACTS: Final[
+_LEGACY_MANAGER_NICKNAME_TIMELINE_CONTRACTS: Final[
     dict[str, dict[str, object]]
 ] = {
     "lifestyle_nicknames.1000": {
@@ -211,7 +211,7 @@ MANAGER_NICKNAME_TIMELINE_CONTRACTS: Final[
 
 
 # Migrated from tools/zg361_phase2_promotion_manager_parent_contracts.py.
-MANAGER_PARENT_TIMELINE_CONTRACTS: Final[
+_LEGACY_MANAGER_PARENT_TIMELINE_CONTRACTS: Final[
     dict[str, dict[str, object]]
 ] = {
     "parent.1005": {
@@ -246,7 +246,9 @@ MANAGER_PARENT_TIMELINE_CONTRACTS: Final[
 
 
 # Migrated from tools/zg361_phase2_promotion_manager_prison_contracts.py.
-MANAGER_PRISON_TIMELINE_CONTRACTS: Final[dict[str, dict[str, object]]] = {
+_LEGACY_MANAGER_PRISON_TIMELINE_CONTRACTS: Final[
+    dict[str, dict[str, object]]
+] = {
     "prison_notification.2002": {
         # CK3 1.19.0.6 full popup sent when a player's heir or spouse is
         # released. The release itself and its memory happen before this
@@ -297,7 +299,7 @@ MANAGER_PRISON_TIMELINE_CONTRACTS: Final[dict[str, dict[str, object]]] = {
 
 
 # Migrated from tools/zg361_phase2_promotion_manager_spymaster_contracts.py.
-MANAGER_SPYMASTER_TIMELINE_CONTRACTS: Final[
+_LEGACY_MANAGER_SPYMASTER_TIMELINE_CONTRACTS: Final[
     dict[str, dict[str, object]]
 ] = {
     "spymaster_task.3001": {
@@ -702,7 +704,7 @@ MANAGER_SPYMASTER_TIMELINE_CONTRACTS: Final[
 
 
 # Migrated from tools/zg361_phase2_promotion_manager_tgp_interaction_contracts.py.
-MANAGER_TGP_INTERACTION_TIMELINE_CONTRACTS: Final[
+_LEGACY_MANAGER_TGP_INTERACTION_TIMELINE_CONTRACTS: Final[
     dict[str, dict[str, object]]
 ] = {
     "tgp_interaction_event.0010": {
@@ -894,7 +896,7 @@ def _province_petition_scope_variant(
     }
 
 
-MANAGER_TGP_PETITION_TIMELINE_CONTRACTS: Final[
+_LEGACY_MANAGER_TGP_PETITION_TIMELINE_CONTRACTS: Final[
     dict[str, dict[str, object]]
 ] = {
     "tgp_decision_events.0101": {
@@ -984,7 +986,9 @@ MANAGER_TGP_PETITION_TIMELINE_CONTRACTS: Final[
 
 
 # Migrated from tools/zg361_phase2_promotion_manager_trait_contracts.py.
-MANAGER_TRAIT_TIMELINE_CONTRACTS: Final[dict[str, dict[str, object]]] = {
+_LEGACY_MANAGER_TRAIT_TIMELINE_CONTRACTS: Final[
+    dict[str, dict[str, object]]
+] = {
     "trait_specific_ongoing.2001": {
         # CK3 1.19.0.6 possessed-character vision. Immediate sets the
         # one-life occurrence flag and resolves a same-faith clergy witness.
@@ -1109,7 +1113,7 @@ def _resource_reward_scope_variant(resource_type: str) -> dict[str, object]:
     }
 
 
-MANAGER_TRIBUTE_TIMELINE_CONTRACTS: Final[
+_LEGACY_MANAGER_TRIBUTE_TIMELINE_CONTRACTS: Final[
     dict[str, dict[str, object]]
 ] = {
     "tribute_mission.1002": {
@@ -1428,6 +1432,184 @@ MANAGER_TRIBUTE_TIMELINE_CONTRACTS: Final[
 }
 
 
+_LEGACY_IDENTITY_FIELDS = (
+    "date_raw",
+    "date_raw_range",
+    "root_character_id",
+    "character_scopes",
+    "unique_character_scope_excludes",
+    "optional_unique_character_scope_excludes",
+)
+_LEGACY_PLAYER_CHARACTER_IDS = frozenset((29037, 32904))
+
+
+def _legacy_live_binding(contract: dict[str, object]) -> dict[str, object]:
+    """Detach the old campaign-specific envelope for migration evidence only."""
+
+    binding: dict[str, object] = {}
+    for field in _LEGACY_IDENTITY_FIELDS:
+        if field in contract:
+            binding[field] = deepcopy(contract[field])
+
+    variant_bindings: list[dict[str, object]] = []
+    for index, variant in enumerate(contract.get("scope_variants", ())):
+        if not isinstance(variant, dict):
+            continue
+        variant_binding = {
+            field: deepcopy(variant[field])
+            for field in _LEGACY_IDENTITY_FIELDS
+            if field in variant
+        }
+        if variant_binding:
+            variant_bindings.append({"index": index, **variant_binding})
+    if variant_bindings:
+        binding["scope_variant_bindings"] = variant_bindings
+    return binding
+
+
+def _campaign_neutral_identity_constraints(
+    payload: dict[str, object],
+) -> dict[str, object]:
+    """Replace one legacy campaign identity envelope with portable relations."""
+
+    result = deepcopy(payload)
+    result.pop("date_raw", None)
+    result.pop("date_raw_range", None)
+
+    if isinstance(result.get("root_character_id"), int):
+        result["root_character_id"] = PLAYER_SENTINEL
+
+    character_scopes = result.get("character_scopes")
+    if isinstance(character_scopes, dict):
+        # Numeric non-player identities were live exemplars, not source
+        # relationships. Player aliases remain explicit through ``$player``.
+        result["character_scopes"] = {
+            name: (
+                PLAYER_SENTINEL
+                if value in _LEGACY_PLAYER_CHARACTER_IDS
+                else value
+            )
+            for name, value in character_scopes.items()
+            if not isinstance(value, int)
+            or value in _LEGACY_PLAYER_CHARACTER_IDS
+        }
+
+    for field in (
+        "unique_character_scope_excludes",
+        "optional_unique_character_scope_excludes",
+    ):
+        exclusions = result.get(field)
+        if not isinstance(exclusions, dict):
+            continue
+        neutral_exclusions: dict[str, tuple[object, ...]] = {}
+        for name, values in exclusions.items():
+            neutral_values: list[object] = []
+            for value in values:
+                if isinstance(value, int):
+                    if value not in _LEGACY_PLAYER_CHARACTER_IDS:
+                        continue
+                    value = PLAYER_SENTINEL
+                if value not in neutral_values:
+                    neutral_values.append(value)
+            if neutral_values:
+                neutral_exclusions[name] = tuple(neutral_values)
+        result[field] = neutral_exclusions
+
+    variants = result.get("scope_variants")
+    if isinstance(variants, tuple):
+        result["scope_variants"] = tuple(
+            _campaign_neutral_identity_constraints(variant)
+            if isinstance(variant, dict)
+            else deepcopy(variant)
+            for variant in variants
+        )
+    return result
+
+
+_MANAGER_B_LEGACY_TABLES = (
+    _LEGACY_MANAGER_IMPERIAL_TIMELINE_CONTRACTS,
+    _LEGACY_MANAGER_NICKNAME_TIMELINE_CONTRACTS,
+    _LEGACY_MANAGER_PARENT_TIMELINE_CONTRACTS,
+    _LEGACY_MANAGER_PRISON_TIMELINE_CONTRACTS,
+    _LEGACY_MANAGER_SPYMASTER_TIMELINE_CONTRACTS,
+    _LEGACY_MANAGER_TGP_INTERACTION_TIMELINE_CONTRACTS,
+    _LEGACY_MANAGER_TGP_PETITION_TIMELINE_CONTRACTS,
+    _LEGACY_MANAGER_TRAIT_TIMELINE_CONTRACTS,
+    _LEGACY_MANAGER_TRIBUTE_TIMELINE_CONTRACTS,
+)
+
+MANAGER_VANILLA_LEGACY_OBSERVATIONS_B: Final[
+    dict[str, dict[str, object]]
+] = {
+    event_key: {
+        "exemplars": [{
+            "run": "legacy-migrated",
+            "kind": "legacy-live-binding",
+            "review_kind": "migration-only",
+            **_legacy_live_binding(legacy_contract),
+        }],
+    }
+    for legacy_table in _MANAGER_B_LEGACY_TABLES
+    for event_key, legacy_contract in legacy_table.items()
+    # tribute_mission.1005 was already migrated and carries no legacy
+    # campaign binding. Keep its reusable contract unchanged.
+    if isinstance(legacy_contract.get("root_character_id"), int)
+}
+
+
+def _campaign_neutral_group(
+    legacy_table: dict[str, dict[str, object]],
+) -> dict[str, dict[str, object]]:
+    return {
+        event_key: (
+            _campaign_neutral_identity_constraints(legacy_contract)
+            if isinstance(legacy_contract.get("root_character_id"), int)
+            else deepcopy(legacy_contract)
+        )
+        for event_key, legacy_contract in legacy_table.items()
+    }
+
+
+MANAGER_IMPERIAL_TIMELINE_CONTRACTS: Final = _campaign_neutral_group(
+    _LEGACY_MANAGER_IMPERIAL_TIMELINE_CONTRACTS
+)
+MANAGER_NICKNAME_TIMELINE_CONTRACTS: Final = _campaign_neutral_group(
+    _LEGACY_MANAGER_NICKNAME_TIMELINE_CONTRACTS
+)
+MANAGER_PARENT_TIMELINE_CONTRACTS: Final = _campaign_neutral_group(
+    _LEGACY_MANAGER_PARENT_TIMELINE_CONTRACTS
+)
+MANAGER_PRISON_TIMELINE_CONTRACTS: Final = _campaign_neutral_group(
+    _LEGACY_MANAGER_PRISON_TIMELINE_CONTRACTS
+)
+MANAGER_SPYMASTER_TIMELINE_CONTRACTS: Final = _campaign_neutral_group(
+    _LEGACY_MANAGER_SPYMASTER_TIMELINE_CONTRACTS
+)
+MANAGER_TGP_INTERACTION_TIMELINE_CONTRACTS: Final = _campaign_neutral_group(
+    _LEGACY_MANAGER_TGP_INTERACTION_TIMELINE_CONTRACTS
+)
+MANAGER_TGP_PETITION_TIMELINE_CONTRACTS: Final = _campaign_neutral_group(
+    _LEGACY_MANAGER_TGP_PETITION_TIMELINE_CONTRACTS
+)
+MANAGER_TRAIT_TIMELINE_CONTRACTS: Final = _campaign_neutral_group(
+    _LEGACY_MANAGER_TRAIT_TIMELINE_CONTRACTS
+)
+MANAGER_TRIBUTE_TIMELINE_CONTRACTS: Final = _campaign_neutral_group(
+    _LEGACY_MANAGER_TRIBUTE_TIMELINE_CONTRACTS
+)
+
+
+# The original .0342 exemplar encoded two source-created aliases as repeated
+# numeric IDs. Preserve those necessary relations without binding either NPC.
+_spymaster_0342 = MANAGER_SPYMASTER_TIMELINE_CONTRACTS["spymaster_task.0342"]
+_spymaster_0342["character_scope_matches_any"] = {
+    "councillor": ("active_councillor",),
+    "active_councillor": ("councillor",),
+    "target_character": ("secret_holder",),
+    "secret_holder": ("target_character",),
+}
+
+
 def _aggregate_manager_vanilla_timeline_contracts_b(
     tables: tuple[dict[str, dict[str, object]], ...],
 ) -> dict[str, dict[str, object]]:
@@ -1469,5 +1651,6 @@ __all__ = [
     "MANAGER_TGP_PETITION_TIMELINE_CONTRACTS",
     "MANAGER_TRAIT_TIMELINE_CONTRACTS",
     "MANAGER_TRIBUTE_TIMELINE_CONTRACTS",
+    "MANAGER_VANILLA_LEGACY_OBSERVATIONS_B",
     "MANAGER_VANILLA_TIMELINE_CONTRACTS_B",
 ]
