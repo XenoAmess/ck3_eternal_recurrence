@@ -1924,6 +1924,21 @@ exact build 改变、保留门任一健康检查失败，或者场景需要一�
 `bf5960b7194e1222029add884743c688fee0d86f95559670c587317461519e74`，并再次得到
 `played_character=null` / mailbox 未安装，正是这条启动前去重门禁所要阻止的浪费。
 
+#### R408–R414：`SAV0102` multiplayer normalization 不是玩家准入（2026-09-11）
+
+R410 对五玩家 `SAV0102` source `2C9278D4...2261` 做 exact-build、无自定义 mod 的直接加载。CK3 虽返回
+`map_ready=true / paused=true / local_player_id=1`，但 `played_character=null`，主线程 mailbox、executor、stamp 与
+application state pointers 均未 ready。R411 随后离线删除四组 `played_character`/`player_owner`，把 metadata 玩家数
+从五改为一；输出仍是 `SAV0102`。R412 加载该 derivative 后重复同类 RED，仍没有 live 玩家绑定或 MCP 保存的
+`SAV0101`。因此 header 可解析、记录数归一或 map ready 都不能替代 local-player admission。
+
+这两个 source SHA 已加入启动前拒绝表。只有负责该结果的游戏 build、bridge、恢复算法或存档内容发生可证明的因果变化时
+才允许复试；改文件名、改 run 编号、重新压缩或再次做同类离线 normalization 都不构成新变量。迁移成功必须同时取得
+非空且符合预期的 `played_character`、健康 mailbox/date binding 与 MCP 原生保存的 `SAV0101`。R414 改用带 live
+provenance 的 R375 单玩家 `SAV0101` 后，fresh PID 立即恢复玩家 `32904` 并进入真实事件 drain，证明替代 lineage 越过了
+准入边界。完整证据与分类见
+[`r408-r414-lineage-intake-and-multiplayer-red-2026-09-11.md`](phase2-promo/r408-r414-lineage-intake-and-multiplayer-red-2026-09-11.md)。
+
 R93 首次把这条策略跑通。新的 Python pipe server 必须异步等待 DLL 再连接，直到收到
 `hello` 且首个 snapshot 为 `map_ready=true`；刚创建 server 时的空 capability 不是 CK3
 死亡证据。`connection_generation` 是单个 Python endpoint 的本地代数，跨 client 不比较

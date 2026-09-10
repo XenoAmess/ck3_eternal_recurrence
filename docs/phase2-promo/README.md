@@ -28,6 +28,10 @@ generation，以及 B1、AF5、Central、Workforce 的 identity/state/receipt �
 但不能扩大 P1 blocker；因此 P1 判定没有“还差一个历史 cell”之类的隐含口径。显式 legacy 诊断命令本身仍可因其
 coverage 失败返回 RED，但该诊断 RED 不回写、不改变独立的 P1 九项判定。
 
+R408–R414 的终端 lineage 换轨、五玩家 `SAV0102` 两次 native-readiness RED、离线 normalization 的证据边界以及
+R375 单玩家 checkpoint 的有效准入，见
+[`r408-r414-lineage-intake-and-multiplayer-red-2026-09-11.md`](r408-r414-lineage-intake-and-multiplayer-red-2026-09-11.md)。
+
 ## 现行 effect 文件边界（2026-09-05）
 
 单文件过大现按强制缺陷处理，不再讨论是否拆分或等待性能触发。canonical source 已退役 mechanism、B1 runtime 与 core 的四类旧聚合 owner，改为 `186 + 12 + 4` 个用途分片；当前全树 `626 files / 3721 effects / maximum 10 / >20=0 / exceptions=0`。后续 production 与 CK3 验收只允许使用拆分布局，详见
