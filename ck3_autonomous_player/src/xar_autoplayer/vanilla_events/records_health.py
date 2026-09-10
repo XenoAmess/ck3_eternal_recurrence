@@ -276,6 +276,83 @@ VANILLA_HEALTH_ANALYSIS: Final[dict[str, dict[str, object]]] = {
             "outcome range and native 3's certain absence of treatment"
         ),
     },
+    "health.3102": {
+        "exact_build": {
+            "game_version": EXACT_CK3_BUILD,
+            "ck3_executable_sha256": EXACT_CK3_EXE_SHA256,
+            "steam_build_id": 23530548,
+            "branch": "titus/release/1.19.0",
+        },
+        "source_sha256": {
+            "events/health_events.txt": (
+                "8CAB7F230E09A37C15F7C088383D40752D970918D44D86762FDD068EE168EFEB"
+            ),
+            "common/scripted_effects/20_health_effects.txt": (
+                "6D7DEF1245D899DE4DEBC42136815BC7F4D14F6A467A8320355507AD03528F12"
+            ),
+            "localization/english/event_localization/health_events_l_english.yml": (
+                "043216116C522B5D108315A3730DA12C5D7B2EDDB8CF60D67D0967AF4AFE23D0"
+            ),
+            "localization/simp_chinese/event_localization/"
+            "health_events_l_simp_chinese.yml": (
+                "AFDC39A947F036A140288CC565EDE0B2CC29B1DCD27AF191A7CC0F91A026A0E4"
+            ),
+        },
+        "definition_lines": "7527-7708",
+        "trigger_lines": "7624-7630",
+        "immediate_effect_lines": "7636-7642",
+        "option_lines": "7645-7707",
+        "safe_treatment_effect_lines": "1581-1713",
+        "set_physician_effect_lines": "1308-1408",
+        "decide_treatment_picker_effect_lines": "3546-3564",
+        "liege_picks_treatment_effect_lines": "3566-3578",
+        "caller_semantics": (
+            "when a newly appointed physician iterates sick courtiers or guests, "
+            "decide_who_picks_disease_treatment_effect schedules health.3102 for "
+            "the liege when the native responsibility trigger selects that liege. "
+            "R416 opened this window for courtier 88187 after the player's own "
+            "successful treatment result was acknowledged"
+        ),
+        "trigger_boundary": (
+            "sick_character must remain alive with a treatable disease and ROOT's "
+            "court physician must remain available"
+        ),
+        "immediate_effect": (
+            "re-saves ROOT's court physician, updates sick_character's worst disease "
+            "as disease_type, and saves the patient's location as the background"
+        ),
+        "scope_boundary": (
+            "the exact R416 projection retains epidemic/new_memory and the preceding "
+            "high/low recruitment candidates. ROOT is the played liege, the patient "
+            "is a distinct third party, and physician matches high_skill_option"
+        ),
+        "option_semantics": {
+            0: "uses the physician's safe disease treatment on sick_character",
+            1: "uses the physician's risky disease treatment on sick_character",
+            2: (
+                "uses mystic treatment when the physician has a mystic lifestyle "
+                "trait; this row was not rendered in R416"
+            ),
+            3: "denies treatment to sick_character",
+            4: (
+                "lets sick_character decide and schedules that character's own "
+                "health.3101 treatment window after five to ten days"
+            ),
+        },
+        "native_ai_weights": {
+            0: "base 10",
+            1: "base 1",
+            2: "base 0.5, reduced to zero when AI zeal is nonnegative",
+            3: "base 1",
+            4: "base 0",
+        },
+        "after_effect": None,
+        "safe_option_rationale": (
+            "authored option 1/native 0 is the source-labelled safe treatment for "
+            "the sick courtier. It avoids the risky result range, explicit denial, "
+            "and a delayed second choice window while preserving the patient identity"
+        ),
+    },
     "health.3103": {
         "exact_build": {
             "game_version": EXACT_CK3_BUILD,
@@ -606,6 +683,56 @@ VANILLA_HEALTH_OBSERVATIONS: Final[dict[str, dict[str, object]]] = {
             "process_restart_required": False,
         }],
     },
+    "health.3102": {
+        "exemplars": [{
+            "run": "R416-retry-09",
+            "kind": "retained-live-contract-red",
+            "red_classification": "harness-route-red",
+            "product_failure_proven": False,
+            "artifact": (
+                "_runtime/p1-terminal-resume-r416-20260911/live-artifacts/"
+                "terminal-stages-red-attempt-09.json"
+            ),
+            "artifact_sha256": (
+                "5E630E4EF04B137F132627470B27D67BA8B4148C5B9F171D5117227A9FF49DFC"
+            ),
+            "date_raw": 53865048,
+            "event_instance_id": 1088,
+            "root_character_id": 32904,
+            "snapshot_id": "native:1044",
+            "revision": 1045,
+            "native_revision": 1044,
+            "saved_character_ids": {
+                "sick_character": 88187,
+                "high_skill_option": 33648496,
+                "low_skill_option": 16889335,
+                "physician": 33648496,
+            },
+            "saved_scope_raw_types": {
+                "epidemic": 50,
+                "disease_type": 3,
+                "sick_character": 4,
+                "new_memory": 34,
+                "high_skill_option": 4,
+                "low_skill_option": 4,
+                "physician": 4,
+                "background_terrain_scope": 8,
+            },
+            "rendered_native_option_indices": [0, 1, 3, 4],
+            "selected_option_number": None,
+            "selected_native_option_index": None,
+            "selection_attempted": False,
+            "retained_red": True,
+            "process_id": 174656,
+            "connection_generation": 1,
+            "process_restart_required": False,
+            "mcp_only": True,
+            "fixture_used": False,
+            "ocr_used": False,
+            "coordinates_used": False,
+            "console_used": False,
+        }],
+    },
     "health.3103": {
         "exemplars": [{
             "run": "R199",
@@ -677,6 +804,30 @@ VANILLA_HEALTH_OBSERVATIONS: Final[dict[str, dict[str, object]]] = {
             "ocr_used": False,
             "coordinates_used": False,
             "console_used": False,
+        }, {
+            "run": "R416-retry-09",
+            "kind": "same-process-hot-recovery-green",
+            "artifact": (
+                "_runtime/p1-terminal-resume-r416-20260911/live-artifacts/"
+                "terminal-stages-red-attempt-09.json"
+            ),
+            "artifact_sha256": (
+                "5E630E4EF04B137F132627470B27D67BA8B4148C5B9F171D5117227A9FF49DFC"
+            ),
+            "date_raw": 53864832,
+            "event_instance_id": 1087,
+            "ending_event_instance_id": None,
+            "root_character_id": 32904,
+            "starting_snapshot_id": "native:1038",
+            "starting_revision": 1039,
+            "ending_snapshot_id": "native:1039",
+            "ending_revision": 1040,
+            "selected_option_number": 1,
+            "selected_native_option_index": 0,
+            "postcondition_verified": True,
+            "connection_generation": 1,
+            "bridge_pid": 174656,
+            "process_restart_required": False,
         }],
     },
 }

@@ -133,8 +133,9 @@
   primitive；赠书与 artifact 事件随后也在同 PID 完成各自选择与 advance。`health.1006` 无医师投影也已在
   retry 06 以 authored1/native0 完成选择与 advance，并按原版延迟进入 `health.3001`；后者的六 scope
   形态也已在 retry 07 以 authored2/native1 完成招募与 advance。`health.3101` 的八 scope 继承形态已在 retry 08
-  以 authored1/native0 完成安全治疗选择与 advance，随机结果为成功。当前暂停在 `health.3103` 继承
-  `epidemic,new_memory` 的十二 scope RED；exact-build 四段决策树与唯一 authored1/native0 确认路线见
+  以 authored1/native0 完成安全治疗选择与 advance，随机结果为成功；`health.3103` 十二 scope 继承形态也已在
+  retry 09 完成唯一确认与 advance。当前暂停在为廷臣 `88187` 代选治疗的 `health.3102` 八 scope / native
+  `0/1/3/4` RED；exact-build 五段决策树与 authored1/native0 安全治疗路线见
   [health-consumption-diagnosis.md](health-consumption-diagnosis.md)。
   artifact 树见 [artifact-expert-improvement.md](artifact-expert-improvement.md)。上述状态不表示 177 条全部 live；
   `361/626` 全树覆盖也不是 T0、其它 mod、CI 或发布门。T0 仍为 `50% / stage 8/11 / source 3/4 / P2 LOCKED`。
