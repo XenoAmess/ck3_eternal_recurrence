@@ -324,7 +324,7 @@
 - [static-ready / no-launch exclusive outer-owner orchestration] [g2-source-specific-war-loss-outer-owner-2026-09-05.md](g2-source-specific-war-loss-outer-owner-2026-09-05.md)
   冻结正常事件进程在 observer 恢复断点并仅 detach 后继续存活、同 PID bridge attach、同一 driver 交给
   lifecycle continuation、最终由外层唯一 cleanup 的确定性顺序。C++ observer 已具备 detach-without-kill 路径。
-- [R442 resume load live-validated / non-modal timeline recovery static-ready; source capture pending] [g2-source-specific-war-loss-live-adapter-2026-09-05.md](g2-source-specific-war-loss-live-adapter-2026-09-05.md)
+- [R443 scenario exhausted at player death / non-modal recovery live-validated; fresh peace-precondition plan required] [g2-source-specific-war-loss-live-adapter-2026-09-05.md](g2-source-specific-war-loss-live-adapter-2026-09-05.md)
   已实现 normal launch → speed-5 natural event → observer detach → same-PID pause/explicit-pipe bridge → same-driver
   lifecycle → one outer cleanup，并对 launch receipt 形成前的失败补 exact-PID 回收。OCR 仅用于 bridge attach 前 UI，
   source truth 来自 native observer，current/action/postwar truth 来自 MCP。R441 已将 R440 的原版单选事件修复实机验证：
@@ -335,6 +335,8 @@
   R442 已实机通过 hash-bound copy、`继续游戏` 与地图恢复，并从 1079 年推进到日志可见的 1082-04-23；一次 HUD 日期 OCR
   空窗被误送到 modal-only recovery 后以 harness RED 收口。最小修复只在不存在可验证 modal 选项时重试时间轴，并要求读到更晚
   游戏日；最新 R442 autosave 已通过 no-launch admission，等待下一次 bounded continuation。
+  R443 已实机触发该修复并在无法推进时保留终态帧：罗贝尔于 1084-05-06 死亡，CK3 因继承暂停。runner 未继续扮演继承人；
+  exact `.1071` 排程/重试绑定罗贝尔，因此该存档链已耗尽。下一次 CK3 前必须先形成可执行的 `is_at_war=no` 前置方案。
 - [static-ready / portable operator MCP no-launch profile generator] [g2-source-specific-operator-mcp-preflight-2026-09-10.md](g2-source-specific-operator-mcp-preflight-2026-09-10.md)
   把 target identity、endpoint、clone、游戏文件与 runtime bundle 变为每机参数，并以 production operator
   profile parser 和逐文件 SHA-256 冻结；生成结果只暴露 adapter `--verify-only`，不能启动或控制 CK3，

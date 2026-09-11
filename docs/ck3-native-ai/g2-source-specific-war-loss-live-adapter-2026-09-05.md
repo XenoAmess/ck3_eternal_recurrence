@@ -1,6 +1,6 @@
 # G2 source-specific war-loss concrete live adapter
 
-Status: **R442 resume load live-validated / non-modal timeline recovery repaired and static-ready / source capture pending**.
+Status: **R443 scenario exhausted at player death / non-modal recovery live-validated / fresh peace-precondition plan required**.
 
 ## Delivered platform composition
 
@@ -396,3 +396,40 @@ the manifest SHA-256 is
 This is a harness repair only; source-specific readiness and T1 remain
 unchanged. The next live action is a single bounded continuation from the exact
 R442 successor, after commit/push and companion-contract synchronization.
+
+### R443 terminal classification
+
+R443 launched one exact-build CK3 process, PID `187992`, from root commit
+`e073216a916988707fa2010c47c9885e83a1df75`. It admitted the R442 successor,
+selected `继续游戏` once, loaded the map, and later exercised the new no-modal
+branch. The branch reapplied speed 5 and the timeline control, then correctly
+refused to continue when it could not observe a later date. Its retained stall
+frame shows the actual terminal state: Robert Guiscard died at age 69 on
+`1084-05-06`, and CK3 was paused at the succession screen. The runner did not
+select `继续扮演公爵罗杰`, did not attach the bridge, and did not submit any
+war action.
+
+This is scenario exhaustion rather than another generic UI blocker. Exact
+`game_start.txt` SHA-256
+`84C0101F3273205433F6484A6184887BA377C57FEF18F735337369E0A2ED136C`
+schedules `.1071` on `character:1128`; `.1071` retries on the same event root.
+Continuing as Roger would violate the frozen expected CharacterID and would not
+provide the required Robert-source lifecycle. The target event had still not
+appeared before death, so no source-specific field advances.
+
+The frozen classification receipt is
+`Z:\ck3_mod_rewrite\_runtime\g2-source-specific-r443-resume-20260911\r443-scenario-exhaustion.json`,
+4,188 bytes, SHA-256
+`CFBB1AFFB139D8702EB7E141FB286E087AE35FC30F2FEF48F04D37E857CC0DB6`.
+The terminal screenshot is 5,220,756 bytes, SHA-256
+`A2C78B8D1A2036F67EB0AA67A9E232D0A639C783462298075B427A0CA02963CF`;
+the runner report SHA-256 is
+`28EF87649E13EA9A0BD02D7E575086E7282A0D8C27C0C35E841D1372CF34DFD7`.
+Cleanup is GREEN, CK3 inventory is empty, and both error/debug logs have zero
+`XAR:` hits.
+
+No R444 continuation may consume this dead-character chain. Before another CK3
+run, the harness needs an evidence-backed fresh-run plan that can make Robert
+satisfy the exact `is_at_war=no` trigger instead of passively waiting through
+another lifetime. This does not authorize console-triggering the event or
+relaxing the natural-source contract. T1 remains 90%.
