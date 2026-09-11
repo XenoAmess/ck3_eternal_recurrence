@@ -36,6 +36,8 @@ class Stage10PlayerSubjectOperatorTests(unittest.TestCase):
             artifacts.mkdir()
             input_checkpoint = root / "input.ck3"
             input_checkpoint.write_bytes(b"input")
+            source_receipt = root / "source-receipt.json"
+            source_receipt.write_text("{}", encoding="utf-8")
             source_checkpoint = root / "source.ck3"
             source_checkpoint.write_bytes(b"source")
             terminal_checkpoint = root / "terminal.ck3"
@@ -47,10 +49,12 @@ class Stage10PlayerSubjectOperatorTests(unittest.TestCase):
                 "artifact_directory": artifacts,
                 "round": "R440",
                 "checkpoint": input_checkpoint,
+                "stage10_source_receipt": source_receipt,
                 "bridge_dll": bridge,
                 "expected_hashes": {
                     "code_commit": "a" * 40,
                     "product_tree_sha256": "B" * 64,
+                    "checkpoint_sha256": operator.base.sha256(input_checkpoint),
                 },
             }
 
@@ -108,6 +112,68 @@ class Stage10PlayerSubjectOperatorTests(unittest.TestCase):
             self.assertEqual(evidence["round"], "R440")
             self.assertTrue(evidence["production_live"])
             self.assertFalse(evidence["video_lock_touched"])
+
+    def test_source_receipt_must_bind_checkpoint_event_selector_and_tree(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            checkpoint = root / "source.ck3"
+            checkpoint.write_bytes(b"source")
+            receipt_path = root / "source.json"
+            receipt = {
+                "schema_version": 1,
+                "kind": operator.SOURCE_RECEIPT_KIND,
+                "result": "GREEN",
+                "production_live": True,
+                "provider_observed": True,
+                "fixture_used": False,
+                "console_used": False,
+                "selection_attempted": False,
+                "source_event_definition_key": operator.SOURCE_EVENT,
+                "source_event_instance_id": 390,
+                "source_event_context": {
+                    "event_definition_key": operator.SOURCE_EVENT,
+                    "current_event_instance_id": 390,
+                    "root_scope": {
+                        "typed_identity": {
+                            "status": "available",
+                            "kind": "character",
+                            "character_id": 100,
+                        }
+                    },
+                },
+                "owner_character_id": 100,
+                "player_character_id": 100,
+                "selected_manager_character_id": 200,
+                "selector": {
+                    "status": "available",
+                    "provider_observed": True,
+                    "readiness": {"ready": True},
+                    "selection": {"manager_character_id": 200},
+                },
+                "product_tree_sha256": "B" * 64,
+                "checkpoint": operator.base.file_record(checkpoint),
+            }
+            operator.base.write_object(receipt_path, receipt)
+            bound = {
+                "checkpoint": checkpoint,
+                "expected_hashes": {
+                    "product_tree_sha256": "B" * 64,
+                    "checkpoint_sha256": operator.base.sha256(checkpoint),
+                },
+            }
+            result = operator._validate_source_receipt(
+                operator.base.file_record(receipt_path), bound
+            )
+            self.assertEqual(result["path"], receipt_path.resolve())
+
+            receipt["source_event_definition_key"] = "zg361cl.389"
+            operator.base.write_object(receipt_path, receipt)
+            with self.assertRaisesRegex(
+                operator.base.Af5JobError, "matching qualified .390"
+            ):
+                operator._validate_source_receipt(
+                    operator.base.file_record(receipt_path), bound
+                )
 
     def test_archive_failure_preserves_green_product_result(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
