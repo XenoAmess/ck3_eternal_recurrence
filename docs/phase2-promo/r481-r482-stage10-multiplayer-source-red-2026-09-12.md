@@ -47,8 +47,11 @@ managed cleanup SHA-256 为 `A87F9EE46B47723A40928C56D2AA9BB94B4D11C7049FBD04242
 GREEN。当前轮次 R482 与旧轮次 R481 均已终止；CK3、Operator 作业、Operator MCP 服务和监听端口均为零。
 
 下一步先从已有 live-admitted 单玩家 checkpoint 生成玩家经理 source，再执行一次新的 30 游戏日 Stage 10 尝试。离线
-候选扫描已在 R159 单玩家世界中找到玩家 `32904` 的多名合格天朝直属经理；该临时扫描逻辑必须先迁成无固定账号、路径
-或轮次的通用工具，再允许新 CK3 启动。新来源需经过 v3 receipt，不能再次依赖文件名或 `SAV0101` header 放行。
+候选扫描已通过通用、路径无关的 `ck3_save_player_topology_offline_v1` 工具在 R159 单玩家世界中找到 71 名合格天朝
+直属经理；目标 `29037 -> 32904` 为 tier `4` 且有 8 名直属有地封臣。该报告 SHA-256 为
+`CD4C6A0E2B5F7D4017D5E23D306E59589C5A190241306BDBADDB4EF07B556B17`；同一工具对 R482 输入的拒绝报告为
+`2361D26C53EE051E0247B076900705CD8E6E2F705AEE21A47AD18CFE82D74F4F`。下一步由 MCP 从已准入的 R159
+lineage 切换到目标经理并原生保存；新来源需经过 v3 receipt，不能再次依赖文件名或 `SAV0101` header 放行。
 
 ## 证据索引
 
