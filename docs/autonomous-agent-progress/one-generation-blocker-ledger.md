@@ -907,12 +907,12 @@ WarID `50331699` / `raiktor_claim_cb` 的 primary-attacker surrender 只有 type
 - **根因**：exact-build `chancellor_task.1004` 是 `chancellor_task.1003` 经
   `task_foreign_affairs_side_effects` 打开的 unavoidable letter event。唯一选项 key 为 `chancellor_task.1003.a`；
   现有 source adapter 没有该事件的高置信处理分支。
-- **修复**：`081baea2ee61809d08314f3b152d899f472ec122` 只在正文和选项区同时命中
+- **修复**：`3b632641ab839a6b9d569208e762fc39ad9fa052` 只在正文和选项区同时命中
   `掌玺大臣 / 外交行为 / 可怕的误会` 时关闭唯一选项并恢复时间。normal/`-O` 各 `25/25`，实际截图回放 GREEN；
   shared runner、DLL 和游戏文件不变。
 - **资产同步**：`.1004` 通用事件记录与新 source-index 在
-  `ee185c4ecaa84240a0a0f6090e8fa4d825cc1ae4`；`open_kaishek` 兼容同步为
-  `39c5bee697082d814c62800e013fd85874b77485`。
+  `dacc1d759d349ff142f167e265f09077c51da27d`；`open_kaishek` 兼容同步为
+  `2a558f6317551ba5f04f7d95009071d7f96bc90c`。
 - **状态**：`HARNESS_RED -> static-ready fix`；产品 RED 为 false。R445 已结束、cleanup GREEN、CK3=0。
   R446 使用 SHA-256 `431320AAC5094501BE48005C3A13E7FF0B4C75A56639A47C96352D04B1AFDBFF` 的最近 successor，
   final no-launch admission SHA-256 `8A3C4FFA6E3C3A68738B6B06184F053C855B53196C896111B405A92971CBBE0F`。

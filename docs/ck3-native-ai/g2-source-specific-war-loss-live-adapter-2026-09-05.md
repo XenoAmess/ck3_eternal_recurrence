@@ -528,7 +528,7 @@ replay resolves the option center `(1266,984)`. `py_compile`, BOM, diff, and
 no-launch input admission are GREEN. The adapter and manifest SHA-256 values
 are `0E5D0DF24D19F9908E9674E3FFF6245E7EC1C845A6EF2AB23738448EC79205D0`
 and `A447BF5935D2D5C8ADAA68EFE6F9B498AB8274E004C849627F010CBBDA699A39`.
-The fix is commit `081baea2ee61809d08314f3b152d899f472ec122`.
+The fix is commit `3b632641ab839a6b9d569208e762fc39ad9fa052`.
 
 R445 cleanup is GREEN and CK3 inventory is empty. Its report is 3,724 bytes,
 SHA-256 `42084B46AC8B3E03963552C97FDEF04BB5D7E62F11C5886C9F8F3933FA279D86`;
@@ -542,12 +542,12 @@ receipt is 20,652 bytes, SHA-256
 
 The exact-build event definition, caller candidates, safe-option contract, and
 honest R445 observation were also added to the campaign-neutral vanilla-event
-registry in commit `ee185c4ecaa84240a0a0f6090e8fa4d825cc1ae4`. The regenerated source index
+registry in commit `dacc1d759d349ff142f167e265f09077c51da27d`. The regenerated source index
 now contains 183 definitions and has dataset identity
 `265EBCE989627D68C69DDEF178A7BC0EBE1DE846721E42584D2B8271D14E9CFD`.
 Focused registry tests pass `13 tests / 63 subtests`; generator `--check` is
 GREEN. `open_kaishek` pins the same revision and dataset in commit
-`39c5bee697082d814c62800e013fd85874b77485`.
+`2a558f6317551ba5f04f7d95009071d7f96bc90c`.
 
 No source-specific field, comparison input, decision/action readiness, or
 `GEN-034` state advances from R445; T1 remains 90%. R446 may consume only this
