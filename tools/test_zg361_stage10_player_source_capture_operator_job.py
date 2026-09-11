@@ -38,6 +38,23 @@ def campaign(player: int, owner: int | None) -> dict[str, object]:
 
 
 class Stage10PlayerSourceCaptureTests(unittest.TestCase):
+    def test_worker_revalidates_with_source_specific_contract(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            bound = {
+                "source_player_character_id": 100,
+                "artifact_directory": Path(temporary),
+            }
+            job = capture.Stage10PlayerSourceCaptureOperatorJob(Path("activation.json"))
+            with (
+                mock.patch.object(capture, "validate_activation", return_value=bound) as validate,
+                mock.patch.object(job, "_execute") as execute,
+            ):
+                job._run()
+
+            validate.assert_called_once_with(job.activation_path, require_empty_slot=True)
+            execute.assert_called_once_with(bound)
+            self.assertIs(job.bound, bound)
+
     def test_capture_switches_qualifies_and_archives_without_time_advance(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
             root = Path(temporary)
