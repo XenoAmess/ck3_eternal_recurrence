@@ -116,6 +116,7 @@ class B1RuntimeFoundationTests(unittest.TestCase):
         cls.jingcha = read(
             "common/scripted_effects/zg361_jingcha_mandate_effects.txt"
         )
+        cls.on_actions = read("common/on_action/zg361_on_actions.txt")
         cls.jingcha_events = read("events/zg361_jingcha_events.txt")
         cls.scripted_guis = read(
             "common/scripted_guis/zg361_scoreboard_guis.txt"
@@ -1722,6 +1723,21 @@ class B1RuntimeFoundationTests(unittest.TestCase):
         )
         eligibility = dispatch.index("zg361_is_celestial_liege_trigger = yes")
         self.assertLess(recovery, eligibility)
+        global_pulse = top_level_block(
+            self.on_actions, "yearly_global_pulse"
+        )
+        self.assertIn(
+            "on_actions = { zg361_b1_player_recovery_on_action }",
+            global_pulse,
+        )
+        global_recovery = top_level_block(
+            self.on_actions, "zg361_b1_player_recovery_on_action"
+        )
+        self.assertIn("every_player = {", global_recovery)
+        self.assertIn(
+            "zg361_b1_recover_empty_calibration_cycle_effect = yes",
+            global_recovery,
+        )
         issue = top_level_block(self.jingcha, "zg361_issue_jingcha_mandate_effect")
         issue_now = top_level_block(
             self.jingcha, "zg361_issue_jingcha_mandate_now_effect"

@@ -102,3 +102,40 @@ celestial liege；`.90/.91` sibling ticket 也把恢复调用放在同一资格�
 serial 与零 survivor 全部精确匹配。失去资格的旧 owner 只会无奖励、无发布地退役残留周期；仍有资格者可在同一次年度 pulse
 继续进入原有开新周期路径。当前结论仍为 `static-ready`，必须用新的 fresh production projection 再次恢复同一 checkpoint
 验证；R420 证据不把这一根因解释冒充 live 修复完成。
+
+## R422 复验：`yearly_playable_pulse` 本身不会覆盖失地玩家
+
+R422 从 R420 attempt 01 冻结的零幸存者 checkpoint 冷启动 PID `22264` / connection generation `1`。输入
+checkpoint 为 `197,968,111` bytes，SHA-256
+`85AD59742D62D26740AC7786D890C94F080224E5F782EA1298B8CE46B0A5505C`；production tree SHA-256 为
+`4D1D611BE25FE1C2D21F7716D8E785E269BA108C75FF7AE5D2EA3F7EFCF2AEEA`。该候选已经把 recovery 调用移到
+`zg361_jingcha_annual_dispatch_effect` 的 celestial eligibility 前，但入口仍挂在 `yearly_playable_pulse`。
+
+attempt 02 从 date raw `54251808` 推进到 `54481488`，共 `9570` 游戏日，离既定绝对截止只剩 `620` 日。
+B1 在最终 paused frame 仍是同一 cycle/case `8/8`、active/state `true/7`、roster/processing `0/0`、closure
+`0`；这说明不是 dispatch 内部资格判断阻止恢复，而是该角色根本没有再收到 playable pulse。原版 exact-build source
+明确注释 `yearly_playable_pulse` 只对 count+ 角色触发；同一玩家在本存档已失去相应身份。
+
+因此生产唤醒点改为 `yearly_global_pulse` 的扩展 on_action。原版定义明确它每年 1 月 1 日触发且没有 ROOT；扩展只执行
+`every_player`，再调用同一个严格的 `zg361_b1_recover_empty_calibration_cycle_effect`。effect 内的 `is_ai=no`、schema、
+state、serial、pending 与零 survivor 门保持不变，不会把恢复入口扩给 AI，也不改变正常周期。`yearly_playable_pulse`
+的既有年度业务链继续保留。
+
+本次 RED 还实见 `tgp_movement_events.0060` 在十年 cooldown 后第二次合法出现；旧事件合同的
+`max_occurrences=1` 独立导致选择前停车，不改变上述 B1 判决。原版 caller 与重复边界见
+[tgp-movement-rival.md](../ck3-native-ai/tgp-movement-rival.md)。
+
+证据与清理：
+
+- B1 after：`b1-after-attempt-02.json`，SHA-256
+  `53809BDF64DA162A6C4E6A50775EFEC180FAD59DF494485998736F213FC82D43`。
+- retained RED：`terminal-stages-red-attempt-02.json`，SHA-256
+  `AD3F9517ADBEFACA1E59ADF6F01D73A1B950DFD631401D23241D2B0BA1BB754E`。
+- partial checkpoint：`terminal-partial-attempt-02.ck3`，SHA-256
+  `9B8CA99765BC1AD78ADE1B3EAB6417060C7FFC29C9C942D88C8F29EECCAF7B7F`。
+- canonical / operator cleanup 均 GREEN，SHA-256 分别为
+  `8EEDE1FAEE4E2934111727DFC3EB5C7D5557D38FF111DED57C10C1FAA8B637C2` /
+  `B933751884608D645FFA1F7B7C6624007DA91BB0ED385507BA0AE70EE3508BF6`。
+
+按项目所有者明确要求，下一次 B1 验收不再重复完整 `10190` 天产品窗口。它只从同一冻结卡死存档跨过最近一次
+`yearly_global_pulse`，随即查询旧 cycle/case 是否退役或重建；该最小后置 GREEN 之前，修复状态仍为 `static-ready`。

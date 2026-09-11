@@ -85,10 +85,10 @@ def test_checked_in_bundle_is_complete_and_strictly_self_validating() -> None:
         "evidence": 273,
         "generated_definition_references": 182,
         "lexical_caller_candidate_references": 519,
-        "manually_reviewed_analysis_source_references": 264,
+        "manually_reviewed_analysis_source_references": 268,
         "observation_artifacts": 86,
         "observation_artifact_references": 102,
-        "references": 1067,
+        "references": 1071,
         "source_definitions": 187,
     }
     assert result["manifest_sha256"] == hashlib.sha256(
@@ -160,7 +160,7 @@ def test_manifest_preserves_honest_source_provenance_for_all_indexed_events() ->
         "captured-observation-artifact": 102,
         "generated-definition-index": 182,
         "lexical-caller-candidate-not-proven-runtime-caller": 519,
-        "manually-reviewed-analysis-source": 264,
+        "manually-reviewed-analysis-source": 268,
     }
     lexical = [
         reference

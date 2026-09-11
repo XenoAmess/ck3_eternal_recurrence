@@ -469,6 +469,11 @@ class ManagerRecoveryTgpInterruptTests(unittest.TestCase):
         self.assertTrue(all(checks.values()), checks)
         self.assertEqual(contract["selected_option_number"], 3)
         self.assertEqual(contract["selected_native_option_index"], 2)
+        self.assertEqual(
+            contract["occurrence_policy"],
+            "repeatable-within-product-observation-window",
+        )
+        self.assertNotIn("max_occurrences", contract)
 
         wrong_projection = copy.deepcopy(context)
         wrong_projection["options"][0]["native_option_index"] = 0
