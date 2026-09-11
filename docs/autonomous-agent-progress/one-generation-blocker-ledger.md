@@ -1075,3 +1075,22 @@ WarID `50331699` / `raiktor_claim_cb` 的 primary-attacker surrender 只有 type
 - This is static-ready only. One bounded R471 read-only query must replace the
   R470 RED before campaign dominance can consume the value. `GEN-034` remains
   unresolved, T1 remains 90%, T0 P1 remains 6/9, and P2 remains `LOCKED`.
+
+## 2026-09-12: GEN-034 R471 active-war strategic-power primitive GREEN
+
+- R471 produced two identical official MCP results on paused snapshot
+  `native:3`: player `29829` power `13075500000`, opponent `28551` total
+  `16770900000`, ratio `128262/100000`, and target source
+  `active_war_primary_opponent`. Every native readiness bit is true.
+- The report's RED is confined to a runner audit that read absent `history`.
+  Canonical `native_command_history` proves exactly two successful read-only
+  query rows and no mutation/time advance. The helper correction passes focused
+  normal/optimized `1/1`; offline reclassification is GREEN without a CK3
+  restart. Report/reclassification SHA-256 values are
+  `F4676762...E7CD` / `D8F43EAB...24C9`.
+- This closes the strategic-power observation provider as a production-live
+  primitive, but campaign dominance still needs a policy-level certificate.
+  Owner-authored budget and same-frame white-peace comparison are also absent.
+  `GEN-034` remains unresolved and T1 remains 90%.
+- Current round R471 is terminated, old round R470 is terminated, and CK3=0.
+  T0 P1 remains 6/9 and P2 remains `LOCKED`.

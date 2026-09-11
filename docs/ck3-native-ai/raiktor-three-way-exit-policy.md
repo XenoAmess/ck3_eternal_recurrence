@@ -503,3 +503,26 @@ tests), but the end-to-end capability is not ready. R470 issued one read-only
 query, then stopped without retry, time advance, or mutation. Campaign dominance,
 owner-authored budget, same-frame white-peace comparison, recommendation,
 action readiness, automatic surrender, and `GEN-034` therefore remain false.
+
+## 2026-09-12 R471 active-war strategic-power observation
+
+R471 closes the missing live observation primitive for the current opponent.
+Two official MCP queries on the same paused snapshot returned identical native
+payloads: player `29829` power `13075500000`, opponent `28551` total power
+`16770900000`, and native ratio `128262/100000` (opponent 1.28262 times the
+player). The target source is `active_war_primary_opponent`, all native
+readiness bits are true, and the only two new native-history rows are the two
+successful read-only queries.
+
+The original report's RED is an explained harness audit error: it read
+`history`, while the public snapshot field is `native_command_history`. The
+corrected offline reclassification is GREEN and preserves the original report;
+no query was replayed and no CK3 process was restarted. Report/reclassification
+SHA-256 values are `F4676762...E7CD` and `D8F43EAB...24C9`.
+
+This promotes only the current-opponent strategic-power provider to
+`production-live primitive`. A single ratio is an input to campaign dominance,
+not the campaign-dominance certificate itself. Owner-authored budget and
+same-frame white-peace comparison also remain absent. Recommendation,
+decision/action readiness, automatic surrender, and `GEN-034` remain false;
+T1 remains 90%.

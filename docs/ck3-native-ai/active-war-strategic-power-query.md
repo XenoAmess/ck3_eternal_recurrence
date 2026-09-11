@@ -1,6 +1,6 @@
 # Active-war strategic-power query
 
-Status: `native-fix static-ready; live recheck pending`; exact build: CK3 `1.19.0.6`, executable SHA-256
+Status: `production-live primitive; campaign-policy integration pending`; exact build: CK3 `1.19.0.6`, executable SHA-256
 `2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86`.
 
 ## Problem and reuse decision
@@ -125,3 +125,40 @@ The native correction is committed and pushed as
 profile update is `0d7ed41bc90ce2afdc4cd81d6d31beb2c759a38a`; it pins the
 new native sources, ABI ledger, candidate DLL, and keeps native/runtime
 certification false until R471.
+
+## R471 production-live closure
+
+R471 loaded the same immutable R459 pre-surrender checkpoint with the corrected
+DLL and returned the current active-war primary opponent twice through the
+official MCP surface on one unchanged paused frame. Both calls reported
+`status=available`, query sequences `1` and `2`, snapshot `native:3`, public
+revision `4`, native revision `3`, and date `53183856`. The normalized payloads
+are identical.
+
+The observed player CharacterID `29829` has strategic power
+`13075500000`; opponent CharacterID `28551` has base/pre-adjustment power
+`15460500000`, target adjustment `1310400000`, and total power
+`16770900000`. Native ratio `128262` at scale `100000` means the opponent is
+1.28262 times the player's measured power. The result classifies the target as
+`active_war_primary_opponent`; every native readiness bit is true.
+
+The original report remains RED because the runner audited nonexistent
+`history` fields instead of the public snapshot's `native_command_history`.
+The underlying history contains exactly the two successful query rows and no
+time-advance or mutation command. The minimal harness correction now reads the
+canonical field and checks both command literals and `ok=true`; its focused
+normal and optimized tests each pass `1/1`. The original report is
+`Z:\ck3_mod_rewrite\_runtime\g2-r471-active-war-power-fix-20260912\report.json`
+(SHA-256
+`F467676201497A75C08ED5F6C72AFE64618337C73EFD2BA816B981470CE1E7CD`).
+The offline reclassification sidecar is `reclassification.json` beside it
+(SHA-256
+`D8F43EABC2A38F451FCAB1FE8DAEEB157EF8C62439B904DF96E8AFA301E924C9`)
+and is GREEN. It replays no query and starts no CK3 process.
+
+The source checkpoint and driver state remain byte-identical, cleanup is
+GREEN, current round R471 is terminated, old round R470 is terminated, and the
+CK3 process inventory is zero. This closes the read-only active-war strategic
+power observation as a production-live primitive. It does not by itself prove
+campaign dominance or choose an exit: the policy must consume the observation
+alongside an owner-authored budget and a same-frame white-peace comparison.
