@@ -60,6 +60,7 @@ REPORT_SCHEMA = "xar.ck3.g2_source_specific_war_loss_live_adapter_run.v1"
 PREFLIGHT_STATUS = "READY_TO_RUN_G2_SOURCE_SPECIFIC_LIFECYCLE"
 STARTUP_PROFILE_ASSETS_SCHEMA = "xar.ck3.startup_profile_assets.v1"
 TARGET_EVENT = "bookmark.1071.a"
+CHANCELLOR_TASK_1004_OPTION = "可怕的误会"
 PIPE_PREFIX = r"\\.\pipe\xar_ck3_g2_source_"
 EXPECTED_LIVE_WAR_ID = 50_331_699
 EXPECTED_GAME_VERSION = "1.19.0.6"
@@ -185,6 +186,26 @@ def _find_target_option(acceptance: Any, image: Any) -> tuple[int, int] | None:
         ),
     )
     return int(selected[1][0]), int(selected[1][1])
+
+
+def _find_chancellor_task_1004_option(
+    acceptance: Any, image: Any, visible_text: str
+) -> tuple[int, int] | None:
+    """Locate the sole option only on the observed foreign-affairs letter."""
+
+    normalized = visible_text.replace(" ", "")
+    if not all(
+        token in normalized
+        for token in ("掌玺大臣", "外交行为", CHANCELLOR_TASK_1004_OPTION)
+    ):
+        return None
+    option = acceptance.find_ocr_text(
+        image,
+        CHANCELLOR_TASK_1004_OPTION,
+        acceptance.EVENT_OPTIONS_FULL_REGION,
+        contains=True,
+    )
+    return tuple(option) if option is not None else None
 
 
 def _resolve(path_value: object, *, repo_root: Path) -> Path:
@@ -1244,6 +1265,27 @@ class ConcreteLiveOperations:
                 break
             if source_ui.TARGET_TITLE in joined:
                 raise LiveAdapterError("bookmark.1071.a option was not located")
+            chancellor_letter_option = _find_chancellor_task_1004_option(
+                acceptance, image, joined
+            )
+            if (
+                chancellor_letter_option is not None
+                and time.monotonic() - last_action > 2
+            ):
+                image.save(self.ui_dir / "chancellor-task-1004-option.png")
+                acceptance.deliberate_click(
+                    chancellor_letter_option,
+                    "chancellor_task.1004 sole option",
+                )
+                handled_other += 1
+                last_action = time.monotonic()
+                last_progress = last_action
+                acceptance.set_speed_five_and_unpause(
+                    self.ui_dir,
+                    f"g2-post-chancellor-letter-{handled_other}",
+                    require_progress=False,
+                )
+                continue
             if (
                 source_ui.SICILY_TITLE in joined
                 and time.monotonic() - last_action > 2
