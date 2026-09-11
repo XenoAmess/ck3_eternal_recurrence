@@ -422,6 +422,15 @@ class Af5OperatorJob:
             }
 
     def start(self) -> dict[str, object]:
+        # Import the desktop automation stack on the process main thread before
+        # the live worker starts.  OpenCV/Numpy can stall indefinitely while
+        # loading native modules for the first time from a background thread.
+        # The worker's imports below then resolve from sys.modules.
+        bound = mapping(self.bound, "validated activation")
+        root = Path(str(bound["repository_root"]))
+        sys.path.insert(0, str(root / "ck3_autonomous_player" / "src"))
+        sys.path.insert(0, str(root / "tools"))
+        importlib.import_module("run_zhongguo_acceptance")
         with self.lock:
             if self.worker is not None or self.state != "READY_NO_LAUNCH":
                 return {**self.status(), "control": "run-af5", "idempotent": True}
