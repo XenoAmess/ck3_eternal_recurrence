@@ -576,4 +576,4 @@ flowchart TD
 
 - R451 唯一 PID `214712` 再次取得六行 source、WarID `33554473`，debugger detach 以两次尝试 GREEN；随后顶部“女儿支付赎金”通知占据 pause OCR 区域，runner 在 bridge 前 RED。没有 diagnostic row、checkpoint、action 或 postwar，source 未变、cleanup GREEN、CK3=0。
 - 最小修复只在 pause click 后 OCR 超时时接受严格 3 秒 HUD 日期冻结；两端不可读或日期变化仍 RED。adapter normal/`-O` 各 `30/30`，R452 no-launch receipt SHA-256 `F89EE9D57A34038B822B74E2B75DD1F2BE9CCF1ED4798B7E636C78C033F02CCF`。
-- R451 分类为 harness RED，mod 产品 RED=false；T1=90%、`GEN-034` unresolved，T0 P1=`6/9`、P2=`LOCKED`。
+- R451 分类为 harness RED，mod 产品 RED=false；open_kaishek 私有依赖同步为 `5175bdaf2031449e1822a5ebdfccc77b23557044`。T1=90%、`GEN-034` unresolved，T0 P1=`6/9`、P2=`LOCKED`。
