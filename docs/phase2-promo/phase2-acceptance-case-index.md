@@ -57,12 +57,12 @@ definition/场景与 footage 都不能制造 P1 歧义或把 P1 判 RED。它们
 记录；确有真实 encountered RED 时仍按 SOP 闭环，但不得借此扩张 P1 blocker。历史“四项总门”及其剩余项描述自本节起
 `POLICY_SUPERSEDED`。显式 legacy coverage 命令可为自身诊断失败返回 RED；该结果不回写独立 P1 gate。
 
-Stage 10 当前为 `STATIC_READY / LIVE_PENDING`：R467 的 `no_bounded_ai_direct_manager` 已结合当前生产调用链确认为入口可达性 RED。修复后，玩家经理的真实 B1 公示幂等调度 `zg361mg.90`，该隐藏事件只把 ROOT 重置为直属上级并以独立 evaluation cycle 打开玩家 F/AK；Stage10 与 opener 都拒绝 AI subject。case kernel / manager / central 定向双模式测试分别为 `12/12`、`53/53`、`45/45` GREEN，本地静态解析 GREEN。下一轮 R481 只验证一次真实 `.120` 与 F-case owner/subject/cycle/terminal；尚无 live artifact，不能把该状态计入 P1。合同见
+Stage 10 当前为 `STATIC_READY / LIVE_PENDING`：R467 的 `no_bounded_ai_direct_manager` 已结合当前生产调用链确认为入口可达性 RED。修复后，玩家经理的真实 B1 公示幂等调度 `zg361mg.90`，该隐藏事件只把 ROOT 重置为直属上级并以独立 evaluation cycle 打开玩家 F/AK；Stage10 与 opener 都拒绝 AI subject。case kernel / manager / central 定向双模式测试分别为 `12/12`、`53/53`、`45/45` GREEN，本地静态解析 GREEN。R482 在 action 前因输入内部仍含五玩家记录而 native-readiness RED；它没有执行 B1 或 `.120`，不能改变产品修复结论。合同见
 [`r480-stage10-player-publication-reachability-fix-2026-09-12.md`](r480-stage10-player-publication-reachability-fix-2026-09-12.md)。
 受管 action/operator 分别以 normal/`-O` 各 `5/5`、`4/4` 聚焦测试锁定玩家经理 campaign-root、真实 review-now、
 30 日绝对截止、双 checkpoint 归档和无 retry 控制；它不改变 Stage 10 的 `LIVE_PENDING` 状态。Stage 10 activation 现必须消费
-`zg361_stage10_player_publication_source_v2`，以 SAV0101 离线拓扑、产品树及 checkpoint 哈希排除明显错误输入；实机启动后
-仍由 campaign-root MCP 权威确认。旧 `.390` selector-positive 收据和对应 open_kaishek 记录均为历史合同，不再用于现行启动。
+`zg361_stage10_player_publication_source_v3`，除 SAV0101、离线拓扑、产品树及 checkpoint 哈希外，还要求单玩家记录和
+hash-bound 的 MCP 原生保存/live campaign-root provenance。旧 `.390` selector-positive 与 v2 收据均为历史合同，不再用于现行启动。
 公共 Operator MCP 1.1 adapter 无生产代码变化；目标自有 activation 语义在本包提交后另行同步 T2。
 
 R326 的当前 source receipt 是

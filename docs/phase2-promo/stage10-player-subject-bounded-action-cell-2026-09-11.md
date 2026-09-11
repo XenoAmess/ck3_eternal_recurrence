@@ -2,7 +2,7 @@
 
 ## 现行状态
 
-当前为 **`static-ready / live pending`**。R480 后 P1 为 **`8/9 = 88.9%`**，唯一待验收项是玩家可见的
+当前为 **`static-ready / live pending`**。R482 后 P1 为 **`8/9 = 88.9%`**，唯一待验收项是玩家可见的
 `zg361mg.120`；P2 最终宣传视频继续 `LOCKED`。本页早期记载的“从 `.390` 选择 AI manager 再切换玩家”路线已被
 R467 的实机 RED 与 `58e8cc9` 的生产修复取代，不能再用于启动准入。
 
@@ -34,11 +34,14 @@ AI 上级参加过 B1。Stage10 与公共 opener 都拒绝 AI subject。
 
 ## 启动前 source admission
 
-受管 operator 只接受 `zg361_stage10_player_publication_source_v2`。收据必须绑定：
+受管 operator 只接受 `zg361_stage10_player_publication_source_v3`。收据必须绑定：
 
 - `SAV0101`、CK3 `1.19.0.6`、产品树 SHA-256，以及 checkpoint 的绝对路径、大小和 SHA-256；
+- 离线玩家数必须为 `1`，唯一 `played_character` 和 `currently_played_characters` 都必须精确绑定目标 manager；
 - 离线读到的玩家 manager、不同的直属上级、至少一名直属有地封臣、公爵及以上和 `celestial_government`；
-- `offline_topology_observed=true`，且 fixture、console、selection 均未使用。
+- 一份 hash-verified 的 `zg361_stage10_player_source_capture_v1` 实机证明，确认同一 checkpoint 由 MCP 原生保存，且
+  source 帧 paused/map-ready、玩家/上级/爵位/政府均与离线收据一致；
+- `offline_topology_observed=true`、`offline_single_player_observed=true`，且 fixture、console、selection 均未使用。
 
 离线字段只负责避免把明显不合格的存档送进 CK3；运行后的 campaign-root MCP 才是权威准入，任何不一致都会在首次保存或
 游戏输入前 RED。operator 复用 AF5 的 frozen-input admission、唯一 CK3 生命周期与 managed cleanup，只暴露
@@ -46,20 +49,21 @@ AI 上级参加过 B1。Stage10 与公共 opener 都拒绝 AI subject。
 
 ## 当前候选源与通用资产边界
 
-当前候选是用户存档 `autosave.ck3`：`112339684` bytes，SHA-256
+R481/R482 已淘汰原用户存档 `autosave.ck3`：`112339684` bytes，SHA-256
 `80030146765A960EABAA1E38E90FF88CDEB8FBBBB2442E30E695FDFBFD64687D`。离线解析显示玩家 `37884`、直属上级
-`61334`、直属有地封臣 `[57858, 16817470, 43060]`，且满足天朝公爵级经理准入。解析使用仓库外 Rakaly CLI 0.8.19：
+`61334`、直属有地封臣 `[57858, 16817470, 43060]`，但进一步检查确认它含五组玩家记录；实机也恢复为
+`played_character=null`，所以不能作为产品来源。解析使用仓库外 Rakaly CLI 0.8.19：
 ZIP SHA-256 `343E2C33869B1EC82E4AB018D1BB6936CC68B63146F99F426939F4D76106710D`，EXE SHA-256
 `E154AF990AAED2C2F44284946772188C9749AD3F6B641B41F6C23456A6F1633D`。
 
-Rakaly 是通用 save melt 工具，campaign-root 与 manager-governance 是现有通用只读 MCP；本包没有新增固定机器路径、账号或
-轮次的查询接口。一次性工作只限于为本次 activation 组装 file record，原因是候选存档属于本机运行输入；它在本次有界运行
-cleanup 时结束，不迁入产品代码。任何机器都可用相同 receipt schema 和自身绝对路径重建同一 SHA 绑定。
+R482 的详情和 v3 admission 见
+[`r481-r482-stage10-multiplayer-source-red-2026-09-12.md`](r481-r482-stage10-multiplayer-source-red-2026-09-12.md)。
+下一份 source 必须从已 live-admitted 的单玩家 lineage 由 MCP 原生保存；离线扫描逻辑先迁为通用、路径无关工具。
 
 ## 聚焦验证
 
 - action cell：normal / optimized 各 `5/5` GREEN；覆盖成功、独立玩家拒绝、非天朝拒绝、错误 terminal 和 provider 未闭合。
-- operator：normal / optimized 各 `4/4` GREEN；覆盖目标角色透传、双 checkpoint 归档、拓扑/树/checkpoint 绑定和归档失败保留产品 GREEN。
+- operator：normal / optimized 各 `4/4` GREEN；覆盖目标角色透传、双 checkpoint 归档、单玩家/live provenance/拓扑/树/checkpoint 绑定和归档失败保留产品 GREEN。
 - 两个实现与两个测试通过 `py_compile`；`git diff --check` GREEN。
 
 本包没有为这一小改动运行全量测试或启动 CK3。公共 Operator MCP 1.1 的 control、schema、DLL 和传输协议没有变化；目标自有

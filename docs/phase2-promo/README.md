@@ -28,7 +28,7 @@ paused candidate 的 manifest/seed 绑定并判定上述九项，不再依次跑
 但不能扩大 P1 blocker；因此 P1 判定没有“还差一个历史 cell”之类的隐含口径。显式 legacy 诊断命令本身仍可因其
 coverage 失败返回 RED，但该诊断 RED 不回写、不改变独立的 P1 九项判定。
 
-截至 2026-09-12 R480 后的机器化归档，现行候选 P1 为 **`8/9 = 88.9%`**：B1、AF5、Central stage 9、Central stage 11、代表性终态 cold restore、完整 gameplay
+截至 2026-09-12 R482 后的机器化归档，现行候选 P1 为 **`8/9 = 88.9%`**：B1、AF5、Central stage 9、Central stage 11、代表性终态 cold restore、完整 gameplay
 时间窗 error scan、managed cleanup 与候选 L0 已 READY；仅 stage 10 `zg361mg.120` 仍 PENDING。Stage 11 与 cold restore 的 exact-build 证据、两 PID 生命周期、process-local generation 合同和 cleanup RED 修复见
 [`r476-r480-stage11-and-cold-restore-2026-09-12.md`](r476-r480-stage11-and-cold-restore-2026-09-12.md)。权威中间账本为
 `Z:\ck3_mod_rewrite\_runtime\p1-critical-path-assembler\pending-assembly-status.json`。这只是九项门禁的完成比例，不换算为
@@ -41,10 +41,11 @@ R434/R439 的零游戏日 selector 只排除了 R432/R159 作为 B3 focused 路�
 [`r434-r439-bounded-source-checks-and-stage10-route-correction-2026-09-11.md`](r434-r439-bounded-source-checks-and-stage10-route-correction-2026-09-11.md)。P1 仍为 `6/9`。
 
 Stage 10 action/operator 已同步改为真实玩家 B1 公示路线：从非独立的天朝玩家经理存档调用 review-now，在同一 30 游戏日
-绝对截止内等待 `.120`，不再依赖 `.390`、AI manager selector 或玩家切换。activation 的 v2 收据用离线 SAV0101 拓扑和
-checkpoint/product-tree 哈希排除明显错误输入；启动后仍由 exact-build campaign-root MCP 权威确认。action normal/`-O`
+绝对截止内等待 `.120`，不再依赖 `.390`、AI manager selector 或玩家切换。R482 在业务动作前确认旧 v2 receipt 错放了
+内部含五组玩家记录的 `SAV0101`；实机为 `played_character=null`、mailbox 未安装，按 300 秒 readiness 门 RED 后立即清理，
+没有重跑。v3 receipt 现同时要求离线单玩家结构及 hash-bound 的 MCP 原生保存/live campaign-root 证明。action normal/`-O`
 各 `5/5`、operator 各 `4/4` GREEN，状态仍为 `static-ready / live pending`，P1 为 `8/9`。公共 Operator MCP 1.1 不变，
-目标自有 receipt 语义需在本次根仓提交后同步 open_kaishek。完整合同与当前候选源见
+目标自有 receipt 语义需在本次根仓提交后同步 open_kaishek。完整合同与 R482 证据见
 [`stage10-player-subject-bounded-action-cell-2026-09-11.md`](stage10-player-subject-bounded-action-cell-2026-09-11.md)。
 
 R466/R467 随后从距 `.390` 仅 2 游戏日的 production 存档执行了一次有界资格尝试。R467 在真实 `.390` 帧返回

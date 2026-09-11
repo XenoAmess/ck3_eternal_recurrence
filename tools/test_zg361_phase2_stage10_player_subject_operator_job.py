@@ -128,16 +128,53 @@ class Stage10PlayerSubjectOperatorTests(unittest.TestCase):
             checkpoint = root / "source.ck3"
             checkpoint.write_bytes(b"source")
             receipt_path = root / "source.json"
+            live_path = root / "live-source.json"
+            live = {
+                "schema_version": 1,
+                "kind": operator.LIVE_SOURCE_KIND,
+                "result": "GREEN",
+                "production_live": True,
+                "mcp_native_save": True,
+                "fixture_used": False,
+                "console_used": False,
+                "product_tree_sha256": "B" * 64,
+                "target_checkpoint": operator.base.file_record(checkpoint),
+                "target_binding": {
+                    "player_character_id": 200,
+                    "paused": True,
+                    "map_ready": True,
+                },
+                "target_campaign_root": {
+                    "status": "available",
+                    "campaign_root_context_ready": True,
+                    "player_character_id": 200,
+                    "immediate_liege_character_id": 100,
+                    "independent": False,
+                    "primary_title": {"tier_raw": 3},
+                    "government": {
+                        "flags": ["government_is_celestial"],
+                    },
+                },
+            }
+            operator.base.write_object(live_path, live)
             receipt = {
                 "schema_version": 1,
                 "kind": operator.SOURCE_RECEIPT_KIND,
                 "result": "GREEN",
                 "offline_topology_observed": True,
+                "offline_single_player_observed": True,
                 "fixture_used": False,
                 "console_used": False,
                 "selection_attempted": False,
                 "source_container_header": "SAV0101",
                 "game_version": "1.19.0.6",
+                "offline_player_state": {
+                    "meta_number_of_players": 1,
+                    "played_character_records": [
+                        {"character_id": 200, "player_id": 1}
+                    ],
+                    "currently_played_character_ids": [200],
+                },
                 "offline_topology": {
                     "player_manager_character_id": 200,
                     "immediate_liege_character_id": 100,
@@ -147,6 +184,7 @@ class Stage10PlayerSubjectOperatorTests(unittest.TestCase):
                 },
                 "product_tree_sha256": "B" * 64,
                 "checkpoint": operator.base.file_record(checkpoint),
+                "live_source_provenance": operator.base.file_record(live_path),
             }
             operator.base.write_object(receipt_path, receipt)
             bound = {
@@ -164,6 +202,16 @@ class Stage10PlayerSubjectOperatorTests(unittest.TestCase):
             self.assertEqual(result["owner_character_id"], 100)
 
             receipt["offline_topology"]["immediate_liege_character_id"] = 200
+            operator.base.write_object(receipt_path, receipt)
+            with self.assertRaisesRegex(
+                operator.base.Af5JobError, "matching player-publication source"
+            ):
+                operator._validate_source_receipt(
+                    operator.base.file_record(receipt_path), bound
+                )
+
+            receipt["offline_topology"]["immediate_liege_character_id"] = 100
+            receipt["offline_player_state"]["meta_number_of_players"] = 5
             operator.base.write_object(receipt_path, receipt)
             with self.assertRaisesRegex(
                 operator.base.Af5JobError, "matching player-publication source"

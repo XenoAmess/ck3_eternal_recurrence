@@ -22,7 +22,8 @@ import zg361_phase2_af5_operator_job as base
 
 CONTROLS = ["status", "run-stage10", "cleanup"]
 JOB_ROLE = "stage10-player-subject"
-SOURCE_RECEIPT_KIND = "zg361_stage10_player_publication_source_v2"
+SOURCE_RECEIPT_KIND = "zg361_stage10_player_publication_source_v3"
+LIVE_SOURCE_KIND = "zg361_stage10_player_source_capture_v1"
 
 
 def _validate_source_receipt(
@@ -34,6 +35,9 @@ def _validate_source_receipt(
     bound_checkpoint = Path(str(bound["checkpoint"])).resolve()
     expected = base.mapping(bound.get("expected_hashes"), "expected hashes")
     topology = base.mapping(receipt.get("offline_topology"), "source topology")
+    player_state = base.mapping(
+        receipt.get("offline_player_state"), "source player state"
+    )
     owner = base.positive_int(
         topology.get("immediate_liege_character_id"), "source owner"
     )
@@ -42,17 +46,44 @@ def _validate_source_receipt(
     )
     direct_subjects = topology.get("direct_landed_vassal_character_ids")
     player_tier = topology.get("player_primary_title_tier")
+    played_records = player_state.get("played_character_records")
+    current_players = player_state.get("currently_played_character_ids")
+    live_path = base.checked_file(
+        receipt.get("live_source_provenance"), "live source provenance"
+    )
+    live = base.read_object(live_path)
+    live_checkpoint = base.mapping(
+        live.get("target_checkpoint"), "live target checkpoint"
+    )
+    live_campaign = base.mapping(
+        live.get("target_campaign_root"), "live target campaign root"
+    )
+    live_binding = base.mapping(
+        live.get("target_binding"), "live target binding"
+    )
+    live_title = base.mapping(
+        live_campaign.get("primary_title"), "live target primary title"
+    )
+    live_government = base.mapping(
+        live_campaign.get("government"), "live target government"
+    )
+    live_flags = live_government.get("flags")
     if not (
         receipt.get("schema_version") == 1
         and receipt.get("kind") == SOURCE_RECEIPT_KIND
         and receipt.get("result") == "GREEN"
         and receipt.get("offline_topology_observed") is True
+        and receipt.get("offline_single_player_observed") is True
         and receipt.get("fixture_used") is False
         and receipt.get("console_used") is False
         and receipt.get("selection_attempted") is False
         and manager != owner
         and receipt.get("source_container_header") == "SAV0101"
         and receipt.get("game_version") == "1.19.0.6"
+        and player_state.get("meta_number_of_players") == 1
+        and played_records
+        == [{"character_id": manager, "player_id": 1}]
+        and current_players == [manager]
         and isinstance(direct_subjects, list)
         and len(direct_subjects) >= 1
         and all(
@@ -71,6 +102,33 @@ def _validate_source_receipt(
         and checkpoint.get("bytes") == bound_checkpoint.stat().st_size
         and str(checkpoint.get("sha256", "")).upper()
         == str(expected["checkpoint_sha256"]).upper()
+        and live.get("schema_version") == 1
+        and live.get("kind") == LIVE_SOURCE_KIND
+        and live.get("result") == "GREEN"
+        and live.get("production_live") is True
+        and live.get("mcp_native_save") is True
+        and live.get("fixture_used") is False
+        and live.get("console_used") is False
+        and str(live.get("product_tree_sha256", "")).upper()
+        == str(expected["product_tree_sha256"]).upper()
+        and isinstance(live_checkpoint.get("path"), str)
+        and Path(str(live_checkpoint["path"])).resolve() == bound_checkpoint
+        and live_checkpoint.get("bytes") == bound_checkpoint.stat().st_size
+        and str(live_checkpoint.get("sha256", "")).upper()
+        == str(expected["checkpoint_sha256"]).upper()
+        and live_binding.get("player_character_id") == manager
+        and live_binding.get("paused") is True
+        and live_binding.get("map_ready") is True
+        and live_campaign.get("status") == "available"
+        and live_campaign.get("campaign_root_context_ready") is True
+        and live_campaign.get("player_character_id") == manager
+        and live_campaign.get("immediate_liege_character_id") == owner
+        and live_campaign.get("independent") is False
+        and isinstance(live_title.get("tier_raw"), int)
+        and not isinstance(live_title.get("tier_raw"), bool)
+        and live_title.get("tier_raw") >= 3
+        and isinstance(live_flags, list)
+        and "government_is_celestial" in live_flags
     ):
         raise base.Af5JobError(
             "Stage 10 activation lacks a matching player-publication source receipt"
@@ -78,6 +136,7 @@ def _validate_source_receipt(
     return {
         "path": receipt_path,
         "receipt": receipt,
+        "live_source_provenance": live_path,
         "player_manager_character_id": manager,
         "owner_character_id": owner,
     }
