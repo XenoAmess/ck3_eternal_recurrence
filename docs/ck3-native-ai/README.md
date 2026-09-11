@@ -509,3 +509,21 @@ flowchart TD
   兼容提交为 `2a558f6317551ba5f04f7d95009071d7f96bc90c`。
 - 本轮未获得 `.1071` source capture，`GEN-034`、comparison、decision/action readiness 均不变，T1 保持 90%。
   下一步只从该 admitted successor 启动一轮有界 R446，不重放 1066–1068 前缀。
+
+## 2026-09-11：GEN-034 R446 自然目标到达与点击验收 RED
+
+- R446 以唯一 PID `207976` 从 R445 successor 自然到达 `1070-09-02` 的 `bookmark.1071`；`.1071.a`
+  在 `(931,934)` 可见，observer 已 attach、断点已安装、arm SHA 精确匹配。之前“最近 lineage 是否还能命中目标”的不确定性已经关闭。
+- adapter 发出一次点击后没有验证选项消失，observer 最终捕获 `0` 次 source execution；原始断点字节恢复，detach 失败，外层 owner
+  完成回收。该轮无法区分 UI click 未接受与 native no-hit，故保持 harness RED；report/capture SHA-256 分别为
+  `536C590B10E67DFC0B362D418FFC534636FD2CFF2CC837C62AC1C78FFF2600FD` /
+  `808DE68DD45D965E21BAC24F7D69D848B03C982E0295BC24F272FDA75433E453`，CK3=0。
+- `20:23:35` 的原版日志保留 `bookmark.1071:immediate:1477` tooltip/description scope RED；它早于 `20:23:40` 的点击，
+  不能证明 option mutation 已执行或失败。下一 action-bound run 继续核对，不吞掉该诊断。
+- `85b7c8b49802a981f78e2e285f515f12e52a5812` 仅为目标选项增加“最多三次点击并要求同一识别器确认消失”；
+  保持可见则 RED。normal/`-O` 各 `27/27`，adapter/manifest SHA-256 为
+  `61126B773151B6F0A37966360BF6BFCD09989659737CA05572BB028E9AB00F5C` /
+  `13541DE0C911C10BEE89467586F1437BB09EDE502748D3167C3B2FBD20DBBF06`。
+- R446 最近 pre-target save SHA-256 `523D365EC6E566EE7432C99B04AD682C99BFCA92D26FDA7EDE340AACCCA38709`，
+  无 `raiktor`；R447 no-launch admission SHA-256
+  `BCF0467F59E1BEEFD02B2868BF4F159980E595137F58790A4A93860097475112`。T1 仍为 90%，下一步只跑这一近边界续轮。

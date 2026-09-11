@@ -918,3 +918,19 @@ WarID `50331699` / `raiktor_claim_cb` 的 primary-attacker surrender 只有 type
   final no-launch admission SHA-256 `8A3C4FFA6E3C3A68738B6B06184F053C855B53196C896111B405A92971CBBE0F`。
 - **关闭条件**：一轮有界 R446 仍须自然命中 `.1071`、先 arm 后 click，并完成同 PID source/action/postwar lifecycle；
   未满足前 `GEN-034` 保持 unresolved，T1 保持 90%。
+
+## 2026-09-11：GEN-034 R446 target-click acceptance RED
+
+- **到达**：R446 自然到达 `1070-09-02 bookmark.1071`；`.1071.a` 点位 `(931,934)`，observer ready、断点安装、
+  action-arm identity 全部匹配。
+- **失败**：adapter 发出单次点击后没有验证 rendered option 消失；observer 捕获 0 executions，恢复断点字节后 detach 失败。
+  因无 post-click 画面，不能区分 click 未接受与 native no-hit。classification SHA-256
+  `FEDFC309F84F2B7ECB66B52CA99F98D15768360FC90BAD7AFF8F5EE6181E7F59`；cleanup GREEN，CK3=0。
+- **伴随原版 RED**：`bookmark.1071:immediate:1477` 的 tooltip scope 错误发生在点击前五秒；保持记录，不能冒充 option mutation 结果。
+- **修复**：`85b7c8b49802a981f78e2e285f515f12e52a5812` 要求已 arm 的目标选项在最多三次点击内由同一高置信识别器确认消失；
+  否则保持 RED。normal/`-O` 各 `27/27`。
+- **下一输入**：R446 latest save SHA-256
+  `523D365EC6E566EE7432C99B04AD682C99BFCA92D26FDA7EDE340AACCCA38709`、无 `raiktor`；R447 admission SHA-256
+  `BCF0467F59E1BEEFD02B2868BF4F159980E595137F58790A4A93860097475112`。
+- **关闭条件**：R447 必须同时证明目标选项消失、六次 source execution、observer detach 与同 PID continuation；当前
+  source/comparison/decision/action/automatic-surrender 均不 ready，`GEN-034` unresolved，T1=90%。

@@ -554,3 +554,57 @@ No source-specific field, comparison input, decision/action readiness, or
 admitted successor for one bounded continuation. It must still preserve the
 natural `.1071` source, arm before click, and prove the same-PID lifecycle
 before any readiness promotion.
+
+### R446 natural target reached and click-acceptance RED
+
+R446 launched the unique CK3 PID `207976` from the latest R445 successor and
+naturally reached `bookmark.1071` on the rendered date `1070-09-02`. The exact
+`.1071.a` option was visible at `(931,934)`, the source observer was already
+attached, its breakpoint was installed, and the action-arm SHA-256 was the
+expected `B7DC28B0B9EDB0F8A03E5DB2F03AD6CA1E3B649648BAE161B6A487063735B9B8`.
+This closes the previous uncertainty about whether the nearest lineage could
+reach the target event.
+
+The adapter sent one click and then waited for the observer without checking
+that the rendered option disappeared. The observer captured zero source
+executions. It restored the original breakpoint byte, failed
+`DebugActiveProcessStop`, and returned RED with
+`reason=debugger-detach-failed`; the outer owner then reclaimed CK3. Because no
+post-click UI frame was retained, R446 cannot distinguish an unaccepted click
+from a native no-hit. It therefore supplies no source-specific loss or action
+evidence. The report and capture SHA-256 values are
+`536C590B10E67DFC0B362D418FFC534636FD2CFF2CC837C62AC1C78FFF2600FD` and
+`808DE68DD45D965E21BAC24F7D69D848B03C982E0295BC24F272FDA75433E453`.
+The armed screenshot is 5,053,134 bytes, SHA-256
+`EE3803364AC9465161C943E115F253B15F2547C09305F28341A9B4CA453850A6`.
+The compact classification receipt is 4,380 bytes, SHA-256
+`FEDFC309F84F2B7ECB66B52CA99F98D15768360FC90BAD7AFF8F5EE6181E7F59`.
+
+The exact-build error log also retains a stock diagnostic at `20:23:35`:
+`bookmark.1071:immediate` line 1477 evaluated `scope:raiktor` as invalid while
+building a tooltip/description. The option click was sent at `20:23:40`, five
+seconds later. The diagnostic therefore cannot prove that the post-click
+option mutation executed or failed. It remains an explained vanilla tooltip
+RED for the next action-bound run; it is not hidden or rewritten as GREEN.
+Exact `bookmark_events.txt` SHA-256 remains
+`75CF485E379E522D4AAED9EF889FCC411A0D9DFCC28BCFB250ABDCC93A757EFF`.
+
+Commit `85b7c8b49802a981f78e2e285f515f12e52a5812` closes the demonstrated harness
+gap. After arming, the adapter retries only the already high-confidence
+`.1071.a` point, at most three times, and requires the same target recognizer
+to disappear. A visible option after all attempts is RED. This does not change
+generic modal handling, the observer, bridge, game files, or load order.
+Focused normal and optimized tests each pass `27/27`; `py_compile`, BOM, diff,
+and manifest binding are GREEN. The adapter and manifest SHA-256 values are
+`61126B773151B6F0A37966360BF6BFCD09989659737CA05572BB028E9AB00F5C` and
+`13541DE0C911C10BEE89467586F1437BB09EDE502748D3167C3B2FBD20DBBF06`.
+
+R446 cleanup is GREEN and CK3 inventory is empty. Its latest pre-target save is
+64,952,354 bytes, contains no `raiktor` marker, and has SHA-256
+`523D365EC6E566EE7432C99B04AD682C99BFCA92D26FDA7EDE340AACCCA38709`.
+The current adapter admitted that exact input without launching CK3; the R447
+receipt is 20,698 bytes, SHA-256
+`BCF0467F59E1BEEFD02B2868BF4F159980E595137F58790A4A93860097475112`.
+R447 may perform one bounded continuation from this closer boundary. T1
+remains 90%; `GEN-034`, comparison, decision, action, and automatic-surrender
+readiness remain unchanged.
