@@ -14,6 +14,9 @@ sys.path.insert(0, str(ROOT / "tools"))
 sys.path.insert(0, str(ROOT / "ck3_autonomous_player" / "src"))
 
 import zg361_phase2_promotion_source_production_entry as production
+from xar_autoplayer.vanilla_events.records_tgp_japan_yearly import (
+    VANILLA_TGP_JAPAN_YEARLY_OBSERVATIONS,
+)
 from test_zg361_phase2_manager_recovery_interrupts import (
     _context,
     _manager_contract,
@@ -68,6 +71,16 @@ class ManagerRecoveryTgpInterruptTests(unittest.TestCase):
             contract=contract,
         )
         self.assertFalse(drift_checks["authored_options_exact"])
+
+        observations = VANILLA_TGP_JAPAN_YEARLY_OBSERVATIONS[event_key][
+            "exemplars"
+        ]
+        self.assertEqual([row["run"] for row in observations], ["R463", "R465"])
+        live = observations[1]
+        self.assertEqual(live["selection_result"], "GREEN")
+        self.assertEqual(live["selection_postcondition"], "event_instance_advanced")
+        self.assertEqual(live["source_route_result"], "RED")
+        self.assertFalse(live["stage10_source_receipt_emitted"])
 
     def test_military_aid_request_uses_saved_governor_resolution(self) -> None:
         event_key = "tgp_interaction_event.0010"

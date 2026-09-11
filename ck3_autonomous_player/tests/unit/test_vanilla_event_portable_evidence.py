@@ -80,15 +80,15 @@ def test_checked_in_bundle_is_complete_and_strictly_self_validating() -> None:
     manifest = _manifest()
 
     assert result["status"] == "available"
-    assert result["validated_evidence"] == 280
+    assert result["validated_evidence"] == 281
     assert result["statistics"] == {
-        "evidence": 280,
+        "evidence": 281,
         "generated_definition_references": 184,
         "lexical_caller_candidate_references": 522,
         "manually_reviewed_analysis_source_references": 276,
-        "observation_artifacts": 88,
-        "observation_artifact_references": 104,
-        "references": 1086,
+        "observation_artifacts": 89,
+        "observation_artifact_references": 105,
+        "references": 1087,
         "source_definitions": 192,
     }
     assert result["manifest_sha256"] == hashlib.sha256(
@@ -97,7 +97,7 @@ def test_checked_in_bundle_is_complete_and_strictly_self_validating() -> None:
     Draft202012Validator(
         _schema("vanilla-event-portable-evidence-manifest-v1.schema.json")
     ).validate(manifest)
-    assert len(list((BUNDLE / "blobs").glob("*.gz"))) == 280
+    assert len(list((BUNDLE / "blobs").glob("*.gz"))) == 281
 
 
 def test_wheel_package_data_includes_source_index_and_evidence_bundle() -> None:
@@ -157,7 +157,7 @@ def test_manifest_preserves_honest_source_provenance_for_all_indexed_events() ->
 
     assert portable_event_keys_v1() == frozenset(source_index["events"])
     assert provenance_counts == {
-        "captured-observation-artifact": 104,
+        "captured-observation-artifact": 105,
         "generated-definition-index": 184,
         "lexical-caller-candidate-not-proven-runtime-caller": 522,
         "manually-reviewed-analysis-source": 276,
@@ -320,4 +320,4 @@ def test_offline_check_ignores_unavailable_external_roots() -> None:
     assert completed.returncode == 0, completed.stderr
     result = json.loads(completed.stdout)
     assert result["status"] == "available"
-    assert result["validated_evidence"] == 280
+    assert result["validated_evidence"] == 281

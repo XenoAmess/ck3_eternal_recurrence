@@ -90,7 +90,7 @@ R390 在 `date_raw=53589168` 暂停于 instance `1089`，原始 RED 原样保留
 
 CK3 `1.19.0.6` exact-build 定义位于 `events/lifestyles/statecraft_lifestyle/diplomacy_majesty_events.txt:968`。`.4033` 只由 `.4030` 的 option B 直接触发；上游是每年四次的 diplomacy lifestyle pulse 及概率事件池，不是 daily pulse。`.4033` 自身只检查 `thinker` 仍存活，没有独立随机分支或后续事件。唯一 authored option 1/native `0` 给接收者五年 `+1 diplomacy/+1 martial` modifier、对 thinker 的 `+25` opinion，并在需要时建立 potential-friend 关系；没有资源、压力、囚禁、受伤、死亡、战争或头衔代价。因此最小安全合同选择该唯一终止路线，同时仍要求 exact saved-scope shape、玩家/第三方关系、选项投影及提交前 revision 重绑定全部通过。
 
-portable evidence bundle 当前为 `280` 个唯一 evidence blob、`1086` 条 canonical 引用，其中 generated definition reference `184` 条、lexical caller candidate `522` 条、人工审阅 source `276` 条、observation artifact reference `104` 条；共 `88` 份唯一 observation artifact。manifest SHA-256 为 `C0BD96E2F4798D928940F6957B61E0A77210178651EB48AA5C654B37CD15C588`。共享合同是 Python-only 数据，既有 continuation 会重新加载 canonical registry，可在保留同一 CK3 PID 的条件下热恢复。
+portable evidence bundle 当前为 `281` 个唯一 evidence blob、`1087` 条 canonical 引用，其中 generated definition reference `184` 条、lexical caller candidate `522` 条、人工审阅 source `276` 条、observation artifact reference `105` 条；共 `89` 份唯一 observation artifact。manifest SHA-256 为 `B9910108273AB057E4FC246E89FCE303D65C2986C42B8CF33ACC016CEC694D55`。共享合同是 Python-only 数据；R465 的 `.1030` 选择后证据已进入 bundle，后续操作者无需依赖 R465 的机器路径即可只读复核。
 
 ### R416 `bp1_yearly.1040` 最小合同
 
@@ -286,3 +286,5 @@ R463 在 `date_raw=53219640`、instance `343` 原位冻结 `tgp_japan_yearly_eve
 exact-build 定义位于 `events/dlc/tgp/tgp_japan_yearly_events_ariana.txt:926`，专用年度池在 `common/on_action/dlc/tgp/tgp_japan_yearly_on_actions.txt:24`，上层年度池在 `common/on_action/yearly_on_actions.txt:2558`；三文件 SHA-256 与完整语义记录在 [`../phase2-promo/r463-tgp-japan-yearly-1030-red-2026-09-12.md`](../phase2-promo/r463-tgp-japan-yearly-1030-red-2026-09-12.md)。安全合同选择 authored1/native0 的五年健康路线；该判断只依赖选项的显式终端效果，不扩展通用宗教观测或策略。
 
 该记录把通用目录增加到 184 个事件，并把 source index 增加到 184 个唯一定义与 522 条词法 caller candidates；portable evidence 离线 bundle 为 280 个 evidence / 1,086 个 references。普通与 optimized Python 的单项 manager-recovery 合同测试各 `1/1` GREEN。补丁为 Python 数据合同，当前轮次 R463 后续只允许原位热恢复。
+
+R463 随后在热恢复前意外退出；R465 从其不可变 partial checkpoint 冷启动，使用相同 exact-build、产品树与 DLL。合同选择 authored1/native0 后，native postcondition 证明 instance `343` 已消失：snapshot `native:3 -> native:4`、revision `4 -> 5`，因此 `.1030` 合同从 static-ready 提升为 `production-live primitive`。同一 R465 在固定剩余 10 日 source 窗口内没有遇到 Stage 10 `.390`，未签发 source receipt；这只淘汰该 source，不提升 P1，也不删除 R463 的选择前 RED。R465 RED 已作为第 105 条 observation reference 收入 portable bundle。

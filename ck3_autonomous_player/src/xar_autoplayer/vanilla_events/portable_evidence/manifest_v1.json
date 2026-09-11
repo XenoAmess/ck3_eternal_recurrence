@@ -7322,6 +7322,28 @@
       "sha256": "66538a8fe8c894a52d8ec89b2fc4a45b85b8d1b9464802263e45d582ce1ca42b"
     },
     {
+      "blob_bytes": 9013,
+      "blob_path": "blobs/665cc017aa69346c352d3ebc36a6a1f49721f763eade2348bdefc9deefca814f.gz",
+      "blob_sha256": "6c5132267720c5a8dade9a0d339f52dc996815f7774815b5483e13bf4ab69993",
+      "bytes": 92865,
+      "evidence_id": "665cc017aa69346c352d3ebc36a6a1f49721f763eade2348bdefc9deefca814f",
+      "kind": "observation_artifact",
+      "media_type": "application/json",
+      "references": [
+        {
+          "caller_candidate_resolution": null,
+          "event_definition_key": "tgp_japan_yearly_events.1030",
+          "logical_path": "_runtime/p1-stage10-r463-partial-r464-r465-20260912/live-artifacts/terminal-stages-red.json",
+          "origin": "runtime",
+          "provenance": "captured-observation-artifact",
+          "role": "artifact",
+          "source_column": null,
+          "source_line": null
+        }
+      ],
+      "sha256": "665cc017aa69346c352d3ebc36a6a1f49721f763eade2348bdefc9deefca814f"
+    },
+    {
       "blob_bytes": 2961,
       "blob_path": "blobs/68e4ecc075a7d3d91fb2fd46a9a1c0c3fee12d07e018e6e2a01e533013f6c91f.gz",
       "blob_sha256": "f0f3aa19a7649d148a728f7ba75929eea7a94416de2e5fd5fa2a4300a64adf2d",
@@ -14231,13 +14253,13 @@
   "schema": "xar.ck3.vanilla-event-portable-evidence-manifest",
   "schema_version": 1,
   "statistics": {
-    "evidence": 280,
+    "evidence": 281,
     "generated_definition_references": 184,
     "lexical_caller_candidate_references": 522,
     "manually_reviewed_analysis_source_references": 276,
-    "observation_artifact_references": 104,
-    "observation_artifacts": 88,
-    "references": 1086,
+    "observation_artifact_references": 105,
+    "observation_artifacts": 89,
+    "references": 1087,
     "source_definitions": 192
   }
 }
