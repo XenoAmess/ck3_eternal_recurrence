@@ -47,12 +47,12 @@
   `treatment,outcome,portrait`，唯一 native `0` shown/enabled。retry 02 继续在同一 PID / generation 选择 authored
   `1` / native `0`，instance `1093 -> null`、snapshot `native:42 -> native:43`、revision `43 -> 44`，且
   `postcondition_verified=true`。第二轮安全治疗再次随机成功。
-- [paused live RED] R418 retry 02 继续推进到 `date_raw=53915424` 后打开玩家肺痨康复事件 `health.1106`
+- [paused live RED → production-live primitive] R418 retry 02 继续推进到 `date_raw=53915424` 后打开玩家肺痨康复事件 `health.1106`
   instance `1094`。root 与 `sick_character` 都是玩家 `32904`，saved scopes 严格为
   `epidemic:epidemic,disease_type:flag,sick_character:character`；唯一 native `0` shown/enabled，effect indicator
-  显示移除 `consumption`。未知事件门在选择前停止，RED 原样保留。
-- [counter-policy static-ready, live action pending] 新增 `health.1106` 三 scope 精确合同，选择唯一 authored `1` /
-  native `0`。该按钮只确认已经在 `immediate` 中完成的康复；动作仍待同 PID 热恢复验证。
+  显示移除 `consumption`。未知事件门在选择前停止，RED 原样保留。retry 03 在同一 PID / generation 选择唯一
+  authored `1` / native `0`，instance `1094 -> null`、snapshot `native:124 -> native:125`、revision
+  `125 -> 126`，且 `postcondition_verified=true`。该按钮只确认已经在 `immediate` 中完成的康复。
 
 ## 原版状态与入口
 
@@ -332,6 +332,9 @@ flowchart TD
   `health.1106` 的选择前 RED：
   `_runtime/p1-terminal-resume-r418-20260911/live-artifacts/terminal-stages-red-attempt-02.json`，SHA-256
   `7976147C48739863B4FA136CAEB4AEA5665C91477A59FFB3B1C4ECACA5AD54B1`。
+- R418 retry 03 包含 `health.1106` 的选择后置条件以及下一项 `yearly.1030` 的选择前 RED：
+  `_runtime/p1-terminal-resume-r418-20260911/live-artifacts/terminal-stages-red-attempt-03.json`，SHA-256
+  `A814FA6203FC0EC0E1BAA17E2D9DC7C3CA586E3F69B12A0B33CAC30832B89E90`。
 
 R97 下游死亡边界见
 [`promotion-source-checkpoint-choreography-forensics-2026-09-04.md`](../phase2-promo/promotion-source-checkpoint-choreography-forensics-2026-09-04.md)。

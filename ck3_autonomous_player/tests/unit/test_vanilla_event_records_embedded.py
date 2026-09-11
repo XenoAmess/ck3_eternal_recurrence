@@ -1,4 +1,4 @@
-﻿from __future__ import annotations
+from __future__ import annotations
 
 import ast
 import json
@@ -185,7 +185,7 @@ class EmbeddedVanillaTimelineContractsTests(unittest.TestCase):
             sum(key.startswith("zg361") for key in literal_keys), 17
         )
         self.assertEqual(_shared_aggregate_update_count(tree), 1)
-        self.assertEqual(len(DEFAULT_VANILLA_EVENT_TIMELINE_CONTRACTS), 180)
+        self.assertEqual(len(DEFAULT_VANILLA_EVENT_TIMELINE_CONTRACTS), 181)
 
 
 if __name__ == "__main__":

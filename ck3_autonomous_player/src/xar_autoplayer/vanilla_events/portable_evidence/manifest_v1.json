@@ -1380,6 +1380,26 @@
         },
         {
           "caller_candidate_resolution": "external-definition-file",
+          "event_definition_key": "yearly.1030",
+          "logical_path": "common/on_action/yearly_on_actions.txt",
+          "origin": "ck3_game",
+          "provenance": "lexical-caller-candidate-not-proven-runtime-caller",
+          "role": "caller_candidate",
+          "source_column": 9,
+          "source_line": 2946
+        },
+        {
+          "caller_candidate_resolution": null,
+          "event_definition_key": "yearly.1030",
+          "logical_path": "common/on_action/yearly_on_actions.txt",
+          "origin": "ck3_game",
+          "provenance": "manually-reviewed-analysis-source",
+          "role": "analysis_source",
+          "source_column": null,
+          "source_line": null
+        },
+        {
+          "caller_candidate_resolution": "external-definition-file",
           "event_definition_key": "yearly.1040",
           "logical_path": "common/on_action/yearly_on_actions.txt",
           "origin": "ck3_game",
@@ -3390,6 +3410,28 @@
         }
       ],
       "sha256": "49d9f28ece0aff971474a47ce6d71b65e1575fbd23f1d4d22c3b512651d9d10b"
+    },
+    {
+      "blob_bytes": 12489,
+      "blob_path": "blobs/49fea5e7066464140ebaf10421c356df3ced5db1370c11210f658e446dc16440.gz",
+      "blob_sha256": "0e44daf39cae74528df7a87a84eb5fcaa15c9e94dd1ccf1e4932bea872df8081",
+      "bytes": 45519,
+      "evidence_id": "49fea5e7066464140ebaf10421c356df3ced5db1370c11210f658e446dc16440",
+      "kind": "source_definition",
+      "media_type": "application/yaml; charset=utf-8",
+      "references": [
+        {
+          "caller_candidate_resolution": null,
+          "event_definition_key": "yearly.1030",
+          "logical_path": "localization/english/event_localization/yearly_events/yearly_events_2_l_english.yml",
+          "origin": "ck3_game",
+          "provenance": "manually-reviewed-analysis-source",
+          "role": "analysis_source",
+          "source_column": null,
+          "source_line": null
+        }
+      ],
+      "sha256": "49fea5e7066464140ebaf10421c356df3ced5db1370c11210f658e446dc16440"
     },
     {
       "blob_bytes": 76994,
@@ -6896,6 +6938,26 @@
       "references": [
         {
           "caller_candidate_resolution": null,
+          "event_definition_key": "yearly.1030",
+          "logical_path": "events/yearly_events/yearly_events_2.txt",
+          "origin": "ck3_game",
+          "provenance": "generated-definition-index",
+          "role": "event_definition",
+          "source_column": null,
+          "source_line": 2927
+        },
+        {
+          "caller_candidate_resolution": null,
+          "event_definition_key": "yearly.1030",
+          "logical_path": "events/yearly_events/yearly_events_2.txt",
+          "origin": "ck3_game",
+          "provenance": "manually-reviewed-analysis-source",
+          "role": "analysis_source",
+          "source_column": null,
+          "source_line": null
+        },
+        {
+          "caller_candidate_resolution": null,
           "event_definition_key": "yearly.1040",
           "logical_path": "events/yearly_events/yearly_events_2.txt",
           "origin": "ck3_game",
@@ -9600,6 +9662,38 @@
         }
       ],
       "sha256": "a7e2b196d63a57329219ac81fc44eee92f1caaacf8e18e760c606911b068dab2"
+    },
+    {
+      "blob_bytes": 45995,
+      "blob_path": "blobs/a814fa6203fc0ec0e1baa17e2d9dc7c3ca586e3f69b12a0b33cac30832b89e90.gz",
+      "blob_sha256": "e794d36528c0f8baef164ee90fd984e839ef714f9453f7fa601cff4b462f0e14",
+      "bytes": 727366,
+      "evidence_id": "a814fa6203fc0ec0e1baa17e2d9dc7c3ca586e3f69b12a0b33cac30832b89e90",
+      "kind": "observation_artifact",
+      "media_type": "application/json",
+      "references": [
+        {
+          "caller_candidate_resolution": null,
+          "event_definition_key": "health.1106",
+          "logical_path": "_runtime/p1-terminal-resume-r418-20260911/live-artifacts/terminal-stages-red-attempt-03.json",
+          "origin": "runtime",
+          "provenance": "captured-observation-artifact",
+          "role": "artifact",
+          "source_column": null,
+          "source_line": null
+        },
+        {
+          "caller_candidate_resolution": null,
+          "event_definition_key": "yearly.1030",
+          "logical_path": "_runtime/p1-terminal-resume-r418-20260911/live-artifacts/terminal-stages-red-attempt-03.json",
+          "origin": "runtime",
+          "provenance": "captured-observation-artifact",
+          "role": "artifact",
+          "source_column": null,
+          "source_line": null
+        }
+      ],
+      "sha256": "a814fa6203fc0ec0e1baa17e2d9dc7c3ca586e3f69b12a0b33cac30832b89e90"
     },
     {
       "blob_bytes": 14909,
@@ -13154,6 +13248,28 @@
       "sha256": "f646fae510a66a87a01b464140f7206921b141e6f3d3d06ce20570c18c7b9759"
     },
     {
+      "blob_bytes": 14145,
+      "blob_path": "blobs/f6a248c14b923aa4ed33753c766de302d67705dfc2065cbb27a6a4a04ff18631.gz",
+      "blob_sha256": "bffaf5cc3f8b206ce9afc8d80a6faabfae9c5ed572d8d9bebf0bd4e7582b0556",
+      "bytes": 44632,
+      "evidence_id": "f6a248c14b923aa4ed33753c766de302d67705dfc2065cbb27a6a4a04ff18631",
+      "kind": "source_definition",
+      "media_type": "application/yaml; charset=utf-8",
+      "references": [
+        {
+          "caller_candidate_resolution": null,
+          "event_definition_key": "yearly.1030",
+          "logical_path": "localization/simp_chinese/event_localization/yearly_events/yearly_events_2_l_simp_chinese.yml",
+          "origin": "ck3_game",
+          "provenance": "manually-reviewed-analysis-source",
+          "role": "analysis_source",
+          "source_column": null,
+          "source_line": null
+        }
+      ],
+      "sha256": "f6a248c14b923aa4ed33753c766de302d67705dfc2065cbb27a6a4a04ff18631"
+    },
+    {
       "blob_bytes": 1995,
       "blob_path": "blobs/f74447fe01ddb9bc890c757578dba477373167ea0da862bb987d26a61904dfa1.gz",
       "blob_sha256": "a61f36f660b86245bef8cc7188b2a9534e01d3a0af09c7020c25c72a6913a516",
@@ -13599,13 +13715,13 @@
   "schema": "xar.ck3.vanilla-event-portable-evidence-manifest",
   "schema_version": 1,
   "statistics": {
-    "evidence": 264,
-    "generated_definition_references": 180,
-    "lexical_caller_candidate_references": 517,
-    "manually_reviewed_analysis_source_references": 252,
-    "observation_artifact_references": 93,
-    "observation_artifacts": 80,
-    "references": 1042,
-    "source_definitions": 184
+    "evidence": 267,
+    "generated_definition_references": 181,
+    "lexical_caller_candidate_references": 518,
+    "manually_reviewed_analysis_source_references": 256,
+    "observation_artifact_references": 95,
+    "observation_artifacts": 81,
+    "references": 1050,
+    "source_definitions": 186
   }
 }
