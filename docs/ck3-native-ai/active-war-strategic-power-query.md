@@ -119,3 +119,9 @@ and the injector SHA-256 is
 `C4CE2042C2559216E816C29081277E064CD276A0097DB85BD7402DC5C16FE389`.
 No CK3 process was started for this build package. The next evidence step is
 one bounded R471 read-only checkpoint query with this exact DLL.
+
+The native correction is committed and pushed as
+`283904d5438e07c18a49903333eafcaaabb75e80`. The corresponding open_kaishek
+profile update is `0d7ed41bc90ce2afdc4cd81d6d31beb2c759a38a`; it pins the
+new native sources, ABI ledger, candidate DLL, and keeps native/runtime
+certification false until R471.
