@@ -550,3 +550,10 @@ flowchart TD
 - R448 已证自然事件本轮 WarID 为 `33554473`，不是旧 fixture 的 `50331699`。启动前静态检查发现旧 lifecycle 会硬拒绝新 WarID，且 concrete continuation 缺少 outer owner 已传入的 `expected_war_id` 参数；若直接运行，capture GREEN 后必然失败。
 - `5743466d1074af68ff12930bbe299becc12fef8c` 改为从已规范化的 source capture 派生本轮 full-generation WarID，并贯穿 current/termination/postwar；CLI WarID 仅保留为可选相等断言。所有同 PID、active-war、generation、checkpoint 和 postwar 门保持不变。normal/`-O` 各 `53/53` GREEN。
 - T2 同步提交 `5aec42436035e870a63c29ece582d41fc909163a`；公开 MCP/Java/profile、DLL、游戏文件和加载顺序不变。未启动 CK3，当前 R448 已结束、CK3=0；T1 仍 90%，`GEN-034` unresolved。
+
+## 2026-09-11：GEN-034 R449 debugger detach 时序 RED
+
+- R449 唯一 PID `31936` 完成 `.1071.a` 首击接受，并以动态 WarID `33554473` 通过六行名称、node、CArmy、兵力和 regiment 校验；随后仅 `DebugActiveProcessStop` 失败。断点已恢复，outer cleanup GREEN、CK3=0，未启动 bridge 或提交 termination。
+- capture/report/classification SHA-256 为 `E382E079DC7A6124A9961E174A3E802F8E67B0C95403325FB16485FD51A5E178`、`F200F6744242EED27D7ABAF8EA66DBE36ECF7FAEAF0F41E6960DDC4794F3864D`、`CAB2A4A1A8AF07FCB494F5ED52A02B49A05916F37575510A26A634CA00398B2C`。R448 同 seam 曾成功 detach，因此本轮分类为间歇性 debugger release race，产品 RED 为 false。
+- `454f515d8ef55ddf6e3cd5eccfa0a8cfb26e7630` 增加最多 20 次、间隔 25 ms、总 sleep 475 ms 的有限重试，并输出 attempts/last-error；耗尽仍 RED。新 executable SHA-256 `EEE39F858E941E1500DA13FB11906814FA4D70EE42DED894CFDEB03ACEF709B8`，self-test、normal/`-O` 各 `54/54` GREEN。
+- T2 同步为 `36009e7994f1db80f4e100eac7894dd357802b3a`；公开 MCP/Java/profile 不变。T1=90%、`GEN-034` unresolved，T0 P1=`6/9`、P2 视频硬锁未触碰。

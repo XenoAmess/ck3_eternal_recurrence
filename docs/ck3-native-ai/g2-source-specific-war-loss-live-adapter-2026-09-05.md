@@ -718,3 +718,36 @@ pass `53/53` each. The live-adapter manifest SHA-256 is
 `C67C711401A1DA4BC8509FED9EE8AC0A4EA8D24EE46D762440EC0E88FE46F1F2`;
 open_kaishek records the private interface delta in commit
 `5aec42436035e870a63c29ece582d41fc909163a`.
+
+### R449 six-row GREEN path reached the debugger-detach race
+
+R449 launched the unique CK3 PID `31936` from the unchanged near-boundary
+save. It handled the known chancellor letter, accepted `.1071.a` on the first
+click, and captured six complete rows with locale-neutral name validation and
+dynamic WarID `33554473`. The observer then returned RED only because
+`DebugActiveProcessStop` failed immediately after the final single-step event
+was continued. The breakpoint byte was restored, all six rows were retained,
+outer cleanup is GREEN, and no CK3 process remains. The capture, report, and
+classification SHA-256 values are
+`E382E079DC7A6124A9961E174A3E802F8E67B0C95403325FB16485FD51A5E178`,
+`F200F6744242EED27D7ABAF8EA66DBE36ECF7FAEAF0F41E6960DDC4794F3864D`,
+and `CAB2A4A1A8AF07FCB494F5ED52A02B49A05916F37575510A26A634CA00398B2C`.
+
+R448 detached successfully at this same seam, while R449 failed with otherwise
+equivalent complete evidence. Commit
+`454f515d8ef55ddf6e3cd5eccfa0a8cfb26e7630` therefore adds a bounded release
+retry: at most 20 attempts separated by 25 ms, a maximum sleep budget of
+475 ms, plus attempt-count and last-Win32-error telemetry. A failure after the
+budget remains RED. The replacement private executable and live-adapter
+manifest SHA-256 values are
+`EEE39F858E941E1500DA13FB11906814FA4D70EE42DED894CFDEB03ACEF709B8`
+and `657E538D8754C6094F6FC3B3055BFE31D49C0BC7F27DAF6A7D392E1155A2A247`.
+Self-test and focused normal/optimized tests pass (`54/54` each).
+open_kaishek records the private dependency in commit
+`36009e7994f1db80f4e100eac7894dd357802b3a`.
+
+R449 never started the bridge or submitted a termination action. Readiness
+therefore remains unchanged: T1 is 90%, `GEN-034` is unresolved, and all
+source-specific loss/comparison/action gates remain false. The R449 autosave is
+again byte-identical to the admitted input, SHA-256
+`89D15B8ACB0E69E6C439D658582B63DC1F8AD11EC687089E5021A5961607D4DD`.
