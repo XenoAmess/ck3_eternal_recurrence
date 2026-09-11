@@ -1,0 +1,68 @@
+﻿namespace = auto_build
+
+# 自动建造主事件 - 每15天触发一次
+auto_build.0001 = {
+    type = character_event
+    title = auto_build.0001.t
+    desc = auto_build.0001.desc
+    weight_multiplier = { base = 1 }
+    
+    immediate = {
+        hidden_effect = {
+            trigger_event = {
+                id = auto_build.0003
+                days = 5
+            }
+        }
+    }
+    
+    option = {
+        name = auto_build.0001.a
+        add_character_flag = enable_auto_build
+    }
+    option = {
+        name = auto_build.0001.b
+    }
+}
+
+# 自动建造循环触发器
+auto_build.0003 = {
+    type = character_event
+    trigger = { has_character_flag = enable_auto_build }
+    hidden = yes
+    
+    immediate = {
+        hidden_effect = {
+            # 触发所有建筑的自动升级
+            trigger_event = {
+                id = auto_build.0004
+                days = 1
+            }
+            
+            # 设置下一次触发
+            trigger_event = {
+                id = auto_build.0003
+                days = 15
+            }
+        }
+    }
+}
+
+# 自动建造执行事件
+auto_build.0004 = {
+    type = character_event
+    hidden = yes
+    
+    immediate = {
+        hidden_effect = {
+            # 在所有直辖领地执行建筑升级
+            every_province = {
+                limit = {
+                    province_owner = root
+                    barony = { is_leased_out = no }
+                }
+                add_all_buildings_effect = yes
+            }
+        }
+    }
+}

@@ -1,0 +1,9 @@
+﻿l_simp_chinese:
+ enable_auto_build:0 "启用自动建造"
+ enable_auto_build_desc:0 "启用自动建造功能。"
+ enable_auto_build_text:0 "开启后系统将会每隔15天自动升级建筑\n需要注意的是升级优先花费国库然后花费金钱\n花费不受任何减免并且瞬间完成\n#R 强烈建议在消息设置里关闭建造完成的消息，不然同时建造完成的消息会造成卡顿#!"
+ enable_auto_build_confirm:0 "当然"
+ disable_auto_build:0 "禁用自动建造" 
+ disable_auto_build_desc:0 "停止自动建造功能。"
+ disable_auto_build_text:0 "停止自动建造功能"
+ disable_auto_build_confirm:0 "当然"

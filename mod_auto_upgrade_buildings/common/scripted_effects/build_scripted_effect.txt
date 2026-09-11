@@ -1,0 +1,604 @@
+﻿## 简化的建筑升级系统 - 按经济/军事/城防分类
+
+# 经济建筑升级模板 - 革新要求：轮作→庄园制→风车→起重机
+au_simple_economy_upgrade = {
+    if = {
+        limit = {
+            OR = {
+                prev = { treasury >= normal_building_tier_2_cost }
+                prev = { gold >= normal_building_tier_2_cost }
+            }
+            has_building = $BUILDING$_01
+            prev.culture = { has_innovation = innovation_crop_rotation }
+            building_requirement_castle_city_church = { LEVEL = 01 }
+        }
+        add_building = $BUILDING$_02
+        if = {
+            limit = { prev = { treasury >= normal_building_tier_2_cost } }
+            prev = { remove_short_term_treasury = normal_building_tier_2_cost }
+        }
+        else = {
+            prev = { remove_short_term_gold = normal_building_tier_2_cost }
+        }
+    }
+    if = {
+        limit = {
+            OR = {
+                prev = { treasury >= normal_building_tier_3_cost }
+                prev = { gold >= normal_building_tier_3_cost }
+            }
+            has_building = $BUILDING$_02
+            prev.culture = { has_innovation = innovation_manorialism }
+            building_requirement_castle_city_church = { LEVEL = 02 }
+        }
+        add_building = $BUILDING$_03
+        if = {
+            limit = { prev = { treasury >= normal_building_tier_3_cost } }
+            prev = { remove_short_term_treasury = normal_building_tier_3_cost }
+        }
+        else = {
+            prev = { remove_short_term_gold = normal_building_tier_3_cost }
+        }
+    }
+    if = {
+        limit = {
+            OR = {
+                prev = { treasury >= normal_building_tier_4_cost }
+                prev = { gold >= normal_building_tier_4_cost }
+            }
+            has_building = $BUILDING$_03
+            prev.culture = { has_innovation = innovation_manorialism }
+            building_requirement_castle_city_church = { LEVEL = 02 }
+        }
+        add_building = $BUILDING$_04
+        if = {
+            limit = { prev = { treasury >= normal_building_tier_4_cost } }
+            prev = { remove_short_term_treasury = normal_building_tier_4_cost }
+        }
+        else = {
+            prev = { remove_short_term_gold = normal_building_tier_4_cost }
+        }
+    }
+    if = {
+        limit = {
+            OR = {
+                prev = { treasury >= normal_building_tier_5_cost }
+                prev = { gold >= normal_building_tier_5_cost }
+            }
+            has_building = $BUILDING$_04
+            prev.culture = { has_innovation = innovation_windmills }
+            building_requirement_castle_city_church = { LEVEL = 03 }
+        }
+        add_building = $BUILDING$_05
+        if = {
+            limit = { prev = { treasury >= normal_building_tier_5_cost } }
+            prev = { remove_short_term_treasury = normal_building_tier_5_cost }
+        }
+        else = {
+            prev = { remove_short_term_gold = normal_building_tier_5_cost }
+        }
+    }
+    if = {
+        limit = {
+            OR = {
+                prev = { treasury >= normal_building_tier_6_cost }
+                prev = { gold >= normal_building_tier_6_cost }
+            }
+            has_building = $BUILDING$_05
+            prev.culture = { has_innovation = innovation_windmills }
+            building_requirement_castle_city_church = { LEVEL = 03 }
+        }
+        add_building = $BUILDING$_06
+        if = {
+            limit = { prev = { treasury >= normal_building_tier_6_cost } }
+            prev = { remove_short_term_treasury = normal_building_tier_6_cost }
+        }
+        else = {
+            prev = { remove_short_term_gold = normal_building_tier_6_cost }
+        }
+    }
+    if = {
+        limit = {
+            OR = {
+                prev = { treasury >= normal_building_tier_7_cost }
+                prev = { gold >= normal_building_tier_7_cost }
+            }
+            has_building = $BUILDING$_06
+            prev.culture = { has_innovation = innovation_cranes }
+            building_requirement_castle_city_church = { LEVEL = 04 }
+        }
+        add_building = $BUILDING$_07
+        if = {
+            limit = { prev = { treasury >= normal_building_tier_7_cost } }
+            prev = { remove_short_term_treasury = normal_building_tier_7_cost }
+        }
+        else = {
+            prev = { remove_short_term_gold = normal_building_tier_7_cost }
+        }
+    }
+    if = {
+        limit = {
+            OR = {
+                prev = { treasury >= normal_building_tier_8_cost }
+                prev = { gold >= normal_building_tier_8_cost }
+            }
+            has_building = $BUILDING$_07
+            prev.culture = { has_innovation = innovation_cranes }
+            building_requirement_castle_city_church = { LEVEL = 04 }
+        }
+        add_building = $BUILDING$_08
+        if = {
+            limit = { prev = { treasury >= normal_building_tier_8_cost } }
+            prev = { remove_short_term_treasury = normal_building_tier_8_cost }
+        }
+        else = {
+            prev = { remove_short_term_gold = normal_building_tier_8_cost }
+        }
+    }
+}
+
+# 军事建筑升级模板 - 革新要求：兵营→堡寨→城堡内堡→君主军械库
+au_simple_military_upgrade = {
+    if = {
+        limit = {
+            OR = {
+                prev = { treasury >= normal_building_tier_2_cost }
+                prev = { gold >= normal_building_tier_2_cost }
+            }
+            has_building = $BUILDING$_01
+            prev.culture = { has_innovation = innovation_barracks }
+            building_requirement_castle_city_church = { LEVEL = 01 }
+        }
+        add_building = $BUILDING$_02
+        if = {
+            limit = { prev = { treasury >= normal_building_tier_2_cost } }
+            prev = { remove_short_term_treasury = normal_building_tier_2_cost }
+        }
+        else = {
+            prev = { remove_short_term_gold = normal_building_tier_2_cost }
+        }
+    }
+    if = {
+        limit = {
+            OR = {
+                prev = { treasury >= normal_building_tier_3_cost }
+                prev = { gold >= normal_building_tier_3_cost }
+            }
+            has_building = $BUILDING$_02
+            prev.culture = { has_innovation = innovation_burhs }
+            building_requirement_castle_city_church = { LEVEL = 02 }
+        }
+        add_building = $BUILDING$_03
+        if = {
+            limit = { prev = { treasury >= normal_building_tier_3_cost } }
+            prev = { remove_short_term_treasury = normal_building_tier_3_cost }
+        }
+        else = {
+            prev = { remove_short_term_gold = normal_building_tier_3_cost }
+        }
+    }
+    if = {
+        limit = {
+            OR = {
+                prev = { treasury >= normal_building_tier_4_cost }
+                prev = { gold >= normal_building_tier_4_cost }
+            }
+            has_building = $BUILDING$_03
+            prev.culture = { has_innovation = innovation_burhs }
+            building_requirement_castle_city_church = { LEVEL = 02 }
+        }
+        add_building = $BUILDING$_04
+        if = {
+            limit = { prev = { treasury >= normal_building_tier_4_cost } }
+            prev = { remove_short_term_treasury = normal_building_tier_4_cost }
+        }
+        else = {
+            prev = { remove_short_term_gold = normal_building_tier_4_cost }
+        }
+    }
+    if = {
+        limit = {
+            OR = {
+                prev = { treasury >= normal_building_tier_5_cost }
+                prev = { gold >= normal_building_tier_5_cost }
+            }
+            has_building = $BUILDING$_04
+            prev.culture = { has_innovation = innovation_castle_baileys }
+            building_requirement_castle_city_church = { LEVEL = 03 }
+        }
+        add_building = $BUILDING$_05
+        if = {
+            limit = { prev = { treasury >= normal_building_tier_5_cost } }
+            prev = { remove_short_term_treasury = normal_building_tier_5_cost }
+        }
+        else = {
+            prev = { remove_short_term_gold = normal_building_tier_5_cost }
+        }
+    }
+    if = {
+        limit = {
+            OR = {
+                prev = { treasury >= normal_building_tier_6_cost }
+                prev = { gold >= normal_building_tier_6_cost }
+            }
+            has_building = $BUILDING$_05
+            prev.culture = { has_innovation = innovation_castle_baileys }
+            building_requirement_castle_city_church = { LEVEL = 03 }
+        }
+        add_building = $BUILDING$_06
+        if = {
+            limit = { prev = { treasury >= normal_building_tier_6_cost } }
+            prev = { remove_short_term_treasury = normal_building_tier_6_cost }
+        }
+        else = {
+            prev = { remove_short_term_gold = normal_building_tier_6_cost }
+        }
+    }
+    if = {
+        limit = {
+            OR = {
+                prev = { treasury >= normal_building_tier_7_cost }
+                prev = { gold >= normal_building_tier_7_cost }
+            }
+            has_building = $BUILDING$_06
+            prev.culture = { has_innovation = innovation_royal_armory }
+            building_requirement_castle_city_church = { LEVEL = 04 }
+        }
+        add_building = $BUILDING$_07
+        if = {
+            limit = { prev = { treasury >= normal_building_tier_7_cost } }
+            prev = { remove_short_term_treasury = normal_building_tier_7_cost }
+        }
+        else = {
+            prev = { remove_short_term_gold = normal_building_tier_7_cost }
+        }
+    }
+    if = {
+        limit = {
+            OR = {
+                prev = { treasury >= normal_building_tier_8_cost }
+                prev = { gold >= normal_building_tier_8_cost }
+            }
+            has_building = $BUILDING$_07
+            prev.culture = { has_innovation = innovation_royal_armory }
+            building_requirement_castle_city_church = { LEVEL = 04 }
+        }
+        add_building = $BUILDING$_08
+        if = {
+            limit = { prev = { treasury >= normal_building_tier_8_cost } }
+            prev = { remove_short_term_treasury = normal_building_tier_8_cost }
+        }
+        else = {
+            prev = { remove_short_term_gold = normal_building_tier_8_cost }
+        }
+    }
+}
+
+# 城防建筑升级模板 - 革新要求：土岗→城垛→悬墙→堞口
+au_simple_fortification_upgrade = {
+    if = {
+        limit = {
+            OR = {
+                prev = { treasury >= cheap_building_tier_2_cost }
+                prev = { gold >= cheap_building_tier_2_cost }
+            }
+            has_building = $BUILDING$_01
+            prev.culture = { has_innovation = innovation_motte }
+            building_requirement_castle_city_church = { LEVEL = 01 }
+        }
+        add_building = $BUILDING$_02
+        if = {
+            limit = { prev = { treasury >= cheap_building_tier_2_cost } }
+            prev = { remove_short_term_treasury = cheap_building_tier_2_cost }
+        }
+        else = {
+            prev = { remove_short_term_gold = cheap_building_tier_2_cost }
+        }
+    }
+    if = {
+        limit = {
+            OR = {
+                prev = { treasury >= cheap_building_tier_3_cost }
+                prev = { gold >= cheap_building_tier_3_cost }
+            }
+            has_building = $BUILDING$_02
+            prev.culture = { has_innovation = innovation_battlements }
+            building_requirement_castle_city_church = { LEVEL = 02 }
+        }
+        add_building = $BUILDING$_03
+        if = {
+            limit = { prev = { treasury >= cheap_building_tier_3_cost } }
+            prev = { remove_short_term_treasury = cheap_building_tier_3_cost }
+        }
+        else = {
+            prev = { remove_short_term_gold = cheap_building_tier_3_cost }
+        }
+    }
+    if = {
+        limit = {
+            OR = {
+                prev = { treasury >= cheap_building_tier_4_cost }
+                prev = { gold >= cheap_building_tier_4_cost }
+            }
+            has_building = $BUILDING$_03
+            prev.culture = { has_innovation = innovation_battlements }
+            building_requirement_castle_city_church = { LEVEL = 02 }
+        }
+        add_building = $BUILDING$_04
+        if = {
+            limit = { prev = { treasury >= cheap_building_tier_4_cost } }
+            prev = { remove_short_term_treasury = cheap_building_tier_4_cost }
+        }
+        else = {
+            prev = { remove_short_term_gold = cheap_building_tier_4_cost }
+        }
+    }
+    if = {
+        limit = {
+            OR = {
+                prev = { treasury >= cheap_building_tier_5_cost }
+                prev = { gold >= cheap_building_tier_5_cost }
+            }
+            has_building = $BUILDING$_04
+            prev.culture = { has_innovation = innovation_hoardings }
+            building_requirement_castle_city_church = { LEVEL = 03 }
+        }
+        add_building = $BUILDING$_05
+        if = {
+            limit = { prev = { treasury >= cheap_building_tier_5_cost } }
+            prev = { remove_short_term_treasury = cheap_building_tier_5_cost }
+        }
+        else = {
+            prev = { remove_short_term_gold = cheap_building_tier_5_cost }
+        }
+    }
+    if = {
+        limit = {
+            OR = {
+                prev = { treasury >= cheap_building_tier_6_cost }
+                prev = { gold >= cheap_building_tier_6_cost }
+            }
+            has_building = $BUILDING$_05
+            prev.culture = { has_innovation = innovation_hoardings }
+            building_requirement_castle_city_church = { LEVEL = 03 }
+        }
+        add_building = $BUILDING$_06
+        if = {
+            limit = { prev = { treasury >= cheap_building_tier_6_cost } }
+            prev = { remove_short_term_treasury = cheap_building_tier_6_cost }
+        }
+        else = {
+            prev = { remove_short_term_gold = cheap_building_tier_6_cost }
+        }
+    }
+    if = {
+        limit = {
+            OR = {
+                prev = { treasury >= cheap_building_tier_7_cost }
+                prev = { gold >= cheap_building_tier_7_cost }
+            }
+            has_building = $BUILDING$_06
+            prev.culture = { has_innovation = innovation_machicolations }
+            building_requirement_castle_city_church = { LEVEL = 04 }
+        }
+        add_building = $BUILDING$_07
+        if = {
+            limit = { prev = { treasury >= cheap_building_tier_7_cost } }
+            prev = { remove_short_term_treasury = cheap_building_tier_7_cost }
+        }
+        else = {
+            prev = { remove_short_term_gold = cheap_building_tier_7_cost }
+        }
+    }
+    if = {
+        limit = {
+            OR = {
+                prev = { treasury >= cheap_building_tier_8_cost }
+                prev = { gold >= cheap_building_tier_8_cost }
+            }
+            has_building = $BUILDING$_07
+            prev.culture = { has_innovation = innovation_machicolations }
+            building_requirement_castle_city_church = { LEVEL = 04 }
+        }
+        add_building = $BUILDING$_08
+        if = {
+            limit = { prev = { treasury >= cheap_building_tier_8_cost } }
+            prev = { remove_short_term_treasury = cheap_building_tier_8_cost }
+        }
+        else = {
+            prev = { remove_short_term_gold = cheap_building_tier_8_cost }
+        }
+    }
+}
+
+# 通用建筑升级模板 - 革新要求：城市规划→庄园制→风车→起重机
+au_simple_common_upgrade = {
+    if = {
+        limit = {
+            OR = {
+                prev = { treasury >= normal_building_tier_2_cost }
+                prev = { gold >= normal_building_tier_2_cost }
+            }
+            has_building = $BUILDING$_01
+            prev.culture = { has_innovation = innovation_city_planning }
+            building_requirement_castle_city_church = { LEVEL = 01 }
+        }
+        add_building = $BUILDING$_02
+        if = {
+            limit = { prev = { treasury >= normal_building_tier_2_cost } }
+            prev = { remove_short_term_treasury = normal_building_tier_2_cost }
+        }
+        else = {
+            prev = { remove_short_term_gold = normal_building_tier_2_cost }
+        }
+    }
+    if = {
+        limit = {
+            OR = {
+                prev = { treasury >= normal_building_tier_3_cost }
+                prev = { gold >= normal_building_tier_3_cost }
+            }
+            has_building = $BUILDING$_02
+            prev.culture = { has_innovation = innovation_manorialism }
+            building_requirement_castle_city_church = { LEVEL = 02 }
+        }
+        add_building = $BUILDING$_03
+        if = {
+            limit = { prev = { treasury >= normal_building_tier_3_cost } }
+            prev = { remove_short_term_treasury = normal_building_tier_3_cost }
+        }
+        else = {
+            prev = { remove_short_term_gold = normal_building_tier_3_cost }
+        }
+    }
+    if = {
+        limit = {
+            OR = {
+                prev = { treasury >= normal_building_tier_4_cost }
+                prev = { gold >= normal_building_tier_4_cost }
+            }
+            has_building = $BUILDING$_03
+            prev.culture = { has_innovation = innovation_manorialism }
+            building_requirement_castle_city_church = { LEVEL = 02 }
+        }
+        add_building = $BUILDING$_04
+        if = {
+            limit = { prev = { treasury >= normal_building_tier_4_cost } }
+            prev = { remove_short_term_treasury = normal_building_tier_4_cost }
+        }
+        else = {
+            prev = { remove_short_term_gold = normal_building_tier_4_cost }
+        }
+    }
+    if = {
+        limit = {
+            OR = {
+                prev = { treasury >= normal_building_tier_5_cost }
+                prev = { gold >= normal_building_tier_5_cost }
+            }
+            has_building = $BUILDING$_04
+            prev.culture = { has_innovation = innovation_windmills }
+            building_requirement_castle_city_church = { LEVEL = 03 }
+        }
+        add_building = $BUILDING$_05
+        if = {
+            limit = { prev = { treasury >= normal_building_tier_5_cost } }
+            prev = { remove_short_term_treasury = normal_building_tier_5_cost }
+        }
+        else = {
+            prev = { remove_short_term_gold = normal_building_tier_5_cost }
+        }
+    }
+    if = {
+        limit = {
+            OR = {
+                prev = { treasury >= normal_building_tier_6_cost }
+                prev = { gold >= normal_building_tier_6_cost }
+            }
+            has_building = $BUILDING$_05
+            prev.culture = { has_innovation = innovation_windmills }
+            building_requirement_castle_city_church = { LEVEL = 03 }
+        }
+        add_building = $BUILDING$_06
+        if = {
+            limit = { prev = { treasury >= normal_building_tier_6_cost } }
+            prev = { remove_short_term_treasury = normal_building_tier_6_cost }
+        }
+        else = {
+            prev = { remove_short_term_gold = normal_building_tier_6_cost }
+        }
+    }
+    if = {
+        limit = {
+            OR = {
+                prev = { treasury >= normal_building_tier_7_cost }
+                prev = { gold >= normal_building_tier_7_cost }
+            }
+            has_building = $BUILDING$_06
+            prev.culture = { has_innovation = innovation_cranes }
+            building_requirement_castle_city_church = { LEVEL = 04 }
+        }
+        add_building = $BUILDING$_07
+        if = {
+            limit = { prev = { treasury >= normal_building_tier_7_cost } }
+            prev = { remove_short_term_treasury = normal_building_tier_7_cost }
+        }
+        else = {
+            prev = { remove_short_term_gold = normal_building_tier_7_cost }
+        }
+    }
+    if = {
+        limit = {
+            OR = {
+                prev = { treasury >= normal_building_tier_8_cost }
+                prev = { gold >= normal_building_tier_8_cost }
+            }
+            has_building = $BUILDING$_07
+            prev.culture = { has_innovation = innovation_cranes }
+            building_requirement_castle_city_church = { LEVEL = 04 }
+        }
+        add_building = $BUILDING$_08
+        if = {
+            limit = { prev = { treasury >= normal_building_tier_8_cost } }
+            prev = { remove_short_term_treasury = normal_building_tier_8_cost }
+        }
+        else = {
+            prev = { remove_short_term_gold = normal_building_tier_8_cost }
+        }
+    }
+}
+
+# 主建筑升级效果 - 统一调用所有建筑
+add_all_buildings_effect = {
+
+    # 经济建筑
+    if = { limit = { has_building_or_higher = caravanserai_01 } au_simple_economy_upgrade = { BUILDING = caravanserai } } # 商队旅店
+    if = { limit = { has_building_or_higher = watermills_01 } au_simple_economy_upgrade = { BUILDING = watermills } } # 水磨
+    if = { limit = { has_building_or_higher = windmills_01 } au_simple_economy_upgrade = { BUILDING = windmills } } # 风车
+    if = { limit = { has_building_or_higher = common_tradeport_01 } au_simple_economy_upgrade = { BUILDING = common_tradeport } } # 通用贸易港
+    if = { limit = { has_building_or_higher = pastures_01 } au_simple_economy_upgrade = { BUILDING = pastures } } # 畜牧场
+    if = { limit = { has_building_or_higher = hunting_grounds_01 } au_simple_economy_upgrade = { BUILDING = hunting_grounds } } # 猎场
+    if = { limit = { has_building_or_higher = orchards_01 } au_simple_economy_upgrade = { BUILDING = orchards } } # 果园
+    if = { limit = { has_building_or_higher = farm_estates_01 } au_simple_economy_upgrade = { BUILDING = farm_estates } } # 农场庄园
+    if = { limit = { has_building_or_higher = cereal_fields_01 } au_simple_economy_upgrade = { BUILDING = cereal_fields } } # 谷物农田
+    if = { limit = { has_building_or_higher = logging_camps_01 } au_simple_economy_upgrade = { BUILDING = logging_camps } } # 伐木场
+    if = { limit = { has_building_or_higher = peat_quarries_01 } au_simple_economy_upgrade = { BUILDING = peat_quarries } } # 泥炭采掘场
+    if = { limit = { has_building_or_higher = hill_farms_01 } au_simple_economy_upgrade = { BUILDING = hill_farms } } # 山地农场
+    if = { limit = { has_building_or_higher = elephant_pens_01 } au_simple_economy_upgrade = { BUILDING = elephant_pens } } # 象栏
+    if = { limit = { has_building_or_higher = plantations_01 } au_simple_economy_upgrade = { BUILDING = plantations } } # 种植园
+    if = { limit = { has_building_or_higher = quarries_01 } au_simple_economy_upgrade = { BUILDING = quarries } } # 采石场
+    if = { limit = { has_building_or_higher = qanats_01 } au_simple_economy_upgrade = { BUILDING = qanats } } # 坎儿井
+    if = { limit = { has_building_or_higher = murex_farm_01 } au_simple_economy_upgrade = { BUILDING = murex_farm } } # 骨螺养殖场
+    if = { limit = { has_building_or_higher = waterworks_01 } au_simple_economy_upgrade = { BUILDING = waterworks } } # 水利设施
+    if = { limit = { has_building_or_higher = spice_plantation_01 } au_simple_economy_upgrade = { BUILDING = spice_plantation } } # 香料种植园
+    if = { limit = { has_building_or_higher = paddy_fields_01 } au_simple_economy_upgrade = { BUILDING = paddy_fields } } # 水稻田
+
+    # 军事建筑
+    if = { limit = { has_building_or_higher = wind_furnace_01 } au_simple_military_upgrade = { BUILDING = wind_furnace } } # 风锻炉
+    if = { limit = { has_building_or_higher = workshops_01 } au_simple_military_upgrade = { BUILDING = workshops } } # 工坊
+    if = { limit = { has_building_or_higher = horse_pastures_01 } au_simple_military_upgrade = { BUILDING = horse_pastures } } # 马场
+    if = { limit = { has_building_or_higher = hillside_grazing_01 } au_simple_military_upgrade = { BUILDING = hillside_grazing } } # 山坡牧场
+    if = { limit = { has_building_or_higher = warrior_lodges_01 } au_simple_military_upgrade = { BUILDING = warrior_lodges } } # 战士屋
+    if = { limit = { has_building_or_higher = military_camps_01 } au_simple_military_upgrade = { BUILDING = military_camps } } # 军营
+    if = { limit = { has_building_or_higher = regimental_grounds_01 } au_simple_military_upgrade = { BUILDING = regimental_grounds } } # 校场
+    if = { limit = { has_building_or_higher = outposts_01 } au_simple_military_upgrade = { BUILDING = outposts } } # 前哨站
+    if = { limit = { has_building_or_higher = barracks_01 } au_simple_military_upgrade = { BUILDING = barracks } } # 兵营
+    if = { limit = { has_building_or_higher = camel_farms_01 } au_simple_military_upgrade = { BUILDING = camel_farms } } # 骆驼农场
+    if = { limit = { has_building_or_higher = stables_01 } au_simple_military_upgrade = { BUILDING = stables } } # 马厩
+    if = { limit = { has_building_or_higher = smiths_01 } au_simple_military_upgrade = { BUILDING = smiths } } # 铁匠铺
+
+    # 城防建筑
+    if = { limit = { has_building_or_higher = ramparts_01 } au_simple_fortification_upgrade = { BUILDING = ramparts } } # 城墙
+    if = { limit = { has_building_or_higher = curtain_walls_01 } au_simple_fortification_upgrade = { BUILDING = curtain_walls } } # 幕墙
+    if = { limit = { has_building_or_higher = watchtowers_01 } au_simple_fortification_upgrade = { BUILDING = watchtowers } } # 瞭望塔
+    if = { limit = { has_building_or_higher = hill_forts_01 } au_simple_fortification_upgrade = { BUILDING = hill_forts } } # 山地堡垒
+
+    # 通用建筑
+    if = { limit = { has_building_or_higher = hospices_01 } au_simple_common_upgrade = { BUILDING = hospices } } # 济贫院
+    if = { limit = { has_building_or_higher = guild_halls_01 } au_simple_common_upgrade = { BUILDING = guild_halls } } # 行会大厅
+    if = { limit = { has_building_or_higher = scriptorium_01 } au_simple_common_upgrade = { BUILDING = scriptorium } } # 缮写室
+    if = { limit = { has_building_or_higher = monastic_schools_01 } au_simple_common_upgrade = { BUILDING = monastic_schools } } # 修道院学校
+    if = { limit = { has_building_or_higher = megalith_01 } au_simple_common_upgrade = { BUILDING = megalith } } # 巨石建筑
+    if = { limit = { has_building_or_higher = breweries_01 } au_simple_common_upgrade = { BUILDING = breweries } } # 酿酒厂
+    if = { limit = { has_building_or_higher = capital_bureau_01 } au_simple_common_upgrade = { BUILDING = capital_bureau } } # 首都政务区
+}

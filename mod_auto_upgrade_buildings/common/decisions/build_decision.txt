@@ -1,0 +1,66 @@
+﻿enable_auto_build = {
+    picture = {
+        reference = "gfx/interface/illustrations/decisions/decision_misc.dds"
+    }
+    decision_group_type = realm
+    ai_check_frequency = 0
+    desc = enable_auto_build_desc
+    is_shown = {
+        is_ai = no
+        NOT = {
+            has_character_flag = enable_auto_build
+        }
+    }
+
+    is_valid = {
+        is_ai = no
+    }
+
+    effect = {
+		custom_tooltip = enable_auto_build_text
+        add_character_flag = enable_auto_build
+        # 立即开始自动建造循环
+        trigger_event = {
+            id = auto_build.0003
+            days = 1
+        }
+    }
+    
+    ai_potential = {
+        always = no
+    }
+
+    ai_will_do = {
+        base = 0
+    }
+}
+
+disable_auto_build = {
+    picture = {
+        reference = "gfx/interface/illustrations/decisions/decision_misc.dds"
+    }
+    decision_group_type = realm
+    ai_check_frequency = 0
+    desc = disable_auto_build_desc
+    is_shown = {
+        is_ai = no
+        has_character_flag = enable_auto_build
+    }
+
+    is_valid = {
+        is_ai = no
+    }
+
+    effect = {
+		custom_tooltip = disable_auto_build_text
+        remove_character_flag = enable_auto_build
+    }
+    
+    ai_potential = {
+        always = no
+    }
+
+    ai_will_do = {
+        base = 0
+    }
+}

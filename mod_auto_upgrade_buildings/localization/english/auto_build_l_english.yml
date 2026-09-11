@@ -1,0 +1,9 @@
+﻿l_english:
+ enable_auto_build:0 "Enable Auto Build"
+ enable_auto_build_desc:0 "Enable the auto build function."
+ enable_auto_build_text:0 "After enabling, the system will automatically upgrade buildings every 15 days.\nNote that upgrades will first spend from the treasury and then from gold.\nCosts are not affected by any reductions and are completed instantly.\n#R It is strongly recommended to turn off building completion messages in the message settings, otherwise simultaneous building completion messages may cause lag.#!"
+ enable_auto_build_confirm:0 "Certainly"
+ disable_auto_build:0 "Disable Auto Build" 
+ disable_auto_build_desc:0 "Stop the auto build function."
+ disable_auto_build_text:0 "Stop the auto build function"
+ disable_auto_build_confirm:0 "Certainly"

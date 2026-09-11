@@ -7,6 +7,7 @@
 - `mod_remove_mandala/` — “肃清曼荼罗伪信”独立版源目录；正式发布只使用 `build_remove_mandala_release.py` 生成的 15 文件 staging
 - `mod_xenoamess_quality_of_life/` — “XenoAmess的体验优化”独立版源目录；Workshop item id：**3798133925**；正式发布只使用 `build_xenoamess_quality_of_life_release.py` 生成的 19 文件 staging
 - `mod_reclaim_the_motherland/` — “重整河山”独立版源目录；Workshop item id：**3798404599**；正式发布只使用 `build_reclaim_the_motherland_release.py` 生成的 28 文件 staging
+- `mod_auto_upgrade_buildings/` — “自动升级建筑”兼容维护源码；上游 Workshop item id：**3596580780**，仅作来源身份，禁止写入仓库内层 descriptor 或作为维护版发布目标；上游冻结与验收计划见 `docs/auto-upgrade-buildings-*.md`
 - `Crusader Kings III/` — 游戏本体目录（仅作参考/逆向用，已被 .gitignore 排除）
 - `docs/` — 知识库（跨存档存储机制、GUI 系统、语法踩坑），改机制前先读
 - `docs/autonomous-agent-progress/` — 自动游玩智能体的统一目标/路线图、日报、周报、月报与日/周计划会入口；能力状态必须回链原生专题与实机证据
