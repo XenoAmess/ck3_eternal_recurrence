@@ -1,4 +1,4 @@
-from __future__ import annotations
+﻿from __future__ import annotations
 
 import asyncio
 import hashlib
@@ -213,6 +213,30 @@ def _relocate_runtime_binaries(
 
 
 class G2SourceSpecificWarLossLiveAdapterTests(unittest.TestCase):
+    def test_natural_event_blocker_uses_verified_ocr_recovery(self) -> None:
+        acceptance = mock.Mock()
+        acceptance.quick_stall_and_recover.return_value = {
+            "text": "They grow up fast.",
+            "center": [930, 1043],
+        }
+
+        selected = ADAPTER._recover_natural_event_blocker(
+            acceptance, Path("evidence"), 4
+        )
+
+        self.assertEqual(selected["center"], [930, 1043])
+        acceptance.quick_stall_and_recover.assert_called_once_with(
+            Path("evidence"), "g2-source-specific-natural-event", 4
+        )
+
+        acceptance.quick_stall_and_recover.return_value = None
+        with self.assertRaisesRegex(
+            ADAPTER.LiveAdapterError, "no verified event option"
+        ):
+            ADAPTER._recover_natural_event_blocker(
+                acceptance, Path("evidence"), 5
+            )
+
     def test_inventory_falls_back_to_toolhelp_when_wmi_is_denied(self) -> None:
         fallback = [{"Name": "ck3.exe", "ProcessId": PID}]
         with (

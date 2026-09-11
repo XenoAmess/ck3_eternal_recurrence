@@ -1,6 +1,6 @@
 # G2 source-specific war-loss concrete live adapter
 
-Status: **static-ready / default-OFF live command available / live not run**.
+Status: **R440 harness RED before source capture / blocker fix static-ready / live retry pending**.
 
 ## Delivered platform composition
 
@@ -253,3 +253,34 @@ the CK3 inventories before and after are identical, and no CK3 process was
 started. The directory name reserves the intended next live round; this
 preflight did not create R440. Live/readiness values remain unchanged until the
 exclusive command succeeds.
+
+### R440 encountered blocker and bounded repair
+
+R440 launched one CK3 1.19.0.6 process, PID `182552`, from the admitted
+manifest. It reached Robert 1066, handled `bookmark.1070.c`, and advanced at
+speed 5 until the stock single-option event `埃玛成年` paused the map. The old
+fallback sent `Shift+1`; twenty-two bounded attempts left the same event open.
+The representative screenshot is
+`live-artifacts/ui/bargain_g2-post-blocker-4_speed_5_stalled.png`. The frozen
+R440 RED receipt is
+`Z:\ck3_mod_rewrite\_runtime\g2-source-specific-r440-20260911\r440-harness-red.json`,
+2,426 bytes, SHA-256
+`4016A49E72071DCA176224C5AE1283DBBC2293685F384EDB00023DFE7520B441`.
+
+The run was stopped once the repeated action supplied no new information.
+PTY interrupt bytes did not reach the Python child, so cleanup targeted the
+recorded driver, observer and CK3 PIDs; all exited and the final CK3 inventory
+was empty. R440 never selected `bookmark.1071.a`, captured source executions,
+injected the bridge or submitted surrender. This is harness RED and does not
+change G2 product readiness.
+
+The adapter now calls the established `quick_stall_and_recover` path. It clicks
+only an OCR-ranked event option whose disappearance is verified and returns RED
+when no verified option exists; the blind keyboard fallback is removed. Offline
+replay of the R440 screenshot selected the classic option at `[930, 1043]`.
+Focused adapter tests pass `20/20` in normal and optimized Python. Both changed
+Python files now satisfy the repository UTF-8 BOM rule, and the final no-launch
+preflight returns `READY_TO_RUN_G2_SOURCE_SPECIFIC_LIFECYCLE`. Final adapter and
+manifest SHA-256 values are
+`CE9FF6D910D68003EA2768AA28E4B4871595FE648EB9EDDA3CCFECC9C4224848`
+and `29549DFC108DFB734A3FB38D2AF00DE3C042DD928E71E9324F1FAD1C0B4113DE`.
