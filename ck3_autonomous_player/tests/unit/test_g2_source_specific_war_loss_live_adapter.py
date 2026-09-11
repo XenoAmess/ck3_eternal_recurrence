@@ -511,6 +511,9 @@ class G2SourceSpecificWarLossLiveAdapterTests(unittest.TestCase):
             self.assertEqual(report["process_inventory_before"], inventory)
             self.assertEqual(report["process_inventory_after"], inventory)
             self.assertEqual(report["status"], ADAPTER.PREFLIGHT_STATUS)
+            self.assertEqual(
+                report["requested_live_mode"], "source-current-action-postwar"
+            )
             self.assertTrue(report["live_command"]["available"])
             self.assertTrue(report["live_command"]["default_off"])
             self.assertTrue(report["live_command"]["startup_profile_asset_gate"])
@@ -529,6 +532,23 @@ class G2SourceSpecificWarLossLiveAdapterTests(unittest.TestCase):
             )
             self.assertEqual(report["live_command"]["timeline_speed"], 5)
             self.assertFalse(report["boundaries"]["source_specific_loss_ready"])
+            self.assertEqual(json.loads(output.read_text(encoding="utf-8")), report)
+
+    def test_read_only_probe_mode_is_written_into_preflight_receipt(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            output = root / "preflight.json"
+            report = ADAPTER.run_no_launch_preflight(
+                MANIFEST,
+                output,
+                requested_live_mode="read-only-pre-termination",
+                process_inventory=lambda: [],
+                game_root=_installed_game_root(),
+            )
+
+            self.assertEqual(
+                report["requested_live_mode"], "read-only-pre-termination"
+            )
             self.assertEqual(json.loads(output.read_text(encoding="utf-8")), report)
 
     def test_manifest_pins_concrete_same_pid_composition(self) -> None:
@@ -986,6 +1006,57 @@ class G2SourceSpecificWarLossLiveAdapterTests(unittest.TestCase):
                 33_554_473,
             )
 
+    def test_read_only_continuation_binds_date_and_never_selects_action_path(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            driver = _Driver()
+            operations = ADAPTER.ConcreteLiveOperations(
+                paths=_paths(root),
+                timeouts=_timeouts(),
+                artifact_dir=root / "artifacts",
+                userdir=root / "userdir",
+                read_only_pretermination_probe=True,
+            )
+            operations._driver = driver
+            operations._bridge_binding = {
+                "bridge_pid": PID,
+                "date_raw": 53149944,
+            }
+            expected_result = {"ok": True, "status": "probe-complete"}
+            with (
+                mock.patch.object(
+                    ADAPTER.outer.lifecycle,
+                    "run_same_lifecycle_pretermination_probe",
+                    new=mock.AsyncMock(return_value=expected_result),
+                ) as probe,
+                mock.patch.object(
+                    ADAPTER.outer.lifecycle,
+                    "run_same_lifecycle_sequence",
+                    new=mock.AsyncMock(),
+                ) as action,
+            ):
+                result = asyncio.run(
+                    operations.continue_read_only_pretermination_probe_from_bridge(
+                        driver,
+                        source_capture={"schema": "capture"},
+                        capture_sha256="A" * 64,
+                        expected_character_id=29829,
+                        expected_war_id=33_554_473,
+                        expected_date_raw=0,
+                        postwar_timeout=45,
+                    )
+                )
+
+            self.assertIs(result, expected_result)
+            self.assertEqual(
+                probe.await_args.kwargs["expected_date_raw"], 53149944
+            )
+            action.assert_not_awaited()
+            self.assertEqual(
+                operations.truce_diagnostic_path,
+                (root / "artifacts" / "truce-default-leaf-diagnostic.jsonl").resolve(),
+            )
+
     def test_cli_accepts_optional_source_war_assertion_and_external_paths(self) -> None:
         parser = ADAPTER._parser()
         parsed = parser.parse_args(
@@ -999,6 +1070,7 @@ class G2SourceSpecificWarLossLiveAdapterTests(unittest.TestCase):
         self.assertIsNone(parsed.expected_war_id)
         self.assertIsNone(parsed.resume_save)
         self.assertIsNone(parsed.resume_save_sha256)
+        self.assertFalse(parsed.read_only_pretermination_probe)
         explicit_game_root = Path("explicit-game")
         explicit_game_executable = Path("explicit-ck3.exe")
         explicit_bookmark_events = Path("explicit-bookmark-events.txt")
@@ -1021,6 +1093,7 @@ class G2SourceSpecificWarLossLiveAdapterTests(unittest.TestCase):
                 "--bridge-injector", str(explicit_bridge_injector),
                 "--resume-save", str(explicit_resume_save),
                 "--resume-save-sha256", explicit_resume_sha256,
+                "--read-only-pretermination-probe",
                 "--verify-only",
             ]
         )
@@ -1032,6 +1105,7 @@ class G2SourceSpecificWarLossLiveAdapterTests(unittest.TestCase):
         self.assertEqual(parsed.bridge_injector, explicit_bridge_injector)
         self.assertEqual(parsed.resume_save, explicit_resume_save)
         self.assertEqual(parsed.resume_save_sha256, explicit_resume_sha256)
+        self.assertTrue(parsed.read_only_pretermination_probe)
         with self.assertRaisesRegex(
             ADAPTER.LiveAdapterError, "outside the repository"
         ):
@@ -1068,6 +1142,10 @@ class G2SourceSpecificWarLossLiveAdapterTests(unittest.TestCase):
         self.assertEqual(
             preflight.call_args.kwargs["bridge_injector"],
             explicit_bridge_injector,
+        )
+        self.assertEqual(
+            preflight.call_args.kwargs["requested_live_mode"],
+            "source-current-action-postwar",
         )
 
     def test_bridge_pid_or_pause_drift_never_returns_a_driver(self) -> None:

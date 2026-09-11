@@ -2,7 +2,8 @@
   "schema": "xar.ck3.g2_source_specific_war_loss_live_adapter_manifest.v1",
   "status": "static-ready-live-command-default-off",
   "created_at": "2026-09-05T17:10:00+08:00",
-  "candidate_source_commit": "7dec66d",
+  "candidate_source_commit": "4e943f3b430e8ee907940f7840a71dca31c0d875",
+  "candidate_source_change": "read-only pre-termination probe working tree",
   "default_off": true,
   "live_executed": false,
   "paths": {
@@ -14,24 +15,24 @@
     "source_provider": "ck3_autonomous_player/src/xar_autoplayer/bridge/raiktor_source_specific_war_loss_contract.py",
     "source_contract": "ck3_autonomous_player/native_bridge/research/fixtures/raiktor_source_specific_war_loss_attribution_v1_contract.json",
     "capture_executable": "Z:\\ck3_mod_rewrite_process_assets\\zg361\\g2-source-specific-war-loss-provider-r450-20260911\\build-msvc\\Release\\xar_ck3_raiktor_war_bound_private_capture_v1.exe",
-    "bridge_dll": "Z:\\ck3_mod_rewrite_process_assets\\zg361\\g2-cleanup-formal-e72f9fa-r3-20260904\\xar_ck3_bridge.dll",
-    "bridge_injector": "Z:\\ck3_mod_rewrite_process_assets\\zg361\\g2-cleanup-formal-e72f9fa-r3-20260904\\xar_ck3_bridge_injector.exe",
+    "bridge_dll": "Z:\\ck3_mod_rewrite_process_assets\\zg361\\g2-truce-default-leaf-diagnostic-r451-20260911\\build-msvc\\xar_ck3_bridge.dll",
+    "bridge_injector": "Z:\\ck3_mod_rewrite_process_assets\\zg361\\g2-truce-default-leaf-diagnostic-r451-20260911\\build-msvc\\xar_ck3_bridge_injector.exe",
     "game_executable": "Crusader Kings III/binaries/ck3.exe",
     "bookmark_events": "Crusader Kings III/game/events/bookmark_events.txt",
     "run_acceptance": "tools/run_acceptance.py",
     "profile_settings_guard": "tools/run_zg361_phase2_seed_capture.py"
   },
   "sha256": {
-    "adapter": "621F0184307B2B8819CFCEAFEEBBCE9CE4BBA41F0EA4DAE707D0FE249D356660",
-    "outer_owner_runner": "C6F05DD5ADFDA5FD41B3D072F40BD3AC6A5FCFA280D4AB9C5A58A5CA5D59A65D",
-    "outer_owner_manifest": "5C347BE24C26077CEE10C5DBE83486CEC99505155E4C673CDFA20A2BB4F2052E",
-    "lifecycle_runner": "E3D4FB59C6BF9BAEC6B3E1470425151BB0451D592BD6CE965D47D2232220737B",
+    "adapter": "98D144305BBF03C01D03D009447CAFF8C76EBFE3CF7C00FAA98313EAA37E14E7",
+    "outer_owner_runner": "C2E0F7EDA10A9856B44852DDD737D6E13A223311FED25640F73EFDDEB5507AD3",
+    "outer_owner_manifest": "11AAA271D193EBF6BC520FA4C69B8FD5464C72A2B31B0A51ECE6BC11BF71E6C5",
+    "lifecycle_runner": "FF51D88B50B2EF731F8D6641F532F23722834B26732FEBEF809CC785C04CD4B9",
     "source_ui_runner": "53E6086EEACB6ABF4B54D2C7186C38E6212237C247A34E30EC442FB544A0BF56",
     "source_provider": "AEFCD4BA93F4435509650E533C84E4E352472A125A7F4379A9D4B143CA97E4CB",
     "source_contract": "346D3DE9105B44749D9BA1E11F820A7C538063980CE53C24A9572B486F9FB247",
     "capture_executable": "EEE39F858E941E1500DA13FB11906814FA4D70EE42DED894CFDEB03ACEF709B8",
-    "bridge_dll": "4D839524098891BD997009663E189929722746AB0404D88C1E91F7546EFE238B",
-    "bridge_injector": "43983E28CE3FBFC5EA1F26786834AD5E9133E59807BDCB18FB244BA8E830E08D",
+    "bridge_dll": "AB1BF87A1C4C20BC488F857BA0454E070225F0027259DDC6282530D92AAB1705",
+    "bridge_injector": "B5353527B56B4C99A7AF11A09C59A0850C481A45ED7CDA4C519AF956D97B39EC",
     "game_executable": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
     "bookmark_events": "75CF485E379E522D4AAED9EF889FCC411A0D9DFCC28BCFB250ABDCC93A757EFF",
     "run_acceptance": "CD5098E0E9CA793D98FE2DF6C44ADB6AE1D15F66033C7553B9255E2640BB7CE8",
@@ -40,7 +41,13 @@
   "timeouts": {
     "process_discovery_seconds": 30,
     "main_menu_seconds": 300,
-    "main_menu_stage_seconds": [60, 120, 180, 240, 300],
+    "main_menu_stage_seconds": [
+      60,
+      120,
+      180,
+      240,
+      300
+    ],
     "private_attach_seconds": 30,
     "map_hud_seconds": 90,
     "natural_event_seconds": 520,
@@ -62,7 +69,8 @@
     "mcp_state_truth_after_attach": true,
     "startup_profile_asset_gate_integrated": true,
     "resume_checkpoint_copy_gate_integrated": true,
-    "launch_fail_closed": true
+    "launch_fail_closed": true,
+    "read_only_pretermination_probe_integrated": true
   },
   "ocr_boundary": {
     "used": true,
@@ -102,7 +110,10 @@
     "checkpoint_must_bind_same_paused_frame": true,
     "expected_date_raw_required": false,
     "expected_date_raw_source": "same-PID paused bridge snapshot after natural event",
-    "one_surrender_mutation_only": true
+    "one_surrender_mutation_only": true,
+    "read_only_pretermination_probe_available": true,
+    "read_only_probe_mutation_commands": [],
+    "read_only_probe_diagnostic_environment": "XAR_CK3_G2_TRUCE_PRIVATE_CAPTURE_PATH"
   },
   "boundaries": {
     "live_executed": false,
@@ -113,5 +124,11 @@
     "automatic_surrender_ready": false,
     "gen034_closed": false,
     "t1_percent": 90
+  },
+  "diagnostic_build": {
+    "cmake_option": "XAR_CK3_ENABLE_G2_TRUCE_DEFAULT_LEAF_DIAGNOSTICS_V1=ON",
+    "default_reader_branch_unchanged": true,
+    "public_abi_changed": false,
+    "artifact_path_source": "caller-owned external build directory"
   }
 }

@@ -1,4 +1,4 @@
-﻿# CK3 原生 AI 决策树索引
+# CK3 原生 AI 决策树索引
 
 - [static-ready; metropolitan live retry pending] [?????????`imperial_examination.7100`?](imperial-examination-family-notice.md)????? caller???????????? authored ???????? opt-out ???
 
@@ -565,3 +565,9 @@ flowchart TD
 - lifecycle 在 mutation checkpoint 与 surrender 之前保持 RED；没有提交动作，source autosave SHA-256 `89D15B8ACB0E69E6C439D658582B63DC1F8AD11EC687089E5021A5961607D4DD` 未变，cleanup GREEN、CK3=0。该项分类为 G2 观测能力 RED，mod 产品 RED 为 false。
 - capture/report/driver/classification SHA-256 为 `4C377E364C55BEC6DFB2CD5159B441786B44701DA489D7728B35A9C9B5C5BDA3`、`41D07532B36259AEA76BF5179BC31ADBF4B0AC47B2D3E8C5C1A3460A343D1F4C`、`752D03EB50EF40D0ACE629A904976CB840BAFEF3E18AA6403D1A889B64910894`、`4ACA6BC721D9D9286E572200F03D3526A2D69D53B302DFBEB5E60A545E387047`。下一包只增加只读 pre-termination 诊断并定位 default truce reader，不放宽动作门。
 - 公开 MCP/ABI/schema 未变化，本轮无需 T2 代码同步。T1=90%、`GEN-034` unresolved；T0 P1=`6/9`，P2 视频硬锁未触碰。
+
+## 2026-09-11：R451 只读停战诊断 static-ready
+
+- source-specific lifecycle 新增显式 `--read-only-pretermination-probe`：复用自然 source 与同 PID 双查询，到 pre-termination 即止，并硬断言没有 checkpoint、action 或 postwar。
+- default-OFF 诊断构建只给现有 default truce reader 增加阶段、callback、failure-enum 与 context telemetry；公开 MCP/ABI 和正常 action gate 不变。诊断 ON 与默认 OFF 两套 bridge 目标均编译通过。
+- 聚焦 normal/`-O` 各 `57/57`，no-launch receipt SHA-256 `7465C044BC059E13D57949FDA29AC560B31CD679F8C017D72A3A63E7E12655AF`，写盘模式为 `read-only-pre-termination`。当前仅 static-ready；T1=90%、`GEN-034` unresolved，CK3=0。

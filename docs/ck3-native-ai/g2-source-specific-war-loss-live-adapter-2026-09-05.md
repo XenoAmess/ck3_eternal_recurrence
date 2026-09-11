@@ -784,3 +784,39 @@ classification, and final launch-record SHA-256 values are
 `4ACA6BC721D9D9286E572200F03D3526A2D69D53B302DFBEB5E60A545E387047`,
 and `CBC4A1C03115D076DBD6B2BE1FE6BC3A78A6DED1CA76CC7A67AC60D14756D62C`.
 T1 remains 90% and `GEN-034` remains unresolved.
+
+### Read-only pre-termination diagnostic package for R451
+
+The live adapter now exposes an explicit
+`--read-only-pretermination-probe` mode. It reuses the already validated
+natural-source capture and same-PID bridge handoff, performs the same two
+public term queries, then stops. In this mode the lifecycle contract requires
+`pre_mutation_checkpoint_created=false`, an empty `mutation_commands` list,
+and `postwar_started=false`. `PROBE_COMPLETE` means the bounded diagnostic ran
+to completion; term readiness remains a separate `terms_ready` value and a
+missing truce domain remains RED.
+
+The companion diagnostic build uses the default-OFF CMake option
+`XAR_CK3_ENABLE_G2_TRUCE_DEFAULT_LEAF_DIAGNOSTICS_V1`. The normal production
+reader branch is unchanged. When enabled, it writes one read-only JSONL row
+per default-reader invocation to the caller-owned external artifact directory,
+including the final traversal stage, callback counts, failure-enum counts,
+the last effect/context identities, observed result, and context-destruction
+state. The mode is mutually exclusive with earlier private truce capture modes
+and does not change the public bridge ABI or action gate.
+
+Both the diagnostic-ON build and a separate default-OFF targeted build compile
+for `xar_ck3_bridge` and `xar_ck3_bridge_injector`. The diagnostic DLL and
+injector SHA-256 values are
+`AB1BF87A1C4C20BC488F857BA0454E070225F0027259DDC6282530D92AAB1705`
+and `B5353527B56B4C99A7AF11A09C59A0850C481A45ED7CDA4C519AF956D97B39EC`.
+Focused lifecycle/owner/adapter/source-contract tests pass `57/57` in both
+normal and optimized Python; `py_compile` is GREEN. The corrected no-launch
+receipt records `requested_live_mode=read-only-pre-termination`, binds the
+unchanged 68,016,053-byte source save, and has SHA-256
+`7465C044BC059E13D57949FDA29AC560B31CD679F8C017D72A3A63E7E12655AF`.
+
+This package is static-ready only. It does not promote the current truce
+primitive, terms aggregate, policy, action, or `GEN-034`. The next CK3 launch
+is one bounded R451 read-only probe from the same hash-bound input; it cannot
+create a mutation checkpoint, submit surrender, or start postwar polling.

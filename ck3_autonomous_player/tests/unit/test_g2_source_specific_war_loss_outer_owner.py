@@ -129,6 +129,20 @@ def _lifecycle_result() -> dict[str, object]:
     }
 
 
+def _probe_result() -> dict[str, object]:
+    return {
+        "status": "probe-complete",
+        "mode": "read-only-pre-termination",
+        "source_normalization": {"capture_pid": PID},
+        "identity": {"ck3_pid": PID, "war_id": WAR_ID},
+        "pre_sequence": {"mutation_commands": [], "ok": False},
+        "pre_mutation_checkpoint_created": False,
+        "mutation_commands": [],
+        "postwar_started": False,
+        "ok": True,
+    }
+
+
 class FakeOperations:
     def __init__(self, capture: dict[str, object] | None = None) -> None:
         self.capture = capture or _source_capture()
@@ -277,6 +291,37 @@ class G2SourceSpecificWarLossOuterOwnerTests(unittest.TestCase):
         self.assertEqual(received["expected_character_id"], CHARACTER_ID)
         self.assertTrue(result["ok"])
 
+    def test_read_only_probe_uses_same_owner_and_accepts_terms_red(self) -> None:
+        operations = FakeOperations()
+
+        async def probe(driver: object, **_kwargs: object) -> dict[str, object]:
+            self.assertIs(driver, operations.driver)
+            operations.events.append(("probe", driver))
+            return _probe_result()
+
+        result = asyncio.run(
+            RUNNER.run_exclusive_outer_owner(
+                operations,
+                expected_character_id=CHARACTER_ID,
+                expected_war_id=WAR_ID,
+                expected_date_raw=DATE_RAW,
+                postwar_timeout=1.0,
+                continuation=probe,
+                read_only_pretermination_probe=True,
+            )
+        )
+
+        self.assertTrue(result["ok"])
+        self.assertEqual(result["mode"], "read-only-pre-termination")
+        self.assertEqual(result["status"], "green-read-only-probe-orchestration")
+        self.assertEqual(set(result["process_identity"].values()), {PID})
+        event_names = [
+            event if isinstance(event, str) else event[0]
+            for event in operations.events
+        ]
+        self.assertEqual(event_names.count("probe"), 1)
+        self.assertEqual(event_names.count("cleanup"), 1)
+
     def test_unsafe_observer_handoff_is_no_go_before_bridge_and_cleans_once(self) -> None:
         capture = _source_capture()
         capture["process_terminated"] = True
@@ -403,9 +448,14 @@ class G2SourceSpecificWarLossOuterOwnerTests(unittest.TestCase):
                     "live_adapter_implemented": False,
                     "standalone_capture_runner_used_as_inner_phase": False,
                     "final_cleanup_owner": "outer-owner",
+                    "read_only_pretermination_probe": (
+                        "run_g2_source_specific_war_loss_lifecycle."
+                        "run_same_lifecycle_pretermination_probe"
+                    ),
                 },
                 "ownership_contract": {
                     "expected_war_id_forwarded_to_lifecycle": True,
+                    "read_only_probe_forbids_checkpoint_and_mutation": True,
                 },
                 "boundaries": {
                     "live_executed": False,

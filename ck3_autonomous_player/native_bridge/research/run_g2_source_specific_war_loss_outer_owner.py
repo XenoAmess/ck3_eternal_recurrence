@@ -171,6 +171,30 @@ def _validate_lifecycle_result(value: object, *, expected_pid: int) -> dict[str,
     return result
 
 
+def _validate_pretermination_probe_result(
+    value: object, *, expected_pid: int
+) -> dict[str, object]:
+    result = _object(value, "read-only pre-termination probe result")
+    normalized = _object(result.get("source_normalization"), "probe source")
+    identity = _object(result.get("identity"), "probe identity")
+    pre_sequence = _object(result.get("pre_sequence"), "probe sequence")
+    if (
+        result.get("ok") is not True
+        or result.get("status") != "probe-complete"
+        or result.get("mode") != "read-only-pre-termination"
+        or normalized.get("capture_pid") != expected_pid
+        or identity.get("ck3_pid") != expected_pid
+        or result.get("pre_mutation_checkpoint_created") is not False
+        or result.get("mutation_commands") != []
+        or result.get("postwar_started") is not False
+        or pre_sequence.get("mutation_commands") != []
+    ):
+        raise OuterOwnerContractError(
+            "read-only pre-termination probe changed process or mutation boundary"
+        )
+    return result
+
+
 async def run_exclusive_outer_owner(
     operations: Any,
     *,
@@ -179,6 +203,7 @@ async def run_exclusive_outer_owner(
     postwar_timeout: float,
     expected_war_id: int | None = None,
     continuation: Callable[..., Awaitable[dict[str, object]]] | None = None,
+    read_only_pretermination_probe: bool = False,
 ) -> dict[str, object]:
     """Compose one caller-supplied process owner around the lifecycle seam.
 
@@ -190,11 +215,14 @@ async def run_exclusive_outer_owner(
         raise OuterOwnerContractError("outer owner arguments are invalid")
     if expected_war_id is not None:
         expected_war_id = _positive_integer(expected_war_id, "expected WarID")
-    lifecycle_continuation = (
-        lifecycle.run_same_lifecycle_sequence
-        if continuation is None
-        else continuation
-    )
+    if continuation is None:
+        lifecycle_continuation = (
+            lifecycle.run_same_lifecycle_pretermination_probe
+            if read_only_pretermination_probe
+            else lifecycle.run_same_lifecycle_sequence
+        )
+    else:
+        lifecycle_continuation = continuation
 
     trace: list[str] = []
     exclusive_token: object | None = None
@@ -271,8 +299,12 @@ async def run_exclusive_outer_owner(
             expected_date_raw=expected_date_raw,
             postwar_timeout=postwar_timeout,
         )
-        lifecycle_result = _validate_lifecycle_result(
-            lifecycle_value, expected_pid=pid
+        lifecycle_result = (
+            _validate_pretermination_probe_result(
+                lifecycle_value, expected_pid=pid
+            )
+            if read_only_pretermination_probe
+            else _validate_lifecycle_result(lifecycle_value, expected_pid=pid)
         )
         trace.append("same-driver-lifecycle-continuation-complete")
     finally:
@@ -294,16 +326,33 @@ async def run_exclusive_outer_owner(
         or lifecycle_result is None
     ):
         raise OuterOwnerContractError("outer owner did not complete exactly one cleanup")
+    continuation_pid = (
+        _object(lifecycle_result.get("identity"), "probe identity").get("ck3_pid")
+        if read_only_pretermination_probe
+        else _object(
+            _object(lifecycle_result.get("source_specific_loss_join"), "lifecycle join").get(
+                "identity"
+            ),
+            "lifecycle join identity",
+        ).get("ck3_pid")
+    )
     return {
         "schema": RUN_SCHEMA,
-        "status": "green-orchestration",
+        "status": (
+            "green-read-only-probe-orchestration"
+            if read_only_pretermination_probe
+            else "green-orchestration"
+        ),
+        "mode": (
+            "read-only-pre-termination"
+            if read_only_pretermination_probe
+            else "source-current-action-postwar"
+        ),
         "process_identity": {
             "normal_event_pid": pid,
             "observer_pid": normalized_source["capture_pid"],
             "bridge_pid": bridge_binding["bridge_pid"],
-            "lifecycle_pid": lifecycle_result["source_specific_loss_join"]["identity"][
-                "ck3_pid"
-            ],
+            "lifecycle_pid": continuation_pid,
         },
         "observer_handoff": {
             "breakpoint_restored": True,
@@ -387,7 +436,10 @@ def run_no_launch_preflight(
         or composition.get("live_adapter_implemented") is not False
         or composition.get("standalone_capture_runner_used_as_inner_phase") is not False
         or composition.get("final_cleanup_owner") != "outer-owner"
+        or composition.get("read_only_pretermination_probe")
+        != "run_g2_source_specific_war_loss_lifecycle.run_same_lifecycle_pretermination_probe"
         or ownership.get("expected_war_id_forwarded_to_lifecycle") is not True
+        or ownership.get("read_only_probe_forbids_checkpoint_and_mutation") is not True
         or any(value is not False for value in boundaries.values() if isinstance(value, bool))
     ):
         raise OuterOwnerContractError("manifest static/no-launch boundary drifted")

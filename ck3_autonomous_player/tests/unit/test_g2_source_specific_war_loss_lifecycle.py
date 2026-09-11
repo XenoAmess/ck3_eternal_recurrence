@@ -542,6 +542,46 @@ class G2SourceSpecificWarLossLifecycleTests(unittest.TestCase):
                 )
         self.assertEqual(calls, ["query"])
 
+    def test_read_only_probe_retains_red_terms_without_checkpoint_or_action(self) -> None:
+        pre = _pre_sequence()
+        pre["ok"] = False
+        pre["mutation_commands"] = []
+        pre["checks"] = {"truce_probe": False, "mcp_results_not_errors": True}
+        truce = pre["second_query"]["structured_content"][
+            "war_termination_terms"
+        ]["truce"]
+        truce["evaluated_days_observable"] = False
+        truce["evaluated_days"] = None
+
+        async def query(query_driver: object, **_kwargs: object) -> dict[str, object]:
+            self.assertIs(query_driver, driver)
+            return pre
+
+        with tempfile.TemporaryDirectory() as temporary:
+            driver = _CheckpointDriver(Path(temporary) / "save games")
+            with mock.patch.object(RUNNER.terms, "_run_mcp_sequence", query):
+                result = asyncio.run(
+                    RUNNER.run_same_lifecycle_pretermination_probe(
+                        driver,
+                        source_capture=_source_capture(),
+                        capture_sha256="A" * 64,
+                        expected_character_id=ATTACKER_ID,
+                        expected_war_id=WAR_ID,
+                        expected_date_raw=DATE_RAW,
+                        postwar_timeout=1.0,
+                    )
+                )
+
+        self.assertTrue(result["ok"])
+        self.assertEqual(result["status"], "probe-complete")
+        self.assertFalse(result["terms_ready"])
+        self.assertEqual(result["failed_checks"], ["truce_probe"])
+        self.assertFalse(result["truce"]["evaluated_days_observable"])
+        self.assertEqual(result["mutation_commands"], [])
+        self.assertFalse(result["pre_mutation_checkpoint_created"])
+        self.assertFalse(result["postwar_started"])
+        self.assertEqual(driver.calls, [])
+
     def test_wrong_explicit_war_id_fails_before_query_or_mutation(self) -> None:
         query = mock.AsyncMock()
         with mock.patch.object(RUNNER.terms, "_run_mcp_sequence", query):

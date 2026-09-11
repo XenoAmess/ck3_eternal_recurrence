@@ -971,3 +971,9 @@ WarID `50331699` / `raiktor_claim_cb` 的 primary-attacker surrender 只有 type
 - 两次同帧公开 terms 查询都返回 gold、prestige、PoW 与 favor，但 `truce.evaluated_days_observable=false`。因此 aggregate 的唯一 missing domain 为 `truce`，`action_terms_ready=false`；没有创建 checkpoint、没有提交 surrender、没有 postwar 结果。
 - 这取代 GEN-034 表格中早期“继续枚举 index 9/10 shape”的施工入口。旧 shape 枚举已经完成且不能解释当前 production reader 的输入依赖失败；下一入口改为只读 pre-termination probe，在 exact build 和当前 WarID 上记录 default truce reader 的明确失败阶段。正常 lifecycle 的六域门不变。
 - R450 classification SHA-256 `4ACA6BC721D9D9286E572200F03D3526A2D69D53B302DFBEB5E60A545E387047`；source 未变、cleanup GREEN、CK3=0。`GEN-034` 继续 unresolved，T1=90%。
+
+## 2026-09-11：GEN-034 R451 只读诊断入口
+
+- 新 probe 只复用既有自然 source、同 PID bridge 与两次公开 terms 查询，在 mutation checkpoint 前终止；合同要求零 action、零 postwar，并把 `PROBE_COMPLETE` 与 `terms_ready` 分离。
+- default-OFF 诊断 build 在不改变 default reader 分支的前提下记录具体 stage、callback/failure counts 与 context identity/destruction。诊断 ON 与默认 OFF 均编译通过；normal/`-O` 聚焦测试各 `57/57`。
+- no-launch receipt SHA-256 `7465C044BC059E13D57949FDA29AC560B31CD679F8C017D72A3A63E7E12655AF` 绑定 source SHA-256 `89D15B8ACB0E69E6C439D658582B63DC1F8AD11EC687089E5021A5961607D4DD`。这只提供一次 R451 精确取证入口，不提升 truce/terms/action readiness；`GEN-034` 继续 unresolved、T1=90%。
