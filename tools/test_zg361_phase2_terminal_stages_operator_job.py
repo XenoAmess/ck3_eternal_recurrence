@@ -67,6 +67,7 @@ class TerminalStagesOperatorTests(unittest.TestCase):
             bridge.write_bytes(b"bridge")
             bound = {"repository_root": root, "artifact_directory": artifacts,
                      "round": "R406", "checkpoint": source, "bridge_dll": bridge,
+                     "terminal_stages_max_advance_days": 500,
                      "expected_hashes": {"product_tree_sha256": "A" * 64, "code_commit": "b" * 40}}
             checkpoint = {"path": str(root / "checkpoint.ck3"), "status": "saved", "size": 3, "sha256": "C" * 64}
             evidence = {"result": "GREEN", "save_result": {"accepted": True, "checkpoint": checkpoint},
@@ -86,7 +87,12 @@ class TerminalStagesOperatorTests(unittest.TestCase):
                  mock.patch.object(stages.base, "ck3_pids", return_value=[]):
                 job._execute_action(bound)
                 status = job.status()
-            action.assert_called_once_with(job.service, evidence_directory=artifacts / "stages", request_nonce="R406.terminal-stages")
+            action.assert_called_once_with(
+                job.service,
+                evidence_directory=artifacts / "stages",
+                request_nonce="R406.terminal-stages",
+                max_advance_days=500,
+            )
             job.service.save_checkpoint.assert_not_called()
             self.assertEqual(status["stages_result"], "GREEN")
             self.assertEqual(status["b1_result"], "PENDING")

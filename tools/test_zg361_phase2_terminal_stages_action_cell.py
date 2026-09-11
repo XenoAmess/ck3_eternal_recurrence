@@ -256,6 +256,43 @@ class TerminalStagesTests(unittest.TestCase):
             self.assertEqual(second["attempt"], 2)
             self.assertTrue((directory / "attempt-002.json").is_file())
 
+    def test_explicit_game_day_bound_is_persisted_and_cannot_change_on_retry(self) -> None:
+        service = Service()
+        with tempfile.TemporaryDirectory() as temporary:
+            directory = Path(temporary)
+            archived = {
+                "path": str(directory / "stage10-player-subject-source.ck3"),
+                "bytes": 3,
+                "sha256": "A" * 64,
+            }
+            with patch.object(
+                cell.entry,
+                "enter_promotion_source_checkpoint_v1",
+                side_effect=service.enter,
+            ), patch.object(cell, "_archive_checkpoint", return_value=archived):
+                with self.assertRaises(cell.TerminalStagesError) as raised:
+                    cell.run_terminal_stages(
+                        service,
+                        evidence_directory=directory,
+                        request_nonce="synthetic.bounded",
+                        max_advance_days=17,
+                    )
+                with self.assertRaisesRegex(
+                    ValueError, "retry changed its game-day bound"
+                ):
+                    cell.run_terminal_stages(
+                        service,
+                        evidence_directory=directory,
+                        request_nonce="synthetic.bounded",
+                        max_advance_days=18,
+                    )
+            state = raised.exception.evidence
+            self.assertEqual(state["configured_max_advance_days"], 17)
+            self.assertEqual(
+                state["progress_out"]["absolute_end_date_raw"],
+                100000 + 17 * 24,
+            )
+
     def test_failed_park_save_is_reported_as_checkpoint_failure(self) -> None:
         service = Service()
         service.fail_save_call = 2

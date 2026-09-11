@@ -148,7 +148,20 @@ def validate_activation(path: Path, *, require_empty_slot: bool) -> dict[str, ob
     value = base.read_object(path)
     if value.get("job_role") != JOB_ROLE:
         raise base.Af5JobError("activation does not target terminal stages")
-    return base.validate_activation(path, require_empty_slot=require_empty_slot)
+    bound = base.validate_activation(path, require_empty_slot=require_empty_slot)
+    source_route = value.get("source_route")
+    if isinstance(source_route, Mapping) and "max_advance_days" in source_route:
+        max_advance_days = source_route["max_advance_days"]
+        if (
+            isinstance(max_advance_days, bool)
+            or not isinstance(max_advance_days, int)
+            or max_advance_days <= 0
+        ):
+            raise base.Af5JobError(
+                "source_route.max_advance_days must be a positive integer"
+            )
+        bound["terminal_stages_max_advance_days"] = max_advance_days
+    return bound
 
 
 def observe_b1(service: object, nonce: str) -> dict[str, object]:
@@ -298,10 +311,17 @@ class TerminalStagesOperatorJob(base.Af5OperatorJob):
         self.stage = "terminal_stages_action"
         self._sample_b1(bound, "before")
         try:
-            evidence = dict(module.run_terminal_stages(
-                self.service, evidence_directory=artifacts / "stages",
-                request_nonce=f"{bound['round']}.terminal-stages",
-            ))
+            action_arguments: dict[str, object] = {
+                "evidence_directory": artifacts / "stages",
+                "request_nonce": f"{bound['round']}.terminal-stages",
+            }
+            if "terminal_stages_max_advance_days" in bound:
+                action_arguments["max_advance_days"] = bound[
+                    "terminal_stages_max_advance_days"
+                ]
+            evidence = dict(
+                module.run_terminal_stages(self.service, **action_arguments)
+            )
         finally:
             self._sample_b1(bound, "after")
         if evidence.get("result") != "GREEN":
@@ -395,6 +415,10 @@ class TerminalStagesOperatorJob(base.Af5OperatorJob):
                         "bridge_injector", "state_directory", "artifact_directory", "bridge_pipe", "warmup_bridge_pipe", "rounds"):
                 if original[key] != repaired[key]:
                     raise base.Af5JobError(f"stage retry changed loaded session input: {key}")
+            if original.get("terminal_stages_max_advance_days") != repaired.get(
+                "terminal_stages_max_advance_days"
+            ):
+                raise base.Af5JobError("stage retry changed the game-day bound")
             before = self._retained_binding()
             base.Af5OperatorJob._reload_action_modules(Path(str(repaired["repository_root"])))
             stage_module = importlib.import_module("zg361_phase2_terminal_stages_action_cell")

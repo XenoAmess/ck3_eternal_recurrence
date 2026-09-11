@@ -176,6 +176,7 @@ def _ack_summary(service: object, context: Mapping[str, object]) -> dict[str, ob
 
 def run_terminal_stages(
     service: object, *, evidence_directory: Path, request_nonce: str,
+    max_advance_days: int | None = None,
 ) -> dict[str, object]:
     """Collect stage gate rows; resume this directory on the same live binding.
 
@@ -185,6 +186,15 @@ def run_terminal_stages(
     """
     if not isinstance(request_nonce, str) or re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9._:-]{0,55}", request_nonce) is None:
         raise ValueError("request_nonce must be a nonempty ASCII token of at most 56 characters")
+    configured_max_advance_days = (
+        entry.MAX_ADVANCE_DAYS if max_advance_days is None else max_advance_days
+    )
+    if (
+        isinstance(configured_max_advance_days, bool)
+        or not isinstance(configured_max_advance_days, int)
+        or configured_max_advance_days <= 0
+    ):
+        raise ValueError("max_advance_days must be a positive integer")
     directory = Path(evidence_directory)
     directory.mkdir(parents=True, exist_ok=True)
     path = directory / "terminal-stages.json"
@@ -194,6 +204,14 @@ def run_terminal_stages(
         state = json.loads(path.read_text(encoding="utf-8"))
         if state["binding"] != binding or state["request_nonce"] != request_nonce:
             raise ValueError("terminal stages retry belongs to a different session or request")
+        persisted_max_advance_days = state.get("configured_max_advance_days")
+        if persisted_max_advance_days is None:
+            persisted_max_advance_days = (
+                state["progress_out"]["absolute_end_date_raw"]
+                - state["progress_out"]["timeline_origin_date_raw"]
+            ) // 24
+        if persisted_max_advance_days != configured_max_advance_days:
+            raise ValueError("terminal stages retry changed its game-day bound")
         if state["result"] == "GREEN":
             return state
     else:
@@ -202,10 +220,13 @@ def run_terminal_stages(
             "result": "RED", "mcp_only": True, "binding": binding,
             "request_nonce": request_nonce, "attempt": 0, "current_stage": None,
             "failure_reason": None, "stage_observations": {},
+            "configured_max_advance_days": configured_max_advance_days,
             "p1_acceptance_evidence": {"central_stage_terminals": {}},
             "progress_out": {
                 "timeline_origin_date_raw": initial["date_raw"],
-                "absolute_end_date_raw": initial["date_raw"] + entry.MAX_ADVANCE_DAYS * 24,
+                "absolute_end_date_raw": (
+                    initial["date_raw"] + configured_max_advance_days * 24
+                ),
                 "timeline_interrupt_drains": [],
             },
             "owned_stage_sequence": [9, 11],
