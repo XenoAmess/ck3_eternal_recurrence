@@ -4,7 +4,7 @@
 
 | 功能 | 原版入口 | 本 Mod 的使用方式 |
 |---|---|---|
-| 防御召集 | `on_war_started`、`call_ally_interaction`、`call_house_member_to_war_interaction` | 用完整互动 validity 过滤，随后调用原版防御加入 effect；排除一切付费调用 |
+| 防御召集 | `on_war_started`、`call_ally_interaction_event_effect` | 战争开始次日，用明确的免费关系白名单和原版战争加入条件过滤，再调用原版共同的 `set_called_to + add_defender` 核心；不依赖声明当刻尚未稳定的互动缓存，不进入会读取互动专属 `scope:hook` 的包装层，并排除一切付费调用 |
 | 改信筛选 | `ask_for_conversion_courtier_interaction`、`demand_conversion_vassal_ruler_interaction` | 用 `is_character_interaction_potentially_accepted` 和 literal `ai_accept=0..100` 过滤 |
 | 改信答复 | `religion_demand_conversion_default_modifier`、`demand_conversion_interaction_effect`、`demand_conversion_vassal_ruler_interaction_effect` | 内部异步互动镜像接受率，二元累计接受/拒绝 |
 | 牵制索款 | `demand_payment_interaction`、`golden_obligation_value` | `run_interaction execute_threshold=accept`，由原版 effect 扣款和消耗牵制 |

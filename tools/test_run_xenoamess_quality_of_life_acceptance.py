@@ -9,9 +9,18 @@ from pathlib import Path
 
 import run_acceptance as acceptance
 import run_xenoamess_quality_of_life_acceptance as xqol
+import run_xqol_defense_acceptance as defense
 
 
 class ProductOuterDescriptorTests(unittest.TestCase):
+    def test_defense_only_runner_reuses_isolated_acceptance_contract(self) -> None:
+        self.assertEqual(defense.base.BOOT_TIMEOUT_S, 30 * 60)
+        self.assertIn("ZQA: TEST PASS defense_matrix_done", defense.DEFENSE_MARKERS)
+        decision = (
+            xqol.FIXTURE / "common" / "decisions" / "zqa_decisions.txt"
+        ).read_text(encoding="utf-8-sig")
+        self.assertIn("zqa_initialize_defense_only_decision", decision)
+
     def test_boot_timeout_allows_slow_local_machine_startup(self) -> None:
         self.assertEqual(xqol.BOOT_TIMEOUT_S, 30 * 60)
 

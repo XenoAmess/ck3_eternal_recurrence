@@ -8,6 +8,8 @@
 	state = { name = _show using = Animation_FadeIn_Quick }
 	state = { name = _hide using = Animation_FadeOut_Quick }
 	state = { name = "zqa_initialize" trigger_when = "[GetScriptedGui('zqa_initialize_gui').IsShown( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]" on_start = "[GetScriptedGui('zqa_initialize_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]" }
+	state = { name = "zqa_defense_initialize" trigger_when = "[GetScriptedGui('zqa_defense_initialize_gui').IsShown( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]" on_start = "[GetScriptedGui('zqa_defense_initialize_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]" }
+	state = { name = "zqa_defense_setup_after_switch" trigger_when = "[GetScriptedGui('zqa_defense_setup_after_switch_gui').IsShown( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]" on_start = "[GetScriptedGui('zqa_defense_setup_after_switch_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]" }
 	state = { name = "zqa_enabled" trigger_when = "[GetScriptedGui('zqa_enabled_matrix_gui').IsShown( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]" on_start = "[GetScriptedGui('zqa_enabled_matrix_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]" }
 	state = { name = "zqa_death" trigger_when = "[GetScriptedGui('zqa_death_matrix_gui').IsShown( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]" on_start = "[GetScriptedGui('zqa_death_matrix_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]" }
 	state = { name = "zqa_disabled" trigger_when = "[GetScriptedGui('zqa_disabled_matrix_gui').IsShown( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]" on_start = "[GetScriptedGui('zqa_disabled_matrix_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]" }

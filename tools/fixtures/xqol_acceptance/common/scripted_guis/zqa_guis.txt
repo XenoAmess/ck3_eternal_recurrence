@@ -7,6 +7,24 @@
 	effect = { zqa_initialize_effect = yes }
 }
 
+zqa_defense_initialize_gui = {
+	scope = character
+	is_shown = {
+		is_ai = no
+		has_character_flag = zqa_defense_initialize_pending
+	}
+	effect = { zqa_defense_initialize_effect = yes }
+}
+
+zqa_defense_setup_after_switch_gui = {
+	scope = character
+	is_shown = {
+		is_ai = no
+		has_character_flag = zqa_defense_setup_pending
+	}
+	effect = { zqa_defense_setup_after_switch_effect = yes }
+}
+
 zqa_enabled_matrix_gui = {
 	scope = character
 	is_shown = {

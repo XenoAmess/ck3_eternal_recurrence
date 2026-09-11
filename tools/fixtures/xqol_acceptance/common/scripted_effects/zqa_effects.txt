@@ -71,6 +71,48 @@ zqa_initialize_effect = {
 	}
 }
 
+zqa_defense_initialize_effect = {
+	if = {
+		limit = { has_character_flag = zqa_defense_initialize_pending }
+		remove_character_flag = zqa_defense_initialize_pending
+		add_character_flag = zqa_fixture_initialized
+		debug_log = "ZQA: TEST BEGIN xqol_defense"
+		character:han_8052 = { save_scope_as = zqa_song_emperor }
+		if = {
+			limit = {
+				exists = scope:zqa_song_emperor
+				scope:zqa_song_emperor = {
+					is_alive = yes
+					is_ai = yes
+					is_ruler = yes
+					has_title = title:h_china
+					is_independent_ruler = yes
+					has_government = celestial_government
+				}
+			}
+			debug_log = "ZQA: TEST PASS exact_build_song_emperor"
+			scope:zqa_song_emperor = { add_character_flag = zqa_defense_setup_pending }
+			set_player_character = scope:zqa_song_emperor
+			debug_log = "ZQA: TEST PASS switched_to_supported_player"
+		}
+		else = {
+			debug_log = "ZQA: TEST FAIL exact_build_song_emperor"
+			debug_log = "ZQA: TEST DONE xqol_defense"
+		}
+	}
+}
+
+zqa_defense_setup_after_switch_effect = {
+	if = {
+		limit = {
+			is_ai = no
+			has_character_flag = zqa_defense_setup_pending
+		}
+		remove_character_flag = zqa_defense_setup_pending
+		zqa_setup_defense_matrix_effect = yes
+	}
+}
+
 zqa_run_enabled_matrix_effect = {
 	if = {
 		limit = { has_character_flag = zqa_await_product_toggles }

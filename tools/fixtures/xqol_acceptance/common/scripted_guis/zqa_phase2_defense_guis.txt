@@ -10,6 +10,7 @@
 		var:zqa_phase2_defense_war = {
 			primary_attacker = root.var:zqa_phase2_attacker
 			primary_defender = root
+			war_days >= 2
 		}
 	}
 	effect = { zqa_verify_defense_matrix_effect = yes }

@@ -4,3 +4,7 @@
  zqa_initialize_decision_desc:0 "Switch to the 1066 Song emperor and verify both product toggles against real administrative titles."
  zqa_initialize_decision_tooltip:0 "Begin the isolated acceptance run."
  zqa_initialize_decision_confirm:0 "Switch to the Song emperor"
+ zqa_initialize_defense_only_decision:0 "Start automatic defense-call acceptance"
+ zqa_initialize_defense_only_decision_desc:0 "Switch to the 1066 Song emperor, create a defensive war, and verify free automatic calls."
+ zqa_initialize_defense_only_decision_tooltip:0 "Start the isolated defense-call acceptance."
+ zqa_initialize_defense_only_decision_confirm:0 "Switch and start the war"

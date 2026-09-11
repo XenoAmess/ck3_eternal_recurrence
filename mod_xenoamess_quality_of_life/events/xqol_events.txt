@@ -1,5 +1,22 @@
 ﻿namespace = xqol
 
+xqol.101 = {
+	type = character_event
+	hidden = yes
+
+	trigger = {
+		is_ai = no
+		has_variable = xqol_auto_call_defenders_enabled
+		exists = scope:target
+		scope:target = { primary_defender = root }
+	}
+
+	immediate = {
+		save_scope_as = actor
+		xqol_auto_call_free_defenders_effect = yes
+	}
+}
+
 xqol.100 = {
 	type = character_event
 	title = xqol_mass_conversion_event_title

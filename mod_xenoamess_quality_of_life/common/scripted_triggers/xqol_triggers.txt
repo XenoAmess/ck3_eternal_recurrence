@@ -26,6 +26,48 @@ xqol_human_ruler_trigger = {
 	is_ruler = yes
 }
 
+# Only relationships whose call path is free are admitted. In particular, the
+# piety-priced "call tributary" alternative is intentionally absent.
+xqol_free_ally_relationship_trigger = {
+	scope:recipient = {
+		is_ai = yes
+		is_ruler = yes
+	}
+	OR = {
+		scope:recipient = { is_allied_to = scope:actor }
+		AND = {
+			scope:recipient ?= scope:actor.diarch
+			scope:target = { diarch_callable_in_internal_war_trigger = yes }
+		}
+		scope:actor = {
+			is_vassal_of = scope:recipient
+			subject_contract_has_flag = vassal_contract_liege_forced_war_override
+		}
+		scope:actor = {
+			is_tributary_of = scope:recipient
+			subject_contract_has_flag = tributary_contract_suzerain_guarantee_override
+		}
+		scope:recipient = {
+			is_tributary_of = scope:actor
+			subject_contract_has_flag = tributary_contract_suzerain_guarantee_override
+		}
+	}
+}
+
+xqol_free_house_relationship_trigger = {
+	scope:actor = {
+		is_house_head = yes
+		exists = house
+		house = scope:recipient.house
+		religion = scope:recipient.religion
+	}
+	scope:recipient = {
+		is_ai = yes
+		is_playable_character = yes
+		NOT = { target_is_liege_or_above = scope:actor }
+	}
+}
+
 xqol_free_call_target_valid_trigger = {
 	scope:target = {
 		is_war_leader = scope:actor

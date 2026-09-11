@@ -37,7 +37,10 @@ xqol_on_war_started = {
 			scope:war = { save_scope_as = target }
 			scope:defender = {
 				save_scope_as = actor
-				xqol_auto_call_free_defenders_effect = yes
+				# War and relationship caches are not yet stable inside the
+				# synchronous declaration callback. Preserve the exact war scope
+				# and settle free calls on the following day.
+				trigger_event = { id = xqol.101 days = 1 }
 			}
 		}
 	}

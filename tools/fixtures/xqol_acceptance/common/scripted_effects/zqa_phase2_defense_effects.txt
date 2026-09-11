@@ -61,6 +61,7 @@ zqa_setup_defense_matrix_effect = {
 				is_ai = yes
 				is_alive = yes
 				is_adult = yes
+				is_female = no
 				is_landed = yes
 				is_playable_character = yes
 				is_at_war = no
@@ -82,6 +83,7 @@ zqa_setup_defense_matrix_effect = {
 				is_ai = yes
 				is_alive = yes
 				is_adult = yes
+				is_female = no
 				is_landed = yes
 				is_playable_character = yes
 				is_at_war = no
@@ -102,6 +104,7 @@ zqa_setup_defense_matrix_effect = {
 				is_ai = yes
 				is_alive = yes
 				is_adult = yes
+				is_female = no
 				is_landed = yes
 				is_playable_character = yes
 				is_at_war = no
@@ -122,6 +125,7 @@ zqa_setup_defense_matrix_effect = {
 				is_ai = yes
 				is_alive = yes
 				is_adult = yes
+				is_female = no
 				is_landed = yes
 				is_playable_character = yes
 				is_at_war = no
@@ -152,7 +156,10 @@ zqa_setup_defense_matrix_effect = {
 			scope:zqa_phase2_attacker = { zqa_phase2_break_alliances_effect = yes }
 
 			house = { save_scope_as = zqa_phase2_defense_house }
-			house = { set_house_head = root }
+			if = {
+				limit = { NOT = { is_house_head = yes } }
+				house = { set_house_head = root }
+			}
 
 			scope:zqa_phase2_overlap_ally = {
 				set_house = root.house
@@ -163,16 +170,64 @@ zqa_setup_defense_matrix_effect = {
 				set_character_faith = root.faith
 				create_cadet_branch = { save_scope_as = zqa_phase2_paid_dynasty_house }
 			}
+			# Build genuine marriage-backed alliances. CK3's daily cleanup removes
+			# direct fabricated alliances without a recognized family marriage.
+			create_character = {
+				template = servant_character
+				location = root.capital_province
+				culture = root.culture
+				faith = root.faith
+				age = 18
+				gender_female_chance = 100
+				father = root
+				save_scope_as = zqa_phase2_regular_owner_anchor
+			}
+			create_character = {
+				template = servant_character
+				location = scope:zqa_phase2_regular_ally.capital_province
+				culture = scope:zqa_phase2_regular_ally.culture
+				faith = scope:zqa_phase2_regular_ally.faith
+				age = 18
+				gender_female_chance = 0
+				father = scope:zqa_phase2_regular_ally
+				save_scope_as = zqa_phase2_regular_target_anchor
+			}
+			create_character = {
+				template = servant_character
+				location = root.capital_province
+				culture = root.culture
+				faith = root.faith
+				age = 18
+				gender_female_chance = 100
+				father = root
+				save_scope_as = zqa_phase2_overlap_owner_anchor
+			}
+			create_character = {
+				template = servant_character
+				location = scope:zqa_phase2_overlap_ally.capital_province
+				culture = scope:zqa_phase2_overlap_ally.culture
+				faith = scope:zqa_phase2_overlap_ally.faith
+				age = 18
+				gender_female_chance = 0
+				father = scope:zqa_phase2_overlap_ally
+				save_scope_as = zqa_phase2_overlap_target_anchor
+			}
+			scope:zqa_phase2_regular_owner_anchor = {
+				marry = scope:zqa_phase2_regular_target_anchor
+			}
+			scope:zqa_phase2_overlap_owner_anchor = {
+				marry = scope:zqa_phase2_overlap_target_anchor
+			}
 
 			create_alliance = {
 				target = scope:zqa_phase2_regular_ally
-				allied_through_owner = root
-				allied_through_target = scope:zqa_phase2_regular_ally
+				allied_through_owner = scope:zqa_phase2_regular_owner_anchor
+				allied_through_target = scope:zqa_phase2_regular_target_anchor
 			}
 			create_alliance = {
 				target = scope:zqa_phase2_overlap_ally
-				allied_through_owner = root
-				allied_through_target = scope:zqa_phase2_overlap_ally
+				allied_through_owner = scope:zqa_phase2_overlap_owner_anchor
+				allied_through_target = scope:zqa_phase2_overlap_target_anchor
 			}
 
 			# The paid dynasty interaction must be genuinely affordable so its
@@ -188,6 +243,16 @@ zqa_setup_defense_matrix_effect = {
 				limit = {
 					exists = scope:zqa_phase2_defense_house
 					exists = scope:zqa_phase2_paid_dynasty_house
+					exists = scope:zqa_phase2_regular_owner_anchor
+					exists = scope:zqa_phase2_regular_target_anchor
+					exists = scope:zqa_phase2_overlap_owner_anchor
+					exists = scope:zqa_phase2_overlap_target_anchor
+					scope:zqa_phase2_regular_owner_anchor = {
+						is_spouse_of = scope:zqa_phase2_regular_target_anchor
+					}
+					scope:zqa_phase2_overlap_owner_anchor = {
+						is_spouse_of = scope:zqa_phase2_overlap_target_anchor
+					}
 					house = scope:zqa_phase2_defense_house
 					is_house_head = yes
 					is_dynast = yes
@@ -242,6 +307,60 @@ zqa_setup_defense_matrix_effect = {
 				if = {
 					limit = { exists = scope:zqa_phase2_defense_war }
 					set_variable = { name = zqa_phase2_defense_war value = scope:zqa_phase2_defense_war }
+					save_scope_as = actor
+					scope:zqa_phase2_defense_war = { save_scope_as = target }
+					if = {
+						limit = { any_ally = { this = scope:zqa_phase2_regular_ally } }
+						debug_log = "ZQA: OBSERVED defense_regular_enumerated"
+					}
+					else = { debug_log = "ZQA: OBSERVED defense_regular_not_enumerated" }
+					if = {
+						limit = { any_ally = { this = scope:zqa_phase2_overlap_ally } }
+						debug_log = "ZQA: OBSERVED defense_overlap_enumerated"
+					}
+					else = { debug_log = "ZQA: OBSERVED defense_overlap_not_enumerated" }
+					if = {
+						limit = {
+							is_character_interaction_valid = {
+								recipient = scope:zqa_phase2_regular_ally
+								interaction = call_ally_interaction
+							}
+						}
+						debug_log = "ZQA: OBSERVED defense_regular_interaction_valid"
+					}
+					else = { debug_log = "ZQA: OBSERVED defense_regular_interaction_invalid" }
+					scope:zqa_phase2_regular_ally = { save_scope_as = recipient }
+					if = {
+						limit = { xqol_free_call_target_valid_trigger = yes }
+						debug_log = "ZQA: OBSERVED defense_regular_target_valid"
+					}
+					else = { debug_log = "ZQA: OBSERVED defense_regular_target_invalid" }
+					scope:zqa_phase2_overlap_ally = { save_scope_as = recipient }
+					if = {
+						limit = {
+							is_character_interaction_valid = {
+								recipient = scope:zqa_phase2_overlap_ally
+								interaction = call_house_member_to_war_interaction
+							}
+						}
+						debug_log = "ZQA: OBSERVED defense_overlap_house_interaction_valid"
+					}
+					else = { debug_log = "ZQA: OBSERVED defense_overlap_house_interaction_invalid" }
+					if = {
+						limit = { xqol_free_house_call_target_valid_trigger = yes }
+						debug_log = "ZQA: OBSERVED defense_overlap_target_valid"
+					}
+					else = { debug_log = "ZQA: OBSERVED defense_overlap_target_invalid" }
+					if = {
+						limit = {
+							is_character_interaction_valid = {
+								recipient = scope:zqa_phase2_paid_dynasty_member
+								interaction = call_dynasty_member_to_war_interaction
+							}
+						}
+						debug_log = "ZQA: OBSERVED defense_paid_dynasty_interaction_valid"
+					}
+					else = { debug_log = "ZQA: OBSERVED defense_paid_dynasty_interaction_invalid" }
 					add_character_flag = zqa_phase2_await_defense_verify
 					debug_log = "ZQA: TEST PASS defense_fixture_setup"
 					debug_log = "ZQA: TEST READY defense_auto_call"
@@ -284,6 +403,55 @@ zqa_verify_defense_matrix_effect = {
 		remove_character_flag = zqa_phase2_await_defense_verify
 		save_scope_as = actor
 		var:zqa_phase2_defense_war = { save_scope_as = target }
+		if = {
+			limit = { var:xqol_last_auto_called_count = 0 }
+			debug_log = "ZQA: OBSERVED defense_first_call_count_zero"
+		}
+		else_if = {
+			limit = { var:xqol_last_auto_called_count = 1 }
+			debug_log = "ZQA: OBSERVED defense_first_call_count_one"
+		}
+		else_if = {
+			limit = { var:xqol_last_auto_called_count >= 2 }
+			debug_log = "ZQA: OBSERVED defense_first_call_count_two_or_more"
+		}
+		else = { debug_log = "ZQA: OBSERVED defense_first_call_count_unexpected" }
+		if = {
+			limit = {
+				var:zqa_phase2_defense_war = {
+					was_called = root.var:zqa_phase2_regular_ally
+				}
+			}
+			debug_log = "ZQA: OBSERVED defense_regular_was_called"
+		}
+		else = { debug_log = "ZQA: OBSERVED defense_regular_not_called" }
+		if = {
+			limit = {
+				var:zqa_phase2_defense_war = {
+					is_participant = root.var:zqa_phase2_regular_ally
+				}
+			}
+			debug_log = "ZQA: OBSERVED defense_regular_is_participant"
+		}
+		else = { debug_log = "ZQA: OBSERVED defense_regular_not_participant" }
+		if = {
+			limit = {
+				var:zqa_phase2_defense_war = {
+					was_called = root.var:zqa_phase2_overlap_ally
+				}
+			}
+			debug_log = "ZQA: OBSERVED defense_overlap_was_called"
+		}
+		else = { debug_log = "ZQA: OBSERVED defense_overlap_not_called" }
+		if = {
+			limit = {
+				var:zqa_phase2_defense_war = {
+					is_participant = root.var:zqa_phase2_overlap_ally
+				}
+			}
+			debug_log = "ZQA: OBSERVED defense_overlap_is_participant"
+		}
+		else = { debug_log = "ZQA: OBSERVED defense_overlap_not_participant" }
 
 		if = {
 			limit = {
@@ -330,13 +498,13 @@ zqa_verify_defense_matrix_effect = {
 				var:zqa_phase2_paid_dynasty_member = {
 					is_ai = yes
 					is_ruler = yes
+					is_independent_ruler = yes
 					dynasty = root.dynasty
 					house != root.house
+					religion = root.religion
 				}
-				is_character_interaction_valid = {
-					recipient = var:zqa_phase2_paid_dynasty_member
-					interaction = call_dynasty_member_to_war_interaction
-				}
+				is_dynast = yes
+				dynasty = { dynasty_prestige >= medium_dynasty_prestige_value }
 				var:zqa_phase2_defense_war = {
 					NOT = { is_participant = root.var:zqa_phase2_paid_dynasty_member }
 					NOT = { was_called = root.var:zqa_phase2_paid_dynasty_member }
@@ -357,6 +525,19 @@ zqa_verify_defense_matrix_effect = {
 		var:zqa_phase2_defense_war = { save_scope_as = target }
 		save_scope_as = actor
 		xqol_auto_call_free_defenders_effect = yes
+		if = {
+			limit = { var:xqol_last_auto_called_count = 0 }
+			debug_log = "ZQA: OBSERVED defense_replay_call_count_zero"
+		}
+		else_if = {
+			limit = { var:xqol_last_auto_called_count = 1 }
+			debug_log = "ZQA: OBSERVED defense_replay_call_count_one"
+		}
+		else_if = {
+			limit = { var:xqol_last_auto_called_count >= 2 }
+			debug_log = "ZQA: OBSERVED defense_replay_call_count_two_or_more"
+		}
+		else = { debug_log = "ZQA: OBSERVED defense_replay_call_count_unexpected" }
 
 		if = {
 			limit = {
@@ -370,10 +551,16 @@ zqa_verify_defense_matrix_effect = {
 					NOT = { is_participant = root.var:zqa_phase2_paid_dynasty_member }
 					NOT = { was_called = root.var:zqa_phase2_paid_dynasty_member }
 				}
-				is_character_interaction_valid = {
-					recipient = var:zqa_phase2_paid_dynasty_member
-					interaction = call_dynasty_member_to_war_interaction
+				var:zqa_phase2_paid_dynasty_member = {
+					is_ai = yes
+					is_ruler = yes
+					is_independent_ruler = yes
+					dynasty = root.dynasty
+					house != root.house
+					religion = root.religion
 				}
+				is_dynast = yes
+				dynasty = { dynasty_prestige >= medium_dynasty_prestige_value }
 			}
 			debug_log = "ZQA: TEST PASS defense_overlap_dedup_and_replay_idempotent"
 		}

@@ -303,6 +303,8 @@ def check_scripts(errors: list[str]) -> None:
     if invalid_auto_call_check.search(effects):
         errors.append("automatic calls must use interaction validity, not AI acceptance")
     for token in (
+        "xqol_free_ally_relationship_trigger = yes",
+        "xqol_free_house_relationship_trigger = yes",
         "xqol_free_call_target_valid_trigger = yes",
         "xqol_free_house_call_target_valid_trigger = yes",
         "NOT = { was_called = scope:recipient }",
@@ -312,6 +314,18 @@ def check_scripts(errors: list[str]) -> None:
     ):
         if token not in triggers + effects:
             errors.append(f"automatic-call target gate missing: {token}")
+
+    for forbidden in (
+        "call_dynasty_member_to_war_interaction_effect = yes",
+        "call_house_member_to_war_interaction_effect = yes",
+        "medium_dynasty_prestige_loss",
+        "can_call_tributaries_for_piety",
+    ):
+        if forbidden in effects + triggers:
+            errors.append(f"automatic-call paid path is forbidden: {forbidden}")
+
+    if effects.count("call_ally_interaction_event_effect = yes") < 2:
+        errors.append("free ally and house paths must use the hook-free vanilla join core")
 
     vanilla_contracts = {
         "common/on_action/war_on_actions.txt": ("on_war_started = {",),
