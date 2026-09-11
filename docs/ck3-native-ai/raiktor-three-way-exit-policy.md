@@ -487,3 +487,19 @@ See
 R459 supplies the previously missing production source-specific surrender observation. The six captured event-army executions measured 3000 soldiers at creation and before termination; one accepted surrender destroyed the exact bound generations to zero. The same postwar frame also provides persisted truce expiry `53227656` for the evaluated 1825-day duration. Offline intake `43B0A053...4FE1` normalizes this as observation `BA139830...F462` with `source_specific_loss_comparison_ready=true` and `comparison_input_ready=true`.
 
 This closes the observed-surrender input only. The policy still returns `evidence_required` with exactly three providers: campaign dominance, owner-authored budget, and same-frame white-peace comparison. `recommended_outcome`, decision/action readiness, automatic surrender, and `GEN-034` remain false.
+
+## 2026-09-12 active-war strategic-power input
+
+The existing production native war-entry evaluator can now be queried for the
+current `active_wars[*].primary_opponent_character_id`, in addition to a
+current declaration target. The Python/MCP layer advertises the concrete
+one-target step, rejects IDs outside those two snapshot sources, and returns an
+explicit `target_scopes` classification. The native DLL and frozen assessment
+payload are unchanged. See
+[active-war-strategic-power-query.md](active-war-strategic-power-query.md).
+
+This package is `static-ready`: focused normal and optimized tests each pass
+`23/23`, and no CK3 process was launched. It reduces the campaign observation
+gap but does not yet provide R459's live opponent value. Campaign dominance,
+owner-authored budget, same-frame white-peace comparison, recommendation,
+action readiness, automatic surrender, and `GEN-034` therefore remain false.

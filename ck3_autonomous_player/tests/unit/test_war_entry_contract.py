@@ -16,6 +16,8 @@ from xar_autoplayer.bridge.war_entry_contract import (
     parse_query_war_entry_assessments_step,
     query_war_entry_assessments_step,
     require_declarable_war_targets,
+    require_war_entry_assessment_targets,
+    war_entry_assessment_target_scopes,
 )
 
 
@@ -126,6 +128,50 @@ class WarEntryRequestContractTests(unittest.TestCase):
         )
         with self.assertRaisesRegex(ValueError, "outside current"):
             require_declarable_war_targets(snapshot, [43])
+
+    def test_scope_accepts_current_active_war_primary_opponent(self) -> None:
+        snapshot = {
+            "declarable_wars": [],
+            "active_wars": [
+                {"primary_opponent_character_id": 43},
+                {"primary_opponent_character_id": None},
+            ],
+        }
+
+        self.assertEqual(
+            require_war_entry_assessment_targets(snapshot, [43]),
+            [43],
+        )
+        self.assertEqual(
+            war_entry_assessment_target_scopes(snapshot, [43]),
+            [
+                {
+                    "target_character_id": 43,
+                    "sources": ["active_war_primary_opponent"],
+                }
+            ],
+        )
+
+    def test_scope_reports_both_sources_and_rejects_unrelated_target(self) -> None:
+        snapshot = {
+            "declarable_wars": [{"target_character_id": 42}],
+            "active_wars": [{"primary_opponent_character_id": 42}],
+        }
+
+        self.assertEqual(
+            war_entry_assessment_target_scopes(snapshot, [42]),
+            [
+                {
+                    "target_character_id": 42,
+                    "sources": [
+                        "declarable_war",
+                        "active_war_primary_opponent",
+                    ],
+                }
+            ],
+        )
+        with self.assertRaisesRegex(ValueError, "active-war primary opponents"):
+            require_war_entry_assessment_targets(snapshot, [43])
 
 
 class WarEntryAvailableResultContractTests(unittest.TestCase):

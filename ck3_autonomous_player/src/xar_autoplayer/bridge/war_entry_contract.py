@@ -156,6 +156,90 @@ def require_declarable_war_targets(
     return targets
 
 
+def war_entry_assessment_target_scopes(
+    snapshot: object, target_character_ids: list[int]
+) -> list[dict[str, object]]:
+    """Bind each target to a current declaration or active-war opponent row."""
+    targets = normalize_war_entry_target_ids(target_character_ids)
+    if not isinstance(snapshot, dict):
+        raise ValueError("war-entry assessment requires a snapshot object")
+
+    declarations = snapshot.get("declarable_wars")
+    if not isinstance(declarations, list):
+        raise ValueError("snapshot declarable_wars must be an array")
+    declarable: set[int] = set()
+    for index, row in enumerate(declarations):
+        if not isinstance(row, dict):
+            raise ValueError(f"snapshot declarable_wars[{index}] is malformed")
+        target = row.get("target_character_id")
+        if (
+            isinstance(target, bool)
+            or not isinstance(target, int)
+            or not 1 <= target <= 2**31 - 1
+        ):
+            raise ValueError(
+                f"snapshot declarable_wars[{index}].target_character_id "
+                "is not a positive full-generation CharacterID"
+            )
+        declarable.add(target)
+
+    active_wars = snapshot.get("active_wars", [])
+    if not isinstance(active_wars, list):
+        raise ValueError("snapshot active_wars must be an array")
+    active_opponents: set[int] = set()
+    for index, row in enumerate(active_wars):
+        if not isinstance(row, dict):
+            raise ValueError(f"snapshot active_wars[{index}] is malformed")
+        opponent = row.get("primary_opponent_character_id")
+        # A normalized row may legitimately lack an observable primary
+        # opponent. Such a row cannot authorize this character query.
+        if opponent is None or opponent == 0:
+            continue
+        if (
+            isinstance(opponent, bool)
+            or not isinstance(opponent, int)
+            or not 1 <= opponent <= 2**31 - 1
+        ):
+            raise ValueError(
+                f"snapshot active_wars[{index}].primary_opponent_character_id "
+                "is not a positive full-generation CharacterID"
+            )
+        active_opponents.add(opponent)
+
+    scopes: list[dict[str, object]] = []
+    outside: list[int] = []
+    for target in targets:
+        sources: list[str] = []
+        if target in declarable:
+            sources.append("declarable_war")
+        if target in active_opponents:
+            sources.append("active_war_primary_opponent")
+        if not sources:
+            outside.append(target)
+            continue
+        scopes.append(
+            {
+                "target_character_id": target,
+                "sources": sources,
+            }
+        )
+    if outside:
+        raise ValueError(
+            "target_character_ids are outside current declarable_wars and "
+            f"active-war primary opponents: {outside}"
+        )
+    return scopes
+
+
+def require_war_entry_assessment_targets(
+    snapshot: object, target_character_ids: list[int]
+) -> list[int]:
+    """Require targets to belong to either supported current target scope."""
+    targets = normalize_war_entry_target_ids(target_character_ids)
+    war_entry_assessment_target_scopes(snapshot, targets)
+    return targets
+
+
 def normalize_war_entry_assessments(
     value: object,
     *,

@@ -1028,3 +1028,17 @@ WarID `50331699` / `raiktor_claim_cb` 的 primary-attacker surrender 只有 type
 - R459 unique PID `123140` completed the entire bounded normal lifecycle. It submitted one typed surrender for WarID `33554473`, proved the six-event source set was 3000 soldiers before termination and destroyed to 0 afterward, and read the persisted native truce expiry `53227656` twice. Checkpoint `FAA32578...4E78`, cleanup, session identity, and every ticket check are GREEN.
 - The production report is now policy-consumable through offline intake `43B0A053...4FE1`; `source_specific_loss_ready=true` and `comparison_input_ready=true`. The consumer needed only a production-schema alignment for `terms_ready` and preflight `live_executed`; focused tests pass `5/5` in normal and optimized Python, with no further CK3 launch.
 - `GEN-034` remains unresolved and T1 remains 90%. The exact remaining providers are campaign dominance, owner-authored budget, and same-frame white-peace comparison. Three-way comparison, recommendation, decision, action, and automatic surrender remain false.
+
+## 2026-09-12: GEN-034 active-war power query static-ready
+
+- The existing production-live exact-build strategic-power query now admits a
+  current active-war primary opponent as well as a declaration target. It
+  returns an explicit source classification and keeps the native payload, DLL,
+  one-target bound, paused-frame binding, and fail-closed behavior unchanged.
+- Focused contract/driver/service/strategy/MCP tests pass `23/23` in normal and
+  optimized Python. No CK3 instance was started for this small interface
+  package; current round R469 and old round R468 remain terminated.
+- This opens one bounded read-only query against R459's durable pre-surrender
+  checkpoint. Until that live value exists, campaign dominance remains
+  incomplete. Owner-authored budget and same-frame white-peace comparison are
+  also still missing, so `GEN-034` stays unresolved and T1 stays at 90%.
