@@ -1,6 +1,6 @@
 # G2 source-specific war-loss concrete live adapter
 
-Status: **R440 harness RED before source capture / blocker fix static-ready / live retry pending**.
+Status: **R441 bounded live attempt reached the target-event gate / R440 blocker fix live-validated / source capture still pending**.
 
 ## Delivered platform composition
 
@@ -284,3 +284,35 @@ preflight returns `READY_TO_RUN_G2_SOURCE_SPECIFIC_LIFECYCLE`. Final adapter and
 manifest SHA-256 values are
 `CE9FF6D910D68003EA2768AA28E4B4871595FE648EB9EDDA3CCFECC9C4224848`
 and `29549DFC108DFB734A3FB38D2AF00DE3C042DD928E71E9324F1FAD1C0B4113DE`.
+
+### R441 bounded retry and preserved continuation
+
+R441 launched the exact build once as PID `140912` from root commit
+`a911c253ec29d3de1b204d4e4b91780e3a81e891`. It reached the map and ran only
+the manifest's existing 520-second target window. The repaired recovery path
+closed 18 stock events with a verified OCR option and verified time resumed
+after each one; one modal also required the existing verified timeline-play
+recovery. This is sufficient live evidence for the R440 blocker repair.
+
+`bookmark.1071.a` did not appear before the bounded deadline. No source capture,
+bridge injection or surrender occurred, so source-specific readiness remains
+false and T1 remains 90%. This is a target-event precondition/scheduling miss,
+not a product RED. The exact-build definition schedules `bookmark.1071` at
+`years={1 7}`, requires `gold >= 100`, `is_at_war = no`, and a Byzantine holder
+other than root, then retries after 25 days while that holder condition remains.
+A durable R441 frame at game date `1073-10-31` shows 694 gold, proving that the
+run had already crossed the latest initial scheduling boundary; simply extending
+the same attempt would therefore be the wrong response.
+
+The frozen receipt is
+`Z:\\ck3_mod_rewrite\\_runtime\\g2-source-specific-r441-20260911\\r441-bounded-attempt.json`,
+3,716 bytes, SHA-256
+`E8EE575557FA9D4CF90055FB8B4DC540100E7CCA5867E199594789E038EDF88F`.
+The runner report is 2,979 bytes, SHA-256
+`FDE8FB0AC7A1A269FF238DFD75E4F02F501A4227928ED6B34E92D5024291B128`;
+its cleanup is GREEN and the final CK3 and driver inventories are both empty.
+The preserved `last_save.ck3` is 85,561,556 bytes, SHA-256
+`A0E122CAFA2A89C418C0A641A08A980DD880299E05561B7B6887508E9A351A98`.
+It is only a resume candidate until a hash-bound copy/load admission validates
+it. The next implementation package must consume that checkpoint in a fresh
+userdir instead of replaying the completed prefix or enlarging one live window.
