@@ -113,6 +113,9 @@ def create_pre_mutation_checkpoint(
     """Materialize and bind the exact paused source frame before surrender."""
     war_id = _integer(ticket.get("war_id"), "ticket WarID", minimum=1)
     revision = _integer(ticket.get("source_revision"), "source revision")
+    native_revision = _integer(
+        ticket.get("source_native_revision"), "source native revision"
+    )
     execute = getattr(driver, "execute_step", None)
     if not callable(execute):
         raise LifecycleContractError("durable checkpoint gameplay step is unavailable")
@@ -151,17 +154,23 @@ def create_pre_mutation_checkpoint(
         raise LifecycleContractError("post-checkpoint frame inspection is unavailable")
     observed_diagnostics = _object(diagnostics(), "post-checkpoint diagnostics")
     observed_snapshot = _object(take_snapshot(), "post-checkpoint snapshot")
+    observed_snapshot_id = observed_snapshot.get("snapshot_id")
+    observed_revision = observed_snapshot.get("revision")
+    observed_native_revision = observed_snapshot.get("native_revision")
     frame_checks = {
         "same_pid": observed_diagnostics.get("bridge_pid")
         == ticket.get("source_ck3_pid"),
         "same_connection": observed_diagnostics.get("connection_generation")
         == ticket.get("source_connection_generation"),
-        "same_snapshot": observed_snapshot.get("snapshot_id")
-        == ticket.get("source_snapshot_id"),
-        "same_revision": observed_snapshot.get("revision")
-        == ticket.get("source_revision"),
-        "same_native_revision": observed_snapshot.get("native_revision")
-        == ticket.get("source_native_revision"),
+        "successor_snapshot": isinstance(observed_snapshot_id, str)
+        and bool(observed_snapshot_id)
+        and observed_snapshot_id != ticket.get("source_snapshot_id"),
+        "successor_revision": isinstance(observed_revision, int)
+        and not isinstance(observed_revision, bool)
+        and observed_revision > revision,
+        "successor_native_revision": isinstance(observed_native_revision, int)
+        and not isinstance(observed_native_revision, bool)
+        and observed_native_revision > native_revision,
         "same_date": observed_snapshot.get("date_raw") == ticket.get("date_raw"),
         "same_episode": observed_snapshot.get("episode_run_id")
         == ticket.get("source_episode_run_id"),
@@ -198,6 +207,20 @@ def create_pre_mutation_checkpoint(
             "date_raw": ticket.get("date_raw"),
             "paused": True,
         },
+        "post_checkpoint_frame": {
+            "ck3_pid": observed_diagnostics.get("bridge_pid"),
+            "connection_generation": observed_diagnostics.get(
+                "connection_generation"
+            ),
+            "episode_run_id": observed_snapshot.get("episode_run_id"),
+            "character_id": _played_character_id(observed_snapshot),
+            "war_id": war_id,
+            "snapshot_id": observed_snapshot_id,
+            "revision": observed_revision,
+            "native_revision": observed_native_revision,
+            "date_raw": observed_snapshot.get("date_raw"),
+            "paused": observed_snapshot.get("paused"),
+        },
         "frame_checks": frame_checks,
     }
     binding = copy.deepcopy(binding_body)
@@ -218,7 +241,12 @@ def _pre_mutation_checkpoint_checks(
     declared_binding_sha = binding.pop("binding_sha256", None)
     checkpoint = binding.get("checkpoint")
     frame = binding.get("frame")
-    if not isinstance(checkpoint, dict) or not isinstance(frame, dict):
+    post_checkpoint_frame = binding.get("post_checkpoint_frame")
+    if (
+        not isinstance(checkpoint, dict)
+        or not isinstance(frame, dict)
+        or not isinstance(post_checkpoint_frame, dict)
+    ):
         return {"present": True, "shape": False}
     try:
         checkpoint_sha = _sha256_text(
@@ -252,6 +280,28 @@ def _pre_mutation_checkpoint_checks(
         and frame.get("native_revision") == ticket.get("source_native_revision")
         and frame.get("date_raw") == ticket.get("date_raw")
         and frame.get("paused") is True,
+        "post_checkpoint_successor": post_checkpoint_frame.get("ck3_pid")
+        == ticket.get("source_ck3_pid")
+        and post_checkpoint_frame.get("connection_generation")
+        == ticket.get("source_connection_generation")
+        and post_checkpoint_frame.get("episode_run_id")
+        == ticket.get("source_episode_run_id")
+        and post_checkpoint_frame.get("character_id")
+        == ticket.get("character_id")
+        and post_checkpoint_frame.get("war_id") == ticket.get("war_id")
+        and isinstance(post_checkpoint_frame.get("snapshot_id"), str)
+        and bool(post_checkpoint_frame.get("snapshot_id"))
+        and post_checkpoint_frame.get("snapshot_id")
+        != ticket.get("source_snapshot_id")
+        and isinstance(post_checkpoint_frame.get("revision"), int)
+        and not isinstance(post_checkpoint_frame.get("revision"), bool)
+        and post_checkpoint_frame.get("revision") > ticket.get("source_revision")
+        and isinstance(post_checkpoint_frame.get("native_revision"), int)
+        and not isinstance(post_checkpoint_frame.get("native_revision"), bool)
+        and post_checkpoint_frame.get("native_revision")
+        > ticket.get("source_native_revision")
+        and post_checkpoint_frame.get("date_raw") == ticket.get("date_raw")
+        and post_checkpoint_frame.get("paused") is True,
         "action_bound": ticket.get("termination_action_bound") is True,
     }
 

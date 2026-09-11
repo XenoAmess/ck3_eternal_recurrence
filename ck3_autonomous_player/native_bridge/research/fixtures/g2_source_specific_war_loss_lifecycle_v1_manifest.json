@@ -21,7 +21,7 @@
     "bookmark_events": "Crusader Kings III/game/events/bookmark_events.txt"
   },
   "sha256": {
-    "runner": "FF51D88B50B2EF731F8D6641F532F23722834B26732FEBEF809CC785C04CD4B9",
+    "runner": "D9CDBD56428853E6CCA8DD7A1D3D3ED95A9EE07D28622ED0180E2BB81F0257A4",
     "source_capture_runner": "53E6086EEACB6ABF4B54D2C7186C38E6212237C247A34E30EC442FB544A0BF56",
     "source_provider": "AEFCD4BA93F4435509650E533C84E4E352472A125A7F4379A9D4B143CA97E4CB",
     "source_contract": "346D3DE9105B44749D9BA1E11F820A7C538063980CE53C24A9572B486F9FB247",
@@ -49,7 +49,7 @@
     "paused_dual_current_query_required": true,
     "one_surrender_mutation_required": true,
     "durable_pre_mutation_checkpoint_required": true,
-    "checkpoint_hash_and_same_paused_frame_binding_required": true,
+    "checkpoint_hash_source_frame_and_post_save_successor_binding_required": true,
     "destroyed_exact_generation_cleanup_required": true,
     "two_equal_persisted_expiry_reads_required": true,
     "final_managed_cleanup_required": true,
