@@ -52,3 +52,7 @@ tests pass `23/23` in normal Python and `23/23` under `python -O`. No CK3
 process was launched for this code package. The next live check is one bounded,
 read-only query of R459's durable pre-surrender checkpoint; it is not a long
 campaign run.
+
+## Companion compatibility sync
+
+open_kaishek commit `3d54890451d447fbad26575543fbb2d27e853e59` freezes this additive MCP boundary as `ActiveWarStrategicPowerCapabilityProfile`. Its focused offline Maven test passes `4/4`; the companion remains runtime-uncertified for the active-war source until the bounded root live query is captured.
