@@ -81,6 +81,7 @@ _LEGACY_EMBEDDED_A_VANILLA_TIMELINE_CONTRACTS: Final[
             "founder": 35761,
         },
         "scope_types": {
+            "founder": "character",
             "parent_culture_1": "culture",
             "new_culture": "culture",
             "parent_1": "culture",

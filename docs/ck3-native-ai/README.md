@@ -1,5 +1,7 @@
 # CK3 原生 AI 决策树索引
 
+- [static-ready; metropolitan live retry pending] [?????????`imperial_examination.7100`?](imperial-examination-family-notice.md)????? caller???????????? authored ???????? opt-out ???
+
 - [typed observation/selection production-live slices; aggregate live pending] [天朝二期 Promotion source progress 与 review-now action](zhongguo-promotion-source-progress-and-review-action-v1.md)：冻结 1.19.0.6 exact build；R162 已在 repaired review action 后独立观察真实 B1 active，R193–R207 又在同一 product PID 上连续读取 B1/Central/PP 与 exact current-event。R207 以独立 instance-advanced 后置证明 `zg361pp.150` option `3/2` GREEN，随后在 `.151` instance `130` typed RED；`.151`、剩余 PP、AF5 route 3、`.146 -> D+1 -> .147 -> save` 与完整迁移树仍 pending。ACK 不作状态证据，正式 capability 保持 default-off。
 
 ## 版本与证据边界

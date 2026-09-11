@@ -467,6 +467,52 @@ class ManagerRecoveryInterruptTests(unittest.TestCase):
         self.assertEqual(contract["selected_option_number"], 4)
         self.assertEqual(contract["selected_native_option_index"], 3)
 
+        metropolitan_contract = production._manager_recovery_contract(
+            production.KNOWN_TIMELINE_INTERRUPTS[event_key],
+            player=33596113,
+            event_key=event_key,
+        )
+        metropolitan_contract = production._timeline_contract_for_window(
+            metropolitan_contract,
+            starting_date=54251808,
+        )
+        metropolitan_context = _context(
+            event_key=event_key,
+            instance_id=1114,
+            date_raw=54261336,
+            player=33596113,
+            scopes=[
+                _scope("activity", "activity"),
+                _scope("host", "character", 110448),
+                _scope("province", "province"),
+                _scope("new_memory", "character_memory"),
+                _scope("location", "province"),
+                _scope("metropolitan_entrant", "character", 16889271),
+                _scope("house_member", "character", 16889271),
+            ],
+            native_option_indices=(1, 3),
+        )
+        metropolitan_checks = production._known_interrupt_checks(
+            snapshot={
+                "date_raw": 54261336,
+                "active_event": {"option_count": 4},
+            },
+            event={"event_instance_id": 1114},
+            context=metropolitan_context,
+            event_key=event_key,
+            contract=metropolitan_contract,
+        )
+        self.assertTrue(all(metropolitan_checks.values()), metropolitan_checks)
+        metropolitan_contract = production._interrupt_contract_for_context(
+            metropolitan_context,
+            metropolitan_contract,
+        )
+        self.assertEqual(metropolitan_contract["native_option_indices"], (1, 3))
+        self.assertEqual(metropolitan_contract["selected_option_number"], 4)
+        self.assertEqual(
+            metropolitan_contract["selected_native_option_index"], 3
+        )
+
         game_root = ROOT / "Crusader Kings III"
         if not game_root.is_dir():
             game_root = ROOT.parent / "Crusader Kings III"
@@ -490,6 +536,20 @@ class ManagerRecoveryInterruptTests(unittest.TestCase):
         self.assertIn("minor_stress_impact_loss", opt_out)
         self.assertNotIn("trigger_event", opt_out)
         self.assertNotIn("add_opinion", opt_out)
+
+        activity_path = (
+            game_root
+            / "game/common/activities/activity_types/imperial_examination.txt"
+        )
+        self.assertEqual(
+            hashlib.sha256(activity_path.read_bytes()).hexdigest().upper(),
+            "B7FC4A23A31210DF0C43516A345D9D4A9979259848E023BAAA7DAF4D0413687A",
+        )
+        caller_lines = activity_path.read_text(encoding="utf-8-sig").splitlines()
+        self.assertIn(
+            "trigger_event = imperial_examination.7100",
+            "\n".join(caller_lines[1225:1238]),
+        )
 
     def test_dynastic_chaos_nonroot_notice_invalidates_without_ack(self) -> None:
         event_key = "tgp_dynastic_cycle.0082"
