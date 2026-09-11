@@ -3366,6 +3366,7 @@ class B1RuntimeFoundationTests(unittest.TestCase):
             "var:zg361_b1_calibration_finalized = 0",
             "var:zg361_b1_pending_open_n = 0",
             "var:zg361_b1_oversight_return_status = 0",
+            "var:zg361_b1_oversight_return_status = 2",
             "var:zg361_b1_publication_blocked = 0",
             "var:zg361_b1_quota_built_serial = var:zg361_b1_manager_case_serial",
             "zg361_b1_prune_unavailable_subjects_effect = yes",
@@ -3376,6 +3377,12 @@ class B1RuntimeFoundationTests(unittest.TestCase):
             "callback-free zero-survivor calibration cycle retired before restart",
         ):
             self.assertIn(token, recovery)
+        self.assertNotIn("var:zg361_b1_oversight_return_status = 1", recovery)
+        oversight_gate = recovery.index("OR = {")
+        self.assertLess(
+            oversight_gate,
+            recovery.index("var:zg361_b1_oversight_return_status = 2"),
+        )
         prune_at = recovery.index("zg361_b1_prune_unavailable_subjects_effect = yes")
         self.assertLess(
             prune_at,

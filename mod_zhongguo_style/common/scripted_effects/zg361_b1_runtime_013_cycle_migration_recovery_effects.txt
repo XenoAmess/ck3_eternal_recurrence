@@ -74,10 +74,12 @@ zg361_b1_recover_legacy_active_cycle_effect = {
 }
 
 # A state-7 manager normally reaches the closure gate in the same effect chain,
-# or owns a manager/subject callback represented by pending_open_n or the
-# skip-level return status. R418 retained a production lineage after every one
-# of its 132 weak Character rows had disappeared: both manager lists were empty,
-# no callback remained, and the annual request kept polling the active serial
+# or owns a manager/subject callback represented by pending_open_n or
+# oversight_return_status=1. Status 2 means the one-day skip-level callback has
+# already returned: that callback itself restores state 7 and clears the
+# publication block. R418 retained a production lineage after every one of its
+# 132 weak Character rows had disappeared: both manager lists were empty, no
+# callback remained, and the annual request kept polling the active serial
 # forever. At an existing player-only request boundary, prune once and retire
 # only that exact callback-free zero-survivor state. The caller can then open a
 # new cycle from the current live vassal domain without publishing an empty
@@ -98,7 +100,10 @@ zg361_b1_recover_empty_calibration_cycle_effect = {
 			has_variable = zg361_b1_pending_open_n
 			var:zg361_b1_pending_open_n = 0
 			has_variable = zg361_b1_oversight_return_status
-			var:zg361_b1_oversight_return_status = 0
+			OR = {
+				var:zg361_b1_oversight_return_status = 0
+				var:zg361_b1_oversight_return_status = 2
+			}
 			has_variable = zg361_b1_publication_blocked
 			var:zg361_b1_publication_blocked = 0
 			has_variable = zg361_b1_quota_built_serial

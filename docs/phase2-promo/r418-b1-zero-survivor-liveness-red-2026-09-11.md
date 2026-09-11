@@ -161,3 +161,26 @@ SHA-256 分别为 `64BED75B4A7DE80C004AE3FF2F66DFA3CA9CC0CDB23A3E375FE4AE57602F8
 生产唤醒点改挂这个 pulse，自定义 on_action 用 `trigger = { is_ai = no }` 在入口拒绝 AI，再调用原有严格 recovery effect。
 新的实机复验仍从冻结零幸存者存档开始，只推进到该角色下一次 everyone pulse，保守最多两个游戏年；命中 state `8` / inactive
 后立即停止。当前依然是 `static-ready`，不把 R426 RED 写成已修复。
+
+## R428：everyone pulse 到达窗口仍 RED，根因改为完成态门禁
+
+R428 使用 commit `3438eb1373426cfe0034a99cb2f61779648c8ca7` 的 fresh production projection，从同一冻结
+checkpoint 开始，严格限制为 `740` 游戏日。product tree SHA-256 为
+`188C9D46FFAD61F2175CB5CDA2B97375614FB434B103C3AB3B47230F9C2C5089`；projection receipt SHA-256 为
+`23CFC1F53F2985F8D55E340B6CC3845914A00DA569AB55F91A668F71F31384EB`。运行从 date raw `54251808`
+推进到绝对截止 `54269568` 后按预设边界停止，B1 仍未退役。retained RED 为 `349,273` bytes，SHA-256
+`3854846678DF402C55AF7E2D1434F89FE7492FF6EFE37FC0A486C5B51DAA059E`；canonical / operator cleanup 均
+GREEN，SHA-256 分别为 `93079AC39831DF6030CB30EA71591C08D8927910464A7A5F3CC32FB405D2A560` /
+`7DD7CFBA6D84E75174C1D632D869D498582A9D6E4B179AFB209DACDFA050342F`。
+
+这次结果否定了“只要换到 everyone pulse，原恢复门就会通过”的解释。逐项对照 frozen query 与恢复 effect 后，唯一未由
+B1 snapshot 暴露的前置字段是 `zg361_b1_oversight_return_status`。生成源的状态机给出确定语义：`0` 为未发起，`1` 为
+一日延迟的跳级复核回调在途；`zg361b1.124` 只有在 `1 + state 6 + publication_blocked 1` 时消费 ticket，然后先把状态写成
+`2`，再恢复 `state 7` 并清除 publication block。状态 `2` 因而是**回调已完成**，不是仍有回调。旧恢复门只接受 `0`，会把
+合法完成态 `2` 永久拒绝。R418 的 `state 7 + publication_blocked 0 + pending 0 + zero survivors` 与该完成后形态完全吻合；
+由于 snapshot 没有发布这个字段，这里明确记为“源码状态机 + R428 排除结果”的根因推断，最终由修复后同 checkpoint 的后置状态验证。
+
+最小修复只把恢复门改为接受 `oversight_return_status` 的 `0/2`，继续拒绝唯一在途态 `1`；其余 schema、active、state、closure、
+calibration、pending、publication、serial 与 prune 后双零门全部保持。`random_yearly_everyone_pulse` 入口保留：R422 已实证失地
+玩家不再收到 `yearly_playable_pulse`，若没有这个玩家专属低频入口，完成态门修复仍不会自动执行。该结论当前为
+`static-ready`；只再做一轮同 checkpoint、最多 `740` 游戏日的目标复验，观察退役后立即停止。
