@@ -1,7 +1,8 @@
 # “自动升级建筑”1.19.0.6 维护记录
 
-状态：实现与 L0 已完成；隔离 CK3 实机验收被本机离线冷启动阻断，尚未取得玩法层 GREEN。本文记录的是维护判断和可复核证据，
-不替代上游原始字节记录。
+状态：实现、L0 与隔离 CK3 核心实机矩阵均已完成；
+`desktop-3fevhd2-1c74096080--auto-upgrade-buildings--R0013` 在 CK3 1.19.0.6 上取得 GREEN。本文记录的是维护判断和可复核证据，
+不替代上游原始字节记录，也不代表已经上传 Workshop。
 
 ## 诊断结论
 
@@ -57,5 +58,27 @@
   真实用户资料不变，退出后以 Get-Process/WMI 双源确认 CK3 进程数为 0。该结果只能分类为 environment RED，不能证明玩法 GREEN，
   也没有证据把它归因于本 mod。证据保存在
   `D:\workspace\ck3_auto_upgrade_runtime\R410-maintained-live\artifacts`。
+- R0006 的环境 RED 根因已确认：本任务早先遗留的 `rg.exe` PID 12388（父 PowerShell PID 22848）从 21:45 起扫描整个
+  `D:\workspace`，令 D 盘平均队列约 14、峰值 16、平均传输延迟约 40 ms，而吞吐仅约 7.5 MB/s。按用户指令只终止这两个
+  精确进程后，D 盘平均队列降至约 0.007、延迟约 0.3 ms；R0007 在同一 D 盘本体上 11 分 48 秒到达主菜单，证明阻断来自
+  I/O 竞争，不是 CK3 或本 mod 死锁。
+- R0007 同时暴露并促成修复三项真实 1.19 加载问题：decision 的旧 `ai_check_frequency`、缺失 tooltip 本地化、无引用且缺少
+  本地化/主题的 `auto_build.0001`。修复提交为 `92b94ecf`；此后的 R0008–R0013 产品相关诊断均为零。
+- 游戏迁移到 `C:\SteamLibrary\steamapps\common\Crusader Kings III` 后，EXE SHA-256 保持
+  `2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86`。R0008 首次在 C 盘以隔离 userdir 到达主菜单用时
+  5 分 46 秒，较无竞争 D 盘 R0007 的 11 分 48 秒缩短约 51%；R0009–R0013 稳定在约 5 分钟至 5 分 15 秒。
+- R0008/R0009、R0010/R0011 与 R0012 分别保留为资金假设、跨日被动经济假设、以及非法 fixture `remove_gold` token 导致的
+  fixture/harness RED。它们均未改写产品树或真实用户资料；R0010 已取得 `has_treasury = yes`、国库下降和建筑升一级的正证据，
+  R0011 已通过国库与停用场景。最终夹具在一次性环境中先切换到真实拥有国库的 `celestial_government`，再切回
+  `feudal_government` 验证个人金币路径，并新增静态门拒绝已证伪的 `remove_gold` effect。
+- `desktop-3fevhd2-1c74096080--auto-upgrade-buildings--R0013`：402.065 秒内完成核心 source-live 矩阵并取得 GREEN；国库优先且
+  `outposts_01 → outposts_02` 每轮只升一级、停用后零建筑副作用、无国库时只走个人金币、重新启用后的循环可干净停止、两种资金
+  都不足时建筑不变，五项 marker 全部 PASS；验收结果事件由 OCR 看见并关闭。产品相关诊断为 0，产品 release tree
+  SHA-256 为 `E0B95B5228670633EB7DBFAFA13F2B4555C6B72BCDD12242CA208B1F7DB2224F`，运行前后产品/fixture tree 均不变，
+  临时 userdir 已删除，受保护 Steam/CK3 真实资料未改变，退出后 Get-Process/WMI 均为 0。报告与截图保存在
+  `C:\Users\1\AppData\Local\Temp\desktop-3fevhd2-1c74096080--auto-upgrade-buildings--R0013`。
+- 最终离线构建仍为 7 文件；ZIP SHA-256 为
+  `71143C1550F043CEC004EB4B6C6A7DCBBE2BCD2F62577E91E3FA9FA0BE440471`。
 
-本轮没有 Workshop 上传、订阅缓存覆盖、tag 或正式 release；Steam 在取得上游字节后保持离线。
+本轮没有 Workshop 上传、订阅缓存覆盖、tag 或正式 release；Steam 在取得上游字节后持续保持离线。R0013 完成后连接日志仍只有
+`CClientJobGetClientUpdateHosts: failed to get updated list, error 3`，没有重新登录记录。

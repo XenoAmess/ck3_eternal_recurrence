@@ -1,7 +1,8 @@
 # “自动升级建筑”1.19.0.6 维护验收计划
 
-状态：L0 已完成；L1–L3 的自动 fixture 已就绪，但当前机器的 CK3 离线冷启动在主菜单前超过 1800 秒，故玩法层仍为未验收，
-不是 GREEN。本文定义本轮完成门，不把静态解析、命令 ACK 或文件出现冒充实机功能 GREEN。
+状态：L0 已完成；当前 source-live 核心实机矩阵已由
+`desktop-3fevhd2-1c74096080--auto-upgrade-buildings--R0013` 验收为 GREEN。扩展边界矩阵仍保留为后续计划，不把静态解析、
+命令 ACK 或未执行的场景冒充实机功能 GREEN。
 
 ## 冻结环境
 
@@ -37,20 +38,26 @@
 使用 production projection、外置 fixture 与一次性 `-userdir`，直接启动本地 `ck3.exe`；不启动 PDX Launcher，Steam 保持离线。
 启动前后均以 `Get-Process` 和 WMI 双源清点 CK3。
 
-同一进程串行覆盖：
+R0013 当前在同一进程中串行覆盖：
 
-- 产品实际挂载、进入目标界面、决议可见，产品相关解析错误为零；
-- 禁用状态跨 16 日零变化；启用后跨首次检查与一个完整 15 日周期；
-- 国库足额、国库不足/个人足额、两者不足三种资金分支；
-- 可用革新、不可用革新、正在建设、普通建筑和各排除类别；
-- 新征服直辖地；
-- 保存/重载后的 flag 与单循环行为；
-- 禁用后旧排队事件零副作用，重新启用恢复一次循环。
+- 产品 7 文件 production projection 实际挂载、进入地图、产品相关解析/运行诊断为零；
+- 首次检查、禁用状态跨 16 日不再升级、重新启用后新循环建立并可干净停止；
+- 国库足额、无国库且个人足额、两者都不可用三种实机资金分支；
+- `outposts_01 → outposts_02` 成功路径每轮只升一级；
+- 结果事件可见并由 OCR 确认，运行树、受保护真实资料与进程清理合同保持不变。
+
+以下扩展场景尚未由 R0013 独立覆盖，继续作为后续矩阵，而不是本轮已验证事实：decision 可见性、不可用革新、正在建设、全部
+排除类别、新征服直辖地，以及保存/重载后的 flag 与单循环行为。
 
 fixture 以升级前后 building ID、国库、个人金钱、日期与调度 marker 形成断言；UI 截图只证明玩家可见结果。报告必须绑定 source/runtime
 tree hash、Git commit、CK3 build/EXE hash、日志增量、进程清理及失败 artifact。当前任务不执行 Workshop fresh-cache 发布层验证。
 
-当前实机证据：`desktop-3fevhd2-1c74096080--auto-upgrade-buildings--R0006`（legacy `R410`）已验证精确 release projection、
-fixture、隔离 userdir、受保护真实资料和进程清理合同；但游戏始终停在“启动游戏中……”画面，fixture marker 为零。因此上列产品行为
-仍须在能够正常进入主菜单的环境中执行，不能由本轮静态结果代替。其历史 artifact 路径仍为
-`D:\workspace\ck3_auto_upgrade_runtime\R410-maintained-live\artifacts`，不为迁移编号而改名。
+当前实机证据：`desktop-3fevhd2-1c74096080--auto-upgrade-buildings--R0013` 在 C 盘 CK3 1.19.0.6 上于 402.065 秒完成并 GREEN。
+报告绑定 EXE SHA-256 `2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86`、产品 tree SHA-256
+`E0B95B5228670633EB7DBFAFA13F2B4555C6B72BCDD12242CA208B1F7DB2224F`、五项 PASS marker、零项目诊断、运行树不变、临时
+userdir 删除、受保护资料不变与退出后双源零进程。artifact 位于
+`C:\Users\1\AppData\Local\Temp\desktop-3fevhd2-1c74096080--auto-upgrade-buildings--R0013`。
+
+R0006（legacy `R410`）仍作为原始 environment RED 历史证据保存在
+`D:\workspace\ck3_auto_upgrade_runtime\R410-maintained-live\artifacts`，不为迁移编号而改名；后续已确认其根因为同任务遗留的全盘
+`rg.exe` 扫描造成 D 盘 I/O 竞争。Steam 在全部实机轮次中保持离线，本任务没有执行 Workshop fresh-cache 或上传验证。
