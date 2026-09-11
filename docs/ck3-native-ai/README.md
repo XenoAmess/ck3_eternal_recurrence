@@ -570,4 +570,4 @@ flowchart TD
 
 - source-specific lifecycle 新增显式 `--read-only-pretermination-probe`：复用自然 source 与同 PID 双查询，到 pre-termination 即止，并硬断言没有 checkpoint、action 或 postwar。
 - default-OFF 诊断构建只给现有 default truce reader 增加阶段、callback、failure-enum 与 context telemetry；公开 MCP/ABI 和正常 action gate 不变。诊断 ON 与默认 OFF 两套 bridge 目标均编译通过。
-- 聚焦 normal/`-O` 各 `57/57`，no-launch receipt SHA-256 `7465C044BC059E13D57949FDA29AC560B31CD679F8C017D72A3A63E7E12655AF`，写盘模式为 `read-only-pre-termination`。当前仅 static-ready；T1=90%、`GEN-034` unresolved，CK3=0。
+- 聚焦 normal/`-O` 各 `57/57`，no-launch receipt SHA-256 `E10DA2DBF2DDD3F7B427972223F4162BA886875F1445F47C4320BD375FC6B56D`，写盘模式为 `read-only-pre-termination`。当前仅 static-ready；T1=90%、`GEN-034` unresolved，CK3=0。

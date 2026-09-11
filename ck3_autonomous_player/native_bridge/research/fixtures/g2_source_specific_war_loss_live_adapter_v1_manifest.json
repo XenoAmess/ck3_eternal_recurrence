@@ -2,7 +2,7 @@
   "schema": "xar.ck3.g2_source_specific_war_loss_live_adapter_manifest.v1",
   "status": "static-ready-live-command-default-off",
   "created_at": "2026-09-05T17:10:00+08:00",
-  "candidate_source_commit": "4e943f3b430e8ee907940f7840a71dca31c0d875",
+  "candidate_source_commit": "218f31f544e73be30e4660ebc67ec6795dcae771",
   "candidate_source_change": "read-only pre-termination probe working tree",
   "default_off": true,
   "live_executed": false,
@@ -25,7 +25,7 @@
   "sha256": {
     "adapter": "98D144305BBF03C01D03D009447CAFF8C76EBFE3CF7C00FAA98313EAA37E14E7",
     "outer_owner_runner": "C2E0F7EDA10A9856B44852DDD737D6E13A223311FED25640F73EFDDEB5507AD3",
-    "outer_owner_manifest": "11AAA271D193EBF6BC520FA4C69B8FD5464C72A2B31B0A51ECE6BC11BF71E6C5",
+    "outer_owner_manifest": "8E51DFBDD4CEC34B7B48B2F04F4B9CEACC6C9CCC46FF0F9BF229F3BE917EBC6C",
     "lifecycle_runner": "FF51D88B50B2EF731F8D6641F532F23722834B26732FEBEF809CC785C04CD4B9",
     "source_ui_runner": "53E6086EEACB6ABF4B54D2C7186C38E6212237C247A34E30EC442FB544A0BF56",
     "source_provider": "AEFCD4BA93F4435509650E533C84E4E352472A125A7F4379A9D4B143CA97E4CB",
