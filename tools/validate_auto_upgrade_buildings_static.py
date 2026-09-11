@@ -285,6 +285,13 @@ def validate(game_root: Path = DEFAULT_GAME_ROOT) -> tuple[list[str], bool]:
             errors.append(f"acceptance fixture marker count drifted: {marker}")
     if "on_game_start_after_lobby = {" not in fixture_script:
         errors.append("acceptance fixture is not wired to the post-lobby start")
+    for fragment in (
+        "change_government = celestial_government",
+        "has_treasury = yes",
+        "change_government = feudal_government",
+    ):
+        if fragment not in fixture_script:
+            errors.append(f"acceptance resource-route contract missing: {fragment}")
 
     vanilla_errors, vanilla_checked = validate_vanilla(game_root)
     errors.extend(vanilla_errors)

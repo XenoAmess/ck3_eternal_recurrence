@@ -39,6 +39,11 @@ aubt.1 = {
 		}
 		global_var:aubt_player = {
 			if = {
+				limit = { has_treasury = yes }
+				debug_log = "AUBT: OBSERVED payer_has_treasury yes"
+			}
+			else = { debug_log = "AUBT: OBSERVED payer_has_treasury no" }
+			if = {
 				limit = { culture = { has_innovation = innovation_barracks } }
 				debug_log = "AUBT: OBSERVED payer_innovation barracks"
 			}
@@ -55,10 +60,10 @@ aubt.1 = {
 			else = { debug_log = "AUBT: OBSERVED payer_gold changed"
 			}
 			if = {
-				limit = { any_directly_owned_province = { has_building = outposts_01 } }
-				debug_log = "AUBT: OBSERVED direct_iterator sees_outposts_01"
+				limit = { any_directly_owned_province = { has_building = outposts_02 } }
+				debug_log = "AUBT: OBSERVED direct_iterator sees_outposts_02"
 			}
-			else = { debug_log = "AUBT: OBSERVED direct_iterator misses_outposts_01" }
+			else = { debug_log = "AUBT: OBSERVED direct_iterator misses_outposts_02" }
 		}
 		if = {
 			limit = { has_global_variable = aub_auto_build_loop_started }
@@ -72,6 +77,7 @@ aubt.1 = {
 					NOT = { has_building_or_higher = outposts_03 }
 				}
 				global_var:aubt_player = {
+					has_treasury = yes
 					gold = var:aubt_gold_before
 					treasury < var:aubt_treasury_before
 				}
@@ -106,6 +112,8 @@ aubt.2 = {
 		}
 		else = { debug_log = "AUBT: TEST FAIL disabled_zero_side_effect" }
 		global_var:aubt_player = {
+			# Return to the runner's original resource model for the explicit gold fallback.
+			change_government = feudal_government
 			set_variable = { name = aubt_reset_gold value = gold }
 			if = { limit = { var:aubt_reset_gold > 0 } remove_short_term_gold = var:aubt_reset_gold }
 			set_variable = { name = aubt_reset_treasury value = treasury }

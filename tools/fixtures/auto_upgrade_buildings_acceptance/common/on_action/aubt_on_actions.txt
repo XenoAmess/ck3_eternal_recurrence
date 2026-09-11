@@ -9,6 +9,9 @@ aubt_start = {
 		debug_log = "AUBT: TEST BEGIN source-live"
 		random_player = {
 			set_global_variable = { name = aubt_player value = this }
+			# Force a government that actually exposes CK3 1.19's treasury resource.
+			# The disposable fixture switches back to feudal before testing gold fallback.
+			change_government = celestial_government
 			set_variable = { name = aubt_reset_gold value = gold }
 			if = {
 				limit = { var:aubt_reset_gold > 0 }
