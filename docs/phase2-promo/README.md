@@ -40,7 +40,11 @@ R434/R439 的零游戏日 selector 只排除了 R432/R159 作为 B3 focused 路�
 Stage 10 的独立 action cell 已按上述反向角色拓扑完成静态实现：只从精确 paused `.390` 开始，先由 owner-view provider
 确认所选 manager 的真实 F case 已打开，再切换玩家，并在同一个 30 游戏日绝对截止内等待 `.120` 与 player-subject
 provider 终态；未开 case 时禁止切换，任一条件失败即停且不原地重试。聚焦测试 normal/`-O` 各 `5/5` GREEN，未启动
-CK3，所以状态仅为 `static-ready / live pending`，P1 仍为 `6/9`。完整合同见
+CK3，所以状态仅为 `static-ready / live pending`，P1 仍为 `6/9`。受管 operator 复用现有 frozen-input admission 与
+managed lifecycle，只暴露 `status / run-stage10 / cleanup`，并归档 source/terminal；其 normal/`-O` 测试各 `3/3` GREEN。
+open_kaishek 通用 1.1 adapter 无需生产代码修改，T2 兼容测试与记录已由 commit `bab3efe9883ed730637b4aeac059b228779d0ce2`
+推送，聚焦测试 `13/13` GREEN。
+完整合同见
 [`stage10-player-subject-bounded-action-cell-2026-09-11.md`](stage10-player-subject-bounded-action-cell-2026-09-11.md)。
 
 R408–R414 的终端 lineage 换轨、五玩家 `SAV0102` 两次 native-readiness RED、离线 normalization 的证据边界以及
