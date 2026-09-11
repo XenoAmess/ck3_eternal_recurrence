@@ -595,6 +595,7 @@ def _run(
     args: argparse.Namespace,
     *,
     sequence_runner: Any = _run_mcp_sequence,
+    exact_build_runner: Any = _exact_build_proof,
     report_kind: str = "ck3_war_termination_terms_four_domain_live_acceptance",
     policy_override: dict[str, object] | None = None,
 ) -> tuple[dict[str, object], int]:
@@ -759,7 +760,7 @@ def _run(
             allow_terminal=False,
         )
         capabilities = driver.capabilities()
-        exact_build = _exact_build_proof(
+        exact_build = exact_build_runner(
             capabilities,
             managed_executable_sha256=_sha256_file(spec.game_exe),
             war_id=args.war_id,
