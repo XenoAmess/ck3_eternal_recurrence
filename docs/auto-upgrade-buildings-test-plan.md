@@ -50,6 +50,7 @@
 fixture 以升级前后 building ID、国库、个人金钱、日期与调度 marker 形成断言；UI 截图只证明玩家可见结果。报告必须绑定 source/runtime
 tree hash、Git commit、CK3 build/EXE hash、日志增量、进程清理及失败 artifact。当前任务不执行 Workshop fresh-cache 发布层验证。
 
-当前实机证据：R410 已验证精确 release projection、fixture、隔离 userdir、受保护真实资料和进程清理合同；但游戏始终停在
-“启动游戏中……”画面，fixture marker 为零。因此上列产品行为仍须在能够正常进入主菜单的环境中执行，不能由本轮静态结果代替。
-R410 报告与失败画面位于 `D:\workspace\ck3_auto_upgrade_runtime\R410-maintained-live\artifacts`。
+当前实机证据：`desktop-3fevhd2-1c74096080--auto-upgrade-buildings--R0006`（legacy `R410`）已验证精确 release projection、
+fixture、隔离 userdir、受保护真实资料和进程清理合同；但游戏始终停在“启动游戏中……”画面，fixture marker 为零。因此上列产品行为
+仍须在能够正常进入主菜单的环境中执行，不能由本轮静态结果代替。其历史 artifact 路径仍为
+`D:\workspace\ck3_auto_upgrade_runtime\R410-maintained-live\artifacts`，不为迁移编号而改名。

@@ -47,6 +47,8 @@ jobs:
         run: python tools/test_build_remove_mandala_release.py
       - name: Test Auto Upgrade Buildings release tooling
         run: python tools/test_build_auto_upgrade_buildings_release.py
+      - name: Test machine- and mod-scoped CK3 live-run IDs
+        run: python tools/test_ck3_live_run_id.py
       - name: Test Reclaim the Motherland release tooling
         run: |
           python tools/test_reclaim_the_motherland_contract.py

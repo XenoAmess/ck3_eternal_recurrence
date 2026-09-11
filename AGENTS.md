@@ -300,7 +300,13 @@ GREEN/RED + 退出码，约 5-6 分钟。原理与坐标表见 `docs/testing-wor
 ## 自动游玩 Agent：价值优先与安全边界
 
 - **交付执行保持宽并行，CK3 启动保持排他串行。** 所有不冲突且不依赖 CK3 启动的工作包都应并行铺开；任何启动 CK3 的环节必须取得唯一排他槽，完成后立即释放，CK3 运行期间仍继续推进不依赖该进程的工作。天朝二期 T0-P1 的开发、内容与产品验收全部完成前，T0-P2 宣传视频保持硬锁，禁止提前检查或更新宣传工具、预热物料、取材、制作、导出或发布成片。
-- **CK3 实机轮次只记录当前事实，不固定某个历史编号。** 每次启动前必须证明当前 CK3 进程数为 `0`；每次新启动使用递增的 `R{n}`，同一 PID 的 Python-only 热恢复不新建轮次。重启必须记录旧/新轮次、原因、前后代码与 DLL/游戏/启动配置身份、启动参数和当时 RED；`R372` 或任何其他既有编号只能作为历史证据引用，禁止写成长期固定项或假设仍存活。
+- **CK3 实机编号按机器和 mod 隔离。** 新 attempt 必须在静态/preflight 通过后、启动 CK3 前，用
+  `py tools/ck3_live_run_id.py allocate --mod <canonical-mod-key>` 分配
+  `<machine-id>--<mod-key>--R<n>`；序号只在同一机器与同一 mod 内递增，完整 ID 必须进入 artifact、报告、任务总线与跨文档引用。
+  同一 PID 的 Python-only 热恢复沿用原编号；预先声明的多进程矩阵用同一 ID 下的 `C01/C02/...` 标识 cell，失败后的非计划重跑则
+  分配新编号。多 mod 矩阵为每个被验 mod 各分配一个 ID，并共享 `execution_id`。每次启动前仍必须证明当前 CK3 进程数为 `0`。
+  旧 `R1…R410` 只作为 `legacy_alias` 保留，不改写历史证据；详细合同见
+  `docs/ck3-live-run-identifiers.md`。
 - **全量枚举不是项目义务或产品验收门禁。** 不要求穷举 `361` 个严格场景，也不要求审完 `626` 个 definition；已有结果只作为历史覆盖证据。当前验收只要求产品关键路径、代表性高风险路径和实机真实出现的 RED 闭环。裁剪范围外的问题记录风险与影响面；除非触发关键链或高风险路径，不得扩成主线 blocker，也不得把测试数量替代真实产品能力。
 - **MCP-first 能力必须跨操作者、跨机器可部署。** 新能力优先进入通用 MCP，并通过配置、能力发现和 documented bootstrap 解析游戏、仓库、userdir、pipe 与凭据入口；不得把 Windows 账户、单机绝对路径、临时 PID/会话或某个操作者身份写成协议前提。另一名获授权操作者在另一台兼容机器上应能复用同一 MCP 合同与实现。
 - **原版事件合同统一归档到可复用 registry。** 过去和未来对 vanilla event 的定义、作用域、选项、副作用、安全终止、复发策略与 exact-build/source SHA 分析，都必须 canonicalize 到 `xar_autoplayer` 的通用原版事件 registry，由 gameplay agent 和其他 mod 共用；项目 runner 只消费并绑定当次玩家、日期窗口与 observation evidence，不再把这些知识新增为 `zg361` 专属 shard。新实机变体仍按“保留 RED → 查原版定义 → 最小补充 registry → 热重跑”处理。

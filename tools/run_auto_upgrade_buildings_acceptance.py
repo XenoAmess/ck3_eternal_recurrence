@@ -26,6 +26,7 @@ if "XAR_CK3_EXE" not in os.environ and DEFAULT_CK3_EXE.is_file():
     os.environ["XAR_CK3_EXE"] = str(DEFAULT_CK3_EXE)
 
 import build_auto_upgrade_buildings_release as release
+import ck3_live_run_id as live_ids
 import run_acceptance as acceptance
 import run_terminal_acceptance as terminal
 import run_vivhite_acceptance as isolated
@@ -367,7 +368,12 @@ def verify_protected_snapshot(
             )
 
 
-def run_cell(artifacts: Path, userdir: Path, keep_userdir: bool) -> dict[str, object]:
+def run_cell(
+    artifacts: Path,
+    userdir: Path,
+    keep_userdir: bool,
+    run_identity: live_ids.LiveRunIdentity,
+) -> dict[str, object]:
     started = time.perf_counter()
     started_at = datetime.now(timezone.utc).isoformat()
     artifacts.mkdir(parents=True)
@@ -393,6 +399,11 @@ def run_cell(artifacts: Path, userdir: Path, keep_userdir: bool) -> dict[str, ob
     try:
         watchdog_pid = acceptance.start_process_watchdog(pid_path)
         process = acceptance.launch_ck3_process(False)
+        live_ids.record_live_run_status(
+            run_identity,
+            "launch-started",
+            reason=f"tracked CK3 PID {process.pid}",
+        )
         pid_path.write_text(str(process.pid), encoding="ascii")
         log(f"launched tracked CK3 PID {process.pid}")
         acceptance.wait_for_ocr_text(
@@ -511,6 +522,7 @@ def run_cell(artifacts: Path, userdir: Path, keep_userdir: bool) -> dict[str, ob
         "error_reason": error_reason,
         "started_at_utc": started_at,
         "duration_seconds": round(time.perf_counter() - started, 3),
+        "ck3_launch_attempted": process is not None,
         "game_version": game_version,
         "ck3_executable_before_sha256": executable_before,
         "ck3_executable_after_sha256": executable_after,
@@ -556,9 +568,9 @@ def main(
             raise acceptance.RunnerError(
                 "artifact target must be a new directory under an existing parent"
             )
-    else:
-        stamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-        artifacts = Path(tempfile.gettempdir()) / f"aubt_{stamp}_{uuid.uuid4().hex[:8]}"
+    run_identity = live_ids.allocate_live_run_id("auto-upgrade-buildings")
+    if not artifacts_dir:
+        artifacts = Path(tempfile.gettempdir()) / run_identity.run_id
     userdir = artifacts.with_name(f"aubtu_{uuid.uuid4().hex[:8]}")
     steam_root = terminal.steam_userdata_root()
     workshop_roots = isolated.steam_workshop_app_roots(steam_root)
@@ -566,7 +578,8 @@ def main(
     isolated.ensure_test_paths_safe((artifacts, userdir), steam_root, workshop_roots)
     protected_before = protected_snapshot(steam_root)
     artifacts.mkdir()
-    report = run_cell(artifacts / "cell", userdir, keep_userdir)
+    live_ids.write_identity_receipt(artifacts, (run_identity,))
+    report = run_cell(artifacts / "cell", userdir, keep_userdir, run_identity)
     result = report["result"]
     error_reason = report["error_reason"]
     protected_unchanged = False
@@ -580,8 +593,22 @@ def main(
     except BaseException as error:
         result = "RED"
         error_reason = f"{error_reason}; {error}"
+    try:
+        live_ids.record_live_run_status(
+            run_identity,
+            "completed-green" if result == "GREEN" else "completed-red",
+            reason=(
+                "acceptance matrix passed"
+                if result == "GREEN"
+                else (error_reason or "acceptance matrix failed")
+            ),
+        )
+    except live_ids.LiveRunIdError as error:
+        result = "RED"
+        error_reason = f"{error_reason}; live-run status write failed: {error}"
     matrix = {
         "schema_version": 1,
+        "live_run_identities": [run_identity.to_dict()],
         "result": result,
         "error_reason": error_reason,
         "cell": report,
@@ -590,6 +617,7 @@ def main(
     }
     write_json(artifacts / "report.json", matrix)
     print("\n===== AUTO UPGRADE BUILDINGS ACCEPTANCE =====")
+    print(f"live run                {run_identity.run_id}")
     print(f"cell                    {report['result']}")
     print("protected storage       " + ("UNCHANGED" if protected_unchanged else "UNPROVEN"))
     print(f"artifacts               {artifacts}")
@@ -613,6 +641,6 @@ if __name__ == "__main__":
                 arguments.skip_open_kaishek,
             )
         )
-    except acceptance.RunnerError as error:
+    except (acceptance.RunnerError, live_ids.LiveRunIdError) as error:
         print(f"AUTO UPGRADE BUILDINGS ACCEPTANCE FAILED: {error}", file=sys.stderr)
         raise SystemExit(1)

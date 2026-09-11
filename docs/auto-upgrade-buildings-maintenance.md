@@ -42,12 +42,17 @@
   7 文件 allowlist、5 个构建器单测和 deterministic ZIP 均已通过。
 - Open Kaishek：本机 `D:\workspace\open_kaishek@890b32d` 的 Java 25 启动器在 `java -version` 与 preflight 中均持续卡死；该项是
   工具环境 RED，不是产品 RED，未在无变化条件下重复运行。
-- R405/R406：隔离启动脚手架错误，均在 CK3 进入解析前终止并保留，分类为 harness RED。
-- R407：上游基线直接启动后持续工作，但 1800 秒内未到达日志/主菜单状态；只终止该轮自有 PID，分类为 environment RED。
-- R408：保护快照错误地遍历了 83 个无关 Workshop 树，CK3 未启动；修正 runner 后保留该轮并分类为 harness RED。
-- R409：维护版已启动，但在等待主菜单期间代码复核发现付款后置条件需要补强；只终止本轮自有 PID，修正后以新轮次复验，分类为
+- `desktop-3fevhd2-1c74096080--auto-upgrade-buildings--R0001/R0002`（legacy `R405/R406`）：隔离启动脚手架错误，
+  均在 CK3 进入解析前终止并保留，分类为 harness RED。
+- `desktop-3fevhd2-1c74096080--auto-upgrade-buildings--R0003`（legacy `R407`）：上游基线直接启动后持续工作，但 1800 秒内未到达
+  日志/主菜单状态；只终止该轮自有 PID，分类为 environment RED。
+- `desktop-3fevhd2-1c74096080--auto-upgrade-buildings--R0004`（legacy `R408`）：保护快照错误地遍历了 83 个无关 Workshop 树，
+  CK3 未启动；修正 runner 后保留该轮并分类为 harness RED。
+- `desktop-3fevhd2-1c74096080--auto-upgrade-buildings--R0005`（legacy `R409`）：维护版已启动，但在等待主菜单期间代码复核发现
+  付款后置条件需要补强；只终止本轮自有 PID，修正后以新轮次复验，分类为
   superseded。
-- R410：最终 7 文件 production projection 与外置 fixture 均按精确 tree hash 挂载，CK3 进程持续响应，但 1800 秒内仍停在
+- `desktop-3fevhd2-1c74096080--auto-upgrade-buildings--R0006`（legacy `R410`）：最终 7 文件 production projection 与外置
+  fixture 均按精确 tree hash 挂载，CK3 进程持续响应，但 1800 秒内仍停在
   “启动游戏中……”画面，未进入主菜单或 fixture 场景。`error.log` 为空，报告未发现产品诊断；产品与 fixture 前后 tree hash 不变，
   真实用户资料不变，退出后以 Get-Process/WMI 双源确认 CK3 进程数为 0。该结果只能分类为 environment RED，不能证明玩法 GREEN，
   也没有证据把它归因于本 mod。证据保存在
