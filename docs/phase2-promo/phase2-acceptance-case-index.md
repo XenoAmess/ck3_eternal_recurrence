@@ -57,6 +57,12 @@ definition/场景与 footage 都不能制造 P1 歧义或把 P1 判 RED。它们
 记录；确有真实 encountered RED 时仍按 SOP 闭环，但不得借此扩张 P1 blocker。历史“四项总门”及其剩余项描述自本节起
 `POLICY_SUPERSEDED`。显式 legacy coverage 命令可为自身诊断失败返回 RED；该结果不回写独立 P1 gate。
 
+Stage 10 当前为 `STATIC_READY / LIVE_PENDING`：独立 action cell 从真实 paused `.390` source 保存并确认 Stage 9，先观测
+所选 AI manager 的 F case 已打开，再切换为该 manager；随后在同一个 30 游戏日绝对截止内取得真实 `.120` saved scopes
+与 player-subject provider 的 `state=5 / active=false`。未观测 opening case 时不得切玩家，失败不原地重试。聚焦测试
+normal/`-O` 各 `5/5` GREEN；尚无 live artifact，不能把该状态计入 P1。合同见
+[`stage10-player-subject-bounded-action-cell-2026-09-11.md`](stage10-player-subject-bounded-action-cell-2026-09-11.md)。
+
 R326 的当前 source receipt 是
 `Z:\ck3_mod_rewrite\_runtime\p2r326incidentsource\phase2-source-capture-three-of-four-v3.json`，SHA-256
 `0828ED6F8BD2364145506ED452394B62570F837374086AEE8847420F9D339644`；incident checkpoint 为 `73,156,969` bytes，
