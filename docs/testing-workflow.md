@@ -2557,5 +2557,8 @@ identity/state/receipt。每个查询仍须绑定同一 paused date、played cha
 
 B1 fix 与 AF5 terminal 是独立 P1 工作包，各自使用 hash-bound production-live 收据。cold restore
 不得再次要求代表性存档中的 B1 必须是有奖励 closure，或 AF5 必须正在 terminal；否则会把已经拆分的
-业务验收重新绑回同一条长时间线。代表性存档自身的 Stage 11 Workforce terminal 与 Central callback
+业务验收重新绑回同一条长时间线。AF5 subject 已销毁时，只接受明确的
+`subject_projection_read_failed` tombstone：subject ID 必须仍可读、所有 AF5 typed 业务字段必须统一为
+`unavailable/null/variable_absent`、全部 readiness 必须为 false，并把整份 tombstone 纳入恢复前后相等比较；
+其它 unavailable 原因仍为 RED。代表性存档自身的 Stage 11 Workforce terminal 与 Central callback
 仍是硬前置，不能用普通中间存档冒充终态。
