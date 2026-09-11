@@ -25,6 +25,7 @@ Start-Process "...\binaries\ck3.exe" -ArgumentList "-debug_mode"
 - `resume-map` 的 ACK 后可能短暂读到“旧日期仍 paused”的缓存帧，而 native revision 已经前进；此时不得调用 paused-only terminal query。entry 必须等日期至少前进一次或出现真实事件，再执行下一次 pause/query。这个边界在 speed 1 的绝对截止邻域同样适用，避免同日 resume/pause 空转和 revision mismatch。
 - Windows operator 的首次桌面自动化依赖导入必须发生在 operator 主线程，再创建 live worker。2026-09-12 的一次真实 MCP handoff 已接受 `run-stages`，但后台线程首次加载 `run_acceptance → pyautogui → cv2 → numpy` 时停在 Numpy 原生模块 `create_module`，持续三分钟且未创建 state/artifact、未启动 CK3；线程栈保存在对应 run 的 `prelaunch-hang-thread-dump.txt`。主线程预加载同一模块约 `0.93s`，后台缓存导入约 `0.000004s`。因此这类状态属于 pre-launch harness RED；保存线程栈并回收精确 operator 进程后修复启动顺序，不消耗 CK3 轮次，也不得误报为产品或存档 RED。
 - Stage 10 单玩家来源构造使用 `tools/zg361_stage10_player_source_capture_operator_job.py`。activation 必须 hash 绑定离线 topology、既有 live qualification 和 checkpoint provenance；operator 只接受 `status / capture-source / cleanup`，不允许 retry。实机中只做一次原生玩家切换、同帧 campaign-root 复核和 MCP 原生保存，要求日期不前进。输出 `zg361_stage10_player_source_capture_v1` 后必须再用通用离线 topology 工具检查新存档，随后才能签发 Stage 10 v3 source receipt；这一来源构造不计作 `.120` 产品验收。
+- `ck3_save_player_topology_offline_v1` 的 manager candidate 同时输出 `direct_landed_vassal_count` 与排序后的 `direct_landed_vassal_character_ids`。两者都只计算仍存活、有地、位于 `celestial_vassal` 合同中的直属角色；v3 receipt 使用 ID 列表，避免用计数冒充可回查身份。该字段仍是离线准入证据，live campaign-root MCP 继续负责权威玩家/上级/爵位/政府/规则判定。
 
 ## 当前并行优先级与 `open_kaishek` 预验（2026-09-02 起）
 

@@ -152,10 +152,10 @@ def inspect_melted(path: Path, *, requested_player: int | None = None) -> dict[s
     for title_id, key, holder in titles:
         held.setdefault(holder, []).append((TITLE_RANK[key[0]], key, title_id))
     celestial = [row for row in contracts if row[3] == "celestial_vassal"]
-    child_count: dict[int, int] = {}
+    landed_children: dict[int, list[int]] = {}
     for _, vassal, liege, _ in celestial:
         if vassal in characters:
-            child_count[liege] = child_count.get(liege, 0) + 1
+            landed_children.setdefault(liege, []).append(vassal)
 
     candidates: list[dict[str, object]] = []
     for contract_id, vassal, liege, _ in celestial:
@@ -183,7 +183,10 @@ def inspect_melted(path: Path, *, requested_player: int | None = None) -> dict[s
                 "liege_primary_title_tier": liege_title[0],
                 "liege_primary_title_key": liege_title[1],
                 "liege_government": liege_character["government"],
-                "direct_landed_vassal_count": child_count.get(vassal, 0),
+                "direct_landed_vassal_count": len(landed_children.get(vassal, [])),
+                "direct_landed_vassal_character_ids": sorted(
+                    landed_children.get(vassal, [])
+                ),
             }
         )
     candidates.sort(
@@ -300,4 +303,3 @@ def main(argv: Sequence[str] | None = None) -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
-

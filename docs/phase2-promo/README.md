@@ -55,6 +55,8 @@ R482 后的下一步来源构造已实现为独立受管 operator：从已实机
 
 R483/R484 首次 source-capture 启动的 loader/native 链全部 GREEN，但继承的 worker 错用 AF5 基类 validator，目标字段在 action 前丢失并保留 harness RED。玩家切换、保存和时间推进均未发生；两轮已清理。最小修复让 worker 显式调用 source-specific validator，并增加分派回归测试；下次只允许用递增新轮次执行。见 [R483/R484 分派 RED](r483-r484-stage10-source-capture-dispatch-red-2026-09-12.md)。
 
+R485/R486 已生成合格的 production-live 单玩家来源：玩家从 `32904` 原生切换到经理 `29037`，同帧确认 `29037 -> 32904`、tier 4、celestial 与 `zg361_on` 后保存；日期未推进。新 checkpoint SHA-256 为 `C11AFCF4...21BFA`，离线复核 single-player ready。两轮 cleanup GREEN 并已终止。该来源只解除 v3 admission 前置，P1 仍为 `8/9`；见 [R485/R486 来源捕获 GREEN](r485-r486-stage10-player-source-capture-green-2026-09-12.md)。
+
 R466/R467 随后从距 `.390` 仅 2 游戏日的 production 存档执行了一次有界资格尝试。R467 在真实 `.390` 帧返回
 `no_bounded_ai_direct_manager`，所以该来源的 Stage 10 用途永久淘汰。Stage 11 随后因恢复推进时 paused revision 已变化而返回
 `snapshot changed or is not ready`；首帧缺少 owner/portfolio/case 绑定是 D+2 pump 前的预期状态，不能据此淘汰 Stage 11 来源。
