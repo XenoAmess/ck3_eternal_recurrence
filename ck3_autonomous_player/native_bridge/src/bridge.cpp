@@ -4524,6 +4524,8 @@ struct WarEntryBridgeFrameContext {
   std::uint64_t expected_snapshot_revision = 0;
   xar::game::Snapshot expected_snapshot;
   std::vector<std::int32_t> expected_declarable_target_character_ids;
+  std::vector<std::int32_t>
+      expected_active_war_primary_opponent_character_ids;
 };
 
 bool CaptureWarEntryBridgeFrame(
@@ -4554,6 +4556,8 @@ bool CaptureWarEntryBridgeFrame(
     output.actor_character_id = snapshot.played_character_id;
     output.declarable_target_character_ids =
         context->expected_declarable_target_character_ids;
+    output.active_war_primary_opponent_character_ids =
+        context->expected_active_war_primary_opponent_character_ids;
     return true;
   } catch (...) {
     output = {};
@@ -9067,20 +9071,24 @@ void RunConnectedSession(
               frame_context.game = &game;
               frame_context.expected_snapshot_revision = state_revision;
               frame_context.expected_snapshot = current_snapshot;
-              for (const auto &declaration : current_declarations) {
-                if (declaration.target_character_id > 0 &&
-                    std::find(frame_context
-                                  .expected_declarable_target_character_ids
-                                  .begin(),
-                              frame_context
-                                  .expected_declarable_target_character_ids
-                                  .end(),
-                              declaration.target_character_id) ==
-                        frame_context
-                            .expected_declarable_target_character_ids.end()) {
-                  frame_context.expected_declarable_target_character_ids
-                      .push_back(declaration.target_character_id);
+              const auto append_unique_positive = [](auto &target_ids,
+                                                     std::int32_t target_id) {
+                if (target_id > 0 &&
+                    std::find(target_ids.begin(), target_ids.end(),
+                              target_id) == target_ids.end()) {
+                  target_ids.push_back(target_id);
                 }
+              };
+              for (const auto &declaration : current_declarations) {
+                append_unique_positive(
+                    frame_context.expected_declarable_target_character_ids,
+                    declaration.target_character_id);
+              }
+              for (const auto &war : current_snapshot.active_wars) {
+                append_unique_positive(
+                    frame_context
+                        .expected_active_war_primary_opponent_character_ids,
+                    war.primary_opponent_character_id);
               }
 
               xar::ck3_11906::WarEntryAssessmentMailboxContextV1 query{};

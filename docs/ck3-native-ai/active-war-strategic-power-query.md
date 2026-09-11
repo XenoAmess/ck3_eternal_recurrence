@@ -1,6 +1,6 @@
 # Active-war strategic-power query
 
-Status: `production RED`; exact build: CK3 `1.19.0.6`, executable SHA-256
+Status: `native-fix static-ready; live recheck pending`; exact build: CK3 `1.19.0.6`, executable SHA-256
 `2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86`.
 
 ## Problem and reuse decision
@@ -99,3 +99,23 @@ all captures. The exact evaluator, one-target limit, paused owner-thread
 mailbox, full-generation identity checks, and read-only output remain
 unchanged. Only focused native tests and one bounded new-round live query are
 required; no campaign-length acceptance is justified for this defect.
+
+## Minimal native correction
+
+The corrected frame now carries separate declaration-target and active-war
+primary-opponent vectors. `ReadWarEntryAssessmentsV1` admits the one requested
+CharacterID when it is present in either vector; frame-shape validation and
+the existing before/middle/after structural equality checks cover both. The
+exact evaluator and resolver RVAs, mailbox, one-target cap, wire serializer,
+and legacy failure/readiness spellings are unchanged.
+
+A fresh MSVC 19.51 Release build completed all 545 compile/link steps with the
+header dependency gate intact. Only the directly affected reader and source
+contract CTests were executed; both pass (`2/2`). The candidate DLL is
+`Z:\ck3_mod_rewrite\_runtime\native-builds\r471-active-war-power-r2-20260912\xar_ck3_bridge.dll`
+(SHA-256
+`65C14FE284EA99036DBFBA950B3BE38C3656FA2D064017FD8A38FF21B32B61EF`),
+and the injector SHA-256 is
+`C4CE2042C2559216E816C29081277E064CD276A0097DB85BD7402DC5C16FE389`.
+No CK3 process was started for this build package. The next evidence step is
+one bounded R471 read-only checkpoint query with this exact DLL.

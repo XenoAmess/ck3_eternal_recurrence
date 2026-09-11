@@ -16,6 +16,7 @@ struct WarEntryAssessmentFrameV1 {
   bool actor_alive = false;
   std::int32_t actor_character_id = -1;
   std::vector<std::int32_t> declarable_target_character_ids;
+  std::vector<std::int32_t> active_war_primary_opponent_character_ids;
 
   friend bool operator==(const WarEntryAssessmentFrameV1 &,
                          const WarEntryAssessmentFrameV1 &) = default;

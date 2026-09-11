@@ -235,7 +235,8 @@ flowchart LR
 - [bridge-design] capability 为 `game.command.query-war-entry-assessments-v1-N`；唯一 canonical literal 为
   `query-war-entry-assessments-v1-1-<target_character_id>`。首轮 production 每条请求严格只允许一个正的
   signed-int32 full-generation CharacterID。target 必须存在于同一 snapshot 的
-  `declarable_wars`；同帧 exact `0x2909D30(actor,raw_target)` 解析 effective target。同一 target 的多个
+  `declarable_wars` 或 `active_wars[*].primary_opponent_character_id`；两个来源在 native frame
+  分开冻结并参与三次结构相等检查。同帧 exact `0x2909D30(actor,raw_target)` 解析 effective target。同一 target 的多个
   CB/config 共享这份战略军力评估，不能伪装成 CB-specific 数值。
 - [bridge-design] 每个 assessment 原子返回固定 15 字段：`target_character_id`、
   `effective_target_character_id`、`distance_raw`、`actor_power_base_raw`、
@@ -250,7 +251,8 @@ flowchart LR
   的权威来源是同 sample 的 builder `State16+0x00`，由 exact-build ABI/source-contract 另行锁定。
 - [bridge-design] 顶层绑定 `snapshot_revision`、`date_raw`、`actor_character_id`、请求 ID、readiness 与 exact-build
   provenance（游戏版本、EXE SHA、两个 RVA、power leaf、scale）。worker 在提交前从同一个 paused expected snapshot
-  只调用现有 exact-build `ReadDeclarableWarsForTarget` 复核请求的唯一 target，并冻结该 target 当前仍合法的声明行；
+  只调用现有 exact-build `ReadDeclarableWarsForTarget` 复核请求的唯一 target，并分别冻结该 target 当前仍合法的声明行与
+  snapshot 中的 active-war primary opponents；reader 只接受命中任一集合的 target。
   application-main callback 的 before/middle/after 三次 frame capture 各自 fresh `ReadSnapshot`，且必须逐字段等于该
   expected snapshot。该收窄不缓存旧合法性、不改变 same-frame 门，也不改变策略 cadence；成本从
   `O(all character slots × enabled CB types)` 降为 `O(enabled CB types)`。

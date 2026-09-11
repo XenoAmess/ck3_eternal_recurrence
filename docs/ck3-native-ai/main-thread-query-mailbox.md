@@ -180,8 +180,10 @@ Before, middle, and after world samples are fresh native observations. Each
 `CaptureWarEntryBridgeFrame` call runs on the application-main thread and
 re-reads `GameAdapter::ReadSnapshot`; it compares the complete snapshot with
 the worker's expected revision/frame. Declarability is enumerated once by the
-worker immediately before submit on that same paused expected snapshot and its
-ordered unique target set is frozen into the context. Re-running the global CB
+worker immediately before submit on that same paused expected snapshot, while
+active-war primary opponents come from that complete snapshot. Both ordered
+unique target sets are frozen separately into the context, and the reader
+admits the single target from either set. Re-running the global CB
 enumerator three times would scan the character database on the application
 thread and is deliberately excluded from this one-target bounded path. The
 native reader independently revalidates actor, target,
