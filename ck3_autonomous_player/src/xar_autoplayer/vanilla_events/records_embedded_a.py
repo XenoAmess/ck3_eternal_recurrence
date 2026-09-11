@@ -290,7 +290,7 @@ _LEGACY_EMBEDDED_A_VANILLA_TIMELINE_CONTRACTS: Final[
         "native_option_indices": (1, 2, 3),
         "selected_option_number": 3,
         "selected_native_option_index": 2,
-        "max_occurrences": 1,
+        "occurrence_policy": "repeatable-within-product-observation-window",
     },
     "tgp_movement_events.0150": {
         # CK3 1.19.0.6 Shinto-monk visit. The diplomat-only alliance route is

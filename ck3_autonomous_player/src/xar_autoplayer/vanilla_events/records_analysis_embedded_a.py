@@ -339,6 +339,77 @@ def _build_analysis() -> dict[str, dict[str, object]]:
             },
         }
 
+    movement_rival_analysis = analysis["tgp_movement_events.0060"]
+    movement_rival_analysis["migrated_from"]["review_kind"] = (
+        "exact-build-original-definition-and-live-repeat-review"
+    )
+    movement_rival_analysis.update({
+        "source_sha256": {
+            "events/dlc/tgp/tgp_movement_events.txt": (
+                "D9B172FC6C9F81216BE580C1B65DA7720CAA6EF21F049AB316361E17D3710BC6"
+            ),
+            "common/on_action/dlc/tgp/tgp_china_yearly_on_actions.txt": (
+                "4D6F5379E40304B56C5C1A914E8A0EE3998E8023174DC52F7E5072F7CFA40454"
+            ),
+            "common/on_action/mandate_on_actions.txt": (
+                "C129A3C09A32BE3F2D55686099AB3FC97DBC286E18D75968B8C2553349AD731D"
+            ),
+            "common/on_action/yearly_on_actions.txt": (
+                "0FC85A284224A68D1CA0A4EF071D4F4A4F49896753AEC463975A12EE4E1116FA"
+            ),
+        },
+        "definition_lines": "1165-1412",
+        "caller_semantics": (
+            "the TGP yearly pool includes the event at weight 100, the general "
+            "yearly pool at weight 200, and the placate-movements mandate pool "
+            "at weight 100; none is one-shot and the event has a ten-year cooldown"
+        ),
+        "trigger_boundary": (
+            "available adult celestial-government ruler with TGP enabled, a "
+            "decided dynastic-cycle movement, and at least one valid ruler in a "
+            "different movement"
+        ),
+        "immediate_effect": (
+            "saves the player's movement and selects a valid rival ruler plus "
+            "that ruler's different movement, favoring potential or actual rivals "
+            "and movement leaders"
+        ),
+        "option_semantics": {
+            "0": (
+                "intrigue-focus-only route that increases the player's movement "
+                "power, reduces the rival movement, adds intrigue XP, and applies "
+                "trait-dependent stress"
+            ),
+            "1": (
+                "starts or strengthens a hostile challenge-status scheme against "
+                "the rival, reduces rival movement power, and applies stress"
+            ),
+            "2": (
+                "increases only the player's movement power by the medium value "
+                "and applies trait-dependent stress"
+            ),
+            "3": (
+                "grants piety plus court-chaplain opinion when the faith treats "
+                "calm or compassionate as a virtue, otherwise minor prestige; "
+                "also applies trait-dependent stress"
+            ),
+        },
+        "after_effect": None,
+        "safe_option_rationale": (
+            "native2 avoids a hostile scheme, avoids reducing another movement, "
+            "and does not inspect faith; its bounded effect is a medium power gain "
+            "for the player's existing movement plus possible personality stress"
+        ),
+        "frequency_boundary": (
+            "R422 observed instances 1115 and 1122 for the same played manager "
+            "7,810 in-game days apart; the source cooldown is ten years and all "
+            "three candidate callers permit later recurrence"
+        ),
+    })
+    movement_rival_analysis["existing_boundaries"]["occurrence"] = {
+        "occurrence_policy": "repeatable-within-product-observation-window"
+    }
+
     movement_study_analysis = analysis["tgp_movement_events.0070"]
     movement_study_analysis["migrated_from"]["review_kind"] = (
         "exact-build-original-definition-and-live-repeat-review"

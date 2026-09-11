@@ -1219,6 +1219,16 @@
           "source_line": 3747
         },
         {
+          "caller_candidate_resolution": null,
+          "event_definition_key": "tgp_movement_events.0060",
+          "logical_path": "common/on_action/yearly_on_actions.txt",
+          "origin": "ck3_game",
+          "provenance": "manually-reviewed-analysis-source",
+          "role": "analysis_source",
+          "source_column": null,
+          "source_line": null
+        },
+        {
           "caller_candidate_resolution": "external-definition-file",
           "event_definition_key": "tgp_movement_events.0070",
           "logical_path": "common/on_action/yearly_on_actions.txt",
@@ -3603,6 +3613,16 @@
           "role": "caller_candidate",
           "source_column": 9,
           "source_line": 19
+        },
+        {
+          "caller_candidate_resolution": null,
+          "event_definition_key": "tgp_movement_events.0060",
+          "logical_path": "common/on_action/dlc/tgp/tgp_china_yearly_on_actions.txt",
+          "origin": "ck3_game",
+          "provenance": "manually-reviewed-analysis-source",
+          "role": "analysis_source",
+          "source_column": null,
+          "source_line": null
         },
         {
           "caller_candidate_resolution": "external-definition-file",
@@ -11237,6 +11257,16 @@
           "role": "caller_candidate",
           "source_column": 9,
           "source_line": 35
+        },
+        {
+          "caller_candidate_resolution": null,
+          "event_definition_key": "tgp_movement_events.0060",
+          "logical_path": "common/on_action/mandate_on_actions.txt",
+          "origin": "ck3_game",
+          "provenance": "manually-reviewed-analysis-source",
+          "role": "analysis_source",
+          "source_column": null,
+          "source_line": null
         }
       ],
       "sha256": "c129a3c09a32be3f2d55686099ab3fc97dbc286e18d75968b8c2553349ad731d"
@@ -12670,6 +12700,16 @@
         },
         {
           "caller_candidate_resolution": null,
+          "event_definition_key": "tgp_movement_events.0060",
+          "logical_path": "events/dlc/tgp/tgp_movement_events.txt",
+          "origin": "ck3_game",
+          "provenance": "manually-reviewed-analysis-source",
+          "role": "analysis_source",
+          "source_column": null,
+          "source_line": null
+        },
+        {
+          "caller_candidate_resolution": null,
           "event_definition_key": "tgp_movement_events.0070",
           "logical_path": "events/dlc/tgp/tgp_movement_events.txt",
           "origin": "ck3_game",
@@ -13960,10 +14000,10 @@
     "evidence": 273,
     "generated_definition_references": 182,
     "lexical_caller_candidate_references": 519,
-    "manually_reviewed_analysis_source_references": 264,
+    "manually_reviewed_analysis_source_references": 268,
     "observation_artifact_references": 102,
     "observation_artifacts": 86,
-    "references": 1067,
+    "references": 1071,
     "source_definitions": 187
   }
 }

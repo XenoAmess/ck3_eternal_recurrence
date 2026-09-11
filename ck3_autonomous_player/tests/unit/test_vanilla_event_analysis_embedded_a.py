@@ -39,6 +39,8 @@ def test_analysis_is_json_safe_and_only_reviewed_event_claims_source_hashes() ->
     for event_key, record in VANILLA_EMBEDDED_A_ANALYSIS.items():
         if event_key == "stress_threshold.1721":
             assert len(record["source_sha256"]) == 6
+        elif event_key == "tgp_movement_events.0060":
+            assert len(record["source_sha256"]) == 4
         elif event_key == "tgp_movement_events.0070":
             assert len(record["source_sha256"]) == 3
         elif event_key == "culture_notification.1111":
@@ -58,6 +60,9 @@ def test_each_record_carries_exact_build_and_migration_boundary() -> None:
                 "exact-build-original-definition-and-live-variant-review"
             ),
             "tgp_movement_events.0070": (
+                "exact-build-original-definition-and-live-repeat-review"
+            ),
+            "tgp_movement_events.0060": (
                 "exact-build-original-definition-and-live-repeat-review"
             ),
             "culture_notification.1111": (
@@ -135,6 +140,24 @@ def test_tgp_movement_study_repeat_is_source_reviewed_and_live_bounded() -> None
     assert repeat_green["artifact_sha256"] != repeat_red["artifact_sha256"]
     assert repeat_green["bridge_pid"] == first_green["bridge_pid"]
     assert repeat_green["connection_generation"] == 1
+
+
+def test_tgp_movement_rival_repeat_is_source_reviewed_and_live_bounded() -> None:
+    event_key = "tgp_movement_events.0060"
+    contract = EMBEDDED_A_VANILLA_TIMELINE_CONTRACTS[event_key]
+    analysis = VANILLA_EMBEDDED_A_ANALYSIS[event_key]
+
+    assert "max_occurrences" not in contract
+    assert contract["occurrence_policy"] == (
+        "repeatable-within-product-observation-window"
+    )
+    assert analysis["definition_lines"] == "1165-1412"
+    assert "ten-year cooldown" in analysis["caller_semantics"]
+    assert "none is one-shot" in analysis["caller_semantics"]
+    assert analysis["safe_option"]["selected_native_option_index"] == 2
+    assert "instances 1115 and 1122" in analysis["frequency_boundary"]
+    for digest in analysis["source_sha256"].values():
+        assert len(digest) == 64
 
 
 def test_culture_divergence_notification_is_source_reviewed_and_repeatable() -> None:

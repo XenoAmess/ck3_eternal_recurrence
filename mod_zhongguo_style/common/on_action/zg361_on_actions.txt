@@ -1,5 +1,20 @@
 ﻿# ZhongGuo 361 Style — on_action hooks
-# 只加 on_actions 条目扩展 yearly_playable_pulse，不碰原版 effect/events（覆盖不合并坑）
+# 只加 on_actions 条目扩展原生 pulse，不碰原版 effect/events（覆盖不合并坑）
+
+# yearly_playable_pulse 只覆盖 count+ 角色。失去全部领地的前任天朝玩家
+# 不再收到该 pulse，却仍可能持有等待回调的旧 B1 周期。全局元旦 pulse
+# 没有 root；显式枚举玩家，为这种真实零存活者状态提供稳定唤醒入口。
+yearly_global_pulse = {
+	on_actions = { zg361_b1_player_recovery_on_action }
+}
+
+zg361_b1_player_recovery_on_action = {
+	effect = {
+		every_player = {
+			zg361_b1_recover_empty_calibration_cycle_effect = yes
+		}
+	}
+}
 
 yearly_playable_pulse = {
 	on_actions = { zg361_annual_review_on_action }
