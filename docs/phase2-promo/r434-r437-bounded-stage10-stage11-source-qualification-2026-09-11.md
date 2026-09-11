@@ -1,10 +1,10 @@
-# R434–R437：Stage 10/11 有界 source 资格核对
+# R434–R439：Stage 10/11 有界 source 资格核对
 
 日期：2026-09-11
 
-状态：**R434/R435 资格查询 GREEN，但目标门未满足；R437 为零游戏日 source-boundary RED；P1 仍为 `6/9 = 66.7%`，P2 仍为 `LOCKED`**。
+状态：**R434/R435/R439 资格查询 GREEN，但目标门未满足；R437 为零游戏日 source-boundary RED；P1 仍为 `6/9 = 66.7%`，P2 仍为 `LOCKED`**。
 
-本批遵循“小化改动匹配小化验证、单个 bug 不做永久长跑”的现行规则。三次 gameplay session 都只回答一个预先声明的问题；没有把未满足的结果改成延长观察窗或同形重试。
+本批遵循“小化改动匹配小化验证、单个 bug 不做永久长跑”的现行规则。四次 gameplay session 都只回答一个预先声明的问题；没有把未满足的结果改成延长观察窗或同形重试。
 
 ## R434：Stage 10 manager source 资格
 
@@ -48,6 +48,19 @@ operator 在入口身份检查立即停止，原因是 `current paused frame has
 
 R437 是 source-boundary/harness RED，不是 mod 产品 RED。257 文件一致性不能把一个 pre-entry save 提升为 near-terminal save，也不能据此签收 Stage 11。
 
+## R439：R159 manager seed 的一次性零日资格查询
+
+R159 的历史 contract 真实绑定了 player-manager `32904` 与其 direct reviewable subject `26347`，并证明玩家本人满足 manager entry；它没有证明该玩家麾下存在 Stage 10 selector 所需的“AI、celestial、duke-or-higher direct manager，且该 manager 自己还有 direct subordinate”。因此 R439 只启动一次当前产品与当前 bridge 的 selector 查询，用来补这一个原生事实。
+
+查询前后均为 paused map，player 均为 `32904`，日期均为 `53154120`。返回：
+
+- `status=unavailable`
+- `provider_observed=false`
+- `unavailable_reason=no_bounded_ai_direct_manager`
+- manager/subordinate 均为 `null`
+
+R159 因此也不具备 Stage 10 source 资格。R439 没有推进游戏时间、没有发送事件或玩法动作、没有重试；查询完成后 canonical cleanup 为 GREEN，CK3/injector inventory 为空。这一结果只淘汰该 checkpoint，不构成 Stage 10 产品 RED，也不改变 `stage10_gate_satisfied=false`。
+
 ## 证据
 
 | 轮次 | artifact | SHA-256 |
@@ -60,12 +73,15 @@ R437 是 source-boundary/harness RED，不是 mod 产品 RED。257 文件一致�
 | R437 | `Z:\ck3_mod_rewrite\_runtime\p1-stage11-terminal-r437-20260911\live-artifacts\stage11-bounded-terminal-live.json` | `B1F8A8038A1D6456A234F39048331FAAA620E4A0560CC2659D19C4D2C5EE4C11` |
 | R437 | canonical cleanup | `341A333C0C829B810D0C7CB0E33B197B5937F1F7F0B1447C2758531B9052EECC` |
 | R437 | operator cleanup | `1932156F8F7E2C6246F049C0DC9A9C413064D3160E9A09A8FCFF2F16AC80D43F` |
+| R439 | R159 source contract | `BAD92E689FEDF460F5E194E55AE1D56BE881D0D83AC091113593150182131033` |
+| R439 | `Z:\ck3_mod_rewrite\_runtime\p1-stage10-r159-source-r439-20260911\live-artifacts\stage10-zero-advance-source-qualification.json` | `D2CE38B5D855843DE70D50589D10E170AA4AE77EB09CAEFB2FCCDD2ADF733AD6` |
+| R439 | canonical cleanup | `5BEC7631A16D9CCFB2B2B6AF3BE0CD00C65ED7E8B807E5DD5C5CED7B82B02851` |
 
-R434、R435 与 R437 清理后的 CK3/injector inventory 均为空。全部 runtime operator、profile 和 artifact 均在仓库外 `_runtime`，没有修改 mod 产品树。
+R434、R435、R437 与 R439 清理后的 CK3/injector inventory 均为空。全部 runtime operator、profile 和 artifact 均在仓库外 `_runtime`，没有修改 mod 产品树。
 
 ## 后续施工边界
 
-Stage 10 下一步只接受离线可证明包含合格 AI manager/direct subordinate 的真实 checkpoint，或由既有 manager seed 路径生成并在同轮保存的 checkpoint。不得再对 R432 checkpoint 查询或长等 `.120`。
+Stage 10 下一步只接受离线可证明包含合格 AI manager/direct subordinate 的真实 checkpoint，或由能构造并当轮验证该真实层级的既有路径生成的 checkpoint。不得再对 R432 或 R159 checkpoint 查询，也不得在不合格 source 上长等 `.120`。
 
 Stage 11 下一步只接受以下输入之一：
 
