@@ -213,6 +213,10 @@ MAX_ADVANCE_DAYS = (
     + POST_RECONCILIATION_RECOVERY_DAYS
 )
 HOURS_PER_DAY = 24
+# R465 proved that speed 5 can cross two game days between public snapshots.
+# Slow only the final three days so a bounded source route can pause on its
+# declared deadline without turning the whole observation window into a crawl.
+BOUNDARY_THROTTLE_DAYS = 3
 # Native bridge snapshots publish on a 250 ms heartbeat. A just-submitted
 # pause can become visible to Python before the next heartbeat has replaced
 # every cached Snapshot field used by the query's direct-read equality gate.
@@ -299,6 +303,19 @@ def _observation_bound_label(
         f"critical-path tail plus {ENDGAME_TARGET_WORKFORCE_CYCLES} finite "
         f"{WORKFORCE_CYCLE_OBSERVATION_DAYS}-day Workforce windows)"
     )
+
+
+def _bounded_timeline_speed_step(
+    *, date_raw: int, absolute_end_date: int
+) -> str | None:
+    """Choose the fast path or the final bounded approach; None means stop."""
+
+    remaining = absolute_end_date - date_raw
+    if remaining <= 0:
+        return None
+    if remaining <= BOUNDARY_THROTTLE_DAYS * HOURS_PER_DAY:
+        return "set-speed-1"
+    return "set-speed-5"
 
 
 def _runtime_diagnostic_probe_binding(
@@ -1931,7 +1948,7 @@ def _map_control_from_latest_binding(
     sent.
     """
 
-    if step not in {"pause-map", "resume-map", "set-speed-5"}:
+    if step not in {"pause-map", "resume-map", "set-speed-1", "set-speed-5"}:
         raise ValueError(f"unsupported rebound map control: {step}")
 
     def raise_postcondition(
@@ -1982,8 +1999,8 @@ def _map_control_from_latest_binding(
             event is not None or snapshot.get("paused") is not True
         ):
             return None
-        if step == "set-speed-5" and (
-            event is not None or snapshot.get("speed") == 5
+        if step in {"set-speed-1", "set-speed-5"} and (
+            event is not None or snapshot.get("speed") == int(step[-1])
         ):
             return None
         revision = int(snapshot["revision"])
@@ -4329,9 +4346,14 @@ def enter_promotion_source_checkpoint_v1(
         has_active_event_surface = isinstance(
             snapshot.get("active_event"), Mapping
         )
+        bounded_speed_step = _bounded_timeline_speed_step(
+            date_raw=date_raw,
+            absolute_end_date=absolute_end_date,
+        )
         if (
             snapshot.get("paused") is not True
             and not has_active_event_surface
+            and bounded_speed_step == "set-speed-5"
             and date_raw < last_progress_date_raw + progress_sample_interval_raw
         ):
             if poll_interval_seconds:
@@ -4794,10 +4816,28 @@ def enter_promotion_source_checkpoint_v1(
             if poll_interval_seconds:
                 sleeper(poll_interval_seconds)
             continue
-        if snapshot.get("speed") != 5:
+        bounded_speed_step = _bounded_timeline_speed_step(
+            date_raw=date_raw,
+            absolute_end_date=absolute_end_date,
+        )
+        if bounded_speed_step is None:
+            _raise_runtime_diagnostic(
+                service,
+                diagnostic=(
+                    "promotion path reached its "
+                    + _observation_bound_label(
+                        timeline_origin_date=timeline_origin_date,
+                        absolute_end_date=absolute_end_date,
+                    )
+                ),
+                snapshot=snapshot,
+                player=player,
+            )
+        target_speed = int(bounded_speed_step[-1])
+        if snapshot.get("speed") != target_speed:
             _map_control_from_latest_binding(
                 service,
-                step="set-speed-5",
+                step=bounded_speed_step,
                 player=player,
                 connection_generation=generation,
                 rebind_audit=evidence["pre_submission_revision_rebinds"],

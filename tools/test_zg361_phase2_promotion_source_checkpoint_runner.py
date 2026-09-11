@@ -105,6 +105,35 @@ def _player_manager_seed_contract(seed_sha: str = "A" * 64) -> dict[str, object]
 
 
 class PromotionSourceCheckpointRunnerTests(unittest.TestCase):
+    def test_bounded_timeline_slows_only_for_final_three_days_and_stops(self) -> None:
+        end = 1_000_000
+        self.assertEqual(
+            production._bounded_timeline_speed_step(
+                date_raw=end - 4 * production.HOURS_PER_DAY,
+                absolute_end_date=end,
+            ),
+            "set-speed-5",
+        )
+        self.assertEqual(
+            production._bounded_timeline_speed_step(
+                date_raw=end - 3 * production.HOURS_PER_DAY,
+                absolute_end_date=end,
+            ),
+            "set-speed-1",
+        )
+        self.assertIsNone(
+            production._bounded_timeline_speed_step(
+                date_raw=end,
+                absolute_end_date=end,
+            )
+        )
+        self.assertIsNone(
+            production._bounded_timeline_speed_step(
+                date_raw=end + production.HOURS_PER_DAY,
+                absolute_end_date=end,
+            )
+        )
+
     def test_initial_m146_is_the_valid_paused_product_target(self) -> None:
         common = {
             "player": 32904,
@@ -1793,7 +1822,7 @@ class PromotionSourceCheckpointRunnerTests(unittest.TestCase):
                     "played_character": {"character_id": 32904},
                     "diagnostics": {"connection_generation": 56},
                     "paused": True,
-                    "speed": 1,
+                    "speed": 5 if self.step == "set-speed-1" else 1,
                 }
 
             def execute_step(
@@ -1809,7 +1838,7 @@ class PromotionSourceCheckpointRunnerTests(unittest.TestCase):
                     f"expected {expected_revision}, current {expected_revision + 1}"
                 )
 
-        for step in ("resume-map", "set-speed-5"):
+        for step in ("resume-map", "set-speed-1", "set-speed-5"):
             with self.subTest(step=step):
                 service = Service(step)
                 audit: list[dict[str, object]] = []

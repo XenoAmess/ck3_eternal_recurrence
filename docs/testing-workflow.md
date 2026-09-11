@@ -2537,3 +2537,8 @@ The focused regression shape is: preserve the exact pre-save frame for source/ti
 A no-launch postprocessor should build its fixture from the producer's emitted report rather than inventing an equivalent boundary name. R459's live adapter emits `preflight.boundaries.live_executed=false` and the final report adds `terms_ready=true`. An older fixture used `ck3_started_or_attached=false` and omitted `terms_ready`, so its tests were GREEN while the first production report was rejected.
 
 The bounded correction is to require the producer's actual fields and values, update the fixture, and replay the already frozen report. This class of offline schema mismatch requires no CK3 restart and should be verified with only the affected consumer tests plus the one frozen artifact replay.
+# 有界自然推进的截止帧
+
+R465 实测表明，speed 5 下两个只读 snapshot 之间可能跨过两个游戏日。只在循环顶部比较 `date_raw > absolute_end_date_raw` 会发现越界，却不能保证进程停在声明的截止帧。
+
+promotion-source 有界推进现在保留主体 speed-5 吞吐，但在绝对截止前三天切到 speed 1；当目标事件和同帧产品状态都检查完且 `date_raw >= absolute_end_date_raw` 时，直接保留 RED，不再发送 resume。该规则只修复实测的窗口越界，不增加观察天数，也不要求为单个 bug 单独运行 CK3 长跑；下一条本来就需要执行的 source 路由同时承担 live 验证。
