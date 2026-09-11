@@ -25,25 +25,18 @@ auto_build.0001 = {
     }
 }
 
-# 自动建造循环触发器
+# 旧存档兼容入口：上游版本排队的 auto_build.0003 会在更新后汇入唯一全局循环。
 auto_build.0003 = {
     type = character_event
-    trigger = { has_character_flag = enable_auto_build }
+    trigger = {
+        is_ai = no
+        has_character_flag = enable_auto_build
+    }
     hidden = yes
     
     immediate = {
         hidden_effect = {
-            # 触发所有建筑的自动升级
-            trigger_event = {
-                id = auto_build.0004
-                days = 1
-            }
-            
-            # 设置下一次触发
-            trigger_event = {
-                id = auto_build.0003
-                days = 15
-            }
+            aub_start_global_loop_effect = yes
         }
     }
 }
@@ -51,18 +44,59 @@ auto_build.0003 = {
 # 自动建造执行事件
 auto_build.0004 = {
     type = character_event
+    trigger = {
+        is_ai = no
+        has_character_flag = enable_auto_build
+    }
     hidden = yes
     
     immediate = {
         hidden_effect = {
-            # 在所有直辖领地执行建筑升级
-            every_province = {
+            save_scope_as = aub_payer
+            # 仅遍历当前玩家直接持有的普通、未出租地产。
+            every_directly_owned_province = {
                 limit = {
-                    province_owner = root
+                    has_ongoing_construction = no
                     barony = { is_leased_out = no }
+                    OR = {
+                        has_holding_type = castle_holding
+                        has_holding_type = city_holding
+                        has_holding_type = church_holding
+                    }
                 }
-                add_all_buildings_effect = yes
+                province_owner = { save_scope_as = holder }
+                province_owner = { save_scope_as = build_owner }
+                aub_upgrade_all_supported_buildings_effect = yes
             }
+        }
+    }
+}
+
+# 单实例全局循环。没有启用该功能的真人玩家时，循环自行停止并释放 seed。
+auto_build.0005 = {
+    scope = none
+    trigger = { has_global_variable = aub_auto_build_loop_started }
+    hidden = yes
+
+    immediate = {
+        if = {
+            limit = {
+                any_player = {
+                    is_ai = no
+                    has_character_flag = enable_auto_build
+                }
+            }
+            every_player = {
+                limit = {
+                    is_ai = no
+                    has_character_flag = enable_auto_build
+                }
+                trigger_event = { id = auto_build.0004 }
+            }
+            trigger_event = { id = auto_build.0005 days = 15 }
+        }
+        else = {
+            remove_global_variable = aub_auto_build_loop_started
         }
     }
 }

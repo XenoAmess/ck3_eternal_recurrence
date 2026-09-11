@@ -17,13 +17,10 @@
     }
 
     effect = {
-		custom_tooltip = enable_auto_build_text
+        custom_tooltip = enable_auto_build_text
         add_character_flag = enable_auto_build
-        # 立即开始自动建造循环
-        trigger_event = {
-            id = auto_build.0003
-            days = 1
-        }
+        # 建立或复用唯一的全局循环；首次检查在一天后执行。
+        aub_start_global_loop_effect = yes
     }
     
     ai_potential = {

@@ -28,7 +28,7 @@
 - [ck3-agent-one-life-terminal.md](ck3-agent-one-life-terminal.md) — Python/MCP 一代制终局状态机、纪录位稳定等待、旧 DLL 兼容与跨局成就归一
 - [autonomous-player-phase-a-evidence.md](autonomous-player-phase-a-evidence.md) — Phase A 三次真实 non-debug CK3 isolation smoke 的冻结指纹、hash-chain 一致性校验、诊断边界与明确非声明
 - [workshop-publishing.md](workshop-publishing.md) — **创意工坊发布**（启动器上传器）：物料清单、picture 路径解析、预览图 1MB 限制、remote_file_id 内外层之别、更新流程
-- [auto-upgrade-buildings-upstream.md](auto-upgrade-buildings-upstream.md) / [auto-upgrade-buildings-test-plan.md](auto-upgrade-buildings-test-plan.md) — “自动升级建筑”上游 3596580780 的逐文件冻结身份、Steam 离线证据与 CK3 1.19.0.6 维护验收合同
+- [auto-upgrade-buildings-upstream.md](auto-upgrade-buildings-upstream.md) / [auto-upgrade-buildings-maintenance.md](auto-upgrade-buildings-maintenance.md) / [auto-upgrade-buildings-test-plan.md](auto-upgrade-buildings-test-plan.md) — “自动升级建筑”上游 3596580780 的逐文件冻结身份、1.19.0.6 故障诊断、维护实现、Steam 离线证据与验收合同
 - [vivhite-courtier.md](vivhite-courtier.md) — **白绮特供独立版**：隔离边界、ervc 命名空间、生成/构建/验收与独立 Workshop 契约
 - [image-assets.md](image-assets.md) — 图片源文件命名、CK3 DDS 投影、事件背景/决议引用与静态校验链
 

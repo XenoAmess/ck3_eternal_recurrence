@@ -1,0 +1,4 @@
+﻿l_english:
+ aubt_acceptance_title:0 "Auto Upgrade Buildings: acceptance passed"
+ aubt_acceptance_desc:0 "The maintained 1.19 runtime completed treasury priority, personal-gold fallback, insufficient-funds, one-tier, disable, and restart checks."
+ aubt_acceptance_option:0 "Close"

@@ -1,0 +1,151 @@
+﻿namespace = aubt
+
+aubt.1 = {
+	scope = none
+	hidden = yes
+	immediate = {
+		if = {
+			limit = {
+				global_var:aubt_province = {
+					has_building = outposts_02
+					NOT = { has_building_or_higher = outposts_03 }
+				}
+				global_var:aubt_player = {
+					gold = var:aubt_gold_before
+					treasury < var:aubt_treasury_before
+				}
+				has_global_variable = aub_auto_build_loop_started
+			}
+			debug_log = "AUBT: TEST PASS treasury_priority_one_tier"
+		}
+		else = { debug_log = "AUBT: TEST FAIL treasury_priority_one_tier" }
+		global_var:aubt_player = {
+			remove_character_flag = enable_auto_build
+			set_variable = { name = aubt_disabled_gold value = gold }
+			set_variable = { name = aubt_disabled_treasury value = treasury }
+		}
+		trigger_event = { id = aubt.2 days = 16 }
+	}
+}
+
+aubt.2 = {
+	scope = none
+	hidden = yes
+	immediate = {
+		if = {
+			limit = {
+				global_var:aubt_province = { has_building = outposts_02 }
+				global_var:aubt_player = {
+					gold = var:aubt_disabled_gold
+					treasury = var:aubt_disabled_treasury
+				}
+				NOT = { has_global_variable = aub_auto_build_loop_started }
+			}
+			debug_log = "AUBT: TEST PASS disabled_zero_side_effect"
+		}
+		else = { debug_log = "AUBT: TEST FAIL disabled_zero_side_effect" }
+		global_var:aubt_player = {
+			set_variable = { name = aubt_reset_gold value = gold }
+			if = { limit = { var:aubt_reset_gold > 0 } remove_short_term_gold = var:aubt_reset_gold }
+			set_variable = { name = aubt_reset_treasury value = treasury }
+			if = { limit = { var:aubt_reset_treasury > 0 } remove_short_term_treasury = var:aubt_reset_treasury }
+			add_gold = 100000
+			set_variable = { name = aubt_gold_before value = gold }
+			capital_province = {
+				remove_building = outposts_02
+				add_building = outposts_01
+			}
+			add_character_flag = enable_auto_build
+			aub_start_global_loop_effect = yes
+		}
+		trigger_event = { id = aubt.3 days = 3 }
+	}
+}
+
+aubt.3 = {
+	scope = none
+	hidden = yes
+	immediate = {
+		if = {
+			limit = {
+				global_var:aubt_province = {
+					has_building = outposts_02
+					NOT = { has_building_or_higher = outposts_03 }
+				}
+				global_var:aubt_player = {
+					treasury = 0
+					gold < var:aubt_gold_before
+				}
+			}
+			debug_log = "AUBT: TEST PASS personal_gold_fallback"
+		}
+		else = { debug_log = "AUBT: TEST FAIL personal_gold_fallback" }
+		global_var:aubt_player = {
+			remove_character_flag = enable_auto_build
+			set_variable = { name = aubt_disabled_gold value = gold }
+			set_variable = { name = aubt_disabled_treasury value = treasury }
+		}
+		trigger_event = { id = aubt.4 days = 16 }
+	}
+}
+
+aubt.4 = {
+	scope = none
+	hidden = yes
+	immediate = {
+		if = {
+			limit = {
+				global_var:aubt_province = { has_building = outposts_02 }
+				global_var:aubt_player = {
+					gold = var:aubt_disabled_gold
+					treasury = var:aubt_disabled_treasury
+				}
+				NOT = { has_global_variable = aub_auto_build_loop_started }
+			}
+			debug_log = "AUBT: TEST PASS reenabled_loop_stopped_cleanly"
+		}
+		else = { debug_log = "AUBT: TEST FAIL reenabled_loop_stopped_cleanly" }
+		global_var:aubt_player = {
+			set_variable = { name = aubt_reset_gold value = gold }
+			if = { limit = { var:aubt_reset_gold > 0 } remove_short_term_gold = var:aubt_reset_gold }
+			set_variable = { name = aubt_reset_treasury value = treasury }
+			if = { limit = { var:aubt_reset_treasury > 0 } remove_short_term_treasury = var:aubt_reset_treasury }
+			capital_province = {
+				remove_building = outposts_02
+				add_building = outposts_01
+			}
+			add_character_flag = enable_auto_build
+			aub_start_global_loop_effect = yes
+		}
+		trigger_event = { id = aubt.5 days = 3 }
+	}
+}
+
+aubt.5 = {
+	scope = none
+	hidden = yes
+	immediate = {
+		if = {
+			limit = {
+				global_var:aubt_province = { has_building = outposts_01 }
+				global_var:aubt_player = { gold = 0 treasury = 0 }
+			}
+			debug_log = "AUBT: TEST PASS insufficient_funds_no_change"
+			debug_log = "AUBT: TEST DONE source-live"
+			global_var:aubt_player = {
+				remove_character_flag = enable_auto_build
+				trigger_event = aubt.900
+			}
+		}
+		else = { debug_log = "AUBT: TEST FAIL insufficient_funds_no_change" }
+	}
+}
+
+aubt.900 = {
+	type = character_event
+	title = aubt_acceptance_title
+	desc = aubt_acceptance_desc
+	theme = realm
+
+	option = { name = aubt_acceptance_option }
+}

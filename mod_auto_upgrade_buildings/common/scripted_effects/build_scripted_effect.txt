@@ -1,604 +1,5684 @@
-﻿## 简化的建筑升级系统 - 按经济/军事/城防分类
+﻿# GENERATED FILE. DO NOT EDIT.
+# Source: tools/auto_upgrade_buildings_data.py
 
-# 经济建筑升级模板 - 革新要求：轮作→庄园制→风车→起重机
-au_simple_economy_upgrade = {
-    if = {
-        limit = {
-            OR = {
-                prev = { treasury >= normal_building_tier_2_cost }
-                prev = { gold >= normal_building_tier_2_cost }
-            }
-            has_building = $BUILDING$_01
-            prev.culture = { has_innovation = innovation_crop_rotation }
-            building_requirement_castle_city_church = { LEVEL = 01 }
-        }
-        add_building = $BUILDING$_02
-        if = {
-            limit = { prev = { treasury >= normal_building_tier_2_cost } }
-            prev = { remove_short_term_treasury = normal_building_tier_2_cost }
-        }
-        else = {
-            prev = { remove_short_term_gold = normal_building_tier_2_cost }
-        }
-    }
-    if = {
-        limit = {
-            OR = {
-                prev = { treasury >= normal_building_tier_3_cost }
-                prev = { gold >= normal_building_tier_3_cost }
-            }
-            has_building = $BUILDING$_02
-            prev.culture = { has_innovation = innovation_manorialism }
-            building_requirement_castle_city_church = { LEVEL = 02 }
-        }
-        add_building = $BUILDING$_03
-        if = {
-            limit = { prev = { treasury >= normal_building_tier_3_cost } }
-            prev = { remove_short_term_treasury = normal_building_tier_3_cost }
-        }
-        else = {
-            prev = { remove_short_term_gold = normal_building_tier_3_cost }
-        }
-    }
-    if = {
-        limit = {
-            OR = {
-                prev = { treasury >= normal_building_tier_4_cost }
-                prev = { gold >= normal_building_tier_4_cost }
-            }
-            has_building = $BUILDING$_03
-            prev.culture = { has_innovation = innovation_manorialism }
-            building_requirement_castle_city_church = { LEVEL = 02 }
-        }
-        add_building = $BUILDING$_04
-        if = {
-            limit = { prev = { treasury >= normal_building_tier_4_cost } }
-            prev = { remove_short_term_treasury = normal_building_tier_4_cost }
-        }
-        else = {
-            prev = { remove_short_term_gold = normal_building_tier_4_cost }
-        }
-    }
-    if = {
-        limit = {
-            OR = {
-                prev = { treasury >= normal_building_tier_5_cost }
-                prev = { gold >= normal_building_tier_5_cost }
-            }
-            has_building = $BUILDING$_04
-            prev.culture = { has_innovation = innovation_windmills }
-            building_requirement_castle_city_church = { LEVEL = 03 }
-        }
-        add_building = $BUILDING$_05
-        if = {
-            limit = { prev = { treasury >= normal_building_tier_5_cost } }
-            prev = { remove_short_term_treasury = normal_building_tier_5_cost }
-        }
-        else = {
-            prev = { remove_short_term_gold = normal_building_tier_5_cost }
-        }
-    }
-    if = {
-        limit = {
-            OR = {
-                prev = { treasury >= normal_building_tier_6_cost }
-                prev = { gold >= normal_building_tier_6_cost }
-            }
-            has_building = $BUILDING$_05
-            prev.culture = { has_innovation = innovation_windmills }
-            building_requirement_castle_city_church = { LEVEL = 03 }
-        }
-        add_building = $BUILDING$_06
-        if = {
-            limit = { prev = { treasury >= normal_building_tier_6_cost } }
-            prev = { remove_short_term_treasury = normal_building_tier_6_cost }
-        }
-        else = {
-            prev = { remove_short_term_gold = normal_building_tier_6_cost }
-        }
-    }
-    if = {
-        limit = {
-            OR = {
-                prev = { treasury >= normal_building_tier_7_cost }
-                prev = { gold >= normal_building_tier_7_cost }
-            }
-            has_building = $BUILDING$_06
-            prev.culture = { has_innovation = innovation_cranes }
-            building_requirement_castle_city_church = { LEVEL = 04 }
-        }
-        add_building = $BUILDING$_07
-        if = {
-            limit = { prev = { treasury >= normal_building_tier_7_cost } }
-            prev = { remove_short_term_treasury = normal_building_tier_7_cost }
-        }
-        else = {
-            prev = { remove_short_term_gold = normal_building_tier_7_cost }
-        }
-    }
-    if = {
-        limit = {
-            OR = {
-                prev = { treasury >= normal_building_tier_8_cost }
-                prev = { gold >= normal_building_tier_8_cost }
-            }
-            has_building = $BUILDING$_07
-            prev.culture = { has_innovation = innovation_cranes }
-            building_requirement_castle_city_church = { LEVEL = 04 }
-        }
-        add_building = $BUILDING$_08
-        if = {
-            limit = { prev = { treasury >= normal_building_tier_8_cost } }
-            prev = { remove_short_term_treasury = normal_building_tier_8_cost }
-        }
-        else = {
-            prev = { remove_short_term_gold = normal_building_tier_8_cost }
-        }
-    }
+aub_start_global_loop_effect = {
+	if = {
+		limit = { NOT = { has_global_variable = aub_auto_build_loop_started } }
+		set_global_variable = { name = aub_auto_build_loop_started value = 1 }
+		trigger_event = { id = auto_build.0005 days = 1 }
+	}
 }
 
-# 军事建筑升级模板 - 革新要求：兵营→堡寨→城堡内堡→君主军械库
-au_simple_military_upgrade = {
-    if = {
-        limit = {
-            OR = {
-                prev = { treasury >= normal_building_tier_2_cost }
-                prev = { gold >= normal_building_tier_2_cost }
-            }
-            has_building = $BUILDING$_01
-            prev.culture = { has_innovation = innovation_barracks }
-            building_requirement_castle_city_church = { LEVEL = 01 }
-        }
-        add_building = $BUILDING$_02
-        if = {
-            limit = { prev = { treasury >= normal_building_tier_2_cost } }
-            prev = { remove_short_term_treasury = normal_building_tier_2_cost }
-        }
-        else = {
-            prev = { remove_short_term_gold = normal_building_tier_2_cost }
-        }
-    }
-    if = {
-        limit = {
-            OR = {
-                prev = { treasury >= normal_building_tier_3_cost }
-                prev = { gold >= normal_building_tier_3_cost }
-            }
-            has_building = $BUILDING$_02
-            prev.culture = { has_innovation = innovation_burhs }
-            building_requirement_castle_city_church = { LEVEL = 02 }
-        }
-        add_building = $BUILDING$_03
-        if = {
-            limit = { prev = { treasury >= normal_building_tier_3_cost } }
-            prev = { remove_short_term_treasury = normal_building_tier_3_cost }
-        }
-        else = {
-            prev = { remove_short_term_gold = normal_building_tier_3_cost }
-        }
-    }
-    if = {
-        limit = {
-            OR = {
-                prev = { treasury >= normal_building_tier_4_cost }
-                prev = { gold >= normal_building_tier_4_cost }
-            }
-            has_building = $BUILDING$_03
-            prev.culture = { has_innovation = innovation_burhs }
-            building_requirement_castle_city_church = { LEVEL = 02 }
-        }
-        add_building = $BUILDING$_04
-        if = {
-            limit = { prev = { treasury >= normal_building_tier_4_cost } }
-            prev = { remove_short_term_treasury = normal_building_tier_4_cost }
-        }
-        else = {
-            prev = { remove_short_term_gold = normal_building_tier_4_cost }
-        }
-    }
-    if = {
-        limit = {
-            OR = {
-                prev = { treasury >= normal_building_tier_5_cost }
-                prev = { gold >= normal_building_tier_5_cost }
-            }
-            has_building = $BUILDING$_04
-            prev.culture = { has_innovation = innovation_castle_baileys }
-            building_requirement_castle_city_church = { LEVEL = 03 }
-        }
-        add_building = $BUILDING$_05
-        if = {
-            limit = { prev = { treasury >= normal_building_tier_5_cost } }
-            prev = { remove_short_term_treasury = normal_building_tier_5_cost }
-        }
-        else = {
-            prev = { remove_short_term_gold = normal_building_tier_5_cost }
-        }
-    }
-    if = {
-        limit = {
-            OR = {
-                prev = { treasury >= normal_building_tier_6_cost }
-                prev = { gold >= normal_building_tier_6_cost }
-            }
-            has_building = $BUILDING$_05
-            prev.culture = { has_innovation = innovation_castle_baileys }
-            building_requirement_castle_city_church = { LEVEL = 03 }
-        }
-        add_building = $BUILDING$_06
-        if = {
-            limit = { prev = { treasury >= normal_building_tier_6_cost } }
-            prev = { remove_short_term_treasury = normal_building_tier_6_cost }
-        }
-        else = {
-            prev = { remove_short_term_gold = normal_building_tier_6_cost }
-        }
-    }
-    if = {
-        limit = {
-            OR = {
-                prev = { treasury >= normal_building_tier_7_cost }
-                prev = { gold >= normal_building_tier_7_cost }
-            }
-            has_building = $BUILDING$_06
-            prev.culture = { has_innovation = innovation_royal_armory }
-            building_requirement_castle_city_church = { LEVEL = 04 }
-        }
-        add_building = $BUILDING$_07
-        if = {
-            limit = { prev = { treasury >= normal_building_tier_7_cost } }
-            prev = { remove_short_term_treasury = normal_building_tier_7_cost }
-        }
-        else = {
-            prev = { remove_short_term_gold = normal_building_tier_7_cost }
-        }
-    }
-    if = {
-        limit = {
-            OR = {
-                prev = { treasury >= normal_building_tier_8_cost }
-                prev = { gold >= normal_building_tier_8_cost }
-            }
-            has_building = $BUILDING$_07
-            prev.culture = { has_innovation = innovation_royal_armory }
-            building_requirement_castle_city_church = { LEVEL = 04 }
-        }
-        add_building = $BUILDING$_08
-        if = {
-            limit = { prev = { treasury >= normal_building_tier_8_cost } }
-            prev = { remove_short_term_treasury = normal_building_tier_8_cost }
-        }
-        else = {
-            prev = { remove_short_term_gold = normal_building_tier_8_cost }
-        }
-    }
+aub_pay_building_cost_effect = {
+	if = {
+		limit = { scope:aub_payer = { treasury >= $COST$ } }
+		scope:aub_payer = { remove_short_term_treasury = $COST$ }
+	}
+	else = {
+		scope:aub_payer = { remove_short_term_gold = $COST$ }
+	}
 }
 
-# 城防建筑升级模板 - 革新要求：土岗→城垛→悬墙→堞口
-au_simple_fortification_upgrade = {
-    if = {
-        limit = {
-            OR = {
-                prev = { treasury >= cheap_building_tier_2_cost }
-                prev = { gold >= cheap_building_tier_2_cost }
-            }
-            has_building = $BUILDING$_01
-            prev.culture = { has_innovation = innovation_motte }
-            building_requirement_castle_city_church = { LEVEL = 01 }
-        }
-        add_building = $BUILDING$_02
-        if = {
-            limit = { prev = { treasury >= cheap_building_tier_2_cost } }
-            prev = { remove_short_term_treasury = cheap_building_tier_2_cost }
-        }
-        else = {
-            prev = { remove_short_term_gold = cheap_building_tier_2_cost }
-        }
-    }
-    if = {
-        limit = {
-            OR = {
-                prev = { treasury >= cheap_building_tier_3_cost }
-                prev = { gold >= cheap_building_tier_3_cost }
-            }
-            has_building = $BUILDING$_02
-            prev.culture = { has_innovation = innovation_battlements }
-            building_requirement_castle_city_church = { LEVEL = 02 }
-        }
-        add_building = $BUILDING$_03
-        if = {
-            limit = { prev = { treasury >= cheap_building_tier_3_cost } }
-            prev = { remove_short_term_treasury = cheap_building_tier_3_cost }
-        }
-        else = {
-            prev = { remove_short_term_gold = cheap_building_tier_3_cost }
-        }
-    }
-    if = {
-        limit = {
-            OR = {
-                prev = { treasury >= cheap_building_tier_4_cost }
-                prev = { gold >= cheap_building_tier_4_cost }
-            }
-            has_building = $BUILDING$_03
-            prev.culture = { has_innovation = innovation_battlements }
-            building_requirement_castle_city_church = { LEVEL = 02 }
-        }
-        add_building = $BUILDING$_04
-        if = {
-            limit = { prev = { treasury >= cheap_building_tier_4_cost } }
-            prev = { remove_short_term_treasury = cheap_building_tier_4_cost }
-        }
-        else = {
-            prev = { remove_short_term_gold = cheap_building_tier_4_cost }
-        }
-    }
-    if = {
-        limit = {
-            OR = {
-                prev = { treasury >= cheap_building_tier_5_cost }
-                prev = { gold >= cheap_building_tier_5_cost }
-            }
-            has_building = $BUILDING$_04
-            prev.culture = { has_innovation = innovation_hoardings }
-            building_requirement_castle_city_church = { LEVEL = 03 }
-        }
-        add_building = $BUILDING$_05
-        if = {
-            limit = { prev = { treasury >= cheap_building_tier_5_cost } }
-            prev = { remove_short_term_treasury = cheap_building_tier_5_cost }
-        }
-        else = {
-            prev = { remove_short_term_gold = cheap_building_tier_5_cost }
-        }
-    }
-    if = {
-        limit = {
-            OR = {
-                prev = { treasury >= cheap_building_tier_6_cost }
-                prev = { gold >= cheap_building_tier_6_cost }
-            }
-            has_building = $BUILDING$_05
-            prev.culture = { has_innovation = innovation_hoardings }
-            building_requirement_castle_city_church = { LEVEL = 03 }
-        }
-        add_building = $BUILDING$_06
-        if = {
-            limit = { prev = { treasury >= cheap_building_tier_6_cost } }
-            prev = { remove_short_term_treasury = cheap_building_tier_6_cost }
-        }
-        else = {
-            prev = { remove_short_term_gold = cheap_building_tier_6_cost }
-        }
-    }
-    if = {
-        limit = {
-            OR = {
-                prev = { treasury >= cheap_building_tier_7_cost }
-                prev = { gold >= cheap_building_tier_7_cost }
-            }
-            has_building = $BUILDING$_06
-            prev.culture = { has_innovation = innovation_machicolations }
-            building_requirement_castle_city_church = { LEVEL = 04 }
-        }
-        add_building = $BUILDING$_07
-        if = {
-            limit = { prev = { treasury >= cheap_building_tier_7_cost } }
-            prev = { remove_short_term_treasury = cheap_building_tier_7_cost }
-        }
-        else = {
-            prev = { remove_short_term_gold = cheap_building_tier_7_cost }
-        }
-    }
-    if = {
-        limit = {
-            OR = {
-                prev = { treasury >= cheap_building_tier_8_cost }
-                prev = { gold >= cheap_building_tier_8_cost }
-            }
-            has_building = $BUILDING$_07
-            prev.culture = { has_innovation = innovation_machicolations }
-            building_requirement_castle_city_church = { LEVEL = 04 }
-        }
-        add_building = $BUILDING$_08
-        if = {
-            limit = { prev = { treasury >= cheap_building_tier_8_cost } }
-            prev = { remove_short_term_treasury = cheap_building_tier_8_cost }
-        }
-        else = {
-            prev = { remove_short_term_gold = cheap_building_tier_8_cost }
-        }
-    }
+# Caravanserai
+aub_upgrade_caravanserai_effect = {
+	if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= expensive_building_tier_2_cost }
+				scope:aub_payer = { gold >= expensive_building_tier_2_cost }
+			}
+			has_building = caravanserai_01
+			scope:aub_payer.culture = {
+				has_innovation = innovation_guilds
+			}
+			building_requirement_castle_city_church = { LEVEL = 01 }
+		}
+		add_building = caravanserai_02
+		if = {
+			limit = { has_building = caravanserai_02 }
+			aub_pay_building_cost_effect = { COST = expensive_building_tier_2_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= expensive_building_tier_3_cost }
+				scope:aub_payer = { gold >= expensive_building_tier_3_cost }
+			}
+			has_building = caravanserai_02
+			scope:aub_payer.culture = {
+				has_innovation = innovation_guilds
+			}
+			building_requirement_castle_city_church = { LEVEL = 02 }
+		}
+		add_building = caravanserai_03
+		if = {
+			limit = { has_building = caravanserai_03 }
+			aub_pay_building_cost_effect = { COST = expensive_building_tier_3_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= expensive_building_tier_4_cost }
+				scope:aub_payer = { gold >= expensive_building_tier_4_cost }
+			}
+			has_building = caravanserai_03
+			scope:aub_payer.culture = {
+				has_innovation = innovation_guilds
+			}
+			building_requirement_castle_city_church = { LEVEL = 02 }
+		}
+		add_building = caravanserai_04
+		if = {
+			limit = { has_building = caravanserai_04 }
+			aub_pay_building_cost_effect = { COST = expensive_building_tier_4_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= expensive_building_tier_5_cost }
+				scope:aub_payer = { gold >= expensive_building_tier_5_cost }
+			}
+			has_building = caravanserai_04
+			scope:aub_payer.culture = {
+				has_innovation = innovation_guilds
+			}
+			building_requirement_castle_city_church = { LEVEL = 03 }
+		}
+		add_building = caravanserai_05
+		if = {
+			limit = { has_building = caravanserai_05 }
+			aub_pay_building_cost_effect = { COST = expensive_building_tier_5_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= expensive_building_tier_6_cost }
+				scope:aub_payer = { gold >= expensive_building_tier_6_cost }
+			}
+			has_building = caravanserai_05
+			scope:aub_payer.culture = {
+				has_innovation = innovation_cranes
+			}
+			building_requirement_castle_city_church = { LEVEL = 03 }
+		}
+		add_building = caravanserai_06
+		if = {
+			limit = { has_building = caravanserai_06 }
+			aub_pay_building_cost_effect = { COST = expensive_building_tier_6_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= expensive_building_tier_7_cost }
+				scope:aub_payer = { gold >= expensive_building_tier_7_cost }
+			}
+			has_building = caravanserai_06
+			scope:aub_payer.culture = {
+				has_innovation = innovation_cranes
+			}
+			building_requirement_castle_city_church = { LEVEL = 04 }
+		}
+		add_building = caravanserai_07
+		if = {
+			limit = { has_building = caravanserai_07 }
+			aub_pay_building_cost_effect = { COST = expensive_building_tier_7_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= expensive_building_tier_8_cost }
+				scope:aub_payer = { gold >= expensive_building_tier_8_cost }
+			}
+			has_building = caravanserai_07
+			scope:aub_payer.culture = {
+				has_innovation = innovation_cranes
+			}
+			building_requirement_castle_city_church = { LEVEL = 04 }
+		}
+		add_building = caravanserai_08
+		if = {
+			limit = { has_building = caravanserai_08 }
+			aub_pay_building_cost_effect = { COST = expensive_building_tier_8_cost }
+		}
+	}
 }
 
-# 通用建筑升级模板 - 革新要求：城市规划→庄园制→风车→起重机
-au_simple_common_upgrade = {
-    if = {
-        limit = {
-            OR = {
-                prev = { treasury >= normal_building_tier_2_cost }
-                prev = { gold >= normal_building_tier_2_cost }
-            }
-            has_building = $BUILDING$_01
-            prev.culture = { has_innovation = innovation_city_planning }
-            building_requirement_castle_city_church = { LEVEL = 01 }
-        }
-        add_building = $BUILDING$_02
-        if = {
-            limit = { prev = { treasury >= normal_building_tier_2_cost } }
-            prev = { remove_short_term_treasury = normal_building_tier_2_cost }
-        }
-        else = {
-            prev = { remove_short_term_gold = normal_building_tier_2_cost }
-        }
-    }
-    if = {
-        limit = {
-            OR = {
-                prev = { treasury >= normal_building_tier_3_cost }
-                prev = { gold >= normal_building_tier_3_cost }
-            }
-            has_building = $BUILDING$_02
-            prev.culture = { has_innovation = innovation_manorialism }
-            building_requirement_castle_city_church = { LEVEL = 02 }
-        }
-        add_building = $BUILDING$_03
-        if = {
-            limit = { prev = { treasury >= normal_building_tier_3_cost } }
-            prev = { remove_short_term_treasury = normal_building_tier_3_cost }
-        }
-        else = {
-            prev = { remove_short_term_gold = normal_building_tier_3_cost }
-        }
-    }
-    if = {
-        limit = {
-            OR = {
-                prev = { treasury >= normal_building_tier_4_cost }
-                prev = { gold >= normal_building_tier_4_cost }
-            }
-            has_building = $BUILDING$_03
-            prev.culture = { has_innovation = innovation_manorialism }
-            building_requirement_castle_city_church = { LEVEL = 02 }
-        }
-        add_building = $BUILDING$_04
-        if = {
-            limit = { prev = { treasury >= normal_building_tier_4_cost } }
-            prev = { remove_short_term_treasury = normal_building_tier_4_cost }
-        }
-        else = {
-            prev = { remove_short_term_gold = normal_building_tier_4_cost }
-        }
-    }
-    if = {
-        limit = {
-            OR = {
-                prev = { treasury >= normal_building_tier_5_cost }
-                prev = { gold >= normal_building_tier_5_cost }
-            }
-            has_building = $BUILDING$_04
-            prev.culture = { has_innovation = innovation_windmills }
-            building_requirement_castle_city_church = { LEVEL = 03 }
-        }
-        add_building = $BUILDING$_05
-        if = {
-            limit = { prev = { treasury >= normal_building_tier_5_cost } }
-            prev = { remove_short_term_treasury = normal_building_tier_5_cost }
-        }
-        else = {
-            prev = { remove_short_term_gold = normal_building_tier_5_cost }
-        }
-    }
-    if = {
-        limit = {
-            OR = {
-                prev = { treasury >= normal_building_tier_6_cost }
-                prev = { gold >= normal_building_tier_6_cost }
-            }
-            has_building = $BUILDING$_05
-            prev.culture = { has_innovation = innovation_windmills }
-            building_requirement_castle_city_church = { LEVEL = 03 }
-        }
-        add_building = $BUILDING$_06
-        if = {
-            limit = { prev = { treasury >= normal_building_tier_6_cost } }
-            prev = { remove_short_term_treasury = normal_building_tier_6_cost }
-        }
-        else = {
-            prev = { remove_short_term_gold = normal_building_tier_6_cost }
-        }
-    }
-    if = {
-        limit = {
-            OR = {
-                prev = { treasury >= normal_building_tier_7_cost }
-                prev = { gold >= normal_building_tier_7_cost }
-            }
-            has_building = $BUILDING$_06
-            prev.culture = { has_innovation = innovation_cranes }
-            building_requirement_castle_city_church = { LEVEL = 04 }
-        }
-        add_building = $BUILDING$_07
-        if = {
-            limit = { prev = { treasury >= normal_building_tier_7_cost } }
-            prev = { remove_short_term_treasury = normal_building_tier_7_cost }
-        }
-        else = {
-            prev = { remove_short_term_gold = normal_building_tier_7_cost }
-        }
-    }
-    if = {
-        limit = {
-            OR = {
-                prev = { treasury >= normal_building_tier_8_cost }
-                prev = { gold >= normal_building_tier_8_cost }
-            }
-            has_building = $BUILDING$_07
-            prev.culture = { has_innovation = innovation_cranes }
-            building_requirement_castle_city_church = { LEVEL = 04 }
-        }
-        add_building = $BUILDING$_08
-        if = {
-            limit = { prev = { treasury >= normal_building_tier_8_cost } }
-            prev = { remove_short_term_treasury = normal_building_tier_8_cost }
-        }
-        else = {
-            prev = { remove_short_term_gold = normal_building_tier_8_cost }
-        }
-    }
+# Watermills
+aub_upgrade_watermills_effect = {
+	if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= expensive_building_tier_2_cost }
+				scope:aub_payer = { gold >= expensive_building_tier_2_cost }
+			}
+			has_building = watermills_01
+			scope:aub_payer.culture = {
+				has_innovation = innovation_windmills
+			}
+			building_requirement_castle_city_church = { LEVEL = 01 }
+		}
+		add_building = watermills_02
+		if = {
+			limit = { has_building = watermills_02 }
+			aub_pay_building_cost_effect = { COST = expensive_building_tier_2_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= expensive_building_tier_3_cost }
+				scope:aub_payer = { gold >= expensive_building_tier_3_cost }
+			}
+			has_building = watermills_02
+			scope:aub_payer.culture = {
+				has_innovation = innovation_windmills
+			}
+			building_requirement_castle_city_church = { LEVEL = 02 }
+		}
+		add_building = watermills_03
+		if = {
+			limit = { has_building = watermills_03 }
+			aub_pay_building_cost_effect = { COST = expensive_building_tier_3_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= expensive_building_tier_4_cost }
+				scope:aub_payer = { gold >= expensive_building_tier_4_cost }
+			}
+			has_building = watermills_03
+			scope:aub_payer.culture = {
+				has_innovation = innovation_windmills
+			}
+			building_requirement_castle_city_church = { LEVEL = 02 }
+		}
+		add_building = watermills_04
+		if = {
+			limit = { has_building = watermills_04 }
+			aub_pay_building_cost_effect = { COST = expensive_building_tier_4_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= expensive_building_tier_5_cost }
+				scope:aub_payer = { gold >= expensive_building_tier_5_cost }
+			}
+			has_building = watermills_04
+			scope:aub_payer.culture = {
+				has_innovation = innovation_windmills
+			}
+			building_requirement_castle_city_church = { LEVEL = 03 }
+		}
+		add_building = watermills_05
+		if = {
+			limit = { has_building = watermills_05 }
+			aub_pay_building_cost_effect = { COST = expensive_building_tier_5_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= expensive_building_tier_6_cost }
+				scope:aub_payer = { gold >= expensive_building_tier_6_cost }
+			}
+			has_building = watermills_05
+			scope:aub_payer.culture = {
+				has_innovation = innovation_cranes
+			}
+			building_requirement_castle_city_church = { LEVEL = 03 }
+		}
+		add_building = watermills_06
+		if = {
+			limit = { has_building = watermills_06 }
+			aub_pay_building_cost_effect = { COST = expensive_building_tier_6_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= expensive_building_tier_7_cost }
+				scope:aub_payer = { gold >= expensive_building_tier_7_cost }
+			}
+			has_building = watermills_06
+			scope:aub_payer.culture = {
+				has_innovation = innovation_cranes
+			}
+			building_requirement_castle_city_church = { LEVEL = 04 }
+		}
+		add_building = watermills_07
+		if = {
+			limit = { has_building = watermills_07 }
+			aub_pay_building_cost_effect = { COST = expensive_building_tier_7_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= expensive_building_tier_8_cost }
+				scope:aub_payer = { gold >= expensive_building_tier_8_cost }
+			}
+			has_building = watermills_07
+			scope:aub_payer.culture = {
+				has_innovation = innovation_cranes
+			}
+			building_requirement_castle_city_church = { LEVEL = 04 }
+		}
+		add_building = watermills_08
+		if = {
+			limit = { has_building = watermills_08 }
+			aub_pay_building_cost_effect = { COST = expensive_building_tier_8_cost }
+		}
+	}
 }
 
-# 主建筑升级效果 - 统一调用所有建筑
-add_all_buildings_effect = {
+# Windmills
+aub_upgrade_windmills_effect = {
+	if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= expensive_building_tier_2_cost }
+				scope:aub_payer = { gold >= expensive_building_tier_2_cost }
+			}
+			has_building = windmills_01
+			scope:aub_payer.culture = {
+				has_innovation = innovation_windmills
+			}
+			building_requirement_castle_city_church = { LEVEL = 01 }
+		}
+		add_building = windmills_02
+		if = {
+			limit = { has_building = windmills_02 }
+			aub_pay_building_cost_effect = { COST = expensive_building_tier_2_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= expensive_building_tier_3_cost }
+				scope:aub_payer = { gold >= expensive_building_tier_3_cost }
+			}
+			has_building = windmills_02
+			scope:aub_payer.culture = {
+				has_innovation = innovation_windmills
+			}
+			building_requirement_castle_city_church = { LEVEL = 02 }
+		}
+		add_building = windmills_03
+		if = {
+			limit = { has_building = windmills_03 }
+			aub_pay_building_cost_effect = { COST = expensive_building_tier_3_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= expensive_building_tier_4_cost }
+				scope:aub_payer = { gold >= expensive_building_tier_4_cost }
+			}
+			has_building = windmills_03
+			scope:aub_payer.culture = {
+				has_innovation = innovation_windmills
+			}
+			building_requirement_castle_city_church = { LEVEL = 02 }
+		}
+		add_building = windmills_04
+		if = {
+			limit = { has_building = windmills_04 }
+			aub_pay_building_cost_effect = { COST = expensive_building_tier_4_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= expensive_building_tier_5_cost }
+				scope:aub_payer = { gold >= expensive_building_tier_5_cost }
+			}
+			has_building = windmills_04
+			scope:aub_payer.culture = {
+				has_innovation = innovation_windmills
+			}
+			building_requirement_castle_city_church = { LEVEL = 03 }
+		}
+		add_building = windmills_05
+		if = {
+			limit = { has_building = windmills_05 }
+			aub_pay_building_cost_effect = { COST = expensive_building_tier_5_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= expensive_building_tier_6_cost }
+				scope:aub_payer = { gold >= expensive_building_tier_6_cost }
+			}
+			has_building = windmills_05
+			scope:aub_payer.culture = {
+				has_innovation = innovation_cranes
+			}
+			building_requirement_castle_city_church = { LEVEL = 03 }
+		}
+		add_building = windmills_06
+		if = {
+			limit = { has_building = windmills_06 }
+			aub_pay_building_cost_effect = { COST = expensive_building_tier_6_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= expensive_building_tier_7_cost }
+				scope:aub_payer = { gold >= expensive_building_tier_7_cost }
+			}
+			has_building = windmills_06
+			scope:aub_payer.culture = {
+				has_innovation = innovation_cranes
+			}
+			building_requirement_castle_city_church = { LEVEL = 04 }
+		}
+		add_building = windmills_07
+		if = {
+			limit = { has_building = windmills_07 }
+			aub_pay_building_cost_effect = { COST = expensive_building_tier_7_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= expensive_building_tier_8_cost }
+				scope:aub_payer = { gold >= expensive_building_tier_8_cost }
+			}
+			has_building = windmills_07
+			scope:aub_payer.culture = {
+				has_innovation = innovation_cranes
+			}
+			building_requirement_castle_city_church = { LEVEL = 04 }
+		}
+		add_building = windmills_08
+		if = {
+			limit = { has_building = windmills_08 }
+			aub_pay_building_cost_effect = { COST = expensive_building_tier_8_cost }
+		}
+	}
+}
 
-    # 经济建筑
-    if = { limit = { has_building_or_higher = caravanserai_01 } au_simple_economy_upgrade = { BUILDING = caravanserai } } # 商队旅店
-    if = { limit = { has_building_or_higher = watermills_01 } au_simple_economy_upgrade = { BUILDING = watermills } } # 水磨
-    if = { limit = { has_building_or_higher = windmills_01 } au_simple_economy_upgrade = { BUILDING = windmills } } # 风车
-    if = { limit = { has_building_or_higher = common_tradeport_01 } au_simple_economy_upgrade = { BUILDING = common_tradeport } } # 通用贸易港
-    if = { limit = { has_building_or_higher = pastures_01 } au_simple_economy_upgrade = { BUILDING = pastures } } # 畜牧场
-    if = { limit = { has_building_or_higher = hunting_grounds_01 } au_simple_economy_upgrade = { BUILDING = hunting_grounds } } # 猎场
-    if = { limit = { has_building_or_higher = orchards_01 } au_simple_economy_upgrade = { BUILDING = orchards } } # 果园
-    if = { limit = { has_building_or_higher = farm_estates_01 } au_simple_economy_upgrade = { BUILDING = farm_estates } } # 农场庄园
-    if = { limit = { has_building_or_higher = cereal_fields_01 } au_simple_economy_upgrade = { BUILDING = cereal_fields } } # 谷物农田
-    if = { limit = { has_building_or_higher = logging_camps_01 } au_simple_economy_upgrade = { BUILDING = logging_camps } } # 伐木场
-    if = { limit = { has_building_or_higher = peat_quarries_01 } au_simple_economy_upgrade = { BUILDING = peat_quarries } } # 泥炭采掘场
-    if = { limit = { has_building_or_higher = hill_farms_01 } au_simple_economy_upgrade = { BUILDING = hill_farms } } # 山地农场
-    if = { limit = { has_building_or_higher = elephant_pens_01 } au_simple_economy_upgrade = { BUILDING = elephant_pens } } # 象栏
-    if = { limit = { has_building_or_higher = plantations_01 } au_simple_economy_upgrade = { BUILDING = plantations } } # 种植园
-    if = { limit = { has_building_or_higher = quarries_01 } au_simple_economy_upgrade = { BUILDING = quarries } } # 采石场
-    if = { limit = { has_building_or_higher = qanats_01 } au_simple_economy_upgrade = { BUILDING = qanats } } # 坎儿井
-    if = { limit = { has_building_or_higher = murex_farm_01 } au_simple_economy_upgrade = { BUILDING = murex_farm } } # 骨螺养殖场
-    if = { limit = { has_building_or_higher = waterworks_01 } au_simple_economy_upgrade = { BUILDING = waterworks } } # 水利设施
-    if = { limit = { has_building_or_higher = spice_plantation_01 } au_simple_economy_upgrade = { BUILDING = spice_plantation } } # 香料种植园
-    if = { limit = { has_building_or_higher = paddy_fields_01 } au_simple_economy_upgrade = { BUILDING = paddy_fields } } # 水稻田
+# Tradeport
+aub_upgrade_common_tradeport_effect = {
+	if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= normal_building_tier_2_cost }
+				scope:aub_payer = { gold >= normal_building_tier_2_cost }
+			}
+			has_building = common_tradeport_01
+			scope:aub_payer.culture = {
+				has_innovation = innovation_crop_rotation
+			}
+			building_requirement_castle_city_church = { LEVEL = 01 }
+		}
+		add_building = common_tradeport_02
+		if = {
+			limit = { has_building = common_tradeport_02 }
+			aub_pay_building_cost_effect = { COST = normal_building_tier_2_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= normal_building_tier_3_cost }
+				scope:aub_payer = { gold >= normal_building_tier_3_cost }
+			}
+			has_building = common_tradeport_02
+			scope:aub_payer.culture = {
+				has_innovation = innovation_manorialism
+			}
+			building_requirement_castle_city_church = { LEVEL = 02 }
+		}
+		add_building = common_tradeport_03
+		if = {
+			limit = { has_building = common_tradeport_03 }
+			aub_pay_building_cost_effect = { COST = normal_building_tier_3_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= normal_building_tier_4_cost }
+				scope:aub_payer = { gold >= normal_building_tier_4_cost }
+			}
+			has_building = common_tradeport_03
+			scope:aub_payer.culture = {
+				has_innovation = innovation_manorialism
+			}
+			building_requirement_castle_city_church = { LEVEL = 02 }
+		}
+		add_building = common_tradeport_04
+		if = {
+			limit = { has_building = common_tradeport_04 }
+			aub_pay_building_cost_effect = { COST = normal_building_tier_4_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= normal_building_tier_5_cost }
+				scope:aub_payer = { gold >= normal_building_tier_5_cost }
+			}
+			has_building = common_tradeport_04
+			scope:aub_payer.culture = {
+				has_innovation = innovation_guilds
+			}
+			building_requirement_castle_city_church = { LEVEL = 03 }
+		}
+		add_building = common_tradeport_05
+		if = {
+			limit = { has_building = common_tradeport_05 }
+			aub_pay_building_cost_effect = { COST = normal_building_tier_5_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= normal_building_tier_6_cost }
+				scope:aub_payer = { gold >= normal_building_tier_6_cost }
+			}
+			has_building = common_tradeport_05
+			scope:aub_payer.culture = {
+				has_innovation = innovation_guilds
+			}
+			building_requirement_castle_city_church = { LEVEL = 03 }
+		}
+		add_building = common_tradeport_06
+		if = {
+			limit = { has_building = common_tradeport_06 }
+			aub_pay_building_cost_effect = { COST = normal_building_tier_6_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= normal_building_tier_7_cost }
+				scope:aub_payer = { gold >= normal_building_tier_7_cost }
+			}
+			has_building = common_tradeport_06
+			scope:aub_payer.culture = {
+				has_innovation = innovation_cranes
+			}
+			building_requirement_castle_city_church = { LEVEL = 04 }
+		}
+		add_building = common_tradeport_07
+		if = {
+			limit = { has_building = common_tradeport_07 }
+			aub_pay_building_cost_effect = { COST = normal_building_tier_7_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= normal_building_tier_8_cost }
+				scope:aub_payer = { gold >= normal_building_tier_8_cost }
+			}
+			has_building = common_tradeport_07
+			scope:aub_payer.culture = {
+				has_innovation = innovation_cranes
+			}
+			building_requirement_castle_city_church = { LEVEL = 04 }
+		}
+		add_building = common_tradeport_08
+		if = {
+			limit = { has_building = common_tradeport_08 }
+			aub_pay_building_cost_effect = { COST = normal_building_tier_8_cost }
+		}
+	}
+}
 
-    # 军事建筑
-    if = { limit = { has_building_or_higher = wind_furnace_01 } au_simple_military_upgrade = { BUILDING = wind_furnace } } # 风锻炉
-    if = { limit = { has_building_or_higher = workshops_01 } au_simple_military_upgrade = { BUILDING = workshops } } # 工坊
-    if = { limit = { has_building_or_higher = horse_pastures_01 } au_simple_military_upgrade = { BUILDING = horse_pastures } } # 马场
-    if = { limit = { has_building_or_higher = hillside_grazing_01 } au_simple_military_upgrade = { BUILDING = hillside_grazing } } # 山坡牧场
-    if = { limit = { has_building_or_higher = warrior_lodges_01 } au_simple_military_upgrade = { BUILDING = warrior_lodges } } # 战士屋
-    if = { limit = { has_building_or_higher = military_camps_01 } au_simple_military_upgrade = { BUILDING = military_camps } } # 军营
-    if = { limit = { has_building_or_higher = regimental_grounds_01 } au_simple_military_upgrade = { BUILDING = regimental_grounds } } # 校场
-    if = { limit = { has_building_or_higher = outposts_01 } au_simple_military_upgrade = { BUILDING = outposts } } # 前哨站
-    if = { limit = { has_building_or_higher = barracks_01 } au_simple_military_upgrade = { BUILDING = barracks } } # 兵营
-    if = { limit = { has_building_or_higher = camel_farms_01 } au_simple_military_upgrade = { BUILDING = camel_farms } } # 骆驼农场
-    if = { limit = { has_building_or_higher = stables_01 } au_simple_military_upgrade = { BUILDING = stables } } # 马厩
-    if = { limit = { has_building_or_higher = smiths_01 } au_simple_military_upgrade = { BUILDING = smiths } } # 铁匠铺
+# Pastures
+aub_upgrade_pastures_effect = {
+	if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= normal_building_tier_2_cost }
+				scope:aub_payer = { gold >= normal_building_tier_2_cost }
+			}
+			has_building = pastures_01
+			scope:aub_payer.culture = {
+				has_innovation = innovation_crop_rotation
+			}
+			building_requirement_castle_city_church = { LEVEL = 01 }
+		}
+		add_building = pastures_02
+		if = {
+			limit = { has_building = pastures_02 }
+			aub_pay_building_cost_effect = { COST = normal_building_tier_2_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= normal_building_tier_3_cost }
+				scope:aub_payer = { gold >= normal_building_tier_3_cost }
+			}
+			has_building = pastures_02
+			scope:aub_payer.culture = {
+				has_innovation = innovation_manorialism
+			}
+			building_requirement_castle_city_church = { LEVEL = 02 }
+		}
+		add_building = pastures_03
+		if = {
+			limit = { has_building = pastures_03 }
+			aub_pay_building_cost_effect = { COST = normal_building_tier_3_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= normal_building_tier_4_cost }
+				scope:aub_payer = { gold >= normal_building_tier_4_cost }
+			}
+			has_building = pastures_03
+			scope:aub_payer.culture = {
+				has_innovation = innovation_manorialism
+			}
+			building_requirement_castle_city_church = { LEVEL = 02 }
+		}
+		add_building = pastures_04
+		if = {
+			limit = { has_building = pastures_04 }
+			aub_pay_building_cost_effect = { COST = normal_building_tier_4_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= normal_building_tier_5_cost }
+				scope:aub_payer = { gold >= normal_building_tier_5_cost }
+			}
+			has_building = pastures_04
+			scope:aub_payer.culture = {
+				has_innovation = innovation_guilds
+			}
+			building_requirement_castle_city_church = { LEVEL = 03 }
+		}
+		add_building = pastures_05
+		if = {
+			limit = { has_building = pastures_05 }
+			aub_pay_building_cost_effect = { COST = normal_building_tier_5_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= normal_building_tier_6_cost }
+				scope:aub_payer = { gold >= normal_building_tier_6_cost }
+			}
+			has_building = pastures_05
+			scope:aub_payer.culture = {
+				has_innovation = innovation_guilds
+			}
+			building_requirement_castle_city_church = { LEVEL = 03 }
+		}
+		add_building = pastures_06
+		if = {
+			limit = { has_building = pastures_06 }
+			aub_pay_building_cost_effect = { COST = normal_building_tier_6_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= normal_building_tier_7_cost }
+				scope:aub_payer = { gold >= normal_building_tier_7_cost }
+			}
+			has_building = pastures_06
+			scope:aub_payer.culture = {
+				has_innovation = innovation_cranes
+			}
+			building_requirement_castle_city_church = { LEVEL = 04 }
+		}
+		add_building = pastures_07
+		if = {
+			limit = { has_building = pastures_07 }
+			aub_pay_building_cost_effect = { COST = normal_building_tier_7_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= normal_building_tier_8_cost }
+				scope:aub_payer = { gold >= normal_building_tier_8_cost }
+			}
+			has_building = pastures_07
+			scope:aub_payer.culture = {
+				has_innovation = innovation_cranes
+			}
+			building_requirement_castle_city_church = { LEVEL = 04 }
+		}
+		add_building = pastures_08
+		if = {
+			limit = { has_building = pastures_08 }
+			aub_pay_building_cost_effect = { COST = normal_building_tier_8_cost }
+		}
+	}
+}
 
-    # 城防建筑
-    if = { limit = { has_building_or_higher = ramparts_01 } au_simple_fortification_upgrade = { BUILDING = ramparts } } # 城墙
-    if = { limit = { has_building_or_higher = curtain_walls_01 } au_simple_fortification_upgrade = { BUILDING = curtain_walls } } # 幕墙
-    if = { limit = { has_building_or_higher = watchtowers_01 } au_simple_fortification_upgrade = { BUILDING = watchtowers } } # 瞭望塔
-    if = { limit = { has_building_or_higher = hill_forts_01 } au_simple_fortification_upgrade = { BUILDING = hill_forts } } # 山地堡垒
+# Hunting Grounds
+aub_upgrade_hunting_grounds_effect = {
+	if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= cheap_building_tier_2_cost }
+				scope:aub_payer = { gold >= cheap_building_tier_2_cost }
+			}
+			has_building = hunting_grounds_01
+			scope:aub_payer.culture = {
+				has_innovation = innovation_crop_rotation
+			}
+			building_requirement_castle_city_church = { LEVEL = 01 }
+		}
+		add_building = hunting_grounds_02
+		if = {
+			limit = { has_building = hunting_grounds_02 }
+			aub_pay_building_cost_effect = { COST = cheap_building_tier_2_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= cheap_building_tier_3_cost }
+				scope:aub_payer = { gold >= cheap_building_tier_3_cost }
+			}
+			has_building = hunting_grounds_02
+			scope:aub_payer.culture = {
+				has_innovation = innovation_manorialism
+			}
+			building_requirement_castle_city_church = { LEVEL = 02 }
+		}
+		add_building = hunting_grounds_03
+		if = {
+			limit = { has_building = hunting_grounds_03 }
+			aub_pay_building_cost_effect = { COST = cheap_building_tier_3_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= cheap_building_tier_4_cost }
+				scope:aub_payer = { gold >= cheap_building_tier_4_cost }
+			}
+			has_building = hunting_grounds_03
+			scope:aub_payer.culture = {
+				has_innovation = innovation_manorialism
+			}
+			building_requirement_castle_city_church = { LEVEL = 02 }
+		}
+		add_building = hunting_grounds_04
+		if = {
+			limit = { has_building = hunting_grounds_04 }
+			aub_pay_building_cost_effect = { COST = cheap_building_tier_4_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= cheap_building_tier_5_cost }
+				scope:aub_payer = { gold >= cheap_building_tier_5_cost }
+			}
+			has_building = hunting_grounds_04
+			scope:aub_payer.culture = {
+				has_innovation = innovation_guilds
+			}
+			building_requirement_castle_city_church = { LEVEL = 03 }
+		}
+		add_building = hunting_grounds_05
+		if = {
+			limit = { has_building = hunting_grounds_05 }
+			aub_pay_building_cost_effect = { COST = cheap_building_tier_5_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= cheap_building_tier_6_cost }
+				scope:aub_payer = { gold >= cheap_building_tier_6_cost }
+			}
+			has_building = hunting_grounds_05
+			scope:aub_payer.culture = {
+				has_innovation = innovation_guilds
+			}
+			building_requirement_castle_city_church = { LEVEL = 03 }
+		}
+		add_building = hunting_grounds_06
+		if = {
+			limit = { has_building = hunting_grounds_06 }
+			aub_pay_building_cost_effect = { COST = cheap_building_tier_6_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= cheap_building_tier_7_cost }
+				scope:aub_payer = { gold >= cheap_building_tier_7_cost }
+			}
+			has_building = hunting_grounds_06
+			scope:aub_payer.culture = {
+				has_innovation = innovation_cranes
+			}
+			building_requirement_castle_city_church = { LEVEL = 04 }
+		}
+		add_building = hunting_grounds_07
+		if = {
+			limit = { has_building = hunting_grounds_07 }
+			aub_pay_building_cost_effect = { COST = cheap_building_tier_7_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= cheap_building_tier_8_cost }
+				scope:aub_payer = { gold >= cheap_building_tier_8_cost }
+			}
+			has_building = hunting_grounds_07
+			scope:aub_payer.culture = {
+				has_innovation = innovation_cranes
+			}
+			building_requirement_castle_city_church = { LEVEL = 04 }
+		}
+		add_building = hunting_grounds_08
+		if = {
+			limit = { has_building = hunting_grounds_08 }
+			aub_pay_building_cost_effect = { COST = cheap_building_tier_8_cost }
+		}
+	}
+}
 
-    # 通用建筑
-    if = { limit = { has_building_or_higher = hospices_01 } au_simple_common_upgrade = { BUILDING = hospices } } # 济贫院
-    if = { limit = { has_building_or_higher = guild_halls_01 } au_simple_common_upgrade = { BUILDING = guild_halls } } # 行会大厅
-    if = { limit = { has_building_or_higher = scriptorium_01 } au_simple_common_upgrade = { BUILDING = scriptorium } } # 缮写室
-    if = { limit = { has_building_or_higher = monastic_schools_01 } au_simple_common_upgrade = { BUILDING = monastic_schools } } # 修道院学校
-    if = { limit = { has_building_or_higher = megalith_01 } au_simple_common_upgrade = { BUILDING = megalith } } # 巨石建筑
-    if = { limit = { has_building_or_higher = breweries_01 } au_simple_common_upgrade = { BUILDING = breweries } } # 酿酒厂
-    if = { limit = { has_building_or_higher = capital_bureau_01 } au_simple_common_upgrade = { BUILDING = capital_bureau } } # 首都政务区
+# Orchards
+aub_upgrade_orchards_effect = {
+	if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= normal_building_tier_2_cost }
+				scope:aub_payer = { gold >= normal_building_tier_2_cost }
+			}
+			has_building = orchards_01
+			scope:aub_payer.culture = {
+				has_innovation = innovation_crop_rotation
+			}
+			building_requirement_castle_city_church = { LEVEL = 01 }
+		}
+		add_building = orchards_02
+		if = {
+			limit = { has_building = orchards_02 }
+			aub_pay_building_cost_effect = { COST = normal_building_tier_2_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= normal_building_tier_3_cost }
+				scope:aub_payer = { gold >= normal_building_tier_3_cost }
+			}
+			has_building = orchards_02
+			scope:aub_payer.culture = {
+				has_innovation = innovation_manorialism
+			}
+			building_requirement_castle_city_church = { LEVEL = 02 }
+		}
+		add_building = orchards_03
+		if = {
+			limit = { has_building = orchards_03 }
+			aub_pay_building_cost_effect = { COST = normal_building_tier_3_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= normal_building_tier_4_cost }
+				scope:aub_payer = { gold >= normal_building_tier_4_cost }
+			}
+			has_building = orchards_03
+			scope:aub_payer.culture = {
+				has_innovation = innovation_manorialism
+			}
+			building_requirement_castle_city_church = { LEVEL = 02 }
+		}
+		add_building = orchards_04
+		if = {
+			limit = { has_building = orchards_04 }
+			aub_pay_building_cost_effect = { COST = normal_building_tier_4_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= normal_building_tier_5_cost }
+				scope:aub_payer = { gold >= normal_building_tier_5_cost }
+			}
+			has_building = orchards_04
+			scope:aub_payer.culture = {
+				has_innovation = innovation_guilds
+			}
+			building_requirement_castle_city_church = { LEVEL = 03 }
+		}
+		add_building = orchards_05
+		if = {
+			limit = { has_building = orchards_05 }
+			aub_pay_building_cost_effect = { COST = normal_building_tier_5_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= normal_building_tier_6_cost }
+				scope:aub_payer = { gold >= normal_building_tier_6_cost }
+			}
+			has_building = orchards_05
+			scope:aub_payer.culture = {
+				has_innovation = innovation_guilds
+			}
+			building_requirement_castle_city_church = { LEVEL = 03 }
+		}
+		add_building = orchards_06
+		if = {
+			limit = { has_building = orchards_06 }
+			aub_pay_building_cost_effect = { COST = normal_building_tier_6_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= normal_building_tier_7_cost }
+				scope:aub_payer = { gold >= normal_building_tier_7_cost }
+			}
+			has_building = orchards_06
+			scope:aub_payer.culture = {
+				has_innovation = innovation_cranes
+			}
+			building_requirement_castle_city_church = { LEVEL = 04 }
+		}
+		add_building = orchards_07
+		if = {
+			limit = { has_building = orchards_07 }
+			aub_pay_building_cost_effect = { COST = normal_building_tier_7_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= normal_building_tier_8_cost }
+				scope:aub_payer = { gold >= normal_building_tier_8_cost }
+			}
+			has_building = orchards_07
+			scope:aub_payer.culture = {
+				has_innovation = innovation_cranes
+			}
+			building_requirement_castle_city_church = { LEVEL = 04 }
+		}
+		add_building = orchards_08
+		if = {
+			limit = { has_building = orchards_08 }
+			aub_pay_building_cost_effect = { COST = normal_building_tier_8_cost }
+		}
+	}
+}
+
+# Farm Estates
+aub_upgrade_farm_estates_effect = {
+	if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= normal_building_tier_2_cost }
+				scope:aub_payer = { gold >= normal_building_tier_2_cost }
+			}
+			has_building = farm_estates_01
+			scope:aub_payer.culture = {
+				has_innovation = innovation_crop_rotation
+			}
+			building_requirement_castle_city_church = { LEVEL = 01 }
+		}
+		add_building = farm_estates_02
+		if = {
+			limit = { has_building = farm_estates_02 }
+			aub_pay_building_cost_effect = { COST = normal_building_tier_2_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= normal_building_tier_3_cost }
+				scope:aub_payer = { gold >= normal_building_tier_3_cost }
+			}
+			has_building = farm_estates_02
+			scope:aub_payer.culture = {
+				has_innovation = innovation_manorialism
+			}
+			building_requirement_castle_city_church = { LEVEL = 02 }
+		}
+		add_building = farm_estates_03
+		if = {
+			limit = { has_building = farm_estates_03 }
+			aub_pay_building_cost_effect = { COST = normal_building_tier_3_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= normal_building_tier_4_cost }
+				scope:aub_payer = { gold >= normal_building_tier_4_cost }
+			}
+			has_building = farm_estates_03
+			scope:aub_payer.culture = {
+				has_innovation = innovation_manorialism
+			}
+			building_requirement_castle_city_church = { LEVEL = 02 }
+		}
+		add_building = farm_estates_04
+		if = {
+			limit = { has_building = farm_estates_04 }
+			aub_pay_building_cost_effect = { COST = normal_building_tier_4_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= normal_building_tier_5_cost }
+				scope:aub_payer = { gold >= normal_building_tier_5_cost }
+			}
+			has_building = farm_estates_04
+			scope:aub_payer.culture = {
+				has_innovation = innovation_guilds
+			}
+			building_requirement_castle_city_church = { LEVEL = 03 }
+		}
+		add_building = farm_estates_05
+		if = {
+			limit = { has_building = farm_estates_05 }
+			aub_pay_building_cost_effect = { COST = normal_building_tier_5_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= normal_building_tier_6_cost }
+				scope:aub_payer = { gold >= normal_building_tier_6_cost }
+			}
+			has_building = farm_estates_05
+			scope:aub_payer.culture = {
+				has_innovation = innovation_guilds
+			}
+			building_requirement_castle_city_church = { LEVEL = 03 }
+		}
+		add_building = farm_estates_06
+		if = {
+			limit = { has_building = farm_estates_06 }
+			aub_pay_building_cost_effect = { COST = normal_building_tier_6_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= normal_building_tier_7_cost }
+				scope:aub_payer = { gold >= normal_building_tier_7_cost }
+			}
+			has_building = farm_estates_06
+			scope:aub_payer.culture = {
+				has_innovation = innovation_cranes
+			}
+			building_requirement_castle_city_church = { LEVEL = 04 }
+		}
+		add_building = farm_estates_07
+		if = {
+			limit = { has_building = farm_estates_07 }
+			aub_pay_building_cost_effect = { COST = normal_building_tier_7_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= normal_building_tier_8_cost }
+				scope:aub_payer = { gold >= normal_building_tier_8_cost }
+			}
+			has_building = farm_estates_07
+			scope:aub_payer.culture = {
+				has_innovation = innovation_cranes
+			}
+			building_requirement_castle_city_church = { LEVEL = 04 }
+		}
+		add_building = farm_estates_08
+		if = {
+			limit = { has_building = farm_estates_08 }
+			aub_pay_building_cost_effect = { COST = normal_building_tier_8_cost }
+		}
+	}
+}
+
+# Cereal Fields
+aub_upgrade_cereal_fields_effect = {
+	if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= normal_building_tier_2_cost }
+				scope:aub_payer = { gold >= normal_building_tier_2_cost }
+			}
+			has_building = cereal_fields_01
+			scope:aub_payer.culture = {
+				has_innovation = innovation_crop_rotation
+			}
+			building_requirement_castle_city_church = { LEVEL = 01 }
+		}
+		add_building = cereal_fields_02
+		if = {
+			limit = { has_building = cereal_fields_02 }
+			aub_pay_building_cost_effect = { COST = normal_building_tier_2_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= normal_building_tier_3_cost }
+				scope:aub_payer = { gold >= normal_building_tier_3_cost }
+			}
+			has_building = cereal_fields_02
+			scope:aub_payer.culture = {
+				has_innovation = innovation_manorialism
+			}
+			building_requirement_castle_city_church = { LEVEL = 02 }
+		}
+		add_building = cereal_fields_03
+		if = {
+			limit = { has_building = cereal_fields_03 }
+			aub_pay_building_cost_effect = { COST = normal_building_tier_3_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= normal_building_tier_4_cost }
+				scope:aub_payer = { gold >= normal_building_tier_4_cost }
+			}
+			has_building = cereal_fields_03
+			scope:aub_payer.culture = {
+				has_innovation = innovation_manorialism
+			}
+			building_requirement_castle_city_church = { LEVEL = 02 }
+		}
+		add_building = cereal_fields_04
+		if = {
+			limit = { has_building = cereal_fields_04 }
+			aub_pay_building_cost_effect = { COST = normal_building_tier_4_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= normal_building_tier_5_cost }
+				scope:aub_payer = { gold >= normal_building_tier_5_cost }
+			}
+			has_building = cereal_fields_04
+			scope:aub_payer.culture = {
+				has_innovation = innovation_guilds
+			}
+			building_requirement_castle_city_church = { LEVEL = 03 }
+		}
+		add_building = cereal_fields_05
+		if = {
+			limit = { has_building = cereal_fields_05 }
+			aub_pay_building_cost_effect = { COST = normal_building_tier_5_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= normal_building_tier_6_cost }
+				scope:aub_payer = { gold >= normal_building_tier_6_cost }
+			}
+			has_building = cereal_fields_05
+			scope:aub_payer.culture = {
+				has_innovation = innovation_guilds
+			}
+			building_requirement_castle_city_church = { LEVEL = 03 }
+		}
+		add_building = cereal_fields_06
+		if = {
+			limit = { has_building = cereal_fields_06 }
+			aub_pay_building_cost_effect = { COST = normal_building_tier_6_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= normal_building_tier_7_cost }
+				scope:aub_payer = { gold >= normal_building_tier_7_cost }
+			}
+			has_building = cereal_fields_06
+			scope:aub_payer.culture = {
+				has_innovation = innovation_cranes
+			}
+			building_requirement_castle_city_church = { LEVEL = 04 }
+		}
+		add_building = cereal_fields_07
+		if = {
+			limit = { has_building = cereal_fields_07 }
+			aub_pay_building_cost_effect = { COST = normal_building_tier_7_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= normal_building_tier_8_cost }
+				scope:aub_payer = { gold >= normal_building_tier_8_cost }
+			}
+			has_building = cereal_fields_07
+			scope:aub_payer.culture = {
+				has_innovation = innovation_cranes
+			}
+			building_requirement_castle_city_church = { LEVEL = 04 }
+		}
+		add_building = cereal_fields_08
+		if = {
+			limit = { has_building = cereal_fields_08 }
+			aub_pay_building_cost_effect = { COST = normal_building_tier_8_cost }
+		}
+	}
+}
+
+# Logging Camps
+aub_upgrade_logging_camps_effect = {
+	if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= cheap_building_tier_2_cost }
+				scope:aub_payer = { gold >= cheap_building_tier_2_cost }
+			}
+			has_building = logging_camps_01
+			scope:aub_payer.culture = {
+				has_innovation = innovation_crop_rotation
+			}
+			building_requirement_castle_city_church = { LEVEL = 01 }
+		}
+		add_building = logging_camps_02
+		if = {
+			limit = { has_building = logging_camps_02 }
+			aub_pay_building_cost_effect = { COST = cheap_building_tier_2_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= cheap_building_tier_3_cost }
+				scope:aub_payer = { gold >= cheap_building_tier_3_cost }
+			}
+			has_building = logging_camps_02
+			scope:aub_payer.culture = {
+				has_innovation = innovation_manorialism
+			}
+			building_requirement_castle_city_church = { LEVEL = 02 }
+		}
+		add_building = logging_camps_03
+		if = {
+			limit = { has_building = logging_camps_03 }
+			aub_pay_building_cost_effect = { COST = cheap_building_tier_3_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= cheap_building_tier_4_cost }
+				scope:aub_payer = { gold >= cheap_building_tier_4_cost }
+			}
+			has_building = logging_camps_03
+			scope:aub_payer.culture = {
+				has_innovation = innovation_manorialism
+			}
+			building_requirement_castle_city_church = { LEVEL = 02 }
+		}
+		add_building = logging_camps_04
+		if = {
+			limit = { has_building = logging_camps_04 }
+			aub_pay_building_cost_effect = { COST = cheap_building_tier_4_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= cheap_building_tier_5_cost }
+				scope:aub_payer = { gold >= cheap_building_tier_5_cost }
+			}
+			has_building = logging_camps_04
+			scope:aub_payer.culture = {
+				has_innovation = innovation_guilds
+			}
+			building_requirement_castle_city_church = { LEVEL = 03 }
+		}
+		add_building = logging_camps_05
+		if = {
+			limit = { has_building = logging_camps_05 }
+			aub_pay_building_cost_effect = { COST = cheap_building_tier_5_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= cheap_building_tier_6_cost }
+				scope:aub_payer = { gold >= cheap_building_tier_6_cost }
+			}
+			has_building = logging_camps_05
+			scope:aub_payer.culture = {
+				has_innovation = innovation_guilds
+			}
+			building_requirement_castle_city_church = { LEVEL = 03 }
+		}
+		add_building = logging_camps_06
+		if = {
+			limit = { has_building = logging_camps_06 }
+			aub_pay_building_cost_effect = { COST = cheap_building_tier_6_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= cheap_building_tier_7_cost }
+				scope:aub_payer = { gold >= cheap_building_tier_7_cost }
+			}
+			has_building = logging_camps_06
+			scope:aub_payer.culture = {
+				has_innovation = innovation_cranes
+			}
+			building_requirement_castle_city_church = { LEVEL = 04 }
+		}
+		add_building = logging_camps_07
+		if = {
+			limit = { has_building = logging_camps_07 }
+			aub_pay_building_cost_effect = { COST = cheap_building_tier_7_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= cheap_building_tier_8_cost }
+				scope:aub_payer = { gold >= cheap_building_tier_8_cost }
+			}
+			has_building = logging_camps_07
+			scope:aub_payer.culture = {
+				has_innovation = innovation_cranes
+			}
+			building_requirement_castle_city_church = { LEVEL = 04 }
+		}
+		add_building = logging_camps_08
+		if = {
+			limit = { has_building = logging_camps_08 }
+			aub_pay_building_cost_effect = { COST = cheap_building_tier_8_cost }
+		}
+	}
+}
+
+# Peat Quarries
+aub_upgrade_peat_quarries_effect = {
+	if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= cheap_building_tier_2_cost }
+				scope:aub_payer = { gold >= cheap_building_tier_2_cost }
+			}
+			has_building = peat_quarries_01
+			scope:aub_payer.culture = {
+				has_innovation = innovation_crop_rotation
+			}
+			building_requirement_castle_city_church = { LEVEL = 01 }
+		}
+		add_building = peat_quarries_02
+		if = {
+			limit = { has_building = peat_quarries_02 }
+			aub_pay_building_cost_effect = { COST = cheap_building_tier_2_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= cheap_building_tier_3_cost }
+				scope:aub_payer = { gold >= cheap_building_tier_3_cost }
+			}
+			has_building = peat_quarries_02
+			scope:aub_payer.culture = {
+				has_innovation = innovation_manorialism
+			}
+			building_requirement_castle_city_church = { LEVEL = 02 }
+		}
+		add_building = peat_quarries_03
+		if = {
+			limit = { has_building = peat_quarries_03 }
+			aub_pay_building_cost_effect = { COST = cheap_building_tier_3_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= cheap_building_tier_4_cost }
+				scope:aub_payer = { gold >= cheap_building_tier_4_cost }
+			}
+			has_building = peat_quarries_03
+			scope:aub_payer.culture = {
+				has_innovation = innovation_manorialism
+			}
+			building_requirement_castle_city_church = { LEVEL = 02 }
+		}
+		add_building = peat_quarries_04
+		if = {
+			limit = { has_building = peat_quarries_04 }
+			aub_pay_building_cost_effect = { COST = cheap_building_tier_4_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= cheap_building_tier_5_cost }
+				scope:aub_payer = { gold >= cheap_building_tier_5_cost }
+			}
+			has_building = peat_quarries_04
+			scope:aub_payer.culture = {
+				has_innovation = innovation_guilds
+			}
+			building_requirement_castle_city_church = { LEVEL = 03 }
+		}
+		add_building = peat_quarries_05
+		if = {
+			limit = { has_building = peat_quarries_05 }
+			aub_pay_building_cost_effect = { COST = cheap_building_tier_5_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= cheap_building_tier_6_cost }
+				scope:aub_payer = { gold >= cheap_building_tier_6_cost }
+			}
+			has_building = peat_quarries_05
+			scope:aub_payer.culture = {
+				has_innovation = innovation_guilds
+			}
+			building_requirement_castle_city_church = { LEVEL = 03 }
+		}
+		add_building = peat_quarries_06
+		if = {
+			limit = { has_building = peat_quarries_06 }
+			aub_pay_building_cost_effect = { COST = cheap_building_tier_6_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= cheap_building_tier_7_cost }
+				scope:aub_payer = { gold >= cheap_building_tier_7_cost }
+			}
+			has_building = peat_quarries_06
+			scope:aub_payer.culture = {
+				has_innovation = innovation_cranes
+			}
+			building_requirement_castle_city_church = { LEVEL = 04 }
+		}
+		add_building = peat_quarries_07
+		if = {
+			limit = { has_building = peat_quarries_07 }
+			aub_pay_building_cost_effect = { COST = cheap_building_tier_7_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= cheap_building_tier_8_cost }
+				scope:aub_payer = { gold >= cheap_building_tier_8_cost }
+			}
+			has_building = peat_quarries_07
+			scope:aub_payer.culture = {
+				has_innovation = innovation_cranes
+			}
+			building_requirement_castle_city_church = { LEVEL = 04 }
+		}
+		add_building = peat_quarries_08
+		if = {
+			limit = { has_building = peat_quarries_08 }
+			aub_pay_building_cost_effect = { COST = cheap_building_tier_8_cost }
+		}
+	}
+}
+
+# Hill Farms
+aub_upgrade_hill_farms_effect = {
+	if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= cheap_building_tier_2_cost }
+				scope:aub_payer = { gold >= cheap_building_tier_2_cost }
+			}
+			has_building = hill_farms_01
+			scope:aub_payer.culture = {
+				has_innovation = innovation_crop_rotation
+			}
+			building_requirement_castle_city_church = { LEVEL = 01 }
+		}
+		add_building = hill_farms_02
+		if = {
+			limit = { has_building = hill_farms_02 }
+			aub_pay_building_cost_effect = { COST = cheap_building_tier_2_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= cheap_building_tier_3_cost }
+				scope:aub_payer = { gold >= cheap_building_tier_3_cost }
+			}
+			has_building = hill_farms_02
+			scope:aub_payer.culture = {
+				has_innovation = innovation_manorialism
+			}
+			building_requirement_castle_city_church = { LEVEL = 02 }
+		}
+		add_building = hill_farms_03
+		if = {
+			limit = { has_building = hill_farms_03 }
+			aub_pay_building_cost_effect = { COST = cheap_building_tier_3_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= cheap_building_tier_4_cost }
+				scope:aub_payer = { gold >= cheap_building_tier_4_cost }
+			}
+			has_building = hill_farms_03
+			scope:aub_payer.culture = {
+				has_innovation = innovation_manorialism
+			}
+			building_requirement_castle_city_church = { LEVEL = 02 }
+		}
+		add_building = hill_farms_04
+		if = {
+			limit = { has_building = hill_farms_04 }
+			aub_pay_building_cost_effect = { COST = cheap_building_tier_4_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= cheap_building_tier_5_cost }
+				scope:aub_payer = { gold >= cheap_building_tier_5_cost }
+			}
+			has_building = hill_farms_04
+			scope:aub_payer.culture = {
+				has_innovation = innovation_guilds
+			}
+			building_requirement_castle_city_church = { LEVEL = 03 }
+		}
+		add_building = hill_farms_05
+		if = {
+			limit = { has_building = hill_farms_05 }
+			aub_pay_building_cost_effect = { COST = cheap_building_tier_5_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= cheap_building_tier_6_cost }
+				scope:aub_payer = { gold >= cheap_building_tier_6_cost }
+			}
+			has_building = hill_farms_05
+			scope:aub_payer.culture = {
+				has_innovation = innovation_guilds
+			}
+			building_requirement_castle_city_church = { LEVEL = 03 }
+		}
+		add_building = hill_farms_06
+		if = {
+			limit = { has_building = hill_farms_06 }
+			aub_pay_building_cost_effect = { COST = cheap_building_tier_6_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= cheap_building_tier_7_cost }
+				scope:aub_payer = { gold >= cheap_building_tier_7_cost }
+			}
+			has_building = hill_farms_06
+			scope:aub_payer.culture = {
+				has_innovation = innovation_cranes
+			}
+			building_requirement_castle_city_church = { LEVEL = 04 }
+		}
+		add_building = hill_farms_07
+		if = {
+			limit = { has_building = hill_farms_07 }
+			aub_pay_building_cost_effect = { COST = cheap_building_tier_7_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= cheap_building_tier_8_cost }
+				scope:aub_payer = { gold >= cheap_building_tier_8_cost }
+			}
+			has_building = hill_farms_07
+			scope:aub_payer.culture = {
+				has_innovation = innovation_cranes
+			}
+			building_requirement_castle_city_church = { LEVEL = 04 }
+		}
+		add_building = hill_farms_08
+		if = {
+			limit = { has_building = hill_farms_08 }
+			aub_pay_building_cost_effect = { COST = cheap_building_tier_8_cost }
+		}
+	}
+}
+
+# Elephant Pens
+aub_upgrade_elephant_pens_effect = {
+	if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= normal_building_tier_2_cost }
+				scope:aub_payer = { gold >= normal_building_tier_2_cost }
+			}
+			has_building = elephant_pens_01
+			scope:aub_payer.culture = {
+				has_innovation = innovation_crop_rotation
+			}
+			building_requirement_castle_city_church = { LEVEL = 01 }
+		}
+		add_building = elephant_pens_02
+		if = {
+			limit = { has_building = elephant_pens_02 }
+			aub_pay_building_cost_effect = { COST = normal_building_tier_2_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= normal_building_tier_3_cost }
+				scope:aub_payer = { gold >= normal_building_tier_3_cost }
+			}
+			has_building = elephant_pens_02
+			scope:aub_payer.culture = {
+				has_innovation = innovation_manorialism
+			}
+			building_requirement_castle_city_church = { LEVEL = 02 }
+		}
+		add_building = elephant_pens_03
+		if = {
+			limit = { has_building = elephant_pens_03 }
+			aub_pay_building_cost_effect = { COST = normal_building_tier_3_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= normal_building_tier_4_cost }
+				scope:aub_payer = { gold >= normal_building_tier_4_cost }
+			}
+			has_building = elephant_pens_03
+			scope:aub_payer.culture = {
+				has_innovation = innovation_manorialism
+			}
+			building_requirement_castle_city_church = { LEVEL = 02 }
+		}
+		add_building = elephant_pens_04
+		if = {
+			limit = { has_building = elephant_pens_04 }
+			aub_pay_building_cost_effect = { COST = normal_building_tier_4_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= normal_building_tier_5_cost }
+				scope:aub_payer = { gold >= normal_building_tier_5_cost }
+			}
+			has_building = elephant_pens_04
+			scope:aub_payer.culture = {
+				has_innovation = innovation_guilds
+			}
+			building_requirement_castle_city_church = { LEVEL = 03 }
+		}
+		add_building = elephant_pens_05
+		if = {
+			limit = { has_building = elephant_pens_05 }
+			aub_pay_building_cost_effect = { COST = normal_building_tier_5_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= normal_building_tier_6_cost }
+				scope:aub_payer = { gold >= normal_building_tier_6_cost }
+			}
+			has_building = elephant_pens_05
+			scope:aub_payer.culture = {
+				has_innovation = innovation_guilds
+			}
+			building_requirement_castle_city_church = { LEVEL = 03 }
+		}
+		add_building = elephant_pens_06
+		if = {
+			limit = { has_building = elephant_pens_06 }
+			aub_pay_building_cost_effect = { COST = normal_building_tier_6_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= normal_building_tier_7_cost }
+				scope:aub_payer = { gold >= normal_building_tier_7_cost }
+			}
+			has_building = elephant_pens_06
+			scope:aub_payer.culture = {
+				has_innovation = innovation_cranes
+			}
+			building_requirement_castle_city_church = { LEVEL = 04 }
+		}
+		add_building = elephant_pens_07
+		if = {
+			limit = { has_building = elephant_pens_07 }
+			aub_pay_building_cost_effect = { COST = normal_building_tier_7_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= normal_building_tier_8_cost }
+				scope:aub_payer = { gold >= normal_building_tier_8_cost }
+			}
+			has_building = elephant_pens_07
+			scope:aub_payer.culture = {
+				has_innovation = innovation_cranes
+			}
+			building_requirement_castle_city_church = { LEVEL = 04 }
+		}
+		add_building = elephant_pens_08
+		if = {
+			limit = { has_building = elephant_pens_08 }
+			aub_pay_building_cost_effect = { COST = normal_building_tier_8_cost }
+		}
+	}
+}
+
+# Plantations
+aub_upgrade_plantations_effect = {
+	if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= cheap_building_tier_2_cost }
+				scope:aub_payer = { gold >= cheap_building_tier_2_cost }
+			}
+			has_building = plantations_01
+			scope:aub_payer.culture = {
+				has_innovation = innovation_crop_rotation
+			}
+			building_requirement_castle_city_church = { LEVEL = 01 }
+		}
+		add_building = plantations_02
+		if = {
+			limit = { has_building = plantations_02 }
+			aub_pay_building_cost_effect = { COST = cheap_building_tier_2_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= cheap_building_tier_3_cost }
+				scope:aub_payer = { gold >= cheap_building_tier_3_cost }
+			}
+			has_building = plantations_02
+			scope:aub_payer.culture = {
+				has_innovation = innovation_manorialism
+			}
+			building_requirement_castle_city_church = { LEVEL = 02 }
+		}
+		add_building = plantations_03
+		if = {
+			limit = { has_building = plantations_03 }
+			aub_pay_building_cost_effect = { COST = cheap_building_tier_3_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= cheap_building_tier_4_cost }
+				scope:aub_payer = { gold >= cheap_building_tier_4_cost }
+			}
+			has_building = plantations_03
+			scope:aub_payer.culture = {
+				has_innovation = innovation_manorialism
+			}
+			building_requirement_castle_city_church = { LEVEL = 02 }
+		}
+		add_building = plantations_04
+		if = {
+			limit = { has_building = plantations_04 }
+			aub_pay_building_cost_effect = { COST = cheap_building_tier_4_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= cheap_building_tier_5_cost }
+				scope:aub_payer = { gold >= cheap_building_tier_5_cost }
+			}
+			has_building = plantations_04
+			scope:aub_payer.culture = {
+				has_innovation = innovation_guilds
+			}
+			building_requirement_castle_city_church = { LEVEL = 03 }
+		}
+		add_building = plantations_05
+		if = {
+			limit = { has_building = plantations_05 }
+			aub_pay_building_cost_effect = { COST = cheap_building_tier_5_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= cheap_building_tier_6_cost }
+				scope:aub_payer = { gold >= cheap_building_tier_6_cost }
+			}
+			has_building = plantations_05
+			scope:aub_payer.culture = {
+				has_innovation = innovation_guilds
+			}
+			building_requirement_castle_city_church = { LEVEL = 03 }
+		}
+		add_building = plantations_06
+		if = {
+			limit = { has_building = plantations_06 }
+			aub_pay_building_cost_effect = { COST = cheap_building_tier_6_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= cheap_building_tier_7_cost }
+				scope:aub_payer = { gold >= cheap_building_tier_7_cost }
+			}
+			has_building = plantations_06
+			scope:aub_payer.culture = {
+				has_innovation = innovation_cranes
+			}
+			building_requirement_castle_city_church = { LEVEL = 04 }
+		}
+		add_building = plantations_07
+		if = {
+			limit = { has_building = plantations_07 }
+			aub_pay_building_cost_effect = { COST = cheap_building_tier_7_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= cheap_building_tier_8_cost }
+				scope:aub_payer = { gold >= cheap_building_tier_8_cost }
+			}
+			has_building = plantations_07
+			scope:aub_payer.culture = {
+				has_innovation = innovation_cranes
+			}
+			building_requirement_castle_city_church = { LEVEL = 04 }
+		}
+		add_building = plantations_08
+		if = {
+			limit = { has_building = plantations_08 }
+			aub_pay_building_cost_effect = { COST = cheap_building_tier_8_cost }
+		}
+	}
+}
+
+# Quarries
+aub_upgrade_quarries_effect = {
+	if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= cheap_building_tier_2_cost }
+				scope:aub_payer = { gold >= cheap_building_tier_2_cost }
+			}
+			has_building = quarries_01
+			scope:aub_payer.culture = {
+				has_innovation = innovation_crop_rotation
+			}
+			building_requirement_castle_city_church = { LEVEL = 01 }
+		}
+		add_building = quarries_02
+		if = {
+			limit = { has_building = quarries_02 }
+			aub_pay_building_cost_effect = { COST = cheap_building_tier_2_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= cheap_building_tier_3_cost }
+				scope:aub_payer = { gold >= cheap_building_tier_3_cost }
+			}
+			has_building = quarries_02
+			scope:aub_payer.culture = {
+				has_innovation = innovation_manorialism
+			}
+			building_requirement_castle_city_church = { LEVEL = 02 }
+		}
+		add_building = quarries_03
+		if = {
+			limit = { has_building = quarries_03 }
+			aub_pay_building_cost_effect = { COST = cheap_building_tier_3_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= cheap_building_tier_4_cost }
+				scope:aub_payer = { gold >= cheap_building_tier_4_cost }
+			}
+			has_building = quarries_03
+			scope:aub_payer.culture = {
+				has_innovation = innovation_manorialism
+			}
+			building_requirement_castle_city_church = { LEVEL = 02 }
+		}
+		add_building = quarries_04
+		if = {
+			limit = { has_building = quarries_04 }
+			aub_pay_building_cost_effect = { COST = cheap_building_tier_4_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= cheap_building_tier_5_cost }
+				scope:aub_payer = { gold >= cheap_building_tier_5_cost }
+			}
+			has_building = quarries_04
+			scope:aub_payer.culture = {
+				has_innovation = innovation_guilds
+			}
+			building_requirement_castle_city_church = { LEVEL = 03 }
+		}
+		add_building = quarries_05
+		if = {
+			limit = { has_building = quarries_05 }
+			aub_pay_building_cost_effect = { COST = cheap_building_tier_5_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= cheap_building_tier_6_cost }
+				scope:aub_payer = { gold >= cheap_building_tier_6_cost }
+			}
+			has_building = quarries_05
+			scope:aub_payer.culture = {
+				has_innovation = innovation_guilds
+			}
+			building_requirement_castle_city_church = { LEVEL = 03 }
+		}
+		add_building = quarries_06
+		if = {
+			limit = { has_building = quarries_06 }
+			aub_pay_building_cost_effect = { COST = cheap_building_tier_6_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= cheap_building_tier_7_cost }
+				scope:aub_payer = { gold >= cheap_building_tier_7_cost }
+			}
+			has_building = quarries_06
+			scope:aub_payer.culture = {
+				has_innovation = innovation_cranes
+			}
+			building_requirement_castle_city_church = { LEVEL = 04 }
+		}
+		add_building = quarries_07
+		if = {
+			limit = { has_building = quarries_07 }
+			aub_pay_building_cost_effect = { COST = cheap_building_tier_7_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= cheap_building_tier_8_cost }
+				scope:aub_payer = { gold >= cheap_building_tier_8_cost }
+			}
+			has_building = quarries_07
+			scope:aub_payer.culture = {
+				has_innovation = innovation_cranes
+			}
+			building_requirement_castle_city_church = { LEVEL = 04 }
+		}
+		add_building = quarries_08
+		if = {
+			limit = { has_building = quarries_08 }
+			aub_pay_building_cost_effect = { COST = cheap_building_tier_8_cost }
+		}
+	}
+}
+
+# Qanats
+aub_upgrade_qanats_effect = {
+	if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= normal_building_tier_2_cost }
+				scope:aub_payer = { gold >= normal_building_tier_2_cost }
+			}
+			has_building = qanats_01
+			building_requirement_castle_city_church = { LEVEL = 01 }
+		}
+		add_building = qanats_02
+		if = {
+			limit = { has_building = qanats_02 }
+			aub_pay_building_cost_effect = { COST = normal_building_tier_2_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= normal_building_tier_3_cost }
+				scope:aub_payer = { gold >= normal_building_tier_3_cost }
+			}
+			has_building = qanats_02
+			building_requirement_castle_city_church = { LEVEL = 02 }
+		}
+		add_building = qanats_03
+		if = {
+			limit = { has_building = qanats_03 }
+			aub_pay_building_cost_effect = { COST = normal_building_tier_3_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= normal_building_tier_4_cost }
+				scope:aub_payer = { gold >= normal_building_tier_4_cost }
+			}
+			has_building = qanats_03
+			building_requirement_castle_city_church = { LEVEL = 02 }
+		}
+		add_building = qanats_04
+		if = {
+			limit = { has_building = qanats_04 }
+			aub_pay_building_cost_effect = { COST = normal_building_tier_4_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= normal_building_tier_5_cost }
+				scope:aub_payer = { gold >= normal_building_tier_5_cost }
+			}
+			has_building = qanats_04
+			building_requirement_castle_city_church = { LEVEL = 03 }
+		}
+		add_building = qanats_05
+		if = {
+			limit = { has_building = qanats_05 }
+			aub_pay_building_cost_effect = { COST = normal_building_tier_5_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= normal_building_tier_6_cost }
+				scope:aub_payer = { gold >= normal_building_tier_6_cost }
+			}
+			has_building = qanats_05
+			building_requirement_castle_city_church = { LEVEL = 03 }
+		}
+		add_building = qanats_06
+		if = {
+			limit = { has_building = qanats_06 }
+			aub_pay_building_cost_effect = { COST = normal_building_tier_6_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= normal_building_tier_7_cost }
+				scope:aub_payer = { gold >= normal_building_tier_7_cost }
+			}
+			has_building = qanats_06
+			building_requirement_castle_city_church = { LEVEL = 04 }
+		}
+		add_building = qanats_07
+		if = {
+			limit = { has_building = qanats_07 }
+			aub_pay_building_cost_effect = { COST = normal_building_tier_7_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= normal_building_tier_8_cost }
+				scope:aub_payer = { gold >= normal_building_tier_8_cost }
+			}
+			has_building = qanats_07
+			building_requirement_castle_city_church = { LEVEL = 04 }
+		}
+		add_building = qanats_08
+		if = {
+			limit = { has_building = qanats_08 }
+			aub_pay_building_cost_effect = { COST = normal_building_tier_8_cost }
+		}
+	}
+}
+
+# Murex Farm
+aub_upgrade_murex_farm_effect = {
+	if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= normal_building_tier_2_cost }
+				scope:aub_payer = { gold >= normal_building_tier_2_cost }
+			}
+			has_building = murex_farm_01
+			building_requirement_castle_city_church = { LEVEL = 01 }
+		}
+		add_building = murex_farm_02
+		if = {
+			limit = { has_building = murex_farm_02 }
+			aub_pay_building_cost_effect = { COST = normal_building_tier_2_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= normal_building_tier_3_cost }
+				scope:aub_payer = { gold >= normal_building_tier_3_cost }
+			}
+			has_building = murex_farm_02
+			building_requirement_castle_city_church = { LEVEL = 02 }
+		}
+		add_building = murex_farm_03
+		if = {
+			limit = { has_building = murex_farm_03 }
+			aub_pay_building_cost_effect = { COST = normal_building_tier_3_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= normal_building_tier_4_cost }
+				scope:aub_payer = { gold >= normal_building_tier_4_cost }
+			}
+			has_building = murex_farm_03
+			building_requirement_castle_city_church = { LEVEL = 02 }
+		}
+		add_building = murex_farm_04
+		if = {
+			limit = { has_building = murex_farm_04 }
+			aub_pay_building_cost_effect = { COST = normal_building_tier_4_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= normal_building_tier_5_cost }
+				scope:aub_payer = { gold >= normal_building_tier_5_cost }
+			}
+			has_building = murex_farm_04
+			building_requirement_castle_city_church = { LEVEL = 03 }
+		}
+		add_building = murex_farm_05
+		if = {
+			limit = { has_building = murex_farm_05 }
+			aub_pay_building_cost_effect = { COST = normal_building_tier_5_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= normal_building_tier_6_cost }
+				scope:aub_payer = { gold >= normal_building_tier_6_cost }
+			}
+			has_building = murex_farm_05
+			building_requirement_castle_city_church = { LEVEL = 03 }
+		}
+		add_building = murex_farm_06
+		if = {
+			limit = { has_building = murex_farm_06 }
+			aub_pay_building_cost_effect = { COST = normal_building_tier_6_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= normal_building_tier_7_cost }
+				scope:aub_payer = { gold >= normal_building_tier_7_cost }
+			}
+			has_building = murex_farm_06
+			building_requirement_castle_city_church = { LEVEL = 04 }
+		}
+		add_building = murex_farm_07
+		if = {
+			limit = { has_building = murex_farm_07 }
+			aub_pay_building_cost_effect = { COST = normal_building_tier_7_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= normal_building_tier_8_cost }
+				scope:aub_payer = { gold >= normal_building_tier_8_cost }
+			}
+			has_building = murex_farm_07
+			building_requirement_castle_city_church = { LEVEL = 04 }
+		}
+		add_building = murex_farm_08
+		if = {
+			limit = { has_building = murex_farm_08 }
+			aub_pay_building_cost_effect = { COST = normal_building_tier_8_cost }
+		}
+	}
+}
+
+# Waterworks
+aub_upgrade_waterworks_effect = {
+	if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= normal_building_tier_2_cost }
+				scope:aub_payer = { gold >= normal_building_tier_2_cost }
+			}
+			has_building = waterworks_01
+			building_requirement_castle_city_church = { LEVEL = 01 }
+		}
+		add_building = waterworks_02
+		if = {
+			limit = { has_building = waterworks_02 }
+			aub_pay_building_cost_effect = { COST = normal_building_tier_2_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= normal_building_tier_3_cost }
+				scope:aub_payer = { gold >= normal_building_tier_3_cost }
+			}
+			has_building = waterworks_02
+			building_requirement_castle_city_church = { LEVEL = 02 }
+		}
+		add_building = waterworks_03
+		if = {
+			limit = { has_building = waterworks_03 }
+			aub_pay_building_cost_effect = { COST = normal_building_tier_3_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= normal_building_tier_4_cost }
+				scope:aub_payer = { gold >= normal_building_tier_4_cost }
+			}
+			has_building = waterworks_03
+			building_requirement_castle_city_church = { LEVEL = 02 }
+		}
+		add_building = waterworks_04
+		if = {
+			limit = { has_building = waterworks_04 }
+			aub_pay_building_cost_effect = { COST = normal_building_tier_4_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= normal_building_tier_5_cost }
+				scope:aub_payer = { gold >= normal_building_tier_5_cost }
+			}
+			has_building = waterworks_04
+			building_requirement_castle_city_church = { LEVEL = 03 }
+		}
+		add_building = waterworks_05
+		if = {
+			limit = { has_building = waterworks_05 }
+			aub_pay_building_cost_effect = { COST = normal_building_tier_5_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= normal_building_tier_6_cost }
+				scope:aub_payer = { gold >= normal_building_tier_6_cost }
+			}
+			has_building = waterworks_05
+			building_requirement_castle_city_church = { LEVEL = 03 }
+		}
+		add_building = waterworks_06
+		if = {
+			limit = { has_building = waterworks_06 }
+			aub_pay_building_cost_effect = { COST = normal_building_tier_6_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= normal_building_tier_7_cost }
+				scope:aub_payer = { gold >= normal_building_tier_7_cost }
+			}
+			has_building = waterworks_06
+			building_requirement_castle_city_church = { LEVEL = 04 }
+		}
+		add_building = waterworks_07
+		if = {
+			limit = { has_building = waterworks_07 }
+			aub_pay_building_cost_effect = { COST = normal_building_tier_7_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= normal_building_tier_8_cost }
+				scope:aub_payer = { gold >= normal_building_tier_8_cost }
+			}
+			has_building = waterworks_07
+			building_requirement_castle_city_church = { LEVEL = 04 }
+		}
+		add_building = waterworks_08
+		if = {
+			limit = { has_building = waterworks_08 }
+			aub_pay_building_cost_effect = { COST = normal_building_tier_8_cost }
+		}
+	}
+}
+
+# Spice Plantation
+aub_upgrade_spice_plantation_effect = {
+	if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= normal_building_tier_2_cost }
+				scope:aub_payer = { gold >= normal_building_tier_2_cost }
+			}
+			has_building = spice_plantation_01
+			building_requirement_castle_city_church = { LEVEL = 01 }
+		}
+		add_building = spice_plantation_02
+		if = {
+			limit = { has_building = spice_plantation_02 }
+			aub_pay_building_cost_effect = { COST = normal_building_tier_2_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= normal_building_tier_3_cost }
+				scope:aub_payer = { gold >= normal_building_tier_3_cost }
+			}
+			has_building = spice_plantation_02
+			building_requirement_castle_city_church = { LEVEL = 02 }
+		}
+		add_building = spice_plantation_03
+		if = {
+			limit = { has_building = spice_plantation_03 }
+			aub_pay_building_cost_effect = { COST = normal_building_tier_3_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= normal_building_tier_4_cost }
+				scope:aub_payer = { gold >= normal_building_tier_4_cost }
+			}
+			has_building = spice_plantation_03
+			building_requirement_castle_city_church = { LEVEL = 02 }
+		}
+		add_building = spice_plantation_04
+		if = {
+			limit = { has_building = spice_plantation_04 }
+			aub_pay_building_cost_effect = { COST = normal_building_tier_4_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= normal_building_tier_5_cost }
+				scope:aub_payer = { gold >= normal_building_tier_5_cost }
+			}
+			has_building = spice_plantation_04
+			building_requirement_castle_city_church = { LEVEL = 03 }
+		}
+		add_building = spice_plantation_05
+		if = {
+			limit = { has_building = spice_plantation_05 }
+			aub_pay_building_cost_effect = { COST = normal_building_tier_5_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= normal_building_tier_6_cost }
+				scope:aub_payer = { gold >= normal_building_tier_6_cost }
+			}
+			has_building = spice_plantation_05
+			building_requirement_castle_city_church = { LEVEL = 03 }
+		}
+		add_building = spice_plantation_06
+		if = {
+			limit = { has_building = spice_plantation_06 }
+			aub_pay_building_cost_effect = { COST = normal_building_tier_6_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= normal_building_tier_7_cost }
+				scope:aub_payer = { gold >= normal_building_tier_7_cost }
+			}
+			has_building = spice_plantation_06
+			building_requirement_castle_city_church = { LEVEL = 04 }
+		}
+		add_building = spice_plantation_07
+		if = {
+			limit = { has_building = spice_plantation_07 }
+			aub_pay_building_cost_effect = { COST = normal_building_tier_7_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= normal_building_tier_8_cost }
+				scope:aub_payer = { gold >= normal_building_tier_8_cost }
+			}
+			has_building = spice_plantation_07
+			building_requirement_castle_city_church = { LEVEL = 04 }
+		}
+		add_building = spice_plantation_08
+		if = {
+			limit = { has_building = spice_plantation_08 }
+			aub_pay_building_cost_effect = { COST = normal_building_tier_8_cost }
+		}
+	}
+}
+
+# Paddy Fields
+aub_upgrade_paddy_fields_effect = {
+	if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= normal_building_tier_2_cost }
+				scope:aub_payer = { gold >= normal_building_tier_2_cost }
+			}
+			has_building = paddy_fields_01
+			building_requirement_castle_city_church = { LEVEL = 01 }
+		}
+		add_building = paddy_fields_02
+		if = {
+			limit = { has_building = paddy_fields_02 }
+			aub_pay_building_cost_effect = { COST = normal_building_tier_2_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= normal_building_tier_3_cost }
+				scope:aub_payer = { gold >= normal_building_tier_3_cost }
+			}
+			has_building = paddy_fields_02
+			scope:aub_payer.culture = {
+				has_innovation = innovation_manorialism
+			}
+			building_requirement_castle_city_church = { LEVEL = 02 }
+		}
+		add_building = paddy_fields_03
+		if = {
+			limit = { has_building = paddy_fields_03 }
+			aub_pay_building_cost_effect = { COST = normal_building_tier_3_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= normal_building_tier_4_cost }
+				scope:aub_payer = { gold >= normal_building_tier_4_cost }
+			}
+			has_building = paddy_fields_03
+			scope:aub_payer.culture = {
+				has_innovation = innovation_manorialism
+			}
+			building_requirement_castle_city_church = { LEVEL = 02 }
+		}
+		add_building = paddy_fields_04
+		if = {
+			limit = { has_building = paddy_fields_04 }
+			aub_pay_building_cost_effect = { COST = normal_building_tier_4_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= normal_building_tier_5_cost }
+				scope:aub_payer = { gold >= normal_building_tier_5_cost }
+			}
+			has_building = paddy_fields_04
+			scope:aub_payer.culture = {
+				has_innovation = innovation_guilds
+			}
+			building_requirement_castle_city_church = { LEVEL = 03 }
+		}
+		add_building = paddy_fields_05
+		if = {
+			limit = { has_building = paddy_fields_05 }
+			aub_pay_building_cost_effect = { COST = normal_building_tier_5_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= normal_building_tier_6_cost }
+				scope:aub_payer = { gold >= normal_building_tier_6_cost }
+			}
+			has_building = paddy_fields_05
+			scope:aub_payer.culture = {
+				has_innovation = innovation_guilds
+			}
+			building_requirement_castle_city_church = { LEVEL = 03 }
+		}
+		add_building = paddy_fields_06
+		if = {
+			limit = { has_building = paddy_fields_06 }
+			aub_pay_building_cost_effect = { COST = normal_building_tier_6_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= normal_building_tier_7_cost }
+				scope:aub_payer = { gold >= normal_building_tier_7_cost }
+			}
+			has_building = paddy_fields_06
+			scope:aub_payer.culture = {
+				has_innovation = innovation_cranes
+			}
+			building_requirement_castle_city_church = { LEVEL = 04 }
+		}
+		add_building = paddy_fields_07
+		if = {
+			limit = { has_building = paddy_fields_07 }
+			aub_pay_building_cost_effect = { COST = normal_building_tier_7_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= normal_building_tier_8_cost }
+				scope:aub_payer = { gold >= normal_building_tier_8_cost }
+			}
+			has_building = paddy_fields_07
+			scope:aub_payer.culture = {
+				has_innovation = innovation_cranes
+			}
+			building_requirement_castle_city_church = { LEVEL = 04 }
+		}
+		add_building = paddy_fields_08
+		if = {
+			limit = { has_building = paddy_fields_08 }
+			aub_pay_building_cost_effect = { COST = normal_building_tier_8_cost }
+		}
+	}
+}
+
+# Wind Furnace
+aub_upgrade_wind_furnace_effect = {
+	if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= normal_building_tier_2_cost }
+				scope:aub_payer = { gold >= normal_building_tier_2_cost }
+			}
+			has_building = wind_furnace_01
+			scope:aub_payer.culture = {
+				has_innovation = innovation_barracks
+			}
+			building_requirement_castle_city_church = { LEVEL = 01 }
+		}
+		add_building = wind_furnace_02
+		if = {
+			limit = { has_building = wind_furnace_02 }
+			aub_pay_building_cost_effect = { COST = normal_building_tier_2_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= normal_building_tier_3_cost }
+				scope:aub_payer = { gold >= normal_building_tier_3_cost }
+			}
+			has_building = wind_furnace_02
+			scope:aub_payer.culture = {
+				has_innovation = innovation_burhs
+			}
+			building_requirement_castle_city_church = { LEVEL = 02 }
+		}
+		add_building = wind_furnace_03
+		if = {
+			limit = { has_building = wind_furnace_03 }
+			aub_pay_building_cost_effect = { COST = normal_building_tier_3_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= normal_building_tier_4_cost }
+				scope:aub_payer = { gold >= normal_building_tier_4_cost }
+			}
+			has_building = wind_furnace_03
+			scope:aub_payer.culture = {
+				has_innovation = innovation_burhs
+			}
+			building_requirement_castle_city_church = { LEVEL = 02 }
+		}
+		add_building = wind_furnace_04
+		if = {
+			limit = { has_building = wind_furnace_04 }
+			aub_pay_building_cost_effect = { COST = normal_building_tier_4_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= normal_building_tier_5_cost }
+				scope:aub_payer = { gold >= normal_building_tier_5_cost }
+			}
+			has_building = wind_furnace_04
+			scope:aub_payer.culture = {
+				has_innovation = innovation_castle_baileys
+			}
+			building_requirement_castle_city_church = { LEVEL = 03 }
+		}
+		add_building = wind_furnace_05
+		if = {
+			limit = { has_building = wind_furnace_05 }
+			aub_pay_building_cost_effect = { COST = normal_building_tier_5_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= normal_building_tier_6_cost }
+				scope:aub_payer = { gold >= normal_building_tier_6_cost }
+			}
+			has_building = wind_furnace_05
+			scope:aub_payer.culture = {
+				has_innovation = innovation_royal_armory
+			}
+			building_requirement_castle_city_church = { LEVEL = 03 }
+		}
+		add_building = wind_furnace_06
+		if = {
+			limit = { has_building = wind_furnace_06 }
+			aub_pay_building_cost_effect = { COST = normal_building_tier_6_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= normal_building_tier_7_cost }
+				scope:aub_payer = { gold >= normal_building_tier_7_cost }
+			}
+			has_building = wind_furnace_06
+			scope:aub_payer.culture = {
+				has_innovation = innovation_royal_armory
+			}
+			building_requirement_castle_city_church = { LEVEL = 04 }
+		}
+		add_building = wind_furnace_07
+		if = {
+			limit = { has_building = wind_furnace_07 }
+			aub_pay_building_cost_effect = { COST = normal_building_tier_7_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= normal_building_tier_8_cost }
+				scope:aub_payer = { gold >= normal_building_tier_8_cost }
+			}
+			has_building = wind_furnace_07
+			scope:aub_payer.culture = {
+				has_innovation = innovation_royal_armory
+			}
+			building_requirement_castle_city_church = { LEVEL = 04 }
+		}
+		add_building = wind_furnace_08
+		if = {
+			limit = { has_building = wind_furnace_08 }
+			aub_pay_building_cost_effect = { COST = normal_building_tier_8_cost }
+		}
+	}
+}
+
+# Workshops
+aub_upgrade_workshops_effect = {
+	if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= expensive_building_tier_2_cost }
+				scope:aub_payer = { gold >= expensive_building_tier_2_cost }
+			}
+			has_building = workshops_01
+			scope:aub_payer.culture = {
+				has_innovation = innovation_advanced_bowmaking
+			}
+			building_requirement_castle_city_church = { LEVEL = 01 }
+		}
+		add_building = workshops_02
+		if = {
+			limit = { has_building = workshops_02 }
+			aub_pay_building_cost_effect = { COST = expensive_building_tier_2_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= expensive_building_tier_3_cost }
+				scope:aub_payer = { gold >= expensive_building_tier_3_cost }
+			}
+			has_building = workshops_02
+			scope:aub_payer.culture = {
+				has_innovation = innovation_advanced_bowmaking
+			}
+			building_requirement_castle_city_church = { LEVEL = 02 }
+		}
+		add_building = workshops_03
+		if = {
+			limit = { has_building = workshops_03 }
+			aub_pay_building_cost_effect = { COST = expensive_building_tier_3_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= expensive_building_tier_4_cost }
+				scope:aub_payer = { gold >= expensive_building_tier_4_cost }
+			}
+			has_building = workshops_03
+			scope:aub_payer.culture = {
+				has_innovation = innovation_advanced_bowmaking
+			}
+			building_requirement_castle_city_church = { LEVEL = 02 }
+		}
+		add_building = workshops_04
+		if = {
+			limit = { has_building = workshops_04 }
+			aub_pay_building_cost_effect = { COST = expensive_building_tier_4_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= expensive_building_tier_5_cost }
+				scope:aub_payer = { gold >= expensive_building_tier_5_cost }
+			}
+			has_building = workshops_04
+			scope:aub_payer.culture = {
+				has_innovation = innovation_advanced_bowmaking
+			}
+			building_requirement_castle_city_church = { LEVEL = 03 }
+		}
+		add_building = workshops_05
+		if = {
+			limit = { has_building = workshops_05 }
+			aub_pay_building_cost_effect = { COST = expensive_building_tier_5_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= expensive_building_tier_6_cost }
+				scope:aub_payer = { gold >= expensive_building_tier_6_cost }
+			}
+			has_building = workshops_05
+			scope:aub_payer.culture = {
+				has_innovation = innovation_royal_armory
+			}
+			building_requirement_castle_city_church = { LEVEL = 03 }
+		}
+		add_building = workshops_06
+		if = {
+			limit = { has_building = workshops_06 }
+			aub_pay_building_cost_effect = { COST = expensive_building_tier_6_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= expensive_building_tier_7_cost }
+				scope:aub_payer = { gold >= expensive_building_tier_7_cost }
+			}
+			has_building = workshops_06
+			scope:aub_payer.culture = {
+				has_innovation = innovation_royal_armory
+			}
+			building_requirement_castle_city_church = { LEVEL = 04 }
+		}
+		add_building = workshops_07
+		if = {
+			limit = { has_building = workshops_07 }
+			aub_pay_building_cost_effect = { COST = expensive_building_tier_7_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= expensive_building_tier_8_cost }
+				scope:aub_payer = { gold >= expensive_building_tier_8_cost }
+			}
+			has_building = workshops_07
+			scope:aub_payer.culture = {
+				has_innovation = innovation_royal_armory
+			}
+			building_requirement_castle_city_church = { LEVEL = 04 }
+		}
+		add_building = workshops_08
+		if = {
+			limit = { has_building = workshops_08 }
+			aub_pay_building_cost_effect = { COST = expensive_building_tier_8_cost }
+		}
+	}
+}
+
+# Horse Pastures
+aub_upgrade_horse_pastures_effect = {
+	if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= cheap_building_tier_2_cost }
+				scope:aub_payer = { gold >= cheap_building_tier_2_cost }
+			}
+			has_building = horse_pastures_01
+			scope:aub_payer.culture = {
+				has_innovation = innovation_barracks
+			}
+		}
+		add_building = horse_pastures_02
+		if = {
+			limit = { has_building = horse_pastures_02 }
+			aub_pay_building_cost_effect = { COST = cheap_building_tier_2_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= cheap_building_tier_3_cost }
+				scope:aub_payer = { gold >= cheap_building_tier_3_cost }
+			}
+			has_building = horse_pastures_02
+			scope:aub_payer.culture = {
+				has_innovation = innovation_burhs
+			}
+			building_requirement_castle_city_church = { LEVEL = 02 }
+		}
+		add_building = horse_pastures_03
+		if = {
+			limit = { has_building = horse_pastures_03 }
+			aub_pay_building_cost_effect = { COST = cheap_building_tier_3_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= cheap_building_tier_4_cost }
+				scope:aub_payer = { gold >= cheap_building_tier_4_cost }
+			}
+			has_building = horse_pastures_03
+			scope:aub_payer.culture = {
+				has_innovation = innovation_burhs
+			}
+			building_requirement_castle_city_church = { LEVEL = 02 }
+		}
+		add_building = horse_pastures_04
+		if = {
+			limit = { has_building = horse_pastures_04 }
+			aub_pay_building_cost_effect = { COST = cheap_building_tier_4_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= cheap_building_tier_5_cost }
+				scope:aub_payer = { gold >= cheap_building_tier_5_cost }
+			}
+			has_building = horse_pastures_04
+			scope:aub_payer.culture = {
+				has_innovation = innovation_castle_baileys
+			}
+			building_requirement_castle_city_church = { LEVEL = 03 }
+		}
+		add_building = horse_pastures_05
+		if = {
+			limit = { has_building = horse_pastures_05 }
+			aub_pay_building_cost_effect = { COST = cheap_building_tier_5_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= cheap_building_tier_6_cost }
+				scope:aub_payer = { gold >= cheap_building_tier_6_cost }
+			}
+			has_building = horse_pastures_05
+			scope:aub_payer.culture = {
+				has_innovation = innovation_castle_baileys
+			}
+			building_requirement_castle_city_church = { LEVEL = 03 }
+		}
+		add_building = horse_pastures_06
+		if = {
+			limit = { has_building = horse_pastures_06 }
+			aub_pay_building_cost_effect = { COST = cheap_building_tier_6_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= cheap_building_tier_7_cost }
+				scope:aub_payer = { gold >= cheap_building_tier_7_cost }
+			}
+			has_building = horse_pastures_06
+			scope:aub_payer.culture = {
+				has_innovation = innovation_royal_armory
+			}
+			building_requirement_castle_city_church = { LEVEL = 04 }
+		}
+		add_building = horse_pastures_07
+		if = {
+			limit = { has_building = horse_pastures_07 }
+			aub_pay_building_cost_effect = { COST = cheap_building_tier_7_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= cheap_building_tier_8_cost }
+				scope:aub_payer = { gold >= cheap_building_tier_8_cost }
+			}
+			has_building = horse_pastures_07
+			scope:aub_payer.culture = {
+				has_innovation = innovation_royal_armory
+			}
+			building_requirement_castle_city_church = { LEVEL = 04 }
+		}
+		add_building = horse_pastures_08
+		if = {
+			limit = { has_building = horse_pastures_08 }
+			aub_pay_building_cost_effect = { COST = cheap_building_tier_8_cost }
+		}
+	}
+}
+
+# Hillside Grazing
+aub_upgrade_hillside_grazing_effect = {
+	if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= cheap_building_tier_2_cost }
+				scope:aub_payer = { gold >= cheap_building_tier_2_cost }
+			}
+			has_building = hillside_grazing_01
+			scope:aub_payer.culture = {
+				has_innovation = innovation_barracks
+			}
+		}
+		add_building = hillside_grazing_02
+		if = {
+			limit = { has_building = hillside_grazing_02 }
+			aub_pay_building_cost_effect = { COST = cheap_building_tier_2_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= cheap_building_tier_3_cost }
+				scope:aub_payer = { gold >= cheap_building_tier_3_cost }
+			}
+			has_building = hillside_grazing_02
+			scope:aub_payer.culture = {
+				has_innovation = innovation_burhs
+			}
+			building_requirement_castle_city_church = { LEVEL = 02 }
+		}
+		add_building = hillside_grazing_03
+		if = {
+			limit = { has_building = hillside_grazing_03 }
+			aub_pay_building_cost_effect = { COST = cheap_building_tier_3_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= cheap_building_tier_4_cost }
+				scope:aub_payer = { gold >= cheap_building_tier_4_cost }
+			}
+			has_building = hillside_grazing_03
+			scope:aub_payer.culture = {
+				has_innovation = innovation_burhs
+			}
+			building_requirement_castle_city_church = { LEVEL = 02 }
+		}
+		add_building = hillside_grazing_04
+		if = {
+			limit = { has_building = hillside_grazing_04 }
+			aub_pay_building_cost_effect = { COST = cheap_building_tier_4_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= cheap_building_tier_5_cost }
+				scope:aub_payer = { gold >= cheap_building_tier_5_cost }
+			}
+			has_building = hillside_grazing_04
+			scope:aub_payer.culture = {
+				has_innovation = innovation_castle_baileys
+			}
+			building_requirement_castle_city_church = { LEVEL = 03 }
+		}
+		add_building = hillside_grazing_05
+		if = {
+			limit = { has_building = hillside_grazing_05 }
+			aub_pay_building_cost_effect = { COST = cheap_building_tier_5_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= cheap_building_tier_6_cost }
+				scope:aub_payer = { gold >= cheap_building_tier_6_cost }
+			}
+			has_building = hillside_grazing_05
+			scope:aub_payer.culture = {
+				has_innovation = innovation_castle_baileys
+			}
+			building_requirement_castle_city_church = { LEVEL = 03 }
+		}
+		add_building = hillside_grazing_06
+		if = {
+			limit = { has_building = hillside_grazing_06 }
+			aub_pay_building_cost_effect = { COST = cheap_building_tier_6_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= cheap_building_tier_7_cost }
+				scope:aub_payer = { gold >= cheap_building_tier_7_cost }
+			}
+			has_building = hillside_grazing_06
+			scope:aub_payer.culture = {
+				has_innovation = innovation_royal_armory
+			}
+			building_requirement_castle_city_church = { LEVEL = 04 }
+		}
+		add_building = hillside_grazing_07
+		if = {
+			limit = { has_building = hillside_grazing_07 }
+			aub_pay_building_cost_effect = { COST = cheap_building_tier_7_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= cheap_building_tier_8_cost }
+				scope:aub_payer = { gold >= cheap_building_tier_8_cost }
+			}
+			has_building = hillside_grazing_07
+			scope:aub_payer.culture = {
+				has_innovation = innovation_royal_armory
+			}
+			building_requirement_castle_city_church = { LEVEL = 04 }
+		}
+		add_building = hillside_grazing_08
+		if = {
+			limit = { has_building = hillside_grazing_08 }
+			aub_pay_building_cost_effect = { COST = cheap_building_tier_8_cost }
+		}
+	}
+}
+
+# Warrior Lodges
+aub_upgrade_warrior_lodges_effect = {
+	if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= cheap_building_tier_2_cost }
+				scope:aub_payer = { gold >= cheap_building_tier_2_cost }
+			}
+			has_building = warrior_lodges_01
+			scope:aub_payer.culture = {
+				has_innovation = innovation_barracks
+			}
+		}
+		add_building = warrior_lodges_02
+		if = {
+			limit = { has_building = warrior_lodges_02 }
+			aub_pay_building_cost_effect = { COST = cheap_building_tier_2_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= cheap_building_tier_3_cost }
+				scope:aub_payer = { gold >= cheap_building_tier_3_cost }
+			}
+			has_building = warrior_lodges_02
+			scope:aub_payer.culture = {
+				has_innovation = innovation_burhs
+			}
+			building_requirement_castle_city_church = { LEVEL = 02 }
+		}
+		add_building = warrior_lodges_03
+		if = {
+			limit = { has_building = warrior_lodges_03 }
+			aub_pay_building_cost_effect = { COST = cheap_building_tier_3_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= cheap_building_tier_4_cost }
+				scope:aub_payer = { gold >= cheap_building_tier_4_cost }
+			}
+			has_building = warrior_lodges_03
+			scope:aub_payer.culture = {
+				has_innovation = innovation_burhs
+			}
+			building_requirement_castle_city_church = { LEVEL = 02 }
+		}
+		add_building = warrior_lodges_04
+		if = {
+			limit = { has_building = warrior_lodges_04 }
+			aub_pay_building_cost_effect = { COST = cheap_building_tier_4_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= cheap_building_tier_5_cost }
+				scope:aub_payer = { gold >= cheap_building_tier_5_cost }
+			}
+			has_building = warrior_lodges_04
+			scope:aub_payer.culture = {
+				has_innovation = innovation_castle_baileys
+			}
+			building_requirement_castle_city_church = { LEVEL = 03 }
+		}
+		add_building = warrior_lodges_05
+		if = {
+			limit = { has_building = warrior_lodges_05 }
+			aub_pay_building_cost_effect = { COST = cheap_building_tier_5_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= cheap_building_tier_6_cost }
+				scope:aub_payer = { gold >= cheap_building_tier_6_cost }
+			}
+			has_building = warrior_lodges_05
+			scope:aub_payer.culture = {
+				has_innovation = innovation_castle_baileys
+			}
+			building_requirement_castle_city_church = { LEVEL = 03 }
+		}
+		add_building = warrior_lodges_06
+		if = {
+			limit = { has_building = warrior_lodges_06 }
+			aub_pay_building_cost_effect = { COST = cheap_building_tier_6_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= cheap_building_tier_7_cost }
+				scope:aub_payer = { gold >= cheap_building_tier_7_cost }
+			}
+			has_building = warrior_lodges_06
+			scope:aub_payer.culture = {
+				has_innovation = innovation_royal_armory
+			}
+			building_requirement_castle_city_church = { LEVEL = 04 }
+		}
+		add_building = warrior_lodges_07
+		if = {
+			limit = { has_building = warrior_lodges_07 }
+			aub_pay_building_cost_effect = { COST = cheap_building_tier_7_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= cheap_building_tier_8_cost }
+				scope:aub_payer = { gold >= cheap_building_tier_8_cost }
+			}
+			has_building = warrior_lodges_07
+			scope:aub_payer.culture = {
+				has_innovation = innovation_royal_armory
+			}
+			building_requirement_castle_city_church = { LEVEL = 04 }
+		}
+		add_building = warrior_lodges_08
+		if = {
+			limit = { has_building = warrior_lodges_08 }
+			aub_pay_building_cost_effect = { COST = cheap_building_tier_8_cost }
+		}
+	}
+}
+
+# Military Camps
+aub_upgrade_military_camps_effect = {
+	if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= cheap_building_tier_2_cost }
+				scope:aub_payer = { gold >= cheap_building_tier_2_cost }
+			}
+			has_building = military_camps_01
+			scope:aub_payer.culture = {
+				has_innovation = innovation_barracks
+			}
+			building_requirement_castle_city_church = { LEVEL = 01 }
+		}
+		add_building = military_camps_02
+		if = {
+			limit = { has_building = military_camps_02 }
+			aub_pay_building_cost_effect = { COST = cheap_building_tier_2_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= cheap_building_tier_3_cost }
+				scope:aub_payer = { gold >= cheap_building_tier_3_cost }
+			}
+			has_building = military_camps_02
+			scope:aub_payer.culture = {
+				has_innovation = innovation_burhs
+			}
+			building_requirement_castle_city_church = { LEVEL = 02 }
+		}
+		add_building = military_camps_03
+		if = {
+			limit = { has_building = military_camps_03 }
+			aub_pay_building_cost_effect = { COST = cheap_building_tier_3_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= cheap_building_tier_4_cost }
+				scope:aub_payer = { gold >= cheap_building_tier_4_cost }
+			}
+			has_building = military_camps_03
+			scope:aub_payer.culture = {
+				has_innovation = innovation_burhs
+			}
+			building_requirement_castle_city_church = { LEVEL = 02 }
+		}
+		add_building = military_camps_04
+		if = {
+			limit = { has_building = military_camps_04 }
+			aub_pay_building_cost_effect = { COST = cheap_building_tier_4_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= cheap_building_tier_5_cost }
+				scope:aub_payer = { gold >= cheap_building_tier_5_cost }
+			}
+			has_building = military_camps_04
+			scope:aub_payer.culture = {
+				has_innovation = innovation_castle_baileys
+			}
+			building_requirement_castle_city_church = { LEVEL = 03 }
+		}
+		add_building = military_camps_05
+		if = {
+			limit = { has_building = military_camps_05 }
+			aub_pay_building_cost_effect = { COST = cheap_building_tier_5_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= cheap_building_tier_6_cost }
+				scope:aub_payer = { gold >= cheap_building_tier_6_cost }
+			}
+			has_building = military_camps_05
+			scope:aub_payer.culture = {
+				has_innovation = innovation_castle_baileys
+			}
+			building_requirement_castle_city_church = { LEVEL = 03 }
+		}
+		add_building = military_camps_06
+		if = {
+			limit = { has_building = military_camps_06 }
+			aub_pay_building_cost_effect = { COST = cheap_building_tier_6_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= cheap_building_tier_7_cost }
+				scope:aub_payer = { gold >= cheap_building_tier_7_cost }
+			}
+			has_building = military_camps_06
+			scope:aub_payer.culture = {
+				has_innovation = innovation_royal_armory
+			}
+			building_requirement_castle_city_church = { LEVEL = 04 }
+		}
+		add_building = military_camps_07
+		if = {
+			limit = { has_building = military_camps_07 }
+			aub_pay_building_cost_effect = { COST = cheap_building_tier_7_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= cheap_building_tier_8_cost }
+				scope:aub_payer = { gold >= cheap_building_tier_8_cost }
+			}
+			has_building = military_camps_07
+			scope:aub_payer.culture = {
+				has_innovation = innovation_royal_armory
+			}
+			building_requirement_castle_city_church = { LEVEL = 04 }
+		}
+		add_building = military_camps_08
+		if = {
+			limit = { has_building = military_camps_08 }
+			aub_pay_building_cost_effect = { COST = cheap_building_tier_8_cost }
+		}
+	}
+}
+
+# Regimental Grounds
+aub_upgrade_regimental_grounds_effect = {
+	if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= expensive_building_tier_2_cost }
+				scope:aub_payer = { gold >= expensive_building_tier_2_cost }
+			}
+			has_building = regimental_grounds_01
+			scope:aub_payer.culture = {
+				has_innovation = innovation_barracks
+			}
+			building_requirement_castle_city_church = { LEVEL = 01 }
+		}
+		add_building = regimental_grounds_02
+		if = {
+			limit = { has_building = regimental_grounds_02 }
+			aub_pay_building_cost_effect = { COST = expensive_building_tier_2_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= expensive_building_tier_3_cost }
+				scope:aub_payer = { gold >= expensive_building_tier_3_cost }
+			}
+			has_building = regimental_grounds_02
+			scope:aub_payer.culture = {
+				has_innovation = innovation_burhs
+			}
+			building_requirement_castle_city_church = { LEVEL = 02 }
+		}
+		add_building = regimental_grounds_03
+		if = {
+			limit = { has_building = regimental_grounds_03 }
+			aub_pay_building_cost_effect = { COST = expensive_building_tier_3_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= expensive_building_tier_4_cost }
+				scope:aub_payer = { gold >= expensive_building_tier_4_cost }
+			}
+			has_building = regimental_grounds_03
+			scope:aub_payer.culture = {
+				has_innovation = innovation_burhs
+			}
+			building_requirement_castle_city_church = { LEVEL = 02 }
+		}
+		add_building = regimental_grounds_04
+		if = {
+			limit = { has_building = regimental_grounds_04 }
+			aub_pay_building_cost_effect = { COST = expensive_building_tier_4_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= expensive_building_tier_5_cost }
+				scope:aub_payer = { gold >= expensive_building_tier_5_cost }
+			}
+			has_building = regimental_grounds_04
+			scope:aub_payer.culture = {
+				has_innovation = innovation_castle_baileys
+			}
+			building_requirement_castle_city_church = { LEVEL = 03 }
+		}
+		add_building = regimental_grounds_05
+		if = {
+			limit = { has_building = regimental_grounds_05 }
+			aub_pay_building_cost_effect = { COST = expensive_building_tier_5_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= expensive_building_tier_6_cost }
+				scope:aub_payer = { gold >= expensive_building_tier_6_cost }
+			}
+			has_building = regimental_grounds_05
+			scope:aub_payer.culture = {
+				has_innovation = innovation_castle_baileys
+			}
+			building_requirement_castle_city_church = { LEVEL = 03 }
+		}
+		add_building = regimental_grounds_06
+		if = {
+			limit = { has_building = regimental_grounds_06 }
+			aub_pay_building_cost_effect = { COST = expensive_building_tier_6_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= expensive_building_tier_7_cost }
+				scope:aub_payer = { gold >= expensive_building_tier_7_cost }
+			}
+			has_building = regimental_grounds_06
+			scope:aub_payer.culture = {
+				has_innovation = innovation_royal_armory
+			}
+			building_requirement_castle_city_church = { LEVEL = 04 }
+		}
+		add_building = regimental_grounds_07
+		if = {
+			limit = { has_building = regimental_grounds_07 }
+			aub_pay_building_cost_effect = { COST = expensive_building_tier_7_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= expensive_building_tier_8_cost }
+				scope:aub_payer = { gold >= expensive_building_tier_8_cost }
+			}
+			has_building = regimental_grounds_07
+			scope:aub_payer.culture = {
+				has_innovation = innovation_royal_armory
+			}
+			building_requirement_castle_city_church = { LEVEL = 04 }
+		}
+		add_building = regimental_grounds_08
+		if = {
+			limit = { has_building = regimental_grounds_08 }
+			aub_pay_building_cost_effect = { COST = expensive_building_tier_8_cost }
+		}
+	}
+}
+
+# Outposts
+aub_upgrade_outposts_effect = {
+	if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= cheap_building_tier_2_cost }
+				scope:aub_payer = { gold >= cheap_building_tier_2_cost }
+			}
+			has_building = outposts_01
+			scope:aub_payer.culture = {
+				has_innovation = innovation_barracks
+			}
+			building_requirement_castle_city_church = { LEVEL = 01 }
+		}
+		add_building = outposts_02
+		if = {
+			limit = { has_building = outposts_02 }
+			aub_pay_building_cost_effect = { COST = cheap_building_tier_2_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= cheap_building_tier_3_cost }
+				scope:aub_payer = { gold >= cheap_building_tier_3_cost }
+			}
+			has_building = outposts_02
+			scope:aub_payer.culture = {
+				has_innovation = innovation_burhs
+			}
+			building_requirement_castle_city_church = { LEVEL = 02 }
+		}
+		add_building = outposts_03
+		if = {
+			limit = { has_building = outposts_03 }
+			aub_pay_building_cost_effect = { COST = cheap_building_tier_3_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= cheap_building_tier_4_cost }
+				scope:aub_payer = { gold >= cheap_building_tier_4_cost }
+			}
+			has_building = outposts_03
+			scope:aub_payer.culture = {
+				has_innovation = innovation_burhs
+			}
+			building_requirement_castle_city_church = { LEVEL = 02 }
+		}
+		add_building = outposts_04
+		if = {
+			limit = { has_building = outposts_04 }
+			aub_pay_building_cost_effect = { COST = cheap_building_tier_4_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= cheap_building_tier_5_cost }
+				scope:aub_payer = { gold >= cheap_building_tier_5_cost }
+			}
+			has_building = outposts_04
+			scope:aub_payer.culture = {
+				has_innovation = innovation_castle_baileys
+			}
+			building_requirement_castle_city_church = { LEVEL = 03 }
+		}
+		add_building = outposts_05
+		if = {
+			limit = { has_building = outposts_05 }
+			aub_pay_building_cost_effect = { COST = cheap_building_tier_5_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= cheap_building_tier_6_cost }
+				scope:aub_payer = { gold >= cheap_building_tier_6_cost }
+			}
+			has_building = outposts_05
+			scope:aub_payer.culture = {
+				has_innovation = innovation_castle_baileys
+			}
+			building_requirement_castle_city_church = { LEVEL = 03 }
+		}
+		add_building = outposts_06
+		if = {
+			limit = { has_building = outposts_06 }
+			aub_pay_building_cost_effect = { COST = cheap_building_tier_6_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= cheap_building_tier_7_cost }
+				scope:aub_payer = { gold >= cheap_building_tier_7_cost }
+			}
+			has_building = outposts_06
+			scope:aub_payer.culture = {
+				has_innovation = innovation_royal_armory
+			}
+			building_requirement_castle_city_church = { LEVEL = 04 }
+		}
+		add_building = outposts_07
+		if = {
+			limit = { has_building = outposts_07 }
+			aub_pay_building_cost_effect = { COST = cheap_building_tier_7_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= cheap_building_tier_8_cost }
+				scope:aub_payer = { gold >= cheap_building_tier_8_cost }
+			}
+			has_building = outposts_07
+			scope:aub_payer.culture = {
+				has_innovation = innovation_royal_armory
+			}
+			building_requirement_castle_city_church = { LEVEL = 04 }
+		}
+		add_building = outposts_08
+		if = {
+			limit = { has_building = outposts_08 }
+			aub_pay_building_cost_effect = { COST = cheap_building_tier_8_cost }
+		}
+	}
+}
+
+# Barracks
+aub_upgrade_barracks_effect = {
+	if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= normal_building_tier_2_cost }
+				scope:aub_payer = { gold >= normal_building_tier_2_cost }
+			}
+			has_building = barracks_01
+			scope:aub_payer.culture = {
+				has_innovation = innovation_barracks
+			}
+			building_requirement_castle_city_church = { LEVEL = 01 }
+		}
+		add_building = barracks_02
+		if = {
+			limit = { has_building = barracks_02 }
+			aub_pay_building_cost_effect = { COST = normal_building_tier_2_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= normal_building_tier_3_cost }
+				scope:aub_payer = { gold >= normal_building_tier_3_cost }
+			}
+			has_building = barracks_02
+			scope:aub_payer.culture = {
+				has_innovation = innovation_burhs
+			}
+			building_requirement_castle_city_church = { LEVEL = 02 }
+		}
+		add_building = barracks_03
+		if = {
+			limit = { has_building = barracks_03 }
+			aub_pay_building_cost_effect = { COST = normal_building_tier_3_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= normal_building_tier_4_cost }
+				scope:aub_payer = { gold >= normal_building_tier_4_cost }
+			}
+			has_building = barracks_03
+			scope:aub_payer.culture = {
+				has_innovation = innovation_burhs
+			}
+			building_requirement_castle_city_church = { LEVEL = 02 }
+		}
+		add_building = barracks_04
+		if = {
+			limit = { has_building = barracks_04 }
+			aub_pay_building_cost_effect = { COST = normal_building_tier_4_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= normal_building_tier_5_cost }
+				scope:aub_payer = { gold >= normal_building_tier_5_cost }
+			}
+			has_building = barracks_04
+			scope:aub_payer.culture = {
+				has_innovation = innovation_castle_baileys
+			}
+			building_requirement_castle_city_church = { LEVEL = 03 }
+		}
+		add_building = barracks_05
+		if = {
+			limit = { has_building = barracks_05 }
+			aub_pay_building_cost_effect = { COST = normal_building_tier_5_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= normal_building_tier_6_cost }
+				scope:aub_payer = { gold >= normal_building_tier_6_cost }
+			}
+			has_building = barracks_05
+			scope:aub_payer.culture = {
+				has_innovation = innovation_castle_baileys
+			}
+			building_requirement_castle_city_church = { LEVEL = 03 }
+		}
+		add_building = barracks_06
+		if = {
+			limit = { has_building = barracks_06 }
+			aub_pay_building_cost_effect = { COST = normal_building_tier_6_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= normal_building_tier_7_cost }
+				scope:aub_payer = { gold >= normal_building_tier_7_cost }
+			}
+			has_building = barracks_06
+			scope:aub_payer.culture = {
+				has_innovation = innovation_royal_armory
+			}
+			building_requirement_castle_city_church = { LEVEL = 04 }
+		}
+		add_building = barracks_07
+		if = {
+			limit = { has_building = barracks_07 }
+			aub_pay_building_cost_effect = { COST = normal_building_tier_7_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= normal_building_tier_8_cost }
+				scope:aub_payer = { gold >= normal_building_tier_8_cost }
+			}
+			has_building = barracks_07
+			scope:aub_payer.culture = {
+				has_innovation = innovation_royal_armory
+			}
+			building_requirement_castle_city_church = { LEVEL = 04 }
+		}
+		add_building = barracks_08
+		if = {
+			limit = { has_building = barracks_08 }
+			aub_pay_building_cost_effect = { COST = normal_building_tier_8_cost }
+		}
+	}
+}
+
+# Camel Farms
+aub_upgrade_camel_farms_effect = {
+	if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= normal_building_tier_2_cost }
+				scope:aub_payer = { gold >= normal_building_tier_2_cost }
+			}
+			has_building = camel_farms_01
+			scope:aub_payer.culture = {
+				has_innovation = innovation_barracks
+			}
+			building_requirement_castle_city_church = { LEVEL = 01 }
+		}
+		add_building = camel_farms_02
+		if = {
+			limit = { has_building = camel_farms_02 }
+			aub_pay_building_cost_effect = { COST = normal_building_tier_2_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= normal_building_tier_3_cost }
+				scope:aub_payer = { gold >= normal_building_tier_3_cost }
+			}
+			has_building = camel_farms_02
+			scope:aub_payer.culture = {
+				has_innovation = innovation_burhs
+			}
+			building_requirement_castle_city_church = { LEVEL = 02 }
+		}
+		add_building = camel_farms_03
+		if = {
+			limit = { has_building = camel_farms_03 }
+			aub_pay_building_cost_effect = { COST = normal_building_tier_3_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= normal_building_tier_4_cost }
+				scope:aub_payer = { gold >= normal_building_tier_4_cost }
+			}
+			has_building = camel_farms_03
+			scope:aub_payer.culture = {
+				has_innovation = innovation_burhs
+			}
+			building_requirement_castle_city_church = { LEVEL = 02 }
+		}
+		add_building = camel_farms_04
+		if = {
+			limit = { has_building = camel_farms_04 }
+			aub_pay_building_cost_effect = { COST = normal_building_tier_4_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= normal_building_tier_5_cost }
+				scope:aub_payer = { gold >= normal_building_tier_5_cost }
+			}
+			has_building = camel_farms_04
+			scope:aub_payer.culture = {
+				has_innovation = innovation_castle_baileys
+			}
+			building_requirement_castle_city_church = { LEVEL = 03 }
+		}
+		add_building = camel_farms_05
+		if = {
+			limit = { has_building = camel_farms_05 }
+			aub_pay_building_cost_effect = { COST = normal_building_tier_5_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= normal_building_tier_6_cost }
+				scope:aub_payer = { gold >= normal_building_tier_6_cost }
+			}
+			has_building = camel_farms_05
+			scope:aub_payer.culture = {
+				has_innovation = innovation_castle_baileys
+			}
+			building_requirement_castle_city_church = { LEVEL = 03 }
+		}
+		add_building = camel_farms_06
+		if = {
+			limit = { has_building = camel_farms_06 }
+			aub_pay_building_cost_effect = { COST = normal_building_tier_6_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= normal_building_tier_7_cost }
+				scope:aub_payer = { gold >= normal_building_tier_7_cost }
+			}
+			has_building = camel_farms_06
+			scope:aub_payer.culture = {
+				has_innovation = innovation_royal_armory
+			}
+			building_requirement_castle_city_church = { LEVEL = 04 }
+		}
+		add_building = camel_farms_07
+		if = {
+			limit = { has_building = camel_farms_07 }
+			aub_pay_building_cost_effect = { COST = normal_building_tier_7_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= normal_building_tier_8_cost }
+				scope:aub_payer = { gold >= normal_building_tier_8_cost }
+			}
+			has_building = camel_farms_07
+			scope:aub_payer.culture = {
+				has_innovation = innovation_royal_armory
+			}
+			building_requirement_castle_city_church = { LEVEL = 04 }
+		}
+		add_building = camel_farms_08
+		if = {
+			limit = { has_building = camel_farms_08 }
+			aub_pay_building_cost_effect = { COST = normal_building_tier_8_cost }
+		}
+	}
+}
+
+# Stables
+aub_upgrade_stables_effect = {
+	if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= normal_building_tier_2_cost }
+				scope:aub_payer = { gold >= normal_building_tier_2_cost }
+			}
+			has_building = stables_01
+			scope:aub_payer.culture = {
+				has_innovation = innovation_barracks
+			}
+			building_requirement_castle_city_church = { LEVEL = 01 }
+		}
+		add_building = stables_02
+		if = {
+			limit = { has_building = stables_02 }
+			aub_pay_building_cost_effect = { COST = normal_building_tier_2_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= normal_building_tier_3_cost }
+				scope:aub_payer = { gold >= normal_building_tier_3_cost }
+			}
+			has_building = stables_02
+			scope:aub_payer.culture = {
+				has_innovation = innovation_burhs
+			}
+			building_requirement_castle_city_church = { LEVEL = 02 }
+		}
+		add_building = stables_03
+		if = {
+			limit = { has_building = stables_03 }
+			aub_pay_building_cost_effect = { COST = normal_building_tier_3_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= normal_building_tier_4_cost }
+				scope:aub_payer = { gold >= normal_building_tier_4_cost }
+			}
+			has_building = stables_03
+			scope:aub_payer.culture = {
+				has_innovation = innovation_burhs
+			}
+			building_requirement_castle_city_church = { LEVEL = 02 }
+		}
+		add_building = stables_04
+		if = {
+			limit = { has_building = stables_04 }
+			aub_pay_building_cost_effect = { COST = normal_building_tier_4_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= normal_building_tier_5_cost }
+				scope:aub_payer = { gold >= normal_building_tier_5_cost }
+			}
+			has_building = stables_04
+			scope:aub_payer.culture = {
+				has_innovation = innovation_castle_baileys
+			}
+			building_requirement_castle_city_church = { LEVEL = 03 }
+		}
+		add_building = stables_05
+		if = {
+			limit = { has_building = stables_05 }
+			aub_pay_building_cost_effect = { COST = normal_building_tier_5_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= normal_building_tier_6_cost }
+				scope:aub_payer = { gold >= normal_building_tier_6_cost }
+			}
+			has_building = stables_05
+			scope:aub_payer.culture = {
+				has_innovation = innovation_castle_baileys
+			}
+			building_requirement_castle_city_church = { LEVEL = 03 }
+		}
+		add_building = stables_06
+		if = {
+			limit = { has_building = stables_06 }
+			aub_pay_building_cost_effect = { COST = normal_building_tier_6_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= normal_building_tier_7_cost }
+				scope:aub_payer = { gold >= normal_building_tier_7_cost }
+			}
+			has_building = stables_06
+			scope:aub_payer.culture = {
+				has_innovation = innovation_royal_armory
+			}
+			building_requirement_castle_city_church = { LEVEL = 04 }
+		}
+		add_building = stables_07
+		if = {
+			limit = { has_building = stables_07 }
+			aub_pay_building_cost_effect = { COST = normal_building_tier_7_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= normal_building_tier_8_cost }
+				scope:aub_payer = { gold >= normal_building_tier_8_cost }
+			}
+			has_building = stables_07
+			scope:aub_payer.culture = {
+				has_innovation = innovation_royal_armory
+			}
+			building_requirement_castle_city_church = { LEVEL = 04 }
+		}
+		add_building = stables_08
+		if = {
+			limit = { has_building = stables_08 }
+			aub_pay_building_cost_effect = { COST = normal_building_tier_8_cost }
+		}
+	}
+}
+
+# Smiths
+aub_upgrade_smiths_effect = {
+	if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= normal_building_tier_2_cost }
+				scope:aub_payer = { gold >= normal_building_tier_2_cost }
+			}
+			has_building = smiths_01
+			scope:aub_payer.culture = {
+				has_innovation = innovation_barracks
+			}
+			building_requirement_castle_city_church = { LEVEL = 01 }
+		}
+		add_building = smiths_02
+		if = {
+			limit = { has_building = smiths_02 }
+			aub_pay_building_cost_effect = { COST = normal_building_tier_2_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= normal_building_tier_3_cost }
+				scope:aub_payer = { gold >= normal_building_tier_3_cost }
+			}
+			has_building = smiths_02
+			scope:aub_payer.culture = {
+				has_innovation = innovation_burhs
+			}
+			building_requirement_castle_city_church = { LEVEL = 02 }
+		}
+		add_building = smiths_03
+		if = {
+			limit = { has_building = smiths_03 }
+			aub_pay_building_cost_effect = { COST = normal_building_tier_3_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= normal_building_tier_4_cost }
+				scope:aub_payer = { gold >= normal_building_tier_4_cost }
+			}
+			has_building = smiths_03
+			scope:aub_payer.culture = {
+				has_innovation = innovation_burhs
+			}
+			building_requirement_castle_city_church = { LEVEL = 02 }
+		}
+		add_building = smiths_04
+		if = {
+			limit = { has_building = smiths_04 }
+			aub_pay_building_cost_effect = { COST = normal_building_tier_4_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= normal_building_tier_5_cost }
+				scope:aub_payer = { gold >= normal_building_tier_5_cost }
+			}
+			has_building = smiths_04
+			scope:aub_payer.culture = {
+				has_innovation = innovation_castle_baileys
+			}
+			building_requirement_castle_city_church = { LEVEL = 03 }
+		}
+		add_building = smiths_05
+		if = {
+			limit = { has_building = smiths_05 }
+			aub_pay_building_cost_effect = { COST = normal_building_tier_5_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= normal_building_tier_6_cost }
+				scope:aub_payer = { gold >= normal_building_tier_6_cost }
+			}
+			has_building = smiths_05
+			scope:aub_payer.culture = {
+				has_innovation = innovation_castle_baileys
+			}
+			building_requirement_castle_city_church = { LEVEL = 03 }
+		}
+		add_building = smiths_06
+		if = {
+			limit = { has_building = smiths_06 }
+			aub_pay_building_cost_effect = { COST = normal_building_tier_6_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= normal_building_tier_7_cost }
+				scope:aub_payer = { gold >= normal_building_tier_7_cost }
+			}
+			has_building = smiths_06
+			scope:aub_payer.culture = {
+				has_innovation = innovation_royal_armory
+			}
+			building_requirement_castle_city_church = { LEVEL = 04 }
+		}
+		add_building = smiths_07
+		if = {
+			limit = { has_building = smiths_07 }
+			aub_pay_building_cost_effect = { COST = normal_building_tier_7_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= normal_building_tier_8_cost }
+				scope:aub_payer = { gold >= normal_building_tier_8_cost }
+			}
+			has_building = smiths_07
+			scope:aub_payer.culture = {
+				has_innovation = innovation_royal_armory
+			}
+			building_requirement_castle_city_church = { LEVEL = 04 }
+		}
+		add_building = smiths_08
+		if = {
+			limit = { has_building = smiths_08 }
+			aub_pay_building_cost_effect = { COST = normal_building_tier_8_cost }
+		}
+	}
+}
+
+# Ramparts
+aub_upgrade_ramparts_effect = {
+	if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= cheap_building_tier_2_cost }
+				scope:aub_payer = { gold >= cheap_building_tier_2_cost }
+			}
+			has_building = ramparts_01
+			scope:aub_payer.culture = {
+				has_innovation = innovation_motte
+			}
+			building_requirement_castle_city_church = { LEVEL = 01 }
+		}
+		add_building = ramparts_02
+		if = {
+			limit = { has_building = ramparts_02 }
+			aub_pay_building_cost_effect = { COST = cheap_building_tier_2_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= cheap_building_tier_3_cost }
+				scope:aub_payer = { gold >= cheap_building_tier_3_cost }
+			}
+			has_building = ramparts_02
+			scope:aub_payer.culture = {
+				has_innovation = innovation_battlements
+			}
+			building_requirement_castle_city_church = { LEVEL = 02 }
+		}
+		add_building = ramparts_03
+		if = {
+			limit = { has_building = ramparts_03 }
+			aub_pay_building_cost_effect = { COST = cheap_building_tier_3_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= cheap_building_tier_4_cost }
+				scope:aub_payer = { gold >= cheap_building_tier_4_cost }
+			}
+			has_building = ramparts_03
+			scope:aub_payer.culture = {
+				has_innovation = innovation_battlements
+			}
+			building_requirement_castle_city_church = { LEVEL = 02 }
+		}
+		add_building = ramparts_04
+		if = {
+			limit = { has_building = ramparts_04 }
+			aub_pay_building_cost_effect = { COST = cheap_building_tier_4_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= cheap_building_tier_5_cost }
+				scope:aub_payer = { gold >= cheap_building_tier_5_cost }
+			}
+			has_building = ramparts_04
+			scope:aub_payer.culture = {
+				has_innovation = innovation_hoardings
+			}
+			building_requirement_castle_city_church = { LEVEL = 03 }
+		}
+		add_building = ramparts_05
+		if = {
+			limit = { has_building = ramparts_05 }
+			aub_pay_building_cost_effect = { COST = cheap_building_tier_5_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= cheap_building_tier_6_cost }
+				scope:aub_payer = { gold >= cheap_building_tier_6_cost }
+			}
+			has_building = ramparts_05
+			scope:aub_payer.culture = {
+				has_innovation = innovation_hoardings
+			}
+			building_requirement_castle_city_church = { LEVEL = 03 }
+		}
+		add_building = ramparts_06
+		if = {
+			limit = { has_building = ramparts_06 }
+			aub_pay_building_cost_effect = { COST = cheap_building_tier_6_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= cheap_building_tier_7_cost }
+				scope:aub_payer = { gold >= cheap_building_tier_7_cost }
+			}
+			has_building = ramparts_06
+			scope:aub_payer.culture = {
+				has_innovation = innovation_machicolations
+			}
+			building_requirement_castle_city_church = { LEVEL = 04 }
+		}
+		add_building = ramparts_07
+		if = {
+			limit = { has_building = ramparts_07 }
+			aub_pay_building_cost_effect = { COST = cheap_building_tier_7_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= cheap_building_tier_8_cost }
+				scope:aub_payer = { gold >= cheap_building_tier_8_cost }
+			}
+			has_building = ramparts_07
+			scope:aub_payer.culture = {
+				has_innovation = innovation_machicolations
+			}
+			building_requirement_castle_city_church = { LEVEL = 04 }
+		}
+		add_building = ramparts_08
+		if = {
+			limit = { has_building = ramparts_08 }
+			aub_pay_building_cost_effect = { COST = cheap_building_tier_8_cost }
+		}
+	}
+}
+
+# Curtain Walls
+aub_upgrade_curtain_walls_effect = {
+	if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= cheap_building_tier_2_cost }
+				scope:aub_payer = { gold >= cheap_building_tier_2_cost }
+			}
+			has_building = curtain_walls_01
+			scope:aub_payer.culture = {
+				has_innovation = innovation_motte
+			}
+			building_requirement_castle_city_church = { LEVEL = 01 }
+		}
+		add_building = curtain_walls_02
+		if = {
+			limit = { has_building = curtain_walls_02 }
+			aub_pay_building_cost_effect = { COST = cheap_building_tier_2_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= cheap_building_tier_3_cost }
+				scope:aub_payer = { gold >= cheap_building_tier_3_cost }
+			}
+			has_building = curtain_walls_02
+			scope:aub_payer.culture = {
+				has_innovation = innovation_battlements
+			}
+			building_requirement_castle_city_church = { LEVEL = 02 }
+		}
+		add_building = curtain_walls_03
+		if = {
+			limit = { has_building = curtain_walls_03 }
+			aub_pay_building_cost_effect = { COST = cheap_building_tier_3_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= cheap_building_tier_4_cost }
+				scope:aub_payer = { gold >= cheap_building_tier_4_cost }
+			}
+			has_building = curtain_walls_03
+			scope:aub_payer.culture = {
+				has_innovation = innovation_battlements
+			}
+			building_requirement_castle_city_church = { LEVEL = 02 }
+		}
+		add_building = curtain_walls_04
+		if = {
+			limit = { has_building = curtain_walls_04 }
+			aub_pay_building_cost_effect = { COST = cheap_building_tier_4_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= cheap_building_tier_5_cost }
+				scope:aub_payer = { gold >= cheap_building_tier_5_cost }
+			}
+			has_building = curtain_walls_04
+			scope:aub_payer.culture = {
+				has_innovation = innovation_hoardings
+			}
+			building_requirement_castle_city_church = { LEVEL = 03 }
+		}
+		add_building = curtain_walls_05
+		if = {
+			limit = { has_building = curtain_walls_05 }
+			aub_pay_building_cost_effect = { COST = cheap_building_tier_5_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= cheap_building_tier_6_cost }
+				scope:aub_payer = { gold >= cheap_building_tier_6_cost }
+			}
+			has_building = curtain_walls_05
+			scope:aub_payer.culture = {
+				has_innovation = innovation_hoardings
+			}
+			building_requirement_castle_city_church = { LEVEL = 03 }
+		}
+		add_building = curtain_walls_06
+		if = {
+			limit = { has_building = curtain_walls_06 }
+			aub_pay_building_cost_effect = { COST = cheap_building_tier_6_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= cheap_building_tier_7_cost }
+				scope:aub_payer = { gold >= cheap_building_tier_7_cost }
+			}
+			has_building = curtain_walls_06
+			scope:aub_payer.culture = {
+				has_innovation = innovation_machicolations
+			}
+			building_requirement_castle_city_church = { LEVEL = 04 }
+		}
+		add_building = curtain_walls_07
+		if = {
+			limit = { has_building = curtain_walls_07 }
+			aub_pay_building_cost_effect = { COST = cheap_building_tier_7_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= cheap_building_tier_8_cost }
+				scope:aub_payer = { gold >= cheap_building_tier_8_cost }
+			}
+			has_building = curtain_walls_07
+			scope:aub_payer.culture = {
+				has_innovation = innovation_machicolations
+			}
+			building_requirement_castle_city_church = { LEVEL = 04 }
+		}
+		add_building = curtain_walls_08
+		if = {
+			limit = { has_building = curtain_walls_08 }
+			aub_pay_building_cost_effect = { COST = cheap_building_tier_8_cost }
+		}
+	}
+}
+
+# Watchtowers
+aub_upgrade_watchtowers_effect = {
+	if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= cheap_building_tier_2_cost }
+				scope:aub_payer = { gold >= cheap_building_tier_2_cost }
+			}
+			has_building = watchtowers_01
+			scope:aub_payer.culture = {
+				has_innovation = innovation_motte
+			}
+			building_requirement_castle_city_church = { LEVEL = 01 }
+		}
+		add_building = watchtowers_02
+		if = {
+			limit = { has_building = watchtowers_02 }
+			aub_pay_building_cost_effect = { COST = cheap_building_tier_2_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= cheap_building_tier_3_cost }
+				scope:aub_payer = { gold >= cheap_building_tier_3_cost }
+			}
+			has_building = watchtowers_02
+			scope:aub_payer.culture = {
+				has_innovation = innovation_battlements
+			}
+			building_requirement_castle_city_church = { LEVEL = 02 }
+		}
+		add_building = watchtowers_03
+		if = {
+			limit = { has_building = watchtowers_03 }
+			aub_pay_building_cost_effect = { COST = cheap_building_tier_3_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= cheap_building_tier_4_cost }
+				scope:aub_payer = { gold >= cheap_building_tier_4_cost }
+			}
+			has_building = watchtowers_03
+			scope:aub_payer.culture = {
+				has_innovation = innovation_battlements
+			}
+			building_requirement_castle_city_church = { LEVEL = 02 }
+		}
+		add_building = watchtowers_04
+		if = {
+			limit = { has_building = watchtowers_04 }
+			aub_pay_building_cost_effect = { COST = cheap_building_tier_4_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= cheap_building_tier_5_cost }
+				scope:aub_payer = { gold >= cheap_building_tier_5_cost }
+			}
+			has_building = watchtowers_04
+			scope:aub_payer.culture = {
+				has_innovation = innovation_hoardings
+			}
+			building_requirement_castle_city_church = { LEVEL = 03 }
+		}
+		add_building = watchtowers_05
+		if = {
+			limit = { has_building = watchtowers_05 }
+			aub_pay_building_cost_effect = { COST = cheap_building_tier_5_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= cheap_building_tier_6_cost }
+				scope:aub_payer = { gold >= cheap_building_tier_6_cost }
+			}
+			has_building = watchtowers_05
+			scope:aub_payer.culture = {
+				has_innovation = innovation_hoardings
+			}
+			building_requirement_castle_city_church = { LEVEL = 03 }
+		}
+		add_building = watchtowers_06
+		if = {
+			limit = { has_building = watchtowers_06 }
+			aub_pay_building_cost_effect = { COST = cheap_building_tier_6_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= cheap_building_tier_7_cost }
+				scope:aub_payer = { gold >= cheap_building_tier_7_cost }
+			}
+			has_building = watchtowers_06
+			scope:aub_payer.culture = {
+				has_innovation = innovation_machicolations
+			}
+			building_requirement_castle_city_church = { LEVEL = 04 }
+		}
+		add_building = watchtowers_07
+		if = {
+			limit = { has_building = watchtowers_07 }
+			aub_pay_building_cost_effect = { COST = cheap_building_tier_7_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= cheap_building_tier_8_cost }
+				scope:aub_payer = { gold >= cheap_building_tier_8_cost }
+			}
+			has_building = watchtowers_07
+			scope:aub_payer.culture = {
+				has_innovation = innovation_machicolations
+			}
+			building_requirement_castle_city_church = { LEVEL = 04 }
+		}
+		add_building = watchtowers_08
+		if = {
+			limit = { has_building = watchtowers_08 }
+			aub_pay_building_cost_effect = { COST = cheap_building_tier_8_cost }
+		}
+	}
+}
+
+# Hill Forts
+aub_upgrade_hill_forts_effect = {
+	if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= cheap_building_tier_2_cost }
+				scope:aub_payer = { gold >= cheap_building_tier_2_cost }
+			}
+			has_building = hill_forts_01
+			scope:aub_payer.culture = {
+				has_innovation = innovation_motte
+			}
+			building_requirement_castle_city_church = { LEVEL = 01 }
+		}
+		add_building = hill_forts_02
+		if = {
+			limit = { has_building = hill_forts_02 }
+			aub_pay_building_cost_effect = { COST = cheap_building_tier_2_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= cheap_building_tier_3_cost }
+				scope:aub_payer = { gold >= cheap_building_tier_3_cost }
+			}
+			has_building = hill_forts_02
+			scope:aub_payer.culture = {
+				has_innovation = innovation_battlements
+			}
+			building_requirement_castle_city_church = { LEVEL = 02 }
+		}
+		add_building = hill_forts_03
+		if = {
+			limit = { has_building = hill_forts_03 }
+			aub_pay_building_cost_effect = { COST = cheap_building_tier_3_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= cheap_building_tier_4_cost }
+				scope:aub_payer = { gold >= cheap_building_tier_4_cost }
+			}
+			has_building = hill_forts_03
+			scope:aub_payer.culture = {
+				has_innovation = innovation_battlements
+			}
+			building_requirement_castle_city_church = { LEVEL = 02 }
+		}
+		add_building = hill_forts_04
+		if = {
+			limit = { has_building = hill_forts_04 }
+			aub_pay_building_cost_effect = { COST = cheap_building_tier_4_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= cheap_building_tier_5_cost }
+				scope:aub_payer = { gold >= cheap_building_tier_5_cost }
+			}
+			has_building = hill_forts_04
+			scope:aub_payer.culture = {
+				has_innovation = innovation_hoardings
+			}
+			building_requirement_castle_city_church = { LEVEL = 03 }
+		}
+		add_building = hill_forts_05
+		if = {
+			limit = { has_building = hill_forts_05 }
+			aub_pay_building_cost_effect = { COST = cheap_building_tier_5_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= cheap_building_tier_6_cost }
+				scope:aub_payer = { gold >= cheap_building_tier_6_cost }
+			}
+			has_building = hill_forts_05
+			scope:aub_payer.culture = {
+				has_innovation = innovation_hoardings
+			}
+			building_requirement_castle_city_church = { LEVEL = 03 }
+		}
+		add_building = hill_forts_06
+		if = {
+			limit = { has_building = hill_forts_06 }
+			aub_pay_building_cost_effect = { COST = cheap_building_tier_6_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= cheap_building_tier_7_cost }
+				scope:aub_payer = { gold >= cheap_building_tier_7_cost }
+			}
+			has_building = hill_forts_06
+			scope:aub_payer.culture = {
+				has_innovation = innovation_machicolations
+			}
+			building_requirement_castle_city_church = { LEVEL = 04 }
+		}
+		add_building = hill_forts_07
+		if = {
+			limit = { has_building = hill_forts_07 }
+			aub_pay_building_cost_effect = { COST = cheap_building_tier_7_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= cheap_building_tier_8_cost }
+				scope:aub_payer = { gold >= cheap_building_tier_8_cost }
+			}
+			has_building = hill_forts_07
+			scope:aub_payer.culture = {
+				has_innovation = innovation_machicolations
+			}
+			building_requirement_castle_city_church = { LEVEL = 04 }
+		}
+		add_building = hill_forts_08
+		if = {
+			limit = { has_building = hill_forts_08 }
+			aub_pay_building_cost_effect = { COST = cheap_building_tier_8_cost }
+		}
+	}
+}
+
+# Hospices
+aub_upgrade_hospices_effect = {
+	if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= normal_building_tier_2_cost }
+				scope:aub_payer = { gold >= normal_building_tier_2_cost }
+			}
+			has_building = hospices_01
+			scope:aub_payer.culture = {
+				has_innovation = innovation_city_planning
+			}
+			building_requirement_castle_city_church = { LEVEL = 01 }
+		}
+		add_building = hospices_02
+		if = {
+			limit = { has_building = hospices_02 }
+			aub_pay_building_cost_effect = { COST = normal_building_tier_2_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= normal_building_tier_3_cost }
+				scope:aub_payer = { gold >= normal_building_tier_3_cost }
+			}
+			has_building = hospices_02
+			scope:aub_payer.culture = {
+				has_innovation = innovation_manorialism
+			}
+			building_requirement_castle_city_church = { LEVEL = 02 }
+		}
+		add_building = hospices_03
+		if = {
+			limit = { has_building = hospices_03 }
+			aub_pay_building_cost_effect = { COST = normal_building_tier_3_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= normal_building_tier_4_cost }
+				scope:aub_payer = { gold >= normal_building_tier_4_cost }
+			}
+			has_building = hospices_03
+			scope:aub_payer.culture = {
+				has_innovation = innovation_manorialism
+			}
+			building_requirement_castle_city_church = { LEVEL = 02 }
+		}
+		add_building = hospices_04
+		if = {
+			limit = { has_building = hospices_04 }
+			aub_pay_building_cost_effect = { COST = normal_building_tier_4_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= normal_building_tier_5_cost }
+				scope:aub_payer = { gold >= normal_building_tier_5_cost }
+			}
+			has_building = hospices_04
+			scope:aub_payer.culture = {
+				has_innovation = innovation_windmills
+			}
+			building_requirement_castle_city_church = { LEVEL = 03 }
+		}
+		add_building = hospices_05
+		if = {
+			limit = { has_building = hospices_05 }
+			aub_pay_building_cost_effect = { COST = normal_building_tier_5_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= normal_building_tier_6_cost }
+				scope:aub_payer = { gold >= normal_building_tier_6_cost }
+			}
+			has_building = hospices_05
+			scope:aub_payer.culture = {
+				has_innovation = innovation_windmills
+			}
+			building_requirement_castle_city_church = { LEVEL = 03 }
+		}
+		add_building = hospices_06
+		if = {
+			limit = { has_building = hospices_06 }
+			aub_pay_building_cost_effect = { COST = normal_building_tier_6_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= normal_building_tier_7_cost }
+				scope:aub_payer = { gold >= normal_building_tier_7_cost }
+			}
+			has_building = hospices_06
+			scope:aub_payer.culture = {
+				has_innovation = innovation_cranes
+			}
+			building_requirement_castle_city_church = { LEVEL = 04 }
+		}
+		add_building = hospices_07
+		if = {
+			limit = { has_building = hospices_07 }
+			aub_pay_building_cost_effect = { COST = normal_building_tier_7_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= normal_building_tier_8_cost }
+				scope:aub_payer = { gold >= normal_building_tier_8_cost }
+			}
+			has_building = hospices_07
+			scope:aub_payer.culture = {
+				has_innovation = innovation_cranes
+			}
+			building_requirement_castle_city_church = { LEVEL = 04 }
+		}
+		add_building = hospices_08
+		if = {
+			limit = { has_building = hospices_08 }
+			aub_pay_building_cost_effect = { COST = normal_building_tier_8_cost }
+		}
+	}
+}
+
+# Guild Halls
+aub_upgrade_guild_halls_effect = {
+	if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= normal_building_tier_2_cost }
+				scope:aub_payer = { gold >= normal_building_tier_2_cost }
+			}
+			has_building = guild_halls_01
+			scope:aub_payer.culture = {
+				has_innovation = innovation_crop_rotation
+			}
+		}
+		add_building = guild_halls_02
+		if = {
+			limit = { has_building = guild_halls_02 }
+			aub_pay_building_cost_effect = { COST = normal_building_tier_2_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= normal_building_tier_3_cost }
+				scope:aub_payer = { gold >= normal_building_tier_3_cost }
+			}
+			has_building = guild_halls_02
+			scope:aub_payer.culture = {
+				has_innovation = innovation_manorialism
+			}
+		}
+		add_building = guild_halls_03
+		if = {
+			limit = { has_building = guild_halls_03 }
+			aub_pay_building_cost_effect = { COST = normal_building_tier_3_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= normal_building_tier_4_cost }
+				scope:aub_payer = { gold >= normal_building_tier_4_cost }
+			}
+			has_building = guild_halls_03
+			scope:aub_payer.culture = {
+				has_innovation = innovation_manorialism
+			}
+		}
+		add_building = guild_halls_04
+		if = {
+			limit = { has_building = guild_halls_04 }
+			aub_pay_building_cost_effect = { COST = normal_building_tier_4_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= normal_building_tier_5_cost }
+				scope:aub_payer = { gold >= normal_building_tier_5_cost }
+			}
+			has_building = guild_halls_04
+			scope:aub_payer.culture = {
+				has_innovation = innovation_guilds
+			}
+		}
+		add_building = guild_halls_05
+		if = {
+			limit = { has_building = guild_halls_05 }
+			aub_pay_building_cost_effect = { COST = normal_building_tier_5_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= normal_building_tier_6_cost }
+				scope:aub_payer = { gold >= normal_building_tier_6_cost }
+			}
+			has_building = guild_halls_05
+			scope:aub_payer.culture = {
+				has_innovation = innovation_guilds
+			}
+		}
+		add_building = guild_halls_06
+		if = {
+			limit = { has_building = guild_halls_06 }
+			aub_pay_building_cost_effect = { COST = normal_building_tier_6_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= normal_building_tier_7_cost }
+				scope:aub_payer = { gold >= normal_building_tier_7_cost }
+			}
+			has_building = guild_halls_06
+			scope:aub_payer.culture = {
+				has_innovation = innovation_cranes
+			}
+		}
+		add_building = guild_halls_07
+		if = {
+			limit = { has_building = guild_halls_07 }
+			aub_pay_building_cost_effect = { COST = normal_building_tier_7_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= normal_building_tier_8_cost }
+				scope:aub_payer = { gold >= normal_building_tier_8_cost }
+			}
+			has_building = guild_halls_07
+			scope:aub_payer.culture = {
+				has_innovation = innovation_cranes
+			}
+		}
+		add_building = guild_halls_08
+		if = {
+			limit = { has_building = guild_halls_08 }
+			aub_pay_building_cost_effect = { COST = normal_building_tier_8_cost }
+		}
+	}
+}
+
+# Scriptorium
+aub_upgrade_scriptorium_effect = {
+	if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= normal_building_tier_2_cost }
+				scope:aub_payer = { gold >= normal_building_tier_2_cost }
+			}
+			has_building = scriptorium_01
+			scope:aub_payer.culture = {
+				has_innovation = innovation_city_planning
+			}
+		}
+		add_building = scriptorium_02
+		if = {
+			limit = { has_building = scriptorium_02 }
+			aub_pay_building_cost_effect = { COST = normal_building_tier_2_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= normal_building_tier_3_cost }
+				scope:aub_payer = { gold >= normal_building_tier_3_cost }
+			}
+			has_building = scriptorium_02
+			scope:aub_payer.culture = {
+				has_innovation = innovation_manorialism
+			}
+		}
+		add_building = scriptorium_03
+		if = {
+			limit = { has_building = scriptorium_03 }
+			aub_pay_building_cost_effect = { COST = normal_building_tier_3_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= normal_building_tier_4_cost }
+				scope:aub_payer = { gold >= normal_building_tier_4_cost }
+			}
+			has_building = scriptorium_03
+			scope:aub_payer.culture = {
+				has_innovation = innovation_manorialism
+			}
+		}
+		add_building = scriptorium_04
+		if = {
+			limit = { has_building = scriptorium_04 }
+			aub_pay_building_cost_effect = { COST = normal_building_tier_4_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= normal_building_tier_5_cost }
+				scope:aub_payer = { gold >= normal_building_tier_5_cost }
+			}
+			has_building = scriptorium_04
+			scope:aub_payer.culture = {
+				has_innovation = innovation_windmills
+			}
+		}
+		add_building = scriptorium_05
+		if = {
+			limit = { has_building = scriptorium_05 }
+			aub_pay_building_cost_effect = { COST = normal_building_tier_5_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= normal_building_tier_6_cost }
+				scope:aub_payer = { gold >= normal_building_tier_6_cost }
+			}
+			has_building = scriptorium_05
+			scope:aub_payer.culture = {
+				has_innovation = innovation_windmills
+			}
+		}
+		add_building = scriptorium_06
+		if = {
+			limit = { has_building = scriptorium_06 }
+			aub_pay_building_cost_effect = { COST = normal_building_tier_6_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= normal_building_tier_7_cost }
+				scope:aub_payer = { gold >= normal_building_tier_7_cost }
+			}
+			has_building = scriptorium_06
+			scope:aub_payer.culture = {
+				has_innovation = innovation_cranes
+			}
+		}
+		add_building = scriptorium_07
+		if = {
+			limit = { has_building = scriptorium_07 }
+			aub_pay_building_cost_effect = { COST = normal_building_tier_7_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= normal_building_tier_8_cost }
+				scope:aub_payer = { gold >= normal_building_tier_8_cost }
+			}
+			has_building = scriptorium_07
+			scope:aub_payer.culture = {
+				has_innovation = innovation_cranes
+			}
+		}
+		add_building = scriptorium_08
+		if = {
+			limit = { has_building = scriptorium_08 }
+			aub_pay_building_cost_effect = { COST = normal_building_tier_8_cost }
+		}
+	}
+}
+
+# Monastic Schools
+aub_upgrade_monastic_schools_effect = {
+	if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= normal_building_tier_2_cost }
+				scope:aub_payer = { gold >= normal_building_tier_2_cost }
+			}
+			has_building = monastic_schools_01
+			scope:aub_payer.culture = {
+				has_innovation = innovation_city_planning
+			}
+		}
+		add_building = monastic_schools_02
+		if = {
+			limit = { has_building = monastic_schools_02 }
+			aub_pay_building_cost_effect = { COST = normal_building_tier_2_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= normal_building_tier_3_cost }
+				scope:aub_payer = { gold >= normal_building_tier_3_cost }
+			}
+			has_building = monastic_schools_02
+			scope:aub_payer.culture = {
+				has_innovation = innovation_city_planning
+				has_innovation = innovation_manorialism
+			}
+		}
+		add_building = monastic_schools_03
+		if = {
+			limit = { has_building = monastic_schools_03 }
+			aub_pay_building_cost_effect = { COST = normal_building_tier_3_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= normal_building_tier_4_cost }
+				scope:aub_payer = { gold >= normal_building_tier_4_cost }
+			}
+			has_building = monastic_schools_03
+			scope:aub_payer.culture = {
+				has_innovation = innovation_city_planning
+				has_innovation = innovation_manorialism
+			}
+		}
+		add_building = monastic_schools_04
+		if = {
+			limit = { has_building = monastic_schools_04 }
+			aub_pay_building_cost_effect = { COST = normal_building_tier_4_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= normal_building_tier_5_cost }
+				scope:aub_payer = { gold >= normal_building_tier_5_cost }
+			}
+			has_building = monastic_schools_04
+			scope:aub_payer.culture = {
+				has_innovation = innovation_city_planning
+				has_innovation = innovation_windmills
+			}
+		}
+		add_building = monastic_schools_05
+		if = {
+			limit = { has_building = monastic_schools_05 }
+			aub_pay_building_cost_effect = { COST = normal_building_tier_5_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= normal_building_tier_6_cost }
+				scope:aub_payer = { gold >= normal_building_tier_6_cost }
+			}
+			has_building = monastic_schools_05
+			scope:aub_payer.culture = {
+				has_innovation = innovation_city_planning
+				has_innovation = innovation_windmills
+			}
+		}
+		add_building = monastic_schools_06
+		if = {
+			limit = { has_building = monastic_schools_06 }
+			aub_pay_building_cost_effect = { COST = normal_building_tier_6_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= normal_building_tier_7_cost }
+				scope:aub_payer = { gold >= normal_building_tier_7_cost }
+			}
+			has_building = monastic_schools_06
+			scope:aub_payer.culture = {
+				has_innovation = innovation_windmills
+				has_innovation = innovation_cranes
+			}
+		}
+		add_building = monastic_schools_07
+		if = {
+			limit = { has_building = monastic_schools_07 }
+			aub_pay_building_cost_effect = { COST = normal_building_tier_7_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= normal_building_tier_8_cost }
+				scope:aub_payer = { gold >= normal_building_tier_8_cost }
+			}
+			has_building = monastic_schools_07
+			scope:aub_payer.culture = {
+				has_innovation = innovation_windmills
+				has_innovation = innovation_cranes
+			}
+		}
+		add_building = monastic_schools_08
+		if = {
+			limit = { has_building = monastic_schools_08 }
+			aub_pay_building_cost_effect = { COST = normal_building_tier_8_cost }
+		}
+	}
+}
+
+# Megalith
+aub_upgrade_megalith_effect = {
+	if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= normal_building_tier_2_cost }
+				scope:aub_payer = { gold >= normal_building_tier_2_cost }
+			}
+			has_building = megalith_01
+		}
+		add_building = megalith_02
+		if = {
+			limit = { has_building = megalith_02 }
+			aub_pay_building_cost_effect = { COST = normal_building_tier_2_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= normal_building_tier_3_cost }
+				scope:aub_payer = { gold >= normal_building_tier_3_cost }
+			}
+			has_building = megalith_02
+			scope:aub_payer.culture = {
+				has_innovation = innovation_city_planning
+			}
+		}
+		add_building = megalith_03
+		if = {
+			limit = { has_building = megalith_03 }
+			aub_pay_building_cost_effect = { COST = normal_building_tier_3_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= normal_building_tier_4_cost }
+				scope:aub_payer = { gold >= normal_building_tier_4_cost }
+			}
+			has_building = megalith_03
+			scope:aub_payer.culture = {
+				has_innovation = innovation_city_planning
+			}
+		}
+		add_building = megalith_04
+		if = {
+			limit = { has_building = megalith_04 }
+			aub_pay_building_cost_effect = { COST = normal_building_tier_4_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= normal_building_tier_5_cost }
+				scope:aub_payer = { gold >= normal_building_tier_5_cost }
+			}
+			has_building = megalith_04
+			scope:aub_payer.culture = {
+				has_innovation = innovation_city_planning
+			}
+		}
+		add_building = megalith_05
+		if = {
+			limit = { has_building = megalith_05 }
+			aub_pay_building_cost_effect = { COST = normal_building_tier_5_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= normal_building_tier_5_cost }
+				scope:aub_payer = { gold >= normal_building_tier_5_cost }
+			}
+			has_building = megalith_05
+			scope:aub_payer.culture = {
+				has_innovation = innovation_city_planning
+			}
+		}
+		add_building = megalith_06
+		if = {
+			limit = { has_building = megalith_06 }
+			aub_pay_building_cost_effect = { COST = normal_building_tier_5_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= normal_building_tier_5_cost }
+				scope:aub_payer = { gold >= normal_building_tier_5_cost }
+			}
+			has_building = megalith_06
+			scope:aub_payer.culture = {
+				has_innovation = innovation_city_planning
+			}
+		}
+		add_building = megalith_07
+		if = {
+			limit = { has_building = megalith_07 }
+			aub_pay_building_cost_effect = { COST = normal_building_tier_5_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= normal_building_tier_5_cost }
+				scope:aub_payer = { gold >= normal_building_tier_5_cost }
+			}
+			has_building = megalith_07
+			scope:aub_payer.culture = {
+				has_innovation = innovation_city_planning
+			}
+		}
+		add_building = megalith_08
+		if = {
+			limit = { has_building = megalith_08 }
+			aub_pay_building_cost_effect = { COST = normal_building_tier_5_cost }
+		}
+	}
+}
+
+# Breweries
+aub_upgrade_breweries_effect = {
+	if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= normal_building_tier_2_cost }
+				scope:aub_payer = { gold >= normal_building_tier_2_cost }
+			}
+			has_building = breweries_01
+			scope:aub_payer.culture = {
+				has_innovation = innovation_city_planning
+			}
+		}
+		add_building = breweries_02
+		if = {
+			limit = { has_building = breweries_02 }
+			aub_pay_building_cost_effect = { COST = normal_building_tier_2_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= normal_building_tier_3_cost }
+				scope:aub_payer = { gold >= normal_building_tier_3_cost }
+			}
+			has_building = breweries_02
+			scope:aub_payer.culture = {
+				has_innovation = innovation_city_planning
+			}
+		}
+		add_building = breweries_03
+		if = {
+			limit = { has_building = breweries_03 }
+			aub_pay_building_cost_effect = { COST = normal_building_tier_3_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= normal_building_tier_4_cost }
+				scope:aub_payer = { gold >= normal_building_tier_4_cost }
+			}
+			has_building = breweries_03
+			scope:aub_payer.culture = {
+				has_innovation = innovation_manorialism
+			}
+		}
+		add_building = breweries_04
+		if = {
+			limit = { has_building = breweries_04 }
+			aub_pay_building_cost_effect = { COST = normal_building_tier_4_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= normal_building_tier_5_cost }
+				scope:aub_payer = { gold >= normal_building_tier_5_cost }
+			}
+			has_building = breweries_04
+			scope:aub_payer.culture = {
+				has_innovation = innovation_windmills
+			}
+		}
+		add_building = breweries_05
+		if = {
+			limit = { has_building = breweries_05 }
+			aub_pay_building_cost_effect = { COST = normal_building_tier_5_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= normal_building_tier_6_cost }
+				scope:aub_payer = { gold >= normal_building_tier_6_cost }
+			}
+			has_building = breweries_05
+			scope:aub_payer.culture = {
+				has_innovation = innovation_windmills
+			}
+		}
+		add_building = breweries_06
+		if = {
+			limit = { has_building = breweries_06 }
+			aub_pay_building_cost_effect = { COST = normal_building_tier_6_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= normal_building_tier_7_cost }
+				scope:aub_payer = { gold >= normal_building_tier_7_cost }
+			}
+			has_building = breweries_06
+			scope:aub_payer.culture = {
+				has_innovation = innovation_cranes
+			}
+		}
+		add_building = breweries_07
+		if = {
+			limit = { has_building = breweries_07 }
+			aub_pay_building_cost_effect = { COST = normal_building_tier_7_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= normal_building_tier_8_cost }
+				scope:aub_payer = { gold >= normal_building_tier_8_cost }
+			}
+			has_building = breweries_07
+			scope:aub_payer.culture = {
+				has_innovation = innovation_cranes
+			}
+		}
+		add_building = breweries_08
+		if = {
+			limit = { has_building = breweries_08 }
+			aub_pay_building_cost_effect = { COST = normal_building_tier_8_cost }
+		}
+	}
+}
+
+# Capital Bureau
+aub_upgrade_capital_bureau_effect = {
+	if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= normal_building_tier_2_cost }
+				scope:aub_payer = { gold >= normal_building_tier_2_cost }
+			}
+			has_building = capital_bureau_01
+			scope:aub_payer.culture = {
+				has_innovation = innovation_city_planning
+			}
+			building_requirement_castle_city_church = { LEVEL = 01 }
+			scope:aub_payer = {
+				government_has_flag = government_is_administrative
+			}
+		}
+		add_building = capital_bureau_02
+		if = {
+			limit = { has_building = capital_bureau_02 }
+			aub_pay_building_cost_effect = { COST = normal_building_tier_2_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= normal_building_tier_3_cost }
+				scope:aub_payer = { gold >= normal_building_tier_3_cost }
+			}
+			has_building = capital_bureau_02
+			scope:aub_payer.culture = {
+				has_innovation = innovation_manorialism
+			}
+			building_requirement_castle_city_church = { LEVEL = 02 }
+			scope:aub_payer = {
+				government_has_flag = government_is_administrative
+			}
+		}
+		add_building = capital_bureau_03
+		if = {
+			limit = { has_building = capital_bureau_03 }
+			aub_pay_building_cost_effect = { COST = normal_building_tier_3_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= normal_building_tier_4_cost }
+				scope:aub_payer = { gold >= normal_building_tier_4_cost }
+			}
+			has_building = capital_bureau_03
+			scope:aub_payer.culture = {
+				has_innovation = innovation_manorialism
+			}
+			building_requirement_castle_city_church = { LEVEL = 02 }
+			scope:aub_payer = {
+				government_has_flag = government_is_administrative
+			}
+		}
+		add_building = capital_bureau_04
+		if = {
+			limit = { has_building = capital_bureau_04 }
+			aub_pay_building_cost_effect = { COST = normal_building_tier_4_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= normal_building_tier_5_cost }
+				scope:aub_payer = { gold >= normal_building_tier_5_cost }
+			}
+			has_building = capital_bureau_04
+			scope:aub_payer.culture = {
+				has_innovation = innovation_windmills
+			}
+			building_requirement_castle_city_church = { LEVEL = 03 }
+			scope:aub_payer = {
+				government_has_flag = government_is_administrative
+			}
+		}
+		add_building = capital_bureau_05
+		if = {
+			limit = { has_building = capital_bureau_05 }
+			aub_pay_building_cost_effect = { COST = normal_building_tier_5_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= normal_building_tier_6_cost }
+				scope:aub_payer = { gold >= normal_building_tier_6_cost }
+			}
+			has_building = capital_bureau_05
+			scope:aub_payer.culture = {
+				has_innovation = innovation_windmills
+			}
+			building_requirement_castle_city_church = { LEVEL = 03 }
+			scope:aub_payer = {
+				government_has_flag = government_is_administrative
+			}
+		}
+		add_building = capital_bureau_06
+		if = {
+			limit = { has_building = capital_bureau_06 }
+			aub_pay_building_cost_effect = { COST = normal_building_tier_6_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= normal_building_tier_7_cost }
+				scope:aub_payer = { gold >= normal_building_tier_7_cost }
+			}
+			has_building = capital_bureau_06
+			scope:aub_payer.culture = {
+				has_innovation = innovation_cranes
+			}
+			building_requirement_castle_city_church = { LEVEL = 04 }
+			scope:aub_payer = {
+				government_has_flag = government_is_administrative
+			}
+		}
+		add_building = capital_bureau_07
+		if = {
+			limit = { has_building = capital_bureau_07 }
+			aub_pay_building_cost_effect = { COST = normal_building_tier_7_cost }
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				scope:aub_payer = { treasury >= normal_building_tier_8_cost }
+				scope:aub_payer = { gold >= normal_building_tier_8_cost }
+			}
+			has_building = capital_bureau_07
+			scope:aub_payer.culture = {
+				has_innovation = innovation_cranes
+			}
+			building_requirement_castle_city_church = { LEVEL = 04 }
+			scope:aub_payer = {
+				government_has_flag = government_is_administrative
+			}
+		}
+		add_building = capital_bureau_08
+		if = {
+			limit = { has_building = capital_bureau_08 }
+			aub_pay_building_cost_effect = { COST = normal_building_tier_8_cost }
+		}
+	}
+}
+
+aub_upgrade_all_supported_buildings_effect = {
+	if = {
+		limit = { has_building_or_higher = caravanserai_01 }
+		aub_upgrade_caravanserai_effect = yes
+	}
+	if = {
+		limit = { has_building_or_higher = watermills_01 }
+		aub_upgrade_watermills_effect = yes
+	}
+	if = {
+		limit = { has_building_or_higher = windmills_01 }
+		aub_upgrade_windmills_effect = yes
+	}
+	if = {
+		limit = { has_building_or_higher = common_tradeport_01 }
+		aub_upgrade_common_tradeport_effect = yes
+	}
+	if = {
+		limit = { has_building_or_higher = pastures_01 }
+		aub_upgrade_pastures_effect = yes
+	}
+	if = {
+		limit = { has_building_or_higher = hunting_grounds_01 }
+		aub_upgrade_hunting_grounds_effect = yes
+	}
+	if = {
+		limit = { has_building_or_higher = orchards_01 }
+		aub_upgrade_orchards_effect = yes
+	}
+	if = {
+		limit = { has_building_or_higher = farm_estates_01 }
+		aub_upgrade_farm_estates_effect = yes
+	}
+	if = {
+		limit = { has_building_or_higher = cereal_fields_01 }
+		aub_upgrade_cereal_fields_effect = yes
+	}
+	if = {
+		limit = { has_building_or_higher = logging_camps_01 }
+		aub_upgrade_logging_camps_effect = yes
+	}
+	if = {
+		limit = { has_building_or_higher = peat_quarries_01 }
+		aub_upgrade_peat_quarries_effect = yes
+	}
+	if = {
+		limit = { has_building_or_higher = hill_farms_01 }
+		aub_upgrade_hill_farms_effect = yes
+	}
+	if = {
+		limit = { has_building_or_higher = elephant_pens_01 }
+		aub_upgrade_elephant_pens_effect = yes
+	}
+	if = {
+		limit = { has_building_or_higher = plantations_01 }
+		aub_upgrade_plantations_effect = yes
+	}
+	if = {
+		limit = { has_building_or_higher = quarries_01 }
+		aub_upgrade_quarries_effect = yes
+	}
+	if = {
+		limit = { has_building_or_higher = qanats_01 }
+		aub_upgrade_qanats_effect = yes
+	}
+	if = {
+		limit = { has_building_or_higher = murex_farm_01 }
+		aub_upgrade_murex_farm_effect = yes
+	}
+	if = {
+		limit = { has_building_or_higher = waterworks_01 }
+		aub_upgrade_waterworks_effect = yes
+	}
+	if = {
+		limit = { has_building_or_higher = spice_plantation_01 }
+		aub_upgrade_spice_plantation_effect = yes
+	}
+	if = {
+		limit = { has_building_or_higher = paddy_fields_01 }
+		aub_upgrade_paddy_fields_effect = yes
+	}
+	if = {
+		limit = { has_building_or_higher = wind_furnace_01 }
+		aub_upgrade_wind_furnace_effect = yes
+	}
+	if = {
+		limit = { has_building_or_higher = workshops_01 }
+		aub_upgrade_workshops_effect = yes
+	}
+	if = {
+		limit = { has_building_or_higher = horse_pastures_01 }
+		aub_upgrade_horse_pastures_effect = yes
+	}
+	if = {
+		limit = { has_building_or_higher = hillside_grazing_01 }
+		aub_upgrade_hillside_grazing_effect = yes
+	}
+	if = {
+		limit = { has_building_or_higher = warrior_lodges_01 }
+		aub_upgrade_warrior_lodges_effect = yes
+	}
+	if = {
+		limit = { has_building_or_higher = military_camps_01 }
+		aub_upgrade_military_camps_effect = yes
+	}
+	if = {
+		limit = { has_building_or_higher = regimental_grounds_01 }
+		aub_upgrade_regimental_grounds_effect = yes
+	}
+	if = {
+		limit = { has_building_or_higher = outposts_01 }
+		aub_upgrade_outposts_effect = yes
+	}
+	if = {
+		limit = { has_building_or_higher = barracks_01 }
+		aub_upgrade_barracks_effect = yes
+	}
+	if = {
+		limit = { has_building_or_higher = camel_farms_01 }
+		aub_upgrade_camel_farms_effect = yes
+	}
+	if = {
+		limit = { has_building_or_higher = stables_01 }
+		aub_upgrade_stables_effect = yes
+	}
+	if = {
+		limit = { has_building_or_higher = smiths_01 }
+		aub_upgrade_smiths_effect = yes
+	}
+	if = {
+		limit = { has_building_or_higher = ramparts_01 }
+		aub_upgrade_ramparts_effect = yes
+	}
+	if = {
+		limit = { has_building_or_higher = curtain_walls_01 }
+		aub_upgrade_curtain_walls_effect = yes
+	}
+	if = {
+		limit = { has_building_or_higher = watchtowers_01 }
+		aub_upgrade_watchtowers_effect = yes
+	}
+	if = {
+		limit = { has_building_or_higher = hill_forts_01 }
+		aub_upgrade_hill_forts_effect = yes
+	}
+	if = {
+		limit = { has_building_or_higher = hospices_01 }
+		aub_upgrade_hospices_effect = yes
+	}
+	if = {
+		limit = { has_building_or_higher = guild_halls_01 }
+		aub_upgrade_guild_halls_effect = yes
+	}
+	if = {
+		limit = { has_building_or_higher = scriptorium_01 }
+		aub_upgrade_scriptorium_effect = yes
+	}
+	if = {
+		limit = { has_building_or_higher = monastic_schools_01 }
+		aub_upgrade_monastic_schools_effect = yes
+	}
+	if = {
+		limit = { has_building_or_higher = megalith_01 }
+		aub_upgrade_megalith_effect = yes
+	}
+	if = {
+		limit = { has_building_or_higher = breweries_01 }
+		aub_upgrade_breweries_effect = yes
+	}
+	if = {
+		limit = { has_building_or_higher = capital_bureau_01 }
+		aub_upgrade_capital_bureau_effect = yes
+	}
 }

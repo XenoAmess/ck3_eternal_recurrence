@@ -1,0 +1,46 @@
+﻿on_game_start_after_lobby = {
+	on_actions = {
+		aubt_start
+	}
+}
+
+aubt_start = {
+	effect = {
+		debug_log = "AUBT: TEST BEGIN source-live"
+		random_player = {
+			set_global_variable = { name = aubt_player value = this }
+			set_variable = { name = aubt_reset_gold value = gold }
+			if = {
+				limit = { var:aubt_reset_gold > 0 }
+				remove_short_term_gold = var:aubt_reset_gold
+			}
+			set_variable = { name = aubt_reset_treasury value = treasury }
+			if = {
+				limit = { var:aubt_reset_treasury > 0 }
+				remove_short_term_treasury = var:aubt_reset_treasury
+			}
+			add_gold = 100000
+			add_treasury = 100000
+			set_variable = { name = aubt_gold_before value = gold }
+			set_variable = { name = aubt_treasury_before value = treasury }
+			capital_province = {
+				set_global_variable = { name = aubt_province value = this }
+				if = {
+					limit = { has_building_or_higher = outposts_01 }
+					if = { limit = { has_building = outposts_08 } remove_building = outposts_08 }
+					else_if = { limit = { has_building = outposts_07 } remove_building = outposts_07 }
+					else_if = { limit = { has_building = outposts_06 } remove_building = outposts_06 }
+					else_if = { limit = { has_building = outposts_05 } remove_building = outposts_05 }
+					else_if = { limit = { has_building = outposts_04 } remove_building = outposts_04 }
+					else_if = { limit = { has_building = outposts_03 } remove_building = outposts_03 }
+					else_if = { limit = { has_building = outposts_02 } remove_building = outposts_02 }
+					else = { remove_building = outposts_01 }
+				}
+				add_building = outposts_01
+			}
+			add_character_flag = enable_auto_build
+			aub_start_global_loop_effect = yes
+		}
+		trigger_event = { id = aubt.1 days = 3 }
+	}
+}

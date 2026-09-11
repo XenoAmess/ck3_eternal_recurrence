@@ -64,6 +64,9 @@ py tools/build_remove_mandala_release.py --check            # 肃清曼荼罗临
 py tools/build_remove_mandala_release.py                    # 生成 15 文件 staging、manifest 与 ZIP
 py tools/build_reclaim_the_motherland_release.py --check    # 重整河山临时双构建
 py tools/build_reclaim_the_motherland_release.py            # 生成 28 文件 staging、manifest 与 ZIP
+py tools/gen_auto_upgrade_buildings.py                      # 自动升级建筑 43 条建筑链
+py tools/build_auto_upgrade_buildings_release.py --check    # 自动升级建筑临时双构建
+py tools/build_auto_upgrade_buildings_release.py            # 生成 7 文件 staging、manifest 与 ZIP
 ```
 
 上述脚本生成器与素材投影工具中，**不要手改 `GENERATED FILE` 标记的文件**。计分参数只改 `tools/scoring_data.py`，
@@ -158,11 +161,14 @@ py -m pip install -r tools/requirements-promo-toolchain.txt
 py tools/test_gen_no_heir_gui.py
 py tools/test_build_release.py
 py tools/test_build_vivhite_release.py
+py tools/test_build_auto_upgrade_buildings_release.py
 py tools/validate_static.py
 py tools/validate_vivhite_static.py
+py tools/validate_auto_upgrade_buildings_static.py
 py -c "import sys; sys.path.insert(0, 'tools'); import scoring_data; scoring_data.assert_reference_vectors()"
 py tools/build_release.py --check
 py tools/build_vivhite_release.py --check
+py tools/build_auto_upgrade_buildings_release.py --check
 ```
 
 **全自动验收（默认）**：

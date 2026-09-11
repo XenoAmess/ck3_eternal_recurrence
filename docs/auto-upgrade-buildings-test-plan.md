@@ -1,6 +1,7 @@
 # “自动升级建筑”1.19.0.6 维护验收计划
 
-状态：维护中。本文定义本轮完成门，不把静态解析、命令 ACK 或文件出现冒充实机功能 GREEN。
+状态：L0 已完成；L1–L3 的自动 fixture 已就绪，但当前机器的 CK3 离线冷启动在主菜单前超过 1800 秒，故玩法层仍为未验收，
+不是 GREEN。本文定义本轮完成门，不把静态解析、命令 ACK 或文件出现冒充实机功能 GREEN。
 
 ## 冻结环境
 
@@ -48,3 +49,7 @@
 
 fixture 以升级前后 building ID、国库、个人金钱、日期与调度 marker 形成断言；UI 截图只证明玩家可见结果。报告必须绑定 source/runtime
 tree hash、Git commit、CK3 build/EXE hash、日志增量、进程清理及失败 artifact。当前任务不执行 Workshop fresh-cache 发布层验证。
+
+当前实机证据：R410 已验证精确 release projection、fixture、隔离 userdir、受保护真实资料和进程清理合同；但游戏始终停在
+“启动游戏中……”画面，fixture marker 为零。因此上列产品行为仍须在能够正常进入主菜单的环境中执行，不能由本轮静态结果代替。
+R410 报告与失败画面位于 `D:\workspace\ck3_auto_upgrade_runtime\R410-maintained-live\artifacts`。

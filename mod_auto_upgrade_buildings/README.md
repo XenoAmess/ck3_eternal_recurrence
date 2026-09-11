@@ -8,8 +8,8 @@
 ## 玩家合同
 
 - 入口：玩家决议“启用自动建造”与“禁用自动建造”。
-- 启用后：每 15 个游戏日检查玩家直接持有的地产，并即时升级已有、符合条件的普通建筑。
-- 费用：优先使用国库；国库不足时使用个人金钱；两者都不足时不升级、不扣款。
+- 启用后：由唯一全局循环每 15 个游戏日检查玩家直接持有的地产；每条已有、符合条件的普通建筑链每轮最多即时升级一级。
+- 费用：使用 CK3 1.19.0.6 对应建筑等级的原版基础费用；优先使用国库，国库不足时使用个人金钱，两者都不足时不升级、不扣款。
 - 排除：主建筑、公国建筑、特殊建筑、部落、游牧、曼荼罗及其他非普通建筑体系。
 - 革新：只按当前时代革新与地产等级判断，不兑现文化传统提供的提前升级。
 - 玩家/AI：只允许真人玩家启用，AI 永不触发。
@@ -22,3 +22,15 @@
 均不在本轮范围内。
 
 本维护副本保留上游署名和来源，不对额外再发布授权作推定。
+
+## 生成与校验
+
+`common/scripted_effects/build_scripted_effect.txt` 是生成文件。建筑链、费用档、标准革新路线和地产等级门槛只改
+`../tools/auto_upgrade_buildings_data.py`，然后运行：
+
+```powershell
+py tools/gen_auto_upgrade_buildings.py
+py tools/validate_auto_upgrade_buildings_static.py
+py tools/test_build_auto_upgrade_buildings_release.py
+py tools/build_auto_upgrade_buildings_release.py --check
+```
