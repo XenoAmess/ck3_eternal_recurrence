@@ -28,10 +28,12 @@ generation，以及 B1、AF5、Central、Workforce 的 identity/state/receipt �
 但不能扩大 P1 blocker；因此 P1 判定没有“还差一个历史 cell”之类的隐含口径。显式 legacy 诊断命令本身仍可因其
 coverage 失败返回 RED，但该诊断 RED 不回写、不改变独立的 P1 九项判定。
 
-截至 2026-09-11 R430 的机器化归档，现行候选 P1 为 **`5/9 = 55.6%`**：B1、AF5、完整 gameplay 时间窗 error scan、
-managed cleanup 与候选 L0 已 READY；stage 9、10、11 和一次代表性终态 cold restore 仍 PENDING。权威中间账本为
+截至 2026-09-11 R433 后的机器化归档，现行候选 P1 为 **`6/9 = 66.7%`**：B1、AF5、Central stage 9、完整 gameplay
+时间窗 error scan、managed cleanup 与候选 L0 已 READY；stage 10、11 和一次代表性终态 cold restore 仍 PENDING。权威中间账本为
 `Z:\ck3_mod_rewrite\_runtime\p1-critical-path-assembler\pending-assembly-status.json`。这只是九项门禁的完成比例，不换算为
-T0 产品总完成度；P1 尚未签收，P2 继续 `LOCKED`。R430 的整理全部为 no-launch，不为 B1 重开或延长实机验收。
+T0 产品总完成度；P1 尚未签收，P2 继续 `LOCKED`。R390 Stage 9 冻结记录的真实选择与当前候选的 23 文件逐字节
+资格核对，以及 R432 硬上限、R433 零游戏日诊断见
+[`r432-r433-bounded-stage9-intake-2026-09-11.md`](r432-r433-bounded-stage9-intake-2026-09-11.md)。证据整理不重开 CK3。
 
 R408–R414 的终端 lineage 换轨、五玩家 `SAV0102` 两次 native-readiness RED、离线 normalization 的证据边界以及
 R375 单玩家 checkpoint 的有效准入，见
