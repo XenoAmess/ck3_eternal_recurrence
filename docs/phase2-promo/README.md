@@ -52,8 +52,10 @@ selector、产品树和 checkpoint 哈希收据时，会在启动 CK3 前拒绝�
 [`stage10-player-subject-bounded-action-cell-2026-09-11.md`](stage10-player-subject-bounded-action-cell-2026-09-11.md)。
 
 R466/R467 随后从距 `.390` 仅 2 游戏日的 production 存档执行了一次有界资格尝试。R467 在真实 `.390` 帧返回
-`no_bounded_ai_direct_manager`，并且同帧 Workforce owner provider 缺少 Stage 11 的 owner/portfolio/case 绑定；两项产品门均为
-`NOT_EVALUATED`，该来源永久淘汰。运行在 10 游戏日上限内停止，cleanup GREEN，P1 仍为 `6/9`。启动前发现并修复了
+`no_bounded_ai_direct_manager`，所以该来源的 Stage 10 用途永久淘汰。Stage 11 随后因恢复推进时 paused revision 已变化而返回
+`snapshot changed or is not ready`；首帧缺少 owner/portfolio/case 绑定是 D+2 pump 前的预期状态，不能据此淘汰 Stage 11 来源。
+runner 已把这条 exact-build 文本纳入现有四次上限的只读 rebind，normal/optimized 各 `14/14` GREEN；Stage 11 仍为
+`NOT_EVALUATED`，可从原始近边界输入短程续跑。运行在 10 游戏日上限内停止，cleanup GREEN，P1 仍为 `6/9`。启动前还修复了
 Operator worker 首次后台导入 `numpy/cv2` 时无响应的问题；这是 Python Operator 生命周期修复，未修改公共 MCP 或游戏资产。
 证据见 [`r466-r467-stage10-near-source-rejection-2026-09-12.md`](r466-r467-stage10-near-source-rejection-2026-09-12.md)。
 

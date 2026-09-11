@@ -52,6 +52,7 @@ MAX_CONSECUTIVE_WORKFORCE_QUERY_REBINDS = 4
 _TRANSIENT_WORKFORCE_QUERY_BINDING_ERRORS = (
     "ZhongGuo Workforce owner query lacks one stable paused player binding",
     "ZhongGuo workforce owner revision is stale",
+    "ZhongGuo workforce owner snapshot changed or is not ready",
     "ZhongGuo Workforce owner backend result is not bound to the requested paused frame",
     "ZhongGuo Workforce owner query crossed its paused snapshot binding",
 )
