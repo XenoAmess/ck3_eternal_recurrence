@@ -264,7 +264,7 @@ def check_scripts(errors: list[str]) -> None:
         "run_interaction = {",
         "interaction = demand_payment_interaction",
         "interaction = ransom_interaction",
-        "send_threshold = decline",
+        "execute_threshold = decline",
         "execute_threshold = accept",
         "xqol_release_hook_recruit_conversion_interaction",
         "xqol_mass_conversion_pending",
@@ -278,6 +278,11 @@ def check_scripts(errors: list[str]) -> None:
     ):
         if token not in effects:
             errors.append(f"phase-two runtime token missing: {token}")
+    conversion_runtime = effects.split(
+        "xqol_bulk_conversion_threshold_effect = {", 1
+    )[1].split("xqol_mass_conversion_courtier_accepted_effect = {", 1)[0]
+    if "send_threshold" in conversion_runtime:
+        errors.append("conversion dispatch must settle synchronously without pending notifications")
     conversion_count = (
         "change_variable = { name = xqol_mass_conversion_pending add = 1 }"
     )
