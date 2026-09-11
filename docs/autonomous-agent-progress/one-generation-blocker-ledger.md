@@ -1005,4 +1005,4 @@ WarID `50331699` / `raiktor_claim_cb` 的 primary-attacker surrender 只有 type
 
 - R455 唯一 PID `196216` 通过完整 source-first 只读链；WarID `33554473` 的两次同帧公开 terms 均返回 `evaluated_days=1825`，`terms_ready=true`。诊断两行均为 `traversal-complete`、一个有效 callback/context、`reader_returned=true`、`last_failure=none`、context 已销毁。
 - report/capture/diagnostic/classification 为 `E4C3DCFC…DC69` / `DD33C69C…CD70` / `28CA8EB5…E774` / `DB6C587A…EDD8`；零 checkpoint/action/postwar，source 未变、cleanup GREEN、CK3=0。R450 的当前输入 truce observation RED 已关闭，不再重复该只读探针。
-- `source_specific_loss_ready=false`、`comparison_input_ready=false`、`decision/action/automatic_surrender=false`，因此 `GEN-034` 仍 unresolved、T1=90%。下一入口是同一已验证启动链的一次正常 lifecycle：durable checkpoint、唯一 surrender、postwar cleanup/expiry 与 source-loss join。
+- `source_specific_loss_ready=false`、`comparison_input_ready=false`、`decision/action/automatic_surrender=false`，因此 `GEN-034` 仍 unresolved、T1=90%。根证据提交 `4bed362d87eda2028e745db6f03a8c44f7df401f`、T2 capability 记录 `18cb4fa3df8e4a04f353bf72f376a0f45179e3c6` 均已推送。下一入口是同一已验证启动链的一次正常 lifecycle：durable checkpoint、唯一 surrender、postwar cleanup/expiry 与 source-loss join。
