@@ -957,3 +957,27 @@ This does not change public MCP behavior or readiness.
 The root contract fix is commit
 `55702c167ed31c940a717484e0d939560397f4c3`; open_kaishek records the
 private receipt dependency in `24ee29b71af1c9c7ce36107f1019695f0d0b35e0`.
+
+### R455 current-war truce terms are live GREEN
+
+R455 used unique PID `196216` and completed the full read-only source-first
+path: suspended startup Prepare, six `.1071.a` source executions for WarID
+`33554473`, debugger detach, same-PID bridge attach, and two terms queries on
+the same paused lifecycle. Both public queries returned
+`evaluated_days_observable=true`, `evaluated_days=1825`, and
+`terms_ready=true`. Both diagnostic rows reached `traversal-complete` with one
+callback, one valid evaluation context, `reader_returned=true`, no failure,
+and proven context destruction.
+
+The read-only boundary remained exact: no pre-mutation checkpoint was created,
+the mutation list is empty, and postwar polling did not start. Thus R455 closes
+the current-input truce observation RED but does not yet prove source-specific
+loss, comparison input, a decision, an action, or `GEN-034`. The source save is
+unchanged and cleanup is GREEN with no CK3 process remaining. Report, capture,
+diagnostic, classification, and final launch-record SHA-256 values are
+`E4C3DCFCA6B8DF1CF90ED376E638BD73241A227744D06B46FA212083BFB3DC69`,
+`DD33C69C6F92A4FDFC41A00C326F92D02B0BCC1BF84A366B8FE15BBEBE3ACD70`,
+`28CA8EB52E53A83B42CD2A0E29AF28A174A620E8439475DCB6DA1A6B81F0E774`,
+`DB6C587A06BE10BABA11FB0F82190018736E010878677466C7015AD08F7FEDD8`,
+and `B14F90DA3D552B7A01973237CF933274041D7080224664E2DF81F622301978D3`.
+The next run uses the existing normal lifecycle once; this probe is not repeated.

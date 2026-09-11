@@ -1000,3 +1000,9 @@ WarID `50331699` / `raiktor_claim_cb` 的 primary-attacker surrender 只有 type
 
 - R454 唯一 PID `77472` 通过 suspended identity，完成 pre-resume Prepare 并恢复；外层 owner 随即拒绝新 `suspended-prepared-normal-event` receipt，因为旧合同仍写 `normal-event`。source/bridge/query/mutation 未开始，cleanup GREEN、CK3=0；report/classification 为 `F6EC3AAE…CC78` / `46FD0B0E…4122`。
 - outer owner 与 fixture 已同步新字面值，其他模式继续 fail-closed；两模块 focused normal/`-O` 各 `40/40` GREEN。R455 admission `B43F5BD9…50BB` READY；根提交 `55702c167ed31c940a717484e0d939560397f4c3`、T2 记录 `24ee29b71af1c9c7ce36107f1019695f0d0b35e0` 均已推送。`GEN-034` unresolved、T1=90%，下一步只运行一轮 R455。
+
+## 2026-09-11：GEN-034 R455 当前输入的 truce terms GREEN
+
+- R455 唯一 PID `196216` 通过完整 source-first 只读链；WarID `33554473` 的两次同帧公开 terms 均返回 `evaluated_days=1825`，`terms_ready=true`。诊断两行均为 `traversal-complete`、一个有效 callback/context、`reader_returned=true`、`last_failure=none`、context 已销毁。
+- report/capture/diagnostic/classification 为 `E4C3DCFC…DC69` / `DD33C69C…CD70` / `28CA8EB5…E774` / `DB6C587A…EDD8`；零 checkpoint/action/postwar，source 未变、cleanup GREEN、CK3=0。R450 的当前输入 truce observation RED 已关闭，不再重复该只读探针。
+- `source_specific_loss_ready=false`、`comparison_input_ready=false`、`decision/action/automatic_surrender=false`，因此 `GEN-034` 仍 unresolved、T1=90%。下一入口是同一已验证启动链的一次正常 lifecycle：durable checkpoint、唯一 surrender、postwar cleanup/expiry 与 source-loss join。
