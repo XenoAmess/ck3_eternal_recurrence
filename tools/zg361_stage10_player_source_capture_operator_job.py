@@ -214,6 +214,25 @@ class Stage10PlayerSourceCaptureOperatorJob(base.Af5OperatorJob):
         response["control"] = "capture-source"
         return response
 
+    def _run(self) -> None:
+        """Revalidate with this job's source-specific activation contract."""
+
+        try:
+            bound = validate_activation(self.activation_path, require_empty_slot=True)
+            with self.lock:
+                self.bound = bound
+            self._execute(bound)
+        except BaseException as error:
+            self._record_failure(error)
+        finally:
+            print(
+                json.dumps(
+                    {**self.status(), "notification": "capture-source-finished"},
+                    ensure_ascii=False,
+                ),
+                flush=True,
+            )
+
     def _execute_action(self, bound: Mapping[str, object]) -> None:
         if self.service is None or self.runner is None:
             raise base.Af5JobError("source capture runtime is not bound")

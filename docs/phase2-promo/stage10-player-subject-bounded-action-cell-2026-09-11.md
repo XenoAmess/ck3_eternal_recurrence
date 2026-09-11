@@ -82,4 +82,6 @@ provenance。运行后依次执行：确认来源玩家与 campaign root、调�
 
 当前冻结输入为已实机准入的 R159 单玩家 checkpoint，来源玩家/owner 为 `32904`，目标玩家经理为 `29037`。离线候选只负责
 避免无效启动；新轮次中的 campaign-root 与保存结果仍由 exact-build MCP 权威确认。聚焦测试在 normal/optimized 下各
-`3/3` GREEN，另通过 `py_compile` 与 `git diff --check`；本工作包没有启动 CK3。
+`4/4` GREEN，另通过 `py_compile` 与 `git diff --check`。
+
+R483/R484 已证明 loader/native 来源本身可恢复，但首次 worker 错用 AF5 基类 validator，在 action 前丢失目标字段并保留 harness RED；没有玩家切换、保存或时间推进。最小修复改由 worker 调用本模块 validator，R483/R484 已完成 GREEN cleanup，不能原地 retry。证据见 [R483/R484 分派 RED](r483-r484-stage10-source-capture-dispatch-red-2026-09-12.md)。

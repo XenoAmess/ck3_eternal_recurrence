@@ -53,6 +53,8 @@ R482 后的下一步来源构造已实现为独立受管 operator：从已实机
 既有 live qualification 与 checkpoint provenance 三者必须 hash 一致。该工作包只生成 v3 admission 所需来源，不计作 Stage 10
 `.120` 验收；接口与聚焦验证见同一 [Stage 10 action cell 专题](stage10-player-subject-bounded-action-cell-2026-09-11.md)。
 
+R483/R484 首次 source-capture 启动的 loader/native 链全部 GREEN，但继承的 worker 错用 AF5 基类 validator，目标字段在 action 前丢失并保留 harness RED。玩家切换、保存和时间推进均未发生；两轮已清理。最小修复让 worker 显式调用 source-specific validator，并增加分派回归测试；下次只允许用递增新轮次执行。见 [R483/R484 分派 RED](r483-r484-stage10-source-capture-dispatch-red-2026-09-12.md)。
+
 R466/R467 随后从距 `.390` 仅 2 游戏日的 production 存档执行了一次有界资格尝试。R467 在真实 `.390` 帧返回
 `no_bounded_ai_direct_manager`，所以该来源的 Stage 10 用途永久淘汰。Stage 11 随后因恢复推进时 paused revision 已变化而返回
 `snapshot changed or is not ready`；首帧缺少 owner/portfolio/case 绑定是 D+2 pump 前的预期状态，不能据此淘汰 Stage 11 来源。
