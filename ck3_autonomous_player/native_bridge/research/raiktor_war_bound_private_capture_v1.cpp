@@ -57,6 +57,8 @@ constexpr std::size_t kPersistentRegimentRowOrdinalOffset = 0x0C;
 constexpr std::size_t kPersistentRegimentRowCurrentRegimentIdOffset = 0x10;
 constexpr std::size_t kPersistentRegimentBoundWarIdOffset = 0x13C;
 constexpr std::size_t kPersistentRegimentWarKeepOffset = 0x142;
+constexpr std::uint32_t kMaxDebuggerDetachAttempts = 20;
+constexpr DWORD kDebuggerDetachRetryDelayMs = 25;
 
 constexpr char kArmProof[] =
     "event_definition_key=bookmark.1071\n"
@@ -111,6 +113,8 @@ struct CaptureResult {
   bool process_terminated = false;
   bool attach_mode = false;
   bool debugger_detached = false;
+  std::uint32_t debugger_detach_attempts = 0;
+  DWORD debugger_detach_last_error = ERROR_SUCCESS;
   std::vector<SourceExecutionCapture> executions;
 };
 
@@ -538,6 +542,10 @@ void WriteManifest(const Options &options, const CaptureResult &capture) {
          << (capture.attach_mode ? "true" : "false") << ",\n"
          << "  \"debugger_detached\": "
          << (capture.debugger_detached ? "true" : "false") << ",\n"
+         << "  \"debugger_detach_attempts\": "
+         << capture.debugger_detach_attempts << ",\n"
+         << "  \"debugger_detach_last_error\": "
+         << capture.debugger_detach_last_error << ",\n"
          << "  \"executions\": [\n";
   for (std::size_t i = 0; i < capture.executions.size(); ++i) {
     const auto &row = capture.executions[i];
@@ -674,6 +682,24 @@ int SelfTest() {
   std::cout << "PASS: private=1 action_arm=1 loaded_nodes=6 exact_war_id=1 "
                "public_abi=0 readiness=0\n";
   return 0;
+}
+
+bool DetachDebuggerWithRetry(DWORD pid, std::uint32_t *attempts,
+                             DWORD *last_error) {
+  *attempts = 0;
+  *last_error = ERROR_SUCCESS;
+  for (std::uint32_t index = 0; index < kMaxDebuggerDetachAttempts; ++index) {
+    ++*attempts;
+    if (DebugActiveProcessStop(pid) != FALSE) {
+      *last_error = ERROR_SUCCESS;
+      return true;
+    }
+    *last_error = GetLastError();
+    if (index + 1 < kMaxDebuggerDetachAttempts) {
+      Sleep(kDebuggerDetachRetryDelayMs);
+    }
+  }
+  return false;
 }
 
 int Run(const Options &options) {
@@ -884,8 +910,9 @@ int Run(const Options &options) {
         process_info.hProcess, breakpoint, kObservationStopByte);
   }
   if (!process_exited && capture.attach_mode) {
-    capture.debugger_detached =
-        DebugActiveProcessStop(process_info.dwProcessId) != FALSE;
+    capture.debugger_detached = DetachDebuggerWithRetry(
+        process_info.dwProcessId, &capture.debugger_detach_attempts,
+        &capture.debugger_detach_last_error);
     if (!capture.debugger_detached) {
       capture.result = "RED";
       capture.reason = "debugger-detach-failed";
