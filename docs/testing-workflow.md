@@ -22,6 +22,7 @@ Start-Process "...\binaries\ck3.exe" -ArgumentList "-debug_mode"
 - terminal-stages 的短程实机必须在 activation 的 `source_route.max_advance_days` 声明单次游戏日预算。operator 会校验并传入 action cell；action state 固化同一绝对截止，热重试不得改变预算。该字段缺失时才使用历史默认值。2026-09-12 起，不得把仅写在 activation、却未由 action 执行的数字称为有界验收。
 - 已有可信 Stage 9 收据、输入存档专用于 Stage 11 时，在 activation 设置 `source_route.start_stage = 11`。operator 与 action state 都会冻结该起点，本轮只产生 Stage 11 收据和 `central-stages-11` 存档 lineage，不重放 Stage 9，也不发布 Stage 10 source。缺省值仍为 `9`，继续执行完整 `[9, 11]` 路径；同一 evidence directory 的热重试不得改变起点。
 - Workforce owner provider 的 `terminal=true` 只证明 portfolio 已到产品终态；Central 的 `stage11_status` 是随后独立发布的回调收据。若第一帧中该 typed field 为 `unavailable/variable_absent`，Stage 11 导航必须继续等待，不得把合法的两次状态变化报成合同异常，也不得只凭 portfolio 终态签收 Stage 11。
+- `resume-map` 的 ACK 后可能短暂读到“旧日期仍 paused”的缓存帧，而 native revision 已经前进；此时不得调用 paused-only terminal query。entry 必须等日期至少前进一次或出现真实事件，再执行下一次 pause/query。这个边界在 speed 1 的绝对截止邻域同样适用，避免同日 resume/pause 空转和 revision mismatch。
 - Windows operator 的首次桌面自动化依赖导入必须发生在 operator 主线程，再创建 live worker。2026-09-12 的一次真实 MCP handoff 已接受 `run-stages`，但后台线程首次加载 `run_acceptance → pyautogui → cv2 → numpy` 时停在 Numpy 原生模块 `create_module`，持续三分钟且未创建 state/artifact、未启动 CK3；线程栈保存在对应 run 的 `prelaunch-hang-thread-dump.txt`。主线程预加载同一模块约 `0.93s`，后台缓存导入约 `0.000004s`。因此这类状态属于 pre-launch harness RED；保存线程栈并回收精确 operator 进程后修复启动顺序，不消耗 CK3 轮次，也不得误报为产品或存档 RED。
 
 ## 当前并行优先级与 `open_kaishek` 预验（2026-09-02 起）

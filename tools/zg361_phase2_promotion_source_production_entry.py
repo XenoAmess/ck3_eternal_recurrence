@@ -4266,6 +4266,7 @@ def enter_promotion_source_checkpoint_v1(
     consecutive_progress_query_rebinds = 0
     zg361_6_wait_state: dict[str, object] | None = None
     post_interrupt_progress_due = False
+    resume_pending_date_raw: int | None = None
     while clock() < deadline:
         snapshot, event = _binding(
             service.snapshot(), player=player,
@@ -4306,6 +4307,16 @@ def enter_promotion_source_checkpoint_v1(
                 snapshot=snapshot,
                 player=player,
             )
+        # A submitted resume is applied asynchronously. The next cached
+        # snapshot can still say paused on the old date while native gameplay
+        # has already advanced its revision. Do not run paused-only probes on
+        # that stale frame; wait for a date transition or a delivered event.
+        if resume_pending_date_raw is not None:
+            if event is None and date_raw <= resume_pending_date_raw:
+                if poll_interval_seconds:
+                    sleeper(poll_interval_seconds)
+                continue
+            resume_pending_date_raw = None
         if zg361_6_wait_state is not None:
             active_event = snapshot.get("active_event")
             current_instance_id = (
@@ -4861,6 +4872,7 @@ def enter_promotion_source_checkpoint_v1(
                 connection_generation=generation,
                 rebind_audit=rebind_audit,
             )
+            resume_pending_date_raw = date_raw
         if poll_interval_seconds:
             sleeper(poll_interval_seconds)
     if runtime_diagnostic_probe is not None:
