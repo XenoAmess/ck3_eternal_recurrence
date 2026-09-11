@@ -51,6 +51,8 @@ class Stage10PlayerSubjectOperatorTests(unittest.TestCase):
                 "checkpoint": input_checkpoint,
                 "stage10_source_receipt": source_receipt,
                 "bridge_dll": bridge,
+                "stage10_player_manager_character_id": 200,
+                "stage10_owner_character_id": 100,
                 "expected_hashes": {
                     "code_commit": "a" * 40,
                     "product_tree_sha256": "B" * 64,
@@ -102,6 +104,13 @@ class Stage10PlayerSubjectOperatorTests(unittest.TestCase):
                 job._execute_action(bound)
 
             self.assertEqual(runner._phase2_archive_checkpoint.call_count, 2)
+            action.assert_called_once_with(
+                job.service,
+                evidence_directory=artifacts / "stage10",
+                request_nonce="R440.stage10.player-subject",
+                expected_player_manager_character_id=200,
+                expected_owner_character_id=100,
+            )
             self.assertEqual(job.state, "AF5_GREEN_PARKED")
             self.assertEqual(job.product_result, "GREEN")
             self.assertEqual(job.status()["controls"], operator.CONTROLS)
@@ -113,7 +122,7 @@ class Stage10PlayerSubjectOperatorTests(unittest.TestCase):
             self.assertTrue(evidence["production_live"])
             self.assertFalse(evidence["video_lock_touched"])
 
-    def test_source_receipt_must_bind_checkpoint_event_selector_and_tree(self) -> None:
+    def test_source_receipt_must_bind_player_manager_topology_and_tree(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
             root = Path(temporary)
             checkpoint = root / "source.ck3"
@@ -123,32 +132,18 @@ class Stage10PlayerSubjectOperatorTests(unittest.TestCase):
                 "schema_version": 1,
                 "kind": operator.SOURCE_RECEIPT_KIND,
                 "result": "GREEN",
-                "production_live": True,
-                "provider_observed": True,
+                "offline_topology_observed": True,
                 "fixture_used": False,
                 "console_used": False,
                 "selection_attempted": False,
-                "source_event_definition_key": operator.SOURCE_EVENT,
-                "source_event_instance_id": 390,
-                "source_event_context": {
-                    "event_definition_key": operator.SOURCE_EVENT,
-                    "current_event_instance_id": 390,
-                    "root_scope": {
-                        "typed_identity": {
-                            "status": "available",
-                            "kind": "character",
-                            "character_id": 100,
-                        }
-                    },
-                },
-                "owner_character_id": 100,
-                "player_character_id": 100,
-                "selected_manager_character_id": 200,
-                "selector": {
-                    "status": "available",
-                    "provider_observed": True,
-                    "readiness": {"ready": True},
-                    "selection": {"manager_character_id": 200},
+                "source_container_header": "SAV0101",
+                "game_version": "1.19.0.6",
+                "offline_topology": {
+                    "player_manager_character_id": 200,
+                    "immediate_liege_character_id": 100,
+                    "direct_landed_vassal_character_ids": [300],
+                    "player_primary_title_tier": 3,
+                    "player_government": "celestial_government",
                 },
                 "product_tree_sha256": "B" * 64,
                 "checkpoint": operator.base.file_record(checkpoint),
@@ -165,11 +160,13 @@ class Stage10PlayerSubjectOperatorTests(unittest.TestCase):
                 operator.base.file_record(receipt_path), bound
             )
             self.assertEqual(result["path"], receipt_path.resolve())
+            self.assertEqual(result["player_manager_character_id"], 200)
+            self.assertEqual(result["owner_character_id"], 100)
 
-            receipt["source_event_definition_key"] = "zg361cl.389"
+            receipt["offline_topology"]["immediate_liege_character_id"] = 200
             operator.base.write_object(receipt_path, receipt)
             with self.assertRaisesRegex(
-                operator.base.Af5JobError, "matching qualified .390"
+                operator.base.Af5JobError, "matching player-publication source"
             ):
                 operator._validate_source_receipt(
                     operator.base.file_record(receipt_path), bound
@@ -190,6 +187,8 @@ class Stage10PlayerSubjectOperatorTests(unittest.TestCase):
                 "repository_root": root,
                 "artifact_directory": artifacts,
                 "round": "R440",
+                "stage10_player_manager_character_id": 200,
+                "stage10_owner_character_id": 100,
                 "expected_hashes": {
                     "code_commit": "a" * 40,
                     "product_tree_sha256": "B" * 64,

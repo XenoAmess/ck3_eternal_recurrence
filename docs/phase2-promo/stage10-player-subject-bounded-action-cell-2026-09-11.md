@@ -1,89 +1,66 @@
-﻿# Stage 10 玩家 subject 有界 action cell（2026-09-11）
+# Stage 10 玩家 subject 有界 action cell（2026-09-11，2026-09-12 修订）
 
-## 状态
+## 现行状态
 
-当前为 **`static-ready / live pending`**。本轮没有启动 CK3，也没有产生 `zg361mg.120` 实机终态收据；因此
-P1 保持 **`6/9 = 66.7%`**，Stage 10、Stage 11 与代表性终态 cold restore 仍为 PENDING，P2 保持 `LOCKED`。
+当前为 **`static-ready / live pending`**。R480 后 P1 为 **`8/9 = 88.9%`**，唯一待验收项是玩家可见的
+`zg361mg.120`；P2 最终宣传视频继续 `LOCKED`。本页早期记载的“从 `.390` 选择 AI manager 再切换玩家”路线已被
+R467 的实机 RED 与 `58e8cc9` 的生产修复取代，不能再用于启动准入。
 
-## 已纠正的角色与观测路线
+## 现行产品路线
 
-产品在玩家作为 Central owner 时给直属 AI manager 打开 F case；AI subject 会静默结案，不显示玩家事件
-`zg361mg.120`。P1 所要求的玩家可见 `.120` 必须让玩家本人处于 manager subject 位置，其 Central owner 为 AI。
+B1 是玩家限定系统。玩家本人作为有直属上级的天朝经理完成真实 B1 公示后，产品幂等调度 `zg361mg.90`；该隐藏事件
+把直属上级作为 owner/root，并在玩家 manager 身上打开 F/AK。随后逐日 ticket 到达玩家可见的 `zg361mg.120`。
+F/AK 使用 owner-local 独立 evaluation cycle，值为玩家 B1 `review_serial + 1`，保持 source 严格早于 evaluation，且不伪造
+AI 上级参加过 B1。Stage10 与公共 opener 都拒绝 AI subject。
 
-现有 manager-governance provider 已支持这个反向拓扑，无需新增 DLL、MCP 或 schema：owner 视角可查询直属 AI manager，
-切换以后又可在 `subject_binding_kind=played_character` 下查询作为玩家本人的同一 F case。产品 pump 每两日运行；F case
-打开后依次调度 `.100`–`.103` 和 `.120` 的逐日 ticket。因此从真实 `.390` 边界开始，30 游戏日已经是宽裕的
-单次截止，不需要恢复 183 日前的 R390 存档进行长跑。
+这条路线不需要 `.390`、manager selector 或 `set_player_character_v1`。R467 证明旧路线依赖已经没有正式生产者的 AI
+`review_serial`；继续搜索 selector-positive 存档只会重复验证同一个已知缺陷。
 
 ## 单次执行合同
 
 [`zg361_phase2_stage10_player_subject_action_cell.py`](../../tools/zg361_phase2_stage10_player_subject_action_cell.py)
-只接受 paused、map-ready、事件身份精确为 `zg361cl.390` 的同一 native lineage：
+从 paused、map-ready、产品-only 的玩家经理存档执行一次最多 30 游戏日的验收：
 
-1. 用现有 selector 选择玩家 Central owner 的一个直属 AI manager；无候选时在保存和事件输入前 RED。
-2. 保存精确 `.390` source checkpoint，再确认 `.390`；从该帧建立唯一的 30 游戏日绝对截止。
-3. 保持玩家仍为 owner，等待两日 pump，并用 manager-governance provider 确认所选 manager 的同一 F case 已处于
-   `state=1..4 / active=true`。没有观测到真实 case 时不得切换玩家。
-4. 在第一张延迟 ticket 前把 played character 切为该 manager，并校验 PID、connection generation、日期与目标角色的
-   同会话后置条件。
-5. 在同一个绝对截止内等待真实 `zg361mg.120`；事件 saved scopes 必须精确回指原 owner 与当前玩家 subject。
-6. 用同一 provider 的 player-subject 分支证明 F case `state=5 / active=false`，再保存终态 checkpoint、确认事件并输出
-   `p1_acceptance_evidence.central_stage_10_terminal`。事件 ACK 明确不作为业务后置条件。
+1. exact-build `campaign-root-context-v1` 必须确认当前玩家与 activation 的 CharacterID 一致、存活、非独立、公爵及以上、
+   `government_is_celestial` 且游戏规则含 `zg361_on`；直属上级必须与准入收据一致。
+2. 保存原始 source checkpoint，不做角色切换、fixture 或控制台输入。
+3. 调用共享 promotion-source navigator 的真实 `activate-review-now-v1`，消费正常 B1 authored 事件，并在同一个绝对
+   30 日截止内暂停于 `.120`。
+4. `.120` root 必须是当前玩家 manager；saved scopes 必须回指收据中的直属上级 owner 与当前玩家 subject。
+5. manager-governance provider 必须证明同一 F case 已 `state=5 / active=false`，随后才保存 terminal、确认事件并输出
+   `p1_acceptance_evidence.central_stage_10_terminal`。事件 ACK 不作为业务后置条件。
 
-任一身份、lineage、事件或 provider 条件不满足即保留 RED artifact 并停止；action cell 不拥有进程生命周期，也不原地重试。
-调用方若要再试，必须从已保存的精确 source 开始新的有界 attempt。
-
-## 聚焦验证
-
-[`test_zg361_phase2_stage10_player_subject_action_cell.py`](../../tools/test_zg361_phase2_stage10_player_subject_action_cell.py)
-覆盖五项关键行为：成功路线、错误入口零 mutation、无 manager 时不确认 `.390`、没有真实 opening case 时不切玩家、
-terminal provider 未闭合时不确认 `.120`。普通模式 `5/5`、`python -O` 模式 `5/5` GREEN；两个新文件均通过
-`py_compile` 且保留 UTF-8 BOM。
-
-本轮没有运行全量 L0，因为改动只增加独立 action cell 与其聚焦测试；没有修改 mod 产品脚本、公共 MCP、ABI 或 schema。
-下一次实机只有在自然抵达或已有 artifact 提供精确 paused `.390` 边界时才执行本 cell。
-
-## 受管 operator
-
-[`zg361_phase2_stage10_player_subject_operator_job.py`](../../tools/zg361_phase2_stage10_player_subject_operator_job.py)
-复用现有 AF5 operator 的 frozen-input admission、唯一 CK3 生命周期与 managed cleanup，只接受
-`job_role=stage10-player-subject`。它只暴露 `status`、`run-stage10` 和 `cleanup`，不提供原地 retry；成功时把 action cell
-保存的精确 `.390` source 与 `.120` terminal 都归档到 artifact，失败时尽力先归档 source 再停车等待清理。
-
-该 operator 是可重复使用的 T0 Stage 10 编排入口，不绑定固定账号、机器路径或轮次；selector、事件导航、角色切换和
-manager-governance 查询继续由现有通用 MCP 资产提供。它没有新增采集协议或分析逻辑。open_kaishek 的通用 1.1 adapter
-无需修改生产代码；T2 以 commit `bab3efe9883ed730637b4aeac059b228779d0ce2` 增加目标自有 control 的兼容测试与同步记录，
-聚焦测试 `13/13` GREEN。operator 聚焦测试普通模式 `4/4`、`python -O` 模式 `4/4` GREEN，并通过 `py_compile` 与 BOM 检查。
+任一身份、事件、lineage、期限或 provider 条件失败即保存 RED 并停车；action cell 不拥有进程生命周期，也不提供原地 retry。
 
 ## 启动前 source admission
 
-Stage 9/11 action cell 在自然抵达真实 `.390` 时先做一次 manager selector 查询。只有 exact event、played owner 和 selector
-全部正向可见时，才在选择 Stage 9 选项前保存 checkpoint，并立即复制到独立 artifact；selector 不合格只记录
-`INELIGIBLE`，不会阻断原有 Stage 9/11 路线。受管 terminal-stages operator 随后补齐当前产品树、commit、PID/generation
-与真实输入身份，产出 `zg361_stage10_player_subject_source_v1` 收据。
+受管 operator 只接受 `zg361_stage10_player_publication_source_v2`。收据必须绑定：
 
-Stage 10 operator 的 activation 现在强制携带这份收据。收据文件本身、`.390` 事件实例、owner/player、候选 manager、
-selector readiness、产品树以及 checkpoint path/size/SHA-256 必须全部一致；否则在 `_execute` 启动 CK3 前直接 RED。
-因此 R159、R432 或任何只靠猜测的存档都不能再消耗新轮次。受影响聚焦测试为 terminal action normal/`-O` 各
-`12/12`、terminal operator 各 `7/7`、Stage 10 operator 各 `4/4`，未运行全量 L0。
+- `SAV0101`、CK3 `1.19.0.6`、产品树 SHA-256，以及 checkpoint 的绝对路径、大小和 SHA-256；
+- 离线读到的玩家 manager、不同的直属上级、至少一名直属有地封臣、公爵及以上和 `celestial_government`；
+- `offline_topology_observed=true`，且 fixture、console、selection 均未使用。
 
-该 activation 输入变化已触发 T2；open_kaishek 仍无需生产代码修改，其通用 Operator MCP 1.1 不解析目标自有 activation。
-兼容记录 commit `8b68c63f1453b9da2907b9e2afd5825949ff93f9` 已推送；此前 control 兼容测试 commit
-`bab3efe9883ed730637b4aeac059b228779d0ce2` 的 `13/13` 结果继续适用，没有重复运行。最终 source hash 刷新 commit
-`16d9e8e100e120738086c62a25525646f7098d02` 已推送，且为当前 `origin/main`。
+离线字段只负责避免把明显不合格的存档送进 CK3；运行后的 campaign-root MCP 才是权威准入，任何不一致都会在首次保存或
+游戏输入前 RED。operator 复用 AF5 的 frozen-input admission、唯一 CK3 生命周期与 managed cleanup，只暴露
+`status / run-stage10 / cleanup`，成功时归档玩家经理 source 与 `.120` terminal。
 
-当前轮次 R439 已结束，CK3 存活数为 0；本工作包没有启动 CK3，也没有新建轮次。不得仅为 Stage 10 从 183 日前的
-存档重放而启动；新轮次 R440 必须绑定独立的有界 P1 机器门，若其自然抵达 `.390`，再即时冻结并执行本 operator。
+## 当前候选源与通用资产边界
 
-## 有界预算落实（2026-09-12）
+当前候选是用户存档 `autosave.ck3`：`112339684` bytes，SHA-256
+`80030146765A960EABAA1E38E90FF88CDEB8FBBBB2442E30E695FDFBFD64687D`。离线解析显示玩家 `37884`、直属上级
+`61334`、直属有地封臣 `[57858, 16817470, 43060]`，且满足天朝公爵级经理准入。解析使用仓库外 Rakaly CLI 0.8.19：
+ZIP SHA-256 `343E2C33869B1EC82E4AB018D1BB6936CC68B63146F99F426939F4D76106710D`，EXE SHA-256
+`E154AF990AAED2C2F44284946772188C9749AD3F6B641B41F6C23456A6F1633D`。
 
-terminal-stages activation 原有的 `source_route.max_advance_days` 过去只写入编排说明，action cell 实际仍采用全局
-`MAX_ADVANCE_DAYS`。这会让为 Stage 10/11 设计的短程验收在目标未出现时意外退化成长跑。现由 operator 校验该字段并
-显式传给 action cell；action 将游戏日上限写入 durable state，同时把绝对截止绑定到首次 paused frame。热重试必须复用
-同一上限，不能通过改 activation 给时间线续杯。未声明该字段的旧 activation 仍保留原默认值。
+Rakaly 是通用 save melt 工具，campaign-root 与 manager-governance 是现有通用只读 MCP；本包没有新增固定机器路径、账号或
+轮次的查询接口。一次性工作只限于为本次 activation 组装 file record，原因是候选存档属于本机运行输入；它在本次有界运行
+cleanup 时结束，不迁入产品代码。任何机器都可用相同 receipt schema 和自身绝对路径重建同一 SHA 绑定。
 
-这项修复没有改 mod 产品脚本、公共 MCP 控制名、ABI 或 DLL。聚焦 action/operator 测试普通模式 `20/20`、
-`python -O` 模式 `20/20` GREEN。下一次组合运行把前置 183 日、`.390` source 冻结和紧随其后的 Stage 11 路线限定在
-500 游戏日内；到界即保留 RED 并停车，不扩大为单 bug 长跑。activation 数据语义变化已同步到 open_kaishek；其
-Operator MCP 1.1 继续把该字段作为目标自有输入透传，无需修改 Java/API/schema，兼容记录 commit
-`84d0a459b4cbad35bfa91c8264ba44a6b7fb1825` 已推送并与 `origin/main` 一致。
+## 聚焦验证
+
+- action cell：normal / optimized 各 `5/5` GREEN；覆盖成功、独立玩家拒绝、非天朝拒绝、错误 terminal 和 provider 未闭合。
+- operator：normal / optimized 各 `4/4` GREEN；覆盖目标角色透传、双 checkpoint 归档、拓扑/树/checkpoint 绑定和归档失败保留产品 GREEN。
+- 两个实现与两个测试通过 `py_compile`；`git diff --check` GREEN。
+
+本包没有为这一小改动运行全量测试或启动 CK3。公共 Operator MCP 1.1 的 control、schema、DLL 和传输协议没有变化；目标自有
+activation/receipt 语义改变，需在根仓提交后同步 open_kaishek 兼容说明。

@@ -40,18 +40,11 @@ R467 的 `no_bounded_ai_direct_manager` 现已结合 `380af02` 之后的生产�
 R434/R439 的零游戏日 selector 只排除了 R432/R159 作为 B3 focused 路线的 AI manager/direct subordinate source，不能判定玩家可见的 Stage 10 `.120` 路线；其中 R439 重复了 09 月 07 日已有的 R159 结论，是一次可避免的验证。R435 只排除 R432 的 Stage 11 terminal 资格；R437 又证明 R398 输入存档本身并未停在 `.242`，因此在零游戏日、零事件输入处停止，没有把 source 误读扩成第二次长跑。两种 Stage 10 角色拓扑、验收 runner 纠正、不重跑边界与下一项 source 要求见
 [`r434-r439-bounded-source-checks-and-stage10-route-correction-2026-09-11.md`](r434-r439-bounded-source-checks-and-stage10-route-correction-2026-09-11.md)。P1 仍为 `6/9`。
 
-Stage 10 的独立 action cell 已按上述反向角色拓扑完成静态实现：只从精确 paused `.390` 开始，先由 owner-view provider
-确认所选 manager 的真实 F case 已打开，再切换玩家，并在同一个 30 游戏日绝对截止内等待 `.120` 与 player-subject
-provider 终态；未开 case 时禁止切换，任一条件失败即停且不原地重试。聚焦测试 normal/`-O` 各 `5/5` GREEN，未启动
-CK3，所以状态仅为 `static-ready / live pending`，P1 仍为 `6/9`。受管 operator 复用现有 frozen-input admission 与
-managed lifecycle，只暴露 `status / run-stage10 / cleanup`，并归档 source/terminal；其 normal/`-O` 测试各 `4/4` GREEN。
-open_kaishek 通用 1.1 adapter 无需生产代码修改，T2 兼容测试与记录已由 commit `bab3efe9883ed730637b4aeac059b228779d0ce2`
-推送，聚焦测试 `13/13` GREEN。
-Stage 9/11 runner 现会在自然抵达 `.390` 时顺手冻结 selector-positive source；Stage 10 activation 没有对应事件、角色、
-selector、产品树和 checkpoint 哈希收据时，会在启动 CK3 前拒绝。该 T2 activation 记录已由 open_kaishek commit
-`8b68c63f1453b9da2907b9e2afd5825949ff93f9` 推送，通用 adapter 仍无生产代码变化。
-最终 source hash 由 open_kaishek commit `16d9e8e100e120738086c62a25525646f7098d02` 刷新并与 `origin/main` 同步。
-完整合同见
+Stage 10 action/operator 已同步改为真实玩家 B1 公示路线：从非独立的天朝玩家经理存档调用 review-now，在同一 30 游戏日
+绝对截止内等待 `.120`，不再依赖 `.390`、AI manager selector 或玩家切换。activation 的 v2 收据用离线 SAV0101 拓扑和
+checkpoint/product-tree 哈希排除明显错误输入；启动后仍由 exact-build campaign-root MCP 权威确认。action normal/`-O`
+各 `5/5`、operator 各 `4/4` GREEN，状态仍为 `static-ready / live pending`，P1 为 `8/9`。公共 Operator MCP 1.1 不变，
+目标自有 receipt 语义需在本次根仓提交后同步 open_kaishek。完整合同与当前候选源见
 [`stage10-player-subject-bounded-action-cell-2026-09-11.md`](stage10-player-subject-bounded-action-cell-2026-09-11.md)。
 
 R466/R467 随后从距 `.390` 仅 2 游戏日的 production 存档执行了一次有界资格尝试。R467 在真实 `.390` 帧返回
