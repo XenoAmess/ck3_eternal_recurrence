@@ -146,7 +146,8 @@
   第二次合法出现，证明旧 `max_occurrences=1` 是产品合同 RED；attempt 06 已在同一 PID/generation 闭合第二次动作。
   年度把柄换秘密路线见 [yearly-hook-for-secret.md](yearly-hook-for-secret.md)，稳定阶段通知与保持独立路线见
   [tgp-dynastic-cycle-stability-notification.md](tgp-dynastic-cycle-stability-notification.md)，共读卷册的重复语义见
-  [tgp-movement-shared-scroll.md](tgp-movement-shared-scroll.md)。attempt 06 已在同一 PID/generation 闭合第二次
+  [tgp-movement-shared-scroll.md](tgp-movement-shared-scroll.md)，文化分歧通知的重复 caller 与确认路线见
+  [culture-divergence-notification.md](culture-divergence-notification.md)。attempt 06 已在同一 PID/generation 闭合第二次
   `.0070`，随后跑满固定 `10190` 天窗口并冻结 B1 零幸存者 liveness RED；产品诊断与最小恢复合同见
   [r418-b1-zero-survivor-liveness-red-2026-09-11.md](../phase2-promo/r418-b1-zero-survivor-liveness-red-2026-09-11.md)。artifact 树见
   [artifact-expert-improvement.md](artifact-expert-improvement.md)。上述状态不表示 182 条全部 live；

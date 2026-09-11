@@ -78,3 +78,27 @@ open-year 与 review flags，并明确不调用 `zg361_b1_mark_published_effect`
 fresh CK3 进程恢复同一冻结 checkpoint。live 升级至少要证明旧 cycle/case `8/8` 被退役、新 serial 被打开，并最终获得无 anomaly 的
 B1 state `8` / closure `4` / finalized，再恢复 Central 9–11 的正式 terminal 验收。T0 保持 `50% / stage 8/11 / P1 未签收`，
 P2 视频继续锁定。
+
+## R420 fresh 复验：调用点仍不可达
+
+R420 用 commit `4cd6738b6fcdc2c62961971ddc951f5d5ca97b71` 的 detached code worktree 和 fresh 1,031-file
+production projection，从 R418 attempt 06 前保存的零幸存者 checkpoint 启动新 CK3 PID `197452`。preflight
+`18/18` GREEN；启动前 checkpoint SHA-256 为
+`00E61D505A05C39F953C815AC6FB79F88DEEBA8B16CF246C87FAA94693F81E1F`，release manifest / ZIP SHA-256 为
+`09E7962DFDAA63D9650BA74BEEBEE4C481850095C099315F11E3D35596A2DC6F` / `647AB1A16941955536A5303E587516275B7A00319B1F2F1CABA107D8E9ECFE25`。
+
+fresh 进程从 date raw `54114528` 推进到 `54251808`，约 `15.7` 游戏年。B1 始终保持 cycle/case `8/8`、
+active/state `true/7`、roster/processing `0/0`、closure `0`，恢复记录和状态迁移均未出现。这证明恢复 effect 的精确条件
+并非唯一问题：现有 wake-up 调用点在这个演化存档中没有被触达。attempt 01 随后因同一窗口第二次合法出现
+`culture_notification.1111` 而在选择前暂停；汇总 artifact SHA-256 为
+`70B27E1064482C11FAE20CB730ED255755BDC5B70F1EAD1C048209EB31806866`。
+
+代码调用图给出与实机现象一致的最小解释：年度 dispatch 在进入 `zg361_issue_jingcha_mandate_effect` 前要求当前玩家仍是
+celestial liege；`.90/.91` sibling ticket 也把恢复调用放在同一资格门内；`.42` 只有旧存档已经持有 pending ticket 才会执行。
+该玩家仍拥有旧 B1 manager state，但长期演化后可能已失去当前天朝资格，因此所有已有恢复点均可合法不运行。
+
+下一修复把同一个严格 recovery effect 前移到 `zg361_jingcha_annual_dispatch_effect` 顶部、当前 celestial eligibility
+判断之前。年度 pulse 本身是已有 `yearly_playable_pulse` 玩家入口；effect 内仍要求 `is_ai=no`、active/schema/state、
+serial 与零 survivor 全部精确匹配。失去资格的旧 owner 只会无奖励、无发布地退役残留周期；仍有资格者可在同一次年度 pulse
+继续进入原有开新周期路径。当前结论仍为 `static-ready`，必须用新的 fresh production projection 再次恢复同一 checkpoint
+验证；R420 证据不把这一根因解释冒充 live 修复完成。

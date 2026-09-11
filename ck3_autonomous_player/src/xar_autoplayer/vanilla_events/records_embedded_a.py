@@ -71,7 +71,9 @@ _LEGACY_EMBEDDED_A_VANILLA_TIMELINE_CONTRACTS: Final[
         # both contain only the same custom tooltip and no gameplay effect.
         # R135 observed the played manager as a non-founder, so exactly one
         # rendered button mapped to native option index 1. Bind the complete
-        # five-scope frame before dismissing that acknowledgement.
+        # five-scope frame before dismissing that acknowledgement. Culture
+        # divergence can legally notify the same player again; R420 observed
+        # two instances in the same product window.
         "date_raw": 53148048,
         "date_policy": "product-observation-window",
         "root_character_id": 29037,
@@ -91,7 +93,7 @@ _LEGACY_EMBEDDED_A_VANILLA_TIMELINE_CONTRACTS: Final[
         "native_option_indices": (1,),
         "selected_option_number": 2,
         "selected_native_option_index": 1,
-        "max_occurrences": 1,
+        "occurrence_policy": "repeatable-within-product-observation-window",
     },
     "intrigue_scheming.1202": {
         # CK3 1.19.0.6 hired-spy follow-up. The temporary spy is created in
