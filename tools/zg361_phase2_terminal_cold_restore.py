@@ -74,6 +74,48 @@ def _available(value: object, label: str, *, ready_key: str = "ready") -> Mappin
     return result
 
 
+def _af5_available_or_tombstone(value: object) -> Mapping[str, object]:
+    """Accept a live AF5 frame or its explicit destroyed-subject tombstone."""
+
+    result = _object(value, "AF5")
+    if result.get("status") == "available":
+        return _available(result, "AF5")
+    if not (
+        result.get("status") == "unavailable"
+        and result.get("unavailable_reason") == "subject_projection_read_failed"
+        and isinstance(result.get("subject_character_id"), int)
+        and not isinstance(result.get("subject_character_id"), bool)
+        and result.get("subject_character_id") > 0
+        and result.get("terminal") is False
+    ):
+        raise ValueError("AF5 is neither observable nor an explicit subject tombstone")
+    readiness = _object(result.get("readiness"), "AF5 tombstone readiness")
+    if any(value is not False for value in readiness.values()):
+        raise ValueError("AF5 subject tombstone has an unexpected ready projection")
+    leaves: list[Mapping[str, object]] = []
+
+    def collect(node: object) -> None:
+        if isinstance(node, Mapping):
+            if {"status", "value", "unavailable_reason"} <= set(node):
+                leaves.append(node)
+                return
+            for child in node.values():
+                collect(child)
+        elif isinstance(node, list):
+            for child in node:
+                collect(child)
+
+    collect(_object(result.get("af5"), "AF5 tombstone payload"))
+    if not leaves or any(
+        leaf.get("status") != "unavailable"
+        or leaf.get("value") is not None
+        or leaf.get("unavailable_reason") != "variable_absent"
+        for leaf in leaves
+    ):
+        raise ValueError("AF5 subject tombstone retains a partial business payload")
+    return result
+
+
 def read_terminal_domains_v1(
     service: object, *, request_nonce: str = "p1.restore",
     evidence_out: dict[str, object] | None = None,
@@ -102,7 +144,9 @@ def read_terminal_domains_v1(
         return _object(response, name + " query")
 
     b1 = _available(query("b1", "query_zhongguo_b1_cycle_snapshot_v1"), "B1")
-    af5 = _available(query("af5", "query_zhongguo_compensation_af5_snapshot_v1"), "AF5")
+    af5 = _af5_available_or_tombstone(
+        query("af5", "query_zhongguo_compensation_af5_snapshot_v1")
+    )
     central_response = query("central", "query_zhongguo_promotion_source_progress_v1")
     if central_response.get("status") != "available":
         raise ValueError("Central query is unavailable")
@@ -146,7 +190,9 @@ def read_terminal_domains_v1(
                          "result_identity": copy.deepcopy(af["portfolio"]["result_identity"])},
             "state": {"terminal": af5.get("terminal") is True, "portfolio": copy.deepcopy(af["portfolio"]),
                       "case": {key: copy.deepcopy(value) for key, value in af_case.items() if key != "identity"}},
-            "receipt": {"m299": copy.deepcopy(af["m299"]), "m300": copy.deepcopy(af["m300"]),
+            "receipt": {"observation_status": af5["status"],
+                        "unavailable_reason": af5.get("unavailable_reason"),
+                        "m299": copy.deepcopy(af["m299"]), "m300": copy.deepcopy(af["m300"]),
                         "readiness": copy.deepcopy(af5["readiness"])},
         },
         "central": {

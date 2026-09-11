@@ -38,6 +38,7 @@ class TerminalService:
         self.generation_step = 1
         self.restore_same_pid = False
         self.af5_terminal = True
+        self.af5_tombstone = False
         self.b1_closed = True
         self.b1_anomalies = []
         self.path = root / "xar_checkpoint.ck3"
@@ -95,6 +96,28 @@ class TerminalService:
     def query_zhongguo_compensation_af5_snapshot_v1(self, nonce: str, *, expected_revision: int) -> dict[str, object]:
         response = self.query_frame("af5", nonce, expected_revision, self.af5)
         response["terminal"] = self.af5_terminal
+        if self.af5_tombstone:
+            def clear(node: object) -> None:
+                if isinstance(node, dict):
+                    if {"status", "value", "unavailable_reason"} <= set(node):
+                        node.update(status="unavailable", value=None,
+                                    unavailable_reason="variable_absent")
+                        return
+                    for child in node.values():
+                        clear(child)
+                elif isinstance(node, list):
+                    for child in node:
+                        clear(child)
+            clear(response["af5"])
+            response.update(
+                status="unavailable",
+                unavailable_reason="subject_projection_read_failed",
+                terminal=False,
+                subject_character_id=361,
+            )
+            response["readiness"] = {
+                key: False for key in response["readiness"]
+            }
         return response
 
     def query_zhongguo_workforce_owner_snapshot_v1(self, nonce: str, *, expected_revision: int) -> dict[str, object]:
@@ -270,6 +293,42 @@ class TerminalColdRestoreTests(unittest.TestCase):
             after = result["after_readback"]["b1"]["receipt"]["anomalies"]
             self.assertEqual(before, ["quota_target_processing_mismatch"])
             self.assertEqual(after, before)
+
+    def test_destroyed_af5_subject_tombstone_is_compared_across_restore(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            service = TerminalService(root)
+            service.af5_tombstone = True
+            result = self.run_restore(service, root / "evidence")
+            af5 = result["after_readback"]["af5"]
+            self.assertFalse(af5["state"]["terminal"])
+            self.assertEqual(
+                af5["receipt"]["observation_status"], "unavailable"
+            )
+            self.assertEqual(
+                af5["receipt"]["unavailable_reason"],
+                "subject_projection_read_failed",
+            )
+            self.assertEqual(
+                result["before_readback"], result["after_readback"]
+            )
+
+    def test_other_af5_unavailable_reason_stops_before_restore(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            service = TerminalService(root)
+            service.af5_tombstone = True
+            original = service.query_zhongguo_compensation_af5_snapshot_v1
+
+            def query(nonce: str, *, expected_revision: int) -> dict[str, object]:
+                response = original(nonce, expected_revision=expected_revision)
+                response["unavailable_reason"] = "different_failure"
+                return response
+
+            service.query_zhongguo_compensation_af5_snapshot_v1 = query
+            with self.assertRaises(cold.TerminalColdRestoreError):
+                self.run_restore(service, root / "evidence")
+            self.assertEqual(service.restore_count, 0)
 
 
 if __name__ == "__main__":
