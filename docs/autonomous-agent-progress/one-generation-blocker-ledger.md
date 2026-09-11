@@ -891,3 +891,11 @@ WarID `50331699` / `raiktor_claim_cb` 的 primary-attacker surrender 只有 type
   Raiktor 后写这两项。故 source 已自然出现，但标题漏识别后 generic modal recovery 在 observer 未 arm 时关闭了事件。
 - R444 classification SHA-256 `3827A3E1…E5D4`，cleanup GREEN、CK3=0、mutation 零。`GEN-034` 仍 unresolved；下一入口是
   target option 的高置信识别并保证 `atomic_arm` 先于 click，不再通过延长 live 窗口获取同一事实。
+## 2026-09-11：GEN-034 `.1071` arm guard 与最近 pre-target source
+
+- target option 现在在 generic recovery 前检查；完整文案失败时，只有 option 区域同时存在 `扶上 / 君士坦丁堡 / 皇位`
+  才允许定位，随后严格 `atomic_arm → click`。normal/`-O` 各 `24/24`，未启动 CK3。
+- R441 三个 autosave 均已有同记录 `raiktor`；R440 1068-01-03 save 尚未出现该 marker，是最近可用 pre-target lineage。
+  其 SHA-256 `D1E469D0…CDA9D` 已通过 input-specific no-launch admission `5E6A0A00…AACD`。
+- `GEN-034` 仍 unresolved；下一入口是一轮从该边界启动的 source-specific lifecycle。该轮只验证自然目标的 arm/capture 与既有
+  same-PID continuation，不再重新跑 1066–1068 前缀。

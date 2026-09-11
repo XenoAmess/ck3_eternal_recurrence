@@ -289,6 +289,26 @@ class G2SourceSpecificWarLossLiveAdapterTests(unittest.TestCase):
             (640, 720), "main-menu Continue Game"
         )
 
+    def test_target_option_tokens_arm_before_generic_recovery(self) -> None:
+        acceptance = mock.Mock()
+        acceptance.EVENT_OPTIONS_FULL_REGION = (0.2, 0.5, 0.8, 0.9)
+        acceptance.find_ocr_text.return_value = None
+        acceptance.ocr_results.return_value = [
+            ("我会将他扶上君士坦丁堡", (930, 1043), (700, 1020, 1120, 1060), 0.91),
+            ("的皇位！", (930, 1070), (850, 1058, 1010, 1082), 0.89),
+        ]
+
+        option = ADAPTER._find_target_option(acceptance, object())
+
+        self.assertEqual(option, (930, 1043))
+        acceptance.find_ocr_text.assert_called_once()
+        acceptance.quick_stall_and_recover.assert_not_called()
+
+        acceptance.ocr_results.return_value = [
+            ("君士坦丁堡见闻", (930, 1043), (700, 1020, 1120, 1060), 0.91),
+        ]
+        self.assertIsNone(ADAPTER._find_target_option(acceptance, object()))
+
     def test_natural_event_blocker_uses_verified_ocr_recovery(self) -> None:
         acceptance = mock.Mock()
         acceptance.quick_stall_and_recover.return_value = {
