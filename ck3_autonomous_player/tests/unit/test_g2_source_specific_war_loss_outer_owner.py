@@ -160,7 +160,7 @@ class FakeOperations:
         self.events.append(("launch", token))
         return {
             "pid": PID,
-            "startup_mode": "normal-event",
+            "startup_mode": "suspended-prepared-normal-event",
             "event_target": "bookmark.1071.a",
             "exclusive_slot": True,
             "cleanup_owner": "outer-owner",

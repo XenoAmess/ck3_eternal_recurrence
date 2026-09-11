@@ -89,12 +89,12 @@ def _validate_launch_receipt(value: object) -> tuple[dict[str, object], int]:
     receipt = _object(value, "normal-event launch receipt")
     pid = _positive_integer(receipt.get("pid"), "normal-event PID")
     if (
-        receipt.get("startup_mode") != "normal-event"
+        receipt.get("startup_mode") != "suspended-prepared-normal-event"
         or receipt.get("event_target") != EXPECTED_EVENT
         or receipt.get("exclusive_slot") is not True
         or receipt.get("cleanup_owner") != "outer-owner"
     ):
-        raise OuterOwnerContractError("normal-event launch ownership drifted")
+        raise OuterOwnerContractError("prepared normal-event launch ownership drifted")
     return receipt, pid
 
 

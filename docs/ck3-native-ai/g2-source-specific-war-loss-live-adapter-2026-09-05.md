@@ -934,3 +934,23 @@ This is a harness repair only; truce readiness and `GEN-034` do not change.
 The root fix is commit `69f0fbf5d7e7d723d12726064c1c23a9f1b4563e`;
 open_kaishek records the private dependency in
 `cd6545fac7c284d63261798d3d1313bf771540b6`.
+
+### R454 outer-owner startup receipt literal
+
+R454 verified the retained-handle path and completed startup Prepare on unique
+PID `77472`. It then returned the new
+`startup_mode=suspended-prepared-normal-event` receipt. The outer owner still
+required the former `normal-event` literal and rejected the handoff before
+source capture. Managed cleanup is GREEN, CK3 count is zero, no query or
+mutation ran, and the source save is unchanged. Report, classification, and
+launch-record SHA-256 values are
+`F6EC3AAEF41E6BA0EB1AAA41D24F515951BC8F9E629F4D2957AE91DF05F7CC78`,
+`46FD0B0EAA6CE85C237029AC46FC1356145F178C54993BD84B34DCEA3ED74122`,
+and `B6BF231BAA222807E8A7BFC9B1E18CC2A8FE8FA59110AB29EC335C30C78BF6BF`.
+
+The private outer-owner validator and manifest now require the truthful new
+literal; unrelated modes still fail closed. Combined owner/adapter focused
+tests pass `40/40` in normal and optimized Python. R455 no-launch admission is
+READY with SHA-256
+`B43F5BD9D9F16F75A3F55F51781E46A23E7A3C1A17B88DD9732058CC78150BB0`.
+This does not change public MCP behavior or readiness.
