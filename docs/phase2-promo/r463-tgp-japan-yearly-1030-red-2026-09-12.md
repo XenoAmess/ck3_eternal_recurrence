@@ -46,3 +46,17 @@
 - 根仓提交推送后，同步 open_kaishek 的内容兼容记录；公共 MCP schema、工具名和参数不变。
 - R463 热恢复后补写 event instance advance、选择后证据、最终 commit hash 与 RED 关闭状态。
 - 若固定窗口耗尽仍未到 Stage 10 `.390`，按既定上限收口并判定此 source 不合格，不扩大观察窗口。
+
+## R463 进程退出与封存补记
+
+合同工作包提交并推送后，准备执行同轮次热恢复时，Operator 只读状态显示当前轮次 R463 的 CK3 PID `113420` 已不再存在。没有向 CK3 发送 cleanup、终止、重启或游戏输入；Windows Application 事件与运行目录也没有留下 CK3 崩溃事件、dump 或 exception 文件。因此只能确认“进程在 RED checkpoint 保存后消失”，不能证明具体终止来源，也不能把后续验证记为同进程热恢复。
+
+随后通过同一 Operator MCP 对旧作业发送 `cleanup`。最终状态为 `CLEANED`，产品结果仍为 RED，`cleanup_result=GREEN`，CK3 清单为空。证据为：
+
+- canonical cleanup：`live-artifacts/09_phase2_native_session_cleanup.json`，31,826 bytes，SHA-256 `843A695FFAD821B09C4289254A20C143CC292B7614DD14329D7C13618B212733`；
+- managed cleanup：`live-artifacts/terminal-stages-managed-cleanup.json`，33,405 bytes，SHA-256 `AD209C55EFCEFD3FC5BA1764CD9C4CB18172987C0C1B0F2B9F6AA4AD79954B8F`；
+- 可恢复的最后 checkpoint：`live-artifacts/terminal-partial-attempt-02.ck3`，87,799,060 bytes，SHA-256 `3F8629957AA0DC9002AB97417E450167B23708BB2B7492CBE00189C913CE09C4`。
+
+旧 Operator 服务与作业进程已经终止，端口 `12431` 不再监听，CK3/旧 Operator 进程清单均为空。当前轮次 R463 已终止；旧轮次 R462 早已终止。
+
+由于 R463 已死亡，原计划的同轮次热恢复取消。下一次实际启动必须使用新轮次。为避免重放 110 天已验证前缀，后继激活从上述 partial checkpoint 开始，并把 `max_advance_days` 缩为 10；这对应原始绝对截止 `date_raw=53219880`，不延长既定 120 游戏日边界。Operator 生命周期固定要求一次前台 warmup 后紧接 gameplay，因此下一组为 R464 warmup / R465 gameplay。R465 只允许关闭 `.1030` 并跑完剩余窗口；遇到新 RED 立即停，不做永久长跑。
