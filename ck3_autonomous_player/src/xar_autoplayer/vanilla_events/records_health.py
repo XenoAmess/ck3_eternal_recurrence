@@ -624,6 +624,30 @@ VANILLA_HEALTH_OBSERVATIONS: Final[dict[str, dict[str, object]]] = {
             "ocr_used": False,
             "coordinates_used": False,
             "console_used": False,
+        }, {
+            "run": "R418-retry-03",
+            "kind": "same-process-hot-recovery-green",
+            "artifact": (
+                "_runtime/p1-terminal-resume-r418-20260911/live-artifacts/"
+                "terminal-stages-red-attempt-03.json"
+            ),
+            "artifact_sha256": (
+                "A814FA6203FC0EC0E1BAA17E2D9DC7C3CA586E3F69B12A0B33CAC30832B89E90"
+            ),
+            "date_raw": 53915424,
+            "event_instance_id": 1094,
+            "ending_event_instance_id": None,
+            "root_character_id": 32904,
+            "starting_snapshot_id": "native:124",
+            "starting_revision": 125,
+            "ending_snapshot_id": "native:125",
+            "ending_revision": 126,
+            "selected_option_number": 1,
+            "selected_native_option_index": 0,
+            "postcondition_verified": True,
+            "connection_generation": 1,
+            "bridge_pid": 204536,
+            "process_restart_required": False,
         }],
     },
     "health.2202": {
