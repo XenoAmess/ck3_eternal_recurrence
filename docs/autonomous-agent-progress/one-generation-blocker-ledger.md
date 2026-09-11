@@ -862,3 +862,12 @@ WarID `50331699` / `raiktor_claim_cb` 的 primary-attacker surrender 只有 type
 - 该入口只消除重复播放 R441 前缀的成本，状态为 static-ready。下一项仍是一轮从该 exact checkpoint 开始的 bounded live；只有
   自然事件六次 source execution、同 PID current、唯一 surrender 与 postwar cleanup 全链成功后，才可提升 source-specific
   loss/comparison input。campaign、budget、white-peace、decision/action/automatic surrender 和 `GEN-034` 仍 unresolved。
+
+## 2026-09-11：GEN-034 R442 resume load 与 OCR 空窗边界
+
+- R442 已实机验证 R441 checkpoint 的逐字节 copy/load，唯一 PID `43852` 从 1079-01-01 推进到 runtime log 可见的
+  `1082.4.23`。一次 8 秒 HUD 日期 OCR 空窗被送入 modal-only recovery；画面没有可验证选项，runner 以 harness RED 停止并完成
+  cleanup。没有 source capture、bridge 或 surrender，`GEN-034` 不变。
+- 修复范围只覆盖该实证故障：无 verified modal option 时重做现有时间轴动作，并要求读到严格更晚游戏日；无法证明推进仍为 RED。
+  adapter normal/`-O` 各 `23/23`。R442 最新 successor `3D8755AE…6E07` 已通过 no-launch admission
+  `C10FDE71…5391`，下一项是一轮 bounded continuation，不重放 1066–1082 前缀。

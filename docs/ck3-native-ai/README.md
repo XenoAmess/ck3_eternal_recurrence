@@ -324,7 +324,7 @@
 - [static-ready / no-launch exclusive outer-owner orchestration] [g2-source-specific-war-loss-outer-owner-2026-09-05.md](g2-source-specific-war-loss-outer-owner-2026-09-05.md)
   冻结正常事件进程在 observer 恢复断点并仅 detach 后继续存活、同 PID bridge attach、同一 driver 交给
   lifecycle continuation、最终由外层唯一 cleanup 的确定性顺序。C++ observer 已具备 detach-without-kill 路径。
-- [R441 bounded live / blocker fix live-validated / hash-bound resume static-ready; source capture pending] [g2-source-specific-war-loss-live-adapter-2026-09-05.md](g2-source-specific-war-loss-live-adapter-2026-09-05.md)
+- [R442 resume load live-validated / non-modal timeline recovery static-ready; source capture pending] [g2-source-specific-war-loss-live-adapter-2026-09-05.md](g2-source-specific-war-loss-live-adapter-2026-09-05.md)
   已实现 normal launch → speed-5 natural event → observer detach → same-PID pause/explicit-pipe bridge → same-driver
   lifecycle → one outer cleanup，并对 launch receipt 形成前的失败补 exact-PID 回收。OCR 仅用于 bridge attach 前 UI，
   source truth 来自 native observer，current/action/postwar truth 来自 MCP。R441 已将 R440 的原版单选事件修复实机验证：
@@ -332,6 +332,9 @@
   R441 后继存档现已通过 exact-build、SHA-256 与 fresh-userdir copy gate；adapter 保留原 outer-owner 合同并新增可审计的
   `startup_source=resume-checkpoint`。no-launch 实档 admission GREEN，下一轮从该存档接续而不重放前缀；source-specific readiness
   仍 false、T1 保持 90%。
+  R442 已实机通过 hash-bound copy、`继续游戏` 与地图恢复，并从 1079 年推进到日志可见的 1082-04-23；一次 HUD 日期 OCR
+  空窗被误送到 modal-only recovery 后以 harness RED 收口。最小修复只在不存在可验证 modal 选项时重试时间轴，并要求读到更晚
+  游戏日；最新 R442 autosave 已通过 no-launch admission，等待下一次 bounded continuation。
 - [static-ready / portable operator MCP no-launch profile generator] [g2-source-specific-operator-mcp-preflight-2026-09-10.md](g2-source-specific-operator-mcp-preflight-2026-09-10.md)
   把 target identity、endpoint、clone、游戏文件与 runtime bundle 变为每机参数，并以 production operator
   profile parser 和逐文件 SHA-256 冻结；生成结果只暴露 adapter `--verify-only`，不能启动或控制 CK3，

@@ -1,6 +1,6 @@
 # G2 source-specific war-loss concrete live adapter
 
-Status: **R441 bounded live / R440 blocker fix live-validated / hash-bound resume admission static-ready / source capture pending**.
+Status: **R442 resume load live-validated / non-modal timeline recovery repaired and static-ready / source capture pending**.
 
 ## Delivered platform composition
 
@@ -356,3 +356,43 @@ This package is static-ready only. It does not promote source-specific loss,
 comparison, decision, action, automatic surrender or `GEN-034`; T1 remains
 90%. Current round R441 is ended and CK3 inventory is zero. The next bounded
 live action is one fresh-userdir continuation from this exact checkpoint.
+
+### R442 resume live and non-modal timeline recovery
+
+R442 launched one exact-build CK3 process, PID `43852`, from root commit
+`0221a419780e41a2911ff7309389784c47174da6`. The adapter verified and copied
+the R441 checkpoint, selected `继续游戏` once, reached a rendered 1079-01-01
+map, and resumed speed 5. This live-validates the checkpoint copy/load route.
+The runner later returned harness RED before source capture because an
+eight-second HUD-date OCR gap was routed to modal-only recovery, while no
+verified event option was present. Runtime debug evidence had already advanced
+to `1082.4.23`, and three progressively larger autosaves were produced, so the
+simulation had not remained at the loaded frame. No bridge was injected and no
+surrender command was submitted.
+
+The frozen R442 receipt is
+`Z:\ck3_mod_rewrite\_runtime\g2-source-specific-r442-resume-20260911\r442-bounded-attempt.json`,
+3,760 bytes, SHA-256
+`366E5B7E4345EB8856364BCB3F87D340E32965D55F675FA8086BC3CA5A0EC62D`.
+The runner report SHA-256 is
+`2AB08965682D8FB0F5E6A17381A0AE25D87051A2FDF29EEB5FCFFA68BC4B7385`;
+cleanup is GREEN and CK3 inventory is empty. Both `error.log` and `debug.log`
+contain zero `XAR:` hits. The latest successor is 90,582,861 bytes, SHA-256
+`3D8755AE1BB30A8D35A0DAA5CD26A5A3BA6C6A449D738D23213424D1FD586E07`.
+
+The minimal repair keeps the existing verified OCR option click when a modal
+is present. When no modal option is verified, it reapplies the existing speed
+and timeline control and continues only after reading a strictly later rendered
+game day. Failure to prove progress remains RED and retains the existing stall
+frame. Focused adapter tests pass `23/23` in normal and optimized Python;
+`py_compile` and UTF-8 BOM checks pass. A no-launch admission of the exact R442
+successor is GREEN; its receipt SHA-256 is
+`C10FDE71DAB6912562B47581406E1636FC2EEC2F295D21FDD1E5475AAB545391`.
+
+The repaired adapter SHA-256 is
+`94E4C57404E8ECE7445B620592BC71D3493876B5E46A6FB2AE4CE9ABF12C736C`;
+the manifest SHA-256 is
+`90D1B3080165B3E64D40A8C999358599FDD5FA90C94639E062A2F9F72CE2C28B`.
+This is a harness repair only; source-specific readiness and T1 remain
+unchanged. The next live action is a single bounded continuation from the exact
+R442 successor, after commit/push and companion-contract synchronization.
