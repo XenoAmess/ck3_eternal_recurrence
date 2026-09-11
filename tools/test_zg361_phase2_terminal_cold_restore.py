@@ -230,7 +230,9 @@ class TerminalColdRestoreTests(unittest.TestCase):
 
         with tempfile.TemporaryDirectory() as temporary:
             root = Path(temporary)
-            result = self.run_restore(TerminalService(root), root / "evidence")
+            service = TerminalService(root)
+            service.generation_step = -2
+            result = self.run_restore(service, root / "evidence")
             handoff = result["cleanup_handoff"]
             # Existing cleanup consumer with a synthetic supervisor report;
             # no supervisor, process shutdown or CK3 is run in this test.
@@ -248,6 +250,64 @@ class TerminalColdRestoreTests(unittest.TestCase):
                 managed_stop_requested=True,
             )
             self.assertEqual(proof["result"], "GREEN", proof.get("contract_errors"))
+            self.assertEqual(proof["connection_generation_lineage"], [3, 1])
+            self.assertTrue(
+                proof["checks"]["lineage_process_local_generations_positive"]
+            )
+
+    def test_cleanup_rejects_same_pid_or_malformed_process_generation(self) -> None:
+        import run_zhongguo_acceptance as acceptance
+        from test_zg361_phase2_formal_live_session_lineage import _shutdown
+
+        for same_pid, second_generation in ((True, 1), (False, 0)):
+            with self.subTest(
+                same_pid=same_pid, second_generation=second_generation
+            ), tempfile.TemporaryDirectory() as temporary:
+                root = Path(temporary)
+                service = TerminalService(root)
+                service.generation_step = -2
+                result = self.run_restore(service, root / "evidence")
+                handoff = result["cleanup_handoff"]
+                scenario = copy.deepcopy(handoff["scenario_evidence"])
+                lineage = scenario["save_restore_lineage"]
+                second_pid = 101 if same_pid else 201
+                lineage["second_pid"] = second_pid
+                lineage["pid_lineage"] = [101, second_pid]
+                lineage["second_connection_generation"] = second_generation
+                lineage["connection_generation_lineage"] = [3, second_generation]
+                lineage["restore_result"]["lifecycle"]["pid"] = second_pid
+                lineage["restore_result"]["lifecycle"][
+                    "connection_generation"
+                ] = second_generation
+                final_capabilities = copy.deepcopy(handoff["final_capabilities"])
+                final_capabilities["diagnostics"]["bridge_pid"] = second_pid
+                final_capabilities["diagnostics"][
+                    "connection_generation"
+                ] = second_generation
+                report = {
+                    "kind": "ck3_native_headless_session",
+                    "mode": "native-headless",
+                    "pipe": "synthetic-pipe",
+                    "pid": second_pid,
+                    "exit_reason": "stop",
+                    "process_exit_code": None,
+                    "shutdown": _shutdown(second_pid),
+                    "restart_count": 1,
+                    "restart_shutdowns": [_shutdown(101)],
+                    "ok": True,
+                }
+                with self.assertRaises(acceptance.acceptance.RunnerError):
+                    acceptance.prove_phase2_native_session_cleanup(
+                        report,
+                        root,
+                        initial_pid=101,
+                        initial_generation=3,
+                        expected_pipe="synthetic-pipe",
+                        scenario_evidence=scenario,
+                        final_capabilities=final_capabilities,
+                        supervisor_stopped=True,
+                        managed_stop_requested=True,
+                    )
 
     def test_real_na_representation_keeps_unavailable_m360_source_and_receipt(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
