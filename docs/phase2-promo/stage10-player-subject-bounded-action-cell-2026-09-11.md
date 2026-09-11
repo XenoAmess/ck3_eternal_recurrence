@@ -68,3 +68,18 @@ R482 的详情和 v3 admission 见
 
 本包没有为这一小改动运行全量测试或启动 CK3。公共 Operator MCP 1.1 的 control、schema、DLL 和传输协议没有变化；目标自有
 activation/receipt 语义改变，需在根仓提交后同步 open_kaishek 兼容说明。
+
+## 单玩家来源捕获执行器
+
+[`zg361_stage10_player_source_capture_operator_job.py`](../../tools/zg361_stage10_player_source_capture_operator_job.py)
+把“从已准入单玩家存档切换到合格玩家经理并原生保存”收成独立工作包。它只暴露
+`status / capture-source / cleanup`，不提供 retry；每次 activation 只能启动一次受管生命周期。
+
+启动前必须同时通过三份 hash 绑定输入：通用离线 topology 报告、既有 exact-build live qualification、原生 checkpoint
+provenance。运行后依次执行：确认来源玩家与 campaign root、调用通用 `set-player-character-v1` 切换目标经理、重新确认目标经理
+直属上级/公爵级以上/celestial/`zg361_on`、在游戏时间不前进的条件下调用 MCP 原生保存。成功结果为
+`zg361_stage10_player_source_capture_v1`，并归档独立 checkpoint；任何身份、日期、进程、连接代次或来源哈希漂移都保留 RED。
+
+当前冻结输入为已实机准入的 R159 单玩家 checkpoint，来源玩家/owner 为 `32904`，目标玩家经理为 `29037`。离线候选只负责
+避免无效启动；新轮次中的 campaign-root 与保存结果仍由 exact-build MCP 权威确认。聚焦测试在 normal/optimized 下各
+`3/3` GREEN，另通过 `py_compile` 与 `git diff --check`；本工作包没有启动 CK3。
