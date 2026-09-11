@@ -62,6 +62,9 @@ Stage 10 当前为 `STATIC_READY / LIVE_PENDING`：独立 action cell 从真实 
 与 player-subject provider 的 `state=5 / active=false`。未观测 opening case 时不得切玩家，失败不原地重试。聚焦测试
 normal/`-O` 各 `5/5` GREEN；尚无 live artifact，不能把该状态计入 P1。合同见
 [`stage10-player-subject-bounded-action-cell-2026-09-11.md`](stage10-player-subject-bounded-action-cell-2026-09-11.md)。
+受管 operator 另以 normal/`-O` 各 `3/3` 聚焦测试锁定显式 job role、双 checkpoint 归档、产品/harness RED 分界和无 retry
+控制；它不改变 Stage 10 的 `LIVE_PENDING` 状态。open_kaishek T2 兼容测试/记录 commit 为 `bab3efe9883ed730637b4aeac059b228779d0ce2`，
+通用 1.1 adapter 无生产代码变化，聚焦测试 `13/13` GREEN。
 
 R326 的当前 source receipt 是
 `Z:\ck3_mod_rewrite\_runtime\p2r326incidentsource\phase2-source-capture-three-of-four-v3.json`，SHA-256

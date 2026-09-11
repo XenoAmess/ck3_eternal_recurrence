@@ -42,3 +42,18 @@ terminal provider 未闭合时不确认 `.120`。普通模式 `5/5`、`python -O
 
 本轮没有运行全量 L0，因为改动只增加独立 action cell 与其聚焦测试；没有修改 mod 产品脚本、公共 MCP、ABI 或 schema。
 下一次实机只有在自然抵达或已有 artifact 提供精确 paused `.390` 边界时才执行本 cell。
+
+## 受管 operator
+
+[`zg361_phase2_stage10_player_subject_operator_job.py`](../../tools/zg361_phase2_stage10_player_subject_operator_job.py)
+复用现有 AF5 operator 的 frozen-input admission、唯一 CK3 生命周期与 managed cleanup，只接受
+`job_role=stage10-player-subject`。它只暴露 `status`、`run-stage10` 和 `cleanup`，不提供原地 retry；成功时把 action cell
+保存的精确 `.390` source 与 `.120` terminal 都归档到 artifact，失败时尽力先归档 source 再停车等待清理。
+
+该 operator 是可重复使用的 T0 Stage 10 编排入口，不绑定固定账号、机器路径或轮次；selector、事件导航、角色切换和
+manager-governance 查询继续由现有通用 MCP 资产提供。它没有新增采集协议或分析逻辑。open_kaishek 的通用 1.1 adapter
+无需修改生产代码；T2 以 commit `bab3efe9883ed730637b4aeac059b228779d0ce2` 增加目标自有 control 的兼容测试与同步记录，
+聚焦测试 `13/13` GREEN。operator 聚焦测试普通模式 `3/3`、`python -O` 模式 `3/3` GREEN，并通过 `py_compile` 与 BOM 检查。
+
+当前轮次 R439 已结束，CK3 存活数为 0；本工作包没有启动 CK3，也没有新建轮次。不得仅为 Stage 10 从 183 日前的
+存档重放而启动；新轮次 R440 必须绑定独立的有界 P1 机器门，若其自然抵达 `.390`，再即时冻结并执行本 operator。
