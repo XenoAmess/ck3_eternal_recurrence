@@ -954,3 +954,6 @@ tests pass `40/40` in normal and optimized Python. R455 no-launch admission is
 READY with SHA-256
 `B43F5BD9D9F16F75A3F55F51781E46A23E7A3C1A17B88DD9732058CC78150BB0`.
 This does not change public MCP behavior or readiness.
+The root contract fix is commit
+`55702c167ed31c940a717484e0d939560397f4c3`; open_kaishek records the
+private receipt dependency in `24ee29b71af1c9c7ce36107f1019695f0d0b35e0`.
