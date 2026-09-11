@@ -72,7 +72,7 @@ class _Driver:
         return {
             "paused": self.paused,
             "map_ready": True,
-            "played_character_id": 29829,
+            "played_character": {"character_id": 29829},
             "episode_run_id": "native-29829-source",
             "snapshot_id": "native:7",
             "revision": 8,
