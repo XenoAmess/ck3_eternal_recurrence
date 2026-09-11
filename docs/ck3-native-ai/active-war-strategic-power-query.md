@@ -56,3 +56,7 @@ campaign run.
 ## Companion compatibility sync
 
 open_kaishek commit `3d54890451d447fbad26575543fbb2d27e853e59` freezes this additive MCP boundary as `ActiveWarStrategicPowerCapabilityProfile`. Its focused offline Maven test passes `4/4`; the companion remains runtime-uncertified for the active-war source until the bounded root live query is captured.
+
+## Bounded live runner
+
+`run_active_war_strategic_power_live_acceptance.py` reuses the existing single-process cold-checkpoint owner. It allows exactly one CK3 launch and two official MCP strategic-power queries on one unchanged paused frame; it advances no time and permits no mutation command. The shared runner's existing tests pass `4/4` in normal and optimized Python, and the new runner passes import/CLI compilation checks before live use.
