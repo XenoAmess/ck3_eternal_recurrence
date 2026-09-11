@@ -999,4 +999,4 @@ WarID `50331699` / `raiktor_claim_cb` 的 primary-attacker surrender 只有 type
 ## 2026-09-11：GEN-034 R454 outer-owner startup-mode 合同 RED
 
 - R454 唯一 PID `77472` 通过 suspended identity，完成 pre-resume Prepare 并恢复；外层 owner 随即拒绝新 `suspended-prepared-normal-event` receipt，因为旧合同仍写 `normal-event`。source/bridge/query/mutation 未开始，cleanup GREEN、CK3=0；report/classification 为 `F6EC3AAE…CC78` / `46FD0B0E…4122`。
-- outer owner 与 fixture 已同步新字面值，其他模式继续 fail-closed；两模块 focused normal/`-O` 各 `40/40` GREEN。R455 admission `B43F5BD9…50BB` READY；`GEN-034` unresolved、T1=90%，下一步只运行一轮 R455。
+- outer owner 与 fixture 已同步新字面值，其他模式继续 fail-closed；两模块 focused normal/`-O` 各 `40/40` GREEN。R455 admission `B43F5BD9…50BB` READY；根提交 `55702c167ed31c940a717484e0d939560397f4c3`、T2 记录 `24ee29b71af1c9c7ce36107f1019695f0d0b35e0` 均已推送。`GEN-034` unresolved、T1=90%，下一步只运行一轮 R455。
