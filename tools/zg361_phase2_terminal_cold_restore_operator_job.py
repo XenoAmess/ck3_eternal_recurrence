@@ -21,7 +21,20 @@ def validate_activation(path: Path, *, require_empty_slot: bool) -> dict[str, ob
     value = base.read_object(path)
     if value.get("job_role") != JOB_ROLE:
         raise base.Af5JobError("activation does not target terminal cold restore")
-    return base.validate_activation(path, require_empty_slot=require_empty_slot)
+    bound = base.validate_activation(path, require_empty_slot=require_empty_slot)
+    cold_round = value.get("cold_restore_round")
+    match = base.ROUND_RE.fullmatch(cold_round) if isinstance(cold_round, str) else None
+    gameplay_match = base.ROUND_RE.fullmatch(str(bound["round"]))
+    if (
+        match is None
+        or gameplay_match is None
+        or int(match.group(1)) != int(gameplay_match.group(1)) + 1
+    ):
+        raise base.Af5JobError(
+            "cold_restore_round must immediately follow the gameplay round"
+        )
+    bound["cold_restore_round"] = cold_round
+    return bound
 
 
 class TerminalColdRestoreOperatorJob(base.Af5OperatorJob):
@@ -40,6 +53,9 @@ class TerminalColdRestoreOperatorJob(base.Af5OperatorJob):
             controls=CONTROLS,
             state=self.state.replace("AF5", "COLD_RESTORE"),
             cold_restore_result=self.product_result,
+            cold_restore_round=(
+                self.bound.get("cold_restore_round") if self.bound else None
+            ),
         )
         if self.cold_evidence is not None:
             handoff = self.cold_evidence.get("cleanup_handoff")
@@ -107,7 +123,9 @@ class TerminalColdRestoreOperatorJob(base.Af5OperatorJob):
             module.run_terminal_cold_restore(
                 service,
                 evidence_directory=artifacts / "cold-restore",
-                request_nonce=f"{bound['round']}.terminal.cold",
+                request_nonce=(
+                    f"{bound['round']}.{bound['cold_restore_round']}.terminal.cold"
+                ),
                 save_result=self.terminal_save_result,
             )
         )
@@ -116,8 +134,43 @@ class TerminalColdRestoreOperatorJob(base.Af5OperatorJob):
         handoff = base.mapping(evidence.get("cleanup_handoff"), "cleanup handoff")
         scenario = base.mapping(handoff.get("scenario_evidence"), "cleanup scenario")
         expected = base.mapping(bound["expected_hashes"], "expected hashes")
+        activation = base.mapping(bound["activation"], "activation")
+        lineage = base.mapping(evidence.get("save_restore_lineage"), "save/restore lineage")
         evidence.update(
             round=bound["round"],
+            rounds={
+                **dict(bound["rounds"]),
+                "cold_restore": bound["cold_restore_round"],
+            },
+            restart_record={
+                "old_round": bound["round"],
+                "new_round": bound["cold_restore_round"],
+                "reason": "representative_terminal_checkpoint_cold_restore",
+                "old_pid": lineage.get("first_pid"),
+                "new_pid": lineage.get("second_pid"),
+                "old_connection_generation": lineage.get(
+                    "first_connection_generation"
+                ),
+                "new_connection_generation": lineage.get(
+                    "second_connection_generation"
+                ),
+                "old_code_commit": expected["code_commit"],
+                "new_code_commit": expected["code_commit"],
+                "old_product_tree_sha256": expected["product_tree_sha256"],
+                "new_product_tree_sha256": expected["product_tree_sha256"],
+                "game_exe_sha256": expected["game_exe_sha256"],
+                "startup_parameters": {
+                    "lifecycle_intent": "restore",
+                    "checkpoint": self.terminal_save_result["checkpoint"],
+                    "bridge_pipe": str(bound["bridge_pipe"]),
+                },
+                "known_red": base.bootstrap_evidence_json_value(
+                    activation.get("known_red", [])
+                ),
+                "dll_or_game_files_changed": False,
+                "startup_configuration_changed": False,
+                "load_order_changed": False,
+            },
             execution_identity={
                 "repository_root": str(root),
                 "code_commit": expected["code_commit"],
@@ -192,6 +245,7 @@ class TerminalColdRestoreOperatorJob(base.Af5OperatorJob):
                 "bridge_pipe",
                 "warmup_bridge_pipe",
                 "rounds",
+                "cold_restore_round",
             ):
                 if original[key] != repaired[key]:
                     raise base.Af5JobError(
