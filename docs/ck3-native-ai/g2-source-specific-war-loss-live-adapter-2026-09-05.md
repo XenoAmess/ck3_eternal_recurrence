@@ -981,3 +981,6 @@ diagnostic, classification, and final launch-record SHA-256 values are
 `DB6C587A06BE10BABA11FB0F82190018736E010878677466C7015AD08F7FEDD8`,
 and `B14F90DA3D552B7A01973237CF933274041D7080224664E2DF81F622301978D3`.
 The next run uses the existing normal lifecycle once; this probe is not repeated.
+The root evidence commit is `4bed362d87eda2028e745db6f03a8c44f7df401f`;
+open_kaishek records the capability evidence in
+`18cb4fa3df8e4a04f353bf72f376a0f45179e3c6`.
