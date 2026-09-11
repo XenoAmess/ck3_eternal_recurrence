@@ -441,7 +441,7 @@ def open_xqol_decision_detail(
                 )
                 acceptance.pyautogui.dragTo(
                     scrollbar_x,
-                    int(height * 0.72),
+                    int(height * 0.27),
                     duration=0.5,
                     button="left",
                 )
