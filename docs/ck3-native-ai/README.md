@@ -499,13 +499,13 @@ flowchart TD
   邻国统治者对 root 的限时好感惩罚，不改变战争、资源、头衔或事件 source。产品 RED 为 false，cleanup GREEN，CK3=0。
 - source adapter 只在正文和选项区同时命中 `掌玺大臣 / 外交行为 / 可怕的误会` 时关闭该唯一选项并恢复时间，
   不改共享 runner 或 DLL。normal/`-O` 各 `25/25`，R445 截图离线回放命中 `(1266,984)`；修复提交
-  `081baea2ee61809d08314f3b152d899f472ec122`。
+  `3b632641ab839a6b9d569208e762fc39ad9fa052`。
 - R445 最新 successor SHA-256 为 `431320AAC5094501BE48005C3A13E7FF0B4C75A56639A47C96352D04B1AFDBFF`，
   仍无 `raiktor`；R446 no-launch admission SHA-256 为
   `8A3C4FFA6E3C3A68738B6B06184F053C855B53196C896111B405A92971CBBE0F`。
-- 通用原版事件资产提交 `ee185c4ecaa84240a0a0f6090e8fa4d825cc1ae4` 新增 `.1004` contract/analysis/observation，
+- 通用原版事件资产提交 `dacc1d759d349ff142f167e265f09077c51da27d` 新增 `.1004` contract/analysis/observation，
   source-index 增至 183 项，dataset SHA-256
   `265EBCE989627D68C69DDEF178A7BC0EBE1DE846721E42584D2B8271D14E9CFD`；`open_kaishek`
-  兼容提交为 `39c5bee697082d814c62800e013fd85874b77485`。
+  兼容提交为 `2a558f6317551ba5f04f7d95009071d7f96bc90c`。
 - 本轮未获得 `.1071` source capture，`GEN-034`、comparison、decision/action readiness 均不变，T1 保持 90%。
   下一步只从该 admitted successor 启动一轮有界 R446，不重放 1066–1068 前缀。
