@@ -78,6 +78,7 @@ class _NativeAutoRunHarness:
         session_exits_immediately: bool = False,
         fail_save_checkpoint: bool = False,
         persistent_unavailable: bool = False,
+        reset_connection_generation_on_new_episode: bool = False,
     ) -> None:
         self.spec = spec
         self.actions = list(actions)
@@ -86,6 +87,9 @@ class _NativeAutoRunHarness:
         self.session_exits_immediately = session_exits_immediately
         self.fail_save_checkpoint = fail_save_checkpoint
         self.persistent_unavailable = persistent_unavailable
+        self.reset_connection_generation_on_new_episode = (
+            reset_connection_generation_on_new_episode
+        )
         self.events: list[str] = []
         self.date_raw = 53_171_400
         self.native_revision = 1
@@ -602,7 +606,11 @@ class _NativeAutoRunHarness:
             self.episode_character_id = int(seed["character_id"])
             self.episode_run_id = "native-707-next-test-run"
             self.bridge_pid = 4343
-            self.connection_generation += 1
+            self.connection_generation = (
+                1
+                if self.reset_connection_generation_on_new_episode
+                else self.connection_generation + 1
+            )
             self.driver_state_restored = False
             self.driver_state_restore_kind = "new_episode_seed"
             self.episode_binding_state = "active_new"
@@ -949,6 +957,7 @@ class NativeAutoRunTests(unittest.TestCase):
         fail_save_checkpoint: bool = False,
         persistent_unavailable: bool = False,
         allow_stationary_objective_hold_sentinel_canary: bool = False,
+        reset_connection_generation_on_new_episode: bool = False,
     ) -> tuple[dict[str, object], _NativeAutoRunHarness]:
         harness = _NativeAutoRunHarness(
             self.spec,
@@ -959,6 +968,9 @@ class NativeAutoRunTests(unittest.TestCase):
             session_exits_immediately=session_exits_immediately,
             fail_save_checkpoint=fail_save_checkpoint,
             persistent_unavailable=persistent_unavailable,
+            reset_connection_generation_on_new_episode=(
+                reset_connection_generation_on_new_episode
+            ),
         )
         with mock.patch.object(
             native_auto_run_module,
@@ -2408,6 +2420,26 @@ class NativeAutoRunTests(unittest.TestCase):
                 "start-next-episode",
                 "life-advance",
             ],
+        )
+
+    def test_next_episode_accepts_replacement_process_generation_reset(self) -> None:
+        report, harness = self._run(
+            [
+                "terminal_advance",
+                "death_terminal",
+                "start_next_episode",
+                "advance",
+            ],
+            completion_contract="next_episode",
+            checkpoint_every_eligible_advances=1,
+            reset_connection_generation_on_new_episode=True,
+        )
+
+        self.assertTrue(report["ok"], report.get("error"))
+        self.assertEqual(report["status"], "next_episode_checkpointed")
+        self.assertEqual(harness.connection_generation, 1)
+        self.assertEqual(
+            report["next_episode"]["transition"]["status"], "verified"
         )
 
     def test_one_generation_bound_is_incomplete_and_checkpointed(self) -> None:

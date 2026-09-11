@@ -37,11 +37,14 @@ class TerminalService:
         self.change_domain = None
         self.generation_step = 1
         self.restore_same_pid = False
+        self.fail_after_restore = False
+        self.native_command_history = []
         self.af5_terminal = True
         self.af5_tombstone = False
         self.b1_closed = True
         self.b1_anomalies = []
-        self.path = root / "xar_checkpoint.ck3"
+        self.path = root / "profile" / "save games" / "xar_checkpoint.ck3"
+        self.path.parent.mkdir(parents=True)
         self.path.write_bytes(b"synthetic terminal save, not a CK3 fixture")
         self.save = {"accepted": True, "checkpoint": {
             "status": "saved", "path": str(self.path), "size": self.path.stat().st_size,
@@ -56,7 +59,8 @@ class TerminalService:
         return {"paused": True, "map_ready": True, "revision": self.revision,
                 "native_revision": self.revision, "date_raw": self.date,
                 "played_character": {"character_id": 147},
-                "diagnostics": {"bridge_pid": self.pid, "connection_generation": self.generation}}
+                "diagnostics": {"bridge_pid": self.pid, "connection_generation": self.generation},
+                "native_command_history": copy.deepcopy(self.native_command_history)}
 
     def capabilities(self) -> dict[str, object]:
         return {"diagnostics": {"connected": True, "bridge_pid": self.pid,
@@ -141,12 +145,43 @@ class TerminalService:
             self.pid += 100
         self.generation += self.generation_step
         self.revision = 1
-        return {"accepted": True, "status": "restored", "source": "native-session-lifecycle-queue",
-                "checkpoint": {**self.save["checkpoint"], "status": "restored"},
-                "lifecycle": {"lifecycle_intent": "restore", "request_id": "synthetic-restore-1",
-                              "previous_pid": old_pid, "pid": self.pid,
-                              "previous_connection_generation": old_generation,
-                              "connection_generation": self.generation}}
+        result = {"accepted": True, "status": "restored", "source": "native-session-lifecycle-queue",
+                  "checkpoint": {**self.save["checkpoint"], "status": "restored"},
+                  "restored_date_raw": self.date, "map_ready": True,
+                  "lifecycle": {"status": "relaunched", "lifecycle_intent": "restore",
+                                "request_id": "synthetic-restore-1", "pipe": "synthetic-pipe",
+                                "previous_pid": old_pid, "pid": self.pid,
+                                "previous_connection_generation": old_generation,
+                                "connection_generation": self.generation}}
+        if self.fail_after_restore:
+            recovered = copy.deepcopy(result)
+            recovered["source"] = "native-session-cold-start"
+            recovered["checkpoint"]["status"] = "saved"
+            recovered["lifecycle"] = {"previous_pid": old_pid, "pid": self.pid}
+            self.native_command_history.append(
+                {"index": 1, "command": "restore-checkpoint", "ok": True,
+                 "result": recovered}
+            )
+            outbox = self.path.parents[2] / "native-session" / "bridge" / "outbox"
+            outbox.mkdir(parents=True)
+            payload = {
+                "protocol_version": 1, "request_id": "restore-synthetic",
+                "ok": True, "error": None,
+                "result": {
+                    "status": "relaunched", "lifecycle_intent": "restore",
+                    "previous_pid": old_pid, "pid": self.pid,
+                    "pipe": "synthetic-pipe", "checkpoint": {
+                        "name": "xar_checkpoint.ck3",
+                        "size": self.save["checkpoint"]["size"],
+                        "sha256": self.save["checkpoint"]["sha256"],
+                    },
+                },
+            }
+            (outbox / "restore-synthetic.json").write_text(
+                json.dumps(payload), encoding="utf-8"
+            )
+            raise RuntimeError("synthetic timeout after completed restore")
+        return result
 
 
 class TerminalColdRestoreTests(unittest.TestCase):
@@ -234,16 +269,52 @@ class TerminalColdRestoreTests(unittest.TestCase):
                 self.assertEqual(raised.exception.evidence["result"], "RED")
                 self.assertEqual(service.restore_count, 1)
 
-    def test_requires_new_pid_and_exactly_next_generation(self) -> None:
-        for same_pid, step in ((True, 1), (False, 0), (False, 2)):
+    def test_requires_new_pid_and_positive_process_local_generation(self) -> None:
+        for same_pid, step in ((True, 1), (False, -3)):
             with self.subTest(same_pid=same_pid, step=step), tempfile.TemporaryDirectory() as temporary:
                 root = Path(temporary)
                 service = TerminalService(root)
                 service.restore_same_pid, service.generation_step = same_pid, step
                 with self.assertRaises(cold.TerminalColdRestoreError) as raised:
                     self.run_restore(service, root / "evidence")
-                self.assertIn("transition failed", str(raised.exception))
+                self.assertTrue(str(raised.exception))
                 self.assertEqual(service.queries, list(cold.DOMAINS))
+
+    def test_replacement_process_may_restart_native_generation_at_one(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            service = TerminalService(root)
+            service.generation_step = -2
+            result = self.run_restore(service, root / "evidence")
+            self.assertEqual(result["result"], "GREEN")
+            self.assertEqual(
+                result["save_restore_lineage"]["connection_generation_lineage"],
+                [3, 1],
+            )
+
+    def test_retry_recovers_completed_restore_without_third_process(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            service = TerminalService(root)
+            service.generation_step = -2
+            service.fail_after_restore = True
+            directory = root / "evidence"
+            with self.assertRaises(cold.TerminalColdRestoreError):
+                self.run_restore(service, directory)
+            self.assertEqual(service.restore_count, 1)
+            service.fail_after_restore = False
+            result = self.run_restore(service, directory)
+            self.assertEqual(result["result"], "GREEN")
+            self.assertEqual(service.restore_count, 1)
+            self.assertEqual(
+                result["restore_recovery"]["status"],
+                "recovered_completed_restore",
+            )
+            self.assertEqual(result["save_restore_lineage"]["pid_lineage"], [101, 201])
+            self.assertEqual(
+                result["save_restore_lineage"]["connection_generation_lineage"],
+                [3, 1],
+            )
 
     def test_post_restore_query_retry_preserves_transition_and_previous_attempt(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:

@@ -47,7 +47,7 @@ candidate 的 loaded-feature manifest 与 seed，再消费 `--phase2-p1-evidence
 | 3 | Central stage 9 | `zg361cl.390` 真实 provider terminal GREEN |
 | 4 | Stage 10 玩家可见 manager terminal（机器字段沿用 `central_stage_10_terminal`） | 独立的“AI Central owner → 玩家 F-case subject”路线取得 `zg361mg.120` 真实 provider terminal GREEN；不能从玩家自己的 Stage 9/11 owner 时间线推导 |
 | 5 | Central stage 11 | 真实 Workforce provider terminal GREEN（正常 close 或合法 N/A close）；`.361` 宪章/制度债及跨周期后续只作非阻塞 coverage |
-| 6 | 代表性终态 cold restore | 真实 save receipt、不同 PID/递增 generation 的 cold restore receipt，以及 B1、AF5、Central、Workforce 当前 identity/state/receipt（含严格 AF5 destroyed-subject tombstone）的前后相同回读；代表性存档自身须保留 Stage 11 Workforce 终态，B1/AF5 的业务终态由各自独立 P1 收据证明，不在同一存档重复绑定 |
+| 6 | 代表性终态 cold restore | 真实 save receipt、不同 PID、同一 supervisor/pipe 及两侧有效进程内 generation 的 cold restore receipt，以及 B1、AF5、Central、Workforce 当前 identity/state/receipt（含严格 AF5 destroyed-subject tombstone）的前后相同回读；代表性存档自身须保留 Stage 11 Workforce 终态，B1/AF5 的业务终态由各自独立 P1 收据证明，不在同一存档重复绑定；generation 不作跨进程数值递增断言 |
 | 7 | gameplay-window error scan | 完整目标时间窗扫描且 `blocking_diagnostics=[]` |
 | 8 | managed cleanup | cleanup GREEN、contract error 为空 |
 | 9 | final candidate L0 | 完整 L0 GREEN，tested SHA-256 与待签收 candidate 完全相同 |

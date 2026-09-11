@@ -11504,7 +11504,7 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
             result["materialization"]["reason"], "save_dir_not_configured"
         )
 
-    def test_restore_checkpoint_relaunches_and_waits_for_new_map_generation(
+    def test_restore_checkpoint_relaunches_and_waits_for_new_process_map(
         self,
     ) -> None:
         with tempfile.TemporaryDirectory() as temporary:
@@ -11523,7 +11523,12 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
                 restore_timeout_seconds=3.0,
                 restore_poll_interval_seconds=0.005,
             )
-            endpoint.publish(_hello("game.state.snapshot"))
+            endpoint.publish(
+                {
+                    **_hello("game.state.snapshot"),
+                    "connection_generation": 1,
+                }
+            )
             endpoint.publish(
                 _snapshot(
                     40,
@@ -11587,6 +11592,9 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
                             **_hello("game.state.snapshot"),
                             "pid": 5252,
                             "session_generation": 1,
+                            # The native counter is process-local and therefore
+                            # starts at one again in the replacement process.
+                            "connection_generation": 1,
                         }
                     )
                     endpoint.publish(
@@ -11654,7 +11662,7 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
             self.assertEqual(
                 result["lifecycle"]["previous_connection_generation"], 1
             )
-            self.assertEqual(result["lifecycle"]["connection_generation"], 2)
+            self.assertEqual(result["lifecycle"]["connection_generation"], 1)
             self.assertEqual(result["lifecycle"]["previous_pid"], 4242)
             self.assertEqual(result["lifecycle"]["pid"], 5252)
             self.assertTrue(result["map_ready"])

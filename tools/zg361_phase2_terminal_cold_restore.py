@@ -241,6 +241,157 @@ def _checkpoint(save_result: Mapping[str, object]) -> Mapping[str, object]:
     return checkpoint
 
 
+def _same_checkpoint(
+    candidate: object, saved: Mapping[str, object]
+) -> bool:
+    if not isinstance(candidate, Mapping):
+        return False
+    try:
+        candidate_path = Path(str(candidate.get("path", ""))).resolve()
+        saved_path = Path(str(saved.get("path", ""))).resolve()
+    except (OSError, RuntimeError):
+        return False
+    return bool(
+        candidate.get("size") == saved.get("size")
+        and str(candidate.get("sha256", "")).upper()
+        == str(saved.get("sha256", "")).upper()
+        and candidate_path == saved_path
+    )
+
+
+def _recover_completed_restore(
+    service: object,
+    state: Mapping[str, object],
+    saved: Mapping[str, object],
+) -> tuple[dict[str, object], dict[str, object]] | None:
+    """Recover an ACK lost after native-session already replaced CK3.
+
+    The replacement driver records the completed managed transaction in its
+    command history.  The lifecycle queue keeps the independent supervisor ACK.
+    Both must match the saved bytes and the observed old/new PID pair before a
+    retry may resume readback without launching a third process.
+    """
+
+    before_value = state.get("before_snapshot")
+    if not isinstance(before_value, Mapping):
+        return None
+    before_binding = _binding(before_value)
+    current = service.snapshot()
+    current_binding = _binding(current)
+    if not (
+        current_binding["bridge_pid"] != before_binding["bridge_pid"]
+        and current_binding["player_character_id"]
+        == before_binding["player_character_id"]
+        and current_binding["date_raw"] == before_binding["date_raw"]
+    ):
+        return None
+
+    history_value = current.get("native_command_history")
+    history = history_value if isinstance(history_value, list) else []
+    history_entry: Mapping[str, object] | None = None
+    history_result: Mapping[str, object] | None = None
+    for item in reversed(history):
+        if not isinstance(item, Mapping):
+            continue
+        result = item.get("result")
+        if not (
+            item.get("command") == "restore-checkpoint"
+            and item.get("ok") is True
+            and isinstance(result, Mapping)
+            and result.get("accepted") is True
+            and result.get("status") == "restored"
+            and result.get("source") == "native-session-cold-start"
+            and _same_checkpoint(result.get("checkpoint"), saved)
+        ):
+            continue
+        lifecycle = result.get("lifecycle")
+        if not (
+            isinstance(lifecycle, Mapping)
+            and lifecycle.get("previous_pid") == before_binding["bridge_pid"]
+            and lifecycle.get("pid") == current_binding["bridge_pid"]
+            and result.get("restored_date_raw") == current_binding["date_raw"]
+            and result.get("map_ready") is True
+        ):
+            continue
+        history_entry = item
+        history_result = result
+        break
+    if history_entry is None or history_result is None:
+        return None
+
+    saved_path = Path(str(saved["path"])).resolve()
+    state_dir = saved_path.parent.parent.parent
+    outbox = state_dir / "native-session" / "bridge" / "outbox"
+    queue_path: Path | None = None
+    queue_response: Mapping[str, object] | None = None
+    queue_result: Mapping[str, object] | None = None
+    for candidate in sorted(
+        outbox.glob("restore-*.json"),
+        key=lambda item: item.stat().st_mtime_ns,
+        reverse=True,
+    ):
+        try:
+            payload = json.loads(candidate.read_text(encoding="utf-8-sig"))
+        except (OSError, UnicodeError, json.JSONDecodeError):
+            continue
+        result = payload.get("result") if isinstance(payload, Mapping) else None
+        checkpoint = result.get("checkpoint") if isinstance(result, Mapping) else None
+        if not (
+            isinstance(payload, Mapping)
+            and payload.get("protocol_version") == 1
+            and payload.get("ok") is True
+            and isinstance(payload.get("request_id"), str)
+            and candidate.stem == payload.get("request_id")
+            and isinstance(result, Mapping)
+            and result.get("status") == "relaunched"
+            and result.get("lifecycle_intent") == "restore"
+            and result.get("previous_pid") == before_binding["bridge_pid"]
+            and result.get("pid") == current_binding["bridge_pid"]
+            and isinstance(checkpoint, Mapping)
+            and checkpoint.get("size") == saved.get("size")
+            and str(checkpoint.get("sha256", "")).upper()
+            == str(saved.get("sha256", "")).upper()
+        ):
+            continue
+        queue_path = candidate
+        queue_response = payload
+        queue_result = result
+        break
+    if queue_path is None or queue_response is None or queue_result is None:
+        return None
+
+    restored = copy.deepcopy(dict(history_result))
+    restored["source"] = "native-session-lifecycle-queue"
+    restored["checkpoint"] = {
+        **copy.deepcopy(dict(saved)),
+        **copy.deepcopy(dict(_object(history_result.get("checkpoint"), "history checkpoint"))),
+        "status": "restored",
+    }
+    restored["starting_date"] = {"date_raw": before_binding["date_raw"]}
+    restored["restored_date"] = {"date_raw": current_binding["date_raw"]}
+    restored["starting_date_raw"] = before_binding["date_raw"]
+    restored["restored_date_raw"] = current_binding["date_raw"]
+    restored["paused"] = True
+    restored["lifecycle"] = {
+        **copy.deepcopy(dict(queue_result)),
+        "request_id": queue_response["request_id"],
+        "previous_connection_generation": before_binding[
+            "connection_generation"
+        ],
+        "connection_generation": current_binding["connection_generation"],
+    }
+    recovery = {
+        "status": "recovered_completed_restore",
+        "source": "native_command_history_and_lifecycle_outbox",
+        "history_index": history_entry.get("index"),
+        "queue_response_path": str(queue_path.resolve()),
+        "request_id": queue_response["request_id"],
+        "before_binding": before_binding,
+        "current_binding": current_binding,
+    }
+    return restored, recovery
+
+
 def run_terminal_cold_restore(
     service: object, *, evidence_directory: Path, request_nonce: str,
     save_result: Mapping[str, object],
@@ -272,22 +423,31 @@ def run_terminal_cold_restore(
     _write(path, state)
     try:
         if state["restore_result"] is None:
-            before = service.snapshot()
-            before_binding = _binding(before)
-            state["before_snapshot"] = before
-            state["before_queries"] = {}
-            state["before_readback"] = read_terminal_domains_v1(
-                service, request_nonce=request_nonce + ".before", evidence_out=state["before_queries"],
+            recovered = (
+                _recover_completed_restore(service, state, saved)
+                if state["attempt"] > 1
+                else None
             )
-            current = service.snapshot()
-            if _binding(current) != before_binding:
-                raise ValueError("terminal session changed before the restore command")
-            if saved.get("date_raw") != current["date_raw"]:
-                raise ValueError("terminal checkpoint date differs from the observed terminal frame")
-            _write(path, state)
-            state["restore_result"] = service.restore_checkpoint(expected_revision=current["revision"])
-            # Preserve the lifecycle response before any follow-up provider call.
-            _write(path, state)
+            if recovered is not None:
+                state["restore_result"], state["restore_recovery"] = recovered
+                _write(path, state)
+            else:
+                before = service.snapshot()
+                before_binding = _binding(before)
+                state["before_snapshot"] = before
+                state["before_queries"] = {}
+                state["before_readback"] = read_terminal_domains_v1(
+                    service, request_nonce=request_nonce + ".before", evidence_out=state["before_queries"],
+                )
+                current = service.snapshot()
+                if _binding(current) != before_binding:
+                    raise ValueError("terminal session changed before the restore command")
+                if saved.get("date_raw") != current["date_raw"]:
+                    raise ValueError("terminal checkpoint date differs from the observed terminal frame")
+                _write(path, state)
+                state["restore_result"] = service.restore_checkpoint(expected_revision=current["revision"])
+                # Preserve the lifecycle response before any follow-up provider call.
+                _write(path, state)
         before = state["before_snapshot"]
         before_binding = _binding(before)
         restored = _object(state["restore_result"], "restore result")
@@ -305,7 +465,7 @@ def run_terminal_cold_restore(
             "restore_acknowledged": restored.get("accepted") is True and restored.get("status") == "restored",
             "same_supervisor_lifecycle_queue": restored.get("source") == "native-session-lifecycle-queue" and lifecycle.get("lifecycle_intent") == "restore",
             "pid_changed": first_pid != second_pid,
-            "generation_advanced_once": second_generation == first_generation + 1,
+            "process_local_generations_valid": first_generation > 0 and second_generation > 0,
             "lifecycle_pid_pair": lifecycle.get("previous_pid") == first_pid and lifecycle.get("pid") == second_pid,
             "lifecycle_generation_pair": lifecycle.get("previous_connection_generation") == first_generation and lifecycle.get("connection_generation") == second_generation,
             "restore_request_id_present": isinstance(lifecycle.get("request_id"), str) and bool(lifecycle.get("request_id")),
