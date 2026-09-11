@@ -243,12 +243,24 @@ class ProductOuterDescriptorTests(unittest.TestCase):
                     ],
                 },
             },
-            {"paused": True, "revision": 13, "active_event": None},
-            {"paused": False, "revision": 14, "active_event": None},
-            {"paused": True, "revision": 15, "active_event": None},
+            {
+                "paused": True,
+                "revision": 13,
+                "active_event": {
+                    "instance_id": 7,
+                    "options": [
+                        {"option_number": 1, "enabled": True},
+                        {"option_number": 2, "enabled": True},
+                    ],
+                },
+            },
+            {"paused": True, "revision": 14, "active_event": None},
+            {"paused": False, "revision": 15, "active_event": None},
+            {"paused": True, "revision": 16, "active_event": None},
         ]
         service.execute_step.side_effect = [
             {"accepted": True, "step": "resume-map"},
+            {"accepted": True, "step": "pause-map"},
             {"accepted": True, "step": "resume-map"},
             {"accepted": True, "step": "pause-map"},
         ]
@@ -273,7 +285,7 @@ class ProductOuterDescriptorTests(unittest.TestCase):
             )
 
         service.select_event_option.assert_called_once_with(
-            1, event_instance_id=7, expected_revision=12
+            1, event_instance_id=7, expected_revision=13
         )
         self.assertEqual(len(evidence["drained_events"]), 1)
         self.assertEqual(evidence["result"], "GREEN")

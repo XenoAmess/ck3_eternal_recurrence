@@ -590,6 +590,29 @@ def advance_until_marker(
             # CK3 event windows can stop calendar progress while the native
             # paused bit remains false, so the event identity is authoritative.
             if isinstance(active_event, dict):
+                event_pause_ack: dict[str, object] | None = None
+                if snapshot.get("paused") is not True:
+                    event_pause_ack = service.execute_step(
+                        "pause-map", expected_revision=int(snapshot["revision"])
+                    )
+                    pause_deadline = time.monotonic() + 5
+                    while time.monotonic() < pause_deadline:
+                        paused_event_snapshot = service.snapshot()
+                        paused_event = paused_event_snapshot.get("active_event")
+                        if (
+                            paused_event_snapshot.get("paused") is True
+                            and isinstance(paused_event, dict)
+                            and paused_event.get("instance_id")
+                            == active_event.get("instance_id")
+                        ):
+                            snapshot = paused_event_snapshot
+                            active_event = paused_event
+                            break
+                        time.sleep(0.1)
+                    else:
+                        raise acceptance.RunnerError(
+                            f"{stem} ambient event did not reach a paused snapshot"
+                        )
                 instance_id = active_event.get("instance_id")
                 revision = snapshot.get("revision")
                 options = active_event.get("options")
@@ -628,6 +651,7 @@ def advance_until_marker(
                 drained_events.append(
                     {
                         "snapshot": snapshot,
+                        "event_pause_ack": event_pause_ack,
                         "context_query": context_query,
                         "context_error": context_error,
                         "selected_option_number": option_number,
