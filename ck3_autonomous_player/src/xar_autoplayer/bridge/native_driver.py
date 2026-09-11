@@ -92,7 +92,7 @@ from .war_entry_contract import (
     normalize_war_entry_assessments,
     parse_query_war_entry_assessments_step,
     query_war_entry_assessments_step,
-    require_declarable_war_targets,
+    require_war_entry_assessment_targets,
 )
 from .actual_contact_contract import (
     QUERY_ACTUAL_CONTACT_SCOPE_CAPABILITY,
@@ -1568,13 +1568,23 @@ class NativeHeadlessGameplayDriver:
             and isinstance(current_snapshot, dict)
             and current_snapshot.get("paused") is True
         ):
+            raw_targets = [
+                row.get("target_character_id")
+                for row in declarations
+                if isinstance(row, dict)
+            ]
+            raw_targets.extend(
+                war.get("primary_opponent_character_id")
+                for war in current_snapshot.get("active_wars", [])
+                if isinstance(war, dict)
+            )
             distinct_targets = list(
                 dict.fromkeys(
-                    int(row["target_character_id"])
-                    for row in declarations
-                    if isinstance(row.get("target_character_id"), int)
-                    and not isinstance(row.get("target_character_id"), bool)
-                    and 0 < int(row["target_character_id"]) <= 2**31 - 1
+                    int(target)
+                    for target in raw_targets
+                    if isinstance(target, int)
+                    and not isinstance(target, bool)
+                    and 0 < int(target) <= 2**31 - 1
                 )
             )
             action_steps.update(
@@ -2454,7 +2464,7 @@ class NativeHeadlessGameplayDriver:
                 return None
             targets = binding.get("target_character_ids")
             try:
-                targets = require_declarable_war_targets(snapshot, targets)
+                targets = require_war_entry_assessment_targets(snapshot, targets)
                 normalized = normalize_war_entry_assessments(
                     cached.get("war_entry_assessments"),
                     expected_target_character_ids=targets,
@@ -7914,7 +7924,7 @@ class NativeHeadlessGameplayDriver:
                 "native war-entry assessment query requires a paused snapshot"
             )
         try:
-            require_declarable_war_targets(starting, targets)
+            require_war_entry_assessment_targets(starting, targets)
         except ValueError as error:
             raise BridgeUnavailableError(
                 f"native war-entry target scope is malformed: {error}"
@@ -7986,10 +7996,10 @@ class NativeHeadlessGameplayDriver:
                 "native war-entry assessment query crossed a snapshot revision"
             )
         try:
-            require_declarable_war_targets(current, targets)
+            require_war_entry_assessment_targets(current, targets)
         except ValueError as error:
             raise BridgeUnavailableError(
-                "native war-entry declarations changed during query: "
+                "native war-entry target scope changed during query: "
                 f"{error}"
             ) from error
         diagnostics = starting.get("diagnostics")

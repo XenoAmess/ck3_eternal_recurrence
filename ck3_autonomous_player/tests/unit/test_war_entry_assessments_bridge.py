@@ -41,6 +41,22 @@ def _declaration(target: int) -> dict[str, object]:
     }
 
 
+def _active_war(opponent: int) -> dict[str, object]:
+    return {
+        "war_id": 33_554_473,
+        "player_side": "attacker",
+        "primary_opponent_character_id": opponent,
+        "player_is_primary_war_leader": True,
+        "enemy_primary_default_raise_province_id": None,
+        "targeted_title_ids": [91],
+        "war_objective_province_ids": [],
+        "objective_province_states": [],
+        "player_relative_war_score": 0,
+        "allied_armies": [],
+        "enemy_armies": [],
+    }
+
+
 def _row(target: int, *, effective_target: int | None = None) -> dict[str, object]:
     return {
         "target_character_id": target,
@@ -110,7 +126,11 @@ def _result(*, targets: list[int] | None = None) -> dict[str, object]:
     }
 
 
-def _semantic_snapshot(revision: int = 5) -> dict[str, object]:
+def _semantic_snapshot(
+    revision: int = 5,
+    *,
+    active_wars: list[dict[str, object]] | None = None,
+) -> dict[str, object]:
     return {
         "type": "state_snapshot",
         "protocol_version": 1,
@@ -128,7 +148,7 @@ def _semantic_snapshot(revision: int = 5) -> dict[str, object]:
             "pending_character_interaction": None,
             "played_character": {"character_id": 29_829, "alive": True},
             "one_life_settlement": None,
-            "active_wars": [],
+            "active_wars": active_wars or [],
             "player_armies": [],
         },
     }
@@ -160,7 +180,11 @@ class _FakeEndpoint:
         return None
 
 
-def _native_driver() -> tuple[NativeHeadlessGameplayDriver, _FakeEndpoint]:
+def _native_driver(
+    *,
+    declarations: list[dict[str, object]] | None = None,
+    active_wars: list[dict[str, object]] | None = None,
+) -> tuple[NativeHeadlessGameplayDriver, _FakeEndpoint]:
     endpoint = _FakeEndpoint()
     driver = NativeHeadlessGameplayDriver(
         endpoint.pipe_name,
@@ -182,8 +206,12 @@ def _native_driver() -> tuple[NativeHeadlessGameplayDriver, _FakeEndpoint]:
             ],
         }
     )
-    endpoint.publish(_semantic_snapshot())
-    driver._declarable_wars = [_declaration(808), _declaration(42)]
+    endpoint.publish(_semantic_snapshot(active_wars=active_wars))
+    driver._declarable_wars = (
+        [_declaration(808), _declaration(42)]
+        if declarations is None
+        else declarations
+    )
     return driver, endpoint
 
 
@@ -257,6 +285,22 @@ class WarEntryNativeDriverTests(unittest.TestCase):
         endpoint.publish(_semantic_snapshot(6))
         self.assertIsNone(driver.take_snapshot()["war_entry_assessments"])
 
+    def test_active_war_opponent_is_advertised_and_queryable(self) -> None:
+        driver, endpoint = _native_driver(
+            declarations=[], active_wars=[_active_war(808)]
+        )
+        _answer(endpoint)
+
+        self.assertIn(STEP, driver.capabilities()["action_steps"])
+        revision = int(driver.take_snapshot()["revision"])
+        result = driver.execute_step(STEP, expected_revision=revision)
+
+        self.assertEqual(result["status"], "available")
+        self.assertEqual(
+            result["war_entry_assessments"]["requested_target_character_ids"],
+            [808],
+        )
+
     def test_out_of_scope_target_is_rejected_before_pipe_send(self) -> None:
         driver, endpoint = _native_driver()
         before = len(endpoint.frames)
@@ -313,8 +357,11 @@ class WarEntryNativeDriverTests(unittest.TestCase):
 
 
 class _ServiceDriver:
-    def __init__(self, *, advertise: bool = True) -> None:
+    def __init__(
+        self, *, advertise: bool = True, active_war_only: bool = False
+    ) -> None:
         self.advertise = advertise
+        self.active_war_only = active_war_only
         self.execute_count = 0
         self.snapshot_count = 0
 
@@ -344,7 +391,14 @@ class _ServiceDriver:
             "paused": True,
             "map_ready": True,
             "played_character": {"character_id": 29_829, "alive": True},
-            "declarable_wars": [_declaration(808), _declaration(42)],
+            "declarable_wars": (
+                []
+                if self.active_war_only
+                else [_declaration(808), _declaration(42)]
+            ),
+            "active_wars": (
+                [_active_war(808)] if self.active_war_only else []
+            ),
             "episode_run_id": "native-29829-test",
             "backend_id": "war-entry-fixture",
         }
@@ -378,7 +432,26 @@ class WarEntryServiceAndStrategyTests(unittest.TestCase):
         self.assertEqual(result["queried_revision"], 17)
         self.assertEqual(result["queried_native_revision"], 5)
         self.assertEqual(result["target_character_ids"], [808])
+        self.assertEqual(
+            result["target_scopes"],
+            [{"target_character_id": 808, "sources": ["declarable_war"]}],
+        )
         self.assertNotIn("win_probability", result)
+
+    def test_service_accepts_active_war_opponent_scope(self) -> None:
+        result = GameplayBridgeService(
+            _ServiceDriver(active_war_only=True)
+        ).query_war_entry_assessments([808], expected_revision=17)
+
+        self.assertEqual(
+            result["target_scopes"],
+            [
+                {
+                    "target_character_id": 808,
+                    "sources": ["active_war_primary_opponent"],
+                }
+            ],
+        )
 
     def test_service_rejects_multiple_targets_before_snapshot_or_driver(self) -> None:
         driver = _ServiceDriver()

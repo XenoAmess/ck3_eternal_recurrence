@@ -49,7 +49,8 @@ from .war_entry_contract import (
     normalize_war_entry_assessments,
     normalize_war_entry_target_ids,
     query_war_entry_assessments_step,
-    require_declarable_war_targets,
+    require_war_entry_assessment_targets,
+    war_entry_assessment_target_scopes,
 )
 from .actual_contact_contract import query_actual_contact_scope_step
 from .battle_control_contract import (
@@ -8429,7 +8430,7 @@ class GameplayBridgeService:
         *,
         expected_revision: int | None = None,
     ) -> dict[str, object]:
-        """Read exact native strategic power for one declaration target."""
+        """Read native strategic power for one current war-related target."""
         # Reject an over-broad public request before reading a snapshot or
         # entering any driver/pipe path. The first production contract is
         # one-target end to end.
@@ -8459,7 +8460,10 @@ class GameplayBridgeService:
                     f"{expected_revision}, current {revision}"
                 )
         try:
-            targets = require_declarable_war_targets(
+            targets = require_war_entry_assessment_targets(
+                snapshot, targets
+            )
+            target_scopes = war_entry_assessment_target_scopes(
                 snapshot, targets
             )
         except ValueError as error:
@@ -8516,16 +8520,23 @@ class GameplayBridgeService:
                 "war-entry assessment query crossed a snapshot revision"
             )
         try:
-            require_declarable_war_targets(current, targets)
+            current_scopes = war_entry_assessment_target_scopes(
+                current, targets
+            )
         except ValueError as error:
             raise BridgeUnavailableError(
-                f"war-entry declarations changed during query: {error}"
+                f"war-entry target scope changed during query: {error}"
             ) from error
+        if current_scopes != target_scopes:
+            raise BridgeUnavailableError(
+                "war-entry target scope changed during query"
+            )
         return {
             **result,
             "schema_version": 1,
             "status": "available",
             "target_character_ids": targets,
+            "target_scopes": target_scopes,
             "war_entry_assessments": normalized,
             "queried_snapshot_id": snapshot.get("snapshot_id"),
             "queried_revision": revision,

@@ -1674,7 +1674,7 @@ def create_server(driver: GameplayBridgeDriver):
         target_character_ids: list[int],
         expected_revision: int | None = None,
     ) -> dict[str, object]:
-        """Read native strategic power for one declarable-war target."""
+        """Read native power for one declarable or active-war target."""
         return _ck3_query_war_entry_assessments(
             service,
             target_character_ids,
