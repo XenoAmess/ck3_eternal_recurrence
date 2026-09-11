@@ -905,4 +905,7 @@ the R453 no-launch admission is `READY_TO_RUN_G2_SOURCE_SPECIFIC_LIFECYCLE`
 with SHA-256
 `A4C58C0E23CF658E5449887DBD300CDD3B5F0E2AA33943A00FA5799071143EEA`.
 This package is static-ready until one bounded R453 read-only probe confirms
-callbacks and evaluated truce days. T1 remains 90% and `GEN-034` unresolved.
+callbacks and evaluated truce days. Root implementation commit
+`8f1a522c0163796056ae8bc1281839b4fed8edf1` and open_kaishek private
+compatibility record `9505a1e30dcb24cfbd3c9dfdc63bd41a1c5fee5e` are pushed.
+T1 remains 90% and `GEN-034` unresolved.
