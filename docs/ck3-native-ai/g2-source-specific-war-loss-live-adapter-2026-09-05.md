@@ -751,3 +751,36 @@ therefore remains unchanged: T1 is 90%, `GEN-034` is unresolved, and all
 source-specific loss/comparison/action gates remain false. The R449 autosave is
 again byte-identical to the admitted input, SHA-256
 `89D15B8ACB0E69E6C439D658582B63DC1F8AD11EC687089E5021A5961607D4DD`.
+
+### R450 closed the detach race and exposed a current-war truce observation RED
+
+R450 launched the unique CK3 PID `105244` from the unchanged near-boundary
+save. The target option was accepted on the first click, all six source rows
+passed, and the capture bound exact WarID `33554473` with 3,000 measured
+soldiers. The bounded detach change was validated live:
+`debugger_detached=true`, `debugger_detach_attempts=1`, and
+`debugger_detach_last_error=0`.
+
+The bridge then issued the two required public termination-term queries on the
+same paused frame (`date_raw=53187072`). Both transports were GREEN and returned
+the current CB, participants, gold, prestige, prisoners, favor, and 24
+war-bound regiment rows. Both also returned
+`truce.evaluated_days_observable=false`, so `truce_ready` and
+`action_terms_ready` remained false. The lifecycle stopped before creating the
+mutation checkpoint or submitting surrender. The source autosave stayed
+byte-identical at SHA-256
+`89D15B8ACB0E69E6C439D658582B63DC1F8AD11EC687089E5021A5961607D4DD`;
+outer cleanup is GREEN and no CK3 process remains.
+
+This is a G2 observation-capability RED, not a mod-product RED. It is also an
+input-current contradiction to the earlier production-live fixture that
+returned 1,825 evaluated days, so the next step is a bounded, read-only
+exact-build diagnostic of the default truce reader on this current WarID. The
+normal action gate will remain unchanged. Capture, report, driver-state,
+classification, and final launch-record SHA-256 values are
+`4C377E364C55BEC6DFB2CD5159B441786B44701DA489D7728B35A9C9B5C5BDA3`,
+`41D07532B36259AEA76BF5179BC31ADBF4B0AC47B2D3E8C5C1A3460A343D1F4C`,
+`752D03EB50EF40D0ACE629A904976CB840BAFEF3E18AA6403D1A889B64910894`,
+`4ACA6BC721D9D9286E572200F03D3526A2D69D53B302DFBEB5E60A545E387047`,
+and `CBC4A1C03115D076DBD6B2BE1FE6BC3A78A6DED1CA76CC7A67AC60D14756D62C`.
+T1 remains 90% and `GEN-034` remains unresolved.
