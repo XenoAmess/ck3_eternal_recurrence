@@ -309,6 +309,73 @@ class G2SourceSpecificWarLossLiveAdapterTests(unittest.TestCase):
         ]
         self.assertIsNone(ADAPTER._find_target_option(acceptance, object()))
 
+    @mock.patch.object(ADAPTER.time, "sleep")
+    def test_target_option_click_requires_rendered_disappearance(
+        self, sleep: mock.Mock
+    ) -> None:
+        acceptance = mock.Mock()
+        image_grab = mock.Mock()
+        first_poll = mock.Mock()
+        accepted_poll = mock.Mock()
+        image_grab.grab.side_effect = [first_poll, accepted_poll]
+        acceptance.find_ocr_text.side_effect = [(931, 934), None]
+        acceptance.ocr_results.return_value = []
+        acceptance.EVENT_OPTIONS_FULL_REGION = (0.2, 0.5, 0.8, 0.9)
+
+        ADAPTER._click_target_option_until_disappears(
+            acceptance,
+            image_grab,
+            Path("evidence"),
+            (931, 934),
+            attempts=2,
+            settle_polls=1,
+            poll_interval_seconds=0.0,
+        )
+
+        self.assertEqual(acceptance.deliberate_click.call_count, 2)
+        acceptance.deliberate_click.assert_has_calls(
+            [
+                mock.call((931, 934), "bookmark.1071.a exact option attempt 1"),
+                mock.call((931, 934), "bookmark.1071.a exact option attempt 2"),
+            ]
+        )
+        accepted_poll.save.assert_called_once_with(
+            Path("evidence/bookmark-1071-a-selection-confirmed.png")
+        )
+        acceptance.log.assert_called_once_with(
+            "OCR confirmed bookmark.1071.a disappeared"
+        )
+        self.assertEqual(sleep.call_count, 2)
+
+    @mock.patch.object(ADAPTER.time, "sleep")
+    def test_target_option_click_stays_red_when_option_remains(
+        self, _sleep: mock.Mock
+    ) -> None:
+        acceptance = mock.Mock()
+        image_grab = mock.Mock()
+        last_image = mock.Mock()
+        image_grab.grab.return_value = last_image
+        acceptance.find_ocr_text.return_value = (931, 934)
+        acceptance.EVENT_OPTIONS_FULL_REGION = (0.2, 0.5, 0.8, 0.9)
+
+        with self.assertRaisesRegex(
+            ADAPTER.LiveAdapterError, "click was not accepted"
+        ):
+            ADAPTER._click_target_option_until_disappears(
+                acceptance,
+                image_grab,
+                Path("evidence"),
+                (931, 934),
+                attempts=2,
+                settle_polls=1,
+                poll_interval_seconds=0.0,
+            )
+
+        self.assertEqual(acceptance.deliberate_click.call_count, 2)
+        last_image.save.assert_called_once_with(
+            Path("evidence/bookmark-1071-a-selection-not-accepted.png")
+        )
+
     def test_chancellor_task_1004_requires_body_and_exact_option_region(self) -> None:
         acceptance = mock.Mock()
         acceptance.EVENT_OPTIONS_FULL_REGION = (0.2, 0.5, 0.8, 0.9)

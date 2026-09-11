@@ -188,6 +188,38 @@ def _find_target_option(acceptance: Any, image: Any) -> tuple[int, int] | None:
     return int(selected[1][0]), int(selected[1][1])
 
 
+def _click_target_option_until_disappears(
+    acceptance: Any,
+    image_grab: Any,
+    ui_dir: Path,
+    point: tuple[int, int],
+    *,
+    attempts: int = 3,
+    settle_polls: int = 10,
+    poll_interval_seconds: float = 0.5,
+) -> None:
+    """Require rendered proof that the armed source option accepted the click."""
+
+    current = point
+    last_image: Any | None = None
+    for attempt in range(1, attempts + 1):
+        acceptance.deliberate_click(
+            current, f"bookmark.1071.a exact option attempt {attempt}"
+        )
+        for _ in range(settle_polls):
+            time.sleep(poll_interval_seconds)
+            last_image = image_grab.grab()
+            visible = _find_target_option(acceptance, last_image)
+            if visible is None:
+                last_image.save(ui_dir / "bookmark-1071-a-selection-confirmed.png")
+                acceptance.log("OCR confirmed bookmark.1071.a disappeared")
+                return
+            current = visible
+    if last_image is not None:
+        last_image.save(ui_dir / "bookmark-1071-a-selection-not-accepted.png")
+    raise LiveAdapterError("bookmark.1071.a click was not accepted")
+
+
 def _find_chancellor_task_1004_option(
     acceptance: Any, image: Any, visible_text: str
 ) -> tuple[int, int] | None:
@@ -1259,8 +1291,11 @@ class ConcreteLiveOperations:
             if target_option is not None:
                 image.save(self.ui_dir / "bookmark-1071-a-armed.png")
                 arm_sha256 = source_ui.atomic_arm(arm_path)
-                acceptance.deliberate_click(
-                    target_option, "bookmark.1071.a exact option"
+                _click_target_option_until_disappears(
+                    acceptance,
+                    image_grab,
+                    self.ui_dir,
+                    target_option,
                 )
                 break
             if source_ui.TARGET_TITLE in joined:
