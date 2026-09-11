@@ -1717,6 +1717,11 @@ class B1RuntimeFoundationTests(unittest.TestCase):
             self.jingcha, "zg361_jingcha_annual_dispatch_effect"
         )
         self.assertIn("is_ai = no", dispatch)
+        recovery = dispatch.index(
+            "zg361_b1_recover_empty_calibration_cycle_effect = yes"
+        )
+        eligibility = dispatch.index("zg361_is_celestial_liege_trigger = yes")
+        self.assertLess(recovery, eligibility)
         issue = top_level_block(self.jingcha, "zg361_issue_jingcha_mandate_effect")
         issue_now = top_level_block(
             self.jingcha, "zg361_issue_jingcha_mandate_now_effect"

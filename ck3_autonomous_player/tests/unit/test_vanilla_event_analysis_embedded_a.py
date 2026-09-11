@@ -41,6 +41,8 @@ def test_analysis_is_json_safe_and_only_reviewed_event_claims_source_hashes() ->
             assert len(record["source_sha256"]) == 6
         elif event_key == "tgp_movement_events.0070":
             assert len(record["source_sha256"]) == 3
+        elif event_key == "culture_notification.1111":
+            assert len(record["source_sha256"]) == 2
         else:
             assert "source_sha256" not in record
 
@@ -56,6 +58,9 @@ def test_each_record_carries_exact_build_and_migration_boundary() -> None:
                 "exact-build-original-definition-and-live-variant-review"
             ),
             "tgp_movement_events.0070": (
+                "exact-build-original-definition-and-live-repeat-review"
+            ),
+            "culture_notification.1111": (
                 "exact-build-original-definition-and-live-repeat-review"
             ),
         }.get(event_key, "migration-only-no-new-full-definition-review")
@@ -127,6 +132,27 @@ def test_tgp_movement_study_repeat_is_source_reviewed_and_live_bounded() -> None
     assert repeat_green["artifact_sha256"] != repeat_red["artifact_sha256"]
     assert repeat_green["bridge_pid"] == first_green["bridge_pid"]
     assert repeat_green["connection_generation"] == 1
+
+
+def test_culture_divergence_notification_is_source_reviewed_and_repeatable() -> None:
+    event_key = "culture_notification.1111"
+    contract = EMBEDDED_A_VANILLA_TIMELINE_CONTRACTS[event_key]
+    analysis = VANILLA_EMBEDDED_A_ANALYSIS[event_key]
+
+    assert "max_occurrences" not in contract
+    assert contract["occurrence_policy"] == (
+        "repeatable-within-product-observation-window"
+    )
+    assert analysis["definition_lines"] == "161-262"
+    assert "neither caller nor event is one-shot" in analysis["caller_semantics"]
+    assert analysis["option_semantics"] == {
+        "0": "founder-only acknowledgement with the culture notification tooltip",
+        "1": "non-founder acknowledgement with the same tooltip",
+    }
+    assert analysis["after_effect"] is None
+    assert "instances 1111 and 1113" in analysis["repeatability_evidence"]
+    for digest in analysis["source_sha256"].values():
+        assert len(digest) == 64
 
 
 def test_safe_option_and_occurrence_fields_match_existing_contracts() -> None:

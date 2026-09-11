@@ -3,6 +3,10 @@
 
 # 替代旧 zg361_annual_review_effect 的 on_action 入口，保留原有存档计数变量。
 zg361_jingcha_annual_dispatch_effect = {
+	# The yearly player pulse must also wake an active cycle whose manager has
+	# since lost celestial-liege eligibility. The recovery effect itself binds
+	# player ownership and the exact schema-v2 callback-free zero-survivor state.
+	zg361_b1_recover_empty_calibration_cycle_effect = yes
 	if = {
 		limit = {
 			is_ai = no

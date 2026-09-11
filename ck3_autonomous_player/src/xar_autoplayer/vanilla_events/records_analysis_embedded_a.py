@@ -399,6 +399,46 @@ def _build_analysis() -> dict[str, dict[str, object]]:
         "occurrence_policy": "repeatable-within-product-observation-window"
     }
 
+    culture_divergence_analysis = analysis["culture_notification.1111"]
+    culture_divergence_analysis["migrated_from"]["review_kind"] = (
+        "exact-build-original-definition-and-live-repeat-review"
+    )
+    culture_divergence_analysis.update({
+        "source_sha256": {
+            "events/culture_events/culture_notification_events.txt": (
+                "875A91E2E308DCFB15AD8DD99D267F721985798FB6B6AD0E605011FE1AB9AC8F"
+            ),
+            "common/on_action/culture_on_actions.txt": (
+                "68E4ECC075A7D3D91FB2FD46A9A1C0C3FEE12D07E018E6E2A01E533013F6C91F"
+            ),
+        },
+        "definition_lines": "161-262",
+        "caller_semantics": (
+            "each culture-divergence action schedules this event at day zero "
+            "for every player whose culture is the new culture or one of its "
+            "parents; neither caller nor event is one-shot"
+        ),
+        "trigger_boundary": (
+            "the player culture matches the newly diverged culture or one of "
+            "that culture's parent cultures"
+        ),
+        "immediate_effect": (
+            "saves the new ethos flag only when it differs from parent_1"
+        ),
+        "option_semantics": {
+            "0": "founder-only acknowledgement with the culture notification tooltip",
+            "1": "non-founder acknowledgement with the same tooltip",
+        },
+        "after_effect": None,
+        "repeatability_evidence": (
+            "R420 observed instances 1111 and 1113 for the same played manager "
+            "at dates 54225528 and 54251808 in one process and product window"
+        ),
+    })
+    culture_divergence_analysis["existing_boundaries"]["occurrence"] = {
+        "occurrence_policy": "repeatable-within-product-observation-window"
+    }
+
     stress_analysis = analysis["stress_threshold.1721"]
     stress_analysis["migrated_from"]["review_kind"] = (
         "exact-build-original-definition-and-live-variant-review"
