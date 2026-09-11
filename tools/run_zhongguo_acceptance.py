@@ -8530,10 +8530,14 @@ def prove_phase2_native_session_cleanup(
                     "first_connection_generation"
                 )
                 == initial_generation,
-                "lineage_generation_advanced_once": second_generation
-                == initial_generation + 1
-                if isinstance(initial_generation, int)
-                else False,
+                "lineage_process_local_generations_positive": (
+                    isinstance(initial_generation, int)
+                    and not isinstance(initial_generation, bool)
+                    and initial_generation > 0
+                    and isinstance(second_generation, int)
+                    and not isinstance(second_generation, bool)
+                    and second_generation > 0
+                ),
                 "lineage_generation_pair_exact": lineage.get(
                     "connection_generation_lineage"
                 )
@@ -8672,17 +8676,6 @@ def prove_phase2_native_session_cleanup(
                     and len(set(pid_lineage)) == len(pid_lineage),
                     "full_generation_lineage_positive": (
                         positive_generation_lineage
-                    ),
-                    "full_generation_lineage_consecutive": (
-                        positive_generation_lineage
-                        and generation_lineage
-                        == list(
-                            range(
-                                generation_lineage[0],
-                                generation_lineage[0]
-                                + len(generation_lineage),
-                            )
-                        )
                     ),
                     "full_lineage_lengths_match": len(pid_lineage)
                     == len(generation_lineage),

@@ -2563,6 +2563,15 @@ Python 驱动等待 `generation > 1` 因而超时。修复后的等待以 lifecy
 进程已经替换而调用方在 ACK 后超时，重试还必须同时核对新进程 command history、outbox 与 checkpoint
 字节，原位恢复结果，禁止为同一次转换再启动第三个 CK3。
 
+managed cleanup 消费同一 lineage 时也只能要求两个不同的正 PID、每个进程各自为正且与其帧绑定的
+generation，以及 lifecycle/最终 capabilities 对这两组 identity 的精确回执；不得要求跨进程 generation
+连续递增。R480 清理确已回收两个 PID，但旧 consumer 仅因 `1→1` 产生的 RED 已逐字节冻结为
+`09_phase2_native_session_cleanup-red-generation-assumption.json`，SHA-256
+`3CCF3EBCA1647B6CF28824C2AD3FF7B0B51FA7EA3BBB749147DAB86790D268BF`。修正后只重放该冻结 session
+report 与 terminal handoff，不重启 CK3；重建的 GREEN cleanup SHA-256 为
+`2C578FF4F8BB4D23DF10C1D01C4D0CEE80B3B31D0E48C58ACDFCF9BBD21A1F56`，全部检查通过，CK3、injector、
+Operator MCP 和端口 `12437` 均归零。
+
 B1 fix 与 AF5 terminal 是独立 P1 工作包，各自使用 hash-bound production-live 收据。cold restore
 不得再次要求代表性存档中的 B1 必须是有奖励 closure，或 AF5 必须正在 terminal；否则会把已经拆分的
 业务验收重新绑回同一条长时间线。AF5 subject 已销毁时，只接受明确的
