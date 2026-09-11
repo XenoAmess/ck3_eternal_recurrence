@@ -2,17 +2,17 @@
 # 只加 on_actions 条目扩展原生 pulse，不碰原版 effect/events（覆盖不合并坑）
 
 # yearly_playable_pulse 只覆盖 count+ 角色。失去全部领地的前任天朝玩家
-# 不再收到该 pulse，却仍可能持有等待回调的旧 B1 周期。全局元旦 pulse
-# 没有 root；显式枚举玩家，为这种真实零存活者状态提供稳定唤醒入口。
-yearly_global_pulse = {
+# 不再收到该 pulse，yearly_global_pulse 的 every_player 也不会枚举该角色。
+# 原版 random_yearly_everyone_pulse 明确逐个覆盖所有角色；本扩展只让
+# is_ai = no 的角色进入严格恢复 effect，为遗留零存活者周期提供唤醒入口。
+random_yearly_everyone_pulse = {
 	on_actions = { zg361_b1_player_recovery_on_action }
 }
 
 zg361_b1_player_recovery_on_action = {
+	trigger = { is_ai = no }
 	effect = {
-		every_player = {
-			zg361_b1_recover_empty_calibration_cycle_effect = yes
-		}
+		zg361_b1_recover_empty_calibration_cycle_effect = yes
 	}
 }
 

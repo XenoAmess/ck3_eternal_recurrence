@@ -46,6 +46,7 @@
 | 现象 | 原因 | 解法 |
 |---|---|---|
 | 原版开局逻辑失效（`There is more than one 'effect' defined`） | on_action 同名字段**覆盖不合并** | 只加 `on_actions = { 自定义钩子 }` 条目 |
+| 失地玩家持有的角色状态无法由 `yearly_global_pulse` 恢复 | `yearly_global_pulse` 没有 root；R426 实机证明其 `every_player` 不枚举这个仍为 `is_ai = no`、但已不再是 count+ playable 的角色 | 扩展原版 `random_yearly_everyone_pulse`；在自定义 on_action 的 `trigger` 首先要求 `is_ai = no`，再调用严格的玩家状态恢复 effect。该原版 pulse 明确逐个覆盖所有角色 |
 | 开局钩子里玩家/规则拿不到 | `on_game_start` 时机太早 | 用 `on_game_start_after_lobby` |
 | effect 里设的值，同 on_action 触发的事件读到旧值 | effect 与事件**并发**执行 | 计算进事件 immediate，或事件延迟 1 天 |
 | 延迟事件没触发 | root 到点时失效（on_death 的角色已死） | 触发到存活 scope（如 `player_heir`） |
