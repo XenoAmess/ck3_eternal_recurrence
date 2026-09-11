@@ -1026,3 +1026,30 @@ This finding does not promote source-loss, comparison, decision, action, or
 The companion compatibility record for this additive private receipt change is
 open_kaishek commit `208dd0ba7c223fe0b4cd07c5c72a1b51e4c0339b`, pushed with local
 `main` equal to `origin/main`.
+
+## R457 normal-manifest build mismatch
+
+R457 unique PID `96164` passed the corrected checkpoint successor contract. It
+created a `69,376,226`-byte checkpoint with SHA-256
+`F3F4D4460FCFD3C7BFDF7F7BEB5871EB06D055630DAD132A845BD901E277F846`.
+The next private capability gate stopped before surrender because all three
+normal lifecycle manifests still selected the R451 read-only diagnostic DLL.
+Its frozen CMake cache has
+`XAR_CK3_ENABLE_G2_ACTUAL_TRUCE_EXPIRY_CANDIDATE_V1=OFF` and
+`XAR_CK3_ENABLE_G2_WAR_BOUND_LOSS_CANDIDATE_V1=OFF`.
+
+The normal manifests now restore the previously frozen postwar-capable DLL and
+injector, with hashes
+`4D839524098891BD997009663E189929722746AB0404D88C1E91F7546EFE238B` and
+`43983E28CE3FBFC5EA1F26786834AD5E9133E59807BDCB18FB244BA8E830E08D`.
+Their build cache has both required candidates ON. The canonical manifest test
+pins those two flags and capability IDs. Focused lifecycle/owner/adapter tests
+pass `48/48` in normal and optimized Python. R458 no-launch admission is
+`A270F42E79259B956CF05DD65E574C45BBA6EC39DE1C09BD83ABDFE7F3A6D20F`.
+
+R457 submitted exactly two terms queries and one save; it submitted no
+surrender. Its report, capture, driver-state, classification, and final launch
+record hashes are `1EFE95B1...18620`, `FD345FF7...C024E`,
+`FB960855...4B701`, `2F77E0BE...62FDA`, and `3D292C53...BCA7D`.
+The source save remains unchanged and cleanup is GREEN with no CK3 process.
+Source-loss and GEN-034 readiness remain false pending one R458 lifecycle.

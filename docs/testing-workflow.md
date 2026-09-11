@@ -2506,3 +2506,19 @@ stable, but the old equality gate stopped before surrender. The corrected
 focused regression is `48/48` in normal and optimized Python. No repeated live
 probe or broad acceptance suite is required for this Python-only contract
 change; the next evidence is one bounded normal lifecycle.
+## Match private build capabilities to the selected live mode
+
+A read-only diagnostic DLL can satisfy source capture and terms inspection yet
+be invalid for the normal action/postwar lifecycle. Before a normal G2 run,
+the hash-bound DLL profile must enable both
+`XAR_CK3_ENABLE_G2_ACTUAL_TRUCE_EXPIRY_CANDIDATE_V1` and
+`XAR_CK3_ENABLE_G2_WAR_BOUND_LOSS_CANDIDATE_V1`. The diagnostic truce build
+used for a completed read-only probe must not remain selected by the normal
+manifest.
+
+R457 is the concrete failure: source, two terms reads, and checkpoint all
+succeeded, then the private capability gate rejected the diagnostic DLL before
+surrender. Restore the frozen normal candidate in the manifest, verify its
+exact DLL/injector hashes and build-profile declaration, run only the focused
+manifest/lifecycle tests, and admit one new CK3 round. Do not repeat the
+read-only diagnostic probe.
