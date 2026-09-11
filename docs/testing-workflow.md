@@ -2472,3 +2472,9 @@ source observer detach 后，顶部游戏通知可能遮住短暂的“暂停”
 发送 pause click 后使用 3 秒 HUD 日期冻结作为替代确认；开始和结束日期必须都可读且完全相等。
 日期不可读或发生变化仍为 RED。R451 的 daughter-ransom 顶部通知提供了该窄 fallback 的真实
 触发证据；不得把它扩展成不读状态的盲目 pause 假设。
+
+需要依赖 `XarCk3BridgePrepareStartup` 安装的 observer 不能由运行后的 `--pipe` attach 补装。
+这类 source-first runner 必须通过共享 runtime 挂起创建 CK3，在唯一 PID/exact executable 校验后，
+先调用无 `--pipe` injector 完成 Prepare，再恢复主线程。自然事件采集结束后的 `--pipe` 调用只启动
+同一已加载 DLL 的 MCP worker。Prepare 失败时目标仍处于挂起状态，必须回收并保持 RED；不得恢复后
+假装 observer 已安装。R452 的 `callback_count=0 / invalid_request` 是该时序缺失的实机证据。

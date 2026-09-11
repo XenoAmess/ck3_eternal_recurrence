@@ -48,6 +48,7 @@ class _Process:
         self.running = running
         self.returncode = None if running else 0
         self.wait_calls: list[float] = []
+        self.resume_calls = 0
 
     def poll(self) -> int | None:
         return None if self.running else self.returncode
@@ -57,6 +58,9 @@ class _Process:
         self.running = False
         self.returncode = 0
         return 0
+
+    def resume(self) -> None:
+        self.resume_calls += 1
 
 
 class _Driver:
@@ -235,7 +239,7 @@ class G2SourceSpecificWarLossLiveAdapterTests(unittest.TestCase):
             with self.assertRaisesRegex(ADAPTER.LiveAdapterError, "SHA-256 drifted"):
                 ADAPTER.inspect_resume_checkpoint(save, "A" * 64)
 
-    def test_resume_checkpoint_copy_is_verified_before_popen(self) -> None:
+    def test_resume_checkpoint_copy_is_verified_before_suspended_launch(self) -> None:
         with tempfile.TemporaryDirectory() as temp:
             root = Path(temp)
             userdir = root / "userdir"
@@ -243,7 +247,8 @@ class G2SourceSpecificWarLossLiveAdapterTests(unittest.TestCase):
             template = _write_profile_settings_template(root)
             save, digest = _write_resume_save(root)
             process = _Process()
-            popen = mock.Mock(return_value=process)
+            launch = mock.Mock(return_value=process)
+            run_process = mock.Mock(return_value=_Completed())
             operations = ADAPTER.ConcreteLiveOperations(
                 paths=_paths(root),
                 timeouts=_timeouts(),
@@ -253,7 +258,8 @@ class G2SourceSpecificWarLossLiveAdapterTests(unittest.TestCase):
                 resume_save=save,
                 resume_save_sha256=digest,
                 process_inventory=lambda: [],
-                popen=popen,
+                suspended_process_factory=launch,
+                run_process=run_process,
             )
             with mock.patch.object(
                 operations, "_validate_owned_ck3", return_value={"pid": PID}
@@ -262,8 +268,17 @@ class G2SourceSpecificWarLossLiveAdapterTests(unittest.TestCase):
                     operations.launch_normal_event_process(object())
                 )
 
-            popen.assert_called_once()
-            self.assertEqual(receipt["startup_mode"], "normal-event")
+            launch.assert_called_once()
+            run_process.assert_called_once()
+            self.assertEqual(
+                run_process.call_args.args[0],
+                [str(root / "injector.exe"), str(PID), str(root / "bridge.dll")],
+            )
+            self.assertEqual(process.resume_calls, 1)
+            self.assertEqual(
+                receipt["startup_mode"], "suspended-prepared-normal-event"
+            )
+            self.assertTrue(receipt["native_bridge_prepared_before_resume"])
             self.assertEqual(receipt["startup_source"], "resume-checkpoint")
             copied = userdir / "save games" / "autosave.ck3"
             self.assertEqual(copied.read_bytes(), save.read_bytes())
@@ -288,6 +303,54 @@ class G2SourceSpecificWarLossLiveAdapterTests(unittest.TestCase):
         acceptance.deliberate_click.assert_called_once_with(
             (640, 720), "main-menu Continue Game"
         )
+
+    def test_startup_prepare_failure_reclaims_without_resuming(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            userdir = root / "userdir"
+            userdir.mkdir()
+            template = _write_profile_settings_template(root)
+            process = _Process()
+            commands: list[list[str]] = []
+
+            def run_process(command: list[str], **_kwargs: object) -> _Completed:
+                commands.append(command)
+                if command[0] == str(root / "injector.exe"):
+                    return _Completed(returncode=3)
+                process.running = False
+                process.returncode = 0
+                return _Completed()
+
+            operations = ADAPTER.ConcreteLiveOperations(
+                paths=_paths(root),
+                timeouts=_timeouts(),
+                artifact_dir=root / "artifacts",
+                userdir=userdir,
+                profile_settings_template=template,
+                process_inventory=lambda: [],
+                suspended_process_factory=lambda *_args: process,
+                run_process=run_process,
+            )
+            with (
+                mock.patch.object(
+                    operations, "_validate_owned_ck3", return_value={"pid": PID}
+                ),
+                self.assertRaisesRegex(
+                    ADAPTER.LiveAdapterError,
+                    "startup preparation failed before resume",
+                ),
+            ):
+                asyncio.run(operations.launch_normal_event_process(object()))
+
+            self.assertEqual(process.resume_calls, 0)
+            self.assertEqual(
+                commands,
+                [
+                    [str(root / "injector.exe"), str(PID), str(root / "bridge.dll")],
+                    ["taskkill.exe", "/F", "/T", "/PID", str(PID)],
+                ],
+            )
+            self.assertFalse(process.running)
 
     def test_target_option_tokens_arm_before_generic_recovery(self) -> None:
         acceptance = mock.Mock()
@@ -518,7 +581,9 @@ class G2SourceSpecificWarLossLiveAdapterTests(unittest.TestCase):
             self.assertTrue(report["live_command"]["default_off"])
             self.assertTrue(report["live_command"]["startup_profile_asset_gate"])
             self.assertTrue(
-                report["live_command"]["asset_failure_blocks_before_popen"]
+                report["live_command"][
+                    "asset_failure_blocks_before_process_creation"
+                ]
             )
             self.assertEqual(
                 report["startup_profile_template"]["inspection"],
@@ -594,7 +659,7 @@ class G2SourceSpecificWarLossLiveAdapterTests(unittest.TestCase):
                     game_root=game_root,
                 )
 
-        self.assertEqual(len(report["dependencies"]), 14)
+        self.assertEqual(len(report["dependencies"]), 15)
         self.assertTrue(report["game_source_binding"]["exact_hashes_verified"])
         self.assertEqual(
             report["dependencies"]["game_executable"]["path"],
@@ -769,11 +834,11 @@ class G2SourceSpecificWarLossLiveAdapterTests(unittest.TestCase):
         for name in ("capture_executable", "bridge_dll", "bridge_injector"):
             self.assertEqual(checked[name]["path_source"], "manifest")
 
-    def test_profile_asset_failure_blocks_before_popen_and_writes_evidence(self) -> None:
+    def test_profile_asset_failure_blocks_before_launch_and_writes_evidence(self) -> None:
         with tempfile.TemporaryDirectory() as temp:
             root = Path(temp)
             (root / "userdir").mkdir()
-            popen = mock.Mock()
+            launch = mock.Mock()
 
             operations = ADAPTER.ConcreteLiveOperations(
                 paths=_paths(root),
@@ -782,27 +847,28 @@ class G2SourceSpecificWarLossLiveAdapterTests(unittest.TestCase):
                 userdir=root / "userdir",
                 profile_settings_template=root / "missing" / "pdx_settings.txt",
                 process_inventory=lambda: [],
-                popen=popen,
+                suspended_process_factory=launch,
             )
             with self.assertRaisesRegex(
                 ADAPTER.LiveAdapterError, "startup profile asset gate blocked"
             ):
                 asyncio.run(operations.launch_normal_event_process(object()))
-            popen.assert_not_called()
+            launch.assert_not_called()
             evidence_path = root / "artifacts" / "startup-profile-assets.json"
             evidence = json.loads(evidence_path.read_text(encoding="utf-8"))
             self.assertEqual(evidence["status"], "BLOCKED")
             self.assertFalse(evidence["profile_ready"])
             self.assertIsNone(evidence["settings"]["destination_sha256"])
 
-    def test_profile_assets_are_copied_and_verified_before_popen(self) -> None:
+    def test_profile_assets_are_copied_and_verified_before_suspended_launch(self) -> None:
         with tempfile.TemporaryDirectory() as temp:
             root = Path(temp)
             userdir = root / "userdir"
             userdir.mkdir()
             template = _write_profile_settings_template(root)
             process = _Process()
-            popen = mock.Mock(return_value=process)
+            launch = mock.Mock(return_value=process)
+            run_process = mock.Mock(return_value=_Completed())
             operations = ADAPTER.ConcreteLiveOperations(
                 paths=_paths(root),
                 timeouts=_timeouts(),
@@ -810,7 +876,8 @@ class G2SourceSpecificWarLossLiveAdapterTests(unittest.TestCase):
                 userdir=userdir,
                 profile_settings_template=template,
                 process_inventory=lambda: [],
-                popen=popen,
+                suspended_process_factory=launch,
+                run_process=run_process,
             )
             with mock.patch.object(
                 operations, "_validate_owned_ck3", return_value={"pid": PID}
@@ -819,7 +886,9 @@ class G2SourceSpecificWarLossLiveAdapterTests(unittest.TestCase):
                     operations.launch_normal_event_process(object())
                 )
 
-            popen.assert_called_once()
+            launch.assert_called_once()
+            run_process.assert_called_once()
+            self.assertEqual(process.resume_calls, 1)
             evidence = receipt["startup_profile_assets"]
             self.assertEqual(evidence["status"], "GREEN")
             self.assertTrue(evidence["profile_ready"])
@@ -862,7 +931,8 @@ class G2SourceSpecificWarLossLiveAdapterTests(unittest.TestCase):
                 artifact_dir=root / "artifacts",
                 userdir=userdir,
                 profile_settings_template=template,
-                popen=mock.Mock(return_value=process),
+                suspended_process_factory=mock.Mock(return_value=process),
+                run_process=mock.Mock(return_value=_Completed()),
             )
             with (
                 mock.patch.object(
@@ -917,11 +987,11 @@ class G2SourceSpecificWarLossLiveAdapterTests(unittest.TestCase):
                 userdir=userdir,
                 profile_settings_template=template,
                 process_inventory=lambda: [],
-                popen=lambda *_args, **_kwargs: process,
+                suspended_process_factory=lambda *_args, **_kwargs: process,
                 run_process=run_process,
             )
             with self.assertRaisesRegex(
-                ADAPTER.LiveAdapterError, "normally launched process was reclaimed"
+                ADAPTER.LiveAdapterError, "suspended process was reclaimed"
             ):
                 asyncio.run(operations.launch_normal_event_process(object()))
 
