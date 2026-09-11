@@ -550,6 +550,98 @@ class OwnerTerminalTests(unittest.TestCase):
 
 
 class ProductionTerminalTimelineTests(unittest.TestCase):
+    def test_pending_callback_ignores_cached_paused_frame_after_resume(self) -> None:
+        from test_zg361_phase2_af5_timeline import ScheduledCompensationService
+
+        class CachedResumeService(ScheduledCompensationService):
+            def __init__(self) -> None:
+                super().__init__()
+                self.active_instance = None
+                self.active_indices = ()
+                self.speed = 1
+                self.cached_paused_frame = False
+                self.resume_sleep_pending = False
+                self.probe_dates = []
+
+            def snapshot(self) -> dict[str, object]:
+                frame = super().snapshot()
+                if self.cached_paused_frame:
+                    frame["paused"] = True
+                return frame
+
+            def execute_step(
+                self, step: str, *, expected_revision: int
+            ) -> dict[str, object]:
+                result = super().execute_step(step, expected_revision=expected_revision)
+                if step == "resume-map":
+                    self.cached_paused_frame = True
+                    self.resume_sleep_pending = True
+                return result
+
+            def sleep(self, seconds: float) -> None:
+                if self.resume_sleep_pending:
+                    self.elapsed += seconds
+                    self.resume_sleep_pending = False
+                    return
+                if self.cached_paused_frame:
+                    self.cached_paused_frame = False
+                super().sleep(seconds)
+
+            def query_zhongguo_workforce_owner_snapshot_v1(
+                self, nonce: str, *, expected_revision: int
+            ) -> dict[str, object]:
+                if self.cached_paused_frame:
+                    raise cell.entry.PreSubmissionRevisionMismatchError(
+                        "synthetic cached paused frame after resume"
+                    )
+                self._require_revision(expected_revision)
+                self.probe_dates.append(self.date_raw)
+                stage = typed(3) if self.running_days >= 1 else {
+                    "status": "unavailable",
+                    "value": None,
+                    "unavailable_reason": "variable_absent",
+                }
+                return {
+                    "status": "available",
+                    "readiness": {"ready": True},
+                    "terminal": True,
+                    "terminal_kind": "not_applicable",
+                    "player_character_id": 32904,
+                    "subject_character_id": 361,
+                    "workforce": {"central": {"stage11_status": stage}},
+                }
+
+        service = CachedResumeService()
+
+        def probe(snapshot: dict[str, object]) -> dict[str, object] | None:
+            response = service.query_zhongguo_workforce_owner_snapshot_v1(
+                "synthetic.cached-resume",
+                expected_revision=snapshot["revision"],
+            )
+            return response if cell._stage11_terminal(response) else None
+
+        result = cell.entry.enter_promotion_source_checkpoint_v1(
+            service,
+            timeout_seconds=3.0,
+            poll_interval_seconds=0.05,
+            progress_sample_interval_days=30,
+            prefer_natural_cycle=True,
+            pause_on_event_definition_key="zg361we.360",
+            terminal_observation_probe=probe,
+            evidence_out={
+                "timeline_origin_date_raw": service.date_raw,
+                "absolute_end_date_raw": service.date_raw + 3 * 24,
+                "timeline_interrupt_drains": [],
+            },
+            clock=lambda: service.elapsed,
+            sleeper=service.sleep,
+        )
+        self.assertEqual(result["result"], "GREEN")
+        self.assertEqual(service.running_days, 1)
+        self.assertEqual(service.probe_dates[-1], 53183280)
+        self.assertIn("resume-map", service.actions)
+        self.assertIn("pause-map", service.actions)
+
     def test_actual_driver_advances_to_callback_and_stops_without_m360_event(self) -> None:
         from test_zg361_phase2_af5_timeline import ScheduledCompensationService
 
