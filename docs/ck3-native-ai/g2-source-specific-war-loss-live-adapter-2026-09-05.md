@@ -1022,3 +1022,7 @@ process remains. R457 no-launch admission is READY with SHA-256
 `3AAE6BA08E360E0380AC4B11B4F11CB4BBC68EF0D2E3F65EBA8DC9DFB17FD701`.
 This finding does not promote source-loss, comparison, decision, action, or
 `GEN-034` readiness; one bounded R457 normal lifecycle remains.
+
+The companion compatibility record for this additive private receipt change is
+open_kaishek commit `208dd0ba7c223fe0b4cd07c5c72a1b51e4c0339b`, pushed with local
+`main` equal to `origin/main`.
