@@ -957,3 +957,10 @@ WarID `50331699` / `raiktor_claim_cb` 的 primary-attacker surrender 只有 type
 - **同分支缺口**：concrete continuation 未声明 outer owner 已传入的 `expected_war_id`，因此旧代码即使 WarID 恰巧相同也会在首次走通分支时发生参数错误。
 - **修复**：`5743466d1074af68ff12930bbe299becc12fef8c` 从已规范化 source capture 取 WarID，并贯穿 lifecycle；CLI 值只做可选相等断言。既有 full-generation、same-PID、active-war、checkpoint、mutation 和 postwar 校验不变；normal/`-O` 各 `53/53`。
 - **边界**：本包未启动 CK3、未提升 readiness。R448 已结束、CK3=0；`GEN-034` unresolved、T1=90%。下一步重新做 hash-bound no-launch admission 后才允许唯一 R449。
+
+## 2026-09-11：GEN-034 R449 debugger detach race
+
+- **已通过**：R449 六行 source capture 使用动态 WarID `33554473`，locale-neutral name、unique node/CArmy、兵力和 regiment 映射全部通过；`.1071.a` 接受、breakpoint restore 与 outer cleanup GREEN。
+- **RED**：final debug event continue 后，单次 `DebugActiveProcessStop` 返回失败，故 observer 覆盖为 `debugger-detach-failed`；R449 没有进入 bridge/current/termination/postwar。capture SHA-256 `E382E079DC7A6124A9961E174A3E802F8E67B0C95403325FB16485FD51A5E178`，产品 RED 为 false。
+- **最小修复**：`454f515d8ef55ddf6e3cd5eccfa0a8cfb26e7630` 允许最多 20 次、每次间隔 25 ms 的 detach，记录 attempt count 和 last Win32 error；最多 sleep 475 ms，耗尽继续 RED。self-test、normal/`-O` 各 `54/54`。
+- **状态**：R449 已结束、旧轮次 R448 已结束、CK3=0；T1=90%、`GEN-034` unresolved。下一轮只能消费同一近边界输入验证 detach 后继续 lifecycle，不重跑已证名称/WarID研究。

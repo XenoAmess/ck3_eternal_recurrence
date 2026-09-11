@@ -2437,3 +2437,15 @@ Character row 的失效。resolver 在这个 final barrier prune 后不得直接
 `native ZhongGuo B1-cycle query requires a paused snapshot` 只允许进入精确白名单、最多四次、零状态写的 probe rebind。
 若绑定稳定且连续四次仍拒绝，保持 harness RED；未知错误立即 RED。Python-only 合同可以同 PID 热加载，但若同一工作包还
 修改了 CK3 游戏脚本，最终产品复验仍必须清理旧实例并递增轮次 fresh launch。
+
+## 私有 debugger attach 的 detach 时序（2026-09-11 实测）
+
+外部只读 debugger 在恢复软件断点、完成最后一次 single-step 并调用
+`ContinueDebugEvent` 后，立即调用一次 `DebugActiveProcessStop` 可能偶发失败。
+R448 在同一 seam 成功，R449 在六行 capture 完整且断点已恢复时失败，因此该现象按
+harness release race 处理，不能改写成 source/product RED。
+
+当前 G2 私有采集器最多重试 20 次，每次间隔 25 ms，总 sleep 预算 475 ms；artifact
+必须记录 `debugger_detach_attempts` 与 `debugger_detach_last_error`。任何一次成功才允许
+同 PID bridge handoff；预算耗尽仍保持 RED 并由唯一 outer owner 回收 CK3。不得通过忽略
+detach 结果或直接启动第二个 CK3 绕过该门。
