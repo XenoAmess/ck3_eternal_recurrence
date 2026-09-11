@@ -37,6 +37,12 @@ T0 产品总完成度；P1 尚未签收，P2 继续 `LOCKED`。R390 Stage 9 冻�
 R434/R439 的零游戏日 selector 只排除了 R432/R159 作为 B3 focused 路线的 AI manager/direct subordinate source，不能判定玩家可见的 Stage 10 `.120` 路线；其中 R439 重复了 09 月 07 日已有的 R159 结论，是一次可避免的验证。R435 只排除 R432 的 Stage 11 terminal 资格；R437 又证明 R398 输入存档本身并未停在 `.242`，因此在零游戏日、零事件输入处停止，没有把 source 误读扩成第二次长跑。两种 Stage 10 角色拓扑、验收 runner 纠正、不重跑边界与下一项 source 要求见
 [`r434-r439-bounded-source-checks-and-stage10-route-correction-2026-09-11.md`](r434-r439-bounded-source-checks-and-stage10-route-correction-2026-09-11.md)。P1 仍为 `6/9`。
 
+Stage 10 的独立 action cell 已按上述反向角色拓扑完成静态实现：只从精确 paused `.390` 开始，先由 owner-view provider
+确认所选 manager 的真实 F case 已打开，再切换玩家，并在同一个 30 游戏日绝对截止内等待 `.120` 与 player-subject
+provider 终态；未开 case 时禁止切换，任一条件失败即停且不原地重试。聚焦测试 normal/`-O` 各 `5/5` GREEN，未启动
+CK3，所以状态仅为 `static-ready / live pending`，P1 仍为 `6/9`。完整合同见
+[`stage10-player-subject-bounded-action-cell-2026-09-11.md`](stage10-player-subject-bounded-action-cell-2026-09-11.md)。
+
 R408–R414 的终端 lineage 换轨、五玩家 `SAV0102` 两次 native-readiness RED、离线 normalization 的证据边界以及
 R375 单玩家 checkpoint 的有效准入，见
 [`r408-r414-lineage-intake-and-multiplayer-red-2026-09-11.md`](r408-r414-lineage-intake-and-multiplayer-red-2026-09-11.md)。
