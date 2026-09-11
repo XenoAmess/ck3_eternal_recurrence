@@ -309,6 +309,35 @@ class G2SourceSpecificWarLossLiveAdapterTests(unittest.TestCase):
         ]
         self.assertIsNone(ADAPTER._find_target_option(acceptance, object()))
 
+    def test_chancellor_task_1004_requires_body_and_exact_option_region(self) -> None:
+        acceptance = mock.Mock()
+        acceptance.EVENT_OPTIONS_FULL_REGION = (0.2, 0.5, 0.8, 0.9)
+        acceptance.find_ocr_text.return_value = (1266, 984)
+        image = object()
+
+        option = ADAPTER._find_chancellor_task_1004_option(
+            acceptance,
+            image,
+            "我已经和你的掌玺大臣交流过了 这是可耻的外交行为 "
+            "这之间一定是有一些可怕的误会",
+        )
+
+        self.assertEqual(option, (1266, 984))
+        acceptance.find_ocr_text.assert_called_once_with(
+            image,
+            ADAPTER.CHANCELLOR_TASK_1004_OPTION,
+            acceptance.EVENT_OPTIONS_FULL_REGION,
+            contains=True,
+        )
+
+        acceptance.reset_mock()
+        self.assertIsNone(
+            ADAPTER._find_chancellor_task_1004_option(
+                acceptance, image, "这之间一定是有一些可怕的误会"
+            )
+        )
+        acceptance.find_ocr_text.assert_not_called()
+
     def test_natural_event_blocker_uses_verified_ocr_recovery(self) -> None:
         acceptance = mock.Mock()
         acceptance.quick_stall_and_recover.return_value = {
