@@ -28,8 +28,9 @@ paused candidate 的 manifest/seed 绑定并判定上述九项，不再依次跑
 但不能扩大 P1 blocker；因此 P1 判定没有“还差一个历史 cell”之类的隐含口径。显式 legacy 诊断命令本身仍可因其
 coverage 失败返回 RED，但该诊断 RED 不回写、不改变独立的 P1 九项判定。
 
-截至 2026-09-11 R433 后的机器化归档，现行候选 P1 为 **`6/9 = 66.7%`**：B1、AF5、Central stage 9、完整 gameplay
-时间窗 error scan、managed cleanup 与候选 L0 已 READY；stage 10、11 和一次代表性终态 cold restore 仍 PENDING。权威中间账本为
+截至 2026-09-12 R480 后的机器化归档，现行候选 P1 为 **`8/9 = 88.9%`**：B1、AF5、Central stage 9、Central stage 11、代表性终态 cold restore、完整 gameplay
+时间窗 error scan、managed cleanup 与候选 L0 已 READY；仅 stage 10 `zg361mg.120` 仍 PENDING。Stage 11 与 cold restore 的 exact-build 证据、两 PID 生命周期、process-local generation 合同和 cleanup RED 修复见
+[`r476-r480-stage11-and-cold-restore-2026-09-12.md`](r476-r480-stage11-and-cold-restore-2026-09-12.md)。权威中间账本为
 `Z:\ck3_mod_rewrite\_runtime\p1-critical-path-assembler\pending-assembly-status.json`。这只是九项门禁的完成比例，不换算为
 T0 产品总完成度；P1 尚未签收，P2 继续 `LOCKED`。R390 Stage 9 冻结记录的真实选择与当前候选的 23 文件逐字节
 资格核对，以及 R432 硬上限、R433 零游戏日诊断见
