@@ -74,3 +74,14 @@ selector readiness、产品树以及 checkpoint path/size/SHA-256 必须全部�
 
 当前轮次 R439 已结束，CK3 存活数为 0；本工作包没有启动 CK3，也没有新建轮次。不得仅为 Stage 10 从 183 日前的
 存档重放而启动；新轮次 R440 必须绑定独立的有界 P1 机器门，若其自然抵达 `.390`，再即时冻结并执行本 operator。
+
+## 有界预算落实（2026-09-12）
+
+terminal-stages activation 原有的 `source_route.max_advance_days` 过去只写入编排说明，action cell 实际仍采用全局
+`MAX_ADVANCE_DAYS`。这会让为 Stage 10/11 设计的短程验收在目标未出现时意外退化成长跑。现由 operator 校验该字段并
+显式传给 action cell；action 将游戏日上限写入 durable state，同时把绝对截止绑定到首次 paused frame。热重试必须复用
+同一上限，不能通过改 activation 给时间线续杯。未声明该字段的旧 activation 仍保留原默认值。
+
+这项修复没有改 mod 产品脚本、公共 MCP 控制名、ABI 或 DLL。聚焦 action/operator 测试普通模式 `20/20`、
+`python -O` 模式 `20/20` GREEN。下一次组合运行把前置 183 日、`.390` source 冻结和紧随其后的 Stage 11 路线限定在
+500 游戏日内；到界即保留 RED 并停车，不扩大为单 bug 长跑。
