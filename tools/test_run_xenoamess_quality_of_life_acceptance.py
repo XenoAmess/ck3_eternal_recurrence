@@ -207,8 +207,8 @@ class ProductOuterDescriptorTests(unittest.TestCase):
                 service, stream, Path(raw)
             )
 
-        stream.wait.assert_called_once_with(
-            "ZQA: TEST PASS ready_for_product_disable_decisions", 45
+        stream.has.assert_called_once_with(
+            "ZQA: TEST PASS ready_for_product_disable_decisions"
         )
         self.assertEqual(
             service.execute_step.call_args_list,

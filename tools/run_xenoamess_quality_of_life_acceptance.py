@@ -706,50 +706,19 @@ def settle_queued_death_succession(
     timeout_s: float = 45,
 ) -> dict[str, object]:
     """Advance the paused map until CK3 applies its queued death title change."""
-
-    before = service.snapshot()
-    if before.get("paused") is not True:
-        raise acceptance.RunnerError("death-settlement precondition is not paused")
-    resume_ack = service.execute_step(
-        "resume-map", expected_revision=int(before["revision"])
+    evidence = advance_until_marker(
+        service,
+        stream,
+        artifacts,
+        "09_death_settlement_tick",
+        "ZQA: TEST PASS ready_for_product_disable_decisions",
+        timeout_s,
     )
-    wait_error: BaseException | None = None
-    try:
-        stream.wait("ZQA: TEST PASS ready_for_product_disable_decisions", timeout_s)
-    except BaseException as error:
-        wait_error = error
-
-    running = service.snapshot()
-    pause_ack: dict[str, object] | None = None
-    paused = running
-    if running.get("paused") is not True:
-        pause_ack = service.execute_step(
-            "pause-map", expected_revision=int(running["revision"])
-        )
-        deadline = time.monotonic() + 5
-        while time.monotonic() < deadline:
-            paused = service.snapshot()
-            if paused.get("paused") is True:
-                break
-            time.sleep(0.1)
-        else:
-            raise acceptance.RunnerError("death-settlement map did not pause")
-
-    evidence = {
-        "schema_version": 1,
-        "result": "GREEN" if wait_error is None else "RED",
-        "reason": "advance paused simulation so CK3 can apply queued death succession",
-        "before": before,
-        "resume_ack": resume_ack,
-        "after_running": running,
-        "pause_ack": pause_ack,
-        "after_paused": paused,
-        "marker_observed": wait_error is None,
-        "error": None if wait_error is None else str(wait_error),
-    }
+    evidence["reason"] = (
+        "advance paused simulation so CK3 can apply queued death succession"
+    )
+    evidence["marker_observed"] = True
     write_json(artifacts / "09_death_settlement_tick.json", evidence)
-    if wait_error is not None:
-        raise wait_error
     return evidence
 
 
