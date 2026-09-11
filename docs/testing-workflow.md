@@ -2478,3 +2478,8 @@ source observer detach 后，顶部游戏通知可能遮住短暂的“暂停”
 先调用无 `--pipe` injector 完成 Prepare，再恢复主线程。自然事件采集结束后的 `--pipe` 调用只启动
 同一已加载 DLL 的 MCP worker。Prepare 失败时目标仍处于挂起状态，必须回收并保持 RED；不得恢复后
 假装 observer 已安装。R452 的 `callback_count=0 / invalid_request` 是该时序缺失的实机证据。
+
+Windows 在新进程仍挂起时可能给出唯一 PID 却不返回 CIM/Toolhelp `ExecutablePath`。此时可使用
+共享 suspended-process 对象保留的进程句柄读取 `image_path()`，但仍必须先证明全局 CK3 清单
+只有同一 PID，并继续核验 exact path 与 SHA-256。R453 在 Prepare 前触发了这一真实情况；不得
+因为清单路径为空而恢复未验证的进程，也不得放宽唯一实例要求。

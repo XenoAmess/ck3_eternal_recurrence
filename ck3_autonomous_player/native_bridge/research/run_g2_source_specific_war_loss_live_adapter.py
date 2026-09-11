@@ -1055,11 +1055,25 @@ class ConcreteLiveOperations:
                 f"expected one CK3 process at PID {pid}, observed {ck3_rows}"
             )
         path_value = matches[0].get("ExecutablePath")
-        if not isinstance(path_value, str) or not path_value.strip():
-            raise LiveAdapterError(
-                f"PID {pid} executable path is unavailable from process inventory"
-            )
-        actual_executable = Path(path_value).resolve()
+        executable_path_source = "process-inventory"
+        if isinstance(path_value, str) and path_value.strip():
+            actual_executable = Path(path_value).resolve()
+        else:
+            process = self._process
+            image_path = getattr(process, "image_path", None)
+            if getattr(process, "pid", None) != pid or not callable(image_path):
+                raise LiveAdapterError(
+                    f"PID {pid} executable path is unavailable from process "
+                    "inventory and retained process handle"
+                )
+            try:
+                actual_executable = Path(image_path()).resolve()
+            except BaseException as error:
+                raise LiveAdapterError(
+                    f"PID {pid} executable path is unavailable from retained "
+                    f"process handle: {type(error).__name__}: {error}"
+                ) from error
+            executable_path_source = "retained-process-handle"
         if actual_executable != self.paths.game_executable.resolve():
             raise LiveAdapterError(
                 f"PID {pid} executable path mismatch: {actual_executable}"
@@ -1073,6 +1087,7 @@ class ConcreteLiveOperations:
             "pid": pid,
             "name": "ck3.exe",
             "executable_path": str(actual_executable),
+            "executable_path_source": executable_path_source,
             "executable_sha256": actual_sha256,
             "inventory_source": matches[0].get("InventorySource", "cim"),
         }

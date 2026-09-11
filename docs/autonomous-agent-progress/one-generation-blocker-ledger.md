@@ -990,3 +990,8 @@ WarID `50331699` / `raiktor_claim_cb` 的 primary-attacker surrender 只有 type
 - 根因是 live adapter 普通启动 CK3，待 source capture 后才用 `--pipe` 注入；该模式不调用只允许在主线程恢复前执行的 `XarCk3BridgePrepareStartup`，因此 preview-entry observer 从未安装。该结论取代继续更换 CB/input shape 的旧施工方向。
 - R452 没有 checkpoint/action/postwar，source SHA-256 `89D15B8A…D4DD` 未变，cleanup GREEN、CK3=0；report/diagnostic/classification 为 `3EE2B4C5…D7C7` / `116553E6…F628` / `FF4A3928…EEFB`。
 - adapter 已改为复用通用 runtime 的 suspended process：唯一进程校验后以无 `--pipe` injector 执行 Prepare，再恢复主线程；source 后仍以原 `--pipe` 启动同 PID MCP worker。runtime 纳入 manifest 哈希依赖，focused `31/31` GREEN。根实现 `8f1a522c0163796056ae8bc1281839b4fed8edf1` 与 T2 记录 `9505a1e30dcb24cfbd3c9dfdc63bd41a1c5fee5e` 已推送。当前仅 static-ready；下一步只运行一轮 R453 有界只读复验，`GEN-034` unresolved、T1=90%。
+
+## 2026-09-11：GEN-034 R453 suspended identity harness RED
+
+- R453 唯一 PID `26952` 在主线程挂起时只有清单 identity、没有 CIM/Toolhelp `ExecutablePath`；旧校验因此在 Prepare 前回收目标。主线程未恢复，source/bridge/query/mutation 均未开始，源存档未变、CK3=0。report/classification 为 `554D8D41…6458` / `520DFC89…1BD4`。
+- 最小修复继续要求全局只有同一 PID，并在清单路径为空时通过共享 suspended-process 的保留 Win32 handle 读取 image path，再执行 exact path/hash 校验。R454 no-launch admission `5DBB22DE…6F46` READY；`GEN-034` unresolved、T1=90%，下一步只有一轮 R454 只读复验。
