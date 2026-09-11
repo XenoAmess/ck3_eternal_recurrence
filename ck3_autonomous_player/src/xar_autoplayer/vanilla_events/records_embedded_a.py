@@ -180,7 +180,11 @@ _LEGACY_EMBEDDED_A_VANILLA_TIMELINE_CONTRACTS: Final[
         "native_option_indices": (0, 1, 2),
         "selected_option_number": 1,
         "selected_native_option_index": 0,
-        "max_occurrences": 1,
+        # Both exact-build yearly pools may select this event again after its
+        # event-local ten-year cooldown. R418 observed and safely drained one
+        # occurrence, then reached a second legal instance about eleven years
+        # later in the same product window.
+        "occurrence_policy": "repeatable-within-product-observation-window",
     },
     "tgp_movement_events.0080": {
         # CK3 1.19.0.6 celestial family-subsidy request.  The played manager
