@@ -16,8 +16,8 @@
     "postwar_runner": "ck3_autonomous_player/native_bridge/research/run_g2_postwar_cleanup_expiry_live_acceptance.py",
     "terms_runner": "ck3_autonomous_player/native_bridge/research/run_war_termination_terms_live_acceptance.py",
     "capture_executable": "Z:\\ck3_mod_rewrite_process_assets\\zg361\\g2-source-specific-war-loss-provider-r450-20260911\\build-msvc\\Release\\xar_ck3_raiktor_war_bound_private_capture_v1.exe",
-    "bridge_dll": "Z:\\ck3_mod_rewrite_process_assets\\zg361\\g2-truce-default-leaf-diagnostic-r451-20260911\\build-msvc\\xar_ck3_bridge.dll",
-    "bridge_injector": "Z:\\ck3_mod_rewrite_process_assets\\zg361\\g2-truce-default-leaf-diagnostic-r451-20260911\\build-msvc\\xar_ck3_bridge_injector.exe",
+    "bridge_dll": "Z:\\ck3_mod_rewrite_process_assets\\zg361\\g2-cleanup-formal-e72f9fa-r3-20260904\\xar_ck3_bridge.dll",
+    "bridge_injector": "Z:\\ck3_mod_rewrite_process_assets\\zg361\\g2-cleanup-formal-e72f9fa-r3-20260904\\xar_ck3_bridge_injector.exe",
     "game_executable": "Crusader Kings III/binaries/ck3.exe",
     "bookmark_events": "Crusader Kings III/game/events/bookmark_events.txt"
   },
@@ -31,8 +31,8 @@
     "postwar_runner": "40CB5CDF82DE59562D8B18E638EB5464F9C8083E5D9B061028F94474AF4FC116",
     "terms_runner": "BA06A5A8B781912FB02D6F083C905B5D808782E5C7B7F46F654DB603AC018E61",
     "capture_executable": "EEE39F858E941E1500DA13FB11906814FA4D70EE42DED894CFDEB03ACEF709B8",
-    "bridge_dll": "AB1BF87A1C4C20BC488F857BA0454E070225F0027259DDC6282530D92AAB1705",
-    "bridge_injector": "B5353527B56B4C99A7AF11A09C59A0850C481A45ED7CDA4C519AF956D97B39EC",
+    "bridge_dll": "4D839524098891BD997009663E189929722746AB0404D88C1E91F7546EFE238B",
+    "bridge_injector": "43983E28CE3FBFC5EA1F26786834AD5E9133E59807BDCB18FB244BA8E830E08D",
     "game_executable": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
     "bookmark_events": "75CF485E379E522D4AAED9EF889FCC411A0D9DFCC28BCFB250ABDCC93A757EFF"
   },

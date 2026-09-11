@@ -640,6 +640,22 @@ class G2SourceSpecificWarLossLiveAdapterTests(unittest.TestCase):
         self.assertFalse(composition["standalone_capture_runner_main_reused"])
         self.assertTrue(composition["startup_profile_asset_gate_integrated"])
         self.assertTrue(composition["launch_fail_closed"])
+        normal_build = manifest["normal_lifecycle_build"]
+        self.assertEqual(
+            normal_build["cmake_options"],
+            [
+                "XAR_CK3_ENABLE_G2_ACTUAL_TRUCE_EXPIRY_CANDIDATE_V1=ON",
+                "XAR_CK3_ENABLE_G2_WAR_BOUND_LOSS_CANDIDATE_V1=ON",
+            ],
+        )
+        self.assertEqual(
+            normal_build["required_private_capabilities"],
+            [
+                "game.command.query-raiktor-actual-truce-expiry-v1-N",
+                "game.command.query-raiktor-war-bound-loss-cleanup-v1-N",
+            ],
+        )
+        self.assertFalse(normal_build["read_only_diagnostic_build_selected"])
         self.assertEqual(timeouts.natural_event_seconds, 520.0)
         self.assertEqual(timeouts.observer_timeout_ms, 1_200_000)
         self.assertEqual(paths.game_executable.name, "ck3.exe")
