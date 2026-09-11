@@ -10,7 +10,7 @@
   "live_authorized": false,
   "paths": {
     "game_executable": "Crusader Kings III/binaries/ck3.exe",
-    "capture_executable": "Z:\\ck3_mod_rewrite_process_assets\\zg361\\g2-source-specific-war-loss-provider-20260905\\build-msvc\\Release\\xar_ck3_raiktor_war_bound_private_capture_v1.exe",
+    "capture_executable": "Z:\\ck3_mod_rewrite_process_assets\\zg361\\g2-source-specific-war-loss-provider-r448-20260911-r2\\build-msvc\\Release\\xar_ck3_raiktor_war_bound_private_capture_v1.exe",
     "preflight": "ck3_autonomous_player/native_bridge/research/prepare_raiktor_source_specific_war_loss_capture.py",
     "spawn_army_abi": "ck3_autonomous_player/native_bridge/research/raiktor_spawn_army_execute_v1_abi.json",
     "spawn_army_verifier": "ck3_autonomous_player/native_bridge/research/verify_raiktor_spawn_army_execute_v1.py",
@@ -21,13 +21,13 @@
   },
   "sha256": {
     "game_executable": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
-    "capture_executable": "B8328D5C0B52AF667BB71D2BBE660C803BF46EC0A7549A514083B7DBB8BA5A72",
+    "capture_executable": "B05E0B6D3CA8DBEC41C8C5107AB8F9AACD4E99981E442AC1DBF3077868241007",
     "preflight": "6286921CF0782FE47EFFEC911BCD93697FF6F77BA99CD815784E957DD0A80D9E",
     "spawn_army_abi": "C81963E32264CF2B0B09353A8EA25CA0A4035B43B13C9E5C36F050E1BA346AF0",
     "spawn_army_verifier": "A6FEF375185074F5CAC107334DFCED17083FE75B873CF0A8EA27D3A4F5CCAC72",
-    "capture_source": "A84601C5BB6927DEF52DF6B27E8602B8C2CAC0C6475A9F1A75B30085433848D8",
-    "capture_manifest": "0D7E4B948F6D6600A6D4412FADAA328728ED451B01330E652548995CF2B9BDAD",
-    "cmake": "1944A859C99AF4756BF3DCDE0725CFCC3BD73304B44538DD263AD395D3FA02CB",
+    "capture_source": "A68C4674B6C03A4445EDBA7947C961DAB86E26DE6E11DCAF2F21FE2687839B9D",
+    "capture_manifest": "F65ABFBC9C515F2F9751E740C5FA8E06B4739BF374CCCC79CE9DECACA1D5D2FB",
+    "cmake": "4F02E653FF30FDE44757F514E72D76B4E3A2C936B888B98212C89243FD737728",
     "provider": "F3204BA33885F12443493B4E0B8FE779C233E4B45047FA46C66079A65D75942A"
   },
   "exact_observation": {

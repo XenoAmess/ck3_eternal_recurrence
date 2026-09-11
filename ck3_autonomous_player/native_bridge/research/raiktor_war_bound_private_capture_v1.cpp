@@ -345,10 +345,10 @@ bool CaptureSourceExecution(HANDLE process, std::uint64_t image_base,
     return false;
   }
   output->evaluated_name = ReadMsvcString(process, context.Rbp + 0x70);
-  if (output->evaluated_name != kExpectedArmyName) {
-    *reason = "armed-hit-evaluated-name-mismatch";
-    return false;
-  }
+  // R447 reached the armed source breakpoint but disproved the old assumption
+  // that this evaluated display string is the authored localization key. Keep
+  // the observed value in every row and let the six-row validator retain the
+  // conservative final RED until the exact live value has been reviewed.
   if (!ReadRemote(process, output->created_army + kObjectIdOffset,
                   &output->army_generation_id) ||
       output->army_generation_id < 0) {

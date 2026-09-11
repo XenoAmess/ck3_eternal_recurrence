@@ -42,6 +42,19 @@ class RaiktorWarBoundPrivateCaptureV1Tests(unittest.TestCase):
         self.assertIn("initial_soldiers += soldiers", self.source)
         self.assertNotIn("authored_total_soldiers", self.source)
 
+    def test_evaluated_name_is_recorded_before_conservative_final_verdict(self) -> None:
+        capture = self.source[
+            self.source.index("bool CaptureSourceExecution") :
+            self.source.index("bool ValidateSixExecutions")
+        ]
+        validator = self.source[self.source.index("bool ValidateSixExecutions") :]
+        self.assertIn(
+            "output->evaluated_name = ReadMsvcString(process, context.Rbp + 0x70)",
+            capture,
+        )
+        self.assertNotIn("output->evaluated_name != kExpectedArmyName", capture)
+        self.assertIn("row.evaluated_name != kExpectedArmyName", validator)
+
     def test_target_is_opt_in_and_does_not_touch_public_bridge_target(self) -> None:
         self.assertIn("XAR_CK3_ENABLE_G2_WAR_BOUND_PRIVATE_CAPTURE_V1", self.cmake)
         self.assertIn("xar_ck3_raiktor_war_bound_private_capture_v1", self.cmake)
