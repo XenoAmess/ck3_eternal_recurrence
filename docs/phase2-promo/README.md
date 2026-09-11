@@ -48,6 +48,11 @@ Stage 10 action/operator 已同步改为真实玩家 B1 公示路线：从非独
 目标自有 receipt 语义需在本次根仓提交后同步 open_kaishek。完整合同与 R482 证据见
 [`stage10-player-subject-bounded-action-cell-2026-09-11.md`](stage10-player-subject-bounded-action-cell-2026-09-11.md)。
 
+R482 后的下一步来源构造已实现为独立受管 operator：从已实机准入的 R159 单玩家 checkpoint 恢复，原生切换到目标玩家经理
+`29037`，同帧复核 campaign root 后以 MCP 原生保存；控制面只有 `status / capture-source / cleanup`，不允许 retry。离线 topology、
+既有 live qualification 与 checkpoint provenance 三者必须 hash 一致。该工作包只生成 v3 admission 所需来源，不计作 Stage 10
+`.120` 验收；接口与聚焦验证见同一 [Stage 10 action cell 专题](stage10-player-subject-bounded-action-cell-2026-09-11.md)。
+
 R466/R467 随后从距 `.390` 仅 2 游戏日的 production 存档执行了一次有界资格尝试。R467 在真实 `.390` 帧返回
 `no_bounded_ai_direct_manager`，所以该来源的 Stage 10 用途永久淘汰。Stage 11 随后因恢复推进时 paused revision 已变化而返回
 `snapshot changed or is not ready`；首帧缺少 owner/portfolio/case 绑定是 D+2 pump 前的预期状态，不能据此淘汰 Stage 11 来源。
