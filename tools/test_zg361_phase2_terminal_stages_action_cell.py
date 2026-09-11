@@ -141,6 +141,22 @@ class Service:
 
 
 class TerminalStagesTests(unittest.TestCase):
+    def test_terminal_portfolio_waits_when_central_callback_is_not_yet_published(self) -> None:
+        frame = json.loads(
+            (
+                cell.ROOT
+                / "ck3_autonomous_player/tests/fixtures/zhongguo_workforce_owner_snapshot_v1.json"
+            ).read_text()
+        )["frames"]["not_applicable_without_m360_source"]
+        frame["workforce"]["central"]["stage11_status"] = {
+            "status": "unavailable",
+            "value": None,
+            "unavailable_reason": "variable_absent",
+        }
+        self.assertIs(frame["terminal"], True)
+        self.assertEqual(frame["terminal_kind"], "not_applicable")
+        self.assertIsNone(cell._stage11_terminal(frame))
+
     def test_stage10_source_archive_is_byte_bound_and_idempotent(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
             root = Path(temporary)

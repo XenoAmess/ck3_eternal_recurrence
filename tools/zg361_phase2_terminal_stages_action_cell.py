@@ -152,7 +152,16 @@ def _stage11_terminal(response: Mapping[str, object]) -> str | None:
     if expected_status is None:
         raise ValueError("Workforce terminal lacks an authored terminal kind")
     central = response.get("workforce", {}).get("central")
-    if _typed(central, "stage11_status") != expected_status:
+    stage11_status = (
+        central.get("stage11_status") if isinstance(central, Mapping) else None
+    )
+    # Portfolio closure and the Central callback are separate product state
+    # changes. A valid terminal portfolio may therefore be observed one frame
+    # before Central publishes its stage receipt; keep navigating in that case.
+    if not isinstance(stage11_status, Mapping) or (
+        stage11_status.get("status") != "available"
+        or stage11_status.get("value") != expected_status
+    ):
         return None
     return "terminal_na" if kind == "not_applicable" else "closed"
 
