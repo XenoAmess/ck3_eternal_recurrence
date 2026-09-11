@@ -1042,3 +1042,22 @@ WarID `50331699` / `raiktor_claim_cb` 的 primary-attacker surrender 只有 type
   checkpoint. Until that live value exists, campaign dominance remains
   incomplete. Owner-authored budget and same-frame white-peace comparison are
   also still missing, so `GEN-034` stays unresolved and T1 stays at 90%.
+
+## 2026-09-12: GEN-034 R470 native admission RED
+
+- R470 reached the exact-build paused checkpoint for WarID `33554473` and
+  primary opponent `28551`, but its first official MCP query failed with
+  `application-main war-entry query failed:target_not_declarable`.
+- The live result disproves the static assumption that only Python restricted
+  the query to declaration targets. The native frame and reader also enforce
+  that restriction before calling the strategic evaluator. The second query
+  was not attempted; there was no retry, time advance, or mutation.
+- Report SHA-256 is `CCF29894...E022D`; source checkpoint
+  `FAA32578...4E78` and restored driver state `A5DB3F1E...4B5E` are unchanged,
+  cleanup is GREEN, current round R470 and old round R469 are terminated, and
+  CK3=0.
+- The next implementation is limited to native admission of same-frame active-war
+  primary opponents plus focused tests and one bounded R471 query. Campaign
+  dominance remains unavailable; owner-authored budget and same-frame
+  white-peace comparison are also absent. `GEN-034` remains unresolved and T1
+  remains 90%.
