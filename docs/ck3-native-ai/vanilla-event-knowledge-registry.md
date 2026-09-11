@@ -271,3 +271,10 @@ unavailable_reason = null
 - T0 完成标准仍是主体工程、内容、约定测试矩阵与 hard-gated 最终媒体，不由 registry 数量决定。
 
 Registry 的价值是让已经付出过的原版定义分析可以被下一次事件、下一条 T0 路径和其它 mod 复用，而不是建立一条无限扩张的全树验收线。
+
+
+## 2026-09-12?`health.2201` ? epidemic ??????
+
+R463 ? CK3 `1.19.0.6`?PID `113420`?generation `1`?`date_raw=53218848` ?? `health.2201` instance `341`?root `32904`?scope ? `physician=49718 / sick_character=36354 / disease_type:flag / health_court_owner=32904 / background_terrain_scope:province`??? `epidemic`?rendered native indices ? `(0,1,3,4)`??????????? epidemic ? RED?`selection_attempted=false`??? RED SHA-256 ? `555AA864F9BB9FC982E8C1E174CF095AF651AAED687F3329765A0D8606E98D8D`?
+
+exact source index ??? `events/health_events.txt:5931`?SHA-256 `8CAB7F230E09A37C15F7C088383D40752D970918D44D86762FDD068EE168EFEB`?? `common/scripted_effects/20_health_effects.txt:534` ? caller candidate?SHA-256 `6D7DEF1245D899DE4DEBC42136815BC7F4D14F6A467A8320355507AD03528F12`??????? `epidemic` ?????????? `health.2201` ??????? physician??????????? scope / ????????? authored 1/native 0 ???????????scope ????????? fail-closed?????? B1 ??????? [`../phase2-promo/r463-health-2201-non-epidemic-physician-red-2026-09-12.md`](../phase2-promo/r463-health-2201-non-epidemic-physician-red-2026-09-12.md)?

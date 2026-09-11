@@ -1155,6 +1155,37 @@ _LEGACY_MANAGER_HEALTH_TIMELINE_CONTRACTS: Final[
                 "sick_character": "character",
                 "background_terrain_scope": "province",
             },
+        }, {
+            # R463 reached the same four-option physician projection from a
+            # non-epidemic disease contraction. contract_disease_effect only
+            # forwards epidemic when its caller owns one, while health.2201
+            # independently saves the available court physician. Bind this
+            # exact five-scope shape and retain the same safe-treatment route.
+            "saved_scope_names": (
+                "disease_type",
+                "physician",
+                "sick_character",
+                "health_court_owner",
+                "background_terrain_scope",
+            ),
+            "saved_scope_count": 5,
+            "unique_character_scope_excludes": {
+                "sick_character": (29037,),
+                "physician": (29037,),
+            },
+            "scope_types": {
+                "disease_type": "flag",
+                "physician": "character",
+                "sick_character": "character",
+                "background_terrain_scope": "province",
+            },
+            "option_variants": ({
+                "option_count": 4,
+                "snapshot_option_counts": (4, 7),
+                "native_option_indices": (0, 1, 3, 4),
+                "selected_option_number": 1,
+                "selected_native_option_index": 0,
+            },),
         },),
         "option_variants": ({
             # When a physician is available and root controls the patient's
