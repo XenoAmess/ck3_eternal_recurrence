@@ -417,10 +417,10 @@ zqa_setup_ransom_matrix_effect = {
 		var:zqa_conversion_ruler_low = { save_scope_as = zqa_ransom_one_gold_target }
 
 		scope:zqa_ransom_full_target = {
-			add_gold = { value = gold multiply = -1 }
+			remove_long_term_gold = gold
 		}
 		scope:zqa_ransom_one_gold_target = {
-			add_gold = { value = gold multiply = -1 }
+			remove_long_term_gold = gold
 			add_gold = 1
 		}
 		if = {

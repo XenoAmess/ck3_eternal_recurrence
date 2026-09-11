@@ -314,15 +314,15 @@ zqa_setup_payment_matrix_effect = {
 	add_courtier = scope:zqa_payment_any_target
 	add_courtier = scope:zqa_payment_one_gold_target
 	scope:zqa_payment_full_target = {
-		add_gold = { value = gold multiply = -1 }
+		remove_long_term_gold = gold
 		add_gold = golden_obligation_value
 	}
 	scope:zqa_payment_any_target = {
-		add_gold = { value = gold multiply = -1 }
+		remove_long_term_gold = gold
 		add_gold = 2
 	}
 	scope:zqa_payment_one_gold_target = {
-		add_gold = { value = gold multiply = -1 }
+		remove_long_term_gold = gold
 		add_gold = 1
 	}
 	add_hook = { type = favor_hook target = scope:zqa_payment_full_target }
