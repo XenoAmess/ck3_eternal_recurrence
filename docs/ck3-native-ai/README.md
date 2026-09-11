@@ -527,3 +527,12 @@ flowchart TD
 - R446 最近 pre-target save SHA-256 `523D365EC6E566EE7432C99B04AD682C99BFCA92D26FDA7EDE340AACCCA38709`，
   无 `raiktor`；R447 no-launch admission SHA-256
   `BCF0467F59E1BEEFD02B2868BF4F159980E595137F58790A4A93860097475112`。T1 仍为 90%，下一步只跑这一近边界续轮。
+
+## 2026-09-11：GEN-034 R447 选项执行命中与证据门纠偏
+
+- R447 以唯一 PID `58396` 从 admitted R446 successor 启动；`.1071.a` 在 `(931,934)` 首次点击后由同一高置信识别器确认消失，关闭了 R446 的点击接受不确定性。
+- observer 返回 `armed-hit-evaluated-name-mismatch`、`source_execution_count=0`，同时记录断点已安装、原字节已恢复且 debugger 已 detach。该顺序证明选项实际命中 exact `spawn_army` 断点并通过 loaded-node identity；零行来自旧采集器在 append 前把 `evaluated_name` 当硬选择器，并非 native no-hit。
+- 原版 `bookmark.1071:immediate:1477` tooltip scope RED 再次出现，但随后真实命中 mutation breakpoint，已经排除其作为选项执行阻断的解释；诊断仍原样保留。R447 classification SHA-256 为 `4F9E9DD3E8EB19DFD7B9BC88A308F39E7D43A0721185B77630D14096BE34C767`，cleanup GREEN、CK3=0。
+- `8e2a8917143e261ccac589436b44baafdb1b9d14` 仅取消 append 前的名称拒绝，保留每行真实读值；最终六行 validator 仍要求经审阅的预期 identity，失败继续 RED。新 capture executable SHA-256 为 `B05E0B6D3CA8DBEC41C8C5107AB8F9AACD4E99981E442AC1DBF3077868241007`，normal/`-O` 聚焦矩阵各 `53/53`，self-test GREEN。
+- R447 最近 pre-target save SHA-256 `89D15B8ACB0E69E6C439D658582B63DC1F8AD11EC687089E5021A5961607D4DD` 已通过 R448 no-launch admission（receipt SHA-256 `5FF8771F9CCCA853FA4C4FE8FA7B7BE0787C3EAB5EEF25B18FD8FD5A9601E3EB`）。open_kaishek 依赖记录提交为 `1d67a5e9567e83af2875c5122681c3b35bc92278`，公开 MCP/Java/schema 不变。
+- T1 保持 90%，`GEN-034` unresolved；R448 只从该近边界输入采集并审阅六行实际名称，不扩大为长跑。T0 P1 仍为 `6/9`，P2 视频硬锁未触碰。
