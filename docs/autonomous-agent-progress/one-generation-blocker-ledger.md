@@ -994,4 +994,4 @@ WarID `50331699` / `raiktor_claim_cb` 的 primary-attacker surrender 只有 type
 ## 2026-09-11：GEN-034 R453 suspended identity harness RED
 
 - R453 唯一 PID `26952` 在主线程挂起时只有清单 identity、没有 CIM/Toolhelp `ExecutablePath`；旧校验因此在 Prepare 前回收目标。主线程未恢复，source/bridge/query/mutation 均未开始，源存档未变、CK3=0。report/classification 为 `554D8D41…6458` / `520DFC89…1BD4`。
-- 最小修复继续要求全局只有同一 PID，并在清单路径为空时通过共享 suspended-process 的保留 Win32 handle 读取 image path，再执行 exact path/hash 校验。R454 no-launch admission `5DBB22DE…6F46` READY；`GEN-034` unresolved、T1=90%，下一步只有一轮 R454 只读复验。
+- 最小修复继续要求全局只有同一 PID，并在清单路径为空时通过共享 suspended-process 的保留 Win32 handle 读取 image path，再执行 exact path/hash 校验。R454 no-launch admission `5DBB22DE…6F46` READY；根提交 `69f0fbf5d7e7d723d12726064c1c23a9f1b4563e`、T2 记录 `cd6545fac7c284d63261798d3d1313bf771540b6` 均已推送。`GEN-034` unresolved、T1=90%，下一步只有一轮 R454 只读复验。
