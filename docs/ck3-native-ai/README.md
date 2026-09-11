@@ -544,3 +544,9 @@ flowchart TD
 - R448 capture/report/classification SHA-256 分别为 `B819D4C94B3BD25EC1B505368801FE5EC2BD09CBCEFB934543B687CB1A984A1D`、`F42E36EA27E7A2CA099A49729AAE673C5A393900B3195080F7B6995BF80BA720`、`852DDB667BDEC287450441BC95A5032065F9BB77AA3FF67FFF6F315A2E300ABF`。
 - `0235a50241f3dd6c37d375ff00bf56d76620d3a9` 在 C++/Python 中改为“名称非空且六行一致”，同时保留 node、WarID、generation、兵力和映射硬校验。新 executable SHA-256 `020F051DDE034CBBC67C5A308F8E035FFA3E224844AC413261AA257466B0F185`；self-test、normal/`-O` 各 `53/53` GREEN。T2 同步提交为 `880888cb130cbf2d7002ff02c9047d3e15e5f45a`，公开 MCP/Java/schema 不变。
 - 本轮未进入 bridge/termination，故 source-specific loss、comparison、decision/action readiness 不提升，T1=90%、`GEN-034` unresolved。R448 已结束；autosave 与入参逐字节相同且无 `raiktor`，下一步只需一轮 R449 近边界续跑。
+
+## 2026-09-11：R449 启动前纠正动态 source WarID 绑定
+
+- R448 已证自然事件本轮 WarID 为 `33554473`，不是旧 fixture 的 `50331699`。启动前静态检查发现旧 lifecycle 会硬拒绝新 WarID，且 concrete continuation 缺少 outer owner 已传入的 `expected_war_id` 参数；若直接运行，capture GREEN 后必然失败。
+- `5743466d1074af68ff12930bbe299becc12fef8c` 改为从已规范化的 source capture 派生本轮 full-generation WarID，并贯穿 current/termination/postwar；CLI WarID 仅保留为可选相等断言。所有同 PID、active-war、generation、checkpoint 和 postwar 门保持不变。normal/`-O` 各 `53/53` GREEN。
+- T2 同步提交 `5aec42436035e870a63c29ece582d41fc909163a`；公开 MCP/Java/profile、DLL、游戏文件和加载顺序不变。未启动 CK3，当前 R448 已结束、CK3=0；T1 仍 90%，`GEN-034` unresolved。
