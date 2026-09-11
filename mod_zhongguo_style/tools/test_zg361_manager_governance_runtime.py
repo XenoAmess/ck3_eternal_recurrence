@@ -173,9 +173,10 @@ class ManagerGovernanceRuntimeTests(unittest.TestCase):
         self.assertEqual(READINESS, "static-ready")
         self.assertIn("Readiness: `static-ready-live-pending`", self.spec)
         self.assertIn("native manager→subordinate typed selector transport", self.spec)
-        self.assertIn("CK3 live evidence: `RED only`", self.spec)
+        self.assertIn("CK3 live evidence: `.120`", self.spec)
         self.assertIn("B3 readiness 仍为 `static-ready-live-pending`", self.spec)
-        self.assertIn("尚无可提升 B3 readiness 的 paused gameplay artifact", self.spec)
+        self.assertIn("no_bounded_ai_direct_manager", self.spec)
+        self.assertIn("zg361_mg_schedule_player_manager_assessment_effect", self.spec)
         self.assertIn("不触发\nsize A/B", self.spec)
         self.assertNotIn("fixture-live", self.spec.split("## Readiness boundary", 1)[0])
 
@@ -213,11 +214,11 @@ class ManagerGovernanceRuntimeTests(unittest.TestCase):
         )
 
         historical_bytes = render_effects()
-        # The generated payload includes the independent-Jingcha refusal branch.
-        self.assertEqual(len(historical_bytes), 387_704)
+        # The generated payload includes the player-publication callback.
+        self.assertEqual(len(historical_bytes), 389_468)
         self.assertEqual(
             hashlib.sha256(historical_bytes).hexdigest(),
-            "d4d2a74b94c7f5dfb79cce8e65088d2474fbf141bd44f2963fb0c89dcba0d64d",
+            "9c20e43bdfe0829cfb696de2398b741724f60f9af3d0801044f71bf0ab6d80cf",
         )
         historical = historical_bytes.decode("utf-8-sig")
         historical_names = re.findall(
@@ -227,10 +228,10 @@ class ManagerGovernanceRuntimeTests(unittest.TestCase):
         configured_names = [
             name for _filename, names in EFFECT_GROUPS for name in names
         ]
-        self.assertEqual(len(historical_names), 43)
-        self.assertEqual(len(set(historical_names)), 43)
-        self.assertEqual(len(configured_names), 43)
-        self.assertEqual(len(set(configured_names)), 43)
+        self.assertEqual(len(historical_names), 44)
+        self.assertEqual(len(set(historical_names)), 44)
+        self.assertEqual(len(configured_names), 44)
+        self.assertEqual(len(set(configured_names)), 44)
         self.assertEqual(set(configured_names), set(historical_names))
 
         for filename, expected_names in EFFECT_GROUPS:
@@ -586,10 +587,10 @@ class ManagerGovernanceRuntimeTests(unittest.TestCase):
         self.assertIn("zg361_mg_consume_due_policy_debts_effect = yes", opener)
         self.assertIn("liege = root", opener)
         self.assertIn(
-            "root.var:zg361_review_serial >= var:zg361_mg_m032_next_review_serial",
+            "root.var:zg361_mg_evaluation_cycle_serial >= var:zg361_mg_m032_next_review_serial",
             consumer,
         )
-        self.assertNotRegex(consumer, r"(?<!root\.)var:zg361_review_serial\s*>=")
+        self.assertNotIn("root.var:zg361_review_serial", consumer)
         for mechanism_id in TARGET_IDS:
             stem = f"zg361_mg_m{mechanism_id:03d}"
             with self.subTest(mechanism=mechanism_id):
@@ -601,11 +602,11 @@ class ManagerGovernanceRuntimeTests(unittest.TestCase):
                 self.assertIn(f"{stem}_debt_remediation_code value = 1", consumer)
         self.assertEqual(consumer.count("change_variable = { name = zg361_mg_manager_score_delta add = -3 }"), len(TARGET_IDS))
         self.assertEqual(
-            consumer.count("zg361_mg_manager_score_delta_due_cycle value = root.var:zg361_review_serial"),
+            consumer.count("zg361_mg_manager_score_delta_due_cycle value = root.var:zg361_mg_evaluation_cycle_serial"),
             len(TARGET_IDS),
         )
         self.assertIn("add = var:zg361_mg_manager_score_delta", snapshot)
-        self.assertIn("var:zg361_mg_manager_score_delta_due_cycle <= root.var:zg361_review_serial", snapshot)
+        self.assertIn("var:zg361_mg_manager_score_delta_due_cycle <= root.var:zg361_mg_evaluation_cycle_serial", snapshot)
         self.assertIn("remove_variable = zg361_mg_manager_score_delta", snapshot)
         self.assertIn("remove_variable = zg361_mg_manager_score_delta_due_cycle", snapshot)
 
@@ -760,7 +761,7 @@ class ManagerGovernanceRuntimeTests(unittest.TestCase):
             fairness,
         )
 
-    def test_permission_matrix_player_ai_duke_and_assessed_only(self) -> None:
+    def test_permission_matrix_is_player_only_and_keeps_duke_boundary(self) -> None:
         dispatcher = top_level_block(
             self.effects, "zg361_mg_dispatch_subordinate_managers_effect"
         )
@@ -770,9 +771,8 @@ class ManagerGovernanceRuntimeTests(unittest.TestCase):
         self.assertIn("zg361_is_celestial_liege_trigger = yes", dispatcher)
         self.assertIn("zg361_is_celestial_liege_trigger = yes", opener)
         self.assertIn("liege = root", opener)
-        self.assertNotIn("is_ai = no", dispatcher)
-        self.assertIn("eligible AI manager report projected silently", self.effects)
-        self.assertIn("eligible AI policy governance completed silently", self.effects)
+        self.assertIn("is_ai = no", dispatcher)
+        self.assertIn("is_ai = no", opener)
         self.assertIn("is_ai = no", top_level_block(self.events, "zg361mg.120"))
         self.assertIn("is_ai = no", top_level_block(self.events, "zg361mg.220"))
         celestial = top_level_block(self.triggers, "zg361_is_celestial_liege_trigger")
@@ -780,6 +780,36 @@ class ManagerGovernanceRuntimeTests(unittest.TestCase):
         self.assertIn("highest_held_title_tier >= tier_duchy", celestial)
         self.assertIn("liege = { zg361_is_celestial_liege_trigger = yes }", reviewed)
         self.assertNotIn("tier_county", reviewed)
+
+    def test_player_publication_callback_re_roots_without_forging_owner_review(self) -> None:
+        scheduler = top_level_block(
+            self.effects, "zg361_mg_schedule_player_manager_assessment_effect"
+        )
+        callback = top_level_block(self.events, "zg361mg.90")
+        self.assertIn("is_ai = no", scheduler)
+        self.assertIn("liege = { zg361_is_celestial_liege_trigger = yes }", scheduler)
+        self.assertIn("zg361_mg_last_scheduled_publication_serial", scheduler)
+        self.assertIn("trigger_event = { id = zg361mg.90 days = 1 }", scheduler)
+        self.assertIn("this = scope:zg361_mg_publication_owner", callback)
+        self.assertIn("is_ai = no", callback)
+        self.assertIn(
+            "value = scope:zg361_mg_publication_subject.var:zg361_review_serial",
+            callback,
+        )
+        self.assertIn(
+            "change_variable = { name = zg361_mg_evaluation_cycle_serial add = 1 }",
+            callback,
+        )
+        self.assertIn("zg361_mg_open_manager_governance_cases_effect = yes", callback)
+        self.assertNotIn("name = zg361_review_serial", callback)
+
+        for domain in ("f", "ak"):
+            opened = top_level_block(
+                self.case_effects, f"zg361_case_{domain}_open_effect"
+            )
+            self.assertIn(
+                "MANAGER_CYCLE_VAR = zg361_mg_evaluation_cycle_serial", opened
+            )
 
     def test_manager_is_owned_and_assessed_by_direct_superior(self) -> None:
         opener = top_level_block(
@@ -789,9 +819,12 @@ class ManagerGovernanceRuntimeTests(unittest.TestCase):
         self.assertIn("liege = root", opener)
         self.assertIn("zg361_case_f_open_effect = yes", opener)
         self.assertIn("zg361_case_ak_open_effect = yes", opener)
-        self.assertIn("value = root.var:zg361_review_serial", snapshot)
+        self.assertIn("value = root.var:zg361_mg_evaluation_cycle_serial", snapshot)
         self.assertIn("value = var:zg361_review_serial", snapshot)
-        self.assertIn("var:zg361_review_serial < root.var:zg361_review_serial", opener)
+        self.assertIn(
+            "var:zg361_review_serial < root.var:zg361_mg_evaluation_cycle_serial",
+            opener,
+        )
 
     def test_jingcha_is_free_default_mandatory_and_ai_silent(self) -> None:
         self.assertRegex(

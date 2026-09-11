@@ -65,6 +65,29 @@ zg361_mg_refuse_jingcha_exact_effect = {
 	else = { zg361_mg_set_red_effect = { CODE = 4 MECHANISM = 32 } }
 }
 
+zg361_mg_schedule_player_manager_assessment_effect = {
+	if = {
+		limit = {
+			has_game_rule = zg361_on
+			is_ai = no
+			zg361_is_celestial_liege_trigger = yes
+			has_variable = zg361_review_serial
+			liege = { zg361_is_celestial_liege_trigger = yes }
+			trigger_if = {
+				limit = { has_variable = zg361_mg_last_scheduled_publication_serial }
+				NOT = { var:zg361_mg_last_scheduled_publication_serial = var:zg361_review_serial }
+			}
+			trigger_else = { always = yes }
+		}
+		set_variable = { name = zg361_mg_last_scheduled_publication_serial value = var:zg361_review_serial }
+		save_scope_as = zg361_mg_publication_subject
+		liege = {
+			save_scope_as = zg361_mg_publication_owner
+			trigger_event = { id = zg361mg.90 days = 1 }
+		}
+	}
+}
+
 zg361_mg_dispatch_subordinate_managers_effect = {
 	if = {
 		limit = {
@@ -72,12 +95,14 @@ zg361_mg_dispatch_subordinate_managers_effect = {
 			zg361_is_celestial_liege_trigger = yes
 			has_variable = zg361_review_serial
 		}
+		set_variable = { name = zg361_mg_evaluation_cycle_serial value = var:zg361_review_serial }
 		every_vassal = {
 			limit = {
+				is_ai = no
 				zg361_is_celestial_liege_trigger = yes
 				liege = root
 				has_variable = zg361_review_serial
-				var:zg361_review_serial < root.var:zg361_review_serial
+				var:zg361_review_serial < root.var:zg361_mg_evaluation_cycle_serial
 			}
 			zg361_mg_open_manager_governance_cases_effect = yes
 		}
@@ -107,14 +132,15 @@ zg361_mg_open_manager_governance_cases_effect = {
 	if = {
 		limit = {
 			has_game_rule = zg361_on
+			is_ai = no
 			zg361_is_celestial_liege_trigger = yes
 			liege = root
 			root = {
 				zg361_is_celestial_liege_trigger = yes
-				has_variable = zg361_review_serial
+				has_variable = zg361_mg_evaluation_cycle_serial
 			}
 			has_variable = zg361_review_serial
-			var:zg361_review_serial < root.var:zg361_review_serial
+			var:zg361_review_serial < root.var:zg361_mg_evaluation_cycle_serial
 		}
 		zg361_mg_clear_red_effect = yes
 		zg361_mg_consume_due_policy_debts_effect = yes
@@ -162,7 +188,7 @@ zg361_mg_build_team_snapshot_effect = {
 	if = { limit = { NOT = { has_variable = zg361_mg_team_snapshot_revision } } set_variable = { name = zg361_mg_team_snapshot_revision value = 0 } }
 	change_variable = { name = zg361_mg_team_snapshot_revision add = 1 }
 	set_variable = { name = zg361_mg_snapshot_source_serial value = var:zg361_review_serial }
-	set_variable = { name = zg361_mg_snapshot_current_serial value = root.var:zg361_review_serial }
+	set_variable = { name = zg361_mg_snapshot_current_serial value = root.var:zg361_mg_evaluation_cycle_serial }
 	# Freeze the exact published B1 cohort source that can later authorize a
 	# #360 manager-cost receipt.  A later B1 cycle cannot be substituted for
 	# the cohort that this manager review actually scored.
@@ -313,10 +339,10 @@ zg361_mg_build_team_snapshot_effect = {
 		limit = {
 			has_variable = zg361_mg_manager_score_delta
 			has_variable = zg361_mg_manager_score_delta_due_cycle
-			var:zg361_mg_manager_score_delta_due_cycle <= root.var:zg361_review_serial
+			var:zg361_mg_manager_score_delta_due_cycle <= root.var:zg361_mg_evaluation_cycle_serial
 		}
 		change_variable = { name = zg361_mg_team_hc_efficiency add = var:zg361_mg_manager_score_delta }
-		set_variable = { name = zg361_mg_manager_score_delta_consumed_cycle value = root.var:zg361_review_serial }
+		set_variable = { name = zg361_mg_manager_score_delta_consumed_cycle value = root.var:zg361_mg_evaluation_cycle_serial }
 		remove_variable = zg361_mg_manager_score_delta
 		remove_variable = zg361_mg_manager_score_delta_due_cycle
 	}

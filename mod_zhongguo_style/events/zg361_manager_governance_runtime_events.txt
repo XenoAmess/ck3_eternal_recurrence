@@ -1,6 +1,39 @@
 ﻿# GENERATED FILE — edit tools/gen_361_manager_governance_runtime.py
 namespace = zg361mg
 
+# Re-root a player-originated publication callback on the direct superior.
+# The owner-local evaluation clock is one greater than the fully published
+# manager source, preserving strict lag without claiming that the owner ran B1.
+zg361mg.90 = {
+	type = character_event
+	hidden = yes
+	immediate = {
+		if = {
+			limit = {
+				exists = scope:zg361_mg_publication_owner
+				exists = scope:zg361_mg_publication_subject
+				this = scope:zg361_mg_publication_owner
+				zg361_is_celestial_liege_trigger = yes
+				scope:zg361_mg_publication_subject = {
+					is_ai = no
+					zg361_is_celestial_liege_trigger = yes
+					liege = scope:zg361_mg_publication_owner
+					has_variable = zg361_review_serial
+				}
+			}
+			set_variable = {
+				name = zg361_mg_evaluation_cycle_serial
+				value = scope:zg361_mg_publication_subject.var:zg361_review_serial
+			}
+			change_variable = { name = zg361_mg_evaluation_cycle_serial add = 1 }
+			scope:zg361_mg_publication_subject = {
+				zg361_mg_open_manager_governance_cases_effect = yes
+			}
+		}
+		else = { debug_log = "ZG361MG: stale player publication callback ignored" }
+	}
+}
+
 # F032-036 delayed stage tickets.  Every event binds owner, subject, cycle,
 # case and expected state; stale copies are strict no-ops.
 zg361mg.100 = {

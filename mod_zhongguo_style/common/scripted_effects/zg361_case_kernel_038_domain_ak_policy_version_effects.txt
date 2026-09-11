@@ -3,7 +3,7 @@
 # AK: policy_version; state 1 = drafted
 zg361_case_ak_open_effect = {
 	zg361_case_kernel_initialize_case_effect = {
-		MANAGER_CYCLE_VAR = zg361_review_serial
+		MANAGER_CYCLE_VAR = zg361_mg_evaluation_cycle_serial
 		MANAGER_CASE_CURSOR_VAR = zg361_case_ak_cursor
 		OWNER_VAR = zg361_case_ak_owner
 		SUBJECT_VAR = zg361_case_ak_subject

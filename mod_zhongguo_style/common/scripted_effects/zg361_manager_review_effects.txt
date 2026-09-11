@@ -1855,7 +1855,7 @@ zg361_mg_m036_append_decade_log_effect = {
 		if = {
 			limit = { var:zg361_case_f_state = 5 var:zg361_case_f_active = 0 }
 			if = { limit = { is_ai = no } zg361_mg_schedule_f_ticket_effect = { EVENT = zg361mg.120 DAYS = 1 } }
-			else = { debug_log = "ZG361MG: eligible AI deferred manager report completed silently" }
+			else = { debug_log = "ZG361MG: non-player deferred manager report suppressed" }
 		}
 	}
 	if = {
@@ -1942,7 +1942,7 @@ zg361_mg_m036_append_decade_log_effect = {
 			if = {
 				limit = { var:zg361_case_f_state = 5 var:zg361_case_f_active = 0 }
 				if = { limit = { is_ai = no } zg361_mg_schedule_f_ticket_effect = { EVENT = zg361mg.120 DAYS = 1 } }
-				else = { debug_log = "ZG361MG: eligible AI manager highlight projected silently" }
+				else = { debug_log = "ZG361MG: non-player manager highlight suppressed" }
 			}
 		}
 		else = {
@@ -2018,7 +2018,7 @@ zg361_mg_m036_append_decade_log_effect = {
 		if = {
 			limit = { var:zg361_case_f_state = 5 var:zg361_case_f_active = 0 }
 			if = { limit = { is_ai = no } zg361_mg_schedule_f_ticket_effect = { EVENT = zg361mg.120 DAYS = 1 } }
-			else = { debug_log = "ZG361MG: eligible AI manager report projected silently" }
+			else = { debug_log = "ZG361MG: non-player manager report suppressed" }
 		}
 		}
 	}

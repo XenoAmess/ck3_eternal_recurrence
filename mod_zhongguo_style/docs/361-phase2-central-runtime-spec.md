@@ -36,10 +36,10 @@ M013 公示闭合证明按显式 mode 严格互斥：route A/B 必须同时满�
 | 7 | Credit/Project | `zg361_cp_open_portfolio_effect` | closed + conservation OK；无 distinct reviewer 为 N/A |
 | 8 | Metrics/Delivery | `zg361_p3_open_portfolio_effect` | 同 result case、同周期 CP source、closed、conservation OK |
 | 9 | Career/Learning | `zg361_cl_dispatch_direct_reports_effect` | expected/completed 全齐；玩家 digest 已 ACK |
-| 10 | Manager/Governance | `zg361_mg_dispatch_subordinate_managers_effect` | 冻结带 owner/cycle/case/order 的 strict-lag manager cohort，全部 F/AK terminal；空集 N/A |
+| 10 | Manager/Governance | `zg361_mg_dispatch_subordinate_managers_effect` | 只冻结玩家控制、带 owner/cycle/case/order 的 strict-lag manager cohort，全部 F/AK terminal；空集 N/A |
 | 11 | Workforce/Endgame | 初始 `zg361_we_open_portfolio_effect`；#360 `zg361_we_resume_m360_from_central_source_effect` | status 6 success；status 8 为真实 history-accruing terminal；status 7 为 count/baron 或 manager structural N/A；status 5 是外部等待 |
 
-每次中央 pump 的 `if/else_if` 只进入一个 stage；每个 stage 每次最多调用一个 public adapter/domain opener。玩家与 AI 走同一业务 ABI 和同一顺序，差异仅是玩家 UI lane 与最终摘要；AI 后台静默。
+每次中央 pump 的 `if/else_if` 只进入一个 stage；每个 stage 每次最多调用一个 public adapter/domain opener。Central 的正式入口来自玩家 B1 公示；hidden event 只搬运玩家已经触发的业务身份，不授予 AI 自主入口。
 
 ## 4. UI、等待与 replay
 
@@ -47,7 +47,7 @@ M013 公示闭合证明按显式 mode 严格互斥：route A/B 必须同时满�
 - PP 的 queue lock、Compensation 的 active flag、Career/Learning 的 digest pending 都是中央真实等待条件。
 - Incident X/Y/Z 的 success 额外要求 `applicable=1`、positive incident/source/consequence 与 `final_kpi_staged=1`；N/A 必须同时冻结 owner/subject/cycle、reason=1、probe/receipt serial，并回指同周期 `probe_result/source/consequence=0/0/0`。缺字段或任意旧零值都不能冒充 N/A。
 - Career/HC、Compensation、PP 的 manager-only ABI 会先按各自同一筛选器预选；只有候选仍等于 frozen primary 才调用，防止资格漂移在别人身上留下 active orphan。
-- Career/Learning 冻结直属 cohort/count，AH/AI expected 必须各自等于该 count；partial open 等已开案终态后记 RED。Manager/Governance 同样核对 frozen cohort 的 exact F/AK started/active/terminal，failed open 不会无限轮询。
+- Career/Learning 冻结直属 cohort/count，AH/AI expected 必须各自等于该 count；partial open 等已开案终态后记 RED。Manager/Governance 只枚举玩家经理，并核对 frozen cohort 的 exact F/AK started/active/terminal；failed open 不会无限轮询。
 - #360 source status 严格分为 READY=1、consumed=2、RED=4、WAIT=5、structural N/A=7。B1 status 2 的 route C、
   zero quota、absolute-grade C、单 cohort quota>6 只排除该 manager；B1 status 3 的 agenda/member/#137/#357/
   result/hash/quota 不一致是 RED，禁止换一组经理掩盖。未发布且合法流程仍 active 才是 WAIT；同轮 B1 已 terminal
@@ -94,8 +94,8 @@ M013 公示闭合证明按显式 mode 严格互斥：route A/B 必须同时满�
 
 - Central effect 已按用途投影为 10 个 whole-file shard，顶层定义数依次为
   `3 / 2 / 9 / 2 / 6 / 3 / 3 / 1 / 3 / 1`，最大为 9。33 个顶层 effect block 与冻结聚合逐字节、
-  顺序和定义集合一致；冻结聚合为 143,715 bytes，SHA-256
-  `1BD32A606BDE969C2709F4A95E62A5D49BF74D6F503043EB516396C285BE8A0F`。
+  顺序和定义集合一致；冻结聚合为 143,841 bytes，SHA-256
+  `7A6C3C79EBC47C73C41D46A3414CB62BFE6CEFC8437A39A6B9AED7EF55E83190`。
 - Central event 已拆为三个用途 shard：
   `zg361_phase2_central_001_serial_dispatch_events.txt` 只含 `zg361p2c.1`–`.3`，
   `zg361_phase2_central_002_m275_requisition_events.txt` 只含 `zg361p2c.4`–`.6`，

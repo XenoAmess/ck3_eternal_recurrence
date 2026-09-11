@@ -367,6 +367,7 @@ class Phase2CentralRuntimeTests(unittest.TestCase):
 
     def test_publish_initializes_only_and_defers_first_adapter_d2(self) -> None:
         hook = block(self.effects, "zg361_p2c_on_review_published_effect")
+        self.assertIn("zg361_mg_schedule_player_manager_assessment_effect = yes", hook)
         self.assertIn("var:zg361_b1_cycle_state = 8", hook)
         self.assertIn("var:zg361_b1_closure_state = 4", hook)
         self.assertIn("position = 0", hook)
@@ -793,6 +794,7 @@ class Phase2CentralRuntimeTests(unittest.TestCase):
         self.assertIn("zg361_cl_portfolio_reconcile_invalid > 0", cl)
         self.assertIn("CODE = 911", cl)
         mg = block(self.effects, "zg361_p2c_stage_10_manager_governance_effect")
+        self.assertIn("is_ai = no", mg)
         self.assertIn("var:zg361_review_serial < root.var:zg361_p2c_cycle", mg)
         self.assertIn("zg361_p2c_mg_subjects", mg)
         self.assertIn("var:zg361_case_f_state = 5", mg)
