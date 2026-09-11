@@ -1424,7 +1424,20 @@ class ConcreteLiveOperations:
             raise LiveAdapterError("owned CK3 died before post-observer pause")
         self._load_visual_dependencies()
         self._acceptance.ACTIVE_CK3_PID = pid
-        self._acceptance.ensure_game_paused(self.ui_dir, "g2-post-observer")
+        try:
+            self._acceptance.ensure_game_paused(self.ui_dir, "g2-post-observer")
+        except self._acceptance.RunnerError as error:
+            frozen = self._acceptance.verify_terminal_date_frozen(
+                self.ui_dir, "g2-post-observer-date-fallback", seconds=3
+            )
+            return {
+                "pid": pid,
+                "paused": True,
+                "after_observer_detach": True,
+                "pause_confirmation": "hud-date-frozen-after-ocr-occlusion",
+                "pause_ocr_error": str(error),
+                "date_freeze": frozen,
+            }
         return {"pid": pid, "paused": True, "after_observer_detach": True}
 
     async def attach_bridge_to_pid(

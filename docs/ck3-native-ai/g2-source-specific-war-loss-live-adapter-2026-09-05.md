@@ -691,6 +691,42 @@ open_kaishek records the private contract delta in commit
 `880888cb130cbf2d7002ff02c9047d3e15e5f45a`; no public MCP/Java contract
 changed.
 
+### R451 source GREEN and pause-confirmation OCR occlusion
+
+Two command attempts were rejected before `Popen`: the first supplied a
+nonexistent userdir instead of a fresh empty directory, and the second selected
+a Python environment without `win32api`. Both left CK3 count at zero and did
+not consume a round. The corrected command launched the unique R451 PID
+`214712` with the general repository venv.
+
+R451 again accepted `.1071.a`, captured all six source executions for WarID
+`33554473`, and detached the debugger after two attempts with final error zero.
+The capture is SHA-256
+`A0324AD9A12F03145470D4087EC08A7638C0DDDD69668772B731953B1CB2A5D2`.
+The adapter then clicked the timeline pause control, but a top-center
+daughter-ransom notification occupied the pause OCR region until the six-second
+wait expired. The retained frame shows a readable HUD date and the notification
+occlusion. The run stopped before bridge attach, emitted no truce diagnostic
+row, created no checkpoint, submitted no command, and started no postwar phase.
+Cleanup is GREEN, the source save is byte-identical, and CK3 count is zero.
+The report, timeout frame, classification, and final launch-record SHA-256
+values are
+`51F38C32CC9759B43120759A4CD15BB0C55FE4D389B04EEEE48C28526F89E559`,
+`95739D8D05FDFD9CD1E300F5AB78B56D6251542CC250160A58EC20C46DEC3F76`,
+`85C217795CC1CBF59B8BD42AD9F54D19C627D46CD78A86A1477479B5D4F04D7A`,
+and `6E25E1BE85BDFDAE25BD2DF88659E7C40B7D021B004C5C4FCC8B7F8400A442F7`.
+
+The focused repair catches only the existing runner's pause-OCR timeout after
+the pause click and requires a strict three-second HUD-date freeze. Both dates
+must be readable and equal; unreadable or advancing time remains RED. The live
+adapter test module passes `30/30` in normal and optimized Python, `py_compile`
+and `git diff --check` are GREEN, and no C++/DLL/game file changed. The R452
+no-launch receipt binds the unchanged source and the new adapter, records
+`read-only-pre-termination`, and has SHA-256
+`F89EE9D57A34038B822B74E2B75DD1F2BE9CCF1ED4798B7E636C78C033F02CCF`.
+R451 is a harness RED, not a mod-product RED; truce/terms/action readiness and
+`GEN-034` remain unchanged.
+
 R448 did not reach the bridge or termination phases, so source-specific loss,
 comparison, decision, action, and automatic-surrender readiness remain false;
 T1 stays at 90% and `GEN-034` remains unresolved. Its autosave is byte-identical
