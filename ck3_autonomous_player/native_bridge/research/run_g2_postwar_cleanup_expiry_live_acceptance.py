@@ -194,6 +194,7 @@ async def _continue_private_sequence(
     ticket: dict[str, object],
     postwar_timeout: float,
     pre_sequence: dict[str, object],
+    action_expected_revision: int | None = None,
 ) -> dict[str, object]:
     """Continue an already sampled paused lifecycle through one surrender.
 
@@ -244,6 +245,14 @@ async def _continue_private_sequence(
     revision = pre_sequence.get("public_revision")
     if isinstance(revision, bool) or not isinstance(revision, int):
         raise AgentError("pre-termination public revision is invalid")
+    if action_expected_revision is not None:
+        if (
+            isinstance(action_expected_revision, bool)
+            or not isinstance(action_expected_revision, int)
+            or action_expected_revision <= revision
+        ):
+            raise AgentError("checkpoint action revision is not a successor")
+        revision = action_expected_revision
     action_step = f"surrender-war-{war_id}"
     submit = getattr(driver, "_execute_primitive_step", None)
     if not callable(submit):

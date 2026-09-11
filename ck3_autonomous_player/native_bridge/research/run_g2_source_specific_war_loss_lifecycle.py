@@ -640,12 +640,19 @@ async def run_same_lifecycle_sequence(
     )
     ticket, handoff = build_source_bound_ticket(normalized_source, pre_sequence)
     checkpoint = create_pre_mutation_checkpoint(driver, ticket)
+    post_checkpoint_frame = _object(
+        checkpoint.get("post_checkpoint_frame"), "post-checkpoint frame"
+    )
     sequence = await postwar._continue_private_sequence(
         driver,
         war_id=war_id,
         ticket=ticket,
         postwar_timeout=postwar_timeout,
         pre_sequence=pre_sequence,
+        action_expected_revision=_integer(
+            post_checkpoint_frame.get("revision"),
+            "post-checkpoint public revision",
+        ),
     )
     joined = build_source_specific_loss_join(normalized_source, ticket, sequence)
     joined_checks = _object(joined.get("checks"), "source-specific join checks")

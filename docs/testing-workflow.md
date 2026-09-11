@@ -2522,3 +2522,10 @@ surrender. Restore the frozen normal candidate in the manifest, verify its
 exact DLL/injector hashes and build-profile declaration, run only the focused
 manifest/lifecycle tests, and admit one new CK3 round. Do not repeat the
 read-only diagnostic probe.
+
+
+## Checkpoint successor revision must feed the next optimistic action
+
+A durable save can publish a new snapshot/public/native revision while CK3 PID, connection generation, date, episode, character, pause state, and active-war identity remain unchanged. When a lifecycle validates that post-save observation as a successor frame and then submits a mutation guarded by `expected_revision`, it must use the successor frame's public revision. Reusing the pre-save revision causes a deterministic harness RED before the action reaches command history.
+
+The focused regression shape is: preserve the exact pre-save frame for source/ticket binding; verify the post-save frame is the same gameplay identity with strictly increasing revisions; pass only that validated post-save public revision to the immediately following action. A command history ending at `save-checkpoint` distinguishes this harness failure from a product action or postwar failure and does not justify a long run or broad acceptance suite.

@@ -461,7 +461,7 @@ class G2SourceSpecificWarLossLifecycleTests(unittest.TestCase):
 
     def test_async_composition_reuses_one_driver_and_existing_continuation(self) -> None:
         pre = _pre_sequence()
-        seen: list[tuple[str, object]] = []
+        seen: list[tuple[object, ...]] = []
 
         async def query(query_driver: object, **_kwargs: object) -> dict[str, object]:
             seen.append(("query", query_driver))
@@ -470,7 +470,13 @@ class G2SourceSpecificWarLossLifecycleTests(unittest.TestCase):
         async def continue_sequence(
             continue_driver: object, **kwargs: object
         ) -> dict[str, object]:
-            seen.append(("continue", continue_driver))
+            seen.append(
+                (
+                    "continue",
+                    continue_driver,
+                    kwargs["action_expected_revision"],
+                )
+            )
             ticket = kwargs["ticket"]
             return {
                 "ok": True,
@@ -498,7 +504,10 @@ class G2SourceSpecificWarLossLifecycleTests(unittest.TestCase):
                     )
                 )
         self.assertTrue(result["ok"])
-        self.assertEqual(seen, [("query", driver), ("continue", driver)])
+        self.assertEqual(
+            seen,
+            [("query", driver), ("continue", driver, 92)],
+        )
         self.assertEqual(driver.calls, [("save-checkpoint", 91)])
         self.assertTrue(
             result["retention_ticket"]["termination_action_bound"]
