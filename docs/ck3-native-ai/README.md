@@ -324,11 +324,12 @@
 - [static-ready / no-launch exclusive outer-owner orchestration] [g2-source-specific-war-loss-outer-owner-2026-09-05.md](g2-source-specific-war-loss-outer-owner-2026-09-05.md)
   冻结正常事件进程在 observer 恢复断点并仅 detach 后继续存活、同 PID bridge attach、同一 driver 交给
   lifecycle continuation、最终由外层唯一 cleanup 的确定性顺序。C++ observer 已具备 detach-without-kill 路径。
-- [static-ready / concrete default-OFF live adapter; live not run] [g2-source-specific-war-loss-live-adapter-2026-09-05.md](g2-source-specific-war-loss-live-adapter-2026-09-05.md)
+- [static-ready / R440 harness RED before source capture; bounded fix ready] [g2-source-specific-war-loss-live-adapter-2026-09-05.md](g2-source-specific-war-loss-live-adapter-2026-09-05.md)
   已实现 normal launch → speed-5 natural event → observer detach → same-PID pause/explicit-pipe bridge → same-driver
   lifecycle → one outer cleanup，并对 launch receipt 形成前的失败补 exact-PID 回收。OCR 仅用于 bridge attach 前 UI，
-  source truth 来自 native observer，current/action/postwar truth 来自 MCP。no-launch preflight GREEN；等待排他 CK3
-  槽执行，故 source-specific readiness 仍 false、T1 保持 90%。
+  source truth 来自 native observer，current/action/postwar truth 来自 MCP。R440 在 source capture 前被原版单选事件阻塞，
+  现已用既有可验证 OCR recovery 替换无效 `Shift+1`；截图回放、聚焦双模式测试及 no-launch preflight GREEN。等待一次
+  新的排他 live retry，故 source-specific readiness 仍 false、T1 保持 90%。
 - [static-ready / portable operator MCP no-launch profile generator] [g2-source-specific-operator-mcp-preflight-2026-09-10.md](g2-source-specific-operator-mcp-preflight-2026-09-10.md)
   把 target identity、endpoint、clone、游戏文件与 runtime bundle 变为每机参数，并以 production operator
   profile parser 和逐文件 SHA-256 冻结；生成结果只暴露 adapter `--verify-only`，不能启动或控制 CK3，

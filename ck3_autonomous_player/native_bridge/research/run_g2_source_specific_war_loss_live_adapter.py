@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+﻿#!/usr/bin/env python3
 """Concrete owner for one natural-event G2 source-loss lifecycle.
 
 The adapter reuses the established Robert-1066 UI choreography only until the
@@ -106,6 +106,21 @@ def _sha256_file(path: Path) -> str:
         for chunk in iter(lambda: source.read(1024 * 1024), b""):
             digest.update(chunk)
     return digest.hexdigest().upper()
+
+
+def _recover_natural_event_blocker(
+    acceptance: Any, ui_dir: Path, attempt: int
+) -> dict[str, object]:
+    """Use the recorded OCR recovery path for a real non-target event."""
+
+    selected = acceptance.quick_stall_and_recover(
+        ui_dir, "g2-source-specific-natural-event", attempt
+    )
+    if not isinstance(selected, dict):
+        raise LiveAdapterError(
+            "stalled natural-event frame has no verified event option"
+        )
+    return selected
 
 
 def _resolve(path_value: object, *, repo_root: Path) -> Path:
@@ -1073,7 +1088,9 @@ class ConcreteLiveOperations:
                 time.monotonic() - last_progress > 8
                 and time.monotonic() - last_action > 3
             ):
-                pyautogui.hotkey("shift", "1")
+                _recover_natural_event_blocker(
+                    acceptance, self.ui_dir, handled_other + 1
+                )
                 handled_other += 1
                 last_action = time.monotonic()
                 last_progress = last_action
