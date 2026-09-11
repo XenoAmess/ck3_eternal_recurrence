@@ -233,7 +233,7 @@ class ProductOuterDescriptorTests(unittest.TestCase):
         service.snapshot.side_effect = [
             {"paused": True, "revision": 10, "active_event": None},
             {
-                "paused": True,
+                "paused": False,
                 "revision": 12,
                 "active_event": {
                     "instance_id": 7,

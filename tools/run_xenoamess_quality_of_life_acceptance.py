@@ -587,7 +587,9 @@ def advance_until_marker(
                 break
             snapshot = service.snapshot()
             active_event = snapshot.get("active_event")
-            if snapshot.get("paused") is True and isinstance(active_event, dict):
+            # CK3 event windows can stop calendar progress while the native
+            # paused bit remains false, so the event identity is authoritative.
+            if isinstance(active_event, dict):
                 instance_id = active_event.get("instance_id")
                 revision = snapshot.get("revision")
                 options = active_event.get("options")
