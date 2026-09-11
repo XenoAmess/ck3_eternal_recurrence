@@ -1,86 +1,93 @@
-# 验收报告
+# XQOL 1.1.0 验收报告
 
-执行日期：2026-09-09（Asia/Shanghai）
-目标：XenoAmess的体验优化 1.0.2 / CK3 1.19.0.6
+执行日期：2026-09-11（Asia/Shanghai）
+目标：XenoAmess的体验优化 1.1.0 / CK3 1.19.0.6
+公开基线：Workshop item `3798133925` / 1.0.2
 
 ## 结论
 
 | 层级 | 结果 | 证据 |
 |---|---|---|
-| L0 静态、发布本地化、exact-byte、可复现构建 | GREEN | 发布本地化 validator、builder 单测、双构建 SHA、exact-tag 官方 CI |
-| L1 隔离加载、MCP readiness | GREEN | Workshop fresh-cache 最终 artifact 的 `04_mcp_readiness.json` |
-| L2 开关、死亡、卸任、禁转 flag | GREEN | 14 个必需引擎 PASS/DONE marker 各一次，另记录死亡继任观察项 |
-| L3 Steam fresh-cache | GREEN | item `3798133925`，19/19 strict verify，fresh-cache 实机矩阵 GREEN |
+| L0 静态、九语发布本地化、生成 parity、可复现构建 | GREEN | XQOL validator、生成器检查、builder 单测与双构建 |
+| L1 隔离加载、MCP readiness | GREEN | `D:\workspace\ck3_xqol_phase2_release_live1\cell\04_mcp_readiness.json` |
+| L2 一期回归与七项二期功能 | GREEN | 同一次完整 CK3 运行的引擎 PASS/DONE marker、截图和 MCP 快照 |
+| L3 Steam fresh-cache | 待发布后复核 | 只在 Workshop 上传并从空缓存重新下载后关闭 |
 
-## 发布身份与 L0
+本报告冻结发布前候选的实机事实；Workshop 上传、fresh-cache 严格核验和正式发布事实记录在 `docs/release-changelogs/xqol/1.1.0.md`，只有三者都完成后才标记本次发布完成。
 
-- Git tag：`xqol-v1.0.2`
-- Git commit：`a8acdc19c36a94e807c11f047f3d4bc85f7ff941`
-- GitHub Release：<https://github.com/XenoAmess/ck3_eternal_recurrence/releases/tag/xqol-v1.0.2>
-- 正式 manifest SHA-256：`d1618abc1ffe6b3f2e611799001b72793ac99676f8fd5b28061f724d07538ce3`
-- deterministic ZIP SHA-256：`edf50efd2d64044c1ea62f9c9177759d375324dabf2e08aea56d1acb124e95c7`
-- thumbnail SHA-256：`832e36c9394e6ed74aa8669507d55486ceacc0403f49daa8b456fc3cb1067fe3`
-- exact-tag 官方 CI：runs `34251618381`、`34251655995` 均 GREEN。
+## 已验收候选
 
-L0 确认 19 个 runtime 文件、五种 appointment type、三份受控原版覆盖、九种本地化结构、七语发布翻译门禁与 640×640 thumbnail。法、德、日、韩、波、俄、西均为 22/22 key，格式 token 与英文基准一致；未获得七语母语者签核。三份 appointment 文件移除五个 `XQOL_AUTO_APPOINTMENT` 块后逐字节等于本机 CK3 1.19.0.6 原版。
+- 实机测试代码与九语本地化 commit：`e877a0b31f2b10d2d7b837e1eaac057e2a23bbf6`。
+- 版本：`1.1.0`；正式中文名：`XenoAmess的体验优化`。
+- 正式 tag、manifest 与 ZIP 由后续 clean release freeze 生成；不在本报告中循环嵌入自身哈希。
+- 七种外语各新增 50 个二期值，共 350 个值；发布本地化门禁为 GREEN。完整审阅见 `docs/xqol-release-localization-review-2026-09-11.md`。
 
-## Workshop fresh-cache
+## open_kaishek 离线预验
 
-- Workshop item：[`3798133925`](https://steamcommunity.com/sharedfiles/filedetails/?id=3798133925)
-- Launcher 上传成功：2026-09-09 01:20:02（Asia/Shanghai），日志为 `C:\Users\1\AppData\Local\Paradox Interactive\launcher-v2\logs\launcher-2026-09-09.log` 第 1784 行 `Publishing mod succeeded`。
-- 空路径下载缓存：`D:\Program Files (x86)\Steam\steamapps\workshop\content\1158310\3798133925`
-- ID-bearing sidecar manifest SHA-256：`a896600926a79d31ff3bc53e9d162c47666547d1965be407d2269734d916ed7b`
-- sidecar ZIP SHA-256：`edf50efd2d64044c1ea62f9c9177759d375324dabf2e08aea56d1acb124e95c7`
-- `--workshop-cache` 严格核验：19/19 GREEN；只接受 Launcher 注入的 item ID 与允许的换行规范化。
-- 匿名 Steam API 回读：`visibility=0`、标题 `XenoAmess的体验优化`、`Gameplay` 标签；描述仅规范化末尾换行后逐字符等于 `workshop/xenoamess_quality_of_life_description.bbcode`。
-- 远端 preview：640×640 PNG，768,568 字节，SHA-256 `832e36c9394e6ed74aa8669507d55486ceacc0403f49daa8b456fc3cb1067fe3`；commit-pinned GitHub raw 主图 HTTP 200。
+- checkout commit：`890b32de49081b7b5510e40c5518dfb59d5c8a6d`。
+- CLI JAR：`kaishek-cli-0.1.0-SNAPSHOT-shaded.jar`，SHA-256 `7262e771ad3e1f5d724d663ac259a20e2a7df0c491d4c125f56cb4c3a604e75c`。
+- profile/version：CK3 `1.19.0.6`；EXE SHA-256 `2d00ff3101ef70b566f2fcbae292f09263199c80e9dc8f139b82d7d96f83db86`。
+- 产品确定性语法子集 13/13 parser GREEN，corpus SHA-256 `5ab8093df9e3a36024954f8f93db1b4071e8430d721036c2fee35100d72f52c2`。
+- 最终验收夹具确定性语法子集 10/10 parser GREEN，corpus SHA-256 `b9640ac51984a0bc06115431c6ae0067d4893aa2d1ee0335e7324738abb4e01f`。
+- 尚未覆盖的互动运行语义记录为 tool-coverage `not-applicable`，没有把离线 parser 冒充实机 GREEN。
 
-## L1 / L2 / L3 最终实机
+## L0 发布门禁
+
+同一候选上的发布本地化工作包一次通过：
+
+```powershell
+& tools/.venv/Scripts/python.exe tools/test_translate_localization_minimax.py
+& tools/.venv/Scripts/python.exe tools/validate_xenoamess_quality_of_life.py --release-localization
+& tools/.venv/Scripts/python.exe tools/test_build_xenoamess_quality_of_life_release.py
+& tools/.venv/Scripts/python.exe tools/build_xenoamess_quality_of_life_release.py --check
+```
+
+结果：26/26 翻译调用器测试、发布本地化门禁、8/8 builder 测试、24 文件确定性双构建全部 GREEN。该次文档冻结前开发快照的 manifest SHA-256 为 `617c4eb6d4dc3e9b2b717465c21351de9d45640b896d56d9e5bb8af53309a058`，ZIP SHA-256 为 `58f79aa467615d11d1473898b5b9e08f63b08d609a0ef0c68c575bffc5bbe9b8`；正式 tag 构建哈希以后续 changelog 为准。
+
+## L1 / L2 完整实机
 
 命令：
 
 ```powershell
 & tools/.venv/Scripts/python.exe tools/run_xenoamess_quality_of_life_acceptance.py `
-  --source 'D:\Program Files (x86)\Steam\steamapps\workshop\content\1158310\3798133925' `
-  --bridge-dll 'ck3_autonomous_player/build-fresh-xqol-1.0.1/xar_ck3_bridge.dll' `
-  --bridge-injector 'ck3_autonomous_player/build-fresh-xqol-1.0.1/xar_ck3_bridge_injector.exe'
+  --artifacts-dir 'D:\workspace\ck3_xqol_phase2_release_live1' `
+  --bridge-dll 'D:\workspace\ck3_xqol_publication\ck3_autonomous_player\build-fresh-xqol-1.0.1\xar_ck3_bridge.dll' `
+  --bridge-injector 'D:\workspace\ck3_xqol_publication\ck3_autonomous_player\build-fresh-xqol-1.0.1\xar_ck3_bridge_injector.exe'
 ```
 
-最终 artifact：`D:\workspace\ck3_xqol_publication_process_assets\xqol\runs\zqa_20260909_043524_3fe57500`
-
-- 结果：GREEN；耗时 623.051 秒。
+- 最终结果：GREEN；退出码 0；耗时 1069.261 秒，其中本机冷启动约 11 分钟，runner 的启动等待上限为 30 分钟。
 - exact build：CK3 `1.19.0.6`；`ck3.exe` SHA-256 `2d00ff3101ef70b566f2fcbae292f09263199c80e9dc8f139b82d7d96f83db86`。
-- MCP：`native-headless`；paused、map-ready、semantic state、transport 与 PID binding 全部 GREEN。
-- 产品开启/关闭决议、原版 baseline heir、启用态最高非玩家 heir、真实卸任、真实自然死亡、禁转 flag 所有权、关闭恢复与既有 flag 保留全部 PASS。
-- 死亡路径先由 MCP 短暂推进暂停的模拟队列，再重新暂停；本次明确记录 `death_used_predeath_current_heir`，并通过 `death_transferred_to_non_player_successor`。
-- runtime product tree SHA-256：`5d224abfe224c291a34f7f425a25bc8a8d9f5f5af84a67bb5dd3592cfef45b5d`；fixture tree SHA-256：`e95f099289dc58ffc5975af244f24425885339499f353e40874edd50b6b53399`。
-- runtime/source 树未被 CK3 改写；原生进程树清理证明 GREEN；一次性 state dir 已删除；受保护 Steam/真实用户目录未变化。
+- MCP：`native-headless`；transport、PID binding、paused、map-ready、semantic state 全部 GREEN。
+- runtime product tree SHA-256：`14f4b66cf41e7d560e7471b3307725b977c434f11e40f11828e7fa19274c0a41`；fixture tree SHA-256：`fe01439cade95449dbbe911fd026ffabf4fe48b2119d9face4d0b315a53a8ad4`。
+- runtime/source 均 unchanged；进程树受控清理；一次性 state dir 删除；受保护 Steam 与真实用户目录 unchanged。
+
+### 一期回归
+
+- 三项产品开关的启用/关闭决议均由简体中文 UI OCR 实读并点击。
+- 原版继承 baseline、启用后最高分非玩家继任、卸任转移、真实死亡转移均 PASS。
+- 禁转封 flag 的启用、关闭、所有权边界与既有原版 flag 保留均 PASS。
+
+### 七项二期功能
+
+1. 自动防御召援：常规免费盟友与同时具有同盟/家系关系的重叠候选实际成为防御方参战者；付费宗族候选未加入，重叠候选只加入一次，重放调用计数为 0，玩家金钱、威信、虔诚未下降。
+2. 批量要求改信：滑动条实际显示 50%，拖至 65%，再回到 50%；50 门槛筛选与接受/拒绝汇总 PASS。
+3. 足额牵制索款：只处理可支付完整义务且可合法互动的目标，PASS。
+4. 现有款牵制索款：只处理金钱严格大于 1 的目标并收取当前整数金钱，PASS。
+5. 足额赎囚：只处理愿意支付完整适用赎金的付款人，PASS。
+6. 现有款赎囚：只要愿意付款的 AI 至少有 1 金钱便收取现有整数金钱并放人，PASS。
+7. 附条件释放：在牵制、招募、改宗中最大化兼容条件数，并按牵制、招募、改宗打破同规模平局，PASS。
 
 关键哈希：
 
 | 文件 | SHA-256 |
 |---|---|
-| `report.json` | `b01a7ee987ca591aee4e2abffcbf9b81f2c833743490830cd123ed8730a5b19a` |
-| `cell/report.json` | `2d01847d7dfeb913806376f56010627260da6ea855fea132188319d0d8454264` |
-| `cell/04_mcp_readiness.json` | `679e5406bb6a0a17eedb5695f83846bad293c281daaed5a328239597cb8cb938` |
-| `cell/09_death_settlement_tick.json` | `dfeb9eb738461ad11bf86cc40c20629eb723d6105bc26b65c6da16657fecd746` |
-
-MCP 当前不发布 appointment score、角色变量或角色 flag，故这些字段由仓库外部 fixture 在 CK3 引擎内断言；暂停、地图 readiness、模拟推进、前后 paused snapshot 与进程绑定均由 MCP 完成。简体中文正式名、四个决议标题及确认按钮已在本次正式 fresh-cache 会话中由 OCR 实读。
-
-## open_kaishek 预验
-
-预验使用 checkout commit `33d690234d8217422978ee642055ab1b13e44c76`、CLI JAR SHA-256 `cc42a0bbd4991095deb4c8af4142a4657d46d07d616b89643a9f2d7a1e4a3cd7`、profile `ck3-1.19.0.6` 与 exact CK3 EXE hash。产品 fresh-cache 与最终 fixture 均 parser GREEN；validator 因尚未覆盖 XQOL 目录/opcode 返回独立 tool-coverage RED，IR/runtime 跳过。该 RED 未被冒充 CK3 capability RED，也不替代最终实机 GREEN。
+| `report.json` | `47a6fa24213e600b3c9fd8498273efe0efc5ae3ea27037f789be7ee554643e2f` |
+| `cell/report.json` | `85707c8dd471807fcb936ef6dafaef2c69d04cb483952ef22ba18a96c84e0c06` |
+| `cell/04_mcp_readiness.json` | `4f140c14340e1410099b8e77a97871f037552bf48cfa4125370f60a60d1d138e` |
+| `cell/09_death_settlement_tick.json` | `9fc52382705b12bfba8a9253d2e8e51e68f7f62eb4012cde594c37dd7932a26a` |
+| `cell/15_conversion_reply_advance.json` | `e03341c4bdb85bcae0b58fc267db15ec41d6856cb78969183e8b4a1477d9e3ab` |
+| `cell/19_defense_war_advance.json` | `6b5d21b0f285e209a83e01d7a22bbd969d14aba2ff1d6177923216166e8bcdeb` |
 
 ## 保留的 RED 尝试
 
-历史 1.0.0 夹具 RED 与本次发布尝试均原样保留，没有覆盖或冒充最终 GREEN。本次主要路径如下：
-
-1. `zqa_20260909_013538_0ba0e296`：runner 尚不接受 fresh-cache 内层 Launcher ID。
-2. `zqa_20260909_014730_cbbdd753`：五分钟超时且 Windows Update 弹窗遮挡启动画面。
-3. `zqa_20260909_020023_4e9229ba`、`zqa_20260909_021613_da3eaae8`：本机冷启动超过旧五分钟预算。
-4. `zqa_20260909_032959_be5a64a5`：死亡 holder 在同一 GUI 帧被提前读取。
-5. `zqa_20260909_040040_458e6fd8`：修复同帧竞态后证明暂停地图不会自行处理排队死亡继承。
-6. `zqa_20260909_041836_9447142e`：MCP 已推进日期，但随机样本的预死亡 `current_heir` 身份不是稳定门禁；由精确产品合同修正为“title 离开死者且绝不落到玩家”，同时保留候选身份观察。
-7. `zqa_20260909_043524_3fe57500`：最终 GREEN。
-
-正式 staging 已从 `xqol-v1.0.2` tag 重建；内层 `descriptor.mod` 不含 `remote_file_id`。item ID 只保留在用户目录外层 descriptor、Steam cache 与发布 sidecar。
+二期开发中的失败尝试按原目录保留，没有覆盖成 GREEN。`ck3_xqol_phase2_live27_process_assets` 已证明除防御召援外的全部二期互动矩阵；随后 `ck3_xqol_phase2_defense_live1` 至 `live5` 依次定位战争创建时序、虚构同盟被日结算清理和互动 wrapper 读取缺失 `scope:hook` 的问题。`ck3_xqol_phase2_defense_live4` 在历史加载期崩溃，归类为 environment RED。修复后 `ck3_xqol_phase2_defense_live6` 取得针对性 GREEN，最终由本报告的完整 `ck3_xqol_phase2_release_live1` 一次复核全部功能。

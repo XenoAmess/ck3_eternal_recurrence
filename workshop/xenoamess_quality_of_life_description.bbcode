@@ -1,36 +1,49 @@
 [h1]XenoAmess的体验优化[/h1]
 [h2]XenoAmess Quality of Life[/h2]
 
-[b]让行政头衔按原版分数找到最合适的下一任，也让下属别再把不想要的封臣往你手里塞。[/b]
-[b]Keep administrative succession merit-based, and stop subordinate rulers from pushing unwanted vassals up to you.[/b]
+[b]把重复而确定的操作交给决议：自动防御召援、批量改信、牵制索款、赎囚与附条件释放，同时保留一期的行政继任和禁转封优化。[/b]
+[b]Turn repetitive, deterministic chores into decisions: defensive calls, realm conversions, hook payments, ransoms and conditional releases, alongside the original appointment and vassal-transfer improvements.[/b]
 
-Version 1.0.2 · CK3 1.19.0.6
+Version 1.1.0 · CK3 1.19.0.6
 
 [img]https://raw.githubusercontent.com/XenoAmess/ck3_eternal_recurrence/3ecba400af0b4c985059459eb3215d169c6b3a53/mod_xenoamess_quality_of_life/thumbnail.png[/img]
 
-[h1]两个独立开关 / Two Independent Toggles[/h1]
+[h1]三个独立开关 / Three Independent Toggles[/h1]
 
 [list]
 [*][b]自动选择继任 / Automatic Appointments[/b]：开启后，行政制、贤能制与天朝制玩家本人不再成为下属行政官职的兜底候选。候选池、资格和继承分数仍全部使用原版；死亡或卸任时由最高分的其他合资格候选人接任。
 [*][b]别把封臣给我 / Do Not Give Me Vassals[/b]：开启后，下属行政统治者不会再通过原版 AI“授予封臣”逻辑把自己的法理封臣向上转给玩家。玩家主动转封不受影响。
+[*][b]自动召集防御援军 / Automatic Defensive Calls[/b]：被宣战后，自动召集当下可以免费加入的 AI 盟友、保证参战的宗主/朝贡关系、可参战摄政和免费家系成员。不会花费金钱、威信或虔诚；需要付费的宗族/朝贡召集不执行。
 [/list]
 
-两个功能默认关闭，可在决议面板的【XenoAmess的体验优化】分组中分别开启或关闭。关闭后恢复原版行为。
-Both features are off by default and can be toggled independently from the “XenoAmess Quality of Life” Decisions group. Disabling a feature restores vanilla behavior.
+三个功能默认关闭，可在决议面板的【XenoAmess的体验优化】分组中分别开启或关闭。关闭后恢复手动或原版行为。
+All three features are off by default and can be toggled independently from the “XenoAmess Quality of Life” Decisions group. Disabling one restores manual or vanilla behavior.
+
+[h1]二期批处理决议 / Phase-Two Bulk Decisions[/h1]
+
+[list]
+[*][b]批量要求改信 / Bulk Conversion Demands[/b]：使用 0–100 滑动条设定最低原版接受值。只向领内达到门槛且可合法要求改信的 AI 发出请求；全部答复后用气泡汇总同意与拒绝人数。
+[*][b]批量牵制索款 / Bulk Hook Payments[/b]：足额模式只处理能付清者；现有款模式处理金钱大于 1 的目标并收取其当前全部整数金钱。两种模式都复用原版互动并消耗牵制。
+[*][b]批量赎囚 / Bulk Ransoms[/b]：足额模式只接受完整赎金；现有款模式只要愿意付款的 AI 至少有 1 金钱，就收取其当前钱财并放人。
+[*][b]批量附条件释放 / Bulk Conditional Release[/b]：为每名愿意的囚犯选择“获得牵制、招募、要求改信”中数量最多的兼容组合；同规模时依次优先牵制、招募、改信。
+[/list]
+
+这些批处理决议只处理通过对应原版互动条件的 AI 目标；没有合资格目标时结果为 0，不会绕过战争、宗教、囚禁、冷却或关系限制。
+These decisions only process AI targets that pass the matching vanilla interaction rules. With no eligible target, the result is zero; war, faith, imprisonment, cooldown and relationship restrictions are not bypassed.
 
 [h1]适用范围 / Scope[/h1]
 
 [list]
-[*]仅限非 AI、独立的人类玩家 / Human, non-AI independent rulers only
-[*]行政制 / Administrative Government
-[*]贤能制 / Meritocratic Government
-[*]天朝制 / Celestial Government
+[*]自动继任与禁止转封：仅限非 AI、独立的行政制、贤能制或天朝制玩家
+[*]自动防御召援与二期批处理：所有非 AI 统治者；具体目标仍须通过原版条件
+[*]Appointments and transfer guard: human independent Administrative, Meritocratic or Celestial rulers
+[*]Defensive calls and phase-two bulk actions: all human rulers; every target must still pass vanilla conditions
 [/list]
 
 [h1]兼容性 / Compatibility[/h1]
 
-已在 CK3 1.19.0.6 的隔离、非 debug 实机会话中通过原生 MCP + 引擎夹具验收。推荐新开单人存档。
-Tested on CK3 1.19.0.6 in an isolated, non-debug live session using the native MCP bridge plus in-engine assertions. A new single-player game is recommended.
+已在 CK3 1.19.0.6 的隔离实机会话中通过原生 MCP + 引擎夹具完整验收。推荐单人存档；更新后无需迁移步骤。
+Fully tested on CK3 1.19.0.6 in an isolated live session using the native MCP bridge plus in-engine assertions. Single-player is recommended; no save-migration step is required.
 
 自动继任功能会按相同相对路径覆盖原版的三份 appointment 文件，因此与改写下列文件的其他 mod 不兼容：
 Automatic appointments replace these three vanilla files at the same relative paths and are therefore incompatible with other mods that replace them:
