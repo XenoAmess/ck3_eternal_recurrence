@@ -608,3 +608,50 @@ receipt is 20,698 bytes, SHA-256
 R447 may perform one bounded continuation from this closer boundary. T1
 remains 90%; `GEN-034`, comparison, decision, action, and automatic-surrender
 readiness remain unchanged.
+
+### R447 confirmed target selection and exposed the evaluated-name evidence gate
+
+R447 launched the unique CK3 PID `58396` from the admitted R446 successor.
+The adapter clicked `.1071.a` once at `(931,934)` and retained a post-click
+frame proving that the same high-confidence target recognizer had disappeared.
+The private observer then returned RED with
+`reason=armed-hit-evaluated-name-mismatch`, `source_execution_count=0`, an
+installed and restored breakpoint, and `debugger_detached=true`. This sequence
+proves that the accepted option reached the exact native `spawn_army`
+breakpoint and passed loaded-node identity checks. The observer rejected that
+hit at its `evaluated_name == norman_highwaymen` pre-append gate, so zero rows
+does not mean zero source executions in this round.
+
+The stock `bookmark.1071:immediate:1477` scope diagnostic appeared again while
+the option tooltip was rendered. Because the accepted option subsequently hit
+the native mutation breakpoint, this diagnostic is now disproved as an option
+execution blocker. It remains recorded as an explained vanilla tooltip RED.
+The report, capture, armed-frame, selection-confirmed-frame, error-log, and
+classification SHA-256 values are respectively
+`C3EA19C27F8C4AF0DDE05AC0DD73BDF1D19F74CF63FC46A0C244B66DD4A6D841`,
+`BAAA2D4A2CE463F414E3FD6D50AF96D2AB94BE0ACFD15059C7DD2BD2F38E7D91`,
+`18A857D5BE005EEE203E8ADB62226EDD0F60D58DD80BF56772090B8646F19BE3`,
+`94DD9BC511CE3E7705A1BAAE903A7E902AD76B069CF5A00087614E9C92146EA7`,
+`39D274565214F8FA73AF4C2B2DF52A915AE9F8C9F1300B77C4F468F1D879B139`,
+and `4F9E9DD3E8EB19DFD7B9BC88A308F39E7D43A0721185B77630D14096BE34C767`.
+
+Commit `8e2a8917143e261ccac589436b44baafdb1b9d14` removes only the
+pre-append evaluated-name rejection. Every matching breakpoint hit now retains
+the value actually read from the process, while `ValidateSixExecutions` still
+requires six reviewed rows with the expected identity before GREEN. The rebuilt
+private executable is 113,152 bytes, passes its self-test, and has SHA-256
+`B05E0B6D3CA8DBEC41C8C5107AB8F9AACD4E99981E442AC1DBF3077868241007`.
+The source contract and live-adapter manifest SHA-256 values are
+`7DFA946A90F7C3DD5DF8305CFA07A39BD635BE06C5610FA1BC02FAD16D0B1654`
+and `7DFB5FCAE751C3317A3C4C9BDED03CE2E4EF9B0DA848F1F7D7EC61417F13EB1F`.
+The focused dependency matrix passes `53/53` in normal and optimized Python.
+
+R447 cleanup is GREEN and CK3 inventory is empty. Its latest pre-target save is
+68,016,053 bytes, contains no `raiktor` marker, and has SHA-256
+`89D15B8ACB0E69E6C439D658582B63DC1F8AD11EC687089E5021A5961607D4DD`.
+That exact input passed R448 no-launch admission; the receipt is 20,706 bytes,
+SHA-256 `5FF8771F9CCCA853FA4C4FE8FA7B7BE0787C3EAB5EEF25B18FD8FD5A9601E3EB`.
+The private dependency sync is recorded in open_kaishek commit
+`1d67a5e9567e83af2875c5122681c3b35bc92278`; no public MCP or Java contract
+changed. R448 is limited to capturing and reviewing the actual six evaluated
+names from this boundary. T1 remains 90% and `GEN-034` remains unresolved.

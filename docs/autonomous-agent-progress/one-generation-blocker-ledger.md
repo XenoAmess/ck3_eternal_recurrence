@@ -934,3 +934,11 @@ WarID `50331699` / `raiktor_claim_cb` 的 primary-attacker surrender 只有 type
   `BCF0467F59E1BEEFD02B2868BF4F159980E595137F58790A4A93860097475112`。
 - **关闭条件**：R447 必须同时证明目标选项消失、六次 source execution、observer detach 与同 PID continuation；当前
   source/comparison/decision/action/automatic-surrender 均不 ready，`GEN-034` unresolved，T1=90%。
+
+## 2026-09-11：GEN-034 R447 native hit 与 evaluated-name 证据门
+
+- **已关闭的不确定性**：R447 首次点击后 `.1071.a` 由同一高置信识别器确认消失；private observer 随即在 exact `spawn_army` breakpoint 返回 `armed-hit-evaluated-name-mismatch`。断点安装、原字节恢复和 debugger detach 均有记录，因此 source mutation 确实被调用。
+- **真实根因**：旧 observer 在 append evidence row 前要求运行时字符串等于 authored key `norman_highwaymen`。现有专题已把该字符串定位为 supporting evidence，而不是 source 唯一选择器；这项旧检查导致命中存在却输出零行。
+- **最小修复**：`8e2a8917143e261ccac589436b44baafdb1b9d14` 删除前置拒绝，保留实际字符串；最终 `ValidateSixExecutions` 仍要求六行 identity 一致后才能 GREEN。新 executable SHA-256 `B05E0B6D3CA8DBEC41C8C5107AB8F9AACD4E99981E442AC1DBF3077868241007`，self-test 与 normal/`-O` 各 `53/53` GREEN。
+- **输入与边界**：R447 latest pre-target save SHA-256 `89D15B8ACB0E69E6C439D658582B63DC1F8AD11EC687089E5021A5961607D4DD` 已通过 R448 no-launch admission `5FF8771F9CCCA853FA4C4FE8FA7B7BE0787C3EAB5EEF25B18FD8FD5A9601E3EB`。R447 已结束，cleanup GREEN、CK3=0；原版 tooltip scope RED 保留，但已由 mutation breakpoint 命中排除为执行阻断。
+- **仍未关闭**：尚未取得并审阅六行实际 `evaluated_name`、source-specific measured loss、comparison input、decision/action 和 postwar lifecycle。`GEN-034` 保持 unresolved、T1=90%。下一步只允许一轮 R448 近边界捕获；若 identity 不同，先审阅 artifact 再改合同，不原地反复测试。
