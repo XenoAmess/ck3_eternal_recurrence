@@ -61,7 +61,12 @@ campaign run.
 
 ## Companion compatibility sync
 
-open_kaishek commit `3d54890451d447fbad26575543fbb2d27e853e59` freezes this additive MCP boundary as `ActiveWarStrategicPowerCapabilityProfile`. Its focused offline Maven test passes `4/4`; the companion remains runtime-uncertified for the active-war source until the bounded root live query is captured.
+open_kaishek commit `3d54890451d447fbad26575543fbb2d27e853e59`
+initially froze this additive MCP boundary. After R470 disproved the assumed
+native support, corrective commit
+`2fd64da020c75645384ea566288f304c3c17b916` changed the profile to both
+native-uncertified and runtime-uncertified and pinned the RED report. Its
+focused offline Maven test passes `4/4`.
 
 ## Bounded live runner
 
