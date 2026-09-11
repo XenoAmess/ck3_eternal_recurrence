@@ -84,4 +84,6 @@ terminal-stages activation 原有的 `source_route.max_advance_days` 过去只�
 
 这项修复没有改 mod 产品脚本、公共 MCP 控制名、ABI 或 DLL。聚焦 action/operator 测试普通模式 `20/20`、
 `python -O` 模式 `20/20` GREEN。下一次组合运行把前置 183 日、`.390` source 冻结和紧随其后的 Stage 11 路线限定在
-500 游戏日内；到界即保留 RED 并停车，不扩大为单 bug 长跑。
+500 游戏日内；到界即保留 RED 并停车，不扩大为单 bug 长跑。activation 数据语义变化已同步到 open_kaishek；其
+Operator MCP 1.1 继续把该字段作为目标自有输入透传，无需修改 Java/API/schema，兼容记录 commit
+`84d0a459b4cbad35bfa91c8264ba44a6b7fb1825` 已推送并与 `origin/main` 一致。
