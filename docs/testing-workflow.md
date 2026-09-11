@@ -2546,3 +2546,16 @@ The bounded correction is to require the producer's actual fields and values, up
 R465 实测表明，speed 5 下两个只读 snapshot 之间可能跨过两个游戏日。只在循环顶部比较 `date_raw > absolute_end_date_raw` 会发现越界，却不能保证进程停在声明的截止帧。
 
 promotion-source 有界推进现在保留主体 speed-5 吞吐，但在绝对截止前三天切到 speed 1；当目标事件和同帧产品状态都检查完且 `date_raw >= absolute_end_date_raw` 时，直接保留 RED，不再发送 resume。该规则只修复实测的窗口越界，不增加观察天数，也不要求为单个 bug 单独运行 CK3 长跑；下一条本来就需要执行的 source 路由同时承担 live 验证。
+
+## 天朝二期代表性终态 cold restore 的职责边界
+
+`tools/zg361_phase2_terminal_cold_restore.py` 只验证一个已接受的 Stage 11
+Workforce 终态存档能否经同一 supervisor lifecycle queue 换到不同 PID、恰好递增一个
+connection generation，并在恢复前后逐项保留 B1、AF5、Central、Workforce 的当前可观察
+identity/state/receipt。每个查询仍须绑定同一 paused date、played character 和最新 revision；四域
+投影发生任何变化都为 RED。
+
+B1 fix 与 AF5 terminal 是独立 P1 工作包，各自使用 hash-bound production-live 收据。cold restore
+不得再次要求代表性存档中的 B1 必须是有奖励 closure，或 AF5 必须正在 terminal；否则会把已经拆分的
+业务验收重新绑回同一条长时间线。代表性存档自身的 Stage 11 Workforce terminal 与 Central callback
+仍是硬前置，不能用普通中间存档冒充终态。

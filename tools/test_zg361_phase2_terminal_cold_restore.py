@@ -39,6 +39,7 @@ class TerminalService:
         self.restore_same_pid = False
         self.af5_terminal = True
         self.b1_closed = True
+        self.b1_anomalies = []
         self.path = root / "xar_checkpoint.ck3"
         self.path.write_bytes(b"synthetic terminal save, not a CK3 fixture")
         self.save = {"accepted": True, "checkpoint": {
@@ -87,7 +88,8 @@ class TerminalService:
             "closure": fields(state=4, calibration_finalized=True, rewards_issued=True),
             "pending": fields(open_count=0, rewards_committed=True),
             "quota": fields(rebuild_generation=1, built_case_serial=9, target_top=2, target_middle=5, target_bottom=1),
-            "invariants": {"closed_state_coherent": True}, "anomalies": [],
+            "invariants": {"closed_state_coherent": True},
+            "anomalies": copy.deepcopy(self.b1_anomalies),
         })
 
     def query_zhongguo_compensation_af5_snapshot_v1(self, nonce: str, *, expected_revision: int) -> dict[str, object]:
@@ -235,15 +237,39 @@ class TerminalColdRestoreTests(unittest.TestCase):
             self.assertEqual(result["attempt"], 2)
             self.assertEqual((directory / "attempt-001.json").read_bytes(), first_attempt)
 
-    def test_nonterminal_provider_stops_before_any_restore(self) -> None:
+    def test_independent_b1_and_af5_business_states_do_not_block_restore(self) -> None:
         for field in ("af5_terminal", "b1_closed"):
             with self.subTest(field=field), tempfile.TemporaryDirectory() as temporary:
                 root = Path(temporary)
                 service = TerminalService(root)
                 setattr(service, field, False)
-                with self.assertRaises(cold.TerminalColdRestoreError):
-                    self.run_restore(service, root / "evidence")
-                self.assertEqual(service.restore_count, 0)
+                result = self.run_restore(service, root / "evidence")
+                self.assertEqual(result["result"], "GREEN")
+                self.assertEqual(service.restore_count, 1)
+                self.assertEqual(
+                    result["before_readback"], result["after_readback"]
+                )
+
+    def test_representative_workforce_terminal_is_still_required(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            service = TerminalService(root)
+            service.workforce["terminal"] = False
+            with self.assertRaises(cold.TerminalColdRestoreError):
+                self.run_restore(service, root / "evidence")
+            self.assertEqual(service.restore_count, 0)
+
+    def test_existing_b1_anomaly_is_preserved_without_becoming_a_pass(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            service = TerminalService(root)
+            service.b1_anomalies = ["quota_target_processing_mismatch"]
+            result = self.run_restore(service, root / "evidence")
+            self.assertEqual(result["result"], "GREEN")
+            before = result["before_readback"]["b1"]["receipt"]["anomalies"]
+            after = result["after_readback"]["b1"]["receipt"]["anomalies"]
+            self.assertEqual(before, ["quota_target_processing_mismatch"])
+            self.assertEqual(after, before)
 
 
 if __name__ == "__main__":

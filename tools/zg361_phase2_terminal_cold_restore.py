@@ -47,13 +47,6 @@ def _positive(value: object, label: str) -> int:
     return value
 
 
-def _value(group: object, key: str) -> object:
-    field = _object(_object(group, key).get(key), key)
-    if field.get("status") != "available":
-        raise ValueError(f"terminal field {key} is unavailable")
-    return field.get("value")
-
-
 def _nonce(value: str, *, maximum: int = 54) -> None:
     if not isinstance(value, str) or not 1 <= len(value) <= maximum or re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9._:-]*", value) is None:
         raise ValueError(f"request_nonce must be a nonempty ASCII token of at most {maximum} characters")
@@ -85,12 +78,14 @@ def read_terminal_domains_v1(
     service: object, *, request_nonce: str = "p1.restore",
     evidence_out: dict[str, object] | None = None,
 ) -> dict[str, object]:
-    """Read actual B1/AF5/Central/Workforce terminal state on one paused date.
+    """Read actual B1/AF5/Central/Workforce durable state on one paused date.
 
     Each query binds the latest public revision. PID, generation, played owner
-    and game date remain constant across the independent queries. This reads
-    current durable state; it does not manufacture independent B1 or AF5 action
-    receipts from a different P1 slice.
+    and game date remain constant across the independent queries. The
+    representative save must itself retain the Stage 11 Workforce terminal,
+    while the independent B1 and AF5 business gates remain proven by their own
+    P1 slices. This readback only proves that their current durable state and
+    receipts survive the process replacement unchanged.
     """
     _nonce(request_nonce)
     evidence = {} if evidence_out is None else evidence_out
@@ -107,19 +102,7 @@ def read_terminal_domains_v1(
         return _object(response, name + " query")
 
     b1 = _available(query("b1", "query_zhongguo_b1_cycle_snapshot_v1"), "B1")
-    if not (
-        _value(b1.get("cycle"), "state") == 8
-        and _value(b1.get("cycle"), "active") is False
-        and _value(b1.get("closure"), "state") == 4
-        and _value(b1.get("closure"), "calibration_finalized") is True
-        and _value(b1.get("closure"), "rewards_issued") is True
-        and _object(b1.get("invariants"), "B1 invariants").get("closed_state_coherent") is True
-        and b1.get("anomalies") == []
-    ):
-        raise ValueError("B1 has not reached its independently observed closed state")
     af5 = _available(query("af5", "query_zhongguo_compensation_af5_snapshot_v1"), "AF5")
-    if af5.get("terminal") is not True:
-        raise ValueError("AF5 has not reached its independently observed terminal")
     central_response = query("central", "query_zhongguo_promotion_source_progress_v1")
     if central_response.get("status") != "available":
         raise ValueError("Central query is unavailable")
@@ -161,7 +144,7 @@ def read_terminal_domains_v1(
                          "subject_character_id": af5["subject_character_id"],
                          "case_identity": copy.deepcopy(af_case["identity"]),
                          "result_identity": copy.deepcopy(af["portfolio"]["result_identity"])},
-            "state": {"terminal": True, "portfolio": copy.deepcopy(af["portfolio"]),
+            "state": {"terminal": af5.get("terminal") is True, "portfolio": copy.deepcopy(af["portfolio"]),
                       "case": {key: copy.deepcopy(value) for key, value in af_case.items() if key != "identity"}},
             "receipt": {"m299": copy.deepcopy(af["m299"]), "m300": copy.deepcopy(af["m300"]),
                         "readiness": copy.deepcopy(af5["readiness"])},
@@ -179,7 +162,7 @@ def read_terminal_domains_v1(
             "identity": {"player_character_id": workforce["player_character_id"],
                          "subject_character_id": workforce["subject_character_id"],
                          "al_case": {key: copy.deepcopy(wf_case[key]) for key in identity_fields}},
-            "state": {"terminal": True, "terminal_kind": workforce["terminal_kind"],
+            "state": {"terminal": workforce.get("terminal") is True, "terminal_kind": workforce["terminal_kind"],
                       "al_case": {key: copy.deepcopy(value) for key, value in wf_case.items() if key not in identity_fields},
                       "portfolio": copy.deepcopy(wf["portfolio"])},
             "receipt": {"source": copy.deepcopy(wf["source"]), "m360_receipt": copy.deepcopy(wf["m360_receipt"]),
