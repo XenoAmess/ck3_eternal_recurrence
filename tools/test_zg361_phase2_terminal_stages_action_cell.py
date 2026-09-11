@@ -415,6 +415,60 @@ class OwnerTerminalTests(unittest.TestCase):
                 self.assertIn((True, True, True), service.callback_reads)
                 self.assertEqual(len(service.saves), 3)
 
+    def test_stage11_only_source_does_not_replay_stage9_or_claim_its_receipt(self) -> None:
+        service = OwnerService()
+        with tempfile.TemporaryDirectory() as temporary:
+            directory = Path(temporary)
+            with patch.object(
+                cell.entry,
+                "enter_promotion_source_checkpoint_v1",
+                side_effect=service.enter,
+            ), patch("zhongguo_phase2_workforce_action.time.sleep", return_value=None):
+                result = cell.run_terminal_stages(
+                    service,
+                    evidence_directory=directory,
+                    request_nonce="synthetic.stage11-only",
+                    start_stage=11,
+                )
+        self.assertEqual(result["result"], "GREEN")
+        self.assertEqual(result["configured_start_stage"], 11)
+        self.assertEqual(result["owned_stage_sequence"], [11])
+        self.assertIs(result["independent_stage10_required"], False)
+        self.assertEqual(service.visits, [11, 11])
+        self.assertEqual(service.actions, [(11, 1)])
+        self.assertEqual(
+            set(result["p1_acceptance_evidence"]["central_stage_terminals"]),
+            {"11"},
+        )
+        self.assertNotIn("stage10_source", result)
+
+    def test_retry_cannot_change_starting_stage(self) -> None:
+        service = OwnerService()
+        service.fail_after_action_once = True
+        with tempfile.TemporaryDirectory() as temporary:
+            directory = Path(temporary)
+            with patch.object(
+                cell.entry,
+                "enter_promotion_source_checkpoint_v1",
+                side_effect=service.enter,
+            ), patch("zhongguo_phase2_workforce_action.time.sleep", return_value=None):
+                with self.assertRaises(cell.TerminalStagesError):
+                    cell.run_terminal_stages(
+                        service,
+                        evidence_directory=directory,
+                        request_nonce="synthetic.stage11-retry",
+                        start_stage=11,
+                    )
+                with self.assertRaisesRegex(
+                    ValueError, "retry changed its starting stage"
+                ):
+                    cell.run_terminal_stages(
+                        service,
+                        evidence_directory=directory,
+                        request_nonce="synthetic.stage11-retry",
+                        start_stage=9,
+                    )
+
     def test_owner_query_revision_race_rebinds_without_restarting_or_input(self) -> None:
         errors = (
             "ZhongGuo workforce owner revision is stale",
