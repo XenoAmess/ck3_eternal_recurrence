@@ -8,8 +8,9 @@
   `tgp_dynastic_cycle.0072` instance `1101`，日期为 `54044544`。ROOT 是玩家 `32904`；saved scopes
   为 `situation`、`situation_sub_region` 和非玩家 `new_son_of_heaven=110448`；native `0/1` 均
   shown/enabled。发现时没有提交选择。
-- [counter-policy static-ready, live action pending] continuation 严格匹配上述窗口并选择 authored `1` /
-  native `0`，保持玩家独立。该动作仍须在同一 PID 热恢复中验证旧 instance 消失或前进。
+- [production-live primitive] continuation 严格匹配上述窗口并选择 authored `1` / native `0`，保持玩家独立。
+  R418 attempt 05 已在同一 PID/generation 热恢复中提交该路线：instance `1101 -> null`、snapshot
+  `native:1731 -> native:1732`、revision `1732 -> 1733`，`postcondition_verified=true`。
 
 这条记录只解决真实 terminal promotion 时间线上的事件中断。日期、instance 和人物 ID 只进入 observation，
 不会固化到通用合同。
@@ -71,5 +72,8 @@ continuation 选择 native `0`，因为它不会主动改变玩家的臣属关�
 - R418 attempt 04 选择前 RED：
   `_runtime/p1-terminal-resume-r418-20260911/live-artifacts/terminal-stages-red-attempt-04.json`，SHA-256
   `5F1710E928F214C28FF4DF19478117F333E22473BF9E9713F0039AE766138146`。
+- R418 attempt 05 同进程 GREEN 动作由随后保留的 RED artifact 携带：
+  `_runtime/p1-terminal-resume-r418-20260911/live-artifacts/terminal-stages-red-attempt-05.json`，SHA-256
+  `B5048E4E5384BB50B6DA0DC57A928AF7B0F56A999B27E6FD2C462180A1DCDE70`。
 - 可移植合同、analysis 与 observation：
   `ck3_autonomous_player/src/xar_autoplayer/vanilla_events/records_tgp_dynastic_cycle.py`。

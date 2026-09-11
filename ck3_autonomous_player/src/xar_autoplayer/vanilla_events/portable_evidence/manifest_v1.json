@@ -1229,6 +1229,16 @@
           "source_line": 3748
         },
         {
+          "caller_candidate_resolution": null,
+          "event_definition_key": "tgp_movement_events.0070",
+          "logical_path": "common/on_action/yearly_on_actions.txt",
+          "origin": "ck3_game",
+          "provenance": "manually-reviewed-analysis-source",
+          "role": "analysis_source",
+          "source_column": null,
+          "source_line": null
+        },
+        {
           "caller_candidate_resolution": "external-definition-file",
           "event_definition_key": "tgp_movement_events.0080",
           "logical_path": "common/on_action/yearly_on_actions.txt",
@@ -3603,6 +3613,16 @@
           "role": "caller_candidate",
           "source_column": 9,
           "source_line": 20
+        },
+        {
+          "caller_candidate_resolution": null,
+          "event_definition_key": "tgp_movement_events.0070",
+          "logical_path": "common/on_action/dlc/tgp/tgp_china_yearly_on_actions.txt",
+          "origin": "ck3_game",
+          "provenance": "manually-reviewed-analysis-source",
+          "role": "analysis_source",
+          "source_column": null,
+          "source_line": null
         },
         {
           "caller_candidate_resolution": "external-definition-file",
@@ -10802,6 +10822,38 @@
       "sha256": "b36d7898d6f60983cd3ea359c768925efe26db6e9a0734d99a4c614ede8ab1c4"
     },
     {
+      "blob_bytes": 104786,
+      "blob_path": "blobs/b5048e4e5384bb50b6da0dc57a928af7b0f56a999b27e6fd2c462180a1dcde70.gz",
+      "blob_sha256": "a42cfb1b9950e7339d86ae1325813aed58de8cca5240bdc1fee0d1ec151905f3",
+      "bytes": 1957579,
+      "evidence_id": "b5048e4e5384bb50b6da0dc57a928af7b0f56a999b27e6fd2c462180a1dcde70",
+      "kind": "observation_artifact",
+      "media_type": "application/json",
+      "references": [
+        {
+          "caller_candidate_resolution": null,
+          "event_definition_key": "tgp_dynastic_cycle.0072",
+          "logical_path": "_runtime/p1-terminal-resume-r418-20260911/live-artifacts/terminal-stages-red-attempt-05.json",
+          "origin": "runtime",
+          "provenance": "captured-observation-artifact",
+          "role": "artifact",
+          "source_column": null,
+          "source_line": null
+        },
+        {
+          "caller_candidate_resolution": null,
+          "event_definition_key": "tgp_movement_events.0070",
+          "logical_path": "_runtime/p1-terminal-resume-r418-20260911/live-artifacts/terminal-stages-red-attempt-05.json",
+          "origin": "runtime",
+          "provenance": "captured-observation-artifact",
+          "role": "artifact",
+          "source_column": null,
+          "source_line": null
+        }
+      ],
+      "sha256": "b5048e4e5384bb50b6da0dc57a928af7b0f56a999b27e6fd2c462180a1dcde70"
+    },
+    {
       "blob_bytes": 1142858,
       "blob_path": "blobs/b69243825168b01f11c0cbdebc321c277e3ac22ceec2f50650abb9c0994d1d64.gz",
       "blob_sha256": "72f8501916a2a61669bfc5cc1f694e3f6bb2d3372fd3aa69aad0935730dbde0b",
@@ -12542,6 +12594,16 @@
         },
         {
           "caller_candidate_resolution": null,
+          "event_definition_key": "tgp_movement_events.0070",
+          "logical_path": "events/dlc/tgp/tgp_movement_events.txt",
+          "origin": "ck3_game",
+          "provenance": "manually-reviewed-analysis-source",
+          "role": "analysis_source",
+          "source_column": null,
+          "source_line": null
+        },
+        {
+          "caller_candidate_resolution": null,
           "event_definition_key": "tgp_movement_events.0080",
           "logical_path": "events/dlc/tgp/tgp_movement_events.txt",
           "origin": "ck3_game",
@@ -13809,13 +13871,13 @@
   "schema": "xar.ck3.vanilla-event-portable-evidence-manifest",
   "schema_version": 1,
   "statistics": {
-    "evidence": 269,
+    "evidence": 270,
     "generated_definition_references": 182,
     "lexical_caller_candidate_references": 519,
-    "manually_reviewed_analysis_source_references": 259,
-    "observation_artifact_references": 97,
-    "observation_artifacts": 82,
-    "references": 1057,
+    "manually_reviewed_analysis_source_references": 262,
+    "observation_artifact_references": 99,
+    "observation_artifacts": 83,
+    "references": 1062,
     "source_definitions": 187
   }
 }

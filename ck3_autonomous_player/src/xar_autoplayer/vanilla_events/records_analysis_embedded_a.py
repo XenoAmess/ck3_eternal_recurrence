@@ -339,6 +339,66 @@ def _build_analysis() -> dict[str, dict[str, object]]:
             },
         }
 
+    movement_study_analysis = analysis["tgp_movement_events.0070"]
+    movement_study_analysis["migrated_from"]["review_kind"] = (
+        "exact-build-original-definition-and-live-repeat-review"
+    )
+    movement_study_analysis.update({
+        "source_sha256": {
+            "events/dlc/tgp/tgp_movement_events.txt": (
+                "D9B172FC6C9F81216BE580C1B65DA7720CAA6EF21F049AB316361E17D3710BC6"
+            ),
+            "common/on_action/dlc/tgp/tgp_china_yearly_on_actions.txt": (
+                "4D6F5379E40304B56C5C1A914E8A0EE3998E8023174DC52F7E5072F7CFA40454"
+            ),
+            "common/on_action/yearly_on_actions.txt": (
+                "0FC85A284224A68D1CA0A4EF071D4F4A4F49896753AEC463975A12EE4E1116FA"
+            ),
+        },
+        "definition_lines": "1426-1598",
+        "caller_semantics": (
+            "the TGP yearly pool includes the event at weight 100 and the "
+            "general yearly pool at weight 200; the event itself has a ten-year "
+            "cooldown, so a later yearly selection is legal"
+        ),
+        "trigger_boundary": (
+            "available adult celestial-government ruler with TGP enabled and at "
+            "least one healthy adult AI councillor who shares the ruler's highest "
+            "skill and has at least ten opinion of the ruler"
+        ),
+        "immediate_effect": (
+            "optionally saves the dynastic-cycle top participant group and "
+            "selects a valid councillor, favoring an existing potential friend"
+        ),
+        "option_semantics": {
+            "0": (
+                "progresses toward friendship with the councillor and applies "
+                "trait-dependent stress"
+            ),
+            "1": (
+                "adds two points to the spouse's highest skill or to the "
+                "councillor's relevant council skill, plus trait-dependent stress"
+            ),
+            "2": (
+                "adds one highest-skill point to both the ruler and councillor, "
+                "plus trait-dependent stress"
+            ),
+        },
+        "after_effect": None,
+        "safe_option_rationale": (
+            "native0 avoids direct skill mutation of the player and councillor; "
+            "its friendship progress and possible personality stress remain "
+            "explicit bounded costs"
+        ),
+        "frequency_boundary": (
+            "R418 observed two legal instances about eleven in-game years apart; "
+            "the source cooldown is ten years and neither yearly caller is one-shot"
+        ),
+    })
+    movement_study_analysis["existing_boundaries"]["occurrence"] = {
+        "occurrence_policy": "repeatable-within-product-observation-window"
+    }
+
     stress_analysis = analysis["stress_threshold.1721"]
     stress_analysis["migrated_from"]["review_kind"] = (
         "exact-build-original-definition-and-live-variant-review"
@@ -449,6 +509,90 @@ def _build_analysis() -> dict[str, dict[str, object]]:
 VANILLA_EMBEDDED_A_ANALYSIS: Final[dict[str, dict[str, object]]] = (
     _build_analysis()
 )
+
+
+_TGP_MOVEMENT_0070_OBSERVATIONS: Final[
+    dict[str, dict[str, object]]
+] = {
+    "tgp_movement_events.0070": {
+        "exemplars": [
+            *_LEGACY_MIGRATION_OBSERVATIONS[
+                "tgp_movement_events.0070"
+            ]["exemplars"],
+            {
+                "run": "R418-attempt-04",
+                "kind": "same-process-hot-recovery-green",
+                "artifact": (
+                    "_runtime/p1-terminal-resume-r418-20260911/live-artifacts/"
+                    "terminal-stages-red-attempt-05.json"
+                ),
+                "artifact_sha256": (
+                    "B5048E4E5384BB50B6DA0DC57A928AF7B0F56A999B27E6FD2C462180A1DCDE70"
+                ),
+                "date_raw": 54017928,
+                "event_instance_id": 1099,
+                "root_character_id": 32904,
+                "saved_character_ids": {"councillor": 50407232},
+                "saved_scope_raw_types": {
+                    "my_movement": 61,
+                    "councillor": 4,
+                },
+                "rendered_native_option_indices": [0, 1, 2],
+                "context_query_sequence": 16,
+                "selected_option_number": 1,
+                "selected_native_option_index": 0,
+                "postcondition_verified": True,
+                "starting_snapshot_id": "native:1376",
+                "starting_revision": 1377,
+                "ending_snapshot_id": "native:1377",
+                "ending_revision": 1378,
+                "connection_generation": 1,
+                "bridge_pid": 204536,
+                "process_restart_required": False,
+                "mcp_only": True,
+                "fixture_used": False,
+                "ocr_used": False,
+                "coordinates_used": False,
+                "console_used": False,
+            },
+            {
+                "run": "R418-attempt-05",
+                "kind": "repeat-occurrence-bound-live-red",
+                "red_classification": "product-contract-red",
+                "artifact": (
+                    "_runtime/p1-terminal-resume-r418-20260911/live-artifacts/"
+                    "terminal-stages-red-attempt-05.json"
+                ),
+                "artifact_sha256": (
+                    "B5048E4E5384BB50B6DA0DC57A928AF7B0F56A999B27E6FD2C462180A1DCDE70"
+                ),
+                "date_raw": 54114528,
+                "event_instance_id": 1108,
+                "root_character_id": 32904,
+                "saved_character_ids": {"councillor": 125906},
+                "saved_scope_raw_types": {
+                    "my_movement": 61,
+                    "councillor": 4,
+                },
+                "rendered_native_option_indices": [0, 1, 2],
+                "context_query_sequence": 27,
+                "snapshot_id": "native:2691",
+                "revision": 2692,
+                "native_revision": 2691,
+                "selection_attempted": False,
+                "retained_red": True,
+                "connection_generation": 1,
+                "bridge_pid": 204536,
+                "process_restart_required": False,
+                "mcp_only": True,
+                "fixture_used": False,
+                "ocr_used": False,
+                "coordinates_used": False,
+                "console_used": False,
+            },
+        ],
+    },
+}
 
 
 _STRESS_THRESHOLD_1721_OBSERVATIONS: Final[
@@ -591,6 +735,7 @@ VANILLA_EMBEDDED_A_OBSERVATIONS: Final[
     dict[str, dict[str, object]]
 ] = {
     **_LEGACY_MIGRATION_OBSERVATIONS,
+    **_TGP_MOVEMENT_0070_OBSERVATIONS,
     **_STRESS_THRESHOLD_1721_OBSERVATIONS,
 }
 

@@ -39,6 +39,8 @@ def test_analysis_is_json_safe_and_only_reviewed_event_claims_source_hashes() ->
     for event_key, record in VANILLA_EMBEDDED_A_ANALYSIS.items():
         if event_key == "stress_threshold.1721":
             assert len(record["source_sha256"]) == 6
+        elif event_key == "tgp_movement_events.0070":
+            assert len(record["source_sha256"]) == 3
         else:
             assert "source_sha256" not in record
 
@@ -49,11 +51,14 @@ def test_each_record_carries_exact_build_and_migration_boundary() -> None:
             "game_version": EXACT_CK3_BUILD,
             "ck3_executable_sha256": EXACT_CK3_EXE_SHA256,
         }
-        expected_review = (
-            "exact-build-original-definition-and-live-variant-review"
-            if event_key == "stress_threshold.1721"
-            else "migration-only-no-new-full-definition-review"
-        )
+        expected_review = {
+            "stress_threshold.1721": (
+                "exact-build-original-definition-and-live-variant-review"
+            ),
+            "tgp_movement_events.0070": (
+                "exact-build-original-definition-and-live-repeat-review"
+            ),
+        }.get(event_key, "migration-only-no-new-full-definition-review")
         assert record["migrated_from"]["review_kind"] == expected_review
         assert record["review_summary"]
         assert record["safe_option"]["rationale"]
@@ -70,7 +75,11 @@ def test_migration_observations_join_existing_live_evidence() -> None:
     assert len(EMBEDDED_A_VANILLA_OBSERVATIONS) == 26
     assert len(VANILLA_EMBEDDED_A_OBSERVATIONS) == 27
     for event_key, observation in EMBEDDED_A_VANILLA_OBSERVATIONS.items():
-        assert VANILLA_EMBEDDED_A_OBSERVATIONS[event_key] == observation
+        migrated = VANILLA_EMBEDDED_A_OBSERVATIONS[event_key]
+        if event_key == "tgp_movement_events.0070":
+            assert migrated["exemplars"][0] == observation["exemplars"][0]
+        else:
+            assert migrated == observation
         exemplar = observation["exemplars"][0]
         assert exemplar["run"] == "legacy-migrated"
         assert exemplar["kind"] == "legacy-live-binding"
@@ -80,6 +89,35 @@ def test_migration_observations_join_existing_live_evidence() -> None:
     assert VANILLA_EMBEDDED_A_OBSERVATIONS[
         "stress_threshold.1721"
     ]["exemplars"][0]["run"] == "R372"
+
+
+def test_tgp_movement_study_repeat_is_source_reviewed_and_live_bounded() -> None:
+    event_key = "tgp_movement_events.0070"
+    contract = EMBEDDED_A_VANILLA_TIMELINE_CONTRACTS[event_key]
+    analysis = VANILLA_EMBEDDED_A_ANALYSIS[event_key]
+    legacy, first_green, repeat_red = VANILLA_EMBEDDED_A_OBSERVATIONS[
+        event_key
+    ]["exemplars"]
+
+    assert "max_occurrences" not in contract
+    assert contract["occurrence_policy"] == (
+        "repeatable-within-product-observation-window"
+    )
+    assert analysis["definition_lines"] == "1426-1598"
+    assert "ten-year cooldown" in analysis["caller_semantics"]
+    assert analysis["safe_option"]["selected_native_option_index"] == 0
+    assert legacy["run"] == "legacy-migrated"
+    assert first_green["run"] == "R418-attempt-04"
+    assert first_green["event_instance_id"] == 1099
+    assert first_green["selected_native_option_index"] == 0
+    assert first_green["postcondition_verified"] is True
+    assert first_green["ending_snapshot_id"] == "native:1377"
+    assert repeat_red["run"] == "R418-attempt-05"
+    assert repeat_red["event_instance_id"] == 1108
+    assert repeat_red["date_raw"] > first_green["date_raw"]
+    assert repeat_red["selection_attempted"] is False
+    assert repeat_red["retained_red"] is True
+    assert repeat_red["artifact_sha256"] == first_green["artifact_sha256"]
 
 
 def test_safe_option_and_occurrence_fields_match_existing_contracts() -> None:

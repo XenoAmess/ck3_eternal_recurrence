@@ -510,6 +510,18 @@ def build_bundle(
                     "refusing to remove an unsafe orphan evidence blob"
                 )
             stale.unlink()
+    canonical_references = [
+        reference
+        for entry in entries
+        for reference in entry["references"]
+    ]
+
+    def reference_count(provenance: str) -> int:
+        return sum(
+            reference["provenance"] == provenance
+            for reference in canonical_references
+        )
+
     manifest: dict[str, object] = {
         "schema": EVIDENCE_MANIFEST_SCHEMA,
         "schema_version": EVIDENCE_SCHEMA_VERSION,
@@ -525,13 +537,23 @@ def build_bundle(
             "observation_artifacts": sum(
                 entry["kind"] == "observation_artifact" for entry in entries
             ),
-            "references": len(source_rows) + len(observation_rows),
-            "generated_definition_references": len(definition_rows),
-            "lexical_caller_candidate_references": len(candidate_rows),
-            "manually_reviewed_analysis_source_references": len(
-                analysis_source_rows
+            # Count the canonical references retained on entries. Multiple
+            # observations may intentionally cite the same event/artifact pair;
+            # add() deduplicates that reference, so pre-dedup input row counts
+            # would make the generated manifest fail its own validator.
+            "references": len(canonical_references),
+            "generated_definition_references": reference_count(
+                "generated-definition-index"
             ),
-            "observation_artifact_references": len(observation_rows),
+            "lexical_caller_candidate_references": reference_count(
+                "lexical-caller-candidate-not-proven-runtime-caller"
+            ),
+            "manually_reviewed_analysis_source_references": reference_count(
+                "manually-reviewed-analysis-source"
+            ),
+            "observation_artifact_references": reference_count(
+                "captured-observation-artifact"
+            ),
             "source_definitions": sum(
                 entry["kind"] == "source_definition" for entry in entries
             ),

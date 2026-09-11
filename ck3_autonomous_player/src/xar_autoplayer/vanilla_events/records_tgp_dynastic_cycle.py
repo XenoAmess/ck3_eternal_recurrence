@@ -626,6 +626,34 @@ VANILLA_TGP_DYNASTIC_CYCLE_OBSERVATIONS: Final[
             },
             "rendered_native_option_indices": [0, 1],
             "selection_attempted": False,
+        }, {
+            "run": "R418-attempt-05",
+            "kind": "same-process-hot-recovery-green",
+            "artifact": (
+                "_runtime/p1-terminal-resume-r418-20260911/live-artifacts/"
+                "terminal-stages-red-attempt-05.json"
+            ),
+            "artifact_sha256": (
+                "B5048E4E5384BB50B6DA0DC57A928AF7B0F56A999B27E6FD2C462180A1DCDE70"
+            ),
+            "date_raw": 54044544,
+            "event_instance_id": 1101,
+            "root_character_id": 32904,
+            "bridge_pid": 204536,
+            "connection_generation": 1,
+            "selected_option_number": 1,
+            "selected_native_option_index": 0,
+            "postcondition_verified": True,
+            "starting_snapshot_id": "native:1731",
+            "starting_revision": 1732,
+            "ending_snapshot_id": "native:1732",
+            "ending_revision": 1733,
+            "process_restart_required": False,
+            "mcp_only": True,
+            "fixture_used": False,
+            "ocr_used": False,
+            "coordinates_used": False,
+            "console_used": False,
         }],
     },
     "tgp_dynastic_cycle.0081": {

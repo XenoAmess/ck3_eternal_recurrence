@@ -51,15 +51,15 @@ def test_checked_in_bundle_is_complete_and_strictly_self_validating() -> None:
     manifest = _manifest()
 
     assert result["status"] == "available"
-    assert result["validated_evidence"] == 269
+    assert result["validated_evidence"] == 270
     assert result["statistics"] == {
-        "evidence": 269,
+        "evidence": 270,
         "generated_definition_references": 182,
         "lexical_caller_candidate_references": 519,
-        "manually_reviewed_analysis_source_references": 259,
-        "observation_artifacts": 82,
-        "observation_artifact_references": 97,
-        "references": 1057,
+        "manually_reviewed_analysis_source_references": 262,
+        "observation_artifacts": 83,
+        "observation_artifact_references": 99,
+        "references": 1062,
         "source_definitions": 187,
     }
     assert result["manifest_sha256"] == hashlib.sha256(
@@ -68,7 +68,7 @@ def test_checked_in_bundle_is_complete_and_strictly_self_validating() -> None:
     Draft202012Validator(
         _schema("vanilla-event-portable-evidence-manifest-v1.schema.json")
     ).validate(manifest)
-    assert len(list((BUNDLE / "blobs").glob("*.gz"))) == 269
+    assert len(list((BUNDLE / "blobs").glob("*.gz"))) == 270
 
 
 def test_wheel_package_data_includes_source_index_and_evidence_bundle() -> None:
@@ -128,10 +128,10 @@ def test_manifest_preserves_honest_source_provenance_for_all_indexed_events() ->
 
     assert portable_event_keys_v1() == frozenset(source_index["events"])
     assert provenance_counts == {
-        "captured-observation-artifact": 97,
+        "captured-observation-artifact": 99,
         "generated-definition-index": 182,
         "lexical-caller-candidate-not-proven-runtime-caller": 519,
-        "manually-reviewed-analysis-source": 259,
+        "manually-reviewed-analysis-source": 262,
     }
     lexical = [
         reference
@@ -291,4 +291,4 @@ def test_offline_check_ignores_unavailable_external_roots() -> None:
     assert completed.returncode == 0, completed.stderr
     result = json.loads(completed.stdout)
     assert result["status"] == "available"
-    assert result["validated_evidence"] == 269
+    assert result["validated_evidence"] == 270
