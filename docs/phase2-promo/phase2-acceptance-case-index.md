@@ -45,7 +45,7 @@ candidate 的 loaded-feature manifest 与 seed，再消费 `--phase2-p1-evidence
 | 1 | 当前 B1 fix live | production-live 后置 GREEN，当前产品 RED 已消失 |
 | 2 | AF5 终态 | `zg361comp.1` authored `42` / native `41`，独立 provider 回读终态；ACK 不算结果 |
 | 3 | Central stage 9 | `zg361cl.390` 真实 provider terminal GREEN |
-| 4 | Central stage 10 | `zg361mg.120` 真实 provider terminal GREEN |
+| 4 | Stage 10 玩家可见 manager terminal（机器字段沿用 `central_stage_10_terminal`） | 独立的“AI Central owner → 玩家 F-case subject”路线取得 `zg361mg.120` 真实 provider terminal GREEN；不能从玩家自己的 Stage 9/11 owner 时间线推导 |
 | 5 | Central stage 11 | 真实 Workforce provider terminal GREEN（正常 close 或合法 N/A close）；`.361` 宪章/制度债及跨周期后续只作非阻塞 coverage |
 | 6 | 代表性终态 cold restore | 真实 save receipt、不同 PID/递增 generation 的 cold restore receipt，以及 B1、AF5、Central、Workforce 的 identity/state/receipt 前后相同回读 |
 | 7 | gameplay-window error scan | 完整目标时间窗扫描且 `blocking_diagnostics=[]` |

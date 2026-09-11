@@ -70,7 +70,8 @@ class TerminalStagesOperatorTests(unittest.TestCase):
                      "expected_hashes": {"product_tree_sha256": "A" * 64, "code_commit": "b" * 40}}
             checkpoint = {"path": str(root / "checkpoint.ck3"), "status": "saved", "size": 3, "sha256": "C" * 64}
             evidence = {"result": "GREEN", "save_result": {"accepted": True, "checkpoint": checkpoint},
-                        "p1_acceptance_evidence": {"central_stage_terminals": {str(i): {"result": "GREEN"} for i in (9, 10, 11)}}}
+                        "owned_stage_sequence": [9, 11], "independent_stage10_required": True,
+                        "p1_acceptance_evidence": {"central_stage_terminals": {str(i): {"result": "GREEN"} for i in (9, 11)}}}
             action = mock.Mock(return_value=evidence)
             module = SimpleNamespace(__file__=str(root / "tools/zg361_phase2_terminal_stages_action_cell.py"),
                                      run_terminal_stages=action)
@@ -92,6 +93,10 @@ class TerminalStagesOperatorTests(unittest.TestCase):
             self.assertEqual(status["cleanup_result"], "PENDING")
             self.assertEqual(status["controls"], stages.CONTROLS)
             self.assertTrue((artifacts / "representative-terminal-checkpoint.json").is_file())
+            job.runner._phase2_archive_checkpoint.assert_called_once_with(
+                checkpoint, artifacts / "representative-terminal.ck3",
+                save_lineage_id="R406.central-stages-9-and-11",
+            )
 
     def test_partial_stage_failure_preserves_evidence_and_paused_checkpoint(self):
         with tempfile.TemporaryDirectory() as temporary:
