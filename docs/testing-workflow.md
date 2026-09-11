@@ -1951,6 +1951,29 @@ provenance 的 R375 单玩家 `SAV0101` 后，fresh PID 立即恢复玩家 `3290
 准入边界。完整证据与分类见
 [`r408-r414-lineage-intake-and-multiplayer-red-2026-09-11.md`](phase2-promo/r408-r414-lineage-intake-and-multiplayer-red-2026-09-11.md)。
 
+#### 通用 CK3 存档玩家/天朝拓扑离线检查（2026-09-12）
+
+`tools/inspect_ck3_save_player_topology.py` 把 R482 前曾临时执行的 Rakaly 文本扫描迁成通用 CLI。工具不绑定账号、机器路径、
+轮次或固定角色；调用者显式传入 save、Rakaly executable 和可选的目标 CharacterID：
+
+```powershell
+py tools/inspect_ck3_save_player_topology.py `
+  --save <checkpoint.ck3> `
+  --rakaly <rakaly.exe> `
+  --player-character-id <CharacterID> `
+  --output <report.json>
+```
+
+输出合同为 `ck3_save_player_topology_offline_v1`。它记录 source/Rakaly/melted SHA-256、游戏版本、metadata 玩家数、全部
+`played_character`、`currently_played_characters`，并从 title、living landed character 和 vassal-contract 表计算所有
+“天朝制、公爵及以上、直属上级同样合格”的 manager candidate。`offline_single_player_ready` 只有在 metadata 为 1、唯一
+player record 是 `(requested player, local player 1)` 且 current vector 也只有该角色时才为真。
+
+该输出只做启动前筛选，不能冒充 live admission；最终仍需 exact-build campaign-root MCP 复核并由 MCP 原生保存 source。
+既有已 melt 文本可用 `--melted` 做无外部进程的确定性复查。normal/optimized 小型解析测试各 `2/2`，真实 R159 单玩家
+lineage 找到 71 个候选，其中目标 `29037 -> 32904` 为 tier `4`、有 8 名直属有地封臣；R482 输入报告则稳定识别为
+5 个玩家记录、`offline_single_player_ready=false`。
+
 R93 首次把这条策略跑通。新的 Python pipe server 必须异步等待 DLL 再连接，直到收到
 `hello` 且首个 snapshot 为 `map_ready=true`；刚创建 server 时的空 capability 不是 CK3
 死亡证据。当前 DLL 发布的 `connection_generation` 是单个 CK3 进程内的连接代数，跨
