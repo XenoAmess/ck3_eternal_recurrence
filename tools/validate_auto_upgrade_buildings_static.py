@@ -22,10 +22,12 @@ DEFAULT_GAME_ROOT = Path(
 )
 LOC_KEYS = {
     "enable_auto_build",
+    "enable_auto_build_tooltip",
     "enable_auto_build_desc",
     "enable_auto_build_text",
     "enable_auto_build_confirm",
     "disable_auto_build",
+    "disable_auto_build_tooltip",
     "disable_auto_build_desc",
     "disable_auto_build_text",
     "disable_auto_build_confirm",
@@ -174,12 +176,11 @@ def validate(game_root: Path = DEFAULT_GAME_ROOT) -> tuple[list[str], bool]:
         errors.append("generated scripted effects are stale")
 
     if re.findall(r"(?m)^auto_build\.(\d+)\s*=\s*\{", events) != [
-        "0001",
         "0003",
         "0004",
         "0005",
     ]:
-        errors.append("event inventory must preserve 0001/0003/0004 and add only 0005")
+        errors.append("event inventory must preserve compatibility 0003/0004 and unique loop 0005")
     combined = decisions + "\n" + events + "\n" + effects
     if "AUBT:" in combined or "aubt_" in combined or "aubt." in combined:
         errors.append("acceptance fixture markers leaked into production runtime")
@@ -209,8 +210,12 @@ def validate(game_root: Path = DEFAULT_GAME_ROOT) -> tuple[list[str], bool]:
         errors.append("enable_auto_build compatibility flag is not fully wired")
     if decisions.count("is_ai = no") < 4 or events.count("is_ai = no") < 4:
         errors.append("human-player gates are incomplete")
-    if "aub_start_global_loop_effect = yes" not in decisions:
-        errors.append("enable decision does not seed the unique loop")
+    if "id = auto_build.0003" not in decisions:
+        errors.append("enable decision does not enter the compatibility loop seed")
+    if "ai_check_frequency" in decisions or decisions.count("ai_check_interval = 0") != 2:
+        errors.append("decisions must use CK3 1.19 ai_check_interval syntax")
+    if "auto_build.0001" in events:
+        errors.append("unreferenced upstream auto_build.0001 must not be restored")
     if effects.count("aub_start_global_loop_effect = {") != 1:
         errors.append("global loop seed effect must be defined exactly once")
     if effects.count("aub_upgrade_") != 43 * 2 + 1:

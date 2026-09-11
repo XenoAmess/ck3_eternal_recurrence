@@ -3,7 +3,7 @@
         reference = "gfx/interface/illustrations/decisions/decision_misc.dds"
     }
     decision_group_type = realm
-    ai_check_frequency = 0
+    ai_check_interval = 0
     desc = enable_auto_build_desc
     is_shown = {
         is_ai = no
@@ -19,8 +19,11 @@
     effect = {
         custom_tooltip = enable_auto_build_text
         add_character_flag = enable_auto_build
-        # 建立或复用唯一的全局循环；首次检查在一天后执行。
-        aub_start_global_loop_effect = yes
+        # 经旧存档兼容入口建立或复用唯一的全局循环。
+        trigger_event = {
+            id = auto_build.0003
+            days = 1
+        }
     }
     
     ai_potential = {
@@ -37,7 +40,7 @@ disable_auto_build = {
         reference = "gfx/interface/illustrations/decisions/decision_misc.dds"
     }
     decision_group_type = realm
-    ai_check_frequency = 0
+    ai_check_interval = 0
     desc = disable_auto_build_desc
     is_shown = {
         is_ai = no

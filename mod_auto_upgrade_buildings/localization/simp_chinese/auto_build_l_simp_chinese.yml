@@ -1,9 +1,11 @@
 ﻿l_simp_chinese:
  enable_auto_build:0 "启用自动建造"
+ enable_auto_build_tooltip:0 "启用自动建造"
  enable_auto_build_desc:0 "启用自动建造功能。"
  enable_auto_build_text:0 "开启后，系统每隔15天检查你的直辖地产，并将每条符合条件的普通建筑链提升一级。\n升级优先花费国库，国库不足时才花费个人金钱；两者都不足则跳过。\n费用采用1.19.0.6原版基础费用，不受减免影响，升级瞬间完成。\n不会处理正在施工的地产，也不会处理主建筑、公国建筑、特殊建筑、部落、游牧或曼荼罗建筑。"
  enable_auto_build_confirm:0 "当然"
  disable_auto_build:0 "禁用自动建造" 
+ disable_auto_build_tooltip:0 "禁用自动建造"
  disable_auto_build_desc:0 "停止自动建造功能。"
  disable_auto_build_text:0 "停止自动建造；已经排队的检查到达时不会产生副作用。"
  disable_auto_build_confirm:0 "当然"
