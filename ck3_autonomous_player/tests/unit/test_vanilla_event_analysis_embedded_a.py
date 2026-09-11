@@ -95,7 +95,7 @@ def test_tgp_movement_study_repeat_is_source_reviewed_and_live_bounded() -> None
     event_key = "tgp_movement_events.0070"
     contract = EMBEDDED_A_VANILLA_TIMELINE_CONTRACTS[event_key]
     analysis = VANILLA_EMBEDDED_A_ANALYSIS[event_key]
-    legacy, first_green, repeat_red = VANILLA_EMBEDDED_A_OBSERVATIONS[
+    legacy, first_green, repeat_red, repeat_green = VANILLA_EMBEDDED_A_OBSERVATIONS[
         event_key
     ]["exemplars"]
 
@@ -118,6 +118,15 @@ def test_tgp_movement_study_repeat_is_source_reviewed_and_live_bounded() -> None
     assert repeat_red["selection_attempted"] is False
     assert repeat_red["retained_red"] is True
     assert repeat_red["artifact_sha256"] == first_green["artifact_sha256"]
+    assert repeat_green["run"] == "R418-attempt-06"
+    assert repeat_green["event_instance_id"] == repeat_red["event_instance_id"]
+    assert repeat_green["selected_native_option_index"] == 0
+    assert repeat_green["postcondition_verified"] is True
+    assert repeat_green["starting_snapshot_id"] == "native:2692"
+    assert repeat_green["ending_snapshot_id"] == "native:2693"
+    assert repeat_green["artifact_sha256"] != repeat_red["artifact_sha256"]
+    assert repeat_green["bridge_pid"] == first_green["bridge_pid"]
+    assert repeat_green["connection_generation"] == 1
 
 
 def test_safe_option_and_occurrence_fields_match_existing_contracts() -> None:

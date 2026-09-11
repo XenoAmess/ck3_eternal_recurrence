@@ -34,6 +34,10 @@ zg361_jingcha_annual_dispatch_effect = {
 # 已公示 serial tuple 时，不得先开新 B1 再让旧链 stale abort；改为保留
 # 一枚 pending request，由唯一隐藏票据轮询，并由 Central 终态主动消费。
 zg361_issue_jingcha_mandate_effect = {
+	# Existing annual requests are the durable wake-up lane for an active B1.
+	# Recover the exact callback-free zero-survivor state before testing whether
+	# the serial is still busy, so the same request can open its replacement.
+	zg361_b1_recover_empty_calibration_cycle_effect = yes
 	if = {
 		limit = { zg361_b1_serial_dependents_active_trigger = yes }
 		if = {

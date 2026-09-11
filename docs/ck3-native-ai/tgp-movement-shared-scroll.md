@@ -9,7 +9,9 @@
   revision `1377 -> 1378`，`postcondition_verified=true`。
 - [paused live RED retained] 同一产品窗口约十一游戏年后，R418 attempt 05 在同一 PID/generation 实见第二个合法
   instance `1108`。旧合同的 `max_occurrences=1` 在选择前阻断，未提交动作；该 RED 证明次数上限错误，不是原版事件漂移。
-- [counter-policy static-ready] 通用合同现按产品观察窗口允许重复。第二次实例仍待同进程热恢复验证动作与 advance。
+- [production-live primitive] R418 attempt 06 在同一 PID/generation 对第二次实例选择 authored `1` / native `0`，
+  instance `1108 -> null`、snapshot `native:2692 -> native:2693`、revision `2693 -> 2694`，
+  `postcondition_verified=true`。重复合同的同进程热恢复已经闭合。
 
 日期、instance、人物 ID 和 PID 只属于 observation。通用合同只冻结可复用的 scope/option 形态、选择路线与重复语义。
 
@@ -65,6 +67,9 @@ R418 两次实见日期分别为 `54017928` 和 `54114528`，相差 `96600` raw 
 - R418 attempt 05 汇总 artifact（含第一次 GREEN drain 与第二次选择前 RED）：
   `_runtime/p1-terminal-resume-r418-20260911/live-artifacts/terminal-stages-red-attempt-05.json`，SHA-256
   `B5048E4E5384BB50B6DA0DC57A928AF7B0F56A999B27E6FD2C462180A1DCDE70`。
+- R418 attempt 06 汇总 artifact（含第二次 GREEN drain）：
+  `_runtime/p1-terminal-resume-r418-20260911/live-artifacts/terminal-stages-red-attempt-06.json`，SHA-256
+  `999828C356E88EB943A9E4CC22ACBF63BA294AFBAAFCA83FAE750C67D3342B76`。
 - 可移植合同、analysis 与 observations：
   `ck3_autonomous_player/src/xar_autoplayer/vanilla_events/records_embedded_a.py` 与
   `records_analysis_embedded_a.py`。

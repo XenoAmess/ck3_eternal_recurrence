@@ -6,6 +6,7 @@
 
 zg361_b1_open_cycle_effect = {
 	zg361_b1_migrate_manager_identity_effect = yes
+	zg361_b1_recover_empty_calibration_cycle_effect = yes
 	# A canonical acceptance seed can already contain an active cycle produced
 	# by an older runtime.  Such a cycle cannot acquire the schema-v2 shared
 	# bank retroactively, so retire it without publication/rewards and let this

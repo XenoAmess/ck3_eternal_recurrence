@@ -185,8 +185,8 @@ class B1RuntimeFoundationTests(unittest.TestCase):
         self.assertEqual(keys_by_part[5][0], EFFECT_SPLIT_KEY)
         self.assertNotIn(EFFECT_SPLIT_KEY, keys_by_part[0])
         all_keys = tuple(key for part in keys_by_part for key in part)
-        self.assertEqual(len(all_keys), 82)
-        self.assertEqual(len(set(all_keys)), 82)
+        self.assertEqual(len(all_keys), 83)
+        self.assertEqual(len(set(all_keys)), 83)
 
         observed_blocks = []
         for relative in B1_EFFECT_FILES:
@@ -269,7 +269,10 @@ class B1RuntimeFoundationTests(unittest.TestCase):
         self.assertNotIn("zg361_apply_pending_grades_effect", recovery)
         self.assertEqual(B1_EFFECT_PURPOSES[-1], (
             "cycle_migration_recovery",
-            ("zg361_b1_recover_legacy_active_cycle_effect",),
+            (
+                "zg361_b1_recover_legacy_active_cycle_effect",
+                "zg361_b1_recover_empty_calibration_cycle_effect",
+            ),
         ))
         self.assertTrue(
             B1_EFFECT_FILES[-1].endswith(
@@ -1749,6 +1752,9 @@ class B1RuntimeFoundationTests(unittest.TestCase):
         self.assertEqual(busy.count("trigger_else = { always = no }"), 3)
 
         issue = top_level_block(self.jingcha, "zg361_issue_jingcha_mandate_effect")
+        recovery = issue.index("zg361_b1_recover_empty_calibration_cycle_effect = yes")
+        busy_check = issue.index("zg361_b1_serial_dependents_active_trigger = yes")
+        self.assertLess(recovery, busy_check)
         pending = issue.index(
             "set_variable = { name = zg361_jingcha_annual_request_pending value = 1 }"
         )
@@ -1792,6 +1798,10 @@ class B1RuntimeFoundationTests(unittest.TestCase):
             retry.count("zg361_consume_pending_annual_jingcha_effect = yes"), 1
         )
         self.assertNotIn("remove_variable = zg361_jingcha_annual_request_pending", retry)
+        self.assertLess(
+            retry.index("zg361_b1_recover_empty_calibration_cycle_effect = yes"),
+            retry.index("zg361_b1_serial_dependents_active_trigger = yes"),
+        )
 
     def test_review_now_rechecks_serial_busy_state_before_direct_open(self) -> None:
         validity = top_level_block(
@@ -1801,6 +1811,10 @@ class B1RuntimeFoundationTests(unittest.TestCase):
             "NOT = { zg361_b1_serial_dependents_active_trigger = yes }", validity
         )
         bridge = top_level_block(self.scripted_guis, "zg361_review_now_bridge_gui")
+        self.assertLess(
+            bridge.index("zg361_b1_recover_empty_calibration_cycle_effect = yes"),
+            bridge.index("NOT = { zg361_b1_serial_dependents_active_trigger = yes }"),
+        )
         busy = bridge.index(
             "NOT = { zg361_b1_serial_dependents_active_trigger = yes }"
         )
@@ -1848,6 +1862,11 @@ class B1RuntimeFoundationTests(unittest.TestCase):
         self.assertIn(
             "deferred sibling synchronization retired after eligibility loss", retry
         )
+        for event in (first, retry):
+            self.assertLess(
+                event.index("zg361_b1_recover_empty_calibration_cycle_effect = yes"),
+                event.index("zg361_b1_serial_dependents_active_trigger = yes"),
+            )
         annual = top_level_block(self.core, "zg361_annual_review_effect")
         self.assertIn("is_ai = no", annual)
         self.assertEqual(annual.count("zg361_issue_jingcha_mandate_effect = yes"), 2)
@@ -3312,6 +3331,34 @@ class B1RuntimeFoundationTests(unittest.TestCase):
         self.assertNotIn("is_landed", prune)
         self.assertNotIn("list_size:zg361_b1_subjects", prune)
         self.assertNotIn("list_size:zg361_b1_processing_subjects", prune)
+
+        recovery = top_level_block(
+            self.effects, "zg361_b1_recover_empty_calibration_cycle_effect"
+        )
+        for token in (
+            "is_ai = no",
+            "has_character_flag = zg361_b1_cycle_active",
+            "var:zg361_b1_cycle_runtime_schema = 2",
+            "var:zg361_b1_cycle_state = 7",
+            "var:zg361_b1_closure_state = 0",
+            "var:zg361_b1_calibration_finalized = 0",
+            "var:zg361_b1_pending_open_n = 0",
+            "var:zg361_b1_oversight_return_status = 0",
+            "var:zg361_b1_publication_blocked = 0",
+            "var:zg361_b1_quota_built_serial = var:zg361_b1_manager_case_serial",
+            "zg361_b1_prune_unavailable_subjects_effect = yes",
+            "var:zg361_b1_subject_n = 0",
+            "var:zg361_b1_processing_n = 0",
+            "name = zg361_b1_empty_calibration_recovery_state value = 2",
+            "remove_character_flag = zg361_b1_cycle_active",
+            "callback-free zero-survivor calibration cycle retired before restart",
+        ):
+            self.assertIn(token, recovery)
+        prune_at = recovery.index("zg361_b1_prune_unavailable_subjects_effect = yes")
+        self.assertLess(
+            prune_at,
+            recovery.index("var:zg361_b1_subject_n = 0", prune_at),
+        )
         for event_id, first_consumer in (
             (100, "zg361_b1_midcycle_dispatcher_effect"),
             (102, "zg361_b1_prepare_facts_effect"),

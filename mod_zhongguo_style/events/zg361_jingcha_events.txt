@@ -89,6 +89,9 @@ zg361.42 = {
 	}
 
 	immediate = {
+		# A retained save may already own this polling ticket. Give the new runtime
+		# one player-only recovery boundary before deciding to poll for two more days.
+		zg361_b1_recover_empty_calibration_cycle_effect = yes
 		if = {
 			limit = {
 				is_alive = yes

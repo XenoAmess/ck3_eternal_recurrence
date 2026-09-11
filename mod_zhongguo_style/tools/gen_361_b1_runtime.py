@@ -24,7 +24,7 @@ EFFECTS_DIR = MOD_ROOT / "common" / "scripted_effects"
 BOM = b"\xef\xbb\xbf"
 HEADER = "# GENERATED FILE — edit tools/gen_361_b1_runtime.py\n"
 EFFECT_SPLIT_KEY = "zg361_b1_finalize_agenda_audit_effect"
-EFFECT_BLOCK_COUNTS = (42, 40)
+EFFECT_BLOCK_COUNTS = (42, 41)
 LEGACY_EFFECT_PATHS = (
     EFFECTS_DIR / "zg361_b1_runtime_effects.txt",
     EFFECTS_DIR / "zg361_b1_runtime_effects_part2.txt",
@@ -773,7 +773,7 @@ def render_stage_s_policy_freeze_blocks() -> str:
 
 
 def render_legacy_cycle_recovery() -> str:
-    """Render the one-shot migration for active pre-schema-v2 manager cycles."""
+    """Render save-compatible retirement for legacy and empty state-7 cycles."""
 
     return r'''# One-time save compatibility for an already-active cycle created before the
 # cross-year common-superior bank contract.  The old case is terminally
@@ -841,6 +841,70 @@ zg361_b1_recover_legacy_active_cycle_effect = {
 		remove_character_flag = zg361_review_in_progress
 		remove_character_flag = zg361_b1_cycle_active
 		debug_log = "ZG361B1: legacy active cycle retired before schema-v2 restart"
+	}
+}
+
+# A state-7 manager normally reaches the closure gate in the same effect chain,
+# or owns a manager/subject callback represented by pending_open_n or the
+# skip-level return status. R418 retained a production lineage after every one
+# of its 132 weak Character rows had disappeared: both manager lists were empty,
+# no callback remained, and the annual request kept polling the active serial
+# forever. At an existing player-only request boundary, prune once and retire
+# only that exact callback-free zero-survivor state. The caller can then open a
+# new cycle from the current live vassal domain without publishing an empty
+# result or paying a reward.
+zg361_b1_recover_empty_calibration_cycle_effect = {
+	if = {
+		limit = {
+			is_ai = no
+			has_character_flag = zg361_b1_cycle_active
+			has_variable = zg361_b1_cycle_runtime_schema
+			var:zg361_b1_cycle_runtime_schema = 2
+			has_variable = zg361_b1_cycle_state
+			var:zg361_b1_cycle_state = 7
+			has_variable = zg361_b1_closure_state
+			var:zg361_b1_closure_state = 0
+			has_variable = zg361_b1_calibration_finalized
+			var:zg361_b1_calibration_finalized = 0
+			has_variable = zg361_b1_pending_open_n
+			var:zg361_b1_pending_open_n = 0
+			has_variable = zg361_b1_oversight_return_status
+			var:zg361_b1_oversight_return_status = 0
+			has_variable = zg361_b1_publication_blocked
+			var:zg361_b1_publication_blocked = 0
+			has_variable = zg361_b1_quota_built_serial
+			has_variable = zg361_b1_manager_case_serial
+			var:zg361_b1_quota_built_serial = var:zg361_b1_manager_case_serial
+		}
+		zg361_b1_prune_unavailable_subjects_effect = yes
+		if = {
+			limit = {
+				var:zg361_b1_subject_n = 0
+				var:zg361_b1_processing_n = 0
+				var:zg361_b1_cycle_state = 7
+				var:zg361_b1_closure_state = 0
+				var:zg361_b1_pending_open_n = 0
+			}
+			set_variable = { name = zg361_b1_empty_calibration_recovery_state value = 1 }
+			set_variable = { name = zg361_b1_empty_calibration_recovery_cycle value = var:zg361_b1_manager_cycle_serial }
+			set_variable = { name = zg361_b1_empty_calibration_recovery_case value = var:zg361_b1_manager_case_serial }
+			set_variable = { name = zg361_b1_empty_calibration_recovery_year value = current_year }
+			if = { limit = { has_variable_list = zg361_b1_subjects } clear_variable_list = zg361_b1_subjects }
+			if = { limit = { has_variable_list = zg361_b1_processing_subjects } clear_variable_list = zg361_b1_processing_subjects }
+			if = { limit = { has_variable_list = zg361_b1_agenda_subjects } clear_variable_list = zg361_b1_agenda_subjects }
+			if = { limit = { has_variable_list = zg361_b1_pending_watch_subjects } clear_variable_list = zg361_b1_pending_watch_subjects }
+			set_variable = { name = zg361_b1_subject_n value = 0 }
+			set_variable = { name = zg361_b1_processing_n value = 0 }
+			set_variable = { name = zg361_b1_agenda_n value = 0 }
+			set_variable = { name = zg361_b1_cycle_state value = 8 }
+			set_variable = { name = zg361_b1_rewards_issued value = 0 }
+			set_variable = { name = zg361_b1_pending_rewards_committed value = 0 }
+			set_variable = { name = zg361_b1_empty_calibration_recovery_state value = 2 }
+			remove_variable = zg361_b1_cycle_open_year
+			remove_character_flag = zg361_review_in_progress
+			remove_character_flag = zg361_b1_cycle_active
+			debug_log = "ZG361B1: callback-free zero-survivor calibration cycle retired before restart"
+		}
 	}
 }'''
 
@@ -1967,6 +2031,7 @@ zg361_b1_initialize_subject_case_effect = {
 
 zg361_b1_open_cycle_effect = {
 	zg361_b1_migrate_manager_identity_effect = yes
+	zg361_b1_recover_empty_calibration_cycle_effect = yes
 	# A canonical acceptance seed can already contain an active cycle produced
 	# by an older runtime.  Such a cycle cannot acquire the schema-v2 shared
 	# bank retroactively, so retire it without publication/rewards and let this
@@ -9556,6 +9621,7 @@ zg361b1.90 = {
 				has_game_rule = zg361_on
 				zg361_is_celestial_liege_trigger = yes
 			}
+			zg361_b1_recover_empty_calibration_cycle_effect = yes
 			if = {
 				limit = { zg361_b1_serial_dependents_active_trigger = yes }
 				if = {
@@ -9597,6 +9663,7 @@ zg361b1.91 = {
 				has_game_rule = zg361_on
 				zg361_is_celestial_liege_trigger = yes
 			}
+			zg361_b1_recover_empty_calibration_cycle_effect = yes
 			if = {
 				limit = {
 					trigger_if = {
@@ -10963,7 +11030,10 @@ B1_EFFECT_PURPOSES = (
     ),
     (
         "cycle_migration_recovery",
-        ("zg361_b1_recover_legacy_active_cycle_effect",),
+        (
+            "zg361_b1_recover_legacy_active_cycle_effect",
+            "zg361_b1_recover_empty_calibration_cycle_effect",
+        ),
     ),
 )
 

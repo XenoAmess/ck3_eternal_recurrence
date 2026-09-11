@@ -590,6 +590,42 @@ _TGP_MOVEMENT_0070_OBSERVATIONS: Final[
                 "coordinates_used": False,
                 "console_used": False,
             },
+            {
+                "run": "R418-attempt-06",
+                "kind": "repeat-occurrence-same-process-green",
+                "artifact": (
+                    "_runtime/p1-terminal-resume-r418-20260911/live-artifacts/"
+                    "terminal-stages-red-attempt-06.json"
+                ),
+                "artifact_sha256": (
+                    "999828C356E88EB943A9E4CC22ACBF63BA294AFBAAFCA83FAE750C67D3342B76"
+                ),
+                "date_raw": 54114528,
+                "event_instance_id": 1108,
+                "root_character_id": 32904,
+                "saved_character_ids": {"councillor": 125906},
+                "saved_scope_raw_types": {
+                    "my_movement": 61,
+                    "councillor": 4,
+                },
+                "rendered_native_option_indices": [0, 1, 2],
+                "context_query_sequence": 29,
+                "selected_option_number": 1,
+                "selected_native_option_index": 0,
+                "postcondition_verified": True,
+                "starting_snapshot_id": "native:2692",
+                "starting_revision": 2693,
+                "ending_snapshot_id": "native:2693",
+                "ending_revision": 2694,
+                "connection_generation": 1,
+                "bridge_pid": 204536,
+                "process_restart_required": False,
+                "mcp_only": True,
+                "fixture_used": False,
+                "ocr_used": False,
+                "coordinates_used": False,
+                "console_used": False,
+            },
         ],
     },
 }
