@@ -6788,6 +6788,38 @@
       "sha256": "5e72b6038e3f2b010d1aecb3288c14d4480ba4796b00c8c069946601f43319cd"
     },
     {
+      "blob_bytes": 79873,
+      "blob_path": "blobs/5f1710e928f214c28ff4df19478117f333e22473bf9e9713f0039ae766138146.gz",
+      "blob_sha256": "34f5b3ae508f6c97202eb2024259900d92429517fa98192e78569c4df06bc4c6",
+      "bytes": 1390823,
+      "evidence_id": "5f1710e928f214c28ff4df19478117f333e22473bf9e9713f0039ae766138146",
+      "kind": "observation_artifact",
+      "media_type": "application/json",
+      "references": [
+        {
+          "caller_candidate_resolution": null,
+          "event_definition_key": "tgp_dynastic_cycle.0072",
+          "logical_path": "_runtime/p1-terminal-resume-r418-20260911/live-artifacts/terminal-stages-red-attempt-04.json",
+          "origin": "runtime",
+          "provenance": "captured-observation-artifact",
+          "role": "artifact",
+          "source_column": null,
+          "source_line": null
+        },
+        {
+          "caller_candidate_resolution": null,
+          "event_definition_key": "yearly.1030",
+          "logical_path": "_runtime/p1-terminal-resume-r418-20260911/live-artifacts/terminal-stages-red-attempt-04.json",
+          "origin": "runtime",
+          "provenance": "captured-observation-artifact",
+          "role": "artifact",
+          "source_column": null,
+          "source_line": null
+        }
+      ],
+      "sha256": "5f1710e928f214c28ff4df19478117f333e22473bf9e9713f0039ae766138146"
+    },
+    {
       "blob_bytes": 360,
       "blob_path": "blobs/60c00a7986b1767e4d33a628d604238ea597a66e4e41e65df1a2955f3af157d7.gz",
       "blob_sha256": "b29beca20de2b322250e2408d7039c3ecf2d21ab60677b78bd4fd34f5ac2f259",
@@ -7292,6 +7324,16 @@
       "kind": "source_definition",
       "media_type": "application/yaml; charset=utf-8",
       "references": [
+        {
+          "caller_candidate_resolution": null,
+          "event_definition_key": "tgp_dynastic_cycle.0072",
+          "logical_path": "localization/simp_chinese/dlc/tgp/dlc_tgp_situation_decision_events_l_simp_chinese.yml",
+          "origin": "ck3_game",
+          "provenance": "manually-reviewed-analysis-source",
+          "role": "analysis_source",
+          "source_column": null,
+          "source_line": null
+        },
         {
           "caller_candidate_resolution": null,
           "event_definition_key": "tgp_dynastic_cycle.0081",
@@ -8984,6 +9026,28 @@
         }
       ],
       "sha256": "9268a54f0e425d409d9d0f20d884e0a3d0a89df85a0b6644d56133c0c4cb0096"
+    },
+    {
+      "blob_bytes": 6872,
+      "blob_path": "blobs/9279be92a40de23178c020f13b9397b5b3909006526bcca81eb56133eb86644c.gz",
+      "blob_sha256": "1e2db086d68b1cd6fcb372064758d7e2bf94e3fa09e910c92d9f3477f2a9352b",
+      "bytes": 23057,
+      "evidence_id": "9279be92a40de23178c020f13b9397b5b3909006526bcca81eb56133eb86644c",
+      "kind": "source_definition",
+      "media_type": "application/yaml; charset=utf-8",
+      "references": [
+        {
+          "caller_candidate_resolution": null,
+          "event_definition_key": "tgp_dynastic_cycle.0072",
+          "logical_path": "localization/english/dlc/tgp/dlc_tgp_situation_decision_events_l_english.yml",
+          "origin": "ck3_game",
+          "provenance": "manually-reviewed-analysis-source",
+          "role": "analysis_source",
+          "source_column": null,
+          "source_line": null
+        }
+      ],
+      "sha256": "9279be92a40de23178c020f13b9397b5b3909006526bcca81eb56133eb86644c"
     },
     {
       "blob_bytes": 7480,
@@ -11420,6 +11484,36 @@
       "references": [
         {
           "caller_candidate_resolution": null,
+          "event_definition_key": "tgp_dynastic_cycle.0072",
+          "logical_path": "events/dlc/tgp/tgp_dynastic_cycle_events.txt",
+          "origin": "ck3_game",
+          "provenance": "generated-definition-index",
+          "role": "event_definition",
+          "source_column": null,
+          "source_line": 1041
+        },
+        {
+          "caller_candidate_resolution": "same-definition-file-only",
+          "event_definition_key": "tgp_dynastic_cycle.0072",
+          "logical_path": "events/dlc/tgp/tgp_dynastic_cycle_events.txt",
+          "origin": "ck3_game",
+          "provenance": "lexical-caller-candidate-not-proven-runtime-caller",
+          "role": "caller_candidate",
+          "source_column": 20,
+          "source_line": 1036
+        },
+        {
+          "caller_candidate_resolution": null,
+          "event_definition_key": "tgp_dynastic_cycle.0072",
+          "logical_path": "events/dlc/tgp/tgp_dynastic_cycle_events.txt",
+          "origin": "ck3_game",
+          "provenance": "manually-reviewed-analysis-source",
+          "role": "analysis_source",
+          "source_column": null,
+          "source_line": null
+        },
+        {
+          "caller_candidate_resolution": null,
           "event_definition_key": "tgp_dynastic_cycle.0081",
           "logical_path": "events/dlc/tgp/tgp_dynastic_cycle_events.txt",
           "origin": "ck3_game",
@@ -13715,13 +13809,13 @@
   "schema": "xar.ck3.vanilla-event-portable-evidence-manifest",
   "schema_version": 1,
   "statistics": {
-    "evidence": 267,
-    "generated_definition_references": 181,
-    "lexical_caller_candidate_references": 518,
-    "manually_reviewed_analysis_source_references": 256,
-    "observation_artifact_references": 95,
-    "observation_artifacts": 81,
-    "references": 1050,
-    "source_definitions": 186
+    "evidence": 269,
+    "generated_definition_references": 182,
+    "lexical_caller_candidate_references": 519,
+    "manually_reviewed_analysis_source_references": 259,
+    "observation_artifact_references": 97,
+    "observation_artifacts": 82,
+    "references": 1057,
+    "source_definitions": 187
   }
 }

@@ -125,8 +125,8 @@ class YearlyHookForSecretEventRecordTests(unittest.TestCase):
         for digest in analysis["source_sha256"].values():
             self.assertRegex(digest, SHA256_PATTERN)
 
-    def test_r418_red_remains_observation_only(self) -> None:
-        (red,) = VANILLA_YEARLY_OBSERVATIONS[EVENT_KEY]["exemplars"]
+    def test_r418_red_and_hot_recovery_green_remain_observation_only(self) -> None:
+        red, green = VANILLA_YEARLY_OBSERVATIONS[EVENT_KEY]["exemplars"]
         contract_repr = repr(VANILLA_YEARLY_TIMELINE_CONTRACTS[EVENT_KEY])
 
         self.assertEqual(red["run"], "R418-retry-03")
@@ -143,6 +143,13 @@ class YearlyHookForSecretEventRecordTests(unittest.TestCase):
         self.assertEqual(red["rendered_native_option_indices"], [0, 1, 2])
         self.assertFalse(red["selection_attempted"])
         self.assertRegex(red["artifact_sha256"], SHA256_PATTERN)
+        self.assertEqual(green["run"], "R418-attempt-04")
+        self.assertEqual(green["selected_option_number"], 1)
+        self.assertEqual(green["selected_native_option_index"], 0)
+        self.assertEqual(green["starting_snapshot_id"], "native:457")
+        self.assertEqual(green["ending_snapshot_id"], "native:458")
+        self.assertTrue(green["postcondition_verified"])
+        self.assertRegex(green["artifact_sha256"], SHA256_PATTERN)
         for observation_only in (53943096, 1096, 32904, 50407232, 88187, 204536):
             self.assertNotIn(str(observation_only), contract_repr)
 

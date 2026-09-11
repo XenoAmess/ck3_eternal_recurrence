@@ -39,6 +39,21 @@ def _scope(name: str, type_key: str) -> dict[str, object]:
     }
 
 
+def _character_scope(name: str, character_id: int) -> dict[str, object]:
+    return {
+        "name": name,
+        "scope": {
+            "status": "available",
+            "type_key": "character",
+            "typed_identity": {
+                "status": "available",
+                "kind": "character",
+                "character_id": character_id,
+            },
+        },
+    }
+
+
 def _source(relative: str) -> Path | None:
     for root in (ROOT, ROOT.parent):
         candidate = root / "Crusader Kings III" / "game" / relative
@@ -48,6 +63,92 @@ def _source(relative: str) -> Path | None:
 
 
 class VanillaDynasticCycleInterruptContractTests(unittest.TestCase):
+    def test_stability_notification_keeps_player_independent(self) -> None:
+        event_key = "tgp_dynastic_cycle.0072"
+        contract = production._resolve_timeline_interrupt_contract(
+            event_key,
+            player=32904,
+            starting_date=53905680,
+            absolute_end_date=54158880,
+            stop_at_clean_review_boundary=False,
+            continue_to_pause_target=True,
+        )
+        self.assertIsNotNone(contract)
+        assert contract is not None
+        context = {
+            "schema": "current-event-window-context-v1",
+            "schema_version": 1,
+            "status": "available",
+            "window_match_count": 1,
+            "event_definition_key": event_key,
+            "current_event_instance_id": 1101,
+            "date_raw": 54044544,
+            "root_scope": {
+                "status": "available",
+                "type_key": "character",
+                "typed_identity": {
+                    "status": "available",
+                    "kind": "character",
+                    "character_id": 32904,
+                },
+            },
+            "saved_scopes": [
+                _scope("situation", "situation"),
+                _scope("situation_sub_region", "situation_sub_region"),
+                _character_scope("new_son_of_heaven", 110448),
+            ],
+            "options": [
+                {
+                    "rendered_index": index,
+                    "native_option_index": index,
+                    "shown": True,
+                    "enabled": True,
+                    "fallback": False,
+                    "cancel": False,
+                }
+                for index in range(2)
+            ],
+        }
+
+        def checks_for(candidate: dict[str, object]) -> dict[str, bool]:
+            return production._known_interrupt_checks(
+                snapshot={
+                    "date_raw": 54044544,
+                    "active_event": {"option_count": 2},
+                },
+                event={"event_instance_id": 1101},
+                context=candidate,
+                event_key=event_key,
+                contract=contract,
+            )
+
+        checks = checks_for(context)
+        self.assertTrue(all(checks.values()), checks)
+        self.assertEqual(contract["selected_option_number"], 1)
+        self.assertEqual(contract["selected_native_option_index"], 0)
+        self.assertEqual(
+            contract["occurrence_policy"],
+            "repeatable-within-product-observation-window",
+        )
+
+        no_new_emperor = copy.deepcopy(context)
+        no_new_emperor["saved_scopes"].pop()
+        self.assertTrue(all(checks_for(no_new_emperor).values()))
+
+        player_as_new_emperor = copy.deepcopy(context)
+        player_as_new_emperor["saved_scopes"][2] = _character_scope(
+            "new_son_of_heaven", 32904
+        )
+        self.assertFalse(
+            checks_for(player_as_new_emperor)[
+                "scope:new_son_of_heaven:unique_third_party"
+            ]
+        )
+
+        wrong_option = copy.deepcopy(context)
+        wrong_option["options"][0]["native_option_index"] = 1
+        self.assertFalse(checks_for(wrong_option)["authored_options_exact"])
+
     def test_instability_transition_uses_exact_empty_acknowledgement(self) -> None:
         event_key = "tgp_dynastic_cycle.0091"
         contract = production._resolve_timeline_interrupt_contract(
