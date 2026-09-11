@@ -27,6 +27,10 @@ meta_data={
 \t\t\tkey="k_owner"
 \t\t\tholder=10
 \t\t}
+\t\t102={
+\t\t\tkey="c_subject"
+\t\t\tholder=30
+\t\t}
 \t20={
 \t\tfirst_name="Manager"
 \t\talive_data={ }
@@ -41,9 +45,21 @@ meta_data={
 \t\t\tgovernment="celestial_government"
 \t\t}
 \t}
+\t30={
+\t\tfirst_name="Subject"
+\t\talive_data={ }
+\t\tlanded_data={
+\t\t\tgovernment="celestial_government"
+\t\t}
+\t}
 \t\t200={
 \t\t\tvassal=20
 \t\t\tliege=10
+\t\t\tcontract_group="celestial_vassal"
+\t\t}
+\t\t201={
+\t\t\tvassal=30
+\t\t\tliege=20
 \t\t\tcontract_group="celestial_vassal"
 \t\t}
 played_character={
@@ -79,7 +95,8 @@ class SaveTopologyTests(unittest.TestCase):
                     "liege_primary_title_tier": 4,
                     "liege_primary_title_key": "k_owner",
                     "liege_government": "celestial_government",
-                    "direct_landed_vassal_count": 0,
+                    "direct_landed_vassal_count": 1,
+                    "direct_landed_vassal_character_ids": [30],
                 }
             ],
         )

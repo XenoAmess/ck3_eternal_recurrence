@@ -85,3 +85,5 @@ provenance。运行后依次执行：确认来源玩家与 campaign root、调�
 `4/4` GREEN，另通过 `py_compile` 与 `git diff --check`。
 
 R483/R484 已证明 loader/native 来源本身可恢复，但首次 worker 错用 AF5 基类 validator，在 action 前丢失目标字段并保留 harness RED；没有玩家切换、保存或时间推进。最小修复改由 worker 调用本模块 validator，R483/R484 已完成 GREEN cleanup，不能原地 retry。证据见 [R483/R484 分派 RED](r483-r484-stage10-source-capture-dispatch-red-2026-09-12.md)。
+
+修复后的 R485/R486 已签发 `zg361_stage10_player_source_capture_v1`：目标 `29037 -> 32904`、`date_raw=53154120`、MCP 原生保存、零时间推进。checkpoint SHA-256 为 `C11AFCF4...21BFA`，离线结构为唯一玩家 `29037`。该来源现可用于签发 v3 receipt 和下一次单次 30 游戏日 Stage 10 验收；详见 [R485/R486 来源捕获 GREEN](r485-r486-stage10-player-source-capture-green-2026-09-12.md)。
