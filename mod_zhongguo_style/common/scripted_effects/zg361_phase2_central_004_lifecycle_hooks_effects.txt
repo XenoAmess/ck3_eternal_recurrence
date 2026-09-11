@@ -4,6 +4,7 @@
 
 zg361_p2c_on_review_published_effect = {
     zg361_b1_migrate_manager_identity_effect = yes
+    zg361_mg_schedule_player_manager_assessment_effect = yes
     # A newer B1 publication may arrive while an older central portfolio is
     # still active.  Terminate the old immutable tuple first; never overwrite
     # its case/stage/ticket in place.

@@ -3,7 +3,7 @@
 # F: manager_review; state 1 = snapshot_ready
 zg361_case_f_open_effect = {
 	zg361_case_kernel_initialize_case_effect = {
-		MANAGER_CYCLE_VAR = zg361_review_serial
+		MANAGER_CYCLE_VAR = zg361_mg_evaluation_cycle_serial
 		MANAGER_CASE_CURSOR_VAR = zg361_case_f_cursor
 		OWNER_VAR = zg361_case_f_owner
 		SUBJECT_VAR = zg361_case_f_subject

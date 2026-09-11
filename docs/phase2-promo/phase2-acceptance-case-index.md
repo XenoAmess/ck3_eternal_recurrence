@@ -45,7 +45,7 @@ candidate 的 loaded-feature manifest 与 seed，再消费 `--phase2-p1-evidence
 | 1 | 当前 B1 fix live | production-live 后置 GREEN，当前产品 RED 已消失 |
 | 2 | AF5 终态 | `zg361comp.1` authored `42` / native `41`，独立 provider 回读终态；ACK 不算结果 |
 | 3 | Central stage 9 | `zg361cl.390` 真实 provider terminal GREEN |
-| 4 | Stage 10 玩家可见 manager terminal（机器字段沿用 `central_stage_10_terminal`） | 独立的“AI Central owner → 玩家 F-case subject”路线取得 `zg361mg.120` 真实 provider terminal GREEN；不能从玩家自己的 Stage 9/11 owner 时间线推导 |
+| 4 | Stage 10 玩家可见 manager terminal（机器字段沿用 `central_stage_10_terminal`） | 玩家经理真实 B1 公示后，由直属上级 owner callback 打开玩家 F-case，并取得 `zg361mg.120` 真实 provider terminal GREEN；不能从玩家自己的 Stage 9/11 owner 时间线推导 |
 | 5 | Central stage 11 | 真实 Workforce provider terminal GREEN（正常 close 或合法 N/A close）；`.361` 宪章/制度债及跨周期后续只作非阻塞 coverage |
 | 6 | 代表性终态 cold restore | 真实 save receipt、不同 PID、同一 supervisor/pipe 及两侧有效进程内 generation 的 cold restore receipt，以及 B1、AF5、Central、Workforce 当前 identity/state/receipt（含严格 AF5 destroyed-subject tombstone）的前后相同回读；代表性存档自身须保留 Stage 11 Workforce 终态，B1/AF5 的业务终态由各自独立 P1 收据证明，不在同一存档重复绑定；generation 不作跨进程数值递增断言 |
 | 7 | gameplay-window error scan | 完整目标时间窗扫描且 `blocking_diagnostics=[]` |
@@ -57,11 +57,8 @@ definition/场景与 footage 都不能制造 P1 歧义或把 P1 判 RED。它们
 记录；确有真实 encountered RED 时仍按 SOP 闭环，但不得借此扩张 P1 blocker。历史“四项总门”及其剩余项描述自本节起
 `POLICY_SUPERSEDED`。显式 legacy coverage 命令可为自身诊断失败返回 RED；该结果不回写独立 P1 gate。
 
-Stage 10 当前为 `STATIC_READY / LIVE_PENDING`：独立 action cell 从真实 paused `.390` source 保存并确认 Stage 9，先观测
-所选 AI manager 的 F case 已打开，再切换为该 manager；随后在同一个 30 游戏日绝对截止内取得真实 `.120` saved scopes
-与 player-subject provider 的 `state=5 / active=false`。未观测 opening case 时不得切玩家，失败不原地重试。聚焦测试
-normal/`-O` 各 `5/5` GREEN；尚无 live artifact，不能把该状态计入 P1。合同见
-[`stage10-player-subject-bounded-action-cell-2026-09-11.md`](stage10-player-subject-bounded-action-cell-2026-09-11.md)。
+Stage 10 当前为 `STATIC_READY / LIVE_PENDING`：R467 的 `no_bounded_ai_direct_manager` 已结合当前生产调用链确认为入口可达性 RED。修复后，玩家经理的真实 B1 公示幂等调度 `zg361mg.90`，该隐藏事件只把 ROOT 重置为直属上级并以独立 evaluation cycle 打开玩家 F/AK；Stage10 与 opener 都拒绝 AI subject。case kernel / manager / central 定向双模式测试分别为 `12/12`、`53/53`、`45/45` GREEN，本地静态解析 GREEN。下一轮 R481 只验证一次真实 `.120` 与 F-case owner/subject/cycle/terminal；尚无 live artifact，不能把该状态计入 P1。合同见
+[`r480-stage10-player-publication-reachability-fix-2026-09-12.md`](r480-stage10-player-publication-reachability-fix-2026-09-12.md)。
 受管 operator 另以 normal/`-O` 各 `4/4` 聚焦测试锁定显式 job role、双 checkpoint 归档、产品/harness RED 分界和无 retry
 控制；它不改变 Stage 10 的 `LIVE_PENDING` 状态。open_kaishek T2 兼容测试/记录 commit 为 `bab3efe9883ed730637b4aeac059b228779d0ce2`，
 通用 1.1 adapter 无生产代码变化，聚焦测试 `13/13` GREEN。

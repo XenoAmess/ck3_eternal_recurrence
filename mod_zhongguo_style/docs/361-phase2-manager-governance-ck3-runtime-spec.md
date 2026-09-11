@@ -3,8 +3,8 @@
 ## Readiness boundary
 
 - Readiness: `static-ready-live-pending`
-- MCP evidence: native manager→subordinate typed selector transport、capability/query flag 与 runner 默认 provider binding 已接线；尚未取得真实两层 AI manager→subordinate 可用选择结果、B3 action 或 F032/F035 provider-observed postcondition
-- CK3 live evidence: `RED only`；现存失败只证明更早的 loader/material 闭包，尚无可提升 B3 readiness 的 paused gameplay artifact
+- MCP evidence: native manager→subordinate typed selector transport、capability/query flag 与 runner 默认 provider binding 已接线；R467 的 `no_bounded_ai_direct_manager` 证明旧验收拓扑在玩家限定合同下不可达，不能继续把 AI manager selector 当作正式入口
+- CK3 live evidence: `.120` 仍为 `RED/live-pending`；2026-09-12 已完成玩家经理公示回调的静态修复，须由下一次单轮实机证明后才能提升
 - 目标编号：`032–036` 与 `345–354`，共 15 项。
 - 明确不含：`312–333`；该段属于职业/学习子包，不得由本运行时抢占。
 - 本规格证明的是确定生成、产品脚本、状态/收据/期限/资源合同与 L0 静态测试。它不是 fixture-live、production-live 或发版签核。
@@ -28,21 +28,21 @@
 
 ### Effect 文件边界证据（2026-09-04，静态）
 
-历史生成单体为 `386,750 B / 43 effects`，SHA-256
-`53120757ab63b1694a3c2b93ef4ac7a409a71300767ce93382720a246d0dab18`。它仅保留为生成器内存中的
+历史生成单体为 `389,468 B / 44 effects`，SHA-256
+`9c20e43bdfe0829cfb696de2398b741724f60f9af3d0801044f71bf0ab6d80cf`。它仅保留为生成器内存中的
 语义基线，不再是产品文件。当前七片依次为：
 
 | 用途片 | bytes | effects |
 |---|---:|---:|
-| core adapters / shared hook / #360 | 85,371 | 10 |
-| dispatch / ticket / team snapshot | 16,244 | 7 |
-| F032–036 manager review | 98,971 | 6 |
+| core adapters / shared hook / #360 | 85,996 | 10 |
+| dispatch / ticket / team snapshot | 17,749 | 8 |
+| F032–036 manager review | 98,944 | 6 |
 | AK345–348 intake / override / exception | 67,760 | 8 |
-| AK349–350 audit / benchmark | 34,390 | 4 |
+| AK349–350 audit / benchmark | 34,522 | 4 |
 | AK351–352 pilot / history | 32,427 | 3 |
-| AK353–354 capacity / fairness / due resolver | 45,651 | 5 |
+| AK353–354 capacity / fairness / due resolver | 45,638 | 5 |
 
-总计 `380,814 B / 43 effects`，最大单片 `10`，`>10=0 / >20=0`，没有例外。L0 会把七片逐 effect
+总计 `383,036 B / 44 effects`，最大单片 `10`，`>10=0 / >20=0`，没有例外。L0 会把七片逐 effect
 映射回历史 aggregate 并验证每个 block 字节完全一致，同时拒绝缺失、重复、额外定义及旧单体残留。这里没有启动 CK3，
 所以这项证据只达到 `static-ready`；下一次 B3 product projection 实机应记录 loader 时长与首错。若出现加载性能 RED，按
 `docs/testing-workflow.md` 的同条件文件边界 A/B 规程继续细拆，不能把静态分片本身写成加载 GREEN 或根因证明。
@@ -84,10 +84,16 @@ zg361_mg_dispatch_subordinate_managers_effect
 ## 二、角色权限
 
 1. 管理行为必须通过 `zg361_is_celestial_liege_trigger`：天朝制、在任、有地、公爵及以上。
-2. 合格玩家走可见报告；合格 AI 天朝制公爵及以上属于项目所有者授权的第二 AI 例外，只走后台，不弹可见事件。
+2. 只有玩家控制的合格经理能新开 F/AK。AI 角色不得由年度 pulse、decision 或中央 Stage10 自主进入案件；玩家经理公示后允许用直属上级作为 owner/root 作用域，但触发权仍属于玩家公示。
 3. 伯爵和男爵继续通过 `zg361_is_reviewable_vassal_trigger` 被直属上司考核，但不能打开 F/AK 管理案件。
 4. 管理者不是考核豁免对象。F/AK 案件固定为 `owner = 直属上司`、`subject = 经理本人`，并要求 `subject.liege = owner`。
 5. 上级只读取经理团队的七项冻结汇总；孙级角色 ID 数固定为 0，不能把下下级个人偷偷塞进上级考核榜。
+
+### 2026-09-12 玩家经理可达性修复
+
+旧 Stage10 同时要求直属经理和上级都存在 `zg361_review_serial`。在 B1 年度入口改为玩家限定后，AI 经理不会再产生自己的 serial，因此普通单人局的该条件结构性不可达；R467 的真实选择器结果为 `no_bounded_ai_direct_manager`。修复不恢复 AI 年度 B1，而是在玩家经理完成真实 B1 公示时调用 `zg361_mg_schedule_player_manager_assessment_effect`。D+1 的隐藏 `zg361mg.90` 只负责把 ROOT 重置为直属上级，随后在玩家 subject 上打开 F/AK。
+
+owner-local 的 `zg361_mg_evaluation_cycle_serial = subject.review_serial + 1` 是管理考核时钟，不是上级 B1 记录。调度在 subject 上保存 `zg361_mg_last_scheduled_publication_serial`，同一公示的 deferred re-entry 不会重复开案。中央 Stage10 枚举和公共 opener 都显式要求 `is_ai = no`，所以旧存档里残留 serial 的 AI 经理也不能重新进入案件。
 
 ## 三、共享案件状态
 
@@ -137,7 +143,7 @@ due_cycle = source cycle + 1
 status = pending(1) -> settled(2)
 ```
 
-`zg361_mg_consume_due_policy_debts_effect` 只在下一轮及以后、由当时的直属上司入口消费一次；到期判断与 `settled_cycle` 都使用 `root.var:zg361_review_serial`，不能误用受评经理自己的旧 serial。原 source owner 永不改写，另记 `settled_by_owner`。每项债向下一轮 032 团队快照写 `manager_score_delta = -3` 及真实 due cycle；快照只在 due 到达后消费，并同时删除 delta 与 due，避免提前或重复扣分。精确重复 settlement 是 no-op，改写已结清债为 stale RED。
+`zg361_mg_consume_due_policy_debts_effect` 只在下一轮及以后、由当时的直属上司入口消费一次；到期判断与 `settled_cycle` 都使用 owner-local 的 `root.var:zg361_mg_evaluation_cycle_serial`。该时钟在普通多人玩家上级路径等于上级真实 review serial；在玩家经理公示回调中等于 subject 已发布 serial 加一，因此既满足 strict lag，也不会伪造 AI 上级本人参加过 B1。原 source owner 永不改写，另记 `settled_by_owner`。每项债向下一轮 032 团队快照写 `manager_score_delta = -3` 及真实 due cycle；快照只在 due 到达后消费，并同时删除 delta 与 due，避免提前或重复扣分。精确重复 settlement 是 no-op，改写已结清债为 stale RED。
 
 旧的全局 `mg_policy_debt`、`mg_policy_debt_settled` 与 `mg_exception_renewal_count` 只有累加写入、没有任何决策 reader，现已退役，
 不得用初始化零值掩盖。制度债的权威仍是每个机制独立的 source identity、due/status/settled receipt；例外续期的权威仍是 #348
@@ -151,12 +157,12 @@ AK 的 stage barrier 同样 route-aware：347C 以“未做覆盖天然保持 qu
 
 | ID | typed operation | 实际写入 | 后续 consumer / 不变量 |
 |---:|---|---|---|
-| 032 | `manager.score_frozen_team` | 七项团队冻结分项、管理者总分、拒办京察收据、下一轮 component-8 token | `source_team_serial < superior review_serial`；下一轮官方 organization 分项读取后单次结清；拒办只匹配保存的上司/年份 |
+| 032 | `manager.score_frozen_team` | 七项团队冻结分项、管理者总分、拒办京察收据、下一轮 component-8 token | `source_team_serial < owner evaluation cycle`；下一轮官方 organization 分项读取后单次结清；拒办只匹配保存的上司/年份 |
 | 033 | `manager.explain_profile_decision` | 五个 `[-25,25]` 理由码、画像版本、一次关系覆盖、申诉风险 | 理由总分进入年度制度日志；不得反写 KPI/档位 |
 | 034 | `manager.freeze_nine_box` | 两轮冻结分、绩效轴、潜力轴、九宫格编码 | 少于两轮时明确写 `ready=0/code=0` 与非致命 typed RED 6，但仍记收据并推进，避免首轮永久卡案；只读，不扣钱、不改 KPI/档位/HC |
 | 035 | `manager.freeze_distribution_mode` | `ratio_override > game rule` 的 strict/relaxed/off、top/middle/bottom、next-cycle token | `top + middle + bottom = cohort`；仅 strict 在 `n>=5` 时保底一名；下一轮 rank 单次结清 |
 | 036 | `manager.compile_decade_report` | 按 owner 分段的连续年度累积、十年 ready、奖金净流、上一轮经理分 | owner 变化、年份断档或上一段已满十年时重开；同年重复由 receipt 拒绝 |
-| 345 | `policy.freeze_next_cycle_calendar` | 年度/半年/季度次数、行政工时、effective cycle | 只从 `current case cycle + 1` 生效；同周期玩家/AI 合批标记为 1 |
+| 345 | `policy.freeze_next_cycle_calendar` | 年度/半年/季度次数、行政工时、effective cycle | 只从 `current case cycle + 1` 生效；同一玩家案件的合批标记为 1 |
 | 346 | `policy.consume_material_offcycle_signal` | 从真实翻案/PIP/校准快照产生的重大信号、动作、revision、一次消费收据 | 没有真实 signal 不造 input；`cohort_reruns = 0`；pending→settled/discarded |
 | 347 | `policy.consume_override_point` | 实际 `grade_reason` 推/抬配对的 beneficiary、bearer、两个 result case、reason、revision | before/after cohort 数相等；没有真实配对不伪造覆盖；pending→settled/discarded |
 | 348 | `policy.expire_or_renew_exception` | owner/subject/cycle/case/state/expiry token | 365 日到期；无新事实恢复默认，有新证据才续期；旧 token stale no-op |
@@ -267,12 +273,12 @@ A/B 只复制 Career/HC 权威 `manager_object_{id,owner,subject,cycle,case,stat
 - `activity_zg361_jingcha.cost.treasury = 0` 且 `ui_predicted_cost = 0`；京察本身免费。
 - 活动真正办结时，每名非主办参会者获得对主办者 `+10`、持续两年且衰减的好感；贤能制参会者另获 `miniscule_merit_gain`。活动入口、主客说明与办结 tooltip 必须披露这两项收益。
 - 玩家定期召集令第一项是默认举办并打开原生活动规划器；拒办是第二个明确抗命选项。
-- 合格 AI 不走活动 UI，后台默认履责。
+- AI 不得由该包新开京察或管理案件；旧存档中已经存在的非玩家可见事件只做抑制，不形成新的自主入口。
 - `zg361_kpi_jingcha_evidence_value` 在冻结 KPI 时读取保存的原上司并精确减 50；`zg361_compute_kpi_effect` 先冻结证据，再清除 marker，所以同一拒办只消费一次，调任后的新上司不能继承。
 
 既有 `zg361_refused_jingcha` modifier 的默认数值仍为 -20，但玩家在 `zg361.40` 第二项明确拒办时，正式事件 caller 已直接调用 `zg361_mg_refuse_jingcha_exact_effect`，不再先走旧 `zg361_refuse_jingcha_effect` 再靠 F032 自愈。该 effect 在清理 mandate 前冻结 `owner = 发令时直属上司`、`subject = 拒办经理本人`、`cycle/case = 当期 B1 绩效季 token`（极端旧存档缺 token 时以 mandate year 派生稳定 fallback），并记录 state/revision/operation/year、`opinion_delta=-25` 与 receipt status。随后先移除同名旧实例，再用动态 `opinion = -25` 安装唯一实例；具备考核资格的原上司同时写一次性 `-50` 下轮 KPI 重大理由和 `reviewer_eligible=1`。最后才统一清理 pending/superior/reviewer/year，故生命周期清理不能抹掉本次业务身份。若 mandate 根本没有保存直属上司（独立最高领主），同一个 exact effect 改走明确的 `-200` 威望分支并清理 mandate，不伪造 owner、KPI 或自我考核收据。
 
-承诺举办后 D+300 仍未完成属于自动违约，不是玩家在弹窗中“明确拒办”；它暂时保留既有 deadline failure effect。两条路径均不改变京察免费、第一项默认举办、AI 后台履责、独立顶级领主 prestige fallback 或伯爵/男爵只受评的既有合同。F032 的旧存档兼容归一化仍保留，但只是迁移兜底，不再冒充明确拒办的正式 caller。
+承诺举办后 D+300 仍未完成属于自动违约，不是玩家在弹窗中“明确拒办”；它暂时保留既有 deadline failure effect。两条路径均不改变京察免费、第一项默认举办、独立顶级领主 prestige fallback 或伯爵/男爵只受评的既有合同，也不向 AI 开放年度入口。F032 的旧存档兼容归一化仍保留，但只是迁移兜底，不再冒充明确拒办的正式 caller。
 
 ## 六、原子资源与收费边界
 
@@ -301,7 +307,7 @@ A/B 只复制 Career/HC 权威 `manager_object_{id,owner,subject,cycle,case,stat
 
 简中与英文是本轮创作并静态审阅的源文案。法、德、日、韩、波、俄、西文件仅为 English structural placeholders，用来保持九语言结构可加载；它们是 not release-grade translations。普通开发不提前投入七语发布审计，正式 release 前再按仓库工作流完成翻译和实机抽检。
 
-玩家的 F 结果事件直接显示本案冻结的 `zg361_mg_report_manager_score`、来源轮次、当前轮次、理由合计和九宫格编码，明确解决“上司给我考核，窗口却不写我的绩效是多少”的问题。三个结果都同时显示 availability；上游选 C 时写 0 + unavailable，不能把上一周期同名变量当成本案结果。AI 永不弹这两个报告事件。
+玩家的 F 结果事件直接显示本案冻结的 `zg361_mg_report_manager_score`、来源轮次、当前轮次、理由合计和九宫格编码，明确解决“上司给我考核，窗口却不写我的绩效是多少”的问题。三个结果都同时显示 availability；上游选 C 时写 0 + unavailable，不能把上一周期同名变量当成本案结果。新案件入口要求 subject `is_ai = no`。
 
 ## 九、静态验收与下一步实机
 
@@ -325,9 +331,9 @@ L0 批量覆盖 15 项的 A/B/C、每项一个原子 negative、exact duplicate�
 `manager_governance_gameplay_action_and_postcondition_matrix` 并接入 B3 action-cell handler；manager snapshot capability/query flag
 也属于 full Phase2 capability profile。native typed selector 的 transport、capability/query flag 与 runner 默认 provider binding
 现已接线，因此 B3 不再是 `provider_pending`，而是 `live-pending`。剩余门槛是让 selector 在真实 paused game state
-返回 provider-observed 的“AI 直属经理 + 该经理直属下属”两层身份，随后实际调用 action cell，并由 provider 查询观察
-B1 新 receipt 与 B3 F035/F032 joined postcondition；action ACK 不能替代业务查询结果。取得这些 artifact 前，
+返回 provider-observed 的“玩家经理 + 直属上级 + 该经理直属下属”三方身份，随后通过玩家经理真实 B1 公示触发直属上级 owner callback，并由 provider 查询观察
+B1 新 receipt 与 F035/F032 joined postcondition；action ACK 不能替代业务查询结果。取得这些 artifact 前，
 `gameplay_action_executed` / `action_cell_invoked` / provider-observed postcondition 仍不得写成 GREEN。focused B2 capability profile
 仍只要求原来的 B2 子集，不会被 B3 缺口阻断。
 
-下一步通过 MCP 查询角色、上司、review/case/state/receipt/capacity/opinion/KPI；禁止优先 OCR。一次 CK3 启动应批量跑完：玩家经理、授权 AI 公爵经理、伯爵/男爵只受评、F032 下一轮 component-8 一次结算、F035 下一轮真实 bottom slots、346/347/354 pending→settled/discarded、拒办京察、资源不足、重复 ticket、stale deadline、十年/版本迁移等矩阵。至少取得真实两层 AI manager→subordinate pair、实际 action，以及 F032/F035 provider-observed artifact 前，状态保持 `static-ready-live-pending`。
+下一步只做与当前 RED 相称的单轮 MCP-first 验收：复用真实玩家经理 B1 lineage，验证公示后 `zg361mg.90` 以直属上级为 owner 建案，并到达玩家可见 `.120`；同时核对 F case owner/subject/source/evaluation cycle 和无 manager RED。F032/F035 的扩展跨期矩阵仍保留为后续质量工作，不再阻断本次 P1 Stage10 关闭，也不得恢复 AI manager 选择器作为前置。

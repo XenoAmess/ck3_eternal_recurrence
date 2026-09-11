@@ -23,8 +23,8 @@ HEADER = "# GENERATED FILE — edit tools/gen_361_case_kernel.py\n"
 LEGACY_EFFECT_FILENAME = "zg361_case_kernel_effects.txt"
 LEGACY_EFFECT_PATH = SCRIPTED_EFFECTS_DIR / LEGACY_EFFECT_FILENAME
 EFFECT_SHARD_GLOB = "zg361_case_kernel_*_effects.txt"
-HISTORICAL_EFFECT_BYTES = 172_748
-HISTORICAL_EFFECT_SHA256 = "8453D36BE33C4C17447A13B0312251EF276F0918FE0153DBEDE1509A5D7A9B20"
+HISTORICAL_EFFECT_BYTES = 172_774
+HISTORICAL_EFFECT_SHA256 = "474C4080C0062526F18B6644C3733CC30E4B957F4D0B3F95BDDD1D6347EEE2B3"
 HISTORICAL_EFFECT_COUNT = 229
 EFFECT_TARGET_MAX = 10
 EFFECT_HARD_MAX = 20
@@ -104,6 +104,14 @@ def _domain_variables(code: str) -> dict[str, str]:
         "last_choice": f"{prefix}_last_choice",
         "last_hook": f"{prefix}_last_hook",
     }
+
+
+def _manager_cycle_variable(code: str) -> str:
+    """Bind manager-governance domains to their own owner evaluation clock."""
+
+    if code in {"F", "AK"}:
+        return "zg361_mg_evaluation_cycle_serial"
+    return "zg361_review_serial"
 
 
 def render_triggers() -> str:
@@ -531,7 +539,7 @@ def render_domain_wrapper(domain: DomainSpec) -> str:
         f'''\n# {domain.code}: {domain.object_type}; state 1 = {domain.states[0]}\n'''
         f'''zg361_case_{slug}_open_effect = {{\n'''
         f'''\tzg361_case_kernel_initialize_case_effect = {{\n'''
-        f'''\t\tMANAGER_CYCLE_VAR = zg361_review_serial\n'''
+        f'''\t\tMANAGER_CYCLE_VAR = {_manager_cycle_variable(domain.code)}\n'''
         f'''\t\tMANAGER_CASE_CURSOR_VAR = {variables["cursor"]}\n'''
         f'''\t\tOWNER_VAR = {variables["owner"]}\n'''
         f'''\t\tSUBJECT_VAR = {variables["subject"]}\n'''

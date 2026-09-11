@@ -10,6 +10,7 @@ zg361_p2c_stage_10_manager_governance_effect = {
         set_variable = { name = zg361_p2c_mg_frozen_order_cursor value = 0 }
         every_vassal = {
             limit = {
+                is_ai = no
                 zg361_is_celestial_liege_trigger = yes
                 liege = root
                 has_variable = zg361_review_serial

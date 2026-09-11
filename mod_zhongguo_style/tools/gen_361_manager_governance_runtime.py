@@ -50,6 +50,7 @@ EFFECT_GROUPS: tuple[tuple[str, tuple[str, ...]], ...] = (
         "zg361_manager_governance_dispatch_effects.txt",
         (
             "zg361_mg_refuse_jingcha_exact_effect",
+            "zg361_mg_schedule_player_manager_assessment_effect",
             "zg361_mg_dispatch_subordinate_managers_effect",
             "zg361_mg_schedule_f_ticket_effect",
             "zg361_mg_schedule_ak_ticket_effect",
@@ -698,7 +699,7 @@ def f_c_route_followup(mechanism_id: int, state: int, event_id: int | None) -> s
         schedule = """if = {
 			limit = { var:zg361_case_f_state = 5 var:zg361_case_f_active = 0 }
 			if = { limit = { is_ai = no } zg361_mg_schedule_f_ticket_effect = { EVENT = zg361mg.120 DAYS = 1 } }
-			else = { debug_log = "ZG361MG: eligible AI deferred manager report completed silently" }
+			else = { debug_log = "ZG361MG: non-player deferred manager report suppressed" }
 		}"""
     return f"""if = {{
 		limit = {{
@@ -744,16 +745,16 @@ def render_policy_debt_consumer() -> str:
 			has_variable = zg361_mg_m{mechanism_id:03d}_debt_state
 			has_variable = zg361_mg_m{mechanism_id:03d}_debt_revision
 			has_variable = zg361_mg_m{mechanism_id:03d}_next_review_serial
-			root.var:zg361_review_serial >= var:zg361_mg_m{mechanism_id:03d}_next_review_serial
+			root.var:zg361_mg_evaluation_cycle_serial >= var:zg361_mg_m{mechanism_id:03d}_next_review_serial
 			var:zg361_mg_m{mechanism_id:03d}_debt_subject = this
 		}}
 		set_variable = {{ name = zg361_mg_m{mechanism_id:03d}_debt_status value = 2 }}
-		set_variable = {{ name = zg361_mg_m{mechanism_id:03d}_debt_settled_cycle value = root.var:zg361_review_serial }}
+		set_variable = {{ name = zg361_mg_m{mechanism_id:03d}_debt_settled_cycle value = root.var:zg361_mg_evaluation_cycle_serial }}
 		set_variable = {{ name = zg361_mg_m{mechanism_id:03d}_debt_settled_by_owner value = root }}
 		set_variable = {{ name = zg361_mg_m{mechanism_id:03d}_debt_manager_score_delta value = -3 }}
 		set_variable = {{ name = zg361_mg_m{mechanism_id:03d}_debt_remediation_code value = 1 }}
 		change_variable = {{ name = zg361_mg_manager_score_delta add = -3 }}
-		set_variable = {{ name = zg361_mg_manager_score_delta_due_cycle value = root.var:zg361_review_serial }}
+		set_variable = {{ name = zg361_mg_manager_score_delta_due_cycle value = root.var:zg361_mg_evaluation_cycle_serial }}
 	}}"""
         )
     joined = "\n\t".join(blocks)
@@ -1556,9 +1557,36 @@ zg361_mg_refuse_jingcha_exact_effect = {{
 	else = {{ zg361_mg_set_red_effect = {{ CODE = 4 MECHANISM = 32 }} }}
 }}
 
-# Only celestial landed dukes or higher enter this dispatcher.  It intentionally
-# has no is_ai=no gate: the owner-authorized second AI exception is background
-# only, while visible report events below remain player-only.
+# Publication-origin callback.  Current scope is the player manager who just
+# completed a real B1 cycle.  A hidden D+1 event re-roots the call on the direct
+# superior so F/AK retain their owner = superior identity without allowing an
+# AI pulse, decision or annual review to initiate content.
+zg361_mg_schedule_player_manager_assessment_effect = {{
+	if = {{
+		limit = {{
+			has_game_rule = zg361_on
+			is_ai = no
+			zg361_is_celestial_liege_trigger = yes
+			has_variable = zg361_review_serial
+			liege = {{ zg361_is_celestial_liege_trigger = yes }}
+			trigger_if = {{
+				limit = {{ has_variable = zg361_mg_last_scheduled_publication_serial }}
+				NOT = {{ var:zg361_mg_last_scheduled_publication_serial = var:zg361_review_serial }}
+			}}
+			trigger_else = {{ always = yes }}
+		}}
+		set_variable = {{ name = zg361_mg_last_scheduled_publication_serial value = var:zg361_review_serial }}
+		save_scope_as = zg361_mg_publication_subject
+		liege = {{
+			save_scope_as = zg361_mg_publication_owner
+			trigger_event = {{ id = zg361mg.90 days = 1 }}
+		}}
+	}}
+}}
+
+# The regular dispatcher remains useful for multiplayer player vassals whose
+# superior also completed B1.  AI vassals are never admitted, including old
+# saves that still carry a historical review_serial.
 zg361_mg_dispatch_subordinate_managers_effect = {{
 	if = {{
 		limit = {{
@@ -1566,12 +1594,14 @@ zg361_mg_dispatch_subordinate_managers_effect = {{
 			zg361_is_celestial_liege_trigger = yes
 			has_variable = zg361_review_serial
 		}}
+		set_variable = {{ name = zg361_mg_evaluation_cycle_serial value = var:zg361_review_serial }}
 		every_vassal = {{
 			limit = {{
+				is_ai = no
 				zg361_is_celestial_liege_trigger = yes
 				liege = root
 				has_variable = zg361_review_serial
-				var:zg361_review_serial < root.var:zg361_review_serial
+				var:zg361_review_serial < root.var:zg361_mg_evaluation_cycle_serial
 			}}
 			zg361_mg_open_manager_governance_cases_effect = yes
 		}}
@@ -1604,14 +1634,15 @@ zg361_mg_open_manager_governance_cases_effect = {{
 	if = {{
 		limit = {{
 			has_game_rule = zg361_on
+			is_ai = no
 			zg361_is_celestial_liege_trigger = yes
 			liege = root
 			root = {{
 				zg361_is_celestial_liege_trigger = yes
-				has_variable = zg361_review_serial
+				has_variable = zg361_mg_evaluation_cycle_serial
 			}}
 			has_variable = zg361_review_serial
-			var:zg361_review_serial < root.var:zg361_review_serial
+			var:zg361_review_serial < root.var:zg361_mg_evaluation_cycle_serial
 		}}
 		zg361_mg_clear_red_effect = yes
 		zg361_mg_consume_due_policy_debts_effect = yes
@@ -1663,7 +1694,7 @@ zg361_mg_build_team_snapshot_effect = {{
 	if = {{ limit = {{ NOT = {{ has_variable = zg361_mg_team_snapshot_revision }} }} set_variable = {{ name = zg361_mg_team_snapshot_revision value = 0 }} }}
 	change_variable = {{ name = zg361_mg_team_snapshot_revision add = 1 }}
 	set_variable = {{ name = zg361_mg_snapshot_source_serial value = var:zg361_review_serial }}
-	set_variable = {{ name = zg361_mg_snapshot_current_serial value = root.var:zg361_review_serial }}
+	set_variable = {{ name = zg361_mg_snapshot_current_serial value = root.var:zg361_mg_evaluation_cycle_serial }}
 	# Freeze the exact published B1 cohort source that can later authorize a
 	# #360 manager-cost receipt.  A later B1 cycle cannot be substituted for
 	# the cohort that this manager review actually scored.
@@ -1814,10 +1845,10 @@ zg361_mg_build_team_snapshot_effect = {{
 		limit = {{
 			has_variable = zg361_mg_manager_score_delta
 			has_variable = zg361_mg_manager_score_delta_due_cycle
-			var:zg361_mg_manager_score_delta_due_cycle <= root.var:zg361_review_serial
+			var:zg361_mg_manager_score_delta_due_cycle <= root.var:zg361_mg_evaluation_cycle_serial
 		}}
 		change_variable = {{ name = zg361_mg_team_hc_efficiency add = var:zg361_mg_manager_score_delta }}
-		set_variable = {{ name = zg361_mg_manager_score_delta_consumed_cycle value = root.var:zg361_review_serial }}
+		set_variable = {{ name = zg361_mg_manager_score_delta_consumed_cycle value = root.var:zg361_mg_evaluation_cycle_serial }}
 		remove_variable = zg361_mg_manager_score_delta
 		remove_variable = zg361_mg_manager_score_delta_due_cycle
 	}}
@@ -2280,7 +2311,7 @@ zg361_mg_m036_append_decade_log_effect = {{
 			if = {{
 				limit = {{ var:zg361_case_f_state = 5 var:zg361_case_f_active = 0 }}
 				if = {{ limit = {{ is_ai = no }} zg361_mg_schedule_f_ticket_effect = {{ EVENT = zg361mg.120 DAYS = 1 }} }}
-				else = {{ debug_log = "ZG361MG: eligible AI manager highlight projected silently" }}
+				else = {{ debug_log = "ZG361MG: non-player manager highlight suppressed" }}
 			}}
 		}}
 		else = {{
@@ -2326,7 +2357,7 @@ zg361_mg_m036_append_decade_log_effect = {{
 		if = {{
 			limit = {{ var:zg361_case_f_state = 5 var:zg361_case_f_active = 0 }}
 			if = {{ limit = {{ is_ai = no }} zg361_mg_schedule_f_ticket_effect = {{ EVENT = zg361mg.120 DAYS = 1 }} }}
-			else = {{ debug_log = "ZG361MG: eligible AI manager report projected silently" }}
+			else = {{ debug_log = "ZG361MG: non-player manager report suppressed" }}
 		}}
 		}}
 	}}
@@ -3118,7 +3149,7 @@ zg361_mg_ak_stage_5_effect = {{
 		if = {{
 			limit = {{ var:zg361_case_ak_state = 6 var:zg361_case_ak_active = 0 }}
 			if = {{ limit = {{ is_ai = no }} zg361_mg_schedule_ak_ticket_effect = {{ EVENT = zg361mg.220 DAYS = 1 }} }}
-			else = {{ debug_log = "ZG361MG: eligible AI policy governance completed silently" }}
+			else = {{ debug_log = "ZG361MG: non-player policy report suppressed" }}
 		}}
 	}}
 }}
@@ -3220,13 +3251,13 @@ def render_effect_parts() -> dict[str, bytes]:
         raise ValueError(
             "manager/governance runtime must remain split into seven purpose files"
         )
-    if len(historical_names) != 43 or len(set(historical_names)) != 43:
+    if len(historical_names) != 44 or len(set(historical_names)) != 44:
         raise ValueError(
-            "manager/governance historical render must contain 43 unique effects"
+            "manager/governance historical render must contain 44 unique effects"
         )
-    if len(configured_names) != 43 or len(set(configured_names)) != 43:
+    if len(configured_names) != 44 or len(set(configured_names)) != 44:
         raise ValueError(
-            "manager/governance purpose map must contain 43 unique effects"
+            "manager/governance purpose map must contain 44 unique effects"
         )
     if set(configured_names) != set(historical_names):
         missing = sorted(set(historical_names) - set(configured_names))
@@ -3279,6 +3310,39 @@ def render_effect_parts() -> dict[str, bytes]:
 def render_events() -> bytes:
     return generated(r'''
 namespace = zg361mg
+
+# Re-root a player-originated publication callback on the direct superior.
+# The owner-local evaluation clock is one greater than the fully published
+# manager source, preserving strict lag without claiming that the owner ran B1.
+zg361mg.90 = {
+	type = character_event
+	hidden = yes
+	immediate = {
+		if = {
+			limit = {
+				exists = scope:zg361_mg_publication_owner
+				exists = scope:zg361_mg_publication_subject
+				this = scope:zg361_mg_publication_owner
+				zg361_is_celestial_liege_trigger = yes
+				scope:zg361_mg_publication_subject = {
+					is_ai = no
+					zg361_is_celestial_liege_trigger = yes
+					liege = scope:zg361_mg_publication_owner
+					has_variable = zg361_review_serial
+				}
+			}
+			set_variable = {
+				name = zg361_mg_evaluation_cycle_serial
+				value = scope:zg361_mg_publication_subject.var:zg361_review_serial
+			}
+			change_variable = { name = zg361_mg_evaluation_cycle_serial add = 1 }
+			scope:zg361_mg_publication_subject = {
+				zg361_mg_open_manager_governance_cases_effect = yes
+			}
+		}
+		else = { debug_log = "ZG361MG: stale player publication callback ignored" }
+	}
+}
 
 # F032-036 delayed stage tickets.  Every event binds owner, subject, cycle,
 # case and expected state; stale copies are strict no-ops.
