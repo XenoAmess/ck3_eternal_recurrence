@@ -150,17 +150,23 @@ def validate_activation(path: Path, *, require_empty_slot: bool) -> dict[str, ob
         raise base.Af5JobError("activation does not target terminal stages")
     bound = base.validate_activation(path, require_empty_slot=require_empty_slot)
     source_route = value.get("source_route")
-    if isinstance(source_route, Mapping) and "max_advance_days" in source_route:
-        max_advance_days = source_route["max_advance_days"]
-        if (
-            isinstance(max_advance_days, bool)
-            or not isinstance(max_advance_days, int)
-            or max_advance_days <= 0
-        ):
-            raise base.Af5JobError(
-                "source_route.max_advance_days must be a positive integer"
-            )
-        bound["terminal_stages_max_advance_days"] = max_advance_days
+    if isinstance(source_route, Mapping):
+        if "max_advance_days" in source_route:
+            max_advance_days = source_route["max_advance_days"]
+            if (
+                isinstance(max_advance_days, bool)
+                or not isinstance(max_advance_days, int)
+                or max_advance_days <= 0
+            ):
+                raise base.Af5JobError(
+                    "source_route.max_advance_days must be a positive integer"
+                )
+            bound["terminal_stages_max_advance_days"] = max_advance_days
+        if "start_stage" in source_route:
+            start_stage = source_route["start_stage"]
+            if isinstance(start_stage, bool) or start_stage not in (9, 11):
+                raise base.Af5JobError("source_route.start_stage must be 9 or 11")
+            bound["terminal_stages_start_stage"] = start_stage
     return bound
 
 
@@ -319,6 +325,10 @@ class TerminalStagesOperatorJob(base.Af5OperatorJob):
                 action_arguments["max_advance_days"] = bound[
                     "terminal_stages_max_advance_days"
                 ]
+            if "terminal_stages_start_stage" in bound:
+                action_arguments["start_stage"] = bound[
+                    "terminal_stages_start_stage"
+                ]
             evidence = dict(
                 module.run_terminal_stages(self.service, **action_arguments)
             )
@@ -341,9 +351,11 @@ class TerminalStagesOperatorJob(base.Af5OperatorJob):
         checkpoint = base.mapping(save_result.get("checkpoint"), "stages terminal checkpoint")
         if save_result.get("accepted") is not True or checkpoint.get("status") != "saved":
             raise base.Af5JobError("stages terminal save was not materialized", evidence)
+        owned_stages = evidence.get("owned_stage_sequence")
+        lineage_suffix = "-and-".join(str(stage) for stage in owned_stages)
         archive = self.runner._phase2_archive_checkpoint(
             checkpoint, artifacts / "representative-terminal.ck3",
-            save_lineage_id=f"{bound['round']}.central-stages-9-and-11",
+            save_lineage_id=f"{bound['round']}.central-stages-{lineage_suffix}",
         )
         base.write_object(artifacts / "representative-terminal-checkpoint.json", {
             "schema_version": 1, "result": "GREEN", "checkpoint": archive,

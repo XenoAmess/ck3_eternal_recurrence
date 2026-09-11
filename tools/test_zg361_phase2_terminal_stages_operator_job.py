@@ -38,6 +38,43 @@ def b1_service(frame):
 
 
 class TerminalStagesOperatorTests(unittest.TestCase):
+    def test_validate_activation_accepts_only_authored_start_stages(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            path = Path(temporary) / "activation.json"
+            for start_stage in (9, 11):
+                with self.subTest(start_stage=start_stage), mock.patch.object(
+                    stages.base, "read_object",
+                    return_value={
+                        "job_role": stages.JOB_ROLE,
+                        "source_route": {"start_stage": start_stage},
+                    },
+                ), mock.patch.object(
+                    stages.base,
+                    "validate_activation",
+                    return_value={"round": "R477"},
+                ):
+                    bound = stages.validate_activation(
+                        path, require_empty_slot=True
+                    )
+                    self.assertEqual(
+                        bound["terminal_stages_start_stage"], start_stage
+                    )
+            with mock.patch.object(
+                stages.base, "read_object",
+                return_value={
+                    "job_role": stages.JOB_ROLE,
+                    "source_route": {"start_stage": 10},
+                },
+            ), mock.patch.object(
+                stages.base,
+                "validate_activation",
+                return_value={"round": "R477"},
+            ), self.assertRaisesRegex(
+                stages.base.Af5JobError,
+                "source_route.start_stage must be 9 or 11",
+            ):
+                stages.validate_activation(path, require_empty_slot=True)
+
     def test_current_b1_cycle_can_verify_without_historical_cycle_8(self):
         result = stages.observe_b1(b1_service(b1_frame()), "R406.b1")
         self.assertEqual(result["result"], "GREEN")
@@ -103,6 +140,78 @@ class TerminalStagesOperatorTests(unittest.TestCase):
                 checkpoint, artifacts / "representative-terminal.ck3",
                 save_lineage_id="R406.central-stages-9-and-11",
             )
+
+    def test_stage11_only_route_is_forwarded_and_uses_stage11_lineage(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            artifacts = root / "artifacts"
+            artifacts.mkdir()
+            source, bridge = root / "source.ck3", root / "bridge.dll"
+            source.write_bytes(b"source")
+            bridge.write_bytes(b"bridge")
+            bound = {
+                "repository_root": root,
+                "artifact_directory": artifacts,
+                "round": "R477",
+                "checkpoint": source,
+                "bridge_dll": bridge,
+                "terminal_stages_start_stage": 11,
+                "terminal_stages_max_advance_days": 30,
+                "expected_hashes": {
+                    "product_tree_sha256": "A" * 64,
+                    "code_commit": "b" * 40,
+                },
+            }
+            checkpoint = {
+                "path": str(root / "checkpoint.ck3"),
+                "status": "saved",
+                "size": 3,
+                "sha256": "C" * 64,
+            }
+            evidence = {
+                "result": "GREEN",
+                "save_result": {"accepted": True, "checkpoint": checkpoint},
+                "owned_stage_sequence": [11],
+                "independent_stage10_required": False,
+                "p1_acceptance_evidence": {
+                    "central_stage_terminals": {"11": {"result": "GREEN"}}
+                },
+            }
+            action = mock.Mock(return_value=evidence)
+            module = SimpleNamespace(
+                __file__=str(root / "tools/zg361_phase2_terminal_stages_action_cell.py"),
+                run_terminal_stages=action,
+            )
+            job = stages.TerminalStagesOperatorJob(root / "activation.json")
+            job.bound = bound
+            job.service = mock.Mock()
+            job.service.capabilities.return_value = {"bridge_capabilities": []}
+            job.service.snapshot.return_value = {"revision": 30, "paused": True}
+            job.runner = mock.Mock()
+            job.runner._phase2_archive_checkpoint.return_value = {
+                "path": str(artifacts / "representative-terminal.ck3"),
+                "sha256": "C" * 64,
+            }
+            with mock.patch.object(
+                stages.importlib, "import_module", return_value=module
+            ), mock.patch.object(stages.base, "ck3_pids", return_value=[]):
+                job._execute_action(bound)
+            action.assert_called_once_with(
+                job.service,
+                evidence_directory=artifacts / "stages",
+                request_nonce="R477.terminal-stages",
+                max_advance_days=30,
+                start_stage=11,
+            )
+            job.runner._phase2_archive_checkpoint.assert_called_once_with(
+                checkpoint,
+                artifacts / "representative-terminal.ck3",
+                save_lineage_id="R477.central-stages-11",
+            )
+            stored = stages.base.read_object(
+                artifacts / "terminal-stages-green.json"
+            )
+            self.assertIsNone(stored["stage10_source_receipt"])
 
     def test_partial_stage_failure_preserves_evidence_and_paused_checkpoint(self):
         with tempfile.TemporaryDirectory() as temporary:

@@ -185,7 +185,7 @@ def _ack_summary(service: object, context: Mapping[str, object]) -> dict[str, ob
 
 def run_terminal_stages(
     service: object, *, evidence_directory: Path, request_nonce: str,
-    max_advance_days: int | None = None,
+    max_advance_days: int | None = None, start_stage: int = 9,
 ) -> dict[str, object]:
     """Collect stage gate rows; resume this directory on the same live binding.
 
@@ -195,6 +195,8 @@ def run_terminal_stages(
     """
     if not isinstance(request_nonce, str) or re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9._:-]{0,55}", request_nonce) is None:
         raise ValueError("request_nonce must be a nonempty ASCII token of at most 56 characters")
+    if isinstance(start_stage, bool) or start_stage not in (9, 11):
+        raise ValueError("start_stage must be 9 or 11")
     configured_max_advance_days = (
         entry.MAX_ADVANCE_DAYS if max_advance_days is None else max_advance_days
     )
@@ -221,15 +223,19 @@ def run_terminal_stages(
             ) // 24
         if persisted_max_advance_days != configured_max_advance_days:
             raise ValueError("terminal stages retry changed its game-day bound")
+        if state.get("configured_start_stage", 9) != start_stage:
+            raise ValueError("terminal stages retry changed its starting stage")
         if state["result"] == "GREEN":
             return state
     else:
+        owned_stage_sequence = [9, 11] if start_stage == 9 else [11]
         state = {
             "schema_version": 1, "kind": "zg361_phase2_terminal_stages_action_cell",
             "result": "RED", "mcp_only": True, "binding": binding,
             "request_nonce": request_nonce, "attempt": 0, "current_stage": None,
             "failure_reason": None, "stage_observations": {},
             "configured_max_advance_days": configured_max_advance_days,
+            "configured_start_stage": start_stage,
             "p1_acceptance_evidence": {"central_stage_terminals": {}},
             "progress_out": {
                 "timeline_origin_date_raw": initial["date_raw"],
@@ -238,8 +244,8 @@ def run_terminal_stages(
                 ),
                 "timeline_interrupt_drains": [],
             },
-            "owned_stage_sequence": [9, 11],
-            "independent_stage10_required": True,
+            "owned_stage_sequence": owned_stage_sequence,
+            "independent_stage10_required": start_stage == 9,
             "independent_stage10_event_definition_key": INDEPENDENT_STAGE10_EVENT,
             "af5_same_slice_required": False, "action_ack_is_business_postcondition": False,
         }
@@ -440,7 +446,7 @@ def run_terminal_stages(
         return capture
 
     try:
-        if "9" not in receipts:
+        if start_stage == 9 and "9" not in receipts:
             state["current_stage"] = 9
             context = navigate(9)
             if "stage10_source" not in state:
