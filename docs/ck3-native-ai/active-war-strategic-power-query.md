@@ -162,3 +162,12 @@ CK3 process inventory is zero. This closes the read-only active-war strategic
 power observation as a production-live primitive. It does not by itself prove
 campaign dominance or choose an exit: the policy must consume the observation
 alongside an owner-authored budget and a same-frame white-peace comparison.
+
+## R471 companion certification sync
+
+open_kaishek commit `747a0ce834417a82a06a482acb9a2d315c62dcbf`
+pins the R471 root commit, original report, GREEN reclassification, corrected
+runner/test hashes, native sources, and production DLL. Its focused offline
+Maven test passes `4/4`. The profile marks this exact-build read-only query
+native/runtime certified while explicitly keeping campaign dominance, exit
+recommendation, action readiness, and GEN-034 outside that certification.
