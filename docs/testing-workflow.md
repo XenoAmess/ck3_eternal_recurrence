@@ -2483,3 +2483,26 @@ Windows 在新进程仍挂起时可能给出唯一 PID 却不返回 CIM/Toolhelp
 共享 suspended-process 对象保留的进程句柄读取 `image_path()`，但仍必须先证明全局 CK3 清单
 只有同一 PID，并继续核验 exact path 与 SHA-256。R453 在 Prepare 前触发了这一真实情况；不得
 因为清单路径为空而恢复未验证的进程，也不得放宽唯一实例要求。
+
+## Durable checkpoint revision semantics (2026-09-11 live evidence)
+
+`save-checkpoint` is a gameplay command even when the date and paused gameplay
+state do not change. A successful save publishes a new native snapshot and
+therefore advances both public and native revisions. A post-save gate must not
+require those counters to equal the command's pre-submission source frame.
+
+Keep the pre-save frame as the exact authorization and provenance anchor. Bind
+the command with `expected_revision` to that source frame, then inspect a new
+post-save snapshot. The latter must be a nonempty different snapshot ID with
+strictly greater public/native revisions, while PID, bridge connection
+generation, date, episode, played character, paused state, and the business
+object being protected remain equal. For the G2 surrender lifecycle the
+protected object is the active WarID. Any identity or gameplay-state change is
+still RED; monotonic revision advance alone is the expected save receipt.
+
+R456 provided the live case: save succeeded and produced a byte-verified
+`69,302,764`-byte checkpoint while all protected identity fields remained
+stable, but the old equality gate stopped before surrender. The corrected
+focused regression is `48/48` in normal and optimized Python. No repeated live
+probe or broad acceptance suite is required for this Python-only contract
+change; the next evidence is one bounded normal lifecycle.

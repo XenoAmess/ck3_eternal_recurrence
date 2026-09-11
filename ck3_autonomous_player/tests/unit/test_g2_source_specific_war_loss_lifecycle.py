@@ -301,7 +301,11 @@ class _CheckpointDriver:
         return {"bridge_pid": PID, "connection_generation": 1}
 
     def take_snapshot(self) -> dict[str, object]:
-        return _snapshot()
+        snapshot = _snapshot()
+        snapshot["snapshot_id"] = "native:4"
+        snapshot["revision"] = 92
+        snapshot["native_revision"] = 8
+        return snapshot
 
 
 def _receipt(ticket: dict[str, object]) -> dict[str, object]:
@@ -503,6 +507,12 @@ class G2SourceSpecificWarLossLifecycleTests(unittest.TestCase):
             result["pre_mutation_checkpoint"]["binding_sha256"],
             r"^[0-9A-F]{64}$",
         )
+        post_checkpoint_frame = result["pre_mutation_checkpoint"][
+            "post_checkpoint_frame"
+        ]
+        self.assertEqual(post_checkpoint_frame["snapshot_id"], "native:4")
+        self.assertEqual(post_checkpoint_frame["revision"], 92)
+        self.assertEqual(post_checkpoint_frame["native_revision"], 8)
         self.assertEqual(result["mutation_commands"], [f"surrender-war-{WAR_ID}"])
 
     def test_checkpoint_failure_prevents_surrender_continuation(self) -> None:

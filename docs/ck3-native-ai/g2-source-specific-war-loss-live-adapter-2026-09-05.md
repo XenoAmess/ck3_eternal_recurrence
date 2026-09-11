@@ -984,3 +984,41 @@ The next run uses the existing normal lifecycle once; this probe is not repeated
 The root evidence commit is `4bed362d87eda2028e745db6f03a8c44f7df401f`;
 open_kaishek records the capability evidence in
 `18cb4fa3df8e4a04f353bf72f376a0f45179e3c6`.
+
+## R456 checkpoint successor finding
+
+R456 used unique PID `179252` and repeated the already admitted source and
+terms phases only as part of the normal lifecycle. Both terms reads were GREEN
+with `evaluated_days=1825`. `save-checkpoint` then materialized identical
+`xar_checkpoint.ck3` and `xar_episode_seed.ck3` files, each `69,302,764` bytes
+with SHA-256
+`0759E25C2612E127A63C676CC73A9DB95B336319DAC16CF0C632CDE7ED817530`.
+
+The run stopped before surrender because the lifecycle contract required the
+post-save snapshot ID, public revision, and native revision to equal the
+pre-save source frame. A successful native save publishes a successor frame.
+R456 simultaneously proved that PID, connection generation, date `53187096`,
+episode, played character, paused state, and active WarID `33554473` remained
+unchanged. The three changing counters therefore identify expected command
+completion rather than gameplay drift.
+
+The corrected contract keeps the full pre-save source frame in `frame`, adds
+the observed result in `post_checkpoint_frame`, and requires a different
+nonempty snapshot ID plus strictly increasing public and native revisions.
+Both frames remain hash-bound to the retention ticket. The post-save frame
+must still match PID, connection generation, date, episode, character, pause
+state, and active war. Focused lifecycle, outer-owner, and live-adapter tests
+pass `48/48` in normal Python and `48/48` with `PYTHONOPTIMIZE=1`.
+
+R456 report, capture, driver-state, classification, and final launch-record
+SHA-256 values are
+`E28E820CE713897A92E51416D6F655F399B1C0B421ABBC8FBEF0A19ACD095668`,
+`37980F390313F8D61A46197C12EA9D1AC5FDD89DD12AB834A3FA0BEEBB925CB7`,
+`DD6EBDF7643C3D213A9AA81C2360D0FD3EF61C1C922A7893F1B342C79C232647`,
+`BF2CAB1795E4033C745D64CE63A3E61A88DE77EF514090EE6D5E13B236788AF3`,
+and `1C470932202EC1831A56484C7AAC51A980DC2A0A16EC974F7E118BEC3076E7D9`.
+The original source save remains `89D15B8A...D4DD`; cleanup is GREEN and no CK3
+process remains. R457 no-launch admission is READY with SHA-256
+`3AAE6BA08E360E0380AC4B11B4F11CB4BBC68EF0D2E3F65EBA8DC9DFB17FD701`.
+This finding does not promote source-loss, comparison, decision, action, or
+`GEN-034` readiness; one bounded R457 normal lifecycle remains.
