@@ -153,6 +153,40 @@ def _recover_natural_event_blocker(
     return selected
 
 
+def _find_target_option(acceptance: Any, image: Any) -> tuple[int, int] | None:
+    exact = acceptance.find_ocr_text(
+        image,
+        source_ui.TARGET_OPTION,
+        acceptance.EVENT_OPTIONS_FULL_REGION,
+        contains=True,
+    )
+    if exact is not None:
+        return tuple(exact)
+
+    rows = acceptance.ocr_results(image, acceptance.EVENT_OPTIONS_FULL_REGION)
+    tokens = ("扶上", "君士坦丁堡", "皇位")
+    texts = [str(row[0]).replace(" ", "") for row in rows]
+    if not all(any(token in value for value in texts) for token in tokens):
+        return None
+    candidates = [
+        row
+        for row, value in zip(rows, texts)
+        if any(token in value for token in tokens)
+        and isinstance(row[1], (list, tuple))
+        and len(row[1]) == 2
+    ]
+    if not candidates:
+        return None
+    selected = max(
+        candidates,
+        key=lambda row: (
+            sum(token in str(row[0]).replace(" ", "") for token in tokens),
+            len(str(row[0])),
+        ),
+    )
+    return int(selected[1][0]), int(selected[1][1])
+
+
 def _resolve(path_value: object, *, repo_root: Path) -> Path:
     path = Path(str(path_value)).expanduser()
     if not path.is_absolute():
@@ -1200,19 +1234,16 @@ class ConcreteLiveOperations:
             image = image_grab.grab()
             texts = acceptance.ocr_results(image, acceptance.FULL_SCREEN_REGION)
             joined = " ".join(str(row[0]) for row in texts)
-            if source_ui.TARGET_TITLE in joined:
-                option = acceptance.find_ocr_text(
-                    image,
-                    source_ui.TARGET_OPTION,
-                    acceptance.EVENT_OPTIONS_FULL_REGION,
-                    contains=True,
-                )
-                if option is None:
-                    raise LiveAdapterError("bookmark.1071.a option was not located")
+            target_option = _find_target_option(acceptance, image)
+            if target_option is not None:
                 image.save(self.ui_dir / "bookmark-1071-a-armed.png")
                 arm_sha256 = source_ui.atomic_arm(arm_path)
-                acceptance.deliberate_click(option, "bookmark.1071.a exact option")
+                acceptance.deliberate_click(
+                    target_option, "bookmark.1071.a exact option"
+                )
                 break
+            if source_ui.TARGET_TITLE in joined:
+                raise LiveAdapterError("bookmark.1071.a option was not located")
             if (
                 source_ui.SICILY_TITLE in joined
                 and time.monotonic() - last_action > 2

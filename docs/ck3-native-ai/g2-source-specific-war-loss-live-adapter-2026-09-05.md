@@ -476,3 +476,31 @@ The compact classification receipt is
 Cleanup is GREEN, CK3 inventory is empty, and both logs contain zero `XAR:`
 hits. Source capture, comparison input, decision/action readiness and
 `GEN-034` remain unchanged; T1 stays at 90%.
+### Target-option arm guard and R445 bounded source
+
+The source loop now checks the target option before generic modal recovery on
+every frame. It first accepts the full localized `.1071.a` text. If OCR splits
+the line, it requires all three option-region tokens `扶上`, `君士坦丁堡`, and
+`皇位`, then selects the row containing the largest part of that phrase. A row
+containing only `君士坦丁堡` is rejected. Once identified, the existing order
+remains `atomic_arm` then `deliberate_click`; a target-title-only frame without
+a valid option remains RED. This closes the observed unarmed dismissal without
+broadening generic recovery or changing the native observer.
+
+Focused adapter tests pass `24/24` in normal and optimized Python. `py_compile`,
+UTF-8 BOM, diff checks, and no-launch admission are GREEN. The adapter/manifest
+SHA-256 values are
+`6CB7E3B97524C8EB2AFB56329BE97052A0E63752A96BF1887EDD51E5879079AB` and
+`C271267FBA0F4FA666EA121C0E7DE2B4D288011C70A893483B138F3098010648`.
+
+The next live input is no longer a fresh 1066 replay. R440's retained
+`last_save.ck3` is a rendered 1068-01-03 pre-target frame; its binary contains
+no `raiktor` marker. It is 58,320,404 bytes with SHA-256
+`D1E469D0FE2AB22FF7DA301D689BCFF10B48BE1D486511882ECF203290CDDA9D`.
+The current adapter admitted it without launching CK3; the receipt at
+`Z:\ck3_mod_rewrite\_runtime\g2-r445-pre-event-source-admission-20260911\preflight.json`
+has SHA-256
+`5E6A0A00E3E77D63802D2783C273394D337BDA5F241A647AD25800A42263AACD`.
+R445 may therefore resume this exact pending-event lineage, handle the already
+visible stock event, and wait only the remaining part of the original 1–7 year
+schedule. It remains one bounded lifecycle rather than another full-prefix run.
