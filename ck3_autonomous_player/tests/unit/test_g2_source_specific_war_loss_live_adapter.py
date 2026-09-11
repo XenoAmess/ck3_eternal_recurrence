@@ -1201,6 +1201,7 @@ class G2SourceSpecificWarLossLiveAdapterTests(unittest.TestCase):
     def test_pause_uses_rendered_state_only_after_observer_handoff(self) -> None:
         class Acceptance:
             ACTIVE_CK3_PID = None
+            RunnerError = RuntimeError
 
             def __init__(self) -> None:
                 self.calls: list[tuple[Path, str]] = []
@@ -1233,6 +1234,52 @@ class G2SourceSpecificWarLossLiveAdapterTests(unittest.TestCase):
             self.assertEqual(
                 acceptance.calls,
                 [(operations.ui_dir, "g2-post-observer")],
+            )
+
+    def test_pause_accepts_strict_date_freeze_when_notification_occludes_ocr(
+        self,
+    ) -> None:
+        class Acceptance:
+            ACTIVE_CK3_PID = None
+            RunnerError = RuntimeError
+
+            def ensure_game_paused(self, _path: Path, _stem: str) -> None:
+                raise self.RunnerError("OCR timeout waiting for pause")
+
+            def verify_terminal_date_frozen(
+                self, _path: Path, stem: str, *, seconds: int
+            ) -> dict[str, int]:
+                self.freeze_call = (stem, seconds)
+                return {"before": 391216, "after": 391216, "seconds": seconds}
+
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            acceptance = Acceptance()
+            operations = ADAPTER.ConcreteLiveOperations(
+                paths=_paths(root),
+                timeouts=_timeouts(),
+                artifact_dir=root / "artifacts",
+                userdir=root / "userdir",
+                process_inventory=lambda: [],
+            )
+            operations._process = _Process()
+            operations._acceptance = acceptance
+            operations._image_grab = object()
+            operations._pyautogui = object()
+            with mock.patch.object(
+                operations, "_validate_owned_ck3", return_value={"pid": PID}
+            ):
+                receipt = asyncio.run(operations.pause_owned_process({}, PID))
+
+            self.assertTrue(receipt["paused"])
+            self.assertEqual(
+                receipt["pause_confirmation"],
+                "hud-date-frozen-after-ocr-occlusion",
+            )
+            self.assertEqual(receipt["date_freeze"]["before"], 391216)
+            self.assertEqual(
+                acceptance.freeze_call,
+                ("g2-post-observer-date-fallback", 3),
             )
 
 

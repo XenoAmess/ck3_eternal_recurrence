@@ -2467,3 +2467,8 @@ capture、debugger detach 和同 PID bridge；完成两次查询后立即停止�
 只读 telemetry；正常 reader 分支、公开 ABI 和 action gate 均不变。完成一次有界实机后先审阅
 JSONL 的 `stage`、callback/failure counts 与 context 销毁状态，再决定最小修复；不得用相同配置
 重复长跑。
+
+source observer detach 后，顶部游戏通知可能遮住短暂的“暂停”OCR 文本。此时仅允许在已经
+发送 pause click 后使用 3 秒 HUD 日期冻结作为替代确认；开始和结束日期必须都可读且完全相等。
+日期不可读或发生变化仍为 RED。R451 的 daughter-ransom 顶部通知提供了该窄 fallback 的真实
+触发证据；不得把它扩展成不读状态的盲目 pause 假设。

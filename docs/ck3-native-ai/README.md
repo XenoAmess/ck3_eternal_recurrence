@@ -571,3 +571,9 @@ flowchart TD
 - source-specific lifecycle 新增显式 `--read-only-pretermination-probe`：复用自然 source 与同 PID 双查询，到 pre-termination 即止，并硬断言没有 checkpoint、action 或 postwar。
 - default-OFF 诊断构建只给现有 default truce reader 增加阶段、callback、failure-enum 与 context telemetry；公开 MCP/ABI 和正常 action gate 不变。诊断 ON 与默认 OFF 两套 bridge 目标均编译通过。
 - 聚焦 normal/`-O` 各 `57/57`，no-launch receipt SHA-256 `E10DA2DBF2DDD3F7B427972223F4162BA886875F1445F47C4320BD375FC6B56D`，写盘模式为 `read-only-pre-termination`。open_kaishek 私有兼容记录已同步为 `89ea4218151e2b340463c85d682ebd6b765cb651`；当前仅 static-ready，T1=90%、`GEN-034` unresolved，CK3=0。
+
+## 2026-09-11：R451 顶部通知遮挡 pause OCR
+
+- R451 唯一 PID `214712` 再次取得六行 source、WarID `33554473`，debugger detach 以两次尝试 GREEN；随后顶部“女儿支付赎金”通知占据 pause OCR 区域，runner 在 bridge 前 RED。没有 diagnostic row、checkpoint、action 或 postwar，source 未变、cleanup GREEN、CK3=0。
+- 最小修复只在 pause click 后 OCR 超时时接受严格 3 秒 HUD 日期冻结；两端不可读或日期变化仍 RED。adapter normal/`-O` 各 `30/30`，R452 no-launch receipt SHA-256 `F89EE9D57A34038B822B74E2B75DD1F2BE9CCF1ED4798B7E636C78C033F02CCF`。
+- R451 分类为 harness RED，mod 产品 RED=false；T1=90%、`GEN-034` unresolved，T0 P1=`6/9`、P2=`LOCKED`。

@@ -977,3 +977,9 @@ WarID `50331699` / `raiktor_claim_cb` 的 primary-attacker surrender 只有 type
 - 新 probe 只复用既有自然 source、同 PID bridge 与两次公开 terms 查询，在 mutation checkpoint 前终止；合同要求零 action、零 postwar，并把 `PROBE_COMPLETE` 与 `terms_ready` 分离。
 - default-OFF 诊断 build 在不改变 default reader 分支的前提下记录具体 stage、callback/failure counts 与 context identity/destruction。诊断 ON 与默认 OFF 均编译通过；normal/`-O` 聚焦测试各 `57/57`。
 - no-launch receipt SHA-256 `E10DA2DBF2DDD3F7B427972223F4162BA886875F1445F47C4320BD375FC6B56D` 绑定 source SHA-256 `89D15B8ACB0E69E6C439D658582B63DC1F8AD11EC687089E5021A5961607D4DD`；open_kaishek 私有依赖同步为 `89ea4218151e2b340463c85d682ebd6b765cb651`。这只提供一次 R451 精确取证入口，不提升 truce/terms/action readiness；`GEN-034` 继续 unresolved、T1=90%。
+
+## 2026-09-11：GEN-034 R451 pause OCR 遮挡
+
+- R451 六行 source、动态 WarID 与 detach GREEN 后，顶部 in-game 通知占据 pause OCR 区域，导致 bridge 前 harness RED。report `51F38C32…9E559`、classification `85C21779…04D7A`；零 diagnostic/checkpoint/action/postwar，source 未变、cleanup GREEN、CK3=0。
+- 窄修复仅在 pause click 后要求 3 秒 HUD 日期严格冻结，不能读取或日期变化仍 RED；adapter normal/`-O` 各 `30/30`。R452 admission `F89EE9D5…02CCF` 已绑定同一 source。
+- 该故障不改变 GEN-034 的能力缺口或 readiness；`GEN-034` unresolved、T1=90%。下一步单次 R452 才能取得 default reader telemetry。
