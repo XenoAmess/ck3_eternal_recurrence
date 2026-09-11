@@ -92,3 +92,10 @@ R439 的事实结果仍原样保留：查询前后 player `32904`、日期 `5315
 - 单个 runner 只负责角色拓扑一致、因果相连的事件。Stage 9/11 的玩家 owner Central 路线与 `.120` 的玩家 subject 路线分开收据，最终由 P1 assembler 合并。
 
 找到正向合格 source 前，Stage 10、Stage 11 和代表性终态 cold restore 均保持 PENDING；不再用未知 source 做实机筛选。
+
+## 历史 `.120` 证据的离线收口
+
+- 对可访问的 `_runtime` JSON 做一次事件实例字段精确检索，没有发现 `event_definition_key` 为 `zg361mg.100`、`.101`、`.102`、`.103` 或 `.120` 的历史实机记录。两个不可访问项是 pytest 临时权限目录，不属于正式 artifact。
+- `formal-phase2-event-locaug-20260903/report.json` 中的 `.120` 只出现在加载期缺少本地化键的错误清单；它证明事件定义被解析，不证明事件实例曾触发。`p1-critical-path-assembler/pending-assembly-status.json` 则明确记录 “No qualifying provider-observed terminal artifact exists.”
+- R390 的 `.390` 发生在 `date_raw=53615592`。现存最近的前置存档为 `date_raw=53611200`，相差 183 游戏日；最近的后置存档已越过该事件 182 游戏日。不存在可直接恢复的 Stage 10 near-boundary save。
+- 本轮到此停止检索，没有启动 CK3、没有重跑 B1，也不从 183 日前置存档为单个 Stage 10 门重放长时间线。`central_stage_10_terminal` 保持 PENDING；以后只在其他有独立产品价值的流程自然抵达 `.390` 附近时即时冻结 source，或先离线证明新的 near-boundary checkpoint 合格后再跑最短验收。
