@@ -4,6 +4,67 @@ aubt.1 = {
 	scope = none
 	hidden = yes
 	immediate = {
+		global_var:aubt_province = {
+			if = {
+				limit = { has_building = outposts_01 }
+				debug_log = "AUBT: OBSERVED target_building outposts_01"
+			}
+			else = { debug_log = "AUBT: OBSERVED target_building not_outposts_01" }
+			if = {
+				limit = { has_building = outposts_02 }
+				debug_log = "AUBT: OBSERVED target_upgrade outposts_02"
+			}
+			else = { debug_log = "AUBT: OBSERVED target_upgrade not_outposts_02" }
+			if = {
+				limit = { has_ongoing_construction = no }
+				debug_log = "AUBT: OBSERVED target_construction none"
+			}
+			else = { debug_log = "AUBT: OBSERVED target_construction ongoing" }
+			if = {
+				limit = {
+					OR = {
+						has_holding_type = castle_holding
+						has_holding_type = city_holding
+						has_holding_type = church_holding
+					}
+				}
+				debug_log = "AUBT: OBSERVED target_holding eligible"
+			}
+			else = { debug_log = "AUBT: OBSERVED target_holding ineligible" }
+			if = {
+				limit = { barony = { is_leased_out = no } }
+				debug_log = "AUBT: OBSERVED target_lease none"
+			}
+			else = { debug_log = "AUBT: OBSERVED target_lease leased" }
+		}
+		global_var:aubt_player = {
+			if = {
+				limit = { culture = { has_innovation = innovation_barracks } }
+				debug_log = "AUBT: OBSERVED payer_innovation barracks"
+			}
+			else = { debug_log = "AUBT: OBSERVED payer_innovation missing_barracks" }
+			if = {
+				limit = { treasury < var:aubt_treasury_before }
+				debug_log = "AUBT: OBSERVED payer_treasury decreased"
+			}
+			else = { debug_log = "AUBT: OBSERVED payer_treasury not_decreased" }
+			if = {
+				limit = { gold = var:aubt_gold_before }
+				debug_log = "AUBT: OBSERVED payer_gold unchanged"
+			}
+			else = { debug_log = "AUBT: OBSERVED payer_gold changed"
+			}
+			if = {
+				limit = { any_directly_owned_province = { has_building = outposts_01 } }
+				debug_log = "AUBT: OBSERVED direct_iterator sees_outposts_01"
+			}
+			else = { debug_log = "AUBT: OBSERVED direct_iterator misses_outposts_01" }
+		}
+		if = {
+			limit = { has_global_variable = aub_auto_build_loop_started }
+			debug_log = "AUBT: OBSERVED global_loop active"
+		}
+		else = { debug_log = "AUBT: OBSERVED global_loop inactive" }
 		if = {
 			limit = {
 				global_var:aubt_province = {
