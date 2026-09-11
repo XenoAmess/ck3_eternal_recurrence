@@ -292,6 +292,8 @@ def validate(game_root: Path = DEFAULT_GAME_ROOT) -> tuple[list[str], bool]:
     ):
         if fragment not in fixture_script:
             errors.append(f"acceptance resource-route contract missing: {fragment}")
+    if re.search(r"(?m)^\s*remove_gold\s*=", fixture_script):
+        errors.append("acceptance fixture uses unsupported CK3 1.19 remove_gold effect")
 
     vanilla_errors, vanilla_checked = validate_vanilla(game_root)
     errors.extend(vanilla_errors)

@@ -111,7 +111,7 @@ aubt.2 = {
 			if = { limit = { var:aubt_reset_treasury > 0 } remove_treasury = var:aubt_reset_treasury }
 			change_government = feudal_government
 			set_variable = { name = aubt_reset_gold value = gold }
-			if = { limit = { var:aubt_reset_gold > 0 } remove_gold = var:aubt_reset_gold }
+			if = { limit = { var:aubt_reset_gold > 0 } remove_short_term_gold = var:aubt_reset_gold }
 			add_gold = 100000
 			set_variable = { name = aubt_gold_before value = gold }
 			capital_province = {
@@ -188,7 +188,7 @@ aubt.4 = {
 		else = { debug_log = "AUBT: TEST FAIL reenabled_loop_stopped_cleanly" }
 		global_var:aubt_player = {
 			set_variable = { name = aubt_reset_gold value = gold }
-			if = { limit = { var:aubt_reset_gold > 0 } remove_gold = var:aubt_reset_gold }
+			if = { limit = { var:aubt_reset_gold > 0 } remove_short_term_gold = var:aubt_reset_gold }
 			set_variable = { name = aubt_reset_treasury value = treasury }
 			if = { limit = { var:aubt_reset_treasury > 0 } remove_treasury = var:aubt_reset_treasury }
 			capital_province = {
