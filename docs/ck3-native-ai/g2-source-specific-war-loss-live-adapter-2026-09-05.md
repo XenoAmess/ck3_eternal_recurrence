@@ -698,3 +698,23 @@ to the admitted pre-target input, contains no `raiktor` marker, and has SHA-256
 `89D15B8ACB0E69E6C439D658582B63DC1F8AD11EC687089E5021A5961607D4DD`.
 One bounded R449 may consume that same near-boundary input with the corrected
 validator; no older prefix or duplicate R448 run is required.
+
+### R449 prelaunch correction: source capture owns the dynamic WarID
+
+The R448 rows also disprove the live adapter's frozen `50331699` WarID
+assumption: the natural event created full-generation WarID `33554473`. Static
+review before R449 showed that a GREEN observer would have reached two
+unexecuted defects: the lifecycle rejected any WarID except the historical
+constant, and the concrete continuation did not accept the outer owner's
+`expected_war_id` keyword.
+
+Commit `5743466d1074af68ff12930bbe299becc12fef8c` fixes the seam without
+starting CK3. The outer owner now derives the WarID from its already normalized
+source capture and forwards that identity to the same-PID lifecycle. A CLI
+WarID is optional and, when present, is only a post-capture equality assertion.
+All full-generation, active-war, current-regiment, checkpoint, action, and
+postwar identity checks remain mandatory. Focused normal and optimized tests
+pass `53/53` each. The live-adapter manifest SHA-256 is
+`C67C711401A1DA4BC8509FED9EE8AC0A4EA8D24EE46D762440EC0E88FE46F1F2`;
+open_kaishek records the private interface delta in commit
+`5aec42436035e870a63c29ece582d41fc909163a`.

@@ -950,3 +950,10 @@ WarID `50331699` / `raiktor_claim_cb` 的 primary-attacker surrender 只有 type
 - **修复**：`0235a50241f3dd6c37d375ff00bf56d76620d3a9` 要求名称非空且六行一致，不再用 authored key 选择 source；WarID、节点、generation、兵力聚合和 regiment 映射门全部保留。新 executable SHA-256 `020F051DDE034CBBC67C5A308F8E035FFA3E224844AC413261AA257466B0F185`，self-test 与 normal/`-O` 各 `53/53` GREEN。
 - **状态**：R448 在 observer RED 后未进入 bridge/current/termination/postwar；故 source-specific loss、comparison、decision/action/automatic-surrender 仍不 ready，`GEN-034` unresolved、T1=90%。R448 已结束、CK3=0；autosave 与近边界输入逐字节相同且无 `raiktor`。
 - **下一关闭入口**：只运行一轮 R449，消费修正后的 locale-neutral capture 并在同 PID 继续 current checkpoint、唯一 termination 与 postwar cleanup。若出现新的明确 RED，冻结并分类；不得为已证名称事实再跑重复轮次。
+
+## 2026-09-11：GEN-034 R449 启动前动态 WarID seam 修复
+
+- **实证冲突**：R448 source capture 的 full-generation WarID 是 `33554473`，旧 lifecycle/CLI 却冻结 `50331699`。自然事件创建的新战争不能预先复用历史 generation ID；直接运行会在 observer GREEN 后必然 RED。
+- **同分支缺口**：concrete continuation 未声明 outer owner 已传入的 `expected_war_id`，因此旧代码即使 WarID 恰巧相同也会在首次走通分支时发生参数错误。
+- **修复**：`5743466d1074af68ff12930bbe299becc12fef8c` 从已规范化 source capture 取 WarID，并贯穿 lifecycle；CLI 值只做可选相等断言。既有 full-generation、same-PID、active-war、checkpoint、mutation 和 postwar 校验不变；normal/`-O` 各 `53/53`。
+- **边界**：本包未启动 CK3、未提升 readiness。R448 已结束、CK3=0；`GEN-034` unresolved、T1=90%。下一步重新做 hash-bound no-launch admission 后才允许唯一 R449。
