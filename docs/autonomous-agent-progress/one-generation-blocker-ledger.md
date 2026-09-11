@@ -983,3 +983,10 @@ WarID `50331699` / `raiktor_claim_cb` 的 primary-attacker surrender 只有 type
 - R451 六行 source、动态 WarID 与 detach GREEN 后，顶部 in-game 通知占据 pause OCR 区域，导致 bridge 前 harness RED。report `51F38C32…9E559`、classification `85C21779…04D7A`；零 diagnostic/checkpoint/action/postwar，source 未变、cleanup GREEN、CK3=0。
 - 窄修复仅在 pause click 后要求 3 秒 HUD 日期严格冻结，不能读取或日期变化仍 RED；adapter normal/`-O` 各 `30/30`。R452 admission `F89EE9D5…02CCF` 已绑定同一 source。
 - 该故障不改变 GEN-034 的能力缺口或 readiness；`GEN-034` unresolved、T1=90%。下一步单次 R452 才能取得 default reader telemetry。
+
+## 2026-09-11：GEN-034 R452 启动架构根因与最小修复
+
+- R452 唯一 PID `132200` 完成六行 source 和 WarID `33554473` 的只读探针；公开 terms 仍只缺 `truce`。诊断两行均为 `collector-vtable-verified / callback_count=0 / last_failure=invalid_request`，证明 preview-entry capture 在回调前没有成功 arm。
+- 根因是 live adapter 普通启动 CK3，待 source capture 后才用 `--pipe` 注入；该模式不调用只允许在主线程恢复前执行的 `XarCk3BridgePrepareStartup`，因此 preview-entry observer 从未安装。该结论取代继续更换 CB/input shape 的旧施工方向。
+- R452 没有 checkpoint/action/postwar，source SHA-256 `89D15B8A…D4DD` 未变，cleanup GREEN、CK3=0；report/diagnostic/classification 为 `3EE2B4C5…D7C7` / `116553E6…F628` / `FF4A3928…EEFB`。
+- adapter 已改为复用通用 runtime 的 suspended process：唯一进程校验后以无 `--pipe` injector 执行 Prepare，再恢复主线程；source 后仍以原 `--pipe` 启动同 PID MCP worker。runtime 纳入 manifest 哈希依赖，focused `31/31` GREEN。当前仅 static-ready；下一步只运行一轮 R453 有界只读复验，`GEN-034` unresolved、T1=90%。

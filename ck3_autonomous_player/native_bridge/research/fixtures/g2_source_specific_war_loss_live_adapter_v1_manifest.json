@@ -3,7 +3,7 @@
   "status": "static-ready-live-command-default-off",
   "created_at": "2026-09-05T17:10:00+08:00",
   "candidate_source_commit": "b9aa7e01479168c1003bfc02c76ca8d0a72832c9",
-  "candidate_source_change": "read-only probe pause-confirmation fallback working tree",
+  "candidate_source_change": "suspended pre-resume bridge preparation working tree",
   "default_off": true,
   "live_executed": false,
   "paths": {
@@ -20,10 +20,11 @@
     "game_executable": "Crusader Kings III/binaries/ck3.exe",
     "bookmark_events": "Crusader Kings III/game/events/bookmark_events.txt",
     "run_acceptance": "tools/run_acceptance.py",
-    "profile_settings_guard": "tools/run_zg361_phase2_seed_capture.py"
+    "profile_settings_guard": "tools/run_zg361_phase2_seed_capture.py",
+    "native_runtime": "ck3_autonomous_player/src/xar_autoplayer/runtime.py"
   },
   "sha256": {
-    "adapter": "F26ADA6789B28C840C72C774BB3503F708FD21E2DF23BB847C26B3557CC902B0",
+    "adapter": "6C5788A96DF569665A07C61221BE0E80D89CE6CA55124610C6DA33656E601C0B",
     "outer_owner_runner": "C2E0F7EDA10A9856B44852DDD737D6E13A223311FED25640F73EFDDEB5507AD3",
     "outer_owner_manifest": "8E51DFBDD4CEC34B7B48B2F04F4B9CEACC6C9CCC46FF0F9BF229F3BE917EBC6C",
     "lifecycle_runner": "FF51D88B50B2EF731F8D6641F532F23722834B26732FEBEF809CC785C04CD4B9",
@@ -36,7 +37,8 @@
     "game_executable": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
     "bookmark_events": "75CF485E379E522D4AAED9EF889FCC411A0D9DFCC28BCFB250ABDCC93A757EFF",
     "run_acceptance": "CD5098E0E9CA793D98FE2DF6C44ADB6AE1D15F66033C7553B9255E2640BB7CE8",
-    "profile_settings_guard": "2E4EC85C3B3496DDAB0ED18E0D8D7010B08DC7B337B7546E36FA5E38A11696A6"
+    "profile_settings_guard": "2E4EC85C3B3496DDAB0ED18E0D8D7010B08DC7B337B7546E36FA5E38A11696A6",
+    "native_runtime": "DAB7E7100A2B7BCBC6B9B21DA6C8582CF9FAD33D54995C659C5E72F9B9D8F2A7"
   },
   "timeouts": {
     "process_discovery_seconds": 30,
@@ -57,7 +59,8 @@
   },
   "composition": {
     "concrete_live_adapter_implemented": true,
-    "normal_launch_before_observer": true,
+    "suspended_launch_before_observer": true,
+    "native_bridge_prepared_before_resume": true,
     "observer_detach_before_bridge": true,
     "same_pid_bridge_attach": true,
     "same_driver_lifecycle_handoff": true,
@@ -83,7 +86,7 @@
     "command_available": true,
     "profile_settings_template_required": true,
     "warm_shadercache_required": true,
-    "profile_asset_failure_blocks_before_popen": true,
+    "profile_asset_failure_blocks_before_process_creation": true,
     "profile_asset_evidence_required": true,
     "profile_asset_evidence_fields": [
       "settings.source_sha256",
@@ -98,7 +101,9 @@
     "resume_checkpoint_sha256_required_when_selected": true,
     "resume_checkpoint_exact_game_version_required": "1.19.0.6",
     "resume_checkpoint_destination": "fresh userdir/save games/autosave.ck3",
-    "resume_checkpoint_copy_verified_before_popen": true,
+    "resume_checkpoint_copy_verified_before_process_creation": true,
+    "startup_prepare_injector_mode": "without-pipe",
+    "startup_prepare_required_before_primary_thread_resume": true,
     "authorize_private_live_flag_required": true,
     "exclusive_ck3_slot_required": true,
     "fresh_artifact_directory_required": true,

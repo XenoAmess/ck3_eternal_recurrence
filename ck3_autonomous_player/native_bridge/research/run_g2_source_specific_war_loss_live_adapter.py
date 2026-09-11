@@ -1,12 +1,13 @@
 ﻿#!/usr/bin/env python3
 """Concrete owner for one natural-event G2 source-loss lifecycle.
 
-The adapter reuses the established Robert-1066 UI choreography only until the
-private ``bookmark.1071.a`` observer has captured its six ``spawn_army``
-executions.  It then restores/detaches that observer, pauses the same process,
-starts the MCP bridge on an explicit named pipe, and hands the exact driver to
-``run_exclusive_outer_owner``.  The outer owner remains the sole process
-cleanup caller.
+The adapter creates CK3 suspended and prepares the native bridge's startup
+observers before the primary thread resumes.  It then reuses the established
+Robert-1066 UI choreography only until the private ``bookmark.1071.a`` observer
+has captured its six ``spawn_army`` executions.  After restoring/detaching that
+observer, it pauses the same process, starts the prepared MCP bridge on an
+explicit named pipe, and hands the exact driver to ``run_exclusive_outer_owner``.
+The outer owner remains the sole process cleanup caller.
 
 The command is default-off.  ``--verify-only`` checks the frozen dependencies
 without launching, attaching, focusing, or terminating CK3.
@@ -52,6 +53,7 @@ from xar_autoplayer.bridge.raiktor_source_specific_war_loss_contract import (  #
 )
 from xar_autoplayer.errors import AgentError  # noqa: E402
 from xar_autoplayer.locking import exclusive_launch_lock  # noqa: E402
+from xar_autoplayer import runtime as autoplay_runtime  # noqa: E402
 
 
 MANIFEST_SCHEMA = "xar.ck3.g2_source_specific_war_loss_live_adapter_manifest.v1"
@@ -665,7 +667,7 @@ def prepare_startup_profile_assets(
     userdir: Path,
     profile_settings_template: Path,
 ) -> dict[str, object]:
-    """Copy and byte-verify the explicit settings/cache pair before Popen."""
+    """Copy and byte-verify the explicit settings/cache pair before process creation."""
 
     guard = _profile_settings_guard()
     config = _ProfileSettingsConfig(
@@ -719,7 +721,8 @@ def _load_manifest(
     composition = _object(manifest.get("composition"), "manifest composition")
     if (
         composition.get("concrete_live_adapter_implemented") is not True
-        or composition.get("normal_launch_before_observer") is not True
+        or composition.get("suspended_launch_before_observer") is not True
+        or composition.get("native_bridge_prepared_before_resume") is not True
         or composition.get("observer_detach_before_bridge") is not True
         or composition.get("same_pid_bridge_attach") is not True
         or composition.get("outer_owner_final_cleanup_only") is not True
@@ -750,6 +753,7 @@ def _load_manifest(
         "bookmark_events",
         "run_acceptance",
         "profile_settings_guard",
+        "native_runtime",
     }
     checked: dict[str, dict[str, object]] = {}
     for name in sorted(required):
@@ -934,7 +938,7 @@ def run_no_launch_preflight(
             "default_off": True,
             "startup_profile_asset_gate": True,
             "profile_settings_template_required": True,
-            "asset_failure_blocks_before_popen": True,
+            "asset_failure_blocks_before_process_creation": True,
             "resume_checkpoint_optional": True,
             "resume_checkpoint_hash_and_version_gate": True,
             "exclusive_slot_required": True,
@@ -978,6 +982,9 @@ class ConcreteLiveOperations:
         resume_save_sha256: str | None = None,
         read_only_pretermination_probe: bool = False,
         process_inventory: Callable[[], list[dict[str, object]]] = _process_inventory,
+        suspended_process_factory: Callable[..., Any] = (
+            autoplay_runtime._create_suspended_process
+        ),
         popen: Callable[..., Any] = subprocess.Popen,
         run_process: Callable[..., Any] = subprocess.run,
         driver_factory: Callable[..., Any] = NativeHeadlessGameplayDriver,
@@ -1004,6 +1011,7 @@ class ConcreteLiveOperations:
         self.ui_dir = self.artifact_dir / "ui"
         self.state_dir = self.artifact_dir / "native-state"
         self.process_inventory = process_inventory
+        self.suspended_process_factory = suspended_process_factory
         self.popen = popen
         self.run_process = run_process
         self.driver_factory = driver_factory
@@ -1135,12 +1143,10 @@ class ConcreteLiveOperations:
             launch_environment["XAR_CK3_G2_TRUCE_PRIVATE_CAPTURE_PATH"] = str(
                 self.truce_diagnostic_path
             )
-        self._process = self.popen(
+        self._process = self.suspended_process_factory(
             command,
-            cwd=str(self.paths.game_executable.parent),
-            text=True,
-            creationflags=subprocess.CREATE_NEW_PROCESS_GROUP,
-            env=launch_environment,
+            self.paths.game_executable.parent,
+            launch_environment,
         )
         pid = _positive_integer(getattr(self._process, "pid", None), "launched PID")
         deadline = time.monotonic() + self.timeouts.process_discovery_seconds
@@ -1157,16 +1163,58 @@ class ConcreteLiveOperations:
             cleanup_suffix = (
                 f"; emergency cleanup failed: {cleanup_error}"
                 if cleanup_error is not None
-                else "; normally launched process was reclaimed"
+                else "; suspended process was reclaimed"
             )
             raise LiveAdapterError(
-                "normally launched CK3 did not become the unique target: "
+                "suspended CK3 did not become the unique target: "
                 f"{last_error}{cleanup_suffix}"
             )
+        prepare_command = [
+            str(self.paths.bridge_injector),
+            str(pid),
+            str(self.paths.bridge_dll),
+        ]
+        try:
+            prepared = self.run_process(
+                prepare_command,
+                capture_output=True,
+                text=True,
+                errors="replace",
+                timeout=30,
+                check=False,
+            )
+        except BaseException as error:
+            cleanup_error = self._terminate_unhanded_launch(pid)
+            raise LiveAdapterError(
+                "native bridge startup preparation could not complete before "
+                f"resume: {type(error).__name__}: {error}; cleanup={cleanup_error}"
+            ) from error
+        if prepared.returncode != 0:
+            cleanup_error = self._terminate_unhanded_launch(pid)
+            raise LiveAdapterError(
+                "native bridge startup preparation failed before resume: "
+                f"rc={prepared.returncode}, stdout={prepared.stdout!r}, "
+                f"stderr={prepared.stderr!r}; cleanup={cleanup_error}"
+            )
+        try:
+            self._process.resume()
+        except BaseException as error:
+            cleanup_error = self._terminate_unhanded_launch(pid)
+            raise LiveAdapterError(
+                "prepared CK3 primary thread could not resume: "
+                f"{type(error).__name__}: {error}; cleanup={cleanup_error}"
+            ) from error
         return {
             "pid": pid,
-            "startup_mode": "normal-event",
+            "startup_mode": "suspended-prepared-normal-event",
             "startup_source": str(self._resume_checkpoint["mode"]),
+            "native_bridge_prepared_before_resume": True,
+            "startup_prepare": {
+                "command_mode": "inject-and-prepare-without-pipe",
+                "returncode": prepared.returncode,
+                "stdout": prepared.stdout,
+                "stderr": prepared.stderr,
+            },
             "event_target": TARGET_EVENT,
             "exclusive_slot": True,
             "cleanup_owner": "outer-owner",

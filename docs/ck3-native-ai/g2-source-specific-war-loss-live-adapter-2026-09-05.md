@@ -862,3 +862,47 @@ create a mutation checkpoint, submit surrender, or start postwar polling.
 The private dependency is synchronized in open_kaishek commit
 `89ea4218151e2b340463c85d682ebd6b765cb651`; no public MCP or Java contract
 changed.
+
+### R452 isolated the missing pre-resume startup preparation
+
+R452 launched the unique PID `132200`, repeated the six-row natural source
+capture for WarID `33554473`, and reached the bounded read-only terms probe.
+The public pair again returned every required domain except truce. The private
+diagnostic emitted two identical rows with `stage=collector-vtable-verified`,
+`callback_count=0`, `valid_evaluation_context_count=0`,
+`last_failure=invalid_request`, and `context_destroyed=true`. This combination
+means `ArmG2TrucePreviewEntryCaptureV1` rejected the request before any preview
+callback; it does not support further CB-shape probing.
+
+Static call-chain review found the adapter defect. The preview-entry observer
+is installed only by `XarCk3BridgePrepareStartup`, which must run while the
+new CK3 primary thread is suspended. The adapter previously used ordinary
+`subprocess.Popen` and later called the injector with `--pipe` after source
+capture. That mode loads/starts the worker but never calls the startup Prepare
+export, so the observer was absent on every adapter-owned run. Earlier
+production-live evaluated-days evidence used the shared pre-resume launcher
+and is consistent with this finding.
+
+R452 performed no mutation, created no pre-mutation checkpoint, and did not
+enter postwar polling. The source save remains 68,016,053 bytes with SHA-256
+`89D15B8ACB0E69E6C439D658582B63DC1F8AD11EC687089E5021A5961607D4DD`;
+cleanup is GREEN and CK3 count is zero. Report, capture, diagnostic,
+classification, and final launch-record SHA-256 values are
+`3EE2B4C59D708E0ABBD93B8F5B169360A8DC5E89C4A6138FAC7F4F5D528CD7C7`,
+`B0B1F39B8D649F546189FB382E70826EE6AAE141660DE429C277C519EB58D30F`,
+`116553E61AEA64A09A653D70AC65B2279DB941D35D2C8BB1394BCB18D389F628`,
+`FF4A3928C911F407B804B0960F0C10CE0C2993F26E28BEDDA18C80C009C7EEFB`,
+and `BAE7B212121465FEA0A7FA69E469F1ED2E9C0642113E7B4CC701C9E8372C01D0`.
+
+The adapter now reuses the shared Windows suspended-process primitive. It
+verifies the unique exact process, invokes the existing injector without
+`--pipe` to load the DLL and call Prepare, and only then resumes the primary
+thread. The later same-PID `--pipe` call remains responsible for starting the
+MCP worker after source capture and pause. Startup preparation failure keeps
+the process suspended, reclaims it, and remains RED. The runtime module is an
+explicit hash-bound manifest dependency. Focused adapter tests pass `31/31`;
+the R453 no-launch admission is `READY_TO_RUN_G2_SOURCE_SPECIFIC_LIFECYCLE`
+with SHA-256
+`A4C58C0E23CF658E5449887DBD300CDD3B5F0E2AA33943A00FA5799071143EEA`.
+This package is static-ready until one bounded R453 read-only probe confirms
+callbacks and evaluated truce days. T1 remains 90% and `GEN-034` unresolved.
