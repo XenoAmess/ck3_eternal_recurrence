@@ -43,6 +43,10 @@ def _report() -> dict[str, object]:
     ticket, handoff = FIXTURE.RUNNER.build_source_bound_ticket(
         normalized, FIXTURE._pre_sequence()
     )
+    with tempfile.TemporaryDirectory() as temporary:
+        FIXTURE.RUNNER.create_pre_mutation_checkpoint(
+            FIXTURE._CheckpointDriver(Path(temporary) / "save games"), ticket
+        )
     receipt = FIXTURE._receipt(ticket)
     receipt["termination"]["receipt_id"] = "B" * 64
     receipt["boundaries"].update(
@@ -105,7 +109,7 @@ def _report() -> dict[str, object]:
         "preflight": {
             "status": INTAKE.PREFLIGHT_STATUS,
             "boundaries": {
-                "ck3_started_or_attached": False,
+                "live_executed": False,
                 "source_specific_loss_ready": False,
                 "comparison_input_ready": False,
             },
@@ -119,6 +123,7 @@ def _report() -> dict[str, object]:
             "ok": True,
         },
         "boundaries": {
+            "terms_ready": True,
             "source_specific_loss_ready": True,
             "comparison_input_ready": True,
             "three_way_comparison_ready": False,
@@ -194,6 +199,13 @@ class G2SourceSpecificComparisonIntakeTests(unittest.TestCase):
     def test_readiness_overclaim_is_rejected(self) -> None:
         report = _report()
         report["boundaries"]["decision_ready"] = True
+        with self.assertRaisesRegex(INTAKE.IntakeError, "report_boundaries"):
+            INTAKE.build_observed_surrender_outcome(
+                report, report_sha256="C" * 64
+            )
+
+        report = _report()
+        report["boundaries"]["terms_ready"] = False
         with self.assertRaisesRegex(INTAKE.IntakeError, "report_boundaries"):
             INTAKE.build_observed_surrender_outcome(
                 report, report_sha256="C" * 64

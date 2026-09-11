@@ -346,7 +346,7 @@
   把 target identity、endpoint、clone、游戏文件与 runtime bundle 变为每机参数，并以 production operator
   profile parser 和逐文件 SHA-256 冻结；生成结果只暴露 adapter `--verify-only`，不能启动或控制 CK3，
   不绑定操作者、绝对部署根、机器或固定 `R{n}`，且不提升 G2 live/readiness。
-- [static-ready / no-launch source-specific policy intake; live input pending] [g2-source-specific-comparison-intake-2026-09-06.md](g2-source-specific-comparison-intake-2026-09-06.md)
+- [production-live source-specific input consumed / no-launch policy intake; three decision providers pending] [g2-source-specific-comparison-intake-2026-09-06.md](g2-source-specific-comparison-intake-2026-09-06.md)
   新增不改 frozen live runner 的离线后处理器：只有完整验证六次 source join、同 PID/WarID/episode、唯一 surrender、
   destroyed cleanup 与 persisted expiry 后，才把真实 source-specific outcome 投影进既有三方 policy。当前尚无 live
   report，campaign、owner-budget 与 same-frame white-peace 三项 provider 仍缺，decision/action/GEN-034 不提升。

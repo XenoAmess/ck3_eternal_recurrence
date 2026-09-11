@@ -66,6 +66,7 @@ REMAINING_PROVIDERS = [
     "same-frame-white-peace-comparison-certificate",
 ]
 _REPORT_BOUNDARY_KEYS = {
+    "terms_ready",
     "source_specific_loss_ready",
     "comparison_input_ready",
     "three_way_comparison_ready",
@@ -288,10 +289,11 @@ def build_observed_surrender_outcome(
         "report_green": report.get("schema") == REPORT_SCHEMA
         and report.get("status") == "GREEN",
         "preflight_green": preflight.get("status") == PREFLIGHT_STATUS
-        and preflight_boundaries.get("ck3_started_or_attached") is False
+        and preflight_boundaries.get("live_executed") is False
         and preflight_boundaries.get("source_specific_loss_ready") is False
         and preflight_boundaries.get("comparison_input_ready") is False,
-        "report_boundaries": boundaries["source_specific_loss_ready"] is True
+        "report_boundaries": boundaries["terms_ready"] is True
+        and boundaries["source_specific_loss_ready"] is True
         and boundaries["comparison_input_ready"] is True
         and all(
             boundaries[name] is False
