@@ -167,6 +167,41 @@ def _query_checks(
     }
 
 
+def _query_history_checks(
+    *,
+    before: dict[str, object],
+    between: dict[str, object],
+    after: dict[str, object],
+    step: str,
+) -> dict[str, bool]:
+    histories = [
+        snapshot.get("native_command_history")
+        for snapshot in (before, between, after)
+    ]
+    if not all(isinstance(history, list) for history in histories):
+        return {
+            "history_first_query_only": False,
+            "history_two_queries_only": False,
+        }
+    before_history, between_history, after_history = histories
+    before_count = len(before_history)
+    observed_between = [
+        (row.get("command"), row.get("ok"))
+        for row in between_history[before_count:]
+        if isinstance(row, dict)
+    ]
+    observed_after = [
+        (row.get("command"), row.get("ok"))
+        for row in after_history[before_count:]
+        if isinstance(row, dict)
+    ]
+    return {
+        "history_first_query_only": observed_between == [(step, True)],
+        "history_two_queries_only": observed_after
+        == [(step, True), (step, True)],
+    }
+
+
 async def _run_mcp_sequence(
     driver: Any,
     *,
@@ -226,15 +261,6 @@ async def _run_mcp_sequence(
     first_sequence = first.get("query_sequence")
     second_sequence = second.get("query_sequence")
     step = query_war_entry_assessments_step([target_character_id])
-    before_history = before.get("history")
-    between_history = between.get("history")
-    after_history = after.get("history")
-    before_count = len(before_history) if isinstance(before_history, list) else -1
-    new_commands = (
-        [row.get("command") for row in after_history[before_count:]]
-        if isinstance(after_history, list) and before_count >= 0
-        else None
-    )
     player_value = before.get("played_character")
     player = player_value if isinstance(player_value, dict) else {}
     checks = {
@@ -277,10 +303,12 @@ async def _run_mcp_sequence(
         and second_sequence == first_sequence + 1,
         "normalized_payloads_equal": base._without_query_sequence(first)
         == base._without_query_sequence(second),
-        "history_first_query_only": isinstance(between_history, list)
-        and len(between_history) == before_count + 1
-        and between_history[-1].get("command") == step,
-        "history_two_queries_only": new_commands == [step, step],
+        **_query_history_checks(
+            before=before,
+            between=between,
+            after=after,
+            step=step,
+        ),
     }
     return {
         "allowed_gameplay_commands": [step, step],

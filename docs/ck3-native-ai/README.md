@@ -580,3 +580,21 @@ flowchart TD
 
 - 2026-09-11 R452：G2 source-specific adapter 的 `--pipe` 事后注入不会执行 pre-resume `XarCk3BridgePrepareStartup`；`callback_count=0 / invalid_request` 已实机定位。adapter 现复用共享 suspended launcher，恢复主线程前完成无 `--pipe` Prepare；详见 [G2 source-specific war-loss live adapter](g2-source-specific-war-loss-live-adapter-2026-09-05.md)。
 - 2026-09-11 R455：同一修复后的 source-first 只读链已在 WarID `33554473` 上双读 `evaluated_days=1825`、`terms_ready=true`；当前输入的 truce observation RED 已关闭，动作与 GEN-034 仍待正常 lifecycle，证据见同一专题。
+
+## 2026-09-12: GEN-034 R471 active-war power production-live primitive
+
+- R471 queried active-war opponent `28551` twice through the official MCP
+  surface on one unchanged paused frame. Both native results are available and
+  identical except for sequences `1/2`: player `29829` power
+  `13075500000`, opponent total `16770900000`, ratio `128262/100000`, and
+  target source `active_war_primary_opponent`; all native readiness bits pass.
+- The original report RED is an explained harness audit defect: the runner read
+  absent `history` instead of canonical `native_command_history`. The corrected
+  focused normal/optimized tests pass `1/1`; offline reclassification is GREEN
+  without replaying queries or restarting CK3. Report/reclassification hashes
+  are `F4676762...E7CD` / `D8F43EAB...24C9`.
+- The query capability is now a production-live read-only primitive. Campaign
+  dominance still needs a policy-level derivation, and owner-authored budget
+  plus same-frame white-peace comparison remain missing. `GEN-034` is unresolved
+  and T1 remains 90%. Current round R471 and old round R470 are terminated;
+  CK3=0. T0 P1 remains 6/9 and P2 remains `LOCKED`.
