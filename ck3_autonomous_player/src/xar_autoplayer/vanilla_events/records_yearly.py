@@ -345,6 +345,34 @@ VANILLA_YEARLY_OBSERVATIONS: Final[dict[str, dict[str, object]]] = {
             "ocr_used": False,
             "coordinates_used": False,
             "console_used": False,
+        }, {
+            "run": "R418-attempt-04",
+            "kind": "same-process-hot-recovery-green",
+            "artifact": (
+                "_runtime/p1-terminal-resume-r418-20260911/live-artifacts/"
+                "terminal-stages-red-attempt-04.json"
+            ),
+            "artifact_sha256": (
+                "5F1710E928F214C28FF4DF19478117F333E22473BF9E9713F0039AE766138146"
+            ),
+            "date_raw": 53943096,
+            "event_instance_id": 1096,
+            "root_character_id": 32904,
+            "bridge_pid": 204536,
+            "connection_generation": 1,
+            "selected_option_number": 1,
+            "selected_native_option_index": 0,
+            "starting_snapshot_id": "native:457",
+            "starting_revision": 458,
+            "ending_snapshot_id": "native:458",
+            "ending_revision": 459,
+            "postcondition_verified": True,
+            "process_restart_required": False,
+            "mcp_only": True,
+            "fixture_used": False,
+            "ocr_used": False,
+            "coordinates_used": False,
+            "console_used": False,
         }],
     },
 }

@@ -7,9 +7,10 @@
 - [paused live RED] R418 retry 03 在 PID `204536`、connection generation `1` 的真实暂停帧命中
   `yearly.1030` instance `1096`，日期为 `53943096`。桥接器发布 `secret_character`、`secret`、`hooked`
   三个 saved scope，native `0/1/2` 均 shown/enabled；未尝试选择。
-- [counter-policy static-ready, live action pending] 产品续跑合同选择 authored `1` / native `0`。该路线会交出
-  ROOT 对 `hooked` 的现有 hook，换取 `secret_character` 的秘密与 `hooked` 对 ROOT 的 `+10` 好感；选择后的
-  instance advance 仍待同 PID 热恢复验证。
+- [production-live primitive] R418 attempt 04 在同一 PID / connection generation 选择 authored `1` /
+  native `0`，instance `1096 -> null`、snapshot `native:457 -> native:458`、revision `458 -> 459`，
+  `postcondition_verified=true`。该路线交出 ROOT 对 `hooked` 的现有 hook，换取 `secret_character` 的秘密与
+  `hooked` 对 ROOT 的 `+10` 好感。
 
 这条记录只解决真实 promotion 时间线上的事件中断，不把一次 campaign 的人物 ID、日期或 instance 写入通用合同。
 
@@ -83,5 +84,8 @@ flowchart TD
 - R418 retry 03 选择前 RED：
   `_runtime/p1-terminal-resume-r418-20260911/live-artifacts/terminal-stages-red-attempt-03.json`，SHA-256
   `A814FA6203FC0EC0E1BAA17E2D9DC7C3CA586E3F69B12A0B33CAC30832B89E90`。
+- R418 attempt 04 同进程动作 GREEN（artifact 最终保留后续 `.0072` RED）：
+  `_runtime/p1-terminal-resume-r418-20260911/live-artifacts/terminal-stages-red-attempt-04.json`，SHA-256
+  `5F1710E928F214C28FF4DF19478117F333E22473BF9E9713F0039AE766138146`。
 - 可移植合同、analysis 与 observation：
   `ck3_autonomous_player/src/xar_autoplayer/vanilla_events/records_yearly.py`。

@@ -1,19 +1,19 @@
 {
   "audit": {
     "ambiguous_definition_count": 0,
-    "caller_candidate_file_count": 77,
-    "caller_candidate_reference_count": 518,
+    "caller_candidate_file_count": 78,
+    "caller_candidate_reference_count": 519,
     "definition_file_count": 70,
     "external_caller_event_count": 148,
     "missing_definition_count": 0,
     "namespace_mismatch_count": 0,
-    "registered_event_count": 181,
-    "same_file_only_caller_event_count": 33,
-    "unique_definition_count": 181
+    "registered_event_count": 182,
+    "same_file_only_caller_event_count": 34,
+    "unique_definition_count": 182
   },
   "ck3_build": "1.19.0.6",
   "ck3_exe_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
-  "dataset_sha256": "D89CA4FAAC0FBBCC1D5EF6BDC538F5EEA8916568E7EF89F0E10E083A7BDAE7C0",
+  "dataset_sha256": "9F2041C61916B01ED1E907370DB30EB7B4D70744D6B134D4AFAC181FB1FF7B86",
   "events": {
     "adultery.0002": {
       "caller_candidate_resolution": "same-definition-file-only",
@@ -4961,6 +4961,24 @@
         "relative_path": "events/decisions_events/tgp_decision_events.txt"
       },
       "namespace": "tgp_decision_events"
+    },
+    "tgp_dynastic_cycle.0072": {
+      "caller_candidate_resolution": "same-definition-file-only",
+      "caller_candidates": [
+        {
+          "column": 20,
+          "file_sha256": "C9904AAA01ABC8583E67D07866FAE8EF89274708BDA3929498DDDB2F24FC2153",
+          "kind": "exact-token-lexical-candidate",
+          "line": 1036,
+          "relative_path": "events/dlc/tgp/tgp_dynastic_cycle_events.txt"
+        }
+      ],
+      "definition": {
+        "file_sha256": "C9904AAA01ABC8583E67D07866FAE8EF89274708BDA3929498DDDB2F24FC2153",
+        "line": 1041,
+        "relative_path": "events/dlc/tgp/tgp_dynastic_cycle_events.txt"
+      },
+      "namespace": "tgp_dynastic_cycle"
     },
     "tgp_dynastic_cycle.0081": {
       "caller_candidate_resolution": "external-definition-file",

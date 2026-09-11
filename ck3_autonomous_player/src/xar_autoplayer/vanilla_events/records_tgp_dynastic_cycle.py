@@ -150,6 +150,50 @@ VANILLA_TGP_DYNASTIC_CYCLE_TIMELINE_CONTRACTS: Final[
         ),
         "occurrence_policy": "repeatable-within-product-observation-window",
     },
+    "tgp_dynastic_cycle.0072": {
+        # This card is sent to interested human players after the hegemon has
+        # selected a Stability branch.  Native0 only acknowledges the new era;
+        # native1 actively offers fealty to the holder of h_china.
+        "date_policy": "product-observation-window",
+        "root_character_id": PLAYER_SENTINEL,
+        "character_scopes": {},
+        "unique_character_scope_excludes": {
+            "new_son_of_heaven": (PLAYER_SENTINEL,),
+        },
+        "scope_types": {
+            "situation": "situation",
+            "situation_sub_region": "situation_sub_region",
+            "new_son_of_heaven": "character",
+        },
+        "saved_scope_name_sets": ((
+            "situation",
+            "situation_sub_region",
+            "new_son_of_heaven",
+        ),),
+        "saved_scope_count": 3,
+        "scope_variants": ({
+            # .0071 saves new_son_of_heaven only when its root carries the
+            # corresponding variable; the notification is still legal when it
+            # is absent.
+            "saved_scope_names": (
+                "situation",
+                "situation_sub_region",
+            ),
+            "saved_scope_count": 2,
+            "scope_types": {
+                "situation": "situation",
+                "situation_sub_region": "situation_sub_region",
+            },
+            "unique_character_scope_excludes": {},
+        },),
+        "boolean_scopes": (),
+        "option_count": 2,
+        "snapshot_option_count": 2,
+        "native_option_indices": (0, 1),
+        "selected_option_number": 1,
+        "selected_native_option_index": 0,
+        "occurrence_policy": "repeatable-within-product-observation-window",
+    },
     "tgp_dynastic_cycle.0081": {
         # The situation phase-transition caller has already executed the realm-
         # shattering immediate block before this fullscreen acknowledgement is
@@ -300,6 +344,68 @@ VANILLA_TGP_DYNASTIC_CYCLE_ANALYSIS: Final[
         "safe_option_rationale": (
             "native2 avoids the native0 dread/modifier mutation and the native1 "
             "treasury-or-gold transfer; the immediate control loss is unavoidable"
+        ),
+    },
+    "tgp_dynastic_cycle.0072": {
+        "exact_build": {
+            "game_version": EXACT_CK3_BUILD,
+            "ck3_executable_sha256": EXACT_CK3_EXE_SHA256,
+        },
+        "source_sha256": {
+            "events/dlc/tgp/tgp_dynastic_cycle_events.txt": (
+                "C9904AAA01ABC8583E67D07866FAE8EF89274708BDA3929498DDDB2F24FC2153"
+            ),
+            (
+                "localization/english/dlc/tgp/"
+                "dlc_tgp_situation_decision_events_l_english.yml"
+            ): (
+                "9279BE92A40DE23178C020F13B9397B5B3909006526BCCA81EB56133EB86644C"
+            ),
+            (
+                "localization/simp_chinese/dlc/tgp/"
+                "dlc_tgp_situation_decision_events_l_simp_chinese.yml"
+            ): (
+                "6C48AFC2D30213A878B03F5D3FF0AD11A32188E241B3293D947ADB2120BB5836"
+            ),
+        },
+        "definition_lines": "1041-1150",
+        "caller_lines": "1025-1037",
+        "caller_semantics": (
+            "after tgp_dynastic_cycle.0071 completes its Stability choice, it "
+            "notifies every interested player except the event root; inherited "
+            "situation scopes and the optional new_son_of_heaven scope remain "
+            "available to the notification"
+        ),
+        "trigger_boundary": (
+            "human recipient without the temporary situation_phase_notification "
+            "flag; the flag is added immediately and removed after the card"
+        ),
+        "immediate_effect": (
+            "adds the temporary notification flag, conditionally presents the "
+            "new Son of Heaven mandate effect as a tooltip, and mirrors the "
+            "selected Stability phase into the top situation sub-region"
+        ),
+        "option_semantics": {
+            0: (
+                "remain independent; no authored gameplay effect beyond a custom "
+                "tooltip and the shared click sound"
+            ),
+            1: (
+                "saves the recipient/actor scopes and runs "
+                "offer_fealty_interaction_effect toward the holder of h_china"
+            ),
+        },
+        "after_effect": (
+            "removes the temporary situation_phase_notification character flag"
+        ),
+        "safe_option_rationale": (
+            "native0 avoids the voluntary fealty interaction while still "
+            "acknowledging the phase notification; the immediate phase work is "
+            "already unavoidable when the option becomes available"
+        ),
+        "scope_variant_semantics": (
+            "new_son_of_heaven is inherited only when .0071 saved it from its "
+            "conditional variable branch; R418 observed the three-scope form"
         ),
     },
     "tgp_dynastic_cycle.0081": {
@@ -492,6 +598,35 @@ VANILLA_TGP_DYNASTIC_CYCLE_OBSERVATIONS: Final[
                 "process_restart_required": False,
             },
         ],
+    },
+    "tgp_dynastic_cycle.0072": {
+        "exemplars": [{
+            "run": "R418-attempt-04",
+            "kind": "pre-selection-live-red",
+            "artifact": (
+                "_runtime/p1-terminal-resume-r418-20260911/live-artifacts/"
+                "terminal-stages-red-attempt-04.json"
+            ),
+            "artifact_sha256": (
+                "5F1710E928F214C28FF4DF19478117F333E22473BF9E9713F0039AE766138146"
+            ),
+            "date_raw": 54044544,
+            "event_instance_id": 1101,
+            "root_character_id": 32904,
+            "bridge_pid": 204536,
+            "connection_generation": 1,
+            "context_query_sequence": 18,
+            "context_snapshot_id": "native:1730",
+            "context_native_revision": 1730,
+            "saved_character_ids": {"new_son_of_heaven": 110448},
+            "saved_scope_raw_types": {
+                "situation": 60,
+                "situation_sub_region": 62,
+                "new_son_of_heaven": 4,
+            },
+            "rendered_native_option_indices": [0, 1],
+            "selection_attempted": False,
+        }],
     },
     "tgp_dynastic_cycle.0081": {
         "exemplars": [{
