@@ -931,3 +931,6 @@ existing path. Focused normal and optimized tests pass `31/31`; R454 no-launch
 admission is READY with SHA-256
 `5DBB22DE0BD7674242CC3B36EC9C02CD3B15902BBCA652008696DD48AADE6F46`.
 This is a harness repair only; truce readiness and `GEN-034` do not change.
+The root fix is commit `69f0fbf5d7e7d723d12726064c1c23a9f1b4563e`;
+open_kaishek records the private dependency in
+`cd6545fac7c284d63261798d3d1313bf771540b6`.
