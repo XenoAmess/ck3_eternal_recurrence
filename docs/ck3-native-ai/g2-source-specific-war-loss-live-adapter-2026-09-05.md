@@ -726,6 +726,9 @@ no-launch receipt binds the unchanged source and the new adapter, records
 `F89EE9D57A34038B822B74E2B75DD1F2BE9CCF1ED4798B7E636C78C033F02CCF`.
 R451 is a harness RED, not a mod-product RED; truce/terms/action readiness and
 `GEN-034` remain unchanged.
+The private pause-confirmation dependency is synchronized in open_kaishek
+commit `5175bdaf2031449e1822a5ebdfccc77b23557044`; its public contracts remain
+unchanged.
 
 R448 did not reach the bridge or termination phases, so source-specific loss,
 comparison, decision, action, and automatic-surrender readiness remain false;
