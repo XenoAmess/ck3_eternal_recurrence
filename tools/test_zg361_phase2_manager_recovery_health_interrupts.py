@@ -883,6 +883,62 @@ class ManagerRecoveryHealthInterruptTests(unittest.TestCase):
             "repeatable-within-product-observation-window",
         )
 
+        non_epidemic_physician_context = _context(
+            event_key=event_key,
+            instance_id=341,
+            date_raw=53218848,
+            player=32904,
+            scopes=[
+                _scope("physician", "character", 49718),
+                _scope("sick_character", "character", 36354),
+                _scope("disease_type", "flag"),
+                _scope("health_court_owner", "character", 32904),
+                _scope("background_terrain_scope", "province"),
+            ],
+            native_option_indices=(0, 1, 3, 4),
+        )
+        non_epidemic_physician_checks = production._known_interrupt_checks(
+            snapshot={
+                "date_raw": 53218848,
+                "active_event": {"option_count": 7},
+            },
+            event={"event_instance_id": 341},
+            context=non_epidemic_physician_context,
+            event_key=event_key,
+            contract=contract,
+        )
+        non_epidemic_effective = production._interrupt_contract_for_context(
+            non_epidemic_physician_context,
+            contract,
+        )
+        self.assertTrue(
+            all(non_epidemic_physician_checks.values()),
+            non_epidemic_physician_checks,
+        )
+        self.assertEqual(non_epidemic_effective["saved_scope_count"], 5)
+        self.assertEqual(non_epidemic_effective["selected_option_number"], 1)
+        self.assertEqual(
+            non_epidemic_effective["selected_native_option_index"], 0
+        )
+
+        missing_physician = copy.deepcopy(non_epidemic_physician_context)
+        missing_physician["saved_scopes"] = [
+            row
+            for row in missing_physician["saved_scopes"]
+            if row["name"] != "physician"
+        ]
+        missing_physician_checks = production._known_interrupt_checks(
+            snapshot={
+                "date_raw": 53218848,
+                "active_event": {"option_count": 7},
+            },
+            event={"event_instance_id": 341},
+            context=missing_physician,
+            event_key=event_key,
+            contract=contract,
+        )
+        self.assertFalse(missing_physician_checks["saved_scope_names_exact"])
+
     def test_third_party_smallpox_recovery_is_acknowledged(self) -> None:
         event_key = "health.2202"
         contract = _manager_contract(event_key, player=32904)
