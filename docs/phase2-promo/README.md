@@ -34,6 +34,10 @@ coverage 失败返回 RED，但该诊断 RED 不回写、不改变独立的 P1 �
 T0 产品总完成度；P1 尚未签收，P2 继续 `LOCKED`。R390 Stage 9 冻结记录的真实选择与当前候选的 23 文件逐字节
 资格核对，以及 R432 硬上限、R433 零游戏日诊断见
 [`r432-r433-bounded-stage9-intake-2026-09-11.md`](r432-r433-bounded-stage9-intake-2026-09-11.md)。证据整理不重开 CK3。
+R434/R435 已用零游戏日查询排除 R432 checkpoint 的 Stage 10 manager source 与 Stage 11 terminal 资格；R437 又证明
+R398 输入存档本身并未停在 `.242`，因此在零游戏日、零事件输入处停止，没有把 source 误读扩成第二次长跑。三轮的证据、
+不重跑边界与下一项 source 要求见
+[`r434-r437-bounded-stage10-stage11-source-qualification-2026-09-11.md`](r434-r437-bounded-stage10-stage11-source-qualification-2026-09-11.md)。P1 仍为 `6/9`。
 
 R408–R414 的终端 lineage 换轨、五玩家 `SAV0102` 两次 native-readiness RED、离线 normalization 的证据边界以及
 R375 单玩家 checkpoint 的有效准入，见
