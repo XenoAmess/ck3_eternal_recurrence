@@ -177,7 +177,7 @@ async def run_exclusive_outer_owner(
     expected_character_id: int,
     expected_date_raw: int,
     postwar_timeout: float,
-    expected_war_id: int = lifecycle.EXPECTED_LIVE_WAR_ID,
+    expected_war_id: int | None = None,
     continuation: Callable[..., Awaitable[dict[str, object]]] | None = None,
 ) -> dict[str, object]:
     """Compose one caller-supplied process owner around the lifecycle seam.
@@ -188,7 +188,8 @@ async def run_exclusive_outer_owner(
     """
     if expected_character_id <= 0 or expected_date_raw < 0 or postwar_timeout <= 0:
         raise OuterOwnerContractError("outer owner arguments are invalid")
-    expected_war_id = _positive_integer(expected_war_id, "expected WarID")
+    if expected_war_id is not None:
+        expected_war_id = _positive_integer(expected_war_id, "expected WarID")
     lifecycle_continuation = (
         lifecycle.run_same_lifecycle_sequence
         if continuation is None
@@ -225,6 +226,18 @@ async def run_exclusive_outer_owner(
         _, normalized_source, capture_sha256 = _validate_observer_handoff(
             observer_value, expected_pid=pid
         )
+        captured_war_id = _positive_integer(
+            _object(normalized_source.get("source_set"), "normalized source set").get(
+                "war_id"
+            ),
+            "captured source WarID",
+        )
+        if expected_war_id is not None and expected_war_id != captured_war_id:
+            raise OuterOwnerContractError(
+                f"captured source WarID {captured_war_id} != optional expected WarID "
+                f"{expected_war_id}"
+            )
+        expected_war_id = captured_war_id
         trace.extend(
             (
                 "observer-breakpoint-restored",

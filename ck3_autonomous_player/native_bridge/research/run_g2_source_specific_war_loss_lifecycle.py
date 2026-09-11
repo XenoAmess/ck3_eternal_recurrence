@@ -47,7 +47,6 @@ MANIFEST_SCHEMA = "xar.ck3.g2_source_specific_war_loss_lifecycle_manifest.v1"
 PREFLIGHT_SCHEMA = "xar.ck3.g2_source_specific_war_loss_lifecycle_preflight.v1"
 JOIN_SCHEMA = "xar.ck3.g2_source_specific_war_loss_join.v1"
 EXPECTED_STATUS = "GREEN_STATIC_SOURCE_SPECIFIC_LIFECYCLE_RUNNER"
-EXPECTED_LIVE_WAR_ID = 50_331_699
 CHECKPOINT_FILENAME = "xar_checkpoint.ck3"
 
 
@@ -113,10 +112,6 @@ def create_pre_mutation_checkpoint(
 ) -> dict[str, object]:
     """Materialize and bind the exact paused source frame before surrender."""
     war_id = _integer(ticket.get("war_id"), "ticket WarID", minimum=1)
-    if war_id != EXPECTED_LIVE_WAR_ID:
-        raise LifecycleContractError(
-            f"checkpoint WarID {war_id} != expected {EXPECTED_LIVE_WAR_ID}"
-        )
     revision = _integer(ticket.get("source_revision"), "source revision")
     execute = getattr(driver, "execute_step", None)
     if not callable(execute):
@@ -583,7 +578,7 @@ async def run_same_lifecycle_sequence(
         _object(normalized_source["source_set"], "source_set")["war_id"],
         "source WarID",
     )
-    if expected_war_id != EXPECTED_LIVE_WAR_ID or war_id != expected_war_id:
+    if war_id != expected_war_id:
         raise LifecycleContractError(
             f"source WarID {war_id} != explicit expected WarID {expected_war_id}"
         )
