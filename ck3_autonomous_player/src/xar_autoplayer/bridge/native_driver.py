@@ -12922,7 +12922,7 @@ class NativeHeadlessGameplayDriver:
                 == starting_generation
                 and lifecycle.get("connection_generation") == ending_generation
                 and ending_pid != starting_pid
-                and ending_generation == starting_generation + 1
+                and _positive_native_id(ending_generation)
                 and ending.get("paused") is True
                 and ending.get("map_ready") is True
                 and ending.get("date_raw") == expected_date_raw
@@ -12999,13 +12999,17 @@ class NativeHeadlessGameplayDriver:
                 )
         diagnostics = self.state.diagnostics()
         starting_generation = diagnostics.get("connection_generation")
+        starting_pid = diagnostics.get("bridge_pid")
         if (
             isinstance(starting_generation, bool)
             or not isinstance(starting_generation, int)
             or starting_generation < 1
+            or isinstance(starting_pid, bool)
+            or not isinstance(starting_pid, int)
+            or starting_pid < 1
         ):
             raise BridgeUnavailableError(
-                "native restore-checkpoint requires a connected DLL generation"
+                "native restore-checkpoint requires a connected DLL PID/generation"
             )
 
         request_id = f"restore-{uuid.uuid4().hex}"
@@ -13047,7 +13051,27 @@ class NativeHeadlessGameplayDriver:
         response = self._wait_for_restore_response(
             response_path, request_id, deadline
         )
-        restored = self._wait_for_restored_map(starting_generation, deadline)
+        lifecycle_result = response.get("result")
+        lifecycle = (
+            dict(lifecycle_result)
+            if isinstance(lifecycle_result, dict)
+            else {}
+        )
+        restored_pid = lifecycle.get("pid")
+        if (
+            lifecycle.get("previous_pid") != starting_pid
+            or isinstance(restored_pid, bool)
+            or not isinstance(restored_pid, int)
+            or restored_pid < 1
+            or restored_pid == starting_pid
+            or lifecycle.get("pipe") != self.pipe_name
+        ):
+            raise BridgeUnavailableError(
+                "native-session restore response lacks the replacement PID/pipe proof"
+            )
+        restored = self._wait_for_restored_map(
+            starting_pid, restored_pid, deadline
+        )
         restored_date_raw = _date_raw(restored, "restored snapshot")
         if (
             checkpoint_saved_date_raw is not None
@@ -13079,12 +13103,6 @@ class NativeHeadlessGameplayDriver:
                 "native-session restored CK3 but its checkpoint file is missing"
             )
         size, mtime_ns = restored_signature
-        lifecycle_result = response.get("result")
-        lifecycle = (
-            dict(lifecycle_result)
-            if isinstance(lifecycle_result, dict)
-            else {}
-        )
         lifecycle_checkpoint = lifecycle.get("checkpoint")
         if not isinstance(lifecycle_checkpoint, dict) or (
             lifecycle_checkpoint.get("name") != _CHECKPOINT_FILENAME
@@ -13180,13 +13198,17 @@ class NativeHeadlessGameplayDriver:
         assert isinstance(seed, dict)
         diagnostics = self.state.diagnostics()
         starting_generation = diagnostics.get("connection_generation")
+        starting_pid = diagnostics.get("bridge_pid")
         if (
             isinstance(starting_generation, bool)
             or not isinstance(starting_generation, int)
             or starting_generation < 1
+            or isinstance(starting_pid, bool)
+            or not isinstance(starting_pid, int)
+            or starting_pid < 1
         ):
             raise BridgeUnavailableError(
-                "start-next-episode requires a connected DLL generation"
+                "start-next-episode requires a connected DLL PID/generation"
             )
 
         request_id = f"next-episode-{uuid.uuid4().hex}"
@@ -13242,7 +13264,22 @@ class NativeHeadlessGameplayDriver:
                 raise BridgeUnavailableError(
                     "native-session did not attest the new-episode seed lifecycle"
                 )
-            resumed = self._wait_for_restored_map(starting_generation, deadline)
+            resumed_pid = lifecycle.get("pid")
+            if (
+                lifecycle.get("previous_pid") != starting_pid
+                or isinstance(resumed_pid, bool)
+                or not isinstance(resumed_pid, int)
+                or resumed_pid < 1
+                or resumed_pid == starting_pid
+                or lifecycle.get("pipe") != self.pipe_name
+            ):
+                raise BridgeUnavailableError(
+                    "native-session new-episode response lacks the replacement "
+                    "PID/pipe proof"
+                )
+            resumed = self._wait_for_restored_map(
+                starting_pid, resumed_pid, deadline
+            )
             resumed = self._with_one_life_episode(resumed)
             with self._driver_state_lock:
                 transition_error = self._episode_transition_error
@@ -13613,7 +13650,7 @@ class NativeHeadlessGameplayDriver:
             time.sleep(min(self.restore_poll_interval_seconds, remaining))
 
     def _wait_for_restored_map(
-        self, starting_generation: int, deadline: float
+        self, starting_pid: int, expected_pid: int, deadline: float
     ) -> dict[str, object]:
         observed_revision = self.state.public_revision()
         stable_revision: int | None = None
@@ -13621,8 +13658,15 @@ class NativeHeadlessGameplayDriver:
         while True:
             now = time.monotonic()
             diagnostics = self.state.diagnostics()
+            bridge_pid = diagnostics.get("bridge_pid")
             generation = diagnostics.get("connection_generation")
-            if isinstance(generation, int) and generation > starting_generation:
+            if (
+                bridge_pid == expected_pid
+                and bridge_pid != starting_pid
+                and isinstance(generation, int)
+                and not isinstance(generation, bool)
+                and generation > 0
+            ):
                 try:
                     snapshot = self.state.semantic_snapshot()
                 except BridgeUnavailableError:
@@ -13647,8 +13691,9 @@ class NativeHeadlessGameplayDriver:
             remaining = deadline - now
             if remaining <= 0:
                 raise BridgeUnavailableError(
-                    "native-session relaunched CK3 but no newer DLL generation "
-                    "published a stable map_ready snapshot with played_character"
+                    "native-session relaunched CK3 but the replacement DLL PID "
+                    "did not publish a stable map_ready snapshot with "
+                    "played_character"
                 )
             wait_seconds = remaining
             if stable_since is not None:

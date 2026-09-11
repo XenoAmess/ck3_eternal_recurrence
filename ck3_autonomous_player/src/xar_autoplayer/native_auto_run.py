@@ -1813,7 +1813,8 @@ def _verify_next_episode_transition(
         or not isinstance(previous_generation, int)
         or isinstance(connection_generation, bool)
         or not isinstance(connection_generation, int)
-        or connection_generation <= previous_generation
+        or previous_generation < 1
+        or connection_generation < 1
         or isinstance(previous_pid, bool)
         or not isinstance(previous_pid, int)
         or isinstance(current_pid, bool)

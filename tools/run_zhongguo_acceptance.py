@@ -1477,7 +1477,6 @@ def _phase2_full_tree_completion_gate(
                 and value > 0
                 for value in generation_lineage
             )
-            and generation_lineage[1] == generation_lineage[0] + 1
             and all(
                 terminal_readback_complete(restore_before.get(domain))
                 and restore_after.get(domain) == restore_before.get(domain)

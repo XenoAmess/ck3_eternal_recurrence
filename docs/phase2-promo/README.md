@@ -22,8 +22,8 @@ P1 现在只由产品关键链、代表性高风险路径和真实 encountered R
 
 正式入口 `tools/run_zhongguo_acceptance.py --phase2-live-batch --phase2-p1-evidence-manifest <json>` 默认只做当前
 paused candidate 的 manifest/seed 绑定并判定上述九项，不再依次跑旧 Incident/B2/manager/scoreboard/Workforce/promotion
-全矩阵。证据 JSON 必须保存现有 provider/receipt 内容；cold restore 项必须包含真实 save/restore receipt、两 PID/递增
-generation，以及 B1、AF5、Central、Workforce 的 identity/state/receipt 前后回读。旧矩阵只有显式增加
+全矩阵。证据 JSON 必须保存现有 provider/receipt 内容；cold restore 项必须包含真实 save/restore receipt、两个不同 PID、
+各自有效且与当前帧一致的进程内 generation，以及 B1、AF5、Central、Workforce 的 identity/state/receipt 前后回读。旧矩阵只有显式增加
 `--phase2-legacy-full-tree-coverage` 才运行，结果只记 `NON_BLOCKING` coverage。九项以外的问题照常记录和处理真实 RED，
 但不能扩大 P1 blocker；因此 P1 判定没有“还差一个历史 cell”之类的隐含口径。显式 legacy 诊断命令本身仍可因其
 coverage 失败返回 RED，但该诊断 RED 不回写、不改变独立的 P1 九项判定。

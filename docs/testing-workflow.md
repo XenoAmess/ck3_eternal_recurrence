@@ -1953,18 +1953,20 @@ provenance 的 R375 单玩家 `SAV0101` 后，fresh PID 立即恢复玩家 `3290
 
 R93 首次把这条策略跑通。新的 Python pipe server 必须异步等待 DLL 再连接，直到收到
 `hello` 且首个 snapshot 为 `map_ready=true`；刚创建 server 时的空 capability 不是 CK3
-死亡证据。`connection_generation` 是单个 Python endpoint 的本地代数，跨 client 不比较
-数值；重连身份由同一 exact pipe、同一 CK3 PID 和持久 episode binding 共同约束。重连时
+死亡证据。当前 DLL 发布的 `connection_generation` 是单个 CK3 进程内的连接代数，跨
+client 或跨 CK3 进程都不比较数值；重连身份由 exact pipe、CK3 PID、当前 generation 和
+持久 episode binding 共同约束。重连时
 若地图已停在登记过的 modal，先把该事件重新绑定到新 revision，再走正常的 paused
 query/validate/select 流程。年度 `zg361.40` 之类的重复事件按源码锚点和 8,760 小时周期
 绑定到当前观察窗口，不能把最初两次实测日期硬编码成永远的完整集合。
 
 若某项验收明确要求在**同一** `connection_generation` 内续跑，则不能套用上面的跨 client
 重连：`NativeNamedPipeServer` 以 `CreateNamedPipeW(..., max_instances=1, ...)` 建立单客户端
-endpoint，DLL 每次新连接都会递增 `connection_generation`。这类热续跑必须由当前 pipe owner
+endpoint，同一 DLL 进程每次新连接都会递增 `connection_generation`。这类热续跑必须由当前 pipe owner
 复用既有 service 原位调用后续 choreography；关闭 owner 再 attach，即使 CK3 PID 未变，也已是
-新 generation。反之，要求证明 cold restore 的 `g -> g+1` 时，应让同一 Python endpoint 跨旧
-CK3 停止与新 CK3 启动继续存活，以一次真实 reconnect 观测递增。若 owner 由 operator MCP 启动且
+新 generation。cold restore 必须让同一 Python endpoint 跨旧 CK3 停止与新 CK3 启动继续存活，
+但新 DLL 进程的 generation 合法地从 `1` 重新开始；因此恢复凭据必须验证 supervisor ACK 的
+旧/新 PID、同一 pipe、各自正 generation 及当前帧绑定，禁止要求跨进程 `g -> g+1`。若 owner 由 operator MCP 启动且
 stdin 被隔离为 `DEVNULL`，必须用启动时冻结的自动续跑参数或等价的可审计控制面，不能依赖事后向
 交互提示写入命令。
 
@@ -2550,10 +2552,16 @@ promotion-source 有界推进现在保留主体 speed-5 吞吐，但在绝对截
 ## 天朝二期代表性终态 cold restore 的职责边界
 
 `tools/zg361_phase2_terminal_cold_restore.py` 只验证一个已接受的 Stage 11
-Workforce 终态存档能否经同一 supervisor lifecycle queue 换到不同 PID、恰好递增一个
-connection generation，并在恢复前后逐项保留 B1、AF5、Central、Workforce 的当前可观察
+Workforce 终态存档能否经同一 supervisor lifecycle queue 换到不同 PID、由新 PID 发布有效的
+进程内 connection generation，并在恢复前后逐项保留 B1、AF5、Central、Workforce 的当前可观察
 identity/state/receipt。每个查询仍须绑定同一 paused date、played character 和最新 revision；四域
 投影发生任何变化都为 RED。
+
+R479→R480 首次暴露了旧门的错误假设：supervisor 已真实用 `86544→77320` 换进程，R480 在相同
+`date_raw=53366616` 恢复玩家 `32904` 且 `map_ready=true`，但两个进程各自首连均为 generation `1`。
+Python 驱动等待 `generation > 1` 因而超时。修复后的等待以 lifecycle outbox 声明的新 PID 为目标；若
+进程已经替换而调用方在 ACK 后超时，重试还必须同时核对新进程 command history、outbox 与 checkpoint
+字节，原位恢复结果，禁止为同一次转换再启动第三个 CK3。
 
 B1 fix 与 AF5 terminal 是独立 P1 工作包，各自使用 hash-bound production-live 收据。cold restore
 不得再次要求代表性存档中的 B1 必须是有奖励 closure，或 AF5 必须正在 terminal；否则会把已经拆分的

@@ -55,7 +55,7 @@ flowchart LR
 生命周期合同现为 schema v3，明确区分两层：
 
 - **单个 surface 内**：六个动作必须保持同一 PID、connection generation、player、date 与 provider session；任一动作中途重启或 rebound 都 RED；
-- **两个 surface 之间**：允许且当前只允许一次有凭据的 `canonical-checkpoint-clean-restart`。receipt 必须给出前后不同 PID、连续 generation、
+- **两个 surface 之间**：允许且当前只允许一次有凭据的 `canonical-checkpoint-clean-restart`。receipt 必须给出前后不同 PID、各自有效的进程内 generation、
   exact checkpoint SHA-256/bytes/save lineage，以及 `fixture_used=false`、`console_used=false`、
   `generic_character_rebind_used=false`。顶层明确写 `global_single_session_required=false`，绝不把跨 PID 说成同 session。
 
@@ -68,7 +68,8 @@ OCR、坐标或通用角色切换。
 ### 为什么现有 restore 不能直接冒充 provider
 
 `NativeHeadlessGameplayDriver.restore_phase2_span_source_checkpoint_v1` 的真实合同要求 `ending_pid != starting_pid`，并要求
-`ending_generation == starting_generation + 1`；底层 `restore-checkpoint` 也明确由 native-session 替换 CK3 进程。因此旧版“两个 surface
+前后 generation 均为正数且分别绑定其 PID；底层 `restore-checkpoint` 也明确由 native-session 替换 CK3 进程。generation 是
+DLL 进程内连接计数，新 CK3 可从 `1` 开始。因此旧版“两个 surface
 共用一个 provider session”的要求与现有受管恢复机制冲突，现已纠正为上面的 per-surface / cross-surface 两级合同。
 
 现有 Phase2 source registry 只覆盖四个事件 span，而且当前 seed contract 仍是
