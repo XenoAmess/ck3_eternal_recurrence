@@ -1723,20 +1723,21 @@ class B1RuntimeFoundationTests(unittest.TestCase):
         )
         eligibility = dispatch.index("zg361_is_celestial_liege_trigger = yes")
         self.assertLess(recovery, eligibility)
-        global_pulse = top_level_block(
-            self.on_actions, "yearly_global_pulse"
+        everyone_pulse = top_level_block(
+            self.on_actions, "random_yearly_everyone_pulse"
         )
         self.assertIn(
             "on_actions = { zg361_b1_player_recovery_on_action }",
-            global_pulse,
+            everyone_pulse,
         )
-        global_recovery = top_level_block(
+        player_recovery = top_level_block(
             self.on_actions, "zg361_b1_player_recovery_on_action"
         )
-        self.assertIn("every_player = {", global_recovery)
+        self.assertIn("trigger = { is_ai = no }", player_recovery)
+        self.assertNotIn("every_player = {", player_recovery)
         self.assertIn(
             "zg361_b1_recover_empty_calibration_cycle_effect = yes",
-            global_recovery,
+            player_recovery,
         )
         issue = top_level_block(self.jingcha, "zg361_issue_jingcha_mandate_effect")
         issue_now = top_level_block(

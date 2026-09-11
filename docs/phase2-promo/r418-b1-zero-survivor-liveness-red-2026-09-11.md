@@ -139,3 +139,25 @@ state、serial、pending 与零 survivor 门保持不变，不会把恢复入口
 
 按项目所有者明确要求，下一次 B1 验收不再重复完整 `10190` 天产品窗口。它只从同一冻结卡死存档跨过最近一次
 `yearly_global_pulse`，随即查询旧 cycle/case 是否退役或重建；该最小后置 GREEN 之前，修复状态仍为 `static-ready`。
+
+## R424 / R426 短验收：排除 global `every_player` 路径
+
+R424 首次执行严格 370 天短验收，在任何游戏日期推进前命中只读探针重绑定竞态：恢复时间的 ACK 已提交，但缓存帧仍短暂标为
+paused，B1 query 因 revision 已前进而在提交前拒绝。该 attempt 保留为 harness RED，没有产品状态变化；汇总、canonical cleanup、
+operator cleanup SHA-256 分别为
+`40CE6F68E5ADA7A659B49308B9F873CAE6E103F1B299B59567DB07549677067C` /
+`F6994C2A6D1A921E2ACDD97801C44EF41E40FCCB84C523BBC1259CE98248885A` /
+`7E4C2161F06CDD8902B2AF48827304B94644A7F594280CC7117A6BBBBDF0C49B`。
+
+R426 只让该只读探针在这组已知、零提交的 stale-binding 错误上等待下一帧，没有改产品、checkpoint 或时间窗。它从同一
+date raw `54251808` 推进到 `54260712`，即在 370 天绝对截止后第一帧停止；整个窗口没有观察到 cycle/case `8/8` 从
+active/state `true/7` 退役。汇总 artifact 为 `200,817` bytes，SHA-256
+`EC0215A297935CA241ED0819486F2E46AC9CA0D9548D80D5D046EF7BABDC4A0E`；canonical / operator cleanup 均 GREEN，
+SHA-256 分别为 `64BED75B4A7DE80C004AE3FF2F66DFA3CA9CC0CDB23A3E375FE4AE57602F8728` /
+`990C0A58DE57DD42081F66C8BEF9A14D661F767B7A76BD5DC453315C80E0F09E`。
+
+因此 `yearly_global_pulse -> every_player` 在该真实失地玩家上不可达；这次短验收已经否定 R422 的唤醒假设，不应再延长同一路径。
+原版 1.19.0.6 `yearly_on_actions.txt` 明确 `random_yearly_everyone_pulse` 对所有角色逐个触发，且 root 就是该角色。
+生产唤醒点改挂这个 pulse，自定义 on_action 用 `trigger = { is_ai = no }` 在入口拒绝 AI，再调用原有严格 recovery effect。
+新的实机复验仍从冻结零幸存者存档开始，只推进到该角色下一次 everyone pulse，保守最多两个游戏年；命中 state `8` / inactive
+后立即停止。当前依然是 `static-ready`，不把 R426 RED 写成已修复。
