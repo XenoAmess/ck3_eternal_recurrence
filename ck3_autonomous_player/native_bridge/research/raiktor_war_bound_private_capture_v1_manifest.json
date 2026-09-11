@@ -14,7 +14,7 @@
     "architecture": "msvc-x64"
   },
   "capture_product": {
-    "executable_sha256": "E658470CF7DFC65334E791F1DE301A51FA787916D443AD3BE4C0FCAAFBC3AB72",
+    "executable_sha256": "B05E0B6D3CA8DBEC41C8C5107AB8F9AACD4E99981E442AC1DBF3077868241007",
     "timeout_max_ms": 1200000
   },
   "observation": {
