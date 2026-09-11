@@ -51,6 +51,12 @@ selector、产品树和 checkpoint 哈希收据时，会在启动 CK3 前拒绝�
 完整合同见
 [`stage10-player-subject-bounded-action-cell-2026-09-11.md`](stage10-player-subject-bounded-action-cell-2026-09-11.md)。
 
+R466/R467 随后从距 `.390` 仅 2 游戏日的 production 存档执行了一次有界资格尝试。R467 在真实 `.390` 帧返回
+`no_bounded_ai_direct_manager`，并且同帧 Workforce owner provider 缺少 Stage 11 的 owner/portfolio/case 绑定；两项产品门均为
+`NOT_EVALUATED`，该来源永久淘汰。运行在 10 游戏日上限内停止，cleanup GREEN，P1 仍为 `6/9`。启动前发现并修复了
+Operator worker 首次后台导入 `numpy/cv2` 时无响应的问题；这是 Python Operator 生命周期修复，未修改公共 MCP 或游戏资产。
+证据见 [`r466-r467-stage10-near-source-rejection-2026-09-12.md`](r466-r467-stage10-near-source-rejection-2026-09-12.md)。
+
 R408–R414 的终端 lineage 换轨、五玩家 `SAV0102` 两次 native-readiness RED、离线 normalization 的证据边界以及
 R375 单玩家 checkpoint 的有效准入，见
 [`r408-r414-lineage-intake-and-multiplayer-red-2026-09-11.md`](r408-r414-lineage-intake-and-multiplayer-red-2026-09-11.md)。
