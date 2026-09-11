@@ -504,3 +504,53 @@ has SHA-256
 R445 may therefore resume this exact pending-event lineage, handle the already
 visible stock event, and wait only the remaining part of the original 1–7 year
 schedule. It remains one bounded lifecycle rather than another full-prefix run.
+
+### R445 foreign-affairs letter harness RED and R446 successor
+
+R445 launched one CK3 process (PID `44836`) from the retained R440
+`1068-01-03` pre-target save. The run reached `1069-08-16` without a
+`bookmark.1071.a` source capture, then stopped on an unavoidable stock
+foreign-affairs letter. Exact-build source inspection identifies the event as
+`chancellor_task.1004`, called directly by hidden event
+`chancellor_task.1003` through `task_foreign_affairs_side_effects`. Its sole
+option is localized by `chancellor_task.1003.a` and applies only the configured
+neighbor-to-root opinion decrease. There is no second option, resource branch,
+war mutation, title mutation, or follow-up event. The preserved stop is a
+harness RED, not a product RED.
+
+The source loop now recognizes this one letter only when its body and option
+region jointly contain `掌玺大臣`, `外交行为`, and `可怕的误会`. It clicks the sole
+option and resumes time before entering generic modal recovery. A body-only or
+option-only match is rejected. This is an event-specific minimal patch; shared
+`run_acceptance.py` and the native bridge are unchanged. Focused adapter tests
+pass `25/25` in normal and optimized Python, and the actual R445 screenshot
+replay resolves the option center `(1266,984)`. `py_compile`, BOM, diff, and
+no-launch input admission are GREEN. The adapter and manifest SHA-256 values
+are `0E5D0DF24D19F9908E9674E3FFF6245E7EC1C845A6EF2AB23738448EC79205D0`
+and `A447BF5935D2D5C8ADAA68EFE6F9B498AB8274E004C849627F010CBBDA699A39`.
+The fix is commit `081baea2ee61809d08314f3b152d899f472ec122`.
+
+R445 cleanup is GREEN and CK3 inventory is empty. Its report is 3,724 bytes,
+SHA-256 `42084B46AC8B3E03963552C97FDEF04BB5D7E62F11C5886C9F8F3933FA279D86`;
+the frozen classification receipt is 2,613 bytes, SHA-256
+`FF1E7018E106C2CF9D11F31C39340953320FC32E9DBE3BFAFC0EB3E6BDFE554E`.
+The latest successor save is 62,041,267 bytes, SHA-256
+`431320AAC5094501BE48005C3A13E7FF0B4C75A56639A47C96352D04B1AFDBFF`,
+and still contains no `raiktor` marker. The final R446 no-launch admission
+receipt is 20,652 bytes, SHA-256
+`8A3C4FFA6E3C3A68738B6B06184F053C855B53196C896111B405A92971CBBE0F`.
+
+The exact-build event definition, caller candidates, safe-option contract, and
+honest R445 observation were also added to the campaign-neutral vanilla-event
+registry in commit `ee185c4ecaa84240a0a0f6090e8fa4d825cc1ae4`. The regenerated source index
+now contains 183 definitions and has dataset identity
+`265EBCE989627D68C69DDEF178A7BC0EBE1DE846721E42584D2B8271D14E9CFD`.
+Focused registry tests pass `13 tests / 63 subtests`; generator `--check` is
+GREEN. `open_kaishek` pins the same revision and dataset in commit
+`39c5bee697082d814c62800e013fd85874b77485`.
+
+No source-specific field, comparison input, decision/action readiness, or
+`GEN-034` state advances from R445; T1 remains 90%. R446 may consume only this
+admitted successor for one bounded continuation. It must still preserve the
+natural `.1071` source, arm before click, and prove the same-PID lifecycle
+before any readiness promotion.
