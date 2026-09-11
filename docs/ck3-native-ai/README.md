@@ -557,3 +557,11 @@ flowchart TD
 - capture/report/classification SHA-256 为 `E382E079DC7A6124A9961E174A3E802F8E67B0C95403325FB16485FD51A5E178`、`F200F6744242EED27D7ABAF8EA66DBE36ECF7FAEAF0F41E6960DDC4794F3864D`、`CAB2A4A1A8AF07FCB494F5ED52A02B49A05916F37575510A26A634CA00398B2C`。R448 同 seam 曾成功 detach，因此本轮分类为间歇性 debugger release race，产品 RED 为 false。
 - `454f515d8ef55ddf6e3cd5eccfa0a8cfb26e7630` 增加最多 20 次、间隔 25 ms、总 sleep 475 ms 的有限重试，并输出 attempts/last-error；耗尽仍 RED。新 executable SHA-256 `EEE39F858E941E1500DA13FB11906814FA4D70EE42DED894CFDEB03ACEF709B8`，self-test、normal/`-O` 各 `54/54` GREEN。
 - T2 同步为 `36009e7994f1db80f4e100eac7894dd357802b3a`；公开 MCP/Java/profile 不变。T1=90%、`GEN-034` unresolved，T0 P1=`6/9`、P2 视频硬锁未触碰。
+
+## 2026-09-11：GEN-034 R450 当前战争停战期限观测 RED
+
+- R450 以唯一 PID `105244` 从未变化的近边界存档启动；`.1071.a` 首击接受，六次 source execution、动态 WarID `33554473`、24 条 regiment 映射与实测 3000 兵力全部通过。
+- R449 的有限 debugger detach 修复已在实机闭合：`detached=true / attempts=1 / last_error=0`。同一暂停帧上的两次公开 termination-term 查询均成功传输并返回 gold、prestige、PoW、favor 与 generic war-bound current，但均返回 `truce.evaluated_days_observable=false`，因此 `truce_ready=false / action_terms_ready=false`。
+- lifecycle 在 mutation checkpoint 与 surrender 之前保持 RED；没有提交动作，source autosave SHA-256 `89D15B8ACB0E69E6C439D658582B63DC1F8AD11EC687089E5021A5961607D4DD` 未变，cleanup GREEN、CK3=0。该项分类为 G2 观测能力 RED，mod 产品 RED 为 false。
+- capture/report/driver/classification SHA-256 为 `4C377E364C55BEC6DFB2CD5159B441786B44701DA489D7728B35A9C9B5C5BDA3`、`41D07532B36259AEA76BF5179BC31ADBF4B0AC47B2D3E8C5C1A3460A343D1F4C`、`752D03EB50EF40D0ACE629A904976CB840BAFEF3E18AA6403D1A889B64910894`、`4ACA6BC721D9D9286E572200F03D3526A2D69D53B302DFBEB5E60A545E387047`。下一包只增加只读 pre-termination 诊断并定位 default truce reader，不放宽动作门。
+- 公开 MCP/ABI/schema 未变化，本轮无需 T2 代码同步。T1=90%、`GEN-034` unresolved；T0 P1=`6/9`，P2 视频硬锁未触碰。

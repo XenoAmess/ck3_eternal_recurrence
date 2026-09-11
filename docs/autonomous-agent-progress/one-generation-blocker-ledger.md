@@ -964,3 +964,10 @@ WarID `50331699` / `raiktor_claim_cb` 的 primary-attacker surrender 只有 type
 - **RED**：final debug event continue 后，单次 `DebugActiveProcessStop` 返回失败，故 observer 覆盖为 `debugger-detach-failed`；R449 没有进入 bridge/current/termination/postwar。capture SHA-256 `E382E079DC7A6124A9961E174A3E802F8E67B0C95403325FB16485FD51A5E178`，产品 RED 为 false。
 - **最小修复**：`454f515d8ef55ddf6e3cd5eccfa0a8cfb26e7630` 允许最多 20 次、每次间隔 25 ms 的 detach，记录 attempt count 和 last Win32 error；最多 sleep 475 ms，耗尽继续 RED。self-test、normal/`-O` 各 `54/54`。
 - **状态**：R449 已结束、旧轮次 R448 已结束、CK3=0；T1=90%、`GEN-034` unresolved。下一轮只能消费同一近边界输入验证 detach 后继续 lifecycle，不重跑已证名称/WarID研究。
+
+## 2026-09-11：GEN-034 R450 当前输入上的停战期限缺口
+
+- R450 已取得 source-specific 当前帧：WarID `33554473`、`raiktor_claim_cb`、玩家为 primary attacker、24 条 war-bound regiment、实测 3000 当前兵力；六行 source capture 和 debugger detach 均 GREEN。
+- 两次同帧公开 terms 查询都返回 gold、prestige、PoW 与 favor，但 `truce.evaluated_days_observable=false`。因此 aggregate 的唯一 missing domain 为 `truce`，`action_terms_ready=false`；没有创建 checkpoint、没有提交 surrender、没有 postwar 结果。
+- 这取代 GEN-034 表格中早期“继续枚举 index 9/10 shape”的施工入口。旧 shape 枚举已经完成且不能解释当前 production reader 的输入依赖失败；下一入口改为只读 pre-termination probe，在 exact build 和当前 WarID 上记录 default truce reader 的明确失败阶段。正常 lifecycle 的六域门不变。
+- R450 classification SHA-256 `4ACA6BC721D9D9286E572200F03D3526A2D69D53B302DFBEB5E60A545E387047`；source 未变、cleanup GREEN、CK3=0。`GEN-034` 继续 unresolved，T1=90%。
