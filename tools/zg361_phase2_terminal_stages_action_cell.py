@@ -28,6 +28,7 @@ if str(ROOT / "ck3_autonomous_player/src") not in sys.path:
     sys.path.insert(0, str(ROOT / "ck3_autonomous_player/src"))
 
 import zg361_phase2_promotion_source_production_entry as entry  # noqa: E402
+from xar_autoplayer.bridge.driver import BridgeUnavailableError  # noqa: E402
 from zhongguo_phase2_workforce_action import (  # noqa: E402
     _event_context,
     _saved_character_id,
@@ -47,6 +48,13 @@ ENTRY_TIMEOUT_SECONDS = 1800.0
 NAVIGATION_PROGRESS_SAMPLE_DAYS = 30
 POST_M360_PROGRESS_SAMPLE_DAYS = 1
 STAGE10_SOURCE_KIND = "zg361_stage10_player_subject_source_v1"
+MAX_CONSECUTIVE_WORKFORCE_QUERY_REBINDS = 4
+_TRANSIENT_WORKFORCE_QUERY_BINDING_ERRORS = (
+    "ZhongGuo Workforce owner query lacks one stable paused player binding",
+    "ZhongGuo workforce owner revision is stale",
+    "ZhongGuo Workforce owner backend result is not bound to the requested paused frame",
+    "ZhongGuo Workforce owner query crossed its paused snapshot binding",
+)
 
 
 class TerminalStagesError(RuntimeError):
@@ -279,7 +287,40 @@ def run_terminal_stages(
         query = getattr(service, "query_zhongguo_workforce_owner_snapshot_v1", None)
         if not callable(query):
             return None
-        provider = query(request_nonce + ".11", expected_revision=current["revision"])
+        try:
+            provider = query(
+                request_nonce + ".11", expected_revision=current["revision"]
+            )
+        except BridgeUnavailableError as error:
+            if not any(
+                marker in str(error)
+                for marker in _TRANSIENT_WORKFORCE_QUERY_BINDING_ERRORS
+            ):
+                raise
+            consecutive = int(
+                state.get("stage11_consecutive_query_rebinds", 0)
+            ) + 1
+            state["stage11_consecutive_query_rebinds"] = consecutive
+            rebinds = state.setdefault("stage11_query_rebinds", [])
+            if not isinstance(rebinds, list):
+                raise ValueError("persisted Stage 11 query rebind audit is malformed")
+            rebinds.append(
+                {
+                    "attempt": consecutive,
+                    "stale_revision": current.get("revision"),
+                    "date_raw": current.get("date_raw"),
+                    "error": f"{type(error).__name__}: {error}",
+                    "state_mutation_submitted": False,
+                }
+            )
+            _write(path, state)
+            if consecutive >= MAX_CONSECUTIVE_WORKFORCE_QUERY_REBINDS:
+                raise
+            # The production entry driver immediately takes a fresh snapshot
+            # after a terminal probe returns None. This is a read-only rebind;
+            # no gameplay input or CK3 restart is needed.
+            return None
+        state["stage11_consecutive_query_rebinds"] = 0
         state["stage11_latest_provider"] = provider
         _write(path, state)
         if provider.get("status") != "available" or provider.get("readiness", {}).get("ready") is not True:
