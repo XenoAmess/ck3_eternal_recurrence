@@ -18,7 +18,7 @@ Start-Process "...\binaries\ck3.exe" -ArgumentList "-debug_mode"
 - 小化改动使用与故障因果链相称的最小验证范围；已有目标证据后停止，不因为 runner 支持长跑就扩大测试。
 - 单个 mod bug 不做永久长跑。加载冻结复现点，只推进到能触发修复的最近确定性边界，并立即查询目标后置条件。
 - 只有最短边界仍不能解释结果、出现新的可复现故障，或改动直接影响长期累积语义时，才扩大时间窗；扩大原因写入 artifact 或报告。
-- B1 零幸存者恢复的当前最短验收是：载入冻结卡死存档，只推进到该角色下一次 `random_yearly_everyone_pulse`（最多两个游戏年），确认 active 空周期被重建或关闭后立即停止。R426 已证明 `yearly_global_pulse` 内的 `every_player` 不覆盖这个失地玩家，不能再用该入口做复验假设。
+- B1 零幸存者恢复的最短验收是：载入冻结卡死存档，只推进到该角色下一次 `random_yearly_everyone_pulse`（最多两个游戏年），确认 active 空周期被重建或关闭后立即停止。R430 已在 148 游戏日取得 GREEN 并完成清理；除非 B1 状态机再改或出现新回归，不重复该 checkpoint。R426 已证明 `yearly_global_pulse` 内的 `every_player` 不覆盖这个失地玩家，不能再用该入口做复验假设。
 
 ## 当前并行优先级与 `open_kaishek` 预验（2026-09-02 起）
 

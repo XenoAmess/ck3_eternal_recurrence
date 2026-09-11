@@ -184,3 +184,24 @@ B1 snapshot 暴露的前置字段是 `zg361_b1_oversight_return_status`。生成
 calibration、pending、publication、serial 与 prune 后双零门全部保持。`random_yearly_everyone_pulse` 入口保留：R422 已实证失地
 玩家不再收到 `yearly_playable_pulse`，若没有这个玩家专属低频入口，完成态门修复仍不会自动执行。该结论当前为
 `static-ready`；只再做一轮同 checkpoint、最多 `740` 游戏日的目标复验，观察退役后立即停止。
+
+## R430：完成态门禁修复 production-live GREEN
+
+commit `4553a429f69d1df15d31d59e14300067c7c33320` 只把恢复门的
+`zg361_b1_oversight_return_status` 从“必须为 `0`”改为“允许 `0/2`、继续拒绝在途态 `1`”，没有改变奖励、发布、
+quota、closure 或正常周期逻辑。fresh production staging 共 `1,031` 文件，tree SHA-256
+`84443728419E390024936809778C98D4BF4B529747FF776DE0F2FD4DC97E58CE`；projection manifest SHA-256
+`383EFCCC7BE736C226441C1F6D502D614E3608CE687A053EFF024CC297AEFE86`。
+
+R430 从同一冻结 checkpoint 的 cycle/case `8/8`、`state=7`、active、roster/processing `0/0` 开始。runner 的硬上限仍为
+`740` 游戏日，但实际只推进 **148 游戏日**便由目标 probe 观察到同一 `8/8` 变成 `state=8`、inactive；roster、processing、
+agenda 均为 `0`，`rewards_issued=false`。十项后置检查全部 GREEN，命中后立即暂停，没有继续运行其它 mod 场景。
+
+live artifact 为 `b1-minimal-wakeup-live.json`，`47,994` bytes，SHA-256
+`4AB0EE070EB686DB8737AF5086516FF412E2C4E297B7F3BC17FF32774FEF782E`。canonical / operator cleanup 均 GREEN，
+SHA-256 分别为 `9D3FCCBE60B3929694587180E31808F47C23ED2AD76A95F8C7819DAF3BF9C028` /
+`5FF5F2BC4FE9A342FF047C08800A4F78F12C70FFC8C24E311B6CA757E79E311B`；CK3 与 operator 进程均已退出。
+
+B1 零幸存者永久卡死 bug 至此关闭，能力等级从 `static-ready` 升为 `production-live primitive`。该 artifact 只证明遗留空周期
+会无奖励、无发布地安全退役；它不单独证明新周期完整 publication，也不代替其余 P1 收据或最终 evidence assembly。除非以后
+B1 状态机再次改动或出现新的可复现回归，不再重复运行这个 checkpoint。

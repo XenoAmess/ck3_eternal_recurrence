@@ -373,4 +373,6 @@ R418 在同一 PID 内解除全部已知原版事件阻断后跑满固定 `10190
 roster/processing 均为 `0`，无 pending、reopen 或隔级回调；Central 与 PP 始终不可达。该结果禁止继续延长观察窗。
 实机证据、根因和只在玩家请求边界运行的无奖励/无发布退役恢复见
 [r418-b1-zero-survivor-liveness-red-2026-09-11.md](r418-b1-zero-survivor-liveness-red-2026-09-11.md)。
-当前修复为 `static-ready`；fresh CK3 必须先证明 cycle `8/8` 被退役并由新周期完成 B1 publication，才能继续 P1 terminal stages。
+R430 已用 fresh production tree 在 148 游戏日内证明 cycle `8/8` 退役为 `state=8 / inactive`，且无奖励、无发布，B1
+零幸存者永久卡死升级为 `production-live primitive`。本收据不单独证明新周期 publication；后续只做 P1 evidence assembly，
+不重复同 checkpoint 长跑。详见上述专题的 R430 小节。
