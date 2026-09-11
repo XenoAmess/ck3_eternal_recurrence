@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "contract": "raiktor-source-specific-war-loss-attribution-provider-v1",
-  "status": "static-ready-private-capture-live-not-run",
+  "status": "fixture-live-evaluated-name-observed-r448",
   "game_version": "1.19.0.6",
   "ck3_exe_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
   "default_off": true,
@@ -10,7 +10,7 @@
   "live_authorized": false,
   "paths": {
     "game_executable": "Crusader Kings III/binaries/ck3.exe",
-    "capture_executable": "Z:\\ck3_mod_rewrite_process_assets\\zg361\\g2-source-specific-war-loss-provider-r448-20260911-r2\\build-msvc\\Release\\xar_ck3_raiktor_war_bound_private_capture_v1.exe",
+    "capture_executable": "Z:\\ck3_mod_rewrite_process_assets\\zg361\\g2-source-specific-war-loss-provider-r449-20260911-r2\\build-msvc\\Release\\xar_ck3_raiktor_war_bound_private_capture_v1.exe",
     "preflight": "ck3_autonomous_player/native_bridge/research/prepare_raiktor_source_specific_war_loss_capture.py",
     "spawn_army_abi": "ck3_autonomous_player/native_bridge/research/raiktor_spawn_army_execute_v1_abi.json",
     "spawn_army_verifier": "ck3_autonomous_player/native_bridge/research/verify_raiktor_spawn_army_execute_v1.py",
@@ -21,14 +21,14 @@
   },
   "sha256": {
     "game_executable": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
-    "capture_executable": "B05E0B6D3CA8DBEC41C8C5107AB8F9AACD4E99981E442AC1DBF3077868241007",
+    "capture_executable": "020F051DDE034CBBC67C5A308F8E035FFA3E224844AC413261AA257466B0F185",
     "preflight": "6286921CF0782FE47EFFEC911BCD93697FF6F77BA99CD815784E957DD0A80D9E",
     "spawn_army_abi": "C81963E32264CF2B0B09353A8EA25CA0A4035B43B13C9E5C36F050E1BA346AF0",
     "spawn_army_verifier": "A6FEF375185074F5CAC107334DFCED17083FE75B873CF0A8EA27D3A4F5CCAC72",
-    "capture_source": "A68C4674B6C03A4445EDBA7947C961DAB86E26DE6E11DCAF2F21FE2687839B9D",
-    "capture_manifest": "F65ABFBC9C515F2F9751E740C5FA8E06B4739BF374CCCC79CE9DECACA1D5D2FB",
+    "capture_source": "F2259F11B9513E786D585F163B464360FD6334BC9474B270088AB86D13033870",
+    "capture_manifest": "F716A6E92C9652074CE0CF195A65934879F2458CA53E5A904EDB51185ECBFF7C",
     "cmake": "4F02E653FF30FDE44757F514E72D76B4E3A2C936B888B98212C89243FD737728",
-    "provider": "F3204BA33885F12443493B4E0B8FE779C233E4B45047FA46C66079A65D75942A"
+    "provider": "AEFCD4BA93F4435509650E533C84E4E352472A125A7F4379A9D4B143CA97E4CB"
   },
   "exact_observation": {
     "execute_rva": "0x2E7F010",
@@ -50,7 +50,8 @@
     "required_unique_loaded_nodes": 6,
     "required_unique_army_generation_ids": 6,
     "required_same_full_generation_war_id": true,
-    "evaluated_name": "norman_highwaymen",
+    "authored_name_key": "norman_highwaymen",
+    "evaluated_name_requirement": "nonempty locale-dependent runtime display string, identical across all six executions",
     "evaluated_name_is_standalone_selector": false
   },
   "typed_output": {
@@ -89,8 +90,22 @@
     "self_test_expected": "PASS: private=1 action_arm=1 loaded_nodes=6 exact_war_id=1 public_abi=0 readiness=0",
     "self_test_exit_code": 0
   },
+  "live_observation": {
+    "round": "R448",
+    "result": "RED",
+    "reason": "six-execution-identity-mismatch under the superseded authored-key comparison",
+    "capture_sha256": "B819D4C94B3BD25EC1B505368801FE5EC2BD09CBCEFB934543B687CB1A984A1D",
+    "source_execution_count": 6,
+    "exact_raiktor_war_id": 33554473,
+    "measured_initial_soldiers": 3000,
+    "evaluated_name": "诺曼路匪",
+    "evaluated_name_locale_dependent": true,
+    "breakpoint_restored": true,
+    "debugger_detached": true,
+    "ck3_cleanup_green": true
+  },
   "hard_boundaries": {
-    "capture_live_executed": false,
+    "capture_live_executed": true,
     "provider_production_live": false,
     "authored_3000_used": false,
     "existing_r3_generic_rows_retroactively_attributed": false,
@@ -100,5 +115,5 @@
     "automatic_surrender_ready": false,
     "gen034_closed": false
   },
-  "next_live_completion": "A future exclusive fresh natural bookmark.1071.a run must capture all six source executions, then carry that exact source_set identity through an action-bound current checkpoint and exact-generation postwar cleanup before source_specific_loss_ready or comparison_input_ready can become true."
+  "next_live_completion": "A future exclusive near-boundary bookmark.1071.a run may consume the corrected locale-neutral validator, then must carry that exact source_set identity through an action-bound current checkpoint and exact-generation postwar cleanup before source_specific_loss_ready or comparison_input_ready can become true."
 }

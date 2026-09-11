@@ -62,7 +62,6 @@ constexpr char kArmProof[] =
     "event_definition_key=bookmark.1071\n"
     "option_key=bookmark.1071.a\n"
     "option_index=0\n";
-constexpr char kExpectedArmyName[] = "norman_highwaymen";
 
 struct Options {
   bool self_test = false;
@@ -345,10 +344,8 @@ bool CaptureSourceExecution(HANDLE process, std::uint64_t image_base,
     return false;
   }
   output->evaluated_name = ReadMsvcString(process, context.Rbp + 0x70);
-  // R447 reached the armed source breakpoint but disproved the old assumption
-  // that this evaluated display string is the authored localization key. Keep
-  // the observed value in every row and let the six-row validator retain the
-  // conservative final RED until the exact live value has been reviewed.
+  // This is the evaluated, locale-dependent display string rather than the
+  // authored localization key. It is supporting evidence only.
   if (!ReadRemote(process, output->created_army + kObjectIdOffset,
                   &output->army_generation_id) ||
       output->army_generation_id < 0) {
@@ -629,13 +626,18 @@ bool ValidateSixExecutions(const std::vector<SourceExecutionCapture> &rows,
   std::set<std::uint64_t> nodes;
   std::set<std::int32_t> armies;
   const auto war_id = rows.front().war_id;
+  const auto &evaluated_name = rows.front().evaluated_name;
   if (war_id < 0) {
     *reason = "exact-raiktor-war-id-invalid";
     return false;
   }
+  if (evaluated_name.empty()) {
+    *reason = "evaluated-name-empty";
+    return false;
+  }
   for (const auto &row : rows) {
     if (row.war_id != war_id || row.army_generation_id < 0 ||
-        row.initial_soldiers < 0 || row.evaluated_name != kExpectedArmyName ||
+        row.initial_soldiers < 0 || row.evaluated_name != evaluated_name ||
         !nodes.insert(row.loaded_node).second ||
         !armies.insert(row.army_generation_id).second) {
       *reason = "six-execution-identity-mismatch";
@@ -654,7 +656,7 @@ int SelfTest() {
     row.army_generation_id = 0x01000020 + static_cast<std::int32_t>(index);
     row.war_id = 0x02000042;
     row.initial_soldiers = 500;
-    row.evaluated_name = kExpectedArmyName;
+    row.evaluated_name = "localized-runtime-name";
     rows.push_back(row);
   }
   std::string reason;
@@ -663,8 +665,12 @@ int SelfTest() {
   if (ValidateSixExecutions(rows, &reason) ||
       reason != "six-execution-identity-mismatch") return 2;
   rows[5].war_id = rows[0].war_id;
+  rows[5].evaluated_name = "different-runtime-name";
+  if (ValidateSixExecutions(rows, &reason) ||
+      reason != "six-execution-identity-mismatch") return 3;
+  rows[5].evaluated_name = rows[0].evaluated_name;
   rows[5].loaded_node = rows[0].loaded_node;
-  if (ValidateSixExecutions(rows, &reason)) return 3;
+  if (ValidateSixExecutions(rows, &reason)) return 4;
   std::cout << "PASS: private=1 action_arm=1 loaded_nodes=6 exact_war_id=1 "
                "public_abi=0 readiness=0\n";
   return 0;

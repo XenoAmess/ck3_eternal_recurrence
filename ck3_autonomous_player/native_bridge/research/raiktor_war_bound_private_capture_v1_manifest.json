@@ -14,7 +14,7 @@
     "architecture": "msvc-x64"
   },
   "capture_product": {
-    "executable_sha256": "B05E0B6D3CA8DBEC41C8C5107AB8F9AACD4E99981E442AC1DBF3077868241007",
+    "executable_sha256": "020F051DDE034CBBC67C5A308F8E035FFA3E224844AC413261AA257466B0F185",
     "timeout_max_ms": 1200000
   },
   "observation": {
@@ -32,7 +32,7 @@
     "required_unique_loaded_nodes": 6,
     "required_unique_army_generation_ids": 6,
     "required_exact_full_generation_war_id": "one nonnegative WarID latched from the first armed source execution and matched by every created persistent regiment in all six executions",
-    "supporting_name_only": "norman_highwaymen"
+    "supporting_name_only": "nonempty locale-dependent runtime display string, identical across all six executions"
   },
   "captured_per_execution": [
     "loaded spawn_army node pointer",
@@ -40,7 +40,8 @@
     "exact bound WarID",
     "current CArmyRegiment full generation IDs",
     "measured initial current soldiers",
-    "new persistent CRegiment full generation IDs and roster mapping"
+    "new persistent CRegiment full generation IDs and roster mapping",
+    "locale-dependent evaluated display name as supporting evidence"
   ],
   "attempt_contract": {
     "fresh_attempt_required": true,
