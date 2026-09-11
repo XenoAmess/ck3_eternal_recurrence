@@ -871,3 +871,13 @@ WarID `50331699` / `raiktor_claim_cb` 的 primary-attacker surrender 只有 type
 - 修复范围只覆盖该实证故障：无 verified modal option 时重做现有时间轴动作，并要求读到严格更晚游戏日；无法证明推进仍为 RED。
   adapter normal/`-O` 各 `23/23`。R442 最新 successor `3D8755AE…6E07` 已通过 no-launch admission
   `C10FDE71…5391`，下一项是一轮 bounded continuation，不重放 1066–1082 前缀。
+
+## 2026-09-11：GEN-034 R443 source 场景耗尽
+
+- R443 实机验证 no-modal 恢复分支在无法证明日期推进时保持 fail-closed；保留帧显示罗贝尔在 1084-05-06、69 岁死亡并进入
+  继承暂停。exact `.1071` 调度和 trigger-fail retry 均绑定历史角色 `1128`，故不能用 Roger successor 延续冻结
+  CharacterID/source lifecycle。
+- receipt `CFBB1AFF…0DB6`、终态帧 `A2C78B8D…63CF`、report `28EF8764…DFD7`；cleanup GREEN，CK3=0，source capture/
+  bridge/surrender 均未发生。该链为 `SCENARIO_EXHAUSTED`，`GEN-034` 继续 unresolved。
+- 下一施工入口从“继续旧存档”改为 fresh natural run 的 peace-precondition control：必须先以 exact-build、可观测输入证明并维持
+  `is_at_war=no`，再启动下一轮；不得用 console 触发冒充 natural source，也不得再无控制地等待完整寿命。
