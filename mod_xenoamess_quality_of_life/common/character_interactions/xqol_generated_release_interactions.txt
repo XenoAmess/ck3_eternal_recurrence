@@ -4,7 +4,6 @@ xqol_mass_conversion_courtier_interaction = {
 	hidden = yes
 	category = interaction_category_religion
 	use_diplomatic_range = no
-	ignores_pending_interaction_block = yes
 	ai_maybe = yes
 	can_send_despite_rejection = yes
 	ai_min_reply_days = 1
@@ -49,7 +48,6 @@ xqol_mass_conversion_ruler_interaction = {
 	hidden = yes
 	category = interaction_category_religion
 	use_diplomatic_range = no
-	ignores_pending_interaction_block = yes
 	ai_maybe = yes
 	can_send_despite_rejection = yes
 	ai_min_reply_days = 4
@@ -95,7 +93,6 @@ xqol_release_hook_recruit_conversion_interaction = {
 	common_interaction = no
 	category = interaction_category_prison
 	use_diplomatic_range = no
-	ignores_pending_interaction_block = yes
 	ai_will_do = { base = 100 }
 
 	is_shown = {
@@ -185,7 +182,6 @@ xqol_release_hook_recruit_interaction = {
 	common_interaction = no
 	category = interaction_category_prison
 	use_diplomatic_range = no
-	ignores_pending_interaction_block = yes
 	ai_will_do = { base = 100 }
 
 	is_shown = {
@@ -249,7 +245,6 @@ xqol_release_hook_conversion_interaction = {
 	common_interaction = no
 	category = interaction_category_prison
 	use_diplomatic_range = no
-	ignores_pending_interaction_block = yes
 	ai_will_do = { base = 100 }
 
 	is_shown = {
@@ -328,7 +323,6 @@ xqol_release_recruit_conversion_interaction = {
 	common_interaction = no
 	category = interaction_category_prison
 	use_diplomatic_range = no
-	ignores_pending_interaction_block = yes
 	ai_will_do = { base = 100 }
 
 	is_shown = {
@@ -406,7 +400,6 @@ xqol_release_hook_interaction = {
 	common_interaction = no
 	category = interaction_category_prison
 	use_diplomatic_range = no
-	ignores_pending_interaction_block = yes
 	ai_will_do = { base = 100 }
 
 	is_shown = {
@@ -459,7 +452,6 @@ xqol_release_recruit_interaction = {
 	common_interaction = no
 	category = interaction_category_prison
 	use_diplomatic_range = no
-	ignores_pending_interaction_block = yes
 	ai_will_do = { base = 100 }
 
 	is_shown = {
@@ -511,7 +503,6 @@ xqol_release_conversion_interaction = {
 	common_interaction = no
 	category = interaction_category_prison
 	use_diplomatic_range = no
-	ignores_pending_interaction_block = yes
 	ai_will_do = { base = 100 }
 
 	is_shown = {

@@ -174,8 +174,8 @@ def check_scripts(errors: list[str]) -> None:
         errors.append("both conversion interactions must declare the religion category")
     if interactions.count("category = interaction_category_prison") != 7:
         errors.append("all seven release interactions must declare the prison category")
-    if interactions.count("ignores_pending_interaction_block = yes") != 9:
-        errors.append("all hidden interactions must support same-batch dispatch")
+    if "ignores_pending_interaction_block = yes" in interactions:
+        errors.append("non-auto-accepted hidden interactions cannot bypass pending replies")
     if interactions.count("scope:actor = { xqol_human_ruler_trigger = yes }") != 18:
         errors.append("all nine hidden scripted interactions must require a human actor")
     if "FloatToInt(" in slider:
@@ -268,25 +268,27 @@ def check_scripts(errors: list[str]) -> None:
         "execute_threshold = accept",
         "xqol_release_hook_recruit_conversion_interaction",
         "xqol_mass_conversion_pending",
-        "add_to_list = xqol_conversion_courtier_candidates",
-        "add_to_list = xqol_conversion_ruler_candidates",
-        "list = xqol_conversion_courtier_candidates",
-        "list = xqol_conversion_ruler_candidates",
-        "NOT = { is_in_list = xqol_conversion_ruler_candidates }",
+        "xqol_mass_conversion_dispatch_next_effect",
+        "xqol_conversion_courtier_candidate",
+        "xqol_conversion_ruler_candidate",
+        "NOT = { has_character_flag = xqol_conversion_ruler_candidate }",
+        "random_courtier = {",
+        "random_vassal_or_below = {",
+        "random_tributary = {",
     ):
         if token not in effects:
             errors.append(f"phase-two runtime token missing: {token}")
     conversion_count = (
         "change_variable = { name = xqol_mass_conversion_pending add = 1 }"
     )
-    first_dispatch = effects.find(
-        "every_in_list = {\n\t\t\tlist = xqol_conversion_courtier_candidates"
-    )
+    first_dispatch = effects.find("xqol_mass_conversion_dispatch_next_effect = yes")
     if effects.count(conversion_count) != 3:
         errors.append("conversion candidate counter must cover all three candidate scans")
     if first_dispatch < 0:
         errors.append("conversion courtier dispatch loop missing")
-    elif conversion_count in effects[first_dispatch:]:
+    elif conversion_count in effects[first_dispatch:effects.find(
+        "xqol_mass_conversion_dispatch_next_effect = {"
+    )]:
         errors.append("conversion candidates must all be counted before dispatch begins")
     invalid_auto_call_check = re.compile(
         r"is_character_interaction_potentially_accepted\s*=\s*\{\s*"
