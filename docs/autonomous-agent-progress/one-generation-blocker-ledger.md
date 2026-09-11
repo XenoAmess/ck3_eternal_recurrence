@@ -899,3 +899,22 @@ WarID `50331699` / `raiktor_claim_cb` 的 primary-attacker surrender 只有 type
   其 SHA-256 `D1E469D0…CDA9D` 已通过 input-specific no-launch admission `5E6A0A00…AACD`。
 - `GEN-034` 仍 unresolved；下一入口是一轮从该边界启动的 source-specific lifecycle。该轮只验证自然目标的 arm/capture 与既有
   same-PID continuation，不再重新跑 1066–1068 前缀。
+
+## 2026-09-11：GEN-034 R445 外交信件 harness RED
+
+- **现象**：R445 从 `1068-01-03` pre-target lineage 推进至 `1069-08-16` 后停在掌玺大臣外交失败信件；
+  `.1071` 尚未 capture，故 source-specific loss、comparison、decision/action readiness 不变。
+- **根因**：exact-build `chancellor_task.1004` 是 `chancellor_task.1003` 经
+  `task_foreign_affairs_side_effects` 打开的 unavoidable letter event。唯一选项 key 为 `chancellor_task.1003.a`；
+  现有 source adapter 没有该事件的高置信处理分支。
+- **修复**：`081baea2ee61809d08314f3b152d899f472ec122` 只在正文和选项区同时命中
+  `掌玺大臣 / 外交行为 / 可怕的误会` 时关闭唯一选项并恢复时间。normal/`-O` 各 `25/25`，实际截图回放 GREEN；
+  shared runner、DLL 和游戏文件不变。
+- **资产同步**：`.1004` 通用事件记录与新 source-index 在
+  `ee185c4ecaa84240a0a0f6090e8fa4d825cc1ae4`；`open_kaishek` 兼容同步为
+  `39c5bee697082d814c62800e013fd85874b77485`。
+- **状态**：`HARNESS_RED -> static-ready fix`；产品 RED 为 false。R445 已结束、cleanup GREEN、CK3=0。
+  R446 使用 SHA-256 `431320AAC5094501BE48005C3A13E7FF0B4C75A56639A47C96352D04B1AFDBFF` 的最近 successor，
+  final no-launch admission SHA-256 `8A3C4FFA6E3C3A68738B6B06184F053C855B53196C896111B405A92971CBBE0F`。
+- **关闭条件**：一轮有界 R446 仍须自然命中 `.1071`、先 arm 后 click，并完成同 PID source/action/postwar lifecycle；
+  未满足前 `GEN-034` 保持 unresolved，T1 保持 90%。

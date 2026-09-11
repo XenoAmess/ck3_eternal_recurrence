@@ -491,3 +491,21 @@ flowchart TD
 - [counter-policy] `null` 是 transport 的三态语义，不是完成标志。若 damage/toughness、骑士、渡河等字段仍让
   `monte_carlo_ready=false`，就必须继续补对应原生读取口；只有已独立解锁真实决策价值的 partial query 才能单独发布，
   不得把“已经定义字段名”写成“已经观测到数据”。
+
+## 2026-09-11：GEN-034 R445 掌玺大臣信件 RED 与 R446 输入
+
+- R445 从 R440 的 `1068-01-03` pre-target 存档单实例推进至 `1069-08-16`，在原版
+  `chancellor_task.1004` 掌玺大臣外交失败信件上保留 harness RED；该信件只有一个选项，只产生
+  邻国统治者对 root 的限时好感惩罚，不改变战争、资源、头衔或事件 source。产品 RED 为 false，cleanup GREEN，CK3=0。
+- source adapter 只在正文和选项区同时命中 `掌玺大臣 / 外交行为 / 可怕的误会` 时关闭该唯一选项并恢复时间，
+  不改共享 runner 或 DLL。normal/`-O` 各 `25/25`，R445 截图离线回放命中 `(1266,984)`；修复提交
+  `081baea2ee61809d08314f3b152d899f472ec122`。
+- R445 最新 successor SHA-256 为 `431320AAC5094501BE48005C3A13E7FF0B4C75A56639A47C96352D04B1AFDBFF`，
+  仍无 `raiktor`；R446 no-launch admission SHA-256 为
+  `8A3C4FFA6E3C3A68738B6B06184F053C855B53196C896111B405A92971CBBE0F`。
+- 通用原版事件资产提交 `ee185c4ecaa84240a0a0f6090e8fa4d825cc1ae4` 新增 `.1004` contract/analysis/observation，
+  source-index 增至 183 项，dataset SHA-256
+  `265EBCE989627D68C69DDEF178A7BC0EBE1DE846721E42584D2B8271D14E9CFD`；`open_kaishek`
+  兼容提交为 `39c5bee697082d814c62800e013fd85874b77485`。
+- 本轮未获得 `.1071` source capture，`GEN-034`、comparison、decision/action readiness 均不变，T1 保持 90%。
+  下一步只从该 admitted successor 启动一轮有界 R446，不重放 1066–1068 前缀。
