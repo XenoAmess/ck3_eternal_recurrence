@@ -22,6 +22,53 @@ from test_zg361_phase2_manager_recovery_interrupts import (
 
 
 class ManagerRecoveryTgpInterruptTests(unittest.TestCase):
+    def test_japanese_shrine_yearly_event_uses_terminal_health_route(self) -> None:
+        event_key = "tgp_japan_yearly_events.1030"
+        contract = _manager_contract(event_key, player=32904)
+        context = _context(
+            event_key=event_key,
+            instance_id=343,
+            date_raw=53219640,
+            player=32904,
+            scopes=[],
+            native_option_indices=(0, 1, 2, 3),
+        )
+        checks = production._known_interrupt_checks(
+            snapshot={
+                "date_raw": 53219640,
+                "active_event": {"option_count": 5},
+            },
+            event={"event_instance_id": 343},
+            context=context,
+            event_key=event_key,
+            contract=contract,
+        )
+
+        self.assertTrue(all(checks.values()), checks)
+        self.assertEqual(contract["saved_scope_count"], 0)
+        self.assertEqual(contract["native_option_indices"], (0, 1, 2, 3))
+        self.assertEqual(contract["snapshot_option_count"], 5)
+        self.assertEqual(contract["selected_option_number"], 1)
+        self.assertEqual(contract["selected_native_option_index"], 0)
+        self.assertEqual(
+            contract["occurrence_policy"],
+            "repeatable-within-product-observation-window",
+        )
+
+        drifted = copy.deepcopy(context)
+        drifted["options"].pop()
+        drift_checks = production._known_interrupt_checks(
+            snapshot={
+                "date_raw": 53219640,
+                "active_event": {"option_count": 5},
+            },
+            event={"event_instance_id": 343},
+            context=drifted,
+            event_key=event_key,
+            contract=contract,
+        )
+        self.assertFalse(drift_checks["authored_options_exact"])
+
     def test_military_aid_request_uses_saved_governor_resolution(self) -> None:
         event_key = "tgp_interaction_event.0010"
         contract = _manager_contract(event_key, player=32904)
