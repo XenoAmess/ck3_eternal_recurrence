@@ -976,4 +976,4 @@ WarID `50331699` / `raiktor_claim_cb` 的 primary-attacker surrender 只有 type
 
 - 新 probe 只复用既有自然 source、同 PID bridge 与两次公开 terms 查询，在 mutation checkpoint 前终止；合同要求零 action、零 postwar，并把 `PROBE_COMPLETE` 与 `terms_ready` 分离。
 - default-OFF 诊断 build 在不改变 default reader 分支的前提下记录具体 stage、callback/failure counts 与 context identity/destruction。诊断 ON 与默认 OFF 均编译通过；normal/`-O` 聚焦测试各 `57/57`。
-- no-launch receipt SHA-256 `E10DA2DBF2DDD3F7B427972223F4162BA886875F1445F47C4320BD375FC6B56D` 绑定 source SHA-256 `89D15B8ACB0E69E6C439D658582B63DC1F8AD11EC687089E5021A5961607D4DD`。这只提供一次 R451 精确取证入口，不提升 truce/terms/action readiness；`GEN-034` 继续 unresolved、T1=90%。
+- no-launch receipt SHA-256 `E10DA2DBF2DDD3F7B427972223F4162BA886875F1445F47C4320BD375FC6B56D` 绑定 source SHA-256 `89D15B8ACB0E69E6C439D658582B63DC1F8AD11EC687089E5021A5961607D4DD`；open_kaishek 私有依赖同步为 `89ea4218151e2b340463c85d682ebd6b765cb651`。这只提供一次 R451 精确取证入口，不提升 truce/terms/action readiness；`GEN-034` 继续 unresolved、T1=90%。

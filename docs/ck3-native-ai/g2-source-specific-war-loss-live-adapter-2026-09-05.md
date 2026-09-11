@@ -820,3 +820,6 @@ This package is static-ready only. It does not promote the current truce
 primitive, terms aggregate, policy, action, or `GEN-034`. The next CK3 launch
 is one bounded R451 read-only probe from the same hash-bound input; it cannot
 create a mutation checkpoint, submit surrender, or start postwar polling.
+The private dependency is synchronized in open_kaishek commit
+`89ea4218151e2b340463c85d682ebd6b765cb651`; no public MCP or Java contract
+changed.
