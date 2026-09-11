@@ -814,7 +814,7 @@ Focused lifecycle/owner/adapter/source-contract tests pass `57/57` in both
 normal and optimized Python; `py_compile` is GREEN. The corrected no-launch
 receipt records `requested_live_mode=read-only-pre-termination`, binds the
 unchanged 68,016,053-byte source save, and has SHA-256
-`7465C044BC059E13D57949FDA29AC560B31CD679F8C017D72A3A63E7E12655AF`.
+`E10DA2DBF2DDD3F7B427972223F4162BA886875F1445F47C4320BD375FC6B56D`.
 
 This package is static-ready only. It does not promote the current truce
 primitive, terms aggregate, policy, action, or `GEN-034`. The next CK3 launch
