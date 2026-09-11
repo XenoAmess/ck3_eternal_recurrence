@@ -881,3 +881,13 @@ WarID `50331699` / `raiktor_claim_cb` 的 primary-attacker surrender 只有 type
   bridge/surrender 均未发生。该链为 `SCENARIO_EXHAUSTED`，`GEN-034` 继续 unresolved。
 - 下一施工入口从“继续旧存档”改为 fresh natural run 的 peace-precondition control：必须先以 exact-build、可观测输入证明并维持
   `is_at_war=no`，再启动下一轮；不得用 console 触发冒充 natural source，也不得再无控制地等待完整寿命。
+
+## 2026-09-11：GEN-034 R444 snapshot 纠错与 source 去向
+
+- R444 exact native snapshot 给出 played character `29829`、`active_wars=[]`，否定了“R441/R442 一直因战争使 `.1071` trigger
+  fail”的假设；没有必要构造 surrender precondition。adapter 因仍要求顶层 `played_character_id` 而 harness RED，已最小兼容
+  canonical `played_character.character_id`，focused normal/`-O` 各 `23/23`、real-save no-launch admission GREEN。
+- R441 successor 中 `show_historical_gui` 与 `raiktor` 位于同一序列化角色记录、相距 59 bytes；exact `.1071:immediate` 正是创建
+  Raiktor 后写这两项。故 source 已自然出现，但标题漏识别后 generic modal recovery 在 observer 未 arm 时关闭了事件。
+- R444 classification SHA-256 `3827A3E1…E5D4`，cleanup GREEN、CK3=0、mutation 零。`GEN-034` 仍 unresolved；下一入口是
+  target option 的高置信识别并保证 `atomic_arm` 先于 click，不再通过延长 live 窗口获取同一事实。

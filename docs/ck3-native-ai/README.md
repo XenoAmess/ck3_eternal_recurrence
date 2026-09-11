@@ -1,4 +1,4 @@
-# CK3 原生 AI 决策树索引
+﻿# CK3 原生 AI 决策树索引
 
 - [static-ready; metropolitan live retry pending] [?????????`imperial_examination.7100`?](imperial-examination-family-notice.md)????? caller???????????? authored ???????? opt-out ???
 
@@ -324,7 +324,7 @@
 - [static-ready / no-launch exclusive outer-owner orchestration] [g2-source-specific-war-loss-outer-owner-2026-09-05.md](g2-source-specific-war-loss-outer-owner-2026-09-05.md)
   冻结正常事件进程在 observer 恢复断点并仅 detach 后继续存活、同 PID bridge attach、同一 driver 交给
   lifecycle continuation、最终由外层唯一 cleanup 的确定性顺序。C++ observer 已具备 detach-without-kill 路径。
-- [R443 scenario exhausted at player death / non-modal recovery live-validated; fresh peace-precondition plan required] [g2-source-specific-war-loss-live-adapter-2026-09-05.md](g2-source-specific-war-loss-live-adapter-2026-09-05.md)
+- [R444 canonical snapshot compatibility fixed / target-event dismissal root cause proven; target-option guard pending] [g2-source-specific-war-loss-live-adapter-2026-09-05.md](g2-source-specific-war-loss-live-adapter-2026-09-05.md)
   已实现 normal launch → speed-5 natural event → observer detach → same-PID pause/explicit-pipe bridge → same-driver
   lifecycle → one outer cleanup，并对 launch receipt 形成前的失败补 exact-PID 回收。OCR 仅用于 bridge attach 前 UI，
   source truth 来自 native observer，current/action/postwar truth 来自 MCP。R441 已将 R440 的原版单选事件修复实机验证：
@@ -336,7 +336,10 @@
   空窗被误送到 modal-only recovery 后以 harness RED 收口。最小修复只在不存在可验证 modal 选项时重试时间轴，并要求读到更晚
   游戏日；最新 R442 autosave 已通过 no-launch admission，等待下一次 bounded continuation。
   R443 已实机触发该修复并在无法推进时保留终态帧：罗贝尔于 1084-05-06 死亡，CK3 因继承暂停。runner 未继续扮演继承人；
-  exact `.1071` 排程/重试绑定罗贝尔，因此该存档链已耗尽。下一次 CK3 前必须先形成可执行的 `is_at_war=no` 前置方案。
+  exact `.1071` 排程/重试绑定罗贝尔，因此该存档链已耗尽。R444 随后从 R442 存档取得 exact native snapshot：
+  `active_wars=[]`，证明战争不是 blocker；bridge timeout 来自 adapter 仍读取顶层 `played_character_id`，现已兼容 canonical
+  `played_character.character_id`。R441 successor 同一角色记录中的 `show_historical_gui + raiktor` 又证明 `.1071` 已自然打开，
+  实际根因是标题漏识别后通用 modal recovery 在 observer 未 arm 时吞掉目标。下一包只修 target-option 识别/arm 顺序，不再长跑。
 - [static-ready / portable operator MCP no-launch profile generator] [g2-source-specific-operator-mcp-preflight-2026-09-10.md](g2-source-specific-operator-mcp-preflight-2026-09-10.md)
   把 target identity、endpoint、clone、游戏文件与 runtime bundle 变为每机参数，并以 production operator
   profile parser 和逐文件 SHA-256 冻结；生成结果只暴露 adapter `--verify-only`，不能启动或控制 CK3，

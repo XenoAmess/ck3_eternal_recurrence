@@ -95,6 +95,17 @@ def _nonnegative_integer(value: object, name: str) -> int:
     return value
 
 
+def _played_character_id(snapshot: dict[str, object]) -> int | None:
+    direct = snapshot.get("played_character_id")
+    if not isinstance(direct, bool) and isinstance(direct, int) and direct > 0:
+        return direct
+    played = snapshot.get("played_character")
+    nested = played.get("character_id") if isinstance(played, dict) else None
+    if not isinstance(nested, bool) and isinstance(nested, int) and nested > 0:
+        return nested
+    return None
+
+
 def _sha256_text(value: object, name: str) -> str:
     text = str(value).strip().upper()
     if len(text) != 64 or any(character not in "0123456789ABCDEF" for character in text):
@@ -1341,7 +1352,7 @@ class ConcreteLiveOperations:
                     diagnostics.get("bridge_pid") == pid
                     and snapshot.get("paused") is True
                     and snapshot.get("map_ready") is True
-                    and snapshot.get("played_character_id") is not None
+                    and _played_character_id(snapshot) is not None
                     and snapshot.get("episode_run_id") is not None
                 ):
                     self._bridge_binding = {
@@ -1356,7 +1367,7 @@ class ConcreteLiveOperations:
                         "revision": snapshot.get("revision"),
                         "native_revision": snapshot.get("native_revision"),
                         "date_raw": snapshot.get("date_raw"),
-                        "played_character_id": snapshot.get("played_character_id"),
+                        "played_character_id": _played_character_id(snapshot),
                         "episode_run_id": snapshot.get("episode_run_id"),
                     }
                     return driver

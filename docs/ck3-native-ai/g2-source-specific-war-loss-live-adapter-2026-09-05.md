@@ -433,3 +433,46 @@ run, the harness needs an evidence-backed fresh-run plan that can make Robert
 satisfy the exact `is_at_war=no` trigger instead of passively waiting through
 another lifetime. This does not authorize console-triggering the event or
 relaxing the natural-source contract. T1 remains 90%.
+
+### R444 canonical snapshot compatibility RED
+
+R444 reused the live R442 save only to inspect the proposed peace precondition.
+The first invocation failed before `Popen` because the fresh userdir had not yet
+been created; that input RED is retained and did not consume a CK3 launch. The
+actual R444 run then launched the unique CK3 PID `70988`, selected `继续游戏`
+once, loaded the paused map, and connected the exact-build bridge. No gameplay
+mutation or `bookmark.1071` selection occurred.
+
+The bridge published a valid paused snapshot at `date_raw=53278320` with played
+character `29829` and `active_wars=[]`. The adapter nevertheless timed out
+because its readiness gate required the obsolete convenience field
+`played_character_id`; the canonical native snapshot publishes the same ID as
+`played_character.character_id`. This is a harness RED. The adapter now accepts
+both shapes and records one normalized positive ID. The focused adapter test
+fixture uses the canonical nested shape; normal and optimized Python each pass
+`23/23`. `py_compile`, BOM, diff checks, and a current real-save no-launch
+admission are GREEN. The adapter/manifest SHA-256 values are
+`9F88417E62F54E4D255C5495513E05F2FC0E568B8082ED1EE73AFAA46DF608A9` and
+`AF5533CA4D086B46F1DCDEF0DC920DFE30208C88D0B10D13C5F859112D22165B`;
+the admission receipt SHA-256 is
+`979DCD959E125310DC9A32CF9F6FF14C30CB33F0AC821C983E222B7DC1BA0489`.
+
+R444 also disproves the proposed war blocker: the admitted R442 frame was
+already at peace. Offline inspection of the R441 successor finds
+`show_historical_gui` at byte `37817695` and `raiktor` at byte `37817754` in
+the same serialized character record. Exact `bookmark.1071:immediate` assigns
+both values to the created Raiktor character, so the target event had naturally
+opened before that save. Combined with the runner's unarmed result, this shows
+that generic modal recovery dismissed the target after exact title recognition
+failed. The next repair must recognize the unique target option and arm the
+observer before any click; it must not launch another passive wait.
+
+The frozen R444 report is 27,608 bytes with SHA-256
+`111D3CFAAFA10B8AA2B9355414342E53DBEC12D4284B4C2A8D77E69E7B893438`.
+The compact classification receipt is
+`Z:\ck3_mod_rewrite\_runtime\g2-pre-event-peace-r444-20260911\r444-classification.json`,
+3,695 bytes, SHA-256
+`3827A3E1174A2C67420D8F30E8289BF0C154E890A6AD3AC4077B62F8584CE5D4`.
+Cleanup is GREEN, CK3 inventory is empty, and both logs contain zero `XAR:`
+hits. Source capture, comparison input, decision/action readiness and
+`GEN-034` remain unchanged; T1 stays at 90%.
