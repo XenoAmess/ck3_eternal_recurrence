@@ -971,6 +971,7 @@ class G2SourceSpecificWarLossLiveAdapterTests(unittest.TestCase):
                         source_capture={"schema": "capture"},
                         capture_sha256="A" * 64,
                         expected_character_id=29829,
+                        expected_war_id=33_554_473,
                         expected_date_raw=0,
                         postwar_timeout=45,
                     )
@@ -982,30 +983,20 @@ class G2SourceSpecificWarLossLiveAdapterTests(unittest.TestCase):
             )
             self.assertEqual(
                 continuation.await_args.kwargs["expected_war_id"],
-                ADAPTER.EXPECTED_LIVE_WAR_ID,
+                33_554_473,
             )
 
-    def test_cli_requires_exact_war_id_and_external_runtime_paths(self) -> None:
+    def test_cli_accepts_optional_source_war_assertion_and_external_paths(self) -> None:
         parser = ADAPTER._parser()
-        with self.assertRaises(SystemExit):
-            parser.parse_args(
-                [
-                    "--manifest", str(MANIFEST),
-                    "--preflight-output", "preflight.json",
-                    "--profile-settings-template", "pdx_settings.txt",
-                    "--verify-only",
-                ]
-            )
         parsed = parser.parse_args(
             [
                 "--manifest", str(MANIFEST),
                 "--preflight-output", "preflight.json",
                 "--profile-settings-template", "pdx_settings.txt",
-                "--expected-war-id", str(ADAPTER.EXPECTED_LIVE_WAR_ID),
                 "--verify-only",
             ]
         )
-        self.assertEqual(parsed.expected_war_id, ADAPTER.EXPECTED_LIVE_WAR_ID)
+        self.assertIsNone(parsed.expected_war_id)
         self.assertIsNone(parsed.resume_save)
         self.assertIsNone(parsed.resume_save_sha256)
         explicit_game_root = Path("explicit-game")
@@ -1021,7 +1012,7 @@ class G2SourceSpecificWarLossLiveAdapterTests(unittest.TestCase):
                 "--manifest", str(MANIFEST),
                 "--preflight-output", "preflight.json",
                 "--profile-settings-template", "pdx_settings.txt",
-                "--expected-war-id", str(ADAPTER.EXPECTED_LIVE_WAR_ID),
+                "--expected-war-id", "33554473",
                 "--game-root", str(explicit_game_root),
                 "--game-executable", str(explicit_game_executable),
                 "--bookmark-events", str(explicit_bookmark_events),
@@ -1049,24 +1040,6 @@ class G2SourceSpecificWarLossLiveAdapterTests(unittest.TestCase):
                 ADAPTER.REPOSITORY_ROOT / "_runtime" / "userdir",
             )
 
-        preflight = mock.Mock()
-        with (
-            tempfile.TemporaryDirectory() as temporary,
-            mock.patch.object(ADAPTER, "run_no_launch_preflight", preflight),
-        ):
-            root = Path(temporary)
-            result = ADAPTER.main(
-                [
-                    "--manifest", str(MANIFEST),
-                    "--preflight-output", str(root / "preflight.json"),
-                    "--profile-settings-template", str(root / "pdx_settings.txt"),
-                    "--expected-war-id", str(ADAPTER.EXPECTED_LIVE_WAR_ID + 1),
-                    "--verify-only",
-                ]
-            )
-        self.assertEqual(result, 2)
-        preflight.assert_not_called()
-
         preflight = mock.Mock(return_value={"status": ADAPTER.PREFLIGHT_STATUS})
         with (
             tempfile.TemporaryDirectory() as temporary,
@@ -1078,7 +1051,6 @@ class G2SourceSpecificWarLossLiveAdapterTests(unittest.TestCase):
                     "--manifest", str(MANIFEST),
                     "--preflight-output", str(root / "preflight.json"),
                     "--profile-settings-template", str(root / "pdx_settings.txt"),
-                    "--expected-war-id", str(ADAPTER.EXPECTED_LIVE_WAR_ID),
                     "--capture-executable", str(explicit_capture_executable),
                     "--bridge-dll", str(explicit_bridge_dll),
                     "--bridge-injector", str(explicit_bridge_injector),

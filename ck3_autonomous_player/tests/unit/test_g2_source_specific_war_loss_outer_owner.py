@@ -246,7 +246,7 @@ class G2SourceSpecificWarLossOuterOwnerTests(unittest.TestCase):
         self.assertTrue(result["observer_handoff"]["breakpoint_restored"])
         self.assertFalse(result["observer_handoff"]["process_terminated"])
 
-    def test_default_continuation_receives_explicit_expected_war_id(self) -> None:
+    def test_default_continuation_receives_source_capture_war_id(self) -> None:
         operations = FakeOperations()
         received: dict[str, object] = {}
 
@@ -266,7 +266,6 @@ class G2SourceSpecificWarLossOuterOwnerTests(unittest.TestCase):
                 RUNNER.run_exclusive_outer_owner(
                     operations,
                     expected_character_id=CHARACTER_ID,
-                    expected_war_id=WAR_ID,
                     expected_date_raw=DATE_RAW,
                     postwar_timeout=1.0,
                 )

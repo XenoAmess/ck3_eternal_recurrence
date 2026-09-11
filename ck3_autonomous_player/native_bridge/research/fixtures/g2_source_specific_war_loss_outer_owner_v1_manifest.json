@@ -21,8 +21,8 @@
     "bookmark_events": "Crusader Kings III/game/events/bookmark_events.txt"
   },
   "sha256": {
-    "runner": "B79E2E6D38830DEF3C0A89EC196A55B62336791D6DDFDECDE07480C5DA9D2918",
-    "lifecycle_runner": "D087B4944925EB8BAF9169BCFF31F26DDCF8E20848F5104C6CAE365EFC071ED0",
+    "runner": "C6F05DD5ADFDA5FD41B3D072F40BD3AC6A5FCFA280D4AB9C5A58A5CA5D59A65D",
+    "lifecycle_runner": "E3D4FB59C6BF9BAEC6B3E1470425151BB0451D592BD6CE965D47D2232220737B",
     "source_observer": "F2259F11B9513E786D585F163B464360FD6334BC9474B270088AB86D13033870",
     "standalone_capture_runner": "53E6086EEACB6ABF4B54D2C7186C38E6212237C247A34E30EC442FB544A0BF56",
     "source_provider": "AEFCD4BA93F4435509650E533C84E4E352472A125A7F4379A9D4B143CA97E4CB",
@@ -49,6 +49,7 @@
     "startup_mode": "normal-event",
     "event_target": "bookmark.1071.a",
     "expected_war_id_forwarded_to_lifecycle": true,
+    "expected_war_id_derived_from_validated_source_capture": true,
     "same_pid_capture_pause_bridge_lifecycle": true,
     "same_driver_object_passed_to_continuation": true,
     "one_final_cleanup_call": true,

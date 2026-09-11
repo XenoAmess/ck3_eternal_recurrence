@@ -62,7 +62,6 @@ STARTUP_PROFILE_ASSETS_SCHEMA = "xar.ck3.startup_profile_assets.v1"
 TARGET_EVENT = "bookmark.1071.a"
 CHANCELLOR_TASK_1004_OPTION = "可怕的误会"
 PIPE_PREFIX = r"\\.\pipe\xar_ck3_g2_source_"
-EXPECTED_LIVE_WAR_ID = 50_331_699
 EXPECTED_GAME_VERSION = "1.19.0.6"
 
 
@@ -1498,6 +1497,7 @@ class ConcreteLiveOperations:
         source_capture: dict[str, object],
         capture_sha256: str,
         expected_character_id: int,
+        expected_war_id: int,
         expected_date_raw: int,
         postwar_timeout: float,
     ) -> dict[str, object]:
@@ -1512,7 +1512,7 @@ class ConcreteLiveOperations:
             source_capture=source_capture,
             capture_sha256=capture_sha256,
             expected_character_id=expected_character_id,
-            expected_war_id=EXPECTED_LIVE_WAR_ID,
+            expected_war_id=expected_war_id,
             expected_date_raw=observed_date_raw,
             postwar_timeout=postwar_timeout,
         )
@@ -1651,7 +1651,14 @@ def _parser() -> argparse.ArgumentParser:
         ),
     )
     parser.add_argument("--expected-character-id", type=int)
-    parser.add_argument("--expected-war-id", type=int, required=True)
+    parser.add_argument(
+        "--expected-war-id",
+        type=int,
+        help=(
+            "optional post-capture assertion; the lifecycle WarID is derived "
+            "from the validated natural-event source capture"
+        ),
+    )
     parser.add_argument(
         "--resume-save",
         type=Path,
@@ -1672,10 +1679,6 @@ def main(argv: list[str] | None = None) -> int:
     report: dict[str, object] | None = None
     operations: ConcreteLiveOperations | None = None
     try:
-        if args.expected_war_id != EXPECTED_LIVE_WAR_ID:
-            raise LiveAdapterError(
-                f"expected-war-id must be exactly {EXPECTED_LIVE_WAR_ID}"
-            )
         preflight = run_no_launch_preflight(
             args.manifest,
             args.preflight_output,
@@ -1725,6 +1728,7 @@ def main(argv: list[str] | None = None) -> int:
             outer.run_exclusive_outer_owner(
                 operations,
                 expected_character_id=character_id,
+                expected_war_id=args.expected_war_id,
                 expected_date_raw=0,
                 postwar_timeout=float(args.postwar_timeout),
                 continuation=operations.continue_same_lifecycle_from_bridge,

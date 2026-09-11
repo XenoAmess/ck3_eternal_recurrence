@@ -20,7 +20,7 @@
     "bookmark_events": "Crusader Kings III/game/events/bookmark_events.txt"
   },
   "sha256": {
-    "runner": "D087B4944925EB8BAF9169BCFF31F26DDCF8E20848F5104C6CAE365EFC071ED0",
+    "runner": "E3D4FB59C6BF9BAEC6B3E1470425151BB0451D592BD6CE965D47D2232220737B",
     "source_capture_runner": "53E6086EEACB6ABF4B54D2C7186C38E6212237C247A34E30EC442FB544A0BF56",
     "source_provider": "AEFCD4BA93F4435509650E533C84E4E352472A125A7F4379A9D4B143CA97E4CB",
     "source_contract": "A96F54BC9556B23473C4BC9120009B6C6BC411CC0035F68E6C0CE8073F6C3586",
@@ -41,7 +41,7 @@
     "observer_must_restore_breakpoint_and_detach_before_bridge": true,
     "same_ck3_pid_from_capture_through_receipt": true,
     "same_full_generation_war_id_required": true,
-    "expected_war_id": 50331699,
+    "expected_war_id": "source_capture.exact_raiktor_war_id",
     "exact_persistent_current_army_generation_join_required": true,
     "same_bridge_connection_generation_for_current_action_post": true,
     "same_episode_for_current_action_post": true,
