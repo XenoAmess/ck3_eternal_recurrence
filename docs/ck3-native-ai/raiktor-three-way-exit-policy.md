@@ -480,3 +480,10 @@ all six executions to the selected loaded node and exact WarID, then freeze
 their created persistent/current/CArmy generations before gameplay advances.
 See
 [g2-postwar-outcome-comparison-intake-2026-09-05.md](g2-postwar-outcome-comparison-intake-2026-09-05.md).
+
+
+## 2026-09-11 R459 observed surrender input
+
+R459 supplies the previously missing production source-specific surrender observation. The six captured event-army executions measured 3000 soldiers at creation and before termination; one accepted surrender destroyed the exact bound generations to zero. The same postwar frame also provides persisted truce expiry `53227656` for the evaluated 1825-day duration. Offline intake `43B0A053...4FE1` normalizes this as observation `BA139830...F462` with `source_specific_loss_comparison_ready=true` and `comparison_input_ready=true`.
+
+This closes the observed-surrender input only. The policy still returns `evidence_required` with exactly three providers: campaign dominance, owner-authored budget, and same-frame white-peace comparison. `recommended_outcome`, decision/action readiness, automatic surrender, and `GEN-034` remain false.

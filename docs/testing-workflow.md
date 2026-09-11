@@ -2529,3 +2529,10 @@ read-only diagnostic probe.
 A durable save can publish a new snapshot/public/native revision while CK3 PID, connection generation, date, episode, character, pause state, and active-war identity remain unchanged. When a lifecycle validates that post-save observation as a successor frame and then submits a mutation guarded by `expected_revision`, it must use the successor frame's public revision. Reusing the pre-save revision causes a deterministic harness RED before the action reaches command history.
 
 The focused regression shape is: preserve the exact pre-save frame for source/ticket binding; verify the post-save frame is the same gameplay identity with strictly increasing revisions; pass only that validated post-save public revision to the immediately following action. A command history ending at `save-checkpoint` distinguishes this harness failure from a product action or postwar failure and does not justify a long run or broad acceptance suite.
+
+
+## Offline consumers must validate production preflight field names
+
+A no-launch postprocessor should build its fixture from the producer's emitted report rather than inventing an equivalent boundary name. R459's live adapter emits `preflight.boundaries.live_executed=false` and the final report adds `terms_ready=true`. An older fixture used `ck3_started_or_attached=false` and omitted `terms_ready`, so its tests were GREEN while the first production report was rejected.
+
+The bounded correction is to require the producer's actual fields and values, update the fixture, and replay the already frozen report. This class of offline schema mismatch requires no CK3 restart and should be verified with only the affected consumer tests plus the one frozen artifact replay.

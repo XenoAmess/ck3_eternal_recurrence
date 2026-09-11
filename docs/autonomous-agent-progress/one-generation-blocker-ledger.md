@@ -1021,3 +1021,10 @@ WarID `50331699` / `raiktor_claim_cb` 的 primary-attacker surrender 只有 type
 
 - R458 passed its source, terms, and durable checkpoint gates with the postwar-capable DLL, then stopped before surrender. The successful save advanced the public revision, while the private continuation supplied the pre-save revision to the optimistic action gate. Command history ends at `save-checkpoint`; this is an explained harness RED, product RED=false, cleanup GREEN, CK3=0.
 - The minimal fix passes the validated post-checkpoint successor revision to surrender. Focused lifecycle/postwar/owner/adapter plus directly changed pin/intake manifest tests pass `59/59` in normal and optimized Python, and R459 no-launch admission is READY (`45B981E2...26F1`). `GEN-034` remains unresolved and T1 remains 90% until the bounded R459 action/postwar result.
+
+
+## 2026-09-11: GEN-034 R459 source-specific loss and comparison input GREEN
+
+- R459 unique PID `123140` completed the entire bounded normal lifecycle. It submitted one typed surrender for WarID `33554473`, proved the six-event source set was 3000 soldiers before termination and destroyed to 0 afterward, and read the persisted native truce expiry `53227656` twice. Checkpoint `FAA32578...4E78`, cleanup, session identity, and every ticket check are GREEN.
+- The production report is now policy-consumable through offline intake `43B0A053...4FE1`; `source_specific_loss_ready=true` and `comparison_input_ready=true`. The consumer needed only a production-schema alignment for `terms_ready` and preflight `live_executed`; focused tests pass `5/5` in normal and optimized Python, with no further CK3 launch.
+- `GEN-034` remains unresolved and T1 remains 90%. The exact remaining providers are campaign dominance, owner-authored budget, and same-frame white-peace comparison. Three-way comparison, recommendation, decision, action, and automatic surrender remain false.

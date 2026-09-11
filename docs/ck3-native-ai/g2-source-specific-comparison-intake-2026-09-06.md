@@ -1,6 +1,6 @@
 # G2 source-specific comparison intake
 
-Status: **static-ready / no-launch postprocessor; live input pending**.
+Status: **production-live source-specific input consumed / no-launch postprocessor; three decision providers pending**.
 
 ## Delivered seam
 
@@ -64,3 +64,12 @@ pre-action comparison continues to require:
 Therefore `three_way_comparison_ready`, `decision_ready`,
 `automatic_surrender_ready` and `gen034_closed` remain false. No CK3 action or
 readiness promotion is delivered by this static package.
+
+
+## R459 production-live input consumed
+
+The pending live input arrived in R459. The exact report `87ADB7E11AEDC34407568EC5D765F599FE2ED2581AA627994CC918B871764B34` passes the full source/session/checkpoint/action/postwar join and projects to policy intake `43B0A05314DF74D49202ED33479259F06EC91EF8E41D3B2798F1E63A84C94FE1`. Its normalized observation hash is `BA1398308EA0BB91EBFA13D9189FA246AE794E8F4A804CE8B73BFFC115AAF462`.
+
+The first consumption attempt retained two stale fixture-era field assumptions. The consumer now requires the production report's `terms_ready=true` and verifies the production preflight field `live_executed=false`; its fixture also includes the durable checkpoint successor shape. Focused tests pass `5/5` in normal and optimized Python. This correction and reprocessing are offline and did not start CK3.
+
+Status is now **production-live source-specific observation consumed by the no-launch postprocessor**. The output still returns `evidence_required`: campaign dominance, owner-authored budget, and same-frame white-peace comparison remain absent, so all decision and action gates remain false.
