@@ -490,16 +490,16 @@ This closes the observed-surrender input only. The policy still returns `evidenc
 
 ## 2026-09-12 active-war strategic-power input
 
-The existing production native war-entry evaluator can now be queried for the
-current `active_wars[*].primary_opponent_character_id`, in addition to a
-current declaration target. The Python/MCP layer advertises the concrete
-one-target step, rejects IDs outside those two snapshot sources, and returns an
-explicit `target_scopes` classification. The native DLL and frozen assessment
-payload are unchanged. See
+The Python/MCP layer now admits the current
+`active_wars[*].primary_opponent_character_id`, in addition to a current
+declaration target, and returns an explicit `target_scopes` classification.
+R470 showed that the old native DLL still rejects that opponent with
+`target_not_declarable` before evaluator execution, so this input remains a
+production RED and requires a narrow native admission update. See
 [active-war-strategic-power-query.md](active-war-strategic-power-query.md).
 
-This package is `static-ready`: focused normal and optimized tests each pass
-`23/23`, and no CK3 process was launched. It reduces the campaign observation
-gap but does not yet provide R459's live opponent value. Campaign dominance,
+The Python package remains statically verified (`23/23` in normal and optimized
+tests), but the end-to-end capability is not ready. R470 issued one read-only
+query, then stopped without retry, time advance, or mutation. Campaign dominance,
 owner-authored budget, same-frame white-peace comparison, recommendation,
 action readiness, automatic surrender, and `GEN-034` therefore remain false.
