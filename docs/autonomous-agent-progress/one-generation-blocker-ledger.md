@@ -1061,3 +1061,17 @@ WarID `50331699` / `raiktor_claim_cb` 的 primary-attacker surrender 只有 type
   dominance remains unavailable; owner-authored budget and same-frame
   white-peace comparison are also absent. `GEN-034` remains unresolved and T1
   remains 90%.
+
+## 2026-09-12: GEN-034 active-war native admission correction
+
+- The native frame now freezes declaration targets and active-war primary
+  opponents separately; the one-target reader admits either source while
+  retaining all existing exact-build, main-thread, paused-frame, identity,
+  double-sample, and wire contracts.
+- Fresh MSVC Release compile/link completes `545/545`; the two directly
+  affected CTests pass `2/2`. Candidate DLL SHA-256 is
+  `65C14FE2...B61EF`, injector SHA-256 is `C4CE2042...E389`, and the header
+  dependency gate is GREEN. No CK3 was started for this package.
+- This is static-ready only. One bounded R471 read-only query must replace the
+  R470 RED before campaign dominance can consume the value. `GEN-034` remains
+  unresolved, T1 remains 90%, T0 P1 remains 6/9, and P2 remains `LOCKED`.

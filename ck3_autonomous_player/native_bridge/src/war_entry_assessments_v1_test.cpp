@@ -625,6 +625,22 @@ bool TestAtomicFailures() {
   }
   {
     Fixture fixture;
+    fixture.frame.declarable_target_character_ids = {kTarget1Id};
+    fixture.frame.active_war_primary_opponent_character_ids = {kTarget2Id};
+    auto environment = fixture.Environment();
+    BindFixtureFunctions(fixture, environment);
+    auto access = fixture.Access();
+    xar::game::WarEntryAssessmentsV1 output{};
+    if (ReadWarEntryAssessmentsV1(environment, access, fixture.Request(),
+                                  output) !=
+            xar::game::ReadWarEntryAssessmentsV1Result::available ||
+        !output.available || output.assessments.size() != 1 ||
+        output.assessments.front().target_character_id != kTarget2Id) {
+      return false;
+    }
+  }
+  {
+    Fixture fixture;
     void *no_extension = nullptr;
     Write(fixture.actor, 0x1A8, no_extension);
     auto environment = fixture.Environment();

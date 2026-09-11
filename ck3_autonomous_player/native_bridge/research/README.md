@@ -1607,8 +1607,9 @@ context and `+0x20` marker passed while failure bit `32` reported only that the
 generic scoped RNG owner was not held at that instant. RNG ownership is now
 diagnostic provenance, not a readiness or execution gate. The production
 follow-up is deliberately typed to `query-war-entry-assessments-v1` only: the
-worker freezes one target and one declarable-war set from the same paused
-expected snapshot; reader before/middle/after callbacks each perform a fresh
+worker freezes one target plus distinct declarable-war and active-war primary
+opponent sets from the same paused expected snapshot; reader
+before/middle/after callbacks each perform a fresh
 `ReadSnapshot` and require exact equality. This evidence does not rename the
 boundary simulation-main and does not authorize generic effects, phase queries
 or evaluators.
@@ -1634,8 +1635,9 @@ This build advertises only the canonical single-target
 `game.command.query-war-entry-assessments-v1-N` contract. The mailbox admits
 only `ExecuteWarEntryAssessmentMailboxQueryV1`, at most one request per pump.
 The worker performs one fresh same-paused-snapshot declaration scan for the
-single requested target and freezes that scope. It does not enumerate every
-character in storage. Reader before/middle/after callbacks each perform a
+single requested target and also freezes active-war primary opponents from the
+same snapshot. It does not enumerate every character in storage. A request is
+admitted from either source. Reader before/middle/after callbacks each perform a
 fresh complete snapshot equality check; resolver, network and assessment rows
 are sampled twice. RNG owner TID remains diagnostic only. An available typed
 live result is still pending, and this boundary does not authorize generic effects or

@@ -489,9 +489,10 @@ counted-call stop/reinstall drain.  V1 is process-lifetime pinned: restoring
 the IAT cannot prove that no thread fetched the old target before incrementing
 the counter, so the static mailbox and original function pointer remain valid
 until process exit and remote `FreeLibrary` is forbidden.  The production
-war-entry literal accepts exactly one target.  The worker freezes one
-declarable-war target set after a fresh same-paused-snapshot read; the reader's
-before/middle/after callbacks each perform a fresh full `ReadSnapshot`, then
+war-entry literal accepts exactly one target.  The worker freezes distinct
+declarable-war and active-war-primary-opponent target sets after a fresh
+same-paused-snapshot read; the reader admits the single request from either
+set. Its before/middle/after callbacks each perform a fresh full `ReadSnapshot`, then
 the native resolver, network collector and assessment rows are sampled twice.
 Typed-executor live result acceptance remains pending.  The exact ABI and
 diagram are documented in

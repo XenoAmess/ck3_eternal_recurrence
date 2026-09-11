@@ -299,6 +299,8 @@ int main(int argc, char **argv) {
       "same_frame_stamp",
       "actor_same_frame_revalidation",
       "effective_target_same_frame",
+      "active_war_primary_opponent_character_ids",
+      "IsAdmittedTarget",
       "target_not_declarable",
       "output.assessments = std::move(rows)",
       "output.readiness = {true, true, true, true, true, true, true, true}",
@@ -460,6 +462,9 @@ int main(int argc, char **argv) {
       "xar::game::ReadDeclarableWarsForTarget(",
       "game, target_character_ids.front(),",
       "xar::game::ReadDeclarableWarsResult::available",
+      "current_snapshot.active_wars",
+      "war.primary_opponent_character_id",
+      "expected_active_war_primary_opponent_character_ids",
   });
   if (!ContainsAll(bridge, required_bridge) ||
       Contains(bridge,
