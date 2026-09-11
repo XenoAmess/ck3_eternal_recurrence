@@ -119,9 +119,26 @@ def _recover_natural_event_blocker(
         ui_dir, "g2-source-specific-natural-event", attempt
     )
     if not isinstance(selected, dict):
-        raise LiveAdapterError(
-            "stalled natural-event frame has no verified event option"
-        )
+        try:
+            resumed_day = acceptance.set_speed_five_and_unpause(
+                ui_dir,
+                f"g2-no-modal-stall-{attempt}",
+                require_progress=True,
+            )
+        except Exception as error:
+            raise LiveAdapterError(
+                "stalled natural-event frame has no verified event option and "
+                "timeline progress could not be restored"
+            ) from error
+        if isinstance(resumed_day, bool) or not isinstance(resumed_day, int):
+            raise LiveAdapterError(
+                "non-modal natural-event recovery returned no verified game day"
+            )
+        return {
+            "layout_fallback": "verified_timeline_progress",
+            "timeline_progress_verified": True,
+            "game_day": resumed_day,
+        }
     return selected
 
 
@@ -1214,17 +1231,18 @@ class ConcreteLiveOperations:
                 time.monotonic() - last_progress > 8
                 and time.monotonic() - last_action > 3
             ):
-                _recover_natural_event_blocker(
+                recovery = _recover_natural_event_blocker(
                     acceptance, self.ui_dir, handled_other + 1
                 )
                 handled_other += 1
                 last_action = time.monotonic()
                 last_progress = last_action
-                acceptance.set_speed_five_and_unpause(
-                    self.ui_dir,
-                    f"g2-post-blocker-{handled_other}",
-                    require_progress=False,
-                )
+                if recovery.get("timeline_progress_verified") is not True:
+                    acceptance.set_speed_five_and_unpause(
+                        self.ui_dir,
+                        f"g2-post-blocker-{handled_other}",
+                        require_progress=False,
+                    )
             await asyncio.sleep(0.5)
         if arm_sha256 is None:
             raise LiveAdapterError("natural bookmark.1071.a was not selected")

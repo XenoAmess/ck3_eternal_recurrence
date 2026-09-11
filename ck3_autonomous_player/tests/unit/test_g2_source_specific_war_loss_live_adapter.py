@@ -306,11 +306,24 @@ class G2SourceSpecificWarLossLiveAdapterTests(unittest.TestCase):
         )
 
         acceptance.quick_stall_and_recover.return_value = None
+        acceptance.set_speed_five_and_unpause.return_value = 394_550
+        resumed = ADAPTER._recover_natural_event_blocker(
+            acceptance, Path("evidence"), 5
+        )
+        self.assertTrue(resumed["timeline_progress_verified"])
+        self.assertEqual(resumed["game_day"], 394_550)
+        acceptance.set_speed_five_and_unpause.assert_called_once_with(
+            Path("evidence"), "g2-no-modal-stall-5", require_progress=True
+        )
+
+        acceptance.set_speed_five_and_unpause.side_effect = RuntimeError(
+            "date remained frozen"
+        )
         with self.assertRaisesRegex(
-            ADAPTER.LiveAdapterError, "no verified event option"
+            ADAPTER.LiveAdapterError, "timeline progress could not be restored"
         ):
             ADAPTER._recover_natural_event_blocker(
-                acceptance, Path("evidence"), 5
+                acceptance, Path("evidence"), 6
             )
 
     def test_inventory_falls_back_to_toolhelp_when_wmi_is_denied(self) -> None:
