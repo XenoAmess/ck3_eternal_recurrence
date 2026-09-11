@@ -24,6 +24,7 @@ import hashlib
 import json
 import os
 from pathlib import Path
+import shutil
 import subprocess
 import sys
 import tempfile
@@ -61,6 +62,7 @@ STARTUP_PROFILE_ASSETS_SCHEMA = "xar.ck3.startup_profile_assets.v1"
 TARGET_EVENT = "bookmark.1071.a"
 PIPE_PREFIX = r"\\.\pipe\xar_ck3_g2_source_"
 EXPECTED_LIVE_WAR_ID = 50_331_699
+EXPECTED_GAME_VERSION = "1.19.0.6"
 
 
 class LiveAdapterError(ValueError):
@@ -201,6 +203,100 @@ def _write_json_atomic(path: Path, payload: dict[str, object]) -> None:
         encoding="utf-8",
     )
     os.replace(temporary, path)
+
+
+def inspect_resume_checkpoint(
+    resume_save: Path | None,
+    resume_save_sha256: str | None,
+) -> dict[str, object]:
+    """Validate an optional CK3 save without copying or launching anything."""
+
+    if resume_save is None and resume_save_sha256 is None:
+        return {
+            "status": "NOT_REQUESTED",
+            "mode": "new-game",
+            "selected": False,
+        }
+    if resume_save is None or resume_save_sha256 is None:
+        raise LiveAdapterError(
+            "resume-save and resume-save-sha256 must be supplied together"
+        )
+    source = resume_save.expanduser().resolve()
+    expected_sha256 = _sha256_text(resume_save_sha256, "resume save SHA-256")
+    if not source.is_file():
+        raise LiveAdapterError(f"resume save is unavailable: {source}")
+    size = source.stat().st_size
+    if size <= 0:
+        raise LiveAdapterError(f"resume save is empty: {source}")
+    with source.open("rb") as stream:
+        header = stream.read(256)
+    if not header.startswith(b"SAV0101") or EXPECTED_GAME_VERSION.encode() not in header:
+        raise LiveAdapterError(
+            f"resume save is not an exact CK3 {EXPECTED_GAME_VERSION} save"
+        )
+    actual_sha256 = _sha256_file(source)
+    if actual_sha256 != expected_sha256:
+        raise LiveAdapterError(
+            f"resume save SHA-256 drifted: {actual_sha256} != {expected_sha256}"
+        )
+    return {
+        "status": "READY_TO_COPY",
+        "mode": "resume-checkpoint",
+        "selected": True,
+        "source": str(source),
+        "source_sha256": actual_sha256,
+        "source_bytes": size,
+        "game_version": EXPECTED_GAME_VERSION,
+    }
+
+
+def install_resume_checkpoint(
+    userdir: Path,
+    resume_save: Path | None,
+    resume_save_sha256: str | None,
+) -> dict[str, object]:
+    """Copy an admitted checkpoint into a fresh profile and verify the copy."""
+
+    evidence = inspect_resume_checkpoint(resume_save, resume_save_sha256)
+    if evidence["selected"] is not True:
+        return evidence
+    source = Path(str(evidence["source"]))
+    destination = userdir.resolve() / "save games" / "autosave.ck3"
+    destination.parent.mkdir(parents=True, exist_ok=True)
+    if destination.exists():
+        raise LiveAdapterError(
+            f"resume save destination already exists in fresh userdir: {destination}"
+        )
+    shutil.copyfile(source, destination)
+    destination_sha256 = _sha256_file(destination)
+    destination_bytes = destination.stat().st_size
+    if (
+        destination_sha256 != evidence["source_sha256"]
+        or destination_bytes != evidence["source_bytes"]
+    ):
+        raise LiveAdapterError("resume save copy differs from the admitted source")
+    return {
+        **evidence,
+        "status": "GREEN",
+        "destination": str(destination),
+        "destination_sha256": destination_sha256,
+        "destination_bytes": destination_bytes,
+    }
+
+
+def navigate_resume_checkpoint(acceptance: Any, ui_dir: Path) -> None:
+    """Select the visible main-menu Continue Game entry exactly once."""
+
+    continue_game = acceptance.wait_for_ocr_text(
+        "继续游戏",
+        acceptance.MAIN_MENU_REGION,
+        30,
+        ui_dir,
+        "01_resume_checkpoint.png",
+        contains=True,
+        stable_hits=1,
+    )
+    acceptance.deliberate_click(continue_game, "main-menu Continue Game")
 
 
 def _ck3_rows(inventory: list[dict[str, object]]) -> list[dict[str, object]]:
@@ -517,6 +613,7 @@ def _load_manifest(
         or composition.get("timeline_speed") != 5
         or composition.get("standalone_capture_runner_main_reused") is not False
         or composition.get("startup_profile_asset_gate_integrated") is not True
+        or composition.get("resume_checkpoint_copy_gate_integrated") is not True
         or composition.get("launch_fail_closed") is not True
     ):
         raise LiveAdapterError("live-adapter composition drifted")
@@ -651,6 +748,8 @@ def run_no_launch_preflight(
     capture_executable: Path | None = None,
     bridge_dll: Path | None = None,
     bridge_injector: Path | None = None,
+    resume_save: Path | None = None,
+    resume_save_sha256: str | None = None,
 ) -> dict[str, object]:
     if output_path.exists():
         raise LiveAdapterError(f"output path already exists: {output_path}")
@@ -693,6 +792,7 @@ def run_no_launch_preflight(
                 profile_template
             ),
         }
+    resume_checkpoint = inspect_resume_checkpoint(resume_save, resume_save_sha256)
     report = {
         "schema": PREFLIGHT_SCHEMA,
         "status": PREFLIGHT_STATUS,
@@ -711,12 +811,15 @@ def run_no_launch_preflight(
         "process_inventory_before": before,
         "process_inventory_after": after,
         "startup_profile_template": profile_template_evidence,
+        "resume_checkpoint": resume_checkpoint,
         "live_command": {
             "available": True,
             "default_off": True,
             "startup_profile_asset_gate": True,
             "profile_settings_template_required": True,
             "asset_failure_blocks_before_popen": True,
+            "resume_checkpoint_optional": True,
+            "resume_checkpoint_hash_and_version_gate": True,
             "exclusive_slot_required": True,
             "same_pid_required": True,
             "timeline_speed": 5,
@@ -754,6 +857,8 @@ class ConcreteLiveOperations:
         artifact_dir: Path,
         userdir: Path,
         profile_settings_template: Path | None = None,
+        resume_save: Path | None = None,
+        resume_save_sha256: str | None = None,
         process_inventory: Callable[[], list[dict[str, object]]] = _process_inventory,
         popen: Callable[..., Any] = subprocess.Popen,
         run_process: Callable[..., Any] = subprocess.run,
@@ -768,6 +873,10 @@ class ConcreteLiveOperations:
             if profile_settings_template is not None
             else None
         )
+        self.resume_save = (
+            resume_save.expanduser().resolve() if resume_save is not None else None
+        )
+        self.resume_save_sha256 = resume_save_sha256
         self.ui_dir = self.artifact_dir / "ui"
         self.state_dir = self.artifact_dir / "native-state"
         self.process_inventory = process_inventory
@@ -787,6 +896,7 @@ class ConcreteLiveOperations:
         self._legal_classifications: list[dict[str, object]] = []
         self._cleanup_receipt: dict[str, object] | None = None
         self._startup_profile_assets: dict[str, object] | None = None
+        self._resume_checkpoint: dict[str, object] | None = None
         self._release_called = False
 
     def _load_visual_dependencies(self) -> None:
@@ -881,6 +991,15 @@ class ConcreteLiveOperations:
             self.artifact_dir / "startup-profile-assets.json",
             self._startup_profile_assets,
         )
+        self._resume_checkpoint = install_resume_checkpoint(
+            self.userdir,
+            self.resume_save,
+            self.resume_save_sha256,
+        )
+        _write_json_atomic(
+            self.artifact_dir / "resume-checkpoint.json",
+            self._resume_checkpoint,
+        )
         command = [
             str(self.paths.game_executable),
             "-gdpr-compliant",
@@ -916,6 +1035,7 @@ class ConcreteLiveOperations:
         return {
             "pid": pid,
             "startup_mode": "normal-event",
+            "startup_source": str(self._resume_checkpoint["mode"]),
             "event_target": TARGET_EVENT,
             "exclusive_slot": True,
             "cleanup_owner": "outer-owner",
@@ -923,6 +1043,7 @@ class ConcreteLiveOperations:
             "startup_profile_assets": copy.deepcopy(
                 self._startup_profile_assets
             ),
+            "resume_checkpoint": copy.deepcopy(self._resume_checkpoint),
         }
 
     def _terminate_unhanded_launch(self, pid: int) -> str | None:
@@ -1009,17 +1130,22 @@ class ConcreteLiveOperations:
         else:
             raise LiveAdapterError("source observer attach readiness timed out")
 
-        source_ui.navigate_lobby_with_authorized_legal(
-            acceptance,
-            pyautogui,
-            image_grab,
-            self.userdir,
-            self.ui_dir,
-            self._stage_artifacts,
-            self._legal_acceptances,
-            self._legal_classifications,
-            self.artifact_dir / "legal-modal-observations.json",
-        )
+        if self._resume_checkpoint is not None and self._resume_checkpoint.get(
+            "selected"
+        ) is True:
+            navigate_resume_checkpoint(acceptance, self.ui_dir)
+        else:
+            source_ui.navigate_lobby_with_authorized_legal(
+                acceptance,
+                pyautogui,
+                image_grab,
+                self.userdir,
+                self.ui_dir,
+                self._stage_artifacts,
+                self._legal_acceptances,
+                self._legal_classifications,
+                self.artifact_dir / "legal-modal-observations.json",
+            )
         map_deadline = time.monotonic() + self.timeouts.map_hud_seconds
         while time.monotonic() < map_deadline and self._observer.poll() is None:
             acceptance.focus_ck3()
@@ -1389,6 +1515,15 @@ def _parser() -> argparse.ArgumentParser:
     )
     parser.add_argument("--expected-character-id", type=int)
     parser.add_argument("--expected-war-id", type=int, required=True)
+    parser.add_argument(
+        "--resume-save",
+        type=Path,
+        help="optional exact-build checkpoint copied into the fresh userdir",
+    )
+    parser.add_argument(
+        "--resume-save-sha256",
+        help="uppercase SHA-256 required with --resume-save",
+    )
     parser.add_argument("--postwar-timeout", type=float, default=45.0)
     parser.add_argument("--verify-only", action="store_true")
     parser.add_argument("--authorize-private-live", action="store_true")
@@ -1415,6 +1550,8 @@ def main(argv: list[str] | None = None) -> int:
             capture_executable=args.capture_executable,
             bridge_dll=args.bridge_dll,
             bridge_injector=args.bridge_injector,
+            resume_save=args.resume_save,
+            resume_save_sha256=args.resume_save_sha256,
         )
         if args.verify_only:
             print(json.dumps(preflight, ensure_ascii=False, indent=2))
@@ -1444,6 +1581,8 @@ def main(argv: list[str] | None = None) -> int:
             artifact_dir=args.artifact_dir,
             userdir=args.userdir,
             profile_settings_template=args.profile_settings_template,
+            resume_save=args.resume_save,
+            resume_save_sha256=args.resume_save_sha256,
         )
         result = asyncio.run(
             outer.run_exclusive_outer_owner(
@@ -1461,6 +1600,7 @@ def main(argv: list[str] | None = None) -> int:
             "startup_profile_assets": copy.deepcopy(
                 operations._startup_profile_assets
             ),
+            "resume_checkpoint": copy.deepcopy(operations._resume_checkpoint),
             "outer_owner": result,
             "cleanup": copy.deepcopy(operations._cleanup_receipt),
             "boundaries": {
@@ -1485,6 +1625,11 @@ def main(argv: list[str] | None = None) -> int:
             ),
             "startup_profile_assets": (
                 copy.deepcopy(operations._startup_profile_assets)
+                if operations is not None
+                else None
+            ),
+            "resume_checkpoint": (
+                copy.deepcopy(operations._resume_checkpoint)
                 if operations is not None
                 else None
             ),

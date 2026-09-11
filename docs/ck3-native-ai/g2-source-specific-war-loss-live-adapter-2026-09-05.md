@@ -1,6 +1,6 @@
 # G2 source-specific war-loss concrete live adapter
 
-Status: **R441 bounded live attempt reached the target-event gate / R440 blocker fix live-validated / source capture still pending**.
+Status: **R441 bounded live / R440 blocker fix live-validated / hash-bound resume admission static-ready / source capture pending**.
 
 ## Delivered platform composition
 
@@ -316,3 +316,43 @@ The preserved `last_save.ck3` is 85,561,556 bytes, SHA-256
 It is only a resume candidate until a hash-bound copy/load admission validates
 it. The next implementation package must consume that checkpoint in a fresh
 userdir instead of replaying the completed prefix or enlarging one live window.
+
+### Hash-bound R441 continuation admission
+
+The adapter now accepts the optional all-or-none pair `--resume-save` and
+`--resume-save-sha256`. Before any launch, it requires a non-empty `SAV0101`
+save whose header contains exact game version `1.19.0.6`, then verifies the
+declared SHA-256. A live invocation copies the admitted bytes to
+`<fresh-userdir>/save games/autosave.ck3` and rechecks both size and SHA-256
+before `Popen`. The launch receipt retains `startup_mode=normal-event` for the
+outer-owner contract and records `startup_source=resume-checkpoint`; omission
+of both arguments retains the original new-game route.
+
+The resume UI route selects the visible `继续游戏` entry once, after which the
+existing map/event/source lifecycle owns the run. It does not trust OCR for
+save identity or any source-specific fact. The selected source and copied
+destination are both recorded in `resume-checkpoint.json` and in the final
+report.
+
+Focused verification is GREEN: adapter tests are `23/23` in normal Python and
+`23/23` under `-O`; outer-owner compatibility tests are `8/8` in both modes;
+`py_compile` and the UTF-8 BOM checks pass. A real no-launch admission consumed
+the R441 candidate and returned
+`READY_TO_RUN_G2_SOURCE_SPECIFIC_LIFECYCLE` without creating a CK3 process. Its
+receipt is
+`Z:\ck3_mod_rewrite\_runtime\g2-source-specific-resume-admission-20260911\preflight-final.json`,
+20,613 bytes, SHA-256
+`1D5B0B773897A8975369D605272D2638D2C00E38F263F4EA8EC8074C7F9CB88B`.
+It binds the 85,561,556-byte source at
+`A0E122CAFA2A89C418C0A641A08A980DD880299E05561B7B6887508E9A351A98`,
+reports game version `1.19.0.6`, and leaves the before/after CK3 inventories
+identical and empty.
+
+The resulting adapter SHA-256 is
+`13202ADABC42D0A777EA22B946B9988CC9A9B287AAAF16C3D80C97CBDAAAB33C`;
+the manifest SHA-256 is
+`A2C2A93F08E23074D18B3181D7CF6C4ADDA5635C9B5E609BD736333564D59763`.
+This package is static-ready only. It does not promote source-specific loss,
+comparison, decision, action, automatic surrender or `GEN-034`; T1 remains
+90%. Current round R441 is ended and CK3 inventory is zero. The next bounded
+live action is one fresh-userdir continuation from this exact checkpoint.

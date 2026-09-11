@@ -155,6 +155,14 @@ def _sha256(value: bytes) -> str:
     return hashlib.sha256(value).hexdigest().upper()
 
 
+def _write_resume_save(root: Path) -> tuple[Path, str]:
+    payload = b"SAV0101fixture-header-1.19.0.6\n" + (b"checkpoint" * 64)
+    path = root / "source" / "resume.ck3"
+    path.parent.mkdir(parents=True)
+    path.write_bytes(payload)
+    return path, _sha256(payload)
+
+
 def _write_self_contained_manifest(
     root: Path,
 ) -> tuple[Path, Path, Path, Path, str]:
@@ -213,6 +221,74 @@ def _relocate_runtime_binaries(
 
 
 class G2SourceSpecificWarLossLiveAdapterTests(unittest.TestCase):
+    def test_resume_checkpoint_requires_an_exact_hash_bound_save(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            save, digest = _write_resume_save(root)
+            evidence = ADAPTER.inspect_resume_checkpoint(save, digest)
+            self.assertEqual(evidence["status"], "READY_TO_COPY")
+            self.assertEqual(evidence["game_version"], "1.19.0.6")
+            with self.assertRaisesRegex(
+                ADAPTER.LiveAdapterError, "must be supplied together"
+            ):
+                ADAPTER.inspect_resume_checkpoint(save, None)
+            with self.assertRaisesRegex(ADAPTER.LiveAdapterError, "SHA-256 drifted"):
+                ADAPTER.inspect_resume_checkpoint(save, "A" * 64)
+
+    def test_resume_checkpoint_copy_is_verified_before_popen(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            userdir = root / "userdir"
+            userdir.mkdir()
+            template = _write_profile_settings_template(root)
+            save, digest = _write_resume_save(root)
+            process = _Process()
+            popen = mock.Mock(return_value=process)
+            operations = ADAPTER.ConcreteLiveOperations(
+                paths=_paths(root),
+                timeouts=_timeouts(),
+                artifact_dir=root / "artifacts",
+                userdir=userdir,
+                profile_settings_template=template,
+                resume_save=save,
+                resume_save_sha256=digest,
+                process_inventory=lambda: [],
+                popen=popen,
+            )
+            with mock.patch.object(
+                operations, "_validate_owned_ck3", return_value={"pid": PID}
+            ):
+                receipt = asyncio.run(
+                    operations.launch_normal_event_process(object())
+                )
+
+            popen.assert_called_once()
+            self.assertEqual(receipt["startup_mode"], "normal-event")
+            self.assertEqual(receipt["startup_source"], "resume-checkpoint")
+            copied = userdir / "save games" / "autosave.ck3"
+            self.assertEqual(copied.read_bytes(), save.read_bytes())
+            self.assertEqual(
+                receipt["resume_checkpoint"]["destination_sha256"], digest
+            )
+
+    def test_resume_navigation_uses_continue_game_once(self) -> None:
+        acceptance = mock.Mock()
+        acceptance.MAIN_MENU_REGION = (0.0, 0.0, 1.0, 1.0)
+        acceptance.wait_for_ocr_text.return_value = (640, 720)
+        ADAPTER.navigate_resume_checkpoint(acceptance, Path("evidence"))
+        acceptance.wait_for_ocr_text.assert_called_once_with(
+            "继续游戏",
+            acceptance.MAIN_MENU_REGION,
+            30,
+            Path("evidence"),
+            "01_resume_checkpoint.png",
+            contains=True,
+            stable_hits=1,
+        )
+        acceptance.deliberate_click.assert_called_once_with(
+            (640, 720), "main-menu Continue Game"
+        )
+
     def test_natural_event_blocker_uses_verified_ocr_recovery(self) -> None:
         acceptance = mock.Mock()
         acceptance.quick_stall_and_recover.return_value = {
@@ -801,12 +877,16 @@ class G2SourceSpecificWarLossLiveAdapterTests(unittest.TestCase):
             ]
         )
         self.assertEqual(parsed.expected_war_id, ADAPTER.EXPECTED_LIVE_WAR_ID)
+        self.assertIsNone(parsed.resume_save)
+        self.assertIsNone(parsed.resume_save_sha256)
         explicit_game_root = Path("explicit-game")
         explicit_game_executable = Path("explicit-ck3.exe")
         explicit_bookmark_events = Path("explicit-bookmark-events.txt")
         explicit_capture_executable = Path("explicit-capture.exe")
         explicit_bridge_dll = Path("explicit-bridge.dll")
         explicit_bridge_injector = Path("explicit-injector.exe")
+        explicit_resume_save = Path("explicit-resume.ck3")
+        explicit_resume_sha256 = "B" * 64
         parsed = parser.parse_args(
             [
                 "--manifest", str(MANIFEST),
@@ -819,6 +899,8 @@ class G2SourceSpecificWarLossLiveAdapterTests(unittest.TestCase):
                 "--capture-executable", str(explicit_capture_executable),
                 "--bridge-dll", str(explicit_bridge_dll),
                 "--bridge-injector", str(explicit_bridge_injector),
+                "--resume-save", str(explicit_resume_save),
+                "--resume-save-sha256", explicit_resume_sha256,
                 "--verify-only",
             ]
         )
@@ -828,6 +910,8 @@ class G2SourceSpecificWarLossLiveAdapterTests(unittest.TestCase):
         self.assertEqual(parsed.capture_executable, explicit_capture_executable)
         self.assertEqual(parsed.bridge_dll, explicit_bridge_dll)
         self.assertEqual(parsed.bridge_injector, explicit_bridge_injector)
+        self.assertEqual(parsed.resume_save, explicit_resume_save)
+        self.assertEqual(parsed.resume_save_sha256, explicit_resume_sha256)
         with self.assertRaisesRegex(
             ADAPTER.LiveAdapterError, "outside the repository"
         ):

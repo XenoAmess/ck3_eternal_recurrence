@@ -849,3 +849,16 @@ WarID `50331699` / `raiktor_claim_cb` 的 primary-attacker surrender 只有 type
   focused test `4/4` GREEN，未启动 CK3。production shape/public ABI/readiness
   均不变，`GEN-034` 仍 **unresolved**；index 7 路径必须经一次 bounded live
   后才能更新生产合同。
+
+## 2026-09-11：GEN-034 natural-source R441 与 hash-bound 续跑入口
+
+- R441 在唯一 CK3 PID `140912` 上用既定 520 秒窗口验证了原版事件 OCR 修复：18 个事件均通过已验证的选项点击关闭并恢复时间。
+  `bookmark.1071.a` 未出现，因而没有 source capture、bridge attach 或 surrender；这不提升 `GEN-034`。exact-build 定义要求
+  `gold>=100`、`is_at_war=no` 与非玩家拜占庭持有者，且初始排程为开局后 1–7 年。R441 已到 1073-10-31、694 金，故不再扩大
+  单次 timeout。
+- R441 后继存档为 85,561,556 bytes、SHA-256 `A0E122CA…51A98`。adapter 现以成对参数绑定该输入，启动前检查 exact
+  `1.19.0.6` 存档头与哈希，并在 fresh userdir copy 后复核大小与哈希；no-launch 实档 admission GREEN，收据 SHA-256
+  `1D5B0B77…88B`。聚焦测试 normal/`-O` 全绿，当前没有 CK3 存活实例。
+- 该入口只消除重复播放 R441 前缀的成本，状态为 static-ready。下一项仍是一轮从该 exact checkpoint 开始的 bounded live；只有
+  自然事件六次 source execution、同 PID current、唯一 surrender 与 postwar cleanup 全链成功后，才可提升 source-specific
+  loss/comparison input。campaign、budget、white-peace、decision/action/automatic surrender 和 `GEN-034` 仍 unresolved。
