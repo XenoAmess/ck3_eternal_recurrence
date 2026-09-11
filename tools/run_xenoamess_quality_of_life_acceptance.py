@@ -31,6 +31,7 @@ AUTOPLAYER_SOURCE = ROOT / "ck3_autonomous_player/src"
 if str(AUTOPLAYER_SOURCE) not in sys.path:
     sys.path.insert(0, str(AUTOPLAYER_SOURCE))
 
+from xar_autoplayer.bridge.driver import BridgeUnavailableError
 from xar_autoplayer.bridge.native_driver import NativeHeadlessGameplayDriver
 from xar_autoplayer.bridge.service import GameplayBridgeService
 from xar_autoplayer.environment import make_spec
@@ -663,11 +664,31 @@ def advance_until_marker(
                 except Exception as error:
                     context_error = f"{type(error).__name__}: {error}"
                 option_number = min(enabled)
-                selection = service.select_event_option(
-                    option_number,
-                    event_instance_id=instance_id,
-                    expected_revision=revision,
-                )
+                try:
+                    selection = service.select_event_option(
+                        option_number,
+                        event_instance_id=instance_id,
+                        expected_revision=revision,
+                    )
+                except BridgeUnavailableError as error:
+                    if str(error) != "native event selection postcondition is not paused":
+                        raise
+                    recovered = service.snapshot()
+                    recovered_event = recovered.get("active_event")
+                    if (
+                        isinstance(recovered_event, dict)
+                        and recovered_event.get("instance_id") == instance_id
+                    ):
+                        raise
+                    selection = {
+                        "progress_status": "postcondition-recovered",
+                        "selected_option_number": option_number,
+                        "old_event_instance_id": instance_id,
+                        "ending_snapshot_id": recovered.get("snapshot_id"),
+                        "ending_revision": recovered.get("revision"),
+                        "ending_paused": recovered.get("paused"),
+                        "driver_error": str(error),
+                    }
                 drained_events.append(
                     {
                         "snapshot": snapshot,

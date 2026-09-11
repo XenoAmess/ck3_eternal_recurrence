@@ -302,6 +302,63 @@ class ProductOuterDescriptorTests(unittest.TestCase):
         self.assertEqual(evidence["result"], "GREEN")
         self.assertTrue(evidence["after_paused"]["paused"])
 
+    def test_async_advance_recovers_when_event_closes_into_running_map(self) -> None:
+        class Stream:
+            def __init__(self) -> None:
+                self.calls = 0
+
+            def has(self, marker: str) -> bool:
+                self.calls += 1
+                return self.calls >= 2
+
+        service = mock.Mock()
+        service.snapshot.side_effect = [
+            {"paused": True, "revision": 10, "active_event": None},
+            {
+                "paused": True,
+                "revision": 12,
+                "active_event": {
+                    "instance_id": 7,
+                    "options": [{"option_number": 1, "enabled": True}],
+                },
+            },
+            {
+                "paused": False,
+                "revision": 13,
+                "snapshot_id": "after-event",
+                "active_event": None,
+            },
+            {"paused": False, "revision": 13, "active_event": None},
+            {"paused": False, "revision": 14, "active_event": None},
+            {"paused": True, "revision": 15, "active_event": None},
+        ]
+        service.execute_step.side_effect = [
+            {"accepted": True, "step": "resume-map"},
+            {"accepted": True, "step": "pause-map"},
+        ]
+        service.query_current_event_window_context_v1.return_value = {
+            "current_event_window_context": {"event_definition_key": "test.0001"}
+        }
+        service.select_event_option.side_effect = xqol.BridgeUnavailableError(
+            "native event selection postcondition is not paused"
+        )
+
+        with tempfile.TemporaryDirectory() as raw:
+            evidence = xqol.advance_until_marker(
+                service,
+                Stream(),
+                Path(raw),
+                "defense_advance",
+                "ZQA: TEST DONE xqol",
+                5,
+            )
+
+        selection = evidence["drained_events"][0]["selection"]
+        self.assertEqual(selection["progress_status"], "postcondition-recovered")
+        self.assertFalse(selection["ending_paused"])
+        self.assertEqual(evidence["result"], "GREEN")
+        self.assertTrue(evidence["after_paused"]["paused"])
+
 
 if __name__ == "__main__":
     unittest.main()
