@@ -114,11 +114,6 @@ class G2PostwarCleanupExpiryLiveAcceptanceTests(unittest.TestCase):
         async def run() -> dict[str, object]:
             with (
                 mock.patch.object(
-                    RUNNER.base,
-                    "_run_mcp_sequence",
-                    mock.AsyncMock(return_value=pre_sequence),
-                ),
-                mock.patch.object(
                     RUNNER.base, "create_server", return_value=object()
                 ),
                 mock.patch.object(
@@ -138,13 +133,13 @@ class G2PostwarCleanupExpiryLiveAcceptanceTests(unittest.TestCase):
                 ),
                 mock.patch.dict(sys.modules, {"mcp": SimpleNamespace(Client=Client)}),
             ):
-                return await RUNNER._run_private_sequence(
+                return await RUNNER._continue_private_sequence(
                     Driver(),
                     war_id=50_331_699,
-                    expected_character_id=29_829,
-                    expected_date_raw=53_223_936,
                     ticket={"opponent_character_id": 36_769},
                     postwar_timeout=1.0,
+                    pre_sequence=pre_sequence,
+                    action_expected_revision=5,
                 )
 
         result = asyncio.run(run())
@@ -154,7 +149,7 @@ class G2PostwarCleanupExpiryLiveAcceptanceTests(unittest.TestCase):
             [
                 (
                     "surrender-war-50331699",
-                    4,
+                    5,
                     RUNNER.SURRENDER_CAPABILITY,
                 )
             ],

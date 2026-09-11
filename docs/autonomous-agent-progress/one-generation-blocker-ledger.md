@@ -1015,3 +1015,9 @@ WarID `50331699` / `raiktor_claim_cb` 的 primary-attacker surrender 只有 type
 
 - R457 passed source, terms, durable save, and the successor gate, but the private capability check stopped before surrender. The selected R451 diagnostic DLL has both postwar candidate flags `OFF`; command history contains no surrender. This is an explained harness configuration RED, product RED=false, cleanup GREEN, CK3=0.
 - The normal manifests again bind the prior postwar-capable DLL/injector, whose frozen CMake cache has both required flags `ON`. Focused tests pass `48/48` in normal and optimized Python; R458 admission is READY (`A270F42E...D20F`). `GEN-034` remains unresolved and T1 remains 90% until the bounded R458 action/postwar result.
+
+
+## 2026-09-11: GEN-034 R458 checkpoint-to-action revision RED
+
+- R458 passed its source, terms, and durable checkpoint gates with the postwar-capable DLL, then stopped before surrender. The successful save advanced the public revision, while the private continuation supplied the pre-save revision to the optimistic action gate. Command history ends at `save-checkpoint`; this is an explained harness RED, product RED=false, cleanup GREEN, CK3=0.
+- The minimal fix passes the validated post-checkpoint successor revision to surrender. Focused lifecycle/postwar/owner/adapter plus directly changed pin/intake manifest tests pass `59/59` in normal and optimized Python, and R459 no-launch admission is READY (`45B981E2...26F1`). `GEN-034` remains unresolved and T1 remains 90% until the bounded R459 action/postwar result.

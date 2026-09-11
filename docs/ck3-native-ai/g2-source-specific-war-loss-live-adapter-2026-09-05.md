@@ -1053,3 +1053,12 @@ record hashes are `1EFE95B1...18620`, `FD345FF7...C024E`,
 `FB960855...4B701`, `2F77E0BE...62FDA`, and `3D292C53...BCA7D`.
 The source save remains unchanged and cleanup is GREEN with no CK3 process.
 Source-loss and GEN-034 readiness remain false pending one R458 lifecycle.
+
+
+## R458 checkpoint-to-action revision handoff
+
+R458 unique PID `84156` selected the intended postwar-capable bridge and reached the complete pre-mutation boundary: six source executions, two same-PID terms reads with `evaluated_days=1825`, and a byte-verified checkpoint `079F35735A8B8799F8CF992DFB935E85129F29181B7B46A764B4B3502D149FB1` (`69,299,530` bytes, date `53187096`). The run then returned an outer `ExceptionGroup` before surrender. Its command history contains exactly two terms queries and `save-checkpoint`, so neither surrender nor postwar sampling occurred.
+
+The reproducible call chain explains the harness RED: checkpoint creation correctly obtains and validates a successor frame, but the next action previously reused `pre_sequence.public_revision`. The native optimistic action gate therefore rejected a stale revision before recording the surrender command. The correction passes `post_checkpoint_frame.revision` explicitly into `_continue_private_sequence`; the standalone path retains its existing pre-sequence revision behavior. The supplied revision must be a non-boolean integer strictly greater than the pre-checkpoint revision.
+
+Focused lifecycle, private postwar, owner, and live-adapter tests plus the directly changed pin/intake manifest tests pass `59/59` under normal Python and `59/59` under `PYTHONOPTIMIZE=1`. R458 report/capture/driver/preflight/classification/final record hashes are `566B4E53...D6C5`, `8D8E175D...71C4`, `1B507DA9...4615`, `B83947E0...F899`, `65E2063B...8164`, and `80442A9D...D190`. The source save remains `89D15B8A...D4DD`, cleanup is GREEN, and no CK3 process remains. R459 admission is READY (`45B981E2...26F1`). No readiness is promoted until that one bounded lifecycle returns the actual action and postwar evidence.
