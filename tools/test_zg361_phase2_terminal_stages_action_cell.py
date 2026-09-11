@@ -322,17 +322,18 @@ class OwnerService(Service):
         self.callback_complete = False
         self.owner_ready = True
         self.fail_after_action_once = False
-        self.stale_query_once = False
+        self.transient_query_error_once = None
         self.callback_reads = []
         self.stage11_direct_kwargs = []
         self._frames = json.loads((cell.ROOT / "ck3_autonomous_player/tests/fixtures/zhongguo_workforce_owner_snapshot_v1.json").read_text())["frames"]
 
     def query_zhongguo_workforce_owner_snapshot_v1(self, nonce: str, *, expected_revision: int) -> dict[str, object]:
-        if self.stale_query_once:
-            self.stale_query_once = False
+        if self.transient_query_error_once is not None:
+            error = self.transient_query_error_once
+            self.transient_query_error_once = None
             self.revision += 1
             raise cell.BridgeUnavailableError(
-                "native gameplay step failed: ZhongGuo workforce owner revision is stale"
+                f"native gameplay step failed: {error}"
             )
         if expected_revision != self.revision:
             raise AssertionError("owner query bound a stale frame")
@@ -415,17 +416,22 @@ class OwnerTerminalTests(unittest.TestCase):
                 self.assertEqual(len(service.saves), 3)
 
     def test_owner_query_revision_race_rebinds_without_restarting_or_input(self) -> None:
-        service = OwnerService()
-        service.stale_query_once = True
-        with tempfile.TemporaryDirectory() as temporary:
-            result = self.run_cell(service, Path(temporary))
-        self.assertEqual(result["result"], "GREEN")
-        self.assertEqual(result["stage11_consecutive_query_rebinds"], 0)
-        self.assertEqual(len(result["stage11_query_rebinds"]), 1)
-        rebind = result["stage11_query_rebinds"][0]
-        self.assertIn("revision is stale", rebind["error"])
-        self.assertIs(rebind["state_mutation_submitted"], False)
-        self.assertEqual(service.actions, [(9, 1), (11, 1)])
+        errors = (
+            "ZhongGuo workforce owner revision is stale",
+            "ZhongGuo workforce owner snapshot changed or is not ready",
+        )
+        for error in errors:
+            with self.subTest(error=error), tempfile.TemporaryDirectory() as temporary:
+                service = OwnerService()
+                service.transient_query_error_once = error
+                result = self.run_cell(service, Path(temporary))
+                self.assertEqual(result["result"], "GREEN")
+                self.assertEqual(result["stage11_consecutive_query_rebinds"], 0)
+                self.assertEqual(len(result["stage11_query_rebinds"]), 1)
+                rebind = result["stage11_query_rebinds"][0]
+                self.assertIn(error, rebind["error"])
+                self.assertIs(rebind["state_mutation_submitted"], False)
+                self.assertEqual(service.actions, [(9, 1), (11, 1)])
 
     def test_na_without_m360_event_or_source_returns_the_na_terminal(self) -> None:
         service = OwnerService(early_na=True)

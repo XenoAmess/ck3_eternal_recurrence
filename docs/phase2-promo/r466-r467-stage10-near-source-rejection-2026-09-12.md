@@ -2,9 +2,11 @@
 
 ## 结论
 
-R467 从距 `zg361cl.390` 仅 2 游戏日的真实 production 存档启动并在固定 10 游戏日上限内停止。该帧再次证明 Central stage 9，但没有符合 Stage 10 的直属 AI celestial manager；同帧 Workforce owner 查询也明确缺少 Stage 11 所需的 owner/portfolio/case 绑定。该存档不具备 Stage 10 或 Stage 11 来源资格，不能计入 P1，今后不得再次重放。
+R467 从距 `zg361cl.390` 仅 2 游戏日的真实 production 存档启动并在固定 10 游戏日上限内停止。该帧再次证明 Central stage 9，但没有符合 Stage 10 的直属 AI celestial manager，因此只能永久淘汰这份存档的 Stage 10 用途。
 
-这次运行没有暴露新的 mod 产品 bug。Stage 10 返回结构化 `INELIGIBLE`，Stage 11 的 runner RED 是来源资格在动作前没有被完整筛掉；产品 Stage 10/11 均为 `NOT_EVALUATED`。P1 仍为 `6/9 = 66.7%`，P2 最终宣传视频继续硬锁定。
+Stage 11 随后暴露的是另一条只读查询 revision 瞬态：`.390` 确认后的首个 provider 帧尚未建立 Stage 11 身份，游戏恢复推进后，native 主线程在处理旧 paused revision 时返回 `ZhongGuo workforce owner snapshot changed or is not ready`。原 runner 没把这条 exact-build 文本纳入 R461 已有的有界 rebind 集合，因而提前 RED。它没有证明存档缺少未来可达的 Stage 11 状态；Stage 11 仍为 `NOT_EVALUATED`，该近边界来源可在修复后用于一次短程续跑。
+
+这次运行没有暴露新的 mod 产品 bug。P1 仍为 `6/9 = 66.7%`，P2 最终宣传视频继续硬锁定。
 
 ## 启动前 Operator RED 与最小修复
 
@@ -43,9 +45,9 @@ R467 在 `date_raw=53313408`、instance `418` 观察到真实 `zg361cl.390`；�
 
 因此没有生成 `zg361_stage10_player_subject_source_v1` checkpoint receipt，也没有切换玩家或尝试 Stage 10 `.120`。这不是 `.120` 产品失败，而是该世界状态没有可用的 owner → AI celestial manager 路线。
 
-## Stage 11 来源判定
+## Stage 11 查询瞬态与修正后的证据边界
 
-同一暂停帧的 Workforce owner provider 找到 Central subject `30317`、cycle `4`、case `3`，但 Stage 11 身份链没有建立：
+`.390` 刚确认后的同一暂停帧中，Workforce owner provider 找到 Central subject `30317`、cycle `4`、case `3`；此时 Stage 11 的 D+2 pump 尚未运行，所以以下字段还没有建立：
 
 - `stage11_status` 不存在；
 - source status 为 `0`，source owner/subject 与 P2C/AL serial 均不存在；
@@ -55,7 +57,9 @@ R467 在 `date_raw=53313408`、instance `418` 观察到真实 `zg361cl.390`；�
 - `case_identity_ready=false`；
 - `unavailable_reason=workforce_owner_identity_not_bound`。
 
-runner 保留 `TerminalStagesError: native gameplay step failed: ZhongGuo workforce owner snapshot changed or is not ready`，`current_stage=11`。这个 RED 暴露的是 source qualification 未在 Stage 11 动作前短路，而不是 Stage 11 产品状态被执行后破坏。后续必须在启动前或首个只读暂停帧淘汰缺少上述身份链的存档，禁止把它扩成实机长跑。
+随后 runner 恢复游戏推进，失败快照已经从暂停的 `date_raw=53313408` 前进到未暂停的 `53313480`。native command history 的第 12 条查询仍绑定旧 paused revision，bridge 因当前帧已变化而正确拒绝，并返回 `ZhongGuo workforce owner snapshot changed or is not ready`。这与 R461 已处理的 `revision is stale` 属于同一种无 gameplay mutation 的查询竞争；不能把前一帧字段缺失解释成存档永久无资格。
+
+最小修复只把该精确返回文本加入现有 `_TRANSIENT_WORKFORCE_QUERY_BINDING_ERRORS`。仍然最多连续重绑四次，超过上限继续 RED；没有放宽 provider terminal、owner/subject/cycle/case 或产品后置条件。对应 action-cell 测试在 normal/optimized Python 各 `14/14` GREEN，没有启动 CK3，也没有扩大验证范围。
 
 canonical RED 为 `terminal-stages-red.json`，`913,108` bytes，SHA-256 `C6658E23F2492D597670C7695FF73AE825DBABDFF0C1B8EE884C64380E86BC32`；attempt-01 内容相同。完整 loader error scan 为 `02_loader_error_scan.json`，`11,076` bytes，SHA-256 `2345F5896D84430301BA7CB1BBF59772A073C0F02F311DE0D6230F43262F15DA`。
 
@@ -66,6 +70,7 @@ R467 在目标出现后的同帧完成两项只读资格判断，失败快照最
 - canonical cleanup：`09_phase2_native_session_cleanup.json`，`32,497` bytes，SHA-256 `9B9046809D0F5ED9CAA6E07586987D591A482942ABCFF33BCA39C84DA8A11261`，GREEN。
 - managed cleanup：`terminal-stages-managed-cleanup.json`，`34,110` bytes，SHA-256 `D765BFADF45256BB9FFE433F32E85A3821A34E0E7CDFCD0D385DF306315D6207`，GREEN。
 - 当前轮次 R467 已结束；旧轮次 R466 已结束；CK3=0，Operator MCP=0，端口 `12432` 已释放。
-- 该输入以及此前所有返回 `no_bounded_ai_direct_manager` 的 `.390` 帧均加入不重放集合。下一步先离线核对真实 Stage 10 manager 条件与 Stage 11 owner/portfolio/case 条件，只在候选能新增信息时启动新轮次 R468。
+- 该输入的 Stage 10 用途以及此前所有返回 `no_bounded_ai_direct_manager` 的 `.390` 帧均加入 Stage 10 不重放集合；不得再次用它们筛选 `.120`。
+- 该输入距 Stage 11 pump 只有数日，Stage 11 用途没有被淘汰。完成 Python 修复与提交后，可用递增新轮次从原始只读存档执行一次同上限短程续跑；不得复用 R467 的运行目录或把上限续杯。
 
-本轮没有触碰 T0 视频锁，没有改变 T1 G2，也没有改变 open_kaishek 对外接口或兼容行为。
+本轮没有触碰 T0 视频锁，没有改变 T1 G2，也没有改变 open_kaishek 对外接口或兼容行为。Python rebind 文本集合属于 runner 内部行为，不触发 T2 代码同步。
