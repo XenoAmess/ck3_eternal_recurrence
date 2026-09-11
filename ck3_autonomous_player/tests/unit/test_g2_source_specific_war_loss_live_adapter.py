@@ -43,12 +43,18 @@ class _Completed:
 
 
 class _Process:
-    def __init__(self, pid: int = PID, running: bool = True) -> None:
+    def __init__(
+        self,
+        pid: int = PID,
+        running: bool = True,
+        image_path: Path | None = None,
+    ) -> None:
         self.pid = pid
         self.running = running
         self.returncode = None if running else 0
         self.wait_calls: list[float] = []
         self.resume_calls = 0
+        self.image_path_value = image_path
 
     def poll(self) -> int | None:
         return None if self.running else self.returncode
@@ -61,6 +67,11 @@ class _Process:
 
     def resume(self) -> None:
         self.resume_calls += 1
+
+    def image_path(self) -> Path:
+        if self.image_path_value is None:
+            raise RuntimeError("fixture process image path was not configured")
+        return self.image_path_value
 
 
 class _Driver:
@@ -917,12 +928,12 @@ class G2SourceSpecificWarLossLiveAdapterTests(unittest.TestCase):
             executable = root / "ck3.exe"
             executable.write_bytes(b"exact-build-fixture")
             template = _write_profile_settings_template(root)
-            process = _Process()
+            process = _Process(image_path=executable)
             target_row = {
                 "ProcessId": PID,
                 "ParentProcessId": 1,
                 "Name": "ck3.exe",
-                "ExecutablePath": str(executable),
+                "ExecutablePath": None,
                 "InventorySource": "toolhelp32",
             }
             operations = ADAPTER.ConcreteLiveOperations(
@@ -957,6 +968,7 @@ class G2SourceSpecificWarLossLiveAdapterTests(unittest.TestCase):
         self.assertEqual(receipt["pid"], PID)
         self.assertEqual(toolhelp.call_count, 2)
         self.assertTrue(process.running)
+        self.assertEqual(process.resume_calls, 1)
 
     def test_launch_discovery_failure_reclaims_process_after_asset_gate(self) -> None:
         with tempfile.TemporaryDirectory() as temp:

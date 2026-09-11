@@ -909,3 +909,25 @@ callbacks and evaluated truce days. Root implementation commit
 `8f1a522c0163796056ae8bc1281839b4fed8edf1` and open_kaishek private
 compatibility record `9505a1e30dcb24cfbd3c9dfdc63bd41a1c5fee5e` are pushed.
 T1 remains 90% and `GEN-034` unresolved.
+
+### R453 retained-handle identity fallback
+
+R453 created the unique suspended PID `26952`, but the existing inventory row
+had no `ExecutablePath` before the primary thread resumed. The old validator
+therefore rejected and reclaimed the target before startup Prepare. The primary
+thread never resumed; source capture, bridge startup, queries, checkpoint,
+action, and postwar work never began. CK3 count returned to zero and the source
+save remained unchanged. Report, classification, and final launch-record
+SHA-256 values are
+`554D8D413EDB9626DC781A76EB581071FCE11F968B66C63C431DD7CFEBC56458`,
+`520DFC890959EFE70F53D87105325B207E84C92EE29C26BF7D85A1335EBE1BD4`,
+and `DE7C38B48C576F9CE15ABAD7111984D0B63F46CA9947C98598B45C07F1E7D331`.
+
+The identity gate still requires one global CK3 row matching the launched PID.
+When that row has no path, it now reads the image path through the retained
+suspended-process Win32 handle already owned by the shared runtime, then applies
+the same exact path and SHA-256 checks. An available inventory path keeps the
+existing path. Focused normal and optimized tests pass `31/31`; R454 no-launch
+admission is READY with SHA-256
+`5DBB22DE0BD7674242CC3B36EC9C02CD3B15902BBCA652008696DD48AADE6F46`.
+This is a harness repair only; truce readiness and `GEN-034` do not change.
