@@ -22,13 +22,77 @@ import zg361_phase2_af5_operator_job as base
 
 CONTROLS = ["status", "run-stage10", "cleanup"]
 JOB_ROLE = "stage10-player-subject"
+SOURCE_RECEIPT_KIND = "zg361_stage10_player_subject_source_v1"
+SOURCE_EVENT = "zg361cl.390"
+
+
+def _validate_source_receipt(
+    value: object, bound: Mapping[str, object]
+) -> dict[str, object]:
+    receipt_path = base.checked_file(value, "stage10_source_receipt")
+    receipt = base.read_object(receipt_path)
+    checkpoint = base.mapping(receipt.get("checkpoint"), "source receipt checkpoint")
+    bound_checkpoint = Path(str(bound["checkpoint"])).resolve()
+    expected = base.mapping(bound.get("expected_hashes"), "expected hashes")
+    context = base.mapping(receipt.get("source_event_context"), "source event context")
+    root_scope = base.mapping(context.get("root_scope"), "source event root")
+    root_identity = base.mapping(
+        root_scope.get("typed_identity"), "source event root identity"
+    )
+    selector = base.mapping(receipt.get("selector"), "source selector")
+    readiness = base.mapping(selector.get("readiness"), "source selector readiness")
+    selection = base.mapping(selector.get("selection"), "source selector selection")
+    owner = base.positive_int(receipt.get("owner_character_id"), "source owner")
+    player = base.positive_int(receipt.get("player_character_id"), "source player")
+    manager = base.positive_int(
+        receipt.get("selected_manager_character_id"), "source manager"
+    )
+    if not (
+        receipt.get("schema_version") == 1
+        and receipt.get("kind") == SOURCE_RECEIPT_KIND
+        and receipt.get("result") == "GREEN"
+        and receipt.get("production_live") is True
+        and receipt.get("provider_observed") is True
+        and receipt.get("fixture_used") is False
+        and receipt.get("console_used") is False
+        and receipt.get("selection_attempted") is False
+        and receipt.get("source_event_definition_key") == SOURCE_EVENT
+        and context.get("event_definition_key") == SOURCE_EVENT
+        and receipt.get("source_event_instance_id")
+        == context.get("current_event_instance_id")
+        and owner == player
+        and root_identity.get("status") == "available"
+        and root_identity.get("kind") == "character"
+        and root_identity.get("character_id") == owner
+        and manager != owner
+        and selector.get("status") == "available"
+        and selector.get("provider_observed") is True
+        and readiness.get("ready") is True
+        and selection.get("manager_character_id") == manager
+        and str(receipt.get("product_tree_sha256", "")).upper()
+        == str(expected["product_tree_sha256"]).upper()
+        and isinstance(checkpoint.get("path"), str)
+        and Path(str(checkpoint["path"])).is_absolute()
+        and Path(str(checkpoint["path"])).resolve() == bound_checkpoint
+        and checkpoint.get("bytes") == bound_checkpoint.stat().st_size
+        and str(checkpoint.get("sha256", "")).upper()
+        == str(expected["checkpoint_sha256"]).upper()
+    ):
+        raise base.Af5JobError(
+            "Stage 10 activation lacks a matching qualified .390 source receipt"
+        )
+    return {"path": receipt_path, "receipt": receipt}
 
 
 def validate_activation(path: Path, *, require_empty_slot: bool) -> dict[str, object]:
     value = base.read_object(path)
     if value.get("job_role") != JOB_ROLE:
         raise base.Af5JobError("activation does not target Stage 10 player-subject")
-    return base.validate_activation(path, require_empty_slot=require_empty_slot)
+    bound = base.validate_activation(path, require_empty_slot=require_empty_slot)
+    source = _validate_source_receipt(value.get("stage10_source_receipt"), bound)
+    bound["stage10_source_receipt"] = source["path"]
+    bound["stage10_source"] = source["receipt"]
+    return bound
 
 
 def _archive_checkpoint(
@@ -154,7 +218,14 @@ class Stage10PlayerSubjectOperatorJob(base.Af5OperatorJob):
             },
             bridge_pid=binding["bridge_pid"],
             connection_generation=binding["connection_generation"],
-            input_checkpoint=base.file_record(Path(str(bound["checkpoint"]))),
+            input_checkpoint={
+                "path": str(Path(str(bound["checkpoint"]))),
+                "bytes": Path(str(bound["checkpoint"])).stat().st_size,
+                "sha256": expected["checkpoint_sha256"],
+            },
+            source_qualification_receipt=base.file_record(
+                Path(str(bound["stage10_source_receipt"]))
+            ),
             product_tree_sha256=expected["product_tree_sha256"],
             bridge_dll=base.file_record(Path(str(bound["bridge_dll"]))),
             archived_source_checkpoint=source_archive,

@@ -23,6 +23,8 @@ import zg361_phase2_af5_operator_job as base
 CONTROLS = ["status", "run-stages", "retry-stages", "cleanup"]
 JOB_ROLE = "terminal-stages"
 B1_CAPABILITY = "game.command.query-zhongguo-b1-cycle-snapshot-v1"
+STAGE10_SOURCE_KIND = "zg361_stage10_player_subject_source_v1"
+STAGE10_SOURCE_EVENT = "zg361cl.390"
 
 
 # Preserves R390's observed final-survivor gate. Only the old seed's fixed
@@ -217,6 +219,76 @@ class TerminalStagesOperatorJob(base.Af5OperatorJob):
             self.b1_evidence = report
         base.write_object(artifacts / "b1-observation.json", self.b1_evidence)
 
+    def _publish_stage10_source(
+        self, bound: Mapping[str, object], action: object
+    ) -> dict[str, object] | None:
+        evidence = action if isinstance(action, Mapping) else {}
+        source = evidence.get("stage10_source")
+        if not isinstance(source, Mapping) or source.get("result") != "GREEN":
+            return None
+        artifacts = Path(str(bound["artifact_directory"])).resolve()
+        checkpoint = base.mapping(source.get("checkpoint"), "Stage 10 source checkpoint")
+        checkpoint_path = base.checked_file(checkpoint, "Stage 10 source checkpoint")
+        if not checkpoint_path.is_relative_to(artifacts / "stages"):
+            raise base.Af5JobError("Stage 10 source archive is outside stage artifacts")
+        context = base.mapping(source.get("source_event_context"), "Stage 10 source event")
+        root_scope = base.mapping(context.get("root_scope"), "Stage 10 source root")
+        root_identity = base.mapping(
+            root_scope.get("typed_identity"), "Stage 10 source root identity"
+        )
+        selector = base.mapping(source.get("selector"), "Stage 10 source selector")
+        readiness = base.mapping(selector.get("readiness"), "Stage 10 source readiness")
+        selection = base.mapping(selector.get("selection"), "Stage 10 source selection")
+        owner = base.positive_int(source.get("owner_character_id"), "Stage 10 source owner")
+        player = base.positive_int(source.get("player_character_id"), "Stage 10 source player")
+        manager = base.positive_int(
+            source.get("selected_manager_character_id"), "Stage 10 source manager"
+        )
+        if not (
+            source.get("kind") == STAGE10_SOURCE_KIND
+            and source.get("source_event_definition_key") == STAGE10_SOURCE_EVENT
+            and context.get("event_definition_key") == STAGE10_SOURCE_EVENT
+            and source.get("source_event_instance_id")
+            == context.get("current_event_instance_id")
+            and owner == player
+            and root_identity.get("status") == "available"
+            and root_identity.get("kind") == "character"
+            and root_identity.get("character_id") == owner
+            and manager != owner
+            and selector.get("status") == "available"
+            and selector.get("provider_observed") is True
+            and readiness.get("ready") is True
+            and selection.get("manager_character_id") == manager
+            and source.get("selection_attempted") is False
+        ):
+            raise base.Af5JobError("Stage 10 source receipt is not a qualified .390 frame")
+        binding = base.mapping(self.binding, "native binding")
+        expected = base.mapping(bound.get("expected_hashes"), "expected hashes")
+        receipt = copy.deepcopy(dict(source))
+        input_checkpoint = Path(str(bound["checkpoint"]))
+        receipt.update(
+            result="GREEN",
+            production_live=True,
+            fixture_used=False,
+            console_used=False,
+            round=bound["round"],
+            bridge_pid=binding["bridge_pid"],
+            connection_generation=binding["connection_generation"],
+            source_code_commit=expected["code_commit"],
+            product_tree_sha256=expected["product_tree_sha256"],
+            input_checkpoint={
+                "path": str(input_checkpoint),
+                "bytes": input_checkpoint.stat().st_size,
+                "sha256": expected["checkpoint_sha256"],
+            },
+            bridge_dll=base.file_record(Path(str(bound["bridge_dll"]))),
+            checkpoint=copy.deepcopy(dict(checkpoint)),
+            video_lock_touched=False,
+        )
+        target = artifacts / "stage10-player-subject-source.json"
+        base.write_object(target, receipt)
+        return base.file_record(target)
+
     def _execute_action(self, bound: Mapping[str, object]) -> None:
         module = importlib.import_module("zg361_phase2_terminal_stages_action_cell")
         root = Path(str(bound["repository_root"]))
@@ -234,10 +306,12 @@ class TerminalStagesOperatorJob(base.Af5OperatorJob):
             self._sample_b1(bound, "after")
         if evidence.get("result") != "GREEN":
             raise base.Af5JobError("terminal stage action returned RED", evidence)
+        stage10_source_receipt = self._publish_stage10_source(bound, evidence)
         evidence.update(round=bound["round"], product_tree_sha256=bound["expected_hashes"]["product_tree_sha256"],
                         execution_identity={"repository_root": str(root), "code_commit": bound["expected_hashes"]["code_commit"]},
                         source_checkpoint=base.file_record(Path(str(bound["checkpoint"]))),
                         bridge_dll=base.file_record(Path(str(bound["bridge_dll"]))),
+                        stage10_source_receipt=stage10_source_receipt,
                         production_live=True, fixture_used=False, video_lock_touched=False)
         base.write_object(artifacts / "terminal-stages-green.json", evidence)
         self.af5_evidence = evidence  # Reused lifecycle's scenario receipt slot.
@@ -273,6 +347,14 @@ class TerminalStagesOperatorJob(base.Af5OperatorJob):
             return
         artifacts = Path(str(self.bound["artifact_directory"]))
         partial = copy.deepcopy(self.failure_evidence)
+        try:
+            partial["stage10_source_receipt"] = self._publish_stage10_source(
+                self.bound, partial.get("evidence")
+            )
+        except Exception as source_error:
+            partial["stage10_source_receipt_error"] = (
+                f"{type(source_error).__name__}: {source_error}"
+            )
         snapshot = partial.get("failure_snapshot")
         if self.service is not None and isinstance(snapshot, Mapping) and snapshot.get("paused") is True:
             try:

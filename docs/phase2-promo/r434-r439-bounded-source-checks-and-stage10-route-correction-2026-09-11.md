@@ -93,6 +93,10 @@ R439 的事实结果仍原样保留：查询前后 player `32904`、日期 `5315
 
 找到正向合格 source 前，Stage 10、Stage 11 和代表性终态 cold restore 均保持 PENDING；不再用未知 source 做实机筛选。
 
+Stage 9/11 runner 后续在自然抵达 `.390` 时会顺手检查 selector，并只为正向结果即时冻结 source；Stage 10 operator 又在
+任何 CK3 启动前强制核对这份事件/角色/selector/产品树/checkpoint 收据。这个 admission 不会把 R434/R439 的 B3 selector
+负结果改写成 Stage 10 产品 RED，只是确保未知或负向 source 不再消耗新轮次。
+
 ## 历史 `.120` 证据的离线收口
 
 - 对可访问的 `_runtime` JSON 做一次事件实例字段精确检索，没有发现 `event_definition_key` 为 `zg361mg.100`、`.101`、`.102`、`.103` 或 `.120` 的历史实机记录。两个不可访问项是 pytest 临时权限目录，不属于正式 artifact。

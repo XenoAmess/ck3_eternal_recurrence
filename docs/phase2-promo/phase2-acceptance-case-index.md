@@ -62,9 +62,12 @@ Stage 10 当前为 `STATIC_READY / LIVE_PENDING`：独立 action cell 从真实 
 与 player-subject provider 的 `state=5 / active=false`。未观测 opening case 时不得切玩家，失败不原地重试。聚焦测试
 normal/`-O` 各 `5/5` GREEN；尚无 live artifact，不能把该状态计入 P1。合同见
 [`stage10-player-subject-bounded-action-cell-2026-09-11.md`](stage10-player-subject-bounded-action-cell-2026-09-11.md)。
-受管 operator 另以 normal/`-O` 各 `3/3` 聚焦测试锁定显式 job role、双 checkpoint 归档、产品/harness RED 分界和无 retry
+受管 operator 另以 normal/`-O` 各 `4/4` 聚焦测试锁定显式 job role、双 checkpoint 归档、产品/harness RED 分界和无 retry
 控制；它不改变 Stage 10 的 `LIVE_PENDING` 状态。open_kaishek T2 兼容测试/记录 commit 为 `bab3efe9883ed730637b4aeac059b228779d0ce2`，
 通用 1.1 adapter 无生产代码变化，聚焦测试 `13/13` GREEN。
+Stage 9/11 runner 会在自然 `.390` 帧 opportunistic 保存 selector-positive source；Stage 10 activation 必须消费与该 checkpoint
+逐字节绑定的收据，否则在 CK3 启动前 RED。T2 activation 记录 commit 为 `8b68c63f1453b9da2907b9e2afd5825949ff93f9`。
+最终 source hash 刷新 commit 为 `16d9e8e100e120738086c62a25525646f7098d02`。
 
 R326 的当前 source receipt 是
 `Z:\ck3_mod_rewrite\_runtime\p2r326incidentsource\phase2-source-capture-three-of-four-v3.json`，SHA-256

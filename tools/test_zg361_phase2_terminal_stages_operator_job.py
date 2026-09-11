@@ -117,6 +117,78 @@ class TerminalStagesOperatorTests(unittest.TestCase):
             self.assertEqual(stored["archived_checkpoint"]["path"], "partial.ck3")
             self.assertFalse((root / "af5-red.json").exists())
 
+    def test_stage9_capture_publishes_activation_grade_stage10_receipt(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            artifacts = root / "artifacts"
+            stages_dir = artifacts / "stages"
+            stages_dir.mkdir(parents=True)
+            checkpoint = stages_dir / "stage10-player-subject-source.ck3"
+            checkpoint.write_bytes(b"stage10-source")
+            input_checkpoint = root / "input.ck3"
+            input_checkpoint.write_bytes(b"input")
+            bridge = root / "bridge.dll"
+            bridge.write_bytes(b"bridge")
+            context = {
+                "event_definition_key": stages.STAGE10_SOURCE_EVENT,
+                "current_event_instance_id": 390,
+                "root_scope": {
+                    "typed_identity": {
+                        "status": "available",
+                        "kind": "character",
+                        "character_id": 100,
+                    }
+                },
+            }
+            source = {
+                "schema_version": 1,
+                "kind": stages.STAGE10_SOURCE_KIND,
+                "result": "GREEN",
+                "source_event_definition_key": stages.STAGE10_SOURCE_EVENT,
+                "source_event_instance_id": 390,
+                "owner_character_id": 100,
+                "player_character_id": 100,
+                "selected_manager_character_id": 200,
+                "source_event_context": context,
+                "selector": {
+                    "status": "available",
+                    "provider_observed": True,
+                    "readiness": {"ready": True},
+                    "selection": {"manager_character_id": 200},
+                },
+                "selection_attempted": False,
+                "fixture_used": False,
+                "console_used": False,
+                "checkpoint": stages.base.file_record(checkpoint),
+            }
+            bound = {
+                "artifact_directory": artifacts,
+                "round": "R440",
+                "checkpoint": input_checkpoint,
+                "bridge_dll": bridge,
+                "expected_hashes": {
+                    "code_commit": "a" * 40,
+                    "product_tree_sha256": "B" * 64,
+                    "checkpoint_sha256": stages.base.sha256(input_checkpoint),
+                },
+            }
+            job = stages.TerminalStagesOperatorJob(root / "activation.json")
+            job.binding = {"bridge_pid": 123, "connection_generation": 4}
+            record = job._publish_stage10_source(
+                bound, {"stage10_source": source}
+            )
+            self.assertIsNotNone(record)
+            receipt = stages.base.read_object(
+                artifacts / "stage10-player-subject-source.json"
+            )
+            self.assertTrue(receipt["production_live"])
+            self.assertEqual(receipt["round"], "R440")
+            self.assertEqual(
+                receipt["checkpoint"]["sha256"],
+                stages.base.file_record(checkpoint)["sha256"],
+            )
+            self.assertEqual(receipt["product_tree_sha256"], "B" * 64)
+
     def test_hot_retry_keeps_existing_service_and_stage_directory(self):
         with tempfile.TemporaryDirectory() as temporary:
             root = Path(temporary)

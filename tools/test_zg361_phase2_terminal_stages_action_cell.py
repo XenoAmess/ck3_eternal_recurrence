@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import copy
+import hashlib
 import json
 from pathlib import Path
 import sys
@@ -36,6 +37,8 @@ class Service:
         self.current_stage = None
         self.retain_ack_event = False
         self.saved_ok = True
+        self.fail_save_call = None
+        self.source_selector_ready = True
         self.fail_entry_once = None
         self.visits = []
         self.actions = []
@@ -111,14 +114,66 @@ class Service:
         if expected_revision != self.revision:
             raise AssertionError("checkpoint revision is stale")
         self.saves.append(self.snapshot())
-        return {"accepted": self.saved_ok,
-                "checkpoint": {"status": "saved" if self.saved_ok else "failed",
+        accepted = self.saved_ok and len(self.saves) != self.fail_save_call
+        return {"accepted": accepted,
+                "checkpoint": {"status": "saved" if accepted else "failed",
                                "path": "synthetic-stage11.ck3"}}
+
+    def query_zhongguo_manager_subordinate_selector_v1(
+        self, nonce: str, *, expected_revision: int
+    ) -> dict[str, object]:
+        if expected_revision != self.revision:
+            raise AssertionError("selector bound a stale frame")
+        return {
+            "status": "available" if self.source_selector_ready else "unavailable",
+            "provider_observed": self.source_selector_ready,
+            "request_nonce": nonce,
+            "readiness": {"ready": self.source_selector_ready},
+            "selection": (
+                {
+                    "manager_character_id": SUBJECT,
+                    "subordinate_character_id": SUBJECT + 1,
+                }
+                if self.source_selector_ready
+                else None
+            ),
+        }
 
 
 class TerminalStagesTests(unittest.TestCase):
+    def test_stage10_source_archive_is_byte_bound_and_idempotent(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            source = root / "native.ck3"
+            source.write_bytes(b"stage10-source")
+            digest = hashlib.sha256(source.read_bytes()).hexdigest().upper()
+            save_result = {
+                "accepted": True,
+                "checkpoint": {
+                    "status": "saved",
+                    "path": str(source.resolve()),
+                    "size": source.stat().st_size,
+                    "sha256": digest,
+                },
+            }
+            target = root / "archive.ck3"
+            first = cell._archive_checkpoint(save_result, target)
+            second = cell._archive_checkpoint(save_result, target)
+            self.assertEqual(first, second)
+            self.assertEqual(target.read_bytes(), source.read_bytes())
+
+            target.write_bytes(b"drift")
+            with self.assertRaisesRegex(ValueError, "different bytes"):
+                cell._archive_checkpoint(save_result, target)
+
     def run_cell(self, service: Service, directory: Path) -> dict[str, object]:
-        with patch.object(cell.entry, "enter_promotion_source_checkpoint_v1", side_effect=service.enter):
+        archived = {
+            "path": str(directory / "stage10-player-subject-source.ck3"),
+            "bytes": 3,
+            "sha256": "A" * 64,
+        }
+        with patch.object(cell.entry, "enter_promotion_source_checkpoint_v1", side_effect=service.enter), \
+             patch.object(cell, "_archive_checkpoint", return_value=archived):
             with self.assertRaises(cell.TerminalStagesError) as raised:
                 cell.run_terminal_stages(service, evidence_directory=directory,
                                          request_nonce="synthetic.terminal")
@@ -154,7 +209,12 @@ class TerminalStagesTests(unittest.TestCase):
             self.assertIs(result["stage11_park"]["selection_attempted"], False)
             self.assertIs(result["missing_observation"]["player_switch_attempted"], False)
             self.assertIs(result["af5_same_slice_required"], False)
-            self.assertEqual(len(service.saves), 1)
+            self.assertEqual(len(service.saves), 2)
+            source = result["stage10_source"]
+            self.assertEqual(source["result"], "GREEN")
+            self.assertEqual(source["source_event_definition_key"], cell.EVENTS[9])
+            self.assertEqual(source["selected_manager_character_id"], SUBJECT)
+            self.assertIs(source["selection_attempted"], False)
             self.assertEqual(json.loads((directory / "terminal-stages.json").read_text()), result)
             self.assertEqual(json.loads((directory / "attempt-001.json").read_text()), result)
 
@@ -198,11 +258,20 @@ class TerminalStagesTests(unittest.TestCase):
 
     def test_failed_park_save_is_reported_as_checkpoint_failure(self) -> None:
         service = Service()
-        service.saved_ok = False
+        service.fail_save_call = 2
         with tempfile.TemporaryDirectory() as temporary:
             result = self.run_cell(service, Path(temporary))
         self.assertIn("parked checkpoint was not saved", result["failure_reason"])
         self.assertEqual(service.actions, [(9, 1)])
+
+    def test_ineligible_stage10_source_does_not_block_owned_stages(self) -> None:
+        service = Service()
+        service.source_selector_ready = False
+        with tempfile.TemporaryDirectory() as temporary:
+            result = self.run_cell(service, Path(temporary))
+        self.assertEqual(service.actions, [(9, 1)])
+        self.assertEqual(result["stage10_source"]["result"], "INELIGIBLE")
+        self.assertNotIn("checkpoint", result["stage10_source"])
 
 
 class OwnerService(Service):
@@ -274,7 +343,13 @@ class OwnerService(Service):
 
 class OwnerTerminalTests(unittest.TestCase):
     def run_cell(self, service: OwnerService, directory: Path) -> dict[str, object]:
+        archived = {
+            "path": str(directory / "stage10-player-subject-source.ck3"),
+            "bytes": 3,
+            "sha256": "A" * 64,
+        }
         with patch.object(cell.entry, "enter_promotion_source_checkpoint_v1", side_effect=service.enter), \
+             patch.object(cell, "_archive_checkpoint", return_value=archived), \
              patch("zhongguo_phase2_workforce_action.time.sleep", return_value=None):
             return cell.run_terminal_stages(service, evidence_directory=directory,
                                            request_nonce="synthetic.owner")
@@ -293,7 +368,7 @@ class OwnerTerminalTests(unittest.TestCase):
                 self.assertEqual(row["provider_observation"]["subject_character_id"], SUBJECT)
                 self.assertIn((True, False, True), service.callback_reads)
                 self.assertIn((True, True, True), service.callback_reads)
-                self.assertEqual(len(service.saves), 2)
+                self.assertEqual(len(service.saves), 3)
 
     def test_na_without_m360_event_or_source_returns_the_na_terminal(self) -> None:
         service = OwnerService(early_na=True)

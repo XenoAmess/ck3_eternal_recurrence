@@ -15,9 +15,11 @@ changes the played character to obtain an observation.
 from __future__ import annotations
 
 import copy
+import hashlib
 import json
 from pathlib import Path
 import re
+import shutil
 import sys
 from typing import Mapping
 
@@ -29,6 +31,7 @@ import zg361_phase2_promotion_source_production_entry as entry  # noqa: E402
 from zhongguo_phase2_workforce_action import (  # noqa: E402
     _event_context,
     _saved_character_id,
+    _scope_character_id,
     submit_m360_route_action,
 )
 
@@ -43,6 +46,7 @@ INDEPENDENT_STAGE10_EVENT = "zg361mg.120"
 ENTRY_TIMEOUT_SECONDS = 1800.0
 NAVIGATION_PROGRESS_SAMPLE_DAYS = 30
 POST_M360_PROGRESS_SAMPLE_DAYS = 1
+STAGE10_SOURCE_KIND = "zg361_stage10_player_subject_source_v1"
 
 
 class TerminalStagesError(RuntimeError):
@@ -57,6 +61,53 @@ def _write(path: Path, value: Mapping[str, object]) -> None:
         json.dumps(value, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"
     )
     temporary.replace(path)
+
+
+def _sha256(path: Path) -> str:
+    digest = hashlib.sha256()
+    with path.open("rb") as stream:
+        for block in iter(lambda: stream.read(1024 * 1024), b""):
+            digest.update(block)
+    return digest.hexdigest().upper()
+
+
+def _archive_checkpoint(
+    save_result: object, destination: Path
+) -> dict[str, object]:
+    result = save_result if isinstance(save_result, Mapping) else {}
+    checkpoint = result.get("checkpoint")
+    checkpoint = checkpoint if isinstance(checkpoint, Mapping) else {}
+    raw_path = checkpoint.get("path")
+    expected_size = checkpoint.get("size")
+    expected_sha = checkpoint.get("sha256")
+    if not (
+        result.get("accepted") is True
+        and checkpoint.get("status") == "saved"
+        and isinstance(raw_path, str)
+        and Path(raw_path).is_absolute()
+        and isinstance(expected_size, int)
+        and not isinstance(expected_size, bool)
+        and expected_size > 0
+        and isinstance(expected_sha, str)
+        and re.fullmatch(r"[0-9A-Fa-f]{64}", expected_sha) is not None
+    ):
+        raise ValueError("Stage 10 source save lacks materialized size/hash proof")
+    source = Path(raw_path).resolve()
+    if not source.is_file():
+        raise ValueError("Stage 10 source save is not materialized")
+    digest = _sha256(source)
+    if source.stat().st_size != expected_size or digest != expected_sha.upper():
+        raise ValueError("Stage 10 source save differs from its native receipt")
+    target = destination.resolve()
+    if target.exists():
+        target_digest = _sha256(target)
+    else:
+        target.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copy2(source, target)
+        target_digest = _sha256(target)
+    if target.stat().st_size != expected_size or target_digest != digest:
+        raise ValueError("Stage 10 source archive already exists with different bytes")
+    return {"path": str(target), "bytes": expected_size, "sha256": digest}
 
 
 def _binding(snapshot: Mapping[str, object]) -> dict[str, int]:
@@ -240,10 +291,98 @@ def run_terminal_stages(
         }
         _write(path, state)
 
+    def capture_stage10_source(context: Mapping[str, object]) -> dict[str, object]:
+        current = snapshot()
+        selector_method = getattr(
+            service, "query_zhongguo_manager_subordinate_selector_v1", None
+        )
+        capture: dict[str, object] = {
+            "schema_version": 1,
+            "kind": STAGE10_SOURCE_KIND,
+            "result": "INELIGIBLE",
+            "source_event_definition_key": EVENTS[9],
+            "source_event_instance_id": context["current_event_instance_id"],
+            "owner_character_id": binding["player_character_id"],
+            "player_character_id": binding["player_character_id"],
+            "date_raw": current["date_raw"],
+            "source_event_context": copy.deepcopy(dict(context)),
+            "selector": None,
+            "selection_attempted": False,
+        }
+        if not callable(selector_method):
+            capture["reason"] = "manager_subordinate_selector_unavailable"
+            return capture
+        try:
+            root_character_id = _scope_character_id(
+                context.get("root_scope"), "Stage 9 root"
+            )
+        except Exception as error:
+            capture["reason"] = (
+                f"stage9_root_unavailable: {type(error).__name__}: {error}"
+            )
+            return capture
+        if root_character_id != binding["player_character_id"]:
+            capture["reason"] = "stage9_root_is_not_played_owner"
+            return capture
+        selector = selector_method(
+            request_nonce + ".s10",
+            expected_revision=current["revision"],
+        )
+        capture["selector"] = copy.deepcopy(selector)
+        readiness = selector.get("readiness") if isinstance(selector, Mapping) else None
+        selection = selector.get("selection") if isinstance(selector, Mapping) else None
+        manager = (
+            selection.get("manager_character_id")
+            if isinstance(selection, Mapping)
+            else None
+        )
+        if not (
+            isinstance(selector, Mapping)
+            and selector.get("status") == "available"
+            and selector.get("provider_observed") is True
+            and isinstance(readiness, Mapping)
+            and readiness.get("ready") is True
+            and isinstance(selection, Mapping)
+            and isinstance(manager, int)
+            and not isinstance(manager, bool)
+            and manager > 0
+            and manager != binding["player_character_id"]
+        ):
+            capture["reason"] = "eligible_stage10_manager_unavailable"
+            return capture
+        after_selector = snapshot()
+        active = after_selector.get("active_event")
+        if not (
+            _binding(after_selector) == binding
+            and after_selector.get("date_raw") == current.get("date_raw")
+            and isinstance(active, Mapping)
+            and active.get("instance_id") == context["current_event_instance_id"]
+        ):
+            raise ValueError("Stage 10 source frame changed during selector qualification")
+        save_result = service.save_checkpoint(
+            expected_revision=after_selector["revision"]
+        )
+        archived = _archive_checkpoint(
+            save_result, directory / "stage10-player-subject-source.ck3"
+        )
+        capture.update(
+            result="GREEN",
+            reason=None,
+            selected_manager_character_id=manager,
+            save_result=copy.deepcopy(save_result),
+            checkpoint=archived,
+            provider_observed=True,
+        )
+        _write(directory / "stage10-player-subject-source.json", capture)
+        return capture
+
     try:
         if "9" not in receipts:
             state["current_stage"] = 9
             context = navigate(9)
+            if "stage10_source" not in state:
+                state["stage10_source"] = capture_stage10_source(context)
+                _write(path, state)
             # .390 is the product's completed career/learning portfolio digest;
             # its single option only removes zg361_cl_digest_pending.
             acknowledgement = _ack_summary(service, context)

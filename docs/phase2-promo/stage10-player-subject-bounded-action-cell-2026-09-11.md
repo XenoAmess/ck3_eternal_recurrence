@@ -53,7 +53,24 @@ terminal provider 未闭合时不确认 `.120`。普通模式 `5/5`、`python -O
 该 operator 是可重复使用的 T0 Stage 10 编排入口，不绑定固定账号、机器路径或轮次；selector、事件导航、角色切换和
 manager-governance 查询继续由现有通用 MCP 资产提供。它没有新增采集协议或分析逻辑。open_kaishek 的通用 1.1 adapter
 无需修改生产代码；T2 以 commit `bab3efe9883ed730637b4aeac059b228779d0ce2` 增加目标自有 control 的兼容测试与同步记录，
-聚焦测试 `13/13` GREEN。operator 聚焦测试普通模式 `3/3`、`python -O` 模式 `3/3` GREEN，并通过 `py_compile` 与 BOM 检查。
+聚焦测试 `13/13` GREEN。operator 聚焦测试普通模式 `4/4`、`python -O` 模式 `4/4` GREEN，并通过 `py_compile` 与 BOM 检查。
+
+## 启动前 source admission
+
+Stage 9/11 action cell 在自然抵达真实 `.390` 时先做一次 manager selector 查询。只有 exact event、played owner 和 selector
+全部正向可见时，才在选择 Stage 9 选项前保存 checkpoint，并立即复制到独立 artifact；selector 不合格只记录
+`INELIGIBLE`，不会阻断原有 Stage 9/11 路线。受管 terminal-stages operator 随后补齐当前产品树、commit、PID/generation
+与真实输入身份，产出 `zg361_stage10_player_subject_source_v1` 收据。
+
+Stage 10 operator 的 activation 现在强制携带这份收据。收据文件本身、`.390` 事件实例、owner/player、候选 manager、
+selector readiness、产品树以及 checkpoint path/size/SHA-256 必须全部一致；否则在 `_execute` 启动 CK3 前直接 RED。
+因此 R159、R432 或任何只靠猜测的存档都不能再消耗新轮次。受影响聚焦测试为 terminal action normal/`-O` 各
+`12/12`、terminal operator 各 `7/7`、Stage 10 operator 各 `4/4`，未运行全量 L0。
+
+该 activation 输入变化已触发 T2；open_kaishek 仍无需生产代码修改，其通用 Operator MCP 1.1 不解析目标自有 activation。
+兼容记录 commit `8b68c63f1453b9da2907b9e2afd5825949ff93f9` 已推送；此前 control 兼容测试 commit
+`bab3efe9883ed730637b4aeac059b228779d0ce2` 的 `13/13` 结果继续适用，没有重复运行。最终 source hash 刷新 commit
+`16d9e8e100e120738086c62a25525646f7098d02` 已推送，且为当前 `origin/main`。
 
 当前轮次 R439 已结束，CK3 存活数为 0；本工作包没有启动 CK3，也没有新建轮次。不得仅为 Stage 10 从 183 日前的
 存档重放而启动；新轮次 R440 必须绑定独立的有界 P1 机器门，若其自然抵达 `.390`，再即时冻结并执行本 operator。
