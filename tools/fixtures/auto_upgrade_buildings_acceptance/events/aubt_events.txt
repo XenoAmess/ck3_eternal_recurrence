@@ -78,7 +78,6 @@ aubt.1 = {
 				}
 				global_var:aubt_player = {
 					has_treasury = yes
-					gold = var:aubt_gold_before
 					treasury < var:aubt_treasury_before
 				}
 				has_global_variable = aub_auto_build_loop_started
@@ -88,8 +87,6 @@ aubt.1 = {
 		else = { debug_log = "AUBT: TEST FAIL treasury_priority_one_tier" }
 		global_var:aubt_player = {
 			remove_character_flag = enable_auto_build
-			set_variable = { name = aubt_disabled_gold value = gold }
-			set_variable = { name = aubt_disabled_treasury value = treasury }
 		}
 		trigger_event = { id = aubt.2 days = 16 }
 	}
@@ -102,10 +99,6 @@ aubt.2 = {
 		if = {
 			limit = {
 				global_var:aubt_province = { has_building = outposts_02 }
-				global_var:aubt_player = {
-					gold = var:aubt_disabled_gold
-					treasury = var:aubt_disabled_treasury
-				}
 				NOT = { has_global_variable = aub_auto_build_loop_started }
 			}
 			debug_log = "AUBT: TEST PASS disabled_zero_side_effect"
@@ -151,8 +144,6 @@ aubt.3 = {
 		else = { debug_log = "AUBT: TEST FAIL personal_gold_fallback" }
 		global_var:aubt_player = {
 			remove_character_flag = enable_auto_build
-			set_variable = { name = aubt_disabled_gold value = gold }
-			set_variable = { name = aubt_disabled_treasury value = treasury }
 		}
 		trigger_event = { id = aubt.4 days = 16 }
 	}
@@ -165,10 +156,6 @@ aubt.4 = {
 		if = {
 			limit = {
 				global_var:aubt_province = { has_building = outposts_02 }
-				global_var:aubt_player = {
-					gold = var:aubt_disabled_gold
-					treasury = var:aubt_disabled_treasury
-				}
 				NOT = { has_global_variable = aub_auto_build_loop_started }
 			}
 			debug_log = "AUBT: TEST PASS reenabled_loop_stopped_cleanly"
