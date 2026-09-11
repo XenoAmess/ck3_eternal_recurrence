@@ -407,3 +407,7 @@ roster/processing 均为 `0`，无 pending、reopen 或隔级回调；Central �
 R430 已用 fresh production tree 在 148 游戏日内证明 cycle `8/8` 退役为 `state=8 / inactive`，且无奖励、无发布，B1
 零幸存者永久卡死升级为 `production-live primitive`。本收据不单独证明新周期 publication；后续只做 P1 evidence assembly，
 不重复同 checkpoint 长跑。详见上述专题的 R430 小节。
+
+## R468/R469 Stage 11 短验收
+
+R468/R469 验证了 `f14220f` 的只读快照重绑修复，但同一来源到 10 游戏日绝对截止仍未建立 Stage 11 owner/case/portfolio 身份，现已永久淘汰该输入的 Stage 11 用途。P1 保持 `6/9`，P2 继续锁定。详见 [R468/R469 Stage 11 短验收与来源淘汰](r468-r469-stage11-source-disqualification-2026-09-12.md)。
