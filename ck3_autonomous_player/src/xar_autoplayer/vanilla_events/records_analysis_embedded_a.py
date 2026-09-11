@@ -671,6 +671,134 @@ _TGP_MOVEMENT_0070_OBSERVATIONS: Final[
 }
 
 
+_CULTURE_NOTIFICATION_1111_OBSERVATIONS: Final[
+    dict[str, dict[str, object]]
+] = {
+    "culture_notification.1111": {
+        "exemplars": [
+            *_LEGACY_MIGRATION_OBSERVATIONS[
+                "culture_notification.1111"
+            ]["exemplars"],
+            {
+                "run": "R420-attempt-01",
+                "kind": "first-occurrence-production-live-green",
+                "artifact": (
+                    "_runtime/p1-b1-recovery-r420-20260911/live-artifacts/"
+                    "terminal-stages-red-attempt-01.json"
+                ),
+                "artifact_sha256": (
+                    "70B27E1064482C11FAE20CB730ED255755BDC5B70F1EAD1C048209EB31806866"
+                ),
+                "date_raw": 54225528,
+                "event_instance_id": 1111,
+                "root_character_id": 32904,
+                "saved_character_ids": {"founder": 98415},
+                "saved_scope_raw_types": {
+                    "founder": 4,
+                    "parent_culture_1": 26,
+                    "new_culture": 26,
+                    "parent_1": 26,
+                    "ethos": 3,
+                },
+                "rendered_native_option_indices": [1],
+                "context_query_sequence": 5,
+                "selected_option_number": 2,
+                "selected_native_option_index": 1,
+                "postcondition_verified": True,
+                "starting_snapshot_id": "native:1481",
+                "starting_revision": 1482,
+                "ending_snapshot_id": "native:1482",
+                "ending_revision": 1483,
+                "connection_generation": 1,
+                "bridge_pid": 197452,
+                "process_restart_required": False,
+                "mcp_only": True,
+                "fixture_used": False,
+                "ocr_used": False,
+                "coordinates_used": False,
+                "console_used": False,
+            },
+            {
+                "run": "R420-attempt-01",
+                "kind": "repeat-occurrence-bound-live-red",
+                "red_classification": "product-contract-red",
+                "artifact": (
+                    "_runtime/p1-b1-recovery-r420-20260911/live-artifacts/"
+                    "terminal-stages-red-attempt-01.json"
+                ),
+                "artifact_sha256": (
+                    "70B27E1064482C11FAE20CB730ED255755BDC5B70F1EAD1C048209EB31806866"
+                ),
+                "date_raw": 54251808,
+                "event_instance_id": 1113,
+                "root_character_id": 32904,
+                "saved_character_ids": {"founder": 16881830},
+                "saved_scope_raw_types": {
+                    "founder": 4,
+                    "parent_culture_1": 26,
+                    "new_culture": 26,
+                    "parent_1": 26,
+                    "ethos": 3,
+                },
+                "rendered_native_option_indices": [1],
+                "context_query_sequence": 7,
+                "snapshot_id": "native:1824",
+                "revision": 1825,
+                "native_revision": 1824,
+                "selection_attempted": False,
+                "retained_red": True,
+                "connection_generation": 1,
+                "bridge_pid": 197452,
+                "process_restart_required": False,
+                "mcp_only": True,
+                "fixture_used": False,
+                "ocr_used": False,
+                "coordinates_used": False,
+                "console_used": False,
+            },
+            {
+                "run": "R420-attempt-02",
+                "kind": "repeat-occurrence-same-process-green",
+                "artifact": (
+                    "_runtime/p1-b1-recovery-r420-20260911/live-artifacts/"
+                    "terminal-stages-red-attempt-02.json"
+                ),
+                "artifact_sha256": (
+                    "6A579AAC9B9D183EE97CD0756F06A01AFC026DD2A3387388BD9A1D534B272A64"
+                ),
+                "date_raw": 54251808,
+                "event_instance_id": 1113,
+                "root_character_id": 32904,
+                "saved_character_ids": {"founder": 16881830},
+                "saved_scope_raw_types": {
+                    "founder": 4,
+                    "parent_culture_1": 26,
+                    "new_culture": 26,
+                    "parent_1": 26,
+                    "ethos": 3,
+                },
+                "rendered_native_option_indices": [1],
+                "selected_option_number": 2,
+                "selected_native_option_index": 1,
+                "postcondition_verified": True,
+                "starting_snapshot_id": "native:1825",
+                "starting_revision": 1826,
+                "ending_snapshot_id": "native:1826",
+                "ending_revision": 1827,
+                "connection_generation": 1,
+                "bridge_pid": 197452,
+                "process_restart_required": False,
+                "mcp_only": True,
+                "fixture_used": False,
+                "ocr_used": False,
+                "coordinates_used": False,
+                "console_used": False,
+            },
+        ],
+    },
+}
+
+
 _STRESS_THRESHOLD_1721_OBSERVATIONS: Final[
     dict[str, dict[str, object]]
 ] = {
@@ -812,6 +940,7 @@ VANILLA_EMBEDDED_A_OBSERVATIONS: Final[
 ] = {
     **_LEGACY_MIGRATION_OBSERVATIONS,
     **_TGP_MOVEMENT_0070_OBSERVATIONS,
+    **_CULTURE_NOTIFICATION_1111_OBSERVATIONS,
     **_STRESS_THRESHOLD_1721_OBSERVATIONS,
 }
 
