@@ -536,3 +536,11 @@ flowchart TD
 - `8e2a8917143e261ccac589436b44baafdb1b9d14` 仅取消 append 前的名称拒绝，保留每行真实读值；最终六行 validator 仍要求经审阅的预期 identity，失败继续 RED。新 capture executable SHA-256 为 `B05E0B6D3CA8DBEC41C8C5107AB8F9AACD4E99981E442AC1DBF3077868241007`，normal/`-O` 聚焦矩阵各 `53/53`，self-test GREEN。
 - R447 最近 pre-target save SHA-256 `89D15B8ACB0E69E6C439D658582B63DC1F8AD11EC687089E5021A5961607D4DD` 已通过 R448 no-launch admission（receipt SHA-256 `5FF8771F9CCCA853FA4C4FE8FA7B7BE0787C3EAB5EEF25B18FD8FD5A9601E3EB`）。open_kaishek 依赖记录提交为 `1d67a5e9567e83af2875c5122681c3b35bc92278`，公开 MCP/Java/schema 不变。
 - T1 保持 90%，`GEN-034` unresolved；R448 只从该近边界输入采集并审阅六行实际名称，不扩大为长跑。T0 P1 仍为 `6/9`，P2 视频硬锁未触碰。
+
+## 2026-09-11：GEN-034 R448 六行 source 证据与本地化名称合同
+
+- R448 唯一 CK3 PID `26020`；`.1071.a` 第一次点击后一秒内确认消失，observer 捕获完整六行、恢复断点并 detach，外层 cleanup GREEN、CK3=0。六行均绑定 WarID `33554473`，各有唯一 loaded node/CArmy generation、四组 regiment 映射和实测 500 初始兵力。
+- 六行 `evaluated_name` 全为简体中文运行时显示值 `诺曼路匪`；旧 validator 用 authored key `norman_highwaymen` 比较，导致 `six-execution-identity-mismatch`。这是一项已解释的私有 harness/contract RED，产品 RED 为 false。
+- R448 capture/report/classification SHA-256 分别为 `B819D4C94B3BD25EC1B505368801FE5EC2BD09CBCEFB934543B687CB1A984A1D`、`F42E36EA27E7A2CA099A49729AAE673C5A393900B3195080F7B6995BF80BA720`、`852DDB667BDEC287450441BC95A5032065F9BB77AA3FF67FFF6F315A2E300ABF`。
+- `0235a50241f3dd6c37d375ff00bf56d76620d3a9` 在 C++/Python 中改为“名称非空且六行一致”，同时保留 node、WarID、generation、兵力和映射硬校验。新 executable SHA-256 `020F051DDE034CBBC67C5A308F8E035FFA3E224844AC413261AA257466B0F185`；self-test、normal/`-O` 各 `53/53` GREEN。T2 同步提交为 `880888cb130cbf2d7002ff02c9047d3e15e5f45a`，公开 MCP/Java/schema 不变。
+- 本轮未进入 bridge/termination，故 source-specific loss、comparison、decision/action readiness 不提升，T1=90%、`GEN-034` unresolved。R448 已结束；autosave 与入参逐字节相同且无 `raiktor`，下一步只需一轮 R449 近边界续跑。

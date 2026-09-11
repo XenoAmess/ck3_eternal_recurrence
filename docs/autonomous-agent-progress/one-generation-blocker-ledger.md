@@ -942,3 +942,11 @@ WarID `50331699` / `raiktor_claim_cb` 的 primary-attacker surrender 只有 type
 - **最小修复**：`8e2a8917143e261ccac589436b44baafdb1b9d14` 删除前置拒绝，保留实际字符串；最终 `ValidateSixExecutions` 仍要求六行 identity 一致后才能 GREEN。新 executable SHA-256 `B05E0B6D3CA8DBEC41C8C5107AB8F9AACD4E99981E442AC1DBF3077868241007`，self-test 与 normal/`-O` 各 `53/53` GREEN。
 - **输入与边界**：R447 latest pre-target save SHA-256 `89D15B8ACB0E69E6C439D658582B63DC1F8AD11EC687089E5021A5961607D4DD` 已通过 R448 no-launch admission `5FF8771F9CCCA853FA4C4FE8FA7B7BE0787C3EAB5EEF25B18FD8FD5A9601E3EB`。R447 已结束，cleanup GREEN、CK3=0；原版 tooltip scope RED 保留，但已由 mutation breakpoint 命中排除为执行阻断。
 - **仍未关闭**：尚未取得并审阅六行实际 `evaluated_name`、source-specific measured loss、comparison input、decision/action 和 postwar lifecycle。`GEN-034` 保持 unresolved、T1=90%。下一步只允许一轮 R448 近边界捕获；若 identity 不同，先审阅 artifact 再改合同，不原地反复测试。
+
+## 2026-09-11：GEN-034 R448 六行 source 已取得，lifecycle 尚未续接
+
+- **取得**：R448 捕获六个 unique loaded node/CArmy generation、同一 full-generation WarID `33554473`、24 条 persistent/current 映射与实测 `3000` 创建兵力。`.1071.a` 已确认接受，breakpoint restore、debugger detach 和 cleanup 全部 GREEN。capture SHA-256 `B819D4C94B3BD25EC1B505368801FE5EC2BD09CBCEFB934543B687CB1A984A1D`。
+- **RED 根因**：六行运行时名称均为本地化显示值 `诺曼路匪`，旧 validator 却要求 authored key `norman_highwaymen`。R448 因此为已解释的 harness/contract RED；产品 RED 为 false，原版 tooltip scope RED 也已由 native breakpoint 命中排除为执行阻断。
+- **修复**：`0235a50241f3dd6c37d375ff00bf56d76620d3a9` 要求名称非空且六行一致，不再用 authored key 选择 source；WarID、节点、generation、兵力聚合和 regiment 映射门全部保留。新 executable SHA-256 `020F051DDE034CBBC67C5A308F8E035FFA3E224844AC413261AA257466B0F185`，self-test 与 normal/`-O` 各 `53/53` GREEN。
+- **状态**：R448 在 observer RED 后未进入 bridge/current/termination/postwar；故 source-specific loss、comparison、decision/action/automatic-surrender 仍不 ready，`GEN-034` unresolved、T1=90%。R448 已结束、CK3=0；autosave 与近边界输入逐字节相同且无 `raiktor`。
+- **下一关闭入口**：只运行一轮 R449，消费修正后的 locale-neutral capture 并在同 PID 继续 current checkpoint、唯一 termination 与 postwar cleanup。若出现新的明确 RED，冻结并分类；不得为已证名称事实再跑重复轮次。

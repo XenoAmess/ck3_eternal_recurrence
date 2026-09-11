@@ -1993,8 +1993,11 @@ the selected `bookmark.1071.a` loaded option node and its exact
 `raiktor_claim_cb` WarID, then freeze every newly created persistent/current/
 CArmy generation and its current soldiers before time advances. Exactly six
 source executions are required before publishing a measured initial total.
-The evaluated `norman_highwaymen` name is supporting evidence only, never a
-standalone selector.
+The evaluated name is supporting evidence only, never a standalone selector.
+R448 proved that this value is locale-dependent display text (`诺曼路匪` under
+Simplified Chinese), while `norman_highwaymen` is the authored localization
+key. A valid capture therefore requires a nonempty value consistent across the
+six rows rather than equality with the authored key.
 
 The offline verifier
 `native_bridge/research/verify_raiktor_spawn_army_execute_v1.py` pins the
