@@ -225,3 +225,31 @@ successful run changes only those two inputs. Three-way choice remains blocked
 on `campaign-dominance-certificate`, `owner-authored-budget-profile`, and
 `same-frame-white-peace-comparison-certificate`; decision/action/automatic
 surrender and `GEN-034` remain false. T1 therefore remains **90%**.
+
+### 2026-09-11 current-checkout admission refresh
+
+The first current-checkout no-launch attempt stopped before CK3 because the
+manifest still pinned the whole-file SHA-256 of
+`tools/run_zg361_phase2_seed_capture.py` from the original adapter package.
+Later Phase2 work changed unrelated portions of that large module. A direct
+AST comparison against `7dec66d` confirmed that all seven definitions consumed
+by this adapter remain identical: `SeedCaptureError`, `sha256_file`,
+`tree_manifest`, `_settings_file_is_full`, `_warm_shadercache_manifest`,
+`_profile_startup_assets_error`, and `prepare_profile_settings`.
+
+Only the stale whole-file hash was refreshed. The adapter, outer owner,
+lifecycle runner, native binaries, exact game files, source provider and source
+contract remain byte-identical to their frozen values. The replacement
+manifest SHA-256 is
+`4A370EEAE10B588ABD6730D2F4E0FC0998A73D80ADECE1A8CF778F2F54D73079`.
+
+The second no-launch attempt returned
+`READY_TO_RUN_G2_SOURCE_SPECIFIC_LIFECYCLE`. Its receipt is
+`Z:\ck3_mod_rewrite\_runtime\g2-source-specific-r440-20260911\preflight-green.json`,
+20,184 bytes, SHA-256
+`81A9F1D38FF1ED1F86FC89652A3D268D9F1ADCC336FFCE91ED5C729CEDCFAE4C`.
+The source settings/cache pair is ready (`4,956` files, `216,470,121` bytes),
+the CK3 inventories before and after are identical, and no CK3 process was
+started. The directory name reserves the intended next live round; this
+preflight did not create R440. Live/readiness values remain unchanged until the
+exclusive command succeeds.
