@@ -80,9 +80,16 @@ class RaiktorWarBoundPrivateCaptureV1Tests(unittest.TestCase):
             "DebugActiveProcess(options.attach_pid)",
             "DebugSetProcessKillOnExit(FALSE)",
             "raiktor-war-bound-private-attach-ready-v1",
-            "DebugActiveProcessStop(process_info.dwProcessId)",
+            "DetachDebuggerWithRetry(",
         ):
             self.assertIn(token, self.source)
+
+    def test_debugger_detach_has_bounded_retry_and_error_telemetry(self) -> None:
+        self.assertIn("kMaxDebuggerDetachAttempts = 20", self.source)
+        self.assertIn("kDebuggerDetachRetryDelayMs = 25", self.source)
+        self.assertIn("DetachDebuggerWithRetry", self.source)
+        self.assertIn("debugger_detach_attempts", self.source)
+        self.assertIn("debugger_detach_last_error", self.source)
 
 
 if __name__ == "__main__":

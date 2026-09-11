@@ -10,7 +10,7 @@
   "live_authorized": false,
   "paths": {
     "game_executable": "Crusader Kings III/binaries/ck3.exe",
-    "capture_executable": "Z:\\ck3_mod_rewrite_process_assets\\zg361\\g2-source-specific-war-loss-provider-r449-20260911-r2\\build-msvc\\Release\\xar_ck3_raiktor_war_bound_private_capture_v1.exe",
+    "capture_executable": "Z:\\ck3_mod_rewrite_process_assets\\zg361\\g2-source-specific-war-loss-provider-r450-20260911\\build-msvc\\Release\\xar_ck3_raiktor_war_bound_private_capture_v1.exe",
     "preflight": "ck3_autonomous_player/native_bridge/research/prepare_raiktor_source_specific_war_loss_capture.py",
     "spawn_army_abi": "ck3_autonomous_player/native_bridge/research/raiktor_spawn_army_execute_v1_abi.json",
     "spawn_army_verifier": "ck3_autonomous_player/native_bridge/research/verify_raiktor_spawn_army_execute_v1.py",
@@ -21,12 +21,12 @@
   },
   "sha256": {
     "game_executable": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
-    "capture_executable": "020F051DDE034CBBC67C5A308F8E035FFA3E224844AC413261AA257466B0F185",
+    "capture_executable": "EEE39F858E941E1500DA13FB11906814FA4D70EE42DED894CFDEB03ACEF709B8",
     "preflight": "6286921CF0782FE47EFFEC911BCD93697FF6F77BA99CD815784E957DD0A80D9E",
     "spawn_army_abi": "C81963E32264CF2B0B09353A8EA25CA0A4035B43B13C9E5C36F050E1BA346AF0",
     "spawn_army_verifier": "A6FEF375185074F5CAC107334DFCED17083FE75B873CF0A8EA27D3A4F5CCAC72",
-    "capture_source": "F2259F11B9513E786D585F163B464360FD6334BC9474B270088AB86D13033870",
-    "capture_manifest": "F716A6E92C9652074CE0CF195A65934879F2458CA53E5A904EDB51185ECBFF7C",
+    "capture_source": "3CED2C016389C200B785C7B2BD3C0BE77EADBA56972527D2E3EDF647710156FE",
+    "capture_manifest": "C115105D4B938540C7E51F9E427CF1B78F00B296D27D5F3CF56112948158DC71",
     "cmake": "4F02E653FF30FDE44757F514E72D76B4E3A2C936B888B98212C89243FD737728",
     "provider": "AEFCD4BA93F4435509650E533C84E4E352472A125A7F4379A9D4B143CA97E4CB"
   },

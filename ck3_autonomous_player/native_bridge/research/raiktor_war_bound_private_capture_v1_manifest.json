@@ -14,7 +14,7 @@
     "architecture": "msvc-x64"
   },
   "capture_product": {
-    "executable_sha256": "020F051DDE034CBBC67C5A308F8E035FFA3E224844AC413261AA257466B0F185",
+    "executable_sha256": "EEE39F858E941E1500DA13FB11906814FA4D70EE42DED894CFDEB03ACEF709B8",
     "timeout_max_ms": 1200000
   },
   "observation": {
@@ -95,6 +95,9 @@
     "natural_bookmark_timeout_seconds": 520,
     "capture_process_timeout_ms": 1200000,
     "post_selection_capture_timeout_seconds": 30,
+    "debugger_detach_max_attempts": 20,
+    "debugger_detach_retry_delay_ms": 25,
+    "debugger_detach_retry_budget_ms": 475,
     "typed_terminals": [
       "FreshAttemptRequired",
       "LegalConsentRequired",
