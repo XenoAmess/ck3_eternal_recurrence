@@ -81,7 +81,10 @@ def test_migration_observations_join_existing_live_evidence() -> None:
     assert len(VANILLA_EMBEDDED_A_OBSERVATIONS) == 27
     for event_key, observation in EMBEDDED_A_VANILLA_OBSERVATIONS.items():
         migrated = VANILLA_EMBEDDED_A_OBSERVATIONS[event_key]
-        if event_key == "tgp_movement_events.0070":
+        if event_key in {
+            "tgp_movement_events.0070",
+            "culture_notification.1111",
+        }:
             assert migrated["exemplars"][0] == observation["exemplars"][0]
         else:
             assert migrated == observation
@@ -138,6 +141,9 @@ def test_culture_divergence_notification_is_source_reviewed_and_repeatable() -> 
     event_key = "culture_notification.1111"
     contract = EMBEDDED_A_VANILLA_TIMELINE_CONTRACTS[event_key]
     analysis = VANILLA_EMBEDDED_A_ANALYSIS[event_key]
+    legacy, first_green, repeat_red, repeat_green = VANILLA_EMBEDDED_A_OBSERVATIONS[
+        event_key
+    ]["exemplars"]
 
     assert "max_occurrences" not in contract
     assert contract["occurrence_policy"] == (
@@ -153,6 +159,27 @@ def test_culture_divergence_notification_is_source_reviewed_and_repeatable() -> 
     assert "instances 1111 and 1113" in analysis["repeatability_evidence"]
     for digest in analysis["source_sha256"].values():
         assert len(digest) == 64
+    assert legacy["run"] == "legacy-migrated"
+    assert first_green["run"] == "R420-attempt-01"
+    assert first_green["event_instance_id"] == 1111
+    assert first_green["selected_native_option_index"] == 1
+    assert first_green["postcondition_verified"] is True
+    assert first_green["ending_snapshot_id"] == "native:1482"
+    assert repeat_red["run"] == "R420-attempt-01"
+    assert repeat_red["event_instance_id"] == 1113
+    assert repeat_red["date_raw"] > first_green["date_raw"]
+    assert repeat_red["selection_attempted"] is False
+    assert repeat_red["retained_red"] is True
+    assert repeat_red["artifact_sha256"] == first_green["artifact_sha256"]
+    assert repeat_green["run"] == "R420-attempt-02"
+    assert repeat_green["event_instance_id"] == repeat_red["event_instance_id"]
+    assert repeat_green["selected_native_option_index"] == 1
+    assert repeat_green["postcondition_verified"] is True
+    assert repeat_green["starting_snapshot_id"] == "native:1825"
+    assert repeat_green["ending_snapshot_id"] == "native:1826"
+    assert repeat_green["artifact_sha256"] != repeat_red["artifact_sha256"]
+    assert repeat_green["bridge_pid"] == first_green["bridge_pid"]
+    assert repeat_green["connection_generation"] == 1
 
 
 def test_safe_option_and_occurrence_fields_match_existing_contracts() -> None:

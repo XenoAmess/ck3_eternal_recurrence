@@ -7213,9 +7213,41 @@
           "role": "caller_candidate",
           "source_column": 13,
           "source_line": 253
+        },
+        {
+          "caller_candidate_resolution": null,
+          "event_definition_key": "culture_notification.1111",
+          "logical_path": "common/on_action/culture_on_actions.txt",
+          "origin": "ck3_game",
+          "provenance": "manually-reviewed-analysis-source",
+          "role": "analysis_source",
+          "source_column": null,
+          "source_line": null
         }
       ],
       "sha256": "68e4ecc075a7d3d91fb2fd46a9a1c0c3fee12d07e018e6e2a01e533013f6c91f"
+    },
+    {
+      "blob_bytes": 102099,
+      "blob_path": "blobs/6a579aac9b9d183ee97cd0756f06a01afc026dd2a3387388bd9a1d534b272a64.gz",
+      "blob_sha256": "48fcc54fe63d5172c81a8a4c2f3e3a2eaa4fb84a306f0d16803e42843c52af89",
+      "bytes": 2130731,
+      "evidence_id": "6a579aac9b9d183ee97cd0756f06a01afc026dd2a3387388bd9a1d534b272a64",
+      "kind": "observation_artifact",
+      "media_type": "application/json",
+      "references": [
+        {
+          "caller_candidate_resolution": null,
+          "event_definition_key": "culture_notification.1111",
+          "logical_path": "_runtime/p1-b1-recovery-r420-20260911/live-artifacts/terminal-stages-red-attempt-02.json",
+          "origin": "runtime",
+          "provenance": "captured-observation-artifact",
+          "role": "artifact",
+          "source_column": null,
+          "source_line": null
+        }
+      ],
+      "sha256": "6a579aac9b9d183ee97cd0756f06a01afc026dd2a3387388bd9a1d534b272a64"
     },
     {
       "blob_bytes": 3034,
@@ -7764,6 +7796,28 @@
         }
       ],
       "sha256": "6f0f849c88ec48d78803b27b6bde94c334fdd94f61024aa1baa48ec88e2f4508"
+    },
+    {
+      "blob_bytes": 45197,
+      "blob_path": "blobs/70b27e1064482c11fae20cb730ed255755bdc5b70f1ead1c048209eb31806866.gz",
+      "blob_sha256": "c816d3e65dd9b22d6a2d8a0caf7208ac7c00c5063ae429ac130d2c93c2440bb2",
+      "bytes": 843064,
+      "evidence_id": "70b27e1064482c11fae20cb730ed255755bdc5b70f1ead1c048209eb31806866",
+      "kind": "observation_artifact",
+      "media_type": "application/json",
+      "references": [
+        {
+          "caller_candidate_resolution": null,
+          "event_definition_key": "culture_notification.1111",
+          "logical_path": "_runtime/p1-b1-recovery-r420-20260911/live-artifacts/terminal-stages-red-attempt-01.json",
+          "origin": "runtime",
+          "provenance": "captured-observation-artifact",
+          "role": "artifact",
+          "source_column": null,
+          "source_line": null
+        }
+      ],
+      "sha256": "70b27e1064482c11fae20cb730ed255755bdc5b70f1ead1c048209eb31806866"
     },
     {
       "blob_bytes": 28867,
@@ -8553,6 +8607,16 @@
           "role": "event_definition",
           "source_column": null,
           "source_line": 161
+        },
+        {
+          "caller_candidate_resolution": null,
+          "event_definition_key": "culture_notification.1111",
+          "logical_path": "events/culture_events/culture_notification_events.txt",
+          "origin": "ck3_game",
+          "provenance": "manually-reviewed-analysis-source",
+          "role": "analysis_source",
+          "source_column": null,
+          "source_line": null
         }
       ],
       "sha256": "875a91e2e308dcfb15ad8dd99d267f721985798fb6b6ad0e605011fe1ab9ac8f"
@@ -13893,13 +13957,13 @@
   "schema": "xar.ck3.vanilla-event-portable-evidence-manifest",
   "schema_version": 1,
   "statistics": {
-    "evidence": 271,
+    "evidence": 273,
     "generated_definition_references": 182,
     "lexical_caller_candidate_references": 519,
-    "manually_reviewed_analysis_source_references": 262,
-    "observation_artifact_references": 100,
-    "observation_artifacts": 84,
-    "references": 1063,
+    "manually_reviewed_analysis_source_references": 264,
+    "observation_artifact_references": 102,
+    "observation_artifacts": 86,
+    "references": 1067,
     "source_definitions": 187
   }
 }

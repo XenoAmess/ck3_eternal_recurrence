@@ -1,10 +1,11 @@
 """Build or verify the portable vanilla-event evidence bundle.
 
-Building imports the current reviewed event catalog and reads only exact-hash
-source files from a local CK3 tree and exact-hash observation artifacts from a
-local runtime tree.  ``--check`` is intentionally offline: it validates only
-the checked-in manifest and blobs, so a different operator or machine needs no
-access to the original absolute paths.
+Building imports the current reviewed event catalog. It reads new exact-hash
+source files and observation artifacts from the local CK3/runtime trees, while
+reusing an already packaged content-addressed blob when its historical source
+path is no longer available at the reviewed hash. ``--check`` is intentionally
+offline: it validates only the checked-in manifest and blobs, so a different
+operator or machine needs no access to the original absolute paths.
 """
 
 from __future__ import annotations
@@ -319,6 +320,40 @@ def _read_exact_payload(path: Path, digest: str, *, context: str) -> bytes:
     return path.read_bytes()
 
 
+def _read_exact_or_packaged_payload(
+    path: Path,
+    digest: str,
+    *,
+    context: str,
+    output_root: Path,
+) -> bytes:
+    """Read the live source, or reuse its already verified content-addressed blob.
+
+    Runtime reports can be extended in place after an earlier observation was
+    reviewed. Once the exact old bytes are stored under their SHA-256, a later
+    bundle rebuild must not depend on that mutable path still having those
+    bytes. New digests still require an exact external source.
+    """
+
+    try:
+        return _read_exact_payload(path, digest, context=context)
+    except EvidencePackagingError as source_error:
+        blob_path = output_root / "blobs" / f"{digest}.gz"
+        if not blob_path.is_file() or blob_path.is_symlink():
+            raise source_error
+        try:
+            payload = gzip.decompress(blob_path.read_bytes())
+        except (OSError, EOFError) as error:
+            raise EvidencePackagingError(
+                f"{context} packaged fallback is not valid gzip"
+            ) from error
+        if _sha256(payload) != digest:
+            raise EvidencePackagingError(
+                f"{context} packaged fallback SHA-256 mismatch"
+            )
+        return payload
+
+
 def _event_reference(
     *,
     event_key: str,
@@ -377,10 +412,11 @@ def build_bundle(
         caller_candidate_resolution: str | None,
     ) -> None:
         media_type = _media_type_for_path(logical_path)
-        payload = _read_exact_payload(
+        payload = _read_exact_or_packaged_payload(
             source_path,
             expected_digest,
             context=f"{event_key}:{role}:{logical_path}",
+            output_root=output_root,
         )
         _validate_payload_media_type(payload, media_type)
         evidence_id = _sha256(payload)

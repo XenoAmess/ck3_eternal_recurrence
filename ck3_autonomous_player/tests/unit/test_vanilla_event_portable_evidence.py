@@ -3,6 +3,7 @@ from __future__ import annotations
 import base64
 import gzip
 import hashlib
+import importlib.util
 import json
 import os
 from pathlib import Path
@@ -35,6 +36,14 @@ BUNDLE = SRC / "xar_autoplayer" / "vanilla_events" / "portable_evidence"
 MANIFEST = BUNDLE / "manifest_v1.json"
 SCHEMAS = PLAYER / "schemas"
 
+PACKAGER_SPEC = importlib.util.spec_from_file_location(
+    "package_vanilla_event_evidence",
+    ROOT / "tools" / "package_vanilla_event_evidence.py",
+)
+assert PACKAGER_SPEC is not None and PACKAGER_SPEC.loader is not None
+PACKAGER = importlib.util.module_from_spec(PACKAGER_SPEC)
+PACKAGER_SPEC.loader.exec_module(PACKAGER)
+
 
 def _schema(name: str) -> dict[str, object]:
     result = json.loads((SCHEMAS / name).read_text(encoding="utf-8"))
@@ -46,20 +55,40 @@ def _manifest() -> dict[str, object]:
     return json.loads(MANIFEST.read_text(encoding="utf-8"))
 
 
+def test_packager_reuses_verified_blob_after_historical_source_changes(
+    tmp_path: Path,
+) -> None:
+    original = b'{"historical":true}\n'
+    digest = hashlib.sha256(original).hexdigest()
+    source = tmp_path / "mutable-runtime-report.json"
+    source.write_bytes(b'{"historical":false}\n')
+    output = tmp_path / "bundle"
+    blob = output / "blobs" / f"{digest}.gz"
+    blob.parent.mkdir(parents=True)
+    blob.write_bytes(PACKAGER._deterministic_gzip(original))
+
+    assert PACKAGER._read_exact_or_packaged_payload(
+        source,
+        digest,
+        context="test historical artifact",
+        output_root=output,
+    ) == original
+
+
 def test_checked_in_bundle_is_complete_and_strictly_self_validating() -> None:
     result = validate_portable_evidence_bundle_v1()
     manifest = _manifest()
 
     assert result["status"] == "available"
-    assert result["validated_evidence"] == 271
+    assert result["validated_evidence"] == 273
     assert result["statistics"] == {
-        "evidence": 271,
+        "evidence": 273,
         "generated_definition_references": 182,
         "lexical_caller_candidate_references": 519,
-        "manually_reviewed_analysis_source_references": 262,
-        "observation_artifacts": 84,
-        "observation_artifact_references": 100,
-        "references": 1063,
+        "manually_reviewed_analysis_source_references": 264,
+        "observation_artifacts": 86,
+        "observation_artifact_references": 102,
+        "references": 1067,
         "source_definitions": 187,
     }
     assert result["manifest_sha256"] == hashlib.sha256(
@@ -68,7 +97,7 @@ def test_checked_in_bundle_is_complete_and_strictly_self_validating() -> None:
     Draft202012Validator(
         _schema("vanilla-event-portable-evidence-manifest-v1.schema.json")
     ).validate(manifest)
-    assert len(list((BUNDLE / "blobs").glob("*.gz"))) == 271
+    assert len(list((BUNDLE / "blobs").glob("*.gz"))) == 273
 
 
 def test_wheel_package_data_includes_source_index_and_evidence_bundle() -> None:
@@ -128,10 +157,10 @@ def test_manifest_preserves_honest_source_provenance_for_all_indexed_events() ->
 
     assert portable_event_keys_v1() == frozenset(source_index["events"])
     assert provenance_counts == {
-        "captured-observation-artifact": 100,
+        "captured-observation-artifact": 102,
         "generated-definition-index": 182,
         "lexical-caller-candidate-not-proven-runtime-caller": 519,
-        "manually-reviewed-analysis-source": 262,
+        "manually-reviewed-analysis-source": 264,
     }
     lexical = [
         reference
@@ -291,4 +320,4 @@ def test_offline_check_ignores_unavailable_external_roots() -> None:
     assert completed.returncode == 0, completed.stderr
     result = json.loads(completed.stdout)
     assert result["status"] == "available"
-    assert result["validated_evidence"] == 271
+    assert result["validated_evidence"] == 273
