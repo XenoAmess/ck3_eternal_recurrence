@@ -11,6 +11,7 @@ zg361_review_now_bridge_gui = {
 	effect = {
 		if = {
 			limit = { has_character_flag = zg361_review_now_pending }
+			zg361_b1_recover_empty_calibration_cycle_effect = yes
 			if = {
 				limit = { NOT = { zg361_b1_serial_dependents_active_trigger = yes } }
 				remove_character_flag = zg361_review_now_pending

@@ -9350,6 +9350,28 @@
       "sha256": "97c706c9ec1cf5b3a6520c27a6683b68eb94d89ef9dbad3d745c3ed4386ed247"
     },
     {
+      "blob_bytes": 60898,
+      "blob_path": "blobs/999828c356e88eb943a9e4cc22acbf63ba294afbaafca83fae750c67d3342b76.gz",
+      "blob_sha256": "803e9c34c6bae1ac9614a7d4977cead9415fbaf2fbe2c32651547ec87e366bc3",
+      "bytes": 1130607,
+      "evidence_id": "999828c356e88eb943a9e4cc22acbf63ba294afbaafca83fae750c67d3342b76",
+      "kind": "observation_artifact",
+      "media_type": "application/json",
+      "references": [
+        {
+          "caller_candidate_resolution": null,
+          "event_definition_key": "tgp_movement_events.0070",
+          "logical_path": "_runtime/p1-terminal-resume-r418-20260911/live-artifacts/terminal-stages-red-attempt-06.json",
+          "origin": "runtime",
+          "provenance": "captured-observation-artifact",
+          "role": "artifact",
+          "source_column": null,
+          "source_line": null
+        }
+      ],
+      "sha256": "999828c356e88eb943a9e4cc22acbf63ba294afbaafca83fae750c67d3342b76"
+    },
+    {
       "blob_bytes": 249963,
       "blob_path": "blobs/9a5fce5d0109e2b009826a15474bd469aa59ee6ea368a2fd00d40d1496ad02c3.gz",
       "blob_sha256": "a29f140b8b6b5f4434cc117556fd3a61b65772074a302862f691c2b23f5a4c42",
@@ -13871,13 +13893,13 @@
   "schema": "xar.ck3.vanilla-event-portable-evidence-manifest",
   "schema_version": 1,
   "statistics": {
-    "evidence": 270,
+    "evidence": 271,
     "generated_definition_references": 182,
     "lexical_caller_candidate_references": 519,
     "manually_reviewed_analysis_source_references": 262,
-    "observation_artifact_references": 99,
-    "observation_artifacts": 83,
-    "references": 1062,
+    "observation_artifact_references": 100,
+    "observation_artifacts": 84,
+    "references": 1063,
     "source_definitions": 187
   }
 }

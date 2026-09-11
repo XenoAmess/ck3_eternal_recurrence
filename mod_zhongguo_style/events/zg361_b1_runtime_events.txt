@@ -64,6 +64,7 @@ zg361b1.90 = {
 				has_game_rule = zg361_on
 				zg361_is_celestial_liege_trigger = yes
 			}
+			zg361_b1_recover_empty_calibration_cycle_effect = yes
 			if = {
 				limit = { zg361_b1_serial_dependents_active_trigger = yes }
 				if = {
@@ -105,6 +106,7 @@ zg361b1.91 = {
 				has_game_rule = zg361_on
 				zg361_is_celestial_liege_trigger = yes
 			}
+			zg361_b1_recover_empty_calibration_cycle_effect = yes
 			if = {
 				limit = {
 					trigger_if = {

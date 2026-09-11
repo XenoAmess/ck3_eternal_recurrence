@@ -367,3 +367,10 @@ Incident/X r3 provider 的交集为 `83 effects / 22 events / 6 triggers`，故�
 overlay/candidate 文件数在该阶段尚待 renderer；后续已冻结为 249-file product。Manager 43-effect owner 增量仍为 0，
 不在闭包内。原定“物化 Workforce → full-entry → seed”路线已由 r9 完成；当前下一项是 product-only focused
 B2/provider。footage 仍为 `0/8`，两份 MP4 均未生成。
+## R418 零幸存者 B1 liveness RED（2026-09-11）
+
+R418 在同一 PID 内解除全部已知原版事件阻断后跑满固定 `10190` 天产品窗，B1 仍为 active/state `7`，
+roster/processing 均为 `0`，无 pending、reopen 或隔级回调；Central 与 PP 始终不可达。该结果禁止继续延长观察窗。
+实机证据、根因和只在玩家请求边界运行的无奖励/无发布退役恢复见
+[r418-b1-zero-survivor-liveness-red-2026-09-11.md](r418-b1-zero-survivor-liveness-red-2026-09-11.md)。
+当前修复为 `static-ready`；fresh CK3 必须先证明 cycle `8/8` 被退役并由新周期完成 B1 publication，才能继续 P1 terminal stages。
