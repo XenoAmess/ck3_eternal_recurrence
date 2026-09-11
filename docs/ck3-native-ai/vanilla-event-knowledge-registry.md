@@ -5,11 +5,11 @@
 - [static-ready] 共享 registry 已实现在
   `ck3_autonomous_player/src/xar_autoplayer/vanilla_events/`。它提供合同构建、冲突检测、`$player` 物化和 JSON-safe 查询；全部能力均为离线只读，不依赖已启动的 CK3。
 - [static-ready] `ck3_query_vanilla_event_knowledge_v1` 已注册到正式 MCP server。它只按 stable event key 与 CK3 build 查询知识，不选择按钮、不推进时间、不修改存档或 registry。
-- [static-ready] 本包默认扁平 registry 为 **182 个 unique vanilla event key**。原冻结迁移 key 集不变；随后只按真实中断增量加入独立 records，最新新增 key 是 R418 attempt 04 的 `tgp_dynastic_cycle.0072`；其 authored1/native0 已在 attempt 05 同 PID 热恢复 GREEN。数量由 registry/migration 测试冻结。
-- [static-ready analysis / mixed live evidence] 当前 package 同时发布 **182 条 analysis** 与 **182 条 observation metadata**，其中 **38 个 key** 含非 legacy 的 paused/live observation。缺少已冻结 source hash 的旧结论只按既有合同注释、docs/tests 标为 migration-only，不编造 hash；新出现的事件边界均按 harness-route RED 保留，在各自动作完成前不是新增 production-live primitive。
+- [static-ready] 本包默认扁平 registry 为 **184 个 unique vanilla event key**。原冻结迁移 key 集不变；只按实机真实中断增量加入独立 records，最新新增 key 是 R463 的 `tgp_japan_yearly_events.1030`。数量由 registry/migration 测试冻结。
+- [static-ready analysis / mixed live evidence] 当前 package 同时发布 **184 条 analysis** 与 **184 条 observation metadata**，其中 **43 个 key** 含非 legacy 的 paused/live observation。缺少已冻结 source hash 的旧结论只按既有合同注释、docs/tests 标为 migration-only，不编造 hash；新出现的事件边界均按 harness-route RED 保留，在各自动作完成前不是新增 production-live primitive。
 - [static-ready context profiles] prebootstrap 的 `spymaster_task.0381`、`spymaster_task.0399` 两条记录继续作为 seed-capture 上下文 profile 保存，不混入默认扁平 registry。它们与默认 manager 合同使用相同 event key、但冻结不同阶段的精确存档 shape，强行压平会造成有意义的合同冲突。
 
-当前状态表示 registry、默认数据组合和只读 MCP 可以被静态消费者使用，不表示 182 条记录都已有独立 production-live exemplar，也不表示 CK3 自动玩家已经具备完整事件效用判断。production runtime 当前 package 组合 `328` 条事件合同；共享 registry 的 production-live 标签只落在已有选择与 advance 证据的切片。R418 已从 R416 partial checkpoint 在新 PID 冷恢复，闭合 `health.2202`，并在同一进程闭合下一轮 `health.3101`、`health.3103`、玩家康复 `health.1106`、`yearly.1030` 与 `tgp_dynastic_cycle.0072`；当前暂停于十年冷却后第二次出现的 `tgp_movement_events.0070`。旧次数上限造成选择前产品 RED，重复合同已修复为 static-ready，动作仍待同 PID 热恢复。当前 T0 产品进度不变。最新原版树见 [health-consumption-diagnosis.md](health-consumption-diagnosis.md)、[yearly-hook-for-secret.md](yearly-hook-for-secret.md)、[tgp-dynastic-cycle-stability-notification.md](tgp-dynastic-cycle-stability-notification.md)、[tgp-movement-shared-scroll.md](tgp-movement-shared-scroll.md) 与 [bp1-yearly-family-memory.md](bp1-yearly-family-memory.md)。
+当前状态表示 registry、默认数据组合和只读 MCP 可以被静态消费者使用，不表示 184 条记录都已有独立 production-live exemplar，也不表示 CK3 自动玩家已经具备完整事件效用判断。共享 registry 的 production-live 标签只落在已有选择与 advance 证据的切片。当前 T0 产品进度不因目录增长而变化。
 
 T0 当前仍为 `50%`、canonical stage `8/11`，source checkpoint `3/4` 且只缺 `capture_cross_cycle_endgame`；T0-P1 未签收，T0-P2 继续 `LOCKED`。`strict 4/361` 与 `definitions 106/626` 只是非阻塞 backlog。
 
@@ -82,7 +82,7 @@ v1 的 156 条迁移基线以保持现有 T0 合同逐值 parity 为首要目标
 - `VANILLA_TGP_MOVEMENT_ANALYSIS`：exact build/EXE、四个原版来源文件 SHA-256、定义行号、yearly caller 与十年 cooldown、三个选项语义、`after_effect=None` 和 safe-option rationale；
 - `VANILLA_TGP_MOVEMENT_OBSERVATIONS`：R372 paused-live exemplar，包括 artifact/hash、`date_raw=53436720`、instance `668`、本局人物 ID、scope raw type 和 `selection_attempted=false`。
 
-各轮实机日期、instance 和人物 ID 不进入新建或已触达迁移后的通用 timeline contract。当前 MCP v1 的既有 knowledge envelope 以彼此独立的 `contract`、`analysis`、`observations` 字段返回这三层；本包全部 182 条记录已有 analysis 与 observation metadata，其中 38 个 key 含非 legacy 的 paused/live observation。元数据不会混入选择合同或被物化成当前人物约束。`yearly.0003`、`yearly.1030`、`tgp_dynastic_cycle.0072`、`bp1_house_feud.0014`、`tgp_movement_events.0030`、`trait_specific.8001`、`bp1_yearly.1040`、`bp1_yearly.4000`、`tgp_movement_events.0110`、`artifact.4040` 与 source-reviewed health 路线均可从默认组合查询，且三层投影可严格 JSON 往返。
+各轮实机日期、instance 和人物 ID 不进入新建或已触达迁移后的通用 timeline contract。当前 MCP v1 的既有 knowledge envelope 以彼此独立的 `contract`、`analysis`、`observations` 字段返回这三层；本包全部 184 条记录已有 analysis 与 observation metadata，其中 43 个 key 含非 legacy 的 paused/live observation。元数据不会混入选择合同或被物化成当前人物约束。
 
 ### R390 `diplomacy_majesty.4033` 最小合同
 
@@ -90,7 +90,7 @@ R390 在 `date_raw=53589168` 暂停于 instance `1089`，原始 RED 原样保留
 
 CK3 `1.19.0.6` exact-build 定义位于 `events/lifestyles/statecraft_lifestyle/diplomacy_majesty_events.txt:968`。`.4033` 只由 `.4030` 的 option B 直接触发；上游是每年四次的 diplomacy lifestyle pulse 及概率事件池，不是 daily pulse。`.4033` 自身只检查 `thinker` 仍存活，没有独立随机分支或后续事件。唯一 authored option 1/native `0` 给接收者五年 `+1 diplomacy/+1 martial` modifier、对 thinker 的 `+25` opinion，并在需要时建立 potential-friend 关系；没有资源、压力、囚禁、受伤、死亡、战争或头衔代价。因此最小安全合同选择该唯一终止路线，同时仍要求 exact saved-scope shape、玩家/第三方关系、选项投影及提交前 revision 重绑定全部通过。
 
-portable evidence bundle 当前为 `270` 个唯一 evidence blob、`1062` 条 canonical 引用，其中 generated definition reference `182` 条、lexical caller candidate `519` 条、人工审阅 source `262` 条、observation artifact reference `99` 条；`83` 份唯一 observation artifact 包含 R418 attempts 01/02/03/04/05。manifest SHA-256 为 `3FF7B532304D80FF8D7CF809500C9D5AE3CE48EFC4BA95D10FC488AA10811924`。attempt 05 artifact SHA-256 为 `B5048E4E5384BB50B6DA0DC57A928AF7B0F56A999B27E6FD2C462180A1DCDE70`；它同时被 `.0072` GREEN 及 `.0070` 第一次 GREEN/第二次 RED 引用，同 event/artifact 的重复引用在 manifest 内只计一次。共享合同是 Python-only 数据，既有 continuation 会重新加载 canonical registry，可在保留同一 CK3 PID 的条件下热恢复。
+portable evidence bundle 当前为 `280` 个唯一 evidence blob、`1086` 条 canonical 引用，其中 generated definition reference `184` 条、lexical caller candidate `522` 条、人工审阅 source `276` 条、observation artifact reference `104` 条；共 `88` 份唯一 observation artifact。manifest SHA-256 为 `C0BD96E2F4798D928940F6957B61E0A77210178651EB48AA5C654B37CD15C588`。共享合同是 Python-only 数据，既有 continuation 会重新加载 canonical registry，可在保留同一 CK3 PID 的条件下热恢复。
 
 ### R416 `bp1_yearly.1040` 最小合同
 
@@ -278,3 +278,11 @@ Registry 的价值是让已经付出过的原版定义分析可以被下一次�
 R463 ? CK3 `1.19.0.6`?PID `113420`?generation `1`?`date_raw=53218848` ?? `health.2201` instance `341`?root `32904`?scope ? `physician=49718 / sick_character=36354 / disease_type:flag / health_court_owner=32904 / background_terrain_scope:province`??? `epidemic`?rendered native indices ? `(0,1,3,4)`??????????? epidemic ? RED?`selection_attempted=false`??? RED SHA-256 ? `555AA864F9BB9FC982E8C1E174CF095AF651AAED687F3329765A0D8606E98D8D`?
 
 exact source index ??? `events/health_events.txt:5931`?SHA-256 `8CAB7F230E09A37C15F7C088383D40752D970918D44D86762FDD068EE168EFEB`?? `common/scripted_effects/20_health_effects.txt:534` ? caller candidate?SHA-256 `6D7DEF1245D899DE4DEBC42136815BC7F4D14F6A467A8320355507AD03528F12`??????? `epidemic` ?????????? `health.2201` ??????? physician??????????? scope / ????????? authored 1/native 0 ???????????scope ????????? fail-closed?????? B1 ??????? [`../phase2-promo/r463-health-2201-non-epidemic-physician-red-2026-09-12.md`](../phase2-promo/r463-health-2201-non-epidemic-physician-red-2026-09-12.md)?
+
+## R463：TGP 日本神社年度事件 `.1030`
+
+R463 在 `date_raw=53219640`、instance `343` 原位冻结 `tgp_japan_yearly_events.1030`。native query 证明 root 是玩家 `32904`、saved scopes 为空，当前渲染 native `(0,1,2,3)`；snapshot 保留源码五个 options，第五项因 `cynical` 条件未渲染。不可变 RED SHA-256 为 `07BC6B2AA7A4AD2AC5AE4422CE9B129118C1940123DD187E2A3BC8AE2AE5A4C6`，且 `selection_attempted=false`。
+
+exact-build 定义位于 `events/dlc/tgp/tgp_japan_yearly_events_ariana.txt:926`，专用年度池在 `common/on_action/dlc/tgp/tgp_japan_yearly_on_actions.txt:24`，上层年度池在 `common/on_action/yearly_on_actions.txt:2558`；三文件 SHA-256 与完整语义记录在 [`../phase2-promo/r463-tgp-japan-yearly-1030-red-2026-09-12.md`](../phase2-promo/r463-tgp-japan-yearly-1030-red-2026-09-12.md)。安全合同选择 authored1/native0 的五年健康路线；该判断只依赖选项的显式终端效果，不扩展通用宗教观测或策略。
+
+该记录把通用目录增加到 184 个事件，并把 source index 增加到 184 个唯一定义与 522 条词法 caller candidates；portable evidence 离线 bundle 为 280 个 evidence / 1,086 个 references。普通与 optimized Python 的单项 manager-recovery 合同测试各 `1/1` GREEN。补丁为 Python 数据合同，当前轮次 R463 后续只允许原位热恢复。

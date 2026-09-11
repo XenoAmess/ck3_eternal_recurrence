@@ -282,6 +282,28 @@
       "sha256": "079f0ab5c4224c505ab9f25bca80d8df296e5899bfab26049ce5fe794dc0b042"
     },
     {
+      "blob_bytes": 30856,
+      "blob_path": "blobs/07bc6b2aa7a4ad2ac5ae4422ce9b129118c1940123dd187e2a3bc8ae2ae5a4c6.gz",
+      "blob_sha256": "9407d48045becb6537a80fc6bffcef6daff946c989ca93f7068ad52bf8757d90",
+      "bytes": 392668,
+      "evidence_id": "07bc6b2aa7a4ad2ac5ae4422ce9b129118c1940123dd187e2a3bc8ae2ae5a4c6",
+      "kind": "observation_artifact",
+      "media_type": "application/json",
+      "references": [
+        {
+          "caller_candidate_resolution": null,
+          "event_definition_key": "tgp_japan_yearly_events.1030",
+          "logical_path": "_runtime/p1-stage10-source-r349-r462-r463-20260912/r463-tgp-japan-yearly-1030-red-freeze.json",
+          "origin": "runtime",
+          "provenance": "captured-observation-artifact",
+          "role": "artifact",
+          "source_column": null,
+          "source_line": null
+        }
+      ],
+      "sha256": "07bc6b2aa7a4ad2ac5ae4422ce9b129118c1940123dd187e2a3bc8ae2ae5a4c6"
+    },
+    {
       "blob_bytes": 515,
       "blob_path": "blobs/07bd6c955cccd4c41705a750959aa381ec196ba61c6f1a233d25984e6e63efcf.gz",
       "blob_sha256": "dca176ba54dcdd33df3cecaeada1e9ded491b8a52cb591807eb6d70f592536db",
@@ -1177,6 +1199,26 @@
           "role": "caller_candidate",
           "source_column": 9,
           "source_line": 3764
+        },
+        {
+          "caller_candidate_resolution": "external-definition-file",
+          "event_definition_key": "tgp_japan_yearly_events.1030",
+          "logical_path": "common/on_action/yearly_on_actions.txt",
+          "origin": "ck3_game",
+          "provenance": "lexical-caller-candidate-not-proven-runtime-caller",
+          "role": "caller_candidate",
+          "source_column": 9,
+          "source_line": 3780
+        },
+        {
+          "caller_candidate_resolution": null,
+          "event_definition_key": "tgp_japan_yearly_events.1030",
+          "logical_path": "common/on_action/yearly_on_actions.txt",
+          "origin": "ck3_game",
+          "provenance": "manually-reviewed-analysis-source",
+          "role": "analysis_source",
+          "source_column": null,
+          "source_line": null
         },
         {
           "caller_candidate_resolution": "external-definition-file",
@@ -3132,6 +3174,38 @@
       "sha256": "3e05c94cdce4d42cce8256d2d79cd78feb1c9d5b79daa64aa8243aa0c658f22b"
     },
     {
+      "blob_bytes": 1107,
+      "blob_path": "blobs/40d68d6306d3e180e40efbc80d5879da825ab111f7ec0870682ab414f2ad5fe4.gz",
+      "blob_sha256": "bd9cd29a585c6683fdb55e894f44c285fa0e9bcf3a44226c2c75b4ebe37f5fce",
+      "bytes": 3006,
+      "evidence_id": "40d68d6306d3e180e40efbc80d5879da825ab111f7ec0870682ab414f2ad5fe4",
+      "kind": "source_definition",
+      "media_type": "text/plain; charset=utf-8",
+      "references": [
+        {
+          "caller_candidate_resolution": "external-definition-file",
+          "event_definition_key": "tgp_japan_yearly_events.1030",
+          "logical_path": "common/on_action/dlc/tgp/tgp_japan_yearly_on_actions.txt",
+          "origin": "ck3_game",
+          "provenance": "lexical-caller-candidate-not-proven-runtime-caller",
+          "role": "caller_candidate",
+          "source_column": 9,
+          "source_line": 24
+        },
+        {
+          "caller_candidate_resolution": null,
+          "event_definition_key": "tgp_japan_yearly_events.1030",
+          "logical_path": "common/on_action/dlc/tgp/tgp_japan_yearly_on_actions.txt",
+          "origin": "ck3_game",
+          "provenance": "manually-reviewed-analysis-source",
+          "role": "analysis_source",
+          "source_column": null,
+          "source_line": null
+        }
+      ],
+      "sha256": "40d68d6306d3e180e40efbc80d5879da825ab111f7ec0870682ab414f2ad5fe4"
+    },
+    {
       "blob_bytes": 16612,
       "blob_path": "blobs/435a81cce584d57ccd0568e81b6bbe49d09af44b309407487e0f69460a6b627a.gz",
       "blob_sha256": "41551cfe7ae39116bff3d0f907227b0a9dfb466818bed34bc13a236f44c5aeec",
@@ -3898,6 +3972,28 @@
       "sha256": "4f1a0ea8e43255b7c3399cc3b7f90623f56d8cb0688769d906ab6045efed838d"
     },
     {
+      "blob_bytes": 4156,
+      "blob_path": "blobs/503e04f591067de14e8ec50d435717100bfc0bd678a032e7bf4052cb4fbf9a84.gz",
+      "blob_sha256": "3b0aa9bf72a25d39b2a9eb223b8a85aa7ad61e589d37514c32867f3d165b3eb3",
+      "bytes": 27446,
+      "evidence_id": "503e04f591067de14e8ec50d435717100bfc0bd678a032e7bf4052cb4fbf9a84",
+      "kind": "source_definition",
+      "media_type": "text/plain; charset=utf-8",
+      "references": [
+        {
+          "caller_candidate_resolution": null,
+          "event_definition_key": "chancellor_task.1004",
+          "logical_path": "common/council_tasks/00_chancellor_tasks.txt",
+          "origin": "ck3_game",
+          "provenance": "manually-reviewed-analysis-source",
+          "role": "analysis_source",
+          "source_column": null,
+          "source_line": null
+        }
+      ],
+      "sha256": "503e04f591067de14e8ec50d435717100bfc0bd678a032e7bf4052cb4fbf9a84"
+    },
+    {
       "blob_bytes": 4714,
       "blob_path": "blobs/51adeea52f9a93406156abafa6608b0425003f63098f0cb033a5cb515c90f493.gz",
       "blob_sha256": "963af21d43e7dcae0e285842bb6ea3395109db0e45e6aac8e6a5ea8ed79afd47",
@@ -4099,6 +4195,16 @@
           "role": "caller_candidate",
           "source_column": 9,
           "source_line": 258
+        },
+        {
+          "caller_candidate_resolution": null,
+          "event_definition_key": "chancellor_task.1004",
+          "logical_path": "common/on_action/councillor_on_actions.txt",
+          "origin": "ck3_game",
+          "provenance": "manually-reviewed-analysis-source",
+          "role": "analysis_source",
+          "source_column": null,
+          "source_line": null
         },
         {
           "caller_candidate_resolution": "external-definition-file",
@@ -7420,6 +7526,28 @@
       "sha256": "6c48afc2d30213a878b03f5d3ff0ad11a32188e241b3293d947adb2120bb5836"
     },
     {
+      "blob_bytes": 5245153,
+      "blob_path": "blobs/6cdfd461e08a80f197778cd748fc05239856a30fdd0be7aeb4a0f2fc5b9d3d57.gz",
+      "blob_sha256": "920278aea4e6a0dba472acfcf9de04dc522a34326bf2f828d0ac1457ca358c46",
+      "bytes": 5243535,
+      "evidence_id": "6cdfd461e08a80f197778cd748fc05239856a30fdd0be7aeb4a0f2fc5b9d3d57",
+      "kind": "observation_artifact",
+      "media_type": "image/png",
+      "references": [
+        {
+          "caller_candidate_resolution": null,
+          "event_definition_key": "chancellor_task.1004",
+          "logical_path": "_runtime/g2-source-specific-r445-resume-20260911/live-artifacts/ui/bargain_g2-no-modal-stall-5_speed_5_stalled.png",
+          "origin": "runtime",
+          "provenance": "captured-observation-artifact",
+          "role": "artifact",
+          "source_column": null,
+          "source_line": null
+        }
+      ],
+      "sha256": "6cdfd461e08a80f197778cd748fc05239856a30fdd0be7aeb4a0f2fc5b9d3d57"
+    },
+    {
       "blob_bytes": 15316,
       "blob_path": "blobs/6d7def1245d899de4debc42136815bc7f4d14f6a467a8320355507ad03528f12.gz",
       "blob_sha256": "bc21219fbe2f3d11d45364ae2f6db0340fb867186b1f3c7cacab2f012b3123a2",
@@ -9020,6 +9148,28 @@
         }
       ],
       "sha256": "8cab7f230e09a37c15f7c088383d40752d970918d44d86762fdd068ee168efeb"
+    },
+    {
+      "blob_bytes": 3016,
+      "blob_path": "blobs/8cf9446933cb9ac961e4db042eef3c95c96ffb50e12cc72732be777febc3677f.gz",
+      "blob_sha256": "f3a2252a151ff50c5492d7bdecc8265da7eb32d0abaa064511aafd2ea19bec61",
+      "bytes": 9279,
+      "evidence_id": "8cf9446933cb9ac961e4db042eef3c95c96ffb50e12cc72732be777febc3677f",
+      "kind": "source_definition",
+      "media_type": "application/yaml; charset=utf-8",
+      "references": [
+        {
+          "caller_candidate_resolution": null,
+          "event_definition_key": "chancellor_task.1004",
+          "logical_path": "localization/english/event_localization/councillor_task_events/chancellor_task_events_l_english.yml",
+          "origin": "ck3_game",
+          "provenance": "manually-reviewed-analysis-source",
+          "role": "analysis_source",
+          "source_column": null,
+          "source_line": null
+        }
+      ],
+      "sha256": "8cf9446933cb9ac961e4db042eef3c95c96ffb50e12cc72732be777febc3677f"
     },
     {
       "blob_bytes": 2727,
@@ -11014,6 +11164,38 @@
       "sha256": "b854af82181794200d98330d9236f71f982a278868dc3d05bc016d4d9fdecb8d"
     },
     {
+      "blob_bytes": 17842,
+      "blob_path": "blobs/b9f5799465e9b83b16c97086bc74f43ecd3949680ae1a78c081ed44ecd9b5fd6.gz",
+      "blob_sha256": "99cf8ec05b7c2f5eb6bc3eb2b91fa3d8aa3fa6702404d250412651e5b65fe731",
+      "bytes": 120507,
+      "evidence_id": "b9f5799465e9b83b16c97086bc74f43ecd3949680ae1a78c081ed44ecd9b5fd6",
+      "kind": "source_definition",
+      "media_type": "text/plain; charset=utf-8",
+      "references": [
+        {
+          "caller_candidate_resolution": null,
+          "event_definition_key": "tgp_japan_yearly_events.1030",
+          "logical_path": "events/dlc/tgp/tgp_japan_yearly_events_ariana.txt",
+          "origin": "ck3_game",
+          "provenance": "generated-definition-index",
+          "role": "event_definition",
+          "source_column": null,
+          "source_line": 926
+        },
+        {
+          "caller_candidate_resolution": null,
+          "event_definition_key": "tgp_japan_yearly_events.1030",
+          "logical_path": "events/dlc/tgp/tgp_japan_yearly_events_ariana.txt",
+          "origin": "ck3_game",
+          "provenance": "manually-reviewed-analysis-source",
+          "role": "analysis_source",
+          "source_column": null,
+          "source_line": null
+        }
+      ],
+      "sha256": "b9f5799465e9b83b16c97086bc74f43ecd3949680ae1a78c081ed44ecd9b5fd6"
+    },
+    {
       "blob_bytes": 1163840,
       "blob_path": "blobs/ba39b64acc3224e8f1f5d5c04719a04106430d7f2f2551dec52ccec514fc3aa6.gz",
       "blob_sha256": "a5e2e985909e829ff79456b4478805a493f7373a209f0b1f5ac67c0f088935a3",
@@ -11966,6 +12148,28 @@
         }
       ],
       "sha256": "cd3daa9da33c3dfd15934ca30c1b2d7381e0b3968337bf52a7cbc2f9f2237102"
+    },
+    {
+      "blob_bytes": 3285,
+      "blob_path": "blobs/cdcbe4b082018e3be75c5d64a08627b6f3be2c57d83b6e3f0d2ff45ed6f19474.gz",
+      "blob_sha256": "ee816bf52c2bdd8811fc36aa44b08529151cc6af0ff669c53587adb03d8d4827",
+      "bytes": 8782,
+      "evidence_id": "cdcbe4b082018e3be75c5d64a08627b6f3be2c57d83b6e3f0d2ff45ed6f19474",
+      "kind": "source_definition",
+      "media_type": "application/yaml; charset=utf-8",
+      "references": [
+        {
+          "caller_candidate_resolution": null,
+          "event_definition_key": "chancellor_task.1004",
+          "logical_path": "localization/simp_chinese/event_localization/councillor_task_events/chancellor_task_events_l_simp_chinese.yml",
+          "origin": "ck3_game",
+          "provenance": "manually-reviewed-analysis-source",
+          "role": "analysis_source",
+          "source_column": null,
+          "source_line": null
+        }
+      ],
+      "sha256": "cdcbe4b082018e3be75c5d64a08627b6f3be2c57d83b6e3f0d2ff45ed6f19474"
     },
     {
       "blob_bytes": 19602,
@@ -13232,6 +13436,36 @@
         },
         {
           "caller_candidate_resolution": null,
+          "event_definition_key": "chancellor_task.1004",
+          "logical_path": "events/councillor_task_events/chancellor_task_events.txt",
+          "origin": "ck3_game",
+          "provenance": "generated-definition-index",
+          "role": "event_definition",
+          "source_column": null,
+          "source_line": 508
+        },
+        {
+          "caller_candidate_resolution": "same-definition-file-only",
+          "event_definition_key": "chancellor_task.1004",
+          "logical_path": "events/councillor_task_events/chancellor_task_events.txt",
+          "origin": "ck3_game",
+          "provenance": "lexical-caller-candidate-not-proven-runtime-caller",
+          "role": "caller_candidate",
+          "source_column": 20,
+          "source_line": 470
+        },
+        {
+          "caller_candidate_resolution": null,
+          "event_definition_key": "chancellor_task.1004",
+          "logical_path": "events/councillor_task_events/chancellor_task_events.txt",
+          "origin": "ck3_game",
+          "provenance": "manually-reviewed-analysis-source",
+          "role": "analysis_source",
+          "source_column": null,
+          "source_line": null
+        },
+        {
+          "caller_candidate_resolution": null,
           "event_definition_key": "chancellor_task.1102",
           "logical_path": "events/councillor_task_events/chancellor_task_events.txt",
           "origin": "ck3_game",
@@ -13997,13 +14231,13 @@
   "schema": "xar.ck3.vanilla-event-portable-evidence-manifest",
   "schema_version": 1,
   "statistics": {
-    "evidence": 273,
-    "generated_definition_references": 182,
-    "lexical_caller_candidate_references": 519,
-    "manually_reviewed_analysis_source_references": 268,
-    "observation_artifact_references": 102,
-    "observation_artifacts": 86,
-    "references": 1071,
-    "source_definitions": 187
+    "evidence": 280,
+    "generated_definition_references": 184,
+    "lexical_caller_candidate_references": 522,
+    "manually_reviewed_analysis_source_references": 276,
+    "observation_artifact_references": 104,
+    "observation_artifacts": 88,
+    "references": 1086,
+    "source_definitions": 192
   }
 }

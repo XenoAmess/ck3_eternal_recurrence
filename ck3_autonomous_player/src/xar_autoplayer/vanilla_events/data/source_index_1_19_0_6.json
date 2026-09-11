@@ -1,19 +1,19 @@
 {
   "audit": {
     "ambiguous_definition_count": 0,
-    "caller_candidate_file_count": 78,
-    "caller_candidate_reference_count": 520,
-    "definition_file_count": 70,
-    "external_caller_event_count": 148,
+    "caller_candidate_file_count": 79,
+    "caller_candidate_reference_count": 522,
+    "definition_file_count": 71,
+    "external_caller_event_count": 149,
     "missing_definition_count": 0,
     "namespace_mismatch_count": 0,
-    "registered_event_count": 183,
+    "registered_event_count": 184,
     "same_file_only_caller_event_count": 35,
-    "unique_definition_count": 183
+    "unique_definition_count": 184
   },
   "ck3_build": "1.19.0.6",
   "ck3_exe_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
-  "dataset_sha256": "265EBCE989627D68C69DDEF178A7BC0EBE1DE846721E42584D2B8271D14E9CFD",
+  "dataset_sha256": "EB04C48C6FD007BA2CB30203433EA4377BD858B33816908AAA269B48B6F0F4EF",
   "events": {
     "adultery.0002": {
       "caller_candidate_resolution": "same-definition-file-only",
@@ -5187,6 +5187,31 @@
         "relative_path": "events/dlc/tgp/tgp_interaction_events.txt"
       },
       "namespace": "tgp_interaction_event"
+    },
+    "tgp_japan_yearly_events.1030": {
+      "caller_candidate_resolution": "external-definition-file",
+      "caller_candidates": [
+        {
+          "column": 9,
+          "file_sha256": "40D68D6306D3E180E40EFBC80D5879DA825AB111F7EC0870682AB414F2AD5FE4",
+          "kind": "exact-token-lexical-candidate",
+          "line": 24,
+          "relative_path": "common/on_action/dlc/tgp/tgp_japan_yearly_on_actions.txt"
+        },
+        {
+          "column": 9,
+          "file_sha256": "0FC85A284224A68D1CA0A4EF071D4F4A4F49896753AEC463975A12EE4E1116FA",
+          "kind": "exact-token-lexical-candidate",
+          "line": 3780,
+          "relative_path": "common/on_action/yearly_on_actions.txt"
+        }
+      ],
+      "definition": {
+        "file_sha256": "B9F5799465E9B83B16C97086BC74F43ECD3949680AE1A78C081ED44ECD9B5FD6",
+        "line": 926,
+        "relative_path": "events/dlc/tgp/tgp_japan_yearly_events_ariana.txt"
+      },
+      "namespace": "tgp_japan_yearly_events"
     },
     "tgp_movement_events.0030": {
       "caller_candidate_resolution": "external-definition-file",
