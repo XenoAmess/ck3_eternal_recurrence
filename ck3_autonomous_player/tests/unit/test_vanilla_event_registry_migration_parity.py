@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+﻿#!/usr/bin/env python3
 """Transitional parity checks for the shared vanilla-event registry."""
 
 from __future__ import annotations
@@ -62,6 +62,9 @@ from xar_autoplayer.vanilla_events.records_trait_specific import (  # noqa: E402
 )
 from xar_autoplayer.vanilla_events.records_death_management import (  # noqa: E402
     VANILLA_DEATH_MANAGEMENT_TIMELINE_CONTRACTS,
+)
+from xar_autoplayer.vanilla_events.records_chancellor_foreign_affairs import (  # noqa: E402
+    VANILLA_CHANCELLOR_FOREIGN_AFFAIRS_TIMELINE_CONTRACTS,
 )
 from xar_autoplayer.vanilla_events.records_diplomacy_majesty import (  # noqa: E402
     VANILLA_DIPLOMACY_MAJESTY_TIMELINE_CONTRACTS,
@@ -343,6 +346,7 @@ class VanillaEventRegistryMigrationParityTests(unittest.TestCase):
             VANILLA_VASSAL_INTERACTION_TIMELINE_CONTRACTS,
             VANILLA_TRAIT_SPECIFIC_TIMELINE_CONTRACTS,
             VANILLA_DEATH_MANAGEMENT_TIMELINE_CONTRACTS,
+            VANILLA_CHANCELLOR_FOREIGN_AFFAIRS_TIMELINE_CONTRACTS,
             VANILLA_DIPLOMACY_MAJESTY_TIMELINE_CONTRACTS,
             VANILLA_FACTION_DEMAND_TIMELINE_CONTRACTS,
             VANILLA_TGP_TREASURY_TIMELINE_CONTRACTS,
@@ -358,8 +362,8 @@ class VanillaEventRegistryMigrationParityTests(unittest.TestCase):
             for event_key in records:
                 key_memberships[event_key].append(group_index)
 
-        self.assertEqual(sum(map(len, default_groups)), 182)
-        self.assertEqual(len(key_memberships), 182)
+        self.assertEqual(sum(map(len, default_groups)), 183)
+        self.assertEqual(len(key_memberships), 183)
         self.assertEqual(
             {
                 event_key: indexes

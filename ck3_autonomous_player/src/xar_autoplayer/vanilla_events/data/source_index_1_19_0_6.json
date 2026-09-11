@@ -2,18 +2,18 @@
   "audit": {
     "ambiguous_definition_count": 0,
     "caller_candidate_file_count": 78,
-    "caller_candidate_reference_count": 519,
+    "caller_candidate_reference_count": 520,
     "definition_file_count": 70,
     "external_caller_event_count": 148,
     "missing_definition_count": 0,
     "namespace_mismatch_count": 0,
-    "registered_event_count": 182,
-    "same_file_only_caller_event_count": 34,
-    "unique_definition_count": 182
+    "registered_event_count": 183,
+    "same_file_only_caller_event_count": 35,
+    "unique_definition_count": 183
   },
   "ck3_build": "1.19.0.6",
   "ck3_exe_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
-  "dataset_sha256": "9F2041C61916B01ED1E907370DB30EB7B4D70744D6B134D4AFAC181FB1FF7B86",
+  "dataset_sha256": "265EBCE989627D68C69DDEF178A7BC0EBE1DE846721E42584D2B8271D14E9CFD",
   "events": {
     "adultery.0002": {
       "caller_candidate_resolution": "same-definition-file-only",
@@ -305,6 +305,24 @@
       "definition": {
         "file_sha256": "EAF95612E4AEC6BF0CEDBC1ACA1C66C8087DD280BC42A60296F824437A5A46EB",
         "line": 298,
+        "relative_path": "events/councillor_task_events/chancellor_task_events.txt"
+      },
+      "namespace": "chancellor_task"
+    },
+    "chancellor_task.1004": {
+      "caller_candidate_resolution": "same-definition-file-only",
+      "caller_candidates": [
+        {
+          "column": 20,
+          "file_sha256": "EAF95612E4AEC6BF0CEDBC1ACA1C66C8087DD280BC42A60296F824437A5A46EB",
+          "kind": "exact-token-lexical-candidate",
+          "line": 470,
+          "relative_path": "events/councillor_task_events/chancellor_task_events.txt"
+        }
+      ],
+      "definition": {
+        "file_sha256": "EAF95612E4AEC6BF0CEDBC1ACA1C66C8087DD280BC42A60296F824437A5A46EB",
+        "line": 508,
         "relative_path": "events/councillor_task_events/chancellor_task_events.txt"
       },
       "namespace": "chancellor_task"
