@@ -1,8 +1,9 @@
-#!/usr/bin/env python3
-"""MCP-owned continuation of current-product Central terminal stages 9-11.
+﻿#!/usr/bin/env python3
+"""MCP-owned continuation of the played Central owner's stages 9 and 11.
 
 Reuse the AF5 operator's frozen-input activation and lifecycle. job_role marks
 this specific consumer; its stage receipts and optional B1 proof remain separate.
+The player-visible manager Stage 10 receipt uses an independent subject route.
 No launch occurs until the operator sends run-stages.
 """
 from __future__ import annotations
@@ -248,7 +249,7 @@ class TerminalStagesOperatorJob(base.Af5OperatorJob):
             raise base.Af5JobError("stages terminal save was not materialized", evidence)
         archive = self.runner._phase2_archive_checkpoint(
             checkpoint, artifacts / "representative-terminal.ck3",
-            save_lineage_id=f"{bound['round']}.central-stages-9-11",
+            save_lineage_id=f"{bound['round']}.central-stages-9-and-11",
         )
         base.write_object(artifacts / "representative-terminal-checkpoint.json", {
             "schema_version": 1, "result": "GREEN", "checkpoint": archive,

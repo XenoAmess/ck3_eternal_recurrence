@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+﻿#!/usr/bin/env python3
 """Offline continuation tests; synthetic native frames are never live evidence."""
 
 from __future__ import annotations
@@ -35,14 +35,12 @@ class Service:
         self.date = 100000
         self.current_stage = None
         self.retain_ack_event = False
-        self.manager_terminal = True
         self.saved_ok = True
         self.fail_entry_once = None
         self.visits = []
         self.actions = []
         self.progress_inputs = []
         self.entry_kwargs = []
-        self.manager_queries = []
         self.saves = []
 
     def snapshot(self) -> dict[str, object]:
@@ -82,10 +80,7 @@ class Service:
         if event_instance_id != 100 + self.current_stage or expected_revision != self.revision:
             raise AssertionError("event context query did not bind the current frame")
         scopes = []
-        if self.current_stage == 10:
-            scopes = [saved("zg361_mg_f_ticket_owner", SUBJECT),
-                      saved("zg361_mg_f_ticket_subject", PLAYER)]
-        elif self.current_stage == 11:
+        if self.current_stage == 11:
             scopes = [saved("zg361_we_al_owner", PLAYER),
                       saved("zg361_we_al_subject", SUBJECT)]
         return {"status": "available", "current_event_window_context": {
@@ -101,17 +96,6 @@ class Service:
             "saved_scopes": scopes,
             "options": [{"native_option_index": index, "shown": True, "enabled": True}
                         for index in range(3 if self.current_stage == 11 else 1)],
-        }}
-
-    def query_zhongguo_manager_governance_snapshot_v1(self, nonce: str, **kwargs: object) -> dict[str, object]:
-        self.manager_queries.append((nonce, kwargs))
-        if kwargs != {"expected_revision": self.revision,
-                      "owner_character_id": SUBJECT, "subject_character_id": PLAYER}:
-            raise AssertionError("manager observation did not bind the saved F-case")
-        return {"status": "available", "readiness": {"ready": True}, "f_case": {
-            "owner_character_id": typed(SUBJECT), "subject_character_id": typed(PLAYER),
-            "state": typed(5 if self.manager_terminal else 3),
-            "active": typed(not self.manager_terminal),
         }}
 
     def select_event_option(self, option_number: int, *, event_instance_id: int, expected_revision: int) -> dict[str, object]:
@@ -145,23 +129,25 @@ class TerminalStagesTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as temporary:
             directory = Path(temporary)
             result = self.run_cell(service, directory)
-            self.assertEqual(service.visits, [9, 10, 11])
+            self.assertEqual(service.visits, [9, 11])
             self.assertEqual(
                 [row["progress_sample_interval_days"] for row in service.entry_kwargs],
-                [cell.NAVIGATION_PROGRESS_SAMPLE_DAYS] * 3,
+                [cell.NAVIGATION_PROGRESS_SAMPLE_DAYS] * 2,
             )
-            self.assertEqual(service.actions, [(9, 1), (10, 1)])
-            self.assertEqual(service.manager_queries[0][0], "synthetic.terminal.10")
+            self.assertEqual(service.actions, [(9, 1)])
             receipts = result["p1_acceptance_evidence"]["central_stage_terminals"]
-            self.assertEqual(set(receipts), {"9", "10"})
-            for stage in (9, 10):
-                row = receipts[str(stage)]
-                self.assertEqual((row["result"], row["stage"], row["event_definition_key"]),
-                                 ("GREEN", stage, cell.EVENTS[stage]))
-                self.assertIs(row["provider_observed"], True)
-                self.assertIs(row["terminal_postcondition_verified"], True)
-                self.assertIs(row["action_ack_is_business_postcondition"], False)
-                self.assertIs(row["acknowledgement"]["old_event_instance_removed"], True)
+            self.assertEqual(set(receipts), {"9"})
+            row = receipts["9"]
+            self.assertEqual((row["result"], row["stage"], row["event_definition_key"]),
+                             ("GREEN", 9, cell.EVENTS[9]))
+            self.assertIs(row["provider_observed"], True)
+            self.assertIs(row["terminal_postcondition_verified"], True)
+            self.assertIs(row["action_ack_is_business_postcondition"], False)
+            self.assertIs(row["acknowledgement"]["old_event_instance_removed"], True)
+            self.assertEqual(result["owned_stage_sequence"], [9, 11])
+            self.assertIs(result["independent_stage10_required"], True)
+            self.assertEqual(result["independent_stage10_event_definition_key"],
+                             cell.INDEPENDENT_STAGE10_EVENT)
             self.assertEqual(result["result"], "RED")
             self.assertIn("owner-view Workforce", result["failure_reason"])
             self.assertEqual(result["stage11_park"]["subject_character_id"], SUBJECT)
@@ -181,26 +167,26 @@ class TerminalStagesTests(unittest.TestCase):
         self.assertIn("snapshot did not verify", result["failure_reason"])
         self.assertEqual(service.visits, [9])
 
-    def test_manager_summary_without_native_terminal_is_not_acknowledged(self) -> None:
+    def test_player_visible_manager_summary_is_not_part_of_owned_sequence(self) -> None:
         service = Service()
-        service.manager_terminal = False
         with tempfile.TemporaryDirectory() as temporary:
             result = self.run_cell(service, Path(temporary))
         self.assertEqual(set(result["p1_acceptance_evidence"]["central_stage_terminals"]), {"9"})
         self.assertEqual(service.actions, [(9, 1)])
-        self.assertIn("F-case has not reached", result["failure_reason"])
-        self.assertEqual(result["stage_observations"]["10"]["provider"]["f_case"]["state"]["value"], 3)
+        self.assertNotIn(10, service.visits)
+        self.assertNotIn("10", result["stage_observations"])
+        self.assertIn("owner-view Workforce", result["failure_reason"])
 
     def test_retry_retains_horizon_progress_completed_receipt_and_failed_attempt(self) -> None:
         service = Service()
-        service.fail_entry_once = 10
+        service.fail_entry_once = 11
         with tempfile.TemporaryDirectory() as temporary:
             directory = Path(temporary)
             first = self.run_cell(service, directory)
             first_bytes = (directory / "attempt-001.json").read_bytes()
             second = self.run_cell(service, directory)
-            self.assertEqual(service.visits, [9, 10, 10, 11])
-            self.assertEqual(service.actions, [(9, 1), (10, 1)])
+            self.assertEqual(service.visits, [9, 11, 11])
+            self.assertEqual(service.actions, [(9, 1)])
             self.assertEqual(service.progress_inputs[2], first["progress_out"])
             self.assertEqual(first["progress_out"]["absolute_end_date_raw"],
                              second["progress_out"]["absolute_end_date_raw"])
@@ -216,7 +202,7 @@ class TerminalStagesTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as temporary:
             result = self.run_cell(service, Path(temporary))
         self.assertIn("parked checkpoint was not saved", result["failure_reason"])
-        self.assertEqual(service.actions, [(9, 1), (10, 1)])
+        self.assertEqual(service.actions, [(9, 1)])
 
 
 class OwnerService(Service):
@@ -300,7 +286,7 @@ class OwnerTerminalTests(unittest.TestCase):
                 result = self.run_cell(service, Path(temporary))
                 row = result["p1_acceptance_evidence"]["central_stage_terminals"]["11"]
                 self.assertEqual(result["result"], "GREEN")
-                self.assertEqual(service.actions, [(9, 1), (10, 1), (11, 1)])
+                self.assertEqual(service.actions, [(9, 1), (11, 1)])
                 self.assertEqual((row["provider_domain"], row["terminal_state"], row["terminal_kind"]),
                                  ("workforce", "closed", kind))
                 self.assertIs(row["player_switch_attempted"], False)
@@ -313,7 +299,7 @@ class OwnerTerminalTests(unittest.TestCase):
         service = OwnerService(early_na=True)
         with tempfile.TemporaryDirectory() as temporary:
             result = self.run_cell(service, Path(temporary))
-        self.assertEqual(service.actions, [(9, 1), (10, 1)])
+        self.assertEqual(service.actions, [(9, 1)])
         row = result["p1_acceptance_evidence"]["central_stage_terminals"]["11"]
         self.assertEqual(row["terminal_state"], "terminal_na")
         self.assertIsNone(row["m360_action"])
@@ -326,7 +312,7 @@ class OwnerTerminalTests(unittest.TestCase):
             with self.assertRaises(cell.TerminalStagesError) as raised:
                 self.run_cell(service, Path(temporary))
         self.assertIn("observation is missing", str(raised.exception))
-        self.assertEqual(service.actions, [(9, 1), (10, 1)])
+        self.assertEqual(service.actions, [(9, 1)])
 
     def test_retry_after_m360_waits_without_replaying_the_choice(self) -> None:
         service = OwnerService()
@@ -343,7 +329,7 @@ class OwnerTerminalTests(unittest.TestCase):
         self.assertEqual(service.actions.count((11, 1)), 1)
         self.assertEqual(
             [row["progress_sample_interval_days"] for row in service.entry_kwargs],
-            [cell.NAVIGATION_PROGRESS_SAMPLE_DAYS] * 3,
+            [cell.NAVIGATION_PROGRESS_SAMPLE_DAYS] * 2,
         )
         self.assertEqual(
             [row["progress_sample_interval_days"] for row in service.stage11_direct_kwargs],

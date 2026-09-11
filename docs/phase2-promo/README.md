@@ -6,7 +6,7 @@ P1 现在只由产品关键链、代表性高风险路径和真实 encountered R
 
 1. 当前 B1 配额重建修复取得 production-live 后置；
 2. `zg361comp.1` 的 AF5 选择 authored `42` / native `41`，并由独立 provider 证明 portfolio 进入终态；
-3. Central stage `9/10` 分别以 `zg361cl.390`、`zg361mg.120` 取得真实终态；stage `11` 取得真实 Workforce provider terminal（正常 close 或合法 N/A close），不要求 `.361` 宪章/制度债事件或其跨周期后续；
+3. 玩家作为 Central owner 的 stage `9/11` 分别取得 `zg361cl.390` 与真实 Workforce provider terminal（正常 close 或合法 N/A close）；独立的玩家 manager-subject 路线以 `zg361mg.120` 取得 stage `10` F-case terminal，不要求 `.361` 宪章/制度债事件或其跨周期后续；
 4. 从一个代表性终态生成 save，执行一次真正 cold restore，并回读相同终态；
 5. 覆盖完整 gameplay 时间窗的 error scan 为 GREEN；
 6. managed cleanup 为 GREEN；
@@ -34,10 +34,8 @@ coverage 失败返回 RED，但该诊断 RED 不回写、不改变独立的 P1 �
 T0 产品总完成度；P1 尚未签收，P2 继续 `LOCKED`。R390 Stage 9 冻结记录的真实选择与当前候选的 23 文件逐字节
 资格核对，以及 R432 硬上限、R433 零游戏日诊断见
 [`r432-r433-bounded-stage9-intake-2026-09-11.md`](r432-r433-bounded-stage9-intake-2026-09-11.md)。证据整理不重开 CK3。
-R434/R435 已用零游戏日查询排除 R432 checkpoint 的 Stage 10 manager source 与 Stage 11 terminal 资格；R437 又证明
-R398 输入存档本身并未停在 `.242`，因此在零游戏日、零事件输入处停止，没有把 source 误读扩成第二次长跑。R439 随后只对历史 R159 manager seed 做一次零日 selector，确认它同样没有合格 AI manager/direct subordinate，并立即清理、不重试。四轮的证据、
-不重跑边界与下一项 source 要求见
-[`r434-r437-bounded-stage10-stage11-source-qualification-2026-09-11.md`](r434-r437-bounded-stage10-stage11-source-qualification-2026-09-11.md)。P1 仍为 `6/9`。
+R434/R439 的零游戏日 selector 只排除了 R432/R159 作为 B3 focused 路线的 AI manager/direct subordinate source，不能判定玩家可见的 Stage 10 `.120` 路线；其中 R439 重复了 09 月 07 日已有的 R159 结论，是一次可避免的验证。R435 只排除 R432 的 Stage 11 terminal 资格；R437 又证明 R398 输入存档本身并未停在 `.242`，因此在零游戏日、零事件输入处停止，没有把 source 误读扩成第二次长跑。两种 Stage 10 角色拓扑、验收 runner 纠正、不重跑边界与下一项 source 要求见
+[`r434-r439-bounded-source-checks-and-stage10-route-correction-2026-09-11.md`](r434-r439-bounded-source-checks-and-stage10-route-correction-2026-09-11.md)。P1 仍为 `6/9`。
 
 R408–R414 的终端 lineage 换轨、五玩家 `SAV0102` 两次 native-readiness RED、离线 normalization 的证据边界以及
 R375 单玩家 checkpoint 的有效准入，见

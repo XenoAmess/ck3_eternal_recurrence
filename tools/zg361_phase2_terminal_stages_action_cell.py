@@ -1,9 +1,12 @@
-#!/usr/bin/env python3
-"""Resume P1 stages 9-11 on an already loaded exact-build product session.
+﻿#!/usr/bin/env python3
+"""Resume the played Central owner's P1 stages 9 and 11.
 
 The caller owns seed migration/admission, CK3 and its cleanup. This module
 keeps completed stage receipts and the canonical timeline's progress across
 Python retries. AF5 is assembled independently and is never required here.
+The player-visible Stage 10 ``zg361mg.120`` result belongs to the opposite
+role topology (the player is an AI Central owner's manager subject), so its
+receipt must be collected independently and is never awaited on this route.
 Stage 11 uses the owner-view Workforce provider before acting and after the
 Central callback. Legitimate N/A closes need no M360 event. The module never
 changes the played character to obtain an observation.
@@ -29,7 +32,8 @@ from zhongguo_phase2_workforce_action import (  # noqa: E402
     submit_m360_route_action,
 )
 
-EVENTS = {9: "zg361cl.390", 10: "zg361mg.120", 11: "zg361we.360"}
+EVENTS = {9: "zg361cl.390", 11: "zg361we.360"}
+INDEPENDENT_STAGE10_EVENT = "zg361mg.120"
 # R406 showed that daily paused-frame native progress reads can consume the
 # whole five-minute wall-clock window while only eleven healthy product days
 # elapse.  Terminal navigation samples the unchanged observer once per product
@@ -75,12 +79,6 @@ def _typed(group: object, key: str) -> object:
     if not isinstance(value, Mapping) or value.get("status") != "available":
         raise ValueError(f"terminal field {key} is not observed")
     return value.get("value")
-
-
-def _available(response: Mapping[str, object], label: str) -> None:
-    readiness = response.get("readiness")
-    if response.get("status") != "available" or not isinstance(readiness, Mapping) or readiness.get("ready") is not True:
-        raise ValueError(f"{label} is not observable: {response.get('unavailable_reason')}")
 
 
 def _stage11_terminal(response: Mapping[str, object]) -> str | None:
@@ -159,6 +157,9 @@ def run_terminal_stages(
                 "absolute_end_date_raw": initial["date_raw"] + entry.MAX_ADVANCE_DAYS * 24,
                 "timeline_interrupt_drains": [],
             },
+            "owned_stage_sequence": [9, 11],
+            "independent_stage10_required": True,
+            "independent_stage10_event_definition_key": INDEPENDENT_STAGE10_EVENT,
             "af5_same_slice_required": False, "action_ack_is_business_postcondition": False,
         }
     state["attempt"] += 1
@@ -247,25 +248,6 @@ def run_terminal_stages(
             # its single option only removes zg361_cl_digest_pending.
             acknowledgement = _ack_summary(service, context)
             receipt(9, context, "complete", acknowledgement=acknowledgement)
-        if "10" not in receipts:
-            state["current_stage"] = 10
-            context = navigate(10)
-            owner = _saved_character_id(context, "zg361_mg_f_ticket_owner")
-            subject = _saved_character_id(context, "zg361_mg_f_ticket_subject")
-            current = snapshot()
-            provider = service.query_zhongguo_manager_governance_snapshot_v1(
-                request_nonce + ".10", expected_revision=current["revision"],
-                subject_character_id=subject, owner_character_id=owner,
-            )
-            state["stage_observations"]["10"]["provider"] = provider
-            _available(provider, "Stage 10 manager provider")
-            case = provider.get("f_case")
-            if _typed(case, "owner_character_id") != owner or _typed(case, "subject_character_id") != subject or (
-                _typed(case, "state") != 5 or _typed(case, "active") is not False
-            ):
-                raise ValueError("Stage 10 F-case has not reached its native terminal")
-            acknowledgement = _ack_summary(service, context)
-            receipt(10, provider, "complete", acknowledgement=acknowledgement)
         if "11" not in receipts:
             state["current_stage"] = 11
             context = navigate(11, terminal_probe=observe_workforce)
