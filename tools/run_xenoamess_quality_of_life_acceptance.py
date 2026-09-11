@@ -425,15 +425,35 @@ def open_xqol_decision_detail(
     isolated.ensure_decisions_panel(artifacts, stem)
     width, height = acceptance.pyautogui.size()
     if scroll_steps:
-        acceptance.focus_ck3()
-        acceptance.pyautogui.moveTo(
-            int(width * 0.90), int(height * 0.70), duration=0.2
-        )
-        acceptance.pyautogui.scroll(scroll_steps)
-        time.sleep(0.6)
-        acceptance.ImageGrab.grab().save(
-            artifacts / f"{stem}_decisions_scrolled_{scroll_steps}.png"
-        )
+        visible = acceptance.ImageGrab.grab()
+        if acceptance.find_ocr_text(
+            visible, title, acceptance.FULL_SCREEN_REGION, contains=False
+        ) is None:
+            acceptance.focus_ck3()
+            if scroll_steps < 0:
+                # CK3's decision-list rows consume wheel events once their
+                # delayed hover tooltip opens.  Drag the native scrollbar
+                # thumb instead; its normalized position is stable across
+                # the supported 16:9 desktop sizes.
+                scrollbar_x = int(width * 0.972)
+                acceptance.pyautogui.moveTo(
+                    scrollbar_x, int(height * 0.20), duration=0.2
+                )
+                acceptance.pyautogui.dragTo(
+                    scrollbar_x,
+                    int(height * 0.72),
+                    duration=0.5,
+                    button="left",
+                )
+            else:
+                acceptance.pyautogui.moveTo(
+                    int(width * 0.90), int(height * 0.70), duration=0.2
+                )
+                acceptance.pyautogui.scroll(scroll_steps)
+            time.sleep(0.6)
+            acceptance.ImageGrab.grab().save(
+                artifacts / f"{stem}_decisions_scrolled_{scroll_steps}.png"
+            )
     row = acceptance.wait_for_ocr_text(
         title,
         acceptance.FULL_SCREEN_REGION,
