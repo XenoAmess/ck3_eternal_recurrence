@@ -105,12 +105,13 @@ aubt.2 = {
 		}
 		else = { debug_log = "AUBT: TEST FAIL disabled_zero_side_effect" }
 		global_var:aubt_player = {
-			# Return to the runner's original resource model for the explicit gold fallback.
+			# Empty the live treasury while it is still available, then return to the
+			# runner's original resource model for the explicit gold fallback.
+			set_variable = { name = aubt_reset_treasury value = treasury }
+			if = { limit = { var:aubt_reset_treasury > 0 } remove_treasury = var:aubt_reset_treasury }
 			change_government = feudal_government
 			set_variable = { name = aubt_reset_gold value = gold }
-			if = { limit = { var:aubt_reset_gold > 0 } remove_short_term_gold = var:aubt_reset_gold }
-			set_variable = { name = aubt_reset_treasury value = treasury }
-			if = { limit = { var:aubt_reset_treasury > 0 } remove_short_term_treasury = var:aubt_reset_treasury }
+			if = { limit = { var:aubt_reset_gold > 0 } remove_gold = var:aubt_reset_gold }
 			add_gold = 100000
 			set_variable = { name = aubt_gold_before value = gold }
 			capital_province = {
@@ -128,6 +129,30 @@ aubt.3 = {
 	scope = none
 	hidden = yes
 	immediate = {
+		global_var:aubt_province = {
+			if = {
+				limit = { has_building = outposts_02 }
+				debug_log = "AUBT: OBSERVED fallback_upgrade outposts_02"
+			}
+			else = { debug_log = "AUBT: OBSERVED fallback_upgrade not_outposts_02" }
+		}
+		global_var:aubt_player = {
+			if = {
+				limit = { has_treasury = no }
+				debug_log = "AUBT: OBSERVED fallback_has_treasury no"
+			}
+			else = { debug_log = "AUBT: OBSERVED fallback_has_treasury yes" }
+			if = {
+				limit = { treasury = 0 }
+				debug_log = "AUBT: OBSERVED fallback_treasury zero"
+			}
+			else = { debug_log = "AUBT: OBSERVED fallback_treasury nonzero" }
+			if = {
+				limit = { gold < var:aubt_gold_before }
+				debug_log = "AUBT: OBSERVED fallback_gold decreased"
+			}
+			else = { debug_log = "AUBT: OBSERVED fallback_gold not_decreased" }
+		}
 		if = {
 			limit = {
 				global_var:aubt_province = {
@@ -163,9 +188,9 @@ aubt.4 = {
 		else = { debug_log = "AUBT: TEST FAIL reenabled_loop_stopped_cleanly" }
 		global_var:aubt_player = {
 			set_variable = { name = aubt_reset_gold value = gold }
-			if = { limit = { var:aubt_reset_gold > 0 } remove_short_term_gold = var:aubt_reset_gold }
+			if = { limit = { var:aubt_reset_gold > 0 } remove_gold = var:aubt_reset_gold }
 			set_variable = { name = aubt_reset_treasury value = treasury }
-			if = { limit = { var:aubt_reset_treasury > 0 } remove_short_term_treasury = var:aubt_reset_treasury }
+			if = { limit = { var:aubt_reset_treasury > 0 } remove_treasury = var:aubt_reset_treasury }
 			capital_province = {
 				remove_building = outposts_02
 				add_building = outposts_01

@@ -15,12 +15,12 @@ aubt_start = {
 			set_variable = { name = aubt_reset_gold value = gold }
 			if = {
 				limit = { var:aubt_reset_gold > 0 }
-				remove_short_term_gold = var:aubt_reset_gold
+				remove_gold = var:aubt_reset_gold
 			}
 			set_variable = { name = aubt_reset_treasury value = treasury }
 			if = {
 				limit = { var:aubt_reset_treasury > 0 }
-				remove_short_term_treasury = var:aubt_reset_treasury
+				remove_treasury = var:aubt_reset_treasury
 			}
 			add_gold = 100000
 			add_treasury = 100000
