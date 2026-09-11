@@ -103,3 +103,30 @@ providers and were not changed. Public/action/decision/automatic-surrender and
 
 No CK3 effect file was changed and no loading or single-file-size performance
 RED occurred, so the effect-file sharding rule was not exercised.
+
+## R448 locale-dependent evaluated-name evidence
+
+R448 produced six complete action-bound rows from the accepted
+`bookmark.1071.a` option. All six rows have unique loaded nodes and created
+CArmy generations, the same full-generation WarID `33554473`, four mapped
+current/persistent regiments, and a measured initial total of `500` soldiers
+per army. The value read from `RBP+0x70` is `诺曼路匪` on the Simplified
+Chinese runtime, not the authored localization key `norman_highwaymen`.
+Therefore an evaluated name is a locale-dependent display string. It may be
+retained only as nonempty, six-row-consistent supporting evidence; it is not a
+source selector.
+
+The frozen R448 capture remains RED under the superseded authored-key check and
+has SHA-256
+`B819D4C94B3BD25EC1B505368801FE5EC2BD09CBCEFB934543B687CB1A984A1D`.
+Commit `0235a50241f3dd6c37d375ff00bf56d76620d3a9` applies the locale-neutral
+rule in both the private executable and Python normalizer. The replacement
+executable SHA-256 is
+`020F051DDE034CBBC67C5A308F8E035FFA3E224844AC413261AA257466B0F185`;
+self-test and focused normal/optimized matrices are GREEN (`53/53` each).
+
+This closes the evaluated-name contract defect, but it does not retroactively
+make the RED R448 artifact provider-GREEN. A later bounded run must still pass
+the corrected validator and carry that exact source set through current-state,
+termination, and postwar joins. Public/action/decision/automatic-surrender
+readiness and `GEN-034` therefore remain false.

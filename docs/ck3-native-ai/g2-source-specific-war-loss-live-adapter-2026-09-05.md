@@ -655,3 +655,46 @@ The private dependency sync is recorded in open_kaishek commit
 `1d67a5e9567e83af2875c5122681c3b35bc92278`; no public MCP or Java contract
 changed. R448 is limited to capturing and reviewing the actual six evaluated
 names from this boundary. T1 remains 90% and `GEN-034` remains unresolved.
+
+### R448 captured all six rows and classified the localized-name contract RED
+
+R448 launched the unique CK3 PID `26020`. Its first command invocation was
+rejected before process creation because the external game root was omitted;
+the retained launch record marks `ck3_started=false` for that attempt. The
+corrected invocation supplied the frozen game root, copied the exact R447 save,
+and launched the only CK3 instance. `.1071.a` disappeared one second after the
+first click. The observer captured all six source executions, restored its
+breakpoint, detached, and returned `six-execution-identity-mismatch`; outer
+cleanup is GREEN and CK3 inventory is empty.
+
+Every row used exact WarID `33554473`, a unique loaded node and created CArmy
+generation, four current/persistent regiment mappings, and measured `500`
+initial soldiers. All six evaluated names are the same Simplified Chinese
+display text, `诺曼路匪`. This proves the old final comparison was wrong:
+`RBP+0x70` contains evaluated locale-dependent text, while
+`norman_highwaymen` is the authored key. The capture, report, armed-frame,
+selection-confirmed-frame, and classification SHA-256 values are
+`B819D4C94B3BD25EC1B505368801FE5EC2BD09CBCEFB934543B687CB1A984A1D`,
+`F42E36EA27E7A2CA099A49729AAE673C5A393900B3195080F7B6995BF80BA720`,
+`91B09D01451D10112FCE98E0211AD0AD0EDD2AC851A2631CC8AA025E431E2FA1`,
+`1E359DD32DCC662B3C12DCA7A06E88C3F94AA8051D8E42A331895668D8FDCDA6`,
+and `852DDB667BDEC287450441BC95A5032065F9BB77AA3FF67FFF6F315A2E300ABF`.
+
+Commit `0235a50241f3dd6c37d375ff00bf56d76620d3a9` now requires the runtime
+name to be nonempty and identical across all six rows in both C++ and Python.
+It retains all loaded-node, WarID, generation, measured-soldier, and regiment
+mapping gates. The new private executable and source-contract SHA-256 values
+are `020F051DDE034CBBC67C5A308F8E035FFA3E224844AC413261AA257466B0F185`
+and `A96F54BC9556B23473C4BC9120009B6C6BC411CC0035F68E6C0CE8073F6C3586`;
+self-test and normal/optimized focused matrices pass (`53/53` each).
+open_kaishek records the private contract delta in commit
+`880888cb130cbf2d7002ff02c9047d3e15e5f45a`; no public MCP/Java contract
+changed.
+
+R448 did not reach the bridge or termination phases, so source-specific loss,
+comparison, decision, action, and automatic-surrender readiness remain false;
+T1 stays at 90% and `GEN-034` remains unresolved. Its autosave is byte-identical
+to the admitted pre-target input, contains no `raiktor` marker, and has SHA-256
+`89D15B8ACB0E69E6C439D658582B63DC1F8AD11EC687089E5021A5961607D4DD`.
+One bounded R449 may consume that same near-boundary input with the corrected
+validator; no older prefix or duplicate R448 run is required.

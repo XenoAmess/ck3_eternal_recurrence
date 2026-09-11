@@ -138,3 +138,21 @@ three-way winner exists today.
 This work changed no CK3 effect file and encountered no effect-file loading or
 single-file-size performance RED. The effect sharding rule was therefore not
 exercised by this native/Python package.
+
+## R448 source capture result
+
+R448 supplied the previously missing six native source executions, including
+six unique loaded nodes/CArmy generations, one exact WarID `33554473`, complete
+persistent-to-current regiment mappings, and measured creation-time soldiers
+totalling `3000`. The private artifact remains RED only because its superseded
+validator compared the Simplified Chinese evaluated display name `诺曼路匪`
+with the authored key `norman_highwaymen`. Commit
+`0235a50241f3dd6c37d375ff00bf56d76620d3a9` corrects that contract for future
+captures by requiring a nonempty, six-row-consistent runtime name without using
+it as a selector.
+
+No current-state or postwar join ran after the R448 observer RED. Consequently
+`source_specific_loss_ready`, `comparison_input_ready`, and the complete
+three-way decision remain false. The next run starts from the unchanged
+pre-target save and may advance only after the corrected capture becomes
+GREEN.
