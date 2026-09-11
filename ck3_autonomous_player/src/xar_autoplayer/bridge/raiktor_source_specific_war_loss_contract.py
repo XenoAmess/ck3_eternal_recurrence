@@ -82,6 +82,7 @@ def normalize_raiktor_source_specific_capture(
     persistent_ids: set[int] = set()
     normalized_rows: list[dict[str, object]] = []
     measured_total = 0
+    evaluated_name: str | None = None
     for index, row_value in enumerate(rows, start=1):
         row = _dict(row_value, f"executions[{index - 1}]")
         sequence = _positive_int(row.get("sequence"), "sequence")
@@ -90,9 +91,14 @@ def normalize_raiktor_source_specific_capture(
         loaded_node = _hex(row.get("loaded_node"), "loaded_node")
         created_army = _hex(row.get("created_army"), "created_army")
         army_id = _full_id(row.get("army_generation_id"), "army_generation_id")
+        row_evaluated_name = row.get("evaluated_name")
+        if not isinstance(row_evaluated_name, str) or not row_evaluated_name:
+            raise ValueError("evaluated name must be a nonempty runtime string")
+        if evaluated_name is None:
+            evaluated_name = row_evaluated_name
         if (
             row.get("war_id") != war_id
-            or row.get("evaluated_name") != "norman_highwaymen"
+            or row_evaluated_name != evaluated_name
             or loaded_node in loaded_nodes
             or army_id in army_ids
         ):
@@ -170,7 +176,7 @@ def normalize_raiktor_source_specific_capture(
                 "army_generation_id": army_id,
                 "war_id": war_id,
                 "initial_soldiers": initial_soldiers,
-                "evaluated_name": "norman_highwaymen",
+                "evaluated_name": row_evaluated_name,
                 "current_regiments": normalized_current,
                 "persistent_regiments": normalized_persistent,
             }

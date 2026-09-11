@@ -50,7 +50,7 @@ def _capture() -> dict[str, object]:
                 "army_generation_id": 10_000 + index,
                 "war_id": war_id,
                 "initial_soldiers": first_soldiers + second_soldiers,
-                "evaluated_name": "norman_highwaymen",
+                "evaluated_name": "诺曼路匪",
                 "current_regiments": [
                     {
                         "generation_id": first_current,
@@ -116,6 +116,7 @@ class RaiktorSourceSpecificWarLossCaptureTests(unittest.TestCase):
         self.assertEqual(len(source_set["executions"]), 6)
         self.assertEqual(len(source_set["persistent_generation_ids"]), 12)
         self.assertEqual(len(source_set["current_generation_ids"]), 12)
+        self.assertEqual(source_set["executions"][0]["evaluated_name"], "诺曼路匪")
         expected_total = sum(
             row["initial_soldiers"] for row in capture["executions"]
         )
@@ -138,6 +139,10 @@ class RaiktorSourceSpecificWarLossCaptureTests(unittest.TestCase):
             lambda value: value["executions"][0].__setitem__(
                 "initial_soldiers", 3000
             ),
+            lambda value: value["executions"][5].__setitem__(
+                "evaluated_name", "another locale value"
+            ),
+            lambda value: value["executions"][0].__setitem__("evaluated_name", ""),
         ):
             capture = deepcopy(_capture())
             mutate(capture)
@@ -162,7 +167,8 @@ class RaiktorSourceSpecificWarLossCaptureTests(unittest.TestCase):
         self.assertTrue(contract["default_off"])
         self.assertFalse(contract["live_authorized"])
         self.assertFalse(contract["typed_output"]["comparison_input_ready"])
-        self.assertFalse(contract["hard_boundaries"]["capture_live_executed"])
+        self.assertTrue(contract["hard_boundaries"]["capture_live_executed"])
+        self.assertEqual(contract["live_observation"]["evaluated_name"], "诺曼路匪")
         self.assertEqual(
             contract["exact_observation"]["stop_rva"], "0x2E7F951"
         )
