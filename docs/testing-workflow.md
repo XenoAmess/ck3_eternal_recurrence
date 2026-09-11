@@ -2449,3 +2449,21 @@ harness release race 处理，不能改写成 source/product RED。
 必须记录 `debugger_detach_attempts` 与 `debugger_detach_last_error`。任何一次成功才允许
 同 PID bridge handoff；预算耗尽仍保持 RED 并由唯一 outer owner 回收 CK3。不得通过忽略
 detach 结果或直接启动第二个 CK3 绕过该门。
+
+## G2 pre-termination 只读诊断（2026-09-11）
+
+当 source-specific lifecycle 已经取得真实当前战争，但公开 terms 只因一个域 RED 时，使用
+`run_g2_source_specific_war_loss_live_adapter.py --read-only-pretermination-probe`。
+该模式仍要求 fresh 外部 artifact/userdir、hash-bound resume save、唯一 CK3、自然 source
+capture、debugger detach 和同 PID bridge；完成两次查询后立即停止。
+
+验收时必须分别读取两个状态：`PROBE_COMPLETE` 只说明探针完整执行，`terms_ready` 才表示
+六域可用于动作。报告还必须满足 `pre_mutation_checkpoint_created=false`、
+`mutation_commands=[]`、`postwar_started=false`。因此探针完成不能提升 decision/action readiness。
+
+如需 default truce reader 内部阶段证据，使用默认关闭的
+`XAR_CK3_ENABLE_G2_TRUCE_DEFAULT_LEAF_DIAGNOSTICS_V1=ON` 构建。JSONL 路径由 adapter 从
+调用方外部 artifact 目录派生并经环境变量传入，不绑定账号、机器或固定轮次。该构建只增加
+只读 telemetry；正常 reader 分支、公开 ABI 和 action gate 均不变。完成一次有界实机后先审阅
+JSONL 的 `stage`、callback/failure counts 与 context 销毁状态，再决定最小修复；不得用相同配置
+重复长跑。

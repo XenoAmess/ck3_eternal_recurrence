@@ -191,6 +191,36 @@ class G2TrucePrivateCaptureSourceContractTests(unittest.TestCase):
         self.assertIn("ObserveRaiktorSurrenderTruceLeafContextV1", writer)
         self.assertIn("ReadRaiktorTruceDurationViaNativeLeafPreviewV1", writer)
 
+    def test_default_leaf_diagnostic_is_private_default_off_and_read_only(self) -> None:
+        cmake = (NATIVE / "CMakeLists.txt").read_text(encoding="utf-8")
+        writer = WRITER.read_text(encoding="utf-8")
+        option = re.search(
+            r"option\(\s*XAR_CK3_ENABLE_G2_TRUCE_DEFAULT_LEAF_DIAGNOSTICS_V1\s+"
+            r'"[^"]+"\s+(ON|OFF)\s*\)',
+            cmake,
+        )
+        self.assertIsNotNone(option)
+        self.assertEqual(option.group(1), "OFF")
+        self.assertIn(
+            "XAR_CK3_G2_TRUCE_DEFAULT_LEAF_DIAGNOSTICS_V1=1", cmake
+        )
+        begin = writer.index("void AppendG2TruceDefaultLeafDiagnosticV1(")
+        end = writer.index("\n}\n#endif", begin)
+        diagnostic = writer[begin:end]
+        self.assertIn("xar.ck3.g2_truce_default_leaf_diagnostic.v1", diagnostic)
+        self.assertIn('\\"read_only\\":true', diagnostic)
+        self.assertIn(
+            '\\"production_reader_branch_unchanged\\":true', diagnostic
+        )
+        self.assertIn('\\"failure_counts_by_enum\\"', diagnostic)
+        for forbidden in (
+            "surrender-war-",
+            "save-checkpoint",
+            "WriteProcessMemory",
+            "ExecuteStep",
+        ):
+            self.assertNotIn(forbidden, diagnostic)
+
     def test_v2_uses_only_the_transient_native_leaf_preview_context(self) -> None:
         cmake = (NATIVE / "CMakeLists.txt").read_text(encoding="utf-8")
         writer = WRITER.read_text(encoding="utf-8")

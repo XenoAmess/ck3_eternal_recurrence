@@ -137,6 +137,12 @@ option(
   OFF
 )
 
+option(
+  XAR_CK3_ENABLE_G2_TRUCE_DEFAULT_LEAF_DIAGNOSTICS_V1
+  "Log failure stages from the unchanged default G2 truce leaf reader"
+  OFF
+)
+
 if(
   XAR_CK3_ENABLE_G2_TRUCE_PRIVATE_CAPTURE_V1 AND
   XAR_CK3_ENABLE_G2_TRUCE_NATIVE_CALLSITE_OBSERVER_V1
@@ -151,6 +157,16 @@ if(
 )
   message(FATAL_ERROR
     "The leaf-context capture is a standalone private candidate")
+endif()
+if(
+  XAR_CK3_ENABLE_G2_TRUCE_DEFAULT_LEAF_DIAGNOSTICS_V1 AND
+  (XAR_CK3_ENABLE_G2_TRUCE_PRIVATE_CAPTURE_V1 OR
+   XAR_CK3_ENABLE_G2_TRUCE_NATIVE_CALLSITE_OBSERVER_V1 OR
+   XAR_CK3_ENABLE_G2_TRUCE_PREVIEW_ENTRY_OBSERVER_V1 OR
+   XAR_CK3_ENABLE_G2_TRUCE_LEAF_CONTEXT_CAPTURE_V2)
+)
+  message(FATAL_ERROR
+    "Default-leaf diagnostics must use the otherwise unchanged production reader")
 endif()
 
 option(
@@ -495,6 +511,11 @@ endif()
 if(XAR_CK3_ENABLE_G2_TRUCE_LEAF_CONTEXT_CAPTURE_V2)
   target_compile_definitions(xar_ck3_bridge PRIVATE
     XAR_CK3_G2_TRUCE_LEAF_CONTEXT_CAPTURE_V2=1
+  )
+endif()
+if(XAR_CK3_ENABLE_G2_TRUCE_DEFAULT_LEAF_DIAGNOSTICS_V1)
+  target_compile_definitions(xar_ck3_bridge PRIVATE
+    XAR_CK3_G2_TRUCE_DEFAULT_LEAF_DIAGNOSTICS_V1=1
   )
 endif()
 if(XAR_CK3_ENABLE_PHASE2_COMPLETION_OBSERVER_V1)

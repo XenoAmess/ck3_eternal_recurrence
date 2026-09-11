@@ -613,6 +613,109 @@ async def run_same_lifecycle_sequence(
     }
 
 
+async def run_same_lifecycle_pretermination_probe(
+    driver: Any,
+    *,
+    source_capture: dict[str, object],
+    capture_sha256: str,
+    expected_character_id: int,
+    expected_war_id: int,
+    expected_date_raw: int,
+    postwar_timeout: float,
+) -> dict[str, object]:
+    """Capture the normal dual query without creating or submitting an action.
+
+    ``postwar_timeout`` remains in the shared continuation signature so the
+    outer owner can select this probe without a second orchestration API.  It
+    is deliberately unused: this mode has no postwar phase.
+    """
+    del postwar_timeout
+    normalized_source = normalize_raiktor_source_specific_capture(
+        source_capture, capture_sha256=capture_sha256
+    )
+    source_set = _object(normalized_source.get("source_set"), "source_set")
+    war_id = _integer(source_set.get("war_id"), "source WarID")
+    if war_id != expected_war_id:
+        raise LifecycleContractError(
+            f"source WarID {war_id} != explicit expected WarID {expected_war_id}"
+        )
+    pre_sequence = await terms._run_mcp_sequence(
+        driver,
+        war_id=war_id,
+        expected_character_id=expected_character_id,
+        expected_date_raw=expected_date_raw,
+    )
+    before = postwar._structured_record(
+        pre_sequence.get("before_snapshot"), "pre snapshot"
+    )
+    second = postwar._structured_record(
+        pre_sequence.get("second_query"), "second terms query"
+    )
+    binding = postwar.adapter._snapshot_binding(
+        before, "read-only pre-termination probe snapshot"
+    )
+    capture_pid = _integer(
+        normalized_source.get("capture_pid"), "source capture PID", minimum=1
+    )
+    if binding.get("ck3_pid") != capture_pid:
+        raise LifecycleContractError(
+            "source capture and read-only probe use different CK3 PIDs"
+        )
+    if not isinstance(postwar.adapter._war_row(binding, war_id), dict):
+        raise LifecycleContractError(
+            "source WarID is absent from the read-only probe frame"
+        )
+    if second.get("war_id") != war_id:
+        raise LifecycleContractError(
+            "read-only probe second query WarID differs from source capture"
+        )
+    if pre_sequence.get("mutation_commands") != []:
+        raise LifecycleContractError("read-only probe reported a mutation command")
+
+    terms_value = _object(second.get("war_termination_terms"), "termination terms")
+    truce = _object(terms_value.get("truce"), "termination truce")
+    checks = _object(pre_sequence.get("checks"), "pre-termination checks")
+    failed_checks = sorted(key for key, value in checks.items() if value is not True)
+    return {
+        "schema": "xar.ck3.g2_source_specific_pretermination_probe_run.v1",
+        "status": "probe-complete",
+        "mode": "read-only-pre-termination",
+        "source_normalization": normalized_source,
+        "identity": {
+            "ck3_pid": capture_pid,
+            "war_id": war_id,
+            "date_raw": binding["date_raw"],
+            "snapshot_id": binding["snapshot_id"],
+            "revision": binding["revision"],
+            "native_revision": binding["native_revision"],
+            "connection_generation": binding["connection_generation"],
+            "episode_run_id": binding["episode_run_id"],
+        },
+        "pre_sequence": pre_sequence,
+        "terms_ready": pre_sequence.get("ok") is True,
+        "failed_checks": failed_checks,
+        "truce": {
+            "evaluated_days_observable": truce.get(
+                "evaluated_days_observable"
+            ),
+            "evaluated_days": truce.get("evaluated_days"),
+            "actual_expiry_observable": truce.get("actual_expiry_observable"),
+            "expiry_date_raw": truce.get("expiry_date_raw"),
+        },
+        "pre_mutation_checkpoint_created": False,
+        "mutation_commands": [],
+        "postwar_started": False,
+        "readiness": {
+            "source_specific_loss_ready": False,
+            "comparison_input_ready": False,
+            "decision_ready": False,
+            "automatic_surrender_ready": False,
+            "gen034_closed": False,
+        },
+        "ok": True,
+    }
+
+
 def run_no_launch_preflight(
     manifest_path: Path,
     output_path: Path,

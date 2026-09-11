@@ -49,7 +49,8 @@ thread_local std::array<std::uintptr_t,
                         kMaximumWarExitDiagnosticRootChildren>
     g_war_exit_loaded_root_child_vtable_rvas{};
 
-#if defined(XAR_CK3_G2_TRUCE_PRIVATE_CAPTURE_V1)
+#if defined(XAR_CK3_G2_TRUCE_PRIVATE_CAPTURE_V1) ||                         \
+    defined(XAR_CK3_G2_TRUCE_DEFAULT_LEAF_DIAGNOSTICS_V1)
 constexpr wchar_t kG2TrucePrivateCapturePathEnvironment[] =
     L"XAR_CK3_G2_TRUCE_PRIVATE_CAPTURE_PATH";
 constexpr std::size_t kG2TrucePrivateCapturePathCapacity = 1024;
@@ -82,7 +83,9 @@ bool AppendAndFlushG2TrucePrivateRow(const char *row,
   CloseHandle(artifact);
   return write_ok && flush_ok;
 }
+#endif
 
+#if defined(XAR_CK3_G2_TRUCE_PRIVATE_CAPTURE_V1)
 bool AppendG2TrucePrivateEvaluatorBoundaryV1(
     void *, const RaiktorTrucePrivateEvaluatorBoundaryV1 &boundary) noexcept {
   const auto module_base =
@@ -4319,6 +4322,19 @@ struct RaiktorTruceLeafContextReaderV1 {
   const RaiktorSurrenderTruceAccessV1 *access = nullptr;
   RaiktorSurrenderTruceObservationV1 *output = nullptr;
   bool completed = false;
+#if defined(XAR_CK3_G2_TRUCE_DEFAULT_LEAF_DIAGNOSTICS_V1)
+  std::string_view stage = "input-check";
+  std::size_t callback_count = 0;
+  std::size_t valid_evaluation_context_count = 0;
+  std::array<std::uint32_t, 16> failure_counts{};
+  std::uintptr_t last_effect_this = 0;
+  std::uintptr_t last_preview_context = 0;
+  std::uintptr_t last_evaluation_context = 0;
+  RaiktorSurrenderTruceStatusV1 last_status =
+      RaiktorSurrenderTruceStatusV1::unavailable;
+  RaiktorSurrenderTruceFailureV1 last_failure =
+      RaiktorSurrenderTruceFailureV1::invalid_request;
+#endif
 };
 
 void ReadRaiktorTruceLeafPreviewContextV1(
@@ -4331,13 +4347,39 @@ void ReadRaiktorTruceLeafPreviewContextV1(
       effect_this == 0 || preview_context == 0 || preview_collector == 0) {
     return;
   }
+#if defined(XAR_CK3_G2_TRUCE_DEFAULT_LEAF_DIAGNOSTICS_V1)
+  ++reader->callback_count;
+  reader->last_effect_this = effect_this;
+  reader->last_preview_context = preview_context;
+#endif
   void *const context = reinterpret_cast<void *>(preview_context);
   void *const evaluation_context = LoadAt<void *>(context, 0x28);
-  if (evaluation_context == nullptr) return;
+  if (evaluation_context == nullptr) {
+#if defined(XAR_CK3_G2_TRUCE_DEFAULT_LEAF_DIAGNOSTICS_V1)
+    ++reader->failure_counts[static_cast<std::size_t>(
+        RaiktorSurrenderTruceFailureV1::invalid_request)];
+    reader->last_status = RaiktorSurrenderTruceStatusV1::unavailable;
+    reader->last_failure = RaiktorSurrenderTruceFailureV1::invalid_request;
+#endif
+    return;
+  }
+#if defined(XAR_CK3_G2_TRUCE_DEFAULT_LEAF_DIAGNOSTICS_V1)
+  ++reader->valid_evaluation_context_count;
+  reader->last_evaluation_context =
+      reinterpret_cast<std::uintptr_t>(evaluation_context);
+#endif
   const RaiktorSurrenderTruceRequestV1 request{context, evaluation_context};
   const auto observation = ObserveRaiktorSurrenderTruceLeafContextV1(
       *reader->environment, *reader->access, request,
       reinterpret_cast<void *>(effect_this));
+#if defined(XAR_CK3_G2_TRUCE_DEFAULT_LEAF_DIAGNOSTICS_V1)
+  reader->last_status = observation.status;
+  reader->last_failure = observation.failure;
+  const auto failure_index = static_cast<std::size_t>(observation.failure);
+  if (failure_index < reader->failure_counts.size()) {
+    ++reader->failure_counts[failure_index];
+  }
+#endif
   if (observation.status == RaiktorSurrenderTruceStatusV1::available &&
       observation.failure == RaiktorSurrenderTruceFailureV1::none) {
     *reader->output = observation;
@@ -4349,7 +4391,23 @@ bool ReadRaiktorTruceDurationViaNativeLeafPreviewV1(
     const Bindings &bindings, void *loaded_effect, void *effect_context,
     const RaiktorSurrenderTruceNativeEnvironmentV1 &environment,
     const RaiktorSurrenderTruceAccessV1 &access,
-    RaiktorSurrenderTruceObservationV1 &output) noexcept {
+    RaiktorSurrenderTruceObservationV1 &output
+#if defined(XAR_CK3_G2_TRUCE_DEFAULT_LEAF_DIAGNOSTICS_V1)
+    , RaiktorTruceLeafContextReaderV1 *diagnostic
+#endif
+    ) noexcept {
+#if defined(XAR_CK3_G2_TRUCE_DEFAULT_LEAF_DIAGNOSTICS_V1)
+  if (diagnostic != nullptr) {
+    *diagnostic = {};
+    diagnostic->environment = &environment;
+    diagnostic->access = &access;
+    diagnostic->output = &output;
+  }
+  const auto set_diagnostic_stage = [diagnostic](
+                                        std::string_view stage) noexcept {
+    if (diagnostic != nullptr) diagnostic->stage = stage;
+  };
+#endif
   if (loaded_effect == nullptr || effect_context == nullptr ||
       bindings.construct_effect_preview_collector == nullptr ||
       bindings.destroy_effect_preview_collector == nullptr ||
@@ -4359,29 +4417,126 @@ bool ReadRaiktorTruceDurationViaNativeLeafPreviewV1(
   }
   EffectPreviewCollectorStorage collector_storage{};
   void *const collector = collector_storage.bytes.data();
+#if defined(XAR_CK3_G2_TRUCE_DEFAULT_LEAF_DIAGNOSTICS_V1)
+  set_diagnostic_stage("collector-construction-requested");
+#endif
   if (bindings.construct_effect_preview_collector(collector) != collector) {
     return false;
   }
+#if defined(XAR_CK3_G2_TRUCE_DEFAULT_LEAF_DIAGNOSTICS_V1)
+  set_diagnostic_stage("collector-constructed");
+#endif
   const auto collector_vtable = LoadAt<std::uintptr_t>(collector, 0x00);
   if (collector_vtable != bindings.effect_preview_collector_vtable) {
     bindings.destroy_effect_preview_collector(collector);
     return false;
   }
+#if defined(XAR_CK3_G2_TRUCE_DEFAULT_LEAF_DIAGNOSTICS_V1)
+  set_diagnostic_stage("collector-vtable-verified");
+#endif
 
-  RaiktorTruceLeafContextReaderV1 reader{&environment, &access, &output, false};
+  RaiktorTruceLeafContextReaderV1 local_reader{
+      &environment, &access, &output, false};
+#if defined(XAR_CK3_G2_TRUCE_DEFAULT_LEAF_DIAGNOSTICS_V1)
+  RaiktorTruceLeafContextReaderV1 &reader =
+      diagnostic == nullptr ? local_reader : *diagnostic;
+#else
+  RaiktorTruceLeafContextReaderV1 &reader = local_reader;
+#endif
   if (!xar::bridge::ArmG2TrucePreviewEntryCaptureV1(
           ReadRaiktorTruceLeafPreviewContextV1, &reader)) {
     bindings.destroy_effect_preview_collector(collector);
     return false;
   }
+#if defined(XAR_CK3_G2_TRUCE_DEFAULT_LEAF_DIAGNOSTICS_V1)
+  set_diagnostic_stage("capture-armed");
+#endif
   // The exact 0x3380170 traversal constructs the root wrapper, and its
   // 0x3380840 child dispatcher constructs the transient leaf wrapper.  The
   // evaluator is read twice synchronously before that leaf call returns.
   bindings.traverse_loaded_effect(loaded_effect, effect_context, collector);
+#if defined(XAR_CK3_G2_TRUCE_DEFAULT_LEAF_DIAGNOSTICS_V1)
+  set_diagnostic_stage("traversal-complete");
+#endif
   xar::bridge::DisarmG2TrucePreviewEntryCaptureV1();
   bindings.destroy_effect_preview_collector(collector);
   return reader.completed;
 }
+
+#if defined(XAR_CK3_G2_TRUCE_DEFAULT_LEAF_DIAGNOSTICS_V1)
+void AppendG2TruceDefaultLeafDiagnosticV1(
+    std::int32_t war_id, std::int32_t casus_belli_database_index,
+    std::int32_t primary_attacker_character_id,
+    std::int32_t primary_defender_character_id,
+    std::int32_t claimant_character_id,
+    const RaiktorTruceLeafContextReaderV1 &diagnostic,
+    bool reader_returned, bool context_destroyed,
+    const RaiktorSurrenderTruceObservationV1 &observation) noexcept {
+  const auto module_base =
+      reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr));
+  const auto effect_rva = diagnostic.last_effect_this >= module_base
+                              ? diagnostic.last_effect_this - module_base
+                              : diagnostic.last_effect_this;
+  const auto reason =
+      RaiktorSurrenderTruceFailureReasonV1(diagnostic.last_failure);
+  std::array<char, 4096> row{};
+  const int length = std::snprintf(
+      row.data(), row.size(),
+      "{\"schema\":\"xar.ck3.g2_truce_default_leaf_diagnostic.v1\","
+      "\"read_only\":true,\"production_reader_branch_unchanged\":true,"
+      "\"war_id\":%d,\"casus_belli_database_index\":%d,"
+      "\"primary_attacker_character_id\":%d,"
+      "\"primary_defender_character_id\":%d,"
+      "\"claimant_character_id\":%d,\"stage\":\"%.*s\","
+      "\"callback_count\":%llu,"
+      "\"valid_evaluation_context_count\":%llu,"
+      "\"completed\":%s,\"reader_returned\":%s,"
+      "\"failure_counts_by_enum\":[%u,%u,%u,%u,%u,%u,%u,%u,"
+      "%u,%u,%u,%u,%u,%u,%u,%u],"
+      "\"last_status\":%u,\"last_failure\":%u,"
+      "\"last_failure_reason\":\"%.*s\","
+      "\"last_effect_this\":\"0x%llX\","
+      "\"last_effect_rva\":\"0x%llX\","
+      "\"last_preview_context\":\"0x%llX\","
+      "\"last_evaluation_context\":\"0x%llX\","
+      "\"observation_status\":%u,\"observation_failure\":%u,"
+      "\"observation_evaluated_days\":%d,"
+      "\"context_destroyed\":%s}\r\n",
+      war_id, casus_belli_database_index,
+      primary_attacker_character_id, primary_defender_character_id,
+      claimant_character_id, static_cast<int>(diagnostic.stage.size()),
+      diagnostic.stage.data(),
+      static_cast<unsigned long long>(diagnostic.callback_count),
+      static_cast<unsigned long long>(
+          diagnostic.valid_evaluation_context_count),
+      diagnostic.completed ? "true" : "false",
+      reader_returned ? "true" : "false",
+      diagnostic.failure_counts[0], diagnostic.failure_counts[1],
+      diagnostic.failure_counts[2], diagnostic.failure_counts[3],
+      diagnostic.failure_counts[4], diagnostic.failure_counts[5],
+      diagnostic.failure_counts[6], diagnostic.failure_counts[7],
+      diagnostic.failure_counts[8], diagnostic.failure_counts[9],
+      diagnostic.failure_counts[10], diagnostic.failure_counts[11],
+      diagnostic.failure_counts[12], diagnostic.failure_counts[13],
+      diagnostic.failure_counts[14], diagnostic.failure_counts[15],
+      static_cast<unsigned>(diagnostic.last_status),
+      static_cast<unsigned>(diagnostic.last_failure),
+      static_cast<int>(reason.size()), reason.data(),
+      static_cast<unsigned long long>(diagnostic.last_effect_this),
+      static_cast<unsigned long long>(effect_rva),
+      static_cast<unsigned long long>(diagnostic.last_preview_context),
+      static_cast<unsigned long long>(diagnostic.last_evaluation_context),
+      static_cast<unsigned>(observation.status),
+      static_cast<unsigned>(observation.failure),
+      observation.evaluated_days,
+      context_destroyed ? "true" : "false");
+  if (length <= 0 || static_cast<std::size_t>(length) >= row.size()) {
+    return;
+  }
+  (void)AppendAndFlushG2TrucePrivateRow(
+      row.data(), static_cast<std::size_t>(length));
+}
+#endif
 
 #if defined(XAR_CK3_G2_TRUCE_LEAF_CONTEXT_CAPTURE_V2)
 struct G2TruceLeafContextCaptureV2 {
@@ -4516,6 +4671,9 @@ bool ReadRaiktorSurrenderTruceDuration(
     DestroyWarEffectContext(bindings, effect_context);
     return false;
   }
+#elif defined(XAR_CK3_G2_TRUCE_DEFAULT_LEAF_DIAGNOSTICS_V1)
+  RaiktorTruceLeafContextReaderV1 default_leaf_diagnostic{};
+  bool default_leaf_reader_returned = false;
 #endif
 
   RaiktorTruceProductionFrameContext frame_context{
@@ -4565,17 +4723,32 @@ bool ReadRaiktorSurrenderTruceDuration(
       effect_context, evaluation_context};
   output = ObserveRaiktorSurrenderTruceV1(environment, access, request);
 #else
+#if defined(XAR_CK3_G2_TRUCE_DEFAULT_LEAF_DIAGNOSTICS_V1)
+  default_leaf_reader_returned = ReadRaiktorTruceDurationViaNativeLeafPreviewV1(
+      bindings,
+      static_cast<std::byte *>(casus_belli) +
+          kWarEffectAttackerDefeatOffset,
+      effect_context, environment, access, output, &default_leaf_diagnostic);
+#else
   (void)ReadRaiktorTruceDurationViaNativeLeafPreviewV1(
       bindings,
       static_cast<std::byte *>(casus_belli) +
           kWarEffectAttackerDefeatOffset,
       effect_context, environment, access, output);
 #endif
+#endif
 #if defined(XAR_CK3_WAR_EXIT_TERMS_OFFLINE_RE_TEST)
   g_last_raiktor_surrender_truce_failure = output.failure;
 #endif
   const bool context_destroyed =
       DestroyWarEffectContext(bindings, effect_context);
+#if defined(XAR_CK3_G2_TRUCE_DEFAULT_LEAF_DIAGNOSTICS_V1)
+  AppendG2TruceDefaultLeafDiagnosticV1(
+      war_id, casus_belli_database_index,
+      primary_attacker_character_id, primary_defender_character_id,
+      claimant_character_id, default_leaf_diagnostic,
+      default_leaf_reader_returned, context_destroyed, output);
+#endif
 #if defined(XAR_CK3_G2_TRUCE_PRIVATE_CAPTURE_V1)
   // This evidence row is emitted before the production failure path clears
   // the observation. It is compiled only into an explicitly instrumented

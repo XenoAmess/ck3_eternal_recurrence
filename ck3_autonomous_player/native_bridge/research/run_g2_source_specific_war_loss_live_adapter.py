@@ -728,6 +728,7 @@ def _load_manifest(
         or composition.get("standalone_capture_runner_main_reused") is not False
         or composition.get("startup_profile_asset_gate_integrated") is not True
         or composition.get("resume_checkpoint_copy_gate_integrated") is not True
+        or composition.get("read_only_pretermination_probe_integrated") is not True
         or composition.get("launch_fail_closed") is not True
     ):
         raise LiveAdapterError("live-adapter composition drifted")
@@ -852,6 +853,7 @@ def run_no_launch_preflight(
     manifest_path: Path,
     output_path: Path,
     *,
+    requested_live_mode: str = "source-current-action-postwar",
     repo_root: Path = REPOSITORY_ROOT,
     process_inventory: Callable[[], list[dict[str, object]]] = _process_inventory,
     profile_settings_template: Path | None = None,
@@ -910,6 +912,7 @@ def run_no_launch_preflight(
     report = {
         "schema": PREFLIGHT_SCHEMA,
         "status": PREFLIGHT_STATUS,
+        "requested_live_mode": requested_live_mode,
         "manifest_sha256": _sha256_file(manifest_path),
         "dependencies": checked,
         "game_source_binding": {
@@ -973,6 +976,7 @@ class ConcreteLiveOperations:
         profile_settings_template: Path | None = None,
         resume_save: Path | None = None,
         resume_save_sha256: str | None = None,
+        read_only_pretermination_probe: bool = False,
         process_inventory: Callable[[], list[dict[str, object]]] = _process_inventory,
         popen: Callable[..., Any] = subprocess.Popen,
         run_process: Callable[..., Any] = subprocess.run,
@@ -991,6 +995,12 @@ class ConcreteLiveOperations:
             resume_save.expanduser().resolve() if resume_save is not None else None
         )
         self.resume_save_sha256 = resume_save_sha256
+        self.read_only_pretermination_probe = read_only_pretermination_probe
+        self.truce_diagnostic_path = (
+            self.artifact_dir / "truce-default-leaf-diagnostic.jsonl"
+            if read_only_pretermination_probe
+            else None
+        )
         self.ui_dir = self.artifact_dir / "ui"
         self.state_dir = self.artifact_dir / "native-state"
         self.process_inventory = process_inventory
@@ -1119,11 +1129,18 @@ class ConcreteLiveOperations:
             "-gdpr-compliant",
             f"-userdir={self.userdir}",
         ]
+        launch_environment = None
+        if self.truce_diagnostic_path is not None:
+            launch_environment = os.environ.copy()
+            launch_environment["XAR_CK3_G2_TRUCE_PRIVATE_CAPTURE_PATH"] = str(
+                self.truce_diagnostic_path
+            )
         self._process = self.popen(
             command,
             cwd=str(self.paths.game_executable.parent),
             text=True,
             creationflags=subprocess.CREATE_NEW_PROCESS_GROUP,
+            env=launch_environment,
         )
         pid = _positive_integer(getattr(self._process, "pid", None), "launched PID")
         deadline = time.monotonic() + self.timeouts.process_discovery_seconds
@@ -1517,6 +1534,33 @@ class ConcreteLiveOperations:
             postwar_timeout=postwar_timeout,
         )
 
+    async def continue_read_only_pretermination_probe_from_bridge(
+        self,
+        driver: object,
+        *,
+        source_capture: dict[str, object],
+        capture_sha256: str,
+        expected_character_id: int,
+        expected_war_id: int,
+        expected_date_raw: int,
+        postwar_timeout: float,
+    ) -> dict[str, object]:
+        if expected_date_raw != 0:
+            raise LiveAdapterError("outer-owner date sentinel drifted")
+        binding = await self.read_bridge_binding(driver)
+        observed_date_raw = _nonnegative_integer(
+            binding.get("date_raw"), "bridge binding date raw"
+        )
+        return await outer.lifecycle.run_same_lifecycle_pretermination_probe(
+            driver,
+            source_capture=source_capture,
+            capture_sha256=capture_sha256,
+            expected_character_id=expected_character_id,
+            expected_war_id=expected_war_id,
+            expected_date_raw=observed_date_raw,
+            postwar_timeout=postwar_timeout,
+        )
+
     async def final_cleanup(
         self,
         _launch: dict[str, object],
@@ -1671,7 +1715,36 @@ def _parser() -> argparse.ArgumentParser:
     parser.add_argument("--postwar-timeout", type=float, default=45.0)
     parser.add_argument("--verify-only", action="store_true")
     parser.add_argument("--authorize-private-live", action="store_true")
+    parser.add_argument(
+        "--read-only-pretermination-probe",
+        action="store_true",
+        help=(
+            "stop after the same-frame dual terms query; never create the "
+            "mutation checkpoint or submit war termination"
+        ),
+    )
     return parser
+
+
+def _truce_diagnostic_receipt(
+    operations: ConcreteLiveOperations | None,
+) -> dict[str, object] | None:
+    if operations is None or operations.truce_diagnostic_path is None:
+        return None
+    path = operations.truce_diagnostic_path
+    if not path.is_file():
+        return {
+            "path": str(path),
+            "exists": False,
+            "bytes": 0,
+            "sha256": None,
+        }
+    return {
+        "path": str(path),
+        "exists": True,
+        "bytes": path.stat().st_size,
+        "sha256": _sha256_file(path),
+    }
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -1682,6 +1755,11 @@ def main(argv: list[str] | None = None) -> int:
         preflight = run_no_launch_preflight(
             args.manifest,
             args.preflight_output,
+            requested_live_mode=(
+                "read-only-pre-termination"
+                if args.read_only_pretermination_probe
+                else "source-current-action-postwar"
+            ),
             profile_settings_template=args.profile_settings_template,
             inspect_profile_settings_template=args.verify_only,
             game_root=args.game_root,
@@ -1723,6 +1801,12 @@ def main(argv: list[str] | None = None) -> int:
             profile_settings_template=args.profile_settings_template,
             resume_save=args.resume_save,
             resume_save_sha256=args.resume_save_sha256,
+            read_only_pretermination_probe=args.read_only_pretermination_probe,
+        )
+        continuation = (
+            operations.continue_read_only_pretermination_probe_from_bridge
+            if args.read_only_pretermination_probe
+            else operations.continue_same_lifecycle_from_bridge
         )
         result = asyncio.run(
             outer.run_exclusive_outer_owner(
@@ -1731,12 +1815,27 @@ def main(argv: list[str] | None = None) -> int:
                 expected_war_id=args.expected_war_id,
                 expected_date_raw=0,
                 postwar_timeout=float(args.postwar_timeout),
-                continuation=operations.continue_same_lifecycle_from_bridge,
+                continuation=continuation,
+                read_only_pretermination_probe=args.read_only_pretermination_probe,
             )
+        )
+        probe_result = (
+            _object(result.get("lifecycle_result"), "read-only probe result")
+            if args.read_only_pretermination_probe
+            else None
         )
         report = {
             "schema": REPORT_SCHEMA,
-            "status": "GREEN" if result.get("ok") is True else "RED",
+            "status": (
+                "PROBE_COMPLETE"
+                if args.read_only_pretermination_probe and result.get("ok") is True
+                else "GREEN" if result.get("ok") is True else "RED"
+            ),
+            "mode": (
+                "read-only-pre-termination"
+                if args.read_only_pretermination_probe
+                else "source-current-action-postwar"
+            ),
             "preflight": preflight,
             "startup_profile_assets": copy.deepcopy(
                 operations._startup_profile_assets
@@ -1744,9 +1843,15 @@ def main(argv: list[str] | None = None) -> int:
             "resume_checkpoint": copy.deepcopy(operations._resume_checkpoint),
             "outer_owner": result,
             "cleanup": copy.deepcopy(operations._cleanup_receipt),
+            "truce_diagnostic": _truce_diagnostic_receipt(operations),
             "boundaries": {
-                "source_specific_loss_ready": True,
-                "comparison_input_ready": True,
+                "terms_ready": (
+                    probe_result.get("terms_ready")
+                    if probe_result is not None
+                    else True
+                ),
+                "source_specific_loss_ready": not args.read_only_pretermination_probe,
+                "comparison_input_ready": not args.read_only_pretermination_probe,
                 "three_way_comparison_ready": False,
                 "decision_ready": False,
                 "automatic_surrender_ready": False,
@@ -1774,7 +1879,9 @@ def main(argv: list[str] | None = None) -> int:
                 if operations is not None
                 else None
             ),
+            "truce_diagnostic": _truce_diagnostic_receipt(operations),
             "boundaries": {
+                "terms_ready": False,
                 "source_specific_loss_ready": False,
                 "comparison_input_ready": False,
                 "three_way_comparison_ready": False,
