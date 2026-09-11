@@ -579,3 +579,4 @@ flowchart TD
 - R451 分类为 harness RED，mod 产品 RED=false；open_kaishek 私有依赖同步为 `5175bdaf2031449e1822a5ebdfccc77b23557044`。T1=90%、`GEN-034` unresolved，T0 P1=`6/9`、P2=`LOCKED`。
 
 - 2026-09-11 R452：G2 source-specific adapter 的 `--pipe` 事后注入不会执行 pre-resume `XarCk3BridgePrepareStartup`；`callback_count=0 / invalid_request` 已实机定位。adapter 现复用共享 suspended launcher，恢复主线程前完成无 `--pipe` Prepare；详见 [G2 source-specific war-loss live adapter](g2-source-specific-war-loss-live-adapter-2026-09-05.md)。
+- 2026-09-11 R455：同一修复后的 source-first 只读链已在 WarID `33554473` 上双读 `evaluated_days=1825`、`terms_ready=true`；当前输入的 truce observation RED 已关闭，动作与 GEN-034 仍待正常 lifecycle，证据见同一专题。
