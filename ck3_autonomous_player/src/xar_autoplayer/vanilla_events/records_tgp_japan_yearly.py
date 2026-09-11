@@ -132,6 +132,42 @@ VANILLA_TGP_JAPAN_YEARLY_OBSERVATIONS: Final[
             "ocr_used": False,
             "coordinates_used": False,
             "console_used": False,
+        }, {
+            "run": "R465",
+            "kind": "selection-postcondition-live-green-with-source-exhaustion",
+            "artifact": (
+                "_runtime/p1-stage10-r463-partial-r464-r465-20260912/"
+                "live-artifacts/terminal-stages-red.json"
+            ),
+            "artifact_sha256": (
+                "665CC017AA69346C352D3EBC36A6A1F49721F763EADE2348BDEFC9DEEFCA814F"
+            ),
+            "date_raw": 53219640,
+            "event_instance_id": 343,
+            "root_character_id": 32904,
+            "selected_option_number": 1,
+            "selected_native_option_index": 0,
+            "selection_postcondition": "event_instance_advanced",
+            "ending_event_instance_id": None,
+            "starting_snapshot_id": "native:3",
+            "starting_revision": 4,
+            "ending_snapshot_id": "native:4",
+            "ending_revision": 5,
+            "connection_generation": 1,
+            "ck3_pid": 134852,
+            "selection_result": "GREEN",
+            "source_route_result": "RED",
+            "source_route_reason": "fixed_10_day_window_exhausted_without_zg361cl.390",
+            "source_route_absolute_end_date_raw": 53219880,
+            "last_observed_date_raw": 53219928,
+            "stage10_source_receipt_emitted": False,
+            "retained_red": True,
+            "process_restart_required": True,
+            "mcp_only": True,
+            "fixture_used": False,
+            "ocr_used": False,
+            "coordinates_used": False,
+            "console_used": False,
         }],
     },
 }
