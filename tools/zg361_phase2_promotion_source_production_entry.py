@@ -638,10 +638,12 @@ KNOWN_TIMELINE_INTERRUPTS: dict[str, dict[str, object]] = {
         # CK3 1.19.0.6, exact EXE SHA 2D00FF31...; source
         # events/activities/imperial_examination_activity/
         # imperial_examination_events.txt SHA 346473CE..., lines 8627-9104.
-        # R408 instance 2161 renders authored native options 0 and 3 from the
-        # four-option event. Native 3 is the explicit opt-out: it only applies
-        # the authored minor stress relief and avoids all follow-up events and
-        # family-member opinion mutations in options 0-2.
+        # R408 instance 2161 selected the source-priority palace entrant branch
+        # and rendered authored native options 0 and 3. R422 instance 1114
+        # selected the mutually exclusive metropolitan entrant branch and
+        # rendered native options 1 and 3. Native 3 is the explicit opt-out:
+        # it only applies the authored minor stress relief and avoids all
+        # follow-up events and family-member opinion mutations in options 0-2.
         "date_policy": "product-observation-window",
         "root_character_id": 33596113,
         "character_scopes": {
@@ -678,6 +680,41 @@ KNOWN_TIMELINE_INTERRUPTS: dict[str, dict[str, object]] = {
         "native_option_indices": (0, 3),
         "selected_option_number": 4,
         "selected_native_option_index": 3,
+        "scope_variants": ({
+            "saved_scope_names": (
+                "activity",
+                "host",
+                "province",
+                "new_memory",
+                "location",
+                "metropolitan_entrant",
+                "house_member",
+            ),
+            "saved_scope_count": 7,
+            "character_scopes": {
+                "host": 110448,
+                "metropolitan_entrant": 16889271,
+                "house_member": 16889271,
+            },
+            "character_scope_matches_any": {
+                "metropolitan_entrant": ("house_member",),
+                "house_member": ("metropolitan_entrant",),
+            },
+            "scope_types": {
+                "activity": "activity",
+                "host": "character",
+                "province": "province",
+                "new_memory": "character_memory",
+                "location": "province",
+                "metropolitan_entrant": "character",
+                "house_member": "character",
+            },
+            "option_count": 2,
+            "snapshot_option_count": 4,
+            "native_option_indices": (1, 3),
+            "selected_option_number": 4,
+            "selected_native_option_index": 3,
+        },),
         "occurrence_policy": "repeatable-within-product-observation-window",
     },
     "tgp_dynastic_cycle.0082": {
