@@ -1,7 +1,6 @@
-﻿#!/usr/bin/env python3
+#!/usr/bin/env python3
 from __future__ import annotations
 
-import copy
 from pathlib import Path
 import sys
 import tempfile
@@ -10,14 +9,15 @@ import unittest
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 import zg361_phase2_stage10_player_subject_action_cell as cell
-from xar_autoplayer.bridge.set_played_character_contract import (
-    SET_PLAYED_CHARACTER_V1_CAPABILITY,
+from xar_autoplayer.bridge.campaign_root_context_contract import (
+    QUERY_CAMPAIGN_ROOT_CONTEXT_V1_CAPABILITY,
 )
 from xar_autoplayer.bridge.zhongguo_manager_governance_snapshot_contract import (
     QUERY_ZHONGGUO_MANAGER_GOVERNANCE_SNAPSHOT_V1_CAPABILITY,
 )
-from xar_autoplayer.bridge.zhongguo_manager_subordinate_selector_contract import (
-    QUERY_ZHONGGUO_MANAGER_SUBORDINATE_SELECTOR_V1_CAPABILITY,
+from xar_autoplayer.bridge.zhongguo_promotion_source_progress_contract import (
+    ACTIVATE_REVIEW_NOW_V1_TRANSPORT_CAPABILITY,
+    QUERY_PROMOTION_SOURCE_PROGRESS_V1_TRANSPORT_CAPABILITY,
 )
 
 
@@ -44,26 +44,28 @@ def scope(name: str, character_id: int) -> dict[str, object]:
 
 class Service:
     def __init__(self) -> None:
-        self.player = OWNER
+        self.player = MANAGER
         self.date = 9000
         self.initial_date = self.date
         self.revision = 10
-        self.event_id: int | None = 11
-        self.event_key = cell.STAGE9_EVENT
-        self.selector_available = True
-        self.opening_case_available = True
+        self.event_id: int | None = None
+        self.event_key: str | None = None
+        self.independent = False
+        self.celestial = True
         self.provider_terminal = True
         self.selections: list[tuple[int, int]] = []
-        self.switches: list[int] = []
         self.saves = 0
-        self.provider_query_players: list[int] = []
+        self.provider_calls = 0
 
     def capabilities(self) -> dict[str, object]:
-        return {"bridge_capabilities": [
-            QUERY_ZHONGGUO_MANAGER_SUBORDINATE_SELECTOR_V1_CAPABILITY,
-            QUERY_ZHONGGUO_MANAGER_GOVERNANCE_SNAPSHOT_V1_CAPABILITY,
-            SET_PLAYED_CHARACTER_V1_CAPABILITY,
-        ]}
+        return {
+            "bridge_capabilities": [
+                QUERY_CAMPAIGN_ROOT_CONTEXT_V1_CAPABILITY,
+                QUERY_ZHONGGUO_MANAGER_GOVERNANCE_SNAPSHOT_V1_CAPABILITY,
+                QUERY_PROMOTION_SOURCE_PROGRESS_V1_TRANSPORT_CAPABILITY,
+                ACTIVATE_REVIEW_NOW_V1_TRANSPORT_CAPABILITY,
+            ]
+        }
 
     def snapshot(self) -> dict[str, object]:
         return {
@@ -80,56 +82,26 @@ class Service:
             ),
         }
 
-    def query_current_event_window_context_v1(
-        self, event_id: int, *, expected_revision: int
-    ) -> dict[str, object]:
-        if event_id != self.event_id or expected_revision != self.revision:
-            raise AssertionError("event query crossed its fixture frame")
-        saved = []
-        if self.event_key == cell.STAGE10_EVENT:
-            saved = [
-                scope("zg361_mg_f_ticket_owner", OWNER),
-                scope("zg361_mg_f_ticket_subject", MANAGER),
-            ]
-        return {
-            "status": "available",
-            "current_event_window_context": {
-                "event_definition_key": self.event_key,
-                "current_event_instance_id": event_id,
-                "root_scope": scope("root", self.player)["scope"],
-                "saved_scopes": saved,
-                "options": [{
-                    "native_option_index": 0, "shown": True, "enabled": True
-                }],
-                "readiness": {
-                    "event_definition_identity_ready": True,
-                    "root_scope_ready": True,
-                    "saved_scopes_ready": True,
-                    "option_presentation_ready": True,
-                },
-            },
-        }
-
-    def query_zhongguo_manager_subordinate_selector_v1(
-        self, nonce: str, *, expected_revision: int
+    def query_campaign_root_context_v1(
+        self, *, expected_revision: int
     ) -> dict[str, object]:
         if expected_revision != self.revision:
-            raise AssertionError("selector revision drift")
-        if not self.selector_available:
-            return {
-                "status": "unavailable",
-                "provider_observed": False,
-                "readiness": {"ready": False},
-                "selection": None,
-            }
+            raise AssertionError("campaign query crossed its fixture frame")
         return {
             "status": "available",
-            "provider_observed": True,
+            "unavailable_reason": None,
+            "campaign_root_context_ready": True,
             "readiness": {"ready": True},
-            "selection": {
-                "manager_character_id": MANAGER,
-                "subordinate_character_id": 404,
+            "player_character_id": self.player,
+            "player_character_alive": True,
+            "independent": self.independent,
+            "immediate_liege_character_id": None if self.independent else OWNER,
+            "primary_title": {"tier_raw": 3, "tier_key": "duchy"},
+            "government": {
+                "key": "celestial_government",
+                "flags": ["government_is_celestial"] if self.celestial else [],
             },
+            "selected_game_rule_tokens": ["zg361_on"],
         }
 
     def save_checkpoint(self, *, expected_revision: int) -> dict[str, object]:
@@ -147,29 +119,31 @@ class Service:
             },
         }
 
-    def select_event_option(
-        self, option: int, *, event_instance_id: int, expected_revision: int
+    def query_current_event_window_context_v1(
+        self, event_id: int, *, expected_revision: int
     ) -> dict[str, object]:
-        if option != 1 or event_instance_id != self.event_id or expected_revision != self.revision:
-            raise AssertionError("event selection drift")
-        self.selections.append((event_instance_id, option))
-        self.event_id = None
-        self.revision += 1
-        return {"accepted": True, "status": "submitted"}
-
-    def set_player_character_v1(
-        self, character_id: int, *, expected_revision: int
-    ) -> dict[str, object]:
-        if expected_revision != self.revision:
-            raise AssertionError("switch revision drift")
-        self.player = character_id
-        self.switches.append(character_id)
-        self.revision += 1
+        if event_id != self.event_id or expected_revision != self.revision:
+            raise AssertionError("event query crossed its fixture frame")
         return {
-            "accepted": True,
-            "status": "switched",
-            "to_character_id": character_id,
-            "postcondition_verified": True,
+            "status": "available",
+            "current_event_window_context": {
+                "event_definition_key": self.event_key,
+                "current_event_instance_id": event_id,
+                "root_scope": scope("root", MANAGER)["scope"],
+                "saved_scopes": [
+                    scope("zg361_mg_f_ticket_owner", OWNER),
+                    scope("zg361_mg_f_ticket_subject", MANAGER),
+                ],
+                "options": [
+                    {"native_option_index": 0, "shown": True, "enabled": True}
+                ],
+                "readiness": {
+                    "event_definition_identity_ready": True,
+                    "root_scope_ready": True,
+                    "saved_scopes_ready": True,
+                    "option_presentation_ready": True,
+                },
+            },
         }
 
     def query_zhongguo_manager_governance_snapshot_v1(
@@ -182,53 +156,54 @@ class Service:
     ) -> dict[str, object]:
         if expected_revision != self.revision:
             raise AssertionError("provider revision drift")
-        self.provider_query_players.append(self.player)
-        terminal_query = self.player == MANAGER
-        state = 5 if terminal_query and self.provider_terminal else (
-            4 if terminal_query else (1 if self.opening_case_available else 0)
-        )
-        binding_kind = (
-            "played_character" if terminal_query else "bounded_ai_direct_manager"
-        )
+        self.provider_calls += 1
+        state = 5 if self.provider_terminal else 4
         return {
             "status": "available",
             "unavailable_reason": None,
             "player_character_id": self.player,
-            "readiness": {"ready": terminal_query and self.provider_terminal},
+            "readiness": {"ready": self.provider_terminal},
             "binding": {
                 "subject_character_id": subject_character_id,
                 "owner_character_id": owner_character_id,
-                "subject_binding_kind": binding_kind,
+                "subject_binding_kind": "played_character",
             },
             "f_case": {
                 "owner_character_id": typed(owner_character_id),
                 "subject_character_id": typed(subject_character_id),
                 "state": typed(state),
-                "active": typed(state not in {0, 5}),
+                "active": typed(state != 5),
             },
         }
+
+    def select_event_option(
+        self, option: int, *, event_instance_id: int, expected_revision: int
+    ) -> dict[str, object]:
+        if option != 1 or event_instance_id != self.event_id:
+            raise AssertionError("event selection drift")
+        self.selections.append((event_instance_id, option))
+        self.event_id = None
+        self.revision += 1
+        return {"accepted": True, "status": "submitted"}
 
 
 def navigate_to_stage10(service: Service, **kwargs: object) -> dict[str, object]:
     progress = kwargs["evidence_out"]
     assert isinstance(progress, dict)
     assert kwargs["pause_on_event_definition_key"] == cell.STAGE10_EVENT
-    assert progress["absolute_end_date_raw"] == service.initial_date + cell.MAX_ADVANCE_DAYS * 24
-    probe = kwargs.get("terminal_observation_probe")
-    if callable(probe):
-        service.date += 2 * 24
-        service.revision += 1
-        observed = probe(service.snapshot())
-        return {
-            "result": "TERMINAL_OBSERVATION",
-            "date_raw": service.date,
-            "terminal_observation": observed,
-        }
+    assert kwargs["prefer_natural_cycle"] is False
+    assert progress["absolute_end_date_raw"] == (
+        service.initial_date + cell.MAX_ADVANCE_DAYS * 24
+    )
     service.date += 4 * 24
     service.revision += 1
     service.event_id = 12
     service.event_key = cell.STAGE10_EVENT
-    return {"result": "PAUSED_ON_TARGET", "date_raw": service.date}
+    return {
+        "result": "PAUSED_ON_TARGET",
+        "date_raw": service.date,
+        "review_action": {"accepted": True},
+    }
 
 
 class Stage10PlayerSubjectTests(unittest.TestCase):
@@ -237,57 +212,64 @@ class Stage10PlayerSubjectTests(unittest.TestCase):
             service,
             evidence_directory=directory,
             request_nonce="fixture.stage10",
+            expected_player_manager_character_id=MANAGER,
+            expected_owner_character_id=OWNER,
             navigator=navigate_to_stage10,
         )
 
-    def test_exact_stage9_source_switches_before_bounded_stage10_terminal(self) -> None:
+    def test_player_manager_publication_reaches_bounded_stage10_terminal(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
             service = Service()
             result = self.run_cell(service, Path(temporary))
             self.assertEqual(result["result"], "GREEN")
-            self.assertEqual(service.switches, [MANAGER])
-            self.assertEqual(service.selections, [(11, 1), (12, 1)])
+            self.assertEqual(service.player, MANAGER)
+            self.assertEqual(service.selections, [(12, 1)])
             self.assertEqual(service.saves, 2)
-            self.assertEqual(service.provider_query_players, [OWNER, MANAGER])
+            self.assertEqual(service.provider_calls, 1)
             gate = result["p1_acceptance_evidence"]["central_stage_10_terminal"]
-            self.assertTrue(gate["provider_observed"])
             self.assertEqual(gate["owner_character_id"], OWNER)
             self.assertEqual(gate["subject_character_id"], MANAGER)
             self.assertEqual(
                 gate["role_topology"],
-                "ai_central_owner_to_player_manager_subject",
+                "superior_owner_to_player_manager_subject",
             )
 
-    def test_wrong_source_event_refuses_before_selector_or_mutation(self) -> None:
+    def test_independent_player_refuses_before_save_or_navigation(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
             service = Service()
+            service.independent = True
+            with self.assertRaises(cell.Stage10PlayerSubjectError):
+                self.run_cell(service, Path(temporary))
+            self.assertEqual(service.saves, 0)
+            self.assertEqual(service.selections, [])
+
+    def test_non_celestial_player_refuses_before_save(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            service = Service()
+            service.celestial = False
+            with self.assertRaises(cell.Stage10PlayerSubjectError):
+                self.run_cell(service, Path(temporary))
+            self.assertEqual(service.saves, 0)
+
+    def test_wrong_terminal_event_keeps_source_only(self) -> None:
+        def wrong_event(service: Service, **kwargs: object) -> dict[str, object]:
+            result = navigate_to_stage10(service, **kwargs)
             service.event_key = "some.other.event"
-            with self.assertRaises(cell.Stage10PlayerSubjectError):
-                self.run_cell(service, Path(temporary))
-            self.assertEqual(service.switches, [])
-            self.assertEqual(service.selections, [])
-            self.assertEqual(service.saves, 0)
+            return result
 
-    def test_missing_manager_refuses_before_stage9_acknowledgement(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
             service = Service()
-            service.selector_available = False
-            with self.assertRaises(cell.Stage10PlayerSubjectError) as raised:
-                self.run_cell(service, Path(temporary))
-            self.assertEqual(raised.exception.reason_code, "eligible_manager_unavailable")
-            self.assertEqual(service.switches, [])
-            self.assertEqual(service.selections, [])
-            self.assertEqual(service.saves, 0)
-
-    def test_missing_open_case_never_switches_player(self) -> None:
-        with tempfile.TemporaryDirectory() as temporary:
-            service = Service()
-            service.opening_case_available = False
             with self.assertRaises(cell.Stage10PlayerSubjectError):
-                self.run_cell(service, Path(temporary))
-            self.assertEqual(service.switches, [])
-            self.assertEqual(service.selections, [(11, 1)])
+                cell.run_stage10_player_subject(
+                    service,
+                    evidence_directory=Path(temporary),
+                    request_nonce="fixture.stage10",
+                    expected_player_manager_character_id=MANAGER,
+                    expected_owner_character_id=OWNER,
+                    navigator=wrong_event,
+                )
             self.assertEqual(service.saves, 1)
+            self.assertEqual(service.selections, [])
 
     def test_nonterminal_provider_does_not_acknowledge_stage10(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
@@ -295,10 +277,9 @@ class Stage10PlayerSubjectTests(unittest.TestCase):
             service.provider_terminal = False
             with self.assertRaises(cell.Stage10PlayerSubjectError):
                 self.run_cell(service, Path(temporary))
-            self.assertEqual(service.selections, [(11, 1)])
+            self.assertEqual(service.selections, [])
             self.assertEqual(service.saves, 1)
-            evidence = copy.deepcopy(service.snapshot())
-            self.assertEqual(evidence["active_event"]["instance_id"], 12)
+            self.assertEqual(service.event_id, 12)
 
 
 if __name__ == "__main__":

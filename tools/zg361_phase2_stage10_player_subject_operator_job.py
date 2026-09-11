@@ -1,5 +1,5 @@
 ﻿#!/usr/bin/env python3
-"""MCP-owned Stage 10 player-subject run from an exact Stage 9 checkpoint.
+"""MCP-owned Stage 10 player-subject run from a qualified player-manager save.
 
 The process lifecycle and frozen-input admission come from the AF5 operator.
 No launch occurs until the operator receives ``run-stage10``.  A failed action
@@ -22,8 +22,7 @@ import zg361_phase2_af5_operator_job as base
 
 CONTROLS = ["status", "run-stage10", "cleanup"]
 JOB_ROLE = "stage10-player-subject"
-SOURCE_RECEIPT_KIND = "zg361_stage10_player_subject_source_v1"
-SOURCE_EVENT = "zg361cl.390"
+SOURCE_RECEIPT_KIND = "zg361_stage10_player_publication_source_v2"
 
 
 def _validate_source_receipt(
@@ -34,41 +33,36 @@ def _validate_source_receipt(
     checkpoint = base.mapping(receipt.get("checkpoint"), "source receipt checkpoint")
     bound_checkpoint = Path(str(bound["checkpoint"])).resolve()
     expected = base.mapping(bound.get("expected_hashes"), "expected hashes")
-    context = base.mapping(receipt.get("source_event_context"), "source event context")
-    root_scope = base.mapping(context.get("root_scope"), "source event root")
-    root_identity = base.mapping(
-        root_scope.get("typed_identity"), "source event root identity"
+    topology = base.mapping(receipt.get("offline_topology"), "source topology")
+    owner = base.positive_int(
+        topology.get("immediate_liege_character_id"), "source owner"
     )
-    selector = base.mapping(receipt.get("selector"), "source selector")
-    readiness = base.mapping(selector.get("readiness"), "source selector readiness")
-    selection = base.mapping(selector.get("selection"), "source selector selection")
-    owner = base.positive_int(receipt.get("owner_character_id"), "source owner")
-    player = base.positive_int(receipt.get("player_character_id"), "source player")
     manager = base.positive_int(
-        receipt.get("selected_manager_character_id"), "source manager"
+        topology.get("player_manager_character_id"), "source manager"
     )
+    direct_subjects = topology.get("direct_landed_vassal_character_ids")
+    player_tier = topology.get("player_primary_title_tier")
     if not (
         receipt.get("schema_version") == 1
         and receipt.get("kind") == SOURCE_RECEIPT_KIND
         and receipt.get("result") == "GREEN"
-        and receipt.get("production_live") is True
-        and receipt.get("provider_observed") is True
+        and receipt.get("offline_topology_observed") is True
         and receipt.get("fixture_used") is False
         and receipt.get("console_used") is False
         and receipt.get("selection_attempted") is False
-        and receipt.get("source_event_definition_key") == SOURCE_EVENT
-        and context.get("event_definition_key") == SOURCE_EVENT
-        and receipt.get("source_event_instance_id")
-        == context.get("current_event_instance_id")
-        and owner == player
-        and root_identity.get("status") == "available"
-        and root_identity.get("kind") == "character"
-        and root_identity.get("character_id") == owner
         and manager != owner
-        and selector.get("status") == "available"
-        and selector.get("provider_observed") is True
-        and readiness.get("ready") is True
-        and selection.get("manager_character_id") == manager
+        and receipt.get("source_container_header") == "SAV0101"
+        and receipt.get("game_version") == "1.19.0.6"
+        and isinstance(direct_subjects, list)
+        and len(direct_subjects) >= 1
+        and all(
+            isinstance(value, int) and not isinstance(value, bool) and value > 0
+            for value in direct_subjects
+        )
+        and isinstance(player_tier, int)
+        and not isinstance(player_tier, bool)
+        and player_tier >= 3
+        and topology.get("player_government") == "celestial_government"
         and str(receipt.get("product_tree_sha256", "")).upper()
         == str(expected["product_tree_sha256"]).upper()
         and isinstance(checkpoint.get("path"), str)
@@ -79,9 +73,14 @@ def _validate_source_receipt(
         == str(expected["checkpoint_sha256"]).upper()
     ):
         raise base.Af5JobError(
-            "Stage 10 activation lacks a matching qualified .390 source receipt"
+            "Stage 10 activation lacks a matching player-publication source receipt"
         )
-    return {"path": receipt_path, "receipt": receipt}
+    return {
+        "path": receipt_path,
+        "receipt": receipt,
+        "player_manager_character_id": manager,
+        "owner_character_id": owner,
+    }
 
 
 def validate_activation(path: Path, *, require_empty_slot: bool) -> dict[str, object]:
@@ -92,6 +91,10 @@ def validate_activation(path: Path, *, require_empty_slot: bool) -> dict[str, ob
     source = _validate_source_receipt(value.get("stage10_source_receipt"), bound)
     bound["stage10_source_receipt"] = source["path"]
     bound["stage10_source"] = source["receipt"]
+    bound["stage10_player_manager_character_id"] = source[
+        "player_manager_character_id"
+    ]
+    bound["stage10_owner_character_id"] = source["owner_character_id"]
     return bound
 
 
@@ -176,6 +179,10 @@ class Stage10PlayerSubjectOperatorJob(base.Af5OperatorJob):
                 self.service,
                 evidence_directory=artifacts / "stage10",
                 request_nonce=f"{bound['round']}.stage10.player-subject",
+                expected_player_manager_character_id=bound[
+                    "stage10_player_manager_character_id"
+                ],
+                expected_owner_character_id=bound["stage10_owner_character_id"],
             )
         )
         gate = evidence.get("p1_acceptance_evidence")
@@ -199,8 +206,8 @@ class Stage10PlayerSubjectOperatorJob(base.Af5OperatorJob):
             bound,
             evidence,
             result_key="source_checkpoint",
-            filename="stage10-exact-stage9-source.ck3",
-            lineage_suffix="stage10.exact-stage9-source",
+            filename="stage10-player-manager-source.ck3",
+            lineage_suffix="stage10.player-manager-source",
         )
         terminal_archive = _archive_checkpoint(
             self,
@@ -255,8 +262,8 @@ class Stage10PlayerSubjectOperatorJob(base.Af5OperatorJob):
                     self.bound,
                     action,
                     result_key="source_checkpoint",
-                    filename=f"stage10-exact-stage9-source-attempt-{self.attempt:02d}.ck3",
-                    lineage_suffix=f"stage10.exact-stage9-source.{self.attempt}",
+                    filename=f"stage10-player-manager-source-attempt-{self.attempt:02d}.ck3",
+                    lineage_suffix=f"stage10.player-manager-source.{self.attempt}",
                 )
             except Exception as archive_error:
                 partial["source_archive_error"] = (

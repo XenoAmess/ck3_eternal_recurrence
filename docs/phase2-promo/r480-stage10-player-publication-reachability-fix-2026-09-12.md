@@ -32,3 +32,14 @@ T0-P1 仍为 **`8/9 = 88.9%`**，唯一未签收项仍是玩家可见的 `zg361m
 当前轮次 R480 已结束，旧轮次 R479 已终止，CK3、injector、Operator MCP 均为零。脚本游戏资产已经变化，不能热恢复；下一次必须启动新轮次 R481。R481 只执行一次有界 Stage10 验收：复用真实玩家经理 B1 lineage，等待真实公示触发 `.90`，在同一进程内取得 `.120`，并回读 F case 的 owner/subject/source/evaluation cycle、终态和 manager RED。成功后立即更新九项账本为 9/9；失败则保存首个 RED 并停止，不延长为单 bug 长跑。
 
 本变更改变 Manager/Governance 的入口架构和周期字段语义，必须在根仓提交推送后立即同步 open_kaishek 兼容说明；公共 MCP schema、DLL、启动参数与加载顺序没有变化。
+
+## 有界 runner 与候选源补充
+
+Stage10 action/operator 已从旧 `.390 + selector + set-player` 编排改为真实玩家经理 B1 公示：先用 campaign-root 确认当前玩家
+`非独立 + 公爵及以上 + celestial + zg361_on` 及直属上级，再执行 review-now，最多推进 30 游戏日并停在 `.120`；terminal
+provider 必须证明同一 owner/player F case 已闭合。聚焦 action normal/optimized 各 `5/5`、operator 各 `4/4` GREEN。
+
+现有 R159 是独立最高统治者，已离线淘汰且不再启动。当前候选 `autosave.ck3` 为 SAV0101 / 1.19.0.6，SHA-256
+`80030146765A960EABAA1E38E90FF88CDEB8FBBBB2442E30E695FDFBFD64687D`；玩家 `37884` 的直属上级为 `61334`，直属有地
+封臣为 `[57858, 16817470, 43060]`。离线准入使用仓库外通用 Rakaly 0.8.19，实机启动后仍由通用 campaign-root MCP
+重新确认，离线结果不冒充 production-live 证据。该路线只允许一次绝对 30 日验收，失败即保存首个 RED，不重试或延长。
