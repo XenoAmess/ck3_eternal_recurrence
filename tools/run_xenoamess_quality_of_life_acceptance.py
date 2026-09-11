@@ -348,6 +348,10 @@ class MarkerStream:
             time.sleep(0.2)
         raise acceptance.RunnerError(f"fixture marker timeout: {marker}")
 
+    def has(self, marker: str) -> bool:
+        self.pump()
+        return any(marker in line for line in self.lines)
+
     def validate(self) -> None:
         self.pump()
         for marker in REQUIRED_MARKERS:
@@ -575,8 +579,91 @@ def advance_until_marker(
         "resume-map", expected_revision=int(before["revision"])
     )
     wait_error: BaseException | None = None
+    drained_events: list[dict[str, object]] = []
     try:
-        stream.wait(marker, timeout_s)
+        deadline = time.monotonic() + timeout_s
+        while time.monotonic() < deadline:
+            if stream.has(marker):
+                break
+            snapshot = service.snapshot()
+            active_event = snapshot.get("active_event")
+            if snapshot.get("paused") is True and isinstance(active_event, dict):
+                instance_id = active_event.get("instance_id")
+                revision = snapshot.get("revision")
+                options = active_event.get("options")
+                enabled = [
+                    row.get("option_number")
+                    for row in options or []
+                    if isinstance(row, dict)
+                    and row.get("enabled") is True
+                    and isinstance(row.get("option_number"), int)
+                    and not isinstance(row.get("option_number"), bool)
+                ]
+                if (
+                    not isinstance(instance_id, int)
+                    or isinstance(instance_id, bool)
+                    or not isinstance(revision, int)
+                    or isinstance(revision, bool)
+                    or not enabled
+                ):
+                    raise acceptance.RunnerError(
+                        f"{stem} ambient event lacks a stable enabled option"
+                    )
+                context_query: dict[str, object] | None = None
+                context_error: str | None = None
+                try:
+                    context_query = service.query_current_event_window_context_v1(
+                        instance_id, expected_revision=revision
+                    )
+                except Exception as error:
+                    context_error = f"{type(error).__name__}: {error}"
+                option_number = min(enabled)
+                selection = service.select_event_option(
+                    option_number,
+                    event_instance_id=instance_id,
+                    expected_revision=revision,
+                )
+                drained_events.append(
+                    {
+                        "snapshot": snapshot,
+                        "context_query": context_query,
+                        "context_error": context_error,
+                        "selected_option_number": option_number,
+                        "selection": selection,
+                    }
+                )
+                log(
+                    f"{stem}: selected option {option_number} on ambient event "
+                    f"instance {instance_id} so asynchronous replies can continue"
+                )
+                settle_deadline = time.monotonic() + 5
+                while time.monotonic() < settle_deadline:
+                    settled = service.snapshot()
+                    settled_event = settled.get("active_event")
+                    if (
+                        not isinstance(settled_event, dict)
+                        or settled_event.get("instance_id") != instance_id
+                    ):
+                        break
+                    time.sleep(0.1)
+                else:
+                    raise acceptance.RunnerError(
+                        f"{stem} ambient event {instance_id} did not close"
+                    )
+                if settled.get("paused") is True and not isinstance(
+                    settled.get("active_event"), dict
+                ):
+                    service.execute_step(
+                        "resume-map", expected_revision=int(settled["revision"])
+                    )
+                continue
+            if snapshot.get("paused") is True:
+                service.execute_step(
+                    "resume-map", expected_revision=int(snapshot["revision"])
+                )
+            time.sleep(0.2)
+        else:
+            raise acceptance.RunnerError(f"fixture marker timeout: {marker}")
     except BaseException as error:
         wait_error = error
     running = service.snapshot()
@@ -603,6 +690,7 @@ def advance_until_marker(
         "after_running": running,
         "pause_ack": pause_ack,
         "after_paused": paused,
+        "drained_events": drained_events,
         "error": None if wait_error is None else str(wait_error),
     }
     write_json(artifacts / f"{stem}.json", evidence)

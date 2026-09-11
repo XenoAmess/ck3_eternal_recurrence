@@ -220,6 +220,65 @@ class ProductOuterDescriptorTests(unittest.TestCase):
         self.assertEqual(evidence["result"], "GREEN")
         self.assertTrue(evidence["after_paused"]["paused"])
 
+    def test_async_advance_drains_ambient_event_and_resumes(self) -> None:
+        class Stream:
+            def __init__(self) -> None:
+                self.calls = 0
+
+            def has(self, marker: str) -> bool:
+                self.calls += 1
+                return self.calls >= 2
+
+        service = mock.Mock()
+        service.snapshot.side_effect = [
+            {"paused": True, "revision": 10, "active_event": None},
+            {
+                "paused": True,
+                "revision": 12,
+                "active_event": {
+                    "instance_id": 7,
+                    "options": [
+                        {"option_number": 1, "enabled": True},
+                        {"option_number": 2, "enabled": True},
+                    ],
+                },
+            },
+            {"paused": True, "revision": 13, "active_event": None},
+            {"paused": False, "revision": 14, "active_event": None},
+            {"paused": True, "revision": 15, "active_event": None},
+        ]
+        service.execute_step.side_effect = [
+            {"accepted": True, "step": "resume-map"},
+            {"accepted": True, "step": "resume-map"},
+            {"accepted": True, "step": "pause-map"},
+        ]
+        service.query_current_event_window_context_v1.return_value = {
+            "current_event_window_context": {
+                "event_definition_key": "tgp_tributary_task.0001"
+            }
+        }
+        service.select_event_option.return_value = {
+            "accepted": True,
+            "step": "select-event-option-1",
+        }
+
+        with tempfile.TemporaryDirectory() as raw:
+            evidence = xqol.advance_until_marker(
+                service,
+                Stream(),
+                Path(raw),
+                "conversion_reply",
+                "ZQA: TEST PASS conversion_threshold_50_filtered",
+                5,
+            )
+
+        service.select_event_option.assert_called_once_with(
+            1, event_instance_id=7, expected_revision=12
+        )
+        self.assertEqual(len(evidence["drained_events"]), 1)
+        self.assertEqual(evidence["result"], "GREEN")
+        self.assertTrue(evidence["after_paused"]["paused"])
+
 
 if __name__ == "__main__":
     unittest.main()
