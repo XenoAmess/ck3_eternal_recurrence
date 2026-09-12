@@ -35,6 +35,7 @@ EMBEDDED_A_EVENT_KEYS: Final[tuple[str, ...]] = (
     "stress_threshold.2202",
     "stress_threshold.1721",
     "stress_threshold.1011",
+    "trait_specific_interactions.0011",
     "stress_threshold_special.1001",
     "ep1_flavor.0021",
     "ep1_flavor.2040",
@@ -153,6 +154,13 @@ _REVIEW_NOTES: Final[dict[str, tuple[str, str]]] = {
         "Native option 5 changes only the played character's stress and avoids "
         "the coping-trait, brothel, relationship, and faith mutations of the "
         "other authored routes.",
+    ),
+    "trait_specific_interactions.0011": (
+        "Mourning-poem response sent by a distinct actor to the played recipient; "
+        "the R500 projection rendered duel, accept, and reject routes.",
+        "Native option 1 deterministically accepts the poem, avoiding both the "
+        "random diplomacy duel and the rejection route's opinion loss and "
+        "possible rivalry.",
     ),
     "stress_threshold_special.1001": (
         "Grief break with three recorded source-defined projections, including "
@@ -688,6 +696,73 @@ def _build_analysis() -> dict[str, dict[str, object]]:
         "requires a distinct typed neglected_spouse, and leaves the R498 date "
         "and numeric identities in observations only."
     )
+
+    poem_analysis = analysis["trait_specific_interactions.0011"]
+    poem_analysis["migrated_from"]["review_kind"] = (
+        "exact-build-original-definition-caller-effects-and-live-projection-review"
+    )
+    poem_analysis.update({
+        "source_sha256": {
+            "events/trait_specific_events/trait_specific_interaction_events.txt": (
+                "2709B06223751133BD96B09657BB44C6F0987A66BFF6C3CF99288F67282CEE55"
+            ),
+            "common/character_interactions/00_poetry_interactions.txt": (
+                "324439D9477AA6106F8F1C5206D75D53EFD5C670D0118BC53410A9E216DE9C7F"
+            ),
+            "common/scripted_effects/00_poetry_effects.txt": (
+                "0BF4AACF776DC83AF32FC6FA6AEC93BCF01456CDE10DFC2E1C2E389A2CBB57FB"
+            ),
+        },
+        "definition_lines": "128-205",
+        "caller_semantics": (
+            "send_poem_interaction fires .0011 on the adult recipient when the "
+            "accepted interaction payload carries poem_theme_mourning; the live "
+            "actor is distinct from the played recipient"
+        ),
+        "trigger_boundary": (
+            "the sender is a poet, master bard, or laureate; sender and adult "
+            "recipient are distinct and not imprisoned, and the accepted poem "
+            "theme is mourning"
+        ),
+        "immediate_effect": (
+            "the interaction has already selected the subject and poem theme; "
+            "the event itself applies no additional immediate mutation"
+        ),
+        "option_semantics": {
+            "0": (
+                "runs a random diplomacy duel and resolves either the acceptance "
+                "or rejection effect"
+            ),
+            "1": (
+                "deterministically applies actor victory: optional poet XP, "
+                "positive recipient opinion, medium recipient stress loss, and "
+                "a 25-percent potential-friend check"
+            ),
+            "2": (
+                "deterministically applies actor failure: possible minor poet "
+                "XP, recipient opinion loss, minor prestige gain, and a "
+                "20-percent potential-rival check"
+            ),
+        },
+        "after_effect": (
+            "clears the actor's temporary poetry_theme and poem_subject variables"
+        ),
+        "live_projection_boundary": (
+            "R500 rendered native options 0, 1, and 2 with root, recipient, and "
+            "subject bound to the player; actor was a distinct character, three "
+            "generic interaction character slots had unavailable identities, "
+            "and all five poem-theme scopes were typed booleans"
+        ),
+    })
+    poem_analysis["existing_boundaries"][
+        "campaign_specific_binding_fields"
+    ] = []
+    poem_analysis["existing_boundaries"]["boundary_note"] = (
+        "The reusable contract binds root, recipient, and subject through "
+        "$player; requires a distinct actor; preserves the exact weak-slot, "
+        "boolean-theme, and option shape; and leaves R500 numeric identities "
+        "and date in observations only."
+    )
     return analysis
 
 
@@ -1121,6 +1196,57 @@ _STRESS_THRESHOLD_1011_OBSERVATIONS: Final[
 }
 
 
+_TRAIT_SPECIFIC_INTERACTIONS_0011_OBSERVATIONS: Final[
+    dict[str, dict[str, object]]
+] = {
+    "trait_specific_interactions.0011": {
+        "exemplars": [{
+            "run": "R500",
+            "kind": "pre-selection-live-red",
+            "artifact": (
+                "_runtime/p1-stage10-player-publication-r499-r500-"
+                "f522fbe-20260912/live-artifacts/"
+                "stage10-player-subject-red.json"
+            ),
+            "artifact_sha256": (
+                "8DF21A7682E1B30258A12DB736B975E348CE434C6A2A3D0AFFF11F30424B04AA"
+            ),
+            "date_raw": 53155992,
+            "event_instance_id": 21,
+            "root_character_id": 27181,
+            "saved_character_ids": {
+                "actor": 27168,
+                "recipient": 27181,
+                "subject": 27181,
+            },
+            "saved_scope_raw_types": {
+                "actor": 4,
+                "recipient": 4,
+                "secondary_actor": 4,
+                "secondary_recipient": 4,
+                "intermediary": 4,
+                "poem_theme_romance": 2,
+                "poem_theme_legacy": 2,
+                "poem_theme_mourning": 2,
+                "poem_theme_strife": 2,
+                "poem_theme_incompetence": 2,
+                "subject": 4,
+            },
+            "rendered_native_option_indices": [0, 1, 2],
+            "snapshot_option_count": 3,
+            "snapshot_id": "native:18",
+            "native_revision": 18,
+            "revision": 19,
+            "query_sequence": 3,
+            "connection_generation": 1,
+            "bridge_pid": 181268,
+            "selection_attempted": False,
+            "process_restart_required": False,
+        }],
+    },
+}
+
+
 VANILLA_EMBEDDED_A_OBSERVATIONS: Final[
     dict[str, dict[str, object]]
 ] = {
@@ -1129,6 +1255,7 @@ VANILLA_EMBEDDED_A_OBSERVATIONS: Final[
     **_CULTURE_NOTIFICATION_1111_OBSERVATIONS,
     **_STRESS_THRESHOLD_1721_OBSERVATIONS,
     **_STRESS_THRESHOLD_1011_OBSERVATIONS,
+    **_TRAIT_SPECIFIC_INTERACTIONS_0011_OBSERVATIONS,
 }
 
 

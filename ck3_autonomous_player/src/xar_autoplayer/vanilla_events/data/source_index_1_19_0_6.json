@@ -1,19 +1,19 @@
 {
   "audit": {
     "ambiguous_definition_count": 0,
-    "caller_candidate_file_count": 79,
-    "caller_candidate_reference_count": 523,
-    "definition_file_count": 71,
-    "external_caller_event_count": 150,
+    "caller_candidate_file_count": 80,
+    "caller_candidate_reference_count": 524,
+    "definition_file_count": 72,
+    "external_caller_event_count": 151,
     "missing_definition_count": 0,
     "namespace_mismatch_count": 0,
-    "registered_event_count": 185,
+    "registered_event_count": 186,
     "same_file_only_caller_event_count": 35,
-    "unique_definition_count": 185
+    "unique_definition_count": 186
   },
   "ck3_build": "1.19.0.6",
   "ck3_exe_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
-  "dataset_sha256": "068843AC8DE172F8E087A401162F19ADC22DA6F808BA9BA2B71A4BF7D4843348",
+  "dataset_sha256": "210E785F58FE6C176F0AE7DEFCF5301AB9E63BBC41161DBBF45590D4E6FE10C9",
   "events": {
     "adultery.0002": {
       "caller_candidate_resolution": "same-definition-file-only",
@@ -5473,6 +5473,24 @@
         "relative_path": "events/trait_specific_events/trait_specific_events.txt"
       },
       "namespace": "trait_specific"
+    },
+    "trait_specific_interactions.0011": {
+      "caller_candidate_resolution": "external-definition-file",
+      "caller_candidates": [
+        {
+          "column": 40,
+          "file_sha256": "324439D9477AA6106F8F1C5206D75D53EFD5C670D0118BC53410A9E216DE9C7F",
+          "kind": "exact-token-lexical-candidate",
+          "line": 101,
+          "relative_path": "common/character_interactions/00_poetry_interactions.txt"
+        }
+      ],
+      "definition": {
+        "file_sha256": "2709B06223751133BD96B09657BB44C6F0987A66BFF6C3CF99288F67282CEE55",
+        "line": 128,
+        "relative_path": "events/trait_specific_events/trait_specific_interaction_events.txt"
+      },
+      "namespace": "trait_specific_interactions"
     },
     "trait_specific_ongoing.2001": {
       "caller_candidate_resolution": "external-definition-file",

@@ -618,6 +618,28 @@
       "sha256": "0a4df080a9d2f2ec7fcde26b62350703ca19598594e76b2d5ad80f012523ced0"
     },
     {
+      "blob_bytes": 2113,
+      "blob_path": "blobs/0bf4aacf776dc83af32fc6fa6aec93bcf01456cde10dfc2e1c2e389a2cbb57fb.gz",
+      "blob_sha256": "02b8e778073e497dae821f8f58e54bffdf46b4b8731e8231242f78d811c2c923",
+      "bytes": 21078,
+      "evidence_id": "0bf4aacf776dc83af32fc6fa6aec93bcf01456cde10dfc2e1c2e389a2cbb57fb",
+      "kind": "source_definition",
+      "media_type": "text/plain; charset=utf-8",
+      "references": [
+        {
+          "caller_candidate_resolution": null,
+          "event_definition_key": "trait_specific_interactions.0011",
+          "logical_path": "common/scripted_effects/00_poetry_effects.txt",
+          "origin": "ck3_game",
+          "provenance": "manually-reviewed-analysis-source",
+          "role": "analysis_source",
+          "source_column": null,
+          "source_line": null
+        }
+      ],
+      "sha256": "0bf4aacf776dc83af32fc6fa6aec93bcf01456cde10dfc2e1c2e389a2cbb57fb"
+    },
+    {
       "blob_bytes": 63427,
       "blob_path": "blobs/0bfab9ef8d38ae9c74f783fe3e4b3672222e5289f760d21074bd04d5683692aa.gz",
       "blob_sha256": "41cd92ce0d58282d02934b5932a4274498834cf8c6f92dcfb20bc7083bb0de1e",
@@ -2206,6 +2228,38 @@
       "sha256": "253988da3e14be7cc9b86cab2a3c15843b0cb8b273b2b4bc391eb287aef0c94c"
     },
     {
+      "blob_bytes": 1904,
+      "blob_path": "blobs/2709b06223751133bd96b09657bb44c6f0987a66bff6c3cf99288f67282cee55.gz",
+      "blob_sha256": "ad692bb58efe9e5a6f97edc5247f24615ffe41057b3d4d1ede04dc31cecd56a5",
+      "bytes": 15786,
+      "evidence_id": "2709b06223751133bd96b09657bb44c6f0987a66bff6c3cf99288f67282cee55",
+      "kind": "source_definition",
+      "media_type": "text/plain; charset=utf-8",
+      "references": [
+        {
+          "caller_candidate_resolution": null,
+          "event_definition_key": "trait_specific_interactions.0011",
+          "logical_path": "events/trait_specific_events/trait_specific_interaction_events.txt",
+          "origin": "ck3_game",
+          "provenance": "generated-definition-index",
+          "role": "event_definition",
+          "source_column": null,
+          "source_line": 128
+        },
+        {
+          "caller_candidate_resolution": null,
+          "event_definition_key": "trait_specific_interactions.0011",
+          "logical_path": "events/trait_specific_events/trait_specific_interaction_events.txt",
+          "origin": "ck3_game",
+          "provenance": "manually-reviewed-analysis-source",
+          "role": "analysis_source",
+          "source_column": null,
+          "source_line": null
+        }
+      ],
+      "sha256": "2709b06223751133bd96b09657bb44c6f0987a66bff6c3cf99288f67282cee55"
+    },
+    {
       "blob_bytes": 2272,
       "blob_path": "blobs/2aa4f3f637bf5a824b14fd74c9b6f30507c76c6be9d26cfe40e493c84dae775c.gz",
       "blob_sha256": "28de7f4c8f01f2b8021b39752de61c6cce106674a1ff5139f19edc3c543f7ac2",
@@ -2582,6 +2636,38 @@
         }
       ],
       "sha256": "31591a2f2d3a61e65853cc43b9bef4b001feb75ea1502861d2fb9ac054ab1fb7"
+    },
+    {
+      "blob_bytes": 2571,
+      "blob_path": "blobs/324439d9477aa6106f8f1c5206d75d53efd5c670d0118bc53410a9e216de9c7f.gz",
+      "blob_sha256": "b669ffacb9f153cc4b66a09445aed9657d2c01b5c50d44939221714307a7e939",
+      "bytes": 10540,
+      "evidence_id": "324439d9477aa6106f8f1c5206d75d53efd5c670d0118bc53410a9e216de9c7f",
+      "kind": "source_definition",
+      "media_type": "text/plain; charset=utf-8",
+      "references": [
+        {
+          "caller_candidate_resolution": "external-definition-file",
+          "event_definition_key": "trait_specific_interactions.0011",
+          "logical_path": "common/character_interactions/00_poetry_interactions.txt",
+          "origin": "ck3_game",
+          "provenance": "lexical-caller-candidate-not-proven-runtime-caller",
+          "role": "caller_candidate",
+          "source_column": 40,
+          "source_line": 101
+        },
+        {
+          "caller_candidate_resolution": null,
+          "event_definition_key": "trait_specific_interactions.0011",
+          "logical_path": "common/character_interactions/00_poetry_interactions.txt",
+          "origin": "ck3_game",
+          "provenance": "manually-reviewed-analysis-source",
+          "role": "analysis_source",
+          "source_column": null,
+          "source_line": null
+        }
+      ],
+      "sha256": "324439d9477aa6106f8f1c5206d75d53efd5c670d0118bc53410a9e216de9c7f"
     },
     {
       "blob_bytes": 11722,
@@ -9234,6 +9320,28 @@
       "sha256": "8cf9446933cb9ac961e4db042eef3c95c96ffb50e12cc72732be777febc3677f"
     },
     {
+      "blob_bytes": 23445,
+      "blob_path": "blobs/8df21a7682e1b30258a12db736b975e348ce434c6a2a3d0afff11f30424b04aa.gz",
+      "blob_sha256": "ca3db4834c5def98e7fe79120b69f4ccdd6b657cecdd7f49e7ddfd3458d4f2b2",
+      "bytes": 243177,
+      "evidence_id": "8df21a7682e1b30258a12db736b975e348ce434c6a2a3d0afff11f30424b04aa",
+      "kind": "observation_artifact",
+      "media_type": "application/json",
+      "references": [
+        {
+          "caller_candidate_resolution": null,
+          "event_definition_key": "trait_specific_interactions.0011",
+          "logical_path": "_runtime/p1-stage10-player-publication-r499-r500-f522fbe-20260912/live-artifacts/stage10-player-subject-red.json",
+          "origin": "runtime",
+          "provenance": "captured-observation-artifact",
+          "role": "artifact",
+          "source_column": null,
+          "source_line": null
+        }
+      ],
+      "sha256": "8df21a7682e1b30258a12db736b975e348ce434c6a2a3d0afff11f30424b04aa"
+    },
+    {
       "blob_bytes": 2727,
       "blob_path": "blobs/8ecd76790d3908ee1e93fb46a25a1123a935f18a91e91352b1cae7173db23d5d.gz",
       "blob_sha256": "ee90f33be1e11161b8c31e08b2546ef7b7948fe9b0b99807224627d63b078dc7",
@@ -14315,13 +14423,13 @@
   "schema": "xar.ck3.vanilla-event-portable-evidence-manifest",
   "schema_version": 1,
   "statistics": {
-    "evidence": 282,
-    "generated_definition_references": 185,
-    "lexical_caller_candidate_references": 523,
-    "manually_reviewed_analysis_source_references": 278,
-    "observation_artifact_references": 106,
-    "observation_artifacts": 90,
-    "references": 1092,
-    "source_definitions": 192
+    "evidence": 286,
+    "generated_definition_references": 186,
+    "lexical_caller_candidate_references": 524,
+    "manually_reviewed_analysis_source_references": 281,
+    "observation_artifact_references": 107,
+    "observation_artifacts": 91,
+    "references": 1098,
+    "source_definitions": 195
   }
 }

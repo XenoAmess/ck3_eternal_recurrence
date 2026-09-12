@@ -99,10 +99,10 @@ class EmbeddedAVanillaTimelineContractsTests(unittest.TestCase):
         )
         self.assertIsInstance(records.EMBEDDED_A_VANILLA_OBSERVATIONS, dict)
 
-    def test_all_28_contracts_are_campaign_neutral(self) -> None:
+    def test_all_29_contracts_are_campaign_neutral(self) -> None:
         legacy = records._LEGACY_EMBEDDED_A_VANILLA_TIMELINE_CONTRACTS
         portable = records.EMBEDDED_A_VANILLA_TIMELINE_CONTRACTS
-        self.assertEqual(len(portable), 28)
+        self.assertEqual(len(portable), 29)
         self.assertEqual(tuple(portable), tuple(legacy))
 
         for event_key, contract in portable.items():

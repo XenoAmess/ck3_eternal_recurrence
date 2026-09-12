@@ -2692,3 +2692,8 @@ R498 在 Python-only 合同提交和兼容同步期间达到 activation 既定�
 managed cleanup SHA-256 分别为 `A93FB075...12DD7C` / `F90F824D...E03EB`，结果均为 GREEN。没有发送第二次
 `run-stage10`。旧轮次 R497 与当前轮次 R498 均已终止；下一次启动必须递增为 R499 warmup / R500 gameplay，并继续沿用同一 120
 游戏日绝对边界。
+
+R500 证明事件合同必须同时保留 generic interaction 的弱 Character slots 与主题 boolean scopes：
+`trait_specific_interactions.0011` 的 live frame 为 root/recipient/subject=`$player`、distinct actor、三个
+identity-unavailable Character slot、五个 typed boolean theme、native options `0/1/2`。合同选择 authored2/native1；
+冻结现场经 Stage 10 生产解析器 `26/26` 检查 GREEN。该 Python-only 修复不需要 DLL/游戏文件重启，也不得扩大 120 日边界。

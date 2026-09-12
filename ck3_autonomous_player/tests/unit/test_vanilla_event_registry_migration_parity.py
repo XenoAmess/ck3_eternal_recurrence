@@ -51,6 +51,9 @@ from xar_autoplayer.vanilla_events.records_pay_homage import (  # noqa: E402
 from xar_autoplayer.vanilla_events.records_tgp_dynastic_cycle import (  # noqa: E402
     VANILLA_TGP_DYNASTIC_CYCLE_TIMELINE_CONTRACTS,
 )
+from xar_autoplayer.vanilla_events.records_tgp_japan_yearly import (  # noqa: E402
+    VANILLA_TGP_JAPAN_YEARLY_TIMELINE_CONTRACTS,
+)
 from xar_autoplayer.vanilla_events.records_tgp_movement import (  # noqa: E402
     VANILLA_TGP_MOVEMENT_TIMELINE_CONTRACTS,
 )
@@ -102,7 +105,7 @@ SEED_CAPTURE_ENTRY = ROOT / "tools" / "run_zg361_phase2_seed_capture.py"
 EXPECTED_BUCKET_COUNTS = {
     "vanilla_shards": 20,
     "manager_original": 57,
-    "embedded_original": 79,
+    "embedded_original": 81,
     "prebootstrap": 2,
 }
 EXPECTED_INTENTIONAL_OVERLAPS = {
@@ -305,7 +308,7 @@ class VanillaEventRegistryMigrationParityTests(unittest.TestCase):
                 self.assertNotIn("date_raw", contract)
                 self.assertNotIn("date_raw_range", contract)
                 self.assertEqual(contract.get("root_character_id"), "$player")
-        self.assertEqual(len(EMBEDDED_VANILLA_TIMELINE_CONTRACTS), 79)
+        self.assertEqual(len(EMBEDDED_VANILLA_TIMELINE_CONTRACTS), 81)
         self.assertEqual(
             PREBOOTSTRAP_VANILLA_TIMELINE_CONTRACTS,
             legacy_prebootstrap,
@@ -342,6 +345,7 @@ class VanillaEventRegistryMigrationParityTests(unittest.TestCase):
             VANILLA_EP3_LANDLESS_ADMIN_TIMELINE_CONTRACTS,
             VANILLA_TGP_MOVEMENT_TIMELINE_CONTRACTS,
             VANILLA_TGP_DYNASTIC_CYCLE_TIMELINE_CONTRACTS,
+            VANILLA_TGP_JAPAN_YEARLY_TIMELINE_CONTRACTS,
             VANILLA_PAY_HOMAGE_TIMELINE_CONTRACTS,
             VANILLA_VASSAL_INTERACTION_TIMELINE_CONTRACTS,
             VANILLA_TRAIT_SPECIFIC_TIMELINE_CONTRACTS,
@@ -362,8 +366,8 @@ class VanillaEventRegistryMigrationParityTests(unittest.TestCase):
             for event_key in records:
                 key_memberships[event_key].append(group_index)
 
-        self.assertEqual(sum(map(len, default_groups)), 185)
-        self.assertEqual(len(key_memberships), 185)
+        self.assertEqual(sum(map(len, default_groups)), 186)
+        self.assertEqual(len(key_memberships), 186)
         self.assertEqual(
             {
                 event_key: indexes
@@ -468,7 +472,7 @@ class VanillaEventRegistryMigrationParityTests(unittest.TestCase):
             if len(bucket_names) > 1
         }
         self.assertEqual(actual_overlaps, EXPECTED_INTENTIONAL_OVERLAPS)
-        self.assertEqual(len(memberships), 156)
+        self.assertEqual(len(memberships), 158)
 
 
 if __name__ == "__main__":

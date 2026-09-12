@@ -466,3 +466,9 @@ SHA-256 为 `B51B8960...F392F`；合同现场回放 `18/18` GREEN，相关 norma
 `A93FB075...12DD7C` / `F90F824D...E03EB` 均为 GREEN，最终 CK3 清单为空。没有重发 `run-stage10`。
 当前轮次 R498 与旧轮次 R497 均已终止；下一次启动为 R499 warmup / R500 gameplay，仍受同一 120 游戏日绝对边界约束。
 P1 保持 `8/9`，P2 继续硬锁定。
+
+R500 已实机通过 `.1011` 的 authored6/native5 选择并继续推进 13 日，随后在新的原版诗歌互动事件
+`trait_specific_interactions.0011` 保留 RED；`.120` 仍未评估。exact-build 定义、调用链与选项 effects 已冻结，
+最小通用合同选择 authored2/native1，避免随机外交决斗及拒绝导致的关系恶化/潜在宿敌。冻结 frame 生产解析器
+`26/26` GREEN，normal/optimized 聚焦测试均为 `50 passed, 147 subtests passed` 加独立 `8 passed`。
+P1 保持 `8/9`，P2 继续硬锁定。完整记录：[R499/R500 诗歌事件 RED 与合同](r499-r500-trait-specific-interactions-0011-red-and-contract-2026-09-12.md)。

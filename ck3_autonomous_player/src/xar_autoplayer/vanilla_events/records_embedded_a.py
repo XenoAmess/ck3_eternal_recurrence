@@ -604,6 +604,56 @@ _LEGACY_EMBEDDED_A_VANILLA_TIMELINE_CONTRACTS: Final[
         "selected_native_option_index": 5,
         "occurrence_policy": "repeatable-within-product-observation-window",
     },
+    "trait_specific_interactions.0011": {
+        # CK3 1.19.0.6 mourning-poem response fired by send_poem_interaction.
+        # R500 received it from a distinct AI actor with the played character
+        # bound as root, recipient, and poem subject. Native option 1 accepts
+        # the poem without a diplomacy duel: it gives the player stress loss
+        # and positive opinion, while native option 0 is a random duel and
+        # native option 2 creates opinion loss with possible rivalry.
+        "date_policy": "product-observation-window",
+        "root_character_id": PLAYER_SENTINEL,
+        "character_scopes": {
+            "recipient": PLAYER_SENTINEL,
+            "subject": PLAYER_SENTINEL,
+        },
+        "unique_character_scope_excludes": {
+            "actor": (PLAYER_SENTINEL,),
+        },
+        "scope_types": {},
+        "unavailable_character_scopes": (
+            "secondary_actor",
+            "secondary_recipient",
+            "intermediary",
+        ),
+        "boolean_scopes": (
+            "poem_theme_romance",
+            "poem_theme_legacy",
+            "poem_theme_mourning",
+            "poem_theme_strife",
+            "poem_theme_incompetence",
+        ),
+        "saved_scope_name_sets": ((
+            "actor",
+            "recipient",
+            "secondary_actor",
+            "secondary_recipient",
+            "intermediary",
+            "poem_theme_romance",
+            "poem_theme_legacy",
+            "poem_theme_mourning",
+            "poem_theme_strife",
+            "poem_theme_incompetence",
+            "subject",
+        ),),
+        "saved_scope_count": 11,
+        "option_count": 3,
+        "snapshot_option_count": 3,
+        "native_option_indices": (0, 1, 2),
+        "selected_option_number": 2,
+        "selected_native_option_index": 1,
+        "occurrence_policy": "repeatable-within-product-observation-window",
+    },
     "stress_threshold_special.1001": {
         # CK3 1.19.0.6 grief mental break after a recorded close death. The
         # immediate block exposes at most two coping routes plus the mutually
