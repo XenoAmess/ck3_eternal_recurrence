@@ -19,13 +19,12 @@ AI 上级参加过 B1。Stage10 与公共 opener 都拒绝 AI subject。
 ## 单次执行合同
 
 [`zg361_phase2_stage10_player_subject_action_cell.py`](../../tools/zg361_phase2_stage10_player_subject_action_cell.py)
-从 paused、map-ready、产品-only 的玩家经理存档执行一次最多 30 游戏日的验收：
+从 paused、map-ready、产品-only 且已经停在 B1 D+299 的玩家经理存档执行一次最多 45 游戏日的验收：
 
 1. exact-build `campaign-root-context-v1` 必须确认当前玩家与 activation 的 CharacterID 一致、存活、非独立、公爵及以上、
    `government_is_celestial` 且游戏规则含 `zg361_on`；直属上级必须与准入收据一致。
 2. 保存原始 source checkpoint，不做角色切换、fixture 或控制台输入。
-3. 调用共享 promotion-source navigator 的真实 `activate-review-now-v1`，消费正常 B1 authored 事件，并在同一个绝对
-   30 日截止内暂停于 `.120`。
+3. 复用共享 promotion-source navigator 消费已经活跃的 B1 固定尾链，不新开 B1；在同一个绝对 45 日截止内暂停于 `.120`。
 4. `.120` root 必须是当前玩家 manager；saved scopes 必须回指收据中的直属上级 owner 与当前玩家 subject。
 5. manager-governance provider 必须证明同一 F case 已 `state=5 / active=false`，随后才保存 terminal、确认事件并输出
    `p1_acceptance_evidence.central_stage_10_terminal`。事件 ACK 不作为业务后置条件。
@@ -34,7 +33,7 @@ AI 上级参加过 B1。Stage10 与公共 opener 都拒绝 AI subject。
 
 ## 启动前 source admission
 
-受管 operator 只接受 `zg361_stage10_player_publication_source_v3`。收据必须绑定：
+受管 operator 只接受 `zg361_stage10_player_publication_source_v4`。收据必须绑定：
 
 - `SAV0101`、CK3 `1.19.0.6`、产品树 SHA-256，以及 checkpoint 的绝对路径、大小和 SHA-256；
 - 离线玩家数必须为 `1`，唯一 `played_character` 和 `currently_played_characters` 都必须精确绑定目标 manager；
@@ -42,6 +41,8 @@ AI 上级参加过 B1。Stage10 与公共 opener 都拒绝 AI subject。
 - 一份 hash-verified 的 `zg361_stage10_player_source_capture_v1` 实机证明，确认同一 checkpoint 由 MCP 原生保存，且
   source 帧 paused/map-ready、玩家/上级/爵位/政府均与离线收据一致；
 - `offline_topology_observed=true`、`offline_single_player_observed=true`，且 fixture、console、selection 均未使用。
+- R488 live 初始进度证明 `B1=true / Central=false / PP=false / review-now=false`，以及同一个 exact checkpoint 内
+  玩家经理 `zg361b1.102` 距当前日期恰好 1 日的离线队列证明。
 
 离线字段只负责避免把明显不合格的存档送进 CK3；运行后的 campaign-root MCP 才是权威准入，任何不一致都会在首次保存或
 游戏输入前 RED。operator 复用 AF5 的 frozen-input admission、唯一 CK3 生命周期与 managed cleanup，只暴露
@@ -86,4 +87,6 @@ provenance。运行后依次执行：确认来源玩家与 campaign root、调�
 
 R483/R484 已证明 loader/native 来源本身可恢复，但首次 worker 错用 AF5 基类 validator，在 action 前丢失目标字段并保留 harness RED；没有玩家切换、保存或时间推进。最小修复改由 worker 调用本模块 validator，R483/R484 已完成 GREEN cleanup，不能原地 retry。证据见 [R483/R484 分派 RED](r483-r484-stage10-source-capture-dispatch-red-2026-09-12.md)。
 
-修复后的 R485/R486 已签发 `zg361_stage10_player_source_capture_v1`：目标 `29037 -> 32904`、`date_raw=53154120`、MCP 原生保存、零时间推进。checkpoint SHA-256 为 `C11AFCF4...21BFA`，离线结构为唯一玩家 `29037`。该来源现可用于签发 v3 receipt 和下一次单次 30 游戏日 Stage 10 验收；详见 [R485/R486 来源捕获 GREEN](r485-r486-stage10-player-source-capture-green-2026-09-12.md)。
+修复后的 R485/R486 已签发 `zg361_stage10_player_source_capture_v1`：目标 `29037 -> 32904`、`date_raw=53154120`、MCP 原生保存、零时间推进。checkpoint SHA-256 为 `C11AFCF4...21BFA`，离线结构为唯一玩家 `29037`；详见 [R485/R486 来源捕获 GREEN](r485-r486-stage10-player-source-capture-green-2026-09-12.md)。
+
+R487/R488 随后证明该来源实际位于 B1 D+299：`.102` 在次日，后续固定尾链至少还包含 `.103 +30d`、公共合账、公示回调和五级 F 票据。30 日边界因此属于 harness RED。现行 v4 receipt 绑定 live 初始状态与离线队列，上限只修正为 45 日，不回放完整 400 日 B1；详见 [R487/R488 边界 RED 与修正](r487-r488-stage10-bound-red-and-correction-2026-09-12.md)。

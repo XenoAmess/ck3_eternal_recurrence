@@ -22,8 +22,10 @@ import zg361_phase2_af5_operator_job as base
 
 CONTROLS = ["status", "run-stage10", "cleanup"]
 JOB_ROLE = "stage10-player-subject"
-SOURCE_RECEIPT_KIND = "zg361_stage10_player_publication_source_v3"
+SOURCE_RECEIPT_KIND = "zg361_stage10_player_publication_source_v4"
 LIVE_SOURCE_KIND = "zg361_stage10_player_source_capture_v1"
+NEAR_BOUNDARY_KIND = "zg361_phase2_stage10_player_subject_action_cell"
+SCHEDULE_KIND = "ck3_scheduled_event_queue_offline_v1"
 
 
 def _validate_source_receipt(
@@ -68,6 +70,25 @@ def _validate_source_receipt(
         live_campaign.get("government"), "live target government"
     )
     live_flags = live_government.get("flags")
+    near_path = base.checked_file(
+        receipt.get("near_boundary_live_evidence"),
+        "near-boundary live evidence",
+    )
+    near_wrapper = base.read_object(near_path)
+    near = base.mapping(near_wrapper.get("evidence"), "near-boundary action evidence")
+    near_progress = base.mapping(near.get("progress"), "near-boundary progress")
+    near_initial = base.mapping(
+        near_progress.get("initial_progress_observation"),
+        "near-boundary initial progress",
+    )
+    near_binding = base.mapping(near.get("source_binding"), "near-boundary binding")
+    schedule_path = base.checked_file(
+        receipt.get("scheduled_event_evidence"), "scheduled-event evidence"
+    )
+    schedule = base.read_object(schedule_path)
+    schedule_source = base.mapping(schedule.get("source"), "schedule source")
+    scheduled = schedule.get("matches")
+    expected_tail = receipt.get("fixed_tail_contract")
     if not (
         receipt.get("schema_version") == 1
         and receipt.get("kind") == SOURCE_RECEIPT_KIND
@@ -129,6 +150,45 @@ def _validate_source_receipt(
         and live_title.get("tier_raw") >= 3
         and isinstance(live_flags, list)
         and "government_is_celestial" in live_flags
+        and near_wrapper.get("result") == "RED"
+        and near_wrapper.get("product_result") == "RED"
+        and near_wrapper.get("red_preserved") is True
+        and near.get("schema_version") == 2
+        and near.get("kind") == NEAR_BOUNDARY_KIND
+        and near.get("result") == "RED"
+        and near.get("max_advance_days") == 30
+        and near.get("expected_player_manager_character_id") == manager
+        and near.get("expected_owner_character_id") == owner
+        and near_binding.get("player_character_id") == manager
+        and near_binding.get("date_raw") == live_binding.get("date_raw")
+        and near_initial.get("date_raw") == live_binding.get("date_raw")
+        and near_initial.get("review_now_eligible") is False
+        and near_initial.get("b1_active") is True
+        and near_initial.get("central_active") is False
+        and near_initial.get("pp_active") is False
+        and schedule.get("schema_version") == 1
+        and schedule.get("kind") == SCHEDULE_KIND
+        and schedule.get("result") == "GREEN"
+        and schedule.get("event_prefix") == "zg361b1."
+        and schedule.get("root_character_id") == manager
+        and isinstance(scheduled, list)
+        and any(
+            isinstance(row, Mapping)
+            and row.get("event") == "zg361b1.102"
+            and row.get("root_character_id") == manager
+            and row.get("days_from_current") == 1
+            for row in scheduled
+        )
+        and schedule_source.get("bytes") == bound_checkpoint.stat().st_size
+        and str(schedule_source.get("sha256", "")).upper()
+        == str(expected["checkpoint_sha256"]).upper()
+        and expected_tail
+        == {
+            "source_b1_stage": "D+299",
+            "first_pending_event": "zg361b1.102",
+            "first_pending_event_days": 1,
+            "maximum_action_days": 45,
+        }
     ):
         raise base.Af5JobError(
             "Stage 10 activation lacks a matching player-publication source receipt"
@@ -139,6 +199,8 @@ def _validate_source_receipt(
         "live_source_provenance": live_path,
         "player_manager_character_id": manager,
         "owner_character_id": owner,
+        "near_boundary_live_evidence": near_path,
+        "scheduled_event_evidence": schedule_path,
     }
 
 

@@ -2604,3 +2604,15 @@ B1 fix 与 AF5 terminal 是独立 P1 工作包，各自使用 hash-bound product
 `unavailable/null/variable_absent`、全部 readiness 必须为 false，并把整份 tombstone 纳入恢复前后相等比较；
 其它 unavailable 原因仍为 RED。代表性存档自身的 Stage 11 Workforce terminal 与 Central callback
 仍是硬前置，不能用普通中间存档冒充终态。
+
+## CK3 存档 scheduled-event 队列的通用离线检查
+
+当短验收在事件链中途到达绝对日期边界时，可在下一次启动前运行：
+
+```powershell
+py tools/inspect_ck3_save_scheduled_events.py --save <checkpoint.ck3> --rakaly <rakaly.exe> --event-prefix zg361b1. --root-character-id 29037 --output <report.json>
+```
+
+也可用 `--melted <gamestate>` 复用已经解包的只读文本。输出 schema 为 `ck3_scheduled_event_queue_offline_v1`，绑定输入字节哈希、游戏版本、当前日期、队列事件 ID/root/date 及相对天数；参数由调用者提供，不依赖固定操作者、机器路径或 CK3 轮次。
+
+该报告只用于启动前解释固定产品尾链和设置有依据的短上限，不能替代 exact-build live MCP，也不能单独把 P1 项提升为 READY。R488 的冻结来源显示 `zg361b1.102` 在当前日期后 1 天；结合静态产品链 `.103 +30d`、公共合账、公示回调及 F 票据，Stage 10 的最小充分上限修为 45 游戏日。原 30 日 RED 保留，不为同一故障继续扩成永久长跑。

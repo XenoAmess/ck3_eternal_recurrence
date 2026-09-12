@@ -129,6 +129,8 @@ class Stage10PlayerSubjectOperatorTests(unittest.TestCase):
             checkpoint.write_bytes(b"source")
             receipt_path = root / "source.json"
             live_path = root / "live-source.json"
+            near_path = root / "near-boundary-red.json"
+            schedule_path = root / "scheduled-events.json"
             live = {
                 "schema_version": 1,
                 "kind": operator.LIVE_SOURCE_KIND,
@@ -143,6 +145,7 @@ class Stage10PlayerSubjectOperatorTests(unittest.TestCase):
                     "player_character_id": 200,
                     "paused": True,
                     "map_ready": True,
+                    "date_raw": 9000,
                 },
                 "target_campaign_root": {
                     "status": "available",
@@ -157,6 +160,54 @@ class Stage10PlayerSubjectOperatorTests(unittest.TestCase):
                 },
             }
             operator.base.write_object(live_path, live)
+            operator.base.write_object(
+                near_path,
+                {
+                    "schema_version": 1,
+                    "result": "RED",
+                    "product_result": "RED",
+                    "red_preserved": True,
+                    "evidence": {
+                        "schema_version": 2,
+                        "kind": operator.NEAR_BOUNDARY_KIND,
+                        "result": "RED",
+                        "max_advance_days": 30,
+                        "expected_player_manager_character_id": 200,
+                        "expected_owner_character_id": 100,
+                        "source_binding": {
+                            "player_character_id": 200,
+                            "date_raw": 9000,
+                        },
+                        "progress": {
+                            "initial_progress_observation": {
+                                "date_raw": 9000,
+                                "review_now_eligible": False,
+                                "b1_active": True,
+                                "central_active": False,
+                                "pp_active": False,
+                            }
+                        },
+                    },
+                },
+            )
+            operator.base.write_object(
+                schedule_path,
+                {
+                    "schema_version": 1,
+                    "kind": operator.SCHEDULE_KIND,
+                    "result": "GREEN",
+                    "event_prefix": "zg361b1.",
+                    "root_character_id": 200,
+                    "matches": [
+                        {
+                            "event": "zg361b1.102",
+                            "root_character_id": 200,
+                            "days_from_current": 1,
+                        }
+                    ],
+                    "source": operator.base.file_record(checkpoint),
+                },
+            )
             receipt = {
                 "schema_version": 1,
                 "kind": operator.SOURCE_RECEIPT_KIND,
@@ -185,6 +236,14 @@ class Stage10PlayerSubjectOperatorTests(unittest.TestCase):
                 "product_tree_sha256": "B" * 64,
                 "checkpoint": operator.base.file_record(checkpoint),
                 "live_source_provenance": operator.base.file_record(live_path),
+                "near_boundary_live_evidence": operator.base.file_record(near_path),
+                "scheduled_event_evidence": operator.base.file_record(schedule_path),
+                "fixed_tail_contract": {
+                    "source_b1_stage": "D+299",
+                    "first_pending_event": "zg361b1.102",
+                    "first_pending_event_days": 1,
+                    "maximum_action_days": 45,
+                },
             }
             operator.base.write_object(receipt_path, receipt)
             bound = {
@@ -200,6 +259,26 @@ class Stage10PlayerSubjectOperatorTests(unittest.TestCase):
             self.assertEqual(result["path"], receipt_path.resolve())
             self.assertEqual(result["player_manager_character_id"], 200)
             self.assertEqual(result["owner_character_id"], 100)
+
+            schedule = operator.base.read_object(schedule_path)
+            schedule["matches"][0]["days_from_current"] = 2
+            operator.base.write_object(schedule_path, schedule)
+            receipt["scheduled_event_evidence"] = operator.base.file_record(
+                schedule_path
+            )
+            operator.base.write_object(receipt_path, receipt)
+            with self.assertRaisesRegex(
+                operator.base.Af5JobError, "matching player-publication source"
+            ):
+                operator._validate_source_receipt(
+                    operator.base.file_record(receipt_path), bound
+                )
+
+            schedule["matches"][0]["days_from_current"] = 1
+            operator.base.write_object(schedule_path, schedule)
+            receipt["scheduled_event_evidence"] = operator.base.file_record(
+                schedule_path
+            )
 
             receipt["offline_topology"]["immediate_liege_character_id"] = 200
             operator.base.write_object(receipt_path, receipt)
