@@ -61,6 +61,7 @@ constexpr std::int32_t kMaximumGovernmentFlags = 4'096;
 constexpr std::int32_t kMaximumSelectedRuleTokens = 16'384;
 constexpr std::int32_t kMaximumTitleSuccessors = 4'096;
 constexpr std::size_t kMaximumStableKeyBytes = 1'024;
+constexpr std::int64_t kFixedPointScale = 100'000;
 
 bool Utf8BytewiseLess(std::string_view left,
                       std::string_view right) noexcept {
@@ -76,6 +77,7 @@ struct ObservationV1 {
   std::int32_t local_player_id = -1;
   std::int32_t player_character_id = -1;
   bool player_character_alive = false;
+  game::FixedPointValue player_monthly_gold_income;
   std::optional<game::CampaignRootTitleV1> primary_title;
   std::vector<std::int32_t> primary_title_succession_character_ids;
   std::optional<std::int32_t> capital_province_id;
@@ -213,6 +215,7 @@ bool EnvironmentIsExact(
       environment.government_fallback_slot == nullptr ||
       environment.game_rule_selection_service_slot == nullptr ||
       environment.game_rule_token_fallback_slot == nullptr ||
+      environment.monthly_gold_income == nullptr ||
       environment.primary_title == nullptr ||
       environment.capital_province == nullptr ||
       environment.immediate_liege == nullptr ||
@@ -253,6 +256,8 @@ bool EnvironmentIsExact(
          reinterpret_cast<std::uintptr_t>(
              environment.game_rule_token_fallback_slot) ==
              base + kCampaignRootGameRuleTokenFallbackSlotRva &&
+         reinterpret_cast<std::uintptr_t>(environment.monthly_gold_income) ==
+             base + kCampaignRootMonthlyGoldIncomeRva &&
          reinterpret_cast<std::uintptr_t>(environment.primary_title) ==
              base + kCampaignRootPrimaryTitleRva &&
          reinterpret_cast<std::uintptr_t>(environment.capital_province) ==
@@ -1225,6 +1230,19 @@ bool ReadObservation(const CampaignRootNativeEnvironmentV1 &environment,
     failure = "player_identity_unavailable";
     return false;
   }
+  std::int64_t monthly_income_raw = 0;
+  if (environment.monthly_gold_income(
+          &monthly_income_raw, output.player_character, nullptr, nullptr) !=
+      &monthly_income_raw ||
+      ResolveComponent(access, environment.character_storage_slot,
+                       environment.character_fallback_slot,
+                       output.player_character_id,
+                       kCharacterIdentityOffset) != output.player_character) {
+    failure = "player_monthly_gold_income_unavailable";
+    return false;
+  }
+  output.player_monthly_gold_income = {
+      monthly_income_raw, kFixedPointScale};
   if (!ReadPrimaryTitle(environment, access, output)) {
     failure = "primary_title_unavailable";
     return false;
@@ -1292,6 +1310,9 @@ CampaignRootNativeEnvironmentV1 BindCampaignRootNativeEnvironmentV1(
       module_base + kCampaignRootGameRuleSelectionServiceSlotRva);
   output.game_rule_token_fallback_slot = reinterpret_cast<void **>(
       module_base + kCampaignRootGameRuleTokenFallbackSlotRva);
+  output.monthly_gold_income = reinterpret_cast<
+      NativeCampaignRootMonthlyGoldIncomeV1>(
+      module_base + kCampaignRootMonthlyGoldIncomeRva);
   output.primary_title = reinterpret_cast<
       NativeCampaignRootCharacterResolverV1>(
       module_base + kCampaignRootPrimaryTitleRva);
@@ -1383,6 +1404,7 @@ game::ReadCampaignRootContextResultV1 ReadCampaignRootContextV1(
     output.local_player_id = first.local_player_id;
     output.player_character_id = first.player_character_id;
     output.player_character_alive = first.player_character_alive;
+    output.player_monthly_gold_income = first.player_monthly_gold_income;
     output.primary_title = std::move(first.primary_title);
     output.primary_title_succession_character_ids =
         std::move(first.primary_title_succession_character_ids);
@@ -1403,7 +1425,7 @@ game::ReadCampaignRootContextResultV1 ReadCampaignRootContextV1(
     output.native_selected_game_rule_token_count =
         first.native_selected_game_rule_token_count;
     output.readiness = {true, true, true, true, true, true, true, true,
-                        true, true, true, true};
+                        true, true, true, true, true};
     output.unavailable_reason.clear();
     return game::ReadCampaignRootContextResultV1::available;
   } catch (...) {

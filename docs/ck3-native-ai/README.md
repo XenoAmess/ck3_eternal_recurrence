@@ -69,9 +69,12 @@
 - [static-ready, live pending] [primary-title-succession-v1.md](primary-title-succession-v1.md) 把既有战争专用
   `CLandedTitle+0x278/+0x280/+0x284` 有序继承数组提炼为 campaign-root 通用只读字段；完整 CharacterID 顺序进入同帧双采样，
   可支持主头衔最低继承警报，但不冒充全头衔 partition、继承法或跨死亡 continuation。
+- [static-ready, live pending] [player-monthly-gold-income-v1.md](player-monthly-gold-income-v1.md) 复用战争结算已实证的
+  `0x28DBE90` 完整月收入求值器，把玩家 signed Q100000 income 接入 campaign-root 双采样；缓存 `extension+0x2B0` 因实测滞后
+  继续只作诊断。turn bundle 的 ruler resource gate 现在由 current gold 与 monthly income 共同决定。
 - [static-ready, live pending] [turn-bundle-v1.md](turn-bundle-v1.md) 发布 `ck3_query_turn_bundle_v1`，把一个缓存 state snapshot 与一次
-  同绑定 campaign-root query 聚合为 ruler/realm/succession/pending/war/alerts 六域；最低三域警报已可用，收入、健康、domain、council、
-  faction 与 partition 保持 typed unavailable，因此完整 readiness 仍为 false。
+  同绑定 campaign-root query 聚合为 ruler/realm/succession/pending/war/alerts 六域；最低三域警报与收入资源门已可用，健康、domain、
+  council、faction 与 partition 保持 typed unavailable，因此完整 readiness 仍为 false。
 - [static-confirmed + production-live] [loaded-feature-manifest.md](loaded-feature-manifest.md) 区分当前进程 effective gameplay feature
   bitset、script-visible `has_dlc` runtime set 与独立 store entitlement service；冻结完整 44-entry feature vocabulary、三套
   exact-build registry/service RVA与 typed wire。bridge/MCP 已在真实 paused frame 双查询完成 44 rows/29 runtime keys，artifact

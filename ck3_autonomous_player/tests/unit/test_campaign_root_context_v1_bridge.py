@@ -45,6 +45,7 @@ UNAVAILABLE_REASONS = (
     "map_not_ready",
     "player_identity_unavailable",
     "player_character_generation_mismatch",
+    "player_monthly_gold_income_unavailable",
     "primary_title_unavailable",
     "primary_title_succession_unavailable",
     "capital_unavailable",
@@ -62,6 +63,7 @@ UNAVAILABLE_REASONS = (
 def _readiness(ready: bool) -> dict[str, bool]:
     return {
         "player_identity_ready": ready,
+        "player_monthly_gold_income_ready": ready,
         "primary_title_ready": ready,
         "primary_title_succession_ready": ready,
         "capital_ready": ready,
@@ -83,6 +85,7 @@ def _provenance() -> dict[str, str]:
             CAMPAIGN_ROOT_CONTEXT_V1_EXECUTABLE_SHA256
         ),
         "backend_id": CAMPAIGN_ROOT_CONTEXT_V1_BACKEND_ID,
+        "monthly_gold_income_rva": "0x28DBE90",
         "primary_title_rva": "0x25F3350",
         "capital_province_rva": "0x2606760",
         "immediate_liege_rva": "0x2613480",
@@ -146,6 +149,11 @@ def _frame(
         "local_player_id": 0 if available else None,
         "player_character_id": PLAYER_CHARACTER_ID if available else None,
         "player_character_alive": True if available else None,
+        "player_monthly_gold_income": (
+            {"raw": 570_772, "scale": 100_000}
+            if available
+            else None
+        ),
         "primary_title": (
             {
                 "title_id": 67_890,
@@ -218,6 +226,7 @@ def _driver_result(status: str = "available") -> dict[str, object]:
         "local_player_id",
         "player_character_id",
         "player_character_alive",
+        "player_monthly_gold_income",
         "primary_title",
         "primary_title_succession_character_ids",
         "capital_province_id",
@@ -418,6 +427,12 @@ class CampaignRootContextV1ContractTests(unittest.TestCase):
             "date": lambda row: row.__setitem__("date_raw", DATE_RAW + 24),
             "readiness": lambda row: row["readiness"].__setitem__(
                 "capital_ready", False
+            ),
+            "income_scale": lambda row: row[
+                "player_monthly_gold_income"
+            ].__setitem__("scale", 1),
+            "income_shape": lambda row: row.__setitem__(
+                "player_monthly_gold_income", {"raw": 570_772}
             ),
             "tier_pair": lambda row: row["primary_title"].__setitem__(
                 "tier_key", "empire"

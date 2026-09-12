@@ -44,6 +44,20 @@ def _positive_int(value: object, name: str) -> int:
     return value
 
 
+def _fixed_point_component(value: object, name: str) -> dict[str, object]:
+    if not isinstance(value, dict) or set(value) != {"raw", "scale"}:
+        raise ValueError(f"{name} is malformed")
+    raw = value.get("raw")
+    if (
+        isinstance(raw, bool)
+        or not isinstance(raw, int)
+        or not -(2**63) <= raw <= 2**63 - 1
+        or value.get("scale") != 100_000
+    ):
+        raise ValueError(f"{name} is malformed")
+    return _component("available", {"raw": raw, "scale": 100_000})
+
+
 def _binding(
     snapshot: object,
     campaign_root_result: object,
@@ -269,6 +283,10 @@ def build_turn_bundle_v1(
     stress, gold = _optional_snapshot_components(
         snapshot, character_id=character_id, alive=alive
     )
+    income = _fixed_point_component(
+        root.get("player_monthly_gold_income"),
+        "player_monthly_gold_income",
+    )
 
     primary_title = root.get("primary_title")
     primary_title_component = (
@@ -297,9 +315,7 @@ def build_turn_bundle_v1(
         "capital_province_id": capital_component,
         "government": government_component,
         "gold": gold,
-        "income": _component(
-            "unavailable", reason="ruler_income_observation_not_implemented"
-        ),
+        "income": income,
         "stress_points": stress,
         "health_band": _component(
             "unavailable", reason="ruler_health_observation_not_implemented"
@@ -418,13 +434,14 @@ def build_turn_bundle_v1(
         ),
     }
     gold_ready = gold["status"] == "available"
+    income_ready = income["status"] == "available"
     stress_ready = stress["status"] == "available"
     readiness = {
         "root_identity_ready": True,
         "ruler_alive_alert_ready": True,
         "ruler_stress_alert_ready": stress_ready,
         "ruler_health_alert_ready": False,
-        "ruler_resources_ready": False,
+        "ruler_resources_ready": gold_ready and income_ready,
         "realm_relationship_alerts_ready": True,
         "realm_domain_ready": False,
         "realm_council_ready": False,
@@ -436,8 +453,9 @@ def build_turn_bundle_v1(
         "minimum_alerts_ready": True,
         "ready": False,
     }
-    # Gold alone is useful, but the resources gate also requires income.
-    assert not readiness["ruler_resources_ready"] or gold_ready
+    assert not readiness["ruler_resources_ready"] or (
+        gold_ready and income_ready
+    )
     return {
         "schema": TURN_BUNDLE_V1_SCHEMA,
         "status": "partial",

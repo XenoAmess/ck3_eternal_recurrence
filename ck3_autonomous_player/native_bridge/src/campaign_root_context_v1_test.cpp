@@ -127,6 +127,9 @@ struct Fixture {
   xar::game::CampaignRootFrameV1 frame{};
   bool main_thread = true;
   bool change_frame_on_second_capture = false;
+  bool monthly_income_available = true;
+  std::int64_t monthly_income_raw = 570'772;
+  std::uint32_t monthly_income_calls = 0;
   std::uint32_t capture_calls = 0;
   std::unordered_map<const void *, std::string> native_strings;
 
@@ -345,6 +348,20 @@ void *__fastcall ResolvePrimaryTitle(void *character) noexcept {
   return nullptr;
 }
 
+std::int64_t *__fastcall ResolveMonthlyGoldIncome(
+    std::int64_t *output, void *character, void *optional_breakdown,
+    void *evaluation_context) noexcept {
+  if (g_fixture == nullptr || output == nullptr ||
+      character != Address(g_fixture->player_character) ||
+      optional_breakdown != nullptr || evaluation_context != nullptr ||
+      !g_fixture->monthly_income_available) {
+    return nullptr;
+  }
+  ++g_fixture->monthly_income_calls;
+  *output = g_fixture->monthly_income_raw;
+  return output;
+}
+
 void *__fastcall ResolveCapital(void *character) noexcept {
   if (g_fixture == nullptr) {
     return nullptr;
@@ -479,6 +496,7 @@ xar::ck3_11906::CampaignRootNativeEnvironmentV1 Environment(Fixture &fixture) {
       &fixture.selection_service_slot;
   environment.game_rule_token_fallback_slot =
       &fixture.rule_token_fallback_slot;
+  environment.monthly_gold_income = &ResolveMonthlyGoldIncome;
   environment.primary_title = &ResolvePrimaryTitle;
   environment.capital_province = &ResolveCapital;
   environment.immediate_liege = &ResolveImmediateLiege;
@@ -503,6 +521,7 @@ xar::ck3_11906::CampaignRootAccessV1 Access(Fixture &fixture) {
 bool AllReadiness(const xar::game::CampaignRootReadinessV1 &value,
                   bool expected) {
   return value.player_identity_ready == expected &&
+         value.player_monthly_gold_income_ready == expected &&
          value.primary_title_ready == expected &&
          value.primary_title_succession_ready == expected &&
          value.capital_ready == expected &&
@@ -522,6 +541,7 @@ bool ClearedUnavailable(const xar::game::CampaignRootContextV1 &value,
          value.snapshot_revision == 41 && value.date_raw == 12'345 &&
          !value.local_player_id && !value.player_character_id &&
          !value.player_character_alive && !value.primary_title &&
+         !value.player_monthly_gold_income &&
          value.primary_title_succession_character_ids.empty() &&
           !value.capital_province_id && !value.immediate_liege_character_id &&
          !value.top_liege_character_id && !value.independent &&
@@ -563,7 +583,10 @@ bool TestAvailableAndSerializer() {
       result.snapshot_revision != 41 || result.date_raw != 12'345 ||
       result.local_player_id != 7 ||
       result.player_character_id != Fixture::kPlayerCharacterId ||
-      result.player_character_alive != true || !result.primary_title ||
+      result.player_character_alive != true ||
+      result.player_monthly_gold_income !=
+          xar::game::FixedPointValue{570'772, 100'000} ||
+      fixture.monthly_income_calls != 2 || !result.primary_title ||
       result.primary_title->title_id != Fixture::kPrimaryTitleId ||
       result.primary_title->tier_raw != 6 ||
       result.primary_title->tier_key != "hegemony" ||
@@ -602,7 +625,9 @@ bool TestAvailableAndSerializer() {
       "{\"schema_version\":1,\"status\":\"available\","
       "\"snapshot_revision\":41,\"date_raw\":12345,"
       "\"local_player_id\":7,\"player_character_id\":33554433,"
-      "\"player_character_alive\":true,\"primary_title\":{"
+      "\"player_character_alive\":true,"
+      "\"player_monthly_gold_income\":{\"raw\":570772,"
+      "\"scale\":100000},\"primary_title\":{"
       "\"title_id\":83886081,\"tier_raw\":6,"
       "\"tier_key\":\"hegemony\"},"
       "\"primary_title_succession_character_ids\":[201326600,218103817],"
@@ -631,6 +656,7 @@ bool TestAvailableAndSerializer() {
       "\"z_rule\",\"" + NonAsciiRule() +
       "\"],\"native_selected_game_rule_token_count\":4,"
       "\"readiness\":{\"player_identity_ready\":true,"
+      "\"player_monthly_gold_income_ready\":true,"
       "\"primary_title_ready\":true,"
       "\"primary_title_succession_ready\":true,"
       "\"capital_ready\":true,"
@@ -644,6 +670,7 @@ bool TestAvailableAndSerializer() {
       "\"game_version\":\"1.19.0.6\",\"executable_sha256\":"
       "\"2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86\","
       "\"backend_id\":\"ck3-1.19.0.6-native-campaign-root-context-v1\","
+      "\"monthly_gold_income_rva\":\"0x28DBE90\","
       "\"primary_title_rva\":\"0x25F3350\","
       "\"capital_province_rva\":\"0x2606760\","
       "\"immediate_liege_rva\":\"0x2613480\","
@@ -742,6 +769,20 @@ bool TestMalformedSuccessionIsTypedUnavailable() {
                             "primary_title_succession_unavailable");
 }
 
+bool TestMonthlyIncomeFailureIsTypedUnavailable() {
+  Fixture fixture;
+  fixture.monthly_income_available = false;
+  const auto environment = Environment(fixture);
+  const auto access = Access(fixture);
+  const xar::ck3_11906::CampaignRootContextRequestV1 request{41};
+  xar::game::CampaignRootContextV1 result{};
+  return xar::ck3_11906::ReadCampaignRootContextV1(
+             environment, access, request, result) ==
+             xar::game::ReadCampaignRootContextResultV1::unavailable &&
+         ClearedUnavailable(
+             result, "player_monthly_gold_income_unavailable");
+}
+
 bool TestStateChangedAndUnsupportedBuild() {
   Fixture changed_fixture;
   changed_fixture.change_frame_on_second_capture = true;
@@ -784,6 +825,10 @@ int main() {
   }
   if (!TestMalformedSuccessionIsTypedUnavailable()) {
     std::cerr << "malformed succession fixture failed\n";
+    return 1;
+  }
+  if (!TestMonthlyIncomeFailureIsTypedUnavailable()) {
+    std::cerr << "monthly income fixture failed\n";
     return 1;
   }
   if (!TestStateChangedAndUnsupportedBuild()) {

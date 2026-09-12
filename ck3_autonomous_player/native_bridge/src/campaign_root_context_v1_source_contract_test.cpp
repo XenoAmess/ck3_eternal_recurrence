@@ -67,6 +67,7 @@ int main(int argc, char **argv) {
           "ck3-1.19.0.6-native-campaign-root-context-v1" ||
       kCampaignRootGovernmentFallbackSlotRva != 0x570CB50 ||
       kCampaignRootGameRuleSelectionServiceSlotRva != 0x5754B48 ||
+      kCampaignRootMonthlyGoldIncomeRva != 0x28DBE90 ||
       kCampaignRootPrimaryTitleRva != 0x25F3350 ||
       kCampaignRootCapitalProvinceRva != 0x2606760 ||
       kCampaignRootImmediateLiegeRva != 0x2613480 ||
@@ -79,6 +80,7 @@ int main(int argc, char **argv) {
 
   if (!ContainsAll(header,
                    {"void **government_fallback_slot",
+                    "NativeCampaignRootMonthlyGoldIncomeV1",
                     "game.command.query-campaign-root-context-v1",
                     "ck3-1.19.0.6-native-campaign-root-context-v1"}) ||
       !ContainsAll(reader,
@@ -97,6 +99,8 @@ int main(int argc, char **argv) {
                     "related_character_contexts_unavailable",
                     "ReadPrimaryTitleSuccession",
                     "primary_title_succession_unavailable",
+                    "player_monthly_gold_income_unavailable",
+                    "kCampaignRootMonthlyGoldIncomeRva",
                     "kLandedTitleSuccessionDataOffset = 0x278",
                     "CharacterBelongsToPlayerSubrealm",
                     "observed_id != full_id",
@@ -111,6 +115,8 @@ int main(int argc, char **argv) {
                     "\\\"adjacent_external_province_holder_character_ids\\\"",
                     "\\\"related_character_contexts\\\"",
                     "\\\"primary_title_succession_character_ids\\\"",
+                    "\\\"player_monthly_gold_income\\\"",
+                    "\\\"monthly_gold_income_rva\\\"",
                     "\\\"relationship_role\\\"",
                     "\\\"unavailable_reason\\\"",
                     "\\\"provenance\\\""}) ||
@@ -146,10 +152,12 @@ int main(int argc, char **argv) {
                     "mov rax, qword ptr [rip+0x30F64E5]",
                     "\"resolved_rva\": \"0x570CB50\"",
                     "\"province_holder_character_id_rva\": \"0x220C3F0\"",
+                    "\"monthly_gold_income_rva\": \"0x28DBE90\"",
                     "531558C7064BA9F24F2FDE278F2A5FEF7F495664F0437A0EF528E04FC8CAB8D8",
                     "\"row_stride\": \"0x30\"",
                     "\"related_character_contexts\"",
                     "\"primary_title_succession\"",
+                    "\"player_monthly_gold_income\"",
                     "\"data_offset\": \"0x278\"",
                     "\"direct_vassal_invariant\"",
                     "unsigned_utf8_bytewise_lexicographical",
@@ -168,6 +176,7 @@ int main(int argc, char **argv) {
                     "\"related_character_context_all_or_nothing\": true",
                     "\"primary_title_succession_order\": "
                     "\"native_title_succession_order\"",
+                    "\"player_monthly_gold_income_scale\": 100000",
                     "\"government_fallback_kind\": \"pointer_slot\""})) {
     return 1;
   }

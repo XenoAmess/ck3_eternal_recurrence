@@ -68,6 +68,7 @@ absent；结构或 identity 无法在同一 paused query 中闭合时返回 type
   "local_player_id": 0,
   "player_character_id": 12345,
   "player_character_alive": true,
+  "player_monthly_gold_income": {"raw": 570772, "scale": 100000},
   "primary_title": {
     "title_id": 67890,
     "tier_raw": 4,
@@ -115,6 +116,7 @@ absent；结构或 identity 无法在同一 paused query 中闭合时返回 type
   "native_selected_game_rule_token_count": 2,
   "readiness": {
     "player_identity_ready": true,
+    "player_monthly_gold_income_ready": true,
     "primary_title_ready": true,
     "primary_title_succession_ready": true,
     "capital_ready": true,
@@ -132,6 +134,7 @@ absent；结构或 identity 无法在同一 paused query 中闭合时返回 type
     "game_version": "1.19.0.6",
     "executable_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
     "backend_id": "ck3-1.19.0.6-native-campaign-root-context-v1",
+    "monthly_gold_income_rva": "0x28DBE90",
     "primary_title_rva": "0x25F3350",
     "capital_province_rva": "0x2606760",
     "immediate_liege_rva": "0x2613480",
@@ -149,6 +152,9 @@ lexical order 排序，但必须保留 native multiplicity，并以 `native_*_co
 canonicalization：**不得依此反推 native 优先级、父 game-rule、rule declaration order 或 DLC 状态。**
 
 合法 absent 语义固定为：
+
+`player_monthly_gold_income` 在 available frame 中不可为空；它是完整 native evaluator 的 signed Q100000 结果。调用失败或
+Character generation 漂移会让整帧返回 `player_monthly_gold_income_unavailable`，不会把缓存 income 或零值冒充结果。
 
 | 字段 | 合法 absent |
 |---|---|

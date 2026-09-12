@@ -45,6 +45,11 @@ def _context(
         "local_player_id": 0 if available else None,
         "player_character_id": player_character_id if available else None,
         "player_character_alive": True if available else None,
+        "player_monthly_gold_income": (
+            {"raw": 570_772, "scale": 100_000}
+            if available
+            else None
+        ),
         "primary_title": (
             {"title_id": 67_890, "tier_raw": 3, "tier_key": "duchy"}
             if available
@@ -138,6 +143,7 @@ def _context(
         "native_selected_game_rule_token_count": 2 if available else 0,
         "readiness": {
             "player_identity_ready": available,
+            "player_monthly_gold_income_ready": available,
             "primary_title_ready": available,
             "primary_title_succession_ready": available,
             "capital_ready": available,
@@ -159,6 +165,7 @@ def _context(
             "backend_id": (
                 "ck3-1.19.0.6-native-campaign-root-context-v1"
             ),
+            "monthly_gold_income_rva": "0x28DBE90",
             "primary_title_rva": "0x25F3350",
             "capital_province_rva": "0x2606760",
             "immediate_liege_rva": "0x2613480",

@@ -20,6 +20,7 @@
     "game_rule_token_fallback_slot_rva": "0x57D7430"
   },
   "functions": {
+    "monthly_gold_income_rva": "0x28DBE90",
     "primary_title_rva": "0x25F3350",
     "capital_province_rva": "0x2606760",
     "immediate_liege_rva": "0x2613480",
@@ -27,6 +28,15 @@
     "government_rva": "0x26165B0",
     "province_holder_character_id_rva": "0x220C3F0",
     "script_identifier_name_rva": "0x3B58970"
+  },
+  "player_monthly_gold_income": {
+    "published_field": "player_monthly_gold_income",
+    "function_rva": "0x28DBE90",
+    "return_contract": "the function must return the caller-provided int64 output pointer",
+    "scale": 100000,
+    "identity_gate": "the played Character pointer must roundtrip through full-generation Character storage after evaluation",
+    "same_frame": "the signed Q100000 result participates in the existing two-sample equality gate",
+    "cached_leaf_excluded": "CCharacter extension+0x2B0 is diagnostic only because paused live evidence showed it lagging the complete evaluator"
   },
   "province_boundary_identity": {
     "province_holder_character_id_function": {

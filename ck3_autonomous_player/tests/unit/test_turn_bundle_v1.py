@@ -62,6 +62,11 @@ def _root(*, available: bool = True) -> dict[str, object]:
         "date_raw": DATE_RAW,
         "player_character_id": PLAYER_ID if available else None,
         "player_character_alive": True if available else None,
+        "player_monthly_gold_income": (
+            {"raw": 570_772, "scale": 100_000}
+            if available
+            else None
+        ),
         "primary_title": (
             {"title_id": 90, "tier_raw": 4, "tier_key": "kingdom"}
             if available
@@ -129,7 +134,9 @@ class TurnBundleV1Tests(unittest.TestCase):
         ruler = result["ruler_state"]["value"]
         self.assertEqual(ruler["gold"]["value"]["raw"], 2_500_000)
         self.assertEqual(ruler["stress_points"]["value"], 120)
-        self.assertEqual(ruler["income"]["status"], "unavailable")
+        self.assertEqual(ruler["income"]["status"], "available")
+        self.assertEqual(ruler["income"]["value"]["raw"], 570_772)
+        self.assertTrue(result["readiness"]["ruler_resources_ready"])
         realm = result["realm_state"]["value"]
         self.assertEqual(
             realm["adjacent_holder_top_liege_character_ids"], [99]
@@ -241,6 +248,7 @@ class TurnBundleV1Tests(unittest.TestCase):
 
         ruler = result["ruler_state"]["value"]
         self.assertEqual(ruler["gold"]["status"], "unavailable")
+        self.assertFalse(result["readiness"]["ruler_resources_ready"])
         self.assertEqual(ruler["stress_points"]["status"], "unavailable")
         self.assertEqual(
             result["pending_state"]["value"]["active_event"]["status"],
@@ -248,6 +256,18 @@ class TurnBundleV1Tests(unittest.TestCase):
         )
         self.assertEqual(result["war_state"]["status"], "unavailable")
         self.assertFalse(result["readiness"]["war_summary_ready"])
+
+    def test_rejects_malformed_campaign_root_income(self) -> None:
+        root = _root()
+        context = root["campaign_root_context"]
+        assert isinstance(context, dict)
+        context["player_monthly_gold_income"] = {
+            "raw": 570_772,
+            "scale": 1,
+        }
+
+        with self.assertRaises(ValueError):
+            build_turn_bundle_v1(_snapshot(), root)
 
 
 if __name__ == "__main__":

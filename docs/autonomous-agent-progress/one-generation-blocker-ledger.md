@@ -1260,3 +1260,15 @@ strategic-power primitive；余下入口只有 policy-level campaign dominance�
   observations are still absent. This closes an aggregation gap, not the M1 live gate or its complete state breadth.
 - Focused normal/optimized tests pass `26/26`, including official MCP listing/call and binding/identity drift rejection. No CK3 or desktop resource
   was used. The next construction entry is an exact-build read-only income/domain slice rather than another unavailable-only wrapper.
+
+## 2026-09-13: G2-M1 player monthly income observation
+
+- The existing war-exit implementation had already proven `0x28DBE90` as the complete monthly-gold-income evaluator and recorded a paused case
+  where `extension+0x2B0` lagged it. `campaign-root-context-v1` now reuses the evaluator for the played Character, requires the caller output
+  pointer, generation-revalidates the Character and includes signed Q100000 income in the complete two-sample frame equality gate.
+- A failed call or identity/value drift returns whole-frame `player_monthly_gold_income_unavailable`. The bundle consumes this observation and
+  marks ruler resources ready only with current gold plus income; it still reports full readiness false for health, domain, council, faction
+  and partition.
+- Native reader/source-contract fixtures and focused normal/optimized Python suites are GREEN; candidate Release DLL is `2,636,800` bytes /
+  `98FC2431...0566C2`. This is `static-ready / live=false` and will share a future bounded paused G2 read. It does not create a dedicated run or
+  change G2 `0/8` / GEN-034 `2/4`.

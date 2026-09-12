@@ -18,6 +18,7 @@
     "local_player_id",
     "player_character_id",
     "player_character_alive",
+    "player_monthly_gold_income",
     "primary_title",
     "primary_title_succession_character_ids",
     "capital_province_id",
@@ -41,6 +42,7 @@
     "map_not_ready",
     "player_identity_unavailable",
     "player_character_generation_mismatch",
+    "player_monthly_gold_income_unavailable",
     "primary_title_unavailable",
     "primary_title_succession_unavailable",
     "capital_unavailable",
@@ -65,5 +67,6 @@
   "related_character_context_all_or_nothing": true,
   "primary_title_succession_order": "native_title_succession_order",
   "primary_title_succession_offsets": ["0x278", "0x280", "0x284"],
-  "primary_title_succession_all_or_nothing": true
+  "primary_title_succession_all_or_nothing": true,
+  "player_monthly_gold_income_scale": 100000
 }

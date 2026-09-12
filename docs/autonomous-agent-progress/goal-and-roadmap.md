@@ -246,7 +246,7 @@ seed/ruler/government/DLC 或普通 campaign 继承。
 | 窄 `claim_cb` white-peace termination | `production-live loop` | 当前 primary-attacker 场景已按 options → v1 claim terms → literal offer 提交，AI 异步响应后旧 WarID 消失；残军解散、即时 checkpoint、冷恢复与继续推进均已实走。 | 不是完整 v2/campaign 战争退出；其它 CB/角色、holy war、surrender、victory/defeat 与完整 outcome utility 仍未闭合。 |
 | pending character interaction | typed query `production-live primitive`；`pay_ransom` degraded reply `production-live loop` | 读取 stable kind、五 roles、routing、deadline、send options 与四路 legality；exact `pay_ransom_interaction` 已完成 typed query→reject→旧 full ID 消失→时间推进/checkpoint，100% enforce-demands 始终优先。 | reject-first 不是赎金语义最优或原生等价；`spar`/unique-accept、其它 stock definition、intermediary/notification live 与 structured terms/effects 仍缺。 |
 | auto-accept notification ACK | `fixture-live` | 非宗教 definition-only fixture 中完成 query/query/ACK/旧 full ID 消失。 | 不是 stock/production-only 语义证据，自然 stock 与 intermediary 仍待验。 |
-| campaign root 与 loaded feature manifest | base `production-live primitive`；vassal/boundary identity `static-ready` | 读取玩家主头衔/tier、capital、liege、直属有地封臣、相邻外部省份持有者、government/rules，以及当前进程 feature registry/runtime keys。 | 两项新增 identity vector 待一次共享 paused live read；开局选择、全部政府/DLC 场景和 entitlement provenance 尚未完成。 |
+| campaign root 与 loaded feature manifest | base `production-live primitive`；vassal/boundary/succession/income extensions `static-ready` | 读取玩家主头衔/tier、capital、liege、直属有地封臣、相邻外部省份持有者、主头衔继承序列、signed Q100000 月收入、government/rules，以及当前进程 feature registry/runtime keys。 | 新增字段待一次共享 paused live read；开局选择、全部政府/DLC 场景和 entitlement provenance 尚未完成。 |
 | 婚姻关系与最小候选动作 | `implemented`，部分结果 live | 读取配偶/婚约关系，枚举合法 CharacterID 候选并提交、等待关系结果。 | 当前仍可能选择首个候选，不是智能婚姻策略。 |
 | 一代结算 | `production-live loop`（固定 G1 episode） | 自然死亡后等待 matching committed settlement；本次实读 `ready=true / commit_serial=1 / source=29829`，三处人生分数均为 `14.8`，record persistence 与零继承人 gameplay 全绿。 | 普通 campaign 跨继承与更多 seed 尚未完成。 |
 | 一代人严格 runner | `production-live loop`（G1 qualified） | 从归档 exact cold seed 持续 OODA 到自然死亡、Mod committed settlement 和 managed cleanup；最终 run 为 `155/155` turns、`53` gameplay、`15` checkpoints、`1` terminal。 | 只完成一个固定 production seed；跨继承 G2、更多 ruler/government/DLC 与通用高质量策略仍未完成。 |
@@ -401,8 +401,9 @@ tyranny；健康、压力与生育；法律、政府、文化、创新与非宗�
    `ck3_search_entities_v1` relationship-search 切片；同帧 `related_character_contexts` 已把每个 related ID 解析为 primary title、
    capital 与 immediate/top liege，并保留 holder source role 后归一 realm identity，状态为 `static-ready / live=false`。下一输入是
    campaign-root 已新增保持 native 顺序的主头衔继承人 CharacterID vector，可作为最低 succession alert 的真实输入；下一输入是
-   最低 ruler/realm/succession alerts 已由 `ck3_query_turn_bundle_v1` 聚合为 `static-ready / live=false`；完整 M1 仍缺收入、健康、
-   domain、council、faction 与 partition 的真实观测及两场景 live 验收；
+   最低 ruler/realm/succession alerts 已由 `ck3_query_turn_bundle_v1` 聚合为 `static-ready / live=false`；exact-build 玩家月收入也已
+   接入 campaign-root 双采样并令 gold+income 资源门可真实变绿。完整 M1 仍缺健康、domain、council、faction 与 partition 的
+   真实观测及两场景 live 验收；
 3. `G2-M2`：`event-context-v2` 接入共享 registry recommendation，并以三个自然事件闭合选择与状态后置；
 4. `G2-M3/M4`：把继承、health/stress/legitimacy、vassal/faction alert、建设和内阁组成 realm-survival 与和平治理 OODA；
 5. `G2-M5–M7`：家庭/外交/完整战争，谋略/制度/活动，以及按 runtime identity 启用的政府/DLC adapter 和长期 qualification。

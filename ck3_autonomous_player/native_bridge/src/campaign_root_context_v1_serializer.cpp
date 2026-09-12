@@ -52,6 +52,7 @@ bool ValidToken(std::string_view value) noexcept {
 bool ReadinessAll(const game::CampaignRootReadinessV1 &value,
                   bool expected) noexcept {
   return value.player_identity_ready == expected &&
+         value.player_monthly_gold_income_ready == expected &&
          value.primary_title_ready == expected &&
          value.primary_title_succession_ready == expected &&
          value.capital_ready == expected && value.lieges_ready == expected &&
@@ -83,13 +84,14 @@ std::string_view TierKey(std::int32_t raw) noexcept {
 }
 
 bool ValidUnavailableReason(std::string_view reason) noexcept {
-  constexpr std::array<std::string_view, 17> reasons = {
+  constexpr std::array<std::string_view, 18> reasons = {
       "unsupported_build",
       "requires_application_main",
       "requires_paused",
       "map_not_ready",
       "player_identity_unavailable",
       "player_character_generation_mismatch",
+      "player_monthly_gold_income_unavailable",
       "primary_title_unavailable",
       "primary_title_succession_unavailable",
       "capital_unavailable",
@@ -201,6 +203,8 @@ bool ValidAvailable(const game::CampaignRootContextV1 &context) noexcept {
       !context.player_character_id.has_value() ||
       *context.player_character_id <= 0 ||
       !context.player_character_alive.has_value() ||
+      !context.player_monthly_gold_income.has_value() ||
+      context.player_monthly_gold_income->scale != 100'000 ||
       !context.top_liege_character_id.has_value() ||
       *context.top_liege_character_id <= 0 ||
       !context.independent.has_value() ||
@@ -280,6 +284,7 @@ bool ValidUnavailable(const game::CampaignRootContextV1 &context) noexcept {
          !context.local_player_id.has_value() &&
          !context.player_character_id.has_value() &&
          !context.player_character_alive.has_value() &&
+         !context.player_monthly_gold_income.has_value() &&
          !context.primary_title.has_value() &&
          context.primary_title_succession_character_ids.empty() &&
          !context.capital_province_id.has_value() &&
@@ -386,6 +391,8 @@ void AppendReadiness(std::string &output,
                      const game::CampaignRootReadinessV1 &value) {
   output += "{\"player_identity_ready\":";
   output += value.player_identity_ready ? "true" : "false";
+  output += ",\"player_monthly_gold_income_ready\":";
+  output += value.player_monthly_gold_income_ready ? "true" : "false";
   output += ",\"primary_title_ready\":";
   output += value.primary_title_ready ? "true" : "false";
   output += ",\"primary_title_succession_ready\":";
@@ -418,7 +425,8 @@ void AppendProvenance(std::string &output) {
   output += kCampaignRootContextV1ExecutableSha256;
   output += "\",\"backend_id\":\"";
   output += kCampaignRootContextV1BackendId;
-  output += "\",\"primary_title_rva\":\"0x25F3350\",";
+  output += "\",\"monthly_gold_income_rva\":\"0x28DBE90\",";
+  output += "\"primary_title_rva\":\"0x25F3350\",";
   output += "\"capital_province_rva\":\"0x2606760\",";
   output += "\"immediate_liege_rva\":\"0x2613480\",";
   output += "\"top_liege_rva\":\"0x2613600\",";
@@ -457,6 +465,20 @@ std::string SerializeCampaignRootContextV1(
   AppendOptionalInt32(output, context.player_character_id);
   output += ",\"player_character_alive\":";
   AppendOptionalBool(output, context.player_character_alive);
+  output += ",\"player_monthly_gold_income\":";
+  if (!context.player_monthly_gold_income.has_value()) {
+    output += "null";
+  } else {
+    output += "{\"raw\":";
+    if (!AppendNumber(output, context.player_monthly_gold_income->raw)) {
+      return {};
+    }
+    output += ",\"scale\":";
+    if (!AppendNumber(output, context.player_monthly_gold_income->scale)) {
+      return {};
+    }
+    output.push_back('}');
+  }
   output += ",\"primary_title\":";
   if (!context.primary_title.has_value()) {
     output += "null";

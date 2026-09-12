@@ -27,6 +27,7 @@ _FIELDS: Final = {
     "local_player_id",
     "player_character_id",
     "player_character_alive",
+    "player_monthly_gold_income",
     "primary_title",
     "primary_title_succession_character_ids",
     "capital_province_id",
@@ -44,6 +45,7 @@ _FIELDS: Final = {
     "provenance",
 }
 _PRIMARY_TITLE_FIELDS: Final = {"title_id", "tier_raw", "tier_key"}
+_FIXED_POINT_FIELDS: Final = {"raw", "scale"}
 _RELATED_CHARACTER_FIELDS: Final = {
     "character_id",
     "relationship_role",
@@ -56,6 +58,7 @@ _RELATED_CHARACTER_FIELDS: Final = {
 _GOVERNMENT_FIELDS: Final = {"key", "flags", "native_flag_count"}
 _READINESS_KEYS: Final = (
     "player_identity_ready",
+    "player_monthly_gold_income_ready",
     "primary_title_ready",
     "primary_title_succession_ready",
     "capital_ready",
@@ -73,6 +76,7 @@ _PROVENANCE_FIELDS: Final = {
     "game_version",
     "executable_sha256",
     "backend_id",
+    "monthly_gold_income_rva",
     "primary_title_rva",
     "capital_province_rva",
     "immediate_liege_rva",
@@ -85,6 +89,7 @@ _PROVENANCE_VALUES: Final = {
     "game_version": CAMPAIGN_ROOT_CONTEXT_V1_GAME_VERSION,
     "executable_sha256": CAMPAIGN_ROOT_CONTEXT_V1_EXECUTABLE_SHA256,
     "backend_id": CAMPAIGN_ROOT_CONTEXT_V1_BACKEND_ID,
+    "monthly_gold_income_rva": "0x28DBE90",
     "primary_title_rva": "0x25F3350",
     "capital_province_rva": "0x2606760",
     "immediate_liege_rva": "0x2613480",
@@ -100,6 +105,7 @@ _UNAVAILABLE_REASONS: Final = {
     "map_not_ready",
     "player_identity_unavailable",
     "player_character_generation_mismatch",
+    "player_monthly_gold_income_unavailable",
     "primary_title_unavailable",
     "primary_title_succession_unavailable",
     "capital_unavailable",
@@ -124,6 +130,7 @@ _UNAVAILABLE_NULL_FIELDS: Final = {
     "local_player_id",
     "player_character_id",
     "player_character_alive",
+    "player_monthly_gold_income",
     "primary_title",
     "capital_province_id",
     "immediate_liege_character_id",
@@ -163,6 +170,19 @@ def _int(
 
 def _positive_int32(value: object, name: str) -> int:
     return _int(value, name, minimum=1, maximum=2**31 - 1)
+
+
+def _fixed_point(value: object, name: str) -> dict[str, int]:
+    frame = _exact_object(value, _FIXED_POINT_FIELDS, name)
+    raw = _int(
+        frame.get("raw"),
+        f"{name}.raw",
+        minimum=-(2**63),
+        maximum=2**63 - 1,
+    )
+    if frame.get("scale") != 100_000:
+        raise ValueError(f"{name}.scale must be 100000")
+    return {"raw": raw, "scale": 100_000}
 
 
 def _optional_positive_int32(value: object, name: str) -> int | None:
@@ -485,6 +505,10 @@ def normalize_campaign_root_context_v1(
     player_character_alive = _bool(
         frame.get("player_character_alive"), "player_character_alive"
     )
+    player_monthly_gold_income = _fixed_point(
+        frame.get("player_monthly_gold_income"),
+        "player_monthly_gold_income",
+    )
     primary_title_succession_character_ids = (
         _ordered_unique_positive_int32_vector(
             frame.get("primary_title_succession_character_ids"),
@@ -597,6 +621,7 @@ def normalize_campaign_root_context_v1(
         "local_player_id": local_player_id,
         "player_character_id": player_character_id,
         "player_character_alive": player_character_alive,
+        "player_monthly_gold_income": player_monthly_gold_income,
         "primary_title": primary_title,
         "primary_title_succession_character_ids": (
             primary_title_succession_character_ids

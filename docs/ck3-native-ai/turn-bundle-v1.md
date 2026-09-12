@@ -10,8 +10,8 @@
 - It already delivers truthful minimum alerts for ruler alive/landless state,
   direct-vassal and adjacent-holder presence, and the primary title's first
   ordered successor. The full bundle stays `status=partial` and
-  `readiness.ready=false` because income, health, domain, council, factions and
-  partition are not yet observed.
+  `readiness.ready=false` because health, domain, council, factions and
+  partition are not yet observed. Player monthly income is now static-ready.
 - This aggregation changes no native mailbox, DLL, game object or action path.
   Native AI decision-tree research is N/A because the package groups observed
   state and does not introduce a counter-policy.
@@ -30,7 +30,7 @@ The response contains six typed domains:
 
 | Domain | Available now | Explicit gap |
 |---|---|---|
-| `ruler_state` | CharacterID, alive, primary title, capital, government, optional current gold and raw stress points | income, health band |
+| `ruler_state` | CharacterID, alive, primary title, capital, government, exact-build monthly income, optional current gold and raw stress points | health band |
 | `realm_state` | top liege, independent state, direct landed-vassal IDs, adjacent Province-holder IDs and their grouped top-liege IDs | domain holdings, council, faction threat |
 | `succession_state` | ordered primary-title successor IDs, first primary-title heir and no-heir alert | per-title partition/law/claims |
 | `pending_state` | current normalized event and pending character interaction, including proven absence | unavailable only when the source snapshot lacks that observation surface |
@@ -62,9 +62,11 @@ have an observed alert input:
 
 It does not mean the G2-M1 acceptance gate is complete. The broader
 `readiness.ready` remains false until the same-frame query can also supply the
-required resource/income, health/stress, domain, council, faction and partition
-components. Current gold and stress may be individually available without
-raising their larger combined readiness gates.
+required health, domain, council, faction and partition components. Monthly
+income is required in every available campaign-root frame; current gold remains
+an optional normalized-snapshot surface. `ruler_resources_ready` is true only
+when both are available. Raw stress may be individually available without
+closing its larger health/stress gate.
 
 The raw stress alert uses `stress_points >= 100`. It reports the first CK3
 stress-break threshold as a boolean and preserves the raw points; it is not a
@@ -87,13 +89,16 @@ text, historical artifacts or another frame.
 
 ## Focused verification
 
-- Contract fixtures cover successor order, high-stress and gold projection,
+- Contract fixtures cover successor order, high-stress, gold and exact-build
+  monthly-income projection,
   adjacent holder-to-top-liege grouping, WarID sorting, landless and heirless
   `not_applicable`, root typed unavailable, missing optional surfaces and
   cross-frame/identity drift rejection.
 - Service integration reuses the already exact-bound campaign-root call.
 - The official MCP SDK lists and calls `ck3_query_turn_bundle_v1`.
-- Focused normal and optimized Python suites pass `26/26` each.
+- The focused campaign-root/live-harness/turn-bundle suite passes normal and
+  optimized modes; the native reader and source contract are independently
+  executable and GREEN.
 
 No CK3 process, recorder, injector, keyboard, mouse or foreground window was
 used for this package. One future already-required paused G2 session should
@@ -104,6 +109,6 @@ dedicated long run is not required.
 
 The next highest-value off-screen work is the smallest exact-build read-only
 slice that can turn one currently unavailable decision input into real state.
-Priority within M1 is current income/domain capacity, then council and faction
-alerts, then health and full partition. Each new field should enter this same
+Priority within M1 is domain capacity, then council and faction alerts, then
+health and full partition. Each new field should enter this same
 bundle only after its native evidence and focused fixture are complete.
