@@ -543,7 +543,7 @@ def prepare_plan(
             "managed native session and loader GREEN",
             "paused map bound to tracked PID",
             "04_phase2_seed_loaded.json schema_version=2 GREEN",
-            "all eight loaded-feature requirements GREEN",
+            "full eight-span MCP capability profile GREEN",
             (
                 "Incident strict zg361.50 receipt bound to registry, "
                 "seed owner and ACK-free result contract"

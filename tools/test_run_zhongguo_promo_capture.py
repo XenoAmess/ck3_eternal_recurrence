@@ -2515,6 +2515,77 @@ def main() -> int:
         assert phase2_persisted_green["legacy_scenario_used"] is False
         assert phase2_persisted_green["missing_requirements"] == []
         assert capture.PHASE2_UNFROZEN_REQUIREMENTS == {}
+
+        promo_capability_artifacts = (
+            temporary_root / "phase2-promo-capture-profile-green"
+        )
+        promo_capability_artifacts.mkdir()
+        promo_capability_green = capture.phase2_runtime_capability_preflight(
+            Phase2CapabilityService(complete_phase2_capabilities()),
+            promo_capability_artifacts,
+            tracked_ck3_pid=4321,
+            managed_restore_supervisor=True,
+            phase2_promo_capture=True,
+        )
+        assert promo_capability_green["result"] == "GREEN"
+        assert promo_capability_green["scope"] == (
+            "phase2_promo_capture_mcp_capability_profile"
+        )
+        assert promo_capability_green["phase2_promo_capture"] is True
+
+        missing_promotion = complete_phase2_capabilities()
+        missing_promotion_capability = (
+            capture.PHASE2_REQUIRED_BRIDGE_CAPABILITIES[
+                "promotion_compensation_postcondition"
+            ]
+        )
+        missing_promotion["bridge_capabilities"].remove(
+            missing_promotion_capability
+        )
+        missing_promotion_flag = capture.PHASE2_REQUIRED_QUERY_FLAGS[
+            "promotion_compensation_postcondition"
+        ]
+        missing_promotion[missing_promotion_flag] = False
+        missing_promotion_artifacts = (
+            temporary_root / "phase2-promo-capture-profile-missing-promotion"
+        )
+        missing_promotion_artifacts.mkdir()
+        try:
+            capture.phase2_runtime_capability_preflight(
+                Phase2CapabilityService(missing_promotion),
+                missing_promotion_artifacts,
+                tracked_ck3_pid=4321,
+                managed_restore_supervisor=True,
+                phase2_promo_capture=True,
+            )
+        except capture.acceptance.RunnerError as error:
+            assert "MCP capability RED" in str(error)
+        else:
+            raise AssertionError(
+                "promo preflight accepted a missing promotion provider"
+            )
+        persisted_missing_promotion = json.loads(
+            (
+                missing_promotion_artifacts
+                / "02_phase2_mcp_capabilities.json"
+            ).read_text(encoding="utf-8")
+        )
+        assert persisted_missing_promotion["result"] == "RED"
+        assert {
+            (row["kind"], row["label"], row["value"])
+            for row in persisted_missing_promotion["missing_requirements"]
+        } >= {
+            (
+                "bridge_capability",
+                "promotion_compensation_postcondition",
+                missing_promotion_capability,
+            ),
+            (
+                "query_support_flag",
+                "promotion_compensation_postcondition",
+                missing_promotion_flag,
+            ),
+        }
         assert (
             capture.PHASE2_REQUIRED_BRIDGE_CAPABILITIES[
                 "workforce_collective_snapshot"

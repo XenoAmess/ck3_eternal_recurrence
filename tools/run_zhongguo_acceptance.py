@@ -9351,6 +9351,7 @@ def phase2_runtime_capability_preflight(
     focused_hc_workforce_route_b: bool = False,
     focused_endgame_source_capture: bool = False,
     focused_incident_source_capture: bool = False,
+    phase2_promo_capture: bool = False,
     legacy_full_tree_coverage: bool = False,
 ) -> dict[str, object]:
     """Fail before navigation unless the selected Phase2 MCP surface exists."""
@@ -9386,7 +9387,7 @@ def phase2_runtime_capability_preflight(
         bridge_labels = PHASE2_B2_REQUIRED_BRIDGE_CAPABILITY_LABELS
         query_labels = PHASE2_B2_REQUIRED_QUERY_FLAG_LABELS
         action_labels = PHASE2_B2_REQUIRED_ACTION_STEP_LABELS
-    elif legacy_full_tree_coverage:
+    elif phase2_promo_capture or legacy_full_tree_coverage:
         bridge_labels = tuple(PHASE2_REQUIRED_BRIDGE_CAPABILITIES)
         query_labels = tuple(PHASE2_REQUIRED_QUERY_FLAGS)
         action_labels = tuple(PHASE2_REQUIRED_ACTION_STEPS)
@@ -9420,6 +9421,8 @@ def phase2_runtime_capability_preflight(
             if focused_hc_workforce_route_b
             else "focused_b2_same_checkpoint_mcp_capability_profile"
             if focused_b2_same_checkpoint
+            else "phase2_promo_capture_mcp_capability_profile"
+            if phase2_promo_capture
             else "legacy_full_tree_coverage_mcp_capability_profile"
             if legacy_full_tree_coverage
             else "p1_critical_path_mcp_capability_profile"
@@ -9430,6 +9433,7 @@ def phase2_runtime_capability_preflight(
         "focused_hc_workforce_route_b": focused_hc_workforce_route_b,
         "focused_endgame_source_capture": focused_endgame_source_capture,
         "focused_incident_source_capture": focused_incident_source_capture,
+        "phase2_promo_capture": phase2_promo_capture,
         "legacy_full_tree_coverage": legacy_full_tree_coverage,
         "tracked_ck3_pid": tracked_ck3_pid,
         "managed_restore_supervisor": managed_restore_supervisor,
@@ -9533,6 +9537,7 @@ def phase2_runtime_capability_preflight(
                 focused_hc_workforce_route_b,
                 focused_endgame_source_capture,
                 focused_incident_source_capture,
+                phase2_promo_capture,
                 legacy_full_tree_coverage,
             )
         )
@@ -14990,6 +14995,7 @@ def run_loader_gate(
                 focused_incident_source_capture=(
                     phase2_incident_source_checkpoint_capture
                 ),
+                phase2_promo_capture=phase2_promo_capture,
                 legacy_full_tree_coverage=(
                     phase2_live_batch
                     and phase2_legacy_full_tree_coverage
