@@ -763,6 +763,30 @@ int main() {
       "publishing readiness");
   fixture.missing_widget_index = 15;
 
+  fixture.widgets[5][xar::ck3_11906::kZhongguoWidgetHiddenFlagsOffset] =
+      xar::ck3_11906::kZhongguoWidgetLocalHiddenMask |
+      xar::ck3_11906::kZhongguoWidgetEffectiveHiddenMask;
+  request.request_nonce = "scoreboard-transition-diagnostic";
+  xar::game::ZhongguoScoreboardStateV1 transition{};
+  const auto transition_read =
+      xar::ck3_11906::ReadZhongguoScoreboardStateV1(
+          Environment(), Access(fixture), request, transition);
+  ok &= Expect(
+      transition_read ==
+              xar::game::ReadZhongguoScoreboardStateResultV1::unavailable &&
+          transition.unavailable_reason == "state_projection_unavailable" &&
+          transition.widgets[2].exists.available &&
+          transition.widgets[2].exists.value == true &&
+          transition.widgets[2].effective_visible.available &&
+          transition.widgets[2].effective_visible.value == false &&
+          transition.widgets[5].effective_visible.available &&
+          transition.widgets[5].effective_visible.value == false &&
+          !transition.readiness.entry_window_state_ready &&
+          !transition.readiness.state_acl_query_ready,
+      "projection RED must retain decoded surface diagnostics without "
+      "publishing readiness");
+  fixture.widgets[5][xar::ck3_11906::kZhongguoWidgetHiddenFlagsOffset] = 0;
+
   const auto bound =
       xar::ck3_11906::BindZhongguoScoreboardNativeEnvironmentV1(
           0x10000000, true);

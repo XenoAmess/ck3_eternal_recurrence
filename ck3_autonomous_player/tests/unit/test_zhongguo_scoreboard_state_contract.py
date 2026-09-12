@@ -347,6 +347,32 @@ class ZhongguoScoreboardStateContractTests(unittest.TestCase):
         self.assertEqual(normalized["widgets"][12]["exists"], typed(False))
         self.assertFalse(normalized["readiness"]["entry_window_state_ready"])
 
+    def test_projection_red_preserves_decoded_surface_diagnostics(self) -> None:
+        query = parse_query_zhongguo_scoreboard_state_v1_step(
+            query_zhongguo_scoreboard_state_v1_step(NONCE)
+        )
+        assert query is not None
+        frame = native_frame()
+        frame["status"] = "unavailable"
+        frame["tree_fingerprint_v1"] = ""
+        frame["semantic_fingerprint_v1"] = ""
+        frame["observation_sequence"] = 0
+        frame["observed_state_revision"] = 0
+        frame["unavailable_reason"] = "state_projection_unavailable"
+        frame["readiness"] = {key: False for key in frame["readiness"]}
+
+        normalized = normalize_native_zhongguo_scoreboard_state_v1(
+            frame,
+            expected_query=query,
+            expected_snapshot_revision=REVISION,
+            expected_date_raw=DATE_RAW,
+            expected_player_character_id=PLAYER,
+        )
+        self.assertEqual(normalized["status"], "unavailable")
+        self.assertEqual(normalized["widgets"][2]["effective_visible"], typed(False))
+        self.assertEqual(normalized["widgets"][5]["effective_visible"], typed(True))
+        self.assertFalse(normalized["readiness"]["state_acl_query_ready"])
+
     def test_identity_acl_and_action_drift_fail_closed(self) -> None:
         query = parse_query_zhongguo_scoreboard_state_v1_step(
             query_zhongguo_scoreboard_state_v1_step(NONCE)

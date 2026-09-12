@@ -5,10 +5,10 @@
 R525 closes the preceding scoreboard-root blocker. The exact-build provider
 resolved all 15 fixed widget identities and published a valid closed-state
 observation. Native `open` dispatch was accepted and returned an exact ACK, but
-the immediately following independent query sampled the GUI before its
-show/hide animation had settled and returned
-`unavailable/state_projection_unavailable`. The failed take contains no clean
-span; P2 remains `0/8`.
+the immediately following independent query returned
+`unavailable/state_projection_unavailable`. R525 alone could not distinguish a
+show/hide transition frame from another semantic-projection mismatch. The
+failed take contains no clean span; P2 remains `0/8`.
 
 This is a capability RED with loader, harness, and lifecycle GREEN. It is not a
 product scoreboard-content failure and it does not justify loosening the native
@@ -48,9 +48,10 @@ The product GUI applies `Animation_ShowHide_Quick` to both the entry container
 and modal. Exact-build source defines its fade-in and fade-out duration as
 `0.15` seconds. Sampling immediately after the synchronous callback can see a
 transition frame that satisfies neither the closed-state nor open-state
-mutual-exclusion invariant. The recorder stopped at the RED almost immediately;
-the 2.90-second frame still shows the pre-render surface and cannot disprove the
-ACK.
+mutual-exclusion invariant. This was the bounded hypothesis carried into R527,
+not a completed root-cause claim. The recorder stopped at the RED almost
+immediately; the 2.90-second frame still shows the pre-render surface and cannot
+disprove the ACK.
 
 ## Minimal correction and validation
 
@@ -73,6 +74,11 @@ open_kaishek compatibility change. The next and only proportionate live check is
 a fresh R526 Frontend warm-up followed by R527 gameplay using the same native
 DLL and the committed Python correction.
 
+R527 performed that check and returned the same RED after the 0.25-second wait.
+The fixed-delay hypothesis is therefore insufficient. See
+`r526-r527-scoreboard-surface-diagnostic-red-2026-09-12.md` for the replacement
+diagnostic plan; no longer wait or retry loop is proposed.
+
 ## Evidence
 
 - plan: `capture-plan.json`, SHA-256
@@ -93,4 +99,3 @@ DLL and the committed Python correction.
   `727F3CB58F5D827A5744A26A6897D6CD57D355410C345295B3FE1251DF358DC1`
 - 2.90-second diagnostic frame: SHA-256
   `7CA43D546CA6387110114FE62293A6232D3B9BB26D4C6F9A35EF34D42738FEA4`
-

@@ -1583,10 +1583,19 @@ game::ReadZhongguoScoreboardStateResultV1 ReadZhongguoScoreboardStateV1(
     std::string first_semantic_bytes;
     if (!BuildTreeCanonicalBytes(access, first_gui, first_tree_bytes) ||
         !BuildSemanticCanonicalBytes(access, first_gui, first_rows,
-                                     first_state, first_semantic_bytes) ||
-        !FindFixedWidgets(environment, access, second_gui) ||
-        !ReadAllowlistedRows(environment, access, before.played_character_id,
+                                     first_state, first_semantic_bytes)) {
+      output = std::move(first_state);
+      SetTopUnavailable(output, "state_projection_unavailable");
+      return game::ReadZhongguoScoreboardStateResultV1::unavailable;
+    }
+    if (!FindFixedWidgets(environment, access, second_gui)) {
+      output = std::move(first_state);
+      SetTopUnavailable(output, "gui_root_unavailable");
+      return game::ReadZhongguoScoreboardStateResultV1::unavailable;
+    }
+    if (!ReadAllowlistedRows(environment, access, before.played_character_id,
                              second_rows)) {
+      output = std::move(first_state);
       SetTopUnavailable(output, "state_projection_unavailable");
       return game::ReadZhongguoScoreboardStateResultV1::unavailable;
     }
@@ -1597,13 +1606,26 @@ game::ReadZhongguoScoreboardStateResultV1 ReadZhongguoScoreboardStateV1(
     second_state.readiness.gui_root_ready = true;
     std::string second_tree_bytes;
     std::string second_semantic_bytes;
-    if (!DecodeWidgets(access, second_gui.widgets, second_state) ||
-        !DecodeAcl(environment, access, second_rows,
-                   before.played_character_id, second_state) ||
-        !second_state.readiness.entry_window_state_ready ||
-        !BuildTreeCanonicalBytes(access, second_gui, second_tree_bytes) ||
+    if (!DecodeWidgets(access, second_gui.widgets, second_state)) {
+      output = std::move(second_state);
+      SetTopUnavailable(output, "widget_state_unavailable");
+      return game::ReadZhongguoScoreboardStateResultV1::unavailable;
+    }
+    if (!DecodeAcl(environment, access, second_rows,
+                   before.played_character_id, second_state)) {
+      output = std::move(second_state);
+      SetTopUnavailable(output, "acl_inconsistent");
+      return game::ReadZhongguoScoreboardStateResultV1::unavailable;
+    }
+    if (!second_state.readiness.entry_window_state_ready) {
+      output = std::move(second_state);
+      SetTopUnavailable(output, "widget_not_instantiated");
+      return game::ReadZhongguoScoreboardStateResultV1::unavailable;
+    }
+    if (!BuildTreeCanonicalBytes(access, second_gui, second_tree_bytes) ||
         !BuildSemanticCanonicalBytes(access, second_gui, second_rows,
                                      second_state, second_semantic_bytes)) {
+      output = std::move(second_state);
       SetTopUnavailable(output, "state_projection_unavailable");
       return game::ReadZhongguoScoreboardStateResultV1::unavailable;
     }

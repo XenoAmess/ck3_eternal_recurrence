@@ -218,3 +218,7 @@ R525 已在实机证明全局根 fallback 生效：15 个固定身份全部存�
 `zg361_scoreboard_toggle` 与 `zg361_scoreboard_modal` 均使用 `Animation_ShowHide_Quick`；exact-build 的共享模板把淡入、淡出时长定义为 0.15 秒。过渡期间，effective visibility 可短暂不满足 canonical closed/open 两种互斥关系。provider 在这种帧继续 unavailable 是正确行为，不放宽 semantic invariant。
 
 consumer 现只在动作 accepted 后等待 0.25 秒，再执行原有的一次独立 later query。它不轮询，也不把 unavailable 改写为成功。在 R527 取得符合预期 revision 与可见面的 available observation 前，该动作仍只记为 `static-ready + exact live ACK`，不能标成 verified production-live primitive。
+
+R527 已执行上述有界检验，0.25 秒后仍返回 `state_projection_unavailable`，所以固定等待不是充分修复，后续不继续增加等待或原样复跑。最后可解码帧已经出现 scoreboard dimmer 与 panel 轮廓，证明 callback 改变了 GUI；当前缺口是 unavailable 响应没有保留 modal/page/closed-entry 的实际值。
+
+新的诊断实现会在 tree/semantic projection RED 时保留已经解码的 first/second widget 与 ACL 状态，再调用 `SetTopUnavailable` 清空全部 readiness。它不发布 observation/revision，也不改变 success path。second read 的既有失败原因按 GUI lookup、widget decode、ACL、missing instance、tree/semantic 分支保留原有 reason vocabulary。下一轮只用于读取这些状态并确定唯一失败关系。
