@@ -152,9 +152,9 @@
             {
               "index_ref": {
                 "base": "repo_root",
-                "bytes": 3663,
+                "bytes": 4149,
                 "locator": "docs/project-state/red-indexes/r513-scoreboard-gui-dispatch-context-red.json",
-                "sha256": "F42096B1DD18A43C9E079B85AA8ADF8FC9FEB63F3E5D76056012AF89472F579C"
+                "sha256": "85E3726D723C8925F81A24B52A7624DC390D02B8E25434D86C872FB90298E313"
               },
               "red_id": "R513-scoreboard-gui-dispatch-context-red"
             }
@@ -282,5 +282,5 @@
     "red_index_refs": [],
     "status": "GREEN"
   },
-  "updated_at": "2026-09-12T15:49:00+08:00"
+  "updated_at": "2026-09-12T15:58:00+08:00"
 }

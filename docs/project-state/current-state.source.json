@@ -1,12 +1,12 @@
 {
   "schema": "xar.project-delivery-state-source",
   "schema_version": 1,
-  "updated_at": "2026-09-12T15:49:00+08:00",
+  "updated_at": "2026-09-12T15:58:00+08:00",
   "repository_provenance": {
     "root_live_source": "git status --branch --porcelain=v2 plus git ls-remote origin",
     "root_live_state_not_git_cached": true,
     "root_last_completed_transaction": {
-      "commit": "32ce260476c9c653badc87852729a1f6289f48ce",
+      "commit": "c8de01af49b711b696494c2d1a776ac5c31dce68",
       "upstream_ref": "origin/master",
       "sync_result": "GREEN"
     },
@@ -229,7 +229,7 @@
     "live_sync_source": "repository_provenance.t2_live_source"
   },
   "live_red_source": {
-    "status": "R513_NATIVE_GUI_CONTEXT_SOURCE_FIX_GREEN_NEW_DLL_LIVE_PENDING",
+    "status": "R513_NEW_DLL_BUILT_FOCUSED_GREEN_R514_R515_LIVE_PENDING",
     "active": null,
     "unresolved_count": 0,
     "inventory_source": "operator_get_status",
@@ -570,10 +570,18 @@
           "sha256": "CF6A34BC2B2CBB333097F88634AA74951457D26A1FECD10FBB84EBA91BE9C2C9"
         },
         "requires_new_dll_and_round": true,
-        "status": "SOURCE_FIX_FOCUSED_TEST_GREEN_NEW_DLL_PENDING",
+        "status": "NEW_DLL_BUILT_FOCUSED_TEST_GREEN_LIVE_RETRY_PENDING",
         "focused_native": "xar_ck3_zhongguo_scoreboard_state_v1_test GREEN with distinct dispatch context, owner host, and owner",
         "focused_python_normal": "15/15 GREEN",
-        "focused_python_optimized": "15/15 GREEN"
+        "focused_python_optimized": "15/15 GREEN",
+        "new_bridge_dll_sha256": "B7FCCB1E41C9274F3E0FBB7588810F7D1965F4E05E7CC79968163BFC87E9570E",
+        "new_injector_sha256": "4BA4E6A76FAA5E464089881760ECA7994414AFAAB21ED6093A0AAE069B1EDA73",
+        "build_receipt_ref": {
+          "base": "workspace_root",
+          "bytes": 3474,
+          "locator": "_runtime/native-builds/p2-r514-r515-scoreboard-gui-context-c8de01a-v2-20260912/build-receipt.json",
+          "sha256": "16F3A9D8D067545A5E0BDE4EC8F257FBE2134FE31E45DD4E27FF2F3FCD786DEF"
+        }
       },
       "result": "RED",
       "same_frame_retry_eligible": false,

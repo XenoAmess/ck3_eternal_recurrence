@@ -38,7 +38,7 @@
       "git_cached": false,
       "inventory_source": "operator_get_status",
       "stable_projection_only": true,
-      "status": "R513_NATIVE_GUI_CONTEXT_SOURCE_FIX_GREEN_NEW_DLL_LIVE_PENDING"
+      "status": "R513_NEW_DLL_BUILT_FOCUSED_GREEN_R514_R515_LIVE_PENDING"
     },
     "preserved_indexes": [
       {
@@ -84,9 +84,9 @@
       {
         "index_ref": {
           "base": "repo_root",
-          "bytes": 3663,
+          "bytes": 4149,
           "locator": "docs/project-state/red-indexes/r513-scoreboard-gui-dispatch-context-red.json",
-          "sha256": "F42096B1DD18A43C9E079B85AA8ADF8FC9FEB63F3E5D76056012AF89472F579C"
+          "sha256": "85E3726D723C8925F81A24B52A7624DC390D02B8E25434D86C872FB90298E313"
         },
         "red_id": "R513-scoreboard-gui-dispatch-context-red",
         "role": "HISTORICAL_PRESERVED"
@@ -102,7 +102,7 @@
   },
   "repository_provenance": {
     "root_last_completed_transaction": {
-      "commit": "32ce260476c9c653badc87852729a1f6289f48ce",
+      "commit": "c8de01af49b711b696494c2d1a776ac5c31dce68",
       "sync_result": "GREEN",
       "upstream_ref": "origin/master"
     },
@@ -163,7 +163,7 @@
         "base": "repo_root",
         "bytes": 8270,
         "locator": "docs/phase2-promo/p2-stage-ledger.json",
-        "sha256": "2E97AB0B5067A8F85A50B0CF7E5E4CA37285D345A64A75B2F01AD1EBF9B7A1DA"
+        "sha256": "2F0C80521B68AD1D877C3FAD6EE8A1B38F8D05095CC1C1CFB82E494C5FCE7B66"
       },
       "raw_footage": {
         "passed": 0,
@@ -202,5 +202,5 @@
     "result": "GREEN",
     "upstream_root_commit": "32ce260476c9c653badc87852729a1f6289f48ce"
   },
-  "updated_at": "2026-09-12T15:49:00+08:00"
+  "updated_at": "2026-09-12T15:58:00+08:00"
 }

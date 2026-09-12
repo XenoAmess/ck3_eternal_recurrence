@@ -65,3 +65,22 @@ fixture 把三者放在不同地址，明确断言 context 不能等于 owner ho
 
 R513 RED 在新 DLL 完成一次真实 paused available query 前仍保持 current blocker；
 源码修复通过不能冒充 live capability closure。
+
+## 新 DLL candidate
+
+基于已推送并同步的 root `c8de01af49b711b696494c2d1a776ac5c31dce68`
+完成独立 Windows MSVC Release 构建：
+
+- bridge DLL：`2597888` bytes，SHA-256
+  `B7FCCB1E41C9274F3E0FBB7588810F7D1965F4E05E7CC79968163BFC87E9570E`；
+- injector：`39936` bytes，SHA-256
+  `4BA4E6A76FAA5E464089881760ECA7994414AFAAB21ED6093A0AAE069B1EDA73`；
+- focused test：`121856` bytes，SHA-256
+  `37F8F453C0C03E83A84DAF393609FB389DC8FF7B57B962C02C35F0FA89F20542`，GREEN；
+- build receipt：`3474` bytes，SHA-256
+  `16F3A9D8D067545A5E0BDE4EC8F257FBE2134FE31E45DD4E27FF2F3FCD786DEF`。
+
+构建只包含 bridge、injector 和 focused test 三个 target；全部
+`XAR_CK3_ENABLE_*` candidate 保持 OFF。首次配置因显式 Ninja 路径漏掉
+`CMake` 目录而在编译前 RED，改正工具路径后新建 `v2` 目录并 GREEN；两次都没有
+启动 CK3。下一轮严格为 R514 Frontend warm-up、R515 autosave gameplay。
