@@ -17,6 +17,7 @@ from auto_upgrade_buildings_data import CHAINS
 ROOT = Path(__file__).resolve().parents[1]
 MOD = ROOT / "mod_auto_upgrade_buildings"
 FIXTURE = ROOT / "tools" / "fixtures" / "auto_upgrade_buildings_acceptance"
+WORKSHOP_DESCRIPTION = ROOT / "workshop" / "auto_upgrade_buildings_description.bbcode"
 DEFAULT_GAME_ROOT = Path(
     r"D:\Program Files (x86)\Steam\steamapps\common\Crusader Kings III\game"
 )
@@ -156,7 +157,7 @@ def validate(game_root: Path = DEFAULT_GAME_ROOT) -> tuple[list[str], bool]:
     expected_descriptor = (
         'version="1.19.0"\n'
         'tags={\n\t"Balance"\n}\n'
-        'name="自动升级建筑"\n'
+        'name="自动升级建筑（XenoAmess维护版）"\n'
         'supported_version="1.19.0.6"\n'
     )
     if descriptor != expected_descriptor:
@@ -294,6 +295,21 @@ def validate(game_root: Path = DEFAULT_GAME_ROOT) -> tuple[list[str], bool]:
             errors.append(f"acceptance resource-route contract missing: {fragment}")
     if re.search(r"(?m)^\s*remove_gold\s*=", fixture_script):
         errors.append("acceptance fixture uses unsupported CK3 1.19 remove_gold effect")
+
+    if not WORKSHOP_DESCRIPTION.is_file():
+        errors.append("Auto Upgrade Buildings Workshop description is missing")
+    else:
+        workshop_description = WORKSHOP_DESCRIPTION.read_text(encoding="utf-8")
+        for fragment in (
+            "[h1]自动升级建筑（XenoAmess维护版）[/h1]",
+            "[h1]原作、致谢与授权[/h1]",
+            "[url=https://steamcommunity.com/sharedfiles/filedetails/?id=3596580780]自动升级建筑（新版）[/url]",
+            "致谢：[/b]感谢原 Mod 作者的创作与维护劳动，本维护版以原作提供的玩法和内容为基础。",
+            "授权说明：[/b]本维护版已获得原 Mod 作者授权进行二次开发与发布。",
+            "[url=https://github.com/XenoAmess/ck3_eternal_recurrence]源码与问题反馈[/url]",
+        ):
+            if workshop_description.count(fragment) != 1:
+                errors.append(f"Workshop publication contract drifted: {fragment}")
 
     vanilla_errors, vanilla_checked = validate_vanilla(game_root)
     errors.extend(vanilla_errors)

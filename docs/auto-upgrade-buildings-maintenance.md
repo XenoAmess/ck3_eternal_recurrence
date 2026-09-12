@@ -77,8 +77,10 @@
   SHA-256 为 `E0B95B5228670633EB7DBFAFA13F2B4555C6B72BCDD12242CA208B1F7DB2224F`，运行前后产品/fixture tree 均不变，
   临时 userdir 已删除，受保护 Steam/CK3 真实资料未改变，退出后 Get-Process/WMI 均为 0。报告与截图保存在
   `C:\Users\1\AppData\Local\Temp\desktop-3fevhd2-1c74096080--auto-upgrade-buildings--R0013`。
-- 最终离线构建仍为 7 文件；ZIP SHA-256 为
-  `71143C1550F043CEC004EB4B6C6A7DCBBE2BCD2F62577E91E3FA9FA0BE440471`。
+- R0013 后的发布前文案工作只把 descriptor 名称统一为“自动升级建筑（XenoAmess维护版）”，并新增 README/Workshop BBCode 与
+  对应静态合同；事件、决议、scripted effect、本地化和图片字节均未改变，因此未重复启动 CK3。更新后的 7 文件离线构建 tree
+  SHA-256 为 `6052EF7972DE74C4BC6AAEAE7952254016CB9AEF7757C2EC48199AF794358E19`，ZIP SHA-256 为
+  `72BF4CFB0C5DDB3CC191EF7D86CBAE75D1F12D69620559F83E38E7455311C1B3`。
 
 本轮没有 Workshop 上传、订阅缓存覆盖、tag 或正式 release；Steam 在取得上游字节后持续保持离线。R0013 完成后连接日志仍只有
 `CClientJobGetClientUpdateHosts: failed to get updated list, error 3`，没有重新登录记录。
