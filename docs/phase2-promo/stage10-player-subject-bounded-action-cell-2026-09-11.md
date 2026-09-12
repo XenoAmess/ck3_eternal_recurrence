@@ -2,8 +2,8 @@
 
 ## 现行状态
 
-当前为 **`product fix static-ready / live pending`**。R492 后 P1 为 **`8/9 = 88.9%`**，唯一待验收项是玩家可见的
-`zg361mg.120`；P2 最终宣传视频继续 `LOCKED`。本页早期记载的“从 `.390` 选择 AI manager 再切换玩家”路线已被
+当前为 **`production-live / P1 accepted`**。R504 后 P1 为 **`9/9 = 100% / GREEN`**：玩家可见的
+`zg361mg.120` 与同帧 F 终态已经实机闭合。P2 只能在检查宣传工具版本、rebase 更新远端 master 并验证后进入最终视频制作。本页早期记载的“从 `.390` 选择 AI manager 再切换玩家”路线已被
 R467 的实机 RED 与 `58e8cc9` 的生产修复取代，不能再用于启动准入。
 
 ## 现行产品路线
