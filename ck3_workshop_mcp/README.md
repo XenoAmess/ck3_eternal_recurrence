@@ -115,7 +115,11 @@ The first real MCP-backed create completed on 2026-09-12 as Workshop item
 `3800124956`: `CreateItem` and `SubmitItemUpdate` both returned `EResult=1`, the
 legal-agreement flag was false, and the durable receipt reached `complete` at
 `2026-09-12T09:32:48.697643Z`. This validates the new-item path on that exact
-machine/session. It does not yet claim a real update-path validation.
+machine/session. The same item then received two successful live native updates:
+a metadata-only wording correction and the full 2.0.0 content update. The latter
+returned `EResult=1` at `2026-09-12T14:32:37.174334Z`; anonymous public readback
+matched the exact title and description, and a newly downloaded 15-file cache
+matched the ID-bound release manifest byte for byte.
 
 ## Hard gates
 
@@ -373,11 +377,10 @@ restart recovery, and inert real-provider capabilities.
 
 ## Remaining work
 
-Native create/publication is live-verified. Native update is implemented and
-offline-tested; validate it during the next authorized real update. Download
-callback automation and Steam mode restoration are not native MCP features yet:
-this release used Steam's console for fresh downloading and its menu for offline
-restoration. Direct tools remain separate from the prototype WAL workflow.
+Native create and update publication are both live-verified. Download callback
+automation and Steam mode restoration are not native MCP features yet: the
+verified releases used Steam's console for fresh downloading and its menu for
+offline restoration. Direct tools remain separate from the prototype WAL workflow.
 
 ### Native MCP invocation used for publication
 

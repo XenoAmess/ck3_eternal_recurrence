@@ -96,7 +96,7 @@ Steam 在下载核验后恢复离线，未注销账号。发布事实、构建�
 
 ## 2026-09-12 二期实现与 R0024 验收
 
-本节覆盖上文仅适用于 1.19.0 一期的“43 链／301 边／排除主建筑、公国、特殊与部落”运行范围。二期候选版 `2.0.0` 已完成实现与 release-candidate 验收，但尚未上传 Workshop：
+本节覆盖上文仅适用于 1.19.0 一期的“43 链／301 边／排除主建筑、公国、特殊与部落”运行范围。二期 `2.0.0` 已完成实现、release-candidate 验收与正式 Workshop 更新：
 
 - exact CK3 1.19.0.6 inventory 冻结 981 个建筑定义、609 条原版升级边和 165 条链；生产包含 605 条，排除 4 条曼荼罗都城 Great Project 边。
 - 生产覆盖 370 条 regular、30 条 duchy-capital、205 条 special，以及 castle、city、church、tribal、temple-citadel 五类可升级主建筑；所有住所系统、nomad/herder N/A 对象和原版施工进度继续排除。
@@ -107,4 +107,11 @@ Steam 在下载核验后恢复离线，未注销账号。发布事实、构建�
 - 完整报告位于 `D:\workspace\ck3_auto_upgrade_runtime\phase2-live-r10-20260912\report.json`，SHA-256 为 `BCE9485277FADBB507C83998824FC346E7EEBB737B459A19F358E71BC59F49BB`。
 - Open Kaishek 的 Java environment RED 已解除：适配器会自动寻找 workspace sibling checkout，并从 `JAVA_HOME`／`JDK_HOME` 取得 exact Java。仓库受支持 fixture 的完整 preflight 为 GREEN；本产品 source parser 为 GREEN，未覆盖 opcode／fixture 仍如实分类为工具语义 RED。
 
-完整范围、已完成清单、抽样矩阵和发布待办见 [二期开发清单与验收记录](auto-upgrade-buildings-phase-2-plan.md)。
+完整范围、已完成清单、抽样矩阵和发布收口见 [二期开发清单与验收记录](auto-upgrade-buildings-phase-2-plan.md)。
+
+## 2026-09-12 二期 2.0.0 正式发布
+
+- 冻结发布源为 commit `e4a958bd19a15343abc680f746a7e2ec0b15e6c1`、tag `auto-upgrade-buildings-v2.0.0`；15 文件 ID-bound manifest SHA-256 为 `9D332F13FBB6D56BE3D3A42EB04E52CE03E7A3A6ADE0BB5958C3FF12817EE99A`，deterministic ZIP SHA-256 为 `53F0D54B5BE4A4830FF44313718A7D2C9F028846DDFADD6BC9C2109A6BDB5FFD`。
+- 原生 Steamworks MCP 更新同一物品 `3800124956` 成功，Submit 返回 `EResult=1`，receipt SHA-256 为 `88D5BBFE43417EEDE738E266B4AD5FE7A2434A0602311F411709E2766D03CD9D`。公开读取确认 creator、AppID、public visibility、标题和完整 BBCode 均正确。
+- 旧 14 文件缓存先移动到可恢复目录 `3800124956.before-v2.0.0-20260912-223342`；从不存在的目标路径重新下载得到 15 文件／700,669 字节，并严格通过正式 manifest 的 inventory、size 与 SHA-256 校验。缓存 `descriptor.mod` 没有 `remote_file_id`。
+- Steam 于 22:41（Asia/Shanghai）恢复离线并保持客户端运行；CK3 未在本发布工作包中启动。永久事实见 [2.0.0 changelog](release-changelogs/auto-upgrade-buildings/2.0.0.md)。

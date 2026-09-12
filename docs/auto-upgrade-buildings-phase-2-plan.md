@@ -1,6 +1,6 @@
 # “自动升级建筑”二期开发清单与验收记录
 
-状态：**二期实现、静态全量验收与抽样 CK3 实机验收已完成；Workshop 发布尚未开始**
+状态：**Release-complete：二期实现、静态全量验收、抽样 CK3 实机验收、Workshop 更新与 fresh-cache 复核均已完成**
 
 候选版本：`2.0.0`
 
@@ -141,9 +141,9 @@ Steam Workshop item：`3800124956`
 
 - [x] 更新 README、Workshop BBCode 和九语玩家可见范围说明，明确即时升级、住所排除和 Great Project 排除。
 - [x] 构建 release-candidate staging、manifest 和 deterministic ZIP；canonical `descriptor.mod` 不含 `remote_file_id`。
-- [ ] 更新同一 Workshop item `3800124956`，下载订阅缓存并逐字节复核。
-- [ ] 上传成功后写入 `docs/release-changelogs/auto-upgrade-buildings/<version>.md`。
-- [ ] 提交并推送 exact release commit/tag/changelog；恢复 Steam 离线模式。
+- [x] 更新同一 Workshop item `3800124956`，下载订阅缓存并逐字节复核。
+- [x] 上传成功后写入 `docs/release-changelogs/auto-upgrade-buildings/2.0.0.md`。
+- [x] 提交并推送 exact release commit/tag/changelog；恢复 Steam 离线模式。
 
 ## 7. 工时评估
 
@@ -159,7 +159,7 @@ Steam Workshop item：`3800124956`
 | 文档与 release candidate 收口 | 0.5–1 小时 |
 | **合计** | **约 8–12 小时** |
 
-最终生成器完整投影了 601 组资格条件，并以冻结 inventory 和生成校验控制复杂度。Workshop 正式上传仍不计入上述开发工时；取得明确发布授权且 Steam 可以上线后，发布、fresh-cache 复核和 changelog 另行执行。
+最终生成器完整投影了 601 组资格条件，并以冻结 inventory 和生成校验控制复杂度。Workshop 上传、fresh-cache 复核和 changelog 已作为独立发布工作包于 2026-09-12 完成，不计入上述开工前实现工时。
 
 ## 8. 完成标准
 
@@ -186,4 +186,4 @@ Steam Workshop item：`3800124956`
 - 报告 SHA-256 `BCE9485277FADBB507C83998824FC346E7EEBB737B459A19F358E71BC59F49BB`；最终暂停画面 SHA-256 `34EBFA20155014FF537FEB02243D72CD75FF7259F54C421B1A852AD676BE388C`。
 - R0023 已先证明 17/17 产品断言与零项目诊断，最终 RED 仅来自旧的暂停文字 OCR；R0024 改用 HUD 日期稳定性验证后正式 GREEN。更早 RED 轮次均保留，未改写为 GREEN。
 - Open Kaishek 的 Java environment RED 已于 2026-09-12 解除：适配器自动解析 workspace sibling checkout 与 `JAVA_HOME`，受支持的 `synthetic-361-014` 完整 preflight 在 `0.959s` 内 GREEN。对本产品全量 source 的 parser 为 GREEN；validator/fixture 仍因未覆盖 opcode／未知 fixture 返回语义 RED，不能冒充产品语义 GREEN，也不改变 R0024 的 CK3 正式结论。
-- 本轮没有上传或更新 Workshop；Steam 保持离线。
+- 2.0.0 已于 2026-09-12 22:32:37（Asia/Shanghai）通过原生 Steamworks 更新到同一 item `3800124956`，回执 `EResult=1`；公开标题与 1,148 字符 BBCode 精确一致。旧缓存先移动到可恢复兄弟目录，再从空目标下载 15 文件／700,669 字节，严格通过 ID-bound manifest 的逐文件大小、SHA-256 与 inventory 复核；Steam 于 22:41 恢复离线，CK3 始终未启动。完整发布事实见 [2.0.0 changelog](release-changelogs/auto-upgrade-buildings/2.0.0.md)。
