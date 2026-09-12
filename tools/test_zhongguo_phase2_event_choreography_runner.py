@@ -699,6 +699,44 @@ class Phase2EventChoreographyRunnerTests(unittest.TestCase):
         self.assertTrue(result["transition_materialized"])
         self.assertEqual(close.call_args.kwargs["expected_event_instance_id"], 901)
 
+    def test_promotion_successor_close_selects_canonical_first_option(self) -> None:
+        snapshot = _snapshot(event=True)
+        snapshot["active_event"]["option_count"] = 3
+        service = _Service(snapshot)
+        adapter = capture._Phase2RealEventChoreographyService(service)
+        plan = phase2_event_sequence_plan(capture.PROMOTION_HANDLER)
+        context = SimpleNamespace(artifacts=Path("unused"))
+        with (
+            mock.patch.object(
+                capture,
+                "query_event_definition_identity",
+                return_value={
+                    "event_instance_id": 901,
+                    "event_definition_key": "zg361pp.148",
+                },
+            ),
+            mock.patch.object(
+                capture,
+                "select_bound_event_option_native",
+                return_value={"result": "GREEN"},
+            ) as close,
+            mock.patch.object(
+                capture, "select_single_option_interruption_native"
+            ) as single_option_close,
+        ):
+            result = adapter.close_capture_surface(
+                "product_event", "zg361pp.148", plan, context, {}
+            )
+        self.assertTrue(result["transition_materialized"])
+        close.assert_called_once_with(
+            service,
+            Path("unused"),
+            "phase2_promo_phase2_promotion_compensation_zg361pp_148_close",
+            expected_event_instance_id=901,
+            option_number=1,
+        )
+        single_option_close.assert_not_called()
+
     def test_scoreboard_close_uses_provider_owned_close_and_later_query(self) -> None:
         service = _Service()
         adapter = capture._Phase2RealEventChoreographyService(service)

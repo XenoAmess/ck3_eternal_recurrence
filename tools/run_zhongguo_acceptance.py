@@ -2401,12 +2401,25 @@ class _Phase2RealEventChoreographyService:
                         "identity": identity,
                     },
                 )
-            close = select_single_option_interruption_native(
-                self.service,
-                context.artifacts,
-                f"phase2_promo_{plan.span_id}_{surface_id.replace('.', '_')}_close",
-                expected_event_instance_id=int(identity["event_instance_id"]),
+            close_stem = (
+                f"phase2_promo_{plan.span_id}_"
+                f"{surface_id.replace('.', '_')}_close"
             )
+            if surface_id == PP_SUCCESSOR_EVENT_DEFINITION_KEY:
+                close = select_bound_event_option_native(
+                    self.service,
+                    context.artifacts,
+                    close_stem,
+                    expected_event_instance_id=int(identity["event_instance_id"]),
+                    option_number=1,
+                )
+            else:
+                close = select_single_option_interruption_native(
+                    self.service,
+                    context.artifacts,
+                    close_stem,
+                    expected_event_instance_id=int(identity["event_instance_id"]),
+                )
             if close.get("result") != "GREEN":
                 raise Phase2EventChoreographyError(
                     "capture_event_close_not_green",
@@ -17711,6 +17724,91 @@ def pause_bound_native_event_for_definition_query(
         "snapshot": paused,
         "evidence": evidence,
     }
+
+
+def select_bound_event_option_native(
+    service: GameplayBridgeService,
+    artifacts: Path,
+    stem: str,
+    *,
+    expected_event_instance_id: int,
+    option_number: int,
+) -> dict[str, object]:
+    """Select one explicit option from an already-paused bound event."""
+
+    before = service.snapshot()
+    before_observation = _personal_switch_native_snapshot(before)
+    evidence: dict[str, object] = {
+        "schema_version": 1,
+        "result": "RED",
+        "selection_method": "native_mcp_bound_option",
+        "expected_event_instance_id": expected_event_instance_id,
+        "selected_option_number": option_number,
+        "before": before_observation,
+        "selection_submission": None,
+        "after": None,
+        "failure_reason": None,
+    }
+    evidence_path = artifacts / f"{stem}_native_bound_option_gate.json"
+
+    def fail(reason: str) -> None:
+        evidence["failure_reason"] = reason
+        write_json(evidence_path, evidence)
+        raise acceptance.RunnerError(reason)
+
+    event_id = before_observation["active_event_instance_id"]
+    option_count = before_observation["active_event_option_count"]
+    before_revision = before.get("revision")
+    before_date = before.get("date_raw")
+    if event_id != expected_event_instance_id:
+        fail("native event changed before bound option selection")
+    if (
+        isinstance(option_count, bool)
+        or not isinstance(option_count, int)
+        or isinstance(option_number, bool)
+        or not isinstance(option_number, int)
+        or option_number < 1
+        or option_number > option_count
+    ):
+        fail("bound native option number is outside the active event")
+    if before.get("paused") is not True:
+        fail("bound native option selection requires a paused event")
+    if (
+        isinstance(before_revision, bool)
+        or not isinstance(before_revision, int)
+        or before_revision < 0
+    ):
+        fail("bound native event snapshot lacks a valid revision")
+    if isinstance(before_date, bool) or not isinstance(before_date, int):
+        fail("bound native event snapshot lacks a valid date_raw")
+
+    try:
+        evidence["selection_submission"] = service.select_event_option(
+            option_number,
+            event_instance_id=expected_event_instance_id,
+            expected_revision=before_revision,
+        )
+    except Exception as error:
+        evidence["failure_reason"] = (
+            f"native bound option selection failed: {type(error).__name__}: {error}"
+        )
+        write_json(evidence_path, evidence)
+        raise
+
+    after = service.snapshot()
+    after_observation = _personal_switch_native_snapshot(after)
+    evidence["after"] = after_observation
+    if after_observation["active_event_instance_id"] == expected_event_instance_id:
+        fail("native option ACK did not advance the bound event instance")
+    if after_observation["date_raw"] != before_date:
+        fail("game date advanced while selecting the bound event option")
+    if after.get("paused") is not True:
+        fail("bound event option selection did not leave CK3 paused")
+
+    evidence["result"] = "GREEN"
+    evidence["failure_reason"] = None
+    write_json(evidence_path, evidence)
+    return evidence
 
 
 def select_single_option_interruption_native(
