@@ -621,6 +621,41 @@ class Phase2EventChoreographyRunnerTests(unittest.TestCase):
         plan = phase2_event_sequence_plan("capture_fact_quota_calibration")
         close_evidence = {
             "result": "GREEN",
+            "verified_pass": True,
+            "production_capability_advertised": True,
+            "action_request": {"action": "close"},
+            "later_query": _scoreboard(visible=False),
+        }
+        with mock.patch.object(
+            capture,
+            "run_zhongguo_scoreboard_action_cell",
+            return_value=close_evidence,
+        ) as close:
+            result = adapter.close_capture_surface(
+                "named_widget",
+                "zg361_scoreboard_modal",
+                plan,
+                SimpleNamespace(artifacts=Path("unused")),
+                {},
+            )
+        self.assertTrue(result["transition_materialized"])
+        close.assert_called_once_with(
+            mock.ANY,
+            nonce_prefix=(
+                "zg361.phase2.promo.phase2_fact_quota_calibration.close"
+            ),
+            requested_action="close",
+        )
+
+    def test_scoreboard_close_accepts_verified_capture_candidate_boundary(self) -> None:
+        service = _Service()
+        adapter = capture._Phase2RealEventChoreographyService(service)
+        plan = phase2_event_sequence_plan("capture_fact_quota_calibration")
+        close_evidence = {
+            "result": "RED",
+            "verified_pass": True,
+            "production_capability_advertised": False,
+            "failure_reason": "production_capability_not_advertised",
             "action_request": {"action": "close"},
             "later_query": _scoreboard(visible=False),
         }
@@ -637,6 +672,7 @@ class Phase2EventChoreographyRunnerTests(unittest.TestCase):
                 {},
             )
         self.assertTrue(result["transition_materialized"])
+        self.assertEqual(result["close"], close_evidence)
 
     def test_drain_is_red_on_unknown_visible_event_instead_of_selecting_it(self) -> None:
         service = _Service(_snapshot(event=True))

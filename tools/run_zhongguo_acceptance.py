@@ -2345,6 +2345,7 @@ class _Phase2RealEventChoreographyService:
             close = run_zhongguo_scoreboard_action_cell(
                 self.service,
                 nonce_prefix=f"zg361.phase2.promo.{plan.span_id}.close",
+                requested_action="close",
             )
             request = close.get("action_request") if isinstance(close, dict) else None
             later = close.get("later_query") if isinstance(close, dict) else None
@@ -2359,9 +2360,21 @@ class _Phase2RealEventChoreographyService:
                 None,
             ) if isinstance(widgets, list) else None
             visible = modal.get("effective_visible") if isinstance(modal, dict) else None
+            expected_candidate_boundary = bool(
+                isinstance(close, dict)
+                and close.get("result") == "RED"
+                and close.get("verified_pass") is True
+                and close.get("failure_reason")
+                == "production_capability_not_advertised"
+                and close.get("production_capability_advertised") is False
+            )
             if not (
                 isinstance(close, dict)
-                and close.get("result") == "GREEN"
+                and close.get("verified_pass") is True
+                and (
+                    close.get("result") == "GREEN"
+                    or expected_candidate_boundary
+                )
                 and isinstance(request, dict)
                 and request.get("action") == "close"
                 and isinstance(visible, dict)
