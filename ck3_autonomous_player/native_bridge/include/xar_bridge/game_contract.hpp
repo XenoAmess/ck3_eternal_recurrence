@@ -878,6 +878,7 @@ struct Snapshot {
   bool has_played_character = false;
   std::int32_t played_character_id = -1;
   bool played_character_alive = false;
+  std::int32_t played_character_stress_points = -1;
   std::int32_t played_character_betrothed_id = -1;
   std::int32_t played_character_primary_spouse_id = -1;
   std::vector<std::int32_t> played_character_spouse_ids;

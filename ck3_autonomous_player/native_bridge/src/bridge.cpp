@@ -2925,6 +2925,8 @@ std::string StateSnapshotFrame(const xar::game::Snapshot &snapshot,
     result += SignedNumber(snapshot.played_character_id);
     result += ",\"alive\":";
     result += snapshot.played_character_alive ? "true" : "false";
+    result += ",\"stress_points\":";
+    result += SignedNumber(snapshot.played_character_stress_points);
     result += ",\"betrothed_id\":";
     if (snapshot.played_character_betrothed_id == -1) {
       result += "null";

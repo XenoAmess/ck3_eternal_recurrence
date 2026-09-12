@@ -74,6 +74,9 @@
   player-only trait/stress/death/scheme indicator 子集已静态闭合，但完整结构化 preview、resource/relation 语义、
   completeness 与 event live fixture 仍待施工；notification discovery/ACK 另见下一专题。宗教/信仰内容按 owner 指示保持 opaque
   compatibility，只有圣战战争 OODA 与婚姻必要判定可取最小原生输入，宗教域整体仍不计入完成。
+- [static-confirmed + implementation-confirmed, live pending] [played-character-stress.md](played-character-stress.md)
+  复用 exact-build `CCharacter+0x1A8 -> extension+0x2F8` 路径，把当前玩家非负压力点作为加法字段接入通用
+  state snapshot；native/Python 聚焦测试已闭合，真实 paused snapshot 与事件动作前后对账仍待下一次可用实机。
 - [static-confirmed + implementation-confirmed] [interaction-notification-ack.md](interaction-notification-ack.md)
   单独冻结人物互动 notification 的 full-generation 枚举、`+0x5C6` channel、enum-4 false validator seam、原生 UI
   construct/submit 与 manager transition；production bridge 已扩展为 notification 可见、paused typed query 可达和严格

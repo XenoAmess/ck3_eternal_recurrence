@@ -494,7 +494,7 @@ terminal 原生树与 live 边界见 [battle-terminal-and-reentry.md](battle-ter
 | 12 | vassals / contracts / factions / rebellions | `absent` | 预防并处理强派系，两种结果路线。 |
 | 13 | schemes / hooks / secrets | `absent` | hostile/personal scheme 与风险反馈闭环。 |
 | 14 | prisoners / crime / tyranny | inbound `pay_ransom` exact reject `live-loop`；通用囚犯/犯罪/tyranny policy 仍 `absent` | 囚犯与犯罪处置符合稳定/财政目标。 |
-| 15 | health / stress / fertility | `absent` | 疾病、高压和继承风险联合管理。 |
+| 15 | health / stress / fertility | 玩家 `stress_points` 已 `static-ready`；其余仍 `absent` | 先用 paused live 升级压力标量并接事件后置，再补疾病、健康与继承风险联合管理。 |
 | 16 | culture / innovations；faith 暂缓 | culture/innovations `absent`；faith `owner-deferred` | 先闭合文化/创新长期项目；圣战归战争域窄例外，收到明确许可后再做宗教完整 OODA。 |
 | 17 | decisions / laws / government | decision OCR read-only `visual-narrow` | 动态选择并执行 major decision/法律。 |
 | 18 | activities / travel | `absent` | 规划、旅行、事件与返程完整闭环。 |

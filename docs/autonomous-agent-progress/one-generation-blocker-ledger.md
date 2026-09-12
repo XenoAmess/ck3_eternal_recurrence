@@ -1108,3 +1108,15 @@ strategic-power primitive；余下入口只有 policy-level campaign dominance�
 - Contracts that require variants, dynamic option prefixes, occurrence accounting, deferred choice or scenario invalidation remain explicitly blocked.
   This package is `static-ready / live=false`; normal and optimized focused tests are each `30/30` GREEN. G2-M2 is now in progress, but the fixed
   program denominator remains `0/8` until structured effects, campaign scoring and three natural event outcome loops are live.
+
+## 2026-09-12: G2-M2 played-character stress observation static-ready
+
+- `tgp_travel_events.0030` can now be selected from its exact-build registry contract, but the generic snapshot previously exposed no
+  material state that could verify its medium stress-loss outcome. The only stress reader was embedded in war-exit terms and therefore
+  unavailable to a travel event.
+- The native state snapshot now publishes additive `played_character.stress_points` from the already used generation-checked
+  `CCharacter+0x1A8 -> extension+0x2F8` path. The Python driver validates and preserves non-negative values while accepting legacy
+  snapshots that omit the field.
+- Release DLL and `game_access` fixture compile/link/run GREEN; Python normal/invalid-value tests are `2/2` GREEN. This remains
+  `static-ready / live=false`: a single future paused read must prove the production field, and the planner still needs a pre/post
+  same-character comparator. G2-M2 and global G2 remain `in_progress` and `0/8` respectively.

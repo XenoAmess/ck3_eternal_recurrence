@@ -5453,6 +5453,7 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
                 played_character={
                     "character_id": 707,
                     "alive": True,
+                    "stress_points": 42,
                     "betrothed_id": None,
                     "primary_spouse_id": 808,
                     "spouse_ids": [808, 809],
@@ -5461,9 +5462,20 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
         )
 
         played = driver.take_snapshot()["played_character"]
+        self.assertEqual(played["stress_points"], 42)
         self.assertIsNone(played["betrothed_id"])
         self.assertEqual(played["primary_spouse_id"], 808)
         self.assertEqual(played["spouse_ids"], [808, 809])
+
+    def test_played_character_rejects_invalid_stress_points(self) -> None:
+        with self.assertRaisesRegex(ValueError, "stress_points is malformed"):
+            native_driver_module._played_character(
+                {
+                    "character_id": 707,
+                    "alive": True,
+                    "stress_points": -1,
+                }
+            )
 
     def test_map_ready_without_played_character_does_not_invent_terminal(
         self,

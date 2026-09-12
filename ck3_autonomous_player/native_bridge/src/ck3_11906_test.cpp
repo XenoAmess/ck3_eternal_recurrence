@@ -4616,6 +4616,7 @@ int main() {
       snapshot.map_ready ||
       snapshot.has_played_character || snapshot.played_character_id != -1 ||
       snapshot.played_character_alive ||
+      snapshot.played_character_stress_points != -1 ||
       snapshot.played_character_betrothed_id != -1 ||
       snapshot.played_character_primary_spouse_id != -1 ||
       !snapshot.played_character_spouse_ids.empty() ||
@@ -4637,6 +4638,7 @@ int main() {
       !snapshot.map_ready || !snapshot.has_played_character ||
       snapshot.played_character_id != played_character_id ||
       !snapshot.played_character_alive ||
+      snapshot.played_character_stress_points != 42 ||
       snapshot.played_character_betrothed_id != enemy_character_id ||
       snapshot.played_character_primary_spouse_id != enemy_character_id ||
       snapshot.played_character_spouse_ids !=
@@ -4688,6 +4690,11 @@ int main() {
   if (snapshot.active_wars[0].objective_province_states.size() != 3) {
     return Fail("exact war objectives omitted Province state rows");
   }
+  Store(g_played_character_extension, 0x2F8, std::int32_t{-1});
+  if (xar::ck3_11906::ReadSnapshot(bindings, snapshot)) {
+    return Fail("negative played-character stress was published");
+  }
+  Store(g_played_character_extension, 0x2F8, std::int32_t{42});
   Store(g_player_army, 0x18, std::int32_t{1});
   if (!xar::ck3_11906::ReadSnapshot(bindings, snapshot) ||
       !snapshot.player_armies.empty() || snapshot.active_wars.size() != 1 ||

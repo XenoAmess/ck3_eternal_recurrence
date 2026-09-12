@@ -22533,6 +22533,16 @@ def _played_character(value: object) -> dict[str, object] | None:
         "alive": alive,
         "source": "native",
     }
+    if "stress_points" in value:
+        stress_points = value.get("stress_points")
+        if (
+            isinstance(stress_points, bool)
+            or not isinstance(stress_points, int)
+            or stress_points < 0
+            or stress_points > 2**31 - 1
+        ):
+            raise ValueError("native played_character stress_points is malformed")
+        result["stress_points"] = stress_points
     if "primary_heir_id" in value or "has_heir" in value:
         primary_heir_id = value.get("primary_heir_id")
         has_heir = value.get("has_heir")

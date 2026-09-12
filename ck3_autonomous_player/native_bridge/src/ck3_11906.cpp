@@ -10081,6 +10081,7 @@ bool ReadSnapshot(const Bindings &bindings, Snapshot &output) noexcept {
   if (!output.has_played_character) {
     output.played_character_id = -1;
     output.played_character_alive = false;
+    output.played_character_stress_points = -1;
     output.played_character_betrothed_id = -1;
     output.played_character_primary_spouse_id = -1;
     output.played_character_spouse_ids.clear();
@@ -10097,6 +10098,20 @@ bool ReadSnapshot(const Bindings &bindings, Snapshot &output) noexcept {
                                            bindings,
                                            output.played_character_id)
                                      : nullptr;
+  if (output.has_played_character) {
+    if (played_character == nullptr) {
+      return false;
+    }
+    void *const extension =
+        LoadAt<void *>(played_character, kCharacterExtensionOffset);
+    output.played_character_stress_points =
+        extension == nullptr
+            ? 0
+            : LoadAt<std::int32_t>(extension, kCharacterStressPointsOffset);
+    if (output.played_character_stress_points < 0) {
+      return false;
+    }
+  }
   if (output.has_played_character &&
       !ReadPlayedCharacterRelationships(
           bindings, played_character,

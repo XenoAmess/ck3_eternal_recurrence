@@ -81,6 +81,13 @@ native index 与 enabled 投影全部匹配时，planner 采用登记的 source-
 也没有提升固定 `0/8` 完成数。M2 仍需 variant-aware consumer、event-context-v2 结构化效果、campaign objective 评分，以及三个
 自然事件（至少两个多选）的动作与物质状态后置实机证据。
 
+为关闭其中一个真实后置缺口，通用 native state snapshot 已在 `played_character` 上增加可选 `stress_points`。它复用
+战争退出资源读取器已使用的 exact-build `CCharacter+0x1A8 -> extension+0x2F8` 路径，不新建另一套 mailbox/MCP。
+主 DLL、native fixture 与 Python 正常/异常合同均 GREEN；旧 snapshot 不带字段时仍兼容。当前状态仅为
+`static-ready / live=false`。下一次可用实机先读取一个 paused frame；随后 registry consumer 才能把 `.0030` 的选择前后
+压力点接成同角色后置验证。若选择前压力已经为零，该次安全关闭不能计入 material-delta。详见
+[`played-character-stress.md`](../ck3-native-ai/played-character-stress.md)。
+
 战争 controller 的既有成熟执行器继续保留；assigned reinforcement、terminal 长尾与更多 CB 改为真实 encounter 驱动。
 宗教域继续暂缓，只允许战争中的圣战和婚姻合法性/接受度所需的最小原生最终判定，不借此扩展通用宗教模型。
 
