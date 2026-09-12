@@ -40,6 +40,9 @@ CLI_SCHEMA = "open_kaishek.preflight.v1"
 # as the provenance override.
 CLI_CONTRACT_COMMIT = "b306a95"
 DEFAULT_OPEN_KAISHEK_ROOT = Path(r"Z:\workspace\open_kaishek")
+WORKSPACE_SIBLING_OPEN_KAISHEK_ROOT = (
+    Path(__file__).resolve().parents[2] / "open_kaishek"
+)
 DEFAULT_CLI_RELATIVE_JAR = Path(
     "kaishek-cli/target/kaishek-cli-0.1.0-SNAPSHOT.jar"
 )
@@ -74,6 +77,40 @@ def _as_path(value: str | os.PathLike[str] | None) -> Path | None:
     if value is None:
         return None
     return Path(value).expanduser().resolve()
+
+
+def _resolve_open_kaishek_checkout(environ: Mapping[str, str]) -> Path:
+    override = _first_env(
+        environ,
+        "XAR_OPEN_KAISHEK_ROOT",
+        "OPEN_KAISHEK_ROOT",
+        "KAISHEK_ROOT",
+        "XAR_KAISHEK_ROOT",
+    )
+    if override is not None:
+        return Path(override).expanduser().resolve()
+    for candidate in (
+        DEFAULT_OPEN_KAISHEK_ROOT,
+        WORKSPACE_SIBLING_OPEN_KAISHEK_ROOT,
+    ):
+        if candidate.is_dir():
+            return candidate.resolve()
+    return DEFAULT_OPEN_KAISHEK_ROOT.resolve()
+
+
+def _resolve_java_executable(environ: Mapping[str, str]) -> str:
+    override = _first_env(environ, "XAR_KAISHEK_JAVA", "OPEN_KAISHEK_JAVA")
+    if override is not None:
+        return override
+    java_name = "java.exe" if os.name == "nt" else "java"
+    for home_name in ("JAVA_HOME", "JDK_HOME"):
+        home = _first_env(environ, home_name)
+        if home is None:
+            continue
+        candidate = Path(home).expanduser() / "bin" / java_name
+        if candidate.is_file():
+            return str(candidate.resolve())
+    return "java"
 
 
 def _env_bool(environ: Mapping[str, str], name: str, default: bool = False) -> bool:
@@ -435,15 +472,10 @@ def run_preflight(
             "KAISHEK_PREFLIGHT_ROOT",
         )
     )
-    checkout = _as_path(open_kaishek_root) if open_kaishek_root is not None else _as_path(
-        _first_env(
-            environ,
-            "XAR_OPEN_KAISHEK_ROOT",
-            "OPEN_KAISHEK_ROOT",
-            "KAISHEK_ROOT",
-            "XAR_KAISHEK_ROOT",
-        )
-        or str(DEFAULT_OPEN_KAISHEK_ROOT)
+    checkout = (
+        _as_path(open_kaishek_root)
+        if open_kaishek_root is not None
+        else _resolve_open_kaishek_checkout(environ)
     )
     explicit_jar = jar_path is not None or bool(
         _first_env(
@@ -470,9 +502,7 @@ def run_preflight(
             "OPEN_KAISHEK_PREFLIGHT_ARTIFACT",
         )
     )
-    java_executable = java or _first_env(
-        environ, "XAR_KAISHEK_JAVA", "OPEN_KAISHEK_JAVA"
-    ) or "java"
+    java_executable = java or _resolve_java_executable(environ)
     timeout = (
         timeout_seconds
         if timeout_seconds is not None

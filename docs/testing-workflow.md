@@ -46,6 +46,8 @@ Start-Process "...\binaries\ck3.exe" -ArgumentList "-debug_mode"
 
 父仓适配器以 `open_kaishek` preflight contract `b306a95` 作为稳定最低兼容标记（兼容其后代），不把某个会变化的 mainline commit 当作默认绑定；每次调用都会读取当前 checkout HEAD 并计算 JAR SHA-256，因此 `Z:\workspace\open_kaishek\main` 更新后无需联网即可自动采用最新本地版本。默认离线进程上限为 180 秒；该上限最初来自完整 76 文件语料在旧 120 秒上限耗尽的实证。`open_kaishek` 主线 `5672c98` 已将 CST `raw/text` 改为 span-local 读取（`source()` 仍防御性拷贝），同一 75 文件/23.8 MB 预验由约 316 秒降至约 3.37 秒，输出诊断与 hash 保持一致。显式 checkout/JAR/commit/timeout 仍可通过 `XAR_OPEN_KAISHEK_ROOT`、`XAR_OPEN_KAISHEK_JAR`、`XAR_OPEN_KAISHEK_COMMIT` 与 `XAR_KAISHEK_PREFLIGHT_TIMEOUT_SECONDS` 覆盖，并必须进入同一份 provenance。旧 JAR 不支持 `preflight` 时记 `UNSUPPORTED`，checkout/JAR 缺失时记 `NOT_APPLICABLE`，两者都不得冒充 `GREEN`。
 
+2026-09-12 起，适配器不再假定 `Z:` 映射或 `java` 一定在 PATH。checkout 解析顺序为显式环境覆盖、既有 `Z:\workspace\open_kaishek`、当前仓库的 workspace sibling `open_kaishek`；Java 解析顺序为显式 `XAR_KAISHEK_JAVA`／`OPEN_KAISHEK_JAVA`、`JAVA_HOME\bin\java.exe`、`JDK_HOME\bin\java.exe`、最后才是 PATH 中的 `java`。本机真实 checkout `D:\workspace\open_kaishek@890b32d` 与 GraalVM `25.0.4.1` 由零额外环境变量自动发现；`synthetic-361-014` 完整 parser／validator／IR／runtime preflight 在 `0.959s` 内 GREEN。artifact 为 `D:\workspace\ck3_auto_upgrade_runtime\open-kaishek-java-fix-20260912\synthetic-preflight-green.json`，SHA-256 `9DFF498BBB0277A1E0B4140B541F29968B11BBFECC9FF2B82725C6A91C45E745`。Auto Upgrade Buildings 全量 source 随后在 `0.627s` 返回 parser GREEN、validator/fixture 语义 RED；这证明 Java 启动环境已恢复，同时保留 Open Kaishek 尚未覆盖该 fixture/opcode 的真实能力边界。
+
 截至 2026-09-02 03:12，`open_kaishek` 主线已推进到 `d207707`，固定 JAR
 SHA-256 为 `CBCD5F868F5C46AA7B5A2C70E11705B978F95DE3437E0809D20A4139F62DD0E4`。
 该提交只增加有 exact-build 静态证据的标量 `has_variable` trigger，并让

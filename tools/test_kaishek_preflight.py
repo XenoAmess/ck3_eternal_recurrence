@@ -20,6 +20,36 @@ class KaishekPreflightTests(unittest.TestCase):
         self.assertEqual(adapter.DEFAULT_TIMEOUT_SECONDS, 180.0)
         self.assertFalse(adapter.DEFAULT_REQUIRE_ORIGIN_SYNC)
 
+    def test_default_checkout_falls_back_to_workspace_sibling(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            missing = Path(temporary) / "missing-z-drive-checkout"
+            sibling = Path(temporary) / "open_kaishek"
+            sibling.mkdir()
+            with mock.patch.object(adapter, "DEFAULT_OPEN_KAISHEK_ROOT", missing):
+                with mock.patch.object(
+                    adapter, "WORKSPACE_SIBLING_OPEN_KAISHEK_ROOT", sibling
+                ):
+                    resolved = adapter._resolve_open_kaishek_checkout({})
+            self.assertEqual(resolved, sibling.resolve())
+
+    def test_java_home_supplies_exact_java_when_path_has_no_java(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            home = Path(temporary) / "jdk"
+            java_name = "java.exe" if adapter.os.name == "nt" else "java"
+            java = home / "bin" / java_name
+            java.parent.mkdir(parents=True)
+            java.write_bytes(b"java-fixture")
+            resolved = adapter._resolve_java_executable(
+                {"JAVA_HOME": str(home), "PATH": ""}
+            )
+            self.assertEqual(resolved, str(java.resolve()))
+
+    def test_explicit_java_override_precedes_java_home(self) -> None:
+        resolved = adapter._resolve_java_executable(
+            {"XAR_KAISHEK_JAVA": "C:/explicit/java.exe", "JAVA_HOME": "C:/jdk"}
+        )
+        self.assertEqual(resolved, "C:/explicit/java.exe")
+
     @staticmethod
     def _checkout_with_refs(
         temporary: str,

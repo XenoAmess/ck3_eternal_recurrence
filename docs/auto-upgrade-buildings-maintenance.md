@@ -104,6 +104,7 @@ Steam 在下载核验后恢复离线，未注销账号。发布事实、构建�
 - 601 个目标的原版资格门槛由生成器逐条投影；4 个原版无 gate 目标保持无 gate。四类费用形状为 588 金币、5 金币加威望、3 金币加虔诚和 9 scripted cost。
 - 静态门禁逐条覆盖 605/4 清单、生成一致性、15 文件正式 allowlist、manifest 与 deterministic ZIP。
 - `desktop-3fevhd2-1c74096080--auto-upgrade-buildings--R0024` 在 CK3 1.19.0.6 正式 GREEN：17/17 功能断言、34 条 marker、项目诊断 0；生产树 SHA-256 为 `116795FA60632F0ED247B2D3B88D162F2E37A1EBF9E92DEC109A76E1D539FDAF`，源树、运行树和真实用户存储均未变化，一次性 userdir 已删除。
-- 完整报告位于 `D:\workspace\ck3_auto_upgrade_runtime\phase2-live-r10-20260912\report.json`，SHA-256 为 `BCE9485277FADBB507C83998824FC346E7EEBB737B459A19F358E71BC59F49BB`。Open Kaishek 仍是独立的本机 Java environment RED，不冒充 GREEN。
+- 完整报告位于 `D:\workspace\ck3_auto_upgrade_runtime\phase2-live-r10-20260912\report.json`，SHA-256 为 `BCE9485277FADBB507C83998824FC346E7EEBB737B459A19F358E71BC59F49BB`。
+- Open Kaishek 的 Java environment RED 已解除：适配器会自动寻找 workspace sibling checkout，并从 `JAVA_HOME`／`JDK_HOME` 取得 exact Java。仓库受支持 fixture 的完整 preflight 为 GREEN；本产品 source parser 为 GREEN，未覆盖 opcode／fixture 仍如实分类为工具语义 RED。
 
 完整范围、已完成清单、抽样矩阵和发布待办见 [二期开发清单与验收记录](auto-upgrade-buildings-phase-2-plan.md)。

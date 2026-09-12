@@ -185,5 +185,5 @@ Steam Workshop item：`3800124956`
 - R0024 在 CK3 1.19.0.6 中通过 17 个功能断言；34 条 fixture marker、项目诊断 0、生产树 SHA-256 `116795FA60632F0ED247B2D3B88D162F2E37A1EBF9E92DEC109A76E1D539FDAF`，运行树、源树和真实用户存储均未变化，一次性 userdir 已删除，CK3 受控退出。
 - 报告 SHA-256 `BCE9485277FADBB507C83998824FC346E7EEBB737B459A19F358E71BC59F49BB`；最终暂停画面 SHA-256 `34EBFA20155014FF537FEB02243D72CD75FF7259F54C421B1A852AD676BE388C`。
 - R0023 已先证明 17/17 产品断言与零项目诊断，最终 RED 仅来自旧的暂停文字 OCR；R0024 改用 HUD 日期稳定性验证后正式 GREEN。更早 RED 轮次均保留，未改写为 GREEN。
-- Open Kaishek 仍因本机 Java 启动器无变化卡死而记录为 environment RED；该项未冒充通过，也不改变 CK3 正式矩阵结论。
+- Open Kaishek 的 Java environment RED 已于 2026-09-12 解除：适配器自动解析 workspace sibling checkout 与 `JAVA_HOME`，受支持的 `synthetic-361-014` 完整 preflight 在 `0.959s` 内 GREEN。对本产品全量 source 的 parser 为 GREEN；validator/fixture 仍因未覆盖 opcode／未知 fixture 返回语义 RED，不能冒充产品语义 GREEN，也不改变 R0024 的 CK3 正式结论。
 - 本轮没有上传或更新 Workshop；Steam 保持离线。
