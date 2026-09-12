@@ -59,10 +59,10 @@ Focused validation only:
   `0.79s`;
 - ABI JSON parse and `git diff --check`: GREEN.
 
-The provider-private canonical gating change triggers a documentation-only
-open_kaishek compatibility sync after the root commit. The next live action is
-one fresh DLL and one bounded R532/R533 verification; the R531 DLL will not be
-retried.
+Root `69194e654e2d9bd11bc21f58d28b23f6f28756c8` and open_kaishek
+`3c6b8b2590788801fb54ef588a7568f67712627a` are pushed and synchronized.
+The companion sync is documentation-only. The next live action is one fresh DLL
+and one bounded R532/R533 verification; the R531 DLL will not be retried.
 
 ## Evidence
 
