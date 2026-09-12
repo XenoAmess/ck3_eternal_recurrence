@@ -30,6 +30,8 @@
 - [workshop-publishing.md](workshop-publishing.md) — **创意工坊发布**（启动器上传器）：物料清单、picture 路径解析、预览图 1MB 限制、remote_file_id 内外层之别、更新流程
 - [ck3-live-run-identifiers.md](ck3-live-run-identifiers.md) — 按执行机器与 mod 隔离的 CK3 实机编号、分配器、artifact receipt、多 mod 矩阵及旧全局 R 号迁移规则
 - [auto-upgrade-buildings-upstream.md](auto-upgrade-buildings-upstream.md) / [auto-upgrade-buildings-maintenance.md](auto-upgrade-buildings-maintenance.md) / [auto-upgrade-buildings-test-plan.md](auto-upgrade-buildings-test-plan.md) — “自动升级建筑”上游 3596580780 的逐文件冻结身份、1.19.0.6 故障诊断、维护实现、Steam 离线证据与验收合同
+- [workshop-publishing-mcp.md](workshop-publishing-mcp.md) — Paradox/Steam 实际发布协议、上传窗口资料故障与 `ck3_workshop_mcp` 实现入口
+- [desktop-coordinate-mapping.md](desktop-coordinate-mapping.md) — 任意屏幕/预览宽高比的显式换算、点击回执与英文输入法/文本读回合同
 - [vivhite-courtier.md](vivhite-courtier.md) — **白绮特供独立版**：隔离边界、ervc 命名空间、生成/构建/验收与独立 Workshop 契约
 - [image-assets.md](image-assets.md) — 图片源文件命名、CK3 DDS 投影、事件背景/决议引用与静态校验链
 

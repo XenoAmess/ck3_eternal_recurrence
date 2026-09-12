@@ -85,3 +85,11 @@
 
 本轮没有 Workshop 上传、订阅缓存覆盖、tag 或正式 release；Steam 在取得上游字节后持续保持离线。R0013 完成后连接日志仍只有
 `CClientJobGetClientUpdateHosts: failed to get updated list, error 3`，没有重新登录记录。
+
+## 2026-09-12 正式发布补记
+
+上述“没有上传/tag”描述仅针对 R0013 维护验收阶段。收到正式发布授权后，维护版 1.19.0 已通过原生 Steamworks MCP 发布为
+[3800124956](https://steamcommunity.com/sharedfiles/filedetails/?id=3800124956)，与原作 3596580780 分离。
+公开标题和完整 BBCode 已读回；新下载的 14 文件工坊缓存逐字节通过正式 manifest 校验。
+Steam 在下载核验后恢复离线，未注销账号。发布事实、构建身份及剩余边界见
+[initial-baseline changelog](release-changelogs/auto-upgrade-buildings/1.19.0.md)。

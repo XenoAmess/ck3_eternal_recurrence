@@ -1,0 +1,32 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ck3-workshop-mcp"
+version = "0.1.0"
+description = "Crash-safe MCP orchestration prototype for CK3 Steam Workshop publication"
+readme = "README.md"
+requires-python = ">=3.11"
+license = { text = "MIT" }
+authors = [{ name = "XenoAmess" }]
+dependencies = []
+
+[project.optional-dependencies]
+mcp = ["mcp==2.0.0"]
+test = []
+
+[project.scripts]
+ck3-workshop-mcp = "ck3_workshop_mcp.server:main"
+
+[tool.setuptools]
+package-dir = { "" = "src" }
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+ck3_workshop_mcp = ["uia_bridge.ps1"]
+
+[tool.unittest]
+start-directory = "tests"
