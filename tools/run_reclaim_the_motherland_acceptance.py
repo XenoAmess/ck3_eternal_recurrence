@@ -905,18 +905,18 @@ def advance_to_player_event(
     stem: str,
     timeout_s: float = 60,
 ) -> dict[str, object]:
-    """Advance paused time until the expected player event pauses the game."""
+    """Observe an already queued event, or advance until it pauses the game."""
 
     before = service.snapshot()
     if before.get("paused") is not True:
         raise acceptance.RunnerError("scheduled-event precondition is not paused")
-    resume_ack = service.execute_step(
-        "resume-map", expected_revision=int(before["revision"])
-    )
+    resume_ack: dict[str, object] | None = None
     deadline = time.monotonic() + timeout_s
     last_event_key: str | None = None
+    first_snapshot = True
     while time.monotonic() < deadline:
-        snapshot = service.snapshot()
+        snapshot = before if first_snapshot else service.snapshot()
+        first_snapshot = False
         active_event = snapshot.get("active_event")
         if snapshot.get("paused") is True and isinstance(active_event, dict):
             instance_id = active_event.get("instance_id")
@@ -948,6 +948,10 @@ def advance_to_player_event(
                         }
                         write_json(artifacts / f"{stem}.json", evidence)
                         return evidence
+        if resume_ack is None:
+            resume_ack = service.execute_step(
+                "resume-map", expected_revision=int(snapshot["revision"])
+            )
         time.sleep(0.1)
     raise acceptance.RunnerError(
         f"scheduled player event {expected_event_key} timed out; last={last_event_key!r}"

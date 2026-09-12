@@ -338,8 +338,8 @@ rmtm_chaos_shattering_effect = {
 		}
 
 		# A player old emperor receives a concise political reckoning after the
-		# atomic shattering transaction. Delaying by one day avoids competing with
-		# the vanilla Chaos event which invoked this effect while preserving scopes.
+		# atomic shattering transaction. Queue it immediately behind the vanilla
+		# Chaos event: delayed events do not retain this event's saved scopes.
 		scope:old_emperor_temp = {
 			if = {
 				limit = {
@@ -379,10 +379,7 @@ rmtm_chaos_shattering_effect = {
 						save_scope_as = rmtm_defector_notable
 					}
 				}
-				trigger_event = {
-					id = rmtm.1001
-					days = 1
-				}
+				trigger_event = rmtm.1001
 			}
 		}
 	}

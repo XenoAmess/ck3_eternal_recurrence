@@ -18,8 +18,8 @@ rmtm_pro_hegemon_hard_defect_trigger = {
 		scope:old_emperor_temp = {
 			any_targeting_faction = {
 				OR = {
-					faction_type = independence_faction
-					faction_type = claimant_faction
+					faction_is_type = independence_faction
+					faction_is_type = claimant_faction
 				}
 				any_faction_member = {
 					this = scope:rmtm_loyalty_candidate

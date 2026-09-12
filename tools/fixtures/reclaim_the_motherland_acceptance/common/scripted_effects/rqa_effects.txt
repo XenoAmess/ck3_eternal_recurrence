@@ -235,7 +235,12 @@ rqa_dispatch_chaos_event_effect = {
 	if = {
 		limit = { has_character_flag = rqa_dispatch_chaos_event_pending }
 		remove_character_flag = rqa_dispatch_chaos_event_pending
-		trigger_event = tgp_dynastic_cycle.0081
+		# The scripted-GUI dispatcher otherwise expands the complete event chain
+		# while constructing its hover tooltip. Keep that preview from speculatively
+		# evaluating outcome variables; the hidden effect executes identically.
+		hidden_effect = {
+			trigger_event = tgp_dynastic_cycle.0081
+		}
 		debug_log = "RQA: TEST PASS original_chaos_event_dispatched"
 	}
 }

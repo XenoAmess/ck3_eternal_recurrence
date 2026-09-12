@@ -775,6 +775,8 @@ class TestReclaimTheMotherlandContract(unittest.TestCase):
         self.assertIn("rmtm_loyalty_summary_both", event_text)
         self.assertIn("rmtm_loyalty_summary_loyal_only", event_text)
         self.assertIn("rmtm_loyalty_summary_defector_only", event_text)
+        self.assertIn("trigger_event = rmtm.1001", custom_text)
+        self.assertNotIn("days = 1", custom_text)
 
     def test_loyalists_are_frozen_from_direct_vassals_historical_movement(self) -> None:
         _, custom_file = read_script(CUSTOM_EFFECTS)
