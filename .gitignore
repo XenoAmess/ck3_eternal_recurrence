@@ -15,6 +15,7 @@ tools/.venv/
 # Python cache
 __pycache__/
 ck3_autonomous_player/build/
+ck3_autonomous_player/build-*/
 ck3_autonomous_player/src/*.egg-info/
 
 # Local native bridge builds
@@ -22,3 +23,9 @@ ck3_autonomous_player/native_bridge/build*/
 
 # Reproducible release staging and archives
 dist/
+
+# Local runtime captures, temporary installs, and research checkouts
+_runtime/
+
+# CK3 coat-of-arms live probe process assets (kept locally, not committed)
+artifacts/coa-clipboard-probe-*/

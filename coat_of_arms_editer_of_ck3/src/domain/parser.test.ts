@@ -31,6 +31,21 @@ describe('CK3 coat of arms parser', () => {
     expect(output).not.toMatch(/(?<!\r)\n/)
   })
 
+  it('imports native Copy output and drops engine-owned wrapper metadata', () => {
+    const source = 'coa_rd_dynasty_4127510289={\r\n\tcustom=yes\r\n\tpattern="pattern_solid.dds"\r\n\tcolor1=black\r\n\tcolor2=white\r\n\tcolor3=black\r\n\tcolored_emblem={\r\n\t\tcolor1=white\r\n\t\ttexture="ce_fleur.dds"\r\n\t\tinstance={\r\n\t\t\tscale={ 0.700000 0.700000 }\r\n\t\t}\r\n\r\n\t}\r\n\r\n}\r\n'
+    const result = parseCoatOfArms(source)
+
+    expect(result.diagnostics.filter((item) => item.severity === 'error')).toEqual([])
+    expect(result.coatOfArms.outerKey).toBe('coa_rd_dynasty_4127510289')
+    result.coatOfArms.colors[0] = 'red'
+
+    const output = serializeCoatOfArms(result.coatOfArms)
+    expect(output.startsWith('coa = {\r\n')).toBe(true)
+    expect(output).not.toContain('custom =')
+    expect(output).toContain('color1 = red')
+    expect(output).toContain('texture = "ce_fleur.dds"')
+  })
+
   it('rejects body-only syntax', () => {
     const result = parseCoatOfArms('pattern="pattern_solid.dds" color1=blue')
     expect(result.diagnostics.some((item) => item.severity === 'error')).toBe(true)

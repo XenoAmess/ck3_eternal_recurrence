@@ -273,7 +273,7 @@ function parseInstance(block: AstBlock, diagnostics: Diagnostic[]): CoatOfArmsIn
   }
 }
 
-const KNOWN_ROOT = new Set(['pattern', 'color1', 'color2', 'color3', 'colored_emblem', 'textured_emblem'])
+const KNOWN_ROOT = new Set(['custom', 'pattern', 'color1', 'color2', 'color3', 'colored_emblem', 'textured_emblem'])
 const KNOWN_EMBLEM = new Set(['texture', 'color1', 'color2', 'color3', 'mask', 'instance'])
 const KNOWN_TEXTURED_EMBLEM = new Set(['texture'])
 
