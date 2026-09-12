@@ -10397,15 +10397,42 @@ def run_phase2_scoreboard_promo_visual_cell(
 ) -> dict[str, object]:
     """Open the real scoreboard and preserve its independent visibility proof."""
 
-    evidence = run_zhongguo_scoreboard_action_cell(
+    action_cell = run_zhongguo_scoreboard_action_cell(
         service,
         nonce_prefix="zg361.phase2.promo.scoreboard",
         requested_action="open",
     )
-    if not isinstance(evidence, dict):
+    if not isinstance(action_cell, dict):
         raise acceptance.RunnerError(
             "phase-two scoreboard promo visual cell returned a non-object"
         )
+    verified = action_cell.get("verified_pass") is True
+    advertised = action_cell.get("production_capability_advertised") is True
+    expected_candidate_boundary = (
+        action_cell.get("result") == "RED"
+        and action_cell.get("failure_reason")
+        == "production_capability_not_advertised"
+        and action_cell.get("production_capability_advertised") is False
+    )
+    visual_green = bool(
+        verified
+        and (
+            action_cell.get("result") == "GREEN"
+            or expected_candidate_boundary
+        )
+    )
+    evidence = {
+        "schema_version": 1,
+        "cell_id": "scoreboard_promo_open_visible",
+        "result": "GREEN" if visual_green else "RED",
+        "capture_only_visual_scope": True,
+        "verified_pass": verified,
+        "production_capability_advertised": advertised,
+        "action_request": action_cell.get("action_request"),
+        "later_query": action_cell.get("later_query"),
+        "action_cell": action_cell,
+        "failure_reason": None if visual_green else action_cell.get("failure_reason"),
+    }
     write_json(
         artifacts / "07c_phase2_scoreboard_promo_visual_action_cell.json",
         evidence,

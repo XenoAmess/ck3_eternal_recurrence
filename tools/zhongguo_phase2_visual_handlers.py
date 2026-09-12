@@ -221,9 +221,16 @@ def _event_surface(
 
 
 def _typed_scoreboard_visible(evidence: Mapping[str, object]) -> bool:
+    capture_only_visual = (
+        evidence.get("capture_only_visual_scope") is True
+        and evidence.get("production_capability_advertised") is False
+    )
     if not (
         evidence.get("result") == "GREEN"
-        and evidence.get("production_capability_advertised") is True
+        and (
+            evidence.get("production_capability_advertised") is True
+            or capture_only_visual
+        )
     ):
         return False
     action_evidence: Mapping[str, object] = evidence

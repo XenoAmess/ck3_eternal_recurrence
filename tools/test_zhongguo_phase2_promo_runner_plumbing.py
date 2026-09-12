@@ -525,6 +525,39 @@ class Phase2PromoRunnerPlumbingTests(unittest.TestCase):
             capture.run_phase2_scoreboard_promo_visual_cell,
         )
 
+    def test_scoreboard_promo_visual_keeps_candidate_boundary_honest(self) -> None:
+        action_cell = {
+            "result": "RED",
+            "verified_pass": True,
+            "production_capability_advertised": False,
+            "failure_reason": "production_capability_not_advertised",
+            "action_request": {"action": "open"},
+            "later_query": {"widgets": []},
+        }
+        with tempfile.TemporaryDirectory() as temporary, mock.patch.object(
+            capture,
+            "run_zhongguo_scoreboard_action_cell",
+            return_value=action_cell,
+        ) as action:
+            evidence = capture.run_phase2_scoreboard_promo_visual_cell(
+                object(), Path(temporary)
+            )
+            persisted = json.loads(
+                (
+                    Path(temporary)
+                    / "07c_phase2_scoreboard_promo_visual_action_cell.json"
+                ).read_text(encoding="utf-8")
+            )
+        action.assert_called_once_with(
+            mock.ANY,
+            nonce_prefix="zg361.phase2.promo.scoreboard",
+            requested_action="open",
+        )
+        self.assertEqual(evidence, persisted)
+        self.assertEqual(evidence["result"], "GREEN")
+        self.assertTrue(evidence["capture_only_visual_scope"])
+        self.assertFalse(evidence["production_capability_advertised"])
+
     def test_visual_primitive_registry_accepts_only_canonical_unique_keys(self) -> None:
         capture._PHASE2_PROMO_VISUAL_PRIMITIVES.clear()
         primitive = lambda *_args, **_kwargs: {}  # noqa: E731

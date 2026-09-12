@@ -327,6 +327,24 @@ class Phase2VisualHandlerTests(unittest.TestCase):
         self.assertEqual(batch_result["result"], "GREEN")
         self.assertTrue(batch_result["surface_visible"])
 
+        def capture_only_visual(_service, _artifacts):
+            evidence = _green_scoreboard(_service, _artifacts)
+            evidence["production_capability_advertised"] = False
+            evidence["capture_only_visual_scope"] = True
+            return evidence
+
+        visual_result = Phase2VisualHandlerAdapter(
+            service, scoreboard_action_cell=capture_only_visual
+        ).run_span(
+            _scenario(SCOREBOARD_HANDLER),
+            _context(_Recorder(), Path("unit-capture-only")),
+            _runtime(),
+        )
+        self.assertEqual(visual_result["result"], "GREEN")
+        self.assertFalse(
+            visual_result["action_cell"]["production_capability_advertised"]
+        )
+
         def ack_only(_service, _artifacts):
             return {
                 "result": "RED",

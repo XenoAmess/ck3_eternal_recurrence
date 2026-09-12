@@ -10,7 +10,7 @@ R514 Frontend warm-up 与 R515 gameplay 都已终止，当前 CK3/FFmpeg 实例�
 
 1. native ACL 解码现在接受合法 list-only 状态：首行必须是有效角色；存在的 header 字段必须按类型解码；self dossier 全部缺失时保留逐字段 `variable_absent`，并返回 `surface_available=true / current_player_is_subject=false`。只要 self dossier 有一项存在，原有全量 identity/policy join 仍严格执行，部分或矛盾 tuple 继续 RED。
 2. Python normalizer 把 received 约束改为单向蕴含：`current_player_is_subject=true` 必须有列表面，列表面存在不再强迫当前玩家拥有 dossier。
-3. 宣传首镜头只执行真实 `open` 动作和独立 later-query 可见性证明。完整 managed/received 双表面 action matrix 保留在正式 scoreboard 验收中，不再作为“只展示计分板”的宣传片段前置。
+3. 宣传首镜头只执行真实 `open` 动作和独立 later-query 可见性证明。该 capture-only 证据明确保留 `production_capability_advertised=false`，只允许本次视觉片段 GREEN，不提升 scoreboard 生产能力。完整 managed/received 双表面 action matrix 保留在正式 scoreboard 验收中，不再作为“只展示计分板”的宣传片段前置。
 
 整改使用一个 native list-only fixture、一个 Python 合同测试、现有 visual-handler 覆盖和一个 promo wiring 断言验证；不扩大到长跑或全仓测试。接口语义变化要求根仓提交后同步 open_kaishek。
 

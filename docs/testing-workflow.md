@@ -2760,6 +2760,6 @@ py -O tools/test_zg361_phase2_endgame_source_operator_job.py
 
 ## 宣传录制与完整功能验收的范围边界（2026-09-12）
 
-宣传片段只执行画面所需的最小真实产品动作和对应独立观测。例如计分板首镜头的门禁是 paused source query、真实 `open` ACK、later query 证明 modal 可见，以及收尾 `close` 证明；它不要求先跑 managed/received 两种玩家身份的完整 open/switch/close/reopen 矩阵。完整矩阵继续属于 scoreboard capability 的独立验收，不能用宣传镜头替代。
+宣传片段只执行画面所需的最小真实产品动作和对应独立观测。例如计分板首镜头的门禁是 paused source query、真实 `open` ACK、later query 证明 modal 可见，以及收尾 `close` 证明；它不要求先跑 managed/received 两种玩家身份的完整 open/switch/close/reopen 矩阵。capture-only receipt 必须保留 `production_capability_advertised=false`，只证明镜头内产品表面真实可见。完整矩阵继续属于 scoreboard capability 的独立验收，不能用宣传镜头替代。
 
 R515 证明产品 GUI 的列表面与详情面可能合法分离：`zg361_sb_r_01_char` 使 received 列表可见，而 `zg361_sb_self_*` 全量 tuple 决定当前玩家详情是否可见。bridge 查询不得把“列表存在、self dossier 不存在”误报为整条 ACL 不一致。录制遇到此类 RED 时先对照产品实际 `is_shown` 条件，再修最小合同；不得为单个镜头临时制造完整角色矩阵或延长实机运行。
