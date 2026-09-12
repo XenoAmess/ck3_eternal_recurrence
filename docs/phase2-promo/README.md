@@ -36,6 +36,11 @@ T0 产品总完成度。P1 已签收；P2 只能按“检查宣传工具版本 �
 资格核对，以及 R432 硬上限、R433 零游戏日诊断见
 [`r432-r433-bounded-stage9-intake-2026-09-11.md`](r432-r433-bounded-stage9-intake-2026-09-11.md)。证据整理不重开 CK3。
 
+P2 前三步已在 2026-09-12 完成：宣传工具 fresh fetch 后从 `57c42fca` 更新到 `adb52f44`，normal/optimized
+各 268 tests（2 skipped）GREEN；根仓 143 个提交无冲突 rebase 到远端新增 11 个提交之上，并将
+`origin/master` 线性快进到 `77bd8e42`。更新后的现行 runner 再验 P1 仍为 9/9 GREEN。机器回执与边界见
+[`p2-toolchain-master-update-2026-09-12.md`](p2-toolchain-master-update-2026-09-12.md)。下一步只盘点八段正式 clean footage，缺哪段补哪段。
+
 R467 的 `no_bounded_ai_direct_manager` 现已结合 `380af02` 之后的生产调用链确认为真实 reachability RED：AI 年度 B1 已按玩家限定停止，但旧 Stage10 仍要求 AI 经理或其 AI 上级持有 `review_serial`。最小修复改为玩家经理真实 B1 公示后调度 `.90`，由直属上级作为 owner/root 打开玩家 F/AK，并用独立 evaluation cycle 保持 strict lag；Stage10 与 opener 同时拒绝 AI subject。定向双模式测试与本地静态解析 GREEN，尚待新轮次 R481 单次有界实机到达 `.120`，所以 P1 仍为 8/9、P2 仍锁定。见 [R480 后 Stage10 玩家公示可达性修复](r480-stage10-player-publication-reachability-fix-2026-09-12.md)。
 R434/R439 的零游戏日 selector 只排除了 R432/R159 作为 B3 focused 路线的 AI manager/direct subordinate source，不能判定玩家可见的 Stage 10 `.120` 路线；其中 R439 重复了 09 月 07 日已有的 R159 结论，是一次可避免的验证。R435 只排除 R432 的 Stage 11 terminal 资格；R437 又证明 R398 输入存档本身并未停在 `.242`，因此在零游戏日、零事件输入处停止，没有把 source 误读扩成第二次长跑。两种 Stage 10 角色拓扑、验收 runner 纠正、不重跑边界与下一项 source 要求见
 [`r434-r439-bounded-source-checks-and-stage10-route-correction-2026-09-11.md`](r434-r439-bounded-source-checks-and-stage10-route-correction-2026-09-11.md)。P1 仍为 `6/9`。
