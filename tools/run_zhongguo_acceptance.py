@@ -169,8 +169,11 @@ from zg361_phase2_cross_cycle_endgame_live_seam import (
     EXACT_GAME_VERSION as ENDGAME_EXACT_GAME_VERSION,
     TRANSITION_EVENT as PHASE2_ENDGAME_REBIND_FIXTURE_EVENT,
     TRANSITION_FIXTURE_ID as PHASE2_ENDGAME_REBIND_FIXTURE_ID,
+    TRANSITION_OWNER_SCOPE as PHASE2_ENDGAME_REBIND_OWNER_SCOPE,
+    TRANSITION_SUBJECT_SCOPE as PHASE2_ENDGAME_REBIND_SUBJECT_SCOPE,
     run_exact_build_cross_cycle_endgame_seam,
 )
+from zg361_phase2_cross_cycle_endgame_action_cell import EndgameResultBinding
 from zg361_phase2_cross_cycle_endgame_switch_ui import (
     ProductSwitchCharacterError,
     preflight_switch_character_ui_source,
@@ -191,6 +194,7 @@ from zg361_phase2_hc_workforce_route_b_checkpoint import (
     RouteBCheckpointError,
     RouteBSubjectSession,
     bind_current_cumulative_projection,
+    freeze_product_owner_route_b_pre_action_checkpoint,
     freeze_route_b_pre_action_checkpoint,
     query_career_hc_if_available,
     restore_route_b_pre_action_checkpoint,
@@ -2279,6 +2283,48 @@ class _Phase2RealEventChoreographyService:
         context: Phase2PromoCaptureContext,
         runtime: Mapping[str, object],
     ) -> Mapping[str, object]:
+        if plan.handler == "capture_hc_workforce":
+            endgame_plan = phase2_event_sequence_plan(ENDGAME_HANDLER)
+            mature_source = self._restore_registered_source(
+                endgame_plan, context
+            )
+            source_restore = self.take_registered_source_restore(
+                ENDGAME_HANDLER
+            )
+            self._registered_source_restores[plan.handler] = source_restore
+            snapshot = self.service.snapshot()
+            binding = _phase2_paused_binding(
+                snapshot, label="phase-two HC mature #356 source"
+            )
+            identity = query_event_definition_identity(self.service, snapshot)
+            if identity.get("event_definition_key") != "zg361we.356":
+                raise Phase2EventChoreographyError(
+                    "hc_mature_source_event_drifted",
+                    {"identity": identity, "source": mature_source},
+                )
+            selection = select_bound_event_option_native(
+                self.service,
+                context.artifacts,
+                "phase2_promo_hc_mature_356_route_a",
+                expected_event_instance_id=int(identity["event_instance_id"]),
+                option_number=1,
+            )
+            observed = self._wait_event(
+                M360_EVENT_DEFINITION_KEY,
+                plan,
+                context,
+                operation="mature_endgame_source",
+            )
+            return {
+                **self._common(plan),
+                "event_definition_key": M360_EVENT_DEFINITION_KEY,
+                "surface_visible": True,
+                "registered_checkpoint_restore": source_restore,
+                "mature_source": mature_source,
+                "mature_source_binding": binding,
+                "source_selection": selection,
+                "live_event_observation": observed,
+            }
         if plan.handler in CHECKPOINT_REQUIRED_HANDLERS:
             return self._restore_registered_source(plan, context)
         manager_restore = None
@@ -2405,7 +2451,10 @@ class _Phase2RealEventChoreographyService:
                 f"phase2_promo_{plan.span_id}_"
                 f"{surface_id.replace('.', '_')}_close"
             )
-            if surface_id == PP_SUCCESSOR_EVENT_DEFINITION_KEY:
+            if surface_id in {
+                PP_SUCCESSOR_EVENT_DEFINITION_KEY,
+                "zg361we.361",
+            }:
                 close = select_bound_event_option_native(
                     self.service,
                     context.artifacts,
@@ -2564,7 +2613,6 @@ class _Phase2AcceptanceActionSpanDriver:
         "capture_receipt_appeal_pip",
         "capture_manager_governance",
         PROMOTION_HANDLER,
-        "capture_hc_workforce",
         "capture_incidents_operations",
     )
 
@@ -2610,7 +2658,6 @@ class _Phase2AcceptanceActionSpanDriver:
             )
             if handler in {
                 "capture_receipt_appeal_pip",
-                "capture_hc_workforce",
             }
             else {}
         )
@@ -2669,17 +2716,6 @@ class _Phase2AcceptanceActionSpanDriver:
                     authoritative["owner_character_id"]
                 ),
             )
-        else:
-            # The production-only seed must already contain the route.  This
-            # preflight never installs or activates the acceptance fixture.
-            evidence = preflight_phase2_workforce_m360_gameplay_action_cell(
-                self.service,
-                context.artifacts,
-                owner_character_id=owners["workforce_owner_character_id"],
-                subject_character_id=int(binding["player_character_id"]),
-                seed_contract=dict(context.seed_contract),
-                prior_lineage={"scope": "phase2_promo_production_seed"},
-            )
         if not isinstance(evidence, Mapping) or evidence.get("result") != "GREEN":
             raise Phase2VisualHandlerError(
                 "acceptance_action_cell_not_green",
@@ -2710,6 +2746,343 @@ class _Phase2AcceptanceActionSpanDriver:
             "post_action_event_sequence": post_action,
             "visible_surface": visible,
         }
+
+
+def _phase2_endgame_registry_subject(
+    registry: Mapping[str, object] | None,
+    *,
+    expected_owner_character_id: int,
+) -> int:
+    entries = registry.get("entries") if isinstance(registry, Mapping) else None
+    rows = [
+        row
+        for row in entries
+        if isinstance(row, Mapping)
+        and row.get("handler") == ENDGAME_HANDLER
+    ] if isinstance(entries, list) else []
+    receipt = rows[0].get("source_receipt") if len(rows) == 1 else None
+    subject = (
+        receipt.get("subject_character_id")
+        if isinstance(receipt, Mapping)
+        else None
+    )
+    if not (
+        len(rows) == 1
+        and rows[0].get("owner_character_id")
+        == expected_owner_character_id
+        and isinstance(receipt, Mapping)
+        and receipt.get("result") == "GREEN"
+        and receipt.get("owner_character_id")
+        == expected_owner_character_id
+        and isinstance(subject, int)
+        and not isinstance(subject, bool)
+        and subject > 0
+        and subject != expected_owner_character_id
+    ):
+        raise Phase2VisualHandlerError(
+            "hc_endgame_source_subject_unavailable",
+            {"registry_entry_count": len(rows), "source_receipt": receipt},
+        )
+    return int(subject)
+
+
+class _Phase2HcWorkforceSpanDriver:
+    """Reach real M360 from the mature #356 checkpoint and prove route B."""
+
+    _HANDLERS = ("capture_hc_workforce",)
+
+    def __init__(
+        self,
+        service: GameplayBridgeService,
+        *,
+        source_choreography: _Phase2RealEventChoreographyService,
+    ) -> None:
+        self.service = service
+        self.source_choreography = source_choreography
+
+    def available_handlers(self) -> tuple[str, ...]:
+        return self._HANDLERS
+
+    def run_span(
+        self,
+        scenario: object,
+        context: Phase2PromoCaptureContext,
+        _runtime: Mapping[str, object],
+    ) -> Mapping[str, object]:
+        handler = str(getattr(scenario, "handler"))
+        if handler not in self._HANDLERS:
+            raise Phase2VisualHandlerError(
+                "handler_not_owned", {"handler": handler}
+            )
+        if not isinstance(context.isolated_userdir, Path) or not isinstance(
+            context.runtime_bootstrap, Mapping
+        ):
+            raise Phase2VisualHandlerError(
+                "hc_result_session_lifecycle_unavailable"
+            )
+        seed_runtime = (
+            context.seed_contract.get("runtime")
+            if isinstance(context.seed_contract, Mapping)
+            else None
+        )
+        if not (
+            isinstance(seed_runtime, Mapping)
+            and seed_runtime.get("game_version") == ENDGAME_EXACT_GAME_VERSION
+            and str(seed_runtime.get("executable_sha256") or "").upper()
+            == ENDGAME_EXACT_EXE_SHA256
+        ):
+            raise Phase2VisualHandlerError(
+                "hc_exact_build_identity_unavailable",
+                {"runtime": seed_runtime},
+            )
+
+        source_restore = self.source_choreography.take_registered_source_restore(
+            handler
+        )
+        expected = source_restore.get("expected")
+        expected = dict(expected) if isinstance(expected, Mapping) else {}
+        owner = expected.get("owner_character_id")
+        if isinstance(owner, bool) or not isinstance(owner, int) or owner <= 0:
+            raise Phase2VisualHandlerError(
+                "hc_endgame_source_owner_unavailable",
+                {"source_restore": source_restore},
+            )
+        subject = _phase2_endgame_registry_subject(
+            context.source_checkpoint_registry,
+            expected_owner_character_id=owner,
+        )
+        start_snapshot = self.service.snapshot()
+        if not isinstance(start_snapshot, dict):
+            raise acceptance.RunnerError(
+                "HC route-B source snapshot is not an object"
+            )
+        start_binding = _phase2_paused_binding(
+            start_snapshot, label="HC route-B M360 source"
+        )
+        plan = phase2_event_sequence_plan(handler)
+        evidence_directory = context.artifacts / "phase2_hc_workforce_route_b"
+        evidence_directory.mkdir(parents=True, exist_ok=True)
+        checkpoint_capture = freeze_product_owner_route_b_pre_action_checkpoint(
+            self.service,
+            owner_character_id=owner,
+            subject_character_id=subject,
+            source_checkpoint_restore=source_restore,
+            archive_path=evidence_directory / "pre-m360-route-b.ck3",
+            evidence_path=evidence_directory / "pre-m360-route-b.json",
+        )
+        fixture_install: dict[str, object] | None = None
+        activation_restore: dict[str, object] | None = None
+        fixture_event: dict[str, object] | None = None
+        typed_transition: dict[str, object] | None = None
+        result_binding: EndgameResultBinding | None = None
+        result_checkpoint: dict[str, object] | None = None
+
+        def activate_subject(_binding: object) -> RouteBSubjectSession:
+            nonlocal fixture_install, activation_restore, fixture_event
+            nonlocal typed_transition, result_binding, result_checkpoint
+            result_event = self.source_choreography._wait_event(
+                "zg361we.361",
+                plan,
+                context,
+                operation="route_b_result",
+            )
+            snapshot = self.service.snapshot()
+            if not isinstance(snapshot, dict):
+                raise acceptance.RunnerError(
+                    "HC route-B result snapshot is not an object"
+                )
+            binding = _phase2_paused_binding(
+                snapshot, label="HC route-B #361 result"
+            )
+            identity = query_event_definition_identity(self.service, snapshot)
+            save_result = self.service.save_checkpoint(
+                expected_revision=int(binding["revision"])
+            )
+            saved = _phase2_checkpoint_payload(
+                save_result, status="saved", label="HC route-B #361"
+            )
+            lineage = source_restore.get("checkpoint")
+            lineage_id = (
+                lineage.get("save_lineage_id")
+                if isinstance(lineage, Mapping)
+                else None
+            )
+            if not isinstance(lineage_id, str) or not lineage_id:
+                raise acceptance.RunnerError(
+                    "HC route-B result lacks source save lineage"
+                )
+            result_checkpoint = _phase2_archive_checkpoint(
+                saved,
+                evidence_directory / "post-route-b-m361.ck3",
+                save_lineage_id=lineage_id,
+            )
+            result_binding = EndgameResultBinding(
+                owner_character_id=owner,
+                subject_character_id=subject,
+                result_event_instance_id=int(identity["event_instance_id"]),
+                result_revision=int(binding["revision"]),
+                result_native_revision=int(binding["native_revision"]),
+                result_date_raw=int(binding["date_raw"]),
+                result_checkpoint_sha256=str(result_checkpoint["sha256"]),
+                save_lineage_id=lineage_id,
+            )
+            fixture_install = install_phase2_endgame_rebind_fixture(
+                context.isolated_userdir,
+                dict(context.runtime_bootstrap),
+                context.artifacts,
+            )
+            activation_restore = _restore_phase2_endgame_result_checkpoint(
+                self.service,
+                result_binding=result_binding,
+                expected_fixture_enabled=True,
+                label="HC route-B typed result-session activation",
+            )
+            restored = self.service.snapshot()
+            if not isinstance(restored, dict):
+                raise acceptance.RunnerError(
+                    "HC route-B restored #361 snapshot is not an object"
+                )
+            restored_identity = query_event_definition_identity(
+                self.service, restored
+            )
+            select_bound_event_option_native(
+                self.service,
+                context.artifacts,
+                "phase2_promo_hc_route_b_m361_fixture_transition",
+                expected_event_instance_id=int(
+                    restored_identity["event_instance_id"]
+                ),
+                option_number=1,
+            )
+            fixture_event = self.source_choreography._wait_event(
+                PHASE2_ENDGAME_REBIND_FIXTURE_EVENT,
+                plan,
+                context,
+                operation="route_b_typed_subject_transition",
+            )
+            typed_transition = select_typed_fixture_player_transition(
+                self.service,
+                expected_event_definition_key=(
+                    PHASE2_ENDGAME_REBIND_FIXTURE_EVENT
+                ),
+                expected_player_before=owner,
+                expected_player_after=subject,
+                owner_character_id=owner,
+                subject_character_id=subject,
+                owner_scope_name=PHASE2_ENDGAME_REBIND_OWNER_SCOPE,
+                subject_scope_name=PHASE2_ENDGAME_REBIND_SUBJECT_SCOPE,
+                evidence_path=(
+                    evidence_directory / "typed_owner_subject_transition.json"
+                ),
+            )
+            return RouteBSubjectSession(
+                service=self.service,
+                transition_receipt=typed_transition,
+            )
+
+        try:
+            action_cell = run_route_b_and_collect_postconditions(
+                self.service,
+                checkpoint_capture=checkpoint_capture,
+                subject_session_factory=activate_subject,
+                evidence_directory=evidence_directory,
+                post_ack_event_definition_allowlist=("zg361we.361",),
+                expected_subject_transition_event=(
+                    PHASE2_ENDGAME_REBIND_FIXTURE_EVENT
+                ),
+            )
+        except BaseException:
+            if fixture_install is not None:
+                disable_phase2_endgame_rebind_fixture(
+                    context.isolated_userdir, fixture_install, context.artifacts
+                )
+            raise
+        if not (
+            action_cell.get("result") == "GREEN"
+            and action_cell.get("action_ack_is_business_postcondition") is False
+            and result_binding is not None
+            and fixture_install is not None
+        ):
+            if fixture_install is not None:
+                disable_phase2_endgame_rebind_fixture(
+                    context.isolated_userdir, fixture_install, context.artifacts
+                )
+            raise Phase2VisualHandlerError(
+                "hc_route_b_action_cell_not_green",
+                {"action_cell": action_cell},
+            )
+        fixture_disable = disable_phase2_endgame_rebind_fixture(
+            context.isolated_userdir, fixture_install, context.artifacts
+        )
+        final_restore = _restore_phase2_endgame_result_checkpoint(
+            self.service,
+            result_binding=result_binding,
+            expected_fixture_enabled=False,
+            label="HC route-B product-only result presentation",
+        )
+        final_snapshot = self.service.snapshot()
+        if not isinstance(final_snapshot, dict):
+            raise acceptance.RunnerError(
+                "HC route-B final snapshot is not an object"
+            )
+        end_binding = _phase2_paused_binding(
+            final_snapshot, label="HC route-B final product result"
+        )
+        visible = _phase2_promo_visible_scenario_surface(
+            self.service, scenario
+        )
+        transition = {
+            "schema_version": 1,
+            "result": "GREEN",
+            "transition_kind": "hc_workforce_route_b_result_checkpoint",
+            "handler": handler,
+            "restore_count": 2,
+            "source": {
+                "bridge_pid": start_binding["bridge_pid"],
+                "connection_generation": start_binding[
+                    "connection_generation"
+                ],
+            },
+            "result_surface": {
+                "bridge_pid": end_binding["bridge_pid"],
+                "connection_generation": end_binding[
+                    "connection_generation"
+                ],
+            },
+            "checkpoint_sha256": result_binding.result_checkpoint_sha256,
+            "save_lineage_id": result_binding.save_lineage_id,
+            "provider_observed": True,
+            "action_ack_only": False,
+            "typed_event_fixture_used": True,
+            "business_state_fixture_used": False,
+            "console_used": False,
+            "generic_character_rebind_used": False,
+        }
+        evidence = {
+            "schema_version": 1,
+            "result": "GREEN",
+            "readiness": "production-live primitive",
+            "surface_visible": True,
+            "postcondition_green": True,
+            "handler": handler,
+            "source_checkpoint_restore": source_restore,
+            "pre_action_checkpoint": checkpoint_capture,
+            "action_cell": dict(action_cell),
+            "result_checkpoint": result_checkpoint,
+            "fixture_install": fixture_install,
+            "activation_restore": activation_restore,
+            "fixture_event": fixture_event,
+            "typed_transition": typed_transition,
+            "fixture_disable": fixture_disable,
+            "final_product_only_restore": final_restore,
+            "visible_surface": visible,
+            "managed_session_transition": transition,
+        }
+        write_json(
+            context.artifacts / "phase2_hc_workforce_runner_cell.json",
+            evidence,
+        )
+        return evidence
 
 
 class _Phase2CrossCycleEndgameSpanDriver:
@@ -3371,6 +3744,10 @@ def _make_default_phase2_promo_span_driver(
     composite = CompositePhase2SpanDriver(
         _Phase2AcceptanceActionSpanDriver(
             service, event_choreographer=event_choreographer
+        ),
+        _Phase2HcWorkforceSpanDriver(
+            service,
+            source_choreography=real_events,
         ),
         _Phase2CrossCycleEndgameSpanDriver(
             service,
@@ -12158,6 +12535,7 @@ def install_phase2_endgame_rebind_fixture(
         "target_tree_sha256": None,
         "enabled_mods_before": None,
         "enabled_mods_after": None,
+        "reused_dormant_fixture": None,
         "failure_reason": None,
     }
     write_json(evidence_path, evidence)
@@ -12179,10 +12557,6 @@ def install_phase2_endgame_rebind_fixture(
                     "phase-two endgame rebind fixture lacks UTF-8 BOM: "
                     + relative
                 )
-        if target.exists() or outer.exists():
-            raise acceptance.RunnerError(
-                "phase-two endgame rebind fixture target already exists"
-            )
         userdir_root = userdir.resolve()
         if not isolated.is_relative_to(target, userdir_root) or not (
             isolated.is_relative_to(outer, userdir_root)
@@ -12210,10 +12584,23 @@ def install_phase2_endgame_rebind_fixture(
             raise acceptance.RunnerError(
                 "phase-two endgame rebind fixture was already enabled"
             )
-        shutil.copytree(source, target)
-        isolated.write_outer_descriptor(
-            target / "descriptor.mod", outer, target
-        )
+        reused_dormant_fixture = False
+        if target.exists() or outer.exists():
+            if not (target.is_dir() and outer.is_file()):
+                raise acceptance.RunnerError(
+                    "phase-two endgame rebind fixture dormant target is incomplete"
+                )
+            target_snapshot = isolated.tree_snapshot(target)
+            if target_snapshot != source_snapshot:
+                raise acceptance.RunnerError(
+                    "phase-two endgame rebind fixture dormant target drifted"
+                )
+            reused_dormant_fixture = True
+        else:
+            shutil.copytree(source, target)
+            isolated.write_outer_descriptor(
+                target / "descriptor.mod", outer, target
+            )
         target_snapshot = isolated.tree_snapshot(target)
         if target_snapshot != source_snapshot:
             raise acceptance.RunnerError(
@@ -12233,6 +12620,7 @@ def install_phase2_endgame_rebind_fixture(
                 ),
                 "enabled_mods_before": list(enabled),
                 "enabled_mods_after": enabled_after,
+                "reused_dormant_fixture": reused_dormant_fixture,
                 "failure_reason": None,
             }
         )

@@ -690,6 +690,65 @@ class Phase2EventChoreographyRunnerTests(unittest.TestCase):
         self.assertEqual(result["event_definition_key"], "zg361b2.40")
         self.assertFalse(wait.call_args.kwargs["clear_unexpected_single_option_events"])
 
+    def test_hc_source_reuses_mature_endgame_checkpoint_and_reaches_m360(self) -> None:
+        snapshot = _snapshot(event=True)
+        service = _Service(snapshot)
+        adapter = capture._Phase2RealEventChoreographyService(service)
+        plan = phase2_event_sequence_plan("capture_hc_workforce")
+        source_restore = {
+            "result": "GREEN",
+            "handler": capture.ENDGAME_HANDLER,
+            "checkpoint": {"save_lineage_id": "seed-unit"},
+        }
+
+        def restore_endgame(restored_plan, _context):
+            self.assertEqual(restored_plan.handler, capture.ENDGAME_HANDLER)
+            adapter._registered_source_restores[
+                capture.ENDGAME_HANDLER
+            ] = source_restore
+            return {"result": "GREEN", "event_definition_key": "zg361we.356"}
+
+        with (
+            tempfile.TemporaryDirectory() as temporary,
+            mock.patch.object(
+                adapter,
+                "_restore_registered_source",
+                side_effect=restore_endgame,
+            ),
+            mock.patch.object(
+                capture,
+                "query_event_definition_identity",
+                return_value={
+                    "event_instance_id": 901,
+                    "event_definition_key": "zg361we.356",
+                },
+            ),
+            mock.patch.object(
+                capture,
+                "select_bound_event_option_native",
+                return_value={"result": "GREEN"},
+            ) as select,
+            mock.patch.object(
+                adapter,
+                "_wait_event",
+                return_value={"event_definition_key": "zg361we.360"},
+            ) as wait,
+        ):
+            result = adapter.stage_span_source(
+                plan,
+                PHASE2_CAPTURE_SCENARIOS[4],
+                SimpleNamespace(artifacts=Path(temporary)),
+                {},
+            )
+
+        self.assertEqual(result["event_definition_key"], "zg361we.360")
+        self.assertIs(
+            adapter._registered_source_restores["capture_hc_workforce"],
+            source_restore,
+        )
+        self.assertEqual(select.call_args.kwargs["option_number"], 1)
+        self.assertEqual(wait.call_args.args[0], "zg361we.360")
+
     def test_event_close_binds_exact_identity_and_requires_instance_transition(self) -> None:
         service = _Service(_snapshot(event=True))
         adapter = capture._Phase2RealEventChoreographyService(service)
@@ -752,6 +811,38 @@ class Phase2EventChoreographyRunnerTests(unittest.TestCase):
             expected_event_instance_id=901,
             option_number=1,
         )
+        single_option_close.assert_not_called()
+
+    def test_hc_result_close_selects_canonical_first_option(self) -> None:
+        snapshot = _snapshot(event=True)
+        snapshot["active_event"]["option_count"] = 3
+        service = _Service(snapshot)
+        adapter = capture._Phase2RealEventChoreographyService(service)
+        plan = phase2_event_sequence_plan("capture_hc_workforce")
+        context = SimpleNamespace(artifacts=Path("unused"))
+        with (
+            mock.patch.object(
+                capture,
+                "query_event_definition_identity",
+                return_value={
+                    "event_instance_id": 901,
+                    "event_definition_key": "zg361we.361",
+                },
+            ),
+            mock.patch.object(
+                capture,
+                "select_bound_event_option_native",
+                return_value={"result": "GREEN"},
+            ) as close,
+            mock.patch.object(
+                capture, "select_single_option_interruption_native"
+            ) as single_option_close,
+        ):
+            result = adapter.close_capture_surface(
+                "product_event", "zg361we.361", plan, context, {}
+            )
+        self.assertTrue(result["transition_materialized"])
+        self.assertEqual(close.call_args.kwargs["option_number"], 1)
         single_option_close.assert_not_called()
 
     def test_scoreboard_close_uses_provider_owned_close_and_later_query(self) -> None:

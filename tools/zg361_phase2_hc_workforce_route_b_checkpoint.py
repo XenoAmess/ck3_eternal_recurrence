@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
 """Strict checkpoint transaction for the real Workforce M360 route-B cell.
 
-This module is runner plumbing.  It assumes the existing Workforce transition
-fixture has already moved the paused session from the received-self subject to
-the exact owner and exposed the real ``zg361we.360`` window.  It then freezes
-that frame, executes route B, obtains the existing Workforce provider proof,
-optionally joins the separately versioned career-HC provider, and restores the
-byte-identical checkpoint.
+This module is runner plumbing.  It accepts either the existing typed
+subject-to-owner transition or a registered product-only mature source that
+already plays the exact owner on the real ``zg361we.360`` window.  It then
+freezes that frame, executes route B, obtains the existing Workforce provider
+proof, optionally joins the separately versioned career-HC provider, and can
+restore the byte-identical checkpoint.
 
 The event-window query cannot expose the numeric cycle/case values carried by
 generic saved scopes.  Consequently those values are never guessed at capture
@@ -605,14 +605,158 @@ def freeze_route_b_pre_action_checkpoint(
         raise
 
 
+def freeze_product_owner_route_b_pre_action_checkpoint(
+    service: RouteBCheckpointService,
+    *,
+    owner_character_id: int,
+    subject_character_id: int,
+    source_checkpoint_restore: Mapping[str, object],
+    archive_path: Path,
+    evidence_path: Path | None = None,
+) -> dict[str, object]:
+    """Freeze a product-only owner-facing M360 reached from a real source.
+
+    The canonical promo choreography reaches M360 from the registered mature
+    ``zg361we.356`` checkpoint with the owner already played.  That path does
+    not need the earlier subject-to-owner transition fixture, but it still
+    needs the same exact event/scope/option and native checkpoint proof before
+    route B is selected.
+    """
+
+    owner = _positive_character(owner_character_id, "owner_character_id")
+    subject = _positive_character(subject_character_id, "subject_character_id")
+    if owner == subject:
+        raise ValueError("owner and subject must be distinct")
+    restore = dict(source_checkpoint_restore)
+    restore_checkpoint = restore.get("checkpoint")
+    restore_expected = restore.get("expected")
+    if not (
+        restore.get("result") == "GREEN"
+        and restore.get("handler") == "capture_cross_cycle_endgame"
+        and isinstance(restore_checkpoint, Mapping)
+        and isinstance(restore_expected, Mapping)
+        and restore_expected.get("owner_character_id") == owner
+        and restore_expected.get("player_character_id") == owner
+        and restore_expected.get("event_definition_key") == "zg361we.356"
+        and isinstance(restore_checkpoint.get("save_lineage_id"), str)
+        and bool(restore_checkpoint.get("save_lineage_id"))
+    ):
+        _fail(
+            "product_owner_source_restore_unbound",
+            owner_character_id=owner,
+            source_checkpoint_restore=restore,
+        )
+
+    evidence: dict[str, object] = {
+        "schema_version": 1,
+        "kind": "zg361_hc_workforce_product_owner_route_b_pre_action_checkpoint",
+        "result": "RED",
+        "readiness": READINESS,
+        "route": ROUTE,
+        "option_number": OPTION_NUMBER,
+        "native_option_index": NATIVE_OPTION_INDEX,
+        "owner_character_id": owner,
+        "subject_character_id": subject,
+        "source_checkpoint_restore": restore,
+        "event_binding": None,
+        "event_context": None,
+        "native_save_receipt": None,
+        "checkpoint": None,
+        "fixture_used": False,
+        "console_used": False,
+        "gameplay_action_executed": False,
+        "business_postcondition_claimed": False,
+        "failure_reason": None,
+    }
+    _write_json(evidence_path, evidence)
+    try:
+        before = _paused_binding(service.snapshot(), label="product route-B pre-save")
+        if before["player_character_id"] != owner:
+            _fail("pre_save_player_is_not_owner", binding=before, owner=owner)
+        context = _event_context(
+            service,
+            before,
+            owner_character_id=owner,
+            subject_character_id=subject,
+        )
+        saved_result = service.save_checkpoint(
+            expected_revision=int(before["revision"])
+        )
+        saved = _checkpoint_payload(
+            saved_result,
+            status="saved",
+            expected_player=owner,
+            expected_date=int(before["date_raw"]),
+        )
+        source_path = Path(str(saved["path"])).resolve()
+        if not source_path.is_file():
+            _fail("native_checkpoint_file_missing", checkpoint=saved)
+        archive = Path(archive_path).resolve()
+        if archive.exists():
+            _fail("checkpoint_archive_already_exists", archive_path=str(archive))
+        archive.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copy2(source_path, archive)
+        archive_sha = _sha256(archive)
+        expected_sha = str(saved["sha256"]).lower()
+        if (
+            archive.stat().st_size != saved["size"]
+            or archive_sha != expected_sha
+        ):
+            _fail(
+                "checkpoint_archive_hash_mismatch",
+                native_checkpoint=saved,
+                archive_path=str(archive),
+                archive_sha256=archive_sha,
+            )
+        after = _paused_binding(service.snapshot(), label="product route-B post-save")
+        if any(
+            after[key] != before[key]
+            for key in (
+                "player_character_id",
+                "event_instance_id",
+                "date_raw",
+            )
+        ):
+            _fail("checkpoint_save_binding_drifted", before=before, after=after)
+        evidence.update(
+            {
+                "result": "GREEN",
+                "event_binding": before,
+                "event_context": context,
+                "native_save_receipt": copy.deepcopy(dict(saved_result)),
+                "checkpoint": {
+                    "path": str(archive),
+                    "bytes": archive.stat().st_size,
+                    "sha256": archive_sha.upper(),
+                    "save_lineage_id": restore_checkpoint[
+                        "save_lineage_id"
+                    ],
+                },
+                "failure_reason": None,
+            }
+        )
+        _write_json(evidence_path, evidence)
+        return evidence
+    except BaseException as error:
+        evidence["failure_reason"] = f"{type(error).__name__}: {error}"
+        _write_json(evidence_path, evidence)
+        raise
+
+
 def _validate_owner_to_subject_transition(
-    value: object, *, owner: int, subject: int, date_raw: int
+    value: object,
+    *,
+    owner: int,
+    subject: int,
+    date_raw: int,
+    expected_event_definition_key: str = SWITCH_BACK_EVENT,
 ) -> dict[str, object]:
     receipt = dict(value) if isinstance(value, Mapping) else {}
     post = receipt.get("native_played_character_postcondition")
     valid = (
         receipt.get("result") == "GREEN"
-        and receipt.get("expected_event_definition_key") == SWITCH_BACK_EVENT
+        and receipt.get("expected_event_definition_key")
+        == expected_event_definition_key
         and receipt.get("owner_character_id") == owner
         and receipt.get("subject_character_id") == subject
         and receipt.get("expected_player_before") == owner
@@ -774,6 +918,10 @@ def run_route_b_and_collect_postconditions(
     evidence_directory: Path,
     expected_case_identity: RouteBCaseIdentity | None = None,
     career_hc_hook: CareerHcHook = query_career_hc_if_available,
+    post_ack_event_definition_allowlist: tuple[str, ...] = (
+        SWITCH_BACK_EVENT,
+    ),
+    expected_subject_transition_event: str = SWITCH_BACK_EVENT,
 ) -> dict[str, object]:
     """Execute route B and seal the real provider identity onto its checkpoint."""
 
@@ -816,7 +964,9 @@ def run_route_b_and_collect_postconditions(
             owner_service,
             route=ROUTE,
             evidence_path=evidence_directory / "route_b_action_ack.json",
-            post_ack_event_definition_allowlist=(SWITCH_BACK_EVENT,),
+            post_ack_event_definition_allowlist=(
+                post_ack_event_definition_allowlist
+            ),
         )
         evidence["owner_action"] = action
         action_binding = action.get("binding") if isinstance(action, Mapping) else None
@@ -848,6 +998,9 @@ def run_route_b_and_collect_postconditions(
             owner=owner,
             subject=subject,
             date_raw=binding.date_raw,
+            expected_event_definition_key=(
+                expected_subject_transition_event
+            ),
         )
         evidence["subject_transition"] = transition
         workforce = prove_m360_postcondition(
@@ -1038,6 +1191,7 @@ __all__ = [
     "WORKFORCE_REQUIRED_FACTS",
     "bind_current_cumulative_projection",
     "freeze_route_b_pre_action_checkpoint",
+    "freeze_product_owner_route_b_pre_action_checkpoint",
     "query_career_hc_if_available",
     "restore_route_b_pre_action_checkpoint",
     "run_route_b_and_collect_postconditions",

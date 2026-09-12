@@ -24,7 +24,10 @@ zga_phase2_endgame_rebind.1 = {
 			has_variable = zg361_we_m360_receipt_choice
 			var:zg361_case_al_owner = root
 			var:zg361_case_al_subject = this
-			var:zg361_we_m360_receipt_choice = 3
+			OR = {
+				var:zg361_we_m360_receipt_choice = 2
+				var:zg361_we_m360_receipt_choice = 3
+			}
 		}
 	}
 	immediate = {

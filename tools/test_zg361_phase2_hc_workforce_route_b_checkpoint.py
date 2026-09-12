@@ -425,6 +425,34 @@ class FreezeCheckpointTests(unittest.TestCase):
         self.assertFalse(result["gameplay_action_executed"])
         self.assertFalse(result["business_postcondition_claimed"])
 
+    def test_freezes_product_owner_m360_from_registered_mature_source(self) -> None:
+        with tempfile.TemporaryDirectory(prefix="zg361-route-b-product-") as name:
+            root = Path(name)
+            source = root / "native.ck3"
+            source.write_bytes(b"real-product-route-b-checkpoint")
+            archive = root / "archive" / "pre-route-b.ck3"
+            service = CaptureService(source)
+            result = checkpoint.freeze_product_owner_route_b_pre_action_checkpoint(
+                service,
+                owner_character_id=OWNER,
+                subject_character_id=SUBJECT,
+                source_checkpoint_restore={
+                    "result": "GREEN",
+                    "handler": "capture_cross_cycle_endgame",
+                    "expected": {
+                        "event_definition_key": "zg361we.356",
+                        "owner_character_id": OWNER,
+                        "player_character_id": OWNER,
+                    },
+                    "checkpoint": {"save_lineage_id": "seed-lineage"},
+                },
+                archive_path=archive,
+            )
+        self.assertEqual("GREEN", result["result"])
+        self.assertFalse(result["fixture_used"])
+        self.assertEqual("seed-lineage", result["checkpoint"]["save_lineage_id"])
+        self.assertEqual(1, service.save_calls)
+
     def test_wrong_event_is_red_before_save(self) -> None:
         with tempfile.TemporaryDirectory(prefix="zg361-route-b-freeze-") as name:
             root = Path(name)

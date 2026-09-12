@@ -94,6 +94,10 @@ class CrossCycleEndgameRunnerIntegrationTests(unittest.TestCase):
             owner, runner._Phase2CrossCycleEndgameSpanDriver
         )
         self.assertNotIsInstance(owner, runner.Phase2VisualHandlerAdapter)
+        self.assertIsInstance(
+            owners["capture_hc_workforce"],
+            runner._Phase2HcWorkforceSpanDriver,
+        )
         self.assertEqual(
             set(sequenced.available_handlers()),
             {item.handler for item in runner.PHASE2_CAPTURE_SCENARIOS},
@@ -137,6 +141,15 @@ class CrossCycleEndgameRunnerIntegrationTests(unittest.TestCase):
                 (userdir / "dlc_load.json").read_text(encoding="utf-8-sig")
             )
             self.assertEqual(load["enabled_mods"], enabled)
+
+            reused = runner.install_phase2_endgame_rebind_fixture(
+                userdir, {"enabled_mods": enabled}, artifacts
+            )
+            self.assertEqual(reused["result"], "GREEN")
+            self.assertTrue(reused["reused_dormant_fixture"])
+            runner.disable_phase2_endgame_rebind_fixture(
+                userdir, reused, artifacts
+            )
 
     def test_formal_handler_consumes_registered_source_and_provider_cell(self) -> None:
         source_restore = {

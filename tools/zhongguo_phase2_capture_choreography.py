@@ -512,13 +512,40 @@ def run_phase2_capture_choreography(
                 checkpoint_sha = str(
                     transition.get("checkpoint_sha256", "")
                 ).upper()
-                expected_lineage = lineage.get("seed_lineage_id")
+                prepared_source = (
+                    preparation.get("source")
+                    if isinstance(preparation, Mapping)
+                    else None
+                )
+                registered_restore = (
+                    prepared_source.get("registered_checkpoint_restore")
+                    if isinstance(prepared_source, Mapping)
+                    else None
+                )
+                registered_checkpoint = (
+                    registered_restore.get("checkpoint")
+                    if isinstance(registered_restore, Mapping)
+                    else None
+                )
+                expected_lineage = (
+                    registered_checkpoint.get("save_lineage_id")
+                    if isinstance(registered_checkpoint, Mapping)
+                    else lineage.get("seed_lineage_id")
+                )
+                expected_transition_kind = {
+                    "capture_cross_cycle_endgame": (
+                        "cross_cycle_endgame_exact_result_checkpoint"
+                    ),
+                    "capture_hc_workforce": (
+                        "hc_workforce_route_b_result_checkpoint"
+                    ),
+                }.get(scenario.handler)
                 managed_transition_valid = (
-                    scenario.handler == "capture_cross_cycle_endgame"
+                    expected_transition_kind is not None
                     and transition.get("schema_version") == 1
                     and transition.get("result") == "GREEN"
                     and transition.get("transition_kind")
-                    == "cross_cycle_endgame_exact_result_checkpoint"
+                    == expected_transition_kind
                     and transition.get("handler") == scenario.handler
                     and restore_count == 2
                     and source_binding.get("bridge_pid")

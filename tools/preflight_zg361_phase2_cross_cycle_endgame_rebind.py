@@ -106,6 +106,8 @@ def _fixture_check() -> bool:
         and "var:zg361_p2c_m360_source_subject = scope:zga_phase2_endgame_subject"
         in event
         and "var:zg361_p2c_m360_source_subject = {" in gui
+        and "var:zg361_we_m360_receipt_choice = 2" in event
+        and "var:zg361_we_m360_receipt_choice = 2" in gui
         and "var:zg361_we_m360_receipt_choice = 3" in gui
         and "var:zg361_we_m361_evidence_ready = 1" in gui
         and "set_variable" not in all_text

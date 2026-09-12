@@ -326,32 +326,41 @@ class Phase2CaptureChoreographyTests(unittest.TestCase):
         self.assertEqual(raised.exception.reason_code, "span_session_changed_during_action")
         self.assertEqual(recorder.calls, [])
 
-    def test_v2_allows_only_typed_endgame_two_restore_transition(self) -> None:
-        endgame = PHASE2_CAPTURE_SCENARIOS[-1]
+    def test_v2_allows_typed_hc_and_endgame_two_restore_transitions(self) -> None:
+        transition_kinds = {
+            "capture_hc_workforce": (
+                "hc_workforce_route_b_result_checkpoint"
+            ),
+            "capture_cross_cycle_endgame": (
+                "cross_cycle_endgame_exact_result_checkpoint"
+            ),
+        }
 
         class EndgameDriver(_Driver):
-            def __init__(self, *, generic_rebind_used: bool) -> None:
+            def __init__(
+                self, *, managed_handler: str, generic_rebind_used: bool
+            ) -> None:
                 super().__init__()
+                self.managed_handler = managed_handler
                 self.generic_rebind_used = generic_rebind_used
 
             def run_span(self, scenario, context, runtime):
                 result = dict(super().run_span(scenario, context, runtime))
-                if scenario.handler == "capture_cross_cycle_endgame":
+                if scenario.handler == self.managed_handler:
+                    span_index = PHASE2_CAPTURE_SCENARIOS.index(scenario) + 1
                     result["managed_session_transition"] = {
                         "schema_version": 1,
                         "result": "GREEN",
-                        "transition_kind": (
-                            "cross_cycle_endgame_exact_result_checkpoint"
-                        ),
+                        "transition_kind": transition_kinds[scenario.handler],
                         "handler": scenario.handler,
                         "restore_count": 2,
                         "source": {
-                            "bridge_pid": 5008,
-                            "connection_generation": 108,
+                            "bridge_pid": 5000 + span_index,
+                            "connection_generation": 100 + span_index,
                         },
                         "result_surface": {
-                            "bridge_pid": 6008,
-                            "connection_generation": 110,
+                            "bridge_pid": 6000 + span_index,
+                            "connection_generation": 102 + span_index,
                         },
                         "checkpoint_sha256": "A" * 64,
                         "save_lineage_id": "seed-1",
@@ -364,7 +373,7 @@ class Phase2CaptureChoreographyTests(unittest.TestCase):
                     }
                 return result
 
-        def exercise(*, generic_rebind_used: bool):
+        def exercise(*, managed_handler: str, generic_rebind_used: bool):
             temporary = tempfile.TemporaryDirectory()
             self.addCleanup(temporary.cleanup)
             root = Path(temporary.name)
@@ -373,9 +382,19 @@ class Phase2CaptureChoreographyTests(unittest.TestCase):
 
             def receipt(scenario, phase: str) -> dict[str, object]:
                 span_index = PHASE2_CAPTURE_SCENARIOS.index(scenario) + 1
-                endgame_post = scenario is endgame and phase == "post"
-                pid = 6008 if endgame_post else 5000 + span_index
-                generation = 110 if endgame_post else 100 + span_index
+                managed_post = (
+                    scenario.handler == managed_handler and phase == "post"
+                )
+                pid = (
+                    6000 + span_index
+                    if managed_post
+                    else 5000 + span_index
+                )
+                generation = (
+                    102 + span_index
+                    if managed_post
+                    else 100 + span_index
+                )
                 return {
                     "schema_version": 1,
                     "result": "GREEN",
@@ -386,11 +405,11 @@ class Phase2CaptureChoreographyTests(unittest.TestCase):
                     "connection_generation": generation,
                     "snapshot_id": f"snapshot-{span_index}-{phase}",
                     "revision": (
-                        1 if endgame_post else span_index * 10 + (phase == "post")
+                        1 if managed_post else span_index * 10 + (phase == "post")
                     ),
                     "native_revision": (
                         1
-                        if endgame_post
+                        if managed_post
                         else 1000 + span_index * 10 + (phase == "post")
                     ),
                     "checkpoint": {
@@ -403,26 +422,40 @@ class Phase2CaptureChoreographyTests(unittest.TestCase):
 
             recorder.phase2_span_receipt_provider = receipt
             return root, recorder, EndgameDriver(
+                managed_handler=managed_handler,
                 generic_rebind_used=generic_rebind_used
             )
 
-        root, recorder, driver = exercise(generic_rebind_used=False)
-        evidence = run_phase2_capture_choreography(
-            _context(recorder, root), _runtime(), driver
-        )
-        self.assertEqual(evidence["result"], "GREEN")
-        self.assertEqual(len(recorder.calls), 8)
-
-        root, recorder, driver = exercise(generic_rebind_used=True)
-        with self.assertRaises(Phase2ChoreographyBlocked) as raised:
-            run_phase2_capture_choreography(
+        for handler in transition_kinds:
+            root, recorder, driver = exercise(
+                managed_handler=handler, generic_rebind_used=False
+            )
+            evidence = run_phase2_capture_choreography(
                 _context(recorder, root), _runtime(), driver
             )
-        self.assertEqual(
-            raised.exception.reason_code,
-            "span_session_changed_during_action",
-        )
-        self.assertEqual(len(recorder.calls), 7)
+            self.assertEqual(evidence["result"], "GREEN")
+            self.assertEqual(len(recorder.calls), 8)
+
+            root, recorder, driver = exercise(
+                managed_handler=handler, generic_rebind_used=True
+            )
+            with self.assertRaises(Phase2ChoreographyBlocked) as raised:
+                run_phase2_capture_choreography(
+                    _context(recorder, root), _runtime(), driver
+                )
+            self.assertEqual(
+                raised.exception.reason_code,
+                "span_session_changed_during_action",
+            )
+            managed = next(
+                item
+                for item in PHASE2_CAPTURE_SCENARIOS
+                if item.handler == handler
+            )
+            self.assertEqual(
+                len(recorder.calls),
+                PHASE2_CAPTURE_SCENARIOS.index(managed),
+            )
 
 
 if __name__ == "__main__":

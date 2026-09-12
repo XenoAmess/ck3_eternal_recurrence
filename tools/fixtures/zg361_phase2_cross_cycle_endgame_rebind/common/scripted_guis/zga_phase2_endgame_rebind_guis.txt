@@ -34,16 +34,21 @@ zga_phase2_endgame_rebind_summon_gui = {
 			has_variable = zg361_we_m360_receipt_subject
 			has_variable = zg361_we_m360_receipt_cycle
 			has_variable = zg361_we_m360_receipt_case
-			var:zg361_we_m360_receipt_choice = 3
 			var:zg361_we_m360_receipt_owner = root
 			var:zg361_we_m360_receipt_subject = this
 			var:zg361_we_m360_receipt_cycle = var:zg361_case_al_cycle_serial
 			var:zg361_we_m360_receipt_case = var:zg361_case_al_case_serial
-			has_variable = zg361_we_m360_debt_open
-			has_variable = zg361_we_m360_debt_consumed
-			has_variable = zg361_we_m360_debt_due_cycle
-			var:zg361_we_m360_debt_open = 1
-			var:zg361_we_m360_debt_consumed = 0
+			OR = {
+				var:zg361_we_m360_receipt_choice = 2
+				AND = {
+					var:zg361_we_m360_receipt_choice = 3
+					has_variable = zg361_we_m360_debt_open
+					has_variable = zg361_we_m360_debt_consumed
+					has_variable = zg361_we_m360_debt_due_cycle
+					var:zg361_we_m360_debt_open = 1
+					var:zg361_we_m360_debt_consumed = 0
+				}
+			}
 			has_variable = zg361_we_m361_evidence_count
 			has_variable = zg361_we_m361_evidence_ready
 			has_variable = zg361_we_m361_evidence_consumed
