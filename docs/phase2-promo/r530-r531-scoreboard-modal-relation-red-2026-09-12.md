@@ -64,6 +64,18 @@ Root `69194e654e2d9bd11bc21f58d28b23f6f28756c8` and open_kaishek
 The companion sync is documentation-only. The next live action is one fresh DLL
 and one bounded R532/R533 verification; the R531 DLL will not be retried.
 
+The fresh synchronized-root Release build for R532/R533 is GREEN from root
+`73118a285878ca19e229084297d3d8a43ef1fcb9`. All 27 candidate switches are
+OFF. Bridge SHA-256 is
+`3D41E88ABB0FD5CF812D67CB233D2BFD7A01A7661358E7D9375BCFD31E23CF48`,
+injector SHA-256 is
+`6A4E7A045F54771BB027AC8E0B89B6BE131A62D99BCE239CC28BA0A9C1261E2C`,
+and focused-test SHA-256 is
+`6185691B7B9BFA99D3C0620A9AF6C08D56A173768A8D0D20DCAFB05A5A992BEB`
+with exit `0`. Receipt
+`B7BA2A35301A2EDCFB41CF538BDF79A677F6385A444CFB9183237600CCF621F9`
+records no CK3 launch or round consumption.
+
 ## Evidence
 
 - no-launch plan: `21FAC0B551DA0FBDCF614600E5A23F10E0CBAA128F13F18FB29BF7B036888988`
