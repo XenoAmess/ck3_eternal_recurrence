@@ -59,6 +59,10 @@ hash-bound Stage 10 v7 source restore：玩家经理 `27181`、直属上级 `363
 P2 仍为 `0/8`；证据与修复见
 [`r538-r539-stale-ai-manager-capture-contract-red-2026-09-12.md`](r538-r539-stale-ai-manager-capture-contract-red-2026-09-12.md)。
 
+R584–R588 的连续 take 在前四段通过后，于 HC 来源从成熟 `.356` 推进到 `.360` 途中遇到原版
+`ep3_story_cycle_admin_eunuch.8030`，按多选未知事件规则保留 RED 并完整清理，P2 仍为 `0/8`。既有共享原版事件注册表本已包含该事件的 2/3/4 按钮合同；本次补入 exact-build 调用链与 R588 现场，并让 P2 等待门在全部保存域和 native 映射严格吻合时选择最小影响的 authored D/native 3。未知或漂移事件仍在选择前 RED。代码提交、证据哈希、轮次处置和下一次 R589 边界见
+[`r584-r588-eunuch-8030-red-and-contract-recovery-2026-09-13.md`](r584-r588-eunuch-8030-red-and-contract-recovery-2026-09-13.md)。
+
 R467 的 `no_bounded_ai_direct_manager` 现已结合 `380af02` 之后的生产调用链确认为真实 reachability RED：AI 年度 B1 已按玩家限定停止，但旧 Stage10 仍要求 AI 经理或其 AI 上级持有 `review_serial`。最小修复改为玩家经理真实 B1 公示后调度 `.90`，由直属上级作为 owner/root 打开玩家 F/AK，并用独立 evaluation cycle 保持 strict lag；Stage10 与 opener 同时拒绝 AI subject。定向双模式测试与本地静态解析 GREEN，尚待新轮次 R481 单次有界实机到达 `.120`，所以 P1 仍为 8/9、P2 仍锁定。见 [R480 后 Stage10 玩家公示可达性修复](r480-stage10-player-publication-reachability-fix-2026-09-12.md)。
 R434/R439 的零游戏日 selector 只排除了 R432/R159 作为 B3 focused 路线的 AI manager/direct subordinate source，不能判定玩家可见的 Stage 10 `.120` 路线；其中 R439 重复了 09 月 07 日已有的 R159 结论，是一次可避免的验证。R435 只排除 R432 的 Stage 11 terminal 资格；R437 又证明 R398 输入存档本身并未停在 `.242`，因此在零游戏日、零事件输入处停止，没有把 source 误读扩成第二次长跑。两种 Stage 10 角色拓扑、验收 runner 纠正、不重跑边界与下一项 source 要求见
 [`r434-r439-bounded-source-checks-and-stage10-route-correction-2026-09-11.md`](r434-r439-bounded-source-checks-and-stage10-route-correction-2026-09-11.md)。P1 仍为 `6/9`。
