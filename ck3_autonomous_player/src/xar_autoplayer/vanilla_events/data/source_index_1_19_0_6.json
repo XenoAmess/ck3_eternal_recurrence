@@ -2,18 +2,18 @@
   "audit": {
     "ambiguous_definition_count": 0,
     "caller_candidate_file_count": 79,
-    "caller_candidate_reference_count": 522,
+    "caller_candidate_reference_count": 523,
     "definition_file_count": 71,
-    "external_caller_event_count": 149,
+    "external_caller_event_count": 150,
     "missing_definition_count": 0,
     "namespace_mismatch_count": 0,
-    "registered_event_count": 184,
+    "registered_event_count": 185,
     "same_file_only_caller_event_count": 35,
-    "unique_definition_count": 184
+    "unique_definition_count": 185
   },
   "ck3_build": "1.19.0.6",
   "ck3_exe_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
-  "dataset_sha256": "EB04C48C6FD007BA2CB30203433EA4377BD858B33816908AAA269B48B6F0F4EF",
+  "dataset_sha256": "068843AC8DE172F8E087A401162F19ADC22DA6F808BA9BA2B71A4BF7D4843348",
   "events": {
     "adultery.0002": {
       "caller_candidate_resolution": "same-definition-file-only",
@@ -4682,6 +4682,24 @@
         "relative_path": "events/councillor_task_events/spymaster_task_events.txt"
       },
       "namespace": "spymaster_task"
+    },
+    "stress_threshold.1011": {
+      "caller_candidate_resolution": "external-definition-file",
+      "caller_candidates": [
+        {
+          "column": 9,
+          "file_sha256": "35A9B8FC8FE6CDE91EAAD06F9C90AD6FCD41BEEFD317BFF77D3A68430E5DD839",
+          "kind": "exact-token-lexical-candidate",
+          "line": 81,
+          "relative_path": "common/on_action/stress_on_actions.txt"
+        }
+      ],
+      "definition": {
+        "file_sha256": "66538A8FE8C894A52D8EC89B2FC4A45B85B8D1B9464802263E45D582CE1CA42B",
+        "line": 882,
+        "relative_path": "events/stress_events/stress_threshold_events.txt"
+      },
+      "namespace": "stress_threshold"
     },
     "stress_threshold.1721": {
       "caller_candidate_resolution": "external-definition-file",

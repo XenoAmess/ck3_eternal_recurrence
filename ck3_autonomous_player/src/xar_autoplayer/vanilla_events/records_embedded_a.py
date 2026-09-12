@@ -573,6 +573,37 @@ _LEGACY_EMBEDDED_A_VANILLA_TIMELINE_CONTRACTS: Final[
         # the event, and the ordinary 5/8-year recheck is not a hard minimum.
         "occurrence_policy": "repeatable-within-product-observation-window",
     },
+    "stress_threshold.1011": {
+        # CK3 1.19.0.6 wanton-desires mental break. Immediate selects two
+        # coping routes and saves root as stress_character. R498 rendered the
+        # rakish, reclusive, and unconditional endure routes (native 0/1/5).
+        # Endure is the narrowest deterministic choice for this projection:
+        # it changes only the played character's stress, while the other two
+        # routes add a coping trait and invoke brothel or relationship effects.
+        "date_policy": "product-observation-window",
+        "root_character_id": PLAYER_SENTINEL,
+        "character_scopes": {
+            "stress_character": PLAYER_SENTINEL,
+        },
+        "unique_character_scope_excludes": {
+            "neglected_spouse": (PLAYER_SENTINEL,),
+        },
+        "scope_types": {
+            "neglected_spouse": "character",
+        },
+        "boolean_scopes": (),
+        "saved_scope_name_sets": ((
+            "stress_character",
+            "neglected_spouse",
+        ),),
+        "saved_scope_count": 2,
+        "option_count": 3,
+        "snapshot_option_count": 6,
+        "native_option_indices": (0, 1, 5),
+        "selected_option_number": 6,
+        "selected_native_option_index": 5,
+        "occurrence_policy": "repeatable-within-product-observation-window",
+    },
     "stress_threshold_special.1001": {
         # CK3 1.19.0.6 grief mental break after a recorded close death. The
         # immediate block exposes at most two coping routes plus the mutually

@@ -2668,3 +2668,21 @@ py tools/inspect_ck3_save_character_scope.py --melted <gamestate> --discover-roo
 v7 hash 绑定当前 checkpoint、产品树、`ck3_save_player_topology_offline_v1`、`zg361_stage10_player_source_capture_v1`、`zg361_rn_af5_managed_cleanup_v1`、`ck3_character_scope_offline_v1` 和 `ck3_scheduled_event_queue_offline_v1`。准入必须证明：单一 played/current player；玩家经理与直属领主不同；天朝政府和至少 tier 3；live 保存没有推进游戏时间；cleanup GREEN 且 CK3 为零；subject/processing 是相同、唯一、存活的 exact owner/cycle/case/state-7 域；每名 subject 各有一个 `.122 +30d`。
 
 v7 不重放或重新解释旧来源的历史 RED。旧 RED 仍在各自 artifact 中保留；新来源靠自身的 live provenance 与 checkpoint-bound 当前状态取得准入。该收据只允许一次既有 120 日上限的 product attempt，不能单独把 `.120` 或 P1 标为 READY。R495/R496 的实例见 [受管来源捕获 GREEN](phase2-promo/r495-r496-stage10-managed-source-capture-green-2026-09-12.md)。
+
+### R498 `stress_threshold.1011` 原版事件合同与原位热恢复边界（2026-09-12）
+
+Stage 10 的 R498 在 source 后第二个游戏日暂停于 exact-build 原版事件 `stress_threshold.1011`。冻结 RED 为
+`_runtime/p1-stage10-player-publication-r497-r498-0aa1576-20260912/live-artifacts/stage10-player-subject-red.json`
+（SHA-256 `B51B8960C470FA5D76A73724F6791425EF5B23BF4FC10B6D361DF4B6574F392F`）。现场为 root/player
+`27181`、`stress_character=27181`、`neglected_spouse=48337`、snapshot authored count `6`、rendered native
+indices `0/1/5`；选择尚未尝试。
+
+原版 `stress_threshold_events.txt:882-1281` 与 `stress_on_actions.txt:78-93` 证明该事件是一级压力阈值随机池的
+weight-100 分支。当前三条路线中，native0 会添加 rakish 并执行妓院后果，native1 会添加 reclusive 并损伤关系，
+native5 只对玩家增加 opt-out stress 后执行共同阈值清理。共享合同因此只接纳上述 exact scope/option shape，并选择
+authored6/native5。它不接纳隐藏的转换或 athletic 投影，也不把增加压力描述成无效果。
+
+Python-only 合同修复允许当前轮次原位 reload；不改 DLL、游戏文件、启动配置、加载顺序或环境，因此不得为此重启
+CK3 或新建轮次。冻结现场离线回放 `18/18` check GREEN；vanilla-event 相关 normal/optimized 测试均为
+`59 passed, 82 subtests passed`。此处只允许一次同轮次热恢复，不得重发 Stage 10 operator 的一次性启动控制，也不得
+把单事件恢复扩大成长跑。
