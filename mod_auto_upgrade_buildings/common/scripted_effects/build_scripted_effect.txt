@@ -168,8 +168,7 @@ aub_upgrade_chain_archery_ranges_01_effect = {
 				scope:aub_payer = { gold >= expensive_building_tier_4_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = archery_ranges_02
+		upgrade_building_effect = archery_ranges_01
 		if = {
 			limit = { has_building = archery_ranges_02 }
 			aub_pay_gold_building_cost_effect = { GOLD = expensive_building_tier_4_cost }
@@ -184,8 +183,7 @@ aub_upgrade_chain_archery_ranges_01_effect = {
 				scope:aub_payer = { gold >= expensive_building_tier_5_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = archery_ranges_03
+		upgrade_building_effect = archery_ranges_02
 		if = {
 			limit = { has_building = archery_ranges_03 }
 			aub_pay_gold_building_cost_effect = { GOLD = expensive_building_tier_5_cost }
@@ -338,8 +336,7 @@ aub_upgrade_chain_barracks_01_effect = {
 				scope:aub_payer = { gold >= normal_building_tier_2_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = barracks_02
+		upgrade_building_effect = barracks_01
 		if = {
 			limit = { has_building = barracks_02 }
 			aub_pay_gold_building_cost_effect = { GOLD = normal_building_tier_2_cost }
@@ -354,8 +351,7 @@ aub_upgrade_chain_barracks_01_effect = {
 				scope:aub_payer = { gold >= normal_building_tier_3_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = barracks_03
+		upgrade_building_effect = barracks_02
 		if = {
 			limit = { has_building = barracks_03 }
 			aub_pay_gold_building_cost_effect = { GOLD = normal_building_tier_3_cost }
@@ -370,8 +366,7 @@ aub_upgrade_chain_barracks_01_effect = {
 				scope:aub_payer = { gold >= normal_building_tier_4_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = barracks_04
+		upgrade_building_effect = barracks_03
 		if = {
 			limit = { has_building = barracks_04 }
 			aub_pay_gold_building_cost_effect = { GOLD = normal_building_tier_4_cost }
@@ -386,8 +381,7 @@ aub_upgrade_chain_barracks_01_effect = {
 				scope:aub_payer = { gold >= normal_building_tier_5_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = barracks_05
+		upgrade_building_effect = barracks_04
 		if = {
 			limit = { has_building = barracks_05 }
 			aub_pay_gold_building_cost_effect = { GOLD = normal_building_tier_5_cost }
@@ -402,8 +396,7 @@ aub_upgrade_chain_barracks_01_effect = {
 				scope:aub_payer = { gold >= normal_building_tier_6_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = barracks_06
+		upgrade_building_effect = barracks_05
 		if = {
 			limit = { has_building = barracks_06 }
 			aub_pay_gold_building_cost_effect = { GOLD = normal_building_tier_6_cost }
@@ -418,8 +411,7 @@ aub_upgrade_chain_barracks_01_effect = {
 				scope:aub_payer = { gold >= normal_building_tier_7_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = barracks_07
+		upgrade_building_effect = barracks_06
 		if = {
 			limit = { has_building = barracks_07 }
 			aub_pay_gold_building_cost_effect = { GOLD = normal_building_tier_7_cost }
@@ -434,8 +426,7 @@ aub_upgrade_chain_barracks_01_effect = {
 				scope:aub_payer = { gold >= normal_building_tier_8_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = barracks_08
+		upgrade_building_effect = barracks_07
 		if = {
 			limit = { has_building = barracks_08 }
 			aub_pay_gold_building_cost_effect = { GOLD = normal_building_tier_8_cost }
@@ -454,8 +445,7 @@ aub_upgrade_chain_blacksmiths_01_effect = {
 				scope:aub_payer = { gold >= expensive_building_tier_4_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = blacksmiths_02
+		upgrade_building_effect = blacksmiths_01
 		if = {
 			limit = { has_building = blacksmiths_02 }
 			aub_pay_gold_building_cost_effect = { GOLD = expensive_building_tier_4_cost }
@@ -470,8 +460,7 @@ aub_upgrade_chain_blacksmiths_01_effect = {
 				scope:aub_payer = { gold >= expensive_building_tier_5_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = blacksmiths_03
+		upgrade_building_effect = blacksmiths_02
 		if = {
 			limit = { has_building = blacksmiths_03 }
 			aub_pay_gold_building_cost_effect = { GOLD = expensive_building_tier_5_cost }
@@ -490,8 +479,7 @@ aub_upgrade_chain_breweries_01_effect = {
 				scope:aub_payer = { gold >= normal_building_tier_2_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = breweries_02
+		upgrade_building_effect = breweries_01
 		if = {
 			limit = { has_building = breweries_02 }
 			aub_pay_gold_building_cost_effect = { GOLD = normal_building_tier_2_cost }
@@ -506,8 +494,7 @@ aub_upgrade_chain_breweries_01_effect = {
 				scope:aub_payer = { gold >= normal_building_tier_3_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = breweries_03
+		upgrade_building_effect = breweries_02
 		if = {
 			limit = { has_building = breweries_03 }
 			aub_pay_gold_building_cost_effect = { GOLD = normal_building_tier_3_cost }
@@ -522,8 +509,7 @@ aub_upgrade_chain_breweries_01_effect = {
 				scope:aub_payer = { gold >= normal_building_tier_4_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = breweries_04
+		upgrade_building_effect = breweries_03
 		if = {
 			limit = { has_building = breweries_04 }
 			aub_pay_gold_building_cost_effect = { GOLD = normal_building_tier_4_cost }
@@ -538,8 +524,7 @@ aub_upgrade_chain_breweries_01_effect = {
 				scope:aub_payer = { gold >= normal_building_tier_5_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = breweries_05
+		upgrade_building_effect = breweries_04
 		if = {
 			limit = { has_building = breweries_05 }
 			aub_pay_gold_building_cost_effect = { GOLD = normal_building_tier_5_cost }
@@ -554,8 +539,7 @@ aub_upgrade_chain_breweries_01_effect = {
 				scope:aub_payer = { gold >= normal_building_tier_6_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = breweries_06
+		upgrade_building_effect = breweries_05
 		if = {
 			limit = { has_building = breweries_06 }
 			aub_pay_gold_building_cost_effect = { GOLD = normal_building_tier_6_cost }
@@ -570,8 +554,7 @@ aub_upgrade_chain_breweries_01_effect = {
 				scope:aub_payer = { gold >= normal_building_tier_7_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = breweries_07
+		upgrade_building_effect = breweries_06
 		if = {
 			limit = { has_building = breweries_07 }
 			aub_pay_gold_building_cost_effect = { GOLD = normal_building_tier_7_cost }
@@ -586,8 +569,7 @@ aub_upgrade_chain_breweries_01_effect = {
 				scope:aub_payer = { gold >= normal_building_tier_8_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = breweries_08
+		upgrade_building_effect = breweries_07
 		if = {
 			limit = { has_building = breweries_08 }
 			aub_pay_gold_building_cost_effect = { GOLD = normal_building_tier_8_cost }
@@ -606,8 +588,7 @@ aub_upgrade_chain_burial_site_01_effect = {
 				scope:aub_payer = { gold >= expensive_building_tier_4_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = burial_site_02
+		upgrade_building_effect = burial_site_01
 		if = {
 			limit = { has_building = burial_site_02 }
 			aub_pay_gold_building_cost_effect = { GOLD = expensive_building_tier_4_cost }
@@ -622,8 +603,7 @@ aub_upgrade_chain_burial_site_01_effect = {
 				scope:aub_payer = { gold >= expensive_building_tier_5_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = burial_site_03
+		upgrade_building_effect = burial_site_02
 		if = {
 			limit = { has_building = burial_site_03 }
 			aub_pay_gold_building_cost_effect = { GOLD = expensive_building_tier_5_cost }
@@ -642,8 +622,7 @@ aub_upgrade_chain_camel_farms_01_effect = {
 				scope:aub_payer = { gold >= normal_building_tier_2_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = camel_farms_02
+		upgrade_building_effect = camel_farms_01
 		if = {
 			limit = { has_building = camel_farms_02 }
 			aub_pay_gold_building_cost_effect = { GOLD = normal_building_tier_2_cost }
@@ -658,8 +637,7 @@ aub_upgrade_chain_camel_farms_01_effect = {
 				scope:aub_payer = { gold >= normal_building_tier_3_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = camel_farms_03
+		upgrade_building_effect = camel_farms_02
 		if = {
 			limit = { has_building = camel_farms_03 }
 			aub_pay_gold_building_cost_effect = { GOLD = normal_building_tier_3_cost }
@@ -674,8 +652,7 @@ aub_upgrade_chain_camel_farms_01_effect = {
 				scope:aub_payer = { gold >= normal_building_tier_4_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = camel_farms_04
+		upgrade_building_effect = camel_farms_03
 		if = {
 			limit = { has_building = camel_farms_04 }
 			aub_pay_gold_building_cost_effect = { GOLD = normal_building_tier_4_cost }
@@ -690,8 +667,7 @@ aub_upgrade_chain_camel_farms_01_effect = {
 				scope:aub_payer = { gold >= normal_building_tier_5_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = camel_farms_05
+		upgrade_building_effect = camel_farms_04
 		if = {
 			limit = { has_building = camel_farms_05 }
 			aub_pay_gold_building_cost_effect = { GOLD = normal_building_tier_5_cost }
@@ -706,8 +682,7 @@ aub_upgrade_chain_camel_farms_01_effect = {
 				scope:aub_payer = { gold >= normal_building_tier_6_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = camel_farms_06
+		upgrade_building_effect = camel_farms_05
 		if = {
 			limit = { has_building = camel_farms_06 }
 			aub_pay_gold_building_cost_effect = { GOLD = normal_building_tier_6_cost }
@@ -722,8 +697,7 @@ aub_upgrade_chain_camel_farms_01_effect = {
 				scope:aub_payer = { gold >= normal_building_tier_7_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = camel_farms_07
+		upgrade_building_effect = camel_farms_06
 		if = {
 			limit = { has_building = camel_farms_07 }
 			aub_pay_gold_building_cost_effect = { GOLD = normal_building_tier_7_cost }
@@ -738,8 +712,7 @@ aub_upgrade_chain_camel_farms_01_effect = {
 				scope:aub_payer = { gold >= normal_building_tier_8_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = camel_farms_08
+		upgrade_building_effect = camel_farms_07
 		if = {
 			limit = { has_building = camel_farms_08 }
 			aub_pay_gold_building_cost_effect = { GOLD = normal_building_tier_8_cost }
@@ -758,8 +731,7 @@ aub_upgrade_chain_capital_bureau_01_effect = {
 				scope:aub_payer = { gold >= normal_building_tier_2_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = capital_bureau_02
+		upgrade_building_effect = capital_bureau_01
 		if = {
 			limit = { has_building = capital_bureau_02 }
 			aub_pay_gold_building_cost_effect = { GOLD = normal_building_tier_2_cost }
@@ -774,8 +746,7 @@ aub_upgrade_chain_capital_bureau_01_effect = {
 				scope:aub_payer = { gold >= normal_building_tier_3_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = capital_bureau_03
+		upgrade_building_effect = capital_bureau_02
 		if = {
 			limit = { has_building = capital_bureau_03 }
 			aub_pay_gold_building_cost_effect = { GOLD = normal_building_tier_3_cost }
@@ -790,8 +761,7 @@ aub_upgrade_chain_capital_bureau_01_effect = {
 				scope:aub_payer = { gold >= normal_building_tier_4_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = capital_bureau_04
+		upgrade_building_effect = capital_bureau_03
 		if = {
 			limit = { has_building = capital_bureau_04 }
 			aub_pay_gold_building_cost_effect = { GOLD = normal_building_tier_4_cost }
@@ -806,8 +776,7 @@ aub_upgrade_chain_capital_bureau_01_effect = {
 				scope:aub_payer = { gold >= normal_building_tier_5_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = capital_bureau_05
+		upgrade_building_effect = capital_bureau_04
 		if = {
 			limit = { has_building = capital_bureau_05 }
 			aub_pay_gold_building_cost_effect = { GOLD = normal_building_tier_5_cost }
@@ -822,8 +791,7 @@ aub_upgrade_chain_capital_bureau_01_effect = {
 				scope:aub_payer = { gold >= normal_building_tier_6_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = capital_bureau_06
+		upgrade_building_effect = capital_bureau_05
 		if = {
 			limit = { has_building = capital_bureau_06 }
 			aub_pay_gold_building_cost_effect = { GOLD = normal_building_tier_6_cost }
@@ -838,8 +806,7 @@ aub_upgrade_chain_capital_bureau_01_effect = {
 				scope:aub_payer = { gold >= normal_building_tier_7_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = capital_bureau_07
+		upgrade_building_effect = capital_bureau_06
 		if = {
 			limit = { has_building = capital_bureau_07 }
 			aub_pay_gold_building_cost_effect = { GOLD = normal_building_tier_7_cost }
@@ -854,8 +821,7 @@ aub_upgrade_chain_capital_bureau_01_effect = {
 				scope:aub_payer = { gold >= normal_building_tier_8_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = capital_bureau_08
+		upgrade_building_effect = capital_bureau_07
 		if = {
 			limit = { has_building = capital_bureau_08 }
 			aub_pay_gold_building_cost_effect = { GOLD = normal_building_tier_8_cost }
@@ -874,8 +840,7 @@ aub_upgrade_chain_caravanserai_01_effect = {
 				scope:aub_payer = { gold >= expensive_building_tier_2_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = caravanserai_02
+		upgrade_building_effect = caravanserai_01
 		if = {
 			limit = { has_building = caravanserai_02 }
 			aub_pay_gold_building_cost_effect = { GOLD = expensive_building_tier_2_cost }
@@ -890,8 +855,7 @@ aub_upgrade_chain_caravanserai_01_effect = {
 				scope:aub_payer = { gold >= expensive_building_tier_3_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = caravanserai_03
+		upgrade_building_effect = caravanserai_02
 		if = {
 			limit = { has_building = caravanserai_03 }
 			aub_pay_gold_building_cost_effect = { GOLD = expensive_building_tier_3_cost }
@@ -906,8 +870,7 @@ aub_upgrade_chain_caravanserai_01_effect = {
 				scope:aub_payer = { gold >= expensive_building_tier_4_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = caravanserai_04
+		upgrade_building_effect = caravanserai_03
 		if = {
 			limit = { has_building = caravanserai_04 }
 			aub_pay_gold_building_cost_effect = { GOLD = expensive_building_tier_4_cost }
@@ -922,8 +885,7 @@ aub_upgrade_chain_caravanserai_01_effect = {
 				scope:aub_payer = { gold >= expensive_building_tier_5_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = caravanserai_05
+		upgrade_building_effect = caravanserai_04
 		if = {
 			limit = { has_building = caravanserai_05 }
 			aub_pay_gold_building_cost_effect = { GOLD = expensive_building_tier_5_cost }
@@ -938,8 +900,7 @@ aub_upgrade_chain_caravanserai_01_effect = {
 				scope:aub_payer = { gold >= expensive_building_tier_6_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = caravanserai_06
+		upgrade_building_effect = caravanserai_05
 		if = {
 			limit = { has_building = caravanserai_06 }
 			aub_pay_gold_building_cost_effect = { GOLD = expensive_building_tier_6_cost }
@@ -954,8 +915,7 @@ aub_upgrade_chain_caravanserai_01_effect = {
 				scope:aub_payer = { gold >= expensive_building_tier_7_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = caravanserai_07
+		upgrade_building_effect = caravanserai_06
 		if = {
 			limit = { has_building = caravanserai_07 }
 			aub_pay_gold_building_cost_effect = { GOLD = expensive_building_tier_7_cost }
@@ -970,8 +930,7 @@ aub_upgrade_chain_caravanserai_01_effect = {
 				scope:aub_payer = { gold >= expensive_building_tier_8_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = caravanserai_08
+		upgrade_building_effect = caravanserai_07
 		if = {
 			limit = { has_building = caravanserai_08 }
 			aub_pay_gold_building_cost_effect = { GOLD = expensive_building_tier_8_cost }
@@ -990,8 +949,7 @@ aub_upgrade_chain_castle_01_effect = {
 				scope:aub_payer = { gold >= main_building_tier_2_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = castle_02
+		upgrade_building_effect = castle_01
 		if = {
 			limit = { has_building = castle_02 }
 			aub_pay_gold_building_cost_effect = { GOLD = main_building_tier_2_cost }
@@ -1006,8 +964,7 @@ aub_upgrade_chain_castle_01_effect = {
 				scope:aub_payer = { gold >= main_building_tier_3_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = castle_03
+		upgrade_building_effect = castle_02
 		if = {
 			limit = { has_building = castle_03 }
 			aub_pay_gold_building_cost_effect = { GOLD = main_building_tier_3_cost }
@@ -1022,8 +979,7 @@ aub_upgrade_chain_castle_01_effect = {
 				scope:aub_payer = { gold >= main_building_tier_4_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = castle_04
+		upgrade_building_effect = castle_03
 		if = {
 			limit = { has_building = castle_04 }
 			aub_pay_gold_building_cost_effect = { GOLD = main_building_tier_4_cost }
@@ -1042,8 +998,7 @@ aub_upgrade_chain_cereal_fields_01_effect = {
 				scope:aub_payer = { gold >= normal_building_tier_2_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = cereal_fields_02
+		upgrade_building_effect = cereal_fields_01
 		if = {
 			limit = { has_building = cereal_fields_02 }
 			aub_pay_gold_building_cost_effect = { GOLD = normal_building_tier_2_cost }
@@ -1058,8 +1013,7 @@ aub_upgrade_chain_cereal_fields_01_effect = {
 				scope:aub_payer = { gold >= normal_building_tier_3_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = cereal_fields_03
+		upgrade_building_effect = cereal_fields_02
 		if = {
 			limit = { has_building = cereal_fields_03 }
 			aub_pay_gold_building_cost_effect = { GOLD = normal_building_tier_3_cost }
@@ -1074,8 +1028,7 @@ aub_upgrade_chain_cereal_fields_01_effect = {
 				scope:aub_payer = { gold >= normal_building_tier_4_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = cereal_fields_04
+		upgrade_building_effect = cereal_fields_03
 		if = {
 			limit = { has_building = cereal_fields_04 }
 			aub_pay_gold_building_cost_effect = { GOLD = normal_building_tier_4_cost }
@@ -1090,8 +1043,7 @@ aub_upgrade_chain_cereal_fields_01_effect = {
 				scope:aub_payer = { gold >= normal_building_tier_5_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = cereal_fields_05
+		upgrade_building_effect = cereal_fields_04
 		if = {
 			limit = { has_building = cereal_fields_05 }
 			aub_pay_gold_building_cost_effect = { GOLD = normal_building_tier_5_cost }
@@ -1106,8 +1058,7 @@ aub_upgrade_chain_cereal_fields_01_effect = {
 				scope:aub_payer = { gold >= normal_building_tier_6_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = cereal_fields_06
+		upgrade_building_effect = cereal_fields_05
 		if = {
 			limit = { has_building = cereal_fields_06 }
 			aub_pay_gold_building_cost_effect = { GOLD = normal_building_tier_6_cost }
@@ -1122,8 +1073,7 @@ aub_upgrade_chain_cereal_fields_01_effect = {
 				scope:aub_payer = { gold >= normal_building_tier_7_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = cereal_fields_07
+		upgrade_building_effect = cereal_fields_06
 		if = {
 			limit = { has_building = cereal_fields_07 }
 			aub_pay_gold_building_cost_effect = { GOLD = normal_building_tier_7_cost }
@@ -1138,8 +1088,7 @@ aub_upgrade_chain_cereal_fields_01_effect = {
 				scope:aub_payer = { gold >= normal_building_tier_8_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = cereal_fields_08
+		upgrade_building_effect = cereal_fields_07
 		if = {
 			limit = { has_building = cereal_fields_08 }
 			aub_pay_gold_building_cost_effect = { GOLD = normal_building_tier_8_cost }
@@ -1250,8 +1199,7 @@ aub_upgrade_chain_charnel_grounds_01_effect = {
 				scope:aub_payer = { gold >= expensive_building_tier_4_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = charnel_grounds_02
+		upgrade_building_effect = charnel_grounds_01
 		if = {
 			limit = { has_building = charnel_grounds_02 }
 			aub_pay_gold_building_cost_effect = { GOLD = expensive_building_tier_4_cost }
@@ -1266,8 +1214,7 @@ aub_upgrade_chain_charnel_grounds_01_effect = {
 				scope:aub_payer = { gold >= expensive_building_tier_5_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = charnel_grounds_03
+		upgrade_building_effect = charnel_grounds_02
 		if = {
 			limit = { has_building = charnel_grounds_03 }
 			aub_pay_gold_building_cost_effect = { GOLD = expensive_building_tier_5_cost }
@@ -1403,8 +1350,7 @@ aub_upgrade_chain_citadel_shrine_01_effect = {
 				scope:aub_payer = { gold >= normal_building_tier_2_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = citadel_shrine_02
+		upgrade_building_effect = citadel_shrine_01
 		if = {
 			limit = { has_building = citadel_shrine_02 }
 			aub_pay_gold_building_cost_effect = { GOLD = normal_building_tier_2_cost }
@@ -1419,8 +1365,7 @@ aub_upgrade_chain_citadel_shrine_01_effect = {
 				scope:aub_payer = { gold >= normal_building_tier_3_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = citadel_shrine_03
+		upgrade_building_effect = citadel_shrine_02
 		if = {
 			limit = { has_building = citadel_shrine_03 }
 			aub_pay_gold_building_cost_effect = { GOLD = normal_building_tier_3_cost }
@@ -1435,8 +1380,7 @@ aub_upgrade_chain_citadel_shrine_01_effect = {
 				scope:aub_payer = { gold >= normal_building_tier_4_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = citadel_shrine_04
+		upgrade_building_effect = citadel_shrine_03
 		if = {
 			limit = { has_building = citadel_shrine_04 }
 			aub_pay_gold_building_cost_effect = { GOLD = normal_building_tier_4_cost }
@@ -1451,8 +1395,7 @@ aub_upgrade_chain_citadel_shrine_01_effect = {
 				scope:aub_payer = { gold >= normal_building_tier_5_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = citadel_shrine_05
+		upgrade_building_effect = citadel_shrine_04
 		if = {
 			limit = { has_building = citadel_shrine_05 }
 			aub_pay_gold_building_cost_effect = { GOLD = normal_building_tier_5_cost }
@@ -1467,8 +1410,7 @@ aub_upgrade_chain_citadel_shrine_01_effect = {
 				scope:aub_payer = { gold >= normal_building_tier_6_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = citadel_shrine_06
+		upgrade_building_effect = citadel_shrine_05
 		if = {
 			limit = { has_building = citadel_shrine_06 }
 			aub_pay_gold_building_cost_effect = { GOLD = normal_building_tier_6_cost }
@@ -1483,8 +1425,7 @@ aub_upgrade_chain_citadel_shrine_01_effect = {
 				scope:aub_payer = { gold >= normal_building_tier_7_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = citadel_shrine_07
+		upgrade_building_effect = citadel_shrine_06
 		if = {
 			limit = { has_building = citadel_shrine_07 }
 			aub_pay_gold_building_cost_effect = { GOLD = normal_building_tier_7_cost }
@@ -1499,8 +1440,7 @@ aub_upgrade_chain_citadel_shrine_01_effect = {
 				scope:aub_payer = { gold >= normal_building_tier_8_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = citadel_shrine_08
+		upgrade_building_effect = citadel_shrine_07
 		if = {
 			limit = { has_building = citadel_shrine_08 }
 			aub_pay_gold_building_cost_effect = { GOLD = normal_building_tier_8_cost }
@@ -1544,8 +1484,7 @@ aub_upgrade_chain_city_01_effect = {
 				scope:aub_payer = { gold >= main_building_tier_2_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = city_02
+		upgrade_building_effect = city_01
 		if = {
 			limit = { has_building = city_02 }
 			aub_pay_gold_building_cost_effect = { GOLD = main_building_tier_2_cost }
@@ -1560,8 +1499,7 @@ aub_upgrade_chain_city_01_effect = {
 				scope:aub_payer = { gold >= main_building_tier_3_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = city_03
+		upgrade_building_effect = city_02
 		if = {
 			limit = { has_building = city_03 }
 			aub_pay_gold_building_cost_effect = { GOLD = main_building_tier_3_cost }
@@ -1576,8 +1514,7 @@ aub_upgrade_chain_city_01_effect = {
 				scope:aub_payer = { gold >= main_building_tier_4_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = city_04
+		upgrade_building_effect = city_03
 		if = {
 			limit = { has_building = city_04 }
 			aub_pay_gold_building_cost_effect = { GOLD = main_building_tier_4_cost }
@@ -1621,8 +1558,7 @@ aub_upgrade_chain_common_tradeport_01_effect = {
 				scope:aub_payer = { gold >= normal_building_tier_2_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = common_tradeport_02
+		upgrade_building_effect = common_tradeport_01
 		if = {
 			limit = { has_building = common_tradeport_02 }
 			aub_pay_gold_building_cost_effect = { GOLD = normal_building_tier_2_cost }
@@ -1637,8 +1573,7 @@ aub_upgrade_chain_common_tradeport_01_effect = {
 				scope:aub_payer = { gold >= normal_building_tier_3_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = common_tradeport_03
+		upgrade_building_effect = common_tradeport_02
 		if = {
 			limit = { has_building = common_tradeport_03 }
 			aub_pay_gold_building_cost_effect = { GOLD = normal_building_tier_3_cost }
@@ -1653,8 +1588,7 @@ aub_upgrade_chain_common_tradeport_01_effect = {
 				scope:aub_payer = { gold >= normal_building_tier_4_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = common_tradeport_04
+		upgrade_building_effect = common_tradeport_03
 		if = {
 			limit = { has_building = common_tradeport_04 }
 			aub_pay_gold_building_cost_effect = { GOLD = normal_building_tier_4_cost }
@@ -1669,8 +1603,7 @@ aub_upgrade_chain_common_tradeport_01_effect = {
 				scope:aub_payer = { gold >= normal_building_tier_5_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = common_tradeport_05
+		upgrade_building_effect = common_tradeport_04
 		if = {
 			limit = { has_building = common_tradeport_05 }
 			aub_pay_gold_building_cost_effect = { GOLD = normal_building_tier_5_cost }
@@ -1685,8 +1618,7 @@ aub_upgrade_chain_common_tradeport_01_effect = {
 				scope:aub_payer = { gold >= normal_building_tier_6_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = common_tradeport_06
+		upgrade_building_effect = common_tradeport_05
 		if = {
 			limit = { has_building = common_tradeport_06 }
 			aub_pay_gold_building_cost_effect = { GOLD = normal_building_tier_6_cost }
@@ -1701,8 +1633,7 @@ aub_upgrade_chain_common_tradeport_01_effect = {
 				scope:aub_payer = { gold >= normal_building_tier_7_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = common_tradeport_07
+		upgrade_building_effect = common_tradeport_06
 		if = {
 			limit = { has_building = common_tradeport_07 }
 			aub_pay_gold_building_cost_effect = { GOLD = normal_building_tier_7_cost }
@@ -1717,8 +1648,7 @@ aub_upgrade_chain_common_tradeport_01_effect = {
 				scope:aub_payer = { gold >= normal_building_tier_8_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = common_tradeport_08
+		upgrade_building_effect = common_tradeport_07
 		if = {
 			limit = { has_building = common_tradeport_08 }
 			aub_pay_gold_building_cost_effect = { GOLD = normal_building_tier_8_cost }
@@ -1737,8 +1667,7 @@ aub_upgrade_chain_curtain_walls_01_effect = {
 				scope:aub_payer = { gold >= cheap_building_tier_2_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = curtain_walls_02
+		upgrade_building_effect = curtain_walls_01
 		if = {
 			limit = { has_building = curtain_walls_02 }
 			aub_pay_gold_building_cost_effect = { GOLD = cheap_building_tier_2_cost }
@@ -1753,8 +1682,7 @@ aub_upgrade_chain_curtain_walls_01_effect = {
 				scope:aub_payer = { gold >= cheap_building_tier_3_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = curtain_walls_03
+		upgrade_building_effect = curtain_walls_02
 		if = {
 			limit = { has_building = curtain_walls_03 }
 			aub_pay_gold_building_cost_effect = { GOLD = cheap_building_tier_3_cost }
@@ -1769,8 +1697,7 @@ aub_upgrade_chain_curtain_walls_01_effect = {
 				scope:aub_payer = { gold >= cheap_building_tier_4_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = curtain_walls_04
+		upgrade_building_effect = curtain_walls_03
 		if = {
 			limit = { has_building = curtain_walls_04 }
 			aub_pay_gold_building_cost_effect = { GOLD = cheap_building_tier_4_cost }
@@ -1785,8 +1712,7 @@ aub_upgrade_chain_curtain_walls_01_effect = {
 				scope:aub_payer = { gold >= cheap_building_tier_5_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = curtain_walls_05
+		upgrade_building_effect = curtain_walls_04
 		if = {
 			limit = { has_building = curtain_walls_05 }
 			aub_pay_gold_building_cost_effect = { GOLD = cheap_building_tier_5_cost }
@@ -1801,8 +1727,7 @@ aub_upgrade_chain_curtain_walls_01_effect = {
 				scope:aub_payer = { gold >= cheap_building_tier_6_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = curtain_walls_06
+		upgrade_building_effect = curtain_walls_05
 		if = {
 			limit = { has_building = curtain_walls_06 }
 			aub_pay_gold_building_cost_effect = { GOLD = cheap_building_tier_6_cost }
@@ -1817,8 +1742,7 @@ aub_upgrade_chain_curtain_walls_01_effect = {
 				scope:aub_payer = { gold >= cheap_building_tier_7_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = curtain_walls_07
+		upgrade_building_effect = curtain_walls_06
 		if = {
 			limit = { has_building = curtain_walls_07 }
 			aub_pay_gold_building_cost_effect = { GOLD = cheap_building_tier_7_cost }
@@ -1833,8 +1757,7 @@ aub_upgrade_chain_curtain_walls_01_effect = {
 				scope:aub_payer = { gold >= cheap_building_tier_8_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = curtain_walls_08
+		upgrade_building_effect = curtain_walls_07
 		if = {
 			limit = { has_building = curtain_walls_08 }
 			aub_pay_gold_building_cost_effect = { GOLD = cheap_building_tier_8_cost }
@@ -1946,8 +1869,7 @@ aub_upgrade_chain_dragon_kiln_01_effect = {
 				scope:aub_payer = { gold >= expensive_building_tier_4_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = dragon_kiln_02
+		upgrade_building_effect = dragon_kiln_01
 		if = {
 			limit = { has_building = dragon_kiln_02 }
 			aub_pay_gold_building_cost_effect = { GOLD = expensive_building_tier_4_cost }
@@ -1962,8 +1884,7 @@ aub_upgrade_chain_dragon_kiln_01_effect = {
 				scope:aub_payer = { gold >= expensive_building_tier_5_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = dragon_kiln_03
+		upgrade_building_effect = dragon_kiln_02
 		if = {
 			limit = { has_building = dragon_kiln_03 }
 			aub_pay_gold_building_cost_effect = { GOLD = expensive_building_tier_5_cost }
@@ -2166,8 +2087,7 @@ aub_upgrade_chain_elephant_pens_01_effect = {
 				scope:aub_payer = { gold >= normal_building_tier_2_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = elephant_pens_02
+		upgrade_building_effect = elephant_pens_01
 		if = {
 			limit = { has_building = elephant_pens_02 }
 			aub_pay_gold_building_cost_effect = { GOLD = normal_building_tier_2_cost }
@@ -2182,8 +2102,7 @@ aub_upgrade_chain_elephant_pens_01_effect = {
 				scope:aub_payer = { gold >= normal_building_tier_3_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = elephant_pens_03
+		upgrade_building_effect = elephant_pens_02
 		if = {
 			limit = { has_building = elephant_pens_03 }
 			aub_pay_gold_building_cost_effect = { GOLD = normal_building_tier_3_cost }
@@ -2198,8 +2117,7 @@ aub_upgrade_chain_elephant_pens_01_effect = {
 				scope:aub_payer = { gold >= normal_building_tier_4_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = elephant_pens_04
+		upgrade_building_effect = elephant_pens_03
 		if = {
 			limit = { has_building = elephant_pens_04 }
 			aub_pay_gold_building_cost_effect = { GOLD = normal_building_tier_4_cost }
@@ -2214,8 +2132,7 @@ aub_upgrade_chain_elephant_pens_01_effect = {
 				scope:aub_payer = { gold >= normal_building_tier_5_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = elephant_pens_05
+		upgrade_building_effect = elephant_pens_04
 		if = {
 			limit = { has_building = elephant_pens_05 }
 			aub_pay_gold_building_cost_effect = { GOLD = normal_building_tier_5_cost }
@@ -2230,8 +2147,7 @@ aub_upgrade_chain_elephant_pens_01_effect = {
 				scope:aub_payer = { gold >= normal_building_tier_6_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = elephant_pens_06
+		upgrade_building_effect = elephant_pens_05
 		if = {
 			limit = { has_building = elephant_pens_06 }
 			aub_pay_gold_building_cost_effect = { GOLD = normal_building_tier_6_cost }
@@ -2246,8 +2162,7 @@ aub_upgrade_chain_elephant_pens_01_effect = {
 				scope:aub_payer = { gold >= normal_building_tier_7_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = elephant_pens_07
+		upgrade_building_effect = elephant_pens_06
 		if = {
 			limit = { has_building = elephant_pens_07 }
 			aub_pay_gold_building_cost_effect = { GOLD = normal_building_tier_7_cost }
@@ -2262,8 +2177,7 @@ aub_upgrade_chain_elephant_pens_01_effect = {
 				scope:aub_payer = { gold >= normal_building_tier_8_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = elephant_pens_08
+		upgrade_building_effect = elephant_pens_07
 		if = {
 			limit = { has_building = elephant_pens_08 }
 			aub_pay_gold_building_cost_effect = { GOLD = normal_building_tier_8_cost }
@@ -2282,8 +2196,7 @@ aub_upgrade_chain_examination_hall_01_effect = {
 				scope:aub_payer = { gold >= expensive_building_tier_4_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = examination_hall_02
+		upgrade_building_effect = examination_hall_01
 		if = {
 			limit = { has_building = examination_hall_02 }
 			aub_pay_gold_building_cost_effect = { GOLD = expensive_building_tier_4_cost }
@@ -2298,8 +2211,7 @@ aub_upgrade_chain_examination_hall_01_effect = {
 				scope:aub_payer = { gold >= expensive_building_tier_5_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = examination_hall_03
+		upgrade_building_effect = examination_hall_02
 		if = {
 			limit = { has_building = examination_hall_03 }
 			aub_pay_gold_building_cost_effect = { GOLD = expensive_building_tier_5_cost }
@@ -2385,8 +2297,7 @@ aub_upgrade_chain_farm_estates_01_effect = {
 				scope:aub_payer = { gold >= normal_building_tier_2_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = farm_estates_02
+		upgrade_building_effect = farm_estates_01
 		if = {
 			limit = { has_building = farm_estates_02 }
 			aub_pay_gold_building_cost_effect = { GOLD = normal_building_tier_2_cost }
@@ -2401,8 +2312,7 @@ aub_upgrade_chain_farm_estates_01_effect = {
 				scope:aub_payer = { gold >= normal_building_tier_3_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = farm_estates_03
+		upgrade_building_effect = farm_estates_02
 		if = {
 			limit = { has_building = farm_estates_03 }
 			aub_pay_gold_building_cost_effect = { GOLD = normal_building_tier_3_cost }
@@ -2417,8 +2327,7 @@ aub_upgrade_chain_farm_estates_01_effect = {
 				scope:aub_payer = { gold >= normal_building_tier_4_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = farm_estates_04
+		upgrade_building_effect = farm_estates_03
 		if = {
 			limit = { has_building = farm_estates_04 }
 			aub_pay_gold_building_cost_effect = { GOLD = normal_building_tier_4_cost }
@@ -2433,8 +2342,7 @@ aub_upgrade_chain_farm_estates_01_effect = {
 				scope:aub_payer = { gold >= normal_building_tier_5_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = farm_estates_05
+		upgrade_building_effect = farm_estates_04
 		if = {
 			limit = { has_building = farm_estates_05 }
 			aub_pay_gold_building_cost_effect = { GOLD = normal_building_tier_5_cost }
@@ -2449,8 +2357,7 @@ aub_upgrade_chain_farm_estates_01_effect = {
 				scope:aub_payer = { gold >= normal_building_tier_6_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = farm_estates_06
+		upgrade_building_effect = farm_estates_05
 		if = {
 			limit = { has_building = farm_estates_06 }
 			aub_pay_gold_building_cost_effect = { GOLD = normal_building_tier_6_cost }
@@ -2465,8 +2372,7 @@ aub_upgrade_chain_farm_estates_01_effect = {
 				scope:aub_payer = { gold >= normal_building_tier_7_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = farm_estates_07
+		upgrade_building_effect = farm_estates_06
 		if = {
 			limit = { has_building = farm_estates_07 }
 			aub_pay_gold_building_cost_effect = { GOLD = normal_building_tier_7_cost }
@@ -2481,8 +2387,7 @@ aub_upgrade_chain_farm_estates_01_effect = {
 				scope:aub_payer = { gold >= normal_building_tier_8_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = farm_estates_08
+		upgrade_building_effect = farm_estates_07
 		if = {
 			limit = { has_building = farm_estates_08 }
 			aub_pay_gold_building_cost_effect = { GOLD = normal_building_tier_8_cost }
@@ -2748,8 +2653,7 @@ aub_upgrade_chain_guild_halls_01_effect = {
 				scope:aub_payer = { gold >= normal_building_tier_2_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = guild_halls_02
+		upgrade_building_effect = guild_halls_01
 		if = {
 			limit = { has_building = guild_halls_02 }
 			aub_pay_gold_building_cost_effect = { GOLD = normal_building_tier_2_cost }
@@ -2764,8 +2668,7 @@ aub_upgrade_chain_guild_halls_01_effect = {
 				scope:aub_payer = { gold >= normal_building_tier_3_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = guild_halls_03
+		upgrade_building_effect = guild_halls_02
 		if = {
 			limit = { has_building = guild_halls_03 }
 			aub_pay_gold_building_cost_effect = { GOLD = normal_building_tier_3_cost }
@@ -2780,8 +2683,7 @@ aub_upgrade_chain_guild_halls_01_effect = {
 				scope:aub_payer = { gold >= normal_building_tier_4_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = guild_halls_04
+		upgrade_building_effect = guild_halls_03
 		if = {
 			limit = { has_building = guild_halls_04 }
 			aub_pay_gold_building_cost_effect = { GOLD = normal_building_tier_4_cost }
@@ -2796,8 +2698,7 @@ aub_upgrade_chain_guild_halls_01_effect = {
 				scope:aub_payer = { gold >= normal_building_tier_5_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = guild_halls_05
+		upgrade_building_effect = guild_halls_04
 		if = {
 			limit = { has_building = guild_halls_05 }
 			aub_pay_gold_building_cost_effect = { GOLD = normal_building_tier_5_cost }
@@ -2812,8 +2713,7 @@ aub_upgrade_chain_guild_halls_01_effect = {
 				scope:aub_payer = { gold >= normal_building_tier_6_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = guild_halls_06
+		upgrade_building_effect = guild_halls_05
 		if = {
 			limit = { has_building = guild_halls_06 }
 			aub_pay_gold_building_cost_effect = { GOLD = normal_building_tier_6_cost }
@@ -2828,8 +2728,7 @@ aub_upgrade_chain_guild_halls_01_effect = {
 				scope:aub_payer = { gold >= normal_building_tier_7_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = guild_halls_07
+		upgrade_building_effect = guild_halls_06
 		if = {
 			limit = { has_building = guild_halls_07 }
 			aub_pay_gold_building_cost_effect = { GOLD = normal_building_tier_7_cost }
@@ -2844,8 +2743,7 @@ aub_upgrade_chain_guild_halls_01_effect = {
 				scope:aub_payer = { gold >= normal_building_tier_8_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = guild_halls_08
+		upgrade_building_effect = guild_halls_07
 		if = {
 			limit = { has_building = guild_halls_08 }
 			aub_pay_gold_building_cost_effect = { GOLD = normal_building_tier_8_cost }
@@ -3229,8 +3127,7 @@ aub_upgrade_chain_hill_farms_01_effect = {
 				scope:aub_payer = { gold >= cheap_building_tier_2_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = hill_farms_02
+		upgrade_building_effect = hill_farms_01
 		if = {
 			limit = { has_building = hill_farms_02 }
 			aub_pay_gold_building_cost_effect = { GOLD = cheap_building_tier_2_cost }
@@ -3245,8 +3142,7 @@ aub_upgrade_chain_hill_farms_01_effect = {
 				scope:aub_payer = { gold >= cheap_building_tier_3_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = hill_farms_03
+		upgrade_building_effect = hill_farms_02
 		if = {
 			limit = { has_building = hill_farms_03 }
 			aub_pay_gold_building_cost_effect = { GOLD = cheap_building_tier_3_cost }
@@ -3261,8 +3157,7 @@ aub_upgrade_chain_hill_farms_01_effect = {
 				scope:aub_payer = { gold >= cheap_building_tier_4_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = hill_farms_04
+		upgrade_building_effect = hill_farms_03
 		if = {
 			limit = { has_building = hill_farms_04 }
 			aub_pay_gold_building_cost_effect = { GOLD = cheap_building_tier_4_cost }
@@ -3277,8 +3172,7 @@ aub_upgrade_chain_hill_farms_01_effect = {
 				scope:aub_payer = { gold >= cheap_building_tier_5_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = hill_farms_05
+		upgrade_building_effect = hill_farms_04
 		if = {
 			limit = { has_building = hill_farms_05 }
 			aub_pay_gold_building_cost_effect = { GOLD = cheap_building_tier_5_cost }
@@ -3293,8 +3187,7 @@ aub_upgrade_chain_hill_farms_01_effect = {
 				scope:aub_payer = { gold >= cheap_building_tier_6_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = hill_farms_06
+		upgrade_building_effect = hill_farms_05
 		if = {
 			limit = { has_building = hill_farms_06 }
 			aub_pay_gold_building_cost_effect = { GOLD = cheap_building_tier_6_cost }
@@ -3309,8 +3202,7 @@ aub_upgrade_chain_hill_farms_01_effect = {
 				scope:aub_payer = { gold >= cheap_building_tier_7_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = hill_farms_07
+		upgrade_building_effect = hill_farms_06
 		if = {
 			limit = { has_building = hill_farms_07 }
 			aub_pay_gold_building_cost_effect = { GOLD = cheap_building_tier_7_cost }
@@ -3325,8 +3217,7 @@ aub_upgrade_chain_hill_farms_01_effect = {
 				scope:aub_payer = { gold >= cheap_building_tier_8_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = hill_farms_08
+		upgrade_building_effect = hill_farms_07
 		if = {
 			limit = { has_building = hill_farms_08 }
 			aub_pay_gold_building_cost_effect = { GOLD = cheap_building_tier_8_cost }
@@ -3345,8 +3236,7 @@ aub_upgrade_chain_hill_forts_01_effect = {
 				scope:aub_payer = { gold >= cheap_building_tier_2_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = hill_forts_02
+		upgrade_building_effect = hill_forts_01
 		if = {
 			limit = { has_building = hill_forts_02 }
 			aub_pay_gold_building_cost_effect = { GOLD = cheap_building_tier_2_cost }
@@ -3361,8 +3251,7 @@ aub_upgrade_chain_hill_forts_01_effect = {
 				scope:aub_payer = { gold >= cheap_building_tier_3_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = hill_forts_03
+		upgrade_building_effect = hill_forts_02
 		if = {
 			limit = { has_building = hill_forts_03 }
 			aub_pay_gold_building_cost_effect = { GOLD = cheap_building_tier_3_cost }
@@ -3377,8 +3266,7 @@ aub_upgrade_chain_hill_forts_01_effect = {
 				scope:aub_payer = { gold >= cheap_building_tier_4_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = hill_forts_04
+		upgrade_building_effect = hill_forts_03
 		if = {
 			limit = { has_building = hill_forts_04 }
 			aub_pay_gold_building_cost_effect = { GOLD = cheap_building_tier_4_cost }
@@ -3393,8 +3281,7 @@ aub_upgrade_chain_hill_forts_01_effect = {
 				scope:aub_payer = { gold >= cheap_building_tier_5_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = hill_forts_05
+		upgrade_building_effect = hill_forts_04
 		if = {
 			limit = { has_building = hill_forts_05 }
 			aub_pay_gold_building_cost_effect = { GOLD = cheap_building_tier_5_cost }
@@ -3409,8 +3296,7 @@ aub_upgrade_chain_hill_forts_01_effect = {
 				scope:aub_payer = { gold >= cheap_building_tier_6_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = hill_forts_06
+		upgrade_building_effect = hill_forts_05
 		if = {
 			limit = { has_building = hill_forts_06 }
 			aub_pay_gold_building_cost_effect = { GOLD = cheap_building_tier_6_cost }
@@ -3425,8 +3311,7 @@ aub_upgrade_chain_hill_forts_01_effect = {
 				scope:aub_payer = { gold >= cheap_building_tier_7_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = hill_forts_07
+		upgrade_building_effect = hill_forts_06
 		if = {
 			limit = { has_building = hill_forts_07 }
 			aub_pay_gold_building_cost_effect = { GOLD = cheap_building_tier_7_cost }
@@ -3441,8 +3326,7 @@ aub_upgrade_chain_hill_forts_01_effect = {
 				scope:aub_payer = { gold >= cheap_building_tier_8_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = hill_forts_08
+		upgrade_building_effect = hill_forts_07
 		if = {
 			limit = { has_building = hill_forts_08 }
 			aub_pay_gold_building_cost_effect = { GOLD = cheap_building_tier_8_cost }
@@ -3461,8 +3345,7 @@ aub_upgrade_chain_hillside_grazing_01_effect = {
 				scope:aub_payer = { gold >= cheap_building_tier_2_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = hillside_grazing_02
+		upgrade_building_effect = hillside_grazing_01
 		if = {
 			limit = { has_building = hillside_grazing_02 }
 			aub_pay_gold_building_cost_effect = { GOLD = cheap_building_tier_2_cost }
@@ -3477,8 +3360,7 @@ aub_upgrade_chain_hillside_grazing_01_effect = {
 				scope:aub_payer = { gold >= cheap_building_tier_3_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = hillside_grazing_03
+		upgrade_building_effect = hillside_grazing_02
 		if = {
 			limit = { has_building = hillside_grazing_03 }
 			aub_pay_gold_building_cost_effect = { GOLD = cheap_building_tier_3_cost }
@@ -3493,8 +3375,7 @@ aub_upgrade_chain_hillside_grazing_01_effect = {
 				scope:aub_payer = { gold >= cheap_building_tier_4_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = hillside_grazing_04
+		upgrade_building_effect = hillside_grazing_03
 		if = {
 			limit = { has_building = hillside_grazing_04 }
 			aub_pay_gold_building_cost_effect = { GOLD = cheap_building_tier_4_cost }
@@ -3509,8 +3390,7 @@ aub_upgrade_chain_hillside_grazing_01_effect = {
 				scope:aub_payer = { gold >= cheap_building_tier_5_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = hillside_grazing_05
+		upgrade_building_effect = hillside_grazing_04
 		if = {
 			limit = { has_building = hillside_grazing_05 }
 			aub_pay_gold_building_cost_effect = { GOLD = cheap_building_tier_5_cost }
@@ -3525,8 +3405,7 @@ aub_upgrade_chain_hillside_grazing_01_effect = {
 				scope:aub_payer = { gold >= cheap_building_tier_6_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = hillside_grazing_06
+		upgrade_building_effect = hillside_grazing_05
 		if = {
 			limit = { has_building = hillside_grazing_06 }
 			aub_pay_gold_building_cost_effect = { GOLD = cheap_building_tier_6_cost }
@@ -3541,8 +3420,7 @@ aub_upgrade_chain_hillside_grazing_01_effect = {
 				scope:aub_payer = { gold >= cheap_building_tier_7_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = hillside_grazing_07
+		upgrade_building_effect = hillside_grazing_06
 		if = {
 			limit = { has_building = hillside_grazing_07 }
 			aub_pay_gold_building_cost_effect = { GOLD = cheap_building_tier_7_cost }
@@ -3557,8 +3435,7 @@ aub_upgrade_chain_hillside_grazing_01_effect = {
 				scope:aub_payer = { gold >= cheap_building_tier_8_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = hillside_grazing_08
+		upgrade_building_effect = hillside_grazing_07
 		if = {
 			limit = { has_building = hillside_grazing_08 }
 			aub_pay_gold_building_cost_effect = { GOLD = cheap_building_tier_8_cost }
@@ -3623,8 +3500,7 @@ aub_upgrade_chain_horse_pastures_01_effect = {
 				scope:aub_payer = { gold >= cheap_building_tier_2_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = horse_pastures_02
+		upgrade_building_effect = horse_pastures_01
 		if = {
 			limit = { has_building = horse_pastures_02 }
 			aub_pay_gold_building_cost_effect = { GOLD = cheap_building_tier_2_cost }
@@ -3639,8 +3515,7 @@ aub_upgrade_chain_horse_pastures_01_effect = {
 				scope:aub_payer = { gold >= cheap_building_tier_3_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = horse_pastures_03
+		upgrade_building_effect = horse_pastures_02
 		if = {
 			limit = { has_building = horse_pastures_03 }
 			aub_pay_gold_building_cost_effect = { GOLD = cheap_building_tier_3_cost }
@@ -3655,8 +3530,7 @@ aub_upgrade_chain_horse_pastures_01_effect = {
 				scope:aub_payer = { gold >= cheap_building_tier_4_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = horse_pastures_04
+		upgrade_building_effect = horse_pastures_03
 		if = {
 			limit = { has_building = horse_pastures_04 }
 			aub_pay_gold_building_cost_effect = { GOLD = cheap_building_tier_4_cost }
@@ -3671,8 +3545,7 @@ aub_upgrade_chain_horse_pastures_01_effect = {
 				scope:aub_payer = { gold >= cheap_building_tier_5_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = horse_pastures_05
+		upgrade_building_effect = horse_pastures_04
 		if = {
 			limit = { has_building = horse_pastures_05 }
 			aub_pay_gold_building_cost_effect = { GOLD = cheap_building_tier_5_cost }
@@ -3687,8 +3560,7 @@ aub_upgrade_chain_horse_pastures_01_effect = {
 				scope:aub_payer = { gold >= cheap_building_tier_6_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = horse_pastures_06
+		upgrade_building_effect = horse_pastures_05
 		if = {
 			limit = { has_building = horse_pastures_06 }
 			aub_pay_gold_building_cost_effect = { GOLD = cheap_building_tier_6_cost }
@@ -3703,8 +3575,7 @@ aub_upgrade_chain_horse_pastures_01_effect = {
 				scope:aub_payer = { gold >= cheap_building_tier_7_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = horse_pastures_07
+		upgrade_building_effect = horse_pastures_06
 		if = {
 			limit = { has_building = horse_pastures_07 }
 			aub_pay_gold_building_cost_effect = { GOLD = cheap_building_tier_7_cost }
@@ -3719,8 +3590,7 @@ aub_upgrade_chain_horse_pastures_01_effect = {
 				scope:aub_payer = { gold >= cheap_building_tier_8_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = horse_pastures_08
+		upgrade_building_effect = horse_pastures_07
 		if = {
 			limit = { has_building = horse_pastures_08 }
 			aub_pay_gold_building_cost_effect = { GOLD = cheap_building_tier_8_cost }
@@ -3739,8 +3609,7 @@ aub_upgrade_chain_hospices_01_effect = {
 				scope:aub_payer = { gold >= normal_building_tier_2_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = hospices_02
+		upgrade_building_effect = hospices_01
 		if = {
 			limit = { has_building = hospices_02 }
 			aub_pay_gold_building_cost_effect = { GOLD = normal_building_tier_2_cost }
@@ -3755,8 +3624,7 @@ aub_upgrade_chain_hospices_01_effect = {
 				scope:aub_payer = { gold >= normal_building_tier_3_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = hospices_03
+		upgrade_building_effect = hospices_02
 		if = {
 			limit = { has_building = hospices_03 }
 			aub_pay_gold_building_cost_effect = { GOLD = normal_building_tier_3_cost }
@@ -3771,8 +3639,7 @@ aub_upgrade_chain_hospices_01_effect = {
 				scope:aub_payer = { gold >= normal_building_tier_4_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = hospices_04
+		upgrade_building_effect = hospices_03
 		if = {
 			limit = { has_building = hospices_04 }
 			aub_pay_gold_building_cost_effect = { GOLD = normal_building_tier_4_cost }
@@ -3787,8 +3654,7 @@ aub_upgrade_chain_hospices_01_effect = {
 				scope:aub_payer = { gold >= normal_building_tier_5_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = hospices_05
+		upgrade_building_effect = hospices_04
 		if = {
 			limit = { has_building = hospices_05 }
 			aub_pay_gold_building_cost_effect = { GOLD = normal_building_tier_5_cost }
@@ -3803,8 +3669,7 @@ aub_upgrade_chain_hospices_01_effect = {
 				scope:aub_payer = { gold >= normal_building_tier_6_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = hospices_06
+		upgrade_building_effect = hospices_05
 		if = {
 			limit = { has_building = hospices_06 }
 			aub_pay_gold_building_cost_effect = { GOLD = normal_building_tier_6_cost }
@@ -3819,8 +3684,7 @@ aub_upgrade_chain_hospices_01_effect = {
 				scope:aub_payer = { gold >= normal_building_tier_7_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = hospices_07
+		upgrade_building_effect = hospices_06
 		if = {
 			limit = { has_building = hospices_07 }
 			aub_pay_gold_building_cost_effect = { GOLD = normal_building_tier_7_cost }
@@ -3835,8 +3699,7 @@ aub_upgrade_chain_hospices_01_effect = {
 				scope:aub_payer = { gold >= normal_building_tier_8_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = hospices_08
+		upgrade_building_effect = hospices_07
 		if = {
 			limit = { has_building = hospices_08 }
 			aub_pay_gold_building_cost_effect = { GOLD = normal_building_tier_8_cost }
@@ -3947,8 +3810,7 @@ aub_upgrade_chain_hunting_grounds_01_effect = {
 				scope:aub_payer = { gold >= cheap_building_tier_2_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = hunting_grounds_02
+		upgrade_building_effect = hunting_grounds_01
 		if = {
 			limit = { has_building = hunting_grounds_02 }
 			aub_pay_gold_building_cost_effect = { GOLD = cheap_building_tier_2_cost }
@@ -3963,8 +3825,7 @@ aub_upgrade_chain_hunting_grounds_01_effect = {
 				scope:aub_payer = { gold >= cheap_building_tier_3_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = hunting_grounds_03
+		upgrade_building_effect = hunting_grounds_02
 		if = {
 			limit = { has_building = hunting_grounds_03 }
 			aub_pay_gold_building_cost_effect = { GOLD = cheap_building_tier_3_cost }
@@ -3979,8 +3840,7 @@ aub_upgrade_chain_hunting_grounds_01_effect = {
 				scope:aub_payer = { gold >= cheap_building_tier_4_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = hunting_grounds_04
+		upgrade_building_effect = hunting_grounds_03
 		if = {
 			limit = { has_building = hunting_grounds_04 }
 			aub_pay_gold_building_cost_effect = { GOLD = cheap_building_tier_4_cost }
@@ -3995,8 +3855,7 @@ aub_upgrade_chain_hunting_grounds_01_effect = {
 				scope:aub_payer = { gold >= cheap_building_tier_5_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = hunting_grounds_05
+		upgrade_building_effect = hunting_grounds_04
 		if = {
 			limit = { has_building = hunting_grounds_05 }
 			aub_pay_gold_building_cost_effect = { GOLD = cheap_building_tier_5_cost }
@@ -4011,8 +3870,7 @@ aub_upgrade_chain_hunting_grounds_01_effect = {
 				scope:aub_payer = { gold >= cheap_building_tier_6_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = hunting_grounds_06
+		upgrade_building_effect = hunting_grounds_05
 		if = {
 			limit = { has_building = hunting_grounds_06 }
 			aub_pay_gold_building_cost_effect = { GOLD = cheap_building_tier_6_cost }
@@ -4027,8 +3885,7 @@ aub_upgrade_chain_hunting_grounds_01_effect = {
 				scope:aub_payer = { gold >= cheap_building_tier_7_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = hunting_grounds_07
+		upgrade_building_effect = hunting_grounds_06
 		if = {
 			limit = { has_building = hunting_grounds_07 }
 			aub_pay_gold_building_cost_effect = { GOLD = cheap_building_tier_7_cost }
@@ -4043,8 +3900,7 @@ aub_upgrade_chain_hunting_grounds_01_effect = {
 				scope:aub_payer = { gold >= cheap_building_tier_8_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = hunting_grounds_08
+		upgrade_building_effect = hunting_grounds_07
 		if = {
 			limit = { has_building = hunting_grounds_08 }
 			aub_pay_gold_building_cost_effect = { GOLD = cheap_building_tier_8_cost }
@@ -4063,8 +3919,7 @@ aub_upgrade_chain_idjang_forts_01_effect = {
 				scope:aub_payer = { gold >= tribal_building_tier_2_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = idjang_forts_02
+		upgrade_building_effect = idjang_forts_01
 		if = {
 			limit = { has_building = idjang_forts_02 }
 			aub_pay_gold_building_cost_effect = { GOLD = tribal_building_tier_2_cost }
@@ -4079,8 +3934,7 @@ aub_upgrade_chain_idjang_forts_01_effect = {
 				scope:aub_payer = { gold >= tribal_building_tier_3_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = idjang_forts_03
+		upgrade_building_effect = idjang_forts_02
 		if = {
 			limit = { has_building = idjang_forts_03 }
 			aub_pay_gold_building_cost_effect = { GOLD = tribal_building_tier_3_cost }
@@ -4095,8 +3949,7 @@ aub_upgrade_chain_idjang_forts_01_effect = {
 				scope:aub_payer = { gold >= tribal_building_tier_4_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = idjang_forts_04
+		upgrade_building_effect = idjang_forts_03
 		if = {
 			limit = { has_building = idjang_forts_04 }
 			aub_pay_gold_building_cost_effect = { GOLD = tribal_building_tier_4_cost }
@@ -4341,8 +4194,7 @@ aub_upgrade_chain_jousting_lists_01_effect = {
 				scope:aub_payer = { gold >= expensive_building_tier_4_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = jousting_lists_02
+		upgrade_building_effect = jousting_lists_01
 		if = {
 			limit = { has_building = jousting_lists_02 }
 			aub_pay_gold_building_cost_effect = { GOLD = expensive_building_tier_4_cost }
@@ -4357,8 +4209,7 @@ aub_upgrade_chain_jousting_lists_01_effect = {
 				scope:aub_payer = { gold >= expensive_building_tier_5_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = jousting_lists_03
+		upgrade_building_effect = jousting_lists_02
 		if = {
 			limit = { has_building = jousting_lists_03 }
 			aub_pay_gold_building_cost_effect = { GOLD = expensive_building_tier_5_cost }
@@ -4737,8 +4588,7 @@ aub_upgrade_chain_kora_kora_yards_01_effect = {
 				scope:aub_payer = { gold >= tribal_building_tier_2_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = kora_kora_yards_02
+		upgrade_building_effect = kora_kora_yards_01
 		if = {
 			limit = { has_building = kora_kora_yards_02 }
 			aub_pay_gold_building_cost_effect = { GOLD = tribal_building_tier_2_cost }
@@ -4753,8 +4603,7 @@ aub_upgrade_chain_kora_kora_yards_01_effect = {
 				scope:aub_payer = { gold >= tribal_building_tier_3_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = kora_kora_yards_03
+		upgrade_building_effect = kora_kora_yards_02
 		if = {
 			limit = { has_building = kora_kora_yards_03 }
 			aub_pay_gold_building_cost_effect = { GOLD = tribal_building_tier_3_cost }
@@ -4769,8 +4618,7 @@ aub_upgrade_chain_kora_kora_yards_01_effect = {
 				scope:aub_payer = { gold >= tribal_building_tier_4_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = kora_kora_yards_04
+		upgrade_building_effect = kora_kora_yards_03
 		if = {
 			limit = { has_building = kora_kora_yards_04 }
 			aub_pay_gold_building_cost_effect = { GOLD = tribal_building_tier_4_cost }
@@ -5015,8 +4863,7 @@ aub_upgrade_chain_leisure_palace_01_effect = {
 				scope:aub_payer = { gold >= expensive_building_tier_4_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = leisure_palace_02
+		upgrade_building_effect = leisure_palace_01
 		if = {
 			limit = { has_building = leisure_palace_02 }
 			aub_pay_gold_building_cost_effect = { GOLD = expensive_building_tier_4_cost }
@@ -5031,8 +4878,7 @@ aub_upgrade_chain_leisure_palace_01_effect = {
 				scope:aub_payer = { gold >= expensive_building_tier_5_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = leisure_palace_03
+		upgrade_building_effect = leisure_palace_02
 		if = {
 			limit = { has_building = leisure_palace_03 }
 			aub_pay_gold_building_cost_effect = { GOLD = expensive_building_tier_5_cost }
@@ -5143,8 +4989,7 @@ aub_upgrade_chain_logging_camps_01_effect = {
 				scope:aub_payer = { gold >= cheap_building_tier_2_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = logging_camps_02
+		upgrade_building_effect = logging_camps_01
 		if = {
 			limit = { has_building = logging_camps_02 }
 			aub_pay_gold_building_cost_effect = { GOLD = cheap_building_tier_2_cost }
@@ -5159,8 +5004,7 @@ aub_upgrade_chain_logging_camps_01_effect = {
 				scope:aub_payer = { gold >= cheap_building_tier_3_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = logging_camps_03
+		upgrade_building_effect = logging_camps_02
 		if = {
 			limit = { has_building = logging_camps_03 }
 			aub_pay_gold_building_cost_effect = { GOLD = cheap_building_tier_3_cost }
@@ -5175,8 +5019,7 @@ aub_upgrade_chain_logging_camps_01_effect = {
 				scope:aub_payer = { gold >= cheap_building_tier_4_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = logging_camps_04
+		upgrade_building_effect = logging_camps_03
 		if = {
 			limit = { has_building = logging_camps_04 }
 			aub_pay_gold_building_cost_effect = { GOLD = cheap_building_tier_4_cost }
@@ -5191,8 +5034,7 @@ aub_upgrade_chain_logging_camps_01_effect = {
 				scope:aub_payer = { gold >= cheap_building_tier_5_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = logging_camps_05
+		upgrade_building_effect = logging_camps_04
 		if = {
 			limit = { has_building = logging_camps_05 }
 			aub_pay_gold_building_cost_effect = { GOLD = cheap_building_tier_5_cost }
@@ -5207,8 +5049,7 @@ aub_upgrade_chain_logging_camps_01_effect = {
 				scope:aub_payer = { gold >= cheap_building_tier_6_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = logging_camps_06
+		upgrade_building_effect = logging_camps_05
 		if = {
 			limit = { has_building = logging_camps_06 }
 			aub_pay_gold_building_cost_effect = { GOLD = cheap_building_tier_6_cost }
@@ -5223,8 +5064,7 @@ aub_upgrade_chain_logging_camps_01_effect = {
 				scope:aub_payer = { gold >= cheap_building_tier_7_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = logging_camps_07
+		upgrade_building_effect = logging_camps_06
 		if = {
 			limit = { has_building = logging_camps_07 }
 			aub_pay_gold_building_cost_effect = { GOLD = cheap_building_tier_7_cost }
@@ -5239,8 +5079,7 @@ aub_upgrade_chain_logging_camps_01_effect = {
 				scope:aub_payer = { gold >= cheap_building_tier_8_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = logging_camps_08
+		upgrade_building_effect = logging_camps_07
 		if = {
 			limit = { has_building = logging_camps_08 }
 			aub_pay_gold_building_cost_effect = { GOLD = cheap_building_tier_8_cost }
@@ -5260,8 +5099,7 @@ aub_upgrade_chain_longhouses_01_effect = {
 			}
 			scope:aub_payer = { prestige >= expensive_building_tier_2_cost }
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = longhouses_02
+		upgrade_building_effect = longhouses_01
 		if = {
 			limit = { has_building = longhouses_02 }
 			aub_pay_gold_prestige_building_cost_effect = { GOLD = tribal_building_tier_2_cost PRESTIGE = expensive_building_tier_2_cost }
@@ -5347,8 +5185,7 @@ aub_upgrade_chain_march_01_effect = {
 				scope:aub_payer = { gold >= expensive_building_tier_4_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = march_02
+		upgrade_building_effect = march_01
 		if = {
 			limit = { has_building = march_02 }
 			aub_pay_gold_building_cost_effect = { GOLD = expensive_building_tier_4_cost }
@@ -5363,8 +5200,7 @@ aub_upgrade_chain_march_01_effect = {
 				scope:aub_payer = { gold >= expensive_building_tier_5_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = march_03
+		upgrade_building_effect = march_02
 		if = {
 			limit = { has_building = march_03 }
 			aub_pay_gold_building_cost_effect = { GOLD = expensive_building_tier_5_cost }
@@ -5384,8 +5220,7 @@ aub_upgrade_chain_market_villages_01_effect = {
 			}
 			scope:aub_payer = { prestige >= expensive_building_tier_2_cost }
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = market_villages_02
+		upgrade_building_effect = market_villages_01
 		if = {
 			limit = { has_building = market_villages_02 }
 			aub_pay_gold_prestige_building_cost_effect = { GOLD = tribal_building_tier_2_cost PRESTIGE = expensive_building_tier_2_cost }
@@ -5404,8 +5239,7 @@ aub_upgrade_chain_megalith_01_effect = {
 				scope:aub_payer = { gold >= normal_building_tier_2_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = megalith_02
+		upgrade_building_effect = megalith_01
 		if = {
 			limit = { has_building = megalith_02 }
 			aub_pay_gold_building_cost_effect = { GOLD = normal_building_tier_2_cost }
@@ -5420,8 +5254,7 @@ aub_upgrade_chain_megalith_01_effect = {
 				scope:aub_payer = { gold >= normal_building_tier_3_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = megalith_03
+		upgrade_building_effect = megalith_02
 		if = {
 			limit = { has_building = megalith_03 }
 			aub_pay_gold_building_cost_effect = { GOLD = normal_building_tier_3_cost }
@@ -5436,8 +5269,7 @@ aub_upgrade_chain_megalith_01_effect = {
 				scope:aub_payer = { gold >= normal_building_tier_4_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = megalith_04
+		upgrade_building_effect = megalith_03
 		if = {
 			limit = { has_building = megalith_04 }
 			aub_pay_gold_building_cost_effect = { GOLD = normal_building_tier_4_cost }
@@ -5452,8 +5284,7 @@ aub_upgrade_chain_megalith_01_effect = {
 				scope:aub_payer = { gold >= normal_building_tier_5_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = megalith_05
+		upgrade_building_effect = megalith_04
 		if = {
 			limit = { has_building = megalith_05 }
 			aub_pay_gold_building_cost_effect = { GOLD = normal_building_tier_5_cost }
@@ -5468,8 +5299,7 @@ aub_upgrade_chain_megalith_01_effect = {
 				scope:aub_payer = { gold >= normal_building_tier_5_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = megalith_06
+		upgrade_building_effect = megalith_05
 		if = {
 			limit = { has_building = megalith_06 }
 			aub_pay_gold_building_cost_effect = { GOLD = normal_building_tier_5_cost }
@@ -5484,8 +5314,7 @@ aub_upgrade_chain_megalith_01_effect = {
 				scope:aub_payer = { gold >= normal_building_tier_5_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = megalith_07
+		upgrade_building_effect = megalith_06
 		if = {
 			limit = { has_building = megalith_07 }
 			aub_pay_gold_building_cost_effect = { GOLD = normal_building_tier_5_cost }
@@ -5500,8 +5329,7 @@ aub_upgrade_chain_megalith_01_effect = {
 				scope:aub_payer = { gold >= normal_building_tier_5_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = megalith_08
+		upgrade_building_effect = megalith_07
 		if = {
 			limit = { has_building = megalith_08 }
 			aub_pay_gold_building_cost_effect = { GOLD = normal_building_tier_5_cost }
@@ -5545,8 +5373,7 @@ aub_upgrade_chain_military_academy_01_effect = {
 				scope:aub_payer = { gold >= expensive_building_tier_4_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = military_academy_02
+		upgrade_building_effect = military_academy_01
 		if = {
 			limit = { has_building = military_academy_02 }
 			aub_pay_gold_building_cost_effect = { GOLD = expensive_building_tier_4_cost }
@@ -5561,8 +5388,7 @@ aub_upgrade_chain_military_academy_01_effect = {
 				scope:aub_payer = { gold >= expensive_building_tier_5_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = military_academy_03
+		upgrade_building_effect = military_academy_02
 		if = {
 			limit = { has_building = military_academy_03 }
 			aub_pay_gold_building_cost_effect = { GOLD = expensive_building_tier_5_cost }
@@ -5581,8 +5407,7 @@ aub_upgrade_chain_military_camps_01_effect = {
 				scope:aub_payer = { gold >= cheap_building_tier_2_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = military_camps_02
+		upgrade_building_effect = military_camps_01
 		if = {
 			limit = { has_building = military_camps_02 }
 			aub_pay_gold_building_cost_effect = { GOLD = cheap_building_tier_2_cost }
@@ -5597,8 +5422,7 @@ aub_upgrade_chain_military_camps_01_effect = {
 				scope:aub_payer = { gold >= cheap_building_tier_3_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = military_camps_03
+		upgrade_building_effect = military_camps_02
 		if = {
 			limit = { has_building = military_camps_03 }
 			aub_pay_gold_building_cost_effect = { GOLD = cheap_building_tier_3_cost }
@@ -5613,8 +5437,7 @@ aub_upgrade_chain_military_camps_01_effect = {
 				scope:aub_payer = { gold >= cheap_building_tier_4_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = military_camps_04
+		upgrade_building_effect = military_camps_03
 		if = {
 			limit = { has_building = military_camps_04 }
 			aub_pay_gold_building_cost_effect = { GOLD = cheap_building_tier_4_cost }
@@ -5629,8 +5452,7 @@ aub_upgrade_chain_military_camps_01_effect = {
 				scope:aub_payer = { gold >= cheap_building_tier_5_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = military_camps_05
+		upgrade_building_effect = military_camps_04
 		if = {
 			limit = { has_building = military_camps_05 }
 			aub_pay_gold_building_cost_effect = { GOLD = cheap_building_tier_5_cost }
@@ -5645,8 +5467,7 @@ aub_upgrade_chain_military_camps_01_effect = {
 				scope:aub_payer = { gold >= cheap_building_tier_6_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = military_camps_06
+		upgrade_building_effect = military_camps_05
 		if = {
 			limit = { has_building = military_camps_06 }
 			aub_pay_gold_building_cost_effect = { GOLD = cheap_building_tier_6_cost }
@@ -5661,8 +5482,7 @@ aub_upgrade_chain_military_camps_01_effect = {
 				scope:aub_payer = { gold >= cheap_building_tier_7_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = military_camps_07
+		upgrade_building_effect = military_camps_06
 		if = {
 			limit = { has_building = military_camps_07 }
 			aub_pay_gold_building_cost_effect = { GOLD = cheap_building_tier_7_cost }
@@ -5677,8 +5497,7 @@ aub_upgrade_chain_military_camps_01_effect = {
 				scope:aub_payer = { gold >= cheap_building_tier_8_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = military_camps_08
+		upgrade_building_effect = military_camps_07
 		if = {
 			limit = { has_building = military_camps_08 }
 			aub_pay_gold_building_cost_effect = { GOLD = cheap_building_tier_8_cost }
@@ -5764,8 +5583,7 @@ aub_upgrade_chain_monastic_schools_01_effect = {
 				scope:aub_payer = { gold >= normal_building_tier_2_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = monastic_schools_02
+		upgrade_building_effect = monastic_schools_01
 		if = {
 			limit = { has_building = monastic_schools_02 }
 			aub_pay_gold_building_cost_effect = { GOLD = normal_building_tier_2_cost }
@@ -5780,8 +5598,7 @@ aub_upgrade_chain_monastic_schools_01_effect = {
 				scope:aub_payer = { gold >= normal_building_tier_3_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = monastic_schools_03
+		upgrade_building_effect = monastic_schools_02
 		if = {
 			limit = { has_building = monastic_schools_03 }
 			aub_pay_gold_building_cost_effect = { GOLD = normal_building_tier_3_cost }
@@ -5796,8 +5613,7 @@ aub_upgrade_chain_monastic_schools_01_effect = {
 				scope:aub_payer = { gold >= normal_building_tier_4_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = monastic_schools_04
+		upgrade_building_effect = monastic_schools_03
 		if = {
 			limit = { has_building = monastic_schools_04 }
 			aub_pay_gold_building_cost_effect = { GOLD = normal_building_tier_4_cost }
@@ -5812,8 +5628,7 @@ aub_upgrade_chain_monastic_schools_01_effect = {
 				scope:aub_payer = { gold >= normal_building_tier_5_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = monastic_schools_05
+		upgrade_building_effect = monastic_schools_04
 		if = {
 			limit = { has_building = monastic_schools_05 }
 			aub_pay_gold_building_cost_effect = { GOLD = normal_building_tier_5_cost }
@@ -5828,8 +5643,7 @@ aub_upgrade_chain_monastic_schools_01_effect = {
 				scope:aub_payer = { gold >= normal_building_tier_6_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = monastic_schools_06
+		upgrade_building_effect = monastic_schools_05
 		if = {
 			limit = { has_building = monastic_schools_06 }
 			aub_pay_gold_building_cost_effect = { GOLD = normal_building_tier_6_cost }
@@ -5844,8 +5658,7 @@ aub_upgrade_chain_monastic_schools_01_effect = {
 				scope:aub_payer = { gold >= normal_building_tier_7_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = monastic_schools_07
+		upgrade_building_effect = monastic_schools_06
 		if = {
 			limit = { has_building = monastic_schools_07 }
 			aub_pay_gold_building_cost_effect = { GOLD = normal_building_tier_7_cost }
@@ -5860,8 +5673,7 @@ aub_upgrade_chain_monastic_schools_01_effect = {
 				scope:aub_payer = { gold >= normal_building_tier_8_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = monastic_schools_08
+		upgrade_building_effect = monastic_schools_07
 		if = {
 			limit = { has_building = monastic_schools_08 }
 			aub_pay_gold_building_cost_effect = { GOLD = normal_building_tier_8_cost }
@@ -5993,8 +5805,7 @@ aub_upgrade_chain_murex_farm_01_effect = {
 				scope:aub_payer = { gold >= normal_building_tier_2_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = murex_farm_02
+		upgrade_building_effect = murex_farm_01
 		if = {
 			limit = { has_building = murex_farm_02 }
 			aub_pay_gold_building_cost_effect = { GOLD = normal_building_tier_2_cost }
@@ -6009,8 +5820,7 @@ aub_upgrade_chain_murex_farm_01_effect = {
 				scope:aub_payer = { gold >= normal_building_tier_3_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = murex_farm_03
+		upgrade_building_effect = murex_farm_02
 		if = {
 			limit = { has_building = murex_farm_03 }
 			aub_pay_gold_building_cost_effect = { GOLD = normal_building_tier_3_cost }
@@ -6025,8 +5835,7 @@ aub_upgrade_chain_murex_farm_01_effect = {
 				scope:aub_payer = { gold >= normal_building_tier_4_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = murex_farm_04
+		upgrade_building_effect = murex_farm_03
 		if = {
 			limit = { has_building = murex_farm_04 }
 			aub_pay_gold_building_cost_effect = { GOLD = normal_building_tier_4_cost }
@@ -6041,8 +5850,7 @@ aub_upgrade_chain_murex_farm_01_effect = {
 				scope:aub_payer = { gold >= normal_building_tier_5_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = murex_farm_05
+		upgrade_building_effect = murex_farm_04
 		if = {
 			limit = { has_building = murex_farm_05 }
 			aub_pay_gold_building_cost_effect = { GOLD = normal_building_tier_5_cost }
@@ -6057,8 +5865,7 @@ aub_upgrade_chain_murex_farm_01_effect = {
 				scope:aub_payer = { gold >= normal_building_tier_6_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = murex_farm_06
+		upgrade_building_effect = murex_farm_05
 		if = {
 			limit = { has_building = murex_farm_06 }
 			aub_pay_gold_building_cost_effect = { GOLD = normal_building_tier_6_cost }
@@ -6073,8 +5880,7 @@ aub_upgrade_chain_murex_farm_01_effect = {
 				scope:aub_payer = { gold >= normal_building_tier_7_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = murex_farm_07
+		upgrade_building_effect = murex_farm_06
 		if = {
 			limit = { has_building = murex_farm_07 }
 			aub_pay_gold_building_cost_effect = { GOLD = normal_building_tier_7_cost }
@@ -6089,8 +5895,7 @@ aub_upgrade_chain_murex_farm_01_effect = {
 				scope:aub_payer = { gold >= normal_building_tier_8_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = murex_farm_08
+		upgrade_building_effect = murex_farm_07
 		if = {
 			limit = { has_building = murex_farm_08 }
 			aub_pay_gold_building_cost_effect = { GOLD = normal_building_tier_8_cost }
@@ -6177,8 +5982,7 @@ aub_upgrade_chain_oath_faithful_building_01_effect = {
 			}
 			scope:aub_payer = { piety >= 200 }
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = oath_faithful_building_02
+		upgrade_building_effect = oath_faithful_building_01
 		if = {
 			limit = { has_building = oath_faithful_building_02 }
 			aub_pay_gold_piety_building_cost_effect = { GOLD = cheap_building_tier_2_cost PIETY = 200 }
@@ -6194,8 +5998,7 @@ aub_upgrade_chain_oath_faithful_building_01_effect = {
 			}
 			scope:aub_payer = { piety >= 300 }
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = oath_faithful_building_03
+		upgrade_building_effect = oath_faithful_building_02
 		if = {
 			limit = { has_building = oath_faithful_building_03 }
 			aub_pay_gold_piety_building_cost_effect = { GOLD = cheap_building_tier_3_cost PIETY = 300 }
@@ -6211,8 +6014,7 @@ aub_upgrade_chain_oath_faithful_building_01_effect = {
 			}
 			scope:aub_payer = { piety >= 400 }
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = oath_faithful_building_04
+		upgrade_building_effect = oath_faithful_building_03
 		if = {
 			limit = { has_building = oath_faithful_building_04 }
 			aub_pay_gold_piety_building_cost_effect = { GOLD = cheap_building_tier_4_cost PIETY = 400 }
@@ -6232,8 +6034,7 @@ aub_upgrade_chain_oath_poor_building_01_effect = {
 			}
 			scope:aub_payer = { prestige >= 250 }
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = oath_poor_building_02
+		upgrade_building_effect = oath_poor_building_01
 		if = {
 			limit = { has_building = oath_poor_building_02 }
 			aub_pay_gold_prestige_building_cost_effect = { GOLD = cheap_building_tier_2_cost PRESTIGE = 250 }
@@ -6249,8 +6050,7 @@ aub_upgrade_chain_oath_poor_building_01_effect = {
 			}
 			scope:aub_payer = { prestige >= 375 }
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = oath_poor_building_03
+		upgrade_building_effect = oath_poor_building_02
 		if = {
 			limit = { has_building = oath_poor_building_03 }
 			aub_pay_gold_prestige_building_cost_effect = { GOLD = cheap_building_tier_3_cost PRESTIGE = 375 }
@@ -6266,8 +6066,7 @@ aub_upgrade_chain_oath_poor_building_01_effect = {
 			}
 			scope:aub_payer = { prestige >= 500 }
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = oath_poor_building_04
+		upgrade_building_effect = oath_poor_building_03
 		if = {
 			limit = { has_building = oath_poor_building_04 }
 			aub_pay_gold_prestige_building_cost_effect = { GOLD = cheap_building_tier_4_cost PRESTIGE = 500 }
@@ -6287,8 +6086,7 @@ aub_upgrade_chain_oath_warriors_building_01_effect = {
 			}
 			scope:aub_payer = { prestige >= 250 }
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = oath_warriors_building_02
+		upgrade_building_effect = oath_warriors_building_01
 		if = {
 			limit = { has_building = oath_warriors_building_02 }
 			aub_pay_gold_prestige_building_cost_effect = { GOLD = cheap_building_tier_2_cost PRESTIGE = 250 }
@@ -6304,8 +6102,7 @@ aub_upgrade_chain_oath_warriors_building_01_effect = {
 			}
 			scope:aub_payer = { prestige >= 375 }
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = oath_warriors_building_03
+		upgrade_building_effect = oath_warriors_building_02
 		if = {
 			limit = { has_building = oath_warriors_building_03 }
 			aub_pay_gold_prestige_building_cost_effect = { GOLD = cheap_building_tier_3_cost PRESTIGE = 375 }
@@ -6321,8 +6118,7 @@ aub_upgrade_chain_oath_warriors_building_01_effect = {
 			}
 			scope:aub_payer = { prestige >= 500 }
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = oath_warriors_building_04
+		upgrade_building_effect = oath_warriors_building_03
 		if = {
 			limit = { has_building = oath_warriors_building_04 }
 			aub_pay_gold_prestige_building_cost_effect = { GOLD = cheap_building_tier_4_cost PRESTIGE = 500 }
@@ -6341,8 +6137,7 @@ aub_upgrade_chain_orchards_01_effect = {
 				scope:aub_payer = { gold >= normal_building_tier_2_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = orchards_02
+		upgrade_building_effect = orchards_01
 		if = {
 			limit = { has_building = orchards_02 }
 			aub_pay_gold_building_cost_effect = { GOLD = normal_building_tier_2_cost }
@@ -6357,8 +6152,7 @@ aub_upgrade_chain_orchards_01_effect = {
 				scope:aub_payer = { gold >= normal_building_tier_3_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = orchards_03
+		upgrade_building_effect = orchards_02
 		if = {
 			limit = { has_building = orchards_03 }
 			aub_pay_gold_building_cost_effect = { GOLD = normal_building_tier_3_cost }
@@ -6373,8 +6167,7 @@ aub_upgrade_chain_orchards_01_effect = {
 				scope:aub_payer = { gold >= normal_building_tier_4_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = orchards_04
+		upgrade_building_effect = orchards_03
 		if = {
 			limit = { has_building = orchards_04 }
 			aub_pay_gold_building_cost_effect = { GOLD = normal_building_tier_4_cost }
@@ -6389,8 +6182,7 @@ aub_upgrade_chain_orchards_01_effect = {
 				scope:aub_payer = { gold >= normal_building_tier_5_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = orchards_05
+		upgrade_building_effect = orchards_04
 		if = {
 			limit = { has_building = orchards_05 }
 			aub_pay_gold_building_cost_effect = { GOLD = normal_building_tier_5_cost }
@@ -6405,8 +6197,7 @@ aub_upgrade_chain_orchards_01_effect = {
 				scope:aub_payer = { gold >= normal_building_tier_6_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = orchards_06
+		upgrade_building_effect = orchards_05
 		if = {
 			limit = { has_building = orchards_06 }
 			aub_pay_gold_building_cost_effect = { GOLD = normal_building_tier_6_cost }
@@ -6421,8 +6212,7 @@ aub_upgrade_chain_orchards_01_effect = {
 				scope:aub_payer = { gold >= normal_building_tier_7_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = orchards_07
+		upgrade_building_effect = orchards_06
 		if = {
 			limit = { has_building = orchards_07 }
 			aub_pay_gold_building_cost_effect = { GOLD = normal_building_tier_7_cost }
@@ -6437,8 +6227,7 @@ aub_upgrade_chain_orchards_01_effect = {
 				scope:aub_payer = { gold >= normal_building_tier_8_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = orchards_08
+		upgrade_building_effect = orchards_07
 		if = {
 			limit = { has_building = orchards_08 }
 			aub_pay_gold_building_cost_effect = { GOLD = normal_building_tier_8_cost }
@@ -6457,8 +6246,7 @@ aub_upgrade_chain_outposts_01_effect = {
 				scope:aub_payer = { gold >= cheap_building_tier_2_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = outposts_02
+		upgrade_building_effect = outposts_01
 		if = {
 			limit = { has_building = outposts_02 }
 			aub_pay_gold_building_cost_effect = { GOLD = cheap_building_tier_2_cost }
@@ -6473,8 +6261,7 @@ aub_upgrade_chain_outposts_01_effect = {
 				scope:aub_payer = { gold >= cheap_building_tier_3_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = outposts_03
+		upgrade_building_effect = outposts_02
 		if = {
 			limit = { has_building = outposts_03 }
 			aub_pay_gold_building_cost_effect = { GOLD = cheap_building_tier_3_cost }
@@ -6489,8 +6276,7 @@ aub_upgrade_chain_outposts_01_effect = {
 				scope:aub_payer = { gold >= cheap_building_tier_4_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = outposts_04
+		upgrade_building_effect = outposts_03
 		if = {
 			limit = { has_building = outposts_04 }
 			aub_pay_gold_building_cost_effect = { GOLD = cheap_building_tier_4_cost }
@@ -6505,8 +6291,7 @@ aub_upgrade_chain_outposts_01_effect = {
 				scope:aub_payer = { gold >= cheap_building_tier_5_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = outposts_05
+		upgrade_building_effect = outposts_04
 		if = {
 			limit = { has_building = outposts_05 }
 			aub_pay_gold_building_cost_effect = { GOLD = cheap_building_tier_5_cost }
@@ -6521,8 +6306,7 @@ aub_upgrade_chain_outposts_01_effect = {
 				scope:aub_payer = { gold >= cheap_building_tier_6_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = outposts_06
+		upgrade_building_effect = outposts_05
 		if = {
 			limit = { has_building = outposts_06 }
 			aub_pay_gold_building_cost_effect = { GOLD = cheap_building_tier_6_cost }
@@ -6537,8 +6321,7 @@ aub_upgrade_chain_outposts_01_effect = {
 				scope:aub_payer = { gold >= cheap_building_tier_7_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = outposts_07
+		upgrade_building_effect = outposts_06
 		if = {
 			limit = { has_building = outposts_07 }
 			aub_pay_gold_building_cost_effect = { GOLD = cheap_building_tier_7_cost }
@@ -6553,8 +6336,7 @@ aub_upgrade_chain_outposts_01_effect = {
 				scope:aub_payer = { gold >= cheap_building_tier_8_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = outposts_08
+		upgrade_building_effect = outposts_07
 		if = {
 			limit = { has_building = outposts_08 }
 			aub_pay_gold_building_cost_effect = { GOLD = cheap_building_tier_8_cost }
@@ -6573,8 +6355,7 @@ aub_upgrade_chain_paddy_fields_01_effect = {
 				scope:aub_payer = { gold >= normal_building_tier_2_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = paddy_fields_02
+		upgrade_building_effect = paddy_fields_01
 		if = {
 			limit = { has_building = paddy_fields_02 }
 			aub_pay_gold_building_cost_effect = { GOLD = normal_building_tier_2_cost }
@@ -6589,8 +6370,7 @@ aub_upgrade_chain_paddy_fields_01_effect = {
 				scope:aub_payer = { gold >= normal_building_tier_3_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = paddy_fields_03
+		upgrade_building_effect = paddy_fields_02
 		if = {
 			limit = { has_building = paddy_fields_03 }
 			aub_pay_gold_building_cost_effect = { GOLD = normal_building_tier_3_cost }
@@ -6605,8 +6385,7 @@ aub_upgrade_chain_paddy_fields_01_effect = {
 				scope:aub_payer = { gold >= normal_building_tier_4_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = paddy_fields_04
+		upgrade_building_effect = paddy_fields_03
 		if = {
 			limit = { has_building = paddy_fields_04 }
 			aub_pay_gold_building_cost_effect = { GOLD = normal_building_tier_4_cost }
@@ -6621,8 +6400,7 @@ aub_upgrade_chain_paddy_fields_01_effect = {
 				scope:aub_payer = { gold >= normal_building_tier_5_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = paddy_fields_05
+		upgrade_building_effect = paddy_fields_04
 		if = {
 			limit = { has_building = paddy_fields_05 }
 			aub_pay_gold_building_cost_effect = { GOLD = normal_building_tier_5_cost }
@@ -6637,8 +6415,7 @@ aub_upgrade_chain_paddy_fields_01_effect = {
 				scope:aub_payer = { gold >= normal_building_tier_6_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = paddy_fields_06
+		upgrade_building_effect = paddy_fields_05
 		if = {
 			limit = { has_building = paddy_fields_06 }
 			aub_pay_gold_building_cost_effect = { GOLD = normal_building_tier_6_cost }
@@ -6653,8 +6430,7 @@ aub_upgrade_chain_paddy_fields_01_effect = {
 				scope:aub_payer = { gold >= normal_building_tier_7_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = paddy_fields_07
+		upgrade_building_effect = paddy_fields_06
 		if = {
 			limit = { has_building = paddy_fields_07 }
 			aub_pay_gold_building_cost_effect = { GOLD = normal_building_tier_7_cost }
@@ -6669,8 +6445,7 @@ aub_upgrade_chain_paddy_fields_01_effect = {
 				scope:aub_payer = { gold >= normal_building_tier_8_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = paddy_fields_08
+		upgrade_building_effect = paddy_fields_07
 		if = {
 			limit = { has_building = paddy_fields_08 }
 			aub_pay_gold_building_cost_effect = { GOLD = normal_building_tier_8_cost }
@@ -6715,8 +6490,7 @@ aub_upgrade_chain_palisades_01_effect = {
 			}
 			scope:aub_payer = { prestige >= expensive_building_tier_2_cost }
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = palisades_02
+		upgrade_building_effect = palisades_01
 		if = {
 			limit = { has_building = palisades_02 }
 			aub_pay_gold_prestige_building_cost_effect = { GOLD = tribal_building_tier_2_cost PRESTIGE = expensive_building_tier_2_cost }
@@ -6802,8 +6576,7 @@ aub_upgrade_chain_pastures_01_effect = {
 				scope:aub_payer = { gold >= normal_building_tier_2_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = pastures_02
+		upgrade_building_effect = pastures_01
 		if = {
 			limit = { has_building = pastures_02 }
 			aub_pay_gold_building_cost_effect = { GOLD = normal_building_tier_2_cost }
@@ -6818,8 +6591,7 @@ aub_upgrade_chain_pastures_01_effect = {
 				scope:aub_payer = { gold >= normal_building_tier_3_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = pastures_03
+		upgrade_building_effect = pastures_02
 		if = {
 			limit = { has_building = pastures_03 }
 			aub_pay_gold_building_cost_effect = { GOLD = normal_building_tier_3_cost }
@@ -6834,8 +6606,7 @@ aub_upgrade_chain_pastures_01_effect = {
 				scope:aub_payer = { gold >= normal_building_tier_4_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = pastures_04
+		upgrade_building_effect = pastures_03
 		if = {
 			limit = { has_building = pastures_04 }
 			aub_pay_gold_building_cost_effect = { GOLD = normal_building_tier_4_cost }
@@ -6850,8 +6621,7 @@ aub_upgrade_chain_pastures_01_effect = {
 				scope:aub_payer = { gold >= normal_building_tier_5_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = pastures_05
+		upgrade_building_effect = pastures_04
 		if = {
 			limit = { has_building = pastures_05 }
 			aub_pay_gold_building_cost_effect = { GOLD = normal_building_tier_5_cost }
@@ -6866,8 +6636,7 @@ aub_upgrade_chain_pastures_01_effect = {
 				scope:aub_payer = { gold >= normal_building_tier_6_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = pastures_06
+		upgrade_building_effect = pastures_05
 		if = {
 			limit = { has_building = pastures_06 }
 			aub_pay_gold_building_cost_effect = { GOLD = normal_building_tier_6_cost }
@@ -6882,8 +6651,7 @@ aub_upgrade_chain_pastures_01_effect = {
 				scope:aub_payer = { gold >= normal_building_tier_7_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = pastures_07
+		upgrade_building_effect = pastures_06
 		if = {
 			limit = { has_building = pastures_07 }
 			aub_pay_gold_building_cost_effect = { GOLD = normal_building_tier_7_cost }
@@ -6898,8 +6666,7 @@ aub_upgrade_chain_pastures_01_effect = {
 				scope:aub_payer = { gold >= normal_building_tier_8_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = pastures_08
+		upgrade_building_effect = pastures_07
 		if = {
 			limit = { has_building = pastures_08 }
 			aub_pay_gold_building_cost_effect = { GOLD = normal_building_tier_8_cost }
@@ -6918,8 +6685,7 @@ aub_upgrade_chain_peat_quarries_01_effect = {
 				scope:aub_payer = { gold >= cheap_building_tier_2_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = peat_quarries_02
+		upgrade_building_effect = peat_quarries_01
 		if = {
 			limit = { has_building = peat_quarries_02 }
 			aub_pay_gold_building_cost_effect = { GOLD = cheap_building_tier_2_cost }
@@ -6934,8 +6700,7 @@ aub_upgrade_chain_peat_quarries_01_effect = {
 				scope:aub_payer = { gold >= cheap_building_tier_3_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = peat_quarries_03
+		upgrade_building_effect = peat_quarries_02
 		if = {
 			limit = { has_building = peat_quarries_03 }
 			aub_pay_gold_building_cost_effect = { GOLD = cheap_building_tier_3_cost }
@@ -6950,8 +6715,7 @@ aub_upgrade_chain_peat_quarries_01_effect = {
 				scope:aub_payer = { gold >= cheap_building_tier_4_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = peat_quarries_04
+		upgrade_building_effect = peat_quarries_03
 		if = {
 			limit = { has_building = peat_quarries_04 }
 			aub_pay_gold_building_cost_effect = { GOLD = cheap_building_tier_4_cost }
@@ -6966,8 +6730,7 @@ aub_upgrade_chain_peat_quarries_01_effect = {
 				scope:aub_payer = { gold >= cheap_building_tier_5_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = peat_quarries_05
+		upgrade_building_effect = peat_quarries_04
 		if = {
 			limit = { has_building = peat_quarries_05 }
 			aub_pay_gold_building_cost_effect = { GOLD = cheap_building_tier_5_cost }
@@ -6982,8 +6745,7 @@ aub_upgrade_chain_peat_quarries_01_effect = {
 				scope:aub_payer = { gold >= cheap_building_tier_6_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = peat_quarries_06
+		upgrade_building_effect = peat_quarries_05
 		if = {
 			limit = { has_building = peat_quarries_06 }
 			aub_pay_gold_building_cost_effect = { GOLD = cheap_building_tier_6_cost }
@@ -6998,8 +6760,7 @@ aub_upgrade_chain_peat_quarries_01_effect = {
 				scope:aub_payer = { gold >= cheap_building_tier_7_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = peat_quarries_07
+		upgrade_building_effect = peat_quarries_06
 		if = {
 			limit = { has_building = peat_quarries_07 }
 			aub_pay_gold_building_cost_effect = { GOLD = cheap_building_tier_7_cost }
@@ -7014,8 +6775,7 @@ aub_upgrade_chain_peat_quarries_01_effect = {
 				scope:aub_payer = { gold >= cheap_building_tier_8_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = peat_quarries_08
+		upgrade_building_effect = peat_quarries_07
 		if = {
 			limit = { has_building = peat_quarries_08 }
 			aub_pay_gold_building_cost_effect = { GOLD = cheap_building_tier_8_cost }
@@ -7168,8 +6928,7 @@ aub_upgrade_chain_plantations_01_effect = {
 				scope:aub_payer = { gold >= cheap_building_tier_2_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = plantations_02
+		upgrade_building_effect = plantations_01
 		if = {
 			limit = { has_building = plantations_02 }
 			aub_pay_gold_building_cost_effect = { GOLD = cheap_building_tier_2_cost }
@@ -7184,8 +6943,7 @@ aub_upgrade_chain_plantations_01_effect = {
 				scope:aub_payer = { gold >= cheap_building_tier_3_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = plantations_03
+		upgrade_building_effect = plantations_02
 		if = {
 			limit = { has_building = plantations_03 }
 			aub_pay_gold_building_cost_effect = { GOLD = cheap_building_tier_3_cost }
@@ -7200,8 +6958,7 @@ aub_upgrade_chain_plantations_01_effect = {
 				scope:aub_payer = { gold >= cheap_building_tier_4_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = plantations_04
+		upgrade_building_effect = plantations_03
 		if = {
 			limit = { has_building = plantations_04 }
 			aub_pay_gold_building_cost_effect = { GOLD = cheap_building_tier_4_cost }
@@ -7216,8 +6973,7 @@ aub_upgrade_chain_plantations_01_effect = {
 				scope:aub_payer = { gold >= cheap_building_tier_5_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = plantations_05
+		upgrade_building_effect = plantations_04
 		if = {
 			limit = { has_building = plantations_05 }
 			aub_pay_gold_building_cost_effect = { GOLD = cheap_building_tier_5_cost }
@@ -7232,8 +6988,7 @@ aub_upgrade_chain_plantations_01_effect = {
 				scope:aub_payer = { gold >= cheap_building_tier_6_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = plantations_06
+		upgrade_building_effect = plantations_05
 		if = {
 			limit = { has_building = plantations_06 }
 			aub_pay_gold_building_cost_effect = { GOLD = cheap_building_tier_6_cost }
@@ -7248,8 +7003,7 @@ aub_upgrade_chain_plantations_01_effect = {
 				scope:aub_payer = { gold >= cheap_building_tier_7_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = plantations_07
+		upgrade_building_effect = plantations_06
 		if = {
 			limit = { has_building = plantations_07 }
 			aub_pay_gold_building_cost_effect = { GOLD = cheap_building_tier_7_cost }
@@ -7264,8 +7018,7 @@ aub_upgrade_chain_plantations_01_effect = {
 				scope:aub_payer = { gold >= cheap_building_tier_8_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = plantations_08
+		upgrade_building_effect = plantations_07
 		if = {
 			limit = { has_building = plantations_08 }
 			aub_pay_gold_building_cost_effect = { GOLD = cheap_building_tier_8_cost }
@@ -7284,8 +7037,7 @@ aub_upgrade_chain_powder_magazine_01_effect = {
 				scope:aub_payer = { gold >= normal_building_tier_2_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = powder_magazine_02
+		upgrade_building_effect = powder_magazine_01
 		if = {
 			limit = { has_building = powder_magazine_02 }
 			aub_pay_gold_building_cost_effect = { GOLD = normal_building_tier_2_cost }
@@ -7300,8 +7052,7 @@ aub_upgrade_chain_powder_magazine_01_effect = {
 				scope:aub_payer = { gold >= normal_building_tier_3_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = powder_magazine_03
+		upgrade_building_effect = powder_magazine_02
 		if = {
 			limit = { has_building = powder_magazine_03 }
 			aub_pay_gold_building_cost_effect = { GOLD = normal_building_tier_3_cost }
@@ -7316,8 +7067,7 @@ aub_upgrade_chain_powder_magazine_01_effect = {
 				scope:aub_payer = { gold >= normal_building_tier_4_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = powder_magazine_04
+		upgrade_building_effect = powder_magazine_03
 		if = {
 			limit = { has_building = powder_magazine_04 }
 			aub_pay_gold_building_cost_effect = { GOLD = normal_building_tier_4_cost }
@@ -7332,8 +7082,7 @@ aub_upgrade_chain_powder_magazine_01_effect = {
 				scope:aub_payer = { gold >= normal_building_tier_5_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = powder_magazine_05
+		upgrade_building_effect = powder_magazine_04
 		if = {
 			limit = { has_building = powder_magazine_05 }
 			aub_pay_gold_building_cost_effect = { GOLD = normal_building_tier_5_cost }
@@ -7348,8 +7097,7 @@ aub_upgrade_chain_powder_magazine_01_effect = {
 				scope:aub_payer = { gold >= normal_building_tier_6_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = powder_magazine_06
+		upgrade_building_effect = powder_magazine_05
 		if = {
 			limit = { has_building = powder_magazine_06 }
 			aub_pay_gold_building_cost_effect = { GOLD = normal_building_tier_6_cost }
@@ -7364,8 +7112,7 @@ aub_upgrade_chain_powder_magazine_01_effect = {
 				scope:aub_payer = { gold >= normal_building_tier_7_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = powder_magazine_07
+		upgrade_building_effect = powder_magazine_06
 		if = {
 			limit = { has_building = powder_magazine_07 }
 			aub_pay_gold_building_cost_effect = { GOLD = normal_building_tier_7_cost }
@@ -7380,8 +7127,7 @@ aub_upgrade_chain_powder_magazine_01_effect = {
 				scope:aub_payer = { gold >= normal_building_tier_8_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = powder_magazine_08
+		upgrade_building_effect = powder_magazine_07
 		if = {
 			limit = { has_building = powder_magazine_08 }
 			aub_pay_gold_building_cost_effect = { GOLD = normal_building_tier_8_cost }
@@ -7400,8 +7146,7 @@ aub_upgrade_chain_qanats_01_effect = {
 				scope:aub_payer = { gold >= normal_building_tier_2_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = qanats_02
+		upgrade_building_effect = qanats_01
 		if = {
 			limit = { has_building = qanats_02 }
 			aub_pay_gold_building_cost_effect = { GOLD = normal_building_tier_2_cost }
@@ -7416,8 +7161,7 @@ aub_upgrade_chain_qanats_01_effect = {
 				scope:aub_payer = { gold >= normal_building_tier_3_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = qanats_03
+		upgrade_building_effect = qanats_02
 		if = {
 			limit = { has_building = qanats_03 }
 			aub_pay_gold_building_cost_effect = { GOLD = normal_building_tier_3_cost }
@@ -7432,8 +7176,7 @@ aub_upgrade_chain_qanats_01_effect = {
 				scope:aub_payer = { gold >= normal_building_tier_4_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = qanats_04
+		upgrade_building_effect = qanats_03
 		if = {
 			limit = { has_building = qanats_04 }
 			aub_pay_gold_building_cost_effect = { GOLD = normal_building_tier_4_cost }
@@ -7448,8 +7191,7 @@ aub_upgrade_chain_qanats_01_effect = {
 				scope:aub_payer = { gold >= normal_building_tier_5_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = qanats_05
+		upgrade_building_effect = qanats_04
 		if = {
 			limit = { has_building = qanats_05 }
 			aub_pay_gold_building_cost_effect = { GOLD = normal_building_tier_5_cost }
@@ -7464,8 +7206,7 @@ aub_upgrade_chain_qanats_01_effect = {
 				scope:aub_payer = { gold >= normal_building_tier_6_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = qanats_06
+		upgrade_building_effect = qanats_05
 		if = {
 			limit = { has_building = qanats_06 }
 			aub_pay_gold_building_cost_effect = { GOLD = normal_building_tier_6_cost }
@@ -7480,8 +7221,7 @@ aub_upgrade_chain_qanats_01_effect = {
 				scope:aub_payer = { gold >= normal_building_tier_7_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = qanats_07
+		upgrade_building_effect = qanats_06
 		if = {
 			limit = { has_building = qanats_07 }
 			aub_pay_gold_building_cost_effect = { GOLD = normal_building_tier_7_cost }
@@ -7496,8 +7236,7 @@ aub_upgrade_chain_qanats_01_effect = {
 				scope:aub_payer = { gold >= normal_building_tier_8_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = qanats_08
+		upgrade_building_effect = qanats_07
 		if = {
 			limit = { has_building = qanats_08 }
 			aub_pay_gold_building_cost_effect = { GOLD = normal_building_tier_8_cost }
@@ -7516,8 +7255,7 @@ aub_upgrade_chain_quarries_01_effect = {
 				scope:aub_payer = { gold >= cheap_building_tier_2_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = quarries_02
+		upgrade_building_effect = quarries_01
 		if = {
 			limit = { has_building = quarries_02 }
 			aub_pay_gold_building_cost_effect = { GOLD = cheap_building_tier_2_cost }
@@ -7532,8 +7270,7 @@ aub_upgrade_chain_quarries_01_effect = {
 				scope:aub_payer = { gold >= cheap_building_tier_3_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = quarries_03
+		upgrade_building_effect = quarries_02
 		if = {
 			limit = { has_building = quarries_03 }
 			aub_pay_gold_building_cost_effect = { GOLD = cheap_building_tier_3_cost }
@@ -7548,8 +7285,7 @@ aub_upgrade_chain_quarries_01_effect = {
 				scope:aub_payer = { gold >= cheap_building_tier_4_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = quarries_04
+		upgrade_building_effect = quarries_03
 		if = {
 			limit = { has_building = quarries_04 }
 			aub_pay_gold_building_cost_effect = { GOLD = cheap_building_tier_4_cost }
@@ -7564,8 +7300,7 @@ aub_upgrade_chain_quarries_01_effect = {
 				scope:aub_payer = { gold >= cheap_building_tier_5_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = quarries_05
+		upgrade_building_effect = quarries_04
 		if = {
 			limit = { has_building = quarries_05 }
 			aub_pay_gold_building_cost_effect = { GOLD = cheap_building_tier_5_cost }
@@ -7580,8 +7315,7 @@ aub_upgrade_chain_quarries_01_effect = {
 				scope:aub_payer = { gold >= cheap_building_tier_6_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = quarries_06
+		upgrade_building_effect = quarries_05
 		if = {
 			limit = { has_building = quarries_06 }
 			aub_pay_gold_building_cost_effect = { GOLD = cheap_building_tier_6_cost }
@@ -7596,8 +7330,7 @@ aub_upgrade_chain_quarries_01_effect = {
 				scope:aub_payer = { gold >= cheap_building_tier_7_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = quarries_07
+		upgrade_building_effect = quarries_06
 		if = {
 			limit = { has_building = quarries_07 }
 			aub_pay_gold_building_cost_effect = { GOLD = cheap_building_tier_7_cost }
@@ -7612,8 +7345,7 @@ aub_upgrade_chain_quarries_01_effect = {
 				scope:aub_payer = { gold >= cheap_building_tier_8_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = quarries_08
+		upgrade_building_effect = quarries_07
 		if = {
 			limit = { has_building = quarries_08 }
 			aub_pay_gold_building_cost_effect = { GOLD = cheap_building_tier_8_cost }
@@ -7766,8 +7498,7 @@ aub_upgrade_chain_ramparts_01_effect = {
 				scope:aub_payer = { gold >= cheap_building_tier_2_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = ramparts_02
+		upgrade_building_effect = ramparts_01
 		if = {
 			limit = { has_building = ramparts_02 }
 			aub_pay_gold_building_cost_effect = { GOLD = cheap_building_tier_2_cost }
@@ -7782,8 +7513,7 @@ aub_upgrade_chain_ramparts_01_effect = {
 				scope:aub_payer = { gold >= cheap_building_tier_3_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = ramparts_03
+		upgrade_building_effect = ramparts_02
 		if = {
 			limit = { has_building = ramparts_03 }
 			aub_pay_gold_building_cost_effect = { GOLD = cheap_building_tier_3_cost }
@@ -7798,8 +7528,7 @@ aub_upgrade_chain_ramparts_01_effect = {
 				scope:aub_payer = { gold >= cheap_building_tier_4_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = ramparts_04
+		upgrade_building_effect = ramparts_03
 		if = {
 			limit = { has_building = ramparts_04 }
 			aub_pay_gold_building_cost_effect = { GOLD = cheap_building_tier_4_cost }
@@ -7814,8 +7543,7 @@ aub_upgrade_chain_ramparts_01_effect = {
 				scope:aub_payer = { gold >= cheap_building_tier_5_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = ramparts_05
+		upgrade_building_effect = ramparts_04
 		if = {
 			limit = { has_building = ramparts_05 }
 			aub_pay_gold_building_cost_effect = { GOLD = cheap_building_tier_5_cost }
@@ -7830,8 +7558,7 @@ aub_upgrade_chain_ramparts_01_effect = {
 				scope:aub_payer = { gold >= cheap_building_tier_6_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = ramparts_06
+		upgrade_building_effect = ramparts_05
 		if = {
 			limit = { has_building = ramparts_06 }
 			aub_pay_gold_building_cost_effect = { GOLD = cheap_building_tier_6_cost }
@@ -7846,8 +7573,7 @@ aub_upgrade_chain_ramparts_01_effect = {
 				scope:aub_payer = { gold >= cheap_building_tier_7_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = ramparts_07
+		upgrade_building_effect = ramparts_06
 		if = {
 			limit = { has_building = ramparts_07 }
 			aub_pay_gold_building_cost_effect = { GOLD = cheap_building_tier_7_cost }
@@ -7862,8 +7588,7 @@ aub_upgrade_chain_ramparts_01_effect = {
 				scope:aub_payer = { gold >= cheap_building_tier_8_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = ramparts_08
+		upgrade_building_effect = ramparts_07
 		if = {
 			limit = { has_building = ramparts_08 }
 			aub_pay_gold_building_cost_effect = { GOLD = cheap_building_tier_8_cost }
@@ -7949,8 +7674,7 @@ aub_upgrade_chain_regimental_grounds_01_effect = {
 				scope:aub_payer = { gold >= expensive_building_tier_2_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = regimental_grounds_02
+		upgrade_building_effect = regimental_grounds_01
 		if = {
 			limit = { has_building = regimental_grounds_02 }
 			aub_pay_gold_building_cost_effect = { GOLD = expensive_building_tier_2_cost }
@@ -7965,8 +7689,7 @@ aub_upgrade_chain_regimental_grounds_01_effect = {
 				scope:aub_payer = { gold >= expensive_building_tier_3_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = regimental_grounds_03
+		upgrade_building_effect = regimental_grounds_02
 		if = {
 			limit = { has_building = regimental_grounds_03 }
 			aub_pay_gold_building_cost_effect = { GOLD = expensive_building_tier_3_cost }
@@ -7981,8 +7704,7 @@ aub_upgrade_chain_regimental_grounds_01_effect = {
 				scope:aub_payer = { gold >= expensive_building_tier_4_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = regimental_grounds_04
+		upgrade_building_effect = regimental_grounds_03
 		if = {
 			limit = { has_building = regimental_grounds_04 }
 			aub_pay_gold_building_cost_effect = { GOLD = expensive_building_tier_4_cost }
@@ -7997,8 +7719,7 @@ aub_upgrade_chain_regimental_grounds_01_effect = {
 				scope:aub_payer = { gold >= expensive_building_tier_5_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = regimental_grounds_05
+		upgrade_building_effect = regimental_grounds_04
 		if = {
 			limit = { has_building = regimental_grounds_05 }
 			aub_pay_gold_building_cost_effect = { GOLD = expensive_building_tier_5_cost }
@@ -8013,8 +7734,7 @@ aub_upgrade_chain_regimental_grounds_01_effect = {
 				scope:aub_payer = { gold >= expensive_building_tier_6_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = regimental_grounds_06
+		upgrade_building_effect = regimental_grounds_05
 		if = {
 			limit = { has_building = regimental_grounds_06 }
 			aub_pay_gold_building_cost_effect = { GOLD = expensive_building_tier_6_cost }
@@ -8029,8 +7749,7 @@ aub_upgrade_chain_regimental_grounds_01_effect = {
 				scope:aub_payer = { gold >= expensive_building_tier_7_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = regimental_grounds_07
+		upgrade_building_effect = regimental_grounds_06
 		if = {
 			limit = { has_building = regimental_grounds_07 }
 			aub_pay_gold_building_cost_effect = { GOLD = expensive_building_tier_7_cost }
@@ -8045,8 +7764,7 @@ aub_upgrade_chain_regimental_grounds_01_effect = {
 				scope:aub_payer = { gold >= expensive_building_tier_8_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = regimental_grounds_08
+		upgrade_building_effect = regimental_grounds_07
 		if = {
 			limit = { has_building = regimental_grounds_08 }
 			aub_pay_gold_building_cost_effect = { GOLD = expensive_building_tier_8_cost }
@@ -8065,8 +7783,7 @@ aub_upgrade_chain_royal_armory_01_effect = {
 				scope:aub_payer = { gold >= expensive_building_tier_4_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = royal_armory_02
+		upgrade_building_effect = royal_armory_01
 		if = {
 			limit = { has_building = royal_armory_02 }
 			aub_pay_gold_building_cost_effect = { GOLD = expensive_building_tier_4_cost }
@@ -8081,8 +7798,7 @@ aub_upgrade_chain_royal_armory_01_effect = {
 				scope:aub_payer = { gold >= expensive_building_tier_5_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = royal_armory_03
+		upgrade_building_effect = royal_armory_02
 		if = {
 			limit = { has_building = royal_armory_03 }
 			aub_pay_gold_building_cost_effect = { GOLD = expensive_building_tier_5_cost }
@@ -8101,8 +7817,7 @@ aub_upgrade_chain_royal_forest_01_effect = {
 				scope:aub_payer = { gold >= expensive_building_tier_4_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = royal_forest_02
+		upgrade_building_effect = royal_forest_01
 		if = {
 			limit = { has_building = royal_forest_02 }
 			aub_pay_gold_building_cost_effect = { GOLD = expensive_building_tier_4_cost }
@@ -8117,8 +7832,7 @@ aub_upgrade_chain_royal_forest_01_effect = {
 				scope:aub_payer = { gold >= expensive_building_tier_5_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = royal_forest_03
+		upgrade_building_effect = royal_forest_02
 		if = {
 			limit = { has_building = royal_forest_03 }
 			aub_pay_gold_building_cost_effect = { GOLD = expensive_building_tier_5_cost }
@@ -8137,8 +7851,7 @@ aub_upgrade_chain_royal_garden_01_effect = {
 				scope:aub_payer = { gold >= expensive_building_tier_4_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = royal_garden_02
+		upgrade_building_effect = royal_garden_01
 		if = {
 			limit = { has_building = royal_garden_02 }
 			aub_pay_gold_building_cost_effect = { GOLD = expensive_building_tier_4_cost }
@@ -8153,8 +7866,7 @@ aub_upgrade_chain_royal_garden_01_effect = {
 				scope:aub_payer = { gold >= expensive_building_tier_5_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = royal_garden_03
+		upgrade_building_effect = royal_garden_02
 		if = {
 			limit = { has_building = royal_garden_03 }
 			aub_pay_gold_building_cost_effect = { GOLD = expensive_building_tier_5_cost }
@@ -8240,8 +7952,7 @@ aub_upgrade_chain_sacred_pool_01_effect = {
 				scope:aub_payer = { gold >= normal_building_tier_2_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = sacred_pool_02
+		upgrade_building_effect = sacred_pool_01
 		if = {
 			limit = { has_building = sacred_pool_02 }
 			aub_pay_gold_building_cost_effect = { GOLD = normal_building_tier_2_cost }
@@ -8256,8 +7967,7 @@ aub_upgrade_chain_sacred_pool_01_effect = {
 				scope:aub_payer = { gold >= normal_building_tier_3_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = sacred_pool_03
+		upgrade_building_effect = sacred_pool_02
 		if = {
 			limit = { has_building = sacred_pool_03 }
 			aub_pay_gold_building_cost_effect = { GOLD = normal_building_tier_3_cost }
@@ -8272,8 +7982,7 @@ aub_upgrade_chain_sacred_pool_01_effect = {
 				scope:aub_payer = { gold >= normal_building_tier_4_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = sacred_pool_04
+		upgrade_building_effect = sacred_pool_03
 		if = {
 			limit = { has_building = sacred_pool_04 }
 			aub_pay_gold_building_cost_effect = { GOLD = normal_building_tier_4_cost }
@@ -8288,8 +7997,7 @@ aub_upgrade_chain_sacred_pool_01_effect = {
 				scope:aub_payer = { gold >= normal_building_tier_5_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = sacred_pool_05
+		upgrade_building_effect = sacred_pool_04
 		if = {
 			limit = { has_building = sacred_pool_05 }
 			aub_pay_gold_building_cost_effect = { GOLD = normal_building_tier_5_cost }
@@ -8304,8 +8012,7 @@ aub_upgrade_chain_sacred_pool_01_effect = {
 				scope:aub_payer = { gold >= normal_building_tier_6_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = sacred_pool_06
+		upgrade_building_effect = sacred_pool_05
 		if = {
 			limit = { has_building = sacred_pool_06 }
 			aub_pay_gold_building_cost_effect = { GOLD = normal_building_tier_6_cost }
@@ -8320,8 +8027,7 @@ aub_upgrade_chain_sacred_pool_01_effect = {
 				scope:aub_payer = { gold >= normal_building_tier_7_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = sacred_pool_07
+		upgrade_building_effect = sacred_pool_06
 		if = {
 			limit = { has_building = sacred_pool_07 }
 			aub_pay_gold_building_cost_effect = { GOLD = normal_building_tier_7_cost }
@@ -8336,8 +8042,7 @@ aub_upgrade_chain_sacred_pool_01_effect = {
 				scope:aub_payer = { gold >= normal_building_tier_8_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = sacred_pool_08
+		upgrade_building_effect = sacred_pool_07
 		if = {
 			limit = { has_building = sacred_pool_08 }
 			aub_pay_gold_building_cost_effect = { GOLD = normal_building_tier_8_cost }
@@ -8557,8 +8262,7 @@ aub_upgrade_chain_scriptorium_01_effect = {
 				scope:aub_payer = { gold >= normal_building_tier_2_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = scriptorium_02
+		upgrade_building_effect = scriptorium_01
 		if = {
 			limit = { has_building = scriptorium_02 }
 			aub_pay_gold_building_cost_effect = { GOLD = normal_building_tier_2_cost }
@@ -8573,8 +8277,7 @@ aub_upgrade_chain_scriptorium_01_effect = {
 				scope:aub_payer = { gold >= normal_building_tier_3_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = scriptorium_03
+		upgrade_building_effect = scriptorium_02
 		if = {
 			limit = { has_building = scriptorium_03 }
 			aub_pay_gold_building_cost_effect = { GOLD = normal_building_tier_3_cost }
@@ -8589,8 +8292,7 @@ aub_upgrade_chain_scriptorium_01_effect = {
 				scope:aub_payer = { gold >= normal_building_tier_4_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = scriptorium_04
+		upgrade_building_effect = scriptorium_03
 		if = {
 			limit = { has_building = scriptorium_04 }
 			aub_pay_gold_building_cost_effect = { GOLD = normal_building_tier_4_cost }
@@ -8605,8 +8307,7 @@ aub_upgrade_chain_scriptorium_01_effect = {
 				scope:aub_payer = { gold >= normal_building_tier_5_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = scriptorium_05
+		upgrade_building_effect = scriptorium_04
 		if = {
 			limit = { has_building = scriptorium_05 }
 			aub_pay_gold_building_cost_effect = { GOLD = normal_building_tier_5_cost }
@@ -8621,8 +8322,7 @@ aub_upgrade_chain_scriptorium_01_effect = {
 				scope:aub_payer = { gold >= normal_building_tier_6_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = scriptorium_06
+		upgrade_building_effect = scriptorium_05
 		if = {
 			limit = { has_building = scriptorium_06 }
 			aub_pay_gold_building_cost_effect = { GOLD = normal_building_tier_6_cost }
@@ -8637,8 +8337,7 @@ aub_upgrade_chain_scriptorium_01_effect = {
 				scope:aub_payer = { gold >= normal_building_tier_7_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = scriptorium_07
+		upgrade_building_effect = scriptorium_06
 		if = {
 			limit = { has_building = scriptorium_07 }
 			aub_pay_gold_building_cost_effect = { GOLD = normal_building_tier_7_cost }
@@ -8653,8 +8352,7 @@ aub_upgrade_chain_scriptorium_01_effect = {
 				scope:aub_payer = { gold >= normal_building_tier_8_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = scriptorium_08
+		upgrade_building_effect = scriptorium_07
 		if = {
 			limit = { has_building = scriptorium_08 }
 			aub_pay_gold_building_cost_effect = { GOLD = normal_building_tier_8_cost }
@@ -8765,8 +8463,7 @@ aub_upgrade_chain_siege_works_01_effect = {
 				scope:aub_payer = { gold >= expensive_building_tier_4_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = siege_works_02
+		upgrade_building_effect = siege_works_01
 		if = {
 			limit = { has_building = siege_works_02 }
 			aub_pay_gold_building_cost_effect = { GOLD = expensive_building_tier_4_cost }
@@ -8781,8 +8478,7 @@ aub_upgrade_chain_siege_works_01_effect = {
 				scope:aub_payer = { gold >= expensive_building_tier_5_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = siege_works_03
+		upgrade_building_effect = siege_works_02
 		if = {
 			limit = { has_building = siege_works_03 }
 			aub_pay_gold_building_cost_effect = { GOLD = expensive_building_tier_5_cost }
@@ -8801,8 +8497,7 @@ aub_upgrade_chain_smiths_01_effect = {
 				scope:aub_payer = { gold >= normal_building_tier_2_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = smiths_02
+		upgrade_building_effect = smiths_01
 		if = {
 			limit = { has_building = smiths_02 }
 			aub_pay_gold_building_cost_effect = { GOLD = normal_building_tier_2_cost }
@@ -8817,8 +8512,7 @@ aub_upgrade_chain_smiths_01_effect = {
 				scope:aub_payer = { gold >= normal_building_tier_3_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = smiths_03
+		upgrade_building_effect = smiths_02
 		if = {
 			limit = { has_building = smiths_03 }
 			aub_pay_gold_building_cost_effect = { GOLD = normal_building_tier_3_cost }
@@ -8833,8 +8527,7 @@ aub_upgrade_chain_smiths_01_effect = {
 				scope:aub_payer = { gold >= normal_building_tier_4_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = smiths_04
+		upgrade_building_effect = smiths_03
 		if = {
 			limit = { has_building = smiths_04 }
 			aub_pay_gold_building_cost_effect = { GOLD = normal_building_tier_4_cost }
@@ -8849,8 +8542,7 @@ aub_upgrade_chain_smiths_01_effect = {
 				scope:aub_payer = { gold >= normal_building_tier_5_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = smiths_05
+		upgrade_building_effect = smiths_04
 		if = {
 			limit = { has_building = smiths_05 }
 			aub_pay_gold_building_cost_effect = { GOLD = normal_building_tier_5_cost }
@@ -8865,8 +8557,7 @@ aub_upgrade_chain_smiths_01_effect = {
 				scope:aub_payer = { gold >= normal_building_tier_6_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = smiths_06
+		upgrade_building_effect = smiths_05
 		if = {
 			limit = { has_building = smiths_06 }
 			aub_pay_gold_building_cost_effect = { GOLD = normal_building_tier_6_cost }
@@ -8881,8 +8572,7 @@ aub_upgrade_chain_smiths_01_effect = {
 				scope:aub_payer = { gold >= normal_building_tier_7_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = smiths_07
+		upgrade_building_effect = smiths_06
 		if = {
 			limit = { has_building = smiths_07 }
 			aub_pay_gold_building_cost_effect = { GOLD = normal_building_tier_7_cost }
@@ -8897,8 +8587,7 @@ aub_upgrade_chain_smiths_01_effect = {
 				scope:aub_payer = { gold >= normal_building_tier_8_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = smiths_08
+		upgrade_building_effect = smiths_07
 		if = {
 			limit = { has_building = smiths_08 }
 			aub_pay_gold_building_cost_effect = { GOLD = normal_building_tier_8_cost }
@@ -8917,8 +8606,7 @@ aub_upgrade_chain_spice_plantation_01_effect = {
 				scope:aub_payer = { gold >= normal_building_tier_2_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = spice_plantation_02
+		upgrade_building_effect = spice_plantation_01
 		if = {
 			limit = { has_building = spice_plantation_02 }
 			aub_pay_gold_building_cost_effect = { GOLD = normal_building_tier_2_cost }
@@ -8933,8 +8621,7 @@ aub_upgrade_chain_spice_plantation_01_effect = {
 				scope:aub_payer = { gold >= normal_building_tier_3_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = spice_plantation_03
+		upgrade_building_effect = spice_plantation_02
 		if = {
 			limit = { has_building = spice_plantation_03 }
 			aub_pay_gold_building_cost_effect = { GOLD = normal_building_tier_3_cost }
@@ -8949,8 +8636,7 @@ aub_upgrade_chain_spice_plantation_01_effect = {
 				scope:aub_payer = { gold >= normal_building_tier_4_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = spice_plantation_04
+		upgrade_building_effect = spice_plantation_03
 		if = {
 			limit = { has_building = spice_plantation_04 }
 			aub_pay_gold_building_cost_effect = { GOLD = normal_building_tier_4_cost }
@@ -8965,8 +8651,7 @@ aub_upgrade_chain_spice_plantation_01_effect = {
 				scope:aub_payer = { gold >= normal_building_tier_5_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = spice_plantation_05
+		upgrade_building_effect = spice_plantation_04
 		if = {
 			limit = { has_building = spice_plantation_05 }
 			aub_pay_gold_building_cost_effect = { GOLD = normal_building_tier_5_cost }
@@ -8981,8 +8666,7 @@ aub_upgrade_chain_spice_plantation_01_effect = {
 				scope:aub_payer = { gold >= normal_building_tier_6_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = spice_plantation_06
+		upgrade_building_effect = spice_plantation_05
 		if = {
 			limit = { has_building = spice_plantation_06 }
 			aub_pay_gold_building_cost_effect = { GOLD = normal_building_tier_6_cost }
@@ -8997,8 +8681,7 @@ aub_upgrade_chain_spice_plantation_01_effect = {
 				scope:aub_payer = { gold >= normal_building_tier_7_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = spice_plantation_07
+		upgrade_building_effect = spice_plantation_06
 		if = {
 			limit = { has_building = spice_plantation_07 }
 			aub_pay_gold_building_cost_effect = { GOLD = normal_building_tier_7_cost }
@@ -9013,8 +8696,7 @@ aub_upgrade_chain_spice_plantation_01_effect = {
 				scope:aub_payer = { gold >= normal_building_tier_8_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = spice_plantation_08
+		upgrade_building_effect = spice_plantation_07
 		if = {
 			limit = { has_building = spice_plantation_08 }
 			aub_pay_gold_building_cost_effect = { GOLD = normal_building_tier_8_cost }
@@ -9100,8 +8782,7 @@ aub_upgrade_chain_stables_01_effect = {
 				scope:aub_payer = { gold >= normal_building_tier_2_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = stables_02
+		upgrade_building_effect = stables_01
 		if = {
 			limit = { has_building = stables_02 }
 			aub_pay_gold_building_cost_effect = { GOLD = normal_building_tier_2_cost }
@@ -9116,8 +8797,7 @@ aub_upgrade_chain_stables_01_effect = {
 				scope:aub_payer = { gold >= normal_building_tier_3_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = stables_03
+		upgrade_building_effect = stables_02
 		if = {
 			limit = { has_building = stables_03 }
 			aub_pay_gold_building_cost_effect = { GOLD = normal_building_tier_3_cost }
@@ -9132,8 +8812,7 @@ aub_upgrade_chain_stables_01_effect = {
 				scope:aub_payer = { gold >= normal_building_tier_4_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = stables_04
+		upgrade_building_effect = stables_03
 		if = {
 			limit = { has_building = stables_04 }
 			aub_pay_gold_building_cost_effect = { GOLD = normal_building_tier_4_cost }
@@ -9148,8 +8827,7 @@ aub_upgrade_chain_stables_01_effect = {
 				scope:aub_payer = { gold >= normal_building_tier_5_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = stables_05
+		upgrade_building_effect = stables_04
 		if = {
 			limit = { has_building = stables_05 }
 			aub_pay_gold_building_cost_effect = { GOLD = normal_building_tier_5_cost }
@@ -9164,8 +8842,7 @@ aub_upgrade_chain_stables_01_effect = {
 				scope:aub_payer = { gold >= normal_building_tier_6_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = stables_06
+		upgrade_building_effect = stables_05
 		if = {
 			limit = { has_building = stables_06 }
 			aub_pay_gold_building_cost_effect = { GOLD = normal_building_tier_6_cost }
@@ -9180,8 +8857,7 @@ aub_upgrade_chain_stables_01_effect = {
 				scope:aub_payer = { gold >= normal_building_tier_7_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = stables_07
+		upgrade_building_effect = stables_06
 		if = {
 			limit = { has_building = stables_07 }
 			aub_pay_gold_building_cost_effect = { GOLD = normal_building_tier_7_cost }
@@ -9196,8 +8872,7 @@ aub_upgrade_chain_stables_01_effect = {
 				scope:aub_payer = { gold >= normal_building_tier_8_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = stables_08
+		upgrade_building_effect = stables_07
 		if = {
 			limit = { has_building = stables_08 }
 			aub_pay_gold_building_cost_effect = { GOLD = normal_building_tier_8_cost }
@@ -9216,8 +8891,7 @@ aub_upgrade_chain_stilted_granaries_01_effect = {
 				scope:aub_payer = { gold >= tribal_building_tier_2_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = stilted_granaries_02
+		upgrade_building_effect = stilted_granaries_01
 		if = {
 			limit = { has_building = stilted_granaries_02 }
 			aub_pay_gold_building_cost_effect = { GOLD = tribal_building_tier_2_cost }
@@ -9232,8 +8906,7 @@ aub_upgrade_chain_stilted_granaries_01_effect = {
 				scope:aub_payer = { gold >= tribal_building_tier_2_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = stilted_granaries_03
+		upgrade_building_effect = stilted_granaries_02
 		if = {
 			limit = { has_building = stilted_granaries_03 }
 			aub_pay_gold_building_cost_effect = { GOLD = tribal_building_tier_2_cost }
@@ -9248,8 +8921,7 @@ aub_upgrade_chain_stilted_granaries_01_effect = {
 				scope:aub_payer = { gold >= tribal_building_tier_4_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = stilted_granaries_04
+		upgrade_building_effect = stilted_granaries_03
 		if = {
 			limit = { has_building = stilted_granaries_04 }
 			aub_pay_gold_building_cost_effect = { GOLD = tribal_building_tier_4_cost }
@@ -9586,8 +9258,7 @@ aub_upgrade_chain_tax_assessor_01_effect = {
 				scope:aub_payer = { gold >= expensive_building_tier_4_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = tax_assessor_02
+		upgrade_building_effect = tax_assessor_01
 		if = {
 			limit = { has_building = tax_assessor_02 }
 			aub_pay_gold_building_cost_effect = { GOLD = expensive_building_tier_4_cost }
@@ -9602,8 +9273,7 @@ aub_upgrade_chain_tax_assessor_01_effect = {
 				scope:aub_payer = { gold >= expensive_building_tier_5_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = tax_assessor_03
+		upgrade_building_effect = tax_assessor_02
 		if = {
 			limit = { has_building = tax_assessor_03 }
 			aub_pay_gold_building_cost_effect = { GOLD = expensive_building_tier_5_cost }
@@ -9622,8 +9292,7 @@ aub_upgrade_chain_temple_01_effect = {
 				scope:aub_payer = { gold >= main_building_tier_2_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = temple_02
+		upgrade_building_effect = temple_01
 		if = {
 			limit = { has_building = temple_02 }
 			aub_pay_gold_building_cost_effect = { GOLD = main_building_tier_2_cost }
@@ -9638,8 +9307,7 @@ aub_upgrade_chain_temple_01_effect = {
 				scope:aub_payer = { gold >= main_building_tier_3_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = temple_03
+		upgrade_building_effect = temple_02
 		if = {
 			limit = { has_building = temple_03 }
 			aub_pay_gold_building_cost_effect = { GOLD = main_building_tier_3_cost }
@@ -9654,8 +9322,7 @@ aub_upgrade_chain_temple_01_effect = {
 				scope:aub_payer = { gold >= main_building_tier_4_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = temple_04
+		upgrade_building_effect = temple_03
 		if = {
 			limit = { has_building = temple_04 }
 			aub_pay_gold_building_cost_effect = { GOLD = main_building_tier_4_cost }
@@ -9674,8 +9341,7 @@ aub_upgrade_chain_temple_citadel_01_effect = {
 				scope:aub_payer = { gold >= main_building_tier_2_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = temple_citadel_02
+		upgrade_building_effect = temple_citadel_01
 		if = {
 			limit = { has_building = temple_citadel_02 }
 			aub_pay_gold_building_cost_effect = { GOLD = main_building_tier_2_cost }
@@ -9690,8 +9356,7 @@ aub_upgrade_chain_temple_citadel_01_effect = {
 				scope:aub_payer = { gold >= main_building_tier_3_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = temple_citadel_03
+		upgrade_building_effect = temple_citadel_02
 		if = {
 			limit = { has_building = temple_citadel_03 }
 			aub_pay_gold_building_cost_effect = { GOLD = main_building_tier_3_cost }
@@ -9706,8 +9371,7 @@ aub_upgrade_chain_temple_citadel_01_effect = {
 				scope:aub_payer = { gold >= main_building_tier_4_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = temple_citadel_04
+		upgrade_building_effect = temple_citadel_03
 		if = {
 			limit = { has_building = temple_citadel_04 }
 			aub_pay_gold_building_cost_effect = { GOLD = main_building_tier_4_cost }
@@ -9844,8 +9508,7 @@ aub_upgrade_chain_tribe_01_effect = {
 			}
 			scope:aub_payer = { prestige >= expensive_building_tier_3_cost }
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = tribe_02
+		upgrade_building_effect = tribe_01
 		if = {
 			limit = { has_building = tribe_02 }
 			aub_pay_gold_prestige_building_cost_effect = { GOLD = expensive_building_tier_1_cost PRESTIGE = expensive_building_tier_3_cost }
@@ -10065,8 +9728,7 @@ aub_upgrade_chain_vihara_halls_01_effect = {
 				scope:aub_payer = { gold >= normal_building_tier_2_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = vihara_halls_02
+		upgrade_building_effect = vihara_halls_01
 		if = {
 			limit = { has_building = vihara_halls_02 }
 			aub_pay_gold_building_cost_effect = { GOLD = normal_building_tier_2_cost }
@@ -10081,8 +9743,7 @@ aub_upgrade_chain_vihara_halls_01_effect = {
 				scope:aub_payer = { gold >= normal_building_tier_3_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = vihara_halls_03
+		upgrade_building_effect = vihara_halls_02
 		if = {
 			limit = { has_building = vihara_halls_03 }
 			aub_pay_gold_building_cost_effect = { GOLD = normal_building_tier_3_cost }
@@ -10097,8 +9758,7 @@ aub_upgrade_chain_vihara_halls_01_effect = {
 				scope:aub_payer = { gold >= normal_building_tier_4_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = vihara_halls_04
+		upgrade_building_effect = vihara_halls_03
 		if = {
 			limit = { has_building = vihara_halls_04 }
 			aub_pay_gold_building_cost_effect = { GOLD = normal_building_tier_4_cost }
@@ -10113,8 +9773,7 @@ aub_upgrade_chain_vihara_halls_01_effect = {
 				scope:aub_payer = { gold >= normal_building_tier_5_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = vihara_halls_05
+		upgrade_building_effect = vihara_halls_04
 		if = {
 			limit = { has_building = vihara_halls_05 }
 			aub_pay_gold_building_cost_effect = { GOLD = normal_building_tier_5_cost }
@@ -10129,8 +9788,7 @@ aub_upgrade_chain_vihara_halls_01_effect = {
 				scope:aub_payer = { gold >= normal_building_tier_6_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = vihara_halls_06
+		upgrade_building_effect = vihara_halls_05
 		if = {
 			limit = { has_building = vihara_halls_06 }
 			aub_pay_gold_building_cost_effect = { GOLD = normal_building_tier_6_cost }
@@ -10145,8 +9803,7 @@ aub_upgrade_chain_vihara_halls_01_effect = {
 				scope:aub_payer = { gold >= normal_building_tier_7_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = vihara_halls_07
+		upgrade_building_effect = vihara_halls_06
 		if = {
 			limit = { has_building = vihara_halls_07 }
 			aub_pay_gold_building_cost_effect = { GOLD = normal_building_tier_7_cost }
@@ -10161,8 +9818,7 @@ aub_upgrade_chain_vihara_halls_01_effect = {
 				scope:aub_payer = { gold >= normal_building_tier_8_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = vihara_halls_08
+		upgrade_building_effect = vihara_halls_07
 		if = {
 			limit = { has_building = vihara_halls_08 }
 			aub_pay_gold_building_cost_effect = { GOLD = normal_building_tier_8_cost }
@@ -10181,8 +9837,7 @@ aub_upgrade_chain_wantilan_01_effect = {
 				scope:aub_payer = { gold >= tribal_building_tier_2_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = wantilan_02
+		upgrade_building_effect = wantilan_01
 		if = {
 			limit = { has_building = wantilan_02 }
 			aub_pay_gold_building_cost_effect = { GOLD = tribal_building_tier_2_cost }
@@ -10197,8 +9852,7 @@ aub_upgrade_chain_wantilan_01_effect = {
 				scope:aub_payer = { gold >= tribal_building_tier_3_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = wantilan_03
+		upgrade_building_effect = wantilan_02
 		if = {
 			limit = { has_building = wantilan_03 }
 			aub_pay_gold_building_cost_effect = { GOLD = tribal_building_tier_3_cost }
@@ -10213,8 +9867,7 @@ aub_upgrade_chain_wantilan_01_effect = {
 				scope:aub_payer = { gold >= tribal_building_tier_4_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = wantilan_04
+		upgrade_building_effect = wantilan_03
 		if = {
 			limit = { has_building = wantilan_04 }
 			aub_pay_gold_building_cost_effect = { GOLD = tribal_building_tier_4_cost }
@@ -10234,8 +9887,7 @@ aub_upgrade_chain_war_camps_01_effect = {
 			}
 			scope:aub_payer = { prestige >= expensive_building_tier_2_cost }
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = war_camps_02
+		upgrade_building_effect = war_camps_01
 		if = {
 			limit = { has_building = war_camps_02 }
 			aub_pay_gold_prestige_building_cost_effect = { GOLD = tribal_building_tier_2_cost PRESTIGE = expensive_building_tier_2_cost }
@@ -10254,8 +9906,7 @@ aub_upgrade_chain_warrior_lodges_01_effect = {
 				scope:aub_payer = { gold >= cheap_building_tier_2_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = warrior_lodges_02
+		upgrade_building_effect = warrior_lodges_01
 		if = {
 			limit = { has_building = warrior_lodges_02 }
 			aub_pay_gold_building_cost_effect = { GOLD = cheap_building_tier_2_cost }
@@ -10270,8 +9921,7 @@ aub_upgrade_chain_warrior_lodges_01_effect = {
 				scope:aub_payer = { gold >= cheap_building_tier_3_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = warrior_lodges_03
+		upgrade_building_effect = warrior_lodges_02
 		if = {
 			limit = { has_building = warrior_lodges_03 }
 			aub_pay_gold_building_cost_effect = { GOLD = cheap_building_tier_3_cost }
@@ -10286,8 +9936,7 @@ aub_upgrade_chain_warrior_lodges_01_effect = {
 				scope:aub_payer = { gold >= cheap_building_tier_4_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = warrior_lodges_04
+		upgrade_building_effect = warrior_lodges_03
 		if = {
 			limit = { has_building = warrior_lodges_04 }
 			aub_pay_gold_building_cost_effect = { GOLD = cheap_building_tier_4_cost }
@@ -10302,8 +9951,7 @@ aub_upgrade_chain_warrior_lodges_01_effect = {
 				scope:aub_payer = { gold >= cheap_building_tier_5_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = warrior_lodges_05
+		upgrade_building_effect = warrior_lodges_04
 		if = {
 			limit = { has_building = warrior_lodges_05 }
 			aub_pay_gold_building_cost_effect = { GOLD = cheap_building_tier_5_cost }
@@ -10318,8 +9966,7 @@ aub_upgrade_chain_warrior_lodges_01_effect = {
 				scope:aub_payer = { gold >= cheap_building_tier_6_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = warrior_lodges_06
+		upgrade_building_effect = warrior_lodges_05
 		if = {
 			limit = { has_building = warrior_lodges_06 }
 			aub_pay_gold_building_cost_effect = { GOLD = cheap_building_tier_6_cost }
@@ -10334,8 +9981,7 @@ aub_upgrade_chain_warrior_lodges_01_effect = {
 				scope:aub_payer = { gold >= cheap_building_tier_7_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = warrior_lodges_07
+		upgrade_building_effect = warrior_lodges_06
 		if = {
 			limit = { has_building = warrior_lodges_07 }
 			aub_pay_gold_building_cost_effect = { GOLD = cheap_building_tier_7_cost }
@@ -10350,8 +9996,7 @@ aub_upgrade_chain_warrior_lodges_01_effect = {
 				scope:aub_payer = { gold >= cheap_building_tier_8_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = warrior_lodges_08
+		upgrade_building_effect = warrior_lodges_07
 		if = {
 			limit = { has_building = warrior_lodges_08 }
 			aub_pay_gold_building_cost_effect = { GOLD = cheap_building_tier_8_cost }
@@ -10370,8 +10015,7 @@ aub_upgrade_chain_watchtowers_01_effect = {
 				scope:aub_payer = { gold >= cheap_building_tier_2_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = watchtowers_02
+		upgrade_building_effect = watchtowers_01
 		if = {
 			limit = { has_building = watchtowers_02 }
 			aub_pay_gold_building_cost_effect = { GOLD = cheap_building_tier_2_cost }
@@ -10386,8 +10030,7 @@ aub_upgrade_chain_watchtowers_01_effect = {
 				scope:aub_payer = { gold >= cheap_building_tier_3_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = watchtowers_03
+		upgrade_building_effect = watchtowers_02
 		if = {
 			limit = { has_building = watchtowers_03 }
 			aub_pay_gold_building_cost_effect = { GOLD = cheap_building_tier_3_cost }
@@ -10402,8 +10045,7 @@ aub_upgrade_chain_watchtowers_01_effect = {
 				scope:aub_payer = { gold >= cheap_building_tier_4_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = watchtowers_04
+		upgrade_building_effect = watchtowers_03
 		if = {
 			limit = { has_building = watchtowers_04 }
 			aub_pay_gold_building_cost_effect = { GOLD = cheap_building_tier_4_cost }
@@ -10418,8 +10060,7 @@ aub_upgrade_chain_watchtowers_01_effect = {
 				scope:aub_payer = { gold >= cheap_building_tier_5_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = watchtowers_05
+		upgrade_building_effect = watchtowers_04
 		if = {
 			limit = { has_building = watchtowers_05 }
 			aub_pay_gold_building_cost_effect = { GOLD = cheap_building_tier_5_cost }
@@ -10434,8 +10075,7 @@ aub_upgrade_chain_watchtowers_01_effect = {
 				scope:aub_payer = { gold >= cheap_building_tier_6_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = watchtowers_06
+		upgrade_building_effect = watchtowers_05
 		if = {
 			limit = { has_building = watchtowers_06 }
 			aub_pay_gold_building_cost_effect = { GOLD = cheap_building_tier_6_cost }
@@ -10450,8 +10090,7 @@ aub_upgrade_chain_watchtowers_01_effect = {
 				scope:aub_payer = { gold >= cheap_building_tier_7_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = watchtowers_07
+		upgrade_building_effect = watchtowers_06
 		if = {
 			limit = { has_building = watchtowers_07 }
 			aub_pay_gold_building_cost_effect = { GOLD = cheap_building_tier_7_cost }
@@ -10466,8 +10105,7 @@ aub_upgrade_chain_watchtowers_01_effect = {
 				scope:aub_payer = { gold >= cheap_building_tier_8_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = watchtowers_08
+		upgrade_building_effect = watchtowers_07
 		if = {
 			limit = { has_building = watchtowers_08 }
 			aub_pay_gold_building_cost_effect = { GOLD = cheap_building_tier_8_cost }
@@ -10486,8 +10124,7 @@ aub_upgrade_chain_water_temples_01_effect = {
 				scope:aub_payer = { gold >= tribal_building_tier_2_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = water_temples_02
+		upgrade_building_effect = water_temples_01
 		if = {
 			limit = { has_building = water_temples_02 }
 			aub_pay_gold_building_cost_effect = { GOLD = tribal_building_tier_2_cost }
@@ -10502,8 +10139,7 @@ aub_upgrade_chain_water_temples_01_effect = {
 				scope:aub_payer = { gold >= tribal_building_tier_3_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = water_temples_03
+		upgrade_building_effect = water_temples_02
 		if = {
 			limit = { has_building = water_temples_03 }
 			aub_pay_gold_building_cost_effect = { GOLD = tribal_building_tier_3_cost }
@@ -10518,8 +10154,7 @@ aub_upgrade_chain_water_temples_01_effect = {
 				scope:aub_payer = { gold >= tribal_building_tier_4_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = water_temples_04
+		upgrade_building_effect = water_temples_03
 		if = {
 			limit = { has_building = water_temples_04 }
 			aub_pay_gold_building_cost_effect = { GOLD = tribal_building_tier_4_cost }
@@ -10538,8 +10173,7 @@ aub_upgrade_chain_watermills_01_effect = {
 				scope:aub_payer = { gold >= expensive_building_tier_2_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = watermills_02
+		upgrade_building_effect = watermills_01
 		if = {
 			limit = { has_building = watermills_02 }
 			aub_pay_gold_building_cost_effect = { GOLD = expensive_building_tier_2_cost }
@@ -10554,8 +10188,7 @@ aub_upgrade_chain_watermills_01_effect = {
 				scope:aub_payer = { gold >= expensive_building_tier_3_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = watermills_03
+		upgrade_building_effect = watermills_02
 		if = {
 			limit = { has_building = watermills_03 }
 			aub_pay_gold_building_cost_effect = { GOLD = expensive_building_tier_3_cost }
@@ -10570,8 +10203,7 @@ aub_upgrade_chain_watermills_01_effect = {
 				scope:aub_payer = { gold >= expensive_building_tier_4_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = watermills_04
+		upgrade_building_effect = watermills_03
 		if = {
 			limit = { has_building = watermills_04 }
 			aub_pay_gold_building_cost_effect = { GOLD = expensive_building_tier_4_cost }
@@ -10586,8 +10218,7 @@ aub_upgrade_chain_watermills_01_effect = {
 				scope:aub_payer = { gold >= expensive_building_tier_5_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = watermills_05
+		upgrade_building_effect = watermills_04
 		if = {
 			limit = { has_building = watermills_05 }
 			aub_pay_gold_building_cost_effect = { GOLD = expensive_building_tier_5_cost }
@@ -10602,8 +10233,7 @@ aub_upgrade_chain_watermills_01_effect = {
 				scope:aub_payer = { gold >= expensive_building_tier_6_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = watermills_06
+		upgrade_building_effect = watermills_05
 		if = {
 			limit = { has_building = watermills_06 }
 			aub_pay_gold_building_cost_effect = { GOLD = expensive_building_tier_6_cost }
@@ -10618,8 +10248,7 @@ aub_upgrade_chain_watermills_01_effect = {
 				scope:aub_payer = { gold >= expensive_building_tier_7_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = watermills_07
+		upgrade_building_effect = watermills_06
 		if = {
 			limit = { has_building = watermills_07 }
 			aub_pay_gold_building_cost_effect = { GOLD = expensive_building_tier_7_cost }
@@ -10634,8 +10263,7 @@ aub_upgrade_chain_watermills_01_effect = {
 				scope:aub_payer = { gold >= expensive_building_tier_8_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = watermills_08
+		upgrade_building_effect = watermills_07
 		if = {
 			limit = { has_building = watermills_08 }
 			aub_pay_gold_building_cost_effect = { GOLD = expensive_building_tier_8_cost }
@@ -10654,8 +10282,7 @@ aub_upgrade_chain_waterworks_01_effect = {
 				scope:aub_payer = { gold >= normal_building_tier_2_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = waterworks_02
+		upgrade_building_effect = waterworks_01
 		if = {
 			limit = { has_building = waterworks_02 }
 			aub_pay_gold_building_cost_effect = { GOLD = normal_building_tier_2_cost }
@@ -10670,8 +10297,7 @@ aub_upgrade_chain_waterworks_01_effect = {
 				scope:aub_payer = { gold >= normal_building_tier_3_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = waterworks_03
+		upgrade_building_effect = waterworks_02
 		if = {
 			limit = { has_building = waterworks_03 }
 			aub_pay_gold_building_cost_effect = { GOLD = normal_building_tier_3_cost }
@@ -10686,8 +10312,7 @@ aub_upgrade_chain_waterworks_01_effect = {
 				scope:aub_payer = { gold >= normal_building_tier_4_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = waterworks_04
+		upgrade_building_effect = waterworks_03
 		if = {
 			limit = { has_building = waterworks_04 }
 			aub_pay_gold_building_cost_effect = { GOLD = normal_building_tier_4_cost }
@@ -10702,8 +10327,7 @@ aub_upgrade_chain_waterworks_01_effect = {
 				scope:aub_payer = { gold >= normal_building_tier_5_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = waterworks_05
+		upgrade_building_effect = waterworks_04
 		if = {
 			limit = { has_building = waterworks_05 }
 			aub_pay_gold_building_cost_effect = { GOLD = normal_building_tier_5_cost }
@@ -10718,8 +10342,7 @@ aub_upgrade_chain_waterworks_01_effect = {
 				scope:aub_payer = { gold >= normal_building_tier_6_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = waterworks_06
+		upgrade_building_effect = waterworks_05
 		if = {
 			limit = { has_building = waterworks_06 }
 			aub_pay_gold_building_cost_effect = { GOLD = normal_building_tier_6_cost }
@@ -10734,8 +10357,7 @@ aub_upgrade_chain_waterworks_01_effect = {
 				scope:aub_payer = { gold >= normal_building_tier_7_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = waterworks_07
+		upgrade_building_effect = waterworks_06
 		if = {
 			limit = { has_building = waterworks_07 }
 			aub_pay_gold_building_cost_effect = { GOLD = normal_building_tier_7_cost }
@@ -10750,8 +10372,7 @@ aub_upgrade_chain_waterworks_01_effect = {
 				scope:aub_payer = { gold >= normal_building_tier_8_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = waterworks_08
+		upgrade_building_effect = waterworks_07
 		if = {
 			limit = { has_building = waterworks_08 }
 			aub_pay_gold_building_cost_effect = { GOLD = normal_building_tier_8_cost }
@@ -10816,8 +10437,7 @@ aub_upgrade_chain_wind_furnace_01_effect = {
 				scope:aub_payer = { gold >= normal_building_tier_2_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = wind_furnace_02
+		upgrade_building_effect = wind_furnace_01
 		if = {
 			limit = { has_building = wind_furnace_02 }
 			aub_pay_gold_building_cost_effect = { GOLD = normal_building_tier_2_cost }
@@ -10832,8 +10452,7 @@ aub_upgrade_chain_wind_furnace_01_effect = {
 				scope:aub_payer = { gold >= normal_building_tier_3_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = wind_furnace_03
+		upgrade_building_effect = wind_furnace_02
 		if = {
 			limit = { has_building = wind_furnace_03 }
 			aub_pay_gold_building_cost_effect = { GOLD = normal_building_tier_3_cost }
@@ -10848,8 +10467,7 @@ aub_upgrade_chain_wind_furnace_01_effect = {
 				scope:aub_payer = { gold >= normal_building_tier_4_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = wind_furnace_04
+		upgrade_building_effect = wind_furnace_03
 		if = {
 			limit = { has_building = wind_furnace_04 }
 			aub_pay_gold_building_cost_effect = { GOLD = normal_building_tier_4_cost }
@@ -10864,8 +10482,7 @@ aub_upgrade_chain_wind_furnace_01_effect = {
 				scope:aub_payer = { gold >= normal_building_tier_5_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = wind_furnace_05
+		upgrade_building_effect = wind_furnace_04
 		if = {
 			limit = { has_building = wind_furnace_05 }
 			aub_pay_gold_building_cost_effect = { GOLD = normal_building_tier_5_cost }
@@ -10880,8 +10497,7 @@ aub_upgrade_chain_wind_furnace_01_effect = {
 				scope:aub_payer = { gold >= normal_building_tier_6_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = wind_furnace_06
+		upgrade_building_effect = wind_furnace_05
 		if = {
 			limit = { has_building = wind_furnace_06 }
 			aub_pay_gold_building_cost_effect = { GOLD = normal_building_tier_6_cost }
@@ -10896,8 +10512,7 @@ aub_upgrade_chain_wind_furnace_01_effect = {
 				scope:aub_payer = { gold >= normal_building_tier_7_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = wind_furnace_07
+		upgrade_building_effect = wind_furnace_06
 		if = {
 			limit = { has_building = wind_furnace_07 }
 			aub_pay_gold_building_cost_effect = { GOLD = normal_building_tier_7_cost }
@@ -10912,8 +10527,7 @@ aub_upgrade_chain_wind_furnace_01_effect = {
 				scope:aub_payer = { gold >= normal_building_tier_8_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = wind_furnace_08
+		upgrade_building_effect = wind_furnace_07
 		if = {
 			limit = { has_building = wind_furnace_08 }
 			aub_pay_gold_building_cost_effect = { GOLD = normal_building_tier_8_cost }
@@ -10932,8 +10546,7 @@ aub_upgrade_chain_windmills_01_effect = {
 				scope:aub_payer = { gold >= expensive_building_tier_2_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = windmills_02
+		upgrade_building_effect = windmills_01
 		if = {
 			limit = { has_building = windmills_02 }
 			aub_pay_gold_building_cost_effect = { GOLD = expensive_building_tier_2_cost }
@@ -10948,8 +10561,7 @@ aub_upgrade_chain_windmills_01_effect = {
 				scope:aub_payer = { gold >= expensive_building_tier_3_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = windmills_03
+		upgrade_building_effect = windmills_02
 		if = {
 			limit = { has_building = windmills_03 }
 			aub_pay_gold_building_cost_effect = { GOLD = expensive_building_tier_3_cost }
@@ -10964,8 +10576,7 @@ aub_upgrade_chain_windmills_01_effect = {
 				scope:aub_payer = { gold >= expensive_building_tier_4_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = windmills_04
+		upgrade_building_effect = windmills_03
 		if = {
 			limit = { has_building = windmills_04 }
 			aub_pay_gold_building_cost_effect = { GOLD = expensive_building_tier_4_cost }
@@ -10980,8 +10591,7 @@ aub_upgrade_chain_windmills_01_effect = {
 				scope:aub_payer = { gold >= expensive_building_tier_5_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = windmills_05
+		upgrade_building_effect = windmills_04
 		if = {
 			limit = { has_building = windmills_05 }
 			aub_pay_gold_building_cost_effect = { GOLD = expensive_building_tier_5_cost }
@@ -10996,8 +10606,7 @@ aub_upgrade_chain_windmills_01_effect = {
 				scope:aub_payer = { gold >= expensive_building_tier_6_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = windmills_06
+		upgrade_building_effect = windmills_05
 		if = {
 			limit = { has_building = windmills_06 }
 			aub_pay_gold_building_cost_effect = { GOLD = expensive_building_tier_6_cost }
@@ -11012,8 +10621,7 @@ aub_upgrade_chain_windmills_01_effect = {
 				scope:aub_payer = { gold >= expensive_building_tier_7_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = windmills_07
+		upgrade_building_effect = windmills_06
 		if = {
 			limit = { has_building = windmills_07 }
 			aub_pay_gold_building_cost_effect = { GOLD = expensive_building_tier_7_cost }
@@ -11028,8 +10636,7 @@ aub_upgrade_chain_windmills_01_effect = {
 				scope:aub_payer = { gold >= expensive_building_tier_8_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = windmills_08
+		upgrade_building_effect = windmills_07
 		if = {
 			limit = { has_building = windmills_08 }
 			aub_pay_gold_building_cost_effect = { GOLD = expensive_building_tier_8_cost }
@@ -11048,8 +10655,7 @@ aub_upgrade_chain_workshops_01_effect = {
 				scope:aub_payer = { gold >= expensive_building_tier_2_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = workshops_02
+		upgrade_building_effect = workshops_01
 		if = {
 			limit = { has_building = workshops_02 }
 			aub_pay_gold_building_cost_effect = { GOLD = expensive_building_tier_2_cost }
@@ -11064,8 +10670,7 @@ aub_upgrade_chain_workshops_01_effect = {
 				scope:aub_payer = { gold >= expensive_building_tier_3_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = workshops_03
+		upgrade_building_effect = workshops_02
 		if = {
 			limit = { has_building = workshops_03 }
 			aub_pay_gold_building_cost_effect = { GOLD = expensive_building_tier_3_cost }
@@ -11080,8 +10685,7 @@ aub_upgrade_chain_workshops_01_effect = {
 				scope:aub_payer = { gold >= expensive_building_tier_4_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = workshops_04
+		upgrade_building_effect = workshops_03
 		if = {
 			limit = { has_building = workshops_04 }
 			aub_pay_gold_building_cost_effect = { GOLD = expensive_building_tier_4_cost }
@@ -11096,8 +10700,7 @@ aub_upgrade_chain_workshops_01_effect = {
 				scope:aub_payer = { gold >= expensive_building_tier_5_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = workshops_05
+		upgrade_building_effect = workshops_04
 		if = {
 			limit = { has_building = workshops_05 }
 			aub_pay_gold_building_cost_effect = { GOLD = expensive_building_tier_5_cost }
@@ -11112,8 +10715,7 @@ aub_upgrade_chain_workshops_01_effect = {
 				scope:aub_payer = { gold >= expensive_building_tier_6_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = workshops_06
+		upgrade_building_effect = workshops_05
 		if = {
 			limit = { has_building = workshops_06 }
 			aub_pay_gold_building_cost_effect = { GOLD = expensive_building_tier_6_cost }
@@ -11128,8 +10730,7 @@ aub_upgrade_chain_workshops_01_effect = {
 				scope:aub_payer = { gold >= expensive_building_tier_7_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = workshops_07
+		upgrade_building_effect = workshops_06
 		if = {
 			limit = { has_building = workshops_07 }
 			aub_pay_gold_building_cost_effect = { GOLD = expensive_building_tier_7_cost }
@@ -11144,8 +10745,7 @@ aub_upgrade_chain_workshops_01_effect = {
 				scope:aub_payer = { gold >= expensive_building_tier_8_cost }
 			}
 		}
-		scope:aub_payer = { save_scope_as = character }
-		add_building = workshops_08
+		upgrade_building_effect = workshops_07
 		if = {
 			limit = { has_building = workshops_08 }
 			aub_pay_gold_building_cost_effect = { GOLD = expensive_building_tier_8_cost }

@@ -109,12 +109,11 @@ def render_chain(chain: BuildingChain) -> list[str]:
                 ]
             )
         else:
-            lines.extend(
-                [
-                    "\t\tscope:aub_payer = { save_scope_as = character }",
-                    f"\t\tadd_building = {edge.target}",
-                ]
-            )
+            # CK3 exposes a dedicated immediate upgrade effect for an existing
+            # province building. Unlike add_building, it does not synthesize a
+            # fresh construction-completion context with a missing payer scope.
+            # Qualification and payment remain under this generated branch.
+            lines.append(f"\t\tupgrade_building_effect = {edge.source}")
         lines.extend(
             [
                 "\t\tif = {",

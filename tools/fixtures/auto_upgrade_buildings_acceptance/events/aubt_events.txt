@@ -247,6 +247,20 @@ aubt.10 = {
 			}
 		}
 		capital_province = { set_global_variable = { name = aubt_province value = this } }
+		# Main and duchy building target gates read the province culture, which
+		# is Sicilian here, rather than Robert's Norman holder culture.
+		global_var:aubt_province = {
+			culture = {
+				if = {
+					limit = { NOT = { has_innovation = innovation_battlements } }
+					add_innovation = innovation_battlements
+				}
+				if = {
+					limit = { NOT = { has_innovation = innovation_castle_baileys } }
+					add_innovation = innovation_castle_baileys
+				}
+			}
+		}
 
 		# Castle main building. The starting capital is already a castle; do not
 		# reapply its holding type because CK3 rejects redundant conversions.

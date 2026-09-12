@@ -215,8 +215,8 @@ def validate(game_root: Path = DEFAULT_GAME_ROOT) -> tuple[list[str], bool]:
         errors.append("generated qualification-trigger call inventory drifted")
     if triggers.count("aub_can_upgrade_to_") != len(EDGES):
         errors.append("generated qualification-trigger definition inventory drifted")
-    expected_regular_adds = Counter(
-        edge.target for edge in EDGES if edge.target_type != "special"
+    expected_regular_upgrades = Counter(
+        edge.source for edge in EDGES if edge.target_type != "special"
     )
     expected_special_adds = Counter(
         item
@@ -227,8 +227,11 @@ def validate(game_root: Path = DEFAULT_GAME_ROOT) -> tuple[list[str], bool]:
     expected_special_removals = Counter(
         edge.source for edge in EDGES if edge.target_type == "special"
     )
-    actual_regular_adds = Counter(
-        re.findall(r"(?m)^\s*add_building\s*=\s*([A-Za-z_][A-Za-z0-9_]*)\s*$", effects)
+    actual_regular_upgrades = Counter(
+        re.findall(
+            r"(?m)^\s*upgrade_building_effect\s*=\s*([A-Za-z_][A-Za-z0-9_]*)\s*$",
+            effects,
+        )
     )
     actual_special_adds = Counter(
         re.findall(
@@ -239,16 +242,16 @@ def validate(game_root: Path = DEFAULT_GAME_ROOT) -> tuple[list[str], bool]:
     actual_special_removals = Counter(
         re.findall(r"(?m)^\s*remove_building\s*=\s*([A-Za-z_][A-Za-z0-9_]*)\s*$", effects)
     )
-    if actual_regular_adds != expected_regular_adds:
-        errors.append("generated regular/duchy target insertion inventory drifted")
+    if actual_regular_upgrades != expected_regular_upgrades:
+        errors.append("generated regular/duchy native-upgrade inventory drifted")
     if actual_special_adds != expected_special_adds:
         errors.append("generated special target/rollback insertion inventory drifted")
     if actual_special_removals != expected_special_removals:
         errors.append("generated special source removal inventory drifted")
     if effects.count("scope:aub_payer = { save_scope_as = character }") != (
-        len(EDGES) + sum(edge.target_type == "special" for edge in EDGES)
+        2 * sum(edge.target_type == "special" for edge in EDGES)
     ):
-        errors.append("per-attempt vanilla construction-payer context inventory drifted")
+        errors.append("special target/rollback payer-context inventory drifted")
     for edge in EDGES:
         if effects.count(f"\n\t\t\thas_building = {edge.source}\n") != 1:
             errors.append(f"generated source edge inventory drifted: {edge.source}")
