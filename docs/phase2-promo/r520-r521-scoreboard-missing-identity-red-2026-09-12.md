@@ -41,3 +41,9 @@ top-level readiness 归零并保持 `widget_not_instantiated`。缺失项因此�
 `exists={status:available,value:false}` 直接定位；其余成功读取项不会被抹去。补丁不改变
 schema shape、allowlist、动作、遍历或可用性判定。native fixture 模拟第 13 项缺失并断言
 序列化仍有效；Python 合同测试断言同一 unavailable payload 可被严格 normalizer 接受。
+
+根仓补丁 `f1f6143dc099772438c2ca6db8d762030d416dfe` 已推送并与
+`origin/master` 相等。open_kaishek commit
+`8f796cadb33c853c0584f9ed496d5b937c8d28ee` 已同步该 unavailable-response
+语义；其结论为现有字段的诊断结果被保留，wire shape、版本、Operator MCP 与 adapter
+代码均不变。本次只改文档，未重复 companion 测试。
