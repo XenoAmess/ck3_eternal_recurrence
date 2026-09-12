@@ -524,6 +524,149 @@ class Stage10PlayerSubjectOperatorTests(unittest.TestCase):
                     operator.base.file_record(receipt_path), bound
                 )
 
+            topology_path = root / "topology.json"
+            cleanup_path = root / "cleanup.json"
+            for row in roster_rows:
+                variables = row["variables"]
+                variables["zg361_b1_case_owner"] = variable("char", 200)
+                variables["zg361_b1_cycle_serial"] = variable("value", 1700000)
+                variables["zg361_b1_case_serial"] = variable("value", 1700000)
+                variables["zg361_b1_case_state"] = variable("value", 700000)
+            roster["root"]["lists"]["zg361_b1_processing_subjects"] = {
+                "present": True,
+                "item_count": len(subject_ids),
+                "duration": len(subject_ids),
+                "items": [
+                    {"type": "char", "identity": value} for value in subject_ids
+                ],
+            }
+            roster["source"] = operator.base.file_record(checkpoint)
+            operator.base.write_object(roster_path, roster)
+            topology_report = {
+                "schema_version": 1,
+                "kind": operator.TOPOLOGY_KIND,
+                "result": "GREEN",
+                "game_version": "1.19.0.6",
+                "meta_number_of_players": 1,
+                "played_character_records": [
+                    {"character_id": 200, "player_id": 1}
+                ],
+                "currently_played_character_ids": [200],
+                "offline_single_player_ready": True,
+                "player_manager_candidates": [
+                    {
+                        "player_manager_character_id": 200,
+                        "immediate_liege_character_id": 100,
+                        "player_primary_title_tier": 3,
+                        "player_government": "celestial_government",
+                        "direct_landed_vassal_character_ids": [300],
+                    }
+                ],
+                "source": operator.base.file_record(checkpoint),
+                "melted_sha256": "C" * 64,
+            }
+            operator.base.write_object(topology_path, topology_report)
+            live.update(
+                product_tree_sha256="B" * 64,
+                game_time_advanced=False,
+                source_admission_kind="managed-autosave",
+            )
+            operator.base.write_object(live_path, live)
+            operator.base.write_object(
+                cleanup_path,
+                {
+                    "schema_version": 1,
+                    "kind": operator.SOURCE_CLEANUP_KIND,
+                    "result": "GREEN",
+                    "cleanup_proven": True,
+                    "ck3_pids_after": [],
+                    "canonical_cleanup": {
+                        "result": "GREEN",
+                        "failed_checks": [],
+                    },
+                },
+            )
+            schedule = {
+                "schema_version": 1,
+                "kind": operator.SCHEDULE_KIND,
+                "result": "GREEN",
+                "game_version": "1.19.0.6",
+                "event_prefix": "zg361b1.",
+                "root_character_id": 200,
+                "matched_count": len(subject_ids),
+                "matches": [
+                    {
+                        "event": "zg361b1.122",
+                        "root_character_id": 200,
+                        "days_from_current": 30,
+                    }
+                    for _ in subject_ids
+                ],
+                "source": operator.base.file_record(checkpoint),
+                "melted_sha256": "C" * 64,
+            }
+            operator.base.write_object(schedule_path, schedule)
+            receipt = {
+                "schema_version": 1,
+                "kind": operator.SOURCE_RECEIPT_KIND_V7,
+                "result": "GREEN",
+                "offline_topology_observed": True,
+                "offline_single_player_observed": True,
+                "fixture_used": False,
+                "console_used": False,
+                "selection_attempted": False,
+                "source_container_header": "SAV0101",
+                "game_version": "1.19.0.6",
+                "offline_player_state": {
+                    "meta_number_of_players": 1,
+                    "played_character_records": [
+                        {"character_id": 200, "player_id": 1}
+                    ],
+                    "currently_played_character_ids": [200],
+                },
+                "offline_topology": topology_report["player_manager_candidates"][0],
+                "offline_evidence": {
+                    "report": operator.base.file_record(topology_path),
+                    "melted_sha256": "C" * 64,
+                },
+                "product_tree_sha256": "B" * 64,
+                "checkpoint": operator.base.file_record(checkpoint),
+                "live_source_provenance": operator.base.file_record(live_path),
+                "source_cleanup_provenance": operator.base.file_record(cleanup_path),
+                "exact_roster_evidence": operator.base.file_record(roster_path),
+                "scheduled_event_evidence": operator.base.file_record(schedule_path),
+                "fixed_tail_contract": {
+                    "source_b1_state": 7,
+                    "first_pending_event": "zg361b1.122",
+                    "first_pending_event_days": 30,
+                    "maximum_action_days": 120,
+                },
+                "product_fix_contract": {
+                    "root_commit": operator.PRODUCT_FIX_COMMIT,
+                    "repaired_product_tree_sha256": "B" * 64,
+                    "exact_subject_count": len(subject_ids),
+                },
+            }
+            operator.base.write_object(receipt_path, receipt)
+            result = operator._validate_source_receipt(
+                operator.base.file_record(receipt_path), bound
+            )
+            self.assertEqual(result["player_manager_character_id"], 200)
+            self.assertEqual(result["owner_character_id"], 100)
+
+            schedule["matches"][0]["days_from_current"] = 31
+            operator.base.write_object(schedule_path, schedule)
+            receipt["scheduled_event_evidence"] = operator.base.file_record(
+                schedule_path
+            )
+            operator.base.write_object(receipt_path, receipt)
+            with self.assertRaisesRegex(
+                operator.base.Af5JobError, "matching player-publication source"
+            ):
+                operator._validate_source_receipt(
+                    operator.base.file_record(receipt_path), bound
+                )
+
     def test_archive_failure_preserves_green_product_result(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
             root = Path(temporary)
