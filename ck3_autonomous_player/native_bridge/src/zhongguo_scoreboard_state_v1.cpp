@@ -821,8 +821,21 @@ bool FindFixedWidgets(
   if (window == nullptr ||
       !WidgetNameEquals(access, window,
                         kZhongguoScoreboardStateV1WidgetNames[1])) {
-    resolved.widgets[1] = nullptr;
-    resolved.root = nullptr;
+    // Scripted-widget registrations are present below the owner's global GUI
+    // root even when CK3's direct top-level lookup does not return them.  The
+    // promotion provider already uses this exact-build owner+0xD0 fallback.
+    // Reuse the scoreboard's single bounded allowlist traversal so the global
+    // tree is scanned once rather than once per widget name.
+    resolved.widgets = {};
+    void *global_root = nullptr;
+    if (ReadValue(access, resolved.owner, kZhongguoGuiOwnerRootWidgetOffset,
+                  global_root) &&
+        global_root != nullptr) {
+      if (!FindScoreboardDescendants(access, global_root, resolved.widgets)) {
+        return false;
+      }
+      resolved.root = resolved.widgets[1];
+    }
     return true;
   }
   return FindScoreboardDescendants(access, window, resolved.widgets);

@@ -204,3 +204,9 @@ reason 与全部 readiness 仍保持 unavailable/false，且不发布 provider o
 离线 native fixture 覆盖 received-only 玩家不能获得 manager ACL、received list-only 玩家没有 self dossier 时仍可读取列表、A 策略 B1/result case 独立、local/effective hidden 缓存对照、未冻结字段 typed unavailable、read-only 动作边界、exact RVA binder，以及 identical/A-B-A/ACK-validation/unavailable 的 provider tracker 对照。Python contract 覆盖 list surface 与 current-player dossier 的单向约束、固定 step、五个 provider 字段、未知字段/任意 widget 输入拒绝、严格响应归一化、MCP facade 与 shared wiring。
 
 下一项 bounded live 工作先用 R515 的 received list-only 现场验证 state query 与宣传片所需的单次 open/visible/close。完整双表面验收继续作为独立工作包，随后在真实角色与真实考核榜实例上分别覆盖 managed 与 received-only 玩家，再按 artifact 单独把外层五个原子动作提升为 production-live primitive。focus、scroll、rect 与页面内动作仍是后续独立 ABI；provider revision 必须取得真实 open/close/switch 对照，reopen 必须取得 close/open 两阶段各自的 ACK 与 later query。在此之前正式完整 runner gate 继续保持 RED，但它不再作为宣传片只读展示首镜头的无关前置。
+
+## R523 全局根定位结论
+
+R523 使用保留逐控件诊断的 DLL 得到 15/15 `exists=false`，证明失败点在 window 子树遍历之前：CK3 的 direct top-level lookup 没有返回 scripted-widget registration，继续增加 DFS 上限没有作用。scoreboard 现复用 promotion R13/R14 已实机跨过首查的 owner `+0xD0` 全局 GUI 根 fallback，并从全局根执行同一个单次 65,536 节点 fixed-allowlist traversal。
+
+direct lookup 仍为首选；fallback 不接受调用方名字，不改变 15 项 allowlist、depth、child count、ACL、schema 或动作 readiness。该路径在新 DLL 的 R525 前只标记为 `static-ready`，不得把 focused native executable 冒充 live scoreboard 证据。
