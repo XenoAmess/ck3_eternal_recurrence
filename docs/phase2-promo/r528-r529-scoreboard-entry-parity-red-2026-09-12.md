@@ -62,6 +62,18 @@ The companion sync is documentation-only because the private canonical bytes
 remain target-owned data. A fresh DLL is required before one bounded R530/R531
 verification; the R529 DLL must not be retried.
 
+The fresh synchronized-root Release build for R530/R531 is GREEN from root
+`e68671cec194b3a3a2b57ec564e2f03b93876445`. All 27 candidate switches are
+OFF. Bridge SHA-256 is
+`4115E09DE9B8D234074B5AC5FA6AEB376A2AB9EB8A82609364BF475D182F3F84`,
+injector SHA-256 is
+`91EACCC416E2D544F93D15ABD55A0FB8AEDAB205270BA11571E9F417113D8929`,
+and focused-test SHA-256 is
+`290430518C151D8D1A462CFB861CA431394CD1A2A6C88E1DE5E373F2B2878C86`
+with exit `0`. Build receipt
+`B6E8BC6CA7279A70BB766E4349E65AC6485E0711F09C651832C29D5E92CF6E7C`
+records no CK3 launch or round consumption.
+
 ## Evidence
 
 - no-launch plan: `BBF7BEEF5B982016DF43B67DEA515197180A8EF753920DFD1BAE2A2E1237F131`
