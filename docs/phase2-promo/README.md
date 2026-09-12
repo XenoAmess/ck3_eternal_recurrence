@@ -429,3 +429,9 @@ R487/R488 首次正式动作在旧 30 游戏日绝对边界保留 RED：11 次�
 R490 的唯一 gameplay 实例通过 loader/native/exact-mount/error 门后，在 45 日绝对上限保留 RED；16 次观测均为 B1 active，`.120` 未出现。live 日志已经记录有效共同上级合账并进入 pending/reopen，且没有 manager-calibration stale，因此这不是新 mod bug。冻结 source 的 `m142=1 / m143=1` 使保守最迟路径从 D+299 延伸到 D+403：31 日 pending watchdog、30 日 reopen、`.90 +1d` 和五张逐日 F 票据都必须计入。
 
 现行 action 上限为 120 日，receipt 为 v5，同时 hash 绑定 R488 的 30 日 RED、R490 的 45 日 RED 和 `.102 +1d` 队列；104 日源码上界之外只有 16 日调度余量。聚焦测试通过后只执行一次新轮次，不恢复 400 日完整 B1，也不允许原位 retry。R489/R490 均已终止，CK3/Operator MCP/端口 `12441` 为零；P1 仍为 `8/9`，P2 仍锁定。详见 [R489/R490 校准尾链 RED 与修正](r489-r490-stage10-calibration-tail-red-and-correction-2026-09-12.md)。
+
+## R491/R492 Stage 10 外来 roster 产品 RED 与修复
+
+R492 的唯一 gameplay 实例在 120 日内完成 40 次观测，已出现 7 次 publication 和 10 次 final-callback compaction failure，仍保持 B1 active、Central/PP false。这证明失败来自产品状态机，而非观察窗不足。冻结 source 的经理 `29037` 持久 subject 列表有 29 个存活引用，只有 6 个属于当前 `29037/17/17` exact tuple；其余 23 个已属于经理 `29628` 的 case `19/19`。旧 prune 只按存活过滤，使 subject 与 processing 域永久分裂。
+
+最小修复让 subject 和 processing 两个列表统一按 owner、subject、cycle、case、active、roster exact tuple 清理，缺字段 fail closed。B1 runtime normal/optimized 各 `76/76` GREEN，没有额外 CK3 长跑。R491/R492 均已终止，CK3/Operator MCP/端口 `12442` 为零；P1 仍为 `8/9`，P2 继续锁定。旧 v5 receipt 已失效，下一步只生成 v6 与新产品树并执行一次新轮次复验。详见 [R491/R492 外来 roster RED 与修复](r491-r492-stage10-foreign-roster-red-and-fix-2026-09-12.md)。

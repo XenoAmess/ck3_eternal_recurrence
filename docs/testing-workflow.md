@@ -2622,3 +2622,9 @@ py tools/inspect_ck3_save_scheduled_events.py --save <checkpoint.ck3> --rakaly <
 R490 证明 45 日不是充分上限：共同上级合账已成功，随后才进入 `m142=1 / m143=1` 的 pending/reopen 路径。从 D+299 source 起，最迟 D+335 合账、D+336 校准、31 日 watchdog、30 日 reopen、1 日 `.90` 回调和 5 日 F 票据使 `.120` 最迟到 D+403，共 104 日。现行 action 使用 120 日绝对截止，额外 16 日只覆盖调度粒度；不得再把 45 日 RED 解释为产品失败，也不得把一次边界修正扩成完整 400 日 B1 长跑。
 
 启动前必须使用 v5 receipt，hash 绑定 R488 30 日 RED、R490 45 日 RED、同一 source 的 `.102 +1d` 队列和 104/120 日字段。action 失败后保持 RED、停止当前轮次并 cleanup；不在原轮次 retry。离线 save 只用于来源与队列准入，`.120` terminal 仍必须由 exact-build paused MCP 与 manager-governance provider 同帧确认。
+
+### B1 持久 roster 的 exact-tuple prune（R492）
+
+`is_alive=yes` 只能证明 Character 仍存在，不能证明该角色仍属于当前 manager 的当前 B1 case。R492 的冻结 source 中，经理 `29037` 的持久 subject 列表有 29 个存活引用，但按 `owner/subject/cycle/case/active/roster` exact tuple 只有 6 个；后续 processing 只消费这 6 个，最终 compaction 因数量不等永久 fail closed。
+
+两个持久列表必须在首个延迟消费者之前使用相同的 exact-tuple prune。缺失任何 case 字段都按不可用处理，不能仅凭角色存活继续进入本 manager 的 frozen domain。若长边界内已经出现 season publication 与重复 compaction failure，应保留产品 RED，检查持久列表与当前 case 域，不得继续扩大观察天数。修复后只运行生成器、受影响的 normal/optimized 聚焦测试，再由绑定新产品树的一个新轮次验收。R492 之后 v5 receipt 已失效，下一次启动必须使用绑定产品 RED、exact roster 证据和修复后产品树的 v6 receipt。

@@ -3333,7 +3333,7 @@ class B1RuntimeFoundationTests(unittest.TestCase):
         )
         for token in (
             "variable = zg361_b1_subjects",
-            "limit = { is_alive = yes }",
+            "is_alive = yes",
             "name = zg361_b1_available_subjects",
             "clear_variable_list = zg361_b1_subjects",
             "name = zg361_b1_roster_before_prune_n value = 0",
@@ -3346,13 +3346,33 @@ class B1RuntimeFoundationTests(unittest.TestCase):
         ):
             self.assertIn(token, prune)
         self.assertLess(
-            prune.index("limit = { is_alive = yes }"),
+            prune.index("is_alive = yes"),
             prune.index("clear_variable_list = zg361_b1_subjects"),
         )
+        self.assertEqual(prune.count("is_alive = yes"), 2)
         self.assertNotIn("limit = { exists = this }", prune)
         self.assertNotIn("is_landed", prune)
         self.assertNotIn("list_size:zg361_b1_subjects", prune)
         self.assertNotIn("list_size:zg361_b1_processing_subjects", prune)
+
+        for token in (
+            "var:zg361_b1_case_owner = scope:zg361_b1_prune_manager",
+            "var:zg361_b1_case_subject = this",
+            "var:zg361_b1_cycle_serial = scope:zg361_b1_prune_manager.var:zg361_b1_manager_cycle_serial",
+            "var:zg361_b1_case_serial = scope:zg361_b1_prune_manager.var:zg361_b1_manager_case_serial",
+            "var:zg361_b1_case_active = 1",
+            "var:zg361_b1_roster_included = 1",
+        ):
+            self.assertEqual(
+                prune.count(token),
+                2,
+                f"both persistent lists must retain only this manager's exact active case tuple: {token}",
+            )
+        self.assertEqual(
+            prune.count("trigger_else = { always = no }"),
+            2,
+            "weak rows without a readable exact tuple must remain fail-closed",
+        )
 
         recovery = top_level_block(
             self.effects, "zg361_b1_recover_empty_calibration_cycle_effect"
@@ -3534,7 +3554,6 @@ class B1RuntimeFoundationTests(unittest.TestCase):
 
         for token in (
             "variable = zg361_b1_processing_subjects",
-            "limit = { is_alive = yes }",
             "name = zg361_b1_available_processing_subjects",
             "clear_variable_list = zg361_b1_processing_subjects",
             "name = zg361_b1_processing_n value = 0",
