@@ -293,6 +293,8 @@ def workshop_descriptor_matches(
     if workshop_item_id is None:
         return False
     data = Path(path).read_bytes()
+    if len(data) == entry.get("size") and sha256_bytes(data) == entry.get("sha256"):
+        return True
     if re.search(rb"\r(?!\n)", data):
         return False
     separators = re.findall(rb"\r\n|\n", data)

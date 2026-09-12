@@ -86,7 +86,7 @@ class BuildAutoUpgradeBuildingsReleaseTests(unittest.TestCase):
                 release.UPSTREAM_WORKSHOP_ITEM_ID,
             )
 
-    def test_workshop_cache_accepts_only_launcher_descriptor_injection(self) -> None:
+    def test_workshop_cache_accepts_exact_or_launcher_injected_descriptor(self) -> None:
         item_id = "4000000000"
         staging, manifest_path, _, manifest = release.build_release(
             self.source,
@@ -98,6 +98,10 @@ class BuildAutoUpgradeBuildingsReleaseTests(unittest.TestCase):
         self.assertEqual(manifest["workshop_item_id"], item_id)
         cache = self.root / "cache"
         shutil.copytree(staging, cache)
+        self.assertEqual(
+            release.verify_manifest(cache, manifest_path, workshop_cache=True),
+            len(release.RUNTIME_FILES),
+        )
         descriptor = cache / "descriptor.mod"
         descriptor.write_bytes(
             descriptor.read_bytes().rstrip(b"\r\n")
