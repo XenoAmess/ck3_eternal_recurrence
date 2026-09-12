@@ -36,7 +36,7 @@ frontend warmup、single-CK3、loader、bridge 与 canonical cleanup 生命周�
 - 三项来源前缀的绝对路径、长度与 SHA-256；
 - owner、目标 `date_raw`、不超过 30 日的游戏日上限和正的墙钟上限；
 - 当前 product tree、代码 commit、输入 checkpoint、bridge、exact EXE、
-  vanilla rules、projection 与上轮 canonical cleanup。
+  exact game version、vanilla rules、projection 与上轮 canonical cleanup。
 
 来源 lineage 由 checkpoint SHA 与 product-tree SHA 确定，记录 product-only
 mount、代码 commit、真实 CK3、无 fixture、无 console。它不含固定机器、账号或
@@ -49,6 +49,11 @@ mount、代码 commit、真实 CK3、无 fixture、无 console。它不含固定
 - action cell：普通 `2/2`、优化 `2/2`；
 - operator：普通 `2/2`、优化 `2/2`；
 - 四个文件 `py_compile` 与 `git diff --check`：GREEN。
+
+首次 no-launch preflight 保留 `source_capture_runtime_lineage_mismatch` RED：第四项
+lineage 已绑定 EXE SHA，但没有提供 schema-3 前缀要求的 game version 字段；CK3
+未启动。最小修正把 exact game version 与 EXE SHA 一起写入 runtime lineage，
+不改变游戏输入或来源语义。
 
 该工作包新增 Python target-side operator 与证据格式，没有修改 DLL、游戏文件、
 加载顺序或产品行为。下一步只执行一次 frontend warmup 加一次 gameplay；到达

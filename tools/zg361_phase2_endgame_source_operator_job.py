@@ -56,6 +56,9 @@ def validate_activation(
     timeout = route.get("timeout_seconds", 1800.0)
     if not isinstance(timeout, (int, float)) or timeout <= 0:
         raise base.Af5JobError("source_route.timeout_seconds must be positive")
+    game_version = route.get("game_version")
+    if not isinstance(game_version, str) or not game_version.strip():
+        raise base.Af5JobError("source_route.game_version must be nonempty")
     bound = base.validate_activation(
         activation_path, require_empty_slot=require_empty_slot
     )
@@ -77,6 +80,10 @@ def validate_activation(
         "mod_mount": {
             "kind": "product-only",
             "tree_sha256": str(expected["product_tree_sha256"]).upper(),
+        },
+        "game": {
+            "version": game_version.strip(),
+            "exe_sha256": str(expected["game_exe_sha256"]).upper(),
         },
         "input_checkpoint": base.file_record(Path(str(bound["checkpoint"]))),
         "source_code_commit": str(expected["code_commit"]),

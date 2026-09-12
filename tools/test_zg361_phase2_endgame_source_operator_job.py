@@ -23,6 +23,7 @@ class EndgameSourceOperatorTests(unittest.TestCase):
                     "expected_owner_character_id": 32904,
                     "expected_date_raw": 2000,
                     "max_advance_days": 30,
+                    "game_version": "1.19.0.6",
                 },
                 "phase2_source_checkpoint_prefix": operator.base.file_record(prefix),
             }
@@ -31,6 +32,7 @@ class EndgameSourceOperatorTests(unittest.TestCase):
                 "expected_hashes": {
                     "checkpoint_sha256": operator.base.sha256(checkpoint),
                     "product_tree_sha256": "A" * 64,
+                    "game_exe_sha256": "E" * 64,
                     "code_commit": "b" * 40,
                 },
             }
@@ -47,6 +49,10 @@ class EndgameSourceOperatorTests(unittest.TestCase):
             )
             lineage = bound["endgame_source_runtime_capture_lineage"]
             self.assertEqual(lineage["mod_mount"]["tree_sha256"], "A" * 64)
+            self.assertEqual(
+                lineage["game"],
+                {"version": "1.19.0.6", "exe_sha256": "E" * 64},
+            )
             capture.preflight_endgame_source_capture_prefix.assert_called_once()
 
     def test_execute_action_publishes_current_product_evidence(self):
