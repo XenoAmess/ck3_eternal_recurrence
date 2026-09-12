@@ -5,9 +5,9 @@ Date: 2026-09-12 (Asia/Shanghai)
 ## Problem and scope
 
 The Stage 10 player-publication operator previously exposed only `status`,
-`run-stage10`, and `cleanup`. When an unknown vanilla event correctly produced a
-pre-selection RED, a newly added Python event contract could not be loaded into
-the retained paused CK3 process. The only operational path was cleanup and a new
+`run-stage10`, and `cleanup`. When a pre-selection Python action RED was
+corrected, the repaired contract could not be loaded into the retained paused
+CK3 process. The only operational path was cleanup and a new
 gameplay launch, even though no DLL, game file, launch setting, load order, save,
 or runtime environment had changed.
 
@@ -22,7 +22,8 @@ injector, game rules, state/artifact directories, pipes, or round identity.
 
 The action carries the failed attempt's `progress` object into the retry. It
 requires the original timeline origin, the exact `origin + 120 days` absolute
-deadline, the prior interrupt list, and the preserved unexpected-event key.
+deadline, the prior interrupt list, and either a preserved unexpected-event key
+or a binding to the already reached `zg361mg.120` target.
 The resumed action therefore consumes the remainder of the original window; it
 does not receive another 120 days. The evidence records the resume date, retained
 deadline, retained interrupt count, and preserved event key.

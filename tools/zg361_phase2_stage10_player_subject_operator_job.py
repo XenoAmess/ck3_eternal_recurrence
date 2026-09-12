@@ -3,8 +3,8 @@
 
 The process lifecycle and frozen-input admission come from the AF5 operator.
 No launch occurs until the operator receives ``run-stage10``. A pre-selection
-vanilla-contract RED may resume with ``retry-stage10`` on the same paused CK3
-process after a repaired activation proves that only Python code changed.
+action RED may resume with ``retry-stage10`` on the same paused CK3 process
+after a repaired activation proves that only Python code changed.
 """
 
 from __future__ import annotations
@@ -889,14 +889,24 @@ class Stage10PlayerSubjectOperatorJob(base.Af5OperatorJob):
                 if isinstance(progress, Mapping)
                 else None
             )
+            retained_target = (
+                isinstance(progress, Mapping)
+                and progress.get("readiness") == "paused-real-zg361mg.120"
+                and isinstance(progress.get("target_binding"), Mapping)
+            )
             if not (
                 self.state == "AF5_RED_PARKED"
                 and self.stage == "stage10_player_subject_action"
                 and self.service is not None
                 and self.binding is not None
                 and (self.worker is None or not self.worker.is_alive())
-                and isinstance(unexpected, Mapping)
-                and isinstance(unexpected.get("event_definition_key"), str)
+                and (
+                    (
+                        isinstance(unexpected, Mapping)
+                        and isinstance(unexpected.get("event_definition_key"), str)
+                    )
+                    or retained_target
+                )
             ):
                 return {
                     **self.status(),

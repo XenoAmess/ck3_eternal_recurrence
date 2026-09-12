@@ -2703,7 +2703,8 @@ R502 established a focused vanilla-event rule for `travel_completion_event.1000`
 ## Stage 10 Python-contract hot resume
 
 The player-publication operator exposes `retry-stage10` only for a preserved
-pre-selection vanilla-event RED. Before sending it, create `retry-activation.json`
+pre-selection action RED, including an unknown vanilla event or target-event
+postcondition failure. Before sending it, create `retry-activation.json`
 beside the original activation with the repaired repository commit. All loaded
 game inputs and session paths must remain byte- and value-identical. The operator
 revalidates the repaired activation, checks that the paused CK3 PID and bridge

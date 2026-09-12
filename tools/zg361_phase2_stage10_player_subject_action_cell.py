@@ -173,7 +173,9 @@ def _terminal_provider(
         provider.get("status") == "available"
         and provider.get("unavailable_reason") is None
         and isinstance(readiness, Mapping)
-        and readiness.get("ready") is True
+        and readiness.get("subject_binding_ready") is True
+        and readiness.get("case_identity_ready") is True
+        and readiness.get("same_frame_ready") is True
         and provider.get("player_character_id") == subject
         and isinstance(binding, Mapping)
         and binding.get("subject_character_id") == subject
@@ -284,6 +286,19 @@ def run_stage10_player_subject(
             deadline = progress.get("absolute_end_date_raw")
             drains = progress.get("timeline_interrupt_drains")
             unexpected = progress.get("unexpected_event")
+            target = progress.get("target_binding")
+            unexpected_key = (
+                unexpected.get("event_definition_key")
+                if isinstance(unexpected, Mapping)
+                else None
+            )
+            retained_target = (
+                progress.get("readiness") == "paused-real-zg361mg.120"
+                and isinstance(target, Mapping)
+                and isinstance(target.get("event_instance_id"), int)
+                and not isinstance(target.get("event_instance_id"), bool)
+                and target.get("event_instance_id") > 0
+            )
             if not (
                 isinstance(origin, int)
                 and not isinstance(origin, bool)
@@ -292,19 +307,23 @@ def run_stage10_player_subject(
                 and origin <= initial_binding["date_raw"] <= deadline
                 and deadline == origin + MAX_ADVANCE_DAYS * 24
                 and isinstance(drains, list)
-                and isinstance(unexpected, Mapping)
-                and isinstance(unexpected.get("event_definition_key"), str)
+                and (isinstance(unexpected_key, str) or retained_target)
             ):
                 raise ValueError("Stage 10 resume progress is not a retained bounded RED")
             progress["contract_resume"] = {
                 "same_process_required": True,
+                "resume_boundary": (
+                    "unexpected_event"
+                    if isinstance(unexpected_key, str)
+                    else "target_event"
+                ),
                 "resume_date_raw": initial_binding["date_raw"],
                 "retained_timeline_origin_date_raw": origin,
                 "retained_absolute_end_date_raw": deadline,
                 "retained_interrupt_drain_count": len(drains),
-                "retained_unexpected_event_definition_key": unexpected[
-                    "event_definition_key"
-                ],
+                "retained_event_definition_key": (
+                    unexpected_key if isinstance(unexpected_key, str) else STAGE10_EVENT
+                ),
             }
         state["progress"] = progress
         _write(path, state)
