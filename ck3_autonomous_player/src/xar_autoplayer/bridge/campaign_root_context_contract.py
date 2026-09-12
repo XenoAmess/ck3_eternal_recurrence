@@ -28,6 +28,7 @@ _FIELDS: Final = {
     "player_character_id",
     "player_character_alive",
     "primary_title",
+    "primary_title_succession_character_ids",
     "capital_province_id",
     "immediate_liege_character_id",
     "top_liege_character_id",
@@ -56,6 +57,7 @@ _GOVERNMENT_FIELDS: Final = {"key", "flags", "native_flag_count"}
 _READINESS_KEYS: Final = (
     "player_identity_ready",
     "primary_title_ready",
+    "primary_title_succession_ready",
     "capital_ready",
     "lieges_ready",
     "direct_landed_vassals_ready",
@@ -99,6 +101,7 @@ _UNAVAILABLE_REASONS: Final = {
     "player_identity_unavailable",
     "player_character_generation_mismatch",
     "primary_title_unavailable",
+    "primary_title_succession_unavailable",
     "capital_unavailable",
     "lieges_unavailable",
     "direct_landed_vassals_unavailable",
@@ -180,6 +183,21 @@ def _sorted_unique_positive_int32_vector(
     ]
     if result != sorted(set(result)):
         raise ValueError(f"{name} must be sorted and duplicate-free")
+    return result
+
+
+def _ordered_unique_positive_int32_vector(
+    value: object,
+    name: str,
+) -> list[int]:
+    if not isinstance(value, list):
+        raise ValueError(f"{name} must be a list")
+    result = [
+        _positive_int32(item, f"{name}[{index}]")
+        for index, item in enumerate(value)
+    ]
+    if len(result) != len(set(result)):
+        raise ValueError(f"{name} must be duplicate-free")
     return result
 
 
@@ -433,6 +451,12 @@ def normalize_campaign_root_context_v1(
             raise ValueError(
                 "unavailable campaign root invented related character contexts"
             )
+        succession = _ordered_unique_positive_int32_vector(
+            frame.get("primary_title_succession_character_ids"),
+            "primary_title_succession_character_ids",
+        )
+        if succession:
+            raise ValueError("unavailable campaign root invented succession")
         return {
             **frame,
             "direct_landed_vassal_character_ids": direct_vassals,
@@ -440,6 +464,7 @@ def normalize_campaign_root_context_v1(
                 adjacent_external_holders
             ),
             "related_character_contexts": [],
+            "primary_title_succession_character_ids": [],
             "selected_game_rule_tokens": tokens,
             "native_selected_game_rule_token_count": token_count,
             "readiness": readiness,
@@ -460,6 +485,14 @@ def normalize_campaign_root_context_v1(
     player_character_alive = _bool(
         frame.get("player_character_alive"), "player_character_alive"
     )
+    primary_title_succession_character_ids = (
+        _ordered_unique_positive_int32_vector(
+            frame.get("primary_title_succession_character_ids"),
+            "primary_title_succession_character_ids",
+        )
+    )
+    if player_character_id in primary_title_succession_character_ids:
+        raise ValueError("primary-title succession cannot include its holder")
 
     primary_value = frame.get("primary_title")
     primary_title: dict[str, object] | None
@@ -484,6 +517,8 @@ def normalize_campaign_root_context_v1(
             "tier_raw": tier_raw,
             "tier_key": _TIER_KEYS[tier_raw],
         }
+    if primary_title is None and primary_title_succession_character_ids:
+        raise ValueError("landless player cannot expose title succession")
 
     capital_province_id = _optional_positive_int32(
         frame.get("capital_province_id"), "capital_province_id"
@@ -563,6 +598,9 @@ def normalize_campaign_root_context_v1(
         "player_character_id": player_character_id,
         "player_character_alive": player_character_alive,
         "primary_title": primary_title,
+        "primary_title_succession_character_ids": (
+            primary_title_succession_character_ids
+        ),
         "capital_province_id": capital_province_id,
         "immediate_liege_character_id": immediate_liege_id,
         "top_liege_character_id": top_liege_id,

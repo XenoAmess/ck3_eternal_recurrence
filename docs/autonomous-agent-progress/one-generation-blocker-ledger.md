@@ -1240,3 +1240,13 @@ strategic-power primitive；余下入口只有 policy-level campaign dominance�
 - `ck3_search_entities_v1` now exposes complete primary-title and top-liege components for its current relationship scope. Status remains
   `static-ready / live=false`, M1 remains in progress and global G2 remains `0/8`; minimum ruler/realm/succession alerts and the turn bundle are
   the next implementation gap.
+
+## 2026-09-13: G2-M1 primary-title succession observation
+
+- The existing campaign-root query now exposes `primary_title_succession_character_ids` from the exact-build ordered Title succession span.
+  It validates every full-generation CharacterID and binds the whole native-order vector to the existing application-main double observation.
+- This removes the prior lack of a real input for the minimum primary-title heir alert. It does not answer per-title partition, succession laws,
+  claims, game-over risk or continuation after death; those remain G2-M3 scope.
+- Release DLL plus direct native reader/source-contract fixtures are GREEN and focused Python normal/optimized tests pass `35/35`. The field is
+  `static-ready / live=false`; it must be sampled only during a future already-required paused G2 session. M1 and global G2 remain open at
+  `in_progress` and `0/8` until the minimum ruler/realm/succession alerts and `ck3_query_turn_bundle_v1` are delivered and live-checked.

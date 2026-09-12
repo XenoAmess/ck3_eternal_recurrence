@@ -1685,6 +1685,7 @@ class GameplayBridgeService:
             "player_character_id",
             "player_character_alive",
             "primary_title",
+            "primary_title_succession_character_ids",
             "capital_province_id",
             "immediate_liege_character_id",
             "top_liege_character_id",

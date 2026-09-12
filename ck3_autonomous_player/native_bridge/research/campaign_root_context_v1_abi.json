@@ -89,6 +89,19 @@
     "slot_object_offset": "0x08",
     "full_generation_equality_required": true
   },
+  "primary_title_succession": {
+    "published_field": "primary_title_succession_character_ids",
+    "title_layout": {
+      "data_offset": "0x278",
+      "capacity_offset": "0x280",
+      "count_offset": "0x284"
+    },
+    "order": "native_title_succession_order",
+    "maximum_count": 4096,
+    "validation": "every successor is a positive duplicate-free CharacterID distinct from the current holder and must roundtrip through exact-build Character storage",
+    "landless_semantics": "empty vector when the player has no primary landed title",
+    "same_frame": "the complete ordered vector participates in the existing two-sample equality gate"
+  },
   "canonicalization": {
     "comparator": "unsigned_utf8_bytewise_lexicographical",
     "preserve_multiplicity": true,

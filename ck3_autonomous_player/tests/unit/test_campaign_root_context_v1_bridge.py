@@ -46,6 +46,7 @@ UNAVAILABLE_REASONS = (
     "player_identity_unavailable",
     "player_character_generation_mismatch",
     "primary_title_unavailable",
+    "primary_title_succession_unavailable",
     "capital_unavailable",
     "lieges_unavailable",
     "direct_landed_vassals_unavailable",
@@ -62,6 +63,7 @@ def _readiness(ready: bool) -> dict[str, bool]:
     return {
         "player_identity_ready": ready,
         "primary_title_ready": ready,
+        "primary_title_succession_ready": ready,
         "capital_ready": ready,
         "lieges_ready": ready,
         "direct_landed_vassals_ready": ready,
@@ -153,6 +155,9 @@ def _frame(
             if available
             else None
         ),
+        "primary_title_succession_character_ids": (
+            [98_765, 87_654] if available else []
+        ),
         "capital_province_id": 42 if available else None,
         "immediate_liege_character_id": None,
         "top_liege_character_id": (
@@ -214,6 +219,7 @@ def _driver_result(status: str = "available") -> dict[str, object]:
         "player_character_id",
         "player_character_alive",
         "primary_title",
+        "primary_title_succession_character_ids",
         "capital_province_id",
         "immediate_liege_character_id",
         "top_liege_character_id",
@@ -322,6 +328,7 @@ class CampaignRootContextV1ContractTests(unittest.TestCase):
     def test_available_distinguishes_every_legal_absence(self) -> None:
         frame = _frame()
         frame["primary_title"] = None
+        frame["primary_title_succession_character_ids"] = []
         frame["capital_province_id"] = None
         frame["government"] = None
 
@@ -427,6 +434,13 @@ class CampaignRootContextV1ContractTests(unittest.TestCase):
             ),
             "tokens_count": lambda row: row.__setitem__(
                 "native_selected_game_rule_token_count", 99
+            ),
+            "succession_duplicate": lambda row: row.__setitem__(
+                "primary_title_succession_character_ids", [98_765, 98_765]
+            ),
+            "succession_holder": lambda row: row.__setitem__(
+                "primary_title_succession_character_ids",
+                [PLAYER_CHARACTER_ID],
             ),
             "vassal_order": lambda row: row.__setitem__(
                 "direct_landed_vassal_character_ids", [34_567, 23_456]

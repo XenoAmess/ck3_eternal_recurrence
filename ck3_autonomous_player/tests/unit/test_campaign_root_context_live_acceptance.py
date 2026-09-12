@@ -50,6 +50,9 @@ def _context(
             if available
             else None
         ),
+        "primary_title_succession_character_ids": (
+            [77_777, 66_666] if available else []
+        ),
         "capital_province_id": 42 if available else None,
         "immediate_liege_character_id": None,
         "top_liege_character_id": (
@@ -136,6 +139,7 @@ def _context(
         "readiness": {
             "player_identity_ready": available,
             "primary_title_ready": available,
+            "primary_title_succession_ready": available,
             "capital_ready": available,
             "lieges_ready": available,
             "direct_landed_vassals_ready": available,

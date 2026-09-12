@@ -73,6 +73,7 @@ absent；结构或 identity 无法在同一 paused query 中闭合时返回 type
     "tier_raw": 4,
     "tier_key": "kingdom"
   },
+  "primary_title_succession_character_ids": [23457, 23458],
   "capital_province_id": 42,
   "immediate_liege_character_id": null,
   "top_liege_character_id": 12345,
@@ -115,6 +116,7 @@ absent；结构或 identity 无法在同一 paused query 中闭合时返回 type
   "readiness": {
     "player_identity_ready": true,
     "primary_title_ready": true,
+    "primary_title_succession_ready": true,
     "capital_ready": true,
     "lieges_ready": true,
     "direct_landed_vassals_ready": true,
@@ -151,6 +153,7 @@ canonicalization：**不得依此反推 native 优先级、父 game-rule、rule 
 | 字段 | 合法 absent |
 |---|---|
 | `primary_title` | 活着但 landless，或 native primary-title resolver 返回 `-1` |
+| `primary_title_succession_character_ids` | 无主头衔或主头衔当前没有 successor 时为 `[]`；有值时严格保留 native 顺序 |
 | `capital_province_id` | native capital resolver 无结果，例如 landless root |
 | `immediate_liege_character_id` | native immediate resolver 返回 self/canonical fallback，即 independent |
 | `top_liege_character_id` | 不为空；independent 时明确等于 `player_character_id` |
@@ -527,8 +530,9 @@ Python contract/driver/service/MCP/live-harness 与 entity-directory 聚焦测�
    double-query + cold-restore production acceptance。
 2. 下一次本来就需要的 G2 paused 会话顺带读取两个 identity vector 与 `related_character_contexts`，核对至少一个非空名单、
    exact generation IDs、玩家子领地排除语义及 holder→top-liege 归一；不单开长跑，成功后才能升为 production-live primitive。
-3. [static-ready] canonical `ck3_search_entities_v1` 已消费相关人物上下文并发布 title/capital/liege components。下一项是与
-   ruler/realm state 和 turn bundle 最低 alerts 聚合；在这些产品层输出完成前，M1 不得标 complete。
+3. [static-ready] canonical `ck3_search_entities_v1` 已消费相关人物上下文并发布 title/capital/liege components；
+   `primary_title_succession_character_ids` 也已提供主头衔最低继承警报的真实输入。下一项是 ruler/realm/succession alerts 与
+   turn bundle 聚合；在这些产品层输出完成前，M1 不得标 complete。
 4. 补 live 矩阵：至少一个非-duchy rank、一个非-feudal government，以及 landless/legal-absent 根；六级 tier 与 unavailable
    路径已有 deterministic exact-build fixture，但 fixture 不能替代这些 live 值。
 5. 建立 loaded rule-definition registry 的只读映射，只有这样 planner 才能把当前 84 个 setting token 还原为

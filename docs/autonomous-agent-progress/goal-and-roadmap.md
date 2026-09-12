@@ -400,6 +400,7 @@ tyranny；健康、压力与生育；法律、政府、文化、创新与非宗�
    full-generation IDs 接入现有 exact-build `campaign-root-context-v1`，并发布支持 relation filter/keyset pagination 的
    `ck3_search_entities_v1` relationship-search 切片；同帧 `related_character_contexts` 已把每个 related ID 解析为 primary title、
    capital 与 immediate/top liege，并保留 holder source role 后归一 realm identity，状态为 `static-ready / live=false`。下一输入是
+   campaign-root 已新增保持 native 顺序的主头衔继承人 CharacterID vector，可作为最低 succession alert 的真实输入；下一输入是
    最低 ruler/realm/succession alerts 与 turn-bundle 聚合；
 3. `G2-M2`：`event-context-v2` 接入共享 registry recommendation，并以三个自然事件闭合选择与状态后置；
 4. `G2-M3/M4`：把继承、health/stress/legitimacy、vassal/faction alert、建设和内阁组成 realm-survival 与和平治理 OODA；

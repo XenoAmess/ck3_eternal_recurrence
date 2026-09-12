@@ -53,6 +53,8 @@ struct Fixture {
   static constexpr std::int32_t kDirectVassalTitleId = 0x09000002;
   static constexpr std::int32_t kExternalProvinceHolderId = 0x0A000007;
   static constexpr std::int32_t kExternalProvinceHolderTitleId = 0x0B000003;
+  static constexpr std::int32_t kFirstSuccessorId = 0x0C000008;
+  static constexpr std::int32_t kSecondSuccessorId = 0x0D000009;
 
   alignas(void *) Blob<0xA8> game_state{};
   alignas(void *) Blob<0x20> jomini_state{};
@@ -62,7 +64,7 @@ struct Fixture {
   alignas(void *) Blob<0x08> player_entries{};
 
   alignas(void *) Blob<0x30> character_storage{};
-  alignas(void *) Blob<0x80> character_slots{};
+  alignas(void *) Blob<0xA0> character_slots{};
   alignas(void *) Blob<0x1D0> player_character{};
   alignas(void *) Blob<0x1D0> immediate_liege{};
   alignas(void *) Blob<0x1D0> top_liege{};
@@ -70,15 +72,19 @@ struct Fixture {
   alignas(void *) Blob<0x1D0> landless_direct_vassal{};
   alignas(void *) Blob<0x1D0> dead_direct_vassal{};
   alignas(void *) Blob<0x1D0> external_province_holder{};
+  alignas(void *) Blob<0x1D0> first_successor{};
+  alignas(void *) Blob<0x1D0> second_successor{};
   alignas(void *) Blob<0x30> character_fallback{};
 
   alignas(void *) Blob<0x30> title_storage{};
   alignas(void *) Blob<0x40> title_slots{};
-  alignas(void *) Blob<0x168> primary_title{};
+  alignas(void *) Blob<0x290> primary_title{};
   alignas(void *) Blob<0x168> direct_vassal_title{};
   alignas(void *) Blob<0x168> external_province_holder_title{};
   alignas(void *) Blob<0x64> title_template{};
   alignas(void *) Blob<0x30> title_fallback{};
+  std::array<std::int32_t, 2> primary_title_successors{
+      kFirstSuccessorId, kSecondSuccessorId};
 
   alignas(void *) Blob<0x18> province{};
   alignas(void *) Blob<0x18> external_province{};
@@ -158,7 +164,7 @@ struct Fixture {
 
     void *slots = Address(character_slots);
     Put(character_storage, 0x20, slots);
-    const std::int32_t character_capacity = 8;
+    const std::int32_t character_capacity = 10;
     Put(character_storage, 0x2C, character_capacity);
     void *player_character_pointer = Address(player_character);
     void *immediate_liege_pointer = Address(immediate_liege);
@@ -168,6 +174,8 @@ struct Fixture {
     void *dead_direct_vassal_pointer = Address(dead_direct_vassal);
     void *external_province_holder_pointer =
         Address(external_province_holder);
+    void *first_successor_pointer = Address(first_successor);
+    void *second_successor_pointer = Address(second_successor);
     Put(character_slots, 1 * 0x10 + 0x08, player_character_pointer);
     Put(character_slots, 2 * 0x10 + 0x08, immediate_liege_pointer);
     Put(character_slots, 3 * 0x10 + 0x08, top_liege_pointer);
@@ -176,6 +184,8 @@ struct Fixture {
     Put(character_slots, 6 * 0x10 + 0x08, dead_direct_vassal_pointer);
     Put(character_slots, 7 * 0x10 + 0x08,
         external_province_holder_pointer);
+    Put(character_slots, 8 * 0x10 + 0x08, first_successor_pointer);
+    Put(character_slots, 9 * 0x10 + 0x08, second_successor_pointer);
     Put(player_character, 0x18, kPlayerCharacterId);
     Put(immediate_liege, 0x18, kImmediateLiegeId);
     Put(top_liege, 0x18, kTopLiegeId);
@@ -183,6 +193,8 @@ struct Fixture {
     Put(landless_direct_vassal, 0x18, kLandlessDirectVassalId);
     Put(dead_direct_vassal, 0x18, kDeadDirectVassalId);
     Put(external_province_holder, 0x18, kExternalProvinceHolderId);
+    Put(first_successor, 0x18, kFirstSuccessorId);
+    Put(second_successor, 0x18, kSecondSuccessorId);
     void *no_death_marker = nullptr;
     Put(player_character, 0x1C8, no_death_marker);
     Put(immediate_liege, 0x1C8, no_death_marker);
@@ -190,6 +202,8 @@ struct Fixture {
     Put(direct_vassal, 0x1C8, no_death_marker);
     Put(landless_direct_vassal, 0x1C8, no_death_marker);
     Put(external_province_holder, 0x1C8, no_death_marker);
+    Put(first_successor, 0x1C8, no_death_marker);
+    Put(second_successor, 0x1C8, no_death_marker);
     void *death_marker = Address(dead_direct_vassal);
     Put(dead_direct_vassal, 0x1C8, death_marker);
 
@@ -208,6 +222,12 @@ struct Fixture {
         kExternalProvinceHolderTitleId);
     void *title_template_pointer = Address(title_template);
     Put(primary_title, 0x160, title_template_pointer);
+    void *successor_data = primary_title_successors.data();
+    Put(primary_title, 0x278, successor_data);
+    const std::int32_t successor_count =
+        static_cast<std::int32_t>(primary_title_successors.size());
+    Put(primary_title, 0x280, successor_count);
+    Put(primary_title, 0x284, successor_count);
     Put(direct_vassal_title, 0x160, title_template_pointer);
     Put(external_province_holder_title, 0x160, title_template_pointer);
     const std::int32_t hegemony_tier = 6;
@@ -484,6 +504,7 @@ bool AllReadiness(const xar::game::CampaignRootReadinessV1 &value,
                   bool expected) {
   return value.player_identity_ready == expected &&
          value.primary_title_ready == expected &&
+         value.primary_title_succession_ready == expected &&
          value.capital_ready == expected &&
          value.lieges_ready == expected &&
          value.direct_landed_vassals_ready == expected &&
@@ -501,6 +522,7 @@ bool ClearedUnavailable(const xar::game::CampaignRootContextV1 &value,
          value.snapshot_revision == 41 && value.date_raw == 12'345 &&
          !value.local_player_id && !value.player_character_id &&
          !value.player_character_alive && !value.primary_title &&
+         value.primary_title_succession_character_ids.empty() &&
           !value.capital_province_id && !value.immediate_liege_character_id &&
          !value.top_liege_character_id && !value.independent &&
          value.direct_landed_vassal_character_ids.empty() &&
@@ -545,6 +567,9 @@ bool TestAvailableAndSerializer() {
       result.primary_title->title_id != Fixture::kPrimaryTitleId ||
       result.primary_title->tier_raw != 6 ||
       result.primary_title->tier_key != "hegemony" ||
+      result.primary_title_succession_character_ids !=
+          std::vector<std::int32_t>{Fixture::kFirstSuccessorId,
+                                    Fixture::kSecondSuccessorId} ||
       result.capital_province_id != 5 ||
       result.immediate_liege_character_id != Fixture::kImmediateLiegeId ||
       result.top_liege_character_id != Fixture::kTopLiegeId ||
@@ -579,7 +604,9 @@ bool TestAvailableAndSerializer() {
       "\"local_player_id\":7,\"player_character_id\":33554433,"
       "\"player_character_alive\":true,\"primary_title\":{"
       "\"title_id\":83886081,\"tier_raw\":6,"
-      "\"tier_key\":\"hegemony\"},\"capital_province_id\":5,"
+      "\"tier_key\":\"hegemony\"},"
+      "\"primary_title_succession_character_ids\":[201326600,218103817],"
+      "\"capital_province_id\":5,"
       "\"immediate_liege_character_id\":50331650,"
       "\"top_liege_character_id\":67108867,\"independent\":false,"
       "\"direct_landed_vassal_character_ids\":[100663300],"
@@ -604,7 +631,9 @@ bool TestAvailableAndSerializer() {
       "\"z_rule\",\"" + NonAsciiRule() +
       "\"],\"native_selected_game_rule_token_count\":4,"
       "\"readiness\":{\"player_identity_ready\":true,"
-      "\"primary_title_ready\":true,\"capital_ready\":true,"
+      "\"primary_title_ready\":true,"
+      "\"primary_title_succession_ready\":true,"
+      "\"capital_ready\":true,"
       "\"lieges_ready\":true,\"direct_landed_vassals_ready\":true,"
       "\"adjacent_external_province_holders_ready\":true,"
       "\"related_character_contexts_ready\":true,"
@@ -665,6 +694,7 @@ bool TestLegitimateAbsenceAndGovernmentPointerSlot() {
              environment, access, request, result) ==
              xar::game::ReadCampaignRootContextResultV1::available &&
          !result.primary_title && !result.capital_province_id &&
+         result.primary_title_succession_character_ids.empty() &&
          !result.immediate_liege_character_id &&
          result.top_liege_character_id == Fixture::kPlayerCharacterId &&
          result.independent == true && !result.government &&
@@ -696,6 +726,20 @@ bool TestTypedUnavailableClearsPartialObservation() {
          json.find("\"unavailable_reason\":"
                    "\"player_character_generation_mismatch\"") !=
              std::string::npos;
+}
+
+bool TestMalformedSuccessionIsTypedUnavailable() {
+  Fixture fixture;
+  fixture.primary_title_successors[1] = 0x0E00000A;
+  const auto environment = Environment(fixture);
+  const auto access = Access(fixture);
+  const xar::ck3_11906::CampaignRootContextRequestV1 request{41};
+  xar::game::CampaignRootContextV1 result{};
+  return xar::ck3_11906::ReadCampaignRootContextV1(
+             environment, access, request, result) ==
+             xar::game::ReadCampaignRootContextResultV1::unavailable &&
+         ClearedUnavailable(result,
+                            "primary_title_succession_unavailable");
 }
 
 bool TestStateChangedAndUnsupportedBuild() {
@@ -736,6 +780,10 @@ int main() {
   }
   if (!TestTypedUnavailableClearsPartialObservation()) {
     std::cerr << "typed unavailable fixture failed\n";
+    return 1;
+  }
+  if (!TestMalformedSuccessionIsTypedUnavailable()) {
+    std::cerr << "malformed succession fixture failed\n";
     return 1;
   }
   if (!TestStateChangedAndUnsupportedBuild()) {

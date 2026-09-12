@@ -19,6 +19,7 @@
     "player_character_id",
     "player_character_alive",
     "primary_title",
+    "primary_title_succession_character_ids",
     "capital_province_id",
     "immediate_liege_character_id",
     "top_liege_character_id",
@@ -41,6 +42,7 @@
     "player_identity_unavailable",
     "player_character_generation_mismatch",
     "primary_title_unavailable",
+    "primary_title_succession_unavailable",
     "capital_unavailable",
     "lieges_unavailable",
     "direct_landed_vassals_unavailable",
@@ -60,5 +62,8 @@
   "adjacent_external_province_holder_filters": ["alive", "generation_valid", "outside_player_subrealm", "province_directly_adjacent_to_player_subrealm"],
   "related_character_context_order": "ascending_full_generation_character_id_duplicate_free",
   "related_character_context_fields": ["character_id", "relationship_role", "primary_title", "capital_province_id", "immediate_liege_character_id", "top_liege_character_id", "independent"],
-  "related_character_context_all_or_nothing": true
+  "related_character_context_all_or_nothing": true,
+  "primary_title_succession_order": "native_title_succession_order",
+  "primary_title_succession_offsets": ["0x278", "0x280", "0x284"],
+  "primary_title_succession_all_or_nothing": true
 }

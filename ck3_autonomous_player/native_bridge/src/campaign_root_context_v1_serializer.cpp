@@ -53,6 +53,7 @@ bool ReadinessAll(const game::CampaignRootReadinessV1 &value,
                   bool expected) noexcept {
   return value.player_identity_ready == expected &&
          value.primary_title_ready == expected &&
+         value.primary_title_succession_ready == expected &&
          value.capital_ready == expected && value.lieges_ready == expected &&
          value.direct_landed_vassals_ready == expected &&
          value.adjacent_external_province_holders_ready == expected &&
@@ -82,7 +83,7 @@ std::string_view TierKey(std::int32_t raw) noexcept {
 }
 
 bool ValidUnavailableReason(std::string_view reason) noexcept {
-  constexpr std::array<std::string_view, 16> reasons = {
+  constexpr std::array<std::string_view, 17> reasons = {
       "unsupported_build",
       "requires_application_main",
       "requires_paused",
@@ -90,6 +91,7 @@ bool ValidUnavailableReason(std::string_view reason) noexcept {
       "player_identity_unavailable",
       "player_character_generation_mismatch",
       "primary_title_unavailable",
+      "primary_title_succession_unavailable",
       "capital_unavailable",
       "lieges_unavailable",
       "direct_landed_vassals_unavailable",
@@ -128,6 +130,18 @@ bool ValidCharacterIds(const std::vector<std::int32_t> &values,
                      [player_character_id](std::int32_t value) {
                        return value > 0 && value != player_character_id;
                      });
+}
+
+bool ValidSuccessionIds(const std::vector<std::int32_t> &values,
+                        std::int32_t player_character_id) noexcept {
+  for (std::size_t index = 0; index < values.size(); ++index) {
+    if (values[index] <= 0 || values[index] == player_character_id ||
+        std::find(values.begin(), values.begin() + index, values[index]) !=
+            values.begin() + index) {
+      return false;
+    }
+  }
+  return true;
 }
 
 bool ValidRelatedCharacters(
@@ -195,6 +209,9 @@ bool ValidAvailable(const game::CampaignRootContextV1 &context) noexcept {
           context.native_selected_game_rule_token_count) !=
           context.selected_game_rule_tokens.size() ||
       !SortedTokens(context.selected_game_rule_tokens) ||
+      !ValidSuccessionIds(
+          context.primary_title_succession_character_ids,
+          *context.player_character_id) ||
       !ValidCharacterIds(context.direct_landed_vassal_character_ids,
                          *context.player_character_id) ||
       !ValidCharacterIds(
@@ -223,6 +240,10 @@ bool ValidAvailable(const game::CampaignRootContextV1 &context) noexcept {
     if (title.title_id <= 0 || TierKey(title.tier_raw) != title.tier_key) {
       return false;
     }
+  }
+  if (!context.primary_title.has_value() &&
+      !context.primary_title_succession_character_ids.empty()) {
+    return false;
   }
   if (context.capital_province_id.has_value() &&
       *context.capital_province_id <= 0) {
@@ -260,6 +281,7 @@ bool ValidUnavailable(const game::CampaignRootContextV1 &context) noexcept {
          !context.player_character_id.has_value() &&
          !context.player_character_alive.has_value() &&
          !context.primary_title.has_value() &&
+         context.primary_title_succession_character_ids.empty() &&
          !context.capital_province_id.has_value() &&
          !context.immediate_liege_character_id.has_value() &&
          !context.top_liege_character_id.has_value() &&
@@ -366,6 +388,8 @@ void AppendReadiness(std::string &output,
   output += value.player_identity_ready ? "true" : "false";
   output += ",\"primary_title_ready\":";
   output += value.primary_title_ready ? "true" : "false";
+  output += ",\"primary_title_succession_ready\":";
+  output += value.primary_title_succession_ready ? "true" : "false";
   output += ",\"capital_ready\":";
   output += value.capital_ready ? "true" : "false";
   output += ",\"lieges_ready\":";
@@ -448,6 +472,11 @@ std::string SerializeCampaignRootContextV1(
     output += ",\"tier_key\":";
     AppendJsonString(output, context.primary_title->tier_key);
     output.push_back('}');
+  }
+  output += ",\"primary_title_succession_character_ids\":";
+  if (!AppendIntegerArray(
+          output, context.primary_title_succession_character_ids)) {
+    return {};
   }
   output += ",\"capital_province_id\":";
   AppendOptionalInt32(output, context.capital_province_id);

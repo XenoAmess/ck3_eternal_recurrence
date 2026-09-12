@@ -50,6 +50,7 @@ struct CampaignRootRelatedCharacterV1 {
 struct CampaignRootReadinessV1 {
   bool player_identity_ready = false;
   bool primary_title_ready = false;
+  bool primary_title_succession_ready = false;
   bool capital_ready = false;
   bool lieges_ready = false;
   bool direct_landed_vassals_ready = false;
@@ -76,6 +77,7 @@ struct CampaignRootContextV1 {
   std::optional<std::int32_t> player_character_id;
   std::optional<bool> player_character_alive;
   std::optional<CampaignRootTitleV1> primary_title;
+  std::vector<std::int32_t> primary_title_succession_character_ids;
   std::optional<std::int32_t> capital_province_id;
   std::optional<std::int32_t> immediate_liege_character_id;
   std::optional<std::int32_t> top_liege_character_id;
