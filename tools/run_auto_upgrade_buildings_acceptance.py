@@ -221,6 +221,48 @@ def focus_ck3_with_exact_toast_recovery() -> bool:
 acceptance.focus_ck3 = focus_ck3_with_exact_toast_recovery
 
 
+def ensure_final_pause_by_date(artifacts: Path, stem: str) -> None:
+    """Prove the final pause from a stable rendered date, not a transient label."""
+    acceptance.focus_ck3()
+    width, height = acceptance.pyautogui.size()
+    acceptance.pyautogui.moveTo(width // 2, height // 2, duration=0.2)
+
+    first = acceptance.read_hud_game_date()
+    if first is None:
+        raise acceptance.RunnerError("final pause gate could not read the HUD date")
+    time.sleep(1.25)
+    second = acceptance.read_hud_game_date()
+    if second is None:
+        raise acceptance.RunnerError("final pause gate lost the HUD date")
+    if second[0] == first[0]:
+        acceptance.ImageGrab.grab().save(artifacts / f"{stem}_already_paused.png")
+        log(f"final HUD date already stable ({stem})")
+        return
+
+    acceptance.deliberate_click(second[1], f"timeline pause ({stem})")
+    deadline = time.time() + 8
+    stable_day: int | None = None
+    stable_since = time.time()
+    last_image = None
+    while time.time() < deadline:
+        last_image = acceptance.ImageGrab.grab()
+        current = acceptance.read_hud_game_day(last_image)
+        if current is None:
+            stable_day = None
+            stable_since = time.time()
+        elif current != stable_day:
+            stable_day = current
+            stable_since = time.time()
+        elif time.time() - stable_since >= 2:
+            last_image.save(artifacts / f"{stem}_paused_date_stable.png")
+            log(f"final HUD date stable after timeline pause ({stem})")
+            return
+        time.sleep(0.4)
+    if last_image is not None:
+        last_image.save(artifacts / f"timeout_{stem}_date_stability.png")
+    raise acceptance.RunnerError("final HUD date did not stabilize after pause")
+
+
 def write_json(path: Path, payload: dict[str, object]) -> None:
     temporary = path.with_name(path.name + ".tmp")
     temporary.write_text(
@@ -588,7 +630,7 @@ def run_cell(
             stable_hits=1,
         )
         acceptance.deliberate_click(option, "close Auto Upgrade Buildings acceptance summary")
-        acceptance.ensure_game_paused(artifacts, "09_final_map")
+        ensure_final_pause_by_date(artifacts, "09_final_map")
         stream.validate()
         evidence = {
             "treasury_priority": True,
