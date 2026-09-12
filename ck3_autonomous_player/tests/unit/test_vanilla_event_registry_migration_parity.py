@@ -105,7 +105,7 @@ SEED_CAPTURE_ENTRY = ROOT / "tools" / "run_zg361_phase2_seed_capture.py"
 EXPECTED_BUCKET_COUNTS = {
     "vanilla_shards": 20,
     "manager_original": 57,
-    "embedded_original": 81,
+    "embedded_original": 82,
     "prebootstrap": 2,
 }
 EXPECTED_INTENTIONAL_OVERLAPS = {
@@ -308,7 +308,7 @@ class VanillaEventRegistryMigrationParityTests(unittest.TestCase):
                 self.assertNotIn("date_raw", contract)
                 self.assertNotIn("date_raw_range", contract)
                 self.assertEqual(contract.get("root_character_id"), "$player")
-        self.assertEqual(len(EMBEDDED_VANILLA_TIMELINE_CONTRACTS), 81)
+        self.assertEqual(len(EMBEDDED_VANILLA_TIMELINE_CONTRACTS), 82)
         self.assertEqual(
             PREBOOTSTRAP_VANILLA_TIMELINE_CONTRACTS,
             legacy_prebootstrap,
@@ -366,8 +366,8 @@ class VanillaEventRegistryMigrationParityTests(unittest.TestCase):
             for event_key in records:
                 key_memberships[event_key].append(group_index)
 
-        self.assertEqual(sum(map(len, default_groups)), 186)
-        self.assertEqual(len(key_memberships), 186)
+        self.assertEqual(sum(map(len, default_groups)), 187)
+        self.assertEqual(len(key_memberships), 187)
         self.assertEqual(
             {
                 event_key: indexes
@@ -472,7 +472,7 @@ class VanillaEventRegistryMigrationParityTests(unittest.TestCase):
             if len(bucket_names) > 1
         }
         self.assertEqual(actual_overlaps, EXPECTED_INTENTIONAL_OVERLAPS)
-        self.assertEqual(len(memberships), 158)
+        self.assertEqual(len(memberships), 159)
 
 
 if __name__ == "__main__":

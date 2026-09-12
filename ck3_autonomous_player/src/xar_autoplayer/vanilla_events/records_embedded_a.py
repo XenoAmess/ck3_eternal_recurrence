@@ -654,6 +654,45 @@ _LEGACY_EMBEDDED_A_VANILLA_TIMELINE_CONTRACTS: Final[
         "selected_native_option_index": 1,
         "occurrence_policy": "repeatable-within-product-observation-window",
     },
+    "travel_completion_event.1000": {
+        # CK3 1.19.0.6 generic travel completion. The two authored options are
+        # mutually exclusive by whether root is already at its default
+        # location. R502 rendered only native option 0 after arriving home.
+        # That route has no explicit action beyond its conditional stress-loss
+        # impact; native option 1 instead orders another return-home movement.
+        "date_policy": "product-observation-window",
+        "root_character_id": PLAYER_SENTINEL,
+        "character_scopes": {
+            "travel_owner": PLAYER_SENTINEL,
+        },
+        "unique_character_scope_excludes": {
+            "travel_leader_scope": (PLAYER_SENTINEL,),
+        },
+        "scope_types": {
+            "travel_plan": "travel_plan",
+            "destination": "province",
+            "current_location": "province",
+            "travel_plan_scope": "travel_plan",
+            "final_destination_province": "province",
+        },
+        "boolean_scopes": (),
+        "saved_scope_name_sets": ((
+            "travel_plan",
+            "travel_owner",
+            "destination",
+            "current_location",
+            "travel_plan_scope",
+            "final_destination_province",
+            "travel_leader_scope",
+        ),),
+        "saved_scope_count": 7,
+        "option_count": 1,
+        "snapshot_option_count": 2,
+        "native_option_indices": (0,),
+        "selected_option_number": 1,
+        "selected_native_option_index": 0,
+        "occurrence_policy": "repeatable-within-product-observation-window",
+    },
     "stress_threshold_special.1001": {
         # CK3 1.19.0.6 grief mental break after a recorded close death. The
         # immediate block exposes at most two coping routes plus the mutually

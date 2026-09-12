@@ -4154,6 +4154,38 @@
       "sha256": "52047d6f9008c4da49471e6db5627f0a3652769eec46d466bc448dd342ade3b3"
     },
     {
+      "blob_bytes": 1477,
+      "blob_path": "blobs/525d15e895d989a1619b8608f006e9d9ba55946857df939cee27834c590960ab.gz",
+      "blob_sha256": "699d0483bd3c267c4bb144cccfad9ce49222fd2b0b73420615936111fe9182ad",
+      "bytes": 5260,
+      "evidence_id": "525d15e895d989a1619b8608f006e9d9ba55946857df939cee27834c590960ab",
+      "kind": "source_definition",
+      "media_type": "text/plain; charset=utf-8",
+      "references": [
+        {
+          "caller_candidate_resolution": null,
+          "event_definition_key": "travel_completion_event.1000",
+          "logical_path": "events/travel_events/travel_completion_events.txt",
+          "origin": "ck3_game",
+          "provenance": "generated-definition-index",
+          "role": "event_definition",
+          "source_column": null,
+          "source_line": 15
+        },
+        {
+          "caller_candidate_resolution": null,
+          "event_definition_key": "travel_completion_event.1000",
+          "logical_path": "events/travel_events/travel_completion_events.txt",
+          "origin": "ck3_game",
+          "provenance": "manually-reviewed-analysis-source",
+          "role": "analysis_source",
+          "source_column": null,
+          "source_line": null
+        }
+      ],
+      "sha256": "525d15e895d989a1619b8608f006e9d9ba55946857df939cee27834c590960ab"
+    },
+    {
       "blob_bytes": 6139,
       "blob_path": "blobs/52d172c10a8164b007382f9df79a48de462cf6b390438158fd37c9b34df8f75c.gz",
       "blob_sha256": "2077fb9f05ef7b276d6ff856ce4a6e65e5cd3b0804fd2148eeb8757ab8deed70",
@@ -4174,6 +4206,28 @@
         }
       ],
       "sha256": "52d172c10a8164b007382f9df79a48de462cf6b390438158fd37c9b34df8f75c"
+    },
+    {
+      "blob_bytes": 12809,
+      "blob_path": "blobs/53450584691e66f492de401ef0f9658ac3644a7672e4e77b10d1e78a776eb9b3.gz",
+      "blob_sha256": "afd9d96ca5cc4ef2d17c528111a9b4c2e3536e12a3f9faf606e4cda80e81a46f",
+      "bytes": 106328,
+      "evidence_id": "53450584691e66f492de401ef0f9658ac3644a7672e4e77b10d1e78a776eb9b3",
+      "kind": "source_definition",
+      "media_type": "text/plain; charset=utf-8",
+      "references": [
+        {
+          "caller_candidate_resolution": "external-definition-file",
+          "event_definition_key": "travel_completion_event.1000",
+          "logical_path": "common/character_interactions/00_debug_interactions.txt",
+          "origin": "ck3_game",
+          "provenance": "lexical-caller-candidate-not-proven-runtime-caller",
+          "role": "caller_candidate",
+          "source_column": 24,
+          "source_line": 2389
+        }
+      ],
+      "sha256": "53450584691e66f492de401ef0f9658ac3644a7672e4e77b10d1e78a776eb9b3"
     },
     {
       "blob_bytes": 3907,
@@ -8482,6 +8536,48 @@
         }
       ],
       "sha256": "7d366988081a0e6cbd9e583ff767aebc71f6cc599f80b1d0784964ce8646e089"
+    },
+    {
+      "blob_bytes": 15824,
+      "blob_path": "blobs/7e433a0d6969e09cfed1d9dc50fb5276d944354024d6d2e045b314355f41040c.gz",
+      "blob_sha256": "14e30a4080d0fbbc1ec6a22146f5111d7fdc909b6c8a7c493d889f3455220006",
+      "bytes": 67698,
+      "evidence_id": "7e433a0d6969e09cfed1d9dc50fb5276d944354024d6d2e045b314355f41040c",
+      "kind": "source_definition",
+      "media_type": "text/plain; charset=utf-8",
+      "references": [
+        {
+          "caller_candidate_resolution": "external-definition-file",
+          "event_definition_key": "travel_completion_event.1000",
+          "logical_path": "common/on_action/travel_on_actions.txt",
+          "origin": "ck3_game",
+          "provenance": "lexical-caller-candidate-not-proven-runtime-caller",
+          "role": "caller_candidate",
+          "source_column": 3,
+          "source_line": 1412
+        },
+        {
+          "caller_candidate_resolution": "external-definition-file",
+          "event_definition_key": "travel_completion_event.1000",
+          "logical_path": "common/on_action/travel_on_actions.txt",
+          "origin": "ck3_game",
+          "provenance": "lexical-caller-candidate-not-proven-runtime-caller",
+          "role": "caller_candidate",
+          "source_column": 3,
+          "source_line": 1711
+        },
+        {
+          "caller_candidate_resolution": null,
+          "event_definition_key": "travel_completion_event.1000",
+          "logical_path": "common/on_action/travel_on_actions.txt",
+          "origin": "ck3_game",
+          "provenance": "manually-reviewed-analysis-source",
+          "role": "analysis_source",
+          "source_column": null,
+          "source_line": null
+        }
+      ],
+      "sha256": "7e433a0d6969e09cfed1d9dc50fb5276d944354024d6d2e045b314355f41040c"
     },
     {
       "blob_bytes": 45857,
@@ -13532,6 +13628,28 @@
       "sha256": "e6e1d565aa74a004b5f995457d4db52af5e6829430b2dcb14b16a69f4b7fb529"
     },
     {
+      "blob_bytes": 22559,
+      "blob_path": "blobs/e797abdd300239adbc9a60f41e7623b6f58e5b7aba8d6bb97828f21cd24a6a5a.gz",
+      "blob_sha256": "a6b4d1a4eb8930710dc36234761382dfb749800b1a6d56c51de64acab2e0bd6e",
+      "bytes": 228132,
+      "evidence_id": "e797abdd300239adbc9a60f41e7623b6f58e5b7aba8d6bb97828f21cd24a6a5a",
+      "kind": "observation_artifact",
+      "media_type": "application/json",
+      "references": [
+        {
+          "caller_candidate_resolution": null,
+          "event_definition_key": "travel_completion_event.1000",
+          "logical_path": "_runtime/p1-stage10-player-publication-r501-r502-e824683-20260912/live-artifacts/stage10-player-subject-red.json",
+          "origin": "runtime",
+          "provenance": "captured-observation-artifact",
+          "role": "artifact",
+          "source_column": null,
+          "source_line": null
+        }
+      ],
+      "sha256": "e797abdd300239adbc9a60f41e7623b6f58e5b7aba8d6bb97828f21cd24a6a5a"
+    },
+    {
       "blob_bytes": 2200,
       "blob_path": "blobs/e90b02c7e82f9d6b45bd4494db5a4ad47e48c10232c3c1cf26bbfe9375eba9ca.gz",
       "blob_sha256": "f5fc69b7ad89c41574dc3ae7ebce916a375c05829d5b77f7987273f89e4208fe",
@@ -14423,13 +14541,13 @@
   "schema": "xar.ck3.vanilla-event-portable-evidence-manifest",
   "schema_version": 1,
   "statistics": {
-    "evidence": 286,
-    "generated_definition_references": 186,
-    "lexical_caller_candidate_references": 524,
-    "manually_reviewed_analysis_source_references": 281,
-    "observation_artifact_references": 107,
-    "observation_artifacts": 91,
-    "references": 1098,
-    "source_definitions": 195
+    "evidence": 290,
+    "generated_definition_references": 187,
+    "lexical_caller_candidate_references": 527,
+    "manually_reviewed_analysis_source_references": 283,
+    "observation_artifact_references": 108,
+    "observation_artifacts": 92,
+    "references": 1105,
+    "source_definitions": 198
   }
 }

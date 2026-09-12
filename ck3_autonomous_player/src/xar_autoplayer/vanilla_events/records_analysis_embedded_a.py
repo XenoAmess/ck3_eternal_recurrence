@@ -36,6 +36,7 @@ EMBEDDED_A_EVENT_KEYS: Final[tuple[str, ...]] = (
     "stress_threshold.1721",
     "stress_threshold.1011",
     "trait_specific_interactions.0011",
+    "travel_completion_event.1000",
     "stress_threshold_special.1001",
     "ep1_flavor.0021",
     "ep1_flavor.2040",
@@ -161,6 +162,12 @@ _REVIEW_NOTES: Final[dict[str, tuple[str, str]]] = {
         "Native option 1 deterministically accepts the poem, avoiding both the "
         "random diplomacy duel and the rejection route's opinion loss and "
         "possible rivalry.",
+    ),
+    "travel_completion_event.1000": (
+        "Generic travel completion with mutually exclusive already-home and "
+        "return-home options; R502 rendered only the already-home route.",
+        "Native option 0 is the sole legal live response and has no explicit "
+        "action beyond a possible trait-conditioned stress decrease.",
     ),
     "stress_threshold_special.1001": (
         "Grief break with three recorded source-defined projections, including "
@@ -763,6 +770,62 @@ def _build_analysis() -> dict[str, dict[str, object]]:
         "boolean-theme, and option shape; and leaves R500 numeric identities "
         "and date in observations only."
     )
+
+    travel_analysis = analysis["travel_completion_event.1000"]
+    travel_analysis["migrated_from"]["review_kind"] = (
+        "exact-build-original-definition-caller-and-live-projection-review"
+    )
+    travel_analysis.update({
+        "source_sha256": {
+            "events/travel_events/travel_completion_events.txt": (
+                "525D15E895D989A1619B8608F006E9D9BA55946857DF939CEE27834C590960AB"
+            ),
+            "common/on_action/travel_on_actions.txt": (
+                "7E433A0D6969E09CFED1D9DC50FB5276D944354024D6D2E045B314355F41040C"
+            ),
+        },
+        "definition_lines": "15-203",
+        "caller_semantics": (
+            "on_travel_plan_complete selects .1000 as the generic first-valid "
+            "completion event, while on_travel_plan_abort also lists it for "
+            "ruler travel cleanup"
+        ),
+        "trigger_boundary": (
+            "root is a landed available traveler with a non-aborted current "
+            "travel plan and is not completing an activity tour"
+        ),
+        "immediate_effect": (
+            "records travel statistics and presentation scopes, may grant tiny "
+            "horse-track XP, and has already run before the player response"
+        ),
+        "option_semantics": {
+            "0": (
+                "already-home response; no explicit effect beyond possible "
+                "craven or paranoid miniscule stress loss"
+            ),
+            "1": (
+                "away-from-home response; may add miniscule stress for craven "
+                "or paranoid and invokes return_home"
+            ),
+        },
+        "after_effect": (
+            "removes recently_completed_mandala_contract when that flag exists"
+        ),
+        "live_projection_boundary": (
+            "R502 rendered only native option 0 with root and travel_owner bound "
+            "to the player, a distinct travel leader, two travel-plan scopes, "
+            "and three province scopes with opaque identities"
+        ),
+    })
+    travel_analysis["existing_boundaries"][
+        "campaign_specific_binding_fields"
+    ] = []
+    travel_analysis["existing_boundaries"]["boundary_note"] = (
+        "The reusable contract binds root and travel_owner through $player, "
+        "requires a distinct typed travel leader, preserves the exact travel-"
+        "plan/province scope and single-rendered-option shape, and leaves R502 "
+        "numeric identities and date in observations only."
+    )
     return analysis
 
 
@@ -1247,6 +1310,52 @@ _TRAIT_SPECIFIC_INTERACTIONS_0011_OBSERVATIONS: Final[
 }
 
 
+_TRAVEL_COMPLETION_1000_OBSERVATIONS: Final[
+    dict[str, dict[str, object]]
+] = {
+    "travel_completion_event.1000": {
+        "exemplars": [{
+            "run": "R502",
+            "kind": "pre-selection-live-red",
+            "artifact": (
+                "_runtime/p1-stage10-player-publication-r501-r502-"
+                "e824683-20260912/live-artifacts/"
+                "stage10-player-subject-red.json"
+            ),
+            "artifact_sha256": (
+                "E797ABDD300239ADBC9A60F41E7623B6F58E5B7ABA8D6BB97828F21CD24A6A5A"
+            ),
+            "date_raw": 53156184,
+            "event_instance_id": 21,
+            "root_character_id": 27181,
+            "saved_character_ids": {
+                "travel_owner": 27181,
+                "travel_leader_scope": 32980,
+            },
+            "saved_scope_raw_types": {
+                "travel_plan": 35,
+                "travel_owner": 4,
+                "destination": 8,
+                "current_location": 8,
+                "travel_plan_scope": 35,
+                "final_destination_province": 8,
+                "travel_leader_scope": 4,
+            },
+            "rendered_native_option_indices": [0],
+            "snapshot_option_count": 2,
+            "snapshot_id": "native:26",
+            "native_revision": 26,
+            "revision": 27,
+            "query_sequence": 3,
+            "connection_generation": 1,
+            "bridge_pid": 149584,
+            "selection_attempted": False,
+            "process_restart_required": False,
+        }],
+    },
+}
+
+
 VANILLA_EMBEDDED_A_OBSERVATIONS: Final[
     dict[str, dict[str, object]]
 ] = {
@@ -1256,6 +1365,7 @@ VANILLA_EMBEDDED_A_OBSERVATIONS: Final[
     **_STRESS_THRESHOLD_1721_OBSERVATIONS,
     **_STRESS_THRESHOLD_1011_OBSERVATIONS,
     **_TRAIT_SPECIFIC_INTERACTIONS_0011_OBSERVATIONS,
+    **_TRAVEL_COMPLETION_1000_OBSERVATIONS,
 }
 
 

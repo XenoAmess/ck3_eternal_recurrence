@@ -1,19 +1,19 @@
 {
   "audit": {
     "ambiguous_definition_count": 0,
-    "caller_candidate_file_count": 80,
-    "caller_candidate_reference_count": 524,
-    "definition_file_count": 72,
-    "external_caller_event_count": 151,
+    "caller_candidate_file_count": 82,
+    "caller_candidate_reference_count": 527,
+    "definition_file_count": 73,
+    "external_caller_event_count": 152,
     "missing_definition_count": 0,
     "namespace_mismatch_count": 0,
-    "registered_event_count": 186,
+    "registered_event_count": 187,
     "same_file_only_caller_event_count": 35,
-    "unique_definition_count": 186
+    "unique_definition_count": 187
   },
   "ck3_build": "1.19.0.6",
   "ck3_exe_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
-  "dataset_sha256": "210E785F58FE6C176F0AE7DEFCF5301AB9E63BBC41161DBBF45590D4E6FE10C9",
+  "dataset_sha256": "FE3A1D8472B14A6901117243A21E7A97E5AD60EE685D03057D5F17BC568F43DC",
   "events": {
     "adultery.0002": {
       "caller_candidate_resolution": "same-definition-file-only",
@@ -5545,6 +5545,38 @@
         "relative_path": "events/trait_specific_events/trait_specific_ongoing_events.txt"
       },
       "namespace": "trait_specific_ongoing"
+    },
+    "travel_completion_event.1000": {
+      "caller_candidate_resolution": "external-definition-file",
+      "caller_candidates": [
+        {
+          "column": 24,
+          "file_sha256": "53450584691E66F492DE401EF0F9658AC3644A7672E4E77B10D1E78A776EB9B3",
+          "kind": "exact-token-lexical-candidate",
+          "line": 2389,
+          "relative_path": "common/character_interactions/00_debug_interactions.txt"
+        },
+        {
+          "column": 3,
+          "file_sha256": "7E433A0D6969E09CFED1D9DC50FB5276D944354024D6D2E045B314355F41040C",
+          "kind": "exact-token-lexical-candidate",
+          "line": 1412,
+          "relative_path": "common/on_action/travel_on_actions.txt"
+        },
+        {
+          "column": 3,
+          "file_sha256": "7E433A0D6969E09CFED1D9DC50FB5276D944354024D6D2E045B314355F41040C",
+          "kind": "exact-token-lexical-candidate",
+          "line": 1711,
+          "relative_path": "common/on_action/travel_on_actions.txt"
+        }
+      ],
+      "definition": {
+        "file_sha256": "525D15E895D989A1619B8608F006E9D9BA55946857DF939CEE27834C590960AB",
+        "line": 15,
+        "relative_path": "events/travel_events/travel_completion_events.txt"
+      },
+      "namespace": "travel_completion_event"
     },
     "travel_danger_events.3002": {
       "caller_candidate_resolution": "same-definition-file-only",

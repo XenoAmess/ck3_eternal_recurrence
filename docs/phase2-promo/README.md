@@ -472,3 +472,5 @@ R500 已实机通过 `.1011` 的 authored6/native5 选择并继续推进 13 日�
 最小通用合同选择 authored2/native1，避免随机外交决斗及拒绝导致的关系恶化/潜在宿敌。冻结 frame 生产解析器
 `26/26` GREEN，normal/optimized 聚焦测试均为 `50 passed, 147 subtests passed` 加独立 `8 passed`。
 P1 保持 `8/9`，P2 继续硬锁定。完整记录：[R499/R500 诗歌事件 RED 与合同](r499-r500-trait-specific-interactions-0011-red-and-contract-2026-09-12.md)。
+
+- [R501/R502 travel completion RED and reusable contract](r501-r502-travel-completion-1000-red-and-contract-2026-09-12.md) records the exact-build `travel_completion_event.1000` single-rendered-option boundary, the R502 pre-selection RED, and the campaign-neutral authored1/native0 contract.
