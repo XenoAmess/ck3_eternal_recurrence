@@ -12,12 +12,13 @@
 - **[static-confirmed]** `campaign-root-context-v1` 所需的每个 native leaf 已在冻结 EXE/stock 数据中闭合；当前没有需要以
   猜值代替的字段。2026-09-13 增加的 `direct_landed_vassal_character_ids` 与
   `adjacent_external_province_holder_character_ids` 复用 Character storage、province array、native holder、primary-title 与
-  immediate-liege leaf，在 application-main 双采样内枚举，不读取或猜测存档文本。
+  immediate-liege leaf，在 application-main 双采样内枚举；`related_character_contexts` 再对这两个 identity vector 逐行调用既有
+  primary-title、capital、immediate/top-liege resolver，不读取或猜测存档文本。
 - **[live-confirmed]** production bridge、Python service 与 MCP 已发布这项只读聚合查询。两个 immutable campaign
   checkpoint 分别完成“同 paused revision 双查询 -> 保存 -> 新 managed PID 冷恢复 -> 同 paused revision 双查询”，并逐项
   证明业务值跨恢复不变；artifact SHA-256 为 `DA5EB7F01A48A2869B8C9B6B2F6607825FA5319715F66D2C0D04AFFCF802CDDC`
   与 `677C4FF9727A479B40D068EC7E62A7AC54EF2E21A3EF57649D624C7648B279F9`。
-- **[static-ready, live pending]** 上述两个历史 artifact 早于直属有地封臣与相邻外部省份持有者字段，不能证明这两个字段的
+- **[static-ready, live pending]** 上述两个历史 artifact 早于直属有地封臣、相邻外部省份持有者和相关人物上下文字段，不能证明这些字段的
   production 值。新增 reader、serializer、source contract、Release DLL 与 Python driver/service/MCP 聚焦测试已通过；
   只在下一次本来就需要的 paused G2 会话中做一次读取互证，不为单个字段另开长跑。
 - 这项 capability **不声明 DLC truth**。磁盘上的 DLC descriptor 只说明文件已安装；它既不证明当前进程已加载对应内容，
@@ -76,8 +77,28 @@ absent；结构或 identity 无法在同一 paused query 中闭合时返回 type
   "immediate_liege_character_id": null,
   "top_liege_character_id": 12345,
   "independent": true,
-  "direct_landed_vassal_character_ids": [23456, 34567],
-  "adjacent_external_province_holder_character_ids": [45678, 56789],
+  "direct_landed_vassal_character_ids": [23456],
+  "adjacent_external_province_holder_character_ids": [45678],
+  "related_character_contexts": [
+    {
+      "character_id": 23456,
+      "relationship_role": "direct_landed_vassal",
+      "primary_title": {"title_id": 73456, "tier_raw": 3, "tier_key": "duchy"},
+      "capital_province_id": 88,
+      "immediate_liege_character_id": 12345,
+      "top_liege_character_id": 12345,
+      "independent": false
+    },
+    {
+      "character_id": 45678,
+      "relationship_role": "adjacent_external_province_holder",
+      "primary_title": {"title_id": 95678, "tier_raw": 2, "tier_key": "county"},
+      "capital_province_id": 144,
+      "immediate_liege_character_id": null,
+      "top_liege_character_id": 45678,
+      "independent": true
+    }
+  ],
   "government": {
     "key": "feudal_government",
     "flags": [
@@ -98,6 +119,7 @@ absent；结构或 identity 无法在同一 paused query 中闭合时返回 type
     "lieges_ready": true,
     "direct_landed_vassals_ready": true,
     "adjacent_external_province_holders_ready": true,
+    "related_character_contexts_ready": true,
     "government_ready": true,
     "selected_game_rule_tokens_ready": true,
     "same_frame_ready": true,
@@ -134,6 +156,7 @@ canonicalization：**不得依此反推 native 优先级、父 game-rule、rule 
 | `top_liege_character_id` | 不为空；independent 时明确等于 `player_character_id` |
 | `direct_landed_vassal_character_ids` | 合法没有直属有地封臣时为 `[]`；available frame 中不使用 `null` |
 | `adjacent_external_province_holder_character_ids` | 合法没有已持有的外部相邻省份时为 `[]`；available frame 中不使用 `null` |
+| `related_character_contexts` | 两个来源 identity vector 都为空时为 `[]`；行内 `capital_province_id` 可合法为 `null`，主头衔与 top liege 不可空 |
 | `government` | resolver 返回 canonical no-government object `module+0x570CB50`；不得把 fallback 的内存内容发布成 stable key |
 | selected tokens | 合法空 vector 是 `[]`；不能回退到 preset 文件或 stock defaults |
 
@@ -294,9 +317,28 @@ wire 按完整 CharacterID 数值升序去重，发布
 无持有者省份和海域不会进入结果。任何 array、identity、holder、liege-chain、adjacency 或第二次 observation 读取失败都会返回
 typed `adjacent_external_province_holders_unavailable`，不会拼接部分边界。
 
-这个字段是**直接相邻的外部 Province holder identity**，不是独立 realm ruler、top liege、外交关系或战争合法性。后续
-`entity-directory-v1` 可以对这些 ID 查询主头衔与 top liege，再构造产品层的“邻国”对象；在那之前不得把此 vector 单独称为
-完整邻国名册。
+这个字段是**直接相邻的外部 Province holder identity**，不是独立 realm ruler、top liege、外交关系或战争合法性。
+`related_character_contexts` 保留这个 source role，并另行发布 native top liege；只有消费该上下文后才能按 top liege 归并
+realm，原 holder vector 本身仍不能单独称为完整邻国名册。
+
+## 相关人物的主头衔、首都与 realm identity
+
+**[static-confirmed]** reader 在两个 identity vector 完成后，按完整 CharacterID 合并排序并逐行执行：
+
+1. Character storage full-generation round-trip 与 alive 复核；
+2. `0x25F3350(character)` 读取必需主头衔，LandedTitle storage round-trip 后从 template `+0x5C` 发布 tier；
+3. `0x2606760(character)` 读取合法可空的首都；非空 Province 必须回到 `game_data+0x140/+0x14C` 同一 pointer；
+4. `0x2613480/0x2613600` 读取 immediate/top liege，并对非空人物执行 Character storage round-trip；
+5. 直属有地封臣必须满足 immediate=player、top=player top liege；相邻 holder 必须再次证明不属于玩家子领地，但其 top liege
+   可以与玩家相同（例如同一宗主下的兄弟封臣），不能被错误排除。
+
+wire 行为 `related_character_contexts`，每行包含 `character_id`、原始 `relationship_role`、`primary_title`、可空
+`capital_province_id`、可空 `immediate_liege_character_id`、`top_liege_character_id` 与 `independent`。行数必须精确等于两个来源
+vector 的去重并集，按 CharacterID 升序且不重复。任一 resolver、round-trip、关系不变量或第二次 observation 失败，整帧返回
+`related_character_contexts_unavailable`；不会用 ID-only 行、旧 frame 或 Python 推断补洞。
+
+这组字段复用既有冻结 RVA，没有新增 native function、mailbox slot 或 mutation surface。产品投影见
+[entity-directory-v1.md](entity-directory-v1.md)。
 
 ## Effective government stable key 与全部 flags
 
@@ -466,16 +508,16 @@ mailbox、source contract 与旧 mailbox/injection 回归 fresh CTest `29/29` GR
 还实证 `save-checkpoint` 会合法地令 `native:3/rev4/native3 -> native:4/rev5/native4`；runner 因而只把查询前后绑定保持
 同帧，并把 save 后置条件定义为同日期/episode/paused 且 revision 单调前进，绝不把合法保存 mutation 误判成 query 漂移。
 
-## 2026-09-13 两项身份扩展的静态验收
+## 2026-09-13 关系身份与上下文扩展的静态验收
 
-直属有地封臣与相邻外部省份持有者共用现有 query、mailbox 与 MCP，不新增 mutation surface。Release DLL 编译链接 GREEN，
-候选 DLL 为 `2,615,808` bytes，SHA-256 `350792626116D8C567F78D196B1B31D01C1BF7A97B4593DCB1FFFDE5065B3834`。
+直属有地封臣、相邻外部省份持有者与相关人物上下文共用现有 query、mailbox 与 MCP，不新增 mutation surface。Release DLL 编译链接 GREEN，
+候选 DLL 为 `2,634,752` bytes，SHA-256 `D86F78E9EE4044609197B1903C4333FBCCA847DB13A7386B63519A26535960B7`。
 direct native reader fixture 覆盖外部相邻 holder、内部直属封臣、无持有者边界和重复边，source-contract executable 也为 GREEN；
-Python driver/service/MCP/live-harness 聚焦测试 normal/optimized 各 `30/30` GREEN。ABI/source contract 已冻结函数体 hash、
-Province array、adjacency row 与 player-subrealm 语义。
+Python contract/driver/service/MCP/live-harness 与 entity-directory 聚焦测试 normal/optimized 各 `35/35` GREEN。ABI/source contract
+已冻结函数体 hash、Province array、adjacency row、player-subrealm 和 related-character 全有或全无语义。
 
-当前 query 的既有 root 字段 production-live readiness 已成立；两个 artifact 不包含 2026-09-13 新增的直属有地封臣和相邻外部
-省份持有者 vector，因此两者仍是 `static-ready / live=false`。覆盖矩阵还诚实保留缺口：两个场景都是 feudal duchy，尚未
+当前 query 的既有 root 字段 production-live readiness 已成立；两个 artifact 不包含 2026-09-13 新增的直属有地封臣、相邻外部
+省份持有者 vector 与相关人物上下文，因此三者仍是 `static-ready / live=false`。覆盖矩阵还诚实保留缺口：两个场景都是 feudal duchy，尚未
 实机覆盖另一 rank、另一 government、landless 以及 primary/capital/government 合法 absent。这些是 F0 场景矩阵缺口，
 不再是 query implementation 或 independent/vassal liege-chain 的缺口。
 
@@ -483,10 +525,10 @@ Province array、adjacency row 与 player-subrealm 语义。
 
 1. [completed] exact-build application-main reader、serializer、typed bridge capability、Python/service/MCP 与独立/vassal
    double-query + cold-restore production acceptance。
-2. 下一次本来就需要的 G2 paused 会话顺带读取直属有地封臣与相邻外部省份持有者 vector，核对至少一个非空名单、exact
-   generation IDs 与玩家子领地排除语义；不单开长跑，成功后才能把这两个字段升为 production-live primitive。
-3. G2-M1 下一项施工是 canonical entity directory：把相邻外部 Province holder 映射为主头衔/top-liege identity，并与
-   ruler/realm state 和 turn bundle 最小 alerts 聚合。在这些产品层输出完成前，M1 不得标 complete。
+2. 下一次本来就需要的 G2 paused 会话顺带读取两个 identity vector 与 `related_character_contexts`，核对至少一个非空名单、
+   exact generation IDs、玩家子领地排除语义及 holder→top-liege 归一；不单开长跑，成功后才能升为 production-live primitive。
+3. [static-ready] canonical `ck3_search_entities_v1` 已消费相关人物上下文并发布 title/capital/liege components。下一项是与
+   ruler/realm state 和 turn bundle 最低 alerts 聚合；在这些产品层输出完成前，M1 不得标 complete。
 4. 补 live 矩阵：至少一个非-duchy rank、一个非-feudal government，以及 landless/legal-absent 根；六级 tier 与 unavailable
    路径已有 deterministic exact-build fixture，但 fixture 不能替代这些 live 值。
 5. 建立 loaded rule-definition registry 的只读映射，只有这样 planner 才能把当前 84 个 setting token 还原为

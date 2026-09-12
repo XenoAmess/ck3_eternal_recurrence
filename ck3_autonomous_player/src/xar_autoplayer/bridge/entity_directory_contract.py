@@ -18,11 +18,6 @@ _RELATION_FILTERS: Final = {
     "direct_landed_vassal",
     "adjacent_external_province_holder",
 }
-_UNOBSERVED_RELATED_COMPONENT: Final = (
-    "not_observed_for_related_character_in_campaign_root_v1"
-)
-
-
 def _component(
     status: str,
     value: object = None,
@@ -109,33 +104,47 @@ def _self_entity(context: dict[str, object]) -> dict[str, object]:
 
 
 def _related_entity(
-    character_id: int,
-    relationship_role: str,
-    *,
-    player_character_id: int,
-    player_top_liege_character_id: int,
+    related: object,
 ) -> dict[str, object]:
-    character_id = _positive_int(character_id, "related character_id")
-    unavailable = lambda: _component(
-        "unavailable", reason=_UNOBSERVED_RELATED_COMPONENT
+    if not isinstance(related, dict):
+        raise ValueError("related character context must be an object")
+    character_id = _positive_int(
+        related.get("character_id"), "related character_id"
     )
-    direct_vassal = relationship_role == "direct_landed_vassal"
+    relationship_role = related.get("relationship_role")
+    if relationship_role not in {
+        "direct_landed_vassal",
+        "adjacent_external_province_holder",
+    }:
+        raise ValueError("related relationship_role is invalid")
+    primary_title = related.get("primary_title")
+    if not isinstance(primary_title, dict):
+        raise ValueError("related primary_title is missing")
+    capital = related.get("capital_province_id")
+    immediate_liege = related.get("immediate_liege_character_id")
+    top_liege = _positive_int(
+        related.get("top_liege_character_id"),
+        "related top_liege_character_id",
+    )
     return {
         "entity_kind": "character",
         "character_id": character_id,
         "relationship_roles": [relationship_role],
-        "primary_title": unavailable(),
-        "capital_province_id": unavailable(),
+        "primary_title": _component("available", primary_title),
+        "capital_province_id": (
+            _component("available", _positive_int(capital, "related capital"))
+            if capital is not None
+            else _component("not_applicable", reason="no_current_capital")
+        ),
         "immediate_liege_character_id": (
-            _component("available", player_character_id)
-            if direct_vassal
-            else unavailable()
+            _component(
+                "available",
+                _positive_int(immediate_liege, "related immediate_liege"),
+            )
+            if immediate_liege is not None
+            else _component("not_applicable", reason="independent")
         ),
-        "top_liege_character_id": (
-            _component("available", player_top_liege_character_id)
-            if direct_vassal
-            else unavailable()
-        ),
+        "top_liege_character_id": _component("available", top_liege),
     }
 
 
@@ -207,33 +216,11 @@ def build_entity_directory_v1(
     if context.get("status") != "available":
         raise ValueError("campaign-root status is invalid")
 
-    player_id = _positive_int(
-        context.get("player_character_id"), "player_character_id"
-    )
-    top_liege_id = _positive_int(
-        context.get("top_liege_character_id"), "top_liege_character_id"
-    )
     entities = [_self_entity(context)]
-    for character_id in context.get("direct_landed_vassal_character_ids", []):
-        entities.append(
-            _related_entity(
-                character_id,
-                "direct_landed_vassal",
-                player_character_id=player_id,
-                player_top_liege_character_id=top_liege_id,
-            )
-        )
-    for character_id in context.get(
-        "adjacent_external_province_holder_character_ids", []
-    ):
-        entities.append(
-            _related_entity(
-                character_id,
-                "adjacent_external_province_holder",
-                player_character_id=player_id,
-                player_top_liege_character_id=top_liege_id,
-            )
-        )
+    related_contexts = context.get("related_character_contexts")
+    if not isinstance(related_contexts, list):
+        raise ValueError("campaign-root related_character_contexts is missing")
+    entities.extend(_related_entity(related) for related in related_contexts)
     entities.sort(key=lambda row: int(row["character_id"]))
     if len({row["character_id"] for row in entities}) != len(entities):
         raise ValueError("campaign-root relationship identities overlap")

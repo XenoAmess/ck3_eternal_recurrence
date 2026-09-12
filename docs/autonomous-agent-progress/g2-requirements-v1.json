@@ -46,10 +46,10 @@
       "name": "entity directory and core turn bundle",
       "priority": "P1-A",
       "status": "in_progress",
-      "latest_evidence": ["campaign-root-context production-live primitive", "direct landed-vassal identity extension static-ready", "adjacent external province-holder identity extension static-ready", "relationship-filtered entity-directory identity search static-ready"],
+      "latest_evidence": ["campaign-root-context production-live primitive", "direct landed-vassal identity extension static-ready", "adjacent external province-holder identity extension static-ready", "relationship-filtered entity-directory with native title and top-liege components static-ready"],
       "planner_consumer": "candidate generation and per-turn objective selection",
       "visible_outcome": "one query identifies the ruler, primary title, capital, liege, direct vassals, one neighbor and the minimum ruler/realm/succession alerts",
-      "open_blocker": "per-related-character primary-title and liege-chain native batch observation, canonicalizing adjacent province holders to top-liege realm identities, aggregated ruler/realm state and minimum alerts remain absent; the identity-search slice and both source vectors still need one shared bounded production paused read"
+      "open_blocker": "aggregated ruler/realm state, minimum ruler/realm/succession alerts and the core turn bundle remain absent; the relationship search, related-character contexts and both source vectors still need one shared bounded production paused read"
     },
     {
       "id": "G2-M2",

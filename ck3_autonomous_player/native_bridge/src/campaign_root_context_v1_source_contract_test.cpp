@@ -93,6 +93,8 @@ int main(int argc, char **argv) {
                     "direct_landed_vassals_unavailable",
                     "ReadAdjacentExternalProvinceHolders",
                     "adjacent_external_province_holders_unavailable",
+                    "ReadRelatedCharacterContexts",
+                    "related_character_contexts_unavailable",
                     "CharacterBelongsToPlayerSubrealm",
                     "observed_id != full_id",
                     "second != first"}) ||
@@ -104,6 +106,8 @@ int main(int argc, char **argv) {
                     "\\\"native_selected_game_rule_token_count\\\"",
                     "\\\"direct_landed_vassal_character_ids\\\"",
                     "\\\"adjacent_external_province_holder_character_ids\\\"",
+                    "\\\"related_character_contexts\\\"",
+                    "\\\"relationship_role\\\"",
                     "\\\"unavailable_reason\\\"",
                     "\\\"provenance\\\""}) ||
       !ContainsAll(query_mailbox,
@@ -140,6 +144,8 @@ int main(int argc, char **argv) {
                     "\"province_holder_character_id_rva\": \"0x220C3F0\"",
                     "531558C7064BA9F24F2FDE278F2A5FEF7F495664F0437A0EF528E04FC8CAB8D8",
                     "\"row_stride\": \"0x30\"",
+                    "\"related_character_contexts\"",
+                    "\"direct_vassal_invariant\"",
                     "unsigned_utf8_bytewise_lexicographical",
                     "\"preserve_multiplicity\": true"}) ||
       !ContainsAll(fixture,
@@ -151,6 +157,9 @@ int main(int argc, char **argv) {
                     "\"ascending_full_generation_character_id\"",
                     "\"adjacent_external_province_holder_order\": "
                     "\"ascending_full_generation_character_id_duplicate_free\"",
+                    "\"related_character_context_order\": "
+                    "\"ascending_full_generation_character_id_duplicate_free\"",
+                    "\"related_character_context_all_or_nothing\": true",
                     "\"government_fallback_kind\": \"pointer_slot\""})) {
     return 1;
   }

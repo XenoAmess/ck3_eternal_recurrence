@@ -50,6 +50,7 @@ UNAVAILABLE_REASONS = (
     "lieges_unavailable",
     "direct_landed_vassals_unavailable",
     "adjacent_external_province_holders_unavailable",
+    "related_character_contexts_unavailable",
     "government_flags_unavailable",
     "selected_game_rule_tokens_unavailable",
     "state_changed",
@@ -65,6 +66,7 @@ def _readiness(ready: bool) -> dict[str, bool]:
         "lieges_ready": ready,
         "direct_landed_vassals_ready": ready,
         "adjacent_external_province_holders_ready": ready,
+        "related_character_contexts_ready": ready,
         "government_ready": ready,
         "selected_game_rule_tokens_ready": ready,
         "same_frame_ready": ready,
@@ -87,6 +89,45 @@ def _provenance() -> dict[str, str]:
         "province_holder_character_id_rva": "0x220C3F0",
         "selected_game_rule_service_slot_rva": "0x5754B48",
     }
+
+
+def _related_contexts(available: bool) -> list[dict[str, object]]:
+    if not available:
+        return []
+    rows: list[dict[str, object]] = []
+    for character_id in (23_456, 34_567):
+        rows.append(
+            {
+                "character_id": character_id,
+                "relationship_role": "direct_landed_vassal",
+                "primary_title": {
+                    "title_id": character_id + 100_000,
+                    "tier_raw": 3,
+                    "tier_key": "duchy",
+                },
+                "capital_province_id": character_id - 20_000,
+                "immediate_liege_character_id": PLAYER_CHARACTER_ID,
+                "top_liege_character_id": PLAYER_CHARACTER_ID,
+                "independent": False,
+            }
+        )
+    for character_id in (45_678, 56_789):
+        rows.append(
+            {
+                "character_id": character_id,
+                "relationship_role": "adjacent_external_province_holder",
+                "primary_title": {
+                    "title_id": character_id + 100_000,
+                    "tier_raw": 2,
+                    "tier_key": "county",
+                },
+                "capital_province_id": character_id - 40_000,
+                "immediate_liege_character_id": None,
+                "top_liege_character_id": character_id,
+                "independent": True,
+            }
+        )
+    return rows
 
 
 def _frame(
@@ -124,6 +165,7 @@ def _frame(
         "adjacent_external_province_holder_character_ids": (
             [45_678, 56_789] if available else []
         ),
+        "related_character_contexts": _related_contexts(available),
         "government": (
             {
                 "key": "feudal_government",
@@ -178,6 +220,7 @@ def _driver_result(status: str = "available") -> dict[str, object]:
             "independent",
             "direct_landed_vassal_character_ids",
             "adjacent_external_province_holder_character_ids",
+            "related_character_contexts",
             "government",
         "selected_game_rule_tokens",
         "native_selected_game_rule_token_count",
@@ -262,6 +305,19 @@ class CampaignRootContextV1ContractTests(unittest.TestCase):
             normalized["adjacent_external_province_holder_character_ids"],
             [45_678, 56_789],
         )
+        self.assertEqual(
+            [
+                row["character_id"]
+                for row in normalized["related_character_contexts"]
+            ],
+            [23_456, 34_567, 45_678, 56_789],
+        )
+        self.assertEqual(
+            normalized["related_character_contexts"][2][
+                "top_liege_character_id"
+            ],
+            45_678,
+        )
 
     def test_available_distinguishes_every_legal_absence(self) -> None:
         frame = _frame()
@@ -332,6 +388,9 @@ class CampaignRootContextV1ContractTests(unittest.TestCase):
         frame["immediate_liege_character_id"] = 22_222
         frame["top_liege_character_id"] = 33_333
         frame["independent"] = False
+        for related in frame["related_character_contexts"]:
+            if related["relationship_role"] == "direct_landed_vassal":
+                related["top_liege_character_id"] = 33_333
 
         normalized = normalize_campaign_root_context_v1(
             frame,
@@ -387,6 +446,17 @@ class CampaignRootContextV1ContractTests(unittest.TestCase):
                 "adjacent_external_province_holder_character_ids",
                 [23_456, 45_678],
             ),
+            "related_context_order": lambda row: row[
+                "related_character_contexts"
+            ].reverse(),
+            "related_context_role": lambda row: row[
+                "related_character_contexts"
+            ][0].__setitem__(
+                "relationship_role", "adjacent_external_province_holder"
+            ),
+            "related_context_top_liege": lambda row: row[
+                "related_character_contexts"
+            ][0].__setitem__("top_liege_character_id", 99_999),
             "provenance": lambda row: row["provenance"].__setitem__(
                 "government_rva", "0x0"
             ),

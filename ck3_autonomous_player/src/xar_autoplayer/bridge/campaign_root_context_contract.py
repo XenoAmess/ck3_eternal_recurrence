@@ -34,6 +34,7 @@ _FIELDS: Final = {
     "independent",
     "direct_landed_vassal_character_ids",
     "adjacent_external_province_holder_character_ids",
+    "related_character_contexts",
     "government",
     "selected_game_rule_tokens",
     "native_selected_game_rule_token_count",
@@ -42,6 +43,15 @@ _FIELDS: Final = {
     "provenance",
 }
 _PRIMARY_TITLE_FIELDS: Final = {"title_id", "tier_raw", "tier_key"}
+_RELATED_CHARACTER_FIELDS: Final = {
+    "character_id",
+    "relationship_role",
+    "primary_title",
+    "capital_province_id",
+    "immediate_liege_character_id",
+    "top_liege_character_id",
+    "independent",
+}
 _GOVERNMENT_FIELDS: Final = {"key", "flags", "native_flag_count"}
 _READINESS_KEYS: Final = (
     "player_identity_ready",
@@ -50,6 +60,7 @@ _READINESS_KEYS: Final = (
     "lieges_ready",
     "direct_landed_vassals_ready",
     "adjacent_external_province_holders_ready",
+    "related_character_contexts_ready",
     "government_ready",
     "selected_game_rule_tokens_ready",
     "same_frame_ready",
@@ -92,6 +103,7 @@ _UNAVAILABLE_REASONS: Final = {
     "lieges_unavailable",
     "direct_landed_vassals_unavailable",
     "adjacent_external_province_holders_unavailable",
+    "related_character_contexts_unavailable",
     "government_flags_unavailable",
     "selected_game_rule_tokens_unavailable",
     "state_changed",
@@ -206,6 +218,105 @@ def _lexical_key_vector(value: object, name: str) -> list[str]:
     return result
 
 
+def _normalize_related_character_contexts(
+    value: object,
+    *,
+    player_character_id: int,
+    player_top_liege_character_id: int,
+    direct_vassals: list[int],
+    adjacent_external_holders: list[int],
+) -> list[dict[str, object]]:
+    if not isinstance(value, list):
+        raise ValueError("related_character_contexts must be a list")
+    direct_set = set(direct_vassals)
+    adjacent_set = set(adjacent_external_holders)
+    expected_ids = direct_set | adjacent_set
+    normalized: list[dict[str, object]] = []
+    for index, item in enumerate(value):
+        name = f"related_character_contexts[{index}]"
+        row = _exact_object(item, _RELATED_CHARACTER_FIELDS, name)
+        character_id = _positive_int32(
+            row.get("character_id"), f"{name}.character_id"
+        )
+        relationship_role = row.get("relationship_role")
+        if relationship_role not in {
+            "direct_landed_vassal",
+            "adjacent_external_province_holder",
+        }:
+            raise ValueError(f"{name}.relationship_role is invalid")
+        title = _exact_object(
+            row.get("primary_title"),
+            _PRIMARY_TITLE_FIELDS,
+            f"{name}.primary_title",
+        )
+        title_id = _positive_int32(
+            title.get("title_id"), f"{name}.primary_title.title_id"
+        )
+        tier_raw = _int(
+            title.get("tier_raw"),
+            f"{name}.primary_title.tier_raw",
+            minimum=1,
+            maximum=6,
+        )
+        if title.get("tier_key") != _TIER_KEYS[tier_raw]:
+            raise ValueError(f"{name}.primary_title tier pair is invalid")
+        capital_province_id = _optional_positive_int32(
+            row.get("capital_province_id"), f"{name}.capital_province_id"
+        )
+        immediate_liege_id = _optional_positive_int32(
+            row.get("immediate_liege_character_id"),
+            f"{name}.immediate_liege_character_id",
+        )
+        top_liege_id = _positive_int32(
+            row.get("top_liege_character_id"),
+            f"{name}.top_liege_character_id",
+        )
+        independent = _bool(row.get("independent"), f"{name}.independent")
+        if immediate_liege_id == character_id:
+            raise ValueError(f"{name} has a self immediate liege")
+        if independent is not (immediate_liege_id is None):
+            raise ValueError(f"{name} independent and immediate liege disagree")
+        if (independent and top_liege_id != character_id) or (
+            not independent and top_liege_id == character_id
+        ):
+            raise ValueError(f"{name} top-liege identity is inconsistent")
+        if relationship_role == "direct_landed_vassal":
+            if (
+                character_id not in direct_set
+                or immediate_liege_id != player_character_id
+                or top_liege_id != player_top_liege_character_id
+            ):
+                raise ValueError(f"{name} direct-vassal proof is inconsistent")
+        elif (
+            character_id not in adjacent_set
+            or immediate_liege_id == player_character_id
+        ):
+            raise ValueError(f"{name} adjacent-holder proof is inconsistent")
+        normalized.append(
+            {
+                **row,
+                "character_id": character_id,
+                "relationship_role": relationship_role,
+                "primary_title": {
+                    "title_id": title_id,
+                    "tier_raw": tier_raw,
+                    "tier_key": _TIER_KEYS[tier_raw],
+                },
+                "capital_province_id": capital_province_id,
+                "immediate_liege_character_id": immediate_liege_id,
+                "top_liege_character_id": top_liege_id,
+                "independent": independent,
+            }
+        )
+    observed_ids = [row["character_id"] for row in normalized]
+    if observed_ids != sorted(expected_ids):
+        raise ValueError(
+            "related_character_contexts must cover both relationship vectors "
+            "once in CharacterID order"
+        )
+    return normalized
+
+
 def _normalize_readiness(
     value: object,
     *,
@@ -317,12 +428,18 @@ def normalize_campaign_root_context_v1(
             raise ValueError(
                 "unavailable campaign root invented adjacent external holders"
             )
+        related_contexts = frame.get("related_character_contexts")
+        if not isinstance(related_contexts, list) or related_contexts:
+            raise ValueError(
+                "unavailable campaign root invented related character contexts"
+            )
         return {
             **frame,
             "direct_landed_vassal_character_ids": direct_vassals,
             "adjacent_external_province_holder_character_ids": (
                 adjacent_external_holders
             ),
+            "related_character_contexts": [],
             "selected_game_rule_tokens": tokens,
             "native_selected_game_rule_token_count": token_count,
             "readiness": readiness,
@@ -405,6 +522,13 @@ def normalize_campaign_root_context_v1(
         raise ValueError("independent top liege must equal the player character")
     if not independent and top_liege_id == player_character_id:
         raise ValueError("vassal top liege cannot equal the player character")
+    related_character_contexts = _normalize_related_character_contexts(
+        frame.get("related_character_contexts"),
+        player_character_id=player_character_id,
+        player_top_liege_character_id=top_liege_id,
+        direct_vassals=direct_vassals,
+        adjacent_external_holders=adjacent_external_holders,
+    )
 
     government_value = frame.get("government")
     government: dict[str, object] | None
@@ -447,6 +571,7 @@ def normalize_campaign_root_context_v1(
         "adjacent_external_province_holder_character_ids": (
             adjacent_external_holders
         ),
+        "related_character_contexts": related_character_contexts,
         "government": government,
         "selected_game_rule_tokens": tokens,
         "native_selected_game_rule_token_count": token_count,

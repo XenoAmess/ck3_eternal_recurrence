@@ -35,6 +35,64 @@ def _result(*, available: bool = True) -> dict[str, object]:
         "adjacent_external_province_holder_character_ids": (
             [20, 50] if available else []
         ),
+        "related_character_contexts": (
+            [
+                {
+                    "character_id": 10,
+                    "relationship_role": "direct_landed_vassal",
+                    "primary_title": {
+                        "title_id": 110,
+                        "tier_raw": 2,
+                        "tier_key": "county",
+                    },
+                    "capital_province_id": 10,
+                    "immediate_liege_character_id": 30,
+                    "top_liege_character_id": 30,
+                    "independent": False,
+                },
+                {
+                    "character_id": 20,
+                    "relationship_role": "adjacent_external_province_holder",
+                    "primary_title": {
+                        "title_id": 120,
+                        "tier_raw": 3,
+                        "tier_key": "duchy",
+                    },
+                    "capital_province_id": 20,
+                    "immediate_liege_character_id": None,
+                    "top_liege_character_id": 20,
+                    "independent": True,
+                },
+                {
+                    "character_id": 40,
+                    "relationship_role": "direct_landed_vassal",
+                    "primary_title": {
+                        "title_id": 140,
+                        "tier_raw": 2,
+                        "tier_key": "county",
+                    },
+                    "capital_province_id": 40,
+                    "immediate_liege_character_id": 30,
+                    "top_liege_character_id": 30,
+                    "independent": False,
+                },
+                {
+                    "character_id": 50,
+                    "relationship_role": "adjacent_external_province_holder",
+                    "primary_title": {
+                        "title_id": 150,
+                        "tier_raw": 2,
+                        "tier_key": "county",
+                    },
+                    "capital_province_id": None,
+                    "immediate_liege_character_id": 20,
+                    "top_liege_character_id": 20,
+                    "independent": False,
+                },
+            ]
+            if available
+            else []
+        ),
         "unavailable_reason": None if available else "state_changed",
         "provenance": {
             "game_version": "1.19.0.6",
@@ -62,13 +120,18 @@ class EntityDirectoryV1Tests(unittest.TestCase):
             by_id[10]["immediate_liege_character_id"]["value"], 30
         )
         self.assertEqual(by_id[10]["top_liege_character_id"]["value"], 30)
+        self.assertEqual(by_id[20]["top_liege_character_id"]["value"], 20)
+        self.assertEqual(by_id[50]["primary_title"]["value"]["title_id"], 150)
         self.assertEqual(
-            by_id[20]["top_liege_character_id"]["status"], "unavailable"
+            by_id[50]["capital_province_id"]["status"], "not_applicable"
         )
         self.assertEqual(by_id[30]["primary_title"]["value"]["title_id"], 90)
         self.assertTrue(result["readiness"]["ready"])
-        self.assertFalse(
+        self.assertTrue(
             result["readiness"]["realm_identity_components_complete"]
+        )
+        self.assertTrue(
+            result["readiness"]["primary_title_components_complete"]
         )
 
     def test_relation_filter_and_keyset_pagination_are_deterministic(self) -> None:
@@ -109,6 +172,7 @@ class EntityDirectoryV1Tests(unittest.TestCase):
         context["capital_province_id"] = None
         context["direct_landed_vassal_character_ids"] = []
         context["adjacent_external_province_holder_character_ids"] = []
+        context["related_character_contexts"] = []
 
         result = build_entity_directory_v1(source, relation_filter="self")
         self_entity = result["entities"][0]
@@ -134,7 +198,9 @@ class EntityDirectoryV1Tests(unittest.TestCase):
         source = _result()
         context = source["campaign_root_context"]
         assert isinstance(context, dict)
-        context["adjacent_external_province_holder_character_ids"] = [10, 50]
+        contexts = context["related_character_contexts"]
+        assert isinstance(contexts, list)
+        contexts.append(dict(contexts[0]))
         with self.assertRaisesRegex(ValueError, "overlap"):
             build_entity_directory_v1(source)
 

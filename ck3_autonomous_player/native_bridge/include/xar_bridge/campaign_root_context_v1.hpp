@@ -34,6 +34,19 @@ struct CampaignRootGovernmentV1 {
                          const CampaignRootGovernmentV1 &) = default;
 };
 
+struct CampaignRootRelatedCharacterV1 {
+  std::int32_t character_id = -1;
+  std::string relationship_role;
+  CampaignRootTitleV1 primary_title;
+  std::optional<std::int32_t> capital_province_id;
+  std::optional<std::int32_t> immediate_liege_character_id;
+  std::int32_t top_liege_character_id = -1;
+  bool independent = false;
+
+  friend bool operator==(const CampaignRootRelatedCharacterV1 &,
+                         const CampaignRootRelatedCharacterV1 &) = default;
+};
+
 struct CampaignRootReadinessV1 {
   bool player_identity_ready = false;
   bool primary_title_ready = false;
@@ -41,6 +54,7 @@ struct CampaignRootReadinessV1 {
   bool lieges_ready = false;
   bool direct_landed_vassals_ready = false;
   bool adjacent_external_province_holders_ready = false;
+  bool related_character_contexts_ready = false;
   bool government_ready = false;
   bool selected_game_rule_tokens_ready = false;
   bool same_frame_ready = false;
@@ -69,6 +83,7 @@ struct CampaignRootContextV1 {
   std::vector<std::int32_t> direct_landed_vassal_character_ids;
   std::vector<std::int32_t>
       adjacent_external_province_holder_character_ids;
+  std::vector<CampaignRootRelatedCharacterV1> related_character_contexts;
   std::optional<CampaignRootGovernmentV1> government;
   std::vector<std::string> selected_game_rule_tokens;
   std::int32_t native_selected_game_rule_token_count = 0;

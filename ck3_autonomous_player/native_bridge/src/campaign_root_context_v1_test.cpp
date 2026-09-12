@@ -52,6 +52,7 @@ struct Fixture {
   static constexpr std::int32_t kDeadDirectVassalId = 0x08000006;
   static constexpr std::int32_t kDirectVassalTitleId = 0x09000002;
   static constexpr std::int32_t kExternalProvinceHolderId = 0x0A000007;
+  static constexpr std::int32_t kExternalProvinceHolderTitleId = 0x0B000003;
 
   alignas(void *) Blob<0xA8> game_state{};
   alignas(void *) Blob<0x20> jomini_state{};
@@ -72,9 +73,10 @@ struct Fixture {
   alignas(void *) Blob<0x30> character_fallback{};
 
   alignas(void *) Blob<0x30> title_storage{};
-  alignas(void *) Blob<0x30> title_slots{};
+  alignas(void *) Blob<0x40> title_slots{};
   alignas(void *) Blob<0x168> primary_title{};
-  alignas(void *) Blob<0x20> direct_vassal_title{};
+  alignas(void *) Blob<0x168> direct_vassal_title{};
+  alignas(void *) Blob<0x168> external_province_holder_title{};
   alignas(void *) Blob<0x64> title_template{};
   alignas(void *) Blob<0x30> title_fallback{};
 
@@ -193,15 +195,21 @@ struct Fixture {
 
     slots = Address(title_slots);
     Put(title_storage, 0x20, slots);
-    const std::int32_t title_capacity = 3;
+    const std::int32_t title_capacity = 4;
     Put(title_storage, 0x2C, title_capacity);
     Put(title_slots, 1 * 0x10 + 0x08, resolved_primary_title);
     void *direct_vassal_title_pointer = Address(direct_vassal_title);
     Put(title_slots, 2 * 0x10 + 0x08, direct_vassal_title_pointer);
+    void *external_title_pointer = Address(external_province_holder_title);
+    Put(title_slots, 3 * 0x10 + 0x08, external_title_pointer);
     Put(primary_title, 0x10, kPrimaryTitleId);
     Put(direct_vassal_title, 0x10, kDirectVassalTitleId);
+    Put(external_province_holder_title, 0x10,
+        kExternalProvinceHolderTitleId);
     void *title_template_pointer = Address(title_template);
     Put(primary_title, 0x160, title_template_pointer);
+    Put(direct_vassal_title, 0x160, title_template_pointer);
+    Put(external_province_holder_title, 0x160, title_template_pointer);
     const std::int32_t hegemony_tier = 6;
     Put(title_template, 0x5C, hegemony_tier);
 
@@ -311,13 +319,26 @@ void *__fastcall ResolvePrimaryTitle(void *character) noexcept {
       character == Address(g_fixture->dead_direct_vassal)) {
     return Address(g_fixture->direct_vassal_title);
   }
+  if (character == Address(g_fixture->external_province_holder)) {
+    return Address(g_fixture->external_province_holder_title);
+  }
   return nullptr;
 }
 
 void *__fastcall ResolveCapital(void *character) noexcept {
-  return g_fixture != nullptr && character == Address(g_fixture->player_character)
-             ? g_fixture->resolved_capital
-             : nullptr;
+  if (g_fixture == nullptr) {
+    return nullptr;
+  }
+  if (character == Address(g_fixture->player_character)) {
+    return g_fixture->resolved_capital;
+  }
+  if (character == Address(g_fixture->direct_vassal)) {
+    return Address(g_fixture->direct_vassal_province);
+  }
+  if (character == Address(g_fixture->external_province_holder)) {
+    return Address(g_fixture->external_province);
+  }
+  return nullptr;
 }
 
 void *__fastcall ResolveImmediateLiege(void *character) noexcept {
@@ -358,9 +379,17 @@ std::int32_t *__fastcall ResolveProvinceHolderCharacterId(
 }
 
 void *__fastcall ResolveTopLiege(void *character) noexcept {
-  return g_fixture != nullptr && character == Address(g_fixture->player_character)
-             ? g_fixture->resolved_top_liege
-             : nullptr;
+  if (g_fixture == nullptr) {
+    return nullptr;
+  }
+  if (character == Address(g_fixture->player_character) ||
+      character == Address(g_fixture->direct_vassal)) {
+    return g_fixture->resolved_top_liege;
+  }
+  if (character == Address(g_fixture->external_province_holder)) {
+    return character;
+  }
+  return nullptr;
 }
 
 void *__fastcall ResolveGovernment(void *character) noexcept {
@@ -459,6 +488,7 @@ bool AllReadiness(const xar::game::CampaignRootReadinessV1 &value,
          value.lieges_ready == expected &&
          value.direct_landed_vassals_ready == expected &&
          value.adjacent_external_province_holders_ready == expected &&
+         value.related_character_contexts_ready == expected &&
          value.government_ready == expected &&
          value.selected_game_rule_tokens_ready == expected &&
          value.same_frame_ready == expected && value.ready == expected;
@@ -475,6 +505,7 @@ bool ClearedUnavailable(const xar::game::CampaignRootContextV1 &value,
          !value.top_liege_character_id && !value.independent &&
          value.direct_landed_vassal_character_ids.empty() &&
          value.adjacent_external_province_holder_character_ids.empty() &&
+         value.related_character_contexts.empty() &&
          !value.government && value.selected_game_rule_tokens.empty() &&
          value.native_selected_game_rule_token_count == 0 &&
          AllReadiness(value.readiness, false) &&
@@ -487,6 +518,22 @@ bool TestAvailableAndSerializer() {
   const auto access = Access(fixture);
   const xar::ck3_11906::CampaignRootContextRequestV1 request{41};
   xar::game::CampaignRootContextV1 result{};
+  const std::vector<xar::game::CampaignRootRelatedCharacterV1>
+      expected_related{
+          {Fixture::kDirectVassalId,
+           "direct_landed_vassal",
+           {Fixture::kDirectVassalTitleId, 6, "hegemony"},
+           7,
+           Fixture::kPlayerCharacterId,
+           Fixture::kTopLiegeId,
+           false},
+          {Fixture::kExternalProvinceHolderId,
+           "adjacent_external_province_holder",
+           {Fixture::kExternalProvinceHolderTitleId, 6, "hegemony"},
+           6,
+           std::nullopt,
+           Fixture::kExternalProvinceHolderId,
+           true}};
   if (xar::ck3_11906::ReadCampaignRootContextV1(
           environment, access, request, result) !=
           xar::game::ReadCampaignRootContextResultV1::available ||
@@ -506,6 +553,7 @@ bool TestAvailableAndSerializer() {
           std::vector<std::int32_t>{Fixture::kDirectVassalId} ||
       result.adjacent_external_province_holder_character_ids !=
           std::vector<std::int32_t>{Fixture::kExternalProvinceHolderId} ||
+      result.related_character_contexts != expected_related ||
       result.government->key != "feudal_government" ||
       result.government->native_flag_count != 4 ||
       result.native_selected_game_rule_token_count != 4 ||
@@ -536,6 +584,18 @@ bool TestAvailableAndSerializer() {
       "\"top_liege_character_id\":67108867,\"independent\":false,"
       "\"direct_landed_vassal_character_ids\":[100663300],"
       "\"adjacent_external_province_holder_character_ids\":[167772167],"
+      "\"related_character_contexts\":[{\"character_id\":100663300,"
+      "\"relationship_role\":\"direct_landed_vassal\","
+      "\"primary_title\":{\"title_id\":150994946,\"tier_raw\":6,"
+      "\"tier_key\":\"hegemony\"},\"capital_province_id\":7,"
+      "\"immediate_liege_character_id\":33554433,"
+      "\"top_liege_character_id\":67108867,\"independent\":false},{"
+      "\"character_id\":167772167,\"relationship_role\":"
+      "\"adjacent_external_province_holder\",\"primary_title\":{"
+      "\"title_id\":184549379,\"tier_raw\":6,"
+      "\"tier_key\":\"hegemony\"},\"capital_province_id\":6,"
+      "\"immediate_liege_character_id\":null,"
+      "\"top_liege_character_id\":167772167,\"independent\":true}],"
       "\"government\":{\"key\":\"feudal_government\",\"flags\":["
       "\"a_flag\",\"a_flag\",\"" +
       std::string("\xC3\xA9", 2) + "_flag\",\"" + NonAsciiFlag() +
@@ -547,6 +607,7 @@ bool TestAvailableAndSerializer() {
       "\"primary_title_ready\":true,\"capital_ready\":true,"
       "\"lieges_ready\":true,\"direct_landed_vassals_ready\":true,"
       "\"adjacent_external_province_holders_ready\":true,"
+      "\"related_character_contexts_ready\":true,"
       "\"government_ready\":true,"
       "\"selected_game_rule_tokens_ready\":true,"
       "\"same_frame_ready\":true,\"ready\":true},"

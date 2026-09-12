@@ -62,6 +62,64 @@ def _context(
         "adjacent_external_province_holder_character_ids": (
             [44_444, 55_555] if available else []
         ),
+        "related_character_contexts": (
+            [
+                {
+                    "character_id": 22_222,
+                    "relationship_role": "direct_landed_vassal",
+                    "primary_title": {
+                        "title_id": 122_222,
+                        "tier_raw": 2,
+                        "tier_key": "county",
+                    },
+                    "capital_province_id": 22,
+                    "immediate_liege_character_id": player_character_id,
+                    "top_liege_character_id": player_character_id,
+                    "independent": False,
+                },
+                {
+                    "character_id": 33_333,
+                    "relationship_role": "direct_landed_vassal",
+                    "primary_title": {
+                        "title_id": 133_333,
+                        "tier_raw": 3,
+                        "tier_key": "duchy",
+                    },
+                    "capital_province_id": 33,
+                    "immediate_liege_character_id": player_character_id,
+                    "top_liege_character_id": player_character_id,
+                    "independent": False,
+                },
+                {
+                    "character_id": 44_444,
+                    "relationship_role": "adjacent_external_province_holder",
+                    "primary_title": {
+                        "title_id": 144_444,
+                        "tier_raw": 2,
+                        "tier_key": "county",
+                    },
+                    "capital_province_id": 44,
+                    "immediate_liege_character_id": None,
+                    "top_liege_character_id": 44_444,
+                    "independent": True,
+                },
+                {
+                    "character_id": 55_555,
+                    "relationship_role": "adjacent_external_province_holder",
+                    "primary_title": {
+                        "title_id": 155_555,
+                        "tier_raw": 4,
+                        "tier_key": "kingdom",
+                    },
+                    "capital_province_id": None,
+                    "immediate_liege_character_id": None,
+                    "top_liege_character_id": 55_555,
+                    "independent": True,
+                },
+            ]
+            if available
+            else []
+        ),
         "government": (
             {
                 "key": "feudal_government",
@@ -82,6 +140,7 @@ def _context(
             "lieges_ready": available,
             "direct_landed_vassals_ready": available,
             "adjacent_external_province_holders_ready": available,
+            "related_character_contexts_ready": available,
             "government_ready": available,
             "selected_game_rule_tokens_ready": available,
             "same_frame_ready": available,

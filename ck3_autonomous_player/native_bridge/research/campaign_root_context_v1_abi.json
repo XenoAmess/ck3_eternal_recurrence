@@ -60,6 +60,19 @@
     "published_field": "adjacent_external_province_holder_character_ids",
     "published_semantics": "sorted unique generation-valid living holders of provinces directly adjacent to at least one province held inside the player subrealm, excluding all holders inside that subrealm"
   },
+  "related_character_contexts": {
+    "published_field": "related_character_contexts",
+    "source_identity_fields": ["direct_landed_vassal_character_ids", "adjacent_external_province_holder_character_ids"],
+    "order": "ascending_full_generation_character_id_duplicate_free",
+    "all_or_nothing": true,
+    "fields": ["character_id", "relationship_role", "primary_title", "capital_province_id", "immediate_liege_character_id", "top_liege_character_id", "independent"],
+    "relationship_roles": ["direct_landed_vassal", "adjacent_external_province_holder"],
+    "primary_title": "required native 0x25F3350 result with LandedTitle storage generation roundtrip and tier at template+0x5C",
+    "capital": "nullable native 0x2606760 result; non-null Province pointer must roundtrip through game_data+0x140/+0x14C",
+    "lieges": "native 0x2613480/0x2613600 results with Character storage generation roundtrip; null/fallback/self immediate liege canonicalizes to independent absence",
+    "direct_vassal_invariant": "immediate_liege_character_id equals player_character_id and top_liege_character_id equals the player's top_liege_character_id",
+    "adjacent_holder_invariant": "the holder remains outside the player subrealm; top_liege_character_id canonicalizes its containing realm without discarding the Province-holder source role"
+  },
   "government_fallback_binding": {
     "kind": "pointer_slot",
     "consumer_function_rva": "0x26165B0",

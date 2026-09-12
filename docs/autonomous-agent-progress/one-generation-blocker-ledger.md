@@ -1226,3 +1226,17 @@ strategic-power primitive；余下入口只有 policy-level campaign dominance�
 - The next construction input is a same-frame full-generation batch resolution of related CharacterIDs to primary title and native
   immediate/top liege. It will canonicalize boundary Province holders to realm identity before minimum alerts and the core turn bundle are
   considered ready.
+
+## 2026-09-13: G2-M1 related-character title and realm identity static-ready
+
+- `campaign-root-context-v1` now batch-resolves the exact union of direct-vassal and adjacent-holder IDs in the same double observation. Each
+  sorted row carries the source relationship role, required primary title/tier, legal-null capital, native immediate/top liege and independent
+  bit. No new RVA or mailbox command was needed.
+- Full-generation Character/Title round-trips, Province pointer identity and role-specific liege invariants are mandatory. An adjacent holder
+  remains outside the player subrealm but may share the player's top liege as a sibling vassal; callers may group by top liege without losing
+  the original boundary-holder role.
+- Any row failure returns typed `related_character_contexts_unavailable` for the whole root frame. Release DLL build/link, direct native reader
+  and source-contract executables are GREEN; focused Python normal/optimized tests pass `35/35`.
+- `ck3_search_entities_v1` now exposes complete primary-title and top-liege components for its current relationship scope. Status remains
+  `static-ready / live=false`, M1 remains in progress and global G2 remains `0/8`; minimum ruler/realm/succession alerts and the turn bundle are
+  the next implementation gap.

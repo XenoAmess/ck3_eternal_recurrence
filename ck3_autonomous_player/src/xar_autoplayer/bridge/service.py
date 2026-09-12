@@ -1691,6 +1691,7 @@ class GameplayBridgeService:
             "independent",
             "direct_landed_vassal_character_ids",
             "adjacent_external_province_holder_character_ids",
+            "related_character_contexts",
             "government",
             "selected_game_rule_tokens",
             "native_selected_game_rule_token_count",

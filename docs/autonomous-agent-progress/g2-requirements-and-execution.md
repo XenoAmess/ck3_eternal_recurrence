@@ -75,13 +75,13 @@ CharacterID；后者从 exact Province array/native holder/adjacency rows 出发
 再发布边界外直接相邻 Province holder 的升序去重 ID。两项都不借用离线 save topology；Release DLL、native
 reader/source-contract 与 Python normal/optimized 聚焦测试均 GREEN。
 
-其上的首个 canonical identity-search 切片也已达到 `static-ready / live=false`。独立只读 MCP 工具
+其上的 canonical relationship-search 切片也已达到 `static-ready / live=false`。独立只读 MCP 工具
 `ck3_search_entities_v1` 只消费一次现有 campaign-root query，以 relation filter 和 keyset pagination 返回 self、直属有地封臣和
-相邻外部 Province holder 的稳定 CharacterID。self 已观测的 title/capital/liege 以及由直属关系严格推出的封臣
-immediate/top-liege 按组件发布；相邻 holder 尚未逐实体读取的 title/capital/liege 保持 component-level `unavailable`，不会被
-冒充为完整邻国 realm directory。下一 native 输入是同帧批量解析 related CharacterID 的 primary-title 与
-immediate/top-liege，再聚合最低 ruler/realm/succession alerts 和 `ck3_query_turn_bundle_v1`。M1 仍为进行中，固定 G2 完成数仍是
-`0/8`。下一次允许实机时只在本来就需要的 paused G2 会话顺带读取两个非空 vector 并验证 directory，不为单字段安排长跑。
+相邻外部 Province holder 的稳定 CharacterID。新增 `related_character_contexts` 在同一双采样中逐 ID 发布 native primary title、
+合法可空 capital、immediate/top liege 与 independent；相邻 holder 保留 source role，再按 top liege 归一 realm identity。
+entity-directory 的当前 title/realm components 因而已完整，下一输入是最低 ruler/realm/succession alerts 与
+`ck3_query_turn_bundle_v1`。M1 仍为进行中，固定 G2 完成数仍是 `0/8`。下一次允许实机时只在本来就需要的 paused G2 会话顺带
+读取两个非空 vector、related contexts 并验证 directory，不为单字段安排长跑。
 
 ## G2-M2 离线 direct-projection consumer
 

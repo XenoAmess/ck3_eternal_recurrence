@@ -64,8 +64,8 @@
   landless/legal-absent live 矩阵仍待补。
 - [static-ready, live pending] [entity-directory-v1.md](entity-directory-v1.md) 发布独立 `ck3_search_entities_v1` MCP 工具，以
   relation filter 与 keyset pagination 发现 self、直属有地封臣和相邻外部 Province holder 的稳定 CharacterID。self 与直属封臣
-  可闭合的 title/liege components 按真实值发布；相邻 holder 尚未逐实体读取的 title/top-liege 保持 component-level
-  `unavailable`，不冒充完整邻国 realm directory。
+  及相邻 holder 的 primary-title/capital/immediate/top-liege 已由同一 campaign-root frame 逐实体解析；相邻 holder 保留来源角色，
+  再按 native top liege 归一 realm identity。历史 live artifact 早于这些字段，故仍不得标 production-live。
 - [static-confirmed + production-live] [loaded-feature-manifest.md](loaded-feature-manifest.md) 区分当前进程 effective gameplay feature
   bitset、script-visible `has_dlc` runtime set 与独立 store entitlement service；冻结完整 44-entry feature vocabulary、三套
   exact-build registry/service RVA与 typed wire。bridge/MCP 已在真实 paused frame 双查询完成 44 rows/29 runtime keys，artifact

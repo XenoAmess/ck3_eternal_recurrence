@@ -56,6 +56,7 @@ bool ReadinessAll(const game::CampaignRootReadinessV1 &value,
          value.capital_ready == expected && value.lieges_ready == expected &&
          value.direct_landed_vassals_ready == expected &&
          value.adjacent_external_province_holders_ready == expected &&
+         value.related_character_contexts_ready == expected &&
          value.government_ready == expected &&
          value.selected_game_rule_tokens_ready == expected &&
          value.same_frame_ready == expected && value.ready == expected;
@@ -81,7 +82,7 @@ std::string_view TierKey(std::int32_t raw) noexcept {
 }
 
 bool ValidUnavailableReason(std::string_view reason) noexcept {
-  constexpr std::array<std::string_view, 15> reasons = {
+  constexpr std::array<std::string_view, 16> reasons = {
       "unsupported_build",
       "requires_application_main",
       "requires_paused",
@@ -93,6 +94,7 @@ bool ValidUnavailableReason(std::string_view reason) noexcept {
       "lieges_unavailable",
       "direct_landed_vassals_unavailable",
       "adjacent_external_province_holders_unavailable",
+      "related_character_contexts_unavailable",
       "government_flags_unavailable",
       "selected_game_rule_tokens_unavailable",
       "state_changed",
@@ -128,6 +130,57 @@ bool ValidCharacterIds(const std::vector<std::int32_t> &values,
                      });
 }
 
+bool ValidRelatedCharacters(
+    const std::vector<game::CampaignRootRelatedCharacterV1> &values,
+    std::int32_t player_character_id,
+    std::int32_t player_top_liege_character_id,
+    const std::vector<std::int32_t> &direct_vassals,
+    const std::vector<std::int32_t> &adjacent_holders) noexcept {
+  if (values.size() != direct_vassals.size() + adjacent_holders.size() ||
+      !std::is_sorted(values.begin(), values.end(),
+                      [](const auto &left, const auto &right) {
+                        return left.character_id < right.character_id;
+                      })) {
+    return false;
+  }
+  std::int32_t previous_id = -1;
+  for (const auto &value : values) {
+    if (value.character_id <= 0 || value.character_id == previous_id ||
+        value.primary_title.title_id <= 0 ||
+        TierKey(value.primary_title.tier_raw) !=
+            value.primary_title.tier_key ||
+        (value.capital_province_id.has_value() &&
+         *value.capital_province_id <= 0) ||
+        value.top_liege_character_id <= 0 ||
+        value.independent !=
+            !value.immediate_liege_character_id.has_value() ||
+        (value.immediate_liege_character_id.has_value() &&
+         (*value.immediate_liege_character_id <= 0 ||
+          *value.immediate_liege_character_id == value.character_id)) ||
+        (value.independent &&
+         value.top_liege_character_id != value.character_id) ||
+        (!value.independent &&
+         value.top_liege_character_id == value.character_id)) {
+      return false;
+    }
+    const bool direct = std::binary_search(
+        direct_vassals.begin(), direct_vassals.end(), value.character_id);
+    const bool adjacent = std::binary_search(
+        adjacent_holders.begin(), adjacent_holders.end(), value.character_id);
+    if (direct == adjacent ||
+        (direct &&
+         (value.relationship_role != "direct_landed_vassal" ||
+          value.immediate_liege_character_id != player_character_id ||
+          value.top_liege_character_id != player_top_liege_character_id)) ||
+        (adjacent && value.relationship_role !=
+                         "adjacent_external_province_holder")) {
+      return false;
+    }
+    previous_id = value.character_id;
+  }
+  return true;
+}
+
 bool ValidAvailable(const game::CampaignRootContextV1 &context) noexcept {
   if (context.snapshot_revision == 0 ||
       !context.local_player_id.has_value() || *context.local_player_id < 0 ||
@@ -156,6 +209,11 @@ bool ValidAvailable(const game::CampaignRootContextV1 &context) noexcept {
                 context.direct_landed_vassal_character_ids.end(),
                 character_id);
           }) ||
+      !ValidRelatedCharacters(
+          context.related_character_contexts, *context.player_character_id,
+          *context.top_liege_character_id,
+          context.direct_landed_vassal_character_ids,
+          context.adjacent_external_province_holder_character_ids) ||
       !ReadinessAll(context.readiness, true) ||
       !context.unavailable_reason.empty()) {
     return false;
@@ -208,6 +266,7 @@ bool ValidUnavailable(const game::CampaignRootContextV1 &context) noexcept {
          !context.independent.has_value() && !context.government.has_value() &&
          context.direct_landed_vassal_character_ids.empty() &&
          context.adjacent_external_province_holder_character_ids.empty() &&
+         context.related_character_contexts.empty() &&
          context.selected_game_rule_tokens.empty() &&
          context.native_selected_game_rule_token_count == 0 &&
          ReadinessAll(context.readiness, false) &&
@@ -260,6 +319,47 @@ void AppendOptionalBool(std::string &output,
   }
 }
 
+bool AppendRelatedCharacters(
+    std::string &output,
+    const std::vector<game::CampaignRootRelatedCharacterV1> &values) {
+  output.push_back('[');
+  for (std::size_t index = 0; index < values.size(); ++index) {
+    const auto &value = values[index];
+    if (index != 0) {
+      output.push_back(',');
+    }
+    output += "{\"character_id\":";
+    if (!AppendNumber(output, value.character_id)) {
+      return false;
+    }
+    output += ",\"relationship_role\":";
+    AppendJsonString(output, value.relationship_role);
+    output += ",\"primary_title\":{\"title_id\":";
+    if (!AppendNumber(output, value.primary_title.title_id)) {
+      return false;
+    }
+    output += ",\"tier_raw\":";
+    if (!AppendNumber(output, value.primary_title.tier_raw)) {
+      return false;
+    }
+    output += ",\"tier_key\":";
+    AppendJsonString(output, value.primary_title.tier_key);
+    output += "},\"capital_province_id\":";
+    AppendOptionalInt32(output, value.capital_province_id);
+    output += ",\"immediate_liege_character_id\":";
+    AppendOptionalInt32(output, value.immediate_liege_character_id);
+    output += ",\"top_liege_character_id\":";
+    if (!AppendNumber(output, value.top_liege_character_id)) {
+      return false;
+    }
+    output += ",\"independent\":";
+    output += value.independent ? "true" : "false";
+    output.push_back('}');
+  }
+  output.push_back(']');
+  return true;
+}
+
 void AppendReadiness(std::string &output,
                      const game::CampaignRootReadinessV1 &value) {
   output += "{\"player_identity_ready\":";
@@ -275,6 +375,8 @@ void AppendReadiness(std::string &output,
   output += ",\"adjacent_external_province_holders_ready\":";
   output +=
       value.adjacent_external_province_holders_ready ? "true" : "false";
+  output += ",\"related_character_contexts_ready\":";
+  output += value.related_character_contexts_ready ? "true" : "false";
   output += ",\"government_ready\":";
   output += value.government_ready ? "true" : "false";
   output += ",\"selected_game_rule_tokens_ready\":";
@@ -313,7 +415,8 @@ std::string SerializeCampaignRootContextV1(
   }
 
   std::string output;
-  output.reserve(1'024 + context.selected_game_rule_tokens.size() * 48);
+  output.reserve(1'024 + context.selected_game_rule_tokens.size() * 48 +
+                 context.related_character_contexts.size() * 256);
   output += "{\"schema_version\":1,\"status\":\"";
   output += available ? "available" : "unavailable";
   output += "\",\"snapshot_revision\":";
@@ -363,6 +466,10 @@ std::string SerializeCampaignRootContextV1(
   if (!AppendIntegerArray(
           output,
           context.adjacent_external_province_holder_character_ids)) {
+    return {};
+  }
+  output += ",\"related_character_contexts\":";
+  if (!AppendRelatedCharacters(output, context.related_character_contexts)) {
     return {};
   }
   output += ",\"government\":";
