@@ -1,9 +1,13 @@
 # 《重整河山》二期版本计划
 
-状态：**设计已通过，尚未实施**  
-计划版本：`0.2.0`  
-产品目录：`mod_reclaim_the_motherland/`  
-Steam Workshop item：`3798404599`  
+状态：**设计已通过，尚未实施**
+
+计划版本：`0.2.0`
+
+产品目录：`mod_reclaim_the_motherland/`
+
+Steam Workshop item：`3798404599`
+
 设计基线：CK3 `1.19.0.6`、《溥天之下》、本项目 `0.1.1`
 
 ## 1. 二期目标
