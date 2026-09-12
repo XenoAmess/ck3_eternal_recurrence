@@ -1332,23 +1332,23 @@ bool BuildSemanticCanonicalBytes(
   }
 
   ScoreboardSurfaceV1 active_page = ScoreboardSurfaceV1::none;
-  ScoreboardSurfaceV1 visible_closed_entry = ScoreboardSurfaceV1::none;
+  ScoreboardSurfaceV1 visible_entry = ScoreboardSurfaceV1::none;
   std::uint8_t active_page_count = 0;
-  std::uint8_t visible_closed_entry_count = 0;
+  std::uint8_t visible_entry_count = 0;
   if (!UniqueVisibleSurface(state, 10, active_page, active_page_count) ||
-      !UniqueVisibleSurface(state, 4, visible_closed_entry,
-                            visible_closed_entry_count) ||
+      !UniqueVisibleSurface(state, 4, visible_entry, visible_entry_count) ||
       (modal_open &&
-       (active_page_count != 1 || visible_closed_entry_count != 0)) ||
+       (active_page_count != 1 || visible_entry_count != 1 ||
+        active_page != visible_entry)) ||
       (!modal_open &&
-       (active_page_count != 0 || visible_closed_entry_count != 1))) {
+       (active_page_count != 0 || visible_entry_count != 1))) {
     return false;
   }
   AppendU8(output, modal_open ? 1 : 0);
   AppendU8(output, static_cast<std::uint8_t>(modal_relation));
   AppendPointer(output, resolved.modal_top_receiver);
   AppendU8(output, static_cast<std::uint8_t>(active_page));
-  AppendU8(output, static_cast<std::uint8_t>(visible_closed_entry));
+  AppendU8(output, static_cast<std::uint8_t>(visible_entry));
 
   for (std::size_t index = 0; index < rows.size(); ++index) {
     AppendU8(output, rows[index].present ? 1 : 0);

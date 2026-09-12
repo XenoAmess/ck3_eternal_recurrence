@@ -93,13 +93,13 @@
         "2": "received",
         "3": "system"
       },
-      "visible_closed_entry_u8": {
+      "visible_entry_u8": {
         "0": "none",
         "1": "managed",
         "2": "received",
         "3": "system"
       },
-      "surface_consistency": "open requires exactly one active page and zero closed entries; closed requires zero active pages and exactly one closed entry; zero-or-multiple contradictions fail the query",
+      "surface_consistency": "the product keeps exactly one HUD entry visible while the modal is open; open requires exactly one active page plus exactly one matching visible entry, while closed requires zero active pages and exactly one visible entry; zero-or-multiple or mismatched surfaces fail the query",
       "raw_acl_rows": "20 allowlisted rows in frozen order, each present_u8,and when present kind_i32,payload_i64",
       "derived_acl_tuples": "managed and received-self surface booleans followed by each typed tuple field as available_u8 plus i64 when available"
     },

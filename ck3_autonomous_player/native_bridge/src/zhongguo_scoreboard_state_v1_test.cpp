@@ -597,13 +597,11 @@ int main() {
           same.semantic_fingerprint_v1 == semantic_a,
       "identical successful observation advances sequence but not revision");
 
-  // Open B: modal/panel and received page are visible, closed entries are
-  // hidden, and the top modal receiver is a strict descendant of the modal.
+  // Open B: modal/panel, the received HUD entry, and the matching received page
+  // are visible. The product leaves its HUD entry mounted beneath the modal.
+  // The top modal receiver is a strict descendant of the modal.
   fixture.widgets[2][xar::ck3_11906::kZhongguoWidgetHiddenFlagsOffset] = 0;
   fixture.widgets[3][xar::ck3_11906::kZhongguoWidgetHiddenFlagsOffset] = 0;
-  fixture.widgets[5][xar::ck3_11906::kZhongguoWidgetHiddenFlagsOffset] =
-      xar::ck3_11906::kZhongguoWidgetLocalHiddenMask |
-      xar::ck3_11906::kZhongguoWidgetEffectiveHiddenMask;
   fixture.widgets[11][xar::ck3_11906::kZhongguoWidgetHiddenFlagsOffset] = 0;
   SetModalReceivers(fixture, {fixture.widgets[3].data()});
   request.request_nonce = "scoreboard-fixture-b";
@@ -612,11 +610,13 @@ int main() {
       Environment(), Access(fixture), request, state_b);
   ok &= Expect(
       read_b == xar::game::ReadZhongguoScoreboardStateResultV1::available &&
-          state_b.observation_sequence == 3 &&
-          state_b.observed_state_revision == 2 &&
-          state_b.tree_fingerprint_v1 == tree_a &&
-          state_b.semantic_fingerprint_v1 != semantic_a,
-      "sampled open state must change semantic revision without changing tree");
+           state_b.observation_sequence == 3 &&
+           state_b.observed_state_revision == 2 &&
+           state_b.tree_fingerprint_v1 == tree_a &&
+           state_b.semantic_fingerprint_v1 != semantic_a &&
+           state_b.widgets[5].effective_visible.value == true &&
+           state_b.widgets[11].effective_visible.value == true,
+       "sampled open state must change semantic revision without changing tree");
 
   // Return to A. Because B was actually sampled, A-B-A advances revision a
   // second time even though the public semantic diagnostic returns to A.
@@ -625,7 +625,6 @@ int main() {
       xar::ck3_11906::kZhongguoWidgetEffectiveHiddenMask;
   fixture.widgets[3][xar::ck3_11906::kZhongguoWidgetHiddenFlagsOffset] =
       xar::ck3_11906::kZhongguoWidgetEffectiveHiddenMask;
-  fixture.widgets[5][xar::ck3_11906::kZhongguoWidgetHiddenFlagsOffset] = 0;
   fixture.widgets[11][xar::ck3_11906::kZhongguoWidgetHiddenFlagsOffset] =
       xar::ck3_11906::kZhongguoWidgetEffectiveHiddenMask;
   SetModalReceivers(fixture, {});
@@ -659,9 +658,6 @@ int main() {
   // An unsampled B cannot be accepted or silently recorded by ACK validation.
   fixture.widgets[2][xar::ck3_11906::kZhongguoWidgetHiddenFlagsOffset] = 0;
   fixture.widgets[3][xar::ck3_11906::kZhongguoWidgetHiddenFlagsOffset] = 0;
-  fixture.widgets[5][xar::ck3_11906::kZhongguoWidgetHiddenFlagsOffset] =
-      xar::ck3_11906::kZhongguoWidgetLocalHiddenMask |
-      xar::ck3_11906::kZhongguoWidgetEffectiveHiddenMask;
   fixture.widgets[11][xar::ck3_11906::kZhongguoWidgetHiddenFlagsOffset] = 0;
   SetModalReceivers(fixture, {fixture.widgets[3].data()});
   xar::game::ZhongguoScoreboardStateV1 unsampled_b{};
@@ -680,7 +676,6 @@ int main() {
       xar::ck3_11906::kZhongguoWidgetEffectiveHiddenMask;
   fixture.widgets[3][xar::ck3_11906::kZhongguoWidgetHiddenFlagsOffset] =
       xar::ck3_11906::kZhongguoWidgetEffectiveHiddenMask;
-  fixture.widgets[5][xar::ck3_11906::kZhongguoWidgetHiddenFlagsOffset] = 0;
   fixture.widgets[11][xar::ck3_11906::kZhongguoWidgetHiddenFlagsOffset] =
       xar::ck3_11906::kZhongguoWidgetEffectiveHiddenMask;
   SetModalReceivers(fixture, {});

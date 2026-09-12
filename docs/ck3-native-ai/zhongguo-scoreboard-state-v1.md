@@ -67,7 +67,7 @@ available state 直接公开五个顶层字段：`tree_fingerprint_v1`、`semant
 
 tree bytes 冻结为：带终止 NUL 的 domain `XAR/ZG361/SCOREBOARD/TREE/V1`、`u16 format=1`、EXE SHA raw 32 bytes、allowlist 长度与 UTF-8、GUI owner/root，以及固定 15 项的 `u8 index/exists + u64 instance/vtable + u8 parent depth + 从 window root 到 target 顺序的每层 u64 ancestor/u32 child ordinal`。它刻意不含 visible、enabled 或 modal top receiver，所以同一 GUI 树上的正常开关不会制造 tree drift。
 
-semantic bytes 冻结为：带终止 NUL 的 `XAR/ZG361/SCOREBOARD/SEMANTIC/V1`、`u16 format=1`、EXE SHA raw 32 bytes、allowlist 长度与 UTF-8、`i32 played_character_id`、15 项 `index/exists/effective-visible/enabled`、modal open、modal top relation 与 receiver、active page、closed entry、20 项原始 ACL allowlist（固定顺序，不另写 row index；present 后为 `i32 kind + i64 payload`）及派生 ACL/case tuple。modal relation 的固定枚举为 none / exact modal / strict descendant / other。打开态必须恰有一个 active page 且没有 closed entry；关闭态必须没有 active page 且恰有一个 closed entry，零项或多项矛盾会让整次 query unavailable。
+semantic bytes 冻结为：带终止 NUL 的 `XAR/ZG361/SCOREBOARD/SEMANTIC/V1`、`u16 format=1`、EXE SHA raw 32 bytes、allowlist 长度与 UTF-8、`i32 played_character_id`、15 项 `index/exists/effective-visible/enabled`、modal open、modal top relation 与 receiver、active page、visible entry、20 项原始 ACL allowlist（固定顺序，不另写 row index；present 后为 `i32 kind + i64 payload`）及派生 ACL/case tuple。modal relation 的固定枚举为 none / exact modal / strict descendant / other。产品把 HUD 入口保留在 modal 下方：打开态必须恰有一个 active page 和一个同面的 visible entry；关闭态必须没有 active page 且恰有一个 visible entry。零项、多项或打开态 page/entry 不同面都会让整次 query unavailable。
 
 只有 application-main 上两次完整 tree/semantic bytes 与前后 paused frame 都一致，才允许发布观测。同一 `{provider session, connection generation, player, date, build, allowlist}` 绑定内：每次成功发布让 `observation_sequence +1`；tree 或 semantic bytes 任一相比上一条成功发布发生变化，才让 `observed_state_revision +1`。首条成功观测为 `1/1`。unavailable 不更新；动作 ACK 的 validation read 也不更新，并且当前 bytes 不等于最后一次已发布观测时直接 fail closed。
 
@@ -92,7 +92,7 @@ provider-owned revision 与独立 action ABI 的 exact dispatcher 均已静态�
 
 完整双表面 scoreboard 验收仍须单独保存 managed 与 received-only 两种真实玩家现场，并完成：
 
-1. 在 modal hidden/open/closed 三态互证 top receiver relation、active page、closed entry 与 provider fingerprint/revision；
+1. 在 modal hidden/open/closed 三态互证 top receiver relation、active page、visible entry 与 provider fingerprint/revision；
 2. 保存 source query、exact ACK 与独立 later query；later 必须具有同一 provider session/connection/player/date/build、相同 tree fingerprint、更大的 observation sequence 与 `observed_state_revision`、不同 semantic fingerprint；
 3. `open` 后验证 modal/panel 与正确 list page，三个 switch 各验证唯一目标页，`close` 验证 modal 与三页隐藏；
 4. `reopen` 必须拆成 close ACK → closed query → open ACK → open query，不能用两次 toggle 或同泵读回冒充成功。
@@ -222,3 +222,5 @@ consumer 现只在动作 accepted 后等待 0.25 秒，再执行原有的一次�
 R527 已执行上述有界检验，0.25 秒后仍返回 `state_projection_unavailable`，所以固定等待不是充分修复，后续不继续增加等待或原样复跑。最后可解码帧已经出现 scoreboard dimmer 与 panel 轮廓，证明 callback 改变了 GUI；当前缺口是 unavailable 响应没有保留 modal/page/closed-entry 的实际值。
 
 新的诊断实现会在 tree/semantic projection RED 时保留已经解码的 first/second widget 与 ACL 状态，再调用 `SetTopUnavailable` 清空全部 readiness。它不发布 observation/revision，也不改变 success path。second read 的既有失败原因按 GUI lookup、widget decode、ACL、missing instance、tree/semantic 分支保留原有 reason vocabulary。下一轮只用于读取这些状态并确定唯一失败关系。
+
+R529 的保留诊断给出了确定的产品形状：modal、panel、received entry、received tab、received page 和两个 close 控件均 effective-visible，另外两个 entry/page 不可见；received list ACL 同时有效。`zg361_scoreboard.gui` 也直接证明 HUD toggle/entry 的 visible 表达式不依赖 `zg361_scoreboard_open`，打开 modal 不会卸载或隐藏入口。因此旧 canonicalizer 的“open 必须零 visible entry”与产品实现不一致。最小修复要求 open 时恰有一个 active page、恰有一个 visible entry，且两者同面；closed 仍要求零 page/一个 entry。它不放宽多入口、多页或错面状态，也不改变 response schema、ACL、动作或 readiness。
