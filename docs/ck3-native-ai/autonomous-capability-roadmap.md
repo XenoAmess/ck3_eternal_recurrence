@@ -12,10 +12,12 @@ gameplay 能力，
 - CK3 版本：`1.19.0.6`；
 - `Crusader Kings III/binaries/ck3.exe` SHA-256：
   `2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86`；
-- 盘点日期：2026-08-28；
-- 本轮 P1 施工起始代码基线：`2d93a54`；
-- 当前持续实机 checkpoint：日期 `53213688`，SHA-256
-  `B60348DA223585995B5E1CF1A022180D0F3D89CAD6E4094F66DA107C608324F1`。
+- 盘点日期：2026-09-12；
+- G2 现行需求与固定 8 项 OODA 分母：
+  [`g2-requirements-and-execution.md`](../autonomous-agent-progress/g2-requirements-and-execution.md)；
+- 当前 G2 P0 输入：R459 pre-surrender checkpoint `FAA32578...4E78`；R459 已闭合 source-specific loss/truce，R471 已闭合
+  active-war strategic-power primitive；
+- F0/P1–P11 继续作为能力域清单，施工顺序由 G2-M0–M7 决定。
 
 现状可以概括为：
 
@@ -32,13 +34,14 @@ gameplay 能力，
    与 owner-subset retreat 均已实见真实后置状态，paused reinforcement assignment query 也已 production-live；passive terminal/warscore
    journals 与 paused successor query 又在第 33 日真实 normal terminal 中闭合旧 CombatID/Province removal、单场战分与玩家 retreat，
    `battle_normal_terminal_query_ready=true`，artifact SHA `61D0D912...56FDB1`；
-5. P1 整体仍在进行中：`join_existing`/multiple-compatible、assigned reinforcement timeline/join、
+5. 战斗 controller 的旧 P1 仍有长尾：`join_existing`/multiple-compatible、assigned reinforcement timeline/join、
    Monte Carlo、no-normal/residual/assignment-reopened terminal fixtures 与主动接战策略仍不可用；terminal normal live 已完成，
    normal/no-normal、cleanup、rescan 和 AI re-entry exact-build 静态树已闭合，不能再用 ResultID 缺失猜 terminal kind；
 6. 最新正式一代 run 又推进 38 日后暴露 CFleet carrier 被误投影为独立 ArmySnapshot：该 row 与 embarked 主体连续
    59 日逐省同步，却触发 186 次失败 preview。CUnit raw kind、CFleet→CArmy→canonical CUnit 与原生 move/contact gate
    已 static-confirmed；canonical tactical reader 过滤和首次拒绝即停止扫描已 static-ready，cold replay pending；
-7. 战争以外的大部分 CK3 决策域尚无原生 AI 树、原生观测或通用动作，视觉实现也主要是固定 1066 罗贝尔路线。
+7. 战争以外的大部分 CK3 决策域尚无原生 AI 树、原生观测或通用动作，视觉实现也主要是固定 1066 罗贝尔路线；因此
+   G2 全局当前是 `0/8` 个可见 OODA 里程碑完成，不能由 capability/tool 数量或 GEN-034 的旧 `90%` 推算完成率。
 
 安全工作不单列为路线图。只有已经在生产路径产生可复现玩法故障的问题才进入相应能力包，并只修到恢复实际使用；
 理论安全、取证扩张和与玩法无关的协议加固不得挤占下列功能施工。
@@ -141,8 +144,9 @@ flowchart LR
 
 ### Native 动作与 MCP surface
 
-exact adapter 当前声明 56 个状态/命令 capability。Python 层会按当前 snapshot 展开 generation-bound literal，不能把
-DLL template 本身当成随时可执行动作。
+截至 2026-09-12，exact adapter 基线声明 82 个状态/命令 capability，MCP server 注册 79 个 `ck3_*` 工具和 2 个 resources。
+这些数量混合通用游戏能力、产品专用 query 与证据工具，只用于 surface inventory，不表示玩法覆盖率。Python 层会按当前
+snapshot 展开 generation-bound literal，不能把 DLL template 本身当成随时可执行动作。
 
 已存在的动作族：
 
@@ -272,6 +276,11 @@ DLL template 本身当成随时可执行动作。
 任何针对这些域的 planner 施工，都必须先创建相应专题并按本目录 README 工作流维护证据与 Mermaid 图。
 
 ## 价值与依赖排序
+
+2026-09-12 的顺序修订如下：`G2-M0 / GEN-034` 先完成三路退出；随后公共 P1 依次施工 core turn bundle、自然事件、
+realm survival 与和平治理。下方原 F0/P0–P11 文本保留其专题验收细节，但旧战斗 P1/P2 不再独占总队列；战斗长尾在
+GEN-034 后改为真实 encounter 驱动。权威分母与每项 `latest_evidence / planner_consumer / visible_outcome` 见
+[`g2-requirements-v1.json`](../autonomous-agent-progress/g2-requirements-v1.json)。
 
 排序规则固定为：先解除当前真实 run 的阻点，再闭合会反复中断所有玩法的能力，然后构建和平期经济/角色基础，最后扩展
 更多制度与 DLC 域。每个包都应以一个可见 OODA 里程碑收口；不得连续交付多个只有 schema 或 offline fixture 的“能力”。

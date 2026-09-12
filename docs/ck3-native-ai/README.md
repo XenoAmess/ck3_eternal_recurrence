@@ -594,7 +594,20 @@ flowchart TD
   without replaying queries or restarting CK3. Report/reclassification hashes
   are `F4676762...E7CD` / `D8F43EAB...24C9`.
 - The query capability is now a production-live read-only primitive. Campaign
-  dominance still needs a policy-level derivation, and owner-authored budget
-  plus same-frame white-peace comparison remain missing. `GEN-034` is unresolved
-  and T1 remains 90%. Current round R471 and old round R470 are terminated;
+  dominance still needs a policy-level derivation, and same-frame white-peace
+  comparison remains missing. `GEN-034` is unresolved. Current round R471 and old round R470 are terminated;
   CK3=0. T0 P1 remains 6/9 and P2 remains `LOCKED`.
+
+## 2026-09-12: G2 requirements reset and GEN-034 strategy profile
+
+- [`g2-requirements-and-execution.md`](../autonomous-agent-progress/g2-requirements-and-execution.md) replaces the unbounded
+  `T1=90%` label with eight visible OODA milestones. Whole-program G2 is
+  `0/8`; fixed-seed cross-episode evidence remains a completed prerequisite.
+- GEN-034 now reports `1/4`: its versioned repository strategy budget profile
+  and base-bound operator override are complete. Profile source SHA is
+  `4206D725...FD11`; offline provider receipt SHA is `BB20D872...7981`.
+- The next live input is frozen in
+  [`gen034-next-live-input-freeze-2026-09-12.md`](gen034-next-live-input-freeze-2026-09-12.md).
+  It reuses R459/R471 evidence and permits only the missing same-frame
+  white-peace comparison before any single recommendation/action. No CK3 was
+  launched for this package.

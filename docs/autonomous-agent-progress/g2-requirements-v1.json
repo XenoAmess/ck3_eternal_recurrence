@@ -1,0 +1,144 @@
+{
+  "schema_version": 1,
+  "program": "ck3-whole-game-g2",
+  "status_vocabulary": [
+    "not_started",
+    "in_progress",
+    "blocked_live",
+    "complete"
+  ],
+  "completion_denominator": {
+    "kind": "visible_ooda_milestones",
+    "total": 8,
+    "complete": 0,
+    "progress_label": "0/8",
+    "percent_reporting_allowed": false
+  },
+  "historical_prerequisites": [
+    {
+      "id": "G1",
+      "status": "complete",
+      "claim": "one fixed production seed completed one natural life"
+    },
+    {
+      "id": "GEN-009",
+      "status": "complete",
+      "claim": "the immutable seed reload lifecycle completed two lives and crossed episode boundaries"
+    }
+  ],
+  "milestones": [
+    {
+      "id": "G2-M0",
+      "name": "GEN-034 three-way war exit",
+      "priority": "P0",
+      "status": "in_progress",
+      "latest_evidence": ["R459", "R471"],
+      "planner_consumer": "three-way exit recommendation and one semantic exit action",
+      "visible_outcome": "compare continue, white peace and surrender on one paused frame, submit once, then verify postwar state and cold restore",
+      "open_blocker": "campaign dominance certificate, same-frame white-peace comparison and integrated action remain to be closed; the versioned strategy profile is complete"
+    },
+    {
+      "id": "G2-M1",
+      "name": "entity directory and core turn bundle",
+      "priority": "P1-A",
+      "status": "not_started",
+      "latest_evidence": ["campaign-root-context production-live primitive"],
+      "planner_consumer": "candidate generation and per-turn objective selection",
+      "visible_outcome": "one query identifies the ruler, primary title, capital, liege, direct vassals, one neighbor and the minimum ruler/realm/succession alerts",
+      "open_blocker": "no canonical entity directory or aggregated ruler and realm snapshot"
+    },
+    {
+      "id": "G2-M2",
+      "name": "natural event semantic loop",
+      "priority": "P1-B",
+      "status": "not_started",
+      "latest_evidence": ["current-window transport fixture-live", "shared vanilla event registry"],
+      "planner_consumer": "event option utility policy",
+      "visible_outcome": "resolve three natural events, including two multi-option events, and verify material state deltas",
+      "open_blocker": "event-context-v2, structured effects and planner registry consumption are incomplete"
+    },
+    {
+      "id": "G2-M3",
+      "name": "succession and realm survival",
+      "priority": "P1-C",
+      "status": "not_started",
+      "latest_evidence": ["immutable-seed cross-episode loop"],
+      "planner_consumer": "survival, inheritance and post-succession goal selection",
+      "visible_outcome": "predict title distribution before a natural death, reconcile actual inheritance and continue as the real successor",
+      "open_blocker": "typed succession, health, stress, legitimacy, vassal and faction state are absent or narrow"
+    },
+    {
+      "id": "G2-M4",
+      "name": "peace governance vertical slice",
+      "priority": "P1-D",
+      "status": "not_started",
+      "latest_evidence": ["fixed visual regression flows only"],
+      "planner_consumer": "budgeted construction, council and faction response",
+      "visible_outcome": "within two game years perform and verify one construction, one council reassignment and one real vassal or faction intervention",
+      "open_blocker": "resource, domain, council, vassal and faction query/action surfaces are missing"
+    },
+    {
+      "id": "G2-M5",
+      "name": "family, diplomacy and complete war",
+      "priority": "P2",
+      "status": "not_started",
+      "latest_evidence": ["ID-only marriage", "mature tactical war executor"],
+      "planner_consumer": "joint marriage, diplomacy and war opportunity-cost policy",
+      "visible_outcome": "choose among at least five legal diplomatic or war candidates and complete the selected path through verified postconditions",
+      "open_blocker": "joint candidate scoring, supply, allies, campaign budget and multi-war coordination are incomplete"
+    },
+    {
+      "id": "G2-M6",
+      "name": "schemes, institutions and activities",
+      "priority": "P3",
+      "status": "not_started",
+      "latest_evidence": ["feature manifest production-live primitive"],
+      "planner_consumer": "long-horizon non-war objective scheduler",
+      "visible_outcome": "complete one scheme, one prisoner or institutional action, one non-religious decision or law project, and one activity lifecycle",
+      "open_blocker": "typed state, semantic actions and outcome models for these domains are absent"
+    },
+    {
+      "id": "G2-M7",
+      "name": "identity adapters and long campaign qualification",
+      "priority": "P4-P5",
+      "status": "not_started",
+      "latest_evidence": ["44 effective feature flags and 29 runtime DLC keys visible on one production process"],
+      "planner_consumer": "runtime identity adapter selection and cross-inheritance goal memory",
+      "visible_outcome": "qualify multiple rulers, seeds and governments while restoring the same high-level intent after checkpoints and inheritance",
+      "open_blocker": "government-specific adapters, broader matrices and calibrated long-horizon memory are incomplete"
+    }
+  ],
+  "current_work_package": {
+    "id": "GEN-034",
+    "completed_packages": 1,
+    "total_packages": 4,
+    "packages": [
+      {
+        "id": "GEN-034-A",
+        "name": "policy-level campaign dominance certificate",
+        "status": "in_progress",
+        "latest_evidence": "R471 strategic-power primitive"
+      },
+      {
+        "id": "GEN-034-B",
+        "name": "versioned repository strategy budget and operator override",
+        "status": "complete",
+        "latest_evidence": "raiktor_exit_budget_v1.json and GREEN offline provider receipt BB20D87233DF6C854DD668FD1641AE590DFFA3BD87CF82099A1A97EBF20C7981"
+      },
+      {
+        "id": "GEN-034-C",
+        "name": "same-frame white-peace comparison",
+        "status": "blocked_live",
+        "latest_evidence": "terms and comparison contracts are static-ready"
+      },
+      {
+        "id": "GEN-034-D",
+        "name": "three-way recommendation, one action and postwar verification",
+        "status": "blocked_live",
+        "latest_evidence": "R459 surrender lifecycle proves the action and postwar primitives separately"
+      }
+    ]
+  },
+  "religion_boundary": "deferred except the minimum native result needed by holy-war execution and marriage legality or acceptance",
+  "updated_at": "2026-09-12T16:00:00+08:00"
+}

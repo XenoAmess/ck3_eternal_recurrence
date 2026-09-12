@@ -522,7 +522,27 @@ SHA-256 values are `F4676762...E7CD` and `D8F43EAB...24C9`.
 
 This promotes only the current-opponent strategic-power provider to
 `production-live primitive`. A single ratio is an input to campaign dominance,
-not the campaign-dominance certificate itself. Owner-authored budget and
-same-frame white-peace comparison also remain absent. Recommendation,
-decision/action readiness, automatic surrender, and `GEN-034` remain false;
-T1 remains 90%.
+not the campaign-dominance certificate itself. Recommendation,
+decision/action readiness, automatic surrender, and `GEN-034` remain false.
+
+## 2026-09-12 versioned strategy budget profile
+
+`GEN-034-B` now has an active repository profile at
+`ck3_autonomous_player/strategies/raiktor_exit_budget_v1.json`. Its identity is
+`raiktor-exit-balanced-v1 / 1.0.0`; exact source bytes are SHA-256
+`4206D725EC702701725221EB274E1F248E607F3127B720D033779FD71154FD11`.
+The provider uses this path when no external source is supplied. A complete
+versioned operator override remains available, but it must declare the default
+profile ID/version as its base; a stale or unrelated override is rejected.
+Legacy explicit owner artifacts remain readable for compatibility.
+
+The reusable offline CLI emitted GREEN receipt
+`Z:\ck3_mod_rewrite\_runtime\g2-gen034-strategy-profile-20260912\repository-default-profile.json`,
+SHA-256 `BB20D87233DF6C854DD668FD1641AE590DFFA3BD87CF82099A1A97EBF20C7981`.
+It starts no CK3 process, supplies no campaign or white-peace evidence and
+authorizes no action. Focused provider/intake/file-intake tests pass `25/25`
+under normal and optimized Python.
+
+GEN-034 is now `1/4` subpackages complete. Campaign dominance,
+same-frame white-peace comparison and integrated recommendation/action remain.
+Whole-program G2 remains `0/8`; the former `T1=90%` label is retired.

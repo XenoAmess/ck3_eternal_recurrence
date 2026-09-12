@@ -145,7 +145,9 @@ class RaiktorThreeWayExitIntakeTests(unittest.TestCase):
         self.assertFalse(result["action_ready"])
         self.assertIsNone(result["action_literal"])
 
-    def test_missing_sources_report_one_fail_closed_intake(self) -> None:
+    def test_missing_evidence_uses_default_budget_but_remains_fail_closed(
+        self,
+    ) -> None:
         result = _provide(owner_path=None)
 
         self.assertEqual(result["schema"], PROVIDER_SCHEMA)
@@ -157,12 +159,15 @@ class RaiktorThreeWayExitIntakeTests(unittest.TestCase):
         self.assertEqual(
             result["blockers"],
             [
-                "owner_budget_profile_unavailable",
                 "white_peace_terms_observation_unavailable",
                 "campaign_dominance_certificate_unavailable",
                 "white_peace_utility_evaluation_unavailable",
                 "white_peace_comparison_certificate_unavailable",
             ],
+        )
+        self.assertTrue(result["inputs"]["owner_budget_profile_available"])
+        self.assertTrue(
+            result["inputs"]["owner_budget_profile_production_eligible"]
         )
         execution = result["surrender_execution_readiness"]
         self.assertEqual(execution["status"], "blocked")

@@ -14,10 +14,15 @@ production 长跑中自然触发 one-life terminal，完成匹配结算，再经
 进入第三个 episode。该结果完成了同一冻结 seed 的 G2 全寿命重复门；它仍不代表不同 ruler/政府/DLC、普通 campaign
 跨继承或全游戏自治已经完成。
 
+现行 G2 使用固定八项可见 OODA 分母，当前为 `0/8`；需求、状态和施工顺序以
+[`g2-requirements-and-execution.md`](g2-requirements-and-execution.md) 及其机器可读 JSON 为准。
+
 ## 导航
 
 - [T0/T1/T2 唯一现行状态投影](../project-state/current-state.json)
 - [状态投影 schema、生成与单写者规则](../project-state/README.md)
+- [G2 全游戏自治需求与现行施工队列](g2-requirements-and-execution.md)
+- [G2 玩法覆盖缺口研究（2026-09-12）](g2-ck3-gameplay-coverage-gap-research-2026-09-12.md)
 - [终极目标、当前能力与完整路线图](goal-and-roadmap.md)
 - [2026-W35 一代人自治 blocker / 能力债账本](one-generation-blocker-ledger.md)
 - [G1 一代人全寿命 production 续跑交接（2026-08-28）](g1-production-handoff-2026-08-28.md)

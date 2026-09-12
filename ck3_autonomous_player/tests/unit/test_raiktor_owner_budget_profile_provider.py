@@ -8,9 +8,11 @@ import tempfile
 import unittest
 
 from xar_autoplayer.simulation.raiktor_owner_budget_profile_provider import (
+    DEFAULT_PROFILE_PATH,
     OwnerBudgetProfileError,
     PROVIDER_SCHEMA,
     SOURCE_CONTRACT,
+    VERSIONED_SOURCE_CONTRACT,
     provide_raiktor_owner_budget_profile,
     render_raiktor_owner_budget_profile,
 )
@@ -55,20 +57,22 @@ def _source(*, approved: bool = True) -> dict[str, object]:
 
 
 class RaiktorOwnerBudgetProfileProviderTests(unittest.TestCase):
-    def test_missing_source_is_typed_unavailable_without_defaults(self) -> None:
+    def test_missing_source_selects_versioned_repository_default(self) -> None:
         result = provide_raiktor_owner_budget_profile(None)
 
         self.assertEqual(result["schema"], PROVIDER_SCHEMA)
         self.assertEqual(result["provider"], OWNER_BUDGET_PROVIDER)
-        self.assertEqual(result["status"], "unavailable")
-        self.assertFalse(result["profile_available"])
-        self.assertFalse(result["profile_production_eligible"])
-        self.assertIsNone(result["owner_budget_profile"])
+        self.assertEqual(result["status"], "available")
+        self.assertTrue(result["profile_available"])
+        self.assertTrue(result["profile_production_eligible"])
+        self.assertTrue(result["default_source_used"])
+        self.assertEqual(result["source_kind"], "repository_default")
+        self.assertEqual(result["source_profile_version"], "1.0.0")
+        self.assertEqual(result["source"]["path"], str(DEFAULT_PROFILE_PATH))
+        self.assertEqual(result["blockers"], [])
         self.assertEqual(
-            result["blockers"], ["owner_budget_profile_unavailable"]
-        )
-        self.assertIn(
-            "no_default_or_fixture_thresholds", result["boundaries"]
+            result["owner_budget_profile"]["profile_id"],
+            "raiktor-exit-balanced-v1",
         )
 
     def test_approved_source_renders_existing_policy_contract(self) -> None:
@@ -158,6 +162,44 @@ class RaiktorOwnerBudgetProfileProviderTests(unittest.TestCase):
             ],
         )
 
+    def test_versioned_operator_override_must_bind_repository_default(
+        self,
+    ) -> None:
+        source = json.loads(DEFAULT_PROFILE_PATH.read_text(encoding="utf-8"))
+        self.assertEqual(source["contract"], VERSIONED_SOURCE_CONTRACT)
+        source["activation"] = {
+            "kind": "operator_override",
+            "source": "focused GEN-034 scenario override",
+            "base_profile_id": "raiktor-exit-balanced-v1",
+            "base_profile_version": "1.0.0",
+        }
+        source["profile_id"] = "raiktor-exit-focused-override-v1"
+        source["profile_version"] = "1.0.1"
+        source["pairwise_limits"]["minimum_switch_margin_raw"] = 20
+
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "override.json"
+            path.write_text(json.dumps(source), encoding="utf-8")
+            result = provide_raiktor_owner_budget_profile(path)
+
+            drifted = deepcopy(source)
+            drifted["activation"]["base_profile_version"] = "2.0.0"
+            drifted_path = Path(directory) / "drifted.json"
+            drifted_path.write_text(json.dumps(drifted), encoding="utf-8")
+            with self.assertRaisesRegex(
+                OwnerBudgetProfileError, "base profile identity drifted"
+            ):
+                provide_raiktor_owner_budget_profile(drifted_path)
+
+        self.assertFalse(result["default_source_used"])
+        self.assertEqual(result["source_kind"], "operator_override")
+        self.assertEqual(result["source_profile_version"], "1.0.1")
+        self.assertEqual(
+            result["owner_budget_profile"]["pairwise_limits"][
+                "minimum_switch_margin_raw"
+            ],
+            20,
+        )
     def test_malformed_approval_never_promotes(self) -> None:
         cases = {
             "unknown-status": ("status", "ready"),

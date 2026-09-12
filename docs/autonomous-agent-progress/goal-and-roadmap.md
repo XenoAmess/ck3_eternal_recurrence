@@ -19,6 +19,11 @@ flowchart LR
 
 ## 冻结边界与本页口径
 
+2026-09-12 起，G2 的现行需求、固定分母与施工顺序以
+[`g2-requirements-and-execution.md`](g2-requirements-and-execution.md) 及其机器可读
+[`g2-requirements-v1.json`](g2-requirements-v1.json) 为准。G2 全局当前为 `0/8` 个可见 OODA 里程碑完成；历史上出现的
+`T1=90%` 仅是 GEN-034 窄包的临时估计，不得再解释或汇报为全游戏自治完成率。
+
 - 当前 exact build：CK3 `1.19.0.6`。
 - `ck3.exe` SHA-256：`2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86`。
 - 本页盘点日期：2026-08-27；实现与验收合同盘点基线：runtime `8efa23f`（exact production bridge DLL 源提交仍为
@@ -291,7 +296,10 @@ tyranny；健康、压力与生育；法律、政府、文化、创新与非宗�
 
 ## 全部后续工作
 
-下面是完整工作包；每一包都按“原生 AI 树 → typed observation → semantic action → planner policy → production OODA”施工。
+下面的 F0/P1–P11 保留为完整能力域清单。现行交付顺序已重排为 G2-M0–M7：先关闭 GEN-034，再完成 core turn bundle、
+自然事件、realm survival 与和平治理四个公共底座，随后进入家庭/外交/完整战争、谋略/制度/活动和 identity adapter/长期矩阵。
+每一包仍按“原生 AI 树 → typed observation → semantic action → planner policy → production OODA”施工；没有 planner consumer
+和玩家可见结果的只读 primitive 不增加里程碑完成数。
 
 ### F0：通用发现、开局与 feature manifest
 
@@ -382,15 +390,19 @@ tyranny；健康、压力与生育；法律、政府、文化、创新与非宗�
 
 ## 当前执行顺序
 
-截至 2026-08-30，最近的施工队列是：
+截至 2026-09-12，施工队列固定为：
 
-1. 冻结并保留 G1 `1f934571` 的 qualified report、terminal sidecar 与人生分数 `14.8`；不重复同 seed canary；
-2. 保留 GEN-032 attempts 01/02 RED 与 attempt 03 GREEN；该 blocker 已关闭，不重复同 checkpoint 验证；
-3. 冻结 GEN-009 的 capability RED、并发锁 harness RED 与 G2 GREEN；不重复同 seed 的同一跨局 gate；
-4. 选择新 seed/ruler 扩展 G2 重复矩阵；同一冻结 seed 的第二完整寿命已关闭，不再重复；若出现新的真实 B0/B1，保留 artifact，先更新对应
-   exact-build 原生树，再做最小合法 blocker-removal；
-5. 完整 effects、reinforcement/join、terminal 剩余分支、forecast、智能宣战及 P4–P10 通用玩法域若未成为真实 blocker，继续按
-   B2/B3 账本排序，不以重复审计取代可见玩法与完整 OODA。
+1. `G2-M0 / GEN-034`：依次完成 campaign dominance certificate、versioned strategy profile、same-frame white-peace
+   comparison，以及唯一 action/postwar/cold-restore；R459 的 loss/truce 与 R471 的 strategic-power 直接复用，不再重跑旧
+   index `9/10` ABI 枚举；
+2. `G2-M1`：current-feudal-ruler 的 `entity-directory-v1`、`ruler-state-v1`、`realm-state-v1` 最小子集和
+   `ck3_query_turn_bundle_v1`；
+3. `G2-M2`：`event-context-v2` 接入共享 registry recommendation，并以三个自然事件闭合选择与状态后置；
+4. `G2-M3/M4`：把继承、health/stress/legitimacy、vassal/faction alert、建设和内阁组成 realm-survival 与和平治理 OODA；
+5. `G2-M5–M7`：家庭/外交/完整战争，谋略/制度/活动，以及按 runtime identity 启用的政府/DLC adapter 和长期 qualification。
+
+G1、GEN-032、GEN-009 与同一 fixed seed 的第二寿命是已冻结前置证据，不再进入现行 G2 分母。当前全局进度只能写 `0/8`；
+GEN-034 子包进度另按 `1/4` 汇报：versioned repository strategy budget/profile 已完成；禁止恢复没有固定分母的百分比。
 
 真实 run 出现更高优先级的观测阻点时，可以调整相邻工作包，但不得通过重复返回 `unknown/unavailable` 代替补观测口。
 

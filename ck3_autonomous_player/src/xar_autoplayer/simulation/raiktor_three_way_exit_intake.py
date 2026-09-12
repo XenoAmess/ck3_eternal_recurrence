@@ -1,7 +1,8 @@
 """Compose the existing Raiktor exit providers into one fail-closed intake.
 
-This module is deliberately side-effect free.  It loads only the explicitly
-supplied owner budget source, delegates evidence validation to the existing
+This module is deliberately side-effect free.  It loads the versioned
+repository strategy budget by default, or an explicitly supplied override,
+and delegates evidence validation to the existing
 white-peace provider and three-way policy, and never manufactures a missing
 campaign, terms observation, utility evaluation, or action authorization.
 """
@@ -49,6 +50,12 @@ def provide_raiktor_three_way_exit_intake(
         if owner_provider["profile_available"] is True
         else None
     )
+    policy_owner_budget = (
+        owner_budget
+        if isinstance(candidate_value, dict)
+        and isinstance(surrender_terms_value, dict)
+        else None
+    )
     white_provider = provide_raiktor_white_peace_comparison(
         observation_value=white_peace_observation_value,
         campaign_value=campaign_value,
@@ -60,7 +67,7 @@ def provide_raiktor_three_way_exit_intake(
         candidate_value,
         surrender_terms_value,
         campaign_value,
-        owner_budget,
+        policy_owner_budget,
         white_peace,
         observed_surrender_outcome_value,
     )
@@ -138,7 +145,9 @@ def provide_raiktor_three_way_exit_intake(
         "surrender_execution_readiness": surrender_execution,
         "boundaries": [
             "offline_side_effect_free_composition_only",
-            "no_default_owner_budget_or_utility_values",
+            "repository_strategy_budget_is_versioned_and_hash_bound",
+            "explicit_budget_path_is_an_operator_override",
+            "no_default_campaign_or_white_peace_utility_values",
             "missing_evidence_remains_typed_and_unavailable",
             "static_recommendation_does_not_authorize_an_action",
             "execution_projection_never_enables_submit_or_postcondition",
