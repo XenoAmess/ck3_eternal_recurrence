@@ -102,14 +102,14 @@
   },
   "repository_provenance": {
     "root_last_completed_transaction": {
-      "commit": "2f0637573b099bdd227c7ddc456f4706c2ff54d7",
+      "commit": "32ce260476c9c653badc87852729a1f6289f48ce",
       "sync_result": "GREEN",
       "upstream_ref": "origin/master"
     },
     "root_live_source": "git status --branch --porcelain=v2 plus git ls-remote origin",
     "root_live_state_not_git_cached": true,
     "t2_last_completed_transaction": {
-      "commit": "1ac7082ff606389b9da648b356c8f6963e83dedb",
+      "commit": "7b54443bb11d433d87f249c6def892c95459d1c8",
       "sync_result": "GREEN",
       "upstream_ref": "origin/main"
     },
@@ -163,7 +163,7 @@
         "base": "repo_root",
         "bytes": 8270,
         "locator": "docs/phase2-promo/p2-stage-ledger.json",
-        "sha256": "90B25E1B39C5B9FBA779B665EB242644DA2416C729B21E50102D96E8279E26C2"
+        "sha256": "2E97AB0B5067A8F85A50B0CF7E5E4CA37285D345A64A75B2F01AD1EBF9B7A1DA"
       },
       "raw_footage": {
         "passed": 0,
@@ -195,12 +195,12 @@
     "result": "ACTIVE"
   },
   "t2": {
-    "compat_commit": "1ac7082ff606389b9da648b356c8f6963e83dedb",
+    "compat_commit": "7b54443bb11d433d87f249c6def892c95459d1c8",
     "live_sync_source": "repository_provenance.t2_live_source",
     "priority": "T2",
-    "public_interface_delta": "NO_SCHEMA_DELTA_SCOREBOARD_EXECUTE_STEP_CONFORMANCE_RESTORED",
+    "public_interface_delta": "NO_SCHEMA_DELTA_NATIVE_GUI_CONTEXT_CONFORMANCE_RESTORED",
     "result": "GREEN",
-    "upstream_root_commit": "2f0637573b099bdd227c7ddc456f4706c2ff54d7"
+    "upstream_root_commit": "32ce260476c9c653badc87852729a1f6289f48ce"
   },
-  "updated_at": "2026-09-12T15:42:00+08:00"
+  "updated_at": "2026-09-12T15:49:00+08:00"
 }

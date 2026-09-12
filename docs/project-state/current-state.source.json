@@ -1,19 +1,19 @@
 {
   "schema": "xar.project-delivery-state-source",
   "schema_version": 1,
-  "updated_at": "2026-09-12T15:42:00+08:00",
+  "updated_at": "2026-09-12T15:49:00+08:00",
   "repository_provenance": {
     "root_live_source": "git status --branch --porcelain=v2 plus git ls-remote origin",
     "root_live_state_not_git_cached": true,
     "root_last_completed_transaction": {
-      "commit": "2f0637573b099bdd227c7ddc456f4706c2ff54d7",
+      "commit": "32ce260476c9c653badc87852729a1f6289f48ce",
       "upstream_ref": "origin/master",
       "sync_result": "GREEN"
     },
     "t2_live_source": "git -C <open_kaishek> status --branch --porcelain=v2 plus git ls-remote origin",
     "t2_live_state_not_git_cached": true,
     "t2_last_completed_transaction": {
-      "commit": "1ac7082ff606389b9da648b356c8f6963e83dedb",
+      "commit": "7b54443bb11d433d87f249c6def892c95459d1c8",
       "upstream_ref": "origin/main",
       "sync_result": "GREEN"
     }
@@ -223,9 +223,9 @@
   "t2": {
     "priority": "T2",
     "result": "GREEN",
-    "upstream_root_commit": "2f0637573b099bdd227c7ddc456f4706c2ff54d7",
-    "compat_commit": "1ac7082ff606389b9da648b356c8f6963e83dedb",
-    "public_interface_delta": "NO_SCHEMA_DELTA_SCOREBOARD_EXECUTE_STEP_CONFORMANCE_RESTORED",
+    "upstream_root_commit": "32ce260476c9c653badc87852729a1f6289f48ce",
+    "compat_commit": "7b54443bb11d433d87f249c6def892c95459d1c8",
+    "public_interface_delta": "NO_SCHEMA_DELTA_NATIVE_GUI_CONTEXT_CONFORMANCE_RESTORED",
     "live_sync_source": "repository_provenance.t2_live_source"
   },
   "live_red_source": {
