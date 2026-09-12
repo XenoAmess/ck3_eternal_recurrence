@@ -27,7 +27,9 @@ R492 在 `date_raw=53154120` 到绝对截止 `53157000` 的 120 游戏日窗口�
 
 聚焦验证为生成器重建、`py_compile`、`git diff --check`，以及 B1 runtime normal/optimized 各 `76/76` GREEN。没有为该单点修复启动 CK3 或扩大成长跑。v5 receipt 绑定的是旧产品树，已永久失效；下一次只能使用绑定本 RED、exact roster 证据和修复后产品树的 v6 receipt，执行一次新轮次短验收。
 
-本次 `source-character-29037.txt` 是为立即定位现行 RED 生成的一次性摘录，只覆盖该角色块，不能作为长期接口。影响面是 B1 持久列表诊断。迁移计划是在下一次 CK3 启动前，把同类读取沉淀为路径无关、参数化、带版本与 hash 的只读通用资产，并由 Operator MCP 的冻结输入查询复用；迁移期限就是 v6 receipt 工作包。
+本次 `source-character-29037.txt` 是为立即定位现行 RED 生成的一次性摘录，只覆盖该角色块，不能作为长期接口。迁移已在下一次 CK3 启动前完成：[`inspect_ck3_save_character_scope.py`](../../tools/inspect_ck3_save_character_scope.py) 接受调用方提供的 save/Rakaly 或 melted 路径、root CharacterID、变量名和持久列表名，输出 `ck3_character_scope_offline_v1`。它不绑定账号、机器路径或轮次；v6 Operator 把报告作为 hash-bound 只读输入消费，其他机器可用同一 CLI 生成并通过自己的 Operator MCP target profile 查询。
+
+真实通用报告为 `41,038` bytes / `74BF50BB83DBA083A767F96E954E1F0EA86D2059D44BA1DC0FE33BEE56F3B328`。v6 receipt 已通过生产 validator 的无启动校验，SHA-256 为 `E363D5EE27421F27DCF80A4B4B6DE174ABCB85343C5116D7D18E5FFDC59FACF8`；修复后产品树为 `C428C42B88A47F6B8834099B6CF8598FB0F405CDC79203EBCAB9752F4E9CB5DC`，projection manifest 为 `DEEF481DAAA202C0A6CED3030F750B355536D1EED406DE520D5BDCEA8D6CB99F`。
 
 ## 冻结证据
 

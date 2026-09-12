@@ -2628,3 +2628,11 @@ R490 证明 45 日不是充分上限：共同上级合账已成功，随后才�
 `is_alive=yes` 只能证明 Character 仍存在，不能证明该角色仍属于当前 manager 的当前 B1 case。R492 的冻结 source 中，经理 `29037` 的持久 subject 列表有 29 个存活引用，但按 `owner/subject/cycle/case/active/roster` exact tuple 只有 6 个；后续 processing 只消费这 6 个，最终 compaction 因数量不等永久 fail closed。
 
 两个持久列表必须在首个延迟消费者之前使用相同的 exact-tuple prune。缺失任何 case 字段都按不可用处理，不能仅凭角色存活继续进入本 manager 的 frozen domain。若长边界内已经出现 season publication 与重复 compaction failure，应保留产品 RED，检查持久列表与当前 case 域，不得继续扩大观察天数。修复后只运行生成器、受影响的 normal/optimized 聚焦测试，再由绑定新产品树的一个新轮次验收。R492 之后 v5 receipt 已失效，下一次启动必须使用绑定产品 RED、exact roster 证据和修复后产品树的 v6 receipt。
+
+通用离线检查命令为：
+
+```powershell
+py tools/inspect_ck3_save_character_scope.py --melted <gamestate> --root-character-id <id> --root-variable <name> --list <name> --referenced-variable <name> --output <report.json>
+```
+
+也可改用 `--save <checkpoint.ck3> --rakaly <rakaly.exe>`。输出 schema 为 `ck3_character_scope_offline_v1`，同时保留 root 变量、列表原始 items、所引用 Character 的存活状态与请求变量；参数和输出不依赖固定轮次、机器或账号。该报告是 hash-bound prelaunch 输入，不能替代 exact-build live MCP。v6 Operator 会复算 exact/foreign 两个 tuple 域，并拒绝字段缺失、计数不一致、旧产品树或未经绑定的 R492 RED。

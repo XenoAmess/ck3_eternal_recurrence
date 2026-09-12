@@ -131,6 +131,9 @@ class Stage10PlayerSubjectOperatorTests(unittest.TestCase):
             live_path = root / "live-source.json"
             near_path = root / "near-boundary-red.json"
             extended_path = root / "extended-boundary-red.json"
+            full_path = root / "full-boundary-product-red.json"
+            debug_path = root / "r492-debug.log"
+            roster_path = root / "exact-roster.json"
             schedule_path = root / "scheduled-events.json"
             live = {
                 "schema_version": 1,
@@ -140,7 +143,7 @@ class Stage10PlayerSubjectOperatorTests(unittest.TestCase):
                 "mcp_native_save": True,
                 "fixture_used": False,
                 "console_used": False,
-                "product_tree_sha256": "B" * 64,
+                "product_tree_sha256": "A" * 64,
                 "target_checkpoint": operator.base.file_record(checkpoint),
                 "target_binding": {
                     "player_character_id": 200,
@@ -221,6 +224,143 @@ class Stage10PlayerSubjectOperatorTests(unittest.TestCase):
                     },
                 },
             )
+            full_observations = [
+                {
+                    "date_raw": 9000 + index,
+                    "review_now_eligible": False,
+                    "b1_active": True,
+                    "central_active": False,
+                    "pp_active": False,
+                }
+                for index in range(1, 41)
+            ]
+            operator.base.write_object(
+                full_path,
+                {
+                    "schema_version": 1,
+                    "result": "RED",
+                    "product_result": "RED",
+                    "red_preserved": True,
+                    "evidence": {
+                        "schema_version": 2,
+                        "kind": operator.NEAR_BOUNDARY_KIND,
+                        "result": "RED",
+                        "reason_code": "stage10_slice_failed",
+                        "max_advance_days": 120,
+                        "expected_player_manager_character_id": 200,
+                        "expected_owner_character_id": 100,
+                        "source_binding": {
+                            "player_character_id": 200,
+                            "date_raw": 9000,
+                        },
+                        "progress": {
+                            "initial_progress_observation": {
+                                "date_raw": 9000,
+                                "review_now_eligible": False,
+                                "b1_active": True,
+                                "central_active": False,
+                                "pp_active": False,
+                            },
+                            "absolute_end_date_raw": 9040,
+                            "progress_observations": full_observations,
+                        },
+                    },
+                },
+            )
+            debug_path.write_text(
+                (operator.PUBLICATION_LOG + "\n") * 7
+                + (operator.COMPACTION_FAILURE_LOG + "\n") * 10,
+                encoding="utf-8",
+            )
+
+            def variable(value_type: str, identity: int) -> dict[str, object]:
+                return {
+                    "present": True,
+                    "type": value_type,
+                    "identity": identity,
+                }
+
+            subject_ids = list(range(1000, 1029))
+            exact_ids = subject_ids[:6]
+            roster_rows = []
+            for character_id in subject_ids:
+                exact = character_id in exact_ids
+                roster_rows.append(
+                    {
+                        "character_id": character_id,
+                        "found": True,
+                        "alive": True,
+                        "variables": {
+                            "zg361_b1_case_owner": variable(
+                                "char", 200 if exact else 400
+                            ),
+                            "zg361_b1_case_subject": variable("char", character_id),
+                            "zg361_b1_cycle_serial": variable(
+                                "value", 1700000 if exact else 1900000
+                            ),
+                            "zg361_b1_case_serial": variable(
+                                "value", 1700000 if exact else 1900000
+                            ),
+                            "zg361_b1_case_state": variable("value", 300000),
+                            "zg361_b1_case_active": variable("value", 100000),
+                            "zg361_b1_roster_included": variable("value", 100000),
+                        },
+                        "lists": {},
+                    }
+                )
+            roster = {
+                "schema_version": 1,
+                "kind": operator.ROSTER_KIND,
+                "result": "GREEN",
+                "game_version": "1.19.0.6",
+                "root_character_id": 200,
+                "requested_root_variables": [
+                    "zg361_b1_manager_cycle_serial",
+                    "zg361_b1_manager_case_serial",
+                ],
+                "requested_lists": [
+                    "zg361_b1_subjects",
+                    "zg361_b1_processing_subjects",
+                ],
+                "requested_referenced_variables": [
+                    "zg361_b1_case_owner",
+                    "zg361_b1_case_subject",
+                    "zg361_b1_cycle_serial",
+                    "zg361_b1_case_serial",
+                    "zg361_b1_case_state",
+                    "zg361_b1_case_active",
+                    "zg361_b1_roster_included",
+                ],
+                "root": {
+                    "found": True,
+                    "alive": True,
+                    "variables": {
+                        "zg361_b1_manager_cycle_serial": variable("value", 1700000),
+                        "zg361_b1_manager_case_serial": variable("value", 1700000),
+                    },
+                    "lists": {
+                        "zg361_b1_subjects": {
+                            "present": True,
+                            "item_count": 29,
+                            "duration": 29,
+                            "items": [
+                                {"type": "char", "identity": value}
+                                for value in subject_ids
+                            ],
+                        },
+                        "zg361_b1_processing_subjects": {
+                            "present": False,
+                            "item_count": 0,
+                            "duration": None,
+                            "items": [],
+                        },
+                    },
+                },
+                "unique_referenced_character_count": 29,
+                "referenced_characters": roster_rows,
+                "melted_sha256": "C" * 64,
+            }
+            operator.base.write_object(roster_path, roster)
             operator.base.write_object(
                 schedule_path,
                 {
@@ -264,6 +404,8 @@ class Stage10PlayerSubjectOperatorTests(unittest.TestCase):
                     "player_primary_title_tier": 3,
                     "player_government": "celestial_government",
                 },
+                "offline_evidence": {"melted_sha256": "C" * 64},
+                "source_product_tree_sha256": "A" * 64,
                 "product_tree_sha256": "B" * 64,
                 "checkpoint": operator.base.file_record(checkpoint),
                 "live_source_provenance": operator.base.file_record(live_path),
@@ -271,6 +413,11 @@ class Stage10PlayerSubjectOperatorTests(unittest.TestCase):
                 "extended_boundary_live_evidence": operator.base.file_record(
                     extended_path
                 ),
+                "full_boundary_product_red_evidence": operator.base.file_record(
+                    full_path
+                ),
+                "r492_live_debug_log": operator.base.file_record(debug_path),
+                "exact_roster_evidence": operator.base.file_record(roster_path),
                 "scheduled_event_evidence": operator.base.file_record(schedule_path),
                 "fixed_tail_contract": {
                     "source_b1_stage": "D+299",
@@ -287,6 +434,23 @@ class Stage10PlayerSubjectOperatorTests(unittest.TestCase):
                     "maximum_required_tail_days": 104,
                     "maximum_action_days": 120,
                 },
+                "product_fix_contract": {
+                    "root_commit": operator.PRODUCT_FIX_COMMIT,
+                    "source_product_tree_sha256": "A" * 64,
+                    "repaired_product_tree_sha256": "B" * 64,
+                    "manager_cycle_identity": 1700000,
+                    "manager_case_identity": 1700000,
+                    "observed_subject_count": 29,
+                    "exact_case_subject_count": 6,
+                    "foreign_subject_count": 23,
+                    "exact_case_character_ids": exact_ids,
+                    "foreign_owner_character_id": 400,
+                    "foreign_cycle_identity": 1900000,
+                    "foreign_case_identity": 1900000,
+                    "r492_observation_count": 40,
+                    "publication_log_count": 7,
+                    "compaction_failure_log_count": 10,
+                },
             }
             operator.base.write_object(receipt_path, receipt)
             bound = {
@@ -302,6 +466,24 @@ class Stage10PlayerSubjectOperatorTests(unittest.TestCase):
             self.assertEqual(result["path"], receipt_path.resolve())
             self.assertEqual(result["player_manager_character_id"], 200)
             self.assertEqual(result["owner_character_id"], 100)
+
+            roster["referenced_characters"][0]["variables"][
+                "zg361_b1_case_owner"
+            ]["identity"] = 999
+            operator.base.write_object(roster_path, roster)
+            receipt["exact_roster_evidence"] = operator.base.file_record(roster_path)
+            operator.base.write_object(receipt_path, receipt)
+            with self.assertRaisesRegex(
+                operator.base.Af5JobError, "matching player-publication source"
+            ):
+                operator._validate_source_receipt(
+                    operator.base.file_record(receipt_path), bound
+                )
+            roster["referenced_characters"][0]["variables"][
+                "zg361_b1_case_owner"
+            ]["identity"] = 200
+            operator.base.write_object(roster_path, roster)
+            receipt["exact_roster_evidence"] = operator.base.file_record(roster_path)
 
             schedule = operator.base.read_object(schedule_path)
             schedule["matches"][0]["days_from_current"] = 2

@@ -22,10 +22,35 @@ import zg361_phase2_af5_operator_job as base
 
 CONTROLS = ["status", "run-stage10", "cleanup"]
 JOB_ROLE = "stage10-player-subject"
-SOURCE_RECEIPT_KIND = "zg361_stage10_player_publication_source_v5"
+SOURCE_RECEIPT_KIND = "zg361_stage10_player_publication_source_v6"
 LIVE_SOURCE_KIND = "zg361_stage10_player_source_capture_v1"
 NEAR_BOUNDARY_KIND = "zg361_phase2_stage10_player_subject_action_cell"
 SCHEDULE_KIND = "ck3_scheduled_event_queue_offline_v1"
+ROSTER_KIND = "ck3_character_scope_offline_v1"
+PRODUCT_FIX_COMMIT = "11cf6499879741860269b6fb5b9cc8325bf05cab"
+PUBLICATION_LOG = "ZG361B1: performance season published"
+COMPACTION_FAILURE_LOG = (
+    "ZG361B1: final callback survivor compaction failed; settlement withheld"
+)
+
+
+def _offline_identity(
+    variables: object, name: str, expected_type: str
+) -> int | None:
+    if not isinstance(variables, Mapping):
+        return None
+    value = variables.get(name)
+    if not isinstance(value, Mapping):
+        return None
+    identity = value.get("identity")
+    if (
+        value.get("present") is not True
+        or value.get("type") != expected_type
+        or not isinstance(identity, int)
+        or isinstance(identity, bool)
+    ):
+        return None
+    return identity
 
 
 def _validate_source_receipt(
@@ -39,6 +64,9 @@ def _validate_source_receipt(
     topology = base.mapping(receipt.get("offline_topology"), "source topology")
     player_state = base.mapping(
         receipt.get("offline_player_state"), "source player state"
+    )
+    offline_evidence = base.mapping(
+        receipt.get("offline_evidence"), "source offline evidence"
     )
     owner = base.positive_int(
         topology.get("immediate_liege_character_id"), "source owner"
@@ -100,6 +128,126 @@ def _validate_source_receipt(
     extended_binding = base.mapping(
         extended.get("source_binding"), "extended-boundary binding"
     )
+    full_path = base.checked_file(
+        receipt.get("full_boundary_product_red_evidence"),
+        "full-boundary product RED evidence",
+    )
+    full_wrapper = base.read_object(full_path)
+    full = base.mapping(full_wrapper.get("evidence"), "full-boundary action evidence")
+    full_progress = base.mapping(full.get("progress"), "full-boundary progress")
+    full_initial = base.mapping(
+        full_progress.get("initial_progress_observation"),
+        "full-boundary initial progress",
+    )
+    full_binding = base.mapping(full.get("source_binding"), "full-boundary binding")
+    full_observations = full_progress.get("progress_observations")
+    debug_path = base.checked_file(
+        receipt.get("r492_live_debug_log"), "R492 live debug log"
+    )
+    debug_text = debug_path.read_text(encoding="utf-8", errors="replace")
+    roster_path = base.checked_file(
+        receipt.get("exact_roster_evidence"), "exact roster evidence"
+    )
+    roster = base.read_object(roster_path)
+    roster_root = base.mapping(roster.get("root"), "exact roster root")
+    roster_root_variables = base.mapping(
+        roster_root.get("variables"), "exact roster root variables"
+    )
+    roster_lists = base.mapping(roster_root.get("lists"), "exact roster lists")
+    subject_list = base.mapping(
+        roster_lists.get("zg361_b1_subjects"), "exact roster subject list"
+    )
+    processing_list = base.mapping(
+        roster_lists.get("zg361_b1_processing_subjects"),
+        "exact roster processing list",
+    )
+    subject_items = subject_list.get("items")
+    roster_rows = roster.get("referenced_characters")
+    product_fix = base.mapping(
+        receipt.get("product_fix_contract"), "product fix contract"
+    )
+    source_product_tree = str(receipt.get("source_product_tree_sha256", "")).upper()
+
+    subject_ids: list[int] = []
+    if isinstance(subject_items, list):
+        for item in subject_items:
+            if (
+                not isinstance(item, Mapping)
+                or item.get("type") != "char"
+                or not isinstance(item.get("identity"), int)
+                or isinstance(item.get("identity"), bool)
+                or int(item["identity"]) <= 0
+            ):
+                subject_ids = []
+                break
+            subject_ids.append(int(item["identity"]))
+    rows_by_id: dict[int, Mapping[str, object]] = {}
+    if isinstance(roster_rows, list):
+        for row in roster_rows:
+            if (
+                isinstance(row, Mapping)
+                and isinstance(row.get("character_id"), int)
+                and not isinstance(row.get("character_id"), bool)
+            ):
+                rows_by_id[int(row["character_id"])] = row
+    manager_cycle_identity = _offline_identity(
+        roster_root_variables, "zg361_b1_manager_cycle_serial", "value"
+    )
+    manager_case_identity = _offline_identity(
+        roster_root_variables, "zg361_b1_manager_case_serial", "value"
+    )
+    foreign_owner = product_fix.get("foreign_owner_character_id")
+    foreign_cycle_identity = product_fix.get("foreign_cycle_identity")
+    foreign_case_identity = product_fix.get("foreign_case_identity")
+    exact_ids: list[int] = []
+    foreign_ids: list[int] = []
+    roster_rows_match_known_domains = bool(subject_ids)
+    for character_id in subject_ids:
+        row = rows_by_id.get(character_id)
+        variables = row.get("variables") if isinstance(row, Mapping) else None
+        common = (
+            isinstance(row, Mapping)
+            and row.get("found") is True
+            and row.get("alive") is True
+            and _offline_identity(
+                variables, "zg361_b1_case_subject", "char"
+            )
+            == character_id
+            and _offline_identity(
+                variables, "zg361_b1_case_state", "value"
+            )
+            == 300000
+            and _offline_identity(
+                variables, "zg361_b1_case_active", "value"
+            )
+            == 100000
+            and _offline_identity(
+                variables, "zg361_b1_roster_included", "value"
+            )
+            == 100000
+        )
+        if (
+            common
+            and _offline_identity(variables, "zg361_b1_case_owner", "char")
+            == manager
+            and _offline_identity(variables, "zg361_b1_cycle_serial", "value")
+            == manager_cycle_identity
+            and _offline_identity(variables, "zg361_b1_case_serial", "value")
+            == manager_case_identity
+        ):
+            exact_ids.append(character_id)
+        elif (
+            common
+            and _offline_identity(variables, "zg361_b1_case_owner", "char")
+            == foreign_owner
+            and _offline_identity(variables, "zg361_b1_cycle_serial", "value")
+            == foreign_cycle_identity
+            and _offline_identity(variables, "zg361_b1_case_serial", "value")
+            == foreign_case_identity
+        ):
+            foreign_ids.append(character_id)
+        else:
+            roster_rows_match_known_domains = False
     schedule_path = base.checked_file(
         receipt.get("scheduled_event_evidence"), "scheduled-event evidence"
     )
@@ -149,7 +297,7 @@ def _validate_source_receipt(
         and live.get("fixture_used") is False
         and live.get("console_used") is False
         and str(live.get("product_tree_sha256", "")).upper()
-        == str(expected["product_tree_sha256"]).upper()
+        == source_product_tree
         and isinstance(live_checkpoint.get("path"), str)
         and Path(str(live_checkpoint["path"])).resolve() == bound_checkpoint
         and live_checkpoint.get("bytes") == bound_checkpoint.stat().st_size
@@ -200,6 +348,87 @@ def _validate_source_receipt(
         and extended_initial.get("b1_active") is True
         and extended_initial.get("central_active") is False
         and extended_initial.get("pp_active") is False
+        and full_wrapper.get("result") == "RED"
+        and full_wrapper.get("product_result") == "RED"
+        and full_wrapper.get("red_preserved") is True
+        and full.get("schema_version") == 2
+        and full.get("kind") == NEAR_BOUNDARY_KIND
+        and full.get("result") == "RED"
+        and full.get("reason_code") == "stage10_slice_failed"
+        and full.get("max_advance_days") == 120
+        and full.get("expected_player_manager_character_id") == manager
+        and full.get("expected_owner_character_id") == owner
+        and full_binding.get("player_character_id") == manager
+        and full_binding.get("date_raw") == live_binding.get("date_raw")
+        and full_initial.get("date_raw") == live_binding.get("date_raw")
+        and full_initial.get("review_now_eligible") is False
+        and full_initial.get("b1_active") is True
+        and full_initial.get("central_active") is False
+        and full_initial.get("pp_active") is False
+        and isinstance(full_observations, list)
+        and len(full_observations) == product_fix.get("r492_observation_count")
+        and len(full_observations) > 0
+        and isinstance(full_observations[-1], Mapping)
+        and full_observations[-1].get("date_raw")
+        == full_progress.get("absolute_end_date_raw")
+        and all(
+            isinstance(row, Mapping)
+            and row.get("review_now_eligible") is False
+            and row.get("b1_active") is True
+            and row.get("central_active") is False
+            and row.get("pp_active") is False
+            for row in full_observations
+        )
+        and debug_text.count(PUBLICATION_LOG)
+        == product_fix.get("publication_log_count")
+        and debug_text.count(COMPACTION_FAILURE_LOG)
+        == product_fix.get("compaction_failure_log_count")
+        and roster.get("schema_version") == 1
+        and roster.get("kind") == ROSTER_KIND
+        and roster.get("result") == "GREEN"
+        and roster.get("game_version") == "1.19.0.6"
+        and roster.get("root_character_id") == manager
+        and roster.get("melted_sha256") == offline_evidence.get("melted_sha256")
+        and roster.get("requested_root_variables")
+        == ["zg361_b1_manager_cycle_serial", "zg361_b1_manager_case_serial"]
+        and roster.get("requested_lists")
+        == ["zg361_b1_subjects", "zg361_b1_processing_subjects"]
+        and roster.get("requested_referenced_variables")
+        == [
+            "zg361_b1_case_owner",
+            "zg361_b1_case_subject",
+            "zg361_b1_cycle_serial",
+            "zg361_b1_case_serial",
+            "zg361_b1_case_state",
+            "zg361_b1_case_active",
+            "zg361_b1_roster_included",
+        ]
+        and roster_root.get("found") is True
+        and roster_root.get("alive") is True
+        and manager_cycle_identity == product_fix.get("manager_cycle_identity")
+        and manager_case_identity == product_fix.get("manager_case_identity")
+        and subject_list.get("present") is True
+        and subject_list.get("item_count") == len(subject_ids)
+        and subject_list.get("duration") == len(subject_ids)
+        and len(subject_ids) == len(set(subject_ids))
+        and processing_list.get("present") is False
+        and processing_list.get("item_count") == 0
+        and roster.get("unique_referenced_character_count") == len(subject_ids)
+        and len(rows_by_id) == len(subject_ids)
+        and roster_rows_match_known_domains
+        and len(subject_ids) == product_fix.get("observed_subject_count")
+        and sorted(exact_ids) == product_fix.get("exact_case_character_ids")
+        and len(exact_ids) == product_fix.get("exact_case_subject_count")
+        and len(foreign_ids) == product_fix.get("foreign_subject_count")
+        and len(exact_ids) + len(foreign_ids) == len(subject_ids)
+        and product_fix.get("root_commit") == PRODUCT_FIX_COMMIT
+        and str(product_fix.get("source_product_tree_sha256", "")).upper()
+        == source_product_tree
+        and str(product_fix.get("repaired_product_tree_sha256", "")).upper()
+        == str(expected["product_tree_sha256"]).upper()
+        and product_fix.get("r492_observation_count") == 40
+        and product_fix.get("publication_log_count") == 7
+        and product_fix.get("compaction_failure_log_count") == 10
         and schedule.get("schema_version") == 1
         and schedule.get("kind") == SCHEDULE_KIND
         and schedule.get("result") == "GREEN"
@@ -244,6 +473,8 @@ def _validate_source_receipt(
         "owner_character_id": owner,
         "near_boundary_live_evidence": near_path,
         "extended_boundary_live_evidence": extended_path,
+        "full_boundary_product_red_evidence": full_path,
+        "exact_roster_evidence": roster_path,
         "scheduled_event_evidence": schedule_path,
     }
 
