@@ -1,0 +1,68 @@
+{
+  "absolute_game_deadline": null,
+  "axes": {
+    "business_result": "NOT_EVALUATED",
+    "harness_result": "RED",
+    "lifecycle_result": "GREEN"
+  },
+  "binding": {
+    "bridge_dll_sha256": "65C14FE284EA99036DBFBA950B3BE38C3656FA2D064017FD8A38FF21B32B61EF",
+    "ck3_build": "1.19.0.6",
+    "ck3_exe_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+    "frontend_round": "R510",
+    "gameplay_pid_at_failure": 8872,
+    "gameplay_round": "R511",
+    "launch_sequence": "Frontend warm-up then -loadsave=autosave",
+    "plan_sha256": "74F1D9F466A45DB708E09CF2A3AA725DE240896B16961CF4056E0CF81A65A0EA",
+    "source_commit": "5bb2a4ea17c013eaadf96479c48a6dca4386f71b"
+  },
+  "blocking_scope": "p2.raw_capture.phase2_fact_quota_calibration",
+  "detail_artifact_ref": {
+    "base": "workspace_root",
+    "bytes": 4370204,
+    "locator": "_runtime/p2-capture-r510-r517-5bb2a4e-20260912/capture/report.json",
+    "sha256": "DCC2F20926002A059EC48F2917DEC1853BEFF906FB29BA79B445F14017BA0F26"
+  },
+  "failure_stage": "initial_capture_scoreboard_state_query",
+  "input_attempted": false,
+  "last_verified_stage": "loader_gate_and_paused_seed_green_recorder_started",
+  "minimal_diff": {
+    "impact": "the first read-only scoreboard query was rejected before choreography or any gameplay input",
+    "native_action_parser_expected": "execute_step",
+    "native_state_parser_expected": "command",
+    "public_contract": "existing protocol fields and capability names are unchanged",
+    "python_request_type": "execute_step",
+    "scoped_fix": "make the state parser accept the existing execute_step transport and add one parser regression target"
+  },
+  "preservation": {
+    "classification_does_not_downgrade_red": true,
+    "detail_is_immutable": true,
+    "index_is_not_business_evidence": true
+  },
+  "reason_code": "scoreboard_state_parser_expected_command_instead_of_execute_step",
+  "red_class": "HARNESS_RED",
+  "red_id": "R511-scoreboard-state-request-type-mismatch",
+  "resolution": {
+    "cleanup_ref": {
+      "base": "workspace_root",
+      "bytes": 30848,
+      "locator": "_runtime/p2-capture-r510-r517-5bb2a4e-20260912/capture/cell/09_phase2_native_session_cleanup.json",
+      "sha256": "DAABE7C60D2C37A197B88C8C34A3B0F8F1186F5B00982D81073643E9D6376C55"
+    },
+    "current_blocker": true,
+    "focused_test": "xar_ck3_zhongguo_scoreboard_state_v1_mailbox_test GREEN",
+    "requires_new_dll_and_round": true,
+    "retained_failed_take": {
+      "base": "workspace_root",
+      "bytes": 3614150,
+      "locator": "_runtime/p2-capture-r510-r517-5bb2a4e-20260912/capture/cell/promo/raw/zg361-promo-live-full-take-01.mkv",
+      "sha256": "B326E8446334A9D868528A0F074AD18AA6F3E786E517A55D5002C4C56DFC9B82",
+      "usable_span_count": 0
+    },
+    "status": "SOURCE_PATCHED_FOCUSED_TEST_GREEN_DLL_REBUILD_AND_LIVE_RETRY_PENDING"
+  },
+  "result": "RED",
+  "same_frame_retry_eligible": false,
+  "schema": "xar.compact-red-index",
+  "schema_version": 1
+}

@@ -7,9 +7,9 @@
     "stable_projection": {
       "cleanup_ref": {
         "base": "workspace_root",
-        "bytes": 24606,
-        "locator": "_runtime/p2-capture-r509-r515-b8f44fb-20260912/capture/cell/09_phase2_native_session_cleanup.json",
-        "sha256": "1566C40EA86A2782808C7AB2919E23919602E9A40571723D42409C241493E23F"
+        "bytes": 30848,
+        "locator": "_runtime/p2-capture-r510-r517-5bb2a4e-20260912/capture/cell/09_phase2_native_session_cleanup.json",
+        "sha256": "DAABE7C60D2C37A197B88C8C34A3B0F8F1186F5B00982D81073643E9D6376C55"
       },
       "instance_count": 0,
       "lifecycle_result": "GREEN",
@@ -38,7 +38,7 @@
       "git_cached": false,
       "inventory_source": "operator_get_status",
       "stable_projection_only": true,
-      "status": "CLEAR_AFTER_R509_HARNESS_RED_FIX"
+      "status": "R511_BRIDGE_PROTOCOL_RED_SOURCE_FIXED_REBUILD_PENDING"
     },
     "preserved_indexes": [
       {
@@ -70,6 +70,16 @@
         },
         "red_id": "R509-frontend-first-omitted-loader-timeout",
         "role": "HISTORICAL_PRESERVED"
+      },
+      {
+        "index_ref": {
+          "base": "repo_root",
+          "bytes": 2985,
+          "locator": "docs/project-state/red-indexes/r511-scoreboard-state-request-type-mismatch.json",
+          "sha256": "FA3228281DEB6950D1017DF41669553521A70E847FCA7D13CD968EA50992B7C6"
+        },
+        "red_id": "R511-scoreboard-state-request-type-mismatch",
+        "role": "HISTORICAL_PRESERVED"
       }
     ],
     "unresolved_count": 0
@@ -82,7 +92,7 @@
   },
   "repository_provenance": {
     "root_last_completed_transaction": {
-      "commit": "b8f44fbcf174b60d716ebe058f3dc8110c12fd12",
+      "commit": "5bb2a4ea17c013eaadf96479c48a6dca4386f71b",
       "sync_result": "GREEN",
       "upstream_ref": "origin/master"
     },
@@ -141,9 +151,9 @@
       },
       "ledger_ref": {
         "base": "repo_root",
-        "bytes": 7434,
+        "bytes": 7860,
         "locator": "docs/phase2-promo/p2-stage-ledger.json",
-        "sha256": "B7FC7F7B6E45302F1876DF20DAFBA838410CB3CEB178F01D7CFA5D8DB44FB5DB"
+        "sha256": "9D836EAFFF681FC46CF4255C95DE8E7DAF9DAC1C5581530DABFEC2A74C3F165F"
       },
       "raw_footage": {
         "passed": 0,
@@ -178,9 +188,9 @@
     "compat_commit": "a2785cce459b03b1c17cf00f197392686697a5d2",
     "live_sync_source": "repository_provenance.t2_live_source",
     "priority": "T2",
-    "public_interface_delta": "NO_PUBLIC_DELTA_OPERATOR_INTEGER_CONTRACT_STRICTENED",
-    "result": "GREEN",
-    "upstream_root_commit": "502020bfbb1309a5bbfe6359365c4df91e3caf7a"
+    "public_interface_delta": "NO_SCHEMA_DELTA_SCOREBOARD_EXECUTE_STEP_CONFORMANCE_FIX_PENDING_SYNC",
+    "result": "PENDING",
+    "upstream_root_commit": "5bb2a4ea17c013eaadf96479c48a6dca4386f71b"
   },
-  "updated_at": "2026-09-12T14:47:00+08:00"
+  "updated_at": "2026-09-12T15:03:00+08:00"
 }

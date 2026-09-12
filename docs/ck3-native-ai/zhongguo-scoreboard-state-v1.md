@@ -139,6 +139,14 @@ received-self 面要求首行与 self character 都是当前玩家；received he
 
 查询通过 application-main fixed mailbox 的第十八槽 `permitted_executor_octodenary` 执行，步骤为 `query-zhongguo-scoreboard-state-v1`。动作 transport 使用独立第二十二槽 `permitted_executor_duovigintary`，不会覆盖只读查询槽。响应绑定：
 
+2026-09-12 的 R511 实机首次调用证明该查询与所有 gameplay primitive
+共享 `type="execute_step"` 外层消息。旧 state mailbox 解析器误写为
+`type="command"`，导致已发布 capability 对真实 Python 请求恒定返回
+malformed；同文件族的 action parser 已正确使用 `execute_step`。修复只校正
+transport discriminator，不改变 capability、字段或 ABI，并由独立 mailbox
+parser 回归覆盖。R511 在输入前终止，因此它是 bridge/harness RED，不是
+记分板业务结果。
+
 - exact build 与 adapter/consumer identity；
 - connection generation 与 query sequence；
 - request nonce；

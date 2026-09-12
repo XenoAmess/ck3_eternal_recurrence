@@ -128,3 +128,27 @@ SHA-256 `9BF4EBE74FFF076A40F1D1E5A67121A39EE72D147181034C157DB62538567845`.
 Managed cleanup is GREEN at SHA-256
 `1566C40EA86A2782808C7AB2919E23919602E9A40571723D42409C241493E23F`;
 current round R509 and old round R508 are terminated, with CK3 count `0`.
+
+## R510/R511 frontend-first capture RED
+
+The corrected plan bound `Frontend -> -loadsave=autosave`. New round R510/PID
+`59056` reached authenticated Frontend and terminated before new round R511/PID
+`8872` became the only live CK3 process. R511 completed all 303 loader callbacks,
+passed loader gate `EEA51CA5...87EDE`, paused-seed gate `F170E385...6FB2`, and
+paused readiness `F5F09FF2...F6745`. The recorder then started after the gameplay
+HUD appeared.
+
+The first read-only `query-zhongguo-scoreboard-state-v1` failed before any
+gameplay input. Python sent the bridge's common `type="execute_step"` envelope,
+while this one native parser still required `type="command"`; the adjacent
+scoreboard action parser already required `execute_step`. This is preserved as
+`HARNESS_RED / business NOT_EVALUATED / lifecycle GREEN`. Report
+`DCC2F209...A0F26` and cleanup `DAABE7C6...76C55` bind the failure and prove both
+R510 and R511 terminated with CK3 count `0`.
+
+The retained 2.03-second MKV `B326E844...C9B82` contains no completed evidence
+gate and contributes **0** raw spans. The source fix changes only the state
+request discriminator and adds one parser regression executable; that focused
+test is GREEN. Because native DLL bytes change, same-frame retry is forbidden.
+P2 raw footage remains `0/8` and the next capture requires a newly built DLL and
+a new CK3 round.

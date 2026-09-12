@@ -304,7 +304,7 @@ bool ParseZhongguoScoreboardStateRequestV1(
   output = {};
   if (!HasExactControlFields(json)) return false;
   std::string_view raw;
-  if (!FindRawField(json, "type", raw) || raw != "\"command\"" ||
+  if (!FindRawField(json, "type", raw) || raw != "\"execute_step\"" ||
       !FindRawField(json, "protocol_version", raw) || raw != "1" ||
       !FindRawField(json, "step", raw) ||
       raw != "\"query-zhongguo-scoreboard-state-v1\"" ||

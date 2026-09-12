@@ -1,12 +1,12 @@
 {
   "schema": "xar.project-delivery-state-source",
   "schema_version": 1,
-  "updated_at": "2026-09-12T14:47:00+08:00",
+  "updated_at": "2026-09-12T15:03:00+08:00",
   "repository_provenance": {
     "root_live_source": "git status --branch --porcelain=v2 plus git ls-remote origin",
     "root_live_state_not_git_cached": true,
     "root_last_completed_transaction": {
-      "commit": "b8f44fbcf174b60d716ebe058f3dc8110c12fd12",
+      "commit": "5bb2a4ea17c013eaadf96479c48a6dca4386f71b",
       "upstream_ref": "origin/master",
       "sync_result": "GREEN"
     },
@@ -106,7 +106,7 @@
       }
     },
     "raw_capture": {
-      "phase2_fact_quota_calibration": {"status": "PENDING", "artifact_refs": []},
+      "phase2_fact_quota_calibration": {"status": "PENDING", "artifact_refs": [], "red_index_ids": ["R511-scoreboard-state-request-type-mismatch"]},
       "phase2_receipt_appeal_pip": {"status": "PENDING", "artifact_refs": []},
       "phase2_manager_governance": {"status": "PENDING", "artifact_refs": []},
       "phase2_promotion_compensation": {"status": "PENDING", "artifact_refs": []},
@@ -156,14 +156,14 @@
   },
   "t2": {
     "priority": "T2",
-    "result": "GREEN",
-    "upstream_root_commit": "502020bfbb1309a5bbfe6359365c4df91e3caf7a",
+    "result": "PENDING",
+    "upstream_root_commit": "5bb2a4ea17c013eaadf96479c48a6dca4386f71b",
     "compat_commit": "a2785cce459b03b1c17cf00f197392686697a5d2",
-    "public_interface_delta": "NO_PUBLIC_DELTA_OPERATOR_INTEGER_CONTRACT_STRICTENED",
+    "public_interface_delta": "NO_SCHEMA_DELTA_SCOREBOARD_EXECUTE_STEP_CONFORMANCE_FIX_PENDING_SYNC",
     "live_sync_source": "repository_provenance.t2_live_source"
   },
   "live_red_source": {
-    "status": "CLEAR_AFTER_R509_HARNESS_RED_FIX",
+    "status": "R511_BRIDGE_PROTOCOL_RED_SOURCE_FIXED_REBUILD_PENDING",
     "active": null,
     "unresolved_count": 0,
     "inventory_source": "operator_get_status",
@@ -181,9 +181,9 @@
       "lifecycle_result": "GREEN",
       "cleanup_ref": {
         "base": "workspace_root",
-        "locator": "_runtime/p2-capture-r509-r515-b8f44fb-20260912/capture/cell/09_phase2_native_session_cleanup.json",
-        "bytes": 24606,
-        "sha256": "1566C40EA86A2782808C7AB2919E23919602E9A40571723D42409C241493E23F"
+        "locator": "_runtime/p2-capture-r510-r517-5bb2a4e-20260912/capture/cell/09_phase2_native_session_cleanup.json",
+        "bytes": 30848,
+        "sha256": "DAABE7C60D2C37A197B88C8C34A3B0F8F1186F5B00982D81073643E9D6376C55"
       }
     }
   },
@@ -336,6 +336,67 @@
           "locator": "_runtime/p2-capture-r509-r515-b8f44fb-20260912/capture/cell/09_phase2_native_session_cleanup.json",
           "bytes": 24606,
           "sha256": "1566C40EA86A2782808C7AB2919E23919602E9A40571723D42409C241493E23F"
+        }
+      }
+    },
+    {
+      "red_id": "R511-scoreboard-state-request-type-mismatch",
+      "output_name": "r511-scoreboard-state-request-type-mismatch.json",
+      "red_class": "HARNESS_RED",
+      "axes": {
+        "business_result": "NOT_EVALUATED",
+        "harness_result": "RED",
+        "lifecycle_result": "GREEN"
+      },
+      "blocking_scope": "p2.raw_capture.phase2_fact_quota_calibration",
+      "failure_stage": "initial_capture_scoreboard_state_query",
+      "reason_code": "scoreboard_state_parser_expected_command_instead_of_execute_step",
+      "last_verified_stage": "loader_gate_and_paused_seed_green_recorder_started",
+      "input_attempted": false,
+      "same_frame_retry_eligible": false,
+      "absolute_game_deadline": null,
+      "binding": {
+        "frontend_round": "R510",
+        "gameplay_round": "R511",
+        "gameplay_pid_at_failure": 8872,
+        "ck3_build": "1.19.0.6",
+        "ck3_exe_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+        "bridge_dll_sha256": "65C14FE284EA99036DBFBA950B3BE38C3656FA2D064017FD8A38FF21B32B61EF",
+        "source_commit": "5bb2a4ea17c013eaadf96479c48a6dca4386f71b",
+        "plan_sha256": "74F1D9F466A45DB708E09CF2A3AA725DE240896B16961CF4056E0CF81A65A0EA",
+        "launch_sequence": "Frontend warm-up then -loadsave=autosave"
+      },
+      "minimal_diff": {
+        "python_request_type": "execute_step",
+        "native_state_parser_expected": "command",
+        "native_action_parser_expected": "execute_step",
+        "impact": "the first read-only scoreboard query was rejected before choreography or any gameplay input",
+        "scoped_fix": "make the state parser accept the existing execute_step transport and add one parser regression target",
+        "public_contract": "existing protocol fields and capability names are unchanged"
+      },
+      "detail_artifact_ref": {
+        "base": "workspace_root",
+        "locator": "_runtime/p2-capture-r510-r517-5bb2a4e-20260912/capture/report.json",
+        "bytes": 4370204,
+        "sha256": "DCC2F20926002A059EC48F2917DEC1853BEFF906FB29BA79B445F14017BA0F26"
+      },
+      "resolution": {
+        "status": "SOURCE_PATCHED_FOCUSED_TEST_GREEN_DLL_REBUILD_AND_LIVE_RETRY_PENDING",
+        "current_blocker": true,
+        "focused_test": "xar_ck3_zhongguo_scoreboard_state_v1_mailbox_test GREEN",
+        "requires_new_dll_and_round": true,
+        "cleanup_ref": {
+          "base": "workspace_root",
+          "locator": "_runtime/p2-capture-r510-r517-5bb2a4e-20260912/capture/cell/09_phase2_native_session_cleanup.json",
+          "bytes": 30848,
+          "sha256": "DAABE7C60D2C37A197B88C8C34A3B0F8F1186F5B00982D81073643E9D6376C55"
+        },
+        "retained_failed_take": {
+          "base": "workspace_root",
+          "locator": "_runtime/p2-capture-r510-r517-5bb2a4e-20260912/capture/cell/promo/raw/zg361-promo-live-full-take-01.mkv",
+          "bytes": 3614150,
+          "sha256": "B326E8446334A9D868528A0F074AD18AA6F3E786E517A55D5002C4C56DFC9B82",
+          "usable_span_count": 0
         }
       }
     }
