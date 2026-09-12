@@ -74,7 +74,42 @@ class BuildAutoUpgradeBuildingsReleaseTests(unittest.TestCase):
         self.assertEqual(loaded, manifest)
         self.assertEqual(loaded["product_id"], release.PRODUCT_ID)
         self.assertEqual(loaded["mod_version"], "1.19.0")
+        self.assertIsNone(loaded["git_tag"])
         self.assertIsNone(loaded["workshop_item_id"])
+
+    def test_workshop_identity_rejects_upstream_item(self) -> None:
+        with self.assertRaisesRegex(ValueError, "must not reuse"):
+            release.build_release(
+                self.source,
+                self.root / "upstream-id",
+                REVISION,
+                release.UPSTREAM_WORKSHOP_ITEM_ID,
+            )
+
+    def test_workshop_cache_accepts_only_launcher_descriptor_injection(self) -> None:
+        item_id = "4000000000"
+        staging, manifest_path, _, manifest = release.build_release(
+            self.source,
+            self.root / "canonical" / release.PRODUCT_ID,
+            REVISION,
+            item_id,
+            git_tag=release.product_tag("1.19.0"),
+        )
+        self.assertEqual(manifest["workshop_item_id"], item_id)
+        cache = self.root / "cache"
+        shutil.copytree(staging, cache)
+        descriptor = cache / "descriptor.mod"
+        descriptor.write_bytes(
+            descriptor.read_bytes().rstrip(b"\r\n")
+            + f'\nremote_file_id="{item_id}"'.encode("ascii")
+        )
+        self.assertEqual(
+            release.verify_manifest(cache, manifest_path, workshop_cache=True),
+            len(release.RUNTIME_FILES),
+        )
+        descriptor.write_bytes(descriptor.read_bytes() + b'\nremote_file_id="4000000001"')
+        with self.assertRaisesRegex(ValueError, "descriptor.mod"):
+            release.verify_manifest(cache, manifest_path, workshop_cache=True)
 
 
 if __name__ == "__main__":
