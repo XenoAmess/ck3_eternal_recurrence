@@ -23,3 +23,13 @@ provider 已正确先定位 `zg361_scoreboard_window`，再从该真实 window �
 - timeline：`784E12A8E3D3C066DC6DF8FD867049C71C174E87BA204F12253252D1F9C5291D`
 
 失败 take 无 clean span，P2 素材仍为 `0/8`。R516/R517 与所有旧轮次均已终止，CK3/FFmpeg 为零。下一次实际启动为 R518 Frontend warm-up、R519 gameplay；只复验计分板 source/open/visible 链并继续八段录制。
+
+## 落地与新构建
+
+- 根仓修复：`183907537ccf2425e8c3ff06de781c3b19f56d5e`，已与 `origin/master` 同步。
+- Release bridge：`C4D3B0867CFA1F1337A79CA48324E3DF5E9EF4D657F9D52EDA14D0E2690C6C11`。
+- injector：`1C7B547728DB7C9F9AAA79AC5A8E10FE4EF797E81A85B38EF4A1E901924A7F1F`。
+- focused test：`C1946DFDCA9229D0C68EB2D2B97A67566A16D3C6910F2B700E7ED33051689B14`，exit `0`。
+- build receipt：`8FA23926A39E03871576896E7618DF53F1C516C2C4FADCE453E2D5536D0A7D6C`；全部 candidate switches 为 OFF。
+
+构建未启动 CK3、未消耗轮次。下一次有界 attempt 从该 DLL 和同步后的 root HEAD 建立。
