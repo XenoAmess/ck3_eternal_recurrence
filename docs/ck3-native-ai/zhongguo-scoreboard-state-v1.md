@@ -33,7 +33,7 @@
 
 这里调用的是 runtime direct-child instance lookup。GUI definition lookup、脚本变量存在、源文件中出现 `name = ...` 都不能替代它。R515 已保存一次真实 paused state 请求并越过 GUI root，但在 ACL 解码处因 received 列表与 self dossier 被错误捆绑而返回 unavailable；尚无 open/close/switch 的 GREEN artifact，因此 scoreboard provider 仍不能标为 production-live。
 
-同一 owner/root ABI 已取得一条用途受限的旁证：B3 promotion R12 的 custom/native direct-child probes 全为 none；promotion-only candidate 随后在 direct lookup miss 时从 `owner+0xD0` 做固定名字、depth 64 的 descendant fallback，R13/R14 均越过最初 progress query。scoreboard 同样先 exact top-level 定位 window，再在 window 内按固定 allowlist 做 bounded descendant lookup。R517 证明原 `4096` traversal 上限小于当前 4,347 个 GUI block 的产品定义规模，查询因此返回 `widget_not_instantiated`；上限按当前产品树最小提高到 `8192`。这仍不构成 scoreboard live 或公开动作能力。
+同一 owner/root ABI 已取得一条用途受限的旁证：B3 promotion R12 的 custom/native direct-child probes 全为 none；promotion-only candidate 随后在 direct lookup miss 时从 `owner+0xD0` 做固定名字、depth 64 的 descendant fallback，R13/R14 均越过最初 progress query。scoreboard 同样先 exact top-level 定位 window，再在 window 内按固定 allowlist 做 bounded descendant lookup。R517/R519 证明旧的逐名字 DFS 即使从 `4096` 调到 `8192`，仍小于 4,782 个源码 block 加 2,110 次 template expansion 的真实实例规模。最终实现改为一次遍历、一次读取每个 runtime name，并在同一趟中收集 15 个固定身份；总上限为 65,536、depth 仍为 64。它比十四次重复扫描更便宜，也不放宽名字或 root。该修复仍不构成 scoreboard live 或公开动作能力。
 
 固定 runtime allowlist 有 15 项。下表概括四个外层对象；三个入口、三个 outer tab、三个 list-page witness 和 backdrop/header close 也以编译期固定名字读取：
 
@@ -168,10 +168,11 @@ received owner `32904`、cycle `2`，但 `zg361_sb_self_char` 及全部 self dos
 新 DLL 的真实 paused query 和 open 动作仍待下一轮验证。
 
 R517 使用上述 DLL 后不再返回 `acl_inconsistent`，而是进入 widget 完整性门禁并返回
-`widget_not_instantiated`。当前 `zg361_scoreboard.gui` 有 7,604 行、4,347 个
-widget-like blocks；固定 DFS 上限仍是早期的 4,096，因此对页面后段的 allowlist
-名字无法完成扫描。修复只把同一固定 window 子树的 traversal 上限提高到 8,192；
-名字 allowlist、depth 64、child count 4,096、动作目标和所有 ACL 规则不变。
+`widget_not_instantiated`。R519 将上限调到 8,192 后仍得到同一 RED，排除了简单二倍
+上限足够的假设。当前 `zg361_scoreboard.gui` 有 7,604 行、4,782 个源码 block，另含
+2,110 次 `using` template expansion；逐名字扫描既重复又无法用源码行数准确估计运行树。
+最终修复在同一固定 window 子树做一次最多 65,536 节点的收集，并在 15 项全找到时
+立即停止。名字 allowlist、depth 64、child count 4,096、动作目标和所有 ACL 规则不变。
 
 - exact build 与 adapter/consumer identity；
 - connection generation 与 query sequence；

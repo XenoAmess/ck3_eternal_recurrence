@@ -13,6 +13,7 @@
 #include <string>
 #include <string_view>
 #include <utility>
+#include <vector>
 
 namespace xar::ck3_11906 {
 namespace {
@@ -21,7 +22,8 @@ constexpr std::int64_t kFixedScale = 100'000;
 constexpr std::int32_t kMaximumComponents = 4'194'304;
 constexpr std::int32_t kMaximumVariableRows = 65'536;
 constexpr std::int32_t kMaximumWidgetChildren = 4'096;
-constexpr std::size_t kMaximumWidgetTraversal = 8'192;
+constexpr std::size_t kMaximumWidgetTraversal = 4'096;
+constexpr std::size_t kMaximumScoreboardWidgetTraversal = 65'536;
 constexpr std::size_t kMaximumWidgetDepth = 64;
 constexpr std::int32_t kMaximumModalReceivers = 256;
 constexpr std::size_t kStorageSlotsOffset = 0x20;
@@ -600,12 +602,17 @@ bool ReadAbiString(const ZhongguoScoreboardAccessV1 &access,
   return true;
 }
 
+bool ReadWidgetName(const ZhongguoScoreboardAccessV1 &access, void *widget,
+                    std::string &name) noexcept {
+  const void *name_object = nullptr;
+  return CheckedAddress(widget, kZhongguoWidgetNameOffset, name_object) &&
+         ReadAbiString(access, name_object, name);
+}
+
 bool WidgetNameEquals(const ZhongguoScoreboardAccessV1 &access, void *widget,
                       std::string_view expected) noexcept {
-  const void *name_object = nullptr;
   std::string name;
-  return CheckedAddress(widget, kZhongguoWidgetNameOffset, name_object) &&
-         ReadAbiString(access, name_object, name) && name == expected;
+  return ReadWidgetName(access, widget, name) && name == expected;
 }
 
 void *FindDescendant(const ZhongguoScoreboardAccessV1 &access, void *root,
@@ -646,6 +653,71 @@ void *FindDescendant(const ZhongguoScoreboardAccessV1 &access, void *root,
     }
   }
   return nullptr;
+}
+
+bool FindScoreboardDescendants(
+    const ZhongguoScoreboardAccessV1 &access, void *root,
+    std::array<void *, kZhongguoScoreboardStateV1WidgetNames.size()> &widgets)
+    noexcept {
+  if (root == nullptr) return false;
+  struct Pending {
+    void *widget = nullptr;
+    std::size_t depth = 0;
+  };
+  try {
+    std::vector<Pending> pending;
+    pending.reserve(kMaximumScoreboardWidgetTraversal);
+    pending.push_back({root, 0});
+    std::size_t matched = static_cast<std::size_t>(std::count_if(
+        widgets.begin(), widgets.end(), [](void *widget) {
+          return widget != nullptr;
+        }));
+    std::size_t visited = 0;
+    while (!pending.empty() &&
+           visited++ < kMaximumScoreboardWidgetTraversal) {
+      const auto current = pending.back();
+      pending.pop_back();
+      std::string name;
+      if (ReadWidgetName(access, current.widget, name)) {
+        for (std::size_t index = 0; index < widgets.size(); ++index) {
+          if (widgets[index] == nullptr &&
+              name == kZhongguoScoreboardStateV1WidgetNames[index]) {
+            widgets[index] = current.widget;
+            ++matched;
+            break;
+          }
+        }
+        if (matched == widgets.size()) return true;
+      }
+      if (current.depth >= kMaximumWidgetDepth) continue;
+      void **children = nullptr;
+      std::int32_t count = 0;
+      if (!ReadValue(access, current.widget, kZhongguoWidgetChildrenOffset,
+                     children) ||
+          !ReadValue(access, current.widget,
+                     kZhongguoWidgetChildCountOffset, count) ||
+          count < 0 || count > kMaximumWidgetChildren ||
+          (count != 0 && children == nullptr) ||
+          pending.size() + static_cast<std::size_t>(count) >
+              kMaximumScoreboardWidgetTraversal) {
+        return false;
+      }
+      for (std::int32_t index = 0; index < count; ++index) {
+        void *child = nullptr;
+        if (!ReadValue(access, children,
+                       static_cast<std::size_t>(index) * sizeof(void *),
+                       child)) {
+          return false;
+        }
+        if (child != nullptr) {
+          pending.push_back({child, current.depth + 1});
+        }
+      }
+    }
+    return true;
+  } catch (...) {
+    return false;
+  }
 }
 
 bool ResolveGuiContextAndOwner(
@@ -753,13 +825,7 @@ bool FindFixedWidgets(
     resolved.root = nullptr;
     return true;
   }
-  for (std::size_t index = 0; index < resolved.widgets.size(); ++index) {
-    if (index != 1) {
-      resolved.widgets[index] = FindDescendant(
-          access, window, kZhongguoScoreboardStateV1WidgetNames[index]);
-    }
-  }
-  return true;
+  return FindScoreboardDescendants(access, window, resolved.widgets);
 }
 
 bool ReadLocalVisible(const ZhongguoScoreboardAccessV1 &access, void *widget,
