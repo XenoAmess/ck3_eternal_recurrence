@@ -2,18 +2,18 @@
   "audit": {
     "ambiguous_definition_count": 0,
     "caller_candidate_file_count": 82,
-    "caller_candidate_reference_count": 527,
-    "definition_file_count": 73,
-    "external_caller_event_count": 152,
+    "caller_candidate_reference_count": 528,
+    "definition_file_count": 74,
+    "external_caller_event_count": 153,
     "missing_definition_count": 0,
     "namespace_mismatch_count": 0,
-    "registered_event_count": 187,
+    "registered_event_count": 188,
     "same_file_only_caller_event_count": 35,
-    "unique_definition_count": 187
+    "unique_definition_count": 188
   },
   "ck3_build": "1.19.0.6",
   "ck3_exe_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
-  "dataset_sha256": "FE3A1D8472B14A6901117243A21E7A97E5AD60EE685D03057D5F17BC568F43DC",
+  "dataset_sha256": "BF55DED8CEA75FC900DD41963FB285C272D9914E058492935953518A84A78BD5",
   "events": {
     "adultery.0002": {
       "caller_candidate_resolution": "same-definition-file-only",
@@ -5437,6 +5437,24 @@
         "relative_path": "events/dlc/tgp/tgp_movement_events.txt"
       },
       "namespace": "tgp_movement_events"
+    },
+    "tgp_travel_events.0030": {
+      "caller_candidate_resolution": "external-definition-file",
+      "caller_candidates": [
+        {
+          "column": 9,
+          "file_sha256": "7E433A0D6969E09CFED1D9DC50FB5276D944354024D6D2E045B314355F41040C",
+          "kind": "exact-token-lexical-candidate",
+          "line": 934,
+          "relative_path": "common/on_action/travel_on_actions.txt"
+        }
+      ],
+      "definition": {
+        "file_sha256": "42B8B1E56C029054FBC4E0B3964511A980D9B5053C47BFF980CD3F5F3924DB37",
+        "line": 311,
+        "relative_path": "events/travel_events/tgp_travel_events.txt"
+      },
+      "namespace": "tgp_travel_events"
     },
     "trait_specific.4001": {
       "caller_candidate_resolution": "external-definition-file",

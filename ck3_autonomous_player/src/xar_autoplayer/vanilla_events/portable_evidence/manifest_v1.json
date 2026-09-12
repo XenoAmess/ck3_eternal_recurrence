@@ -3312,6 +3312,38 @@
       "sha256": "40d68d6306d3e180e40efbc80d5879da825ab111f7ec0870682ab414f2ad5fe4"
     },
     {
+      "blob_bytes": 5371,
+      "blob_path": "blobs/42b8b1e56c029054fbc4e0b3964511a980d9b5053c47bff980cd3f5f3924db37.gz",
+      "blob_sha256": "f1c1bfa3d6db9160edd5dad837499394526050462d85e7667e1ce4c2d145a0db",
+      "bytes": 33292,
+      "evidence_id": "42b8b1e56c029054fbc4e0b3964511a980d9b5053c47bff980cd3f5f3924db37",
+      "kind": "source_definition",
+      "media_type": "text/plain; charset=utf-8",
+      "references": [
+        {
+          "caller_candidate_resolution": null,
+          "event_definition_key": "tgp_travel_events.0030",
+          "logical_path": "events/travel_events/tgp_travel_events.txt",
+          "origin": "ck3_game",
+          "provenance": "generated-definition-index",
+          "role": "event_definition",
+          "source_column": null,
+          "source_line": 311
+        },
+        {
+          "caller_candidate_resolution": null,
+          "event_definition_key": "tgp_travel_events.0030",
+          "logical_path": "events/travel_events/tgp_travel_events.txt",
+          "origin": "ck3_game",
+          "provenance": "manually-reviewed-analysis-source",
+          "role": "analysis_source",
+          "source_column": null,
+          "source_line": null
+        }
+      ],
+      "sha256": "42b8b1e56c029054fbc4e0b3964511a980d9b5053c47bff980cd3f5f3924db37"
+    },
+    {
       "blob_bytes": 16612,
       "blob_path": "blobs/435a81cce584d57ccd0568e81b6bbe49d09af44b309407487e0f69460a6b627a.gz",
       "blob_sha256": "41551cfe7ae39116bff3d0f907227b0a9dfb466818bed34bc13a236f44c5aeec",
@@ -8548,6 +8580,26 @@
       "references": [
         {
           "caller_candidate_resolution": "external-definition-file",
+          "event_definition_key": "tgp_travel_events.0030",
+          "logical_path": "common/on_action/travel_on_actions.txt",
+          "origin": "ck3_game",
+          "provenance": "lexical-caller-candidate-not-proven-runtime-caller",
+          "role": "caller_candidate",
+          "source_column": 9,
+          "source_line": 934
+        },
+        {
+          "caller_candidate_resolution": null,
+          "event_definition_key": "tgp_travel_events.0030",
+          "logical_path": "common/on_action/travel_on_actions.txt",
+          "origin": "ck3_game",
+          "provenance": "manually-reviewed-analysis-source",
+          "role": "analysis_source",
+          "source_column": null,
+          "source_line": null
+        },
+        {
+          "caller_candidate_resolution": "external-definition-file",
           "event_definition_key": "travel_completion_event.1000",
           "logical_path": "common/on_action/travel_on_actions.txt",
           "origin": "ck3_game",
@@ -11976,6 +12028,28 @@
       "sha256": "c63c02464dde0473c3a7943a803d122107c19e36733bbb446fbc6d25afa724a4"
     },
     {
+      "blob_bytes": 49266,
+      "blob_path": "blobs/c6ac0b6ee128ab6c9fa6209e090c92f936546908d97d03ca53fb4bdd1191680c.gz",
+      "blob_sha256": "6b887ecd7d20d49a48d3a943f798cbb179972edbad295b92b0e8dee4fe9b8ba3",
+      "bytes": 1003744,
+      "evidence_id": "c6ac0b6ee128ab6c9fa6209e090c92f936546908d97d03ca53fb4bdd1191680c",
+      "kind": "observation_artifact",
+      "media_type": "application/json",
+      "references": [
+        {
+          "caller_candidate_resolution": null,
+          "event_definition_key": "tgp_travel_events.0030",
+          "logical_path": "_runtime/p2-capture-r553-r560-471ded2-20260912/capture/cell/manager-stage10/stage10-player-subject.json",
+          "origin": "runtime",
+          "provenance": "captured-observation-artifact",
+          "role": "artifact",
+          "source_column": null,
+          "source_line": null
+        }
+      ],
+      "sha256": "c6ac0b6ee128ab6c9fa6209e090c92f936546908d97d03ca53fb4bdd1191680c"
+    },
+    {
       "blob_bytes": 12797,
       "blob_path": "blobs/c8413c1de5eb1b29bc37a6f5a8a730290499a8fae75578dbc6c085639b5c6248.gz",
       "blob_sha256": "0260932a65978753bbda9c61ecf223b52e854add1d57bdeed1efb1f6f0a0fe12",
@@ -14541,13 +14615,13 @@
   "schema": "xar.ck3.vanilla-event-portable-evidence-manifest",
   "schema_version": 1,
   "statistics": {
-    "evidence": 290,
-    "generated_definition_references": 187,
-    "lexical_caller_candidate_references": 527,
-    "manually_reviewed_analysis_source_references": 283,
-    "observation_artifact_references": 108,
-    "observation_artifacts": 92,
-    "references": 1105,
-    "source_definitions": 198
+    "evidence": 292,
+    "generated_definition_references": 188,
+    "lexical_caller_candidate_references": 528,
+    "manually_reviewed_analysis_source_references": 285,
+    "observation_artifact_references": 109,
+    "observation_artifacts": 93,
+    "references": 1110,
+    "source_definitions": 199
   }
 }

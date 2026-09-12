@@ -17,6 +17,10 @@ import zg361_phase2_promotion_source_production_entry as production
 from xar_autoplayer.vanilla_events.records_tgp_japan_yearly import (
     VANILLA_TGP_JAPAN_YEARLY_OBSERVATIONS,
 )
+from xar_autoplayer.vanilla_events.records_tgp_travel import (
+    VANILLA_TGP_TRAVEL_ANALYSIS,
+    VANILLA_TGP_TRAVEL_OBSERVATIONS,
+)
 from test_zg361_phase2_manager_recovery_interrupts import (
     _context,
     _manager_contract,
@@ -25,6 +29,62 @@ from test_zg361_phase2_manager_recovery_interrupts import (
 
 
 class ManagerRecoveryTgpInterruptTests(unittest.TestCase):
+    def test_chinese_roadside_poetry_uses_terminal_stress_route(self) -> None:
+        event_key = "tgp_travel_events.0030"
+        contract = _manager_contract(event_key, player=27181)
+        context = _context(
+            event_key=event_key,
+            instance_id=21,
+            date_raw=53155992,
+            player=27181,
+            scopes=[
+                _scope("travel_plan", "travel_plan"),
+                _scope("poem_province", "province"),
+            ],
+            native_option_indices=(0, 1),
+        )
+        checks = production._known_interrupt_checks(
+            snapshot={
+                "date_raw": 53155992,
+                "active_event": {"option_count": 2},
+            },
+            event={"event_instance_id": 21},
+            context=context,
+            event_key=event_key,
+            contract=contract,
+        )
+
+        self.assertTrue(all(checks.values()), checks)
+        self.assertEqual(contract["selected_option_number"], 2)
+        self.assertEqual(contract["selected_native_option_index"], 1)
+        self.assertEqual(
+            contract["occurrence_policy"],
+            "repeatable-within-product-observation-window",
+        )
+
+        missing_poem_province = copy.deepcopy(context)
+        missing_poem_province["saved_scopes"].pop()
+        drift_checks = production._known_interrupt_checks(
+            snapshot={
+                "date_raw": 53155992,
+                "active_event": {"option_count": 2},
+            },
+            event={"event_instance_id": 21},
+            context=missing_poem_province,
+            event_key=event_key,
+            contract=contract,
+        )
+        self.assertFalse(drift_checks["scope:poem_province:type"])
+        self.assertFalse(drift_checks["saved_scope_names_exact"])
+        self.assertFalse(drift_checks["saved_scope_count"])
+
+        analysis = VANILLA_TGP_TRAVEL_ANALYSIS[event_key]
+        self.assertEqual(analysis["definition_lines"], "311-496")
+        self.assertIn("spends no resources", analysis["safe_option_rationale"])
+        observations = VANILLA_TGP_TRAVEL_OBSERVATIONS[event_key]["exemplars"]
+        self.assertEqual([row["run"] for row in observations], ["R555"])
+        self.assertFalse(observations[0]["selection_attempted"])
+
     def test_japanese_shrine_yearly_event_uses_terminal_health_route(self) -> None:
         event_key = "tgp_japan_yearly_events.1030"
         contract = _manager_contract(event_key, player=32904)
