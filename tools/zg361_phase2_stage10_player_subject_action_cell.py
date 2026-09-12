@@ -1,12 +1,13 @@
 #!/usr/bin/env python3
 """Collect the player-manager Stage 10 terminal after one real B1 publication.
 
-The cell starts from a paused, product-only player manager.  An exact-build
-campaign-root query must prove that the player is a celestial duke-or-higher
-with one immediate superior.  The shared production navigator then uses the
-real review-now action, drains the authored B1 publication, and pauses on the
-new ``zg361mg.120`` player-subject terminal.  No player switch, fixture, or
-console input belongs to this route.
+The cell starts from a paused, product-only player manager whose active B1 is
+already at its frozen near-publication boundary.  An exact-build campaign-root
+query must prove that the player is a celestial duke-or-higher with one
+immediate superior.  The shared production navigator drains the remaining B1
+publication tail and pauses on the new ``zg361mg.120`` player-subject terminal.
+No player switch, fixture, console input, or fresh B1 opening belongs to this
+route.
 
 No process lifecycle is owned here.  A failed attempt is not retried in place;
 the caller may restore the immutable source and start a new bounded attempt.
@@ -49,7 +50,7 @@ from zhongguo_phase2_workforce_action import (  # noqa: E402
 
 
 STAGE10_EVENT = "zg361mg.120"
-MAX_ADVANCE_DAYS = 30
+MAX_ADVANCE_DAYS = 45
 ENTRY_TIMEOUT_SECONDS = 600.0
 PROGRESS_SAMPLE_DAYS = 1
 
@@ -195,7 +196,7 @@ def run_stage10_player_subject(
     expected_owner_character_id: int,
     navigator: Navigator = entry.enter_promotion_source_checkpoint_v1,
 ) -> dict[str, object]:
-    """Run one 30-day maximum player B1-publication to Stage 10 slice."""
+    """Run one 45-day maximum near-publication B1 to Stage 10 slice."""
 
     if not isinstance(request_nonce, str) or re.fullmatch(
         r"[A-Za-z0-9][A-Za-z0-9._:-]{0,47}", request_nonce

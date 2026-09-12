@@ -417,3 +417,9 @@ R430 已用 fresh production tree 在 148 游戏日内证明 cycle `8/8` 退役�
 ## R468/R469 Stage 11 短验收
 
 R468/R469 验证了 `f14220f` 的只读快照重绑修复，但同一来源到 10 游戏日绝对截止仍未建立 Stage 11 owner/case/portfolio 身份，现已永久淘汰该输入的 Stage 11 用途。P1 保持 `6/9`，P2 继续锁定。详见 [R468/R469 Stage 11 短验收与来源淘汰](r468-r469-stage11-source-disqualification-2026-09-12.md)。
+
+## R487/R488 Stage 10 固定尾链边界 RED 与修正
+
+R487/R488 首次正式动作在旧 30 游戏日绝对边界保留 RED：11 次观测均为 B1 active，Central/PP 均未开启，`.120` 未出现。冻结 save 的通用离线队列检查确认来源已经位于 B1 `D+299`，下一事件 `zg361b1.102` 在次日；此后产品还要执行 `.103 +30d`、公共合账、经理公示回调和五级 F 票据。因此该失败来自验收边界短于固定产品尾链，不是新的 mod 玩法缺陷。
+
+现行 action 上限修为 45 游戏日；source receipt 升为 v4，同时绑定 R488 live B1 初态、exact checkpoint 的 `.102 +1d` 队列和固定尾链说明。修复只做聚焦 normal/optimized 测试 `10/10`，不扩成长期 runner。当前两轮均已终止，CK3 与 Operator MCP 为零；P1 仍为 `8/9`，P2 仍锁定。完整证据见 [R487/R488 Stage 10 边界 RED 与修正](r487-r488-stage10-bound-red-and-correction-2026-09-12.md)。
