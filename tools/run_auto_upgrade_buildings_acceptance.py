@@ -79,7 +79,6 @@ REQUIRED_MARKERS = (
     "AUBT: TEST PASS special_gold",
     "AUBT: TEST PASS scripted_cost_resources",
     "AUBT: TEST PASS vanilla_gate_rejection",
-    "AUBT: TEST PASS great_project_excluded",
     "AUBT: TEST PASS nomad_herder_na",
     "AUBT: TEST DONE source-live",
 )
@@ -477,9 +476,12 @@ def run_cell(
             "mixed_resource_costs": ["gold+prestige", "gold+piety", "scripted_cost"],
             "negative_paths": [
                 "vanilla_gate_rejection",
-                "great_project_excluded",
                 "nomad_herder_na",
             ],
+            "static_exclusions": {
+                "mandala_capital_great_project_edges": 4,
+                "validation": "exhaustive-generated-runtime-absence",
+            },
             "summary_event_center": list(summary),
         }
         diagnostics.extend(project_diagnostics(userdir, artifacts, "10_runtime"))

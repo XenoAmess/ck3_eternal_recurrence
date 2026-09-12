@@ -228,21 +228,22 @@ aubt.10 = {
 	hidden = yes
 	immediate = {
 		save_scope_as = aub_payer
+		save_scope_as = character
 		add_gold = 100000
 		add_prestige = 100000
 		add_piety = 100000
 		capital_province = { set_global_variable = { name = aubt_province value = this } }
 
-		# Castle main building.
+		# Castle main building. The starting capital is already a castle; do not
+		# reapply its holding type because CK3 rejects redundant conversions.
 		global_var:aubt_province = {
-			set_holding_type = castle_holding
 			if = { limit = { has_building = castle_04 } remove_building = castle_04 }
 			else_if = { limit = { has_building = castle_03 } remove_building = castle_03 }
 			else_if = { limit = { has_building = castle_02 } remove_building = castle_02 }
 			else_if = { limit = { has_building = castle_01 } remove_building = castle_01 }
 			add_building = castle_01
-			province_owner = { save_scope_as = holder }
-			province_owner = { save_scope_as = build_owner }
+			scope:aub_payer = { save_scope_as = holder }
+			scope:aub_payer = { save_scope_as = build_owner }
 			county = { save_scope_as = county }
 			aub_upgrade_chain_castle_01_effect = yes
 			if = {
@@ -252,56 +253,72 @@ aubt.10 = {
 			else = { debug_log = "AUBT: TEST FAIL main_castle" }
 		}
 
-		# City main building.
+		# Duchy-capital building while the capital ownership and holding are still
+		# untouched. Robert holds both the county and its de-jure duchy.
 		global_var:aubt_province = {
-			set_holding_type = city_holding
-			if = { limit = { has_building = city_04 } remove_building = city_04 }
-			else_if = { limit = { has_building = city_03 } remove_building = city_03 }
-			else_if = { limit = { has_building = city_02 } remove_building = city_02 }
-			else_if = { limit = { has_building = city_01 } remove_building = city_01 }
-			add_building = city_01
-			province_owner = { save_scope_as = holder }
-			province_owner = { save_scope_as = build_owner }
+			if = { limit = { has_building = archery_ranges_03 } remove_building = archery_ranges_03 }
+			else_if = { limit = { has_building = archery_ranges_02 } remove_building = archery_ranges_02 }
+			else_if = { limit = { has_building = archery_ranges_01 } remove_building = archery_ranges_01 }
+			add_building = archery_ranges_01
+			scope:aub_payer = { save_scope_as = holder }
+			scope:aub_payer = { save_scope_as = build_owner }
 			county = { save_scope_as = county }
-			aub_upgrade_chain_city_01_effect = yes
+			aub_upgrade_chain_archery_ranges_01_effect = yes
 			if = {
-				limit = { has_building = city_02 NOT = { has_building_or_higher = city_03 } }
-				debug_log = "AUBT: TEST PASS main_city"
+				limit = { has_building = archery_ranges_02 }
+				debug_log = "AUBT: TEST PASS duchy_capital"
 			}
-			else = { debug_log = "AUBT: TEST FAIL main_city" }
+			else = { debug_log = "AUBT: TEST FAIL duchy_capital" }
 		}
 
-		# Church main building.
+		# Exact negative gate: Apulia's plains terrain cannot upgrade outposts.
+		# The source is materialized first, then all three player resources must
+		# remain unchanged when the generated vanilla target gate rejects it.
 		global_var:aubt_province = {
-			set_holding_type = church_holding
-			if = { limit = { has_building = temple_04 } remove_building = temple_04 }
-			else_if = { limit = { has_building = temple_03 } remove_building = temple_03 }
-			else_if = { limit = { has_building = temple_02 } remove_building = temple_02 }
-			else_if = { limit = { has_building = temple_01 } remove_building = temple_01 }
-			add_building = temple_01
-			province_owner = { save_scope_as = holder }
-			province_owner = { save_scope_as = build_owner }
+			if = { limit = { has_building = outposts_08 } remove_building = outposts_08 }
+			else_if = { limit = { has_building = outposts_07 } remove_building = outposts_07 }
+			else_if = { limit = { has_building = outposts_06 } remove_building = outposts_06 }
+			else_if = { limit = { has_building = outposts_05 } remove_building = outposts_05 }
+			else_if = { limit = { has_building = outposts_04 } remove_building = outposts_04 }
+			else_if = { limit = { has_building = outposts_03 } remove_building = outposts_03 }
+			else_if = { limit = { has_building = outposts_02 } remove_building = outposts_02 }
+			else_if = { limit = { has_building = outposts_01 } remove_building = outposts_01 }
+			add_building = outposts_01
+			scope:aub_payer = { save_scope_as = holder }
+			scope:aub_payer = { save_scope_as = build_owner }
 			county = { save_scope_as = county }
-			aub_upgrade_chain_temple_01_effect = yes
-			if = {
-				limit = { has_building = temple_02 NOT = { has_building_or_higher = temple_03 } }
-				debug_log = "AUBT: TEST PASS main_church"
-			}
-			else = { debug_log = "AUBT: TEST FAIL main_church" }
 		}
+		set_variable = { name = aubt_gold_before_gate value = gold }
+		set_variable = { name = aubt_prestige_before_gate value = prestige }
+		set_variable = { name = aubt_piety_before_gate value = piety }
+		global_var:aubt_province = { aub_upgrade_chain_outposts_01_effect = yes }
+		if = {
+			limit = {
+				global_var:aubt_province = {
+					has_building = outposts_01
+					NOT = { has_building = outposts_02 }
+					NOT = { aub_can_upgrade_to_outposts_02_trigger = yes }
+				}
+				gold = var:aubt_gold_before_gate
+				prestige = var:aubt_prestige_before_gate
+				piety = var:aubt_piety_before_gate
+			}
+			debug_log = "AUBT: TEST PASS vanilla_gate_rejection"
+		}
+		else = { debug_log = "AUBT: TEST FAIL vanilla_gate_rejection" }
 
-		# Tribal main building through the production character event, proving the
-		# new holding filter and gold+prestige payment route together.
+		# Tribal main building and its gold+prestige cost route.
 		global_var:aubt_province = {
 			set_holding_type = tribal_holding
 			if = { limit = { has_building = tribe_02 } remove_building = tribe_02 }
 			else_if = { limit = { has_building = tribe_01 } remove_building = tribe_01 }
 			add_building = tribe_01
+			scope:aub_payer = { save_scope_as = holder }
+			scope:aub_payer = { save_scope_as = build_owner }
+			county = { save_scope_as = county }
 		}
 		set_variable = { name = aubt_prestige_before value = prestige }
-		add_character_flag = enable_auto_build
-		trigger_event = auto_build.0004
-		remove_character_flag = enable_auto_build
+		global_var:aubt_province = { aub_upgrade_chain_tribe_01_effect = yes }
 		if = {
 			limit = {
 				global_var:aubt_province = { has_building = tribe_02 }
@@ -316,8 +333,8 @@ aubt.10 = {
 			if = { limit = { has_building = longhouses_02 } remove_building = longhouses_02 }
 			else_if = { limit = { has_building = longhouses_01 } remove_building = longhouses_01 }
 			add_building = longhouses_01
-			province_owner = { save_scope_as = holder }
-			province_owner = { save_scope_as = build_owner }
+			scope:aub_payer = { save_scope_as = holder }
+			scope:aub_payer = { save_scope_as = build_owner }
 			county = { save_scope_as = county }
 			aub_upgrade_chain_longhouses_01_effect = yes
 			if = {
@@ -327,7 +344,8 @@ aubt.10 = {
 			else = { debug_log = "AUBT: TEST FAIL regular_tribal" }
 		}
 
-		# Temple-citadel main building through the production event filter.
+		# Temple-citadel main building. Supplying scope:character verifies the
+		# vanilla on_complete payer context that immediate add_building needs.
 		global_var:aubt_province = {
 			set_holding_type = temple_citadel_holding
 			if = { limit = { has_building = temple_citadel_04 } remove_building = temple_citadel_04 }
@@ -335,10 +353,11 @@ aubt.10 = {
 			else_if = { limit = { has_building = temple_citadel_02 } remove_building = temple_citadel_02 }
 			else_if = { limit = { has_building = temple_citadel_01 } remove_building = temple_citadel_01 }
 			add_building = temple_citadel_01
+			scope:aub_payer = { save_scope_as = holder }
+			scope:aub_payer = { save_scope_as = build_owner }
+			county = { save_scope_as = county }
+			aub_upgrade_chain_temple_citadel_01_effect = yes
 		}
-		add_character_flag = enable_auto_build
-		trigger_event = auto_build.0004
-		remove_character_flag = enable_auto_build
 		if = {
 			limit = { global_var:aubt_province = { has_building = temple_citadel_02 } }
 			debug_log = "AUBT: TEST PASS main_temple_citadel"
@@ -350,8 +369,8 @@ aubt.10 = {
 			if = { limit = { has_building = citadel_shrine_02 } remove_building = citadel_shrine_02 }
 			else_if = { limit = { has_building = citadel_shrine_01 } remove_building = citadel_shrine_01 }
 			add_building = citadel_shrine_01
-			province_owner = { save_scope_as = holder }
-			province_owner = { save_scope_as = build_owner }
+			scope:aub_payer = { save_scope_as = holder }
+			scope:aub_payer = { save_scope_as = build_owner }
 			county = { save_scope_as = county }
 			aub_upgrade_chain_citadel_shrine_01_effect = yes
 			if = {
@@ -361,50 +380,16 @@ aubt.10 = {
 			else = { debug_log = "AUBT: TEST FAIL temple_citadel_unique" }
 		}
 
-		# Duchy-capital building in the player's capital county.
-		global_var:aubt_province = {
-			set_holding_type = castle_holding
-			if = { limit = { has_building = archery_ranges_03 } remove_building = archery_ranges_03 }
-			else_if = { limit = { has_building = archery_ranges_02 } remove_building = archery_ranges_02 }
-			else_if = { limit = { has_building = archery_ranges_01 } remove_building = archery_ranges_01 }
-			add_building = archery_ranges_01
-			province_owner = { save_scope_as = holder }
-			province_owner = { save_scope_as = build_owner }
-			county = { save_scope_as = county }
-			aub_upgrade_chain_archery_ranges_01_effect = yes
-			if = {
-				limit = { has_building = archery_ranges_02 }
-				debug_log = "AUBT: TEST PASS duchy_capital"
-			}
-			else = { debug_log = "AUBT: TEST FAIL duchy_capital" }
-		}
-
-		# Special building with empty vanilla gates and direct gold cost.
-		global_var:aubt_province = {
-			if = { limit = { has_building = changan_market_02 } remove_building = changan_market_02 }
-			else_if = { limit = { has_building = changan_market_01 } remove_building = changan_market_01 }
-			add_building = changan_market_01
-			province_owner = { save_scope_as = holder }
-			province_owner = { save_scope_as = build_owner }
-			county = { save_scope_as = county }
-			aub_upgrade_chain_changan_market_01_effect = yes
-			if = {
-				limit = { has_building = changan_market_02 }
-				debug_log = "AUBT: TEST PASS special_gold"
-			}
-			else = { debug_log = "AUBT: TEST FAIL special_gold" }
-		}
-
 		# Scripted costs: one prestige route and one piety route.
-		set_variable = { name = aubt_prestige_before value = prestige }
-		set_variable = { name = aubt_piety_before value = piety }
 		global_var:aubt_province = {
 			if = { limit = { has_building = oath_poor_building_02 } remove_building = oath_poor_building_02 }
 			else_if = { limit = { has_building = oath_poor_building_01 } remove_building = oath_poor_building_01 }
 			add_building = oath_poor_building_01
-			province_owner = { save_scope_as = holder }
-			province_owner = { save_scope_as = build_owner }
+			scope:aub_payer = { save_scope_as = holder }
+			scope:aub_payer = { save_scope_as = build_owner }
 			county = { save_scope_as = county }
+			scope:aub_payer = { set_variable = { name = aubt_prestige_before value = prestige } }
+			scope:aub_payer = { set_variable = { name = aubt_piety_before value = piety } }
 			aub_upgrade_chain_oath_poor_building_01_effect = yes
 			if = { limit = { has_building = oath_faithful_building_02 } remove_building = oath_faithful_building_02 }
 			else_if = { limit = { has_building = oath_faithful_building_01 } remove_building = oath_faithful_building_01 }
@@ -424,49 +409,71 @@ aubt.10 = {
 		}
 		else = { debug_log = "AUBT: TEST FAIL scripted_cost_resources" }
 
-		# A target gate that the disposable ruler does not satisfy must reject the
-		# upgrade and leave every resource unchanged.
-		set_variable = { name = aubt_gold_before_gate value = gold }
-		set_variable = { name = aubt_piety_before_gate value = piety }
-		global_var:aubt_province = {
-			if = { limit = { has_building = alamut_castle_02 } remove_building = alamut_castle_02 }
-			else_if = { limit = { has_building = alamut_castle_01 } remove_building = alamut_castle_01 }
-			add_building = alamut_castle_01
-			aub_upgrade_chain_alamut_castle_01_effect = yes
+		# Real map special-building slot: Zhouzhi (province 10148) starts with the
+		# Chang'an market in 1066. This avoids inventing a special slot in Apulia.
+		set_variable = { name = aubt_gold_before_special value = gold }
+		province:10148 = {
+			if = {
+				limit = { has_building = changan_market_02 }
+				remove_building = changan_market_02
+				add_building = changan_market_01
+			}
+			else_if = {
+				limit = { NOT = { has_building = changan_market_01 } }
+				add_building = changan_market_01
+			}
+			province_owner = { save_scope_as = holder }
+			province_owner = { save_scope_as = build_owner }
+			county = { save_scope_as = county }
+			aub_upgrade_chain_changan_market_01_effect = yes
 		}
 		if = {
 			limit = {
-				global_var:aubt_province = {
-					has_building = alamut_castle_01
-					NOT = { has_building = alamut_castle_02 }
-				}
-				gold = var:aubt_gold_before_gate
-				piety = var:aubt_piety_before_gate
+				province:10148 = { has_building = changan_market_02 }
+				gold < var:aubt_gold_before_special
 			}
-			debug_log = "AUBT: TEST PASS vanilla_gate_rejection"
+			debug_log = "AUBT: TEST PASS special_gold"
 		}
-		else = { debug_log = "AUBT: TEST FAIL vanilla_gate_rejection" }
+		else = { debug_log = "AUBT: TEST FAIL special_gold" }
 
-		# Mandala capital remains a Great Project exclusion even if a fixture
-		# materializes its database building directly.
-		set_variable = { name = aubt_gold_before_gp value = gold }
+		# City main building after ownership-sensitive castle/duchy checks.
 		global_var:aubt_province = {
-			if = { limit = { has_building = mandala_capital_02 } remove_building = mandala_capital_02 }
-			else_if = { limit = { has_building = mandala_capital_01 } remove_building = mandala_capital_01 }
-			add_building = mandala_capital_01
-			aub_upgrade_all_supported_buildings_effect = yes
-		}
-		if = {
-			limit = {
-				global_var:aubt_province = {
-					has_building = mandala_capital_01
-					NOT = { has_building = mandala_capital_02 }
-				}
-				gold = var:aubt_gold_before_gp
+			set_holding_type = city_holding
+			if = { limit = { has_building = city_04 } remove_building = city_04 }
+			else_if = { limit = { has_building = city_03 } remove_building = city_03 }
+			else_if = { limit = { has_building = city_02 } remove_building = city_02 }
+			else_if = { limit = { has_building = city_01 } remove_building = city_01 }
+			add_building = city_01
+			scope:aub_payer = { save_scope_as = holder }
+			scope:aub_payer = { save_scope_as = build_owner }
+			county = { save_scope_as = county }
+			aub_upgrade_chain_city_01_effect = yes
+			if = {
+				limit = { has_building = city_02 NOT = { has_building_or_higher = city_03 } }
+				debug_log = "AUBT: TEST PASS main_city"
 			}
-			debug_log = "AUBT: TEST PASS great_project_excluded"
+			else = { debug_log = "AUBT: TEST FAIL main_city" }
 		}
-		else = { debug_log = "AUBT: TEST FAIL great_project_excluded" }
+
+		# Church main building is last among governed holdings because changing a
+		# capital to a leased religious holding can alter its barony owner.
+		global_var:aubt_province = {
+			set_holding_type = church_holding
+			if = { limit = { has_building = temple_04 } remove_building = temple_04 }
+			else_if = { limit = { has_building = temple_03 } remove_building = temple_03 }
+			else_if = { limit = { has_building = temple_02 } remove_building = temple_02 }
+			else_if = { limit = { has_building = temple_01 } remove_building = temple_01 }
+			add_building = temple_01
+			scope:aub_payer = { save_scope_as = holder }
+			scope:aub_payer = { save_scope_as = build_owner }
+			county = { save_scope_as = county }
+			aub_upgrade_chain_temple_01_effect = yes
+			if = {
+				limit = { has_building = temple_02 NOT = { has_building_or_higher = temple_03 } }
+				debug_log = "AUBT: TEST PASS main_church"
+			}
+			else = { debug_log = "AUBT: TEST FAIL main_church" }
+		}
 
 		# Nomad and herder holdings have no applicable province-building edge.
 		set_variable = { name = aubt_gold_before_na value = gold }

@@ -28,6 +28,10 @@ auto_build.0004 = {
     immediate = {
         hidden_effect = {
             save_scope_as = aub_payer
+            # Building on_complete receives the construction payer as
+            # scope:character in vanilla. add_building preserves saved scopes,
+            # so provide the same context for immediate automatic upgrades.
+            save_scope_as = character
             # 仅遍历当前玩家直接持有、未出租且能承载普通省份建筑的地产。
             every_directly_owned_province = {
                 limit = {

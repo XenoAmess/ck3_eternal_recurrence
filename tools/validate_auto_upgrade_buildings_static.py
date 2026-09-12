@@ -178,6 +178,7 @@ def validate(game_root: Path = DEFAULT_GAME_ROOT) -> tuple[list[str], bool]:
         "every_directly_owned_province = {",
         "has_ongoing_construction = no",
         "save_scope_as = aub_payer",
+        "save_scope_as = character",
         "save_scope_as = holder",
         "save_scope_as = build_owner",
         "has_holding_type = castle_holding",
@@ -331,7 +332,6 @@ def validate(game_root: Path = DEFAULT_GAME_ROOT) -> tuple[list[str], bool]:
         "AUBT: TEST PASS special_gold",
         "AUBT: TEST PASS scripted_cost_resources",
         "AUBT: TEST PASS vanilla_gate_rejection",
-        "AUBT: TEST PASS great_project_excluded",
         "AUBT: TEST PASS nomad_herder_na",
         "AUBT: TEST DONE source-live",
     ):
@@ -343,11 +343,15 @@ def validate(game_root: Path = DEFAULT_GAME_ROOT) -> tuple[list[str], bool]:
         "change_government = celestial_government",
         "has_treasury = yes",
         "change_government = feudal_government",
+        "province:10148 = {",
+        "save_scope_as = character",
     ):
         if fragment not in fixture_script:
             errors.append(f"acceptance resource-route contract missing: {fragment}")
     if re.search(r"(?m)^\s*remove_gold\s*=", fixture_script):
         errors.append("acceptance fixture uses unsupported CK3 1.19 remove_gold effect")
+    if "mandala_capital_" in fixture_script:
+        errors.append("Great Project database buildings must not be materialized as fixture slots")
 
     if not WORKSHOP_DESCRIPTION.is_file():
         errors.append("Auto Upgrade Buildings Workshop description is missing")
