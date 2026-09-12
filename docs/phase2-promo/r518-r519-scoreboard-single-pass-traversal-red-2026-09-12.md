@@ -42,3 +42,19 @@ DLL、新轮次中验证。
 终止，CK3/FFmpeg 为零。下一次实际启动为新轮次 R520 Frontend warm-up、R521
 gameplay，只复验 scoreboard source/open/visible 首链；若仍失败，先把缺失 widget
 identity 写入证据，再决定下一项修改，不再扩大遍历上限或长跑重试。
+
+## 同步构建
+
+根仓候选以 commit `95dcc005efddc6d9ef6defa42e98682c31f539fc` 推送并确认与
+`origin/master` 相等。随后从该 commit 建立全新 Release 构建：
+
+- build：`Z:\\ck3_mod_rewrite\\_runtime\\native-builds\\p2-r520-r521-scoreboard-single-pass-95dcc00-v2-20260912`
+- bridge：2,599,936 bytes，`C6F2B132D3A854353126BBA278355B8D833366CD96E7F4885821496484808F16`
+- injector：39,936 bytes，`D3A3641E854B07BFBC097E4515E175C14535E5ADEC87878BF26B6C8F3E429474`
+- focused test：125,952 bytes，`E2B9FDEC545703855640DFD3D84238CA7A6498787F813AB96D6D29F73A80BD92`，exit `0`
+- build receipt：5,383 bytes，`51A9CF3F6195632F79E4A28638D1A44004B8E8A9751A9DC4FB48C3E2CBE1B874`
+- 27 个 `XAR_CK3_ENABLE_*` 均为 `OFF`
+
+receipt 保留了两个编译前 operator RED：首次 shell 外层引号错误；其次 helper 选择了
+ambient Cygwin CMake。两者均未启动 CK3；最终 `v2` 使用 VS 自带 CMake/Ninja 绝对路径，
+完成 124 个 compile/link step 和唯一的 scoreboard 定向测试。构建未消耗轮次。
