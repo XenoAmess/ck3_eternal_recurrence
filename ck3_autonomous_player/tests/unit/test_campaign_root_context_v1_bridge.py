@@ -774,9 +774,18 @@ class CampaignRootContextV1McpTests(unittest.IsolatedAsyncioTestCase):
             listed = await client.list_tools()
             names = {tool.name for tool in listed.tools}
             self.assertIn("ck3_query_campaign_root_context_v1", names)
+            self.assertIn("ck3_search_entities_v1", names)
             result = await client.call_tool(
                 "ck3_query_campaign_root_context_v1",
                 {"expected_revision": PUBLIC_REVISION},
+            )
+            directory_result = await client.call_tool(
+                "ck3_search_entities_v1",
+                {
+                    "expected_revision": PUBLIC_REVISION,
+                    "relation_filter": "adjacent_external_province_holder",
+                    "limit": 1,
+                },
             )
 
         self.assertFalse(result.is_error)
@@ -787,6 +796,15 @@ class CampaignRootContextV1McpTests(unittest.IsolatedAsyncioTestCase):
         self.assertEqual(payload["build"]["version"], "1.19.0.6")
         self.assertEqual(
             payload["binding"]["expected_revision"], PUBLIC_REVISION
+        )
+        self.assertFalse(directory_result.is_error)
+        directory = directory_result.structured_content
+        self.assertEqual(directory["schema"], "xar.ck3.entity-directory/v1")
+        self.assertEqual(directory["total_matching_count"], 2)
+        self.assertEqual(len(directory["entities"]), 1)
+        self.assertEqual(
+            directory["entities"][0]["relationship_roles"],
+            ["adjacent_external_province_holder"],
         )
 
 

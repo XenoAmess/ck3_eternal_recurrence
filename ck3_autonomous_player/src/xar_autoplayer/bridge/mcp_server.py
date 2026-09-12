@@ -386,6 +386,22 @@ def _ck3_query_campaign_root_context_v1(
     )
 
 
+def _ck3_search_entities_v1(
+    service: GameplayBridgeService,
+    expected_revision: int,
+    relation_filter: str = "any",
+    after_character_id: int | None = None,
+    limit: int = 50,
+) -> dict[str, object]:
+    """Search current-player relationship identities with keyset pagination."""
+    return service.search_entities_v1(
+        expected_revision=expected_revision,
+        relation_filter=relation_filter,
+        after_character_id=after_character_id,
+        limit=limit,
+    )
+
+
 def _ck3_query_zhongguo_case_snapshot_v1(
     service: GameplayBridgeService,
     case_kind: str,
@@ -1097,6 +1113,22 @@ def create_server(driver: GameplayBridgeDriver):
         return _ck3_query_campaign_root_context_v1(
             service,
             expected_revision,
+        )
+
+    @server.tool()
+    def ck3_search_entities_v1(
+        expected_revision: int,
+        relation_filter: str = "any",
+        after_character_id: int | None = None,
+        limit: int = 50,
+    ) -> dict[str, object]:
+        """Find self, direct vassal or adjacent-holder CharacterIDs."""
+        return _ck3_search_entities_v1(
+            service,
+            expected_revision,
+            relation_filter,
+            after_character_id,
+            limit,
         )
 
     @server.tool()

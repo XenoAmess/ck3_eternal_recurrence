@@ -82,6 +82,7 @@ from .campaign_root_context_contract import (
     QUERY_CAMPAIGN_ROOT_CONTEXT_V1_STEP,
     normalize_campaign_root_context_v1,
 )
+from .entity_directory_contract import build_entity_directory_v1
 from .zhongguo_case_snapshot_contract import (
     QUERY_ZHONGGUO_CASE_SNAPSHOT_V1_CAPABILITY,
     QUERY_ZHONGGUO_CASE_SNAPSHOT_V1_STEP,
@@ -1846,6 +1847,26 @@ class GameplayBridgeService:
             ],
             "campaign_root_context": normalized,
         }
+
+    def search_entities_v1(
+        self,
+        *,
+        expected_revision: int,
+        relation_filter: str = "any",
+        after_character_id: int | None = None,
+        limit: int = 50,
+    ) -> dict[str, object]:
+        """Search stable relationship identities from one campaign-root read."""
+
+        root = self.query_campaign_root_context_v1(
+            expected_revision=expected_revision
+        )
+        return build_entity_directory_v1(
+            root,
+            relation_filter=relation_filter,
+            after_character_id=after_character_id,
+            limit=limit,
+        )
 
     def query_zhongguo_b1_cycle_snapshot_v1(
         self,

@@ -1211,3 +1211,18 @@ strategic-power primitive；余下入口只有 policy-level campaign dominance�
 - Status remains `static-ready / live=false` and global G2 remains `0/8`. One future already-required paused G2 session may verify both new
   identity vectors together; no dedicated long run is warranted. The next M1 gap is canonical holder-to-title/top-liege entity mapping plus
   minimum ruler/realm/succession alerts and the turn-bundle aggregate.
+
+## 2026-09-13: G2-M1 relationship entity-directory identity search static-ready
+
+- Candidate discovery no longer requires a caller to pre-supply the player, direct-vassal or adjacent-holder IDs. The independent read-only
+  `ck3_search_entities_v1` MCP tool consumes exactly one already-gated campaign-root query, then applies a declarative relationship filter,
+  complete CharacterID ordering and keyset pagination.
+- Each row exposes component-level `available`, `unavailable` or `not_applicable` state. Self components reuse the same source frame;
+  direct-vassal immediate/top lieges are exact consequences of the native enumeration rule; related title/capital and adjacent-holder lieges
+  remain unavailable until the next native batch reader exists. Directory readiness therefore covers identity/relationship consumption and
+  reports title/realm component completeness separately.
+- Contract/service/official MCP SDK focused tests pass normal/optimized `19/19`. This package adds no native mailbox, DLL, mutation, CK3 round,
+  recording or desktop input. It remains `static-ready / live=false`; G2-M1 remains in progress and global G2 remains `0/8`.
+- The next construction input is a same-frame full-generation batch resolution of related CharacterIDs to primary title and native
+  immediate/top liege. It will canonicalize boundary Province holders to realm identity before minimum alerts and the core turn bundle are
+  considered ready.
