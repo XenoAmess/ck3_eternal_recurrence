@@ -756,9 +756,16 @@ class TestReclaimTheMotherlandContract(unittest.TestCase):
 
         effect_text, effect_file = read_script(LOYALTY_EFFECTS)
         resolver = direct_block(effect_file, "rmtm_resolve_pro_hegemon_loyalty_effect")
-        self.assertTrue(has_assignment(resolver, "chance", "var:rmtm_loyalty_score"))
+        self.assertTrue(
+            has_assignment(
+                resolver, "chance", "rmtm_pro_hegemon_loyalty_score_value"
+            )
+        )
         self.assertIn("is_ai = no", effect_text)
-        self.assertIn("var:rmtm_loyalty_score >= 50", effect_text)
+        self.assertIn("rmtm_pro_hegemon_loyalty_score_value >= 50", effect_text)
+        self.assertNotIn("var:rmtm_loyalty_score", effect_text)
+        self.assertNotIn("var:rmtm_loyalty_outcome", effect_text)
+        self.assertIn("remove_from_list = rmtm_defecting_direct_vassals", effect_text)
         self.assertGreaterEqual(effect_text.count("name = rmtm_loyalty_outcome"), 6)
         self.assertIn("rmtm_final_loyal_direct_vassals", effect_text)
         self.assertIn("rmtm_defecting_direct_vassals", effect_text)

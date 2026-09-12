@@ -28,7 +28,7 @@ rmtm_resolve_pro_hegemon_loyalty_effect = {
 		if = {
 			limit = { is_ai = no }
 			if = {
-				limit = { var:rmtm_loyalty_score >= 50 }
+				limit = { rmtm_pro_hegemon_loyalty_score_value >= 50 }
 				set_variable = { name = rmtm_loyalty_outcome value = flag:stay }
 				set_variable = { name = rmtm_loyalty_reason value = flag:weighed_allegiance }
 				add_to_list = rmtm_final_loyal_direct_vassals
@@ -40,19 +40,18 @@ rmtm_resolve_pro_hegemon_loyalty_effect = {
 			}
 		}
 		else = {
+			# Establish the failure branch first, then let one direct score-weighted
+			# roll replace it atomically. The event-tooltip simulator cannot safely
+			# infer variables assigned by an earlier effect in this same chain.
+			set_variable = { name = rmtm_loyalty_outcome value = flag:defect }
+			set_variable = { name = rmtm_loyalty_reason value = flag:weighed_ambition }
+			add_to_list = rmtm_defecting_direct_vassals
 			random = {
-				chance = var:rmtm_loyalty_score
+				chance = rmtm_pro_hegemon_loyalty_score_value
 				set_variable = { name = rmtm_loyalty_outcome value = flag:stay }
-			}
-			if = {
-				limit = { var:rmtm_loyalty_outcome = flag:stay }
 				set_variable = { name = rmtm_loyalty_reason value = flag:weighed_allegiance }
+				remove_from_list = rmtm_defecting_direct_vassals
 				add_to_list = rmtm_final_loyal_direct_vassals
-			}
-			else = {
-				set_variable = { name = rmtm_loyalty_outcome value = flag:defect }
-				set_variable = { name = rmtm_loyalty_reason value = flag:weighed_ambition }
-				add_to_list = rmtm_defecting_direct_vassals
 			}
 		}
 	}
