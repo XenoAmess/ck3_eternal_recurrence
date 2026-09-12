@@ -53,7 +53,7 @@ export bundle 或 publication receipt。
 |---|---|---|---|
 | `phase2_minimal_recap` | 冷开场 generated card | 中英标题清晰；明确是叙事提问，不是 gameplay evidence | 用一期素材、生成卡或旁白冒充二期实机证据 |
 | `phase2_fact_quota_calibration` | 场 1；span `phase2_fact_quota_calibration`；producer `facts-quota-calibration` | 真实产品面上的事实档与配额档可区分；校准事件 identity-ready；动作后榜单/query revision 可见变化 | 由 schema、ACK 或单独 revision 推断持久化校准债 |
-| `phase2_manager_governance` | 场 2；span `phase2_manager_governance`；producer `manager-governance` | 真实经理治理事件 identity-ready；AI-owned case 达到 provider-observed terminal business state | 用等待时间或 ACK 代替终态；把“上司反评”说成下属给上司打分 |
+| `phase2_manager_governance` | 场 2；span `phase2_manager_governance`；producer `manager-governance` | 玩家经理真实 B1 公示到达 `zg361mg.120`；直属上级 owner、玩家经理 subject 与 F `state=5 / active=false` 同帧成立 | 用等待时间或 ACK 代替终态；把“上司反评”说成下属给上司打分 |
 | `phase2_receipt_appeal_pip` | 场 3，场 6 最多 20 秒回扣；span `phase2_receipt_appeal_pip`；producer `receipts-appeals-pip` | 真实告身/PIP surface；owner/subject/cycle/case 在回应中一致；所选状态由 provider 在动作后观察到 | 把按钮点击说成改判/退款完成；无同案证据却宣称跨周期持续 |
 | `phase2_promotion_compensation` | 场 4；span `phase2_promotion_compensation`；producer `promotion-compensation` | 真实晋升选择和薪酬结果事件；两者绑定同一 frozen case | 一条成功分支证明全部失败/释放/长期薪酬语义 |
 | `phase2_hc_workforce` | 场 5；span `phase2_hc_workforce`；producer `hc-workforce` | A/B/C 使用同一 owner/subject case，来自 hash-identical checkpoint；no-opening 结果可见 | 把三分支剪成同一时间线；以页面缺失反推 no-opening；以 fixture 替代 managed span |

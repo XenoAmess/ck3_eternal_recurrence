@@ -349,6 +349,73 @@ class Phase2PromoRunnerPlumbingTests(unittest.TestCase):
         self.assertEqual(result["action_cell"], action_evidence)
         self.assertIn(capture.PROMOTION_HANDLER, driver.available_handlers())
 
+    def test_manager_span_uses_player_publication_source_and_retains_120(self) -> None:
+        service = mock.Mock()
+        service.snapshot.return_value = {"snapshot_id": "source"}
+        choreographer = mock.Mock()
+        choreographer.present_post_action_events.return_value = {
+            "result": "GREEN",
+            "event_definition_key": "zg361mg.120",
+        }
+        driver = capture._Phase2AcceptanceActionSpanDriver(
+            service, event_choreographer=choreographer
+        )
+        scenario = next(
+            item
+            for item in PHASE2_CAPTURE_SCENARIOS
+            if item.handler == "capture_manager_governance"
+        )
+        manager_source = {
+            "result": "GREEN",
+            "player_manager_character_id": 27181,
+            "owner_character_id": 36354,
+        }
+        context = SimpleNamespace(
+            seed_contract={},
+            manager_source_receipt=manager_source,
+            artifacts=TOOLS,
+        )
+        action_evidence = {
+            "result": "GREEN",
+            "p1_acceptance_evidence": {
+                "central_stage_10_terminal": {"result": "GREEN"}
+            },
+        }
+        with (
+            mock.patch.object(
+                capture,
+                "_phase2_paused_binding",
+                return_value={"player_character_id": 27181, "revision": 17},
+            ),
+            mock.patch.object(
+                capture,
+                "run_stage10_player_subject",
+                return_value=action_evidence,
+            ) as player_action,
+            mock.patch.object(
+                capture,
+                "run_phase2_ai_owned_case_gameplay_action_cell",
+            ) as stale_ai_action,
+            mock.patch.object(
+                capture,
+                "_phase2_promo_visible_scenario_surface",
+                return_value={"event_definition_key": "zg361mg.120"},
+            ),
+        ):
+            result = driver.run_span(scenario, context, {})
+
+        player_action.assert_called_once_with(
+            service,
+            evidence_directory=TOOLS / "manager-stage10",
+            request_nonce="zg361.phase2.promo.manager",
+            expected_player_manager_character_id=27181,
+            expected_owner_character_id=36354,
+            acknowledge_terminal=False,
+        )
+        stale_ai_action.assert_not_called()
+        choreographer.present_post_action_events.assert_called_once()
+        self.assertEqual(result["result"], "GREEN")
+
     def test_inline_loaded_seed_handoff_binds_owner_session_before_capture(self) -> None:
         snapshot = {
             "snapshot_id": "phase2-seed:10",

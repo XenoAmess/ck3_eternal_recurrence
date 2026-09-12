@@ -199,6 +199,7 @@ def run_stage10_player_subject(
     expected_owner_character_id: int,
     resume_progress: Mapping[str, object] | None = None,
     navigator: Navigator = entry.enter_promotion_source_checkpoint_v1,
+    acknowledge_terminal: bool = True,
 ) -> dict[str, object]:
     """Run one 120-day maximum near-publication B1 to Stage 10 slice."""
 
@@ -214,6 +215,8 @@ def run_stage10_player_subject(
     owner = _positive(expected_owner_character_id, "expected owner")
     if manager == owner:
         raise ValueError("Stage 10 player manager and owner must differ")
+    if not isinstance(acknowledge_terminal, bool):
+        raise TypeError("acknowledge_terminal must be a bool")
     directory = Path(evidence_directory)
     path = directory / "stage10-player-subject.json"
     state: dict[str, object] = {
@@ -370,8 +373,24 @@ def run_stage10_player_subject(
         state["terminal_checkpoint"] = _save(
             service, current, "Stage 10 terminal"
         )
-        state["terminal_acknowledgement"] = _ack_summary(service, context)
-        final = service.snapshot()
+        if acknowledge_terminal:
+            state["terminal_acknowledgement"] = _ack_summary(service, context)
+            final = service.snapshot()
+        else:
+            final = service.snapshot()
+            active_event = final.get("active_event")
+            if not (
+                isinstance(active_event, Mapping)
+                and active_event.get("instance_id")
+                == context.get("current_event_instance_id")
+                and _binding(final) == terminal_binding
+            ):
+                raise ValueError("Stage 10 terminal did not remain visible for capture")
+            state["terminal_acknowledgement"] = {
+                "acknowledged": False,
+                "reason": "promo_capture_surface_retained",
+                "action_ack_is_business_postcondition": False,
+            }
         if _binding(final)["player_character_id"] != manager:
             raise ValueError("Stage 10 acknowledgement changed the played manager")
 
@@ -388,6 +407,7 @@ def run_stage10_player_subject(
             "source_trigger": "real_player_b1_publication",
             "provider_observation": provider,
             "action_ack_is_business_postcondition": False,
+            "target_acknowledged": acknowledge_terminal,
         }
         state["p1_acceptance_evidence"] = {"central_stage_10_terminal": gate}
         state["terminal_binding"] = terminal_binding

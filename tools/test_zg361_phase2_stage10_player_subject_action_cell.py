@@ -269,6 +269,30 @@ class Stage10PlayerSubjectTests(unittest.TestCase):
                 "superior_owner_to_player_manager_subject",
             )
 
+    def test_promo_mode_retains_verified_terminal_without_acknowledgement(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            service = Service()
+            result = cell.run_stage10_player_subject(
+                service,
+                evidence_directory=Path(temporary),
+                request_nonce="fixture.stage10.promo",
+                expected_player_manager_character_id=MANAGER,
+                expected_owner_character_id=OWNER,
+                navigator=navigate_to_stage10,
+                acknowledge_terminal=False,
+            )
+
+            self.assertEqual(result["result"], "GREEN")
+            self.assertEqual(service.selections, [])
+            self.assertEqual(service.event_id, 12)
+            self.assertFalse(result["p1_acceptance_evidence"][
+                "central_stage_10_terminal"
+            ]["target_acknowledged"])
+            self.assertEqual(
+                result["terminal_acknowledgement"]["reason"],
+                "promo_capture_surface_retained",
+            )
+
     def test_contract_resume_retains_original_deadline_and_interrupts(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
             service = Service()

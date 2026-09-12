@@ -61,7 +61,7 @@ manifest 绑定的 checklist。审核人必须把最终会入片的每条 live c
 |---|---|---|---|
 | `phase2_fact_quota_calibration` / `facts-quota-calibration` | 事实档与配额档分别可读；校准事件身份明确；动作后榜单/查询 revision 变化 | 该真实案卷在校准后出现可观测修订 | schema/handler 存在就等于 live；未展示的跨周期校准债 |
 | `phase2_receipt_appeal_pip` / `receipts-appeals-pip` | 正式告身/PIP surface；owner、subject、cycle、case 四元组贯穿；所选状态由 provider 在动作后观测 | 同一案卷确实抵达画面展示的 response state | 所有申诉都会成功；未验证的 PIP 跨周期持续性 |
-| `phase2_manager_governance` / `manager-governance` | 真实 manager-governance 事件身份明确；AI-owned case 达到 provider-observed 业务终态 | 该经理案件抵达所示终态 | ACK 或等待时间等于连责；经理案必然直接改变主角评级 |
+| `phase2_manager_governance` / `manager-governance` | 玩家经理真实 B1 公示后出现 `zg361mg.120`；直属上级 owner、玩家经理 subject 与 F `state=5 / active=false` 同帧可核验 | 该玩家经理受到直属上级约束的 F 案件抵达所示终态 | ACK 或等待时间等于连责；经理案必然直接改变主角评级 |
 | `phase2_promotion_compensation` / `promotion-compensation` | 晋升选择与薪酬结果事件均可见，并绑定同一个 frozen case | 同一冻结案卷留下了画面所示选择和回执 | 预留名额保证晋升；没有同案证据便宣称职级/薪酬已兑现 |
 | `phase2_hc_workforce` / `hc-workforce` | A/B/C 从 hash-identical checkpoint 出发；owner/subject 相同；no-opening 明确可见 | 同一检查点存在三种受编制约束的分支结果 | 三个分支按时间连续发生；fixture 等于正式 live；已经穷尽全部情形 |
 | `phase2_projects_metrics` / `projects-metrics` | project-choice 事件身份明确；贡献/指标 result event 可见；动作后 provider observation | 画面中的项目选择产生了所示贡献/指标结果 | 静态 handler 已证明归属 live；相邻人物必然参与同一项目 |
@@ -82,4 +82,3 @@ producer key 的 reference closure、配置/overlay/tool 版本和输出 basenam
 
 最终候选路径必须以 `deliverable/zhongguo-361-phase2-character-led.mp4` 结尾。外部发布仍需独立 publication
 receipt；本包不会上传、发布或授权购买。
-

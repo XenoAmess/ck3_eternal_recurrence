@@ -67,7 +67,7 @@ footage intake 的同一 canonical seed/save lineage、逐段可见观测、prov
 - canonical span：`phase2_manager_governance`
 - producer：`manager-governance`
 - 镜头问题：结果发布以后，经理是否也会留下自己的案卷？
-- 可用证据：真实 manager-governance 事件可见且 identity-ready；AI-owned case 抵达 provider-observed terminal business state。
+- 可用证据：真实玩家经理 B1 公示路线到达可见、identity-ready 的 `zg361mg.120`；同帧 provider 绑定直属上级 owner、玩家经理 subject 与 F `state=5 / active=false`。
 - 镜头设计：从榜单的“上司/经理”字段做视觉匹配，切到另一份明确编号的经理案卷；角标必须说明是否换了角色或案件。
 - 旁白语气锚点：“经理当然也有经理。组织结构的优点，是每个人都能在另一张表里成为被解释的对象。”
 - 不可推断：不能用等待时间或 command ACK 代替业务终态；若画面没有明确上司关系，只能说“经理案卷进入终态”，不能说

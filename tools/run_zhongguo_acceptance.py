@@ -145,6 +145,13 @@ from zg361_phase2_promotion_source_production_entry import (
     THIRD_WORKFORCE_SOURCE_SAMPLE_REQUIRED_FOR_READINESS,
     enter_promotion_source_checkpoint_v1,
 )
+from zg361_phase2_stage10_player_subject_action_cell import (
+    run_stage10_player_subject,
+)
+from zhongguo_phase2_manager_source_receipt import (
+    Phase2ManagerSourceReceiptError,
+    validate_phase2_manager_source_receipt,
+)
 from zg361_phase2_loader_stage import (
     LoaderStageError,
     wait_for_phase2_seed_loader_stage,
@@ -2196,6 +2203,59 @@ class _Phase2RealEventChoreographyService:
             "live_event_observation": observed,
         }
 
+    def _restore_player_manager_source(
+        self,
+        plan: Phase2EventSequencePlan,
+        context: Phase2PromoCaptureContext,
+    ) -> dict[str, object]:
+        source = context.manager_source_receipt
+        checkpoint = (
+            source.get("checkpoint") if isinstance(source, Mapping) else None
+        )
+        restore_method = getattr(
+            self.service, "restore_phase2_span_source_checkpoint_v1", None
+        )
+        if not (
+            isinstance(source, Mapping)
+            and source.get("result") == "GREEN"
+            and isinstance(checkpoint, Mapping)
+            and self._source_checkpoint_restore_available()
+            and callable(restore_method)
+        ):
+            raise Phase2EventChoreographyError(
+                "player_manager_source_unavailable",
+                {"plan": asdict(plan), "manager_source_receipt": source},
+            )
+        try:
+            restored = restore_method(
+                checkpoint_path=str(checkpoint["path"]),
+                expected_checkpoint_bytes=int(checkpoint["bytes"]),
+                expected_checkpoint_sha256=str(checkpoint["sha256"]),
+                expected_save_lineage_id=str(checkpoint["save_lineage_id"]),
+                expected_event_definition_key=str(
+                    source["expected_event_definition_key"]
+                ),
+                expected_owner_character_id=int(source["owner_character_id"]),
+                expected_player_character_id=int(
+                    source["player_manager_character_id"]
+                ),
+                expected_date_raw=int(source["date_raw"]),
+                allow_generic_character_rebind=False,
+                allow_fixture=False,
+                allow_console=False,
+            )
+        except (KeyError, TypeError, ValueError) as error:
+            raise Phase2EventChoreographyError(
+                "player_manager_source_restore_red",
+                {"plan": asdict(plan), "message": str(error)},
+            ) from error
+        if not isinstance(restored, Mapping) or restored.get("result") != "GREEN":
+            raise Phase2EventChoreographyError(
+                "player_manager_source_restore_red",
+                {"plan": asdict(plan), "restore": restored},
+            )
+        return dict(restored)
+
     def stage_span_source(
         self,
         plan: Phase2EventSequencePlan,
@@ -2205,6 +2265,9 @@ class _Phase2RealEventChoreographyService:
     ) -> Mapping[str, object]:
         if plan.handler in CHECKPOINT_REQUIRED_HANDLERS:
             return self._restore_registered_source(plan, context)
+        manager_restore = None
+        if plan.handler == "capture_manager_governance":
+            manager_restore = self._restore_player_manager_source(plan, context)
         if plan.source_kind == "event_free_map":
             snapshot = self.service.snapshot()
             binding = _phase2_paused_binding(
@@ -2231,6 +2294,7 @@ class _Phase2RealEventChoreographyService:
                 "no_active_event": True,
                 "binding": binding,
                 "scoreboard_modal_visible": False,
+                "player_manager_source_restore": manager_restore,
             }
 
         if not isinstance(plan.source_event, str):
@@ -2489,9 +2553,16 @@ class _Phase2AcceptanceActionSpanDriver:
             raise acceptance.RunnerError(
                 "phase-two promo action lacks its seed contract"
             )
-        owners = _phase2_domain_query_contract(
-            dict(context.seed_contract),
-            player_character_id=int(binding["player_character_id"]),
+        owners = (
+            _phase2_domain_query_contract(
+                dict(context.seed_contract),
+                player_character_id=int(binding["player_character_id"]),
+            )
+            if handler in {
+                "capture_receipt_appeal_pip",
+                "capture_hc_workforce",
+            }
+            else {}
         )
         if handler == "capture_receipt_appeal_pip":
             evidence = run_phase2_b2_pip_gameplay_action_cell(
@@ -2513,11 +2584,22 @@ class _Phase2AcceptanceActionSpanDriver:
                     {"scoreboard_action_cell": scoreboard_surface},
                 )
         elif handler == "capture_manager_governance":
-            evidence = run_phase2_ai_owned_case_gameplay_action_cell(
+            manager_source = context.manager_source_receipt
+            if not isinstance(manager_source, Mapping):
+                raise Phase2VisualHandlerError(
+                    "player_manager_source_unavailable", {"handler": handler}
+                )
+            evidence = run_stage10_player_subject(
                 self.service,
-                context.artifacts,
-                owner_character_id=owners["ai_owned_case_owner_character_id"],
-                subject_character_id=owners["ai_owned_case_subject_character_id"],
+                evidence_directory=context.artifacts / "manager-stage10",
+                request_nonce="zg361.phase2.promo.manager",
+                expected_player_manager_character_id=int(
+                    manager_source["player_manager_character_id"]
+                ),
+                expected_owner_character_id=int(
+                    manager_source["owner_character_id"]
+                ),
+                acknowledge_terminal=False,
             )
         elif handler == PROMOTION_HANDLER:
             evidence = run_promotion_compensation_gameplay_action_cell(
@@ -3223,6 +3305,7 @@ def run_phase2_promo_capture_scenario(
     native_session_binding: Mapping[str, object] | None = None,
     loader_gate: Mapping[str, object] | None = None,
     source_checkpoint_registry: Mapping[str, object] | None = None,
+    manager_source_receipt: Mapping[str, object] | None = None,
     scoreboard_surface_checkpoint_registry: Mapping[str, object] | None = None,
     capture_receipt_context: Mapping[str, object] | None = None,
     isolated_userdir: Path | None = None,
@@ -3302,6 +3385,7 @@ def run_phase2_promo_capture_scenario(
         ("native_session_binding", native_session_binding),
         ("loader_gate", loader_gate),
         ("source_checkpoint_registry", source_checkpoint_registry),
+        ("manager_source_receipt", manager_source_receipt),
         ("isolated_userdir", isolated_userdir),
         ("runtime_bootstrap", runtime_bootstrap),
         (
@@ -21393,6 +21477,7 @@ def run_cell(
     phase2_seed_install: dict[str, object] | None = None,
     phase2_seed_contract_path: Path | None = None,
     phase2_source_checkpoint_registry: Mapping[str, object] | None = None,
+    phase2_manager_source_receipt: Mapping[str, object] | None = None,
     phase2_scoreboard_surface_checkpoint_registry: (
         Mapping[str, object] | None
     ) = None,
@@ -21968,6 +22053,9 @@ def run_cell(
                     loader_gate=loader_gate_evidence,
                     source_checkpoint_registry=(
                         phase2_source_checkpoint_registry
+                    ),
+                    manager_source_receipt=(
+                        phase2_manager_source_receipt
                     ),
                     scoreboard_surface_checkpoint_registry=(
                         phase2_scoreboard_surface_checkpoint_registry
@@ -23103,6 +23191,7 @@ def main(
     bridge_pipe: str | None = None,
     phase2_seed_contract: str | None = None,
     phase2_source_checkpoint_registry: str | None = None,
+    phase2_manager_source_receipt: str | None = None,
     phase2_scoreboard_surface_checkpoint_registry: str | None = None,
     phase2_product_source: str | None = None,
     phase2_product_projection: str = "broad",
@@ -23190,6 +23279,10 @@ def main(
     ):
         raise acceptance.RunnerError(
             "a named phase-two product projection requires its manifest"
+        )
+    if phase2_manager_source_receipt is not None and not phase2_promo_capture:
+        raise acceptance.RunnerError(
+            "--phase2-manager-source-receipt requires --phase2-promo-capture"
         )
     if (
         phase2_product_source is not None
@@ -23349,6 +23442,42 @@ def main(
         if phase2_product_projection_manifest
         else None
     )
+    phase2_manager_source_receipt_value: Mapping[str, object] | None = None
+    if phase2_manager_source_receipt is not None:
+        if phase2_product_projection_manifest_path is None:
+            raise acceptance.RunnerError(
+                "manager source receipt requires a product projection manifest"
+            )
+        try:
+            projection_manifest_value = json.loads(
+                phase2_product_projection_manifest_path.read_text(
+                    encoding="utf-8-sig"
+                )
+            )
+            if not isinstance(projection_manifest_value, Mapping):
+                raise ValueError("projection manifest is not an object")
+            expected_product_tree = projection_manifest_value.get(
+                "source_tree_sha256"
+            )
+            if not isinstance(expected_product_tree, str):
+                raise ValueError("projection manifest has no source_tree_sha256")
+            phase2_manager_source_receipt_value = (
+                validate_phase2_manager_source_receipt(
+                    Path(phase2_manager_source_receipt),
+                    expected_product_tree_sha256=expected_product_tree,
+                )
+            )
+        except (
+            OSError,
+            UnicodeError,
+            json.JSONDecodeError,
+            ValueError,
+            Phase2ManagerSourceReceiptError,
+        ) as error:
+            raise acceptance.RunnerError(
+                "phase-two manager source receipt RED: "
+                f"{type(error).__name__}: {error}"
+            ) from error
     route_b_checkpoint_output_path = (
         Path(phase2_hc_workforce_route_b_checkpoint_output)
         .expanduser()
@@ -23706,6 +23835,9 @@ def main(
         phase2_seed_contract_path=phase2_seed_contract_path,
         phase2_source_checkpoint_registry=(
             source_checkpoint_registry_value
+        ),
+        phase2_manager_source_receipt=(
+            phase2_manager_source_receipt_value
         ),
         phase2_scoreboard_surface_checkpoint_registry=(
             scoreboard_surface_checkpoint_registry_value
@@ -24493,6 +24625,13 @@ if __name__ == "__main__":
         ),
     )
     parser.add_argument(
+        "--phase2-manager-source-receipt",
+        help=(
+            "hash-bound real player-manager Stage 10 v7 source receipt; "
+            "required by the Phase2 promo manager span"
+        ),
+    )
+    parser.add_argument(
         "--phase2-scoreboard-surface-checkpoint-registry",
         help=(
             "real-CK3 managed-capable/received-only product checkpoint "
@@ -24601,6 +24740,9 @@ if __name__ == "__main__":
                 phase2_seed_contract=arguments.phase2_seed_contract,
                 phase2_source_checkpoint_registry=(
                     arguments.phase2_source_checkpoint_registry
+                ),
+                phase2_manager_source_receipt=(
+                    arguments.phase2_manager_source_receipt
                 ),
                 phase2_scoreboard_surface_checkpoint_registry=(
                     arguments.phase2_scoreboard_surface_checkpoint_registry

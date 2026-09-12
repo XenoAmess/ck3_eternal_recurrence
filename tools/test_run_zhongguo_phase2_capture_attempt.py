@@ -21,6 +21,10 @@ from test_zhongguo_phase2_source_checkpoint_registry import (  # noqa: E402
 from zhongguo_phase2_source_checkpoint_registry import (  # noqa: E402
     build_registry_from_capture_manifest,
 )
+from test_zhongguo_phase2_manager_source_receipt import (  # noqa: E402
+    TREE as MANAGER_PRODUCT_TREE,
+    _source as manager_source_receipt,
+)
 
 
 NOW = dt.datetime(2026, 9, 2, 12, 0, tzinfo=dt.timezone.utc)
@@ -138,7 +142,14 @@ class CaptureAttemptPlanTests(unittest.TestCase):
             registry = _source_registry(root)
             product = root / "product"
             product.mkdir()
-            projection = _write(root / "projection.json", {"result": "GREEN"})
+            projection = _write(
+                root / "projection.json",
+                {
+                    "result": "GREEN",
+                    "source_tree_sha256": MANAGER_PRODUCT_TREE,
+                },
+            )
+            manager_source = manager_source_receipt(root)
             media = _write(root / "media.json", _media())
 
             media_sha = hashlib.sha256(media.read_bytes()).hexdigest()
@@ -154,6 +165,7 @@ class CaptureAttemptPlanTests(unittest.TestCase):
                 bridge_dll=bridge,
                 bridge_injector=injector,
                 source_checkpoint_registry=registry,
+                manager_source_receipt=manager_source,
                 product_source=product,
                 product_projection="phase2-final-product",
                 product_projection_manifest=projection,
@@ -179,6 +191,7 @@ class CaptureAttemptPlanTests(unittest.TestCase):
                 bridge_dll=bridge,
                 bridge_injector=injector,
                 source_checkpoint_registry=registry,
+                manager_source_receipt=manager_source,
                 product_source=product,
                 product_projection="phase2-final-product",
                 product_projection_manifest=projection,
@@ -242,6 +255,7 @@ class CaptureAttemptPlanTests(unittest.TestCase):
                 ),
             )
             self.assertIn("--phase2-source-checkpoint-registry", command)
+            self.assertIn("--phase2-manager-source-receipt", command)
             self.assertIn("--phase2-product-source", command)
             self.assertIn("--phase2-product-projection-manifest", command)
             self.assertIn("--phase2-frontend-first-load-save-name", command)

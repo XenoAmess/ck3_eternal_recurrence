@@ -561,6 +561,60 @@ class Phase2EventChoreographyRunnerTests(unittest.TestCase):
         self.assertFalse(staged["console_used"])
         self.assertFalse(staged["test_fixture_used"])
 
+    def test_manager_source_restores_player_publication_checkpoint_before_span(self) -> None:
+        class RestoreService(_Service):
+            @staticmethod
+            def phase2_span_source_checkpoint_restore_available_v1() -> bool:
+                return True
+
+            def restore_phase2_span_source_checkpoint_v1(self, **kwargs):
+                self.restore_kwargs = kwargs
+                self.current["played_character"]["character_id"] = kwargs[
+                    "expected_player_character_id"
+                ]
+                self.current["date_raw"] = kwargs["expected_date_raw"]
+                return {"result": "GREEN", "provider_observed": True}
+
+        service = RestoreService()
+        adapter = capture._Phase2RealEventChoreographyService(service)
+        plan = phase2_event_sequence_plan("capture_manager_governance")
+        manager_source = {
+            "result": "GREEN",
+            "checkpoint": {
+                "path": "C:/manager.ck3",
+                "bytes": 123,
+                "sha256": "A" * 64,
+                "save_lineage_id": "zg361-stage10-player-manager-unit",
+            },
+            "expected_event_definition_key": (
+                "event_free_map:stage10_player_manager_source"
+            ),
+            "player_manager_character_id": 27181,
+            "owner_character_id": 36354,
+            "date_raw": 53155680,
+        }
+        result = adapter.stage_span_source(
+            plan,
+            PHASE2_CAPTURE_SCENARIOS[2],
+            SimpleNamespace(
+                artifacts=Path("unused"),
+                manager_source_receipt=manager_source,
+            ),
+            {},
+        )
+
+        self.assertTrue(result["no_active_event"])
+        self.assertEqual(
+            result["binding"]["player_character_id"], 27181
+        )
+        self.assertEqual(
+            service.restore_kwargs["expected_owner_character_id"], 36354
+        )
+        self.assertFalse(service.restore_kwargs["allow_fixture"])
+        self.assertEqual(
+            result["player_manager_source_restore"]["result"], "GREEN"
+        )
+
     def test_product_source_wait_never_auto_clears_an_unexpected_event(self) -> None:
         service = _Service()
         adapter = capture._Phase2RealEventChoreographyService(service)
@@ -718,15 +772,7 @@ class Phase2EventChoreographyRunnerTests(unittest.TestCase):
         with (
             mock.patch.object(
                 capture,
-                "_phase2_domain_query_contract",
-                return_value={
-                    "ai_owned_case_owner_character_id": 9002,
-                    "ai_owned_case_subject_character_id": 9001,
-                },
-            ),
-            mock.patch.object(
-                capture,
-                "run_phase2_ai_owned_case_gameplay_action_cell",
+                "run_stage10_player_subject",
                 side_effect=lambda *_args, **_kwargs: (
                     calls.append("manager-action")
                     or {"result": "GREEN"}
@@ -740,7 +786,15 @@ class Phase2EventChoreographyRunnerTests(unittest.TestCase):
         ):
             result = driver.run_span(
                 scenario,
-                SimpleNamespace(seed_contract={}, artifacts=Path("unused")),
+                SimpleNamespace(
+                    seed_contract={},
+                    artifacts=Path("unused"),
+                    manager_source_receipt={
+                        "result": "GREEN",
+                        "player_manager_character_id": 9001,
+                        "owner_character_id": 9002,
+                    },
+                ),
                 {},
             )
         self.assertEqual(

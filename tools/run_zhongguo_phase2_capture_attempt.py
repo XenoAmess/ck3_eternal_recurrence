@@ -33,6 +33,10 @@ from zhongguo_phase2_source_checkpoint_provider import (
     Phase2SourceCheckpointError,
     Phase2SourceCheckpointProvider,
 )
+from zhongguo_phase2_manager_source_receipt import (
+    Phase2ManagerSourceReceiptError,
+    validate_phase2_manager_source_receipt,
+)
 
 
 KIND = "zg361_phase2_capture_attempt_plan"
@@ -254,6 +258,35 @@ def _product_projection_gate(
     return row, ([] if all(checks.values()) else ["product_projection_not_bound"])
 
 
+def _manager_source_gate(
+    path: Path | None,
+    *,
+    product_projection_manifest: Path | None,
+) -> tuple[dict[str, object], list[str]]:
+    row: dict[str, object] = {"required": True, "record": None, "source": None}
+    if path is None or not path.expanduser().resolve().is_file():
+        return row, ["manager_source_receipt_pending"]
+    if (
+        product_projection_manifest is None
+        or not product_projection_manifest.expanduser().resolve().is_file()
+    ):
+        return row, ["manager_source_projection_manifest_pending"]
+    try:
+        projection = _json(product_projection_manifest.expanduser().resolve())
+        expected_tree = projection.get("source_tree_sha256")
+        if not isinstance(expected_tree, str):
+            raise PlanError("product projection has no source_tree_sha256")
+        source = validate_phase2_manager_source_receipt(
+            path,
+            expected_product_tree_sha256=expected_tree,
+        )
+    except (PlanError, Phase2ManagerSourceReceiptError) as error:
+        row["error"] = f"{type(error).__name__}: {error}"
+        return row, ["manager_source_receipt_not_green"]
+    row.update(record=_record(path.expanduser().resolve()), source=source)
+    return row, []
+
+
 def _observer_gate(path: Path | None) -> tuple[dict[str, object], list[str]]:
     row: dict[str, object] = {"required": True, "record": None, "checks": {}}
     if path is None or not path.is_file():
@@ -336,6 +369,7 @@ def prepare_plan(
     bridge_dll: Path | None,
     bridge_injector: Path | None,
     source_checkpoint_registry: Path | None = None,
+    manager_source_receipt: Path | None = None,
     product_source: Path | None = None,
     product_projection: str | None = None,
     product_projection_manifest: Path | None = None,
@@ -371,6 +405,11 @@ def prepare_plan(
         product_source,
         projection=product_projection,
         manifest=product_projection_manifest,
+    )
+    blockers.extend(new)
+    manager_source, new = _manager_source_gate(
+        manager_source_receipt,
+        product_projection_manifest=product_projection_manifest,
     )
     blockers.extend(new)
     media, new = _media_gate(
@@ -433,6 +472,12 @@ def prepare_plan(
             if source_checkpoint_registry is None
             else str(source_checkpoint_registry.expanduser().resolve())
         ),
+        "--phase2-manager-source-receipt",
+        (
+            "<PENDING>"
+            if manager_source_receipt is None
+            else str(manager_source_receipt.expanduser().resolve())
+        ),
         "--phase2-product-source",
         "<PENDING>" if product_source is None else str(product_source.expanduser().resolve()),
         "--phase2-product-projection",
@@ -482,6 +527,7 @@ def prepare_plan(
             "completion_observer": observer,
             "seed_contract": seed,
             "source_checkpoint_registry": source_checkpoints,
+            "manager_source_receipt": manager_source,
             "product_projection": product,
             "media_preflight": media,
             "runtime_dependencies": dependencies,
@@ -575,6 +621,7 @@ def _parser() -> argparse.ArgumentParser:
     parser.add_argument("--bridge-dll", type=Path)
     parser.add_argument("--bridge-injector", type=Path)
     parser.add_argument("--source-checkpoint-registry", type=Path)
+    parser.add_argument("--manager-source-receipt", type=Path)
     parser.add_argument("--product-source", type=Path)
     parser.add_argument("--product-projection")
     parser.add_argument("--product-projection-manifest", type=Path)
@@ -598,6 +645,7 @@ def main(argv: Sequence[str] | None = None) -> int:
             bridge_dll=args.bridge_dll,
             bridge_injector=args.bridge_injector,
             source_checkpoint_registry=args.source_checkpoint_registry,
+            manager_source_receipt=args.manager_source_receipt,
             product_source=args.product_source,
             product_projection=args.product_projection,
             product_projection_manifest=args.product_projection_manifest,

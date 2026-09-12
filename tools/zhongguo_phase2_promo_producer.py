@@ -229,6 +229,7 @@ class Phase2PromoCaptureContext:
     native_session_binding: Mapping[str, object] | None = None
     loader_gate: Mapping[str, object] | None = None
     source_checkpoint_registry: Mapping[str, object] | None = None
+    manager_source_receipt: Mapping[str, object] | None = None
     isolated_userdir: Path | None = None
     runtime_bootstrap: Mapping[str, object] | None = None
     endgame_product_switch_title_key: str | None = None
@@ -417,6 +418,7 @@ class Phase2PromoProducerScaffold:
         native_session_binding: Mapping[str, object] | None = None,
         loader_gate: Mapping[str, object] | None = None,
         source_checkpoint_registry: Mapping[str, object] | None = None,
+        manager_source_receipt: Mapping[str, object] | None = None,
         isolated_userdir: Path | None = None,
         runtime_bootstrap: Mapping[str, object] | None = None,
         endgame_product_switch_title_key: str | None = None,
@@ -492,6 +494,7 @@ class Phase2PromoProducerScaffold:
             ("native_session_binding", native_session_binding),
             ("loader_gate", loader_gate),
             ("source_checkpoint_registry", source_checkpoint_registry),
+            ("manager_source_receipt", manager_source_receipt),
         ):
             if value is None:
                 optional_snapshots[name] = None
@@ -552,6 +555,9 @@ class Phase2PromoProducerScaffold:
             loader_gate=optional_snapshots["loader_gate"],
             source_checkpoint_registry=optional_snapshots[
                 "source_checkpoint_registry"
+            ],
+            manager_source_receipt=optional_snapshots[
+                "manager_source_receipt"
             ],
             isolated_userdir=(
                 isolated_userdir.resolve()
@@ -702,6 +708,7 @@ class Phase2PromoProducerScaffold:
         native_session_binding: Mapping[str, object] | None = None,
         loader_gate: Mapping[str, object] | None = None,
         source_checkpoint_registry: Mapping[str, object] | None = None,
+        manager_source_receipt: Mapping[str, object] | None = None,
         isolated_userdir: Path | None = None,
         runtime_bootstrap: Mapping[str, object] | None = None,
         endgame_product_switch_title_key: str | None = None,
@@ -725,6 +732,7 @@ class Phase2PromoProducerScaffold:
             native_session_binding=native_session_binding,
             loader_gate=loader_gate,
             source_checkpoint_registry=source_checkpoint_registry,
+            manager_source_receipt=manager_source_receipt,
             isolated_userdir=isolated_userdir,
             runtime_bootstrap=runtime_bootstrap,
             endgame_product_switch_title_key=(

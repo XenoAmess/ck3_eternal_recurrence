@@ -132,7 +132,7 @@ producer key：`receipts-appeals-pip`
 章节 ID：`phase2_manager_governance`
 producer key：`manager-governance`
 
-画面编排：第一次主动离开主角。先把他的经理放在画面权力位置，再展示经理自己的正式治理事件；等待 AI-owned case 到达可观察的业务终态。末尾切回主角肖像，但不宣称经理案卷已经改变了他的档位。
+画面编排：第一次主动离开主角。使用已准入的真实玩家经理来源，展示该经理完成 B1 公示后由直属上级 owner 打开的正式治理事件；画面停在 `zg361mg.120`，同帧 provider 必须证明 F `state=5 / active=false`。末尾切回主角肖像，但不宣称经理案卷已经改变了他的档位。
 
 中文旁白草案：
 
@@ -144,7 +144,7 @@ producer key：`manager-governance`
 > The person rating him lives inside another review.
 > Manager accountability counts only when the real case reaches a business terminal.
 
-必须拍到：真实 manager-governance 事件 identity-ready；AI-owned case provider-observed terminal business state。
+必须拍到：真实 manager-governance 事件 identity-ready；玩家经理/直属上级 owner 关系明确；同一 F case 的 provider-observed `state=5 / active=false`。
 
 不能声称：事件定义本身证明经理连责 live；经过时间或 ACK 就等于业务终态；经理案卷与主角档位存在未证明的直接因果。
 
