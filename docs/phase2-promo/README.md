@@ -460,3 +460,9 @@ R498 在 Stage 10 source 后第二个游戏日保留新的原版事件 RED `stre
 SHA-256 为 `B51B8960...F392F`；合同现场回放 `18/18` GREEN，相关 normal/optimized 测试均为
 `59 passed, 82 subtests passed`。本包为 Python-only；当前轮次 R498 保持暂停，提交推送后原位热恢复，不重启、不重发
 一次性 `run-stage10`。P1 保持 `8/9`，P2 保持 `LOCKED`。完整记录：[R497/R498 `.1011` RED 与合同补丁](r497-r498-stress-threshold-1011-red-and-contract-2026-09-12.md)。
+
+提交/兼容同步期间，R498 达到 activation 的 1200 秒托管上限；session report 为
+`exit_reason=timeout / elapsed=1206.428s / restart_count=0`。canonical/managed cleanup
+`A93FB075...12DD7C` / `F90F824D...E03EB` 均为 GREEN，最终 CK3 清单为空。没有重发 `run-stage10`。
+当前轮次 R498 与旧轮次 R497 均已终止；下一次启动为 R499 warmup / R500 gameplay，仍受同一 120 游戏日绝对边界约束。
+P1 保持 `8/9`，P2 继续硬锁定。

@@ -2686,3 +2686,9 @@ Python-only 合同修复允许当前轮次原位 reload；不改 DLL、游戏文
 CK3 或新建轮次。冻结现场离线回放 `18/18` check GREEN；vanilla-event 相关 normal/optimized 测试均为
 `59 passed, 82 subtests passed`。此处只允许一次同轮次热恢复，不得重发 Stage 10 operator 的一次性启动控制，也不得
 把单事件恢复扩大成长跑。
+
+R498 在 Python-only 合同提交和兼容同步期间达到 activation 既定的 `1200s` session timeout。cleanup 取得的 session report 为
+`exit_reason=timeout / elapsed=1206.428s / restart_count=0`；gameplay PID `37604` 的进程树和托管 Job 均已清空，canonical/
+managed cleanup SHA-256 分别为 `A93FB075...12DD7C` / `F90F824D...E03EB`，结果均为 GREEN。没有发送第二次
+`run-stage10`。旧轮次 R497 与当前轮次 R498 均已终止；下一次启动必须递增为 R499 warmup / R500 gameplay，并继续沿用同一 120
+游戏日绝对边界。
