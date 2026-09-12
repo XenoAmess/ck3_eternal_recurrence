@@ -1,6 +1,6 @@
 # “自动升级建筑”三期：资金来源选择需求与开发计划
 
-状态：**三期实现与 R0025 实机验收 GREEN；正式发布收口中**
+状态：**3.0.0 release-complete；实现、R0025 实机、Workshop、fresh-cache、Change Notes 与 Git 收口全部 GREEN**
 
 候选版本：`3.0.0`
 
@@ -236,3 +236,25 @@ GREEN、抽样实机 GREEN。release-complete 还必须完成正式构建、Work
 `F03AF195BBDC6400CADCF107C19E2A8D0D151FD942DBB8517C448E7608178895`。
 
 Open Kaishek 已成功由 GraalVM Java 启动并在 0.508 秒内返回报告，故本轮不存在 Java 启动器卡死或环境 RED。其 root parser 为 GREEN；产品专用 fixture 尚未被该工具注册、validator 尚未覆盖这些 CK3 opcode，因此适配器按既有合同将 `unknown-fixture / UNKNOWN_OPCODE` 记为 non-required semantic coverage RED；该结果不冒充语义验收，也不改变上面的 CK3 正式 GREEN。
+
+## 12. 2026-09-13 正式发布记录
+
+`3.0.0` 已更新到既有 Steam Workshop 物品 `3800124956`；原作物品 `3596580780` 未被修改。发布 tag
+`auto-upgrade-buildings-v3.0.0` 指向实机验收提交 `d4251209a461ba6c7c8faef03eb5630de682e18d`。
+
+- 正式 staging 为 15 文件；manifest SHA-256 `CFCF2A34D5FF997F7E8EF17A718E2874818D2B156439AEB044B4DE303A3441B2`，
+  deterministic ZIP SHA-256 `933BA24CEF3F4F4BBB9985FC5DCFB1CDFC768CA1215614275CAAF7425D713A29`。
+- Steam 原生更新回执为 `EResult=1`、`complete`，无待处理法律协议。匿名公开 API 回读确认标题逐字一致、1911 字描述逐字一致、
+  public visibility 和 676122 字节内容对象。
+- Steam Change Notes 新条目 `1789236338` 已匿名回读；413 字、14 行正文与提交前冻结文本逐字一致，SHA-256
+  `AD8D4B3BC9C4ED67AAB3F44078F3C48A439BC44F0953E50161BBDC1F69151180`。
+- 旧订阅缓存已移动保留；目标目录缺失后通过 Steam Console 实际执行
+  `workshop_download_item 1158310 3800124956`。新缓存为 15 文件、676122 字节、descriptor `3.0.0`，逐文件匹配正式 manifest。
+- 新缓存保留 canonical descriptor 原字节、没有追加 `remote_file_id`。为覆盖 Steam 的两种合法缓存形态，校验器现接受“canonical
+  原字节精确一致”或“唯一正确 ID 的末行注入”，仍拒绝错误／重复 ID；7/7 builder 单测 GREEN，修复提交为
+  `b85bd2226692467ccc35c48715bc9766b642d294`。
+- Steam 于 02:29:29 Asia/Shanghai 由用户发起正常下线；`WantsOfflineMode=1`、公开档案为 offline，客户端仍运行且没有退出或登出，
+  CK3 进程数为 0。
+
+永久发布记录见 [3.0.0 changelog](release-changelogs/auto-upgrade-buildings/3.0.0.md)；本机完整证据根为
+`D:\workspace\auto-upgrade-buildings-v3.0.0-publication\steam`。
