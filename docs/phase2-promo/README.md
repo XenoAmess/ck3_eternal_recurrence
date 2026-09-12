@@ -28,11 +28,11 @@ paused candidate 的 manifest/seed 绑定并判定上述九项，不再依次跑
 但不能扩大 P1 blocker；因此 P1 判定没有“还差一个历史 cell”之类的隐含口径。显式 legacy 诊断命令本身仍可因其
 coverage 失败返回 RED，但该诊断 RED 不回写、不改变独立的 P1 九项判定。
 
-截至 2026-09-12 R482 后的机器化归档，现行候选 P1 为 **`8/9 = 88.9%`**：B1、AF5、Central stage 9、Central stage 11、代表性终态 cold restore、完整 gameplay
-时间窗 error scan、managed cleanup 与候选 L0 已 READY；仅 stage 10 `zg361mg.120` 仍 PENDING。Stage 11 与 cold restore 的 exact-build 证据、两 PID 生命周期、process-local generation 合同和 cleanup RED 修复见
+截至 2026-09-12 R504 收口，现行候选 P1 为 **`9/9 = 100% / GREEN`**：B1、AF5、Central stage 9/10/11、代表性终态 cold restore、完整 gameplay
+时间窗 error scan、managed cleanup 与候选 L0 全部 READY。Stage 10 在 36 游戏日后真实到达 `zg361mg.120`，同帧原生 provider 证明玩家经理/直属上级绑定和 F `state=5 / active=false`；旧 action 的 aggregate-readiness RED 已按 Stage 10 专用合同离线提取，原 RED 保持不变。Stage 11 与 cold restore 的 exact-build 证据、两 PID 生命周期、process-local generation 合同和 cleanup RED 修复见
 [`r476-r480-stage11-and-cold-restore-2026-09-12.md`](r476-r480-stage11-and-cold-restore-2026-09-12.md)。权威中间账本为
-`Z:\ck3_mod_rewrite\_runtime\p1-critical-path-assembler\pending-assembly-status.json`。这只是九项门禁的完成比例，不换算为
-T0 产品总完成度；P1 尚未签收，P2 继续 `LOCKED`。R390 Stage 9 冻结记录的真实选择与当前候选的 23 文件逐字节
+`Z:\ck3_mod_rewrite\_runtime\p1-critical-path-assembler\pending-assembly-status.json`，状态 ledger SHA-256 为 `08AA89BC...E0F2`；最终 manifest `C8879E16...E1A5` 经当前 runner 独立判为九项全真，gate 为 `309750CB...57D6`。这只是九项门禁的完成比例，不换算为
+T0 产品总完成度。P1 已签收；P2 只能按“检查宣传工具版本 → rebase 更新远端 master → 验证更新 → 制作并发布最终视频”的顺序推进。R390 Stage 9 冻结记录的真实选择与当前候选的 23 文件逐字节
 资格核对，以及 R432 硬上限、R433 零游戏日诊断见
 [`r432-r433-bounded-stage9-intake-2026-09-11.md`](r432-r433-bounded-stage9-intake-2026-09-11.md)。证据整理不重开 CK3。
 

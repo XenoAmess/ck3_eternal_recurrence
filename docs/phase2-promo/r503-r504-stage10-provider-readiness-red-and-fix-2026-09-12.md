@@ -67,6 +67,30 @@ R504 then completed its one managed cleanup. Canonical and managed cleanup are
 GREEN with empty final CK3 inventory; their SHA-256 values are
 `28D2C57AE59E2B9B1C84B45862D831129C9255EE68BF9326DD7A1F7B5D03C235`
 and `FEC3801165DFFEFB7EEE5B4C36F9B0DDF06FD4A18346AD2323AFDFE5BB2959C3`.
-Current round R504 and old round R503 are terminated. P1 evidence assembly is
-the next offline step; P2 remains `LOCKED` until that nine-gate manifest is
-GREEN.
+Current round R504 and old round R503 are terminated.
+
+## P1 closure
+
+The corrected offline assembler binds the current product tree
+`C428C42B88A47F6B8834099B6CF8598FB0F405CDC79203EBCAB9752F4E9CB5DC`
+and all nine required artifacts. Its first attempt preserved a packaging RED:
+the historical Stage 9 artifact was an outer wrapper rather than the gate
+shape, and the old assembler still required connection generation to increase
+across different CK3 processes. The Stage 9 adapter rechecked all 23 relevant
+current product files byte for byte; the assembler now mirrors the current
+runner contract, where each distinct process has its own positive process-local
+generation.
+
+The final manifest is
+`C8879E1620E6F21A7B030A6526D6C7FAEC7F63E1086D71C290AE391C9738E1A5`.
+The repository's current `_phase2_full_tree_completion_gate` independently
+consumed it and returned `9/9`, every check true, and `missing=[]`; that runner
+gate is `309750CBA6942D18D2681F5DB663A9D4D517F4795D439ACACD9F8AFC69B357D6`.
+The final status ledger is
+`08AA89BC95A8B20E4C0A8D3035D11B9209973B48681902D2DDF546B77041E0F2`;
+assembler/preflight normal and optimized tests each pass `6/6`.
+
+T0 P1 is therefore `GREEN / 9 of 9 / 100%`. The final-video lock was not
+touched during P1. P2 becomes eligible only through the ordered sequence:
+inspect the promotion-tool version, rebase/update remote master, verify the
+update, then create and publish the final video.
