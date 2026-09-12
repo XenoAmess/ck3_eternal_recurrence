@@ -1,0 +1,36 @@
+{
+  "schema": "xar.work-package-resource-declaration",
+  "schema_version": 1,
+  "package_id": "2026-09-12-workflow-state-projection",
+  "priority": "T0",
+  "reads": [
+    "docs/handover/2026-09-12-workflow-deep-audit-and-improvement-plan.md",
+    "_runtime/p1-critical-path-assembler",
+    "_runtime/p2-endgame-source-r505-r506-3f7b8e7-20260912",
+    "_runtime/p2-endgame-source-r507-r508-10d55b3-20260912"
+  ],
+  "writes": [
+    "tools/project_delivery_state.py",
+    "tools/test_project_delivery_state.py",
+    "docs/project-state",
+    "docs/autonomous-agent-progress/README.md",
+    "docs/phase2-promo/README.md",
+    "docs/phase2-promo/phase2-acceptance-case-index.md",
+    "docs/phase2-promo/p2-stage-ledger.json"
+  ],
+  "requires_ck3": false,
+  "requires_operator": false,
+  "changes_product_tree": false,
+  "changes_bridge": false,
+  "triggers_open_kaishek": true,
+  "blocks": [
+    "workflow-I-1",
+    "workflow-I-2",
+    "workflow-I-4",
+    "workflow-I-5"
+  ],
+  "report_writers": {
+    "daily": "coordinator",
+    "weekly": "coordinator"
+  }
+}

@@ -1,6 +1,15 @@
 # 天朝二期双宣传片导演方案
 
-## T0-P1 现行验收硬门（2026-09-10，替代旧 full-tree 门）
+## 唯一现行状态入口
+
+当前 P1/P2/T1/T2、稳定 RED 索引与 Git/CK3 live-source 口径只从机器生成的
+[`docs/project-state/current-state.json`](../project-state/current-state.json) 读取；P2 各固定分母和两条 cut 的独立节点只从
+[`p2-stage-ledger.json`](p2-stage-ledger.json) 读取。生成输入、校验命令和三轴结果合同见
+[`docs/project-state/README.md`](../project-state/README.md)。
+
+本文件承担导演方案、合同和历史证据导航。下文所有带日期、轮次或“截至”字样的状态均为历史快照，即使旧段落保留“当前”“下一步”措辞，也不得覆盖上述机器投影；历史内容不删除，以便继续核验原始 artifact。
+
+## T0-P1 验收合同与 R504 历史收口（2026-09-10 owner revision）
 
 P1 现在只由产品关键链、代表性高风险路径和真实 encountered RED 决定。以下九项必须全部 GREEN：
 

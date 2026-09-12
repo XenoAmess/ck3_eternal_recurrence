@@ -1,0 +1,166 @@
+{
+  "ck3": {
+    "inventory_source": "operator_get_status",
+    "live_state_not_git_cached": true,
+    "round_source": "operator_get_status",
+    "single_instance_required": true,
+    "stable_projection": {
+      "cleanup_ref": {
+        "base": "workspace_root",
+        "bytes": 33626,
+        "locator": "_runtime/p2-endgame-source-r507-r508-10d55b3-20260912/live-artifacts/endgame-source-managed-cleanup.json",
+        "sha256": "3FA1514206E808F53C7DF92F7858F10C41FFF73D2E6AC062BBD95E5ABD7E06FA"
+      },
+      "instance_count": 0,
+      "lifecycle_result": "GREEN",
+      "live_round": null
+    }
+  },
+  "red": {
+    "axes": {
+      "business_result": [
+        "GREEN",
+        "NOT_EVALUATED",
+        "RED"
+      ],
+      "harness_result": [
+        "GREEN",
+        "RED"
+      ],
+      "lifecycle_result": [
+        "ACTIVE",
+        "GREEN",
+        "RED"
+      ]
+    },
+    "current": null,
+    "live_source": {
+      "git_cached": false,
+      "inventory_source": "operator_get_status",
+      "stable_projection_only": true,
+      "status": "CLEAR_AT_LAST_STABLE_CLEANUP"
+    },
+    "preserved_indexes": [
+      {
+        "index_ref": {
+          "base": "repo_root",
+          "bytes": 2225,
+          "locator": "docs/project-state/red-indexes/r506-source-event-scalar-scope-invalid.json",
+          "sha256": "E12F4B74825B951A10AF35DB78365428506DB4840F5E1C0B2EBAB938029D1A83"
+        },
+        "red_id": "R506-source-event-scalar-scope-invalid",
+        "role": "HISTORICAL_PRESERVED"
+      }
+    ],
+    "unresolved_count": 0
+  },
+  "reporting": {
+    "current_state_writer": "project_delivery_state.py",
+    "daily_single_writer": "coordinator",
+    "weekly_single_writer": "coordinator",
+    "worker_output": "independent package receipt/resource declaration"
+  },
+  "repository_provenance": {
+    "root_last_completed_transaction": {
+      "commit": "1290a8907aa90c8cd8e4c3233f838352e8a01cb7",
+      "sync_result": "GREEN",
+      "upstream_ref": "origin/master"
+    },
+    "root_live_source": "git status --branch --porcelain=v2 plus git ls-remote origin",
+    "root_live_state_not_git_cached": true,
+    "t2_last_completed_transaction": {
+      "commit": "61366e3affc8a615bdee1f343262c2b6d456e281",
+      "sync_result": "GREEN",
+      "upstream_ref": "origin/main"
+    },
+    "t2_live_source": "git -C <open_kaishek> status --branch --porcelain=v2 plus git ls-remote origin",
+    "t2_live_state_not_git_cached": true
+  },
+  "schema": "xar.project-delivery-state",
+  "schema_version": 1,
+  "status_semantics": "stable package projection; live CK3/RED/Git inventory comes from named sources",
+  "t0": {
+    "p1": {
+      "gate_ref": {
+        "base": "workspace_root",
+        "bytes": 3548,
+        "locator": "_runtime/p1-critical-path-assembler/p1-gate-r504.json",
+        "sha256": "309750CBA6942D18D2681F5DB663A9D4D517F4795D439ACACD9F8AFC69B357D6"
+      },
+      "passed": 9,
+      "required": 9,
+      "result": "GREEN",
+      "signed_state_is_not_reopened_by_p2": true
+    },
+    "p2": {
+      "cut_stage_summaries": {
+        "automated_audit": {
+          "passed": 0,
+          "required": 2
+        },
+        "candidate": {
+          "passed": 0,
+          "required": 2
+        },
+        "export": {
+          "passed": 0,
+          "required": 2
+        },
+        "human_review_1x": {
+          "passed": 0,
+          "required": 2
+        },
+        "publication": {
+          "passed": 0,
+          "required": 2
+        },
+        "source_review": {
+          "passed": 0,
+          "required": 2
+        }
+      },
+      "ledger_ref": {
+        "base": "repo_root",
+        "bytes": 7434,
+        "locator": "docs/phase2-promo/p2-stage-ledger.json",
+        "sha256": "9E7698344AFB0E6A7ED5ECF517CE576F3AA9170C00084C8C05B29C886374CC18"
+      },
+      "raw_footage": {
+        "passed": 0,
+        "red": 0,
+        "required": 8,
+        "result": "PENDING"
+      },
+      "result": "ACTIVE",
+      "source_lineage": {
+        "passed": 4,
+        "red": 0,
+        "required": 4,
+        "result": "GREEN"
+      },
+      "tool_update": "GREEN"
+    },
+    "priority": "T0"
+  },
+  "t1": {
+    "authority_locator": "docs/autonomous-agent-progress/one-generation-blocker-ledger.md",
+    "closed_gates": [],
+    "open_gates": [
+      "GEN-034"
+    ],
+    "percentage": null,
+    "priority": "T1",
+    "program": "G2",
+    "progress_basis": "fixed gate counts only; no frozen total denominator exists",
+    "result": "ACTIVE"
+  },
+  "t2": {
+    "compat_commit": "61366e3affc8a615bdee1f343262c2b6d456e281",
+    "live_sync_source": "repository_provenance.t2_live_source",
+    "priority": "T2",
+    "public_interface_delta": "RETRY_POLICY_CONSUMER_SYNCED",
+    "result": "GREEN",
+    "upstream_root_commit": "1290a8907aa90c8cd8e4c3233f838352e8a01cb7"
+  },
+  "updated_at": "2026-09-12T14:10:00+08:00"
+}

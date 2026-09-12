@@ -5,7 +5,10 @@
 [`docs/ck3-native-ai/`](../ck3-native-ai/README.md) 与
 [`docs/testing-workflow.md`](../testing-workflow.md)。
 
-当前 headline（2026-08-31）：固定 production seed 的 G1 与随后第二个完整寿命均已 GREEN。第二寿命在无人接管的
+跨 T0/T1/T2 的现行稳定状态统一读取机器生成的
+[`docs/project-state/current-state.json`](../project-state/current-state.json)。当前 CK3/RED 从其中声明的 Operator live source 读取；本目录的日期段落、日报、周报与 headline 都是历史增量，不得覆盖该投影。
+
+历史 headline（2026-08-31）：固定 production seed 的 G1 与随后第二个完整寿命均已 GREEN。第二寿命在无人接管的
 production 长跑中自然触发 one-life terminal，完成匹配结算，再经
 `death-terminal → start-next-episode → exact seed reload → 新 episode gameplay → durable checkpoint`
 进入第三个 episode。该结果完成了同一冻结 seed 的 G2 全寿命重复门；它仍不代表不同 ruler/政府/DLC、普通 campaign
@@ -13,6 +16,8 @@ production 长跑中自然触发 one-life terminal，完成匹配结算，再经
 
 ## 导航
 
+- [T0/T1/T2 唯一现行状态投影](../project-state/current-state.json)
+- [状态投影 schema、生成与单写者规则](../project-state/README.md)
 - [终极目标、当前能力与完整路线图](goal-and-roadmap.md)
 - [2026-W35 一代人自治 blocker / 能力债账本](one-generation-blocker-ledger.md)
 - [G1 一代人全寿命 production 续跑交接（2026-08-28）](g1-production-handoff-2026-08-28.md)

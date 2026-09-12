@@ -1,0 +1,64 @@
+{
+  "absolute_game_deadline": 53366640,
+  "axes": {
+    "business_result": "NOT_EVALUATED",
+    "harness_result": "RED",
+    "lifecycle_result": "ACTIVE"
+  },
+  "binding": {
+    "ck3_build": "1.19.0.6",
+    "ck3_exe_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+    "connection_generation": 1,
+    "date_raw": 53366568,
+    "event_definition_key": "zg361we.356",
+    "event_instance_id": 620,
+    "gameplay_pid_at_failure": 180184,
+    "player_character_id": 32904,
+    "round": "R506"
+  },
+  "blocking_scope": "p2.source_lineage.phase2_cross_cycle_endgame",
+  "detail_artifact_ref": {
+    "base": "workspace_root",
+    "bytes": 553179,
+    "locator": "_runtime/p2-endgame-source-r505-r506-3f7b8e7-20260912/live-artifacts/af5-red.json",
+    "sha256": "B4762E0EA875511875AB1491010C7EA771BFBB207A398D4FE6974B562F5F63AF"
+  },
+  "failure_stage": "bounded_endgame_source_action",
+  "input_attempted": false,
+  "last_verified_stage": "source_event_reached_pre_input",
+  "minimal_diff": {
+    "fixture_assumption": {
+      "raw_type_index": 9
+    },
+    "frozen_live_observation": {
+      "raw_type_index": 1
+    },
+    "implication": "consumer fixed a diagnostic ordinal; product bytes and event input were not evaluated",
+    "scope_name": "zg361_we_al_cycle",
+    "semantic_identity": {
+      "status": "available",
+      "subtype": 0,
+      "type_key": "value"
+    }
+  },
+  "preservation": {
+    "classification_does_not_downgrade_red": true,
+    "detail_is_immutable": true,
+    "index_is_not_business_evidence": true
+  },
+  "reason_code": "source_event_scalar_scope_invalid",
+  "red_class": "HARNESS_RED",
+  "red_id": "R506-source-event-scalar-scope-invalid",
+  "resolution": {
+    "cleanup_sha256": "3FA1514206E808F53C7DF92F7858F10C41FFF73D2E6AC062BBD95E5ABD7E06FA",
+    "closing_round": "R508",
+    "current_blocker": false,
+    "operator_green_sha256": "EBD3296655C81066DCBBAF771586770F8233DD1B1B92C801E49892C243A4D5D5",
+    "source_registry_sha256": "4C6A9346F32194E7EF26BFCD79289D207E1C6DE7356ED4E7C61930E1FE75AAB3",
+    "status": "CLOSED_BY_LATER_SAME_PROCESS_RETRY"
+  },
+  "result": "RED",
+  "same_frame_retry_eligible": true,
+  "schema": "xar.compact-red-index",
+  "schema_version": 1
+}

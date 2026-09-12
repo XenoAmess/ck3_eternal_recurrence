@@ -1,0 +1,24 @@
+{
+  "schema": "xar.work-package-resource-declaration",
+  "schema_version": 1,
+  "package_id": "replace-with-stable-package-id",
+  "priority": "T0",
+  "reads": [
+    "exact/input/path-or-capability"
+  ],
+  "writes": [
+    "exact/output/directory"
+  ],
+  "requires_ck3": false,
+  "requires_operator": false,
+  "changes_product_tree": false,
+  "changes_bridge": false,
+  "triggers_open_kaishek": false,
+  "blocks": [
+    "gate-id"
+  ],
+  "report_writers": {
+    "daily": "coordinator",
+    "weekly": "coordinator"
+  }
+}

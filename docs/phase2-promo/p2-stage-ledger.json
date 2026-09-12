@@ -1,0 +1,267 @@
+{
+  "cut_stage_summaries": {
+    "automated_audit": {
+      "passed": 0,
+      "required": 2
+    },
+    "candidate": {
+      "passed": 0,
+      "required": 2
+    },
+    "export": {
+      "passed": 0,
+      "required": 2
+    },
+    "human_review_1x": {
+      "passed": 0,
+      "required": 2
+    },
+    "publication": {
+      "passed": 0,
+      "required": 2
+    },
+    "source_review": {
+      "passed": 0,
+      "required": 2
+    }
+  },
+  "cuts": {
+    "character_led": {
+      "duration_seconds": 570,
+      "stages": {
+        "automated_audit": {
+          "artifact_refs": [],
+          "red_index_refs": [],
+          "status": "PENDING"
+        },
+        "candidate": {
+          "artifact_refs": [],
+          "red_index_refs": [],
+          "status": "PENDING"
+        },
+        "export": {
+          "artifact_refs": [],
+          "red_index_refs": [],
+          "status": "PENDING"
+        },
+        "human_review_1x": {
+          "artifact_refs": [],
+          "red_index_refs": [],
+          "status": "PENDING"
+        },
+        "publication": {
+          "artifact_refs": [],
+          "red_index_refs": [],
+          "status": "PENDING"
+        },
+        "source_review": {
+          "artifact_refs": [],
+          "red_index_refs": [],
+          "status": "PENDING"
+        }
+      },
+      "summary": {
+        "passed": 0,
+        "red": 0,
+        "required": 6,
+        "result": "PENDING"
+      }
+    },
+    "institution_led": {
+      "duration_seconds": 580,
+      "stages": {
+        "automated_audit": {
+          "artifact_refs": [],
+          "red_index_refs": [],
+          "status": "PENDING"
+        },
+        "candidate": {
+          "artifact_refs": [],
+          "red_index_refs": [],
+          "status": "PENDING"
+        },
+        "export": {
+          "artifact_refs": [],
+          "red_index_refs": [],
+          "status": "PENDING"
+        },
+        "human_review_1x": {
+          "artifact_refs": [],
+          "red_index_refs": [],
+          "status": "PENDING"
+        },
+        "publication": {
+          "artifact_refs": [],
+          "red_index_refs": [],
+          "status": "PENDING"
+        },
+        "source_review": {
+          "artifact_refs": [],
+          "red_index_refs": [],
+          "status": "PENDING"
+        }
+      },
+      "summary": {
+        "passed": 0,
+        "red": 0,
+        "required": 6,
+        "result": "PENDING"
+      }
+    }
+  },
+  "invariants": {
+    "cut_candidates_and_reviews_are_independent": true,
+    "cut_source_reviews_are_independent": true,
+    "p2_does_not_reopen_p1": true,
+    "raw_intake_is_shared_once": true,
+    "source_lineage_is_not_raw_footage": true
+  },
+  "p1_unlock": {
+    "passed": 9,
+    "required": 9,
+    "result": "GREEN"
+  },
+  "result": "ACTIVE",
+  "schema": "xar.phase2-promo-stage-ledger",
+  "schema_version": 1,
+  "shared": {
+    "media_intake": {
+      "artifact_refs": [],
+      "red_index_refs": [],
+      "status": "PENDING"
+    },
+    "raw_capture": {
+      "items": {
+        "phase2_cross_cycle_endgame": {
+          "artifact_refs": [],
+          "red_index_refs": [],
+          "status": "PENDING"
+        },
+        "phase2_fact_quota_calibration": {
+          "artifact_refs": [],
+          "red_index_refs": [],
+          "status": "PENDING"
+        },
+        "phase2_hc_workforce": {
+          "artifact_refs": [],
+          "red_index_refs": [],
+          "status": "PENDING"
+        },
+        "phase2_incidents_operations": {
+          "artifact_refs": [],
+          "red_index_refs": [],
+          "status": "PENDING"
+        },
+        "phase2_manager_governance": {
+          "artifact_refs": [],
+          "red_index_refs": [],
+          "status": "PENDING"
+        },
+        "phase2_projects_metrics": {
+          "artifact_refs": [],
+          "red_index_refs": [],
+          "status": "PENDING"
+        },
+        "phase2_promotion_compensation": {
+          "artifact_refs": [],
+          "red_index_refs": [],
+          "status": "PENDING"
+        },
+        "phase2_receipt_appeal_pip": {
+          "artifact_refs": [],
+          "red_index_refs": [],
+          "status": "PENDING"
+        }
+      },
+      "summary": {
+        "passed": 0,
+        "red": 0,
+        "required": 8,
+        "result": "PENDING"
+      }
+    },
+    "source_lineage": {
+      "items": {
+        "phase2_cross_cycle_endgame": {
+          "artifact_refs": [
+            {
+              "base": "workspace_root",
+              "bytes": 1379711,
+              "locator": "_runtime/p2-endgame-source-r507-r508-10d55b3-20260912/live-artifacts/source/phase2-source-checkpoint-registry.json",
+              "sha256": "4C6A9346F32194E7EF26BFCD79289D207E1C6DE7356ED4E7C61930E1FE75AAB3"
+            },
+            {
+              "base": "workspace_root",
+              "bytes": 2824333,
+              "locator": "_runtime/p2-endgame-source-r507-r508-10d55b3-20260912/live-artifacts/endgame-source-green.json",
+              "sha256": "EBD3296655C81066DCBBAF771586770F8233DD1B1B92C801E49892C243A4D5D5"
+            },
+            {
+              "base": "workspace_root",
+              "bytes": 33626,
+              "locator": "_runtime/p2-endgame-source-r507-r508-10d55b3-20260912/live-artifacts/endgame-source-managed-cleanup.json",
+              "sha256": "3FA1514206E808F53C7DF92F7858F10C41FFF73D2E6AC062BBD95E5ABD7E06FA"
+            }
+          ],
+          "red_index_refs": [],
+          "status": "GREEN"
+        },
+        "phase2_incidents_operations": {
+          "artifact_refs": [
+            {
+              "base": "workspace_root",
+              "bytes": 1379711,
+              "locator": "_runtime/p2-endgame-source-r507-r508-10d55b3-20260912/live-artifacts/source/phase2-source-checkpoint-registry.json",
+              "sha256": "4C6A9346F32194E7EF26BFCD79289D207E1C6DE7356ED4E7C61930E1FE75AAB3"
+            }
+          ],
+          "red_index_refs": [],
+          "status": "GREEN"
+        },
+        "phase2_projects_metrics": {
+          "artifact_refs": [
+            {
+              "base": "workspace_root",
+              "bytes": 1379711,
+              "locator": "_runtime/p2-endgame-source-r507-r508-10d55b3-20260912/live-artifacts/source/phase2-source-checkpoint-registry.json",
+              "sha256": "4C6A9346F32194E7EF26BFCD79289D207E1C6DE7356ED4E7C61930E1FE75AAB3"
+            }
+          ],
+          "red_index_refs": [],
+          "status": "GREEN"
+        },
+        "phase2_promotion_compensation": {
+          "artifact_refs": [
+            {
+              "base": "workspace_root",
+              "bytes": 1379711,
+              "locator": "_runtime/p2-endgame-source-r507-r508-10d55b3-20260912/live-artifacts/source/phase2-source-checkpoint-registry.json",
+              "sha256": "4C6A9346F32194E7EF26BFCD79289D207E1C6DE7356ED4E7C61930E1FE75AAB3"
+            }
+          ],
+          "red_index_refs": [],
+          "status": "GREEN"
+        }
+      },
+      "summary": {
+        "passed": 4,
+        "red": 0,
+        "required": 4,
+        "result": "GREEN"
+      }
+    }
+  },
+  "tool_update": {
+    "artifact_refs": [
+      {
+        "base": "workspace_root",
+        "bytes": 3993,
+        "locator": "_runtime/p1-critical-path-assembler/p2-tool-master-update-r504.json",
+        "sha256": "3383302A4798A8206E577CAD1B7662422E20C56F77647A7DEECE943949081F40"
+      }
+    ],
+    "red_index_refs": [],
+    "status": "GREEN"
+  },
+  "updated_at": "2026-09-12T14:10:00+08:00"
+}

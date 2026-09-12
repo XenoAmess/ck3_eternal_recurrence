@@ -1,6 +1,10 @@
 # 天朝二期验收用例索引
 
-状态：**滚动维护；下文 T0 `50%`、canonical stage `8/11`、source `3/4` 是历史快照；现行 P1 按九项机器门签收，P2 `LOCKED`**。
+状态：**滚动维护；本文件只编址用例和保留历史快照，不再承担现行状态投影。**
+
+唯一现行状态读取
+[`docs/project-state/current-state.json`](../project-state/current-state.json)，P2 source/raw/cut 固定分母读取
+[`p2-stage-ledger.json`](p2-stage-ledger.json)。下文所有带日期、轮次或“当前”措辞的状态都按历史记录读取，不得覆盖机器投影；其中旧 `P2 LOCKED` 只描述当时 P1 未签收的条件。
 
 本文把分散在生成器测试、静态合同、CK3 runner、source registry 和宣传制作
 文档中的用例统一编址。它是执行索引，不替代各专题的字段级权威定义。
@@ -35,7 +39,7 @@
 
 通过数量不能换算为代码行覆盖率；项目当前没有 coverage.py/分支覆盖率报告。
 
-## T0-P1 九项现行机器门（2026-09-10 owner revision）
+## T0-P1 九项机器门合同（2026-09-10 owner revision；状态由机器投影提供）
 
 `tools/run_zhongguo_acceptance.py --phase2-live-batch` 默认只执行 critical-path 路由：绑定当前 paused
 candidate 的 loaded-feature manifest 与 seed，再消费 `--phase2-p1-evidence-manifest` 指定的真实证据包。只有以下九项能决定 P1：
