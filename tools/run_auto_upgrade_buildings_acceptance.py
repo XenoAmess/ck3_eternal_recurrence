@@ -4,12 +4,14 @@
 from __future__ import annotations
 
 import argparse
+import base64
 from datetime import datetime, timezone
 import json
 import os
 import platform
 import re
 import shutil
+import subprocess
 import sys
 import tempfile
 import time
@@ -83,10 +85,127 @@ REQUIRED_MARKERS = (
     "AUBT: TEST DONE source-live",
 )
 OPEN_KAISHEK_PREFLIGHT_RESULT: dict[str, object] | None = None
+ORIGINAL_FOCUS_CK3 = acceptance.focus_ck3
+
+
+REALTEK_TOAST_DISMISS_SCRIPT = r"""
+$ErrorActionPreference = 'Stop'
+[Console]::OutputEncoding = [System.Text.UTF8Encoding]::new($false)
+Add-Type -AssemblyName UIAutomationClient
+Add-Type -AssemblyName UIAutomationTypes
+Add-Type @'
+using System;
+using System.Runtime.InteropServices;
+using System.Text;
+public static class AubExactToast {
+    [DllImport("user32.dll")] public static extern IntPtr GetForegroundWindow();
+    [DllImport("user32.dll", CharSet=CharSet.Unicode)]
+    public static extern int GetWindowText(IntPtr hWnd, StringBuilder text, int count);
+    [DllImport("user32.dll", CharSet=CharSet.Unicode)]
+    public static extern int GetClassName(IntPtr hWnd, StringBuilder text, int count);
+    [DllImport("user32.dll")]
+    public static extern uint GetWindowThreadProcessId(IntPtr hWnd, out uint pid);
+}
+'@
+$hwnd = [AubExactToast]::GetForegroundWindow()
+$title = [System.Text.StringBuilder]::new(512)
+$class = [System.Text.StringBuilder]::new(512)
+[void][AubExactToast]::GetWindowText($hwnd, $title, 512)
+[void][AubExactToast]::GetClassName($hwnd, $class, 512)
+$windowPid = 0
+[void][AubExactToast]::GetWindowThreadProcessId($hwnd, [ref]$windowPid)
+$process = Get-CimInstance Win32_Process -Filter ("ProcessId=" + $windowPid)
+if (
+    $title.ToString() -ne '新通知' -or
+    $class.ToString() -ne 'Windows.UI.Core.CoreWindow' -or
+    $process.Name -ne 'ShellExperienceHost.exe' -or
+    $process.ExecutablePath -notlike 'C:\Windows\SystemApps\ShellExperienceHost_*\ShellExperienceHost.exe'
+) {
+    throw 'foreground is not the exact ShellExperienceHost notification window'
+}
+$root = [System.Windows.Automation.AutomationElement]::FromHandle($hwnd)
+$senderCondition = [System.Windows.Automation.PropertyCondition]::new(
+    [System.Windows.Automation.AutomationElement]::AutomationIdProperty,
+    'SenderName'
+)
+$dismissCondition = [System.Windows.Automation.PropertyCondition]::new(
+    [System.Windows.Automation.AutomationElement]::AutomationIdProperty,
+    'DismissButton'
+)
+$senders = $root.FindAll(
+    [System.Windows.Automation.TreeScope]::Descendants,
+    $senderCondition
+)
+$dismissButtons = $root.FindAll(
+    [System.Windows.Automation.TreeScope]::Descendants,
+    $dismissCondition
+)
+if (
+    $senders.Count -ne 1 -or
+    $senders.Item(0).Current.Name -ne 'Realtek高清晰音频管理器' -or
+    $dismissButtons.Count -ne 1 -or
+    $dismissButtons.Item(0).Current.Name -ne '将此通知移动到操作中心' -or
+    -not $dismissButtons.Item(0).Current.IsEnabled
+) {
+    throw 'foreground notification is not the exact allowlisted Realtek toast'
+}
+$pattern = $dismissButtons.Item(0).GetCurrentPattern(
+    [System.Windows.Automation.InvokePattern]::Pattern
+)
+$pattern.Invoke()
+Write-Output '{"dismissed":true,"sender":"Realtek","control":"DismissButton"}'
+"""
 
 
 def log(message: str) -> None:
     acceptance.log(f"auto_upgrade_buildings: {message}")
+
+
+def dismiss_exact_realtek_toast() -> bool:
+    """Dismiss only the recurring Realtek jack toast that blocks CK3 focus."""
+    foreground = acceptance.win32gui.GetForegroundWindow()
+    if not foreground:
+        return False
+    if (
+        acceptance.win32gui.GetWindowText(foreground) != "新通知"
+        or acceptance.win32gui.GetClassName(foreground)
+        != "Windows.UI.Core.CoreWindow"
+    ):
+        return False
+    encoded = base64.b64encode(
+        REALTEK_TOAST_DISMISS_SCRIPT.encode("utf-16-le")
+    ).decode("ascii")
+    completed = subprocess.run(
+        [
+            "powershell.exe",
+            "-NoProfile",
+            "-NonInteractive",
+            "-EncodedCommand",
+            encoded,
+        ],
+        capture_output=True,
+        text=True,
+        encoding="utf-8",
+        errors="replace",
+        timeout=15,
+        creationflags=subprocess.CREATE_NO_WINDOW,
+    )
+    if completed.returncode != 0:
+        detail = completed.stderr.strip() or completed.stdout.strip()
+        raise acceptance.RunnerError(
+            f"exact Realtek toast dismissal failed: {detail}"
+        )
+    log("moved exact Realtek jack notification to Action Center")
+    time.sleep(0.75)
+    return True
+
+
+def focus_ck3_with_exact_toast_recovery() -> bool:
+    dismiss_exact_realtek_toast()
+    return ORIGINAL_FOCUS_CK3()
+
+
+acceptance.focus_ck3 = focus_ck3_with_exact_toast_recovery
 
 
 def write_json(path: Path, payload: dict[str, object]) -> None:
