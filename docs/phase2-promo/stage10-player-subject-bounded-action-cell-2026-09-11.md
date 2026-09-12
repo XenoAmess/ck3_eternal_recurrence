@@ -110,3 +110,5 @@ R492 在完整 120 日边界内完成 40 次观测，日志已出现 7 次 seaso
 R494 使用 v6 与修复后产品树运行至 source 后第 88 个游戏日，遇到 exact-build 原版 `ep3_interactions_events.0630`。该事件唯一选项会执行 `governor_resignation_title_transfer_effect`，移除玩家经理官职并破坏 Stage 10 的稳定 roster 前提。既有通用合同正确返回 `SCENARIO_INVALID`、保持暂停且 `selection_attempted=false`；`.120` 产品结果未被评估，不能据此回滚 B1 修复或继续延长观察窗。
 
 该 `29037` 来源永久退出 120 日 Stage 10 用途。下一候选必须在启动前证明其 active B1 exact tuple 和玩家经理拓扑，并排除同一验收窗内已知的官职移除；不允许靠自动点击、吞掉 RED 或原位 retry 保住旧来源。事件定义、调用链、实机 artifact 和 focused normal/optimized `2/2` 见 [R493/R494 来源 RED](r493-r494-stage10-governor-retirement-source-red-2026-09-12.md)。P1 仍为 `8/9`，P2 继续锁定。
+
+R494 autosave 的替代目标已定为 `27181 -> 36354`。拓扑有七名直属有地封臣，其中五名构成 `cycle/case=5/5` 的 exact B1 roster；五个 `.122` 都在 checkpoint 后 30 天。source-capture activation 新增与旧 live-qualified-checkpoint 互斥的 `managed-autosave` 准入：它把 autosave 绑定到来源 activation/state directory、loader GREEN、原版事件场景 RED、目标 discovery exact 域和 scheduled-event 队列。真实凭据已通过无启动 validator；下一步仅做一次零时间玩家切换、live campaign-root 复核与 MCP 原生保存。完整输入与哈希见 [R494 替代来源筛选](r494-alternate-stage10-source-screening-2026-09-12.md)。

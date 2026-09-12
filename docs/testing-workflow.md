@@ -2652,3 +2652,11 @@ py tools/inspect_ck3_save_character_scope.py --melted <gamestate> --discover-roo
 ```
 
 输出 schema 为 `ck3_character_scope_discovery_offline_v1`，列出所有带指定变量的存活或死亡 Character root，再统一跟随其请求列表中的 Character 引用。该模式仍是只读 prelaunch 证据；它只负责把候选域变成可核验数据，不能替代 topology、scheduled-event 或 exact-build live 准入。
+
+### Stage 10 受管 autosave 来源准入
+
+如果 Stage 10 受管作业在产品结果评估前因原版事件返回 `SCENARIO_INVALID`，但已经在事件前留下 `state_directory/profile/last_save.ck3`，可把该 autosave 用作另一个经理的 source-capture 输入。activation 使用 `source_managed_autosave_provenance`，且不得同时提供旧的 `source_live_qualification` / `source_checkpoint_provenance`。
+
+`zg361_stage10_managed_autosave_provenance_v1` 必须 hash 绑定 autosave、来源 activation、loader readiness、受管场景 RED、`ck3_character_scope_discovery_offline_v1` 和 `ck3_scheduled_event_queue_offline_v1`。接纳器会确认 autosave 的真实 state directory、exact-build/产品树一致性、来源玩家与唯一 PID、fail-closed/no-selection 场景处理、目标经理的 exact B1 tuple，以及逐 subject 的固定 `.122 +30d` 队列。通过只表示该 checkpoint 可以进入新的 source-capture；新的 exact-build 轮次仍须在零游戏时间推进下切换玩家、复核 campaign root 并由 MCP 原生保存。
+
+该分支用于复用已经实际产生的受管 autosave，不允许手工拼接不同 session 的 GREEN/RED 或把 offline 报告当成 live 结果。目标直属领主必须取 topology 的 `immediate_liege_character_id`；B1 exact roster 数量和全部直属有地封臣数量是两个不同字段。
