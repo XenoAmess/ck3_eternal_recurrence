@@ -65,6 +65,18 @@ forwards the target-owned unavailable payload without interpreting it. The next
 live attempt requires a fresh DLL and exists only to read the retained surface
 state; it must not be widened into a long capture retry.
 
+The synchronized-root Release build for R528/R529 is GREEN from root
+`d28170d74357acd364f513086a63211b9e4f24e0`, with implementation commit
+`dedc8a5c0a9109de33df3cf31c9d3ec970e275e7`. All 27 candidate switches are
+OFF. The bridge SHA-256 is
+`F4EE46CF3426FCE26FABE1D4BD2A09C76AC0A813DEA7E62517383EDAB61CEB9F`,
+the injector SHA-256 is
+`0CC7554DA62FD4E6BEE03A38C28AFBCDFC81CF3D960C54AB7FCBF8CB90A08597`,
+and the focused executable exited `0` with SHA-256
+`6B0B52A6F4F72846FC17DA395308FF2E4700CD8A3CE05CFAD418A117D9E6A4FD`.
+Build receipt `C2248F5B3C7AEDC18498E1342AEF3B756C86ACC9898105AED99E0D15101C04B6`
+records that no CK3 round was consumed.
+
 ## Evidence
 
 - no-launch plan: `169A9C0BB71202E366149200FA4F9AD8C37497F99C68402A4D4A8100519E53AC`
