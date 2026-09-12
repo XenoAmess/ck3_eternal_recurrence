@@ -1,19 +1,19 @@
 {
   "schema": "xar.project-delivery-state-source",
   "schema_version": 1,
-  "updated_at": "2026-09-12T14:10:00+08:00",
+  "updated_at": "2026-09-12T14:30:00+08:00",
   "repository_provenance": {
     "root_live_source": "git status --branch --porcelain=v2 plus git ls-remote origin",
     "root_live_state_not_git_cached": true,
     "root_last_completed_transaction": {
-      "commit": "1290a8907aa90c8cd8e4c3233f838352e8a01cb7",
+      "commit": "502020bfbb1309a5bbfe6359365c4df91e3caf7a",
       "upstream_ref": "origin/master",
       "sync_result": "GREEN"
     },
     "t2_live_source": "git -C <open_kaishek> status --branch --porcelain=v2 plus git ls-remote origin",
     "t2_live_state_not_git_cached": true,
     "t2_last_completed_transaction": {
-      "commit": "61366e3affc8a615bdee1f343262c2b6d456e281",
+      "commit": "c99116c1cc41d039aff2ec46278799f9521c8509",
       "upstream_ref": "origin/main",
       "sync_result": "GREEN"
     }
@@ -149,7 +149,7 @@
     "program": "G2",
     "result": "ACTIVE",
     "percentage": null,
-    "progress_basis": "fixed gate counts only; no frozen total denominator exists",
+    "progress_basis": "visible OODA milestones; 0/8 complete",
     "open_gates": ["GEN-034"],
     "closed_gates": [],
     "authority_locator": "docs/autonomous-agent-progress/one-generation-blocker-ledger.md"
@@ -157,9 +157,9 @@
   "t2": {
     "priority": "T2",
     "result": "GREEN",
-    "upstream_root_commit": "1290a8907aa90c8cd8e4c3233f838352e8a01cb7",
-    "compat_commit": "61366e3affc8a615bdee1f343262c2b6d456e281",
-    "public_interface_delta": "RETRY_POLICY_CONSUMER_SYNCED",
+    "upstream_root_commit": "502020bfbb1309a5bbfe6359365c4df91e3caf7a",
+    "compat_commit": "c99116c1cc41d039aff2ec46278799f9521c8509",
+    "public_interface_delta": "G2_STRATEGY_PROFILE_CONSUMER_SYNCED",
     "live_sync_source": "repository_provenance.t2_live_source"
   },
   "live_red_source": {

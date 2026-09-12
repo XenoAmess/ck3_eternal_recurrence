@@ -62,14 +62,14 @@
   },
   "repository_provenance": {
     "root_last_completed_transaction": {
-      "commit": "1290a8907aa90c8cd8e4c3233f838352e8a01cb7",
+      "commit": "502020bfbb1309a5bbfe6359365c4df91e3caf7a",
       "sync_result": "GREEN",
       "upstream_ref": "origin/master"
     },
     "root_live_source": "git status --branch --porcelain=v2 plus git ls-remote origin",
     "root_live_state_not_git_cached": true,
     "t2_last_completed_transaction": {
-      "commit": "61366e3affc8a615bdee1f343262c2b6d456e281",
+      "commit": "c99116c1cc41d039aff2ec46278799f9521c8509",
       "sync_result": "GREEN",
       "upstream_ref": "origin/main"
     },
@@ -123,7 +123,7 @@
         "base": "repo_root",
         "bytes": 7434,
         "locator": "docs/phase2-promo/p2-stage-ledger.json",
-        "sha256": "9E7698344AFB0E6A7ED5ECF517CE576F3AA9170C00084C8C05B29C886374CC18"
+        "sha256": "83081759F0B63CD0009853B97E11745F9ED4D0221567B06232109283AD2C3C51"
       },
       "raw_footage": {
         "passed": 0,
@@ -151,16 +151,16 @@
     "percentage": null,
     "priority": "T1",
     "program": "G2",
-    "progress_basis": "fixed gate counts only; no frozen total denominator exists",
+    "progress_basis": "visible OODA milestones; 0/8 complete",
     "result": "ACTIVE"
   },
   "t2": {
-    "compat_commit": "61366e3affc8a615bdee1f343262c2b6d456e281",
+    "compat_commit": "c99116c1cc41d039aff2ec46278799f9521c8509",
     "live_sync_source": "repository_provenance.t2_live_source",
     "priority": "T2",
-    "public_interface_delta": "RETRY_POLICY_CONSUMER_SYNCED",
+    "public_interface_delta": "G2_STRATEGY_PROFILE_CONSUMER_SYNCED",
     "result": "GREEN",
-    "upstream_root_commit": "1290a8907aa90c8cd8e4c3233f838352e8a01cb7"
+    "upstream_root_commit": "502020bfbb1309a5bbfe6359365c4df91e3caf7a"
   },
-  "updated_at": "2026-09-12T14:10:00+08:00"
+  "updated_at": "2026-09-12T14:30:00+08:00"
 }
