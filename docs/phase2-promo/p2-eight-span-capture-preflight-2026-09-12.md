@@ -152,3 +152,17 @@ request discriminator and adds one parser regression executable; that focused
 test is GREEN. Because native DLL bytes change, same-frame retry is forbidden.
 P2 raw footage remains `0/8` and the next capture requires a newly built DLL and
 a new CK3 round.
+
+## Corrected bridge candidate
+
+Root `5c206794e8eb73756b1dfc4eb833dc62521e9d3d` and open_kaishek
+`1ac7082ff606389b9da648b356c8f6963e83dedb` are pushed and synchronized.
+The Windows MSVC 19.51 Release build produced bridge DLL
+`16CBA80C...0451D` and injector `E626D1F5...0D8E7`; all candidate options remain
+OFF. The dedicated mailbox parser test is GREEN. Build receipt
+`76C91D40...C8082` records the exact inputs, artifacts, and two resolved
+toolchain-selection failures.
+
+No CK3 process was launched and R512 was not consumed. This build is
+static-ready only. The next bounded capture must use new round R512 for Frontend
+warm-up and new round R513 for `-loadsave=autosave`, with this exact bridge pair.

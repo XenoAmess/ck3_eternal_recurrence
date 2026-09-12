@@ -38,7 +38,7 @@
       "git_cached": false,
       "inventory_source": "operator_get_status",
       "stable_projection_only": true,
-      "status": "R511_BRIDGE_PROTOCOL_RED_SOURCE_FIXED_REBUILD_PENDING"
+      "status": "R511_BRIDGE_PROTOCOL_RED_NEW_DLL_BUILT_LIVE_RETRY_PENDING"
     },
     "preserved_indexes": [
       {
@@ -74,9 +74,9 @@
       {
         "index_ref": {
           "base": "repo_root",
-          "bytes": 2985,
+          "bytes": 3521,
           "locator": "docs/project-state/red-indexes/r511-scoreboard-state-request-type-mismatch.json",
-          "sha256": "FA3228281DEB6950D1017DF41669553521A70E847FCA7D13CD968EA50992B7C6"
+          "sha256": "261E750A2860029B9ED7C07400A1CDF3918BFEA6BC66A1E32F52A7DA92B6502C"
         },
         "red_id": "R511-scoreboard-state-request-type-mismatch",
         "role": "HISTORICAL_PRESERVED"
@@ -92,14 +92,14 @@
   },
   "repository_provenance": {
     "root_last_completed_transaction": {
-      "commit": "5bb2a4ea17c013eaadf96479c48a6dca4386f71b",
+      "commit": "5c206794e8eb73756b1dfc4eb833dc62521e9d3d",
       "sync_result": "GREEN",
       "upstream_ref": "origin/master"
     },
     "root_live_source": "git status --branch --porcelain=v2 plus git ls-remote origin",
     "root_live_state_not_git_cached": true,
     "t2_last_completed_transaction": {
-      "commit": "a2785cce459b03b1c17cf00f197392686697a5d2",
+      "commit": "1ac7082ff606389b9da648b356c8f6963e83dedb",
       "sync_result": "GREEN",
       "upstream_ref": "origin/main"
     },
@@ -153,7 +153,7 @@
         "base": "repo_root",
         "bytes": 7860,
         "locator": "docs/phase2-promo/p2-stage-ledger.json",
-        "sha256": "9D836EAFFF681FC46CF4255C95DE8E7DAF9DAC1C5581530DABFEC2A74C3F165F"
+        "sha256": "9EB2C1426A6A14CA4EED7C259AFCF6870341FAF5EFE95B662F7A3E9ED8EFA4E5"
       },
       "raw_footage": {
         "passed": 0,
@@ -185,12 +185,12 @@
     "result": "ACTIVE"
   },
   "t2": {
-    "compat_commit": "a2785cce459b03b1c17cf00f197392686697a5d2",
+    "compat_commit": "1ac7082ff606389b9da648b356c8f6963e83dedb",
     "live_sync_source": "repository_provenance.t2_live_source",
     "priority": "T2",
-    "public_interface_delta": "NO_SCHEMA_DELTA_SCOREBOARD_EXECUTE_STEP_CONFORMANCE_FIX_PENDING_SYNC",
-    "result": "PENDING",
-    "upstream_root_commit": "5bb2a4ea17c013eaadf96479c48a6dca4386f71b"
+    "public_interface_delta": "NO_SCHEMA_DELTA_SCOREBOARD_EXECUTE_STEP_CONFORMANCE_RESTORED",
+    "result": "GREEN",
+    "upstream_root_commit": "5c206794e8eb73756b1dfc4eb833dc62521e9d3d"
   },
-  "updated_at": "2026-09-12T15:03:00+08:00"
+  "updated_at": "2026-09-12T15:12:00+08:00"
 }

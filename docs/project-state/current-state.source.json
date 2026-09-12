@@ -1,19 +1,19 @@
 {
   "schema": "xar.project-delivery-state-source",
   "schema_version": 1,
-  "updated_at": "2026-09-12T15:03:00+08:00",
+  "updated_at": "2026-09-12T15:12:00+08:00",
   "repository_provenance": {
     "root_live_source": "git status --branch --porcelain=v2 plus git ls-remote origin",
     "root_live_state_not_git_cached": true,
     "root_last_completed_transaction": {
-      "commit": "5bb2a4ea17c013eaadf96479c48a6dca4386f71b",
+      "commit": "5c206794e8eb73756b1dfc4eb833dc62521e9d3d",
       "upstream_ref": "origin/master",
       "sync_result": "GREEN"
     },
     "t2_live_source": "git -C <open_kaishek> status --branch --porcelain=v2 plus git ls-remote origin",
     "t2_live_state_not_git_cached": true,
     "t2_last_completed_transaction": {
-      "commit": "a2785cce459b03b1c17cf00f197392686697a5d2",
+      "commit": "1ac7082ff606389b9da648b356c8f6963e83dedb",
       "upstream_ref": "origin/main",
       "sync_result": "GREEN"
     }
@@ -156,14 +156,14 @@
   },
   "t2": {
     "priority": "T2",
-    "result": "PENDING",
-    "upstream_root_commit": "5bb2a4ea17c013eaadf96479c48a6dca4386f71b",
-    "compat_commit": "a2785cce459b03b1c17cf00f197392686697a5d2",
-    "public_interface_delta": "NO_SCHEMA_DELTA_SCOREBOARD_EXECUTE_STEP_CONFORMANCE_FIX_PENDING_SYNC",
+    "result": "GREEN",
+    "upstream_root_commit": "5c206794e8eb73756b1dfc4eb833dc62521e9d3d",
+    "compat_commit": "1ac7082ff606389b9da648b356c8f6963e83dedb",
+    "public_interface_delta": "NO_SCHEMA_DELTA_SCOREBOARD_EXECUTE_STEP_CONFORMANCE_RESTORED",
     "live_sync_source": "repository_provenance.t2_live_source"
   },
   "live_red_source": {
-    "status": "R511_BRIDGE_PROTOCOL_RED_SOURCE_FIXED_REBUILD_PENDING",
+    "status": "R511_BRIDGE_PROTOCOL_RED_NEW_DLL_BUILT_LIVE_RETRY_PENDING",
     "active": null,
     "unresolved_count": 0,
     "inventory_source": "operator_get_status",
@@ -381,10 +381,19 @@
         "sha256": "DCC2F20926002A059EC48F2917DEC1853BEFF906FB29BA79B445F14017BA0F26"
       },
       "resolution": {
-        "status": "SOURCE_PATCHED_FOCUSED_TEST_GREEN_DLL_REBUILD_AND_LIVE_RETRY_PENDING",
+        "status": "NEW_DLL_BUILT_FOCUSED_TEST_GREEN_LIVE_RETRY_PENDING",
         "current_blocker": true,
         "focused_test": "xar_ck3_zhongguo_scoreboard_state_v1_mailbox_test GREEN",
         "requires_new_dll_and_round": true,
+        "new_bridge_dll_sha256": "16CBA80CFF2AAF07FC644A27B012C0D9947812C47440B9CB47731C873630451D",
+        "new_injector_sha256": "E626D1F5AE75FEE2ED17D08D737B5F8D70DC4CC8C224807C198D5E391590D8E7",
+        "build_receipt_ref": {
+          "base": "workspace_root",
+          "locator": "_runtime/native-builds/p2-r512-r513-scoreboard-transport-5c20679-20260912/build-receipt.json",
+          "bytes": 3289,
+          "sha256": "76C91D40C3067DC8DE08EEFEF0DF66492C91C5C4D231E731C9A1A4ED5A8C8082"
+        },
+        "open_kaishek_compat_commit": "1ac7082ff606389b9da648b356c8f6963e83dedb",
         "cleanup_ref": {
           "base": "workspace_root",
           "locator": "_runtime/p2-capture-r510-r517-5bb2a4e-20260912/capture/cell/09_phase2_native_session_cleanup.json",

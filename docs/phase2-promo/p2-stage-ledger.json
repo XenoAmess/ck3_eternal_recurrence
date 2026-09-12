@@ -143,9 +143,9 @@
             {
               "index_ref": {
                 "base": "repo_root",
-                "bytes": 2985,
+                "bytes": 3521,
                 "locator": "docs/project-state/red-indexes/r511-scoreboard-state-request-type-mismatch.json",
-                "sha256": "FA3228281DEB6950D1017DF41669553521A70E847FCA7D13CD968EA50992B7C6"
+                "sha256": "261E750A2860029B9ED7C07400A1CDF3918BFEA6BC66A1E32F52A7DA92B6502C"
               },
               "red_id": "R511-scoreboard-state-request-type-mismatch"
             }
@@ -273,5 +273,5 @@
     "red_index_refs": [],
     "status": "GREEN"
   },
-  "updated_at": "2026-09-12T15:03:00+08:00"
+  "updated_at": "2026-09-12T15:12:00+08:00"
 }
