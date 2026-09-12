@@ -21,7 +21,10 @@ PROJECTIONS = (
     (
         "07_loyalty_summary.png",
         "00_divided_hearts_live.jpg",
-        (300, 180, 2260, 1280),
+        # Keep only the ordinary player event and surrounding China map. The
+        # acceptance fixture's decision drawer and diagnostic notifications sit
+        # outside this crop and must never enter storefront media.
+        (300, 180, 1690, 920),
     ),
     (
         "08_later_dynasty_character.png",
