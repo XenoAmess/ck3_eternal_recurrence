@@ -113,7 +113,9 @@
   },
   "gui_root": {
     "global_slot_rva": "0x576CC68",
-    "pointer_chain": ["deref_global_slot", "+0x1B8", "+0x58", "+0x3D0", "+0x08"],
+    "dispatch_context_pointer_chain": ["deref_global_slot", "+0x1B8", "+0x58"],
+    "owner_pointer_chain": ["deref_global_slot", "+0x1B8", "+0x58", "+0x3D0", "+0x08"],
+    "r513_correction": "the +0x3D0 object is an owner-lookup host, not the dispatch context that owns the modal vector",
     "owner_root_widget_offset": "0xD0",
     "find_top_level_widget_rva": "0x36D0B20",
     "find_top_level_widget_abi": "void* __fastcall(void* gui_owner, const std::string* exact_name)",
@@ -161,6 +163,7 @@
     ]
   },
   "modal_receiver_abi": {
+    "context_source": "third_object_from_gui_global_chain_before_plus_0x3D0_owner_lookup",
     "gui_context_modal_vector_data_offset": "0x290",
     "gui_context_modal_vector_count_offset": "0x29C",
     "count_type": "int32",

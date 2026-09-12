@@ -387,6 +387,45 @@ bool CanonicalEncodingMatches(
 
 int main() {
   bool ok = true;
+  {
+    std::array<std::uint8_t, 0x200> first{};
+    std::array<std::uint8_t, 0x80> second{};
+    std::array<std::uint8_t, 0x400> dispatch_context{};
+    std::array<std::uint8_t, 0x20> owner_lookup_host{};
+    std::array<std::uint8_t, 0x100> owner{};
+    void *first_pointer = first.data();
+    void *second_pointer = second.data();
+    void *dispatch_pointer = dispatch_context.data();
+    void *owner_host_pointer = owner_lookup_host.data();
+    void *owner_pointer = owner.data();
+    std::memcpy(first.data() +
+                    xar::ck3_11906::kZhongguoGuiChainFirstOffset,
+                &second_pointer, sizeof(second_pointer));
+    std::memcpy(second.data() +
+                    xar::ck3_11906::kZhongguoGuiChainSecondOffset,
+                &dispatch_pointer, sizeof(dispatch_pointer));
+    std::memcpy(dispatch_context.data() +
+                    xar::ck3_11906::kZhongguoGuiContextOffset,
+                &owner_host_pointer, sizeof(owner_host_pointer));
+    std::memcpy(owner_lookup_host.data() +
+                    xar::ck3_11906::kZhongguoGuiOwnerOffset,
+                &owner_pointer, sizeof(owner_pointer));
+    xar::ck3_11906::ZhongguoScoreboardNativeEnvironmentV1 environment{};
+    environment.gui_global_slot =
+        reinterpret_cast<void **>(&first_pointer);
+    xar::ck3_11906::ZhongguoScoreboardAccessV1 access{};
+    void *resolved_context = nullptr;
+    void *resolved_owner = nullptr;
+    ok &= Expect(
+        xar::ck3_11906::
+            ResolveZhongguoScoreboardNativeGuiContextAndOwnerV1(
+                environment, access, resolved_context, resolved_owner) &&
+            resolved_context == dispatch_context.data() &&
+            resolved_context != owner_lookup_host.data() &&
+            resolved_owner == owner.data(),
+        "native GUI resolver must keep dispatch context separate from the "
+        "owner-lookup host");
+  }
   Fixture fixture{};
   std::uintptr_t push_button_vtable = 0x14506020;
   for (auto &widget : fixture.widgets) {

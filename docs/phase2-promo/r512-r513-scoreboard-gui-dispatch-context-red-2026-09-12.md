@@ -50,3 +50,18 @@ P2 raw capture 保持 `0/8`，首段继续 PENDING。
    才关闭本 RED 并继续八段录制。
 
 公开协议没有变化，open_kaishek 只需记录上游 native conformance 修复，不需要 schema 升级。
+
+## 源码修复结果
+
+`ResolveGuiContextAndOwner` 现在把第三 GUI 链对象保存在 `context`，同时用独立的
+`owner_lookup_host` 完成 `third+0x3D0 -> host+0x08 -> owner`。focused native
+fixture 把三者放在不同地址，明确断言 context 不能等于 owner host。
+
+- `xar_ck3_zhongguo_scoreboard_state_v1_test.exe`：GREEN。
+- `tools.test_zhongguo_phase2_event_choreography_runner`：normal `15/15` GREEN；
+  optimized `15/15` GREEN。
+- ABI JSON parse 与 `git diff --check`：GREEN。
+- CK3：未启动，当前轮次仍为 R513，实例数 `0`。
+
+R513 RED 在新 DLL 完成一次真实 paused available query 前仍保持 current blocker；
+源码修复通过不能冒充 live capability closure。

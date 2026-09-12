@@ -59,6 +59,9 @@
       "sha256": "E82B3DE7E4C9AE1A33750714FA34BA1ACFC7521D19D55CC02CBF7E609C13AA5B",
       "usable_span_count": 0
     },
+    "focused_native": "xar_ck3_zhongguo_scoreboard_state_v1_test GREEN with distinct dispatch context, owner host, and owner",
+    "focused_python_normal": "15/15 GREEN",
+    "focused_python_optimized": "15/15 GREEN",
     "report_ref": {
       "base": "workspace_root",
       "bytes": 4370670,
@@ -66,7 +69,7 @@
       "sha256": "CF6A34BC2B2CBB333097F88634AA74951457D26A1FECD10FBB84EBA91BE9C2C9"
     },
     "requires_new_dll_and_round": true,
-    "status": "ROOT_CAUSE_IDENTIFIED_NATIVE_FIX_PENDING"
+    "status": "SOURCE_FIX_FOCUSED_TEST_GREEN_NEW_DLL_PENDING"
   },
   "result": "RED",
   "same_frame_retry_eligible": false,

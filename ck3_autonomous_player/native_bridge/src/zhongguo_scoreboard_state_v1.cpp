@@ -662,13 +662,21 @@ bool ResolveGuiContextAndOwner(
   void *first = nullptr;
   void *second = nullptr;
   void *third = nullptr;
-  return ReadBytes(access, environment.gui_global_slot, &first,
-                   sizeof(first)) &&
-         ReadValue(access, first, kZhongguoGuiChainFirstOffset, second) &&
-         ReadValue(access, second, kZhongguoGuiChainSecondOffset, third) &&
-         ReadValue(access, third, kZhongguoGuiContextOffset, context) &&
-         ReadValue(access, context, kZhongguoGuiOwnerOffset, owner) &&
-         owner != nullptr;
+  void *owner_lookup_host = nullptr;
+  if (!ReadBytes(access, environment.gui_global_slot, &first,
+                 sizeof(first)) ||
+      !ReadValue(access, first, kZhongguoGuiChainFirstOffset, second) ||
+      !ReadValue(access, second, kZhongguoGuiChainSecondOffset, third) ||
+      !ReadValue(access, third, kZhongguoGuiContextOffset,
+                 owner_lookup_host) ||
+      !ReadValue(access, owner_lookup_host, kZhongguoGuiOwnerOffset, owner) ||
+      third == nullptr || owner == nullptr) {
+    return false;
+  }
+  // The modal receiver vector belongs to the third GUI-chain object.  Its
+  // +0x3D0 pointer is only the host used to resolve the top-level widget owner.
+  context = third;
+  return true;
 }
 
 bool ReadModalTopReceiver(const ZhongguoScoreboardAccessV1 &access,
@@ -1361,6 +1369,13 @@ bool ApplyProviderRevision(
 }
 
 } // namespace
+
+bool ResolveZhongguoScoreboardNativeGuiContextAndOwnerV1(
+    const ZhongguoScoreboardNativeEnvironmentV1 &environment,
+    const ZhongguoScoreboardAccessV1 &access, void *&context,
+    void *&owner) noexcept {
+  return ResolveGuiContextAndOwner(environment, access, context, owner);
+}
 
 ZhongguoScoreboardNativeEnvironmentV1 BindZhongguoScoreboardNativeEnvironmentV1(
     std::uintptr_t module_base, bool exact_build_admitted) noexcept {

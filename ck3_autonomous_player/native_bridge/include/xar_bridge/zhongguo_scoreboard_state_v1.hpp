@@ -283,6 +283,14 @@ struct ZhongguoScoreboardStateRequestV1 {
       nullptr;
 };
 
+// Resolves the exact-build third GUI-chain object used for dispatch/modal
+// state separately from the top-level widget owner reached through +0x3D0.
+// Exposed so the focused native contract test can preserve that distinction.
+bool ResolveZhongguoScoreboardNativeGuiContextAndOwnerV1(
+    const ZhongguoScoreboardNativeEnvironmentV1 &environment,
+    const ZhongguoScoreboardAccessV1 &access, void *&context,
+    void *&owner) noexcept;
+
 ZhongguoScoreboardNativeEnvironmentV1 BindZhongguoScoreboardNativeEnvironmentV1(
     std::uintptr_t module_base, bool exact_build_admitted) noexcept;
 

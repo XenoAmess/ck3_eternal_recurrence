@@ -154,6 +154,10 @@ dispatcher 的静态账本与实现已经证明 modal vector 属于第三 GUI �
 owner 才经 `third+0x3D0 -> +0x08` 解析。因此修复必须保留两个对象身份；不得用延时重试、
 OCR 或“unavailable 等于 closed”绕过。R513 仍无业务输入，分类为 capability RED。
 
+最小修复把第三 GUI 链对象保存在 dispatch context，并用独立局部变量解析
+`third+0x3D0 -> +0x08` owner。focused native fixture 强制三者地址不同并已通过；
+该结论仍需新 DLL 的真实 paused query 才能从 static-ready 提升为 live。
+
 - exact build 与 adapter/consumer identity；
 - connection generation 与 query sequence；
 - request nonce；

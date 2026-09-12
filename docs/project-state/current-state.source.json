@@ -1,12 +1,12 @@
 {
   "schema": "xar.project-delivery-state-source",
   "schema_version": 1,
-  "updated_at": "2026-09-12T15:27:08+08:00",
+  "updated_at": "2026-09-12T15:42:00+08:00",
   "repository_provenance": {
     "root_live_source": "git status --branch --porcelain=v2 plus git ls-remote origin",
     "root_live_state_not_git_cached": true,
     "root_last_completed_transaction": {
-      "commit": "54b305940604493aa392a42e9da48104faf6c58d",
+      "commit": "2f0637573b099bdd227c7ddc456f4706c2ff54d7",
       "upstream_ref": "origin/master",
       "sync_result": "GREEN"
     },
@@ -223,13 +223,13 @@
   "t2": {
     "priority": "T2",
     "result": "GREEN",
-    "upstream_root_commit": "54b305940604493aa392a42e9da48104faf6c58d",
+    "upstream_root_commit": "2f0637573b099bdd227c7ddc456f4706c2ff54d7",
     "compat_commit": "1ac7082ff606389b9da648b356c8f6963e83dedb",
     "public_interface_delta": "NO_SCHEMA_DELTA_SCOREBOARD_EXECUTE_STEP_CONFORMANCE_RESTORED",
     "live_sync_source": "repository_provenance.t2_live_source"
   },
   "live_red_source": {
-    "status": "R513_SCOREBOARD_GUI_DISPATCH_CONTEXT_RED_ROOT_CAUSE_IDENTIFIED_FIX_PENDING",
+    "status": "R513_NATIVE_GUI_CONTEXT_SOURCE_FIX_GREEN_NEW_DLL_LIVE_PENDING",
     "active": null,
     "unresolved_count": 0,
     "inventory_source": "operator_get_status",
@@ -570,7 +570,10 @@
           "sha256": "CF6A34BC2B2CBB333097F88634AA74951457D26A1FECD10FBB84EBA91BE9C2C9"
         },
         "requires_new_dll_and_round": true,
-        "status": "ROOT_CAUSE_IDENTIFIED_NATIVE_FIX_PENDING"
+        "status": "SOURCE_FIX_FOCUSED_TEST_GREEN_NEW_DLL_PENDING",
+        "focused_native": "xar_ck3_zhongguo_scoreboard_state_v1_test GREEN with distinct dispatch context, owner host, and owner",
+        "focused_python_normal": "15/15 GREEN",
+        "focused_python_optimized": "15/15 GREEN"
       },
       "result": "RED",
       "same_frame_retry_eligible": false,
