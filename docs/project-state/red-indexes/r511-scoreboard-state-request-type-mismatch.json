@@ -55,8 +55,16 @@
       "locator": "_runtime/p2-capture-r510-r517-5bb2a4e-20260912/capture/cell/09_phase2_native_session_cleanup.json",
       "sha256": "DAABE7C60D2C37A197B88C8C34A3B0F8F1186F5B00982D81073643E9D6376C55"
     },
-    "current_blocker": true,
+    "closing_driver_state_ref": {
+      "base": "workspace_root",
+      "bytes": 38190,
+      "locator": "_runtime/p2-capture-r512-r519-54b3059-20260912/capture_native_state/native-session/driver-state.json",
+      "sha256": "EDCB5600EAFFC6135C2BF42F5869488CBBAA0E86AF7EF80E7CD55E5CDAEA144E"
+    },
+    "closing_round": "R513",
+    "current_blocker": false,
     "focused_test": "xar_ck3_zhongguo_scoreboard_state_v1_mailbox_test GREEN",
+    "live_result": "request accepted; next typed provider result was gui_root_unavailable",
     "new_bridge_dll_sha256": "16CBA80CFF2AAF07FC644A27B012C0D9947812C47440B9CB47731C873630451D",
     "new_injector_sha256": "E626D1F5AE75FEE2ED17D08D737B5F8D70DC4CC8C224807C198D5E391590D8E7",
     "open_kaishek_compat_commit": "1ac7082ff606389b9da648b356c8f6963e83dedb",
@@ -68,7 +76,7 @@
       "sha256": "B326E8446334A9D868528A0F074AD18AA6F3E786E517A55D5002C4C56DFC9B82",
       "usable_span_count": 0
     },
-    "status": "NEW_DLL_BUILT_FOCUSED_TEST_GREEN_LIVE_RETRY_PENDING"
+    "status": "CLOSED_BY_R513_TRANSPORT_ACCEPTED"
   },
   "result": "RED",
   "same_frame_retry_eligible": false,

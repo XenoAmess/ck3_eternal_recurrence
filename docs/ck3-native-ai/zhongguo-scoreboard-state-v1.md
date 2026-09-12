@@ -147,6 +147,13 @@ transport discriminator，不改变 capability、字段或 ABI，并由独立 ma
 parser 回归覆盖。R511 在输入前终止，因此它是 bridge/harness RED，不是
 记分板业务结果。
 
+R513 随后实机跨过上述 transport，暴露第二个 native 错误。state resolver 把
+`third+0x3D0` 的 owner-lookup host 同时当成 GUI dispatch context，导致 modal vector
+从错误对象的 `+0x290/+0x29C` 读取并返回 `gui_root_unavailable`。同构建 action
+dispatcher 的静态账本与实现已经证明 modal vector 属于第三 GUI 链对象，而 top-level
+owner 才经 `third+0x3D0 -> +0x08` 解析。因此修复必须保留两个对象身份；不得用延时重试、
+OCR 或“unavailable 等于 closed”绕过。R513 仍无业务输入，分类为 capability RED。
+
 - exact build 与 adapter/consumer identity；
 - connection generation 与 query sequence；
 - request nonce；

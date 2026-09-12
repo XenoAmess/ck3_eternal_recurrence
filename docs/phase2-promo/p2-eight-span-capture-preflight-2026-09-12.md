@@ -166,3 +166,29 @@ toolchain-selection failures.
 No CK3 process was launched and R512 was not consumed. This build is
 static-ready only. The next bounded capture must use new round R512 for Frontend
 warm-up and new round R513 for `-loadsave=autosave`, with this exact bridge pair.
+
+## R512/R513 live result
+
+R512 completed Frontend warm-up and terminated before sole gameplay round R513.
+R513 loaded the product save, passed all 303 loader callbacks and the paused seed
+gate, and accepted the corrected scoreboard state request. This closes R511 as
+the current transport blocker.
+
+The accepted query returned typed `unavailable/gui_root_unavailable` before any
+gameplay input. Comparison with the already frozen exact action dispatcher shows
+the state resolver confused the `third+0x3D0` owner-lookup host with the third GUI
+chain object that owns the modal vector at `+0x290/+0x29C`. The loader and HUD
+were already ready, so a timing retry is not justified. R513 is preserved as a
+capability RED; its 2-second failed take has zero clean spans and raw footage
+remains `0/8`.
+
+Both rounds are terminated and cleanup `000A8B8E...5614` is GREEN. The next
+package is the smallest native resolver correction plus its focused fixture;
+because DLL bytes will change, the next live verification requires new rounds.
+
+Before R512, one operator invocation passed `--execute` back to the planner's
+already-created attempt directory. Admission rejected the duplicate directory
+before launch; CK3 count stayed zero and no round was consumed. The correct
+execution path used the frozen `single_capture_command.argv` once with
+`shell=False`. This was a prelaunch operator RED, not product or capability
+evidence, and the rejected invocation will not be repeated.

@@ -143,11 +143,20 @@
             {
               "index_ref": {
                 "base": "repo_root",
-                "bytes": 3521,
+                "bytes": 3924,
                 "locator": "docs/project-state/red-indexes/r511-scoreboard-state-request-type-mismatch.json",
-                "sha256": "261E750A2860029B9ED7C07400A1CDF3918BFEA6BC66A1E32F52A7DA92B6502C"
+                "sha256": "D9A750348608C5591A494F7687F6D4D071E4E5BB54D70A4D7BD013F95CC282C5"
               },
               "red_id": "R511-scoreboard-state-request-type-mismatch"
+            },
+            {
+              "index_ref": {
+                "base": "repo_root",
+                "bytes": 3440,
+                "locator": "docs/project-state/red-indexes/r513-scoreboard-gui-dispatch-context-red.json",
+                "sha256": "2AB52F871B27CB925E44EE19109FC619563AB742BC8B0CC0E69E73B5596D03FC"
+              },
+              "red_id": "R513-scoreboard-gui-dispatch-context-red"
             }
           ],
           "status": "PENDING"
@@ -273,5 +282,5 @@
     "red_index_refs": [],
     "status": "GREEN"
   },
-  "updated_at": "2026-09-12T15:12:00+08:00"
+  "updated_at": "2026-09-12T15:27:08+08:00"
 }

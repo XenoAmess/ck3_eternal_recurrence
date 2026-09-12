@@ -1,12 +1,12 @@
 {
   "schema": "xar.project-delivery-state-source",
   "schema_version": 1,
-  "updated_at": "2026-09-12T15:12:00+08:00",
+  "updated_at": "2026-09-12T15:27:08+08:00",
   "repository_provenance": {
     "root_live_source": "git status --branch --porcelain=v2 plus git ls-remote origin",
     "root_live_state_not_git_cached": true,
     "root_last_completed_transaction": {
-      "commit": "5c206794e8eb73756b1dfc4eb833dc62521e9d3d",
+      "commit": "54b305940604493aa392a42e9da48104faf6c58d",
       "upstream_ref": "origin/master",
       "sync_result": "GREEN"
     },
@@ -106,14 +106,42 @@
       }
     },
     "raw_capture": {
-      "phase2_fact_quota_calibration": {"status": "PENDING", "artifact_refs": [], "red_index_ids": ["R511-scoreboard-state-request-type-mismatch"]},
-      "phase2_receipt_appeal_pip": {"status": "PENDING", "artifact_refs": []},
-      "phase2_manager_governance": {"status": "PENDING", "artifact_refs": []},
-      "phase2_promotion_compensation": {"status": "PENDING", "artifact_refs": []},
-      "phase2_hc_workforce": {"status": "PENDING", "artifact_refs": []},
-      "phase2_projects_metrics": {"status": "PENDING", "artifact_refs": []},
-      "phase2_incidents_operations": {"status": "PENDING", "artifact_refs": []},
-      "phase2_cross_cycle_endgame": {"status": "PENDING", "artifact_refs": []}
+      "phase2_fact_quota_calibration": {
+        "status": "PENDING",
+        "artifact_refs": [],
+        "red_index_ids": [
+          "R511-scoreboard-state-request-type-mismatch",
+          "R513-scoreboard-gui-dispatch-context-red"
+        ]
+      },
+      "phase2_receipt_appeal_pip": {
+        "status": "PENDING",
+        "artifact_refs": []
+      },
+      "phase2_manager_governance": {
+        "status": "PENDING",
+        "artifact_refs": []
+      },
+      "phase2_promotion_compensation": {
+        "status": "PENDING",
+        "artifact_refs": []
+      },
+      "phase2_hc_workforce": {
+        "status": "PENDING",
+        "artifact_refs": []
+      },
+      "phase2_projects_metrics": {
+        "status": "PENDING",
+        "artifact_refs": []
+      },
+      "phase2_incidents_operations": {
+        "status": "PENDING",
+        "artifact_refs": []
+      },
+      "phase2_cross_cycle_endgame": {
+        "status": "PENDING",
+        "artifact_refs": []
+      }
     },
     "shared_intake": {
       "status": "PENDING",
@@ -123,23 +151,59 @@
       "character_led": {
         "duration_seconds": 570,
         "stages": {
-          "source_review": {"status": "PENDING", "artifact_refs": []},
-          "candidate": {"status": "PENDING", "artifact_refs": []},
-          "automated_audit": {"status": "PENDING", "artifact_refs": []},
-          "human_review_1x": {"status": "PENDING", "artifact_refs": []},
-          "export": {"status": "PENDING", "artifact_refs": []},
-          "publication": {"status": "PENDING", "artifact_refs": []}
+          "source_review": {
+            "status": "PENDING",
+            "artifact_refs": []
+          },
+          "candidate": {
+            "status": "PENDING",
+            "artifact_refs": []
+          },
+          "automated_audit": {
+            "status": "PENDING",
+            "artifact_refs": []
+          },
+          "human_review_1x": {
+            "status": "PENDING",
+            "artifact_refs": []
+          },
+          "export": {
+            "status": "PENDING",
+            "artifact_refs": []
+          },
+          "publication": {
+            "status": "PENDING",
+            "artifact_refs": []
+          }
         }
       },
       "institution_led": {
         "duration_seconds": 580,
         "stages": {
-          "source_review": {"status": "PENDING", "artifact_refs": []},
-          "candidate": {"status": "PENDING", "artifact_refs": []},
-          "automated_audit": {"status": "PENDING", "artifact_refs": []},
-          "human_review_1x": {"status": "PENDING", "artifact_refs": []},
-          "export": {"status": "PENDING", "artifact_refs": []},
-          "publication": {"status": "PENDING", "artifact_refs": []}
+          "source_review": {
+            "status": "PENDING",
+            "artifact_refs": []
+          },
+          "candidate": {
+            "status": "PENDING",
+            "artifact_refs": []
+          },
+          "automated_audit": {
+            "status": "PENDING",
+            "artifact_refs": []
+          },
+          "human_review_1x": {
+            "status": "PENDING",
+            "artifact_refs": []
+          },
+          "export": {
+            "status": "PENDING",
+            "artifact_refs": []
+          },
+          "publication": {
+            "status": "PENDING",
+            "artifact_refs": []
+          }
         }
       }
     }
@@ -150,20 +214,22 @@
     "result": "ACTIVE",
     "percentage": null,
     "progress_basis": "visible OODA milestones; 0/8 complete",
-    "open_gates": ["GEN-034"],
+    "open_gates": [
+      "GEN-034"
+    ],
     "closed_gates": [],
     "authority_locator": "docs/autonomous-agent-progress/one-generation-blocker-ledger.md"
   },
   "t2": {
     "priority": "T2",
     "result": "GREEN",
-    "upstream_root_commit": "5c206794e8eb73756b1dfc4eb833dc62521e9d3d",
+    "upstream_root_commit": "54b305940604493aa392a42e9da48104faf6c58d",
     "compat_commit": "1ac7082ff606389b9da648b356c8f6963e83dedb",
     "public_interface_delta": "NO_SCHEMA_DELTA_SCOREBOARD_EXECUTE_STEP_CONFORMANCE_RESTORED",
     "live_sync_source": "repository_provenance.t2_live_source"
   },
   "live_red_source": {
-    "status": "R511_BRIDGE_PROTOCOL_RED_NEW_DLL_BUILT_LIVE_RETRY_PENDING",
+    "status": "R513_SCOREBOARD_GUI_DISPATCH_CONTEXT_RED_ROOT_CAUSE_IDENTIFIED_FIX_PENDING",
     "active": null,
     "unresolved_count": 0,
     "inventory_source": "operator_get_status",
@@ -181,9 +247,9 @@
       "lifecycle_result": "GREEN",
       "cleanup_ref": {
         "base": "workspace_root",
-        "locator": "_runtime/p2-capture-r510-r517-5bb2a4e-20260912/capture/cell/09_phase2_native_session_cleanup.json",
-        "bytes": 30848,
-        "sha256": "DAABE7C60D2C37A197B88C8C34A3B0F8F1186F5B00982D81073643E9D6376C55"
+        "bytes": 30900,
+        "locator": "_runtime/p2-capture-r512-r519-54b3059-20260912/capture/cell/09_phase2_native_session_cleanup.json",
+        "sha256": "000A8B8E4C5F1F0C72DDC7EBDE1D988C41E0084918D4F786791C838C1E285614"
       }
     }
   },
@@ -223,9 +289,17 @@
       },
       "minimal_diff": {
         "scope_name": "zg361_we_al_cycle",
-        "semantic_identity": {"status": "available", "type_key": "value", "subtype": 0},
-        "fixture_assumption": {"raw_type_index": 9},
-        "frozen_live_observation": {"raw_type_index": 1},
+        "semantic_identity": {
+          "status": "available",
+          "type_key": "value",
+          "subtype": 0
+        },
+        "fixture_assumption": {
+          "raw_type_index": 9
+        },
+        "frozen_live_observation": {
+          "raw_type_index": 1
+        },
         "implication": "consumer fixed a diagnostic ordinal; product bytes and event input were not evaluated"
       },
       "detail_artifact_ref": {
@@ -330,7 +404,10 @@
         "closing_round": "R509",
         "focused_normal": "2/2 GREEN",
         "focused_optimized": "2/2 GREEN",
-        "next_rounds": ["R510 frontend warm-up", "R511 product save"],
+        "next_rounds": [
+          "R510 frontend warm-up",
+          "R511 product save"
+        ],
         "cleanup_ref": {
           "base": "workspace_root",
           "locator": "_runtime/p2-capture-r509-r515-b8f44fb-20260912/capture/cell/09_phase2_native_session_cleanup.json",
@@ -340,74 +417,166 @@
       }
     },
     {
-      "red_id": "R511-scoreboard-state-request-type-mismatch",
-      "output_name": "r511-scoreboard-state-request-type-mismatch.json",
-      "red_class": "HARNESS_RED",
+      "absolute_game_deadline": null,
       "axes": {
         "business_result": "NOT_EVALUATED",
         "harness_result": "RED",
         "lifecycle_result": "GREEN"
       },
-      "blocking_scope": "p2.raw_capture.phase2_fact_quota_calibration",
-      "failure_stage": "initial_capture_scoreboard_state_query",
-      "reason_code": "scoreboard_state_parser_expected_command_instead_of_execute_step",
-      "last_verified_stage": "loader_gate_and_paused_seed_green_recorder_started",
-      "input_attempted": false,
-      "same_frame_retry_eligible": false,
-      "absolute_game_deadline": null,
       "binding": {
-        "frontend_round": "R510",
-        "gameplay_round": "R511",
-        "gameplay_pid_at_failure": 8872,
+        "bridge_dll_sha256": "65C14FE284EA99036DBFBA950B3BE38C3656FA2D064017FD8A38FF21B32B61EF",
         "ck3_build": "1.19.0.6",
         "ck3_exe_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
-        "bridge_dll_sha256": "65C14FE284EA99036DBFBA950B3BE38C3656FA2D064017FD8A38FF21B32B61EF",
-        "source_commit": "5bb2a4ea17c013eaadf96479c48a6dca4386f71b",
+        "frontend_round": "R510",
+        "gameplay_pid_at_failure": 8872,
+        "gameplay_round": "R511",
+        "launch_sequence": "Frontend warm-up then -loadsave=autosave",
         "plan_sha256": "74F1D9F466A45DB708E09CF2A3AA725DE240896B16961CF4056E0CF81A65A0EA",
-        "launch_sequence": "Frontend warm-up then -loadsave=autosave"
+        "source_commit": "5bb2a4ea17c013eaadf96479c48a6dca4386f71b"
       },
-      "minimal_diff": {
-        "python_request_type": "execute_step",
-        "native_state_parser_expected": "command",
-        "native_action_parser_expected": "execute_step",
-        "impact": "the first read-only scoreboard query was rejected before choreography or any gameplay input",
-        "scoped_fix": "make the state parser accept the existing execute_step transport and add one parser regression target",
-        "public_contract": "existing protocol fields and capability names are unchanged"
-      },
+      "blocking_scope": "p2.raw_capture.phase2_fact_quota_calibration",
       "detail_artifact_ref": {
         "base": "workspace_root",
-        "locator": "_runtime/p2-capture-r510-r517-5bb2a4e-20260912/capture/report.json",
         "bytes": 4370204,
+        "locator": "_runtime/p2-capture-r510-r517-5bb2a4e-20260912/capture/report.json",
         "sha256": "DCC2F20926002A059EC48F2917DEC1853BEFF906FB29BA79B445F14017BA0F26"
       },
+      "failure_stage": "initial_capture_scoreboard_state_query",
+      "input_attempted": false,
+      "last_verified_stage": "loader_gate_and_paused_seed_green_recorder_started",
+      "minimal_diff": {
+        "impact": "the first read-only scoreboard query was rejected before choreography or any gameplay input",
+        "native_action_parser_expected": "execute_step",
+        "native_state_parser_expected": "command",
+        "public_contract": "existing protocol fields and capability names are unchanged",
+        "python_request_type": "execute_step",
+        "scoped_fix": "make the state parser accept the existing execute_step transport and add one parser regression target"
+      },
+      "preservation": {
+        "classification_does_not_downgrade_red": true,
+        "detail_is_immutable": true,
+        "index_is_not_business_evidence": true
+      },
+      "reason_code": "scoreboard_state_parser_expected_command_instead_of_execute_step",
+      "red_class": "HARNESS_RED",
+      "red_id": "R511-scoreboard-state-request-type-mismatch",
       "resolution": {
-        "status": "NEW_DLL_BUILT_FOCUSED_TEST_GREEN_LIVE_RETRY_PENDING",
-        "current_blocker": true,
-        "focused_test": "xar_ck3_zhongguo_scoreboard_state_v1_mailbox_test GREEN",
-        "requires_new_dll_and_round": true,
-        "new_bridge_dll_sha256": "16CBA80CFF2AAF07FC644A27B012C0D9947812C47440B9CB47731C873630451D",
-        "new_injector_sha256": "E626D1F5AE75FEE2ED17D08D737B5F8D70DC4CC8C224807C198D5E391590D8E7",
         "build_receipt_ref": {
           "base": "workspace_root",
-          "locator": "_runtime/native-builds/p2-r512-r513-scoreboard-transport-5c20679-20260912/build-receipt.json",
           "bytes": 3289,
+          "locator": "_runtime/native-builds/p2-r512-r513-scoreboard-transport-5c20679-20260912/build-receipt.json",
           "sha256": "76C91D40C3067DC8DE08EEFEF0DF66492C91C5C4D231E731C9A1A4ED5A8C8082"
         },
-        "open_kaishek_compat_commit": "1ac7082ff606389b9da648b356c8f6963e83dedb",
         "cleanup_ref": {
           "base": "workspace_root",
-          "locator": "_runtime/p2-capture-r510-r517-5bb2a4e-20260912/capture/cell/09_phase2_native_session_cleanup.json",
           "bytes": 30848,
+          "locator": "_runtime/p2-capture-r510-r517-5bb2a4e-20260912/capture/cell/09_phase2_native_session_cleanup.json",
           "sha256": "DAABE7C60D2C37A197B88C8C34A3B0F8F1186F5B00982D81073643E9D6376C55"
         },
+        "current_blocker": false,
+        "focused_test": "xar_ck3_zhongguo_scoreboard_state_v1_mailbox_test GREEN",
+        "new_bridge_dll_sha256": "16CBA80CFF2AAF07FC644A27B012C0D9947812C47440B9CB47731C873630451D",
+        "new_injector_sha256": "E626D1F5AE75FEE2ED17D08D737B5F8D70DC4CC8C224807C198D5E391590D8E7",
+        "open_kaishek_compat_commit": "1ac7082ff606389b9da648b356c8f6963e83dedb",
+        "requires_new_dll_and_round": true,
         "retained_failed_take": {
           "base": "workspace_root",
-          "locator": "_runtime/p2-capture-r510-r517-5bb2a4e-20260912/capture/cell/promo/raw/zg361-promo-live-full-take-01.mkv",
           "bytes": 3614150,
+          "locator": "_runtime/p2-capture-r510-r517-5bb2a4e-20260912/capture/cell/promo/raw/zg361-promo-live-full-take-01.mkv",
           "sha256": "B326E8446334A9D868528A0F074AD18AA6F3E786E517A55D5002C4C56DFC9B82",
           "usable_span_count": 0
-        }
-      }
+        },
+        "status": "CLOSED_BY_R513_TRANSPORT_ACCEPTED",
+        "closing_round": "R513",
+        "closing_driver_state_ref": {
+          "base": "workspace_root",
+          "bytes": 38190,
+          "locator": "_runtime/p2-capture-r512-r519-54b3059-20260912/capture_native_state/native-session/driver-state.json",
+          "sha256": "EDCB5600EAFFC6135C2BF42F5869488CBBAA0E86AF7EF80E7CD55E5CDAEA144E"
+        },
+        "live_result": "request accepted; next typed provider result was gui_root_unavailable"
+      },
+      "result": "RED",
+      "same_frame_retry_eligible": false,
+      "schema": "xar.compact-red-index",
+      "schema_version": 1,
+      "output_name": "r511-scoreboard-state-request-type-mismatch.json"
+    },
+    {
+      "absolute_game_deadline": null,
+      "axes": {
+        "business_result": "NOT_EVALUATED",
+        "harness_result": "GREEN",
+        "lifecycle_result": "GREEN"
+      },
+      "binding": {
+        "bridge_dll_sha256": "16CBA80CFF2AAF07FC644A27B012C0D9947812C47440B9CB47731C873630451D",
+        "ck3_build": "1.19.0.6",
+        "ck3_exe_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+        "connection_generation": 1,
+        "date_raw": 53147016,
+        "frontend_round": "R512",
+        "gameplay_pid_at_failure": 210220,
+        "gameplay_round": "R513",
+        "native_snapshot_revision": 3,
+        "played_character_id": 29037,
+        "public_snapshot_revision": 4,
+        "source_commit": "54b305940604493aa392a42e9da48104faf6c58d"
+      },
+      "blocking_scope": "p2.raw_capture.phase2_fact_quota_calibration",
+      "detail_artifact_ref": {
+        "base": "workspace_root",
+        "bytes": 38190,
+        "locator": "_runtime/p2-capture-r512-r519-54b3059-20260912/capture_native_state/native-session/driver-state.json",
+        "sha256": "EDCB5600EAFFC6135C2BF42F5869488CBBAA0E86AF7EF80E7CD55E5CDAEA144E"
+      },
+      "failure_stage": "initial_event_free_scoreboard_visibility_gate",
+      "input_attempted": false,
+      "last_verified_stage": "scoreboard_request_transport_accepted_on_stable_paused_frame",
+      "minimal_diff": {
+        "action_path_evidence": "the exact action dispatcher reads modal receivers from the third GUI-chain object",
+        "impact": "the state provider reads the modal vector from the later owner-lookup host, so a real gameplay HUD returns gui_root_unavailable before any capture action",
+        "native_state_path": "ResolveGuiContextAndOwner currently returns the third-object +0x3D0 owner-lookup host as context",
+        "scoped_fix": "retain the third GUI-chain object as dispatch context while resolving the top-level widget owner through +0x3D0 then +0x08",
+        "timing_retry_rejected": "the loader, HUD, paused frame, player binding, and transport were already GREEN; retrying the same wrong address would not add evidence"
+      },
+      "preservation": {
+        "classification_does_not_downgrade_red": true,
+        "detail_is_immutable": true,
+        "index_is_not_business_evidence": true
+      },
+      "reason_code": "scoreboard_state_modal_vector_read_from_owner_lookup_host",
+      "red_class": "CAPABILITY_RED",
+      "red_id": "R513-scoreboard-gui-dispatch-context-red",
+      "resolution": {
+        "cleanup_ref": {
+          "base": "workspace_root",
+          "bytes": 30900,
+          "locator": "_runtime/p2-capture-r512-r519-54b3059-20260912/capture/cell/09_phase2_native_session_cleanup.json",
+          "sha256": "000A8B8E4C5F1F0C72DDC7EBDE1D988C41E0084918D4F786791C838C1E285614"
+        },
+        "current_blocker": true,
+        "failed_take_ref": {
+          "base": "workspace_root",
+          "bytes": 3603145,
+          "locator": "_runtime/p2-capture-r512-r519-54b3059-20260912/capture/cell/promo/raw/zg361-promo-live-full-take-01.mkv",
+          "sha256": "E82B3DE7E4C9AE1A33750714FA34BA1ACFC7521D19D55CC02CBF7E609C13AA5B",
+          "usable_span_count": 0
+        },
+        "report_ref": {
+          "base": "workspace_root",
+          "bytes": 4370670,
+          "locator": "_runtime/p2-capture-r512-r519-54b3059-20260912/capture/report.json",
+          "sha256": "CF6A34BC2B2CBB333097F88634AA74951457D26A1FECD10FBB84EBA91BE9C2C9"
+        },
+        "requires_new_dll_and_round": true,
+        "status": "ROOT_CAUSE_IDENTIFIED_NATIVE_FIX_PENDING"
+      },
+      "result": "RED",
+      "same_frame_retry_eligible": false,
+      "schema": "xar.compact-red-index",
+      "schema_version": 1,
+      "output_name": "r513-scoreboard-gui-dispatch-context-red.json"
     }
   ]
 }

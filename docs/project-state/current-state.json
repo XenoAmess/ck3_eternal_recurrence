@@ -7,9 +7,9 @@
     "stable_projection": {
       "cleanup_ref": {
         "base": "workspace_root",
-        "bytes": 30848,
-        "locator": "_runtime/p2-capture-r510-r517-5bb2a4e-20260912/capture/cell/09_phase2_native_session_cleanup.json",
-        "sha256": "DAABE7C60D2C37A197B88C8C34A3B0F8F1186F5B00982D81073643E9D6376C55"
+        "bytes": 30900,
+        "locator": "_runtime/p2-capture-r512-r519-54b3059-20260912/capture/cell/09_phase2_native_session_cleanup.json",
+        "sha256": "000A8B8E4C5F1F0C72DDC7EBDE1D988C41E0084918D4F786791C838C1E285614"
       },
       "instance_count": 0,
       "lifecycle_result": "GREEN",
@@ -38,7 +38,7 @@
       "git_cached": false,
       "inventory_source": "operator_get_status",
       "stable_projection_only": true,
-      "status": "R511_BRIDGE_PROTOCOL_RED_NEW_DLL_BUILT_LIVE_RETRY_PENDING"
+      "status": "R513_SCOREBOARD_GUI_DISPATCH_CONTEXT_RED_ROOT_CAUSE_IDENTIFIED_FIX_PENDING"
     },
     "preserved_indexes": [
       {
@@ -74,11 +74,21 @@
       {
         "index_ref": {
           "base": "repo_root",
-          "bytes": 3521,
+          "bytes": 3924,
           "locator": "docs/project-state/red-indexes/r511-scoreboard-state-request-type-mismatch.json",
-          "sha256": "261E750A2860029B9ED7C07400A1CDF3918BFEA6BC66A1E32F52A7DA92B6502C"
+          "sha256": "D9A750348608C5591A494F7687F6D4D071E4E5BB54D70A4D7BD013F95CC282C5"
         },
         "red_id": "R511-scoreboard-state-request-type-mismatch",
+        "role": "HISTORICAL_PRESERVED"
+      },
+      {
+        "index_ref": {
+          "base": "repo_root",
+          "bytes": 3440,
+          "locator": "docs/project-state/red-indexes/r513-scoreboard-gui-dispatch-context-red.json",
+          "sha256": "2AB52F871B27CB925E44EE19109FC619563AB742BC8B0CC0E69E73B5596D03FC"
+        },
+        "red_id": "R513-scoreboard-gui-dispatch-context-red",
         "role": "HISTORICAL_PRESERVED"
       }
     ],
@@ -92,7 +102,7 @@
   },
   "repository_provenance": {
     "root_last_completed_transaction": {
-      "commit": "5c206794e8eb73756b1dfc4eb833dc62521e9d3d",
+      "commit": "54b305940604493aa392a42e9da48104faf6c58d",
       "sync_result": "GREEN",
       "upstream_ref": "origin/master"
     },
@@ -151,9 +161,9 @@
       },
       "ledger_ref": {
         "base": "repo_root",
-        "bytes": 7860,
+        "bytes": 8270,
         "locator": "docs/phase2-promo/p2-stage-ledger.json",
-        "sha256": "9EB2C1426A6A14CA4EED7C259AFCF6870341FAF5EFE95B662F7A3E9ED8EFA4E5"
+        "sha256": "C24424203B90DFA3C2798042BC8104F8144468DB301A91CCCBF3CE9AEEA29B2F"
       },
       "raw_footage": {
         "passed": 0,
@@ -190,7 +200,7 @@
     "priority": "T2",
     "public_interface_delta": "NO_SCHEMA_DELTA_SCOREBOARD_EXECUTE_STEP_CONFORMANCE_RESTORED",
     "result": "GREEN",
-    "upstream_root_commit": "5c206794e8eb73756b1dfc4eb833dc62521e9d3d"
+    "upstream_root_commit": "54b305940604493aa392a42e9da48104faf6c58d"
   },
-  "updated_at": "2026-09-12T15:12:00+08:00"
+  "updated_at": "2026-09-12T15:27:08+08:00"
 }

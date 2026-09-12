@@ -1,0 +1,75 @@
+{
+  "absolute_game_deadline": null,
+  "axes": {
+    "business_result": "NOT_EVALUATED",
+    "harness_result": "GREEN",
+    "lifecycle_result": "GREEN"
+  },
+  "binding": {
+    "bridge_dll_sha256": "16CBA80CFF2AAF07FC644A27B012C0D9947812C47440B9CB47731C873630451D",
+    "ck3_build": "1.19.0.6",
+    "ck3_exe_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+    "connection_generation": 1,
+    "date_raw": 53147016,
+    "frontend_round": "R512",
+    "gameplay_pid_at_failure": 210220,
+    "gameplay_round": "R513",
+    "native_snapshot_revision": 3,
+    "played_character_id": 29037,
+    "public_snapshot_revision": 4,
+    "source_commit": "54b305940604493aa392a42e9da48104faf6c58d"
+  },
+  "blocking_scope": "p2.raw_capture.phase2_fact_quota_calibration",
+  "detail_artifact_ref": {
+    "base": "workspace_root",
+    "bytes": 38190,
+    "locator": "_runtime/p2-capture-r512-r519-54b3059-20260912/capture_native_state/native-session/driver-state.json",
+    "sha256": "EDCB5600EAFFC6135C2BF42F5869488CBBAA0E86AF7EF80E7CD55E5CDAEA144E"
+  },
+  "failure_stage": "initial_event_free_scoreboard_visibility_gate",
+  "input_attempted": false,
+  "last_verified_stage": "scoreboard_request_transport_accepted_on_stable_paused_frame",
+  "minimal_diff": {
+    "action_path_evidence": "the exact action dispatcher reads modal receivers from the third GUI-chain object",
+    "impact": "the state provider reads the modal vector from the later owner-lookup host, so a real gameplay HUD returns gui_root_unavailable before any capture action",
+    "native_state_path": "ResolveGuiContextAndOwner currently returns the third-object +0x3D0 owner-lookup host as context",
+    "scoped_fix": "retain the third GUI-chain object as dispatch context while resolving the top-level widget owner through +0x3D0 then +0x08",
+    "timing_retry_rejected": "the loader, HUD, paused frame, player binding, and transport were already GREEN; retrying the same wrong address would not add evidence"
+  },
+  "preservation": {
+    "classification_does_not_downgrade_red": true,
+    "detail_is_immutable": true,
+    "index_is_not_business_evidence": true
+  },
+  "reason_code": "scoreboard_state_modal_vector_read_from_owner_lookup_host",
+  "red_class": "CAPABILITY_RED",
+  "red_id": "R513-scoreboard-gui-dispatch-context-red",
+  "resolution": {
+    "cleanup_ref": {
+      "base": "workspace_root",
+      "bytes": 30900,
+      "locator": "_runtime/p2-capture-r512-r519-54b3059-20260912/capture/cell/09_phase2_native_session_cleanup.json",
+      "sha256": "000A8B8E4C5F1F0C72DDC7EBDE1D988C41E0084918D4F786791C838C1E285614"
+    },
+    "current_blocker": true,
+    "failed_take_ref": {
+      "base": "workspace_root",
+      "bytes": 3603145,
+      "locator": "_runtime/p2-capture-r512-r519-54b3059-20260912/capture/cell/promo/raw/zg361-promo-live-full-take-01.mkv",
+      "sha256": "E82B3DE7E4C9AE1A33750714FA34BA1ACFC7521D19D55CC02CBF7E609C13AA5B",
+      "usable_span_count": 0
+    },
+    "report_ref": {
+      "base": "workspace_root",
+      "bytes": 4370670,
+      "locator": "_runtime/p2-capture-r512-r519-54b3059-20260912/capture/report.json",
+      "sha256": "CF6A34BC2B2CBB333097F88634AA74951457D26A1FECD10FBB84EBA91BE9C2C9"
+    },
+    "requires_new_dll_and_round": true,
+    "status": "ROOT_CAUSE_IDENTIFIED_NATIVE_FIX_PENDING"
+  },
+  "result": "RED",
+  "same_frame_retry_eligible": false,
+  "schema": "xar.compact-red-index",
+  "schema_version": 1
+}
