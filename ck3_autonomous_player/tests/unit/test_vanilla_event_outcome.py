@@ -18,16 +18,27 @@ from xar_autoplayer.vanilla_events.outcome import (  # noqa: E402
     evaluate_registered_event_material_postcondition_v1,
     plan_registered_event_material_postcondition_v1,
 )
+from xar_autoplayer.vanilla_events.registry import (  # noqa: E402
+    query_vanilla_event_knowledge_v1,
+)
 
 
 def _decision(
     *, event_key: str = "tgp_travel_events.0030", native_index: int = 1
 ) -> dict[str, object]:
+    knowledge = query_vanilla_event_knowledge_v1(event_key)
+    analysis = knowledge.get("analysis")
+    profile = (
+        analysis.get("selected_choice_effect_profile")
+        if isinstance(analysis, dict)
+        else None
+    )
     return {
         "status": "recommended",
         "event_definition_key": event_key,
         "selected_option_number": native_index + 1,
         "selected_native_option_index": native_index,
+        "choice_effect_profile": profile,
     }
 
 
@@ -75,6 +86,19 @@ class VanillaEventMaterialOutcomeTests(unittest.TestCase):
         self.assertEqual(expected["expected_relation"], "non_increasing")
         self.assertEqual(expected["character_id"], 27181)
         self.assertEqual(expected["starting_value"], 42)
+
+    def test_missing_structured_effect_profile_is_not_planned(self) -> None:
+        decision = _decision()
+        decision["choice_effect_profile"] = None
+
+        self.assertIsNone(
+            plan_registered_event_material_postcondition_v1(
+                decision,
+                {"character_id": 27181, "stress_points": 42},
+                snapshot_id="native:19",
+                revision=33,
+            )
+        )
 
     def test_missing_stress_is_typed_unavailable_and_unknown_event_is_ignored(
         self,

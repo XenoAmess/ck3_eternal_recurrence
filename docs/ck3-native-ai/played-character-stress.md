@@ -59,6 +59,10 @@ extension + 0x2F8 -> int32 stress points
 3. 在后置 paused snapshot 中要求同一玩家角色且 `post_stress_points <= pre_stress_points`；
 4. 只有 `pre_stress_points > 0` 且实际读数下降时，才把该轮计入 G2-M2 的 material-delta 证据。
 
+Exact source 的 `stress_impact = { base = medium_stress_impact_loss }` 与 `00_stress_values.txt` 给出 authored base `-30`。
+这个值已进入选择的结构化 effect profile，但 profile 同时固定 `runtime_delta_exact=false`：当前 snapshot 没有角色的
+stress-impact modifiers，所以运行时合同只能验证 `post <= pre`，不能要求差值恰好等于 `-30`。
+
 若选择前已经为零，事件可以安全关闭，但该结果不能冒充“已验证压力物质变化”。registry consumer 已实现上述静态链：
 
 - planner 只为 exact `.0030` authored option 2/native 1 生成 `xar.ck3.vanilla-event-material-postcondition`；

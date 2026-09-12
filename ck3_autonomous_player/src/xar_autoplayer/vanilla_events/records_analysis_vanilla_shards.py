@@ -225,6 +225,37 @@ _REVIEW_ROWS: Final[dict[str, dict[str, object]]] = {
             "from presentation; selected native2 only renders the warning "
             "tooltip and remains present in every source-valid projection."
         ),
+        "selected_choice_effect_profile": {
+            "schema": "xar.ck3.vanilla-event-choice-effect",
+            "schema_version": 1,
+            "selected_native_option_index": 2,
+            "completeness": "selected-option-and-common-after-source-reviewed",
+            "selected_option_effects": [{
+                "domain": "interface",
+                "subject": "root",
+                "operation": "custom_tooltip",
+                "scripted_effect_key": "natural_disaster_warning_tooltip_effect",
+                "material_state_change": False,
+            }],
+            "common_after_effects": [{
+                "domain": "character_variable",
+                "subject": "root",
+                "operation": "set",
+                "variable_key": "natural_disaster_received_first_warning",
+                "value": True,
+                "observable": False,
+            }],
+            "observable_postcondition": None,
+            "source_anchors": [
+                "events/situation_events/tgp_natural_disaster_events.txt:3-11",
+                "events/situation_events/tgp_natural_disaster_events.txt:2086-2092",
+            ],
+            "source_sha256": {
+                "events/situation_events/tgp_natural_disaster_events.txt": (
+                    "9595A5C28C14765142E83229EFC215FE06D457C447DC733537677629AD97DF68"
+                ),
+            },
+        },
     },
     "natural_disaster.6901": {
         "migrated_from": (
@@ -436,6 +467,10 @@ def _build_analysis() -> dict[str, dict[str, object]]:
         }
         if "source_sha256" in review:
             record["source_sha256"] = review["source_sha256"]
+        if "selected_choice_effect_profile" in review:
+            record["selected_choice_effect_profile"] = review[
+                "selected_choice_effect_profile"
+            ]
         analysis[event_key] = _json_safe(record)  # type: ignore[assignment]
     return analysis
 

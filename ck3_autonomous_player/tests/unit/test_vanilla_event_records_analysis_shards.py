@@ -330,6 +330,22 @@ class VanillaEventShardAnalysisTests(unittest.TestCase):
         ):
             self.assertRegex(exemplar[field], r"^[0-9A-F]{64}$")
 
+    def test_natural_disaster_selected_choice_effect_profile_is_queryable(
+        self,
+    ) -> None:
+        response = query_vanilla_event_knowledge_v1("natural_disaster.7031")
+        profile = response["analysis"]["selected_choice_effect_profile"]
+
+        self.assertEqual(profile["selected_native_option_index"], 2)
+        self.assertFalse(
+            profile["selected_option_effects"][0]["material_state_change"]
+        )
+        self.assertEqual(
+            profile["common_after_effects"][0]["variable_key"],
+            "natural_disaster_received_first_warning",
+        )
+        self.assertIsNone(profile["observable_postcondition"])
+
 
 if __name__ == "__main__":
     unittest.main()

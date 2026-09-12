@@ -11,13 +11,8 @@ VANILLA_EVENT_MATERIAL_POSTCONDITION_SCHEMA: Final = (
 )
 VANILLA_EVENT_MATERIAL_POSTCONDITION_SCHEMA_VERSION: Final = 1
 
-_SUPPORTED_CHOICES: Final = {
-    ("tgp_travel_events.0030", 1): {
-        "metric": "played_character.stress_points",
-        "expected_relation": "non_increasing",
-        "material_change_required_for_evidence": True,
-    }
-}
+_SUPPORTED_CHOICES: Final = frozenset({("tgp_travel_events.0030", 1)})
+_CHOICE_EFFECT_PROFILE_SCHEMA: Final = "xar.ck3.vanilla-event-choice-effect"
 
 
 def _integer(value: object) -> int | None:
@@ -29,8 +24,22 @@ def _integer(value: object) -> int | None:
 def _base(decision: Mapping[str, object]) -> dict[str, object] | None:
     event_key = decision.get("event_definition_key")
     native_index = _integer(decision.get("selected_native_option_index"))
-    specification = _SUPPORTED_CHOICES.get((event_key, native_index))
-    if specification is None:
+    if (event_key, native_index) not in _SUPPORTED_CHOICES:
+        return None
+    profile = decision.get("choice_effect_profile")
+    if not isinstance(profile, Mapping) or not (
+        profile.get("schema") == _CHOICE_EFFECT_PROFILE_SCHEMA
+        and profile.get("schema_version") == 1
+        and _integer(profile.get("selected_native_option_index"))
+        == native_index
+    ):
+        return None
+    specification = profile.get("observable_postcondition")
+    if not isinstance(specification, Mapping) or not (
+        specification.get("metric") == "played_character.stress_points"
+        and specification.get("expected_relation") == "non_increasing"
+        and specification.get("material_change_required_for_evidence") is True
+    ):
         return None
     return {
         "schema": VANILLA_EVENT_MATERIAL_POSTCONDITION_SCHEMA,
@@ -38,7 +47,11 @@ def _base(decision: Mapping[str, object]) -> dict[str, object] | None:
         "event_definition_key": event_key,
         "selected_option_number": decision.get("selected_option_number"),
         "selected_native_option_index": native_index,
-        **specification,
+        "metric": specification["metric"],
+        "expected_relation": specification["expected_relation"],
+        "material_change_required_for_evidence": specification[
+            "material_change_required_for_evidence"
+        ],
     }
 
 

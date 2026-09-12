@@ -1131,3 +1131,15 @@ strategic-power primitive；余下入口只有 policy-level campaign dominance�
   Unregistered shapes remain blocked, and every other variant-bearing event still requires an explicit reviewed consumer package.
 - Focused policy tests pass normal/optimized `8/8`. This is `static-ready / live=false`; it uses frozen evidence and launches no CK3 process.
   G2-M2 remains in progress and global G2 remains `0/8` until three natural event action/outcome loops are production-live.
+
+## 2026-09-13: G2-M2 selected-choice structured effects static-ready
+
+- The shared read-only event knowledge response now publishes one versioned selected-choice effect profile for exact
+  `tgp_travel_events.0030` and `natural_disaster.7031`. The first records authored base stress loss `-30` plus the observable
+  non-increasing stress relation; the second separates its non-material warning tooltip from the unavoidable, currently unobserved
+  common-after character-variable write.
+- The registry policy copies a profile only when its selected native index matches the resolved exact choice. The `.0030` material
+  comparator consumes the profile's observable postcondition instead of maintaining a duplicate metric/relation table.
+- Focused normal/optimized tests are each `27/27` GREEN. Status is `source-structured / static-ready / live=false`: character stress
+  modifiers prevent an exact runtime `-30` promise, and generic event-context-v2 effect extraction remains open. No CK3, recorder,
+  desktop input, DLL or mod tree was used; global G2 remains `0/8`.

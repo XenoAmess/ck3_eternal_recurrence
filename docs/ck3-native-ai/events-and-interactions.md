@@ -820,3 +820,8 @@ worker 重放 evaluator。只有 locator 无法稳定闭合时，才考虑在 ma
   material change，零值/不变单独记录，反向上升、身份漂移或 ready expectation 缺读数保持 RED。它不补齐通用 option effect
   magnitude；仍需一次 bounded paused production 复核，详见
   [played-character-stress.md](played-character-stress.md)。
+- [source-structured, live pending] 既有 `ck3_query_vanilla_event_knowledge_v1` 的 analysis 已为两条 exact choice 发布
+  `xar.ck3.vanilla-event-choice-effect/v1`。`tgp_travel_events.0030` native 1 记录 authored base `-30`，并因未观测人物
+  stress-impact modifiers 明确拒绝 exact runtime delta；`natural_disaster.7031` native 2 记录纯 tooltip selected effect 和
+  common-after variable 写入。planner 只在 native index 对齐时带出档案，`.0030` comparator 直接消费其中的 observable
+  postcondition。该窄投影不等于通用 `CEffectDescriptionVisitorInterface`/event-context-v2 结构化效果能力。

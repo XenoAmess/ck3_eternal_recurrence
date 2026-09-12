@@ -120,6 +120,15 @@ class VanillaEventRegistryPolicyTests(unittest.TestCase):
         self.assertEqual(result["failed_checks"], [])
         self.assertFalse(result["semantic_optimal"])
         self.assertEqual(result["option_projection_source"], "base_contract")
+        profile = result["choice_effect_profile"]
+        self.assertEqual(profile["schema"], "xar.ck3.vanilla-event-choice-effect")
+        stress_effect = profile["selected_option_effects"][0]
+        self.assertEqual(stress_effect["authored_base_points"], -30)
+        self.assertFalse(stress_effect["runtime_delta_exact"])
+        self.assertEqual(
+            profile["observable_postcondition"]["expected_relation"],
+            "non_increasing",
+        )
 
     def test_exact_natural_disaster_option_variants_select_native_two(
         self,
@@ -146,6 +155,17 @@ class VanillaEventRegistryPolicyTests(unittest.TestCase):
                     result["option_projection_source"],
                     "registered_option_variant",
                 )
+                profile = result["choice_effect_profile"]
+                self.assertFalse(
+                    profile["selected_option_effects"][0][
+                        "material_state_change"
+                    ]
+                )
+                self.assertEqual(
+                    profile["common_after_effects"][0]["variable_key"],
+                    "natural_disaster_received_first_warning",
+                )
+                self.assertIsNone(profile["observable_postcondition"])
 
     def test_natural_disaster_unregistered_projection_stays_blocked(self) -> None:
         result = recommend_registered_vanilla_event_option_v1(

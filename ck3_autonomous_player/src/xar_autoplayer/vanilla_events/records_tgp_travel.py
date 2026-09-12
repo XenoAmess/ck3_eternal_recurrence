@@ -84,6 +84,41 @@ VANILLA_TGP_TRAVEL_ANALYSIS: Final[
             ),
             1: "applies only the authored medium stress reduction",
         },
+        "selected_choice_effect_profile": {
+            "schema": "xar.ck3.vanilla-event-choice-effect",
+            "schema_version": 1,
+            "selected_native_option_index": 1,
+            "completeness": "selected-option-and-common-after-source-reviewed",
+            "selected_option_effects": [{
+                "domain": "stress",
+                "subject": "root",
+                "operation": "stress_impact",
+                "authored_value_key": "medium_stress_impact_loss",
+                "authored_base_points": -30,
+                "runtime_delta_exact": False,
+                "runtime_delta_reason": (
+                    "character stress-impact modifiers are not observed"
+                ),
+            }],
+            "common_after_effects": [],
+            "observable_postcondition": {
+                "metric": "played_character.stress_points",
+                "expected_relation": "non_increasing",
+                "material_change_required_for_evidence": True,
+            },
+            "source_anchors": [
+                "events/travel_events/tgp_travel_events.txt:483-486",
+                "common/script_values/00_stress_values.txt:33",
+            ],
+            "source_sha256": {
+                "events/travel_events/tgp_travel_events.txt": (
+                    "42B8B1E56C029054FBC4E0B3964511A980D9B5053C47BFF980CD3F5F3924DB37"
+                ),
+                "common/script_values/00_stress_values.txt": (
+                    "104A7EF94EE9DA1092F23AEB2FD9DC971B08C695415F3B7EBFB628F381D26395"
+                ),
+            },
+        },
         "after_effect": None,
         "follow_up_event": None,
         "repeatability": "the event owns a ten-year cooldown and no one-shot flag",

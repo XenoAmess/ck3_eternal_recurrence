@@ -98,6 +98,16 @@ option projection 精确匹配到登记 variant，再进入既有 scope/enable �
 event key，其他带 `option_variants` 的合同仍返回 `registered_contract_requires_extended_consumer`，避免一次静态改动暗中扩大事件面。
 聚焦测试 normal/optimized 各 `8/8` GREEN；状态为 `static-ready / live=false`。
 
+两条已进入 planner 的选择现在还带有机器可读的 `xar.ck3.vanilla-event-choice-effect` 档案。`.0030` 记录 authored
+`medium_stress_impact_loss = -30`，同时明确 `runtime_delta_exact=false`，因为人物压力影响修正尚未观测；其 comparator 从同一档案读取
+`played_character.stress_points / non_increasing`，不再另写一份效果假设。`natural_disaster.7031` 则区分 selected native 2 的纯
+warning tooltip 与所有选项之后必经的 character variable 写入，并把后者标为当前不可观测。两条档案都由既有只读
+`ck3_query_vanilla_event_knowledge_v1.analysis` 对外查询，policy 只在 exact native choice 对齐时返回副本。
+
+这项能力是 `source-structured / static-ready / live=false`，只覆盖两条 exact source-reviewed 选择；它没有实现通用
+`event-context-v2` effect visitor，也没有把未观测的 runtime magnitude 或 common-after variable 冒充为 live 后置证据。普通与
+optimized 聚焦测试各 `27/27` GREEN。
+
 战争 controller 的既有成熟执行器继续保留；assigned reinforcement、terminal 长尾与更多 CB 改为真实 encounter 驱动。
 宗教域继续暂缓，只允许战争中的圣战和婚姻合法性/接受度所需的最小原生最终判定，不借此扩展通用宗教模型。
 

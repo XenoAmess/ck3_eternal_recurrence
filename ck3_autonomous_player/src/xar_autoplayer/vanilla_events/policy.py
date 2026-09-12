@@ -20,6 +20,8 @@ VANILLA_EVENT_REGISTRY_CHOICE_SCHEMA_VERSION: Final = 1
 VANILLA_EVENT_REGISTRY_CHOICE_POLICY: Final = (
     "exact-build-vanilla-event-registry-direct-projection-v1"
 )
+_CHOICE_EFFECT_PROFILE_SCHEMA: Final = "xar.ck3.vanilla-event-choice-effect"
+_CHOICE_EFFECT_PROFILE_SCHEMA_VERSION: Final = 1
 
 # These fields need a context-aware resolver. The first consumer stays on the
 # direct projection that closed the real tgp_travel_events.0030 blocker.
@@ -85,6 +87,28 @@ def _active(value: object) -> bool:
     return value not in (None, False, (), [], {})
 
 
+def _selected_choice_effect_profile(
+    knowledge: Mapping[str, object], native_index: int
+) -> dict[str, object] | None:
+    analysis = knowledge.get("analysis")
+    if not isinstance(analysis, Mapping):
+        return None
+    profile = analysis.get("selected_choice_effect_profile")
+    if not isinstance(profile, Mapping):
+        return None
+    if not (
+        profile.get("schema") == _CHOICE_EFFECT_PROFILE_SCHEMA
+        and profile.get("schema_version")
+        == _CHOICE_EFFECT_PROFILE_SCHEMA_VERSION
+        and _integer(profile.get("selected_native_option_index"))
+        == native_index
+        and isinstance(profile.get("selected_option_effects"), list)
+        and isinstance(profile.get("common_after_effects"), list)
+    ):
+        return None
+    return dict(profile)
+
+
 def _response(
     *,
     status: str,
@@ -95,6 +119,7 @@ def _response(
     native_index: int | None = None,
     rendered_index: int | None = None,
     option_variant_index: int | None = None,
+    choice_effect_profile: Mapping[str, object] | None = None,
 ) -> dict[str, object]:
     checked = dict(checks or {})
     return {
@@ -121,6 +146,11 @@ def _response(
             if option_variant_index is not None
             else "base_contract"
             if status == "recommended"
+            else None
+        ),
+        "choice_effect_profile": (
+            dict(choice_effect_profile)
+            if choice_effect_profile is not None
             else None
         ),
         "checks": checked,
@@ -441,6 +471,9 @@ def recommend_registered_vanilla_event_option_v1(
         native_index=selected_native,
         rendered_index=selected_rendered,
         option_variant_index=option_variant_index,
+        choice_effect_profile=_selected_choice_effect_profile(
+            knowledge, selected_native
+        ),
     )
 
 
