@@ -4,6 +4,8 @@
 
 > 2026-09-12 实施补记：下文保留原始预研及失败分析。主线程最终通过 `ck3_workshop_mcp` 的 `steam-native` 工具真实发布了 [3800124956](https://steamcommunity.com/sharedfiles/filedetails/?id=3800124956)，Create/Submit 均为 `EResult=1`；公开文案与 14 文件下载缓存一致，Steam 随后恢复离线。完整事实见 [1.19.0 changelog](release-changelogs/auto-upgrade-buildings/1.19.0.md)。原生更新分支有离线测试，尚未实机更新验证；CDP 未通过实机验证，未使用。
 
+> 2026-09-13 实施补记：原生 update 已由 1.19.0 文案修正和 2.0.0 正式更新两次真实验证。另有一个必须保留的边界：只改变 `SubmitItemUpdate` 的 `pchChangeNote` 时，Steam 可返回 `EResult=1` 却不创建或替换公开 Change Notes；描述 metadata 更新也不替换既有条目。现有条目最终通过登录态 owner page 直接编辑，并以匿名公开 HTML 精确读回。后续发布必须单独核对 Change Notes 正文，不能从 Submit 回执或主描述更新推断成功。完整事实见 [2.0.0 changelog](release-changelogs/auto-upgrade-buildings/2.0.0.md)。
+
 ## 1. 结论
 
 Paradox Launcher 上传 Steam Workshop Mod 的真实路径不是 HTTP API，而是：

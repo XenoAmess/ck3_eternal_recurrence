@@ -121,6 +121,16 @@ returned `EResult=1` at `2026-09-12T14:32:37.174334Z`; anonymous public readback
 matched the exact title and description, and a newly downloaded 15-file cache
 matched the ID-bound release manifest byte for byte.
 
+One live boundary was established during the 2026-09-13 changelog correction:
+passing a different non-empty `pchChangeNote` while the Workshop content and
+effective metadata were unchanged returned `EResult=1` but did not create or
+replace a public Change Notes entry. Even a real description-only metadata
+change did not replace that existing note. Therefore a native submit receipt is
+not sufficient evidence for Change Notes publication: read back the public
+changelog entry itself. Editing an already-created entry currently uses the
+authenticated Workshop owner page; the native bridge does not expose that web
+operation.
+
 ## Hard gates
 
 Within the typed state-machine path, every plan binds the staging manifest, description, preview, metadata, target,
