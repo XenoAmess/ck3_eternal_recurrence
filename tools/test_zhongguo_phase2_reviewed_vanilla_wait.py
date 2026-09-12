@@ -17,6 +17,7 @@ import run_acceptance as acceptance  # noqa: E402
 import run_zhongguo_acceptance as capture  # noqa: E402
 PLAYER = 32_904
 EVENT_KEY = "ep3_story_cycle_admin_eunuch.8030"
+PRODUCT_EVENT_KEY = "zg361p2c.2"
 
 
 def _scope(type_key: str, character_id: int | None = None) -> dict[str, object]:
@@ -81,10 +82,41 @@ def _context(native_indices: tuple[int, ...] = (0, 1, 3)) -> dict[str, object]:
     }
 
 
+def _product_context() -> dict[str, object]:
+    return {
+        "schema": "current-event-window-context-v1",
+        "schema_version": 1,
+        "status": "available",
+        "window_match_count": 1,
+        "event_definition_key": PRODUCT_EVENT_KEY,
+        "root_scope": _scope("character", PLAYER),
+        "saved_scopes": [
+            {"name": "zg361_p2c_summary_cycle", "scope": _scope("value")},
+            {"name": "zg361_p2c_summary_case", "scope": _scope("value")},
+        ],
+        "options": [
+            {
+                "rendered_index": 0,
+                "native_option_index": 0,
+                "shown": True,
+                "enabled": True,
+                "fallback": False,
+                "cancel": False,
+            }
+        ],
+    }
+
+
 class _Service:
-    def __init__(self) -> None:
-        self.event_key = EVENT_KEY
-        self.event_instance_id = 621
+    def __init__(
+        self,
+        event_key: str = EVENT_KEY,
+        event_instance_id: int = 621,
+        option_count: int = 4,
+    ) -> None:
+        self.event_key = event_key
+        self.event_instance_id = event_instance_id
+        self.option_count = option_count
 
     def snapshot(self) -> dict[str, object]:
         return {
@@ -99,7 +131,7 @@ class _Service:
             "diagnostics": {"connection_generation": 1, "bridge_pid": 1001},
             "active_event": {
                 "instance_id": self.event_instance_id,
-                "option_count": 4,
+                "option_count": self.option_count,
             },
         }
 
@@ -141,28 +173,84 @@ class Phase2ReviewedVanillaWaitTests(unittest.TestCase):
         self.assertEqual(kwargs["contract"]["root_character_id"], PLAYER)
         self.assertEqual(kwargs["contract"]["selected_option_number"], 4)
 
-    def test_exact_reviewed_projection_selects_d_then_reaches_product(self) -> None:
+    def test_reviewed_product_helper_resolves_central_summary_contract(self) -> None:
+        service = _Service(PRODUCT_EVENT_KEY, 622, 1)
+        snapshot = service.snapshot()
+        identity = _identity(service, _product_context())
+        with mock.patch.object(
+            capture,
+            "_drain_known_timeline_interrupt",
+            return_value={
+                "result": "GREEN",
+                "selected_option_number": 1,
+                "selected_native_option_index": 0,
+            },
+        ) as drain:
+            result = (
+                capture.drain_reviewed_phase2_product_event_interruption_native(
+                    service,
+                    snapshot=snapshot,
+                    identity=identity,
+                )
+            )
+
+        self.assertEqual(result["result"], "GREEN")
+        self.assertEqual(
+            result["registry_contract_source"],
+            "phase2_central_timeline_registry",
+        )
+        kwargs = drain.call_args.kwargs
+        self.assertEqual(kwargs["event_key"], PRODUCT_EVENT_KEY)
+        self.assertEqual(kwargs["contract"]["root_character_id"], PLAYER)
+        self.assertEqual(kwargs["contract"]["selected_option_number"], 1)
+        self.assertEqual(
+            kwargs["contract"]["scope_types"],
+            {
+                "zg361_p2c_summary_cycle": "value",
+                "zg361_p2c_summary_case": "value",
+            },
+        )
+
+    def test_reviewed_vanilla_then_product_summary_reach_target(self) -> None:
         service = _Service()
         context = _context()
 
         def drain(
             _service: object, *, snapshot: object, identity: object
-        ) -> dict[str, object]:
+        ) -> dict[str, object] | None:
             self.assertIsInstance(snapshot, dict)
+            if identity["event_definition_key"] != EVENT_KEY:
+                return None
             self.assertEqual(identity["event_definition_key"], EVENT_KEY)
-            service.event_key = "zg361we.360"
+            service.event_key = PRODUCT_EVENT_KEY
             service.event_instance_id = 622
+            service.option_count = 1
             return {
                 "result": "GREEN",
                 "selected_option_number": 4,
                 "selected_native_option_index": 3,
             }
 
+        def drain_product(
+            _service: object, *, snapshot: object, identity: object
+        ) -> dict[str, object]:
+            self.assertIsInstance(snapshot, dict)
+            self.assertEqual(identity["event_definition_key"], PRODUCT_EVENT_KEY)
+            service.event_key = "zg361we.360"
+            service.event_instance_id = 623
+            return {
+                "result": "GREEN",
+                "selected_option_number": 1,
+                "selected_native_option_index": 0,
+            }
+
         def identity(_service: object, _snapshot: object) -> dict[str, object]:
             if service.event_key == EVENT_KEY:
                 return _identity(service, context)
+            if service.event_key == PRODUCT_EVENT_KEY:
+                return _identity(service, _product_context())
             return {
-                "event_instance_id": 622,
+                "event_instance_id": 623,
                 "snapshot_revision": 91,
                 "event_definition_key": "zg361we.360",
                 "query": {},
@@ -181,7 +269,11 @@ class Phase2ReviewedVanillaWaitTests(unittest.TestCase):
             capture,
             "drain_reviewed_vanilla_event_interruption_native",
             side_effect=drain,
-        ) as selection:
+        ) as vanilla_selection, mock.patch.object(
+            capture,
+            "drain_reviewed_phase2_product_event_interruption_native",
+            side_effect=drain_product,
+        ) as product_selection:
             result = capture.wait_for_native_event_definition(
                 service,
                 Path(temporary),
@@ -189,14 +281,27 @@ class Phase2ReviewedVanillaWaitTests(unittest.TestCase):
                 expected_event_definition_key="zg361we.360",
                 clear_unexpected_single_option_events=False,
                 clear_reviewed_vanilla_event_interruptions=True,
+                clear_reviewed_product_event_interruptions=True,
             )
 
         self.assertEqual(result["identity"]["event_definition_key"], "zg361we.360")
-        selection.assert_called_once()
+        self.assertEqual(vanilla_selection.call_count, 2)
+        self.assertEqual(
+            [
+                call.kwargs["identity"]["event_definition_key"]
+                for call in vanilla_selection.call_args_list
+            ],
+            [EVENT_KEY, PRODUCT_EVENT_KEY],
+        )
+        product_selection.assert_called_once()
         evidence = result["evidence"]
         self.assertEqual(len(evidence["cleared_reviewed_vanilla_interruptions"]), 1)
         self.assertEqual(
             evidence["reviewed_vanilla_decisions"][0]["result"], "GREEN"
+        )
+        self.assertEqual(len(evidence["cleared_reviewed_product_interruptions"]), 1)
+        self.assertEqual(
+            evidence["reviewed_product_decisions"][0]["result"], "GREEN"
         )
 
     def test_drifted_reviewed_projection_remains_red_without_selection(self) -> None:

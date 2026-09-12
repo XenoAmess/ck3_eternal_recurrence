@@ -692,6 +692,9 @@ class Phase2EventChoreographyRunnerTests(unittest.TestCase):
         self.assertTrue(
             wait.call_args.kwargs["clear_reviewed_vanilla_event_interruptions"]
         )
+        self.assertTrue(
+            wait.call_args.kwargs["clear_reviewed_product_event_interruptions"]
+        )
 
     def test_hc_source_reuses_mature_endgame_checkpoint_and_reaches_m360(self) -> None:
         snapshot = _snapshot(event=True)

@@ -150,6 +150,7 @@ from zg361_phase2_promotion_source_production_entry import (
     _resolve_timeline_interrupt_contract,
     enter_promotion_source_checkpoint_v1,
 )
+from zg361_phase2_promotion_central_contracts import CENTRAL_TIMELINE_CONTRACTS
 from zg361_phase2_stage10_player_subject_action_cell import (
     run_stage10_player_subject,
 )
@@ -2389,6 +2390,7 @@ class _Phase2RealEventChoreographyService:
             timeout_s=45.0,
             clear_unexpected_single_option_events=False,
             clear_reviewed_vanilla_event_interruptions=True,
+            clear_reviewed_product_event_interruptions=True,
         )
         identity = gate.get("identity") if isinstance(gate, dict) else None
         if not (
@@ -18417,20 +18419,20 @@ def resume_personal_switch_timeline_native(
     )
 
 
-def drain_reviewed_vanilla_event_interruption_native(
+def _drain_reviewed_timeline_event_interruption_native(
     service: GameplayBridgeService,
     *,
     snapshot: Mapping[str, object],
     identity: Mapping[str, object],
-) -> dict[str, object] | None:
-    """Drain one exact reviewed vanilla projection, or leave it untouched."""
+    registry_contract_source: str,
+) -> dict[str, object]:
+    """Drain one exact reviewed timeline projection through the shared gate."""
 
     event_key = identity.get("event_definition_key")
-    if not (
-        isinstance(event_key, str)
-        and event_key in VANILLA_EVENT_TIMELINE_CONTRACTS
-    ):
-        return None
+    if not isinstance(event_key, str):
+        raise acceptance.RunnerError(
+            "reviewed timeline interruption lacks an event definition key"
+        )
     player_value = snapshot.get("played_character")
     player = player_value if isinstance(player_value, Mapping) else {}
     player_character_id = player.get("character_id")
@@ -18462,7 +18464,7 @@ def drain_reviewed_vanilla_event_interruption_native(
         and query
     ):
         raise acceptance.RunnerError(
-            "reviewed vanilla interruption lacks a typed paused binding"
+            "reviewed timeline interruption lacks a typed paused binding"
         )
     contract = _resolve_timeline_interrupt_contract(
         event_key,
@@ -18472,9 +18474,9 @@ def drain_reviewed_vanilla_event_interruption_native(
     )
     if contract is None:
         raise acceptance.RunnerError(
-            "reviewed vanilla interruption lacks a resolved exact-build contract"
+            "reviewed timeline interruption lacks a resolved exact-build contract"
         )
-    return _drain_known_timeline_interrupt(
+    decision = _drain_known_timeline_interrupt(
         service,
         snapshot=snapshot,
         event={"event_instance_id": event_instance_id},
@@ -18483,6 +18485,52 @@ def drain_reviewed_vanilla_event_interruption_native(
         contract=contract,
         player=player_character_id,
         connection_generation=connection_generation,
+    )
+    decision["registry_contract_source"] = registry_contract_source
+    return decision
+
+
+def drain_reviewed_vanilla_event_interruption_native(
+    service: GameplayBridgeService,
+    *,
+    snapshot: Mapping[str, object],
+    identity: Mapping[str, object],
+) -> dict[str, object] | None:
+    """Drain one exact reviewed vanilla projection, or leave it untouched."""
+
+    event_key = identity.get("event_definition_key")
+    if not (
+        isinstance(event_key, str)
+        and event_key in VANILLA_EVENT_TIMELINE_CONTRACTS
+    ):
+        return None
+    return _drain_reviewed_timeline_event_interruption_native(
+        service,
+        snapshot=snapshot,
+        identity=identity,
+        registry_contract_source="shared_vanilla_event_registry",
+    )
+
+
+def drain_reviewed_phase2_product_event_interruption_native(
+    service: GameplayBridgeService,
+    *,
+    snapshot: Mapping[str, object],
+    identity: Mapping[str, object],
+) -> dict[str, object] | None:
+    """Drain one reviewed Central product event, or leave it untouched."""
+
+    event_key = identity.get("event_definition_key")
+    if not (
+        isinstance(event_key, str)
+        and event_key in CENTRAL_TIMELINE_CONTRACTS
+    ):
+        return None
+    return _drain_reviewed_timeline_event_interruption_native(
+        service,
+        snapshot=snapshot,
+        identity=identity,
+        registry_contract_source="phase2_central_timeline_registry",
     )
 
 
@@ -18495,14 +18543,15 @@ def wait_for_native_event_definition(
     timeout_s: float = 45.0,
     clear_unexpected_single_option_events: bool = True,
     clear_reviewed_vanilla_event_interruptions: bool = False,
+    clear_reviewed_product_event_interruptions: bool = False,
 ) -> dict[str, object]:
     """Reach one product event using native state, identity and ACK only.
 
     No OCR or geometry participates in navigation or the GREEN decision. An
     unrelated exactly-one-option event may be cleared through its bound native
-    instance. A reviewed vanilla multi-option event is cleared only when the
-    shared exact-build registry recommends one option from the exact current
-    projection; every other multi-option interruption remains a blocker.
+    instance. Reviewed vanilla and Central product events are cleared only when
+    their shared strict registry resolves the exact current projection; every
+    other interruption remains a blocker.
     """
 
     evidence: dict[str, object] = {
@@ -18517,6 +18566,8 @@ def wait_for_native_event_definition(
         "cleared_single_option_interruptions": [],
         "reviewed_vanilla_decisions": [],
         "cleared_reviewed_vanilla_interruptions": [],
+        "reviewed_product_decisions": [],
+        "cleared_reviewed_product_interruptions": [],
         "terminal_identity": None,
         "failure_reason": None,
         "ocr_used_for_navigation": False,
@@ -18619,11 +18670,50 @@ def wait_for_native_event_definition(
                     cleared["event_definition_key"] = identity[
                         "event_definition_key"
                     ]
-                    cleared["registry_contract_source"] = (
-                        "shared_vanilla_event_registry"
-                    )
                     cleared_rows = evidence[
                         "cleared_reviewed_vanilla_interruptions"
+                    ]
+                    assert isinstance(cleared_rows, list)
+                    cleared_rows.append(cleared)
+                    continue
+
+            if clear_reviewed_product_event_interruptions:
+                decisions = evidence["reviewed_product_decisions"]
+                assert isinstance(decisions, list)
+                try:
+                    decision = (
+                        drain_reviewed_phase2_product_event_interruption_native(
+                            service,
+                            snapshot=pause_gate["snapshot"],
+                            identity=identity,
+                        )
+                    )
+                except Exception as error:
+                    decisions.append({
+                        "result": "RED",
+                        "event_definition_key": identity.get(
+                            "event_definition_key"
+                        ),
+                        "error_type": type(error).__name__,
+                        "error": str(error),
+                    })
+                    finish_red(
+                        "reviewed product event contract blocked native "
+                        f"phase-two path: {type(error).__name__}: {error}"
+                    )
+                if decision is not None:
+                    decisions.append(decision)
+                    if decision.get("result") != "GREEN":
+                        finish_red(
+                            "reviewed product event contract did not produce "
+                            "a GREEN selection"
+                        )
+                    cleared = decision
+                    cleared["event_definition_key"] = identity[
+                        "event_definition_key"
+                    ]
+                    cleared_rows = evidence[
+                        "cleared_reviewed_product_interruptions"
                     ]
                     assert isinstance(cleared_rows, list)
                     cleared_rows.append(cleared)
