@@ -210,3 +210,11 @@ reason 与全部 readiness 仍保持 unavailable/false，且不发布 provider o
 R523 使用保留逐控件诊断的 DLL 得到 15/15 `exists=false`，证明失败点在 window 子树遍历之前：CK3 的 direct top-level lookup 没有返回 scripted-widget registration，继续增加 DFS 上限没有作用。scoreboard 现复用 promotion R13/R14 已实机跨过首查的 owner `+0xD0` 全局 GUI 根 fallback，并从全局根执行同一个单次 65,536 节点 fixed-allowlist traversal。
 
 direct lookup 仍为首选；fallback 不接受调用方名字，不改变 15 项 allowlist、depth、child count、ACL、schema 或动作 readiness。该路径在新 DLL 的 R525 前只标记为 `static-ready`，不得把 focused native executable 冒充 live scoreboard 证据。
+
+## R525 动作后渲染稳定证据
+
+R525 已在实机证明全局根 fallback 生效：15 个固定身份全部存在，received 关闭态发布 provider observation/revision `2/1`，exact native `open` 返回 accepted、verification-pending ACK。action cell 随后零等待执行独立查询，得到 `unavailable/state_projection_unavailable`。
+
+`zg361_scoreboard_toggle` 与 `zg361_scoreboard_modal` 均使用 `Animation_ShowHide_Quick`；exact-build 的共享模板把淡入、淡出时长定义为 0.15 秒。过渡期间，effective visibility 可短暂不满足 canonical closed/open 两种互斥关系。provider 在这种帧继续 unavailable 是正确行为，不放宽 semantic invariant。
+
+consumer 现只在动作 accepted 后等待 0.25 秒，再执行原有的一次独立 later query。它不轮询，也不把 unavailable 改写为成功。在 R527 取得符合预期 revision 与可见面的 available observation 前，该动作仍只记为 `static-ready + exact live ACK`，不能标成 verified production-live primitive。

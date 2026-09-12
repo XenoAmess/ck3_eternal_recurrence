@@ -8,6 +8,7 @@ ACK and independent later read while keeping the current acceptance result RED.
 
 from __future__ import annotations
 
+import time
 from typing import Protocol
 
 from .zhongguo_scoreboard_action_contract import (
@@ -56,6 +57,7 @@ _TAB_IDS = {
     "switch-system": "zg361_scoreboard_tab_system",
 }
 _PRIMITIVE_ACTIONS = frozenset({"open", *_TAB_IDS, "close"})
+_POST_ACTION_RENDER_SETTLE_SECONDS = 0.25
 
 
 def _available(value: object, expected_type: type, label: str) -> object:
@@ -263,6 +265,13 @@ def run_zhongguo_scoreboard_action_cell(
         evidence["production_capability_advertised"] = action_result.get(
             "production_capability_advertised"
         )
+
+        # Native activation runs the widget callback synchronously, while CK3's
+        # Animation_ShowHide_Quick visibility state settles on later render
+        # frames.  Keep the verifier independent, but do not sample the
+        # mutually-exclusive open/closed surfaces in that transition frame.
+        if action_result.get("accepted") is True:
+            time.sleep(_POST_ACTION_RENDER_SETTLE_SECONDS)
 
         later_revision = _paused_revision(service, "scoreboard later query")
         later = service.query_zhongguo_scoreboard_state_v1(
