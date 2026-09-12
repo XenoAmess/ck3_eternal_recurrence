@@ -45,8 +45,8 @@ PHASE2_EVENT_SEQUENCE_PLANS: Final = (
         "capture_receipt_appeal_pip",
         "product_event",
         "zg361b2.40",
-        "product_event",
-        "zg361.4",
+        "named_widget",
+        "zg361_scoreboard_modal",
     ),
     Phase2EventSequencePlan(
         "phase2_manager_governance",

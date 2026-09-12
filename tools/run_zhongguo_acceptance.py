@@ -2499,6 +2499,19 @@ class _Phase2AcceptanceActionSpanDriver:
                 context.artifacts,
                 owner_character_id=owners["b2_pip_owner_character_id"],
             )
+            scoreboard_surface = run_phase2_scoreboard_promo_visual_cell(
+                self.service,
+                context.artifacts,
+                nonce_prefix="zg361.phase2.promo.b2.postcondition",
+                evidence_filename=(
+                    "07d_phase2_b2_pip_scoreboard_visual_action_cell.json"
+                ),
+            )
+            if scoreboard_surface.get("result") != "GREEN":
+                raise Phase2VisualHandlerError(
+                    "b2_postcondition_scoreboard_not_green",
+                    {"scoreboard_action_cell": scoreboard_surface},
+                )
         elif handler == "capture_manager_governance":
             evidence = run_phase2_ai_owned_case_gameplay_action_cell(
                 self.service,
@@ -2547,7 +2560,14 @@ class _Phase2AcceptanceActionSpanDriver:
             if plan.post_action_events
             else None
         )
-        visible = _phase2_promo_visible_scenario_surface(self.service, scenario)
+        visible = (
+            {
+                "surface": "named_widget:zg361_scoreboard_modal",
+                "scoreboard_action_cell": scoreboard_surface,
+            }
+            if handler == "capture_receipt_appeal_pip"
+            else _phase2_promo_visible_scenario_surface(self.service, scenario)
+        )
         return {
             "result": "GREEN",
             "surface_visible": True,
@@ -10407,12 +10427,17 @@ def compare_phase2_domain_query_stages(
 def run_phase2_scoreboard_promo_visual_cell(
     service: GameplayBridgeService,
     artifacts: Path,
+    *,
+    nonce_prefix: str = "zg361.phase2.promo.scoreboard",
+    evidence_filename: str = (
+        "07c_phase2_scoreboard_promo_visual_action_cell.json"
+    ),
 ) -> dict[str, object]:
     """Open the real scoreboard and preserve its independent visibility proof."""
 
     action_cell = run_zhongguo_scoreboard_action_cell(
         service,
-        nonce_prefix="zg361.phase2.promo.scoreboard",
+        nonce_prefix=nonce_prefix,
         requested_action="open",
     )
     if not isinstance(action_cell, dict):
@@ -10447,7 +10472,7 @@ def run_phase2_scoreboard_promo_visual_cell(
         "failure_reason": None if visual_green else action_cell.get("failure_reason"),
     }
     write_json(
-        artifacts / "07c_phase2_scoreboard_promo_visual_action_cell.json",
+        artifacts / evidence_filename,
         evidence,
     )
     return evidence

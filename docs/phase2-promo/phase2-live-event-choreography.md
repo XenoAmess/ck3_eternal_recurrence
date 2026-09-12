@@ -20,7 +20,7 @@ staging receipt 必须明确 `console_used=false`、`test_fixture_used=false`，
 | span | source staging | clean hold surface | action 后额外呈现 |
 |---|---|---|---|
 | `phase2_fact_quota_calibration` | event-free paused map | `named_widget:zg361_scoreboard_modal` | 无 |
-| `phase2_receipt_appeal_pip` | `zg361b2.40` | `zg361.4` | 无 |
+| `phase2_receipt_appeal_pip` | `zg361b2.40` | `named_widget:zg361_scoreboard_modal` | PIP 选择及同案 provider 后置条件通过后打开真实榜单，展示执行中的 PIP；`zg361.4` 是更早的考绩送达事件，不是 PIP 选择的后继 |
 | `phase2_manager_governance` | event-free paused map | `zg361mg.120` | 等到并验证 `zg361mg.120` |
 | `phase2_promotion_compensation` | `zg361pp.147` | `zg361comp.1` | 无 |
 | `phase2_hc_workforce` | `zg361we.360` | `zg361we.361` | 无 |

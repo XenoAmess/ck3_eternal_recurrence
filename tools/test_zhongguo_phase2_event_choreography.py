@@ -157,6 +157,11 @@ class Phase2EventChoreographyTests(unittest.TestCase):
             phase2_event_sequence_plan("capture_manager_governance").post_action_events,
             ("zg361mg.120",),
         )
+        b2 = phase2_event_sequence_plan("capture_receipt_appeal_pip")
+        self.assertEqual(b2.source_event, "zg361b2.40")
+        self.assertEqual(b2.capture_surface_kind, "named_widget")
+        self.assertEqual(b2.capture_surface, "zg361_scoreboard_modal")
+        self.assertEqual(b2.post_action_events, ())
         self.assertEqual(
             phase2_event_sequence_plan("capture_incidents_operations").post_action_events,
             ("zg361ip.190", "zg361ip.290", "zg361ip.390"),

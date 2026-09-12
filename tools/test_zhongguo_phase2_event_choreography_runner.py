@@ -752,6 +752,70 @@ class Phase2EventChoreographyRunnerTests(unittest.TestCase):
             "zg361mg.120",
         )
 
+    def test_b2_action_opens_scoreboard_as_its_postcondition_surface(self) -> None:
+        service = _Service()
+        coordinator = mock.Mock()
+        driver = capture._Phase2AcceptanceActionSpanDriver(
+            service, event_choreographer=coordinator
+        )
+        scenario = next(
+            row
+            for row in PHASE2_CAPTURE_SCENARIOS
+            if row.handler == "capture_receipt_appeal_pip"
+        )
+        scoreboard_evidence = {
+            "result": "GREEN",
+            "verified_pass": True,
+            "capture_only_visual_scope": True,
+        }
+        with (
+            mock.patch.object(
+                capture,
+                "_phase2_domain_query_contract",
+                return_value={"b2_pip_owner_character_id": 9002},
+            ),
+            mock.patch.object(
+                capture,
+                "run_phase2_b2_pip_gameplay_action_cell",
+                return_value={"result": "GREEN", "postcondition_query_green": True},
+            ) as b2_action,
+            mock.patch.object(
+                capture,
+                "run_phase2_scoreboard_promo_visual_cell",
+                return_value=scoreboard_evidence,
+            ) as scoreboard,
+            mock.patch.object(
+                capture, "_phase2_promo_visible_scenario_surface"
+            ) as event_surface,
+        ):
+            result = driver.run_span(
+                scenario,
+                SimpleNamespace(seed_contract={}, artifacts=Path("unused")),
+                {},
+            )
+        b2_action.assert_called_once_with(
+            service, Path("unused"), owner_character_id=9002
+        )
+        scoreboard.assert_called_once_with(
+            service,
+            Path("unused"),
+            nonce_prefix="zg361.phase2.promo.b2.postcondition",
+            evidence_filename=(
+                "07d_phase2_b2_pip_scoreboard_visual_action_cell.json"
+            ),
+        )
+        coordinator.present_post_action_events.assert_not_called()
+        event_surface.assert_not_called()
+        self.assertEqual(result["result"], "GREEN")
+        self.assertEqual(
+            result["visible_surface"]["surface"],
+            "named_widget:zg361_scoreboard_modal",
+        )
+        self.assertEqual(
+            result["visible_surface"]["scoreboard_action_cell"],
+            scoreboard_evidence,
+        )
+
 
 if __name__ == "__main__":
     unittest.main()
