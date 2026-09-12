@@ -47,3 +47,19 @@ Visual Studio developer environment 重跑成功。该环境错误没有启动 C
 新轮次 R525 gameplay。P1 继续保持 `9/9 GREEN`；视频硬锁已解除，剪辑、导出和
 发布仍等待八段 clean footage 与内容复核。此次内部根定位没有改变 MCP wire、版本、
 公共字段或依赖，不触发 open_kaishek 兼容层代码同步。
+
+## R524/R525 候选构建
+
+从已同步的 root commit `61bd800763f3ba39096c18a03bd9dbd81c18fe0e`
+完成一份全新的 MSVC Release 构建：
+
+- build：`Z:\ck3_mod_rewrite\_runtime\native-builds\p2-r524-r525-scoreboard-global-root-61bd800-20260912`
+- bridge：2,600,448 bytes，`B25CF9A7814CE5C95702B86C79BBAAE2E5F9647888BA7DCD44BB3658A5FA1F52`
+- injector：39,936 bytes，`8D59AE36F1ED7316F89F3086ACAC44EA25047C7364B0DE77F1359A8F00ED6830`
+- focused test：127,488 bytes，`5129FFDAEB8866E0CA6E1CB871547B58CDC49F41D654350B9234472A1D015A0D`，exit `0`
+- CMake cache：21,933 bytes，`FF524F47229A0E6B7A1293E7D50B602D8F3C2C9F8A74A6F8972EFDBF0635A67D`
+- build receipt：4,454 bytes，`D2000BD3DA55B2F92D6AEF093348FFDD798B74D1B37B12458033AB00EC299627`
+- 27 个 `XAR_CK3_ENABLE_*` candidate switches 全部为 `OFF`
+
+构建没有启动 CK3 或 FFmpeg，也没有消耗新轮次。下一次实机仍从新轮次 R524
+Frontend warm-up 开始，随后仅允许新轮次 R525 加载 autosave。
