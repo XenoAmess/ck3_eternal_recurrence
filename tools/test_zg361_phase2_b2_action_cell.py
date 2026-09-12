@@ -76,9 +76,18 @@ class _FakeClock:
 
 class _FakeService:
     option_names = (
-        "Accept the plan and its support.",
-        "Revise the goal once, then begin.",
-        "Refuse, and let only the next cycle judge it.",
+        (
+            "Begin the 365-day plan; if funded, reserve a mentor, capacity, "
+            "25 treasury, and 12 support hours."
+        ),
+        (
+            "Revise the task once, then begin the 365-day plan with the same "
+            "funded support."
+        ),
+        (
+            "Refuse the plan; record -15 evidence for the next cycle, with no "
+            "second penalty today."
+        ),
     )
 
     def __init__(self) -> None:
@@ -377,9 +386,9 @@ class B2PipActionCellTests(unittest.TestCase):
     def test_simplified_chinese_option_semantics_are_supported(self) -> None:
         service = _FakeService()
         service.option_names_override = (
-            "接受计划及配套支持。",
-            "修改一次目标，然后开始执行。",
-            "拒绝，并只让下一轮评价此事。",
+            "开始365日改进；资源齐备时预留导师、容量、25国库金、12小时支持与关注席位。",
+            "修改一次任务后开始365日改进；资源齐备时提供同等支持。",
+            "拒绝计划；只给下一周期记入 -15 证据，今天不再追加处罚。",
         )
         self.assertEqual(self._run(service, "negotiate")["result"], "GREEN")
 

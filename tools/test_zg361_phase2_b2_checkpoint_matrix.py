@@ -146,9 +146,18 @@ class _FakeLifecycle:
 
 class _FakeMatrixService:
     option_names = (
-        "Accept the plan and its support.",
-        "Revise the goal once, then begin.",
-        "Refuse, and let only the next cycle judge it.",
+        (
+            "Begin the 365-day plan; if funded, reserve a mentor, capacity, "
+            "25 treasury, and 12 support hours."
+        ),
+        (
+            "Revise the task once, then begin the 365-day plan with the same "
+            "funded support."
+        ),
+        (
+            "Refuse the plan; record -15 evidence for the next cycle, with no "
+            "second penalty today."
+        ),
     )
 
     def __init__(self, lifecycle: _FakeLifecycle) -> None:

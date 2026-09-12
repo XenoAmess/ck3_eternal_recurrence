@@ -100,8 +100,11 @@ _ACTION_SPECS: Mapping[str, _ActionSpec] = {
         goal_revision_used=False,
         refusal_receipt=False,
         resolved_names=(
-            "Accept the plan and its support.",
-            "接受计划及配套支持。",
+            (
+                "Begin the 365-day plan; if funded, reserve a mentor, "
+                "capacity, 25 treasury, and 12 support hours."
+            ),
+            "开始365日改进；资源齐备时预留导师、容量、25国库金、12小时支持与关注席位。",
         ),
     ),
     "negotiate": _ActionSpec(
@@ -111,8 +114,11 @@ _ACTION_SPECS: Mapping[str, _ActionSpec] = {
         goal_revision_used=True,
         refusal_receipt=False,
         resolved_names=(
-            "Revise the goal once, then begin.",
-            "修改一次目标，然后开始执行。",
+            (
+                "Revise the task once, then begin the 365-day plan with the "
+                "same funded support."
+            ),
+            "修改一次任务后开始365日改进；资源齐备时提供同等支持。",
         ),
     ),
     "refuse": _ActionSpec(
@@ -122,8 +128,11 @@ _ACTION_SPECS: Mapping[str, _ActionSpec] = {
         goal_revision_used=False,
         refusal_receipt=True,
         resolved_names=(
-            "Refuse, and let only the next cycle judge it.",
-            "拒绝，并只让下一轮评价此事。",
+            (
+                "Refuse the plan; record -15 evidence for the next cycle, "
+                "with no second penalty today."
+            ),
+            "拒绝计划；只给下一周期记入 -15 证据，今天不再追加处罚。",
         ),
     ),
 }

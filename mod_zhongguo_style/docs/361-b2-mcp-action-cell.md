@@ -22,9 +22,9 @@ CK3 paused live artifact，不能写成 `fixture-live` 或 `production-live`。
 
 | action | 事件/选项 | 必须看到的 paused provider 后置条件 |
 |---|---|---|
-| `accept` | `zg361b2.40` 第 1 项，“Accept the plan and its support.” / “接受计划及配套支持。” | 同 owner/subject/cycle/case，state `1 → 2`，response `1`，本人 author，goal revision `false`，refusal receipt `0` |
-| `negotiate` | 第 2 项，“Revise the goal once, then begin.” / “修改一次目标，然后开始执行。” | 同案 state `1 → 2`，response `2`，本人 author，goal revision `true`，refusal receipt `0` |
-| `refuse` | 第 3 项，“Refuse, and let only the next cycle judge it.” / “拒绝，并只让下一轮评价此事。” | 同案 state `1 → 5`，response `3`，本人 author，goal revision `false`，refusal receipt等于 case |
+| `accept` | `zg361b2.40` 第 1 项，“Begin the 365-day plan; if funded, reserve a mentor, capacity, 25 treasury, and 12 support hours.” / “开始365日改进；资源齐备时预留导师、容量、25国库金、12小时支持与关注席位。” | 同 owner/subject/cycle/case，state `1 → 2`，response `1`，本人 author，goal revision `false`，refusal receipt `0` |
+| `negotiate` | 第 2 项，“Revise the task once, then begin the 365-day plan with the same funded support.” / “修改一次任务后开始365日改进；资源齐备时提供同等支持。” | 同案 state `1 → 2`，response `2`，本人 author，goal revision `true`，refusal receipt `0` |
+| `refuse` | 第 3 项，“Refuse the plan; record -15 evidence for the next cycle, with no second penalty today.” / “拒绝计划；只给下一周期记入 -15 证据，今天不再追加处罚。” | 同案 state `1 → 5`，response `3`，本人 author，goal revision `false`，refusal receipt等于 case |
 
 helper 会同时核对：
 
