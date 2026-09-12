@@ -234,6 +234,41 @@ class Stage10PlayerSubjectTests(unittest.TestCase):
                 "superior_owner_to_player_manager_subject",
             )
 
+    def test_contract_resume_retains_original_deadline_and_interrupts(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            service = Service()
+            service.date += 21 * 24
+            result = cell.run_stage10_player_subject(
+                service,
+                evidence_directory=Path(temporary),
+                request_nonce="fixture.stage10.retry-02",
+                expected_player_manager_character_id=MANAGER,
+                expected_owner_character_id=OWNER,
+                resume_progress={
+                    "timeline_origin_date_raw": service.initial_date,
+                    "absolute_end_date_raw": (
+                        service.initial_date + cell.MAX_ADVANCE_DAYS * 24
+                    ),
+                    "timeline_interrupt_drains": [
+                        {"event_definition_key": "travel_completion_event.1000"}
+                    ],
+                    "unexpected_event": {
+                        "event_definition_key": "travel_completion_event.1000"
+                    },
+                },
+                navigator=navigate_to_stage10,
+            )
+
+            resume = result["progress"]["contract_resume"]
+            self.assertTrue(resume["same_process_required"])
+            self.assertEqual(resume["resume_date_raw"], service.initial_date + 21 * 24)
+            self.assertEqual(
+                resume["retained_absolute_end_date_raw"],
+                service.initial_date + cell.MAX_ADVANCE_DAYS * 24,
+            )
+            self.assertEqual(resume["retained_interrupt_drain_count"], 1)
+            self.assertEqual(service.selections, [(12, 1)])
+
     def test_independent_player_refuses_before_save_or_navigation(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
             service = Service()

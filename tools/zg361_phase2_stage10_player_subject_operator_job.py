@@ -2,9 +2,9 @@
 """MCP-owned Stage 10 player-subject run from a qualified player-manager save.
 
 The process lifecycle and frozen-input admission come from the AF5 operator.
-No launch occurs until the operator receives ``run-stage10``.  A failed action
-is parked for evidence and cleanup; this operator deliberately exposes no
-in-place retry control.
+No launch occurs until the operator receives ``run-stage10``. A pre-selection
+vanilla-contract RED may resume with ``retry-stage10`` on the same paused CK3
+process after a repaired activation proves that only Python code changed.
 """
 
 from __future__ import annotations
@@ -15,12 +15,13 @@ import importlib
 import json
 from pathlib import Path
 import sys
+import threading
 from typing import Mapping, Sequence
 
 import zg361_phase2_af5_operator_job as base
 
 
-CONTROLS = ["status", "run-stage10", "cleanup"]
+CONTROLS = ["status", "run-stage10", "retry-stage10", "cleanup"]
 JOB_ROLE = "stage10-player-subject"
 SOURCE_RECEIPT_KIND = "zg361_stage10_player_publication_source_v6"
 SOURCE_RECEIPT_KIND_V7 = "zg361_stage10_player_publication_source_v7"
@@ -870,6 +871,79 @@ class Stage10PlayerSubjectOperatorJob(base.Af5OperatorJob):
         response["control"] = "run-stage10"
         return response
 
+    def retry(self) -> dict[str, object]:
+        """Resume a pre-selection contract RED on the retained CK3 process."""
+        with self.lock:
+            failed_action = (
+                (self.failure_evidence or {}).get("evidence")
+                if isinstance(self.failure_evidence, Mapping)
+                else None
+            )
+            progress = (
+                failed_action.get("progress")
+                if isinstance(failed_action, Mapping)
+                else None
+            )
+            unexpected = (
+                progress.get("unexpected_event")
+                if isinstance(progress, Mapping)
+                else None
+            )
+            if not (
+                self.state == "AF5_RED_PARKED"
+                and self.stage == "stage10_player_subject_action"
+                and self.service is not None
+                and self.binding is not None
+                and (self.worker is None or not self.worker.is_alive())
+                and isinstance(unexpected, Mapping)
+                and isinstance(unexpected.get("event_definition_key"), str)
+            ):
+                return {
+                    **self.status(),
+                    "control": "retry-stage10",
+                    "accepted": False,
+                    "reason": (
+                        "no completed pre-selection contract RED on a retained session"
+                    ),
+                }
+            if (
+                failed_action.get("selected_option_number") is not None
+                or failed_action.get("selection") is not None
+                or failed_action.get("terminal_acknowledgement") is not None
+            ):
+                return {
+                    **self.status(),
+                    "control": "retry-stage10",
+                    "accepted": False,
+                    "reason": (
+                        "event input already attempted; retain original evidence"
+                    ),
+                }
+            self.state = "RUNNING_AF5"
+            self.worker = threading.Thread(
+                target=self._run_retry,
+                name="stage10-hot-retry",
+                daemon=False,
+            )
+            self.worker.start()
+            return {
+                **self.status(),
+                "control": "retry-stage10",
+                "accepted": True,
+            }
+
+    @staticmethod
+    def _reload_action_modules(root: Path) -> None:
+        base.Af5OperatorJob._reload_action_modules(root)
+        module = importlib.import_module(
+            "zg361_phase2_stage10_player_subject_action_cell"
+        )
+        module = importlib.reload(module)
+        if not Path(str(module.__file__)).resolve().is_relative_to(root):
+            raise base.Af5JobError(
+                "repaired Stage 10 action module did not load from frozen checkout"
+            )
+
     def _run(self) -> None:
         try:
             self.bound = validate_activation(
@@ -899,17 +973,27 @@ class Stage10PlayerSubjectOperatorJob(base.Af5OperatorJob):
         expected = base.mapping(bound["expected_hashes"], "expected hashes")
         binding = base.mapping(self.binding, "native binding")
         self.stage = "stage10_player_subject_action"
-        evidence = dict(
-            module.run_stage10_player_subject(
-                self.service,
-                evidence_directory=artifacts / "stage10",
-                request_nonce=f"{bound['round']}.stage10.player-subject",
-                expected_player_manager_character_id=bound[
-                    "stage10_player_manager_character_id"
-                ],
-                expected_owner_character_id=bound["stage10_owner_character_id"],
+        kwargs: dict[str, object] = {}
+        nonce = f"{bound['round']}.stage10.player-subject"
+        if self.attempt > 1:
+            failed_action = base.mapping(
+                (self.failure_evidence or {}).get("evidence"),
+                "failed Stage 10 action evidence",
             )
-        )
+            kwargs["resume_progress"] = base.mapping(
+                failed_action.get("progress"), "failed Stage 10 progress"
+            )
+            nonce = f"{nonce}.retry-{self.attempt:02d}"
+        evidence = dict(module.run_stage10_player_subject(
+            self.service,
+            evidence_directory=artifacts / "stage10",
+            request_nonce=nonce,
+            expected_player_manager_character_id=bound[
+                "stage10_player_manager_character_id"
+            ],
+            expected_owner_character_id=bound["stage10_owner_character_id"],
+            **kwargs,
+        ))
         gate = evidence.get("p1_acceptance_evidence")
         gate = gate.get("central_stage_10_terminal") if isinstance(gate, Mapping) else None
         if not (
@@ -1026,6 +1110,8 @@ class Stage10PlayerSubjectOperatorJob(base.Af5OperatorJob):
                 response = self.status()
             elif command == "run-stage10":
                 response = self.start()
+            elif command == "retry-stage10":
+                response = self.retry()
             elif command == "cleanup":
                 response = self.perform_cleanup()
             else:

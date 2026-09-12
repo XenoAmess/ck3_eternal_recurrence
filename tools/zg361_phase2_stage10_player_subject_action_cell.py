@@ -9,8 +9,9 @@ publication tail and pauses on the new ``zg361mg.120`` player-subject terminal.
 No player switch, fixture, console input, or fresh B1 opening belongs to this
 route.
 
-No process lifecycle is owned here.  A failed attempt is not retried in place;
-the caller may restore the immutable source and start a new bounded attempt.
+No process lifecycle is owned here. A contract-only repair may resume through
+the operator on the retained paused CK3 process. The original absolute game-day
+deadline and prior interrupt history remain authoritative across that resume.
 """
 
 from __future__ import annotations
@@ -194,6 +195,7 @@ def run_stage10_player_subject(
     request_nonce: str,
     expected_player_manager_character_id: int,
     expected_owner_character_id: int,
+    resume_progress: Mapping[str, object] | None = None,
     navigator: Navigator = entry.enter_promotion_source_checkpoint_v1,
 ) -> dict[str, object]:
     """Run one 120-day maximum near-publication B1 to Stage 10 slice."""
@@ -269,12 +271,41 @@ def run_stage10_player_subject(
             service, current, "player-manager source"
         )
 
-        progress: dict[str, object] = {
-            "timeline_origin_date_raw": initial_binding["date_raw"],
-            "absolute_end_date_raw": initial_binding["date_raw"]
-            + MAX_ADVANCE_DAYS * 24,
-            "timeline_interrupt_drains": [],
-        }
+        if resume_progress is None:
+            progress: dict[str, object] = {
+                "timeline_origin_date_raw": initial_binding["date_raw"],
+                "absolute_end_date_raw": initial_binding["date_raw"]
+                + MAX_ADVANCE_DAYS * 24,
+                "timeline_interrupt_drains": [],
+            }
+        else:
+            progress = copy.deepcopy(dict(resume_progress))
+            origin = progress.get("timeline_origin_date_raw")
+            deadline = progress.get("absolute_end_date_raw")
+            drains = progress.get("timeline_interrupt_drains")
+            unexpected = progress.get("unexpected_event")
+            if not (
+                isinstance(origin, int)
+                and not isinstance(origin, bool)
+                and isinstance(deadline, int)
+                and not isinstance(deadline, bool)
+                and origin <= initial_binding["date_raw"] <= deadline
+                and deadline == origin + MAX_ADVANCE_DAYS * 24
+                and isinstance(drains, list)
+                and isinstance(unexpected, Mapping)
+                and isinstance(unexpected.get("event_definition_key"), str)
+            ):
+                raise ValueError("Stage 10 resume progress is not a retained bounded RED")
+            progress["contract_resume"] = {
+                "same_process_required": True,
+                "resume_date_raw": initial_binding["date_raw"],
+                "retained_timeline_origin_date_raw": origin,
+                "retained_absolute_end_date_raw": deadline,
+                "retained_interrupt_drain_count": len(drains),
+                "retained_unexpected_event_definition_key": unexpected[
+                    "event_definition_key"
+                ],
+            }
         state["progress"] = progress
         _write(path, state)
         navigation = navigator(
