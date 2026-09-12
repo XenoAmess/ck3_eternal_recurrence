@@ -8525,14 +8525,29 @@ def prove_phase2_native_session_cleanup(
         if isinstance(generation_lineage_value, list)
         else []
     )
+    restart_count = report.get("restart_count")
+    unattributed_restart_cleanup = bool(
+        restore_expected is False
+        and isinstance(restart_count, int)
+        and not isinstance(restart_count, bool)
+        and restart_count > 0
+    )
+    reported_final_pid = report.get("pid")
+    observed_final_generation = final_diagnostics.get(
+        "connection_generation"
+    )
     expected_final_pid = (
         pid_lineage[-1]
         if restore_expected and pid_lineage
+        else reported_final_pid
+        if unattributed_restart_cleanup
         else initial_pid
     )
     expected_final_generation = (
         generation_lineage[-1]
         if restore_expected and generation_lineage
+        else observed_final_generation
+        if unattributed_restart_cleanup
         else initial_generation
     )
     final_capabilities_connected = final_diagnostics.get("connected") is True
@@ -8627,7 +8642,6 @@ def prove_phase2_native_session_cleanup(
                 == expected_final_generation,
             }
         )
-    restart_count = report.get("restart_count")
     if restore_expected:
         checks.update(
             {
@@ -8847,6 +8861,62 @@ def prove_phase2_native_session_cleanup(
                     prefix="final_pid_shutdown",
                 )
             )
+    elif unattributed_restart_cleanup:
+        retired_pids = [
+            shutdown.get("ck3_pid")
+            for shutdown in restart_shutdowns
+            if isinstance(shutdown, dict)
+        ]
+        positive_retired_pids = bool(retired_pids) and all(
+            isinstance(value, int)
+            and not isinstance(value, bool)
+            and value > 0
+            for value in retired_pids
+        )
+        final_pid_positive = (
+            isinstance(reported_final_pid, int)
+            and not isinstance(reported_final_pid, bool)
+            and reported_final_pid > 0
+        )
+        checks.update(
+            {
+                "restart_semantics_not_claimed": True,
+                "observed_restart_count_matches_shutdowns": restart_count
+                == len(restart_shutdowns),
+                "observed_retired_pids_positive": positive_retired_pids,
+                "observed_retired_pids_unique": positive_retired_pids
+                and len(set(retired_pids)) == len(retired_pids),
+                "observed_retired_lineage_starts_at_initial": bool(
+                    retired_pids
+                )
+                and retired_pids[0] == initial_pid,
+                "observed_final_pid_positive": final_pid_positive,
+                "observed_final_pid_distinct": final_pid_positive
+                and reported_final_pid not in retired_pids,
+                "observed_final_generation_positive": isinstance(
+                    observed_final_generation, int
+                )
+                and not isinstance(observed_final_generation, bool)
+                and observed_final_generation > 0,
+                "session_last_pid_matches_observed_final": report.get("pid")
+                == expected_final_pid,
+            }
+        )
+        for index, retired_pid in enumerate(retired_pids):
+            checks.update(
+                _phase2_shutdown_checks(
+                    restart_shutdowns[index],
+                    expected_pid=retired_pid,
+                    prefix=f"observed_retired_pid_{index + 1}_shutdown",
+                )
+            )
+        checks.update(
+            _phase2_shutdown_checks(
+                report.get("shutdown"),
+                expected_pid=(reported_final_pid if final_pid_positive else None),
+                prefix="observed_final_pid_shutdown",
+            )
+        )
     else:
         checks.update(
             {
@@ -8870,13 +8940,32 @@ def prove_phase2_native_session_cleanup(
         "scope": "phase2_managed_native_session_cleanup",
         "mcp_only": True,
         "restore_expected": restore_expected,
+        "unattributed_restart_cleanup": unattributed_restart_cleanup,
+        "restart_semantics_proven": restore_expected,
         "initial_pid": initial_pid,
         "initial_generation": initial_generation,
         "second_pid": second_pid,
         "second_generation": second_generation,
-        "pid_lineage": pid_lineage if restore_expected else [initial_pid],
+        "pid_lineage": (
+            pid_lineage
+            if restore_expected
+            else [
+                *[
+                    shutdown.get("ck3_pid")
+                    for shutdown in restart_shutdowns
+                    if isinstance(shutdown, dict)
+                ],
+                report.get("pid"),
+            ]
+            if unattributed_restart_cleanup
+            else [initial_pid]
+        ),
         "connection_generation_lineage": (
-            generation_lineage if restore_expected else [initial_generation]
+            generation_lineage
+            if restore_expected
+            else [initial_generation, observed_final_generation]
+            if unattributed_restart_cleanup
+            else [initial_generation]
         ),
         "expected_final_pid": expected_final_pid,
         "expected_final_generation": expected_final_generation,

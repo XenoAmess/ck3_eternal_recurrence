@@ -945,8 +945,9 @@ class GameplayBridgeService:
                 lifecycle.get("previous_connection_generation"), bool
             )
             and lifecycle.get("previous_connection_generation") > 0
-            and lifecycle.get("connection_generation")
-            == lifecycle.get("previous_connection_generation") + 1
+            and isinstance(lifecycle.get("connection_generation"), int)
+            and not isinstance(lifecycle.get("connection_generation"), bool)
+            and lifecycle.get("connection_generation") > 0
         ):
             raise BridgeUnavailableError(
                 "canonical Phase2 source restore returned an incomplete typed ACK"
@@ -1042,8 +1043,9 @@ class GameplayBridgeService:
                 lifecycle.get("previous_connection_generation"), bool
             )
             and lifecycle.get("previous_connection_generation") > 0
-            and lifecycle.get("connection_generation")
-            == lifecycle.get("previous_connection_generation") + 1
+            and isinstance(lifecycle.get("connection_generation"), int)
+            and not isinstance(lifecycle.get("connection_generation"), bool)
+            and lifecycle.get("connection_generation") > 0
         ):
             raise BridgeUnavailableError(
                 "HC-workforce Route-B restore returned an incomplete typed ACK"

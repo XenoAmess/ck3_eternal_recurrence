@@ -4399,6 +4399,55 @@ def main() -> int:
         assert single_pid_cleanup["result"] == "GREEN"
         assert single_pid_cleanup["restore_expected"] is False
 
+        failed_after_restart_artifacts = (
+            temporary_root / "phase2-failed-after-restart-cleanup-green"
+        )
+        failed_after_restart_artifacts.mkdir()
+        failed_after_restart_cleanup = (
+            capture.prove_phase2_native_session_cleanup(
+                copy.deepcopy(two_pid_session_report),
+                failed_after_restart_artifacts,
+                initial_pid=4321,
+                initial_generation=4,
+                expected_pipe=supervisor_pipe,
+                scenario_evidence={
+                    "result": "RED",
+                    "reason_code": "choreography_failed",
+                },
+                final_capabilities={
+                    "diagnostics": {
+                        "connected": True,
+                        "bridge_pid": 5432,
+                        # Connection generations are process-local and may be
+                        # equal across an observed PID replacement.
+                        "connection_generation": 4,
+                    }
+                },
+                session_error=None,
+                supervisor_stopped=True,
+            )
+        )
+        assert failed_after_restart_cleanup["result"] == "GREEN"
+        assert failed_after_restart_cleanup["restore_expected"] is False
+        assert (
+            failed_after_restart_cleanup["unattributed_restart_cleanup"]
+            is True
+        )
+        assert (
+            failed_after_restart_cleanup["restart_semantics_proven"] is False
+        )
+        assert failed_after_restart_cleanup["pid_lineage"] == [4321, 5432]
+        assert (
+            failed_after_restart_cleanup["checks"]
+            ["observed_retired_pid_1_shutdown_cleanup_proven"]
+            is True
+        )
+        assert (
+            failed_after_restart_cleanup["checks"]
+            ["observed_final_pid_shutdown_cleanup_proven"]
+            is True
+        )
+
         warmup_terminal_report = {
             "kind": "ck3_native_headless_session",
             "mode": "native-headless",

@@ -309,7 +309,11 @@ class Phase2SpanSourceCheckpointBridgeTests(unittest.TestCase):
                         "previous_pid": 10,
                         "pid": 11,
                         "previous_connection_generation": 4,
-                        "connection_generation": 5,
+                        # Each replacement CK3 process owns a fresh pipe-client
+                        # generation domain.  PID replacement is the cross-process
+                        # ordering proof; both local generations only need to be
+                        # positive and bound into the typed receipt.
+                        "connection_generation": 4,
                     },
                 }
 
@@ -382,7 +386,7 @@ class Phase2SpanSourceCheckpointBridgeTests(unittest.TestCase):
                         "previous_pid": 10,
                         "pid": 11,
                         "previous_connection_generation": 4,
-                        "connection_generation": 5,
+                        "connection_generation": 4,
                     },
                 }
 
