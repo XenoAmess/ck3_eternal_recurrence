@@ -44,7 +44,7 @@ PHASE2_CAPTURE_SCENARIOS: Final = (
         "phase2_fact_quota_calibration",
         "facts-quota-calibration",
         "capture_fact_quota_calibration",
-        "run_phase2_scoreboard_gameplay_action_cell",
+        "run_phase2_scoreboard_promo_visual_cell",
         ("all_under_heaven", "merit_admin"),
         ("All Under Heaven",),
         ("zg361b1.200", "zg361b1.201", "zg361.1"),

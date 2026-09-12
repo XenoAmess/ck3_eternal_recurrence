@@ -442,10 +442,11 @@ def normalize_native_zhongguo_scoreboard_state_v1(
             "surface_available"
         ]:
             raise ValueError("managed ACL is not surface-derived")
-        if received["current_player_is_subject"] is not received[
-            "surface_available"
-        ]:
-            raise ValueError("received-self ACL is not player-bound")
+        if (
+            received["current_player_is_subject"] is True
+            and received["surface_available"] is not True
+        ):
+            raise ValueError("received-self subject lacks its list surface")
 
     actions = _exact(frame["actions"], {"activate", "close", "reopen"}, "actions")
     normalized_actions = {

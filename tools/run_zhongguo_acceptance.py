@@ -3022,7 +3022,7 @@ def _make_default_phase2_promo_span_driver(
     )
     visual = Phase2VisualHandlerAdapter(
         service,
-        scoreboard_action_cell=run_phase2_scoreboard_gameplay_action_cell,
+        scoreboard_action_cell=run_phase2_scoreboard_promo_visual_cell,
         advance_to_result={
             handler: _phase2_promo_advance_to_result
             for handler in (PROJECTS_HANDLER,)
@@ -10389,6 +10389,28 @@ def compare_phase2_domain_query_stages(
         raise acceptance.RunnerError(
             f"phase-two domain restore consistency failed: {error}"
         ) from error
+
+
+def run_phase2_scoreboard_promo_visual_cell(
+    service: GameplayBridgeService,
+    artifacts: Path,
+) -> dict[str, object]:
+    """Open the real scoreboard and preserve its independent visibility proof."""
+
+    evidence = run_zhongguo_scoreboard_action_cell(
+        service,
+        nonce_prefix="zg361.phase2.promo.scoreboard",
+        requested_action="open",
+    )
+    if not isinstance(evidence, dict):
+        raise acceptance.RunnerError(
+            "phase-two scoreboard promo visual cell returned a non-object"
+        )
+    write_json(
+        artifacts / "07c_phase2_scoreboard_promo_visual_action_cell.json",
+        evidence,
+    )
+    return evidence
 
 
 def run_phase2_scoreboard_gameplay_action_cell(

@@ -516,6 +516,15 @@ class Phase2PromoRunnerPlumbingTests(unittest.TestCase):
         )
         self.assertIs(producer, capture._PHASE2_PROMO_CAPTURE_PRODUCER)
 
+    def test_default_promo_driver_uses_narrow_scoreboard_visual_cell(self) -> None:
+        context = SimpleNamespace(title_navigation_service=object())
+        driver = capture._make_default_phase2_promo_span_driver(context)
+        visual_driver = driver.delegate._owners["capture_fact_quota_calibration"]
+        self.assertIs(
+            visual_driver.scoreboard_action_cell,
+            capture.run_phase2_scoreboard_promo_visual_cell,
+        )
+
     def test_visual_primitive_registry_accepts_only_canonical_unique_keys(self) -> None:
         capture._PHASE2_PROMO_VISUAL_PRIMITIVES.clear()
         primitive = lambda *_args, **_kwargs: {}  # noqa: E731

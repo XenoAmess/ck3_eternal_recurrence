@@ -711,6 +711,31 @@ int main() {
           tracker.connection_generation == 4,
       "connection binding change must begin a new provider observation line");
 
+  fixture.rows.clear();
+  fixture.rows["zg361_sb_r_01_char"] = Character(202);
+  fixture.rows["zg361_scoreboard_received_owner"] = Character(303);
+  fixture.rows["zg361_scoreboard_received_cycle_serial"] = Integer(2);
+  request.connection_generation = 5;
+  request.request_nonce = "scoreboard-received-list-only";
+  xar::game::ZhongguoScoreboardStateV1 list_only{};
+  const auto list_only_read =
+      xar::ck3_11906::ReadZhongguoScoreboardStateV1(
+          Environment(), Access(fixture), request, list_only);
+  ok &= Expect(
+      list_only_read ==
+              xar::game::ReadZhongguoScoreboardStateResultV1::available &&
+          list_only.received_self_acl.surface_available &&
+          !list_only.received_self_acl.current_player_is_subject &&
+          list_only.received_self_acl.first_row_character_id.value == 202 &&
+          list_only.received_self_acl.owner_character_id.value == 303 &&
+          list_only.received_self_acl.cycle_serial.value == 2 &&
+          !list_only.received_self_acl.subject_character_id.available &&
+          list_only.received_self_acl.subject_character_id.unavailable_reason ==
+              "variable_absent" &&
+          !list_only.received_self_acl.result_case_serial.available,
+      "received list must remain available when the current player has no "
+      "self dossier");
+
   const auto bound =
       xar::ck3_11906::BindZhongguoScoreboardNativeEnvironmentV1(
           0x10000000, true);

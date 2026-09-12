@@ -1,13 +1,13 @@
 # 天朝二期考核榜 named-widget state + ACL v1
 
-状态：**read-only query + provider-observed revision + exact semantic-activation dispatcher static-ready；production capability/live artifact pending**。本文记录最小只读 provider、只返回 verification-pending ACK 的共享动作层，以及仍未取得的实机证据；不能据此声称考核榜完整 GUI gate、生产动作能力或 production-live 已完成。
+状态：**read-only query 已在真实 paused CK3 到达 ACL 解码；provider-observed revision + exact semantic-activation dispatcher static-ready；production capability/open-close live artifact pending**。本文记录最小只读 provider、只返回 verification-pending ACK 的共享动作层，以及仍未取得的动作实机证据；不能据此声称考核榜完整 GUI gate、生产动作能力或 production-live 已完成。
 
 ## 目标与边界
 
 这个切片让 runner 在同一个 paused revision 中回答两个有限问题：
 
 1. 当前真实考核榜入口、外层窗口、modal 和 panel 的命名实例是否存在，以及其本地/递归缓存的有效可见性；
-2. 当前玩家是否拥有 managed 考核面，或是否拥有 received-self 面及其 #013 披露策略绑定。
+2. 当前玩家是否拥有 managed 考核面或 received 列表面；若当前玩家另有 self dossier，再验证其 #013 披露策略绑定。
 
 公开 capability 为 `game.command.query-zhongguo-scoreboard-state-v1`，MCP 工具为 `ck3_query_zhongguo_scoreboard_state_v1(request_nonce, expected_revision)`。调用方不能提交 widget 名、变量名、坐标、角色 scope 或动作。native 响应固定使用 `zhongguo_scoreboard_state` result key。
 
@@ -31,9 +31,9 @@
 - parent：`+0xE8`；children pointer/count：`+0xF0/+0xFC`；
 - MSVC widget name string：`+0x1B8`。
 
-这里调用的是 runtime direct-child instance lookup。GUI definition lookup、脚本变量存在、源文件中出现 `name = ...` 都不能替代它。当前尚未保存 scoreboard state/open-close-switch 的 paused CK3 response artifact，因此 scoreboard provider 不能标为 production-live。
+这里调用的是 runtime direct-child instance lookup。GUI definition lookup、脚本变量存在、源文件中出现 `name = ...` 都不能替代它。R515 已保存一次真实 paused state 请求并越过 GUI root，但在 ACL 解码处因 received 列表与 self dossier 被错误捆绑而返回 unavailable；尚无 open/close/switch 的 GREEN artifact，因此 scoreboard provider 仍不能标为 production-live。
 
-同一 owner/root ABI 已取得一条用途受限的旁证：B3 promotion R12 的 custom/native direct-child probes 全为 none；promotion-only candidate 随后在 direct lookup miss 时从 `owner+0xD0` 做固定名字、depth 64 / traversal 4096 的 descendant fallback，R13/R14 均越过最初 progress query。该结果只证明 private promotion candidate 的 discovery 分支实机经过；scoreboard 的 `FindFixedWidgets` 仍保持 direct lookup，且没有 scoreboard response artifact，不能把旁证外推为 scoreboard live 或公开动作能力。
+同一 owner/root ABI 已取得一条用途受限的旁证：B3 promotion R12 的 custom/native direct-child probes 全为 none；promotion-only candidate 随后在 direct lookup miss 时从 `owner+0xD0` 做固定名字、depth 64 / traversal 4096 的 descendant fallback，R13/R14 均越过最初 progress query。该结果只证明 private promotion candidate 的 discovery 分支实机经过；scoreboard 的 `FindFixedWidgets` 仍保持 direct lookup，R515 的 unavailable response 也不能外推为 scoreboard live 或公开动作能力。
 
 固定 runtime allowlist 有 15 项。下表概括四个外层对象；三个入口、三个 outer tab、三个 list-page witness 和 backdrop/header close 也以编译期固定名字读取：
 
@@ -90,7 +90,7 @@ prehandler 可以短路 ButtonBase 或修改 event `+0x14`；ButtonBase 在空 c
 
 provider-owned revision 与独立 action ABI 的 exact dispatcher 均已静态闭合，但真实 paused open/close/switch 对照尚不存在；`query_sequence` 仍只是运输序号。state payload 内的 `action_abi_ready=false` 继续表示“尚未完成 public/live promotion”，而不是否认独立 action ABI 已 static-ready；`production_live_ready=false` 同样固定保持，生产 capability 不得广告，runner 不得生成 verified PASS。禁止调用已证伪 slot 36，禁止用源码 definition presence、OCR、屏幕坐标、一次 ACK 或 `native_handled` 补齐证据。
 
-下一次允许占用 CK3 的最小 paused probe 必须一次批量保存 managed 与 received-only 两种真实玩家现场，并完成：
+完整双表面 scoreboard 验收仍须单独保存 managed 与 received-only 两种真实玩家现场，并完成：
 
 1. 在 modal hidden/open/closed 三态互证 top receiver relation、active page、closed entry 与 provider fingerprint/revision；
 2. 保存 source query、exact ACK 与独立 later query；later 必须具有同一 provider session/connection/player/date/build、相同 tree fingerprint、更大的 observation sequence 与 `observed_state_revision`、不同 semantic fingerprint；
@@ -131,9 +131,11 @@ managed 面只有两种合法状态：
 
 这条规则不推断 rank。公爵及以上玩家只有产品真实 materialize managed 面后才能考核别人；伯爵和男爵在 managed 面不存在时只能被考核，provider 不会因头衔猜出额外权限。
 
-received-self 面要求首行与 self character 都是当前玩家；received header 的 owner/cycle/result case 必须与 self result tuple 一致。B1 owner/cycle 必须与 result tuple join，但 B1 case serial 是独立 policy case，不能与 result case serial 比较。合法例子仍是 B1 case `41`、result case `903`。#013 A/B 的 policy ID 绑定 B1 case；C/legacy 路径保持 policy unavailable。
+received 列表面与当前玩家 self dossier 是两个独立事实。产品 `zg361_scoreboard_received_available_gui` 只要求 `zg361_sb_r_01_char`；因此首行是合法 character 时，列表面可用。received owner/cycle/result case 若存在必须能按冻结类型解码，缺失则保持 typed `variable_absent`。
 
-任何 owner、subject、cycle、case、kind、披露模式或 policy join 不一致都返回 typed `acl_inconsistent`，不会退回爵位推断、第三方读取或宽松 `null`。
+只有 self dossier 的十四个字段中至少一项存在时，才进入完整 received-self join；此时必须全量闭合，self character 必须等于当前玩家，received header 的 owner/cycle/result case 必须与 self result tuple 一致。B1 owner/cycle 必须与 result tuple join，但 B1 case serial 是独立 policy case，不能与 result case serial 比较。合法例子仍是 B1 case `41`、result case `903`。#013 A/B 的 policy ID 绑定 B1 case；C/legacy 路径保持 policy unavailable。若十四个 self 字段全部不存在，则 `surface_available=true`、`current_player_is_subject=false` 是合法列表态。
+
+任何已存在字段的 kind 错误，或部分 self dossier、owner、subject、cycle、case、披露模式、policy join 不一致，都返回 typed `acl_inconsistent`，不会退回爵位推断或第三方读取。完整缺失的 self dossier 使用逐字段 typed `variable_absent`，不把合法缺失伪装成 `null` 成功值。
 
 ## Same-frame 和 readiness
 
@@ -156,7 +158,14 @@ OCR 或“unavailable 等于 closed”绕过。R513 仍无业务输入，分类�
 
 最小修复把第三 GUI 链对象保存在 dispatch context，并用独立局部变量解析
 `third+0x3D0 -> +0x08` owner。focused native fixture 强制三者地址不同并已通过；
-该结论仍需新 DLL 的真实 paused query 才能从 static-ready 提升为 live。
+R515 的新 DLL 查询已经越过 GUI root，关闭了该错误；随后暴露的当前 RED 是 ACL
+合同把合法 received list-only 状态误判为不一致。
+
+R515 的 canonical seed（player `29037`）存在 `zg361_sb_r_01_char=26347`、
+received owner `32904`、cycle `2`，但 `zg361_sb_self_char` 及全部 self dossier
+字段不存在。产品 GUI 的 received 面只以首行为可见条件，self detail 另有独立
+`zg361_sb_self_available_gui` 全量门禁。native/Python 合同现按这个产品边界拆开；
+新 DLL 的真实 paused query 和 open 动作仍待下一轮验证。
 
 - exact build 与 adapter/consumer identity；
 - connection generation 与 query sequence；
@@ -177,6 +186,6 @@ OCR 或“unavailable 等于 closed”绕过。R513 仍无业务输入，分类�
 - `ck3_autonomous_player/native_bridge/research/fixtures/zhongguo_scoreboard_state_v1_source_contract.json`
 - `ck3_autonomous_player/schemas/zhongguo-scoreboard-state-v1.schema.json`
 
-离线 native fixture 覆盖 received-only 玩家不能获得 manager ACL、A 策略 B1/result case 独立、local/effective hidden 缓存对照、未冻结字段 typed unavailable、read-only 动作边界、exact RVA binder，以及 identical/A-B-A/ACK-validation/unavailable 的 provider tracker 对照。Python contract 覆盖固定 step、五个 provider 字段、未知字段/任意 widget 输入拒绝、严格响应归一化、MCP facade 与 shared wiring。
+离线 native fixture 覆盖 received-only 玩家不能获得 manager ACL、received list-only 玩家没有 self dossier 时仍可读取列表、A 策略 B1/result case 独立、local/effective hidden 缓存对照、未冻结字段 typed unavailable、read-only 动作边界、exact RVA binder，以及 identical/A-B-A/ACK-validation/unavailable 的 provider tracker 对照。Python contract 覆盖 list surface 与 current-player dossier 的单向约束、固定 step、五个 provider 字段、未知字段/任意 widget 输入拒绝、严格响应归一化、MCP facade 与 shared wiring。
 
-允许启动 CK3 后的下一项 scoreboard 施工必须是：在真实角色与真实考核榜实例上取得同一 paused world frame 的 MCP response artifact，分别覆盖 managed 与 received-only 玩家，再按 artifact 单独把外层五个原子动作提升为 production-live primitive。focus、scroll、rect 与页面内动作仍是后续独立 ABI；provider revision 必须取得真实 open/close/switch 对照，reopen 必须取得 close/open 两阶段各自的 ACK 与 later query。在此之前正式完整 runner gate 继续保持 RED。
+下一项 bounded live 工作先用 R515 的 received list-only 现场验证 state query 与宣传片所需的单次 open/visible/close。完整双表面验收继续作为独立工作包，随后在真实角色与真实考核榜实例上分别覆盖 managed 与 received-only 玩家，再按 artifact 单独把外层五个原子动作提升为 production-live primitive。focus、scroll、rect 与页面内动作仍是后续独立 ABI；provider revision 必须取得真实 open/close/switch 对照，reopen 必须取得 close/open 两阶段各自的 ACK 与 later query。在此之前正式完整 runner gate 继续保持 RED，但它不再作为宣传片只读展示首镜头的无关前置。

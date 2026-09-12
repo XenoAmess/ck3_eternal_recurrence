@@ -957,8 +957,32 @@ bool DecodeAcl(const ZhongguoScoreboardNativeEnvironmentV1 &environment,
   DecodeInteger(rows[policy_blackbox_risk],
                 received.disclosure_blackbox_risk);
 
+  if (!received.first_row_character_id.available ||
+      (rows[received_owner].present &&
+       !received.owner_character_id.available) ||
+      (rows[received_cycle].present && !received.cycle_serial.available) ||
+      (rows[received_case].present &&
+       !received.result_case_serial.available)) {
+    return false;
+  }
+
+  const bool self_dossier_absent =
+      !rows[self_character].present && !rows[self_case_owner].present &&
+      !rows[self_cycle].present && !rows[self_case].present &&
+      !rows[self_b1_owner].present && !rows[self_b1_cycle].present &&
+      !rows[self_b1_case].present && !rows[acl_mode].present &&
+      !rows[policy_available].present && !rows[policy_id].present &&
+      !rows[policy_self_mode].present && !rows[policy_team_mode].present &&
+      !rows[policy_evaluator_mode].present &&
+      !rows[policy_blackbox_risk].present;
+  if (self_dossier_absent) {
+    received.surface_available = true;
+    received.current_player_is_subject = false;
+    output.readiness.acl_ready = true;
+    return true;
+  }
+
   const bool identity_valid =
-      received.first_row_character_id.available &&
       AvailableEquals(received.subject_character_id, player_character_id) &&
       received.owner_character_id.available &&
       received.cycle_serial.available &&

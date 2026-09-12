@@ -269,6 +269,51 @@ class ZhongguoScoreboardStateContractTests(unittest.TestCase):
         self.assertEqual(normalized["observation_sequence"], 7)
         self.assertEqual(normalized["observed_state_revision"], 3)
 
+    def test_received_list_can_exist_without_current_player_dossier(self) -> None:
+        query = parse_query_zhongguo_scoreboard_state_v1_step(
+            query_zhongguo_scoreboard_state_v1_step(NONCE)
+        )
+        assert query is not None
+        frame = native_frame()
+        received = frame["acl"]["received_self"]
+        received["current_player_is_subject"] = False
+        for key in (
+            "subject_character_id",
+            "result_case_serial",
+            "b1_case_serial",
+            "disclosure_acl_mode",
+            "disclosure_policy_available",
+            "disclosure_policy_id",
+            "disclosure_self_mode",
+            "disclosure_team_mode",
+            "disclosure_evaluator_identity_mode",
+            "disclosure_blackbox_risk",
+        ):
+            received[key] = unavailable("variable_absent")
+
+        normalized = normalize_native_zhongguo_scoreboard_state_v1(
+            frame,
+            expected_query=query,
+            expected_snapshot_revision=REVISION,
+            expected_date_raw=DATE_RAW,
+            expected_player_character_id=PLAYER,
+        )
+        self.assertTrue(normalized["acl"]["received_self"]["surface_available"])
+        self.assertFalse(
+            normalized["acl"]["received_self"]["current_player_is_subject"]
+        )
+
+        frame["acl"]["received_self"]["surface_available"] = False
+        frame["acl"]["received_self"]["current_player_is_subject"] = True
+        with self.assertRaises(ValueError):
+            normalize_native_zhongguo_scoreboard_state_v1(
+                frame,
+                expected_query=query,
+                expected_snapshot_revision=REVISION,
+                expected_date_raw=DATE_RAW,
+                expected_player_character_id=PLAYER,
+            )
+
     def test_identity_acl_and_action_drift_fail_closed(self) -> None:
         query = parse_query_zhongguo_scoreboard_state_v1_step(
             query_zhongguo_scoreboard_state_v1_step(NONCE)
