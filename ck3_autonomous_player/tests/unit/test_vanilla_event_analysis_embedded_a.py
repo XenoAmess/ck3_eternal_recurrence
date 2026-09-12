@@ -26,11 +26,11 @@ from xar_autoplayer.vanilla_events.registry import (  # noqa: E402
 )
 
 
-def test_analysis_exactly_covers_first_28_embedded_keys() -> None:
+def test_analysis_exactly_covers_first_29_embedded_keys() -> None:
     expected = tuple(EMBEDDED_A_VANILLA_TIMELINE_CONTRACTS)
     assert EMBEDDED_A_EVENT_KEYS == expected
     assert tuple(VANILLA_EMBEDDED_A_ANALYSIS) == expected
-    assert len(VANILLA_EMBEDDED_A_ANALYSIS) == 28
+    assert len(VANILLA_EMBEDDED_A_ANALYSIS) == 29
 
 
 def test_analysis_is_json_safe_and_only_reviewed_event_claims_source_hashes() -> None:
@@ -41,6 +41,8 @@ def test_analysis_is_json_safe_and_only_reviewed_event_claims_source_hashes() ->
             assert len(record["source_sha256"]) == 6
         elif event_key == "stress_threshold.1011":
             assert len(record["source_sha256"]) == 2
+        elif event_key == "trait_specific_interactions.0011":
+            assert len(record["source_sha256"]) == 3
         elif event_key == "tgp_movement_events.0060":
             assert len(record["source_sha256"]) == 4
         elif event_key == "tgp_movement_events.0070":
@@ -63,6 +65,9 @@ def test_each_record_carries_exact_build_and_migration_boundary() -> None:
             ),
             "stress_threshold.1011": (
                 "exact-build-original-definition-and-live-projection-review"
+            ),
+            "trait_specific_interactions.0011": (
+                "exact-build-original-definition-caller-effects-and-live-projection-review"
             ),
             "tgp_movement_events.0070": (
                 "exact-build-original-definition-and-live-repeat-review"
@@ -88,7 +93,7 @@ def test_each_record_carries_exact_build_and_migration_boundary() -> None:
 
 def test_migration_observations_join_existing_live_evidence() -> None:
     assert len(EMBEDDED_A_VANILLA_OBSERVATIONS) == 26
-    assert len(VANILLA_EMBEDDED_A_OBSERVATIONS) == 28
+    assert len(VANILLA_EMBEDDED_A_OBSERVATIONS) == 29
     for event_key, observation in EMBEDDED_A_VANILLA_OBSERVATIONS.items():
         migrated = VANILLA_EMBEDDED_A_OBSERVATIONS[event_key]
         if event_key in {
@@ -111,6 +116,12 @@ def test_migration_observations_join_existing_live_evidence() -> None:
     assert VANILLA_EMBEDDED_A_OBSERVATIONS[
         "stress_threshold.1011"
     ]["exemplars"][0]["run"] == "R498"
+    assert "trait_specific_interactions.0011" not in (
+        EMBEDDED_A_VANILLA_OBSERVATIONS
+    )
+    assert VANILLA_EMBEDDED_A_OBSERVATIONS[
+        "trait_specific_interactions.0011"
+    ]["exemplars"][0]["run"] == "R500"
 
 
 def test_tgp_movement_study_repeat_is_source_reviewed_and_live_bounded() -> None:
@@ -454,4 +465,84 @@ def test_wanton_desires_exact_review_and_live_red_are_query_safe() -> None:
     assert response["contract"]["root_character_id"] == "$player"
     assert response["contract"]["selected_native_option_index"] == 5
     assert response["observations"]["exemplars"][0]["run"] == "R498"
+    json.dumps(response, allow_nan=False)
+
+
+def test_mourning_poem_exact_review_and_live_red_are_query_safe() -> None:
+    event_key = "trait_specific_interactions.0011"
+    contract = EMBEDDED_A_VANILLA_TIMELINE_CONTRACTS[event_key]
+    record = VANILLA_EMBEDDED_A_ANALYSIS[event_key]
+    exemplar = VANILLA_EMBEDDED_A_OBSERVATIONS[event_key]["exemplars"][0]
+
+    assert contract["root_character_id"] == PLAYER_SENTINEL
+    assert contract["character_scopes"] == {
+        "recipient": PLAYER_SENTINEL,
+        "subject": PLAYER_SENTINEL,
+    }
+    assert contract["unique_character_scope_excludes"] == {
+        "actor": (PLAYER_SENTINEL,),
+    }
+    assert contract["unavailable_character_scopes"] == (
+        "secondary_actor",
+        "secondary_recipient",
+        "intermediary",
+    )
+    assert contract["boolean_scopes"] == (
+        "poem_theme_romance",
+        "poem_theme_legacy",
+        "poem_theme_mourning",
+        "poem_theme_strife",
+        "poem_theme_incompetence",
+    )
+    assert contract["saved_scope_count"] == 11
+    assert contract["native_option_indices"] == (0, 1, 2)
+    assert contract["selected_option_number"] == 2
+    assert contract["selected_native_option_index"] == 1
+    assert "date_raw" not in contract
+
+    materialized = materialize_vanilla_timeline_contract(contract, 880003)
+    assert materialized["root_character_id"] == 880003
+    assert materialized["character_scopes"] == {
+        "recipient": 880003,
+        "subject": 880003,
+    }
+    assert materialized["unique_character_scope_excludes"] == {
+        "actor": (880003,),
+    }
+
+    assert record["definition_lines"] == "128-205"
+    assert "random diplomacy duel" in record["option_semantics"]["0"]
+    assert "possible rivalry" in record["safe_option"]["rationale"]
+    assert record["existing_boundaries"][
+        "campaign_specific_binding_fields"
+    ] == []
+
+    assert exemplar["kind"] == "pre-selection-live-red"
+    assert exemplar["artifact_sha256"] == (
+        "8DF21A7682E1B30258A12DB736B975E348CE434C6A2A3D0AFFF11F30424B04AA"
+    )
+    assert exemplar["saved_character_ids"] == {
+        "actor": 27168,
+        "recipient": 27181,
+        "subject": 27181,
+    }
+    assert exemplar["rendered_native_option_indices"] == [0, 1, 2]
+    assert exemplar["selection_attempted"] is False
+
+    contract_repr = repr(contract)
+    for observation_only in (
+        53155992,
+        21,
+        27168,
+        27181,
+        181268,
+        "native:18",
+    ):
+        assert str(observation_only) not in contract_repr
+
+    response = query_vanilla_event_knowledge_v1(event_key)
+    assert response["status"] == "available"
+    assert response["contract"]["root_character_id"] == "$player"
+    assert response["contract"]["selected_native_option_index"] == 1
+    assert response["observations"]["exemplars"][0]["run"] == "R500"
     json.dumps(response, allow_nan=False)
