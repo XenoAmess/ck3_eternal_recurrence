@@ -58,10 +58,12 @@ Focused validation:
 - Python scoreboard state contract: `9 passed, 7 subtests passed` in `0.33s`;
 - `git diff --check`: GREEN.
 
-This unavailable-response semantic expansion requires a documentation-only
-open_kaishek compatibility sync after the root commit is pushed. The next live
-attempt requires a fresh DLL and exists only to read the retained surface state;
-it must not be widened into a long capture retry.
+Root `dedc8a5c0a9109de33df3cf31c9d3ec970e275e7` and open_kaishek
+`9b99a826b1e5f076cd9e7c659e71e70f02384f9e` are pushed and synchronized.
+The companion change is documentation-only because its existing adapter already
+forwards the target-owned unavailable payload without interpreting it. The next
+live attempt requires a fresh DLL and exists only to read the retained surface
+state; it must not be widened into a long capture retry.
 
 ## Evidence
 
@@ -74,4 +76,3 @@ it must not be widened into a long capture retry.
 - timeline: `BB8197531EFBC28944A477D1CE4D9D6D4919AFA525FB4028CDC4A28E71E2BC98`
 - failed MKV: `774A04F981A5C4F72F8E0C3B2F84C642A7C1863545932D178C60211C6D12E498`
 - extracted 3.00-second frame: `DB5CC3A55CC0D64E89C5B01D0759C9E2BB823DC636141B6E87B6949D3B34CDDC`
-
