@@ -2,7 +2,7 @@
  enable_auto_build:0 "Activar construcción automática"
  enable_auto_build_tooltip:0 "Activar construcción automática"
  enable_auto_build_desc:0 "Activa la función de construcción automática."
- enable_auto_build_text:0 "Cada 15 días, cada cadena de edificios ordinarios elegible en tus posesiones directas mejora un nivel.\nSe usa primero el tesoro del reino; el oro personal solo se emplea si el tesoro no cubre el coste. Si ninguno basta, se omite la mejora.\nLas mejoras usan el coste base de CK3 1.19.0.6 sin descuentos y finalizan al instante.\nNo se modifican posesiones con obras en curso ni edificios principales, de ducado, especiales, tribales, nómadas o Mandala."
+ enable_auto_build_text:0 "Cada 15 días, cada cadena de edificios existente y apta que tenga un nivel siguiente en las provincias que posees directamente mejora un nivel.\nSe usa primero el tesoro del reino; el oro personal solo se emplea si el tesoro no cubre el coste. Si faltan los recursos necesarios, se omite la mejora.\nLas mejoras usan los costes base de CK3 1.19.0.6 sin descuentos y finalizan al instante.\nSe admiten edificios principales, regulares, de ducado y especiales en dominios de castillo, ciudad, templo, tribales y ciudadelas-templo Mandala. No se modifican dominios con obras en curso, ningún domicilio, dominios nómadas o de pastores, el Mandala Capital Great Project ni los niveles finales."
  enable_auto_build_confirm:0 "Por supuesto"
  disable_auto_build:0 "Desactivar construcción automática"
  disable_auto_build_tooltip:0 "Desactivar construcción automática"

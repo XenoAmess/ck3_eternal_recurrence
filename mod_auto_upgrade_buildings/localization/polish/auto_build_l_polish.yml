@@ -2,7 +2,7 @@
  enable_auto_build:0 "Włącz automatyczną rozbudowę"
  enable_auto_build_tooltip:0 "Włącz automatyczną rozbudowę"
  enable_auto_build_desc:0 "Włącza funkcję automatycznej rozbudowy."
- enable_auto_build_text:0 "Co 15 dni każda kwalifikująca się zwykła linia budynków w bezpośrednio posiadanych przez ciebie prowincjach zostaje ulepszona o jeden poziom.\nNajpierw wykorzystywany jest skarbiec państwa; osobiste złoto jest używane tylko wtedy, gdy skarbiec nie pokrywa kosztu. Jeśli nie wystarcza żadnego z nich, ulepszenie zostaje pominięte.\nUlepszenia korzystają z bazowego kosztu CK3 1.19.0.6 bez zniżek i kończą się natychmiast.\nPosiadłości, w których trwa budowa, oraz budynki główne, książęce, specjalne, plemienne, koczownicze i Mandala nie są modyfikowane."
+ enable_auto_build_text:0 "Co 15 dni każdy istniejący łańcuch budowli spełniający warunki i posiadający kolejny poziom w twoich bezpośrednio posiadanych prowincjach jest ulepszany o jeden poziom.\nNajpierw wykorzystywany jest skarbiec państwa; osobiste złoto jest używane tylko wtedy, gdy skarbiec nie pokrywa kosztu. Jeśli brakuje wymaganych zasobów, ulepszenie zostaje pominięte.\nUlepszenia korzystają z bazowych kosztów CK3 1.19.0.6 bez zniżek i kończą się natychmiast.\nGłówne, zwykłe, książęce i specjalne budowle są obsługiwane w posiadłościach zamkowych, miejskich, świątynnych, plemiennych oraz cytadelach świątynnych Mandala. Trwające budowy, wszystkie siedziby, posiadłości koczowników i pasterzy, Mandala Capital Great Project oraz poziomy końcowe nie są modyfikowane."
  enable_auto_build_confirm:0 "Oczywiście"
  disable_auto_build:0 "Wyłącz automatyczną rozbudowę"
  disable_auto_build_tooltip:0 "Wyłącz automatyczną rozbudowę"

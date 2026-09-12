@@ -2,7 +2,7 @@
  enable_auto_build:0 "Enable Auto Build"
  enable_auto_build_tooltip:0 "Enable Auto Build"
  enable_auto_build_desc:0 "Enable the auto build function."
- enable_auto_build_text:0 "Every 15 days, each eligible ordinary building chain in your directly held provinces is upgraded by one tier.\nThe realm treasury is used first; personal gold is used only when the treasury cannot cover the cost. If neither can pay, the upgrade is skipped.\nUpgrades use the CK3 1.19.0.6 base cost without discounts and finish instantly.\nHoldings with ongoing construction and main, duchy, special, tribal, nomadic, or Mandala buildings are not touched."
+ enable_auto_build_text:0 "Every 15 days, each eligible existing building chain with a next tier in your directly held provinces is upgraded by one tier.\nThe realm treasury is used first; personal gold is used only when the treasury cannot cover the cost. If the required resources are unavailable, the upgrade is skipped.\nUpgrades use the CK3 1.19.0.6 base costs without discounts and finish instantly.\nMain, regular, duchy, and special buildings are supported in castle, city, temple, tribal, and Mandala temple-citadel holdings. Ongoing construction, all domiciles, nomad and herder holdings, the Mandala Capital Great Project, and terminal tiers are not touched."
  enable_auto_build_confirm:0 "Certainly"
  disable_auto_build:0 "Disable Auto Build"
  disable_auto_build_tooltip:0 "Disable Auto Build"

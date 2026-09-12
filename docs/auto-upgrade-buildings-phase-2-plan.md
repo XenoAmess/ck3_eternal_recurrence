@@ -139,7 +139,7 @@ Steam Workshop item：`3800124956`
 
 ### P6：发布收口
 
-- [ ] 更新 README、Workshop BBCode 和九语玩家可见范围说明，明确即时升级、住所排除和 Great Project 排除。
+- [x] 更新 README、Workshop BBCode 和九语玩家可见范围说明，明确即时升级、住所排除和 Great Project 排除。
 - [x] 构建 release-candidate staging、manifest 和 deterministic ZIP；canonical `descriptor.mod` 不含 `remote_file_id`。
 - [ ] 更新同一 Workshop item `3800124956`，下载订阅缓存并逐字节复核。
 - [ ] 上传成功后写入 `docs/release-changelogs/auto-upgrade-buildings/<version>.md`。
