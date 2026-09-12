@@ -144,6 +144,7 @@ from zg361_phase2_promotion_source_checkpoint_capture import (
     capture_promotion_source_checkpoint_v2,
 )
 from zg361_phase2_promotion_source_production_entry import (
+    KNOWN_TIMELINE_INTERRUPTS,
     PromotionScenarioInvalidatingInterrupt,
     THIRD_WORKFORCE_SOURCE_SAMPLE_REQUIRED_FOR_READINESS,
     _drain_known_timeline_interrupt,
@@ -18512,25 +18513,36 @@ def drain_reviewed_vanilla_event_interruption_native(
     )
 
 
+PHASE2_CHOREOGRAPHY_PRODUCT_EVENT_KEYS = frozenset(
+    (*CENTRAL_TIMELINE_CONTRACTS, "zg361.40")
+)
+
+
 def drain_reviewed_phase2_product_event_interruption_native(
     service: GameplayBridgeService,
     *,
     snapshot: Mapping[str, object],
     identity: Mapping[str, object],
 ) -> dict[str, object] | None:
-    """Drain one reviewed Central product event, or leave it untouched."""
+    """Drain one reviewed phase-two product event, or leave it untouched."""
 
     event_key = identity.get("event_definition_key")
     if not (
         isinstance(event_key, str)
-        and event_key in CENTRAL_TIMELINE_CONTRACTS
+        and event_key in PHASE2_CHOREOGRAPHY_PRODUCT_EVENT_KEYS
+        and event_key in KNOWN_TIMELINE_INTERRUPTS
     ):
         return None
+    registry_contract_source = (
+        "phase2_central_timeline_registry"
+        if event_key in CENTRAL_TIMELINE_CONTRACTS
+        else "phase2_product_timeline_registry"
+    )
     return _drain_reviewed_timeline_event_interruption_native(
         service,
         snapshot=snapshot,
         identity=identity,
-        registry_contract_source="phase2_central_timeline_registry",
+        registry_contract_source=registry_contract_source,
     )
 
 

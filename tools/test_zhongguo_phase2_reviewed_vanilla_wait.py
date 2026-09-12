@@ -18,6 +18,7 @@ import run_zhongguo_acceptance as capture  # noqa: E402
 PLAYER = 32_904
 EVENT_KEY = "ep3_story_cycle_admin_eunuch.8030"
 PRODUCT_EVENT_KEY = "zg361p2c.2"
+JINGCHA_EVENT_KEY = "zg361.40"
 
 
 def _scope(type_key: str, character_id: int | None = None) -> dict[str, object]:
@@ -107,23 +108,48 @@ def _product_context() -> dict[str, object]:
     }
 
 
+def _jingcha_context() -> dict[str, object]:
+    return {
+        "schema": "current-event-window-context-v1",
+        "schema_version": 1,
+        "status": "available",
+        "window_match_count": 1,
+        "event_definition_key": JINGCHA_EVENT_KEY,
+        "root_scope": _scope("character", PLAYER),
+        "saved_scopes": [],
+        "options": [
+            {
+                "rendered_index": index,
+                "native_option_index": index,
+                "shown": True,
+                "enabled": True,
+                "fallback": False,
+                "cancel": False,
+            }
+            for index in range(2)
+        ],
+    }
+
+
 class _Service:
     def __init__(
         self,
         event_key: str = EVENT_KEY,
         event_instance_id: int = 621,
         option_count: int = 4,
+        date_raw: int = 53_366_664,
     ) -> None:
         self.event_key = event_key
         self.event_instance_id = event_instance_id
         self.option_count = option_count
+        self.date_raw = date_raw
 
     def snapshot(self) -> dict[str, object]:
         return {
             "snapshot_id": "native:8",
             "revision": 91,
             "native_revision": 8,
-            "date_raw": 53_366_664,
+            "date_raw": self.date_raw,
             "paused": True,
             "speed": 5,
             "map_ready": True,
@@ -211,7 +237,43 @@ class Phase2ReviewedVanillaWaitTests(unittest.TestCase):
             },
         )
 
-    def test_reviewed_vanilla_then_product_summary_reach_target(self) -> None:
+    def test_reviewed_product_helper_resolves_r598_jingcha_contract(self) -> None:
+        service = _Service(JINGCHA_EVENT_KEY, 623, 2, 53_366_688)
+        snapshot = service.snapshot()
+        identity = _identity(service, _jingcha_context())
+        with mock.patch.object(
+            capture,
+            "_drain_known_timeline_interrupt",
+            return_value={
+                "result": "GREEN",
+                "selected_option_number": 1,
+                "selected_native_option_index": 0,
+            },
+        ) as drain:
+            result = (
+                capture.drain_reviewed_phase2_product_event_interruption_native(
+                    service,
+                    snapshot=snapshot,
+                    identity=identity,
+                )
+            )
+
+        self.assertEqual(result["result"], "GREEN")
+        self.assertEqual(
+            result["registry_contract_source"],
+            "phase2_product_timeline_registry",
+        )
+        kwargs = drain.call_args.kwargs
+        self.assertEqual(kwargs["event_key"], JINGCHA_EVENT_KEY)
+        self.assertEqual(kwargs["contract"]["root_character_id"], PLAYER)
+        self.assertEqual(
+            kwargs["contract"]["date_policy"],
+            "manager-recovery-product-window",
+        )
+        self.assertEqual(kwargs["contract"]["selected_option_number"], 1)
+        self.assertEqual(kwargs["contract"]["selected_native_option_index"], 0)
+
+    def test_reviewed_vanilla_then_product_events_reach_target(self) -> None:
         service = _Service()
         context = _context()
 
@@ -235,9 +297,15 @@ class Phase2ReviewedVanillaWaitTests(unittest.TestCase):
             _service: object, *, snapshot: object, identity: object
         ) -> dict[str, object]:
             self.assertIsInstance(snapshot, dict)
-            self.assertEqual(identity["event_definition_key"], PRODUCT_EVENT_KEY)
-            service.event_key = "zg361we.360"
-            service.event_instance_id = 623
+            if identity["event_definition_key"] == PRODUCT_EVENT_KEY:
+                service.event_key = JINGCHA_EVENT_KEY
+                service.event_instance_id = 623
+                service.option_count = 2
+                service.date_raw = 53_366_688
+            else:
+                self.assertEqual(identity["event_definition_key"], JINGCHA_EVENT_KEY)
+                service.event_key = "zg361we.360"
+                service.event_instance_id = 624
             return {
                 "result": "GREEN",
                 "selected_option_number": 1,
@@ -249,8 +317,10 @@ class Phase2ReviewedVanillaWaitTests(unittest.TestCase):
                 return _identity(service, context)
             if service.event_key == PRODUCT_EVENT_KEY:
                 return _identity(service, _product_context())
+            if service.event_key == JINGCHA_EVENT_KEY:
+                return _identity(service, _jingcha_context())
             return {
-                "event_instance_id": 623,
+                "event_instance_id": 624,
                 "snapshot_revision": 91,
                 "event_definition_key": "zg361we.360",
                 "query": {},
@@ -285,23 +355,26 @@ class Phase2ReviewedVanillaWaitTests(unittest.TestCase):
             )
 
         self.assertEqual(result["identity"]["event_definition_key"], "zg361we.360")
-        self.assertEqual(vanilla_selection.call_count, 2)
+        self.assertEqual(vanilla_selection.call_count, 3)
         self.assertEqual(
             [
                 call.kwargs["identity"]["event_definition_key"]
                 for call in vanilla_selection.call_args_list
             ],
-            [EVENT_KEY, PRODUCT_EVENT_KEY],
+            [EVENT_KEY, PRODUCT_EVENT_KEY, JINGCHA_EVENT_KEY],
         )
-        product_selection.assert_called_once()
+        self.assertEqual(product_selection.call_count, 2)
         evidence = result["evidence"]
         self.assertEqual(len(evidence["cleared_reviewed_vanilla_interruptions"]), 1)
         self.assertEqual(
             evidence["reviewed_vanilla_decisions"][0]["result"], "GREEN"
         )
-        self.assertEqual(len(evidence["cleared_reviewed_product_interruptions"]), 1)
+        self.assertEqual(len(evidence["cleared_reviewed_product_interruptions"]), 2)
         self.assertEqual(
             evidence["reviewed_product_decisions"][0]["result"], "GREEN"
+        )
+        self.assertEqual(
+            evidence["reviewed_product_decisions"][1]["result"], "GREEN"
         )
 
     def test_drifted_reviewed_projection_remains_red_without_selection(self) -> None:
