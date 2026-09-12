@@ -2501,61 +2501,13 @@ class _Phase2RealEventChoreographyService:
         _context: Phase2PromoCaptureContext,
         _runtime: Mapping[str, object],
     ) -> Mapping[str, object]:
-        deadline = time.monotonic() + 5.0
-        scoreboard_unavailable: list[dict[str, object]] = []
-        stable_binding: dict[str, int | str] | None = None
-        attempt = 0
-        while True:
-            snapshot = self.service.snapshot()
-            binding = _phase2_paused_binding(
-                snapshot, label=f"phase-two {plan.span_id} drain"
-            )
-            if stable_binding is None:
-                stable_binding = binding
-            elif any(
-                binding[key] != stable_binding[key]
-                for key in (
-                    "date_raw",
-                    "player_character_id",
-                    "bridge_pid",
-                    "connection_generation",
-                )
-            ):
-                raise Phase2EventChoreographyError(
-                    "span_drain_binding_changed",
-                    {
-                        "plan": asdict(plan),
-                        "initial_binding": stable_binding,
-                        "observed_binding": binding,
-                    },
-                )
-            active_event = snapshot.get("active_event")
-            attempt += 1
-            try:
-                modal_visible, scoreboard = _phase2_scoreboard_modal_visible(
-                    self.service,
-                    nonce=(
-                        f"zg361.phase2.promo.{plan.span_id}.drain.{attempt}"
-                    ),
-                    expected_revision=int(binding["revision"]),
-                )
-                break
-            except Phase2EventChoreographyError as error:
-                if error.reason_code != "scoreboard_visibility_provider_unavailable":
-                    raise
-                scoreboard_unavailable.append(error.evidence)
-                if time.monotonic() >= deadline:
-                    raise Phase2EventChoreographyError(
-                        "scoreboard_visibility_provider_unavailable",
-                        {
-                            "plan": asdict(plan),
-                            "attempts": scoreboard_unavailable,
-                        },
-                    ) from error
-                time.sleep(0.05)
+        snapshot = self.service.snapshot()
+        binding = _phase2_paused_binding(
+            snapshot, label=f"phase-two {plan.span_id} drain"
+        )
+        active_event = snapshot.get("active_event")
         no_active_event = active_event is None
-        no_blocking_surface = no_active_event and not modal_visible
-        if not no_blocking_surface:
+        if not no_active_event:
             identity = (
                 query_event_definition_identity(self.service, snapshot)
                 if isinstance(active_event, dict)
@@ -2566,7 +2518,34 @@ class _Phase2RealEventChoreographyService:
                 {
                     "plan": asdict(plan),
                     "active_event_identity": identity,
-                    "scoreboard_modal_visible": modal_visible,
+                    "scoreboard_modal_visible": None,
+                },
+            )
+
+        if plan.capture_surface_kind == "product_event":
+            return {
+                **self._common(plan),
+                "no_active_event": True,
+                "no_blocking_surface": True,
+                "binding": binding,
+                "scoreboard": {
+                    "status": "not_required",
+                    "reason": "product_event_closed_before_cross_span_restore",
+                },
+            }
+
+        modal_visible, scoreboard = _phase2_scoreboard_modal_visible(
+            self.service,
+            nonce=f"zg361.phase2.promo.{plan.span_id}.drain",
+            expected_revision=int(binding["revision"]),
+        )
+        if modal_visible:
+            raise Phase2EventChoreographyError(
+                "span_drain_not_empty",
+                {
+                    "plan": asdict(plan),
+                    "active_event_identity": None,
+                    "scoreboard_modal_visible": True,
                 },
             )
         return {
@@ -2575,7 +2554,6 @@ class _Phase2RealEventChoreographyService:
             "no_blocking_surface": True,
             "binding": binding,
             "scoreboard": scoreboard,
-            "scoreboard_retry_count": len(scoreboard_unavailable),
         }
 
 
