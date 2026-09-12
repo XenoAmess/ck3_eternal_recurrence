@@ -95,17 +95,46 @@ def render_chain(chain: BuildingChain) -> list[str]:
             ]
         )
         lines.extend(_resource_limits(edge))
+        lines.append("\t\t}")
+        if edge.target_type == "special":
+            # Special buildings occupy their own fixed slot. CK3's generic
+            # add_building effect refuses to replace an occupied special slot;
+            # vanilla scripted upgrades remove the old tier and then use
+            # add_special_building for the new tier.
+            lines.extend(
+                [
+                    f"\t\tremove_building = {edge.source}",
+                    "\t\tscope:aub_payer = { save_scope_as = character }",
+                    f"\t\tadd_special_building = {edge.target}",
+                ]
+            )
+        else:
+            lines.extend(
+                [
+                    "\t\tscope:aub_payer = { save_scope_as = character }",
+                    f"\t\tadd_building = {edge.target}",
+                ]
+            )
         lines.extend(
             [
-                "\t\t}",
-                f"\t\tadd_building = {edge.target}",
                 "\t\tif = {",
                 f"\t\t\tlimit = {{ has_building = {edge.target} }}",
                 f"\t\t\t{_payment_call(edge)}",
                 "\t\t}",
-                "\t}",
             ]
         )
+        if edge.target_type == "special":
+            # A failed engine insertion must not silently destroy the source
+            # special building and is never charged.
+            lines.extend(
+                [
+                    "\t\telse = {",
+                    "\t\t\tscope:aub_payer = { save_scope_as = character }",
+                    f"\t\t\tadd_special_building = {edge.source}",
+                    "\t\t}",
+                ]
+            )
+        lines.append("\t}")
     lines.extend(["}", ""])
     return lines
 

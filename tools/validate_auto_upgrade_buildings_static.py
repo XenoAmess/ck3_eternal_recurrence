@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import argparse
+from collections import Counter
 import re
 import struct
 import sys
@@ -214,11 +215,43 @@ def validate(game_root: Path = DEFAULT_GAME_ROOT) -> tuple[list[str], bool]:
         errors.append("generated qualification-trigger call inventory drifted")
     if triggers.count("aub_can_upgrade_to_") != len(EDGES):
         errors.append("generated qualification-trigger definition inventory drifted")
+    expected_regular_adds = Counter(
+        edge.target for edge in EDGES if edge.target_type != "special"
+    )
+    expected_special_adds = Counter(
+        item
+        for edge in EDGES
+        if edge.target_type == "special"
+        for item in (edge.target, edge.source)
+    )
+    expected_special_removals = Counter(
+        edge.source for edge in EDGES if edge.target_type == "special"
+    )
+    actual_regular_adds = Counter(
+        re.findall(r"(?m)^\s*add_building\s*=\s*([A-Za-z_][A-Za-z0-9_]*)\s*$", effects)
+    )
+    actual_special_adds = Counter(
+        re.findall(
+            r"(?m)^\s*add_special_building\s*=\s*([A-Za-z_][A-Za-z0-9_]*)\s*$",
+            effects,
+        )
+    )
+    actual_special_removals = Counter(
+        re.findall(r"(?m)^\s*remove_building\s*=\s*([A-Za-z_][A-Za-z0-9_]*)\s*$", effects)
+    )
+    if actual_regular_adds != expected_regular_adds:
+        errors.append("generated regular/duchy target insertion inventory drifted")
+    if actual_special_adds != expected_special_adds:
+        errors.append("generated special target/rollback insertion inventory drifted")
+    if actual_special_removals != expected_special_removals:
+        errors.append("generated special source removal inventory drifted")
+    if effects.count("scope:aub_payer = { save_scope_as = character }") != (
+        len(EDGES) + sum(edge.target_type == "special" for edge in EDGES)
+    ):
+        errors.append("per-attempt vanilla construction-payer context inventory drifted")
     for edge in EDGES:
         if effects.count(f"\n\t\t\thas_building = {edge.source}\n") != 1:
             errors.append(f"generated source edge inventory drifted: {edge.source}")
-        if effects.count(f"add_building = {edge.target}") != 1:
-            errors.append(f"generated target edge inventory drifted: {edge.target}")
         if triggers.count(f"aub_can_upgrade_to_{edge.target}_trigger = {{") != 1:
             errors.append(f"generated target gate inventory drifted: {edge.target}")
     for edge in EXCLUDED_EDGES:
@@ -342,9 +375,14 @@ def validate(game_root: Path = DEFAULT_GAME_ROOT) -> tuple[list[str], bool]:
     for fragment in (
         "change_government = celestial_government",
         "has_treasury = yes",
+        "change_government = tribal_government",
         "change_government = feudal_government",
         "province:10148 = {",
         "save_scope_as = character",
+        "add_innovation = innovation_battlements",
+        "add_innovation = innovation_castle_baileys",
+        "add_innovation = innovation_plenary_assemblies",
+        "add_special_building = changan_market_01",
     ):
         if fragment not in fixture_script:
             errors.append(f"acceptance resource-route contract missing: {fragment}")

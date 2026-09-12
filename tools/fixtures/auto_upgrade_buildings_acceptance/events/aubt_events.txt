@@ -232,6 +232,20 @@ aubt.10 = {
 		add_gold = 100000
 		add_prestige = 100000
 		add_piety = 100000
+		culture = {
+			if = {
+				limit = { NOT = { has_innovation = innovation_battlements } }
+				add_innovation = innovation_battlements
+			}
+			if = {
+				limit = { NOT = { has_innovation = innovation_castle_baileys } }
+				add_innovation = innovation_castle_baileys
+			}
+			if = {
+				limit = { NOT = { has_innovation = innovation_plenary_assemblies } }
+				add_innovation = innovation_plenary_assemblies
+			}
+		}
 		capital_province = { set_global_variable = { name = aubt_province value = this } }
 
 		# Castle main building. The starting capital is already a castle; do not
@@ -275,6 +289,10 @@ aubt.10 = {
 		# The source is materialized first, then all three player resources must
 		# remain unchanged when the generated vanilla target gate rejects it.
 		global_var:aubt_province = {
+			# The core matrix has already verified barracks_01 -> 02; release that
+			# regular slot before installing the deliberately terrain-invalid source.
+			if = { limit = { has_building = barracks_02 } remove_building = barracks_02 }
+			else_if = { limit = { has_building = barracks_01 } remove_building = barracks_01 }
 			if = { limit = { has_building = outposts_08 } remove_building = outposts_08 }
 			else_if = { limit = { has_building = outposts_07 } remove_building = outposts_07 }
 			else_if = { limit = { has_building = outposts_06 } remove_building = outposts_06 }
@@ -308,6 +326,9 @@ aubt.10 = {
 		else = { debug_log = "AUBT: TEST FAIL vanilla_gate_rejection" }
 
 		# Tribal main building and its gold+prestige cost route.
+		# Vanilla's building_requirement_tribal checks holder government, not only
+		# holding type, so the disposable payer must be tribal for this sample.
+		change_government = tribal_government
 		global_var:aubt_province = {
 			set_holding_type = tribal_holding
 			if = { limit = { has_building = tribe_02 } remove_building = tribe_02 }
@@ -343,6 +364,7 @@ aubt.10 = {
 			}
 			else = { debug_log = "AUBT: TEST FAIL regular_tribal" }
 		}
+		change_government = feudal_government
 
 		# Temple-citadel main building. Supplying scope:character verifies the
 		# vanilla on_complete payer context that immediate add_building needs.
@@ -416,11 +438,13 @@ aubt.10 = {
 			if = {
 				limit = { has_building = changan_market_02 }
 				remove_building = changan_market_02
-				add_building = changan_market_01
+				scope:aub_payer = { save_scope_as = character }
+				add_special_building = changan_market_01
 			}
 			else_if = {
 				limit = { NOT = { has_building = changan_market_01 } }
-				add_building = changan_market_01
+				scope:aub_payer = { save_scope_as = character }
+				add_special_building = changan_market_01
 			}
 			province_owner = { save_scope_as = holder }
 			province_owner = { save_scope_as = build_owner }
