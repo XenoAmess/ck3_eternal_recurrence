@@ -93,3 +93,17 @@
 公开标题和完整 BBCode 已读回；新下载的 14 文件工坊缓存逐字节通过正式 manifest 校验。
 Steam 在下载核验后恢复离线，未注销账号。发布事实、构建身份及剩余边界见
 [initial-baseline changelog](release-changelogs/auto-upgrade-buildings/1.19.0.md)。
+
+## 2026-09-12 二期实现与 R0024 验收
+
+本节覆盖上文仅适用于 1.19.0 一期的“43 链／301 边／排除主建筑、公国、特殊与部落”运行范围。二期候选版 `2.0.0` 已完成实现与 release-candidate 验收，但尚未上传 Workshop：
+
+- exact CK3 1.19.0.6 inventory 冻结 981 个建筑定义、609 条原版升级边和 165 条链；生产包含 605 条，排除 4 条曼荼罗都城 Great Project 边。
+- 生产覆盖 370 条 regular、30 条 duchy-capital、205 条 special，以及 castle、city、church、tribal、temple-citadel 五类可升级主建筑；所有住所系统、nomad/herder N/A 对象和原版施工进度继续排除。
+- 400 条普通／主／公国边使用 `upgrade_building_effect = <source tier>`。这是 CK3 原生的即时升级路径，可保留原版完成事件需要的上下文；205 条特殊槽边使用“移除源、添加目标、失败恢复源”的专用路径。两者都在确认目标后才扣费。
+- 601 个目标的原版资格门槛由生成器逐条投影；4 个原版无 gate 目标保持无 gate。四类费用形状为 588 金币、5 金币加威望、3 金币加虔诚和 9 scripted cost。
+- 静态门禁逐条覆盖 605/4 清单、生成一致性、15 文件正式 allowlist、manifest 与 deterministic ZIP。
+- `desktop-3fevhd2-1c74096080--auto-upgrade-buildings--R0024` 在 CK3 1.19.0.6 正式 GREEN：17/17 功能断言、34 条 marker、项目诊断 0；生产树 SHA-256 为 `116795FA60632F0ED247B2D3B88D162F2E37A1EBF9E92DEC109A76E1D539FDAF`，源树、运行树和真实用户存储均未变化，一次性 userdir 已删除。
+- 完整报告位于 `D:\workspace\ck3_auto_upgrade_runtime\phase2-live-r10-20260912\report.json`，SHA-256 为 `BCE9485277FADBB507C83998824FC346E7EEBB737B459A19F358E71BC59F49BB`。Open Kaishek 仍是独立的本机 Java environment RED，不冒充 GREEN。
+
+完整范围、已完成清单、抽样矩阵和发布待办见 [二期开发清单与验收记录](auto-upgrade-buildings-phase-2-plan.md)。
