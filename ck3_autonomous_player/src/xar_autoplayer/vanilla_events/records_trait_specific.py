@@ -256,6 +256,46 @@ VANILLA_TRAIT_SPECIFIC_ANALYSIS: Final[
             ),
             1: "adds the source-defined minor_gold_value to root",
         },
+        "selected_choice_effect_profile": {
+            "schema": "xar.ck3.vanilla-event-choice-effect",
+            "schema_version": 1,
+            "selected_native_option_index": 1,
+            "completeness": "selected-option-and-common-after-source-reviewed",
+            "selected_option_effects": [{
+                "domain": "currency",
+                "subject": "root",
+                "operation": "add_gold",
+                "authored_value_key": "minor_gold_value",
+                "authored_minimum_whole": 15,
+                "runtime_delta_exact": False,
+                "runtime_delta_reason": (
+                    "minor_gold_value depends on monthly income, treasury and era"
+                ),
+            }],
+            "common_after_effects": [],
+            "observable_postcondition": {
+                "metric": "played_character_gold.raw",
+                "expected_relation": "strictly_increasing",
+                "scale": 100000,
+                "material_change_required_for_evidence": True,
+            },
+            "source_anchors": [
+                "events/trait_specific_events/trait_specific_events.txt:1221-1225",
+                "common/script_values/01_dynamic_values.txt:53-70",
+                "common/script_values/00_basic_values.txt:49-64",
+            ],
+            "source_sha256": {
+                "events/trait_specific_events/trait_specific_events.txt": (
+                    "A4882239AB219EFB2BB082C983403E6E24B8C9DD481E5643ADFE3321ACAC43F7"
+                ),
+                "common/script_values/01_dynamic_values.txt": (
+                    "049303EFF8ABFDFCADCC31D27E2633A26A2E877E4E2980D4A42C53D6B76D7064"
+                ),
+                "common/script_values/00_basic_values.txt": (
+                    "9268A54F0E425D409D9D0F20D884E0A3D0A89DF85A0B6644D56133C0C4CB0096"
+                ),
+            },
+        },
         "after_effect": None,
         "repeatability": (
             "the event defines no cooldown or one-shot flag; choosing native1 "

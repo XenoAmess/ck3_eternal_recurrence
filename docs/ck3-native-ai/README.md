@@ -77,6 +77,9 @@
 - [static-confirmed + implementation-confirmed, live pending] [played-character-stress.md](played-character-stress.md)
   复用 exact-build `CCharacter+0x1A8 -> extension+0x2F8` 路径，把当前玩家非负压力点作为加法字段接入通用
   state snapshot；native/Python 聚焦测试已闭合，真实 paused snapshot 与事件动作前后对账仍待下一次可用实机。
+- [static-confirmed + implementation-confirmed, live pending] [played-character-gold.md](played-character-gold.md)
+  复用 exact-build `CCharacter+0x1A8 -> extension+0x100` 金币 leaf，把当前玩家 signed Q100000 余额作为顶层加法字段接入
+  state snapshot；`trait_specific.8001` 的同角色严格增加后置已 static-ready，真实选择前后对账仍待一次有界实机。
 - [static-confirmed + implementation-confirmed] [interaction-notification-ack.md](interaction-notification-ack.md)
   单独冻结人物互动 notification 的 full-generation 枚举、`+0x5C6` channel、enum-4 false validator seam、原生 UI
   construct/submit 与 manager transition；production bridge 已扩展为 notification 可见、paused typed query 可达和严格

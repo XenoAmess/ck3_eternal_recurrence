@@ -77,6 +77,26 @@ def _selection(
     }
 
 
+def _gold_selection(before: int, after: int) -> dict[str, object]:
+    return {
+        "postcondition_verified": True,
+        "starting_snapshot_id": "native:19",
+        "starting_revision": 33,
+        "starting_played_character_gold": {
+            "status": "available",
+            "character_id": 27181,
+            "gold_raw": before,
+            "scale": 100_000,
+        },
+        "ending_played_character_gold": {
+            "status": "available",
+            "character_id": 27181,
+            "gold_raw": after,
+            "scale": 100_000,
+        },
+    }
+
+
 class VanillaEventMaterialOutcomeTests(unittest.TestCase):
     def test_supported_choice_plans_same_frame_stress_expectation(self) -> None:
         expected = _expectation()
@@ -153,6 +173,53 @@ class VanillaEventMaterialOutcomeTests(unittest.TestCase):
         self.assertEqual(
             drifted["unavailable_reason"],
             "same_character_snapshot_binding_mismatch",
+        )
+
+    def test_trait_gold_gain_is_planned_and_requires_a_strict_increase(
+        self,
+    ) -> None:
+        expected = plan_registered_event_material_postcondition_v1(
+            _decision(event_key="trait_specific.8001"),
+            {"character_id": 27181, "alive": True},
+            played_character_gold={"raw": 35_000_000, "scale": 100_000},
+            snapshot_id="native:19",
+            revision=33,
+        )
+        assert isinstance(expected, dict)
+
+        increased = evaluate_registered_event_material_postcondition_v1(
+            expected, _gold_selection(35_000_000, 50_000_000)
+        )
+        unchanged = evaluate_registered_event_material_postcondition_v1(
+            expected, _gold_selection(35_000_000, 35_000_000)
+        )
+        decreased = evaluate_registered_event_material_postcondition_v1(
+            expected, _gold_selection(35_000_000, 34_000_000)
+        )
+
+        self.assertEqual(expected["status"], "ready")
+        self.assertEqual(expected["metric"], "played_character_gold.raw")
+        self.assertEqual(expected["starting_value"], 35_000_000)
+        self.assertEqual(increased["status"], "verified_change")
+        self.assertEqual(increased["delta"], 15_000_000)
+        self.assertTrue(increased["relation_satisfied"])
+        self.assertEqual(unchanged["status"], "failed")
+        self.assertEqual(unchanged["unavailable_reason"], "gold_not_increased")
+        self.assertEqual(decreased["status"], "failed")
+        self.assertEqual(decreased["unavailable_reason"], "gold_not_increased")
+
+    def test_trait_gold_missing_snapshot_value_is_typed_unavailable(self) -> None:
+        expected = plan_registered_event_material_postcondition_v1(
+            _decision(event_key="trait_specific.8001"),
+            {"character_id": 27181, "alive": True},
+            snapshot_id="native:19",
+            revision=33,
+        )
+
+        self.assertEqual(expected["status"], "unavailable")
+        self.assertEqual(
+            expected["unavailable_reason"],
+            "same_frame_player_gold_unavailable",
         )
 
     def test_ready_expectation_preserves_failed_or_missing_result_as_runner_issue(

@@ -5183,6 +5183,11 @@ def choose_one_life_turn(
                     plan_registered_event_material_postcondition_v1(
                         registry_decision,
                         played_character,
+                        played_character_gold=(
+                            snapshot.get("played_character_gold")
+                            if isinstance(snapshot, dict)
+                            else None
+                        ),
                         snapshot_id=(
                             snapshot.get("snapshot_id")
                             if isinstance(snapshot, dict)

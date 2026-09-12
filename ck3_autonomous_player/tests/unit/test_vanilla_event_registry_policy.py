@@ -107,6 +107,13 @@ def _natural_disaster_context(native_indices: tuple[int, ...]) -> dict[str, obje
     }
 
 
+def _trait_gold_context() -> dict[str, object]:
+    context = _context()
+    context["event_definition_key"] = "trait_specific.8001"
+    context["saved_scopes"] = []
+    return context
+
+
 class VanillaEventRegistryPolicyTests(unittest.TestCase):
     def test_exact_tgp_travel_projection_selects_authored_option_two(
         self,
@@ -166,6 +173,22 @@ class VanillaEventRegistryPolicyTests(unittest.TestCase):
                     "natural_disaster_received_first_warning",
                 )
                 self.assertIsNone(profile["observable_postcondition"])
+
+    def test_trait_gold_projection_selects_deterministic_gain(self) -> None:
+        result = _recommend(_trait_gold_context())
+
+        self.assertEqual(result["status"], "recommended")
+        self.assertEqual(result["selected_option_number"], 2)
+        self.assertEqual(result["selected_native_option_index"], 1)
+        profile = result["choice_effect_profile"]
+        effect = profile["selected_option_effects"][0]
+        self.assertEqual(effect["authored_value_key"], "minor_gold_value")
+        self.assertEqual(effect["authored_minimum_whole"], 15)
+        self.assertFalse(effect["runtime_delta_exact"])
+        self.assertEqual(
+            profile["observable_postcondition"]["expected_relation"],
+            "strictly_increasing",
+        )
 
     def test_natural_disaster_unregistered_projection_stays_blocked(self) -> None:
         result = recommend_registered_vanilla_event_option_v1(

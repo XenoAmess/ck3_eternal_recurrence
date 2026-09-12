@@ -78,6 +78,21 @@ def _boolean_scope(name: str) -> dict[str, object]:
 
 
 class TraitSpecificEventRecordTests(unittest.TestCase):
+    def test_herbalist_refusal_gold_effect_profile_is_queryable(self) -> None:
+        response = query_vanilla_event_knowledge_v1(HERBALIST_EVENT_KEY)
+        profile = response["analysis"]["selected_choice_effect_profile"]
+
+        json.dumps(profile, allow_nan=False)
+        self.assertEqual(profile["selected_native_option_index"], 1)
+        effect = profile["selected_option_effects"][0]
+        self.assertEqual(effect["authored_value_key"], "minor_gold_value")
+        self.assertEqual(effect["authored_minimum_whole"], 15)
+        self.assertFalse(effect["runtime_delta_exact"])
+        self.assertEqual(
+            profile["observable_postcondition"]["metric"],
+            "played_character_gold.raw",
+        )
+
     def test_herbalist_seed_event_uses_deterministic_gold_route(self) -> None:
         contract = VANILLA_TRAIT_SPECIFIC_TIMELINE_CONTRACTS[
             HERBALIST_EVENT_KEY
@@ -269,13 +284,13 @@ class TraitSpecificEventRecordTests(unittest.TestCase):
             self.assertNotIn(str(observation_only), contract_repr)
 
     def test_default_registry_mcp_and_runtime_include_record(self) -> None:
-        self.assertEqual(len(DEFAULT_VANILLA_EVENT_TIMELINE_CONTRACTS), 187)
-        self.assertEqual(len(DEFAULT_VANILLA_EVENT_ANALYSIS), 187)
+        self.assertEqual(len(DEFAULT_VANILLA_EVENT_TIMELINE_CONTRACTS), 188)
+        self.assertEqual(len(DEFAULT_VANILLA_EVENT_ANALYSIS), 188)
         self.assertIs(
             DEFAULT_VANILLA_EVENT_OBSERVATIONS[EVENT_KEY],
             VANILLA_TRAIT_SPECIFIC_OBSERVATIONS[EVENT_KEY],
         )
-        self.assertEqual(len(production.KNOWN_TIMELINE_INTERRUPTS), 333)
+        self.assertEqual(len(production.KNOWN_TIMELINE_INTERRUPTS), 334)
         self.assertIs(
             production.KNOWN_TIMELINE_INTERRUPTS[EVENT_KEY],
             VANILLA_TRAIT_SPECIFIC_TIMELINE_CONTRACTS[EVENT_KEY],

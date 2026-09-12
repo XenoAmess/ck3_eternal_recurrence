@@ -1143,3 +1143,15 @@ strategic-power primitive；余下入口只有 policy-level campaign dominance�
 - Focused normal/optimized tests are each `27/27` GREEN. Status is `source-structured / static-ready / live=false`: character stress
   modifiers prevent an exact runtime `-30` promise, and generic event-context-v2 effect extraction remains open. No CK3, recorder,
   desktop input, DLL or mod tree was used; global G2 remains `0/8`.
+## 2026-09-13: G2-M2 second material event comparator static-ready
+
+- R414 already supplies a real pre-selection frame for `trait_specific.8001` with player ROOT, empty saved scopes and enabled native options
+  `[0,1]`. Exact source gives native 1 `add_gold = minor_gold_value`; the dynamic value depends on monthly income, treasury and era, while
+  its authored whole-gold minimum is 15. A fixed expected runtime delta would therefore overstate current observation.
+- The state snapshot now publishes additive top-level `played_character_gold` from the previously closed exact-build
+  `CCharacter+0x1A8 -> extension+0x100` leaf as signed Q100000. Planner, native action and outcome service bind the same full CharacterID,
+  starting snapshot/revision and pre/post raw values. Only a strict increase is a verified material change; unchanged/decreased balances,
+  identity drift or missing readings do not pass.
+- The Release DLL and native `game_access` fixture build and run GREEN; focused Python normal/optimized tests are each `30/30` GREEN.
+  Status is `static-ready / live=false`. One bounded `.8001` action is the only live proof authorized for this path; no single-event long run
+  is required. G2-M2 and global G2 remain `in_progress` and `0/8` pending three production event loops.

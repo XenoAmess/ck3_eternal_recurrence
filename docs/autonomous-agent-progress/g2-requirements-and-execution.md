@@ -108,6 +108,17 @@ warning tooltip 与所有选项之后必经的 character variable 写入，并�
 `event-context-v2` effect visitor，也没有把未观测的 runtime magnitude 或 common-after variable 冒充为 live 后置证据。普通与
 optimized 聚焦测试各 `27/27` GREEN。
 
+第二条 material comparator 现覆盖 R414 的 `trait_specific.8001`。authored option 2/native 1 的 effect profile 记录
+`add_gold = minor_gold_value`，但由于原版动态值依赖月收入、treasury 与 era，只承诺 Q100000
+`played_character_gold.raw / strictly_increasing`，不预报精确 delta。native state snapshot 复用既有 exact-build
+`extension+0x100` 金币 leaf；planner、action 与 service 绑定同一 CharacterID 和选择前 snapshot/revision，只有动作后 raw 严格增加
+才算 material change。不变、下降、身份漂移或缺读数保持失败/不可用。
+
+主 DLL 与 native fixture GREEN，Python normal/optimized 聚焦测试各 `30/30` GREEN；状态仍为 `static-ready / live=false`。
+`.0030` 与 `.8001` 各只待一次近边界 bounded live action 证明，不为任一单事件启动长跑。G2-M2 仍需第三个自然事件的可验证物质
+后置、campaign objective 评分与三个 production event loops，固定总进度保持 `0/8`。详见
+[`played-character-gold.md`](../ck3-native-ai/played-character-gold.md)。
+
 战争 controller 的既有成熟执行器继续保留；assigned reinforcement、terminal 长尾与更多 CB 改为真实 encounter 驱动。
 宗教域继续暂缓，只允许战争中的圣战和婚姻合法性/接受度所需的最小原生最终判定，不借此扩展通用宗教模型。
 

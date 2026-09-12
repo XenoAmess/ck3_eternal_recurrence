@@ -825,3 +825,8 @@ worker 重放 evaluator。只有 locator 无法稳定闭合时，才考虑在 ma
   stress-impact modifiers 明确拒绝 exact runtime delta；`natural_disaster.7031` native 2 记录纯 tooltip selected effect 和
   common-after variable 写入。planner 只在 native index 对齐时带出档案，`.0030` comparator 直接消费其中的 observable
   postcondition。该窄投影不等于通用 `CEffectDescriptionVisitorInterface`/event-context-v2 结构化效果能力。
+- [implementation-confirmed, live pending] `trait_specific.8001` authored option 2/native 1 现在也发布 source-reviewed
+  `add_gold = minor_gold_value` 档案。通用 state snapshot 从既有 `extension+0x100` leaf 发布顶层 Q100000
+  `played_character_gold`，同角色 comparator 只接受严格正向 raw delta。月收入、treasury 与 era 会影响 runtime 金额，所以档案
+  明确拒绝 exact delta；字段与动作后置仍需一次 bounded paused production 复核，详见
+  [played-character-gold.md](played-character-gold.md)。

@@ -6029,6 +6029,12 @@ class NativeHeadlessGameplayDriver:
                 "ending_played_character_stress": (
                     _played_character_stress_observation(changed)
                 ),
+                "starting_played_character_gold": (
+                    _played_character_gold_observation(starting)
+                ),
+                "ending_played_character_gold": (
+                    _played_character_gold_observation(changed)
+                ),
             },
             "active_event": changed.get("active_event"),
             "paused": True,
@@ -17054,6 +17060,9 @@ def _semantic_snapshot_from_frame(frame: dict[str, object]) -> dict[str, object]
             state.get("one_life_settlement")
         ),
         "played_character": _played_character(state.get("played_character")),
+        "played_character_gold": _played_character_gold(
+            state.get("played_character_gold")
+        ),
         "pending_character_interaction": (
             _pending_character_interaction(
                 state.get("pending_character_interaction")
@@ -19566,6 +19575,39 @@ def _played_character_stress_observation(
         "character_id": None,
         "stress_points": None,
         "unavailable_reason": "played_character_stress_unavailable",
+    }
+
+
+def _played_character_gold_observation(
+    snapshot: dict[str, object],
+) -> dict[str, object]:
+    played = snapshot.get("played_character")
+    character_id = played.get("character_id") if isinstance(played, dict) else None
+    gold = snapshot.get("played_character_gold")
+    raw = gold.get("raw") if isinstance(gold, dict) else None
+    scale = gold.get("scale") if isinstance(gold, dict) else None
+    if (
+        isinstance(character_id, int)
+        and not isinstance(character_id, bool)
+        and character_id > 0
+        and isinstance(raw, int)
+        and not isinstance(raw, bool)
+        and -(2**63) <= raw <= 2**63 - 1
+        and scale == 100_000
+    ):
+        return {
+            "status": "available",
+            "character_id": character_id,
+            "gold_raw": raw,
+            "scale": 100_000,
+            "unavailable_reason": None,
+        }
+    return {
+        "status": "unavailable",
+        "character_id": None,
+        "gold_raw": None,
+        "scale": 100_000,
+        "unavailable_reason": "played_character_gold_unavailable",
     }
 
 
@@ -22546,6 +22588,22 @@ def _pending_character_interaction(value: object) -> dict[str, object] | None:
         "auto_accept_notification": auto_accept_notification,
         "source": "native",
     }
+
+
+def _played_character_gold(value: object) -> dict[str, int] | None:
+    if value is None:
+        return None
+    if not isinstance(value, dict) or set(value) != {"raw", "scale"}:
+        raise ValueError("native played_character_gold is malformed")
+    raw = value.get("raw")
+    if (
+        isinstance(raw, bool)
+        or not isinstance(raw, int)
+        or not -(2**63) <= raw <= 2**63 - 1
+        or value.get("scale") != 100_000
+    ):
+        raise ValueError("native played_character_gold is malformed")
+    return {"raw": raw, "scale": 100_000}
 
 
 def _played_character(value: object) -> dict[str, object] | None:

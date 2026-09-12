@@ -145,6 +145,7 @@ def _snapshot(
     map_ready: bool = True,
     pending_character_interaction: dict[str, object] | None = None,
     played_character: dict[str, object] | None = None,
+    played_character_gold: dict[str, object] | None = None,
     one_life_settlement: dict[str, object] | None = None,
     active_wars: list[dict[str, object]] | None = None,
     player_armies: list[dict[str, object]] | None = None,
@@ -165,6 +166,7 @@ def _snapshot(
             "active_event": active_event,
             "pending_character_interaction": pending_character_interaction,
             "played_character": played_character,
+            "played_character_gold": played_character_gold,
             "one_life_settlement": one_life_settlement,
             "active_wars": active_wars,
             "player_armies": player_armies,
@@ -4914,6 +4916,7 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
                     "alive": True,
                     "stress_points": 42,
                 },
+                played_character_gold={"raw": 35_000_000, "scale": 100_000},
             )
         )
 
@@ -4949,6 +4952,10 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
                             "character_id": 707,
                             "alive": True,
                             "stress_points": 27,
+                        },
+                        played_character_gold={
+                            "raw": 50_000_000,
+                            "scale": 100_000,
                         },
                     )
                 )
@@ -4991,6 +4998,18 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
                 "stress_points"
             ],
             27,
+        )
+        self.assertEqual(
+            result["event_selection"]["starting_played_character_gold"][
+                "gold_raw"
+            ],
+            35_000_000,
+        )
+        self.assertEqual(
+            result["event_selection"]["ending_played_character_gold"][
+                "gold_raw"
+            ],
+            50_000_000,
         )
         self.assertEqual(result["progress_status"], "postcondition")
 
@@ -5490,11 +5509,17 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
                     "primary_spouse_id": 808,
                     "spouse_ids": [808, 809],
                 },
+                played_character_gold={"raw": -5_000_000, "scale": 100_000},
             )
         )
 
-        played = driver.take_snapshot()["played_character"]
+        snapshot = driver.take_snapshot()
+        played = snapshot["played_character"]
         self.assertEqual(played["stress_points"], 42)
+        self.assertEqual(
+            snapshot["played_character_gold"],
+            {"raw": -5_000_000, "scale": 100_000},
+        )
         self.assertIsNone(played["betrothed_id"])
         self.assertEqual(played["primary_spouse_id"], 808)
         self.assertEqual(played["spouse_ids"], [808, 809])
@@ -5508,6 +5533,17 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
                     "stress_points": -1,
                 }
             )
+
+    def test_played_character_gold_rejects_invalid_fixed_point(self) -> None:
+        for value in (
+            {"raw": True, "scale": 100_000},
+            {"raw": 1, "scale": 1},
+            {"raw": 1, "scale": 100_000, "whole": 0},
+        ):
+            with self.subTest(value=value), self.assertRaisesRegex(
+                ValueError, "played_character_gold is malformed"
+            ):
+                native_driver_module._played_character_gold(value)
 
     def test_map_ready_without_played_character_does_not_invent_terminal(
         self,

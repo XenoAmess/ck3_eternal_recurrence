@@ -2950,6 +2950,12 @@ std::string StateSnapshotFrame(const xar::game::Snapshot &snapshot,
     result += ']';
     result += '}';
   }
+  result += ",\"played_character_gold\":";
+  if (!snapshot.has_played_character) {
+    result += "null";
+  } else {
+    AppendFixedPoint(result, snapshot.played_character_gold);
+  }
   result += ",\"one_life_settlement\":";
   if (!snapshot.has_one_life_settlement) {
     result += "null";
