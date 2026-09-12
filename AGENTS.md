@@ -43,6 +43,12 @@
   兼容或存档迁移、已知限制，以及正式构建和实机验收证据链接。草稿可以在发布前准备，但只有实际上传成功后才能写入最终发布事实。
 - Workshop 上传、订阅缓存复核和对应 changelog 的 `master` commit/push 缺一不可；没有永久入库的 changelog，不得把该次 release
   标为完成。历史 changelog 不得覆盖删除；勘误必须追加带日期的更正记录。
+- **Steam Change Notes 是独立交付物**，不能用仓库 changelog、Workshop 主描述或一句摘要代替。每次正式发布都必须把完整的
+  玩家可见更新说明写入目标版本条目，并在提交前冻结待发布文本及其字符数、行数和 SHA-256。
+- `CreateItem` / `SubmitItemUpdate` 的 `EResult=1` 只证明调用返回成功，**不证明 Change Notes 已公开**。完成发布前必须匿名读取
+  `https://steamcommunity.com/sharedfiles/filedetails/changelog/<item-id>`，对目标条目的 entry ID、HTML 解码及换行归一化后的全文、
+  字符数、行数和 SHA-256 做精确核对并保存证据。更新既有条目时必须证明该条目正文确实被替换；如果原生 `change_note` 提交没有
+  改变公开页面，应通过登录态 owner page 编辑既有条目后重新匿名回读。缺少这项公开回读时，不得把 release 标为完成。
 
 ## 构建/生成
 

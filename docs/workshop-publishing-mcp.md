@@ -307,6 +307,32 @@ DISCOVERED
 - `SubmitItemUpdate` 发出后没有可靠取消。超时应记录为 unknown，并先回读，不能自动再次 CreateItem。
 - 上传成功、公开页回读、全新订阅缓存复核、release changelog 入库、Steam 恢复离线缺一不可；前面的 success IPC 只证明 Launcher 调用成功。
 
+### 7.1 Change Notes 事故复盘与强制门禁
+
+2026-09-12 的 Auto Upgrade Buildings 2.0.0 发布把完整 changelog 只留在仓库，Steam Change Notes 则只写入 51 字摘要。根因不是
+内容缺失，而是把三个不同交付物错误地合并理解：仓库 release changelog、Workshop 主描述、Steam Change Notes。验收又只检查了
+`SubmitItemUpdate` 的 `EResult=1`，没有读取公开 changelog 页面，因而漏过了玩家实际只能看到摘要的问题。
+
+2026-09-13 的纠正进一步证明：只更换 `pchChangeNote` 的 metadata-only submit 可以返回 `EResult=1`，但不新建、也不替换公开
+Change Notes；成功更新 Workshop 主描述同样不会连带修改既有 Change Notes。最终必须在登录态 owner page 编辑既有条目，再用匿名
+公开页面读回，才能证明玩家实际看到的正文已经改变。
+
+以后每次正式发布必须执行以下门禁：
+
+1. **分别准备三份交付物。** 仓库 release changelog、Workshop 主描述和 Steam Change Notes 各自有明确目标；Steam 条目必须是
+   完整的玩家可见更新说明，不能只给一句摘要。
+2. **提交前冻结正文。** 在发布证据中保存待发布 Change Notes 的精确 UTF-8 文本、字符数、行数和 SHA-256；禁止事后凭印象判断。
+3. **回执只算传输证据。** `EResult=1`、进度 100% 或主描述更新成功都不能把 Change Notes 标为 GREEN。
+4. **匿名公开回读。** 读取 `https://steamcommunity.com/sharedfiles/filedetails/changelog/<item-id>`，锁定本次目标 entry ID；HTML 解码并
+   归一化 CRLF/LF 后，与冻结正文逐字比较，同时记录 entry ID、字符数、行数、正文哈希及公开 HTML 哈希。
+5. **既有条目必须验证替换。** 若本次是纠正或更新已有版本条目，不能仅证明页面上“有一条新记录”；必须证明预期 entry 的正文
+   已经替换。原生 submit 无效时，使用 owner page 编辑该条目，再重复匿名回读；不要为了改文案无意义地重传未变化的 mod 内容。
+6. **失败就保持未完成。** 公开正文缺失、被截断、仍是旧摘要、目标 entry 不明或无法匿名回读时，release 状态保持 RED/未完成，
+   不能用仓库文档、截图、登录态页面或 API 回执替代。
+7. **证据与收尾。** 将精确回读结果写入该版本永久 changelog/发布证据；随后完成订阅缓存复核、提交推送和 Steam 离线恢复。
+
+本次事故的永久事实与哈希见 [Auto Upgrade Buildings 2.0.0 changelog](release-changelogs/auto-upgrade-buildings/2.0.0.md)。
+
 ## 8. 自动化边界与最小测试路线
 
 可自动化：staging 构建与哈希、descriptor 检查、Launcher local-mod 精确匹配、IPC 请求、进度/错误采集、公开元数据回读、订阅缓存哈希复核和离线恢复。
