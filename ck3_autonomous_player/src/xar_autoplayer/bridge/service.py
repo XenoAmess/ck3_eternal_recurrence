@@ -11,6 +11,9 @@ from .driver import (
     StepPostconditionError,
     UnsupportedStepError,
 )
+from ..vanilla_events.outcome import (
+    evaluate_registered_event_material_postcondition_v1,
+)
 from .event_contract import (
     action_step_set,
     choose_event_option_number,
@@ -590,6 +593,21 @@ class GameplayBridgeService:
             error.selected_step = selected_step
             error.plan = copy.deepcopy(plan)
             raise
+        material_expectation = (
+            plan.get("event_material_postcondition")
+            if isinstance(plan, dict)
+            else None
+        )
+        if isinstance(material_expectation, dict):
+            result = {
+                **result,
+                "event_material_postcondition": (
+                    evaluate_registered_event_material_postcondition_v1(
+                        material_expectation,
+                        result.get("event_selection"),
+                    )
+                ),
+            }
         return {
             "status": "executed",
             "selected_step": selected_step,

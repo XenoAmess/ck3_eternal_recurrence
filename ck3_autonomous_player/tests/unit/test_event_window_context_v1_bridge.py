@@ -762,6 +762,7 @@ class EventWindowContractTests(unittest.TestCase):
         snapshot["played_character"] = {
             "character_id": CHARACTER_ID,
             "alive": True,
+            "stress_points": 42,
         }
         snapshot["active_event"]["option_count"] = 2
 
@@ -782,6 +783,10 @@ class EventWindowContractTests(unittest.TestCase):
             "exact-build-vanilla-event-registry-direct-projection-v1",
         )
         self.assertFalse(plan["event_decision"]["semantic_optimal"])
+        self.assertEqual(plan["event_material_postcondition"]["status"], "ready")
+        self.assertEqual(
+            plan["event_material_postcondition"]["starting_value"], 42
+        )
 
     def test_planner_blocks_zero_enabled_materialized_rows(self) -> None:
         zero = _frame()

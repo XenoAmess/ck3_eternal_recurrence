@@ -4906,7 +4906,15 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
             )
         )
         endpoint.publish(
-            _snapshot(23, active_event={"instance_id": 419, "option_count": 3})
+            _snapshot(
+                23,
+                active_event={"instance_id": 419, "option_count": 3},
+                played_character={
+                    "character_id": 707,
+                    "alive": True,
+                    "stress_points": 42,
+                },
+            )
         )
 
         capabilities = driver.capabilities()
@@ -4934,7 +4942,16 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
                         "result": {"accepted": True},
                     }
                 )
-                endpoint.publish(_snapshot(24))
+                endpoint.publish(
+                    _snapshot(
+                        24,
+                        played_character={
+                            "character_id": 707,
+                            "alive": True,
+                            "stress_points": 27,
+                        },
+                    )
+                )
 
         endpoint.send_hook = answer
         result = driver.execute_step(
@@ -4959,6 +4976,21 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
         )
         self.assertEqual(
             result["event_selection"]["selected_native_option_index"], 2
+        )
+        self.assertEqual(
+            result["event_selection"]["starting_played_character_stress"],
+            {
+                "status": "available",
+                "character_id": 707,
+                "stress_points": 42,
+                "unavailable_reason": None,
+            },
+        )
+        self.assertEqual(
+            result["event_selection"]["ending_played_character_stress"][
+                "stress_points"
+            ],
+            27,
         )
         self.assertEqual(result["progress_status"], "postcondition")
 

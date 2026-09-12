@@ -79,6 +79,29 @@ _PENDING_INTERACTION_REPLY_STATUSES = {
 }
 
 
+def _registered_event_material_postcondition_issue(
+    plan: object, result: object
+) -> str | None:
+    if not isinstance(plan, dict):
+        return None
+    expectation = plan.get("event_material_postcondition")
+    if not isinstance(expectation, dict) or expectation.get("status") != "ready":
+        return None
+    observed = (
+        result.get("event_material_postcondition")
+        if isinstance(result, dict)
+        else None
+    )
+    if not isinstance(observed, dict):
+        return "unavailable"
+    status = observed.get("status")
+    if status == "failed":
+        return "failed"
+    if status not in {"verified_change", "verified_no_change"}:
+        return "unavailable"
+    return None
+
+
 class NativeReadinessTimeoutError(AgentError):
     """A native readiness wait expired with its last bridge evidence."""
 
@@ -649,6 +672,32 @@ def native_auto_run(
                     raise AgentError(
                         "native event selection lacks an old-instance lifecycle postcondition"
                     )
+                material_issue = _registered_event_material_postcondition_issue(
+                    plan, result
+                )
+                if material_issue is not None:
+                    capture_first_failure(
+                        stage="postcondition",
+                        kind=f"event_material_postcondition_{material_issue}",
+                        message=(
+                            "registered native event material postcondition "
+                            f"is {material_issue}"
+                        ),
+                    )
+                    raise AgentError(
+                        "registered native event material postcondition "
+                        f"is {material_issue}"
+                    )
+                material = (
+                    result.get("event_material_postcondition")
+                    if isinstance(result, dict)
+                    else None
+                )
+                if isinstance(material, dict):
+                    if material.get("status") == "verified_change":
+                        evidence.append("event_material_change")
+                    elif material.get("status") == "verified_no_change":
+                        evidence.append("event_material_no_change")
             if step in _PENDING_INTERACTION_REPLY_STATUSES:
                 result = outcome.get("result")
                 if not _pending_interaction_lifecycle_verified(
@@ -2659,6 +2708,7 @@ def _compact_plan(plan: object) -> dict[str, object] | None:
         "target_province_id",
         "event_instance_id",
         "event_decision",
+        "event_material_postcondition",
         "required_step",
         "required_capability",
         "required_capabilities",
@@ -2767,6 +2817,7 @@ def _compact_step_result(result: object) -> dict[str, object] | None:
         "cross_run_strategy",
         "checkpoint",
         "event_selection",
+        "event_material_postcondition",
     )
     compact = {key: result.get(key) for key in keys if key in result}
     if "interaction_result" in result:

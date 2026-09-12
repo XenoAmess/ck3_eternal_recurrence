@@ -83,9 +83,13 @@ native index 与 enabled 投影全部匹配时，planner 采用登记的 source-
 
 为关闭其中一个真实后置缺口，通用 native state snapshot 已在 `played_character` 上增加可选 `stress_points`。它复用
 战争退出资源读取器已使用的 exact-build `CCharacter+0x1A8 -> extension+0x2F8` 路径，不新建另一套 mailbox/MCP。
-主 DLL、native fixture 与 Python 正常/异常合同均 GREEN；旧 snapshot 不带字段时仍兼容。当前状态仅为
-`static-ready / live=false`。下一次可用实机先读取一个 paused frame；随后 registry consumer 才能把 `.0030` 的选择前后
-压力点接成同角色后置验证。若选择前压力已经为零，该次安全关闭不能计入 material-delta。详见
+主 DLL、native fixture 与 Python 正常/异常合同均 GREEN；旧 snapshot 不带字段时仍兼容。registry consumer 现在仅对
+`.0030` authored option 2/native 1 绑定同帧角色、snapshot/revision 和选择前压力。native action 复用已经捕获的前后 paused
+snapshot，service 输出 `verified_change`、`verified_no_change`、`failed` 或 `unavailable`；压力上升、角色漂移或 ready 合同缺少
+动作后读数都会让 auto-run 保持 RED。若选择前压力已经为零，该次安全关闭不会计入 material-delta。
+
+该链仍为 `static-ready / live=false`。下一次允许实机时只需一次有界 `.0030` 复核，同时完成字段 paused read 与 comparator
+production proof，不为单事件扩成长跑矩阵。详见
 [`played-character-stress.md`](../ck3-native-ai/played-character-stress.md)。
 
 战争 controller 的既有成熟执行器继续保留；assigned reinforcement、terminal 长尾与更多 CB 改为真实 encounter 驱动。

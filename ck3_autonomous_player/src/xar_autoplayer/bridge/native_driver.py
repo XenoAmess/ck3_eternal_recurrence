@@ -6023,6 +6023,12 @@ class NativeHeadlessGameplayDriver:
                 "episode_run_id": changed.get("episode_run_id"),
                 "connection_generation": starting_connection_generation,
                 "bridge_pid": starting_bridge_pid,
+                "starting_played_character_stress": (
+                    _played_character_stress_observation(starting)
+                ),
+                "ending_played_character_stress": (
+                    _played_character_stress_observation(changed)
+                ),
             },
             "active_event": changed.get("active_event"),
             "paused": True,
@@ -19533,6 +19539,34 @@ def _state_frame_rejection_summary(snapshot: dict[str, object]) -> object:
 def _event_instance_id(snapshot: dict[str, object]) -> object:
     active_event = snapshot.get("active_event")
     return active_event.get("instance_id") if isinstance(active_event, dict) else None
+
+
+def _played_character_stress_observation(
+    snapshot: dict[str, object],
+) -> dict[str, object]:
+    played = snapshot.get("played_character")
+    character_id = played.get("character_id") if isinstance(played, dict) else None
+    stress_points = played.get("stress_points") if isinstance(played, dict) else None
+    if (
+        isinstance(character_id, int)
+        and not isinstance(character_id, bool)
+        and character_id > 0
+        and isinstance(stress_points, int)
+        and not isinstance(stress_points, bool)
+        and 0 <= stress_points <= 2**31 - 1
+    ):
+        return {
+            "status": "available",
+            "character_id": character_id,
+            "stress_points": stress_points,
+            "unavailable_reason": None,
+        }
+    return {
+        "status": "unavailable",
+        "character_id": None,
+        "stress_points": None,
+        "unavailable_reason": "played_character_stress_unavailable",
+    }
 
 
 def _native_ordinary_event(

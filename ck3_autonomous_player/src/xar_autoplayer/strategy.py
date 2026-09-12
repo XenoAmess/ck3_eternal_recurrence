@@ -107,6 +107,9 @@ from .simulation.battle_terminal_cruise_policy import (
 from .vanilla_events.policy import (
     recommend_registered_vanilla_event_option_v1,
 )
+from .vanilla_events.outcome import (
+    plan_registered_event_material_postcondition_v1,
+)
 
 
 ONE_LIFE_STRATEGY_RELATIVE_PATH = Path("strategy") / "one-life-history.json"
@@ -5176,6 +5179,22 @@ def choose_one_life_turn(
                 )
             )
             if registry_decision.get("status") == "recommended":
+                material_postcondition = (
+                    plan_registered_event_material_postcondition_v1(
+                        registry_decision,
+                        played_character,
+                        snapshot_id=(
+                            snapshot.get("snapshot_id")
+                            if isinstance(snapshot, dict)
+                            else None
+                        ),
+                        revision=(
+                            snapshot.get("revision")
+                            if isinstance(snapshot, dict)
+                            else None
+                        ),
+                    )
+                )
                 native_index = registry_decision.get(
                     "selected_native_option_index"
                 )
@@ -5199,7 +5218,7 @@ def choose_one_life_turn(
                     }
                 )
                 if exact_step in available_steps:
-                    return {
+                    plan = {
                         "policy": "one-life-turn-v1",
                         "phase": "active_event_registry_choice",
                         "selected_step": exact_step,
@@ -5212,6 +5231,9 @@ def choose_one_life_turn(
                         "active_event": event_summary,
                         "event_decision": registry_decision,
                     }
+                    if material_postcondition is not None:
+                        plan["event_material_postcondition"] = material_postcondition
+                    return plan
                 return {
                     "policy": "one-life-turn-v1",
                     "phase": "active_event_registry_choice_unsupported",

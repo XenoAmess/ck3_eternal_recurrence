@@ -1118,5 +1118,7 @@ strategic-power primitive；余下入口只有 policy-level campaign dominance�
   `CCharacter+0x1A8 -> extension+0x2F8` path. The Python driver validates and preserves non-negative values while accepting legacy
   snapshots that omit the field.
 - Release DLL and `game_access` fixture compile/link/run GREEN; Python normal/invalid-value tests are `2/2` GREEN. This remains
-  `static-ready / live=false`: a single future paused read must prove the production field, and the planner still needs a pre/post
-  same-character comparator. G2-M2 and global G2 remain `in_progress` and `0/8` respectively.
+  `static-ready / live=false`: a single future paused read must prove the production field. The planner/service/native-action chain now
+  binds exact `.0030` option 2 to the same-character before/after values; stress increase, identity drift or a missing ready observation is
+  RED, while unchanged stress cannot count as material evidence. Focused normal/optimized tests are `8/8` GREEN. G2-M2 and global G2 remain
+  `in_progress` and `0/8` respectively pending the bounded live outcome and the other two event loops.

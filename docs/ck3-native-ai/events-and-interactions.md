@@ -811,6 +811,7 @@ worker 重放 evaluator。只有 locator 无法稳定闭合时，才考虑在 ma
   description bundle 的 engine-generic structured terms/effect ABI。后两者和非 allowlisted target identity 是
   `interaction_semantic_decision_ready` 的最高优先级观测依赖；在闭合前继续 typed unavailable，不允许默认接受。
 - [implementation-confirmed, live pending] 通用 state snapshot 现已发布当前玩家的 `stress_points`，读取与战争退出资源
-  使用同一 exact-build character-extension leaf；它允许自然事件选择前后做物质状态对账，但不补齐 option effect magnitude。
-  `.0030` 仍需一次 paused production 读取与 planner 同角色前后比较，详见
+  使用同一 exact-build character-extension leaf。`.0030` 的 exact registry choice 已接入同角色前后 comparator：下降记为
+  material change，零值/不变单独记录，反向上升、身份漂移或 ready expectation 缺读数保持 RED。它不补齐通用 option effect
+  magnitude；仍需一次 bounded paused production 复核，详见
   [played-character-stress.md](played-character-stress.md)。

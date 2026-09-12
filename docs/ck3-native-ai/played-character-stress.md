@@ -59,13 +59,20 @@ extension + 0x2F8 -> int32 stress points
 3. 在后置 paused snapshot 中要求同一玩家角色且 `post_stress_points <= pre_stress_points`；
 4. 只有 `pre_stress_points > 0` 且实际读数下降时，才把该轮计入 G2-M2 的 material-delta 证据。
 
-若选择前已经为零，事件可以安全关闭，但该结果不能冒充“已验证压力物质变化”。registry consumer 尚未自动执行上述
-对账；这仍是下一个 Python 施工包。新字段也不改变 P1、视频门禁或当前 G2 `0/8` 完成数。
+若选择前已经为零，事件可以安全关闭，但该结果不能冒充“已验证压力物质变化”。registry consumer 已实现上述静态链：
+
+- planner 只为 exact `.0030` authored option 2/native 1 生成 `xar.ck3.vanilla-event-material-postcondition`；
+- action result 记录前后两个 snapshot 的同角色压力观察，不增加 query 或等待；
+- service 将结果分类为 `verified_change`、`verified_no_change`、`failed` 或 `unavailable`；
+- auto-run 对 ready expectation 的压力上升、身份/绑定漂移和读数缺失保持 RED。
+
+该 comparator 与字段仍是 `static-ready / live=false`。下一次允许启动 CK3 时，用一次有界 `.0030` 复核同时验证真实字段和
+同角色前后结果即可；不得为这个单事件扩成长跑。新字段也不改变 P1、视频门禁或当前 G2 `0/8` 完成数。
 
 ## 聚焦验证
 
 - Visual Studio 2026 Release：`xar_ck3_bridge.dll` 编译与链接 GREEN；
 - `xar_ck3_game_access_test.exe`：GREEN，覆盖 stress `42` 与负值拒绝；
 - Python native-driver 正常/异常合同：`2/2` GREEN；
+- event material comparator、planner/service/native action/runner 聚焦测试：normal/optimized 各 `8/8` GREEN；
 - `py_compile` 与 `git diff --check`：GREEN。
-
