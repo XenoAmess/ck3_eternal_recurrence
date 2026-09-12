@@ -81,7 +81,7 @@ def character_scope(character_id: int) -> dict[str, object]:
 def scalar_scope() -> dict[str, object]:
     return {
         "status": "available",
-        "raw_type_index": 9,
+        "raw_type_index": 1,
         "type_key": "value",
         "subtype": 0,
         "typed_identity": {

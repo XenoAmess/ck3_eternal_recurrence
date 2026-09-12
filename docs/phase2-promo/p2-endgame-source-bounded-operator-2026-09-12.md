@@ -58,3 +58,23 @@ lineage 已绑定 EXE SHA，但没有提供 schema-3 前缀要求的 game versio
 该工作包新增 Python target-side operator 与证据格式，没有修改 DLL、游戏文件、
 加载顺序或产品行为。下一步只执行一次 frontend warmup 加一次 gameplay；到达
 目标、出现真实 RED 或达到 30 日边界后立即停止，不扩成长跑。
+
+## R505/R506 首次 live 结果与合同修正
+
+当前轮次 R505 完成 frontend warmup 后终止；新轮次 R506/PID `180184` 是唯一
+CK3。loader GREEN 后，R506 从 `53365920` 推进 27 个游戏日并暂停在真实
+`zg361we.356` instance `620`，owner/player `32904`、三个选项均可用，未选择
+任何选项。
+
+canonical capture 保留 `source_event_scalar_scope_invalid` RED。实际
+`zg361_we_al_cycle` 为 `raw_type_index=1 / type_key=value / subtype=0`，旧合同
+只接受测试 fixture 中的 raw index `9`。exact-build scope ABI 已证明 generic
+type 的稳定身份是解析后的 `type_key`；只有 Character 的 index `4` 有固定 payload
+decoder。因此最小 Python 修正让 capture 与 receipt validator 接受任意正的非
+Character raw index，同时继续强制 `value`、subtype 0、unavailable typed identity
+并把实际 index 写入证据。它不改 mod、DLL、游戏文件或来源数值解释。
+
+聚焦 normal/optimized 验证各 `29/29` GREEN：cross-cycle capture `18`、source
+provider `9`、bounded action `2`。R506 在补丁与推送期间继续保持目标事件暂停；
+原 RED 不改写，后续只允许同一帧 Python 合同恢复或清理后从同一 27 日来源做一次
+新轮次，不延长 30 日边界。

@@ -285,3 +285,19 @@ A/B 边界，尚不能在没有复跑的情况下宣称因果已证明。
 这两次 2026-08-27 startup RED 继续作为历史失败证据保留，但“scope capability 未触达”的当时结论已由 R193–R207
 真实 product session supersede；不能再用它声称 current-event scope 全局 live=false。仍未完成的是同一 reader 的 generic
 fresh-cold 对照和非 Character payload breadth。后续也不会通过 startup guard、伪造资源或动作 ACK 扩大 live 结论。
+
+## R506：`value` 的 raw type index 不可由旧 fixture 固定
+
+2026-09-12 的 exact-build R506 在真实 `zg361we.356` instance `620` 上发布
+`zg361_we_al_cycle` 为 `raw_type_index=1 / type_key=value / subtype=0`，且
+`typed_identity=generic_scope_payload_identity_not_closed`。事件定义 SHA-256 为
+`29D1B867...43C38`，EXE 仍为 `2D00FF31...3DB86`；owner/player `32904`、日期
+`53366568` 和三个可用选项均已同帧闭合。
+
+来源 capture 的旧测试 fixture 把 `value` 误固定为 raw index `9`。这与本页既有
+ABI 边界一致：只有 Character 的 index `4` 有已闭合 payload decoder；generic
+scope 的稳定语义标签来自 registry 解析后的 `type_key`，不能让旧 fixture 的数字
+覆盖真实 wire。现行来源合同因此要求正的非 Character raw index、
+`type_key=value`、`subtype=0` 和原样 unavailable identity，并在 receipt 中保留
+实际 raw index。它仍不读取或猜测 value payload；cycle/case 数值继续由
+received-self Workforce provider 提供并与事件 full guard 互证。

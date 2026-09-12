@@ -194,6 +194,7 @@ def _event_scalar_scope_binding(context: object) -> dict[str, object]:
     for name in _EVENT_SCALAR_SCOPE_NAMES:
         scope = rows.get(name)
         scope = dict(scope) if isinstance(scope, Mapping) else {}
+        raw_type_index = scope.get("raw_type_index")
         typed_identity = scope.get("typed_identity")
         typed_identity = (
             dict(typed_identity)
@@ -202,7 +203,8 @@ def _event_scalar_scope_binding(context: object) -> dict[str, object]:
         )
         if not (
             scope.get("status") == "available"
-            and scope.get("raw_type_index") == 9
+            and _positive_int(raw_type_index)
+            and raw_type_index != 4
             and scope.get("type_key") == "value"
             and scope.get("subtype") == 0
             and typed_identity
@@ -218,7 +220,7 @@ def _event_scalar_scope_binding(context: object) -> dict[str, object]:
             )
         binding[name] = {
             "status": "available",
-            "raw_type_index": 9,
+            "raw_type_index": raw_type_index,
             "type_key": "value",
             "subtype": 0,
             "typed_identity": typed_identity,

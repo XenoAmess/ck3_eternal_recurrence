@@ -257,6 +257,7 @@ def _endgame_event_scalar_scopes(context: object) -> dict[str, object]:
             return {}
         raw_scope = matching[0].get("scope")
         scope = dict(raw_scope) if isinstance(raw_scope, Mapping) else {}
+        raw_type_index = scope.get("raw_type_index")
         identity_value = scope.get("typed_identity")
         identity = (
             dict(identity_value)
@@ -265,7 +266,8 @@ def _endgame_event_scalar_scopes(context: object) -> dict[str, object]:
         )
         if not (
             scope.get("status") == "available"
-            and scope.get("raw_type_index") == 9
+            and _positive_int(raw_type_index)
+            and raw_type_index != 4
             and scope.get("type_key") == "value"
             and scope.get("subtype") == 0
             and identity
@@ -277,7 +279,7 @@ def _endgame_event_scalar_scopes(context: object) -> dict[str, object]:
             return {}
         result[name] = {
             "status": "available",
-            "raw_type_index": 9,
+            "raw_type_index": raw_type_index,
             "type_key": "value",
             "subtype": 0,
             "typed_identity": identity,
