@@ -591,6 +591,48 @@ class Phase2EventChoreographyRunnerTests(unittest.TestCase):
         self.assertFalse(staged["scoreboard_modal_visible"])
         self.assertEqual(service.expected_revision, 10)
 
+    def test_drain_retries_one_transient_scoreboard_snapshot(self) -> None:
+        class TransientScoreboardService(_Service):
+            def __init__(self) -> None:
+                super().__init__()
+                self.query_count = 0
+
+            def query_zhongguo_scoreboard_state_v1(
+                self, _nonce: str, *, expected_revision: int
+            ) -> dict[str, object]:
+                self.expected_revision = expected_revision
+                self.query_count += 1
+                if self.query_count == 1:
+                    return {
+                        "status": "unavailable",
+                        "unavailable_reason": "acl_inconsistent",
+                        "widgets": [
+                            {
+                                "stable_identity": "zg361_scoreboard_modal",
+                                "exists": {
+                                    "status": "unavailable",
+                                    "value": None,
+                                },
+                                "effective_visible": {
+                                    "status": "unavailable",
+                                    "value": None,
+                                },
+                            }
+                        ],
+                    }
+                return _scoreboard(visible=False)
+
+        service = TransientScoreboardService()
+        adapter = capture._Phase2RealEventChoreographyService(service)
+        plan = phase2_event_sequence_plan(capture.PROMOTION_HANDLER)
+        with mock.patch.object(capture.time, "sleep"):
+            drained = adapter.drain_after_span(
+                plan, SimpleNamespace(artifacts=Path("unused")), {}
+            )
+        self.assertTrue(drained["no_blocking_surface"])
+        self.assertEqual(drained["scoreboard_retry_count"], 1)
+        self.assertEqual(service.query_count, 2)
+
     def test_manager_source_restores_player_publication_checkpoint_before_span(self) -> None:
         class RestoreService(_Service):
             @staticmethod
