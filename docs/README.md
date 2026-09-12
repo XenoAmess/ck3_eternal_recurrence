@@ -29,7 +29,7 @@
 - [autonomous-player-phase-a-evidence.md](autonomous-player-phase-a-evidence.md) — Phase A 三次真实 non-debug CK3 isolation smoke 的冻结指纹、hash-chain 一致性校验、诊断边界与明确非声明
 - [workshop-publishing.md](workshop-publishing.md) — **创意工坊发布**（启动器上传器）：物料清单、picture 路径解析、预览图 1MB 限制、remote_file_id 内外层之别、更新流程
 - [ck3-live-run-identifiers.md](ck3-live-run-identifiers.md) — 按执行机器与 mod 隔离的 CK3 实机编号、分配器、artifact receipt、多 mod 矩阵及旧全局 R 号迁移规则
-- [auto-upgrade-buildings-upstream.md](auto-upgrade-buildings-upstream.md) / [auto-upgrade-buildings-maintenance.md](auto-upgrade-buildings-maintenance.md) / [auto-upgrade-buildings-test-plan.md](auto-upgrade-buildings-test-plan.md) / [auto-upgrade-buildings-phase-2-plan.md](auto-upgrade-buildings-phase-2-plan.md) — “自动升级建筑”上游 3596580780 的逐文件冻结身份、1.19.0.6 维护与验收，以及全省份建筑覆盖、真实施工队列和 Great Project 的二期可行性与开发清单
+- [auto-upgrade-buildings-upstream.md](auto-upgrade-buildings-upstream.md) / [auto-upgrade-buildings-maintenance.md](auto-upgrade-buildings-maintenance.md) / [auto-upgrade-buildings-test-plan.md](auto-upgrade-buildings-test-plan.md) / [auto-upgrade-buildings-phase-2-plan.md](auto-upgrade-buildings-phase-2-plan.md) — “自动升级建筑”上游 3596580780 的逐文件冻结身份、1.19.0.6 维护与验收，以及 605 条普通省份建筑即时升级、排除边界和分层验收的二期开发清单
 - [reclaim-the-motherland-phase-2-plan.md](reclaim-the-motherland-phase-2-plan.md) — 《重整河山》二期 `0.2.0` 计划：留朝忠臣的头衔/国号稳定、尊王派二次忠诚判定、平衡目标与 MCP 优先验收合同
 - [workshop-publishing-mcp.md](workshop-publishing-mcp.md) — Paradox/Steam 实际发布协议、上传窗口资料故障与 `ck3_workshop_mcp` 实现入口
 - [desktop-coordinate-mapping.md](desktop-coordinate-mapping.md) — 任意屏幕/预览宽高比的显式换算、点击回执与英文输入法/文本读回合同
