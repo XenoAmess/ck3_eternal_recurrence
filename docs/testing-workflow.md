@@ -2718,3 +2718,21 @@ file, checkpoint, projection, rule, load order, pipe, state directory, or round
 identity changed, cleanup the current process and use a new numbered launch.
 The implementation and focused evidence are recorded in
 [the Stage 10 hot-resume contract](phase2-promo/stage10-python-contract-hot-resume-2026-09-12.md).
+### 从 Stage 10 合同误判 RED 提取 terminal gate
+
+只有当实机已经暂停在真实 `zg361mg.120`、同一 native frame 已证明精确
+owner/玩家 subject 的 F 案为 `state=5 / active=false`，且目标事件没有提交
+ACK 时，才允许用 `tools/extract_zg361_stage10_terminal_gate.py` 从保留的 RED
+artifact 生成 P1 terminal gate。调用方必须提供 RED 与 activation 的预期
+SHA-256；工具会复核 120 日绝对边界、事件 root/saved scopes、snapshot/revision、
+exact-build provenance 和 Stage 10 专用 readiness。源 RED 的 `result` 不会被改写，
+而是连同路径、哈希和失败原因写进新 gate 的 `preserved_red`。
+
+该工具只修正“aggregate provider readiness 包含与 Stage 10 无关的后续生命周期
+字段”这一已实证误判。真实产品失败、未出现目标事件、角色/帧不一致、F 未终结、
+越界或已提交目标 ACK 都继续返回 RED。聚焦验证命令为：
+
+```powershell
+py tools/test_extract_zg361_stage10_terminal_gate.py -v
+py -O tools/test_extract_zg361_stage10_terminal_gate.py -v
+```
