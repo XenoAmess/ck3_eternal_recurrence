@@ -2736,3 +2736,24 @@ exact-build provenance 和 Stage 10 专用 readiness。源 RED 的 `result` 不�
 py tools/test_extract_zg361_stage10_terminal_gate.py -v
 py -O tools/test_extract_zg361_stage10_terminal_gate.py -v
 ```
+
+### P2 跨周期来源的临近存档短验收
+
+最终宣传来源缺少 `zg361we.356` 时，使用
+`tools/zg361_phase2_endgame_source_operator_job.py` 从已经证明距目标不超过 30
+游戏日的 product checkpoint 进入；不得恢复早期 worldline 的 7190 日长跑。
+activation 的 `source_route.max_advance_days` 必须不超过 30，action 会把它写进
+production entry 的绝对日期截止并在运行中执行。operator 只暴露
+`status / run-source / cleanup`，一次 handoff 只发送一次 `run-source`。
+
+动作必须停在第一次真实 `zg361we.356`，随后复用 canonical capture primitive
+完成同帧保存、event/value-scope 复核、subject Workforce maturity 查询和 4/4
+registry 组装。到达目标、出现新 RED 或用尽 30 日边界后立即 cleanup；不得为
+单个来源继续扩大观察窗。聚焦静态命令为：
+
+```powershell
+py tools/test_zg361_phase2_endgame_source_action_cell.py
+py tools/test_zg361_phase2_endgame_source_operator_job.py
+py -O tools/test_zg361_phase2_endgame_source_action_cell.py
+py -O tools/test_zg361_phase2_endgame_source_operator_job.py
+```
