@@ -1168,3 +1168,15 @@ strategic-power primitive；余下入口只有 policy-level campaign dominance�
   `static-ready / live=false`. The R374 hot park has no durable checkpoint, so live material proof is encounter-driven and must not trigger a
   dedicated long run. All three G2-M2 target events now have static material comparators; three production material loops and campaign scoring
   remain open, so global G2 stays `0/8`.
+## 2026-09-13: G2-M2 bounded campaign utility profiles static-ready
+
+- The three exact target events now publish `xar.ck3.vanilla-event-campaign-utility/v1`. Each profile records a bounded objective,
+  source-reviewed ordinal rank, discrete utility facts and alternative reasons. `.0030` and `.8001` both rank native 1 first, directly
+  excluding a fixed-first-option policy; `.1007` is marked as the sole legal route and retains its adverse stress direction.
+- The registry copies a profile only when its native index matches the proven choice. `one-life-turn-v1` publishes it as
+  `event_campaign_utility` and marks campaign utility ready for that decision. `cross_event_numeric_score` stays null,
+  `calibration_status=not_calibrated` and `semantic_optimal=false`, so no unmeasured exchange rate between stress, gold, traits and time is
+  invented.
+- Focused query/policy/planner tests pass normal/optimized `26/26`. This closes the static objective/utility input for the three G2-M2 target
+  events. The completion gate remains three production recommendation/action/material loops; generic effect extraction, dynamic goal switching
+  and cross-domain numeric calibration remain breadth/quality debt rather than substitutes for those live outcomes. Global G2 stays `0/8`.

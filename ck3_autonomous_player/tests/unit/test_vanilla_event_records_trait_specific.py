@@ -92,6 +92,16 @@ class TraitSpecificEventRecordTests(unittest.TestCase):
             profile["observable_postcondition"]["metric"],
             "played_character_gold.raw",
         )
+        utility = response["analysis"][
+            "selected_choice_campaign_utility_profile"
+        ]
+        self.assertEqual(
+            utility["objective_id"],
+            "increase_liquid_reserve_without_random_persistence",
+        )
+        self.assertEqual(utility["selected_rank"], 1)
+        self.assertEqual(utility["rank_count"], 2)
+        self.assertIsNone(utility["cross_event_numeric_score"])
 
     def test_herbalist_seed_event_uses_deterministic_gold_route(self) -> None:
         contract = VANILLA_TRAIT_SPECIFIC_TIMELINE_CONTRACTS[

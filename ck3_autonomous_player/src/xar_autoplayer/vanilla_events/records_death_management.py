@@ -171,6 +171,25 @@ VANILLA_DEATH_MANAGEMENT_ANALYSIS: Final[
                 ),
             },
         },
+        "selected_choice_campaign_utility_profile": {
+            "schema": "xar.ck3.vanilla-event-campaign-utility",
+            "schema_version": 1,
+            "selected_native_option_index": 0,
+            "objective_id": "acknowledge_unavoidable_heir_death_event",
+            "comparison_kind": "sole_legal_route",
+            "selected_rank": 1,
+            "rank_count": 1,
+            "selected_utility": {
+                "material_direction": "cost",
+                "outcome_variance": "bounded",
+                "persistent_state_risk": "none_authored",
+                "timeline_value": "required_to_continue",
+            },
+            "alternatives": [],
+            "cross_event_numeric_score": None,
+            "calibration_status": "not_calibrated",
+            "decision_scope": "bounded_timeline_continuation",
+        },
         "after_effect": (
             "display-only custom tooltip: the killed tooltip when known_killer "
             "exists, otherwise the ordinary heir-death tooltip; it mutates no "

@@ -165,6 +165,14 @@ class VanillaEventRegistryPolicyTests(unittest.TestCase):
             profile["observable_postcondition"]["expected_relation"],
             "non_increasing",
         )
+        utility = result["campaign_utility_profile"]
+        self.assertTrue(result["campaign_utility_ready"])
+        self.assertEqual(
+            utility["objective_id"], "reduce_stress_without_delaying_travel"
+        )
+        self.assertEqual(utility["selected_rank"], 1)
+        self.assertEqual(utility["alternatives"][0]["native_option_index"], 0)
+        self.assertIsNone(utility["cross_event_numeric_score"])
 
     def test_exact_natural_disaster_option_variants_select_native_two(
         self,
@@ -218,6 +226,14 @@ class VanillaEventRegistryPolicyTests(unittest.TestCase):
             profile["observable_postcondition"]["expected_relation"],
             "strictly_increasing",
         )
+        utility = result["campaign_utility_profile"]
+        self.assertEqual(
+            utility["objective_id"],
+            "increase_liquid_reserve_without_random_persistence",
+        )
+        self.assertEqual(utility["selected_rank"], 1)
+        self.assertEqual(utility["alternatives"][0]["rank"], 2)
+        self.assertIsNone(utility["cross_event_numeric_score"])
 
     def test_heir_death_projection_requires_a_distinct_dead_character(
         self,
@@ -244,6 +260,14 @@ class VanillaEventRegistryPolicyTests(unittest.TestCase):
             profile["observable_postcondition"]["expected_relation"],
             "non_decreasing",
         )
+        utility = recommended["campaign_utility_profile"]
+        self.assertEqual(
+            utility["objective_id"],
+            "acknowledge_unavoidable_heir_death_event",
+        )
+        self.assertEqual(utility["comparison_kind"], "sole_legal_route")
+        self.assertEqual(utility["alternatives"], [])
+        self.assertIsNone(utility["cross_event_numeric_score"])
         self.assertEqual(drifted["status"], "blocked")
         self.assertIn(
             "scope:dead_character:unique_character_excludes",

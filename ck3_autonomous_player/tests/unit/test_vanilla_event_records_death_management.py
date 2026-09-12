@@ -124,6 +124,16 @@ class DeathManagementEventRecordTests(unittest.TestCase):
         self.assertFalse(
             profile["common_after_effects"][0]["material_state_change"]
         )
+        utility = analysis["selected_choice_campaign_utility_profile"]
+        self.assertEqual(
+            utility["objective_id"],
+            "acknowledge_unavoidable_heir_death_event",
+        )
+        self.assertEqual(utility["comparison_kind"], "sole_legal_route")
+        self.assertEqual(utility["selected_rank"], 1)
+        self.assertEqual(utility["rank_count"], 1)
+        self.assertEqual(utility["alternatives"], [])
+        self.assertIsNone(utility["cross_event_numeric_score"])
         self.assertEqual(len(analysis["source_sha256"]), 6)
         for digest in analysis["source_sha256"].values():
             self.assertRegex(digest, SHA256_PATTERN)

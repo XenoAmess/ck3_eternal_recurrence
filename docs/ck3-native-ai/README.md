@@ -83,6 +83,9 @@
 - [static-confirmed + historical action live, material live pending] [heir-death-stress.md](heir-death-stress.md)
   冻结 `death_management.1007` 的唯一选项、distinct dead-character scope 与 authored `+20` 压力档案；R374 已有 instance
   advance，但当时没有压力字段，因此同角色 non-decreasing material 对账只到 static-ready，今后遇到时有界补证。
+- [source-structured + implementation-confirmed, live pending] [event-campaign-utility.md](event-campaign-utility.md)
+  为 G2-M2 三个 exact 目标事件发布 bounded objective 与 source-reviewed ordinal utility；两个多选事件均选择 native1，
+  planner 显式记录目标、排名和替代原因，同时把跨域 numeric score 保持为未校准 null。
 - [static-confirmed + implementation-confirmed] [interaction-notification-ack.md](interaction-notification-ack.md)
   单独冻结人物互动 notification 的 full-generation 枚举、`+0x5C6` channel、enum-4 false validator seam、原生 UI
   construct/submit 与 manager transition；production bridge 已扩展为 notification 可见、paused typed query 可达和严格

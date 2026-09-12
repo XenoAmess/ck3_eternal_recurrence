@@ -296,6 +296,32 @@ VANILLA_TRAIT_SPECIFIC_ANALYSIS: Final[
                 ),
             },
         },
+        "selected_choice_campaign_utility_profile": {
+            "schema": "xar.ck3.vanilla-event-campaign-utility",
+            "schema_version": 1,
+            "selected_native_option_index": 1,
+            "objective_id": "increase_liquid_reserve_without_random_persistence",
+            "comparison_kind": "source_reviewed_ordinal",
+            "selected_rank": 1,
+            "rank_count": 2,
+            "selected_utility": {
+                "material_direction": "benefit",
+                "outcome_variance": "bounded_positive",
+                "persistent_state_risk": "none_authored",
+                "resource_cost": "none_authored",
+            },
+            "alternatives": [{
+                "native_option_index": 0,
+                "rank": 2,
+                "reason": (
+                    "runs a stochastic learning duel whose outcomes include a "
+                    "permanent trait, a ten-year modifier or no scripted benefit"
+                ),
+            }],
+            "cross_event_numeric_score": None,
+            "calibration_status": "not_calibrated",
+            "decision_scope": "bounded_timeline_continuation",
+        },
         "after_effect": None,
         "repeatability": (
             "the event defines no cooldown or one-shot flag; choosing native1 "

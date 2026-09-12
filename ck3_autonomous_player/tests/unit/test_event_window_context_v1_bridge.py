@@ -783,6 +783,15 @@ class EventWindowContractTests(unittest.TestCase):
             "exact-build-vanilla-event-registry-direct-projection-v1",
         )
         self.assertFalse(plan["event_decision"]["semantic_optimal"])
+        self.assertTrue(plan["event_decision"]["campaign_utility_ready"])
+        self.assertEqual(
+            plan["event_campaign_utility"]["objective_id"],
+            "reduce_stress_without_delaying_travel",
+        )
+        self.assertEqual(plan["event_campaign_utility"]["selected_rank"], 1)
+        self.assertIsNone(
+            plan["event_campaign_utility"]["cross_event_numeric_score"]
+        )
         self.assertEqual(plan["event_material_postcondition"]["status"], "ready")
         self.assertEqual(
             plan["event_material_postcondition"]["starting_value"], 42

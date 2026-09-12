@@ -129,6 +129,16 @@ campaign 自然再遇时顺手做一次 bounded 前后对账，不为 `.1007` �
 三条 production material loops 与跨事件 campaign objective 评分仍未闭合，所以 G2-M2 继续 in progress、总进度仍为 `0/8`。
 详见 [`heir-death-stress.md`](../ck3-native-ai/heir-death-stress.md)。
 
+三个目标事件的 bounded campaign objective/utility 输入也已 static-ready。每个 analysis record 现发布 versioned ordinal profile；
+policy 只在 exact native choice 对齐时复制，`one-life-turn-v1` 把它写入 `event_campaign_utility`。`.0030` 以“减压且不延误旅程”
+为目标，`.8001` 以“增加流动金币且不引入随机持久状态”为目标，两者都将 native1 排为当前首选；`.1007` 则诚实记录唯一合法路线
+及其不可避免的压力成本。planner 因此不再只写“bounded continuation”，而是保存 objective、selected rank、utility 特征和替代原因。
+
+该评分为 source-reviewed ordinal，不是跨域数值模型：`cross_event_numeric_score=null`、`calibration_status=not_calibrated`、
+`semantic_optimal=false`。它关闭三个 exact 事件的最小静态“目标和 utility”输入；实时压力/财政/继承风险驱动的动态目标切换、通用
+event-context-v2 effect visitor 与更多事件仍是扩展债，不再作为这三个事件 live loop 的前置。聚焦测试 normal/optimized 各
+`26/26` GREEN，详见 [`event-campaign-utility.md`](../ck3-native-ai/event-campaign-utility.md)。
+
 战争 controller 的既有成熟执行器继续保留；assigned reinforcement、terminal 长尾与更多 CB 改为真实 encounter 驱动。
 宗教域继续暂缓，只允许战争中的圣战和婚姻合法性/接受度所需的最小原生最终判定，不借此扩展通用宗教模型。
 

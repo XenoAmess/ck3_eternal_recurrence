@@ -5209,6 +5209,9 @@ def choose_one_life_turn(
                 rendered_index = registry_decision.get(
                     "selected_rendered_index"
                 )
+                campaign_utility = registry_decision.get(
+                    "campaign_utility_profile"
+                )
                 assert isinstance(native_index, int)
                 assert isinstance(option_number, int)
                 exact_step = event_option_step(option_number)
@@ -5219,6 +5222,9 @@ def choose_one_life_turn(
                         "selected_native_option_index": native_index,
                         "selected_rendered_index": rendered_index,
                         "semantic_optimal": False,
+                        "campaign_utility_ready": (
+                            isinstance(campaign_utility, dict)
+                        ),
                         "registry_decision": registry_decision,
                     }
                 )
@@ -5238,6 +5244,8 @@ def choose_one_life_turn(
                     }
                     if material_postcondition is not None:
                         plan["event_material_postcondition"] = material_postcondition
+                    if isinstance(campaign_utility, dict):
+                        plan["event_campaign_utility"] = campaign_utility
                     return plan
                 return {
                     "policy": "one-life-turn-v1",

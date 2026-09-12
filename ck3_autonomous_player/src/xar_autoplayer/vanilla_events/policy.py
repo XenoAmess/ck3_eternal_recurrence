@@ -22,6 +22,10 @@ VANILLA_EVENT_REGISTRY_CHOICE_POLICY: Final = (
 )
 _CHOICE_EFFECT_PROFILE_SCHEMA: Final = "xar.ck3.vanilla-event-choice-effect"
 _CHOICE_EFFECT_PROFILE_SCHEMA_VERSION: Final = 1
+_CAMPAIGN_UTILITY_PROFILE_SCHEMA: Final = (
+    "xar.ck3.vanilla-event-campaign-utility"
+)
+_CAMPAIGN_UTILITY_PROFILE_SCHEMA_VERSION: Final = 1
 
 # These fields need a context-aware resolver. The first consumer stays on the
 # direct projection that closed the real tgp_travel_events.0030 blocker.
@@ -109,6 +113,38 @@ def _selected_choice_effect_profile(
     return dict(profile)
 
 
+def _selected_campaign_utility_profile(
+    knowledge: Mapping[str, object], native_index: int
+) -> dict[str, object] | None:
+    analysis = knowledge.get("analysis")
+    if not isinstance(analysis, Mapping):
+        return None
+    profile = analysis.get("selected_choice_campaign_utility_profile")
+    if not isinstance(profile, Mapping):
+        return None
+    selected_rank = _integer(profile.get("selected_rank"))
+    rank_count = _integer(profile.get("rank_count"))
+    if not (
+        profile.get("schema") == _CAMPAIGN_UTILITY_PROFILE_SCHEMA
+        and profile.get("schema_version")
+        == _CAMPAIGN_UTILITY_PROFILE_SCHEMA_VERSION
+        and _integer(profile.get("selected_native_option_index"))
+        == native_index
+        and isinstance(profile.get("objective_id"), str)
+        and profile.get("comparison_kind")
+        in {"source_reviewed_ordinal", "sole_legal_route"}
+        and selected_rank is not None
+        and rank_count is not None
+        and 1 <= selected_rank <= rank_count
+        and isinstance(profile.get("selected_utility"), Mapping)
+        and isinstance(profile.get("alternatives"), list)
+        and profile.get("cross_event_numeric_score") is None
+        and profile.get("calibration_status") == "not_calibrated"
+    ):
+        return None
+    return dict(profile)
+
+
 def _response(
     *,
     status: str,
@@ -120,6 +156,7 @@ def _response(
     rendered_index: int | None = None,
     option_variant_index: int | None = None,
     choice_effect_profile: Mapping[str, object] | None = None,
+    campaign_utility_profile: Mapping[str, object] | None = None,
 ) -> dict[str, object]:
     checked = dict(checks or {})
     return {
@@ -151,6 +188,12 @@ def _response(
         "choice_effect_profile": (
             dict(choice_effect_profile)
             if choice_effect_profile is not None
+            else None
+        ),
+        "campaign_utility_ready": campaign_utility_profile is not None,
+        "campaign_utility_profile": (
+            dict(campaign_utility_profile)
+            if campaign_utility_profile is not None
             else None
         ),
         "checks": checked,
@@ -491,6 +534,9 @@ def recommend_registered_vanilla_event_option_v1(
         rendered_index=selected_rendered,
         option_variant_index=option_variant_index,
         choice_effect_profile=_selected_choice_effect_profile(
+            knowledge, selected_native
+        ),
+        campaign_utility_profile=_selected_campaign_utility_profile(
             knowledge, selected_native
         ),
     )

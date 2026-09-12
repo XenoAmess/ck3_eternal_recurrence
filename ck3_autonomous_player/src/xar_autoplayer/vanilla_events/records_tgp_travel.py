@@ -119,6 +119,32 @@ VANILLA_TGP_TRAVEL_ANALYSIS: Final[
                 ),
             },
         },
+        "selected_choice_campaign_utility_profile": {
+            "schema": "xar.ck3.vanilla-event-campaign-utility",
+            "schema_version": 1,
+            "selected_native_option_index": 1,
+            "objective_id": "reduce_stress_without_delaying_travel",
+            "comparison_kind": "source_reviewed_ordinal",
+            "selected_rank": 1,
+            "rank_count": 2,
+            "selected_utility": {
+                "material_direction": "benefit",
+                "outcome_variance": "bounded",
+                "persistent_state_risk": "none_authored",
+                "time_cost": "none_authored",
+            },
+            "alternatives": [{
+                "native_option_index": 0,
+                "rank": 2,
+                "reason": (
+                    "delays travel five days and introduces a stochastic duel "
+                    "with XP, trait and stress branches"
+                ),
+            }],
+            "cross_event_numeric_score": None,
+            "calibration_status": "not_calibrated",
+            "decision_scope": "bounded_timeline_continuation",
+        },
         "after_effect": None,
         "follow_up_event": None,
         "repeatability": "the event owns a ten-year cooldown and no one-shot flag",

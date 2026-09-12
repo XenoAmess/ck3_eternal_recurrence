@@ -25,6 +25,16 @@ class VanillaTgpTravelEventRecordTests(unittest.TestCase):
             profile["observable_postcondition"]["expected_relation"],
             "non_increasing",
         )
+        utility = response["analysis"][
+            "selected_choice_campaign_utility_profile"
+        ]
+        json.dumps(utility, allow_nan=False)
+        self.assertEqual(
+            utility["objective_id"], "reduce_stress_without_delaying_travel"
+        )
+        self.assertEqual(utility["selected_rank"], 1)
+        self.assertEqual(utility["rank_count"], 2)
+        self.assertIsNone(utility["cross_event_numeric_score"])
 
 
 if __name__ == "__main__":

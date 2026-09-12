@@ -835,3 +835,8 @@ worker 重放 evaluator。只有 locator 无法稳定闭合时，才考虑在 ma
   effect profile 记录 authored stress base `+20` 和 `non_decreasing` 后置。R374 已证明 instance advance，但旧帧没有玩家压力读数，
   且 hot park 没有 durable checkpoint；material delta 只待今后自然 encounter 的一次有界复核，详见
   [heir-death-stress.md](heir-death-stress.md)。
+- [source-structured, live pending] G2-M2 三个 exact 目标事件已发布
+  `xar.ck3.vanilla-event-campaign-utility/v1`。profile 记录 bounded objective、source-reviewed ordinal rank、离散 utility 特征和替代
+  原因；`.0030` 与 `.8001` 都选择 native1，`.1007` 明确标为 sole route。planner 输出 `event_campaign_utility`，但
+  `cross_event_numeric_score=null`、`semantic_optimal=false`，不伪造跨压力/金币/trait 的统一标尺。详见
+  [event-campaign-utility.md](event-campaign-utility.md)。
