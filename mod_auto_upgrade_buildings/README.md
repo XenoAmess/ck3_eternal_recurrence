@@ -19,7 +19,7 @@
 ## 维护目标
 
 目标运行时为本机冻结的 CK3 `1.19.0.6 (Scribe)`、Steam build `23530548`。兼容性修复、静态门与隔离核心实机矩阵均已完成；
-实机证据见 `../docs/auto-upgrade-buildings-maintenance.md`。正式版提供简体中文、英文、法文、德文、日文、韩文、波兰文、俄文和西班牙文；Workshop 文案维护在
+维护基线证据见 `../docs/auto-upgrade-buildings-maintenance.md`，三期资金策略与 R0025 证据见 `../docs/auto-upgrade-buildings-phase-3-plan.md`。正式版提供简体中文、英文、法文、德文、日文、韩文、波兰文、俄文和西班牙文；Workshop 文案维护在
 `../workshop/auto_upgrade_buildings_description.bbcode`。
 
 本维护版保留上游署名和来源，并已获得原 Mod 作者授权进行二次开发与发布。

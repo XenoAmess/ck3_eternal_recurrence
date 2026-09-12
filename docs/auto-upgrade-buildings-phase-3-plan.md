@@ -1,6 +1,6 @@
 # “自动升级建筑”三期：资金来源选择需求与开发计划
 
-状态：**需求与可行性分析完成；尚未修改产品代码、启动 CK3 或进入发布流程**
+状态：**三期实现与 R0025 实机验收 GREEN；正式发布收口中**
 
 候选版本：`3.0.0`
 
@@ -204,3 +204,35 @@ GREEN、抽样实机 GREEN。release-complete 还必须完成正式构建、Work
 - 原版选项列表示例：`00_diarchy_decisions.txt` 和 `06_ce1_decisions.txt`；二者均使用
   `decision_option_list_controller`，并通过 `scope:<item.value>` 在决议 effect 中读取选择。
 - 二期范围与现有实机合同：[auto-upgrade-buildings-phase-2-plan.md](auto-upgrade-buildings-phase-2-plan.md)。
+
+## 11. 2026-09-13 实现与验收记录
+
+三期实现已落在 `3.0.0`：
+
+- 【启用自动建造】复用 CK3 原生 `decision_view_widget_option_list_generic`，按“只用国库／只用个人金钱／优先国库”显示三项，优先国库为默认。
+- 只增加 `aub_funding_treasury_only` 与 `aub_funding_personal_only` 两个持久角色 flag；两者都不存在即优先国库，所以 2.0.0 旧存档无需迁移。
+- 生成器集中生成 `aub_can_pay_gold_building_cost_trigger` 和同序扣费分派；605 条升级边全部调用同一个资格入口，不再各自复制固定的国库 OR 个人逻辑。
+- 三种模式均要求单一账户完整覆盖金币费用；威望、虔诚和 scripted cost 的非金币部分保持原有检查与扣除。
+- 九种语言已补齐 9 个新增／变更键；正式 staging 仍为 exact allowlist 15 文件。
+
+静态与构建证据：
+
+- `py tools/validate_auto_upgrade_buildings_static.py`：GREEN；165 条建筑链、605 条升级边，已安装 CK3 1.19.0.6 原版图谱逐字节一致。
+- `py tools/test_build_auto_upgrade_buildings_release.py`：7/7 GREEN。
+- `py tools/test_translate_localization_minimax.py`：26/26 GREEN。
+- `py tools/build_auto_upgrade_buildings_release.py --check`：GREEN；实现提交 `1364537292f291735f315ceaceab06701d3e0c7c` 上的 manifest SHA-256 为 `20EC2930A507D7ADA8762F84B6764C80E0837C6C2CF899151E100F6D4B1EB375`，ZIP SHA-256 为 `933BA24CEF3F4F4BBB9985FC5DCFB1CDFC768CA1215614275CAAF7425D713A29`。
+
+正式实机为 `desktop-3fevhd2-1c74096080--auto-upgrade-buildings--R0025`，在 CK3 `1.19.0.6`、非 debug、隔离一次性 `-userdir` 中于 425.297 秒完成并 GREEN：
+
+- 原生决议真实显示三个选项，纵向中心依次为 `689 / 774 / 859`；三项均实际点击，最终选择“优先国库”，再经二阶段确认执行。fixture 在任何自身 flag 修改前证明了 `enable_auto_build` 已设置且两个覆盖 flag 均不存在。
+- “只用国库”在两侧足额时仅扣国库，国库不足时不回退个人；“只用个人”在两侧足额时仅扣个人，个人不足时不回退国库。
+- “优先国库”保留旧版国库优先与个人兜底；国库 150、个人 150、单笔费用 250 时不升级且两侧余额不变，证明不存在拆分付款。
+- 二期抽样回归继续通过城堡／城市／神殿／部落／曼荼罗神殿城塞主建筑、普通／公国／特殊建筑、金币加威望、金币加虔诚、scripted cost、原版资格拒绝、游牧／牧民 N/A、单级升级、停用与重新启用。
+- 项目诊断为 0；产品树、fixture 树、源树和真实受保护资料均未变化；一次性 userdir 已删除，CK3 受控退出且最终进程数为 0。
+
+持久证据目录：`D:\workspace\ck3_auto_upgrade_runtime\phase3-live-r1-20260913`（53 文件，116,273,013 bytes）。顶层 `report.json` SHA-256 为
+`1314C1AD8E9B5AA2916892151932C42E6F75956AED7509D1C0F398F00092B706`；cell report SHA-256 为
+`FE5D279ADD89D4C874381AD4E839BB1CCC257B5700F29D7D387372F43A405D7E`；实机加载的 production projection 树 SHA-256 为
+`F03AF195BBDC6400CADCF107C19E2A8D0D151FD942DBB8517C448E7608178895`。
+
+Open Kaishek 已成功由 GraalVM Java 启动并在 0.508 秒内返回报告，故本轮不存在 Java 启动器卡死或环境 RED。其 root parser 为 GREEN；产品专用 fixture 尚未被该工具注册、validator 尚未覆盖这些 CK3 opcode，因此适配器按既有合同将 `unknown-fixture / UNKNOWN_OPCODE` 记为 non-required semantic coverage RED；该结果不冒充语义验收，也不改变上面的 CK3 正式 GREEN。
