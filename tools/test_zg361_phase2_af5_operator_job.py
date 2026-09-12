@@ -68,7 +68,23 @@ class Af5OperatorJobTests(unittest.TestCase):
         self.assertEqual(result["result"], "GREEN")
         self.assertFalse(result["launch_requested"])
         self.assertFalse(result["cleanup_requested"])
-        self.assertEqual(result["controls"], ["status", "run-af5", "retry-af5", "cleanup"])
+        self.assertEqual(
+            result["controls"],
+            ["status", "run-af5", "retry-policy", "retry-af5", "cleanup"],
+        )
+
+    def test_standard_retry_policy_rejects_without_retained_red(self) -> None:
+        instance = job.Af5OperatorJob(Path("activation.json"))
+        with mock.patch.object(job, "ck3_pids", return_value=[]):
+            response = instance.retry_policy()
+        self.assertFalse(response["accepted"])
+        self.assertEqual(response["control"], "retry-policy")
+        self.assertEqual(response["job_retry_control"], "retry-af5")
+        policy = response["retry_policy"]
+        self.assertEqual(policy["kind"], "xar_pre_input_retry_policy_v1")
+        self.assertEqual(policy["reason_code"], "NO_ELIGIBLE_RETAINED_FAILURE")
+        self.assertTrue(policy["prior_attempt_immutable"])
+        self.assertFalse(policy["game_deadline_may_expand"])
 
     def test_failure_evidence_is_preserved_without_running_or_reselecting(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:

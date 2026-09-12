@@ -21,7 +21,7 @@ from typing import Mapping, Sequence
 import zg361_phase2_af5_operator_job as base
 
 
-CONTROLS = ["status", "run-stage10", "retry-stage10", "cleanup"]
+CONTROLS = ["status", "run-stage10", "retry-policy", "retry-stage10", "cleanup"]
 JOB_ROLE = "stage10-player-subject"
 SOURCE_RECEIPT_KIND = "zg361_stage10_player_publication_source_v6"
 SOURCE_RECEIPT_KIND_V7 = "zg361_stage10_player_publication_source_v7"
@@ -1122,6 +1122,8 @@ class Stage10PlayerSubjectOperatorJob(base.Af5OperatorJob):
                 response = self.start()
             elif command == "retry-stage10":
                 response = self.retry()
+            elif command == "retry-policy":
+                response = self.retry_policy()
             elif command == "cleanup":
                 response = self.perform_cleanup()
             else:

@@ -417,7 +417,7 @@ class Af5OperatorJob:
                     else None
                 ),
                 "cleanup": copy.deepcopy(self.cleanup),
-                "controls": ["status", "run-af5", "retry-af5", "cleanup"],
+                "controls": ["status", "run-af5", "retry-policy", "retry-af5", "cleanup"],
                 "video_lock_touched": False,
             }
 
@@ -466,6 +466,46 @@ class Af5OperatorJob:
             self.worker = threading.Thread(target=self._run_retry, name="af5-hot-retry", daemon=False)
             self.worker.start()
             return {**self.status(), "control": "retry-af5", "accepted": True}
+
+    def retry_policy(self) -> dict[str, object]:
+        """Expose one machine-readable retry control across operator jobs.
+
+        Job-specific retry names remain compatible aliases. A job which is
+        not on an eligible retained pre-input RED frame returns a structured
+        rejection instead of omitting retry from its control protocol.
+        """
+
+        response = dict(self.retry())
+        job_control = str(response.get("control", "retry-af5"))
+        accepted = response.get("accepted") is True
+        reason = response.get("reason")
+        if accepted:
+            reason_code = "RETRY_ACCEPTED"
+        elif isinstance(reason, str) and "input already attempted" in reason:
+            reason_code = "TARGET_INPUT_ALREADY_ATTEMPTED"
+        elif isinstance(reason, str) and "no completed" in reason:
+            reason_code = "NO_ELIGIBLE_RETAINED_FAILURE"
+        else:
+            reason_code = "JOB_RETRY_REJECTED"
+        response.update(
+            control="retry-policy",
+            job_retry_control=job_control,
+            retry_policy={
+                "schema_version": 1,
+                "kind": "xar_pre_input_retry_policy_v1",
+                "accepted": accepted,
+                "reason_code": reason_code,
+                "requires_frozen_red": True,
+                "requires_zero_target_input": True,
+                "requires_same_paused_binding": True,
+                "loaded_game_inputs_must_match": True,
+                "python_policy_reload_only": True,
+                "prior_attempt_immutable": True,
+                "new_attempt_artifact_required": True,
+                "game_deadline_may_expand": False,
+            },
+        )
+        return response
 
     def _run_retry(self) -> None:
         try:
@@ -844,10 +884,12 @@ class Af5OperatorJob:
                 response = self.start()
             elif command == "retry-af5":
                 response = self.retry()
+            elif command == "retry-policy":
+                response = self.retry_policy()
             elif command == "cleanup":
                 response = self.perform_cleanup()
             else:
-                response = {"result": "RED", "error": "unknown control", "controls": ["status", "run-af5", "retry-af5", "cleanup"]}
+                response = {"result": "RED", "error": "unknown control", "controls": ["status", "run-af5", "retry-policy", "retry-af5", "cleanup"]}
             print(json.dumps(response, ensure_ascii=False), flush=True)
         worker = self.worker
         if worker is not None and worker.is_alive():
@@ -865,7 +907,7 @@ def no_launch_preflight(activation_path: Path | None = None) -> dict[str, object
         "result": "GREEN",
         "launch_requested": False,
         "cleanup_requested": False,
-        "controls": ["status", "run-af5", "retry-af5", "cleanup"],
+        "controls": ["status", "run-af5", "retry-policy", "retry-af5", "cleanup"],
         "single_ck3_gate": True,
         "af5_route": {"event_definition_key": RESULT_EVENT, "authored_option": 42, "native_index": 41},
         "action_ack_is_business_postcondition": False,

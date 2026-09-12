@@ -13,7 +13,7 @@ from typing import Mapping, Sequence
 import zg361_phase2_af5_operator_job as base
 
 
-CONTROLS = ["status", "capture-source", "cleanup"]
+CONTROLS = ["status", "capture-source", "retry-policy", "cleanup"]
 JOB_ROLE = "stage10-player-source-capture"
 TOPOLOGY_KIND = "ck3_save_player_topology_offline_v1"
 DISCOVERY_KIND = "ck3_character_scope_discovery_offline_v1"
@@ -691,6 +691,8 @@ class Stage10PlayerSourceCaptureOperatorJob(base.Af5OperatorJob):
                 response = self.status()
             elif command == "capture-source":
                 response = self.start()
+            elif command == "retry-policy":
+                response = self.retry_policy()
             elif command == "cleanup":
                 response = self.perform_cleanup()
             else:

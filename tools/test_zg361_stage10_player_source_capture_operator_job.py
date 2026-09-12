@@ -369,9 +369,21 @@ class Stage10PlayerSourceCaptureTests(unittest.TestCase):
         self.assertEqual(validated["managed_source_exact_subject_count"], 1)
         self.assertEqual(validated["managed_source_cycle"], 5)
 
-    def test_control_surface_has_no_retry(self) -> None:
-        self.assertEqual(capture.CONTROLS, ["status", "capture-source", "cleanup"])
-        self.assertNotIn("retry", " ".join(capture.CONTROLS))
+    def test_control_surface_exposes_standard_retry_rejection(self) -> None:
+        self.assertEqual(
+            capture.CONTROLS,
+            ["status", "capture-source", "retry-policy", "cleanup"],
+        )
+        instance = capture.Stage10PlayerSourceCaptureOperatorJob(
+            Path("activation.json")
+        )
+        with mock.patch.object(capture.base, "ck3_pids", return_value=[]):
+            response = instance.retry_policy()
+        self.assertFalse(response["accepted"])
+        self.assertEqual(
+            response["retry_policy"]["reason_code"],
+            "NO_ELIGIBLE_RETAINED_FAILURE",
+        )
 
 
 if __name__ == "__main__":

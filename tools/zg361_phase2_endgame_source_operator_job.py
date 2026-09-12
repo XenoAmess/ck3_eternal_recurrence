@@ -16,7 +16,7 @@ from typing import Mapping, Sequence
 import zg361_phase2_af5_operator_job as base
 
 
-CONTROLS = ["status", "run-source", "retry-source", "cleanup"]
+CONTROLS = ["status", "run-source", "retry-policy", "retry-source", "cleanup"]
 JOB_ROLE = "phase2-endgame-source"
 EXPECTED_OWNER_CHARACTER_ID = 32904
 
@@ -389,6 +389,8 @@ class EndgameSourceOperatorJob(base.Af5OperatorJob):
                 response = self.start()
             elif command == "retry-source":
                 response = self.retry()
+            elif command == "retry-policy":
+                response = self.retry_policy()
             elif command == "cleanup":
                 response = self.perform_cleanup()
             else:

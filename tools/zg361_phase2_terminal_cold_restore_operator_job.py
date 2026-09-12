@@ -13,7 +13,7 @@ from typing import Mapping, Sequence
 import zg361_phase2_af5_operator_job as base
 
 
-CONTROLS = ["status", "run-cold-restore", "retry-cold-restore", "cleanup"]
+CONTROLS = ["status", "run-cold-restore", "retry-policy", "retry-cold-restore", "cleanup"]
 JOB_ROLE = "terminal-cold-restore"
 
 
@@ -304,6 +304,8 @@ class TerminalColdRestoreOperatorJob(base.Af5OperatorJob):
                 response = self.start()
             elif command == "retry-cold-restore":
                 response = self.retry()
+            elif command == "retry-policy":
+                response = self.retry_policy()
             elif command == "cleanup":
                 response = self.perform_cleanup()
             else:

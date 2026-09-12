@@ -20,7 +20,7 @@ from typing import Mapping, Sequence
 
 import zg361_phase2_af5_operator_job as base
 
-CONTROLS = ["status", "run-stages", "retry-stages", "cleanup"]
+CONTROLS = ["status", "run-stages", "retry-policy", "retry-stages", "cleanup"]
 JOB_ROLE = "terminal-stages"
 B1_CAPABILITY = "game.command.query-zhongguo-b1-cycle-snapshot-v1"
 STAGE10_SOURCE_KIND = "zg361_stage10_player_subject_source_v1"
@@ -475,6 +475,8 @@ class TerminalStagesOperatorJob(base.Af5OperatorJob):
                 response = self.start()
             elif command == "retry-stages":
                 response = self.retry()
+            elif command == "retry-policy":
+                response = self.retry_policy()
             elif command == "cleanup":
                 response = self.perform_cleanup()
             else:
