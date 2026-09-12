@@ -7,7 +7,7 @@
 `tools/zhongguo_phase2_event_choreography.py` 因此把每段固定为：
 
 1. 用 canonical seed/save lineage 或真实时间线显式 staging 本段 source；
-2. 运行既有产品 action cell，并由 provider 验证业务 postcondition；
+2. 运行产品 action cell，并由原生 provider 验证该段真实 postcondition；
 3. 对需要额外呈现的结果事件按固定顺序等待真实 UI；
 4. 在最后一个 capture surface 仍可见时执行 outer `clean_hold`；
 5. clean hold 之后关闭当前 surface，再 drain 到无活动事件、无阻挡 surface；
@@ -22,7 +22,7 @@ staging receipt 必须明确 `console_used=false`、`test_fixture_used=false`，
 | `phase2_fact_quota_calibration` | event-free paused map | `named_widget:zg361_scoreboard_modal` | 无 |
 | `phase2_receipt_appeal_pip` | `zg361b2.40` | `named_widget:zg361_scoreboard_modal` | PIP 选择及同案 provider 后置条件通过后打开真实榜单，展示执行中的 PIP；`zg361.4` 是更早的考绩送达事件，不是 PIP 选择的后继 |
 | `phase2_manager_governance` | event-free paused map | `zg361mg.120` | 等到并验证 `zg361mg.120` |
-| `phase2_promotion_compensation` | `zg361pp.147` | `zg361comp.1` | 无 |
+| `phase2_promotion_compensation` | `zg361pp.147` | `zg361pp.148` | 选择 `.147` option 1 后以 speed 1 有界推进，原生查询必须在 48 游戏小时内读到同一玩家、同一保存 subject 的真实 `.148`；补偿 AF5 按 P1 独立 provider/action cell 签收 |
 | `phase2_hc_workforce` | `zg361we.360` | `zg361we.361` | 无 |
 | `phase2_projects_metrics` | `zg361cp.26` | `zg361p3.229` | 无 |
 | `phase2_incidents_operations` | `zg361.50` | `zg361ip.390` | `.190` → close → `.290` → close → `.390` |
@@ -128,5 +128,7 @@ Incident 项还必须携带 strict `received_self_incident_checkpoint_receipt`�
 player=root=subject、distinct saved notice owner、option 1 shown/enabled、同帧 native save，以及同一 bytes/hash/lineage/date 绑定。
 assembler 将其归档进 registry；正式 preflight 会再次验证完整 receipt，并与当前 paused player 和 seed 中的 Incident owner 交叉绑定。
 ACK 不作为结果证据，后续 GREEN 仍必须来自 Incident X/Y/Z terminal/KPI provider postcondition 与 wrong-owner typed RED。
+
+Promotion 的旧编排曾把 `.147` 选择后继写成 `zg361comp.1`。生产阶段顺序已由 R400 源码调用链及 R402 实机证明：AF5 补偿先完成，Central stage 3 才进入 PP；`.147` option 1 只会通过 T stage 1 在 D+1 安排 `.148`。因此正式 P2 捕获不得等待、推进或修改业务去制造 `.147 → comp.1`。第 4 段只验收真实 `.147 → .148` PP 边，AF5 继续引用独立 P1 GREEN；两类证据不得相互冒充。
 生成后的 registry 仍须作为 `run_zhongguo_acceptance.py --phase2-promo-capture` 的
 `--phase2-source-checkpoint-registry` 输入，由正式 runner 在录制前再次核对字节、lineage、恢复接口和恢复后的 exact event identity。

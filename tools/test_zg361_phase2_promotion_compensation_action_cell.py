@@ -21,8 +21,11 @@ from xar_autoplayer.bridge.zhongguo_promotion_compensation_postcondition_contrac
 )
 from zg361_phase2_promotion_compensation_action_cell import (  # noqa: E402
     IMPLEMENTATION_READINESS,
+    PP_SUCCESSOR_EVENT_DEFINITION_KEY,
     PromotionCompensationActionCellError,
+    PromotionPpSuccessorActionCellError,
     run_promotion_compensation_gameplay_action_cell,
+    run_promotion_pp_successor_gameplay_action_cell,
 )
 
 
@@ -85,6 +88,9 @@ class _FakeService:
         self.choice_receipt = RECEIPT
         self.compensation_receipt = RECEIPT
         self.result_generation = GENERATION
+        self.result_event_key = "zg361comp.1"
+        self.result_has_source_scopes = False
+        self.result_scope_subject = SUBJECT
         self.missing_capability: str | None = None
         self.provider_calls = 0
 
@@ -106,7 +112,7 @@ class _FakeService:
             "native_revision": (
                 RESULT_NATIVE_REVISION if result else SOURCE_NATIVE_REVISION
             ),
-            "date_raw": DATE_RAW + (1 if result else 0),
+            "date_raw": DATE_RAW + (24 if result else 0),
             "paused": True,
             "map_ready": True,
             "played_character": {"character_id": OWNER},
@@ -130,7 +136,7 @@ class _FakeService:
         if event_instance_id != expected_instance:
             raise ValueError("wrong fake event instance")
         saved_scopes: list[dict[str, object]] = []
-        if source:
+        if source or self.result_has_source_scopes:
             saved_scopes = [
                 {
                     "name": "zg361_pp_prompt_owner",
@@ -138,7 +144,9 @@ class _FakeService:
                 },
                 {
                     "name": "zg361_pp_prompt_subject",
-                    "scope": _character_scope(SUBJECT),
+                    "scope": _character_scope(
+                        SUBJECT if source else self.result_scope_subject
+                    ),
                 },
                 *[
                     {"name": name, "scope": _scalar_scope()}
@@ -161,7 +169,9 @@ class _FakeService:
             },
             "current_event_window_context": {
                 "status": "available",
-                "event_definition_key": "zg361pp.147" if source else "zg361comp.1",
+                "event_definition_key": (
+                    "zg361pp.147" if source else self.result_event_key
+                ),
                 "current_event_instance_id": event_instance_id,
                 "snapshot_revision": snapshot["native_revision"],
                 "date_raw": snapshot["date_raw"],
@@ -299,6 +309,51 @@ def _advance(
 
 
 class PromotionCompensationActionCellTests(unittest.TestCase):
+    def test_real_pp_successor_is_provider_observed_without_compensation_query(self) -> None:
+        service = _FakeService()
+        service.result_event_key = PP_SUCCESSOR_EVENT_DEFINITION_KEY
+        service.result_has_source_scopes = True
+
+        def advance(_service, _request, _ack):
+            service.at_result = True
+            return {
+                "result": "GREEN",
+                "result_event_definition_key": PP_SUCCESSOR_EVENT_DEFINITION_KEY,
+                "provider_observed": True,
+                "action_ack_is_business_postcondition": False,
+            }
+
+        result = run_promotion_pp_successor_gameplay_action_cell(
+            service, advance_to_successor=advance
+        )
+
+        self.assertEqual(result["result"], "GREEN")
+        self.assertTrue(result["production_live"])
+        self.assertEqual(result["business_postcondition"]["result"], "GREEN")
+        self.assertTrue(all(result["checks"].values()))
+        self.assertEqual(service.provider_calls, 0)
+
+    def test_pp_successor_rejects_changed_saved_subject(self) -> None:
+        service = _FakeService()
+        service.result_event_key = PP_SUCCESSOR_EVENT_DEFINITION_KEY
+        service.result_has_source_scopes = True
+        service.result_scope_subject = SUBJECT + 1
+
+        def advance(_service, _request, _ack):
+            service.at_result = True
+            return {
+                "result": "GREEN",
+                "result_event_definition_key": PP_SUCCESSOR_EVENT_DEFINITION_KEY,
+                "provider_observed": True,
+                "action_ack_is_business_postcondition": False,
+            }
+
+        with self.assertRaises(PromotionPpSuccessorActionCellError) as caught:
+            run_promotion_pp_successor_gameplay_action_cell(
+                service, advance_to_successor=advance
+            )
+        self.assertIn("same_saved_subject", caught.exception.reason_code)
+
     def test_green_requires_request_provider_and_receipt_lineage(self) -> None:
         service = _FakeService()
         result = run_promotion_compensation_gameplay_action_cell(

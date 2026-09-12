@@ -36,6 +36,7 @@ from zhongguo_phase2_business_postconditions import (
 ACTION_CELL_ID: Final = "zg361.phase2.promotion-compensation.action.v1"
 SOURCE_EVENT_DEFINITION_KEY: Final = "zg361pp.147"
 RESULT_EVENT_DEFINITION_KEY: Final = "zg361comp.1"
+PP_SUCCESSOR_EVENT_DEFINITION_KEY: Final = "zg361pp.148"
 SOURCE_OPTION_NUMBER: Final = 1
 SELECT_EVENT_OPTION_CAPABILITY: Final = "game.command.select-event-option-N"
 IMPLEMENTATION_READINESS: Final = "live-pending"
@@ -95,6 +96,19 @@ class PromotionCompensationActionCellError(RuntimeError):
         super().__init__(
             f"promotion/compensation action cell RED [{reason_code}]"
         )
+
+
+class PromotionPpSuccessorActionCellError(RuntimeError):
+    """Fail-closed result for the real ``.147 -> .148`` PP transition."""
+
+    def __init__(self, reason_code: str, evidence: Mapping[str, object]) -> None:
+        self.reason_code = reason_code
+        self.evidence = {
+            **copy.deepcopy(dict(evidence)),
+            "result": "RED",
+            "reason_code": reason_code,
+        }
+        super().__init__(f"promotion PP successor action cell RED [{reason_code}]")
 
 
 def _integer(
@@ -690,13 +704,181 @@ def run_promotion_compensation_gameplay_action_cell(
     raise AssertionError("unreachable")
 
 
+def run_promotion_pp_successor_gameplay_action_cell(
+    service: PromotionCompensationActionService,
+    *,
+    advance_to_successor: AdvanceToResult,
+) -> dict[str, object]:
+    """Select real ``zg361pp.147`` option 1 and prove the D+1 ``.148`` card.
+
+    Compensation AF5 is an earlier production stage and has its own independent
+    provider/action cell.  This cell therefore proves only the actual PP edge;
+    it never treats the selection ACK as the transition postcondition.
+    """
+
+    evidence: dict[str, object] = {
+        "schema_version": 1,
+        "cell_id": "zg361.phase2.promotion-pp-successor.action.v1",
+        "span": "promotion-pp-successor",
+        "result": "RED",
+        "reason_code": None,
+        "implementation_readiness": "static-ready-live-pending",
+        "production_live": False,
+        "fixture_evidence_is_live": False,
+        "mcp_only": True,
+        "ocr_used": False,
+        "coordinates_used": False,
+        "action_ack_is_business_postcondition": False,
+        "action_request": None,
+        "selection_ack": None,
+        "transition_driver": None,
+        "source_event_query": None,
+        "result_event_query": None,
+        "business_postcondition": None,
+        "checks": {},
+    }
+
+    def fail(reason: str) -> None:
+        raise PromotionPpSuccessorActionCellError(reason, evidence)
+
+    try:
+        capabilities = service.capabilities()
+        bridge = (
+            capabilities.get("bridge_capabilities")
+            if isinstance(capabilities, Mapping)
+            else None
+        )
+        if not (
+            isinstance(bridge, list)
+            and {
+                QUERY_CURRENT_EVENT_WINDOW_CONTEXT_V1_CAPABILITY,
+                SELECT_EVENT_OPTION_CAPABILITY,
+            }.issubset(set(bridge))
+        ):
+            fail("mcp_capability_profile_incomplete")
+
+        source_binding = _snapshot_binding(service.snapshot(), expected_event=True)
+        source_instance = int(source_binding["event_instance_id"])
+        source_query, source_subject = _event_context(
+            service.query_current_event_window_context_v1(
+                source_instance,
+                expected_revision=int(source_binding["revision"]),
+            ),
+            binding=source_binding,
+            expected_definition_key=SOURCE_EVENT_DEFINITION_KEY,
+            require_source_scopes=True,
+        )
+        if source_subject is None:
+            fail("source_subject_identity_unavailable")
+        evidence["source_event_query"] = source_query
+        action_request = {
+            "source_event_definition_key": SOURCE_EVENT_DEFINITION_KEY,
+            "result_event_definition_key": PP_SUCCESSOR_EVENT_DEFINITION_KEY,
+            "source_event_instance_id": source_instance,
+            "option_number": SOURCE_OPTION_NUMBER,
+            "owner_character_id": source_binding["player_character_id"],
+            "subject_character_id": source_subject,
+            "connection_generation": source_binding["connection_generation"],
+            "source_snapshot_id": source_binding["snapshot_id"],
+            "source_revision": source_binding["revision"],
+            "source_native_revision": source_binding["native_revision"],
+            "source_date_raw": source_binding["date_raw"],
+        }
+        evidence["action_request"] = action_request
+
+        if _snapshot_binding(service.snapshot(), expected_event=True) != source_binding:
+            fail("source_checkpoint_changed_before_submission")
+        ack = service.select_event_option(
+            SOURCE_OPTION_NUMBER,
+            event_instance_id=source_instance,
+            expected_revision=int(source_binding["revision"]),
+        )
+        evidence["selection_ack"] = copy.deepcopy(ack)
+        if not (
+            isinstance(ack, Mapping)
+            and ack.get("accepted") is True
+            and ack.get("status") == "submitted"
+            and ack.get("event_instance_id") == source_instance
+            and ack.get("option_number") == SOURCE_OPTION_NUMBER
+        ):
+            fail("bound_selection_ack_rejected")
+
+        transition = advance_to_successor(service, action_request, ack)
+        evidence["transition_driver"] = copy.deepcopy(transition)
+        if not (
+            isinstance(transition, Mapping)
+            and transition.get("result") == "GREEN"
+            and transition.get("result_event_definition_key")
+            == PP_SUCCESSOR_EVENT_DEFINITION_KEY
+            and transition.get("provider_observed") is True
+            and transition.get("action_ack_is_business_postcondition") is False
+        ):
+            fail("transition_driver_did_not_reach_pp_successor")
+
+        result_binding = _snapshot_binding(service.snapshot(), expected_event=True)
+        result_instance = int(result_binding["event_instance_id"])
+        result_query, result_subject = _event_context(
+            service.query_current_event_window_context_v1(
+                result_instance,
+                expected_revision=int(result_binding["revision"]),
+            ),
+            binding=result_binding,
+            expected_definition_key=PP_SUCCESSOR_EVENT_DEFINITION_KEY,
+            require_source_scopes=True,
+        )
+        evidence["result_event_query"] = result_query
+        checks = {
+            "same_connection_generation": result_binding["connection_generation"]
+            == source_binding["connection_generation"],
+            "same_played_owner": result_binding["player_character_id"]
+            == source_binding["player_character_id"],
+            "same_saved_subject": result_subject == source_subject,
+            "event_instance_advanced": result_instance != source_instance,
+            "snapshot_advanced": result_binding["snapshot_id"]
+            != source_binding["snapshot_id"],
+            "revision_advanced": result_binding["revision"]
+            > source_binding["revision"],
+            "native_revision_advanced": result_binding["native_revision"]
+            > source_binding["native_revision"],
+            "date_advanced": result_binding["date_raw"] > source_binding["date_raw"],
+            "bounded_d1_successor": result_binding["date_raw"]
+            <= source_binding["date_raw"] + 48,
+            "provider_observed_postcondition": True,
+            "action_ack_not_postcondition": True,
+        }
+        evidence["checks"] = checks
+        failed = [name for name, passed in checks.items() if passed is not True]
+        if failed:
+            fail("pp_successor_lineage_failed: " + ", ".join(failed))
+        evidence["business_postcondition"] = {
+            "result": "GREEN",
+            "provider_observed": True,
+            "postcondition": "exact_pp_148_same_owner_subject",
+            "source_event_definition_key": SOURCE_EVENT_DEFINITION_KEY,
+            "result_event_definition_key": PP_SUCCESSOR_EVENT_DEFINITION_KEY,
+        }
+        evidence["production_live"] = True
+        evidence["implementation_readiness"] = "production-live"
+        evidence["result"] = "GREEN"
+        evidence["reason_code"] = None
+        return evidence
+    except PromotionPpSuccessorActionCellError:
+        raise
+    except Exception as error:
+        fail(f"{type(error).__name__}: {error}")
+    raise AssertionError("unreachable")
+
+
 __all__ = [
     "ACTION_CELL_ID",
     "IMPLEMENTATION_READINESS",
+    "PP_SUCCESSOR_EVENT_DEFINITION_KEY",
     "RESULT_EVENT_DEFINITION_KEY",
     "SOURCE_EVENT_DEFINITION_KEY",
     "SOURCE_OPTION_NUMBER",
     "PromotionCompensationActionCellError",
+    "PromotionPpSuccessorActionCellError",
     "PromotionCompensationActionService",
     "run_promotion_compensation_gameplay_action_cell",
+    "run_promotion_pp_successor_gameplay_action_cell",
 ]

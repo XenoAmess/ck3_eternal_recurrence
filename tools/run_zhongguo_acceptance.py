@@ -131,10 +131,12 @@ from zg361_phase2_b3_manager_governance_action_cell import (
     run_b3_manager_governance_gameplay_action_cell,
 )
 from zg361_phase2_promotion_compensation_action_cell import (
+    PP_SUCCESSOR_EVENT_DEFINITION_KEY,
     RESULT_EVENT_DEFINITION_KEY as PROMOTION_COMPENSATION_RESULT_EVENT,
     SOURCE_EVENT_DEFINITION_KEY as PROMOTION_COMPENSATION_SOURCE_EVENT,
     SOURCE_OPTION_NUMBER as PROMOTION_COMPENSATION_SOURCE_OPTION,
     run_promotion_compensation_gameplay_action_cell,
+    run_promotion_pp_successor_gameplay_action_cell,
 )
 from zg361_phase2_promotion_source_checkpoint_capture import (
     CAPTURE_ARTIFACT_KIND as PROMOTION_SOURCE_CAPTURE_ARTIFACT_KIND,
@@ -2617,9 +2619,9 @@ class _Phase2AcceptanceActionSpanDriver:
                 acknowledge_terminal=False,
             )
         elif handler == PROMOTION_HANDLER:
-            evidence = run_promotion_compensation_gameplay_action_cell(
+            evidence = run_promotion_pp_successor_gameplay_action_cell(
                 self.service,
-                advance_to_result=_phase2_promotion_compensation_advance_to_result,
+                advance_to_successor=_phase2_promotion_advance_to_pp_successor,
             )
         elif handler == "capture_incidents_operations":
             authoritative = _phase2_incident_registry_binding(
@@ -3108,6 +3110,176 @@ def _phase2_promotion_compensation_advance_to_result(
         "action_ack_is_business_postcondition": False,
         "event": result,
     }
+
+
+def _phase2_promotion_advance_to_pp_successor(
+    service: GameplayBridgeService,
+    action_request: Mapping[str, object],
+    _action_ack: Mapping[str, object],
+    *,
+    timeout_s: float = 45.0,
+    poll_interval_s: float = 0.05,
+) -> Mapping[str, object]:
+    """Drive the source-backed D+1 ``zg361pp.148`` transition."""
+
+    owner_character_id = action_request.get("owner_character_id")
+    source_event_instance_id = action_request.get("source_event_instance_id")
+    source_date_raw = action_request.get("source_date_raw")
+    expected_generation = action_request.get("connection_generation")
+    if any(
+        isinstance(value, bool) or not isinstance(value, int) or value <= 0
+        for value in (
+            owner_character_id,
+            source_event_instance_id,
+            expected_generation,
+        )
+    ) or isinstance(source_date_raw, bool) or not isinstance(source_date_raw, int):
+        raise Phase2VisualHandlerError(
+            "promotion_pp_successor_source_binding_unavailable"
+        )
+    if timeout_s <= 0 or poll_interval_s < 0:
+        raise ValueError("promotion PP successor wait timing is invalid")
+
+    initial = service.snapshot()
+    if not isinstance(initial, dict):
+        raise acceptance.RunnerError(
+            "promotion PP successor initial snapshot is not an object"
+        )
+    initial_binding = _phase2_paused_binding(
+        initial, label="promotion PP successor initial binding"
+    )
+    expected_pid = int(initial_binding["bridge_pid"])
+    submissions: list[dict[str, object]] = []
+    observations: list[dict[str, object]] = []
+    deadline = time.monotonic() + timeout_s
+
+    def accepted(value: object, step: str) -> dict[str, object]:
+        receipt = dict(value) if isinstance(value, Mapping) else {}
+        status = receipt.get("status")
+        if not (
+            receipt.get("accepted") is True
+            and (
+                status == "submitted"
+                or (step == "resume-map" and status == "already_running")
+                or (step == "pause-map" and status == "already_paused")
+            )
+        ):
+            raise acceptance.RunnerError(
+                f"promotion PP successor {step} ACK was not accepted"
+            )
+        submissions.append(receipt)
+        return receipt
+
+    while time.monotonic() < deadline:
+        snapshot = service.snapshot()
+        if not isinstance(snapshot, dict):
+            raise acceptance.RunnerError(
+                "promotion PP successor snapshot is not an object"
+            )
+        played = snapshot.get("played_character")
+        diagnostics = snapshot.get("diagnostics")
+        active_event = snapshot.get("active_event")
+        revision = snapshot.get("revision")
+        date_raw = snapshot.get("date_raw")
+        player = (
+            played.get("character_id") if isinstance(played, Mapping) else None
+        )
+        pid = (
+            diagnostics.get("bridge_pid")
+            if isinstance(diagnostics, Mapping)
+            else None
+        )
+        generation = (
+            diagnostics.get("connection_generation")
+            if isinstance(diagnostics, Mapping)
+            else None
+        )
+        event_instance_id = (
+            active_event.get("instance_id")
+            if isinstance(active_event, Mapping)
+            else None
+        )
+        observations.append(
+            {
+                "snapshot_id": snapshot.get("snapshot_id"),
+                "revision": revision,
+                "native_revision": snapshot.get("native_revision"),
+                "date_raw": date_raw,
+                "paused": snapshot.get("paused"),
+                "speed": snapshot.get("speed"),
+                "player_character_id": player,
+                "bridge_pid": pid,
+                "connection_generation": generation,
+                "active_event_instance_id": event_instance_id,
+            }
+        )
+        if (
+            isinstance(revision, bool)
+            or not isinstance(revision, int)
+            or isinstance(date_raw, bool)
+            or not isinstance(date_raw, int)
+            or snapshot.get("map_ready") is not True
+            or player != owner_character_id
+            or pid != expected_pid
+            or generation != expected_generation
+            or date_raw < source_date_raw
+            or date_raw > source_date_raw + 48
+        ):
+            raise acceptance.RunnerError(
+                "promotion PP successor escaped its bounded player/PID/date binding"
+            )
+
+        if isinstance(active_event, Mapping):
+            # A submitted event option can remain visible for a few transport
+            # frames.  Wait for its real close before driving the clock.
+            if event_instance_id == source_event_instance_id:
+                if poll_interval_s:
+                    time.sleep(poll_interval_s)
+                continue
+            if snapshot.get("paused") is not True:
+                accepted(
+                    service.execute_step("pause-map", expected_revision=revision),
+                    "pause-map",
+                )
+                if poll_interval_s:
+                    time.sleep(poll_interval_s)
+                continue
+            identity = query_event_definition_identity(service, snapshot)
+            observed = identity.get("event_definition_key")
+            if observed != PP_SUCCESSOR_EVENT_DEFINITION_KEY:
+                raise acceptance.RunnerError(
+                    "promotion PP successor encountered unexpected event "
+                    f"{observed!r}; expected {PP_SUCCESSOR_EVENT_DEFINITION_KEY!r}"
+                )
+            binding = _phase2_paused_binding(
+                snapshot, label="promotion PP successor result binding"
+            )
+            return {
+                "result": "GREEN",
+                "result_event_definition_key": PP_SUCCESSOR_EVENT_DEFINITION_KEY,
+                "provider_observed": True,
+                "action_ack_is_business_postcondition": False,
+                "binding": binding,
+                "identity": identity,
+                "observations": observations,
+                "submissions": submissions,
+            }
+
+        if snapshot.get("speed") != 1:
+            accepted(
+                service.execute_step("set-speed-1", expected_revision=revision),
+                "set-speed-1",
+            )
+        elif snapshot.get("paused") is True:
+            accepted(
+                service.execute_step("resume-map", expected_revision=revision),
+                "resume-map",
+            )
+        if poll_interval_s:
+            time.sleep(poll_interval_s)
+    raise acceptance.RunnerError(
+        "promotion PP successor timed out before exact zg361pp.148"
+    )
 
 
 def _phase2_promo_event_postcondition(

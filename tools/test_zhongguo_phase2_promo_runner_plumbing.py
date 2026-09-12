@@ -264,37 +264,93 @@ def _enter_common_run_cell_patches(
 
 
 class Phase2PromoRunnerPlumbingTests(unittest.TestCase):
-    def test_promotion_compensation_transition_waits_for_exact_result(self) -> None:
-        service = object()
-        action_request = {"owner_character_id": 9001}
-        action_ack = {
-            "accepted": True,
-            "status": "submitted",
-            "result": "GREEN",
-        }
-        exact_event = {
-            "binding": {"player_character_id": 9001, "revision": 42},
-            "identity": {"event_definition_key": "zg361comp.1"},
-        }
-        with mock.patch.object(
-            capture,
-            "wait_for_phase2_exact_event",
-            return_value=exact_event,
-        ) as wait:
-            result = capture._phase2_promotion_compensation_advance_to_result(
-                service, action_request, action_ack
-            )
+    def test_promotion_transition_drives_the_real_d1_pp_successor(self) -> None:
+        class Service:
+            def __init__(self) -> None:
+                self.revision = 40
+                self.native_revision = 400
+                self.date_raw = 1000
+                self.paused = True
+                self.speed = 5
+                self.active = False
+                self.submissions: list[str] = []
 
-        wait.assert_called_once_with(
+            def snapshot(self):
+                if not self.paused and not self.active:
+                    self.date_raw += 24
+                    self.revision += 1
+                    self.native_revision += 1
+                    self.active = True
+                return {
+                    "snapshot_id": f"snapshot:{self.revision}",
+                    "revision": self.revision,
+                    "native_revision": self.native_revision,
+                    "date_raw": self.date_raw,
+                    "paused": self.paused,
+                    "speed": self.speed,
+                    "map_ready": True,
+                    "played_character": {"character_id": 9001},
+                    "diagnostics": {
+                        "bridge_pid": 1234,
+                        "connection_generation": 7,
+                    },
+                    "active_event": (
+                        {"instance_id": 5002, "option_count": 3}
+                        if self.active
+                        else None
+                    ),
+                }
+
+            def execute_step(self, step, *, expected_revision):
+                self.assert_revision(expected_revision)
+                self.submissions.append(step)
+                if step == "set-speed-1":
+                    self.speed = 1
+                elif step == "resume-map":
+                    self.paused = False
+                elif step == "pause-map":
+                    self.paused = True
+                self.revision += 1
+                self.native_revision += 1
+                return {"accepted": True, "status": "submitted", "step": step}
+
+            def assert_revision(self, expected_revision):
+                if expected_revision != self.revision:
+                    raise AssertionError("revision mismatch")
+
+            def query_current_event_window_context_v1(
+                self, event_instance_id, *, expected_revision
+            ):
+                self.assert_revision(expected_revision)
+                return {
+                    "status": "available",
+                    "current_event_window_context": {
+                        "event_definition_key": "zg361pp.148",
+                        "readiness": {"event_definition_identity_ready": True},
+                    },
+                }
+
+        service = Service()
+        result = capture._phase2_promotion_advance_to_pp_successor(
             service,
-            expected_definition_key="zg361comp.1",
-            expected_player_character_id=9001,
+            {
+                "owner_character_id": 9001,
+                "source_event_instance_id": 5001,
+                "source_date_raw": 1000,
+                "connection_generation": 7,
+            },
+            {"accepted": True, "status": "submitted"},
+            timeout_s=1.0,
+            poll_interval_s=0.0,
         )
+
         self.assertEqual(result["result"], "GREEN")
-        self.assertEqual(result["result_event_definition_key"], "zg361comp.1")
+        self.assertEqual(result["result_event_definition_key"], "zg361pp.148")
+        self.assertTrue(result["provider_observed"])
         self.assertFalse(result["action_ack_is_business_postcondition"])
-        self.assertEqual(result["event"], exact_event)
-        self.assertNotIn("action_ack", result)
+        self.assertEqual(
+            service.submissions, ["set-speed-1", "resume-map", "pause-map"]
+        )
 
     def test_promotion_span_is_owned_by_independent_action_cell(self) -> None:
         service = mock.Mock()
@@ -327,21 +383,21 @@ class Phase2PromoRunnerPlumbingTests(unittest.TestCase):
             ),
             mock.patch.object(
                 capture,
-                "run_promotion_compensation_gameplay_action_cell",
+                "run_promotion_pp_successor_gameplay_action_cell",
                 return_value=action_evidence,
             ) as action_cell,
             mock.patch.object(
                 capture,
                 "_phase2_promo_visible_scenario_surface",
-                return_value={"event_definition_key": "zg361comp.1"},
+                return_value={"event_definition_key": "zg361pp.148"},
             ),
         ):
             result = driver.run_span(scenario, context, {})
 
         action_cell.assert_called_once_with(
             service,
-            advance_to_result=(
-                capture._phase2_promotion_compensation_advance_to_result
+            advance_to_successor=(
+                capture._phase2_promotion_advance_to_pp_successor
             ),
         )
         choreographer.present_post_action_events.assert_not_called()

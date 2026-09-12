@@ -63,7 +63,7 @@ PHASE2_EVENT_SEQUENCE_PLANS: Final = (
         "product_event",
         "zg361pp.147",
         "product_event",
-        "zg361comp.1",
+        "zg361pp.148",
     ),
     Phase2EventSequencePlan(
         "phase2_hc_workforce",
