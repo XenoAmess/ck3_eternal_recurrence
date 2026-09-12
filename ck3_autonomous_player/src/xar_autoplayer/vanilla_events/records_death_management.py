@@ -130,6 +130,47 @@ VANILLA_DEATH_MANAGEMENT_ANALYSIS: Final[
                 "deceased character for a mental-break follow-up"
             ),
         },
+        "selected_choice_effect_profile": {
+            "schema": "xar.ck3.vanilla-event-choice-effect",
+            "schema_version": 1,
+            "selected_native_option_index": 0,
+            "completeness": "selected-option-and-common-after-source-reviewed",
+            "selected_option_effects": [{
+                "domain": "stress",
+                "subject": "root",
+                "operation": "stress_impact",
+                "authored_value_key": "minor_stress_impact_gain",
+                "authored_base_points": 20,
+                "runtime_delta_exact": False,
+                "runtime_delta_reason": (
+                    "character stress-impact adjustments and the stress ceiling "
+                    "are not observed"
+                ),
+            }],
+            "common_after_effects": [{
+                "domain": "presentation",
+                "operation": "custom_tooltip",
+                "material_state_change": False,
+                "variant": "known_killer_or_ordinary_heir_death",
+            }],
+            "observable_postcondition": {
+                "metric": "played_character.stress_points",
+                "expected_relation": "non_decreasing",
+                "material_change_required_for_evidence": True,
+            },
+            "source_anchors": [
+                "events/death_events/death_management_events.txt:2038-2056",
+                "common/script_values/00_stress_values.txt:25-34",
+            ],
+            "source_sha256": {
+                "events/death_events/death_management_events.txt": (
+                    "31591A2F2D3A61E65853CC43B9BEF4B001FEB75EA1502861D2FB9AC054AB1FB7"
+                ),
+                "common/script_values/00_stress_values.txt": (
+                    "104A7EF94EE9DA1092F23AEB2FD9DC971B08C695415F3B7EBFB628F381D26395"
+                ),
+            },
+        },
         "after_effect": (
             "display-only custom tooltip: the killed tooltip when known_killer "
             "exists, otherwise the ordinary heir-death tooltip; it mutates no "

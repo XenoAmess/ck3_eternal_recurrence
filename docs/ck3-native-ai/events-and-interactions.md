@@ -830,3 +830,8 @@ worker 重放 evaluator。只有 locator 无法稳定闭合时，才考虑在 ma
   `played_character_gold`，同角色 comparator 只接受严格正向 raw delta。月收入、treasury 与 era 会影响 runtime 金额，所以档案
   明确拒绝 exact delta；字段与动作后置仍需一次 bounded paused production 复核，详见
   [played-character-gold.md](played-character-gold.md)。
+- [implementation-confirmed, historical action live, material live pending] `death_management.1007` 的 R374 严格三-scope/单选
+  shape 已接入 direct registry consumer。准入只放开该 key 的 `unique_character_scope_excludes` 并验证 dead character 与玩家不同；
+  effect profile 记录 authored stress base `+20` 和 `non_decreasing` 后置。R374 已证明 instance advance，但旧帧没有玩家压力读数，
+  且 hot park 没有 durable checkpoint；material delta 只待今后自然 encounter 的一次有界复核，详见
+  [heir-death-stress.md](heir-death-stress.md)。

@@ -115,9 +115,19 @@ optimized 聚焦测试各 `27/27` GREEN。
 才算 material change。不变、下降、身份漂移或缺读数保持失败/不可用。
 
 主 DLL 与 native fixture GREEN，Python normal/optimized 聚焦测试各 `30/30` GREEN；状态仍为 `static-ready / live=false`。
-`.0030` 与 `.8001` 各只待一次近边界 bounded live action 证明，不为任一单事件启动长跑。G2-M2 仍需第三个自然事件的可验证物质
-后置、campaign objective 评分与三个 production event loops，固定总进度保持 `0/8`。详见
+`.0030` 与 `.8001` 各只待一次 bounded live action 证明，不为任一单事件启动长跑。连同下述第三条静态路径，G2-M2 仍需
+campaign objective 评分与三个 production event loops，固定总进度保持 `0/8`。详见
 [`played-character-gold.md`](../ck3-native-ai/played-character-gold.md)。
+
+第三条静态 material path 现选定已有真实证据的 `death_management.1007`。R374 已证明唯一 authored1/native0 的 event instance
+advance；本包为该 key 精确消费 distinct `dead_character` scope，发布 authored `minor_stress_impact_gain = +20` 档案，并复用
+玩家压力字段验证 `non_decreasing`。正向 delta 才计 material evidence；压力封顶导致的不变被记录为非 material，反向下降或身份漂移
+不能通过。其它 unique-exclude 合同仍 blocked。
+
+该 comparator 为 `static-ready / live=false`。R374 的旧 hot park 没有 durable checkpoint，不能冒充可冷恢复输入；今后只在正常
+campaign 自然再遇时顺手做一次 bounded 前后对账，不为 `.1007` 单独长跑。至此三个目标事件均已有静态 material comparator，但
+三条 production material loops 与跨事件 campaign objective 评分仍未闭合，所以 G2-M2 继续 in progress、总进度仍为 `0/8`。
+详见 [`heir-death-stress.md`](../ck3-native-ai/heir-death-stress.md)。
 
 战争 controller 的既有成熟执行器继续保留；assigned reinforcement、terminal 长尾与更多 CB 改为真实 encounter 驱动。
 宗教域继续暂缓，只允许战争中的圣战和婚姻合法性/接受度所需的最小原生最终判定，不借此扩展通用宗教模型。

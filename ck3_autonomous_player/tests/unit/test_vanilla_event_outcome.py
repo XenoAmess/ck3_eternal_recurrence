@@ -175,6 +175,36 @@ class VanillaEventMaterialOutcomeTests(unittest.TestCase):
             "same_character_snapshot_binding_mismatch",
         )
 
+    def test_heir_death_stress_is_non_decreasing_and_material_when_positive(
+        self,
+    ) -> None:
+        expected = plan_registered_event_material_postcondition_v1(
+            _decision(event_key="death_management.1007", native_index=0),
+            {"character_id": 27181, "alive": True, "stress_points": 42},
+            snapshot_id="native:19",
+            revision=33,
+        )
+        assert isinstance(expected, dict)
+
+        increased = evaluate_registered_event_material_postcondition_v1(
+            expected, _selection(42, 62)
+        )
+        unchanged = evaluate_registered_event_material_postcondition_v1(
+            expected, _selection(42, 42)
+        )
+        decreased = evaluate_registered_event_material_postcondition_v1(
+            expected, _selection(42, 41)
+        )
+
+        self.assertEqual(expected["expected_relation"], "non_decreasing")
+        self.assertEqual(increased["status"], "verified_change")
+        self.assertEqual(increased["delta"], 20)
+        self.assertTrue(increased["material_change_observed"])
+        self.assertEqual(unchanged["status"], "verified_no_change")
+        self.assertFalse(unchanged["material_change_observed"])
+        self.assertEqual(decreased["status"], "failed")
+        self.assertEqual(decreased["unavailable_reason"], "stress_decreased")
+
     def test_trait_gold_gain_is_planned_and_requires_a_strict_increase(
         self,
     ) -> None:

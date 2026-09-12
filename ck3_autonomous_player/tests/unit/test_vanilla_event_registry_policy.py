@@ -114,6 +114,35 @@ def _trait_gold_context() -> dict[str, object]:
     return context
 
 
+def _heir_death_context(*, dead_character_id: int = 39_246) -> dict[str, object]:
+    return {
+        "schema": "current-event-window-context-v1",
+        "schema_version": 1,
+        "status": "available",
+        "window_match_count": 1,
+        "event_definition_key": "death_management.1007",
+        "root_scope": _scope("character", character_id=PLAYER),
+        "saved_scopes": [
+            {
+                "name": "new_memory",
+                "name_identifier": 20,
+                "scope": _scope("character_memory"),
+            },
+            {
+                "name": "dead_character",
+                "name_identifier": 21,
+                "scope": _scope("character", character_id=dead_character_id),
+            },
+            {
+                "name": "deceased_character_stress",
+                "name_identifier": 22,
+                "scope": _scope("value"),
+            },
+        ],
+        "options": [_option(0, 0)],
+    }
+
+
 class VanillaEventRegistryPolicyTests(unittest.TestCase):
     def test_exact_tgp_travel_projection_selects_authored_option_two(
         self,
@@ -188,6 +217,37 @@ class VanillaEventRegistryPolicyTests(unittest.TestCase):
         self.assertEqual(
             profile["observable_postcondition"]["expected_relation"],
             "strictly_increasing",
+        )
+
+    def test_heir_death_projection_requires_a_distinct_dead_character(
+        self,
+    ) -> None:
+        recommended = recommend_registered_vanilla_event_option_v1(
+            _heir_death_context(),
+            played_character_id=PLAYER,
+            snapshot_option_count=1,
+        )
+        drifted = recommend_registered_vanilla_event_option_v1(
+            _heir_death_context(dead_character_id=PLAYER),
+            played_character_id=PLAYER,
+            snapshot_option_count=1,
+        )
+
+        self.assertEqual(recommended["status"], "recommended")
+        self.assertEqual(recommended["selected_option_number"], 1)
+        self.assertEqual(recommended["selected_native_option_index"], 0)
+        profile = recommended["choice_effect_profile"]
+        self.assertEqual(
+            profile["selected_option_effects"][0]["authored_base_points"], 20
+        )
+        self.assertEqual(
+            profile["observable_postcondition"]["expected_relation"],
+            "non_decreasing",
+        )
+        self.assertEqual(drifted["status"], "blocked")
+        self.assertIn(
+            "scope:dead_character:unique_character_excludes",
+            drifted["failed_checks"],
         )
 
     def test_natural_disaster_unregistered_projection_stays_blocked(self) -> None:

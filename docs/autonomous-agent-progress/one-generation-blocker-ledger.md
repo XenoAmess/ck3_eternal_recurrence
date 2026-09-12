@@ -1155,3 +1155,16 @@ strategic-power primitive；余下入口只有 policy-level campaign dominance�
 - The Release DLL and native `game_access` fixture build and run GREEN; focused Python normal/optimized tests are each `30/30` GREEN.
   Status is `static-ready / live=false`. One bounded `.8001` action is the only live proof authorized for this path; no single-event long run
   is required. G2-M2 and global G2 remain `in_progress` and `0/8` pending three production event loops.
+## 2026-09-13: G2-M2 third material event path static-ready
+
+- `death_management.1007` already has R374 historical action evidence: exact player-root/no-killer three-scope projection, one native option,
+  and event instance advance. Its sole source effect is `stress_impact` with authored `minor_stress_impact_gain=20`; the after block is a
+  display-only tooltip.
+- The direct registry consumer now admits this key's `unique_character_scope_excludes` only when the typed dead-character full ID differs from
+  the player. Its structured profile drives the existing same-character stress comparator with a `non_decreasing` relation: positive delta is
+  material, unchanged is honest non-material evidence, and a decrease/binding drift does not pass. Other extended-scope contracts remain blocked.
+- Focused normal/optimized policy/profile/comparator tests are each `25/25` GREEN. Six deterministic stale inventory assertions exposed by the
+  earlier 188th record were synchronized from `187/333` to `188/334`; their affected modules pass normal/optimized `45/45`. This is
+  `static-ready / live=false`. The R374 hot park has no durable checkpoint, so live material proof is encounter-driven and must not trigger a
+  dedicated long run. All three G2-M2 target events now have static material comparators; three production material loops and campaign scoring
+  remain open, so global G2 stays `0/8`.

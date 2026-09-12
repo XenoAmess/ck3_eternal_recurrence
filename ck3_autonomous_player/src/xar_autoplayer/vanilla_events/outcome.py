@@ -20,6 +20,10 @@ _SUPPORTED_CHOICES: Final = {
         "played_character_gold.raw",
         "strictly_increasing",
     ),
+    ("death_management.1007", 0): (
+        "played_character.stress_points",
+        "non_decreasing",
+    ),
 }
 _CHOICE_EFFECT_PROFILE_SCHEMA: Final = "xar.ck3.vanilla-event-choice-effect"
 _OBSERVATION_FIELDS: Final = {
@@ -251,6 +255,16 @@ def evaluate_registered_event_material_postcondition_v1(
             else "failed"
         )
         failure_reason = "stress_increased" if delta > 0 else None
+    elif relation == "non_decreasing":
+        relation_satisfied = delta >= 0
+        status = (
+            "verified_change"
+            if delta > 0
+            else "verified_no_change"
+            if delta == 0
+            else "failed"
+        )
+        failure_reason = "stress_decreased" if delta < 0 else None
     else:
         relation_satisfied = delta > 0
         status = "verified_change" if delta > 0 else "failed"

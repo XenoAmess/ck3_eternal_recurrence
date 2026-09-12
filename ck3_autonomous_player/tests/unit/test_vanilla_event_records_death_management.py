@@ -109,6 +109,21 @@ class DeathManagementEventRecordTests(unittest.TestCase):
         self.assertIn("independently", analysis["repeatability"])
         self.assertIn("not a campaign", analysis["duplicate_blocker_boundary"])
         self.assertIn("does not save", analysis["option_semantics"][0])
+        profile = analysis["selected_choice_effect_profile"]
+        self.assertEqual(profile["selected_native_option_index"], 0)
+        self.assertEqual(
+            profile["selected_option_effects"][0]["authored_base_points"], 20
+        )
+        self.assertFalse(
+            profile["selected_option_effects"][0]["runtime_delta_exact"]
+        )
+        self.assertEqual(
+            profile["observable_postcondition"]["expected_relation"],
+            "non_decreasing",
+        )
+        self.assertFalse(
+            profile["common_after_effects"][0]["material_state_change"]
+        )
         self.assertEqual(len(analysis["source_sha256"]), 6)
         for digest in analysis["source_sha256"].values():
             self.assertRegex(digest, SHA256_PATTERN)
@@ -146,13 +161,13 @@ class DeathManagementEventRecordTests(unittest.TestCase):
             self.assertNotIn(str(observation_only), contract_repr)
 
     def test_default_registry_mcp_and_runtime_include_record(self) -> None:
-        self.assertEqual(len(DEFAULT_VANILLA_EVENT_TIMELINE_CONTRACTS), 187)
-        self.assertEqual(len(DEFAULT_VANILLA_EVENT_ANALYSIS), 187)
+        self.assertEqual(len(DEFAULT_VANILLA_EVENT_TIMELINE_CONTRACTS), 188)
+        self.assertEqual(len(DEFAULT_VANILLA_EVENT_ANALYSIS), 188)
         self.assertIs(
             DEFAULT_VANILLA_EVENT_OBSERVATIONS[EVENT_KEY],
             VANILLA_DEATH_MANAGEMENT_OBSERVATIONS[EVENT_KEY],
         )
-        self.assertEqual(len(production.KNOWN_TIMELINE_INTERRUPTS), 333)
+        self.assertEqual(len(production.KNOWN_TIMELINE_INTERRUPTS), 334)
         self.assertIs(
             production.KNOWN_TIMELINE_INTERRUPTS[EVENT_KEY],
             VANILLA_DEATH_MANAGEMENT_TIMELINE_CONTRACTS[EVENT_KEY],

@@ -241,13 +241,13 @@ class EpidemicEventRecordTests(unittest.TestCase):
             self.assertNotIn(str(observation_only), contract_repr)
 
     def test_default_registry_mcp_and_production_runtime_include_record(self) -> None:
-        self.assertEqual(len(DEFAULT_VANILLA_EVENT_TIMELINE_CONTRACTS), 187)
-        self.assertEqual(len(DEFAULT_VANILLA_EVENT_ANALYSIS), 187)
+        self.assertEqual(len(DEFAULT_VANILLA_EVENT_TIMELINE_CONTRACTS), 188)
+        self.assertEqual(len(DEFAULT_VANILLA_EVENT_ANALYSIS), 188)
         self.assertIs(
             DEFAULT_VANILLA_EVENT_OBSERVATIONS[EVENT_KEY],
             VANILLA_EPIDEMIC_OBSERVATIONS[EVENT_KEY],
         )
-        self.assertEqual(len(production.KNOWN_TIMELINE_INTERRUPTS), 333)
+        self.assertEqual(len(production.KNOWN_TIMELINE_INTERRUPTS), 334)
         self.assertIs(
             production.KNOWN_TIMELINE_INTERRUPTS[EVENT_KEY],
             VANILLA_EPIDEMIC_TIMELINE_CONTRACTS[EVENT_KEY],

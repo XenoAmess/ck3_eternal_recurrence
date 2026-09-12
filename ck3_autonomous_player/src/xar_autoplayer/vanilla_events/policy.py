@@ -217,6 +217,19 @@ def _scope_projection_checks(
                 and scope.get("status") == "available"
                 and scope.get("type_key") == expected_type
             )
+    unique_excludes = contract.get("unique_character_scope_excludes")
+    if isinstance(unique_excludes, Mapping):
+        for name, raw_excluded_ids in unique_excludes.items():
+            excluded_ids = _sequence(raw_excluded_ids)
+            character_id = _typed_character_id(named_scopes.get(name))
+            checks[f"scope:{name}:unique_character_excludes"] = bool(
+                isinstance(name, str)
+                and excluded_ids is not None
+                and excluded_ids
+                and all(_integer(value) is not None for value in excluded_ids)
+                and character_id is not None
+                and character_id not in excluded_ids
+            )
     return checks
 
 
@@ -305,6 +318,7 @@ _OPTION_VARIANT_FIELDS: Final = frozenset(
     }
 )
 _DIRECT_OPTION_VARIANT_EVENT_KEYS: Final = frozenset({"natural_disaster.7031"})
+_DIRECT_UNIQUE_EXCLUDE_EVENT_KEYS: Final = frozenset({"death_management.1007"})
 
 
 def _option_projection_signature(contract: Mapping[str, object]) -> tuple[object, ...]:
@@ -416,10 +430,15 @@ def recommend_registered_vanilla_event_option_v1(
                 checks={"option_variant_projection": False},
             )
         contract = resolved
+    allowed_extended_fields = (
+        {"unique_character_scope_excludes"}
+        if event_key in _DIRECT_UNIQUE_EXCLUDE_EVENT_KEYS
+        else set()
+    )
     unsupported = sorted(
         field
         for field in _UNSUPPORTED_FIELDS
-        if _active(contract.get(field))
+        if field not in allowed_extended_fields and _active(contract.get(field))
     )
     if unsupported:
         return _response(

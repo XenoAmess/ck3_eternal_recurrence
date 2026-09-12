@@ -56,10 +56,10 @@
       "name": "natural event semantic loop",
       "priority": "P1-B",
       "status": "in_progress",
-      "latest_evidence": ["current-window transport fixture-live", "shared vanilla event registry", "direct-projection registry planner consumer static-ready", "played-character stress snapshot field static-ready", "same-character event stress postcondition comparator static-ready", "natural_disaster.7031 option-variant consumer static-ready", "two exact selected-choice structured effect profiles static-ready", "played-character gold snapshot and trait_specific.8001 material comparator static-ready"],
+      "latest_evidence": ["current-window transport fixture-live", "shared vanilla event registry", "direct-projection registry planner consumer static-ready", "played-character stress snapshot field static-ready", "same-character event stress postcondition comparator static-ready", "natural_disaster.7031 option-variant consumer static-ready", "two exact selected-choice structured effect profiles static-ready", "played-character gold snapshot and trait_specific.8001 material comparator static-ready", "death_management.1007 scoped consumer and third material comparator static-ready"],
       "planner_consumer": "event option utility policy",
       "visible_outcome": "resolve three natural events, including two multi-option events, and verify material state deltas",
-      "open_blocker": "the .0030 stress and trait_specific.8001 gold comparators each need one bounded paused live proof; a third material event path, generic event-context-v2 structured effect extraction, campaign scoring and three production event outcome loops remain incomplete"
+      "open_blocker": "all three target events have static material comparators but still need production material-delta evidence; generic event-context-v2 structured effect extraction, cross-event campaign scoring and three production event outcome loops remain incomplete"
     },
     {
       "id": "G2-M3",
@@ -144,5 +144,5 @@
     ]
   },
   "religion_boundary": "deferred except the minimum native result needed by holy-war execution and marriage legality or acceptance",
-  "updated_at": "2026-09-13T00:51:09+08:00"
+  "updated_at": "2026-09-13T01:06:09+08:00"
 }
