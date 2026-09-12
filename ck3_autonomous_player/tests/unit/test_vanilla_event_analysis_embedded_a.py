@@ -26,11 +26,11 @@ from xar_autoplayer.vanilla_events.registry import (  # noqa: E402
 )
 
 
-def test_analysis_exactly_covers_first_29_embedded_keys() -> None:
+def test_analysis_exactly_covers_first_30_embedded_keys() -> None:
     expected = tuple(EMBEDDED_A_VANILLA_TIMELINE_CONTRACTS)
     assert EMBEDDED_A_EVENT_KEYS == expected
     assert tuple(VANILLA_EMBEDDED_A_ANALYSIS) == expected
-    assert len(VANILLA_EMBEDDED_A_ANALYSIS) == 29
+    assert len(VANILLA_EMBEDDED_A_ANALYSIS) == 30
 
 
 def test_analysis_is_json_safe_and_only_reviewed_event_claims_source_hashes() -> None:
@@ -43,6 +43,8 @@ def test_analysis_is_json_safe_and_only_reviewed_event_claims_source_hashes() ->
             assert len(record["source_sha256"]) == 2
         elif event_key == "trait_specific_interactions.0011":
             assert len(record["source_sha256"]) == 3
+        elif event_key == "travel_completion_event.1000":
+            assert len(record["source_sha256"]) == 2
         elif event_key == "tgp_movement_events.0060":
             assert len(record["source_sha256"]) == 4
         elif event_key == "tgp_movement_events.0070":
@@ -69,6 +71,9 @@ def test_each_record_carries_exact_build_and_migration_boundary() -> None:
             "trait_specific_interactions.0011": (
                 "exact-build-original-definition-caller-effects-and-live-projection-review"
             ),
+            "travel_completion_event.1000": (
+                "exact-build-original-definition-caller-and-live-projection-review"
+            ),
             "tgp_movement_events.0070": (
                 "exact-build-original-definition-and-live-repeat-review"
             ),
@@ -93,7 +98,7 @@ def test_each_record_carries_exact_build_and_migration_boundary() -> None:
 
 def test_migration_observations_join_existing_live_evidence() -> None:
     assert len(EMBEDDED_A_VANILLA_OBSERVATIONS) == 26
-    assert len(VANILLA_EMBEDDED_A_OBSERVATIONS) == 29
+    assert len(VANILLA_EMBEDDED_A_OBSERVATIONS) == 30
     for event_key, observation in EMBEDDED_A_VANILLA_OBSERVATIONS.items():
         migrated = VANILLA_EMBEDDED_A_OBSERVATIONS[event_key]
         if event_key in {
@@ -122,6 +127,10 @@ def test_migration_observations_join_existing_live_evidence() -> None:
     assert VANILLA_EMBEDDED_A_OBSERVATIONS[
         "trait_specific_interactions.0011"
     ]["exemplars"][0]["run"] == "R500"
+    assert "travel_completion_event.1000" not in EMBEDDED_A_VANILLA_OBSERVATIONS
+    assert VANILLA_EMBEDDED_A_OBSERVATIONS[
+        "travel_completion_event.1000"
+    ]["exemplars"][0]["run"] == "R502"
 
 
 def test_tgp_movement_study_repeat_is_source_reviewed_and_live_bounded() -> None:
@@ -545,4 +554,74 @@ def test_mourning_poem_exact_review_and_live_red_are_query_safe() -> None:
     assert response["contract"]["root_character_id"] == "$player"
     assert response["contract"]["selected_native_option_index"] == 1
     assert response["observations"]["exemplars"][0]["run"] == "R500"
+    json.dumps(response, allow_nan=False)
+
+
+def test_travel_completion_exact_review_and_live_red_are_query_safe() -> None:
+    event_key = "travel_completion_event.1000"
+    contract = EMBEDDED_A_VANILLA_TIMELINE_CONTRACTS[event_key]
+    record = VANILLA_EMBEDDED_A_ANALYSIS[event_key]
+    exemplar = VANILLA_EMBEDDED_A_OBSERVATIONS[event_key]["exemplars"][0]
+
+    assert contract["root_character_id"] == PLAYER_SENTINEL
+    assert contract["character_scopes"] == {
+        "travel_owner": PLAYER_SENTINEL,
+    }
+    assert contract["unique_character_scope_excludes"] == {
+        "travel_leader_scope": (PLAYER_SENTINEL,),
+    }
+    assert contract["scope_types"] == {
+        "travel_plan": "travel_plan",
+        "destination": "province",
+        "current_location": "province",
+        "travel_plan_scope": "travel_plan",
+        "final_destination_province": "province",
+    }
+    assert contract["saved_scope_count"] == 7
+    assert contract["native_option_indices"] == (0,)
+    assert contract["selected_option_number"] == 1
+    assert contract["selected_native_option_index"] == 0
+    assert "date_raw" not in contract
+
+    materialized = materialize_vanilla_timeline_contract(contract, 880004)
+    assert materialized["root_character_id"] == 880004
+    assert materialized["character_scopes"] == {"travel_owner": 880004}
+    assert materialized["unique_character_scope_excludes"] == {
+        "travel_leader_scope": (880004,),
+    }
+
+    assert record["definition_lines"] == "15-203"
+    assert "return_home" in record["option_semantics"]["1"]
+    assert "sole legal live response" in record["safe_option"]["rationale"]
+    assert record["existing_boundaries"][
+        "campaign_specific_binding_fields"
+    ] == []
+
+    assert exemplar["kind"] == "pre-selection-live-red"
+    assert exemplar["artifact_sha256"] == (
+        "E797ABDD300239ADBC9A60F41E7623B6F58E5B7ABA8D6BB97828F21CD24A6A5A"
+    )
+    assert exemplar["saved_character_ids"] == {
+        "travel_owner": 27181,
+        "travel_leader_scope": 32980,
+    }
+    assert exemplar["rendered_native_option_indices"] == [0]
+    assert exemplar["selection_attempted"] is False
+
+    contract_repr = repr(contract)
+    for observation_only in (
+        53156184,
+        21,
+        27181,
+        32980,
+        149584,
+        "native:26",
+    ):
+        assert str(observation_only) not in contract_repr
+
+    response = query_vanilla_event_knowledge_v1(event_key)
+    assert response["status"] == "available"
+    assert response["contract"]["root_character_id"] == "$player"
+    assert response["contract"]["selected_native_option_index"] == 0
+    assert response["observations"]["exemplars"][0]["run"] == "R502"
     json.dumps(response, allow_nan=False)

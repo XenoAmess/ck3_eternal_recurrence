@@ -112,7 +112,7 @@ class EmbeddedVanillaTimelineContractsTests(unittest.TestCase):
             EMBEDDED_B_VANILLA_TIMELINE_CONTRACTS,
             EMBEDDED_C_VANILLA_TIMELINE_CONTRACTS,
         )
-        self.assertEqual(tuple(map(len, shards)), (27, 26, 26))
+        self.assertEqual(tuple(map(len, shards)), (30, 26, 26))
 
         combined: dict[str, dict[str, object]] = {}
         for shard in shards:
@@ -148,7 +148,7 @@ class EmbeddedVanillaTimelineContractsTests(unittest.TestCase):
                 )
 
     def test_embedded_inventory_is_campaign_neutral(self) -> None:
-        self.assertEqual(len(EMBEDDED_VANILLA_TIMELINE_CONTRACTS), 79)
+        self.assertEqual(len(EMBEDDED_VANILLA_TIMELINE_CONTRACTS), 82)
         self.assertFalse(
             any(
                 key.startswith("zg361")
@@ -185,7 +185,7 @@ class EmbeddedVanillaTimelineContractsTests(unittest.TestCase):
             sum(key.startswith("zg361") for key in literal_keys), 17
         )
         self.assertEqual(_shared_aggregate_update_count(tree), 1)
-        self.assertEqual(len(DEFAULT_VANILLA_EVENT_TIMELINE_CONTRACTS), 186)
+        self.assertEqual(len(DEFAULT_VANILLA_EVENT_TIMELINE_CONTRACTS), 187)
 
 
 if __name__ == "__main__":

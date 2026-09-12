@@ -1,4 +1,4 @@
-﻿# 实测工作流程（CK3 mod 调试）
+# 实测工作流程（CK3 mod 调试）
 
 ## 启动与日志
 
@@ -2697,3 +2697,5 @@ R500 证明事件合同必须同时保留 generic interaction 的弱 Character s
 `trait_specific_interactions.0011` 的 live frame 为 root/recipient/subject=`$player`、distinct actor、三个
 identity-unavailable Character slot、五个 typed boolean theme、native options `0/1/2`。合同选择 authored2/native1；
 冻结现场经 Stage 10 生产解析器 `26/26` 检查 GREEN。该 Python-only 修复不需要 DLL/游戏文件重启，也不得扩大 120 日边界。
+
+R502 established a focused vanilla-event rule for `travel_completion_event.1000`: bind the exact seven-scope projection and distinguish the authored option count (`2`) from the single rendered option (`native 0`). The already-home option is the only legal response in that frame. Preserve the RED before adding the contract, replay the frozen frame once, and do not widen this event fix into a longer Stage 10 run. Evidence: [R501/R502 travel completion contract](phase2-promo/r501-r502-travel-completion-1000-red-and-contract-2026-09-12.md).
