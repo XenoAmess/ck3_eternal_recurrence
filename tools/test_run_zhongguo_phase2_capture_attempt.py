@@ -15,11 +15,10 @@ if str(TOOLS) not in sys.path:
 
 from run_zhongguo_phase2_capture_attempt import prepare_plan  # noqa: E402
 from test_zhongguo_phase2_source_checkpoint_registry import (  # noqa: E402
-    strict_incident_checkpoint,
+    capture_manifest,
 )
-from zhongguo_phase2_source_checkpoint_provider import (  # noqa: E402
-    INCIDENT_STRICT_RECEIPT_FIELD,
-    SOURCE_CHECKPOINT_REGISTRY_SCHEMA_VERSION,
+from zhongguo_phase2_source_checkpoint_registry import (  # noqa: E402
+    build_registry_from_capture_manifest,
 )
 
 
@@ -70,87 +69,13 @@ def _seed(*, ready: bool) -> dict[str, object]:
 
 
 def _source_registry(root: Path) -> Path:
-    seed_sha = "d" * 64
-    lineage = f"zg361-phase2-seed-{seed_sha}"
-    specs = (
-        ("phase2_promotion_compensation", "capture_promotion_compensation", "zg361pp.147", 2, 1),
-        ("phase2_projects_metrics", "capture_projects_metrics", "zg361cp.26", 2, 1),
-        ("phase2_incidents_operations", "capture_incidents_operations", "zg361.50", 2, 1),
-        ("phase2_cross_cycle_endgame", "capture_cross_cycle_endgame", "zg361we.356", 2, 1),
+    return_path = root / "source-checkpoints.json"
+    build_registry_from_capture_manifest(
+        capture_manifest(root, multi_branch=True),
+        checkpoint_root=root / "frozen-source-checkpoints",
+        registry_path=return_path,
     )
-    entries = []
-    for index, (span, handler, event, owner, player) in enumerate(specs):
-        strict_receipt = None
-        if handler == "capture_incidents_operations":
-            strict_receipt, checkpoint = strict_incident_checkpoint(
-                root, seed_lineage_id=lineage
-            )
-            owner = int(strict_receipt["owner_character_id"])
-            player = int(strict_receipt["player_character_id"])
-            date_raw = int(strict_receipt["date_raw"])
-        else:
-            checkpoint = _write(
-                root / f"source-{index}.ck3", f"checkpoint-{index}"
-            )
-            date_raw = 100 + index
-        digest = hashlib.sha256(checkpoint.read_bytes()).hexdigest().upper()
-        row = {
-                "span_id": span,
-                "handler": handler,
-                "source_event_definition_key": event,
-                "owner_character_id": owner,
-                "player_character_id": player,
-                "date_raw": date_raw,
-                "checkpoint": {
-                    "path": str(checkpoint.resolve()),
-                    "bytes": checkpoint.stat().st_size,
-                    "sha256": digest,
-                    "save_lineage_id": lineage,
-                },
-                "source_receipt": {
-                    "result": "GREEN",
-                    "evidence_class": "real_ck3",
-                    "provider_observed": True,
-                    "ui_state_verified": True,
-                    "fixture_used": False,
-                    "console_used": False,
-                    "span_id": span,
-                    "event_definition_key": event,
-                    "owner_character_id": owner,
-                    "player_character_id": player,
-                    "date_raw": date_raw,
-                    "checkpoint_sha256": digest,
-                    "save_lineage_id": lineage,
-                },
-            }
-        if strict_receipt is not None:
-            receipt_path = root / "strict-incident-input" / "receipt.json"
-            row[INCIDENT_STRICT_RECEIPT_FIELD] = {
-                "kind": (
-                    "zg361_phase2_incidents_operations_"
-                    "source_checkpoint_receipt"
-                ),
-                "path": str(receipt_path.resolve()),
-                "bytes": receipt_path.stat().st_size,
-                "sha256": hashlib.sha256(
-                    receipt_path.read_bytes()
-                ).hexdigest().upper(),
-            }
-        entries.append(row)
-    return _write(
-        root / "source-checkpoints.json",
-        {
-            "schema_version": SOURCE_CHECKPOINT_REGISTRY_SCHEMA_VERSION,
-            "registry_kind": "zg361_phase2_canonical_source_checkpoint_registry",
-            "result": "GREEN",
-            "evidence_class": "real_ck3",
-            "fixture_used": False,
-            "console_used": False,
-            "seed_lineage_id": lineage,
-            "capture_lineage": {"seed_lineage_id": lineage},
-            "entries": entries,
-        },
-    )
+    return return_path
 
 
 class CaptureAttemptPlanTests(unittest.TestCase):

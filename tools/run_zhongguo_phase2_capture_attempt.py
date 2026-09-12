@@ -142,24 +142,39 @@ def _source_checkpoint_gate(
     seed = _json(seed_contract)
     source = seed.get("source") if isinstance(seed.get("source"), Mapping) else {}
     seed_sha = str(source.get("sha256", "")).lower()
-    expected_lineage = (
+    expected_seed_lineage = (
         f"zg361-phase2-seed-{seed_sha}"
         if re.fullmatch(r"[0-9a-f]{64}", seed_sha)
         else None
     )
+    registry = _json(path)
+    schema_version = registry.get("schema_version")
+    expected_lineage_set = (
+        registry.get("lineage_set_id")
+        if schema_version == 3
+        and isinstance(registry.get("lineage_set_id"), str)
+        and registry.get("lineage_set_id")
+        else None
+    )
+    if expected_lineage_set is not None:
+        expected_seed_lineage = None
     checks = {
         "registry_preflight_green": False,
-        "seed_lineage_bound": expected_lineage is not None,
+        "seed_lineage_bound": (
+            expected_seed_lineage is not None
+            or expected_lineage_set is not None
+        ),
         "incident_strict_received_self_bound": False,
-        "incident_owner_matches_seed": False,
+        "incident_source_binding_ready": False,
         "incident_ack_not_result_evidence": False,
     }
     error: dict[str, object] | None = None
     try:
         preflight = Phase2SourceCheckpointProvider(
-            _json(path),
+            registry,
             restore_registered_checkpoint=lambda _checkpoint: {},
-            expected_seed_lineage_id=expected_lineage,
+            expected_seed_lineage_id=expected_seed_lineage,
+            expected_lineage_set_id=expected_lineage_set,
         ).preflight()
         checks["registry_preflight_green"] = preflight.get("result") == "GREEN"
         incident = preflight.get("incident_received_self_checkpoint")
@@ -172,11 +187,23 @@ def _source_checkpoint_gate(
             and incident.get("owner_character_id")
             != incident.get("player_character_id")
         )
-        checks["incident_owner_matches_seed"] = (
+        handler_lineages = preflight.get("handler_save_lineage_ids")
+        checks["incident_source_binding_ready"] = bool(
             isinstance(incident, Mapping)
-            and isinstance(domain, Mapping)
-            and incident.get("owner_character_id")
-            == domain.get("incident_owner_character_id")
+            and (
+                (
+                    expected_lineage_set is not None
+                    and isinstance(handler_lineages, Mapping)
+                    and incident.get("seed_lineage_id")
+                    == handler_lineages.get("capture_incidents_operations")
+                )
+                or (
+                    expected_lineage_set is None
+                    and isinstance(domain, Mapping)
+                    and incident.get("owner_character_id")
+                    == domain.get("incident_owner_character_id")
+                )
+            )
         )
         incident_checks = (
             incident.get("checks") if isinstance(incident, Mapping) else None
@@ -188,7 +215,17 @@ def _source_checkpoint_gate(
         )
     except Phase2SourceCheckpointError as caught:
         error = caught.evidence
-    row.update(record=_record(path), checks=checks, error=error)
+    row.update(
+        record=_record(path),
+        checks=checks,
+        schema_version=schema_version,
+        lineage_binding=(
+            {"lineage_set_id": expected_lineage_set}
+            if expected_lineage_set is not None
+            else {"seed_lineage_id": expected_seed_lineage}
+        ),
+        error=error,
+    )
     return row, ([] if all(checks.values()) else ["source_checkpoint_registry_not_green"])
 
 
