@@ -1811,7 +1811,7 @@ def _phase2_scoreboard_modal_visible(
     nonce: str,
     expected_revision: int,
 ) -> tuple[bool, dict[str, object]]:
-    """Read the contracted scoreboard modal visibility from its provider."""
+    """Read exact modal visibility, including retained projection diagnostics."""
 
     response = service.query_zhongguo_scoreboard_state_v1(
         nonce, expected_revision=expected_revision
@@ -1826,10 +1826,24 @@ def _phase2_scoreboard_modal_visible(
         ),
         None,
     ) if isinstance(widgets, list) else None
+    exists = modal.get("exists") if isinstance(modal, dict) else None
     visible = modal.get("effective_visible") if isinstance(modal, dict) else None
-    if not (
+    projection_status_usable = bool(
         isinstance(response, dict)
-        and response.get("status") == "available"
+        and (
+            response.get("status") == "available"
+            or (
+                response.get("status") == "unavailable"
+                and response.get("unavailable_reason")
+                == "state_projection_unavailable"
+            )
+        )
+    )
+    if not (
+        projection_status_usable
+        and isinstance(exists, dict)
+        and exists.get("status") == "available"
+        and exists.get("value") is True
         and isinstance(visible, dict)
         and visible.get("status") == "available"
         and isinstance(visible.get("value"), bool)

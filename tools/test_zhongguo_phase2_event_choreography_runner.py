@@ -64,6 +64,7 @@ def _scoreboard(*, visible: bool) -> dict[str, object]:
         "widgets": [
             {
                 "stable_identity": "zg361_scoreboard_modal",
+                "exists": {"status": "available", "value": True},
                 "effective_visible": {"status": "available", "value": visible},
             }
         ],
@@ -560,6 +561,35 @@ class Phase2EventChoreographyRunnerTests(unittest.TestCase):
         self.assertTrue(drained["no_blocking_surface"])
         self.assertFalse(staged["console_used"])
         self.assertFalse(staged["test_fixture_used"])
+
+    def test_event_free_source_accepts_exact_hidden_modal_diagnostic(self) -> None:
+        class ProjectionUnavailableService(_Service):
+            def query_zhongguo_scoreboard_state_v1(
+                self, _nonce: str, *, expected_revision: int
+            ) -> dict[str, object]:
+                self.expected_revision = expected_revision
+                return {
+                    **_scoreboard(visible=False),
+                    "status": "unavailable",
+                    "unavailable_reason": "state_projection_unavailable",
+                }
+
+        service = ProjectionUnavailableService()
+        adapter = capture._Phase2RealEventChoreographyService(service)
+        plan = phase2_event_sequence_plan("capture_manager_governance")
+        with mock.patch.object(
+            adapter,
+            "_restore_player_manager_source",
+            return_value={"result": "GREEN"},
+        ):
+            staged = adapter.stage_span_source(
+                plan,
+                PHASE2_CAPTURE_SCENARIOS[2],
+                SimpleNamespace(artifacts=Path("unused")),
+                {},
+            )
+        self.assertFalse(staged["scoreboard_modal_visible"])
+        self.assertEqual(service.expected_revision, 10)
 
     def test_manager_source_restores_player_publication_checkpoint_before_span(self) -> None:
         class RestoreService(_Service):
