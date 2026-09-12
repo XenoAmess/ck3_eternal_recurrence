@@ -118,7 +118,9 @@ _VANILLA_EMBEDDED_B_ANALYSIS: dict[str, dict[str, object]] = {
         "already-discovered scheme and notifies its owner.",
         "There is no acknowledgement-only alternative, so this is an unavoidable "
         "effect rather than a no-op.",
-        "The owner, target, and spymaster are bound as distinct non-player roles.",
+        "The owner remains distinct from the target and spymaster. Exact-build "
+        "description branches allow the target to equal either the event root "
+        "or the spymaster.",
         classification="only-authored-route",
     ),
     "ep3_story_cycle_admin_eunuch.1001": _record(

@@ -3415,8 +3415,8 @@ if new_event_key not in reloaded.KNOWN_TIMELINE_INTERRUPTS:
         )
         self.assertFalse(owner_checks["scope:owner:unique_third_party"])
 
-        merged_parties = copy.deepcopy(context)
-        merged_parties["saved_scopes"][4] = _scope(
+        target_is_spymaster = copy.deepcopy(context)
+        target_is_spymaster["saved_scopes"][4] = _scope(
             "spymaster", "character", 37960
         )
         merged_checks = production._known_interrupt_checks(
@@ -3425,11 +3425,55 @@ if new_event_key not in reloaded.KNOWN_TIMELINE_INTERRUPTS:
                 "active_event": {"option_count": 1},
             },
             event={"event_instance_id": 207},
-            context=merged_parties,
+            context=target_is_spymaster,
             event_key=event_key,
             contract=contract,
         )
-        self.assertFalse(merged_checks["scope:spymaster:differs_from"])
+        self.assertTrue(all(merged_checks.values()), merged_checks)
+
+        live_contract = _manager_contract(event_key, player=27181)
+        target_is_player = _context(
+            event_key=event_key,
+            instance_id=21,
+            date_raw=53155920,
+            player=27181,
+            scopes=[
+                _scope("scheme", "scheme"),
+                _scope("owner", "character", 28424),
+                _scope("artifact", "artifact"),
+                _scope("target", "character", 27181),
+                _scope("spymaster", "character", 29247),
+                _scope("discovery_chance", "value"),
+            ],
+            native_option_indices=(0,),
+        )
+        player_target_checks = production._known_interrupt_checks(
+            snapshot={
+                "date_raw": 53155920,
+                "active_event": {"option_count": 1},
+            },
+            event={"event_instance_id": 21},
+            context=target_is_player,
+            event_key=event_key,
+            contract=live_contract,
+        )
+        self.assertTrue(all(player_target_checks.values()), player_target_checks)
+
+        owner_is_target = copy.deepcopy(context)
+        owner_is_target["saved_scopes"][1] = _scope(
+            "owner", "character", 37960
+        )
+        owner_target_checks = production._known_interrupt_checks(
+            snapshot={
+                "date_raw": 53216088,
+                "active_event": {"option_count": 1},
+            },
+            event={"event_instance_id": 207},
+            context=owner_is_target,
+            event_key=event_key,
+            contract=contract,
+        )
+        self.assertFalse(owner_target_checks["scope:owner:differs_from"])
 
     def test_eunuch_story_opener_avoids_court_position_mutation(self) -> None:
         event_key = "ep3_story_cycle_admin_eunuch.1001"

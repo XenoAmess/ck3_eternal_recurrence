@@ -194,21 +194,21 @@ _LEGACY_EMBEDDED_B_VANILLA_TIMELINE_CONTRACTS: Final[
         # notifies its dynamic owner; there is no acknowledgement-only or
         # alternate route. Bind the source-authored scheme/owner/target/
         # spymaster frame, the generic artifact slot and discovery value
-        # before selecting that required route. The dynamic characters must
-        # remain distinct non-player parties in this observed lineage.
+        # before selecting that required route. The owner must differ from
+        # the target and spymaster; the target may be the event root or the
+        # spymaster, as both branches are authored by the exact-build event.
         "date_raw": 53216088,
         "date_policy": "product-observation-window",
         "root_character_id": 32904,
         "character_scopes": {},
         "unique_character_scope_excludes": {
             "owner": (32904,),
-            "target": (32904,),
             "spymaster": (32904,),
         },
         "character_scope_differs_from": {
             "owner": ("target", "spymaster"),
-            "target": ("owner", "spymaster"),
-            "spymaster": ("owner", "target"),
+            "target": ("owner",),
+            "spymaster": ("owner",),
         },
         "scope_types": {
             "scheme": "scheme",
