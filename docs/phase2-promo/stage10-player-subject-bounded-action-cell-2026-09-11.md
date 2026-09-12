@@ -104,3 +104,9 @@ R492 在完整 120 日边界内完成 40 次观测，日志已出现 7 次 seaso
 冻结 source 中，玩家经理 `29037` 的 `zg361_b1_subjects` 有 29 个存活引用，但只有 6 个属于当前 `owner=29037 / cycle=17 / case=17 / active=1 / roster=1`；其余 23 个已经属于经理 `29628` 的 case `19/19`。旧 prune 只检查 `is_alive`，而 processing 构造按 exact tuple 取 6 个，导致最终数量等式永远不可能成立。
 
 最小修复让 subject 与 processing 两个持久列表都按当前经理的 owner、subject、cycle、case、active、roster exact tuple 清理，字段不可读时 fail closed。B1 runtime normal/optimized 各 `76/76` GREEN；未启动额外 CK3，也未扩大成长跑。v6 receipt `E363D5EE...ACF8` 已绑定通用角色域报告 `74BF50BB...B328` 与修复后产品树 `C428C42B...B5DC` 并通过无启动 validator。下一步只跑一次新轮次。完整证据见 [R491/R492 外来 roster RED 与修复](r491-r492-stage10-foreign-roster-red-and-fix-2026-09-12.md)。
+
+## R493/R494 的原版强制退休来源淘汰
+
+R494 使用 v6 与修复后产品树运行至 source 后第 88 个游戏日，遇到 exact-build 原版 `ep3_interactions_events.0630`。该事件唯一选项会执行 `governor_resignation_title_transfer_effect`，移除玩家经理官职并破坏 Stage 10 的稳定 roster 前提。既有通用合同正确返回 `SCENARIO_INVALID`、保持暂停且 `selection_attempted=false`；`.120` 产品结果未被评估，不能据此回滚 B1 修复或继续延长观察窗。
+
+该 `29037` 来源永久退出 120 日 Stage 10 用途。下一候选必须在启动前证明其 active B1 exact tuple 和玩家经理拓扑，并排除同一验收窗内已知的官职移除；不允许靠自动点击、吞掉 RED 或原位 retry 保住旧来源。事件定义、调用链、实机 artifact 和 focused normal/optimized `2/2` 见 [R493/R494 来源 RED](r493-r494-stage10-governor-retirement-source-red-2026-09-12.md)。P1 仍为 `8/9`，P2 继续锁定。

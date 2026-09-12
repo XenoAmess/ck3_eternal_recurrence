@@ -435,3 +435,9 @@ R490 的唯一 gameplay 实例通过 loader/native/exact-mount/error 门后，�
 R492 的唯一 gameplay 实例在 120 日内完成 40 次观测，已出现 7 次 publication 和 10 次 final-callback compaction failure，仍保持 B1 active、Central/PP false。这证明失败来自产品状态机，而非观察窗不足。冻结 source 的经理 `29037` 持久 subject 列表有 29 个存活引用，只有 6 个属于当前 `29037/17/17` exact tuple；其余 23 个已属于经理 `29628` 的 case `19/19`。旧 prune 只按存活过滤，使 subject 与 processing 域永久分裂。
 
 最小修复让 subject 和 processing 两个列表统一按 owner、subject、cycle、case、active、roster exact tuple 清理，缺字段 fail closed。B1 runtime normal/optimized 各 `76/76` GREEN，没有额外 CK3 长跑。R491/R492 均已终止，CK3/Operator MCP/端口 `12442` 为零；P1 仍为 `8/9`，P2 继续锁定。旧 v5 receipt 已失效；路径无关的 `ck3_character_scope_offline_v1` 报告和 v6 receipt 已生成并通过生产 validator，下一步只执行一次新轮次复验。详见 [R491/R492 外来 roster RED 与修复](r491-r492-stage10-foreign-roster-red-and-fix-2026-09-12.md)。
+
+## R493/R494 Stage 10 原版强制退休来源 RED
+
+R494 在修复后产品树与 v6 receipt 上通过全部启动门，并在 source 后第 88 个游戏日遇到原版 `ep3_interactions_events.0630`。该事件唯一按钮本身执行 governor resignation/title transfer；现有通用合同正确保持暂停、没有选择并返回 `SCENARIO_INVALID`。失效前有 29 次观测、7 次 publication 与 1 次 compaction failure，但官职与 roster 即将被原版改变，故 `.120` 产品结果为 `NOT_EVALUATED`，不能判定 B1 修复成败。
+
+该来源已永久淘汰，禁止重试、延时或绕过事件。R493/R494 均已终止，CK3/Operator MCP/端口 `12443` 为零；P1 保持 `8/9`，P2 继续锁定。下一步仅离线筛选新的 active B1 玩家经理候选，通过准入后再做一次有界来源捕获。完整证据见 [R493/R494 原版强制退休来源 RED](r493-r494-stage10-governor-retirement-source-red-2026-09-12.md)。
