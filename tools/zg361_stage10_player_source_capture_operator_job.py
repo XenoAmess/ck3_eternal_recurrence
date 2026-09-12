@@ -16,6 +16,9 @@ import zg361_phase2_af5_operator_job as base
 CONTROLS = ["status", "capture-source", "cleanup"]
 JOB_ROLE = "stage10-player-source-capture"
 TOPOLOGY_KIND = "ck3_save_player_topology_offline_v1"
+DISCOVERY_KIND = "ck3_character_scope_discovery_offline_v1"
+SCHEDULED_EVENT_KIND = "ck3_scheduled_event_queue_offline_v1"
+MANAGED_AUTOSAVE_KIND = "zg361_stage10_managed_autosave_provenance_v1"
 LIVE_SOURCE_KIND = "zg361_stage10_player_source_capture_v1"
 
 
@@ -103,6 +106,235 @@ def _campaign(
     return copy.deepcopy(dict(campaign))
 
 
+def _number(scope: Mapping[str, object], name: str) -> int | float | None:
+    variables = scope.get("variables")
+    if not isinstance(variables, Mapping):
+        return None
+    variable = variables.get(name)
+    if not isinstance(variable, Mapping) or variable.get("present") is not True:
+        return None
+    number = variable.get("number")
+    if isinstance(number, bool) or not isinstance(number, (int, float)):
+        return None
+    return number
+
+
+def _character_id(scope: Mapping[str, object], name: str) -> int | None:
+    variables = scope.get("variables")
+    if not isinstance(variables, Mapping):
+        return None
+    variable = variables.get(name)
+    if not isinstance(variable, Mapping) or variable.get("present") is not True:
+        return None
+    character_id = variable.get("character_id")
+    if isinstance(character_id, bool) or not isinstance(character_id, int):
+        return None
+    return character_id
+
+
+def _character_list(scope: Mapping[str, object], name: str) -> list[int] | None:
+    lists = scope.get("lists")
+    if not isinstance(lists, Mapping):
+        return None
+    listed = lists.get(name)
+    if not isinstance(listed, Mapping) or listed.get("present") is not True:
+        return None
+    items = listed.get("items")
+    if not isinstance(items, list):
+        return None
+    result: list[int] = []
+    for item in items:
+        if not isinstance(item, Mapping) or item.get("type") != "char":
+            return None
+        identity = item.get("identity")
+        if isinstance(identity, bool) or not isinstance(identity, int) or identity <= 0:
+            return None
+        result.append(identity)
+    return result
+
+
+def _source_matches_checkpoint(
+    value: object, checkpoint: Path, expected_sha256: str
+) -> bool:
+    source = value if isinstance(value, Mapping) else {}
+    raw_path = source.get("path")
+    return (
+        isinstance(raw_path, str)
+        and Path(raw_path).resolve() == checkpoint
+        and source.get("bytes") == checkpoint.stat().st_size
+        and str(source.get("sha256", "")).upper() == expected_sha256.upper()
+    )
+
+
+def _validate_managed_autosave_provenance(
+    provenance: Mapping[str, object],
+    *,
+    checkpoint: Path,
+    source_player: int,
+    target: int,
+    expected: Mapping[str, object],
+) -> dict[str, object]:
+    session_path, session = _file_payload(
+        provenance.get("source_session_activation"), "source session activation"
+    )
+    loader_path, loader = _file_payload(
+        provenance.get("loader_native_readiness"), "source loader readiness"
+    )
+    red_path, red = _file_payload(
+        provenance.get("managed_scenario_red"), "source managed scenario RED"
+    )
+    discovery_path, discovery = _file_payload(
+        provenance.get("b1_discovery_report"), "source B1 discovery report"
+    )
+    scheduled_path, scheduled = _file_payload(
+        provenance.get("scheduled_event_report"), "source scheduled-event report"
+    )
+    checkpoint_record = base.mapping(
+        provenance.get("checkpoint"), "managed autosave checkpoint"
+    )
+    expected_checkpoint_sha = str(expected["checkpoint_sha256"]).upper()
+    session_expected = base.mapping(
+        session.get("expected_hashes"), "source session expected hashes"
+    )
+    state_directory = Path(str(session.get("state_directory", ""))).resolve()
+    artifact_directory = Path(str(session.get("artifact_directory", ""))).resolve()
+    expected_autosave = state_directory / "profile" / "last_save.ck3"
+    loader_snapshot = loader.get("last_snapshot")
+    loader_snapshot = loader_snapshot if isinstance(loader_snapshot, Mapping) else {}
+    red_evidence = red.get("evidence")
+    red_evidence = red_evidence if isinstance(red_evidence, Mapping) else {}
+    red_binding = red_evidence.get("source_binding")
+    red_binding = red_binding if isinstance(red_binding, Mapping) else {}
+    progress = red_evidence.get("progress")
+    progress = progress if isinstance(progress, Mapping) else {}
+    interrupt = progress.get("scenario_invalidating_interrupt")
+    interrupt = interrupt if isinstance(interrupt, Mapping) else {}
+
+    roots = discovery.get("roots")
+    target_roots = (
+        [row for row in roots if isinstance(row, Mapping) and row.get("root_character_id") == target]
+        if isinstance(roots, list)
+        else []
+    )
+    target_root = target_roots[0] if len(target_roots) == 1 else {}
+    cycle = _number(target_root, "zg361_b1_manager_cycle_serial")
+    case = _number(target_root, "zg361_b1_manager_case_serial")
+    subjects = _character_list(target_root, "zg361_b1_subjects")
+    processing = _character_list(target_root, "zg361_b1_processing_subjects")
+    references = discovery.get("referenced_characters")
+    reference_rows = {
+        row.get("character_id"): row
+        for row in references
+        if isinstance(row, Mapping) and isinstance(row.get("character_id"), int)
+    } if isinstance(references, list) else {}
+    exact_domain = (
+        isinstance(subjects, list)
+        and len(subjects) > 0
+        and len(subjects) == len(set(subjects))
+        and isinstance(processing, list)
+        and sorted(subjects) == sorted(processing)
+        and cycle is not None
+        and case is not None
+        and all(
+            isinstance(reference_rows.get(character_id), Mapping)
+            and reference_rows[character_id].get("alive") is True
+            and _character_id(reference_rows[character_id], "zg361_b1_case_owner") == target
+            and _character_id(reference_rows[character_id], "zg361_b1_case_subject") == character_id
+            and _number(reference_rows[character_id], "zg361_b1_cycle_serial") == cycle
+            and _number(reference_rows[character_id], "zg361_b1_case_serial") == case
+            and _number(reference_rows[character_id], "zg361_b1_case_state") == 7
+            and _number(reference_rows[character_id], "zg361_b1_case_active") == 1
+            and _number(reference_rows[character_id], "zg361_b1_roster_included") == 1
+            for character_id in subjects
+        )
+    )
+    matches = scheduled.get("matches")
+    scheduled_domain = (
+        isinstance(matches, list)
+        and isinstance(subjects, list)
+        and len(matches) == len(subjects)
+        and scheduled.get("matched_count") == len(subjects)
+        and all(
+            isinstance(row, Mapping)
+            and row.get("event") == "zg361b1.122"
+            and row.get("root_character_id") == target
+            and row.get("days_from_current") == 30
+            for row in matches
+        )
+    )
+    played = loader_snapshot.get("played_character")
+    played = played if isinstance(played, Mapping) else {}
+    pids = red.get("ck3_pids")
+    tracked_pid = loader.get("tracked_ck3_pid")
+    valid = (
+        provenance.get("schema_version") == 1
+        and provenance.get("kind") == MANAGED_AUTOSAVE_KIND
+        and provenance.get("result") == "GREEN"
+        and provenance.get("source_player_character_id") == source_player
+        and provenance.get("target_player_manager_character_id") == target
+        and _source_matches_checkpoint(
+            checkpoint_record, checkpoint, expected_checkpoint_sha
+        )
+        and checkpoint == expected_autosave
+        and session.get("job_role") == "stage10-player-subject"
+        and str(session_expected.get("game_exe_sha256", "")).upper()
+        == str(expected["game_exe_sha256"]).upper()
+        and str(session_expected.get("product_tree_sha256", "")).upper()
+        == str(expected["product_tree_sha256"]).upper()
+        and loader_path.parent == artifact_directory
+        and red_path.parent == artifact_directory
+        and loader.get("result") == "GREEN"
+        and isinstance(tracked_pid, int)
+        and not isinstance(tracked_pid, bool)
+        and tracked_pid > 0
+        and pids == [tracked_pid]
+        and loader_snapshot.get("paused") is True
+        and loader_snapshot.get("map_ready") is True
+        and played.get("character_id") == source_player
+        and red.get("result") == "RED"
+        and red.get("failure_stage") == "stage10_player_subject_action"
+        and red_binding.get("player_character_id") == source_player
+        and progress.get("result") == "SCENARIO_INVALID"
+        and progress.get("player_character_id") == source_player
+        and interrupt.get("classification") == "scenario-invalidating-interrupt"
+        and interrupt.get("handling") == "fail-closed-no-selection"
+        and interrupt.get("recipient_character_id") == source_player
+        and interrupt.get("selection_attempted") is False
+        and discovery.get("schema_version") == 1
+        and discovery.get("kind") == DISCOVERY_KIND
+        and discovery.get("result") == "GREEN"
+        and discovery.get("game_version") == "1.19.0.6"
+        and _source_matches_checkpoint(
+            discovery.get("source"), checkpoint, expected_checkpoint_sha
+        )
+        and exact_domain
+        and scheduled.get("schema_version") == 1
+        and scheduled.get("kind") == SCHEDULED_EVENT_KIND
+        and scheduled.get("result") == "GREEN"
+        and scheduled.get("game_version") == "1.19.0.6"
+        and scheduled.get("root_character_id") == target
+        and scheduled.get("event_prefix") == "zg361b1."
+        and _source_matches_checkpoint(
+            scheduled.get("source"), checkpoint, expected_checkpoint_sha
+        )
+        and scheduled_domain
+    )
+    if not valid:
+        raise base.Af5JobError(
+            "Stage 10 managed autosave provenance is not exact", dict(provenance)
+        )
+    return {
+        "managed_source_session_activation": session_path,
+        "managed_source_loader_readiness": loader_path,
+        "managed_source_scenario_red": red_path,
+        "managed_source_b1_discovery_report": discovery_path,
+        "managed_source_scheduled_event_report": scheduled_path,
+        "managed_source_exact_subject_count": len(subjects),
+        "managed_source_cycle": cycle,
+        "managed_source_case": case,
+    }
+
+
 def _validate_activation_inputs(
     value: Mapping[str, object], bound: Mapping[str, object]
 ) -> dict[str, object]:
@@ -123,21 +355,6 @@ def _validate_activation_inputs(
     source = base.mapping(topology.get("source"), "topology source")
     candidates = topology.get("player_manager_candidates")
     candidate = candidates[0] if isinstance(candidates, list) and len(candidates) == 1 else None
-    qualification_path, qualification = _file_payload(
-        value.get("source_live_qualification"), "source live qualification"
-    )
-    provenance_path, provenance = _file_payload(
-        value.get("source_checkpoint_provenance"), "source checkpoint provenance"
-    )
-    provenance_checkpoint = base.mapping(
-        provenance.get("checkpoint"), "provenance checkpoint"
-    )
-    source_binding = base.mapping(
-        provenance.get("source_contract_binding"), "source contract binding"
-    )
-    before = base.mapping(
-        qualification.get("before_snapshot"), "qualification before snapshot"
-    )
     if not (
         source_player != target
         and target != owner
@@ -165,7 +382,62 @@ def _validate_activation_inputs(
         and source.get("bytes") == checkpoint.stat().st_size
         and str(source.get("sha256", "")).upper()
         == str(expected["checkpoint_sha256"]).upper()
-        and qualification.get("result") == "GREEN"
+    ):
+        raise base.Af5JobError(
+            "Stage 10 source capture activation lacks matching offline/live provenance"
+        )
+    result = {
+        "source_player_character_id": source_player,
+        "target_player_manager_character_id": target,
+        "target_owner_character_id": owner,
+        "stage10_topology_report": topology_path,
+    }
+    autosave_value = value.get("source_managed_autosave_provenance")
+    legacy_values = (
+        value.get("source_live_qualification"),
+        value.get("source_checkpoint_provenance"),
+    )
+    if autosave_value is not None:
+        if any(item is not None for item in legacy_values):
+            raise base.Af5JobError("Stage 10 source admission modes must be exclusive")
+        autosave_path, autosave = _file_payload(
+            autosave_value, "source managed autosave provenance"
+        )
+        result.update(
+            _validate_managed_autosave_provenance(
+                autosave,
+                checkpoint=checkpoint,
+                source_player=source_player,
+                target=target,
+                expected=expected,
+            )
+        )
+        result.update(
+            source_admission_kind="managed-autosave",
+            source_managed_autosave_provenance=autosave_path,
+        )
+        return result
+    if any(item is None for item in legacy_values):
+        raise base.Af5JobError(
+            "Stage 10 source capture activation lacks matching offline/live provenance"
+        )
+    qualification_path, qualification = _file_payload(
+        legacy_values[0], "source live qualification"
+    )
+    provenance_path, provenance = _file_payload(
+        legacy_values[1], "source checkpoint provenance"
+    )
+    provenance_checkpoint = base.mapping(
+        provenance.get("checkpoint"), "provenance checkpoint"
+    )
+    source_binding = base.mapping(
+        provenance.get("source_contract_binding"), "source contract binding"
+    )
+    before = base.mapping(
+        qualification.get("before_snapshot"), "qualification before snapshot"
+    )
+    if not (
+        qualification.get("result") == "GREEN"
         and qualification.get("game_time_advanced") is False
         and before.get("paused") is True
         and before.get("map_ready") is True
@@ -178,14 +450,12 @@ def _validate_activation_inputs(
         raise base.Af5JobError(
             "Stage 10 source capture activation lacks matching offline/live provenance"
         )
-    return {
-        "source_player_character_id": source_player,
-        "target_player_manager_character_id": target,
-        "target_owner_character_id": owner,
-        "stage10_topology_report": topology_path,
-        "source_live_qualification": qualification_path,
-        "source_checkpoint_provenance": provenance_path,
-    }
+    result.update(
+        source_admission_kind="legacy-live-qualified-checkpoint",
+        source_live_qualification=qualification_path,
+        source_checkpoint_provenance=provenance_path,
+    )
+    return result
 
 
 def validate_activation(path: Path, *, require_empty_slot: bool) -> dict[str, object]:
@@ -364,14 +634,22 @@ class Stage10PlayerSourceCaptureOperatorJob(base.Af5OperatorJob):
             "source_topology_report": base.file_record(
                 Path(str(bound["stage10_topology_report"]))
             ),
-            "source_live_qualification": base.file_record(
-                Path(str(bound["source_live_qualification"]))
-            ),
-            "source_checkpoint_provenance": base.file_record(
-                Path(str(bound["source_checkpoint_provenance"]))
+            "source_admission_kind": bound.get(
+                "source_admission_kind", "legacy-live-qualified-checkpoint"
             ),
             "video_lock_touched": False,
         }
+        if bound.get("source_admission_kind") == "managed-autosave":
+            evidence["source_managed_autosave_provenance"] = base.file_record(
+                Path(str(bound["source_managed_autosave_provenance"]))
+            )
+        else:
+            evidence["source_live_qualification"] = base.file_record(
+                Path(str(bound["source_live_qualification"]))
+            )
+            evidence["source_checkpoint_provenance"] = base.file_record(
+                Path(str(bound["source_checkpoint_provenance"]))
+            )
         base.write_object(artifacts / "stage10-player-source-green.json", evidence)
         with self.lock:
             self.af5_evidence = evidence

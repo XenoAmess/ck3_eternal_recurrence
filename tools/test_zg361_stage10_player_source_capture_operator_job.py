@@ -201,6 +201,174 @@ class Stage10PlayerSourceCaptureTests(unittest.TestCase):
             ):
                 capture._validate_activation_inputs(activation, bound)
 
+    def test_activation_accepts_exact_managed_autosave_provenance(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            state = root / "session-state"
+            artifacts = root / "session-artifacts"
+            checkpoint = state / "profile" / "last_save.ck3"
+            checkpoint.parent.mkdir(parents=True)
+            artifacts.mkdir()
+            checkpoint.write_bytes(b"SAV0101-source")
+            expected = {
+                "checkpoint_sha256": capture.base.sha256(checkpoint),
+                "product_tree_sha256": "B" * 64,
+                "game_exe_sha256": "E" * 64,
+            }
+            topology = {
+                "schema_version": 1,
+                "kind": capture.TOPOLOGY_KIND,
+                "result": "GREEN",
+                "authority": "offline-prelaunch-only-live-exact-build-mcp-remains-authoritative",
+                "game_version": "1.19.0.6",
+                "meta_number_of_players": 1,
+                "played_character_records": [{"character_id": 100, "player_id": 1}],
+                "currently_played_character_ids": [100],
+                "source": capture.base.file_record(checkpoint),
+                "player_manager_candidates": [{
+                    "player_manager_character_id": 200,
+                    "immediate_liege_character_id": 100,
+                    "player_primary_title_tier": 4,
+                    "player_government": "celestial_government",
+                    "direct_landed_vassal_count": 2,
+                }],
+            }
+
+            def number(value: int) -> dict[str, object]:
+                return {"present": True, "number": value}
+
+            def character(value: int) -> dict[str, object]:
+                return {"present": True, "character_id": value}
+
+            discovery = {
+                "schema_version": 1,
+                "kind": capture.DISCOVERY_KIND,
+                "result": "GREEN",
+                "game_version": "1.19.0.6",
+                "source": capture.base.file_record(checkpoint),
+                "roots": [{
+                    "root_character_id": 200,
+                    "variables": {
+                        "zg361_b1_manager_cycle_serial": number(5),
+                        "zg361_b1_manager_case_serial": number(5),
+                    },
+                    "lists": {
+                        "zg361_b1_subjects": {
+                            "present": True,
+                            "items": [{"type": "char", "identity": 300}],
+                        },
+                        "zg361_b1_processing_subjects": {
+                            "present": True,
+                            "items": [{"type": "char", "identity": 300}],
+                        },
+                    },
+                }],
+                "referenced_characters": [{
+                    "character_id": 300,
+                    "alive": True,
+                    "variables": {
+                        "zg361_b1_case_owner": character(200),
+                        "zg361_b1_case_subject": character(300),
+                        "zg361_b1_cycle_serial": number(5),
+                        "zg361_b1_case_serial": number(5),
+                        "zg361_b1_case_state": number(7),
+                        "zg361_b1_case_active": number(1),
+                        "zg361_b1_roster_included": number(1),
+                    },
+                }],
+            }
+            scheduled = {
+                "schema_version": 1,
+                "kind": capture.SCHEDULED_EVENT_KIND,
+                "result": "GREEN",
+                "game_version": "1.19.0.6",
+                "event_prefix": "zg361b1.",
+                "root_character_id": 200,
+                "matched_count": 1,
+                "matches": [{
+                    "event": "zg361b1.122",
+                    "root_character_id": 200,
+                    "days_from_current": 30,
+                }],
+                "source": capture.base.file_record(checkpoint),
+            }
+            session = {
+                "job_role": "stage10-player-subject",
+                "state_directory": str(state),
+                "artifact_directory": str(artifacts),
+                "expected_hashes": {
+                    "game_exe_sha256": expected["game_exe_sha256"],
+                    "product_tree_sha256": expected["product_tree_sha256"],
+                },
+            }
+            loader = {
+                "result": "GREEN",
+                "tracked_ck3_pid": 50,
+                "last_snapshot": snapshot(100, 3),
+            }
+            red = {
+                "result": "RED",
+                "failure_stage": "stage10_player_subject_action",
+                "ck3_pids": [50],
+                "evidence": {
+                    "source_binding": {"player_character_id": 100},
+                    "progress": {
+                        "result": "SCENARIO_INVALID",
+                        "player_character_id": 100,
+                        "scenario_invalidating_interrupt": {
+                            "classification": "scenario-invalidating-interrupt",
+                            "handling": "fail-closed-no-selection",
+                            "recipient_character_id": 100,
+                            "selection_attempted": False,
+                        },
+                    },
+                },
+            }
+            objects = {
+                "topology": topology,
+                "discovery": discovery,
+                "scheduled": scheduled,
+                "session": session,
+                "loader": loader,
+                "red": red,
+            }
+            paths = {}
+            for name, value in objects.items():
+                directory = artifacts if name in {"loader", "red"} else root
+                path = directory / f"{name}.json"
+                capture.base.write_object(path, value)
+                paths[name] = path
+            provenance = {
+                "schema_version": 1,
+                "kind": capture.MANAGED_AUTOSAVE_KIND,
+                "result": "GREEN",
+                "source_player_character_id": 100,
+                "target_player_manager_character_id": 200,
+                "checkpoint": capture.base.file_record(checkpoint),
+                "source_session_activation": capture.base.file_record(paths["session"]),
+                "loader_native_readiness": capture.base.file_record(paths["loader"]),
+                "managed_scenario_red": capture.base.file_record(paths["red"]),
+                "b1_discovery_report": capture.base.file_record(paths["discovery"]),
+                "scheduled_event_report": capture.base.file_record(paths["scheduled"]),
+            }
+            provenance_path = root / "provenance.json"
+            capture.base.write_object(provenance_path, provenance)
+            activation = {
+                "source_player_character_id": 100,
+                "target_player_manager_character_id": 200,
+                "target_owner_character_id": 100,
+                "stage10_topology_report": capture.base.file_record(paths["topology"]),
+                "source_managed_autosave_provenance": capture.base.file_record(
+                    provenance_path
+                ),
+            }
+            bound = {"checkpoint": checkpoint, "expected_hashes": expected}
+            validated = capture._validate_activation_inputs(activation, bound)
+
+        self.assertEqual(validated["source_admission_kind"], "managed-autosave")
+        self.assertEqual(validated["managed_source_exact_subject_count"], 1)
+        self.assertEqual(validated["managed_source_cycle"], 5)
+
     def test_control_surface_has_no_retry(self) -> None:
         self.assertEqual(capture.CONTROLS, ["status", "capture-source", "cleanup"])
         self.assertNotIn("retry", " ".join(capture.CONTROLS))

@@ -444,6 +444,6 @@ R494 在修复后产品树与 v6 receipt 上通过全部启动门，并在 sourc
 
 ## R494 替代 Stage 10 来源离线筛选
 
-R494 的 `1068.1.1` 自动存档仍是 single-player READY，且已运行 exact-roster 修复。新的通用 `ck3_character_scope_discovery_offline_v1` 在其中找到 18 个 B1 root；11 个候选的 subject/processing/exact 域完全一致。下一次 source-capture 选 `27181 -> 32904`：其 case `5/5` 有 5 个 state-7 exact subject，五个 `.122` 都在 30 天后，且域内不含会在 23 天后被已知 `.0630` 移除的 `29037`。
+R494 的 `1068.1.1` 自动存档仍是 single-player READY，且已运行 exact-roster 修复。新的通用 `ck3_character_scope_discovery_offline_v1` 在其中找到 18 个 B1 root；11 个候选的 subject/processing/exact 域完全一致。下一次 source-capture 选 `27181 -> 36354`：其 case `5/5` 有 5 个 state-7 exact subject，五个 `.122` 都在 30 天后，且域内不含会在 23 天后被已知 `.0630` 移除的 `29037`。拓扑中的直属有地封臣总数为 7，不能与 5 个 exact B1 对象混写。
 
-该选择只是 offline prelaunch qualified；必须零时间推进完成 exact-build 玩家切换、campaign-root 复核和 MCP 原生保存后才能签发新 receipt。原版退休 law 5 对所有 governor 都满足年龄触发，因此不声称候选免疫后续事件。P1 仍为 `8/9`，P2 继续锁定。证据与一次性消费层边界见 [R494 替代来源筛选](r494-alternate-stage10-source-screening-2026-09-12.md)。
+该选择已通过新的 `managed-autosave` 无启动准入：凭据统一绑定来源 activation、loader GREEN、场景 RED、checkpoint-bound topology/discovery/queue，定向普通/优化测试各 `5/5`。它仍须零时间推进完成 exact-build 玩家切换、campaign-root 复核和 MCP 原生保存后才能签发新 receipt。原版退休 law 5 对所有 governor 都满足年龄触发，因此不声称候选免疫后续事件。P1 仍为 `8/9`，P2 继续锁定。证据与一次性消费层边界见 [R494 替代来源筛选](r494-alternate-stage10-source-screening-2026-09-12.md)。
