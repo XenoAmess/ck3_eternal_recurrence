@@ -2636,3 +2636,11 @@ py tools/inspect_ck3_save_character_scope.py --melted <gamestate> --root-charact
 ```
 
 也可改用 `--save <checkpoint.ck3> --rakaly <rakaly.exe>`。输出 schema 为 `ck3_character_scope_offline_v1`，同时保留 root 变量、列表原始 items、所引用 Character 的存活状态与请求变量；参数和输出不依赖固定轮次、机器或账号。该报告是 hash-bound prelaunch 输入，不能替代 exact-build live MCP。v6 Operator 会复算 exact/foreign 两个 tuple 域，并拒绝字段缺失、计数不一致、旧产品树或未经绑定的 R492 RED。
+
+### 原版官职移除事件会淘汰 Stage 10 来源（R494）
+
+Stage 10 需要玩家经理的 governor position、直属上级与 direct-vassal roster 在整个 `.120` 验收窗内稳定。若 exact-build 原版事件的唯一选项会执行官职辞任或头衔转移，该帧必须保持暂停并标为 `SCENARIO_INVALID`；不得把按钮当成无副作用确认，不得吞掉 RED，也不得把事件发生前的 B1 中间信号冒充 terminal 结果。
+
+R494 的 `ep3_interactions_events.0630` 在 source 后第 88 个游戏日到达。原版定义的唯一 option 对 recipient 执行 `governor_resignation_title_transfer_effect`，既有通用事件合同正确返回 `selection_attempted=false / product_result=NOT_EVALUATED`。这种结果淘汰当前 source，不证明 B1 产品失败，也不允许通过增加观察天数解决。
+
+处理顺序为：冻结事件帧与日志 → 绑定 exact-build EXE、事件定义和 interaction 调用方哈希 → 确认现有事件合同是否已覆盖 → 只运行对应 fail-closed/identity-drift 测试 → cleanup 当前轮次 → 离线筛选新的稳定玩家经理来源。若现有合同已准确覆盖，不创建重复 handler 或一次性脚本；下一次 CK3 启动必须由新来源的可核验证据支持。
