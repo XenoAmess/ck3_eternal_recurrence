@@ -2769,3 +2769,11 @@ py -O tools/test_zg361_phase2_endgame_source_operator_job.py
 宣传片段只执行画面所需的最小真实产品动作和对应独立观测。例如计分板首镜头的门禁是 paused source query、真实 `open` ACK、later query 证明 modal 可见，以及收尾 `close` 证明；它不要求先跑 managed/received 两种玩家身份的完整 open/switch/close/reopen 矩阵。capture-only receipt 必须保留 `production_capability_advertised=false`，只证明镜头内产品表面真实可见。完整矩阵继续属于 scoreboard capability 的独立验收，不能用宣传镜头替代。
 
 R515 证明产品 GUI 的列表面与详情面可能合法分离：`zg361_sb_r_01_char` 使 received 列表可见，而 `zg361_sb_self_*` 全量 tuple 决定当前玩家详情是否可见。bridge 查询不得把“列表存在、self dossier 不存在”误报为整条 ACL 不一致。录制遇到此类 RED 时先对照产品实际 `is_shown` 条件，再修最小合同；不得为单个镜头临时制造完整角色矩阵或延长实机运行。
+
+## Phase2 canonical source restore 的跨进程 generation 与失败清理（2026-09-12）
+
+R541→R542 再次实证 connection_generation 只在各自 CK3/pipe client 进程内有序；两个不同进程都可以合法报告 1。所有 canonical source restore consumer 必须验证 old/new PID 均为正且不同、lifecycle intent/pipe/checkpoint 精确、两侧 generation 各自为正并与对应帧绑定；不得要求跨进程 g(new)=g(old)+1。
+
+若 restore 已经真实替换进程，但 choreography 在完整业务 lineage 落盘前 RED，cleanup 仍须独立核验 supervisor
+`restart_count`、每个 retired shutdown、final PID shutdown 和全局进程零库存。这个分支只能给出 cleanup GREEN，并必须写明
+`restart_semantics_proven=false`；原业务 RED 保持不变。冻结 session report 应优先离线重放，不为 cleanup consumer 修复重启 CK3。实证与 artifact 见 [R540-R542 source restore lifecycle RED](phase2-promo/r540-r542-source-restore-lifecycle-contract-red-2026-09-12.md)。
