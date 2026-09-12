@@ -65,3 +65,22 @@ source-index generator byte parity、portable evidence 离线自校验包含在�
 运行环境。提交、rebase、push 后按 SOP 在当前轮次 R498 原位热恢复；不得发送第二次 `run-stage10`，不得重启 CK3。
 若热恢复遇到新的未知事件或产品 RED，继续保留首个新 RED 并停止。P1 仍为 `8/9`，P2 最终宣传视频继续
 `LOCKED`。
+
+## 托管超时与现场闭环
+
+根仓 commit `6e780e08d136df8d8fb0141c8f0d41bab644fcf2` 与 open_kaishek commit
+`1122d9f6c53b48660bde9e2ab54a8844bf76eef3` 均完成 rebase、push 与本地/远端一致性确认。提交和兼容同步期间，
+R498 达到 activation 明确配置的 1200 秒运行上限；随后通过 canonical cleanup 取得完整 session report：
+
+- 当前轮次 R498 started `2026-09-12T02:40:13.087724Z`，finished
+  `2026-09-12T03:00:19.515267Z`，elapsed `1206.428s`；
+- `exit_reason=timeout`，对应 activation 的 `runtime_timeout_seconds=1200`；
+- gameplay PID `37604`，generation `1`，restart count `0`；
+- shutdown 后 process tree 已消失，Job active processes `1 -> 0`，final CK3 inventory empty；
+- canonical cleanup SHA-256 `A93FB075F6FB8E09664FCE2ACC8BB7BEA8B24CC3F2E0E56E435C785A0112DD7C`；
+- managed cleanup SHA-256 `F90F824DAA83C5525B14C5162087FCC4B2D5FF46CB974F68013A2E33E72E03EB`；
+- cleanup result `GREEN`，没有未解释的进程/资源 RED。
+
+没有发送第二次 `run-stage10`，也没有把超时伪装为同进程恢复。当前轮次 R498 与旧轮次 R497 均已终止；
+CK3、injector 和托管 Job 最终清空，因此原计划的同进程热恢复据实取消。下一次唯一允许的启动为 R499 warmup / R500 gameplay，
+复用同一 source 与 120 游戏日绝对边界；不得扩大为永久长跑。
