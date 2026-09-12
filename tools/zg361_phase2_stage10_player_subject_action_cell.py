@@ -161,6 +161,62 @@ def _campaign_source(
     return copy.deepcopy(dict(response))
 
 
+def _manager_source_receipt_attestation(
+    receipt: object,
+    campaign: object,
+    *,
+    expected_player: int,
+    expected_owner: int,
+) -> dict[str, object]:
+    """Bind the exact restored source when a G2-only campaign leaf is unreadable."""
+
+    if not isinstance(receipt, Mapping) or not isinstance(campaign, Mapping):
+        raise ValueError("player-manager source receipt fallback is unavailable")
+    checks = receipt.get("checks")
+    checkpoint = receipt.get("checkpoint")
+    receipt_locator = receipt.get("receipt")
+    reason = campaign.get("unavailable_reason")
+    if not (
+        receipt.get("schema_version") == 1
+        and receipt.get("kind") == "zg361_phase2_promo_manager_source_v1"
+        and receipt.get("result") == "GREEN"
+        and receipt.get("player_manager_character_id") == expected_player
+        and receipt.get("owner_character_id") == expected_owner
+        and receipt.get("fixture_used") is False
+        and receipt.get("console_used") is False
+        and isinstance(checks, Mapping)
+        and bool(checks)
+        and all(value is True for value in checks.values())
+        and isinstance(checkpoint, Mapping)
+        and isinstance(checkpoint.get("path"), str)
+        and bool(checkpoint.get("path"))
+        and isinstance(checkpoint.get("bytes"), int)
+        and not isinstance(checkpoint.get("bytes"), bool)
+        and checkpoint.get("bytes") > 0
+        and isinstance(checkpoint.get("sha256"), str)
+        and re.fullmatch(r"[0-9A-F]{64}", str(checkpoint.get("sha256")))
+        and isinstance(receipt_locator, Mapping)
+        and isinstance(receipt_locator.get("sha256"), str)
+        and re.fullmatch(r"[0-9A-F]{64}", str(receipt_locator.get("sha256")))
+        and campaign.get("status") == "unavailable"
+        and campaign.get("campaign_root_context_ready") is False
+        and reason == "direct_landed_vassals_unavailable"
+    ):
+        raise ValueError("player-manager source receipt fallback is not contracted")
+    return {
+        "schema_version": 1,
+        "kind": "zg361_stage10_hash_bound_manager_source_attestation_v1",
+        "result": "GREEN",
+        "reason": reason,
+        "player_manager_character_id": expected_player,
+        "owner_character_id": expected_owner,
+        "receipt_sha256": receipt_locator["sha256"],
+        "checkpoint_sha256": checkpoint["sha256"],
+        "fixture_used": False,
+        "console_used": False,
+    }
+
+
 def _terminal_provider(
     provider: object, *, owner: int, subject: int
 ) -> dict[str, object]:
@@ -197,6 +253,7 @@ def run_stage10_player_subject(
     request_nonce: str,
     expected_player_manager_character_id: int,
     expected_owner_character_id: int,
+    manager_source_receipt: Mapping[str, object] | None = None,
     resume_progress: Mapping[str, object] | None = None,
     navigator: Navigator = entry.enter_promotion_source_checkpoint_v1,
     acknowledge_terminal: bool = True,
@@ -260,14 +317,26 @@ def run_stage10_player_subject(
         initial_binding = _binding(initial)
         if initial_binding["player_character_id"] != manager:
             raise ValueError("loaded player differs from the contracted manager")
-        campaign = service.query_campaign_root_context_v1(
+        campaign_response = service.query_campaign_root_context_v1(
             expected_revision=int(initial["revision"])
         )
-        campaign = _campaign_source(
-            campaign, expected_player=manager, expected_owner=owner
-        )
+        try:
+            campaign = _campaign_source(
+                campaign_response, expected_player=manager, expected_owner=owner
+            )
+        except ValueError:
+            state["source_campaign_root"] = copy.deepcopy(dict(campaign_response))
+            state["source_campaign_attestation"] = (
+                _manager_source_receipt_attestation(
+                    manager_source_receipt,
+                    campaign_response,
+                    expected_player=manager,
+                    expected_owner=owner,
+                )
+            )
+        else:
+            state["source_campaign_root"] = campaign
         state["source_binding"] = initial_binding
-        state["source_campaign_root"] = campaign
 
         current = service.snapshot()
         if _binding(current) != initial_binding:

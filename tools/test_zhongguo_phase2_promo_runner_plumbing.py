@@ -410,6 +410,7 @@ class Phase2PromoRunnerPlumbingTests(unittest.TestCase):
             request_nonce="zg361.phase2.promo.manager",
             expected_player_manager_character_id=27181,
             expected_owner_character_id=36354,
+            manager_source_receipt=manager_source,
             acknowledge_terminal=False,
         )
         stale_ai_action.assert_not_called()

@@ -56,6 +56,7 @@ class Service:
         self.selections: list[tuple[int, int]] = []
         self.saves = 0
         self.provider_calls = 0
+        self.campaign_unavailable_reason: str | None = None
 
     def capabilities(self) -> dict[str, object]:
         return {
@@ -87,6 +88,12 @@ class Service:
     ) -> dict[str, object]:
         if expected_revision != self.revision:
             raise AssertionError("campaign query crossed its fixture frame")
+        if self.campaign_unavailable_reason is not None:
+            return {
+                "status": "unavailable",
+                "unavailable_reason": self.campaign_unavailable_reason,
+                "campaign_root_context_ready": False,
+            }
         return {
             "status": "available",
             "unavailable_reason": None,
@@ -212,6 +219,25 @@ def navigate_to_stage10(service: Service, **kwargs: object) -> dict[str, object]
 
 
 class Stage10PlayerSubjectTests(unittest.TestCase):
+    @staticmethod
+    def manager_source_receipt() -> dict[str, object]:
+        return {
+            "schema_version": 1,
+            "kind": "zg361_phase2_promo_manager_source_v1",
+            "result": "GREEN",
+            "receipt": {"sha256": "A" * 64},
+            "checkpoint": {
+                "path": "fixture-manager.ck3",
+                "bytes": 123,
+                "sha256": "B" * 64,
+            },
+            "player_manager_character_id": MANAGER,
+            "owner_character_id": OWNER,
+            "checks": {"receipt_identity": True, "live_checkpoint": True},
+            "fixture_used": False,
+            "console_used": False,
+        }
+
     def run_cell(self, service: Service, directory: Path) -> dict[str, object]:
         return cell.run_stage10_player_subject(
             service,
@@ -343,6 +369,44 @@ class Stage10PlayerSubjectTests(unittest.TestCase):
             service.celestial = False
             with self.assertRaises(cell.Stage10PlayerSubjectError):
                 self.run_cell(service, Path(temporary))
+            self.assertEqual(service.saves, 0)
+
+    def test_hash_bound_receipt_carries_only_direct_vassal_leaf_failure(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            service = Service()
+            service.campaign_unavailable_reason = "direct_landed_vassals_unavailable"
+            result = cell.run_stage10_player_subject(
+                service,
+                evidence_directory=Path(temporary),
+                request_nonce="fixture.stage10.receipt-fallback",
+                expected_player_manager_character_id=MANAGER,
+                expected_owner_character_id=OWNER,
+                manager_source_receipt=self.manager_source_receipt(),
+                navigator=navigate_to_stage10,
+            )
+
+            self.assertEqual(result["result"], "GREEN")
+            attestation = result["source_campaign_attestation"]
+            self.assertEqual(attestation["result"], "GREEN")
+            self.assertEqual(
+                attestation["reason"], "direct_landed_vassals_unavailable"
+            )
+            self.assertEqual(attestation["checkpoint_sha256"], "B" * 64)
+
+    def test_receipt_does_not_carry_an_unrelated_campaign_failure(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            service = Service()
+            service.campaign_unavailable_reason = "lieges_unavailable"
+            with self.assertRaises(cell.Stage10PlayerSubjectError):
+                cell.run_stage10_player_subject(
+                    service,
+                    evidence_directory=Path(temporary),
+                    request_nonce="fixture.stage10.no-broad-fallback",
+                    expected_player_manager_character_id=MANAGER,
+                    expected_owner_character_id=OWNER,
+                    manager_source_receipt=self.manager_source_receipt(),
+                    navigator=navigate_to_stage10,
+                )
             self.assertEqual(service.saves, 0)
 
     def test_wrong_terminal_event_keeps_source_only(self) -> None:

@@ -2613,6 +2613,7 @@ class _Phase2AcceptanceActionSpanDriver:
                 expected_owner_character_id=int(
                     manager_source["owner_character_id"]
                 ),
+                manager_source_receipt=manager_source,
                 acknowledge_terminal=False,
             )
         elif handler == PROMOTION_HANDLER:
