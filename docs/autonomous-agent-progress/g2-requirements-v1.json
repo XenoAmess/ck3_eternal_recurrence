@@ -46,10 +46,10 @@
       "name": "entity directory and core turn bundle",
       "priority": "P1-A",
       "status": "in_progress",
-      "latest_evidence": ["campaign-root-context production-live primitive", "direct landed-vassal identity extension static-ready", "adjacent external province-holder identity extension static-ready", "relationship-filtered entity-directory with native title and top-liege components static-ready"],
+      "latest_evidence": ["campaign-root-context production-live primitive", "direct landed-vassal identity extension static-ready", "adjacent external province-holder identity extension static-ready", "relationship-filtered entity-directory with native title and top-liege components static-ready", "minimum-alert turn bundle and monthly-income resource gate static-ready", "exact-build player domain size and limit projection static-ready"],
       "planner_consumer": "candidate generation and per-turn objective selection",
       "visible_outcome": "one query identifies the ruler, primary title, capital, liege, direct vassals, one neighbor and the minimum ruler/realm/succession alerts",
-      "open_blocker": "aggregated ruler/realm state, minimum ruler/realm/succession alerts and the core turn bundle remain absent; the relationship search, related-character contexts and both source vectors still need one shared bounded production paused read"
+      "open_blocker": "health, council, faction and partition observations remain absent; the relationship search, related-character contexts, income, domain capacity and turn bundle still need one shared bounded production paused read"
     },
     {
       "id": "G2-M2",
@@ -79,7 +79,7 @@
       "latest_evidence": ["fixed visual regression flows only"],
       "planner_consumer": "budgeted construction, council and faction response",
       "visible_outcome": "within two game years perform and verify one construction, one council reassignment and one real vassal or faction intervention",
-      "open_blocker": "resource, domain, council, vassal and faction query/action surfaces are missing"
+      "open_blocker": "domain size/limit is static-ready, but holdings/buildings/construction, council, vassal and faction query/action surfaces remain missing"
     },
     {
       "id": "G2-M5",
@@ -144,5 +144,5 @@
     ]
   },
   "religion_boundary": "deferred except the minimum native result needed by holy-war execution and marriage legality or acceptance",
-  "updated_at": "2026-09-13T01:14:00+08:00"
+  "updated_at": "2026-09-13T03:20:10+08:00"
 }

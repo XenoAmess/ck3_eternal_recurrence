@@ -44,6 +44,16 @@ def _positive_int(value: object, name: str) -> int:
     return value
 
 
+def _nonnegative_int(value: object, name: str) -> int:
+    if (
+        isinstance(value, bool)
+        or not isinstance(value, int)
+        or not 0 <= value <= 2**31 - 1
+    ):
+        raise ValueError(f"{name} must be a nonnegative int32")
+    return value
+
+
 def _fixed_point_component(value: object, name: str) -> dict[str, object]:
     if not isinstance(value, dict) or set(value) != {"raw", "scale"}:
         raise ValueError(f"{name} is malformed")
@@ -349,6 +359,21 @@ def build_turn_bundle_v1(
             for holder in adjacent_holders
         }
     )
+    domain_size = _nonnegative_int(
+        root.get("player_domain_size"), "player_domain_size"
+    )
+    domain_limit = _positive_int(
+        root.get("player_domain_limit"), "player_domain_limit"
+    )
+    domain = _component(
+        "available",
+        {
+            "size": domain_size,
+            "limit": domain_limit,
+            "available_capacity": max(domain_limit - domain_size, 0),
+            "over_limit_by": max(domain_size - domain_limit, 0),
+        },
+    )
     realm_state = {
         "top_liege_character_id": _positive_int(
             root.get("top_liege_character_id"), "top_liege_character_id"
@@ -359,9 +384,7 @@ def build_turn_bundle_v1(
             adjacent_holders
         ),
         "adjacent_holder_top_liege_character_ids": adjacent_top_lieges,
-        "domain": _component(
-            "unavailable", reason="realm_domain_observation_not_implemented"
-        ),
+        "domain": domain,
         "council": _component(
             "unavailable", reason="realm_council_observation_not_implemented"
         ),
@@ -443,7 +466,7 @@ def build_turn_bundle_v1(
         "ruler_health_alert_ready": False,
         "ruler_resources_ready": gold_ready and income_ready,
         "realm_relationship_alerts_ready": True,
-        "realm_domain_ready": False,
+        "realm_domain_ready": True,
         "realm_council_ready": False,
         "realm_faction_alert_ready": False,
         "succession_primary_title_alert_ready": True,

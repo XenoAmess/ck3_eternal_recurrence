@@ -1272,3 +1272,12 @@ strategic-power primitive；余下入口只有 policy-level campaign dominance�
 - Native reader/source-contract fixtures and focused normal/optimized Python suites are GREEN; candidate Release DLL is `2,636,800` bytes /
   `98FC2431...0566C2`. This is `static-ready / live=false` and will share a future bounded paused G2 read. It does not create a dedicated run or
   change G2 `0/8` / GEN-034 `2/4`.
+
+## 2026-09-13: G2-M1 player domain capacity observation
+
+- Stock HUD uses `Character.GetDomainSize/GetDomainLimit`. Their exact-build reflection registrations resolve to core RVAs `0x260BA50` and
+  `0x260BA20`; campaign-root now calls those native functions, generation-revalidates the player and double-samples both values.
+- The turn bundle's domain component now reports size, limit, free capacity and over-limit count with `realm_domain_ready=true`. This closes only
+  the current capacity input. Holding identities, building state, construction and grace-period penalty semantics remain explicit later work.
+- Native fixtures and Python normal/optimized `39/39` are GREEN; status is `static-ready / live=false`. M1 still needs health, council, faction,
+  partition and one shared bounded paused read, so global completion remains `0/8`.

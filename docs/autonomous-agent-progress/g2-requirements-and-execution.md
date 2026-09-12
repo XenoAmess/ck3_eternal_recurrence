@@ -79,9 +79,10 @@ reader/source-contract 与 Python normal/optimized 聚焦测试均 GREEN。
 `ck3_search_entities_v1` 只消费一次现有 campaign-root query，以 relation filter 和 keyset pagination 返回 self、直属有地封臣和
 相邻外部 Province holder 的稳定 CharacterID。新增 `related_character_contexts` 在同一双采样中逐 ID 发布 native primary title、
 合法可空 capital、immediate/top liege 与 independent；相邻 holder 保留 source role，再按 top liege 归一 realm identity。
-entity-directory 的当前 title/realm components 因而已完整，下一输入是最低 ruler/realm/succession alerts 与
-`ck3_query_turn_bundle_v1`。M1 仍为进行中，固定 G2 完成数仍是 `0/8`。下一次允许实机时只在本来就需要的 paused G2 会话顺带
-读取两个非空 vector、related contexts 并验证 directory，不为单字段安排长跑。
+entity-directory 的当前 title/realm components 因而已完整。`ck3_query_turn_bundle_v1` 已聚合最低 ruler/realm/succession alerts、
+玩家完整月收入和 exact-build domain size/limit，`ruler_resources_ready` 与 `realm_domain_ready` 都可由真实输入变绿。M1 仍缺
+health、council、faction、partition 与共享 live 验收，固定 G2 完成数仍是 `0/8`。下一次允许实机时只在本来就需要的 paused G2
+会话顺带读取两个非空 vector、related contexts、income 和 domain capacity 并验证 directory/bundle，不为单字段安排长跑。
 
 ## G2-M2 离线 direct-projection consumer
 

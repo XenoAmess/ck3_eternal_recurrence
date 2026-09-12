@@ -18,7 +18,8 @@
   checkpoint 分别完成“同 paused revision 双查询 -> 保存 -> 新 managed PID 冷恢复 -> 同 paused revision 双查询”，并逐项
   证明业务值跨恢复不变；artifact SHA-256 为 `DA5EB7F01A48A2869B8C9B6B2F6607825FA5319715F66D2C0D04AFFCF802CDDC`
   与 `677C4FF9727A479B40D068EC7E62A7AC54EF2E21A3EF57649D624C7648B279F9`。
-- **[static-ready, live pending]** 上述两个历史 artifact 早于直属有地封臣、相邻外部省份持有者和相关人物上下文字段，不能证明这些字段的
+- **[static-ready, live pending]** 上述两个历史 artifact 早于直属有地封臣、相邻外部省份持有者、相关人物上下文、玩家月收入及
+  domain capacity 字段，不能证明这些字段的
   production 值。新增 reader、serializer、source contract、Release DLL 与 Python driver/service/MCP 聚焦测试已通过；
   只在下一次本来就需要的 paused G2 会话中做一次读取互证，不为单个字段另开长跑。
 - 这项 capability **不声明 DLC truth**。磁盘上的 DLC descriptor 只说明文件已安装；它既不证明当前进程已加载对应内容，
@@ -69,6 +70,8 @@ absent；结构或 identity 无法在同一 paused query 中闭合时返回 type
   "player_character_id": 12345,
   "player_character_alive": true,
   "player_monthly_gold_income": {"raw": 570772, "scale": 100000},
+  "player_domain_size": 6,
+  "player_domain_limit": 7,
   "primary_title": {
     "title_id": 67890,
     "tier_raw": 4,
@@ -117,6 +120,7 @@ absent；结构或 identity 无法在同一 paused query 中闭合时返回 type
   "readiness": {
     "player_identity_ready": true,
     "player_monthly_gold_income_ready": true,
+    "player_domain_ready": true,
     "primary_title_ready": true,
     "primary_title_succession_ready": true,
     "capital_ready": true,
@@ -135,6 +139,8 @@ absent；结构或 identity 无法在同一 paused query 中闭合时返回 type
     "executable_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
     "backend_id": "ck3-1.19.0.6-native-campaign-root-context-v1",
     "monthly_gold_income_rva": "0x28DBE90",
+    "domain_size_rva": "0x260BA50",
+    "domain_limit_rva": "0x260BA20",
     "primary_title_rva": "0x25F3350",
     "capital_province_rva": "0x2606760",
     "immediate_liege_rva": "0x2613480",
@@ -155,6 +161,11 @@ canonicalization：**不得依此反推 native 优先级、父 game-rule、rule 
 
 `player_monthly_gold_income` 在 available frame 中不可为空；它是完整 native evaluator 的 signed Q100000 结果。调用失败或
 Character generation 漂移会让整帧返回 `player_monthly_gold_income_unavailable`，不会把缓存 income 或零值冒充结果。
+
+`player_domain_size` 与 `player_domain_limit` 在 available frame 中同样不可为空，分别要求 `>= 0` 与 `>= 1`。它们来自
+exact-build `GetDomainSize`/`GetDomainLimit` core；任一调用失败、值域非法或调用后的 Character generation 不再一致时，整帧返回
+`player_domain_unavailable`。完整注册链与 grace-period 边界见
+[玩家直辖规模与上限](player-domain-capacity-v1.md)。
 
 | 字段 | 合法 absent |
 |---|---|
@@ -522,11 +533,11 @@ mailbox、source contract 与旧 mailbox/injection 回归 fresh CTest `29/29` GR
 直属有地封臣、相邻外部省份持有者与相关人物上下文共用现有 query、mailbox 与 MCP，不新增 mutation surface。Release DLL 编译链接 GREEN，
 候选 DLL 为 `2,634,752` bytes，SHA-256 `D86F78E9EE4044609197B1903C4333FBCCA847DB13A7386B63519A26535960B7`。
 direct native reader fixture 覆盖外部相邻 holder、内部直属封臣、无持有者边界和重复边，source-contract executable 也为 GREEN；
-Python contract/driver/service/MCP/live-harness 与 entity-directory 聚焦测试 normal/optimized 各 `35/35` GREEN。ABI/source contract
+Python contract/driver/service/MCP/live-harness 与 turn-bundle 聚焦测试 normal/optimized 各 `39/39` GREEN。ABI/source contract
 已冻结函数体 hash、Province array、adjacency row、player-subrealm 和 related-character 全有或全无语义。
 
 当前 query 的既有 root 字段 production-live readiness 已成立；两个 artifact 不包含 2026-09-13 新增的直属有地封臣、相邻外部
-省份持有者 vector 与相关人物上下文，因此三者仍是 `static-ready / live=false`。覆盖矩阵还诚实保留缺口：两个场景都是 feudal duchy，尚未
+省份持有者 vector、相关人物上下文、玩家月收入及 domain capacity，因此这些扩展仍是 `static-ready / live=false`。覆盖矩阵还诚实保留缺口：两个场景都是 feudal duchy，尚未
 实机覆盖另一 rank、另一 government、landless 以及 primary/capital/government 合法 absent。这些是 F0 场景矩阵缺口，
 不再是 query implementation 或 independent/vassal liege-chain 的缺口。
 
@@ -534,11 +545,12 @@ Python contract/driver/service/MCP/live-harness 与 entity-directory 聚焦测�
 
 1. [completed] exact-build application-main reader、serializer、typed bridge capability、Python/service/MCP 与独立/vassal
    double-query + cold-restore production acceptance。
-2. 下一次本来就需要的 G2 paused 会话顺带读取两个 identity vector 与 `related_character_contexts`，核对至少一个非空名单、
-   exact generation IDs、玩家子领地排除语义及 holder→top-liege 归一；不单开长跑，成功后才能升为 production-live primitive。
+2. 下一次本来就需要的 G2 paused 会话顺带读取两个 identity vector、`related_character_contexts`、月收入及 domain size/limit，
+   核对至少一个非空名单、exact generation IDs、玩家子领地排除语义、holder→top-liege 归一及 HUD 所示 capacity；不单开长跑，
+   成功后才能升为 production-live primitive。
 3. [static-ready] canonical `ck3_search_entities_v1` 已消费相关人物上下文并发布 title/capital/liege components；
-   `primary_title_succession_character_ids` 也已提供主头衔最低继承警报的真实输入。下一项是 ruler/realm/succession alerts 与
-   turn bundle 聚合；在这些产品层输出完成前，M1 不得标 complete。
+   `ck3_query_turn_bundle_v1` 已聚合最低 ruler/realm/succession alerts、收入资源门与 domain capacity。M1 仍缺 health、council、
+   faction、partition 及上述共享 live 验收，不得标 complete。
 4. 补 live 矩阵：至少一个非-duchy rank、一个非-feudal government，以及 landless/legal-absent 根；六级 tier 与 unavailable
    路径已有 deterministic exact-build fixture，但 fixture 不能替代这些 live 值。
 5. 建立 loaded rule-definition registry 的只读映射，只有这样 planner 才能把当前 84 个 setting token 还原为

@@ -78,6 +78,8 @@ struct ObservationV1 {
   std::int32_t player_character_id = -1;
   bool player_character_alive = false;
   game::FixedPointValue player_monthly_gold_income;
+  std::int32_t player_domain_size = 0;
+  std::int32_t player_domain_limit = 0;
   std::optional<game::CampaignRootTitleV1> primary_title;
   std::vector<std::int32_t> primary_title_succession_character_ids;
   std::optional<std::int32_t> capital_province_id;
@@ -216,6 +218,8 @@ bool EnvironmentIsExact(
       environment.game_rule_selection_service_slot == nullptr ||
       environment.game_rule_token_fallback_slot == nullptr ||
       environment.monthly_gold_income == nullptr ||
+      environment.domain_size == nullptr ||
+      environment.domain_limit == nullptr ||
       environment.primary_title == nullptr ||
       environment.capital_province == nullptr ||
       environment.immediate_liege == nullptr ||
@@ -258,6 +262,10 @@ bool EnvironmentIsExact(
              base + kCampaignRootGameRuleTokenFallbackSlotRva &&
          reinterpret_cast<std::uintptr_t>(environment.monthly_gold_income) ==
              base + kCampaignRootMonthlyGoldIncomeRva &&
+         reinterpret_cast<std::uintptr_t>(environment.domain_size) ==
+             base + kCampaignRootDomainSizeRva &&
+         reinterpret_cast<std::uintptr_t>(environment.domain_limit) ==
+             base + kCampaignRootDomainLimitRva &&
          reinterpret_cast<std::uintptr_t>(environment.primary_title) ==
              base + kCampaignRootPrimaryTitleRva &&
          reinterpret_cast<std::uintptr_t>(environment.capital_province) ==
@@ -333,6 +341,24 @@ bool InvokeResolver(NativeCampaignRootCharacterResolverV1 resolver,
     return true;
   } __except (EXCEPTION_EXECUTE_HANDLER) {
     output = nullptr;
+    return false;
+  }
+#else
+  output = resolver(character);
+  return true;
+#endif
+}
+
+bool InvokeCharacterInt32(NativeCampaignRootCharacterInt32V1 resolver,
+                          void *character,
+                          std::int32_t &output) noexcept {
+  output = 0;
+#if defined(_MSC_VER)
+  __try {
+    output = resolver(character);
+    return true;
+  } __except (EXCEPTION_EXECUTE_HANDLER) {
+    output = 0;
     return false;
   }
 #else
@@ -1243,6 +1269,20 @@ bool ReadObservation(const CampaignRootNativeEnvironmentV1 &environment,
   }
   output.player_monthly_gold_income = {
       monthly_income_raw, kFixedPointScale};
+  if (!InvokeCharacterInt32(environment.domain_size,
+                            output.player_character,
+                            output.player_domain_size) ||
+      !InvokeCharacterInt32(environment.domain_limit,
+                            output.player_character,
+                            output.player_domain_limit) ||
+      output.player_domain_size < 0 || output.player_domain_limit < 1 ||
+      ResolveComponent(access, environment.character_storage_slot,
+                       environment.character_fallback_slot,
+                       output.player_character_id,
+                       kCharacterIdentityOffset) != output.player_character) {
+    failure = "player_domain_unavailable";
+    return false;
+  }
   if (!ReadPrimaryTitle(environment, access, output)) {
     failure = "primary_title_unavailable";
     return false;
@@ -1313,6 +1353,10 @@ CampaignRootNativeEnvironmentV1 BindCampaignRootNativeEnvironmentV1(
   output.monthly_gold_income = reinterpret_cast<
       NativeCampaignRootMonthlyGoldIncomeV1>(
       module_base + kCampaignRootMonthlyGoldIncomeRva);
+  output.domain_size = reinterpret_cast<NativeCampaignRootCharacterInt32V1>(
+      module_base + kCampaignRootDomainSizeRva);
+  output.domain_limit = reinterpret_cast<NativeCampaignRootCharacterInt32V1>(
+      module_base + kCampaignRootDomainLimitRva);
   output.primary_title = reinterpret_cast<
       NativeCampaignRootCharacterResolverV1>(
       module_base + kCampaignRootPrimaryTitleRva);
@@ -1405,6 +1449,8 @@ game::ReadCampaignRootContextResultV1 ReadCampaignRootContextV1(
     output.player_character_id = first.player_character_id;
     output.player_character_alive = first.player_character_alive;
     output.player_monthly_gold_income = first.player_monthly_gold_income;
+    output.player_domain_size = first.player_domain_size;
+    output.player_domain_limit = first.player_domain_limit;
     output.primary_title = std::move(first.primary_title);
     output.primary_title_succession_character_ids =
         std::move(first.primary_title_succession_character_ids);
@@ -1425,7 +1471,7 @@ game::ReadCampaignRootContextResultV1 ReadCampaignRootContextV1(
     output.native_selected_game_rule_token_count =
         first.native_selected_game_rule_token_count;
     output.readiness = {true, true, true, true, true, true, true, true,
-                        true, true, true, true, true};
+                        true, true, true, true, true, true};
     output.unavailable_reason.clear();
     return game::ReadCampaignRootContextResultV1::available;
   } catch (...) {

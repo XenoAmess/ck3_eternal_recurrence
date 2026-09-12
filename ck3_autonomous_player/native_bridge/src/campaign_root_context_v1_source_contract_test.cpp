@@ -68,6 +68,8 @@ int main(int argc, char **argv) {
       kCampaignRootGovernmentFallbackSlotRva != 0x570CB50 ||
       kCampaignRootGameRuleSelectionServiceSlotRva != 0x5754B48 ||
       kCampaignRootMonthlyGoldIncomeRva != 0x28DBE90 ||
+      kCampaignRootDomainSizeRva != 0x260BA50 ||
+      kCampaignRootDomainLimitRva != 0x260BA20 ||
       kCampaignRootPrimaryTitleRva != 0x25F3350 ||
       kCampaignRootCapitalProvinceRva != 0x2606760 ||
       kCampaignRootImmediateLiegeRva != 0x2613480 ||
@@ -81,6 +83,7 @@ int main(int argc, char **argv) {
   if (!ContainsAll(header,
                    {"void **government_fallback_slot",
                     "NativeCampaignRootMonthlyGoldIncomeV1",
+                    "NativeCampaignRootCharacterInt32V1",
                     "game.command.query-campaign-root-context-v1",
                     "ck3-1.19.0.6-native-campaign-root-context-v1"}) ||
       !ContainsAll(reader,
@@ -100,6 +103,9 @@ int main(int argc, char **argv) {
                     "ReadPrimaryTitleSuccession",
                     "primary_title_succession_unavailable",
                     "player_monthly_gold_income_unavailable",
+                    "player_domain_unavailable",
+                    "kCampaignRootDomainSizeRva",
+                    "kCampaignRootDomainLimitRva",
                     "kCampaignRootMonthlyGoldIncomeRva",
                     "kLandedTitleSuccessionDataOffset = 0x278",
                     "CharacterBelongsToPlayerSubrealm",
@@ -116,6 +122,10 @@ int main(int argc, char **argv) {
                     "\\\"related_character_contexts\\\"",
                     "\\\"primary_title_succession_character_ids\\\"",
                     "\\\"player_monthly_gold_income\\\"",
+                    "\\\"player_domain_size\\\"",
+                    "\\\"player_domain_limit\\\"",
+                    "\\\"domain_size_rva\\\"",
+                    "\\\"domain_limit_rva\\\"",
                     "\\\"monthly_gold_income_rva\\\"",
                     "\\\"relationship_role\\\"",
                     "\\\"unavailable_reason\\\"",
@@ -153,11 +163,14 @@ int main(int argc, char **argv) {
                     "\"resolved_rva\": \"0x570CB50\"",
                     "\"province_holder_character_id_rva\": \"0x220C3F0\"",
                     "\"monthly_gold_income_rva\": \"0x28DBE90\"",
+                    "\"domain_size_rva\": \"0x260BA50\"",
+                    "\"domain_limit_rva\": \"0x260BA20\"",
                     "531558C7064BA9F24F2FDE278F2A5FEF7F495664F0437A0EF528E04FC8CAB8D8",
                     "\"row_stride\": \"0x30\"",
                     "\"related_character_contexts\"",
                     "\"primary_title_succession\"",
                     "\"player_monthly_gold_income\"",
+                    "\"player_domain_capacity\"",
                     "\"data_offset\": \"0x278\"",
                     "\"direct_vassal_invariant\"",
                     "unsigned_utf8_bytewise_lexicographical",
@@ -177,6 +190,8 @@ int main(int argc, char **argv) {
                     "\"primary_title_succession_order\": "
                     "\"native_title_succession_order\"",
                     "\"player_monthly_gold_income_scale\": 100000",
+                    "\"player_domain_size_minimum\": 0",
+                    "\"player_domain_limit_minimum\": 1",
                     "\"government_fallback_kind\": \"pointer_slot\""})) {
     return 1;
   }

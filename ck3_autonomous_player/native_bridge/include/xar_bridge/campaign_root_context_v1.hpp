@@ -50,6 +50,7 @@ struct CampaignRootRelatedCharacterV1 {
 struct CampaignRootReadinessV1 {
   bool player_identity_ready = false;
   bool player_monthly_gold_income_ready = false;
+  bool player_domain_ready = false;
   bool primary_title_ready = false;
   bool primary_title_succession_ready = false;
   bool capital_ready = false;
@@ -78,6 +79,8 @@ struct CampaignRootContextV1 {
   std::optional<std::int32_t> player_character_id;
   std::optional<bool> player_character_alive;
   std::optional<FixedPointValue> player_monthly_gold_income;
+  std::optional<std::int32_t> player_domain_size;
+  std::optional<std::int32_t> player_domain_limit;
   std::optional<CampaignRootTitleV1> primary_title;
   std::vector<std::int32_t> primary_title_succession_character_ids;
   std::optional<std::int32_t> capital_province_id;
@@ -150,6 +153,8 @@ inline constexpr std::uintptr_t kCampaignRootGameRuleTokenFallbackSlotRva =
 
 inline constexpr std::uintptr_t kCampaignRootPrimaryTitleRva = 0x25F3350;
 inline constexpr std::uintptr_t kCampaignRootMonthlyGoldIncomeRva = 0x28DBE90;
+inline constexpr std::uintptr_t kCampaignRootDomainSizeRva = 0x260BA50;
+inline constexpr std::uintptr_t kCampaignRootDomainLimitRva = 0x260BA20;
 inline constexpr std::uintptr_t kCampaignRootCapitalProvinceRva = 0x2606760;
 inline constexpr std::uintptr_t kCampaignRootImmediateLiegeRva = 0x2613480;
 inline constexpr std::uintptr_t kCampaignRootTopLiegeRva = 0x2613600;
@@ -171,6 +176,8 @@ using NativeCampaignRootMonthlyGoldIncomeV1 =
     std::int64_t *(XAR_CAMPAIGN_ROOT_FASTCALL *)(
         std::int64_t *output, void *character, void *optional_breakdown,
         void *evaluation_context);
+using NativeCampaignRootCharacterInt32V1 =
+    std::int32_t(XAR_CAMPAIGN_ROOT_FASTCALL *)(void *character);
 using NativeCampaignRootProvinceHolderCharacterIdV1 =
     std::int32_t *(XAR_CAMPAIGN_ROOT_FASTCALL *)(
         void *province, std::int32_t *output);
@@ -193,6 +200,8 @@ struct CampaignRootNativeEnvironmentV1 {
   void **game_rule_selection_service_slot = nullptr;
   void **game_rule_token_fallback_slot = nullptr;
   NativeCampaignRootMonthlyGoldIncomeV1 monthly_gold_income = nullptr;
+  NativeCampaignRootCharacterInt32V1 domain_size = nullptr;
+  NativeCampaignRootCharacterInt32V1 domain_limit = nullptr;
   NativeCampaignRootCharacterResolverV1 primary_title = nullptr;
   NativeCampaignRootCharacterResolverV1 capital_province = nullptr;
   NativeCampaignRootCharacterResolverV1 immediate_liege = nullptr;

@@ -67,6 +67,8 @@ def _root(*, available: bool = True) -> dict[str, object]:
             if available
             else None
         ),
+        "player_domain_size": 6 if available else None,
+        "player_domain_limit": 7 if available else None,
         "primary_title": (
             {"title_id": 90, "tier_raw": 4, "tier_key": "kingdom"}
             if available
@@ -138,6 +140,16 @@ class TurnBundleV1Tests(unittest.TestCase):
         self.assertEqual(ruler["income"]["value"]["raw"], 570_772)
         self.assertTrue(result["readiness"]["ruler_resources_ready"])
         realm = result["realm_state"]["value"]
+        self.assertTrue(result["readiness"]["realm_domain_ready"])
+        self.assertEqual(
+            realm["domain"]["value"],
+            {
+                "size": 6,
+                "limit": 7,
+                "available_capacity": 1,
+                "over_limit_by": 0,
+            },
+        )
         self.assertEqual(
             realm["adjacent_holder_top_liege_character_ids"], [99]
         )
@@ -268,6 +280,19 @@ class TurnBundleV1Tests(unittest.TestCase):
 
         with self.assertRaises(ValueError):
             build_turn_bundle_v1(_snapshot(), root)
+
+    def test_rejects_malformed_domain_capacity(self) -> None:
+        for field, value in (
+            ("player_domain_size", -1),
+            ("player_domain_limit", 0),
+        ):
+            with self.subTest(field=field):
+                root = _root()
+                context = root["campaign_root_context"]
+                assert isinstance(context, dict)
+                context[field] = value
+                with self.assertRaises(ValueError):
+                    build_turn_bundle_v1(_snapshot(), root)
 
 
 if __name__ == "__main__":
