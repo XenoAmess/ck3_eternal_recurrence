@@ -47,6 +47,7 @@ UNAVAILABLE_REASONS = (
     "player_character_generation_mismatch",
     "player_monthly_gold_income_unavailable",
     "player_domain_unavailable",
+    "player_targeting_factions_unavailable",
     "primary_title_unavailable",
     "primary_title_succession_unavailable",
     "capital_unavailable",
@@ -66,6 +67,7 @@ def _readiness(ready: bool) -> dict[str, bool]:
         "player_identity_ready": ready,
         "player_monthly_gold_income_ready": ready,
         "player_domain_ready": ready,
+        "player_targeting_factions_ready": ready,
         "primary_title_ready": ready,
         "primary_title_succession_ready": ready,
         "capital_ready": ready,
@@ -90,6 +92,7 @@ def _provenance() -> dict[str, str]:
         "monthly_gold_income_rva": "0x28DBE90",
         "domain_size_rva": "0x260BA50",
         "domain_limit_rva": "0x260BA20",
+        "has_targeting_faction_trigger_rva": "0x283FAE0",
         "primary_title_rva": "0x25F3350",
         "capital_province_rva": "0x2606760",
         "immediate_liege_rva": "0x2613480",
@@ -160,6 +163,7 @@ def _frame(
         ),
         "player_domain_size": 6 if available else None,
         "player_domain_limit": 7 if available else None,
+        "player_targeting_faction_count": 2 if available else None,
         "primary_title": (
             {
                 "title_id": 67_890,
@@ -235,6 +239,7 @@ def _driver_result(status: str = "available") -> dict[str, object]:
         "player_monthly_gold_income",
         "player_domain_size",
         "player_domain_limit",
+        "player_targeting_faction_count",
         "primary_title",
         "primary_title_succession_character_ids",
         "capital_province_id",
@@ -308,6 +313,7 @@ class CampaignRootContextV1ContractTests(unittest.TestCase):
         self.assertEqual(normalized["local_player_id"], 0)
         self.assertEqual(normalized["player_domain_size"], 6)
         self.assertEqual(normalized["player_domain_limit"], 7)
+        self.assertEqual(normalized["player_targeting_faction_count"], 2)
         self.assertEqual(normalized["primary_title"]["tier_key"], "hegemony")
         self.assertEqual(
             normalized["government"]["flags"].count(
@@ -449,6 +455,9 @@ class CampaignRootContextV1ContractTests(unittest.TestCase):
             ),
             "zero_domain_limit": lambda row: row.__setitem__(
                 "player_domain_limit", 0
+            ),
+            "negative_targeting_faction_count": lambda row: row.__setitem__(
+                "player_targeting_faction_count", -1
             ),
             "tier_pair": lambda row: row["primary_title"].__setitem__(
                 "tier_key", "empire"

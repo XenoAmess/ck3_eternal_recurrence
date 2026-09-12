@@ -11,7 +11,8 @@
   direct-vassal and adjacent-holder presence, the primary title's first
   ordered successor, monthly income and current domain size/limit. The full
   bundle stays `status=partial` and `readiness.ready=false` because health,
-  council, factions and partition are not yet observed.
+  council and partition are not yet observed. The minimum targeting-faction
+  alert is observed, while faction identity, power and deadlines remain open.
 - This aggregation changes no native mailbox, DLL, game object or action path.
   Native AI decision-tree research is N/A because the package groups observed
   state and does not introduce a counter-policy.
@@ -31,11 +32,11 @@ The response contains six typed domains:
 | Domain | Available now | Explicit gap |
 |---|---|---|
 | `ruler_state` | CharacterID, alive, primary title, capital, government, exact-build monthly income, optional current gold and raw stress points | health band |
-| `realm_state` | top liege, independent state, direct landed-vassal IDs, adjacent Province-holder IDs and grouped top-liege IDs, native domain size/limit with derived available/over-limit counts | holding identities/buildings/construction, council, faction threat |
+| `realm_state` | top liege, independent state, direct landed-vassal IDs, adjacent Province-holder IDs and grouped top-liege IDs, native domain size/limit with derived available/over-limit counts, targeting-faction count and minimum threat boolean | holding identities/buildings/construction, council, faction identities/types/power/discontent/deadline |
 | `succession_state` | ordered primary-title successor IDs, first primary-title heir and no-heir alert | per-title partition/law/claims |
 | `pending_state` | current normalized event and pending character interaction, including proven absence | unavailable only when the source snapshot lacks that observation surface |
 | `war_state` | sorted WarID, player side, primary opponent and relative score summaries | unavailable only when the source snapshot lacks `active_wars` |
-| `alerts` | dead, landless, raw stress threshold, direct-vassal absence, adjacent-holder presence and primary-title no-heir | faction threat |
+| `alerts` | dead, landless, raw stress threshold, direct-vassal absence, adjacent-holder presence, primary-title no-heir and targeting-faction threat | health and partition consequences |
 
 Every domain uses the common component shape:
 
@@ -65,7 +66,9 @@ now means exact-build `GetDomainSize` and `GetDomainLimit` both produced valid
 same-frame values; it does not claim holding identities, buildings,
 construction or grace-period penalty state. The broader `readiness.ready`
 remains false until the same-frame query can also supply health, council,
-faction and partition components. Monthly income is required in every
+partition components. `realm_faction_alert_ready=true` means only that the
+exact-build targeting-faction count and its nonzero alert are available; it
+does not claim faction prioritization or response readiness. Monthly income is required in every
 available campaign-root frame; current gold remains an optional
 normalized-snapshot surface. `ruler_resources_ready` is true only when both are
 available. Raw stress may be individually available without closing its larger
@@ -93,7 +96,7 @@ text, historical artifacts or another frame.
 ## Focused verification
 
 - Contract fixtures cover successor order, high-stress, gold, exact-build
-  monthly-income projection and domain size/limit projection,
+  monthly-income projection, domain size/limit projection and targeting-faction alert projection,
   adjacent holder-to-top-liege grouping, WarID sorting, landless and heirless
   `not_applicable`, root typed unavailable, missing optional surfaces and
   cross-frame/identity drift rejection.
@@ -112,6 +115,6 @@ dedicated long run is not required.
 
 The next highest-value off-screen work is the smallest exact-build read-only
 slice that can turn one currently unavailable decision input into real state.
-Priority within M1 is council and faction alerts, then health and full
-partition. Each new field should enter this same bundle only after its native
+Priority within M1 is council, then health and full partition. Deeper faction
+identity/power/deadline inputs belong to the later governance response package. Each new field should enter this same bundle only after its native
 evidence and focused fixture are complete.

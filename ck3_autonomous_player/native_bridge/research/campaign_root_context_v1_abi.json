@@ -23,6 +23,7 @@
     "monthly_gold_income_rva": "0x28DBE90",
     "domain_size_rva": "0x260BA50",
     "domain_limit_rva": "0x260BA20",
+    "has_targeting_faction_trigger_rva": "0x283FAE0",
     "primary_title_rva": "0x25F3350",
     "capital_province_rva": "0x2606760",
     "immediate_liege_rva": "0x2613480",
@@ -60,6 +61,20 @@
     "same_frame": "both signed int32 results participate in the existing two-sample equality gate",
     "constraints": {"domain_size_minimum": 0, "domain_limit_minimum": 1},
     "grace_period_excluded": "GetDomainSizeWithGracePeriod at 0x260BB00 is not published by this minimum capacity slice"
+  },
+  "player_targeting_factions": {
+    "published_field": "player_targeting_faction_count",
+    "trigger_name_rva": "0x436F390",
+    "trigger_registration_rva": "0x537FB0",
+    "trigger_evaluator_rva": "0x283FAE0",
+    "trigger_evaluator_end_rva_exclusive": "0x283FB52",
+    "trigger_evaluator_sha256": "7A4C1EED3FF52B5573AD7598350DB3270954E38FB0F1CF872080851D4C00ECEE",
+    "character_land_state_offset": "0x1B8",
+    "land_state_targeting_faction_count_offset": "0x12C",
+    "null_land_state_semantics": "zero, matching the evaluator's exact-build zero-valued fallback at RVA 0x4F66088+0x0C",
+    "identity_gate": "the played Character pointer must roundtrip through full-generation Character storage after the count read",
+    "same_frame": "the nonnegative int32 count participates in the existing two-sample equality gate",
+    "alert_semantics": "targeting_faction_count greater than zero"
   },
   "province_boundary_identity": {
     "province_holder_character_id_function": {

@@ -1281,3 +1281,15 @@ strategic-power primitive；余下入口只有 policy-level campaign dominance�
   the current capacity input. Holding identities, building state, construction and grace-period penalty semantics remain explicit later work.
 - Native fixtures and Python normal/optimized `39/39` are GREEN; status is `static-ready / live=false`. M1 still needs health, council, faction,
   partition and one shared bounded paused read, so global completion remains `0/8`.
+
+## 2026-09-13: G2-M1 targeting-faction minimum alert
+
+- The stock `has_targeting_faction` trigger registration resolves to exact-build evaluator `0x283FAE0..0x283FB51` (SHA-256
+  `7A4C1EED3FF52B5573AD7598350DB3270954E38FB0F1CF872080851D4C00ECEE`). It validates the full-generation Character, reads
+  `CCharacter+0x1B8` land state and treats the signed count at `land_state+0x12C` as threatened exactly when nonzero.
+- `campaign-root-context-v1` now double-samples a nonnegative `player_targeting_faction_count` and returns typed
+  `player_targeting_factions_unavailable` on pointer, identity, range or sample drift. The turn bundle exposes count/threatened,
+  `alerts.faction_threat` and `realm_faction_alert_ready=true`.
+- The slice deliberately excludes faction identities, types, members, power, discontent, demands and deadlines. Native reader/source-contract
+  fixtures and focused Python normal/optimized `40/40` are GREEN. Status is `static-ready / live=false`; it will share the next bounded paused
+  G2 read instead of creating a dedicated long run. M1 still lacks health, council and partition, and global G2 remains `0/8`.

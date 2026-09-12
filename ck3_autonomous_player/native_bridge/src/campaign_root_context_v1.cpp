@@ -24,6 +24,8 @@ constexpr std::size_t kPlayerEntryCharacterIdOffset = 0xB0;
 constexpr std::size_t kPlayerEntryPlayerIdOffset = 0xD8;
 constexpr std::size_t kCharacterIdentityOffset = 0x18;
 constexpr std::size_t kCharacterDeathMarkerOffset = 0x1C8;
+constexpr std::size_t kCharacterLandStateOffset = 0x1B8;
+constexpr std::size_t kLandStateTargetingFactionsCountOffset = 0x12C;
 constexpr std::size_t kStorageSlotsOffset = 0x20;
 constexpr std::size_t kStorageCapacityOffset = 0x2C;
 constexpr std::size_t kStorageSlotStride = 0x10;
@@ -80,6 +82,7 @@ struct ObservationV1 {
   game::FixedPointValue player_monthly_gold_income;
   std::int32_t player_domain_size = 0;
   std::int32_t player_domain_limit = 0;
+  std::int32_t player_targeting_faction_count = 0;
   std::optional<game::CampaignRootTitleV1> primary_title;
   std::vector<std::int32_t> primary_title_succession_character_ids;
   std::optional<std::int32_t> capital_province_id;
@@ -1283,6 +1286,21 @@ bool ReadObservation(const CampaignRootNativeEnvironmentV1 &environment,
     failure = "player_domain_unavailable";
     return false;
   }
+  void *land_state = nullptr;
+  if (!ReadValue(access, output.player_character, kCharacterLandStateOffset,
+                 land_state) ||
+      (land_state != nullptr &&
+       (!ReadValue(access, land_state,
+                   kLandStateTargetingFactionsCountOffset,
+                   output.player_targeting_faction_count) ||
+        output.player_targeting_faction_count < 0)) ||
+      ResolveComponent(access, environment.character_storage_slot,
+                       environment.character_fallback_slot,
+                       output.player_character_id,
+                       kCharacterIdentityOffset) != output.player_character) {
+    failure = "player_targeting_factions_unavailable";
+    return false;
+  }
   if (!ReadPrimaryTitle(environment, access, output)) {
     failure = "primary_title_unavailable";
     return false;
@@ -1451,6 +1469,8 @@ game::ReadCampaignRootContextResultV1 ReadCampaignRootContextV1(
     output.player_monthly_gold_income = first.player_monthly_gold_income;
     output.player_domain_size = first.player_domain_size;
     output.player_domain_limit = first.player_domain_limit;
+    output.player_targeting_faction_count =
+        first.player_targeting_faction_count;
     output.primary_title = std::move(first.primary_title);
     output.primary_title_succession_character_ids =
         std::move(first.primary_title_succession_character_ids);
@@ -1471,7 +1491,7 @@ game::ReadCampaignRootContextResultV1 ReadCampaignRootContextV1(
     output.native_selected_game_rule_token_count =
         first.native_selected_game_rule_token_count;
     output.readiness = {true, true, true, true, true, true, true, true,
-                        true, true, true, true, true, true};
+                        true, true, true, true, true, true, true};
     output.unavailable_reason.clear();
     return game::ReadCampaignRootContextResultV1::available;
   } catch (...) {

@@ -75,6 +75,7 @@ struct Fixture {
   alignas(void *) Blob<0x1D0> first_successor{};
   alignas(void *) Blob<0x1D0> second_successor{};
   alignas(void *) Blob<0x30> character_fallback{};
+  alignas(void *) Blob<0x130> player_land_state{};
 
   alignas(void *) Blob<0x30> title_storage{};
   alignas(void *) Blob<0x40> title_slots{};
@@ -212,6 +213,10 @@ struct Fixture {
     Put(external_province_holder, 0x1C8, no_death_marker);
     Put(first_successor, 0x1C8, no_death_marker);
     Put(second_successor, 0x1C8, no_death_marker);
+    void *player_land_state_pointer = Address(player_land_state);
+    Put(player_character, 0x1B8, player_land_state_pointer);
+    const std::int32_t targeting_faction_count = 2;
+    Put(player_land_state, 0x12C, targeting_faction_count);
     void *death_marker = Address(dead_direct_vassal);
     Put(dead_direct_vassal, 0x1C8, death_marker);
 
@@ -550,6 +555,7 @@ bool AllReadiness(const xar::game::CampaignRootReadinessV1 &value,
   return value.player_identity_ready == expected &&
          value.player_monthly_gold_income_ready == expected &&
          value.player_domain_ready == expected &&
+         value.player_targeting_factions_ready == expected &&
          value.primary_title_ready == expected &&
          value.primary_title_succession_ready == expected &&
          value.capital_ready == expected &&
@@ -571,6 +577,7 @@ bool ClearedUnavailable(const xar::game::CampaignRootContextV1 &value,
          !value.player_character_alive && !value.primary_title &&
          !value.player_monthly_gold_income &&
          !value.player_domain_size && !value.player_domain_limit &&
+         !value.player_targeting_faction_count &&
          value.primary_title_succession_character_ids.empty() &&
           !value.capital_province_id && !value.immediate_liege_character_id &&
          !value.top_liege_character_id && !value.independent &&
@@ -617,7 +624,8 @@ bool TestAvailableAndSerializer() {
           xar::game::FixedPointValue{570'772, 100'000} ||
       fixture.monthly_income_calls != 2 || result.player_domain_size != 6 ||
       result.player_domain_limit != 7 || fixture.domain_size_calls != 2 ||
-      fixture.domain_limit_calls != 2 || !result.primary_title ||
+      fixture.domain_limit_calls != 2 ||
+      result.player_targeting_faction_count != 2 || !result.primary_title ||
       result.primary_title->title_id != Fixture::kPrimaryTitleId ||
       result.primary_title->tier_raw != 6 ||
       result.primary_title->tier_key != "hegemony" ||
@@ -659,7 +667,8 @@ bool TestAvailableAndSerializer() {
       "\"player_character_alive\":true,"
       "\"player_monthly_gold_income\":{\"raw\":570772,"
       "\"scale\":100000},\"player_domain_size\":6,"
-      "\"player_domain_limit\":7,\"primary_title\":{"
+      "\"player_domain_limit\":7,"
+      "\"player_targeting_faction_count\":2,\"primary_title\":{"
       "\"title_id\":83886081,\"tier_raw\":6,"
       "\"tier_key\":\"hegemony\"},"
       "\"primary_title_succession_character_ids\":[201326600,218103817],"
@@ -690,6 +699,7 @@ bool TestAvailableAndSerializer() {
       "\"readiness\":{\"player_identity_ready\":true,"
       "\"player_monthly_gold_income_ready\":true,"
       "\"player_domain_ready\":true,"
+      "\"player_targeting_factions_ready\":true,"
       "\"primary_title_ready\":true,"
       "\"primary_title_succession_ready\":true,"
       "\"capital_ready\":true,"
@@ -706,6 +716,7 @@ bool TestAvailableAndSerializer() {
       "\"monthly_gold_income_rva\":\"0x28DBE90\","
       "\"domain_size_rva\":\"0x260BA50\","
       "\"domain_limit_rva\":\"0x260BA20\","
+      "\"has_targeting_faction_trigger_rva\":\"0x283FAE0\","
       "\"primary_title_rva\":\"0x25F3350\","
       "\"capital_province_rva\":\"0x2606760\","
       "\"immediate_liege_rva\":\"0x2613480\","
@@ -831,6 +842,34 @@ bool TestDomainFailureIsTypedUnavailable() {
          ClearedUnavailable(result, "player_domain_unavailable");
 }
 
+bool TestTargetingFactionCountSemantics() {
+  Fixture no_land_state;
+  void *null_land_state = nullptr;
+  Put(no_land_state.player_character, 0x1B8, null_land_state);
+  auto environment = Environment(no_land_state);
+  auto access = Access(no_land_state);
+  const xar::ck3_11906::CampaignRootContextRequestV1 request{41};
+  xar::game::CampaignRootContextV1 result{};
+  if (xar::ck3_11906::ReadCampaignRootContextV1(
+          environment, access, request, result) !=
+          xar::game::ReadCampaignRootContextResultV1::available ||
+      result.player_targeting_faction_count != 0) {
+    return false;
+  }
+
+  Fixture malformed;
+  const std::int32_t negative_count = -1;
+  Put(malformed.player_land_state, 0x12C, negative_count);
+  environment = Environment(malformed);
+  access = Access(malformed);
+  result = {};
+  return xar::ck3_11906::ReadCampaignRootContextV1(
+             environment, access, request, result) ==
+             xar::game::ReadCampaignRootContextResultV1::unavailable &&
+         ClearedUnavailable(result,
+                            "player_targeting_factions_unavailable");
+}
+
 bool TestStateChangedAndUnsupportedBuild() {
   Fixture changed_fixture;
   changed_fixture.change_frame_on_second_capture = true;
@@ -881,6 +920,10 @@ int main() {
   }
   if (!TestDomainFailureIsTypedUnavailable()) {
     std::cerr << "domain capacity fixture failed\n";
+    return 1;
+  }
+  if (!TestTargetingFactionCountSemantics()) {
+    std::cerr << "targeting faction count fixture failed\n";
     return 1;
   }
   if (!TestStateChangedAndUnsupportedBuild()) {

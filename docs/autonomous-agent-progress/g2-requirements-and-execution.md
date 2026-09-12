@@ -165,3 +165,19 @@ event-context-v2 effect visitor 与更多事件仍是扩展债，不再作为这
 - query/tool 数量只作 surface inventory，不得换算为玩法完成率；
 - 任何 `live` 提升必须链接 paused artifact；ACK、schema、单元测试和单场 fixture 不得冒充 OODA；
 - 对已取得证据的输入直接复用，新的 live 只验证本包新增的最小事实或动作后置。
+
+## G2-M1 目标派系最低告警
+
+原版 `has_targeting_faction` trigger 已按 CK3 1.19.0.6 exact build 冻结：注册链最终进入
+`0x283FAE0..0x283FB51` evaluator，其语义为解析完整 generation 的玩家 Character，读取
+`CCharacter+0x1B8` land state，并以 `land_state+0x12C` 的非零有符号计数判断是否存在以玩家为目标的派系。
+
+现有 `campaign-root-context-v1` 在同一双采样内发布非负 `player_targeting_faction_count`；身份、指针、计数或两次采样漂移时，
+整帧以 `player_targeting_factions_unavailable` 失败。`ck3_query_turn_bundle_v1` 将它投影为
+`realm.targeting_factions.{count,threatened}`、`alerts.faction_threat` 和 `realm_faction_alert_ready=true`。
+该切片只关闭“是否已被派系针对”的最低告警，不宣称已经观测派系身份、类型、成员、军力、不满度、诉求或最后期限。
+
+状态为 `static-ready / live=false`。MSVC Release reader/source-contract fixtures 为 GREEN，Python campaign-root、live-harness 与
+turn-bundle 聚焦测试在普通及 optimized 模式均为 `40/40`。它将与已经待验的 related contexts、收入和 domain capacity 共用
+一次有界 paused R558 读取；不为该单字段扩成长跑。G2-M1 仍缺 health、council、partition 及两场景 live 验收，G2 总完成数保持
+`0/8`。

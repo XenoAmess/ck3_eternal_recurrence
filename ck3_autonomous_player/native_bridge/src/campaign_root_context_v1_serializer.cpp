@@ -54,6 +54,7 @@ bool ReadinessAll(const game::CampaignRootReadinessV1 &value,
   return value.player_identity_ready == expected &&
          value.player_monthly_gold_income_ready == expected &&
          value.player_domain_ready == expected &&
+         value.player_targeting_factions_ready == expected &&
          value.primary_title_ready == expected &&
          value.primary_title_succession_ready == expected &&
          value.capital_ready == expected && value.lieges_ready == expected &&
@@ -85,7 +86,7 @@ std::string_view TierKey(std::int32_t raw) noexcept {
 }
 
 bool ValidUnavailableReason(std::string_view reason) noexcept {
-  constexpr std::array<std::string_view, 19> reasons = {
+  constexpr std::array<std::string_view, 20> reasons = {
       "unsupported_build",
       "requires_application_main",
       "requires_paused",
@@ -94,6 +95,7 @@ bool ValidUnavailableReason(std::string_view reason) noexcept {
       "player_character_generation_mismatch",
       "player_monthly_gold_income_unavailable",
       "player_domain_unavailable",
+      "player_targeting_factions_unavailable",
       "primary_title_unavailable",
       "primary_title_succession_unavailable",
       "capital_unavailable",
@@ -211,6 +213,8 @@ bool ValidAvailable(const game::CampaignRootContextV1 &context) noexcept {
       *context.player_domain_size < 0 ||
       !context.player_domain_limit.has_value() ||
       *context.player_domain_limit < 1 ||
+      !context.player_targeting_faction_count.has_value() ||
+      *context.player_targeting_faction_count < 0 ||
       !context.top_liege_character_id.has_value() ||
       *context.top_liege_character_id <= 0 ||
       !context.independent.has_value() ||
@@ -293,6 +297,7 @@ bool ValidUnavailable(const game::CampaignRootContextV1 &context) noexcept {
          !context.player_monthly_gold_income.has_value() &&
          !context.player_domain_size.has_value() &&
          !context.player_domain_limit.has_value() &&
+         !context.player_targeting_faction_count.has_value() &&
          !context.primary_title.has_value() &&
          context.primary_title_succession_character_ids.empty() &&
          !context.capital_province_id.has_value() &&
@@ -403,6 +408,8 @@ void AppendReadiness(std::string &output,
   output += value.player_monthly_gold_income_ready ? "true" : "false";
   output += ",\"player_domain_ready\":";
   output += value.player_domain_ready ? "true" : "false";
+  output += ",\"player_targeting_factions_ready\":";
+  output += value.player_targeting_factions_ready ? "true" : "false";
   output += ",\"primary_title_ready\":";
   output += value.primary_title_ready ? "true" : "false";
   output += ",\"primary_title_succession_ready\":";
@@ -438,6 +445,7 @@ void AppendProvenance(std::string &output) {
   output += "\",\"monthly_gold_income_rva\":\"0x28DBE90\",";
   output += "\"domain_size_rva\":\"0x260BA50\",";
   output += "\"domain_limit_rva\":\"0x260BA20\",";
+  output += "\"has_targeting_faction_trigger_rva\":\"0x283FAE0\",";
   output += "\"primary_title_rva\":\"0x25F3350\",";
   output += "\"capital_province_rva\":\"0x2606760\",";
   output += "\"immediate_liege_rva\":\"0x2613480\",";
@@ -495,6 +503,8 @@ std::string SerializeCampaignRootContextV1(
   AppendOptionalInt32(output, context.player_domain_size);
   output += ",\"player_domain_limit\":";
   AppendOptionalInt32(output, context.player_domain_limit);
+  output += ",\"player_targeting_faction_count\":";
+  AppendOptionalInt32(output, context.player_targeting_faction_count);
   output += ",\"primary_title\":";
   if (!context.primary_title.has_value()) {
     output += "null";

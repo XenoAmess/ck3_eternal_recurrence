@@ -1688,6 +1688,7 @@ class GameplayBridgeService:
             "player_monthly_gold_income",
             "player_domain_size",
             "player_domain_limit",
+            "player_targeting_faction_count",
             "primary_title",
             "primary_title_succession_character_ids",
             "capital_province_id",

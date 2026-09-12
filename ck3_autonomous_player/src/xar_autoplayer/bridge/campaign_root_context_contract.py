@@ -30,6 +30,7 @@ _FIELDS: Final = {
     "player_monthly_gold_income",
     "player_domain_size",
     "player_domain_limit",
+    "player_targeting_faction_count",
     "primary_title",
     "primary_title_succession_character_ids",
     "capital_province_id",
@@ -62,6 +63,7 @@ _READINESS_KEYS: Final = (
     "player_identity_ready",
     "player_monthly_gold_income_ready",
     "player_domain_ready",
+    "player_targeting_factions_ready",
     "primary_title_ready",
     "primary_title_succession_ready",
     "capital_ready",
@@ -82,6 +84,7 @@ _PROVENANCE_FIELDS: Final = {
     "monthly_gold_income_rva",
     "domain_size_rva",
     "domain_limit_rva",
+    "has_targeting_faction_trigger_rva",
     "primary_title_rva",
     "capital_province_rva",
     "immediate_liege_rva",
@@ -97,6 +100,7 @@ _PROVENANCE_VALUES: Final = {
     "monthly_gold_income_rva": "0x28DBE90",
     "domain_size_rva": "0x260BA50",
     "domain_limit_rva": "0x260BA20",
+    "has_targeting_faction_trigger_rva": "0x283FAE0",
     "primary_title_rva": "0x25F3350",
     "capital_province_rva": "0x2606760",
     "immediate_liege_rva": "0x2613480",
@@ -114,6 +118,7 @@ _UNAVAILABLE_REASONS: Final = {
     "player_character_generation_mismatch",
     "player_monthly_gold_income_unavailable",
     "player_domain_unavailable",
+    "player_targeting_factions_unavailable",
     "primary_title_unavailable",
     "primary_title_succession_unavailable",
     "capital_unavailable",
@@ -141,6 +146,7 @@ _UNAVAILABLE_NULL_FIELDS: Final = {
     "player_monthly_gold_income",
     "player_domain_size",
     "player_domain_limit",
+    "player_targeting_faction_count",
     "primary_title",
     "capital_province_id",
     "immediate_liege_character_id",
@@ -528,6 +534,12 @@ def normalize_campaign_root_context_v1(
     player_domain_limit = _positive_int32(
         frame.get("player_domain_limit"), "player_domain_limit"
     )
+    player_targeting_faction_count = _int(
+        frame.get("player_targeting_faction_count"),
+        "player_targeting_faction_count",
+        minimum=0,
+        maximum=2**31 - 1,
+    )
     primary_title_succession_character_ids = (
         _ordered_unique_positive_int32_vector(
             frame.get("primary_title_succession_character_ids"),
@@ -643,6 +655,7 @@ def normalize_campaign_root_context_v1(
         "player_monthly_gold_income": player_monthly_gold_income,
         "player_domain_size": player_domain_size,
         "player_domain_limit": player_domain_limit,
+        "player_targeting_faction_count": player_targeting_faction_count,
         "primary_title": primary_title,
         "primary_title_succession_character_ids": (
             primary_title_succession_character_ids

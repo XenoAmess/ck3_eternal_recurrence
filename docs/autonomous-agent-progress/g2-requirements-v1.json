@@ -46,10 +46,10 @@
       "name": "entity directory and core turn bundle",
       "priority": "P1-A",
       "status": "in_progress",
-      "latest_evidence": ["campaign-root-context production-live primitive", "direct landed-vassal identity extension static-ready", "adjacent external province-holder identity extension static-ready", "relationship-filtered entity-directory with native title and top-liege components static-ready", "minimum-alert turn bundle and monthly-income resource gate static-ready", "exact-build player domain size and limit projection static-ready"],
+      "latest_evidence": ["campaign-root-context production-live primitive", "direct landed-vassal identity extension static-ready", "adjacent external province-holder identity extension static-ready", "relationship-filtered entity-directory with native title and top-liege components static-ready", "minimum-alert turn bundle and monthly-income resource gate static-ready", "exact-build player domain size and limit projection static-ready", "exact-build player targeting-faction count and minimum threat alert static-ready"],
       "planner_consumer": "candidate generation and per-turn objective selection",
       "visible_outcome": "one query identifies the ruler, primary title, capital, liege, direct vassals, one neighbor and the minimum ruler/realm/succession alerts",
-      "open_blocker": "health, council, faction and partition observations remain absent; the relationship search, related-character contexts, income, domain capacity and turn bundle still need one shared bounded production paused read"
+      "open_blocker": "health, council and partition observations remain absent; deeper faction identity, power and deadline inputs remain deferred to governance response; relationship search, related-character contexts, income, domain capacity, targeting-faction alert and turn bundle still need one shared bounded production paused read"
     },
     {
       "id": "G2-M2",

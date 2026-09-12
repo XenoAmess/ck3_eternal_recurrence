@@ -70,6 +70,7 @@ int main(int argc, char **argv) {
       kCampaignRootMonthlyGoldIncomeRva != 0x28DBE90 ||
       kCampaignRootDomainSizeRva != 0x260BA50 ||
       kCampaignRootDomainLimitRva != 0x260BA20 ||
+      kCampaignRootHasTargetingFactionTriggerRva != 0x283FAE0 ||
       kCampaignRootPrimaryTitleRva != 0x25F3350 ||
       kCampaignRootCapitalProvinceRva != 0x2606760 ||
       kCampaignRootImmediateLiegeRva != 0x2613480 ||
@@ -104,8 +105,11 @@ int main(int argc, char **argv) {
                     "primary_title_succession_unavailable",
                     "player_monthly_gold_income_unavailable",
                     "player_domain_unavailable",
+                    "player_targeting_factions_unavailable",
                     "kCampaignRootDomainSizeRva",
                     "kCampaignRootDomainLimitRva",
+                    "kCharacterLandStateOffset = 0x1B8",
+                    "kLandStateTargetingFactionsCountOffset = 0x12C",
                     "kCampaignRootMonthlyGoldIncomeRva",
                     "kLandedTitleSuccessionDataOffset = 0x278",
                     "CharacterBelongsToPlayerSubrealm",
@@ -124,8 +128,10 @@ int main(int argc, char **argv) {
                     "\\\"player_monthly_gold_income\\\"",
                     "\\\"player_domain_size\\\"",
                     "\\\"player_domain_limit\\\"",
+                    "\\\"player_targeting_faction_count\\\"",
                     "\\\"domain_size_rva\\\"",
                     "\\\"domain_limit_rva\\\"",
+                    "\\\"has_targeting_faction_trigger_rva\\\"",
                     "\\\"monthly_gold_income_rva\\\"",
                     "\\\"relationship_role\\\"",
                     "\\\"unavailable_reason\\\"",
@@ -165,12 +171,17 @@ int main(int argc, char **argv) {
                     "\"monthly_gold_income_rva\": \"0x28DBE90\"",
                     "\"domain_size_rva\": \"0x260BA50\"",
                     "\"domain_limit_rva\": \"0x260BA20\"",
+                    "\"has_targeting_faction_trigger_rva\": \"0x283FAE0\"",
                     "531558C7064BA9F24F2FDE278F2A5FEF7F495664F0437A0EF528E04FC8CAB8D8",
                     "\"row_stride\": \"0x30\"",
                     "\"related_character_contexts\"",
                     "\"primary_title_succession\"",
                     "\"player_monthly_gold_income\"",
                     "\"player_domain_capacity\"",
+                    "\"player_targeting_factions\"",
+                    "\"character_land_state_offset\": \"0x1B8\"",
+                    "\"land_state_targeting_faction_count_offset\": \"0x12C\"",
+                    "7A4C1EED3FF52B5573AD7598350DB3270954E38FB0F1CF872080851D4C00ECEE",
                     "\"data_offset\": \"0x278\"",
                     "\"direct_vassal_invariant\"",
                     "unsigned_utf8_bytewise_lexicographical",
@@ -192,6 +203,8 @@ int main(int argc, char **argv) {
                     "\"player_monthly_gold_income_scale\": 100000",
                     "\"player_domain_size_minimum\": 0",
                     "\"player_domain_limit_minimum\": 1",
+                    "\"player_targeting_faction_count_minimum\": 0",
+                    "\"player_targeting_faction_trigger_rva\": \"0x283FAE0\"",
                     "\"government_fallback_kind\": \"pointer_slot\""})) {
     return 1;
   }

@@ -75,9 +75,12 @@
 - [static-ready, live pending] [player-domain-capacity-v1.md](player-domain-capacity-v1.md) 冻结 `GetDomainSize`
   `0x260BA50` 与 `GetDomainLimit` `0x260BA20` 的 reflection registration/core 链，把玩家直辖规模和当前上限接入
   campaign-root 双采样与 turn bundle；holdings 明细、建筑、施工及 grace-period 惩罚仍未发布。
+- [static-ready, live pending] [player-targeting-factions-v1.md](player-targeting-factions-v1.md) 冻结原版
+  `has_targeting_faction` evaluator `0x283FAE0`，从玩家 land state 发布目标派系数量，并把最小威胁布尔值接入 turn bundle；
+  派系 identity/type/power/discontent/deadline 仍未发布。
 - [static-ready, live pending] [turn-bundle-v1.md](turn-bundle-v1.md) 发布 `ck3_query_turn_bundle_v1`，把一个缓存 state snapshot 与一次
   同绑定 campaign-root query 聚合为 ruler/realm/succession/pending/war/alerts 六域；最低三域警报、收入资源门与 domain capacity
-  已可用，健康、council、faction 与 partition 保持 typed unavailable，因此完整 readiness 仍为 false。
+  与目标派系最低警报已可用，健康、council 与 partition 保持 typed unavailable，因此完整 readiness 仍为 false。
 - [static-confirmed + production-live] [loaded-feature-manifest.md](loaded-feature-manifest.md) 区分当前进程 effective gameplay feature
   bitset、script-visible `has_dlc` runtime set 与独立 store entitlement service；冻结完整 44-entry feature vocabulary、三套
   exact-build registry/service RVA与 typed wire。bridge/MCP 已在真实 paused frame 双查询完成 44 rows/29 runtime keys，artifact

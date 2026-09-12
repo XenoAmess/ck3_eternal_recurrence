@@ -51,6 +51,7 @@ struct CampaignRootReadinessV1 {
   bool player_identity_ready = false;
   bool player_monthly_gold_income_ready = false;
   bool player_domain_ready = false;
+  bool player_targeting_factions_ready = false;
   bool primary_title_ready = false;
   bool primary_title_succession_ready = false;
   bool capital_ready = false;
@@ -81,6 +82,7 @@ struct CampaignRootContextV1 {
   std::optional<FixedPointValue> player_monthly_gold_income;
   std::optional<std::int32_t> player_domain_size;
   std::optional<std::int32_t> player_domain_limit;
+  std::optional<std::int32_t> player_targeting_faction_count;
   std::optional<CampaignRootTitleV1> primary_title;
   std::vector<std::int32_t> primary_title_succession_character_ids;
   std::optional<std::int32_t> capital_province_id;
@@ -155,6 +157,8 @@ inline constexpr std::uintptr_t kCampaignRootPrimaryTitleRva = 0x25F3350;
 inline constexpr std::uintptr_t kCampaignRootMonthlyGoldIncomeRva = 0x28DBE90;
 inline constexpr std::uintptr_t kCampaignRootDomainSizeRva = 0x260BA50;
 inline constexpr std::uintptr_t kCampaignRootDomainLimitRva = 0x260BA20;
+inline constexpr std::uintptr_t kCampaignRootHasTargetingFactionTriggerRva =
+    0x283FAE0;
 inline constexpr std::uintptr_t kCampaignRootCapitalProvinceRva = 0x2606760;
 inline constexpr std::uintptr_t kCampaignRootImmediateLiegeRva = 0x2613480;
 inline constexpr std::uintptr_t kCampaignRootTopLiegeRva = 0x2613600;

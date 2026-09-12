@@ -69,6 +69,7 @@ def _root(*, available: bool = True) -> dict[str, object]:
         ),
         "player_domain_size": 6 if available else None,
         "player_domain_limit": 7 if available else None,
+        "player_targeting_faction_count": 2 if available else None,
         "primary_title": (
             {"title_id": 90, "tier_raw": 4, "tier_key": "kingdom"}
             if available
@@ -149,6 +150,14 @@ class TurnBundleV1Tests(unittest.TestCase):
                 "available_capacity": 1,
                 "over_limit_by": 0,
             },
+        )
+        self.assertTrue(result["readiness"]["realm_faction_alert_ready"])
+        self.assertEqual(
+            realm["faction_alert"]["value"],
+            {"targeting_faction_count": 2, "threatened": True},
+        )
+        self.assertTrue(
+            result["alerts"]["value"]["faction_threat"]["value"]
         )
         self.assertEqual(
             realm["adjacent_holder_top_liege_character_ids"], [99]
@@ -293,6 +302,15 @@ class TurnBundleV1Tests(unittest.TestCase):
                 context[field] = value
                 with self.assertRaises(ValueError):
                     build_turn_bundle_v1(_snapshot(), root)
+
+    def test_rejects_malformed_targeting_faction_count(self) -> None:
+        root = _root()
+        context = root["campaign_root_context"]
+        assert isinstance(context, dict)
+        context["player_targeting_faction_count"] = -1
+
+        with self.assertRaises(ValueError):
+            build_turn_bundle_v1(_snapshot(), root)
 
 
 if __name__ == "__main__":

@@ -374,6 +374,18 @@ def build_turn_bundle_v1(
             "over_limit_by": max(domain_size - domain_limit, 0),
         },
     )
+    targeting_faction_count = _nonnegative_int(
+        root.get("player_targeting_faction_count"),
+        "player_targeting_faction_count",
+    )
+    faction_threat = targeting_faction_count > 0
+    faction_alert = _component(
+        "available",
+        {
+            "targeting_faction_count": targeting_faction_count,
+            "threatened": faction_threat,
+        },
+    )
     realm_state = {
         "top_liege_character_id": _positive_int(
             root.get("top_liege_character_id"), "top_liege_character_id"
@@ -388,9 +400,7 @@ def build_turn_bundle_v1(
         "council": _component(
             "unavailable", reason="realm_council_observation_not_implemented"
         ),
-        "faction_alert": _component(
-            "unavailable", reason="realm_faction_observation_not_implemented"
-        ),
+        "faction_alert": faction_alert,
     }
     if not isinstance(realm_state["independent"], bool):
         raise ValueError("campaign-root independent state is malformed")
@@ -452,9 +462,7 @@ def build_turn_bundle_v1(
             "available", bool(adjacent_holders)
         ),
         "no_primary_title_heir": no_heir_alert,
-        "faction_threat": _component(
-            "unavailable", reason="realm_faction_observation_not_implemented"
-        ),
+        "faction_threat": _component("available", faction_threat),
     }
     gold_ready = gold["status"] == "available"
     income_ready = income["status"] == "available"
@@ -468,7 +476,7 @@ def build_turn_bundle_v1(
         "realm_relationship_alerts_ready": True,
         "realm_domain_ready": True,
         "realm_council_ready": False,
-        "realm_faction_alert_ready": False,
+        "realm_faction_alert_ready": True,
         "succession_primary_title_alert_ready": True,
         "succession_partition_ready": False,
         "event_pending_ready": pending_ready,
