@@ -79,3 +79,19 @@ After root commit/push synchronization, create one new no-launch plan bound to
 that HEAD, reconfirm CK3 count `0`, then invoke its single capture command once.
 Stop on the first real RED, the first harness RED, or complete eight-span
 GREEN; do not turn a single failure into a long-running acceptance loop.
+
+## First execution admission RED
+
+The first post-sync invocation stopped before CK3 launch. The wrapper generated
+`\\.\pipe\xar_ck3_bridge_zg361_phase2_capture_<uuid>`, while the acceptance
+runner accepts only `\\.\pipe\xar_ck3_bridge_zg361_<32 lowercase hex>`. The
+failure is a `HARNESS_RED`; business was not evaluated, lifecycle remained
+GREEN, and planned round R509 was not consumed.
+
+The immutable detail is
+`Z:\ck3_mod_rewrite\_runtime\p2-capture-r509-r515-6213626-20260912\execution-red.json`,
+SHA-256 `5E25089F59AB6AAA9C80314516C7B8430FBFE23612CFED79283236E977596E0A`.
+The minimal fix removes the descriptive infix and adds a focused assertion that
+the emitted pipe matches the runner's public namespace. The plan tests pass
+`2/2` in normal and optimized Python. No CK3 instance, recorder, capture
+directory, media file, or game input was created.

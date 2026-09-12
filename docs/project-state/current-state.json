@@ -50,6 +50,16 @@
         },
         "red_id": "R506-source-event-scalar-scope-invalid",
         "role": "HISTORICAL_PRESERVED"
+      },
+      {
+        "index_ref": {
+          "base": "repo_root",
+          "bytes": 1705,
+          "locator": "docs/project-state/red-indexes/pre-r509-bridge-pipe-namespace-invalid.json",
+          "sha256": "59DF4A177A02A0846695553E84A51EB8748F34E328B5C5AFD5FF207A1CD0F3FC"
+        },
+        "red_id": "pre-R509-bridge-pipe-namespace-invalid",
+        "role": "HISTORICAL_PRESERVED"
       }
     ],
     "unresolved_count": 0
@@ -62,7 +72,7 @@
   },
   "repository_provenance": {
     "root_last_completed_transaction": {
-      "commit": "502020bfbb1309a5bbfe6359365c4df91e3caf7a",
+      "commit": "62136263a82e36cb929addbd0f2244e7ed1b27b9",
       "sync_result": "GREEN",
       "upstream_ref": "origin/master"
     },
@@ -123,7 +133,7 @@
         "base": "repo_root",
         "bytes": 7434,
         "locator": "docs/phase2-promo/p2-stage-ledger.json",
-        "sha256": "83081759F0B63CD0009853B97E11745F9ED4D0221567B06232109283AD2C3C51"
+        "sha256": "AC071941895756B7B9977673FBA8362415EB697912AD31C8F01A9805C6D0AE14"
       },
       "raw_footage": {
         "passed": 0,
@@ -162,5 +172,5 @@
     "result": "GREEN",
     "upstream_root_commit": "502020bfbb1309a5bbfe6359365c4df91e3caf7a"
   },
-  "updated_at": "2026-09-12T14:30:00+08:00"
+  "updated_at": "2026-09-12T14:35:00+08:00"
 }

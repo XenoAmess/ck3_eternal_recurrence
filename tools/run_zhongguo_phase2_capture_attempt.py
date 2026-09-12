@@ -353,7 +353,10 @@ def prepare_plan(
     moment = (now or dt.datetime.now(dt.timezone.utc)).astimezone(dt.timezone.utc)
     source = source_root.expanduser().resolve()
     capture = attempt / "capture"
-    pipe = rf"\\.\pipe\xar_ck3_bridge_zg361_phase2_capture_{uuid.uuid4().hex}"
+    # Keep the wrapper's explicit pipe inside the acceptance runner's public
+    # run-unique namespace.  The runner rejects descriptive infixes before any
+    # CK3 launch, so the UUID must follow the canonical prefix directly.
+    pipe = rf"\\.\pipe\xar_ck3_bridge_zg361_{uuid.uuid4().hex}"
     blockers: list[str] = []
     observer, new = _observer_gate(observer_artifact)
     blockers.extend(new)

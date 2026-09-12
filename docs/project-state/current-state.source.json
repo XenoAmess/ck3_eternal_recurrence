@@ -1,12 +1,12 @@
 {
   "schema": "xar.project-delivery-state-source",
   "schema_version": 1,
-  "updated_at": "2026-09-12T14:30:00+08:00",
+  "updated_at": "2026-09-12T14:35:00+08:00",
   "repository_provenance": {
     "root_live_source": "git status --branch --porcelain=v2 plus git ls-remote origin",
     "root_live_state_not_git_cached": true,
     "root_last_completed_transaction": {
-      "commit": "502020bfbb1309a5bbfe6359365c4df91e3caf7a",
+      "commit": "62136263a82e36cb929addbd0f2244e7ed1b27b9",
       "upstream_ref": "origin/master",
       "sync_result": "GREEN"
     },
@@ -241,6 +241,49 @@
         "source_registry_sha256": "4C6A9346F32194E7EF26BFCD79289D207E1C6DE7356ED4E7C61930E1FE75AAB3",
         "operator_green_sha256": "EBD3296655C81066DCBBAF771586770F8233DD1B1B92C801E49892C243A4D5D5",
         "cleanup_sha256": "3FA1514206E808F53C7DF92F7858F10C41FFF73D2E6AC062BBD95E5ABD7E06FA"
+      }
+    },
+    {
+      "red_id": "pre-R509-bridge-pipe-namespace-invalid",
+      "output_name": "pre-r509-bridge-pipe-namespace-invalid.json",
+      "red_class": "HARNESS_RED",
+      "axes": {
+        "business_result": "NOT_EVALUATED",
+        "harness_result": "RED",
+        "lifecycle_result": "GREEN"
+      },
+      "blocking_scope": "p2.raw_capture",
+      "failure_stage": "runner_cli_admission",
+      "reason_code": "bridge_pipe_namespace_invalid",
+      "last_verified_stage": "capture_plan_green_prelaunch",
+      "input_attempted": false,
+      "same_frame_retry_eligible": false,
+      "absolute_game_deadline": null,
+      "binding": {
+        "planned_round": "R509",
+        "round_consumed": false,
+        "source_commit": "62136263a82e36cb929addbd0f2244e7ed1b27b9",
+        "ck3_instance_count": 0
+      },
+      "minimal_diff": {
+        "wrapper_pipe": "\\\\.\\pipe\\xar_ck3_bridge_zg361_phase2_capture_<uuid>",
+        "runner_contract": "\\\\.\\pipe\\xar_ck3_bridge_zg361_<32 lowercase hex>",
+        "fix": "UUID now follows the canonical prefix directly",
+        "implication": "runner rejected CLI arguments before CK3 launch or business evaluation"
+      },
+      "detail_artifact_ref": {
+        "base": "workspace_root",
+        "locator": "_runtime/p2-capture-r509-r515-6213626-20260912/execution-red.json",
+        "bytes": 1012,
+        "sha256": "5E25089F59AB6AAA9C80314516C7B8430FBFE23612CFED79283236E977596E0A"
+      },
+      "resolution": {
+        "status": "CLOSED_BY_CAPTURE_WRAPPER_FIX",
+        "current_blocker": false,
+        "closing_round": null,
+        "round_consumed": false,
+        "focused_normal": "2/2 GREEN",
+        "focused_optimized": "2/2 GREEN"
       }
     }
   ]

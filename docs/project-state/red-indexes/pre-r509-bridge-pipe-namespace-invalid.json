@@ -1,0 +1,50 @@
+{
+  "absolute_game_deadline": null,
+  "axes": {
+    "business_result": "NOT_EVALUATED",
+    "harness_result": "RED",
+    "lifecycle_result": "GREEN"
+  },
+  "binding": {
+    "ck3_instance_count": 0,
+    "planned_round": "R509",
+    "round_consumed": false,
+    "source_commit": "62136263a82e36cb929addbd0f2244e7ed1b27b9"
+  },
+  "blocking_scope": "p2.raw_capture",
+  "detail_artifact_ref": {
+    "base": "workspace_root",
+    "bytes": 1012,
+    "locator": "_runtime/p2-capture-r509-r515-6213626-20260912/execution-red.json",
+    "sha256": "5E25089F59AB6AAA9C80314516C7B8430FBFE23612CFED79283236E977596E0A"
+  },
+  "failure_stage": "runner_cli_admission",
+  "input_attempted": false,
+  "last_verified_stage": "capture_plan_green_prelaunch",
+  "minimal_diff": {
+    "fix": "UUID now follows the canonical prefix directly",
+    "implication": "runner rejected CLI arguments before CK3 launch or business evaluation",
+    "runner_contract": "\\\\.\\pipe\\xar_ck3_bridge_zg361_<32 lowercase hex>",
+    "wrapper_pipe": "\\\\.\\pipe\\xar_ck3_bridge_zg361_phase2_capture_<uuid>"
+  },
+  "preservation": {
+    "classification_does_not_downgrade_red": true,
+    "detail_is_immutable": true,
+    "index_is_not_business_evidence": true
+  },
+  "reason_code": "bridge_pipe_namespace_invalid",
+  "red_class": "HARNESS_RED",
+  "red_id": "pre-R509-bridge-pipe-namespace-invalid",
+  "resolution": {
+    "closing_round": null,
+    "current_blocker": false,
+    "focused_normal": "2/2 GREEN",
+    "focused_optimized": "2/2 GREEN",
+    "round_consumed": false,
+    "status": "CLOSED_BY_CAPTURE_WRAPPER_FIX"
+  },
+  "result": "RED",
+  "same_frame_retry_eligible": false,
+  "schema": "xar.compact-red-index",
+  "schema_version": 1
+}

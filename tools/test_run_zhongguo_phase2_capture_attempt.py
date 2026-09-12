@@ -4,6 +4,7 @@ import datetime as dt
 import hashlib
 import json
 from pathlib import Path
+import re
 import sys
 import tempfile
 import unittest
@@ -199,6 +200,13 @@ class CaptureAttemptPlanTests(unittest.TestCase):
             )
             self.assertFalse((root / "attempt" / "capture").exists())
             command = manifest["single_capture_command"]["argv"]
+            pipe = command[command.index("--bridge-pipe") + 1]
+            self.assertRegex(
+                pipe,
+                re.compile(
+                    r"^\\\\\.\\pipe\\xar_ck3_bridge_zg361_[0-9a-f]{32}$"
+                ),
+            )
             self.assertIn("--phase2-source-checkpoint-registry", command)
             self.assertIn("--phase2-product-source", command)
             self.assertIn("--phase2-product-projection-manifest", command)
