@@ -1,6 +1,6 @@
 # 重整河山：设计与实现说明
 
-状态：**0.2.0（二期）已实现，正在执行发布验收。** 这份文档同时记录设计约束、当前实现与发布证据；上一公开版本为 0.1.1。
+状态：**0.2.0（二期）已实现；L0 与源码树 L1 已 GREEN，正在执行 Workshop 发布与 fresh-cache L3。** 这份文档同时记录设计约束、当前实现与发布证据；上一公开版本为 0.1.1。
 
 ## 1. 产品目标
 
@@ -43,7 +43,7 @@
 | --- | --- | --- |
 | 进入群雄割据 | 原版彻底裂解 | 创建后朝霸权，旧天子失去 `h_china`，不被强制退位 |
 | 旧天子的个人领地与其他头衔 | 按原版失去/销毁 | 保留；只明确销毁 `h_china` |
-| 尊王派直属封臣 | 按原版裂解 | 保持原有直属关系 |
+| 尊王派直属封臣 | 按原版裂解 | 按【人心离散／誓死尊王】决出最终留朝者；留朝者保留原关系、国号和封臣树，叛者按原版裂解 |
 | 其他直属封臣 | 按原版裂解 | 先脱离旧天子，再进入原版的朋党领袖、长老、朝贡与弱势头衔处理 |
 | “宣称天命” | 正常可用 | 后朝持有者隐藏且硬性禁止；其他军阀不受影响 |
 | “宣称复辟” | 不显示 | 后朝持有者在群雄割据且独立、和平、成年并控制至少原版比例时可用 |
@@ -217,24 +217,23 @@ mod_reclaim_the_motherland/
 
 ## 12. 当前实现与验证证据
 
-2026-09-09 的实现状态为 **source production-live**：游戏规则、群雄割据分派、动态后朝、尊王派直属封臣保留、原“宣称天命”封锁、“宣称复辟”、九语发布本地化和 28 文件独立构建链均已落地。原版兼容副本绑定 CK3 `1.19.0.6` 的源文件哈希；旧天子还被显式排除在弱势王/帝头衔裁剪之外，确保除 `h_china` 外的个人头衔不会被该轮原版逻辑误删。
+2026-09-13 的二期实现状态为 **source production-live / release candidate**：新增【尊王诸侯的抉择】规则、三段式一次性忠诚结算、留朝忠臣国号与封臣树保护、【人心向背】总结事件、九语发布本地化和 32 文件独立构建链均已落地；一期的动态后朝、原“宣称天命”封锁与“宣称复辟”全链保持不变。原版兼容副本继续绑定 CK3 `1.19.0.6` 的源文件哈希。
 
 `open_kaishek` 预验记录：
 
-- commit：`33d690234d8217422978ee642055ab1b13e44c76`；CLI JAR SHA-256：`CC42A0BBD4991095DEB4C8AF4142A4657D46D07D616B89643A9F2D7A1E4A3CD7`。
-- profile/version：`ck3-1.19.0.6` parser-only root scan（当前没有覆盖本 mod 动态头衔、封臣变更和决议语义的 validator profile，因此命名 fixture、validator/IR/finite-runtime 为 `not-applicable / cli-red`，不能代替 CK3 实机）。
-- CK3：`1.19.0.6`；EXE SHA-256：`2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86`。
-- 产品 corpus：8 文件、41,347 bytes，root SHA-256 `92b0c6c4eb6f6fe6cf62006b9630e070339dd4a3dbdf6f0f7c5141d63f9982a0`；root parser 8/8 GREEN。
-- 外置验收夹具 corpus：8 文件、17,820 bytes，root SHA-256 `dc36c2fd401dff03f959edf5b1fd3aca33c230d226556f64db58930e0a5197f5`；root parser 8/8 GREEN。
-- 命名 fixture 不被当前 CLI 识别；报告保留这个边界并继续执行真实 CK3，没有把离线 parser 冒充机制验收。
+- commit：`890b32de49081b7b5510e40c5518dfb59d5c8a6d`；CLI contract：`b306a95`；JAR SHA-256：`7262e771ad3e1f5d724d663ac259a20e2a7df0c491d4c125f56cb4c3a604e75c`。
+- profile/version：`ck3-1.19.0.6` parser-only root scan。当前 validator 不覆盖本 mod 的动态头衔、封臣重组和决议语义，UNKNOWN 诚实记录为 `not-applicable / cli-red`，不替代 CK3 实机。
+- CK3 EXE SHA-256：`2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86`。
+- 产品 corpus：12 文件、50,804 bytes，root SHA-256 `d8f6001c810261521ecbd744cd121e8930dfdf9cc8dea8bb4ae2174ff0f04ee1`；parser GREEN。
+- 外置验收夹具 corpus：8 文件、20,308 bytes，root SHA-256 `18e7ae11e6cec6e71df789f4766c3dd3349ec873f1b4c08f54eb114a023a0694`；parser GREEN。
 
 最终静态验证：
 
-- `py tools/test_reclaim_the_motherland_contract.py`：12/12 GREEN。
-- `py tools/validate_reclaim_the_motherland_static.py`：GREEN；28 个运行时文件、9 种发布语言、每种 102 个本地化键、8 个玩法脚本。
+- `py tools/test_reclaim_the_motherland_contract.py`：13/13 GREEN；另有 1 项因 detached worktree 不含被忽略的游戏副本而显式 skip。
+- `py tools/validate_reclaim_the_motherland_static.py`：GREEN；32 个运行时文件、9 种发布语言、每种 112 个本地化键、12 个玩法脚本。
 - `py tools/test_build_reclaim_the_motherland_release.py`：10/10 GREEN。
-- `py tools/build_reclaim_the_motherland_release.py --check`：双构建可复现；开发快照 manifest SHA-256 `41ac174812e65725846bceeea084fcccf70b938aed3cbd3aeb4e4ab6e42388d8`，ZIP SHA-256 `cdbd601c44d578c39c2ba8a34c2fe372292f90b812ffb5af5acf8a2425282de1`。正式 tag 构建会因 manifest 内嵌 Git SHA 而取得自己的正式哈希。
+- `py tools/build_reclaim_the_motherland_release.py --check`：双构建可复现；开发快照 manifest SHA-256 `b3cdaa33f4ad1dc8a707e807533da339e1002533be2e582b67e4abd51c048712`，ZIP SHA-256 `5981535815e61dd92c5f681a2fea9f9804cd58ffb545f5fe6f1310d9af6c8550`。正式 tag 构建会因 manifest 内嵌 Git SHA 而取得自己的正式哈希。
 
-源码树 L1 实机 run 为 `D:\workspace\ck3_reclaim_the_motherland_design_process_assets\reclaim\runs\rqa_20260909_114834_32f85232`，有效 `cell/report.json` SHA-256 为 `9594029df6b161329e820bd98dfbc2d54fc6964d0252c44538b423f1f1dbeda6`。它通过 MCP readiness 和语义化事件选择完成 19/19 断言：真实阶段切换与原版群雄事件、后宋名称、空法理与个人领地、尊王派直属及下级树、非尊王派直属脱离、50% 不足与 51% 达标、复辟可见而天命不可见，以及完整原版天命效果＋后朝销毁。运行中 source/runtime 未改写，项目 diagnostics 为 0，保护存储未变化，原生进程树和隔离 userdir 均完成清理。
+源码树 L1 实机 run 为 `D:\workspace\ck3_reclaim_phase2_20260913_process_assets\reclaim\runs\desktop-3fevhd2-1c74096080--reclaim-the-motherland--R0004-source`，wrapper `report.json` SHA-256 为 `962c679a10ae669201eff32cb62f2cb442ab5189cffd0037ee9af4f03071f85a`，有效 `cell/report.json` SHA-256 为 `53ed9ecf85166c4f3e0335777c641b64f5043ffe7b7ec0fe56db1fd6b9bb83e9`。它通过 MCP readiness 和语义化事件选择完成 20 个顺序标记：必留忠臣原样保住【青徐路】头衔、名称与封臣树，必叛尊王诸侯脱离，一次性结果与【人心向背】总结可见；一期的后宋、空法理、个人领地、50%/51% 边界、复辟可见而天命不可见，以及完整原版天命效果＋后朝销毁也全部回归。运行中 source/runtime 未改写，项目 diagnostics 为 0，保护存储未变化，原生进程树和隔离 userdir 均完成清理。
 
-完整 L0/L1/L3 证据和保留的 RED attempt 说明见 `docs/acceptance-report.md`。Workshop item `3798404599` 已公开；全新订阅缓存完成 28/28 严格核对，同矩阵 MCP-first L3 为 19/19 GREEN。页面使用入库 BBCode、独立 640×640 thumbnail 与三张真实游戏截图，其中地图镜头由原生 MCP 定位到大宋首都开封，并已登记《溥天之下 / All Under Heaven》为必需 DLC。
+完整 L0/L1 证据和保留的 RED attempt 说明见 `docs/acceptance-report.md`。0.2.0 使用四张来自最终 GREEN run 的真实游戏截图，其中【人心向背】画面新增为首图，地图镜头仍由原生 MCP 定位到大宋首都开封。Workshop item `3798404599` 当前公开版本仍为 0.1.1；只有完成 0.2.0 正式上传、32/32 fresh-cache 核对和同矩阵 L3 后，本文才会改为发布完成。
