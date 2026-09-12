@@ -86,6 +86,7 @@
         "2": "strict_descendant_of_scoreboard_modal",
         "3": "other"
       },
+      "modal_top_relation_role": "provider-private input-routing diagnostic encoded into the semantic fingerprint; not a scoreboard surface availability or action-admission gate because modal_blocking ABI remains unfrozen",
       "modal_top_receiver": "u64_pointer",
       "active_page_u8": {
         "0": "none",
@@ -99,7 +100,7 @@
         "2": "received",
         "3": "system"
       },
-      "surface_consistency": "the product keeps exactly one HUD entry visible while the modal is open; open requires exactly one active page plus exactly one matching visible entry, while closed requires zero active pages and exactly one visible entry; zero-or-multiple or mismatched surfaces fail the query",
+      "surface_consistency": "the product keeps exactly one HUD entry visible while the modal is open; open requires exactly one active page plus exactly one matching visible entry, while closed requires zero active pages and exactly one visible entry; zero-or-multiple or mismatched surfaces fail the query independently of the diagnostic modal-top relation",
       "raw_acl_rows": "20 allowlisted rows in frozen order, each present_u8,and when present kind_i32,payload_i64",
       "derived_acl_tuples": "managed and received-self surface booleans followed by each typed tuple field as available_u8 plus i64 when available"
     },

@@ -1321,15 +1321,11 @@ bool BuildSemanticCanonicalBytes(
                         resolved.widgets[2], modal_relation)) {
     return false;
   }
-  if ((modal_open && modal_relation != ModalTopRelationV1::exact_scoreboard_modal &&
-       modal_relation !=
-           ModalTopRelationV1::strict_descendant_of_scoreboard_modal) ||
-      (!modal_open &&
-       (modal_relation == ModalTopRelationV1::exact_scoreboard_modal ||
-        modal_relation ==
-            ModalTopRelationV1::strict_descendant_of_scoreboard_modal))) {
-    return false;
-  }
+  // The modal receiver vector is an independent input-routing diagnostic. Its
+  // absolute top can belong to another overlay even while this fixed modal is
+  // effective-visible, and modal_blocking remains explicitly unfrozen. Keep
+  // the relation in the semantic fingerprint without using it as a surface
+  // availability gate.
 
   ScoreboardSurfaceV1 active_page = ScoreboardSurfaceV1::none;
   ScoreboardSurfaceV1 visible_entry = ScoreboardSurfaceV1::none;

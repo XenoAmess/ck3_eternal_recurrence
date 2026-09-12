@@ -599,11 +599,12 @@ int main() {
 
   // Open B: modal/panel, the received HUD entry, and the matching received page
   // are visible. The product leaves its HUD entry mounted beneath the modal.
-  // The top modal receiver is a strict descendant of the modal.
+  // The unrelated top receiver proves that input-routing order is retained as
+  // a diagnostic and does not invalidate the product's visible surface.
   fixture.widgets[2][xar::ck3_11906::kZhongguoWidgetHiddenFlagsOffset] = 0;
   fixture.widgets[3][xar::ck3_11906::kZhongguoWidgetHiddenFlagsOffset] = 0;
   fixture.widgets[11][xar::ck3_11906::kZhongguoWidgetHiddenFlagsOffset] = 0;
-  SetModalReceivers(fixture, {fixture.widgets[3].data()});
+  SetModalReceivers(fixture, {fixture.widgets[0].data()});
   request.request_nonce = "scoreboard-fixture-b";
   xar::game::ZhongguoScoreboardStateV1 state_b{};
   const auto read_b = xar::ck3_11906::ReadZhongguoScoreboardStateV1(
@@ -659,7 +660,7 @@ int main() {
   fixture.widgets[2][xar::ck3_11906::kZhongguoWidgetHiddenFlagsOffset] = 0;
   fixture.widgets[3][xar::ck3_11906::kZhongguoWidgetHiddenFlagsOffset] = 0;
   fixture.widgets[11][xar::ck3_11906::kZhongguoWidgetHiddenFlagsOffset] = 0;
-  SetModalReceivers(fixture, {fixture.widgets[3].data()});
+  SetModalReceivers(fixture, {fixture.widgets[0].data()});
   xar::game::ZhongguoScoreboardStateV1 unsampled_b{};
   const auto unsampled_read = xar::ck3_11906::ReadZhongguoScoreboardStateV1(
       Environment(), Access(fixture), request, unsampled_b);
