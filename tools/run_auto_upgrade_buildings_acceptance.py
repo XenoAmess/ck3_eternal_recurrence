@@ -20,7 +20,7 @@ from pathlib import Path, PurePosixPath
 
 ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_CK3_EXE = Path(
-    r"D:\Program Files (x86)\Steam\steamapps\common\Crusader Kings III\binaries\ck3.exe"
+    r"C:\SteamLibrary\steamapps\common\Crusader Kings III\binaries\ck3.exe"
 )
 if "XAR_CK3_EXE" not in os.environ and DEFAULT_CK3_EXE.is_file():
     os.environ["XAR_CK3_EXE"] = str(DEFAULT_CK3_EXE)
@@ -44,7 +44,7 @@ FIXTURE_OUTER = "aubt_acceptance_fixture.mod"
 POSTFLIGHT_STABILITY_SECONDS = 5
 BOOT_TIMEOUT_SECONDS = 1800
 UPSTREAM_CACHE = Path(
-    r"D:\Program Files (x86)\Steam\steamapps\workshop\content\1158310\3596580780"
+    r"C:\SteamLibrary\steamapps\workshop\content\1158310\3596580780"
 )
 PROJECT_TOKENS = (
     "mod_auto_upgrade_buildings",
@@ -68,6 +68,19 @@ REQUIRED_MARKERS = (
     "AUBT: TEST PASS personal_gold_fallback",
     "AUBT: TEST PASS reenabled_loop_stopped_cleanly",
     "AUBT: TEST PASS insufficient_funds_no_change",
+    "AUBT: TEST PASS main_castle",
+    "AUBT: TEST PASS main_city",
+    "AUBT: TEST PASS main_church",
+    "AUBT: TEST PASS main_tribal_mixed_cost",
+    "AUBT: TEST PASS regular_tribal",
+    "AUBT: TEST PASS main_temple_citadel",
+    "AUBT: TEST PASS temple_citadel_unique",
+    "AUBT: TEST PASS duchy_capital",
+    "AUBT: TEST PASS special_gold",
+    "AUBT: TEST PASS scripted_cost_resources",
+    "AUBT: TEST PASS vanilla_gate_rejection",
+    "AUBT: TEST PASS great_project_excluded",
+    "AUBT: TEST PASS nomad_herder_na",
     "AUBT: TEST DONE source-live",
 )
 OPEN_KAISHEK_PREFLIGHT_RESULT: dict[str, object] | None = None
@@ -452,6 +465,21 @@ def run_cell(
             "insufficient_funds_no_change": True,
             "one_tier_per_dispatch": True,
             "disable_and_restart": True,
+            "main_buildings": [
+                "castle",
+                "city",
+                "church",
+                "tribal",
+                "temple_citadel",
+            ],
+            "regular_building_families": ["feudal", "tribal", "temple_citadel"],
+            "building_types": ["regular", "duchy_capital", "special"],
+            "mixed_resource_costs": ["gold+prestige", "gold+piety", "scripted_cost"],
+            "negative_paths": [
+                "vanilla_gate_rejection",
+                "great_project_excluded",
+                "nomad_herder_na",
+            ],
             "summary_event_center": list(summary),
         }
         diagnostics.extend(project_diagnostics(userdir, artifacts, "10_runtime"))
