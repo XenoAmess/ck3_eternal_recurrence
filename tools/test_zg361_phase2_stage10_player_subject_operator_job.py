@@ -237,6 +237,31 @@ class Stage10PlayerSubjectOperatorTests(unittest.TestCase):
         self.assertFalse(result["accepted"])
         self.assertIn("input already attempted", result["reason"])
 
+    def test_retry_accepts_preselection_target_postcondition_red(self) -> None:
+        job = operator.Stage10PlayerSubjectOperatorJob(Path("activation.json"))
+        job.state = "AF5_RED_PARKED"
+        job.stage = "stage10_player_subject_action"
+        job.service = mock.Mock()
+        job.binding = {"bridge_pid": 101, "connection_generation": 4}
+        job.failure_evidence = {
+            "evidence": {
+                "progress": {
+                    "unexpected_event": None,
+                    "readiness": "paused-real-zg361mg.120",
+                    "target_binding": {"event_instance_id": 28},
+                }
+            }
+        }
+
+        with (
+            mock.patch.object(operator.threading, "Thread") as thread,
+            mock.patch.object(operator.base, "ck3_pids", return_value=[101]),
+        ):
+            result = job.retry()
+
+        self.assertTrue(result["accepted"])
+        thread.return_value.start.assert_called_once_with()
+
     def test_source_receipt_must_bind_player_manager_topology_and_tree(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
             root = Path(temporary)

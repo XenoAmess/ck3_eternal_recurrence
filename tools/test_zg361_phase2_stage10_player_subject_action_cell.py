@@ -162,7 +162,12 @@ class Service:
             "status": "available",
             "unavailable_reason": None,
             "player_character_id": self.player,
-            "readiness": {"ready": self.provider_terminal},
+            "readiness": {
+                "subject_binding_ready": True,
+                "case_identity_ready": True,
+                "same_frame_ready": True,
+                "ready": False,
+            },
             "binding": {
                 "subject_character_id": subject_character_id,
                 "owner_character_id": owner_character_id,
@@ -224,6 +229,36 @@ class Stage10PlayerSubjectTests(unittest.TestCase):
             self.assertEqual(result["result"], "GREEN")
             self.assertEqual(service.player, MANAGER)
             self.assertEqual(service.selections, [(12, 1)])
+
+    def test_target_event_resume_accepts_unrelated_provider_not_ready(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            service = Service()
+            service.date += 36 * 24
+            result = cell.run_stage10_player_subject(
+                service,
+                evidence_directory=Path(temporary),
+                request_nonce="fixture.stage10.target-retry-02",
+                expected_player_manager_character_id=MANAGER,
+                expected_owner_character_id=OWNER,
+                resume_progress={
+                    "timeline_origin_date_raw": service.initial_date,
+                    "absolute_end_date_raw": (
+                        service.initial_date + cell.MAX_ADVANCE_DAYS * 24
+                    ),
+                    "timeline_interrupt_drains": [],
+                    "unexpected_event": None,
+                    "readiness": "paused-real-zg361mg.120",
+                    "target_binding": {"event_instance_id": 12},
+                },
+                navigator=navigate_to_stage10,
+            )
+
+            resume = result["progress"]["contract_resume"]
+            self.assertEqual(resume["resume_boundary"], "target_event")
+            self.assertEqual(
+                resume["retained_event_definition_key"], cell.STAGE10_EVENT
+            )
+            self.assertEqual(result["result"], "GREEN")
             self.assertEqual(service.saves, 2)
             self.assertEqual(service.provider_calls, 1)
             gate = result["p1_acceptance_evidence"]["central_stage_10_terminal"]
