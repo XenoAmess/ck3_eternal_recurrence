@@ -107,6 +107,26 @@ class CharacterScopeTests(unittest.TestCase):
         self.assertFalse(rows[40]["alive"])
         self.assertEqual(rows[40]["variables"]["case_owner"]["character_id"], 99)
 
+    def test_discovers_all_roots_with_requested_variable(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            path = Path(temporary) / "melted.ck3"
+            path.write_text(MELTED, encoding="utf-8")
+            report = scope.inspect_discovery_melted(
+                path,
+                discovery_variable="manager_cycle",
+                root_variables=["missing"],
+                list_names=["subjects"],
+                referenced_variables=["case_owner"],
+            )
+
+        self.assertEqual(report["kind"], scope.DISCOVERY_KIND)
+        self.assertEqual(report["root_character_count"], 1)
+        self.assertEqual(report["roots"][0]["root_character_id"], 20)
+        self.assertEqual(
+            report["roots"][0]["variables"]["manager_cycle"]["number"], 17
+        )
+        self.assertEqual(report["unique_referenced_character_count"], 2)
+
 
 if __name__ == "__main__":
     unittest.main()
