@@ -47,3 +47,14 @@ schema shape、allowlist、动作、遍历或可用性判定。native fixture �
 `8f796cadb33c853c0584f9ed496d5b937c8d28ee` 已同步该 unavailable-response
 语义；其结论为现有字段的诊断结果被保留，wire shape、版本、Operator MCP 与 adapter
 代码均不变。本次只改文档，未重复 companion 测试。
+
+同步根仓 `a8906d88ece90b9f079f277fd32aa7347931740b` 的全新 Release 构建位于
+`Z:\\ck3_mod_rewrite\\_runtime\\native-builds\\p2-r522-r523-scoreboard-diagnostics-a8906d8-20260912`：
+
+- bridge：2,599,936 bytes，`37F66E81976EC9EB41A26E320FB50D24265314E8CF2C46E85A4DA41CFEB62618`
+- injector：39,936 bytes，`FEABA47110A592EF559AA7852606455155FB02374704C9CDC2E6F03C8F895ED2`
+- focused test：126,976 bytes，`186ABF83FEBF084FB3E1F81FC4FD823A2821809D125079A8B805C8F0AD249A06`，exit `0`
+- build receipt：4,450 bytes，`14B858A0D614ADE0867B9B7FACDF5AE358A070657756290536606A7570AB6C3B`
+- 27 个 `XAR_CK3_ENABLE_*` 全部为 `OFF`
+
+构建未启动 CK3、未消耗轮次。下一次有界诊断为新轮次 R522 warm-up、R523 gameplay。
