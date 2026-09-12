@@ -195,42 +195,26 @@ def dismiss_exact_realtek_toast() -> bool:
         raise acceptance.RunnerError(
             f"exact Realtek toast dismissal failed: {detail}"
         )
-    log("moved exact Realtek jack notification to Action Center")
-    time.sleep(0.75)
+    stale_host = acceptance.win32gui.GetForegroundWindow()
+    if (
+        stale_host
+        and acceptance.win32gui.GetWindowText(stale_host) == "新通知"
+        and acceptance.win32gui.GetClassName(stale_host)
+        == "Windows.UI.Core.CoreWindow"
+    ):
+        acceptance.win32gui.ShowWindow(stale_host, acceptance.win32con.SW_HIDE)
+        time.sleep(0.25)
+        if acceptance.win32gui.IsWindowVisible(stale_host):
+            raise acceptance.RunnerError(
+                "exact Realtek notification host remained visible after dismissal"
+            )
+    log("moved exact Realtek jack notification to Action Center and hid its stale host")
+    time.sleep(0.5)
     return True
 
 
-def switch_to_tracked_ck3_window() -> bool:
-    targets: list[int] = []
-
-    def collect(hwnd: int, _: object) -> None:
-        if not acceptance.win32gui.IsWindowVisible(hwnd):
-            return
-        if "Crusader Kings" not in acceptance.win32gui.GetWindowText(hwnd):
-            return
-        _, pid = acceptance.win32process.GetWindowThreadProcessId(hwnd)
-        if acceptance.ACTIVE_CK3_PID is None or pid == acceptance.ACTIVE_CK3_PID:
-            targets.append(hwnd)
-
-    acceptance.win32gui.EnumWindows(collect, None)
-    if len(targets) != 1:
-        return False
-    target = targets[0]
-    if acceptance.win32gui.GetForegroundWindow() == target:
-        return True
-    user32 = acceptance.ctypes.windll.user32
-    switch = user32.SwitchToThisWindow
-    switch.argtypes = [acceptance.ctypes.c_void_p, acceptance.ctypes.c_bool]
-    switch.restype = None
-    switch(target, True)
-    time.sleep(0.75)
-    return acceptance.win32gui.GetForegroundWindow() == target
-
-
 def focus_ck3_with_exact_toast_recovery() -> bool:
-    if dismiss_exact_realtek_toast() and switch_to_tracked_ck3_window():
-        log("restored tracked CK3 foreground through exact task switch")
-        return True
+    dismiss_exact_realtek_toast()
     return ORIGINAL_FOCUS_CK3()
 
 
