@@ -29,3 +29,15 @@ R514 Frontend warm-up 与 R515 gameplay 都已终止，当前 CK3/FFmpeg 实例�
 ## 下一步
 
 从提交并同步后的 HEAD 生成新 Release DLL。下一次启动依次记为新轮次 R516 Frontend warm-up、R517 gameplay；这是 DLL/合同变化，禁止热重跑。R517 只验证 state query、首镜头 open/visible/close 并继续既定八段录制，出现新的真实 RED 时按该片段最小范围处理。
+
+## 落地与新构建
+
+- 根仓 list-only 合同修复：`77fe813c48fa8ba5cc28968888bd6f22d16bf3df`。
+- 根仓 capture-only visual 解耦：`a0027256738daa497290daf2f67f3c03dfbca518`。
+- open_kaishek 兼容记录：`337c29153ac308bc19fc8dcf87c2b1dbfdb5bbcb`。
+- 新 MSVC Release build：`Z:\ck3_mod_rewrite\_runtime\native-builds\p2-r516-r517-scoreboard-list-surface-a002725-20260912`。
+- bridge：`ECA38B81B40F6087E0459792EC43EFA09F9AEB4A0E357C2027A2F68F5F114A16`；injector：`C7715BEF158992A7DB5A445E8C5D68DD9A45D875A42876F123E73084CB639501`。
+- focused native test：`D7226DD7CA1F5756A44C77EDA79189B63FF86915E606369A2C56ADE7BB3530B4`，exit `0`；全部 `XAR_CK3_ENABLE_*` candidate switches 为 OFF。
+- build receipt：`608714DA4A2EC348B21EB0396C22E5C97149250229FFC15E566018EA25AED626`。
+
+构建过程未启动 CK3、未消耗新轮次。R515 仍为已终止的当前轮次，下一次实际启动为 R516。
