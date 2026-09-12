@@ -2732,6 +2732,26 @@
       "references": [
         {
           "caller_candidate_resolution": "external-definition-file",
+          "event_definition_key": "stress_threshold.1011",
+          "logical_path": "common/on_action/stress_on_actions.txt",
+          "origin": "ck3_game",
+          "provenance": "lexical-caller-candidate-not-proven-runtime-caller",
+          "role": "caller_candidate",
+          "source_column": 9,
+          "source_line": 81
+        },
+        {
+          "caller_candidate_resolution": null,
+          "event_definition_key": "stress_threshold.1011",
+          "logical_path": "common/on_action/stress_on_actions.txt",
+          "origin": "ck3_game",
+          "provenance": "manually-reviewed-analysis-source",
+          "role": "analysis_source",
+          "source_column": null,
+          "source_line": null
+        },
+        {
+          "caller_candidate_resolution": "external-definition-file",
           "event_definition_key": "stress_threshold.1721",
           "logical_path": "common/on_action/stress_on_actions.txt",
           "origin": "ck3_game",
@@ -7220,6 +7240,26 @@
       "references": [
         {
           "caller_candidate_resolution": null,
+          "event_definition_key": "stress_threshold.1011",
+          "logical_path": "events/stress_events/stress_threshold_events.txt",
+          "origin": "ck3_game",
+          "provenance": "generated-definition-index",
+          "role": "event_definition",
+          "source_column": null,
+          "source_line": 882
+        },
+        {
+          "caller_candidate_resolution": null,
+          "event_definition_key": "stress_threshold.1011",
+          "logical_path": "events/stress_events/stress_threshold_events.txt",
+          "origin": "ck3_game",
+          "provenance": "manually-reviewed-analysis-source",
+          "role": "analysis_source",
+          "source_column": null,
+          "source_line": null
+        },
+        {
+          "caller_candidate_resolution": null,
           "event_definition_key": "stress_threshold.1721",
           "logical_path": "events/stress_events/stress_threshold_events.txt",
           "origin": "ck3_game",
@@ -11132,6 +11172,28 @@
       "sha256": "b5048e4e5384bb50b6da0dc57a928af7b0f56a999b27e6fd2c462180a1dcde70"
     },
     {
+      "blob_bytes": 20577,
+      "blob_path": "blobs/b51b8960c470fa5d76a73724f6791425ef5b23bf4fc10b6d361df4b6574f392f.gz",
+      "blob_sha256": "bbbfd22a26af2a6c6413a0b46367362416d9ee4b812fc4710ce4f7c694e978df",
+      "bytes": 185360,
+      "evidence_id": "b51b8960c470fa5d76a73724f6791425ef5b23bf4fc10b6d361df4b6574f392f",
+      "kind": "observation_artifact",
+      "media_type": "application/json",
+      "references": [
+        {
+          "caller_candidate_resolution": null,
+          "event_definition_key": "stress_threshold.1011",
+          "logical_path": "_runtime/p1-stage10-player-publication-r497-r498-0aa1576-20260912/live-artifacts/stage10-player-subject-red.json",
+          "origin": "runtime",
+          "provenance": "captured-observation-artifact",
+          "role": "artifact",
+          "source_column": null,
+          "source_line": null
+        }
+      ],
+      "sha256": "b51b8960c470fa5d76a73724f6791425ef5b23bf4fc10b6d361df4b6574f392f"
+    },
+    {
       "blob_bytes": 1142858,
       "blob_path": "blobs/b69243825168b01f11c0cbdebc321c277e3ac22ceec2f50650abb9c0994d1d64.gz",
       "blob_sha256": "72f8501916a2a61669bfc5cc1f694e3f6bb2d3372fd3aa69aad0935730dbde0b",
@@ -14253,13 +14315,13 @@
   "schema": "xar.ck3.vanilla-event-portable-evidence-manifest",
   "schema_version": 1,
   "statistics": {
-    "evidence": 281,
-    "generated_definition_references": 184,
-    "lexical_caller_candidate_references": 522,
-    "manually_reviewed_analysis_source_references": 276,
-    "observation_artifact_references": 105,
-    "observation_artifacts": 89,
-    "references": 1087,
+    "evidence": 282,
+    "generated_definition_references": 185,
+    "lexical_caller_candidate_references": 523,
+    "manually_reviewed_analysis_source_references": 278,
+    "observation_artifact_references": 106,
+    "observation_artifacts": 90,
+    "references": 1092,
     "source_definitions": 192
   }
 }

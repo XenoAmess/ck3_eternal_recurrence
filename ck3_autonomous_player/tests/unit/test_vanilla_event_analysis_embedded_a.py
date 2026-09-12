@@ -26,11 +26,11 @@ from xar_autoplayer.vanilla_events.registry import (  # noqa: E402
 )
 
 
-def test_analysis_exactly_covers_first_27_embedded_keys() -> None:
+def test_analysis_exactly_covers_first_28_embedded_keys() -> None:
     expected = tuple(EMBEDDED_A_VANILLA_TIMELINE_CONTRACTS)
     assert EMBEDDED_A_EVENT_KEYS == expected
     assert tuple(VANILLA_EMBEDDED_A_ANALYSIS) == expected
-    assert len(VANILLA_EMBEDDED_A_ANALYSIS) == 27
+    assert len(VANILLA_EMBEDDED_A_ANALYSIS) == 28
 
 
 def test_analysis_is_json_safe_and_only_reviewed_event_claims_source_hashes() -> None:
@@ -39,6 +39,8 @@ def test_analysis_is_json_safe_and_only_reviewed_event_claims_source_hashes() ->
     for event_key, record in VANILLA_EMBEDDED_A_ANALYSIS.items():
         if event_key == "stress_threshold.1721":
             assert len(record["source_sha256"]) == 6
+        elif event_key == "stress_threshold.1011":
+            assert len(record["source_sha256"]) == 2
         elif event_key == "tgp_movement_events.0060":
             assert len(record["source_sha256"]) == 4
         elif event_key == "tgp_movement_events.0070":
@@ -58,6 +60,9 @@ def test_each_record_carries_exact_build_and_migration_boundary() -> None:
         expected_review = {
             "stress_threshold.1721": (
                 "exact-build-original-definition-and-live-variant-review"
+            ),
+            "stress_threshold.1011": (
+                "exact-build-original-definition-and-live-projection-review"
             ),
             "tgp_movement_events.0070": (
                 "exact-build-original-definition-and-live-repeat-review"
@@ -83,7 +88,7 @@ def test_each_record_carries_exact_build_and_migration_boundary() -> None:
 
 def test_migration_observations_join_existing_live_evidence() -> None:
     assert len(EMBEDDED_A_VANILLA_OBSERVATIONS) == 26
-    assert len(VANILLA_EMBEDDED_A_OBSERVATIONS) == 27
+    assert len(VANILLA_EMBEDDED_A_OBSERVATIONS) == 28
     for event_key, observation in EMBEDDED_A_VANILLA_OBSERVATIONS.items():
         migrated = VANILLA_EMBEDDED_A_OBSERVATIONS[event_key]
         if event_key in {
@@ -102,6 +107,10 @@ def test_migration_observations_join_existing_live_evidence() -> None:
     assert VANILLA_EMBEDDED_A_OBSERVATIONS[
         "stress_threshold.1721"
     ]["exemplars"][0]["run"] == "R372"
+    assert "stress_threshold.1011" not in EMBEDDED_A_VANILLA_OBSERVATIONS
+    assert VANILLA_EMBEDDED_A_OBSERVATIONS[
+        "stress_threshold.1011"
+    ]["exemplars"][0]["run"] == "R498"
 
 
 def test_tgp_movement_study_repeat_is_source_reviewed_and_live_bounded() -> None:
@@ -374,4 +383,75 @@ def test_impostor_break_exact_review_and_live_red_are_query_safe() -> None:
     assert response["observations"]["exemplars"][3][
         "postcondition_verified"
     ] is True
+    json.dumps(response, allow_nan=False)
+
+
+def test_wanton_desires_exact_review_and_live_red_are_query_safe() -> None:
+    event_key = "stress_threshold.1011"
+    contract = EMBEDDED_A_VANILLA_TIMELINE_CONTRACTS[event_key]
+    record = VANILLA_EMBEDDED_A_ANALYSIS[event_key]
+    exemplar = VANILLA_EMBEDDED_A_OBSERVATIONS[event_key]["exemplars"][0]
+
+    assert contract["root_character_id"] == PLAYER_SENTINEL
+    assert contract["character_scopes"] == {
+        "stress_character": PLAYER_SENTINEL,
+    }
+    assert contract["unique_character_scope_excludes"] == {
+        "neglected_spouse": (PLAYER_SENTINEL,),
+    }
+    assert contract["saved_scope_name_sets"] == ((
+        "stress_character",
+        "neglected_spouse",
+    ),)
+    assert contract["native_option_indices"] == (0, 1, 5)
+    assert contract["snapshot_option_count"] == 6
+    assert contract["selected_option_number"] == 6
+    assert contract["selected_native_option_index"] == 5
+    assert contract["occurrence_policy"] == (
+        "repeatable-within-product-observation-window"
+    )
+    assert "date_raw" not in contract
+
+    materialized = materialize_vanilla_timeline_contract(contract, 880002)
+    assert materialized["root_character_id"] == 880002
+    assert materialized["character_scopes"]["stress_character"] == 880002
+    assert materialized["unique_character_scope_excludes"] == {
+        "neglected_spouse": (880002,),
+    }
+
+    assert record["definition_lines"] == "882-1281"
+    assert record["option_semantics"]["5"].startswith("unconditional")
+    assert "brothel" in record["safe_option"]["rationale"]
+    assert record["existing_boundaries"][
+        "campaign_specific_binding_fields"
+    ] == []
+
+    assert exemplar["kind"] == "pre-selection-live-red"
+    assert exemplar["artifact_sha256"] == (
+        "B51B8960C470FA5D76A73724F6791425EF5B23BF4FC10B6D361DF4B6574F392F"
+    )
+    assert exemplar["saved_character_ids"] == {
+        "stress_character": 27181,
+        "neglected_spouse": 48337,
+    }
+    assert exemplar["rendered_native_option_indices"] == [0, 1, 5]
+    assert exemplar["selection_attempted"] is False
+    assert exemplar["process_restart_required"] is False
+
+    contract_repr = repr(contract)
+    for observation_only in (
+        53155728,
+        20,
+        27181,
+        48337,
+        37604,
+        "native:10",
+    ):
+        assert str(observation_only) not in contract_repr
+
+    response = query_vanilla_event_knowledge_v1(event_key)
+    assert response["status"] == "available"
+    assert response["contract"]["root_character_id"] == "$player"
+    assert response["contract"]["selected_native_option_index"] == 5
+    assert response["observations"]["exemplars"][0]["run"] == "R498"
     json.dumps(response, allow_nan=False)

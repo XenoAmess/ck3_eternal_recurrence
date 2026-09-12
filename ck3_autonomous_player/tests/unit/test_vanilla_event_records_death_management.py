@@ -146,8 +146,8 @@ class DeathManagementEventRecordTests(unittest.TestCase):
             self.assertNotIn(str(observation_only), contract_repr)
 
     def test_default_registry_mcp_and_runtime_include_record(self) -> None:
-        self.assertEqual(len(DEFAULT_VANILLA_EVENT_TIMELINE_CONTRACTS), 184)
-        self.assertEqual(len(DEFAULT_VANILLA_EVENT_ANALYSIS), 184)
+        self.assertEqual(len(DEFAULT_VANILLA_EVENT_TIMELINE_CONTRACTS), 185)
+        self.assertEqual(len(DEFAULT_VANILLA_EVENT_ANALYSIS), 185)
         self.assertIs(
             DEFAULT_VANILLA_EVENT_OBSERVATIONS[EVENT_KEY],
             VANILLA_DEATH_MANAGEMENT_OBSERVATIONS[EVENT_KEY],

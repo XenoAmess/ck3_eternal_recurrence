@@ -34,6 +34,7 @@ EMBEDDED_A_EVENT_KEYS: Final[tuple[str, ...]] = (
     "health.1010",
     "stress_threshold.2202",
     "stress_threshold.1721",
+    "stress_threshold.1011",
     "stress_threshold_special.1001",
     "ep1_flavor.0021",
     "ep1_flavor.2040",
@@ -145,6 +146,13 @@ _REVIEW_NOTES: Final[dict[str, tuple[str, str]]] = {
         "Use native 9 when confider is rendered. In the recorded no-confidant "
         "projection, native 10 lowers stress and avoids both advancing the "
         "already-owned inappetetic starvation chain and native 12 stress gain.",
+    ),
+    "stress_threshold.1011": (
+        "Wanton-desires mental break with the rakish, reclusive, and endure "
+        "routes rendered in the R498 player projection.",
+        "Native option 5 changes only the played character's stress and avoids "
+        "the coping-trait, brothel, relationship, and faith mutations of the "
+        "other authored routes.",
     ),
     "stress_threshold_special.1001": (
         "Grief break with three recorded source-defined projections, including "
@@ -289,7 +297,7 @@ def _build_analysis() -> dict[str, dict[str, object]]:
     actual_prefix = tuple(EMBEDDED_A_VANILLA_TIMELINE_CONTRACTS)
     if actual_prefix != EMBEDDED_A_EVENT_KEYS:
         raise RuntimeError(
-            "embedded analysis slice no longer matches the first 27 keys"
+            "embedded analysis slice no longer matches the first 28 keys"
         )
     if set(_REVIEW_NOTES) != set(EMBEDDED_A_EVENT_KEYS):
         raise RuntimeError(
@@ -613,6 +621,72 @@ def _build_analysis() -> dict[str, dict[str, object]]:
         "$player, keeps campaign dates and numeric identities in observations "
         "only, and couples each reviewed saved-scope shape to its exact option "
         "projection."
+    )
+
+    desires_analysis = analysis["stress_threshold.1011"]
+    desires_analysis["migrated_from"]["review_kind"] = (
+        "exact-build-original-definition-and-live-projection-review"
+    )
+    desires_analysis.update({
+        "source_sha256": {
+            "events/stress_events/stress_threshold_events.txt": (
+                "66538A8FE8C894A52D8EC89B2FC4A45B85B8D1B9464802263E45D582CE1CA42B"
+            ),
+            "common/on_action/stress_on_actions.txt": (
+                "35A9B8FC8FE6CDE91EAAD06F9C90AD6FCD41BEEFD317BFF77D3A68430E5DD839"
+            ),
+        },
+        "definition_lines": "882-1281",
+        "caller_semantics": (
+            "stress_threshold.0001 dispatches an uncooldowned level-one mental "
+            "break through stress_threshold_level_1_event, whose random event "
+            "list includes .1011 at weight 100"
+        ),
+        "trigger_boundary": (
+            "adult non-chaste, non-celibate character with at least two eligible "
+            "or already-owned rakish, reclusive, conversion, or athletic routes"
+        ),
+        "immediate_effect": (
+            "saves root as stress_character, selects at most two coping routes, "
+            "and may save a neglected_spouse while preparing reclusive effects"
+        ),
+        "option_semantics": {
+            "0": (
+                "adds rakish and invokes the brothel-night effect, which includes "
+                "stress reduction and can create disease, pregnancy, or bastard "
+                "consequences"
+            ),
+            "1": (
+                "adds reclusive and invokes relationship-damage effects against "
+                "the selected neglected_spouse"
+            ),
+            "2": (
+                "same-religion faith conversion with piety and stress loss"
+            ),
+            "3": (
+                "different-religion faith conversion with larger piety and "
+                "stress loss"
+            ),
+            "4": "adds athletic and applies medium stress loss",
+            "5": "unconditional mental-break opt-out stress gain",
+        },
+        "after_effect": (
+            "runs the shared threshold cleanup and future-threshold cooldown "
+            "preparation"
+        ),
+        "live_projection_boundary": (
+            "R498 rendered native options 0, 1, and 5 with stress_character bound "
+            "to the player and a distinct neglected_spouse; the contract admits "
+            "only that exact two-scope, three-button projection"
+        ),
+    })
+    desires_analysis["existing_boundaries"][
+        "campaign_specific_binding_fields"
+    ] = []
+    desires_analysis["existing_boundaries"]["boundary_note"] = (
+        "The reusable contract binds root and stress_character through $player, "
+        "requires a distinct typed neglected_spouse, and leaves the R498 date "
+        "and numeric identities in observations only."
     )
     return analysis
 
@@ -1006,6 +1080,47 @@ _STRESS_THRESHOLD_1721_OBSERVATIONS: Final[
 }
 
 
+_STRESS_THRESHOLD_1011_OBSERVATIONS: Final[
+    dict[str, dict[str, object]]
+] = {
+    "stress_threshold.1011": {
+        "exemplars": [{
+            "run": "R498",
+            "kind": "pre-selection-live-red",
+            "artifact": (
+                "_runtime/p1-stage10-player-publication-r497-r498-"
+                "0aa1576-20260912/live-artifacts/"
+                "stage10-player-subject-red.json"
+            ),
+            "artifact_sha256": (
+                "B51B8960C470FA5D76A73724F6791425EF5B23BF4FC10B6D361DF4B6574F392F"
+            ),
+            "date_raw": 53155728,
+            "event_instance_id": 20,
+            "root_character_id": 27181,
+            "saved_character_ids": {
+                "stress_character": 27181,
+                "neglected_spouse": 48337,
+            },
+            "saved_scope_raw_types": {
+                "stress_character": 4,
+                "neglected_spouse": 4,
+            },
+            "rendered_native_option_indices": [0, 1, 5],
+            "snapshot_option_count": 6,
+            "snapshot_id": "native:10",
+            "native_revision": 10,
+            "revision": 11,
+            "query_sequence": 2,
+            "connection_generation": 1,
+            "bridge_pid": 37604,
+            "selection_attempted": False,
+            "process_restart_required": False,
+        }],
+    },
+}
+
+
 VANILLA_EMBEDDED_A_OBSERVATIONS: Final[
     dict[str, dict[str, object]]
 ] = {
@@ -1013,6 +1128,7 @@ VANILLA_EMBEDDED_A_OBSERVATIONS: Final[
     **_TGP_MOVEMENT_0070_OBSERVATIONS,
     **_CULTURE_NOTIFICATION_1111_OBSERVATIONS,
     **_STRESS_THRESHOLD_1721_OBSERVATIONS,
+    **_STRESS_THRESHOLD_1011_OBSERVATIONS,
 }
 
 
