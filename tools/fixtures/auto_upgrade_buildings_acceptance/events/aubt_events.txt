@@ -6,15 +6,15 @@ aubt.1 = {
 	immediate = {
 		global_var:aubt_province = {
 			if = {
-				limit = { has_building = outposts_01 }
-				debug_log = "AUBT: OBSERVED target_building outposts_01"
+				limit = { has_building = barracks_01 }
+				debug_log = "AUBT: OBSERVED target_building barracks_01"
 			}
-			else = { debug_log = "AUBT: OBSERVED target_building not_outposts_01" }
+			else = { debug_log = "AUBT: OBSERVED target_building not_barracks_01" }
 			if = {
-				limit = { has_building = outposts_02 }
-				debug_log = "AUBT: OBSERVED target_upgrade outposts_02"
+				limit = { has_building = barracks_02 }
+				debug_log = "AUBT: OBSERVED target_upgrade barracks_02"
 			}
-			else = { debug_log = "AUBT: OBSERVED target_upgrade not_outposts_02" }
+			else = { debug_log = "AUBT: OBSERVED target_upgrade not_barracks_02" }
 			if = {
 				limit = { has_ongoing_construction = no }
 				debug_log = "AUBT: OBSERVED target_construction none"
@@ -60,10 +60,10 @@ aubt.1 = {
 			else = { debug_log = "AUBT: OBSERVED payer_gold changed"
 			}
 			if = {
-				limit = { any_directly_owned_province = { has_building = outposts_02 } }
-				debug_log = "AUBT: OBSERVED direct_iterator sees_outposts_02"
+				limit = { any_directly_owned_province = { has_building = barracks_02 } }
+				debug_log = "AUBT: OBSERVED direct_iterator sees_barracks_02"
 			}
-			else = { debug_log = "AUBT: OBSERVED direct_iterator misses_outposts_02" }
+			else = { debug_log = "AUBT: OBSERVED direct_iterator misses_barracks_02" }
 		}
 		if = {
 			limit = { has_global_variable = aub_auto_build_loop_started }
@@ -73,8 +73,8 @@ aubt.1 = {
 		if = {
 			limit = {
 				global_var:aubt_province = {
-					has_building = outposts_02
-					NOT = { has_building_or_higher = outposts_03 }
+					has_building = barracks_02
+					NOT = { has_building_or_higher = barracks_03 }
 				}
 				global_var:aubt_player = {
 					has_treasury = yes
@@ -98,7 +98,7 @@ aubt.2 = {
 	immediate = {
 		if = {
 			limit = {
-				global_var:aubt_province = { has_building = outposts_02 }
+				global_var:aubt_province = { has_building = barracks_02 }
 				NOT = { has_global_variable = aub_auto_build_loop_started }
 			}
 			debug_log = "AUBT: TEST PASS disabled_zero_side_effect"
@@ -115,8 +115,8 @@ aubt.2 = {
 			add_gold = 100000
 			set_variable = { name = aubt_gold_before value = gold }
 			capital_province = {
-				remove_building = outposts_02
-				add_building = outposts_01
+				remove_building = barracks_02
+				add_building = barracks_01
 			}
 			add_character_flag = enable_auto_build
 			aub_start_global_loop_effect = yes
@@ -131,10 +131,10 @@ aubt.3 = {
 	immediate = {
 		global_var:aubt_province = {
 			if = {
-				limit = { has_building = outposts_02 }
-				debug_log = "AUBT: OBSERVED fallback_upgrade outposts_02"
+				limit = { has_building = barracks_02 }
+				debug_log = "AUBT: OBSERVED fallback_upgrade barracks_02"
 			}
-			else = { debug_log = "AUBT: OBSERVED fallback_upgrade not_outposts_02" }
+			else = { debug_log = "AUBT: OBSERVED fallback_upgrade not_barracks_02" }
 		}
 		global_var:aubt_player = {
 			if = {
@@ -156,8 +156,8 @@ aubt.3 = {
 		if = {
 			limit = {
 				global_var:aubt_province = {
-					has_building = outposts_02
-					NOT = { has_building_or_higher = outposts_03 }
+					has_building = barracks_02
+					NOT = { has_building_or_higher = barracks_03 }
 				}
 				global_var:aubt_player = {
 					treasury = 0
@@ -180,7 +180,7 @@ aubt.4 = {
 	immediate = {
 		if = {
 			limit = {
-				global_var:aubt_province = { has_building = outposts_02 }
+				global_var:aubt_province = { has_building = barracks_02 }
 				NOT = { has_global_variable = aub_auto_build_loop_started }
 			}
 			debug_log = "AUBT: TEST PASS reenabled_loop_stopped_cleanly"
@@ -192,8 +192,8 @@ aubt.4 = {
 			set_variable = { name = aubt_reset_treasury value = treasury }
 			if = { limit = { var:aubt_reset_treasury > 0 } remove_treasury = var:aubt_reset_treasury }
 			capital_province = {
-				remove_building = outposts_02
-				add_building = outposts_01
+				remove_building = barracks_02
+				add_building = barracks_01
 			}
 			add_character_flag = enable_auto_build
 			aub_start_global_loop_effect = yes
@@ -208,7 +208,7 @@ aubt.5 = {
 	immediate = {
 		if = {
 			limit = {
-				global_var:aubt_province = { has_building = outposts_01 }
+				global_var:aubt_province = { has_building = barracks_01 }
 				global_var:aubt_player = { gold = 0 treasury = 0 }
 			}
 			debug_log = "AUBT: TEST PASS insufficient_funds_no_change"

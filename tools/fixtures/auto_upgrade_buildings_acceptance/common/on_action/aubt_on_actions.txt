@@ -29,17 +29,17 @@ aubt_start = {
 			capital_province = {
 				set_global_variable = { name = aubt_province value = this }
 				if = {
-					limit = { has_building_or_higher = outposts_01 }
-					if = { limit = { has_building = outposts_08 } remove_building = outposts_08 }
-					else_if = { limit = { has_building = outposts_07 } remove_building = outposts_07 }
-					else_if = { limit = { has_building = outposts_06 } remove_building = outposts_06 }
-					else_if = { limit = { has_building = outposts_05 } remove_building = outposts_05 }
-					else_if = { limit = { has_building = outposts_04 } remove_building = outposts_04 }
-					else_if = { limit = { has_building = outposts_03 } remove_building = outposts_03 }
-					else_if = { limit = { has_building = outposts_02 } remove_building = outposts_02 }
-					else = { remove_building = outposts_01 }
+					limit = { has_building_or_higher = barracks_01 }
+					if = { limit = { has_building = barracks_08 } remove_building = barracks_08 }
+					else_if = { limit = { has_building = barracks_07 } remove_building = barracks_07 }
+					else_if = { limit = { has_building = barracks_06 } remove_building = barracks_06 }
+					else_if = { limit = { has_building = barracks_05 } remove_building = barracks_05 }
+					else_if = { limit = { has_building = barracks_04 } remove_building = barracks_04 }
+					else_if = { limit = { has_building = barracks_03 } remove_building = barracks_03 }
+					else_if = { limit = { has_building = barracks_02 } remove_building = barracks_02 }
+					else = { remove_building = barracks_01 }
 				}
-				add_building = outposts_01
+				add_building = barracks_01
 			}
 			add_character_flag = enable_auto_build
 			aub_start_global_loop_effect = yes
