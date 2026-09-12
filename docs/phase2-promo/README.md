@@ -474,3 +474,4 @@ R500 已实机通过 `.1011` 的 authored6/native5 选择并继续推进 13 日�
 P1 保持 `8/9`，P2 继续硬锁定。完整记录：[R499/R500 诗歌事件 RED 与合同](r499-r500-trait-specific-interactions-0011-red-and-contract-2026-09-12.md)。
 
 - [R501/R502 travel completion RED and reusable contract](r501-r502-travel-completion-1000-red-and-contract-2026-09-12.md) records the exact-build `travel_completion_event.1000` single-rendered-option boundary, the R502 pre-selection RED, and the campaign-neutral authored1/native0 contract.
+- [Stage 10 same-process Python contract resume](stage10-python-contract-hot-resume-2026-09-12.md) defines the `retry-stage10` control, unchanged native-session admission, retained 120-day deadline, and no-reselection boundary.

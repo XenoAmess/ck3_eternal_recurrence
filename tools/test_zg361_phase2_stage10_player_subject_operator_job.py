@@ -114,13 +114,128 @@ class Stage10PlayerSubjectOperatorTests(unittest.TestCase):
             self.assertEqual(job.state, "AF5_GREEN_PARKED")
             self.assertEqual(job.product_result, "GREEN")
             self.assertEqual(job.status()["controls"], operator.CONTROLS)
-            self.assertNotIn("retry-stage10", operator.CONTROLS)
+            self.assertIn("retry-stage10", operator.CONTROLS)
             evidence = operator.base.read_object(
                 artifacts / "stage10-player-subject-green.json"
             )
             self.assertEqual(evidence["round"], "R440")
             self.assertTrue(evidence["production_live"])
             self.assertFalse(evidence["video_lock_touched"])
+
+    def test_hot_retry_passes_failed_progress_to_action(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            tools = root / "tools"
+            tools.mkdir()
+            module_path = tools / "zg361_phase2_stage10_player_subject_action_cell.py"
+            module_path.write_text("# synthetic", encoding="utf-8")
+            artifacts = root / "artifacts"
+            artifacts.mkdir()
+            input_checkpoint = root / "input.ck3"
+            input_checkpoint.write_bytes(b"input")
+            source_receipt = root / "source-receipt.json"
+            source_receipt.write_text("{}", encoding="utf-8")
+            bridge = root / "bridge.dll"
+            bridge.write_bytes(b"bridge")
+            source_checkpoint = root / "source.ck3"
+            source_checkpoint.write_bytes(b"source")
+            terminal_checkpoint = root / "terminal.ck3"
+            terminal_checkpoint.write_bytes(b"terminal")
+            progress = {
+                "timeline_origin_date_raw": 9000,
+                "absolute_end_date_raw": 11880,
+                "timeline_interrupt_drains": [],
+                "unexpected_event": {
+                    "event_definition_key": "travel_completion_event.1000"
+                },
+            }
+            bound = {
+                "repository_root": root,
+                "artifact_directory": artifacts,
+                "round": "R504",
+                "checkpoint": input_checkpoint,
+                "stage10_source_receipt": source_receipt,
+                "bridge_dll": bridge,
+                "stage10_player_manager_character_id": 200,
+                "stage10_owner_character_id": 100,
+                "expected_hashes": {
+                    "code_commit": "a" * 40,
+                    "product_tree_sha256": "B" * 64,
+                    "checkpoint_sha256": operator.base.sha256(input_checkpoint),
+                },
+            }
+
+            def saved(path: Path) -> dict[str, object]:
+                return {
+                    "accepted": True,
+                    "checkpoint": {"status": "saved", "path": str(path)},
+                }
+
+            action = mock.Mock(return_value={
+                "result": "GREEN",
+                "source_checkpoint": saved(source_checkpoint),
+                "terminal_checkpoint": saved(terminal_checkpoint),
+                "p1_acceptance_evidence": {
+                    "central_stage_10_terminal": {
+                        "result": "GREEN",
+                        "provider_observed": True,
+                        "terminal_postcondition_verified": True,
+                        "action_ack_is_business_postcondition": False,
+                    }
+                },
+            })
+            module = SimpleNamespace(
+                __file__=str(module_path),
+                run_stage10_player_subject=action,
+            )
+            runner = mock.Mock()
+            runner._phase2_archive_checkpoint.side_effect = [
+                {"path": str(artifacts / "source.ck3"), "sha256": "D" * 64},
+                {"path": str(artifacts / "terminal.ck3"), "sha256": "E" * 64},
+            ]
+            job = operator.Stage10PlayerSubjectOperatorJob(root / "activation.json")
+            job.bound = bound
+            job.binding = {"bridge_pid": 101, "connection_generation": 4}
+            job.service = mock.Mock()
+            job.runner = runner
+            job.attempt = 2
+            job.failure_evidence = {"evidence": {"progress": progress}}
+
+            with mock.patch.object(
+                operator.importlib, "import_module", return_value=module
+            ):
+                job._execute_action(bound)
+
+            action.assert_called_once_with(
+                job.service,
+                evidence_directory=artifacts / "stage10",
+                request_nonce="R504.stage10.player-subject.retry-02",
+                expected_player_manager_character_id=200,
+                expected_owner_character_id=100,
+                resume_progress=progress,
+            )
+
+    def test_retry_refuses_after_event_input_was_attempted(self) -> None:
+        job = operator.Stage10PlayerSubjectOperatorJob(Path("activation.json"))
+        job.state = "AF5_RED_PARKED"
+        job.stage = "stage10_player_subject_action"
+        job.service = mock.Mock()
+        job.binding = {"bridge_pid": 101, "connection_generation": 4}
+        job.failure_evidence = {
+            "evidence": {
+                "progress": {
+                    "unexpected_event": {
+                        "event_definition_key": "travel_completion_event.1000"
+                    }
+                },
+                "selection": {"accepted": False},
+            }
+        }
+
+        result = job.retry()
+
+        self.assertFalse(result["accepted"])
+        self.assertIn("input already attempted", result["reason"])
 
     def test_source_receipt_must_bind_player_manager_topology_and_tree(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:

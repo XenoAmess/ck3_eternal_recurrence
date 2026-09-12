@@ -2699,3 +2699,21 @@ identity-unavailable Character slot、五个 typed boolean theme、native option
 冻结现场经 Stage 10 生产解析器 `26/26` 检查 GREEN。该 Python-only 修复不需要 DLL/游戏文件重启，也不得扩大 120 日边界。
 
 R502 established a focused vanilla-event rule for `travel_completion_event.1000`: bind the exact seven-scope projection and distinguish the authored option count (`2`) from the single rendered option (`native 0`). The already-home option is the only legal response in that frame. Preserve the RED before adding the contract, replay the frozen frame once, and do not widen this event fix into a longer Stage 10 run. Evidence: [R501/R502 travel completion contract](phase2-promo/r501-r502-travel-completion-1000-red-and-contract-2026-09-12.md).
+
+## Stage 10 Python-contract hot resume
+
+The player-publication operator exposes `retry-stage10` only for a preserved
+pre-selection vanilla-event RED. Before sending it, create `retry-activation.json`
+beside the original activation with the repaired repository commit. All loaded
+game inputs and session paths must remain byte- and value-identical. The operator
+revalidates the repaired activation, checks that the paused CK3 PID and bridge
+connection generation are unchanged, reloads the Python policy modules, and
+continues with the failed progress object.
+
+The original `timeline_origin_date_raw` and `absolute_end_date_raw` remain fixed;
+the retry receives only the unused portion of the original 120-game-day window.
+Do not send `run-stage10` again. If any input was attempted, or any DLL, game
+file, checkpoint, projection, rule, load order, pipe, state directory, or round
+identity changed, cleanup the current process and use a new numbered launch.
+The implementation and focused evidence are recorded in
+[the Stage 10 hot-resume contract](phase2-promo/stage10-python-contract-hot-resume-2026-09-12.md).
