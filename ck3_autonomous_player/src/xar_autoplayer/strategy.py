@@ -104,6 +104,9 @@ from .runtime import utc_now
 from .simulation.battle_terminal_cruise_policy import (
     assess_battle_terminal_cruise,
 )
+from .vanilla_events.policy import (
+    recommend_registered_vanilla_event_option_v1,
+)
 
 
 ONE_LIFE_STRATEGY_RELATIVE_PATH = Path("strategy") / "one-life-history.json"
@@ -5159,6 +5162,84 @@ def choose_one_life_turn(
                     "semantic_decision_ready": semantic_ready,
                 }
             )
+
+            played_character_id = (
+                played_character.get("character_id")
+                if isinstance(played_character, dict)
+                else None
+            )
+            registry_decision = (
+                recommend_registered_vanilla_event_option_v1(
+                    event_context,
+                    played_character_id=played_character_id,
+                    snapshot_option_count=active_event.get("option_count"),
+                )
+            )
+            if registry_decision.get("status") == "recommended":
+                native_index = registry_decision.get(
+                    "selected_native_option_index"
+                )
+                option_number = registry_decision.get(
+                    "selected_option_number"
+                )
+                rendered_index = registry_decision.get(
+                    "selected_rendered_index"
+                )
+                assert isinstance(native_index, int)
+                assert isinstance(option_number, int)
+                exact_step = event_option_step(option_number)
+                event_summary.update(
+                    {
+                        "selected_option_number": option_number,
+                        "selected_option_index": native_index,
+                        "selected_native_option_index": native_index,
+                        "selected_rendered_index": rendered_index,
+                        "semantic_optimal": False,
+                        "registry_decision": registry_decision,
+                    }
+                )
+                if exact_step in available_steps:
+                    return {
+                        "policy": "one-life-turn-v1",
+                        "phase": "active_event_registry_choice",
+                        "selected_step": exact_step,
+                        "reason": (
+                            "the same-frame event identity, player root, "
+                            "saved scopes and option projection match the "
+                            "exact-build registry; choose its source-reviewed "
+                            "bounded continuation"
+                        ),
+                        "active_event": event_summary,
+                        "event_decision": registry_decision,
+                    }
+                return {
+                    "policy": "one-life-turn-v1",
+                    "phase": "active_event_registry_choice_unsupported",
+                    "selected_step": None,
+                    "required_step": exact_step,
+                    "reason": (
+                        "the exact-build registry selected authored option "
+                        f"{option_number}/native {native_index}, but the "
+                        f"backend did not advertise {exact_step}"
+                    ),
+                    "active_event": event_summary,
+                    "event_decision": registry_decision,
+                }
+            if registry_decision.get("status") == "blocked":
+                event_summary["registry_decision"] = registry_decision
+                return {
+                    "policy": "one-life-turn-v1",
+                    "phase": "active_event_registry_contract_blocked",
+                    "selected_step": None,
+                    "reason": (
+                        "the event has an exact-build registry contract, but "
+                        "the current direct projection cannot safely consume "
+                        "it: "
+                        f"{registry_decision.get('unavailable_reason')}"
+                    ),
+                    "active_event": event_summary,
+                    "event_decision": registry_decision,
+                }
 
             if not semantic_ready and eligible_options:
                 option, event_decision = _degraded_event_option_decision(

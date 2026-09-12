@@ -209,6 +209,11 @@ selected_native_option_index # 0-based CK3 authored index
 
 自动玩家和运维 agent 可以通过 MCP 读取当前 stable event key 的 canonical timeline contract，再结合 `current-event-window-context` 和 campaign policy 决定是否采用登记选项。MCP tool 已可调用，但 registry 不直接提交 `select-event-option-N`，也不自动替代现有策略层；选择、instance/revision 绑定和后置验证仍走既有 gameplay command 链。
 
+2026-09-12 的 direct-projection consumer 把这条读取路径接入通用 `one-life-turn-v1` planner。它只处理当前 **188** 条记录中能被
+同帧窗口完整证明的无歧义投影；含未解析人物关系、variant、动态 native prefix、occurrence 上限、延后选择或场景失效语义的合同会返回 typed blocked，
+不会偷用 base projection。登记合同的 scope/option shape 漂移或目标选项 disabled 时同样保持暂停；只有未知 key 会继续使用既有
+degraded fallback。这个 consumer 不改变 registry/MCP schema，也不提升任何记录的 live evidence level。
+
 Registry 是离线静态数据，因此另一台机器只需取得同一仓库/package revision 和依赖，即可通过同一 MCP 查询；不需要复制原机器的 CK3 进程、绝对 artifact 路径或用户存档。
 
 ### T0 天朝二期 validator

@@ -258,6 +258,29 @@ materialize GUI rows替代）、实际 `ai_will_select/ai_chance`、positive-wei
 完整 effect preview、资源/关系/角色/战争/头衔 delta，以及 campaign objective utility。对应替换入口是继续扩充同一只读 context，
 待 `semantic_decision_ready=true` 后由真正的语义 policy 覆盖本 fallback，而不是修改 fallback 冒充完整。
 
+### Exact-build registry 的有界选择层
+
+[implementation-confirmed / static-ready / live=false] 共享 vanilla-event registry 已经保存 source-reviewed 的
+`selected_native_option_index`，但旧的通用自动玩家没有消费它：即使 stable event key、玩家 root、saved-scope shape 和实际渲染的
+native indices 都与合同一致，策略仍会落回上述最小索引 fallback。`tgp_travel_events.0030` 正好暴露了这个差距：合同要求
+authored 2/native 1 的终止路线，而 fallback 会优先 native 0，并进入五日延迟和随机学习对决。
+
+`vanilla_events/policy.py` 与 `strategy.py` 的首个 registry consumer 只准入无需猜测的 direct projection：
+
+1. 输入必须是已经通过 `current-event-window-context-v1` 严格校验的同帧窗口，并额外把窗口 root 绑定到 snapshot 中的
+   `played_character.character_id`；
+2. exact-build knowledge 查询必须命中 stable event key，合同不得带尚未由 consumer 解析的人物关系、scope/option variant、动态
+   native prefix、occurrence 上限、延后选择或场景失效处理；
+3. direct saved-scope 名称集合、数量和类型，以及 snapshot/rendered option count、native index 顺序、shown/enabled/disabled
+   投影必须逐项匹配；
+4. 只有合同登记的 selected native row 在当前窗口中唯一存在且 enabled 时，才生成 `select-event-option-N`；登记合同存在但投影
+   漂移时保留暂停并返回 typed contract drift，禁止再落回启发式选项；未知 event key 才继续使用旧 fallback；
+5. 该层是 source-reviewed 的 bounded continuation，仍标记 `native_ai_equivalent=false`、`semantic_optimal=false`。它不读取当前
+   campaign objective，也不把 safe drain 冒充完整效果效用判断。
+
+这一层首先解除“知识已经存在但策略不用”的真实阻点。G2-M2 仍需 event-context-v2 的结构化效果、目标评分和选择后的物质状态
+delta，且必须以三个自然事件（至少两个多选）实机闭环后才能完成。
+
 [implementation-confirmed / static-ready / live=false] `native_driver.py` 已把直接 event step 从通用 ACK 路径提升为生命周期动作：
 提交前要求 fresh map-ready、paused、正的 full int32 event instance 与 option range；提交后旧 full instance 必须消失或变为新
 instance，且 bridge PID、connection generation、episode binding 不变、结束帧仍 paused。结果发布 old/new ID、native index 与

@@ -18,7 +18,7 @@ G2 现采用固定的 **8 个可见 OODA 里程碑**，当前为 **0/8 complete*
 |---|---:|---|---|
 | G2-M0 GEN-034 三路战争退出 | P0 | in progress | 同帧比较继续、白和、投降；只提交一次；验证战后并冷恢复 |
 | G2-M1 实体发现与 core turn bundle | P1-A | not started | 一次聚合查询提供人物、头衔、首都、领主/封臣、邻居与最低 ruler/realm/succession alerts |
-| G2-M2 自然事件语义闭环 | P1-B | not started | 三个自然事件按目标评分并验证结果，至少两个为多选 |
+| G2-M2 自然事件语义闭环 | P1-B | in progress | 三个自然事件按目标评分并验证结果，至少两个为多选 |
 | G2-M3 继承与 realm survival | P1-C | not started | 死前预测逐头衔分配，死后对账并由真实继承人继续 |
 | G2-M4 和平治理纵向切片 | P1-D | not started | 两年内完成并验证建设、内阁调整和一次封臣/派系处理 |
 | G2-M5 家庭、外交与完整战争 | P2 | not started | 比较至少五个候选，执行一条从机会选择到最终后置的完整路径 |
@@ -67,6 +67,19 @@ GEN-034 关闭后立即转向公共 P1，不再继续横向扩展单一 CB 的 A
 2. `event-context-v2` 与 registry-driven natural event policy；
 3. `succession-state-v1`、health/stress/legitimacy 与 vassal/faction alert 组成的 realm survival；
 4. 建设、内阁与派系处理组成的和平治理 OODA。
+
+## G2-M2 离线 direct-projection consumer
+
+机器由人工占用、禁止启动 CK3 期间，M2 的非冲突静态子包已先行完成。`vanilla_events/policy.py` 现在把 shared
+exact-build registry 接入 `one-life-turn-v1`：当同帧 event key、玩家 root、saved scopes、snapshot/rendered option count、
+native index 与 enabled 投影全部匹配时，planner 采用登记的 source-reviewed bounded continuation。当前真实阻点
+`tgp_travel_events.0030` 因此会选择 authored 2/native 1，而不再被通用最小索引 fallback 导向随机学习对决。
+
+已登记 key 若投影漂移、目标选项 disabled，或合同需要尚未实现的人物关系、scope/option variant、动态 native prefix、occurrence 上限、延后选择或场景失效
+语义，planner 返回 `active_event_registry_contract_blocked` 并保持不输入；未知 key 才继续旧 degraded fallback。该子包为
+`static-ready / live=false`，普通与 optimized 聚焦测试各 `30/30` GREEN。它没有改变 current-window、registry 或 MCP 公共 schema，
+也没有提升固定 `0/8` 完成数。M2 仍需 variant-aware consumer、event-context-v2 结构化效果、campaign objective 评分，以及三个
+自然事件（至少两个多选）的动作与物质状态后置实机证据。
 
 战争 controller 的既有成熟执行器继续保留；assigned reinforcement、terminal 长尾与更多 CB 改为真实 encounter 驱动。
 宗教域继续暂缓，只允许战争中的圣战和婚姻合法性/接受度所需的最小原生最终判定，不借此扩展通用宗教模型。

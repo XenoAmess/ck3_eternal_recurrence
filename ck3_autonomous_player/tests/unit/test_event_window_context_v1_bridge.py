@@ -720,6 +720,69 @@ class EventWindowContractTests(unittest.TestCase):
         )
         self.assertFalse(plan["active_event"]["semantic_optimal"])
 
+    def test_planner_prefers_matching_exact_build_registry_choice(self) -> None:
+        frame = _frame()
+        frame["event_definition_key"] = "tgp_travel_events.0030"
+        frame["root_scope"] = _scope(character_id=CHARACTER_ID)
+        frame["saved_scopes"] = [
+            {
+                "name": "travel_plan",
+                "name_identifier": 301,
+                "scope": _scope(
+                    raw_type_index=5,
+                    type_key="travel_plan",
+                    character_id=None,
+                ),
+            },
+            {
+                "name": "poem_province",
+                "name_identifier": 302,
+                "scope": _scope(
+                    raw_type_index=3,
+                    type_key="province",
+                    character_id=None,
+                ),
+            },
+        ]
+        first = frame["options"][0]
+        first.update(
+            {
+                "rendered_index": 0,
+                "native_option_index": 0,
+                "enabled": True,
+                "fallback": False,
+                "cancel": False,
+            }
+        )
+        first["effect_indicators"]["rows"] = []
+        second = copy.deepcopy(first)
+        second.update({"rendered_index": 1, "native_option_index": 1})
+        frame["options"] = [first, second]
+        snapshot = _snapshot()
+        snapshot["played_character"] = {
+            "character_id": CHARACTER_ID,
+            "alive": True,
+        }
+        snapshot["active_event"]["option_count"] = 2
+
+        plan = choose_one_life_turn(
+            [_query_history(frame)],
+            snapshot=snapshot,
+            action_steps={
+                QUERY_CURRENT_EVENT_WINDOW_CONTEXT_V1_STEP,
+                "select-event-option-1",
+                "select-event-option-2",
+            },
+        )
+
+        self.assertEqual(plan["phase"], "active_event_registry_choice")
+        self.assertEqual(plan["selected_step"], "select-event-option-2")
+        self.assertEqual(
+            plan["event_decision"]["policy"],
+            "exact-build-vanilla-event-registry-direct-projection-v1",
+        )
+        self.assertFalse(plan["event_decision"]["semantic_optimal"])
+
     def test_planner_blocks_zero_enabled_materialized_rows(self) -> None:
         zero = _frame()
         plan = choose_one_life_turn(

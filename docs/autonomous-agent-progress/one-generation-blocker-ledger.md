@@ -1096,3 +1096,15 @@ strategic-power primitive；余下入口只有 policy-level campaign dominance�
   `GEN-034` remains unresolved and T1 remains 90%.
 - Current round R471 is terminated, old round R470 is terminated, and CK3=0.
   T0 P1 remains 6/9 and P2 remains `LOCKED`.
+
+## 2026-09-12: G2-M2 exact-build event registry consumer static-ready
+
+- The generic one-life planner previously ignored all shared vanilla-event safe choices and always used its death/cancel/native-order fallback when
+  `semantic_decision_ready=false`. For `tgp_travel_events.0030`, that fallback would choose native 0 even though the reviewed contract requires the
+  bounded authored 2/native 1 route.
+- The new direct-projection consumer binds the observed event root to the current played character and checks the exact saved-scope names, counts
+  and types together with snapshot/rendered option counts, native order and enabled projection. A matching record produces its
+  registered choice; a known drift remains paused, while an unknown key keeps the existing fallback.
+- Contracts that require variants, dynamic option prefixes, occurrence accounting, deferred choice or scenario invalidation remain explicitly blocked.
+  This package is `static-ready / live=false`; normal and optimized focused tests are each `30/30` GREEN. G2-M2 is now in progress, but the fixed
+  program denominator remains `0/8` until structured effects, campaign scoring and three natural event outcome loops are live.
