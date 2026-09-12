@@ -701,6 +701,15 @@ class _ServiceDriver:
             "date_raw": DATE_RAW,
             "paused": True,
             "episode_run_id": "native-12345-fixture",
+            "played_character": {
+                "character_id": PLAYER_CHARACTER_ID,
+                "alive": True,
+                "stress_points": 120,
+            },
+            "played_character_gold": {"raw": 2_500_000, "scale": 100_000},
+            "active_event": None,
+            "pending_character_interaction": None,
+            "active_wars": [],
             "diagnostics": {
                 "hello": {
                     "game_version": CAMPAIGN_ROOT_CONTEXT_V1_GAME_VERSION,
@@ -812,6 +821,22 @@ class CampaignRootContextV1ServiceTests(unittest.TestCase):
         self.assertEqual(result["build"]["version"], "1.19.0.6")
         self.assertEqual(result["binding"]["date_raw"], DATE_RAW)
 
+    def test_service_builds_partial_turn_bundle_on_the_same_binding(self) -> None:
+        result = GameplayBridgeService(_ServiceDriver()).query_turn_bundle_v1(
+            expected_revision=PUBLIC_REVISION
+        )
+
+        self.assertEqual(result["schema"], "xar.ck3.turn-bundle/v1")
+        self.assertEqual(result["status"], "partial")
+        self.assertTrue(result["readiness"]["minimum_alerts_ready"])
+        self.assertFalse(result["readiness"]["ready"])
+        ruler = result["ruler_state"]["value"]
+        self.assertEqual(ruler["stress_points"]["value"], 120)
+        succession = result["succession_state"]["value"]
+        self.assertEqual(
+            succession["primary_title_heir_character_id"]["value"], 98_765
+        )
+
     def test_service_rejects_capability_revision_build_and_binding_drift(self) -> None:
         with self.assertRaises(UnsupportedStepError):
             GameplayBridgeService(
@@ -859,6 +884,7 @@ class CampaignRootContextV1McpTests(unittest.IsolatedAsyncioTestCase):
             names = {tool.name for tool in listed.tools}
             self.assertIn("ck3_query_campaign_root_context_v1", names)
             self.assertIn("ck3_search_entities_v1", names)
+            self.assertIn("ck3_query_turn_bundle_v1", names)
             result = await client.call_tool(
                 "ck3_query_campaign_root_context_v1",
                 {"expected_revision": PUBLIC_REVISION},
@@ -870,6 +896,10 @@ class CampaignRootContextV1McpTests(unittest.IsolatedAsyncioTestCase):
                     "relation_filter": "adjacent_external_province_holder",
                     "limit": 1,
                 },
+            )
+            bundle_result = await client.call_tool(
+                "ck3_query_turn_bundle_v1",
+                {"expected_revision": PUBLIC_REVISION},
             )
 
         self.assertFalse(result.is_error)
@@ -890,6 +920,10 @@ class CampaignRootContextV1McpTests(unittest.IsolatedAsyncioTestCase):
             directory["entities"][0]["relationship_roles"],
             ["adjacent_external_province_holder"],
         )
+        self.assertFalse(bundle_result.is_error)
+        bundle = bundle_result.structured_content
+        self.assertEqual(bundle["schema"], "xar.ck3.turn-bundle/v1")
+        self.assertTrue(bundle["readiness"]["minimum_alerts_ready"])
 
 
 if __name__ == "__main__":

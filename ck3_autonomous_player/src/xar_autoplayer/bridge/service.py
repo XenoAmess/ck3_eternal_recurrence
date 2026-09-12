@@ -83,6 +83,7 @@ from .campaign_root_context_contract import (
     normalize_campaign_root_context_v1,
 )
 from .entity_directory_contract import build_entity_directory_v1
+from .turn_bundle_contract import build_turn_bundle_v1
 from .zhongguo_case_snapshot_contract import (
     QUERY_ZHONGGUO_CASE_SNAPSHOT_V1_CAPABILITY,
     QUERY_ZHONGGUO_CASE_SNAPSHOT_V1_STEP,
@@ -1869,6 +1870,24 @@ class GameplayBridgeService:
             after_character_id=after_character_id,
             limit=limit,
         )
+
+    def query_turn_bundle_v1(
+        self,
+        *,
+        expected_revision: int,
+    ) -> dict[str, object]:
+        """Aggregate current root, alert, pending and war observations."""
+
+        snapshot = self.snapshot()
+        root = self.query_campaign_root_context_v1(
+            expected_revision=expected_revision
+        )
+        try:
+            return build_turn_bundle_v1(snapshot, root)
+        except ValueError as error:
+            raise BridgeUnavailableError(
+                f"turn-bundle inputs are malformed: {error}"
+            ) from error
 
     def query_zhongguo_b1_cycle_snapshot_v1(
         self,

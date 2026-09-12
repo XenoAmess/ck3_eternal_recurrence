@@ -402,6 +402,16 @@ def _ck3_search_entities_v1(
     )
 
 
+def _ck3_query_turn_bundle_v1(
+    service: GameplayBridgeService,
+    expected_revision: int,
+) -> dict[str, object]:
+    """Aggregate the current paused ruler, realm and succession alerts."""
+    return service.query_turn_bundle_v1(
+        expected_revision=expected_revision,
+    )
+
+
 def _ck3_query_zhongguo_case_snapshot_v1(
     service: GameplayBridgeService,
     case_kind: str,
@@ -1129,6 +1139,16 @@ def create_server(driver: GameplayBridgeDriver):
             relation_filter,
             after_character_id,
             limit,
+        )
+
+    @server.tool()
+    def ck3_query_turn_bundle_v1(
+        expected_revision: int,
+    ) -> dict[str, object]:
+        """Read one same-frame planner bundle with typed readiness gaps."""
+        return _ck3_query_turn_bundle_v1(
+            service,
+            expected_revision,
         )
 
     @server.tool()

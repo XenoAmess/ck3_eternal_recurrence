@@ -1250,3 +1250,13 @@ strategic-power primitive；余下入口只有 policy-level campaign dominance�
 - Release DLL plus direct native reader/source-contract fixtures are GREEN and focused Python normal/optimized tests pass `35/35`. The field is
   `static-ready / live=false`; it must be sampled only during a future already-required paused G2 session. M1 and global G2 remain open at
   `in_progress` and `0/8` until the minimum ruler/realm/succession alerts and `ck3_query_turn_bundle_v1` are delivered and live-checked.
+
+## 2026-09-13: G2-M1 first turn-bundle aggregate
+
+- `ck3_query_turn_bundle_v1` now binds one cached semantic snapshot to one campaign-root query and publishes six planner-facing domains without
+  additional native RPCs. It provides minimum alive/landless, direct-vassal/adjacent-holder and primary-title heir alerts from real existing
+  observations; event/pending and compact war summaries are included when their normalized snapshot surfaces exist.
+- The bundle deliberately remains `status=partial` and `readiness.ready=false`: income, health, domain, council, faction and partition
+  observations are still absent. This closes an aggregation gap, not the M1 live gate or its complete state breadth.
+- Focused normal/optimized tests pass `26/26`, including official MCP listing/call and binding/identity drift rejection. No CK3 or desktop resource
+  was used. The next construction entry is an exact-build read-only income/domain slice rather than another unavailable-only wrapper.

@@ -114,7 +114,8 @@ candidate generator 现在可以用 declarative relation filter 获取玩家、�
 identity，再交给婚姻、外交、战争或后续 realm-state 查询。相邻边界上的多个 holder 可以通过相同 top liege 归并到同一 realm，
 同时仍能追溯 Province-holder source role。它暂时不能按姓名、距离、资源或效用搜索，也不能直接选出“最强邻国”。
 
-下一施工入口是最低 `ruler-state-v1` / `realm-state-v1` alerts 与 `ck3_query_turn_bundle_v1` 聚合；本工具的 live 互证与两个来源
+最低 `ruler-state-v1` / `realm-state-v1` / primary-title succession alerts 已由
+[turn-bundle-v1.md](turn-bundle-v1.md) 聚合；完整 bundle 仍缺 income/health/domain/council/faction/partition 观测。本工具的 live 互证与两个来源
 vector 共用下一次 already-required paused G2 双查询和 cold restore，不为它单开长跑。
 
 ## 静态验收
