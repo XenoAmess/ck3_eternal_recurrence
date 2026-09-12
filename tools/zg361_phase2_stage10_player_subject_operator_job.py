@@ -22,7 +22,7 @@ import zg361_phase2_af5_operator_job as base
 
 CONTROLS = ["status", "run-stage10", "cleanup"]
 JOB_ROLE = "stage10-player-subject"
-SOURCE_RECEIPT_KIND = "zg361_stage10_player_publication_source_v4"
+SOURCE_RECEIPT_KIND = "zg361_stage10_player_publication_source_v5"
 LIVE_SOURCE_KIND = "zg361_stage10_player_source_capture_v1"
 NEAR_BOUNDARY_KIND = "zg361_phase2_stage10_player_subject_action_cell"
 SCHEDULE_KIND = "ck3_scheduled_event_queue_offline_v1"
@@ -82,6 +82,24 @@ def _validate_source_receipt(
         "near-boundary initial progress",
     )
     near_binding = base.mapping(near.get("source_binding"), "near-boundary binding")
+    extended_path = base.checked_file(
+        receipt.get("extended_boundary_live_evidence"),
+        "extended-boundary live evidence",
+    )
+    extended_wrapper = base.read_object(extended_path)
+    extended = base.mapping(
+        extended_wrapper.get("evidence"), "extended-boundary action evidence"
+    )
+    extended_progress = base.mapping(
+        extended.get("progress"), "extended-boundary progress"
+    )
+    extended_initial = base.mapping(
+        extended_progress.get("initial_progress_observation"),
+        "extended-boundary initial progress",
+    )
+    extended_binding = base.mapping(
+        extended.get("source_binding"), "extended-boundary binding"
+    )
     schedule_path = base.checked_file(
         receipt.get("scheduled_event_evidence"), "scheduled-event evidence"
     )
@@ -166,6 +184,22 @@ def _validate_source_receipt(
         and near_initial.get("b1_active") is True
         and near_initial.get("central_active") is False
         and near_initial.get("pp_active") is False
+        and extended_wrapper.get("result") == "RED"
+        and extended_wrapper.get("product_result") == "RED"
+        and extended_wrapper.get("red_preserved") is True
+        and extended.get("schema_version") == 2
+        and extended.get("kind") == NEAR_BOUNDARY_KIND
+        and extended.get("result") == "RED"
+        and extended.get("max_advance_days") == 45
+        and extended.get("expected_player_manager_character_id") == manager
+        and extended.get("expected_owner_character_id") == owner
+        and extended_binding.get("player_character_id") == manager
+        and extended_binding.get("date_raw") == live_binding.get("date_raw")
+        and extended_initial.get("date_raw") == live_binding.get("date_raw")
+        and extended_initial.get("review_now_eligible") is False
+        and extended_initial.get("b1_active") is True
+        and extended_initial.get("central_active") is False
+        and extended_initial.get("pp_active") is False
         and schedule.get("schema_version") == 1
         and schedule.get("kind") == SCHEDULE_KIND
         and schedule.get("result") == "GREEN"
@@ -187,7 +221,16 @@ def _validate_source_receipt(
             "source_b1_stage": "D+299",
             "first_pending_event": "zg361b1.102",
             "first_pending_event_days": 1,
-            "maximum_action_days": 45,
+            "shadow_close_days": 30,
+            "common_bank_close_latest_cycle_day": 335,
+            "manager_calibration_latest_cycle_day": 336,
+            "pending_watchdog_days": 31,
+            "post_seal_reopen_days": 30,
+            "player_publication_callback_days": 1,
+            "manager_f_ticket_days": 5,
+            "latest_stage10_cycle_day": 403,
+            "maximum_required_tail_days": 104,
+            "maximum_action_days": 120,
         }
     ):
         raise base.Af5JobError(
@@ -200,6 +243,7 @@ def _validate_source_receipt(
         "player_manager_character_id": manager,
         "owner_character_id": owner,
         "near_boundary_live_evidence": near_path,
+        "extended_boundary_live_evidence": extended_path,
         "scheduled_event_evidence": schedule_path,
     }
 

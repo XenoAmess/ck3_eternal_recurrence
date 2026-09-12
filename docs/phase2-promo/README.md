@@ -40,7 +40,7 @@ R467 的 `no_bounded_ai_direct_manager` 现已结合 `380af02` 之后的生产�
 R434/R439 的零游戏日 selector 只排除了 R432/R159 作为 B3 focused 路线的 AI manager/direct subordinate source，不能判定玩家可见的 Stage 10 `.120` 路线；其中 R439 重复了 09 月 07 日已有的 R159 结论，是一次可避免的验证。R435 只排除 R432 的 Stage 11 terminal 资格；R437 又证明 R398 输入存档本身并未停在 `.242`，因此在零游戏日、零事件输入处停止，没有把 source 误读扩成第二次长跑。两种 Stage 10 角色拓扑、验收 runner 纠正、不重跑边界与下一项 source 要求见
 [`r434-r439-bounded-source-checks-and-stage10-route-correction-2026-09-11.md`](r434-r439-bounded-source-checks-and-stage10-route-correction-2026-09-11.md)。P1 仍为 `6/9`。
 
-Stage 10 action/operator 已同步改为真实玩家 B1 公示路线：从非独立的天朝玩家经理存档调用 review-now，在同一 30 游戏日
+Stage 10 action/operator 已同步改为真实玩家 B1 公示路线：从非独立的天朝玩家经理存档调用 review-now，在同一 120 游戏日
 绝对截止内等待 `.120`，不再依赖 `.390`、AI manager selector 或玩家切换。R482 在业务动作前确认旧 v2 receipt 错放了
 内部含五组玩家记录的 `SAV0101`；实机为 `played_character=null`、mailbox 未安装，按 300 秒 readiness 门 RED 后立即清理，
 没有重跑。v3 receipt 现同时要求离线单玩家结构及 hash-bound 的 MCP 原生保存/live campaign-root 证明。action normal/`-O`
@@ -423,3 +423,9 @@ R468/R469 验证了 `f14220f` 的只读快照重绑修复，但同一来源到 1
 R487/R488 首次正式动作在旧 30 游戏日绝对边界保留 RED：11 次观测均为 B1 active，Central/PP 均未开启，`.120` 未出现。冻结 save 的通用离线队列检查确认来源已经位于 B1 `D+299`，下一事件 `zg361b1.102` 在次日；此后产品还要执行 `.103 +30d`、公共合账、经理公示回调和五级 F 票据。因此该失败来自验收边界短于固定产品尾链，不是新的 mod 玩法缺陷。
 
 现行 action 上限修为 45 游戏日；source receipt 升为 v4，同时绑定 R488 live B1 初态、exact checkpoint 的 `.102 +1d` 队列和固定尾链说明。修复只做聚焦 normal/optimized 测试 `10/10`，不扩成长期 runner。当前两轮均已终止，CK3 与 Operator MCP 为零；P1 仍为 `8/9`，P2 仍锁定。完整证据见 [R487/R488 Stage 10 边界 RED 与修正](r487-r488-stage10-bound-red-and-correction-2026-09-12.md)。
+
+## R489/R490 Stage 10 校准尾链边界 RED 与 v5 修正
+
+R490 的唯一 gameplay 实例通过 loader/native/exact-mount/error 门后，在 45 日绝对上限保留 RED；16 次观测均为 B1 active，`.120` 未出现。live 日志已经记录有效共同上级合账并进入 pending/reopen，且没有 manager-calibration stale，因此这不是新 mod bug。冻结 source 的 `m142=1 / m143=1` 使保守最迟路径从 D+299 延伸到 D+403：31 日 pending watchdog、30 日 reopen、`.90 +1d` 和五张逐日 F 票据都必须计入。
+
+现行 action 上限为 120 日，receipt 为 v5，同时 hash 绑定 R488 的 30 日 RED、R490 的 45 日 RED 和 `.102 +1d` 队列；104 日源码上界之外只有 16 日调度余量。聚焦测试通过后只执行一次新轮次，不恢复 400 日完整 B1，也不允许原位 retry。R489/R490 均已终止，CK3/Operator MCP/端口 `12441` 为零；P1 仍为 `8/9`，P2 仍锁定。详见 [R489/R490 校准尾链 RED 与修正](r489-r490-stage10-calibration-tail-red-and-correction-2026-09-12.md)。

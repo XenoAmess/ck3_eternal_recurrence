@@ -36,3 +36,7 @@
 MCP cleanup request `r487-r488-stage10-cleanup-1` 只提交一次并返回 ACCEPTED；canonical/managed cleanup 均 GREEN。当前轮次 R488 与旧轮次 R487 均已终止，CK3、作业进程、Operator MCP 和端口 `12440` 全部为零。
 
 P1 仍为 **`8/9 = 88.9%`**，唯一缺口仍是 `.120` 的 production-live terminal；P2 最终宣传视频继续 `LOCKED`。下一次启动必须使用 v4 receipt，在递增的新轮次中只执行一次 45 日绝对上限场景。
+
+## R489/R490 后续证据（取代 45 日充分性）
+
+R490 的 45 日单次验收已经证明本页的“45 日足够”判断不成立：有效共同上级合账已发生，随后进入 pending/reopen，但 `.120` 尚未出现。exact source 的 `m142=1 / m143=1` 允许额外 31 日 pending watchdog 与 30 日 reopen；从 D+299 到 `.120` 的保守最迟点是 D+403，共 104 日。现行上限改为 120 日，receipt 升为 v5 并绑定 R488/R490 两份 RED。该修正仍只针对 harness 边界，没有观察到新的产品故障。详见 [R489/R490 校准尾链 RED 与修正](r489-r490-stage10-calibration-tail-red-and-correction-2026-09-12.md)。
