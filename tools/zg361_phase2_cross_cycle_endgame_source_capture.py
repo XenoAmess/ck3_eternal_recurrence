@@ -68,6 +68,7 @@ DEFAULT_WAIT_TIMEOUT_SECONDS: Final = 300.0
 DEFAULT_POLL_INTERVAL_SECONDS: Final = 0.10
 MATURE_ENDGAME_OWNER_CHARACTER_ID: Final = 32904
 MATURE_ENDGAME_HISTORY_COUNT: Final = 2
+MINIMUM_ENDGAME_CYCLE_SERIAL: Final = 3
 MATURITY_QUERY_NONCE: Final = "zg361.endgame.source.maturity"
 EVENT_SCALAR_CASE_BINDING_AUTHORITY: Final = (
     "paused-zg361we.356-value-scopes+source-trigger-full-guard+"
@@ -1249,26 +1250,44 @@ def _endgame_maturity_contract(
             al_case=al_case,
         )
 
-    history_count = _typed_available(history, "count")
     slots = history.get("slots")
-    if not (
+    partial_history = bool(
         history.get("status") == "partial"
-        and history_count == MATURE_ENDGAME_HISTORY_COUNT
+        and _typed_available(history, "count")
+        == MATURE_ENDGAME_HISTORY_COUNT
         and history.get("effective_count") == MATURE_ENDGAME_HISTORY_COUNT
         and isinstance(slots, list)
         and len(slots) == 3
-    ):
+    )
+    empty_history = bool(
+        history.get("status") == "empty"
+        and _typed_unavailable(history, "count", "variable_absent")
+        and history.get("effective_count") == 0
+        and isinstance(slots, list)
+        and len(slots) == 3
+        and all(
+            isinstance(slot, Mapping)
+            and len(slot) == len(_HISTORY_SLOT_FIELDS)
+            and all(
+                _typed_unavailable(slot, key, "lifecycle_not_reached")
+                for key in _HISTORY_SLOT_FIELDS
+            )
+            for slot in slots
+        )
+    )
+    if not (partial_history or empty_history):
         _fail(
             "endgame_maturity_history_count_invalid",
-            required_status="partial",
-            required_count=MATURE_ENDGAME_HISTORY_COUNT,
+            accepted_shapes=("empty", "partial-two"),
             history=history,
         )
     assert isinstance(slots, list)
     normalized_slots: list[dict[str, int]] = []
     receipt_ids: list[int] = []
     receipt_hashes: list[int] = []
-    for index in range(MATURE_ENDGAME_HISTORY_COUNT):
+    for index in range(
+        MATURE_ENDGAME_HISTORY_COUNT if partial_history else 0
+    ):
         raw_slot = slots[index]
         normalized: dict[str, int] = {}
         for key in _HISTORY_SLOT_FIELDS:
@@ -1297,7 +1316,7 @@ def _endgame_maturity_contract(
             for milestone in (357, 358, 359)
         )
         normalized_slots.append(normalized)
-    if not all(
+    if partial_history and not all(
         _typed_unavailable(slots[2], key, "lifecycle_not_reached")
         for key in _HISTORY_SLOT_FIELDS
     ):
@@ -1306,11 +1325,18 @@ def _endgame_maturity_contract(
             slot=slots[2],
         )
     prior_cycles = [slot["cycle_serial"] for slot in normalized_slots]
-    if not prior_cycles[0] < prior_cycles[1] < int(current_cycle):
+    if (
+        int(current_cycle) < MINIMUM_ENDGAME_CYCLE_SERIAL
+        or (
+            partial_history
+            and not prior_cycles[0] < prior_cycles[1] < int(current_cycle)
+        )
+    ):
         _fail(
             "endgame_maturity_cycles_not_strictly_increasing",
             prior_cycles=prior_cycles,
             current_cycle_serial=current_cycle,
+            minimum_current_cycle_serial=MINIMUM_ENDGAME_CYCLE_SERIAL,
         )
     if len(set(receipt_ids)) != len(receipt_ids) or len(
         set(receipt_hashes)
@@ -1325,9 +1351,9 @@ def _endgame_maturity_contract(
         "result": "GREEN",
         "evidence_class": "real_ck3",
         "provider_observed": True,
-        "history_status": "partial",
-        "history_count": MATURE_ENDGAME_HISTORY_COUNT,
-        "history_effective_count": MATURE_ENDGAME_HISTORY_COUNT,
+        "history_status": history["status"],
+        "history_count": len(normalized_slots),
+        "history_effective_count": len(normalized_slots),
         "owner_character_id": owner_character_id,
         "subject_character_id": subject_character_id,
         "cycle_serial": int(current_cycle),
@@ -1336,7 +1362,9 @@ def _endgame_maturity_contract(
         "prior_slots": normalized_slots,
         "receipt_ids": receipt_ids,
         "receipt_hashes": receipt_hashes,
-        "third_cycle_source_ready": True,
+        "third_cycle_source_ready": (
+            int(current_cycle) >= MINIMUM_ENDGAME_CYCLE_SERIAL
+        ),
         "provider_response": response,
     }
 

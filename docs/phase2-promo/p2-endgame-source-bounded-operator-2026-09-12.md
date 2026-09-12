@@ -94,3 +94,30 @@ generation; requires a pre-save failure; freezes the failed attempt; validates
 that all loaded game inputs remain byte-identical; and reloads only the source
 provider, capture contract and bounded action modules. No DLL/game/configuration
 change occurs, so a successful use remains in the current CK3 round.
+
+## R508 live source maturity correction
+
+R507 completed the frontend warm-up and terminated before sole R508/PID
+`120780` loaded the same product checkpoint. R508 reached `zg361we.356` again
+at `date_raw=53366568`, saved the owner-facing event, switched to subject
+`31450`, and exposed the exact current AL tuple as owner `32904`, cycle `5`,
+case `1`, state `1`, active `true`. The provider's terminal-history group was
+honestly `empty`: its count variable does not exist until a Workforce
+portfolio closes at state 8, so requiring two completed terminal ledgers at
+the source event incorrectly depended on future business outcomes.
+
+The source contract now accepts either the earlier partial-two history shape
+or the exact empty pre-terminal shape, preserves the observed shape in the
+receipt, and requires the provider-bound current cycle serial to be at least
+three. It still requires the same owner/subject/current-case tuple, event
+scopes, save binding, exact-build native query and no event selection. Final
+`phase2_cross_cycle_endgame` business GREEN remains responsible for proving
+route-C debt, `.361`, charter/default adoption and next-cycle effect; this
+source checkpoint does not claim those later outcomes.
+
+A post-save Python retry may find the retained session played as the subject.
+Before re-running capture it must query the subject-side Workforce provider on
+the same paused revision, prove the expected owner and active cycle >= 3, use
+the typed character switch back to that owner, and observe an owner-facing
+active event again. It then replays only the idempotent save/registry assembly;
+no event option is selected and no game day advances.

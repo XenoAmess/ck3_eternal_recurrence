@@ -37,6 +37,7 @@ INCIDENT_STRICT_RECEIPT_FIELD: Final = (
     "received_self_incident_checkpoint_receipt"
 )
 ENDGAME_MATURE_OWNER_CHARACTER_ID: Final = 32904
+ENDGAME_MINIMUM_CYCLE_SERIAL: Final = 3
 ENDGAME_EVENT_SCALAR_CASE_BINDING_AUTHORITY: Final = (
     "paused-zg361we.356-value-scopes+source-trigger-full-guard+"
     "received-self-current-case-provider"
@@ -241,6 +242,17 @@ def _typed_available(group: object, key: str) -> object | None:
     return field.get("value")
 
 
+def _typed_unavailable(group: object, key: str, reason: str) -> bool:
+    field = group.get(key) if isinstance(group, Mapping) else None
+    return bool(
+        isinstance(field, Mapping)
+        and set(field) == {"status", "value", "unavailable_reason"}
+        and field.get("status") == "unavailable"
+        and field.get("value") is None
+        and field.get("unavailable_reason") == reason
+    )
+
+
 def _endgame_event_scalar_scopes(context: object) -> dict[str, object]:
     frame = dict(context) if isinstance(context, Mapping) else {}
     saved_rows = frame.get("saved_scopes")
@@ -356,6 +368,18 @@ def validate_endgame_maturity_source_receipt(
     normalized_slot_values: list[dict[str, int]] = []
     observed_ids: list[int] = []
     observed_hashes: list[int] = []
+    history_slot_fields = {
+        "owner_character_id",
+        "subject_character_id",
+        "cycle_serial",
+        "case_serial",
+        "m357_receipt_id",
+        "m357_receipt_hash",
+        "m358_receipt_id",
+        "m358_receipt_hash",
+        "m359_receipt_id",
+        "m359_receipt_hash",
+    }
     slots_valid = isinstance(slots, list) and len(slots) == 2
     if slots_valid:
         for slot in slots:
@@ -363,19 +387,7 @@ def validate_endgame_maturity_source_receipt(
                 slots_valid = False
                 break
             normalized = dict(slot)
-            required = {
-                "owner_character_id",
-                "subject_character_id",
-                "cycle_serial",
-                "case_serial",
-                "m357_receipt_id",
-                "m357_receipt_hash",
-                "m358_receipt_id",
-                "m358_receipt_hash",
-                "m359_receipt_id",
-                "m359_receipt_hash",
-            }
-            if set(normalized) != required or not all(
+            if set(normalized) != history_slot_fields or not all(
                 _positive_int(item) for item in normalized.values()
             ):
                 slots_valid = False
@@ -393,7 +405,7 @@ def validate_endgame_maturity_source_receipt(
                 cast[f"m{milestone}_receipt_hash"]
                 for milestone in (357, 358, 359)
             )
-    raw_slots_match = bool(
+    partial_raw_slots_match = bool(
         isinstance(raw_history_slots, list)
         and len(raw_history_slots) == 3
         and len(normalized_slot_values) == 2
@@ -418,6 +430,54 @@ def validate_endgame_maturity_source_receipt(
         and isinstance(raw_history_slots[2], Mapping)
         and len(raw_history_slots[2]) == 10
     )
+    empty_raw_slots_match = bool(
+        isinstance(raw_history_slots, list)
+        and len(raw_history_slots) == 3
+        and all(
+            isinstance(slot, Mapping)
+            and set(slot) == history_slot_fields
+            and all(
+                _typed_unavailable(slot, key, "lifecycle_not_reached")
+                for key in history_slot_fields
+            )
+            for slot in raw_history_slots
+        )
+    )
+    partial_history_valid = bool(
+        proof.get("history_status") == "partial"
+        and proof.get("history_count") == 2
+        and proof.get("history_effective_count") == 2
+        and history.get("status") == "partial"
+        and _typed_available(history, "count") == 2
+        and history.get("effective_count") == 2
+        and isinstance(prior_cycles, list)
+        and len(prior_cycles) == 2
+        and all(_positive_int(cycle) for cycle in prior_cycles)
+        and prior_cycles
+        == [slot["cycle_serial"] for slot in normalized_slot_values]
+        and _positive_int(current_cycle)
+        and prior_cycles[0] < prior_cycles[1] < current_cycle
+        and slots_valid
+        and receipt_ids == observed_ids
+        and receipt_hashes == observed_hashes
+        and len(set(observed_ids)) == 6
+        and len(set(observed_hashes)) == 6
+        and partial_raw_slots_match
+    )
+    empty_history_valid = bool(
+        proof.get("history_status") == "empty"
+        and proof.get("history_count") == 0
+        and proof.get("history_effective_count") == 0
+        and history.get("status") == "empty"
+        and _typed_unavailable(history, "count", "variable_absent")
+        and history.get("effective_count") == 0
+        and prior_cycles == []
+        and slots == []
+        and receipt_ids == []
+        and receipt_hashes == []
+        and empty_raw_slots_match
+    )
+    history_evidence_valid = partial_history_valid or empty_history_valid
     expected_event_scalar_binding = {
         "zg361_we_al_cycle": {
             **dict(event_scalar_scopes.get("zg361_we_al_cycle", {})),
@@ -448,12 +508,11 @@ def validate_endgame_maturity_source_receipt(
         and proof.get("result") == "GREEN"
         and proof.get("evidence_class") == "real_ck3"
         and proof.get("provider_observed") is True
-        and proof.get("history_status") == "partial"
-        and proof.get("history_count") == 2
-        and proof.get("history_effective_count") == 2
+        and history_evidence_valid
         and proof.get("owner_character_id") == owner_character_id
         and proof.get("subject_character_id") == subject
         and _positive_int(current_cycle)
+        and current_cycle >= ENDGAME_MINIMUM_CYCLE_SERIAL
         and _positive_int(current_case)
         and proof.get("third_cycle_source_ready") is True
         and event_case_binding
@@ -472,17 +531,6 @@ def validate_endgame_maturity_source_receipt(
         }
         and bool(event_scalar_scopes)
         and post_save_event_scalar_scopes == event_scalar_scopes
-        and isinstance(prior_cycles, list)
-        and len(prior_cycles) == 2
-        and all(_positive_int(cycle) for cycle in prior_cycles)
-        and prior_cycles
-        == [slot["cycle_serial"] for slot in normalized_slot_values]
-        and prior_cycles[0] < prior_cycles[1] < current_cycle
-        and slots_valid
-        and receipt_ids == observed_ids
-        and receipt_hashes == observed_hashes
-        and len(set(observed_ids)) == 6
-        and len(set(observed_hashes)) == 6
         and switch.get("schema_version") == 1
         and switch.get("accepted") is True
         and switch.get("status") == "switched"
@@ -536,10 +584,6 @@ def validate_endgame_maturity_source_receipt(
         and _typed_available(al_case, "case_serial") == current_case
         and _typed_available(al_case, "state") == 1
         and _typed_available(al_case, "active") is True
-        and history.get("status") == "partial"
-        and _typed_available(history, "count") == 2
-        and history.get("effective_count") == 2
-        and raw_slots_match
     )
     if not valid:
         raise Phase2SourceCheckpointError(
@@ -557,9 +601,9 @@ def validate_endgame_maturity_source_receipt(
         "subject_character_id": subject,
         "cycle_serial": current_cycle,
         "case_serial": current_case,
-        "history_status": "partial",
-        "history_count": 2,
-        "history_effective_count": 2,
+        "history_status": proof["history_status"],
+        "history_count": proof["history_count"],
+        "history_effective_count": proof["history_effective_count"],
         "prior_cycle_serials": list(prior_cycles),
         "generic_character_rebind_used": True,
     }

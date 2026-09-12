@@ -155,6 +155,8 @@ def maturity_response() -> dict[str, object]:
         key: unavailable("lifecycle_not_reached")
         for key in history_slot(2)
     }
+
+
     return {
         "schema_version": 1,
         "status": "available",
@@ -205,6 +207,23 @@ def maturity_response() -> dict[str, object]:
             "expected_revision": 12,
         },
     }
+
+
+def empty_history_maturity_response() -> dict[str, object]:
+    value = maturity_response()
+    empty_slot = {
+        key: unavailable("lifecycle_not_reached")
+        for key in history_slot(0)
+    }
+    value["history"] = {
+        "status": "empty",
+        "count": unavailable("variable_absent"),
+        "effective_count": 0,
+        "slots": [copy.deepcopy(empty_slot) for _ in range(3)],
+    }
+    value["al_case"]["cycle_serial"] = available(5)
+    value["al_case"]["case_serial"] = available(1)
+    return value
 
 
 def maturity_receipt_fields() -> dict[str, object]:
@@ -880,7 +899,32 @@ class CrossCycleEndgameSourceCaptureTests(unittest.TestCase):
                 RUNTIME_SEED_LINEAGE_ID,
             )
 
-    def test_arbitrary_356_without_two_complete_prior_cycles_is_red(self) -> None:
+    def test_empty_terminal_history_uses_current_cycle_identity(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            receipt = capture_cross_cycle_endgame_source_checkpoint_v1(
+                FakeCaptureService(
+                    root, maturity=empty_history_maturity_response()
+                ),
+                prefix_manifest=make_prefix(root),
+                capture_input_root=root / "capture-input",
+                receipt_path=root / "receipt.json",
+                completed_manifest_path=root / "manifest.json",
+                registry_checkpoint_root=root / "registry-input",
+                registry_path=root / "registry.json",
+                expected_owner_character_id=OWNER,
+                expected_date_raw=DATE_RAW,
+                runtime_capture_lineage=capture_lineage(),
+                timeout_seconds=1,
+                poll_interval_seconds=0,
+            )
+        maturity = receipt["source_receipt"]["maturity_provider_proof"]
+        self.assertEqual(maturity["history_status"], "empty")
+        self.assertEqual(maturity["history_count"], 0)
+        self.assertEqual(maturity["cycle_serial"], 5)
+        self.assertTrue(maturity["third_cycle_source_ready"])
+
+    def test_inconsistent_history_or_case_identity_is_red(self) -> None:
         mutations = {
             "wrong_status": lambda value: value["history"].__setitem__(
                 "status", "empty"

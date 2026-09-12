@@ -51,6 +51,124 @@ def _positive_int(value: object, label: str) -> int:
     return value
 
 
+def _typed_available(group: object, key: str) -> object | None:
+    field = group.get(key) if isinstance(group, Mapping) else None
+    if not (
+        isinstance(field, Mapping)
+        and field.get("status") == "available"
+        and field.get("unavailable_reason") is None
+    ):
+        return None
+    return field.get("value")
+
+
+def _restore_owner_after_post_save_retry(
+    service: object,
+    initial: Mapping[str, object],
+    *,
+    expected_owner_character_id: int,
+    expected_date_raw: int,
+    request_nonce: str,
+) -> tuple[Mapping[str, object], dict[str, object] | None]:
+    played = initial.get("played_character")
+    current_player = (
+        played.get("character_id") if isinstance(played, Mapping) else None
+    )
+    if current_player == expected_owner_character_id:
+        return initial, None
+    revision = initial.get("revision")
+    if not (
+        initial.get("paused") is True
+        and initial.get("map_ready") is True
+        and initial.get("date_raw") == expected_date_raw
+        and initial.get("active_event") is None
+        and isinstance(current_player, int)
+        and not isinstance(current_player, bool)
+        and current_player > 0
+        and isinstance(revision, int)
+        and not isinstance(revision, bool)
+        and revision >= 0
+    ):
+        raise EndgameSourceActionError(
+            "source retry is not on the paused post-save subject frame",
+            {"result": "RED", "initial_snapshot": initial},
+        )
+    provider = service.query_zhongguo_workforce_collective_snapshot_v1(
+        request_nonce + ".owner-restore",
+        expected_revision=revision,
+        owner_character_id=expected_owner_character_id,
+    )
+    al_case = provider.get("al_case") if isinstance(provider, Mapping) else None
+    cycle_serial = _typed_available(al_case, "cycle_serial")
+    case_serial = _typed_available(al_case, "case_serial")
+    if not (
+        isinstance(provider, Mapping)
+        and provider.get("status") == "available"
+        and provider.get("player_character_id") == current_player
+        and provider.get("subject_character_id") == current_player
+        and provider.get("requested_owner_character_id")
+        == expected_owner_character_id
+        and _typed_available(al_case, "owner_character_id")
+        == expected_owner_character_id
+        and _typed_available(al_case, "subject_character_id") == current_player
+        and isinstance(cycle_serial, int)
+        and not isinstance(cycle_serial, bool)
+        and cycle_serial >= 3
+        and isinstance(case_serial, int)
+        and not isinstance(case_serial, bool)
+        and case_serial > 0
+        and _typed_available(al_case, "state") == 1
+        and _typed_available(al_case, "active") is True
+    ):
+        raise EndgameSourceActionError(
+            "source retry subject is not the expected active Workforce case",
+            {"result": "RED", "provider": provider},
+        )
+    switch = service.set_player_character_v1(
+        expected_owner_character_id,
+        expected_revision=revision,
+    )
+    restored = service.snapshot()
+    restored_played = (
+        restored.get("played_character")
+        if isinstance(restored, Mapping)
+        else None
+    )
+    restored_event = (
+        restored.get("active_event") if isinstance(restored, Mapping) else None
+    )
+    if not (
+        isinstance(switch, Mapping)
+        and switch.get("accepted") is True
+        and switch.get("status") == "switched"
+        and switch.get("from_character_id") == current_player
+        and switch.get("to_character_id") == expected_owner_character_id
+        and isinstance(restored, Mapping)
+        and restored.get("paused") is True
+        and restored.get("map_ready") is True
+        and restored.get("date_raw") == expected_date_raw
+        and isinstance(restored_played, Mapping)
+        and restored_played.get("character_id")
+        == expected_owner_character_id
+        and isinstance(restored_event, Mapping)
+        and isinstance(restored_event.get("instance_id"), int)
+    ):
+        raise EndgameSourceActionError(
+            "source retry could not restore the owner-facing event frame",
+            {"result": "RED", "switch": switch, "snapshot": restored},
+        )
+    return restored, {
+        "result": "GREEN",
+        "kind": "zg361_phase2_endgame_source_owner_restore_v1",
+        "from_character_id": current_player,
+        "to_character_id": expected_owner_character_id,
+        "date_raw": expected_date_raw,
+        "cycle_serial": cycle_serial,
+        "case_serial": case_serial,
+        "switch": dict(switch),
+    }
+
+
 def run_endgame_source_capture(
     service: object,
     *,
@@ -88,6 +206,13 @@ def run_endgame_source_capture(
     action_path = directory / "endgame-source-action.json"
     entry_path = directory / "endgame-source-production-entry.json"
     initial = service.snapshot()
+    initial, owner_restore = _restore_owner_after_post_save_retry(
+        service,
+        initial,
+        expected_owner_character_id=expected_owner_character_id,
+        expected_date_raw=target_date,
+        request_nonce=request_nonce,
+    )
     played = initial.get("played_character") if isinstance(initial, Mapping) else None
     initial_player = (
         played.get("character_id") if isinstance(played, Mapping) else None
@@ -133,6 +258,7 @@ def run_endgame_source_capture(
         "fixture_used": False,
         "console_used": False,
         "video_lock_touched": False,
+        "owner_restore": owner_restore,
         "failure_reason": None,
     }
     _write(action_path, evidence)
