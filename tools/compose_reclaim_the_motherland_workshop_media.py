@@ -19,6 +19,11 @@ EXPECTED_SIZE = (2560, 1440)
 QUALITY = 90
 PROJECTIONS = (
     (
+        "07_loyalty_summary.png",
+        "00_divided_hearts_live.jpg",
+        (300, 180, 2260, 1280),
+    ),
+    (
         "08_later_dynasty_character.png",
         "01_later_dynasty_live.jpg",
         (0, 0, 1500, 1050),

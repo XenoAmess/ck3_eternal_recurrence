@@ -1,7 +1,7 @@
 ﻿l_polish:
  rule_rmtm_hegemon_fate:0 "Los chińskiego hegemona"
  setting_rmtm_reclaim_the_motherland:0 "Odzyskać ojczyste ziemie"
- setting_rmtm_reclaim_the_motherland_desc:0 "Gdy hegemonia chińska wkracza w Erę Władców Wojennych, dawny hegemon traci Mandat Niebios i hegemonię chińską, lecz zachowuje wszystkie osobiście posiadane domeny i inne tytuły. Bezpośredni wasale popierający hegemona pozostają lojalni, podczas gdy pozostali rozpraszają się w zamęcie. Pozbawiona ziem de iure hegemonia Późniejszej Dynastii podtrzymuje linię dynastyczną."
+ setting_rmtm_reclaim_the_motherland_desc:0 "Gdy hegemonia chińska wkracza w Erę Władców Wojennych, dawny hegemon traci Mandat Niebios i hegemonię chińską, lecz zachowuje wszystkie osobiście posiadane domeny i inne tytuły. Bezpośredni wasale popierający hegemona decydują o pozostaniu zgodnie z Wyborem stronników hegemona, podczas gdy pozostali rozpraszają się w zamęcie. Pozbawiona ziem de iure hegemonia Późniejszej Dynastii podtrzymuje linię dynastyczną."
  setting_rmtm_vanilla_shattering:0 "Pierwotne rozbicie"
  setting_rmtm_vanilla_shattering_desc:0 "Chiński hegemon i jego wasale podlegają pierwotnym zasadom Ery Władców Wojennych."
  rule_rmtm_pro_hegemon_choice:0 "Wybór lojalistów"

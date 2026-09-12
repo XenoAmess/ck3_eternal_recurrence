@@ -1,7 +1,7 @@
 ﻿l_simp_chinese:
  rule_rmtm_hegemon_fate:0 "中华霸权统治者的命运"
  setting_rmtm_reclaim_the_motherland:0 "重整河山"
- setting_rmtm_reclaim_the_motherland_desc:0 "中华霸权进入群雄割据时，旧天子失去天命与中华霸权，却仍保有亲自持有的领地和其他头衔；尊王派直属封臣继续奉其为主，余众在乱世中各自离散。新立一个不承中华法理的“后＋原朝号”霸权，以续国祚。"
+ setting_rmtm_reclaim_the_motherland_desc:0 "中华霸权进入群雄割据时，旧天子失去天命与中华霸权，却仍保有亲自持有的领地和其他头衔；尊王派直属封臣依照“尊王诸侯的抉择”决定去留，余众在乱世中各自离散。新立一个不承中华法理的“后＋原朝号”霸权，以续国祚。"
  setting_rmtm_vanilla_shattering:0 "群雄割据（原版）"
  setting_rmtm_vanilla_shattering_desc:0 "中华霸权统治者及其封臣完全按照原版群雄割据规则运转。"
  rule_rmtm_pro_hegemon_choice:0 "尊王诸侯的抉择"

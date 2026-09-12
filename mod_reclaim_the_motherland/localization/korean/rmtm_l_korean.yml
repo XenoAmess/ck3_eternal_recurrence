@@ -1,7 +1,7 @@
 ﻿l_korean:
  rule_rmtm_hegemon_fate:0 "중화 패권자의 운명"
  setting_rmtm_reclaim_the_motherland:0 "강산을 되찾다"
- setting_rmtm_reclaim_the_motherland_desc:0 "중화 패권이 군웅할거 시대에 접어들면 옛 천자는 천명과 중화 패권을 잃지만, 본인이 직접 보유한 영지와 다른 작위는 모두 유지합니다. 직속 존왕파 봉신은 계속 충성을 바치고 나머지 제후들은 난세 속에서 흩어집니다. 법리 영토가 없는 ‘후＋원래 왕조명’ 패권을 새로 세워 왕통을 이어갑니다."
+ setting_rmtm_reclaim_the_motherland_desc:0 "중화 패권이 군웅할거 시대에 접어들면 옛 천자는 천명과 중화 패권을 잃지만, 본인이 직접 보유한 영지와 다른 작위는 모두 유지합니다. 직속 존왕파 봉신은 ‘존왕 제후의 선택’ 규칙에 따라 거취를 정하고 나머지 제후들은 난세 속에서 흩어집니다. 법리 영토가 없는 ‘후＋원래 왕조명’ 패권을 새로 세워 왕통을 이어갑니다."
  setting_rmtm_vanilla_shattering:0 "군웅할거(원본)"
  setting_rmtm_vanilla_shattering_desc:0 "중화 패권자와 그 봉신들은 원본 군웅할거 규칙을 그대로 따른다."
  rule_rmtm_pro_hegemon_choice:0 "존왕파 제후의 선택"

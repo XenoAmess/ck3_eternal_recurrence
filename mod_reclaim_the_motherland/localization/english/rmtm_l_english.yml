@@ -1,7 +1,7 @@
 ﻿l_english:
  rule_rmtm_hegemon_fate:0 "Fate of the Chinese Hegemon"
  setting_rmtm_reclaim_the_motherland:0 "Reclaim the Motherland"
- setting_rmtm_reclaim_the_motherland_desc:0 "When the Chinese Hegemony enters the Age of Warlords, the former hegemon loses the Mandate and the Chinese Hegemony but keeps every personally held domain and other title. Direct Pro-Hegemon vassals remain loyal while the rest scatter in the upheaval, and a Later Dynasty hegemony with no de-jure lands carries on the dynastic line."
+ setting_rmtm_reclaim_the_motherland_desc:0 "When the Chinese Hegemony enters the Age of Warlords, the former hegemon loses the Mandate and the Chinese Hegemony but keeps every personally held domain and other title. Direct Pro-Hegemon vassals decide whether to remain under The Choice of the Loyalists, while the rest scatter in the upheaval. A Later Dynasty hegemony with no de-jure lands carries on the dynastic line."
  setting_rmtm_vanilla_shattering:0 "Vanilla Shattering"
  setting_rmtm_vanilla_shattering_desc:0 "The Chinese Hegemon and their vassals follow the original Age of Warlords rules."
  rule_rmtm_pro_hegemon_choice:0 "The Choice of the Loyalists"

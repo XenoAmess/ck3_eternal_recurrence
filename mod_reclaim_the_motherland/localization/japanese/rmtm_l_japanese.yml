@@ -1,7 +1,7 @@
 ﻿l_japanese:
  rule_rmtm_hegemon_fate:0 "中華覇権の行く末"
  setting_rmtm_reclaim_the_motherland:0 "山河を取り戻す"
- setting_rmtm_reclaim_the_motherland_desc:0 "中華覇権が群雄割拠の時代に入ると、旧天子は天命と中華覇権を失うが、直轄領とその他の称号はすべて保持する。尊王派の直属封臣は引き続き忠誠を誓い、その他の諸侯は乱世の中で離散する。法理領土を持たない「後＋元の朝号」の覇権を新設し、国祚をつなぐ。"
+ setting_rmtm_reclaim_the_motherland_desc:0 "中華覇権が群雄割拠の時代に入ると、旧天子は天命と中華覇権を失うが、直轄領とその他の称号はすべて保持する。尊王派の直属封臣は「尊王諸侯の選択」に従って去就を決め、その他の諸侯は乱世の中で離散する。法理領土を持たない「後＋元の朝号」の覇権を新設し、国祚をつなぐ。"
  setting_rmtm_vanilla_shattering:0 "群雄割拠（原版）"
  setting_rmtm_vanilla_shattering_desc:0 "中華覇権の支配者と封臣は、原版の群雄割拠ルールに従う。"
  rule_rmtm_pro_hegemon_choice:0 "尊王派の選択"

@@ -1,7 +1,7 @@
 ﻿l_german:
  rule_rmtm_hegemon_fate:0 "Schicksal des chinesischen Hegemons"
  setting_rmtm_reclaim_the_motherland:0 "Das Reich zurückerobern"
- setting_rmtm_reclaim_the_motherland_desc:0 "Wenn die chinesische Hegemonie ins Zeitalter der Kriegsherren eintritt, verliert der frühere Hegemon das Mandat des Himmels und die chinesische Hegemonie, behält jedoch alle persönlich gehaltenen Ländereien und anderen Titel. Direkte hegemonietreue Vasallen bleiben loyal, während die übrigen in den Wirren eigene Wege gehen. Eine Hegemonie der Späteren Dynastie ohne De-jure-Land führt die Herrscherlinie fort."
+ setting_rmtm_reclaim_the_motherland_desc:0 "Wenn die chinesische Hegemonie ins Zeitalter der Kriegsherren eintritt, verliert der frühere Hegemon das Mandat des Himmels und die chinesische Hegemonie, behält jedoch alle persönlich gehaltenen Ländereien und anderen Titel. Direkte hegemonietreue Vasallen entscheiden nach der Wahl der hegemonietreuen Fürsten über ihren Verbleib, während die übrigen in den Wirren eigene Wege gehen. Eine Hegemonie der Späteren Dynastie ohne De-jure-Land führt die Herrscherlinie fort."
  setting_rmtm_vanilla_shattering:0 "Ursprüngliche Zersplitterung"
  setting_rmtm_vanilla_shattering_desc:0 "Der chinesische Hegemon und seine Vasallen folgen den ursprünglichen Regeln des Zeitalters der Kriegsherren."
  rule_rmtm_pro_hegemon_choice:0 "Die Wahl der Loyalisten"

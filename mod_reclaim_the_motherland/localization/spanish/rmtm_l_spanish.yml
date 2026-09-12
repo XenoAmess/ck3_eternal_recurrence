@@ -1,7 +1,7 @@
 ﻿l_spanish:
  rule_rmtm_hegemon_fate:0 "Destino del hegemón chino"
  setting_rmtm_reclaim_the_motherland:0 "Recuperar la patria"
- setting_rmtm_reclaim_the_motherland_desc:0 "Cuando la Hegemonía china entra en la Era de los Señores de la Guerra, el antiguo hegemón pierde el Mandato del Cielo y la Hegemonía china, pero conserva todos sus dominios personales y sus demás títulos. Los vasallos directos favorables al hegemón permanecen leales, mientras los demás se dispersan en la agitación. Una hegemonía de la Dinastía Posterior sin tierras de iure mantiene la línea dinástica."
+ setting_rmtm_reclaim_the_motherland_desc:0 "Cuando la Hegemonía china entra en la Era de los Señores de la Guerra, el antiguo hegemón pierde el Mandato del Cielo y la Hegemonía china, pero conserva todos sus dominios personales y sus demás títulos. Los vasallos directos favorables al hegemón deciden si permanecen según la Elección de los señores prohegemón, mientras los demás se dispersan en la agitación. Una hegemonía de la Dinastía Posterior sin tierras de iure mantiene la línea dinástica."
  setting_rmtm_vanilla_shattering:0 "Fragmentación original"
  setting_rmtm_vanilla_shattering_desc:0 "El hegemón chino y sus vasallos siguen las reglas originales de la Era de los Señores de la Guerra."
  rule_rmtm_pro_hegemon_choice:0 "La elección de los lealistas"
