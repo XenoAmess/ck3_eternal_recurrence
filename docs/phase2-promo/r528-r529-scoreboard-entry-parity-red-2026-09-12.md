@@ -56,9 +56,11 @@ Focused validation only:
   `0.76s`;
 - `git diff --check`: GREEN.
 
-The internal canonical data-semantics correction triggers a documentation-only
-open_kaishek compatibility sync after the root commit. A fresh DLL is required
-before one bounded R530/R531 verification; the R529 DLL must not be retried.
+Root `8cd9c1fa858709d7ca7b853cf0afe0007bce053d` and open_kaishek
+`85cd1e006a5f10499fa56ae5b49637a86c5556e0` are pushed and synchronized.
+The companion sync is documentation-only because the private canonical bytes
+remain target-owned data. A fresh DLL is required before one bounded R530/R531
+verification; the R529 DLL must not be retried.
 
 ## Evidence
 
