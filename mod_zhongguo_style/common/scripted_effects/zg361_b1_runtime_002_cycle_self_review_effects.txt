@@ -215,9 +215,12 @@ zg361_b1_open_cycle_effect = {
 # the display identity after an unlanded subject is pruned from the live
 # character database, but that stale scope no longer supports variables.
 # R62 proved that `exists = this` remains true for these stale weak scopes.
-# Rebuild the manager-owned list through the engine's Character-safe
-# `is_alive = yes` filter before the first delayed consumer reads any case
-# field. The removed entry is a real review vacancy and must leave the same
+# R492 also proved that a live Character can remain in another manager's
+# persisted list after its one case namespace has moved to a different exact
+# owner/cycle/case. Rebuild both manager-owned lists through the engine's
+# Character-safe `is_alive = yes` filter and the exact active case tuple before
+# the first delayed consumer reads any case field. Every removed entry is a
+# real vacancy from this manager's frozen domain and must leave the same
 # reconstructible counters as a death/C departure that the normal roster
 # audit can still inspect.
 zg361_b1_prune_unavailable_subjects_effect = {
@@ -240,7 +243,26 @@ zg361_b1_prune_unavailable_subjects_effect = {
 				change_variable = { name = zg361_b1_roster_before_prune_n add = 1 }
 			}
 			if = {
-				limit = { is_alive = yes }
+				limit = {
+					is_alive = yes
+					trigger_if = {
+						limit = {
+							has_variable = zg361_b1_case_owner
+							has_variable = zg361_b1_case_subject
+							has_variable = zg361_b1_cycle_serial
+							has_variable = zg361_b1_case_serial
+							has_variable = zg361_b1_case_active
+							has_variable = zg361_b1_roster_included
+						}
+						var:zg361_b1_case_owner = scope:zg361_b1_prune_manager
+						var:zg361_b1_case_subject = this
+						var:zg361_b1_cycle_serial = scope:zg361_b1_prune_manager.var:zg361_b1_manager_cycle_serial
+						var:zg361_b1_case_serial = scope:zg361_b1_prune_manager.var:zg361_b1_manager_case_serial
+						var:zg361_b1_case_active = 1
+						var:zg361_b1_roster_included = 1
+					}
+					trigger_else = { always = no }
+				}
 				save_temporary_scope_as = zg361_b1_available_subject
 				scope:zg361_b1_prune_manager = {
 					add_to_variable_list = {
@@ -291,7 +313,26 @@ zg361_b1_prune_unavailable_subjects_effect = {
 		}
 		every_in_list = {
 			variable = zg361_b1_processing_subjects
-			limit = { is_alive = yes }
+			limit = {
+				is_alive = yes
+				trigger_if = {
+					limit = {
+						has_variable = zg361_b1_case_owner
+						has_variable = zg361_b1_case_subject
+						has_variable = zg361_b1_cycle_serial
+						has_variable = zg361_b1_case_serial
+						has_variable = zg361_b1_case_active
+						has_variable = zg361_b1_roster_included
+					}
+					var:zg361_b1_case_owner = scope:zg361_b1_prune_manager
+					var:zg361_b1_case_subject = this
+					var:zg361_b1_cycle_serial = scope:zg361_b1_prune_manager.var:zg361_b1_manager_cycle_serial
+					var:zg361_b1_case_serial = scope:zg361_b1_prune_manager.var:zg361_b1_manager_case_serial
+					var:zg361_b1_case_active = 1
+					var:zg361_b1_roster_included = 1
+				}
+				trigger_else = { always = no }
+			}
 			save_temporary_scope_as = zg361_b1_available_processing_subject
 			scope:zg361_b1_prune_manager = {
 				add_to_variable_list = {
