@@ -20,6 +20,12 @@
   （启动器约定俗成按 mod 根目录找此文件名，同其他 dev mod）；descriptor 里 `picture="thumbnail.png"`
 - 原版工坊描述维护在 `workshop/description.bbcode`；README 全量图、工坊精简图和六张 Steam media strip 的来源、裁切和 commit-pinned GitHub raw URL 规则见 `workshop/main_screenshots.md`。白绮独立版维护在 `workshop/vivhite_description.bbcode`，主视觉与八张实机图顺序在 `workshop/vivhite_screenshots.md`。“肃清曼荼罗伪信”独立版维护在 `workshop/remove_mandala_description.bbcode`，两张实机图顺序与发布证据在 `workshop/remove_mandala_screenshots.md`。“XenoAmess的体验优化”独立版维护在 `workshop/xenoamess_quality_of_life_description.bbcode`。“重整河山”独立版维护在 `workshop/reclaim_the_motherland_description.bbcode`，三张实机图的来源、开封镜头门禁和顺序在 `workshop/reclaim_the_motherland_screenshots.md`。改完描述到对应物品页「编辑标题与描述」整段替换
 
+## Steam 离线模式与账号占用
+
+- 除非任务确实必须联网（例如上传或更新 Steam Workshop mod），禁止把 Steam 从离线模式切换为在线模式；普通开发、构建、静态检查和 CK3 实机验收默认保持 Steam 离线。
+- 因必要任务临时切换到在线模式后，该联网任务完成或终止时必须第一时间把 Steam 恢复为离线模式，不得让客户端无故保持在线。
+- Steam 处于在线模式时，每次启动 CK3 或其他 Steam 游戏前必须先检查当前账号是否已显示“正在游戏中”或存在其他机器的游戏会话。若账号正在游戏中，视为别的机器正在使用：禁止强行启动、接管或挤下线，以免顶号；停止启动流程并向用户报告。
+
 ## Steam 创意工坊发布 Changelog
 
 - 本仓库内每个独立 mod 产品，每次正式发布或更新到 Steam 创意工坊成功后，都必须编写一份**相对上一公开版本**的 changelog，
