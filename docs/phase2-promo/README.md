@@ -434,4 +434,4 @@ R490 的唯一 gameplay 实例通过 loader/native/exact-mount/error 门后，�
 
 R492 的唯一 gameplay 实例在 120 日内完成 40 次观测，已出现 7 次 publication 和 10 次 final-callback compaction failure，仍保持 B1 active、Central/PP false。这证明失败来自产品状态机，而非观察窗不足。冻结 source 的经理 `29037` 持久 subject 列表有 29 个存活引用，只有 6 个属于当前 `29037/17/17` exact tuple；其余 23 个已属于经理 `29628` 的 case `19/19`。旧 prune 只按存活过滤，使 subject 与 processing 域永久分裂。
 
-最小修复让 subject 和 processing 两个列表统一按 owner、subject、cycle、case、active、roster exact tuple 清理，缺字段 fail closed。B1 runtime normal/optimized 各 `76/76` GREEN，没有额外 CK3 长跑。R491/R492 均已终止，CK3/Operator MCP/端口 `12442` 为零；P1 仍为 `8/9`，P2 继续锁定。旧 v5 receipt 已失效，下一步只生成 v6 与新产品树并执行一次新轮次复验。详见 [R491/R492 外来 roster RED 与修复](r491-r492-stage10-foreign-roster-red-and-fix-2026-09-12.md)。
+最小修复让 subject 和 processing 两个列表统一按 owner、subject、cycle、case、active、roster exact tuple 清理，缺字段 fail closed。B1 runtime normal/optimized 各 `76/76` GREEN，没有额外 CK3 长跑。R491/R492 均已终止，CK3/Operator MCP/端口 `12442` 为零；P1 仍为 `8/9`，P2 继续锁定。旧 v5 receipt 已失效；路径无关的 `ck3_character_scope_offline_v1` 报告和 v6 receipt 已生成并通过生产 validator，下一步只执行一次新轮次复验。详见 [R491/R492 外来 roster RED 与修复](r491-r492-stage10-foreign-roster-red-and-fix-2026-09-12.md)。

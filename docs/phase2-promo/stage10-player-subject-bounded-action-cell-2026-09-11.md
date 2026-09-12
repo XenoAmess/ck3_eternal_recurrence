@@ -33,7 +33,7 @@ AI 上级参加过 B1。Stage10 与公共 opener 都拒绝 AI subject。
 
 ## 启动前 source admission
 
-受管 operator 的 v5 输入已被 R492 证实绑定旧产品树和错误的“仅余时间边界”前提，因此永久失效。下一次只接受待生成的 `zg361_stage10_player_publication_source_v6`；除 v5 的来源约束外，还必须绑定 R492 产品 RED、外来 roster exact-tuple 证据和修复后产品树。收据必须绑定：
+受管 operator 的 v5 输入已被 R492 证实绑定旧产品树和错误的“仅余时间边界”前提，因此永久失效。下一次只接受 `zg361_stage10_player_publication_source_v6`；除 v5 的来源约束外，还绑定 R492 产品 RED、外来 roster exact-tuple 证据和修复后产品树。收据必须绑定：
 
 - `SAV0101`、CK3 `1.19.0.6`、产品树 SHA-256，以及 checkpoint 的绝对路径、大小和 SHA-256；
 - 离线玩家数必须为 `1`，唯一 `played_character` 和 `currently_played_characters` 都必须精确绑定目标 manager；
@@ -103,4 +103,4 @@ R492 在完整 120 日边界内完成 40 次观测，日志已出现 7 次 seaso
 
 冻结 source 中，玩家经理 `29037` 的 `zg361_b1_subjects` 有 29 个存活引用，但只有 6 个属于当前 `owner=29037 / cycle=17 / case=17 / active=1 / roster=1`；其余 23 个已经属于经理 `29628` 的 case `19/19`。旧 prune 只检查 `is_alive`，而 processing 构造按 exact tuple 取 6 个，导致最终数量等式永远不可能成立。
 
-最小修复让 subject 与 processing 两个持久列表都按当前经理的 owner、subject、cycle、case、active、roster exact tuple 清理，字段不可读时 fail closed。B1 runtime normal/optimized 各 `76/76` GREEN；未启动额外 CK3，也未扩大成长跑。v5 已失效，下一步是生成 v6 receipt 和新产品树后只跑一次新轮次。完整证据见 [R491/R492 外来 roster RED 与修复](r491-r492-stage10-foreign-roster-red-and-fix-2026-09-12.md)。
+最小修复让 subject 与 processing 两个持久列表都按当前经理的 owner、subject、cycle、case、active、roster exact tuple 清理，字段不可读时 fail closed。B1 runtime normal/optimized 各 `76/76` GREEN；未启动额外 CK3，也未扩大成长跑。v6 receipt `E363D5EE...ACF8` 已绑定通用角色域报告 `74BF50BB...B328` 与修复后产品树 `C428C42B...B5DC` 并通过无启动 validator。下一步只跑一次新轮次。完整证据见 [R491/R492 外来 roster RED 与修复](r491-r492-stage10-foreign-roster-red-and-fix-2026-09-12.md)。
