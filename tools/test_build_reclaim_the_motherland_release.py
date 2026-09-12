@@ -132,10 +132,14 @@ class BuildReclaimTheMotherlandReleaseTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "mismatch: localization/english"):
             release.verify_manifest(staging, manifest_path)
 
-    def test_workshop_descriptor_allows_only_one_final_id_line(self) -> None:
+    def test_workshop_descriptor_accepts_native_or_launcher_form(self) -> None:
         item_id = "9999999999"
         staging, manifest_path, _, _ = self.build(workshop_item_id=item_id)
         descriptor = staging / "descriptor.mod"
+        self.assertEqual(
+            release.verify_manifest(staging, manifest_path, workshop_cache=True),
+            len(release.RUNTIME_FILES),
+        )
         canonical = descriptor.read_bytes().replace(b"\r\n", b"\n").rstrip(b"\n")
         descriptor.write_bytes(
             canonical.replace(b"\n", b"\r\n")

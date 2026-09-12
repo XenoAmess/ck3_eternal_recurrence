@@ -503,6 +503,11 @@ def workshop_descriptor_matches(
     path: Path, entry: dict[str, object], workshop_item_id: str
 ) -> bool:
     data = Path(path).read_bytes()
+    # Direct Steamworks uploads preserve the canonical inner descriptor, while
+    # Paradox Launcher uploads append one remote_file_id line.  A fresh cache
+    # may therefore contain either exact representation of the same release.
+    if len(data) == entry["size"] and sha256_bytes(data) == entry["sha256"]:
+        return True
     if re.search(rb"\r(?!\n)", data):
         return False
     separators = re.findall(rb"\r\n|\n", data)
