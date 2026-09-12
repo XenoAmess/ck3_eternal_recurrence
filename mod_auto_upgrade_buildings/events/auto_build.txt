@@ -28,7 +28,7 @@ auto_build.0004 = {
     immediate = {
         hidden_effect = {
             save_scope_as = aub_payer
-            # 仅遍历当前玩家直接持有的普通、未出租地产。
+            # 仅遍历当前玩家直接持有、未出租且能承载普通省份建筑的地产。
             every_directly_owned_province = {
                 limit = {
                     has_ongoing_construction = no
@@ -37,10 +37,13 @@ auto_build.0004 = {
                         has_holding_type = castle_holding
                         has_holding_type = city_holding
                         has_holding_type = church_holding
+                        has_holding_type = tribal_holding
+                        has_holding_type = temple_citadel_holding
                     }
                 }
                 province_owner = { save_scope_as = holder }
                 province_owner = { save_scope_as = build_owner }
+                county = { save_scope_as = county }
                 aub_upgrade_all_supported_buildings_effect = yes
             }
         }

@@ -26,6 +26,7 @@ RUNTIME_FILES = frozenset(
     {
         "common/decisions/build_decision.txt",
         "common/scripted_effects/build_scripted_effect.txt",
+        "common/scripted_triggers/aub_building_triggers.txt",
         "descriptor.mod",
         "events/auto_build.txt",
         "localization/english/auto_build_l_english.yml",

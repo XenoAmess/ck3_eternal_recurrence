@@ -73,7 +73,7 @@ class BuildAutoUpgradeBuildingsReleaseTests(unittest.TestCase):
         loaded = json.loads(manifest_path.read_text(encoding="utf-8"))
         self.assertEqual(loaded, manifest)
         self.assertEqual(loaded["product_id"], release.PRODUCT_ID)
-        self.assertEqual(loaded["mod_version"], "1.19.0")
+        self.assertEqual(loaded["mod_version"], "2.0.0")
         self.assertIsNone(loaded["git_tag"])
         self.assertIsNone(loaded["workshop_item_id"])
 
@@ -93,7 +93,7 @@ class BuildAutoUpgradeBuildingsReleaseTests(unittest.TestCase):
             self.root / "canonical" / release.PRODUCT_ID,
             REVISION,
             item_id,
-            git_tag=release.product_tag("1.19.0"),
+            git_tag=release.product_tag("2.0.0"),
         )
         self.assertEqual(manifest["workshop_item_id"], item_id)
         cache = self.root / "cache"

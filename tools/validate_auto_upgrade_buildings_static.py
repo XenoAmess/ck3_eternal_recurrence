@@ -10,8 +10,9 @@ import sys
 from pathlib import Path
 
 import build_auto_upgrade_buildings_release as builder
+import extract_auto_upgrade_buildings as extractor
 import gen_auto_upgrade_buildings as generator
-from auto_upgrade_buildings_data import CHAINS
+from auto_upgrade_buildings_data import CHAINS, EDGES, EXCLUDED_EDGES, SNAPSHOT
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -19,7 +20,7 @@ MOD = ROOT / "mod_auto_upgrade_buildings"
 FIXTURE = ROOT / "tools" / "fixtures" / "auto_upgrade_buildings_acceptance"
 WORKSHOP_DESCRIPTION = ROOT / "workshop" / "auto_upgrade_buildings_description.bbcode"
 DEFAULT_GAME_ROOT = Path(
-    r"D:\Program Files (x86)\Steam\steamapps\common\Crusader Kings III\game"
+    r"C:\SteamLibrary\steamapps\common\Crusader Kings III\game"
 )
 LOC_KEYS = {
     "enable_auto_build",
@@ -116,46 +117,27 @@ def extract_block(value: str, name: str) -> str | None:
 
 def validate_vanilla(game_root: Path) -> tuple[list[str], bool]:
     buildings = game_root / "common" / "buildings"
-    innovations = game_root / "common" / "culture" / "innovations"
-    if not buildings.is_dir() or not innovations.is_dir():
+    holdings = game_root / "common" / "holdings"
+    if not buildings.is_dir() or not holdings.is_dir():
         return [], False
-    errors: list[str] = []
-    building_texts = [
-        path.read_text(encoding="utf-8-sig", errors="strict")
-        for path in sorted(buildings.glob("*.txt"))
-    ]
-    innovation_text = "\n".join(
-        path.read_text(encoding="utf-8-sig", errors="strict")
-        for path in sorted(innovations.rglob("*.txt"))
-    )
-    known_innovations = set(
-        re.findall(r"(?m)^(innovation_[A-Za-z0-9_]+)\s*=\s*\{", innovation_text)
-    )
-    for item in CHAINS:
-        for index, tier in enumerate(range(1, 9)):
-            name = f"{item.name}_{tier:02d}"
-            matches = [block for value in building_texts if (block := extract_block(value, name))]
-            if len(matches) != 1:
-                errors.append(f"vanilla building definition count is {len(matches)}: {name}")
-                continue
-            if tier >= 2:
-                expected_cost = (
-                    f"{item.cost_family}_building_tier_{item.cost_tiers[index - 1]}_cost"
-                )
-                if re.search(rf"(?m)^\s*cost_gold\s*=\s*{re.escape(expected_cost)}\s*$", matches[0]) is None:
-                    errors.append(f"vanilla cost drift: {name} != {expected_cost}")
-        for gate in item.innovations:
-            for innovation in gate or ():
-                if innovation not in known_innovations:
-                    errors.append(f"vanilla innovation missing: {innovation}")
-    return list(dict.fromkeys(errors)), True
+    try:
+        current = extractor.render_snapshot(extractor.build_snapshot(game_root))
+        frozen = SNAPSHOT.read_bytes()
+    except (OSError, UnicodeError, extractor.ExtractionError) as error:
+        return [f"installed vanilla extraction failed: {error}"], True
+    if current != frozen:
+        return [
+            "installed vanilla building graph differs from the frozen CK3 1.19.0.6 snapshot; "
+            "run extract_auto_upgrade_buildings.py and review the full inventory diff"
+        ], True
+    return [], True
 
 
 def validate(game_root: Path = DEFAULT_GAME_ROOT) -> tuple[list[str], bool]:
     errors = builder.source_errors(MOD)
     descriptor = text("descriptor.mod").replace("\r\n", "\n")
     expected_descriptor = (
-        'version="1.19.0"\n'
+        'version="2.0.0"\n'
         'tags={\n\t"Balance"\n}\n'
         'name="自动升级建筑（XenoAmess维护版）"\n'
         'supported_version="1.19.0.6"\n'
@@ -166,15 +148,18 @@ def validate(game_root: Path = DEFAULT_GAME_ROOT) -> tuple[list[str], bool]:
     decisions = text("common/decisions/build_decision.txt")
     events = text("events/auto_build.txt")
     effects = text("common/scripted_effects/build_scripted_effect.txt")
+    triggers = text("common/scripted_triggers/aub_building_triggers.txt")
     for relative, value in (
         ("common/decisions/build_decision.txt", decisions),
         ("events/auto_build.txt", events),
         ("common/scripted_effects/build_scripted_effect.txt", effects),
+        ("common/scripted_triggers/aub_building_triggers.txt", triggers),
     ):
         if not balanced_braces(value):
             errors.append(f"unbalanced Clausewitz text: {relative}")
-    if (MOD / "common/scripted_effects/build_scripted_effect.txt").read_bytes() != generator.render().encode("utf-8-sig"):
-        errors.append("generated scripted effects are stale")
+    for path, expected in generator.generated_outputs().items():
+        if not path.is_file() or path.read_bytes() != expected:
+            errors.append(f"generated runtime is stale: {path.relative_to(ROOT).as_posix()}")
 
     if re.findall(r"(?m)^auto_build\.(\d+)\s*=\s*\{", events) != [
         "0003",
@@ -182,10 +167,10 @@ def validate(game_root: Path = DEFAULT_GAME_ROOT) -> tuple[list[str], bool]:
         "0005",
     ]:
         errors.append("event inventory must preserve compatibility 0003/0004 and unique loop 0005")
-    combined = decisions + "\n" + events + "\n" + effects
+    combined = decisions + "\n" + events + "\n" + effects + "\n" + triggers
     if "AUBT:" in combined or "aubt_" in combined or "aubt." in combined:
         errors.append("acceptance fixture markers leaked into production runtime")
-    if "prev" in combined:
+    if "prev" in decisions + "\n" + events + "\n" + effects:
         errors.append("implicit prev scope is forbidden")
     if re.search(r"(?<!directly_owned_)every_province\s*=", events):
         errors.append("global every_province scan is forbidden")
@@ -198,6 +183,9 @@ def validate(game_root: Path = DEFAULT_GAME_ROOT) -> tuple[list[str], bool]:
         "has_holding_type = castle_holding",
         "has_holding_type = city_holding",
         "has_holding_type = church_holding",
+        "has_holding_type = tribal_holding",
+        "has_holding_type = temple_citadel_holding",
+        "county = { save_scope_as = county }",
         "scope = none",
         "any_player = {",
         "every_player = {",
@@ -219,8 +207,30 @@ def validate(game_root: Path = DEFAULT_GAME_ROOT) -> tuple[list[str], bool]:
         errors.append("unreferenced upstream auto_build.0001 must not be restored")
     if effects.count("aub_start_global_loop_effect = {") != 1:
         errors.append("global loop seed effect must be defined exactly once")
-    if effects.count("aub_upgrade_") != 43 * 2 + 1:
+    if effects.count("aub_upgrade_chain_") != len(CHAINS) * 2:
         errors.append("generated building chain call/definition inventory drifted")
+    if effects.count("aub_can_upgrade_to_") != len(EDGES):
+        errors.append("generated qualification-trigger call inventory drifted")
+    if triggers.count("aub_can_upgrade_to_") != len(EDGES):
+        errors.append("generated qualification-trigger definition inventory drifted")
+    for edge in EDGES:
+        if effects.count(f"\n\t\t\thas_building = {edge.source}\n") != 1:
+            errors.append(f"generated source edge inventory drifted: {edge.source}")
+        if effects.count(f"add_building = {edge.target}") != 1:
+            errors.append(f"generated target edge inventory drifted: {edge.target}")
+        if triggers.count(f"aub_can_upgrade_to_{edge.target}_trigger = {{") != 1:
+            errors.append(f"generated target gate inventory drifted: {edge.target}")
+    for edge in EXCLUDED_EDGES:
+        if edge.source in effects or edge.target in effects or edge.source in triggers or edge.target in triggers:
+            errors.append(f"Great Project edge leaked into production: {edge.source} -> {edge.target}")
+    for forbidden in (
+        "domicile",
+        "great_project",
+        "mandala_capital_",
+        "has_ongoing_construction = yes",
+    ):
+        if forbidden in effects or forbidden in triggers:
+            errors.append(f"out-of-scope runtime token leaked into generated data: {forbidden}")
 
     languages = (
         ("english", "l_english"),

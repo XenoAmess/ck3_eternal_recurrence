@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Generate the maintained Auto Upgrade Buildings scripted effects."""
+"""Generate all CK3 1.19.0.6 Auto Upgrade Buildings runtime branches."""
 
 from __future__ import annotations
 
@@ -7,60 +7,101 @@ import argparse
 import sys
 from pathlib import Path
 
-from auto_upgrade_buildings_data import CHAINS, BuildingChain
+from auto_upgrade_buildings_data import CHAINS, EDGES, BuildingChain, BuildingEdge
 
 
 ROOT = Path(__file__).resolve().parents[1]
-OUTPUT = (
-    ROOT
-    / "mod_auto_upgrade_buildings"
-    / "common"
-    / "scripted_effects"
-    / "build_scripted_effect.txt"
-)
+MOD = ROOT / "mod_auto_upgrade_buildings"
+EFFECT_OUTPUT = MOD / "common" / "scripted_effects" / "build_scripted_effect.txt"
+TRIGGER_OUTPUT = MOD / "common" / "scripted_triggers" / "aub_building_triggers.txt"
 
 
-def cost_token(item: BuildingChain, index: int) -> str:
-    return f"{item.cost_family}_building_tier_{item.cost_tiers[index]}_cost"
+def _indent_body(value: str, tabs: int) -> list[str]:
+    prefix = "\t" * tabs
+    return [prefix + line for line in value.splitlines()]
 
 
-def render_chain(item: BuildingChain) -> list[str]:
-    lines = [f"# {item.label}", f"aub_upgrade_{item.name}_effect = {{"]
-    for index, target_tier in enumerate(range(2, 9)):
+def trigger_name(edge: BuildingEdge) -> str:
+    return f"aub_can_upgrade_to_{edge.target}_trigger"
+
+
+def chain_effect_name(chain: BuildingChain) -> str:
+    return f"aub_upgrade_chain_{chain.root}_effect"
+
+
+def render_triggers() -> str:
+    lines = [
+        "# GENERATED FILE. DO NOT EDIT.",
+        "# Source: tools/auto_upgrade_buildings_1_19_0_6.json",
+        "# Every trigger reproduces the target building's four vanilla construction gates.",
+        "",
+    ]
+    for edge in EDGES:
+        lines.append(f"{trigger_name(edge)} = {{")
+        if not edge.gates:
+            lines.append("\talways = yes")
+        else:
+            for field, body in edge.gates:
+                lines.append(f"\t# vanilla {field}")
+                lines.extend(_indent_body(body, 1))
+        lines.extend(["}", ""])
+    return "\n".join(lines)
+
+
+def _resource_limits(edge: BuildingEdge) -> list[str]:
+    resources = dict(edge.resources)
+    lines = [
+        "\t\t\tOR = {",
+        f"\t\t\t\tscope:aub_payer = {{ treasury >= {resources['gold']} }}",
+        f"\t\t\t\tscope:aub_payer = {{ gold >= {resources['gold']} }}",
+        "\t\t\t}",
+    ]
+    if "prestige" in resources:
+        lines.append(
+            f"\t\t\tscope:aub_payer = {{ prestige >= {resources['prestige']} }}"
+        )
+    if "piety" in resources:
+        lines.append(f"\t\t\tscope:aub_payer = {{ piety >= {resources['piety']} }}")
+    return lines
+
+
+def _payment_call(edge: BuildingEdge) -> str:
+    resources = dict(edge.resources)
+    arguments = [f"GOLD = {resources['gold']}"]
+    if "prestige" in resources:
+        arguments.append(f"PRESTIGE = {resources['prestige']}")
+        effect = "aub_pay_gold_prestige_building_cost_effect"
+    elif "piety" in resources:
+        arguments.append(f"PIETY = {resources['piety']}")
+        effect = "aub_pay_gold_piety_building_cost_effect"
+    else:
+        effect = "aub_pay_gold_building_cost_effect"
+    return f"{effect} = {{ {' '.join(arguments)} }}"
+
+
+def render_chain(chain: BuildingChain) -> list[str]:
+    lines = [
+        f"# {chain.root}: {len(chain.edges)} frozen upgrade edge(s)",
+        f"{chain_effect_name(chain)} = {{",
+    ]
+    for index, edge in enumerate(chain.edges):
         keyword = "if" if index == 0 else "else_if"
-        cost = cost_token(item, index)
         lines.extend(
             [
                 f"\t{keyword} = {{",
                 "\t\tlimit = {",
-                "\t\t\tOR = {",
-                f"\t\t\t\tscope:aub_payer = {{ treasury >= {cost} }}",
-                f"\t\t\t\tscope:aub_payer = {{ gold >= {cost} }}",
-                "\t\t\t}",
-                f"\t\t\thas_building = {item.name}_{target_tier - 1:02d}",
+                f"\t\t\thas_building = {edge.source}",
+                f"\t\t\t{trigger_name(edge)} = yes",
             ]
         )
-        innovations = item.innovations[index]
-        if innovations:
-            lines.append("\t\t\tscope:aub_payer.culture = {")
-            lines.extend(f"\t\t\t\thas_innovation = {value}" for value in innovations)
-            lines.append("\t\t\t}")
-        level = item.holding_levels[index]
-        if level is not None:
-            lines.append(
-                f"\t\t\tbuilding_requirement_castle_city_church = {{ LEVEL = {level:02d} }}"
-            )
-        if item.payer_triggers:
-            lines.append("\t\t\tscope:aub_payer = {")
-            lines.extend(f"\t\t\t\t{value}" for value in item.payer_triggers)
-            lines.append("\t\t\t}")
+        lines.extend(_resource_limits(edge))
         lines.extend(
             [
                 "\t\t}",
-                f"\t\tadd_building = {item.name}_{target_tier:02d}",
+                f"\t\tadd_building = {edge.target}",
                 "\t\tif = {",
-                f"\t\t\tlimit = {{ has_building = {item.name}_{target_tier:02d} }}",
-                f"\t\t\taub_pay_building_cost_effect = {{ COST = {cost} }}",
+                f"\t\t\tlimit = {{ has_building = {edge.target} }}",
+                f"\t\t\t{_payment_call(edge)}",
                 "\t\t}",
                 "\t}",
             ]
@@ -69,10 +110,10 @@ def render_chain(item: BuildingChain) -> list[str]:
     return lines
 
 
-def render() -> str:
+def render_effects() -> str:
     lines = [
         "# GENERATED FILE. DO NOT EDIT.",
-        "# Source: tools/auto_upgrade_buildings_data.py",
+        "# Source: tools/auto_upgrade_buildings_1_19_0_6.json",
         "",
         "aub_start_global_loop_effect = {",
         "\tif = {",
@@ -82,26 +123,46 @@ def render() -> str:
         "\t}",
         "}",
         "",
-        "aub_pay_building_cost_effect = {",
+        "aub_pay_gold_building_cost_effect = {",
         "\tif = {",
-        "\t\tlimit = { scope:aub_payer = { treasury >= $COST$ } }",
-        "\t\tscope:aub_payer = { remove_short_term_treasury = $COST$ }",
+        "\t\tlimit = { scope:aub_payer = { treasury >= $GOLD$ } }",
+        "\t\tscope:aub_payer = { remove_short_term_treasury = $GOLD$ }",
         "\t}",
         "\telse = {",
-        "\t\tscope:aub_payer = { remove_short_term_gold = $COST$ }",
+        "\t\tscope:aub_payer = { remove_short_term_gold = $GOLD$ }",
+        "\t}",
+        "}",
+        "",
+        "aub_pay_gold_prestige_building_cost_effect = {",
+        "\taub_pay_gold_building_cost_effect = { GOLD = $GOLD$ }",
+        "\tscope:aub_payer = {",
+        "\t\tadd_prestige = {",
+        "\t\t\tvalue = $PRESTIGE$",
+        "\t\t\tmultiply = -1",
+        "\t\t}",
+        "\t}",
+        "}",
+        "",
+        "aub_pay_gold_piety_building_cost_effect = {",
+        "\taub_pay_gold_building_cost_effect = { GOLD = $GOLD$ }",
+        "\tscope:aub_payer = {",
+        "\t\tadd_piety = {",
+        "\t\t\tvalue = $PIETY$",
+        "\t\t\tmultiply = -1",
+        "\t\t}",
         "\t}",
         "}",
         "",
     ]
-    for item in CHAINS:
-        lines.extend(render_chain(item))
-    lines.extend(["aub_upgrade_all_supported_buildings_effect = {"])
-    for item in CHAINS:
+    for chain in CHAINS:
+        lines.extend(render_chain(chain))
+    lines.append("aub_upgrade_all_supported_buildings_effect = {")
+    for chain in CHAINS:
         lines.extend(
             [
                 "\tif = {",
-                f"\t\tlimit = {{ has_building_or_higher = {item.name}_01 }}",
-                f"\t\taub_upgrade_{item.name}_effect = yes",
+                f"\t\tlimit = {{ has_building_or_higher = {chain.root} }}",
+                f"\t\t{chain_effect_name(chain)} = yes",
                 "\t}",
             ]
         )
@@ -109,20 +170,36 @@ def render() -> str:
     return "\n".join(lines)
 
 
+def render() -> str:
+    """Backward-compatible name for callers validating the effect output."""
+    return render_effects()
+
+
+def generated_outputs() -> dict[Path, bytes]:
+    return {
+        EFFECT_OUTPUT: render_effects().encode("utf-8-sig"),
+        TRIGGER_OUTPUT: render_triggers().encode("utf-8-sig"),
+    }
+
+
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--check", action="store_true")
     args = parser.parse_args(argv)
-    expected = render().encode("utf-8-sig")
+    outputs = generated_outputs()
     if args.check:
-        if not OUTPUT.is_file() or OUTPUT.read_bytes() != expected:
-            print(f"STALE GENERATED FILE: {OUTPUT}", file=sys.stderr)
+        stale = [path for path, expected in outputs.items() if not path.is_file() or path.read_bytes() != expected]
+        if stale:
+            for path in stale:
+                print(f"STALE GENERATED FILE: {path}", file=sys.stderr)
             return 1
-        print(f"AUTO UPGRADE BUILDINGS GENERATOR OK: {len(CHAINS)} chains")
+        print(f"AUTO UPGRADE BUILDINGS GENERATOR OK: {len(CHAINS)} chains, {len(EDGES)} edges")
         return 0
-    OUTPUT.parent.mkdir(parents=True, exist_ok=True)
-    OUTPUT.write_bytes(expected)
-    print(f"Generated {OUTPUT} ({len(CHAINS)} chains)")
+    for path, expected in outputs.items():
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_bytes(expected)
+        print(f"Generated {path}")
+    print(f"Inventory: {len(CHAINS)} chains, {len(EDGES)} edges")
     return 0
 
 
