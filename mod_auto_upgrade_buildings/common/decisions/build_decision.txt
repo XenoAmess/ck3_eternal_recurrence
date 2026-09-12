@@ -16,8 +16,53 @@
         is_ai = no
     }
 
+    widget = {
+        gui = "decision_view_widget_option_list_generic"
+        controller = decision_option_list_controller
+        decision_to_second_step_button = enable_auto_build_choose_funding_button
+        show_from_start = yes
+
+        item = {
+            value = aub_funding_treasury_only_choice
+            localization = aub_funding_treasury_only
+            current_description = aub_funding_treasury_only_desc
+            is_valid = { always = yes }
+            ai_chance = { value = 0 }
+        }
+        item = {
+            value = aub_funding_personal_only_choice
+            localization = aub_funding_personal_only
+            current_description = aub_funding_personal_only_desc
+            is_valid = { always = yes }
+            ai_chance = { value = 0 }
+        }
+        item = {
+            value = aub_funding_treasury_first_choice
+            localization = aub_funding_treasury_first
+            current_description = aub_funding_treasury_first_desc
+            is_valid = { always = yes }
+            is_default = yes
+            ai_chance = { value = 100 }
+        }
+    }
+
     effect = {
         custom_tooltip = enable_auto_build_text
+        remove_character_flag = aub_funding_treasury_only
+        remove_character_flag = aub_funding_personal_only
+        if = {
+            limit = { scope:aub_funding_treasury_only_choice = yes }
+            add_character_flag = aub_funding_treasury_only
+            custom_tooltip = aub_funding_treasury_only_desc
+        }
+        else_if = {
+            limit = { scope:aub_funding_personal_only_choice = yes }
+            add_character_flag = aub_funding_personal_only
+            custom_tooltip = aub_funding_personal_only_desc
+        }
+        else = {
+            custom_tooltip = aub_funding_treasury_first_desc
+        }
         add_character_flag = enable_auto_build
         # 经旧存档兼容入口建立或复用唯一的全局循环。
         trigger_event = {
@@ -54,6 +99,8 @@ disable_auto_build = {
     effect = {
 		custom_tooltip = disable_auto_build_text
         remove_character_flag = enable_auto_build
+        remove_character_flag = aub_funding_treasury_only
+        remove_character_flag = aub_funding_personal_only
     }
     
     ai_potential = {

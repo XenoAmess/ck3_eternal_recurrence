@@ -2,6 +2,31 @@
 # Source: tools/auto_upgrade_buildings_1_19_0_6.json
 # Every trigger reproduces the target building's four vanilla construction gates.
 
+aub_can_pay_gold_building_cost_trigger = {
+	trigger_if = {
+		limit = { scope:aub_payer = { has_character_flag = aub_funding_treasury_only } }
+		scope:aub_payer = {
+			has_treasury = yes
+			treasury >= $GOLD$
+		}
+	}
+	trigger_else_if = {
+		limit = { scope:aub_payer = { has_character_flag = aub_funding_personal_only } }
+		scope:aub_payer = { gold >= $GOLD$ }
+	}
+	trigger_else = {
+		scope:aub_payer = {
+			OR = {
+				AND = {
+					has_treasury = yes
+					treasury >= $GOLD$
+				}
+				gold >= $GOLD$
+			}
+		}
+	}
+}
+
 aub_can_upgrade_to_alamut_castle_02_trigger = {
 	# vanilla can_construct
 	scope:holder = {

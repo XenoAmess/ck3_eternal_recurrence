@@ -6,44 +6,10 @@
 
 aubt_start = {
 	effect = {
-		debug_log = "AUBT: TEST BEGIN source-live"
 		random_player = {
-			set_global_variable = { name = aubt_player value = this }
-			# Force a government that actually exposes CK3 1.19's treasury resource.
-			# The disposable fixture switches back to feudal before testing gold fallback.
-			change_government = celestial_government
-			set_variable = { name = aubt_reset_gold value = gold }
-			if = {
-				limit = { var:aubt_reset_gold > 0 }
-				remove_short_term_gold = var:aubt_reset_gold
-			}
-			set_variable = { name = aubt_reset_treasury value = treasury }
-			if = {
-				limit = { var:aubt_reset_treasury > 0 }
-				remove_treasury = var:aubt_reset_treasury
-			}
-			add_gold = 100000
-			add_treasury = 100000
-			set_variable = { name = aubt_gold_before value = gold }
-			set_variable = { name = aubt_treasury_before value = treasury }
-			capital_province = {
-				set_global_variable = { name = aubt_province value = this }
-				if = {
-					limit = { has_building_or_higher = barracks_01 }
-					if = { limit = { has_building = barracks_08 } remove_building = barracks_08 }
-					else_if = { limit = { has_building = barracks_07 } remove_building = barracks_07 }
-					else_if = { limit = { has_building = barracks_06 } remove_building = barracks_06 }
-					else_if = { limit = { has_building = barracks_05 } remove_building = barracks_05 }
-					else_if = { limit = { has_building = barracks_04 } remove_building = barracks_04 }
-					else_if = { limit = { has_building = barracks_03 } remove_building = barracks_03 }
-					else_if = { limit = { has_building = barracks_02 } remove_building = barracks_02 }
-					else = { remove_building = barracks_01 }
-				}
-				add_building = barracks_01
-			}
-			add_character_flag = enable_auto_build
-			aub_start_global_loop_effect = yes
+			# Defer all mutations until one game day has elapsed so the runner can
+			# inspect the real, still-available production decision while paused.
+			trigger_event = { id = aubt.0 days = 1 }
 		}
-		trigger_event = { id = aubt.1 days = 3 }
 	}
 }

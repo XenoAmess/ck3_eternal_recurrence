@@ -1,5 +1,58 @@
 ﻿namespace = aubt
 
+aubt.0 = {
+	type = character_event
+	hidden = yes
+	immediate = {
+		debug_log = "AUBT: TEST BEGIN source-live"
+		set_global_variable = { name = aubt_player value = this }
+		if = {
+			limit = {
+				has_character_flag = enable_auto_build
+				NOT = { has_character_flag = aub_funding_treasury_only }
+				NOT = { has_character_flag = aub_funding_personal_only }
+			}
+			debug_log = "AUBT: TEST PASS native_decision_priority_selection"
+		}
+		else = { debug_log = "AUBT: TEST FAIL native_decision_priority_selection" }
+		# Force a government that actually exposes CK3 1.19's treasury resource.
+		# No funding flags is the frozen legacy/treasury-first save state.
+		change_government = celestial_government
+		set_variable = { name = aubt_reset_gold value = gold }
+		if = {
+			limit = { var:aubt_reset_gold > 0 }
+			remove_short_term_gold = var:aubt_reset_gold
+		}
+		set_variable = { name = aubt_reset_treasury value = treasury }
+		if = {
+			limit = { var:aubt_reset_treasury > 0 }
+			remove_treasury = var:aubt_reset_treasury
+		}
+		add_gold = 100000
+		add_treasury = 100000
+		set_variable = { name = aubt_gold_before value = gold }
+		set_variable = { name = aubt_treasury_before value = treasury }
+		capital_province = {
+			set_global_variable = { name = aubt_province value = this }
+			if = {
+				limit = { has_building_or_higher = barracks_01 }
+				if = { limit = { has_building = barracks_08 } remove_building = barracks_08 }
+				else_if = { limit = { has_building = barracks_07 } remove_building = barracks_07 }
+				else_if = { limit = { has_building = barracks_06 } remove_building = barracks_06 }
+				else_if = { limit = { has_building = barracks_05 } remove_building = barracks_05 }
+				else_if = { limit = { has_building = barracks_04 } remove_building = barracks_04 }
+				else_if = { limit = { has_building = barracks_03 } remove_building = barracks_03 }
+				else_if = { limit = { has_building = barracks_02 } remove_building = barracks_02 }
+				else = { remove_building = barracks_01 }
+			}
+			add_building = barracks_01
+		}
+		add_character_flag = enable_auto_build
+		aub_start_global_loop_effect = yes
+		trigger_event = { id = aubt.1 days = 3 }
+	}
+}
+
 aubt.1 = {
 	scope = none
 	hidden = yes
@@ -214,10 +267,150 @@ aubt.5 = {
 			debug_log = "AUBT: TEST PASS insufficient_funds_no_change"
 			global_var:aubt_player = {
 				remove_character_flag = enable_auto_build
-				trigger_event = { id = aubt.10 days = 1 }
+				trigger_event = { id = aubt.6 days = 1 }
 			}
 		}
 		else = { debug_log = "AUBT: TEST FAIL insufficient_funds_no_change" }
+	}
+}
+
+# Phase 3 funding matrix. This directly dispatches the same generated building
+# chain used by production after establishing the production payer scopes.
+aubt.6 = {
+	type = character_event
+	hidden = yes
+	immediate = {
+		save_scope_as = aub_payer
+		save_scope_as = character
+		change_government = celestial_government
+
+		# Treasury-only: both accounts can afford the edge, but only treasury pays.
+		remove_character_flag = aub_funding_personal_only
+		add_character_flag = aub_funding_treasury_only
+		set_variable = { name = aubt_reset_gold value = gold }
+		if = { limit = { var:aubt_reset_gold > 0 } remove_short_term_gold = var:aubt_reset_gold }
+		set_variable = { name = aubt_reset_treasury value = treasury }
+		if = { limit = { var:aubt_reset_treasury > 0 } remove_treasury = var:aubt_reset_treasury }
+		add_gold = 100000
+		add_treasury = 100000
+		set_variable = { name = aubt_gold_before value = gold }
+		set_variable = { name = aubt_treasury_before value = treasury }
+		global_var:aubt_province = {
+			if = { limit = { has_building = barracks_02 } remove_building = barracks_02 }
+			else_if = { limit = { has_building = barracks_01 } remove_building = barracks_01 }
+			add_building = barracks_01
+			scope:aub_payer = { save_scope_as = holder }
+			scope:aub_payer = { save_scope_as = build_owner }
+			county = { save_scope_as = county }
+			aub_upgrade_chain_barracks_01_effect = yes
+		}
+		if = {
+			limit = {
+				global_var:aubt_province = { has_building = barracks_02 }
+				gold = var:aubt_gold_before
+				treasury < var:aubt_treasury_before
+			}
+			debug_log = "AUBT: TEST PASS treasury_only_uses_treasury"
+		}
+		else = { debug_log = "AUBT: TEST FAIL treasury_only_uses_treasury" }
+
+		# Treasury-only: an empty treasury must not fall back to abundant personal gold.
+		set_variable = { name = aubt_reset_treasury value = treasury }
+		if = { limit = { var:aubt_reset_treasury > 0 } remove_treasury = var:aubt_reset_treasury }
+		set_variable = { name = aubt_gold_before value = gold }
+		set_variable = { name = aubt_treasury_before value = treasury }
+		global_var:aubt_province = {
+			remove_building = barracks_02
+			add_building = barracks_01
+			aub_upgrade_chain_barracks_01_effect = yes
+		}
+		if = {
+			limit = {
+				global_var:aubt_province = { has_building = barracks_01 NOT = { has_building = barracks_02 } }
+				gold = var:aubt_gold_before
+				treasury = var:aubt_treasury_before
+			}
+			debug_log = "AUBT: TEST PASS treasury_only_no_personal_fallback"
+		}
+		else = { debug_log = "AUBT: TEST FAIL treasury_only_no_personal_fallback" }
+
+		# Personal-only: both accounts can afford the edge, but only personal gold pays.
+		remove_character_flag = aub_funding_treasury_only
+		add_character_flag = aub_funding_personal_only
+		set_variable = { name = aubt_reset_gold value = gold }
+		if = { limit = { var:aubt_reset_gold > 0 } remove_short_term_gold = var:aubt_reset_gold }
+		set_variable = { name = aubt_reset_treasury value = treasury }
+		if = { limit = { var:aubt_reset_treasury > 0 } remove_treasury = var:aubt_reset_treasury }
+		add_gold = 100000
+		add_treasury = 100000
+		set_variable = { name = aubt_gold_before value = gold }
+		set_variable = { name = aubt_treasury_before value = treasury }
+		global_var:aubt_province = {
+			remove_building = barracks_01
+			add_building = barracks_01
+			aub_upgrade_chain_barracks_01_effect = yes
+		}
+		if = {
+			limit = {
+				global_var:aubt_province = { has_building = barracks_02 }
+				gold < var:aubt_gold_before
+				treasury = var:aubt_treasury_before
+			}
+			debug_log = "AUBT: TEST PASS personal_only_uses_personal"
+		}
+		else = { debug_log = "AUBT: TEST FAIL personal_only_uses_personal" }
+
+		# Personal-only: empty personal funds must not fall back to abundant treasury.
+		set_variable = { name = aubt_reset_gold value = gold }
+		if = { limit = { var:aubt_reset_gold > 0 } remove_short_term_gold = var:aubt_reset_gold }
+		set_variable = { name = aubt_gold_before value = gold }
+		set_variable = { name = aubt_treasury_before value = treasury }
+		global_var:aubt_province = {
+			remove_building = barracks_02
+			add_building = barracks_01
+			aub_upgrade_chain_barracks_01_effect = yes
+		}
+		if = {
+			limit = {
+				global_var:aubt_province = { has_building = barracks_01 NOT = { has_building = barracks_02 } }
+				gold = var:aubt_gold_before
+				treasury = var:aubt_treasury_before
+			}
+			debug_log = "AUBT: TEST PASS personal_only_no_treasury_fallback"
+		}
+		else = { debug_log = "AUBT: TEST FAIL personal_only_no_treasury_fallback" }
+
+		# Legacy/priority mode: 150 + 150 exceeds the exact 250 cost, but neither
+		# account does so alone. The edge and both balances must remain unchanged.
+		remove_character_flag = aub_funding_personal_only
+		remove_character_flag = aub_funding_treasury_only
+		set_variable = { name = aubt_reset_gold value = gold }
+		if = { limit = { var:aubt_reset_gold > 0 } remove_short_term_gold = var:aubt_reset_gold }
+		set_variable = { name = aubt_reset_treasury value = treasury }
+		if = { limit = { var:aubt_reset_treasury > 0 } remove_treasury = var:aubt_reset_treasury }
+		add_gold = 150
+		add_treasury = 150
+		set_variable = { name = aubt_gold_before value = gold }
+		set_variable = { name = aubt_treasury_before value = treasury }
+		global_var:aubt_province = {
+			remove_building = barracks_01
+			add_building = barracks_01
+			aub_upgrade_chain_barracks_01_effect = yes
+		}
+		if = {
+			limit = {
+				global_var:aubt_province = { has_building = barracks_01 NOT = { has_building = barracks_02 } }
+				gold = var:aubt_gold_before
+				treasury = var:aubt_treasury_before
+			}
+			debug_log = "AUBT: TEST PASS priority_no_split_payment"
+		}
+		else = { debug_log = "AUBT: TEST FAIL priority_no_split_payment" }
+
+		# Return to the Phase 2 resource model. Absence of both flags deliberately
+		# preserves the legacy treasury-first default for all remaining samples.
+		change_government = feudal_government
+		trigger_event = { id = aubt.10 days = 1 }
 	}
 }
 

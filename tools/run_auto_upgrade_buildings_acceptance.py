@@ -65,11 +65,17 @@ DUPLICATE_PATTERNS = (
 )
 REQUIRED_MARKERS = (
     "AUBT: TEST BEGIN source-live",
+    "AUBT: TEST PASS native_decision_priority_selection",
     "AUBT: TEST PASS treasury_priority_one_tier",
     "AUBT: TEST PASS disabled_zero_side_effect",
     "AUBT: TEST PASS personal_gold_fallback",
     "AUBT: TEST PASS reenabled_loop_stopped_cleanly",
     "AUBT: TEST PASS insufficient_funds_no_change",
+    "AUBT: TEST PASS treasury_only_uses_treasury",
+    "AUBT: TEST PASS treasury_only_no_personal_fallback",
+    "AUBT: TEST PASS personal_only_uses_personal",
+    "AUBT: TEST PASS personal_only_no_treasury_fallback",
+    "AUBT: TEST PASS priority_no_split_payment",
     "AUBT: TEST PASS main_castle",
     "AUBT: TEST PASS main_city",
     "AUBT: TEST PASS main_church",
@@ -554,6 +560,91 @@ def verify_protected_snapshot(
             )
 
 
+def exercise_funding_selector_ui(artifacts: Path) -> dict[str, object]:
+    """Exercise the production decision's native three-choice selector once."""
+
+    second_step = isolated.open_decision_detail(
+        "启用自动建造",
+        "选择资金来源",
+        artifacts,
+        "05_funding_selector",
+        contains=False,
+    )
+    option_labels = (
+        ("treasury_only", "只用国库"),
+        ("personal_only", "只用个人金钱"),
+        ("treasury_first", "优先国库"),
+    )
+    centers: dict[str, tuple[int, int]] = {}
+    for key, label in option_labels:
+        centers[key] = acceptance.wait_for_ocr_text(
+            label,
+            acceptance.FULL_SCREEN_REGION,
+            15,
+            artifacts,
+            f"05_funding_selector_{key}.png",
+            contains=False,
+            stable_hits=1,
+        )
+    ordered_y = [centers[key][1] for key, _ in option_labels]
+    if ordered_y != sorted(ordered_y) or len(set(ordered_y)) != len(ordered_y):
+        raise acceptance.RunnerError(
+            f"funding choices are not rendered in the required order: {ordered_y}"
+        )
+    width, height = acceptance.pyautogui.size()
+    acceptance.pyautogui.moveTo(int(width * 0.05), int(height * 0.50))
+    time.sleep(0.5)
+    acceptance.ImageGrab.grab().save(artifacts / "05_funding_selector_default.png")
+    for key, _ in option_labels:
+        acceptance.deliberate_click(centers[key], f"production funding option {key}")
+        acceptance.pyautogui.moveTo(int(width * 0.05), int(height * 0.50))
+        time.sleep(0.5)
+        acceptance.ImageGrab.grab().save(
+            artifacts / f"05_funding_selector_selected_{key}.png"
+        )
+
+    # The final selected item is treasury-first. Execute the real production
+    # decision and let the fixture prove that it persisted as the no-flag
+    # legacy/default state before any fixture mutation occurs.
+    second_step = acceptance.wait_for_ocr_text(
+        "选择资金来源",
+        acceptance.FULL_SCREEN_REGION,
+        10,
+        artifacts,
+        "05_funding_selector_second_step.png",
+        contains=False,
+        stable_hits=1,
+    )
+    acceptance.deliberate_click(second_step, "production funding option confirmation")
+    final_confirm = acceptance.wait_for_ocr_text(
+        "当然",
+        acceptance.FULL_SCREEN_REGION,
+        15,
+        artifacts,
+        "05_funding_selector_final_confirmation.png",
+        contains=False,
+        stable_hits=1,
+    )
+    acceptance.deliberate_click(final_confirm, "production enable decision confirmation")
+    disabled_row = acceptance.wait_for_ocr_text(
+        "禁用自动建造",
+        acceptance.FULL_SCREEN_REGION,
+        15,
+        artifacts,
+        "05_funding_selector_executed.png",
+        contains=False,
+        stable_hits=1,
+    )
+    return {
+        "option_order": [key for key, _ in option_labels],
+        "option_centers": {key: list(value) for key, value in centers.items()},
+        "selected_and_executed": "treasury_first",
+        "second_step_center": list(second_step),
+        "final_confirm_center": list(final_confirm),
+        "disable_decision_center_after_execution": list(disabled_row),
+    }
+
+
 def run_cell(
     artifacts: Path,
     userdir: Path,
@@ -608,6 +699,7 @@ def run_cell(
         acceptance.navigate_lobby(artifacts)
         isolated.wait_for_gameplay_hud(artifacts)
         acceptance.ensure_game_paused(artifacts, "04_gameplay")
+        funding_ui = exercise_funding_selector_ui(artifacts)
         acceptance.set_speed_five_and_unpause(artifacts, "aub_live")
         for marker in REQUIRED_MARKERS:
             stream.wait(marker, 120)
@@ -633,8 +725,19 @@ def run_cell(
         ensure_final_pause_by_date(artifacts, "09_final_map")
         stream.validate()
         evidence = {
+            "native_funding_selector": funding_ui,
             "treasury_priority": True,
             "personal_gold_fallback": True,
+            "treasury_only": {
+                "uses_only_treasury_when_both_sufficient": True,
+                "no_personal_fallback": True,
+            },
+            "personal_only": {
+                "uses_only_personal_when_both_sufficient": True,
+                "no_treasury_fallback": True,
+            },
+            "no_split_payment": True,
+            "legacy_no_flag_mode": "treasury_first",
             "insufficient_funds_no_change": True,
             "one_tier_per_dispatch": True,
             "disable_and_restart": True,

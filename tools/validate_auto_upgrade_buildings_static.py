@@ -29,6 +29,13 @@ LOC_KEYS = {
     "enable_auto_build_desc",
     "enable_auto_build_text",
     "enable_auto_build_confirm",
+    "enable_auto_build_choose_funding_button",
+    "aub_funding_treasury_only",
+    "aub_funding_treasury_only_desc",
+    "aub_funding_personal_only",
+    "aub_funding_personal_only_desc",
+    "aub_funding_treasury_first",
+    "aub_funding_treasury_first_desc",
     "disable_auto_build",
     "disable_auto_build_tooltip",
     "disable_auto_build_desc",
@@ -138,7 +145,7 @@ def validate(game_root: Path = DEFAULT_GAME_ROOT) -> tuple[list[str], bool]:
     errors = builder.source_errors(MOD)
     descriptor = text("descriptor.mod").replace("\r\n", "\n")
     expected_descriptor = (
-        'version="2.0.0"\n'
+        'version="3.0.0"\n'
         'tags={\n\t"Balance"\n}\n'
         'name="自动升级建筑（XenoAmess维护版）"\n'
         'supported_version="1.19.0.6"\n'
@@ -203,6 +210,51 @@ def validate(game_root: Path = DEFAULT_GAME_ROOT) -> tuple[list[str], bool]:
         errors.append("human-player gates are incomplete")
     if "id = auto_build.0003" not in decisions:
         errors.append("enable decision does not enter the compatibility loop seed")
+    enable_decision = extract_block(decisions, "enable_auto_build")
+    if enable_decision is None:
+        errors.append("enable decision block is missing")
+    else:
+        for fragment in (
+            'gui = "decision_view_widget_option_list_generic"',
+            "controller = decision_option_list_controller",
+            "decision_to_second_step_button = enable_auto_build_choose_funding_button",
+            "show_from_start = yes",
+        ):
+            if enable_decision.count(fragment) != 1:
+                errors.append(f"funding selector contract drifted: {fragment}")
+        choices = re.findall(
+            r"(?m)^\s*value\s*=\s*(aub_funding_[a-z_]+_choice)\s*$",
+            enable_decision,
+        )
+        if choices != [
+            "aub_funding_treasury_only_choice",
+            "aub_funding_personal_only_choice",
+            "aub_funding_treasury_first_choice",
+        ]:
+            errors.append("funding selector must preserve its three choices and order")
+        if enable_decision.count("is_default = yes") != 1 or not re.search(
+            r"value\s*=\s*aub_funding_treasury_first_choice.*?is_default\s*=\s*yes",
+            enable_decision,
+            flags=re.DOTALL,
+        ):
+            errors.append("treasury-first funding choice must be the only default")
+        for choice, flag in (
+            ("aub_funding_treasury_only_choice", "aub_funding_treasury_only"),
+            ("aub_funding_personal_only_choice", "aub_funding_personal_only"),
+        ):
+            if enable_decision.count(f"scope:{choice} = yes") != 1:
+                errors.append(f"funding choice scope is not projected exactly once: {choice}")
+            if enable_decision.count(f"add_character_flag = {flag}") != 1:
+                errors.append(f"persistent funding flag is not set exactly once: {flag}")
+            if enable_decision.count(f"remove_character_flag = {flag}") != 1:
+                errors.append(f"persistent funding flag is not normalized before enable: {flag}")
+    disable_decision = extract_block(decisions, "disable_auto_build")
+    if disable_decision is None:
+        errors.append("disable decision block is missing")
+    else:
+        for flag in ("aub_funding_treasury_only", "aub_funding_personal_only"):
+            if disable_decision.count(f"remove_character_flag = {flag}") != 1:
+                errors.append(f"disable decision does not clear funding flag: {flag}")
     if "ai_check_frequency" in decisions or decisions.count("ai_check_interval = 0") != 2:
         errors.append("decisions must use CK3 1.19 ai_check_interval syntax")
     if "auto_build.0001" in events:
@@ -215,6 +267,46 @@ def validate(game_root: Path = DEFAULT_GAME_ROOT) -> tuple[list[str], bool]:
         errors.append("generated qualification-trigger call inventory drifted")
     if triggers.count("aub_can_upgrade_to_") != len(EDGES):
         errors.append("generated qualification-trigger definition inventory drifted")
+    if triggers.count("aub_can_pay_gold_building_cost_trigger = {") != 1:
+        errors.append("central gold affordability trigger must be defined exactly once")
+    if effects.count("aub_can_pay_gold_building_cost_trigger = {") != len(EDGES):
+        errors.append("every generated edge must call the central gold affordability trigger")
+    affordability = extract_block(triggers, "aub_can_pay_gold_building_cost_trigger")
+    payment = extract_block(effects, "aub_pay_gold_building_cost_effect")
+    for block, label in (
+        (affordability, "gold affordability trigger"),
+        (payment, "gold payment effect"),
+    ):
+        if block is None:
+            errors.append(f"{label} is missing")
+            continue
+        for fragment in (
+            "has_character_flag = aub_funding_treasury_only",
+            "has_character_flag = aub_funding_personal_only",
+        ):
+            if block.count(fragment) != 1:
+                errors.append(f"{label} funding branch drifted: {fragment}")
+    if affordability is not None:
+        for fragment in (
+            "has_treasury = yes",
+            "treasury >= $GOLD$",
+            "gold >= $GOLD$",
+            "trigger_else = {",
+        ):
+            if fragment not in affordability:
+                errors.append(f"gold affordability contract missing: {fragment}")
+    if payment is not None:
+        if payment.count("remove_short_term_treasury = $GOLD$") != 2:
+            errors.append("gold payment effect must have treasury-only and priority treasury paths")
+        if payment.count("remove_short_term_gold = $GOLD$") != 2:
+            errors.append("gold payment effect must have personal-only and priority fallback paths")
+        if "has_treasury = yes" not in payment or "treasury >= $GOLD$" not in payment:
+            errors.append("priority payment must require an available, fully funded treasury")
+    if re.search(
+        r"OR\s*=\s*\{\s*scope:aub_payer\s*=\s*\{\s*treasury\s*>=",
+        effects,
+    ):
+        errors.append("legacy per-edge treasury-or-personal affordability template remains")
     expected_regular_upgrades = Counter(
         edge.source for edge in EDGES if edge.target_type != "special"
     )
@@ -352,11 +444,17 @@ def validate(game_root: Path = DEFAULT_GAME_ROOT) -> tuple[list[str], bool]:
                 errors.append(f"acceptance fixture has unbalanced braces: {relative}")
     for marker in (
         "AUBT: TEST BEGIN source-live",
+        "AUBT: TEST PASS native_decision_priority_selection",
         "AUBT: TEST PASS treasury_priority_one_tier",
         "AUBT: TEST PASS disabled_zero_side_effect",
         "AUBT: TEST PASS personal_gold_fallback",
         "AUBT: TEST PASS reenabled_loop_stopped_cleanly",
         "AUBT: TEST PASS insufficient_funds_no_change",
+        "AUBT: TEST PASS treasury_only_uses_treasury",
+        "AUBT: TEST PASS treasury_only_no_personal_fallback",
+        "AUBT: TEST PASS personal_only_uses_personal",
+        "AUBT: TEST PASS personal_only_no_treasury_fallback",
+        "AUBT: TEST PASS priority_no_split_payment",
         "AUBT: TEST PASS main_castle",
         "AUBT: TEST PASS main_city",
         "AUBT: TEST PASS main_church",
