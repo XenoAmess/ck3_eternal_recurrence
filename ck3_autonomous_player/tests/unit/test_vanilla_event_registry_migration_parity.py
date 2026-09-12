@@ -57,6 +57,9 @@ from xar_autoplayer.vanilla_events.records_tgp_japan_yearly import (  # noqa: E4
 from xar_autoplayer.vanilla_events.records_tgp_movement import (  # noqa: E402
     VANILLA_TGP_MOVEMENT_TIMELINE_CONTRACTS,
 )
+from xar_autoplayer.vanilla_events.records_tgp_travel import (  # noqa: E402
+    VANILLA_TGP_TRAVEL_TIMELINE_CONTRACTS,
+)
 from xar_autoplayer.vanilla_events.records_tgp_treasury import (  # noqa: E402
     VANILLA_TGP_TREASURY_TIMELINE_CONTRACTS,
 )
@@ -346,6 +349,7 @@ class VanillaEventRegistryMigrationParityTests(unittest.TestCase):
             VANILLA_TGP_MOVEMENT_TIMELINE_CONTRACTS,
             VANILLA_TGP_DYNASTIC_CYCLE_TIMELINE_CONTRACTS,
             VANILLA_TGP_JAPAN_YEARLY_TIMELINE_CONTRACTS,
+            VANILLA_TGP_TRAVEL_TIMELINE_CONTRACTS,
             VANILLA_PAY_HOMAGE_TIMELINE_CONTRACTS,
             VANILLA_VASSAL_INTERACTION_TIMELINE_CONTRACTS,
             VANILLA_TRAIT_SPECIFIC_TIMELINE_CONTRACTS,
@@ -366,8 +370,8 @@ class VanillaEventRegistryMigrationParityTests(unittest.TestCase):
             for event_key in records:
                 key_memberships[event_key].append(group_index)
 
-        self.assertEqual(sum(map(len, default_groups)), 187)
-        self.assertEqual(len(key_memberships), 187)
+        self.assertEqual(sum(map(len, default_groups)), 188)
+        self.assertEqual(len(key_memberships), 188)
         self.assertEqual(
             {
                 event_key: indexes

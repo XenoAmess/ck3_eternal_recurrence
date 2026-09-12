@@ -628,6 +628,51 @@ _admin_eunuch_1001.update({
     ),
 })
 
+_admin_eunuch_8030 = VANILLA_EMBEDDED_B_ANALYSIS[
+    "ep3_story_cycle_admin_eunuch.8030"
+]
+_admin_eunuch_8030.update({
+    "migrated_from": {
+        **_admin_eunuch_8030["migrated_from"],
+        "review_kind": "exact-build-original-definition-caller-and-live-review",
+        "evidence": (
+            "exact definition, five-day story-cycle caller, localization and "
+            "R588 pre-selection native event-window projection"
+        ),
+    },
+    "source_sha256": {
+        **_admin_eunuch_8030["source_sha256"],
+        "common/story_cycles/ep3_story_cycle_admin_eunuch.txt": (
+            "CB8D231D31DC8C269B738F9801E971225D434CF078EB94D4641D06D1662FB9E3"
+        ),
+        "localization/simp_chinese/dlc/ep3/"
+        "ep3_story_cycle_admin_eunuch_l_simp_chinese.yml": (
+            "F5D8FAEA62EEF68B929C976451445B71FF46801BD3409400FD90770E03DBB49B"
+        ),
+    },
+    "definition_lines": "6282-6430",
+    "trigger_lines": "6308-6316",
+    "immediate_lines": "6317-6321",
+    "option_lines": "6322-6429",
+    "caller_lines": {
+        "common/story_cycles/ep3_story_cycle_admin_eunuch.txt": "195-202",
+    },
+    "caller_semantics": (
+        "the five-day invalid-state story effect fires this event when the "
+        "recorded eunuch still exists but now serves a different employer "
+        "from the story owner"
+    ),
+    "safe_option_rationale": (
+        "authored option D/native3 performs no payment, recruitment, prison "
+        "release, replacement-character assignment or random branch; it "
+        "clears this story's liege/eunuch modifiers and ends this story"
+    ),
+    "domain_boundary": (
+        "this is a non-religious administrative story event and does not "
+        "expand the postponed religion domain"
+    ),
+})
+
 
 _ADMIN_EUNUCH_LIVE_OBSERVATION: Final[dict[str, object]] = {
     "exemplars": [{
@@ -710,6 +755,43 @@ VANILLA_EMBEDDED_B_OBSERVATIONS: Final[dict[str, dict[str, object]]] = {
 VANILLA_EMBEDDED_B_OBSERVATIONS[
     "ep3_story_cycle_admin_eunuch.1001"
 ] = _ADMIN_EUNUCH_LIVE_OBSERVATION
+VANILLA_EMBEDDED_B_OBSERVATIONS.setdefault(
+    "ep3_story_cycle_admin_eunuch.8030", {"exemplars": []}
+)["exemplars"].append({
+    "run": "R588",
+    "kind": "pre-selection-live-red",
+    "artifact": (
+        "_runtime/p2-capture-r584-plus-804815e-20260913/capture/cell/"
+        "phase2_promo_phase2_hc_workforce_mature_endgame_source_"
+        "zg361we_360_native_event_wait_gate.json"
+    ),
+    "artifact_sha256": (
+        "47BCBC5ACA0FACEEE804ED082D0DC7EB381438DC86B6F24DE2DBFBF549F8696D"
+    ),
+    "run_report": (
+        "_runtime/p2-capture-r584-plus-804815e-20260913/capture/report.json"
+    ),
+    "run_report_sha256": (
+        "DF6184EAE6791044505AE1BEDB8DA083B55540B221C9DA4CDFD7C9854E5B79FF"
+    ),
+    "date_raw": 53366664,
+    "event_instance_id": 621,
+    "root_character_id": 32904,
+    "saved_scope_raw_types": {
+        "story": 17,
+        "eunuch": 4,
+        "emperor": 4,
+        "admin_title": 5,
+        "student": 4,
+        "rival": 4,
+        "background_throne_room_scope": 4,
+    },
+    "rendered_native_option_indices": [0, 1, 3],
+    "selection_attempted": False,
+    "connection_generation": 1,
+    "bridge_pid": 65188,
+    "process_restart_required": False,
+})
 
 
 __all__ = [

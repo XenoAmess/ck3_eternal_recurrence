@@ -75,6 +75,7 @@ for import_root in (AUTOPLAYER_SOURCE, TITLE_NAVIGATION_RESEARCH):
 
 from xar_autoplayer.bridge.native_driver import NativeHeadlessGameplayDriver
 from xar_autoplayer.bridge.service import GameplayBridgeService
+from xar_autoplayer.vanilla_events import VANILLA_EVENT_TIMELINE_CONTRACTS
 from xar_autoplayer.bridge.event_window_context_contract import (
     QUERY_CURRENT_EVENT_WINDOW_CONTEXT_V1_CAPABILITY,
 )
@@ -145,6 +146,8 @@ from zg361_phase2_promotion_source_checkpoint_capture import (
 from zg361_phase2_promotion_source_production_entry import (
     PromotionScenarioInvalidatingInterrupt,
     THIRD_WORKFORCE_SOURCE_SAMPLE_REQUIRED_FOR_READINESS,
+    _drain_known_timeline_interrupt,
+    _resolve_timeline_interrupt_contract,
     enter_promotion_source_checkpoint_v1,
 )
 from zg361_phase2_stage10_player_subject_action_cell import (
@@ -2385,6 +2388,7 @@ class _Phase2RealEventChoreographyService:
             expected_event_definition_key=event_definition_key,
             timeout_s=45.0,
             clear_unexpected_single_option_events=False,
+            clear_reviewed_vanilla_event_interruptions=True,
         )
         identity = gate.get("identity") if isinstance(gate, dict) else None
         if not (
@@ -18413,6 +18417,75 @@ def resume_personal_switch_timeline_native(
     )
 
 
+def drain_reviewed_vanilla_event_interruption_native(
+    service: GameplayBridgeService,
+    *,
+    snapshot: Mapping[str, object],
+    identity: Mapping[str, object],
+) -> dict[str, object] | None:
+    """Drain one exact reviewed vanilla projection, or leave it untouched."""
+
+    event_key = identity.get("event_definition_key")
+    if not (
+        isinstance(event_key, str)
+        and event_key in VANILLA_EVENT_TIMELINE_CONTRACTS
+    ):
+        return None
+    player_value = snapshot.get("played_character")
+    player = player_value if isinstance(player_value, Mapping) else {}
+    player_character_id = player.get("character_id")
+    date_raw = snapshot.get("date_raw")
+    diagnostics_value = snapshot.get("diagnostics")
+    diagnostics = (
+        diagnostics_value if isinstance(diagnostics_value, Mapping) else {}
+    )
+    connection_generation = diagnostics.get("connection_generation")
+    active_event_value = snapshot.get("active_event")
+    active_event = (
+        active_event_value if isinstance(active_event_value, Mapping) else {}
+    )
+    event_instance_id = identity.get("event_instance_id")
+    query_value = identity.get("query")
+    query = query_value if isinstance(query_value, Mapping) else {}
+    if not (
+        isinstance(player_character_id, int)
+        and not isinstance(player_character_id, bool)
+        and player_character_id > 0
+        and isinstance(date_raw, int)
+        and not isinstance(date_raw, bool)
+        and isinstance(connection_generation, int)
+        and not isinstance(connection_generation, bool)
+        and connection_generation > 0
+        and isinstance(event_instance_id, int)
+        and not isinstance(event_instance_id, bool)
+        and active_event.get("instance_id") == event_instance_id
+        and query
+    ):
+        raise acceptance.RunnerError(
+            "reviewed vanilla interruption lacks a typed paused binding"
+        )
+    contract = _resolve_timeline_interrupt_contract(
+        event_key,
+        player=player_character_id,
+        starting_date=date_raw,
+        stop_at_clean_review_boundary=True,
+    )
+    if contract is None:
+        raise acceptance.RunnerError(
+            "reviewed vanilla interruption lacks a resolved exact-build contract"
+        )
+    return _drain_known_timeline_interrupt(
+        service,
+        snapshot=snapshot,
+        event={"event_instance_id": event_instance_id},
+        query=query,
+        event_key=event_key,
+        contract=contract,
+        player=player_character_id,
+        connection_generation=connection_generation,
+    )
+
+
 def wait_for_native_event_definition(
     service: GameplayBridgeService,
     artifacts: Path,
@@ -18421,12 +18494,15 @@ def wait_for_native_event_definition(
     expected_event_definition_key: str,
     timeout_s: float = 45.0,
     clear_unexpected_single_option_events: bool = True,
+    clear_reviewed_vanilla_event_interruptions: bool = False,
 ) -> dict[str, object]:
     """Reach one product event using native state, identity and ACK only.
 
     No OCR or geometry participates in navigation or the GREEN decision. An
     unrelated exactly-one-option event may be cleared through its bound native
-    instance; a multi-option interruption is an explicit MCP/policy blocker.
+    instance. A reviewed vanilla multi-option event is cleared only when the
+    shared exact-build registry recommends one option from the exact current
+    projection; every other multi-option interruption remains a blocker.
     """
 
     evidence: dict[str, object] = {
@@ -18439,6 +18515,8 @@ def wait_for_native_event_definition(
         "identity_queries": [],
         "native_resumes": [],
         "cleared_single_option_interruptions": [],
+        "reviewed_vanilla_decisions": [],
+        "cleared_reviewed_vanilla_interruptions": [],
         "terminal_identity": None,
         "failure_reason": None,
         "ocr_used_for_navigation": False,
@@ -18507,6 +18585,49 @@ def wait_for_native_event_definition(
                 assert isinstance(cleared_rows, list)
                 cleared_rows.append(cleared)
                 continue
+
+            if clear_reviewed_vanilla_event_interruptions:
+                decisions = evidence["reviewed_vanilla_decisions"]
+                assert isinstance(decisions, list)
+                try:
+                    decision = drain_reviewed_vanilla_event_interruption_native(
+                        service,
+                        snapshot=pause_gate["snapshot"],
+                        identity=identity,
+                    )
+                except Exception as error:
+                    decisions.append({
+                        "result": "RED",
+                        "event_definition_key": identity.get(
+                            "event_definition_key"
+                        ),
+                        "error_type": type(error).__name__,
+                        "error": str(error),
+                    })
+                    finish_red(
+                        "reviewed vanilla event contract blocked native "
+                        f"phase-two path: {type(error).__name__}: {error}"
+                    )
+                if decision is not None:
+                    decisions.append(decision)
+                    if decision.get("result") != "GREEN":
+                        finish_red(
+                            "reviewed vanilla event contract did not produce "
+                            "a GREEN selection"
+                        )
+                    cleared = decision
+                    cleared["event_definition_key"] = identity[
+                        "event_definition_key"
+                    ]
+                    cleared["registry_contract_source"] = (
+                        "shared_vanilla_event_registry"
+                    )
+                    cleared_rows = evidence[
+                        "cleared_reviewed_vanilla_interruptions"
+                    ]
+                    assert isinstance(cleared_rows, list)
+                    cleared_rows.append(cleared)
+                    continue
 
             finish_red(
                 "unexpected event blocks native phase-two path: "

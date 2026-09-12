@@ -689,6 +689,9 @@ class Phase2EventChoreographyRunnerTests(unittest.TestCase):
             )
         self.assertEqual(result["event_definition_key"], "zg361b2.40")
         self.assertFalse(wait.call_args.kwargs["clear_unexpected_single_option_events"])
+        self.assertTrue(
+            wait.call_args.kwargs["clear_reviewed_vanilla_event_interruptions"]
+        )
 
     def test_hc_source_reuses_mature_endgame_checkpoint_and_reaches_m360(self) -> None:
         snapshot = _snapshot(event=True)
