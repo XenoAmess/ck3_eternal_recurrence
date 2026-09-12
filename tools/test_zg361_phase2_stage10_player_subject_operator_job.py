@@ -130,6 +130,7 @@ class Stage10PlayerSubjectOperatorTests(unittest.TestCase):
             receipt_path = root / "source.json"
             live_path = root / "live-source.json"
             near_path = root / "near-boundary-red.json"
+            extended_path = root / "extended-boundary-red.json"
             schedule_path = root / "scheduled-events.json"
             live = {
                 "schema_version": 1,
@@ -172,6 +173,36 @@ class Stage10PlayerSubjectOperatorTests(unittest.TestCase):
                         "kind": operator.NEAR_BOUNDARY_KIND,
                         "result": "RED",
                         "max_advance_days": 30,
+                        "expected_player_manager_character_id": 200,
+                        "expected_owner_character_id": 100,
+                        "source_binding": {
+                            "player_character_id": 200,
+                            "date_raw": 9000,
+                        },
+                        "progress": {
+                            "initial_progress_observation": {
+                                "date_raw": 9000,
+                                "review_now_eligible": False,
+                                "b1_active": True,
+                                "central_active": False,
+                                "pp_active": False,
+                            }
+                        },
+                    },
+                },
+            )
+            operator.base.write_object(
+                extended_path,
+                {
+                    "schema_version": 1,
+                    "result": "RED",
+                    "product_result": "RED",
+                    "red_preserved": True,
+                    "evidence": {
+                        "schema_version": 2,
+                        "kind": operator.NEAR_BOUNDARY_KIND,
+                        "result": "RED",
+                        "max_advance_days": 45,
                         "expected_player_manager_character_id": 200,
                         "expected_owner_character_id": 100,
                         "source_binding": {
@@ -237,12 +268,24 @@ class Stage10PlayerSubjectOperatorTests(unittest.TestCase):
                 "checkpoint": operator.base.file_record(checkpoint),
                 "live_source_provenance": operator.base.file_record(live_path),
                 "near_boundary_live_evidence": operator.base.file_record(near_path),
+                "extended_boundary_live_evidence": operator.base.file_record(
+                    extended_path
+                ),
                 "scheduled_event_evidence": operator.base.file_record(schedule_path),
                 "fixed_tail_contract": {
                     "source_b1_stage": "D+299",
                     "first_pending_event": "zg361b1.102",
                     "first_pending_event_days": 1,
-                    "maximum_action_days": 45,
+                    "shadow_close_days": 30,
+                    "common_bank_close_latest_cycle_day": 335,
+                    "manager_calibration_latest_cycle_day": 336,
+                    "pending_watchdog_days": 31,
+                    "post_seal_reopen_days": 30,
+                    "player_publication_callback_days": 1,
+                    "manager_f_ticket_days": 5,
+                    "latest_stage10_cycle_day": 403,
+                    "maximum_required_tail_days": 104,
+                    "maximum_action_days": 120,
                 },
             }
             operator.base.write_object(receipt_path, receipt)

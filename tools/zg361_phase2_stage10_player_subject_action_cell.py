@@ -50,7 +50,7 @@ from zhongguo_phase2_workforce_action import (  # noqa: E402
 
 
 STAGE10_EVENT = "zg361mg.120"
-MAX_ADVANCE_DAYS = 45
+MAX_ADVANCE_DAYS = 120
 ENTRY_TIMEOUT_SECONDS = 600.0
 PROGRESS_SAMPLE_DAYS = 1
 
@@ -196,7 +196,7 @@ def run_stage10_player_subject(
     expected_owner_character_id: int,
     navigator: Navigator = entry.enter_promotion_source_checkpoint_v1,
 ) -> dict[str, object]:
-    """Run one 45-day maximum near-publication B1 to Stage 10 slice."""
+    """Run one 120-day maximum near-publication B1 to Stage 10 slice."""
 
     if not isinstance(request_nonce, str) or re.fullmatch(
         r"[A-Za-z0-9][A-Za-z0-9._:-]{0,47}", request_nonce
