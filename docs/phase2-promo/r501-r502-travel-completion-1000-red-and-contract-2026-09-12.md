@@ -23,3 +23,9 @@ The shared catalog advances to 187 events. Source index has 187 definitions, 73 
 Focused normal validation produced 114 passes before two stale inventory expectations were corrected; the corrected files then passed 13 tests and 86 subtests. Optimized core validation passed 51 tests and 172 subtests. Source-index byte parity and portable-evidence offline checks are GREEN. The two standalone collection attempts without `PYTHONPATH=src` did not collect tests; the corrected invocation passed and did not expose a code failure. No broad suite or extended CK3 run was added.
 
 This package changes only Python contracts, read-only assets, focused tests, and documentation. It does not change DLLs, game files, launch configuration, load order, or video material. P1 remains `8/9`, and P2 remains `LOCKED` pending a later bounded live attempt that reaches `.120`.
+
+## Lifecycle closure and compatibility sync
+
+The operator accepted exactly one cleanup control before its 1200-second limit. Canonical cleanup `E54D90EEF944DE0C1526B205A169DC9F1637D86FBF7D0EB173EAAD49C661C8C3` and managed cleanup `9AA3BA65AC6A79CA13BB0361DC9C3012D3EF293CD923A71898AA7113C71102D9` are GREEN. Old round R501 and current round R502 are terminated; CK3, the managed job, Operator MCP, and port `12447` are clear. No second `run-stage10` control was sent.
+
+Root contract commit `fdf23f537d4238850154f85184f503ba63136a3d` and open_kaishek sync `9d16ddc211053e1193f13b88168b539ffea1a8a9` are pushed and synchronized. The current frozen operator cannot reload a Python contract after its one allowed action has parked. The next operator revision must add an explicit bounded same-CK3 contract-resume control before another gameplay round; P1 remains `8/9` and P2 remains `LOCKED`.
