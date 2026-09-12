@@ -55,6 +55,7 @@ bool ReadinessAll(const game::CampaignRootReadinessV1 &value,
          value.primary_title_ready == expected &&
          value.capital_ready == expected && value.lieges_ready == expected &&
          value.direct_landed_vassals_ready == expected &&
+         value.adjacent_external_province_holders_ready == expected &&
          value.government_ready == expected &&
          value.selected_game_rule_tokens_ready == expected &&
          value.same_frame_ready == expected && value.ready == expected;
@@ -80,7 +81,7 @@ std::string_view TierKey(std::int32_t raw) noexcept {
 }
 
 bool ValidUnavailableReason(std::string_view reason) noexcept {
-  constexpr std::array<std::string_view, 14> reasons = {
+  constexpr std::array<std::string_view, 15> reasons = {
       "unsupported_build",
       "requires_application_main",
       "requires_paused",
@@ -91,6 +92,7 @@ bool ValidUnavailableReason(std::string_view reason) noexcept {
       "capital_unavailable",
       "lieges_unavailable",
       "direct_landed_vassals_unavailable",
+      "adjacent_external_province_holders_unavailable",
       "government_flags_unavailable",
       "selected_game_rule_tokens_unavailable",
       "state_changed",
@@ -142,6 +144,18 @@ bool ValidAvailable(const game::CampaignRootContextV1 &context) noexcept {
       !SortedTokens(context.selected_game_rule_tokens) ||
       !ValidCharacterIds(context.direct_landed_vassal_character_ids,
                          *context.player_character_id) ||
+      !ValidCharacterIds(
+          context.adjacent_external_province_holder_character_ids,
+          *context.player_character_id) ||
+      std::any_of(
+          context.adjacent_external_province_holder_character_ids.begin(),
+          context.adjacent_external_province_holder_character_ids.end(),
+          [&context](std::int32_t character_id) {
+            return std::binary_search(
+                context.direct_landed_vassal_character_ids.begin(),
+                context.direct_landed_vassal_character_ids.end(),
+                character_id);
+          }) ||
       !ReadinessAll(context.readiness, true) ||
       !context.unavailable_reason.empty()) {
     return false;
@@ -193,6 +207,7 @@ bool ValidUnavailable(const game::CampaignRootContextV1 &context) noexcept {
          !context.top_liege_character_id.has_value() &&
          !context.independent.has_value() && !context.government.has_value() &&
          context.direct_landed_vassal_character_ids.empty() &&
+         context.adjacent_external_province_holder_character_ids.empty() &&
          context.selected_game_rule_tokens.empty() &&
          context.native_selected_game_rule_token_count == 0 &&
          ReadinessAll(context.readiness, false) &&
@@ -257,6 +272,9 @@ void AppendReadiness(std::string &output,
   output += value.lieges_ready ? "true" : "false";
   output += ",\"direct_landed_vassals_ready\":";
   output += value.direct_landed_vassals_ready ? "true" : "false";
+  output += ",\"adjacent_external_province_holders_ready\":";
+  output +=
+      value.adjacent_external_province_holders_ready ? "true" : "false";
   output += ",\"government_ready\":";
   output += value.government_ready ? "true" : "false";
   output += ",\"selected_game_rule_tokens_ready\":";
@@ -279,6 +297,7 @@ void AppendProvenance(std::string &output) {
   output += "\"immediate_liege_rva\":\"0x2613480\",";
   output += "\"top_liege_rva\":\"0x2613600\",";
   output += "\"government_rva\":\"0x26165B0\",";
+  output += "\"province_holder_character_id_rva\":\"0x220C3F0\",";
   output += "\"selected_game_rule_service_slot_rva\":\"0x5754B48\"}";
 }
 
@@ -338,6 +357,12 @@ std::string SerializeCampaignRootContextV1(
   output += ",\"direct_landed_vassal_character_ids\":";
   if (!AppendIntegerArray(output,
                           context.direct_landed_vassal_character_ids)) {
+    return {};
+  }
+  output += ",\"adjacent_external_province_holder_character_ids\":";
+  if (!AppendIntegerArray(
+          output,
+          context.adjacent_external_province_holder_character_ids)) {
     return {};
   }
   output += ",\"government\":";

@@ -68,11 +68,14 @@ GEN-034 关闭后立即转向公共 P1，不再继续横向扩展单一 CB 的 A
 3. `succession-state-v1`、health/stress/legitimacy 与 vassal/faction alert 组成的 realm survival；
 4. 建设、内阁与派系处理组成的和平治理 OODA。
 
-G2-M1 的首个 native 子包已达到 `static-ready / live=false`：既有 `campaign-root-context-v1` 现在在同一 paused
-application-main 双采样中枚举 alive、landed 且 immediate liege 为玩家的完整 generation CharacterID，并通过现有 MCP
-镜像 `direct_landed_vassal_character_ids`。该结果不借用离线 save topology；Release DLL、reader/serializer/source-contract
-与 Python normal/optimized 聚焦测试均 GREEN。邻国 identity/adjacency、core turn bundle 与最低 alerts 仍未实现，因此 M1
-仍为进行中，固定 G2 完成数仍是 `0/8`。下一次允许实机时只顺带做一次非空直属封臣 paused read，不为单字段安排长跑。
+G2-M1 的前两个 native 子包已达到 `static-ready / live=false`：既有 `campaign-root-context-v1` 现在在同一 paused
+application-main 双采样中发布 `direct_landed_vassal_character_ids` 和
+`adjacent_external_province_holder_character_ids`。前者枚举 alive、landed 且 immediate liege 为玩家的完整 generation
+CharacterID；后者从 exact Province array/native holder/adjacency rows 出发，以“immediate-liege 链是否到达玩家”区分玩家子领地，
+再发布边界外直接相邻 Province holder 的升序去重 ID。两项都不借用离线 save topology；Release DLL、native
+reader/source-contract 与 Python normal/optimized 聚焦测试均 GREEN。相邻 holder 向主头衔/top-liege 的 canonical entity
+directory 映射、core turn bundle 与最低 alerts 仍未实现，因此 M1 仍为进行中，固定 G2 完成数仍是 `0/8`。下一次允许实机时
+只在本来就需要的 paused G2 会话顺带读取两个非空 vector，不为单字段安排长跑。
 
 ## G2-M2 离线 direct-projection consumer
 

@@ -49,6 +49,7 @@ UNAVAILABLE_REASONS = (
     "capital_unavailable",
     "lieges_unavailable",
     "direct_landed_vassals_unavailable",
+    "adjacent_external_province_holders_unavailable",
     "government_flags_unavailable",
     "selected_game_rule_tokens_unavailable",
     "state_changed",
@@ -63,6 +64,7 @@ def _readiness(ready: bool) -> dict[str, bool]:
         "capital_ready": ready,
         "lieges_ready": ready,
         "direct_landed_vassals_ready": ready,
+        "adjacent_external_province_holders_ready": ready,
         "government_ready": ready,
         "selected_game_rule_tokens_ready": ready,
         "same_frame_ready": ready,
@@ -82,6 +84,7 @@ def _provenance() -> dict[str, str]:
         "immediate_liege_rva": "0x2613480",
         "top_liege_rva": "0x2613600",
         "government_rva": "0x26165B0",
+        "province_holder_character_id_rva": "0x220C3F0",
         "selected_game_rule_service_slot_rva": "0x5754B48",
     }
 
@@ -117,6 +120,9 @@ def _frame(
         "independent": True if available else None,
         "direct_landed_vassal_character_ids": (
             [23_456, 34_567] if available else []
+        ),
+        "adjacent_external_province_holder_character_ids": (
+            [45_678, 56_789] if available else []
         ),
         "government": (
             {
@@ -171,6 +177,7 @@ def _driver_result(status: str = "available") -> dict[str, object]:
         "top_liege_character_id",
             "independent",
             "direct_landed_vassal_character_ids",
+            "adjacent_external_province_holder_character_ids",
             "government",
         "selected_game_rule_tokens",
         "native_selected_game_rule_token_count",
@@ -250,6 +257,10 @@ class CampaignRootContextV1ContractTests(unittest.TestCase):
         self.assertEqual(
             normalized["direct_landed_vassal_character_ids"],
             [23_456, 34_567],
+        )
+        self.assertEqual(
+            normalized["adjacent_external_province_holder_character_ids"],
+            [45_678, 56_789],
         )
 
     def test_available_distinguishes_every_legal_absence(self) -> None:
@@ -363,6 +374,18 @@ class CampaignRootContextV1ContractTests(unittest.TestCase):
             ),
             "vassal_duplicate": lambda row: row.__setitem__(
                 "direct_landed_vassal_character_ids", [23_456, 23_456]
+            ),
+            "adjacent_holder_order": lambda row: row.__setitem__(
+                "adjacent_external_province_holder_character_ids",
+                [56_789, 45_678],
+            ),
+            "adjacent_holder_duplicate": lambda row: row.__setitem__(
+                "adjacent_external_province_holder_character_ids",
+                [45_678, 45_678],
+            ),
+            "adjacent_holder_internal": lambda row: row.__setitem__(
+                "adjacent_external_province_holder_character_ids",
+                [23_456, 45_678],
             ),
             "provenance": lambda row: row["provenance"].__setitem__(
                 "government_rva", "0x0"

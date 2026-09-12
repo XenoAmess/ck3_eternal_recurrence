@@ -1196,3 +1196,18 @@ strategic-power primitive；余下入口只有 policy-level campaign dominance�
   required.
 - G2-M1 is now `in_progress`, but global G2 remains `0/8`. Realm-neighbor identity/adjacency, the canonical entity directory, aggregated ruler
   and realm state, minimum alerts and the turn-bundle consumer remain open; the direct-vassal vector alone does not satisfy the visible M1 gate.
+
+## 2026-09-13: G2-M1 adjacent external Province-holder identity static-ready
+
+- The next missing campaign-root input was an exact paused identity for at least one holder across the player's territorial boundary. The
+  implementation extends the existing query instead of adding another mailbox round trip: it scans the frozen Province array and map-node
+  adjacency rows, resolves the native Province holder, and classifies the holder's immediate-liege chain against the current player.
+- `adjacent_external_province_holder_character_ids` contains sorted, duplicate-free, living generation-valid holders of Provinces directly
+  adjacent to the player subrealm. The player, direct and indirect subrealm vassals, unowned Provinces and water rows cannot enter the vector.
+  This is an identity input for the future entity directory; it does not claim that every row is an independent realm ruler or top liege.
+- Exact leaf `0x220C3F0..0x220C49F` is frozen at SHA-256 `531558C7...B8D8`; the ABI asset also freezes Province array and adjacency layout.
+  Release DLL compile/link and direct reader/source-contract fixtures are GREEN. Python driver/service/MCP/live-harness focused tests pass
+  normal/optimized `30/30`; candidate DLL is `2,615,808` bytes / `35079262...5B3834`.
+- Status remains `static-ready / live=false` and global G2 remains `0/8`. One future already-required paused G2 session may verify both new
+  identity vectors together; no dedicated long run is warranted. The next M1 gap is canonical holder-to-title/top-liege entity mapping plus
+  minimum ruler/realm/succession alerts and the turn-bundle aggregate.

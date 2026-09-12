@@ -33,6 +33,7 @@ _FIELDS: Final = {
     "top_liege_character_id",
     "independent",
     "direct_landed_vassal_character_ids",
+    "adjacent_external_province_holder_character_ids",
     "government",
     "selected_game_rule_tokens",
     "native_selected_game_rule_token_count",
@@ -48,6 +49,7 @@ _READINESS_KEYS: Final = (
     "capital_ready",
     "lieges_ready",
     "direct_landed_vassals_ready",
+    "adjacent_external_province_holders_ready",
     "government_ready",
     "selected_game_rule_tokens_ready",
     "same_frame_ready",
@@ -63,6 +65,7 @@ _PROVENANCE_FIELDS: Final = {
     "immediate_liege_rva",
     "top_liege_rva",
     "government_rva",
+    "province_holder_character_id_rva",
     "selected_game_rule_service_slot_rva",
 }
 _PROVENANCE_VALUES: Final = {
@@ -74,6 +77,7 @@ _PROVENANCE_VALUES: Final = {
     "immediate_liege_rva": "0x2613480",
     "top_liege_rva": "0x2613600",
     "government_rva": "0x26165B0",
+    "province_holder_character_id_rva": "0x220C3F0",
     "selected_game_rule_service_slot_rva": "0x5754B48",
 }
 _UNAVAILABLE_REASONS: Final = {
@@ -87,6 +91,7 @@ _UNAVAILABLE_REASONS: Final = {
     "capital_unavailable",
     "lieges_unavailable",
     "direct_landed_vassals_unavailable",
+    "adjacent_external_province_holders_unavailable",
     "government_flags_unavailable",
     "selected_game_rule_tokens_unavailable",
     "state_changed",
@@ -304,9 +309,20 @@ def normalize_campaign_root_context_v1(
         )
         if direct_vassals:
             raise ValueError("unavailable campaign root invented direct vassals")
+        adjacent_external_holders = _sorted_unique_positive_int32_vector(
+            frame.get("adjacent_external_province_holder_character_ids"),
+            "adjacent_external_province_holder_character_ids",
+        )
+        if adjacent_external_holders:
+            raise ValueError(
+                "unavailable campaign root invented adjacent external holders"
+            )
         return {
             **frame,
             "direct_landed_vassal_character_ids": direct_vassals,
+            "adjacent_external_province_holder_character_ids": (
+                adjacent_external_holders
+            ),
             "selected_game_rule_tokens": tokens,
             "native_selected_game_rule_token_count": token_count,
             "readiness": readiness,
@@ -367,8 +383,20 @@ def normalize_campaign_root_context_v1(
         frame.get("direct_landed_vassal_character_ids"),
         "direct_landed_vassal_character_ids",
     )
+    adjacent_external_holders = _sorted_unique_positive_int32_vector(
+        frame.get("adjacent_external_province_holder_character_ids"),
+        "adjacent_external_province_holder_character_ids",
+    )
     if player_character_id in direct_vassals:
         raise ValueError("player character cannot be its own direct vassal")
+    if player_character_id in adjacent_external_holders:
+        raise ValueError(
+            "player character cannot be an adjacent external holder"
+        )
+    if not set(direct_vassals).isdisjoint(adjacent_external_holders):
+        raise ValueError(
+            "direct vassals and adjacent external holders must be disjoint"
+        )
     if independent is not (immediate_liege_id is None):
         raise ValueError("independent and immediate liege disagree")
     if immediate_liege_id == player_character_id:
@@ -416,6 +444,9 @@ def normalize_campaign_root_context_v1(
         "top_liege_character_id": top_liege_id,
         "independent": independent,
         "direct_landed_vassal_character_ids": direct_vassals,
+        "adjacent_external_province_holder_character_ids": (
+            adjacent_external_holders
+        ),
         "government": government,
         "selected_game_rule_tokens": tokens,
         "native_selected_game_rule_token_count": token_count,

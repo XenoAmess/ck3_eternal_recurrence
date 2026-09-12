@@ -59,6 +59,9 @@ def _context(
         "direct_landed_vassal_character_ids": (
             [22_222, 33_333] if available else []
         ),
+        "adjacent_external_province_holder_character_ids": (
+            [44_444, 55_555] if available else []
+        ),
         "government": (
             {
                 "key": "feudal_government",
@@ -78,6 +81,7 @@ def _context(
             "capital_ready": available,
             "lieges_ready": available,
             "direct_landed_vassals_ready": available,
+            "adjacent_external_province_holders_ready": available,
             "government_ready": available,
             "selected_game_rule_tokens_ready": available,
             "same_frame_ready": available,
@@ -97,6 +101,7 @@ def _context(
             "immediate_liege_rva": "0x2613480",
             "top_liege_rva": "0x2613600",
             "government_rva": "0x26165B0",
+            "province_holder_character_id_rva": "0x220C3F0",
             "selected_game_rule_service_slot_rva": "0x5754B48",
         },
     }

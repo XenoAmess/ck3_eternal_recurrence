@@ -31,9 +31,15 @@ constexpr std::size_t kStorageObjectOffset = 0x08;
 constexpr std::size_t kLandedTitleIdentityOffset = 0x10;
 constexpr std::size_t kLandedTitleTemplateOffset = 0x160;
 constexpr std::size_t kLandedTitleTierOffset = 0x5C;
+constexpr std::size_t kProvinceMapNodeOffset = 0x08;
 constexpr std::size_t kProvinceIdentityOffset = 0x10;
 constexpr std::size_t kGameDataProvinceArrayOffset = 0x140;
 constexpr std::size_t kGameDataProvinceCountOffset = 0x14C;
+constexpr std::size_t kMapNodeAdjacencyDataOffset = 0x50;
+constexpr std::size_t kMapNodeAdjacencyCountOffset = 0x5C;
+constexpr std::size_t kAdjacencyRowStride = 0x30;
+constexpr std::size_t kAdjacencyRowKindOffset = 0x00;
+constexpr std::size_t kAdjacencyRowTargetProvinceIdOffset = 0x04;
 constexpr std::size_t kGovernmentKeyOffset = 0x18;
 constexpr std::size_t kGovernmentFlagsOffset = 0x48;
 constexpr std::size_t kSpanCountOffset = 0x0C;
@@ -45,6 +51,9 @@ constexpr std::size_t kMsvcStringCapacityOffset = 0x18;
 constexpr std::size_t kMsvcStringInlineCapacity = 0x0F;
 constexpr std::int32_t kMaximumComponentSlots = 4'194'304;
 constexpr std::int32_t kMaximumPlayerEntries = 1'024;
+constexpr std::int32_t kMaximumProvinces = 1'000'000;
+constexpr std::int32_t kMaximumAdjacencyRows = 4'096;
+constexpr std::int32_t kMaximumLiegeDepth = 1'024;
 constexpr std::int32_t kMaximumGovernmentFlags = 4'096;
 constexpr std::int32_t kMaximumSelectedRuleTokens = 16'384;
 constexpr std::size_t kMaximumStableKeyBytes = 1'024;
@@ -69,6 +78,8 @@ struct ObservationV1 {
   std::int32_t top_liege_character_id = -1;
   bool independent = false;
   std::vector<std::int32_t> direct_landed_vassal_character_ids;
+  std::vector<std::int32_t>
+      adjacent_external_province_holder_character_ids;
   std::optional<game::CampaignRootGovernmentV1> government;
   std::vector<std::string> selected_game_rule_tokens;
   std::int32_t native_selected_game_rule_token_count = 0;
@@ -199,6 +210,7 @@ bool EnvironmentIsExact(
       environment.capital_province == nullptr ||
       environment.immediate_liege == nullptr ||
       environment.top_liege == nullptr || environment.government == nullptr ||
+      environment.province_holder_character_id == nullptr ||
       environment.script_identifier_name == nullptr) {
     return false;
   }
@@ -244,6 +256,9 @@ bool EnvironmentIsExact(
              base + kCampaignRootTopLiegeRva &&
          reinterpret_cast<std::uintptr_t>(environment.government) ==
              base + kCampaignRootGovernmentRva &&
+         reinterpret_cast<std::uintptr_t>(
+             environment.province_holder_character_id) ==
+             base + kCampaignRootProvinceHolderCharacterIdRva &&
          reinterpret_cast<std::uintptr_t>(
              environment.script_identifier_name) ==
              base + kCampaignRootScriptIdentifierNameRva;
@@ -312,6 +327,24 @@ bool InvokeResolver(NativeCampaignRootCharacterResolverV1 resolver,
   output = resolver(character);
   return true;
 #endif
+}
+
+bool InvokeProvinceHolderCharacterId(
+    NativeCampaignRootProvinceHolderCharacterIdV1 resolver, void *province,
+    std::int32_t &output) noexcept {
+  output = -1;
+  std::int32_t *returned = nullptr;
+#if defined(_MSC_VER)
+  __try {
+    returned = resolver(province, &output);
+  } __except (EXCEPTION_EXECUTE_HANDLER) {
+    output = -1;
+    return false;
+  }
+#else
+  returned = resolver(province, &output);
+#endif
+  return returned == &output;
 }
 
 bool InvokeIdentifierName(
@@ -653,6 +686,172 @@ bool ReadDirectLandedVassals(
          output.direct_landed_vassal_character_ids.end();
 }
 
+bool CharacterBelongsToPlayerSubrealm(
+    const CampaignRootNativeEnvironmentV1 &environment,
+    const CampaignRootAccessV1 &access, void *character,
+    void *character_fallback, void *player_character, bool &belongs) noexcept {
+  belongs = false;
+  void *current = character;
+  for (std::int32_t depth = 0; depth < kMaximumLiegeDepth; ++depth) {
+    if (current == player_character) {
+      belongs = true;
+      return true;
+    }
+    if (current == nullptr || current == character_fallback) {
+      return true;
+    }
+    std::int32_t current_id = -1;
+    if (!ReadValue(access, current, kCharacterIdentityOffset, current_id) ||
+        ResolveComponent(access, environment.character_storage_slot,
+                         environment.character_fallback_slot, current_id,
+                         kCharacterIdentityOffset) != current) {
+      return false;
+    }
+    void *liege = nullptr;
+    if (!InvokeResolver(environment.immediate_liege, current, liege)) {
+      return false;
+    }
+    if (liege == nullptr || liege == character_fallback || liege == current) {
+      return true;
+    }
+    current = liege;
+  }
+  return false;
+}
+
+struct ProvinceObservationV1 {
+  void *province = nullptr;
+  std::int32_t holder_character_id = -1;
+  bool belongs_to_player_subrealm = false;
+};
+
+bool ReadAdjacentExternalProvinceHolders(
+    const CampaignRootNativeEnvironmentV1 &environment,
+    const CampaignRootAccessV1 &access, ObservationV1 &output) noexcept {
+  void *province_array = nullptr;
+  std::int32_t province_count = 0;
+  void *character_fallback = nullptr;
+  if (!ReadValue(access, output.game_data, kGameDataProvinceArrayOffset,
+                 province_array) ||
+      !ReadValue(access, output.game_data, kGameDataProvinceCountOffset,
+                 province_count) ||
+      !ReadSlot(access, environment.character_fallback_slot,
+                character_fallback) ||
+      province_array == nullptr || province_count <= 0 ||
+      province_count > kMaximumProvinces) {
+    return false;
+  }
+
+  std::vector<ProvinceObservationV1> provinces;
+  try {
+    provinces.resize(static_cast<std::size_t>(province_count));
+  } catch (...) {
+    return false;
+  }
+  for (std::int32_t index = 0; index < province_count; ++index) {
+    void *province = nullptr;
+    if (!ReadValue(access, province_array,
+                   static_cast<std::size_t>(index) * sizeof(void *),
+                   province)) {
+      return false;
+    }
+    if (province == nullptr) {
+      continue;
+    }
+    std::int32_t observed_province_id = -1;
+    std::int32_t holder_character_id = -1;
+    if (!ReadValue(access, province, kProvinceIdentityOffset,
+                   observed_province_id) ||
+        observed_province_id != index ||
+        !InvokeProvinceHolderCharacterId(
+            environment.province_holder_character_id, province,
+            holder_character_id)) {
+      return false;
+    }
+    auto &observed = provinces[static_cast<std::size_t>(index)];
+    observed.province = province;
+    if (holder_character_id == -1) {
+      continue;
+    }
+    if (holder_character_id <= 0) {
+      return false;
+    }
+    void *holder =
+        ResolveComponent(access, environment.character_storage_slot,
+                         environment.character_fallback_slot,
+                         holder_character_id, kCharacterIdentityOffset);
+    void *death = nullptr;
+    if (holder == nullptr ||
+        !ReadValue(access, holder, kCharacterDeathMarkerOffset, death) ||
+        death != nullptr ||
+        !CharacterBelongsToPlayerSubrealm(
+            environment, access, holder, character_fallback,
+            output.player_character, observed.belongs_to_player_subrealm)) {
+      return false;
+    }
+    observed.holder_character_id = holder_character_id;
+  }
+
+  output.adjacent_external_province_holder_character_ids.clear();
+  for (const auto &origin : provinces) {
+    if (origin.province == nullptr || origin.holder_character_id <= 0 ||
+        !origin.belongs_to_player_subrealm) {
+      continue;
+    }
+    void *map_node = nullptr;
+    void *adjacency_rows = nullptr;
+    std::int32_t adjacency_count = 0;
+    if (!ReadValue(access, origin.province, kProvinceMapNodeOffset, map_node) ||
+        map_node == nullptr ||
+        !ReadValue(access, map_node, kMapNodeAdjacencyDataOffset,
+                   adjacency_rows) ||
+        !ReadValue(access, map_node, kMapNodeAdjacencyCountOffset,
+                   adjacency_count) ||
+        adjacency_count < 0 || adjacency_count > kMaximumAdjacencyRows ||
+        (adjacency_count > 0 && adjacency_rows == nullptr)) {
+      return false;
+    }
+    for (std::int32_t row_index = 0; row_index < adjacency_count; ++row_index) {
+      const auto row_offset =
+          static_cast<std::size_t>(row_index) * kAdjacencyRowStride;
+      std::int32_t raw_kind = -1;
+      std::int32_t target_province_id = -1;
+      if (!ReadValue(access, adjacency_rows,
+                     row_offset + kAdjacencyRowKindOffset, raw_kind) ||
+          !ReadValue(access, adjacency_rows,
+                     row_offset + kAdjacencyRowTargetProvinceIdOffset,
+                     target_province_id) ||
+          raw_kind < 0 || raw_kind > 3 || target_province_id <= 0 ||
+          target_province_id >= province_count) {
+        return false;
+      }
+      const auto &target =
+          provinces[static_cast<std::size_t>(target_province_id)];
+      if (target.province == nullptr) {
+        return false;
+      }
+      if (target.holder_character_id <= 0 ||
+          target.belongs_to_player_subrealm) {
+        continue;
+      }
+      try {
+        output.adjacent_external_province_holder_character_ids.push_back(
+            target.holder_character_id);
+      } catch (...) {
+        return false;
+      }
+    }
+  }
+  std::sort(output.adjacent_external_province_holder_character_ids.begin(),
+            output.adjacent_external_province_holder_character_ids.end());
+  output.adjacent_external_province_holder_character_ids.erase(
+      std::unique(
+          output.adjacent_external_province_holder_character_ids.begin(),
+          output.adjacent_external_province_holder_character_ids.end()),
+      output.adjacent_external_province_holder_character_ids.end());
+  return true;
+}
+
 bool ReadGovernment(const CampaignRootNativeEnvironmentV1 &environment,
                     const CampaignRootAccessV1 &access,
                     ObservationV1 &output) noexcept {
@@ -800,6 +999,10 @@ bool ReadObservation(const CampaignRootNativeEnvironmentV1 &environment,
     failure = "direct_landed_vassals_unavailable";
     return false;
   }
+  if (!ReadAdjacentExternalProvinceHolders(environment, access, output)) {
+    failure = "adjacent_external_province_holders_unavailable";
+    return false;
+  }
   if (!ReadGovernment(environment, access, output)) {
     failure = "government_flags_unavailable";
     return false;
@@ -854,6 +1057,9 @@ CampaignRootNativeEnvironmentV1 BindCampaignRootNativeEnvironmentV1(
   output.government = reinterpret_cast<
       NativeCampaignRootCharacterResolverV1>(
       module_base + kCampaignRootGovernmentRva);
+  output.province_holder_character_id = reinterpret_cast<
+      NativeCampaignRootProvinceHolderCharacterIdV1>(
+      module_base + kCampaignRootProvinceHolderCharacterIdRva);
   output.script_identifier_name = reinterpret_cast<
       NativeCampaignRootScriptIdentifierNameV1>(
       module_base + kCampaignRootScriptIdentifierNameRva);
@@ -935,12 +1141,15 @@ game::ReadCampaignRootContextResultV1 ReadCampaignRootContextV1(
     output.independent = first.independent;
     output.direct_landed_vassal_character_ids =
         std::move(first.direct_landed_vassal_character_ids);
+    output.adjacent_external_province_holder_character_ids =
+        std::move(first.adjacent_external_province_holder_character_ids);
     output.government = std::move(first.government);
     output.selected_game_rule_tokens =
         std::move(first.selected_game_rule_tokens);
     output.native_selected_game_rule_token_count =
         first.native_selected_game_rule_token_count;
-    output.readiness = {true, true, true, true, true, true, true, true, true};
+    output.readiness =
+        {true, true, true, true, true, true, true, true, true, true};
     output.unavailable_reason.clear();
     return game::ReadCampaignRootContextResultV1::available;
   } catch (...) {

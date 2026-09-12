@@ -40,6 +40,7 @@ struct CampaignRootReadinessV1 {
   bool capital_ready = false;
   bool lieges_ready = false;
   bool direct_landed_vassals_ready = false;
+  bool adjacent_external_province_holders_ready = false;
   bool government_ready = false;
   bool selected_game_rule_tokens_ready = false;
   bool same_frame_ready = false;
@@ -66,6 +67,8 @@ struct CampaignRootContextV1 {
   std::optional<std::int32_t> top_liege_character_id;
   std::optional<bool> independent;
   std::vector<std::int32_t> direct_landed_vassal_character_ids;
+  std::vector<std::int32_t>
+      adjacent_external_province_holder_character_ids;
   std::optional<CampaignRootGovernmentV1> government;
   std::vector<std::string> selected_game_rule_tokens;
   std::int32_t native_selected_game_rule_token_count = 0;
@@ -131,6 +134,8 @@ inline constexpr std::uintptr_t kCampaignRootCapitalProvinceRva = 0x2606760;
 inline constexpr std::uintptr_t kCampaignRootImmediateLiegeRva = 0x2613480;
 inline constexpr std::uintptr_t kCampaignRootTopLiegeRva = 0x2613600;
 inline constexpr std::uintptr_t kCampaignRootGovernmentRva = 0x26165B0;
+inline constexpr std::uintptr_t kCampaignRootProvinceHolderCharacterIdRva =
+    0x220C3F0;
 inline constexpr std::uintptr_t kCampaignRootScriptIdentifierNameRva =
     0x3B58970;
 
@@ -142,6 +147,9 @@ inline constexpr std::uintptr_t kCampaignRootScriptIdentifierNameRva =
 
 using NativeCampaignRootCharacterResolverV1 =
     void *(XAR_CAMPAIGN_ROOT_FASTCALL *)(void *character);
+using NativeCampaignRootProvinceHolderCharacterIdV1 =
+    std::int32_t *(XAR_CAMPAIGN_ROOT_FASTCALL *)(
+        void *province, std::int32_t *output);
 using NativeCampaignRootScriptIdentifierNameV1 =
     const std::string *(XAR_CAMPAIGN_ROOT_FASTCALL *)(std::int32_t identifier);
 
@@ -165,6 +173,8 @@ struct CampaignRootNativeEnvironmentV1 {
   NativeCampaignRootCharacterResolverV1 immediate_liege = nullptr;
   NativeCampaignRootCharacterResolverV1 top_liege = nullptr;
   NativeCampaignRootCharacterResolverV1 government = nullptr;
+  NativeCampaignRootProvinceHolderCharacterIdV1
+      province_holder_character_id = nullptr;
   NativeCampaignRootScriptIdentifierNameV1 script_identifier_name = nullptr;
 };
 

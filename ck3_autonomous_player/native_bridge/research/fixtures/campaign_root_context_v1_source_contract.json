@@ -24,6 +24,7 @@
     "top_liege_character_id",
     "independent",
     "direct_landed_vassal_character_ids",
+    "adjacent_external_province_holder_character_ids",
     "government",
     "selected_game_rule_tokens",
     "native_selected_game_rule_token_count",
@@ -42,6 +43,7 @@
     "capital_unavailable",
     "lieges_unavailable",
     "direct_landed_vassals_unavailable",
+    "adjacent_external_province_holders_unavailable",
     "government_flags_unavailable",
     "selected_game_rule_tokens_unavailable",
     "state_changed",
@@ -51,5 +53,7 @@
   "canonical_order": "unsigned_utf8_bytewise_lexicographical",
   "preserve_multiplicity": true,
   "direct_landed_vassal_order": "ascending_full_generation_character_id",
-  "direct_landed_vassal_filters": ["alive", "landed", "immediate_liege_is_player"]
+  "direct_landed_vassal_filters": ["alive", "landed", "immediate_liege_is_player"],
+  "adjacent_external_province_holder_order": "ascending_full_generation_character_id_duplicate_free",
+  "adjacent_external_province_holder_filters": ["alive", "generation_valid", "outside_player_subrealm", "province_directly_adjacent_to_player_subrealm"]
 }

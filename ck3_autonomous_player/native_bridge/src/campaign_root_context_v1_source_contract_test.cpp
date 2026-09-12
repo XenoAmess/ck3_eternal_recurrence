@@ -71,7 +71,8 @@ int main(int argc, char **argv) {
       kCampaignRootCapitalProvinceRva != 0x2606760 ||
       kCampaignRootImmediateLiegeRva != 0x2613480 ||
       kCampaignRootTopLiegeRva != 0x2613600 ||
-      kCampaignRootGovernmentRva != 0x26165B0) {
+      kCampaignRootGovernmentRva != 0x26165B0 ||
+      kCampaignRootProvinceHolderCharacterIdRva != 0x220C3F0) {
     std::cerr << "compiled exact-build binding drifted\n";
     return 1;
   }
@@ -90,6 +91,9 @@ int main(int argc, char **argv) {
                     "selected_rule_tokens_native_order",
                     "ReadDirectLandedVassals",
                     "direct_landed_vassals_unavailable",
+                    "ReadAdjacentExternalProvinceHolders",
+                    "adjacent_external_province_holders_unavailable",
+                    "CharacterBelongsToPlayerSubrealm",
                     "observed_id != full_id",
                     "second != first"}) ||
       !ContainsAll(serializer,
@@ -99,6 +103,7 @@ int main(int argc, char **argv) {
                     "\\\"selected_game_rule_tokens\\\"",
                     "\\\"native_selected_game_rule_token_count\\\"",
                     "\\\"direct_landed_vassal_character_ids\\\"",
+                    "\\\"adjacent_external_province_holder_character_ids\\\"",
                     "\\\"unavailable_reason\\\"",
                     "\\\"provenance\\\""}) ||
       !ContainsAll(query_mailbox,
@@ -132,6 +137,9 @@ int main(int argc, char **argv) {
                     "\"instruction_rva\": \"0x2616664\"",
                     "mov rax, qword ptr [rip+0x30F64E5]",
                     "\"resolved_rva\": \"0x570CB50\"",
+                    "\"province_holder_character_id_rva\": \"0x220C3F0\"",
+                    "531558C7064BA9F24F2FDE278F2A5FEF7F495664F0437A0EF528E04FC8CAB8D8",
+                    "\"row_stride\": \"0x30\"",
                     "unsigned_utf8_bytewise_lexicographical",
                     "\"preserve_multiplicity\": true"}) ||
       !ContainsAll(fixture,
@@ -141,6 +149,8 @@ int main(int argc, char **argv) {
                     "\"all_or_nothing_readiness\": true",
                     "\"direct_landed_vassal_order\": "
                     "\"ascending_full_generation_character_id\"",
+                    "\"adjacent_external_province_holder_order\": "
+                    "\"ascending_full_generation_character_id_duplicate_free\"",
                     "\"government_fallback_kind\": \"pointer_slot\""})) {
     return 1;
   }

@@ -25,7 +25,40 @@
     "immediate_liege_rva": "0x2613480",
     "top_liege_rva": "0x2613600",
     "government_rva": "0x26165B0",
+    "province_holder_character_id_rva": "0x220C3F0",
     "script_identifier_name_rva": "0x3B58970"
+  },
+  "province_boundary_identity": {
+    "province_holder_character_id_function": {
+      "start_rva": "0x220C3F0",
+      "end_rva_exclusive": "0x220C49F",
+      "size": "0xAF",
+      "sha256": "531558C7064BA9F24F2FDE278F2A5FEF7F495664F0437A0EF528E04FC8CAB8D8",
+      "termination_evidence": "ret at 0x220C49E followed by int3 at 0x220C49F",
+      "semantics": "prefer CProvince+0x744 CharacterID; otherwise resolve CProvince+0x740 LandedTitleID and use the parent title holder for a barony"
+    },
+    "province_layout": {
+      "+0x08": "map node pointer",
+      "+0x10": "ProvinceID used for array-index roundtrip",
+      "+0x740": "full-generation LandedTitleID fallback input",
+      "+0x744": "preferred holder CharacterID"
+    },
+    "game_data_provinces": {
+      "array_offset": "0x140",
+      "count_offset": "0x14C",
+      "entry_stride": "0x08"
+    },
+    "adjacency_layout": {
+      "map_node_data_offset": "0x50",
+      "map_node_count_offset": "0x5C",
+      "row_stride": "0x30",
+      "row_kind_offset": "0x00",
+      "row_target_province_id_offset": "0x04",
+      "admitted_kinds": [0, 1, 2, 3]
+    },
+    "player_subrealm_rule": "a living, generation-valid province holder belongs to the player subrealm iff its native immediate-liege chain reaches the player before null, fallback or self-root termination",
+    "published_field": "adjacent_external_province_holder_character_ids",
+    "published_semantics": "sorted unique generation-valid living holders of provinces directly adjacent to at least one province held inside the player subrealm, excluding all holders inside that subrealm"
   },
   "government_fallback_binding": {
     "kind": "pointer_slot",
@@ -46,6 +79,7 @@
   "canonicalization": {
     "comparator": "unsigned_utf8_bytewise_lexicographical",
     "preserve_multiplicity": true,
+    "adjacent_external_province_holder_order": "ascending_full_generation_character_id_duplicate_free",
     "selected_setting_tokens_do_not_infer_parent_rule": true
   }
 }
