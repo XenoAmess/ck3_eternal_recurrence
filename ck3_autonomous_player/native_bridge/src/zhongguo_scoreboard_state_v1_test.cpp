@@ -27,6 +27,7 @@ struct Fixture {
   std::array<std::uint8_t, 0x400> gui_context{};
   std::array<std::uint8_t, 8> gui_owner{};
   std::array<void *, 4> modal_receivers{};
+  std::size_t missing_widget_index = 15;
 };
 
 ZhongguoRawVariableV1 Integer(std::int64_t value) {
@@ -110,6 +111,7 @@ void *FindWidget(void *opaque, std::string_view name) noexcept {
        ++index) {
     if (name ==
         xar::ck3_11906::kZhongguoScoreboardStateV1WidgetNames[index]) {
+      if (index == fixture.missing_widget_index) return nullptr;
       return fixture.widgets[index].data();
     }
   }
@@ -735,6 +737,31 @@ int main() {
           !list_only.received_self_acl.result_case_serial.available,
       "received list must remain available when the current player has no "
       "self dossier");
+
+  fixture.missing_widget_index = 12;
+  request.request_nonce = "scoreboard-missing-widget-diagnostic";
+  xar::game::ZhongguoScoreboardStateV1 missing_widget{};
+  const auto missing_widget_read =
+      xar::ck3_11906::ReadZhongguoScoreboardStateV1(
+          Environment(), Access(fixture), request, missing_widget);
+  const auto missing_widget_json =
+      xar::ck3_11906::SerializeZhongguoScoreboardStateV1(missing_widget);
+  ok &= Expect(
+      missing_widget_read ==
+              xar::game::ReadZhongguoScoreboardStateResultV1::unavailable &&
+          missing_widget.unavailable_reason == "widget_not_instantiated" &&
+          missing_widget.widgets[11].exists.available &&
+          missing_widget.widgets[11].exists.value == true &&
+          missing_widget.widgets[12].exists.available &&
+          missing_widget.widgets[12].exists.value == false &&
+          !missing_widget.widgets[12].instance_pointer.available &&
+          missing_widget.widgets[12].instance_pointer.unavailable_reason ==
+              "widget_not_instantiated" &&
+          !missing_widget.readiness.entry_window_state_ready &&
+          !missing_widget_json.empty(),
+      "widget RED must retain fixed-identity existence diagnostics without "
+      "publishing readiness");
+  fixture.missing_widget_index = 15;
 
   const auto bound =
       xar::ck3_11906::BindZhongguoScoreboardNativeEnvironmentV1(

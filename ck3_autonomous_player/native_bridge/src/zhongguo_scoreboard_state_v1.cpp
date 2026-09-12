@@ -1558,6 +1558,10 @@ game::ReadZhongguoScoreboardStateResultV1 ReadZhongguoScoreboardStateV1(
       return game::ReadZhongguoScoreboardStateResultV1::unavailable;
     }
     if (!first_state.readiness.entry_window_state_ready) {
+      // Keep the fixed-allowlist existence probes so an unavailable response
+      // identifies the missing runtime widget. Readiness remains unavailable
+      // and no provider observation is published.
+      output.widgets = std::move(first_state.widgets);
       SetTopUnavailable(output, "widget_not_instantiated");
       return game::ReadZhongguoScoreboardStateResultV1::unavailable;
     }

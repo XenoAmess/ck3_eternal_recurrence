@@ -314,6 +314,39 @@ class ZhongguoScoreboardStateContractTests(unittest.TestCase):
                 expected_player_character_id=PLAYER,
             )
 
+    def test_widget_red_preserves_fixed_identity_existence_diagnostics(self) -> None:
+        query = parse_query_zhongguo_scoreboard_state_v1_step(
+            query_zhongguo_scoreboard_state_v1_step(NONCE)
+        )
+        assert query is not None
+        frame = native_frame()
+        frame["status"] = "unavailable"
+        frame["tree_fingerprint_v1"] = ""
+        frame["semantic_fingerprint_v1"] = ""
+        frame["observation_sequence"] = 0
+        frame["observed_state_revision"] = 0
+        frame["unavailable_reason"] = "widget_not_instantiated"
+        frame["readiness"] = {key: False for key in frame["readiness"]}
+        missing = frame["widgets"][12]
+        missing["instance_pointer"] = unavailable("widget_not_instantiated")
+        missing["vtable_pointer"] = unavailable("widget_not_instantiated")
+        missing["exists"] = typed(False)
+        missing["local_visible"] = unavailable("widget_not_instantiated")
+        missing["effective_visible"] = unavailable("widget_not_instantiated")
+        missing["enabled"] = unavailable("snapshot_unavailable")
+
+        normalized = normalize_native_zhongguo_scoreboard_state_v1(
+            frame,
+            expected_query=query,
+            expected_snapshot_revision=REVISION,
+            expected_date_raw=DATE_RAW,
+            expected_player_character_id=PLAYER,
+        )
+        self.assertEqual(normalized["status"], "unavailable")
+        self.assertEqual(normalized["widgets"][11]["exists"], typed(True))
+        self.assertEqual(normalized["widgets"][12]["exists"], typed(False))
+        self.assertFalse(normalized["readiness"]["entry_window_state_ready"])
+
     def test_identity_acl_and_action_drift_fail_closed(self) -> None:
         query = parse_query_zhongguo_scoreboard_state_v1_step(
             query_zhongguo_scoreboard_state_v1_step(NONCE)

@@ -33,3 +33,11 @@ open_kaishek 兼容说明，且在新的 DLL 与轮次前先以定向 native/Pyt
 
 失败 take 没有 clean span，P2 素材仍为 `0/8`。P1 保持 `9/9 GREEN`，视频硬锁保持
 解除；剪辑、导出与发布仍等待八段 clean footage 和内容审阅。
+
+## 诊断补丁
+
+native unavailable 分支现在只把首次解码出的 15 项 widget 数组移动到响应中，再把
+top-level readiness 归零并保持 `widget_not_instantiated`。缺失项因此可由
+`exists={status:available,value:false}` 直接定位；其余成功读取项不会被抹去。补丁不改变
+schema shape、allowlist、动作、遍历或可用性判定。native fixture 模拟第 13 项缺失并断言
+序列化仍有效；Python 合同测试断言同一 unavailable payload 可被严格 normalizer 接受。

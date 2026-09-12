@@ -174,6 +174,14 @@ R517 使用上述 DLL 后不再返回 `acl_inconsistent`，而是进入 widget �
 最终修复在同一固定 window 子树做一次最多 65,536 节点的收集，并在 15 项全找到时
 立即停止。名字 allowlist、depth 64、child count 4,096、动作目标和所有 ACL 规则不变。
 
+R521 使用该单次遍历后仍返回 `widget_not_instantiated`。此前 top-level unavailable 分支
+会丢弃已经完成的逐 widget `exists` 结果，15 项统一退回 `snapshot_unavailable`，导致
+同一个 RED 无法指出缺失身份。响应现在保留首次固定 allowlist 解码得到的 widget 数组：
+找到的项继续返回 typed `exists=true` 与只读 pointer/visibility，缺失项返回 typed
+`exists=false`，其 pointer/visibility reason 为 `widget_not_instantiated`；top-level status、
+reason 与全部 readiness 仍保持 unavailable/false，且不发布 provider observation。
+这是一项诊断语义增强，不放宽 action 或 production-live 门禁。
+
 - exact build 与 adapter/consumer identity；
 - connection generation 与 query sequence；
 - request nonce；
