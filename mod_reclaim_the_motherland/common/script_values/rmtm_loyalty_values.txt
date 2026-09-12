@@ -1,0 +1,98 @@
+﻿#########################################################
+# Reclaim the Motherland - Phase 2 loyalty score
+#########################################################
+
+# Character scope: a direct, landed Pro-Hegemon vassal.
+# Required saved scope: old_emperor_temp.
+rmtm_pro_hegemon_loyalty_score_value = {
+	value = 65
+
+	if = {
+		limit = { opinion = { target = scope:old_emperor_temp value >= 75 } }
+		add = 20
+	}
+	else_if = {
+		limit = { opinion = { target = scope:old_emperor_temp value >= 50 } }
+		add = 15
+	}
+	else_if = {
+		limit = { opinion = { target = scope:old_emperor_temp value >= 25 } }
+		add = 10
+	}
+	else_if = {
+		limit = { opinion = { target = scope:old_emperor_temp value >= 0 } }
+		add = 0
+	}
+	else_if = {
+		limit = { opinion = { target = scope:old_emperor_temp value >= -24 } }
+		add = -15
+	}
+	else_if = {
+		limit = { opinion = { target = scope:old_emperor_temp value >= -49 } }
+		add = -30
+	}
+	else = { add = -50 }
+
+	if = { limit = { has_relation_friend = scope:old_emperor_temp } add = 15 }
+	if = { limit = { has_relation_lover = scope:old_emperor_temp } add = 20 }
+	if = {
+		limit = {
+			OR = {
+				has_relation_elder = scope:old_emperor_temp
+				has_relation_disciple = scope:old_emperor_temp
+			}
+		}
+		add = 15
+	}
+	if = { limit = { has_trait = loyal } add = 20 }
+	if = { limit = { has_trait = content } add = 10 }
+	if = { limit = { has_trait = ambitious } add = -15 }
+	if = { limit = { is_powerful_vassal_of = scope:old_emperor_temp } add = -10 }
+
+	if = { limit = { highest_held_title_tier = tier_empire } add = -15 }
+	else_if = { limit = { highest_held_title_tier = tier_kingdom } add = -5 }
+
+	if = {
+		limit = {
+			military_strength_greater_than_ratio_trigger = {
+				TARGET = scope:old_emperor_temp
+				RATIO = 0.6
+			}
+		}
+		add = -30
+	}
+	else_if = {
+		limit = {
+			military_strength_greater_than_ratio_trigger = {
+				TARGET = scope:old_emperor_temp
+				RATIO = 0.35
+			}
+		}
+		add = -15
+	}
+
+	if = { limit = { scope:old_emperor_temp.legitimacy_level <= 1 } add = -20 }
+	else_if = { limit = { scope:old_emperor_temp.legitimacy_level >= 4 } add = 10 }
+
+	if = {
+		limit = {
+			has_dread_level_towards = {
+				target = scope:old_emperor_temp
+				level >= 2
+			}
+		}
+		add = 10
+	}
+	else_if = {
+		limit = {
+			has_dread_level_towards = {
+				target = scope:old_emperor_temp
+				level >= 1
+			}
+		}
+		add = 5
+	}
+
+	min = 5
+	max = 95
+}

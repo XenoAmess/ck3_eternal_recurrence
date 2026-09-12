@@ -62,8 +62,9 @@ rmtm_create_restoration_hegemony_effect = {
 }
 
 # Character scope inherited from tgp_dynastic_cycle.0081.
-# Keeps the old emperor's personal titles and only their direct Pro-Hegemon
-# vassal trees. All other Chaos bookkeeping follows vanilla 1.19.0.6.
+# Keeps the old emperor's personal titles and the direct Pro-Hegemon vassal
+# trees which pass the Phase 2 loyalty settlement. All other Chaos bookkeeping
+# follows vanilla 1.19.0.6.
 rmtm_chaos_shattering_effect = {
 	hidden_effect = {
 		title:h_china = {
@@ -84,9 +85,10 @@ rmtm_chaos_shattering_effect = {
 			}
 		}
 
-		# Only direct, landed Pro-Hegemon vassals keep their existing liege and
-		# subordinate realm tree. The frozen former_movement_member variable is the
-		# authoritative pre-Chaos movement identity.
+		# Resolve every direct, landed Pro-Hegemon vassal exactly once before any
+		# title or liege changes. The frozen former_movement_member variable is the
+		# authoritative pre-Chaos movement identity. The compatibility rule keeps
+		# every candidate; the recommended rule applies the Phase 2 settlement.
 		scope:old_emperor_temp = {
 			every_vassal = {
 			limit = {
@@ -96,7 +98,25 @@ rmtm_chaos_shattering_effect = {
 						participant_group_type = pro_hegemon_movement
 					}
 				}
-				add_to_list = rmtm_loyal_direct_vassals
+				save_temporary_scope_as = rmtm_loyalty_candidate
+				remove_variable = rmtm_loyalty_outcome
+				remove_variable = rmtm_loyalty_reason
+				remove_variable = rmtm_loyalty_score
+				if = {
+					limit = { has_game_rule = rmtm_unwavering_loyalty }
+					set_variable = {
+						name = rmtm_loyalty_outcome
+						value = flag:stay
+					}
+					set_variable = {
+						name = rmtm_loyalty_reason
+						value = flag:oathsworn
+					}
+					add_to_list = rmtm_final_loyal_direct_vassals
+				}
+				else = {
+					rmtm_resolve_pro_hegemon_loyalty_effect = yes
+				}
 			}
 		}
 
@@ -112,21 +132,23 @@ rmtm_chaos_shattering_effect = {
 			every_vassal = {
 				limit = {
 					highest_held_title_tier >= tier_county
-					NOT = { is_in_list = rmtm_loyal_direct_vassals }
+					NOT = { is_in_list = rmtm_final_loyal_direct_vassals }
 				}
 				becomes_independent = { change = scope:chaos_change }
 			}
 			resolve_title_and_vassal_change = scope:chaos_change
 		}
 
-		# Vanilla 1.19.0.6 Chaos processing resumes here. Loyal vassal trees are
-		# excluded only from the hierarchy-remake block below.
+		# Vanilla 1.19.0.6 Chaos processing resumes here. Final loyalists are also
+		# excluded from weak kingdom/empire pruning, preserving the exact title
+		# object, display/custom name, and subordinate realm tree they already held.
 		every_in_list = {
 			list = former_vassals
 			limit = {
 				# The former hegemon must retain every personal title other than
 				# h_china, even when the AI power thresholds would normally prune it.
 				this != scope:old_emperor_temp
+				NOT = { is_in_list = rmtm_final_loyal_direct_vassals }
 				is_landed = yes
 				is_ai = yes
 				OR = {
@@ -311,6 +333,55 @@ rmtm_chaos_shattering_effect = {
 						}
 					}
 					create_story = story_take_mandate_of_heaven
+				}
+			}
+		}
+
+		# A player old emperor receives a concise political reckoning after the
+		# atomic shattering transaction. Delaying by one day avoids competing with
+		# the vanilla Chaos event which invoked this effect while preserving scopes.
+		scope:old_emperor_temp = {
+			if = {
+				limit = {
+					is_ai = no
+					OR = {
+						any_in_list = {
+							list = rmtm_final_loyal_direct_vassals
+							always = yes
+						}
+						any_in_list = {
+							list = rmtm_defecting_direct_vassals
+							always = yes
+						}
+					}
+				}
+				if = {
+					limit = {
+						any_in_list = {
+							list = rmtm_final_loyal_direct_vassals
+							always = yes
+						}
+					}
+					random_in_list = {
+						list = rmtm_final_loyal_direct_vassals
+						save_scope_as = rmtm_loyal_notable
+					}
+				}
+				if = {
+					limit = {
+						any_in_list = {
+							list = rmtm_defecting_direct_vassals
+							always = yes
+						}
+					}
+					random_in_list = {
+						list = rmtm_defecting_direct_vassals
+						save_scope_as = rmtm_defector_notable
+					}
+				}
+				trigger_event = {
+					id = rmtm.1001
+					days = 1
 				}
 			}
 		}

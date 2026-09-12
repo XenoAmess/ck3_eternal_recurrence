@@ -27,6 +27,10 @@ MANDATE_OVERRIDE = (
     MOD / "common/decisions/dlc_decisions/tgp/zz_rmtm_mandate_override.txt"
 )
 CUSTOM_EFFECTS = MOD / "common/scripted_effects/rmtm_dynastic_cycle_effects.txt"
+LOYALTY_EFFECTS = MOD / "common/scripted_effects/rmtm_loyalty_resolution_effects.txt"
+LOYALTY_TRIGGERS = MOD / "common/scripted_triggers/rmtm_loyalty_triggers.txt"
+LOYALTY_VALUES = MOD / "common/script_values/rmtm_loyalty_values.txt"
+LOYALTY_EVENTS = MOD / "events/rmtm_loyalty_events.txt"
 GENERATED_TITLE_NAMES = (
     MOD / "common/scripted_effects/rmtm_generated_title_name_effects.txt"
 )
@@ -40,6 +44,9 @@ FIXTURE_EFFECTS = (
 RULE = "rmtm_hegemon_fate"
 RECLAIM_SETTING = "rmtm_reclaim_the_motherland"
 VANILLA_SETTING = "rmtm_vanilla_shattering"
+LOYALTY_RULE = "rmtm_pro_hegemon_choice"
+DYNAMIC_LOYALTY_SETTING = "rmtm_divided_hearts"
+LEGACY_LOYALTY_SETTING = "rmtm_unwavering_loyalty"
 DISPATCH_EFFECT = "tgp_chaos_shattering_effect"
 RECLAIM_EFFECT = "rmtm_chaos_shattering_effect"
 VANILLA_EFFECT = "rmtm_vanilla_chaos_shattering_effect"
@@ -401,6 +408,21 @@ class TestReclaimTheMotherlandContract(unittest.TestCase):
         self.assertEqual(len(direct_entries(rule, RECLAIM_SETTING)), 1)
         self.assertEqual(len(direct_entries(rule, VANILLA_SETTING)), 1)
 
+        loyalty_rule = direct_block(parsed, LOYALTY_RULE)
+        self.assertEqual(
+            scalar_values(loyalty_rule, "default", recursive=False),
+            [DYNAMIC_LOYALTY_SETTING],
+        )
+        loyalty_options = {
+            entry.key
+            for entry in loyalty_rule.entries
+            if isinstance(entry.value, Block) and entry.key != "categories"
+        }
+        self.assertEqual(
+            loyalty_options,
+            {DYNAMIC_LOYALTY_SETTING, LEGACY_LOYALTY_SETTING},
+        )
+
     def test_live_fixture_samples_only_county_or_higher_direct_vassals(self) -> None:
         text = FIXTURE_EFFECTS.read_text(encoding="utf-8-sig")
         initialization = text.split("rqa_enter_chaos_effect", 1)[0]
@@ -684,6 +706,75 @@ class TestReclaimTheMotherlandContract(unittest.TestCase):
             ),
             "the weak-ruler pruning pass must not destroy the former hegemon's other titles",
         )
+        self.assertTrue(
+            contains_fragment(pruning_limit, "rmtm_final_loyal_direct_vassals"),
+            "final loyalists must retain weak kingdom/empire titles and their existing names",
+        )
+
+    def test_phase_two_loyalty_resolution_is_one_shot_and_priority_ordered(self) -> None:
+        trigger_text, trigger_file = read_script(LOYALTY_TRIGGERS)
+        hard_defect = direct_block(trigger_file, "rmtm_pro_hegemon_hard_defect_trigger")
+        hard_stay = direct_block(trigger_file, "rmtm_pro_hegemon_hard_stay_trigger")
+        for fragment in (
+            "is_at_war_with",
+            "has_relation_rival",
+            "has_relation_nemesis",
+            "house_has_feud_relation_with_trigger",
+            "disloyal",
+            "value <= -75",
+            "independence_faction",
+            "claimant_faction",
+        ):
+            self.assertIn(fragment, trigger_text)
+        for fragment in (
+            "has_relation_best_friend",
+            "has_relation_soulmate",
+            "former_movement_leader",
+            "dynasty",
+            "has_trait = loyal",
+            "has_strong_hook",
+        ):
+            self.assertIn(fragment, trigger_text)
+        self.assertTrue(has_key(hard_defect, "any_targeting_faction"))
+        self.assertTrue(has_key(hard_stay, "has_strong_hook"))
+
+        value_text, value_file = read_script(LOYALTY_VALUES)
+        score = direct_block(value_file, "rmtm_pro_hegemon_loyalty_score_value")
+        self.assertEqual(scalar_values(score, "value", recursive=False), ["65"])
+        self.assertEqual(scalar_values(score, "min", recursive=False), ["5"])
+        self.assertEqual(scalar_values(score, "max", recursive=False), ["95"])
+        for fragment in (
+            "value >= 75", "value >= 50", "value >= 25", "value >= 0",
+            "value >= -24", "value >= -49", "add = -50",
+            "has_relation_friend", "has_relation_lover", "has_relation_elder",
+            "has_relation_disciple", "content", "ambitious",
+            "is_powerful_vassal_of", "tier_kingdom", "tier_empire",
+            "RATIO = 0.35", "RATIO = 0.6", "legitimacy_level <= 1",
+            "legitimacy_level >= 4", "level >= 1", "level >= 2",
+        ):
+            self.assertIn(fragment, value_text)
+
+        effect_text, effect_file = read_script(LOYALTY_EFFECTS)
+        resolver = direct_block(effect_file, "rmtm_resolve_pro_hegemon_loyalty_effect")
+        self.assertTrue(has_assignment(resolver, "chance", "var:rmtm_loyalty_score"))
+        self.assertIn("is_ai = no", effect_text)
+        self.assertIn("var:rmtm_loyalty_score >= 50", effect_text)
+        self.assertGreaterEqual(effect_text.count("name = rmtm_loyalty_outcome"), 6)
+        self.assertIn("rmtm_final_loyal_direct_vassals", effect_text)
+        self.assertIn("rmtm_defecting_direct_vassals", effect_text)
+
+        custom_text, _ = read_script(CUSTOM_EFFECTS)
+        self.assertIn("remove_variable = rmtm_loyalty_outcome", custom_text)
+        self.assertIn("has_game_rule = rmtm_unwavering_loyalty", custom_text)
+        self.assertIn("rmtm_resolve_pro_hegemon_loyalty_effect = yes", custom_text)
+        self.assertIn("NOT = { is_in_list = rmtm_final_loyal_direct_vassals }", custom_text)
+
+        event_text, event_file = read_script(LOYALTY_EVENTS)
+        summary = direct_block(event_file, "rmtm.1001")
+        self.assertTrue(has_assignment(summary, "title", "rmtm_loyalty_summary_title"))
+        self.assertIn("rmtm_loyalty_summary_both", event_text)
+        self.assertIn("rmtm_loyalty_summary_loyal_only", event_text)
+        self.assertIn("rmtm_loyalty_summary_defector_only", event_text)
 
     def test_loyalists_are_frozen_from_direct_vassals_historical_movement(self) -> None:
         _, custom_file = read_script(CUSTOM_EFFECTS)

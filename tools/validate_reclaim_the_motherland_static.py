@@ -24,6 +24,11 @@ LOC_KEYS = frozenset(
         "setting_rmtm_reclaim_the_motherland_desc",
         "setting_rmtm_vanilla_shattering",
         "setting_rmtm_vanilla_shattering_desc",
+        "rule_rmtm_pro_hegemon_choice",
+        "setting_rmtm_divided_hearts",
+        "setting_rmtm_divided_hearts_desc",
+        "setting_rmtm_unwavering_loyalty",
+        "setting_rmtm_unwavering_loyalty_desc",
         "rmtm_claim_restoration_decision",
         "rmtm_claim_restoration_decision_confirm",
         "rmtm_claim_restoration_decision_desc",
@@ -32,6 +37,11 @@ LOC_KEYS = frozenset(
         "rmtm_restoration_hegemony_fallback_name",
         "rmtm_restoration_hegemony_fallback_name_adj",
         "rmtm_claim_mandate_blocked_by_restoration_tt",
+        "rmtm_loyalty_summary_title",
+        "rmtm_loyalty_summary_both",
+        "rmtm_loyalty_summary_loyal_only",
+        "rmtm_loyalty_summary_defector_only",
+        "rmtm_loyalty_summary_acknowledge",
     }
 )
 GENERATED_TITLE_LOC_KEYS = frozenset(
@@ -89,7 +99,7 @@ def balanced_braces(value: str) -> bool:
 def validate() -> list[str]:
     errors = builder.release_source_errors(MOD)
     expected_descriptor = (
-        'version="0.1.1"\n'
+        'version="0.2.0"\n'
         'tags={\n\t"Gameplay"\n}\n'
         'name="Reclaim the Motherland — 重整河山"\n'
         'picture="thumbnail.png"\n'
@@ -97,7 +107,7 @@ def validate() -> list[str]:
     )
     descriptor = text("descriptor.mod").replace("\r\n", "\n")
     if descriptor != expected_descriptor:
-        errors.append("descriptor.mod fields or ordering differ from the 0.1.1 contract")
+        errors.append("descriptor.mod fields or ordering differ from the 0.2.0 contract")
     thumbnail = MOD / "thumbnail.png"
     if not thumbnail.is_file():
         errors.append("thumbnail.png is missing")
@@ -117,12 +127,16 @@ def validate() -> list[str]:
             "common/decisions/rmtm_restoration_decisions.txt",
             "common/decisions/dlc_decisions/tgp/zz_rmtm_mandate_override.txt",
             "common/game_rules/rmtm_game_rules.txt",
+            "common/script_values/rmtm_loyalty_values.txt",
             "common/scripted_effects/rmtm_dynastic_cycle_effects.txt",
             "common/scripted_effects/rmtm_generated_title_name_effects.txt",
+            "common/scripted_effects/rmtm_loyalty_resolution_effects.txt",
             "common/scripted_effects/rmtm_vanilla_compat_effects.txt",
             "common/scripted_effects/zz_rmtm_vanilla_overrides.txt",
+            "common/scripted_triggers/rmtm_loyalty_triggers.txt",
             "common/scripted_triggers/rmtm_restoration_triggers.txt",
             "descriptor.mod",
+            "events/rmtm_loyalty_events.txt",
             "localization/english/rmtm_l_english.yml",
             "localization/english/rmtm_generated_title_names_l_english.yml",
             "localization/french/rmtm_l_french.yml",
@@ -145,7 +159,7 @@ def validate() -> list[str]:
         }
     )
     if builder.RUNTIME_FILES != expected_runtime_files:
-        errors.append("release allowlist is not the exact twenty-eight-file product inventory")
+        errors.append("release allowlist is not the exact thirty-two-file product inventory")
     if builder.SOURCE_ONLY_FILES != frozenset(
         {"README.md", "docs/acceptance-plan.md", "docs/acceptance-report.md"}
     ):
@@ -187,7 +201,12 @@ def validate() -> list[str]:
     all_script = "\n".join(scripts.values())
     for required_definition in (
         "rmtm_hegemon_fate",
+        "rmtm_pro_hegemon_choice",
         "rmtm_holds_restoration_hegemony_trigger",
+        "rmtm_pro_hegemon_hard_defect_trigger",
+        "rmtm_pro_hegemon_hard_stay_trigger",
+        "rmtm_pro_hegemon_loyalty_score_value",
+        "rmtm_resolve_pro_hegemon_loyalty_effect",
         "rmtm_claim_restoration_decision",
         "rmtm_freeze_restoration_hegemony_name_effect",
         "situation_dynastic_cycle_claim_mandate_decision",
@@ -202,11 +221,14 @@ def validate() -> list[str]:
         "default = rmtm_reclaim_the_motherland",
         "rmtm_reclaim_the_motherland = { }",
         "rmtm_vanilla_shattering = { }",
+        "default = rmtm_divided_hearts",
+        "rmtm_divided_hearts = { }",
+        "rmtm_unwavering_loyalty = { }",
     ):
         if fragment not in rules:
             errors.append(f"game-rule contract missing: {fragment}")
-    if rules.count("default =") != 1:
-        errors.append("the product must expose exactly one defaulted game rule")
+    if rules.count("default =") != 2:
+        errors.append("the product must expose exactly two defaulted game rules")
 
     restoration = scripts.get(
         "common/decisions/rmtm_restoration_decisions.txt", ""
@@ -256,7 +278,10 @@ def validate() -> list[str]:
             )
     for fragment in (
         "participant_group_type = pro_hegemon_movement",
-        "add_to_list = rmtm_loyal_direct_vassals",
+        "add_to_list = rmtm_final_loyal_direct_vassals",
+        "NOT = { is_in_list = rmtm_final_loyal_direct_vassals }",
+        "has_game_rule = rmtm_unwavering_loyalty",
+        "rmtm_resolve_pro_hegemon_loyalty_effect = yes",
         "create_dynamic_title = {",
         "tier = hegemony",
         "name = rmtm_restoration_hegemony",
@@ -265,6 +290,8 @@ def validate() -> list[str]:
     ):
         if fragment not in custom_shattering:
             errors.append(f"custom shattering contract missing: {fragment}")
+    if "add_to_list = rmtm_defecting_direct_vassals" not in all_script:
+        errors.append("dynamic loyalty contract does not record defecting direct vassals")
     if re.search(
         r"(?m)^\s*force_step_down_landed_titles\s*=", custom_shattering
     ):
@@ -320,6 +347,9 @@ def validate() -> list[str]:
     english = localized.get("english", {})
     required_chinese = {
         "rule_rmtm_hegemon_fate": "中华霸权统治者的命运",
+        "rule_rmtm_pro_hegemon_choice": "尊王诸侯的抉择",
+        "setting_rmtm_divided_hearts": "人心离散",
+        "setting_rmtm_unwavering_loyalty": "誓死尊王",
         "setting_rmtm_reclaim_the_motherland": "重整河山",
         "setting_rmtm_vanilla_shattering": "群雄割据（原版）",
         "rmtm_claim_restoration_decision": "宣称复辟",
@@ -327,6 +357,9 @@ def validate() -> list[str]:
     }
     required_english = {
         "rule_rmtm_hegemon_fate": "Fate of the Chinese Hegemon",
+        "rule_rmtm_pro_hegemon_choice": "The Choice of the Loyalists",
+        "setting_rmtm_divided_hearts": "Divided Hearts",
+        "setting_rmtm_unwavering_loyalty": "Unwavering Loyalty",
         "setting_rmtm_reclaim_the_motherland": "Reclaim the Motherland",
         "setting_rmtm_vanilla_shattering": "Vanilla Shattering",
         "rmtm_claim_restoration_decision": "Proclaim the Restoration",

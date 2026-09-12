@@ -1,20 +1,25 @@
-# 重整河山 0.1.1 验收方案
+# 重整河山 0.2.0（二期）验收方案
 
 状态：执行版
 
-目标游戏：CK3 `1.19.0.6`；正式产品：`mod_reclaim_the_motherland`。
+目标游戏：CK3 `1.19.0.6`
 
-## 1. 验收原则
+正式产品：`mod_reclaim_the_motherland`
 
-- 每次 CK3 步骤先执行 `open_kaishek` 离线预验，并在同一 run 记录 commit、profile、游戏版本、EXE SHA-256、语料 SHA-256、实际命令、结果和不支持项。
-- 游戏控制采用原生 MCP bridge 取得 readiness、paused snapshot、恢复/暂停和最终状态；当前 MCP 未暴露王朝循环 participant group、动态头衔变量和决议可用性，因此这些字段由外置、不会进入 release staging 的引擎夹具断言，决议 UI 只用于触发真实产品入口。
-- CK3 排他槽使用 `xar_autoplayer.locking.exclusive_launch_lock`；若槽位已占用，runner 等待，不抢占、不终止别人的进程。
-- L0/L1/L3 各自只证明其声明的边界。脚本解析、夹具 PASS 或上传成功都不能替代 fresh Workshop cache 的完整复核。
-- 正式 staging 只能由 `tools/build_reclaim_the_motherland_release.py` 生成；仓库与正式 staging 的内层 `descriptor.mod` 不含 `remote_file_id`。
+Workshop item：`3798404599`
 
-## 2. L0 静态与构建
+## 1. 验收目标
 
-执行：
+在不削弱一期“后朝—复辟”闭环的前提下，证明二期同时满足两项目标：
+
+1. 最终留下的忠臣不会经过原版弱势王国/帝国裁剪及改国号入口；其主头衔对象、title key、显示/自定义名称、直属关系和下级封臣树保持不变。
+2. 默认“人心离散”规则会对每名直属、有地、伯爵级以上尊王派候选人结算一次忠诚：公开决裂者必叛，强羁绊者必留，其余 AI 按冻结后的 5%–95% 概率掷一次；兼容规则“誓死尊王”仍保留一期全员留守行为。
+
+所有验收保持 MCP-first。`open_kaishek` 先覆盖可确定解析的部分；它不支持的动态头衔、关系、概率与封臣树语义必须进入真实 CK3 paused artifact，不能用静态 PASS 替代。
+
+## 2. L0 静态、原版合同与正式构建
+
+使用已验证的项目虚拟环境解释器执行：
 
 ```powershell
 & tools/.venv/Scripts/python.exe tools/compose_reclaim_the_motherland_key_art.py --check
@@ -26,44 +31,68 @@
 
 通过条件：
 
-- 原版两个覆写点仍与 CK3 1.19.0.6 锁定基线一致；自定义路径与完整原版回退路径均存在。
-- 28 文件 release allowlist 精确成立；九语均为 UTF-8 BOM、102/102 key 对称（13 个产品文案 key 与 89 个确定性朝号组合 key）、格式 token 不漂移、七语无英文占位。
-- 640×640 PNG thumbnail 小于 1,000,000 bytes，且逐字节等于源图的确定性投影。
-- 两次 staging 的 manifest 与 ZIP 逐字节一致。
+- CK3 1.19.0.6 的两个原版覆写点及所用 trigger/effect 合同哈希仍与锁定基线一致。
+- 两个游戏规则分别只有一个默认项；原版群雄割据分支完全绕过二期判定。
+- 硬叛、硬留、分数修正、5/95 钳制、AI 单次随机、玩家确定性 50 分界、结果持久变量和忠/叛名单均有静态合同覆盖。
+- 忠臣同时从独立处理、弱势王/帝头衔销毁和国号重组入口中排除；产品逻辑不对忠臣调用 `reset_title_name`。
+- 正式 allowlist 恰为 32 个运行时文件；九语均为 UTF-8 BOM、每语 112 个产品 key，无七语英文占位；`descriptor.mod` 为 0.2.0 且不含 `remote_file_id`。
+- 两次 staging 的 manifest 与 ZIP 逐字节可复现；640×640 thumbnail 小于 1 MB，并与已提交源图的确定性投影一致。
 
-## 3. L1 源码实机
+## 3. `open_kaishek` 离线预验
 
-外置夹具在 1066 年宋帝真实角色与真实封臣树上执行：
+每次 CK3 启动前保存：`open_kaishek` exact commit、profile/version、CLI/JAR SHA-256、CK3 build 与 EXE SHA-256、产品/fixture corpus ID 与 SHA-256、实际命令、解析结果和不支持项。
 
-1. 把一名直属有地封臣固定到尊王派，把其余直属有地封臣固定到非尊王派，记录一名尊王派下级封臣和一名非尊王派直属封臣。
-2. 先确认两个对照封臣分别处于尊王派与扩张派。精确存档书签可能从不带原版运动冻结 `on_end` 的阶段被测试夹具强制跳入群雄割据，因此夹具先按原版合同把当下真实 participant-group scope 写入 `former_movement_member`，再通过真实 `situation:dynastic_cycle.situation_top_sub_region.change_phase` 切换阶段；地图推进离开书签首日后显式触发原版 `tgp_dynastic_cycle.0081`，由该事件调用产品覆盖的 `tgp_chaos_shattering_effect`。
-3. 引擎断言旧天子失去 `h_china`，但仍有地、仍持有原个人伯爵领，获得一个 marker 正确、空法理、由本人持有的动态霸权；尊王派直属封臣及其下级 realm tree 保留，非尊王派直属封臣脱离。
-4. 在实机事件中显示动态后朝全名，保存截图，验证简中“后＋原朝号”的渲染结果。
-5. 关闭所有验收专用窗口后，通过原生 MCP `ck3_center_map_on_landed_title_v1` 将地图镜头定位到大宋首都 `b_kaifeng`（开封），并以相机 settled 回读为权威证据；随后保存无面板地图画面。详细地图层级可能以相邻的“管城县”标示这一区域，因此 OCR 辅证接受“开封”“汴州”或“管城县”，但不允许出现“教宗”“意大利”“罗马”“那波利”“萨莱诺”等意大利地名，也不允许出现“验收”字样。
-6. 把中华法理伯爵领隔离转移到控制角色，再逐郡转回：先证明控制比例 `>=50%` 且 `<` 原版 `claim_mandate_china_county_percentage_value` 时“宣称复辟”不满足；再转移到刚好首次满足原版门槛。
-7. 决议面板确认“宣称复辟”可见且可执行，并确认“宣称天命”对后朝持有者不可见；点击真实产品决议。
-8. 引擎断言完整原版复辟结果至少包含：玩家重新持有 `h_china`、三日 `claimed_the_mandate_of_heaven` flag 已写入；产品额外结果为全部本人后朝霸权销毁。
-9. 收集项目相关 `error.log`、`gui_warnings.log`、`database_conflicts.log`；项目解析/运行错误、重复 key、进程清理未证明、runtime/source 被改写任一项均为 RED。
+预期边界：root parser 应为 GREEN；当前 validator 对 CK3 大量合法 opcode 仍可能返回 `UNKNOWN_OPCODE`，fixture 目录也可能不在 profile 中。此类结果记录为 tool limitation / not-applicable，不冒充产品 GREEN 或产品 RED，随后继续真实 CK3。
 
-## 4. L3 Workshop fresh-cache
+## 4. L1 源码树真实 CK3 矩阵
 
-首次上传后：
+### 4.1 默认“人心离散”受控场景
 
-1. 用新 item ID 重建 ID-bearing sidecar manifest；不得把 ID 写进 canonical descriptor。
-2. 删除本地订阅缓存后由 Steam 重新下载，确认是 fresh cache，而非上传 staging 的残留副本。
-3. `--verify --workshop-cache` 精确核对 28/28 文件；仅允许缓存内层 descriptor 追加一行正确的 `remote_file_id`。
-4. 对 strict-verified 的数字 cache leaf 再执行与 L1 相同的 MCP-first 实机矩阵。
-5. 核对公开 item 的标题、可见性、Gameplay 标签、640×640 preview 与仓库 BBCode；把最终 GREEN artifact 投影出的三张真实游戏截图按跟踪清单上传、排序并写入 BBCode。第一张画面的地图背景必须由上述 `b_kaifeng` MCP 定位证据约束在开封，不得出现意大利地名；禁止用生成插画冒充实机证据。
-6. 从精确 tag 重建正式 staging，恢复无 ID 的内层 descriptor；写入并 push initial-baseline changelog 后才可标记发布完成。
+外置夹具在 1066 年大宋真实统治者与真实封臣树中准备至少三名直属有地角色：
 
-## 5. 报告与证据
+- 忠臣：尊王派，设置可解释的硬留事实；记录其角色 ID、主头衔对象、title key、显示/自定义名称、直属领主和至少一名下级封臣。
+- 叛臣：尊王派，设置可解释的硬叛事实。
+- 对照：非尊王派直属封臣。
 
-最终结果写入 `docs/acceptance-report.md`，至少记录：
+通过原生 situation phase API 切入群雄割据，并由真实 `tgp_dynastic_cycle.0081` 调用产品覆写。必须在 paused snapshot / fixture marker / 日志中证明：
 
-- 源码/tag/Workshop item 身份；
-- L0 命令与结果；
-- L1、L3 artifact 绝对路径及 `report.json` SHA-256；
-- open_kaishek provenance、MCP readiness、slot 等待时间、关键截图与 fixture markers；
-- manifest/ZIP/thumbnail/fresh-cache 哈希；
-- 发布本地化审阅边界；
-- 已知限制与任何保留的 RED attempt。
+- 忠臣的 `rmtm_loyalty_outcome=stay` 与原因已保存；叛臣为 `defect`；每人只结算一次。
+- 忠臣仍以旧天子为直属/最高领主，原下级封臣仍在其树下；其主头衔对象、title key、显示名称与夹具设置的自定义名称前后一致。
+- 忠臣即使被压到原版弱势王国阈值以下，王国头衔也没有被销毁或换号。
+- 叛臣和非尊王派对照脱离旧天子并继续原版割据重组；没有被忠臣领袖意外拉回。
+- 旧天子只失去 `h_china`，保留个人领地、其他头衔与“后＋原朝号”空法理霸权；一期 50%/51%、决议可见性、宣称复辟及后朝销毁断言继续 GREEN。
+- 一天后的“人心向背”总结事件可见，文案与实际忠/叛结果一致。
+
+### 4.2 规则回归
+
+- “誓死尊王”：受控硬叛候选人也必须留守，证明该规则是一期兼容模式。
+- “原版群雄割据”：不创建后朝、不写二期忠诚结果，角色/头衔/封臣关系与锁定的原版兼容副本一致。
+- 非 AI 候选人：以相同冻结输入验证公开的 50 分确定性分界；报告明确这不是多人交互选择界面。
+
+### 4.3 自然分布与极端场景
+
+在不人为设置忠叛条件的自然大宋候选人上记录候选人数、硬叛/硬留/概率池人数、每人分数与最终结果。15%–40% 的叛离率是平衡观察目标，不是硬编码门禁；若样本过小，只报告原始人数，不伪造统计显著性。
+
+另执行两个受控极端：高好感/高合法性/低相对军力应显著偏向留守；低好感/低合法性/高相对军力应显著偏向叛离。硬叛必须始终优先于硬留。
+
+### 4.4 MCP、画面与清理
+
+- CK3 排他槽通过仓库借用机制获取；若被占用则等待，不抢占、不终止他人进程。
+- 所有交互先取 MCP readiness 和 paused snapshot；UI 只用于 MCP 无法直接触达的真实产品入口。
+- 宣传/工坊实机图在关闭验收专用窗口后拍摄。地图镜头必须由原生 MCP 定位到大宋首都 `b_kaifeng`（开封），并保存 camera settled 回读；不得出现意大利地名或验收字样。
+- 结束时 CK3 进程树、隔离 userdir 和独占槽均清理；源码/runtime 字节、真实用户存档与保护存储不被改写。
+- `error.log`、`gui_warnings.log`、`database_conflicts.log` 中任何产品解析/运行错误、重复 key 或未清理进程均为 RED。
+
+## 5. 发布与 L3 fresh-cache
+
+1. 在 exact `master` commit/tag 上生成正式 staging，冻结 manifest、ZIP、thumbnail、BBCode 与 Steam Change Notes 的字节和 SHA-256。
+2. 只使用 staging 上传同一 Workshop item `3798404599`；`remote_file_id` 只写外层 launcher descriptor/sidecar。
+3. 匿名读取公开 changelog 页面，找到本次条目并在 HTML 解码、换行归一后逐字复核 Change Notes 的字符数、行数与 SHA-256。仅 `EResult=1` 不算完成。
+4. 删除旧订阅缓存并由 Steam 重新下载；对 strict-verified 数字 cache leaf 执行 32/32 精确核对，只允许内层 descriptor 多出正确 `remote_file_id`。
+5. 对 fresh cache 重跑与 4.1 相同的 MCP-first 核心矩阵。公开页面复核标题、版本、可见性、Gameplay 标签、thumbnail、BBCode 和代表性真实游戏截图。
+6. 上传后从 exact tag 重建 staging，恢复无 ID 的 canonical release tree；新增 `docs/release-changelogs/reclaim-the-motherland/0.2.0.md` 并提交、推送到 `master`。
+7. 把 Steam 恢复到项目规定的离线状态，释放 CK3 槽和任务登记。
+
+## 6. 最终报告字段
+
+`docs/acceptance-report.md` 至少记录：源码/tag/Workshop 身份，全部 L0 命令与结果，`open_kaishek` provenance，L1/L3 artifact 绝对路径及 `report.json` SHA-256，MCP readiness 和 slot 等待，二期三角色前后快照与自然分布，32 文件 manifest/ZIP/thumbnail/fresh-cache 哈希，九语审核边界，Change Notes 冻结值与匿名精确回读，公开页面/截图复核，以及所有保留 RED attempt 与已知限制。

@@ -100,7 +100,8 @@ REQUIRED_MARKERS = (
     "RQA: TEST PASS original_movement_identity_frozen",
     "RQA: TEST PASS original_chaos_event_dispatched",
     "RQA: TEST PASS later_dynasty_empty_de_jure_and_personal_land_retained",
-    "RQA: TEST PASS pro_hegemon_direct_and_subtree_retained",
+    "RQA: TEST PASS phase2_loyal_title_name_and_subtree_retained",
+    "RQA: TEST PASS phase2_disloyal_pro_hegemon_defected",
     "RQA: TEST PASS non_pro_hegemon_direct_released",
     "RQA: TEST PASS chaos_matrix_complete",
     "RQA: TEST PASS china_control_reset",
@@ -223,6 +224,9 @@ def fixture_errors() -> list[str]:
         "character:han_8052",
         "change_phase = { phase = situation_dynastic_cycle_phase_chaos }",
         "rmtm_holds_restoration_hegemony_trigger = yes",
+        "var:rmtm_loyalty_outcome = flag:stay",
+        "var:rmtm_loyalty_outcome = flag:defect",
+        "is_title_localization_key_used = rqa_phase2_loyal_title_name",
         "percent >= 0.50",
         "percent >= claim_mandate_china_county_percentage_value",
         "RQA: TEST DONE reclaim",
@@ -238,13 +242,13 @@ def preflight(
     product_kaishek = acceptance.run_open_kaishek_preflight(
         root=SOURCE,
         profile="ck3-1.19.0.6",
-        fixture="reclaim-0.1.1-product",
+        fixture="reclaim-0.2.0-product",
         scope="run_reclaim_the_motherland_acceptance.product",
     )
     fixture_kaishek = acceptance.run_open_kaishek_preflight(
         root=FIXTURE,
         profile="ck3-1.19.0.6",
-        fixture="reclaim-0.1.1-live-fixture",
+        fixture="reclaim-0.2.0-live-fixture",
         scope="run_reclaim_the_motherland_acceptance.fixture",
     )
     kaishek = {"product": product_kaishek, "fixture": fixture_kaishek}
@@ -298,6 +302,7 @@ def render_presets() -> str:
         for _, setting in acceptance.declared_vanilla_rule_defaults(VANILLA_GAME_RULES)
     ]
     settings.append("rmtm_reclaim_the_motherland")
+    settings.append("rmtm_divided_hearts")
     if len(settings) != len(set(settings)):
         raise acceptance.RunnerError("duplicate game-rule setting in acceptance preset")
     return (
@@ -893,6 +898,62 @@ def select_current_event_first_option(
     return evidence
 
 
+def advance_to_player_event(
+    service: GameplayBridgeService,
+    expected_event_key: str,
+    artifacts: Path,
+    stem: str,
+    timeout_s: float = 60,
+) -> dict[str, object]:
+    """Advance paused time until the expected player event pauses the game."""
+
+    before = service.snapshot()
+    if before.get("paused") is not True:
+        raise acceptance.RunnerError("scheduled-event precondition is not paused")
+    resume_ack = service.execute_step(
+        "resume-map", expected_revision=int(before["revision"])
+    )
+    deadline = time.monotonic() + timeout_s
+    last_event_key: str | None = None
+    while time.monotonic() < deadline:
+        snapshot = service.snapshot()
+        active_event = snapshot.get("active_event")
+        if snapshot.get("paused") is True and isinstance(active_event, dict):
+            instance_id = active_event.get("instance_id")
+            revision = snapshot.get("revision")
+            if (
+                not isinstance(instance_id, bool)
+                and isinstance(instance_id, int)
+                and not isinstance(revision, bool)
+                and isinstance(revision, int)
+            ):
+                query = service.query_current_event_window_context_v1(
+                    instance_id, expected_revision=revision
+                )
+                context = query.get("current_event_window_context")
+                if isinstance(context, dict):
+                    last_event_key = str(context.get("event_definition_key"))
+                    if last_event_key == expected_event_key:
+                        acceptance.focus_ck3()
+                        time.sleep(0.5)
+                        acceptance.ImageGrab.grab().save(artifacts / f"{stem}.png")
+                        evidence = {
+                            "schema_version": 1,
+                            "result": "GREEN",
+                            "expected_event_key": expected_event_key,
+                            "before": before,
+                            "resume_ack": resume_ack,
+                            "paused_event_snapshot": snapshot,
+                            "query": query,
+                        }
+                        write_json(artifacts / f"{stem}.json", evidence)
+                        return evidence
+        time.sleep(0.1)
+    raise acceptance.RunnerError(
+        f"scheduled player event {expected_event_key} timed out; last={last_event_key!r}"
+    )
+
+
 def run_scenario(
     service: GameplayBridgeService, stream: MarkerStream, artifacts: Path
 ) -> dict[str, object]:
@@ -910,6 +971,12 @@ def run_scenario(
     phase_advance = advance_queued_phase_transition(service, stream, artifacts)
     chaos_event_close = select_current_event_first_option(
         service, "tgp_dynastic_cycle.0081", artifacts, "07_close_vanilla_chaos"
+    )
+    loyalty_summary = advance_to_player_event(
+        service, "rmtm.1001", artifacts, "07_loyalty_summary"
+    )
+    loyalty_summary_close = select_current_event_first_option(
+        service, "rmtm.1001", artifacts, "07_close_loyalty_summary"
     )
     # Storefront evidence must show only UI a normal player can encounter. First
     # settle the native camera on Kaifeng, then capture the ordinary character UI.
@@ -998,6 +1065,8 @@ def run_scenario(
         "decision_visibility": visibility,
         "phase_transition_advance": phase_advance,
         "chaos_event_close": chaos_event_close,
+        "loyalty_summary": loyalty_summary,
+        "loyalty_summary_close": loyalty_summary_close,
         "song_capital_navigation": song_capital_navigation,
         "later_dynasty_native_ocr": later_native_rows,
         "later_dynasty_event_ocr": later_rows,

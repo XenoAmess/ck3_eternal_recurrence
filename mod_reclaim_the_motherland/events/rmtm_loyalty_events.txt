@@ -1,0 +1,34 @@
+﻿namespace = rmtm
+
+# Player-facing summary after the one-shot Pro-Hegemon settlement.
+rmtm.1001 = {
+	type = character_event
+	title = rmtm_loyalty_summary_title
+	desc = {
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					exists = scope:rmtm_loyal_notable
+					exists = scope:rmtm_defector_notable
+				}
+				desc = rmtm_loyalty_summary_both
+			}
+			triggered_desc = {
+				trigger = { exists = scope:rmtm_loyal_notable }
+				desc = rmtm_loyalty_summary_loyal_only
+			}
+			triggered_desc = {
+				trigger = { exists = scope:rmtm_defector_notable }
+				desc = rmtm_loyalty_summary_defector_only
+			}
+		}
+	}
+	theme = realm
+	left_portrait = {
+		character = root
+		animation = personality_rational
+	}
+	option = {
+		name = rmtm_loyalty_summary_acknowledge
+	}
+}

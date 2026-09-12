@@ -36,7 +36,7 @@ class BuildReclaimTheMotherlandReleaseTests(unittest.TestCase):
 
     def test_exact_skeleton_inventory_and_readme_exclusion(self) -> None:
         staging, _, archive, manifest = self.build()
-        self.assertEqual(28, len(release.RUNTIME_FILES))
+        self.assertEqual(32, len(release.RUNTIME_FILES))
         self.assertEqual(
             18,
             sum(path.startswith("localization/") for path in release.RUNTIME_FILES),
@@ -155,7 +155,7 @@ class BuildReclaimTheMotherlandReleaseTests(unittest.TestCase):
         loaded = json.loads(manifest_path.read_text(encoding="utf-8"))
         self.assertEqual(loaded, manifest)
         self.assertEqual(loaded["product_id"], "mod_reclaim_the_motherland")
-        self.assertEqual(loaded["mod_version"], "0.1.1")
+        self.assertEqual(loaded["mod_version"], "0.2.0")
         self.assertIsNone(loaded["workshop_item_id"])
         self.assertIsNone(loaded["git_tag"])
         self.assertEqual(release.product_tag("0.1.1"), "reclaim-motherland-v0.1.1")

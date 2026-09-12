@@ -1,0 +1,63 @@
+﻿#########################################################
+# Reclaim the Motherland - Phase 2 loyalty triggers
+#########################################################
+
+# Character scope: a direct, landed Pro-Hegemon vassal.
+# Required saved scopes: old_emperor_temp and rmtm_loyalty_candidate.
+rmtm_pro_hegemon_hard_defect_trigger = {
+	OR = {
+		is_at_war_with = scope:old_emperor_temp
+		has_relation_rival = scope:old_emperor_temp
+		has_relation_nemesis = scope:old_emperor_temp
+		house_has_feud_relation_with_trigger = { TARGET = scope:old_emperor_temp }
+		has_trait = disloyal
+		opinion = {
+			target = scope:old_emperor_temp
+			value <= -75
+		}
+		scope:old_emperor_temp = {
+			any_targeting_faction = {
+				OR = {
+					faction_type = independence_faction
+					faction_type = claimant_faction
+				}
+				any_faction_member = {
+					this = scope:rmtm_loyalty_candidate
+				}
+			}
+		}
+	}
+}
+
+# Character scope and saved scopes as above. Hard-defect always has priority.
+rmtm_pro_hegemon_hard_stay_trigger = {
+	OR = {
+		has_relation_best_friend = scope:old_emperor_temp
+		has_relation_soulmate = scope:old_emperor_temp
+		AND = {
+			has_variable = former_movement_leader
+			var:former_movement_leader ?= var:former_movement_member
+			opinion = {
+				target = scope:old_emperor_temp
+				value >= 25
+			}
+		}
+		AND = {
+			dynasty = scope:old_emperor_temp.dynasty
+			has_trait = loyal
+			opinion = {
+				target = scope:old_emperor_temp
+				value >= 0
+			}
+		}
+		AND = {
+			opinion = {
+				target = scope:old_emperor_temp
+				value >= -25
+			}
+			scope:old_emperor_temp = {
+				has_strong_hook = scope:rmtm_loyalty_candidate
+			}
+		}
+	}
+}

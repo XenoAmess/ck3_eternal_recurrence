@@ -18,7 +18,7 @@ rqa_initialize_effect = {
 				is_independent_ruler = yes
 				has_government = celestial_government
 				any_vassal = {
-					count >= 2
+					count >= 3
 					is_landed = yes
 					highest_held_title_tier >= tier_county
 				}
@@ -40,28 +40,52 @@ rqa_initialize_effect = {
 				value = flag:expansion
 			}
 		}
-		random_vassal = {
-			limit = {
-				is_landed = yes
-				highest_held_title_tier >= tier_county
-				any_vassal = { is_landed = yes }
-			}
-			save_scope_as = rqa_loyal_direct
+			random_vassal = {
+				limit = {
+					is_landed = yes
+					highest_held_title_tier = tier_kingdom
+					any_vassal = { is_landed = yes }
+				}
+				save_scope_as = rqa_loyal_direct
 			set_variable = {
-				name = movement_member
-				value = flag:pro_hegemon
+					name = movement_member
+					value = flag:pro_hegemon
+				}
+				set_variable = { name = movement_power_individual value = 0 }
+				remove_trait = disloyal
+				remove_relation_rival = scope:rqa_song_emperor
+				remove_relation_nemesis = scope:rqa_song_emperor
+				set_relation_best_friend = scope:rqa_song_emperor
+				primary_title = {
+					save_scope_as = rqa_loyal_primary_title
+					set_title_name = rqa_phase2_loyal_title_name
+				}
+				random_vassal = {
+					limit = { is_landed = yes }
+					save_scope_as = rqa_loyal_indirect
+				}
 			}
 			random_vassal = {
-				limit = { is_landed = yes }
-				save_scope_as = rqa_loyal_indirect
+				limit = {
+					is_landed = yes
+					highest_held_title_tier >= tier_county
+					this != scope:rqa_loyal_direct
+				}
+				save_scope_as = rqa_defecting_direct
+				set_variable = {
+					name = movement_member
+					value = flag:pro_hegemon
+				}
+				remove_trait = loyal
+				add_trait = disloyal
 			}
-		}
-		random_vassal = {
-			limit = {
-				is_landed = yes
-				highest_held_title_tier >= tier_county
-				this != scope:rqa_loyal_direct
-			}
+			random_vassal = {
+				limit = {
+					is_landed = yes
+					highest_held_title_tier >= tier_county
+					this != scope:rqa_loyal_direct
+					this != scope:rqa_defecting_direct
+				}
 			save_scope_as = rqa_control_ruler
 		}
 		every_vassal = {
@@ -72,6 +96,8 @@ rqa_initialize_effect = {
 		capital_county = { save_scope_as = rqa_personal_county }
 		set_variable = { name = rqa_loyal_direct value = scope:rqa_loyal_direct }
 		set_variable = { name = rqa_loyal_indirect value = scope:rqa_loyal_indirect }
+		set_variable = { name = rqa_defecting_direct value = scope:rqa_defecting_direct }
+		set_variable = { name = rqa_loyal_primary_title value = scope:rqa_loyal_primary_title }
 		set_variable = { name = rqa_control_ruler value = scope:rqa_control_ruler }
 		set_variable = { name = rqa_personal_county value = scope:rqa_personal_county }
 		add_character_flag = rqa_ready_to_enter_chaos
@@ -80,6 +106,8 @@ rqa_initialize_effect = {
 		limit = {
 			exists = scope:rqa_loyal_direct
 			exists = scope:rqa_loyal_indirect
+				exists = scope:rqa_defecting_direct
+				exists = scope:rqa_loyal_primary_title
 				exists = scope:rqa_control_ruler
 				exists = scope:rqa_personal_county
 				scope:rqa_song_emperor = {
@@ -165,6 +193,12 @@ rqa_enter_chaos_effect = {
 					value = scope:rqa_loyal_movement
 				}
 			}
+			var:rqa_defecting_direct = {
+				set_variable = {
+					name = former_movement_member
+					value = scope:rqa_loyal_movement
+				}
+			}
 			var:rqa_control_ruler = {
 				set_variable = {
 					name = former_movement_member
@@ -175,6 +209,10 @@ rqa_enter_chaos_effect = {
 				limit = {
 					exists = var:rqa_loyal_direct
 					var:rqa_loyal_direct.var:former_movement_member = {
+						participant_group_type = pro_hegemon_movement
+					}
+					exists = var:rqa_defecting_direct
+					var:rqa_defecting_direct.var:former_movement_member = {
 						participant_group_type = pro_hegemon_movement
 					}
 					exists = var:rqa_control_ruler
@@ -242,15 +280,38 @@ rqa_verify_chaos_effect = {
 			var:rqa_loyal_direct = {
 				liege = root
 				top_liege = root
+				var:rmtm_loyalty_outcome = flag:stay
+				var:rmtm_loyalty_reason = flag:bound_by_grace
+				primary_title = root.var:rqa_loyal_primary_title
+			}
+			exists = var:rqa_loyal_primary_title
+			var:rqa_loyal_primary_title = {
+				holder = root.var:rqa_loyal_direct
+				is_title_localization_key_used = rqa_phase2_loyal_title_name
 			}
 			exists = var:rqa_loyal_indirect
 			var:rqa_loyal_indirect = {
+				liege = root.var:rqa_loyal_direct
 				top_liege = root
 			}
 		}
-		debug_log = "RQA: TEST PASS pro_hegemon_direct_and_subtree_retained"
+		debug_log = "RQA: TEST PASS phase2_loyal_title_name_and_subtree_retained"
 	}
-	else = { debug_log = "RQA: TEST FAIL pro_hegemon_direct_and_subtree_retained" }
+	else = { debug_log = "RQA: TEST FAIL phase2_loyal_title_name_and_subtree_retained" }
+	if = {
+		limit = {
+			exists = var:rqa_defecting_direct
+			var:rqa_defecting_direct = {
+				is_landed = yes
+				is_independent_ruler = yes
+				NOT = { top_liege = root }
+				var:rmtm_loyalty_outcome = flag:defect
+				var:rmtm_loyalty_reason = flag:open_breach
+			}
+		}
+		debug_log = "RQA: TEST PASS phase2_disloyal_pro_hegemon_defected"
+	}
+	else = { debug_log = "RQA: TEST FAIL phase2_disloyal_pro_hegemon_defected" }
 	if = {
 		limit = {
 			exists = var:rqa_control_ruler

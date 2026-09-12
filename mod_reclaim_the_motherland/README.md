@@ -1,6 +1,6 @@
 # 重整河山：设计与实现说明
 
-状态：**0.1.1 已正式发布；L0、源码树 L1 与 Workshop fresh-cache L3 均为 GREEN。** 这份文档同时记录设计约束、当前实现与发布证据。
+状态：**0.2.0（二期）已实现，正在执行发布验收。** 这份文档同时记录设计约束、当前实现与发布证据；上一公开版本为 0.1.1。
 
 ## 1. 产品目标
 
@@ -8,6 +8,11 @@
 
 - **重整河山（默认）**：中华霸权进入“群雄割据”时，旧天子失去中华霸权，但保住自己的领地、其他个人头衔和尊王派直属封臣，并以“后＋原朝号”的空法理霸权继续存在。
 - **原版群雄割据**：完整执行 CK3 原版行为，方便兼容旧玩法与对照测试。
+
+二期另增游戏规则“尊王诸侯的抉择”：
+
+- **人心离散（默认）**：尊王派直属封臣会按战事、私怨、朋党、好感、性格、实力、合法性与恐惧等事实，在群雄割据的一刻作出一次留守或反叛判定。
+- **誓死尊王**：兼容一期行为，所有尊王派直属封臣一律留下。
 
 “重整河山”选项下，后朝持有者不能执行原版“宣称天命”；在群雄割据期间重新控制中华霸权法理领地的过半伯爵领（当前门槛为 51%，符合条件的朝贡国领地也计入）后，方可执行新决议“宣称复辟”。复辟完整执行原版“宣称天命”的效果，最后销毁复辟者持有的后朝霸权。
 
@@ -73,18 +78,19 @@
 
 这避免了 `set_title_prefix` 不会改写 `GetNameNoTierNoTooltip` 所暴露的标准朝号缺前缀问题，同时保持任意玩家自定义朝号不丢失。89 个组合 key 由 `tools/gen_reclaim_the_motherland_title_names.py` 向九种发布语言确定性生成，禁止手改生成文件。
 
-## 5. 封臣保留算法
+## 5. 尊王诸侯的二期判定
 
-“尊王派封臣”按**裂解瞬间的直属封臣**定义，避免把一个间接封臣跨越其合法领主强行抽到旧天子直属层级。
+候选人仍按**裂解瞬间的直属、有地、伯爵级以上尊王派封臣**定义，避免把一个间接封臣跨越其合法领主强行抽到旧天子直属层级。每名候选人只在这一轮群雄割据中结算一次，结果先冻结，再开始任何头衔或封臣关系变更。
 
 1. 在销毁 `h_china` 前保存旧天子和全部旧 realm participants。
-2. 枚举旧天子的直属、伯爵级以上封臣；其 `former_movement_member` 指向 `pro_hegemon_movement` 时，加入 `rmtm_loyal_direct_vassals`。
-3. 保留这些直属封臣和他们原有的下级封臣树。间接封臣不会因为自己的朋党身份被跨级转封。
-4. 令其余直属、伯爵级以上封臣脱离旧天子；随后继续运行原版的弱势 AI 王/帝头衔销毁、官职头衔清理、征服者判定、朋党领袖/长老重组、朝贡关系、无地家族首领安置和逐鹿天命 story。
-5. 在原版“重新归属”循环中排除仍以旧天子为 top liege 的角色，避免已经保住的尊王派 realm 又被转给其他长老，也避免尊王派领袖把已脱离者重新拉回旧天子的 realm。
-6. 男爵等不能独立参与朋党的结构性封臣跟随其伯爵领主，不单独抽离。
+2. 若选择“誓死尊王”，候选人全部留守；若选择“人心离散”，先判定公开决裂与不可动摇的羁绊。正在与旧天子交战、宿敌/仇敌、家族世仇、不忠、好感不高于 -75，或已参加针对旧天子的独立/宣称者派系者必叛；至交/灵魂伴侣、具备足够好感的原尊王派领袖、忠诚且同宗且非负好感者，以及旧天子握有强牵制且好感不低于 -25 者必留。公开决裂优先于羁绊。
+3. 其余候选人从 65 的基础留守概率出发。好感、朋友/情人、师徒、忠诚、安于现状会提高概率；野心、强力封臣身份、较高头衔、相对军力会降低概率；旧天子的合法性和对候选人的威慑也会影响结果。最终概率限制在 5%–95%，AI 只掷一次并保存结果。
+4. 群雄割据 effect 无法同步等待多名联机玩家逐个确认。非 AI 候选人使用同一套冻结输入，但以 50 分为公开确定性分界，不替玩家暗掷随机数。这是 0.2.0 已知的联机交互边界。
+5. 最终留下的忠臣保持原来的直属关系、完整下级封臣树、主头衔对象、title key、显示名称与玩家自定义名称；他们被明确排除在原版弱势 AI 王国/帝国头衔裁剪和改国号入口之外，不调用 `reset_title_name`。
+6. 最终反叛者与原本就不属尊王派的直属封臣脱离旧天子，再继续进入原版的弱势头衔处理、征服者判定、朋党领袖/长老重组、朝贡关系、无地家族首领安置和逐鹿天命 story。男爵等结构性封臣跟随其合法伯爵领主，不单独抽离。
+7. 在原版“重新归属”循环中排除仍以旧天子为 top liege 的角色，避免忠臣 realm 被转给其他长老，也避免忠臣领袖把已脱离者重新拉回旧天子的 realm。
 
-这一解释保证玩家的直属封臣栏里只留下尊王派，同时不粗暴拆散每个尊王派封臣内部的既有封建层级。
+这套判定保留了“加入尊王派”作为重要政治承诺，但不再把所有成员视作永不动摇；同时，留下的忠臣不会因原版割据重组从“青徐路”等既有国号跳成无关的新国号。
 
 ## 6. 两个决议
 
@@ -143,15 +149,19 @@ mod_reclaim_the_motherland/
   common/decisions/rmtm_restoration_decisions.txt
   common/decisions/dlc_decisions/tgp/zz_rmtm_mandate_override.txt
   common/scripted_effects/rmtm_dynastic_cycle_effects.txt
+  common/scripted_effects/rmtm_loyalty_resolution_effects.txt
   common/scripted_effects/rmtm_generated_title_name_effects.txt
   common/scripted_effects/rmtm_vanilla_compat_effects.txt
   common/scripted_effects/zz_rmtm_vanilla_overrides.txt
+  common/script_values/rmtm_loyalty_values.txt
+  common/scripted_triggers/rmtm_loyalty_triggers.txt
   common/scripted_triggers/rmtm_restoration_triggers.txt
+  events/rmtm_loyalty_events.txt
   localization/<九种语言>/rmtm_l_<语言>.yml
   localization/<九种语言>/rmtm_generated_title_names_l_<语言>.yml
 ```
 
-统一命名空间为 `rmtm`。发布构建使用 `tools/build_reclaim_the_motherland_release.py` 的独立 exact allowlist：28 个运行时文件进入 staging，README 不发布。Workshop item ID 为 `3798404599`；`remote_file_id` 只存在于用户目录外层 launcher descriptor 与 ID-bearing 发布记录，绝不进入仓库内 `descriptor.mod`。
+统一命名空间为 `rmtm`。发布构建使用 `tools/build_reclaim_the_motherland_release.py` 的独立 exact allowlist：32 个运行时文件进入 staging，README 不发布。Workshop item ID 为 `3798404599`；`remote_file_id` 只存在于用户目录外层 launcher descriptor 与 ID-bearing 发布记录，绝不进入仓库内 `descriptor.mod`。
 
 ## 9. 实现与验收顺序
 

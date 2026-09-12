@@ -12,3 +12,18 @@ rmtm_hegemon_fate = {
 
 	rmtm_vanilla_shattering = { }
 }
+
+# Re-evaluate the Pro-Hegemon camp when Chaos begins. This rule is intentionally
+# independent from rmtm_hegemon_fate so the vanilla shattering path remains exact.
+rmtm_pro_hegemon_choice = {
+	categories = {
+		game_modes
+		historicity
+	}
+
+	default = rmtm_divided_hearts
+
+	rmtm_divided_hearts = { }
+
+	rmtm_unwavering_loyalty = { }
+}
