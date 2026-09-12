@@ -1,0 +1,11 @@
+﻿l_japanese:
+ enable_auto_build:0 "自動建造を有効化"
+ enable_auto_build_tooltip:0 "自動建造を有効化"
+ enable_auto_build_desc:0 "自動建造機能を有効にします。"
+ enable_auto_build_text:0 "15日ごとに、直轄領内の対象となる通常建造物チェーンをそれぞれ1段階アップグレードします。\n国庫が優先的に使用され、国庫で費用を賄えない場合にのみ個人の金貨が使われます。どちらでも支払えない場合、アップグレードは行われません。\nアップグレードにはCK3 1.19.0.6の基本費用が適用され、割引なしで即座に完了します。\n建設中の所領、および主建造物・公国建造物・特殊建造物・部族・遊牧・Mandala建造物は対象外です。"
+ enable_auto_build_confirm:0 "もちろん"
+ disable_auto_build:0 "自動建造を無効化"
+ disable_auto_build_tooltip:0 "自動建造を無効化"
+ disable_auto_build_desc:0 "自動建造機能を停止します。"
+ disable_auto_build_text:0 "自動建造を停止します。すでに予約済みの判定は実行されますが、何の効果も発生しません。"
+ disable_auto_build_confirm:0 "もちろん"

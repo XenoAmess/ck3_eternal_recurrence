@@ -28,7 +28,14 @@ RUNTIME_FILES = frozenset(
         "descriptor.mod",
         "events/auto_build.txt",
         "localization/english/auto_build_l_english.yml",
+        "localization/french/auto_build_l_french.yml",
+        "localization/german/auto_build_l_german.yml",
+        "localization/japanese/auto_build_l_japanese.yml",
+        "localization/korean/auto_build_l_korean.yml",
+        "localization/polish/auto_build_l_polish.yml",
+        "localization/russian/auto_build_l_russian.yml",
         "localization/simp_chinese/auto_build_l_simp_chinese.yml",
+        "localization/spanish/auto_build_l_spanish.yml",
         "thumbnail.png",
     }
 )

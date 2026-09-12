@@ -1,0 +1,11 @@
+﻿l_german:
+ enable_auto_build:0 "Automatischen Ausbau aktivieren"
+ enable_auto_build_tooltip:0 "Automatischen Ausbau aktivieren"
+ enable_auto_build_desc:0 "Aktiviert den automatischen Ausbau."
+ enable_auto_build_text:0 "Alle 15 Tage wird jede geeignete gewöhnliche Gebäudekette in deinen direkt gehaltenen Provinzen um eine Stufe ausgebaut.\nZuerst wird die Reichsschatzkammer genutzt; persönliches Gold wird nur verwendet, wenn die Schatzkammer die Kosten nicht decken kann. Reicht beides nicht aus, wird der Ausbau übersprungen.\nAusbauten verwenden die Basiskosten von CK3 1.19.0.6 ohne Rabatte und sind sofort abgeschlossen.\nBesitztümer mit laufenden Bauarbeiten sowie Haupt-, Herzogtums-, Spezial-, Stammes-, Nomaden- oder Mandala-Gebäude werden nicht verändert."
+ enable_auto_build_confirm:0 "Gewiss"
+ disable_auto_build:0 "Automatischen Ausbau deaktivieren"
+ disable_auto_build_tooltip:0 "Automatischen Ausbau deaktivieren"
+ disable_auto_build_desc:0 "Beendet den automatischen Ausbau."
+ disable_auto_build_text:0 "Beendet den automatischen Ausbau. Bereits eingeplante Prüfungen werden ohne Auswirkungen ausgeführt."
+ disable_auto_build_confirm:0 "Gewiss"

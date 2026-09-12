@@ -1,0 +1,11 @@
+﻿l_french:
+ enable_auto_build:0 "Activer la construction automatique"
+ enable_auto_build_tooltip:0 "Activer la construction automatique"
+ enable_auto_build_desc:0 "Active la fonction de construction automatique."
+ enable_auto_build_text:0 "Tous les 15 jours, chaque chaîne de bâtiments ordinaires éligible dans les provinces que vous détenez directement gagne un niveau.\nLe trésor du royaume est utilisé en premier ; votre or personnel ne l'est que si le trésor ne couvre pas le coût. Si aucun des deux ne suffit, l'amélioration est ignorée.\nLes améliorations utilisent le coût de base de CK3 1.19.0.6 sans réduction et se terminent instantanément.\nLes domaines en construction ainsi que les bâtiments principaux, de duché, spéciaux, tribaux, nomades ou Mandala ne sont pas affectés."
+ enable_auto_build_confirm:0 "Bien sûr"
+ disable_auto_build:0 "Désactiver la construction automatique"
+ disable_auto_build_tooltip:0 "Désactiver la construction automatique"
+ disable_auto_build_desc:0 "Arrête la fonction de construction automatique."
+ disable_auto_build_text:0 "Arrête la construction automatique. Toute vérification déjà programmée s'exécutera sans produire d'effet."
+ disable_auto_build_confirm:0 "Bien sûr"

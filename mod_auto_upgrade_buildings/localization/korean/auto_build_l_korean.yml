@@ -1,0 +1,11 @@
+﻿l_korean:
+ enable_auto_build:0 "자동 건설 활성화"
+ enable_auto_build_tooltip:0 "자동 건설 활성화"
+ enable_auto_build_desc:0 "자동 건설 기능을 활성화합니다."
+ enable_auto_build_text:0 "15일마다 직접 보유한 영지의 조건을 충족하는 일반 건축 연쇄가 각각 한 단계씩 업그레이드됩니다.\n왕국 금고를 먼저 사용하며, 금고로 비용을 충당할 수 없을 때만 개인 금화를 사용합니다. 어느 쪽으로도 지불할 수 없다면 업그레이드를 건너뜁니다.\n업그레이드에는 할인 없는 CK3 1.19.0.6 기본 비용이 적용되며 즉시 완료됩니다.\n건설 중인 영지와 주요·공국·특수·부족·유목·Mandala 건축은 대상에서 제외됩니다."
+ enable_auto_build_confirm:0 "물론입니다"
+ disable_auto_build:0 "자동 건설 비활성화"
+ disable_auto_build_tooltip:0 "자동 건설 비활성화"
+ disable_auto_build_desc:0 "자동 건설 기능을 중단합니다."
+ disable_auto_build_text:0 "자동 건설을 중단합니다. 이미 대기 중인 검사는 실행되지만 아무 효과도 발생하지 않습니다."
+ disable_auto_build_confirm:0 "물론입니다"

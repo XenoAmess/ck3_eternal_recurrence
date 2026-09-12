@@ -222,7 +222,19 @@ def validate(game_root: Path = DEFAULT_GAME_ROOT) -> tuple[list[str], bool]:
     if effects.count("aub_upgrade_") != 43 * 2 + 1:
         errors.append("generated building chain call/definition inventory drifted")
 
-    for language, header in (("english", "l_english"), ("simp_chinese", "l_simp_chinese")):
+    languages = (
+        ("english", "l_english"),
+        ("french", "l_french"),
+        ("german", "l_german"),
+        ("japanese", "l_japanese"),
+        ("korean", "l_korean"),
+        ("polish", "l_polish"),
+        ("russian", "l_russian"),
+        ("simp_chinese", "l_simp_chinese"),
+        ("spanish", "l_spanish"),
+    )
+    localized_entries: dict[str, dict[str, str]] = {}
+    for language, header in languages:
         relative = f"localization/{language}/auto_build_l_{language}.yml"
         value = text(relative)
         if value.splitlines()[0] != f"{header}:":
@@ -237,6 +249,24 @@ def validate(game_root: Path = DEFAULT_GAME_ROOT) -> tuple[list[str], bool]:
             errors.append(f"localization key inventory mismatch: {relative}")
         if any(not item.strip() for item in entries.values()):
             errors.append(f"blank localization value: {relative}")
+        localized_entries[language] = entries
+
+    english_entries = localized_entries.get("english", {})
+    for language, _ in languages:
+        entries = localized_entries.get(language, {})
+        if language not in {"english", "simp_chinese"}:
+            for key in sorted(LOC_KEYS & english_entries.keys() & entries.keys()):
+                if entries[key] == english_entries[key]:
+                    errors.append(f"English localization placeholder remains: {language}:{key}")
+        for key in sorted(LOC_KEYS & english_entries.keys() & entries.keys()):
+            tokens = (r"\n",)
+            if language != "simp_chinese":
+                tokens += ("CK3", "1.19.0.6", "Mandala")
+            for token in tokens:
+                if entries[key].count(token) != english_entries[key].count(token):
+                    errors.append(
+                        f"localization protected-token mismatch: {language}:{key}:{token}"
+                    )
 
     thumbnail = MOD / "thumbnail.png"
     data = thumbnail.read_bytes()

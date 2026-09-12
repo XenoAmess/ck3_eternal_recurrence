@@ -33,14 +33,14 @@
   特殊建筑和未列入 43 链的内容不会进入 dispatcher。
 - 每个升级分支先验证资金、标准革新与 holding 等级，再原子执行 `add_building` 和一次扣款。国库足额时只扣国库，否则才检查并
   扣个人金钱。
-- 构建器只投影 7 个运行时文件，README 不进入 staging；canonical descriptor 禁止 `remote_file_id` 和上游 item ID。
+- 构建器只投影 14 个运行时文件（其中九份本地化），README 不进入 staging；canonical descriptor 禁止 `remote_file_id` 和上游 item ID。
 
 ## 证据状态
 
 - 上游字节：见 [auto-upgrade-buildings-upstream.md](auto-upgrade-buildings-upstream.md)，tree SHA-256
   `E878367B2A105CC3C9EFFA2D63543A6EB983BF13FC8557C8F5B6DF5BFEB595B7`。
-- L0：生成一致性、43×8 原版 building ID、301 个升级边的费用 token、革新定义、作用域/循环约束、UTF-8/BOM、双语本地化、
-  7 文件 allowlist、5 个构建器单测和 deterministic ZIP 均已通过。
+- L0：生成一致性、43×8 原版 building ID、301 个升级边的费用 token、革新定义、作用域/循环约束、UTF-8/BOM、九语本地化、
+  14 文件 allowlist、5 个构建器单测和 deterministic ZIP 均已通过。
 - Open Kaishek：本机 `D:\workspace\open_kaishek@890b32d` 的 Java 25 启动器在 `java -version` 与 preflight 中均持续卡死；该项是
   工具环境 RED，不是产品 RED，未在无变化条件下重复运行。
 - `desktop-3fevhd2-1c74096080--auto-upgrade-buildings--R0001/R0002`（legacy `R405/R406`）：隔离启动脚手架错误，
@@ -77,10 +77,11 @@
   SHA-256 为 `E0B95B5228670633EB7DBFAFA13F2B4555C6B72BCDD12242CA208B1F7DB2224F`，运行前后产品/fixture tree 均不变，
   临时 userdir 已删除，受保护 Steam/CK3 真实资料未改变，退出后 Get-Process/WMI 均为 0。报告与截图保存在
   `C:\Users\1\AppData\Local\Temp\desktop-3fevhd2-1c74096080--auto-upgrade-buildings--R0013`。
-- R0013 后的发布前文案工作只把 descriptor 名称统一为“自动升级建筑（XenoAmess维护版）”，并新增 README/Workshop BBCode 与
-  对应静态合同；事件、决议、scripted effect、本地化和图片字节均未改变，因此未重复启动 CK3。更新后的 7 文件离线构建 tree
+- R0013 后的第一轮发布前文案工作只把 descriptor 名称统一为“自动升级建筑（XenoAmess维护版）”，并新增 README/Workshop BBCode 与
+  对应静态合同；事件、决议、scripted effect、本地化和图片字节均未改变，因此未重复启动 CK3。该中间 7 文件离线构建 tree
   SHA-256 为 `6052EF7972DE74C4BC6AAEAE7952254016CB9AEF7757C2EC48199AF794358E19`，ZIP SHA-256 为
-  `72BF4CFB0C5DDB3CC191EF7D86CBAE75D1F12D69620559F83E38E7455311C1B3`。
+  `72BF4CFB0C5DDB3CC191EF7D86CBAE75D1F12D69620559F83E38E7455311C1B3`。收到正式发布指令后又补齐法、德、日、韩、波、俄、西七种
+  本地化，当前正式投影因此为 14 文件；该变化只涉及玩家可见文本与发布清单，玩法脚本仍与 R0013 的 GREEN 树一致。
 
 本轮没有 Workshop 上传、订阅缓存覆盖、tag 或正式 release；Steam 在取得上游字节后持续保持离线。R0013 完成后连接日志仍只有
 `CClientJobGetClientUpdateHosts: failed to get updated list, error 3`，没有重新登录记录。
