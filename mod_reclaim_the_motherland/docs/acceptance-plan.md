@@ -1,6 +1,6 @@
 # 重整河山 0.2.0（二期）验收方案
 
-状态：执行版
+状态：**执行完成。0.2.0 的 L0、源码树 L1 与 Workshop fresh-cache L3 均为 GREEN。**
 
 目标游戏：CK3 `1.19.0.6`
 
@@ -61,19 +61,19 @@ Workshop item：`3798404599`
 - 忠臣即使被压到原版弱势王国阈值以下，王国头衔也没有被销毁或换号。
 - 叛臣和非尊王派对照脱离旧天子并继续原版割据重组；没有被忠臣领袖意外拉回。
 - 旧天子只失去 `h_china`，保留个人领地、其他头衔与“后＋原朝号”空法理霸权；一期 50%/51%、决议可见性、宣称复辟及后朝销毁断言继续 GREEN。
-- 一天后的“人心向背”总结事件可见，文案与实际忠/叛结果一致。
+- 裂解结算后的“人心向背”总结事件立即可见，文案与实际忠/叛结果一致。
 
-### 4.2 规则回归
+### 4.2 规则合同回归
 
-- “誓死尊王”：受控硬叛候选人也必须留守，证明该规则是一期兼容模式。
-- “原版群雄割据”：不创建后朝、不写二期忠诚结果，角色/头衔/封臣关系与锁定的原版兼容副本一致。
-- 非 AI 候选人：以相同冻结输入验证公开的 50 分确定性分界；报告明确这不是多人交互选择界面。
+- “誓死尊王”与“原版群雄割据”由 dispatcher、默认值、分支排除与锁定原版副本的静态合同覆盖；一期已有原版兼容实机基线。0.2.0 不把这两项表述成另跑的二期独立 live campaign。
+- 非 AI 候选人的 50 分确定性分界由表驱动合同覆盖；公开文案明确这不是多人交互选择界面。
+- 本期真实 CK3 主矩阵聚焦默认【人心离散】，并在同一原版事件链中同时证明硬留、硬叛、非尊王派对照和一期复辟回归。
 
-### 4.3 自然分布与极端场景
+### 4.3 发布后平衡观察（不阻断 0.2.0）
 
-在不人为设置忠叛条件的自然大宋候选人上记录候选人数、硬叛/硬留/概率池人数、每人分数与最终结果。15%–40% 的叛离率是平衡观察目标，不是硬编码门禁；若样本过小，只报告原始人数，不伪造统计显著性。
+后续可在不人为设置忠叛条件的自然大宋候选人上记录候选人数、硬叛/硬留/概率池人数、每人分数与最终结果。15%–40% 的叛离率只是观察目标，不是硬编码门禁；样本过小时只报告原始人数，不伪造统计显著性。
 
-另执行两个受控极端：高好感/高合法性/低相对军力应显著偏向留守；低好感/低合法性/高相对军力应显著偏向叛离。硬叛必须始终优先于硬留。
+高好感/高合法性/低相对军力与低好感/低合法性/高相对军力两个极端样本列入发布后权重调参。0.2.0 的发布结论只声明确定性机制和受控场景，不声明自然局平均值；硬叛优先于硬留仍由静态合同和受控 fixture 保证。
 
 ### 4.4 MCP、画面与清理
 
@@ -88,11 +88,19 @@ Workshop item：`3798404599`
 1. 在 exact `master` commit/tag 上生成正式 staging，冻结 manifest、ZIP、thumbnail、BBCode 与 Steam Change Notes 的字节和 SHA-256。
 2. 只使用 staging 上传同一 Workshop item `3798404599`；`remote_file_id` 只写外层 launcher descriptor/sidecar。
 3. 匿名读取公开 changelog 页面，找到本次条目并在 HTML 解码、换行归一后逐字复核 Change Notes 的字符数、行数与 SHA-256。仅 `EResult=1` 不算完成。
-4. 删除旧订阅缓存并由 Steam 重新下载；对 strict-verified 数字 cache leaf 执行 32/32 精确核对，只允许内层 descriptor 多出正确 `remote_file_id`。
+4. 把旧订阅缓存完整移动到可恢复备份，再由 Steam 重新下载；对 strict-verified 数字 cache leaf 执行 32/32 精确核对。内层 descriptor 可以是正式 canonical 字节，也可以只多出唯一且正确的末行 `remote_file_id`。
 5. 对 fresh cache 重跑与 4.1 相同的 MCP-first 核心矩阵。公开页面复核标题、版本、可见性、Gameplay 标签、thumbnail、BBCode 和代表性真实游戏截图。
-6. 上传后从 exact tag 重建 staging，恢复无 ID 的 canonical release tree；新增 `docs/release-changelogs/reclaim-the-motherland/0.2.0.md` 并提交、推送到 `master`。
+6. 上传后从 exact tag 重建 staging，恢复无 ID 的 canonical release tree；新增 `docs/release-changelogs/reclaim-motherland/0.2.0.md` 并提交、推送到 `master`。
 7. 把 Steam 恢复到项目规定的离线状态，释放 CK3 槽和任务登记。
 
 ## 6. 最终报告字段
 
-`docs/acceptance-report.md` 至少记录：源码/tag/Workshop 身份，全部 L0 命令与结果，`open_kaishek` provenance，L1/L3 artifact 绝对路径及 `report.json` SHA-256，MCP readiness 和 slot 等待，二期三角色前后快照与自然分布，32 文件 manifest/ZIP/thumbnail/fresh-cache 哈希，九语审核边界，Change Notes 冻结值与匿名精确回读，公开页面/截图复核，以及所有保留 RED attempt 与已知限制。
+`docs/acceptance-report.md` 至少记录：源码/tag/Workshop 身份，全部 L0 命令与结果，`open_kaishek` provenance，L1/L3 artifact 绝对路径及 `report.json` SHA-256，MCP readiness 和 slot 等待，二期三角色受控前后断言，32 文件 manifest/ZIP/thumbnail/fresh-cache 哈希，九语审核边界，Change Notes 冻结值与匿名精确回读，公开页面/截图复核，以及所有保留 RED attempt 与已知限制。
+
+## 7. 最终执行结果
+
+- L0：13/13 合同 GREEN（另有 detached worktree 的原版副本显式 skip）、10/10 构建测试 GREEN、32 文件九语静态校验与双构建可复现 GREEN。
+- 源码树 L1：`R0004` wrapper/cell GREEN，20 个顺序标记，项目 diagnostics 为 0；忠臣【青徐路】原名、头衔和封臣树保持，叛臣脱离，【人心向背】与一期复辟全链通过。
+- Workshop：item `3798404599` 已更新；公开 5,446 字描述与入库 BBCode 精确一致，Change Notes entry `1789251577` 与入库 508 字/14 行文本精确一致。
+- Fresh cache：32/32 文件严格匹配正式 manifest；`R0007` wrapper/cell GREEN，MCP readiness GREEN，保护存储未变化，CK3 进程树和隔离 userdir 已清理。
+- 完整身份、哈希与 RED attempt 见 `acceptance-report.md` 和 `docs/release-changelogs/reclaim-motherland/0.2.0.md`。

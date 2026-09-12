@@ -1,70 +1,78 @@
 # 重整河山：Steam Workshop 发布交接
 
-状态：**公开发布完成，运行时上传、订阅缓存 L3、页面媒体与 DLC 依赖均已复核。**
+状态：**0.2.0 发布闭环完成。正式上传、公开描述、Change Notes、全新订阅缓存与 MCP-first L3 均已复核。**
 
 ## 公开产品
 
 - 产品：`mod_reclaim_the_motherland`
-- 版本：`0.1.1`
+- 版本：`0.2.0`
 - Workshop item：[`3798404599`](https://steamcommunity.com/sharedfiles/filedetails/?id=3798404599)
 - 应用：Crusader Kings III（App ID `1158310`）
 - 依赖：`Crusader Kings III: All Under Heaven`；中文统一写作《溥天之下》
 - 可见性：Public；Steam 匿名接口返回 `result=1`、`visibility=0`
+- 标题：`Reclaim the Motherland — 重整河山`
+- 公共文件大小：949,064 bytes；`time_updated=1789251577`
 - BBCode 权威源：`workshop/reclaim_the_motherland_description.bbcode`
+- Change Notes 权威源：`workshop/reclaim_the_motherland_change_notes_0.2.0.txt`
 - 截图来源与顺序：`workshop/reclaim_the_motherland_screenshots.md`
 
-## 上传与缓存身份
+## 正式构建与上传身份
 
-- 上传用 staging：`D:\workspace\reclaim-motherland-v0.1.1-publication\release\mod_reclaim_the_motherland`
-- ID-bearing manifest：`D:\workspace\reclaim-motherland-v0.1.1-publication\release\mod_reclaim_the_motherland.manifest.json`
-- manifest SHA-256：`f1d4f19816650267ad2ca181d9e18295c910623b88fe4b56ffd6bbc3cb5b6946`
-- deterministic ZIP SHA-256：`b7096953d96ff2c5542fa7b18fc9a9a02536750969f9f5ef57a08bc65b96e962`
-- Steam 订阅缓存：`D:\Program Files (x86)\Steam\steamapps\workshop\content\1158310\3798404599`
-- 缓存核对：28/28 文件严格匹配 ID-bearing manifest
-- 外层 launcher descriptor：`C:\Users\1\Documents\Paradox Interactive\Crusader Kings III\mod\mod_reclaim_the_motherland.mod`
-- 内层正式 `descriptor.mod`：上传后已重建，不含 `remote_file_id`
+- tag：`reclaim-motherland-v0.2.0`
+- tag target：`6486a0c72dda61c3b4e4466bc9db1193e83c74bc`
+- 精确 tag worktree：`D:\workspace\ck3_reclaim_v020_tagbuild`
+- 上传及重建 staging：`D:\workspace\reclaim-motherland-v0.2.0-publication\release\mod_reclaim_the_motherland`
+- 文件数：32
+- manifest SHA-256：`2d63b2c6d72db677a06644d61ee6b909e639c30d99f2ce9fc153f12f16ccce73`
+- deterministic ZIP SHA-256：`5981535815e61dd92c5f681a2fea9f9804cd58ffb545f5fe6f1310d9af6c8550`
+- thumbnail：803,154 bytes；SHA-256 `564a558d5dc280e9049fb6907db36418a9a29085802da2ce8bed0f1dff6e1c38`
+- native publish plan SHA-256：`3c60a0e3f079cf1e4cf2f7de1fa751d686f3b19faecb627bd01519bf604cab4e`
+- payload SHA-256：`1659038e01959d01404f97a9b9e6ca0b346437b8fd0194a741db99a1fd5d4083`
+- native receipt SHA-256：`d33334e040b59c21fc7757f78445ee70596c8a4b3f80d7b10788caadeaffbc11`
+- Steam result：`1`；提交时间：2026-09-13 06:19:29（Asia/Shanghai）
 
-启动器上传日志位于 `C:\Users\1\AppData\Local\Paradox Interactive\launcher-v2\logs\launcher-2026-09-09.log`。日志记录 2026-09-09 10:30:57 开始、10:31:05 上传成功。
+上传后已从 exact tag 再建一次 staging；两次 manifest/ZIP 哈希相同，内层 `descriptor.mod` 不含 `remote_file_id`。Workshop item ID 只保存在外层 launcher descriptor、ID-bearing manifest 与发布证据中。
 
-正式 tag `reclaim-motherland-v0.1.1` 指向 commit `0337d6ae515ccbeb666ca49dcefaee6b7f860de8`。从该 tag 生成的 canonical manifest SHA-256 为 `e75096427efa44c92e9aa71cab568531deaa01570dfc129f66098b1f3f1dea9e`，deterministic ZIP SHA-256 为 `b7096953d96ff2c5542fa7b18fc9a9a02536750969f9f5ef57a08bc65b96e962`；28/28 manifest verification GREEN。
+## 公开回读
 
-## Workshop fresh-cache L3
+- 匿名 `GetPublishedFileDetails` 的标题、可见性、标签和 5,446 字规范化描述与入库 BBCode 精确一致。
+- 公开 item 回读：`D:\workspace\reclaim-motherland-v0.2.0-publication\steam\public_item_readback.json`；SHA-256 `ade3b8fe6423c800edfd7d14ec05f687103acf6d319bf97821ad8ed0d41f669b`。
+- BBCode bytes：7,479；SHA-256 `267c6c0b03e00d599ca2ed971aaaa641a1a1067e4ca1e96f256ea8514eb8b6d2`。
+- 新 Change Notes entry：`1789251577`。
+- 公开正文与权威源逐字符相同：508 字、14 行、保留末尾换行；UTF-8 SHA-256 均为 `368a357002ec6e9bdb3fb181881257926e5a8184c8d8ee86aa29d9f7dc06cad2`。
+- 匿名 changelog HTML SHA-256：`80221726c46f240331615a9b4c6e18c10b934e14b12b6402b82f4e064d4ad8e6`。
+- 精确 Change Notes 回读：`D:\workspace\reclaim-motherland-v0.2.0-publication\steam\public_changelog_readback.json`；SHA-256 `7840809031cc91794c30dbc3fc576c93b757ee12287766ab97b7294696dcbad5`。
+- 四个 commit-pinned GitHub raw 素材 URL 均返回 HTTP 200，Content-Length 分别为 228,473 / 512,586 / 114,128 / 286,425 bytes。
 
-- Run：`D:\workspace\ck3_reclaim_the_motherland_design_process_assets\reclaim\runs\rqa_workshop_20260909_1952_capital_3798404599_v011`
-- Wrapper report SHA-256：`6d5ad36cd296f61a83573b501a566c90ec918e9d811ab5b38eb41ade3513c6ab`
-- Cell report SHA-256：`5859e13cdf06f8287cb2a28aa1f3d72669d4d33ff2cb50fb4ab691dee4938e30`
-- 结果：GREEN；19/19 markers；项目 diagnostics 为 0
-- 时长：878.326 秒；CK3 槽位等待 0.165 秒
-- runtime product tree SHA-256：`9313dbd44116241f7bd4f22000068033778ad3c584a5933599915e5472dfe947`
-- 清理：source/runtime 与保护存储未改写，CK3 进程树已回收，隔离 userdir 已删除
+## 全新订阅缓存与 L3
 
-个人领地断言检查每个原直辖伯爵领仍满足 `holder = root`，并非只检查旧天子仍是 top liege。产品分支仅销毁 `h_china`，跳过 `force_step_down_landed_titles = yes`，同时把旧天子排除在该轮弱势王/帝头衔裁剪之外。
+- 旧 0.1.1 缓存已可恢复地移动到 `D:\workspace\reclaim-motherland-v0.2.0-publication\steam\3798404599.before-v0.2.0-20260913-0620`，共 28 文件；没有删除。
+- Steam 控制台重新下载到 `C:\SteamLibrary\steamapps\workshop\content\1158310\3798404599`。
+- 新缓存 32/32 文件按正式 ID-bearing manifest 严格匹配。
+- 缓存核对记录：`D:\workspace\reclaim-motherland-v0.2.0-publication\steam\fresh_cache_verification.json`；SHA-256 `d03e70fb410b22a01b548883a086b851b5bf784c3769124191b2c5c296a9471c`。
+- Steam 原生上传保留 canonical 无 ID inner descriptor；验证器已在 commit `52456f9f` 修正为同时接受这种精确形式和 Launcher 唯一末行 ID 形式，10/10 focused tests GREEN。
+- 最终 run：`desktop-3fevhd2-1c74096080--reclaim-the-motherland--R0007`
+- execution ID：`dee5e47a-6108-4720-86e9-c8370e5f8cf7`
+- 路径：`D:\workspace\ck3_reclaim_phase2_20260913_process_assets\reclaim\runs\desktop-3fevhd2-1c74096080--reclaim-the-motherland--R0007-workshop`
+- wrapper/cell：GREEN / GREEN；20 个顺序标记；项目 diagnostics 为 0。
+- wrapper SHA-256：`fc77bbff14ef2be971f727d0875c52e181aac35bce52d7a2808e56d283286512`
+- cell SHA-256：`8cc4cfbfc57b3bb7e1a6eac3385052bf58d364a5caa95501ae505b0193eebfb2`
+- live identity receipt SHA-256：`39f62d4eeb16a6df8c9226f2ef42ccb37c779ce8c640fda9297e3e779a97b58d`
+- open_kaishek preflight SHA-256：`cff13f7d2be8ed65610a22886195536b569458b12daac8906a1464c4664189cf`
+- runtime product/fixture SHA-256：`b849da37bcb8901aa27b9a06d53b4bb4a247025ac9f2c775e54588d40933e119` / `8aea8e4e2df5eec325ff8d3315c184064f00fc798633228a0ee2098205c5ab99`
+- 时长：764.041 秒；CK3 槽位等待 0.125 秒。
+- source/runtime、保护存储均未改写；隔离 userdir 已删除；CK3 进程树回收已证明。
 
-## 开封中心镜头
+`R0005` 是保留的 environment RED：detached worktree 未显式设置迁移后的 `XAR_CK3_EXE`，在 preflight 即停止，没有启动 CK3。`R0006` 是单独的 GREEN preflight-only 记录，没有启动 CK3；完整 L3 使用新的 `R0007`，没有覆盖前两次记录。
 
-宣传截图所在 run 在群雄割据后调用原生 MCP `ck3_center_map_on_landed_title_v1("b_kaifeng")`。返回的 title ID 为 `13949`，capital province 为 `9822`；相机 target/current 相同，`settled` 与 `postcondition_verified` 均为 true。
+## 本机收尾
 
-- 导航 JSON SHA-256：`cc280aaadd48a2ab4fc3d8f193f3edcfe6e0afbb92042c1a832077e1e92acdde`
-- 开封地图 PNG SHA-256：`772defc92ca9846758a5e42da554d5b5ec021b1e290c747d9736491a4cdc150a`
-- 视觉辅证命中“管城县”，排除了“教宗 / 教宗国 / 意大利 / 罗马 / 那波利 / 萨莱诺”与测试字样
-
-这条门禁已经写入 runner 和媒体生成器；没有 GREEN 导航证据时，媒体生成器会拒绝产出商店 JPG。
-
-## 页面资产
-
-- Thumbnail：640×640，803,154 bytes，SHA-256 `564a558d5dc280e9049fb6907db36418a9a29085802da2ce8bed0f1dff6e1c38`
-- Media 1：后宋立于开封，SHA-256 `603071742f6d450fb9867f0d40b60108886769be2f67802640b9e726dea91f51`
-- Media 2：宣称复辟已就绪，SHA-256 `00e307d670ebe8b2f73eb05c2b49c92adc14c901a1b97342a35713ebe06dea14`
-- Media 3：复辟诏告与效果，SHA-256 `e3886bf3b385bbacf7d4b5b413c0e5e4ccf1c87de4735eeb05de14b459d08bca`
-- 公开页面证据：`D:\workspace\ck3_reclaim_the_motherland_design_process_assets\reclaim\steam\public_page_final.png`，SHA-256 `f532f793a59fa9988823a97fa23c83f7258b6adbbcab6e4e9c81e27b3446405c`
-- DLC 勾选证据：`required_dlc_saved.png`，SHA-256 `642bc89e737550eebb095c64dad2ad57cbace8326160d06891a780be899509c6`
-
-三张媒体只做确定性裁切和 JPEG 编码，没有生成或改写游戏内容；AI 生成主视觉仅作为 thumbnail，不冒充实机截图。
+Steam 已在发布和下载后恢复 Offline Mode：`WantsOfflineMode=1`，connection log 记录用户发起的 LogOff，带 AppID 1158310 的本地 Steamworks probe 返回 `STEAM_USER_OFFLINE / BLoggedOn=false`。Steam 客户端仍运行，CK3 进程数为 0。最终记录为 `D:\workspace\reclaim-motherland-v0.2.0-publication\steam\final_offline_attestation.json`，SHA-256 `a48c09d45e2f2c57b5bd0d056af91b055723d67c510292b73dceb72d9cd34561`。
 
 ## 后续更新规则
 
-1. 修改仓库源码后先重跑与风险相称的 L0，并用本脚本生成新的 release staging。
-2. 只能上传 staging，不能上传开发树；上传前 staging 内层 descriptor 不得预置 `remote_file_id`。
-3. 更新同一 Workshop item `3798404599`；成功后立即重建无 ID 的正式 staging。
-4. 从全新订阅缓存执行 28/28 核对和 MCP-first L3；页面素材变更时同步更新入库 BBCode、媒体 ledger 与 changelog。
-5. 任何地图宣传素材必须先以 MCP 定位 `b_kaifeng` 并通过错误地域负词门禁；不得复用意大利镜头。
+1. 修改源码后先做与风险相称的 L0/L1，并从新 tag 生成唯一正式 staging。
+2. 只能上传 staging；内层 descriptor 不得预置 `remote_file_id`。
+3. 更新同一 Workshop item `3798404599`；必须独立精确回读公开 Change Notes，不能只信 submit 回执。
+4. 上传后从全新订阅缓存做 manifest 核对和 MCP-first L3，并再次重建无 ID 的正式 staging。
+5. 页面素材必须来自真实 GREEN run；中国地图镜头继续以原生 MCP 定位 `b_kaifeng`。

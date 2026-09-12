@@ -1,6 +1,6 @@
 # 重整河山 0.2.0 验收报告
 
-状态：**Release Candidate。L0 GREEN，源码树 L1 GREEN；Workshop fresh-cache L3 等待 0.2.0 上传后执行。**
+状态：**COMPLETE。L0 GREEN、源码树 L1 GREEN、Workshop fresh-cache L3 GREEN，公开发布后复核通过。**
 
 验收日期：2026-09-13
 
@@ -16,7 +16,7 @@ Workshop item：`3798404599`
 
 最终源码树 run 为 `desktop-3fevhd2-1c74096080--reclaim-the-motherland--R0004`。wrapper/cell 均为 `GREEN`，20 个顺序标记全部出现，项目 diagnostics 为 0；source/runtime、保护存储均未被改写，隔离 userdir 已删除，CK3 进程树已回收。
 
-0.2.0 的正式发布闭环尚差两项：上传正式 staging，以及从全新 Workshop 订阅缓存执行同矩阵 L3。完成后本报告将补入发布回执、缓存 manifest 和最终 L3 run。
+0.2.0 已上传到同一 Workshop item。公开标题、可见性和描述与入库源一致；公开 Change Notes 已逐字符精确回读。旧缓存被完整移到可恢复备份后重新下载，32/32 文件与正式 manifest 一致；最终 L3 从这份缓存再次获得完整 GREEN。
 
 ## 2. 机制断言
 
@@ -97,9 +97,30 @@ Run：`D:\workspace\ck3_reclaim_phase2_20260913_process_assets\reclaim\runs\desk
 
 ## 8. L3：Workshop fresh-cache
 
-等待 0.2.0 正式上传。发布后必须完成：
+公开与构建身份：
 
-1. 匿名公开接口复核 item `3798404599` 的标题、公开可见性、描述、文件和更新时间。
-2. 对公开 Change Notes 作逐字符、逐行、SHA-256 精确回读。
-3. 从全新订阅缓存按正式 manifest 做 32/32 严格核对。
-4. 从该缓存运行同一 MCP-first CK3 矩阵；只有 L3 GREEN 后才把 0.2.0 标记为正式完成。
+- Workshop item：[`3798404599`](https://steamcommunity.com/sharedfiles/filedetails/?id=3798404599)
+- tag：`reclaim-motherland-v0.2.0`；target `6486a0c72dda61c3b4e4466bc9db1193e83c74bc`
+- 正式 32 文件 manifest SHA-256：`2d63b2c6d72db677a06644d61ee6b909e639c30d99f2ce9fc153f12f16ccce73`
+- deterministic ZIP SHA-256：`5981535815e61dd92c5f681a2fea9f9804cd58ffb545f5fe6f1310d9af6c8550`
+- 原生 Steam 上传回执 SHA-256：`d33334e040b59c21fc7757f78445ee70596c8a4b3f80d7b10788caadeaffbc11`；`EResult=1`
+- 公开 API：`result=1`、`visibility=0`、949,064 bytes、`time_updated=1789251577`；标题与 5,446 字规范化描述精确一致。
+- Change Notes entry `1789251577`：公开正文与入库源均为 508 字、14 行，UTF-8 SHA-256 `368a357002ec6e9bdb3fb181881257926e5a8184c8d8ee86aa29d9f7dc06cad2`。
+- 永久回读：`public_item_readback.json` / `public_changelog_readback.json` 的 SHA-256 分别为 `ade3b8fe6423c800edfd7d14ec05f687103acf6d319bf97821ad8ed0d41f669b` / `7840809031cc91794c30dbc3fc576c93b757ee12287766ab97b7294696dcbad5`，均位于 `D:\workspace\reclaim-motherland-v0.2.0-publication\steam\`。
+
+缓存：`C:\SteamLibrary\steamapps\workshop\content\1158310\3798404599`。旧 0.1.1 的 28 文件缓存已完整移动到发布证据目录，没有删除；强制下载后的 32 文件全部通过正式 manifest 严格核对。Steam 原生提交保留无 ID 的 canonical inner descriptor，验证器已修正为同时接受这种精确形式与 Launcher 的唯一末行 ID 形式。
+
+最终 run：`D:\workspace\ck3_reclaim_phase2_20260913_process_assets\reclaim\runs\desktop-3fevhd2-1c74096080--reclaim-the-motherland--R0007-workshop`
+
+- execution ID：`dee5e47a-6108-4720-86e9-c8370e5f8cf7`
+- wrapper/cell：GREEN / GREEN；SHA-256 `fc77bbff14ef2be971f727d0875c52e181aac35bce52d7a2808e56d283286512` / `8cc4cfbfc57b3bb7e1a6eac3385052bf58d364a5caa95501ae505b0193eebfb2`
+- live identity receipt SHA-256：`39f62d4eeb16a6df8c9226f2ef42ccb37c779ce8c640fda9297e3e779a97b58d`
+- open_kaishek preflight SHA-256：`cff13f7d2be8ed65610a22886195536b569458b12daac8906a1464c4664189cf`
+- 完整 20 个顺序标记；项目 diagnostics 为 0；MCP readiness GREEN。
+- runtime product/fixture SHA-256：`b849da37bcb8901aa27b9a06d53b4bb4a247025ac9f2c775e54588d40933e119` / `8aea8e4e2df5eec325ff8d3315c184064f00fc798633228a0ee2098205c5ab99`
+- 总时长 764.041 秒；CK3 槽位等待 0.125 秒。
+- source/runtime、保护存储未改写；隔离 userdir 删除、原生进程树回收均已证明。
+
+`R0005` 保留为 environment RED：未显式设置迁移后的 `XAR_CK3_EXE`，preflight 即停止且没有启动 CK3。`R0006` 是单独的 GREEN preflight-only 记录。二者均未覆盖，也未被冒充为最终 L3。
+
+上传后已从 exact tag 重建正式 staging；manifest/ZIP 哈希保持不变，内层 `descriptor.mod` 不含 `remote_file_id`。Steam 最终恢复 Offline Mode，CK3 进程数为 0。缓存核对与最终离线记录 SHA-256 分别为 `d03e70fb410b22a01b548883a086b851b5bf784c3769124191b2c5c296a9471c` / `a48c09d45e2f2c57b5bd0d056af91b055723d67c510292b73dceb72d9cd34561`。

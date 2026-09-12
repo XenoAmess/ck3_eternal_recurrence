@@ -1,6 +1,6 @@
 # 重整河山：设计与实现说明
 
-状态：**0.2.0（二期）已实现；L0 与源码树 L1 已 GREEN，正在执行 Workshop 发布与 fresh-cache L3。** 这份文档同时记录设计约束、当前实现与发布证据；上一公开版本为 0.1.1。
+状态：**0.2.0（二期）已实现并公开发布；L0、源码树 L1 与 Workshop fresh-cache L3 全部 GREEN。** 这份文档同时记录设计约束、当前实现与发布证据；上一公开版本为 0.1.1。
 
 ## 1. 产品目标
 
@@ -217,7 +217,7 @@ mod_reclaim_the_motherland/
 
 ## 12. 当前实现与验证证据
 
-2026-09-13 的二期实现状态为 **source production-live / release candidate**：新增【尊王诸侯的抉择】规则、三段式一次性忠诚结算、留朝忠臣国号与封臣树保护、【人心向背】总结事件、九语发布本地化和 32 文件独立构建链均已落地；一期的动态后朝、原“宣称天命”封锁与“宣称复辟”全链保持不变。原版兼容副本继续绑定 CK3 `1.19.0.6` 的源文件哈希。
+2026-09-13 的二期实现状态为 **complete / production-live**：新增【尊王诸侯的抉择】规则、三段式一次性忠诚结算、留朝忠臣国号与封臣树保护、【人心向背】总结事件、九语发布本地化和 32 文件独立构建链均已落地并发布；一期的动态后朝、原“宣称天命”封锁与“宣称复辟”全链保持不变。原版兼容副本继续绑定 CK3 `1.19.0.6` 的源文件哈希。
 
 `open_kaishek` 预验记录：
 
@@ -236,4 +236,4 @@ mod_reclaim_the_motherland/
 
 源码树 L1 实机 run 为 `D:\workspace\ck3_reclaim_phase2_20260913_process_assets\reclaim\runs\desktop-3fevhd2-1c74096080--reclaim-the-motherland--R0004-source`，wrapper `report.json` SHA-256 为 `962c679a10ae669201eff32cb62f2cb442ab5189cffd0037ee9af4f03071f85a`，有效 `cell/report.json` SHA-256 为 `53ed9ecf85166c4f3e0335777c641b64f5043ffe7b7ec0fe56db1fd6b9bb83e9`。它通过 MCP readiness 和语义化事件选择完成 20 个顺序标记：必留忠臣原样保住【青徐路】头衔、名称与封臣树，必叛尊王诸侯脱离，一次性结果与【人心向背】总结可见；一期的后宋、空法理、个人领地、50%/51% 边界、复辟可见而天命不可见，以及完整原版天命效果＋后朝销毁也全部回归。运行中 source/runtime 未改写，项目 diagnostics 为 0，保护存储未变化，原生进程树和隔离 userdir 均完成清理。
 
-完整 L0/L1 证据和保留的 RED attempt 说明见 `docs/acceptance-report.md`。0.2.0 使用四张来自最终 GREEN run 的真实游戏截图，其中【人心向背】画面新增为首图，地图镜头仍由原生 MCP 定位到大宋首都开封。Workshop item `3798404599` 当前公开版本仍为 0.1.1；只有完成 0.2.0 正式上传、32/32 fresh-cache 核对和同矩阵 L3 后，本文才会改为发布完成。
+完整 L0/L1/L3 证据和保留的 RED attempt 说明见 `docs/acceptance-report.md`，九语发布审阅见 `../docs/reclaim-release-localization-review-2026-09-13.md`。0.2.0 使用四张来自最终 GREEN run 的真实游戏截图，其中【人心向背】为首图，地图镜头由原生 MCP 定位到大宋首都开封。Workshop item `3798404599` 已公开更新：描述与入库 BBCode 精确一致，Change Notes 的 508 字/14 行全文已匿名精确回读，全新 32 文件订阅缓存严格核对并完成同矩阵 MCP-first L3。

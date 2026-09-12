@@ -1,6 +1,6 @@
 # 《重整河山》二期版本计划
 
-状态：**0.2.0 已实现；L0 与源码树 L1 GREEN，等待 Workshop 上传及 fresh-cache L3。**
+状态：**0.2.0 已实现并公开发布；L0、源码树 L1、Workshop fresh-cache L3 全部 GREEN。**
 
 计划版本：`0.2.0`
 
@@ -261,7 +261,7 @@ Steam Workshop item：`3798404599`
 - 玩家反馈已落地：【人心向背】总结事件列出代表性留朝者与叛者，且公开文案不包含验收术语。
 - 一期机制已在同一 run 回归：后宋、个人领地、50%/51% 门槛、【宣称复辟】、原版天命效果与后朝销毁全部 GREEN。
 - 最终源码树 run：`desktop-3fevhd2-1c74096080--reclaim-the-motherland--R0004`；wrapper/cell 均为 GREEN，项目 diagnostics 为 0。完整哈希与保留的 RED 见 `mod_reclaim_the_motherland/docs/acceptance-report.md`。
-- 未完成项只剩发布层：正式 tag/staging、Steam 上传、公开 Change Notes 精确回读、全新订阅缓存 32/32 核对和该缓存的 MCP-first L3。
+- 发布层已完成：正式 tag/staging、Steam 上传、公开 Change Notes 精确回读、全新订阅缓存 32/32 核对和该缓存的 MCP-first L3 均为 GREEN。完整发布身份见 `docs/release-changelogs/reclaim-motherland/0.2.0.md`。
 - 原版独立后国号事件：游戏文件 `common/on_action/title_on_actions.txt` 与 `events/dlc/tgp/tgp_dynastic_cycle_events.txt`。
 - `0.1.1` fresh-cache L3 报告：`D:\workspace\ck3_reclaim_the_motherland_design_process_assets\reclaim\runs\rqa_workshop_20260909_1952_capital_3798404599_v011\report.json`。
 

@@ -1,6 +1,6 @@
 # 重整河山 0.2.0：Steam 实机截图清单
 
-状态：四张候选图均来自同一次 **GREEN 的 CK3 1.19.0.6 源码树 MCP-first 验收**，已完成确定性裁切和逐张视觉检查；等待 0.2.0 上传后作为公开页面素材复核。
+状态：四张图均来自同一次 **GREEN 的 CK3 1.19.0.6 源码树 MCP-first 验收**，已完成确定性裁切、逐张视觉检查、入库及公开 URL 复核；0.2.0 Workshop BBCode 已按本表顺序展示。
 
 ## 权威来源
 
@@ -41,4 +41,8 @@ Workshop BBCode 必须使用 commit-pinned GitHub raw URL；Steam media strip �
 
 ## 发布证据
 
-0.2.0 尚未上传。正式发布后在此补充：上传回执、公开页面/API 复核、四张素材公开可见证据、必需 DLC 复核，以及 fresh-cache L3 run。
+- 0.2.0 于 2026-09-13 上传到公开 item `3798404599`；匿名接口返回 `result=1`、`visibility=0`、`time_updated=1789251577`。
+- 公开描述与入库 BBCode 规范化后的 5,446 字精确一致；四个 commit-pinned raw URL 均返回 HTTP 200，Content-Length 与本表 JPEG bytes 一致。
+- Change Notes entry `1789251577` 与入库 508 字、14 行文本精确一致。
+- Fresh-cache L3：`desktop-3fevhd2-1c74096080--reclaim-the-motherland--R0007`，wrapper/cell GREEN，20 个顺序标记，项目 diagnostics 为 0；完整证据见 `mod_reclaim_the_motherland/docs/acceptance-report.md`。
+- 必需 DLC 沿用并公开显示 `Crusader Kings III: All Under Heaven`；中文在全部仓库文案中统一为《溥天之下》。
