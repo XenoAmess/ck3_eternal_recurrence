@@ -121,3 +121,24 @@ the same paused revision, prove the expected owner and active cycle >= 3, use
 the typed character switch back to that owner, and observe an owner-facing
 active event again. It then replays only the idempotent save/registry assembly;
 no event option is selected and no game day advances.
+## R508 GREEN and canonical cleanup
+
+The in-process `retry-source` completed on the same R508/PID `120780` and
+connection generation `1`. It froze the original RED and action files,
+reloaded only the repaired Python source modules from commit `e168ad0`, proved
+the retained binding unchanged, restored the owner from the provider-bound
+subject frame, re-saved the same `date_raw=53366568` event and assembled the
+canonical schema-3 registry. The fourth source receipt records history
+`empty`, current cycle `5`, case `1`, and real checkpoint SHA-256
+`6D2A1C55373021882E754ED102D44A905A7EBE55F3B7B09BCFC0B8783CB9F302`.
+
+The complete four-entry registry is
+`phase2-source-checkpoint-registry.json`, SHA-256
+`4C6A9346F32194E7EF26BFCD79289D207E1C6DE7356ED4E7C61930E1FE75AAB3`.
+An independent provider preflight reports schema `3`, GREEN, `entry_count=4`,
+and exact handler coverage in the declared order. Operator GREEN evidence is
+`EBD3296655C81066DCBBAF771586770F8233DD1B1B92C801E49892C243A4D5D5`;
+canonical managed cleanup is
+`3FA1514206E808F53C7DF92F7858F10C41FFF73D2E6AC062BBD95E5ABD7E06FA`
+and proves no CK3 PID remains. R507 warm-up and R508 gameplay are both
+terminated. Source readiness is now 4/4; raw promotional footage remains 0/8.
