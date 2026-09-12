@@ -2660,3 +2660,11 @@ py tools/inspect_ck3_save_character_scope.py --melted <gamestate> --discover-roo
 `zg361_stage10_managed_autosave_provenance_v1` 必须 hash 绑定 autosave、来源 activation、loader readiness、受管场景 RED、`ck3_character_scope_discovery_offline_v1` 和 `ck3_scheduled_event_queue_offline_v1`。接纳器会确认 autosave 的真实 state directory、exact-build/产品树一致性、来源玩家与唯一 PID、fail-closed/no-selection 场景处理、目标经理的 exact B1 tuple，以及逐 subject 的固定 `.122 +30d` 队列。通过只表示该 checkpoint 可以进入新的 source-capture；新的 exact-build 轮次仍须在零游戏时间推进下切换玩家、复核 campaign root 并由 MCP 原生保存。
 
 该分支用于复用已经实际产生的受管 autosave，不允许手工拼接不同 session 的 GREEN/RED 或把 offline 报告当成 live 结果。目标直属领主必须取 topology 的 `immediate_liege_character_id`；B1 exact roster 数量和全部直属有地封臣数量是两个不同字段。
+
+### Stage 10 当前状态来源收据 v7
+
+受管 autosave 完成零时间玩家切换、exact-build campaign-root 复核和 MCP 原生保存后，新的 Stage 10 checkpoint 使用 `zg361_stage10_player_publication_source_v7`。v7 与旧 v6 并存；v6 继续只描述其原有 R492 历史来源，不能换绑到新 checkpoint。
+
+v7 hash 绑定当前 checkpoint、产品树、`ck3_save_player_topology_offline_v1`、`zg361_stage10_player_source_capture_v1`、`zg361_rn_af5_managed_cleanup_v1`、`ck3_character_scope_offline_v1` 和 `ck3_scheduled_event_queue_offline_v1`。准入必须证明：单一 played/current player；玩家经理与直属领主不同；天朝政府和至少 tier 3；live 保存没有推进游戏时间；cleanup GREEN 且 CK3 为零；subject/processing 是相同、唯一、存活的 exact owner/cycle/case/state-7 域；每名 subject 各有一个 `.122 +30d`。
+
+v7 不重放或重新解释旧来源的历史 RED。旧 RED 仍在各自 artifact 中保留；新来源靠自身的 live provenance 与 checkpoint-bound 当前状态取得准入。该收据只允许一次既有 120 日上限的 product attempt，不能单独把 `.120` 或 P1 标为 READY。R495/R496 的实例见 [受管来源捕获 GREEN](phase2-promo/r495-r496-stage10-managed-source-capture-green-2026-09-12.md)。

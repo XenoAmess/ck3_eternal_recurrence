@@ -23,7 +23,10 @@ import zg361_phase2_af5_operator_job as base
 CONTROLS = ["status", "run-stage10", "cleanup"]
 JOB_ROLE = "stage10-player-subject"
 SOURCE_RECEIPT_KIND = "zg361_stage10_player_publication_source_v6"
+SOURCE_RECEIPT_KIND_V7 = "zg361_stage10_player_publication_source_v7"
 LIVE_SOURCE_KIND = "zg361_stage10_player_source_capture_v1"
+SOURCE_CLEANUP_KIND = "zg361_rn_af5_managed_cleanup_v1"
+TOPOLOGY_KIND = "ck3_save_player_topology_offline_v1"
 NEAR_BOUNDARY_KIND = "zg361_phase2_stage10_player_subject_action_cell"
 SCHEDULE_KIND = "ck3_scheduled_event_queue_offline_v1"
 ROSTER_KIND = "ck3_character_scope_offline_v1"
@@ -53,7 +56,323 @@ def _offline_identity(
     return identity
 
 
-def _validate_source_receipt(
+def _validate_source_receipt_v7(
+    value: object, bound: Mapping[str, object]
+) -> dict[str, object]:
+    """Admit a current-state player-manager source without replaying old REDs."""
+
+    receipt_path = base.checked_file(value, "stage10_source_receipt")
+    receipt = base.read_object(receipt_path)
+    checkpoint = base.mapping(receipt.get("checkpoint"), "source receipt checkpoint")
+    bound_checkpoint = Path(str(bound["checkpoint"])).resolve()
+    expected = base.mapping(bound.get("expected_hashes"), "expected hashes")
+    topology = base.mapping(receipt.get("offline_topology"), "source topology")
+    player_state = base.mapping(
+        receipt.get("offline_player_state"), "source player state"
+    )
+    offline_evidence = base.mapping(
+        receipt.get("offline_evidence"), "source offline evidence"
+    )
+    manager = base.positive_int(
+        topology.get("player_manager_character_id"), "source manager"
+    )
+    owner = base.positive_int(
+        topology.get("immediate_liege_character_id"), "source owner"
+    )
+    direct_subjects = topology.get("direct_landed_vassal_character_ids")
+    player_tier = topology.get("player_primary_title_tier")
+
+    topology_path = base.checked_file(
+        offline_evidence.get("report"), "offline topology evidence"
+    )
+    topology_report = base.read_object(topology_path)
+    topology_source = base.mapping(
+        topology_report.get("source"), "offline topology source"
+    )
+    topology_candidates = topology_report.get("player_manager_candidates")
+    selected_topologies = (
+        [
+            row
+            for row in topology_candidates
+            if isinstance(row, Mapping)
+            and row.get("player_manager_character_id") == manager
+        ]
+        if isinstance(topology_candidates, list)
+        else []
+    )
+
+    live_path = base.checked_file(
+        receipt.get("live_source_provenance"), "live source provenance"
+    )
+    live = base.read_object(live_path)
+    live_checkpoint = base.mapping(
+        live.get("target_checkpoint"), "live target checkpoint"
+    )
+    live_binding = base.mapping(live.get("target_binding"), "live target binding")
+    live_campaign = base.mapping(
+        live.get("target_campaign_root"), "live target campaign root"
+    )
+    live_title = base.mapping(
+        live_campaign.get("primary_title"), "live target primary title"
+    )
+    live_government = base.mapping(
+        live_campaign.get("government"), "live target government"
+    )
+    live_flags = live_government.get("flags")
+
+    cleanup_path = base.checked_file(
+        receipt.get("source_cleanup_provenance"), "source cleanup provenance"
+    )
+    cleanup = base.read_object(cleanup_path)
+    canonical_cleanup = base.mapping(
+        cleanup.get("canonical_cleanup"), "canonical source cleanup"
+    )
+
+    roster_path = base.checked_file(
+        receipt.get("exact_roster_evidence"), "exact roster evidence"
+    )
+    roster = base.read_object(roster_path)
+    roster_source = base.mapping(roster.get("source"), "exact roster source")
+    roster_root = base.mapping(roster.get("root"), "exact roster root")
+    roster_root_variables = base.mapping(
+        roster_root.get("variables"), "exact roster root variables"
+    )
+    roster_lists = base.mapping(roster_root.get("lists"), "exact roster lists")
+    subject_list = base.mapping(
+        roster_lists.get("zg361_b1_subjects"), "exact roster subject list"
+    )
+    processing_list = base.mapping(
+        roster_lists.get("zg361_b1_processing_subjects"),
+        "exact roster processing list",
+    )
+
+    def character_ids(items: object) -> list[int]:
+        result: list[int] = []
+        if not isinstance(items, list):
+            return result
+        for item in items:
+            if (
+                not isinstance(item, Mapping)
+                or item.get("type") != "char"
+                or not isinstance(item.get("identity"), int)
+                or isinstance(item.get("identity"), bool)
+                or int(item["identity"]) <= 0
+            ):
+                return []
+            result.append(int(item["identity"]))
+        return result
+
+    subject_ids = character_ids(subject_list.get("items"))
+    processing_ids = character_ids(processing_list.get("items"))
+    roster_rows = roster.get("referenced_characters")
+    rows_by_id = {
+        int(row["character_id"]): row
+        for row in roster_rows
+        if isinstance(row, Mapping)
+        and isinstance(row.get("character_id"), int)
+        and not isinstance(row.get("character_id"), bool)
+    } if isinstance(roster_rows, list) else {}
+    manager_cycle = _offline_identity(
+        roster_root_variables, "zg361_b1_manager_cycle_serial", "value"
+    )
+    manager_case = _offline_identity(
+        roster_root_variables, "zg361_b1_manager_case_serial", "value"
+    )
+    roster_rows_match = bool(subject_ids) and all(
+        isinstance((row := rows_by_id.get(character_id)), Mapping)
+        and row.get("found") is True
+        and row.get("alive") is True
+        and _offline_identity(row.get("variables"), "zg361_b1_case_owner", "char")
+        == manager
+        and _offline_identity(row.get("variables"), "zg361_b1_case_subject", "char")
+        == character_id
+        and _offline_identity(row.get("variables"), "zg361_b1_cycle_serial", "value")
+        == manager_cycle
+        and _offline_identity(row.get("variables"), "zg361_b1_case_serial", "value")
+        == manager_case
+        and _offline_identity(row.get("variables"), "zg361_b1_case_state", "value")
+        == 700000
+        and _offline_identity(row.get("variables"), "zg361_b1_case_active", "value")
+        == 100000
+        and _offline_identity(row.get("variables"), "zg361_b1_roster_included", "value")
+        == 100000
+        for character_id in subject_ids
+    )
+
+    schedule_path = base.checked_file(
+        receipt.get("scheduled_event_evidence"), "scheduled-event evidence"
+    )
+    schedule = base.read_object(schedule_path)
+    schedule_source = base.mapping(schedule.get("source"), "schedule source")
+    scheduled = schedule.get("matches")
+    product_fix = base.mapping(
+        receipt.get("product_fix_contract"), "product fix contract"
+    )
+    expected_tail = receipt.get("fixed_tail_contract")
+    selected_topology = selected_topologies[0] if len(selected_topologies) == 1 else {}
+    expected_product_tree = str(expected["product_tree_sha256"]).upper()
+    expected_checkpoint = str(expected["checkpoint_sha256"]).upper()
+    played_records = player_state.get("played_character_records")
+    current_players = player_state.get("currently_played_character_ids")
+
+    if not (
+        receipt.get("schema_version") == 1
+        and receipt.get("kind") == SOURCE_RECEIPT_KIND_V7
+        and receipt.get("result") == "GREEN"
+        and receipt.get("offline_topology_observed") is True
+        and receipt.get("offline_single_player_observed") is True
+        and receipt.get("fixture_used") is False
+        and receipt.get("console_used") is False
+        and receipt.get("selection_attempted") is False
+        and receipt.get("source_container_header") == "SAV0101"
+        and receipt.get("game_version") == "1.19.0.6"
+        and manager != owner
+        and player_state.get("meta_number_of_players") == 1
+        and played_records == [{"character_id": manager, "player_id": 1}]
+        and current_players == [manager]
+        and isinstance(direct_subjects, list)
+        and len(direct_subjects) >= 1
+        and len(direct_subjects) == len(set(direct_subjects))
+        and all(
+            isinstance(character_id, int)
+            and not isinstance(character_id, bool)
+            and character_id > 0
+            for character_id in direct_subjects
+        )
+        and isinstance(player_tier, int)
+        and not isinstance(player_tier, bool)
+        and player_tier >= 3
+        and topology.get("player_government") == "celestial_government"
+        and str(receipt.get("product_tree_sha256", "")).upper()
+        == expected_product_tree
+        and isinstance(checkpoint.get("path"), str)
+        and Path(str(checkpoint["path"])).is_absolute()
+        and Path(str(checkpoint["path"])).resolve() == bound_checkpoint
+        and checkpoint.get("bytes") == bound_checkpoint.stat().st_size
+        and str(checkpoint.get("sha256", "")).upper() == expected_checkpoint
+        and topology_report.get("schema_version") == 1
+        and topology_report.get("kind") == TOPOLOGY_KIND
+        and topology_report.get("result") == "GREEN"
+        and topology_report.get("game_version") == "1.19.0.6"
+        and topology_report.get("offline_single_player_ready") is True
+        and topology_report.get("meta_number_of_players") == 1
+        and topology_report.get("played_character_records") == played_records
+        and topology_report.get("currently_played_character_ids") == current_players
+        and len(selected_topologies) == 1
+        and selected_topology.get("immediate_liege_character_id") == owner
+        and selected_topology.get("player_primary_title_tier") == player_tier
+        and selected_topology.get("player_government") == "celestial_government"
+        and selected_topology.get("direct_landed_vassal_character_ids")
+        == direct_subjects
+        and topology_source.get("bytes") == bound_checkpoint.stat().st_size
+        and str(topology_source.get("sha256", "")).upper() == expected_checkpoint
+        and offline_evidence.get("melted_sha256")
+        == topology_report.get("melted_sha256")
+        and live.get("schema_version") == 1
+        and live.get("kind") == LIVE_SOURCE_KIND
+        and live.get("result") == "GREEN"
+        and live.get("production_live") is True
+        and live.get("mcp_native_save") is True
+        and live.get("fixture_used") is False
+        and live.get("console_used") is False
+        and live.get("game_time_advanced") is False
+        and live.get("source_admission_kind") == "managed-autosave"
+        and str(live.get("product_tree_sha256", "")).upper()
+        == expected_product_tree
+        and isinstance(live_checkpoint.get("path"), str)
+        and Path(str(live_checkpoint["path"])).resolve() == bound_checkpoint
+        and live_checkpoint.get("bytes") == bound_checkpoint.stat().st_size
+        and str(live_checkpoint.get("sha256", "")).upper() == expected_checkpoint
+        and live_binding.get("player_character_id") == manager
+        and live_binding.get("paused") is True
+        and live_binding.get("map_ready") is True
+        and live_campaign.get("status") == "available"
+        and live_campaign.get("campaign_root_context_ready") is True
+        and live_campaign.get("player_character_id") == manager
+        and live_campaign.get("immediate_liege_character_id") == owner
+        and live_campaign.get("independent") is False
+        and isinstance(live_title.get("tier_raw"), int)
+        and not isinstance(live_title.get("tier_raw"), bool)
+        and live_title.get("tier_raw") >= 3
+        and isinstance(live_flags, list)
+        and "government_is_celestial" in live_flags
+        and cleanup.get("schema_version") == 1
+        and cleanup.get("kind") == SOURCE_CLEANUP_KIND
+        and cleanup.get("result") == "GREEN"
+        and cleanup.get("cleanup_proven") is True
+        and cleanup.get("ck3_pids_after") == []
+        and canonical_cleanup.get("result") == "GREEN"
+        and canonical_cleanup.get("failed_checks") == []
+        and roster.get("schema_version") == 1
+        and roster.get("kind") == ROSTER_KIND
+        and roster.get("result") == "GREEN"
+        and roster.get("game_version") == "1.19.0.6"
+        and roster.get("root_character_id") == manager
+        and roster.get("melted_sha256") == offline_evidence.get("melted_sha256")
+        and roster_source.get("bytes") == bound_checkpoint.stat().st_size
+        and str(roster_source.get("sha256", "")).upper() == expected_checkpoint
+        and manager_cycle == manager_case
+        and isinstance(manager_cycle, int)
+        and manager_cycle > 0
+        and subject_list.get("present") is True
+        and subject_list.get("item_count") == len(subject_ids)
+        and subject_list.get("duration") == len(subject_ids)
+        and processing_list.get("present") is True
+        and processing_list.get("item_count") == len(processing_ids)
+        and processing_list.get("duration") == len(processing_ids)
+        and subject_ids == processing_ids
+        and len(subject_ids) == len(set(subject_ids))
+        and roster.get("unique_referenced_character_count") == len(subject_ids)
+        and len(rows_by_id) == len(subject_ids)
+        and roster_rows_match
+        and schedule.get("schema_version") == 1
+        and schedule.get("kind") == SCHEDULE_KIND
+        and schedule.get("result") == "GREEN"
+        and schedule.get("game_version") == "1.19.0.6"
+        and schedule.get("event_prefix") == "zg361b1."
+        and schedule.get("root_character_id") == manager
+        and schedule.get("matched_count") == len(subject_ids)
+        and isinstance(scheduled, list)
+        and len(scheduled) == len(subject_ids)
+        and all(
+            isinstance(row, Mapping)
+            and row.get("event") == "zg361b1.122"
+            and row.get("root_character_id") == manager
+            and row.get("days_from_current") == 30
+            for row in scheduled
+        )
+        and schedule.get("melted_sha256") == offline_evidence.get("melted_sha256")
+        and schedule_source.get("bytes") == bound_checkpoint.stat().st_size
+        and str(schedule_source.get("sha256", "")).upper() == expected_checkpoint
+        and product_fix.get("root_commit") == PRODUCT_FIX_COMMIT
+        and str(product_fix.get("repaired_product_tree_sha256", "")).upper()
+        == expected_product_tree
+        and product_fix.get("exact_subject_count") == len(subject_ids)
+        and expected_tail
+        == {
+            "source_b1_state": 7,
+            "first_pending_event": "zg361b1.122",
+            "first_pending_event_days": 30,
+            "maximum_action_days": 120,
+        }
+    ):
+        raise base.Af5JobError(
+            "Stage 10 activation lacks a matching player-publication source receipt"
+        )
+    return {
+        "path": receipt_path,
+        "receipt": receipt,
+        "live_source_provenance": live_path,
+        "source_cleanup_provenance": cleanup_path,
+        "player_manager_character_id": manager,
+        "owner_character_id": owner,
+        "offline_topology_evidence": topology_path,
+        "exact_roster_evidence": roster_path,
+        "scheduled_event_evidence": schedule_path,
+    }
+
+
+def _validate_source_receipt_v6(
     value: object, bound: Mapping[str, object]
 ) -> dict[str, object]:
     receipt_path = base.checked_file(value, "stage10_source_receipt")
@@ -477,6 +796,16 @@ def _validate_source_receipt(
         "exact_roster_evidence": roster_path,
         "scheduled_event_evidence": schedule_path,
     }
+
+
+def _validate_source_receipt(
+    value: object, bound: Mapping[str, object]
+) -> dict[str, object]:
+    receipt_path = base.checked_file(value, "stage10_source_receipt")
+    receipt = base.read_object(receipt_path)
+    if receipt.get("kind") == SOURCE_RECEIPT_KIND_V7:
+        return _validate_source_receipt_v7(value, bound)
+    return _validate_source_receipt_v6(value, bound)
 
 
 def validate_activation(path: Path, *, require_empty_slot: bool) -> dict[str, object]:
