@@ -2644,3 +2644,11 @@ Stage 10 需要玩家经理的 governor position、直属上级与 direct-vassal
 R494 的 `ep3_interactions_events.0630` 在 source 后第 88 个游戏日到达。原版定义的唯一 option 对 recipient 执行 `governor_resignation_title_transfer_effect`，既有通用事件合同正确返回 `selection_attempted=false / product_result=NOT_EVALUATED`。这种结果淘汰当前 source，不证明 B1 产品失败，也不允许通过增加观察天数解决。
 
 处理顺序为：冻结事件帧与日志 → 绑定 exact-build EXE、事件定义和 interaction 调用方哈希 → 确认现有事件合同是否已覆盖 → 只运行对应 fail-closed/identity-drift 测试 → cleanup 当前轮次 → 离线筛选新的稳定玩家经理来源。若现有合同已准确覆盖，不创建重复 handler 或一次性脚本；下一次 CK3 启动必须由新来源的可核验证据支持。
+
+需要从冻结世界枚举未知 root 时，使用同一通用工具的 discovery 模式：
+
+```powershell
+py tools/inspect_ck3_save_character_scope.py --melted <gamestate> --discover-root-variable <name> --root-variable <name> --list <name> --referenced-variable <name> --output <report.json>
+```
+
+输出 schema 为 `ck3_character_scope_discovery_offline_v1`，列出所有带指定变量的存活或死亡 Character root，再统一跟随其请求列表中的 Character 引用。该模式仍是只读 prelaunch 证据；它只负责把候选域变成可核验数据，不能替代 topology、scheduled-event 或 exact-build live 准入。

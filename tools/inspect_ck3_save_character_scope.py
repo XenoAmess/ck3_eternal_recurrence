@@ -1,10 +1,11 @@
 #!/usr/bin/env python3
 """Inspect selected CK3 character variables and persistent lists offline.
 
-The caller chooses one root CharacterID, root variables, lists, and variables
-to read from Character references followed through those lists.  The report is
-path-neutral, hash-bound prelaunch evidence; exact-build live MCP remains the
-authority for current game state.
+The caller chooses one root CharacterID or a variable used to discover roots,
+plus root variables, lists, and variables to read from Character references
+followed through those lists.  The report is path-neutral, hash-bound
+prelaunch evidence; exact-build live MCP remains the authority for current
+game state.
 """
 
 from __future__ import annotations
@@ -22,6 +23,7 @@ from inspect_ck3_save_player_topology import _numeric_records, _sha256
 
 SCHEMA_VERSION = 1
 KIND = "ck3_character_scope_offline_v1"
+DISCOVERY_KIND = "ck3_character_scope_discovery_offline_v1"
 
 
 def _anonymous_records(text: str) -> Iterator[str]:
@@ -132,6 +134,38 @@ def _character_blocks(path: Path, wanted: set[int]) -> dict[int, str]:
     return found
 
 
+def _game_version(path: Path) -> str | None:
+    with path.open("r", encoding="utf-8", errors="replace") as stream:
+        for line in stream:
+            match = re.fullmatch(r'version="([^"]+)"', line.strip())
+            if match is not None:
+                return match.group(1)
+    return None
+
+
+def _referenced_scopes(
+    path: Path,
+    roots: Sequence[dict[str, object]],
+    referenced_variables: Sequence[str],
+) -> tuple[int, list[dict[str, object]]]:
+    references: set[int] = set()
+    for root in roots:
+        for listed in root["lists"].values():
+            for item in listed["items"]:
+                if item.get("type") == "char" and isinstance(item.get("identity"), int):
+                    references.add(int(item["identity"]))
+    referenced_blocks = _character_blocks(path, references) if references else {}
+    referenced = []
+    for character_id in sorted(references):
+        scope = _selected_scope(
+            referenced_blocks.get(character_id),
+            variable_names=referenced_variables,
+            list_names=(),
+        )
+        referenced.append({"character_id": character_id, **scope})
+    return len(references), referenced
+
+
 def inspect_melted(
     path: Path,
     *,
@@ -146,40 +180,66 @@ def inspect_melted(
         variable_names=root_variables,
         list_names=list_names,
     )
-    references: set[int] = set()
-    for listed in root_scope["lists"].values():
-        for item in listed["items"]:
-            if item.get("type") == "char" and isinstance(item.get("identity"), int):
-                references.add(int(item["identity"]))
-    referenced_blocks = _character_blocks(path, references) if references else {}
-    referenced = []
-    for character_id in sorted(references):
-        scope = _selected_scope(
-            referenced_blocks.get(character_id),
-            variable_names=referenced_variables,
-            list_names=(),
-        )
-        referenced.append({"character_id": character_id, **scope})
-
-    game_version: str | None = None
-    with path.open("r", encoding="utf-8", errors="replace") as stream:
-        for line in stream:
-            match = re.fullmatch(r'version="([^"]+)"', line.strip())
-            if match is not None:
-                game_version = match.group(1)
-                break
+    reference_count, referenced = _referenced_scopes(
+        path, [root_scope], referenced_variables
+    )
     return {
         "schema_version": SCHEMA_VERSION,
         "kind": KIND,
         "result": "GREEN",
         "authority": "offline-prelaunch-only-live-exact-build-mcp-remains-authoritative",
-        "game_version": game_version,
+        "game_version": _game_version(path),
         "root_character_id": root_character_id,
         "requested_root_variables": list(root_variables),
         "requested_lists": list(list_names),
         "requested_referenced_variables": list(referenced_variables),
         "root": root_scope,
-        "unique_referenced_character_count": len(references),
+        "unique_referenced_character_count": reference_count,
+        "referenced_characters": referenced,
+    }
+
+
+def inspect_discovery_melted(
+    path: Path,
+    *,
+    discovery_variable: str,
+    root_variables: Sequence[str] = (),
+    list_names: Sequence[str] = (),
+    referenced_variables: Sequence[str] = (),
+) -> dict[str, object]:
+    requested_root_variables = list(
+        dict.fromkeys([discovery_variable, *root_variables])
+    )
+    roots: list[dict[str, object]] = []
+    variable_marker = f'flag="{discovery_variable}"'
+    for level, character_id, block in _numeric_records(path):
+        if level != 1 or variable_marker not in block:
+            continue
+        scope = _selected_scope(
+            block,
+            variable_names=requested_root_variables,
+            list_names=list_names,
+        )
+        if not scope["variables"][discovery_variable]["present"]:
+            continue
+        roots.append({"root_character_id": character_id, **scope})
+    roots.sort(key=lambda row: int(row["root_character_id"]))
+    reference_count, referenced = _referenced_scopes(
+        path, roots, referenced_variables
+    )
+    return {
+        "schema_version": SCHEMA_VERSION,
+        "kind": DISCOVERY_KIND,
+        "result": "GREEN",
+        "authority": "offline-prelaunch-only-live-exact-build-mcp-remains-authoritative",
+        "game_version": _game_version(path),
+        "discovery_variable": discovery_variable,
+        "requested_root_variables": requested_root_variables,
+        "requested_lists": list(list_names),
+        "requested_referenced_variables": list(referenced_variables),
+        "root_character_count": len(roots),
+        "roots": roots,
+        "unique_referenced_character_count": reference_count,
         "referenced_characters": referenced,
     }
 
@@ -190,7 +250,9 @@ def _parser() -> argparse.ArgumentParser:
     source.add_argument("--save", type=Path)
     source.add_argument("--melted", type=Path)
     parser.add_argument("--rakaly", type=Path)
-    parser.add_argument("--root-character-id", type=int, required=True)
+    root = parser.add_mutually_exclusive_group(required=True)
+    root.add_argument("--root-character-id", type=int)
+    root.add_argument("--discover-root-variable")
     parser.add_argument("--root-variable", action="append", default=[])
     parser.add_argument("--list", dest="list_names", action="append", default=[])
     parser.add_argument("--referenced-variable", action="append", default=[])
@@ -236,13 +298,22 @@ def main(argv: Sequence[str] | None = None) -> int:
                 "bytes": rakaly.stat().st_size,
                 "sha256": _sha256(rakaly),
             }
-        report = inspect_melted(
-            melted,
-            root_character_id=args.root_character_id,
-            root_variables=args.root_variable,
-            list_names=args.list_names,
-            referenced_variables=args.referenced_variable,
-        )
+        if args.discover_root_variable is not None:
+            report = inspect_discovery_melted(
+                melted,
+                discovery_variable=args.discover_root_variable,
+                root_variables=args.root_variable,
+                list_names=args.list_names,
+                referenced_variables=args.referenced_variable,
+            )
+        else:
+            report = inspect_melted(
+                melted,
+                root_character_id=args.root_character_id,
+                root_variables=args.root_variable,
+                list_names=args.list_names,
+                referenced_variables=args.referenced_variable,
+            )
         report["source"] = source_record
         report["rakaly"] = rakaly_record
         report["melted_sha256"] = _sha256(melted)
