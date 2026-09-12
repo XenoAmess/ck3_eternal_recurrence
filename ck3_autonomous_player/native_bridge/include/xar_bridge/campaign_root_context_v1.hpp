@@ -39,6 +39,7 @@ struct CampaignRootReadinessV1 {
   bool primary_title_ready = false;
   bool capital_ready = false;
   bool lieges_ready = false;
+  bool direct_landed_vassals_ready = false;
   bool government_ready = false;
   bool selected_game_rule_tokens_ready = false;
   bool same_frame_ready = false;
@@ -64,6 +65,7 @@ struct CampaignRootContextV1 {
   std::optional<std::int32_t> immediate_liege_character_id;
   std::optional<std::int32_t> top_liege_character_id;
   std::optional<bool> independent;
+  std::vector<std::int32_t> direct_landed_vassal_character_ids;
   std::optional<CampaignRootGovernmentV1> government;
   std::vector<std::string> selected_game_rule_tokens;
   std::int32_t native_selected_game_rule_token_count = 0;

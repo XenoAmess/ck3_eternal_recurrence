@@ -23,6 +23,7 @@
     "immediate_liege_character_id",
     "top_liege_character_id",
     "independent",
+    "direct_landed_vassal_character_ids",
     "government",
     "selected_game_rule_tokens",
     "native_selected_game_rule_token_count",
@@ -40,6 +41,7 @@
     "primary_title_unavailable",
     "capital_unavailable",
     "lieges_unavailable",
+    "direct_landed_vassals_unavailable",
     "government_flags_unavailable",
     "selected_game_rule_tokens_unavailable",
     "state_changed",
@@ -47,5 +49,7 @@
   ],
   "government_fallback_kind": "pointer_slot",
   "canonical_order": "unsigned_utf8_bytewise_lexicographical",
-  "preserve_multiplicity": true
+  "preserve_multiplicity": true,
+  "direct_landed_vassal_order": "ascending_full_generation_character_id",
+  "direct_landed_vassal_filters": ["alive", "landed", "immediate_liege_is_player"]
 }

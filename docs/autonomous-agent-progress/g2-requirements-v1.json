@@ -45,11 +45,11 @@
       "id": "G2-M1",
       "name": "entity directory and core turn bundle",
       "priority": "P1-A",
-      "status": "not_started",
-      "latest_evidence": ["campaign-root-context production-live primitive"],
+      "status": "in_progress",
+      "latest_evidence": ["campaign-root-context production-live primitive", "direct landed-vassal identity extension static-ready"],
       "planner_consumer": "candidate generation and per-turn objective selection",
       "visible_outcome": "one query identifies the ruler, primary title, capital, liege, direct vassals, one neighbor and the minimum ruler/realm/succession alerts",
-      "open_blocker": "no canonical entity directory or aggregated ruler and realm snapshot"
+      "open_blocker": "realm neighbor identity and adjacency, the canonical entity directory, aggregated ruler/realm state and minimum alerts remain absent; direct landed-vassal IDs still need one bounded production paused read"
     },
     {
       "id": "G2-M2",

@@ -396,13 +396,15 @@ tyranny；健康、压力与生育；法律、政府、文化、创新与非宗�
    comparison，以及唯一 action/postwar/cold-restore；R459 的 loss/truce 与 R471 的 strategic-power 直接复用，不再重跑旧
    index `9/10` ABI 枚举；
 2. `G2-M1`：current-feudal-ruler 的 `entity-directory-v1`、`ruler-state-v1`、`realm-state-v1` 最小子集和
-   `ck3_query_turn_bundle_v1`；
+   `ck3_query_turn_bundle_v1`；2026-09-13 已先把直属有地封臣 full-generation IDs 接入现有 exact-build
+   `campaign-root-context-v1`，状态为 `static-ready / live=false`，下一输入是 neighbor identity/adjacency；
 3. `G2-M2`：`event-context-v2` 接入共享 registry recommendation，并以三个自然事件闭合选择与状态后置；
 4. `G2-M3/M4`：把继承、health/stress/legitimacy、vassal/faction alert、建设和内阁组成 realm-survival 与和平治理 OODA；
 5. `G2-M5–M7`：家庭/外交/完整战争，谋略/制度/活动，以及按 runtime identity 启用的政府/DLC adapter 和长期 qualification。
 
 G1、GEN-032、GEN-009 与同一 fixed seed 的第二寿命是已冻结前置证据，不再进入现行 G2 分母。当前全局进度只能写 `0/8`；
-GEN-034 子包进度另按 `1/4` 汇报：versioned repository strategy budget/profile 已完成；禁止恢复没有固定分母的百分比。
+GEN-034 子包进度另按 `2/4` 汇报：campaign dominance certificate 与 versioned repository strategy budget/profile 已完成；
+禁止恢复没有固定分母的百分比。
 
 真实 run 出现更高优先级的观测阻点时，可以调整相邻工作包，但不得通过重复返回 `unknown/unavailable` 代替补观测口。
 

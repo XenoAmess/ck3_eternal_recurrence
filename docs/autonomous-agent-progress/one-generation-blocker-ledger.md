@@ -1180,3 +1180,19 @@ strategic-power primitive；余下入口只有 policy-level campaign dominance�
 - Focused query/policy/planner tests pass normal/optimized `26/26`. This closes the static objective/utility input for the three G2-M2 target
   events. The completion gate remains three production recommendation/action/material loops; generic effect extraction, dynamic goal switching
   and cross-domain numeric calibration remain breadth/quality debt rather than substitutes for those live outcomes. Global G2 stays `0/8`.
+
+## 2026-09-13: G2-M1 direct landed-vassal identity observation static-ready
+
+- The production-live campaign-root primitive already identifies the current ruler, primary title, capital and liege chain, but it did not
+  enumerate the ruler's direct landed vassals. The only existing roster was an offline save-topology candidate and is not eligible as paused
+  production truth.
+- The exact-build reader now walks the frozen Character storage in the same application-main double observation. It requires each admitted row
+  to be alive, generation-valid, native-immediate-vassal to the current player and backed by a generation-valid primary title. The wire publishes
+  a sorted duplicate-free `direct_landed_vassal_character_ids` vector; any read or second-sample failure returns typed
+  `direct_landed_vassals_unavailable` rather than a partial roster.
+- Release DLL compile/link, direct native reader and source-contract fixtures are GREEN. Python driver/service/MCP/live-harness focused tests pass
+  normal/optimized `30/30` each. The field remains `static-ready / live=false` because the two historical campaign-root artifacts predate it.
+  One future bounded paused read may close the production primitive while sharing an already-required G2 session; no dedicated long run is
+  required.
+- G2-M1 is now `in_progress`, but global G2 remains `0/8`. Realm-neighbor identity/adjacency, the canonical entity directory, aggregated ruler
+  and realm state, minimum alerts and the turn-bundle consumer remain open; the direct-vassal vector alone does not satisfy the visible M1 gate.

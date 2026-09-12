@@ -8937,6 +8937,7 @@ class NativeHeadlessGameplayDriver:
             "immediate_liege_character_id",
             "top_liege_character_id",
             "independent",
+            "direct_landed_vassal_character_ids",
             "government",
             "selected_game_rule_tokens",
             "native_selected_game_rule_token_count",

@@ -48,6 +48,7 @@ UNAVAILABLE_REASONS = (
     "primary_title_unavailable",
     "capital_unavailable",
     "lieges_unavailable",
+    "direct_landed_vassals_unavailable",
     "government_flags_unavailable",
     "selected_game_rule_tokens_unavailable",
     "state_changed",
@@ -61,6 +62,7 @@ def _readiness(ready: bool) -> dict[str, bool]:
         "primary_title_ready": ready,
         "capital_ready": ready,
         "lieges_ready": ready,
+        "direct_landed_vassals_ready": ready,
         "government_ready": ready,
         "selected_game_rule_tokens_ready": ready,
         "same_frame_ready": ready,
@@ -113,6 +115,9 @@ def _frame(
             PLAYER_CHARACTER_ID if available else None
         ),
         "independent": True if available else None,
+        "direct_landed_vassal_character_ids": (
+            [23_456, 34_567] if available else []
+        ),
         "government": (
             {
                 "key": "feudal_government",
@@ -164,8 +169,9 @@ def _driver_result(status: str = "available") -> dict[str, object]:
         "capital_province_id",
         "immediate_liege_character_id",
         "top_liege_character_id",
-        "independent",
-        "government",
+            "independent",
+            "direct_landed_vassal_character_ids",
+            "government",
         "selected_game_rule_tokens",
         "native_selected_game_rule_token_count",
         "readiness",
@@ -241,6 +247,10 @@ class CampaignRootContextV1ContractTests(unittest.TestCase):
             2,
         )
         self.assertTrue(normalized["readiness"]["ready"])
+        self.assertEqual(
+            normalized["direct_landed_vassal_character_ids"],
+            [23_456, 34_567],
+        )
 
     def test_available_distinguishes_every_legal_absence(self) -> None:
         frame = _frame()
@@ -347,6 +357,12 @@ class CampaignRootContextV1ContractTests(unittest.TestCase):
             ),
             "tokens_count": lambda row: row.__setitem__(
                 "native_selected_game_rule_token_count", 99
+            ),
+            "vassal_order": lambda row: row.__setitem__(
+                "direct_landed_vassal_character_ids", [34_567, 23_456]
+            ),
+            "vassal_duplicate": lambda row: row.__setitem__(
+                "direct_landed_vassal_character_ids", [23_456, 23_456]
             ),
             "provenance": lambda row: row["provenance"].__setitem__(
                 "government_rva", "0x0"

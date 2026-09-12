@@ -68,6 +68,7 @@ struct ObservationV1 {
   std::optional<std::int32_t> immediate_liege_character_id;
   std::int32_t top_liege_character_id = -1;
   bool independent = false;
+  std::vector<std::int32_t> direct_landed_vassal_character_ids;
   std::optional<game::CampaignRootGovernmentV1> government;
   std::vector<std::string> selected_game_rule_tokens;
   std::int32_t native_selected_game_rule_token_count = 0;
@@ -567,6 +568,91 @@ bool ReadLieges(const CampaignRootNativeEnvironmentV1 &environment,
              : output.top_liege_character_id != output.player_character_id;
 }
 
+bool ReadDirectLandedVassals(
+    const CampaignRootNativeEnvironmentV1 &environment,
+    const CampaignRootAccessV1 &access, ObservationV1 &output) noexcept {
+  void *storage = nullptr;
+  void *character_fallback = nullptr;
+  void *title_fallback = nullptr;
+  void *slots = nullptr;
+  std::int32_t capacity = 0;
+  if (!ReadSlot(access, environment.character_storage_slot, storage) ||
+      !ReadSlot(access, environment.character_fallback_slot,
+                character_fallback) ||
+      !ReadSlot(access, environment.landed_title_fallback_slot,
+                title_fallback) ||
+      storage == nullptr ||
+      !ReadValue(access, storage, kStorageSlotsOffset, slots) ||
+      !ReadValue(access, storage, kStorageCapacityOffset, capacity) ||
+      slots == nullptr || capacity <= 0 || capacity > kMaximumComponentSlots) {
+    return false;
+  }
+
+  output.direct_landed_vassal_character_ids.clear();
+  for (std::int32_t index = 0; index < capacity; ++index) {
+    void *character = nullptr;
+    const auto slot_offset = static_cast<std::size_t>(index) *
+                                 kStorageSlotStride +
+                             kStorageObjectOffset;
+    if (!ReadValue(access, slots, slot_offset, character)) {
+      return false;
+    }
+    if (character == nullptr || character == character_fallback ||
+        character == output.player_character) {
+      continue;
+    }
+
+    std::int32_t character_id = -1;
+    void *death = nullptr;
+    if (!ReadValue(access, character, kCharacterIdentityOffset,
+                   character_id) ||
+        character_id <= 0 ||
+        (static_cast<std::uint32_t>(character_id) & 0x00FFFFFFU) !=
+            static_cast<std::uint32_t>(index) ||
+        !ReadValue(access, character, kCharacterDeathMarkerOffset, death)) {
+      return false;
+    }
+    if (death != nullptr) {
+      continue;
+    }
+
+    void *liege = nullptr;
+    if (!InvokeResolver(environment.immediate_liege, character, liege)) {
+      return false;
+    }
+    if (liege != output.player_character) {
+      continue;
+    }
+
+    void *primary_title = nullptr;
+    if (!InvokeResolver(environment.primary_title, character, primary_title)) {
+      return false;
+    }
+    if (primary_title == nullptr || primary_title == title_fallback) {
+      continue;
+    }
+    std::int32_t title_id = -1;
+    if (!ReadValue(access, primary_title, kLandedTitleIdentityOffset,
+                   title_id) ||
+        ResolveComponent(access, environment.landed_title_storage_slot,
+                         environment.landed_title_fallback_slot, title_id,
+                         kLandedTitleIdentityOffset) != primary_title) {
+      return false;
+    }
+    try {
+      output.direct_landed_vassal_character_ids.push_back(character_id);
+    } catch (...) {
+      return false;
+    }
+  }
+  std::sort(output.direct_landed_vassal_character_ids.begin(),
+            output.direct_landed_vassal_character_ids.end());
+  return std::adjacent_find(
+             output.direct_landed_vassal_character_ids.begin(),
+             output.direct_landed_vassal_character_ids.end()) ==
+         output.direct_landed_vassal_character_ids.end();
+}
+
 bool ReadGovernment(const CampaignRootNativeEnvironmentV1 &environment,
                     const CampaignRootAccessV1 &access,
                     ObservationV1 &output) noexcept {
@@ -710,6 +796,10 @@ bool ReadObservation(const CampaignRootNativeEnvironmentV1 &environment,
     failure = "lieges_unavailable";
     return false;
   }
+  if (!ReadDirectLandedVassals(environment, access, output)) {
+    failure = "direct_landed_vassals_unavailable";
+    return false;
+  }
   if (!ReadGovernment(environment, access, output)) {
     failure = "government_flags_unavailable";
     return false;
@@ -843,12 +933,14 @@ game::ReadCampaignRootContextResultV1 ReadCampaignRootContextV1(
         first.immediate_liege_character_id;
     output.top_liege_character_id = first.top_liege_character_id;
     output.independent = first.independent;
+    output.direct_landed_vassal_character_ids =
+        std::move(first.direct_landed_vassal_character_ids);
     output.government = std::move(first.government);
     output.selected_game_rule_tokens =
         std::move(first.selected_game_rule_tokens);
     output.native_selected_game_rule_token_count =
         first.native_selected_game_rule_token_count;
-    output.readiness = {true, true, true, true, true, true, true, true};
+    output.readiness = {true, true, true, true, true, true, true, true, true};
     output.unavailable_reason.clear();
     return game::ReadCampaignRootContextResultV1::available;
   } catch (...) {

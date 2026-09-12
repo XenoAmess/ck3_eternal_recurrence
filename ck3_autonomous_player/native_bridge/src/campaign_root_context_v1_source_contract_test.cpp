@@ -88,6 +88,8 @@ int main(int argc, char **argv) {
                     "Utf8BytewiseLess);",
                     "std::sort(output.selected_game_rule_tokens.begin(),",
                     "selected_rule_tokens_native_order",
+                    "ReadDirectLandedVassals",
+                    "direct_landed_vassals_unavailable",
                     "observed_id != full_id",
                     "second != first"}) ||
       !ContainsAll(serializer,
@@ -96,6 +98,7 @@ int main(int argc, char **argv) {
                     "\\\"schema_version\\\":1",
                     "\\\"selected_game_rule_tokens\\\"",
                     "\\\"native_selected_game_rule_token_count\\\"",
+                    "\\\"direct_landed_vassal_character_ids\\\"",
                     "\\\"unavailable_reason\\\"",
                     "\\\"provenance\\\""}) ||
       !ContainsAll(query_mailbox,
@@ -136,6 +139,8 @@ int main(int argc, char **argv) {
                     "\"mailbox_executor_slot\": "
                     "\"permitted_executor_nonary\"",
                     "\"all_or_nothing_readiness\": true",
+                    "\"direct_landed_vassal_order\": "
+                    "\"ascending_full_generation_character_id\"",
                     "\"government_fallback_kind\": \"pointer_slot\""})) {
     return 1;
   }

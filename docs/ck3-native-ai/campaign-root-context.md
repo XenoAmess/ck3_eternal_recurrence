@@ -10,11 +10,15 @@
   原版头衔数据确实允许 `ai_primary_priority` 影响 AI 选择主头衔，但本文读取的是 native 已解析的当前主头衔，既不重跑、
   也不模仿那个 AI 评分。
 - **[static-confirmed]** `campaign-root-context-v1` 所需的每个 native leaf 已在冻结 EXE/stock 数据中闭合；当前没有需要以
-  猜值代替的字段。
+  猜值代替的字段。2026-09-13 增加的 `direct_landed_vassal_character_ids` 复用同一 Character storage、primary-title 与
+  immediate-liege leaf，在 application-main 双采样内枚举，不读取或猜测存档文本。
 - **[live-confirmed]** production bridge、Python service 与 MCP 已发布这项只读聚合查询。两个 immutable campaign
   checkpoint 分别完成“同 paused revision 双查询 -> 保存 -> 新 managed PID 冷恢复 -> 同 paused revision 双查询”，并逐项
   证明业务值跨恢复不变；artifact SHA-256 为 `DA5EB7F01A48A2869B8C9B6B2F6607825FA5319715F66D2C0D04AFFCF802CDDC`
   与 `677C4FF9727A479B40D068EC7E62A7AC54EF2E21A3EF57649D624C7648B279F9`。
+- **[static-ready, live pending]** 上述两个历史 artifact 早于直属有地封臣字段，不能证明该字段的 production 值。新增 reader、
+  serializer、source contract、Release DLL 与 Python driver/service/MCP 聚焦测试已通过；只在下一次本来就需要的 paused
+  G2 会话中做一次读取互证，不为这一字段单开长跑。
 - 这项 capability **不声明 DLC truth**。磁盘上的 DLC descriptor 只说明文件已安装；它既不证明当前进程已加载对应内容，
   也不证明当前账户 entitled/enabled。selected setting-token vector 只证明当前 selection service 中实际选中的 rule
   setting，也不能反推 installed、loaded 或 entitled DLC/feature。后者必须由独立的 loaded-feature/entitlement native
@@ -71,6 +75,7 @@ absent；结构或 identity 无法在同一 paused query 中闭合时返回 type
   "immediate_liege_character_id": null,
   "top_liege_character_id": 12345,
   "independent": true,
+  "direct_landed_vassal_character_ids": [23456, 34567],
   "government": {
     "key": "feudal_government",
     "flags": [
@@ -89,6 +94,7 @@ absent；结构或 identity 无法在同一 paused query 中闭合时返回 type
     "primary_title_ready": true,
     "capital_ready": true,
     "lieges_ready": true,
+    "direct_landed_vassals_ready": true,
     "government_ready": true,
     "selected_game_rule_tokens_ready": true,
     "same_frame_ready": true,
@@ -122,6 +128,7 @@ canonicalization：**不得依此反推 native 优先级、父 game-rule、rule 
 | `capital_province_id` | native capital resolver 无结果，例如 landless root |
 | `immediate_liege_character_id` | native immediate resolver 返回 self/canonical fallback，即 independent |
 | `top_liege_character_id` | 不为空；independent 时明确等于 `player_character_id` |
+| `direct_landed_vassal_character_ids` | 合法没有直属有地封臣时为 `[]`；available frame 中不使用 `null` |
 | `government` | resolver 返回 canonical no-government object `module+0x570CB50`；不得把 fallback 的内存内容发布成 stable key |
 | selected tokens | 合法空 vector 是 `[]`；不能回退到 preset 文件或 stock defaults |
 
@@ -243,6 +250,21 @@ RTTI `CTopLiegeLink` type descriptor `0x533EB30`、vtable `0x41D5568`，leaf `0x
 结束前按 full CharacterID 重新解析。`independent` 严格派生为 immediate `null`，而 top=self 保留，不能把 self 错写成
 一条实际 immediate-vassal relation。
 
+## 直属有地封臣枚举
+
+**[static-confirmed]** 该字段不新增 RVA。reader 在同一次 application-main paused observation 内读取
+`module+0x570C130` Character storage 的 `+0x20` slot span 与 `+0x2C` capacity，逐个只读检查：
+
+1. slot 对象的 `CCharacter+0x18` 是正 full-generation ID，且 low 24-bit index 必须回到当前 slot；
+2. `CCharacter+0x1C8 == nullptr`，排除死亡角色；
+3. native `0x2613480` 的 immediate-liege pointer 必须精确等于当前玩家对象；
+4. native `0x25F3350` 必须返回可由 LandedTitle storage generation-round-trip 的实际头衔，排除 landless 直属角色。
+
+结果按完整 CharacterID 数值升序排列并拒绝重复。整个 vector 随其余 root 字段做两次 observation equality 与前后 paused frame
+equality；任何 slot 读取、generation、resolver 或第二次采样失败都会把整帧降为 typed
+`direct_landed_vassals_unavailable`，不会发布残缺名单。该名单只回答直属有地封臣身份，不回答契约、税赋、兵力、派系或
+地图邻接。
+
 ## Effective government stable key 与全部 flags
 
 **[static-confirmed]** canonical resolver RVA `0x26165B0(CCharacter*)` 的分支是：
@@ -352,6 +374,10 @@ flowchart TD
     C --> TL["0x2613600 top-liege native loop"]
     TL --> TG["last valid; self when independent"]
 
+    C --> VS["enumerate Character storage slots"]
+    VS --> VF["alive + immediate liege is player<br/>+ primary title generation-valid"]
+    VF --> VL["sorted full CharacterID vector"]
+
     C --> G["0x26165B0 effective government"]
     G --> GK["+0x18 stable key"]
     G --> GF["+0x48 complete identifier span<br/>ID -> stable name"]
@@ -366,16 +392,18 @@ flowchart TD
     IN --> OUT
     IG --> OUT
     TG --> OUT
+    VL --> OUT
     GK --> OUT
     GF --> OUT
     SORT --> OUT
 
-    OUT --> LIVE["[live-confirmed] paused production query<br/>independent + vassal, cold restore"]
+    OUT --> LIVE["[live-confirmed] base paused production query<br/>independent + vassal, cold restore"]
+    VL -. "[live pending] one bounded paused read" .-> VLIVE["direct landed-vassal vector"]
     LIVE -. "[unknown] remaining matrix" .-> MATRIX["different rank/government<br/>landless/legal absent"]
     DLC["installed DLC descriptors"] -. "[unknown here] not loaded/entitled truth" .-> FEAT["separate loaded-feature capability"]
 
     classDef unknown stroke-dasharray: 6 4,fill:#fff4e5,stroke:#b36b00;
-    class MATRIX,DLC,FEAT unknown;
+    class MATRIX,DLC,FEAT,VLIVE unknown;
 ```
 
 ## production-live 互证（2026-08-26）
@@ -396,7 +424,8 @@ mailbox、source contract 与旧 mailbox/injection 回归 fresh CTest `29/29` GR
 还实证 `save-checkpoint` 会合法地令 `native:3/rev4/native3 -> native:4/rev5/native4`；runner 因而只把查询前后绑定保持
 同帧，并把 save 后置条件定义为同日期/episode/paused 且 revision 单调前进，绝不把合法保存 mutation 误判成 query 漂移。
 
-当前 query 的 production-live readiness 已成立；覆盖矩阵仍诚实保留缺口：两个场景都是 feudal duchy，尚未实机覆盖另一
+当前 query 的既有 root 字段 production-live readiness 已成立；两个 artifact 不包含 2026-09-13 新增的直属有地封臣 vector，
+因此该 vector 仍是 `static-ready / live=false`。覆盖矩阵还诚实保留缺口：两个场景都是 feudal duchy，尚未实机覆盖另一
 rank、另一 government、landless 以及 primary/capital/government 合法 absent。这些是 F0 场景矩阵缺口，不再是 query
 implementation 或 independent/vassal liege-chain 的缺口。
 
@@ -404,9 +433,12 @@ implementation 或 independent/vassal liege-chain 的缺口。
 
 1. [completed] exact-build application-main reader、serializer、typed bridge capability、Python/service/MCP 与独立/vassal
    double-query + cold-restore production acceptance。
-2. 补 live 矩阵：至少一个非-duchy rank、一个非-feudal government，以及 landless/legal-absent 根；六级 tier 与 unavailable
+2. 下一次本来就需要的 G2 paused 会话顺带读取直属有地封臣 vector，核对至少一个非空名单及 exact generation IDs；不单开
+   长跑，成功后才能把该字段升为 production-live primitive。
+3. G2-M1 下一项 native 施工是 realm neighbor identity/adjacency；在它和 turn bundle 最小 alerts 完成前，M1 不得标 complete。
+4. 补 live 矩阵：至少一个非-duchy rank、一个非-feudal government，以及 landless/legal-absent 根；六级 tier 与 unavailable
    路径已有 deterministic exact-build fixture，但 fixture 不能替代这些 live 值。
-3. 建立 loaded rule-definition registry 的只读映射，只有这样 planner 才能把当前 84 个 setting token 还原为
+5. 建立 loaded rule-definition registry 的只读映射，只有这样 planner 才能把当前 84 个 setting token 还原为
    `rule -> selected setting`；不得从排序位置猜 parent rule。
-4. loaded/enabled/entitled feature truth 保持独立施工项；不能用本 query 的 stock 文件、磁盘 DLC descriptor、government key
+6. loaded/enabled/entitled feature truth 保持独立施工项；不能用本 query 的 stock 文件、磁盘 DLC descriptor、government key
    或 selected rules 间接填充。

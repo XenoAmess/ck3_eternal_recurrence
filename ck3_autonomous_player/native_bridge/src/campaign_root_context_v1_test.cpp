@@ -47,6 +47,10 @@ struct Fixture {
   static constexpr std::int32_t kImmediateLiegeId = 0x03000002;
   static constexpr std::int32_t kTopLiegeId = 0x04000003;
   static constexpr std::int32_t kPrimaryTitleId = 0x05000001;
+  static constexpr std::int32_t kDirectVassalId = 0x06000004;
+  static constexpr std::int32_t kLandlessDirectVassalId = 0x07000005;
+  static constexpr std::int32_t kDeadDirectVassalId = 0x08000006;
+  static constexpr std::int32_t kDirectVassalTitleId = 0x09000002;
 
   alignas(void *) Blob<0xA8> game_state{};
   alignas(void *) Blob<0x20> jomini_state{};
@@ -56,15 +60,19 @@ struct Fixture {
   alignas(void *) Blob<0x08> player_entries{};
 
   alignas(void *) Blob<0x30> character_storage{};
-  alignas(void *) Blob<0x40> character_slots{};
+  alignas(void *) Blob<0x70> character_slots{};
   alignas(void *) Blob<0x1D0> player_character{};
-  alignas(void *) Blob<0x30> immediate_liege{};
-  alignas(void *) Blob<0x30> top_liege{};
+  alignas(void *) Blob<0x1D0> immediate_liege{};
+  alignas(void *) Blob<0x1D0> top_liege{};
+  alignas(void *) Blob<0x1D0> direct_vassal{};
+  alignas(void *) Blob<0x1D0> landless_direct_vassal{};
+  alignas(void *) Blob<0x1D0> dead_direct_vassal{};
   alignas(void *) Blob<0x30> character_fallback{};
 
   alignas(void *) Blob<0x30> title_storage{};
-  alignas(void *) Blob<0x20> title_slots{};
+  alignas(void *) Blob<0x30> title_slots{};
   alignas(void *) Blob<0x168> primary_title{};
+  alignas(void *) Blob<0x20> direct_vassal_title{};
   alignas(void *) Blob<0x64> title_template{};
   alignas(void *) Blob<0x30> title_fallback{};
 
@@ -140,26 +148,44 @@ struct Fixture {
 
     void *slots = Address(character_slots);
     Put(character_storage, 0x20, slots);
-    const std::int32_t character_capacity = 4;
+    const std::int32_t character_capacity = 7;
     Put(character_storage, 0x2C, character_capacity);
     void *player_character_pointer = Address(player_character);
     void *immediate_liege_pointer = Address(immediate_liege);
     void *top_liege_pointer = Address(top_liege);
+    void *direct_vassal_pointer = Address(direct_vassal);
+    void *landless_direct_vassal_pointer = Address(landless_direct_vassal);
+    void *dead_direct_vassal_pointer = Address(dead_direct_vassal);
     Put(character_slots, 1 * 0x10 + 0x08, player_character_pointer);
     Put(character_slots, 2 * 0x10 + 0x08, immediate_liege_pointer);
     Put(character_slots, 3 * 0x10 + 0x08, top_liege_pointer);
+    Put(character_slots, 4 * 0x10 + 0x08, direct_vassal_pointer);
+    Put(character_slots, 5 * 0x10 + 0x08, landless_direct_vassal_pointer);
+    Put(character_slots, 6 * 0x10 + 0x08, dead_direct_vassal_pointer);
     Put(player_character, 0x18, kPlayerCharacterId);
     Put(immediate_liege, 0x18, kImmediateLiegeId);
     Put(top_liege, 0x18, kTopLiegeId);
+    Put(direct_vassal, 0x18, kDirectVassalId);
+    Put(landless_direct_vassal, 0x18, kLandlessDirectVassalId);
+    Put(dead_direct_vassal, 0x18, kDeadDirectVassalId);
     void *no_death_marker = nullptr;
     Put(player_character, 0x1C8, no_death_marker);
+    Put(immediate_liege, 0x1C8, no_death_marker);
+    Put(top_liege, 0x1C8, no_death_marker);
+    Put(direct_vassal, 0x1C8, no_death_marker);
+    Put(landless_direct_vassal, 0x1C8, no_death_marker);
+    void *death_marker = Address(dead_direct_vassal);
+    Put(dead_direct_vassal, 0x1C8, death_marker);
 
     slots = Address(title_slots);
     Put(title_storage, 0x20, slots);
-    const std::int32_t title_capacity = 2;
+    const std::int32_t title_capacity = 3;
     Put(title_storage, 0x2C, title_capacity);
     Put(title_slots, 1 * 0x10 + 0x08, resolved_primary_title);
+    void *direct_vassal_title_pointer = Address(direct_vassal_title);
+    Put(title_slots, 2 * 0x10 + 0x08, direct_vassal_title_pointer);
     Put(primary_title, 0x10, kPrimaryTitleId);
+    Put(direct_vassal_title, 0x10, kDirectVassalTitleId);
     void *title_template_pointer = Address(title_template);
     Put(primary_title, 0x160, title_template_pointer);
     const std::int32_t hegemony_tier = 6;
@@ -223,9 +249,17 @@ struct Fixture {
 };
 
 void *__fastcall ResolvePrimaryTitle(void *character) noexcept {
-  return g_fixture != nullptr && character == Address(g_fixture->player_character)
-             ? g_fixture->resolved_primary_title
-             : nullptr;
+  if (g_fixture == nullptr) {
+    return nullptr;
+  }
+  if (character == Address(g_fixture->player_character)) {
+    return g_fixture->resolved_primary_title;
+  }
+  if (character == Address(g_fixture->direct_vassal) ||
+      character == Address(g_fixture->dead_direct_vassal)) {
+    return Address(g_fixture->direct_vassal_title);
+  }
+  return nullptr;
 }
 
 void *__fastcall ResolveCapital(void *character) noexcept {
@@ -235,9 +269,18 @@ void *__fastcall ResolveCapital(void *character) noexcept {
 }
 
 void *__fastcall ResolveImmediateLiege(void *character) noexcept {
-  return g_fixture != nullptr && character == Address(g_fixture->player_character)
-             ? g_fixture->resolved_immediate_liege
-             : nullptr;
+  if (g_fixture == nullptr) {
+    return nullptr;
+  }
+  if (character == Address(g_fixture->player_character)) {
+    return g_fixture->resolved_immediate_liege;
+  }
+  if (character == Address(g_fixture->direct_vassal) ||
+      character == Address(g_fixture->landless_direct_vassal) ||
+      character == Address(g_fixture->dead_direct_vassal)) {
+    return Address(g_fixture->player_character);
+  }
+  return nullptr;
 }
 
 void *__fastcall ResolveTopLiege(void *character) noexcept {
@@ -338,6 +381,7 @@ bool AllReadiness(const xar::game::CampaignRootReadinessV1 &value,
          value.primary_title_ready == expected &&
          value.capital_ready == expected &&
          value.lieges_ready == expected &&
+         value.direct_landed_vassals_ready == expected &&
          value.government_ready == expected &&
          value.selected_game_rule_tokens_ready == expected &&
          value.same_frame_ready == expected && value.ready == expected;
@@ -350,9 +394,10 @@ bool ClearedUnavailable(const xar::game::CampaignRootContextV1 &value,
          value.snapshot_revision == 41 && value.date_raw == 12'345 &&
          !value.local_player_id && !value.player_character_id &&
          !value.player_character_alive && !value.primary_title &&
-         !value.capital_province_id && !value.immediate_liege_character_id &&
-         !value.top_liege_character_id && !value.independent &&
-         !value.government && value.selected_game_rule_tokens.empty() &&
+          !value.capital_province_id && !value.immediate_liege_character_id &&
+          !value.top_liege_character_id && !value.independent &&
+          value.direct_landed_vassal_character_ids.empty() &&
+          !value.government && value.selected_game_rule_tokens.empty() &&
          value.native_selected_game_rule_token_count == 0 &&
          AllReadiness(value.readiness, false) &&
          value.unavailable_reason == reason;
@@ -379,6 +424,8 @@ bool TestAvailableAndSerializer() {
       result.immediate_liege_character_id != Fixture::kImmediateLiegeId ||
       result.top_liege_character_id != Fixture::kTopLiegeId ||
       result.independent != false || !result.government ||
+      result.direct_landed_vassal_character_ids !=
+          std::vector<std::int32_t>{Fixture::kDirectVassalId} ||
       result.government->key != "feudal_government" ||
       result.government->native_flag_count != 4 ||
       result.native_selected_game_rule_token_count != 4 ||
@@ -407,6 +454,7 @@ bool TestAvailableAndSerializer() {
       "\"tier_key\":\"hegemony\"},\"capital_province_id\":5,"
       "\"immediate_liege_character_id\":50331650,"
       "\"top_liege_character_id\":67108867,\"independent\":false,"
+      "\"direct_landed_vassal_character_ids\":[100663300],"
       "\"government\":{\"key\":\"feudal_government\",\"flags\":["
       "\"a_flag\",\"a_flag\",\"" +
       std::string("\xC3\xA9", 2) + "_flag\",\"" + NonAsciiFlag() +
@@ -416,7 +464,8 @@ bool TestAvailableAndSerializer() {
       "\"],\"native_selected_game_rule_token_count\":4,"
       "\"readiness\":{\"player_identity_ready\":true,"
       "\"primary_title_ready\":true,\"capital_ready\":true,"
-      "\"lieges_ready\":true,\"government_ready\":true,"
+      "\"lieges_ready\":true,\"direct_landed_vassals_ready\":true,"
+      "\"government_ready\":true,"
       "\"selected_game_rule_tokens_ready\":true,"
       "\"same_frame_ready\":true,\"ready\":true},"
       "\"unavailable_reason\":null,\"provenance\":{"

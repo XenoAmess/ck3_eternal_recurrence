@@ -56,6 +56,9 @@ def _context(
             player_character_id if available else None
         ),
         "independent": True if available else None,
+        "direct_landed_vassal_character_ids": (
+            [22_222, 33_333] if available else []
+        ),
         "government": (
             {
                 "key": "feudal_government",
@@ -74,6 +77,7 @@ def _context(
             "primary_title_ready": available,
             "capital_ready": available,
             "lieges_ready": available,
+            "direct_landed_vassals_ready": available,
             "government_ready": available,
             "selected_game_rule_tokens_ready": available,
             "same_frame_ready": available,

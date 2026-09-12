@@ -54,6 +54,7 @@ bool ReadinessAll(const game::CampaignRootReadinessV1 &value,
   return value.player_identity_ready == expected &&
          value.primary_title_ready == expected &&
          value.capital_ready == expected && value.lieges_ready == expected &&
+         value.direct_landed_vassals_ready == expected &&
          value.government_ready == expected &&
          value.selected_game_rule_tokens_ready == expected &&
          value.same_frame_ready == expected && value.ready == expected;
@@ -89,6 +90,7 @@ bool ValidUnavailableReason(std::string_view reason) noexcept {
       "primary_title_unavailable",
       "capital_unavailable",
       "lieges_unavailable",
+      "direct_landed_vassals_unavailable",
       "government_flags_unavailable",
       "selected_game_rule_tokens_unavailable",
       "state_changed",
@@ -114,6 +116,16 @@ bool SortedTokens(const std::vector<std::string> &values) noexcept {
          });
 }
 
+bool ValidCharacterIds(const std::vector<std::int32_t> &values,
+                       std::int32_t player_character_id) noexcept {
+  return std::is_sorted(values.begin(), values.end()) &&
+         std::adjacent_find(values.begin(), values.end()) == values.end() &&
+         std::all_of(values.begin(), values.end(),
+                     [player_character_id](std::int32_t value) {
+                       return value > 0 && value != player_character_id;
+                     });
+}
+
 bool ValidAvailable(const game::CampaignRootContextV1 &context) noexcept {
   if (context.snapshot_revision == 0 ||
       !context.local_player_id.has_value() || *context.local_player_id < 0 ||
@@ -128,6 +140,8 @@ bool ValidAvailable(const game::CampaignRootContextV1 &context) noexcept {
           context.native_selected_game_rule_token_count) !=
           context.selected_game_rule_tokens.size() ||
       !SortedTokens(context.selected_game_rule_tokens) ||
+      !ValidCharacterIds(context.direct_landed_vassal_character_ids,
+                         *context.player_character_id) ||
       !ReadinessAll(context.readiness, true) ||
       !context.unavailable_reason.empty()) {
     return false;
@@ -178,6 +192,7 @@ bool ValidUnavailable(const game::CampaignRootContextV1 &context) noexcept {
          !context.immediate_liege_character_id.has_value() &&
          !context.top_liege_character_id.has_value() &&
          !context.independent.has_value() && !context.government.has_value() &&
+         context.direct_landed_vassal_character_ids.empty() &&
          context.selected_game_rule_tokens.empty() &&
          context.native_selected_game_rule_token_count == 0 &&
          ReadinessAll(context.readiness, false) &&
@@ -192,6 +207,21 @@ bool AppendStringArray(std::string &output,
       output.push_back(',');
     }
     AppendJsonString(output, values[index]);
+  }
+  output.push_back(']');
+  return true;
+}
+
+bool AppendIntegerArray(std::string &output,
+                        const std::vector<std::int32_t> &values) {
+  output.push_back('[');
+  for (std::size_t index = 0; index < values.size(); ++index) {
+    if (index != 0) {
+      output.push_back(',');
+    }
+    if (!AppendNumber(output, values[index])) {
+      return false;
+    }
   }
   output.push_back(']');
   return true;
@@ -225,6 +255,8 @@ void AppendReadiness(std::string &output,
   output += value.capital_ready ? "true" : "false";
   output += ",\"lieges_ready\":";
   output += value.lieges_ready ? "true" : "false";
+  output += ",\"direct_landed_vassals_ready\":";
+  output += value.direct_landed_vassals_ready ? "true" : "false";
   output += ",\"government_ready\":";
   output += value.government_ready ? "true" : "false";
   output += ",\"selected_game_rule_tokens_ready\":";
@@ -303,6 +335,11 @@ std::string SerializeCampaignRootContextV1(
   AppendOptionalInt32(output, context.top_liege_character_id);
   output += ",\"independent\":";
   AppendOptionalBool(output, context.independent);
+  output += ",\"direct_landed_vassal_character_ids\":";
+  if (!AppendIntegerArray(output,
+                          context.direct_landed_vassal_character_ids)) {
+    return {};
+  }
   output += ",\"government\":";
   if (!context.government.has_value()) {
     output += "null";

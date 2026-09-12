@@ -32,6 +32,7 @@ _FIELDS: Final = {
     "immediate_liege_character_id",
     "top_liege_character_id",
     "independent",
+    "direct_landed_vassal_character_ids",
     "government",
     "selected_game_rule_tokens",
     "native_selected_game_rule_token_count",
@@ -46,6 +47,7 @@ _READINESS_KEYS: Final = (
     "primary_title_ready",
     "capital_ready",
     "lieges_ready",
+    "direct_landed_vassals_ready",
     "government_ready",
     "selected_game_rule_tokens_ready",
     "same_frame_ready",
@@ -84,6 +86,7 @@ _UNAVAILABLE_REASONS: Final = {
     "primary_title_unavailable",
     "capital_unavailable",
     "lieges_unavailable",
+    "direct_landed_vassals_unavailable",
     "government_flags_unavailable",
     "selected_game_rule_tokens_unavailable",
     "state_changed",
@@ -146,6 +149,21 @@ def _optional_positive_int32(value: object, name: str) -> int | None:
     if value is None:
         return None
     return _positive_int32(value, name)
+
+
+def _sorted_unique_positive_int32_vector(
+    value: object,
+    name: str,
+) -> list[int]:
+    if not isinstance(value, list):
+        raise ValueError(f"{name} must be a list")
+    result = [
+        _positive_int32(item, f"{name}[{index}]")
+        for index, item in enumerate(value)
+    ]
+    if result != sorted(set(result)):
+        raise ValueError(f"{name} must be sorted and duplicate-free")
+    return result
 
 
 def _bool(value: object, name: str) -> bool:
@@ -280,8 +298,15 @@ def normalize_campaign_root_context_v1(
             raise ValueError("unavailable campaign root invented root state")
         if tokens or token_count != 0:
             raise ValueError("unavailable campaign root invented rule tokens")
+        direct_vassals = _sorted_unique_positive_int32_vector(
+            frame.get("direct_landed_vassal_character_ids"),
+            "direct_landed_vassal_character_ids",
+        )
+        if direct_vassals:
+            raise ValueError("unavailable campaign root invented direct vassals")
         return {
             **frame,
+            "direct_landed_vassal_character_ids": direct_vassals,
             "selected_game_rule_tokens": tokens,
             "native_selected_game_rule_token_count": token_count,
             "readiness": readiness,
@@ -338,6 +363,12 @@ def normalize_campaign_root_context_v1(
         frame.get("top_liege_character_id"), "top_liege_character_id"
     )
     independent = _bool(frame.get("independent"), "independent")
+    direct_vassals = _sorted_unique_positive_int32_vector(
+        frame.get("direct_landed_vassal_character_ids"),
+        "direct_landed_vassal_character_ids",
+    )
+    if player_character_id in direct_vassals:
+        raise ValueError("player character cannot be its own direct vassal")
     if independent is not (immediate_liege_id is None):
         raise ValueError("independent and immediate liege disagree")
     if immediate_liege_id == player_character_id:
@@ -384,6 +415,7 @@ def normalize_campaign_root_context_v1(
         "immediate_liege_character_id": immediate_liege_id,
         "top_liege_character_id": top_liege_id,
         "independent": independent,
+        "direct_landed_vassal_character_ids": direct_vassals,
         "government": government,
         "selected_game_rule_tokens": tokens,
         "native_selected_game_rule_token_count": token_count,

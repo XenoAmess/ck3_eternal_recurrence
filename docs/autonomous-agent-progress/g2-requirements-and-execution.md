@@ -17,7 +17,7 @@ G2 现采用固定的 **8 个可见 OODA 里程碑**，当前为 **0/8 complete*
 | 里程碑 | 优先级 | 当前状态 | 可见验收结果 |
 |---|---:|---|---|
 | G2-M0 GEN-034 三路战争退出 | P0 | in progress | 同帧比较继续、白和、投降；只提交一次；验证战后并冷恢复 |
-| G2-M1 实体发现与 core turn bundle | P1-A | not started | 一次聚合查询提供人物、头衔、首都、领主/封臣、邻居与最低 ruler/realm/succession alerts |
+| G2-M1 实体发现与 core turn bundle | P1-A | in progress | 一次聚合查询提供人物、头衔、首都、领主/封臣、邻居与最低 ruler/realm/succession alerts |
 | G2-M2 自然事件语义闭环 | P1-B | in progress | 三个自然事件按目标评分并验证结果，至少两个为多选 |
 | G2-M3 继承与 realm survival | P1-C | not started | 死前预测逐头衔分配，死后对账并由真实继承人继续 |
 | G2-M4 和平治理纵向切片 | P1-D | not started | 两年内完成并验证建设、内阁调整和一次封臣/派系处理 |
@@ -67,6 +67,12 @@ GEN-034 关闭后立即转向公共 P1，不再继续横向扩展单一 CB 的 A
 2. `event-context-v2` 与 registry-driven natural event policy；
 3. `succession-state-v1`、health/stress/legitimacy 与 vassal/faction alert 组成的 realm survival；
 4. 建设、内阁与派系处理组成的和平治理 OODA。
+
+G2-M1 的首个 native 子包已达到 `static-ready / live=false`：既有 `campaign-root-context-v1` 现在在同一 paused
+application-main 双采样中枚举 alive、landed 且 immediate liege 为玩家的完整 generation CharacterID，并通过现有 MCP
+镜像 `direct_landed_vassal_character_ids`。该结果不借用离线 save topology；Release DLL、reader/serializer/source-contract
+与 Python normal/optimized 聚焦测试均 GREEN。邻国 identity/adjacency、core turn bundle 与最低 alerts 仍未实现，因此 M1
+仍为进行中，固定 G2 完成数仍是 `0/8`。下一次允许实机时只顺带做一次非空直属封臣 paused read，不为单字段安排长跑。
 
 ## G2-M2 离线 direct-projection consumer
 

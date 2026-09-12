@@ -57,9 +57,9 @@
   `grant_vassal_interaction` 的接收者、战争、tier、容量与特殊制度前置，以及
   `create_title_and_vassal_change → change_liege → resolve_title_and_vassal_change` 原子结算树；天朝 361
   的 CL 转岗只消费 Career/HC 真实 vacancy/HC reserve 并回读 liege/title/holder，paused MCP 后置查询仍待补。
-- [static-confirmed + independent/vassal production-live] [campaign-root-context.md](campaign-root-context.md) 冻结 campaign setup 后 local player、主头衔/完整六级
+- [static-confirmed + independent/vassal production-live; direct-vassal extension static-ready] [campaign-root-context.md](campaign-root-context.md) 冻结 campaign setup 后 local player、主头衔/完整六级
   tier、当前首都、immediate/top liege、effective government stable key/全部 flags 与完整 selected game-rule setting-token
-  vector 的 exact-build 状态解析树；该域没有原生 AI 决策树。typed bridge/service/MCP 已在两个不同角色的 independent/vassal
+  vector 与直属有地封臣 full-generation ID 的 exact-build 状态解析树；该域没有原生 AI 决策树。typed bridge/service/MCP 已在两个不同角色的 independent/vassal
   checkpoint 上完成双查询与冷恢复，artifact SHA 为 `DA5EB7F0...02CDDC`、`677C4FF9...B279F9`；非-duchy、非-feudal 与
   landless/legal-absent live 矩阵仍待补。
 - [static-confirmed + production-live] [loaded-feature-manifest.md](loaded-feature-manifest.md) 区分当前进程 effective gameplay feature
