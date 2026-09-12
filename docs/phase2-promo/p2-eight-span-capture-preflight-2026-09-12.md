@@ -95,3 +95,36 @@ The minimal fix removes the descriptive infix and adds a focused assertion that
 the emitted pipe matches the runner's public namespace. The plan tests pass
 `2/2` in normal and optimized Python. No CK3 instance, recorder, capture
 directory, media file, or game input was created.
+
+## R509 direct-continue loader RED
+
+The corrected wrapper launched current round R509/PID `184256` as the only CK3
+instance, using CK3 `1.19.0.6`, the frozen EXE and bridge bytes, and
+`-continuelastsave`. The bridge connected, the loader completed all `303`
+database callbacks through `CJominiInGameMusicDatabase`, and no loader fatal
+signature was classified. It then remained without Frontend, Load Save, In
+Game or native readiness for `105.019` seconds and stopped at the fixed
+`299.762`-second loader bound. No recorder, gameplay input or raw span started;
+raw footage remains `0/8`.
+
+This is a harness/configuration RED rather than a product verdict. The plan
+accepted omission of `--phase2-frontend-first-load-save-name` even though the
+same-day R507/R508 source run had already proved the required working sequence:
+reach an authenticated Frontend, terminate that warm-up process, then launch
+the product save with `-loadsave=autosave`. The capture wrapper already
+supported that argument; the missing admission check allowed the unproven
+direct-continue path to consume R509.
+
+The minimal correction makes a frontend-first save name mandatory before a
+capture plan can become GREEN. A fresh plan must bind `autosave`. Its first
+actual process will be new round R510 for Frontend warm-up; after R510 is
+terminated, the product-save process will be new round R511. Any later
+checkpoint restores continue incrementing from the PIDs actually launched.
+There is no DLL, game-file, load-order or product change.
+
+The retained RED report is
+`Z:\ck3_mod_rewrite\_runtime\p2-capture-r509-r515-b8f44fb-20260912\capture\report.json`,
+SHA-256 `9BF4EBE74FFF076A40F1D1E5A67121A39EE72D147181034C157DB62538567845`.
+Managed cleanup is GREEN at SHA-256
+`1566C40EA86A2782808C7AB2919E23919602E9A40571723D42409C241493E23F`;
+current round R509 and old round R508 are terminated, with CK3 count `0`.

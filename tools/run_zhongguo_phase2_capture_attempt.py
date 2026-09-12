@@ -449,6 +449,8 @@ def prepare_plan(
         command.extend(
             ["--phase2-frontend-first-load-save-name", frontend_first_load_save_name]
         )
+    else:
+        blockers.append("frontend_first_load_save_name_required")
     status = "ready-to-run" if not blockers else "waiting-for-bound-inputs"
     result = "GREEN" if not blockers else "RED"
     manifest: dict[str, object] = {
@@ -503,6 +505,8 @@ def prepare_plan(
             "all eight default handlers available",
         ],
         "managed_session_handoff": {
+            "frontend_first_required": True,
+            "frontend_first_load_save_name": frontend_first_load_save_name,
             "seed_generation_session_reused": False,
             "reason": (
                 "run_zg361_phase2_seed_capture.py always stops its supervisor "

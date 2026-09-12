@@ -142,6 +142,31 @@ class CaptureAttemptPlanTests(unittest.TestCase):
             media = _write(root / "media.json", _media())
 
             media_sha = hashlib.sha256(media.read_bytes()).hexdigest()
+            missing_frontend, _ = prepare_plan(
+                attempt_dir=root / "attempt-missing-frontend",
+                source_root=source,
+                source_git_commit="a" * 40,
+                python=python,
+                observer_artifact=observer,
+                seed_contract=seed,
+                media_preflight_report=media,
+                expected_media_preflight_sha256=media_sha,
+                bridge_dll=bridge,
+                bridge_injector=injector,
+                source_checkpoint_registry=registry,
+                product_source=product,
+                product_projection="phase2-final-product",
+                product_projection_manifest=projection,
+                now=NOW,
+            )
+            self.assertEqual(missing_frontend["result"], "RED")
+            self.assertEqual(
+                missing_frontend["reason_code"],
+                "frontend_first_load_save_name_required",
+            )
+            self.assertFalse(
+                (root / "attempt-missing-frontend" / "capture").exists()
+            )
             manifest, _ = prepare_plan(
                 attempt_dir=root / "attempt",
                 source_root=source,
@@ -197,6 +222,15 @@ class CaptureAttemptPlanTests(unittest.TestCase):
                 manifest["managed_session_handoff"][
                     "seed_generation_session_reused"
                 ]
+            )
+            self.assertTrue(
+                manifest["managed_session_handoff"]["frontend_first_required"]
+            )
+            self.assertEqual(
+                manifest["managed_session_handoff"][
+                    "frontend_first_load_save_name"
+                ],
+                "phase2_seed",
             )
             self.assertFalse((root / "attempt" / "capture").exists())
             command = manifest["single_capture_command"]["argv"]
