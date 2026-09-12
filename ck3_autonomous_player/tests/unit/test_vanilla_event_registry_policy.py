@@ -78,6 +78,35 @@ def _recommend(context: dict[str, object]) -> dict[str, object]:
     )
 
 
+def _natural_disaster_context(native_indices: tuple[int, ...]) -> dict[str, object]:
+    scope_types = {
+        "situation": "situation",
+        "situation_sub_region": "situation_sub_region",
+        "epicenter_county": "landed_title",
+        "river_region": "geographical_region",
+    }
+    return {
+        "schema": "current-event-window-context-v1",
+        "schema_version": 1,
+        "status": "available",
+        "window_match_count": 1,
+        "event_definition_key": "natural_disaster.7031",
+        "root_scope": _scope("character", character_id=PLAYER),
+        "saved_scopes": [
+            {
+                "name": name,
+                "name_identifier": index + 10,
+                "scope": _scope(type_key),
+            }
+            for index, (name, type_key) in enumerate(scope_types.items())
+        ],
+        "options": [
+            _option(rendered, native)
+            for rendered, native in enumerate(native_indices)
+        ],
+    }
+
+
 class VanillaEventRegistryPolicyTests(unittest.TestCase):
     def test_exact_tgp_travel_projection_selects_authored_option_two(
         self,
@@ -90,6 +119,69 @@ class VanillaEventRegistryPolicyTests(unittest.TestCase):
         self.assertEqual(result["selected_rendered_index"], 1)
         self.assertEqual(result["failed_checks"], [])
         self.assertFalse(result["semantic_optimal"])
+        self.assertEqual(result["option_projection_source"], "base_contract")
+
+    def test_exact_natural_disaster_option_variants_select_native_two(
+        self,
+    ) -> None:
+        for native_indices, expected_variant in (
+            ((2,), 0),
+            ((0, 2), 1),
+            ((0, 1, 2), 2),
+        ):
+            with self.subTest(native_indices=native_indices):
+                result = recommend_registered_vanilla_event_option_v1(
+                    _natural_disaster_context(native_indices),
+                    played_character_id=PLAYER,
+                    snapshot_option_count=3,
+                )
+
+                self.assertEqual(result["status"], "recommended")
+                self.assertEqual(result["selected_option_number"], 3)
+                self.assertEqual(result["selected_native_option_index"], 2)
+                self.assertEqual(
+                    result["matched_option_variant_index"], expected_variant
+                )
+                self.assertEqual(
+                    result["option_projection_source"],
+                    "registered_option_variant",
+                )
+
+    def test_natural_disaster_unregistered_projection_stays_blocked(self) -> None:
+        result = recommend_registered_vanilla_event_option_v1(
+            _natural_disaster_context((0, 1)),
+            played_character_id=PLAYER,
+            snapshot_option_count=3,
+        )
+
+        self.assertEqual(result["status"], "blocked")
+        self.assertEqual(
+            result["unavailable_reason"],
+            "registered_option_variant_projection_drift",
+        )
+        self.assertEqual(result["failed_checks"], ["option_variant_projection"])
+
+    def test_other_variant_contracts_still_require_explicit_consumer_review(
+        self,
+    ) -> None:
+        context = _context()
+        context["event_definition_key"] = "epidemic_events.1100"
+
+        result = recommend_registered_vanilla_event_option_v1(
+            context,
+            played_character_id=PLAYER,
+            snapshot_option_count=2,
+        )
+
+        self.assertEqual(result["status"], "blocked")
+        self.assertEqual(
+            result["unavailable_reason"],
+            "registered_contract_requires_extended_consumer",
+        )
+        self.assertEqual(
+            result["failed_checks"],
+            ["direct_projection_support:option_variants"],
+        )
 
     def test_unknown_event_leaves_existing_planner_fallback_available(
         self,

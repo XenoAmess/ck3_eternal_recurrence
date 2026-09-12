@@ -1122,3 +1122,12 @@ strategic-power primitive；余下入口只有 policy-level campaign dominance�
   binds exact `.0030` option 2 to the same-character before/after values; stress increase, identity drift or a missing ready observation is
   RED, while unchanged stress cannot count as material evidence. Focused normal/optimized tests are `8/8` GREEN. G2-M2 and global G2 remain
   `in_progress` and `0/8` respectively pending the bounded live outcome and the other two event loops.
+
+## 2026-09-13: G2-M2 first option-variant consumer static-ready
+
+- R374 froze `natural_disaster.7031` with rendered native indices `[0,2]`; exact source records `[2]`, `[0,2]` and `[0,1,2]` as the only
+  supported projections, all retaining the source-reviewed terminal warning route at native 2.
+- The registry consumer now resolves only this event's current projection before applying the existing scope, shown/enabled and root checks.
+  Unregistered shapes remain blocked, and every other variant-bearing event still requires an explicit reviewed consumer package.
+- Focused policy tests pass normal/optimized `8/8`. This is `static-ready / live=false`; it uses frozen evidence and launches no CK3 process.
+  G2-M2 remains in progress and global G2 remains `0/8` until three natural event action/outcome loops are production-live.

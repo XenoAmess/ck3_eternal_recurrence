@@ -56,10 +56,10 @@
       "name": "natural event semantic loop",
       "priority": "P1-B",
       "status": "in_progress",
-      "latest_evidence": ["current-window transport fixture-live", "shared vanilla event registry", "direct-projection registry planner consumer static-ready", "played-character stress snapshot field static-ready", "same-character event stress postcondition comparator static-ready"],
+      "latest_evidence": ["current-window transport fixture-live", "shared vanilla event registry", "direct-projection registry planner consumer static-ready", "played-character stress snapshot field static-ready", "same-character event stress postcondition comparator static-ready", "natural_disaster.7031 option-variant consumer static-ready"],
       "planner_consumer": "event option utility policy",
       "visible_outcome": "resolve three natural events, including two multi-option events, and verify material state deltas",
-      "open_blocker": "stress field and comparator still need one bounded paused live proof; variant-aware registry consumption, event-context-v2 structured effects and three production event outcome loops remain incomplete"
+      "open_blocker": "stress field and comparator still need one bounded paused live proof; additional evidence-backed variants, event-context-v2 structured effects and three production event outcome loops remain incomplete"
     },
     {
       "id": "G2-M3",
@@ -144,5 +144,5 @@
     ]
   },
   "religion_boundary": "deferred except the minimum native result needed by holy-war execution and marriage legality or acceptance",
-  "updated_at": "2026-09-13T00:16:07+08:00"
+  "updated_at": "2026-09-13T00:35:00+08:00"
 }

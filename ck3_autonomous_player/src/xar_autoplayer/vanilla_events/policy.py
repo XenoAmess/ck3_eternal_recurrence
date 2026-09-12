@@ -94,6 +94,7 @@ def _response(
     option_number: int | None = None,
     native_index: int | None = None,
     rendered_index: int | None = None,
+    option_variant_index: int | None = None,
 ) -> dict[str, object]:
     checked = dict(checks or {})
     return {
@@ -114,6 +115,14 @@ def _response(
         "selected_option_number": option_number,
         "selected_native_option_index": native_index,
         "selected_rendered_index": rendered_index,
+        "matched_option_variant_index": option_variant_index,
+        "option_projection_source": (
+            "registered_option_variant"
+            if option_variant_index is not None
+            else "base_contract"
+            if status == "recommended"
+            else None
+        ),
         "checks": checked,
         "failed_checks": sorted(
             name for name, passed in checked.items() if not passed
@@ -254,6 +263,75 @@ def _option_projection_checks(
     return checks, selected
 
 
+_OPTION_VARIANT_FIELDS: Final = frozenset(
+    {
+        "disabled_native_option_indices",
+        "native_option_indices",
+        "option_count",
+        "selected_native_option_index",
+        "selected_option_number",
+        "snapshot_option_count",
+        "snapshot_option_counts",
+    }
+)
+_DIRECT_OPTION_VARIANT_EVENT_KEYS: Final = frozenset({"natural_disaster.7031"})
+
+
+def _option_projection_signature(contract: Mapping[str, object]) -> tuple[object, ...]:
+    snapshot_counts = _sequence(contract.get("snapshot_option_counts"))
+    if snapshot_counts is None:
+        snapshot_counts = (contract.get("snapshot_option_count"),)
+    return (
+        contract.get("option_count"),
+        tuple(_sequence(contract.get("native_option_indices")) or ()),
+        tuple(snapshot_counts),
+        tuple(_sequence(contract.get("disabled_native_option_indices")) or ()),
+        contract.get("selected_option_number"),
+        contract.get("selected_native_option_index"),
+    )
+
+
+def _resolve_option_variant_contract(
+    context: Mapping[str, object],
+    contract: Mapping[str, object],
+    snapshot_option_count: int,
+) -> tuple[dict[str, object] | None, int | None, str | None]:
+    raw_variants = _sequence(contract.get("option_variants"))
+    if raw_variants is None:
+        return dict(contract), None, None
+
+    candidates: list[tuple[int | None, dict[str, object]]] = []
+    for index, value in enumerate(raw_variants):
+        if not isinstance(value, Mapping) or not set(value).issubset(
+            _OPTION_VARIANT_FIELDS
+        ):
+            return None, None, "registered_option_variant_contract_unsupported"
+        effective = dict(contract)
+        effective.pop("option_variants", None)
+        effective.update(value)
+        candidates.append((index, effective))
+    base = dict(contract)
+    base.pop("option_variants", None)
+    candidates.append((None, base))
+
+    matches: list[tuple[int | None, dict[str, object]]] = []
+    for index, effective in candidates:
+        checks, selected = _option_projection_checks(
+            context, effective, snapshot_option_count
+        )
+        if selected is not None and all(checks.values()):
+            matches.append((index, effective))
+    if not matches:
+        return None, None, "registered_option_variant_projection_drift"
+
+    signatures = {
+        _option_projection_signature(effective) for _index, effective in matches
+    }
+    if len(signatures) != 1:
+        return None, None, "registered_option_variant_projection_ambiguous"
+    return matches[0][1], matches[0][0], None
+
+
 def recommend_registered_vanilla_event_option_v1(
     event_context: Mapping[str, object],
     *,
@@ -290,6 +368,24 @@ def recommend_registered_vanilla_event_option_v1(
     contract = materialize_vanilla_timeline_contract(
         raw_contract, character_id
     )
+    option_variant_index = None
+    if (
+        event_key in _DIRECT_OPTION_VARIANT_EVENT_KEYS
+        and _active(contract.get("option_variants"))
+    ):
+        resolved, option_variant_index, variant_error = (
+            _resolve_option_variant_contract(
+                event_context, contract, option_count
+            )
+        )
+        if resolved is None:
+            return _response(
+                status="blocked",
+                event_key=event_key,
+                reason=variant_error,
+                checks={"option_variant_projection": False},
+            )
+        contract = resolved
     unsupported = sorted(
         field
         for field in _UNSUPPORTED_FIELDS
@@ -344,6 +440,7 @@ def recommend_registered_vanilla_event_option_v1(
         option_number=selected_number,
         native_index=selected_native,
         rendered_index=selected_rendered,
+        option_variant_index=option_variant_index,
     )
 
 

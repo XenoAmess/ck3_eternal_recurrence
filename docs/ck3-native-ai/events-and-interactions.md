@@ -281,6 +281,11 @@ authored 2/native 1 的终止路线，而 fallback 会优先 native 0，并进�
 这一层首先解除“知识已经存在但策略不用”的真实阻点。G2-M2 仍需 event-context-v2 的结构化效果、目标评分和选择后的物质状态
 delta，且必须以三个自然事件（至少两个多选）实机闭环后才能完成。
 
+2026-09-13 的第一个受限 variant consumer 只准入 `natural_disaster.7031`。exact-build source 与 R374 frame 共同冻结三个合法
+native option 序列：`[2]`、`[0,2]`、`[0,1,2]`；三者的 source-reviewed bounded continuation 都是 native 2。resolver 要求
+当前 rendered/native 顺序、snapshot count、shown/enabled 状态与其中一个 variant 全部一致，并在多个匹配投影语义不一致时
+阻断。其他 event key 的 `option_variants` 仍留在 extended-consumer 门后，不因这个实现自动放行。
+
 [implementation-confirmed / static-ready / live=false] `native_driver.py` 已把直接 event step 从通用 ACK 路径提升为生命周期动作：
 提交前要求 fresh map-ready、paused、正的 full int32 event instance 与 option range；提交后旧 full instance 必须消失或变为新
 instance，且 bridge PID、connection generation、episode binding 不变、结束帧仍 paused。结果发布 old/new ID、native index 与

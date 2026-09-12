@@ -92,6 +92,12 @@ snapshot，service 输出 `verified_change`、`verified_no_change`、`failed` �
 production proof，不为单事件扩成长跑矩阵。详见
 [`played-character-stress.md`](../ck3-native-ai/played-character-stress.md)。
 
+首个 option-variant consumer 也已按真实 R374 阻点收口。`natural_disaster.7031` 的 exact source 和冻结 live frame 证明 native 2
+在单选 `[2]`、实际 R374 的 `[0,2]` 与完整 `[0,1,2]` 三种投影中都存在，且只显示 warning tooltip。policy 现在先把当前
+option projection 精确匹配到登记 variant，再进入既有 scope/enable 检查；`[0,1]` 等未登记投影继续 blocked。准入目前只限该
+event key，其他带 `option_variants` 的合同仍返回 `registered_contract_requires_extended_consumer`，避免一次静态改动暗中扩大事件面。
+聚焦测试 normal/optimized 各 `8/8` GREEN；状态为 `static-ready / live=false`。
+
 战争 controller 的既有成熟执行器继续保留；assigned reinforcement、terminal 长尾与更多 CB 改为真实 encounter 驱动。
 宗教域继续暂缓，只允许战争中的圣战和婚姻合法性/接受度所需的最小原生最终判定，不借此扩展通用宗教模型。
 
