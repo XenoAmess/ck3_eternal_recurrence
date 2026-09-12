@@ -253,8 +253,9 @@ Open Kaishek 已成功由 GraalVM Java 启动并在 0.508 秒内返回报告，�
 - 新缓存保留 canonical descriptor 原字节、没有追加 `remote_file_id`。为覆盖 Steam 的两种合法缓存形态，校验器现接受“canonical
   原字节精确一致”或“唯一正确 ID 的末行注入”，仍拒绝错误／重复 ID；7/7 builder 单测 GREEN，修复提交为
   `b85bd2226692467ccc35c48715bc9766b642d294`。
-- Steam 于 02:29:29 Asia/Shanghai 由用户发起正常下线；`WantsOfflineMode=1`、公开档案为 offline，客户端仍运行且没有退出或登出，
-  CK3 进程数为 0。
+- Steam 于 02:29:29 Asia/Shanghai 由用户发起正常下线；`WantsOfflineMode=1`、本机 Steamworks `BLoggedOn=false`、连接日志未重连，
+  客户端仍运行且没有退出或登出，CK3 进程数为 0。账号级公开 presence 稍后显示 online 但没有 `inGameInfo`；它可能来自其他非游戏会话，
+  不作为本机模式证明，也没有构成“其他机器正在游玩”的信号。
 
 永久发布记录见 [3.0.0 changelog](release-changelogs/auto-upgrade-buildings/3.0.0.md)；本机完整证据根为
 `D:\workspace\auto-upgrade-buildings-v3.0.0-publication\steam`。
