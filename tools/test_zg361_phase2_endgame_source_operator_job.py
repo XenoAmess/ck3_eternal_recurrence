@@ -10,6 +10,24 @@ import zg361_phase2_endgame_source_operator_job as operator
 
 
 class EndgameSourceOperatorTests(unittest.TestCase):
+    def test_retry_accepts_only_retained_pre_save_failure(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            job = operator.EndgameSourceOperatorJob(root / "activation.json")
+            job.bound = {"artifact_directory": root}
+            job.state = "AF5_RED_PARKED"
+            job.stage = "bounded_endgame_source_action"
+            job.service = mock.Mock()
+            job.binding = {"bridge_pid": 123, "connection_generation": 1}
+            job._run_retry = mock.Mock()
+            with mock.patch.object(operator.base, "ck3_pids", return_value=[]):
+                response = job.retry()
+                assert job.worker is not None
+                job.worker.join(timeout=1.0)
+            self.assertTrue(response["accepted"])
+            self.assertEqual(response["control"], "retry-source")
+            job._run_retry.assert_called_once_with()
+
     def test_validate_activation_binds_prefix_and_focused_route(self):
         with tempfile.TemporaryDirectory() as temporary:
             root = Path(temporary)

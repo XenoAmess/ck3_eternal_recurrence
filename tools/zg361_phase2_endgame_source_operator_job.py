@@ -16,7 +16,7 @@ from typing import Mapping, Sequence
 import zg361_phase2_af5_operator_job as base
 
 
-CONTROLS = ["status", "run-source", "cleanup"]
+CONTROLS = ["status", "run-source", "retry-source", "cleanup"]
 JOB_ROLE = "phase2-endgame-source"
 EXPECTED_OWNER_CHARACTER_ID = 32904
 
@@ -130,6 +130,153 @@ class EndgameSourceOperatorJob(base.Af5OperatorJob):
         response["control"] = "run-source"
         return response
 
+    def retry(self) -> dict[str, object]:
+        """Reload only the Python capture policy on the retained live pipe."""
+
+        with self.lock:
+            artifacts = (
+                Path(str(self.bound["artifact_directory"]))
+                if self.bound is not None
+                else None
+            )
+            receipt_exists = bool(
+                artifacts is not None
+                and (artifacts / "source" / "endgame-source-receipt.json").exists()
+            )
+            if (
+                self.state != "AF5_RED_PARKED"
+                or self.stage != "bounded_endgame_source_action"
+                or self.service is None
+                or self.binding is None
+                or receipt_exists
+                or (self.worker is not None and self.worker.is_alive())
+            ):
+                return {
+                    **self.status(),
+                    "control": "retry-source",
+                    "accepted": False,
+                    "reason": (
+                        "no completed pre-save source failure on a retained session"
+                    ),
+                }
+            self.state = "RUNNING_AF5"
+            self.worker = base.threading.Thread(
+                target=self._run_retry,
+                name="endgame-source-hot-retry",
+                daemon=False,
+            )
+            self.worker.start()
+            return {
+                **self.status(),
+                "control": "retry-source",
+                "accepted": True,
+            }
+
+    def _run_retry(self) -> None:
+        try:
+            original = base.mapping(self.bound, "original activation")
+            artifacts = Path(str(original["artifact_directory"]))
+            for name in (
+                "af5-red.json",
+                "endgame-source-red.json",
+                "source/endgame-source-action.json",
+                "source/endgame-source-production-entry.json",
+            ):
+                source = artifacts / name
+                if source.is_file():
+                    destination = source.with_name(
+                        f"{source.stem}-attempt-{self.attempt:02d}{source.suffix}"
+                    )
+                    if destination.exists():
+                        raise base.Af5JobError(
+                            f"source retry archive already exists: {destination}"
+                        )
+                    shutil.copy2(source, destination)
+            repaired = validate_activation(
+                self.activation_path.with_name("retry-activation.json"),
+                require_empty_slot=False,
+            )
+            old_hashes = base.mapping(
+                original["expected_hashes"], "original hashes"
+            )
+            new_hashes = base.mapping(
+                repaired["expected_hashes"], "repaired hashes"
+            )
+            if any(
+                old_hashes[key] != new_hashes[key]
+                for key in base.HASH_FIELDS
+            ):
+                raise base.Af5JobError("source hot retry changed loaded game inputs")
+            for key in (
+                "game_directory",
+                "product_root",
+                "product_projection_manifest",
+                "checkpoint",
+                "bridge_dll",
+                "bridge_injector",
+                "state_directory",
+                "artifact_directory",
+                "bridge_pipe",
+                "warmup_bridge_pipe",
+                "rounds",
+            ):
+                if original[key] != repaired[key]:
+                    raise base.Af5JobError(
+                        f"source hot retry changed loaded session input: {key}"
+                    )
+            before = self._retained_binding()
+            self._reload_source_modules(
+                Path(str(repaired["repository_root"]))
+            )
+            after = self._retained_binding()
+            if before != after:
+                raise base.Af5JobError(
+                    "paused source session changed while reloading Python"
+                )
+            self.attempt += 1
+            base.write_object(
+                artifacts / f"endgame-source-retry-attempt-{self.attempt:02d}.json",
+                {
+                    "schema_version": 1,
+                    "result": "GREEN",
+                    "same_process_retained": True,
+                    "before": before,
+                    "after": after,
+                    "original_code_commit": old_hashes["code_commit"],
+                    "repaired_code_commit": new_hashes["code_commit"],
+                    "activation": repaired["activation_record"],
+                },
+            )
+            self.bound = repaired
+            self.failure_reason = None
+            self.product_result = "PENDING"
+            self._execute_action(repaired)
+        except BaseException as error:
+            self._record_failure(error)
+        finally:
+            print(
+                json.dumps(
+                    {**self.status(), "notification": "retry-source-finished"},
+                    ensure_ascii=False,
+                ),
+                flush=True,
+            )
+
+    @staticmethod
+    def _reload_source_modules(root: Path) -> None:
+        sys.path.insert(0, str(root / "tools"))
+        importlib.invalidate_caches()
+        for name in (
+            "zhongguo_phase2_source_checkpoint_provider",
+            "zg361_phase2_cross_cycle_endgame_source_capture",
+            "zg361_phase2_endgame_source_action_cell",
+        ):
+            module = importlib.reload(importlib.import_module(name))
+            if not Path(str(module.__file__)).resolve().is_relative_to(root):
+                raise base.Af5JobError(
+                    f"repaired source module loaded outside frozen checkout: {name}"
+                )
+
     def _run(self) -> None:
         try:
             self.bound = validate_activation(
@@ -240,6 +387,8 @@ class EndgameSourceOperatorJob(base.Af5OperatorJob):
                 response = self.status()
             elif command == "run-source":
                 response = self.start()
+            elif command == "retry-source":
+                response = self.retry()
             elif command == "cleanup":
                 response = self.perform_cleanup()
             else:

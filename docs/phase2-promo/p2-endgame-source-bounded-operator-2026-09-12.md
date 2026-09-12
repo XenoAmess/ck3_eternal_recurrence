@@ -79,13 +79,18 @@ provider `9`、bounded action `2`。R506 在补丁与推送期间继续保持目
 原 RED 不改写，后续只允许同一帧 Python 合同恢复或清理后从同一 27 日来源做一次
 新轮次，不延长 30 日边界。
 
-## R506 Python-only retained recovery
+## R506 recovery result and corrected retry boundary
 
-The reusable recovery entry is
-`tools/zg361_phase2_endgame_source_retained_recovery.py`. It is valid only
-after the failed operator process releases its named-pipe server without
-terminating the sole paused CK3 child. It proves the exact PID, owner, date and
-active event instance before re-running the pending save/registry assembly with
-the repaired Python contract. It archives the failed action files first, leaves
-CK3 paused on recovery failure, and terminates only the bound CK3 PID after a
-GREEN recovery when `--cleanup-after-success` is present.
+The first retained-session implementation tried to replace the Python
+named-pipe server after stopping the failed operator. R506/PID `180184`
+survived the operator release, but the loaded native DLL did not reconnect to
+the replacement server within the 30-second bound. The attempt preserved a
+typed RED and the failed action bytes; R506 then exited with no CK3 process
+remaining. This disproved cross-process pipe adoption for the current bridge.
+
+The supported recovery control is now `retry-source` on the original operator
+process. It retains the existing pipe server, driver, CK3 PID and connection
+generation; requires a pre-save failure; freezes the failed attempt; validates
+that all loaded game inputs remain byte-identical; and reloads only the source
+provider, capture contract and bounded action modules. No DLL/game/configuration
+change occurs, so a successful use remains in the current CK3 round.
