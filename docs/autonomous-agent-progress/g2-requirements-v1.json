@@ -32,10 +32,14 @@
       "name": "GEN-034 three-way war exit",
       "priority": "P0",
       "status": "in_progress",
-      "latest_evidence": ["R459", "R471"],
+      "latest_evidence": [
+        "R459",
+        "R471",
+        "GEN-034-A campaign dominance receipt AB0DB5678F65631D63E5A54BA66B61A6F5956179C0A4D3970B78BEAC5E9E0569"
+      ],
       "planner_consumer": "three-way exit recommendation and one semantic exit action",
       "visible_outcome": "compare continue, white peace and surrender on one paused frame, submit once, then verify postwar state and cold restore",
-      "open_blocker": "campaign dominance certificate, same-frame white-peace comparison and integrated action remain to be closed; the versioned strategy profile is complete"
+      "open_blocker": "same-frame white-peace comparison and integrated action remain to be closed; campaign dominance and the versioned strategy profile are complete"
     },
     {
       "id": "G2-M1",
@@ -110,14 +114,14 @@
   ],
   "current_work_package": {
     "id": "GEN-034",
-    "completed_packages": 1,
+    "completed_packages": 2,
     "total_packages": 4,
     "packages": [
       {
         "id": "GEN-034-A",
         "name": "policy-level campaign dominance certificate",
-        "status": "in_progress",
-        "latest_evidence": "R471 strategic-power primitive"
+        "status": "complete",
+        "latest_evidence": "R471-derived campaign dominance receipt AB0DB5678F65631D63E5A54BA66B61A6F5956179C0A4D3970B78BEAC5E9E0569"
       },
       {
         "id": "GEN-034-B",
@@ -140,5 +144,5 @@
     ]
   },
   "religion_boundary": "deferred except the minimum native result needed by holy-war execution and marriage legality or acceptance",
-  "updated_at": "2026-09-12T16:00:00+08:00"
+  "updated_at": "2026-09-12T23:19:56+08:00"
 }

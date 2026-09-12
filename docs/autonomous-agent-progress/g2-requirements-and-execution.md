@@ -32,13 +32,13 @@ G2 现采用固定的 **8 个可见 OODA 里程碑**，当前为 **0/8 complete*
 
 ## 当前 P0：GEN-034
 
-GEN-034 当前是 **1/4 子包完成**，但已有重要前置原语：R459 已真实提交一次 surrender，证明 source-specific
+GEN-034 当前是 **2/4 子包完成**，但已有重要前置原语：R459 已真实提交一次 surrender，证明 source-specific
 `3000→0`、persisted truce expiry `53227656` 与战后生命周期；R471 已在同一 paused frame 两次读取玩家
 `13075500000`、对手 `16770900000` 的 strategic power，原生 ratio 为 `128262/100000`。
 
 现行四包为：
 
-1. `GEN-034-A`：把 R471 strategic-power 原语接成 policy-level campaign dominance certificate；
+1. `GEN-034-A`（**complete**）：把 R471 strategic-power 原语接成 policy-level campaign dominance certificate；
 2. `GEN-034-B`（**complete**）：提供有版本、来源、仓库默认值和显式 operator override 的 strategy budget/profile；
 3. `GEN-034-C`：在同一 paused frame 取得 white-peace terms 与 utility comparison；
 4. `GEN-034-D`：三路 recommendation → 一次 semantic action → WarID/loss/truce/resources 后置 → checkpoint/cold restore。
@@ -52,7 +52,10 @@ operator override 必须绑定默认 profile ID/version，实际输入按源文�
 `BB20D87233DF6C854DD668FD1641AE590DFFA3BD87CF82099A1A97EBF20C7981`；它只提供策略参数，不提供 campaign 或 white-peace
 观测，也不授权 action。
 
-当前可离线继续的是 `GEN-034-A` 的合同与策略输入接线；`GEN-034-C/D` 需要 CK3 时必须服从 T0 资源让位和单实例轮次规则。
+`GEN-034-A` 已由 `raiktor_campaign_dominance_provider.py` 和 hash-bound CLI 闭合。R471 receipt 为
+`Z:\ck3_mod_rewrite\_runtime\g2-gen034-a-campaign-dominance-20260912\r471-certificate.json`，SHA-256
+`AB0DB5678F65631D63E5A54BA66B61A6F5956179C0A4D3970B78BEAC5E9E0569`。它只发布实测兵力关系；campaign forecast、exit utility、
+recommendation 与 action 均保持关闭。`GEN-034-C/D` 需要 CK3 时必须服从 T0 资源让位和单实例轮次规则。
 下一次 live 只允许一个有界 paused 场景，完成同帧 white-peace comparison；若输入齐全则在同一受管会话继续唯一 action 与
 postwar 验证。单字段修复只跑聚焦测试和这一个场景，不扩成永久长跑。
 
@@ -71,7 +74,7 @@ GEN-034 关闭后立即转向公共 P1，不再继续横向扩展单一 CB 的 A
 ## 报告规则
 
 - 总进度只写 `G2-Mx / 8`，当前为 `0/8`；
-- 当前工作包另写 `完成子包/总子包`，当前 GEN-034 为 `1/4`；
+- 当前工作包另写 `完成子包/总子包`，当前 GEN-034 为 `2/4`；
 - query/tool 数量只作 surface inventory，不得换算为玩法完成率；
 - 任何 `live` 提升必须链接 paused artifact；ACK、schema、单元测试和单场 fixture 不得冒充 OODA；
 - 对已取得证据的输入直接复用，新的 live 只验证本包新增的最小事实或动作后置。

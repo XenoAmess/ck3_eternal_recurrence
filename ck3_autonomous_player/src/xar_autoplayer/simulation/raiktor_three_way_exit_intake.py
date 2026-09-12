@@ -11,6 +11,9 @@ from __future__ import annotations
 
 from pathlib import Path
 
+from xar_autoplayer.simulation.raiktor_campaign_dominance_provider import (
+    normalize_raiktor_campaign_dominance_certificate,
+)
 from xar_autoplayer.simulation.raiktor_owner_budget_profile_provider import (
     provide_raiktor_owner_budget_profile,
 )
@@ -39,11 +42,19 @@ def provide_raiktor_three_way_exit_intake(
     white_peace_utility_evaluation_value: object | None,
     observed_surrender_outcome_value: object | None = None,
     surrender_aggregate_session_binding_value: object | None = None,
+    power_dominance_certificate_value: object | None = None,
 ) -> dict[str, object]:
     """Return one composed static assessment and all typed provider blockers."""
 
     owner_provider = provide_raiktor_owner_budget_profile(
         owner_budget_source_path
+    )
+    power_dominance = (
+        normalize_raiktor_campaign_dominance_certificate(
+            power_dominance_certificate_value
+        )
+        if power_dominance_certificate_value is not None
+        else None
     )
     owner_budget = (
         owner_provider["owner_budget_profile"]
@@ -107,6 +118,14 @@ def provide_raiktor_three_way_exit_intake(
         "status": assessment["status"],
         "inputs": {
             "campaign_certificate_supplied": campaign_value is not None,
+            "measured_power_dominance_supplied": power_dominance is not None,
+            "measured_power_dominance_ready": (
+                power_dominance is not None
+                and power_dominance["boundaries"][
+                    "measured_strategic_power_ready"
+                ]
+                is True
+            ),
             "owner_budget_profile_available": owner_provider[
                 "profile_available"
             ],
@@ -138,6 +157,12 @@ def provide_raiktor_three_way_exit_intake(
         "action_literal": None,
         "blockers": blockers,
         "providers": {
+            "measured_power_dominance": {
+                "status": (
+                    "available" if power_dominance is not None else "unavailable"
+                ),
+                "certificate": power_dominance,
+            },
             "owner_budget": owner_provider,
             "white_peace_comparison": white_provider,
         },
@@ -149,6 +174,7 @@ def provide_raiktor_three_way_exit_intake(
             "explicit_budget_path_is_an_operator_override",
             "no_default_campaign_or_white_peace_utility_values",
             "missing_evidence_remains_typed_and_unavailable",
+            "measured_power_dominance_is_not_a_campaign_forecast_or_utility",
             "static_recommendation_does_not_authorize_an_action",
             "execution_projection_never_enables_submit_or_postcondition",
             "provider_does_not_start_query_or_mutate_ck3",

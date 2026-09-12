@@ -33,7 +33,7 @@ schema，也不会替代 campaign、owner budget、white-peace、truce 或 war-b
 
 ### Campaign dominance certificate
 
-沿用 pairwise 核心的 `raiktor-campaign-dominance-certificate-v1`。证书必须绑定同一
+历史 pairwise 核心的 `raiktor-campaign-dominance-certificate-v1` 仍描述完整 forecast/utility 输入。证书必须绑定同一
 paused frame、candidate SHA-256、六域 terms SHA-256 与 owner pairwise limits
 SHA-256，并完整声明：
 
@@ -44,12 +44,17 @@ SHA-256，并完整声明：
 - claims base 和六域的 valuation；
 - continue/surrender 的保守 utility interval 与 hard-budget breaches。
 
-当前仓库没有生产该证书的 provider。战分和战争时长只是必须 hash-bind 的模型输入，
+该 v1 完整 forecast 仍没有生产 provider。战分和战争时长只是必须 hash-bind 的模型输入，
 不是替代证书的投降阈值。2026-09-06 的施工审计进一步确认：当前只有 strict consumer，
 没有 campaign-level production producer；v3 hypothetical combat fixture 与 100,000 次
 research-only fixed-contact 输出都明确不可用于 planner。因而本项暂不新增 schema wrapper，
 生产入口与重开条件见
 [g2-campaign-provider-go-no-go-2026-09-06.md](g2-campaign-provider-go-no-go-2026-09-06.md)。
+
+2026-09-12 的当前 G2 规划将 GEN-034-A 裁成可交付的 measured-power 层：
+[`raiktor-campaign-dominance-certificate-v2`](g2-campaign-dominance-certificate-v2-2026-09-12.md)
+只把 R471 的稳定双查询转换为 `actor_stronger / opponent_stronger / equal`，并接入 three-way intake。它明确保持
+forecast、utility、recommendation 和 action 关闭，因此不会把单一兵力比伪装成完整 v1 战役模型。
 
 ### Owner budget profile
 
@@ -543,6 +548,9 @@ It starts no CK3 process, supplies no campaign or white-peace evidence and
 authorizes no action. Focused provider/intake/file-intake tests pass `25/25`
 under normal and optimized Python.
 
-GEN-034 is now `1/4` subpackages complete. Campaign dominance,
-same-frame white-peace comparison and integrated recommendation/action remain.
+GEN-034-A now converts this production-live primitive into a v2 measured-power
+dominance certificate. Its receipt is `AB0DB567...E0569`, and the three-way
+intake retains it while forecast, utility, recommendation and action remain
+false. GEN-034 is now `2/4`: same-frame white-peace comparison and the
+integrated recommendation/action package remain.
 Whole-program G2 remains `0/8`; the former `T1=90%` label is retired.
