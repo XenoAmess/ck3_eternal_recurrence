@@ -320,6 +320,7 @@ from .frontend_gui_route_contract import (
     ACTIVATE_FRONTEND_PICK_ANY_CHARACTER_V1_STEP,
     QUERY_FRONTEND_GUI_ROUTE_V1_CAPABILITY,
     QUERY_FRONTEND_GUI_ROUTE_V1_STEP,
+    frontend_gui_route_binding_from_capabilities,
     normalize_frontend_gui_route_v1,
     normalize_frontend_new_game_v1,
     normalize_frontend_pick_any_character_v1,
@@ -5730,9 +5731,15 @@ class NativeHeadlessGameplayDriver:
                 raise ValueError(
                     "frontend native execution requires expected_revision=0"
                 )
-            coat_of_arms_source_frontend_binding_from_capabilities(
-                capabilities
-            )
+            if step in {
+                PROBE_COAT_OF_ARMS_SOURCE_V1_STEP,
+                EXPORT_COAT_OF_ARMS_SOURCE_V1_STEP,
+            }:
+                coat_of_arms_source_frontend_binding_from_capabilities(
+                    capabilities
+                )
+            else:
+                frontend_gui_route_binding_from_capabilities(capabilities)
             snapshot = {"revision": 0, "native_revision": 0}
         else:
             snapshot = (

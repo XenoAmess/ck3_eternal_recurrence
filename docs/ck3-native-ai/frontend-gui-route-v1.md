@@ -105,5 +105,6 @@ proof。
 - `activate-frontend-pick-any-character-v1` 已通过 Release 编译、adapter registry、mailbox/source-contract 与官方 MCP closed-schema 测试，状态为 `mcp-static-ready / live=false`。
 - 首次 live attempt 已保留为 `mcp-frontend-route-lobby-live1.json`（94,811 bytes，SHA-256 `B8A98F66B942B785629FED6255E276E313CB8E5870DF809D64A05D6A36039763`）。原生动作已令 Bookmarks 进入加载，但加载期 application-main GUI pump 暂停，单次 route command 超时，结果为 RED；`cleanup_proven=true`，不是能力 GREEN。
 - driver 现在以独立的 120 秒 frontend transition deadline 重试暂时超时/拒绝的 route 查询；每次查询仍由原生邮箱自己 fail closed，只有最终观察到目标 route 才报告 verified。聚焦测试包含“暂时不可用 → unavailable → lobby”的恢复向量。
+- 第二次 live attempt `mcp-frontend-route-lobby-live2.json`（94,795 bytes，SHA-256 `87650AC340C0049B3279816DE1D49DE14C9CCC79027BD0DCD158CBFEAD24C9D8`）证明加载后 CK3 已开始发布 gameplay snapshot；route transport 此时误复用 CoA 专用的 `snapshot=false` frontend binding，因而被 Python 侧拒绝。GUI route 现改用独立 exact-bridge binding：同一 PID、连接代次、adapter、build hash 与 capability 必须成立，但允许 pregame lobby 同时存在 snapshot。该 attempt 同样是 RED 且 cleanup GREEN。
 
 下一步先用受管 CK3 对 `bookmarks → lobby` 做官方 MCP live 验收；通过后继续补 lobby 的确定性角色选择、ruler designer 与 CoA 页动作，禁止以鼠标链代替缺失 primitive。

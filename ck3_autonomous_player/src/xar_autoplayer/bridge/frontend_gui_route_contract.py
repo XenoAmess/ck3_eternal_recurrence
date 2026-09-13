@@ -31,6 +31,79 @@ FRONTEND_GUI_ROUTES_V1: Final = frozenset(
         "coat_of_arms_designer",
     }
 )
+FRONTEND_GUI_ROUTE_V1_GAME_VERSION: Final = "1.19.0.6"
+FRONTEND_GUI_ROUTE_V1_EXECUTABLE_SHA256: Final = (
+    "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86"
+)
+FRONTEND_GUI_ROUTE_V1_GAME_ADAPTER_ID: Final = "ck3-1.19.0.6-msvc-x64"
+
+
+def frontend_gui_route_binding_from_capabilities(
+    value: object,
+) -> dict[str, int]:
+    """Bind a pre-game GUI command even after CK3 starts snapshot publication."""
+
+    candidates: list[tuple[int, int]] = []
+
+    def visit(row: object) -> None:
+        if not isinstance(row, dict):
+            return
+        capabilities = row.get("bridge_capabilities")
+        diagnostics = row.get("diagnostics")
+        if (
+            row.get("backend_id") == "native-headless"
+            and row.get("mode") == "native-headless"
+            and row.get("source") == "injected-dll-named-pipe"
+            and row.get("visual_fallback") is False
+            and isinstance(capabilities, list)
+            and QUERY_FRONTEND_GUI_ROUTE_V1_CAPABILITY in capabilities
+            and isinstance(diagnostics, dict)
+        ):
+            hello = diagnostics.get("hello")
+            bridge_pid = diagnostics.get("bridge_pid")
+            connection_generation = diagnostics.get("connection_generation")
+            if not (
+                diagnostics.get("connected") is True
+                and isinstance(hello, dict)
+                and isinstance(bridge_pid, int)
+                and not isinstance(bridge_pid, bool)
+                and 1 <= bridge_pid <= 2**32 - 1
+                and hello.get("pid") == bridge_pid
+                and isinstance(connection_generation, int)
+                and not isinstance(connection_generation, bool)
+                and 1 <= connection_generation <= 2**64 - 1
+                and hello.get("connection_generation")
+                == connection_generation
+                and hello.get("game_adapter_id")
+                == FRONTEND_GUI_ROUTE_V1_GAME_ADAPTER_ID
+                and hello.get("game_adapter_status") == "ready"
+                and hello.get("expected_ck3_version")
+                == FRONTEND_GUI_ROUTE_V1_GAME_VERSION
+                and hello.get("expected_ck3_sha256")
+                == FRONTEND_GUI_ROUTE_V1_EXECUTABLE_SHA256
+                and hello.get("ck3_build_match") is True
+                and isinstance(hello.get("capabilities"), list)
+                and QUERY_FRONTEND_GUI_ROUTE_V1_CAPABILITY
+                in hello["capabilities"]
+            ):
+                raise ValueError(
+                    "frontend GUI route native bridge identity is malformed"
+                )
+            candidates.append((bridge_pid, connection_generation))
+        backends = row.get("backends")
+        if isinstance(backends, list):
+            for backend in backends:
+                visit(backend)
+
+    visit(value)
+    unique = set(candidates)
+    if len(unique) != 1:
+        raise ValueError("frontend GUI route requires one exact native bridge")
+    bridge_pid, connection_generation = unique.pop()
+    return {
+        "bridge_pid": bridge_pid,
+        "connection_generation": connection_generation,
+    }
 
 
 def normalize_frontend_gui_route_v1(result: object) -> dict[str, object]:
