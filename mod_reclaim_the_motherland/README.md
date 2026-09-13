@@ -1,6 +1,6 @@
 # 重整河山：设计与实现说明
 
-状态：**0.2.0（二期）已实现并公开发布；L0、源码树 L1 与 Workshop fresh-cache L3 全部 GREEN。** 这份文档同时记录设计约束、当前实现与发布证据；上一公开版本为 0.1.1。
+状态：**0.4.0（三、四期）发布候选已实现，L0 与 `open_kaishek` parser 预验 GREEN；源码树 L1 正等待 CK3 排他槽复验。** 当前公开版本仍为 0.2.0，尚未把候选状态写成发布事实。
 
 ## 1. 产品目标
 
@@ -49,6 +49,9 @@
 | “宣称复辟” | 不显示 | 后朝持有者在群雄割据且独立、和平、成年并控制至少原版比例时可用 |
 | 复辟成功 | 不适用 | 获得 `h_china` 并执行原版全部配套效果，然后销毁自己持有的全部后朝霸权 |
 | 别人先取得天命 | 群雄割据结束 | 后朝不自动消失；它作为失国政权继续传承，可在未来一次群雄割据中再谋复辟 |
+| 后朝君主死亡 | 不适用 | 同一后朝霸权随主继承人传承，留朝忠臣封臣树继续归于该后朝；其他个人头衔按角色原有继承规则处理 |
+| 三省六部 | 随中华霸权与原版事务变化 | 最近失去天命的后朝延续九席；留朝且合资格的原班大臣不动，离朝者离任，真实空缺交回原版任免流程 |
+| 刚脱离后的和平附庸 | 原版天朝霸权公式 | 后朝不再冒领现任中华霸权的身份优惠；本轮实际脱离者另有五年、绑定双方头衔的【新近自立】-50 接受度 |
 
 最后一行是本设计的拟定规则：它避免擅自增加“别人成功就强制销毁你的后朝”这一需求外惩罚，也允许多个历史后朝并存。若希望后朝只在本轮逐鹿中有效，可改成群雄割据结束时自动销毁。
 
@@ -61,7 +64,7 @@
 - 复制当时 `h_china` 的纹章、颜色，以旧天子的首都作为显示位置。
 - 设置 `no_automatic_claims`、禁止自动按宗族或游牧规则改名，并在被销毁时删除动态 title object。
 - 不设置“获得同级头衔时自动销毁”，因为销毁必须由“宣称复辟”的显式额外效果完成。
-- 授予旧天子并设为主头衔。`0.2.0` 已设置 `always_follows_primary_heir`，但没有为动态后朝添加显式 title succession law；用户报告的死亡裂解与原版同类动态头衔对照均表明当前跨代继承不可靠。这是 `0.3.0` 的 P0 已知缺陷，修复与旧存档迁移计划见 `../docs/reclaim-the-motherland-phase-3-plan.md`。
+- 授予旧天子并设为主头衔；`0.4.0` 添加 `single_heir_succession_law`，同时保留 `always_follows_primary_heir`，使动态后朝产生明确继承顺位并随主继承人传承。
 
 若一个角色通过继承等方式同时持有多个带标记的后朝霸权，执行一次复辟会销毁他持有的全部此类头衔。否则遗留的第二个后朝头衔会继续错误地封锁“宣称天命”。
 
@@ -77,6 +80,18 @@
 4. 名称冻结发生在授予动态头衔并处理完 title-gain on-action 之后、销毁 `h_china` 之前；随后重置旧 `h_china` 的运行时名称。
 
 这避免了 `set_title_prefix` 不会改写 `GetNameNoTierNoTooltip` 所暴露的标准朝号缺前缀问题，同时保持任意玩家自定义朝号不丢失。89 个组合 key 由 `tools/gen_reclaim_the_motherland_title_names.py` 向九种发布语言确定性生成，禁止手改生成文件。
+
+### 4.2 跨代继承与旧存档迁移
+
+`0.4.0` 在动态后朝授予完成、头衔已经有持有者之后添加 `single_heir_succession_law`，并继续设置 `always_follows_primary_heir`。这两项分别负责产生单一继承顺位与对齐角色主继承人，不能互相替代。旧君死亡时，后朝之下仍然留朝的直属诸侯及其封臣树随顶级头衔继续存在；旧君的其他个人头衔仍由其角色继承法决定，本 mod 不强行改写分配结果。
+
+`rmtm_migrate_restoration_hegemonies_effect` 会在新游戏与读档初始化时枚举带耐久 marker 的既有后朝，只为缺少继承法的头衔补法并重申主继承人对齐。迁移不按名称猜测、不重建动态头衔，也不改持有者、国号、纹章、首都、空法理或复辟进度；重复运行是幂等的。
+
+### 4.3 前朝三省六部
+
+九个原版 `e_minister_*` 官职是全局唯一头衔，因此只有最近一次失去 `h_china` 的后朝获得 `rmtm_ministry_entitlement_title` 官署资格。群雄割据事务先在旧天子仍持有 `h_china` 时完成大臣清退：仍在旧朝 realm 的现任保留原官职和 council position，只有明确按二期结果叛离的现任才失去官职；随后才销毁 `h_china` 并正式以动态后朝为主头衔。真实空缺留给原版日常任免流程，裂解事务不会批量重选九席，也不会让自动补缺误把忠臣诸侯的封臣树上收。
+
+对 `tgp_has_access_to_ministry_trigger` 的窄覆写只延续九席与原版任职规则，并继续要求天朝政体。正式中书门下权力分享制度、天命、稳定期和 `h_china` 专属工程／特权不随之后朝延续；如果出现更新的失国后朝，唯一官署资格转给新近前朝，较早后朝仍保留自身头衔与复辟资格。
 
 ## 5. 尊王诸侯的二期判定
 
@@ -126,16 +141,24 @@
 
 这在行为上就是“原版宣称天命的完整效果＋销毁你的后朝霸权”，同时避免以后原版修复了内部效果而本 mod 仍运行旧的 400 行副本。
 
+### 6.3 和平附庸平衡
+
+`0.4.0` 纠正原版 `offer_vassalization_interaction` 对后朝身份的误判。后朝仍是霸权级头衔，但不再取得现任中华霸权才应享有的天朝等级差、通用霸权加成及高阶诸侯拒绝豁免；其余好感、法理、军力、合法性、语言、宗教、文化、盟约与恐惧等原版项目保持不变。
+
+同一轮裂解中，只有被《重整河山》事务实际释放的直属诸侯才会在其当时主头衔上获得五年定时变量，变量精确引用本轮动态后朝 title object。五年内，该头衔当前持有者面对该后朝当前持有者的附庸提议时显示【新近自立】`-50`；双方换君不能绕过，五年后自然到期。留朝忠臣、无关独立者和旧版已经完成裂解但没有保存精确释放名单的存档都不会被猜测性补标。
+
 ## 7. 入口覆写与兼容策略
 
-计划只覆写两个原版 key：
+当前覆写四个原版 key：
 
 1. `tgp_chaos_shattering_effect`：按游戏规则分派到自定义裂解或一份固定的原版兼容副本。
 2. `situation_dynastic_cycle_claim_mandate_decision`：给后朝持有者增加禁用条件。
+3. `tgp_has_access_to_ministry_trigger`：保留原版 `h_china` 分支，并为唯一获授权后朝加入受限官署资格。
+4. `offer_vassalization_interaction`：由 exact upstream 生成完整对象投影，只改后朝身份分支和五年【新近自立】接受度。
 
-不覆写 `tgp_dynastic_cycle.0081` 事件、不替换整个 dynastic-cycle situation，也不复制 `tgp_claim_mandate_of_heaven_effect`。这能把与其他 mod 的冲突面压到必要的两个 key。
+不覆写 `tgp_dynastic_cycle.0081` 事件、不替换整个 dynastic-cycle situation，也不复制 `tgp_claim_mandate_of_heaven_effect`。`offer_vassalization_interaction` 投影由生成器从锁定原版对象产生，禁止手改生成文件。
 
-代价是：任何同样覆写上述两个 key 的 mod 都存在加载顺序冲突。descriptor/Workshop 页面必须明确列出这一点。兼容副本会绑定下面的原版文件 SHA-256；升级 CK3 后只要 hash 变化，静态校验就要求人工审阅上游差异，不能悄悄继续使用旧逻辑。
+代价是：任何同样覆写上述四个 key 的 mod 都存在加载顺序冲突。descriptor/Workshop 页面必须明确列出这一点。兼容副本与生成投影会绑定原版文件及对象 SHA-256；升级 CK3 后只要 hash 变化，静态校验就要求人工审阅上游差异，不能悄悄继续使用旧逻辑。
 
 原版 `tgp_dynastic_cycle.0081/.0082` 的 tooltip 会继续沿用原版文字；本 mod 不覆盖原版本地化 key，避免加载时产生重复 key。玩家应以游戏规则说明、动态后朝头衔与新决议的实际结果为准。
 
@@ -148,12 +171,15 @@ mod_reclaim_the_motherland/
   common/game_rules/rmtm_game_rules.txt
   common/decisions/rmtm_restoration_decisions.txt
   common/decisions/dlc_decisions/tgp/zz_rmtm_mandate_override.txt
+  common/character_interactions/zz_rmtm_offer_vassalization.txt
+  common/on_action/rmtm_on_actions.txt
   common/scripted_effects/rmtm_dynastic_cycle_effects.txt
   common/scripted_effects/rmtm_loyalty_resolution_effects.txt
   common/scripted_effects/rmtm_generated_title_name_effects.txt
   common/scripted_effects/rmtm_vanilla_compat_effects.txt
   common/scripted_effects/zz_rmtm_vanilla_overrides.txt
   common/script_values/rmtm_loyalty_values.txt
+  common/scripted_triggers/zz_rmtm_ministry_override.txt
   common/scripted_triggers/rmtm_loyalty_triggers.txt
   common/scripted_triggers/rmtm_restoration_triggers.txt
   events/rmtm_loyalty_events.txt
@@ -161,7 +187,7 @@ mod_reclaim_the_motherland/
   localization/<九种语言>/rmtm_generated_title_names_l_<语言>.yml
 ```
 
-统一命名空间为 `rmtm`。发布构建使用 `tools/build_reclaim_the_motherland_release.py` 的独立 exact allowlist：32 个运行时文件进入 staging，README 不发布。Workshop item ID 为 `3798404599`；`remote_file_id` 只存在于用户目录外层 launcher descriptor 与 ID-bearing 发布记录，绝不进入仓库内 `descriptor.mod`。
+统一命名空间为 `rmtm`。发布构建使用 `tools/build_reclaim_the_motherland_release.py` 的独立 exact allowlist：35 个运行时文件进入 staging，README 不发布。Workshop item ID 为 `3798404599`；`remote_file_id` 只存在于用户目录外层 launcher descriptor 与 ID-bearing 发布记录，绝不进入仓库内 `descriptor.mod`。
 
 ## 9. 实现与验收顺序
 
@@ -215,7 +241,7 @@ mod_reclaim_the_motherland/
 3. “尊王派封臣”按直属封臣判断，并完整保留这些直属封臣原有的下级 realm 树，不跨级抽取间接尊王派。
 4. 别人先取得天命时不销毁后朝；后朝可跨王朝周期传承，并在未来群雄割据中复辟。
 
-第 4 点是产品设计口径，不代表 `0.2.0` 已经通过死亡继承验收。当前版本的动态后朝缺少显式头衔继承法，可能在持有者死亡时裂解；三期将先修复该缺陷，再恢复“跨王朝周期传承”的完成声明。
+`0.2.0` 没有真正执行死亡继承，因此其跨代声明已经撤回；`0.4.0` 候选以显式单继承法和实际旧君死亡用例重新建立该结论，正式发布事实只在源码树与 fresh-cache 两次实机均 GREEN 后写入。
 
 ## 12. 当前实现与验证证据
 

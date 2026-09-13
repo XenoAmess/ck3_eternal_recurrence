@@ -68,9 +68,9 @@ rmtm_create_restoration_hegemony_effect = {
 
 }
 
-# Character scope: old emperor after the released court has been reconciled while
-# h_china still has a holder. This deliberately runs after fill_the_ministry_effect:
-# vanilla resolves new ministry titles through h_china's holder during on_title_gain.
+# Character scope: old emperor after retained and departing ministers have been
+# reconciled while h_china still has a holder. The entitlement is already bound to
+# the new Later title before h_china is destroyed.
 rmtm_finalize_restoration_hegemony_effect = {
 	# The old emperor loses only the Chinese Hegemony. All counties, duchies,
 	# kingdoms and unrelated personal titles remain untouched.
@@ -135,6 +135,23 @@ rmtm_chaos_shattering_effect = {
 					rmtm_resolve_pro_hegemon_loyalty_effect = yes
 				}
 			}
+			# Ministry titles are landless empire-tier vassal titles. Without an
+			# explicit exemption they are released and then pruned like ordinary
+			# weak realms, even when the incumbent never left the old court. Preserve
+			# every exact incumbent except a landed Pro-Hegemon councillor whose
+			# already-frozen Phase 2 result is an explicit defection.
+			every_councillor = {
+				limit = {
+					tgp_is_any_minister = yes
+					NOT = {
+						AND = {
+							exists = var:rmtm_loyalty_outcome
+							var:rmtm_loyalty_outcome = flag:defect
+						}
+					}
+				}
+				add_to_list = rmtm_retained_ministers
+			}
 		}
 
 		# Replace h_china through the same helper exposed to the focused live probe.
@@ -150,6 +167,7 @@ rmtm_chaos_shattering_effect = {
 				limit = {
 					highest_held_title_tier >= tier_county
 					NOT = { is_in_list = rmtm_final_loyal_direct_vassals }
+					NOT = { is_in_list = rmtm_retained_ministers }
 				}
 				becomes_independent = { change = scope:chaos_change }
 				add_to_list = rmtm_released_direct_vassals
@@ -157,9 +175,27 @@ rmtm_chaos_shattering_effect = {
 			resolve_title_and_vassal_change = scope:chaos_change
 		}
 
+		# Remove office only from ministers whose explicit Phase 2 defection made
+		# them leave. fired_minister_position_effect normally hands the title to its
+		# current heir while the ministry is active; providing the documented
+		# replacement scope suppresses that hand-off so one departure cannot cascade
+		# all nine titles onto the same incumbent. Vacancies remain ordinary council
+		# vacancies and can be filled through the vanilla appointment flow.
+		scope:old_emperor_temp = { save_temporary_scope_as = new_councillor }
+		every_in_list = {
+			list = former_vassals
+			limit = {
+				tgp_is_any_minister = yes
+				NOT = { is_in_list = rmtm_retained_ministers }
+			}
+			destroy_held_ministry_titles_effect = yes
+		}
+
 		# Vanilla 1.19.0.6 Chaos processing resumes here. Final loyalists are also
 		# excluded from weak kingdom/empire pruning, preserving the exact title
 		# object, display/custom name, and subordinate realm tree they already held.
+		# Retained ministry incumbents are likewise excluded: their landless office
+		# title is not an independent realm to rename or destroy.
 		every_in_list = {
 			list = former_vassals
 			limit = {
@@ -167,6 +203,7 @@ rmtm_chaos_shattering_effect = {
 				# h_china, even when the AI power thresholds would normally prune it.
 				this != scope:old_emperor_temp
 				NOT = { is_in_list = rmtm_final_loyal_direct_vassals }
+				NOT = { is_in_list = rmtm_retained_ministers }
 				is_landed = yes
 				is_ai = yes
 				OR = {
@@ -203,18 +240,8 @@ rmtm_chaos_shattering_effect = {
 				}
 			}
 		}
-		every_in_list = {
-			list = former_vassals
-			# Ministers who left the surviving court lose office. Incumbents who
-			# remained under the old emperor keep the exact title and council seat.
-			limit = { NOT = { top_liege = scope:old_emperor_temp } }
-			destroy_held_ministry_titles_effect = yes
-		}
-		# Fill only seats actually vacated by defectors. Vanilla's helper preserves
-		# every incumbent whose council position still matches the ministry title.
-		scope:old_emperor_temp = { fill_the_ministry_effect = yes }
-		# Finalize the Later Dynasty only after ministry title grants can resolve
-		# their de-jure liege through the still-held h_china title.
+		# Finalize the Later Dynasty only after minister retention/defection is
+		# settled while h_china still has a holder.
 		scope:old_emperor_temp = {
 			rmtm_finalize_restoration_hegemony_effect = yes
 		}

@@ -306,7 +306,9 @@ def validate() -> list[str]:
         "destroy_title = title:h_china",
         "name = rmtm_recently_independent_from_restoration_hegemony",
         "days = rmtm_recent_independence_duration_days",
-        "fill_the_ministry_effect = yes",
+        "add_to_list = rmtm_retained_ministers",
+        "save_temporary_scope_as = new_councillor",
+        "NOT = { is_in_list = rmtm_retained_ministers }",
     ):
         if fragment not in custom_shattering:
             errors.append(f"custom shattering contract missing: {fragment}")
@@ -316,10 +318,10 @@ def validate() -> list[str]:
         r"(?m)^\s*force_step_down_landed_titles\s*=", custom_shattering
     ):
         errors.append("custom shattering must not force the former hegemon to step down")
-    if custom_shattering.index("fill_the_ministry_effect = yes") > custom_shattering.index(
+    if custom_shattering.index("destroy_held_ministry_titles_effect = yes") > custom_shattering.index(
         "rmtm_finalize_restoration_hegemony_effect = yes"
     ):
-        errors.append("ministry vacancies must be filled before h_china is destroyed")
+        errors.append("departing ministers must be reconciled before h_china is destroyed")
 
     loyalty_values = scripts.get(
         "common/script_values/rmtm_loyalty_values.txt", ""

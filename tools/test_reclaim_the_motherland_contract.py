@@ -509,13 +509,18 @@ class TestReclaimTheMotherlandContract(unittest.TestCase):
             if has_assignment(loop, "destroy_held_ministry_titles_effect", "yes")
         ]
         self.assertEqual(len(ministry_cleanup), 1)
-        self.assertTrue(
-            any(excludes_old_emperor(limit) for limit in descendant_blocks(ministry_cleanup[0], "limit"))
+        self.assertTrue(has_assignment(ministry_cleanup[0], "tgp_is_any_minister", "yes"))
+        self.assertIn("NOT = { is_in_list = rmtm_retained_ministers }", custom_text)
+        self.assertIn("add_to_list = rmtm_retained_ministers", custom_text)
+        self.assertIn("save_temporary_scope_as = new_councillor", custom_text)
+        self.assertGreaterEqual(
+            custom_text.count("NOT = { is_in_list = rmtm_retained_ministers }"),
+            3,
         )
-        self.assertEqual(custom_text.count("fill_the_ministry_effect = yes"), 1)
+        self.assertNotIn("fill_the_ministry_effect = yes", custom_text)
         self.assertIn("name = rmtm_ministry_entitlement_title", custom_text)
         self.assertLess(
-            custom_text.index("fill_the_ministry_effect = yes"),
+            custom_text.index("destroy_held_ministry_titles_effect = yes"),
             custom_text.index("rmtm_finalize_restoration_hegemony_effect = yes"),
         )
         finalizer = direct_block(

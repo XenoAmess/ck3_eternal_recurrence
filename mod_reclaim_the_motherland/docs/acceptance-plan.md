@@ -1,106 +1,104 @@
-# 重整河山 0.2.0（二期）验收方案
+# 重整河山 0.4.0 验收方案
 
-状态：**执行完成。0.2.0 的 L0、源码树 L1 与 Workshop fresh-cache L3 均为 GREEN。**
+状态：**执行中。运行时实现、L0 与 `open_kaishek` parser 预验已完成；源码树 L1、正式发布与 fresh-cache L3 尚待最终证据。**
 
 目标游戏：CK3 `1.19.0.6`
 
-正式产品：`mod_reclaim_the_motherland`
+产品：`mod_reclaim_the_motherland`
 
 Workshop item：`3798404599`
 
-## 1. 验收目标
+## 1. 本期验收目标
 
-在不削弱一期“后朝—复辟”闭环的前提下，证明二期同时满足两项目标：
+0.4.0 合并交付三期与四期，但四类结论必须分别成立：
 
-1. 最终留下的忠臣不会经过原版弱势王国/帝国裁剪及改国号入口；其主头衔对象、title key、显示/自定义名称、直属关系和下级封臣树保持不变。
-2. 默认“人心离散”规则会对每名直属、有地、伯爵级以上尊王派候选人结算一次忠诚：公开决裂者必叛，强羁绊者必留，其余 AI 按冻结后的 5%–95% 概率掷一次；兼容规则“誓死尊王”仍保留一期全员留守行为。
+1. 动态后朝具有明确单继承人顺位，随主继承人跨过一次真实死亡；同一后朝 title object、空法理、marker、留朝直属诸侯及其封臣树不裂解。其他个人头衔仍按角色原有继承规则处理。
+2. 最近失去天命的后朝延续三省六部九席。仍在旧朝且合资格的 incumbent 保持同一人物、同一 council position 与同一 `e_minister_*` 头衔；实际离朝者才离任，只补真实空缺。正式中书门下权力分享、天命和 `h_china` 专属特权不得随之延续。
+3. 后朝在【提议附庸】中不再冒领现任中华霸权的身份优惠；只有本轮实际释放的直属诸侯主头衔获得五年、精确引用该后朝 title object 的【新近自立】`-50`，双方换君不能绕过，期满自然消失。
+4. 0.2.0 的【人心离散】、忠臣国号与封臣树、个人直辖领地保留、50%/51% 边界、【宣称天命】封锁和【宣称复辟】全链不得回归。
 
-所有验收保持 MCP-first。`open_kaishek` 先覆盖可确定解析的部分；它不支持的动态头衔、关系、概率与封臣树语义必须进入真实 CK3 paused artifact，不能用静态 PASS 替代。
+发布退出条件是 L0、源码树 L1、正式 staging、Workshop 上传、全新订阅缓存严格复核和 fresh-cache L3 全部 GREEN；任何自动报告都不替代实际公开页面与 Change Notes 回读。
 
-## 2. L0 静态、原版合同与正式构建
+## 2. L0：静态合同、原版身份与构建
 
-使用已验证的项目虚拟环境解释器执行：
+### 2.1 exact upstream 与生成投影
 
-```powershell
-& tools/.venv/Scripts/python.exe tools/compose_reclaim_the_motherland_key_art.py --check
-& tools/.venv/Scripts/python.exe tools/test_reclaim_the_motherland_contract.py
-& tools/.venv/Scripts/python.exe tools/test_build_reclaim_the_motherland_release.py
-& tools/.venv/Scripts/python.exe tools/validate_reclaim_the_motherland_static.py
-& tools/.venv/Scripts/python.exe tools/build_reclaim_the_motherland_release.py --check
-```
+- 从本机已安装 CK3 `1.19.0.6` 读取本期依赖的原版文件并校验锁定 SHA-256，不以仓库内忽略副本缺失作为跳过理由。
+- `tools/gen_reclaim_vassalization_override.py` 必须从 exact upstream 的完整 `offer_vassalization_interaction` 生成发布投影；除后朝身份分支和【新近自立】项外，其余对象字节／结构保持一致。
+- 对同名 interaction、`tgp_has_access_to_ministry_trigger`、单继承法、on_action 迁移、定时 title variable 和 release allowlist 建立静态合同。
+- 至少 12 个表驱动接受度向量覆盖王国／公国／伯国、法理、合法性、好感和军力组合；每个向量同时保存原版与 0.4.0 差值来源。
 
-通过条件：
+### 2.2 内容与发布树
 
-- CK3 1.19.0.6 的两个原版覆写点及所用 trigger/effect 合同哈希仍与锁定基线一致。
-- 两个游戏规则分别只有一个默认项；原版群雄割据分支完全绕过二期判定。
-- 硬叛、硬留、分数修正、5/95 钳制、AI 单次随机、玩家确定性 50 分界、结果持久变量和忠/叛名单均有静态合同覆盖。
-- 忠臣同时从独立处理、弱势王/帝头衔销毁和国号重组入口中排除；产品逻辑不对忠臣调用 `reset_title_name`。
-- 正式 allowlist 恰为 32 个运行时文件；九语均为 UTF-8 BOM、每语 112 个产品 key，无七语英文占位；`descriptor.mod` 为 0.2.0 且不含 `remote_file_id`。
-- 两次 staging 的 manifest 与 ZIP 逐字节可复现；640×640 thumbnail 小于 1 MB，并与已提交源图的确定性投影一致。
+- `descriptor.mod` 为 `0.4.0`，不含 `remote_file_id`。
+- 九种发布语言 key 集一致、UTF-8 BOM 正确，无七语英文占位；【溥天之下 / All Under Heaven】术语对应不得漂移。
+- 正式 allowlist 恰为 35 个运行时文件；源码 README、验收 fixture、日志和其他 development-only 内容不得进入 staging。
+- `tools/test_reclaim_the_motherland_contract.py`、`tools/validate_reclaim_the_motherland_static.py`、`tools/test_build_reclaim_the_motherland_release.py` 与 `tools/build_reclaim_the_motherland_release.py --check` 全部 GREEN。
 
 ## 3. `open_kaishek` 离线预验
 
-每次 CK3 启动前保存：`open_kaishek` exact commit、profile/version、CLI/JAR SHA-256、CK3 build 与 EXE SHA-256、产品/fixture corpus ID 与 SHA-256、实际命令、解析结果和不支持项。
+任何 CK3 启动前，先运行产品树与外置 fixture 的 parser-only root scan，并冻结：
 
-预期边界：root parser 应为 GREEN；当前 validator 对 CK3 大量合法 opcode 仍可能返回 `UNKNOWN_OPCODE`，fixture 目录也可能不在 profile 中。此类结果记录为 tool limitation / not-applicable，不冒充产品 GREEN 或产品 RED，随后继续真实 CK3。
+- `open_kaishek` exact commit、CLI contract、profile/version 与 JAR SHA-256；
+- CK3 exact build、EXE 路径与 SHA-256；
+- product/fixture corpus ID、文件数、bytes、root SHA-256、命令和 diagnostics；
+- validator/IR 对动态头衔、继承、council position、interaction AI 接受度和定时变量不支持的部分必须明确记录 `not-applicable`，不得把 parser GREEN 冒充玩法 GREEN。
 
-## 4. L1 源码树真实 CK3 矩阵
+## 4. L1：源码树 MCP-first 实机
 
-### 4.1 默认“人心离散”受控场景
+### 4.1 槽位与受保护运行
 
-外置夹具在 1066 年大宋真实统治者与真实封臣树中准备至少三名直属有地角色：
+- 启动前在任务总线 `poll --ack`；若 CK3、主屏幕或 Steam 在线会话被其他任务占用，只按 10 分钟间隔轮询，不启动 CK3。
+- 使用排他 launch lock、隔离 `-userdir`、固定源码树 runtime copy、外置 fixture 和仓库既有 bridge DLL/injector。
+- 原生 MCP snapshot/command 是状态与动作的首选证据；OCR 只用于玩家可见窗口、按钮和地图画面，不用来猜内部 title/council/variable 状态。
+- 每次 attempt 使用新的 append-only run 目录；RED 不覆盖、不删除。退出时回收 CK3 进程树、释放槽位并证明真实 source/runtime 与保护存储未改写。
 
-- 忠臣：尊王派，设置可解释的硬留事实；记录其角色 ID、主头衔对象、title key、显示/自定义名称、直属领主和至少一名下级封臣。
-- 叛臣：尊王派，设置可解释的硬叛事实。
-- 对照：非尊王派直属封臣。
+### 4.2 单次严格链
 
-通过原生 situation phase API 切入群雄割据，并由真实 `tgp_dynastic_cycle.0081` 调用产品覆写。必须在 paused snapshot / fixture marker / 日志中证明：
+同一条真实 CK3 链必须按顺序出现 31 个严格 marker，并完成：
 
-- 忠臣的 `rmtm_loyalty_outcome=stay` 与原因已保存；叛臣为 `defect`；每人只结算一次。
-- 忠臣仍以旧天子为直属/最高领主，原下级封臣仍在其树下；其主头衔对象、title key、显示名称与夹具设置的自定义名称前后一致。
-- 忠臣即使被压到原版弱势王国阈值以下，王国头衔也没有被销毁或换号。
-- 叛臣和非尊王派对照脱离旧天子并继续原版割据重组；没有被忠臣领袖意外拉回。
-- 旧天子只失去 `h_china`，保留个人领地、其他头衔与“后＋原朝号”空法理霸权；一期 50%/51%、决议可见性、宣称复辟及后朝销毁断言继续 GREEN。
-- 裂解结算后的“人心向背”总结事件立即可见，文案与实际忠/叛结果一致。
+1. 确认 1066 大宋天子、`h_china`、王朝循环和九席原班大臣 exact identity。
+2. 进入群雄割据，确认旧天子只失去 `h_china`，仍亲自持有受控伯爵领并取得唯一空法理后朝霸权。
+3. 证明必留忠臣仍直属旧天子、一次性留朝原因正确、主头衔／显示名称不变、间接封臣树完整；必叛尊王诸侯和普通对照诸侯独立。
+4. 证明后朝具有 `single_heir_succession_law` 与 `current_heir`；九席仍为群雄割据前的 exact incumbents，唯一官署 entitlement 指向该后朝。
+5. 证明只有两名本轮实际释放者的主头衔绑定确切后朝；通过实际 `offer_vassalization_interaction` 引擎路径向二人提议并确认二人即时拒绝、保持独立。
+6. 切换为后朝主继承人并让旧君真实死亡；确认同一后朝、忠臣主头衔与封臣树、受控个人伯爵领、唯一官署 entitlement 和九名原班大臣全部由新君体系承接。
+7. fixture 只把正式 1825 日 script value 覆写为 1 日；原生 MCP 以速度 1 推进并证明两项 title-bound 变量自然到期，随后重新暂停。
+8. 继续回归 50% 不足、51% 达标、【宣称天命】不可用、【宣称复辟】可用、原版天命效果完成及后朝销毁。
 
-### 4.2 规则合同回归
+### 4.3 四期平衡证据边界
 
-- “誓死尊王”与“原版群雄割据”由 dispatcher、默认值、分支排除与锁定原版副本的静态合同覆盖；一期已有原版兼容实机基线。0.2.0 不把这两项表述成另跑的二期独立 live campaign。
-- 非 AI 候选人的 50 分确定性分界由表驱动合同覆盖；公开文案明确这不是多人交互选择界面。
-- 本期真实 CK3 主矩阵聚焦默认【人心离散】，并在同一原版事件链中同时证明硬留、硬叛、非尊王派对照和一期复辟回归。
+- L0 的 12 个向量负责精确证明被删除的身份优惠和未改变的原版项目；L1 的两个真实目标负责证明 engine 实际拒绝，而非只验证自造脚本条件。
+- 本版本不把 fixture 的两个受控目标冒充“三个自然局首年宏观统计”。若另行执行自然样本，人数、中华法理领土百分点、兵力与复辟状态须独立列入报告；缺少这类样本时，公开结论只能是“修复即时批量归附的已定位公式与受控复现”，不能宣称所有随机地图首年都不超过某一百分比。
+- 五年机制是软性 `-50`，不是硬禁。静态极端向量必须保留堆叠好感、法理、军力和外交经营后仍可接受的路线。
 
-### 4.3 发布后平衡观察（不阻断 0.2.0）
+## 5. 正式构建、发布与 L3
 
-后续可在不人为设置忠叛条件的自然大宋候选人上记录候选人数、硬叛/硬留/概率池人数、每人分数与最终结果。15%–40% 的叛离率只是观察目标，不是硬编码门禁；样本过小时只报告原始人数，不伪造统计显著性。
+1. 源码树 L1 GREEN 后更新 README、Workshop BBCode、0.4.0 Change Notes 与验收报告；真实游戏截图必须来自 GREEN CK3 run，生成图不得冒充实机。
+2. 同步最新 `origin/master` 时只允许 `fetch` + `rebase`；复测后把实现普通 fast-forward push 到 `master`，禁止 merge、force-push。
+3. 从 exact `master` 建立 `reclaim-motherland-v0.4.0` tag，再从 tag 生成 deterministic staging/ZIP；canonical 内层 descriptor 保持无 `remote_file_id`。
+4. 上传同一 Workshop item `3798404599`，整段替换入库 BBCode，并使用入库 `workshop/reclaim_the_motherland_change_notes_0.4.0.txt` 作为 Change Notes。
+5. 通过匿名公开 API/页面逐项回读 item ID、标题、可见性、描述正文和最新 Change Notes；成功上传回执本身不算完成。
+6. 把旧订阅缓存移动到可恢复发布证据目录，重新下载全新缓存并按正式 manifest 逐文件严格核对；不得把本地 staging 当 fresh cache。
+7. 从全新缓存重跑同一关键 31-marker MCP-first L3；关闭 CK3，把 Steam 恢复 Offline Mode，并再次证明资源释放。
+8. 实际上传成功后才写 `docs/release-changelogs/reclaim-motherland/0.4.0.md` 的最终发布事实，提交、推送 tag/changelog，并等待 exact master SHA 官方 CI 终态。
 
-高好感/高合法性/低相对军力与低好感/低合法性/高相对军力两个极端样本列入发布后权重调参。0.2.0 的发布结论只声明确定性机制和受控场景，不声明自然局平均值；硬叛优先于硬留仍由静态合同和受控 fixture 保证。
+## 6. 验收报告必填字段
 
-### 4.4 MCP、画面与清理
+`acceptance-report.md` 至少记录：
 
-- CK3 排他槽通过仓库借用机制获取；若被占用则等待，不抢占、不终止他人进程。
-- 所有交互先取 MCP readiness 和 paused snapshot；UI 只用于 MCP 无法直接触达的真实产品入口。
-- 宣传/工坊实机图在关闭验收专用窗口后拍摄。地图镜头必须由原生 MCP 定位到大宋首都 `b_kaifeng`（开封），并保存 camera settled 回读；不得出现意大利地名或验收字样。
-- 结束时 CK3 进程树、隔离 userdir 和独占槽均清理；源码/runtime 字节、真实用户存档与保护存储不被改写。
-- `error.log`、`gui_warnings.log`、`database_conflicts.log` 中任何产品解析/运行错误、重复 key 或未清理进程均为 RED。
+- source/master/tag/Workshop 四重身份、当前与上一公开版本；
+- 全部 L0 命令、结果、用例数、35 文件 manifest/ZIP/thumbnail SHA-256；
+- `open_kaishek` 与 CK3 exact provenance、适用与不支持边界；
+- 每个保留 RED attempt 的路径、报告哈希、失败标记、根因与修复；
+- 最终 source L1 与 fresh-cache L3 的绝对路径、execution ID、wrapper/cell report SHA-256、时长、slot wait、MCP readiness、31 marker 与 diagnostics；
+- 后朝 title object／law／heir、忠臣封臣树、个人伯爵领、官署 entitlement、九席 exact incumbents、两个真实拒绝、定时到期、50%/51% 与复辟断言；
+- 九语审核边界、四个 override key、旧割据存档无法追溯补标的限制；
+- 上传回执、公开 item/Change Notes 精确回读、全新缓存严格核对、Steam Offline Mode 与最终任务总线释放证据。
 
-## 5. 发布与 L3 fresh-cache
+## 7. 当前执行记录
 
-1. 在 exact `master` commit/tag 上生成正式 staging，冻结 manifest、ZIP、thumbnail、BBCode 与 Steam Change Notes 的字节和 SHA-256。
-2. 只使用 staging 上传同一 Workshop item `3798404599`；`remote_file_id` 只写外层 launcher descriptor/sidecar。
-3. 匿名读取公开 changelog 页面，找到本次条目并在 HTML 解码、换行归一后逐字复核 Change Notes 的字符数、行数与 SHA-256。仅 `EResult=1` 不算完成。
-4. 把旧订阅缓存完整移动到可恢复备份，再由 Steam 重新下载；对 strict-verified 数字 cache leaf 执行 32/32 精确核对。内层 descriptor 可以是正式 canonical 字节，也可以只多出唯一且正确的末行 `remote_file_id`。
-5. 对 fresh cache 重跑与 4.1 相同的 MCP-first 核心矩阵。公开页面复核标题、版本、可见性、Gameplay 标签、thumbnail、BBCode 和代表性真实游戏截图。
-6. 上传后从 exact tag 重建 staging，恢复无 ID 的 canonical release tree；新增 `docs/release-changelogs/reclaim-motherland/0.2.0.md` 并提交、推送到 `master`。
-7. 把 Steam 恢复到项目规定的离线状态，释放 CK3 槽和任务登记。
-
-## 6. 最终报告字段
-
-`docs/acceptance-report.md` 至少记录：源码/tag/Workshop 身份，全部 L0 命令与结果，`open_kaishek` provenance，L1/L3 artifact 绝对路径及 `report.json` SHA-256，MCP readiness 和 slot 等待，二期三角色受控前后断言，32 文件 manifest/ZIP/thumbnail/fresh-cache 哈希，九语审核边界，Change Notes 冻结值与匿名精确回读，公开页面/截图复核，以及所有保留 RED attempt 与已知限制。
-
-## 7. 最终执行结果
-
-- L0：13/13 合同 GREEN（另有 detached worktree 的原版副本显式 skip）、10/10 构建测试 GREEN、32 文件九语静态校验与双构建可复现 GREEN。
-- 源码树 L1：`R0004` wrapper/cell GREEN，20 个顺序标记，项目 diagnostics 为 0；忠臣【青徐路】原名、头衔和封臣树保持，叛臣脱离，【人心向背】与一期复辟全链通过。
-- Workshop：item `3798404599` 已更新；公开 5,446 字描述与入库 BBCode 精确一致，Change Notes entry `1789251577` 与入库 508 字/14 行文本精确一致。
-- Fresh cache：32/32 文件严格匹配正式 manifest；`R0007` wrapper/cell GREEN，MCP readiness GREEN，保护存储未变化，CK3 进程树和隔离 userdir 已清理。
-- 完整身份、哈希与 RED attempt 见 `acceptance-report.md` 和 `docs/release-changelogs/reclaim-motherland/0.2.0.md`。
+- 已完成：运行时与 fixture 实现；18 项静态合同、九语/35 文件静态校验、10 项构建测试与 deterministic 双构建 GREEN；产品/fixture `open_kaishek` parser root scan GREEN。
+- 已保留：`R0008-source` 为 RED。MCP readiness 与四期 title binding 已通过；失败暴露 title law 在无持有者时过早添加、销毁 `h_china` 后才补官导致原版 liege 无 holder，以及 ministry trigger 嵌套 scope 错误。三项根因均已作窄修复，RED 目录没有覆盖。
+- 已保留：`R0009-source` 为 RED。继承法／继承人、个人伯爵领、四期 title binding 与两次真实附庸拒绝均已通过；九席和忠臣主头衔／封臣树失败。日志证明九个 landless ministry title 被误当普通弱势帝国头衔释放、裁剪，随后原版官职继承把同一宰相连续塞入多个席位；批量补缺又把忠臣诸侯选为大臣并按原版规则上收其封臣树。当前窄修复显式保护未叛现任、只清退明确叛离者并把真实空缺交回正常任免。
+- 待完成：修复后的源码树 L1、新真实截图（若可清晰表现三/四期）、正式构建、Workshop 上传、公开回读、全新缓存 L3、changelog/tag/master push 与官方 CI。

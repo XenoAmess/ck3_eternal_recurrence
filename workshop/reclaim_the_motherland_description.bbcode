@@ -3,7 +3,7 @@
 [b]The Mandate may be lost. The dynasty need not vanish with it.[/b]
 [b]天命可以失去，王朝不必随之湮灭。[/b]
 
-Version 0.2.0 · CK3 1.19.0.6 · All Under Heaven required
+Version 0.4.0 · CK3 1.19.0.6 · All Under Heaven required
 
 [h1]A New Default Rule / 新增默认规则[/h1]
 
@@ -23,6 +23,23 @@ A second rule, “The Choice of the Loyalists,” defaults to “Divided Hearts.
 [*]Defectors and every other direct vassal break away and continue through vanilla Chaos reorganization. / 反叛的尊王诸侯与其他直属封臣脱离，并继续按原版群雄割据逻辑重组。
 [/list]
 
+[h1]The Later Dynasty and Its Court / 后朝与旧朝廷[/h1]
+
+[list]
+[*]The Later-Dynasty Hegemony now uses single-heir succession and follows the ruler's primary heir. Existing Later titles from older saves are migrated idempotently when loaded. / 后朝霸权现采用单继承人头衔法并跟随主继承人；旧版存档中的既有后朝会在加载时幂等补齐继承合同。
+[*]When the former emperor dies, the same Later title and the loyalist realm beneath it pass to the primary heir. Other personal titles continue to follow the character's normal succession rules. / 旧君驾崩后，同一后朝头衔及其下的忠臣封臣树由主继承人接续；其他个人头衔仍按角色原有继承规则处理。
+[*]The nine central ministries continue under the most recent Later Dynasty. Eligible incumbents who remain in the realm keep their exact offices; ministers who explicitly defect lose office, while genuine vacancies return to the normal appointment flow instead of triggering a wholesale reshuffle during the shattering. / 最近失去天命的后朝继续保有三省六部九席；仍在旧朝且合资格的原班大臣原位留任，明确叛离者失去官职，真实空缺交回原版任免流程，不在裂解事务中批量洗牌。
+[*]This continuity does not preserve the formal Grand Secretariat power-sharing system, the Mandate, or privileges reserved for the holder of the Chinese Hegemony. / 这项延续不保留正式中书门下权力分享制度、天命或中华霸权持有者专属特权。
+[/list]
+
+[h1]No Instant Diplomatic Reunification / 割据不再顷刻归附[/h1]
+
+A Later Dynasty is no longer treated as the reigning Chinese Hegemony by Offer Vassalization. It loses the special celestial rank-gap, Hegemony, and high-tier-ruler exemptions that caused whole groups of warlords to accept immediately.
+后朝在【提议附庸】中不再被误当成现任中华霸权，不再获得天朝等级差、霸权身份及高阶诸侯拒绝豁免等现任霸权待遇。
+
+Direct vassals actually released by this shattering carry a title-bound “Recently Independent” memory of that exact Later Dynasty for five years. Its holder receives a visible -50 acceptance reason against vassalization by that dynasty; changing rulers cannot bypass it, and it expires naturally. This is a soft political resistance, not a hard ban: patient diplomacy remains viable.
+本轮群雄割据中由该后朝实际释放的直属诸侯，其主头衔会保留五年【新近自立】记忆。期间面对该后朝的附庸提议会出现一项公开的 -50 接受度；双方换君不能绕过，期满自然消失。这是短期政治抗拒，并非硬性禁止，长期经营仍可走外交统一路线。
+
 [h1]Proclaim the Restoration / 宣称复辟[/h1]
 
 A Later-Dynasty holder cannot use the original “Claim the Mandate” decision. During Chaos, once the restorer controls a majority of the Chinese Hegemony's de-jure counties—currently 51%, including qualifying tributary land—“Proclaim the Restoration” becomes available.
@@ -31,14 +48,15 @@ A Later-Dynasty holder cannot use the original “Claim the Mandate” decision.
 Restoration completes the same founding of a new dynasty, submission of the warlords, and closure of the Dynastic Cycle as Claim the Mandate; the Later-Dynasty name then passes into history.
 宣称复辟后，新朝建立、群雄归附与王朝循环收束均与【宣称天命】一致；后朝之号随即归入历史。
 
-[h1]0.2.0 更新记录[/h1]
+[h1]0.4.0 更新记录[/h1]
 
 [list]
-[*]新增【尊王诸侯的抉择】规则，默认【人心离散】，并提供【誓死尊王】一期兼容项。
-[*]尊王派直属封臣新增必叛、必留与一次性概率判定；判定结果在头衔和封臣关系变化前冻结。
-[*]最终留下的忠臣不再经过原版弱势王国/帝国裁剪与改国号入口，原主头衔、国号和封臣树保持不变。
-[*]新增群雄割据后的【人心向背】总结事件，并补齐九种发布语言。
-[*]一期后朝、51% 原版门槛、宣称复辟与后朝销毁流程保持不变。
+[*]修复后朝霸权死亡后无法可靠传给主继承人的问题，并为旧版后朝存档增加幂等迁移。
+[*]旧君驾崩后，后朝头衔与留朝忠臣封臣树继续由主继承人统领。
+[*]后朝延续三省六部九席：留朝合资格的原班大臣不动，随割据者离朝的大臣离任，只补空缺。
+[*]修正后朝被和平附庸公式误当成现任中华霸权的问题。
+[*]本轮实际脱离的直属诸侯获得五年、绑定双方头衔且可见的【新近自立】-50 接受度。
+[*]二期【人心离散】、忠臣国号与封臣树保护、51% 原版门槛及【宣称复辟】保持不变。
 [/list]
 
 [h1]Real CK3 Evidence / 真实游戏画面[/h1]
@@ -57,8 +75,8 @@ Restoration completes the same founding of a new dynasty, submission of the warl
 
 [h1]Verification / 验收[/h1]
 
-The release uses a reproducible 32-file staging tree. The 0.2 acceptance matrix additionally verifies a guaranteed loyalist retaining the exact “Qingxu Circuit” title and subtree, a disloyal Pro-Hegemon lord rebelling, the one-shot outcome records, and the player-facing reckoning; all 0.1 restoration assertions remain in the same MCP-first CK3 1.19.0.6 run.
-正式版本使用可复现的 32 文件 staging。0.2 验收矩阵新增验证：必留忠臣原样保住【青徐路】头衔与封臣树、不忠的尊王诸侯确实反叛、一次性判定记录及玩家可见的结果总结；0.1 版全部复辟断言仍在同一条 MCP-first CK3 1.19.0.6 实机链中回归。
+The release uses a reproducible 35-file staging tree. Its MCP-first CK3 1.19.0.6 matrix exercises Chaos, loyalist continuity, Later-title inheritance through an actual ruler death, the same nine ministry incumbents before and after succession, two real Offer Vassalization refusals, timed expiry of the title-bound resistance, the 51% threshold, and restoration.
+正式版本使用可复现的 35 文件 staging。MCP-first CK3 1.19.0.6 矩阵实际执行群雄割据、忠臣封臣树延续、旧君死亡后的同一后朝继承、继承前后九席原班大臣一致、两名真实割据诸侯拒绝即时附庸、头衔绑定抗拒的定时到期、51% 门槛及宣称复辟。
 
 [h1]Localization / 本地化[/h1]
 
@@ -69,8 +87,8 @@ The seven additional release languages were generated as MiniMax-M3 candidates a
 
 [h1]Compatibility / 兼容性[/h1]
 
-Requires CK3 1.19.0.6 and All Under Heaven. Start a new single-player game. In multiplayer, a human Pro-Hegemon vassal uses the same frozen factors and a public deterministic 50-point boundary because the atomic shattering effect cannot pause for several clients. This mod overrides exactly two vanilla keys: [code]tgp_chaos_shattering_effect[/code] and [code]situation_dynastic_cycle_claim_mandate_decision[/code]. Mods replacing either key may conflict by load order.
-需要 CK3 1.19.0.6 与《溥天之下 / All Under Heaven》，推荐新开单人存档。多人游戏中，由于裂解过程无法暂停并逐个等待多名客户端，人类尊王封臣使用同一套冻结因素及公开的 50 分确定性分界。本 mod 只覆写两个原版 key：[code]tgp_chaos_shattering_effect[/code] 与 [code]situation_dynastic_cycle_claim_mandate_decision[/code]；其他 mod 若覆写其中之一，可能发生加载顺序冲突。
+Requires CK3 1.19.0.6 and All Under Heaven. Start a new single-player game. Existing Later titles gain the succession migration, but an old save already inside Chaos cannot reconstruct which lords were released by this mod, so the five-year memory applies only to new shatterings after the update. In multiplayer, a human Pro-Hegemon vassal uses the same frozen factors and a public deterministic 50-point boundary because the atomic shattering effect cannot pause for several clients. This mod overrides four vanilla keys: [code]tgp_chaos_shattering_effect[/code], [code]situation_dynastic_cycle_claim_mandate_decision[/code], [code]tgp_has_access_to_ministry_trigger[/code], and [code]offer_vassalization_interaction[/code]. Mods replacing one of these keys may conflict by load order.
+需要 CK3 1.19.0.6 与《溥天之下 / All Under Heaven》，推荐新开单人存档。旧版既有后朝会获得继承迁移；但已经处于群雄割据的旧存档无法重建当时由本 mod 释放的精确名单，因此五年记忆只适用于更新后新发生的群雄割据。多人游戏中，由于裂解过程无法暂停并逐个等待多名客户端，人类尊王封臣使用同一套冻结因素及公开的 50 分确定性分界。本 mod 覆写四个原版 key：[code]tgp_chaos_shattering_effect[/code]、[code]situation_dynastic_cycle_claim_mandate_decision[/code]、[code]tgp_has_access_to_ministry_trigger[/code] 与 [code]offer_vassalization_interaction[/code]；其他 mod 若覆写其中之一，可能发生加载顺序冲突。
 
 [h1]Source / 源码[/h1]
 
