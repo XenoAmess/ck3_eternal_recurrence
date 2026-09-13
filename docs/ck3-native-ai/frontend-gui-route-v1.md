@@ -21,8 +21,8 @@ lobby --activate-frontend-ruler-designer-v1--> ruler_designer
 ruler_designer --activate-frontend-coat-of-arms-designer-v1--> coat_of_arms_designer
 ```
 
-前四段（截至 `ruler_designer`）均为 `production-live primitive`。最后一段已经由 live native tree 与原版 GUI 源码固定目标，
-实现为 `mcp-static-ready / live=false`；上层 Finish 仍不在当前闭环内。
+上述五段均为 `production-live primitive`。最后一段由 live native tree 与原版 GUI 源码固定目标，并由官方 MCP 的独立
+route/page 后置条件完成实机闭合；上层 Finish 仍不在当前闭环内。
 
 ## MCP 合同
 
@@ -178,5 +178,11 @@ exact 安装 EXE 后同一套测试为 `106 passed / 0 failed`，因此前者不
 据此新增的零输入 `ck3_activate_frontend_coat_of_arms_designer_v1()` 只允许上述固定 leaf，且必须独立观察 route
 `coat_of_arms_designer` 与可见 `coat_of_arms_page` 才返回 verified。rebase 到 exact `master` 后的 Release DLL 为
 2,702,848 bytes，SHA-256 `973B9EB1A4BAA926811CD06237A8B8173CC4459C7F9140221AFD45242E537095`；Python 普通/优化模式各 `11/11`、runner
-普通/优化模式各 `2/2`，原生套件为首次 100/106 加修正后失败六项 6/6，即等价 `106/106`。该最后一段仍为
-`mcp-static-ready / live=false`，下一次共享槽位可用时做一次受管 live，不以鼠标链代替。
+普通/优化模式各 `2/2`，原生套件为首次 100/106 加修正后失败六项 6/6，即等价 `106/106`。
+
+最终受管实机 `mcp-frontend-route-coa-page-live5.json` 已将这段提升为 `production-live primitive`（1,185,843 bytes，
+SHA-256 `6BE30B3C356CCE22D279FD1906BAFE6474451D7FFCB5EF2229E5B538A0106103`，源码 commit
+`c3f074a8f8f6717dd0a40f23b796c6d8a2d23881`）。官方 MCP 依次完成五段 route，最终独立观察到可见、enabled 的
+`coat_of_arms_page`（路径 `0/2`）、`dynasty_detail_input`（`0/2/0/0`）与 `dynasty_finish_button`（`0/2/1/1`）；
+所有 ACK、route/postcondition、native backend 与零 OCR/键盘/鼠标检查均为 true。Steam 保持离线，共享锁释放和受管 cleanup
+均为 GREEN，PID 19424 与 watchdog 已回收。该证据只证明进入原生家徽页，不证明上层角色设计器 Finish 或纹章持久化。
