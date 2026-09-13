@@ -566,6 +566,22 @@ def verify_protected_snapshot(
             )
 
 
+def normalized_policy_label(value: str) -> str:
+    """Normalize only decorative separators that OCR may omit or substitute."""
+
+    return re.sub(r"[\s|｜丨·・:：「」/\\]+", "", value)
+
+
+def find_policy_label(image, label: str) -> tuple[tuple[int, int], str] | None:
+    expected = normalized_policy_label(label)
+    for text, _, center, _ in acceptance.ocr_results(
+        image, acceptance.FULL_SCREEN_REGION
+    ):
+        if normalized_policy_label(text) == expected:
+            return center, text
+    return None
+
+
 def exercise_policy_selector_ui(artifacts: Path) -> dict[str, object]:
     """Exercise all six production policies through the native scroll list."""
 
@@ -586,14 +602,13 @@ def exercise_policy_selector_ui(artifacts: Path) -> dict[str, object]:
     )
     centers: dict[str, tuple[int, int]] = {}
     scroll_attempts: dict[str, int] = {}
+    observed_labels: dict[str, str] = {}
 
     def visible_option_center(image) -> tuple[int, int] | None:
         for _, label in option_labels:
-            center = acceptance.find_ocr_text(
-                image, label, acceptance.FULL_SCREEN_REGION, contains=False
-            )
-            if center is not None:
-                return center
+            match = find_policy_label(image, label)
+            if match is not None:
+                return match[0]
         return None
 
     # The controller may initially reveal the default at the bottom. Derive a
@@ -617,11 +632,11 @@ def exercise_policy_selector_ui(artifacts: Path) -> dict[str, object]:
         for attempt in range(9):
             acceptance.focus_ck3()
             image = acceptance.ImageGrab.grab()
-            center = acceptance.find_ocr_text(
-                image, label, acceptance.FULL_SCREEN_REGION, contains=False
-            )
-            if center is not None:
+            match = find_policy_label(image, label)
+            if match is not None:
+                center, observed = match
                 centers[key] = center
+                observed_labels[key] = observed
                 scroll_attempts[key] = attempt
                 image.save(artifacts / f"05_policy_selector_{key}.png")
                 break
@@ -682,6 +697,7 @@ def exercise_policy_selector_ui(artifacts: Path) -> dict[str, object]:
     return {
         "option_order": [key for key, _ in option_labels],
         "option_centers": {key: list(value) for key, value in centers.items()},
+        "observed_labels": observed_labels,
         "scroll_attempts": scroll_attempts,
         "interaction_samples": sorted(selected_for_gate),
         "selected_and_executed": "treasury_first_continue",
