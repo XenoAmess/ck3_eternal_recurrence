@@ -35,6 +35,8 @@ window = {
 			name = "zg361_scoreboard_panel" size = { 90% 90% } parentanchor = center widgetanchor = center alwaystransparent = no filter_mouse = all using = Window_Background using = Window_Decoration_Spike
 			vbox = {
 				using = Window_Margins spacing = 8
+				layoutpolicy_horizontal = expanding layoutpolicy_vertical = expanding
+				restrictparent_min = yes ignoreinvisible = yes
 				header_pattern = { layoutpolicy_horizontal = expanding blockoverride "header_text" { text = "zg361_scoreboard_title" } blockoverride "button_close" { name = "zg361_scoreboard_header_close" onclick = "[GetScriptedGui('zg361_scoreboard_detail_clear_gui').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]" onclick = "[GetVariableSystem.Clear('zg361_scoreboard_open')]" onclick = "[GetVariableSystem.Set('zg361_scoreboard_view', 'list')]" onclick = "[GetVariableSystem.Set('zg361_scoreboard_detail_tab', 'facts')]" shortcut = close_window } }
 				hbox = { layoutpolicy_horizontal = expanding
 					button_tab = { name = "zg361_scoreboard_tab_managed" layoutpolicy_horizontal = expanding visible = "[GetScriptedGui('zg361_scoreboard_managed_available_gui').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]" text = "zg361_scoreboard_tab_managed" onclick = "[GetVariableSystem.Set('zg361_scoreboard_tab', 'managed')]" onclick = "[GetVariableSystem.Set('zg361_scoreboard_view', 'list')]" onclick = "[GetVariableSystem.Set('zg361_scoreboard_detail_tab', 'facts')]" down = "[GetVariableSystem.HasValue('zg361_scoreboard_tab', 'managed')]" }
@@ -44,11 +46,13 @@ window = {
 				vbox = { name = "zg361_scoreboard_page_managed"
 					layoutpolicy_horizontal = expanding
 					layoutpolicy_vertical = expanding
+					restrictparent_min = yes
 					spacing = 8
 					visible = "[And(And(GetScriptedGui('zg361_scoreboard_managed_available_gui').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End), GetVariableSystem.HasValue('zg361_scoreboard_tab', 'managed')), Not(And(GetVariableSystem.HasValue('zg361_scoreboard_view', 'detail'), GetScriptedGui('zg361_scoreboard_detail_managed_gui').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End))))]"
 					scrollbox = {
 						name = "zg361_scoreboard_table_managed"
 						layoutpolicy_horizontal = expanding layoutpolicy_vertical = expanding
+						scissor = yes
 						scrollbarpolicy_horizontal = as_needed scrollbarpolicy_vertical = as_needed
 						scrollbar_horizontal = { using = Scrollbar_Horizontal }
 						scrollbar_vertical = { using = Scrollbar_Vertical }
@@ -3439,11 +3443,13 @@ window = {
 				vbox = { name = "zg361_scoreboard_page_received"
 					layoutpolicy_horizontal = expanding
 					layoutpolicy_vertical = expanding
+					restrictparent_min = yes
 					spacing = 8
 					visible = "[And(And(GetScriptedGui('zg361_scoreboard_received_available_gui').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End), GetVariableSystem.HasValue('zg361_scoreboard_tab', 'received')), Not(And(GetVariableSystem.HasValue('zg361_scoreboard_view', 'detail'), GetScriptedGui('zg361_scoreboard_detail_received_gui').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End))))]"
 					scrollbox = {
 						name = "zg361_scoreboard_table_received"
 						layoutpolicy_horizontal = expanding layoutpolicy_vertical = expanding
+						scissor = yes
 						scrollbarpolicy_horizontal = as_needed scrollbarpolicy_vertical = as_needed
 						scrollbar_horizontal = { using = Scrollbar_Horizontal }
 						scrollbar_vertical = { using = Scrollbar_Vertical }
@@ -6836,6 +6842,7 @@ window = {
 				vbox = {
 					name = "zg361_scoreboard_detail_panel"
 					layoutpolicy_horizontal = expanding layoutpolicy_vertical = expanding spacing = 10 margin = { 20 8 }
+					restrictparent_min = yes ignoreinvisible = yes
 					visible = "[And(GetVariableSystem.HasValue('zg361_scoreboard_view', 'detail'), Or(And(GetVariableSystem.HasValue('zg361_scoreboard_tab', 'managed'), GetScriptedGui('zg361_scoreboard_detail_managed_gui').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)), And(GetVariableSystem.HasValue('zg361_scoreboard_tab', 'received'), GetScriptedGui('zg361_scoreboard_detail_received_gui').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End))))]"
 					hbox = { layoutpolicy_horizontal = expanding spacing = 14
 						button_standard = { name = "zg361_scoreboard_detail_back" size = { 118 44 } text = "zg361_scoreboard_detail_back" onclick = "[GetScriptedGui('zg361_scoreboard_detail_clear_gui').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]" onclick = "[GetVariableSystem.Set('zg361_scoreboard_view', 'list')]" onclick = "[GetVariableSystem.Set('zg361_scoreboard_detail_tab', 'facts')]" }
@@ -6855,11 +6862,13 @@ window = {
 					vbox = {
 						name = "zg361_scoreboard_detail_page_facts"
 						layoutpolicy_horizontal = expanding layoutpolicy_vertical = expanding spacing = 8
+						restrictparent_min = yes
 						visible = "[GetVariableSystem.HasValue('zg361_scoreboard_detail_tab', 'facts')]"
 						text_label_center = { layoutpolicy_horizontal = expanding text = "zg361_scoreboard_detail_facts_hint" default_format = "#weak" using = Font_Size_Small }
 						scrollbox = {
 							name = "zg361_scoreboard_detail_scroll_facts"
 							layoutpolicy_horizontal = expanding layoutpolicy_vertical = expanding
+							scissor = yes
 							scrollbarpolicy_horizontal = as_needed scrollbarpolicy_vertical = as_needed
 							scrollbar_horizontal = { using = Scrollbar_Horizontal }
 							scrollbar_vertical = { using = Scrollbar_Vertical }
@@ -6988,11 +6997,13 @@ window = {
 					vbox = {
 						name = "zg361_scoreboard_detail_page_peer"
 						layoutpolicy_horizontal = expanding layoutpolicy_vertical = expanding spacing = 8
+						restrictparent_min = yes
 						visible = "[GetVariableSystem.HasValue('zg361_scoreboard_detail_tab', 'peer')]"
 						text_label_center = { layoutpolicy_horizontal = expanding text = "zg361_scoreboard_detail_peer_hint" default_format = "#weak" using = Font_Size_Small }
 						scrollbox = {
 							name = "zg361_scoreboard_detail_scroll_peer"
 							layoutpolicy_horizontal = expanding layoutpolicy_vertical = expanding
+							scissor = yes
 							scrollbarpolicy_horizontal = as_needed scrollbarpolicy_vertical = as_needed
 							scrollbar_horizontal = { using = Scrollbar_Horizontal }
 							scrollbar_vertical = { using = Scrollbar_Vertical }
@@ -7088,11 +7099,13 @@ window = {
 					vbox = {
 						name = "zg361_scoreboard_detail_page_quota"
 						layoutpolicy_horizontal = expanding layoutpolicy_vertical = expanding spacing = 8
+						restrictparent_min = yes
 						visible = "[GetVariableSystem.HasValue('zg361_scoreboard_detail_tab', 'quota')]"
 						text_label_center = { layoutpolicy_horizontal = expanding text = "zg361_scoreboard_detail_quota_hint" default_format = "#weak" using = Font_Size_Small }
 						scrollbox = {
 							name = "zg361_scoreboard_detail_scroll_quota"
 							layoutpolicy_horizontal = expanding layoutpolicy_vertical = expanding
+							scissor = yes
 							scrollbarpolicy_horizontal = as_needed scrollbarpolicy_vertical = as_needed
 							scrollbar_horizontal = { using = Scrollbar_Horizontal }
 							scrollbar_vertical = { using = Scrollbar_Vertical }
@@ -7231,11 +7244,13 @@ window = {
 					vbox = {
 						name = "zg361_scoreboard_detail_page_audit"
 						layoutpolicy_horizontal = expanding layoutpolicy_vertical = expanding spacing = 8
+						restrictparent_min = yes
 						visible = "[GetVariableSystem.HasValue('zg361_scoreboard_detail_tab', 'audit')]"
 						text_label_center = { layoutpolicy_horizontal = expanding text = "zg361_scoreboard_detail_audit_hint" default_format = "#weak" using = Font_Size_Small }
 						scrollbox = {
 							name = "zg361_scoreboard_detail_scroll_audit"
 							layoutpolicy_horizontal = expanding layoutpolicy_vertical = expanding
+							scissor = yes
 							scrollbarpolicy_horizontal = as_needed scrollbarpolicy_vertical = as_needed
 							scrollbar_horizontal = { using = Scrollbar_Horizontal }
 							scrollbar_vertical = { using = Scrollbar_Vertical }
@@ -7498,10 +7513,12 @@ window = {
 				}
 				vbox = { name = "zg361_scoreboard_page_system"
 					layoutpolicy_horizontal = expanding layoutpolicy_vertical = expanding spacing = 8
+					restrictparent_min = yes
 					visible = "[And(GetScriptedGui('zg361_mechanism_ledger_available_gui').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End), GetVariableSystem.HasValue('zg361_scoreboard_tab', 'system'))]"
 					scrollbox = {
 						name = "zg361_scoreboard_ledger_scroll"
 						layoutpolicy_horizontal = expanding layoutpolicy_vertical = expanding
+						scissor = yes
 						scrollbarpolicy_horizontal = as_needed scrollbarpolicy_vertical = as_needed
 						scrollbar_horizontal = { using = Scrollbar_Horizontal }
 						scrollbar_vertical = { using = Scrollbar_Vertical }

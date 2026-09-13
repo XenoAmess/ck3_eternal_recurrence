@@ -1262,6 +1262,7 @@ class ScoreboardSnapshotTests(unittest.TestCase):
             )[0]
             self.assertIn("layoutpolicy_horizontal = expanding", body)
             self.assertIn("layoutpolicy_vertical = expanding", body)
+            self.assertIn("scissor = yes", body)
             self.assertIn("scrollbarpolicy_horizontal = as_needed", body)
             self.assertIn("scrollbarpolicy_vertical = as_needed", body)
             self.assertIn(
@@ -1280,6 +1281,31 @@ class ScoreboardSnapshotTests(unittest.TestCase):
         self.assertEqual(gui.count("scrollbarpolicy_vertical = as_needed"), 7)
         self.assertEqual(gui.count("using = Scrollbar_Horizontal"), 7)
         self.assertEqual(gui.count("using = Scrollbar_Vertical"), 7)
+
+        panel_layout = gui.split(
+            'name = "zg361_scoreboard_panel"', 1
+        )[1].split("header_pattern = {", 1)[0]
+        self.assertIn(
+            "layoutpolicy_horizontal = expanding layoutpolicy_vertical = expanding",
+            panel_layout,
+        )
+        self.assertIn("restrictparent_min = yes ignoreinvisible = yes", panel_layout)
+
+        detail_layout = gui.split(
+            'name = "zg361_scoreboard_detail_panel"', 1
+        )[1][:320]
+        self.assertIn("restrictparent_min = yes ignoreinvisible = yes", detail_layout)
+
+        bounded_pages = [
+            "zg361_scoreboard_page_managed",
+            "zg361_scoreboard_page_received",
+            "zg361_scoreboard_page_system",
+            *(f"zg361_scoreboard_detail_page_{page}" for page in DETAIL_PAGES),
+        ]
+        for name in bounded_pages:
+            with self.subTest(page=name):
+                page_layout = gui.split(f'name = "{name}"', 1)[1][:320]
+                self.assertIn("restrictparent_min = yes", page_layout)
 
     def test_three_by_three_geometry_and_modal_blocking_contract(self) -> None:
         gui = outputs()[MOD_ROOT / "gui" / "zg361_scoreboard.gui"].decode(
