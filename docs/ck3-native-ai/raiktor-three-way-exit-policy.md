@@ -625,3 +625,10 @@ event to disappear while the same paused war remains. Normal and optimized
 focused tests pass `14 passed / 7 subtests` per mode. This keeps the current
 event acknowledgement separate from the later white-peace observation and
 prevents a successful event click from being counted as GEN-034-C evidence.
+
+The R647 bundle passes no-launch admission under the registered-event runner.
+The report (`228692C3...AD65`) binds checkpoint `01CAACED...49B2`, driver state
+`FDAA47C6...48D9`, exact executable, DLL, injector, product tree and requested
+CharacterID/WarID/date while proving CK3 was not started and no profile was
+prepared. The owner has temporarily prohibited CK3 use, so this admitted action
+remains queued and no new CK3 round exists.

@@ -1483,3 +1483,17 @@ one recommendation, one action and the bounded postwar/cold-restore checks.
 - This runner reuses the existing official MCP and versioned registry. It adds
   no public protocol or native ABI and does not affect open_kaishek. GEN-034
   stays `2/4` pending one bounded live use on the R647 unresolved checkpoint.
+
+## GEN-034-C registered-event no-launch admission (2026-09-14)
+
+- The path/hash/identity preflight is GREEN for the R647 unresolved checkpoint
+  (`01CAACED...49B2`) and its current driver state (`FDAA47C6...48D9`). It also
+  binds the exact executable, DLL, injector, product tree, CharacterID `29829`,
+  WarID `33554473` and date `53187648`.
+- The 3,462-byte no-launch report is
+  `Z:\ck3_mod_rewrite_process_assets\g2-gen034c-event-continuation-preflight-5ef1cc7.json`,
+  SHA-256 `228692C3518AAA37A1F14CB2AF75A669A45A533C30F0C3CB6EDAB80DCEE3AD65`.
+  It proves `ck3_started=false` and `profile_prepared=false`.
+- The owner has placed a temporary CK3-use hold. This preflight creates no CK3
+  round and consumes no screen resource. GEN-034 remains `2/4`; continue with
+  offline implementation and retain the admitted live command for later.
