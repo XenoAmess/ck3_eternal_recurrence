@@ -166,6 +166,17 @@ async def _mcp_sequence(
 ) -> dict[str, object]:
     deadline = time.monotonic() + timeout
     calls: list[dict[str, object]] = []
+
+    def red(reason: str, **evidence: object) -> dict[str, object]:
+        return {
+            "mcp_sdk": "official-python-client",
+            "calls": calls,
+            "checks": {},
+            "error": reason,
+            "ok": False,
+            **evidence,
+        }
+
     async with Client(create_server(driver)) as client:
         listed = await client.list_tools()
         tools = {tool.name: tool for tool in listed.tools}
@@ -176,13 +187,19 @@ async def _mcp_sequence(
             if name in tools
         }
         if not required <= set(tools):
-            raise RuntimeError("frontend MCP tools are not registered")
+            return red(
+                "frontend MCP tools are not registered",
+                registered_tools=sorted(tools),
+            )
         if any(
             schema.get("required", []) != []
             or schema.get("additionalProperties") is not False
             for schema in schemas.values()
         ):
-            raise RuntimeError("frontend MCP tools are not closed zero-input tools")
+            return red(
+                "frontend MCP tools are not closed zero-input tools",
+                tool_schemas=schemas,
+            )
 
         capability_call: dict[str, object] | None = None
         while time.monotonic() < deadline:
@@ -203,7 +220,11 @@ async def _mcp_sequence(
                 break
             await asyncio.sleep(0.25)
         else:
-            raise RuntimeError("native bridge did not advertise frontend MCP capabilities")
+            return red(
+                "native bridge did not advertise frontend MCP capabilities",
+                tool_schemas=schemas,
+                last_capability=_structured(capability_call or {}),
+            )
 
         before_call: dict[str, object] | None = None
         before: dict[str, object] = {}
@@ -215,7 +236,12 @@ async def _mcp_sequence(
                 break
             await asyncio.sleep(0.25)
         else:
-            raise RuntimeError(f"main_menu route was not observed: {before!r}")
+            return red(
+                "main_menu route was not observed",
+                tool_schemas=schemas,
+                capabilities=_structured(capability_call or {}),
+                last_route=before,
+            )
 
         action_call = await _call(client, ACTIVATE_TOOL)
         calls.append(action_call)
