@@ -13,7 +13,7 @@
     }
 
     is_valid = {
-        is_ai = no
+        always = yes
     }
 
     widget = {
@@ -68,52 +68,80 @@
     }
 
     effect = {
-        custom_tooltip = enable_auto_build_text
-        remove_character_flag = aub_funding_treasury_only
-        remove_character_flag = aub_funding_personal_only
-        remove_character_flag = aub_pause_when_over_domain_limit
         if = {
             limit = {
-                OR = {
-                    scope:aub_policy_treasury_only_pause_choice = yes
-                    scope:aub_policy_treasury_only_continue_choice = yes
-                }
+                scope:aub_policy_treasury_only_pause_choice = yes
             }
-            add_character_flag = aub_funding_treasury_only
-            custom_tooltip = aub_funding_treasury_only_desc
+            custom_tooltip = aub_policy_treasury_only_pause_confirm
         }
         else_if = {
             limit = {
-                OR = {
-                    scope:aub_policy_personal_only_pause_choice = yes
-                    scope:aub_policy_personal_only_continue_choice = yes
-                }
+                scope:aub_policy_treasury_only_continue_choice = yes
             }
-            add_character_flag = aub_funding_personal_only
-            custom_tooltip = aub_funding_personal_only_desc
+            custom_tooltip = aub_policy_treasury_only_continue_confirm
         }
-        else = {
-            custom_tooltip = aub_funding_treasury_first_desc
-        }
-        if = {
+        else_if = {
             limit = {
-                OR = {
-                    scope:aub_policy_treasury_only_pause_choice = yes
-                    scope:aub_policy_personal_only_pause_choice = yes
-                    scope:aub_policy_treasury_first_pause_choice = yes
-                }
+                scope:aub_policy_personal_only_pause_choice = yes
             }
-            add_character_flag = aub_pause_when_over_domain_limit
-            custom_tooltip = aub_over_domain_pause_desc
+            custom_tooltip = aub_policy_personal_only_pause_confirm
         }
-        else = {
-            custom_tooltip = aub_over_domain_continue_desc
+        else_if = {
+            limit = {
+                scope:aub_policy_personal_only_continue_choice = yes
+            }
+            custom_tooltip = aub_policy_personal_only_continue_confirm
         }
-        add_character_flag = enable_auto_build
-        # 经旧存档兼容入口建立或复用唯一的全局循环。
-        trigger_event = {
-            id = auto_build.0003
-            days = 1
+        else_if = {
+            limit = {
+                scope:aub_policy_treasury_first_pause_choice = yes
+            }
+            custom_tooltip = aub_policy_treasury_first_pause_confirm
+        }
+        else_if = {
+            limit = {
+                scope:aub_policy_treasury_first_continue_choice = yes
+            }
+            custom_tooltip = aub_policy_treasury_first_continue_confirm
+        }
+        hidden_effect = {
+            remove_character_flag = aub_funding_treasury_only
+            remove_character_flag = aub_funding_personal_only
+            remove_character_flag = aub_pause_when_over_domain_limit
+            if = {
+                limit = {
+                    OR = {
+                        scope:aub_policy_treasury_only_pause_choice = yes
+                        scope:aub_policy_treasury_only_continue_choice = yes
+                    }
+                }
+                add_character_flag = aub_funding_treasury_only
+            }
+            else_if = {
+                limit = {
+                    OR = {
+                        scope:aub_policy_personal_only_pause_choice = yes
+                        scope:aub_policy_personal_only_continue_choice = yes
+                    }
+                }
+                add_character_flag = aub_funding_personal_only
+            }
+            if = {
+                limit = {
+                    OR = {
+                        scope:aub_policy_treasury_only_pause_choice = yes
+                        scope:aub_policy_personal_only_pause_choice = yes
+                        scope:aub_policy_treasury_first_pause_choice = yes
+                    }
+                }
+                add_character_flag = aub_pause_when_over_domain_limit
+            }
+            add_character_flag = enable_auto_build
+            # 经旧存档兼容入口建立或复用唯一的全局循环。
+            trigger_event = {
+                id = auto_build.0003
+                days = 1
+            }
         }
     }
     
@@ -139,15 +167,17 @@ disable_auto_build = {
     }
 
     is_valid = {
-        is_ai = no
+        always = yes
     }
 
     effect = {
-		custom_tooltip = disable_auto_build_text
-        remove_character_flag = enable_auto_build
-        remove_character_flag = aub_funding_treasury_only
-        remove_character_flag = aub_funding_personal_only
-        remove_character_flag = aub_pause_when_over_domain_limit
+        custom_tooltip = disable_auto_build_text
+        hidden_effect = {
+            remove_character_flag = enable_auto_build
+            remove_character_flag = aub_funding_treasury_only
+            remove_character_flag = aub_funding_personal_only
+            remove_character_flag = aub_pause_when_over_domain_limit
+        }
     }
     
     ai_potential = {

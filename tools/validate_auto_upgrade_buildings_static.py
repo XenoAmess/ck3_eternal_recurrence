@@ -38,16 +38,28 @@ LOC_KEYS = {
     "aub_funding_treasury_first_desc",
     "aub_policy_treasury_only_pause",
     "aub_policy_treasury_only_pause_desc",
+    "aub_policy_treasury_only_pause_choice_tooltip",
+    "aub_policy_treasury_only_pause_confirm",
     "aub_policy_treasury_only_continue",
     "aub_policy_treasury_only_continue_desc",
+    "aub_policy_treasury_only_continue_choice_tooltip",
+    "aub_policy_treasury_only_continue_confirm",
     "aub_policy_personal_only_pause",
     "aub_policy_personal_only_pause_desc",
+    "aub_policy_personal_only_pause_choice_tooltip",
+    "aub_policy_personal_only_pause_confirm",
     "aub_policy_personal_only_continue",
     "aub_policy_personal_only_continue_desc",
+    "aub_policy_personal_only_continue_choice_tooltip",
+    "aub_policy_personal_only_continue_confirm",
     "aub_policy_treasury_first_pause",
     "aub_policy_treasury_first_pause_desc",
+    "aub_policy_treasury_first_pause_choice_tooltip",
+    "aub_policy_treasury_first_pause_confirm",
     "aub_policy_treasury_first_continue",
     "aub_policy_treasury_first_continue_desc",
+    "aub_policy_treasury_first_continue_choice_tooltip",
+    "aub_policy_treasury_first_continue_confirm",
     "aub_over_domain_pause_desc",
     "aub_over_domain_continue_desc",
     "disable_auto_build",
@@ -105,7 +117,7 @@ def localization_entries(value: str) -> dict[str, str]:
 
 
 def extract_block(value: str, name: str) -> str | None:
-    match = re.search(rf"(?m)^{re.escape(name)}\s*=\s*\{{", value)
+    match = re.search(rf"(?m)^\s*{re.escape(name)}\s*=\s*\{{", value)
     if match is None:
         return None
     depth = 0
@@ -224,7 +236,7 @@ def validate(
             errors.append(f"runtime loop contract missing: {fragment}")
     if combined.count("has_character_flag = enable_auto_build") < 5:
         errors.append("enable_auto_build compatibility flag is not fully wired")
-    if decisions.count("is_ai = no") < 4 or events.count("is_ai = no") < 4:
+    if decisions.count("is_ai = no") != 2 or events.count("is_ai = no") < 4:
         errors.append("human-player gates are incomplete")
     if "id = auto_build.0003" not in decisions:
         errors.append("enable decision does not enter the compatibility loop seed")
@@ -269,12 +281,12 @@ def validate(
                 if enable_decision.count(fragment) != 1:
                     errors.append(f"policy choice presentation drifted: {fragment}")
         for choice, count in (
-            ("aub_policy_treasury_only_pause_choice", 2),
-            ("aub_policy_treasury_only_continue_choice", 1),
-            ("aub_policy_personal_only_pause_choice", 2),
-            ("aub_policy_personal_only_continue_choice", 1),
-            ("aub_policy_treasury_first_pause_choice", 1),
-            ("aub_policy_treasury_first_continue_choice", 0),
+            ("aub_policy_treasury_only_pause_choice", 3),
+            ("aub_policy_treasury_only_continue_choice", 2),
+            ("aub_policy_personal_only_pause_choice", 3),
+            ("aub_policy_personal_only_continue_choice", 2),
+            ("aub_policy_treasury_first_pause_choice", 2),
+            ("aub_policy_treasury_first_continue_choice", 1),
         ):
             if enable_decision.count(f"scope:{choice} = yes") != count:
                 errors.append(f"policy choice projection count drifted: {choice}")
@@ -287,6 +299,38 @@ def validate(
                 errors.append(f"persistent policy flag is not set exactly once: {flag}")
             if enable_decision.count(f"remove_character_flag = {flag}") != 1:
                 errors.append(f"persistent policy flag is not normalized before enable: {flag}")
+        enable_effect = extract_block(enable_decision, "effect")
+        hidden_effect = (
+            extract_block(enable_effect, "hidden_effect")
+            if enable_effect is not None
+            else None
+        )
+        if enable_effect is None or hidden_effect is None:
+            errors.append("enable decision must contain one hidden implementation effect")
+        else:
+            visible_effect = enable_effect.replace(hidden_effect, "", 1)
+            for token in (
+                "add_character_flag",
+                "remove_character_flag",
+                "trigger_event",
+                "is_ai",
+            ):
+                if token in visible_effect:
+                    errors.append(f"enable decision exposes implementation token: {token}")
+            if "custom_tooltip = enable_auto_build_text" in visible_effect:
+                errors.append("enable confirmation still exposes the legacy multi-paragraph copy")
+            for choice in expected_choices:
+                confirm = f"custom_tooltip = {choice.removesuffix('_choice')}_confirm"
+                if visible_effect.count(confirm) != 1:
+                    errors.append(f"policy-specific confirmation drifted: {confirm}")
+            if hidden_effect.count("add_character_flag = enable_auto_build") != 1:
+                errors.append("enable compatibility flag must be hidden and set exactly once")
+            if hidden_effect.count("id = auto_build.0003") != 1:
+                errors.append("compatibility loop seed must be hidden and scheduled exactly once")
+        if enable_decision.count("is_ai = no") != 1:
+            errors.append("enable decision may expose its human-only gate outside is_shown")
+        if "is_valid = {\n        always = yes\n    }" not in enable_decision:
+            errors.append("enable decision visible validity must remain unconditional")
     disable_decision = extract_block(decisions, "disable_auto_build")
     if disable_decision is None:
         errors.append("disable decision block is missing")
@@ -298,6 +342,22 @@ def validate(
         ):
             if disable_decision.count(f"remove_character_flag = {flag}") != 1:
                 errors.append(f"disable decision does not clear policy flag: {flag}")
+        disable_effect = extract_block(disable_decision, "effect")
+        disable_hidden = (
+            extract_block(disable_effect, "hidden_effect")
+            if disable_effect is not None
+            else None
+        )
+        if disable_effect is None or disable_hidden is None:
+            errors.append("disable decision must hide its implementation effects")
+        else:
+            visible_effect = disable_effect.replace(disable_hidden, "", 1)
+            if "remove_character_flag" in visible_effect or "is_ai" in visible_effect:
+                errors.append("disable decision exposes an implementation token")
+        if disable_decision.count("is_ai = no") != 1:
+            errors.append("disable decision may expose its human-only gate outside is_shown")
+        if "is_valid = {\n        always = yes\n    }" not in disable_decision:
+            errors.append("disable decision visible validity must remain unconditional")
     build_pass = extract_block(events, "auto_build.0004")
     global_loop = extract_block(events, "auto_build.0005")
     if build_pass is None or global_loop is None:
@@ -451,6 +511,11 @@ def validate(
             errors.append(f"localization key inventory mismatch: {relative}")
         if any(not item.strip() for item in entries.values()):
             errors.append(f"blank localization value: {relative}")
+        for key, item in entries.items():
+            if key.endswith("_confirm") and r"\n" in item:
+                errors.append(f"policy confirmation contains a forced line break: {relative}:{key}")
+            if key.endswith("_choice_tooltip") and item == key:
+                errors.append(f"raw policy tooltip key remains visible: {relative}:{key}")
         localized_entries[language] = entries
 
     english_entries = localized_entries.get("english", {})

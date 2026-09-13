@@ -482,12 +482,14 @@ class MarkerStream:
         if failures:
             raise acceptance.RunnerError(f"fixture failure marker: {failures[-1]}")
 
-    def wait(self, marker: str, timeout_seconds: float) -> None:
+    def wait(self, marker: str, timeout_seconds: float, on_poll=None) -> None:
         deadline = time.time() + timeout_seconds
         while time.time() < deadline:
             self.pump()
             if any(marker in line for line in self.lines):
                 return
+            if on_poll is not None:
+                on_poll()
             time.sleep(acceptance.POLL_INTERVAL_S)
         raise acceptance.RunnerError(f"fixture marker timeout: {marker}")
 
@@ -582,6 +584,29 @@ def find_policy_label(image, label: str) -> tuple[tuple[int, int], str] | None:
     return None
 
 
+def assert_policy_surface(
+    artifacts: Path,
+    stem: str,
+    tokens: tuple[str, ...],
+) -> str:
+    """Bind a rendered policy surface to localized copy and no raw internals."""
+
+    return acceptance.wait_for_ocr_tokens(
+        tokens,
+        (
+            "aub_",
+            "_choice_tooltip",
+            "is_ai",
+            "has_character_flag",
+            "character_flag",
+        ),
+        acceptance.FULL_SCREEN_REGION,
+        12,
+        artifacts,
+        stem,
+    )
+
+
 def exercise_policy_selector_ui(artifacts: Path) -> dict[str, object]:
     """Exercise all six production policies through the native scroll list."""
 
@@ -600,9 +625,24 @@ def exercise_policy_selector_ui(artifacts: Path) -> dict[str, object]:
         ("treasury_first_pause", "优先国库｜超直辖暂停"),
         ("treasury_first_continue", "优先国库｜超直辖继续"),
     )
+    tooltip_tokens = {
+        "treasury_only_pause": ("国库不足就跳过", "暂停整轮修建"),
+        "treasury_only_continue": ("国库不足就跳过", "照常修建"),
+        "personal_only_pause": ("个人金钱不足就跳过", "暂停整轮修建"),
+        "personal_only_continue": ("个人金钱不足就跳过", "照常修建"),
+        "treasury_first_pause": ("绝不拆分付款", "暂停整轮修建"),
+        "treasury_first_continue": ("绝不拆分付款", "照常修建"),
+    }
     centers: dict[str, tuple[int, int]] = {}
     scroll_attempts: dict[str, int] = {}
     observed_labels: dict[str, str] = {}
+    hover_evidence: dict[str, list[str]] = {}
+
+    assert_policy_surface(
+        artifacts,
+        "05_policy_selector_clean_surface",
+        ("启用自动建造", "选择资金与超直辖策略"),
+    )
 
     def visible_option_center(image) -> tuple[int, int] | None:
         for _, label in option_labels:
@@ -655,6 +695,18 @@ def exercise_policy_selector_ui(artifacts: Path) -> dict[str, object]:
                 f"native policy choice was not reachable by scrolling: {label}"
             )
 
+        acceptance.pyautogui.moveTo(*centers[key], duration=0.2)
+        rendered = assert_policy_surface(
+            artifacts,
+            f"05_policy_selector_hover_{key}",
+            tooltip_tokens[key],
+        )
+        hover_evidence[key] = list(tooltip_tokens[key])
+        if "aub_" in rendered or "_choice_tooltip" in rendered:
+            raise acceptance.RunnerError(
+                f"raw localization key remained visible while hovering {key}"
+            )
+
         if key in selected_for_gate:
             acceptance.deliberate_click(centers[key], f"production policy option {key}")
             time.sleep(0.5)
@@ -675,6 +727,11 @@ def exercise_policy_selector_ui(artifacts: Path) -> dict[str, object]:
         stable_hits=1,
     )
     acceptance.deliberate_click(second_step, "production policy option confirmation")
+    confirmation_copy = assert_policy_surface(
+        artifacts,
+        "05_policy_selector_natural_confirmation",
+        ("国库不足时改由个人金钱全额支付", "绝不拆分付款", "照常修建"),
+    )
     final_confirm = acceptance.wait_for_ocr_text(
         "当然",
         acceptance.FULL_SCREEN_REGION,
@@ -698,6 +755,10 @@ def exercise_policy_selector_ui(artifacts: Path) -> dict[str, object]:
         "option_order": [key for key, _ in option_labels],
         "option_centers": {key: list(value) for key, value in centers.items()},
         "observed_labels": observed_labels,
+        "localized_hover_tokens": hover_evidence,
+        "confirmation_copy_ocr": confirmation_copy,
+        "raw_implementation_tokens_absent": True,
+        "forced_confirmation_line_breaks": False,
         "scroll_attempts": scroll_attempts,
         "interaction_samples": sorted(selected_for_gate),
         "selected_and_executed": "treasury_first_continue",
@@ -763,8 +824,74 @@ def run_cell(
         acceptance.ensure_game_paused(artifacts, "04_gameplay")
         policy_ui = exercise_policy_selector_ui(artifacts)
         acceptance.set_speed_five_and_unpause(artifacts, "aub_live")
+        interruption_state = {"last_check": 0.0, "dismissed": 0}
+
+        def dismiss_known_norman_interruption() -> None:
+            now = time.time()
+            if now - interruption_state["last_check"] < 2.5:
+                return
+            interruption_state["last_check"] = now
+            acceptance.focus_ck3()
+            image = acceptance.ImageGrab.grab()
+            title = acceptance.find_ocr_text(
+                image,
+                "诺曼人的西西里",
+                acceptance.FULL_SCREEN_REGION,
+                contains=False,
+            )
+            if title is None:
+                return
+            option = acceptance.find_ocr_text(
+                image,
+                "教宗和皇帝都可以保留他们的土地",
+                acceptance.FULL_SCREEN_REGION,
+                contains=True,
+            )
+            sequence = interruption_state["dismissed"] + 1
+            image.save(artifacts / f"06_norman_interruption_{sequence}_before.png")
+            if option is None:
+                raise acceptance.RunnerError(
+                    "known Norman Sicily interruption appeared without its "
+                    "least-invasive localized option"
+                )
+            acceptance.deliberate_click(
+                option,
+                "least-invasive option for known vanilla Norman Sicily interruption",
+            )
+            deadline = time.time() + 6
+            after = None
+            while time.time() < deadline:
+                after = acceptance.ImageGrab.grab()
+                if acceptance.find_ocr_text(
+                    after,
+                    "诺曼人的西西里",
+                    acceptance.FULL_SCREEN_REGION,
+                    contains=False,
+                ) is None:
+                    after.save(
+                        artifacts / f"06_norman_interruption_{sequence}_closed.png"
+                    )
+                    break
+                time.sleep(acceptance.POLL_INTERVAL_S)
+            else:
+                raise acceptance.RunnerError(
+                    "known Norman Sicily interruption did not close after selection"
+                )
+            before = acceptance.read_hud_game_day(after)
+            acceptance.pyautogui.press("5")
+            progress_deadline = time.time() + 4
+            while time.time() < progress_deadline:
+                current = acceptance.read_hud_game_day()
+                if before is not None and current is not None and current > before:
+                    break
+                time.sleep(acceptance.POLL_INTERVAL_S)
+            else:
+                acceptance.pyautogui.press("space")
+            interruption_state["dismissed"] = sequence
+            log("dismissed deterministic vanilla Norman Sicily interruption")
+
         for marker in REQUIRED_MARKERS:
-            stream.wait(marker, 120)
+            stream.wait(marker, 120, on_poll=dismiss_known_norman_interruption)
         summary = acceptance.wait_for_ocr_text(
             "自动升级建筑验收通过",
             acceptance.FULL_SCREEN_REGION,
@@ -788,6 +915,7 @@ def run_cell(
         stream.validate()
         evidence = {
             "native_policy_selector": policy_ui,
+            "known_vanilla_interruptions_dismissed": interruption_state["dismissed"],
             "domain_limit_policy": {
                 "exact_boundary_zero_builds": True,
                 "over_limit_minus_one_pauses_without_side_effects": True,
