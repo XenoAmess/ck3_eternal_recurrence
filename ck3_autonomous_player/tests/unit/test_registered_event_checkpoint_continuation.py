@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import importlib.util
+import json
 from pathlib import Path
 import sys
 
@@ -61,6 +62,8 @@ def _context(*, neighbor_id: int = 33_422) -> dict[str, object]:
         "schema": "current-event-window-context-v1",
         "schema_version": 1,
         "status": "available",
+        "date_raw": 53_187_648,
+        "current_event_instance_id": 7,
         "window_match_count": 1,
         "event_definition_key": "chancellor_task.1104",
         "root_scope": _scope(PLAYER),
@@ -120,6 +123,8 @@ def test_runner_source_forbids_time_and_war_exit_commands() -> None:
     assert '"step": "life-advance"' not in source
     assert '"step": "offer-white-peace-' not in source
     assert '"step": "surrender-war-' not in source
+    assert '"event_context_queries": 0' in source
+    assert 'context_result = await client.call_tool' not in source
 
 
 def test_runner_preserves_nested_mcp_failure_reason() -> None:
@@ -132,3 +137,68 @@ def test_runner_preserves_nested_mcp_failure_reason() -> None:
         "ExceptionGroup: unhandled errors in a TaskGroup (1 sub-exception) "
         "[RuntimeError: application-main event-window query timed out]"
     )
+
+
+def test_runner_recovers_only_context_immediately_sealed_by_checkpoint(
+    tmp_path: Path,
+) -> None:
+    checkpoint_hash = "A" * 64
+    state_path = tmp_path / "driver-state.json"
+    state_path.write_text(
+        json.dumps(
+            {
+                "last_checkpoint": {
+                    "history_index": 8,
+                    "sha256": checkpoint_hash,
+                    "date_raw": 53_187_648,
+                },
+                "command_history": [
+                    {
+                        "index": 7,
+                        "command": "query-current-event-window-context-v1",
+                        "ok": True,
+                        "result": {
+                            "step": "query-current-event-window-context-v1",
+                            "accepted": True,
+                            "status": "available",
+                            "current_event_window_context": _context(),
+                        },
+                    },
+                    {
+                        "index": 8,
+                        "command": "save-checkpoint",
+                        "ok": True,
+                        "result": {
+                            "step": "save-checkpoint",
+                            "accepted": True,
+                            "checkpoint": {
+                                "sha256": checkpoint_hash,
+                                "date_raw": 53_187_648,
+                            },
+                        },
+                    },
+                ],
+            }
+        ),
+        encoding="utf-8",
+    )
+
+    result = HARNESS._checkpoint_bound_event_context(
+        state_path,
+        expected_checkpoint_sha256=checkpoint_hash,
+        expected_date_raw=53_187_648,
+        expected_event_key="chancellor_task.1104",
+    )
+
+    assert result == _context()
+
+    state = json.loads(state_path.read_text(encoding="utf-8"))
+    state["last_checkpoint"]["history_index"] = 9
+    state_path.write_text(json.dumps(state), encoding="utf-8")
+    with pytest.raises(RuntimeError, match="not immediately bound"):
+        HARNESS._checkpoint_bound_event_context(
+            state_path,
+            expected_checkpoint_sha256=checkpoint_hash,
+            expected_date_raw=53_187_648,
+            expected_event_key="chancellor_task.1104",
+        )

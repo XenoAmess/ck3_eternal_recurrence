@@ -11,6 +11,7 @@ from __future__ import annotations
 
 import argparse
 import asyncio
+import copy
 import functools
 import json
 from pathlib import Path
@@ -50,6 +51,78 @@ def _format_sequence_error(error: BaseException) -> str:
         return headline
     details = "; ".join(_format_sequence_error(item) for item in nested)
     return f"{headline} [{details}]"
+
+
+def _checkpoint_bound_event_context(
+    driver_state_path: Path,
+    *,
+    expected_checkpoint_sha256: str,
+    expected_date_raw: int,
+    expected_event_key: str,
+) -> dict[str, object]:
+    """Recover the exact event query immediately sealed by the checkpoint."""
+
+    try:
+        state = json.loads(driver_state_path.read_text(encoding="utf-8"))
+    except (OSError, UnicodeError, json.JSONDecodeError) as error:
+        raise RuntimeError(f"source driver-state is unavailable: {error}") from error
+    history = state.get("command_history") if isinstance(state, dict) else None
+    checkpoint = state.get("last_checkpoint") if isinstance(state, dict) else None
+    if not isinstance(history, list) or not isinstance(checkpoint, dict):
+        raise RuntimeError("source driver-state lacks checkpoint history")
+    history_index = checkpoint.get("history_index")
+    if isinstance(history_index, bool) or not isinstance(history_index, int):
+        raise RuntimeError("source checkpoint lacks its history index")
+    by_index = {
+        row.get("index"): row
+        for row in history
+        if isinstance(row, dict)
+        and isinstance(row.get("index"), int)
+        and not isinstance(row.get("index"), bool)
+    }
+    query_row = by_index.get(history_index - 1)
+    save_row = by_index.get(history_index)
+    query_result = (
+        query_row.get("result") if isinstance(query_row, dict) else None
+    )
+    save_result = save_row.get("result") if isinstance(save_row, dict) else None
+    saved_checkpoint = (
+        save_result.get("checkpoint") if isinstance(save_result, dict) else None
+    )
+    context = (
+        query_result.get("current_event_window_context")
+        if isinstance(query_result, dict)
+        else None
+    )
+    expected_hash = str(expected_checkpoint_sha256).upper()
+    if not (
+        isinstance(query_row, dict)
+        and query_row.get("command") == QUERY_CURRENT_EVENT_WINDOW_CONTEXT_V1_STEP
+        and query_row.get("ok") is True
+        and isinstance(query_result, dict)
+        and query_result.get("step") == QUERY_CURRENT_EVENT_WINDOW_CONTEXT_V1_STEP
+        and query_result.get("accepted") is True
+        and query_result.get("status") == "available"
+        and isinstance(context, dict)
+        and context.get("status") == "available"
+        and context.get("date_raw") == expected_date_raw
+        and context.get("event_definition_key") == expected_event_key
+        and isinstance(save_row, dict)
+        and save_row.get("command") == "save-checkpoint"
+        and save_row.get("ok") is True
+        and isinstance(save_result, dict)
+        and save_result.get("step") == "save-checkpoint"
+        and save_result.get("accepted") is True
+        and isinstance(saved_checkpoint, dict)
+        and str(saved_checkpoint.get("sha256", "")).upper() == expected_hash
+        and saved_checkpoint.get("date_raw") == expected_date_raw
+        and str(checkpoint.get("sha256", "")).upper() == expected_hash
+        and checkpoint.get("date_raw") == expected_date_raw
+    ):
+        raise RuntimeError(
+            "source checkpoint is not immediately bound to the exact event query"
+        )
+    return copy.deepcopy(context)
 
 
 def _parser() -> argparse.ArgumentParser:
@@ -118,6 +191,7 @@ async def _run_mcp_sequence(
     expected_character_id: int,
     expected_date_raw: int,
     expected_event_key: str,
+    frozen_event_context: dict[str, object],
     settle_timeout: float,
     poll_interval: float,
 ) -> dict[str, object]:
@@ -171,23 +245,9 @@ async def _run_mcp_sequence(
             ):
                 raise RuntimeError("source event lacks stable instance/revision identity")
 
-            context_result = await client.call_tool(
-                "ck3_query_current_event_window_context_v1",
-                {
-                    "event_instance_id": event_instance_id,
-                    "expected_revision": revision,
-                },
-            )
-            mcp_results.append(context_result)
-            context_query = base._structured(
-                context_result,
-                tool_name="ck3_query_current_event_window_context_v1",
-            )
-            expected_commands.append(QUERY_CURRENT_EVENT_WINDOW_CONTEXT_V1_STEP)
-            context_value = context_query.get("current_event_window_context")
-            if not isinstance(context_value, dict):
-                raise RuntimeError("current-event query returned no typed context")
-            event_context = dict(context_value)
+            if frozen_event_context.get("current_event_instance_id") != event_instance_id:
+                raise RuntimeError("checkpoint-bound event instance differs after restore")
+            event_context = copy.deepcopy(frozen_event_context)
             decision = _recommend_exact_registered_option(
                 snapshot=before,
                 event_context=event_context,
@@ -304,8 +364,8 @@ async def _run_mcp_sequence(
     }
     return {
         "expected_event_key": expected_event_key,
+        "event_context_source": "checkpoint_bound_driver_receipt",
         "allowed_gameplay_commands": [
-            QUERY_CURRENT_EVENT_WINDOW_CONTEXT_V1_STEP,
             selected_step,
             "save-checkpoint",
         ],
@@ -338,9 +398,16 @@ def main(argv: list[str] | None = None) -> int:
             payload = preflight_payload
             exit_code = preflight_exit
         else:
+            frozen_event_context = _checkpoint_bound_event_context(
+                args.source_driver_state.expanduser().resolve(),
+                expected_checkpoint_sha256=args.expected_checkpoint_sha256,
+                expected_date_raw=args.expected_date_raw,
+                expected_event_key=args.expected_event_key,
+            )
             sequence_runner = functools.partial(
                 _run_mcp_sequence,
                 expected_event_key=args.expected_event_key,
+                frozen_event_context=frozen_event_context,
                 settle_timeout=args.settle_timeout,
                 poll_interval=args.poll_interval,
             )
@@ -357,7 +424,8 @@ def main(argv: list[str] | None = None) -> int:
                     "visual_input_used": False,
                     "time_advanced": False,
                     "maximum_ck3_launches": 1,
-                    "event_context_queries": 1,
+                    "event_context_queries": 0,
+                    "event_context_source": "checkpoint_bound_driver_receipt",
                     "event_selections": 1,
                     "checkpoint_saves": 1,
                     "mutation_commands": [

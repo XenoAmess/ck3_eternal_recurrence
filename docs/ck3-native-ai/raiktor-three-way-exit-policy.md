@@ -669,3 +669,23 @@ authorization while keeping submission, ACK, postcondition and cold restore
 false. Related normal/optimized suites pass `18/18`. This authorization is now
 part of the read-only runner output; the remaining implementation boundary is
 the executor and postcondition observer.
+
+The first direct cold continuations did not select the event. Current round
+R649 used an incorrectly shortened readiness timeout and stopped during normal
+load. Current rounds R650 and R651 reached the exact paused event but the new
+event-context request remained queued and timed out with zero executed mailbox
+requests. Current round R652 proved that a best-effort `WM_NULL` thread wake did
+not change that result; the attempted native wake has therefore been removed
+instead of becoming permanent bridge behavior. Every attempt preserved the
+source checkpoint and performed managed process-tree cleanup.
+
+The R647 checkpoint was saved immediately after its successful exact event
+query: driver history index 7 is the available `chancellor_task.1104` context,
+and adjacent index 8 is the checkpoint save whose hash/date match the frozen
+input. The continuation runner now consumes that checkpoint-bound receipt
+instead of issuing the same query again after cold load. It admits only the
+adjacent successful query/save pair, the exact checkpoint hash/date and the
+same restored event instance before the registry can authorize selection. The
+live command allowance is consequently one event selection plus one successor
+save; time and every war-exit action remain forbidden. This is static-ready
+until the next single bounded live attempt.

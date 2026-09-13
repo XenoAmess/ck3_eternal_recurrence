@@ -60,13 +60,6 @@
       "expected_wait_result": "timeout_cancelled_before_execution"
     },
     {
-      "name": "paused_queue_best_effort_wake",
-      "trigger": "successful fixed typed executor publication",
-      "target": "already verified owner_thread_id",
-      "message": "WM_NULL via PostThreadMessageW",
-      "failure_behavior": "non-fatal; bounded queue wait remains fail-closed"
-    },
-    {
       "name": "consecutive_proof_resets",
       "valid_identity_drifts_reset_to_one": [
         "date_raw",

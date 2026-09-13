@@ -1025,14 +1025,6 @@ MainThreadQuerySubmitResultV1 TrySubmitMainThreadQueryV1(
   ticket.sequence = sequence;
   mailbox.state.store(MainThreadQueryMailboxStateV1::queued,
                       std::memory_order_release);
-  // A loaded game may be paused with no pending Windows input.  In that
-  // state CK3 can leave this otherwise valid ticket queued until the next
-  // SDL/PeekMessage pump.  Wake the already verified owner thread with a
-  // no-op message so the installed pump hook gets a chance to drain it.
-  // Failure remains non-fatal: the ordinary render/input pump and the
-  // existing bounded wait still provide the fail-closed path.
-  (void)PostThreadMessageW(
-      mailbox.owner_thread_id.load(std::memory_order_acquire), WM_NULL, 0, 0);
   return MainThreadQuerySubmitResultV1::submitted;
 }
 
