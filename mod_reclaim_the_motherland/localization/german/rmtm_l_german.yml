@@ -22,3 +22,4 @@
  rmtm_loyalty_summary_loyal_only:0 "Als das Reich zerbricht, folgt [rmtm_loyal_notable.GetFirstName] dem Ruf und behält den alten Titel unter deinem Banner. Vorerst halten die alten Bande von Gnade und Pflicht."
  rmtm_loyalty_summary_defector_only:0 "Als das Reich zerbricht, sagt sich [rmtm_defector_notable.GetFirstName] vom Hof los. Feindschaft, Ehrgeiz und die Macht der Waffen wiegen schwerer als das einstige Treuebekenntnis."
  rmtm_loyalty_summary_acknowledge:0 "Taten sollen zeigen, wer das Reich wiederherstellen kann."
+ rmtm_offer_vassalization_recently_independent_tt:0 "Erst kürzlich von diesem Herrscherhaus unabhängig geworden"

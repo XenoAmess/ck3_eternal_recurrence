@@ -1,0 +1,13 @@
+﻿# Extend the vanilla game-start hook. This applies idempotent save migrations
+# after rules and player identities are available.
+on_game_start_after_lobby = {
+	on_actions = {
+		rmtm_on_game_start
+	}
+}
+
+rmtm_on_game_start = {
+	effect = {
+		rmtm_migrate_restoration_hegemonies_effect = yes
+	}
+}

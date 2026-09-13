@@ -22,3 +22,4 @@
  rmtm_loyalty_summary_loyal_only:0 "Когда держава распадается, [rmtm_loyal_notable.GetFirstName] является на призыв и сохраняет прежний титул под вашим знаменем. Пока старые узы милости и долга ещё держатся."
  rmtm_loyalty_summary_defector_only:0 "Когда держава распадается, [rmtm_defector_notable.GetFirstName] покидает двор. Вражда, честолюбие и военная мощь перевесили прежнюю клятву верности."
  rmtm_loyalty_summary_acknowledge:0 "Пусть дела покажут, кто сможет восстановить державу."
+ rmtm_offer_vassalization_recently_independent_tt:0 "Недавно обрёл независимость от этой династии"

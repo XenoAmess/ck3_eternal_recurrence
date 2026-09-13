@@ -22,3 +22,4 @@
  rmtm_loyalty_summary_loyal_only:0 "Mientras el reino se fragmenta, [rmtm_loyal_notable.GetFirstName] acude al llamado y conserva el antiguo título bajo tu estandarte. Por ahora, los viejos lazos de gracia y deber se mantienen."
  rmtm_loyalty_summary_defector_only:0 "Mientras el reino se fragmenta, [rmtm_defector_notable.GetFirstName] abandona la corte. La hostilidad, la ambición y el poder de las armas han vencido su antigua profesión de lealtad."
  rmtm_loyalty_summary_acknowledge:0 "Que los hechos demuestren quién puede restaurar el reino."
+ rmtm_offer_vassalization_recently_independent_tt:0 "Recién independizado de esta dinastía"

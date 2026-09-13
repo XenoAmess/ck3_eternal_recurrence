@@ -5,3 +5,11 @@ rmtm_holds_restoration_hegemony_trigger = {
 		has_variable = rmtm_restoration_hegemony
 	}
 }
+
+# Character scope. A Later title keeps its hegemony tier for identity and UI,
+# but must not receive the vanilla Son-of-Heaven vassalization shortcuts.
+rmtm_primary_title_is_restoration_hegemony_trigger = {
+	primary_title = {
+		has_variable = rmtm_restoration_hegemony
+	}
+}

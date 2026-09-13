@@ -22,3 +22,4 @@
  rmtm_loyalty_summary_loyal_only:0 "강산이 무너지는 순간, [rmtm_loyal_notable.GetFirstName]은 황명에 응해 조정에 남고 옛 칭호 그대로 그대의 깃발 아래 영지를 지킵니다. 옛 은의와 의무는 아직 굳건합니다."
  rmtm_loyalty_summary_defector_only:0 "강산이 무너지는 순간, [rmtm_defector_notable.GetFirstName]은 조정을 떠나 자립합니다. 적의와 야심, 군사력이 옛 존왕의 명분을 압도했습니다."
  rmtm_loyalty_summary_acknowledge:0 "누가 강산을 되찾을지는 행동으로 드러날 것이다."
+ rmtm_offer_vassalization_recently_independent_tt:0 "최근 이 왕조로부터 독립함"

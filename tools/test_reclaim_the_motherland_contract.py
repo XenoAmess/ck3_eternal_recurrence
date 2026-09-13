@@ -17,6 +17,8 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Iterator
 
+import gen_reclaim_vassalization_override as vassalization
+
 
 ROOT = Path(__file__).resolve().parents[1]
 MOD = ROOT / "mod_reclaim_the_motherland"
@@ -36,6 +38,13 @@ GENERATED_TITLE_NAMES = (
 )
 SCRIPTED_EFFECTS_DIR = MOD / "common/scripted_effects"
 RESTORATION_TRIGGERS = MOD / "common/scripted_triggers/rmtm_restoration_triggers.txt"
+MINISTRY_TRIGGER_OVERRIDE = (
+    MOD / "common/scripted_triggers/zz_rmtm_ministry_override.txt"
+)
+ON_ACTIONS = MOD / "common/on_action/rmtm_on_actions.txt"
+VASSALIZATION_OVERRIDE = (
+    MOD / "common/character_interactions/zz_rmtm_offer_vassalization.txt"
+)
 FIXTURE_EFFECTS = (
     ROOT
     / "tools/fixtures/reclaim_the_motherland_acceptance/common/scripted_effects/rqa_effects.txt"
@@ -422,6 +431,133 @@ class TestReclaimTheMotherlandContract(unittest.TestCase):
             loyalty_options,
             {DYNAMIC_LOYALTY_SETTING, LEGACY_LOYALTY_SETTING},
         )
+
+    def test_phase_three_title_law_and_idempotent_save_migration(self) -> None:
+        text, parsed = read_script(CUSTOM_EFFECTS)
+        creator = direct_block(parsed, "rmtm_create_restoration_hegemony_effect")
+        dynamic_titles = descendant_blocks(creator, "create_dynamic_title")
+        self.assertEqual(len(dynamic_titles), 1)
+        created_title_scopes = descendant_blocks(creator, "scope:new_title")
+        self.assertEqual(len(created_title_scopes), 1)
+        created = created_title_scopes[0]
+        self.assertTrue(
+            has_assignment(created, "add_title_law", "single_heir_succession_law")
+        )
+        self.assertTrue(
+            has_assignment(created, "set_always_follows_primary_heir", "yes")
+        )
+
+        migration = direct_block(parsed, "rmtm_migrate_restoration_hegemonies_effect")
+        self.assertTrue(has_assignment(migration, "has_game_rule", RECLAIM_SETTING))
+        self.assertTrue(has_key(migration, "every_independent_ruler"))
+        self.assertTrue(has_assignment(migration, "has_variable", MARKER))
+        self.assertTrue(
+            has_assignment(migration, "has_title_law", "single_heir_succession_law")
+        )
+        self.assertEqual(text.count("add_title_law = single_heir_succession_law"), 2)
+
+        on_action_text, on_actions = read_script(ON_ACTIONS)
+        start = direct_block(on_actions, "on_game_start_after_lobby")
+        self.assertTrue(has_key(start, "on_actions"))
+        self.assertIn("rmtm_on_game_start", on_action_text)
+        callback = direct_block(on_actions, "rmtm_on_game_start")
+        self.assertTrue(
+            has_assignment(
+                callback, "rmtm_migrate_restoration_hegemonies_effect", "yes"
+            )
+        )
+        self.assertNotIn("trigger_event", on_action_text)
+
+    def test_phase_three_ministry_is_unique_and_only_defectors_leave_office(self) -> None:
+        trigger_text, trigger_file = read_script(MINISTRY_TRIGGER_OVERRIDE)
+        access = direct_block(trigger_file, "tgp_has_access_to_ministry_trigger")
+        self.assertTrue(
+            has_assignment(access, "government_has_flag", "government_is_celestial")
+        )
+        self.assertTrue(has_assignment(access, "has_title", "title:h_china"))
+        self.assertIn("NOT = { exists = holder }", trigger_text)
+        self.assertIn("exists = global_var:rmtm_ministry_entitlement_title", trigger_text)
+        self.assertIn("holder = root", trigger_text)
+        self.assertIn("has_variable = rmtm_restoration_hegemony", trigger_text)
+
+        custom_text, custom_file = read_script(CUSTOM_EFFECTS)
+        custom = direct_block(custom_file, RECLAIM_EFFECT)
+        ministry_cleanup = [
+            loop
+            for loop in descendant_blocks(custom, "every_in_list")
+            if has_assignment(loop, "destroy_held_ministry_titles_effect", "yes")
+        ]
+        self.assertEqual(len(ministry_cleanup), 1)
+        self.assertTrue(
+            any(excludes_old_emperor(limit) for limit in descendant_blocks(ministry_cleanup[0], "limit"))
+        )
+        self.assertEqual(custom_text.count("fill_the_ministry_effect = yes"), 1)
+        self.assertIn("name = rmtm_ministry_entitlement_title", custom_text)
+
+    def test_phase_four_generated_interaction_is_exact_narrow_projection(self) -> None:
+        data = VASSALIZATION_OVERRIDE.read_bytes()
+        self.assertEqual([], vassalization.validate_committed_projection(data))
+        text = data.decode("utf-8-sig")
+        self.assertEqual(
+            text.count("rmtm_primary_title_is_restoration_hegemony_trigger = yes"),
+            4,
+        )
+        self.assertEqual(
+            text.count("rmtm_offer_vassalization_recently_independent_tt"), 1
+        )
+        self.assertEqual(
+            text.count("rmtm_recently_independent_from_restoration_hegemony"), 2
+        )
+        self.assertIn(f"# Vanilla file SHA-256: {vassalization.SOURCE_SHA256}", text)
+
+    def test_phase_four_twelve_identity_acceptance_vectors(self) -> None:
+        # Only the four identity branches touched by the generated projection are
+        # modeled here. All unrelated vanilla acceptance inputs remain in the
+        # byte-restorable interaction body checked above.
+        tier = {"county": 1, "duchy": 2, "kingdom": 3, "empire": 4}
+
+        def vanilla(recipient: str, celestial: bool, realm_size: int) -> int:
+            difference = 5 - tier[recipient]
+            rank = 20 * difference if celestial and difference > 1 else (10 if difference > 1 else 0)
+            refusal = 0
+            if recipient in {"kingdom", "empire"} and not celestial:
+                refusal = -50 - (50 if realm_size >= 10 else 0) - (100 if realm_size >= 20 else 0)
+                if recipient == "empire":
+                    refusal = int(refusal * 1.5)
+            return refusal + rank + 10
+
+        def phase_four(recipient: str, realm_size: int) -> int:
+            difference = 5 - tier[recipient]
+            rank = 10 if difference > 1 else 0
+            refusal = 0
+            if recipient in {"kingdom", "empire"}:
+                refusal = -50 - (50 if realm_size >= 10 else 0) - (100 if realm_size >= 20 else 0)
+                if recipient == "empire":
+                    refusal = int(refusal * 1.5)
+            return refusal + rank
+
+        vectors = (
+            ("kingdom", True, 1, 50, -40),
+            ("kingdom", True, 10, 50, -90),
+            ("kingdom", True, 20, 50, -190),
+            ("duchy", True, 1, 70, 10),
+            ("county", True, 1, 90, 10),
+            ("empire", True, 1, 10, -75),
+            ("kingdom", False, 1, -30, -40),
+            ("kingdom", False, 10, -80, -90),
+            ("kingdom", False, 20, -180, -190),
+            ("duchy", False, 1, 20, 10),
+            ("county", False, 1, 20, 10),
+            ("empire", False, 1, -65, -75),
+        )
+        self.assertEqual(len(vectors), 12)
+        for recipient, celestial, realm_size, expected_vanilla, expected_phase_four in vectors:
+            with self.subTest(
+                recipient=recipient, celestial=celestial, realm_size=realm_size
+            ):
+                self.assertEqual(vanilla(recipient, celestial, realm_size), expected_vanilla)
+                self.assertEqual(phase_four(recipient, realm_size), expected_phase_four)
+                self.assertLess(phase_four(recipient, realm_size), vanilla(recipient, celestial, realm_size))
 
     def test_live_fixture_samples_only_county_or_higher_direct_vassals(self) -> None:
         text = FIXTURE_EFFECTS.read_text(encoding="utf-8-sig")

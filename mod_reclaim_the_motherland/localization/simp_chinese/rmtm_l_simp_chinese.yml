@@ -22,3 +22,4 @@
  rmtm_loyalty_summary_loyal_only:0 "山河崩裂之际，[rmtm_loyal_notable.GetFirstName]奉诏留朝，仍以旧号守土。旧日恩义尚在，朝廷并非无人。"
  rmtm_loyalty_summary_defector_only:0 "山河崩裂之际，[rmtm_defector_notable.GetFirstName]弃朝自立。嫌隙、野心与兵势终究压过了昔日尊王之名。"
  rmtm_loyalty_summary_acknowledge:0 "且看谁能重整河山。"
+ rmtm_offer_vassalization_recently_independent_tt:0 "新近脱离旧朝"

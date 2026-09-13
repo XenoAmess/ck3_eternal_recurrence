@@ -27,7 +27,16 @@ rmtm_create_restoration_hegemony_effect = {
 		set_definitive_form = yes
 		set_can_be_named_after_dynasty = no
 		set_can_use_nomadic_naming = no
+		# A Later Dynasty is a single political inheritance. The title follows the
+		# ruler's primary heir instead of partitioning the surviving court realm.
+		add_title_law = single_heir_succession_law
 		set_always_follows_primary_heir = yes
+	}
+	# Only one surviving Later Dynasty may exercise the old central ministry at a
+	# time. A later Chaos settlement deliberately supersedes the earlier claimant.
+	set_global_variable = {
+		name = rmtm_ministry_entitlement_title
+		value = scope:rmtm_restoration_hegemony_title
 	}
 
 	create_title_and_vassal_change = {
@@ -135,6 +144,7 @@ rmtm_chaos_shattering_effect = {
 					NOT = { is_in_list = rmtm_final_loyal_direct_vassals }
 				}
 				becomes_independent = { change = scope:chaos_change }
+				add_to_list = rmtm_released_direct_vassals
 			}
 			resolve_title_and_vassal_change = scope:chaos_change
 		}
@@ -168,11 +178,33 @@ rmtm_chaos_shattering_effect = {
 				prev = { destroy_title = prev }
 			}
 		}
+		# Weak rulers may have changed primary title during the vanilla pruning pass.
+		# Bind the five-year political memory to the surviving primary title, and
+		# only for direct vassals this exact shattering transaction released.
+		every_in_list = {
+			list = rmtm_released_direct_vassals
+			limit = {
+				is_landed = yes
+				NOT = { top_liege = scope:old_emperor_temp }
+			}
+			primary_title = {
+				set_variable = {
+					name = rmtm_recently_independent_from_restoration_hegemony
+					value = scope:rmtm_restoration_hegemony_title
+					years = 5
+				}
+			}
+		}
 		every_in_list = {
 			list = former_vassals
-			# Destroy any held minister title.
+			# Ministers who left the surviving court lose office. Incumbents who
+			# remained under the old emperor keep the exact title and council seat.
+			limit = { NOT = { top_liege = scope:old_emperor_temp } }
 			destroy_held_ministry_titles_effect = yes
 		}
+		# Fill only seats actually vacated by defectors. Vanilla's helper preserves
+		# every incumbent whose council position still matches the ministry title.
+		scope:old_emperor_temp = { fill_the_ministry_effect = yes }
 		every_in_list = {
 			list = former_vassals
 			# Let the former vassals of the hegemon become regular conquerors.
@@ -390,6 +422,37 @@ rmtm_chaos_shattering_effect = {
 			every_situation_participant = {
 				remove_variable = movement_member
 				recalculate_participant_group = situation:dynastic_cycle
+			}
+		}
+	}
+}
+
+# Global-scope save migration. Version 0.2.0 Later titles already carry the
+# durable marker, so adding the missing succession law is idempotent. If the
+# unique ministry entitlement is absent, the first surviving marked title found
+# becomes its holder; newly created Later titles still supersede this fallback.
+rmtm_migrate_restoration_hegemonies_effect = {
+	if = {
+		limit = { has_game_rule = rmtm_reclaim_the_motherland }
+		every_independent_ruler = {
+			every_held_title = {
+				limit = { has_variable = rmtm_restoration_hegemony }
+				if = {
+					limit = {
+						NOT = { has_title_law = single_heir_succession_law }
+					}
+					add_title_law = single_heir_succession_law
+				}
+				set_always_follows_primary_heir = yes
+				if = {
+					limit = {
+						NOT = { exists = global_var:rmtm_ministry_entitlement_title }
+					}
+					set_global_variable = {
+						name = rmtm_ministry_entitlement_title
+						value = this
+					}
+				}
 			}
 		}
 	}

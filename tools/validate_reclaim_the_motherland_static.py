@@ -11,6 +11,7 @@ import build_reclaim_the_motherland_release as builder
 from PIL import Image
 
 import compose_reclaim_the_motherland_key_art as key_art
+import gen_reclaim_vassalization_override as vassalization
 import gen_reclaim_the_motherland_title_names as title_names
 
 
@@ -42,6 +43,7 @@ LOC_KEYS = frozenset(
         "rmtm_loyalty_summary_loyal_only",
         "rmtm_loyalty_summary_defector_only",
         "rmtm_loyalty_summary_acknowledge",
+        "rmtm_offer_vassalization_recently_independent_tt",
     }
 )
 GENERATED_TITLE_LOC_KEYS = frozenset(
@@ -99,7 +101,7 @@ def balanced_braces(value: str) -> bool:
 def validate() -> list[str]:
     errors = builder.release_source_errors(MOD)
     expected_descriptor = (
-        'version="0.2.0"\n'
+        'version="0.4.0"\n'
         'tags={\n\t"Gameplay"\n}\n'
         'name="Reclaim the Motherland — 重整河山"\n'
         'picture="thumbnail.png"\n'
@@ -107,7 +109,7 @@ def validate() -> list[str]:
     )
     descriptor = text("descriptor.mod").replace("\r\n", "\n")
     if descriptor != expected_descriptor:
-        errors.append("descriptor.mod fields or ordering differ from the 0.2.0 contract")
+        errors.append("descriptor.mod fields or ordering differ from the 0.4.0 contract")
     thumbnail = MOD / "thumbnail.png"
     if not thumbnail.is_file():
         errors.append("thumbnail.png is missing")
@@ -124,9 +126,11 @@ def validate() -> list[str]:
 
     expected_runtime_files = frozenset(
         {
+            "common/character_interactions/zz_rmtm_offer_vassalization.txt",
             "common/decisions/rmtm_restoration_decisions.txt",
             "common/decisions/dlc_decisions/tgp/zz_rmtm_mandate_override.txt",
             "common/game_rules/rmtm_game_rules.txt",
+            "common/on_action/rmtm_on_actions.txt",
             "common/script_values/rmtm_loyalty_values.txt",
             "common/scripted_effects/rmtm_dynastic_cycle_effects.txt",
             "common/scripted_effects/rmtm_generated_title_name_effects.txt",
@@ -135,6 +139,7 @@ def validate() -> list[str]:
             "common/scripted_effects/zz_rmtm_vanilla_overrides.txt",
             "common/scripted_triggers/rmtm_loyalty_triggers.txt",
             "common/scripted_triggers/rmtm_restoration_triggers.txt",
+            "common/scripted_triggers/zz_rmtm_ministry_override.txt",
             "descriptor.mod",
             "events/rmtm_loyalty_events.txt",
             "localization/english/rmtm_l_english.yml",
@@ -159,7 +164,7 @@ def validate() -> list[str]:
         }
     )
     if builder.RUNTIME_FILES != expected_runtime_files:
-        errors.append("release allowlist is not the exact thirty-two-file product inventory")
+        errors.append("release allowlist is not the exact thirty-five-file product inventory")
     if builder.SOURCE_ONLY_FILES != frozenset(
         {"README.md", "docs/acceptance-plan.md", "docs/acceptance-report.md"}
     ):
@@ -187,7 +192,10 @@ def validate() -> list[str]:
     if duplicate_definitions:
         errors.append(f"duplicate common definitions: {duplicate_definitions}")
     allowed_vanilla_overrides = {
+        "offer_vassalization_interaction",
+        "on_game_start_after_lobby",
         "situation_dynastic_cycle_claim_mandate_decision",
+        "tgp_has_access_to_ministry_trigger",
         "tgp_chaos_shattering_effect",
     }
     unnamespaced = sorted(
@@ -203,6 +211,7 @@ def validate() -> list[str]:
         "rmtm_hegemon_fate",
         "rmtm_pro_hegemon_choice",
         "rmtm_holds_restoration_hegemony_trigger",
+        "rmtm_primary_title_is_restoration_hegemony_trigger",
         "rmtm_pro_hegemon_hard_defect_trigger",
         "rmtm_pro_hegemon_hard_stay_trigger",
         "rmtm_pro_hegemon_loyalty_score_value",
@@ -211,6 +220,10 @@ def validate() -> list[str]:
         "rmtm_freeze_restoration_hegemony_name_effect",
         "situation_dynastic_cycle_claim_mandate_decision",
         "rmtm_chaos_shattering_effect",
+        "rmtm_migrate_restoration_hegemonies_effect",
+        "rmtm_on_game_start",
+        "offer_vassalization_interaction",
+        "tgp_has_access_to_ministry_trigger",
         "tgp_chaos_shattering_effect",
     ):
         if required_definition not in definitions:
@@ -284,9 +297,15 @@ def validate() -> list[str]:
         "rmtm_resolve_pro_hegemon_loyalty_effect = yes",
         "create_dynamic_title = {",
         "tier = hegemony",
+        "add_title_law = single_heir_succession_law",
+        "set_global_variable = {",
+        "name = rmtm_ministry_entitlement_title",
         "name = rmtm_restoration_hegemony",
         "rmtm_freeze_restoration_hegemony_name_effect = yes",
         "destroy_title = title:h_china",
+        "name = rmtm_recently_independent_from_restoration_hegemony",
+        "years = 5",
+        "fill_the_ministry_effect = yes",
     ):
         if fragment not in custom_shattering:
             errors.append(f"custom shattering contract missing: {fragment}")
@@ -296,6 +315,16 @@ def validate() -> list[str]:
         r"(?m)^\s*force_step_down_landed_titles\s*=", custom_shattering
     ):
         errors.append("custom shattering must not force the former hegemon to step down")
+
+    generated_interaction = MOD / vassalization.OUTPUT.relative_to(ROOT / builder.PRODUCT_ID)
+    if generated_interaction.is_file():
+        errors.extend(vassalization.validate_committed_projection(generated_interaction.read_bytes()))
+        if vassalization.DEFAULT_GAME_SOURCE.is_file():
+            try:
+                if generated_interaction.read_bytes() != vassalization.rendered_bytes():
+                    errors.append("generated offer-vassalization override is stale")
+            except (OSError, UnicodeError, ValueError) as error:
+                errors.append(f"cannot validate installed offer-vassalization source: {error}")
 
     for localization_reference in (
         "rmtm_restoration_title_prefix",

@@ -22,3 +22,4 @@
  rmtm_loyalty_summary_loyal_only:0 "Gdy państwo się rozpada, [rmtm_loyal_notable.GetFirstName] odpowiada na wezwanie i zachowuje dawny tytuł pod twoim sztandarem. Na razie dawne więzi łaski i obowiązku trwają."
  rmtm_loyalty_summary_defector_only:0 "Gdy państwo się rozpada, [rmtm_defector_notable.GetFirstName] porzuca dwór. Wrogość, ambicja i siła oręża przeważyły nad dawnym wyznaniem lojalności."
  rmtm_loyalty_summary_acknowledge:0 "Niech czyny pokażą, kto zdoła odbudować państwo."
+ rmtm_offer_vassalization_recently_independent_tt:0 "Niedawna niezależność od tej dynastii"

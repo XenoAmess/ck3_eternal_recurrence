@@ -22,3 +22,4 @@
  rmtm_loyalty_summary_loyal_only:0 "山河崩るるの折、[rmtm_loyal_notable.GetFirstName]は詔に応じて朝に留まり、旧き号のまま旗下に在り続ける。旧き恩義はなお結ばれている。"
  rmtm_loyalty_summary_defector_only:0 "山河崩るるの折、[rmtm_defector_notable.GetFirstName]は朝を去りて立つ。隔意、野心、兵の勢いが、ついに旧き尊王の誓いを圧した。"
  rmtm_loyalty_summary_acknowledge:0 "河山を復するは誰の手か、行いをもって示させよう。"
+ rmtm_offer_vassalization_recently_independent_tt:0 "この王朝から独立したばかり"

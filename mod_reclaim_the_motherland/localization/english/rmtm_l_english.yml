@@ -22,3 +22,4 @@
  rmtm_loyalty_summary_loyal_only:0 "As the realm breaks apart, [rmtm_loyal_notable.GetFirstName] answers the summons and keeps the old title beneath your banner. For now, the old bonds of grace and duty hold."
  rmtm_loyalty_summary_defector_only:0 "As the realm breaks apart, [rmtm_defector_notable.GetFirstName] casts off the court. Hostility, ambition, and the weight of arms have overcome the old profession of loyalty."
  rmtm_loyalty_summary_acknowledge:0 "Let deeds reveal who can restore the realm."
+ rmtm_offer_vassalization_recently_independent_tt:0 "Newly independent from this dynasty"

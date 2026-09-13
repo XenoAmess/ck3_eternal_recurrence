@@ -58,6 +58,16 @@ rmtm_claim_restoration_decision = {
 		gok_government_change_story_end_effect = yes
 		situation:dynastic_cycle = { save_scope_as = situation }
 		tgp_claim_mandate_of_heaven_effect = yes
+		if = {
+			limit = {
+				exists = global_var:rmtm_ministry_entitlement_title
+				global_var:rmtm_ministry_entitlement_title = {
+					holder = scope:rmtm_restorer
+					has_variable = rmtm_restoration_hegemony
+				}
+			}
+			remove_global_variable = rmtm_ministry_entitlement_title
+		}
 		every_in_list = {
 			list = rmtm_restoration_hegemonies
 			limit = {

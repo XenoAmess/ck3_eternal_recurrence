@@ -22,3 +22,4 @@
  rmtm_loyalty_summary_loyal_only:0 "Alors que le royaume se disloque, [rmtm_loyal_notable.GetFirstName] répond à l'appel et conserve son ancien titre sous votre bannière. Pour l'heure, les anciens liens de grâce et de devoir tiennent encore."
  rmtm_loyalty_summary_defector_only:0 "Alors que le royaume se disloque, [rmtm_defector_notable.GetFirstName] abandonne la cour. L'hostilité, l'ambition et le poids des armes ont eu raison de son ancienne profession de loyauté."
  rmtm_loyalty_summary_acknowledge:0 "Que les actes révèlent qui peut restaurer le royaume."
+ rmtm_offer_vassalization_recently_independent_tt:0 "Récemment indépendant de cette dynastie"

@@ -26,9 +26,11 @@ MANIFEST_FORMAT_VERSION = 1
 # This is deliberately the exact current runtime inventory; README.md never ships.
 RUNTIME_FILES = frozenset(
     {
+        "common/character_interactions/zz_rmtm_offer_vassalization.txt",
         "common/decisions/rmtm_restoration_decisions.txt",
         "common/decisions/dlc_decisions/tgp/zz_rmtm_mandate_override.txt",
         "common/game_rules/rmtm_game_rules.txt",
+        "common/on_action/rmtm_on_actions.txt",
         "common/script_values/rmtm_loyalty_values.txt",
         "common/scripted_effects/rmtm_dynastic_cycle_effects.txt",
         "common/scripted_effects/rmtm_generated_title_name_effects.txt",
@@ -37,6 +39,7 @@ RUNTIME_FILES = frozenset(
         "common/scripted_effects/zz_rmtm_vanilla_overrides.txt",
         "common/scripted_triggers/rmtm_loyalty_triggers.txt",
         "common/scripted_triggers/rmtm_restoration_triggers.txt",
+        "common/scripted_triggers/zz_rmtm_ministry_override.txt",
         "descriptor.mod",
         "events/rmtm_loyalty_events.txt",
         "localization/english/rmtm_l_english.yml",
