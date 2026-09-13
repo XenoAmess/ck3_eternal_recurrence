@@ -1,6 +1,6 @@
 ﻿# GENERATED FILE — edit tools/gen_361_career_hc_runtime.py
 # Purpose shard: o stage 01 mechanisms.
-# Boundary contract: 1-10 top-level effects; this file has 7.
+# Boundary contract: 1-10 top-level effects; this file has 8.
 
 
 
@@ -166,7 +166,7 @@ zg361_career_hc_m106_consume_effect = {
     }
 }
 
-# Low-risk portfolio default for #106; original card is the fallback.
+# Streamlined portfolio default for #106; original card is the fallback.
 zg361_career_hc_m106_background_apply_effect = {
     if = {
         limit = {
@@ -186,7 +186,18 @@ zg361_career_hc_m106_background_apply_effect = {
                 has_variable = zg361_ch_runtime_applied
                 var:zg361_ch_runtime_applied = 1
             }
-            root = { trigger_event = { id = zg361ch.107 days = 1 } }
+            if = {
+        limit = {
+            has_variable = zg361_ch_player_batch_route
+            OR = {
+                var:zg361_ch_player_batch_route = 1
+                var:zg361_ch_player_batch_route = 2
+                var:zg361_ch_player_batch_route = 3
+            }
+        }
+        zg361_career_hc_m107_background_apply_effect = yes
+    }
+    else = { root = { trigger_event = { id = zg361ch.107 days = 1 } } }
         }
         else = {
             root = { trigger_event = { id = zg361ch.106 days = 1 } }
@@ -356,5 +367,47 @@ zg361_career_hc_m107_consume_effect = {
             set_variable = { name = zg361_ch_o_conserved value = 1 }
         }
         zg361_career_hc_o_try_advance_01_effect = yes
+    }
+}
+
+# Streamlined portfolio default for #107; original card is the fallback.
+zg361_career_hc_m107_background_apply_effect = {
+    if = {
+        limit = {
+            has_variable = zg361_ch_player_batch_route
+            OR = {
+                var:zg361_ch_player_batch_route = 1
+                var:zg361_ch_player_batch_route = 2
+                var:zg361_ch_player_batch_route = 3
+            }
+            always = yes
+        }
+        zg361_career_hc_m107_manager_apply_effect = {
+            ROUTE = var:zg361_ch_player_batch_route
+        }
+        if = {
+            limit = {
+                has_variable = zg361_ch_runtime_applied
+                var:zg361_ch_runtime_applied = 1
+            }
+            if = {
+        limit = {
+            has_variable = zg361_ch_player_batch_route
+            OR = {
+                var:zg361_ch_player_batch_route = 1
+                var:zg361_ch_player_batch_route = 2
+                var:zg361_ch_player_batch_route = 3
+            }
+        }
+        zg361_career_hc_m108_background_apply_effect = yes
+    }
+    else = { root = { trigger_event = { id = zg361ch.108 days = 1 } } }
+        }
+        else = {
+            root = { trigger_event = { id = zg361ch.107 days = 1 } }
+        }
+    }
+    else = {
+        root = { trigger_event = { id = zg361ch.107 days = 1 } }
     }
 }

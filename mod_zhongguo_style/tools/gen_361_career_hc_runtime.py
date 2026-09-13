@@ -84,36 +84,11 @@ STAGE_BY_ID = {
 # official receives the matching two credits.  Route C never spends money.
 DUAL_COST_IDS = frozenset({21, 25, 101, 104, 112, 114, 119})
 
-# The player chooses one default treatment for low-risk portfolio paperwork.
-# These entries still execute their original guarded core/consumer and retain
-# their original visible card as a fail-closed fallback.  Funded transfers,
-# people moves, delayed releases and other consequential rulings stay visible.
-BATCHABLE_IDS = frozenset(
-    {
-        19,
-        20,
-        22,
-        23,
-        92,
-        94,
-        95,
-        96,
-        97,
-        98,
-        99,
-        100,
-        102,
-        106,
-        109,
-        110,
-        117,
-        118,
-        122,
-        126,
-        127,
-        128,
-    }
-)
+# The player chooses one default treatment for the complete portfolio. Every
+# numbered ruling still executes its original guarded core/consumer and keeps
+# its original visible card as the fail-closed fallback. The fourth choice
+# deliberately removes the default and preserves fully granular play.
+BATCHABLE_IDS = frozenset(EXPECTED_IDS)
 VISIBLE_RULING_IDS = frozenset(EXPECTED_IDS) - BATCHABLE_IDS
 
 # Player-facing route names are deliberately separate from the frozen English
@@ -246,9 +221,9 @@ COMPLETION_COPY_CN = {
         "收存内部流动案卷，按各项期限继续结算。",
     ),
     "q": (
-        "管理复审办理完毕",
-        "试任、权重、下属反馈、继任与授权记录已经写入本轮管理评价。",
-        "收存管理复审案卷，记入本轮评价。",
+        "本轮人事与编制总案办结",
+        "职业安排、职级路径、编制、继任、流动与管理复审均已写入各自案卷；仍在期限内的义务会按原定日期继续结算。",
+        "收存本轮人事与编制总案卷。",
     ),
 }
 
@@ -258,7 +233,7 @@ COMPLETION_OPTION_EN = {
     "n": "File the staffing record and carry these decisions into the next cycle.",
     "o": "File the succession record and keep the open dated arrangements in force.",
     "p": "File the internal-mobility record and settle each item on its own deadline.",
-    "q": "File the management-review record in this cycle's evaluation.",
+    "q": "File the final career and workforce portfolio receipt.",
 }
 
 TITLE_OVERRIDE_CN = {119: "招聘质量追责"}
@@ -459,14 +434,12 @@ def validate_specs() -> None:
             raise ValueError(f"{domain.key}: repeated mechanism")
     if not DUAL_COST_IDS <= set(EXPECTED_IDS):
         raise ValueError("dual-cost mechanism outside slice")
-    if len(BATCHABLE_IDS) != 22:
-        raise ValueError("career/HC background batch must cover exactly 22 low-risk rulings")
+    if BATCHABLE_IDS != set(EXPECTED_IDS):
+        raise ValueError("career/HC streamlined route must cover all 44 rulings")
     if BATCHABLE_IDS | VISIBLE_RULING_IDS != set(EXPECTED_IDS):
         raise ValueError("career/HC batch/visible partition lost a frozen mechanism")
     if BATCHABLE_IDS & VISIBLE_RULING_IDS:
         raise ValueError("career/HC batch/visible partition overlaps")
-    if DUAL_COST_IDS & BATCHABLE_IDS:
-        raise ValueError("funded career/HC rulings must remain visible")
     if EXPECTED_IDS != SEMANTIC_EXPECTED_IDS:
         raise ValueError("career/HC semantic registry ID drifted")
     if set(SEMANTIC_SPECS) != set(EXPECTED_IDS):
@@ -775,13 +748,11 @@ def render_batch_route_guard() -> str:
 def render_subject_entry(domain: DomainSpec, mechanism_id: int) -> str:
     """Enter one numbered ruling from assessed-official scope.
 
-    Batchable rulings attempt the exact same manager/core/consumer chain.  An
-    absent batch preference, stale case guard, or other failed application
-    opens the original card instead of silently skipping the ruling.
+    Streamlined rulings attempt the exact same manager/core/consumer chain. An
+    absent portfolio preference, stale case guard, scarce resource or other
+    failed application opens the original card instead of silently skipping it.
     """
 
-    if mechanism_id not in BATCHABLE_IDS:
-        return f"root = {{ trigger_event = {{ id = zg361ch.{mechanism_id} days = 1 }} }}"
     return f'''if = {{
         limit = {{
             {render_batch_route_guard()}
@@ -805,6 +776,13 @@ def render_subject_successor(domain: DomainSpec, mechanism_id: int) -> str:
 def render_background_resource_guard(mechanism_id: int) -> str:
     """Return the precondition that forces scarce-resource cases visible."""
 
+    if mechanism_id in DUAL_COST_IDS:
+        return '''government_has_flag = government_has_treasury
+            root = {
+                government_has_flag = government_has_treasury
+                treasury >= 5
+                gold >= 5
+            }'''
     if mechanism_id in {98, 99, 100, 102}:
         return '''trigger_if = {
                 limit = {
@@ -828,7 +806,7 @@ def render_background_resource_guard(mechanism_id: int) -> str:
 def render_background_apply(mechanism_id: int, domain: DomainSpec) -> str:
     """Apply one low-risk ruling silently, with its original card as fallback."""
 
-    return f'''# Low-risk portfolio default for #{mechanism_id:03d}; original card is the fallback.
+    return f'''# Streamlined portfolio default for #{mechanism_id:03d}; original card is the fallback.
 zg361_career_hc_m{mechanism_id:03d}_background_apply_effect = {{
     if = {{
         limit = {{
@@ -2413,6 +2391,16 @@ def render_timeout(domain: DomainSpec, state: int, stage_ids: tuple[int, ...]) -
 
 def render_outcome(domain: DomainSpec, completion_event: int) -> str:
     row = domain_vars(domain.key)
+    completion_dispatch = ""
+    if domain.key == "q":
+        completion_dispatch = f'''if = {{
+            limit = {{ var:{row["owner"]} = {{ is_ai = no }} }}
+            var:{row["owner"]} = {{ trigger_event = {{ id = zg361ch.{completion_event} days = 1 }} }}
+        }}
+        if = {{
+            limit = {{ is_ai = no }}
+            trigger_event = {{ id = zg361ch.{completion_event} days = 1 }}
+        }}'''
     return f'''zg361_career_hc_resolve_{domain.key}_outcome_effect = {{
     if = {{
         limit = {{
@@ -2436,14 +2424,7 @@ def render_outcome(domain: DomainSpec, completion_event: int) -> str:
             add_prestige = 10
         }}
         set_variable = {{ name = zg361_ch_{domain.key}_visible_receipt_revision value = var:{row["revision"]} }}
-        if = {{
-            limit = {{ var:{row["owner"]} = {{ is_ai = no }} }}
-            var:{row["owner"]} = {{ trigger_event = {{ id = zg361ch.{completion_event} days = 1 }} }}
-        }}
-        if = {{
-            limit = {{ is_ai = no }}
-            trigger_event = {{ id = zg361ch.{completion_event} days = 1 }}
-        }}
+        {completion_dispatch}
         debug_log = "ZG361CH: completed {domain.key.upper()} career/HC case"
     }}
 }}'''
@@ -2585,7 +2566,7 @@ def render_batch_choice_option(route: int) -> str:
 def render_batch_choice_event() -> str:
     scopes = event_scope_names("d")
     options = "\n".join(render_batch_choice_option(route) for route in (1, 2, 3))
-    return f'''# One player portfolio choice replaces 22 low-risk D+1 cards.
+    return f'''# One player portfolio choice replaces all successful numbered cards.
 zg361ch.{BATCH_CHOICE_EVENT} = {{
     type = character_event
     theme = stewardship
@@ -2644,7 +2625,10 @@ def render_queue_event(domain: DomainSpec) -> str:
                 }}
                 zg361_career_hc_open_q_case_effect = yes
             }}
-            else = {{ zg361_career_hc_finalize_{domain.key}_portfolio_effect = yes }}
+            else = {{
+                zg361_career_hc_finalize_{domain.key}_portfolio_effect = yes
+                root = {{ trigger_event = {{ id = zg361ch.906 days = 1 }} }}
+            }}
         }}'''
     else:
         immediate = (
@@ -2820,37 +2804,41 @@ def localization_rows(language: str) -> list[str]:
     if english:
         rows.extend(
             (
-                f' zg361ch.{BATCH_CHOICE_EVENT}.t:0 "Set this portfolio\'s routine"',
-                f' zg361ch.{BATCH_CHOICE_EVENT}.desc:0 "This portfolio contains forty-four career and headcount rulings. Twenty-two consequential rulings involving payment, movement, release timing, or named people will still be presented individually. Choose one standard treatment for the other twenty-two. Each will retain its own formal record; any case lacking the required conditions will be presented separately."',
-                f' zg361ch.{BATCH_CHOICE_EVENT}.a:0 "Use traceable evidence to settle twenty-two routine cases; present any case lacking the required conditions separately."',
-                f' zg361ch.{BATCH_CHOICE_EVENT}.b:0 "Put execution speed first in twenty-two routine cases; present any case lacking the required conditions separately."',
-                f' zg361ch.{BATCH_CHOICE_EVENT}.c:0 "Defer twenty-two routine cases, recording one next-cycle policy debt for each case."',
+                f' zg361ch.{BATCH_CHOICE_EVENT}.t:0 "Set this portfolio\'s review method"',
+                f' zg361ch.{BATCH_CHOICE_EVENT}.desc:0 "This portfolio contains forty-four career and headcount rulings. A streamlined method applies one policy to every case while preserving each formal record; only cases that lack their required conditions or resources return for an individual ruling. Detailed review remains available."',
+                f' zg361ch.{BATCH_CHOICE_EVENT}.a:0 "Streamlined: settle all forty-four cases by traceable evidence; present exceptions separately."',
+                f' zg361ch.{BATCH_CHOICE_EVENT}.b:0 "Streamlined: settle all forty-four cases for influence and immediate speed; present exceptions separately."',
+                f' zg361ch.{BATCH_CHOICE_EVENT}.c:0 "Streamlined: defer all forty-four cases and record the corresponding next-cycle policy debts."',
                 f' zg361ch.{BATCH_CHOICE_EVENT}.d:0 "Present all forty-four cases individually for my separate rulings."',
-                f' zg361ch.{BATCH_CHOICE_EVENT}.a.tt:0 "Twenty-two routine cases that meet their conditions are recorded individually under the evidence-led route; any case that cannot be applied is presented separately. The twenty-two consequential rulings remain individual, and the first arrives on the next-day step."',
-                f' zg361ch.{BATCH_CHOICE_EVENT}.b.tt:0 "Twenty-two routine cases that meet their conditions are recorded individually under the expedient route; any case that cannot be applied is presented separately. The twenty-two consequential rulings remain individual, and the first arrives on the next-day step."',
-                f' zg361ch.{BATCH_CHOICE_EVENT}.c.tt:0 "Each of the twenty-two routine cases records one next-cycle policy debt without using current capacity, then stops recurring in this campaign. The twenty-two consequential rulings remain individual, and the first arrives on the next-day step."',
+                f' zg361ch.{BATCH_CHOICE_EVENT}.a.tt:0 "Every applicable ruling is recorded through its original evidence-led effect. Funded rulings still transfer five treasury and five personal gold each; resource or guard failures reopen only the affected card. Intermediate filing receipts do not interrupt play; one final receipt closes the portfolio."',
+                f' zg361ch.{BATCH_CHOICE_EVENT}.b.tt:0 "Every applicable ruling is recorded through its original expedient effect. Funded rulings still transfer five treasury and five personal gold each; resource or guard failures reopen only the affected card. Intermediate filing receipts do not interrupt play; one final receipt closes the portfolio."',
+                f' zg361ch.{BATCH_CHOICE_EVENT}.c.tt:0 "Every applicable ruling takes its original defer route and records its own policy debt without current spending. Exact delayed obligations, including the release clock, keep their original deadlines. Intermediate filing receipts do not interrupt play; one final receipt closes the portfolio."',
                 f' zg361ch.{BATCH_CHOICE_EVENT}.d.tt:0 "No common route is set. All forty-four rulings remain individual, and the first arrives on the next-day step."',
             )
         )
     else:
         rows.extend(
             (
-                f' zg361ch.{BATCH_CHOICE_EVENT}.t:0 "确定本轮办案方式"',
-                f' zg361ch.{BATCH_CHOICE_EVENT}.desc:0 "本轮共有四十四项职业与编制裁决。涉及付款、调动、放人期限或直接改变去留的二十二项仍会逐项呈报；其余二十二项可按统一口径办理。统一办理仍会逐案留下正式记录；任一案件条件不足时，便改为单独呈报。"',
-                f' zg361ch.{BATCH_CHOICE_EVENT}.a:0 "二十二项常规案一律依可追溯证据办理；条件不足者单独呈报。"',
-                f' zg361ch.{BATCH_CHOICE_EVENT}.b:0 "二十二项常规案一律从权办理，优先照顾关系与眼前速度；条件不足者单独呈报。"',
-                f' zg361ch.{BATCH_CHOICE_EVENT}.c:0 "搁置二十二项常规案，每案记下一笔下周期制度债。"',
-                f' zg361ch.{BATCH_CHOICE_EVENT}.d:0 "全部四十四项逐案呈报，由我分别裁决。"',
-                f' zg361ch.{BATCH_CHOICE_EVENT}.a.tt:0 "条件齐备的二十二项常规案将逐案按循证路线登记；不能执行的事项改为单独呈报。另二十二项关键裁决仍逐项呈报，首项在次日节点到达。"',
-                f' zg361ch.{BATCH_CHOICE_EVENT}.b.tt:0 "条件齐备的二十二项常规案将逐案按从权路线登记；不能执行的事项改为单独呈报。另二十二项关键裁决仍逐项呈报，首项在次日节点到达。"',
-                f' zg361ch.{BATCH_CHOICE_EVENT}.c.tt:0 "二十二项常规案各记一笔下周期制度债，不占用当前容量，并在本局停止重提。另二十二项关键裁决仍逐项呈报，首项在次日节点到达。"',
+                f' zg361ch.{BATCH_CHOICE_EVENT}.t:0 "确定本轮审理方式"',
+                f' zg361ch.{BATCH_CHOICE_EVENT}.desc:0 "本轮共有四十四项职业与编制裁决。精简办理会按同一口径逐项写入原有案卷；只有条件或资源不足的异常项才单独呈报。若要逐案权衡，仍可选择完整审理。"',
+                f' zg361ch.{BATCH_CHOICE_EVENT}.a:0 "精简办理：四十四项一律依可追溯证据裁定；异常项另报。"',
+                f' zg361ch.{BATCH_CHOICE_EVENT}.b:0 "精简办理：四十四项一律从权裁定，优先关系与眼前速度；异常项另报。"',
+                f' zg361ch.{BATCH_CHOICE_EVENT}.c:0 "精简办理：四十四项一律暂缓，分别记入下周期制度债。"',
+                f' zg361ch.{BATCH_CHOICE_EVENT}.d:0 "完整审理：四十四项全部逐案呈报，由我分别裁决。"',
+                f' zg361ch.{BATCH_CHOICE_EVENT}.a.tt:0 "条件齐备的事项仍逐项调用原有循证效果并留下独立回执。涉及付款者仍各从上司国库与私财支出 5；资源或身份条件不足时，只把该项改为单独呈报。中间分域回执不再打断游玩，最终只呈报一次总回执。"',
+                f' zg361ch.{BATCH_CHOICE_EVENT}.b.tt:0 "条件齐备的事项仍逐项调用原有从权效果并留下独立回执。涉及付款者仍各从上司国库与私财支出 5；资源或身份条件不足时，只把该项改为单独呈报。中间分域回执不再打断游玩，最终只呈报一次总回执。"',
+                f' zg361ch.{BATCH_CHOICE_EVENT}.c.tt:0 "条件齐备的事项仍逐项走原有暂缓路线并各记制度债，不支出当前资源；放人时钟等既有延期义务仍按原期限结算。中间分域回执不再打断游玩，最终只呈报一次总回执。"',
                 f' zg361ch.{BATCH_CHOICE_EVENT}.d.tt:0 "不设统一办理路线。四十四项裁决全部逐项呈报，首项在次日节点到达。"',
             )
         )
     for domain_index, domain in enumerate(DOMAINS, start=1):
         event_id = 900 + domain_index
-        title = f"{domain.title_en} decisions recorded" if english else COMPLETION_COPY_CN[domain.key][0]
-        desc = "The decisions in this career domain are recorded; open dated obligations will continue to settle on their own deadlines." if english else COMPLETION_COPY_CN[domain.key][1]
+        if english and domain.key == "q":
+            title = "Career and workforce portfolio closed"
+            desc = "Career allocation, paths, staffing, succession, mobility and management review are recorded in their respective ledgers. Open dated obligations will continue to settle on schedule."
+        else:
+            title = f"{domain.title_en} decisions recorded" if english else COMPLETION_COPY_CN[domain.key][0]
+            desc = "The decisions in this career domain are recorded; open dated obligations will continue to settle on their own deadlines." if english else COMPLETION_COPY_CN[domain.key][1]
         option = COMPLETION_OPTION_EN[domain.key] if english else COMPLETION_COPY_CN[domain.key][2]
         rows.extend(
             (

@@ -1,6 +1,6 @@
 ﻿# GENERATED FILE — edit tools/gen_361_career_hc_runtime.py
 # Purpose shard: n stage 02 mechanisms.
-# Boundary contract: 1-10 top-level effects; this file has 7.
+# Boundary contract: 1-10 top-level effects; this file has 8.
 
 
 
@@ -184,7 +184,7 @@ zg361_career_hc_m100_consume_effect = {
     }
 }
 
-# Low-risk portfolio default for #100; original card is the fallback.
+# Streamlined portfolio default for #100; original card is the fallback.
 zg361_career_hc_m100_background_apply_effect = {
     if = {
         limit = {
@@ -213,7 +213,18 @@ zg361_career_hc_m100_background_apply_effect = {
                 has_variable = zg361_ch_runtime_applied
                 var:zg361_ch_runtime_applied = 1
             }
-            root = { trigger_event = { id = zg361ch.101 days = 1 } }
+            if = {
+        limit = {
+            has_variable = zg361_ch_player_batch_route
+            OR = {
+                var:zg361_ch_player_batch_route = 1
+                var:zg361_ch_player_batch_route = 2
+                var:zg361_ch_player_batch_route = 3
+            }
+        }
+        zg361_career_hc_m101_background_apply_effect = yes
+    }
+    else = { root = { trigger_event = { id = zg361ch.101 days = 1 } } }
         }
         else = {
             root = { trigger_event = { id = zg361ch.100 days = 1 } }
@@ -548,5 +559,52 @@ zg361_career_hc_m101_consume_effect = {
             set_variable = { name = zg361_ch_n_conserved value = 1 }
         }
         zg361_career_hc_n_try_advance_02_effect = yes
+    }
+}
+
+# Streamlined portfolio default for #101; original card is the fallback.
+zg361_career_hc_m101_background_apply_effect = {
+    if = {
+        limit = {
+            has_variable = zg361_ch_player_batch_route
+            OR = {
+                var:zg361_ch_player_batch_route = 1
+                var:zg361_ch_player_batch_route = 2
+                var:zg361_ch_player_batch_route = 3
+            }
+            government_has_flag = government_has_treasury
+            root = {
+                government_has_flag = government_has_treasury
+                treasury >= 5
+                gold >= 5
+            }
+        }
+        zg361_career_hc_m101_manager_apply_effect = {
+            ROUTE = var:zg361_ch_player_batch_route
+        }
+        if = {
+            limit = {
+                has_variable = zg361_ch_runtime_applied
+                var:zg361_ch_runtime_applied = 1
+            }
+            if = {
+        limit = {
+            has_variable = zg361_ch_player_batch_route
+            OR = {
+                var:zg361_ch_player_batch_route = 1
+                var:zg361_ch_player_batch_route = 2
+                var:zg361_ch_player_batch_route = 3
+            }
+        }
+        zg361_career_hc_m102_background_apply_effect = yes
+    }
+    else = { root = { trigger_event = { id = zg361ch.102 days = 1 } } }
+        }
+        else = {
+            root = { trigger_event = { id = zg361ch.101 days = 1 } }
+        }
+    }
+    else = {
+        root = { trigger_event = { id = zg361ch.101 days = 1 } }
     }
 }

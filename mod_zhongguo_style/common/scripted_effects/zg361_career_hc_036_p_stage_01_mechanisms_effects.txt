@@ -1,6 +1,6 @@
 ﻿# GENERATED FILE — edit tools/gen_361_career_hc_runtime.py
 # Purpose shard: p stage 01 mechanisms.
-# Boundary contract: 1-10 top-level effects; this file has 6.
+# Boundary contract: 1-10 top-level effects; this file has 8.
 
 
 
@@ -314,6 +314,53 @@ zg361_career_hc_m114_consume_effect = {
     }
 }
 
+# Streamlined portfolio default for #114; original card is the fallback.
+zg361_career_hc_m114_background_apply_effect = {
+    if = {
+        limit = {
+            has_variable = zg361_ch_player_batch_route
+            OR = {
+                var:zg361_ch_player_batch_route = 1
+                var:zg361_ch_player_batch_route = 2
+                var:zg361_ch_player_batch_route = 3
+            }
+            government_has_flag = government_has_treasury
+            root = {
+                government_has_flag = government_has_treasury
+                treasury >= 5
+                gold >= 5
+            }
+        }
+        zg361_career_hc_m114_manager_apply_effect = {
+            ROUTE = var:zg361_ch_player_batch_route
+        }
+        if = {
+            limit = {
+                has_variable = zg361_ch_runtime_applied
+                var:zg361_ch_runtime_applied = 1
+            }
+            if = {
+        limit = {
+            has_variable = zg361_ch_player_batch_route
+            OR = {
+                var:zg361_ch_player_batch_route = 1
+                var:zg361_ch_player_batch_route = 2
+                var:zg361_ch_player_batch_route = 3
+            }
+        }
+        zg361_career_hc_m115_background_apply_effect = yes
+    }
+    else = { root = { trigger_event = { id = zg361ch.115 days = 1 } } }
+        }
+        else = {
+            root = { trigger_event = { id = zg361ch.114 days = 1 } }
+        }
+    }
+    else = {
+        root = { trigger_event = { id = zg361ch.114 days = 1 } }
+    }
+}
+
 zg361_career_hc_m115_manager_apply_effect = {
     remove_variable = zg361_ch_runtime_applied
     if = {
@@ -473,5 +520,47 @@ zg361_career_hc_m115_consume_effect = {
             set_variable = { name = zg361_ch_p_conserved value = 1 }
         }
         zg361_career_hc_p_try_advance_01_effect = yes
+    }
+}
+
+# Streamlined portfolio default for #115; original card is the fallback.
+zg361_career_hc_m115_background_apply_effect = {
+    if = {
+        limit = {
+            has_variable = zg361_ch_player_batch_route
+            OR = {
+                var:zg361_ch_player_batch_route = 1
+                var:zg361_ch_player_batch_route = 2
+                var:zg361_ch_player_batch_route = 3
+            }
+            always = yes
+        }
+        zg361_career_hc_m115_manager_apply_effect = {
+            ROUTE = var:zg361_ch_player_batch_route
+        }
+        if = {
+            limit = {
+                has_variable = zg361_ch_runtime_applied
+                var:zg361_ch_runtime_applied = 1
+            }
+            if = {
+        limit = {
+            has_variable = zg361_ch_player_batch_route
+            OR = {
+                var:zg361_ch_player_batch_route = 1
+                var:zg361_ch_player_batch_route = 2
+                var:zg361_ch_player_batch_route = 3
+            }
+        }
+        zg361_career_hc_m116_background_apply_effect = yes
+    }
+    else = { root = { trigger_event = { id = zg361ch.116 days = 1 } } }
+        }
+        else = {
+            root = { trigger_event = { id = zg361ch.115 days = 1 } }
+        }
+    }
+    else = {
+        root = { trigger_event = { id = zg361ch.115 days = 1 } }
     }
 }

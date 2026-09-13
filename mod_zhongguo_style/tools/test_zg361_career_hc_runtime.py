@@ -509,15 +509,15 @@ class CareerHcRuntimeTests(unittest.TestCase):
                             3,
                         )
 
-    def test_one_batch_choice_keeps_twenty_two_consequential_rulings_visible(self) -> None:
-        self.assertEqual(len(generator.BATCHABLE_IDS), 22)
-        self.assertEqual(len(generator.VISIBLE_RULING_IDS), 22)
+    def test_one_batch_choice_streamlines_all_rulings_with_granular_fallback(self) -> None:
+        self.assertEqual(len(generator.BATCHABLE_IDS), 44)
+        self.assertEqual(len(generator.VISIBLE_RULING_IDS), 0)
         self.assertEqual(
             generator.BATCHABLE_IDS | generator.VISIBLE_RULING_IDS,
             set(generator.EXPECTED_IDS),
         )
         self.assertFalse(generator.BATCHABLE_IDS & generator.VISIBLE_RULING_IDS)
-        self.assertFalse(generator.DUAL_COST_IDS & generator.BATCHABLE_IDS)
+        self.assertTrue(generator.DUAL_COST_IDS <= generator.BATCHABLE_IDS)
         choice = block(self.events, f"zg361ch.{generator.BATCH_CHOICE_EVENT}")
         self.assertIn("is_ai = no", choice)
         self.assertIn("zg361_case_kernel_full_guard_trigger", choice)
@@ -533,9 +533,25 @@ class CareerHcRuntimeTests(unittest.TestCase):
         self.assertIn(f"name = zg361ch.{generator.BATCH_CHOICE_EVENT}.d", choice)
         self.assertIn("remove_variable = zg361_ch_player_batch_route", choice)
         self.assertIn("trigger_event = { id = zg361ch.19 days = 1 }", choice)
-        # Normal batched flow: one policy card, 22 consequential cards and six
-        # domain receipts, instead of 44 business cards plus six receipts.
-        self.assertEqual(1 + len(generator.VISIBLE_RULING_IDS) + len(generator.DOMAINS), 29)
+        # Normal streamlined flow: one policy card and one final receipt. Any
+        # numbered card is now a precise guard/resource failure fallback.
+        self.assertEqual(1 + len(generator.VISIBLE_RULING_IDS) + 1, 2)
+        for domain_index, domain in enumerate(generator.DOMAINS, start=1):
+            outcome = block(
+                self.effects,
+                f"zg361_career_hc_resolve_{domain.key}_outcome_effect",
+            )
+            completion = 900 + domain_index
+            if domain.key == "q":
+                self.assertIn(
+                    f"trigger_event = {{ id = zg361ch.{completion} days = 1 }}",
+                    outcome,
+                )
+            else:
+                self.assertNotIn(
+                    f"trigger_event = {{ id = zg361ch.{completion} days = 1 }}",
+                    outcome,
+                )
 
     def test_player_rulings_expose_authored_effect_tooltips(self) -> None:
         batch = block(self.events, f"zg361ch.{generator.BATCH_CHOICE_EVENT}")
@@ -629,6 +645,21 @@ class CareerHcRuntimeTests(unittest.TestCase):
             q127.index("zg361_ch_q_manager_hc_available >= 1"),
             q127.index("zg361_career_hc_m127_manager_apply_effect"),
         )
+        for mechanism_id in generator.DUAL_COST_IDS:
+            source = block(
+                self.effects,
+                f"zg361_career_hc_m{mechanism_id:03d}_background_apply_effect",
+            )
+            with self.subTest(funded_mechanism=mechanism_id):
+                self.assertIn("government_has_flag = government_has_treasury", source)
+                self.assertIn("treasury >= 5", source)
+                self.assertIn("gold >= 5", source)
+                self.assertLess(
+                    source.index("treasury >= 5"),
+                    source.index(
+                        f"zg361_career_hc_m{mechanism_id:03d}_manager_apply_effect"
+                    ),
+                )
 
     def test_batching_never_reimplements_case_or_business_semantics(self) -> None:
         for mechanism_id in generator.BATCHABLE_IDS:
@@ -1230,6 +1261,7 @@ class CareerHcRuntimeTests(unittest.TestCase):
         self.assertIn("any_vassal = { zg361_is_reviewable_vassal_trigger = yes }", queue)
         self.assertIn("zg361_career_hc_open_q_case_effect = yes", queue)
         self.assertIn("zg361_career_hc_finalize_p_portfolio_effect = yes", queue)
+        self.assertIn("trigger_event = { id = zg361ch.906 days = 1 }", queue)
 
     def test_unwired_subject_responses_are_not_generated_or_claimed(self) -> None:
         self.assertNotIn("_subject_response_effect", self.effects)
@@ -1250,7 +1282,13 @@ class CareerHcRuntimeTests(unittest.TestCase):
             source = block(self.events, f"zg361ch.{event_id}")
             self.assertIn("trigger = { is_ai = no }", source)
             self.assertNotIn("hidden = yes", source)
-        self.assertIn("var:zg361_case_d_owner = { is_ai = no }", self.effects)
+        self.assertIn("var:zg361_case_q_owner = { is_ai = no }", self.effects)
+        for domain in generator.DOMAINS[:-1]:
+            outcome = block(
+                self.effects,
+                f"zg361_career_hc_resolve_{domain.key}_outcome_effect",
+            )
+            self.assertNotIn(f"var:zg361_case_{domain.key}_owner = {{ is_ai = no }}", outcome)
 
     def test_optional_kernel_applied_reads_are_fail_closed(self) -> None:
         combined = self.effects + "\n" + self.events
@@ -1267,7 +1305,7 @@ class CareerHcRuntimeTests(unittest.TestCase):
             MOD_ROOT / "localization/simp_chinese/zg361_career_hc_l_simp_chinese.yml"
         ).read_text(encoding="utf-8-sig")
         self.assertIn("晋升材料已过初核", chinese)
-        self.assertIn("直接改变去留的二十二项仍会逐项呈报", chinese)
+        self.assertIn("只有条件或资源不足的异常项才单独呈报", chinese)
         self.assertNotIn("具名人员的二十二项", chinese)
         self.assertIn("候选人的履历、绩效记录与担保意见已经收齐", chinese)
         self.assertNotIn("候选材料已经送齐", chinese)
@@ -1279,18 +1317,18 @@ class CareerHcRuntimeTests(unittest.TestCase):
         self.assertNotIn("回写", chinese)
         self.assertNotIn("writeback", english.lower())
         self.assertNotIn("original card", english.lower())
-        self.assertIn("Each will retain its own formal record", english)
+        self.assertIn("preserving each formal record", english)
         for exact in (
-            f'zg361ch.{generator.BATCH_CHOICE_EVENT}.a:0 "二十二项常规案一律依可追溯证据办理；条件不足者单独呈报。"',
-            f'zg361ch.{generator.BATCH_CHOICE_EVENT}.b:0 "二十二项常规案一律从权办理，优先照顾关系与眼前速度；条件不足者单独呈报。"',
-            f'zg361ch.{generator.BATCH_CHOICE_EVENT}.c:0 "搁置二十二项常规案，每案记下一笔下周期制度债。"',
-            f'zg361ch.{generator.BATCH_CHOICE_EVENT}.d:0 "全部四十四项逐案呈报，由我分别裁决。"',
+            f'zg361ch.{generator.BATCH_CHOICE_EVENT}.a:0 "精简办理：四十四项一律依可追溯证据裁定；异常项另报。"',
+            f'zg361ch.{generator.BATCH_CHOICE_EVENT}.b:0 "精简办理：四十四项一律从权裁定，优先关系与眼前速度；异常项另报。"',
+            f'zg361ch.{generator.BATCH_CHOICE_EVENT}.c:0 "精简办理：四十四项一律暂缓，分别记入下周期制度债。"',
+            f'zg361ch.{generator.BATCH_CHOICE_EVENT}.d:0 "完整审理：四十四项全部逐案呈报，由我分别裁决。"',
         ):
             self.assertIn(exact, chinese)
         for exact in (
-            "Use traceable evidence to settle twenty-two routine cases; present any case lacking the required conditions separately.",
-            "Put execution speed first in twenty-two routine cases; present any case lacking the required conditions separately.",
-            "Defer twenty-two routine cases, recording one next-cycle policy debt for each case.",
+            "Streamlined: settle all forty-four cases by traceable evidence; present exceptions separately.",
+            "Streamlined: settle all forty-four cases for influence and immediate speed; present exceptions separately.",
+            "Streamlined: defer all forty-four cases and record the corresponding next-cycle policy debts.",
             "Present all forty-four cases individually for my separate rulings.",
         ):
             self.assertIn(exact, english)

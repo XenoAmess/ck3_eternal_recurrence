@@ -1,6 +1,6 @@
 ﻿# GENERATED FILE — edit tools/gen_361_career_hc_runtime.py
 # Purpose shard: p stage 04 mechanisms.
-# Boundary contract: 1-10 top-level effects; this file has 3.
+# Boundary contract: 1-10 top-level effects; this file has 4.
 
 
 
@@ -309,5 +309,52 @@ zg361_career_hc_m119_consume_effect = {
             set_variable = { name = zg361_ch_p_conserved value = 1 }
         }
         zg361_career_hc_p_try_advance_04_effect = yes
+    }
+}
+
+# Streamlined portfolio default for #119; original card is the fallback.
+zg361_career_hc_m119_background_apply_effect = {
+    if = {
+        limit = {
+            has_variable = zg361_ch_player_batch_route
+            OR = {
+                var:zg361_ch_player_batch_route = 1
+                var:zg361_ch_player_batch_route = 2
+                var:zg361_ch_player_batch_route = 3
+            }
+            government_has_flag = government_has_treasury
+            root = {
+                government_has_flag = government_has_treasury
+                treasury >= 5
+                gold >= 5
+            }
+        }
+        zg361_career_hc_m119_manager_apply_effect = {
+            ROUTE = var:zg361_ch_player_batch_route
+        }
+        if = {
+            limit = {
+                has_variable = zg361_ch_runtime_applied
+                var:zg361_ch_runtime_applied = 1
+            }
+            if = {
+        limit = {
+            has_variable = zg361_ch_player_batch_route
+            OR = {
+                var:zg361_ch_player_batch_route = 1
+                var:zg361_ch_player_batch_route = 2
+                var:zg361_ch_player_batch_route = 3
+            }
+        }
+        zg361_career_hc_m120_background_apply_effect = yes
+    }
+    else = { root = { trigger_event = { id = zg361ch.120 days = 1 } } }
+        }
+        else = {
+            root = { trigger_event = { id = zg361ch.119 days = 1 } }
+        }
+    }
+    else = {
+        root = { trigger_event = { id = zg361ch.119 days = 1 } }
     }
 }

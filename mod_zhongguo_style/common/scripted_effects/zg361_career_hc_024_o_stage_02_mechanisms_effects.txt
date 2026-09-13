@@ -1,6 +1,6 @@
 ﻿# GENERATED FILE — edit tools/gen_361_career_hc_runtime.py
 # Purpose shard: o stage 02 mechanisms.
-# Boundary contract: 1-10 top-level effects; this file has 7.
+# Boundary contract: 1-10 top-level effects; this file has 8.
 
 
 
@@ -168,6 +168,48 @@ zg361_career_hc_m108_consume_effect = {
     }
 }
 
+# Streamlined portfolio default for #108; original card is the fallback.
+zg361_career_hc_m108_background_apply_effect = {
+    if = {
+        limit = {
+            has_variable = zg361_ch_player_batch_route
+            OR = {
+                var:zg361_ch_player_batch_route = 1
+                var:zg361_ch_player_batch_route = 2
+                var:zg361_ch_player_batch_route = 3
+            }
+            always = yes
+        }
+        zg361_career_hc_m108_manager_apply_effect = {
+            ROUTE = var:zg361_ch_player_batch_route
+        }
+        if = {
+            limit = {
+                has_variable = zg361_ch_runtime_applied
+                var:zg361_ch_runtime_applied = 1
+            }
+            if = {
+        limit = {
+            has_variable = zg361_ch_player_batch_route
+            OR = {
+                var:zg361_ch_player_batch_route = 1
+                var:zg361_ch_player_batch_route = 2
+                var:zg361_ch_player_batch_route = 3
+            }
+        }
+        zg361_career_hc_m109_background_apply_effect = yes
+    }
+    else = { root = { trigger_event = { id = zg361ch.109 days = 1 } } }
+        }
+        else = {
+            root = { trigger_event = { id = zg361ch.108 days = 1 } }
+        }
+    }
+    else = {
+        root = { trigger_event = { id = zg361ch.108 days = 1 } }
+    }
+}
+
 zg361_career_hc_m109_manager_apply_effect = {
     remove_variable = zg361_ch_runtime_applied
     if = {
@@ -330,7 +372,7 @@ zg361_career_hc_m109_consume_effect = {
     }
 }
 
-# Low-risk portfolio default for #109; original card is the fallback.
+# Streamlined portfolio default for #109; original card is the fallback.
 zg361_career_hc_m109_background_apply_effect = {
     if = {
         limit = {

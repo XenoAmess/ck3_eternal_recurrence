@@ -101,14 +101,7 @@ zg361_career_hc_resolve_d_outcome_effect = {
             add_prestige = 10
         }
         set_variable = { name = zg361_ch_d_visible_receipt_revision value = var:zg361_case_d_revision }
-        if = {
-            limit = { var:zg361_case_d_owner = { is_ai = no } }
-            var:zg361_case_d_owner = { trigger_event = { id = zg361ch.901 days = 1 } }
-        }
-        if = {
-            limit = { is_ai = no }
-            trigger_event = { id = zg361ch.901 days = 1 }
-        }
+
         debug_log = "ZG361CH: completed D career/HC case"
     }
 }

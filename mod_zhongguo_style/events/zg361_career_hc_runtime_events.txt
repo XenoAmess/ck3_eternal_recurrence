@@ -1,7 +1,7 @@
 ﻿# GENERATED FILE — edit tools/gen_361_career_hc_runtime.py
 namespace = zg361ch
 
-# One player portfolio choice replaces 22 low-risk D+1 cards.
+# One player portfolio choice replaces all successful numbered cards.
 zg361ch.950 = {
     type = character_event
     theme = stewardship
@@ -232,7 +232,18 @@ zg361ch.20 = {
             }
         }
         scope:zg361_ch_d_event_subject = {
-            root = { trigger_event = { id = zg361ch.21 days = 1 } }
+            if = {
+        limit = {
+            has_variable = zg361_ch_player_batch_route
+            OR = {
+                var:zg361_ch_player_batch_route = 1
+                var:zg361_ch_player_batch_route = 2
+                var:zg361_ch_player_batch_route = 3
+            }
+        }
+        zg361_career_hc_m021_background_apply_effect = yes
+    }
+    else = { root = { trigger_event = { id = zg361ch.21 days = 1 } } }
         }
     }
 }
@@ -250,7 +261,18 @@ option = {
             }
         }
         scope:zg361_ch_d_event_subject = {
-            root = { trigger_event = { id = zg361ch.21 days = 1 } }
+            if = {
+        limit = {
+            has_variable = zg361_ch_player_batch_route
+            OR = {
+                var:zg361_ch_player_batch_route = 1
+                var:zg361_ch_player_batch_route = 2
+                var:zg361_ch_player_batch_route = 3
+            }
+        }
+        zg361_career_hc_m021_background_apply_effect = yes
+    }
+    else = { root = { trigger_event = { id = zg361ch.21 days = 1 } } }
         }
     }
 }
@@ -268,7 +290,18 @@ option = {
             }
         }
         scope:zg361_ch_d_event_subject = {
-            root = { trigger_event = { id = zg361ch.21 days = 1 } }
+            if = {
+        limit = {
+            has_variable = zg361_ch_player_batch_route
+            OR = {
+                var:zg361_ch_player_batch_route = 1
+                var:zg361_ch_player_batch_route = 2
+                var:zg361_ch_player_batch_route = 3
+            }
+        }
+        zg361_career_hc_m021_background_apply_effect = yes
+    }
+    else = { root = { trigger_event = { id = zg361ch.21 days = 1 } } }
         }
     }
 }
@@ -574,7 +607,18 @@ zg361ch.23 = {
             }
         }
         scope:zg361_ch_d_event_subject = {
-            root = { trigger_event = { id = zg361ch.24 days = 1 } }
+            if = {
+        limit = {
+            has_variable = zg361_ch_player_batch_route
+            OR = {
+                var:zg361_ch_player_batch_route = 1
+                var:zg361_ch_player_batch_route = 2
+                var:zg361_ch_player_batch_route = 3
+            }
+        }
+        zg361_career_hc_m024_background_apply_effect = yes
+    }
+    else = { root = { trigger_event = { id = zg361ch.24 days = 1 } } }
         }
     }
 }
@@ -592,7 +636,18 @@ option = {
             }
         }
         scope:zg361_ch_d_event_subject = {
-            root = { trigger_event = { id = zg361ch.24 days = 1 } }
+            if = {
+        limit = {
+            has_variable = zg361_ch_player_batch_route
+            OR = {
+                var:zg361_ch_player_batch_route = 1
+                var:zg361_ch_player_batch_route = 2
+                var:zg361_ch_player_batch_route = 3
+            }
+        }
+        zg361_career_hc_m024_background_apply_effect = yes
+    }
+    else = { root = { trigger_event = { id = zg361ch.24 days = 1 } } }
         }
     }
 }
@@ -610,7 +665,18 @@ option = {
             }
         }
         scope:zg361_ch_d_event_subject = {
-            root = { trigger_event = { id = zg361ch.24 days = 1 } }
+            if = {
+        limit = {
+            has_variable = zg361_ch_player_batch_route
+            OR = {
+                var:zg361_ch_player_batch_route = 1
+                var:zg361_ch_player_batch_route = 2
+                var:zg361_ch_player_batch_route = 3
+            }
+        }
+        zg361_career_hc_m024_background_apply_effect = yes
+    }
+    else = { root = { trigger_event = { id = zg361ch.24 days = 1 } } }
         }
     }
 }
@@ -662,7 +728,18 @@ zg361ch.24 = {
             }
         }
         scope:zg361_ch_d_event_subject = {
-            root = { trigger_event = { id = zg361ch.25 days = 1 } }
+            if = {
+        limit = {
+            has_variable = zg361_ch_player_batch_route
+            OR = {
+                var:zg361_ch_player_batch_route = 1
+                var:zg361_ch_player_batch_route = 2
+                var:zg361_ch_player_batch_route = 3
+            }
+        }
+        zg361_career_hc_m025_background_apply_effect = yes
+    }
+    else = { root = { trigger_event = { id = zg361ch.25 days = 1 } } }
         }
     }
 }
@@ -680,7 +757,18 @@ option = {
             }
         }
         scope:zg361_ch_d_event_subject = {
-            root = { trigger_event = { id = zg361ch.25 days = 1 } }
+            if = {
+        limit = {
+            has_variable = zg361_ch_player_batch_route
+            OR = {
+                var:zg361_ch_player_batch_route = 1
+                var:zg361_ch_player_batch_route = 2
+                var:zg361_ch_player_batch_route = 3
+            }
+        }
+        zg361_career_hc_m025_background_apply_effect = yes
+    }
+    else = { root = { trigger_event = { id = zg361ch.25 days = 1 } } }
         }
     }
 }
@@ -698,7 +786,18 @@ option = {
             }
         }
         scope:zg361_ch_d_event_subject = {
-            root = { trigger_event = { id = zg361ch.25 days = 1 } }
+            if = {
+        limit = {
+            has_variable = zg361_ch_player_batch_route
+            OR = {
+                var:zg361_ch_player_batch_route = 1
+                var:zg361_ch_player_batch_route = 2
+                var:zg361_ch_player_batch_route = 3
+            }
+        }
+        zg361_career_hc_m025_background_apply_effect = yes
+    }
+    else = { root = { trigger_event = { id = zg361ch.25 days = 1 } } }
         }
     }
 }
@@ -1026,7 +1125,18 @@ zg361ch.92 = {
             }
         }
         scope:zg361_ch_m_event_subject = {
-            root = { trigger_event = { id = zg361ch.93 days = 1 } }
+            if = {
+        limit = {
+            has_variable = zg361_ch_player_batch_route
+            OR = {
+                var:zg361_ch_player_batch_route = 1
+                var:zg361_ch_player_batch_route = 2
+                var:zg361_ch_player_batch_route = 3
+            }
+        }
+        zg361_career_hc_m093_background_apply_effect = yes
+    }
+    else = { root = { trigger_event = { id = zg361ch.93 days = 1 } } }
         }
     }
 }
@@ -1044,7 +1154,18 @@ option = {
             }
         }
         scope:zg361_ch_m_event_subject = {
-            root = { trigger_event = { id = zg361ch.93 days = 1 } }
+            if = {
+        limit = {
+            has_variable = zg361_ch_player_batch_route
+            OR = {
+                var:zg361_ch_player_batch_route = 1
+                var:zg361_ch_player_batch_route = 2
+                var:zg361_ch_player_batch_route = 3
+            }
+        }
+        zg361_career_hc_m093_background_apply_effect = yes
+    }
+    else = { root = { trigger_event = { id = zg361ch.93 days = 1 } } }
         }
     }
 }
@@ -1062,7 +1183,18 @@ option = {
             }
         }
         scope:zg361_ch_m_event_subject = {
-            root = { trigger_event = { id = zg361ch.93 days = 1 } }
+            if = {
+        limit = {
+            has_variable = zg361_ch_player_batch_route
+            OR = {
+                var:zg361_ch_player_batch_route = 1
+                var:zg361_ch_player_batch_route = 2
+                var:zg361_ch_player_batch_route = 3
+            }
+        }
+        zg361_career_hc_m093_background_apply_effect = yes
+    }
+    else = { root = { trigger_event = { id = zg361ch.93 days = 1 } } }
         }
     }
 }
@@ -2104,7 +2236,18 @@ zg361ch.100 = {
             }
         }
         scope:zg361_ch_n_event_subject = {
-            root = { trigger_event = { id = zg361ch.101 days = 1 } }
+            if = {
+        limit = {
+            has_variable = zg361_ch_player_batch_route
+            OR = {
+                var:zg361_ch_player_batch_route = 1
+                var:zg361_ch_player_batch_route = 2
+                var:zg361_ch_player_batch_route = 3
+            }
+        }
+        zg361_career_hc_m101_background_apply_effect = yes
+    }
+    else = { root = { trigger_event = { id = zg361ch.101 days = 1 } } }
         }
     }
 }
@@ -2122,7 +2265,18 @@ option = {
             }
         }
         scope:zg361_ch_n_event_subject = {
-            root = { trigger_event = { id = zg361ch.101 days = 1 } }
+            if = {
+        limit = {
+            has_variable = zg361_ch_player_batch_route
+            OR = {
+                var:zg361_ch_player_batch_route = 1
+                var:zg361_ch_player_batch_route = 2
+                var:zg361_ch_player_batch_route = 3
+            }
+        }
+        zg361_career_hc_m101_background_apply_effect = yes
+    }
+    else = { root = { trigger_event = { id = zg361ch.101 days = 1 } } }
         }
     }
 }
@@ -2140,7 +2294,18 @@ option = {
             }
         }
         scope:zg361_ch_n_event_subject = {
-            root = { trigger_event = { id = zg361ch.101 days = 1 } }
+            if = {
+        limit = {
+            has_variable = zg361_ch_player_batch_route
+            OR = {
+                var:zg361_ch_player_batch_route = 1
+                var:zg361_ch_player_batch_route = 2
+                var:zg361_ch_player_batch_route = 3
+            }
+        }
+        zg361_career_hc_m101_background_apply_effect = yes
+    }
+    else = { root = { trigger_event = { id = zg361ch.101 days = 1 } } }
         }
     }
 }
@@ -2325,7 +2490,18 @@ zg361ch.102 = {
             }
         }
         scope:zg361_ch_n_event_subject = {
-            root = { trigger_event = { id = zg361ch.103 days = 1 } }
+            if = {
+        limit = {
+            has_variable = zg361_ch_player_batch_route
+            OR = {
+                var:zg361_ch_player_batch_route = 1
+                var:zg361_ch_player_batch_route = 2
+                var:zg361_ch_player_batch_route = 3
+            }
+        }
+        zg361_career_hc_m103_background_apply_effect = yes
+    }
+    else = { root = { trigger_event = { id = zg361ch.103 days = 1 } } }
         }
     }
 }
@@ -2343,7 +2519,18 @@ option = {
             }
         }
         scope:zg361_ch_n_event_subject = {
-            root = { trigger_event = { id = zg361ch.103 days = 1 } }
+            if = {
+        limit = {
+            has_variable = zg361_ch_player_batch_route
+            OR = {
+                var:zg361_ch_player_batch_route = 1
+                var:zg361_ch_player_batch_route = 2
+                var:zg361_ch_player_batch_route = 3
+            }
+        }
+        zg361_career_hc_m103_background_apply_effect = yes
+    }
+    else = { root = { trigger_event = { id = zg361ch.103 days = 1 } } }
         }
     }
 }
@@ -2361,7 +2548,18 @@ option = {
             }
         }
         scope:zg361_ch_n_event_subject = {
-            root = { trigger_event = { id = zg361ch.103 days = 1 } }
+            if = {
+        limit = {
+            has_variable = zg361_ch_player_batch_route
+            OR = {
+                var:zg361_ch_player_batch_route = 1
+                var:zg361_ch_player_batch_route = 2
+                var:zg361_ch_player_batch_route = 3
+            }
+        }
+        zg361_career_hc_m103_background_apply_effect = yes
+    }
+    else = { root = { trigger_event = { id = zg361ch.103 days = 1 } } }
         }
     }
 }
@@ -2413,7 +2611,18 @@ zg361ch.103 = {
             }
         }
         scope:zg361_ch_n_event_subject = {
-            root = { trigger_event = { id = zg361ch.104 days = 1 } }
+            if = {
+        limit = {
+            has_variable = zg361_ch_player_batch_route
+            OR = {
+                var:zg361_ch_player_batch_route = 1
+                var:zg361_ch_player_batch_route = 2
+                var:zg361_ch_player_batch_route = 3
+            }
+        }
+        zg361_career_hc_m104_background_apply_effect = yes
+    }
+    else = { root = { trigger_event = { id = zg361ch.104 days = 1 } } }
         }
     }
 }
@@ -2431,7 +2640,18 @@ option = {
             }
         }
         scope:zg361_ch_n_event_subject = {
-            root = { trigger_event = { id = zg361ch.104 days = 1 } }
+            if = {
+        limit = {
+            has_variable = zg361_ch_player_batch_route
+            OR = {
+                var:zg361_ch_player_batch_route = 1
+                var:zg361_ch_player_batch_route = 2
+                var:zg361_ch_player_batch_route = 3
+            }
+        }
+        zg361_career_hc_m104_background_apply_effect = yes
+    }
+    else = { root = { trigger_event = { id = zg361ch.104 days = 1 } } }
         }
     }
 }
@@ -2449,7 +2669,18 @@ option = {
             }
         }
         scope:zg361_ch_n_event_subject = {
-            root = { trigger_event = { id = zg361ch.104 days = 1 } }
+            if = {
+        limit = {
+            has_variable = zg361_ch_player_batch_route
+            OR = {
+                var:zg361_ch_player_batch_route = 1
+                var:zg361_ch_player_batch_route = 2
+                var:zg361_ch_player_batch_route = 3
+            }
+        }
+        zg361_career_hc_m104_background_apply_effect = yes
+    }
+    else = { root = { trigger_event = { id = zg361ch.104 days = 1 } } }
         }
     }
 }
@@ -2507,7 +2738,18 @@ zg361ch.104 = {
             }
         }
         scope:zg361_ch_n_event_subject = {
-            root = { trigger_event = { id = zg361ch.105 days = 1 } }
+            if = {
+        limit = {
+            has_variable = zg361_ch_player_batch_route
+            OR = {
+                var:zg361_ch_player_batch_route = 1
+                var:zg361_ch_player_batch_route = 2
+                var:zg361_ch_player_batch_route = 3
+            }
+        }
+        zg361_career_hc_m105_background_apply_effect = yes
+    }
+    else = { root = { trigger_event = { id = zg361ch.105 days = 1 } } }
         }
     }
 }
@@ -2531,7 +2773,18 @@ option = {
             }
         }
         scope:zg361_ch_n_event_subject = {
-            root = { trigger_event = { id = zg361ch.105 days = 1 } }
+            if = {
+        limit = {
+            has_variable = zg361_ch_player_batch_route
+            OR = {
+                var:zg361_ch_player_batch_route = 1
+                var:zg361_ch_player_batch_route = 2
+                var:zg361_ch_player_batch_route = 3
+            }
+        }
+        zg361_career_hc_m105_background_apply_effect = yes
+    }
+    else = { root = { trigger_event = { id = zg361ch.105 days = 1 } } }
         }
     }
 }
@@ -2549,7 +2802,18 @@ option = {
             }
         }
         scope:zg361_ch_n_event_subject = {
-            root = { trigger_event = { id = zg361ch.105 days = 1 } }
+            if = {
+        limit = {
+            has_variable = zg361_ch_player_batch_route
+            OR = {
+                var:zg361_ch_player_batch_route = 1
+                var:zg361_ch_player_batch_route = 2
+                var:zg361_ch_player_batch_route = 3
+            }
+        }
+        zg361_career_hc_m105_background_apply_effect = yes
+    }
+    else = { root = { trigger_event = { id = zg361ch.105 days = 1 } } }
         }
     }
 }
@@ -2865,7 +3129,18 @@ zg361ch.106 = {
             }
         }
         scope:zg361_ch_o_event_subject = {
-            root = { trigger_event = { id = zg361ch.107 days = 1 } }
+            if = {
+        limit = {
+            has_variable = zg361_ch_player_batch_route
+            OR = {
+                var:zg361_ch_player_batch_route = 1
+                var:zg361_ch_player_batch_route = 2
+                var:zg361_ch_player_batch_route = 3
+            }
+        }
+        zg361_career_hc_m107_background_apply_effect = yes
+    }
+    else = { root = { trigger_event = { id = zg361ch.107 days = 1 } } }
         }
     }
 }
@@ -2883,7 +3158,18 @@ option = {
             }
         }
         scope:zg361_ch_o_event_subject = {
-            root = { trigger_event = { id = zg361ch.107 days = 1 } }
+            if = {
+        limit = {
+            has_variable = zg361_ch_player_batch_route
+            OR = {
+                var:zg361_ch_player_batch_route = 1
+                var:zg361_ch_player_batch_route = 2
+                var:zg361_ch_player_batch_route = 3
+            }
+        }
+        zg361_career_hc_m107_background_apply_effect = yes
+    }
+    else = { root = { trigger_event = { id = zg361ch.107 days = 1 } } }
         }
     }
 }
@@ -2901,7 +3187,18 @@ option = {
             }
         }
         scope:zg361_ch_o_event_subject = {
-            root = { trigger_event = { id = zg361ch.107 days = 1 } }
+            if = {
+        limit = {
+            has_variable = zg361_ch_player_batch_route
+            OR = {
+                var:zg361_ch_player_batch_route = 1
+                var:zg361_ch_player_batch_route = 2
+                var:zg361_ch_player_batch_route = 3
+            }
+        }
+        zg361_career_hc_m107_background_apply_effect = yes
+    }
+    else = { root = { trigger_event = { id = zg361ch.107 days = 1 } } }
         }
     }
 }
@@ -2953,7 +3250,18 @@ zg361ch.107 = {
             }
         }
         scope:zg361_ch_o_event_subject = {
-            root = { trigger_event = { id = zg361ch.108 days = 1 } }
+            if = {
+        limit = {
+            has_variable = zg361_ch_player_batch_route
+            OR = {
+                var:zg361_ch_player_batch_route = 1
+                var:zg361_ch_player_batch_route = 2
+                var:zg361_ch_player_batch_route = 3
+            }
+        }
+        zg361_career_hc_m108_background_apply_effect = yes
+    }
+    else = { root = { trigger_event = { id = zg361ch.108 days = 1 } } }
         }
     }
 }
@@ -2971,7 +3279,18 @@ option = {
             }
         }
         scope:zg361_ch_o_event_subject = {
-            root = { trigger_event = { id = zg361ch.108 days = 1 } }
+            if = {
+        limit = {
+            has_variable = zg361_ch_player_batch_route
+            OR = {
+                var:zg361_ch_player_batch_route = 1
+                var:zg361_ch_player_batch_route = 2
+                var:zg361_ch_player_batch_route = 3
+            }
+        }
+        zg361_career_hc_m108_background_apply_effect = yes
+    }
+    else = { root = { trigger_event = { id = zg361ch.108 days = 1 } } }
         }
     }
 }
@@ -2989,7 +3308,18 @@ option = {
             }
         }
         scope:zg361_ch_o_event_subject = {
-            root = { trigger_event = { id = zg361ch.108 days = 1 } }
+            if = {
+        limit = {
+            has_variable = zg361_ch_player_batch_route
+            OR = {
+                var:zg361_ch_player_batch_route = 1
+                var:zg361_ch_player_batch_route = 2
+                var:zg361_ch_player_batch_route = 3
+            }
+        }
+        zg361_career_hc_m108_background_apply_effect = yes
+    }
+    else = { root = { trigger_event = { id = zg361ch.108 days = 1 } } }
         }
     }
 }
@@ -3283,7 +3613,18 @@ zg361ch.110 = {
             }
         }
         scope:zg361_ch_o_event_subject = {
-            root = { trigger_event = { id = zg361ch.111 days = 1 } }
+            if = {
+        limit = {
+            has_variable = zg361_ch_player_batch_route
+            OR = {
+                var:zg361_ch_player_batch_route = 1
+                var:zg361_ch_player_batch_route = 2
+                var:zg361_ch_player_batch_route = 3
+            }
+        }
+        zg361_career_hc_m111_background_apply_effect = yes
+    }
+    else = { root = { trigger_event = { id = zg361ch.111 days = 1 } } }
         }
     }
 }
@@ -3301,7 +3642,18 @@ option = {
             }
         }
         scope:zg361_ch_o_event_subject = {
-            root = { trigger_event = { id = zg361ch.111 days = 1 } }
+            if = {
+        limit = {
+            has_variable = zg361_ch_player_batch_route
+            OR = {
+                var:zg361_ch_player_batch_route = 1
+                var:zg361_ch_player_batch_route = 2
+                var:zg361_ch_player_batch_route = 3
+            }
+        }
+        zg361_career_hc_m111_background_apply_effect = yes
+    }
+    else = { root = { trigger_event = { id = zg361ch.111 days = 1 } } }
         }
     }
 }
@@ -3319,7 +3671,18 @@ option = {
             }
         }
         scope:zg361_ch_o_event_subject = {
-            root = { trigger_event = { id = zg361ch.111 days = 1 } }
+            if = {
+        limit = {
+            has_variable = zg361_ch_player_batch_route
+            OR = {
+                var:zg361_ch_player_batch_route = 1
+                var:zg361_ch_player_batch_route = 2
+                var:zg361_ch_player_batch_route = 3
+            }
+        }
+        zg361_career_hc_m111_background_apply_effect = yes
+    }
+    else = { root = { trigger_event = { id = zg361ch.111 days = 1 } } }
         }
     }
 }
@@ -3371,7 +3734,18 @@ zg361ch.111 = {
             }
         }
         scope:zg361_ch_o_event_subject = {
-            root = { trigger_event = { id = zg361ch.112 days = 1 } }
+            if = {
+        limit = {
+            has_variable = zg361_ch_player_batch_route
+            OR = {
+                var:zg361_ch_player_batch_route = 1
+                var:zg361_ch_player_batch_route = 2
+                var:zg361_ch_player_batch_route = 3
+            }
+        }
+        zg361_career_hc_m112_background_apply_effect = yes
+    }
+    else = { root = { trigger_event = { id = zg361ch.112 days = 1 } } }
         }
     }
 }
@@ -3389,7 +3763,18 @@ option = {
             }
         }
         scope:zg361_ch_o_event_subject = {
-            root = { trigger_event = { id = zg361ch.112 days = 1 } }
+            if = {
+        limit = {
+            has_variable = zg361_ch_player_batch_route
+            OR = {
+                var:zg361_ch_player_batch_route = 1
+                var:zg361_ch_player_batch_route = 2
+                var:zg361_ch_player_batch_route = 3
+            }
+        }
+        zg361_career_hc_m112_background_apply_effect = yes
+    }
+    else = { root = { trigger_event = { id = zg361ch.112 days = 1 } } }
         }
     }
 }
@@ -3407,7 +3792,18 @@ option = {
             }
         }
         scope:zg361_ch_o_event_subject = {
-            root = { trigger_event = { id = zg361ch.112 days = 1 } }
+            if = {
+        limit = {
+            has_variable = zg361_ch_player_batch_route
+            OR = {
+                var:zg361_ch_player_batch_route = 1
+                var:zg361_ch_player_batch_route = 2
+                var:zg361_ch_player_batch_route = 3
+            }
+        }
+        zg361_career_hc_m112_background_apply_effect = yes
+    }
+    else = { root = { trigger_event = { id = zg361ch.112 days = 1 } } }
         }
     }
 }
@@ -3465,7 +3861,18 @@ zg361ch.112 = {
             }
         }
         scope:zg361_ch_o_event_subject = {
-            root = { trigger_event = { id = zg361ch.113 days = 1 } }
+            if = {
+        limit = {
+            has_variable = zg361_ch_player_batch_route
+            OR = {
+                var:zg361_ch_player_batch_route = 1
+                var:zg361_ch_player_batch_route = 2
+                var:zg361_ch_player_batch_route = 3
+            }
+        }
+        zg361_career_hc_m113_background_apply_effect = yes
+    }
+    else = { root = { trigger_event = { id = zg361ch.113 days = 1 } } }
         }
     }
 }
@@ -3489,7 +3896,18 @@ option = {
             }
         }
         scope:zg361_ch_o_event_subject = {
-            root = { trigger_event = { id = zg361ch.113 days = 1 } }
+            if = {
+        limit = {
+            has_variable = zg361_ch_player_batch_route
+            OR = {
+                var:zg361_ch_player_batch_route = 1
+                var:zg361_ch_player_batch_route = 2
+                var:zg361_ch_player_batch_route = 3
+            }
+        }
+        zg361_career_hc_m113_background_apply_effect = yes
+    }
+    else = { root = { trigger_event = { id = zg361ch.113 days = 1 } } }
         }
     }
 }
@@ -3507,7 +3925,18 @@ option = {
             }
         }
         scope:zg361_ch_o_event_subject = {
-            root = { trigger_event = { id = zg361ch.113 days = 1 } }
+            if = {
+        limit = {
+            has_variable = zg361_ch_player_batch_route
+            OR = {
+                var:zg361_ch_player_batch_route = 1
+                var:zg361_ch_player_batch_route = 2
+                var:zg361_ch_player_batch_route = 3
+            }
+        }
+        zg361_career_hc_m113_background_apply_effect = yes
+    }
+    else = { root = { trigger_event = { id = zg361ch.113 days = 1 } } }
         }
     }
 }
@@ -3864,7 +4293,18 @@ zg361ch.114 = {
             }
         }
         scope:zg361_ch_p_event_subject = {
-            root = { trigger_event = { id = zg361ch.115 days = 1 } }
+            if = {
+        limit = {
+            has_variable = zg361_ch_player_batch_route
+            OR = {
+                var:zg361_ch_player_batch_route = 1
+                var:zg361_ch_player_batch_route = 2
+                var:zg361_ch_player_batch_route = 3
+            }
+        }
+        zg361_career_hc_m115_background_apply_effect = yes
+    }
+    else = { root = { trigger_event = { id = zg361ch.115 days = 1 } } }
         }
     }
 }
@@ -3888,7 +4328,18 @@ option = {
             }
         }
         scope:zg361_ch_p_event_subject = {
-            root = { trigger_event = { id = zg361ch.115 days = 1 } }
+            if = {
+        limit = {
+            has_variable = zg361_ch_player_batch_route
+            OR = {
+                var:zg361_ch_player_batch_route = 1
+                var:zg361_ch_player_batch_route = 2
+                var:zg361_ch_player_batch_route = 3
+            }
+        }
+        zg361_career_hc_m115_background_apply_effect = yes
+    }
+    else = { root = { trigger_event = { id = zg361ch.115 days = 1 } } }
         }
     }
 }
@@ -3906,7 +4357,18 @@ option = {
             }
         }
         scope:zg361_ch_p_event_subject = {
-            root = { trigger_event = { id = zg361ch.115 days = 1 } }
+            if = {
+        limit = {
+            has_variable = zg361_ch_player_batch_route
+            OR = {
+                var:zg361_ch_player_batch_route = 1
+                var:zg361_ch_player_batch_route = 2
+                var:zg361_ch_player_batch_route = 3
+            }
+        }
+        zg361_career_hc_m115_background_apply_effect = yes
+    }
+    else = { root = { trigger_event = { id = zg361ch.115 days = 1 } } }
         }
     }
 }
@@ -3958,7 +4420,18 @@ zg361ch.115 = {
             }
         }
         scope:zg361_ch_p_event_subject = {
-            root = { trigger_event = { id = zg361ch.116 days = 1 } }
+            if = {
+        limit = {
+            has_variable = zg361_ch_player_batch_route
+            OR = {
+                var:zg361_ch_player_batch_route = 1
+                var:zg361_ch_player_batch_route = 2
+                var:zg361_ch_player_batch_route = 3
+            }
+        }
+        zg361_career_hc_m116_background_apply_effect = yes
+    }
+    else = { root = { trigger_event = { id = zg361ch.116 days = 1 } } }
         }
     }
 }
@@ -3976,7 +4449,18 @@ option = {
             }
         }
         scope:zg361_ch_p_event_subject = {
-            root = { trigger_event = { id = zg361ch.116 days = 1 } }
+            if = {
+        limit = {
+            has_variable = zg361_ch_player_batch_route
+            OR = {
+                var:zg361_ch_player_batch_route = 1
+                var:zg361_ch_player_batch_route = 2
+                var:zg361_ch_player_batch_route = 3
+            }
+        }
+        zg361_career_hc_m116_background_apply_effect = yes
+    }
+    else = { root = { trigger_event = { id = zg361ch.116 days = 1 } } }
         }
     }
 }
@@ -3994,7 +4478,18 @@ option = {
             }
         }
         scope:zg361_ch_p_event_subject = {
-            root = { trigger_event = { id = zg361ch.116 days = 1 } }
+            if = {
+        limit = {
+            has_variable = zg361_ch_player_batch_route
+            OR = {
+                var:zg361_ch_player_batch_route = 1
+                var:zg361_ch_player_batch_route = 2
+                var:zg361_ch_player_batch_route = 3
+            }
+        }
+        zg361_career_hc_m116_background_apply_effect = yes
+    }
+    else = { root = { trigger_event = { id = zg361ch.116 days = 1 } } }
         }
     }
 }
@@ -4288,7 +4783,18 @@ zg361ch.118 = {
             }
         }
         scope:zg361_ch_p_event_subject = {
-            root = { trigger_event = { id = zg361ch.119 days = 1 } }
+            if = {
+        limit = {
+            has_variable = zg361_ch_player_batch_route
+            OR = {
+                var:zg361_ch_player_batch_route = 1
+                var:zg361_ch_player_batch_route = 2
+                var:zg361_ch_player_batch_route = 3
+            }
+        }
+        zg361_career_hc_m119_background_apply_effect = yes
+    }
+    else = { root = { trigger_event = { id = zg361ch.119 days = 1 } } }
         }
     }
 }
@@ -4306,7 +4812,18 @@ option = {
             }
         }
         scope:zg361_ch_p_event_subject = {
-            root = { trigger_event = { id = zg361ch.119 days = 1 } }
+            if = {
+        limit = {
+            has_variable = zg361_ch_player_batch_route
+            OR = {
+                var:zg361_ch_player_batch_route = 1
+                var:zg361_ch_player_batch_route = 2
+                var:zg361_ch_player_batch_route = 3
+            }
+        }
+        zg361_career_hc_m119_background_apply_effect = yes
+    }
+    else = { root = { trigger_event = { id = zg361ch.119 days = 1 } } }
         }
     }
 }
@@ -4324,7 +4841,18 @@ option = {
             }
         }
         scope:zg361_ch_p_event_subject = {
-            root = { trigger_event = { id = zg361ch.119 days = 1 } }
+            if = {
+        limit = {
+            has_variable = zg361_ch_player_batch_route
+            OR = {
+                var:zg361_ch_player_batch_route = 1
+                var:zg361_ch_player_batch_route = 2
+                var:zg361_ch_player_batch_route = 3
+            }
+        }
+        zg361_career_hc_m119_background_apply_effect = yes
+    }
+    else = { root = { trigger_event = { id = zg361ch.119 days = 1 } } }
         }
     }
 }
@@ -4382,7 +4910,18 @@ zg361ch.119 = {
             }
         }
         scope:zg361_ch_p_event_subject = {
-            root = { trigger_event = { id = zg361ch.120 days = 1 } }
+            if = {
+        limit = {
+            has_variable = zg361_ch_player_batch_route
+            OR = {
+                var:zg361_ch_player_batch_route = 1
+                var:zg361_ch_player_batch_route = 2
+                var:zg361_ch_player_batch_route = 3
+            }
+        }
+        zg361_career_hc_m120_background_apply_effect = yes
+    }
+    else = { root = { trigger_event = { id = zg361ch.120 days = 1 } } }
         }
     }
 }
@@ -4406,7 +4945,18 @@ option = {
             }
         }
         scope:zg361_ch_p_event_subject = {
-            root = { trigger_event = { id = zg361ch.120 days = 1 } }
+            if = {
+        limit = {
+            has_variable = zg361_ch_player_batch_route
+            OR = {
+                var:zg361_ch_player_batch_route = 1
+                var:zg361_ch_player_batch_route = 2
+                var:zg361_ch_player_batch_route = 3
+            }
+        }
+        zg361_career_hc_m120_background_apply_effect = yes
+    }
+    else = { root = { trigger_event = { id = zg361ch.120 days = 1 } } }
         }
     }
 }
@@ -4424,7 +4974,18 @@ option = {
             }
         }
         scope:zg361_ch_p_event_subject = {
-            root = { trigger_event = { id = zg361ch.120 days = 1 } }
+            if = {
+        limit = {
+            has_variable = zg361_ch_player_batch_route
+            OR = {
+                var:zg361_ch_player_batch_route = 1
+                var:zg361_ch_player_batch_route = 2
+                var:zg361_ch_player_batch_route = 3
+            }
+        }
+        zg361_career_hc_m120_background_apply_effect = yes
+    }
+    else = { root = { trigger_event = { id = zg361ch.120 days = 1 } } }
         }
     }
 }
@@ -4769,7 +5330,10 @@ zg361ch.955 = {
                 }
                 zg361_career_hc_open_q_case_effect = yes
             }
-            else = { zg361_career_hc_finalize_p_portfolio_effect = yes }
+            else = {
+                zg361_career_hc_finalize_p_portfolio_effect = yes
+                root = { trigger_event = { id = zg361ch.906 days = 1 } }
+            }
         }
     }
 }
@@ -4941,7 +5505,18 @@ zg361ch.122 = {
             }
         }
         scope:zg361_ch_q_event_subject = {
-            root = { trigger_event = { id = zg361ch.123 days = 1 } }
+            if = {
+        limit = {
+            has_variable = zg361_ch_player_batch_route
+            OR = {
+                var:zg361_ch_player_batch_route = 1
+                var:zg361_ch_player_batch_route = 2
+                var:zg361_ch_player_batch_route = 3
+            }
+        }
+        zg361_career_hc_m123_background_apply_effect = yes
+    }
+    else = { root = { trigger_event = { id = zg361ch.123 days = 1 } } }
         }
     }
 }
@@ -4959,7 +5534,18 @@ option = {
             }
         }
         scope:zg361_ch_q_event_subject = {
-            root = { trigger_event = { id = zg361ch.123 days = 1 } }
+            if = {
+        limit = {
+            has_variable = zg361_ch_player_batch_route
+            OR = {
+                var:zg361_ch_player_batch_route = 1
+                var:zg361_ch_player_batch_route = 2
+                var:zg361_ch_player_batch_route = 3
+            }
+        }
+        zg361_career_hc_m123_background_apply_effect = yes
+    }
+    else = { root = { trigger_event = { id = zg361ch.123 days = 1 } } }
         }
     }
 }
@@ -4977,7 +5563,18 @@ option = {
             }
         }
         scope:zg361_ch_q_event_subject = {
-            root = { trigger_event = { id = zg361ch.123 days = 1 } }
+            if = {
+        limit = {
+            has_variable = zg361_ch_player_batch_route
+            OR = {
+                var:zg361_ch_player_batch_route = 1
+                var:zg361_ch_player_batch_route = 2
+                var:zg361_ch_player_batch_route = 3
+            }
+        }
+        zg361_career_hc_m123_background_apply_effect = yes
+    }
+    else = { root = { trigger_event = { id = zg361ch.123 days = 1 } } }
         }
     }
 }
@@ -5029,7 +5626,18 @@ zg361ch.123 = {
             }
         }
         scope:zg361_ch_q_event_subject = {
-            root = { trigger_event = { id = zg361ch.124 days = 1 } }
+            if = {
+        limit = {
+            has_variable = zg361_ch_player_batch_route
+            OR = {
+                var:zg361_ch_player_batch_route = 1
+                var:zg361_ch_player_batch_route = 2
+                var:zg361_ch_player_batch_route = 3
+            }
+        }
+        zg361_career_hc_m124_background_apply_effect = yes
+    }
+    else = { root = { trigger_event = { id = zg361ch.124 days = 1 } } }
         }
     }
 }
@@ -5047,7 +5655,18 @@ option = {
             }
         }
         scope:zg361_ch_q_event_subject = {
-            root = { trigger_event = { id = zg361ch.124 days = 1 } }
+            if = {
+        limit = {
+            has_variable = zg361_ch_player_batch_route
+            OR = {
+                var:zg361_ch_player_batch_route = 1
+                var:zg361_ch_player_batch_route = 2
+                var:zg361_ch_player_batch_route = 3
+            }
+        }
+        zg361_career_hc_m124_background_apply_effect = yes
+    }
+    else = { root = { trigger_event = { id = zg361ch.124 days = 1 } } }
         }
     }
 }
@@ -5065,7 +5684,18 @@ option = {
             }
         }
         scope:zg361_ch_q_event_subject = {
-            root = { trigger_event = { id = zg361ch.124 days = 1 } }
+            if = {
+        limit = {
+            has_variable = zg361_ch_player_batch_route
+            OR = {
+                var:zg361_ch_player_batch_route = 1
+                var:zg361_ch_player_batch_route = 2
+                var:zg361_ch_player_batch_route = 3
+            }
+        }
+        zg361_career_hc_m124_background_apply_effect = yes
+    }
+    else = { root = { trigger_event = { id = zg361ch.124 days = 1 } } }
         }
     }
 }
@@ -5117,7 +5747,18 @@ zg361ch.124 = {
             }
         }
         scope:zg361_ch_q_event_subject = {
-            root = { trigger_event = { id = zg361ch.125 days = 1 } }
+            if = {
+        limit = {
+            has_variable = zg361_ch_player_batch_route
+            OR = {
+                var:zg361_ch_player_batch_route = 1
+                var:zg361_ch_player_batch_route = 2
+                var:zg361_ch_player_batch_route = 3
+            }
+        }
+        zg361_career_hc_m125_background_apply_effect = yes
+    }
+    else = { root = { trigger_event = { id = zg361ch.125 days = 1 } } }
         }
     }
 }
@@ -5135,7 +5776,18 @@ option = {
             }
         }
         scope:zg361_ch_q_event_subject = {
-            root = { trigger_event = { id = zg361ch.125 days = 1 } }
+            if = {
+        limit = {
+            has_variable = zg361_ch_player_batch_route
+            OR = {
+                var:zg361_ch_player_batch_route = 1
+                var:zg361_ch_player_batch_route = 2
+                var:zg361_ch_player_batch_route = 3
+            }
+        }
+        zg361_career_hc_m125_background_apply_effect = yes
+    }
+    else = { root = { trigger_event = { id = zg361ch.125 days = 1 } } }
         }
     }
 }
@@ -5153,7 +5805,18 @@ option = {
             }
         }
         scope:zg361_ch_q_event_subject = {
-            root = { trigger_event = { id = zg361ch.125 days = 1 } }
+            if = {
+        limit = {
+            has_variable = zg361_ch_player_batch_route
+            OR = {
+                var:zg361_ch_player_batch_route = 1
+                var:zg361_ch_player_batch_route = 2
+                var:zg361_ch_player_batch_route = 3
+            }
+        }
+        zg361_career_hc_m125_background_apply_effect = yes
+    }
+    else = { root = { trigger_event = { id = zg361ch.125 days = 1 } } }
         }
     }
 }

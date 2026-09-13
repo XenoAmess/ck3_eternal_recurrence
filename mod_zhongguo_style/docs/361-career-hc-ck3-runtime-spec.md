@@ -6,13 +6,13 @@
 
 生成结果：
 
-- `common/scripted_effects/zg361_career_hc_NNN_<purpose>_effects.txt`（41 个用途分片；每片 1–10 个顶层 effect）
+- `common/scripted_effects/zg361_career_hc_NNN_<purpose>_effects.txt`（47 个用途分片；每片 1–10 个顶层 effect）
 - `events/zg361_career_hc_runtime_events.txt`
 - `localization/*/zg361_career_hc_l_*.yml`（简中、英文原创；其余七语为日常开发期英文结构占位）
 
 L0 合同：`tools/test_zg361_career_hc_runtime.py`
 
-旧单体 `zg361_career_hc_runtime_effects.txt` 已删除，生成器 `--check` 会把它或未知旧分片视为 RED。分片顺序沿用聚合渲染顺序，测试逐 effect 比较名称与完整块文本；当前 271 个顶层 effect 分布在 41 个用途分片中，每片 1–10 个，最大文件 48,532 bytes，没有超过 20 个的例外。这个结果是静态文件边界证据，不替代 CK3 实机加载验收。
+旧单体 `zg361_career_hc_runtime_effects.txt` 已删除，生成器 `--check` 会把它或未知旧分片视为 RED。分片顺序沿用聚合渲染顺序，测试逐 effect 比较名称与完整块文本；当前 293 个顶层 effect 分布在 47 个用途分片中，每片 1–10 个，最大文件 51,185 bytes，没有超过 20 个的例外。这个结果是静态文件边界证据，不替代 CK3 实机加载验收。
 
 本层是 `tools/zg361_phase2_career_model.py` 的 CK3 产品投影，不修改旧考核主循环、B1/B2、考核榜 GUI 或共享案卷内核。当前没有真实 CK3 启动证据，因此不得写成 fixture-live、production-live 或“44 项已验收”。
 
@@ -71,12 +71,13 @@ zg361_career_hc_settle_pp_transfer_effect
 
 开放 effect 复用 `zg361_case_d/m/n/o/p/q_open_effect`，不会自行造另一套 owner、subject、cycle、case 或 state。调用失败只是不写 `zg361_ch_runtime_applied`，不留下半个业务案卷。
 
-玩家管理者先在 D+1 收到一次 `zg361ch.950` 办案方式卡。A/B/C 分别为 22 项低风险事项冻结证据优先、执行优先或逐项留债的统一口径；付款、调动、放人期限与具名人员等另外 22 项仍逐案呈报。D 保留全部 44 项逐案裁决。统一办理仍逐项调用原 manager/core/consumer；条件或资源不足时只恢复该编号的原卡，不静默跳过。因而 A/B/C 的完整玩家路径为 1 张办案方式卡、22 张关键裁决和 6 张分域结案卡，共 29 张；D 为办案方式卡、44 张裁决和 6 张结案卡，共 51 张。
+玩家管理者先在 D+1 收到一次 `zg361ch.950` 审理方式卡。A/B/C 分别为全部 44 项冻结证据优先、从权办理或逐项留债的统一口径；每项仍调用原 manager/core/consumer 并留下独立回执。付款、编制、身份、期限或其他 guard 不满足时，只把失败的编号恢复为原逐案卡，不静默跳过，也不让前面已经成立的编号重放。D 不设统一口径，保留全部 44 项逐案裁决。
 
-每个可见编号的三条选项只有在当前五元身份仍精确匹配且编号 receipt
-成功写入/消费后，才把下一张待呈报卡排到 `days = 1`；D→M→N→O→P→Q 使用五个 hidden queue event，先验证
-前域已经以原 owner/subject/cycle/case 和最终 state 关闭，再打开后域。领域结案回执占用中间一天，因此前域
-最后一张业务卡、结案回执和后域第一张业务卡不会挤在同一天。本包自身任何游戏日最多产生一张玩家业务窗。
+R629 人工体验证明旧路径虽然每天最多一张业务窗，但 A/B/C 仍需点击 1 张办案方式卡、22 张关键裁决和 6 张只负责收存的分域结案卡，共 29 次，形成连续弹窗疲劳。优化后的正常 A/B/C 路径只保留审理方式卡与 Q 域后的总案回执，共 2 次必要点击；D 路为审理方式卡、44 张裁决与 1 张总案回执，共 46 次且由玩家明确选择。D/M/N/O/P 的结案结果继续写入案卷和 debug receipt，但不再生成阻塞玩家的中间回执；Q 的最终回执汇总六域。这个改动不延长中央流水线，P116 的 90/150 日特殊时钟和所有其他真实延期义务保持原语义。
+
+每个回退为可见编号的三条选项只有在当前五元身份仍精确匹配且编号 receipt
+成功写入/消费后，才把下一项排到 `days = 1`；D→M→N→O→P→Q 使用五个 hidden queue event，先验证
+前域已经以原 owner/subject/cycle/case 和最终 state 关闭，再打开后域。精简路线的中间步骤均不生成玩家业务窗；条件失败时任何游戏日仍最多回退一张逐案卡。
 
 Q 只对同样具备天朝制公爵及以上管理资格的 subject 打开；伯爵、男爵完成 P 后直接关闭 portfolio，仍然只有
 被考核权，没有经理认证或考核别人权限。授权 AI 管理者不触发 44 张业务卡，而是用相同 manager entry、五元
@@ -332,9 +333,9 @@ R629 只证明旧版本的呈现缺陷真实存在；新增 tooltip 尚未进入
 `test_zg361_career_hc_runtime.py` 检查：
 
 - 44 ID、六领域、阶段分组与模型 registry 精确一致；
-- 11 个生成结果可复现且均有 UTF-8 BOM；
+- 57 个生成结果可复现且均有 UTF-8 BOM；
 - 唯一 manager-scope portfolio adapter、首名合格直属选择、同周期防重放和只首开 D；
-- 一次办案方式选择、22/22 的统一办理与关键裁决分区、D 模式 44 项完整保留、失败时精确回退原编号，以及五条 hidden 跨域边、关闭五元校验与同日最多一张业务窗；
+- 一次审理方式选择、A/B/C 对 44 项的逐项统一办理、D 模式 44 项完整保留、条件或资源失败时精确回退原编号，以及五条 hidden 跨域边、单一最终回执、关闭五元校验与同日最多一张回退业务窗；
 - 授权 AI 只走后台 manager receipt/consumer，不触发玩家业务事件；
 - 每个 open/manager/core/consumer 的权限、五元 guard、receipt 与 write→consumer；
 - 所有阶段屏障、真实 delayed event、P116 的 90/150 日分支和 route C 超时；

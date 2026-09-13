@@ -98,7 +98,18 @@ zg361_career_hc_open_p_case_effect = {
             }
             else_if = {
                 limit = { root = { is_ai = no zg361_is_celestial_liege_trigger = yes } }
-                root = { trigger_event = { id = zg361ch.114 days = 1 } }
+                if = {
+        limit = {
+            has_variable = zg361_ch_player_batch_route
+            OR = {
+                var:zg361_ch_player_batch_route = 1
+                var:zg361_ch_player_batch_route = 2
+                var:zg361_ch_player_batch_route = 3
+            }
+        }
+        zg361_career_hc_m114_background_apply_effect = yes
+    }
+    else = { root = { trigger_event = { id = zg361ch.114 days = 1 } } }
             }
             debug_log = "ZG361CH: opened P career/HC case"
         }

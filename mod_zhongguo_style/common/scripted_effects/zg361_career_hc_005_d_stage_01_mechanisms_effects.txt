@@ -165,7 +165,7 @@ zg361_career_hc_m019_consume_effect = {
     }
 }
 
-# Low-risk portfolio default for #019; original card is the fallback.
+# Streamlined portfolio default for #019; original card is the fallback.
 zg361_career_hc_m019_background_apply_effect = {
     if = {
         limit = {
@@ -368,7 +368,7 @@ zg361_career_hc_m020_consume_effect = {
     }
 }
 
-# Low-risk portfolio default for #020; original card is the fallback.
+# Streamlined portfolio default for #020; original card is the fallback.
 zg361_career_hc_m020_background_apply_effect = {
     if = {
         limit = {
@@ -388,7 +388,18 @@ zg361_career_hc_m020_background_apply_effect = {
                 has_variable = zg361_ch_runtime_applied
                 var:zg361_ch_runtime_applied = 1
             }
-            root = { trigger_event = { id = zg361ch.21 days = 1 } }
+            if = {
+        limit = {
+            has_variable = zg361_ch_player_batch_route
+            OR = {
+                var:zg361_ch_player_batch_route = 1
+                var:zg361_ch_player_batch_route = 2
+                var:zg361_ch_player_batch_route = 3
+            }
+        }
+        zg361_career_hc_m021_background_apply_effect = yes
+    }
+    else = { root = { trigger_event = { id = zg361ch.21 days = 1 } } }
         }
         else = {
             root = { trigger_event = { id = zg361ch.20 days = 1 } }

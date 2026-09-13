@@ -184,7 +184,7 @@ zg361_career_hc_m098_consume_effect = {
     }
 }
 
-# Low-risk portfolio default for #098; original card is the fallback.
+# Streamlined portfolio default for #098; original card is the fallback.
 zg361_career_hc_m098_background_apply_effect = {
     if = {
         limit = {
@@ -415,7 +415,7 @@ zg361_career_hc_m099_consume_effect = {
     }
 }
 
-# Low-risk portfolio default for #099; original card is the fallback.
+# Streamlined portfolio default for #099; original card is the fallback.
 zg361_career_hc_m099_background_apply_effect = {
     if = {
         limit = {
