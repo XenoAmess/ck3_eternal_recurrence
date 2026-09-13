@@ -25,13 +25,13 @@ aubt.0 = {
 		# No funding flags is the frozen legacy/treasury-first save state.
 		change_government = celestial_government
 		set_variable = { name = aubt_domain_adjust_guard value = 0 }
-		trigger_event = { id = aubt.10 days = 1 }
+		trigger_event = { id = aubt.19 days = 1 }
 	}
 }
 
 # Character modifier results are committed between these daily invocations.
 # This reaches exactly zero without assuming bookmark stats or screen values.
-aubt.10 = {
+aubt.19 = {
 	scope = none
 	hidden = yes
 	immediate = {
@@ -43,7 +43,7 @@ aubt.10 = {
 				}
 				add_character_modifier = { modifier = aubt_domain_limit_adjust_down }
 				change_variable = { name = aubt_domain_adjust_guard add = 1 }
-				trigger_event = { id = aubt.10 days = 1 }
+				trigger_event = { id = aubt.19 days = 1 }
 			}
 			else_if = {
 				limit = {
@@ -52,7 +52,7 @@ aubt.10 = {
 				}
 				add_character_modifier = { modifier = aubt_domain_limit_adjust_up }
 				change_variable = { name = aubt_domain_adjust_guard add = 1 }
-				trigger_event = { id = aubt.10 days = 1 }
+				trigger_event = { id = aubt.19 days = 1 }
 			}
 			else_if = {
 				limit = { domain_limit_available = 0 }

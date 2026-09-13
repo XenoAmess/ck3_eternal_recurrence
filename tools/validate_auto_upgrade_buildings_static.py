@@ -541,6 +541,16 @@ def validate(
     ):
         if fixture_script.count(marker) != 1:
             errors.append(f"acceptance fixture marker count drifted: {marker}")
+    fixture_event_ids = re.findall(r"(?m)^(aubt\.[0-9]+)\s*=\s*\{", fixture_script)
+    duplicate_fixture_event_ids = sorted(
+        event_id for event_id in set(fixture_event_ids)
+        if fixture_event_ids.count(event_id) > 1
+    )
+    if duplicate_fixture_event_ids:
+        errors.append(
+            "acceptance fixture has duplicate event IDs: "
+            + ", ".join(duplicate_fixture_event_ids)
+        )
     if "on_game_start_after_lobby = {" not in fixture_script:
         errors.append("acceptance fixture is not wired to the post-lobby start")
     for fragment in (
