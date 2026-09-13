@@ -11,6 +11,7 @@ from __future__ import annotations
 
 import argparse
 import asyncio
+from contextlib import ExitStack
 import hashlib
 import json
 from pathlib import Path
@@ -35,6 +36,10 @@ from xar_autoplayer.bridge.native_driver import (  # noqa: E402
     NativeHeadlessGameplayDriver,
 )
 from xar_autoplayer.environment import ensure_state_path_safe, make_spec  # noqa: E402
+from xar_autoplayer.locking import (  # noqa: E402
+    exclusive_launch_lock,
+    exclusive_state_lock,
+)
 from xar_autoplayer.runtime import (  # noqa: E402
     NativeBridgeLaunchConfig,
     launch,
@@ -465,6 +470,14 @@ def _run(args: argparse.Namespace) -> tuple[dict[str, object], int]:
     driver: NativeHeadlessGameplayDriver | None = None
     primary_error: str | None = None
     cleanup: dict[str, object] | None = None
+    slot_stack = ExitStack()
+    shared_slot: dict[str, object] = {
+        "mechanism": "exclusive_launch_lock + exclusive_state_lock",
+        "launch_lock_acquired": False,
+        "state_lock_acquired": False,
+        "released": False,
+    }
+    report["shared_ck3_slot"] = shared_slot
     try:
         report["steam"] = _steam_offline(args.steam_loginusers)
         report["profile"] = _copy_profile(
@@ -484,6 +497,14 @@ def _run(args: argparse.Namespace) -> tuple[dict[str, object], int]:
         report["binary"] = binary
         if binary["ck3_exe_sha256"] != EXPECTED_CK3_SHA256:
             raise RuntimeError("CK3 executable SHA-256 differs from the exact-build pin")
+        slot_stack.enter_context(exclusive_launch_lock(spec.game_exe))
+        shared_slot["launch_lock_acquired"] = True
+        slot_stack.enter_context(
+            exclusive_state_lock(
+                state_dir, "frontend-gui-route-v1-live-acceptance"
+            )
+        )
+        shared_slot["state_lock_acquired"] = True
         config = NativeBridgeLaunchConfig(
             mode="native-headless",
             pipe_name=args.bridge_pipe,
@@ -525,6 +546,18 @@ def _run(args: argparse.Namespace) -> tuple[dict[str, object], int]:
             except BaseException as error:
                 if primary_error is None:
                     primary_error = f"driver close failed: {type(error).__name__}: {error}"
+        try:
+            slot_stack.close()
+            if (
+                shared_slot["launch_lock_acquired"] is True
+                or shared_slot["state_lock_acquired"] is True
+            ):
+                shared_slot["released"] = True
+        except BaseException as error:
+            if primary_error is None:
+                primary_error = (
+                    f"shared CK3 slot release failed: {type(error).__name__}: {error}"
+                )
 
     report["cleanup"] = cleanup
     report["error"] = primary_error
