@@ -166,11 +166,25 @@ async def _mcp_sequence(
 ) -> dict[str, object]:
     deadline = time.monotonic() + timeout
     calls: list[dict[str, object]] = []
+    call_summary: dict[str, object] = {
+        "total": 0,
+        "omitted": 0,
+        "last_call": None,
+    }
+
+    def record(call: dict[str, object]) -> None:
+        call_summary["total"] = int(call_summary["total"]) + 1
+        call_summary["last_call"] = call
+        if len(calls) < 32 or call.get("is_error") is False:
+            calls.append(call)
+        else:
+            call_summary["omitted"] = int(call_summary["omitted"]) + 1
 
     def red(reason: str, **evidence: object) -> dict[str, object]:
         return {
             "mcp_sdk": "official-python-client",
             "calls": calls,
+            "call_summary": call_summary,
             "checks": {},
             "error": reason,
             "ok": False,
@@ -204,7 +218,7 @@ async def _mcp_sequence(
         capability_call: dict[str, object] | None = None
         while time.monotonic() < deadline:
             capability_call = await _call(client, "ck3_get_capabilities")
-            calls.append(capability_call)
+            record(capability_call)
             capability = _structured(capability_call)
             advertised = capability.get("bridge_capabilities")
             diagnostics = capability.get("diagnostics")
@@ -230,7 +244,7 @@ async def _mcp_sequence(
         before: dict[str, object] = {}
         while time.monotonic() < deadline:
             before_call = await _call(client, QUERY_TOOL)
-            calls.append(before_call)
+            record(before_call)
             before = _structured(before_call)
             if before_call.get("is_error") is False and before.get("route") == "main_menu":
                 break
@@ -244,7 +258,7 @@ async def _mcp_sequence(
             )
 
         action_call = await _call(client, ACTIVATE_TOOL)
-        calls.append(action_call)
+        record(action_call)
         action = _structured(action_call)
         after = action.get("after") if isinstance(action.get("after"), dict) else {}
         checks = {
@@ -267,6 +281,7 @@ async def _mcp_sequence(
             "before": before,
             "action": action,
             "calls": calls,
+            "call_summary": call_summary,
             "checks": checks,
             "ok": all(checks.values()),
         }

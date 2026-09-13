@@ -44,7 +44,11 @@
         "handle_pdx_events_wrapper": "0x3A2EC30",
         "handle_pdx_events_body": "0x3A2EE60",
         "sdl_event_slot_rva": "0x4FE0A68",
+        "sdl_event_slot_section": ".data writable image pointer",
+        "sdl_event_resolver_thunk_rva": "0x3C9B8C0",
         "sdl_event_slot_target": "0x3CD3730",
+        "sdl_event_call_rva": "0x3A2EEA3",
+        "sdl_event_exact_return_rva": "0x3A2EEA9",
         "paused_semantics": "no_pause_gate_in_static_chain_but_minimized_and_application_flags_still_require_live_counter"
       }
     },
@@ -94,14 +98,27 @@
     "restore_policy": "restore_original_PAGE_READONLY_after_every_CAS_attempt",
     "failure_rollback": "if_post_CAS_protection_restore_fails_then_CAS_original_back_before_retrying_page_restore"
   },
+  "frontend_sdl_slot_patch_protocol": {
+    "reason": "frontend SDL_PollEvent may skip the lower Windows PeekMessageW pump",
+    "slot_rva": "0x4FE0A68",
+    "initial_value": "module+0x3C9B8C0 resolver thunk while managed CK3 is suspended",
+    "resolved_value": "module+0x3CD3730",
+    "install_operation": "heartbeat/submission retry InterlockedCompareExchangePointer only after exact resolved identity appears",
+    "install_desired": "XarMainThreadSdlPollEventHookV1",
+    "uninstall_operation": "CAS hook back to module+0x3CD3730 before restoring PeekMessageW IAT",
+    "double_drain_rule": "if nested exact PeekMessageW already advanced pump_epochs then SDL hook does not drain again"
+  },
   "hook_contract": {
-    "original_call_order": "original_PeekMessageW_first",
+    "original_call_order": "original_PeekMessageW_or_SDL_PollEvent_first",
     "preserve_return": true,
     "preserve_LastError": true,
-    "admission_return_rva": "0x3CE4222",
+    "admission_return_rvas": [
+      "0x3CE4222 lower Windows pump",
+      "0x3A2EEA9 HandlePdxEvents SDL_PollEvent slot"
+    ],
     "maximum_drain_per_pump": 1,
     "minimum_consecutive_application_main_paused_pump_epochs_before_submit": 2,
-    "main_thread_admission": "tls_global_and_stable_tls_context_marker_plus_paused_date_jomini_game_required_rng_owner_diagnostic_only",
+    "main_thread_admission": "frontend requires stable TLS global/context/marker; gameplay additionally requires stable paused Jomini/game/date; RNG owner is diagnostic only",
     "reentry_guard": "atomic_flag",
     "single_slot": true,
     "timeout_cancel": "queued_only",
@@ -126,6 +143,7 @@
     "order": [
       "set_stop_requested",
       "reject_or_cancel_nonexecuting_request",
+      "atomically_restore_original_SDL_PollEvent_dispatch_target",
       "atomically_restore_original_PeekMessageW_under_temporary_PAGE_READWRITE",
       "restore_PAGE_READONLY",
       "wait_until_currently_counted_active_hook_calls_equals_zero",

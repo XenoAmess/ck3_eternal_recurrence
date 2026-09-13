@@ -39,6 +39,17 @@ as a thread rejection: independent call-graph review proved that
 earlier HandlePdxEvents TLS gate. Therefore the application-main boundary is
 live-confirmed; RNG owner remains raw provenance only.
 
+The 2026-09-13 frontend MCP attempt then proved a different boundary: at the
+main menu the lower Windows pump remained at `pump_epochs=0`, even though the
+application was rendering and accepting the bridge connection. Static
+disassembly already froze the upper `HandlePdxEvents` call through writable
+slot `0x4FE0A68` to `SDL_PollEvent` `0x3CD3730`. The bridge now retries an
+exact CAS on that slot after its startup resolver thunk `0x3C9B8C0` has been
+replaced, and observes exact return `0x3A2EEA9`. If the original poll invokes
+the lower `PeekMessageW` hook, the changed epoch suppresses a duplicate drain.
+This frontend path is static/fixture-ready until a new managed MCP artifact
+proves the semantic route query and transition.
+
 The route-contact, actual-contact, combat-v3, ongoing battle-control and
 title-map-navigation typed executors have exact-build live results; war-entry
 and the new by-CombatID lifecycle query still require their own paused live
@@ -91,6 +102,7 @@ minidump ModuleList independently records that exact path. Its SHA-256 is
 | Device install | `0x3CFE7AB` | stores `0x3CE41E0` at video-device `+0x238` |
 | SDL dispatch | `0x3CD3600` / `0x3CD366C` | calls `[rsi+0x238]` |
 | Application chain | `0x351F0D0` -> `0x3555820` -> `0x3555190` -> `0x3A2EC30` -> `0x3A2EE60` -> `0x3CD3730` -> `0x3CD3600` | exact runner-to-pump path |
+| Frontend SDL slot | `.data +0x4FE0A68`; call `0x3A2EEA3`, return `0x3A2EEA9`; resolver `0x3C9B8C0`, target `0x3CD3730` | application-main boundary even when the lower Windows pump is skipped |
 | TLS initialization | `0x7E7CDE`, `0x7E7CE5`, `0x3B86430` | sets global `+0x57727ED=1` and startup thread TLS context `+0x20=1` |
 | HandlePdxEvents gate | `0x3A2EC4D`, `0x3A2EC58` | rejects unless the same global and current TLS marker are active |
 | Pause/date | `+0x570F7B8 -> +0x20`; `+0x570E068 -> +0x08` | Jomini pause and game date identity |
@@ -105,15 +117,22 @@ diagnostics, but are excluded from streak, submit, and post-execution checks.
 
 ## Install and process lifetime
 
-The IAT lives on a read-only page. Install and uninstall use the same bounded
+The PeekMessageW IAT lives on a read-only page. Install and uninstall use the same bounded
 protocol: `VirtualQuery`, one pointer-containing page temporarily changed to
 `PAGE_READWRITE`, `InterlockedCompareExchangePointer`, and immediate restoration
 to `PAGE_READONLY`. A failed protection restore first rolls the IAT pointer
 back and then retries page restoration.
 
-The hook calls original `PeekMessageW` first and preserves both its `BOOL`
-return and `LastError`. It checks exact return RVA only after the original
-call. An atomic reentry guard prohibits SDL reentry from reaching a callback.
+The frontend slot is already a writable `.data` image pointer. The launcher
+starts CK3 suspended, so its initial value is the SDL resolver thunk. The
+worker never calls that thunk: heartbeats and frontend submissions retry one
+CAS only after the slot equals the exact resolved `0x3CD3730` target. Shutdown
+restores that target before restoring the lower IAT, and the shared active-call
+counter covers both wrappers.
+
+Both hooks call their original function first and preserve its return and
+`LastError`. They check their exact return RVA only after the original call.
+An atomic reentry guard prohibits SDL reentry from reaching a callback.
 
 WorkerMain owns uninstall on every return path. It stops admission, restores
 the original IAT, waits for counted active hooks, and retains the static
@@ -128,7 +147,7 @@ flowchart TD
     B --> C[VirtualProtect PAGE_READWRITE]
     C --> D[CAS PeekMessageW to hook]
     D --> E[Restore PAGE_READONLY]
-    E --> F[Observe exact return 0x3CE4222]
+    E --> F[Observe lower 0x3CE4222 or upper SDL return 0x3A2EEA9]
     F --> G{TLS + paused + date + identity stable twice?}
     G -- no --> F
     G -- yes --> H[Twenty-two typed executors ready]

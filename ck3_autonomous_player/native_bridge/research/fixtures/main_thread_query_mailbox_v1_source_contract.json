@@ -41,7 +41,8 @@
     "rng_wrapper_slot": "0x4FEB1C8",
     "tls_startup": "0x7E7CDE global+0x57727ED=1; 0x7E7CE5 -> 0x3B86430; TLS marker +0x20=1",
     "handle_pdx_events_tls_gate": "0x3A2EC30; 0x3A2EC4D global check; 0x3A2EC58 getter and marker check",
-    "application_frame_chain": "0x351F0D0 -> 0x3555820 -> 0x3555190 -> 0x3A2EC30 -> 0x3A2EE60 -> slot 0x4FE0A68 -> 0x3CD3730"
+    "application_frame_chain": "0x351F0D0 -> 0x3555820 -> 0x3555190 -> 0x3A2EC30 -> 0x3A2EE60 -> slot 0x4FE0A68 -> 0x3CD3730",
+    "frontend_slot_boundary": "call 0x3A2EEA3 -> exact return 0x3A2EEA9; .data slot starts at resolver thunk 0x3C9B8C0 and resolves to 0x3CD3730"
   },
   "vectors": [
     {
@@ -49,7 +50,8 @@
       "expected_executor_calls": 1,
       "expected_state": "completed",
       "expected_preserved_return": true,
-      "expected_preserved_LastError": "0x5A17"
+      "expected_preserved_LastError": "0x5A17",
+      "accepted_boundary": "0x3A2EEA9 frontend SDL slot return"
     },
     {
       "name": "timeout_cancel_while_queued",
@@ -139,6 +141,8 @@
     "object_key": "main_thread_query_mailbox_v1",
     "fixed_keys": [
       "installed",
+      "sdl_poll_event_hook_installed",
+      "observed_sdl_poll_event_target",
       "stop",
       "failure",
       "pump_epochs",

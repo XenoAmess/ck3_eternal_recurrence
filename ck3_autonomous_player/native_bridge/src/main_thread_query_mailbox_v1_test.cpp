@@ -23,6 +23,8 @@ namespace {
 const char *g_failure_stage = "not_started";
 xar::ck3_11906::MainThreadQueryMailboxV1 g_test_mailbox{};
 
+int __cdecl FakeSdlPollEvent(void *event);
+
 struct FakeMemoryProtection {
   void *slot = nullptr;
   DWORD current_protect = PAGE_READONLY;
@@ -89,6 +91,8 @@ struct FakeRuntime {
   std::array<std::byte, 0x28> tls_context{};
   std::array<std::byte, 0x28> alternate_tls_context{};
   FakeMemoryProtection protection{};
+  void *sdl_poll_event_slot =
+      reinterpret_cast<void *>(&FakeSdlPollEvent);
 
   explicit FakeRuntime(std::uint32_t owner_thread_id,
                        std::int32_t date_raw) {
@@ -119,7 +123,7 @@ struct FakeRuntime {
       std::uintptr_t module_base, void **iat_slot,
       xar::ck3_11906::PeekMessageWFunctionV1 original) {
     protection.slot = iat_slot;
-    return {
+    auto environment = xar::ck3_11906::MainThreadQueryInstallEnvironmentV1{
         module_base,
         true,
         true,
@@ -136,6 +140,9 @@ struct FakeRuntime {
         4096,
         true,
     };
+    environment.sdl_poll_event_slot_override = &sdl_poll_event_slot;
+    environment.resolved_sdl_poll_event_override = &FakeSdlPollEvent;
+    return environment;
   }
 
   void SetDate(std::int32_t date_raw) {
@@ -403,6 +410,7 @@ DWORD WINAPI DelayedDrainOnFixtureThread(void *opaque) {
 }
 
 std::uint32_t g_original_peek_calls = 0;
+std::uint32_t g_original_sdl_poll_event_calls = 0;
 
 BOOL WINAPI FakePeekMessage(LPMSG message, HWND, UINT, UINT, UINT) {
   ++g_original_peek_calls;
@@ -411,6 +419,12 @@ BOOL WINAPI FakePeekMessage(LPMSG message, HWND, UINT, UINT, UINT) {
   }
   SetLastError(0x5A17U);
   return TRUE;
+}
+
+int __cdecl FakeSdlPollEvent(void *) {
+  ++g_original_sdl_poll_event_calls;
+  SetLastError(0x5D17U);
+  return 1;
 }
 
 std::string ReadFile(const char *path) {
@@ -515,8 +529,9 @@ std::optional<std::size_t> RvaToOffset(std::string_view image,
   return std::nullopt;
 }
 
-bool RvaIsReadOnlyDataSection(std::string_view image, std::uint32_t rva,
-                              std::string_view expected_name) {
+bool RvaIsDataSection(std::string_view image, std::uint32_t rva,
+                      std::string_view expected_name,
+                      bool expected_writable) {
   std::uint32_t pe_offset = 0;
   std::uint16_t section_count = 0;
   std::uint16_t optional_header_size = 0;
@@ -559,7 +574,8 @@ bool RvaIsReadOnlyDataSection(std::string_view image, std::uint32_t rva,
     return name == expected_name &&
            (characteristics & IMAGE_SCN_CNT_INITIALIZED_DATA) != 0 &&
            (characteristics & IMAGE_SCN_MEM_READ) != 0 &&
-           (characteristics & IMAGE_SCN_MEM_WRITE) == 0 &&
+           ((characteristics & IMAGE_SCN_MEM_WRITE) != 0) ==
+               expected_writable &&
            (characteristics & IMAGE_SCN_MEM_EXECUTE) == 0;
   }
   return false;
@@ -668,6 +684,8 @@ bool TestMailboxStateMachine() {
           mailbox,
           runtime.Environment(fake_module_base, &iat, &FakePeekMessage)) ||
       iat != reinterpret_cast<void *>(&XarMainThreadPeekMessageWHookV1) ||
+      runtime.sdl_poll_event_slot !=
+          reinterpret_cast<void *>(&XarMainThreadSdlPollEventHookV1) ||
       runtime.protection.current_protect != PAGE_READONLY ||
       runtime.protection.query_calls != 1 ||
       runtime.protection.protect_calls != 2) {
@@ -683,9 +701,9 @@ bool TestMailboxStateMachine() {
   if (ObserveMainThreadPumpAndDrainV1(mailbox, 0xDEADBEEFU,
                                      owner_thread) ||
       ObserveMainThreadPumpAndDrainV1(
-          mailbox, kSdlWindowsPumpFirstPeekReturnRva, owner_thread) ||
+          mailbox, kHandlePdxEventsSdlPollEventReturnRva, owner_thread) ||
       ObserveMainThreadPumpAndDrainV1(
-          mailbox, kSdlWindowsPumpFirstPeekReturnRva, owner_thread)) {
+          mailbox, kHandlePdxEventsSdlPollEventReturnRva, owner_thread)) {
     return false;
   }
   auto diagnostics = ReadMainThreadQueryMailboxDiagnosticsV1(mailbox);
@@ -923,6 +941,12 @@ bool TestMailboxStateMachine() {
       message.message != WM_NULL) {
     return false;
   }
+  SetLastError(0);
+  g_original_sdl_poll_event_calls = 0;
+  if (XarMainThreadSdlPollEventHookV1(nullptr) != 1 ||
+      g_original_sdl_poll_event_calls != 1 || GetLastError() != 0x5D17U) {
+    return false;
+  }
 
   ExecutorContext drift_context{};
   g_failure_stage = "post_executor_drift";
@@ -946,7 +970,10 @@ bool TestMailboxStateMachine() {
   if (UninstallMainThreadQueryMailboxV1(mailbox, 0) !=
           MainThreadQueryUninstallResultV1::active_hook_calls_pending ||
       iat != reinterpret_cast<void *>(&FakePeekMessage) ||
+      runtime.sdl_poll_event_slot !=
+          reinterpret_cast<void *>(&FakeSdlPollEvent) ||
       mailbox.iat_hook_installed.load(std::memory_order_acquire) ||
+      mailbox.sdl_poll_event_hook_installed.load(std::memory_order_acquire) ||
       runtime.protection.current_protect != PAGE_READONLY) {
     return false;
   }
@@ -954,7 +981,11 @@ bool TestMailboxStateMachine() {
   if (UninstallMainThreadQueryMailboxV1(mailbox, 10) !=
           MainThreadQueryUninstallResultV1::uninstalled ||
       ReadMainThreadQueryMailboxDiagnosticsV1(mailbox).iat_installed ||
-      iat != reinterpret_cast<void *>(&FakePeekMessage)) {
+      ReadMainThreadQueryMailboxDiagnosticsV1(mailbox)
+          .sdl_poll_event_hook_installed ||
+      iat != reinterpret_cast<void *>(&FakePeekMessage) ||
+      runtime.sdl_poll_event_slot !=
+          reinterpret_cast<void *>(&FakeSdlPollEvent)) {
     return false;
   }
 
@@ -1354,16 +1385,24 @@ bool TestSourceContract(int argc, char **argv) {
       kMainThreadQueryMailboxV1AdapterId != "ck3-1.19.0.6-msvc-x64" ||
       kPeekMessageWIatSlotRva != 0x3FD2EE8 ||
       kSdlWindowsPumpFirstPeekReturnRva != 0x3CE4222 ||
+      kSdlPollEventDispatchSlotRva != 0x4FE0A68 ||
+      kSdlPollEventResolverThunkRva != 0x3C9B8C0 ||
+      kSdlPollEventResolvedTargetRva != 0x3CD3730 ||
+      kHandlePdxEventsSdlPollEventReturnRva != 0x3A2EEA9 ||
       kGlobalRngWrapperSlotRva != 0x4FEB1C8 ||
       kMainThreadQueryMaximumDrainPerPump != 1 ||
       kMainThreadQueryMinimumPausedOwnerVerifiedPumpEpochs != 2) {
     std::fprintf(stderr, "mailbox compile-time identity contract failed\n");
     return false;
   }
-  constexpr std::array<std::string_view, 67> source_tokens{
+  constexpr std::array<std::string_view, 71> source_tokens{
       "InterlockedCompareExchangePointer",
       "kPeekMessageWIatSlotRva",
       "kSdlWindowsPumpFirstPeekReturnRva",
+      "kHandlePdxEventsSdlPollEventReturnRva",
+      "TryInstallMainThreadFrontendBoundaryHookV1",
+      "XarMainThreadSdlPollEventHookV1",
+      "pump_epochs_before",
       "ReadExecutionStamp",
       "kGlobalRngOwnerThreadIdOffset",
       "Diagnostic only",
@@ -1436,7 +1475,7 @@ bool TestSourceContract(int argc, char **argv) {
       return false;
     }
   }
-  constexpr std::array<std::string_view, 72> contract_tokens{
+  constexpr std::array<std::string_view, 77> contract_tokens{
       "0x3FD2EE8", "USER32!PeekMessageW", "0x3CE41E0",
       "0x3CE421C", "0x3CE4222", "0x3CFE7AB", "0x3CD3600",
       "0x3CD366C", "0x3CD3763", "0x3CD3D84", "0x3CD40D6",
@@ -1449,6 +1488,8 @@ bool TestSourceContract(int argc, char **argv) {
       "0x57727ED", "0x7E7CDE", "0x7E7CE5", "0x3B86430",
       "0x3A2EC30", "0x3A2EC4D", "0x3A2EC58", "0x351F0D0",
       "0x3555820", "0x3555190", "0x3A2EE60", "0x4FE0A68",
+      "0x3A2EEA3", "0x3A2EEA9", "0x3C9B8C0", "0x3CD3730",
+      "sdl_poll_event_hook_installed",
       "TLS", "marker",
       "process_lifetime_pinned", "consecutive", "heartbeat",
       "executor_submission_enabled", "executed_requests",
@@ -1732,7 +1773,10 @@ bool TestSourceContract(int argc, char **argv) {
       digest != kMainThreadQueryMailboxV1ExecutableSha256 ||
       !ImportNameAtIat(executable, 0x3FD2EE8, "PeekMessageW") ||
       !ImportNameAtIat(executable, 0x3FD2570, "GetCurrentThreadId") ||
-      !RvaIsReadOnlyDataSection(executable, 0x3FD2EE8, ".rdata")) {
+      !RvaIsDataSection(executable, 0x3FD2EE8, ".rdata", false) ||
+      !RvaIsDataSection(executable, 0x4FE0A68, ".data", true) ||
+      !BytesAt(executable, 0x4FE0A68,
+               {0xC0, 0xB8, 0xC9, 0x43, 0x01, 0x00, 0x00, 0x00})) {
     std::fprintf(stderr, "mailbox executable identity contract failed\n");
     return false;
   }

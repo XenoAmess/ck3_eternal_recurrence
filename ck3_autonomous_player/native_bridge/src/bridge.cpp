@@ -592,6 +592,10 @@ std::string HeartbeatFrame(std::uint64_t sequence) {
       ",\"query_scope\":\"frontend_gui_route_and_fixed_action_typed_war_entry_route_actual_contact_combat_v3_battle_control_battle_transition_reinforcement_assignment_campaign_root_context_loaded_feature_manifest_pending_character_interaction_context_current_event_window_title_map_navigation_zhongguo_case_snapshot_zhongguo_b1_cycle_snapshot_zhongguo_result_case_snapshot_zhongguo_b2_pip_snapshot_zhongguo_incident_snapshot_zhongguo_manager_governance_snapshot_zhongguo_scoreboard_state_zhongguo_workforce_collective_snapshot_zhongguo_ai_owned_case_snapshot_zhongguo_workforce_normal_exit_snapshot_zhongguo_scoreboard_action_fail_closed_transport_zhongguo_promotion_source_progress_review_action_fail_closed_transport\"";
   result += ",\"installed\":";
   result += mailbox.iat_installed ? "true" : "false";
+  result += ",\"sdl_poll_event_hook_installed\":";
+  result += mailbox.sdl_poll_event_hook_installed ? "true" : "false";
+  result += ",\"observed_sdl_poll_event_target\":";
+  result += Number(mailbox.observed_sdl_poll_event_target);
   result += ",\"stop\":";
   result += mailbox.stop_requested ? "true" : "false";
   result += ",\"failure\":";
@@ -5450,6 +5454,8 @@ void RunConnectedSession(
     if (now >= next_heartbeat) {
       xar::ck3_11906::RetryDeferredCoatOfArmsDesignerProbeHookV1(
           g_coat_of_arms_designer_probe_hook_v1);
+      xar::ck3_11906::TryInstallMainThreadFrontendBoundaryHookV1(
+          g_main_thread_query_mailbox_v1);
       ++sequence;
       connected = xar::bridge::WriteFrame(pipe, HeartbeatFrame(sequence));
       if (connected && game.supports_snapshot()) {

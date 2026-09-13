@@ -30,6 +30,16 @@ inline constexpr std::uintptr_t kSdlWindowsPumpFunctionRva = 0x3CE41E0;
 inline constexpr std::uintptr_t kSdlWindowsPumpFirstPeekCallRva = 0x3CE421C;
 inline constexpr std::uintptr_t kSdlWindowsPumpFirstPeekReturnRva = 0x3CE4222;
 inline constexpr std::uintptr_t kPeekMessageWIatSlotRva = 0x3FD2EE8;
+// HandlePdxEvents calls SDL_PollEvent through this writable process-global
+// dispatch slot.  The slot begins at the resolver thunk while CK3 is still
+// suspended, then becomes the exact embedded implementation below.  Hooking
+// the resolved slot covers frontend frames where SDL_PollEvent intentionally
+// skips the lower Windows PeekMessageW pump.
+inline constexpr std::uintptr_t kSdlPollEventDispatchSlotRva = 0x4FE0A68;
+inline constexpr std::uintptr_t kSdlPollEventResolverThunkRva = 0x3C9B8C0;
+inline constexpr std::uintptr_t kSdlPollEventResolvedTargetRva = 0x3CD3730;
+inline constexpr std::uintptr_t kHandlePdxEventsSdlPollEventReturnRva =
+    0x3A2EEA9;
 
 // The native global RNG wrapper is a generic scoped-owner diagnostic.  It is
 // not an admission gate for this application-main-thread boundary: the live
@@ -66,6 +76,7 @@ inline constexpr std::uint64_t
 
 using PeekMessageWFunctionV1 =
     BOOL(WINAPI *)(LPMSG, HWND, UINT, UINT, UINT);
+using SdlPollEventFunctionV1 = int(__cdecl *)(void *event);
 
 struct MainThreadExecutionStampV1 {
   std::uint64_t pump_epoch = 0;
@@ -251,6 +262,10 @@ struct MainThreadQueryInstallEnvironmentV1 {
   // gameplay/Jomini frame exists. It still runs at the exact SDL/CK3
   // application-main boundary and cannot be supplied by protocol data.
   MainThreadQueryExecutorV1 permitted_frontend_executor = nullptr;
+  // Optional only for the offline fixture. Production binds the frozen
+  // module-relative dispatch slot and resolved function identities above.
+  void **sdl_poll_event_slot_override = nullptr;
+  SdlPollEventFunctionV1 resolved_sdl_poll_event_override = nullptr;
 };
 
 struct MainThreadQueryMailboxDiagnosticsV1 {
@@ -275,6 +290,8 @@ struct MainThreadQueryMailboxDiagnosticsV1 {
   bool observed_stamp_read_success = false;
   std::uint32_t active_hook_calls = 0;
   bool iat_installed = false;
+  bool sdl_poll_event_hook_installed = false;
+  std::uintptr_t observed_sdl_poll_event_target = 0;
   bool stop_requested = false;
   bool executor_submission_enabled = false;
   bool application_main_observed = false;
@@ -307,6 +324,8 @@ struct MainThreadQueryMailboxV1 {
   std::atomic<std::uint32_t> active_hook_calls{0};
   std::atomic<bool> stop_requested{false};
   std::atomic<bool> iat_hook_installed{false};
+  std::atomic<bool> sdl_poll_event_hook_installed{false};
+  std::atomic<std::uintptr_t> observed_sdl_poll_event_target{0};
   std::atomic<bool> proof_reset_requested{false};
   std::atomic_flag drain_guard = ATOMIC_FLAG_INIT;
 
@@ -314,6 +333,8 @@ struct MainThreadQueryMailboxV1 {
   std::uintptr_t module_base = 0;
   void **peek_message_iat_slot = nullptr;
   PeekMessageWFunctionV1 original_peek_message = nullptr;
+  void **sdl_poll_event_slot = nullptr;
+  SdlPollEventFunctionV1 original_sdl_poll_event = nullptr;
   std::uintptr_t global_rng_wrapper_slot = 0;
   std::uintptr_t jomini_state_slot = 0;
   std::uintptr_t game_state_slot = 0;
@@ -377,6 +398,12 @@ bool InstallMainThreadQueryMailboxV1(
     MainThreadQueryMailboxV1 &mailbox,
     const MainThreadQueryInstallEnvironmentV1 &environment) noexcept;
 
+// The exact SDL slot is still a resolver thunk while the managed launcher has
+// CK3 suspended. Worker heartbeat and frontend submission retry this bounded
+// CAS after the game resolves the slot; no game function is called here.
+bool TryInstallMainThreadFrontendBoundaryHookV1(
+    MainThreadQueryMailboxV1 &mailbox) noexcept;
+
 // WorkerMain owns installation and must call this on every return path before
 // XarCk3BridgeStop resets its worker lifecycle.  Success means the IAT contains
 // the original PeekMessageW and every hook invocation already counted has
@@ -425,5 +452,7 @@ MainThreadQueryMailboxDiagnosticsV1 ReadMainThreadQueryMailboxDiagnosticsV1(
 extern "C" BOOL WINAPI XarMainThreadPeekMessageWHookV1(
     LPMSG message, HWND window, UINT minimum_filter, UINT maximum_filter,
     UINT remove_message) noexcept;
+
+extern "C" int __cdecl XarMainThreadSdlPollEventHookV1(void *event) noexcept;
 
 } // namespace xar::ck3_11906

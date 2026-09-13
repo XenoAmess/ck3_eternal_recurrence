@@ -11,6 +11,7 @@ namespace {
 
 std::atomic<MainThreadQueryMailboxV1 *> g_active_mailbox{nullptr};
 std::atomic<PeekMessageWFunctionV1> g_original_peek_message{nullptr};
+std::atomic<SdlPollEventFunctionV1> g_original_sdl_poll_event{nullptr};
 
 static_assert(kMainThreadQueryMaximumDrainPerPump == 1);
 
@@ -525,6 +526,10 @@ bool InstallMainThreadQueryMailboxV1(
   auto memory_query = environment.memory_query_override;
   auto memory_protect = environment.memory_protect_override;
   std::size_t system_page_size = environment.system_page_size_override;
+  void **sdl_poll_event_slot =
+      environment.sdl_poll_event_slot_override;
+  auto original_sdl_poll_event =
+      environment.resolved_sdl_poll_event_override;
   if (!environment.offline_fixture) {
     if (!ExactPumpAnchorsMatch(environment.module_base)) {
       AddFailure(mailbox, main_thread_query_failure_pump_anchor);
@@ -549,6 +554,10 @@ bool InstallMainThreadQueryMailboxV1(
     SYSTEM_INFO system_information{};
     GetSystemInfo(&system_information);
     system_page_size = system_information.dwPageSize;
+    sdl_poll_event_slot = reinterpret_cast<void **>(
+        environment.module_base + kSdlPollEventDispatchSlotRva);
+    original_sdl_poll_event = reinterpret_cast<SdlPollEventFunctionV1>(
+        environment.module_base + kSdlPollEventResolvedTargetRva);
   }
   if (iat_slot == nullptr || original == nullptr || rng_slot == 0 ||
       jomini_slot == 0 || game_slot == 0 || memory_query == nullptr ||
@@ -612,6 +621,8 @@ bool InstallMainThreadQueryMailboxV1(
   mailbox.module_base = environment.module_base;
   mailbox.peek_message_iat_slot = iat_slot;
   mailbox.original_peek_message = original;
+  mailbox.sdl_poll_event_slot = sdl_poll_event_slot;
+  mailbox.original_sdl_poll_event = original_sdl_poll_event;
   mailbox.global_rng_wrapper_slot = rng_slot;
   mailbox.jomini_state_slot = jomini_slot;
   mailbox.game_state_slot = game_slot;
@@ -697,10 +708,16 @@ bool InstallMainThreadQueryMailboxV1(
   mailbox.last_owner_verified_stamp_valid = false;
   mailbox.stop_requested.store(false, std::memory_order_release);
   mailbox.iat_hook_installed.store(false, std::memory_order_release);
+  mailbox.sdl_poll_event_hook_installed.store(false,
+                                               std::memory_order_release);
+  mailbox.observed_sdl_poll_event_target.store(0,
+                                                std::memory_order_release);
   mailbox.proof_reset_requested.store(false, std::memory_order_release);
   mailbox.state.store(MainThreadQueryMailboxStateV1::idle,
                       std::memory_order_release);
   g_original_peek_message.store(original, std::memory_order_release);
+  g_original_sdl_poll_event.store(original_sdl_poll_event,
+                                  std::memory_order_release);
 
   const auto swap_result = AtomicSwapReadOnlyIat(
       mailbox, reinterpret_cast<void *>(original),
@@ -718,7 +735,48 @@ bool InstallMainThreadQueryMailboxV1(
     return false;
   }
   mailbox.iat_hook_installed.store(true, std::memory_order_release);
+  (void)TryInstallMainThreadFrontendBoundaryHookV1(mailbox);
   return true;
+}
+
+bool TryInstallMainThreadFrontendBoundaryHookV1(
+    MainThreadQueryMailboxV1 &mailbox) noexcept {
+  if (mailbox.sdl_poll_event_hook_installed.load(
+          std::memory_order_acquire)) {
+    return true;
+  }
+  if (g_active_mailbox.load(std::memory_order_acquire) != &mailbox ||
+      mailbox.stop_requested.load(std::memory_order_acquire) ||
+      mailbox.sdl_poll_event_slot == nullptr ||
+      mailbox.original_sdl_poll_event == nullptr) {
+    return false;
+  }
+
+  void *observed = nullptr;
+#if defined(_MSC_VER)
+  __try {
+#endif
+    observed = InterlockedCompareExchangePointer(
+        reinterpret_cast<void *volatile *>(mailbox.sdl_poll_event_slot),
+        reinterpret_cast<void *>(&XarMainThreadSdlPollEventHookV1),
+        reinterpret_cast<void *>(mailbox.original_sdl_poll_event));
+#if defined(_MSC_VER)
+  } __except (EXCEPTION_EXECUTE_HANDLER) {
+    observed = nullptr;
+  }
+#endif
+  mailbox.observed_sdl_poll_event_target.store(
+      reinterpret_cast<std::uintptr_t>(observed), std::memory_order_release);
+  if (observed == reinterpret_cast<void *>(mailbox.original_sdl_poll_event) ||
+      observed == reinterpret_cast<void *>(
+                      &XarMainThreadSdlPollEventHookV1)) {
+    mailbox.sdl_poll_event_hook_installed.store(true,
+                                                 std::memory_order_release);
+    return true;
+  }
+  // While CK3 is suspended this is the expected resolver thunk. The worker
+  // retries after resume rather than calling SDL or changing the slot early.
+  return false;
 }
 
 void SignalMainThreadQueryMailboxProcessDetachV1(
@@ -768,6 +826,30 @@ MainThreadQueryUninstallResultV1 UninstallMainThreadQueryMailboxV1(
             std::memory_order_acq_rel, std::memory_order_acquire)) {
       break;
     }
+  }
+
+  if (mailbox.sdl_poll_event_hook_installed.load(
+          std::memory_order_acquire)) {
+    void *observed = nullptr;
+#if defined(_MSC_VER)
+    __try {
+#endif
+      observed = InterlockedCompareExchangePointer(
+          reinterpret_cast<void *volatile *>(mailbox.sdl_poll_event_slot),
+          reinterpret_cast<void *>(mailbox.original_sdl_poll_event),
+          reinterpret_cast<void *>(&XarMainThreadSdlPollEventHookV1));
+#if defined(_MSC_VER)
+    } __except (EXCEPTION_EXECUTE_HANDLER) {
+      observed = nullptr;
+    }
+#endif
+    if (observed !=
+        reinterpret_cast<void *>(&XarMainThreadSdlPollEventHookV1)) {
+      AddFailure(mailbox, main_thread_query_failure_uninstall);
+      return MainThreadQueryUninstallResultV1::iat_restore_failed;
+    }
+    mailbox.sdl_poll_event_hook_installed.store(false,
+                                                 std::memory_order_release);
   }
 
   if (mailbox.iat_hook_installed.load(std::memory_order_acquire)) {
@@ -902,6 +984,9 @@ MainThreadQuerySubmitResultV1 TrySubmitMainThreadQueryV1(
   }
   const bool frontend_executor =
       executor == mailbox.permitted_frontend_executor;
+  if (frontend_executor) {
+    (void)TryInstallMainThreadFrontendBoundaryHookV1(mailbox);
+  }
   if (mailbox.owner_thread_id.load(std::memory_order_acquire) == 0) {
     return frontend_executor
                ? MainThreadQuerySubmitResultV1::application_main_not_observed
@@ -1033,7 +1118,8 @@ MainThreadQueryReclaimResultV1 ReclaimMainThreadQueryV1(
 bool ObserveMainThreadPumpAndDrainV1(
     MainThreadQueryMailboxV1 &mailbox, std::uintptr_t return_rva,
     std::uint32_t current_thread_id) noexcept {
-  if (return_rva != kSdlWindowsPumpFirstPeekReturnRva) {
+  if (return_rva != kSdlWindowsPumpFirstPeekReturnRva &&
+      return_rva != kHandlePdxEventsSdlPollEventReturnRva) {
     return false;
   }
   if (mailbox.stop_requested.load(std::memory_order_acquire)) {
@@ -1222,6 +1308,10 @@ MainThreadQueryMailboxDiagnosticsV1 ReadMainThreadQueryMailboxDiagnosticsV1(
       mailbox.active_hook_calls.load(std::memory_order_acquire);
   output.iat_installed =
       mailbox.iat_hook_installed.load(std::memory_order_acquire);
+  output.sdl_poll_event_hook_installed =
+      mailbox.sdl_poll_event_hook_installed.load(std::memory_order_acquire);
+  output.observed_sdl_poll_event_target =
+      mailbox.observed_sdl_poll_event_target.load(std::memory_order_acquire);
   output.stop_requested =
       mailbox.stop_requested.load(std::memory_order_acquire);
   output.executor_submission_enabled = mailbox.executor_submission_enabled;
@@ -1259,6 +1349,40 @@ extern "C" BOOL WINAPI XarMainThreadPeekMessageWHookV1(
   const DWORD original_last_error = GetLastError();
   if (mailbox != nullptr &&
       !mailbox->stop_requested.load(std::memory_order_acquire) &&
+      return_address >= mailbox->module_base) {
+    const auto return_rva = return_address - mailbox->module_base;
+    ObserveMainThreadPumpAndDrainV1(*mailbox, return_rva,
+                                   GetCurrentThreadId());
+  }
+  if (mailbox != nullptr) {
+    mailbox->active_hook_calls.fetch_sub(1, std::memory_order_acq_rel);
+  }
+  SetLastError(original_last_error);
+  return result;
+}
+
+extern "C" int __cdecl XarMainThreadSdlPollEventHookV1(void *event) noexcept {
+  const auto return_address =
+      reinterpret_cast<std::uintptr_t>(_ReturnAddress());
+  auto *const mailbox = g_active_mailbox.load(std::memory_order_acquire);
+  const auto original =
+      g_original_sdl_poll_event.load(std::memory_order_acquire);
+  if (original == nullptr) {
+    return 0;
+  }
+  std::uint64_t pump_epochs_before = 0;
+  if (mailbox != nullptr) {
+    mailbox->active_hook_calls.fetch_add(1, std::memory_order_acq_rel);
+    pump_epochs_before =
+        mailbox->pump_epochs.load(std::memory_order_acquire);
+  }
+
+  const int result = original(event);
+  const DWORD original_last_error = GetLastError();
+  if (mailbox != nullptr &&
+      !mailbox->stop_requested.load(std::memory_order_acquire) &&
+      mailbox->pump_epochs.load(std::memory_order_acquire) ==
+          pump_epochs_before &&
       return_address >= mailbox->module_base) {
     const auto return_rva = return_address - mailbox->module_base;
     ObserveMainThreadPumpAndDrainV1(*mailbox, return_rva,
