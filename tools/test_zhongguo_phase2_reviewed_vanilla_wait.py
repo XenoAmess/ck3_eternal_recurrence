@@ -20,6 +20,7 @@ EVENT_KEY = "ep3_story_cycle_admin_eunuch.8030"
 PRODUCT_EVENT_KEY = "zg361p2c.2"
 JINGCHA_EVENT_KEY = "zg361.40"
 ANNUAL_SUMMARY_EVENT_KEY = "zg361.1"
+ELIMINATION_EVENT_KEY = "zg361.5"
 
 
 def _scope(type_key: str, character_id: int | None = None) -> dict[str, object]:
@@ -339,6 +340,66 @@ class Phase2ReviewedVanillaWaitTests(unittest.TestCase):
         )
         self.assertEqual(kwargs["contract"]["selected_option_number"], 1)
         self.assertEqual(kwargs["contract"]["selected_native_option_index"], 0)
+
+    def test_reviewed_product_helper_resolves_r613_elimination_contract(self) -> None:
+        service = _Service(ELIMINATION_EVENT_KEY, 628, 3, 53_375_640)
+        snapshot = service.snapshot()
+        context = {
+            "schema": "current-event-window-context-v1",
+            "schema_version": 1,
+            "status": "available",
+            "window_match_count": 1,
+            "event_definition_key": ELIMINATION_EVENT_KEY,
+            "root_scope": _scope("character", PLAYER),
+            "saved_scopes": [
+                {"name": "zg361_n_elim", "scope": _scope("value")},
+            ],
+            "options": [
+                {
+                    "rendered_index": index,
+                    "native_option_index": index,
+                    "shown": True,
+                    "enabled": True,
+                    "fallback": False,
+                    "cancel": False,
+                }
+                for index in range(3)
+            ],
+        }
+        identity = _identity(service, context)
+        with mock.patch.object(
+            capture,
+            "_drain_known_timeline_interrupt",
+            return_value={
+                "result": "GREEN",
+                "selected_option_number": 3,
+                "selected_native_option_index": 2,
+            },
+        ) as drain:
+            result = (
+                capture.drain_reviewed_phase2_product_event_interruption_native(
+                    service,
+                    snapshot=snapshot,
+                    identity=identity,
+                )
+            )
+
+        self.assertEqual(result["result"], "GREEN")
+        self.assertEqual(
+            result["registry_contract_source"],
+            "phase2_product_timeline_registry",
+        )
+        kwargs = drain.call_args.kwargs
+        self.assertEqual(kwargs["event_key"], ELIMINATION_EVENT_KEY)
+        self.assertEqual(kwargs["contract"]["root_character_id"], PLAYER)
+        self.assertEqual(
+            kwargs["contract"]["date_policy"],
+            "manager-recovery-product-window",
+        )
+        self.assertEqual(kwargs["contract"]["selected_option_number"], 3)
+        self.assertEqual(kwargs["contract"]["selected_native_option_index"], 2)
+        self.assertEqual(kwargs["contract"]["character_scopes"], {})
+        self.assertEqual(kwargs["contract"]["scope_types"], {})
 
     def test_reviewed_vanilla_then_product_events_reach_target(self) -> None:
         service = _Service()
