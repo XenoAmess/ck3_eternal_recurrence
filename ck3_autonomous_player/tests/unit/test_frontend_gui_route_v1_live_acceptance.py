@@ -30,6 +30,19 @@ class FrontendGuiRouteLiveAcceptanceContractTests(unittest.TestCase):
         self.assertLess(launch, cleanup)
         self.assertLess(cleanup, release)
 
+    def test_runner_requires_and_checks_the_coat_of_arms_route(self) -> None:
+        source = RUNNER.read_text(encoding="utf-8")
+
+        self.assertIn(
+            '"game.command.activate-frontend-coat-of-arms-designer-v1"',
+            source,
+        )
+        self.assertIn(
+            '"ck3_activate_frontend_coat_of_arms_designer_v1"', source
+        )
+        self.assertIn('== "coat_of_arms_designer"', source)
+        self.assertIn('row.get("runtime_name") == "coat_of_arms_page"', source)
+
 
 if __name__ == "__main__":
     unittest.main()

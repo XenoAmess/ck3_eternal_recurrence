@@ -5561,7 +5561,9 @@ void RunConnectedSession(
               step == xar::ck3_11906::kFrontendGuiPickAnyCharacterV1Step ||
               step == xar::ck3_11906::
                           kFrontendGuiSelectRandomPlayableV1Step ||
-              step == xar::ck3_11906::kFrontendGuiOpenRulerDesignerV1Step) {
+              step == xar::ck3_11906::kFrontendGuiOpenRulerDesignerV1Step ||
+              step == xar::ck3_11906::
+                          kFrontendGuiOpenCoatOfArmsDesignerV1Step) {
             std::uint64_t expected_revision = 0;
             if (!xar::bridge::JsonUnsignedField(
                     incoming.payload, "expected_revision",
@@ -5593,9 +5595,13 @@ void RunConnectedSession(
                                      kFrontendGuiSelectRandomPlayableV1Step) {
                 query.operation = xar::ck3_11906::FrontendGuiRouteOperationV1::
                     select_random_playable;
-              } else {
+              } else if (step == xar::ck3_11906::
+                                     kFrontendGuiOpenRulerDesignerV1Step) {
                 query.operation = xar::ck3_11906::
                     FrontendGuiRouteOperationV1::open_ruler_designer;
+              } else {
+                query.operation = xar::ck3_11906::
+                    FrontendGuiRouteOperationV1::open_coat_of_arms_designer;
               }
               const auto module_base = reinterpret_cast<std::uintptr_t>(
                   GetModuleHandleW(nullptr));

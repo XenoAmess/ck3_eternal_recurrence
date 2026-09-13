@@ -418,16 +418,18 @@ ck3_activate_frontend_new_game_v1()
 动作调用本身只产生 `acknowledged_verification_pending`，Python driver 必须独立看到路由从 `main_menu` 变为 `bookmarks`，
 才投影 `postcondition_verified=true`。公开结果固定声明 `uses_ocr=false`、`uses_keyboard=false`、`uses_mouse=false`。
 
-截至 2026-09-14，`main_menu → bookmarks → 未选角 lobby` 已由官方 MCP 和独立 route/tree 后置条件实机闭合为
-`production-live primitive`；聚焦 inspector 还证明 lobby 默认角色设计器按钮在未选角时 disabled。最初尝试把书签人物选择与
+截至 2026-09-14，`main_menu → bookmarks → lobby 随机可玩角色 → ruler_designer` 已由官方 MCP 和独立 route/tree 后置条件实机闭合为
+`production-live primitive`；先前聚焦 inspector 还证明 lobby 默认角色设计器按钮在未选角时 disabled。最初尝试把书签人物选择与
 `Pick Any` 串联是错误的状态模型：原版书签卡走 `GameSetup.SetSelectedCharacter`/`GameSetup.StartGame`，而 `Pick Any` 走
 `GameSetup.OnCustomStart` 打开自由选择 lobby。三份失败 attempt 已保留，不能算语法或设计器能力证据。
 
-修正后的静态 MCP 在 lobby 内使用已由 live tree 和原版源码共同识别的固定无名按钮 `4/0/1/0/1`，其回调为
+修正后的 MCP 在 lobby 内使用已由 live tree 和原版源码共同识别的固定无名按钮 `4/0/1/0/1`，其回调为
 `SetRandomPlayableObserverCharacter`；选角后必须独立观察默认角色设计器按钮 `3/0/2/3` 变为 enabled，才允许继续。
-该替代动作与 `lobby → ruler_designer` 当前均为 `mcp-static-ready / live=false`。`open_kaishek` 没有前端 GUI/CoA domain，
-预验证为 `not-applicable`。所有者现已禁止启动/占用 CK3 和屏幕，因此后续 live 路由、CoA 页动作及最终语法矩阵保持待验；
-不得用鼠标、键盘或 OCR 绕过。
+该替代动作与 `lobby → ruler_designer` 已实机 GREEN。新 tree 将 `dynasty_house` 固定在
+`0/0/0/0/0/0/0/3`，原版 `window_ruler_designer.gui:514-548` 再把其 leaf
+`0/0/0/0/0/0/0/3/1/0/1` 绑定为 `OpenDynastyCoatOfArmsDesigner`。对应零输入 MCP 已静态实现，只有独立观察
+`coat_of_arms_designer` route 与可见 `coat_of_arms_page` 才会返回 verified；当前为 `mcp-static-ready / live=false`。
+`open_kaishek` 没有前端 GUI/CoA domain，预验证为 `not-applicable`；不得用鼠标、键盘或 OCR 绕过。
 
 ## 4. 原版实际调用链
 
@@ -698,13 +700,13 @@ Web 端若要提供随机生成，应在自己的数据模型中完成选择，�
 本轮已实机闭合“输入源码 → 原生检测/预览 → 应用 → 原生 Copy/export → 原样再应用 → 稳定再次导出”，并补齐 frontend
 生命周期与 Windows 换行规范化。基础游戏 designer manifest 资源目录也已通过离线 MCP 工具分页暴露；运行中 CK3 的完整
 effective feature 与 script `has_dlc` truth 已有 production-live 原生 primitive，并接入编辑器。前端路由的
-`main_menu → bookmarks → 未选角 lobby` 已达到 `production-live primitive`；修正后的 lobby 随机可玩角色选择和
-`lobby → ruler_designer` 为 `mcp-static-ready / live=false`。仍未通过 MCP 闭合的能力有：
+`main_menu → bookmarks → lobby 随机可玩角色 → ruler_designer` 已达到 `production-live primitive`；
+`ruler_designer → coat_of_arms_designer` 固定动作已经 `mcp-static-ready / live=false`。仍未通过 MCP 闭合的能力有：
 
 - 读取 CK3 原生 preview 的最终像素或直接导出 PNG（浏览器已能按随附 shader 源码离线合成，但不替代 native pixel）；
 - 完成角色设计器上层 Finish；
-- 实机闭合 lobby 随机可玩角色选择与打开 ruler designer，再从 live native tree 确定切换到 coat-of-arms 页面的固定语义动作；
-  这些动作应继续扩展 GUI-tree MCP allowlist，不得回退到坐标、OCR 或键盘；
+- 实机闭合已经静态实现的 `ruler_designer → coat_of_arms_designer` 固定语义动作；该动作已在 GUI-tree MCP allowlist 内，
+  不得回退到坐标、OCR 或键盘；
 - 枚举游戏当前运行时实际注册且已合并 DLC/mod override 的 pattern/emblem/color 资源；现有 runtime feature truth 只证明
   gameplay gate，不提供 CoA VFS/registry winner；
 - 跨 CK3 build 自动适配 RVA 与字段。

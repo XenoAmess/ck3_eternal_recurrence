@@ -589,6 +589,8 @@ int main() {
           "activate-frontend-select-random-playable-v1") ||
       !exact_adapter->supports_step(
           "activate-frontend-ruler-designer-v1") ||
+      !exact_adapter->supports_step(
+          "activate-frontend-coat-of-arms-designer-v1") ||
       !exact_adapter->supports_step("center-map-on-landed-title-v1") ||
       exact_adapter->supports_step(
           "center-map-on-landed-title-v1-c_bianzhou") ||

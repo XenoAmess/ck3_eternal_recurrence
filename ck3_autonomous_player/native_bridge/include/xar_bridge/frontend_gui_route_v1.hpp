@@ -33,6 +33,10 @@ inline constexpr std::string_view kFrontendGuiOpenRulerDesignerV1Capability =
     "game.command.activate-frontend-ruler-designer-v1";
 inline constexpr std::string_view kFrontendGuiOpenRulerDesignerV1Step =
     "activate-frontend-ruler-designer-v1";
+inline constexpr std::string_view kFrontendGuiOpenCoatOfArmsDesignerV1Capability =
+    "game.command.activate-frontend-coat-of-arms-designer-v1";
+inline constexpr std::string_view kFrontendGuiOpenCoatOfArmsDesignerV1Step =
+    "activate-frontend-coat-of-arms-designer-v1";
 inline constexpr std::string_view kFrontendGuiRouteV1BackendId =
     "ck3-1.19.0.6-native-frontend-gui-route-v1";
 
@@ -43,6 +47,7 @@ enum class FrontendGuiRouteOperationV1 : std::uint32_t {
   inspect_tree = 3,
   select_random_playable = 4,
   open_ruler_designer = 5,
+  open_coat_of_arms_designer = 6,
 };
 
 enum class FrontendGuiRouteV1 : std::uint32_t {

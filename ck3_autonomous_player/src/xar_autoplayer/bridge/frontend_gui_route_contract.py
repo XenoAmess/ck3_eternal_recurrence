@@ -39,6 +39,12 @@ ACTIVATE_FRONTEND_RULER_DESIGNER_V1_CAPABILITY: Final = (
 ACTIVATE_FRONTEND_RULER_DESIGNER_V1_STEP: Final = (
     "activate-frontend-ruler-designer-v1"
 )
+ACTIVATE_FRONTEND_COAT_OF_ARMS_DESIGNER_V1_CAPABILITY: Final = (
+    "game.command.activate-frontend-coat-of-arms-designer-v1"
+)
+ACTIVATE_FRONTEND_COAT_OF_ARMS_DESIGNER_V1_STEP: Final = (
+    "activate-frontend-coat-of-arms-designer-v1"
+)
 PREPARE_FRONTEND_CUSTOM_RULER_V1_STEP: Final = (
     "prepare-frontend-custom-ruler-v1"
 )
@@ -440,6 +446,75 @@ def normalize_frontend_open_ruler_designer_v1(
         "accepted": True,
         "status": "verified",
         "action": "open_ruler_designer",
+        "input_backend": "native_gui_semantic_activation",
+        "uses_ocr": False,
+        "uses_keyboard": False,
+        "uses_mouse": False,
+        "before": before,
+        "before_inspection": before_inspection,
+        "acknowledgement": dict(acknowledgement),
+        "after": after,
+        "postcondition_verified": True,
+        "backend_id": acknowledgement.get("backend_id"),
+    }
+
+
+def frontend_ruler_designer_dynasty_coa_target_ready_v1(
+    value: object,
+) -> bool:
+    """Recognize the live parent row that owns the fixed dynasty CoA button."""
+
+    if not isinstance(value, dict):
+        return False
+    widgets = value.get("widgets")
+    return bool(
+        value.get("schema") == "ck3-frontend-gui-tree-inspection-v1"
+        and value.get("schema_version") == 1
+        and value.get("status") == "available"
+        and value.get("scope_root_name") == "ruler_designer"
+        and value.get("root_available") is True
+        and isinstance(widgets, list)
+        and any(
+            isinstance(row, dict)
+            and row.get("child_path") == "0/0/0/0/0/0/0/3/1/0"
+            and row.get("runtime_name") == ""
+            and row.get("child_count") == 2
+            and row.get("effective_visible") is True
+            and row.get("enabled") is True
+            for row in widgets
+        )
+    )
+
+
+def normalize_frontend_open_coat_of_arms_designer_v1(
+    acknowledgement: object,
+    *,
+    before: dict[str, object],
+    before_inspection: dict[str, object],
+    after: dict[str, object],
+) -> dict[str, object]:
+    if not isinstance(acknowledgement, dict):
+        raise ValueError("frontend coat-of-arms acknowledgement must be an object")
+    if (
+        acknowledgement.get("step")
+        != ACTIVATE_FRONTEND_COAT_OF_ARMS_DESIGNER_V1_STEP
+        or acknowledgement.get("accepted") is not True
+        or acknowledgement.get("status")
+        != "acknowledged_verification_pending"
+        or before.get("route") != "ruler_designer"
+        or not frontend_ruler_designer_dynasty_coa_target_ready_v1(
+            before_inspection
+        )
+        or after.get("route") != "coat_of_arms_designer"
+    ):
+        raise ValueError("frontend coat-of-arms postcondition is not proven")
+    return {
+        "schema": "ck3-frontend-gui-action-v1",
+        "schema_version": 1,
+        "step": ACTIVATE_FRONTEND_COAT_OF_ARMS_DESIGNER_V1_STEP,
+        "accepted": True,
+        "status": "verified",
+        "action": "open_coat_of_arms_designer",
         "input_backend": "native_gui_semantic_activation",
         "uses_ocr": False,
         "uses_keyboard": False,

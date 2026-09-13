@@ -63,6 +63,9 @@ ACTIVATE_SELECT_RANDOM_PLAYABLE_CAPABILITY = (
 ACTIVATE_RULER_DESIGNER_CAPABILITY = (
     "game.command.activate-frontend-ruler-designer-v1"
 )
+ACTIVATE_COAT_OF_ARMS_DESIGNER_CAPABILITY = (
+    "game.command.activate-frontend-coat-of-arms-designer-v1"
+)
 QUERY_TOOL = "ck3_query_frontend_gui_route_v1"
 INSPECT_TOOL = "ck3_inspect_frontend_gui_tree_v1"
 ACTIVATE_NEW_GAME_TOOL = "ck3_activate_frontend_new_game_v1"
@@ -71,6 +74,9 @@ ACTIVATE_PREPARE_CUSTOM_RULER_TOOL = (
     "ck3_activate_frontend_prepare_custom_ruler_v1"
 )
 ACTIVATE_RULER_DESIGNER_TOOL = "ck3_activate_frontend_ruler_designer_v1"
+ACTIVATE_COAT_OF_ARMS_DESIGNER_TOOL = (
+    "ck3_activate_frontend_coat_of_arms_designer_v1"
+)
 _PROFILE_EXCLUDES = frozenset(
     {"crashes", "dumps", "exceptions", "logs", "save games", "last_save.ck3"}
 )
@@ -225,6 +231,7 @@ async def _mcp_sequence(
             ACTIVATE_PICK_ANY_TOOL,
             ACTIVATE_PREPARE_CUSTOM_RULER_TOOL,
             ACTIVATE_RULER_DESIGNER_TOOL,
+            ACTIVATE_COAT_OF_ARMS_DESIGNER_TOOL,
         }
         schemas = {
             name: tools[name].input_schema
@@ -266,6 +273,7 @@ async def _mcp_sequence(
                     ACTIVATE_PICK_ANY_CAPABILITY,
                     ACTIVATE_SELECT_RANDOM_PLAYABLE_CAPABILITY,
                     ACTIVATE_RULER_DESIGNER_CAPABILITY,
+                    ACTIVATE_COAT_OF_ARMS_DESIGNER_CAPABILITY,
                 }
                 <= set(advertised)
                 and {
@@ -275,6 +283,7 @@ async def _mcp_sequence(
                     ACTIVATE_PICK_ANY_CAPABILITY,
                     ACTIVATE_SELECT_RANDOM_PLAYABLE_CAPABILITY,
                     ACTIVATE_RULER_DESIGNER_CAPABILITY,
+                    ACTIVATE_COAT_OF_ARMS_DESIGNER_CAPABILITY,
                 }
                 <= set(hello_caps)
             ):
@@ -351,6 +360,14 @@ async def _mcp_sequence(
         inspection_call = await _call(client, INSPECT_TOOL)
         record(inspection_call)
         inspection = _structured(inspection_call)
+        coat_of_arms_call = await _call(
+            client, ACTIVATE_COAT_OF_ARMS_DESIGNER_TOOL
+        )
+        record(coat_of_arms_call)
+        coat_of_arms = _structured(coat_of_arms_call)
+        coat_of_arms_inspection_call = await _call(client, INSPECT_TOOL)
+        record(coat_of_arms_inspection_call)
+        coat_of_arms_inspection = _structured(coat_of_arms_inspection_call)
         after_ruler_designer = (
             ruler_designer.get("after")
             if isinstance(ruler_designer.get("after"), dict)
@@ -412,6 +429,38 @@ async def _mcp_sequence(
                 and inspection.get("read_only") is True
                 and inspection.get("scope_root_name") == "ruler_designer"
             ),
+            "coat_of_arms_not_error": coat_of_arms_call.get("is_error")
+            is False,
+            "coat_of_arms_verified": coat_of_arms.get("status") == "verified",
+            "coat_of_arms_postcondition_verified": coat_of_arms.get(
+                "postcondition_verified"
+            )
+            is True,
+            "after_coat_of_arms_designer": (
+                isinstance(coat_of_arms.get("after"), dict)
+                and coat_of_arms["after"].get("route")
+                == "coat_of_arms_designer"
+            ),
+            "coat_of_arms_no_ocr": coat_of_arms.get("uses_ocr") is False,
+            "coat_of_arms_no_keyboard": coat_of_arms.get("uses_keyboard")
+            is False,
+            "coat_of_arms_no_mouse": coat_of_arms.get("uses_mouse") is False,
+            "coat_of_arms_native_semantic_backend": coat_of_arms.get(
+                "input_backend"
+            )
+            == "native_gui_semantic_activation",
+            "coat_of_arms_tree_visible": (
+                coat_of_arms_inspection_call.get("is_error") is False
+                and coat_of_arms_inspection.get("status") == "available"
+                and any(
+                    isinstance(row, dict)
+                    and row.get("runtime_name") == "coat_of_arms_page"
+                    and row.get("child_path") == "0/2"
+                    and row.get("effective_visible") is True
+                    and row.get("enabled") is True
+                    for row in coat_of_arms_inspection.get("widgets", [])
+                )
+            ),
         }
         return {
             "mcp_sdk": "official-python-client",
@@ -422,6 +471,10 @@ async def _mcp_sequence(
             "prepare_custom_ruler": prepare,
             "ruler_designer": ruler_designer,
             "tree_inspection_after_ruler_designer": inspection,
+            "coat_of_arms_designer": coat_of_arms,
+            "tree_inspection_after_coat_of_arms_designer": (
+                coat_of_arms_inspection
+            ),
             "calls": calls,
             "call_summary": call_summary,
             "checks": checks,

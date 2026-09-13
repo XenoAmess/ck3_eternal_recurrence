@@ -11,6 +11,8 @@ sys.path.insert(0, str(PROJECT_ROOT / "src"))
 
 
 from xar_autoplayer.bridge.frontend_gui_route_contract import (
+    ACTIVATE_FRONTEND_COAT_OF_ARMS_DESIGNER_V1_CAPABILITY,
+    ACTIVATE_FRONTEND_COAT_OF_ARMS_DESIGNER_V1_STEP,
     ACTIVATE_FRONTEND_NEW_GAME_V1_CAPABILITY,
     ACTIVATE_FRONTEND_NEW_GAME_V1_STEP,
     ACTIVATE_FRONTEND_PICK_ANY_CHARACTER_V1_CAPABILITY,
@@ -25,9 +27,11 @@ from xar_autoplayer.bridge.frontend_gui_route_contract import (
     QUERY_FRONTEND_GUI_ROUTE_V1_STEP,
     frontend_gui_route_binding_from_capabilities,
     frontend_lobby_random_playable_actionable_v1,
+    frontend_ruler_designer_dynasty_coa_target_ready_v1,
     normalize_frontend_gui_tree_inspection_v1,
     normalize_frontend_gui_route_v1,
     normalize_frontend_new_game_v1,
+    normalize_frontend_open_coat_of_arms_designer_v1,
     normalize_frontend_open_ruler_designer_v1,
     normalize_frontend_pick_any_character_v1,
     normalize_frontend_prepare_custom_ruler_v1,
@@ -192,6 +196,50 @@ def _open_ruler_designer_action() -> dict[str, object]:
     )
 
 
+def _ruler_designer_inspection() -> dict[str, object]:
+    return {
+        "schema": "ck3-frontend-gui-tree-inspection-v1",
+        "schema_version": 1,
+        "step": INSPECT_FRONTEND_GUI_TREE_V1_STEP,
+        "accepted": True,
+        "status": "available",
+        "scope_root_name": "ruler_designer",
+        "root_available": True,
+        "truncated": True,
+        "widget_count": 1,
+        "widgets": [
+            {
+                "runtime_name": "",
+                "child_path": "0/0/0/0/0/0/0/3/1/0",
+                "depth": 10,
+                "child_count": 2,
+                "vtable_rva": 72469912,
+                "effective_visible": True,
+                "enabled": True,
+            }
+        ],
+        "backend_id": "native-headless",
+        "read_only": True,
+        "uses_ocr": False,
+        "uses_keyboard": False,
+        "uses_mouse": False,
+    }
+
+
+def _open_coat_of_arms_designer_action() -> dict[str, object]:
+    return normalize_frontend_open_coat_of_arms_designer_v1(
+        {
+            "step": ACTIVATE_FRONTEND_COAT_OF_ARMS_DESIGNER_V1_STEP,
+            "accepted": True,
+            "status": "acknowledged_verification_pending",
+            "backend_id": "native-headless",
+        },
+        before=_route("ruler_designer"),
+        before_inspection=_ruler_designer_inspection(),
+        after=_route("coat_of_arms_designer"),
+    )
+
+
 class _FrontendDriver:
     def capabilities(self) -> dict[str, object]:
         return {
@@ -206,6 +254,7 @@ class _FrontendDriver:
                 ACTIVATE_FRONTEND_PICK_ANY_CHARACTER_V1_CAPABILITY,
                 ACTIVATE_FRONTEND_SELECT_RANDOM_PLAYABLE_V1_CAPABILITY,
                 ACTIVATE_FRONTEND_RULER_DESIGNER_V1_CAPABILITY,
+                ACTIVATE_FRONTEND_COAT_OF_ARMS_DESIGNER_V1_CAPABILITY,
             ],
         }
 
@@ -252,6 +301,9 @@ class _FrontendDriver:
 
     def activate_frontend_ruler_designer_v1(self) -> dict[str, object]:
         return _open_ruler_designer_action()
+
+    def activate_frontend_coat_of_arms_designer_v1(self) -> dict[str, object]:
+        return _open_coat_of_arms_designer_action()
 
 
 class FrontendGuiRouteV1ContractTests(unittest.TestCase):
@@ -470,6 +522,66 @@ class FrontendGuiRouteV1ContractTests(unittest.TestCase):
         inspection["widgets"][0]["enabled"] = False
         self.assertFalse(frontend_lobby_random_playable_actionable_v1(inspection))
 
+    def test_dynasty_coa_target_requires_exact_live_parent_row(self) -> None:
+        inspection = _ruler_designer_inspection()
+        self.assertTrue(
+            frontend_ruler_designer_dynasty_coa_target_ready_v1(inspection)
+        )
+        inspection["widgets"][0]["child_count"] = 1
+        self.assertFalse(
+            frontend_ruler_designer_dynasty_coa_target_ready_v1(inspection)
+        )
+
+    def test_native_driver_opens_coa_with_revision_zero_and_proves_route(
+        self,
+    ) -> None:
+        driver = object.__new__(NativeHeadlessGameplayDriver)
+        driver.frontend_transition_timeout_seconds = 1.0
+        routes = [_route("ruler_designer"), _route("coat_of_arms_designer")]
+        calls: list[dict[str, object]] = []
+        driver.query_frontend_gui_route_v1 = lambda: routes.pop(0)
+        driver.inspect_frontend_gui_tree_v1 = _ruler_designer_inspection
+
+        def execute(
+            step: str,
+            *,
+            expected_revision: int,
+            required_capability: str,
+            allow_frontend_revision_zero: bool,
+        ) -> dict[str, object]:
+            calls.append(
+                {
+                    "step": step,
+                    "expected_revision": expected_revision,
+                    "required_capability": required_capability,
+                    "allow_frontend_revision_zero": allow_frontend_revision_zero,
+                }
+            )
+            return {
+                "step": step,
+                "accepted": True,
+                "status": "acknowledged_verification_pending",
+                "backend_id": "native-headless",
+            }
+
+        driver._execute_primitive_step = execute
+        result = driver.activate_frontend_coat_of_arms_designer_v1()
+
+        self.assertEqual(result["after"]["route"], "coat_of_arms_designer")
+        self.assertEqual(
+            calls,
+            [
+                {
+                    "step": ACTIVATE_FRONTEND_COAT_OF_ARMS_DESIGNER_V1_STEP,
+                    "expected_revision": 0,
+                    "required_capability": (
+                        ACTIVATE_FRONTEND_COAT_OF_ARMS_DESIGNER_V1_CAPABILITY
+                    ),
+                    "allow_frontend_revision_zero": True,
+                }
+            ],
+        )
+
     def test_service_preserves_zero_input_native_contract(self) -> None:
         service = GameplayBridgeService(_FrontendDriver())
         self.assertEqual(service.query_frontend_gui_route_v1()["route"], "main_menu")
@@ -489,6 +601,11 @@ class FrontendGuiRouteV1ContractTests(unittest.TestCase):
         )
         self.assertTrue(
             service.activate_frontend_ruler_designer_v1()[
+                "postcondition_verified"
+            ]
+        )
+        self.assertTrue(
+            service.activate_frontend_coat_of_arms_designer_v1()[
                 "postcondition_verified"
             ]
         )
@@ -512,6 +629,7 @@ class FrontendGuiRouteV1McpTests(unittest.IsolatedAsyncioTestCase):
                 "ck3_activate_frontend_pick_any_character_v1",
                 "ck3_activate_frontend_prepare_custom_ruler_v1",
                 "ck3_activate_frontend_ruler_designer_v1",
+                "ck3_activate_frontend_coat_of_arms_designer_v1",
             ):
                 self.assertEqual(tools[name].input_schema.get("required", []), [])
                 self.assertFalse(tools[name].input_schema["additionalProperties"])
@@ -552,6 +670,14 @@ class FrontendGuiRouteV1McpTests(unittest.IsolatedAsyncioTestCase):
             self.assertEqual(
                 ruler_designer.structured_content["after"]["route"],
                 "ruler_designer",
+            )
+            coat_of_arms = await client.call_tool(
+                "ck3_activate_frontend_coat_of_arms_designer_v1", {}
+            )
+            self.assertFalse(coat_of_arms.is_error)
+            self.assertEqual(
+                coat_of_arms.structured_content["after"]["route"],
+                "coat_of_arms_designer",
             )
 
 

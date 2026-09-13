@@ -314,6 +314,8 @@ from .coat_of_arms_source_export_contract import (
     normalize_native_coat_of_arms_source_export_v1_result,
 )
 from .frontend_gui_route_contract import (
+    ACTIVATE_FRONTEND_COAT_OF_ARMS_DESIGNER_V1_CAPABILITY,
+    ACTIVATE_FRONTEND_COAT_OF_ARMS_DESIGNER_V1_STEP,
     ACTIVATE_FRONTEND_NEW_GAME_V1_CAPABILITY,
     ACTIVATE_FRONTEND_NEW_GAME_V1_STEP,
     ACTIVATE_FRONTEND_PICK_ANY_CHARACTER_V1_CAPABILITY,
@@ -329,9 +331,11 @@ from .frontend_gui_route_contract import (
     frontend_gui_route_binding_from_capabilities,
     frontend_lobby_default_ruler_designer_ready_v1,
     frontend_lobby_random_playable_actionable_v1,
+    frontend_ruler_designer_dynasty_coa_target_ready_v1,
     normalize_frontend_gui_tree_inspection_v1,
     normalize_frontend_gui_route_v1,
     normalize_frontend_new_game_v1,
+    normalize_frontend_open_coat_of_arms_designer_v1,
     normalize_frontend_open_ruler_designer_v1,
     normalize_frontend_pick_any_character_v1,
     normalize_frontend_prepare_custom_ruler_v1,
@@ -3743,6 +3747,41 @@ class NativeHeadlessGameplayDriver:
         except ValueError as error:
             raise BridgeUnavailableError(
                 f"native ruler-designer action is unverified: {error}"
+            ) from error
+
+    def activate_frontend_coat_of_arms_designer_v1(self) -> dict[str, object]:
+        """Open the dynasty CoA page and prove the dedicated route."""
+
+        before = self.query_frontend_gui_route_v1()
+        if before["route"] != "ruler_designer":
+            raise BridgeUnavailableError(
+                "frontend coat-of-arms action requires the ruler_designer route"
+            )
+        before_inspection = self._wait_for_frontend_gui_tree_v1(
+            frontend_ruler_designer_dynasty_coa_target_ready_v1,
+            "ruler designer dynasty coat-of-arms target ready",
+        )
+        acknowledgement = self._execute_primitive_step(
+            ACTIVATE_FRONTEND_COAT_OF_ARMS_DESIGNER_V1_STEP,
+            expected_revision=0,
+            required_capability=(
+                ACTIVATE_FRONTEND_COAT_OF_ARMS_DESIGNER_V1_CAPABILITY
+            ),
+            allow_frontend_revision_zero=True,
+        )
+        after = self._wait_for_frontend_gui_route_v1(
+            "coat_of_arms_designer"
+        )
+        try:
+            return normalize_frontend_open_coat_of_arms_designer_v1(
+                acknowledgement,
+                before=before,
+                before_inspection=before_inspection,
+                after=after,
+            )
+        except ValueError as error:
+            raise BridgeUnavailableError(
+                f"native coat-of-arms action is unverified: {error}"
             ) from error
 
     def _center_map_on_landed_title_v1_unrecorded(

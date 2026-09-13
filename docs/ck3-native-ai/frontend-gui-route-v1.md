@@ -18,11 +18,11 @@ main_menu --activate-frontend-new-game-v1--> bookmarks
 bookmarks --activate-frontend-pick-any-character-v1--> lobby
 lobby --activate-frontend-select-random-playable-v1--> ready lobby
 lobby --activate-frontend-ruler-designer-v1--> ruler_designer
+ruler_designer --activate-frontend-coat-of-arms-designer-v1--> coat_of_arms_designer
 ```
 
-前两段（截至未选角 lobby）均为 `production-live primitive`；新增的随机可玩角色选择和 `lobby → ruler_designer` 已为
-`mcp-static-ready / live=false`。
-`ruler_designer → coat_of_arms_designer` 及上层 Finish 仍不在当前闭环内。
+前四段（截至 `ruler_designer`）均为 `production-live primitive`。最后一段已经由 live native tree 与原版 GUI 源码固定目标，
+实现为 `mcp-static-ready / live=false`；上层 Finish 仍不在当前闭环内。
 
 ## MCP 合同
 
@@ -33,6 +33,7 @@ ck3_activate_frontend_new_game_v1()
 ck3_activate_frontend_pick_any_character_v1()
 ck3_activate_frontend_prepare_custom_ruler_v1()
 ck3_activate_frontend_ruler_designer_v1()
+ck3_activate_frontend_coat_of_arms_designer_v1()
 ```
 
 对应 bridge capability/step：
@@ -55,10 +56,13 @@ activate-frontend-select-random-playable-v1
 
 game.command.activate-frontend-ruler-designer-v1
 activate-frontend-ruler-designer-v1
+
+game.command.activate-frontend-coat-of-arms-designer-v1
+activate-frontend-coat-of-arms-designer-v1
 ```
 
 路由枚举为 `unavailable`、`main_menu`、`bookmarks`、`lobby`、`ruler_designer`、`coat_of_arms_designer`。动作分别要求
-`main_menu → bookmarks`、`bookmarks → lobby` 与 `lobby → ruler_designer`；原生调用只返回 `acknowledged_verification_pending`。driver 必须另行轮询 route，
+`main_menu → bookmarks`、`bookmarks → lobby`、`lobby → ruler_designer` 与 `ruler_designer → coat_of_arms_designer`；原生调用只返回 `acknowledged_verification_pending`。driver 必须另行轮询 route，
 只有目标 route 被独立观察到才返回：
 
 ```json
@@ -83,7 +87,7 @@ activate-frontend-ruler-designer-v1
 | `game/gui/frontend_bookmarks.gui` | 111,993 | `C853B48F42A5A3B84208B2FC570C02F5FCB5DA217133553C6A5B70B7F8F0F267` | root `frontend_bookmarks`；button `pick_any_character_button`；动画结束调用 `GameSetup.OnCustomStart` |
 | `game/gui/multiplayer_lobby.gui` | 31,100 | `DA5CFBBC695FE480E814EA6580A811B7719AB08E5A0359FBBB9EC98934425F17` | `JominiLobbyViewButton`；`onclick = [SetRandomPlayableObserverCharacter]`；live 相对路径 `4/0/1/0/1` |
 | `game/gui/multiplayer_types.gui` | 56,911 | `93912D008D2362955470E7F42029280C41E3E316E28D8D1055EE09DFBE8BC3A3` | ruler-selection root `lobbyview`；后续设计器入口调用 `TryStartRulerDesigning` |
-| `game/gui/window_ruler_designer.gui` | 118,240 | `C5761FD395E0C3D7FDF320DDE41DA900928F0A2EB217524E25348CCCC07ABDC9` | root `ruler_designer`；page `coat_of_arms_page` |
+| `game/gui/window_ruler_designer.gui` | 118,240 | `C5761FD395E0C3D7FDF320DDE41DA900928F0A2EB217524E25348CCCC07ABDC9` | root `ruler_designer`；`dynasty_house` 编辑按钮调用 `OpenDynastyCoatOfArmsDesigner`；page `coat_of_arms_page` |
 | `game/gui/shared/coa_designer.gui` | 56,297 | `2F3B863A7FEA692D630825052426CCC674403D096C37DD470E63C923D2D356EC` | CoA designer 结构来源；v1 不从文件文本执行动作 |
 
 运行时不会根据这些磁盘文本猜页面；DLL 每次都从当前 GUI owner 重新解析固定 root/descendant，读取 runtime name、vtable、
@@ -113,11 +117,11 @@ proof。
 固定按钮动作按以下顺序 fail closed：
 
 1. 当前 route 必须与动作匹配：`main_menu`、`bookmarks` 或 `lobby`；
-2. 从固定 root 重新解析 target：两个旧动作使用固定名称；随机选角动作只取 `lobbyview` 下编译期路径 `4/0/1/0/1`；设计器动作只取 `lobbyview` 下编译期路径 `3/0/2/3`；
-3. 有名控件必须精确匹配 runtime name；两个无名 lobby 控件必须保持空名；所有 target 都必须 visible/enabled；
+2. 从固定 root 重新解析 target：两个旧动作使用固定名称；随机选角动作只取 `lobbyview` 下编译期路径 `4/0/1/0/1`；设计器动作只取 `lobbyview` 下编译期路径 `3/0/2/3`；CoA 动作只取 `ruler_designer` 下编译期路径 `0/0/0/0/0/0/0/3/1/0/1`；
+3. 有名控件必须精确匹配 runtime name；三个固定路径按钮必须保持空名；所有 target 都必须 visible/enabled；
 4. target GUI context、button vtable slot、callback group 与 modal admission 通过现有 exact-build 原生 dispatcher；
 5. 调用 `CPdxGuiShortcutManager`；该返回值只算 ACK；
-6. Python driver 独立查询并观察对应的 `bookmarks`、`lobby` 或 `ruler_designer`，才能报告 verified；准备动作先从 inspector
+6. Python driver 独立查询并观察对应的 `bookmarks`、`lobby`、`ruler_designer` 或 `coat_of_arms_designer`，才能报告 verified；准备动作先从 inspector
    证明 `4/0/1/0/1` 可操作，执行选角后再独立证明 `3/0/2/3` 已 enabled。
 
 ## 验收状态与下一步
@@ -162,6 +166,17 @@ application-main executor fail closed。原版源码解释了这个分叉：书�
 当前 DLL 为 2,701,312 bytes，SHA-256 `5573805A227AE86683FD7C846B8E4BA621F60CF10725067ADC55D1055A24456C`。
 首次全量 CTest 因旧构建缓存把 `XAR_CK3_EXECUTABLE_PATH` 指向仓库内不存在的忽略路径而产生 9 项 environment RED；重新配置为
 exact 安装 EXE 后同一套测试为 `106 passed / 0 failed`，因此前者不是能力 RED。`open_kaishek` 无 frontend GUI/CoA domain，
-本包预验证为 `not-applicable`。两项动作仍为
-`mcp-static-ready / live=false`。所有者现已禁止占用 CK3/屏幕，因此不启动游戏；解除后才可做一次受管 MCP 实机验收，
-采样 `ruler_designer` 原生 tree，再补 CoA 页固定动作，禁止以鼠标链代替。
+本包预验证为 `not-applicable`。
+
+2026-09-14 的 `mcp-frontend-route-ruler-designer-live4.json` 已把随机选角与进入角色设计器提升为
+`production-live primitive`（911,495 bytes，SHA-256 `23F752FF7FF37A5354BD35DE92777EFDA746225DC4FDE980A1FD6DA064666CAE`）。
+官方 MCP 全链检查均为 true，Steam offline；共享 CK3 启动锁与状态锁覆盖启动至 cleanup，PID 4848 与 watchdog 均已回收。
+其 `ruler_designer` scoped tree 固定观察到 `dynasty_house` 路径 `0/0/0/0/0/0/0/3`，其内容行
+`0/0/0/0/0/0/0/3/1/0` 可见、enabled 且恰有两个子项。原版 `window_ruler_designer.gui:514-548` 证明第二个子项
+就是调用 `OpenDynastyCoatOfArmsDesigner` 并设置 `coat_of_arms_customization_open='dynasty'` 的编辑按钮。
+
+据此新增的零输入 `ck3_activate_frontend_coat_of_arms_designer_v1()` 只允许上述固定 leaf，且必须独立观察 route
+`coat_of_arms_designer` 与可见 `coat_of_arms_page` 才返回 verified。Release DLL 2,702,848 bytes，SHA-256
+`C7EA035BED0DE7BEC78771C5220CE018854376FA6AACD7BC487DC509C59628F9`；Python 普通/优化模式各 `11/11`、runner
+普通/优化模式各 `2/2`，原生套件为首次 100/106 加修正后失败六项 6/6，即等价 `106/106`。该最后一段仍为
+`mcp-static-ready / live=false`，下一次共享槽位可用时做一次受管 live，不以鼠标链代替。

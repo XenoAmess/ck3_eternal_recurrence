@@ -229,6 +229,43 @@ bool DispatchOpenRulerDesigner(
   return query.result.dispatch_invoked;
 }
 
+bool DispatchOpenCoatOfArmsDesigner(
+    FrontendGuiRouteMailboxContextV1 &query) noexcept {
+  if (query.result.route != FrontendGuiRouteV1::ruler_designer) return false;
+  // window_ruler_designer.gui:514-548: dynasty_house -> content vbox ->
+  // preview row -> second child. Vanilla binds this exact unnamed
+  // button_edit_text to OpenDynastyCoatOfArmsDesigner and then sets
+  // coat_of_arms_customization_open='dynasty'. The live ruler-designer tree
+  // proves the parent chain through depth 10; the source fixes this leaf.
+  constexpr std::array<std::uint32_t, 11> kDynastyCoatOfArmsButtonPath{{
+      0, 0, 0, 0, 0, 0, 0, 3, 1, 0, 1,
+  }};
+  ZhongguoScoreboardAccessV1 access{};
+  void *root = nullptr;
+  void *target = nullptr;
+  if (!ResolveFixedGuiChildPathV1(
+          query.environment, access, "ruler_designer",
+          kDynastyCoatOfArmsButtonPath.data(),
+          kDynastyCoatOfArmsButtonPath.size(), root, target) ||
+      target == nullptr) {
+    return false;
+  }
+  std::string runtime_name;
+  void *vtable = nullptr;
+  bool visible = false;
+  bool enabled = false;
+  if (!ReadGuiWidgetRuntimeV1(access, target, runtime_name, vtable, visible,
+                              enabled) ||
+      !runtime_name.empty() || !visible || !enabled) {
+    return false;
+  }
+  query.result.target_resolved = true;
+  query.result.dispatch_invoked = DispatchFixedGuiWidgetNativeV1(
+      &query.dispatch_environment, game::ZhongguoScoreboardActionV1::open,
+      target, vtable, query.result.native_handled);
+  return query.result.dispatch_invoked;
+}
+
 } // namespace
 
 bool ExecuteFrontendGuiRouteMailboxV1(
@@ -255,8 +292,12 @@ bool ExecuteFrontendGuiRouteMailboxV1(
       FrontendGuiRouteOperationV1::select_random_playable) {
     return DispatchSelectRandomPlayable(*query);
   }
-  return query->operation == FrontendGuiRouteOperationV1::open_ruler_designer &&
-         DispatchOpenRulerDesigner(*query);
+  if (query->operation == FrontendGuiRouteOperationV1::open_ruler_designer) {
+    return DispatchOpenRulerDesigner(*query);
+  }
+  return query->operation ==
+             FrontendGuiRouteOperationV1::open_coat_of_arms_designer &&
+         DispatchOpenCoatOfArmsDesigner(*query);
 }
 
 std::string_view FrontendGuiRouteNameV1(FrontendGuiRouteV1 route) noexcept {
