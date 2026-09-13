@@ -8,6 +8,8 @@
 跨 T0/T1/T2 的现行稳定状态统一读取机器生成的
 [`docs/project-state/current-state.json`](../project-state/current-state.json)。当前 CK3/RED 从其中声明的 Operator live source 读取；本目录的日期段落、日报、周报与 headline 都是历史增量，不得覆盖该投影。
 
+执行范围与发布授权还必须服从项目所有者最新指令：[`2026-09-13 T0 人工测试冻结与 G2 优先级指令`](../handover/2026-09-13-t0-manual-test-hold-and-g2-priority.md)。该指令已取消当前周期的全部宣传视频工作，并禁止发布天朝二期；P1 `9/9 GREEN` 与已知 UI 闭环完成后，现行主线是 G2。`current-state.json` 和旧 P2 ledger 中保留的素材节点只描述历史完成度，不构成继续录像或发布的授权。
+
 历史 headline（2026-08-31）：固定 production seed 的 G1 与随后第二个完整寿命均已 GREEN。第二寿命在无人接管的
 production 长跑中自然触发 one-life terminal，完成匹配结算，再经
 `death-terminal → start-next-episode → exact seed reload → 新 episode gameplay → durable checkpoint`
@@ -32,6 +34,7 @@ production 长跑中自然触发 one-life terminal，完成匹配结算，再经
 - [2026-09-02 交接审计](../handover/audit-2026-09-02.md)
 - [2026-09-03 度假接班与 B1 启动恢复](../handover/2026-09-03-vacation-handoff.md)
 - [2026-09-11 天朝二期 P1 / AF5 收尾交接](../handover/2026-09-11-t0-p1-af5-handoff.md)
+- [2026-09-13 T0 人工测试冻结与 G2 优先级指令](../handover/2026-09-13-t0-manual-test-hold-and-g2-priority.md)
 - [日/周计划会制度与模板](meetings/README.md)
 - [2026-09-04 早会](meetings/daily/2026-09-04.md)
 - [2026-09-10 早会](meetings/daily/2026-09-10.md)

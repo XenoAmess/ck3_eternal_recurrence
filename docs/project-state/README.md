@@ -2,6 +2,8 @@
 
 本目录把已经存在的 P1 gate、P2 source/媒体节点、T1 blocker、T2 同步事务和 RED artifact 投影成一个小型机器入口。它不增加验收门，也不替代原始 artifact、Operator live status、Git 或专题文档。
 
+`current-state.json` 记录证据与交付状态，不授予外部发布或素材生产权限。当前执行范围另见 [`2026-09-13 T0 人工测试冻结与 G2 优先级指令`](../handover/2026-09-13-t0-manual-test-hold-and-g2-priority.md)：当前周期的视频工作已取消，天朝二期处于人工测试冻结且不得发布，现行主线转为 G2。P2 ledger 保留的 `ACTIVE/PENDING` 是取消前的历史素材状态，不能被执行器解释为继续录像的任务。
+
 权威分工如下：
 
 - [`current-state.source.json`](current-state.source.json) 是稳定工作包状态的唯一生成输入；只在工作包收口时更新。
