@@ -1,6 +1,6 @@
 # “自动升级建筑”四期：超直辖暂停策略需求与开发计划
 
-状态：**static-ready；4.0.0 实现与发布级七语 L0 GREEN，尚待排他 CK3 实机、Workshop 与 fresh-cache 收口**
+状态：**implementation-complete；4.0.0 发布级七语 L0 与 R0032 排他实机 GREEN，尚待 Workshop、fresh-cache 与 changelog 收口**
 
 候选版本：`4.0.0`
 
@@ -179,7 +179,11 @@ CK3 1.19.0.6 的 `common/decisions/_decisions.info` 明确规定一个决议最�
 - 一次性 fixture 已加入可叠加的直辖上限校准修正，冻结并断言 `0`、`-1`、暂停零副作用、恢复、继续和旧存档无 flag 行为。
 - 实机 runner 的所有选项点击均来自当前截图 OCR 坐标；滚动只以实际可见选项为锚，不假定桌面、截图或面板尺寸。
 - 9 语发布文案已补齐并完成键集、BOM、保护 token 与非英文占位检查。MiniMax-M3 只生成候选，最终文本已人工复核并修正可能暗示拆分付款的译法。
-- L0 已通过：静态验证（165 链）、snapshot、26 项翻译调用器测试、7 项 release builder 测试及 15 文件可重复构建；manifest SHA-256 `47BC363EECE5C2C88B4F3C0AC002928353DE8FF43EF8B6B22A66011FCDBF0B5C`，ZIP SHA-256 `7F24E62FE706207F674319D81028D0B8382DA9807C84EB8EB67A0426AB9F817F`。
+- 用户追加的 UI 缺陷已经闭环：六个原生 choice value 均补齐 `<value>_tooltip`；只在 `is_shown` 保留真人门禁，内部 AI／character flag 与 loop seed 全部移入 `hidden_effect`；确认页只显示当前所选组合的一段自然语言，不再强制换行。
+- L0 已通过：静态验证（165 链）、snapshot、26 项翻译调用器测试、7 项 release builder 测试及 15 文件可重复构建；当前产品 ZIP SHA-256 `0C71BB51EB1F3EA659F451FA19C09ED39E5C70D3814CDF3DE149D741885F037B`。正式 manifest 随最终发布 commit 重新冻结。
+- `desktop-3fevhd2-1c74096080--auto-upgrade-buildings--R0031` 已证明六项 hover、无原始 key／AI／flag 泄露、自然确认文案和四期完整状态机 GREEN；之后被原版单按钮【已宣战】模态框暂停，按 RED attempt 永久保留于 `D:\workspace\ck3_auto_upgrade_runtime\phase4-live-r6-20260914`。
+- `desktop-3fevhd2-1c74096080--auto-upgrade-buildings--R0032` 全量 GREEN：六项 hover、选择/确认、`0/-1/恢复`、暂停零副作用、继续策略、旧存档默认、三种资金、禁止拆分付款、禁用/重启，以及主建筑、普通、公国、特殊、混合资源和负向路径抽样全部通过；共保全 46 条 AUBT 记录（29 条 `TEST PASS`，所有必需 marker 各出现一次），项目诊断为 0，产品/fixture/源码未被游戏改写，受保护存储保持不变。证据入口为 `D:\workspace\ck3_auto_upgrade_runtime\phase4-live-r7-20260914\report.json`。
+- R0032 的 Open Kaishek 层因该工具未登记 `auto-upgrade-buildings-1.19.0-source` fixture 而标为 `not-applicable / unknown-fixture`；同一报告中的 root parser 为 GREEN，真实 CK3 非调试实机为 GREEN。该工具覆盖缺口与产品结论分开记录。
 
 | 工作包 | 预计工时 |
 | --- | ---: |
