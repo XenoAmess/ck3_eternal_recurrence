@@ -1,0 +1,74 @@
+# Raiktor white-peace narrow projection
+
+Status: `static-ready / live=false` (2026-09-13, exact build 1.19.0.6).
+
+## Problem and boundary
+
+GEN-034 needs `continue / white_peace / surrender` terms on one paused frame.
+The generic loaded-effect termination preview is not a viable input: two real
+runs crashed in CK3 RVA `0x334C668`. That RED remains open and its production
+dispatch remains disabled.
+
+The replacement is
+`raiktor_white_peace_narrow_projection_provider.py`. It is a read-only Python
+composition over the existing safe `ck3_query_war_termination_options` and
+`ck3_query_war_termination_terms` results. It accepts only the primary attacker
+in `raiktor_claim_cb`, and requires the snapshot, both query receipts and the
+surrender aggregate session to agree on process, connection generation,
+episode, snapshot, revisions, date, WarID and CB identity. It adds no mailbox
+command, ABI, native reader or mutation.
+
+## Exact-build projection
+
+The terms source is
+`game/common/casus_belli_types/00_event_war.txt`, SHA-256
+`BD202AE41EBA3A0E1E7E4277D09ED1E8D8C7E66B378308BB417D974331F9C707`.
+The truce helper source is `game/common/scripted_effects/00_war_effects.txt`,
+SHA-256
+`A936E09F448EF715580A918165EAB89A9368AD2D3014E425C998CD9D4F0E8D7D`.
+Both are already frozen by the normalized Raiktor terms query together with
+CK3 executable SHA-256
+`2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86`.
+
+| Domain | White-peace value | Evidence rule |
+|---|---|---|
+| final response | native `recipient_response` | copied from the same-frame options query |
+| declared claims | retained; weak claims strengthened | exact `on_white_peace` target-title loop |
+| primary gold transfer | `0` | no primary transfer exists in the exact white-peace branch |
+| attacker prestige | `cb_prestige_factor * -5` | the branch runs the same `setup_claim_cb(victory=no)` before its literal multiplier |
+| prisoner releases | same current release pairs | both branches call `show_pow_release_message_effect` |
+| favor hook | same boolean | both branches use the identical attacker-to-claimant conditional |
+| truce duration | same evaluated day count | white peace and defeat both use `standard_truce_duration_days` in the same direction |
+| titles / hostages | no holder change; no hostage variant | exact branch plus `allow_hostages=no` |
+
+The shared-expression rule does not relabel the surrender result as white
+peace. Only the value of the common input or conditional is copied; the
+white-peace disposition remains separately identified.
+
+## Explicit uncertainty
+
+The provider does not turn absent observations into zero. It carries these
+effects as unobserved for the downstream versioned utility model:
+
+- attacker and defender trait-dependent stress;
+- defender accolade glory and attacker accolade white-peace prestige;
+- ally fame deltas;
+- glory-hound and antagonistic-clan opinion rows;
+- LAAMP settlement outside the CB effect.
+
+This is sufficient for a bounded comparison because the model has a versioned
+per-unobserved-effect penalty. It is not a full effect preview and does not by
+itself authorize white peace or surrender.
+
+## Verification and next live step
+
+Focused tests pass normal and optimized modes, `6/6` each. They cover a full
+projection into the existing same-frame comparator, session drift, unavailable
+recipient response, missing truce duration, wrong CB and missing inputs. The
+representative projection compares attacker prestige `-35.0` under white peace
+with `-70.0` under surrender while preserving the exact terms distinctions.
+
+GEN-034-C remains open until one bounded managed CK3 session supplies a real
+same-frame projection and the new strategy utility model evaluates it. That run
+must use the next CK3 round, must not call the disabled broad preview, and does
+not justify a long-running scenario matrix.

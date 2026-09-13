@@ -35,11 +35,12 @@
       "latest_evidence": [
         "R459",
         "R471",
-        "GEN-034-A campaign dominance receipt AB0DB5678F65631D63E5A54BA66B61A6F5956179C0A4D3970B78BEAC5E9E0569"
+        "GEN-034-A campaign dominance receipt AB0DB5678F65631D63E5A54BA66B61A6F5956179C0A4D3970B78BEAC5E9E0569",
+        "GEN-034-C Raiktor white-peace narrow projection provider static-ready (normal/optimized 6/6)"
       ],
       "planner_consumer": "three-way exit recommendation and one semantic exit action",
       "visible_outcome": "compare continue, white peace and surrender on one paused frame, submit once, then verify postwar state and cold restore",
-      "open_blocker": "same-frame white-peace comparison and integrated action remain to be closed; campaign dominance and the versioned strategy profile are complete"
+      "open_blocker": "one bounded production frame and versioned utility evaluation remain for the static-ready white-peace projection; integrated action remains to be closed"
     },
     {
       "id": "G2-M1",
@@ -167,7 +168,7 @@
         "id": "GEN-034-C",
         "name": "same-frame white-peace comparison",
         "status": "blocked_live",
-        "latest_evidence": "versioned strategy utility model 1.0.0 is static-ready; narrow same-frame white-peace terms and evaluator remain live-blocked"
+        "latest_evidence": "Raiktor-only same-frame white-peace narrow projection is static-ready (normal/optimized 6/6); one production frame and utility evaluation remain"
       },
       {
         "id": "GEN-034-D",
@@ -178,5 +179,5 @@
     ]
   },
   "religion_boundary": "deferred except the minimum native result needed by holy-war execution and marriage legality or acceptance",
-  "updated_at": "2026-09-13T22:35:00+08:00"
+  "updated_at": "2026-09-13T23:29:00+08:00"
 }

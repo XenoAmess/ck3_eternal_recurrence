@@ -1353,3 +1353,16 @@ default model identity. This is strategy configuration rather than native-AI
 equivalence or live evidence. GEN-034 remains `2/4`: C still requires one
 same-frame narrow white-peace observation plus evaluation, and D still requires
 one recommendation, one action and the bounded postwar/cold-restore checks.
+
+## GEN-034-C narrow white-peace input update (2026-09-13)
+
+- The white-peace terms producer is now `static-ready`: it strictly binds the
+  existing safe options query, narrow Raiktor terms query and surrender session
+  aggregate, then projects only values proven by the exact-build white-peace
+  branch or identical shared expressions. The broad loaded-effect preview RED
+  is unchanged and its production dispatch remains disabled.
+- Focused normal/optimized tests pass `6/6`; the output already feeds the
+  existing same-frame terms comparator. The remaining C blocker is one bounded
+  production frame plus versioned utility evaluation. Therefore GEN-034 stays
+  `2/4`, with D still requiring one recommendation, one semantic action and the
+  postwar/checkpoint/cold-restore verification.
