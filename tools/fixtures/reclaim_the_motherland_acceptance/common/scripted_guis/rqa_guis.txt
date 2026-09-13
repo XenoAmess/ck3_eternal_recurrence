@@ -78,7 +78,6 @@ rqa_verify_succession_gui = {
 	is_shown = {
 		is_ai = no
 		has_character_flag = rqa_waiting_for_succession
-		var:rqa_later_title = { holder = root }
 	}
 	effect = { rqa_verify_succession_effect = yes }
 }
