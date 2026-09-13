@@ -174,28 +174,13 @@ async def _run_mcp_sequence(
         revision = before.get("revision")
         if isinstance(revision, bool) or not isinstance(revision, int):
             raise AgentError("paused recommendation frame lacks a revision")
-        arguments = {"war_id": war_id, "expected_revision": revision}
-        options_result = await client.call_tool(
-            "ck3_query_war_termination_options", arguments
-        )
-        records.append(options_result)
-        options = base._structured(
-            options_result,
-            tool_name="ck3_query_war_termination_options",
-        )
-        terms_result = await client.call_tool(
-            "ck3_query_war_termination_terms", arguments
-        )
-        records.append(terms_result)
-        terms = base._structured(
-            terms_result,
-            tool_name="ck3_query_war_termination_terms",
-        )
-        power_before_result = await client.call_tool("ck3_take_snapshot", {})
-        records.append(power_before_result)
-        power_before = base._structured(
-            power_before_result, tool_name="ck3_take_snapshot:power-before"
-        )
+        # The power reader requires the application-main mailbox.  Query it
+        # immediately while the freshly restored paused UI is still pumping;
+        # the two exit readers below are worker-thread reads and do not need
+        # that scheduling window.  R657 proved the inverse order can strand
+        # the first power ticket after both exit reads have completed.
+        power_before_result = before_result
+        power_before = before
         power_arguments = {
             "target_character_ids": [opponent_character_id],
             "expected_revision": revision,
@@ -221,6 +206,28 @@ async def _run_mcp_sequence(
             second_result,
             tool_name="ck3_query_war_entry_assessments:second",
         )
+        power_after_result = await client.call_tool("ck3_take_snapshot", {})
+        records.append(power_after_result)
+        power_after = base._structured(
+            power_after_result, tool_name="ck3_take_snapshot:power-after"
+        )
+        arguments = {"war_id": war_id, "expected_revision": revision}
+        options_result = await client.call_tool(
+            "ck3_query_war_termination_options", arguments
+        )
+        records.append(options_result)
+        options = base._structured(
+            options_result,
+            tool_name="ck3_query_war_termination_options",
+        )
+        terms_result = await client.call_tool(
+            "ck3_query_war_termination_terms", arguments
+        )
+        records.append(terms_result)
+        terms = base._structured(
+            terms_result,
+            tool_name="ck3_query_war_termination_terms",
+        )
         after_result = await client.call_tool("ck3_take_snapshot", {})
         records.append(after_result)
         after = base._structured(
@@ -232,7 +239,7 @@ async def _run_mcp_sequence(
         first,
         between,
         second,
-        after,
+        power_after,
         war_id=war_id,
         opponent_character_id=opponent_character_id,
         source_artifact_sha256=canonical_policy_input_sha256(
@@ -241,7 +248,7 @@ async def _run_mcp_sequence(
                 "first": first,
                 "between": between,
                 "second": second,
-                "after": after,
+                "after": power_after,
             }
         ),
     )
@@ -257,7 +264,7 @@ async def _run_mcp_sequence(
     option_step = query_war_termination_options_step(war_id)
     terms_step = query_war_termination_terms_step(war_id)
     power_step = query_war_entry_assessments_step([opponent_character_id])
-    expected_commands = [option_step, terms_step, power_step, power_step]
+    expected_commands = [power_step, power_step, option_step, terms_step]
     player = before.get("played_character")
     action = recommendation.get("action_literal")
     checks = {
@@ -288,6 +295,9 @@ async def _run_mcp_sequence(
             before, power_before
         ),
         "between_same_frame": base._same_paused_binding(before, between),
+        "power_after_same_frame": base._same_paused_binding(
+            before, power_after
+        ),
         "after_same_frame": base._same_paused_binding(before, after),
         "dominance_ready": dominance.get("certificate_available") is True,
         "production_recommendation_ready": recommendation.get(
@@ -327,6 +337,7 @@ async def _run_mcp_sequence(
         "first_power_query": base._mcp_record(first_result),
         "between_snapshot": base._mcp_record(between_result),
         "second_power_query": base._mcp_record(second_result),
+        "power_after_snapshot": base._mcp_record(power_after_result),
         "after_snapshot": base._mcp_record(after_result),
         "dominance": dominance,
         "recommendation": recommendation,

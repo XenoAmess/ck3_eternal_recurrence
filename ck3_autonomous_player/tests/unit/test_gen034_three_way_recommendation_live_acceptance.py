@@ -61,10 +61,10 @@ class Gen034ThreeWayRecommendationLiveAcceptanceTests(unittest.TestCase):
     def test_history_accepts_only_four_declared_reads(self) -> None:
         prefix = [{"command": "restore-checkpoint", "ok": True}]
         commands = [
+            HARNESS.query_war_entry_assessments_step([DEFENDER_ID]),
+            HARNESS.query_war_entry_assessments_step([DEFENDER_ID]),
             HARNESS.query_war_termination_options_step(WAR_ID),
             HARNESS.query_war_termination_terms_step(WAR_ID),
-            HARNESS.query_war_entry_assessments_step([DEFENDER_ID]),
-            HARNESS.query_war_entry_assessments_step([DEFENDER_ID]),
         ]
         after = [
             *prefix,
@@ -149,6 +149,10 @@ class Gen034ThreeWayRecommendationLiveAcceptanceTests(unittest.TestCase):
         self.assertNotIn('"step": f"offer-white-peace-', source)
         self.assertNotIn('"step": f"surrender-war-', source)
         self.assertIn('"mutation_commands": []', source)
+        self.assertLess(
+            source.index('"ck3_query_war_entry_assessments", power_arguments'),
+            source.index('"ck3_query_war_termination_options", arguments'),
+        )
 
 
 if __name__ == "__main__":

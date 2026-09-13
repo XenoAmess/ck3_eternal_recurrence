@@ -104,6 +104,14 @@ starting CK3. This avoids spending another live run merely to refresh R471's
 stale-frame value; the later action runner can consume the frozen same-frame
 recommendation artifact.
 
+R657 exposed one concrete scheduling constraint: after both worker-thread exit
+reads completed, the first application-main strategic-power ticket did not
+execute on the cold paused UI. The source checkpoint stayed unchanged, no
+mutation occurred, and cleanup was GREEN. The runner now takes the two
+application-main power samples immediately after the first paused snapshot,
+then performs the options and terms reads that do not depend on that scheduling
+window. The four-read budget and same-frame checks are unchanged.
+
 ## Exact action admission
 
 `raiktor_three_way_exit_action_gate.py` is the final side-effect-free handoff
