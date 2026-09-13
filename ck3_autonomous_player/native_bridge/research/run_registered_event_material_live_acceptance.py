@@ -219,7 +219,12 @@ def _exact_build_proof(
         ),
         "action_steps": isinstance(steps, list)
         and QUERY_CURRENT_EVENT_WINDOW_CONTEXT_V1_STEP in steps
-        and "select-event-option-N" in steps
+        and any(
+            isinstance(item, str)
+            and item.startswith("select-event-option-")
+            and item.removeprefix("select-event-option-").isdigit()
+            for item in steps
+        )
         and "save-checkpoint" in steps,
     }
     return {"checks": checks, "ok": all(checks.values())}

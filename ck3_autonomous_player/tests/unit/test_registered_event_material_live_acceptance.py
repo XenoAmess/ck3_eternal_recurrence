@@ -115,3 +115,36 @@ def test_nested_mcp_error_preserves_the_concrete_failure() -> None:
         "ExceptionGroup: task group (1 sub-exception) "
         "[RuntimeError: material observation unavailable]"
     )
+
+
+def test_exact_build_gate_accepts_concrete_event_option_steps() -> None:
+    capabilities = [
+        HARNESS.QUERY_CURRENT_EVENT_WINDOW_CONTEXT_V1_CAPABILITY,
+        HARNESS.SELECT_EVENT_CAPABILITY,
+        HARNESS.SAVE_CHECKPOINT_CAPABILITY,
+    ]
+    result = HARNESS._exact_build_proof(
+        {
+            "diagnostics": {
+                "hello": {
+                    "expected_ck3_version": HARNESS.base.EXPECTED_GAME_VERSION,
+                    "game_adapter_id": HARNESS.base.EXPECTED_ADAPTER_ID,
+                    "game_adapter_status": "ready",
+                    "ck3_build_match": True,
+                    "expected_ck3_sha256": HARNESS.base.EXPECTED_EXECUTABLE_SHA256,
+                    "capabilities": capabilities,
+                }
+            },
+            "bridge_capabilities": capabilities,
+            "action_steps": [
+                HARNESS.QUERY_CURRENT_EVENT_WINDOW_CONTEXT_V1_STEP,
+                "select-event-option-1",
+                "select-event-option-2",
+                "save-checkpoint",
+            ],
+        },
+        managed_executable_sha256=HARNESS.base.EXPECTED_EXECUTABLE_SHA256,
+        war_id=0,
+    )
+
+    assert result["ok"] is True
