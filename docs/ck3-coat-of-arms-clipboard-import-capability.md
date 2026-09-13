@@ -735,6 +735,9 @@ CoatOfArms
 - parser 拒绝未声明、循环或重复的静态 `@变量`，以及 wrapper 外的顶层标量/游离值；
 - 结构化表单持续复核命名颜色或 `rgb`/`hsv` 三分量字面量、可打印 ASCII 资源名、有限数值与 128 KiB 原生输入上限；
   因而导入后再手工填入伪 CK3 tagged block 或非法数值也会阻止复制和原生 MCP 请求；
+- `src/domain/capabilityMatrix.ts` 把本报告第 5–7 节的保守子集投影成前端可见表格：每行固定语法、最小例子、
+  `mcp-applied`/`mcp-detected`/`mcp-not-detected` 证据和 accept/warn/sanitize/reject 策略；测试要求可接受例子无 error、
+  reject 例子必有 error，且 `parent`/静态变量确实从确定性输出中移除或展开；
 - 语法合法、资源存在、引擎检测、designer 应用是四个不同状态；
 - 多顶层、重复标量、body-only、模板 DSL 默认拒绝；
 - 简单静态 `@变量` 在导入时展开，`parent` 保留为诊断而不混进确定性导出；
@@ -757,7 +760,7 @@ CoatOfArms
 浏览器无法直接启动本机 stdio MCP，因此已引入 Maven + Java + Quarkus 伴随服务。后端只负责 REST/MCP 会话转接与
 本机资源索引，不承担“执行 CK3 脚本”的虚构能力；当前也没有 DDS 转换或素材缓存。
 
-当前前端有 Vitest `32/32` parser/serializer/validator/API/DDS/renderer 回归和 Vite production build 验收。后续扩展仍以本文的原生 MCP 证据为协议来源，
+当前前端有 Vitest `36/36` parser/serializer/validator/capability-matrix/API/DDS/renderer 回归和 Vite production build 验收。后续扩展仍以本文的原生 MCP 证据为协议来源，
 不会把旧 UI 观察或第三方 parser 行为固化成 CK3 引擎事实。
 
 ## 10. 辅助参考边界

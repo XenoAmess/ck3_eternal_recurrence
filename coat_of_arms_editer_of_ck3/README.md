@@ -11,6 +11,7 @@ coat-of-arms render description，不把该入口描述成任意 CK3 脚本执�
 - 对唯一已由原生 MCP 检测的 `textured_emblem = { texture = "_default.dds" }` 提供明确标限的解析、编辑、原始纹理预览和导出；不生成未验证字段，也暂不把该层合成进最终家徽；
 - 编辑 position、scale、rotation、depth，并生成稳定 CRLF CK3 文本；
 - 导入后继续对表单模型执行确定性校验：颜色语法、可打印 ASCII 资源名、有限数值和原生 128 KiB 上限不合格时，禁止复制或发送 MCP；
+- 内置 exact 1.19.0.6 的机器可读语法能力矩阵，逐项展示例子、原生 `detected/applied/not_detected` 结果、编辑器策略与证据边界；
 - 展开简单静态 `@变量`，诊断多顶层、重复标量、`parent` 与未知字段；
 - 通过本机 Quarkus 伴随服务调用 typed MCP：读取基础游戏资源目录、单个 DDS、渲染支撑数据、当前 `dlc_load.json`、目录/ZIP 模组 manifest 与 DDS 候选，以及运行中 CK3 的 effective feature / script `has_dlc` truth；获取 session revision，执行原生检测/应用和 Copy/export；
 - 在浏览器解码原版 DXT1 pattern、DXT5 colored emblem、`coa_mask_texture.dds` 以及 `_default.dds` 使用的无压缩 BGRA8 顶层 mip；

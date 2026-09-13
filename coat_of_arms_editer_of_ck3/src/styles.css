@@ -114,3 +114,20 @@ h1 { margin: 0; font-family: Georgia, "Noto Serif SC", serif; font-weight: 500; 
   .workspace { grid-template-columns: .9fr 1.1fr; }
   .editor-pane { grid-column: 1 / -1; min-height: auto; }
 }
+.syntax-capabilities {
+  margin-top: 18px;
+}
+
+.capability-note {
+  margin: 0 0 12px;
+  color: var(--el-text-color-secondary);
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.syntax-capabilities code {
+  white-space: normal;
+  overflow-wrap: anywhere;
+  color: #d9c39a;
+  font-size: 12px;
+}

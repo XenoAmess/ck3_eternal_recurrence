@@ -7,6 +7,7 @@ import {
   type CoatOfArmsResourceItem,
 } from './api/ck3Companion'
 import { decodeDdsBase64, decodedDdsToDataUrl, type DecodedDds } from './domain/dds'
+import { syntaxCapabilityRows } from './domain/capabilityMatrix'
 import { parseCoatOfArms } from './domain/parser'
 import {
   renderCoatOfArms,
@@ -556,6 +557,34 @@ importSource()
           </div>
         </div>
         <el-empty v-else description="没有解析诊断" :image-size="46" />
+
+        <el-collapse class="syntax-capabilities">
+          <el-collapse-item title="CK3 1.19.0.6 剪贴板语法能力矩阵" name="syntax-capabilities">
+            <p class="capability-note">
+              这里只列 MCP 实机矩阵已有证据的语法；“detected”仅表示 reader 产生预览，不等于脚本执行或资源存在。
+            </p>
+            <el-table :data="syntaxCapabilityRows" size="small" max-height="420">
+              <el-table-column label="分类" width="112">
+                <template #default="{ row }">
+                  <el-tag
+                    size="small"
+                    effect="plain"
+                    :type="row.classification === 'supported' ? 'success' : row.classification === 'ambiguous' ? 'warning' : 'danger'"
+                  >
+                    {{ row.classification === 'supported' ? '可导入' : row.classification === 'ambiguous' ? '有歧义' : '不可执行' }}
+                  </el-tag>
+                </template>
+              </el-table-column>
+              <el-table-column prop="syntax" label="语法" min-width="190" show-overflow-tooltip />
+              <el-table-column label="例子" min-width="250">
+                <template #default="{ row }"><code>{{ row.example }}</code></template>
+              </el-table-column>
+              <el-table-column prop="engineOutcome" label="原生结果" min-width="170" show-overflow-tooltip />
+              <el-table-column prop="editorPolicy" label="编辑器策略" width="105" />
+              <el-table-column prop="note" label="边界" min-width="250" show-overflow-tooltip />
+            </el-table>
+          </el-collapse-item>
+        </el-collapse>
       </section>
 
       <section class="preview-pane panel">
