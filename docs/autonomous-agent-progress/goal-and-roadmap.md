@@ -426,3 +426,14 @@ GEN-034 子包进度另按 `2/4` 汇报：campaign dominance certificate 与 ver
 - 只允许两项窄例外：完整战争 OODA 所必需的圣战/大圣战输入与动作；婚姻确实依赖信仰时的最小原生判定；
 - 两类例外优先消费原生最终 legality/acceptance/result/reason，faith/religion 只保留 opaque identity 或直接必要输入；
 - 暂缓不等于完成。解除暂缓后，通用宗教域仍须补齐五层完成门与整局矩阵。
+
+
+### 2026-09-13 G2-M1 partition increment
+
+Per-held-title current succession is now `static-ready / live=false`. The
+campaign root publishes every personally held county-or-higher title with its
+engine-calculated first heir, and the turn bundle exposes split-risk state. The
+remaining M1 schema component is council: exact task/progress research is
+frozen, while incumbent identity, stable task key, typed target and
+position-fallback semantics remain open. M1 then needs only its existing shared
+bounded two-scene live read; no partition-specific long run is planned.

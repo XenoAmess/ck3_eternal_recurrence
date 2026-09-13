@@ -58,6 +58,7 @@ bool ReadinessAll(const game::CampaignRootReadinessV1 &value,
          value.player_targeting_factions_ready == expected &&
          value.primary_title_ready == expected &&
          value.primary_title_succession_ready == expected &&
+         value.held_title_partition_ready == expected &&
          value.capital_ready == expected && value.lieges_ready == expected &&
          value.direct_landed_vassals_ready == expected &&
          value.adjacent_external_province_holders_ready == expected &&
@@ -87,7 +88,7 @@ std::string_view TierKey(std::int32_t raw) noexcept {
 }
 
 bool ValidUnavailableReason(std::string_view reason) noexcept {
-  constexpr std::array<std::string_view, 21> reasons = {
+  constexpr std::array<std::string_view, 22> reasons = {
       "unsupported_build",
       "requires_application_main",
       "requires_paused",
@@ -100,6 +101,7 @@ bool ValidUnavailableReason(std::string_view reason) noexcept {
       "player_targeting_factions_unavailable",
       "primary_title_unavailable",
       "primary_title_succession_unavailable",
+      "held_title_partition_unavailable",
       "capital_unavailable",
       "lieges_unavailable",
       "direct_landed_vassals_unavailable",
@@ -150,6 +152,45 @@ bool ValidSuccessionIds(const std::vector<std::int32_t> &values,
     }
   }
   return true;
+}
+
+bool ValidHeldTitlePartition(
+    const std::vector<game::CampaignRootHeldTitleSuccessionV1> &values,
+    const std::optional<game::CampaignRootTitleV1> &primary_title,
+    const std::vector<std::int32_t> &primary_title_successors,
+    std::int32_t player_character_id) noexcept {
+  if (!std::is_sorted(values.begin(), values.end(),
+                      [](const auto &left, const auto &right) {
+                        return left.title.title_id < right.title.title_id;
+                      })) {
+    return false;
+  }
+  std::int32_t previous_title_id = -1;
+  std::size_t primary_count = 0;
+  for (const auto &value : values) {
+    if (value.title.title_id <= 0 ||
+        value.title.title_id == previous_title_id ||
+        value.title.tier_raw < 2 || value.title.tier_raw > 6 ||
+        TierKey(value.title.tier_raw) != value.title.tier_key ||
+        (value.first_heir_character_id.has_value() &&
+         (*value.first_heir_character_id <= 0 ||
+          *value.first_heir_character_id == player_character_id)) ||
+        (value.primary &&
+         (!primary_title.has_value() || value.title != *primary_title ||
+          value.first_heir_character_id !=
+              (primary_title_successors.empty()
+                   ? std::optional<std::int32_t>{}
+                   : std::optional<std::int32_t>{
+                         primary_title_successors.front()})))) {
+      return false;
+    }
+    primary_count += value.primary ? 1U : 0U;
+    previous_title_id = value.title.title_id;
+  }
+  if (!primary_title.has_value() || primary_title->tier_raw == 1) {
+    return values.empty();
+  }
+  return primary_count == 1;
 }
 
 bool ValidRelatedCharacters(
@@ -230,6 +271,10 @@ bool ValidAvailable(const game::CampaignRootContextV1 &context) noexcept {
       !ValidSuccessionIds(
           context.primary_title_succession_character_ids,
           *context.player_character_id) ||
+      !ValidHeldTitlePartition(context.held_title_partition,
+                               context.primary_title,
+                               context.primary_title_succession_character_ids,
+                               *context.player_character_id) ||
       !ValidCharacterIds(context.direct_landed_vassal_character_ids,
                          *context.player_character_id) ||
       !ValidCharacterIds(
@@ -305,6 +350,7 @@ bool ValidUnavailable(const game::CampaignRootContextV1 &context) noexcept {
          !context.player_targeting_faction_count.has_value() &&
          !context.primary_title.has_value() &&
          context.primary_title_succession_character_ids.empty() &&
+         context.held_title_partition.empty() &&
          !context.capital_province_id.has_value() &&
          !context.immediate_liege_character_id.has_value() &&
          !context.top_liege_character_id.has_value() &&
@@ -421,6 +467,8 @@ void AppendReadiness(std::string &output,
   output += value.primary_title_ready ? "true" : "false";
   output += ",\"primary_title_succession_ready\":";
   output += value.primary_title_succession_ready ? "true" : "false";
+  output += ",\"held_title_partition_ready\":";
+  output += value.held_title_partition_ready ? "true" : "false";
   output += ",\"capital_ready\":";
   output += value.capital_ready ? "true" : "false";
   output += ",\"lieges_ready\":";
@@ -455,6 +503,7 @@ void AppendProvenance(std::string &output) {
   output += "\"domain_limit_rva\":\"0x260BA20\",";
   output += "\"has_targeting_faction_trigger_rva\":\"0x283FAE0\",";
   output += "\"primary_title_rva\":\"0x25F3350\",";
+  output += "\"held_title_ids_offset\":\"0x1E0\",";
   output += "\"capital_province_rva\":\"0x2606760\",";
   output += "\"immediate_liege_rva\":\"0x2613480\",";
   output += "\"top_liege_rva\":\"0x2613600\",";
@@ -548,6 +597,30 @@ std::string SerializeCampaignRootContextV1(
           output, context.primary_title_succession_character_ids)) {
     return {};
   }
+  output += ",\"held_title_partition\":[";
+  for (std::size_t index = 0; index < context.held_title_partition.size();
+       ++index) {
+    if (index != 0) {
+      output.push_back(',');
+    }
+    const auto &row = context.held_title_partition[index];
+    output += "{\"title\":{\"title_id\":";
+    if (!AppendNumber(output, row.title.title_id)) {
+      return {};
+    }
+    output += ",\"tier_raw\":";
+    if (!AppendNumber(output, row.title.tier_raw)) {
+      return {};
+    }
+    output += ",\"tier_key\":";
+    AppendJsonString(output, row.title.tier_key);
+    output += "},\"first_heir_character_id\":";
+    AppendOptionalInt32(output, row.first_heir_character_id);
+    output += ",\"primary\":";
+    output += row.primary ? "true" : "false";
+    output.push_back('}');
+  }
+  output.push_back(']');
   output += ",\"capital_province_id\":";
   AppendOptionalInt32(output, context.capital_province_id);
   output += ",\"immediate_liege_character_id\":";

@@ -1304,3 +1304,18 @@ strategic-power primitive；余下入口只有 policy-level campaign dominance�
 - Native fixtures and focused Python normal/optimized `42/42` are GREEN. Status is `static-ready / live=false`; the next shared bounded paused
   G2 read will verify it with the other pending campaign-root fields. M1 now lacks council and partition plus two-scene live acceptance, so
   global G2 remains `0/8`.
+
+
+## 2026-09-13: G2-M1 held-title partition observation
+
+- Exact-build evidence proves `CCharacter+0x1B8 -> land_state+0x1E0` is the
+  full-generation held-title ID vector and that the stock My Realm builder
+  groups titles by each `CLandedTitle+0x278` first successor.
+- Campaign-root now publishes an all-or-nothing county-or-higher title/heir
+  vector with title, holder, tier, successor and primary-title consistency
+  gates. Turn bundle derives the current split-risk state without claiming
+  succession law, claims or post-death outcome.
+- Native reader/source-contract fixtures and focused Python normal/optimized
+  `42/42` are GREEN. Status is `static-ready / live=false`; this field joins the
+  existing bounded shared campaign-root live read. M1 now lacks council plus
+  that shared live acceptance, so global G2 remains `0/8`.

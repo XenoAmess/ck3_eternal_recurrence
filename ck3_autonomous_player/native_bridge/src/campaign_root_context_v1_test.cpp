@@ -55,6 +55,8 @@ struct Fixture {
   static constexpr std::int32_t kExternalProvinceHolderTitleId = 0x0B000003;
   static constexpr std::int32_t kFirstSuccessorId = 0x0C000008;
   static constexpr std::int32_t kSecondSuccessorId = 0x0D000009;
+  static constexpr std::int32_t kSecondaryTitleId = 0x0E000004;
+  static constexpr std::int32_t kBaronyTitleId = 0x0F000005;
 
   alignas(void *) Blob<0xA8> game_state{};
   alignas(void *) Blob<0x20> jomini_state{};
@@ -75,17 +77,24 @@ struct Fixture {
   alignas(void *) Blob<0x1D0> first_successor{};
   alignas(void *) Blob<0x1D0> second_successor{};
   alignas(void *) Blob<0x30> character_fallback{};
-  alignas(void *) Blob<0x130> player_land_state{};
+  alignas(void *) Blob<0x200> player_land_state{};
 
   alignas(void *) Blob<0x30> title_storage{};
-  alignas(void *) Blob<0x40> title_slots{};
+  alignas(void *) Blob<0x60> title_slots{};
   alignas(void *) Blob<0x290> primary_title{};
+  alignas(void *) Blob<0x290> secondary_title{};
+  alignas(void *) Blob<0x290> barony_title{};
   alignas(void *) Blob<0x168> direct_vassal_title{};
   alignas(void *) Blob<0x168> external_province_holder_title{};
   alignas(void *) Blob<0x64> title_template{};
+  alignas(void *) Blob<0x64> secondary_title_template{};
+  alignas(void *) Blob<0x64> barony_title_template{};
   alignas(void *) Blob<0x30> title_fallback{};
   std::array<std::int32_t, 2> primary_title_successors{
       kFirstSuccessorId, kSecondSuccessorId};
+  std::array<std::int32_t, 1> secondary_title_successors{kSecondSuccessorId};
+  std::array<std::int32_t, 3> held_title_ids{
+      kSecondaryTitleId, kPrimaryTitleId, kBaronyTitleId};
 
   alignas(void *) Blob<0x18> province{};
   alignas(void *) Blob<0x18> external_province{};
@@ -220,34 +229,68 @@ struct Fixture {
     Put(player_character, 0x1B8, player_land_state_pointer);
     const std::int32_t targeting_faction_count = 2;
     Put(player_land_state, 0x12C, targeting_faction_count);
+    void *held_title_data = held_title_ids.data();
+    Put(player_land_state, 0x1E0, held_title_data);
+    const std::int32_t held_title_count =
+        static_cast<std::int32_t>(held_title_ids.size());
+    Put(player_land_state, 0x1E8, held_title_count);
+    Put(player_land_state, 0x1EC, held_title_count);
     void *death_marker = Address(dead_direct_vassal);
     Put(dead_direct_vassal, 0x1C8, death_marker);
 
     slots = Address(title_slots);
     Put(title_storage, 0x20, slots);
-    const std::int32_t title_capacity = 4;
+    const std::int32_t title_capacity = 6;
     Put(title_storage, 0x2C, title_capacity);
     Put(title_slots, 1 * 0x10 + 0x08, resolved_primary_title);
     void *direct_vassal_title_pointer = Address(direct_vassal_title);
     Put(title_slots, 2 * 0x10 + 0x08, direct_vassal_title_pointer);
     void *external_title_pointer = Address(external_province_holder_title);
     Put(title_slots, 3 * 0x10 + 0x08, external_title_pointer);
+    void *secondary_title_pointer = Address(secondary_title);
+    void *barony_title_pointer = Address(barony_title);
+    Put(title_slots, 4 * 0x10 + 0x08, secondary_title_pointer);
+    Put(title_slots, 5 * 0x10 + 0x08, barony_title_pointer);
     Put(primary_title, 0x10, kPrimaryTitleId);
     Put(direct_vassal_title, 0x10, kDirectVassalTitleId);
     Put(external_province_holder_title, 0x10,
         kExternalProvinceHolderTitleId);
+    Put(secondary_title, 0x10, kSecondaryTitleId);
+    Put(barony_title, 0x10, kBaronyTitleId);
     void *title_template_pointer = Address(title_template);
     Put(primary_title, 0x160, title_template_pointer);
+    const std::int32_t player_holder_id = kPlayerCharacterId;
+    Put(primary_title, 0x258, player_holder_id);
     void *successor_data = primary_title_successors.data();
     Put(primary_title, 0x278, successor_data);
     const std::int32_t successor_count =
         static_cast<std::int32_t>(primary_title_successors.size());
     Put(primary_title, 0x280, successor_count);
     Put(primary_title, 0x284, successor_count);
+    void *secondary_template_pointer = Address(secondary_title_template);
+    Put(secondary_title, 0x160, secondary_template_pointer);
+    Put(secondary_title, 0x258, player_holder_id);
+    void *secondary_successor_data = secondary_title_successors.data();
+    Put(secondary_title, 0x278, secondary_successor_data);
+    const std::int32_t secondary_successor_count = 1;
+    Put(secondary_title, 0x280, secondary_successor_count);
+    Put(secondary_title, 0x284, secondary_successor_count);
+    void *barony_template_pointer = Address(barony_title_template);
+    Put(barony_title, 0x160, barony_template_pointer);
+    Put(barony_title, 0x258, player_holder_id);
+    void *no_successors = nullptr;
+    const std::int32_t no_successor_count = 0;
+    Put(barony_title, 0x278, no_successors);
+    Put(barony_title, 0x280, no_successor_count);
+    Put(barony_title, 0x284, no_successor_count);
     Put(direct_vassal_title, 0x160, title_template_pointer);
     Put(external_province_holder_title, 0x160, title_template_pointer);
     const std::int32_t hegemony_tier = 6;
     Put(title_template, 0x5C, hegemony_tier);
+    const std::int32_t county_tier = 2;
+    Put(secondary_title_template, 0x5C, county_tier);
+    const std::int32_t barony_tier = 1;
+    Put(barony_title_template, 0x5C, barony_tier);
 
     const std::int32_t province_id = 5;
     const std::int32_t external_province_id = 6;
@@ -575,6 +618,7 @@ bool AllReadiness(const xar::game::CampaignRootReadinessV1 &value,
          value.player_targeting_factions_ready == expected &&
          value.primary_title_ready == expected &&
          value.primary_title_succession_ready == expected &&
+         value.held_title_partition_ready == expected &&
          value.capital_ready == expected &&
          value.lieges_ready == expected &&
          value.direct_landed_vassals_ready == expected &&
@@ -597,6 +641,7 @@ bool ClearedUnavailable(const xar::game::CampaignRootContextV1 &value,
          !value.player_domain_size && !value.player_domain_limit &&
          !value.player_targeting_faction_count &&
          value.primary_title_succession_character_ids.empty() &&
+         value.held_title_partition.empty() &&
           !value.capital_province_id && !value.immediate_liege_character_id &&
          !value.top_liege_character_id && !value.independent &&
          value.direct_landed_vassal_character_ids.empty() &&
@@ -630,6 +675,14 @@ bool TestAvailableAndSerializer() {
            std::nullopt,
            Fixture::kExternalProvinceHolderId,
            true}};
+  const std::vector<xar::game::CampaignRootHeldTitleSuccessionV1>
+      expected_partition{
+          {{Fixture::kPrimaryTitleId, 6, "hegemony"},
+           Fixture::kFirstSuccessorId,
+           true},
+          {{Fixture::kSecondaryTitleId, 2, "county"},
+           Fixture::kSecondSuccessorId,
+           false}};
   if (xar::ck3_11906::ReadCampaignRootContextV1(
           environment, access, request, result) !=
           xar::game::ReadCampaignRootContextResultV1::available ||
@@ -652,6 +705,7 @@ bool TestAvailableAndSerializer() {
       result.primary_title_succession_character_ids !=
           std::vector<std::int32_t>{Fixture::kFirstSuccessorId,
                                     Fixture::kSecondSuccessorId} ||
+      result.held_title_partition != expected_partition ||
       result.capital_province_id != 5 ||
       result.immediate_liege_character_id != Fixture::kImmediateLiegeId ||
       result.top_liege_character_id != Fixture::kTopLiegeId ||
@@ -693,6 +747,12 @@ bool TestAvailableAndSerializer() {
       "\"title_id\":83886081,\"tier_raw\":6,"
       "\"tier_key\":\"hegemony\"},"
       "\"primary_title_succession_character_ids\":[201326600,218103817],"
+      "\"held_title_partition\":[{\"title\":{\"title_id\":83886081,"
+      "\"tier_raw\":6,\"tier_key\":\"hegemony\"},"
+      "\"first_heir_character_id\":201326600,\"primary\":true},{"
+      "\"title\":{\"title_id\":234881028,\"tier_raw\":2,"
+      "\"tier_key\":\"county\"},\"first_heir_character_id\":"
+      "218103817,\"primary\":false}],"
       "\"capital_province_id\":5,"
       "\"immediate_liege_character_id\":50331650,"
       "\"top_liege_character_id\":67108867,\"independent\":false,"
@@ -724,6 +784,7 @@ bool TestAvailableAndSerializer() {
       "\"player_targeting_factions_ready\":true,"
       "\"primary_title_ready\":true,"
       "\"primary_title_succession_ready\":true,"
+      "\"held_title_partition_ready\":true,"
       "\"capital_ready\":true,"
       "\"lieges_ready\":true,\"direct_landed_vassals_ready\":true,"
       "\"adjacent_external_province_holders_ready\":true,"
@@ -741,6 +802,7 @@ bool TestAvailableAndSerializer() {
       "\"domain_limit_rva\":\"0x260BA20\","
       "\"has_targeting_faction_trigger_rva\":\"0x283FAE0\","
       "\"primary_title_rva\":\"0x25F3350\","
+      "\"held_title_ids_offset\":\"0x1E0\","
       "\"capital_province_rva\":\"0x2606760\","
       "\"immediate_liege_rva\":\"0x2613480\","
       "\"top_liege_rva\":\"0x2613600\","
@@ -757,9 +819,9 @@ bool TestAvailableAndSerializer() {
     return false;
   }
 
-  constexpr std::array<std::string_view, 6> tier_keys{
-      "barony", "county", "duchy", "kingdom", "empire", "hegemony"};
-  for (std::int32_t tier = 1; tier <= 6; ++tier) {
+  constexpr std::array<std::string_view, 5> tier_keys{
+      "county", "duchy", "kingdom", "empire", "hegemony"};
+  for (std::int32_t tier = 2; tier <= 6; ++tier) {
     Put(fixture.title_template, 0x5C, tier);
     fixture.capture_calls = 0;
     result = {};
@@ -768,7 +830,7 @@ bool TestAvailableAndSerializer() {
             xar::game::ReadCampaignRootContextResultV1::available ||
         !result.primary_title || result.primary_title->tier_raw != tier ||
         result.primary_title->tier_key !=
-            tier_keys[static_cast<std::size_t>(tier - 1)]) {
+            tier_keys[static_cast<std::size_t>(tier - 2)]) {
       return false;
     }
   }
@@ -778,6 +840,8 @@ bool TestAvailableAndSerializer() {
 bool TestLegitimateAbsenceAndGovernmentPointerSlot() {
   Fixture fixture;
   fixture.resolved_primary_title = Address(fixture.title_fallback);
+  const std::int32_t no_held_titles = 0;
+  Put(fixture.player_land_state, 0x1EC, no_held_titles);
   fixture.resolved_capital = nullptr;
   fixture.resolved_immediate_liege = Address(fixture.character_fallback);
   fixture.resolved_top_liege = Address(fixture.player_character);
@@ -791,6 +855,7 @@ bool TestLegitimateAbsenceAndGovernmentPointerSlot() {
              xar::game::ReadCampaignRootContextResultV1::available &&
          !result.primary_title && !result.capital_province_id &&
          result.primary_title_succession_character_ids.empty() &&
+         result.held_title_partition.empty() &&
          !result.immediate_liege_character_id &&
          result.top_liege_character_id == Fixture::kPlayerCharacterId &&
          result.independent == true && !result.government &&
@@ -838,6 +903,19 @@ bool TestMalformedSuccessionIsTypedUnavailable() {
                             "primary_title_succession_unavailable");
 }
 
+bool TestMalformedHeldTitlePartitionIsTypedUnavailable() {
+  Fixture fixture;
+  Put(fixture.secondary_title, 0x258, Fixture::kTopLiegeId);
+  const auto environment = Environment(fixture);
+  const auto access = Access(fixture);
+  const xar::ck3_11906::CampaignRootContextRequestV1 request{41};
+  xar::game::CampaignRootContextV1 result{};
+  return xar::ck3_11906::ReadCampaignRootContextV1(
+             environment, access, request, result) ==
+             xar::game::ReadCampaignRootContextResultV1::unavailable &&
+         ClearedUnavailable(result, "held_title_partition_unavailable");
+}
+
 bool TestMonthlyIncomeFailureIsTypedUnavailable() {
   Fixture fixture;
   fixture.monthly_income_available = false;
@@ -882,6 +960,7 @@ bool TestTargetingFactionCountSemantics() {
   Fixture no_land_state;
   void *null_land_state = nullptr;
   Put(no_land_state.player_character, 0x1B8, null_land_state);
+  no_land_state.resolved_primary_title = Address(no_land_state.title_fallback);
   auto environment = Environment(no_land_state);
   auto access = Access(no_land_state);
   const xar::ck3_11906::CampaignRootContextRequestV1 request{41};
@@ -948,6 +1027,10 @@ int main() {
   }
   if (!TestMalformedSuccessionIsTypedUnavailable()) {
     std::cerr << "malformed succession fixture failed\n";
+    return 1;
+  }
+  if (!TestMalformedHeldTitlePartitionIsTypedUnavailable()) {
+    std::cerr << "malformed held-title partition fixture failed\n";
     return 1;
   }
   if (!TestMonthlyIncomeFailureIsTypedUnavailable()) {

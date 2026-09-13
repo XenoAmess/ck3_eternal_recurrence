@@ -8939,6 +8939,7 @@ class NativeHeadlessGameplayDriver:
             "player_targeting_faction_count",
             "primary_title",
             "primary_title_succession_character_ids",
+            "held_title_partition",
             "capital_province_id",
             "immediate_liege_character_id",
             "top_liege_character_id",

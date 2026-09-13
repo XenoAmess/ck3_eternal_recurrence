@@ -80,6 +80,18 @@ absent；结构或 identity 无法在同一 paused query 中闭合时返回 type
     "tier_key": "kingdom"
   },
   "primary_title_succession_character_ids": [23457, 23458],
+  "held_title_partition": [
+    {
+      "title": {"title_id": 67890, "tier_raw": 4, "tier_key": "kingdom"},
+      "first_heir_character_id": 23457,
+      "primary": true
+    },
+    {
+      "title": {"title_id": 67891, "tier_raw": 2, "tier_key": "county"},
+      "first_heir_character_id": 23458,
+      "primary": false
+    }
+  ],
   "capital_province_id": 42,
   "immediate_liege_character_id": null,
   "top_liege_character_id": 12345,
@@ -127,6 +139,7 @@ absent；结构或 identity 无法在同一 paused query 中闭合时返回 type
     "player_targeting_factions_ready": true,
     "primary_title_ready": true,
     "primary_title_succession_ready": true,
+    "held_title_partition_ready": true,
     "capital_ready": true,
     "lieges_ready": true,
     "direct_landed_vassals_ready": true,
@@ -148,6 +161,7 @@ absent；结构或 identity 无法在同一 paused query 中闭合时返回 type
     "domain_limit_rva": "0x260BA20",
     "has_targeting_faction_trigger_rva": "0x283FAE0",
     "primary_title_rva": "0x25F3350",
+    "held_title_ids_offset": "0x1E0",
     "capital_province_rva": "0x2606760",
     "immediate_liege_rva": "0x2613480",
     "top_liege_rva": "0x2613600",
@@ -195,6 +209,14 @@ exact-build `GetDomainSize`/`GetDomainLimit` core；任一调用失败、值域�
 | `related_character_contexts` | 两个来源 identity vector 都为空时为 `[]`；行内 `capital_province_id` 可合法为 `null`，主头衔与 top liege 不可空 |
 | `government` | resolver 返回 canonical no-government object `module+0x570CB50`；不得把 fallback 的内存内容发布成 stable key |
 | selected tokens | 合法空 vector 是 `[]`；不能回退到 preset 文件或 stock defaults |
+
+`held_title_partition` is an all-or-nothing, title-ID-sorted projection of the
+current engine first heir for every personally held county-or-higher title.
+It is empty for a proven landless or barony-only root. Any invalid held-title
+span, title/holder generation mismatch, invalid tier, invalid first heir or
+primary-title disagreement returns `held_title_partition_unavailable` for the
+whole root frame. Its exact-build evidence and scope boundary are frozen in
+[held-title succession partition v1](held-title-partition-v1.md).
 
 ## Local player 与 full-generation Character root
 
@@ -574,3 +596,14 @@ Python contract/driver/service/MCP/live-harness 与 turn-bundle 聚焦测试 nor
    `rule -> selected setting`；不得从排序位置猜 parent rule。
 6. loaded/enabled/entitled feature truth 保持独立施工项；不能用本 query 的 stock 文件、磁盘 DLC descriptor、government key
    或 selected rules 间接填充。
+
+
+## 2026-09-13 held-title partition extension
+
+The campaign root now includes the title-ID-sorted `held_title_partition` and
+`held_title_partition_ready`. Each row is resolved from the player's native
+held-title vector and contains the current engine first heir. This closes the
+static partition input described in [held-title succession partition
+v1](held-title-partition-v1.md). The remaining G2-M1 component blocker is the
+council reader; all pending campaign-root extensions still share one bounded
+two-scene live read.

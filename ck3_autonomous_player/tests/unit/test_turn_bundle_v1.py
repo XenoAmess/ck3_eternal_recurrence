@@ -83,6 +83,30 @@ def _root(*, available: bool = True) -> dict[str, object]:
         "primary_title_succession_character_ids": (
             [88, 77] if available else []
         ),
+        "held_title_partition": (
+            [
+                {
+                    "title": {
+                        "title_id": 90,
+                        "tier_raw": 4,
+                        "tier_key": "kingdom",
+                    },
+                    "first_heir_character_id": 88,
+                    "primary": True,
+                },
+                {
+                    "title": {
+                        "title_id": 91,
+                        "tier_raw": 2,
+                        "tier_key": "county",
+                    },
+                    "first_heir_character_id": 77,
+                    "primary": False,
+                },
+            ]
+            if available
+            else []
+        ),
         "capital_province_id": 70 if available else None,
         "top_liege_character_id": PLAYER_ID if available else None,
         "independent": True if available else None,
@@ -191,6 +215,15 @@ class TurnBundleV1Tests(unittest.TestCase):
         self.assertFalse(
             succession["no_primary_title_heir_alert"]["value"]
         )
+        self.assertTrue(result["readiness"]["succession_partition_ready"])
+        self.assertEqual(
+            succession["partition"]["value"]["risk_state"],
+            "split_successors",
+        )
+        self.assertTrue(succession["partition"]["value"]["split_risk"])
+        self.assertTrue(
+            result["alerts"]["value"]["succession_partition_split"]["value"]
+        )
         self.assertTrue(
             result["alerts"]["value"][
                 "ruler_stress_at_or_above_100"
@@ -207,6 +240,7 @@ class TurnBundleV1Tests(unittest.TestCase):
         assert isinstance(context, dict)
         context["primary_title"] = None
         context["primary_title_succession_character_ids"] = []
+        context["held_title_partition"] = []
         context["capital_province_id"] = None
 
         result = build_turn_bundle_v1(_snapshot(), root)
@@ -222,6 +256,7 @@ class TurnBundleV1Tests(unittest.TestCase):
             succession["no_primary_title_heir_alert"]["status"],
             "not_applicable",
         )
+        self.assertEqual(succession["partition"]["status"], "not_applicable")
         self.assertTrue(result["alerts"]["value"]["ruler_landless"]["value"])
 
     def test_available_title_without_successor_raises_minimum_alert(self) -> None:
@@ -229,6 +264,7 @@ class TurnBundleV1Tests(unittest.TestCase):
         context = root["campaign_root_context"]
         assert isinstance(context, dict)
         context["primary_title_succession_character_ids"] = []
+        context["held_title_partition"][0]["first_heir_character_id"] = None
 
         result = build_turn_bundle_v1(_snapshot(), root)
         succession = result["succession_state"]["value"]

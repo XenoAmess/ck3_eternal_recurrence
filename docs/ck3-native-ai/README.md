@@ -68,7 +68,10 @@
   再按 native top liege 归一 realm identity。历史 live artifact 早于这些字段，故仍不得标 production-live。
 - [static-ready, live pending] [primary-title-succession-v1.md](primary-title-succession-v1.md) 把既有战争专用
   `CLandedTitle+0x278/+0x280/+0x284` 有序继承数组提炼为 campaign-root 通用只读字段；完整 CharacterID 顺序进入同帧双采样，
-  可支持主头衔最低继承警报，但不冒充全头衔 partition、继承法或跨死亡 continuation。
+  可支持主头衔最低继承警报，但不冒充继承法或跨死亡 continuation。
+- [static-ready, live pending] [held-title-partition-v1.md](held-title-partition-v1.md) 从玩家 land state 的完整 held-title ID
+  vector 逐项解析伯爵领以上头衔，并使用每个 `CLandedTitle+0x278` 的引擎当前第一继承人发布逐头衔分配；turn bundle 已提供
+  split/no-primary-heir 状态及分割告警，继承法、宣称和改法后的假设分配仍明确在范围外。
 - [static-ready, live pending] [player-monthly-gold-income-v1.md](player-monthly-gold-income-v1.md) 复用战争结算已实证的
   `0x28DBE90` 完整月收入求值器，把玩家 signed Q100000 income 接入 campaign-root 双采样；缓存 `extension+0x2B0` 因实测滞后
   继续只作诊断。turn bundle 的 ruler resource gate 现在由 current gold 与 monthly income 共同决定。
@@ -83,7 +86,8 @@
   派系 identity/type/power/discontent/deadline 仍未发布。
 - [static-ready, live pending] [turn-bundle-v1.md](turn-bundle-v1.md) 发布 `ck3_query_turn_bundle_v1`，把一个缓存 state snapshot 与一次
   同绑定 campaign-root query 聚合为 ruler/realm/succession/pending/war/alerts 六域；最低三域警报、收入资源门与 domain capacity
-  与目标派系最低警报已可用，健康分档和低健康告警也已有真实 native 输入；council 与 partition 保持 typed unavailable，因此完整 readiness 仍为 false。
+  与目标派系最低警报已可用，健康分档、低健康告警和逐头衔 partition 也已有真实 native 输入；council 保持 typed unavailable，
+  因此完整 readiness 仍为 false。
 - [static-confirmed; implementation/live pending] [council-and-development.md](council-and-development.md) 冻结 exact-build
   `CCharacter* + position_key -> ActiveCouncilTask` 的首个读取入口、15-key position vocabulary、task type/progress 语义与最小
   campaign-root/turn-bundle schema；任职者、稳定 task key、typed target 和 effective-seat fallback 仍明确为 unknown，未闭合前

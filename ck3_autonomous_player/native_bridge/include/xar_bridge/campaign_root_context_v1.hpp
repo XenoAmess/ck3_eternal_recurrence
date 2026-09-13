@@ -25,6 +25,15 @@ struct CampaignRootTitleV1 {
                          const CampaignRootTitleV1 &) = default;
 };
 
+struct CampaignRootHeldTitleSuccessionV1 {
+  CampaignRootTitleV1 title;
+  std::optional<std::int32_t> first_heir_character_id;
+  bool primary = false;
+
+  friend bool operator==(const CampaignRootHeldTitleSuccessionV1 &,
+                         const CampaignRootHeldTitleSuccessionV1 &) = default;
+};
+
 struct CampaignRootGovernmentV1 {
   std::string key;
   std::vector<std::string> flags;
@@ -55,6 +64,7 @@ struct CampaignRootReadinessV1 {
   bool player_targeting_factions_ready = false;
   bool primary_title_ready = false;
   bool primary_title_succession_ready = false;
+  bool held_title_partition_ready = false;
   bool capital_ready = false;
   bool lieges_ready = false;
   bool direct_landed_vassals_ready = false;
@@ -87,6 +97,7 @@ struct CampaignRootContextV1 {
   std::optional<std::int32_t> player_targeting_faction_count;
   std::optional<CampaignRootTitleV1> primary_title;
   std::vector<std::int32_t> primary_title_succession_character_ids;
+  std::vector<CampaignRootHeldTitleSuccessionV1> held_title_partition;
   std::optional<std::int32_t> capital_province_id;
   std::optional<std::int32_t> immediate_liege_character_id;
   std::optional<std::int32_t> top_liege_character_id;

@@ -26,6 +26,9 @@ constexpr std::size_t kCharacterIdentityOffset = 0x18;
 constexpr std::size_t kCharacterDeathMarkerOffset = 0x1C8;
 constexpr std::size_t kCharacterLandStateOffset = 0x1B8;
 constexpr std::size_t kLandStateTargetingFactionsCountOffset = 0x12C;
+constexpr std::size_t kLandStateHeldTitleIdsOffset = 0x1E0;
+constexpr std::size_t kVectorCapacityOffset = 0x08;
+constexpr std::size_t kVectorCountOffset = 0x0C;
 constexpr std::size_t kStorageSlotsOffset = 0x20;
 constexpr std::size_t kStorageCapacityOffset = 0x2C;
 constexpr std::size_t kStorageSlotStride = 0x10;
@@ -36,6 +39,7 @@ constexpr std::size_t kLandedTitleTierOffset = 0x5C;
 constexpr std::size_t kLandedTitleSuccessionDataOffset = 0x278;
 constexpr std::size_t kLandedTitleSuccessionCapacityOffset = 0x280;
 constexpr std::size_t kLandedTitleSuccessionCountOffset = 0x284;
+constexpr std::size_t kLandedTitleHolderCharacterIdOffset = 0x258;
 constexpr std::size_t kProvinceMapNodeOffset = 0x08;
 constexpr std::size_t kProvinceIdentityOffset = 0x10;
 constexpr std::size_t kGameDataProvinceArrayOffset = 0x140;
@@ -62,6 +66,7 @@ constexpr std::int32_t kMaximumLiegeDepth = 1'024;
 constexpr std::int32_t kMaximumGovernmentFlags = 4'096;
 constexpr std::int32_t kMaximumSelectedRuleTokens = 16'384;
 constexpr std::int32_t kMaximumTitleSuccessors = 4'096;
+constexpr std::int32_t kMaximumHeldTitles = 4'096;
 constexpr std::size_t kMaximumStableKeyBytes = 1'024;
 constexpr std::int64_t kFixedPointScale = 100'000;
 
@@ -86,6 +91,7 @@ struct ObservationV1 {
   std::int32_t player_targeting_faction_count = 0;
   std::optional<game::CampaignRootTitleV1> primary_title;
   std::vector<std::int32_t> primary_title_succession_character_ids;
+  std::vector<game::CampaignRootHeldTitleSuccessionV1> held_title_partition;
   std::optional<std::int32_t> capital_province_id;
   std::optional<std::int32_t> immediate_liege_character_id;
   std::int32_t top_liege_character_id = -1;
@@ -632,6 +638,129 @@ bool ReadPrimaryTitleSuccession(
     output.primary_title_succession_character_ids.push_back(character_id);
   }
   return true;
+}
+
+bool ReadHeldTitlePartition(
+    const CampaignRootNativeEnvironmentV1 &environment,
+    const CampaignRootAccessV1 &access, void *land_state,
+    ObservationV1 &output) noexcept {
+  output.held_title_partition.clear();
+  if (land_state == nullptr) {
+    return !output.primary_title.has_value();
+  }
+
+  void *data = nullptr;
+  std::int32_t capacity = 0;
+  std::int32_t count = 0;
+  if (!ReadValue(access, land_state, kLandStateHeldTitleIdsOffset, data) ||
+      !ReadValue(access, land_state,
+                 kLandStateHeldTitleIdsOffset + kVectorCapacityOffset,
+                 capacity) ||
+      !ReadValue(access, land_state,
+                 kLandStateHeldTitleIdsOffset + kVectorCountOffset, count) ||
+      capacity < 0 || count < 0 || count > capacity ||
+      count > kMaximumHeldTitles || (count > 0 && data == nullptr)) {
+    return false;
+  }
+
+  try {
+    output.held_title_partition.reserve(static_cast<std::size_t>(count));
+  } catch (...) {
+    return false;
+  }
+  std::vector<std::int32_t> seen_title_ids;
+  try {
+    seen_title_ids.reserve(static_cast<std::size_t>(count));
+  } catch (...) {
+    return false;
+  }
+  for (std::int32_t index = 0; index < count; ++index) {
+    std::int32_t title_id = -1;
+    if (!ReadValue(access, data,
+                   static_cast<std::size_t>(index) * sizeof(title_id),
+                   title_id) ||
+        title_id <= 0 ||
+        std::find(seen_title_ids.begin(), seen_title_ids.end(), title_id) !=
+            seen_title_ids.end()) {
+      return false;
+    }
+    seen_title_ids.push_back(title_id);
+    void *title = ResolveComponent(
+        access, environment.landed_title_storage_slot,
+        environment.landed_title_fallback_slot, title_id,
+        kLandedTitleIdentityOffset);
+    void *title_template = nullptr;
+    std::int32_t holder_character_id = -1;
+    std::int32_t tier_raw = 0;
+    if (title == nullptr ||
+        !ReadValue(access, title, kLandedTitleHolderCharacterIdOffset,
+                   holder_character_id) ||
+        holder_character_id != output.player_character_id ||
+        !ReadValue(access, title, kLandedTitleTemplateOffset,
+                   title_template) ||
+        title_template == nullptr ||
+        !ReadValue(access, title_template, kLandedTitleTierOffset,
+                   tier_raw) ||
+        TierKey(tier_raw).empty()) {
+      return false;
+    }
+    // The stock My Realm partition presentation starts at county titles.
+    // Baronies are validated above, then excluded from this realm projection.
+    if (tier_raw < 2) {
+      continue;
+    }
+
+    void *successor_data = nullptr;
+    std::int32_t successor_capacity = 0;
+    std::int32_t successor_count = 0;
+    if (!ReadValue(access, title, kLandedTitleSuccessionDataOffset,
+                   successor_data) ||
+        !ReadValue(access, title, kLandedTitleSuccessionCapacityOffset,
+                   successor_capacity) ||
+        !ReadValue(access, title, kLandedTitleSuccessionCountOffset,
+                   successor_count) ||
+        successor_capacity < 0 || successor_count < 0 ||
+        successor_count > successor_capacity ||
+        successor_count > kMaximumTitleSuccessors ||
+        (successor_count > 0 && successor_data == nullptr)) {
+      return false;
+    }
+    std::optional<std::int32_t> first_heir_character_id;
+    if (successor_count > 0) {
+      std::int32_t character_id = -1;
+      if (!ReadValue(access, successor_data, 0, character_id) ||
+          character_id <= 0 || character_id == output.player_character_id ||
+          ResolveComponent(access, environment.character_storage_slot,
+                           environment.character_fallback_slot, character_id,
+                           kCharacterIdentityOffset) == nullptr) {
+        return false;
+      }
+      first_heir_character_id = character_id;
+    }
+    try {
+      output.held_title_partition.push_back({
+          {title_id, tier_raw, std::string(TierKey(tier_raw))},
+          first_heir_character_id,
+          output.primary_title.has_value() &&
+              output.primary_title->title_id == title_id});
+    } catch (...) {
+      return false;
+    }
+  }
+  std::sort(output.held_title_partition.begin(),
+            output.held_title_partition.end(),
+            [](const auto &left, const auto &right) {
+              return left.title.title_id < right.title.title_id;
+            });
+  if (!output.primary_title.has_value()) {
+    return output.held_title_partition.empty();
+  }
+  if (output.primary_title->tier_raw == 1) {
+    return output.held_title_partition.empty();
+  }
+  return std::count_if(output.held_title_partition.begin(),
+                       output.held_title_partition.end(),
+                       [](const auto &row) { return row.primary; }) == 1;
 }
 
 bool ReadCapital(const CampaignRootNativeEnvironmentV1 &environment,
@@ -1342,6 +1471,10 @@ bool ReadObservation(const CampaignRootNativeEnvironmentV1 &environment,
     failure = "primary_title_succession_unavailable";
     return false;
   }
+  if (!ReadHeldTitlePartition(environment, access, land_state, output)) {
+    failure = "held_title_partition_unavailable";
+    return false;
+  }
   if (!ReadCapital(environment, access, output)) {
     failure = "capital_unavailable";
     return false;
@@ -1510,6 +1643,7 @@ game::ReadCampaignRootContextResultV1 ReadCampaignRootContextV1(
     output.primary_title = std::move(first.primary_title);
     output.primary_title_succession_character_ids =
         std::move(first.primary_title_succession_character_ids);
+    output.held_title_partition = std::move(first.held_title_partition);
     output.capital_province_id = first.capital_province_id;
     output.immediate_liege_character_id =
         first.immediate_liege_character_id;
@@ -1527,7 +1661,8 @@ game::ReadCampaignRootContextResultV1 ReadCampaignRootContextV1(
     output.native_selected_game_rule_token_count =
         first.native_selected_game_rule_token_count;
     output.readiness = {true, true, true, true, true, true, true, true,
-                        true, true, true, true, true, true, true, true};
+                        true, true, true, true, true, true, true, true,
+                        true};
     output.unavailable_reason.clear();
     return game::ReadCampaignRootContextResultV1::available;
   } catch (...) {

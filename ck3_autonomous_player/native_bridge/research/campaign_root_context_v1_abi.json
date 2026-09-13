@@ -73,7 +73,10 @@
     }
   },
   "player_domain_capacity": {
-    "published_fields": ["player_domain_size", "player_domain_limit"],
+    "published_fields": [
+      "player_domain_size",
+      "player_domain_limit"
+    ],
     "domain_size": {
       "reflection_name_rva": "0x4324CF0",
       "registration_rva": "0x50BE60",
@@ -90,7 +93,10 @@
     },
     "identity_gate": "the played Character pointer must roundtrip through full-generation Character storage after both calls",
     "same_frame": "both signed int32 results participate in the existing two-sample equality gate",
-    "constraints": {"domain_size_minimum": 0, "domain_limit_minimum": 1},
+    "constraints": {
+      "domain_size_minimum": 0,
+      "domain_limit_minimum": 1
+    },
     "grace_period_excluded": "GetDomainSizeWithGracePeriod at 0x260BB00 is not published by this minimum capacity slice"
   },
   "player_targeting_factions": {
@@ -133,7 +139,12 @@
       "row_stride": "0x30",
       "row_kind_offset": "0x00",
       "row_target_province_id_offset": "0x04",
-      "admitted_kinds": [0, 1, 2, 3]
+      "admitted_kinds": [
+        0,
+        1,
+        2,
+        3
+      ]
     },
     "player_subrealm_rule": "a living, generation-valid province holder belongs to the player subrealm iff its native immediate-liege chain reaches the player before null, fallback or self-root termination",
     "published_field": "adjacent_external_province_holder_character_ids",
@@ -141,11 +152,25 @@
   },
   "related_character_contexts": {
     "published_field": "related_character_contexts",
-    "source_identity_fields": ["direct_landed_vassal_character_ids", "adjacent_external_province_holder_character_ids"],
+    "source_identity_fields": [
+      "direct_landed_vassal_character_ids",
+      "adjacent_external_province_holder_character_ids"
+    ],
     "order": "ascending_full_generation_character_id_duplicate_free",
     "all_or_nothing": true,
-    "fields": ["character_id", "relationship_role", "primary_title", "capital_province_id", "immediate_liege_character_id", "top_liege_character_id", "independent"],
-    "relationship_roles": ["direct_landed_vassal", "adjacent_external_province_holder"],
+    "fields": [
+      "character_id",
+      "relationship_role",
+      "primary_title",
+      "capital_province_id",
+      "immediate_liege_character_id",
+      "top_liege_character_id",
+      "independent"
+    ],
+    "relationship_roles": [
+      "direct_landed_vassal",
+      "adjacent_external_province_holder"
+    ],
     "primary_title": "required native 0x25F3350 result with LandedTitle storage generation roundtrip and tier at template+0x5C",
     "capital": "nullable native 0x2606760 result; non-null Province pointer must roundtrip through game_data+0x140/+0x14C",
     "lieges": "native 0x2613480/0x2613600 results with Character storage generation roundtrip; null/fallback/self immediate liege canonicalizes to independent absence",
@@ -180,6 +205,51 @@
     "validation": "every successor is a positive duplicate-free CharacterID distinct from the current holder and must roundtrip through exact-build Character storage",
     "landless_semantics": "empty vector when the player has no primary landed title",
     "same_frame": "the complete ordered vector participates in the existing two-sample equality gate"
+  },
+  "held_title_partition": {
+    "published_field": "held_title_partition",
+    "character_land_state_offset": "0x1B8",
+    "held_title_vector": {
+      "data_offset": "0x1E0",
+      "capacity_offset": "0x1E8",
+      "count_offset": "0x1EC",
+      "element": "full-generation LandedTitleID"
+    },
+    "title_layout": {
+      "holder_character_id_offset": "0x258",
+      "template_offset": "0x160",
+      "template_tier_offset": "0x5C",
+      "successor_data_offset": "0x278",
+      "successor_capacity_offset": "0x280",
+      "successor_count_offset": "0x284"
+    },
+    "admitted_tiers": {
+      "minimum_raw": 2,
+      "maximum_raw": 6,
+      "barony_raw_1": "validated as player-held, then excluded to match the stock My Realm realm-succession surface"
+    },
+    "order": "ascending full-generation LandedTitleID",
+    "maximum_held_title_count": 4096,
+    "validation": "every listed title resolves through LandedTitle storage, reports the player as holder, has a valid tier, and exposes either no first heir or a generation-valid non-holder CharacterID",
+    "semantics": "current engine-calculated first heir for each personally held county-or-higher title; null means the title successor vector is currently empty",
+    "excluded_semantics": [
+      "succession law",
+      "claims",
+      "hypothetical distribution after law changes"
+    ],
+    "held_title_enumerator_evidence": {
+      "start_rva": "0x28C39A0",
+      "end_rva_exclusive": "0x28C3B18",
+      "size": "0x178",
+      "sha256": "D7C6700177B5401E712DA7913FE46468C7868450A12488422005E5CBAAFB19A9"
+    },
+    "stock_my_realm_grouping_evidence": {
+      "start_rva": "0x113621F",
+      "end_rva_exclusive": "0x11364C9",
+      "size": "0x2AA",
+      "sha256": "8D3696555ADB3F338244D1E8872C3721707D7B90EEE7E6AD95DD38020195EEA2"
+    },
+    "same_frame": "the complete normalized title/heir vector participates in the existing two-sample equality gate"
   },
   "canonicalization": {
     "comparator": "unsigned_utf8_bytewise_lexicographical",

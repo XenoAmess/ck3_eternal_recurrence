@@ -451,6 +451,76 @@ def build_turn_bundle_v1(
         if primary_title is None
         else _component("available", not successors)
     )
+    held_title_partition = root.get("held_title_partition")
+    if not isinstance(held_title_partition, list):
+        raise ValueError("held-title partition is malformed")
+    if primary_title is None or primary_title.get("tier_raw") == 1:
+        if held_title_partition:
+            raise ValueError("root below county tier exposes held-title partition")
+        partition_reason = (
+            "no_primary_landed_title"
+            if primary_title is None
+            else "primary_title_below_county"
+        )
+        partition = _component(
+            "not_applicable", reason=partition_reason
+        )
+        partition_split_alert = _component(
+            "not_applicable", reason=partition_reason
+        )
+    else:
+        primary_heir_id = successors[0] if successors else None
+        titles_to_other_heirs: list[dict[str, object]] = []
+        titles_without_heir: list[dict[str, object]] = []
+        primary_rows = 0
+        for index, row in enumerate(held_title_partition):
+            if not isinstance(row, dict) or set(row) != {
+                "title",
+                "first_heir_character_id",
+                "primary",
+            }:
+                raise ValueError(f"held-title partition row {index} is malformed")
+            title = row.get("title")
+            first_heir = row.get("first_heir_character_id")
+            if not isinstance(title, dict) or not isinstance(
+                row.get("primary"), bool
+            ):
+                raise ValueError(f"held-title partition row {index} is malformed")
+            primary_rows += int(row["primary"])
+            if row["primary"] and first_heir != primary_heir_id:
+                raise ValueError("held-title primary heir disagrees with succession")
+            if first_heir is None:
+                titles_without_heir.append(copy.deepcopy(title))
+            elif (
+                primary_heir_id is not None
+                and first_heir != primary_heir_id
+            ):
+                _positive_int(first_heir, f"held_title_partition[{index}].first_heir")
+                titles_to_other_heirs.append(copy.deepcopy(row))
+        if primary_rows != 1:
+            raise ValueError("held-title partition lacks one primary row")
+        split_risk = primary_heir_id is not None and bool(
+            titles_to_other_heirs
+        )
+        risk_state = (
+            "no_primary_heir"
+            if primary_heir_id is None
+            else "split_successors"
+            if split_risk
+            else "single_successor"
+        )
+        partition = _component(
+            "available",
+            {
+                "title_heirs": copy.deepcopy(held_title_partition),
+                "primary_heir_character_id": primary_heir_id,
+                "titles_to_other_heirs": titles_to_other_heirs,
+                "titles_without_heir": titles_without_heir,
+                "risk_state": risk_state,
+                "split_risk": split_risk,
+            },
+        )
+        partition_split_alert = _component("available", split_risk)
     succession_state = {
         "primary_title": primary_title_component,
         "ordered_primary_title_successor_character_ids": copy.deepcopy(
@@ -458,9 +528,7 @@ def build_turn_bundle_v1(
         ),
         "primary_title_heir_character_id": heir,
         "no_primary_title_heir_alert": no_heir_alert,
-        "partition": _component(
-            "unavailable", reason="succession_partition_observation_not_implemented"
-        ),
+        "partition": partition,
     }
 
     pending_state, pending_ready = _pending_state(snapshot)
@@ -486,6 +554,7 @@ def build_turn_bundle_v1(
             "available", bool(adjacent_holders)
         ),
         "no_primary_title_heir": no_heir_alert,
+        "succession_partition_split": partition_split_alert,
         "faction_threat": _component("available", faction_threat),
     }
     gold_ready = gold["status"] == "available"
@@ -502,7 +571,7 @@ def build_turn_bundle_v1(
         "realm_council_ready": False,
         "realm_faction_alert_ready": True,
         "succession_primary_title_alert_ready": True,
-        "succession_partition_ready": False,
+        "succession_partition_ready": True,
         "event_pending_ready": pending_ready,
         "war_summary_ready": war_ready,
         "minimum_alerts_ready": True,

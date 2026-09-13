@@ -51,6 +51,7 @@ UNAVAILABLE_REASONS = (
     "player_targeting_factions_unavailable",
     "primary_title_unavailable",
     "primary_title_succession_unavailable",
+    "held_title_partition_unavailable",
     "capital_unavailable",
     "lieges_unavailable",
     "direct_landed_vassals_unavailable",
@@ -72,6 +73,7 @@ def _readiness(ready: bool) -> dict[str, bool]:
         "player_targeting_factions_ready": ready,
         "primary_title_ready": ready,
         "primary_title_succession_ready": ready,
+        "held_title_partition_ready": ready,
         "capital_ready": ready,
         "lieges_ready": ready,
         "direct_landed_vassals_ready": ready,
@@ -97,6 +99,7 @@ def _provenance() -> dict[str, str]:
         "domain_limit_rva": "0x260BA20",
         "has_targeting_faction_trigger_rva": "0x283FAE0",
         "primary_title_rva": "0x25F3350",
+        "held_title_ids_offset": "0x1E0",
         "capital_province_rva": "0x2606760",
         "immediate_liege_rva": "0x2613480",
         "top_liege_rva": "0x2613600",
@@ -184,6 +187,30 @@ def _frame(
         "primary_title_succession_character_ids": (
             [98_765, 87_654] if available else []
         ),
+        "held_title_partition": (
+            [
+                {
+                    "title": {
+                        "title_id": 67_890,
+                        "tier_raw": 6,
+                        "tier_key": "hegemony",
+                    },
+                    "first_heir_character_id": 98_765,
+                    "primary": True,
+                },
+                {
+                    "title": {
+                        "title_id": 67_891,
+                        "tier_raw": 2,
+                        "tier_key": "county",
+                    },
+                    "first_heir_character_id": 87_654,
+                    "primary": False,
+                },
+            ]
+            if available
+            else []
+        ),
         "capital_province_id": 42 if available else None,
         "immediate_liege_character_id": None,
         "top_liege_character_id": (
@@ -251,6 +278,7 @@ def _driver_result(status: str = "available") -> dict[str, object]:
         "player_targeting_faction_count",
         "primary_title",
         "primary_title_succession_character_ids",
+        "held_title_partition",
         "capital_province_id",
         "immediate_liege_character_id",
         "top_liege_character_id",
@@ -367,6 +395,7 @@ class CampaignRootContextV1ContractTests(unittest.TestCase):
         frame = _frame()
         frame["primary_title"] = None
         frame["primary_title_succession_character_ids"] = []
+        frame["held_title_partition"] = []
         frame["capital_province_id"] = None
         frame["government"] = None
 
@@ -419,6 +448,17 @@ class CampaignRootContextV1ContractTests(unittest.TestCase):
                     "tier_raw": tier_raw,
                     "tier_key": tier_key,
                 }
+                frame["held_title_partition"] = (
+                    []
+                    if tier_raw == 1
+                    else [
+                        {
+                            "title": copy.deepcopy(frame["primary_title"]),
+                            "first_heir_character_id": 98_765,
+                            "primary": True,
+                        }
+                    ]
+                )
                 normalized = normalize_campaign_root_context_v1(
                     frame,
                     expected_date_raw=DATE_RAW,

@@ -46,17 +46,38 @@
       "name": "entity directory and core turn bundle",
       "priority": "P1-A",
       "status": "in_progress",
-      "latest_evidence": ["campaign-root-context production-live primitive", "direct landed-vassal identity extension static-ready", "adjacent external province-holder identity extension static-ready", "relationship-filtered entity-directory with native title and top-liege components static-ready", "minimum-alert turn bundle and monthly-income resource gate static-ready", "exact-build player health and minimum risk alert static-ready", "exact-build player domain size and limit projection static-ready", "exact-build player targeting-faction count and minimum threat alert static-ready"],
+      "latest_evidence": [
+        "campaign-root-context production-live primitive",
+        "direct landed-vassal identity extension static-ready",
+        "adjacent external province-holder identity extension static-ready",
+        "relationship-filtered entity-directory with native title and top-liege components static-ready",
+        "minimum-alert turn bundle and monthly-income resource gate static-ready",
+        "exact-build player health and minimum risk alert static-ready",
+        "exact-build player domain size and limit projection static-ready",
+        "exact-build player targeting-faction count and minimum threat alert static-ready",
+        "exact-build per-held-title current first-heir partition and split-risk alert static-ready"
+      ],
       "planner_consumer": "candidate generation and per-turn objective selection",
       "visible_outcome": "one query identifies the ruler, primary title, capital, liege, direct vassals, one neighbor and the minimum ruler/realm/succession alerts",
-      "open_blocker": "council and partition observations remain absent; deeper faction identity, power and deadline inputs remain deferred to governance response; relationship search, related-character contexts, income, health, domain capacity, targeting-faction alert and turn bundle still need one shared bounded production paused read"
+      "open_blocker": "council observation remains absent; exact research is frozen but incumbent, stable task key, typed target and effective-seat fallback are not yet closed; deeper faction identity, power and deadline inputs remain deferred to governance response; relationship search, related-character contexts, income, health, domain capacity, targeting-faction alert, held-title partition and turn bundle still need one shared bounded production paused read"
     },
     {
       "id": "G2-M2",
       "name": "natural event semantic loop",
       "priority": "P1-B",
       "status": "in_progress",
-      "latest_evidence": ["current-window transport fixture-live", "shared vanilla event registry", "direct-projection registry planner consumer static-ready", "played-character stress snapshot field static-ready", "same-character event stress postcondition comparator static-ready", "natural_disaster.7031 option-variant consumer static-ready", "two exact selected-choice structured effect profiles static-ready", "played-character gold snapshot and trait_specific.8001 material comparator static-ready", "death_management.1007 scoped consumer and third material comparator static-ready", "three bounded campaign objective and ordinal utility profiles static-ready"],
+      "latest_evidence": [
+        "current-window transport fixture-live",
+        "shared vanilla event registry",
+        "direct-projection registry planner consumer static-ready",
+        "played-character stress snapshot field static-ready",
+        "same-character event stress postcondition comparator static-ready",
+        "natural_disaster.7031 option-variant consumer static-ready",
+        "two exact selected-choice structured effect profiles static-ready",
+        "played-character gold snapshot and trait_specific.8001 material comparator static-ready",
+        "death_management.1007 scoped consumer and third material comparator static-ready",
+        "three bounded campaign objective and ordinal utility profiles static-ready"
+      ],
       "planner_consumer": "event option utility policy",
       "visible_outcome": "resolve three natural events, including two multi-option events, and verify material state deltas",
       "open_blocker": "all three target events have static material comparators and bounded objective/utility profiles but still need three production recommendation-action-material outcome loops; generic effect extraction, dynamic goal switching and cross-domain numeric calibration remain breadth and quality debt"
@@ -66,7 +87,9 @@
       "name": "succession and realm survival",
       "priority": "P1-C",
       "status": "not_started",
-      "latest_evidence": ["immutable-seed cross-episode loop"],
+      "latest_evidence": [
+        "immutable-seed cross-episode loop"
+      ],
       "planner_consumer": "survival, inheritance and post-succession goal selection",
       "visible_outcome": "predict title distribution before a natural death, reconcile actual inheritance and continue as the real successor",
       "open_blocker": "typed succession, health, stress, legitimacy, vassal and faction state are absent or narrow"
@@ -76,7 +99,9 @@
       "name": "peace governance vertical slice",
       "priority": "P1-D",
       "status": "not_started",
-      "latest_evidence": ["fixed visual regression flows only"],
+      "latest_evidence": [
+        "fixed visual regression flows only"
+      ],
       "planner_consumer": "budgeted construction, council and faction response",
       "visible_outcome": "within two game years perform and verify one construction, one council reassignment and one real vassal or faction intervention",
       "open_blocker": "domain size/limit is static-ready, but holdings/buildings/construction, council, vassal and faction query/action surfaces remain missing"
@@ -86,7 +111,10 @@
       "name": "family, diplomacy and complete war",
       "priority": "P2",
       "status": "not_started",
-      "latest_evidence": ["ID-only marriage", "mature tactical war executor"],
+      "latest_evidence": [
+        "ID-only marriage",
+        "mature tactical war executor"
+      ],
       "planner_consumer": "joint marriage, diplomacy and war opportunity-cost policy",
       "visible_outcome": "choose among at least five legal diplomatic or war candidates and complete the selected path through verified postconditions",
       "open_blocker": "joint candidate scoring, supply, allies, campaign budget and multi-war coordination are incomplete"
@@ -96,7 +124,9 @@
       "name": "schemes, institutions and activities",
       "priority": "P3",
       "status": "not_started",
-      "latest_evidence": ["feature manifest production-live primitive"],
+      "latest_evidence": [
+        "feature manifest production-live primitive"
+      ],
       "planner_consumer": "long-horizon non-war objective scheduler",
       "visible_outcome": "complete one scheme, one prisoner or institutional action, one non-religious decision or law project, and one activity lifecycle",
       "open_blocker": "typed state, semantic actions and outcome models for these domains are absent"
@@ -106,7 +136,9 @@
       "name": "identity adapters and long campaign qualification",
       "priority": "P4-P5",
       "status": "not_started",
-      "latest_evidence": ["44 effective feature flags and 29 runtime DLC keys visible on one production process"],
+      "latest_evidence": [
+        "44 effective feature flags and 29 runtime DLC keys visible on one production process"
+      ],
       "planner_consumer": "runtime identity adapter selection and cross-inheritance goal memory",
       "visible_outcome": "qualify multiple rulers, seeds and governments while restoring the same high-level intent after checkpoints and inheritance",
       "open_blocker": "government-specific adapters, broader matrices and calibrated long-horizon memory are incomplete"

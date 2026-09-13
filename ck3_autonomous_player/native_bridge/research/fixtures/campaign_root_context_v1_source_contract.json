@@ -8,7 +8,10 @@
   "payload_provenance_backend_id": "ck3-1.19.0.6-native-campaign-root-context-v1",
   "mailbox_executor_slot": "permitted_executor_nonary",
   "mailbox_executor": "ExecuteCampaignRootContextMailboxQueryV1",
-  "status": ["available", "unavailable"],
+  "status": [
+    "available",
+    "unavailable"
+  ],
   "all_or_nothing_readiness": true,
   "root_keys": [
     "schema_version",
@@ -25,6 +28,7 @@
     "player_targeting_faction_count",
     "primary_title",
     "primary_title_succession_character_ids",
+    "held_title_partition",
     "capital_province_id",
     "immediate_liege_character_id",
     "top_liege_character_id",
@@ -52,6 +56,7 @@
     "player_targeting_factions_unavailable",
     "primary_title_unavailable",
     "primary_title_succession_unavailable",
+    "held_title_partition_unavailable",
     "capital_unavailable",
     "lieges_unavailable",
     "direct_landed_vassals_unavailable",
@@ -66,20 +71,62 @@
   "canonical_order": "unsigned_utf8_bytewise_lexicographical",
   "preserve_multiplicity": true,
   "direct_landed_vassal_order": "ascending_full_generation_character_id",
-  "direct_landed_vassal_filters": ["alive", "landed", "immediate_liege_is_player"],
+  "direct_landed_vassal_filters": [
+    "alive",
+    "landed",
+    "immediate_liege_is_player"
+  ],
   "adjacent_external_province_holder_order": "ascending_full_generation_character_id_duplicate_free",
-  "adjacent_external_province_holder_filters": ["alive", "generation_valid", "outside_player_subrealm", "province_directly_adjacent_to_player_subrealm"],
+  "adjacent_external_province_holder_filters": [
+    "alive",
+    "generation_valid",
+    "outside_player_subrealm",
+    "province_directly_adjacent_to_player_subrealm"
+  ],
   "related_character_context_order": "ascending_full_generation_character_id_duplicate_free",
-  "related_character_context_fields": ["character_id", "relationship_role", "primary_title", "capital_province_id", "immediate_liege_character_id", "top_liege_character_id", "independent"],
+  "related_character_context_fields": [
+    "character_id",
+    "relationship_role",
+    "primary_title",
+    "capital_province_id",
+    "immediate_liege_character_id",
+    "top_liege_character_id",
+    "independent"
+  ],
   "related_character_context_all_or_nothing": true,
   "primary_title_succession_order": "native_title_succession_order",
-  "primary_title_succession_offsets": ["0x278", "0x280", "0x284"],
+  "primary_title_succession_offsets": [
+    "0x278",
+    "0x280",
+    "0x284"
+  ],
   "primary_title_succession_all_or_nothing": true,
+  "held_title_partition_order": "ascending_full_generation_landed_title_id",
+  "held_title_partition_tier_range": [
+    2,
+    6
+  ],
+  "held_title_partition_character_land_state_offset": "0x1B8",
+  "held_title_partition_vector_offsets": [
+    "0x1E0",
+    "0x1E8",
+    "0x1EC"
+  ],
+  "held_title_partition_holder_character_id_offset": "0x258",
+  "held_title_partition_successor_offsets": [
+    "0x278",
+    "0x280",
+    "0x284"
+  ],
+  "held_title_partition_all_or_nothing": true,
   "player_monthly_gold_income_scale": 100000,
   "player_health_scale": 100000,
   "player_health_rva": "0x2619AD0",
   "player_health_identity_gate": "full_generation_character_roundtrip_after_native_call",
-  "player_health_planner_bands": {"dying_or_worse_max_raw": 150000, "fine_min_raw": 300000},
+  "player_health_planner_bands": {
+    "dying_or_worse_max_raw": 150000,
+    "fine_min_raw": 300000
+  },
   "player_domain_size_minimum": 0,
   "player_domain_limit_minimum": 1,
   "player_domain_identity_gate": "full_generation_character_roundtrip_after_both_native_calls",

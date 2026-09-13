@@ -66,6 +66,21 @@ def _context(
         "primary_title_succession_character_ids": (
             [77_777, 66_666] if available else []
         ),
+        "held_title_partition": (
+            [
+                {
+                    "title": {
+                        "title_id": 67_890,
+                        "tier_raw": 3,
+                        "tier_key": "duchy",
+                    },
+                    "first_heir_character_id": 77_777,
+                    "primary": True,
+                }
+            ]
+            if available
+            else []
+        ),
         "capital_province_id": 42 if available else None,
         "immediate_liege_character_id": None,
         "top_liege_character_id": (
@@ -157,6 +172,7 @@ def _context(
             "player_targeting_factions_ready": available,
             "primary_title_ready": available,
             "primary_title_succession_ready": available,
+            "held_title_partition_ready": available,
             "capital_ready": available,
             "lieges_ready": available,
             "direct_landed_vassals_ready": available,
@@ -182,6 +198,7 @@ def _context(
             "domain_limit_rva": "0x260BA20",
             "has_targeting_faction_trigger_rva": "0x283FAE0",
             "primary_title_rva": "0x25F3350",
+            "held_title_ids_offset": "0x1E0",
             "capital_province_rva": "0x2606760",
             "immediate_liege_rva": "0x2613480",
             "top_liege_rva": "0x2613600",

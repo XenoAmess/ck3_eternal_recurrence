@@ -197,3 +197,20 @@ MSVC Release reader/source-contract fixtures 为 GREEN；Python campaign-root、
 模式均为 `42/42`。状态为 `static-ready / live=false`；没有启动 CK3、录制器、injector 或桌面输入。它将与其它 campaign-root
 扩展共用下一次本来就需要的有界 paused G2 读取，不安排单字段长跑。M1 仍缺 council、partition 与两场景 live 验收，G2 总完成数
 保持 `0/8`。
+
+
+## G2-M1 per-held-title partition static-ready
+
+`campaign-root-context-v1` now reads the player's exact-build held-title vector
+and publishes the current first heir for every personally held county-or-higher
+title. `ck3_query_turn_bundle_v1` preserves every row and derives
+`single_successor / split_successors / no_primary_heir` plus a split alert.
+This is the engine's current per-title result; succession law, claims,
+hypothetical law changes and post-death reconciliation remain G2-M3 work.
+
+MSVC Release reader and source-contract fixtures are GREEN. The focused
+campaign-root, live-harness and turn-bundle suites pass `42/42` in normal and
+optimized Python. Status is `static-ready / live=false`; the extension will use
+the existing shared bounded two-scene paused read, without a dedicated long
+run. G2-M1 now lacks the council observation and that shared live acceptance;
+G2 remains `0/8`.

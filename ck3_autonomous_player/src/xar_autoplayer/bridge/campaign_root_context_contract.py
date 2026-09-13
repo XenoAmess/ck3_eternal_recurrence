@@ -34,6 +34,7 @@ _FIELDS: Final = {
     "player_targeting_faction_count",
     "primary_title",
     "primary_title_succession_character_ids",
+    "held_title_partition",
     "capital_province_id",
     "immediate_liege_character_id",
     "top_liege_character_id",
@@ -49,6 +50,11 @@ _FIELDS: Final = {
     "provenance",
 }
 _PRIMARY_TITLE_FIELDS: Final = {"title_id", "tier_raw", "tier_key"}
+_HELD_TITLE_PARTITION_FIELDS: Final = {
+    "title",
+    "first_heir_character_id",
+    "primary",
+}
 _FIXED_POINT_FIELDS: Final = {"raw", "scale"}
 _RELATED_CHARACTER_FIELDS: Final = {
     "character_id",
@@ -68,6 +74,7 @@ _READINESS_KEYS: Final = (
     "player_targeting_factions_ready",
     "primary_title_ready",
     "primary_title_succession_ready",
+    "held_title_partition_ready",
     "capital_ready",
     "lieges_ready",
     "direct_landed_vassals_ready",
@@ -89,6 +96,7 @@ _PROVENANCE_FIELDS: Final = {
     "domain_limit_rva",
     "has_targeting_faction_trigger_rva",
     "primary_title_rva",
+    "held_title_ids_offset",
     "capital_province_rva",
     "immediate_liege_rva",
     "top_liege_rva",
@@ -106,6 +114,7 @@ _PROVENANCE_VALUES: Final = {
     "domain_limit_rva": "0x260BA20",
     "has_targeting_faction_trigger_rva": "0x283FAE0",
     "primary_title_rva": "0x25F3350",
+    "held_title_ids_offset": "0x1E0",
     "capital_province_rva": "0x2606760",
     "immediate_liege_rva": "0x2613480",
     "top_liege_rva": "0x2613600",
@@ -126,6 +135,7 @@ _UNAVAILABLE_REASONS: Final = {
     "player_targeting_factions_unavailable",
     "primary_title_unavailable",
     "primary_title_succession_unavailable",
+    "held_title_partition_unavailable",
     "capital_unavailable",
     "lieges_unavailable",
     "direct_landed_vassals_unavailable",
@@ -377,6 +387,72 @@ def _normalize_related_character_contexts(
     return normalized
 
 
+def _normalize_held_title_partition(
+    value: object,
+    *,
+    primary_title: dict[str, object] | None,
+    primary_heir_character_id: int | None,
+    player_character_id: int,
+) -> list[dict[str, object]]:
+    if not isinstance(value, list):
+        raise ValueError("held_title_partition must be a list")
+    normalized: list[dict[str, object]] = []
+    previous_title_id = -1
+    primary_count = 0
+    for index, item in enumerate(value):
+        name = f"held_title_partition[{index}]"
+        row = _exact_object(item, _HELD_TITLE_PARTITION_FIELDS, name)
+        title = _exact_object(
+            row.get("title"), _PRIMARY_TITLE_FIELDS, f"{name}.title"
+        )
+        title_id = _positive_int32(
+            title.get("title_id"), f"{name}.title.title_id"
+        )
+        tier_raw = _int(
+            title.get("tier_raw"),
+            f"{name}.title.tier_raw",
+            minimum=2,
+            maximum=6,
+        )
+        if title.get("tier_key") != _TIER_KEYS[tier_raw]:
+            raise ValueError(f"{name}.title tier pair is invalid")
+        if title_id <= previous_title_id:
+            raise ValueError("held_title_partition must be title-id sorted and unique")
+        first_heir = _optional_positive_int32(
+            row.get("first_heir_character_id"),
+            f"{name}.first_heir_character_id",
+        )
+        if first_heir == player_character_id:
+            raise ValueError("held title first heir cannot be its holder")
+        primary = _bool(row.get("primary"), f"{name}.primary")
+        normalized_title = {
+            "title_id": title_id,
+            "tier_raw": tier_raw,
+            "tier_key": _TIER_KEYS[tier_raw],
+        }
+        if primary and normalized_title != primary_title:
+            raise ValueError("held title primary marker disagrees with primary_title")
+        if primary and first_heir != primary_heir_character_id:
+            raise ValueError("held title primary heir disagrees with primary succession")
+        primary_count += int(primary)
+        normalized.append(
+            {
+                "title": normalized_title,
+                "first_heir_character_id": first_heir,
+                "primary": primary,
+            }
+        )
+        previous_title_id = title_id
+    if primary_title is None or primary_title["tier_raw"] == 1:
+        if normalized:
+            raise ValueError(
+                "landless or barony-only player cannot expose realm partition"
+            )
+    elif primary_count != 1:
+        raise ValueError("held-title partition must mark the primary title once")
+    return normalized
+
+
 def _normalize_readiness(
     value: object,
     *,
@@ -499,6 +575,9 @@ def normalize_campaign_root_context_v1(
         )
         if succession:
             raise ValueError("unavailable campaign root invented succession")
+        partition = frame.get("held_title_partition")
+        if not isinstance(partition, list) or partition:
+            raise ValueError("unavailable campaign root invented held-title partition")
         return {
             **frame,
             "direct_landed_vassal_character_ids": direct_vassals,
@@ -507,6 +586,7 @@ def normalize_campaign_root_context_v1(
             ),
             "related_character_contexts": [],
             "primary_title_succession_character_ids": [],
+            "held_title_partition": [],
             "selected_game_rule_tokens": tokens,
             "native_selected_game_rule_token_count": token_count,
             "readiness": readiness,
@@ -584,6 +664,16 @@ def normalize_campaign_root_context_v1(
         }
     if primary_title is None and primary_title_succession_character_ids:
         raise ValueError("landless player cannot expose title succession")
+    held_title_partition = _normalize_held_title_partition(
+        frame.get("held_title_partition"),
+        primary_title=primary_title,
+        primary_heir_character_id=(
+            primary_title_succession_character_ids[0]
+            if primary_title_succession_character_ids
+            else None
+        ),
+        player_character_id=player_character_id,
+    )
 
     capital_province_id = _optional_positive_int32(
         frame.get("capital_province_id"), "capital_province_id"
@@ -671,6 +761,7 @@ def normalize_campaign_root_context_v1(
         "primary_title_succession_character_ids": (
             primary_title_succession_character_ids
         ),
+        "held_title_partition": held_title_partition,
         "capital_province_id": capital_province_id,
         "immediate_liege_character_id": immediate_liege_id,
         "top_liege_character_id": top_liege_id,
