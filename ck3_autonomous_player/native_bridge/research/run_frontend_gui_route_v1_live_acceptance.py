@@ -3,8 +3,8 @@
 
 This runner launches one managed, non-debug CK3 process at the main menu,
 injects the exact bridge DLL, and uses the official MCP SDK to prove the
-semantic route transition ``main_menu -> bookmarks -> lobby``.  It never sends mouse
-or keyboard input and never interprets pixels or OCR.
+semantic route transition ``main_menu -> bookmarks -> lobby -> ruler_designer``.
+It never sends mouse or keyboard input and never interprets pixels or OCR.
 """
 
 from __future__ import annotations
@@ -27,6 +27,9 @@ sys.path.insert(0, str(PACKAGE_ROOT))
 
 from mcp import Client  # noqa: E402
 
+from xar_autoplayer.bridge.frontend_gui_route_contract import (  # noqa: E402
+    frontend_lobby_default_ruler_designer_ready_v1,
+)
 from xar_autoplayer.bridge.mcp_server import create_server  # noqa: E402
 from xar_autoplayer.bridge.native_driver import (  # noqa: E402
     NativeHeadlessGameplayDriver,
@@ -49,10 +52,20 @@ ACTIVATE_NEW_GAME_CAPABILITY = "game.command.activate-frontend-new-game-v1"
 ACTIVATE_PICK_ANY_CAPABILITY = (
     "game.command.activate-frontend-pick-any-character-v1"
 )
+ACTIVATE_SELECT_FIRST_CAPABILITY = (
+    "game.command.activate-frontend-select-first-bookmark-character-v1"
+)
+ACTIVATE_RULER_DESIGNER_CAPABILITY = (
+    "game.command.activate-frontend-ruler-designer-v1"
+)
 QUERY_TOOL = "ck3_query_frontend_gui_route_v1"
 INSPECT_TOOL = "ck3_inspect_frontend_gui_tree_v1"
 ACTIVATE_NEW_GAME_TOOL = "ck3_activate_frontend_new_game_v1"
 ACTIVATE_PICK_ANY_TOOL = "ck3_activate_frontend_pick_any_character_v1"
+ACTIVATE_PREPARE_CUSTOM_RULER_TOOL = (
+    "ck3_activate_frontend_prepare_custom_ruler_v1"
+)
+ACTIVATE_RULER_DESIGNER_TOOL = "ck3_activate_frontend_ruler_designer_v1"
 _PROFILE_EXCLUDES = frozenset(
     {"crashes", "dumps", "exceptions", "logs", "save games", "last_save.ck3"}
 )
@@ -205,6 +218,8 @@ async def _mcp_sequence(
             INSPECT_TOOL,
             ACTIVATE_NEW_GAME_TOOL,
             ACTIVATE_PICK_ANY_TOOL,
+            ACTIVATE_PREPARE_CUSTOM_RULER_TOOL,
+            ACTIVATE_RULER_DESIGNER_TOOL,
         }
         schemas = {
             name: tools[name].input_schema
@@ -244,6 +259,8 @@ async def _mcp_sequence(
                     INSPECT_CAPABILITY,
                     ACTIVATE_NEW_GAME_CAPABILITY,
                     ACTIVATE_PICK_ANY_CAPABILITY,
+                    ACTIVATE_SELECT_FIRST_CAPABILITY,
+                    ACTIVATE_RULER_DESIGNER_CAPABILITY,
                 }
                 <= set(advertised)
                 and {
@@ -251,6 +268,8 @@ async def _mcp_sequence(
                     INSPECT_CAPABILITY,
                     ACTIVATE_NEW_GAME_CAPABILITY,
                     ACTIVATE_PICK_ANY_CAPABILITY,
+                    ACTIVATE_SELECT_FIRST_CAPABILITY,
+                    ACTIVATE_RULER_DESIGNER_CAPABILITY,
                 }
                 <= set(hello_caps)
             ):
@@ -300,15 +319,36 @@ async def _mcp_sequence(
                 new_game=new_game,
             )
 
-        pick_any_call = await _call(client, ACTIVATE_PICK_ANY_TOOL)
-        record(pick_any_call)
-        pick_any = _structured(pick_any_call)
+        prepare_call = await _call(client, ACTIVATE_PREPARE_CUSTOM_RULER_TOOL)
+        record(prepare_call)
+        prepare = _structured(prepare_call)
+        after_prepare = (
+            prepare.get("after")
+            if isinstance(prepare.get("after"), dict)
+            else {}
+        )
+        if (
+            prepare_call.get("is_error") is not False
+            or after_prepare.get("route") != "lobby"
+        ):
+            return red(
+                "custom-ruler preparation did not reach a ready lobby",
+                tool_schemas=schemas,
+                capabilities=_structured(capability_call or {}),
+                before=before,
+                new_game=new_game,
+                prepare_custom_ruler=prepare,
+            )
+
+        ruler_designer_call = await _call(client, ACTIVATE_RULER_DESIGNER_TOOL)
+        record(ruler_designer_call)
+        ruler_designer = _structured(ruler_designer_call)
         inspection_call = await _call(client, INSPECT_TOOL)
         record(inspection_call)
         inspection = _structured(inspection_call)
-        after_pick_any = (
-            pick_any.get("after")
-            if isinstance(pick_any.get("after"), dict)
+        after_ruler_designer = (
+            ruler_designer.get("after")
+            if isinstance(ruler_designer.get("after"), dict)
             else {}
         )
         checks = {
@@ -326,22 +366,46 @@ async def _mcp_sequence(
             "new_game_no_mouse": new_game.get("uses_mouse") is False,
             "new_game_native_semantic_backend": new_game.get("input_backend")
             == "native_gui_semantic_activation",
-            "pick_any_not_error": pick_any_call.get("is_error") is False,
-            "pick_any_verified": pick_any.get("status") == "verified",
-            "pick_any_postcondition_verified": pick_any.get(
+            "prepare_not_error": prepare_call.get("is_error") is False,
+            "prepare_verified": prepare.get("status") == "verified",
+            "prepare_postcondition_verified": prepare.get(
                 "postcondition_verified"
             )
             is True,
-            "after_lobby": after_pick_any.get("route") == "lobby",
-            "pick_any_no_ocr": pick_any.get("uses_ocr") is False,
-            "pick_any_no_keyboard": pick_any.get("uses_keyboard") is False,
-            "pick_any_no_mouse": pick_any.get("uses_mouse") is False,
-            "pick_any_native_semantic_backend": pick_any.get("input_backend")
+            "after_lobby": after_prepare.get("route") == "lobby",
+            "lobby_designer_button_ready": (
+                frontend_lobby_default_ruler_designer_ready_v1(
+                    prepare.get("lobby_inspection")
+                )
+            ),
+            "prepare_no_ocr": prepare.get("uses_ocr") is False,
+            "prepare_no_keyboard": prepare.get("uses_keyboard") is False,
+            "prepare_no_mouse": prepare.get("uses_mouse") is False,
+            "prepare_native_semantic_backend": prepare.get("input_backend")
+            == "native_gui_semantic_activation",
+            "ruler_designer_not_error": ruler_designer_call.get("is_error")
+            is False,
+            "ruler_designer_verified": ruler_designer.get("status")
+            == "verified",
+            "ruler_designer_postcondition_verified": ruler_designer.get(
+                "postcondition_verified"
+            )
+            is True,
+            "after_ruler_designer": after_ruler_designer.get("route")
+            == "ruler_designer",
+            "ruler_designer_no_ocr": ruler_designer.get("uses_ocr") is False,
+            "ruler_designer_no_keyboard": ruler_designer.get("uses_keyboard")
+            is False,
+            "ruler_designer_no_mouse": ruler_designer.get("uses_mouse") is False,
+            "ruler_designer_native_semantic_backend": ruler_designer.get(
+                "input_backend"
+            )
             == "native_gui_semantic_activation",
             "tree_inspection_available": (
                 inspection_call.get("is_error") is False
                 and inspection.get("status") == "available"
                 and inspection.get("read_only") is True
+                and inspection.get("scope_root_name") == "ruler_designer"
             ),
         }
         return {
@@ -350,8 +414,9 @@ async def _mcp_sequence(
             "capabilities": _structured(capability_call or {}),
             "before": before,
             "new_game": new_game,
-            "pick_any_character": pick_any,
-            "tree_inspection_after_pick_any": inspection,
+            "prepare_custom_ruler": prepare,
+            "ruler_designer": ruler_designer,
+            "tree_inspection_after_ruler_designer": inspection,
             "calls": calls,
             "call_summary": call_summary,
             "checks": checks,
