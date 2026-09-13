@@ -27,8 +27,8 @@ SPEC.loader.exec_module(HARNESS)
 
 def test_exact_build_adds_event_selection_gate() -> None:
     capabilities = {
-        "action_steps": ["select-event-option-1"],
-        "bridge_capabilities": [],
+        "action_steps": [],
+        "bridge_capabilities": ["game.command.select-event-option-N"],
     }
     original = HARNESS.horizon._exact_build_proof
     try:
@@ -44,7 +44,7 @@ def test_exact_build_adds_event_selection_gate() -> None:
     finally:
         HARNESS.horizon._exact_build_proof = original
     assert proof["ok"] is True
-    assert proof["checks"]["select_event_option_step"] is True
+    assert proof["checks"]["select_event_option_capability"] is True
 
 
 def test_history_requires_every_declared_command_to_succeed() -> None:

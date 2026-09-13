@@ -67,10 +67,10 @@ def _exact_build_proof(
         war_id=war_id,
     )
     raw = capabilities if isinstance(capabilities, dict) else {}
-    steps = raw.get("action_steps")
-    step_set = set(steps) if isinstance(steps, list) else set()
-    result["checks"]["select_event_option_step"] = (
-        "select-event-option-1" in step_set
+    advertised = raw.get("bridge_capabilities")
+    result["checks"]["select_event_option_capability"] = (
+        isinstance(advertised, list)
+        and "game.command.select-event-option-N" in advertised
     )
     result["ok"] = all(result["checks"].values())
     return result
