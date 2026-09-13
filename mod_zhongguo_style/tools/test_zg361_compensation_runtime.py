@@ -1640,8 +1640,10 @@ class CompensationRuntimeTests(unittest.TestCase):
         )
         self.assertEqual(len(english_tooltip_values), 42)
         self.assertEqual(len(chinese_tooltip_values), 42)
-        self.assertTrue(all(subject_projection in value for value in english_tooltip_values))
-        self.assertTrue(all(subject_projection in value for value in chinese_tooltip_values))
+        self.assertTrue(all(subject_projection not in value for value in english_tooltip_values))
+        self.assertTrue(all(subject_projection not in value for value in chinese_tooltip_values))
+        self.assertTrue(all("the subject" in value for value in english_tooltip_values))
+        self.assertTrue(all("当事人" in value for value in chinese_tooltip_values))
         self.assertTrue(all("Compensation Docket" not in value for value in english_stage_values))
         self.assertTrue(all("薪酬案卷" not in value for value in chinese_stage_values))
 
@@ -1733,31 +1735,30 @@ class CompensationRuntimeTests(unittest.TestCase):
             self.assertNotIn("named_peer_salary", source)
 
     def test_reviewed_compensation_option_copy_is_exact_in_cn_en_and_placeholders(self) -> None:
-        subject = "[ROOT.Var('zg361_comp_portfolio_subject').Char.GetShortUIName]"
         expected_english = {
             "zg361comp.1.l3.r2": (
-                f"Grant {subject} the matching authority now while preserving the "
+                "Grant the subject the matching authority now while preserving the "
                 "existing above-band pay; add no raise and create no payment deadline."
             ),
             "zg361comp.1.ae4.r3": (
-                f"Grant {subject} a one-cycle pay-band exception; add and pay 0, "
+                "Grant the subject a one-cycle pay-band exception; add and pay 0, "
                 "and publish only the anonymous distribution."
             ),
             "zg361comp.1.af4.r1": (
-                f"Split {subject}'s units 50/50 between service and performance; "
+                "Split the subject's units 50/50 between service and performance; "
                 "both portions follow the same vesting schedule. After the first "
                 "vesting, submit departure classification; move 0 cash."
             ),
         }
         expected_chinese = {
             "zg361comp.1.l3.r2": (
-                f"现在按现有薪带外待遇授予 {subject} 相应权责；本次不再加俸，不设付款期限。"
+                "现在按现有薪带外待遇授予当事人相应权责；本次不再加俸，不设付款期限。"
             ),
             "zg361comp.1.ae4.r3": (
-                f"现在准许 {subject} 薪带外例外一轮；新增与支付均为零，只公布匿名分布。"
+                "现在准许当事人薪带外例外一轮；新增与支付均为零，只公布匿名分布。"
             ),
             "zg361comp.1.af4.r1": (
-                f"为 {subject} 服务份额与绩效份额各记五成，并按同一进度归属。"
+                "为当事人服务份额与绩效份额各记五成，并按同一进度归属。"
                 "首次归属后报离任分类，现金为零。"
             ),
         }
@@ -1915,10 +1916,11 @@ class CompensationRuntimeTests(unittest.TestCase):
                 )
                 self.assertLessEqual(len(button), 14)
                 self.assertNotRegex(button, r"\d")
-                self.assertIn(
+                self.assertNotIn(
                     "ROOT.Var('zg361_comp_portfolio_subject').Char.GetShortUIName",
                     tooltip,
                 )
+                self.assertIn("当事人", tooltip)
                 self.assertRegex(tooltip, financial_result_terms)
         for key in appeal_option_keys:
             self.assertIn("不花金币", chinese_values[key])
@@ -1937,17 +1939,12 @@ class CompensationRuntimeTests(unittest.TestCase):
         self.assertIn("否则均为零", chinese_values["zg361comp.1.af2.r1.tt"])
         self.assertIn("没收未归属、保留已归属", chinese_values["zg361comp.1.af5.r3.tt"])
 
-    def test_localization_variables_use_direct_root_var_projection(self) -> None:
+    def test_localization_variables_use_context_safe_root_projection(self) -> None:
         character_variable = "zg361_comp_portfolio_subject"
         expected_keys = {
             *(
                 f"zg361comp.1.{stage}"
                 for stage, _domain_number, _state in generator.PORTFOLIO_STAGES
-            ),
-            *(
-                f"zg361comp.1.{stage}.r{route}.tt"
-                for stage, _domain_number, _state in generator.PORTFOLIO_STAGES
-                for route in (1, 2, 3)
             ),
         }
         forbidden_projection = re.compile(
@@ -2003,7 +2000,7 @@ class CompensationRuntimeTests(unittest.TestCase):
                     )
                 }
                 self.assertEqual(projected_keys, expected_keys)
-                self.assertEqual(source.count(direct_projection), 56)
+                self.assertEqual(source.count(direct_projection), 14)
                 numeric_variables = numeric_projection.findall(source)
                 self.assertEqual(len(numeric_variables), 21)
                 self.assertEqual(set(numeric_variables), expected_numeric_variables)

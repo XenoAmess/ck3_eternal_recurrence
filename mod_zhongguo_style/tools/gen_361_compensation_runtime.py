@@ -3250,12 +3250,18 @@ def render_effect_parts() -> dict[str, bytes]:
 PORTFOLIO_OPTION_ROW = re.compile(
     r'^(?P<indent>\s+)(?P<key>zg361comp\.1\.(?P<stage>(?:l|ae|af)\d)\.r(?P<route>[123])):0\s+".*"$'
 )
+PORTFOLIO_SUBJECT_PROJECTION = (
+    "[ROOT.Var('zg361_comp_portfolio_subject').Char.GetShortUIName]"
+)
 
 
 def separate_portfolio_button_copy(
-    document: str, labels: dict[str, tuple[str, str, str]]
+    document: str,
+    labels: dict[str, tuple[str, str, str]],
+    *,
+    tooltip_subject: str,
 ) -> str:
-    """Keep action labels in buttons and detailed results in hover tooltips."""
+    """Keep short actions on buttons and context-safe results in hover tooltips."""
 
     rows: list[str] = []
     seen: set[tuple[str, int]] = set()
@@ -3271,7 +3277,15 @@ def separate_portfolio_button_copy(
             raise ValueError(f"duplicate portfolio option localization: {key}")
         seen.add((stage, route))
         rows.append(f'{match.group("indent")}{key}:0 "{labels[stage][route - 1]}"')
-        rows.append(line.replace(f"{key}:0", f"{key}.tt:0", 1))
+        tooltip = line.replace(f"{key}:0", f"{key}.tt:0", 1).replace(
+            PORTFOLIO_SUBJECT_PROJECTION,
+            tooltip_subject,
+        )
+        if tooltip_subject == "当事人":
+            tooltip = tooltip.replace(" 当事人 ", "当事人")
+            tooltip = tooltip.replace(" 当事人", "当事人")
+            tooltip = tooltip.replace("当事人 ", "当事人")
+        rows.append(tooltip)
 
     expected = {
         (stage, route)
@@ -3372,7 +3386,11 @@ def render_english_localization() -> bytes:
  zg361comp.904.a:0 "File the final long-term-award receipt; this changes no ledger balance."
 '''
     return localized(
-        separate_portfolio_button_copy(source, PORTFOLIO_BUTTON_LABELS_EN)
+        separate_portfolio_button_copy(
+            source,
+            PORTFOLIO_BUTTON_LABELS_EN,
+            tooltip_subject="the subject",
+        )
     )
 
 
@@ -3465,7 +3483,11 @@ def render_simp_chinese_localization() -> bytes:
  zg361comp.904.a:0 "收存长期功赏结算凭据；此举不再改动账目。"
 ''')
     return localized(
-        separate_portfolio_button_copy(source, PORTFOLIO_BUTTON_LABELS_CN)
+        separate_portfolio_button_copy(
+            source,
+            PORTFOLIO_BUTTON_LABELS_CN,
+            tooltip_subject="当事人",
+        )
     )
 
 
