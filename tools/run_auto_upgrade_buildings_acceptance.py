@@ -824,39 +824,57 @@ def run_cell(
         acceptance.ensure_game_paused(artifacts, "04_gameplay")
         policy_ui = exercise_policy_selector_ui(artifacts)
         acceptance.set_speed_five_and_unpause(artifacts, "aub_live")
-        interruption_state = {"last_check": 0.0, "dismissed": 0}
+        interruption_state = {
+            "last_check": 0.0,
+            "dismissed": 0,
+            "dismissed_by_kind": {},
+        }
 
-        def dismiss_known_norman_interruption() -> None:
+        def dismiss_known_vanilla_interruption() -> None:
             now = time.time()
             if now - interruption_state["last_check"] < 2.5:
                 return
             interruption_state["last_check"] = now
             acceptance.focus_ck3()
             image = acceptance.ImageGrab.grab()
-            title = acceptance.find_ocr_text(
-                image,
-                "诺曼人的西西里",
-                acceptance.FULL_SCREEN_REGION,
-                contains=False,
-            )
-            if title is None:
+            matched = None
+            for kind, title_text, option_text in (
+                (
+                    "norman_sicily",
+                    "诺曼人的西西里",
+                    "教宗和皇帝都可以保留他们的土地",
+                ),
+                ("war_declared", "已宣战", "召集部队"),
+            ):
+                if acceptance.find_ocr_text(
+                    image,
+                    title_text,
+                    acceptance.FULL_SCREEN_REGION,
+                    contains=False,
+                ) is not None:
+                    matched = (kind, title_text, option_text)
+                    break
+            if matched is None:
                 return
+            kind, title_text, option_text = matched
             option = acceptance.find_ocr_text(
                 image,
-                "教宗和皇帝都可以保留他们的土地",
+                option_text,
                 acceptance.FULL_SCREEN_REGION,
                 contains=True,
             )
             sequence = interruption_state["dismissed"] + 1
-            image.save(artifacts / f"06_norman_interruption_{sequence}_before.png")
+            image.save(
+                artifacts / f"06_{kind}_interruption_{sequence}_before.png"
+            )
             if option is None:
                 raise acceptance.RunnerError(
-                    "known Norman Sicily interruption appeared without its "
-                    "least-invasive localized option"
+                    f"known vanilla {kind} interruption appeared without its "
+                    "allowlisted localized option"
                 )
             acceptance.deliberate_click(
                 option,
-                "least-invasive option for known vanilla Norman Sicily interruption",
+                f"allowlisted option for known vanilla {kind} interruption",
             )
             deadline = time.time() + 6
             after = None
@@ -864,18 +882,18 @@ def run_cell(
                 after = acceptance.ImageGrab.grab()
                 if acceptance.find_ocr_text(
                     after,
-                    "诺曼人的西西里",
+                    title_text,
                     acceptance.FULL_SCREEN_REGION,
                     contains=False,
                 ) is None:
                     after.save(
-                        artifacts / f"06_norman_interruption_{sequence}_closed.png"
+                        artifacts / f"06_{kind}_interruption_{sequence}_closed.png"
                     )
                     break
                 time.sleep(acceptance.POLL_INTERVAL_S)
             else:
                 raise acceptance.RunnerError(
-                    "known Norman Sicily interruption did not close after selection"
+                    f"known vanilla {kind} interruption did not close after selection"
                 )
             before = acceptance.read_hud_game_day(after)
             acceptance.pyautogui.press("5")
@@ -888,10 +906,12 @@ def run_cell(
             else:
                 acceptance.pyautogui.press("space")
             interruption_state["dismissed"] = sequence
-            log("dismissed deterministic vanilla Norman Sicily interruption")
+            dismissed_by_kind = interruption_state["dismissed_by_kind"]
+            dismissed_by_kind[kind] = dismissed_by_kind.get(kind, 0) + 1
+            log(f"dismissed known vanilla {kind} interruption")
 
         for marker in REQUIRED_MARKERS:
-            stream.wait(marker, 120, on_poll=dismiss_known_norman_interruption)
+            stream.wait(marker, 120, on_poll=dismiss_known_vanilla_interruption)
         summary = acceptance.wait_for_ocr_text(
             "自动升级建筑验收通过",
             acceptance.FULL_SCREEN_REGION,
@@ -916,6 +936,9 @@ def run_cell(
         evidence = {
             "native_policy_selector": policy_ui,
             "known_vanilla_interruptions_dismissed": interruption_state["dismissed"],
+            "known_vanilla_interruptions_by_kind": interruption_state[
+                "dismissed_by_kind"
+            ],
             "domain_limit_policy": {
                 "exact_boundary_zero_builds": True,
                 "over_limit_minus_one_pauses_without_side_effects": True,
