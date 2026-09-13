@@ -1372,3 +1372,8 @@ one recommendation, one action and the bounded postwar/cold-restore checks.
 - The static-ready narrow projection now feeds a strict same-unit evaluator for white peace and surrender. It binds the exact surrender aggregate, repository budget profile and utility model and records per-feature contributions, uncertainty penalties and hard-budget eligibility.
 - The evaluator preserves seven white-peace and nine surrender effects as unobserved; current regiments are not misreported as proven surrender losses. Focused normal/optimized projection and evaluator tests pass `10/10`.
 - This output does not value continue, recommend among three exits or authorize an action. C remains blocked only on one bounded production frame, so GEN-034 stays `2/4`; D remains the later one-recommendation, one-action and postwar/cold-restore package.
+
+## GEN-034-C bounded live runner update (2026-09-13)
+
+- The reusable managed runner for the remaining C gate is static-ready. It allows exactly one termination-options read and one narrow terms read at the same paused revision, rejects any additional native command, and keeps broad preview, time advance and all exit actions disabled.
+- Focused normal/optimized tests pass `4/4`. The next step is one no-launch identity admission and, only if GREEN, current round R640 against the immutable R459 checkpoint.

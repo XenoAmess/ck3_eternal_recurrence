@@ -100,3 +100,18 @@ Python. GEN-034-C remains `blocked_live`: one bounded production frame must
 prove the same projection/evaluation path before C can close. The next
 integration package will value continue separately from measured strategic
 power, then produce the one three-way decision required by GEN-034-D.
+
+## Bounded production runner
+
+`run_gen034_white_peace_evaluation_live_acceptance.py` reuses the managed
+cold-checkpoint session owner. It admits exactly one options query followed by
+one narrow terms query at the same paused public revision, then runs the
+projection and immediate-exit evaluator in process. Native command history
+must contain exactly those two successful reads. The runner also requires the
+crash-prone broad preview family to be absent from advertised action steps.
+
+The runner never advances time, submits a war-exit action, or enables continue
+valuation. Its focused tests pass `4/4` in normal and optimized Python. The
+next action is its no-launch admission against the frozen R459 checkpoint,
+followed by one managed current round R640 only if every immutable identity is
+GREEN.

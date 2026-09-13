@@ -37,7 +37,8 @@
         "R471",
         "GEN-034-A campaign dominance receipt AB0DB5678F65631D63E5A54BA66B61A6F5956179C0A4D3970B78BEAC5E9E0569",
         "GEN-034-C Raiktor white-peace narrow projection provider static-ready (normal/optimized 6/6)",
-        "GEN-034-C white-peace/surrender same-unit evaluator static-ready (normal/optimized 10/10)"
+        "GEN-034-C white-peace/surrender same-unit evaluator static-ready (normal/optimized 10/10)",
+        "GEN-034-C bounded two-query managed live runner static-ready (normal/optimized 4/4)"
       ],
       "planner_consumer": "three-way exit recommendation and one semantic exit action",
       "visible_outcome": "compare continue, white peace and surrender on one paused frame, submit once, then verify postwar state and cold restore",
@@ -169,7 +170,7 @@
         "id": "GEN-034-C",
         "name": "same-frame white-peace comparison",
         "status": "blocked_live",
-        "latest_evidence": "Raiktor same-frame projection and white-peace/surrender utility evaluator are static-ready (normal/optimized 10/10); one bounded production frame remains"
+        "latest_evidence": "Projection, immediate-exit evaluator and bounded two-query managed runner are static-ready; one production frame remains"
       },
       {
         "id": "GEN-034-D",
@@ -180,5 +181,5 @@
     ]
   },
   "religion_boundary": "deferred except the minimum native result needed by holy-war execution and marriage legality or acceptance",
-  "updated_at": "2026-09-13T23:55:00+08:00"
+  "updated_at": "2026-09-13T23:59:00+08:00"
 }
