@@ -1,6 +1,6 @@
 # “自动升级建筑”四期：超直辖暂停策略需求与开发计划
 
-状态：**implementation-complete；4.0.0 发布级九语与逻辑矩阵 R0032 GREEN，用户定稿的专属决议插图已通过 L0，尚待一次针对插图加载的实机复核及 Workshop、fresh-cache、changelog 收口**
+状态：**implementation-complete；4.0.0 发布级九语、逻辑矩阵 R0032 与专属决议插图 R0033 均 GREEN，尚待 Workshop、fresh-cache 与 changelog 收口**
 
 候选版本：`4.0.0`
 
@@ -186,6 +186,7 @@ CK3 1.19.0.6 的 `common/decisions/_decisions.info` 明确规定一个决议最�
 - `desktop-3fevhd2-1c74096080--auto-upgrade-buildings--R0032` 全量 GREEN：六项 hover、选择/确认、`0/-1/恢复`、暂停零副作用、继续策略、旧存档默认、三种资金、禁止拆分付款、禁用/重启，以及主建筑、普通、公国、特殊、混合资源和负向路径抽样全部通过；共保全 46 条 AUBT 记录（29 条 `TEST PASS`，所有必需 marker 各出现一次），项目诊断为 0，产品/fixture/源码未被游戏改写，受保护存储保持不变。证据入口为 `D:\workspace\ck3_auto_upgrade_runtime\phase4-live-r7-20260914\report.json`。
 - R0032 的 Open Kaishek 层因该工具未登记 `auto-upgrade-buildings-1.19.0-source` fixture 而标为 `not-applicable / unknown-fixture`；同一报告中的 root parser 为 GREEN，真实 CK3 非调试实机为 GREEN。该工具覆盖缺口与产品结论分开记录。
 - R0032 后用户选择了新的专属决议插图，因此 R0032 继续作为全部玩法和 UI 文案的权威 GREEN；新增美术只需一次不重复逻辑矩阵的聚焦加载验收。美术来源、提示词、哈希与投影合同见 [决议插图记录](auto-upgrade-buildings-art.md)。
+- `desktop-3fevhd2-1c74096080--auto-upgrade-buildings--R0033` 已完成该聚焦验收：exact 16-file projection 在 CK3 `1.19.0.6` 的原生决议框中正确显示人物、图纸、施工现场与赛博噪声，没有紫块、缺图或拉伸；六项 hover 与确认文案顺带保持 GREEN，项目诊断为 0，产品／fixture／受保护存储未变化，一次性 userdir 已删除。报告入口为 `D:\workspace\ck3_auto_upgrade_runtime\phase4-art-live-20260914\report.json`，SHA-256 `0C0C380F8C953180EA63EB0D525369FB5CFD3C2E2C577869CB0C5BC2B7952663`；完整视觉审阅见 [决议插图记录](auto-upgrade-buildings-art.md)。
 
 | 工作包 | 预计工时 |
 | --- | ---: |

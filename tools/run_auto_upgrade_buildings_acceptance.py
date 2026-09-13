@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import argparse
 import base64
+from contextlib import contextmanager
 from datetime import datetime, timezone
 import json
 import os
@@ -35,6 +36,14 @@ import run_vivhite_acceptance as isolated
 import validate_auto_upgrade_buildings_static as static_gate
 
 
+AUTOPLAYER_SOURCE = ROOT / "ck3_autonomous_player" / "src"
+if str(AUTOPLAYER_SOURCE) not in sys.path:
+    sys.path.insert(0, str(AUTOPLAYER_SOURCE))
+
+from xar_autoplayer.errors import AgentError
+from xar_autoplayer.locking import exclusive_launch_lock
+
+
 SOURCE = ROOT / "mod_auto_upgrade_buildings"
 FIXTURE_SOURCE = ROOT / "tools" / "fixtures" / "auto_upgrade_buildings_acceptance"
 EXPECTED_GAME_VERSION = "1.19.0.6"
@@ -45,6 +54,7 @@ PRODUCT_OUTER = "mod_auto_upgrade_buildings_acceptance.mod"
 FIXTURE_OUTER = "aubt_acceptance_fixture.mod"
 POSTFLIGHT_STABILITY_SECONDS = 5
 BOOT_TIMEOUT_SECONDS = 1800
+SLOT_WAIT_TIMEOUT_SECONDS = 1800
 UPSTREAM_CACHE = Path(
     r"C:\SteamLibrary\steamapps\workshop\content\1158310\3596580780"
 )
@@ -98,6 +108,14 @@ REQUIRED_MARKERS = (
 )
 OPEN_KAISHEK_PREFLIGHT_RESULT: dict[str, object] | None = None
 ORIGINAL_FOCUS_CK3 = acceptance.focus_ck3
+
+
+class ArtOnlyComplete(Exception):
+    """Internal signal that the focused decision-art evidence is complete."""
+
+    def __init__(self, policy_ui: dict[str, object]) -> None:
+        super().__init__("focused decision-art evidence complete")
+        self.policy_ui = policy_ui
 
 
 REALTEK_TOAST_DISMISS_SCRIPT = r"""
@@ -171,6 +189,33 @@ Write-Output '{"dismissed":true,"sender":"Realtek","control":"DismissButton"}'
 
 def log(message: str) -> None:
     acceptance.log(f"auto_upgrade_buildings: {message}")
+
+
+@contextmanager
+def wait_for_ck3_slot(game_exe: Path, timeout_seconds: float = SLOT_WAIT_TIMEOUT_SECONDS):
+    """Acquire the installation-wide CK3 launch lock before touching the process."""
+    started = time.monotonic()
+    while True:
+        lock = exclusive_launch_lock(game_exe)
+        try:
+            lock.__enter__()
+            break
+        except AgentError:
+            waited = time.monotonic() - started
+            if waited >= timeout_seconds:
+                raise acceptance.RunnerError(
+                    f"timed out waiting for the shared CK3 slot after {waited:.1f}s"
+                )
+            log(f"shared CK3 slot occupied; waiting ({waited:.1f}s)")
+            time.sleep(5)
+    try:
+        if acceptance.ck3_is_running():
+            raise acceptance.RunnerError(
+                "CK3 process exists after acquiring the shared launch lock"
+            )
+        yield round(time.monotonic() - started, 3)
+    finally:
+        lock.__exit__(None, None, None)
 
 
 def dismiss_exact_realtek_toast() -> bool:
@@ -773,6 +818,7 @@ def run_cell(
     userdir: Path,
     keep_userdir: bool,
     run_identity: live_ids.LiveRunIdentity,
+    art_only: bool = False,
 ) -> dict[str, object]:
     started = time.perf_counter()
     started_at = datetime.now(timezone.utc).isoformat()
@@ -823,6 +869,12 @@ def run_cell(
         isolated.wait_for_gameplay_hud(artifacts)
         acceptance.ensure_game_paused(artifacts, "04_gameplay")
         policy_ui = exercise_policy_selector_ui(artifacts)
+        if art_only:
+            ensure_final_pause_by_date(artifacts, "06_art_only_map")
+            diagnostics.extend(project_diagnostics(userdir, artifacts, "07_art_only"))
+            if diagnostics:
+                raise acceptance.RunnerError(diagnostics[-1])
+            raise ArtOnlyComplete(policy_ui)
         acceptance.set_speed_five_and_unpause(artifacts, "aub_live")
         interruption_state = {
             "last_check": 0.0,
@@ -986,6 +1038,22 @@ def run_cell(
         if diagnostics:
             raise acceptance.RunnerError(diagnostics[-1])
         result = "GREEN"
+    except ArtOnlyComplete as complete:
+        evidence = {
+            "acceptance_scope": "focused-decision-art-load",
+            "native_policy_selector": complete.policy_ui,
+            "decision_art": {
+                "reference": (
+                    "gfx/interface/illustrations/decisions/"
+                    "decision_auto_upgrade_buildings.dds"
+                ),
+                "expected_format": "DXT1",
+                "expected_dimensions": [1100, 440],
+                "screenshot_review_required": True,
+            },
+        }
+        result = "GREEN"
+        error_reason = None
     except BaseException as error:
         error_reason = str(error) or type(error).__name__
         log(f"FATAL {error_reason}")
@@ -1004,7 +1072,11 @@ def run_cell(
                 result = "RED"
                 error_reason = f"{error_reason}; controlled stop failed: {error}"
         try:
-            stream.validate(final=True) if result == "GREEN" else stream.pump(final=True)
+            (
+                stream.validate(final=True)
+                if result == "GREEN" and not art_only
+                else stream.pump(final=True)
+            )
         except BaseException as error:
             result = "RED"
             error_reason = f"{error_reason}; {error}"
@@ -1085,6 +1157,7 @@ def main(
     keep_userdir: bool = False,
     preflight_only: bool = False,
     skip_open_kaishek: bool = False,
+    art_only: bool = False,
 ) -> int:
     preflight(skip_open_kaishek)
     if preflight_only:
@@ -1107,7 +1180,14 @@ def main(
     protected_before = protected_snapshot(steam_root)
     artifacts.mkdir()
     live_ids.write_identity_receipt(artifacts, (run_identity,))
-    report = run_cell(artifacts / "cell", userdir, keep_userdir, run_identity)
+    with wait_for_ck3_slot(acceptance.CK3_EXE) as slot_wait_seconds:
+        report = run_cell(
+            artifacts / "cell",
+            userdir,
+            keep_userdir,
+            run_identity,
+            art_only,
+        )
     result = report["result"]
     error_reason = report["error_reason"]
     protected_unchanged = False
@@ -1127,6 +1207,8 @@ def main(
             "completed-green" if result == "GREEN" else "completed-red",
             reason=(
                 "acceptance matrix passed"
+                if result == "GREEN" and not art_only
+                else "focused decision-art load check passed"
                 if result == "GREEN"
                 else (error_reason or "acceptance matrix failed")
             ),
@@ -1142,6 +1224,13 @@ def main(
         "cell": report,
         "protected_storage_unchanged": protected_unchanged,
         "postflight_quiet_seconds": POSTFLIGHT_STABILITY_SECONDS if result == "GREEN" else 0,
+        "shared_ck3_slot": {
+            "mechanism": "xar_autoplayer.locking.exclusive_launch_lock",
+            "wait_seconds": slot_wait_seconds,
+        },
+        "acceptance_scope": (
+            "focused-decision-art-load" if art_only else "full-product-matrix"
+        ),
     }
     write_json(artifacts / "report.json", matrix)
     print("\n===== AUTO UPGRADE BUILDINGS ACCEPTANCE =====")
@@ -1159,6 +1248,11 @@ if __name__ == "__main__":
     parser.add_argument("--keep-userdir", action="store_true")
     parser.add_argument("--preflight", action="store_true")
     parser.add_argument("--skip-open-kaishek", action="store_true")
+    parser.add_argument(
+        "--art-only",
+        action="store_true",
+        help="open the policy decision and preserve focused custom-art evidence only",
+    )
     arguments = parser.parse_args()
     try:
         raise SystemExit(
@@ -1167,6 +1261,7 @@ if __name__ == "__main__":
                 arguments.keep_userdir,
                 arguments.preflight,
                 arguments.skip_open_kaishek,
+                arguments.art_only,
             )
         )
     except (acceptance.RunnerError, live_ids.LiveRunIdError) as error:

@@ -25,3 +25,16 @@ py tools/compose_auto_upgrade_buildings_decision_art.py --check
 当前 DDS SHA-256 为 `B41C0961BE1EE9B8046CC2CA439E611C1200664779974CFD9DD6962D7AD688F1`。启用与禁用决议共同引用该资产。静态校验会从权威 PNG 重新编码，并逐字节比较 DDS，同时检查尺寸和 DXT1 FourCC。
 
 加入该 DDS 后，正式 Workshop staging 从历史 15 个运行时文件增加为 16 个；源 PNG、提示词和生成脚本不进入 Workshop payload。
+
+## 实机验收
+
+`desktop-3fevhd2-1c74096080--auto-upgrade-buildings--R0033` 在 CK3 `1.19.0.6` 中使用 exact 16-file release projection 完成聚焦验收：
+
+- 系统级 `exclusive_launch_lock` 等待 `0.114` 秒后取得唯一 CK3 槽；受管 PID `27452` 退出后 Get-Process 与 WMI 均为 0。
+- 原生决议框正确加载定稿图，没有缺图紫块或异常拉伸；人物的悲伤疲惫表情、书写动作、堆积图纸、绿色代码雨、RGB 撕裂和施工城堡均在实际裁切中可辨，按钮与文字仍清楚。
+- 六项策略 hover 与自然确认文案顺带保持 GREEN；项目诊断为 `[]`，产品与 fixture 树未变化，一次性 userdir 已删除，受保护存储未变化。
+- 顶层报告：`D:\workspace\ck3_auto_upgrade_runtime\phase4-art-live-20260914\report.json`，SHA-256 `0C0C380F8C953180EA63EB0D525369FB5CFD3C2E2C577869CB0C5BC2B7952663`。
+- 原始桌面截图：`cell\05_policy_selector_clean_surface.png`，`2560×1440`，SHA-256 `CA1687BACED2205882C27192E8546705079E03358C213454CEE57041CC38DA9D`。
+- 人工视觉复核：`visual-review.json`，SHA-256 `0008BC922C59DDC668E470FCC407F9AF64FCADD4FA0CB8F2CFE54435EB049E18`。
+
+该轮只覆盖 R0032 后新增的美术加载面，不重复 R0032 已闭合的玩法状态机和建筑／付款矩阵。
