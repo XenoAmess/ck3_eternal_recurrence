@@ -286,6 +286,39 @@ class Gen034ThreeWayExitActionLiveAcceptanceTests(unittest.TestCase):
         self.assertIsNone(result["checkpoint_restore"])
         self.assertEqual(len(client.calls), 3)
 
+    def test_continue_waits_for_a_real_successor_without_resubmitting(self) -> None:
+        gate = _authorized("continue")
+        read = _read_phase(gate)
+        read["allowed_gameplay_commands"] = read[
+            "allowed_gameplay_commands"
+        ][:2]
+        before = read["before_snapshot"]["structured_content"]
+        stalled = deepcopy(before)
+        stalled = _with_history(
+            stalled,
+            [*read["allowed_gameplay_commands"], "resume-map"],
+        )
+        successor = _post(gate, route="continue")
+        successor = _with_history(
+            successor,
+            [*read["allowed_gameplay_commands"], "resume-map"],
+        )
+        action_result = _action_result(gate, successor)
+        client = _FakeClient([before, action_result, stalled, successor])
+
+        result = asyncio.run(
+            HARNESS._execute_action_tail(
+                client,
+                read_phase=read,
+                source_capture={},
+                source_capture_sha256=SOURCE_CAPTURE_SHA256,
+            )
+        )
+
+        self.assertTrue(result["ok"])
+        self.assertEqual(result["continue_observation_attempts"], 2)
+        self.assertEqual(result["issued_commands"], ["resume-map"])
+
     def test_observed_cleanup_red_stops_before_checkpoint(self) -> None:
         read, client = _termination_fixture(cleanup_status="still_alive")
 
@@ -422,7 +455,8 @@ class Gen034ThreeWayExitActionLiveAcceptanceTests(unittest.TestCase):
         source = SCRIPT.read_text(encoding="utf-8")
         self.assertNotIn('"life-advance"', source)
         self.assertNotIn("query-war-termination-exit-terms-v2", source)
-        self.assertNotIn("asyncio.sleep", source)
+        self.assertEqual(HARNESS.CONTINUE_SUCCESSOR_TIMEOUT_SECONDS, 5.0)
+        self.assertEqual(HARNESS.CONTINUE_SUCCESSOR_POLL_SECONDS, 0.1)
 
 
 if __name__ == "__main__":

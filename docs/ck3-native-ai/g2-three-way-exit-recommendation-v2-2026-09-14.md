@@ -206,6 +206,35 @@ fresh power reads and one strategic action. If `continue` remains the winner,
 the runner verifies only the resumed successor and deliberately leaves
 `gen034_closed=false`; it does not extend into a war long-run.
 
+## R659 submitted continue before observing its successor
+
+R659 used the unique PID `215556`. Exact-build proof, the two fresh exit reads,
+immutable-checkpoint replay, production recommendation, action authorization
+and the exact command delta all passed. The retained command history is
+options, terms and one `resume-map`; fresh power-query count is zero. The
+action returned `accepted=true/status=submitted`, but the immediately following
+snapshot still had the original revision, native revision and date. The pure
+postcondition therefore correctly kept
+`map_resume_is_observed_on_a_successor_revision=false` and the run RED.
+
+This is an observation-timing defect in the harness, not permission to treat
+the ACK as execution. The source checkpoint and driver state stayed unchanged,
+cleanup is GREEN and CK3 returned to zero. Report and final driver-state
+SHA-256 values are
+`CC19C975F6791049D7797101A78740F24DCE01AE67D0A26EA3C92CE0E1A172BB`
+and `75D97E5303540385BA846BFFEFCDD53D35CDF63F07C5D71A0CBBFA4321ACD4FF`.
+The outer report's `paused double-sample MCP proof failed` text was a stale
+generic-runner label; the embedded typed result above is authoritative.
+
+The continue tail now observes snapshots for at most five seconds after the
+single submitted `resume-map`. It never resubmits the command. A successor
+still requires higher public/native revisions, a later raw date, the same
+episode/player/WarID and no active event. The shared outer error label is now
+the accurate `managed MCP sequence proof failed`. Focused action/gate/
+postcondition tests pass `21/21` in normal and optimized Python, including a
+stalled first snapshot followed by a valid successor. One R660 replay of this
+changed behavior is justified; another unchanged retry is not.
+
 ## Exact action admission
 
 `raiktor_three_way_exit_action_gate.py` is the final side-effect-free handoff

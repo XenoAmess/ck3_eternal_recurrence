@@ -776,7 +776,7 @@ def _run(
             )
         )
         if mcp_sequence.get("ok") is not True:
-            raise RuntimeError("paused double-sample MCP proof failed")
+            raise RuntimeError("managed MCP sequence proof failed")
     except BaseException as error:
         if isinstance(error, OfficialMcpResultEnvelopeError):
             mcp_sequence = error.diagnostic()

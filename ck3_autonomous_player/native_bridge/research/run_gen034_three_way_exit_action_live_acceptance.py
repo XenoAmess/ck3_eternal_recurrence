@@ -18,6 +18,7 @@ import functools
 import json
 from pathlib import Path
 import sys
+import time
 from typing import Any
 
 
@@ -53,6 +54,8 @@ from xar_autoplayer.simulation.raiktor_three_way_exit_postwar_evidence import ( 
 
 REPORT_KIND = "ck3_gen034_three_way_exit_action_live_acceptance"
 RESULT_SCHEMA = "xar.ck3.gen034_three_way_exit_action_live_acceptance.v1"
+CONTINUE_SUCCESSOR_TIMEOUT_SECONDS = 5.0
+CONTINUE_SUCCESSOR_POLL_SECONDS = 0.1
 
 
 class Gen034ActionRunnerError(RuntimeError):
@@ -310,6 +313,24 @@ async def _execute_action_tail(
             action_result,
             post,
         )
+        observation_attempts = 1
+        deadline = time.monotonic() + CONTINUE_SUCCESSOR_TIMEOUT_SECONDS
+        while (
+            postcondition.get("postcondition_verified") is not True
+            and time.monotonic() < deadline
+        ):
+            await asyncio.sleep(CONTINUE_SUCCESSOR_POLL_SECONDS)
+            post_result = await client.call_tool("ck3_take_snapshot", {})
+            post = base._structured(
+                post_result,
+                tool_name="ck3_take_snapshot:continue-successor",
+            )
+            observation_attempts += 1
+            postcondition = provide_raiktor_three_way_exit_postcondition(
+                action_gate,
+                action_result,
+                post,
+            )
         history = recommendation._history_checks(
             origin,
             post,
@@ -338,6 +359,7 @@ async def _execute_action_tail(
             "postwar_evidence": None,
             "checkpoint_restore": None,
             "postcondition": postcondition,
+            "continue_observation_attempts": observation_attempts,
             "issued_commands": issued_commands,
             "exit_action_commands": [action_step],
             "checks": checks,
