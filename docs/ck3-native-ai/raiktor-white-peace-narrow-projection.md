@@ -10,13 +10,20 @@ runs crashed in CK3 RVA `0x334C668`. That RED remains open and its production
 dispatch remains disabled.
 
 The replacement is
-`raiktor_white_peace_narrow_projection_provider.py`. It is a read-only Python
+`raiktor_white_peace_narrow_projection_provider.py`. Provider v2 is a read-only Python
 composition over the existing safe `ck3_query_war_termination_options` and
 `ck3_query_war_termination_terms` results. It accepts only the primary attacker
 in `raiktor_claim_cb`, and requires the snapshot, both query receipts and the
 surrender aggregate session to agree on process, connection generation,
 episode, snapshot, revisions, date, WarID and CB identity. It adds no mailbox
 command, ABI, native reader or mutation.
+
+The v2 observation separates consequence evidence from current execution
+availability. An explicit native rejection of the outbound white-peace option
+no longer erases exact-build white-peace terms. The observation preserves that
+rejection and the same-frame surrender execution state for the downstream
+eligibility gate. Missing terms evidence and a CB that forbids white peace
+remain blockers.
 
 ## Exact-build projection
 
@@ -32,7 +39,7 @@ CK3 executable SHA-256
 
 | Domain | White-peace value | Evidence rule |
 |---|---|---|
-| final response | native `recipient_response` | copied from the same-frame options query |
+| execution state | native white-peace and surrender option state | copied from the same-frame options query; it gates execution downstream, not consequence projection |
 | declared claims | retained; weak claims strengthened | exact `on_white_peace` target-title loop |
 | primary gold transfer | `0` | no primary transfer exists in the exact white-peace branch |
 | attacker prestige | `cb_prestige_factor * -5` | the branch runs the same `setup_claim_cb(victory=no)` before its literal multiplier |
@@ -63,8 +70,9 @@ itself authorize white peace or surrender.
 ## Verification and next live step
 
 Focused tests pass normal and optimized modes, `6/6` each. They cover a full
-projection into the existing same-frame comparator, session drift, unavailable
-recipient response, missing truce duration, wrong CB and missing inputs. The
+projection into the existing same-frame comparator, session drift, explicit
+native unavailability with preserved terms, missing truce duration, wrong CB
+and missing inputs. The
 representative projection compares attacker prestige `-35.0` under white peace
 with `-70.0` under surrender while preserving the exact terms distinctions.
 

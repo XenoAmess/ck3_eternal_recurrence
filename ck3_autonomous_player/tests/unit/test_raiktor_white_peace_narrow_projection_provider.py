@@ -164,6 +164,13 @@ class RaiktorWhitePeaceNarrowProjectionProviderTests(unittest.TestCase):
                 "would_accept_now"
             ]
         )
+        self.assertEqual(
+            observation["option"]["recipient_response"]["status"],
+            "available",
+        )
+        self.assertTrue(
+            observation["option"]["same_frame_surrender"]["available"]
+        )
         self.assertIn(
             "participant_ally_fame_deltas",
             result["unobserved_dynamic_effects"],
@@ -199,18 +206,30 @@ class RaiktorWhitePeaceNarrowProjectionProviderTests(unittest.TestCase):
                 _snapshot(), options, _terms_query()
             )
 
-    def test_unavailable_final_option_is_a_typed_blocker(self) -> None:
+    def test_unavailable_option_keeps_terms_and_execution_state(self) -> None:
         result = provide_raiktor_white_peace_narrow_projection(
             _snapshot(), _options_query(available=False), _terms_query()
         )
-        self.assertEqual(result["status"], "evidence_required")
-        self.assertFalse(result["observation_ready"])
-        self.assertIn(
-            "white_peace_native_option_unavailable", result["blockers"]
+        self.assertEqual(result["status"], "available")
+        self.assertTrue(result["observation_ready"])
+        self.assertEqual(result["blockers"], [])
+        option = result["white_peace_observation"]["option"]
+        self.assertFalse(option["available"])
+        self.assertFalse(option["native_validator"])
+        self.assertEqual(
+            option["recipient_response"],
+            {
+                "status": "unavailable",
+                "decision_status_raw": None,
+                "would_accept_now": None,
+            },
         )
-        self.assertIn(
-            "white_peace_final_recipient_response_unavailable",
-            result["blockers"],
+        self.assertTrue(option["same_frame_surrender"]["available"])
+        self.assertEqual(
+            result["white_peace_observation"]["terms"][
+                "claim_disposition"
+            ],
+            "retain_and_strengthen_weak",
         )
 
     def test_missing_truce_duration_remains_red(self) -> None:

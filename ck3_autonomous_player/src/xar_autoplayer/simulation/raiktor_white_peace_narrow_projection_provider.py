@@ -29,8 +29,8 @@ from xar_autoplayer.simulation.raiktor_white_peace_comparison_contracts import (
 )
 
 
-PROVIDER_SCHEMA = "xar.ck3.raiktor_white_peace_narrow_projection_provider.v1"
-PROVIDER_ID = "raiktor-white-peace-narrow-projection-v1"
+PROVIDER_SCHEMA = "xar.ck3.raiktor_white_peace_narrow_projection_provider.v2"
+PROVIDER_ID = "raiktor-white-peace-narrow-projection-v2"
 GAME_VERSION = "1.19.0.6"
 EXECUTABLE_SHA256 = (
     "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86"
@@ -181,7 +181,7 @@ def provide_raiktor_white_peace_narrow_projection(
         )
 
     white_option = options["options"]["white_peace"]
-    response = white_option["recipient_response"]
+    surrender_option = options["options"]["surrender"]
     prestige_factor = terms["attacker_fame"]["cb_prestige_factor"]
     prestige_delta_raw = _checked_multiply(
         prestige_factor["raw"], -5, "white-peace prestige delta"
@@ -219,16 +219,8 @@ def provide_raiktor_white_peace_narrow_projection(
             "claimant_character_id"
         ],
     }
-    option = {
-        "context_constructed": white_option["context_constructed"],
-        "native_validator": white_option["native_validator_passed"],
-        "available": white_option["available"],
-        "auto_accept": white_option["auto_accept"],
-        "recipient_response": {
-            "decision_status_raw": response["decision_status_raw"],
-            "would_accept_now": response["would_accept_now"],
-        },
-    }
+    option = _execution_option(white_option)
+    option["same_frame_surrender"] = _execution_option(surrender_option)
     white_terms = {
         "declared_target_title_ids": copy.deepcopy(
             terms["target_title_ids"]
@@ -271,7 +263,7 @@ def provide_raiktor_white_peace_narrow_projection(
             "evaluated_surrender_terms_sha256": aggregate_sha,
             "producer": {
                 "producer_id": PROVIDER_ID,
-                "producer_version": "v1",
+                "producer_version": "v2",
                 "source_artifact_sha256": source_bundle_sha,
                 "production_live": production_live,
             },
@@ -457,18 +449,8 @@ def _readiness_blockers(
     options: dict[str, object], terms: dict[str, object]
 ) -> list[str]:
     blockers: list[str] = []
-    white = options["options"]["white_peace"]
-    response = white["recipient_response"]
     if options.get("cb_allows_white_peace") is not True:
         blockers.append("casus_belli_forbids_white_peace")
-    if not (
-        white.get("context_constructed") is True
-        and white.get("native_validator_passed") is True
-        and white.get("available") is True
-    ):
-        blockers.append("white_peace_native_option_unavailable")
-    if response.get("status") != "available":
-        blockers.append("white_peace_final_recipient_response_unavailable")
     fame = terms.get("attacker_fame")
     if not isinstance(fame, dict) or fame.get("actual_delta_observable") is not True:
         blockers.append("white_peace_prestige_factor_unavailable")
@@ -488,6 +470,21 @@ def _readiness_blockers(
     ) is not True:
         blockers.append("white_peace_favor_condition_unavailable")
     return blockers
+
+
+def _execution_option(option: dict[str, object]) -> dict[str, object]:
+    response = option["recipient_response"]
+    return {
+        "context_constructed": option["context_constructed"],
+        "native_validator": option["native_validator_passed"],
+        "available": option["available"],
+        "auto_accept": option["auto_accept"],
+        "recipient_response": {
+            "status": response["status"],
+            "decision_status_raw": response["decision_status_raw"],
+            "would_accept_now": response["would_accept_now"],
+        },
+    }
 
 
 def _source_evidence(terms: dict[str, object]) -> dict[str, object]:
@@ -576,6 +573,7 @@ def _result(
             "broad_loaded_effect_preview_remains_disabled",
             "copied_values_require_exact_shared_script_expressions",
             "unobserved_dynamic_effects_are_not_zero",
+            "terms_observation_is_independent_of_current_execution_availability",
             "provider_does_not_authorize_or_submit_an_action",
         ],
     }
