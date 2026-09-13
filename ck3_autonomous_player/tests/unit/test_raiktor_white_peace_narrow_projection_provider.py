@@ -185,6 +185,20 @@ class RaiktorWhitePeaceNarrowProjectionProviderTests(unittest.TestCase):
             "war_bound_army_losses",
             result["surrender_unobserved_dynamic_effects"],
         )
+        self.assertEqual(
+            result["surrender_feature_observation"],
+            {
+                "primary_gold_transfer_raw": 15_000_000,
+                "attacker_prestige_delta_raw": -7_000_000,
+                "declared_claim_removed_count": 1,
+                "favor_hook_applied": 1,
+                "truce_day_count": 1_825,
+                "pow_release_count": 1,
+                "title_holder_change_count": 0,
+                "hostage_transfer_count": 0,
+                "war_bound_soldier_loss_count": 0,
+            },
+        )
 
         comparison = provide_raiktor_same_frame_white_peace_comparison(
             source_checkpoint_value=_source(observation["frame"]),

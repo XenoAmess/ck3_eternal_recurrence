@@ -18,12 +18,19 @@ surrender aggregate session to agree on process, connection generation,
 episode, snapshot, revisions, date, WarID and CB identity. It adds no mailbox
 command, ABI, native reader or mutation.
 
-The v2 observation separates consequence evidence from current execution
+The v3 observation separates consequence evidence from current execution
 availability. An explicit native rejection of the outbound white-peace option
 no longer erases exact-build white-peace terms. The observation preserves that
 rejection and the same-frame surrender execution state for the downstream
 eligibility gate. Missing terms evidence and a CB that forbids white peace
 remain blockers.
+
+Provider v3 also publishes the surrender feature vector directly from the
+same normalized terms query. This preserves the observed gold, prestige,
+claim, favor, truce and prisoner consequences when the legacy aggregate
+wrapper has not materialized its truce child. The aggregate remains mandatory
+for session identity and hash binding; its derived completeness bit no longer
+erases terms that are already present in the bound source query.
 
 ## Exact-build projection
 
@@ -91,7 +98,7 @@ multiplication; discrete claims, favors, truce days, prisoner releases, title
 changes, hostage transfers and proven war-bound soldier losses use direct
 integer coefficients.
 
-Evaluator v2 applies the model's bounded per-effect uncertainty penalty to
+Evaluator v3 applies the model's bounded per-effect uncertainty penalty to
 seven white-peace effects and nine surrender effects that the narrow queries do
 not value. It also applies the existing option-specific hard budgets before
 reporting a pairwise preference. It scores a consequence even when its action
@@ -106,7 +113,7 @@ keeps utility and budget eligibility separate.
 
 The output is comparison evidence only. It deliberately has no continue-war
 utility, full three-way recommendation, action literal or submission authority.
-The focused projection-plus-evaluator tests pass `12/12` in normal and optimized
+The focused projection-plus-evaluator tests pass `13/13` in normal and optimized
 Python. GEN-034-C remains `blocked_live`: one bounded production frame must
 prove the same projection/evaluation path before C can close. The next
 integration package will value continue separately from measured strategic

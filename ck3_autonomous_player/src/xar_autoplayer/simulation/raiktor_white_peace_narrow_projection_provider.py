@@ -29,8 +29,8 @@ from xar_autoplayer.simulation.raiktor_white_peace_comparison_contracts import (
 )
 
 
-PROVIDER_SCHEMA = "xar.ck3.raiktor_white_peace_narrow_projection_provider.v2"
-PROVIDER_ID = "raiktor-white-peace-narrow-projection-v2"
+PROVIDER_SCHEMA = "xar.ck3.raiktor_white_peace_narrow_projection_provider.v3"
+PROVIDER_ID = "raiktor-white-peace-narrow-projection-v3"
 GAME_VERSION = "1.19.0.6"
 EXECUTABLE_SHA256 = (
     "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86"
@@ -263,7 +263,7 @@ def provide_raiktor_white_peace_narrow_projection(
             "evaluated_surrender_terms_sha256": aggregate_sha,
             "producer": {
                 "producer_id": PROVIDER_ID,
-                "producer_version": "v2",
+                "producer_version": "v3",
                 "source_artifact_sha256": source_bundle_sha,
                 "production_live": production_live,
             },
@@ -283,6 +283,7 @@ def provide_raiktor_white_peace_narrow_projection(
         surrender_unobserved_dynamic_effects=(
             _surrender_unobserved_dynamic_effects(terms)
         ),
+        surrender_feature_observation=_surrender_feature_observation(terms),
     )
 
 
@@ -541,6 +542,29 @@ def _surrender_unobserved_dynamic_effects(
     return result
 
 
+def _surrender_feature_observation(
+    terms: dict[str, object],
+) -> dict[str, int]:
+    gold = terms["gold_reparations"]
+    fame = terms["attacker_fame"]
+    prisoners = terms["prisoner_release"]
+    favor = terms["conditional_favor_hook"]
+    truce = terms["truce"]
+    return {
+        "primary_gold_transfer_raw": gold["actual_transfer"]["value"]["raw"],
+        "attacker_prestige_delta_raw": fame["attacker_prestige_delta"][
+            "value"
+        ]["raw"],
+        "declared_claim_removed_count": len(terms["target_title_ids"]),
+        "favor_hook_applied": int(favor["will_apply"]),
+        "truce_day_count": truce["evaluated_days"],
+        "pow_release_count": len(prisoners["release_pairs"]),
+        "title_holder_change_count": 0,
+        "hostage_transfer_count": 0,
+        "war_bound_soldier_loss_count": 0,
+    }
+
+
 def _result(
     *,
     blockers: list[str],
@@ -548,6 +572,7 @@ def _result(
     source_evidence: dict[str, object] | None = None,
     unobserved_dynamic_effects: list[str] | None = None,
     surrender_unobserved_dynamic_effects: list[str] | None = None,
+    surrender_feature_observation: dict[str, int] | None = None,
 ) -> dict[str, object]:
     return {
         "schema": PROVIDER_SCHEMA,
@@ -566,6 +591,11 @@ def _result(
         "surrender_unobserved_dynamic_effects": list(
             surrender_unobserved_dynamic_effects or []
         ),
+        "surrender_feature_observation": (
+            dict(surrender_feature_observation)
+            if surrender_feature_observation is not None
+            else None
+        ),
         "blockers": blockers,
         "boundaries": [
             "read_only_python_projection_over_existing_safe_queries",
@@ -574,6 +604,7 @@ def _result(
             "copied_values_require_exact_shared_script_expressions",
             "unobserved_dynamic_effects_are_not_zero",
             "terms_observation_is_independent_of_current_execution_availability",
+            "surrender_features_come_from_the_bound_normalized_terms_query",
             "provider_does_not_authorize_or_submit_an_action",
         ],
     }

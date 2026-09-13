@@ -129,6 +129,38 @@ class RaiktorExitUtilityEvaluatorTests(unittest.TestCase):
             "pairwise_underdetermined",
         )
 
+    def test_bound_terms_survive_incomplete_legacy_aggregate(self) -> None:
+        terms = _terms_query()
+        session = deepcopy(terms["raiktor_surrender_aggregate_session"])
+        aggregate = session["aggregate"]
+        aggregate["status"] = "incomplete"
+        aggregate["domains"]["truce"] = {"available": False}
+        aggregate["missing_domains"] = ["truce"]
+        aggregate["readiness"].update(
+            {
+                "truce_ready": False,
+                "six_dynamic_domains_ready": False,
+                "same_frame_stable": False,
+                "action_terms_ready": False,
+                "automatic_surrender_ready": False,
+            }
+        )
+        terms["raiktor_surrender_aggregate_session"] = session
+        projection = provide_raiktor_white_peace_narrow_projection(
+            _snapshot(), _options_query(), terms
+        )
+        budget = provide_raiktor_owner_budget_profile(None)
+        model = provide_raiktor_exit_utility_model()
+
+        result = evaluate_raiktor_immediate_exit_utilities(
+            projection, session, budget, model
+        )
+
+        self.assertTrue(result["utility_evaluation_ready"])
+        surrender = result["evaluation_certificate"]["options"]["surrender"]
+        self.assertEqual(surrender["features"]["truce_day_count"], 1_825)
+        self.assertEqual(surrender["utility_raw"], -74_725_000)
+
     def test_projection_cannot_bind_a_different_surrender_aggregate(
         self,
     ) -> None:

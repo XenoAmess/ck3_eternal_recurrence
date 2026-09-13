@@ -25,9 +25,9 @@ from xar_autoplayer.simulation.raiktor_exit_utility_evaluator import (
 )
 
 
-CONTRACT = "raiktor-three-way-exit-recommendation-v3"
-PROVIDER_SCHEMA = "xar.ck3.raiktor_three_way_exit_recommendation.v2"
-PROVIDER_ID = "raiktor-three-way-exit-recommendation-provider-v2"
+CONTRACT = "raiktor-three-way-exit-recommendation-v4"
+PROVIDER_SCHEMA = "xar.ck3.raiktor_three_way_exit_recommendation.v3"
+PROVIDER_ID = "raiktor-three-way-exit-recommendation-provider-v3"
 UTILITY_UNIT = "strategy_utility_q100000"
 
 TERMINATION_POSTCONDITIONS = (
@@ -77,7 +77,7 @@ def provide_raiktor_three_way_exit_recommendation(
         )
     certificate = certificate_value
     if (
-        certificate.get("schema_version") != 3
+        certificate.get("schema_version") != 4
         or certificate.get("utility_unit") != UTILITY_UNIT
         or certificate.get("status") not in {
             "pairwise_preference_available",

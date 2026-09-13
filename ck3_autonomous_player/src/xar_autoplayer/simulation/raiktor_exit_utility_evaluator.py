@@ -37,9 +37,9 @@ from xar_autoplayer.simulation.raiktor_white_peace_narrow_projection_provider im
 )
 
 
-CONTRACT = "raiktor-white-peace-vs-surrender-utility-evaluation-v3"
-PROVIDER_SCHEMA = "xar.ck3.raiktor_exit_utility_evaluator.v2"
-PROVIDER_ID = "raiktor-immediate-exit-utility-evaluator-v2"
+CONTRACT = "raiktor-white-peace-vs-surrender-utility-evaluation-v4"
+PROVIDER_SCHEMA = "xar.ck3.raiktor_exit_utility_evaluator.v3"
+PROVIDER_ID = "raiktor-immediate-exit-utility-evaluator-v3"
 _FIXED_POINT_FEATURES = {
     "primary_gold_transfer_raw",
     "attacker_prestige_delta_raw",
@@ -107,7 +107,7 @@ def evaluate_raiktor_immediate_exit_utilities(
     )
 
     white_features = _white_features(observation)
-    surrender_features = _surrender_features(aggregate)
+    surrender_features = _surrender_features(projection)
     white_breaches = _white_budget_breaches(
         white_features, budget["white_peace_limits"]
     )
@@ -142,7 +142,7 @@ def evaluate_raiktor_immediate_exit_utilities(
         "utility_model_sha256": canonical_policy_input_sha256(model),
     }
     certificate = {
-        "schema_version": 3,
+        "schema_version": 4,
         "contract": CONTRACT,
         "status": comparison["status"],
         "frame": dict(frame),
@@ -380,35 +380,18 @@ def _white_features(observation: dict[str, object]) -> dict[str, int]:
     }
 
 
-def _surrender_features(aggregate: dict[str, object]) -> dict[str, int]:
-    if (
-        aggregate.get("status") != "complete"
-        or aggregate["readiness"].get("action_terms_ready") is not True
-    ):
+def _surrender_features(projection: dict[str, object]) -> dict[str, int]:
+    features = _object(
+        projection.get("surrender_feature_observation"),
+        "projection.surrender_feature_observation",
+    )
+    if set(features) != _FEATURE_KEYS:
         raise ExitUtilityEvaluationError(
-            "surrender aggregate is incomplete"
+            "surrender feature observation drifted"
         )
-    claims = aggregate["claims_base"]["payload"]
-    domains = aggregate["domains"]
-    gold = domains["gold"]["payload"]
-    prestige = domains["prestige"]["payload"]
-    prisoners = domains["prisoner_release"]["payload"]
-    favor = domains["favor_hook"]["payload"]
-    truce = domains["truce"]["payload"]
     return {
-        "primary_gold_transfer_raw": gold["actual_transfer"]["value"]["raw"],
-        "attacker_prestige_delta_raw": prestige[
-            "attacker_prestige_delta"
-        ]["value"]["raw"],
-        "declared_claim_removed_count": len(claims["target_title_ids"]),
-        "favor_hook_applied": int(favor["will_apply"]),
-        "truce_day_count": truce["evaluated_days"],
-        "pow_release_count": len(prisoners["release_pairs"]),
-        "title_holder_change_count": 0,
-        "hostage_transfer_count": 0,
-        # Generic current regiments are an at-risk observation, not a proven
-        # source-specific surrender loss. The missing loss remains uncertainty.
-        "war_bound_soldier_loss_count": 0,
+        key: _int64(features[key], f"surrender.{key}")
+        for key in sorted(_FEATURE_KEYS)
     }
 
 
