@@ -336,11 +336,34 @@ def frontend_lobby_default_ruler_designer_ready_v1(
     )
 
 
+def frontend_bookmarks_selected_character_ready_v1(
+    inspection: object,
+) -> bool:
+    """Prove that CK3 applied the featured-ruler selection in Bookmarks."""
+
+    if not isinstance(inspection, dict):
+        return False
+    widgets = inspection.get("widgets")
+    return (
+        inspection.get("schema") == "ck3-frontend-gui-tree-inspection-v1"
+        and inspection.get("scope_root_name") == "frontend_bookmarks"
+        and inspection.get("root_available") is True
+        and isinstance(widgets, list)
+        and any(
+            isinstance(row, dict)
+            and row.get("runtime_name") == "selected_character_info"
+            and row.get("effective_visible") is True
+            for row in widgets
+        )
+    )
+
+
 def normalize_frontend_prepare_custom_ruler_v1(
     select_acknowledgement: object,
     pick_any_acknowledgement: object,
     *,
     before: dict[str, object],
+    selection_inspection: dict[str, object],
     after: dict[str, object],
     lobby_inspection: dict[str, object],
 ) -> dict[str, object]:
@@ -360,6 +383,9 @@ def normalize_frontend_prepare_custom_ruler_v1(
         or pick_any_acknowledgement.get("status")
         != "acknowledged_verification_pending"
         or before.get("route") != "bookmarks"
+        or not frontend_bookmarks_selected_character_ready_v1(
+            selection_inspection
+        )
         or after.get("route") != "lobby"
         or not frontend_lobby_default_ruler_designer_ready_v1(lobby_inspection)
     ):
@@ -377,6 +403,7 @@ def normalize_frontend_prepare_custom_ruler_v1(
         "uses_mouse": False,
         "before": before,
         "selection_acknowledgement": dict(select_acknowledgement),
+        "selection_inspection": selection_inspection,
         "pick_any_acknowledgement": dict(pick_any_acknowledgement),
         "after": after,
         "lobby_inspection": lobby_inspection,

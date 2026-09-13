@@ -23,6 +23,7 @@ from xar_autoplayer.bridge.frontend_gui_route_contract import (
     INSPECT_FRONTEND_GUI_TREE_V1_STEP,
     QUERY_FRONTEND_GUI_ROUTE_V1_CAPABILITY,
     QUERY_FRONTEND_GUI_ROUTE_V1_STEP,
+    frontend_bookmarks_selected_character_ready_v1,
     frontend_gui_route_binding_from_capabilities,
     normalize_frontend_gui_tree_inspection_v1,
     normalize_frontend_gui_route_v1,
@@ -126,6 +127,36 @@ def _ready_lobby_inspection() -> dict[str, object]:
     }
 
 
+def _selected_bookmark_inspection() -> dict[str, object]:
+    return {
+        "schema": "ck3-frontend-gui-tree-inspection-v1",
+        "schema_version": 1,
+        "step": INSPECT_FRONTEND_GUI_TREE_V1_STEP,
+        "accepted": True,
+        "status": "available",
+        "scope_root_name": "frontend_bookmarks",
+        "root_available": True,
+        "truncated": False,
+        "widget_count": 1,
+        "widgets": [
+            {
+                "runtime_name": "selected_character_info",
+                "child_path": "4/2/0",
+                "depth": 3,
+                "child_count": 1,
+                "vtable_rva": 4096,
+                "effective_visible": True,
+                "enabled": True,
+            }
+        ],
+        "backend_id": "native-headless",
+        "read_only": True,
+        "uses_ocr": False,
+        "uses_keyboard": False,
+        "uses_mouse": False,
+    }
+
+
 def _prepare_custom_ruler_action() -> dict[str, object]:
     return normalize_frontend_prepare_custom_ruler_v1(
         {
@@ -141,6 +172,7 @@ def _prepare_custom_ruler_action() -> dict[str, object]:
             "backend_id": "native-headless",
         },
         before=_route("bookmarks"),
+        selection_inspection=_selected_bookmark_inspection(),
         after=_route("lobby"),
         lobby_inspection=_ready_lobby_inspection(),
     )
@@ -411,6 +443,24 @@ class FrontendGuiRouteV1ContractTests(unittest.TestCase):
             driver._wait_for_frontend_gui_route_v1("lobby")["route"],
             "lobby",
         )
+
+    def test_frontend_tree_wait_retries_until_bookmark_selection_is_visible(
+        self,
+    ) -> None:
+        driver = object.__new__(NativeHeadlessGameplayDriver)
+        driver.frontend_transition_timeout_seconds = 1.0
+        unselected = _selected_bookmark_inspection()
+        unselected["widgets"] = []
+        unselected["widget_count"] = 0
+        observations = [unselected, _selected_bookmark_inspection()]
+        driver.inspect_frontend_gui_tree_v1 = lambda: observations.pop(0)
+
+        selected = driver._wait_for_frontend_gui_tree_v1(
+            frontend_bookmarks_selected_character_ready_v1,
+            "bookmarks selected character",
+        )
+
+        self.assertTrue(frontend_bookmarks_selected_character_ready_v1(selected))
 
     def test_service_preserves_zero_input_native_contract(self) -> None:
         service = GameplayBridgeService(_FrontendDriver())

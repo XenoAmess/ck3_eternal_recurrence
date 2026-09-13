@@ -326,6 +326,7 @@ from .frontend_gui_route_contract import (
     INSPECT_FRONTEND_GUI_TREE_V1_STEP,
     QUERY_FRONTEND_GUI_ROUTE_V1_CAPABILITY,
     QUERY_FRONTEND_GUI_ROUTE_V1_STEP,
+    frontend_bookmarks_selected_character_ready_v1,
     frontend_gui_route_binding_from_capabilities,
     normalize_frontend_gui_tree_inspection_v1,
     normalize_frontend_gui_route_v1,
@@ -3583,6 +3584,36 @@ class NativeHeadlessGameplayDriver:
             f"transition deadline; {detail}"
         )
 
+    def _wait_for_frontend_gui_tree_v1(
+        self,
+        predicate: Callable[[object], bool],
+        expectation: str,
+    ) -> dict[str, object]:
+        deadline = time.monotonic() + self.frontend_transition_timeout_seconds
+        last_inspection: dict[str, object] | None = None
+        last_error: BridgeUnavailableError | None = None
+        while time.monotonic() < deadline:
+            try:
+                last_inspection = self.inspect_frontend_gui_tree_v1()
+                last_error = None
+            except BridgeUnavailableError as error:
+                last_error = error
+            else:
+                if predicate(last_inspection):
+                    return last_inspection
+            remaining = deadline - time.monotonic()
+            if remaining > 0:
+                time.sleep(min(0.25, remaining))
+        detail = (
+            "last inspection did not satisfy the predicate"
+            if last_inspection is not None
+            else f"last inspection failed: {last_error}"
+        )
+        raise BridgeUnavailableError(
+            f"frontend GUI state {expectation} was not observed before the "
+            f"transition deadline; {detail}"
+        )
+
     def activate_frontend_new_game_v1(self) -> dict[str, object]:
         """Activate CK3's named New Game widget and prove Bookmarks opened."""
 
@@ -3654,6 +3685,10 @@ class NativeHeadlessGameplayDriver:
             ),
             allow_frontend_revision_zero=True,
         )
+        selection_inspection = self._wait_for_frontend_gui_tree_v1(
+            frontend_bookmarks_selected_character_ready_v1,
+            "bookmarks selected character",
+        )
         pick_any_acknowledgement = self._execute_primitive_step(
             ACTIVATE_FRONTEND_PICK_ANY_CHARACTER_V1_STEP,
             expected_revision=0,
@@ -3669,6 +3704,7 @@ class NativeHeadlessGameplayDriver:
                 selection_acknowledgement,
                 pick_any_acknowledgement,
                 before=before,
+                selection_inspection=selection_inspection,
                 after=after,
                 lobby_inspection=lobby_inspection,
             )
