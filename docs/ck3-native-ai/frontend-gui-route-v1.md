@@ -17,7 +17,7 @@ main_menu --activate-frontend-new-game-v1--> bookmarks
 bookmarks --activate-frontend-pick-any-character-v1--> lobby
 ```
 
-第二段目前为 `mcp-static-ready / live=false`；lobby → ruler designer → coat-of-arms designer 尚无动作 primitive。上层 Finish 也不在 v1 范围内。
+前两段均为 `production-live primitive`；lobby → ruler designer → coat-of-arms designer 尚无动作 primitive。上层 Finish 也不在 v1 范围内。
 
 ## MCP 合同
 
@@ -120,5 +120,6 @@ proof。
 - 因此新增上述有界只读 GUI tree inspector，Release DLL 编译链接、mailbox source-contract 与 Python contract/service/official-MCP `7/7` 均 GREEN，状态为 `mcp-static-ready / live=false`。它是为这次可复现 route-identity 缺口补齐的 MCP 观测功能，不是 OCR 或桌面自动化替代品。
 - `live5` 是另一份启动前 setup RED：管道名缺少 `\\.\pipe\` 前缀，未启动 CK3；artifact 为 1,667 bytes，SHA-256 `F6827D482FACBF642167B1B5E768957C37E9CAB957A024BE8250003B9E0B8EAC`。
 - `mcp-frontend-route-lobby-live6.json`（352,192 bytes，SHA-256 `E0E8FF03AD61C71F4A9E52613FF27D5056502FF3579B961DF4E2134AE1B4675F`）的 inspector 以 native structured data 直接观察到可见、enabled 的 `lobbyview` 位于全局 root 深度 2；旧 fixed-name resolver 却返回 `unavailable`。根因是 resolver 的 4,096 节点深度优先预算被同层大型局内窗口的深子树先耗尽。固定名称解析现改为同上限的广度优先，优先覆盖浅层 top-level 身份；不扩大节点、深度、名称或动作边界。该 attempt 的 Steam offline 与 cleanup 均为 GREEN，但动作因旧 resolver 仍报告 RED。
+- 修复后的 `mcp-frontend-route-lobby-live7.json` 为 GREEN（353,637 bytes，SHA-256 `FBD86144D7EFA066E9839AD5B729A58EB57EFF631AA6C2BA2ECD32458347FCE9`）。官方 MCP 完成 `bookmarks → lobby`，action ACK、独立 route 后置条件、零 OCR/键盘/鼠标、tree inspector、Steam offline 与受管 cleanup 全部通过；源码 commit `294b2afe3b2a67d693ef369c5f1aa56732610402`，DLL SHA-256 `ACD88796BD90715167AFF3409CC9008404837B84ED887B534C246BB746D89EC7`。第二段由 `mcp-static-ready` 提升为 `production-live primitive`，inspector 同步取得首份 live native tree evidence。
 
-下一步用受管 CK3 在同一路径末端调用 tree inspector，以 runtime name 证据修正 `bookmarks → lobby` 的后置条件；通过后继续补 lobby 的确定性角色选择、ruler designer 与 CoA 页动作，禁止以鼠标链代替缺失 primitive。
+下一步使用 `live7` 的 tree evidence 与原版 GUI 源码补 lobby 的确定性 ruler-designer 动作，再补 CoA 页动作；禁止以鼠标链代替缺失 primitive。
