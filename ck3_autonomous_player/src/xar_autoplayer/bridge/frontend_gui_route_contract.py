@@ -27,6 +27,21 @@ ACTIVATE_FRONTEND_PICK_ANY_CHARACTER_V1_CAPABILITY: Final = (
 ACTIVATE_FRONTEND_PICK_ANY_CHARACTER_V1_STEP: Final = (
     "activate-frontend-pick-any-character-v1"
 )
+ACTIVATE_FRONTEND_SELECT_FIRST_BOOKMARK_CHARACTER_V1_CAPABILITY: Final = (
+    "game.command.activate-frontend-select-first-bookmark-character-v1"
+)
+ACTIVATE_FRONTEND_SELECT_FIRST_BOOKMARK_CHARACTER_V1_STEP: Final = (
+    "activate-frontend-select-first-bookmark-character-v1"
+)
+ACTIVATE_FRONTEND_RULER_DESIGNER_V1_CAPABILITY: Final = (
+    "game.command.activate-frontend-ruler-designer-v1"
+)
+ACTIVATE_FRONTEND_RULER_DESIGNER_V1_STEP: Final = (
+    "activate-frontend-ruler-designer-v1"
+)
+PREPARE_FRONTEND_CUSTOM_RULER_V1_STEP: Final = (
+    "prepare-frontend-custom-ruler-v1"
+)
 FRONTEND_GUI_ROUTES_V1: Final = frozenset(
     {
         "unavailable",
@@ -292,6 +307,116 @@ def normalize_frontend_pick_any_character_v1(
         "uses_keyboard": False,
         "uses_mouse": False,
         "before": before,
+        "acknowledgement": dict(acknowledgement),
+        "after": after,
+        "postcondition_verified": True,
+        "backend_id": acknowledgement.get("backend_id"),
+    }
+
+
+def frontend_lobby_default_ruler_designer_ready_v1(
+    inspection: object,
+) -> bool:
+    if not isinstance(inspection, dict):
+        return False
+    widgets = inspection.get("widgets")
+    return (
+        inspection.get("schema") == "ck3-frontend-gui-tree-inspection-v1"
+        and inspection.get("scope_root_name") == "lobbyview"
+        and inspection.get("root_available") is True
+        and isinstance(widgets, list)
+        and any(
+            isinstance(row, dict)
+            and row.get("child_path") == "3/0/2/3"
+            and row.get("runtime_name") == ""
+            and row.get("effective_visible") is True
+            and row.get("enabled") is True
+            for row in widgets
+        )
+    )
+
+
+def normalize_frontend_prepare_custom_ruler_v1(
+    select_acknowledgement: object,
+    pick_any_acknowledgement: object,
+    *,
+    before: dict[str, object],
+    after: dict[str, object],
+    lobby_inspection: dict[str, object],
+) -> dict[str, object]:
+    if not isinstance(select_acknowledgement, dict) or not isinstance(
+        pick_any_acknowledgement, dict
+    ):
+        raise ValueError("frontend custom-ruler acknowledgements must be objects")
+    if (
+        select_acknowledgement.get("step")
+        != ACTIVATE_FRONTEND_SELECT_FIRST_BOOKMARK_CHARACTER_V1_STEP
+        or select_acknowledgement.get("accepted") is not True
+        or select_acknowledgement.get("status")
+        != "acknowledged_verification_pending"
+        or pick_any_acknowledgement.get("step")
+        != ACTIVATE_FRONTEND_PICK_ANY_CHARACTER_V1_STEP
+        or pick_any_acknowledgement.get("accepted") is not True
+        or pick_any_acknowledgement.get("status")
+        != "acknowledged_verification_pending"
+        or before.get("route") != "bookmarks"
+        or after.get("route") != "lobby"
+        or not frontend_lobby_default_ruler_designer_ready_v1(lobby_inspection)
+    ):
+        raise ValueError("frontend custom-ruler lobby postcondition is not proven")
+    return {
+        "schema": "ck3-frontend-gui-action-v1",
+        "schema_version": 1,
+        "step": PREPARE_FRONTEND_CUSTOM_RULER_V1_STEP,
+        "accepted": True,
+        "status": "verified",
+        "action": "prepare_custom_ruler",
+        "input_backend": "native_gui_semantic_activation",
+        "uses_ocr": False,
+        "uses_keyboard": False,
+        "uses_mouse": False,
+        "before": before,
+        "selection_acknowledgement": dict(select_acknowledgement),
+        "pick_any_acknowledgement": dict(pick_any_acknowledgement),
+        "after": after,
+        "lobby_inspection": lobby_inspection,
+        "postcondition_verified": True,
+        "backend_id": select_acknowledgement.get("backend_id"),
+    }
+
+
+def normalize_frontend_open_ruler_designer_v1(
+    acknowledgement: object,
+    *,
+    before: dict[str, object],
+    before_inspection: dict[str, object],
+    after: dict[str, object],
+) -> dict[str, object]:
+    if not isinstance(acknowledgement, dict):
+        raise ValueError("frontend ruler-designer acknowledgement must be an object")
+    if (
+        acknowledgement.get("step") != ACTIVATE_FRONTEND_RULER_DESIGNER_V1_STEP
+        or acknowledgement.get("accepted") is not True
+        or acknowledgement.get("status")
+        != "acknowledged_verification_pending"
+        or before.get("route") != "lobby"
+        or not frontend_lobby_default_ruler_designer_ready_v1(before_inspection)
+        or after.get("route") != "ruler_designer"
+    ):
+        raise ValueError("frontend ruler-designer postcondition is not proven")
+    return {
+        "schema": "ck3-frontend-gui-action-v1",
+        "schema_version": 1,
+        "step": ACTIVATE_FRONTEND_RULER_DESIGNER_V1_STEP,
+        "accepted": True,
+        "status": "verified",
+        "action": "open_ruler_designer",
+        "input_backend": "native_gui_semantic_activation",
+        "uses_ocr": False,
+        "uses_keyboard": False,
+        "uses_mouse": False,
+        "before": before,
+        "before_inspection": before_inspection,
         "acknowledgement": dict(acknowledgement),
         "after": after,
         "postcondition_verified": True,

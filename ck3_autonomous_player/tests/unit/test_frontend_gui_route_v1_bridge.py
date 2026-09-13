@@ -15,6 +15,10 @@ from xar_autoplayer.bridge.frontend_gui_route_contract import (
     ACTIVATE_FRONTEND_NEW_GAME_V1_STEP,
     ACTIVATE_FRONTEND_PICK_ANY_CHARACTER_V1_CAPABILITY,
     ACTIVATE_FRONTEND_PICK_ANY_CHARACTER_V1_STEP,
+    ACTIVATE_FRONTEND_RULER_DESIGNER_V1_CAPABILITY,
+    ACTIVATE_FRONTEND_RULER_DESIGNER_V1_STEP,
+    ACTIVATE_FRONTEND_SELECT_FIRST_BOOKMARK_CHARACTER_V1_CAPABILITY,
+    ACTIVATE_FRONTEND_SELECT_FIRST_BOOKMARK_CHARACTER_V1_STEP,
     INSPECT_FRONTEND_GUI_TREE_V1_CAPABILITY,
     INSPECT_FRONTEND_GUI_TREE_V1_STEP,
     QUERY_FRONTEND_GUI_ROUTE_V1_CAPABILITY,
@@ -23,7 +27,9 @@ from xar_autoplayer.bridge.frontend_gui_route_contract import (
     normalize_frontend_gui_tree_inspection_v1,
     normalize_frontend_gui_route_v1,
     normalize_frontend_new_game_v1,
+    normalize_frontend_open_ruler_designer_v1,
     normalize_frontend_pick_any_character_v1,
+    normalize_frontend_prepare_custom_ruler_v1,
 )
 from xar_autoplayer.bridge.mcp_server import create_server
 from xar_autoplayer.bridge.native_driver import NativeHeadlessGameplayDriver
@@ -90,6 +96,70 @@ def _pick_any_character_action() -> dict[str, object]:
     }
 
 
+def _ready_lobby_inspection() -> dict[str, object]:
+    return {
+        "schema": "ck3-frontend-gui-tree-inspection-v1",
+        "schema_version": 1,
+        "step": INSPECT_FRONTEND_GUI_TREE_V1_STEP,
+        "accepted": True,
+        "status": "available",
+        "scope_root_name": "lobbyview",
+        "root_available": True,
+        "truncated": False,
+        "widget_count": 1,
+        "widgets": [
+            {
+                "runtime_name": "",
+                "child_path": "3/0/2/3",
+                "depth": 4,
+                "child_count": 8,
+                "vtable_rva": 72376352,
+                "effective_visible": True,
+                "enabled": True,
+            }
+        ],
+        "backend_id": "native-headless",
+        "read_only": True,
+        "uses_ocr": False,
+        "uses_keyboard": False,
+        "uses_mouse": False,
+    }
+
+
+def _prepare_custom_ruler_action() -> dict[str, object]:
+    return normalize_frontend_prepare_custom_ruler_v1(
+        {
+            "step": ACTIVATE_FRONTEND_SELECT_FIRST_BOOKMARK_CHARACTER_V1_STEP,
+            "accepted": True,
+            "status": "acknowledged_verification_pending",
+            "backend_id": "native-headless",
+        },
+        {
+            "step": ACTIVATE_FRONTEND_PICK_ANY_CHARACTER_V1_STEP,
+            "accepted": True,
+            "status": "acknowledged_verification_pending",
+            "backend_id": "native-headless",
+        },
+        before=_route("bookmarks"),
+        after=_route("lobby"),
+        lobby_inspection=_ready_lobby_inspection(),
+    )
+
+
+def _open_ruler_designer_action() -> dict[str, object]:
+    return normalize_frontend_open_ruler_designer_v1(
+        {
+            "step": ACTIVATE_FRONTEND_RULER_DESIGNER_V1_STEP,
+            "accepted": True,
+            "status": "acknowledged_verification_pending",
+            "backend_id": "native-headless",
+        },
+        before=_route("lobby"),
+        before_inspection=_ready_lobby_inspection(),
+        after=_route("ruler_designer"),
+    )
+
+
 class _FrontendDriver:
     def capabilities(self) -> dict[str, object]:
         return {
@@ -102,6 +172,8 @@ class _FrontendDriver:
                 INSPECT_FRONTEND_GUI_TREE_V1_CAPABILITY,
                 ACTIVATE_FRONTEND_NEW_GAME_V1_CAPABILITY,
                 ACTIVATE_FRONTEND_PICK_ANY_CHARACTER_V1_CAPABILITY,
+                ACTIVATE_FRONTEND_SELECT_FIRST_BOOKMARK_CHARACTER_V1_CAPABILITY,
+                ACTIVATE_FRONTEND_RULER_DESIGNER_V1_CAPABILITY,
             ],
         }
 
@@ -142,6 +214,12 @@ class _FrontendDriver:
 
     def activate_frontend_pick_any_character_v1(self) -> dict[str, object]:
         return _pick_any_character_action()
+
+    def activate_frontend_prepare_custom_ruler_v1(self) -> dict[str, object]:
+        return _prepare_custom_ruler_action()
+
+    def activate_frontend_ruler_designer_v1(self) -> dict[str, object]:
+        return _open_ruler_designer_action()
 
 
 class FrontendGuiRouteV1ContractTests(unittest.TestCase):
@@ -346,6 +424,16 @@ class FrontendGuiRouteV1ContractTests(unittest.TestCase):
                 "postcondition_verified"
             ]
         )
+        self.assertTrue(
+            service.activate_frontend_prepare_custom_ruler_v1()[
+                "postcondition_verified"
+            ]
+        )
+        self.assertTrue(
+            service.activate_frontend_ruler_designer_v1()[
+                "postcondition_verified"
+            ]
+        )
 
 
 @unittest.skipIf(
@@ -364,6 +452,8 @@ class FrontendGuiRouteV1McpTests(unittest.IsolatedAsyncioTestCase):
                 "ck3_inspect_frontend_gui_tree_v1",
                 "ck3_activate_frontend_new_game_v1",
                 "ck3_activate_frontend_pick_any_character_v1",
+                "ck3_activate_frontend_prepare_custom_ruler_v1",
+                "ck3_activate_frontend_ruler_designer_v1",
             ):
                 self.assertEqual(tools[name].input_schema.get("required", []), [])
                 self.assertFalse(tools[name].input_schema["additionalProperties"])
@@ -389,6 +479,21 @@ class FrontendGuiRouteV1McpTests(unittest.IsolatedAsyncioTestCase):
             self.assertFalse(pick_any.is_error)
             self.assertTrue(
                 pick_any.structured_content["postcondition_verified"]
+            )
+            prepare = await client.call_tool(
+                "ck3_activate_frontend_prepare_custom_ruler_v1", {}
+            )
+            self.assertFalse(prepare.is_error)
+            self.assertEqual(
+                prepare.structured_content["action"], "prepare_custom_ruler"
+            )
+            ruler_designer = await client.call_tool(
+                "ck3_activate_frontend_ruler_designer_v1", {}
+            )
+            self.assertFalse(ruler_designer.is_error)
+            self.assertEqual(
+                ruler_designer.structured_content["after"]["route"],
+                "ruler_designer",
             )
 
 

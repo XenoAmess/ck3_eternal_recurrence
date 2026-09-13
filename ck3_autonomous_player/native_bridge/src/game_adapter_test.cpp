@@ -585,6 +585,10 @@ int main() {
       !exact_adapter->supports_step("activate-frontend-new-game-v1") ||
       !exact_adapter->supports_step(
           "activate-frontend-pick-any-character-v1") ||
+      !exact_adapter->supports_step(
+          "activate-frontend-select-first-bookmark-character-v1") ||
+      !exact_adapter->supports_step(
+          "activate-frontend-ruler-designer-v1") ||
       !exact_adapter->supports_step("center-map-on-landed-title-v1") ||
       exact_adapter->supports_step(
           "center-map-on-landed-title-v1-c_bianzhou") ||

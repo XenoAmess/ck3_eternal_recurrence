@@ -410,24 +410,16 @@ BindZhongguoScoreboardActionDispatchEnvironmentV1(
   return environment;
 }
 
-bool DispatchZhongguoScoreboardActionNativeV1(
+bool DispatchFixedGuiWidgetNativeV1(
     void *opaque_environment, game::ZhongguoScoreboardActionV1 action,
-    std::string_view stable_identity, std::string_view runtime_name,
-    std::string_view instance_pointer, std::string_view vtable_pointer,
-    bool &native_handled) noexcept {
+    void *target, void *expected_vtable, bool &native_handled) noexcept {
   native_handled = false;
   try {
     auto *environment = static_cast<
         ZhongguoScoreboardActionDispatchEnvironmentV1 *>(opaque_environment);
     if (environment == nullptr || !DispatchEnvironmentIsExact(*environment) ||
         action == game::ZhongguoScoreboardActionV1::reopen ||
-        stable_identity.empty() || stable_identity != runtime_name) {
-      return false;
-    }
-    void *target = nullptr;
-    void *expected_vtable = nullptr;
-    if (!ParsePointer(instance_pointer, target) ||
-        !ParsePointer(vtable_pointer, expected_vtable)) {
+        target == nullptr || expected_vtable == nullptr) {
       return false;
     }
     void *context = nullptr;
@@ -467,6 +459,23 @@ bool DispatchZhongguoScoreboardActionNativeV1(
     native_handled = false;
     return false;
   }
+}
+
+bool DispatchZhongguoScoreboardActionNativeV1(
+    void *opaque_environment, game::ZhongguoScoreboardActionV1 action,
+    std::string_view stable_identity, std::string_view runtime_name,
+    std::string_view instance_pointer, std::string_view vtable_pointer,
+    bool &native_handled) noexcept {
+  native_handled = false;
+  if (stable_identity.empty() || stable_identity != runtime_name) return false;
+  void *target = nullptr;
+  void *expected_vtable = nullptr;
+  if (!ParsePointer(instance_pointer, target) ||
+      !ParsePointer(vtable_pointer, expected_vtable)) {
+    return false;
+  }
+  return DispatchFixedGuiWidgetNativeV1(opaque_environment, action, target,
+                                        expected_vtable, native_handled);
 }
 
 game::ZhongguoScoreboardActionResultV1 ExecuteZhongguoScoreboardActionV1(

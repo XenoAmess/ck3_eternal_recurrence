@@ -5558,7 +5558,10 @@ void RunConnectedSession(
           if (step == xar::ck3_11906::kFrontendGuiRouteV1Step ||
               step == xar::ck3_11906::kFrontendGuiTreeInspectionV1Step ||
               step == xar::ck3_11906::kFrontendGuiOpenNewGameV1Step ||
-              step == xar::ck3_11906::kFrontendGuiPickAnyCharacterV1Step) {
+              step == xar::ck3_11906::kFrontendGuiPickAnyCharacterV1Step ||
+              step == xar::ck3_11906::
+                          kFrontendGuiSelectFirstBookmarkCharacterV1Step ||
+              step == xar::ck3_11906::kFrontendGuiOpenRulerDesignerV1Step) {
             std::uint64_t expected_revision = 0;
             if (!xar::bridge::JsonUnsignedField(
                     incoming.payload, "expected_revision",
@@ -5582,9 +5585,17 @@ void RunConnectedSession(
                          xar::ck3_11906::kFrontendGuiOpenNewGameV1Step) {
                 query.operation = xar::ck3_11906::
                     FrontendGuiRouteOperationV1::open_new_game;
-              } else {
+              } else if (step == xar::ck3_11906::
+                                     kFrontendGuiPickAnyCharacterV1Step) {
                 query.operation = xar::ck3_11906::
                     FrontendGuiRouteOperationV1::pick_any_character;
+              } else if (step == xar::ck3_11906::
+                                     kFrontendGuiSelectFirstBookmarkCharacterV1Step) {
+                query.operation = xar::ck3_11906::FrontendGuiRouteOperationV1::
+                    select_first_bookmark_character;
+              } else {
+                query.operation = xar::ck3_11906::
+                    FrontendGuiRouteOperationV1::open_ruler_designer;
               }
               const auto module_base = reinterpret_cast<std::uintptr_t>(
                   GetModuleHandleW(nullptr));

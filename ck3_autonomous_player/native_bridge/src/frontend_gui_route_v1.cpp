@@ -165,6 +165,70 @@ bool DispatchPickAnyCharacter(
                                   "pick_any_character_button");
 }
 
+bool DispatchSelectFirstBookmarkCharacter(
+    FrontendGuiRouteMailboxContextV1 &query) noexcept {
+  if (query.result.route != FrontendGuiRouteV1::bookmarks) return false;
+  ZhongguoScoreboardAccessV1 access{};
+  void *root = nullptr;
+  void *target = nullptr;
+  if (!ResolveFirstVisibleEnabledNamedGuiWidgetV1(
+          query.environment, access, "frontend_bookmarks",
+          "bookmark_character_selection_button", root, target) ||
+      target == nullptr) {
+    return false;
+  }
+  std::string runtime_name;
+  void *vtable = nullptr;
+  bool visible = false;
+  bool enabled = false;
+  if (!ReadGuiWidgetRuntimeV1(access, target, runtime_name, vtable, visible,
+                              enabled) ||
+      runtime_name != "bookmark_character_selection_button" || !visible ||
+      !enabled) {
+    return false;
+  }
+  query.result.target_resolved = true;
+  const auto instance_pointer = FormatPointer(target);
+  const auto vtable_pointer = FormatPointer(vtable);
+  if (instance_pointer.empty() || vtable_pointer.empty()) return false;
+  query.result.dispatch_invoked = DispatchZhongguoScoreboardActionNativeV1(
+      &query.dispatch_environment, game::ZhongguoScoreboardActionV1::open,
+      "bookmark_character_selection_button", runtime_name, instance_pointer,
+      vtable_pointer, query.result.native_handled);
+  return query.result.dispatch_invoked;
+}
+
+bool DispatchOpenRulerDesigner(
+    FrontendGuiRouteMailboxContextV1 &query) noexcept {
+  if (query.result.route != FrontendGuiRouteV1::lobby) return false;
+  constexpr std::array<std::uint32_t, 4> kDefaultRulerDesignerPath{{3, 0, 2,
+                                                                    3}};
+  ZhongguoScoreboardAccessV1 access{};
+  void *root = nullptr;
+  void *target = nullptr;
+  if (!ResolveFixedGuiChildPathV1(
+          query.environment, access, "lobbyview",
+          kDefaultRulerDesignerPath.data(), kDefaultRulerDesignerPath.size(),
+          root, target) ||
+      target == nullptr) {
+    return false;
+  }
+  std::string runtime_name;
+  void *vtable = nullptr;
+  bool visible = false;
+  bool enabled = false;
+  if (!ReadGuiWidgetRuntimeV1(access, target, runtime_name, vtable, visible,
+                              enabled) ||
+      !runtime_name.empty() || !visible || !enabled) {
+    return false;
+  }
+  query.result.target_resolved = true;
+  query.result.dispatch_invoked = DispatchFixedGuiWidgetNativeV1(
+      &query.dispatch_environment, game::ZhongguoScoreboardActionV1::open,
+      target, vtable, query.result.native_handled);
+  return query.result.dispatch_invoked;
+}
+
 } // namespace
 
 bool ExecuteFrontendGuiRouteMailboxV1(
@@ -184,9 +248,15 @@ bool ExecuteFrontendGuiRouteMailboxV1(
   if (query->operation == FrontendGuiRouteOperationV1::open_new_game) {
     return DispatchOpenNewGame(*query);
   }
-  return query->operation ==
-             FrontendGuiRouteOperationV1::pick_any_character &&
-         DispatchPickAnyCharacter(*query);
+  if (query->operation == FrontendGuiRouteOperationV1::pick_any_character) {
+    return DispatchPickAnyCharacter(*query);
+  }
+  if (query->operation ==
+      FrontendGuiRouteOperationV1::select_first_bookmark_character) {
+    return DispatchSelectFirstBookmarkCharacter(*query);
+  }
+  return query->operation == FrontendGuiRouteOperationV1::open_ruler_designer &&
+         DispatchOpenRulerDesigner(*query);
 }
 
 std::string_view FrontendGuiRouteNameV1(FrontendGuiRouteV1 route) noexcept {

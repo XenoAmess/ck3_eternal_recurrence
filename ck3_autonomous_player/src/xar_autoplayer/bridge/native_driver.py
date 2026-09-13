@@ -318,6 +318,10 @@ from .frontend_gui_route_contract import (
     ACTIVATE_FRONTEND_NEW_GAME_V1_STEP,
     ACTIVATE_FRONTEND_PICK_ANY_CHARACTER_V1_CAPABILITY,
     ACTIVATE_FRONTEND_PICK_ANY_CHARACTER_V1_STEP,
+    ACTIVATE_FRONTEND_RULER_DESIGNER_V1_CAPABILITY,
+    ACTIVATE_FRONTEND_RULER_DESIGNER_V1_STEP,
+    ACTIVATE_FRONTEND_SELECT_FIRST_BOOKMARK_CHARACTER_V1_CAPABILITY,
+    ACTIVATE_FRONTEND_SELECT_FIRST_BOOKMARK_CHARACTER_V1_STEP,
     INSPECT_FRONTEND_GUI_TREE_V1_CAPABILITY,
     INSPECT_FRONTEND_GUI_TREE_V1_STEP,
     QUERY_FRONTEND_GUI_ROUTE_V1_CAPABILITY,
@@ -326,7 +330,9 @@ from .frontend_gui_route_contract import (
     normalize_frontend_gui_tree_inspection_v1,
     normalize_frontend_gui_route_v1,
     normalize_frontend_new_game_v1,
+    normalize_frontend_open_ruler_designer_v1,
     normalize_frontend_pick_any_character_v1,
+    normalize_frontend_prepare_custom_ruler_v1,
 )
 from .loaded_feature_manifest_contract import (
     QUERY_LOADED_FEATURE_MANIFEST_V1_CAPABILITY,
@@ -3630,6 +3636,73 @@ class NativeHeadlessGameplayDriver:
             raise BridgeUnavailableError(
                 "native frontend pick-any-character action is unverified: "
                 f"{error}"
+            ) from error
+
+    def activate_frontend_prepare_custom_ruler_v1(self) -> dict[str, object]:
+        """Select one featured ruler, open the lobby, and prove designer access."""
+
+        before = self.query_frontend_gui_route_v1()
+        if before["route"] != "bookmarks":
+            raise BridgeUnavailableError(
+                "frontend custom-ruler preparation requires the bookmarks route"
+            )
+        selection_acknowledgement = self._execute_primitive_step(
+            ACTIVATE_FRONTEND_SELECT_FIRST_BOOKMARK_CHARACTER_V1_STEP,
+            expected_revision=0,
+            required_capability=(
+                ACTIVATE_FRONTEND_SELECT_FIRST_BOOKMARK_CHARACTER_V1_CAPABILITY
+            ),
+            allow_frontend_revision_zero=True,
+        )
+        pick_any_acknowledgement = self._execute_primitive_step(
+            ACTIVATE_FRONTEND_PICK_ANY_CHARACTER_V1_STEP,
+            expected_revision=0,
+            required_capability=(
+                ACTIVATE_FRONTEND_PICK_ANY_CHARACTER_V1_CAPABILITY
+            ),
+            allow_frontend_revision_zero=True,
+        )
+        after = self._wait_for_frontend_gui_route_v1("lobby")
+        lobby_inspection = self.inspect_frontend_gui_tree_v1()
+        try:
+            return normalize_frontend_prepare_custom_ruler_v1(
+                selection_acknowledgement,
+                pick_any_acknowledgement,
+                before=before,
+                after=after,
+                lobby_inspection=lobby_inspection,
+            )
+        except ValueError as error:
+            raise BridgeUnavailableError(
+                f"native custom-ruler lobby preparation is unverified: {error}"
+            ) from error
+
+    def activate_frontend_ruler_designer_v1(self) -> dict[str, object]:
+        """Activate the fixed default designer button and prove its route."""
+
+        before = self.query_frontend_gui_route_v1()
+        if before["route"] != "lobby":
+            raise BridgeUnavailableError(
+                "frontend ruler-designer action requires the lobby route"
+            )
+        before_inspection = self.inspect_frontend_gui_tree_v1()
+        acknowledgement = self._execute_primitive_step(
+            ACTIVATE_FRONTEND_RULER_DESIGNER_V1_STEP,
+            expected_revision=0,
+            required_capability=ACTIVATE_FRONTEND_RULER_DESIGNER_V1_CAPABILITY,
+            allow_frontend_revision_zero=True,
+        )
+        after = self._wait_for_frontend_gui_route_v1("ruler_designer")
+        try:
+            return normalize_frontend_open_ruler_designer_v1(
+                acknowledgement,
+                before=before,
+                before_inspection=before_inspection,
+                after=after,
+            )
+        except ValueError as error:
+            raise BridgeUnavailableError(
+                f"native ruler-designer action is unverified: {error}"
             ) from error
 
     def _center_map_on_landed_title_v1_unrecorded(

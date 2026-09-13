@@ -656,6 +656,53 @@ void *FindDescendant(const ZhongguoScoreboardAccessV1 &access, void *root,
   return nullptr;
 }
 
+void *FindVisibleEnabledDescendant(
+    const ZhongguoScoreboardAccessV1 &access, void *root,
+    std::string_view expected) noexcept {
+  if (root == nullptr) return nullptr;
+  struct Pending {
+    void *widget = nullptr;
+    std::size_t depth = 0;
+  };
+  std::array<Pending, kMaximumWidgetTraversal> pending{};
+  std::size_t head = 0;
+  std::size_t tail = 1;
+  pending[0] = {root, 0};
+  std::size_t visited = 0;
+  while (head < tail && visited++ < kMaximumWidgetTraversal) {
+    const auto current = pending[head++];
+    std::uint8_t flags = 0;
+    if (WidgetNameEquals(access, current.widget, expected) &&
+        ReadValue(access, current.widget, kZhongguoWidgetHiddenFlagsOffset,
+                  flags) &&
+        (flags & (kZhongguoWidgetEffectiveHiddenMask |
+                  kZhongguoWidgetEffectiveDisabledMask)) == 0) {
+      return current.widget;
+    }
+    if (current.depth >= kMaximumWidgetDepth) continue;
+    void **children = nullptr;
+    std::int32_t count = 0;
+    if (!ReadValue(access, current.widget, kZhongguoWidgetChildrenOffset,
+                   children) ||
+        !ReadValue(access, current.widget, kZhongguoWidgetChildCountOffset,
+                   count) ||
+        count < 0 || count > kMaximumWidgetChildren ||
+        (count != 0 && children == nullptr) ||
+        tail + static_cast<std::size_t>(count) > pending.size()) {
+      return nullptr;
+    }
+    for (std::int32_t index = 0; index < count; ++index) {
+      void *child = nullptr;
+      if (!ReadValue(access, children,
+                     static_cast<std::size_t>(index) * sizeof(void *), child)) {
+        return nullptr;
+      }
+      if (child != nullptr) pending[tail++] = {child, current.depth + 1};
+    }
+  }
+  return nullptr;
+}
+
 bool FindScoreboardDescendants(
     const ZhongguoScoreboardAccessV1 &access, void *root,
     std::array<void *, kZhongguoScoreboardStateV1WidgetNames.size()> &widgets)
@@ -1509,6 +1556,62 @@ bool ResolveNamedGuiWidgetV1(
   widget = descendant_name == root_name
                ? root
                : FindDescendant(access, root, descendant_name);
+  return true;
+}
+
+bool ResolveFirstVisibleEnabledNamedGuiWidgetV1(
+    const ZhongguoScoreboardNativeEnvironmentV1 &environment,
+    const ZhongguoScoreboardAccessV1 &access, std::string_view root_name,
+    std::string_view descendant_name, void *&root, void *&widget) noexcept {
+  root = nullptr;
+  widget = nullptr;
+  if (!ResolveNamedGuiWidgetV1(environment, access, root_name, root_name,
+                               root, widget)) {
+    return false;
+  }
+  if (root == nullptr || widget != root) {
+    widget = nullptr;
+    return true;
+  }
+  widget = FindVisibleEnabledDescendant(access, root, descendant_name);
+  return true;
+}
+
+bool ResolveFixedGuiChildPathV1(
+    const ZhongguoScoreboardNativeEnvironmentV1 &environment,
+    const ZhongguoScoreboardAccessV1 &access, std::string_view root_name,
+    const std::uint32_t *child_indices, std::size_t child_index_count,
+    void *&root, void *&widget) noexcept {
+  root = nullptr;
+  widget = nullptr;
+  if ((child_index_count != 0 && child_indices == nullptr) ||
+      child_index_count > kMaximumWidgetDepth ||
+      !ResolveNamedGuiWidgetV1(environment, access, root_name, root_name,
+                               root, widget)) {
+    return false;
+  }
+  if (root == nullptr || widget != root) {
+    widget = nullptr;
+    return true;
+  }
+  for (std::size_t path_index = 0; path_index < child_index_count;
+       ++path_index) {
+    void **children = nullptr;
+    std::int32_t count = 0;
+    if (!ReadValue(access, widget, kZhongguoWidgetChildrenOffset, children) ||
+        !ReadValue(access, widget, kZhongguoWidgetChildCountOffset, count) ||
+        count < 0 || count > kMaximumWidgetChildren ||
+        (count != 0 && children == nullptr) ||
+        child_indices[path_index] >= static_cast<std::uint32_t>(count) ||
+        !ReadValue(access, children,
+                   static_cast<std::size_t>(child_indices[path_index]) *
+                       sizeof(void *),
+                   widget) ||
+        widget == nullptr) {
+      widget = nullptr;
+      return true;
+    }
+  }
   return true;
 }
 

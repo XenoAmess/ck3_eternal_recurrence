@@ -25,6 +25,14 @@ inline constexpr std::string_view kFrontendGuiPickAnyCharacterV1Capability =
     "game.command.activate-frontend-pick-any-character-v1";
 inline constexpr std::string_view kFrontendGuiPickAnyCharacterV1Step =
     "activate-frontend-pick-any-character-v1";
+inline constexpr std::string_view kFrontendGuiSelectFirstBookmarkCharacterV1Capability =
+    "game.command.activate-frontend-select-first-bookmark-character-v1";
+inline constexpr std::string_view kFrontendGuiSelectFirstBookmarkCharacterV1Step =
+    "activate-frontend-select-first-bookmark-character-v1";
+inline constexpr std::string_view kFrontendGuiOpenRulerDesignerV1Capability =
+    "game.command.activate-frontend-ruler-designer-v1";
+inline constexpr std::string_view kFrontendGuiOpenRulerDesignerV1Step =
+    "activate-frontend-ruler-designer-v1";
 inline constexpr std::string_view kFrontendGuiRouteV1BackendId =
     "ck3-1.19.0.6-native-frontend-gui-route-v1";
 
@@ -33,6 +41,8 @@ enum class FrontendGuiRouteOperationV1 : std::uint32_t {
   open_new_game = 1,
   pick_any_character = 2,
   inspect_tree = 3,
+  select_first_bookmark_character = 4,
+  open_ruler_designer = 5,
 };
 
 enum class FrontendGuiRouteV1 : std::uint32_t {

@@ -7,17 +7,20 @@
 ## 目的与边界
 
 该 primitive 用于补齐开局前无法取得 gameplay snapshot 时的语义导航。它读取 CK3 当前 GUI owner tree，并只允许编译期固定动作：
-从主菜单激活原版 `new_game_button`，或从书签页激活 `pick_any_character_button`。它不截图、不做 OCR，不发送鼠标或键盘事件，也不接受调用方提供的 native pointer、
-控件名或回调地址。
+从主菜单激活原版 `new_game_button`；在书签页选择广度优先遇到的第一个可见、可用 `bookmark_character_selection_button`，
+再激活 `pick_any_character_button`；最后在 lobby 激活编译期冻结的默认角色设计器子路径。它不截图、不做 OCR，不发送鼠标或键盘事件，也不接受调用方提供的 native pointer、
+控件名、子路径或回调地址。
 
 首版只闭合：
 
 ```text
 main_menu --activate-frontend-new-game-v1--> bookmarks
-bookmarks --activate-frontend-pick-any-character-v1--> lobby
+bookmarks --select-first-bookmark-character + pick-any--> lobby
+lobby --activate-frontend-ruler-designer-v1--> ruler_designer
 ```
 
-前两段均为 `production-live primitive`；lobby → ruler designer → coat-of-arms designer 尚无动作 primitive。上层 Finish 也不在 v1 范围内。
+前两段均为 `production-live primitive`；新增的固定选角和 `lobby → ruler_designer` 已为 `mcp-static-ready / live=false`。
+`ruler_designer → coat_of_arms_designer` 及上层 Finish 仍不在当前闭环内。
 
 ## MCP 合同
 
@@ -26,6 +29,8 @@ ck3_query_frontend_gui_route_v1()
 ck3_inspect_frontend_gui_tree_v1()
 ck3_activate_frontend_new_game_v1()
 ck3_activate_frontend_pick_any_character_v1()
+ck3_activate_frontend_prepare_custom_ruler_v1()
+ck3_activate_frontend_ruler_designer_v1()
 ```
 
 对应 bridge capability/step：
@@ -42,10 +47,16 @@ activate-frontend-new-game-v1
 
 game.command.activate-frontend-pick-any-character-v1
 activate-frontend-pick-any-character-v1
+
+game.command.activate-frontend-select-first-bookmark-character-v1
+activate-frontend-select-first-bookmark-character-v1
+
+game.command.activate-frontend-ruler-designer-v1
+activate-frontend-ruler-designer-v1
 ```
 
-路由枚举为 `unavailable`、`main_menu`、`bookmarks`、`lobby`、`ruler_designer`、`coat_of_arms_designer`。两个动作分别要求
-`main_menu → bookmarks` 与 `bookmarks → lobby`；原生调用只返回 `acknowledged_verification_pending`。driver 必须另行轮询 route，
+路由枚举为 `unavailable`、`main_menu`、`bookmarks`、`lobby`、`ruler_designer`、`coat_of_arms_designer`。动作分别要求
+`main_menu → bookmarks`、`bookmarks → lobby` 与 `lobby → ruler_designer`；原生调用只返回 `acknowledged_verification_pending`。driver 必须另行轮询 route，
 只有目标 route 被独立观察到才返回：
 
 ```json
@@ -98,12 +109,12 @@ proof。
 
 固定按钮动作按以下顺序 fail closed：
 
-1. 当前 route 必须与动作匹配：`main_menu` 或 `bookmarks`；
-2. 从固定 root 重新解析固定 target：`mainmenu_panel_bottom/new_game_button` 或 `frontend_bookmarks/pick_any_character_button`；
-3. runtime name 精确匹配且控件 visible/enabled；
+1. 当前 route 必须与动作匹配：`main_menu`、`bookmarks` 或 `lobby`；
+2. 从固定 root 重新解析 target：两个旧动作使用固定名称；选角动作只取 `frontend_bookmarks` 下第一个可见、可用的固定名称；设计器动作只取 `lobbyview` 下编译期路径 `3/0/2/3`；
+3. 有名控件必须精确匹配 runtime name；无名设计器控件必须保持空名；所有 target 都必须 visible/enabled；
 4. target GUI context、button vtable slot、callback group 与 modal admission 通过现有 exact-build 原生 dispatcher；
 5. 调用 `CPdxGuiShortcutManager`；该返回值只算 ACK；
-6. Python driver 独立查询并观察对应的 `bookmarks` 或 `lobby`，才能报告 verified。
+6. Python driver 独立查询并观察对应的 `bookmarks`、`lobby` 或 `ruler_designer`，才能报告 verified；准备动作还必须从 inspector 独立证明 `3/0/2/3` 已 enabled。
 
 ## 验收状态与下一步
 
@@ -128,4 +139,6 @@ proof。
 
 `mcp-frontend-route-lobby-live8.json` 完成聚焦 inspector 的受管实机验收（491,326 bytes，SHA-256 `46D167D73C65C51DDD736BBC494AFCA18003E0D5B8BE3606F461D543ACEA073B`）。报告中的 `scope_root_name=lobbyview`、`widget_count=512`、`truncated=true`；Steam offline、`cleanup_proven=true` 与 `tree_gone=true`。原版 `JominiLobbyViewPreparation` 对照表明相对路径 `3/0/2/3` 是 `TryStartRulerDesigning(Character.Self, 'default')` 的无名按钮；样本中该按钮可见但 disabled，同时 `tab_character_unselected` 可见，直接证明下一动作还必须先建立一个有效的 selected playable，不能把 disabled 控件 ACK 当作设计器已打开。源码 commit `9e0687649c22c0f3a96bcd5ac19c11da2e003136`，DLL SHA-256 `6D0917BE5451BC2109581D30C464213B82D7AEFCA709667E72C8BC9C63866A0E`。
 
-下一步先补“选择一个固定可玩角色”的原生 MCP primitive，再激活上述固定 ruler-designer 路径，最后补 CoA 页动作；禁止以鼠标链代替缺失 primitive。
+2026-09-14 的静态包已补齐上述两个缺口：零输入 `ck3_activate_frontend_prepare_custom_ruler_v1()` 在书签页选择第一个可见、可用的固定名称角色卡，再调用既有 Pick Any，并以 lobby inspector 证明默认设计器按钮已经 enabled；零输入 `ck3_activate_frontend_ruler_designer_v1()` 只允许激活编译期冻结的 `lobbyview/3/0/2/3`，且独立观察 `ruler_designer` 后才返回 verified。调用方不能注入名称、路径、地址或输入事件。
+
+静态验收为 fresh Release `549/549`、CTest `106/106`、Python contract/service/native-driver/official-MCP `7/7`；候选 DLL SHA-256 `38BDED238B182542C27BFCD860FB848EE9DEAD79F71E26998C9FDE8179DDA591`。`open_kaishek` 无 frontend GUI/CoA domain，本包预验证为 `not-applicable`。两项新增动作当前仍为 `mcp-static-ready / live=false`；下一步只用该 MCP 链做一次受管 CK3 实机验收并采样 `ruler_designer` 原生 tree，再补 CoA 页固定动作，禁止以鼠标链代替。

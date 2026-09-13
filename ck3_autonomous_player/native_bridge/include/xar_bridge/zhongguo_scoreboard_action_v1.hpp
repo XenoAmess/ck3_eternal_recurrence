@@ -168,6 +168,14 @@ bool DispatchZhongguoScoreboardActionNativeV1(
     std::string_view instance_pointer,
     std::string_view vtable_pointer, bool &native_handled) noexcept;
 
+// Dispatches a widget that was re-resolved from a compile-time fixed child
+// path in the same native mailbox turn. This permits vanilla unnamed buttons
+// without accepting caller-provided pointers or weakening the named action
+// transport above.
+bool DispatchFixedGuiWidgetNativeV1(
+    void *opaque_environment, game::ZhongguoScoreboardActionV1 action,
+    void *target, void *expected_vtable, bool &native_handled) noexcept;
+
 game::ZhongguoScoreboardActionResultV1 ExecuteZhongguoScoreboardActionV1(
     const game::ZhongguoScoreboardActionRequestV1 &request,
     const game::ZhongguoScoreboardActionBindingV1 &binding,

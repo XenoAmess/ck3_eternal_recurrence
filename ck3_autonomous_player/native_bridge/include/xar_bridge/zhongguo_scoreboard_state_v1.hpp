@@ -322,6 +322,23 @@ bool ResolveNamedGuiWidgetV1(
     const ZhongguoScoreboardAccessV1 &access, std::string_view root_name,
     std::string_view descendant_name, void *&root, void *&widget) noexcept;
 
+// Resolves the first effectively visible and enabled occurrence of a fixed
+// compile-time name. This is needed for repeated data-model item names such as
+// the bookmark character cards; MCP callers still cannot provide the name.
+bool ResolveFirstVisibleEnabledNamedGuiWidgetV1(
+    const ZhongguoScoreboardNativeEnvironmentV1 &environment,
+    const ZhongguoScoreboardAccessV1 &access, std::string_view root_name,
+    std::string_view descendant_name, void *&root, void *&widget) noexcept;
+
+// Traverses a child-index path supplied only by the native adapter. The path
+// is never exposed as an MCP argument and is re-resolved from the fixed root
+// for every action.
+bool ResolveFixedGuiChildPathV1(
+    const ZhongguoScoreboardNativeEnvironmentV1 &environment,
+    const ZhongguoScoreboardAccessV1 &access, std::string_view root_name,
+    const std::uint32_t *child_indices, std::size_t child_index_count,
+    void *&root, void *&widget) noexcept;
+
 bool ReadGuiWidgetRuntimeV1(
     const ZhongguoScoreboardAccessV1 &access, void *widget,
     std::string &runtime_name, void *&vtable, bool &effective_visible,
@@ -330,7 +347,7 @@ bool ReadGuiWidgetRuntimeV1(
 // Breadth-first, read-only diagnostics for the current exact-build GUI owner.
 // The fixed limits keep this zero-input MCP research primitive bounded while
 // still exposing shallow runtime names needed to replace source-file guesses
-// with native evidence. Empty runtime names are omitted.
+// with native evidence. Empty runtime names are retained.
 bool InspectNamedGuiTreeV1(
     const ZhongguoScoreboardNativeEnvironmentV1 &environment,
     const ZhongguoScoreboardAccessV1 &access,
