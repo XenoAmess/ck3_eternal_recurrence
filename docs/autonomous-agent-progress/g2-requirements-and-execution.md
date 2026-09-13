@@ -119,6 +119,13 @@ option projection 精确匹配到登记 variant，再进入既有 scope/enable �
 event key，其他带 `option_variants` 的合同仍返回 `registered_contract_requires_extended_consumer`，避免一次静态改动暗中扩大事件面。
 聚焦测试 normal/optimized 各 `8/8` GREEN；状态为 `static-ready / live=false`。
 
+第二个扩展消费切片来自 R647 的真实 `chancellor_task.1104` 中断。共享合同现已显式冻结五个 saved-scope 名称和
+Character 类型、native `[0]` 投影，并由直接策略验证 exact player binding、非玩家排除、官员角色 alias 以及邻国角色
+distinct 关系。准入只开放给该 exact-build、source-reviewed event key；关系缺失、身份不可读、alias 漂移或 distinct 漂移均
+返回 `registered_contract_projection_drift`，不选择选项。普通与 optimized 聚焦测试各 `24 passed / 200 subtests`；将 R647
+真实 MCP 上下文离线重放到消费器得到 `recommended / option 1 / native 0 / failed_checks=[]`。状态为
+`static-ready / production-context-replayed`，尚待从未决 checkpoint 做一次真实选择与后置观测。
+
 两条已进入 planner 的选择现在还带有机器可读的 `xar.ck3.vanilla-event-choice-effect` 档案。`.0030` 记录 authored
 `medium_stress_impact_loss = -30`，同时明确 `runtime_delta_exact=false`，因为人物压力影响修正尚未观测；其 comparator 从同一档案读取
 `played_character.stress_points / non_increasing`，不再另写一份效果假设。`natural_disaster.7031` 则区分 selected native 2 的纯

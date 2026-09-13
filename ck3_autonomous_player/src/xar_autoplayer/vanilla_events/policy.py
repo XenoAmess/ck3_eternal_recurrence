@@ -273,6 +273,61 @@ def _scope_projection_checks(
                 and character_id is not None
                 and character_id not in excluded_ids
             )
+    character_scopes = contract.get("character_scopes")
+    if isinstance(character_scopes, Mapping):
+        for name, expected_character_id in character_scopes.items():
+            checks[f"scope:{name}:character_id"] = bool(
+                isinstance(name, str)
+                and _integer(expected_character_id) is not None
+                and _typed_character_id(named_scopes.get(name))
+                == expected_character_id
+            )
+    matches_any = contract.get("character_scope_matches_any")
+    if isinstance(matches_any, Mapping):
+        for name, raw_candidate_names in matches_any.items():
+            candidate_names = _sequence(raw_candidate_names)
+            character_id = _typed_character_id(named_scopes.get(name))
+            candidate_ids = (
+                tuple(
+                    _typed_character_id(named_scopes.get(candidate_name))
+                    for candidate_name in candidate_names
+                )
+                if candidate_names is not None
+                and candidate_names
+                and all(isinstance(value, str) for value in candidate_names)
+                else ()
+            )
+            checks[f"scope:{name}:matches_any"] = bool(
+                isinstance(name, str)
+                and character_id is not None
+                and candidate_ids
+                and all(value is not None for value in candidate_ids)
+                and character_id in candidate_ids
+            )
+    differs_from = contract.get("character_scope_differs_from")
+    if isinstance(differs_from, Mapping):
+        for name, raw_other_names in differs_from.items():
+            other_names = _sequence(raw_other_names)
+            character_id = _typed_character_id(named_scopes.get(name))
+            other_ids = (
+                tuple(
+                    _typed_character_id(named_scopes.get(other_name))
+                    for other_name in other_names
+                )
+                if other_names is not None
+                and other_names
+                and all(isinstance(value, str) for value in other_names)
+                else ()
+            )
+            checks[f"scope:{name}:differs_from"] = bool(
+                isinstance(name, str)
+                and character_id is not None
+                and other_ids
+                and all(
+                    value is not None and value != character_id
+                    for value in other_ids
+                )
+            )
     return checks
 
 
@@ -362,6 +417,7 @@ _OPTION_VARIANT_FIELDS: Final = frozenset(
 )
 _DIRECT_OPTION_VARIANT_EVENT_KEYS: Final = frozenset({"natural_disaster.7031"})
 _DIRECT_UNIQUE_EXCLUDE_EVENT_KEYS: Final = frozenset({"death_management.1007"})
+_DIRECT_RELATIONAL_SCOPE_EVENT_KEYS: Final = frozenset({"chancellor_task.1104"})
 
 
 def _option_projection_signature(contract: Mapping[str, object]) -> tuple[object, ...]:
@@ -473,11 +529,18 @@ def recommend_registered_vanilla_event_option_v1(
                 checks={"option_variant_projection": False},
             )
         contract = resolved
-    allowed_extended_fields = (
-        {"unique_character_scope_excludes"}
-        if event_key in _DIRECT_UNIQUE_EXCLUDE_EVENT_KEYS
-        else set()
-    )
+    allowed_extended_fields: set[str] = set()
+    if event_key in _DIRECT_UNIQUE_EXCLUDE_EVENT_KEYS:
+        allowed_extended_fields.add("unique_character_scope_excludes")
+    if event_key in _DIRECT_RELATIONAL_SCOPE_EVENT_KEYS:
+        allowed_extended_fields.update(
+            {
+                "character_scopes",
+                "unique_character_scope_excludes",
+                "character_scope_matches_any",
+                "character_scope_differs_from",
+            }
+        )
     unsupported = sorted(
         field
         for field in _UNSUPPORTED_FIELDS

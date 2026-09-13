@@ -1451,3 +1451,19 @@ one recommendation, one action and the bounded postwar/cold-restore checks.
   `character_scope_matches_any`, and distinct
   `character_scope_differs_from`. That consumer must fail closed on missing,
   ambiguous or drifted Character identities before the checkpoint can proceed.
+
+## GEN-034-C event relationship consumer (2026-09-14)
+
+- The exact-build shared contract now freezes all five saved-scope names and
+  Character types together with native option projection `[0]`. The direct
+  registry policy can evaluate its player binding, non-player exclusions,
+  chancellor aliases and distinct neighbor relation; this admission is limited
+  to source-reviewed `chancellor_task.1104`.
+- Normal and optimized focused suites each pass `24 tests / 200 subtests`.
+  Offline replay of the retained R647 MCP context returns only option 1 with no
+  failed check. Drift in the liege binding, either alias or neighbor relation
+  is covered and remains blocked without an option number.
+- This closes the Python consumer gap but supplies no live mutation evidence.
+  GEN-034 remains `2/4`; the next action is one managed event acknowledgement
+  from the R647 checkpoint, followed by a successor checkpoint or the next
+  typed interrupt. No native ABI, public MCP wire or open_kaishek shape changed.

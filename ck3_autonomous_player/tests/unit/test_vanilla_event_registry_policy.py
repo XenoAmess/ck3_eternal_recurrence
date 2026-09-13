@@ -143,6 +143,40 @@ def _heir_death_context(*, dead_character_id: int = 39_246) -> dict[str, object]
     }
 
 
+def _chancellor_success_context(
+    *,
+    liege_id: int = PLAYER,
+    chancellor_id: int = 32_716,
+    chancellor_alias_id: int = 32_716,
+    active_chancellor_id: int = 32_716,
+    neighbor_id: int = 33_422,
+) -> dict[str, object]:
+    character_scopes = (
+        ("councillor", chancellor_id),
+        ("councillor_liege", liege_id),
+        ("chancellor", chancellor_alias_id),
+        ("active_councillor", active_chancellor_id),
+        ("neighbor", neighbor_id),
+    )
+    return {
+        "schema": "current-event-window-context-v1",
+        "schema_version": 1,
+        "status": "available",
+        "window_match_count": 1,
+        "event_definition_key": "chancellor_task.1104",
+        "root_scope": _scope("character", character_id=PLAYER),
+        "saved_scopes": [
+            {
+                "name": name,
+                "name_identifier": index + 30,
+                "scope": _scope("character", character_id=character_id),
+            }
+            for index, (name, character_id) in enumerate(character_scopes)
+        ],
+        "options": [_option(0, 0)],
+    }
+
+
 class VanillaEventRegistryPolicyTests(unittest.TestCase):
     def test_exact_tgp_travel_projection_selects_authored_option_two(
         self,
@@ -273,6 +307,47 @@ class VanillaEventRegistryPolicyTests(unittest.TestCase):
             "scope:dead_character:unique_character_excludes",
             drifted["failed_checks"],
         )
+
+    def test_chancellor_success_requires_exact_role_relationships(self) -> None:
+        recommended = recommend_registered_vanilla_event_option_v1(
+            _chancellor_success_context(),
+            played_character_id=PLAYER,
+            snapshot_option_count=1,
+        )
+
+        self.assertEqual(recommended["status"], "recommended")
+        self.assertEqual(recommended["selected_option_number"], 1)
+        self.assertEqual(recommended["selected_native_option_index"], 0)
+        self.assertEqual(recommended["failed_checks"], [])
+
+        drift_cases = (
+            (
+                {"liege_id": 40_001},
+                "scope:councillor_liege:character_id",
+            ),
+            (
+                {"chancellor_alias_id": 40_002},
+                "scope:chancellor:matches_any",
+            ),
+            (
+                {"active_chancellor_id": 40_003},
+                "scope:active_councillor:matches_any",
+            ),
+            (
+                {"neighbor_id": 32_716},
+                "scope:neighbor:differs_from",
+            ),
+        )
+        for changes, failed_check in drift_cases:
+            with self.subTest(failed_check=failed_check):
+                result = recommend_registered_vanilla_event_option_v1(
+                    _chancellor_success_context(**changes),
+                    played_character_id=PLAYER,
+                    snapshot_option_count=1,
+                )
+                self.assertEqual(result["status"], "blocked")
+                self.assertIn(failed_check, result["failed_checks"])
+                self.assertIsNone(result["selected_option_number"])
 
     def test_natural_disaster_unregistered_projection_stays_blocked(self) -> None:
         result = recommend_registered_vanilla_event_option_v1(

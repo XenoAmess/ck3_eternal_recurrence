@@ -606,3 +606,13 @@ The current RED is a Python consumer gap: the direct registry policy cannot yet
 evaluate its existing exact-character, alias and distinct-character relation
 fields. Until those checks are implemented and all pass on the frozen frame,
 no option is authorized and the white-peace horizon remains unreached.
+
+The direct registry consumer now supports that exact relationship slice. It
+checks the five saved-scope names and Character types, exact player binding,
+four non-player exclusions, both chancellor aliases and the distinct neighbor
+before returning authored option 1/native index 0. Its allowlist contains only
+`chancellor_task.1104`; unrelated contracts with extended relationship fields
+remain blocked pending their own source/live review. Normal and optimized tests
+pass `24 tests / 200 subtests` per mode, and the retained R647 context replays
+with zero failed checks. This is static plus production-context replay evidence;
+the event remains unresolved in CK3 until the next managed round.
