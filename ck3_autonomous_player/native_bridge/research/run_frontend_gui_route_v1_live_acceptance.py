@@ -3,8 +3,9 @@
 
 This runner launches one managed, non-debug CK3 process at the main menu,
 injects the exact bridge DLL, and uses the official MCP SDK to prove the
-semantic route transition ``main_menu -> bookmarks -> lobby -> ruler_designer``.
-It never sends mouse or keyboard input and never interprets pixels or OCR.
+semantic route through ``coat_of_arms_designer``.  An opt-in matrix then
+collects detect/apply/native-Copy evidence on that same page.  It never sends
+mouse or keyboard input and never interprets pixels or OCR.
 """
 
 from __future__ import annotations
@@ -28,6 +29,9 @@ sys.path.insert(0, str(PACKAGE_ROOT))
 
 from mcp import Client  # noqa: E402
 
+from xar_autoplayer.bridge.coat_of_arms_source_probe_contract import (  # noqa: E402
+    encode_coat_of_arms_source_v1,
+)
 from xar_autoplayer.bridge.frontend_gui_route_contract import (  # noqa: E402
     frontend_lobby_default_ruler_designer_ready_v1,
 )
@@ -66,6 +70,8 @@ ACTIVATE_RULER_DESIGNER_CAPABILITY = (
 ACTIVATE_COAT_OF_ARMS_DESIGNER_CAPABILITY = (
     "game.command.activate-frontend-coat-of-arms-designer-v1"
 )
+PROBE_COAT_OF_ARMS_CAPABILITY = "game.command.probe-coat-of-arms-source-v1"
+EXPORT_COAT_OF_ARMS_CAPABILITY = "game.command.export-coat-of-arms-source-v1"
 QUERY_TOOL = "ck3_query_frontend_gui_route_v1"
 INSPECT_TOOL = "ck3_inspect_frontend_gui_tree_v1"
 ACTIVATE_NEW_GAME_TOOL = "ck3_activate_frontend_new_game_v1"
@@ -77,6 +83,10 @@ ACTIVATE_RULER_DESIGNER_TOOL = "ck3_activate_frontend_ruler_designer_v1"
 ACTIVATE_COAT_OF_ARMS_DESIGNER_TOOL = (
     "ck3_activate_frontend_coat_of_arms_designer_v1"
 )
+SNAPSHOT_TOOL = "ck3_take_snapshot"
+PROBE_COAT_OF_ARMS_TOOL = "ck3_probe_coat_of_arms_source_v1"
+EXPORT_COAT_OF_ARMS_TOOL = "ck3_export_coat_of_arms_source_v1"
+SYNTAX_MATRIX = Path(__file__).with_name("coat_of_arms_syntax_matrix_v1.json")
 _PROFILE_EXCLUDES = frozenset(
     {"crashes", "dumps", "exceptions", "logs", "save games", "last_save.ck3"}
 )
@@ -92,6 +102,11 @@ def _parser() -> argparse.ArgumentParser:
     parser.add_argument("--bridge-injector", type=Path, required=True)
     parser.add_argument("--steam-loginusers", type=Path, required=True)
     parser.add_argument("--timeout", type=float, default=360.0)
+    parser.add_argument(
+        "--syntax-matrix",
+        action="store_true",
+        help="collect the checked-in CoA detect/apply/Copy matrix after routing",
+    )
     parser.add_argument("--output", type=Path, required=True)
     return parser
 
@@ -164,13 +179,18 @@ def _content_blocks(result: Any) -> list[object]:
     return blocks
 
 
-async def _call(client: Client, name: str) -> dict[str, object]:
+async def _call(
+    client: Client,
+    name: str,
+    arguments: dict[str, object] | None = None,
+) -> dict[str, object]:
+    arguments = {} if arguments is None else dict(arguments)
     started = time.monotonic()
     try:
-        result = await client.call_tool(name, {})
+        result = await client.call_tool(name, arguments)
         return {
             "tool": name,
-            "arguments": {},
+            "arguments": arguments,
             "elapsed_seconds": round(time.monotonic() - started, 3),
             "is_error": bool(result.is_error),
             "structured_content": result.structured_content,
@@ -179,7 +199,7 @@ async def _call(client: Client, name: str) -> dict[str, object]:
     except BaseException as error:
         return {
             "tool": name,
-            "arguments": {},
+            "arguments": arguments,
             "elapsed_seconds": round(time.monotonic() - started, 3),
             "is_error": True,
             "exception": f"{type(error).__name__}: {error}",
@@ -191,8 +211,288 @@ def _structured(call: dict[str, object]) -> dict[str, object]:
     return value if isinstance(value, dict) else {}
 
 
+def _load_syntax_matrix(path: Path = SYNTAX_MATRIX) -> dict[str, object]:
+    resolved = path.resolve()
+    payload = json.loads(resolved.read_text(encoding="utf-8"))
+    if not isinstance(payload, dict) or set(payload) != {
+        "schema",
+        "schema_version",
+        "cases",
+    }:
+        raise RuntimeError("syntax matrix must contain exactly the v1 fields")
+    if (
+        payload.get("schema") != "ck3-coat-of-arms-syntax-matrix-v1"
+        or payload.get("schema_version") != 1
+        or isinstance(payload.get("schema_version"), bool)
+        or not isinstance(payload.get("cases"), list)
+        or not payload["cases"]
+    ):
+        raise RuntimeError("syntax matrix header is invalid")
+    normalized: list[dict[str, str]] = []
+    identifiers: set[str] = set()
+    for index, value in enumerate(payload["cases"]):
+        if not isinstance(value, dict) or set(value) != {
+            "id",
+            "purpose",
+            "expected_detection",
+            "apply_expectation",
+            "source",
+        }:
+            raise RuntimeError(f"syntax matrix case {index} has invalid fields")
+        identifier = value.get("id")
+        purpose = value.get("purpose")
+        detection = value.get("expected_detection")
+        apply_expectation = value.get("apply_expectation")
+        source = value.get("source")
+        if (
+            not isinstance(identifier, str)
+            or not re.fullmatch(r"[a-z0-9_]+", identifier)
+            or identifier in identifiers
+        ):
+            raise RuntimeError(f"syntax matrix case {index} has invalid id")
+        if not isinstance(purpose, str) or not purpose:
+            raise RuntimeError(f"syntax matrix case {identifier} lacks purpose")
+        if detection not in {"detected", "not_detected"}:
+            raise RuntimeError(
+                f"syntax matrix case {identifier} has invalid detection expectation"
+            )
+        if apply_expectation not in {"required", "observe", "never"}:
+            raise RuntimeError(
+                f"syntax matrix case {identifier} has invalid apply expectation"
+            )
+        if detection == "not_detected" and apply_expectation != "never":
+            raise RuntimeError(
+                f"syntax matrix negative case {identifier} cannot request apply"
+            )
+        try:
+            encoded_source = encode_coat_of_arms_source_v1(source)
+        except ValueError as error:
+            raise RuntimeError(
+                f"syntax matrix case {identifier} source is invalid: {error}"
+            ) from error
+        identifiers.add(identifier)
+        normalized.append(
+            {
+                "id": identifier,
+                "purpose": purpose,
+                "expected_detection": detection,
+                "apply_expectation": apply_expectation,
+                "source": encoded_source.source.replace("\r\n", "\n"),
+            }
+        )
+    return {
+        "schema": payload["schema"],
+        "schema_version": 1,
+        "path": str(resolved),
+        "sha256": _sha256(resolved),
+        "cases": normalized,
+    }
+
+
+def _schema_has_required_fields(
+    schema: object, required: set[str]
+) -> bool:
+    required_value = (
+        schema.get("required", []) if isinstance(schema, dict) else None
+    )
+    return bool(
+        isinstance(schema, dict)
+        and schema.get("additionalProperties") is False
+        and isinstance(required_value, list)
+        and set(required_value) == required
+        and isinstance(schema.get("properties"), dict)
+        and required <= set(schema["properties"])
+    )
+
+
+def _schema_is_zero_input(schema: object) -> bool:
+    return bool(
+        isinstance(schema, dict)
+        and schema.get("type") == "object"
+        and schema.get("properties") == {}
+        and schema.get("required", []) == []
+    )
+
+
+async def _collect_syntax_matrix(
+    client: Client,
+    matrix: dict[str, object],
+    record: Any,
+) -> dict[str, object]:
+    capability_call = await _call(client, "ck3_get_capabilities")
+    record(capability_call)
+    capabilities = _structured(capability_call)
+    snapshot_call: dict[str, object] | None = None
+    if capability_call.get("is_error") is not False:
+        return {
+            "ok": False,
+            "error": "post-route capabilities call failed",
+            "capabilities_call": capability_call,
+            "matrix": matrix,
+            "cases": [],
+        }
+    if capabilities.get("snapshot") is True:
+        snapshot_call = await _call(client, SNAPSHOT_TOOL)
+        record(snapshot_call)
+        snapshot = _structured(snapshot_call)
+        revision = snapshot.get("revision")
+        if (
+            snapshot_call.get("is_error") is not False
+            or isinstance(revision, bool)
+            or not isinstance(revision, int)
+            or revision < 1
+        ):
+            return {
+                "ok": False,
+                "error": "post-route snapshot lacks a positive revision",
+                "capabilities_call": capability_call,
+                "snapshot_call": snapshot_call,
+                "matrix": matrix,
+                "cases": [],
+            }
+        binding_mode = "snapshot"
+    elif capabilities.get("snapshot") is False:
+        revision = 0
+        binding_mode = "frontend"
+    else:
+        return {
+            "ok": False,
+            "error": "post-route capabilities lack a boolean snapshot state",
+            "capabilities_call": capability_call,
+            "matrix": matrix,
+            "cases": [],
+        }
+
+    export_arguments = {"expected_revision": revision}
+    before_export_call = await _call(
+        client, EXPORT_COAT_OF_ARMS_TOOL, export_arguments
+    )
+    record(before_export_call)
+    before_export = _structured(before_export_call)
+    if (
+        before_export_call.get("is_error") is not False
+        or before_export.get("status") != "exported"
+    ):
+        return {
+            "ok": False,
+            "error": "initial native Copy/export failed",
+            "binding_mode": binding_mode,
+            "expected_revision": revision,
+            "capabilities_call": capability_call,
+            "snapshot_call": snapshot_call,
+            "initial_export": before_export_call,
+            "matrix": matrix,
+            "cases": [],
+        }
+
+    cases: list[dict[str, object]] = []
+    current_export = before_export
+    matrix_cases = matrix.get("cases")
+    assert isinstance(matrix_cases, list)
+    for value in matrix_cases:
+        assert isinstance(value, dict)
+        source = value["source"]
+        detect_call = await _call(
+            client,
+            PROBE_COAT_OF_ARMS_TOOL,
+            {
+                "source": source,
+                "expected_revision": revision,
+                "apply": False,
+            },
+        )
+        record(detect_call)
+        detection = _structured(detect_call)
+        apply_call: dict[str, object] | None = None
+        apply_result: dict[str, object] = {}
+        if (
+            detection.get("status") == "detected"
+            and value["apply_expectation"] != "never"
+        ):
+            apply_call = await _call(
+                client,
+                PROBE_COAT_OF_ARMS_TOOL,
+                {
+                    "source": source,
+                    "expected_revision": revision,
+                    "apply": True,
+                },
+            )
+            record(apply_call)
+            apply_result = _structured(apply_call)
+        after_export_call = await _call(
+            client, EXPORT_COAT_OF_ARMS_TOOL, export_arguments
+        )
+        record(after_export_call)
+        after_export = _structured(after_export_call)
+
+        apply_expectation = value["apply_expectation"]
+        if apply_expectation == "never":
+            apply_evidence_complete = apply_call is None
+        elif apply_expectation == "required":
+            apply_evidence_complete = bool(
+                apply_call is not None
+                and apply_call.get("is_error") is False
+                and apply_result.get("status") == "applied"
+            )
+        else:
+            apply_evidence_complete = bool(
+                apply_call is not None
+                and apply_call.get("is_error") is False
+                and apply_result.get("status") in {"applied", "apply_failed"}
+            )
+        expected_detection = value["expected_detection"]
+        negative_state_unchanged = bool(
+            expected_detection != "not_detected"
+            or (
+                isinstance(current_export.get("source_sha256"), str)
+                and after_export.get("source_sha256")
+                == current_export.get("source_sha256")
+            )
+        )
+        checks = {
+            "detect_call_not_error": detect_call.get("is_error") is False,
+            "detection_matches_expectation": detection.get("status")
+            == expected_detection,
+            "apply_evidence_complete": apply_evidence_complete,
+            "after_export_not_error": after_export_call.get("is_error")
+            is False,
+            "after_export_available": after_export.get("status") == "exported",
+            "negative_state_unchanged": negative_state_unchanged,
+        }
+        cases.append(
+            {
+                "id": value["id"],
+                "purpose": value["purpose"],
+                "expected_detection": expected_detection,
+                "apply_expectation": apply_expectation,
+                "before_source_sha256": current_export.get("source_sha256"),
+                "detect": detect_call,
+                "apply": apply_call,
+                "after_export": after_export_call,
+                "checks": checks,
+                "ok": all(checks.values()),
+            }
+        )
+        if after_export.get("status") == "exported":
+            current_export = after_export
+
+    return {
+        "ok": all(case.get("ok") is True for case in cases),
+        "binding_mode": binding_mode,
+        "expected_revision": revision,
+        "capabilities_call": capability_call,
+        "snapshot_call": snapshot_call,
+        "initial_export": before_export_call,
+        "matrix": matrix,
+        "cases": cases,
+    }
+
+
 async def _mcp_sequence(
-    driver: NativeHeadlessGameplayDriver, timeout: float
+    driver: NativeHeadlessGameplayDriver,
+    timeout: float,
+    syntax_matrix: dict[str, object] | None = None,
 ) -> dict[str, object]:
     deadline = time.monotonic() + timeout
     calls: list[dict[str, object]] = []
@@ -224,7 +524,7 @@ async def _mcp_sequence(
     async with Client(create_server(driver)) as client:
         listed = await client.list_tools()
         tools = {tool.name: tool for tool in listed.tools}
-        required = {
+        route_required = {
             QUERY_TOOL,
             INSPECT_TOOL,
             ACTIVATE_NEW_GAME_TOOL,
@@ -233,6 +533,12 @@ async def _mcp_sequence(
             ACTIVATE_RULER_DESIGNER_TOOL,
             ACTIVATE_COAT_OF_ARMS_DESIGNER_TOOL,
         }
+        matrix_required = (
+            {SNAPSHOT_TOOL, PROBE_COAT_OF_ARMS_TOOL, EXPORT_COAT_OF_ARMS_TOOL}
+            if syntax_matrix is not None
+            else set()
+        )
+        required = route_required | matrix_required
         schemas = {
             name: tools[name].input_schema
             for name in sorted(required)
@@ -244,14 +550,43 @@ async def _mcp_sequence(
                 registered_tools=sorted(tools),
             )
         if any(
-            schema.get("required", []) != []
-            or schema.get("additionalProperties") is not False
-            for schema in schemas.values()
+            schemas[name].get("required", []) != []
+            or schemas[name].get("additionalProperties") is not False
+            for name in route_required
         ):
             return red(
                 "frontend MCP tools are not closed zero-input tools",
                 tool_schemas=schemas,
             )
+        if syntax_matrix is not None and not (
+            _schema_is_zero_input(schemas.get(SNAPSHOT_TOOL))
+            and _schema_has_required_fields(
+                schemas.get(PROBE_COAT_OF_ARMS_TOOL),
+                {"source", "expected_revision", "apply"},
+            )
+            and _schema_has_required_fields(
+                schemas.get(EXPORT_COAT_OF_ARMS_TOOL), {"expected_revision"}
+            )
+        ):
+            return red(
+                "coat-of-arms matrix MCP tools do not have the expected v1 schemas",
+                tool_schemas=schemas,
+            )
+
+        required_capabilities = {
+            QUERY_CAPABILITY,
+            INSPECT_CAPABILITY,
+            ACTIVATE_NEW_GAME_CAPABILITY,
+            ACTIVATE_PICK_ANY_CAPABILITY,
+            ACTIVATE_SELECT_RANDOM_PLAYABLE_CAPABILITY,
+            ACTIVATE_RULER_DESIGNER_CAPABILITY,
+            ACTIVATE_COAT_OF_ARMS_DESIGNER_CAPABILITY,
+        }
+        if syntax_matrix is not None:
+            required_capabilities |= {
+                PROBE_COAT_OF_ARMS_CAPABILITY,
+                EXPORT_COAT_OF_ARMS_CAPABILITY,
+            }
 
         capability_call: dict[str, object] | None = None
         while time.monotonic() < deadline:
@@ -266,26 +601,8 @@ async def _mcp_sequence(
                 capability_call.get("is_error") is False
                 and isinstance(advertised, list)
                 and isinstance(hello_caps, list)
-                and {
-                    QUERY_CAPABILITY,
-                    INSPECT_CAPABILITY,
-                    ACTIVATE_NEW_GAME_CAPABILITY,
-                    ACTIVATE_PICK_ANY_CAPABILITY,
-                    ACTIVATE_SELECT_RANDOM_PLAYABLE_CAPABILITY,
-                    ACTIVATE_RULER_DESIGNER_CAPABILITY,
-                    ACTIVATE_COAT_OF_ARMS_DESIGNER_CAPABILITY,
-                }
-                <= set(advertised)
-                and {
-                    QUERY_CAPABILITY,
-                    INSPECT_CAPABILITY,
-                    ACTIVATE_NEW_GAME_CAPABILITY,
-                    ACTIVATE_PICK_ANY_CAPABILITY,
-                    ACTIVATE_SELECT_RANDOM_PLAYABLE_CAPABILITY,
-                    ACTIVATE_RULER_DESIGNER_CAPABILITY,
-                    ACTIVATE_COAT_OF_ARMS_DESIGNER_CAPABILITY,
-                }
-                <= set(hello_caps)
+                and required_capabilities <= set(advertised)
+                and required_capabilities <= set(hello_caps)
             ):
                 break
             await asyncio.sleep(0.25)
@@ -374,7 +691,7 @@ async def _mcp_sequence(
             else {}
         )
         checks = {
-            "closed_zero_input_tools": set(schemas) == required,
+            "closed_zero_input_tools": set(route_required) <= set(schemas),
             "before_main_menu": before.get("route") == "main_menu",
             "new_game_not_error": new_game_call.get("is_error") is False,
             "new_game_verified": new_game.get("status") == "verified",
@@ -462,6 +779,22 @@ async def _mcp_sequence(
                 )
             ),
         }
+        matrix_result: dict[str, object] | None = None
+        if syntax_matrix is not None:
+            if all(checks.values()):
+                matrix_result = await _collect_syntax_matrix(
+                    client, syntax_matrix, record
+                )
+            else:
+                matrix_result = {
+                    "ok": False,
+                    "error": "route checks failed before syntax collection",
+                    "matrix": syntax_matrix,
+                    "cases": [],
+                }
+            checks["syntax_matrix_evidence_complete"] = (
+                matrix_result.get("ok") is True
+            )
         return {
             "mcp_sdk": "official-python-client",
             "tool_schemas": schemas,
@@ -475,6 +808,7 @@ async def _mcp_sequence(
             "tree_inspection_after_coat_of_arms_designer": (
                 coat_of_arms_inspection
             ),
+            "syntax_matrix": matrix_result,
             "calls": calls,
             "call_summary": call_summary,
             "checks": checks,
@@ -494,6 +828,9 @@ def _write_json(path: Path, payload: dict[str, object]) -> None:
 def _run(args: argparse.Namespace) -> tuple[dict[str, object], int]:
     started = time.monotonic()
     repository = Path(__file__).resolve().parents[3]
+    syntax_matrix = (
+        _load_syntax_matrix() if getattr(args, "syntax_matrix", False) else None
+    )
     state_dir = args.state_dir.resolve()
     output = args.output.resolve()
     if state_dir.exists():
@@ -518,6 +855,8 @@ def _run(args: argparse.Namespace) -> tuple[dict[str, object], int]:
             "uses_keyboard": False,
             "uses_mouse": False,
         },
+        "syntax_matrix_requested": syntax_matrix is not None,
+        "syntax_matrix_plan": syntax_matrix,
     }
     handle = None
     driver: NativeHeadlessGameplayDriver | None = None
@@ -576,7 +915,13 @@ def _run(args: argparse.Namespace) -> tuple[dict[str, object], int]:
             verify_prepared_profile=False,
         )
         report["managed_pid"] = int(handle.process.pid)
-        sequence = asyncio.run(_mcp_sequence(driver, float(args.timeout)))
+        sequence = asyncio.run(
+            _mcp_sequence(
+                driver,
+                float(args.timeout),
+                syntax_matrix=syntax_matrix,
+            )
+        )
         report["sequence"] = sequence
         if sequence.get("ok") is not True:
             raise RuntimeError("frontend MCP route sequence failed its checks")

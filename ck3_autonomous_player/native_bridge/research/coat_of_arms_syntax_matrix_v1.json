@@ -1,0 +1,111 @@
+{
+  "schema": "ck3-coat-of-arms-syntax-matrix-v1",
+  "schema_version": 1,
+  "cases": [
+    {
+      "id": "core_roundtrip",
+      "purpose": "Regression control for the already applied core render-description shape.",
+      "expected_detection": "detected",
+      "apply_expectation": "required",
+      "source": "coa = {\n    pattern = \"pattern_solid.dds\"\n    color1 = rgb { 32 64 160 }\n    color2 = yellow\n    color3 = white\n    colored_emblem = {\n        texture = \"ce_martlet.dds\"\n        color1 = red\n        color2 = blue\n        color3 = green\n        mask = { 1 }\n        instance = { position = { 0.30 0.50 } scale = { 0.35 0.35 } rotation = -20 depth = 1.0 }\n        instance = { position = { 0.70 0.50 } scale = { -0.35 0.35 } rotation = 20 depth = 2.0 }\n    }\n}"
+    },
+    {
+      "id": "static_variable_expansion",
+      "purpose": "Observe whether native Copy expands a static @ substitution after apply.",
+      "expected_detection": "detected",
+      "apply_expectation": "required",
+      "source": "@chosen = blue\ncoa = { pattern = \"pattern_solid.dds\" color1 = @chosen }"
+    },
+    {
+      "id": "duplicate_scalar_precedence",
+      "purpose": "Resolve which repeated color1 value survives native apply and Copy.",
+      "expected_detection": "detected",
+      "apply_expectation": "observe",
+      "source": "coa = { pattern = \"pattern_solid.dds\" color1 = blue color1 = red }"
+    },
+    {
+      "id": "multiple_outer_precedence",
+      "purpose": "Resolve which of two accepted outer objects becomes the active design.",
+      "expected_detection": "detected",
+      "apply_expectation": "observe",
+      "source": "first = { pattern = \"pattern_solid.dds\" color1 = blue }\nsecond = { pattern = \"pattern_solid.dds\" color1 = red }"
+    },
+    {
+      "id": "parent_with_override",
+      "purpose": "Observe whether parent inheritance is resolved or merely preserved.",
+      "expected_detection": "detected",
+      "apply_expectation": "observe",
+      "source": "coa = { parent = c_england color1 = blue }"
+    },
+    {
+      "id": "parent_only",
+      "purpose": "Observe whether a parent-only accepted object can be applied and expanded by native Copy.",
+      "expected_detection": "detected",
+      "apply_expectation": "observe",
+      "source": "coa = { parent = c_england }"
+    },
+    {
+      "id": "comment_hsv_canonicalization",
+      "purpose": "Observe native Copy treatment of comments and HSV tagged colors.",
+      "expected_detection": "detected",
+      "apply_expectation": "observe",
+      "source": "custom_name = {\n    # native canonicalization probe\n    pattern = \"pattern_solid.dds\"\n    color1 = hsv { 0.60 0.75 0.80 }\n}"
+    },
+    {
+      "id": "textured_emblem_apply",
+      "purpose": "Distinguish reader detection from successful designer working-state apply.",
+      "expected_detection": "detected",
+      "apply_expectation": "observe",
+      "source": "coa = { pattern = \"pattern_solid.dds\" color1 = blue textured_emblem = { texture = \"_default.dds\" } }"
+    },
+    {
+      "id": "empty_body_defaults",
+      "purpose": "Observe whether an empty accepted object can be applied and serialized.",
+      "expected_detection": "detected",
+      "apply_expectation": "observe",
+      "source": "coa = {}"
+    },
+    {
+      "id": "three_channel_mask_apply",
+      "purpose": "Distinguish three-channel mask detection from successful apply and Copy.",
+      "expected_detection": "detected",
+      "apply_expectation": "observe",
+      "source": "coa = { pattern = \"pattern_solid.dds\" color1 = blue colored_emblem = { texture = \"ce_martlet.dds\" color1 = yellow mask = { 1 2 3 } instance = { position = { 0.5 0.5 } scale = { 0.5 0.5 } rotation = 0 depth = 1.01 } } }"
+    },
+    {
+      "id": "plain_text_rejected",
+      "purpose": "Negative parser control.",
+      "expected_detection": "not_detected",
+      "apply_expectation": "never",
+      "source": "this is not coa syntax"
+    },
+    {
+      "id": "body_without_wrapper_rejected",
+      "purpose": "Confirm that the clipboard reader still requires an outer object.",
+      "expected_detection": "not_detected",
+      "apply_expectation": "never",
+      "source": "pattern = \"pattern_solid.dds\" color1 = blue"
+    },
+    {
+      "id": "effect_rejected",
+      "purpose": "Confirm that effect syntax has no executable path in the CoA reader.",
+      "expected_detection": "not_detected",
+      "apply_expectation": "never",
+      "source": "coa = { pattern = \"pattern_solid.dds\" color1 = blue effect = { add_gold = 1000 } }"
+    },
+    {
+      "id": "template_list_rejected",
+      "purpose": "Confirm that template-list DSL is not accepted as a materialized render description.",
+      "expected_detection": "not_detected",
+      "apply_expectation": "never",
+      "source": "coa = { pattern = \"pattern_solid.dds\" color1 = list \"normal_colors\" }"
+    },
+    {
+      "id": "unknown_key_rejected",
+      "purpose": "Confirm that an arbitrary field does not enter the accepted render-description shape.",
+      "expected_detection": "not_detected",
+      "apply_expectation": "never",
+      "source": "coa = { pattern = \"pattern_solid.dds\" color1 = blue definitely_unknown_key = yes }"
+    }
+  ]
+}

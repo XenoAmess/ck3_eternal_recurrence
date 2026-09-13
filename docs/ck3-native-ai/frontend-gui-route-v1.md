@@ -186,3 +186,10 @@ SHA-256 `6BE30B3C356CCE22D279FD1906BAFE6474451D7FFCB5EF2229E5B538A0106103`，源
 `coat_of_arms_page`（路径 `0/2`）、`dynasty_detail_input`（`0/2/0/0`）与 `dynasty_finish_button`（`0/2/1/1`）；
 所有 ACK、route/postcondition、native backend 与零 OCR/键盘/鼠标检查均为 true。Steam 保持离线，共享锁释放和受管 cleanup
 均为 GREEN，PID 19424 与 watchdog 已回收。该证据只证明进入原生家徽页，不证明上层角色设计器 Finish 或纹章持久化。
+
+后续语法扩展不再需要另写桌面导航链。runner 现提供 opt-in `--syntax-matrix`：先复用同一官方 MCP route，再读取 checked-in
+`coat_of_arms_syntax_matrix_v1.json` 的 15 个固定 ASCII 载荷，在同一 designer 依次采集 detect、可选 apply 与 native
+Copy/export。两项既有 `mcp-applied` 用例是回归门，八项边缘用例只要求完整记录 apply 或 apply-failed，五项已知拒绝用例要求
+`not_detected` 且 Copy 前后源码哈希不变。矩阵文件 SHA-256 为
+`ADFBB02A097A5B13452743761D693A78FBB988570DEE3A80A5EFEC764F6BA13F`；普通/优化合同测试各 `4/4`。该 runner 尚未在 CK3
+执行，状态仅为 `mcp-static-ready / live=false`，不改变第 5 节既有语法结论。

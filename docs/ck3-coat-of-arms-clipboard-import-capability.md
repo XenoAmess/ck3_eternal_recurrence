@@ -712,6 +712,14 @@ effective feature 与 script `has_dlc` truth 已有 production-live 原生 primi
   gameplay gate，不提供 CoA VFS/registry winner；
 - 跨 CK3 build 自动适配 RVA 与字段。
 
+下一轮扩展矩阵已完成静态准备，但尚未执行，不能提前升级任何语法结论。`coat_of_arms_syntax_matrix_v1.json` 固定 15 个
+exact source 用例（SHA-256 `ADFBB02A097A5B13452743761D693A78FBB988570DEE3A80A5EFEC764F6BA13F`），重点补查重复标量、
+多 outer object、`parent`、静态变量、注释/HSV、`textured_emblem`、空对象和三通道 mask 的 apply/Copy 行为，并复验
+body-only、effect、template list 与未知键拒绝。受管 runner 的 `--syntax-matrix` 只在上述 production-live route 到达原生页面后，
+用官方 MCP 做 detect-only；只对 detected 用例继续 apply，再对每项执行原生 Copy/export。已知拒绝项还要求前后导出 SHA-256
+不变，从而证明没有修改 designer working state。普通和优化 Python 合同测试各 `4/4`；当前用户禁用 CK3 与前台屏幕，故 live
+矩阵保持 queued，未产生新引擎结论。
+
 按 MCP-first 原则，后续若需要运行时合并资源清单或截图无关的视觉验收，应继续补这些原生/MCP primitive，
 而不是用 OCR 猜文字、按钮状态或 copy-back 内容。
 
