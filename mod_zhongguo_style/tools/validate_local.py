@@ -504,7 +504,12 @@ def check_runtime_invariants() -> None:
     review_now_body = review_now.group("body") if review_now else ""
     shared_review_validity = "zg361_review_now_business_valid_trigger = yes"
     shared_review_trigger_valid = (
-        len(re.findall(re.escape(shared_review_validity), review_now_body)) == 2
+        len(re.findall(re.escape(shared_review_validity), review_now_body)) == 1
+        and re.search(
+            r"is_valid_showing_failures_only\s*=\s*\{\s*always\s*=\s*yes\s*\}",
+            review_now_body,
+        )
+        is not None
         and re.search(
             r"zg361_review_now_business_valid_trigger\s*=\s*\{(?P<body>.*?)^\}",
             triggers,
@@ -522,7 +527,10 @@ def check_runtime_invariants() -> None:
         is not None
     )
     if not shared_review_trigger_valid:
-        err("review-now decision must accept one or more direct reviewable officials")
+        err(
+            "review-now decision must retain its business gate while hiding "
+            "internal variable comparisons from the display-only validity path"
+        )
     if re.search(r"any_vassal\s*=\s*\{\s*count\s*>=\s*3", review_now_body):
         err("review-now decision must not exclude one-to-two-person cohorts")
 

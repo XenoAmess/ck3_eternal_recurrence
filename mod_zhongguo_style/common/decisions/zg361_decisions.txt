@@ -17,8 +17,11 @@ zg361_review_now_decision = {
 	is_valid = {
 		zg361_review_now_business_valid_trigger = yes
 	}
+	# The authoritative business gate above includes same-year variable comparisons.
+	# Do not render those engine predicates as player-facing failure text: CK3 exposes
+	# the internal `character_var_equal` key in this decision surface.
 	is_valid_showing_failures_only = {
-		zg361_review_now_business_valid_trigger = yes
+		always = yes
 	}
 
 	cost = { prestige = 150 }

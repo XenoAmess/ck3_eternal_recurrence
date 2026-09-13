@@ -227,7 +227,8 @@ class B1WitnessSourceTests(unittest.TestCase):
         self.assertEqual(native_action.count("add_prestige = -150"), 1)
         self.assertEqual(native_action.count("add_character_flag = zg361_review_now_pending"), 1)
         decision = block(read("common/decisions/zg361_decisions.txt"), "zg361_review_now_decision")
-        self.assertEqual(decision.count("zg361_review_now_business_valid_trigger = yes"), 2)
+        self.assertEqual(decision.count("zg361_review_now_business_valid_trigger = yes"), 1)
+        self.assertIn("is_valid_showing_failures_only = {\n\t\talways = yes\n\t}", decision)
 
 
 if __name__ == "__main__":

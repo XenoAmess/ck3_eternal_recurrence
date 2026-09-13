@@ -1198,8 +1198,10 @@ class ReleaseLocalizationTests(unittest.TestCase):
                 )
             )
         )
-        # The decision delegates both validity paths to the shared business
-        # trigger; retain the same-year guard check at its actual definition.
+        # The authoritative validity path delegates to the shared business
+        # trigger.  The display-only path stays unconditional because rendering
+        # the same-year variable comparison exposes CK3's internal
+        # `character_var_equal` key to the player.
         decision = " ".join(
             decisions.partition("zg361_review_now_decision = {")[2]
             .partition("\n}")[0].split()
@@ -1208,12 +1210,17 @@ class ReleaseLocalizationTests(unittest.TestCase):
             triggers.partition("zg361_review_now_business_valid_trigger = {")[2]
             .partition("\n}")[0].split()
         )
-        for validity_path in ("is_valid", "is_valid_showing_failures_only"):
-            self.assertIn(
-                f"{validity_path} = {{ "
-                "zg361_review_now_business_valid_trigger = yes }",
-                decision,
-            )
+        self.assertIn(
+            "is_valid = { zg361_review_now_business_valid_trigger = yes }",
+            decision,
+        )
+        self.assertIn(
+            "is_valid_showing_failures_only = { always = yes }",
+            decision,
+        )
+        self.assertEqual(
+            decision.count("zg361_review_now_business_valid_trigger = yes"), 1
+        )
         self.assertNotIn("custom_description", decision)
         self.assertIn(
             "trigger_if = { limit = { has_variable = zg361_last_settled_year } "
