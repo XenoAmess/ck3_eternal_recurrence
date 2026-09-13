@@ -75,6 +75,16 @@ recommendation → action → instance advance → material postcondition，才�
 visitor、更多事件、基于实时压力/财政/继承风险的动态目标切换，以及跨域数值校准属于后续扩展；它们不能被当前 ordinal profile
 冒充，也不需要阻断这三个 exact event 的最小 live 验收。
 
+## 通用有界实机验收器
+
+`run_registered_event_material_live_acceptance.py` 将上述最小完成门落成可复用执行链。它只接受保存前由 exact current-event query
+绑定、且二者之间仅包含成功只读查询的 immutable checkpoint。冷恢复后 production planner 必须先执行一次新的事件窗口查询，
+下一 OODA 才能按 registry recommendation 选择唯一目标选项；runner 随后要求 old instance advance、material comparator 返回
+`verified_change`，并只保存一个同日期 successor checkpoint。整轮禁止推进时间和任何战争动作。
+
+该工具可以供三个目标事件及后续具有同一 material-postcondition 合同的原版事件复用，不绑定固定 PID、机器账号、CK3 轮次或
+绝对输入路径。当前状态为 `static-ready / live=false`；首个输入使用 R414 的 `trait_specific.8001` 冻结 checkpoint。
+
 ## 聚焦验证
 
 - 三个 record 的 query/profile JSON 投影；
