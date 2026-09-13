@@ -15,11 +15,11 @@
   "source_files": [
     {
       "path": "ck3_autonomous_player/native_bridge/CMakeLists.txt",
-      "sha256": "1944A859C99AF4756BF3DCDE0725CFCC3BD73304B44538DD263AD395D3FA02CB"
+      "sha256": "0ED0701323DB4FDE45200E1B9EAE408E192C11A64596C14F831AF572D064ABBA"
     },
     {
       "path": "ck3_autonomous_player/native_bridge/include/xar_bridge/game_adapter.hpp",
-      "sha256": "A2C3E4493903DD3B382EA29DED53A2F65C2BB53B48DCAD0FA10C59BB6207CBCE"
+      "sha256": "34038D5C5EF6C6E945FBEF83CD61FFA48659BF8704E3D6BCDE232D7D045ACFCF"
     },
     {
       "path": "ck3_autonomous_player/native_bridge/include/xar_bridge/raiktor_war_bound_loss_candidate_v1.hpp",
@@ -27,15 +27,15 @@
     },
     {
       "path": "ck3_autonomous_player/native_bridge/src/bridge.cpp",
-      "sha256": "E13CCB9949CB82EB99D956307946B5DD04BB9D54D953980220AD5F9A952CC51D"
+      "sha256": "9BD89981BA695BA220DA9D68C92EAFDB7B2707287D593B98B4CD2B53E7DB0B51"
     },
     {
       "path": "ck3_autonomous_player/native_bridge/src/ck3_11906_adapter.cpp",
-      "sha256": "FC69D8F8D95710B8F8EF884B7E008FD12E0BE28FEE0617ABA44FE6907E1949CE"
+      "sha256": "AF792F759A84B830250A24BB1A8BDBA2C3DB3160DD478ADB05C45ED17984A5A0"
     },
     {
       "path": "ck3_autonomous_player/native_bridge/src/game_adapter.cpp",
-      "sha256": "9E80318968B284EF02D55DA777C80332F67F698CFCEBD4CF6D7D82E6FC78287A"
+      "sha256": "56D5CC371D00108CBBECC807B43B8DC43AECBABFA11B3F1524D5C7239011D5BA"
     },
     {
       "path": "ck3_autonomous_player/native_bridge/src/raiktor_war_bound_loss_candidate_v1.cpp",
@@ -43,7 +43,7 @@
     },
     {
       "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/native_driver.py",
-      "sha256": "18826574D16E7BFB424709A5A7A07B66E7CCEFA5867C442984F57D8B8CBB069C"
+      "sha256": "30B860A93F0D0B72ECE48C2D48E438C4D358DBEB8F02AA7AD678FAAA04C1B814"
     },
     {
       "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/raiktor_war_bound_loss_cleanup_contract.py",
@@ -59,10 +59,10 @@
   },
   "lifecycle_contract": {
     "baseline": "successful same-connection query-war-termination-terms-v1-N with generic current observation",
-    "action": "successful same-connection surrender-war-N ACK for the retained WarID",
+    "action": "successful same-connection offer-white-peace-N or surrender-war-N ACK for the retained WarID",
     "post": "paused same player, old full-generation WarID absent, stable admission/completion snapshot",
     "read": "existing ReadRaiktorWarBoundLossCleanupV1 exact-store reader",
-    "consumption": "successful cleanup response consumes the one surrender binding",
+    "consumption": "successful cleanup response consumes the one termination binding",
     "connection_reset": "baseline and action binding reset at every bridge connection generation"
   },
   "hard_boundaries": {

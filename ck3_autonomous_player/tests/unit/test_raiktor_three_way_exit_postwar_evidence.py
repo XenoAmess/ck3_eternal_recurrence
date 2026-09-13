@@ -165,6 +165,10 @@ def _inputs(route: str = "white_peace") -> dict[str, object]:
 class RaiktorThreeWayExitPostwarEvidenceTests(unittest.TestCase):
     def test_composes_evidence_consumed_by_six_check_verifier(self) -> None:
         inputs = _inputs()
+        for read in inputs["truce_result_values"]:
+            read["actual_truce_expiry_proof"] = deepcopy(
+                read["raiktor_actual_truce_expiry"]
+            )
         result = provide_raiktor_three_way_exit_postwar_evidence(**inputs)
 
         self.assertEqual(result["schema"], PROVIDER_SCHEMA)

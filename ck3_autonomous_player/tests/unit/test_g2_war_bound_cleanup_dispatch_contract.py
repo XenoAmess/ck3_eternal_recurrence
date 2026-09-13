@@ -60,20 +60,29 @@ class G2WarBoundCleanupDispatchContractTests(unittest.TestCase):
             path = REPOSITORY_ROOT / row["path"]
             self.assertEqual(_sha256(path), row["sha256"], row["path"])
 
-    def test_bridge_requires_baseline_then_surrender_and_consumes_it(self) -> None:
+    def test_bridge_requires_baseline_then_termination_and_consumes_it(self) -> None:
         bridge = (
             ROOT / "native_bridge" / "src" / "bridge.cpp"
         ).read_text(encoding="utf-8")
         for token in (
             "raiktor_war_bound_loss_baseline.reset();",
-            "same-connection surrender ACK is required",
+            "same-connection termination ACK is required",
             "ReadRaiktorWarBoundLossCleanup",
-            "raiktor_war_bound_loss_surrender_submitted = false;",
+            "raiktor_war_bound_loss_termination_submitted = false;",
             "frozen WarID remains active; cleanup is ",
         ):
             self.assertIn(token, bridge)
+        white_peace = bridge.index(
+            'else if (step.starts_with("offer-white-peace-"))'
+        )
+        surrender = bridge.index(
+            'else if (step.starts_with("surrender-war-"))'
+        )
+        binding = "raiktor_war_bound_loss_termination_submitted ="
+        self.assertIn(binding, bridge[white_peace:surrender])
+        self.assertIn(binding, bridge[surrender:])
         self.assertLess(
-            bridge.index("same-connection surrender ACK is required"),
+            bridge.index("same-connection termination ACK is required"),
             bridge.index("ReadRaiktorWarBoundLossCleanup"),
         )
 

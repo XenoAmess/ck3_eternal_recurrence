@@ -41,17 +41,14 @@ class ThreeWayExitPostwarEvidenceError(ValueError):
     """A source, frame or native observation crossed its frozen identity."""
 
 
-def provide_raiktor_three_way_exit_postwar_evidence(
+def normalize_raiktor_three_way_exit_source_binding(
     action_gate_value: object,
     source_capture_value: object,
     *,
     source_capture_sha256: str,
     active_war_bound_value: object,
-    post_snapshot_value: object,
-    cleanup_result_value: object,
-    truce_result_values: object,
 ) -> dict[str, object]:
-    """Return one strict postwar evidence packet or typed observed blockers."""
+    """Bind frozen source generations to the authorized pre-action frame."""
 
     try:
         authorization = normalize_raiktor_three_way_exit_authorization(
@@ -63,7 +60,7 @@ def provide_raiktor_three_way_exit_postwar_evidence(
     route = action.get("semantic_action")
     if route not in {"white_peace", "surrender"}:
         raise ThreeWayExitPostwarEvidenceError(
-            "postwar evidence requires a termination authorization"
+            "source binding requires a termination authorization"
         )
     frame = _object(authorization["frame"], "authorization frame")
     plan = _object(
@@ -81,7 +78,6 @@ def provide_raiktor_three_way_exit_postwar_evidence(
         "expected opponent CharacterID",
         minimum=1,
     )
-
     try:
         source = normalize_raiktor_source_specific_capture(
             source_capture_value,
@@ -108,6 +104,49 @@ def provide_raiktor_three_way_exit_postwar_evidence(
         raise ThreeWayExitPostwarEvidenceError(
             "active war-bound generations do not match the source capture"
         )
+    return {
+        "authorization": deepcopy(authorization),
+        "route": route,
+        "frame": deepcopy(frame),
+        "expectations": deepcopy(expectations),
+        "war_id": war_id,
+        "attacker_id": attacker_id,
+        "defender_id": defender_id,
+        "source": source,
+        "active": active,
+        "source_sets": source_sets,
+        "active_sets": active_sets,
+    }
+
+
+def provide_raiktor_three_way_exit_postwar_evidence(
+    action_gate_value: object,
+    source_capture_value: object,
+    *,
+    source_capture_sha256: str,
+    active_war_bound_value: object,
+    post_snapshot_value: object,
+    cleanup_result_value: object,
+    truce_result_values: object,
+) -> dict[str, object]:
+    """Return one strict postwar evidence packet or typed observed blockers."""
+
+    binding = normalize_raiktor_three_way_exit_source_binding(
+        action_gate_value,
+        source_capture_value,
+        source_capture_sha256=source_capture_sha256,
+        active_war_bound_value=active_war_bound_value,
+    )
+    authorization = binding["authorization"]
+    frame = binding["frame"]
+    expectations = binding["expectations"]
+    war_id = binding["war_id"]
+    attacker_id = binding["attacker_id"]
+    defender_id = binding["defender_id"]
+    source = binding["source"]
+    active = binding["active"]
+    source_sets = binding["source_sets"]
+    active_sets = binding["active_sets"]
 
     post = _snapshot(post_snapshot_value)
     post_checks = {
@@ -167,12 +206,12 @@ def provide_raiktor_three_way_exit_postwar_evidence(
             "truce_result_values must contain exactly two reads"
         )
     try:
-        first = normalize_raiktor_actual_truce_expiry_v1(
+        first = _normalize_truce_read(
             truce_values[0],
             expected_step=truce_step,
             expected_snapshot_revision=post["native_revision"],
         )
-        second = normalize_raiktor_actual_truce_expiry_v1(
+        second = _normalize_truce_read(
             truce_values[1],
             expected_step=truce_step,
             expected_snapshot_revision=post["native_revision"],
@@ -269,6 +308,41 @@ def _source_sets(source: dict[str, object]) -> dict[str, object]:
         "current": tuple(source_set.get("current_generation_ids", [])),
         "armies": tuple(source_set.get("army_generation_ids", [])),
     }
+
+
+def _normalize_truce_read(
+    value: object,
+    *,
+    expected_step: str,
+    expected_snapshot_revision: int,
+) -> dict[str, object]:
+    result = _object(value, "actual truce-expiry read")
+    wire_keys = {
+        "step",
+        "accepted",
+        "query_sequence",
+        "snapshot_revision",
+        "raiktor_actual_truce_expiry",
+        "backend_id",
+    }
+    if not wire_keys <= set(result) or set(result) - wire_keys not in (
+        set(),
+        {"actual_truce_expiry_proof"},
+    ):
+        raise ThreeWayExitPostwarEvidenceError(
+            "actual truce-expiry envelope fields changed"
+        )
+    normalized = normalize_raiktor_actual_truce_expiry_v1(
+        {key: deepcopy(result[key]) for key in wire_keys},
+        expected_step=expected_step,
+        expected_snapshot_revision=expected_snapshot_revision,
+    )
+    proof = result.get("actual_truce_expiry_proof")
+    if proof is not None and proof != normalized:
+        raise ThreeWayExitPostwarEvidenceError(
+            "driver truce proof differs from the native wire"
+        )
+    return normalized
 
 
 def _observation_sets(observation: dict[str, object]) -> dict[str, object]:
@@ -377,5 +451,6 @@ __all__ = [
     "PROVIDER_ID",
     "PROVIDER_SCHEMA",
     "ThreeWayExitPostwarEvidenceError",
+    "normalize_raiktor_three_way_exit_source_binding",
     "provide_raiktor_three_way_exit_postwar_evidence",
 ]

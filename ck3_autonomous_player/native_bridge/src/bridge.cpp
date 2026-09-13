@@ -5345,7 +5345,7 @@ struct WorkerState {
   std::uint64_t raiktor_war_bound_loss_cleanup_query_sequence = 0;
   std::optional<xar::ck3_11906::RaiktorWarBoundLossBaselineV1>
       raiktor_war_bound_loss_baseline;
-  bool raiktor_war_bound_loss_surrender_submitted = false;
+  bool raiktor_war_bound_loss_termination_submitted = false;
 #endif
   std::uint64_t marriage_query_sequence = 0;
   std::vector<xar::game::ArrangeMarriageChoice> marriage_choices;
@@ -5478,8 +5478,8 @@ void RunConnectedSession(
       state.raiktor_war_bound_loss_cleanup_query_sequence;
   auto &raiktor_war_bound_loss_baseline =
       state.raiktor_war_bound_loss_baseline;
-  auto &raiktor_war_bound_loss_surrender_submitted =
-      state.raiktor_war_bound_loss_surrender_submitted;
+  auto &raiktor_war_bound_loss_termination_submitted =
+      state.raiktor_war_bound_loss_termination_submitted;
 #endif
   auto &marriage_query_sequence = state.marriage_query_sequence;
   auto &marriage_choices = state.marriage_choices;
@@ -5493,7 +5493,7 @@ void RunConnectedSession(
   // A frozen generation vector is meaningful only inside the connection that
   // delivered its terms receipt. Never carry it into a later MCP generation.
   raiktor_war_bound_loss_baseline.reset();
-  raiktor_war_bound_loss_surrender_submitted = false;
+  raiktor_war_bound_loss_termination_submitted = false;
 #endif
   ULONGLONG next_heartbeat = GetTickCount64();
   bool connected = true;
@@ -9768,11 +9768,11 @@ void RunConnectedSession(
                           request_id, step, false,
                           "no same-connection frozen war-bound baseline for "
                           "requested WarID"));
-          } else if (!raiktor_war_bound_loss_surrender_submitted) {
+          } else if (!raiktor_war_bound_loss_termination_submitted) {
             connected = xar::bridge::WriteFrame(
                 pipe, CommandResultFrame(
                           request_id, step, false,
-                          "same-connection surrender ACK is required before "
+                          "same-connection termination ACK is required before "
                           "war-bound cleanup"));
           } else {
             xar::game::Snapshot admission_snapshot{};
@@ -9848,7 +9848,7 @@ void RunConnectedSession(
                     // One exact-store cleanup observation belongs to one
                     // retained pre/action/post lifecycle. A later query must
                     // start from a newly frozen active-war baseline.
-                    raiktor_war_bound_loss_surrender_submitted = false;
+                    raiktor_war_bound_loss_termination_submitted = false;
                   }
                 } else {
                   std::string_view error =
@@ -10039,14 +10039,14 @@ void RunConnectedSession(
                               ->generic_war_bound_current,
                           state_revision, baseline)) {
                     raiktor_war_bound_loss_baseline = std::move(baseline);
-                    raiktor_war_bound_loss_surrender_submitted = false;
+                    raiktor_war_bound_loss_termination_submitted = false;
                   } else {
                     raiktor_war_bound_loss_baseline.reset();
-                    raiktor_war_bound_loss_surrender_submitted = false;
+                    raiktor_war_bound_loss_termination_submitted = false;
                   }
                 } else if (connected) {
                   raiktor_war_bound_loss_baseline.reset();
-                  raiktor_war_bound_loss_surrender_submitted = false;
+                  raiktor_war_bound_loss_termination_submitted = false;
                 }
 #endif
               } else {
@@ -10088,6 +10088,12 @@ void RunConnectedSession(
                 xar::game::SubmitOfferWhitePeace(game, war_id.value());
             if (white_peace_result ==
                 xar::game::OfferWhitePeaceResult::submitted) {
+#if defined(XAR_CK3_ENABLE_G2_WAR_BOUND_LOSS_CANDIDATE_V1)
+              raiktor_war_bound_loss_termination_submitted =
+                  raiktor_war_bound_loss_baseline.has_value() &&
+                  raiktor_war_bound_loss_baseline->frozen_active.war_id ==
+                      war_id.value();
+#endif
               connected = xar::bridge::WriteFrame(
                   pipe,
                   CommandResultFrame(request_id, step, true, "submitted"));
@@ -10156,7 +10162,7 @@ void RunConnectedSession(
             if (surrender_result ==
                 xar::game::SurrenderWarResult::submitted) {
 #if defined(XAR_CK3_ENABLE_G2_WAR_BOUND_LOSS_CANDIDATE_V1)
-              raiktor_war_bound_loss_surrender_submitted =
+              raiktor_war_bound_loss_termination_submitted =
                   raiktor_war_bound_loss_baseline.has_value() &&
                   raiktor_war_bound_loss_baseline->frozen_active.war_id ==
                       war_id.value();

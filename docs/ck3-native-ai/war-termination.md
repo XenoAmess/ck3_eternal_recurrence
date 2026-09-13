@@ -2394,7 +2394,7 @@ flowchart TD
     D -->|yes| L["post=0; boundary loss=measured pre"]
     D -->|no| I["cleanup_still_alive; post/loss unavailable"]
     F -. "[unknown] no persisted event origin" .-> S["Raiktor source attribution"]
-    A -. "[pending-live] action not part of this package" .-> B["surrender causality"]
+    A -. "[pending-live] action not part of this package" .-> B["termination causality"]
     L -. "not public without action-bound live" .-> G["GEN-034 readiness"]
 ```
 
@@ -2406,7 +2406,7 @@ boundary fixture is
 native helper only invokes the existing read-only cleanup reader, submits no
 command, and advances no time. The later private lifecycle candidate retains
 one baseline only inside its current bridge connection and consumes it after
-one same-WarID surrender ACK plus successful cleanup read; that candidate state
+one same-WarID white-peace or surrender ACK plus successful cleanup read; that candidate state
 is absent from the default DLL. The default production wire, source-specific
 readiness, automatic surrender and `GEN-034` remain unchanged.
 The no-launch build/test receipt is
@@ -2419,8 +2419,8 @@ The no-launch build/test receipt is
 `game.command.query-raiktor-war-bound-loss-cleanup-v1-N` only when
 `XAR_CK3_ENABLE_G2_WAR_BOUND_LOSS_CANDIDATE_V1=ON`. A successful Raiktor terms
 query reconstructs and freezes the exact generic current observation inside
-the bridge connection. The cleanup dispatch then requires a successful native
-`surrender-war-N` ACK for that same full-generation WarID. Every connection
+the bridge connection. The cleanup dispatch then requires one successful native termination ACK for
+that same full-generation WarID: `offer-white-peace-N` or `surrender-war-N`. Every connection
 reset drops the baseline/action pair, and a successful cleanup response
 consumes the action binding.
 
@@ -2483,3 +2483,19 @@ plus the frozen evaluated days. A valid `no_truce`, a surviving generation or
 frame drift returns RED and emits no verifier evidence. The composer is pure
 and accesses no game, file or MCP service. Focused normal and optimized suites
 pass `26/26`; live readiness remains unchanged.
+
+## 2026-09-14 GEN-034 termination-ACK dispatch correction
+
+[static-ready / live pending] Source integration exposed that the public
+production driver permits the authorized white-peace action while the private
+postwar cleanup dispatch admitted only surrender. The default-OFF candidate now
+sets its one-shot action binding after either successful native termination ACK,
+provided the retained baseline has the same full-generation WarID. Connection
+reset, a new terms baseline and successful cleanup all clear that binding.
+
+The change is internal to the already private capability. It does not change
+`game.command.query-raiktor-war-bound-loss-cleanup-v1-N`, its result envelope,
+or public surrender policy. The action runner separately validates the source
+capture against the current full-generation regiment/army sets before mutation.
+Focused normal/optimized Python tests pass `29/29`, and the candidate-enabled
+MSVC Release DLL builds. No live status is promoted by this static result.

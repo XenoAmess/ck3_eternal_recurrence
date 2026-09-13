@@ -286,3 +286,25 @@ generation or frame drift retains RED. ACK is never state evidence and the
 composer performs no CK3, filesystem or MCP operation. The focused
 recommendation/action-gate/evidence/verifier suite passes `26/26` under normal
 and optimized Python. Status remains `static-ready / live=false`.
+
+## 2026-09-14 GEN-034-D bounded action lifecycle static-ready
+
+`run_gen034_three_way_exit_action_live_acceptance.py` now keeps the four-read
+recommendation and its authorized action in one managed driver. Before any
+mutation it re-snapshots the paused frame and binds the retained source capture
+to the current full-generation persistent CRegiment, CArmyRegiment and CArmy
+sets. A mismatch stops before submission. A continue winner executes only
+`resume-map` and remains unable to close GEN-034. A termination winner executes
+one authorized exit, one exact-store cleanup query, two consecutive persisted-
+truce reads, one checkpoint save and one cold restore before invoking the
+six-item verifier.
+
+The default-OFF native cleanup dispatch now accepts a successful same-connection
+termination ACK for its retained WarID from either `offer-white-peace-N` or
+`surrender-war-N`. This fixes the real mismatch between the public white-peace
+action path and the private cleanup reader. It does not enable public surrender,
+change a capability ID or wire shape, or make the candidate default-on. The
+focused normal/optimized suite passes `29/29` in each mode and the enabled MSVC
+Release candidate DLL builds successfully. Status remains `static-ready /
+live=false`; GEN-034 stays `2/4` until one bounded production lifecycle closes
+C/D evidence.

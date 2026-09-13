@@ -1581,3 +1581,20 @@ one recommendation, one action and the bounded postwar/cold-restore checks.
   close its pure fixture. Focused recommendation/action-gate/evidence/verifier
   tests pass `26/26` in normal and optimized Python. No CK3, filesystem or MCP
   operation occurs in the composer; live action and cold restore remain open.
+
+## GEN-034-D bounded action runner and termination cleanup binding (2026-09-14)
+
+- The managed runner now revalidates the authorized paused snapshot and exact
+  source/current regiment generations before it can submit its single semantic
+  action. This closes the earlier ordering hole where the same check happened
+  only while composing post-action evidence.
+- The private default-OFF cleanup dispatch had a concrete route mismatch: the
+  production driver can submit white peace, while cleanup admitted only a
+  surrender ACK. It now records a same-connection, same-WarID termination ACK
+  for either white peace or surrender, consumes it after one successful cleanup
+  read and resets it with the retained baseline. Public surrender remains
+  disabled and the MCP capability/wire is unchanged.
+- Focused normal/optimized Python tests pass `29/29`; an enabled MSVC Release
+  candidate build is GREEN. This removes the static execution blocker but does
+  not supply live action, resource delta, truce, cleanup or cold-restore proof.
+  GEN-034 remains `2/4` and the next action is one bounded managed lifecycle.
