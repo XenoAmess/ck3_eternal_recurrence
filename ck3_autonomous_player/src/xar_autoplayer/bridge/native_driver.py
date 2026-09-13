@@ -326,6 +326,7 @@ from .frontend_gui_route_contract import (
     INSPECT_FRONTEND_GUI_TREE_V1_STEP,
     QUERY_FRONTEND_GUI_ROUTE_V1_CAPABILITY,
     QUERY_FRONTEND_GUI_ROUTE_V1_STEP,
+    frontend_bookmarks_first_character_actionable_v1,
     frontend_bookmarks_selected_character_ready_v1,
     frontend_gui_route_binding_from_capabilities,
     normalize_frontend_gui_tree_inspection_v1,
@@ -3677,14 +3678,23 @@ class NativeHeadlessGameplayDriver:
             raise BridgeUnavailableError(
                 "frontend custom-ruler preparation requires the bookmarks route"
             )
-        selection_acknowledgement = self._execute_primitive_step(
-            ACTIVATE_FRONTEND_SELECT_FIRST_BOOKMARK_CHARACTER_V1_STEP,
-            expected_revision=0,
-            required_capability=(
-                ACTIVATE_FRONTEND_SELECT_FIRST_BOOKMARK_CHARACTER_V1_CAPABILITY
-            ),
-            allow_frontend_revision_zero=True,
+        selection_target_inspection = self._wait_for_frontend_gui_tree_v1(
+            frontend_bookmarks_first_character_actionable_v1,
+            "first bookmark character action target",
         )
+        try:
+            selection_acknowledgement = self._execute_primitive_step(
+                ACTIVATE_FRONTEND_SELECT_FIRST_BOOKMARK_CHARACTER_V1_STEP,
+                expected_revision=0,
+                required_capability=(
+                    ACTIVATE_FRONTEND_SELECT_FIRST_BOOKMARK_CHARACTER_V1_CAPABILITY
+                ),
+                allow_frontend_revision_zero=True,
+            )
+        except BridgeUnavailableError as error:
+            raise BridgeUnavailableError(
+                f"native bookmark selection failed after readiness proof: {error}"
+            ) from error
         selection_inspection = self._wait_for_frontend_gui_tree_v1(
             frontend_bookmarks_selected_character_ready_v1,
             "bookmarks selected character",
@@ -3704,6 +3714,7 @@ class NativeHeadlessGameplayDriver:
                 selection_acknowledgement,
                 pick_any_acknowledgement,
                 before=before,
+                selection_target_inspection=selection_target_inspection,
                 selection_inspection=selection_inspection,
                 after=after,
                 lobby_inspection=lobby_inspection,

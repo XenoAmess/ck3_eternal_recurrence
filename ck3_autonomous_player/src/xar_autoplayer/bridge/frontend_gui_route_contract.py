@@ -358,11 +358,36 @@ def frontend_bookmarks_selected_character_ready_v1(
     )
 
 
+def frontend_bookmarks_first_character_actionable_v1(
+    inspection: object,
+) -> bool:
+    """Prove that the native target used by the fixed selection action exists."""
+
+    if not isinstance(inspection, dict):
+        return False
+    widgets = inspection.get("widgets")
+    return (
+        inspection.get("schema") == "ck3-frontend-gui-tree-inspection-v1"
+        and inspection.get("scope_root_name") == "frontend_bookmarks"
+        and inspection.get("root_available") is True
+        and isinstance(widgets, list)
+        and any(
+            isinstance(row, dict)
+            and row.get("runtime_name")
+            == "bookmark_character_selection_button"
+            and row.get("effective_visible") is True
+            and row.get("enabled") is True
+            for row in widgets
+        )
+    )
+
+
 def normalize_frontend_prepare_custom_ruler_v1(
     select_acknowledgement: object,
     pick_any_acknowledgement: object,
     *,
     before: dict[str, object],
+    selection_target_inspection: dict[str, object],
     selection_inspection: dict[str, object],
     after: dict[str, object],
     lobby_inspection: dict[str, object],
@@ -377,6 +402,9 @@ def normalize_frontend_prepare_custom_ruler_v1(
         or select_acknowledgement.get("accepted") is not True
         or select_acknowledgement.get("status")
         != "acknowledged_verification_pending"
+        or not frontend_bookmarks_first_character_actionable_v1(
+            selection_target_inspection
+        )
         or pick_any_acknowledgement.get("step")
         != ACTIVATE_FRONTEND_PICK_ANY_CHARACTER_V1_STEP
         or pick_any_acknowledgement.get("accepted") is not True
@@ -402,6 +430,7 @@ def normalize_frontend_prepare_custom_ruler_v1(
         "uses_keyboard": False,
         "uses_mouse": False,
         "before": before,
+        "selection_target_inspection": selection_target_inspection,
         "selection_acknowledgement": dict(select_acknowledgement),
         "selection_inspection": selection_inspection,
         "pick_any_acknowledgement": dict(pick_any_acknowledgement),

@@ -23,6 +23,7 @@ from xar_autoplayer.bridge.frontend_gui_route_contract import (
     INSPECT_FRONTEND_GUI_TREE_V1_STEP,
     QUERY_FRONTEND_GUI_ROUTE_V1_CAPABILITY,
     QUERY_FRONTEND_GUI_ROUTE_V1_STEP,
+    frontend_bookmarks_first_character_actionable_v1,
     frontend_bookmarks_selected_character_ready_v1,
     frontend_gui_route_binding_from_capabilities,
     normalize_frontend_gui_tree_inspection_v1,
@@ -157,6 +158,22 @@ def _selected_bookmark_inspection() -> dict[str, object]:
     }
 
 
+def _actionable_bookmark_inspection() -> dict[str, object]:
+    inspection = _selected_bookmark_inspection()
+    inspection["widgets"] = [
+        {
+            "runtime_name": "bookmark_character_selection_button",
+            "child_path": "1/0/2",
+            "depth": 3,
+            "child_count": 1,
+            "vtable_rva": 4096,
+            "effective_visible": True,
+            "enabled": True,
+        }
+    ]
+    return inspection
+
+
 def _prepare_custom_ruler_action() -> dict[str, object]:
     return normalize_frontend_prepare_custom_ruler_v1(
         {
@@ -172,6 +189,7 @@ def _prepare_custom_ruler_action() -> dict[str, object]:
             "backend_id": "native-headless",
         },
         before=_route("bookmarks"),
+        selection_target_inspection=_actionable_bookmark_inspection(),
         selection_inspection=_selected_bookmark_inspection(),
         after=_route("lobby"),
         lobby_inspection=_ready_lobby_inspection(),
@@ -461,6 +479,14 @@ class FrontendGuiRouteV1ContractTests(unittest.TestCase):
         )
 
         self.assertTrue(frontend_bookmarks_selected_character_ready_v1(selected))
+
+    def test_bookmark_action_target_requires_visible_enabled_native_widget(
+        self,
+    ) -> None:
+        inspection = _actionable_bookmark_inspection()
+        self.assertTrue(frontend_bookmarks_first_character_actionable_v1(inspection))
+        inspection["widgets"][0]["enabled"] = False
+        self.assertFalse(frontend_bookmarks_first_character_actionable_v1(inspection))
 
     def test_service_preserves_zero_input_native_contract(self) -> None:
         service = GameplayBridgeService(_FrontendDriver())
