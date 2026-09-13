@@ -98,6 +98,26 @@ bool ResolveRoute(const FrontendGuiRouteMailboxContextV1 &query,
   return true;
 }
 
+bool InspectActiveRouteTree(FrontendGuiRouteMailboxContextV1 &query) noexcept {
+  if (!ResolveRoute(query, query.result)) return false;
+  ZhongguoScoreboardAccessV1 access{};
+  for (const auto &probe : kRoutePriority) {
+    if (probe.route != query.result.route) continue;
+    void *root = nullptr;
+    void *widget = nullptr;
+    if (!ResolveNamedGuiWidgetV1(query.environment, access, probe.root_name,
+                                 probe.root_name, root, widget)) {
+      return false;
+    }
+    return root != nullptr && widget == root &&
+           InspectNamedGuiSubtreeV1(access, query.environment.module_base,
+                                    root, probe.root_name,
+                                    query.result.tree_inspection);
+  }
+  return InspectNamedGuiTreeV1(query.environment, access,
+                               query.result.tree_inspection);
+}
+
 bool DispatchFixedNamedWidget(FrontendGuiRouteMailboxContextV1 &query,
                               FrontendGuiRouteV1 expected_route,
                               std::string_view root_name,
@@ -157,9 +177,7 @@ bool ExecuteFrontendGuiRouteMailboxV1(
   }
   query->result = {};
   if (query->operation == FrontendGuiRouteOperationV1::inspect_tree) {
-    ZhongguoScoreboardAccessV1 access{};
-    return InspectNamedGuiTreeV1(query->environment, access,
-                                 query->result.tree_inspection);
+    return InspectActiveRouteTree(*query);
   }
   if (!ResolveRoute(*query, query->result)) return false;
   if (query->operation == FrontendGuiRouteOperationV1::query) return true;

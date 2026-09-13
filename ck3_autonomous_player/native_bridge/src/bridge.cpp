@@ -3114,7 +3114,9 @@ std::string FrontendGuiTreeInspectionResultFrame(
       ",\"ok\":true,\"result\":{\"step\":\"inspect-frontend-gui-tree-v1\",";
   result += "\"accepted\":true,\"status\":\"";
   result += inspection.root_available ? "available" : "unavailable";
-  result += "\",\"root_available\":";
+  result += "\",\"scope_root_name\":";
+  AppendJsonString(result, inspection.scope_root_name);
+  result += ",\"root_available\":";
   result += inspection.root_available ? "true" : "false";
   result += ",\"truncated\":";
   result += inspection.truncated ? "true" : "false";
@@ -3126,8 +3128,14 @@ std::string FrontendGuiTreeInspectionResultFrame(
     const auto &widget = inspection.widgets[index];
     result += "{\"runtime_name\":";
     AppendJsonString(result, widget.runtime_name);
+    result += ",\"child_path\":";
+    AppendJsonString(result, widget.child_path);
     result += ",\"depth\":";
     result += Number(widget.depth);
+    result += ",\"child_count\":";
+    result += Number(widget.child_count);
+    result += ",\"vtable_rva\":";
+    result += Number(widget.vtable_rva);
     result += ",\"effective_visible\":";
     result += widget.effective_visible ? "true" : "false";
     result += ",\"enabled\":";

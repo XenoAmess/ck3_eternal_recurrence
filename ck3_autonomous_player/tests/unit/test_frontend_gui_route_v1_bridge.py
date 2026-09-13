@@ -115,13 +115,17 @@ class _FrontendDriver:
             "step": INSPECT_FRONTEND_GUI_TREE_V1_STEP,
             "accepted": True,
             "status": "available",
+            "scope_root_name": "lobbyview",
             "root_available": True,
             "truncated": False,
             "widget_count": 1,
             "widgets": [
                 {
                     "runtime_name": "lobbyview",
-                    "depth": 1,
+                    "child_path": "",
+                    "depth": 0,
+                    "child_count": 1,
+                    "vtable_rva": 4096,
                     "effective_visible": True,
                     "enabled": True,
                 }
@@ -147,13 +151,17 @@ class FrontendGuiRouteV1ContractTests(unittest.TestCase):
                 "step": INSPECT_FRONTEND_GUI_TREE_V1_STEP,
                 "accepted": True,
                 "status": "available",
+                "scope_root_name": "lobbyview",
                 "root_available": True,
                 "truncated": False,
                 "widget_count": 1,
                 "widgets": [
                     {
                         "runtime_name": "lobbyview",
-                        "depth": 1,
+                        "child_path": "",
+                        "depth": 0,
+                        "child_count": 1,
+                        "vtable_rva": 4096,
                         "effective_visible": True,
                         "enabled": True,
                     }
@@ -170,6 +178,7 @@ class FrontendGuiRouteV1ContractTests(unittest.TestCase):
                     "step": INSPECT_FRONTEND_GUI_TREE_V1_STEP,
                     "accepted": True,
                     "status": "available",
+                    "scope_root_name": "lobbyview",
                     "root_available": True,
                     "truncated": False,
                     "widget_count": 513,

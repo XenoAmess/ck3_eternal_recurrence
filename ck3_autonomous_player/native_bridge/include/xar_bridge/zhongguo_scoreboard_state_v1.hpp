@@ -251,12 +251,16 @@ inline constexpr std::size_t kNamedGuiTreeInspectionMaximumWidgetsV1 = 512;
 
 struct NamedGuiWidgetInspectionV1 {
   std::string runtime_name;
+  std::string child_path;
   std::uint32_t depth = 0;
+  std::uint32_t child_count = 0;
+  std::uint64_t vtable_rva = 0;
   bool effective_visible = false;
   bool enabled = false;
 };
 
 struct NamedGuiTreeInspectionV1 {
+  std::string scope_root_name;
   bool root_available = false;
   bool truncated = false;
   std::size_t widget_count = 0;
@@ -330,6 +334,14 @@ bool ReadGuiWidgetRuntimeV1(
 bool InspectNamedGuiTreeV1(
     const ZhongguoScoreboardNativeEnvironmentV1 &environment,
     const ZhongguoScoreboardAccessV1 &access,
+    NamedGuiTreeInspectionV1 &output) noexcept;
+
+// Same bounded census rooted at one DLL-resolved fixed widget. The frontend
+// adapter uses this only after selecting a compile-time route root; callers
+// still cannot provide pointers, paths, names, or limits through MCP.
+bool InspectNamedGuiSubtreeV1(
+    const ZhongguoScoreboardAccessV1 &access, std::uintptr_t module_base,
+    void *root, std::string_view scope_root_name,
     NamedGuiTreeInspectionV1 &output) noexcept;
 
 ZhongguoScoreboardNativeEnvironmentV1 BindZhongguoScoreboardNativeEnvironmentV1(

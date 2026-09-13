@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import re
 from typing import Final
 
 
@@ -137,10 +138,21 @@ def normalize_frontend_gui_tree_inspection_v1(
         raise ValueError("frontend GUI tree inspection must be an object")
     widgets = result.get("widgets")
     widget_count = result.get("widget_count")
+    scope_root_name = result.get("scope_root_name")
     if (
         result.get("step") != INSPECT_FRONTEND_GUI_TREE_V1_STEP
         or result.get("accepted") is not True
         or result.get("status") not in {"available", "unavailable"}
+        or not isinstance(scope_root_name, str)
+        or scope_root_name
+        not in {
+            "",
+            "_root_",
+            "mainmenu_panel_bottom",
+            "frontend_bookmarks",
+            "lobbyview",
+            "ruler_designer",
+        }
         or not isinstance(result.get("root_available"), bool)
         or not isinstance(result.get("truncated"), bool)
         or not isinstance(widget_count, int)
@@ -156,14 +168,30 @@ def normalize_frontend_gui_tree_inspection_v1(
         if not isinstance(row, dict):
             raise ValueError("frontend GUI widget inspection is malformed")
         runtime_name = row.get("runtime_name")
+        child_path = row.get("child_path")
         depth = row.get("depth")
+        child_count = row.get("child_count")
+        vtable_rva = row.get("vtable_rva")
         if (
             not isinstance(runtime_name, str)
-            or not runtime_name
             or len(runtime_name.encode("utf-8")) > 127
+            or not isinstance(child_path, str)
+            or len(child_path) > 383
+            or (
+                child_path != ""
+                and re.fullmatch(r"\d+(?:/\d+)*", child_path) is None
+            )
             or not isinstance(depth, int)
             or isinstance(depth, bool)
             or not 0 <= depth <= 64
+            or (0 if child_path == "" else child_path.count("/") + 1)
+            != depth
+            or not isinstance(child_count, int)
+            or isinstance(child_count, bool)
+            or not 0 <= child_count <= 4096
+            or not isinstance(vtable_rva, int)
+            or isinstance(vtable_rva, bool)
+            or not 0 <= vtable_rva <= 2**64 - 1
             or not isinstance(row.get("effective_visible"), bool)
             or not isinstance(row.get("enabled"), bool)
         ):
@@ -171,7 +199,10 @@ def normalize_frontend_gui_tree_inspection_v1(
         normalized_widgets.append(
             {
                 "runtime_name": runtime_name,
+                "child_path": child_path,
                 "depth": depth,
+                "child_count": child_count,
+                "vtable_rva": vtable_rva,
                 "effective_visible": row["effective_visible"],
                 "enabled": row["enabled"],
             }
@@ -182,6 +213,7 @@ def normalize_frontend_gui_tree_inspection_v1(
         "step": INSPECT_FRONTEND_GUI_TREE_V1_STEP,
         "accepted": True,
         "status": result["status"],
+        "scope_root_name": scope_root_name,
         "root_available": result["root_available"],
         "truncated": result["truncated"],
         "widget_count": widget_count,

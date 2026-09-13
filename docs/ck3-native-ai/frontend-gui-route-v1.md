@@ -76,9 +76,13 @@ activate-frontend-pick-any-character-v1
 visibility 和 enabled 状态。route priority 为 `coat_of_arms_designer > ruler_designer > lobby > bookmarks > main_menu > unavailable`。
 
 当固定 route 返回 `unavailable` 时，零输入 `ck3_inspect_frontend_gui_tree_v1()` 可在同一 application-main mailbox 上对当前 GUI
-owner 做只读广度枚举。它最多返回 512 个非空 runtime name，以及深度、effective visibility、enabled；遍历上限为 4,096
+owner 做只读广度枚举。它最多返回 512 个节点的 runtime name、深度、effective visibility、enabled；遍历上限为 4,096
 节点、深度 64，达到任一上限即标记 `truncated=true`。调用方不能提供控件名、地址、遍历上限或回调；该工具只用于以原生
 结构化证据识别缺失页面，不执行控件，也不读取屏幕。
+
+route 可识别时，inspector 会自动把固定 route root 作为 `scope_root_name` 并枚举其子树；route 不可识别时才回退全局 root。
+每行包含相对 root 的只读 `child_path`、runtime name（允许空，覆盖原版无名控件）、child count 和模块相对 vtable RVA，仍不暴露
+可回传的绝对 native pointer。该扩展用于确定 `lobbyview` 内无显式 name 的原版设计器按钮结构，不能由 MCP 调用方选择任意 root。
 
 ## application-main 与 gameplay 隔离
 
