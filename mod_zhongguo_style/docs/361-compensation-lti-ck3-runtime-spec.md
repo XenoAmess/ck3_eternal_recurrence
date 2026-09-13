@@ -1,6 +1,6 @@
 ﻿# 361 薪酬、发放与长期激励 CK3 运行时
 
-状态：**CK3 script static-ready；R630 已实见统一薪酬案卷及旧 hover 缺陷，本次 tooltip 修复待 fresh CK3 复验**
+状态：**CK3 script static-ready；R630 已实见统一薪酬案卷的长按钮与旧 hover 缺陷，本次信息层级修复待 fresh CK3 复验**
 
 生成器：`tools/gen_361_compensation_runtime.py`
 
@@ -83,13 +83,17 @@ grade 的唯一数值投影为 `1 -> 325 (3.25)`、`2 -> 350 (3.50)`、`3 -> 375
 也不得从可能已经变化的 current result 重读 grade。玩家仅看到统一的 `zg361comp.1` 三路线事件；不存在 33 个
 编号窗口。授权 AI 由 `zg361comp.2` 静默选择后台路线，结案后 hidden queue 再取下一 domain。
 
-统一玩家事件不是三个空泛按钮：L 四阶段、AE 五阶段、AF 五阶段共 14 组 `triggered_desc` 在选择前列明该阶段
-A/B/C 的实际双账户金额、欠付/期限、份额、门槛和离任后果。结案卡再直接投影奖金、薪酬单与长期份额账的数值；
-薪酬透明度只显示制度口径和匿名数值，不泄露具名同僚薪酬。R630 在 production staging 实见 `zg361comp.1`
-的 L1 卡片：三条按钮正文已经准确列出总报酬、奖金、国库/私库付款和零支付结果，但 hover 因只调用内部
-`zg361_comp_portfolio_apply_stage_effect` 而显示“没有直接影响”。生成器现在把各按钮自己的本地化结果同时绑定为
-`custom_tooltip`，统一覆盖 14 阶段 × 3 路线的 42 条选项；它只改变披露层，不复制或改写业务 effect、门槛或账目。
-R630 仍加载修复前 staging，因此该呈现修复保持 static-ready，待下一轮 fresh 产品抽检后再升级为 live。
+统一玩家事件不是三个空泛按钮：L 四阶段、AE 五阶段、AF 五阶段共 14 组 `triggered_desc` 先说明当前案情；
+三条按钮只保留可扫读的行动标签，精确的双账户金额、冻结绩效、欠付与账期、份额门槛、后续阶段和离任后果均放在
+各自 `.tt` 悬浮说明中。结案卡再直接投影奖金、薪酬单与长期份额账的数值；薪酬透明度只显示制度口径和匿名数值，
+不泄露具名同僚薪酬。
+
+R630 在 production staging 实见 `zg361comp.1` 的 L1 卡片：最初三条长按钮虽然准确列出总报酬、奖金和
+国库/私库付款，hover 却因只调用内部 `zg361_comp_portfolio_apply_stage_effect` 而显示“没有直接影响”。第一次修复
+把同一段长按钮文案直接复用为 `custom_tooltip`，导致按钮仍然拥挤，信息层级没有修正。当前生成器将 14 阶段 × 3 路线
+拆成 42 条短按钮和 42 条独立详细 tooltip；event 只引用 `.tt`，不会再用按钮正文冒充效果说明。此改动只调整披露层，
+不复制或改写业务 effect、trigger、账本、结算与 AI 行为。R630 仍加载修复前 staging，因此该 UX 修复保持
+static-ready，待下一轮 fresh 产品抽检后再升级为 live。
 
 ## 三、五元身份、receipt 与写入消费链
 

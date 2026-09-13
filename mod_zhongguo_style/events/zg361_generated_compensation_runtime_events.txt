@@ -309,7 +309,7 @@ zg361comp.1 = {
     immediate = { set_variable = { name = zg361_comp_portfolio_visible_pending value = 0 } }
     option = {
         name = zg361comp.1.l1.r1
-        custom_tooltip = zg361comp.1.l1.r1
+        custom_tooltip = zg361comp.1.l1.r1.tt
         trigger = {
             var:zg361_comp_portfolio_domain = 1
             var:zg361_comp_portfolio_stage = 1
@@ -318,7 +318,7 @@ zg361comp.1 = {
     }
     option = {
         name = zg361comp.1.l1.r2
-        custom_tooltip = zg361comp.1.l1.r2
+        custom_tooltip = zg361comp.1.l1.r2.tt
         trigger = {
             var:zg361_comp_portfolio_domain = 1
             var:zg361_comp_portfolio_stage = 1
@@ -327,7 +327,7 @@ zg361comp.1 = {
     }
     option = {
         name = zg361comp.1.l1.r3
-        custom_tooltip = zg361comp.1.l1.r3
+        custom_tooltip = zg361comp.1.l1.r3.tt
         trigger = {
             var:zg361_comp_portfolio_domain = 1
             var:zg361_comp_portfolio_stage = 1
@@ -336,7 +336,7 @@ zg361comp.1 = {
     }
     option = {
         name = zg361comp.1.l2.r1
-        custom_tooltip = zg361comp.1.l2.r1
+        custom_tooltip = zg361comp.1.l2.r1.tt
         trigger = {
             var:zg361_comp_portfolio_domain = 1
             var:zg361_comp_portfolio_stage = 2
@@ -345,7 +345,7 @@ zg361comp.1 = {
     }
     option = {
         name = zg361comp.1.l2.r2
-        custom_tooltip = zg361comp.1.l2.r2
+        custom_tooltip = zg361comp.1.l2.r2.tt
         trigger = {
             var:zg361_comp_portfolio_domain = 1
             var:zg361_comp_portfolio_stage = 2
@@ -354,7 +354,7 @@ zg361comp.1 = {
     }
     option = {
         name = zg361comp.1.l2.r3
-        custom_tooltip = zg361comp.1.l2.r3
+        custom_tooltip = zg361comp.1.l2.r3.tt
         trigger = {
             var:zg361_comp_portfolio_domain = 1
             var:zg361_comp_portfolio_stage = 2
@@ -363,7 +363,7 @@ zg361comp.1 = {
     }
     option = {
         name = zg361comp.1.l3.r1
-        custom_tooltip = zg361comp.1.l3.r1
+        custom_tooltip = zg361comp.1.l3.r1.tt
         trigger = {
             var:zg361_comp_portfolio_domain = 1
             var:zg361_comp_portfolio_stage = 3
@@ -372,7 +372,7 @@ zg361comp.1 = {
     }
     option = {
         name = zg361comp.1.l3.r2
-        custom_tooltip = zg361comp.1.l3.r2
+        custom_tooltip = zg361comp.1.l3.r2.tt
         trigger = {
             var:zg361_comp_portfolio_domain = 1
             var:zg361_comp_portfolio_stage = 3
@@ -381,7 +381,7 @@ zg361comp.1 = {
     }
     option = {
         name = zg361comp.1.l3.r3
-        custom_tooltip = zg361comp.1.l3.r3
+        custom_tooltip = zg361comp.1.l3.r3.tt
         trigger = {
             var:zg361_comp_portfolio_domain = 1
             var:zg361_comp_portfolio_stage = 3
@@ -390,7 +390,7 @@ zg361comp.1 = {
     }
     option = {
         name = zg361comp.1.l4.r1
-        custom_tooltip = zg361comp.1.l4.r1
+        custom_tooltip = zg361comp.1.l4.r1.tt
         trigger = {
             var:zg361_comp_portfolio_domain = 1
             var:zg361_comp_portfolio_stage = 4
@@ -399,7 +399,7 @@ zg361comp.1 = {
     }
     option = {
         name = zg361comp.1.l4.r2
-        custom_tooltip = zg361comp.1.l4.r2
+        custom_tooltip = zg361comp.1.l4.r2.tt
         trigger = {
             var:zg361_comp_portfolio_domain = 1
             var:zg361_comp_portfolio_stage = 4
@@ -408,7 +408,7 @@ zg361comp.1 = {
     }
     option = {
         name = zg361comp.1.l4.r3
-        custom_tooltip = zg361comp.1.l4.r3
+        custom_tooltip = zg361comp.1.l4.r3.tt
         trigger = {
             var:zg361_comp_portfolio_domain = 1
             var:zg361_comp_portfolio_stage = 4
@@ -417,7 +417,7 @@ zg361comp.1 = {
     }
     option = {
         name = zg361comp.1.ae1.r1
-        custom_tooltip = zg361comp.1.ae1.r1
+        custom_tooltip = zg361comp.1.ae1.r1.tt
         trigger = {
             var:zg361_comp_portfolio_domain = 2
             var:zg361_comp_portfolio_stage = 1
@@ -426,7 +426,7 @@ zg361comp.1 = {
     }
     option = {
         name = zg361comp.1.ae1.r2
-        custom_tooltip = zg361comp.1.ae1.r2
+        custom_tooltip = zg361comp.1.ae1.r2.tt
         trigger = {
             var:zg361_comp_portfolio_domain = 2
             var:zg361_comp_portfolio_stage = 1
@@ -435,7 +435,7 @@ zg361comp.1 = {
     }
     option = {
         name = zg361comp.1.ae1.r3
-        custom_tooltip = zg361comp.1.ae1.r3
+        custom_tooltip = zg361comp.1.ae1.r3.tt
         trigger = {
             var:zg361_comp_portfolio_domain = 2
             var:zg361_comp_portfolio_stage = 1
@@ -444,7 +444,7 @@ zg361comp.1 = {
     }
     option = {
         name = zg361comp.1.ae2.r1
-        custom_tooltip = zg361comp.1.ae2.r1
+        custom_tooltip = zg361comp.1.ae2.r1.tt
         trigger = {
             var:zg361_comp_portfolio_domain = 2
             var:zg361_comp_portfolio_stage = 2
@@ -453,7 +453,7 @@ zg361comp.1 = {
     }
     option = {
         name = zg361comp.1.ae2.r2
-        custom_tooltip = zg361comp.1.ae2.r2
+        custom_tooltip = zg361comp.1.ae2.r2.tt
         trigger = {
             var:zg361_comp_portfolio_domain = 2
             var:zg361_comp_portfolio_stage = 2
@@ -462,7 +462,7 @@ zg361comp.1 = {
     }
     option = {
         name = zg361comp.1.ae2.r3
-        custom_tooltip = zg361comp.1.ae2.r3
+        custom_tooltip = zg361comp.1.ae2.r3.tt
         trigger = {
             var:zg361_comp_portfolio_domain = 2
             var:zg361_comp_portfolio_stage = 2
@@ -471,7 +471,7 @@ zg361comp.1 = {
     }
     option = {
         name = zg361comp.1.ae3.r1
-        custom_tooltip = zg361comp.1.ae3.r1
+        custom_tooltip = zg361comp.1.ae3.r1.tt
         trigger = {
             var:zg361_comp_portfolio_domain = 2
             var:zg361_comp_portfolio_stage = 3
@@ -480,7 +480,7 @@ zg361comp.1 = {
     }
     option = {
         name = zg361comp.1.ae3.r2
-        custom_tooltip = zg361comp.1.ae3.r2
+        custom_tooltip = zg361comp.1.ae3.r2.tt
         trigger = {
             var:zg361_comp_portfolio_domain = 2
             var:zg361_comp_portfolio_stage = 3
@@ -489,7 +489,7 @@ zg361comp.1 = {
     }
     option = {
         name = zg361comp.1.ae3.r3
-        custom_tooltip = zg361comp.1.ae3.r3
+        custom_tooltip = zg361comp.1.ae3.r3.tt
         trigger = {
             var:zg361_comp_portfolio_domain = 2
             var:zg361_comp_portfolio_stage = 3
@@ -498,7 +498,7 @@ zg361comp.1 = {
     }
     option = {
         name = zg361comp.1.ae4.r1
-        custom_tooltip = zg361comp.1.ae4.r1
+        custom_tooltip = zg361comp.1.ae4.r1.tt
         trigger = {
             var:zg361_comp_portfolio_domain = 2
             var:zg361_comp_portfolio_stage = 4
@@ -507,7 +507,7 @@ zg361comp.1 = {
     }
     option = {
         name = zg361comp.1.ae4.r2
-        custom_tooltip = zg361comp.1.ae4.r2
+        custom_tooltip = zg361comp.1.ae4.r2.tt
         trigger = {
             var:zg361_comp_portfolio_domain = 2
             var:zg361_comp_portfolio_stage = 4
@@ -516,7 +516,7 @@ zg361comp.1 = {
     }
     option = {
         name = zg361comp.1.ae4.r3
-        custom_tooltip = zg361comp.1.ae4.r3
+        custom_tooltip = zg361comp.1.ae4.r3.tt
         trigger = {
             var:zg361_comp_portfolio_domain = 2
             var:zg361_comp_portfolio_stage = 4
@@ -525,7 +525,7 @@ zg361comp.1 = {
     }
     option = {
         name = zg361comp.1.ae5.r1
-        custom_tooltip = zg361comp.1.ae5.r1
+        custom_tooltip = zg361comp.1.ae5.r1.tt
         trigger = {
             var:zg361_comp_portfolio_domain = 2
             var:zg361_comp_portfolio_stage = 5
@@ -534,7 +534,7 @@ zg361comp.1 = {
     }
     option = {
         name = zg361comp.1.ae5.r2
-        custom_tooltip = zg361comp.1.ae5.r2
+        custom_tooltip = zg361comp.1.ae5.r2.tt
         trigger = {
             var:zg361_comp_portfolio_domain = 2
             var:zg361_comp_portfolio_stage = 5
@@ -543,7 +543,7 @@ zg361comp.1 = {
     }
     option = {
         name = zg361comp.1.ae5.r3
-        custom_tooltip = zg361comp.1.ae5.r3
+        custom_tooltip = zg361comp.1.ae5.r3.tt
         trigger = {
             var:zg361_comp_portfolio_domain = 2
             var:zg361_comp_portfolio_stage = 5
@@ -552,7 +552,7 @@ zg361comp.1 = {
     }
     option = {
         name = zg361comp.1.af1.r1
-        custom_tooltip = zg361comp.1.af1.r1
+        custom_tooltip = zg361comp.1.af1.r1.tt
         trigger = {
             var:zg361_comp_portfolio_domain = 3
             var:zg361_comp_portfolio_stage = 1
@@ -561,7 +561,7 @@ zg361comp.1 = {
     }
     option = {
         name = zg361comp.1.af1.r2
-        custom_tooltip = zg361comp.1.af1.r2
+        custom_tooltip = zg361comp.1.af1.r2.tt
         trigger = {
             var:zg361_comp_portfolio_domain = 3
             var:zg361_comp_portfolio_stage = 1
@@ -570,7 +570,7 @@ zg361comp.1 = {
     }
     option = {
         name = zg361comp.1.af1.r3
-        custom_tooltip = zg361comp.1.af1.r3
+        custom_tooltip = zg361comp.1.af1.r3.tt
         trigger = {
             var:zg361_comp_portfolio_domain = 3
             var:zg361_comp_portfolio_stage = 1
@@ -579,7 +579,7 @@ zg361comp.1 = {
     }
     option = {
         name = zg361comp.1.af2.r1
-        custom_tooltip = zg361comp.1.af2.r1
+        custom_tooltip = zg361comp.1.af2.r1.tt
         trigger = {
             var:zg361_comp_portfolio_domain = 3
             var:zg361_comp_portfolio_stage = 2
@@ -588,7 +588,7 @@ zg361comp.1 = {
     }
     option = {
         name = zg361comp.1.af2.r2
-        custom_tooltip = zg361comp.1.af2.r2
+        custom_tooltip = zg361comp.1.af2.r2.tt
         trigger = {
             var:zg361_comp_portfolio_domain = 3
             var:zg361_comp_portfolio_stage = 2
@@ -597,7 +597,7 @@ zg361comp.1 = {
     }
     option = {
         name = zg361comp.1.af2.r3
-        custom_tooltip = zg361comp.1.af2.r3
+        custom_tooltip = zg361comp.1.af2.r3.tt
         trigger = {
             var:zg361_comp_portfolio_domain = 3
             var:zg361_comp_portfolio_stage = 2
@@ -606,7 +606,7 @@ zg361comp.1 = {
     }
     option = {
         name = zg361comp.1.af3.r1
-        custom_tooltip = zg361comp.1.af3.r1
+        custom_tooltip = zg361comp.1.af3.r1.tt
         trigger = {
             var:zg361_comp_portfolio_domain = 3
             var:zg361_comp_portfolio_stage = 3
@@ -615,7 +615,7 @@ zg361comp.1 = {
     }
     option = {
         name = zg361comp.1.af3.r2
-        custom_tooltip = zg361comp.1.af3.r2
+        custom_tooltip = zg361comp.1.af3.r2.tt
         trigger = {
             var:zg361_comp_portfolio_domain = 3
             var:zg361_comp_portfolio_stage = 3
@@ -624,7 +624,7 @@ zg361comp.1 = {
     }
     option = {
         name = zg361comp.1.af3.r3
-        custom_tooltip = zg361comp.1.af3.r3
+        custom_tooltip = zg361comp.1.af3.r3.tt
         trigger = {
             var:zg361_comp_portfolio_domain = 3
             var:zg361_comp_portfolio_stage = 3
@@ -633,7 +633,7 @@ zg361comp.1 = {
     }
     option = {
         name = zg361comp.1.af4.r1
-        custom_tooltip = zg361comp.1.af4.r1
+        custom_tooltip = zg361comp.1.af4.r1.tt
         trigger = {
             var:zg361_comp_portfolio_domain = 3
             var:zg361_comp_portfolio_stage = 4
@@ -642,7 +642,7 @@ zg361comp.1 = {
     }
     option = {
         name = zg361comp.1.af4.r2
-        custom_tooltip = zg361comp.1.af4.r2
+        custom_tooltip = zg361comp.1.af4.r2.tt
         trigger = {
             var:zg361_comp_portfolio_domain = 3
             var:zg361_comp_portfolio_stage = 4
@@ -651,7 +651,7 @@ zg361comp.1 = {
     }
     option = {
         name = zg361comp.1.af4.r3
-        custom_tooltip = zg361comp.1.af4.r3
+        custom_tooltip = zg361comp.1.af4.r3.tt
         trigger = {
             var:zg361_comp_portfolio_domain = 3
             var:zg361_comp_portfolio_stage = 4
@@ -660,7 +660,7 @@ zg361comp.1 = {
     }
     option = {
         name = zg361comp.1.af5.r1
-        custom_tooltip = zg361comp.1.af5.r1
+        custom_tooltip = zg361comp.1.af5.r1.tt
         trigger = {
             var:zg361_comp_portfolio_domain = 3
             var:zg361_comp_portfolio_stage = 5
@@ -685,7 +685,7 @@ zg361comp.1 = {
     }
     option = {
         name = zg361comp.1.af5.r2
-        custom_tooltip = zg361comp.1.af5.r2
+        custom_tooltip = zg361comp.1.af5.r2.tt
         trigger = {
             var:zg361_comp_portfolio_domain = 3
             var:zg361_comp_portfolio_stage = 5
@@ -697,7 +697,7 @@ zg361comp.1 = {
     }
     option = {
         name = zg361comp.1.af5.r3
-        custom_tooltip = zg361comp.1.af5.r3
+        custom_tooltip = zg361comp.1.af5.r3.tt
         trigger = {
             var:zg361_comp_portfolio_domain = 3
             var:zg361_comp_portfolio_stage = 5

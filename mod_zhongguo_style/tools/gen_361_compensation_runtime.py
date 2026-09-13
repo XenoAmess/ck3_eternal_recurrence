@@ -131,6 +131,98 @@ PORTFOLIO_STAGES: tuple[tuple[str, int, int], ...] = (
     *((f"af{state}", 3, state) for state in range(1, 6)),
 )
 
+# Event buttons must remain short enough to scan in CK3's fixed option area.
+# Exact amounts, accounts, frozen inputs, deadlines and continuation behavior
+# stay in the matching `.tt` localization generated from the detailed copy.
+PORTFOLIO_BUTTON_LABELS_EN: dict[str, tuple[str, str, str]] = {
+    "l1": (
+        "Approve the standard reward package",
+        "Approve the reduced reward package",
+        "Keep fixed pay only",
+    ),
+    "l2": (
+        "Honor the original award schedule",
+        "Recover the overpayment and renew sooner",
+        "End future awards",
+    ),
+    "l3": (
+        "Grant authority with a pay adjustment",
+        "Grant authority at current pay",
+        "Decline the package",
+    ),
+    "l4": (
+        "Approve a performance-weighted spot award",
+        "Approve a tenure-weighted spot award",
+        "Decline the spot award",
+    ),
+    "ae1": (
+        "Grant the fixed extra-month entitlement",
+        "Grant the performance extra-month entitlement",
+        "Grant no extra-month entitlement",
+    ),
+    "ae2": (
+        "Pay in full with backpay",
+        "Defer payment and recognize backpay",
+        "Defer payment and deny backpay",
+    ),
+    "ae3": (
+        "Recognize the full pay commitment",
+        "Recognize part of the pay commitment",
+        "Decline and lower future base pay",
+    ),
+    "ae4": (
+        "Correct through fixed pay",
+        "Correct through a one-time award",
+        "Grant a pay-band exception",
+    ),
+    "ae5": (
+        "Fully repair the pay inversion",
+        "Partly repair the pay inversion",
+        "Deny the repair",
+    ),
+    "af1": (
+        "Grant high-risk long-term units",
+        "Grant restricted long-term units",
+        "Substitute cash for units",
+    ),
+    "af2": (
+        "Convert part of the bonus",
+        "Keep the bonus entirely in cash",
+        "Cancel the conversion",
+    ),
+    "af3": (
+        "Use gradual long-term vesting",
+        "Use staged mid-term vesting",
+        "Use delayed single vesting",
+    ),
+    "af4": (
+        "Split service and performance evenly",
+        "Favor service-based vesting",
+        "Use service-based vesting only",
+    ),
+    "af5": (
+        "Normal departure with immediate buyback",
+        "Departure with cause and deferred buyback",
+        "Close as an internal transfer",
+    ),
+}
+PORTFOLIO_BUTTON_LABELS_CN: dict[str, tuple[str, str, str]] = {
+    "l1": ("核准标准总报酬方案", "核准收缩总报酬方案", "只保留固定俸"),
+    "l2": ("依原约继续兑付", "追回多付并提前续授", "终止后续奖励"),
+    "l3": ("授予权责并调薪", "授予权责，维持现俸", "驳回待遇包"),
+    "l4": ("核准绩效导向专项奖", "核准年功导向专项奖", "驳回专项奖"),
+    "ae1": ("核定固定额外月俸", "核定绩效额外月俸", "不授额外月俸"),
+    "ae2": ("立即付清并补发", "延期支付并承认补发", "延期支付并驳回补发"),
+    "ae3": ("全额追认俸额承诺", "部分追认俸额承诺", "不追认并调低下期基础俸"),
+    "ae4": ("以固定俸追赶薪带", "以一次性奖励纠偏", "批准薪带例外"),
+    "ae5": ("全额修复薪酬倒挂", "部分修复薪酬倒挂", "驳回倒挂修复"),
+    "af1": ("授予高风险长期份额", "授予限制性长期份额", "改发现金，不授份额"),
+    "af2": ("部分奖金转为长期份额", "奖金全部保留为现金", "取消奖金转换"),
+    "af3": ("采用长期渐进归属", "采用中期分批归属", "采用超长期单次归属"),
+    "af4": ("服务与绩效份额均衡分账", "偏重服务份额", "全部按服务份额处理"),
+    "af5": ("正常离任并立即回购", "有责离任并延期回购", "按内部调动结案"),
+}
+
 
 def mechanism_effect_names(*mechanism_ids: int) -> tuple[str, ...]:
     return tuple(
@@ -290,6 +382,15 @@ def validate_specs() -> None:
         raise ValueError("each domain needs one explicit state on both sides of every stage")
     if RESULT_GRADE_RATINGS != {1: 325, 2: 350, 3: 375}:
         raise ValueError("result grade/rating projection drifted")
+    expected_stage_keys = {key for key, _domain_number, _state in PORTFOLIO_STAGES}
+    for language, labels in (
+        ("english", PORTFOLIO_BUTTON_LABELS_EN),
+        ("simp_chinese", PORTFOLIO_BUTTON_LABELS_CN),
+    ):
+        if set(labels) != expected_stage_keys:
+            raise ValueError(f"{language} portfolio button stage keys drifted")
+        if any(len(routes) != 3 or any(not label for label in routes) for routes in labels.values()):
+            raise ValueError(f"{language} portfolio buttons need three non-empty route labels")
 
 
 def vars_for(domain: str) -> dict[str, str]:
@@ -2856,7 +2957,7 @@ def render_events() -> bytes:
     portfolio_options = "\n".join(
         f'''    option = {{
         name = zg361comp.1.{key}.r{route}
-        custom_tooltip = zg361comp.1.{key}.r{route}
+        custom_tooltip = zg361comp.1.{key}.r{route}.tt
         trigger = {{
 {textwrap.indent(portfolio_option_trigger(key, domain_number, state, route), "            ")}
         }}
@@ -3146,8 +3247,44 @@ def render_effect_parts() -> dict[str, bytes]:
     return rendered
 
 
+PORTFOLIO_OPTION_ROW = re.compile(
+    r'^(?P<indent>\s+)(?P<key>zg361comp\.1\.(?P<stage>(?:l|ae|af)\d)\.r(?P<route>[123])):0\s+".*"$'
+)
+
+
+def separate_portfolio_button_copy(
+    document: str, labels: dict[str, tuple[str, str, str]]
+) -> str:
+    """Keep action labels in buttons and detailed results in hover tooltips."""
+
+    rows: list[str] = []
+    seen: set[tuple[str, int]] = set()
+    for line in document.splitlines():
+        match = PORTFOLIO_OPTION_ROW.match(line)
+        if match is None:
+            rows.append(line)
+            continue
+        stage = match.group("stage")
+        route = int(match.group("route"))
+        key = match.group("key")
+        if (stage, route) in seen:
+            raise ValueError(f"duplicate portfolio option localization: {key}")
+        seen.add((stage, route))
+        rows.append(f'{match.group("indent")}{key}:0 "{labels[stage][route - 1]}"')
+        rows.append(line.replace(f"{key}:0", f"{key}.tt:0", 1))
+
+    expected = {
+        (stage, route)
+        for stage, _domain_number, _state in PORTFOLIO_STAGES
+        for route in (1, 2, 3)
+    }
+    if seen != expected:
+        raise ValueError(f"portfolio option localization coverage drifted: {sorted(seen ^ expected)}")
+    return "\n".join(rows)
+
+
 def render_english_localization() -> bytes:
-    return localized(r'''l_english:
+    source = r'''l_english:
  zg361comp.1.t:0 "Compensation Docket"
  zg361comp.1.desc:0 "The stage seal and ledger entry disagree, so the clerks have closed the docket. Neither your treasury nor your purse will pay against it."
  zg361comp.1.l1:0 "The clerks have assembled [ROOT.Var('zg361_comp_portfolio_subject').Char.GetShortUIName]'s fixed pay, role allowance, and frozen performance record. No bonus coin has yet left your treasury or purse."
@@ -3233,11 +3370,14 @@ def render_english_localization() -> bytes:
  zg361comp.902.a:0 "File the pay-statement receipt; this does not alter the frozen grade."
  zg361comp.903.a:0 "File this period's vesting receipt; this changes no unit balance."
  zg361comp.904.a:0 "File the final long-term-award receipt; this changes no ledger balance."
-''')
+'''
+    return localized(
+        separate_portfolio_button_copy(source, PORTFOLIO_BUTTON_LABELS_EN)
+    )
 
 
 def render_simp_chinese_localization() -> bytes:
-    return localized(normalize_localization_document(r'''l_simp_chinese:
+    source = normalize_localization_document(r'''l_simp_chinese:
  zg361comp.1.t:0 "薪酬案卷"
  zg361comp.1.desc:0 "案吏发现阶段签押与账簿互不相符，因而封存了这份案卷。国库与私库均不会据此付款。"
  zg361comp.1.l1:0 "案吏已经汇齐 [ROOT.Var('zg361_comp_portfolio_subject').Char.GetShortUIName] 的固定俸、职务津贴与冻结绩效记录。奖金尚未从国库或你的私库支出。"
@@ -3323,7 +3463,10 @@ def render_simp_chinese_localization() -> bytes:
  zg361comp.902.a:0 "收存薪酬单凭据；此举不改动冻结绩效档。"
  zg361comp.903.a:0 "收存本期归属凭据；此举不改动份额。"
  zg361comp.904.a:0 "收存长期功赏结算凭据；此举不再改动账目。"
-'''))
+''')
+    return localized(
+        separate_portfolio_button_copy(source, PORTFOLIO_BUTTON_LABELS_CN)
+    )
 
 
 def render_placeholder_localization(language: str) -> bytes:
