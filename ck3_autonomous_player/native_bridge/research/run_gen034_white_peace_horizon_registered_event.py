@@ -166,6 +166,7 @@ async def _run_mcp_sequence(
     commands: list[str] = []
     samples: list[dict[str, object]] = []
     event_continuations: list[dict[str, object]] = []
+    event_interrupt: dict[str, object] | None = None
     sequence_error: str | None = None
     options: dict[str, object] | None = None
     admission_checks: dict[str, bool] = {}
@@ -252,8 +253,6 @@ async def _run_mcp_sequence(
                 if target_reached:
                     break
 
-                if event_continuations:
-                    raise RuntimeError("a second event interrupted the bounded horizon")
                 active_event = current.get("active_event")
                 event_instance_id = (
                     active_event.get("instance_id")
@@ -283,6 +282,39 @@ async def _run_mcp_sequence(
                 context = context_query.get("current_event_window_context")
                 if not isinstance(context, dict):
                     raise RuntimeError("event query returned no typed context")
+                context_key = context.get("event_definition_key")
+                if event_continuations or context_key != expected_event_key:
+                    event_interrupt = {
+                        "reason": (
+                            "event_continuation_limit_reached"
+                            if event_continuations
+                            else "unexpected_event_key"
+                        ),
+                        "event_context": context,
+                    }
+                    final = await _take_snapshot(
+                        client, results, label="event-interrupt-pre-save"
+                    )
+                    _append_sample(samples, final, war_id=war_id)
+                    revision = _plain_revision(final, label="event interrupt")
+                    commands.append("save-checkpoint")
+                    save_result = await client.call_tool(
+                        "ck3_save_checkpoint", {"expected_revision": revision}
+                    )
+                    results.append(save_result)
+                    save = base._structured(
+                        save_result, tool_name="ck3_save_checkpoint:event-interrupt"
+                    )
+                    value = save.get("checkpoint")
+                    checkpoint = dict(value) if isinstance(value, dict) else None
+                    final = await _take_snapshot(
+                        client, results, label="event-interrupt-final"
+                    )
+                    _append_sample(samples, final, war_id=war_id)
+                    raise RuntimeError(
+                        "bounded horizon stopped on unconsumed event "
+                        f"{context_key}"
+                    )
                 decision = registered._recommend_exact_registered_option(
                     snapshot=current,
                     event_context=context,
@@ -442,6 +474,7 @@ async def _run_mcp_sequence(
         "expected_command_delta": commands,
         "snapshot_samples": samples,
         "event_continuations": event_continuations,
+        "event_interrupt": event_interrupt,
         "normalized_termination_options": options,
         "white_peace_admission_checks": admission_checks,
         "prepared_checkpoint": checkpoint,

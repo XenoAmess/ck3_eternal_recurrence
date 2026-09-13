@@ -79,6 +79,8 @@ def test_history_requires_every_declared_command_to_succeed() -> None:
 def test_source_is_bounded_to_one_event_and_no_war_exit() -> None:
     source = SCRIPT.read_text(encoding="utf-8")
     assert '"maximum_event_continuations": 1' in source
+    assert '"event_interrupt": event_interrupt' in source
+    assert '"event_continuation_limit_reached"' in source
     assert '"ck3_query_current_event_window_context_v1"' in source
     assert '"ck3_select_event_option"' in source
     assert '"ck3_query_war_termination_options"' in source
