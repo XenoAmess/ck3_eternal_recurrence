@@ -621,3 +621,25 @@ explicitly incomplete. Landless, nomadic or missing-primary-title roots retain
 an available campaign root with a typed unavailable council component. The
 implementation is `static-ready / live=false`; it joins the existing shared
 two-scene paused live gate rather than creating a field-specific long run.
+
+## Bounded two-scene live gate
+
+`run_campaign_root_context_two_scene_live_acceptance.py` is the reusable M1
+gate. It creates one disposable production profile from an immutable,
+hash-pinned source save, starts exactly one managed CK3 process, and performs:
+
+1. two same-frame campaign-root reads and one derived turn-bundle read for the
+   source independent ruler;
+2. one typed `set-played-character-v1-N` rebind while paused;
+3. the same reads for the target vassal;
+4. managed process-tree and nonce-marked disposable-profile cleanup.
+
+GREEN requires exact player/title/capital/liege identities, unchanged date and
+episode, a forward revision on the rebind, every campaign-root readiness flag,
+nonempty direct-vassal and adjacent-holder samples in the independent scene,
+typed Q100000 income and health, domain/faction/partition observations, five
+core council positions in both scenes, at least one occupied task across them,
+and the same council projection in the turn bundle. The bundle itself may stay
+`partial` when unrelated optional pending-event or war observations are absent.
+The runner never advances time or saves and verifies the source-save SHA before
+and after the attempt.
