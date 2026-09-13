@@ -21,6 +21,7 @@ PRODUCT_EVENT_KEY = "zg361p2c.2"
 JINGCHA_EVENT_KEY = "zg361.40"
 ANNUAL_SUMMARY_EVENT_KEY = "zg361.1"
 ELIMINATION_EVENT_KEY = "zg361.5"
+CAREER_HC_EVENT_KEY = "zg361ch.950"
 
 
 def _scope(type_key: str, character_id: int | None = None) -> dict[str, object]:
@@ -400,6 +401,79 @@ class Phase2ReviewedVanillaWaitTests(unittest.TestCase):
         self.assertEqual(kwargs["contract"]["selected_native_option_index"], 2)
         self.assertEqual(kwargs["contract"]["character_scopes"], {})
         self.assertEqual(kwargs["contract"]["scope_types"], {})
+
+    def test_reviewed_product_helper_resolves_r623_career_hc_chain(self) -> None:
+        self.assertTrue(
+            set(capture.CAREER_HC_TIMELINE_CONTRACTS).issubset(
+                capture.PHASE2_CHOREOGRAPHY_PRODUCT_EVENT_KEYS
+            )
+        )
+        service = _Service(CAREER_HC_EVENT_KEY, 628, 4, 53_375_664)
+        snapshot = service.snapshot()
+        context = {
+            "schema": "current-event-window-context-v1",
+            "schema_version": 1,
+            "status": "available",
+            "window_match_count": 1,
+            "event_definition_key": CAREER_HC_EVENT_KEY,
+            "root_scope": _scope("character", PLAYER),
+            "saved_scopes": [
+                {"name": "zg361_ch_d_event_owner", "scope": _scope("character", PLAYER)},
+                {"name": "zg361_ch_d_event_subject", "scope": _scope("character", 26_936)},
+                {"name": "zg361_ch_d_event_cycle", "scope": _scope("value")},
+                {"name": "zg361_ch_d_event_case", "scope": _scope("value")},
+            ],
+            "options": [
+                {
+                    "rendered_index": index,
+                    "native_option_index": index,
+                    "shown": True,
+                    "enabled": True,
+                    "fallback": False,
+                    "cancel": False,
+                }
+                for index in range(4)
+            ],
+        }
+        identity = _identity(service, context)
+        with mock.patch.object(
+            capture,
+            "_drain_known_timeline_interrupt",
+            return_value={
+                "result": "GREEN",
+                "selected_option_number": 1,
+                "selected_native_option_index": 0,
+            },
+        ) as drain:
+            result = (
+                capture.drain_reviewed_phase2_product_event_interruption_native(
+                    service,
+                    snapshot=snapshot,
+                    identity=identity,
+                )
+            )
+
+        self.assertEqual(result["result"], "GREEN")
+        self.assertEqual(
+            result["registry_contract_source"],
+            "phase2_product_timeline_registry",
+        )
+        kwargs = drain.call_args.kwargs
+        self.assertEqual(kwargs["event_key"], CAREER_HC_EVENT_KEY)
+        self.assertEqual(kwargs["contract"]["root_character_id"], PLAYER)
+        self.assertEqual(kwargs["contract"]["selected_option_number"], 1)
+        self.assertEqual(kwargs["contract"]["selected_native_option_index"], 0)
+        self.assertEqual(
+            kwargs["contract"]["character_scopes"],
+            {"zg361_ch_d_event_owner": PLAYER},
+        )
+        self.assertEqual(
+            kwargs["contract"]["scope_types"],
+            {
+                "zg361_ch_d_event_cycle": "value",
+                "zg361_ch_d_event_case": "value",
+            },
+        )
 
     def test_reviewed_vanilla_then_product_events_reach_target(self) -> None:
         service = _Service()

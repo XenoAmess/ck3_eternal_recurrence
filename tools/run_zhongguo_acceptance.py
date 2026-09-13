@@ -151,6 +151,7 @@ from zg361_phase2_promotion_source_production_entry import (
     _resolve_timeline_interrupt_contract,
     enter_promotion_source_checkpoint_v1,
 )
+from zg361_phase2_promotion_career_hc_contracts import CAREER_HC_TIMELINE_CONTRACTS
 from zg361_phase2_promotion_central_contracts import CENTRAL_TIMELINE_CONTRACTS
 from zg361_phase2_stage10_player_subject_action_cell import (
     run_stage10_player_subject,
@@ -18514,7 +18515,13 @@ def drain_reviewed_vanilla_event_interruption_native(
 
 
 PHASE2_CHOREOGRAPHY_PRODUCT_EVENT_KEYS = frozenset(
-    (*CENTRAL_TIMELINE_CONTRACTS, "zg361.1", "zg361.5", "zg361.40")
+    (
+        *CENTRAL_TIMELINE_CONTRACTS,
+        *CAREER_HC_TIMELINE_CONTRACTS,
+        "zg361.1",
+        "zg361.5",
+        "zg361.40",
+    )
 )
 
 
