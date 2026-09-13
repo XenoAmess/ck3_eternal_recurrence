@@ -58,13 +58,16 @@ def _snapshot() -> dict[str, object]:
     return value
 
 
-def _options_query(*, available: bool = True) -> dict[str, object]:
+def _options_query(
+    *, available: bool = True, surrender_available: bool = True
+) -> dict[str, object]:
     return {
         "accepted": True,
         "status": "available",
         "war_termination_options": _termination_options(
             WAR_ID,
             white_peace_available=available,
+            surrender_available=surrender_available,
             white_peace_acceptance_raw=1_100_000,
             white_peace_decision_status_raw=0,
             casus_belli_database_index=411,

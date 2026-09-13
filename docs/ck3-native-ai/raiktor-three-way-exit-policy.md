@@ -647,7 +647,7 @@ existing minimum switch margin. Only complete production-live inputs on the
 same snapshot/revision/date/connection/episode/PID/WarID/player/opponent can
 emit one typed action literal. The provider separately freezes the action's
 postcondition checklist and keeps submission, postcondition and GEN-034 closure
-false. Focused normal/optimized tests pass `7/7`; no CK3 process was used.
+false. Focused normal/optimized tests pass `8/8`; no CK3 process was used.
 
 This moves GEN-034-D from an abstract dependency to a static-ready action plan,
 while its status remains `blocked_live`. The later horizon must re-query power
@@ -661,6 +661,14 @@ paused horizon frame, followed by in-process recommendation. Its exact history
 contract forbids action submission and time advance. Focused normal/optimized
 tests pass `4/4`; the next offline package is the one-action/postcondition
 executor that will consume this frozen output after CK3 use is permitted.
+
+Recommendation provider v2 consumes immediate-exit evaluation v3 and treats
+native execution availability as an option-specific eligibility condition.
+An unavailable outbound white peace can still be valued from the exact-build
+Raiktor consequences, but it cannot win or emit an action literal. The same
+rule applies independently to surrender. Hard-budget breaches remain separate
+from execution blockers, so the certificate states why each route was
+excluded without turning missing action availability into missing terms.
 
 The pre-action handoff is also static-ready. A pure action gate hash-validates
 the recommendation and requires the current paused snapshot plus advertised

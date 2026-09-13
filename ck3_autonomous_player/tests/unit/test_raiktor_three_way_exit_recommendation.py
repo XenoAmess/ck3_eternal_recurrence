@@ -20,7 +20,15 @@ from xar_autoplayer.simulation.raiktor_three_way_exit_recommendation import (  #
     ThreeWayExitRecommendationError,
     provide_raiktor_three_way_exit_recommendation,
 )
+from xar_autoplayer.simulation.raiktor_white_peace_narrow_projection_provider import (  # noqa: E402
+    provide_raiktor_white_peace_narrow_projection,
+)
 from test_raiktor_exit_utility_evaluator import _inputs  # noqa: E402
+from test_raiktor_white_peace_narrow_projection_provider import (  # noqa: E402
+    _options_query,
+    _snapshot,
+    _terms_query,
+)
 
 
 def _dominance(
@@ -210,6 +218,40 @@ class RaiktorThreeWayExitRecommendationTests(unittest.TestCase):
                 "delta_raw": -7_000_000,
                 "post_raw": 5_345_678,
             },
+        )
+
+    def test_unavailable_white_peace_cannot_emit_its_action(self) -> None:
+        terms = _terms_query()
+        projection = provide_raiktor_white_peace_narrow_projection(
+            _snapshot(), _options_query(available=False), terms
+        )
+        projection["production_live"] = True
+        projection["white_peace_observation"]["producer"][
+            "production_live"
+        ] = True
+        _, session, budget, model = _inputs()
+        budget = deepcopy(budget)
+        budget["owner_budget_profile"]["white_peace_limits"][
+            "allow_favor_hook"
+        ] = True
+
+        result = provide_raiktor_three_way_exit_recommendation(
+            projection,
+            session,
+            _dominance(projection),
+            budget,
+            model,
+        )
+
+        self.assertEqual(result["recommended_outcome"], "continue")
+        self.assertEqual(result["action_literal"], "resume-map")
+        white = result["recommendation_certificate"]["options"][
+            "white_peace"
+        ]
+        self.assertFalse(white["eligible"])
+        self.assertEqual(
+            white["execution_blockers"],
+            ["white_peace_native_execution_unavailable"],
         )
 
     def test_actor_stronger_relation_selects_continue(self) -> None:

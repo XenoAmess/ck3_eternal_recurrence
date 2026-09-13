@@ -84,12 +84,18 @@ class Gen034WhitePeaceEvaluationLiveAcceptanceTests(unittest.TestCase):
             _snapshot(), _options_query(available=False), _terms_query()
         )
 
-        self.assertEqual(projection["status"], "evidence_required")
-        self.assertIn(
-            "white_peace_native_option_unavailable",
-            projection["blockers"],
+        self.assertEqual(projection["status"], "available")
+        self.assertEqual(projection["blockers"], [])
+        self.assertIsNotNone(evaluation)
+        self.assertTrue(evaluation["utility_evaluation_ready"])
+        white = evaluation["evaluation_certificate"]["options"][
+            "white_peace"
+        ]
+        self.assertEqual(
+            white["execution_blockers"],
+            ["white_peace_native_execution_unavailable"],
         )
-        self.assertIsNone(evaluation)
+        self.assertFalse(white["eligible"])
 
     def test_exact_build_requires_both_narrow_query_capabilities(self) -> None:
         terms_capability = HARNESS.base.QUERY_WAR_TERMINATION_TERMS_CAPABILITY

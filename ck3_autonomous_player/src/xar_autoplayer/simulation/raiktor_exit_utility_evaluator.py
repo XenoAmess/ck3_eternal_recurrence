@@ -37,9 +37,9 @@ from xar_autoplayer.simulation.raiktor_white_peace_narrow_projection_provider im
 )
 
 
-CONTRACT = "raiktor-white-peace-vs-surrender-utility-evaluation-v2"
-PROVIDER_SCHEMA = "xar.ck3.raiktor_exit_utility_evaluator.v1"
-PROVIDER_ID = "raiktor-immediate-exit-utility-evaluator-v1"
+CONTRACT = "raiktor-white-peace-vs-surrender-utility-evaluation-v3"
+PROVIDER_SCHEMA = "xar.ck3.raiktor_exit_utility_evaluator.v2"
+PROVIDER_ID = "raiktor-immediate-exit-utility-evaluator-v2"
 _FIXED_POINT_FEATURES = {
     "primary_gold_transfer_raw",
     "attacker_prestige_delta_raw",
@@ -114,11 +114,13 @@ def evaluate_raiktor_immediate_exit_utilities(
     surrender_breaches = _surrender_budget_breaches(
         surrender_features, budget["pairwise_limits"]
     )
+    execution_blockers = _execution_blockers(observation)
     white = _evaluate_option(
         "white_peace",
         white_features,
         projection["unobserved_dynamic_effects"],
         white_breaches,
+        execution_blockers["white_peace"],
         model,
     )
     surrender = _evaluate_option(
@@ -126,6 +128,7 @@ def evaluate_raiktor_immediate_exit_utilities(
         surrender_features,
         projection["surrender_unobserved_dynamic_effects"],
         surrender_breaches,
+        execution_blockers["surrender"],
         model,
     )
     minimum_margin = budget["pairwise_limits"]["minimum_switch_margin_raw"]
@@ -139,7 +142,7 @@ def evaluate_raiktor_immediate_exit_utilities(
         "utility_model_sha256": canonical_policy_input_sha256(model),
     }
     certificate = {
-        "schema_version": 2,
+        "schema_version": 3,
         "contract": CONTRACT,
         "status": comparison["status"],
         "frame": dict(frame),
@@ -164,6 +167,7 @@ def evaluate_raiktor_immediate_exit_utilities(
         ),
         "boundaries": {
             "immediate_exit_utility_ready": True,
+            "execution_availability_gated_separately": True,
             "continue_utility_ready": False,
             "full_three_way_recommendation_ready": False,
             "action_ready": False,
@@ -413,6 +417,7 @@ def _evaluate_option(
     features: dict[str, int],
     unobserved_effects_value: object,
     budget_breaches: list[str],
+    execution_blockers: list[str],
     model: dict[str, object],
 ) -> dict[str, object]:
     if set(features) != _FEATURE_KEYS:
@@ -450,7 +455,30 @@ def _evaluate_option(
         "uncertainty_penalty_raw": penalty,
         "utility_raw": utility,
         "hard_budget_breaches": budget_breaches,
-        "eligible": not budget_breaches,
+        "execution_blockers": execution_blockers,
+        "eligible": not budget_breaches and not execution_blockers,
+    }
+
+
+def _execution_blockers(
+    observation: dict[str, object],
+) -> dict[str, list[str]]:
+    white = _object(observation.get("option"), "observation.option")
+    surrender = _object(
+        white.get("same_frame_surrender"),
+        "observation.option.same_frame_surrender",
+    )
+    return {
+        "white_peace": (
+            []
+            if _boolean(white.get("available"), "white_peace.available")
+            else ["white_peace_native_execution_unavailable"]
+        ),
+        "surrender": (
+            []
+            if _boolean(surrender.get("available"), "surrender.available")
+            else ["surrender_native_execution_unavailable"]
+        ),
     }
 
 
@@ -569,6 +597,7 @@ def _result(
             "unobserved_effects_receive_the_versioned_penalty",
             "generic_current_war_bound_soldiers_are_not_proven_loss",
             "hard_budget_rejects_ineligible_options",
+            "native_execution_unavailability_rejects_only_that_option",
             "no_recommendation_or_action_submission",
         ],
     }

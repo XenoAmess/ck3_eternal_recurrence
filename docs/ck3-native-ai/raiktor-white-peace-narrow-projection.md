@@ -91,10 +91,13 @@ multiplication; discrete claims, favors, truce days, prisoner releases, title
 changes, hostage transfers and proven war-bound soldier losses use direct
 integer coefficients.
 
-The evaluator applies the model's bounded per-effect uncertainty penalty to
+Evaluator v2 applies the model's bounded per-effect uncertainty penalty to
 seven white-peace effects and nine surrender effects that the narrow queries do
 not value. It also applies the existing option-specific hard budgets before
-reporting a pairwise preference. Generic current regiment strength is not
+reporting a pairwise preference. It scores a consequence even when its action
+is currently unavailable, records that state in `execution_blockers`, and
+excludes only that option from the recommendation. Budget breaches and native
+execution blockers remain separate evidence. Generic current regiment strength is not
 relabelled as a proven surrender loss. In the representative fixture, white
 peace scores `-29,025,000` and surrender scores `-74,725,000`; white peace is
 nevertheless ineligible because that frame would grant a favor while the
@@ -103,7 +106,7 @@ keeps utility and budget eligibility separate.
 
 The output is comparison evidence only. It deliberately has no continue-war
 utility, full three-way recommendation, action literal or submission authority.
-The focused projection-plus-evaluator tests pass `10/10` in normal and optimized
+The focused projection-plus-evaluator tests pass `12/12` in normal and optimized
 Python. GEN-034-C remains `blocked_live`: one bounded production frame must
 prove the same projection/evaluation path before C can close. The next
 integration package will value continue separately from measured strategic

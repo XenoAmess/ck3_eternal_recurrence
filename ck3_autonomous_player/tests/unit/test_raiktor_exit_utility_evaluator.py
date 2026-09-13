@@ -67,16 +67,66 @@ class RaiktorExitUtilityEvaluatorTests(unittest.TestCase):
             white["hard_budget_breaches"],
             ["white_peace_favor_hook_budget_breached"],
         )
+        self.assertEqual(white["execution_blockers"], [])
         self.assertFalse(white["eligible"])
         self.assertEqual(surrender["base_utility_raw"], -52_225_000)
         self.assertEqual(
             surrender["uncertainty_penalty_raw"], 22_500_000
         )
         self.assertEqual(surrender["utility_raw"], -74_725_000)
+        self.assertEqual(surrender["execution_blockers"], [])
         self.assertTrue(surrender["eligible"])
         self.assertEqual(
             certificate["comparison"]["preferred_immediate_exit"],
             "surrender",
+        )
+
+    def test_unavailable_white_peace_is_scored_but_not_eligible(self) -> None:
+        terms = _terms_query()
+        projection = provide_raiktor_white_peace_narrow_projection(
+            _snapshot(), _options_query(available=False), terms
+        )
+        result = evaluate_raiktor_immediate_exit_utilities(
+            projection,
+            terms["raiktor_surrender_aggregate_session"],
+            provide_raiktor_owner_budget_profile(None),
+            provide_raiktor_exit_utility_model(),
+        )
+
+        self.assertTrue(result["utility_evaluation_ready"])
+        options = result["evaluation_certificate"]["options"]
+        self.assertEqual(options["white_peace"]["utility_raw"], -29_025_000)
+        self.assertEqual(
+            options["white_peace"]["execution_blockers"],
+            ["white_peace_native_execution_unavailable"],
+        )
+        self.assertFalse(options["white_peace"]["eligible"])
+        self.assertTrue(options["surrender"]["eligible"])
+
+    def test_unavailable_surrender_is_scored_but_not_eligible(self) -> None:
+        terms = _terms_query()
+        projection = provide_raiktor_white_peace_narrow_projection(
+            _snapshot(),
+            _options_query(surrender_available=False),
+            terms,
+        )
+        result = evaluate_raiktor_immediate_exit_utilities(
+            projection,
+            terms["raiktor_surrender_aggregate_session"],
+            provide_raiktor_owner_budget_profile(None),
+            provide_raiktor_exit_utility_model(),
+        )
+
+        options = result["evaluation_certificate"]["options"]
+        self.assertEqual(options["surrender"]["utility_raw"], -74_725_000)
+        self.assertEqual(
+            options["surrender"]["execution_blockers"],
+            ["surrender_native_execution_unavailable"],
+        )
+        self.assertFalse(options["surrender"]["eligible"])
+        self.assertEqual(
+            result["evaluation_certificate"]["comparison"]["status"],
+            "pairwise_underdetermined",
         )
 
     def test_projection_cannot_bind_a_different_surrender_aggregate(
