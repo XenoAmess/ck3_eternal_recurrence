@@ -1211,7 +1211,7 @@ class ReleaseLocalizationTests(unittest.TestCase):
         for validity_path in ("is_valid", "is_valid_showing_failures_only"):
             self.assertIn(
                 f"{validity_path} = {{ custom_description = {{ text = "
-                "zg361_review_now_business_ready "
+                "zg361_review_ready_tt "
                 "zg361_review_now_business_valid_trigger = yes } }",
                 decision,
             )
@@ -1283,7 +1283,7 @@ class ReleaseLocalizationTests(unittest.TestCase):
                 self.assertEqual(
                     tooltip, values["zg361_review_now_decision_tooltip"]
                 )
-                self.assertIn("zg361_review_now_business_ready", values)
+                self.assertIn("zg361_review_ready_tt", values)
                 self.assertNotIn("zg361_review_now_decision_valid_desc", values)
                 if language == "simp_chinese":
                     self.assertEqual(

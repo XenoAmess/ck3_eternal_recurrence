@@ -16,13 +16,13 @@ zg361_review_now_decision = {
 	}
 	is_valid = {
 		custom_description = {
-			text = zg361_review_now_business_ready
+			text = zg361_review_ready_tt
 			zg361_review_now_business_valid_trigger = yes
 		}
 	}
 	is_valid_showing_failures_only = {
 		custom_description = {
-			text = zg361_review_now_business_ready
+			text = zg361_review_ready_tt
 			zg361_review_now_business_valid_trigger = yes
 		}
 	}
