@@ -18514,7 +18514,7 @@ def drain_reviewed_vanilla_event_interruption_native(
 
 
 PHASE2_CHOREOGRAPHY_PRODUCT_EVENT_KEYS = frozenset(
-    (*CENTRAL_TIMELINE_CONTRACTS, "zg361.40")
+    (*CENTRAL_TIMELINE_CONTRACTS, "zg361.1", "zg361.40")
 )
 
 
