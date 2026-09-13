@@ -17,15 +17,14 @@ from xar_autoplayer.bridge.frontend_gui_route_contract import (
     ACTIVATE_FRONTEND_PICK_ANY_CHARACTER_V1_STEP,
     ACTIVATE_FRONTEND_RULER_DESIGNER_V1_CAPABILITY,
     ACTIVATE_FRONTEND_RULER_DESIGNER_V1_STEP,
-    ACTIVATE_FRONTEND_SELECT_FIRST_BOOKMARK_CHARACTER_V1_CAPABILITY,
-    ACTIVATE_FRONTEND_SELECT_FIRST_BOOKMARK_CHARACTER_V1_STEP,
+    ACTIVATE_FRONTEND_SELECT_RANDOM_PLAYABLE_V1_CAPABILITY,
+    ACTIVATE_FRONTEND_SELECT_RANDOM_PLAYABLE_V1_STEP,
     INSPECT_FRONTEND_GUI_TREE_V1_CAPABILITY,
     INSPECT_FRONTEND_GUI_TREE_V1_STEP,
     QUERY_FRONTEND_GUI_ROUTE_V1_CAPABILITY,
     QUERY_FRONTEND_GUI_ROUTE_V1_STEP,
-    frontend_bookmarks_first_character_actionable_v1,
-    frontend_bookmarks_selected_character_ready_v1,
     frontend_gui_route_binding_from_capabilities,
+    frontend_lobby_random_playable_actionable_v1,
     normalize_frontend_gui_tree_inspection_v1,
     normalize_frontend_gui_route_v1,
     normalize_frontend_new_game_v1,
@@ -128,24 +127,24 @@ def _ready_lobby_inspection() -> dict[str, object]:
     }
 
 
-def _selected_bookmark_inspection() -> dict[str, object]:
+def _random_playable_lobby_inspection() -> dict[str, object]:
     return {
         "schema": "ck3-frontend-gui-tree-inspection-v1",
         "schema_version": 1,
         "step": INSPECT_FRONTEND_GUI_TREE_V1_STEP,
         "accepted": True,
         "status": "available",
-        "scope_root_name": "frontend_bookmarks",
+        "scope_root_name": "lobbyview",
         "root_available": True,
         "truncated": False,
         "widget_count": 1,
         "widgets": [
             {
-                "runtime_name": "selected_character_info",
-                "child_path": "4/2/0",
-                "depth": 3,
-                "child_count": 1,
-                "vtable_rva": 4096,
+                "runtime_name": "",
+                "child_path": "4/0/1/0/1",
+                "depth": 5,
+                "child_count": 6,
+                "vtable_rva": 72376352,
                 "effective_visible": True,
                 "enabled": True,
             }
@@ -158,39 +157,22 @@ def _selected_bookmark_inspection() -> dict[str, object]:
     }
 
 
-def _actionable_bookmark_inspection() -> dict[str, object]:
-    inspection = _selected_bookmark_inspection()
-    inspection["widgets"] = [
-        {
-            "runtime_name": "bookmark_character_selection_button",
-            "child_path": "1/0/2",
-            "depth": 3,
-            "child_count": 1,
-            "vtable_rva": 4096,
-            "effective_visible": True,
-            "enabled": True,
-        }
-    ]
-    return inspection
-
-
 def _prepare_custom_ruler_action() -> dict[str, object]:
     return normalize_frontend_prepare_custom_ruler_v1(
-        {
-            "step": ACTIVATE_FRONTEND_SELECT_FIRST_BOOKMARK_CHARACTER_V1_STEP,
-            "accepted": True,
-            "status": "acknowledged_verification_pending",
-            "backend_id": "native-headless",
-        },
         {
             "step": ACTIVATE_FRONTEND_PICK_ANY_CHARACTER_V1_STEP,
             "accepted": True,
             "status": "acknowledged_verification_pending",
             "backend_id": "native-headless",
         },
+        {
+            "step": ACTIVATE_FRONTEND_SELECT_RANDOM_PLAYABLE_V1_STEP,
+            "accepted": True,
+            "status": "acknowledged_verification_pending",
+            "backend_id": "native-headless",
+        },
         before=_route("bookmarks"),
-        selection_target_inspection=_actionable_bookmark_inspection(),
-        selection_inspection=_selected_bookmark_inspection(),
+        selection_target_inspection=_random_playable_lobby_inspection(),
         after=_route("lobby"),
         lobby_inspection=_ready_lobby_inspection(),
     )
@@ -222,7 +204,7 @@ class _FrontendDriver:
                 INSPECT_FRONTEND_GUI_TREE_V1_CAPABILITY,
                 ACTIVATE_FRONTEND_NEW_GAME_V1_CAPABILITY,
                 ACTIVATE_FRONTEND_PICK_ANY_CHARACTER_V1_CAPABILITY,
-                ACTIVATE_FRONTEND_SELECT_FIRST_BOOKMARK_CHARACTER_V1_CAPABILITY,
+                ACTIVATE_FRONTEND_SELECT_RANDOM_PLAYABLE_V1_CAPABILITY,
                 ACTIVATE_FRONTEND_RULER_DESIGNER_V1_CAPABILITY,
             ],
         }
@@ -462,31 +444,31 @@ class FrontendGuiRouteV1ContractTests(unittest.TestCase):
             "lobby",
         )
 
-    def test_frontend_tree_wait_retries_until_bookmark_selection_is_visible(
+    def test_frontend_tree_wait_retries_until_random_playable_is_actionable(
         self,
     ) -> None:
         driver = object.__new__(NativeHeadlessGameplayDriver)
         driver.frontend_transition_timeout_seconds = 1.0
-        unselected = _selected_bookmark_inspection()
-        unselected["widgets"] = []
-        unselected["widget_count"] = 0
-        observations = [unselected, _selected_bookmark_inspection()]
+        unavailable = _random_playable_lobby_inspection()
+        unavailable["widgets"] = []
+        unavailable["widget_count"] = 0
+        observations = [unavailable, _random_playable_lobby_inspection()]
         driver.inspect_frontend_gui_tree_v1 = lambda: observations.pop(0)
 
-        selected = driver._wait_for_frontend_gui_tree_v1(
-            frontend_bookmarks_selected_character_ready_v1,
-            "bookmarks selected character",
+        actionable = driver._wait_for_frontend_gui_tree_v1(
+            frontend_lobby_random_playable_actionable_v1,
+            "lobby random playable action target",
         )
 
-        self.assertTrue(frontend_bookmarks_selected_character_ready_v1(selected))
+        self.assertTrue(frontend_lobby_random_playable_actionable_v1(actionable))
 
-    def test_bookmark_action_target_requires_visible_enabled_native_widget(
+    def test_random_playable_target_requires_visible_enabled_native_widget(
         self,
     ) -> None:
-        inspection = _actionable_bookmark_inspection()
-        self.assertTrue(frontend_bookmarks_first_character_actionable_v1(inspection))
+        inspection = _random_playable_lobby_inspection()
+        self.assertTrue(frontend_lobby_random_playable_actionable_v1(inspection))
         inspection["widgets"][0]["enabled"] = False
-        self.assertFalse(frontend_bookmarks_first_character_actionable_v1(inspection))
+        self.assertFalse(frontend_lobby_random_playable_actionable_v1(inspection))
 
     def test_service_preserves_zero_input_native_contract(self) -> None:
         service = GameplayBridgeService(_FrontendDriver())

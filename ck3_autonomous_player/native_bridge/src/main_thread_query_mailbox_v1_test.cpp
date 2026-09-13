@@ -1598,7 +1598,7 @@ bool TestSourceContract(int argc, char **argv) {
       "kFrontendGuiTreeInspectionV1Step",
       "kFrontendGuiOpenNewGameV1Step",
       "kFrontendGuiPickAnyCharacterV1Step",
-      "kFrontendGuiSelectFirstBookmarkCharacterV1Step",
+      "kFrontendGuiSelectRandomPlayableV1Step",
       "kFrontendGuiOpenRulerDesignerV1Step",
       "kTitleMapNavigationV1Step",
       "ParseTitleMapNavigationRequestV1",

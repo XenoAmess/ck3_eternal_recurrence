@@ -139,7 +139,7 @@ constexpr std::array<std::string_view, kCapabilityCount> kCapabilities{
     ck3_11906::kFrontendGuiTreeInspectionV1Capability,
     ck3_11906::kFrontendGuiOpenNewGameV1Capability,
     ck3_11906::kFrontendGuiPickAnyCharacterV1Capability,
-    ck3_11906::kFrontendGuiSelectFirstBookmarkCharacterV1Capability,
+    ck3_11906::kFrontendGuiSelectRandomPlayableV1Capability,
     ck3_11906::kFrontendGuiOpenRulerDesignerV1Capability,
     ck3_11906::kTitleMapNavigationV1Capability,
     ck3_11906::kSetPlayedCharacterV1Capability,

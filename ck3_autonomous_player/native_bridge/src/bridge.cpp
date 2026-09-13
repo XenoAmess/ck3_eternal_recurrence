@@ -5560,7 +5560,7 @@ void RunConnectedSession(
               step == xar::ck3_11906::kFrontendGuiOpenNewGameV1Step ||
               step == xar::ck3_11906::kFrontendGuiPickAnyCharacterV1Step ||
               step == xar::ck3_11906::
-                          kFrontendGuiSelectFirstBookmarkCharacterV1Step ||
+                          kFrontendGuiSelectRandomPlayableV1Step ||
               step == xar::ck3_11906::kFrontendGuiOpenRulerDesignerV1Step) {
             std::uint64_t expected_revision = 0;
             if (!xar::bridge::JsonUnsignedField(
@@ -5590,9 +5590,9 @@ void RunConnectedSession(
                 query.operation = xar::ck3_11906::
                     FrontendGuiRouteOperationV1::pick_any_character;
               } else if (step == xar::ck3_11906::
-                                     kFrontendGuiSelectFirstBookmarkCharacterV1Step) {
+                                     kFrontendGuiSelectRandomPlayableV1Step) {
                 query.operation = xar::ck3_11906::FrontendGuiRouteOperationV1::
-                    select_first_bookmark_character;
+                    select_random_playable;
               } else {
                 query.operation = xar::ck3_11906::
                     FrontendGuiRouteOperationV1::open_ruler_designer;

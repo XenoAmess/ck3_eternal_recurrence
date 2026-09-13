@@ -405,7 +405,7 @@ SHA-256 `3B2B55F2B931D2FB8424B108F7954478B158C796005403F992F6A11A20D4917D`，并
 
 ```text
 ck3_query_frontend_gui_route_v1()
-  -> unavailable | main_menu | bookmarks | ruler_designer | coat_of_arms_designer
+  -> unavailable | main_menu | bookmarks | lobby | ruler_designer | coat_of_arms_designer
 
 ck3_activate_frontend_new_game_v1()
   -> 仅在 main_menu 解析固定 new_game_button
@@ -418,9 +418,16 @@ ck3_activate_frontend_new_game_v1()
 动作调用本身只产生 `acknowledged_verification_pending`，Python driver 必须独立看到路由从 `main_menu` 变为 `bookmarks`，
 才投影 `postcondition_verified=true`。公开结果固定声明 `uses_ocr=false`、`uses_keyboard=false`、`uses_mouse=false`。
 
-这一首片当前是 `mcp-static-ready / live=false`：原生 fresh build 已生成，application-main/paused-gameplay 门禁隔离和 Python
-closed-schema 测试已加入；尚未重启 CK3 做 live，因此不得把它写成 production-live。`open_kaishek` 当前没有前端 GUI/CoA
-domain，预验证为 `not-applicable`，不能代替下一次 CK3 live。
+截至 2026-09-14，`main_menu → bookmarks → 未选角 lobby` 已由官方 MCP 和独立 route/tree 后置条件实机闭合为
+`production-live primitive`；聚焦 inspector 还证明 lobby 默认角色设计器按钮在未选角时 disabled。最初尝试把书签人物选择与
+`Pick Any` 串联是错误的状态模型：原版书签卡走 `GameSetup.SetSelectedCharacter`/`GameSetup.StartGame`，而 `Pick Any` 走
+`GameSetup.OnCustomStart` 打开自由选择 lobby。三份失败 attempt 已保留，不能算语法或设计器能力证据。
+
+修正后的静态 MCP 在 lobby 内使用已由 live tree 和原版源码共同识别的固定无名按钮 `4/0/1/0/1`，其回调为
+`SetRandomPlayableObserverCharacter`；选角后必须独立观察默认角色设计器按钮 `3/0/2/3` 变为 enabled，才允许继续。
+该替代动作与 `lobby → ruler_designer` 当前均为 `mcp-static-ready / live=false`。`open_kaishek` 没有前端 GUI/CoA domain，
+预验证为 `not-applicable`。所有者现已禁止启动/占用 CK3 和屏幕，因此后续 live 路由、CoA 页动作及最终语法矩阵保持待验；
+不得用鼠标、键盘或 OCR 绕过。
 
 ## 4. 原版实际调用链
 

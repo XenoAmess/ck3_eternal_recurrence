@@ -320,15 +320,15 @@ from .frontend_gui_route_contract import (
     ACTIVATE_FRONTEND_PICK_ANY_CHARACTER_V1_STEP,
     ACTIVATE_FRONTEND_RULER_DESIGNER_V1_CAPABILITY,
     ACTIVATE_FRONTEND_RULER_DESIGNER_V1_STEP,
-    ACTIVATE_FRONTEND_SELECT_FIRST_BOOKMARK_CHARACTER_V1_CAPABILITY,
-    ACTIVATE_FRONTEND_SELECT_FIRST_BOOKMARK_CHARACTER_V1_STEP,
+    ACTIVATE_FRONTEND_SELECT_RANDOM_PLAYABLE_V1_CAPABILITY,
+    ACTIVATE_FRONTEND_SELECT_RANDOM_PLAYABLE_V1_STEP,
     INSPECT_FRONTEND_GUI_TREE_V1_CAPABILITY,
     INSPECT_FRONTEND_GUI_TREE_V1_STEP,
     QUERY_FRONTEND_GUI_ROUTE_V1_CAPABILITY,
     QUERY_FRONTEND_GUI_ROUTE_V1_STEP,
-    frontend_bookmarks_first_character_actionable_v1,
-    frontend_bookmarks_selected_character_ready_v1,
     frontend_gui_route_binding_from_capabilities,
+    frontend_lobby_default_ruler_designer_ready_v1,
+    frontend_lobby_random_playable_actionable_v1,
     normalize_frontend_gui_tree_inspection_v1,
     normalize_frontend_gui_route_v1,
     normalize_frontend_new_game_v1,
@@ -3671,34 +3671,13 @@ class NativeHeadlessGameplayDriver:
             ) from error
 
     def activate_frontend_prepare_custom_ruler_v1(self) -> dict[str, object]:
-        """Select one featured ruler, open the lobby, and prove designer access."""
+        """Open the lobby, select one playable, and prove designer access."""
 
         before = self.query_frontend_gui_route_v1()
         if before["route"] != "bookmarks":
             raise BridgeUnavailableError(
                 "frontend custom-ruler preparation requires the bookmarks route"
             )
-        selection_target_inspection = self._wait_for_frontend_gui_tree_v1(
-            frontend_bookmarks_first_character_actionable_v1,
-            "first bookmark character action target",
-        )
-        try:
-            selection_acknowledgement = self._execute_primitive_step(
-                ACTIVATE_FRONTEND_SELECT_FIRST_BOOKMARK_CHARACTER_V1_STEP,
-                expected_revision=0,
-                required_capability=(
-                    ACTIVATE_FRONTEND_SELECT_FIRST_BOOKMARK_CHARACTER_V1_CAPABILITY
-                ),
-                allow_frontend_revision_zero=True,
-            )
-        except BridgeUnavailableError as error:
-            raise BridgeUnavailableError(
-                f"native bookmark selection failed after readiness proof: {error}"
-            ) from error
-        selection_inspection = self._wait_for_frontend_gui_tree_v1(
-            frontend_bookmarks_selected_character_ready_v1,
-            "bookmarks selected character",
-        )
         pick_any_acknowledgement = self._execute_primitive_step(
             ACTIVATE_FRONTEND_PICK_ANY_CHARACTER_V1_STEP,
             expected_revision=0,
@@ -3708,14 +3687,28 @@ class NativeHeadlessGameplayDriver:
             allow_frontend_revision_zero=True,
         )
         after = self._wait_for_frontend_gui_route_v1("lobby")
-        lobby_inspection = self.inspect_frontend_gui_tree_v1()
+        selection_target_inspection = self._wait_for_frontend_gui_tree_v1(
+            frontend_lobby_random_playable_actionable_v1,
+            "lobby random playable action target",
+        )
+        selection_acknowledgement = self._execute_primitive_step(
+            ACTIVATE_FRONTEND_SELECT_RANDOM_PLAYABLE_V1_STEP,
+            expected_revision=0,
+            required_capability=(
+                ACTIVATE_FRONTEND_SELECT_RANDOM_PLAYABLE_V1_CAPABILITY
+            ),
+            allow_frontend_revision_zero=True,
+        )
+        lobby_inspection = self._wait_for_frontend_gui_tree_v1(
+            frontend_lobby_default_ruler_designer_ready_v1,
+            "lobby default ruler designer ready",
+        )
         try:
             return normalize_frontend_prepare_custom_ruler_v1(
-                selection_acknowledgement,
                 pick_any_acknowledgement,
+                selection_acknowledgement,
                 before=before,
                 selection_target_inspection=selection_target_inspection,
-                selection_inspection=selection_inspection,
                 after=after,
                 lobby_inspection=lobby_inspection,
             )

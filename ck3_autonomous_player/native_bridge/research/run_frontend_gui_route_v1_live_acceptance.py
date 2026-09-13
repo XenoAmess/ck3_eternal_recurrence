@@ -52,8 +52,8 @@ ACTIVATE_NEW_GAME_CAPABILITY = "game.command.activate-frontend-new-game-v1"
 ACTIVATE_PICK_ANY_CAPABILITY = (
     "game.command.activate-frontend-pick-any-character-v1"
 )
-ACTIVATE_SELECT_FIRST_CAPABILITY = (
-    "game.command.activate-frontend-select-first-bookmark-character-v1"
+ACTIVATE_SELECT_RANDOM_PLAYABLE_CAPABILITY = (
+    "game.command.activate-frontend-select-random-playable-v1"
 )
 ACTIVATE_RULER_DESIGNER_CAPABILITY = (
     "game.command.activate-frontend-ruler-designer-v1"
@@ -259,7 +259,7 @@ async def _mcp_sequence(
                     INSPECT_CAPABILITY,
                     ACTIVATE_NEW_GAME_CAPABILITY,
                     ACTIVATE_PICK_ANY_CAPABILITY,
-                    ACTIVATE_SELECT_FIRST_CAPABILITY,
+                    ACTIVATE_SELECT_RANDOM_PLAYABLE_CAPABILITY,
                     ACTIVATE_RULER_DESIGNER_CAPABILITY,
                 }
                 <= set(advertised)
@@ -268,7 +268,7 @@ async def _mcp_sequence(
                     INSPECT_CAPABILITY,
                     ACTIVATE_NEW_GAME_CAPABILITY,
                     ACTIVATE_PICK_ANY_CAPABILITY,
-                    ACTIVATE_SELECT_FIRST_CAPABILITY,
+                    ACTIVATE_SELECT_RANDOM_PLAYABLE_CAPABILITY,
                     ACTIVATE_RULER_DESIGNER_CAPABILITY,
                 }
                 <= set(hello_caps)

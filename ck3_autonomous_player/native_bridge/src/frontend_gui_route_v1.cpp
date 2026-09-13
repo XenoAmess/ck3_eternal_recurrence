@@ -165,15 +165,20 @@ bool DispatchPickAnyCharacter(
                                   "pick_any_character_button");
 }
 
-bool DispatchSelectFirstBookmarkCharacter(
+bool DispatchSelectRandomPlayable(
     FrontendGuiRouteMailboxContextV1 &query) noexcept {
-  if (query.result.route != FrontendGuiRouteV1::bookmarks) return false;
+  if (query.result.route != FrontendGuiRouteV1::lobby) return false;
+  // multiplayer_lobby.gui: bottom controls -> button column -> the second
+  // button.  Vanilla binds this exact unnamed widget to
+  // SetRandomPlayableObserverCharacter.  The adjacent first button is the
+  // debug-only title finder and the third toggles observer mode.
+  constexpr std::array<std::uint32_t, 5> kRandomPlayablePath{{4, 0, 1, 0, 1}};
   ZhongguoScoreboardAccessV1 access{};
   void *root = nullptr;
   void *target = nullptr;
-  if (!ResolveFirstVisibleEnabledNamedGuiWidgetV1(
-          query.environment, access, "frontend_bookmarks",
-          "bookmark_character_selection_button", root, target) ||
+  if (!ResolveFixedGuiChildPathV1(
+          query.environment, access, "lobbyview", kRandomPlayablePath.data(),
+          kRandomPlayablePath.size(), root, target) ||
       target == nullptr) {
     return false;
   }
@@ -183,18 +188,13 @@ bool DispatchSelectFirstBookmarkCharacter(
   bool enabled = false;
   if (!ReadGuiWidgetRuntimeV1(access, target, runtime_name, vtable, visible,
                               enabled) ||
-      runtime_name != "bookmark_character_selection_button" || !visible ||
-      !enabled) {
+      !runtime_name.empty() || !visible || !enabled) {
     return false;
   }
   query.result.target_resolved = true;
-  const auto instance_pointer = FormatPointer(target);
-  const auto vtable_pointer = FormatPointer(vtable);
-  if (instance_pointer.empty() || vtable_pointer.empty()) return false;
-  query.result.dispatch_invoked = DispatchZhongguoScoreboardActionNativeV1(
+  query.result.dispatch_invoked = DispatchFixedGuiWidgetNativeV1(
       &query.dispatch_environment, game::ZhongguoScoreboardActionV1::open,
-      "bookmark_character_selection_button", runtime_name, instance_pointer,
-      vtable_pointer, query.result.native_handled);
+      target, vtable, query.result.native_handled);
   return query.result.dispatch_invoked;
 }
 
@@ -252,8 +252,8 @@ bool ExecuteFrontendGuiRouteMailboxV1(
     return DispatchPickAnyCharacter(*query);
   }
   if (query->operation ==
-      FrontendGuiRouteOperationV1::select_first_bookmark_character) {
-    return DispatchSelectFirstBookmarkCharacter(*query);
+      FrontendGuiRouteOperationV1::select_random_playable) {
+    return DispatchSelectRandomPlayable(*query);
   }
   return query->operation == FrontendGuiRouteOperationV1::open_ruler_designer &&
          DispatchOpenRulerDesigner(*query);
