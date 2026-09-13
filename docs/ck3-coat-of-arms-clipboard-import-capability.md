@@ -168,6 +168,12 @@ installed-DLC-sources MCP 只在 exact-build 门后枚举 `game/dlc/*/*.dlc` 及
 `store_entitlement_observed=false`、`engine_mount_observed=false`。本机 29 份 `.dlc` 描述符的结果为
 `dlc_with_coa_candidates=0`、CoA TXT/DDS 均为 0；因此本机 designer 清单中的 DLC 风格资源名不能据此解释为独立 DLC 树覆盖。
 
+运行态来源使用已有 `ck3_query_loaded_feature_manifest_v1` 原生 MCP，而不是从上述磁盘描述符反推。它在同一 paused/map-ready
+snapshot 内返回完整 44 项 effective gameplay feature flag 和 script `has_dlc` key 集合，并对前后 root、bitset、registry 与
+snapshot 漂移 fail closed；entitlement 继续固定为 `unavailable/store_verdict_provenance_unclosed`。Web 伴随服务现已把该工具加入
+有限白名单并提供独立“读取运行态”入口。这个结果能证明当前进程哪些 gameplay gate/脚本 DLC key 生效，但尚未把这些 gate 映射成
+CoA VFS mount、同名资源 precedence 或 designer 最终 registry，因此不能据此自动选择冲突 DDS。
+
 本机静态交叉检查解释了为什么不把启动器 SQLite 当作权威输入：当前 `dlc_load.json` 精确为 38 bytes、SHA-256
 `B28A99338A45655C4A25CFEE44602A56451960142C9DD9E767B78C21A08C91BB`，配置启用模组为零；同一时刻启动器库中
 “Initial playset”仍保存 82 个 enabled 条目，但该 playset 的 `isActive=0`，另两个 playset 也没有 active 标记。
@@ -265,6 +271,10 @@ export 的公开结果为闭合 schema，包含 `status`、`designer_observed`�
 - 新增 installed-DLC-sources MCP 后，真实安装的官方 MCP 调用列出 79 个工具并读取 29 份 `.dlc` 描述符，九类 CoA
   内容目录命中 0、TXT/DDS 均为 0；四组离线资源 MCP 21/21、Quarkus 9/9、前端 23/23 与 production build GREEN。
   全过程只读本地安装文件，不启动或连接 CK3；
+- Web 编辑器随后复用已达 `production-live` 的 `ck3_query_loaded_feature_manifest_v1`：Quarkus 有界白名单、绑定
+  `expected_revision` 的 REST 映射和 Vue typed client/UI 已接通。该增量只提升到 `mcp-static-ready`；既有 primitive 的原生 live
+  证据不等于这次新增浏览器按钮已经完成 live 点击验收，也不补写 entitlement 或 CoA resource winner。聚焦验证为 Quarkus
+  10/10、Vitest 25/25、前端 production build 与 Quarkus package GREEN；
 - CK3 frontend exact-build 握手：已真实取得，并广告新 capability；
 - 隔离 attempt 5 补齐 `frontend_snapshot` 绑定；attempt 6 暴露剪贴板函数槽的瞬时初始化状态；attempt 8 又证明
   gameplay 生命周期门禁会让角色设计器永远无法安装 hook。现在 hook 在 exact adapter 选定后即于 frontend 启动，瞬时槽缺失仍在
@@ -635,12 +645,13 @@ Web 端若要提供随机生成，应在自己的数据模型中完成选择，�
 ## 8. 目前 MCP 能力仍缺什么
 
 本轮已实机闭合“输入源码 → 原生检测/预览 → 应用 → 原生 Copy/export → 原样再应用 → 稳定再次导出”，并补齐 frontend
-生命周期与 Windows 换行规范化。基础游戏 designer manifest 资源目录也已通过离线 MCP 工具分页暴露。仍未通过 MCP
-闭合的能力有：
+生命周期与 Windows 换行规范化。基础游戏 designer manifest 资源目录也已通过离线 MCP 工具分页暴露；运行中 CK3 的完整
+effective feature 与 script `has_dlc` truth 已有 production-live 原生 primitive，并接入编辑器。仍未通过 MCP 闭合的能力有：
 
 - 读取 CK3 原生 preview 的最终像素或直接导出 PNG（浏览器已能按随附 shader 源码离线合成，但不替代 native pixel）；
 - 完成角色设计器上层 Finish；
-- 枚举游戏当前运行时实际注册且已合并 DLC/mod override 的 pattern/emblem/color 资源；
+- 枚举游戏当前运行时实际注册且已合并 DLC/mod override 的 pattern/emblem/color 资源；现有 runtime feature truth 只证明
+  gameplay gate，不提供 CoA VFS/registry winner；
 - 跨 CK3 build 自动适配 RVA 与字段。
 
 按 MCP-first 原则，后续若需要运行时合并资源清单或截图无关的视觉验收，应继续补这些原生/MCP primitive，
@@ -672,8 +683,9 @@ CoatOfArms
 - 导出固定使用 `coa` wrapper、已实机验证的字段白名单和 CRLF；
 - 提供图层/实例结构化表单与浏览器近似预览，且明确不冒充 CK3 renderer；
 - 基础游戏 pattern/emblem 目录已经接入结构化选择器，并可按名字筛选首批 200 个 emblem；
-- 必要的 Quarkus 伴随服务使用官方 Java MCP SDK 连接现有 Python stdio server，前端可刷新 session revision、执行原生
-  detect/apply，以及载入原生 Copy/export 返回源码；伴随服务只允许十个相关工具（snapshot + 九个 CoA MCP）；
+- 必要的 Quarkus 伴随服务使用官方 Java MCP SDK 连接现有 Python stdio server，前端可刷新 session revision、读取同帧
+  runtime feature/script-DLC truth、执行原生 detect/apply，以及载入原生 Copy/export 返回源码；伴随服务只允许十一个相关工具
+  （snapshot + 九个 CoA MCP + 一个 runtime-feature MCP）；
 - manifest-owned 单素材与 render-support 已接入浏览器：除 DXT1/DXT5 顶层 mip 解码外，还能解码 `_default.dds` 使用的
   无压缩 BGRA8 并在受限 `textured_emblem` 行内显示原始纹理；主路径按随游戏发布的 shader 源码合成三通道调色、mask、
   实例变换、surface detail 和 blend，仍明确不冒充 native GPU 像素完全一致。

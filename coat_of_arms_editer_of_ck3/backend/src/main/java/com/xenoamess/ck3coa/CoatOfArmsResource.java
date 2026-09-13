@@ -124,6 +124,19 @@ public class CoatOfArmsResource {
     }
 
     @GET
+    @Path("/runtime-features")
+    public Object runtimeFeatures(
+            @QueryParam("expectedRevision") Long expectedRevision) {
+        if (expectedRevision == null || expectedRevision < 0) {
+            throw new BadRequestException(
+                    "expectedRevision must be a non-negative integer");
+        }
+        return mcp.callTool(
+                "ck3_query_loaded_feature_manifest_v1",
+                Map.of("expected_revision", expectedRevision));
+    }
+
+    @GET
     @Path("/configured-resources")
     public Object configuredResources(
             @QueryParam("kind") String kind,

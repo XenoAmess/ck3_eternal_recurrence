@@ -134,6 +134,31 @@ class CoatOfArmsResourceTest {
     }
 
     @Test
+    void runtimeFeaturesUseTheBoundSnapshotRevision() {
+        when(mcp.callTool(
+                        eq("ck3_query_loaded_feature_manifest_v1"),
+                        eq(Map.of("expected_revision", 7L))))
+                .thenReturn(Map.of(
+                        "schema", "loaded-feature-manifest-v1",
+                        "status", "available",
+                        "snapshot_revision", 31));
+
+        given()
+                .queryParam("expectedRevision", 7)
+                .when().get("/api/ck3/coat-of-arms/runtime-features")
+                .then()
+                .statusCode(200)
+                .body("schema", equalTo("loaded-feature-manifest-v1"))
+                .body("status", equalTo("available"))
+                .body("snapshot_revision", equalTo(31));
+
+        given()
+                .when().get("/api/ck3/coat-of-arms/runtime-features")
+                .then()
+                .statusCode(400);
+    }
+
+    @Test
     void configuredCatalogPreservesFiltersAndCandidateProvenance() {
         when(mcp.callTool(
                         eq("ck3_query_coat_of_arms_configured_resource_catalog_v1"),

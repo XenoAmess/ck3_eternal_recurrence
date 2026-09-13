@@ -76,6 +76,11 @@ const shaderSourceCount = ref(0)
 const configuredModCount = ref<number | null>(null)
 const installedDlcDescriptorCount = ref<number | null>(null)
 const dlcCoaSourceCount = ref<number | null>(null)
+const runtimeFeatureBusy = ref(false)
+const runtimeFeatureStatus = ref('未读取')
+const runtimeEnabledFeatureCount = ref<number | null>(null)
+const runtimeFeatureCount = ref<number | null>(null)
+const runtimeDlcKeys = ref<string[] | null>(null)
 const configuredPatternCount = ref<number | null>(null)
 const configuredEmblemCount = ref<number | null>(null)
 const configuredArchiveCount = ref(0)
@@ -204,6 +209,33 @@ async function refreshSession() {
     ElMessage.error(`MCP 连接失败：${errorMessage(error)}`)
   } finally {
     mcpBusy.value = false
+  }
+}
+
+async function loadRuntimeFeatures() {
+  runtimeFeatureBusy.value = true
+  runtimeEnabledFeatureCount.value = null
+  runtimeFeatureCount.value = null
+  runtimeDlcKeys.value = null
+  try {
+    const revision = await getCurrentRevision()
+    const result = await companion.runtimeFeatures(revision)
+    if (result.status !== 'available') {
+      runtimeFeatureStatus.value = `不可用 · ${result.unavailable_reason ?? 'unknown'}`
+      ElMessage.warning(`CK3 运行态 feature 不可用：${result.unavailable_reason ?? 'unknown'}`)
+      return
+    }
+    const features = result.effective_feature_flags.items ?? []
+    runtimeEnabledFeatureCount.value = features.filter((item) => item.enabled).length
+    runtimeFeatureCount.value = result.effective_feature_flags.native_count
+    runtimeDlcKeys.value = result.script_dlc_keys.keys
+    runtimeFeatureStatus.value = `可用 · revision ${revision}`
+    ElMessage.success('已读取 CK3 当前进程的 feature 与 script DLC truth')
+  } catch (error) {
+    runtimeFeatureStatus.value = '请求失败'
+    ElMessage.error(`运行态 feature 读取失败：${errorMessage(error)}`)
+  } finally {
+    runtimeFeatureBusy.value = false
   }
 }
 
@@ -570,7 +602,10 @@ importSource()
       <section class="editor-pane panel">
         <div class="panel-title">
           <div><span class="step">03</span><h2>结构化编辑</h2></div>
-          <el-button size="small" :loading="catalogBusy" @click="loadResourceCatalog">读取资源</el-button>
+          <el-space>
+            <el-button size="small" :loading="runtimeFeatureBusy" @click="loadRuntimeFeatures">读取运行态</el-button>
+            <el-button size="small" :loading="catalogBusy" @click="loadResourceCatalog">读取资源</el-button>
+          </el-space>
         </div>
         <el-scrollbar height="690px">
           <div class="resource-search">
@@ -593,6 +628,13 @@ importSource()
             </template>
             <template v-else>
               启动配置未读取，暂不包含 DLC/mod 覆盖，也不冒充运行时注册状态。
+            </template>
+            <br>
+            CK3 运行态：{{ runtimeFeatureStatus }}。
+            <template v-if="runtimeEnabledFeatureCount !== null && runtimeFeatureCount !== null && runtimeDlcKeys !== null">
+              原生同帧读到 {{ runtimeEnabledFeatureCount }}/{{ runtimeFeatureCount }} 个 effective feature 为真，
+              `has_dlc` 可见 {{ runtimeDlcKeys.length }} 个 key。
+              这证明当前进程的 gameplay gate，不证明商店授权，也不决定同名家徽资源的最终胜者。
             </template>
           </p>
           <el-collapse

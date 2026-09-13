@@ -178,6 +178,55 @@ export interface CoatOfArmsInstalledDlcSources {
   }
 }
 
+export interface Ck3LoadedFeatureManifest {
+  schema: 'loaded-feature-manifest-v1'
+  schema_version: 1
+  status: 'available' | 'unavailable'
+  snapshot_revision: number
+  date_raw: number
+  unavailable_reason: string | null
+  build: {
+    version: string
+    exe_sha256: string
+  }
+  effective_feature_flags: {
+    status: 'available' | 'unavailable'
+    unavailable_reason: string | null
+    native_count: number | null
+    items: Array<{
+      native_index: number
+      cstring_id: number
+      key: string
+      enabled: boolean
+    }> | null
+  }
+  script_dlc_keys: {
+    status: 'available' | 'unavailable'
+    unavailable_reason: string | null
+    enumerated_count: number | null
+    keys: string[] | null
+  }
+  entitlements: {
+    status: 'unavailable'
+    unavailable_reason: 'store_verdict_provenance_unclosed'
+    items: null
+  }
+  readiness: {
+    effective_feature_flags_ready: boolean
+    script_dlc_keys_ready: boolean
+    entitlements_ready: false
+    same_frame_ready: boolean
+    actionable_ready: boolean
+  }
+  provenance: {
+    feature_root_slot_rva: string
+    feature_bitset_rva: string
+    feature_enum_table_rva: string
+    script_dlc_set_rva: string
+    backend_id: string
+  }
+}
+
 export interface CoatOfArmsConfiguredResourceItem {
   index: number
   candidate_id: string
@@ -351,6 +400,12 @@ export function createCk3CompanionClient(
       get<CoatOfArmsLoadConfiguration>('/load-configuration'),
     installedDlcSources: () =>
       get<CoatOfArmsInstalledDlcSources>('/dlc-sources'),
+    runtimeFeatures: (expectedRevision: number) => {
+      const query = new URLSearchParams({
+        expectedRevision: String(expectedRevision),
+      })
+      return get<Ck3LoadedFeatureManifest>(`/runtime-features?${query}`)
+    },
     configuredResources: (parameters: {
       kind: CoatOfArmsResourceKind
       query?: string

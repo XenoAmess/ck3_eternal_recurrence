@@ -116,6 +116,29 @@ describe('CK3 companion client', () => {
       .toBe('/api/ck3/coat-of-arms/dlc-sources')
   })
 
+  it('binds runtime feature truth to the current snapshot revision', async () => {
+    const payload = {
+      schema: 'loaded-feature-manifest-v1',
+      status: 'available',
+      snapshot_revision: 31,
+      effective_feature_flags: { native_count: 44, items: [] },
+      script_dlc_keys: { enumerated_count: 29, keys: [] },
+    }
+    const fetchMock = vi.fn().mockResolvedValue(new Response(JSON.stringify(payload), {
+      status: 200,
+      headers: { 'Content-Type': 'application/json' },
+    }))
+    vi.stubGlobal('fetch', fetchMock)
+
+    const result = await createCk3CompanionClient('http://localhost:8080')
+      .runtimeFeatures(7)
+
+    expect(result).toEqual(payload)
+    const requestUrl = new URL(fetchMock.mock.calls[0][0])
+    expect(requestUrl.pathname).toBe('/api/ck3/coat-of-arms/runtime-features')
+    expect(requestUrl.searchParams.get('expectedRevision')).toBe('7')
+  })
+
   it('encodes configured candidate filters and opaque asset identities', async () => {
     const fetchMock = vi.fn()
       .mockResolvedValueOnce(new Response(JSON.stringify({

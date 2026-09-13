@@ -11,7 +11,7 @@ coat-of-arms render description，不把该入口描述成任意 CK3 脚本执�
 - 对唯一已由原生 MCP 检测的 `textured_emblem = { texture = "_default.dds" }` 提供明确标限的解析、编辑、原始纹理预览和导出；不生成未验证字段，也暂不把该层合成进最终家徽；
 - 编辑 position、scale、rotation、depth，并生成稳定 CRLF CK3 文本；
 - 展开简单静态 `@变量`，诊断多顶层、重复标量、`parent` 与未知字段；
-- 通过本机 Quarkus 伴随服务调用 typed MCP：读取基础游戏资源目录、单个 DDS、渲染支撑数据、当前 `dlc_load.json` 以及目录/ZIP 模组 manifest 与 DDS 候选，获取 session revision，执行原生检测/应用和 Copy/export；
+- 通过本机 Quarkus 伴随服务调用 typed MCP：读取基础游戏资源目录、单个 DDS、渲染支撑数据、当前 `dlc_load.json`、目录/ZIP 模组 manifest 与 DDS 候选，以及运行中 CK3 的 effective feature / script `has_dlc` truth；获取 session revision，执行原生检测/应用和 Copy/export；
 - 在浏览器解码原版 DXT1 pattern、DXT5 colored emblem、`coa_mask_texture.dds` 以及 `_default.dds` 使用的无压缩 BGRA8 顶层 mip；
 - 按 CK3 随附的 Clausewitz/Jomini shader 源码翻译三通道调色、pattern mask、flip→rotate→scale→translate、surface detail 和 alpha blend；GPU 采样/色彩空间及引擎未公开的 `FallbackColor` 绑定仍不冒充逐像素一致。
 
@@ -28,7 +28,7 @@ pnpm dev
 ```
 
 浏览器不能直接启动本机 stdio MCP，所以 `backend/` 提供必要且很薄的 Maven + Java + Quarkus 伴随服务。它只允许调用
-`ck3_take_snapshot` 和九项 CoA MCP 工具，不实现第二套后端解析器，也不触碰 OCR、鼠标或屏幕。
+`ck3_take_snapshot`、九项 CoA MCP 工具和一项原生 runtime-feature 查询，不实现第二套后端解析器，也不触碰 OCR、鼠标或屏幕。
 
 ## 启动伴随服务
 
@@ -52,6 +52,7 @@ mvn -f backend/pom.xml quarkus:dev
 | `GET /api/ck3/coat-of-arms/render-support` | `ck3_read_coat_of_arms_render_support_v1` | 否，只读 shader、命名颜色、surface mask 与 `_default.dds` |
 | `GET /api/ck3/coat-of-arms/load-configuration` | `ck3_query_coat_of_arms_load_configuration_v1` | 否，只读 `dlc_load.json`、描述符与目录模组候选 |
 | `GET /api/ck3/coat-of-arms/dlc-sources` | `ck3_query_coat_of_arms_installed_dlc_sources_v1` | 否，只读安装树 `.dlc` 描述符与九类 CoA 目录；不证明授权或 mount |
+| `GET /api/ck3/coat-of-arms/runtime-features` | `ck3_query_loaded_feature_manifest_v1` | 是，同一 snapshot 读取 44 项 effective feature 与 script `has_dlc` key；不证明 entitlement 或 CoA 资源胜者 |
 | `GET /api/ck3/coat-of-arms/configured-resources` | `ck3_query_coat_of_arms_configured_resource_catalog_v1` | 否，分页读取目录/ZIP 模组 manifest 候选与同名冲突 |
 | `GET /api/ck3/coat-of-arms/configured-asset` | `ck3_read_coat_of_arms_configured_resource_asset_v1` | 否，以绑定当前配置的 opaque ID 读取模组 DDS |
 | `GET /api/ck3/coat-of-arms/session` | `ck3_take_snapshot` | 是 |
@@ -97,3 +98,7 @@ archive 通过中央目录有界直读，不解压到磁盘。asset reader
 只能接受 catalog 返回且仍属于当前配置的 opaque candidate ID。前端用独立候选表显示来源与同名冲突，并允许用户显式选择
 某个候选做精确 DDS 预览；在引擎 precedence/merge 尚未取得原生证据前，它不会擅自选 effective winner，也不会把候选
 混入基础游戏下拉框。
+
+运行态按钮另行调用既有的 exact-build `loaded-feature-manifest-v1` 原生 reader：成功时显示当前进程 44 个 feature 中为真的数量和
+script `has_dlc` key 数量；不可用时保留 typed reason。该结果比磁盘 DLC 描述符更接近当前进程实际 gameplay gate，但仍不把
+feature key 推导成商店 entitlement，也不声称已经找到 DLC/mod 家徽 DDS 的最终 VFS/registry 胜者。
