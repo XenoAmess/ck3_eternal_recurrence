@@ -2,9 +2,9 @@
 
 ## 状态与施工范围
 
-- **[static-ready; live pending]** `campaign-root-context-v1` 已实现当前统治者内阁的只读 typed observation：动态枚举全部已物化 active position，并为标准 landed、非 nomadic 范围补齐五个核心席位的可证空缺。实现与 ABI 证据均绑定 exact-build；本包没有启动 CK3，production paused live 仍待既定 G2-M1 两场景验收。
+- **[production-live]** `campaign-root-context-v1` 已实现并在新轮次 R639 验证当前统治者内阁的只读 typed observation：动态枚举全部已物化 active position，并为标准 landed、非 nomadic 范围补齐五个核心席位的可证空缺。独立/vassal 两个封建场景各观测到 6 个 occupied task，且 turn bundle 同帧投影一致。
 - 目标是把 `campaign-root-context-v1` 与 `xar.ck3.turn-bundle/v1` 中当前 unavailable 的 council 输入变成同一 paused frame 的 typed observation。它不实现任命、换任务、发展策略或其它内阁动作。
-- M1 首次 live gate 只要求当前封建统治者场景。游牧 kurultai、天朝 ministry 和 vizier 变体进入同一可扩展 schema，但不能由首个封建 fixture 冒充已经覆盖。
+- M1 首次 live gate 要求的两个当前封建统治者场景已完成。游牧 kurultai、天朝 ministry 和 vizier 变体进入同一可扩展 schema，但不能由本次封建 production artifact 冒充已经覆盖。
 - 宫廷司祭只作为 opaque council position/task 被观察。信仰、教义、教义条目、宗教热情、改宗和宗教改革继续遵守 owner-deferred 边界。
 
 ## Exact-build 冻结
@@ -182,8 +182,8 @@ flowchart LR
 
 | 状态 | 缺口 | 下一项精确工作 |
 |---|---|---|
-| **[live pending]** | current-feudal 实机值与原版 panel 对照 | 只在既定 G2-M1 两场景做一次 paused query；不为 council 单独长跑 |
-| **[live pending]** | dynamic auxiliary occupied row | 若既定场景自然存在 spouse/vizier/ministry occupied row，一并核对；缺失不阻断首个五核心 gate |
+| **[production-live]** | current-feudal 实机值 | 新轮次 R639 两场景均为 `available`，五核心席位完整且各有一个 occupied spouse 辅助 row；turn bundle 投影一致 |
+| **[production-live, spouse only]** | dynamic auxiliary occupied row | R639 两场景自然观测 spouse；vizier/ministry/kurultai 仍随对应政府场景补证 |
 | **[static/live pending]** | auxiliary vacancy completeness | 后续按具体 government 冻结 effective-position 原生集合；在此之前保持 `auxiliary_vacancies_complete=false` |
 | **[unknown]** | runtime scheduler/cadence | 仅影响后续任务切换 counter-policy；继续保留在原生树虚线分支 |
 | **[owner-deferred]** | 通用宗教内阁策略 | 宫廷司祭当前只作 opaque position/task；不借此扩展 faith/doctrine 树 |
@@ -199,6 +199,11 @@ flowchart LR
 - `xar_ck3_bridge.dll`：Release 增量编译及链接成功。
 
 这些结果把能力提升到 `static-ready`，不能替代 production paused live artifact。
+
+新轮次 R639 随后以 fresh Release DLL 完成既定双场景 production paused gate。独立 ruler `29829` 与 vassal ruler `36108` 均发布
+五个核心席位和一个 occupied spouse row，两个场景的 `council_ready`、turn-bundle `realm_council_ready` 及全 bundle readiness
+均为 true。Artifact SHA-256 为 `CFF681146A344AE18FDEB36C20BDAEAFC2A30344023CC7827E9A77006C3530DB`；这把当前封建范围提升为
+`production-live`，但不外推 auxiliary vacancy completeness 或其它 government 变体。
 
 ## 静态证据账本
 

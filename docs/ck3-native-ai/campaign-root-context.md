@@ -18,10 +18,10 @@
   checkpoint 分别完成“同 paused revision 双查询 -> 保存 -> 新 managed PID 冷恢复 -> 同 paused revision 双查询”，并逐项
   证明业务值跨恢复不变；artifact SHA-256 为 `DA5EB7F01A48A2869B8C9B6B2F6607825FA5319715F66D2C0D04AFFCF802CDDC`
   与 `677C4FF9727A479B40D068EC7E62A7AC54EF2E21A3EF57649D624C7648B279F9`。
-- **[static-ready, live pending]** 上述两个历史 artifact 早于直属有地封臣、相邻外部省份持有者、相关人物上下文、玩家月收入、
-  玩家健康、domain capacity 及目标派系计数字段，不能证明这些字段的
-  production 值。新增 reader、serializer、source contract、Release DLL 与 Python driver/service/MCP 聚焦测试已通过；
-  只在下一次本来就需要的 paused G2 会话中做一次读取互证，不为单个字段另开长跑。
+- **[production-live]** 新轮次 R639 已在一个 managed PID 内对独立 ruler `29829` 与 vassal ruler `36108` 完成同 paused date
+  双场景验证。直属有地封臣、相邻外部 Province holder、相关人物上下文、月收入、health、domain、目标派系计数、逐头衔
+  partition 和 typed council 全部 available/ready，并由同帧 turn bundle 投影。Artifact SHA-256 为
+  `CFF681146A344AE18FDEB36C20BDAEAFC2A30344023CC7827E9A77006C3530DB`。
 - 这项 capability **不声明 DLC truth**。磁盘上的 DLC descriptor 只说明文件已安装；它既不证明当前进程已加载对应内容，
   也不证明当前账户 entitled/enabled。selected setting-token vector 只证明当前 selection service 中实际选中的 rule
   setting，也不能反推 installed、loaded 或 entitled DLC/feature。后者必须由独立的 loaded-feature/entitlement native
@@ -538,14 +538,14 @@ flowchart TD
     GF --> OUT
     SORT --> OUT
 
-    OUT --> LIVE["[live-confirmed] base paused production query<br/>independent + vassal, cold restore"]
-    VL -. "[live pending] one bounded paused read" .-> VLIVE["direct landed-vassal vector"]
-    EXT -. "[live pending] same bounded paused read" .-> ELIVE["external adjacent holder vector"]
+    OUT --> LIVE["[production-live] paused production query<br/>independent + vassal, same process"]
+    VL --> VLIVE["[production-live R639]<br/>direct landed-vassal vector"]
+    EXT --> ELIVE["[production-live R639]<br/>external adjacent holder vector"]
     LIVE -. "[unknown] remaining matrix" .-> MATRIX["different rank/government<br/>landless/legal absent"]
     DLC["installed DLC descriptors"] -. "[unknown here] not loaded/entitled truth" .-> FEAT["separate loaded-feature capability"]
 
     classDef unknown stroke-dasharray: 6 4,fill:#fff4e5,stroke:#b36b00;
-    class MATRIX,DLC,FEAT,VLIVE,ELIVE unknown;
+    class MATRIX,DLC,FEAT unknown;
 ```
 
 ## production-live 互证（2026-08-26）
@@ -574,8 +574,9 @@ direct native reader fixture 覆盖外部相邻 holder、内部直属封臣、�
 Python contract/driver/service/MCP/live-harness 与 turn-bundle 聚焦测试 normal/optimized 各 `42/42` GREEN。ABI/source contract
 已冻结函数体 hash、Province array、adjacency row、player-subrealm 和 related-character 全有或全无语义。
 
-当前 query 的既有 root 字段 production-live readiness 已成立；两个 artifact 不包含 2026-09-13 新增的直属有地封臣、相邻外部
-省份持有者 vector、相关人物上下文、玩家月收入、玩家健康、domain capacity 及目标派系计数，因此这些扩展仍是 `static-ready / live=false`。覆盖矩阵还诚实保留缺口：两个场景都是 feudal duchy，尚未
+当前 query 的既有 root 字段 production-live readiness 已成立；新轮次 R639 又在同一 paused production 进程内补齐 2026-09-13
+新增的直属有地封臣、相邻外部省份持有者 vector、相关人物上下文、玩家月收入、玩家健康、domain capacity、目标派系计数、
+逐头衔 partition 和 typed council。覆盖矩阵还诚实保留缺口：两个场景都是 feudal duchy，尚未
 实机覆盖另一 rank、另一 government、landless 以及 primary/capital/government 合法 absent。这些是 F0 场景矩阵缺口，
 不再是 query implementation 或 independent/vassal liege-chain 的缺口。
 
@@ -583,14 +584,13 @@ Python contract/driver/service/MCP/live-harness 与 turn-bundle 聚焦测试 nor
 
 1. [completed] exact-build application-main reader、serializer、typed bridge capability、Python/service/MCP 与独立/vassal
    double-query + cold-restore production acceptance。
-2. 下一次本来就需要的 G2 paused 会话顺带读取两个 identity vector、`related_character_contexts`、月收入、health、domain size/limit 及
-   `player_targeting_faction_count`，核对至少一个非空名单、exact generation IDs、玩家子领地排除语义、holder→top-liege 归一、
-   HUD 所示 capacity 与派系窗口的目标派系数量；不单开长跑，
-   成功后才能升为 production-live primitive。
-3. [static-ready] canonical `ck3_search_entities_v1` 已消费相关人物上下文并发布 title/capital/liege components；
+2. [completed] 新轮次 R639 已在同一 managed PID、同一 date 和一次 typed player rebind 中读取两个非空 identity vector、
+   `related_character_contexts`、月收入、health、domain size/limit、`player_targeting_faction_count`、partition 和 council；
+   两个 campaign root 与 turn bundle 均 ready，源存档未变且 cleanup 成立。
+3. [completed] canonical `ck3_search_entities_v1` 已消费相关人物上下文并发布 title/capital/liege components；
    `ck3_query_turn_bundle_v1` 已聚合最低 ruler/realm/succession alerts、收入资源门、健康分档、domain capacity 与目标派系最低警报。
-   M1 的 partition 与 council 已 static-ready；仍缺上述共享两场景 live 验收。faction identity/power/deadline 留给后续治理响应包，
-   不得标 complete。
+   M1 的 partition 与 council 已由 R639 实机覆盖，G2-M1 已 complete。faction identity/power/deadline 留给后续治理响应包，
+   不重开 M1。
 4. 补 live 矩阵：至少一个非-duchy rank、一个非-feudal government，以及 landless/legal-absent 根；六级 tier 与 unavailable
    路径已有 deterministic exact-build fixture，但 fixture 不能替代这些 live 值。
 5. 建立 loaded rule-definition registry 的只读映射，只有这样 planner 才能把当前 84 个 setting token 还原为
@@ -661,3 +661,21 @@ primary-title evaluation. The offline fixture includes such a non-null reused
 row so this distinction remains covered. This correction does not weaken the
 published vector: every admitted member still round-trips its full generation
 ID, and the live gate still requires a nonempty direct-vassal sample.
+
+## R639 production-live closure
+
+Fresh Release DLL `1F7DE4BCAF94959BF21E7AA110319B34D350CF8909178D9067235AD67968848E`
+passed the dependency-recording gate and then ran the bounded two-scene runner
+once. Independent ruler `29829` published 8 direct landed vassals, 6 adjacent
+external holders and 14 related contexts; vassal ruler `36108` published
+9, 15 and 24 respectively. Both roots reported every readiness flag true,
+and both derived turn bundles were `available/ready=true` with six occupied
+council tasks. PID `175012`, connection generation `1`, episode and date
+`53178264` remained stable across the typed player switch. The source save
+remained at SHA-256
+`9104CCB8AE9D5776166FBBAEDA9B43BD08CBAA2CB5C057332EB8B7A1A212CC63`;
+session stop, process-tree cleanup and disposable-profile removal all passed.
+The 444,994-byte artifact is
+`Z:\ck3_mod_rewrite_process_assets\g2-m1-r639-700fae3\g2-m1-two-scene-live.json`,
+SHA-256 `CFF681146A344AE18FDEB36C20BDAEAFC2A30344023CC7827E9A77006C3530DB`.
+This closes the G2-M1 visible outcome without a field-specific long run.

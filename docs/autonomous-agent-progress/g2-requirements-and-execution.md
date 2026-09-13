@@ -1,6 +1,6 @@
 # G2 全游戏自治需求与现行施工队列
 
-状态日期：2026-09-12（Asia/Shanghai）。机器可读权威状态为
+状态日期：2026-09-13（Asia/Shanghai）。机器可读权威状态为
 [`g2-requirements-v1.json`](g2-requirements-v1.json)；玩法覆盖、Native/MCP 缺口与资料依据见
 [`g2-ck3-gameplay-coverage-gap-research-2026-09-12.md`](g2-ck3-gameplay-coverage-gap-research-2026-09-12.md)。
 
@@ -10,14 +10,14 @@ G2 的终点是能够跨继承、跨玩法域持续完成“观察 → 决策 �
 `start-next-episode` 和第二寿命证明了进程接管、恢复与 episode 生命周期；它们不等于普通 campaign 的真实继承，也不等于
 整套玩法覆盖。
 
-G2 现采用固定的 **8 个可见 OODA 里程碑**，当前为 **0/8 complete**。以后只汇报 `完成里程碑/8`、当前里程碑及其子包，
+G2 现采用固定的 **8 个可见 OODA 里程碑**，当前为 **1/8 complete**。以后只汇报 `完成里程碑/8`、当前里程碑及其子包，
 不再汇报没有固定分母的“G2 90%”。旧 `T1=90%` 只曾表示 GEN-034 这个窄战争退出包接近当时定义的收口，且随着真实证据
 改写了剩余输入，它已失去可比性。
 
 | 里程碑 | 优先级 | 当前状态 | 可见验收结果 |
 |---|---:|---|---|
 | G2-M0 GEN-034 三路战争退出 | P0 | in progress | 同帧比较继续、白和、投降；只提交一次；验证战后并冷恢复 |
-| G2-M1 实体发现与 core turn bundle | P1-A | in progress | 一次聚合查询提供人物、头衔、首都、领主/封臣、邻居与最低 ruler/realm/succession alerts |
+| G2-M1 实体发现与 core turn bundle | P1-A | complete | 一次聚合查询提供人物、头衔、首都、领主/封臣、邻居与最低 ruler/realm/succession alerts |
 | G2-M2 自然事件语义闭环 | P1-B | in progress | 三个自然事件按目标评分并验证结果，至少两个为多选 |
 | G2-M3 继承与 realm survival | P1-C | not started | 死前预测逐头衔分配，死后对账并由真实继承人继续 |
 | G2-M4 和平治理纵向切片 | P1-D | not started | 两年内完成并验证建设、内阁调整和一次封臣/派系处理 |
@@ -81,10 +81,13 @@ reader/source-contract 与 Python normal/optimized 聚焦测试均 GREEN。
 合法可空 capital、immediate/top liege 与 independent；相邻 holder 保留 source role，再按 top liege 归一 realm identity。
 entity-directory 的当前 title/realm components 因而已完整。`ck3_query_turn_bundle_v1` 已聚合最低 ruler/realm/succession alerts、
 玩家完整月收入、exact-build health 和 domain size/limit，`ruler_resources_ready`、`ruler_health_alert_ready` 与
-`realm_domain_ready` 都可由真实输入变绿。逐头衔 partition 与 typed council 也已接入同一 root/bundle；M1 只剩共享两场景 live
-验收，固定 G2 完成数仍是 `0/8`。
-下一次允许实机时只在本来就需要的 paused G2 会话顺带读取两个非空 vector、related contexts、income、health 和 domain capacity
-并验证 directory/bundle，不为单字段安排长跑。
+`realm_domain_ready` 都由真实输入变绿。逐头衔 partition 与 typed council 也已接入同一 root/bundle。
+
+新轮次 R639 在同一 managed PID、同一 connection generation 和冻结日期上完成独立 ruler `29829` 与 vassal ruler `36108`
+两场景：两个 root 和两个 turn bundle 均 `available/ready=true`，两个场景分别发布 8/9 个直属有地封臣、6/15 个相邻外部
+Province holder、14/24 个 related contexts，并各自观测 6 个 occupied council task。源存档未变，进程树清理成立。Artifact
+SHA-256 为 `CFF681146A344AE18FDEB36C20BDAEAFC2A30344023CC7827E9A77006C3530DB`。G2-M1 因此为 `complete`，固定 G2
+完成数提升到 `1/8`；更深派系身份/力量/期限和不同 rank/government/landless 矩阵继续进入各自后续里程碑，不重开 M1。
 
 ## G2-M2 离线 direct-projection consumer
 
@@ -96,7 +99,7 @@ native index 与 enabled 投影全部匹配时，planner 采用登记的 source-
 已登记 key 若投影漂移、目标选项 disabled，或合同需要尚未实现的人物关系、scope/option variant、动态 native prefix、occurrence 上限、延后选择或场景失效
 语义，planner 返回 `active_event_registry_contract_blocked` 并保持不输入；未知 key 才继续旧 degraded fallback。该子包为
 `static-ready / live=false`，普通与 optimized 聚焦测试各 `30/30` GREEN。它没有改变 current-window、registry 或 MCP 公共 schema，
-也没有提升固定 `0/8` 完成数。M2 仍需 variant-aware consumer、event-context-v2 结构化效果、campaign objective 评分，以及三个
+没有独立完成 M2；当前固定总进度 `1/8` 来自 M1。M2 仍需 variant-aware consumer、event-context-v2 结构化效果、campaign objective 评分，以及三个
 自然事件（至少两个多选）的动作与物质状态后置实机证据。
 
 为关闭其中一个真实后置缺口，通用 native state snapshot 已在 `played_character` 上增加可选 `stress_points`。它复用
@@ -134,7 +137,7 @@ optimized 聚焦测试各 `27/27` GREEN。
 
 主 DLL 与 native fixture GREEN，Python normal/optimized 聚焦测试各 `30/30` GREEN；状态仍为 `static-ready / live=false`。
 `.0030` 与 `.8001` 各只待一次 bounded live action 证明，不为任一单事件启动长跑。连同下述第三条静态路径，G2-M2 仍需
-campaign objective 评分与三个 production event loops，固定总进度保持 `0/8`。详见
+campaign objective 评分与三个 production event loops；当前固定总进度为 `1/8`。详见
 [`played-character-gold.md`](../ck3-native-ai/played-character-gold.md)。
 
 第三条静态 material path 现选定已有真实证据的 `death_management.1007`。R374 已证明唯一 authored1/native0 的 event instance
@@ -144,7 +147,7 @@ advance；本包为该 key 精确消费 distinct `dead_character` scope，发布
 
 该 comparator 为 `static-ready / live=false`。R374 的旧 hot park 没有 durable checkpoint，不能冒充可冷恢复输入；今后只在正常
 campaign 自然再遇时顺手做一次 bounded 前后对账，不为 `.1007` 单独长跑。至此三个目标事件均已有静态 material comparator，但
-三条 production material loops 与跨事件 campaign objective 评分仍未闭合，所以 G2-M2 继续 in progress、总进度仍为 `0/8`。
+三条 production material loops 与跨事件 campaign objective 评分仍未闭合，所以 G2-M2 继续 in progress；当前总进度为 `1/8`。
 详见 [`heir-death-stress.md`](../ck3-native-ai/heir-death-stress.md)。
 
 三个目标事件的 bounded campaign objective/utility 输入也已 static-ready。每个 analysis record 现发布 versioned ordinal profile；
@@ -162,7 +165,7 @@ event-context-v2 effect visitor 与更多事件仍是扩展债，不再作为这
 
 ## 报告规则
 
-- 总进度只写 `G2-Mx / 8`，当前为 `0/8`；
+- 总进度只写 `G2-Mx / 8`，当前为 `1/8`；
 - 当前工作包另写 `完成子包/总子包`，当前 GEN-034 为 `2/4`；
 - query/tool 数量只作 surface inventory，不得换算为玩法完成率；
 - 任何 `live` 提升必须链接 paused artifact；ACK、schema、单元测试和单场 fixture 不得冒充 OODA；
@@ -179,10 +182,9 @@ event-context-v2 effect visitor 与更多事件仍是扩展债，不再作为这
 `realm.targeting_factions.{count,threatened}`、`alerts.faction_threat` 和 `realm_faction_alert_ready=true`。
 该切片只关闭“是否已被派系针对”的最低告警，不宣称已经观测派系身份、类型、成员、军力、不满度、诉求或最后期限。
 
-状态为 `static-ready / live=false`。MSVC Release reader/source-contract fixtures 为 GREEN，Python campaign-root、live-harness 与
-turn-bundle 聚焦测试在普通及 optimized 模式均为 `40/40`。它将与已经待验的 related contexts、收入和 domain capacity 共用
-一次有界 paused G2 读取；不为该单字段扩成长跑。G2-M1 仍缺 council、partition 及两场景 live 验收，G2 总完成数保持
-`0/8`。
+静态实现阶段的 MSVC Release reader/source-contract fixtures 为 GREEN，Python campaign-root、live-harness 与 turn-bundle 聚焦测试
+在普通及 optimized 模式均为 `40/40`。新轮次 R639 随后在两个 paused production 场景都观测到 count `0` 并令
+`realm_faction_alert_ready=true`；状态为 `production-live`。该最小告警已计入完成的 M1，但不替代后续派系深度。
 
 ## G2-M1 玩家健康观测 static-ready
 
@@ -195,9 +197,8 @@ turn-bundle 聚焦测试在普通及 optimized 模式均为 `40/40`。它将与�
 不宣称治疗、疾病归因、预后、生育力或死亡概率策略已经完成。
 
 MSVC Release reader/source-contract fixtures 为 GREEN；Python campaign-root、live-harness 与 turn-bundle 聚焦测试普通及 optimized
-模式均为 `42/42`。状态为 `static-ready / live=false`；没有启动 CK3、录制器、injector 或桌面输入。它将与其它 campaign-root
-扩展共用下一次本来就需要的有界 paused G2 读取，不安排单字段长跑。M1 仍缺 council、partition 与两场景 live 验收，G2 总完成数
-保持 `0/8`。
+模式均为 `42/42`。静态包本身没有启动 CK3、录制器、injector 或桌面输入；新轮次 R639 随后在既定共享双场景 gate 中观测
+两个合法 health 值并令 `ruler_health_alert_ready=true`，状态为 `production-live`。没有为 health 单独安排长跑。
 
 
 ## G2-M1 per-held-title partition static-ready
@@ -211,10 +212,9 @@ hypothetical law changes and post-death reconciliation remain G2-M3 work.
 
 MSVC Release reader and source-contract fixtures are GREEN. The focused
 campaign-root, live-harness and turn-bundle suites pass `42/42` in normal and
-optimized Python. Status is `static-ready / live=false`; the extension will use
-the existing shared bounded two-scene paused read, without a dedicated long
-run. G2-M1 now lacks the council observation and that shared live acceptance;
-G2 remains `0/8`.
+optimized Python. New round R639 then observed a complete partition in both
+bounded paused scenes and projected it into two ready turn bundles. Status is
+`production-live`; no dedicated partition run was used.
 
 ## G2-M1 typed council observation static-ready
 
@@ -232,6 +232,21 @@ A fully observed supported scene can reach `available/ready=true`; a landless,
 nomadic or missing-primary-title root remains available while its council is
 typed unavailable. Native Release reader/serializer and source-contract
 fixtures are GREEN, the bridge DLL compiles and links, and the focused Python
-suite passes `47/47` in normal and optimized modes. Status is
-`static-ready / live=false`; G2-M1 now needs only its existing bounded
-independent/vassal paused live gate, and G2 remains `0/8`.
+suite passes `47/47` in normal and optimized modes. New round R639 then
+observed six occupied positions in each bounded paused scene, including all
+five core positions and spouse, with matching ready turn-bundle projections.
+The current-feudal slice is `production-live`.
+
+## G2-M1 双场景 production-live 收口
+
+首轮有界尝试在旧轮次 R638 对两个角色都返回 `direct_landed_vassals_unavailable`。该产品 RED 被完整保留；根因是新扫描器把
+Character storage 中可读但低 24 位不匹配 slot 的复用/旧代际对象误判成致命失败。修复提交 `700fae3fcca5af1ebfee26d4cbaf26d3c5f0a2a9`
+按照 exact-build 原版枚举器语义跳过这类旧代际对象，同时继续把不可读 pointer 和任何已接纳成员的 full-generation round-trip
+失败视为 RED。原生聚焦 fixture 随补丁覆盖该非空旧代际行。
+
+新轮次 R639 使用修复后的 fresh Release DLL `1F7DE4BCAF94959BF21E7AA110319B34D350CF8909178D9067235AD67968848E`
+运行一次同进程双场景 gate。独立 ruler `29829` 与 vassal ruler `36108` 的 root、relationship vectors、partition、council 和
+turn bundle 全部门为 GREEN；角色切换前后日期均为 `53178264`，PID、connection generation 与 episode 保持一致，源存档 SHA-256
+仍为 `9104CCB8AE9D5776166FBBAEDA9B43BD08CBAA2CB5C057332EB8B7A1A212CC63`，cleanup 证明进程树消失。完整 artifact 位于
+`Z:\ck3_mod_rewrite_process_assets\g2-m1-r639-700fae3\g2-m1-two-scene-live.json`，SHA-256
+`CFF681146A344AE18FDEB36C20BDAEAFC2A30344023CC7827E9A77006C3530DB`。这关闭 M1 的既定 visible outcome，G2 为 `1/8`。

@@ -21,7 +21,7 @@ flowchart LR
 
 2026-09-12 起，G2 的现行需求、固定分母与施工顺序以
 [`g2-requirements-and-execution.md`](g2-requirements-and-execution.md) 及其机器可读
-[`g2-requirements-v1.json`](g2-requirements-v1.json) 为准。G2 全局当前为 `0/8` 个可见 OODA 里程碑完成；历史上出现的
+[`g2-requirements-v1.json`](g2-requirements-v1.json) 为准。G2 全局当前为 `1/8` 个可见 OODA 里程碑完成；历史上出现的
 `T1=90%` 仅是 GEN-034 窄包的临时估计，不得再解释或汇报为全游戏自治完成率。
 
 - 当前 exact build：CK3 `1.19.0.6`。
@@ -405,13 +405,14 @@ tyranny；健康、压力与生育；法律、政府、文化、创新与非宗�
    接入 campaign-root 双采样并令 gold+income 资源门可真实变绿；exact-build `GetDomainSize`/`GetDomainLimit` 也已发布玩家直辖
    规模/上限并令 turn-bundle `realm_domain_ready=true`；原版 `has_targeting_faction` 的 exact-build evaluator 也已转成
    targeting-faction count 与 `faction_threat` 最低告警；exact-build `Character.GetHealth` 也已发布 signed Q100000 health、
-   `1.5/3.0` 最低分档与 `ruler_health_below_fine`；逐头衔 partition 与 typed council position/task/target/progress 也已接入，
-   状态均为 `static-ready / live=false`。完整 M1 只剩两场景 live 验收；派系身份、成员、力量、诉求、不满度和最后期限保留为后续治理深度；
+   `1.5/3.0` 最低分档与 `ruler_health_below_fine`；逐头衔 partition 与 typed council position/task/target/progress 也已接入。
+   新轮次 R639 已在同一 paused production PID 内完成独立/vassal 双场景，两个 root 和 turn bundle 均 ready，非空 relationship
+   vectors 与 occupied council task 均实机成立；M1 已 `complete`。派系身份、成员、力量、诉求、不满度和最后期限保留为后续治理深度；
 3. `G2-M2`：`event-context-v2` 接入共享 registry recommendation，并以三个自然事件闭合选择与状态后置；
 4. `G2-M3/M4`：把继承、health/stress/legitimacy、vassal/faction alert、建设和内阁组成 realm-survival 与和平治理 OODA；
 5. `G2-M5–M7`：家庭/外交/完整战争，谋略/制度/活动，以及按 runtime identity 启用的政府/DLC adapter 和长期 qualification。
 
-G1、GEN-032、GEN-009 与同一 fixed seed 的第二寿命是已冻结前置证据，不再进入现行 G2 分母。当前全局进度只能写 `0/8`；
+G1、GEN-032、GEN-009 与同一 fixed seed 的第二寿命是已冻结前置证据，不再进入现行 G2 分母。当前全局进度只能写 `1/8`；
 GEN-034 子包进度另按 `2/4` 汇报：campaign dominance certificate 与 versioned repository strategy budget/profile 已完成；
 禁止恢复没有固定分母的百分比。
 
@@ -430,9 +431,18 @@ GEN-034 子包进度另按 `2/4` 汇报：campaign dominance certificate 与 ver
 
 ### 2026-09-13 G2-M1 partition increment
 
-Per-held-title current succession is now `static-ready / live=false`. The
+Per-held-title current succession was first completed as a static package. The
 campaign root publishes every personally held county-or-higher title with its
 engine-calculated first heir, and the turn bundle exposes split-risk state. The
-matching typed council component is also `static-ready / live=false`.
-M1 needs only its existing shared bounded two-scene live read; no
-partition- or council-specific long run is planned.
+matching typed council component followed the same path. R639, recorded below,
+then verified both together without a partition- or council-specific long run.
+
+### 2026-09-13 G2-M1 production-live closure
+
+The bounded same-process R639 artifact is GREEN for independent ruler `29829`
+and vassal ruler `36108`. Both campaign roots and turn bundles are
+`available/ready=true`; relationship vectors, related contexts, partition and
+six occupied council tasks per scene are observed on unchanged date `53178264`.
+The source save is unchanged and managed cleanup is proven. Artifact SHA-256 is
+`CFF681146A344AE18FDEB36C20BDAEAFC2A30344023CC7827E9A77006C3530DB`.
+G2-M1 is complete and the fixed program denominator is now `1/8`.

@@ -102,14 +102,14 @@
   },
   "repository_provenance": {
     "root_last_completed_transaction": {
-      "commit": "c8de01af49b711b696494c2d1a776ac5c31dce68",
+      "commit": "ddfd482d0345c597b6cde16b0c39df7f5c759e33",
       "sync_result": "GREEN",
       "upstream_ref": "origin/master"
     },
     "root_live_source": "git status --branch --porcelain=v2 plus git ls-remote origin",
     "root_live_state_not_git_cached": true,
     "t2_last_completed_transaction": {
-      "commit": "7b54443bb11d433d87f249c6def892c95459d1c8",
+      "commit": "a6542064546441f4c175c54f3dbf947d7385b768",
       "sync_result": "GREEN",
       "upstream_ref": "origin/main"
     },
@@ -163,7 +163,7 @@
         "base": "repo_root",
         "bytes": 8270,
         "locator": "docs/phase2-promo/p2-stage-ledger.json",
-        "sha256": "2F0C80521B68AD1D877C3FAD6EE8A1B38F8D05095CC1C1CFB82E494C5FCE7B66"
+        "sha256": "904AC7436A88680C3FBD8E135CE36ECC3FD9B012B1485432829D41ED0FC70185"
       },
       "raw_footage": {
         "passed": 0,
@@ -184,23 +184,25 @@
   },
   "t1": {
     "authority_locator": "docs/autonomous-agent-progress/one-generation-blocker-ledger.md",
-    "closed_gates": [],
+    "closed_gates": [
+      "G2-M1"
+    ],
     "open_gates": [
       "GEN-034"
     ],
     "percentage": null,
     "priority": "T1",
     "program": "G2",
-    "progress_basis": "visible OODA milestones; 0/8 complete",
+    "progress_basis": "visible OODA milestones; 1/8 complete",
     "result": "ACTIVE"
   },
   "t2": {
-    "compat_commit": "7b54443bb11d433d87f249c6def892c95459d1c8",
+    "compat_commit": "a6542064546441f4c175c54f3dbf947d7385b768",
     "live_sync_source": "repository_provenance.t2_live_source",
     "priority": "T2",
-    "public_interface_delta": "NO_SCHEMA_DELTA_NATIVE_GUI_CONTEXT_CONFORMANCE_RESTORED",
+    "public_interface_delta": "NO_NEW_DELTA_G2_M1_LIVE_EVIDENCE_ONLY",
     "result": "GREEN",
-    "upstream_root_commit": "32ce260476c9c653badc87852729a1f6289f48ce"
+    "upstream_root_commit": "e7e99e872dbfe3d4774d000b7d9702e122ce0041"
   },
-  "updated_at": "2026-09-12T15:58:00+08:00"
+  "updated_at": "2026-09-13T21:22:00+08:00"
 }

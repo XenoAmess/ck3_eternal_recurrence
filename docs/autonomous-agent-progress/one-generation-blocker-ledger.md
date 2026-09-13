@@ -1334,3 +1334,11 @@ strategic-power primitive；余下入口只有 policy-level campaign dominance�
   bridge DLL links, and Python normal/optimized `47/47` are GREEN. Status is
   `static-ready / live=false`; M1 now lacks only its existing bounded two-scene
   paused live gate, and global G2 remains `0/8`.
+
+## 2026-09-13: G2-M1 bounded two-scene production closure
+
+- Reusable runner commit `411c5441d8f6a4d2e5b12f7e1e0c0528b8aaf301` binds one immutable source save, one managed CK3 process, two direct root reads plus one turn bundle per scene, and one typed player switch. Focused harness tests pass normal/optimized `19/19`.
+- Old round R638 retained a real product RED: both characters returned `direct_landed_vassals_unavailable`. The valid exact-build, same-process switch, paused date, unchanged source and cleanup evidence isolated the new full Character-storage scanner. It incorrectly rejected readable non-null entries whose object generation no longer matched their slot.
+- Fix commit `700fae3fcca5af1ebfee26d4cbaf26d3c5f0a2a9` follows the frozen stock enumerator: stale/reused generations are skipped, unreadable pointers still fail, and every admitted member still round-trips its full CharacterID. The directly affected native fixture is GREEN and includes a non-null stale-generation control.
+- New round R639 is GREEN in one PID/connection generation on unchanged date `53178264`. Independent ruler `29829` and vassal ruler `36108` both have ready roots and turn bundles; relationship vectors, related contexts, partition and six occupied council tasks per scene are observed. Source SHA-256 stays `9104CCB8...12CC63`; cleanup proves the process tree gone.
+- The 444,994-byte artifact at `Z:\ck3_mod_rewrite_process_assets\g2-m1-r639-700fae3\g2-m1-two-scene-live.json` has SHA-256 `CFF681146A344AE18FDEB36C20BDAEAFC2A30344023CC7827E9A77006C3530DB`. G2-M1 is complete and global G2 advances to `1/8`. Deeper faction data and broader rank/government matrices remain later milestones rather than reopening M1.

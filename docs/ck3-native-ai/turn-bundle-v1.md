@@ -2,7 +2,7 @@
 
 ## Current status
 
-- **[static-ready, live pending]** `ck3_query_turn_bundle_v1` is a public
+- **[production-live]** `ck3_query_turn_bundle_v1` is a public
   read-only MCP tool with response schema `xar.ck3.turn-bundle/v1`.
 - It consumes one cached normalized state snapshot and exactly one existing
   `campaign-root-context-v1` query. Both inputs must share the same public and
@@ -65,8 +65,9 @@ have an observed alert input:
 - realm: direct landed-vassal and adjacent external holder presence;
 - succession: primary title and its complete ordered successor vector.
 
-It does not mean the G2-M1 acceptance gate is complete. `realm_domain_ready`
-now means exact-build `GetDomainSize` and `GetDomainLimit` both produced valid
+R639 separately proves the complete G2-M1 acceptance gate across one
+independent and one vassal scene. `realm_domain_ready` means exact-build
+`GetDomainSize` and `GetDomainLimit` both produced valid
 same-frame values; it does not claim holding identities, buildings,
 construction or grace-period penalty state. `realm_council_ready=true` means
 the same campaign-root frame has a council owner matching the player, all five
@@ -129,15 +130,17 @@ text, historical artifacts or another frame.
   normal and optimized modes; the native reader and source contract are
   independently executable and GREEN.
 
-No CK3 process, recorder, injector, keyboard, mouse or foreground window was
-used for this package. One future already-required paused G2 session should
-sample the tool together with the campaign-root/entity-directory checks; a
-dedicated long run is not required.
+The static implementation package used no CK3 process, recorder, injector,
+keyboard, mouse or foreground window. New round R639 later sampled the tool
+together with campaign-root/entity-directory in one bounded managed CK3 process.
+Both scene bundles were `available/ready=true`; the source save stayed unchanged
+and cleanup was proven. Artifact SHA-256 is
+`CFF681146A344AE18FDEB36C20BDAEAFC2A30344023CC7827E9A77006C3530DB`.
 
-## Next observation package
+## Production-live result and next depth
 
-The remaining M1 observation gate is one shared, bounded two-scene paused live
-read of the campaign root, entity directory and this bundle. It must cover one
-independent and one vassal identity without advancing the date, and at least one
-occupied core council task across the two scenes. Deeper faction identity,
-power and deadline inputs belong to the later governance response package.
+New round R639 completed the shared bounded two-scene paused live gate in one
+process without advancing the date. It covered independent ruler `29829`,
+vassal ruler `36108`, nonempty relationship vectors and six occupied council
+tasks in each scene. G2-M1 is complete. Deeper faction identity, power and
+deadline inputs belong to the later governance response package.
