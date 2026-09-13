@@ -11,9 +11,11 @@
   direct-vassal and adjacent-holder presence, the primary title's first
   ordered successor, monthly income, current health and current domain
   size/limit. It also publishes the engine's current first heir for every
-  personally held county-or-higher title and a split-partition alert. The full
-  bundle stays `status=partial` and `readiness.ready=false` because council is
-  not yet observed. The minimum targeting-faction
+  personally held county-or-higher title and a split-partition alert. It now
+  projects the same-frame typed council position/task/target/progress input.
+  The bundle is `available/ready=true` when every component is observed; it
+  remains `partial` when optional snapshot surfaces are missing or council is
+  outside its declared coverage. The minimum targeting-faction
   alert is observed, while faction identity, power and deadlines remain open.
 - This aggregation changes no native mailbox, DLL, game object or action path.
   Native AI decision-tree research is N/A because the package groups observed
@@ -34,7 +36,7 @@ The response contains six typed domains:
 | Domain | Available now | Explicit gap |
 |---|---|---|
 | `ruler_state` | CharacterID, alive, primary title, capital, government, exact-build monthly income and health band, optional current gold and raw stress points | health treatment, disease/injury cause and prognosis |
-| `realm_state` | top liege, independent state, direct landed-vassal IDs, adjacent Province-holder IDs and grouped top-liege IDs, native domain size/limit with derived available/over-limit counts, targeting-faction count and minimum threat boolean | holding identities/buildings/construction, council, faction identities/types/power/discontent/deadline |
+| `realm_state` | top liege, independent state, direct landed-vassal IDs, adjacent Province-holder IDs and grouped top-liege IDs, native domain size/limit with derived available/over-limit counts, targeting-faction count/minimum threat, and typed council positions/tasks/targets/progress | holding identities/buildings/construction, auxiliary council vacancies outside the bounded core scope, faction identities/types/power/discontent/deadline |
 | `succession_state` | ordered primary-title successor IDs, first primary-title heir, no-heir alert, and per-title current first-heir partition with split-risk state | succession law, claims, hypothetical distribution after law changes and post-death reconciliation |
 | `pending_state` | current normalized event and pending character interaction, including proven absence | unavailable only when the source snapshot lacks that observation surface |
 | `war_state` | sorted WarID, player side, primary opponent and relative score summaries | unavailable only when the source snapshot lacks `active_wars` |
@@ -66,8 +68,13 @@ have an observed alert input:
 It does not mean the G2-M1 acceptance gate is complete. `realm_domain_ready`
 now means exact-build `GetDomainSize` and `GetDomainLimit` both produced valid
 same-frame values; it does not claim holding identities, buildings,
-construction or grace-period penalty state. The broader `readiness.ready`
-remains false until the same-frame query can also supply council.
+construction or grace-period penalty state. `realm_council_ready=true` means
+the same campaign-root frame has a council owner matching the player, all five
+core positions exactly once, and every occupied row has a typed task, target
+when applicable, progress and frozen state. It does not claim that unmaterialized
+auxiliary positions are vacant: `auxiliary_vacancies_complete=false` preserves
+that boundary. The broader `readiness.ready` is the conjunction of all ruler,
+realm, succession, pending-event and war readiness inputs.
 `succession_partition_ready=true` means the same campaign-root frame contains
 the complete current first-heir projection for all personally held
 county-or-higher titles. It does not claim law, claims or a hypothetical
@@ -97,7 +104,9 @@ The aggregator rejects:
 - malformed relationship or successor identities;
 - a landless root that invents title successors or partition rows;
 - a partition row whose title, holder, tier, primary marker or first heir
-  disagrees with the campaign-root contract.
+  disagrees with the campaign-root contract;
+- a malformed council status, task/target/progress shape or missing reason for
+  a council component outside its supported scope.
 
 If the underlying campaign-root query is typed unavailable, every bundle
 domain becomes unavailable with the same reason and all readiness flags remain
@@ -112,10 +121,11 @@ text, historical artifacts or another frame.
   adjacent holder-to-top-liege grouping, WarID sorting, landless and heirless
   `not_applicable`, root typed unavailable, missing optional surfaces and
   cross-frame/identity drift rejection, per-title split partition, barony
-  exclusion and holder/primary-heir disagreement.
+  exclusion, holder/primary-heir disagreement, available council projection
+  and an explicitly unavailable out-of-scope council.
 - Service integration reuses the already exact-bound campaign-root call.
 - The official MCP SDK lists and calls `ck3_query_turn_bundle_v1`.
-- The focused campaign-root/live-harness/turn-bundle suite passes `42/42` in
+- The focused campaign-root/live-harness/turn-bundle suite passes `47/47` in
   normal and optimized modes; the native reader and source contract are
   independently executable and GREEN.
 
@@ -126,10 +136,8 @@ dedicated long run is not required.
 
 ## Next observation package
 
-The remaining M1 off-screen work is the bounded council reader described in
-[council and development](council-and-development.md): incumbent identity,
-stable task key, typed target and effective-seat fallback still need exact-build
-closure before `realm_council_ready` can become true. Deeper faction
-identity/power/deadline inputs belong to the later governance response package.
-Each new field should enter this same bundle only after its native evidence and
-focused fixture are complete.
+The remaining M1 observation gate is one shared, bounded two-scene paused live
+read of the campaign root, entity directory and this bundle. It must cover one
+independent and one vassal identity without advancing the date, and at least one
+occupied core council task across the two scenes. Deeper faction identity,
+power and deadline inputs belong to the later governance response package.

@@ -405,8 +405,8 @@ tyranny；健康、压力与生育；法律、政府、文化、创新与非宗�
    接入 campaign-root 双采样并令 gold+income 资源门可真实变绿；exact-build `GetDomainSize`/`GetDomainLimit` 也已发布玩家直辖
    规模/上限并令 turn-bundle `realm_domain_ready=true`；原版 `has_targeting_faction` 的 exact-build evaluator 也已转成
    targeting-faction count 与 `faction_threat` 最低告警；exact-build `Character.GetHealth` 也已发布 signed Q100000 health、
-   `1.5/3.0` 最低分档与 `ruler_health_below_fine`，状态均为 `static-ready / live=false`。完整 M1 仍缺 council 与
-   partition 的真实观测及两场景 live 验收；派系身份、成员、力量、诉求、不满度和最后期限保留为后续治理深度；
+   `1.5/3.0` 最低分档与 `ruler_health_below_fine`；逐头衔 partition 与 typed council position/task/target/progress 也已接入，
+   状态均为 `static-ready / live=false`。完整 M1 只剩两场景 live 验收；派系身份、成员、力量、诉求、不满度和最后期限保留为后续治理深度；
 3. `G2-M2`：`event-context-v2` 接入共享 registry recommendation，并以三个自然事件闭合选择与状态后置；
 4. `G2-M3/M4`：把继承、health/stress/legitimacy、vassal/faction alert、建设和内阁组成 realm-survival 与和平治理 OODA；
 5. `G2-M5–M7`：家庭/外交/完整战争，谋略/制度/活动，以及按 runtime identity 启用的政府/DLC adapter 和长期 qualification。
@@ -433,7 +433,6 @@ GEN-034 子包进度另按 `2/4` 汇报：campaign dominance certificate 与 ver
 Per-held-title current succession is now `static-ready / live=false`. The
 campaign root publishes every personally held county-or-higher title with its
 engine-calculated first heir, and the turn bundle exposes split-risk state. The
-remaining M1 schema component is council: exact task/progress research is
-frozen, while incumbent identity, stable task key, typed target and
-position-fallback semantics remain open. M1 then needs only its existing shared
-bounded two-scene live read; no partition-specific long run is planned.
+matching typed council component is also `static-ready / live=false`.
+M1 needs only its existing shared bounded two-scene live read; no
+partition- or council-specific long run is planned.

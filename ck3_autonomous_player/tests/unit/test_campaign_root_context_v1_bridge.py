@@ -58,6 +58,7 @@ UNAVAILABLE_REASONS = (
     "adjacent_external_province_holders_unavailable",
     "related_character_contexts_unavailable",
     "government_flags_unavailable",
+    "council_unavailable",
     "selected_game_rule_tokens_unavailable",
     "state_changed",
     "internal_error",
@@ -74,6 +75,7 @@ def _readiness(ready: bool) -> dict[str, bool]:
         "primary_title_ready": ready,
         "primary_title_succession_ready": ready,
         "held_title_partition_ready": ready,
+        "council_ready": ready,
         "capital_ready": ready,
         "lieges_ready": ready,
         "direct_landed_vassals_ready": ready,
@@ -98,6 +100,11 @@ def _provenance() -> dict[str, str]:
         "domain_size_rva": "0x260BA50",
         "domain_limit_rva": "0x260BA20",
         "has_targeting_faction_trigger_rva": "0x283FAE0",
+        "council_position_lookup_rva": "0x23F7800",
+        "council_active_task_ids_enumerator_rva": "0x2666CD0",
+        "council_active_task_storage_slot_rva": "0x570C778",
+        "council_value_progress_current_rva": "0x2D650A0",
+        "council_value_progress_maximum_rva": "0x2D65390",
         "primary_title_rva": "0x25F3350",
         "held_title_ids_offset": "0x1E0",
         "capital_province_rva": "0x2606760",
@@ -148,6 +155,69 @@ def _related_contexts(available: bool) -> list[dict[str, object]]:
     return rows
 
 
+def _council(available: bool) -> dict[str, object] | None:
+    if not available:
+        return None
+    vacant = {
+        "incumbent_character_id": None,
+        "task_key": None,
+        "task_type": None,
+        "target": None,
+        "frozen": None,
+        "progress": None,
+    }
+    return {
+        "status": "available",
+        "coverage_key": "standard_landed_non_nomadic_core_v1",
+        "owner_character_id": PLAYER_CHARACTER_ID,
+        "positions": [
+            {
+                "position_key": "councillor_chancellor",
+                "incumbent_character_id": 23_456,
+                "task_key": "task_foreign_affairs",
+                "task_type": "general",
+                "target": None,
+                "frozen": False,
+                "progress": {
+                    "kind": "infinite",
+                    "current": None,
+                    "maximum": None,
+                },
+            },
+            {"position_key": "councillor_court_chaplain", **vacant},
+            {"position_key": "councillor_marshal", **vacant},
+            {
+                "position_key": "councillor_spymaster",
+                "incumbent_character_id": 34_567,
+                "task_key": "task_find_secrets",
+                "task_type": "court",
+                "target": {"kind": "character", "character_id": 45_678},
+                "frozen": False,
+                "progress": {
+                    "kind": "percentage",
+                    "current": {"raw": 5_000_000, "scale": 100_000},
+                    "maximum": {"raw": 10_000_000, "scale": 100_000},
+                },
+            },
+            {
+                "position_key": "councillor_steward",
+                "incumbent_character_id": 23_456,
+                "task_key": "task_develop_county",
+                "task_type": "county",
+                "target": {"kind": "province", "province_id": 42},
+                "frozen": True,
+                "progress": {
+                    "kind": "value",
+                    "current": {"raw": 4_200_000, "scale": 100_000},
+                    "maximum": {"raw": 10_000_000, "scale": 100_000},
+                },
+            },
+        ],
+        "auxiliary_vacancies_complete": False,
+        "unavailable_reason": None,
+    }
+
+
 def _frame(
     status: str = "available",
     *,
@@ -175,6 +245,7 @@ def _frame(
         "player_domain_size": 6 if available else None,
         "player_domain_limit": 7 if available else None,
         "player_targeting_faction_count": 2 if available else None,
+        "council": _council(available),
         "primary_title": (
             {
                 "title_id": 67_890,
@@ -276,6 +347,7 @@ def _driver_result(status: str = "available") -> dict[str, object]:
         "player_domain_size",
         "player_domain_limit",
         "player_targeting_faction_count",
+        "council",
         "primary_title",
         "primary_title_succession_character_ids",
         "held_title_partition",
@@ -355,6 +427,8 @@ class CampaignRootContextV1ContractTests(unittest.TestCase):
         self.assertEqual(normalized["player_domain_size"], 6)
         self.assertEqual(normalized["player_domain_limit"], 7)
         self.assertEqual(normalized["player_targeting_faction_count"], 2)
+        self.assertEqual(normalized["council"]["status"], "available")
+        self.assertEqual(len(normalized["council"]["positions"]), 5)
         self.assertEqual(normalized["primary_title"]["tier_key"], "hegemony")
         self.assertEqual(
             normalized["government"]["flags"].count(
@@ -398,6 +472,17 @@ class CampaignRootContextV1ContractTests(unittest.TestCase):
         frame["held_title_partition"] = []
         frame["capital_province_id"] = None
         frame["government"] = None
+        frame["council"] = {
+            "status": "unavailable",
+            "coverage_key": "standard_landed_non_nomadic_core_v1",
+            "owner_character_id": PLAYER_CHARACTER_ID,
+            "positions": [],
+            "auxiliary_vacancies_complete": False,
+            "unavailable_reason": (
+                "outside_standard_landed_non_nomadic_core_scope"
+            ),
+        }
+        frame["readiness"]["council_ready"] = False
 
         normalized = normalize_campaign_root_context_v1(
             frame,
@@ -410,6 +495,8 @@ class CampaignRootContextV1ContractTests(unittest.TestCase):
         self.assertIsNone(normalized["capital_province_id"])
         self.assertIsNone(normalized["immediate_liege_character_id"])
         self.assertIsNone(normalized["government"])
+        self.assertEqual(normalized["council"]["status"], "unavailable")
+        self.assertFalse(normalized["readiness"]["council_ready"])
         self.assertTrue(normalized["readiness"]["ready"])
 
     def test_every_unavailable_stage_is_typed_and_carries_bindings(self) -> None:
@@ -517,6 +604,23 @@ class CampaignRootContextV1ContractTests(unittest.TestCase):
             ),
             "negative_targeting_faction_count": lambda row: row.__setitem__(
                 "player_targeting_faction_count", -1
+            ),
+            "council_position_order": lambda row: row["council"][
+                "positions"
+            ].reverse(),
+            "council_missing_core": lambda row: row["council"][
+                "positions"
+            ].pop(1),
+            "council_percentage_maximum": lambda row: row["council"][
+                "positions"
+            ][3]["progress"].__setitem__(
+                "maximum", {"raw": 9_000_000, "scale": 100_000}
+            ),
+            "council_county_target_kind": lambda row: row["council"][
+                "positions"
+            ][4]["target"].__setitem__("kind", "character"),
+            "council_readiness": lambda row: row["readiness"].__setitem__(
+                "council_ready", False
             ),
             "tier_pair": lambda row: row["primary_title"].__setitem__(
                 "tier_key", "empire"
@@ -920,18 +1024,23 @@ class CampaignRootContextV1ServiceTests(unittest.TestCase):
         self.assertEqual(result["build"]["version"], "1.19.0.6")
         self.assertEqual(result["binding"]["date_raw"], DATE_RAW)
 
-    def test_service_builds_partial_turn_bundle_on_the_same_binding(self) -> None:
+    def test_service_builds_ready_turn_bundle_on_the_same_binding(self) -> None:
         result = GameplayBridgeService(_ServiceDriver()).query_turn_bundle_v1(
             expected_revision=PUBLIC_REVISION
         )
 
         self.assertEqual(result["schema"], "xar.ck3.turn-bundle/v1")
-        self.assertEqual(result["status"], "partial")
+        self.assertEqual(result["status"], "available")
         self.assertTrue(result["readiness"]["minimum_alerts_ready"])
-        self.assertFalse(result["readiness"]["ready"])
+        self.assertTrue(result["readiness"]["ready"])
         ruler = result["ruler_state"]["value"]
         self.assertEqual(ruler["stress_points"]["value"], 120)
         self.assertEqual(ruler["health_band"]["value"]["key"], "below_fine")
+        self.assertTrue(result["readiness"]["realm_council_ready"])
+        self.assertEqual(
+            result["realm_state"]["value"]["council"]["value"]["status"],
+            "available",
+        )
         succession = result["succession_state"]["value"]
         self.assertEqual(
             succession["primary_title_heir_character_id"]["value"], 98_765

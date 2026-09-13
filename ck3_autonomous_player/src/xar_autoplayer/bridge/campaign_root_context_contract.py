@@ -32,6 +32,7 @@ _FIELDS: Final = {
     "player_domain_size",
     "player_domain_limit",
     "player_targeting_faction_count",
+    "council",
     "primary_title",
     "primary_title_succession_character_ids",
     "held_title_partition",
@@ -66,6 +67,34 @@ _RELATED_CHARACTER_FIELDS: Final = {
     "independent",
 }
 _GOVERNMENT_FIELDS: Final = {"key", "flags", "native_flag_count"}
+_COUNCIL_FIELDS: Final = {
+    "status",
+    "coverage_key",
+    "owner_character_id",
+    "positions",
+    "auxiliary_vacancies_complete",
+    "unavailable_reason",
+}
+_COUNCIL_POSITION_FIELDS: Final = {
+    "position_key",
+    "incumbent_character_id",
+    "task_key",
+    "task_type",
+    "target",
+    "frozen",
+    "progress",
+}
+_COUNCIL_PROVINCE_TARGET_FIELDS: Final = {"kind", "province_id"}
+_COUNCIL_CHARACTER_TARGET_FIELDS: Final = {"kind", "character_id"}
+_COUNCIL_PROGRESS_FIELDS: Final = {"kind", "current", "maximum"}
+_COUNCIL_COVERAGE_KEY: Final = "standard_landed_non_nomadic_core_v1"
+_CORE_COUNCIL_POSITION_KEYS: Final = {
+    "councillor_chancellor",
+    "councillor_steward",
+    "councillor_marshal",
+    "councillor_spymaster",
+    "councillor_court_chaplain",
+}
 _READINESS_KEYS: Final = (
     "player_identity_ready",
     "player_monthly_gold_income_ready",
@@ -75,6 +104,7 @@ _READINESS_KEYS: Final = (
     "primary_title_ready",
     "primary_title_succession_ready",
     "held_title_partition_ready",
+    "council_ready",
     "capital_ready",
     "lieges_ready",
     "direct_landed_vassals_ready",
@@ -95,6 +125,11 @@ _PROVENANCE_FIELDS: Final = {
     "domain_size_rva",
     "domain_limit_rva",
     "has_targeting_faction_trigger_rva",
+    "council_position_lookup_rva",
+    "council_active_task_ids_enumerator_rva",
+    "council_active_task_storage_slot_rva",
+    "council_value_progress_current_rva",
+    "council_value_progress_maximum_rva",
     "primary_title_rva",
     "held_title_ids_offset",
     "capital_province_rva",
@@ -113,6 +148,11 @@ _PROVENANCE_VALUES: Final = {
     "domain_size_rva": "0x260BA50",
     "domain_limit_rva": "0x260BA20",
     "has_targeting_faction_trigger_rva": "0x283FAE0",
+    "council_position_lookup_rva": "0x23F7800",
+    "council_active_task_ids_enumerator_rva": "0x2666CD0",
+    "council_active_task_storage_slot_rva": "0x570C778",
+    "council_value_progress_current_rva": "0x2D650A0",
+    "council_value_progress_maximum_rva": "0x2D65390",
     "primary_title_rva": "0x25F3350",
     "held_title_ids_offset": "0x1E0",
     "capital_province_rva": "0x2606760",
@@ -142,6 +182,7 @@ _UNAVAILABLE_REASONS: Final = {
     "adjacent_external_province_holders_unavailable",
     "related_character_contexts_unavailable",
     "government_flags_unavailable",
+    "council_unavailable",
     "selected_game_rule_tokens_unavailable",
     "state_changed",
     "internal_error",
@@ -163,6 +204,7 @@ _UNAVAILABLE_NULL_FIELDS: Final = {
     "player_domain_size",
     "player_domain_limit",
     "player_targeting_faction_count",
+    "council",
     "primary_title",
     "capital_province_id",
     "immediate_liege_character_id",
@@ -463,9 +505,154 @@ def _normalize_readiness(
         key: _bool(readiness.get(key), f"readiness.{key}")
         for key in _READINESS_KEYS
     }
-    if any(flag is not available for flag in normalized.values()):
-        raise ValueError("readiness fields disagree with status")
+    if not available:
+        if any(normalized.values()):
+            raise ValueError("readiness fields disagree with status")
+    elif any(
+        not flag
+        for key, flag in normalized.items()
+        if key != "council_ready"
+    ):
+        raise ValueError("available root readiness fields disagree with status")
     return normalized
+
+
+def _normalize_council_progress(
+    value: object,
+    name: str,
+) -> dict[str, object]:
+    progress = _exact_object(value, _COUNCIL_PROGRESS_FIELDS, name)
+    kind = progress.get("kind")
+    if kind not in {"infinite", "percentage", "value"}:
+        raise ValueError(f"{name}.kind is invalid")
+    if kind == "infinite":
+        if progress.get("current") is not None or progress.get("maximum") is not None:
+            raise ValueError(f"{name} infinite progress must not invent values")
+        return {"kind": kind, "current": None, "maximum": None}
+    current = _fixed_point(progress.get("current"), f"{name}.current")
+    maximum = _fixed_point(progress.get("maximum"), f"{name}.maximum")
+    if current["raw"] < 0 or maximum["raw"] <= 0 or current["raw"] > maximum["raw"]:
+        raise ValueError(f"{name} bounded progress range is invalid")
+    if kind == "percentage" and maximum["raw"] != 10_000_000:
+        raise ValueError(f"{name} percentage maximum must be 100 percent")
+    return {"kind": kind, "current": current, "maximum": maximum}
+
+
+def _normalize_council(
+    value: object,
+    *,
+    player_character_id: int,
+    admitted: bool,
+) -> dict[str, object]:
+    council = _exact_object(value, _COUNCIL_FIELDS, "council")
+    if council.get("coverage_key") != _COUNCIL_COVERAGE_KEY:
+        raise ValueError("council coverage_key is invalid")
+    owner_character_id = _positive_int32(
+        council.get("owner_character_id"), "council.owner_character_id"
+    )
+    if owner_character_id != player_character_id:
+        raise ValueError("council owner disagrees with the played character")
+    if council.get("auxiliary_vacancies_complete") is not False:
+        raise ValueError("council must not claim complete auxiliary vacancies")
+    status = council.get("status")
+    if status not in {"available", "unavailable"}:
+        raise ValueError("council.status is invalid")
+    if (status == "available") is not admitted:
+        raise ValueError("council status disagrees with the coverage scope")
+    positions_value = council.get("positions")
+    if not isinstance(positions_value, list):
+        raise ValueError("council.positions must be a list")
+    reason = council.get("unavailable_reason")
+    if status == "unavailable":
+        if positions_value:
+            raise ValueError("unavailable council invented positions")
+        if reason != "outside_standard_landed_non_nomadic_core_scope":
+            raise ValueError("council unavailable_reason is invalid")
+        return {
+            **council,
+            "owner_character_id": owner_character_id,
+            "positions": [],
+        }
+    if reason is not None:
+        raise ValueError("available council has unavailable_reason")
+
+    positions: list[dict[str, object]] = []
+    for index, value in enumerate(positions_value):
+        name = f"council.positions[{index}]"
+        row = _exact_object(value, _COUNCIL_POSITION_FIELDS, name)
+        position_key = _stable_key(row.get("position_key"), f"{name}.position_key")
+        incumbent = _optional_positive_int32(
+            row.get("incumbent_character_id"), f"{name}.incumbent_character_id"
+        )
+        if incumbent is None:
+            if any(
+                row.get(field) is not None
+                for field in ("task_key", "task_type", "target", "frozen", "progress")
+            ):
+                raise ValueError(f"{name} vacant position invented an active task")
+            positions.append({**row, "position_key": position_key})
+            continue
+
+        task_key = _stable_key(row.get("task_key"), f"{name}.task_key")
+        task_type = row.get("task_type")
+        if task_type not in {"general", "county", "court"}:
+            raise ValueError(f"{name}.task_type is invalid")
+        frozen = _bool(row.get("frozen"), f"{name}.frozen")
+        progress = _normalize_council_progress(row.get("progress"), f"{name}.progress")
+        target_value = row.get("target")
+        target: dict[str, object] | None
+        if task_type == "general":
+            if target_value is not None:
+                raise ValueError(f"{name} general task must not expose a target")
+            target = None
+        elif task_type == "county":
+            target_frame = _exact_object(
+                target_value, _COUNCIL_PROVINCE_TARGET_FIELDS, f"{name}.target"
+            )
+            if target_frame.get("kind") != "province":
+                raise ValueError(f"{name}.target kind is invalid")
+            target = {
+                "kind": "province",
+                "province_id": _positive_int32(
+                    target_frame.get("province_id"), f"{name}.target.province_id"
+                ),
+            }
+        else:
+            target_frame = _exact_object(
+                target_value, _COUNCIL_CHARACTER_TARGET_FIELDS, f"{name}.target"
+            )
+            if target_frame.get("kind") != "character":
+                raise ValueError(f"{name}.target kind is invalid")
+            target = {
+                "kind": "character",
+                "character_id": _positive_int32(
+                    target_frame.get("character_id"), f"{name}.target.character_id"
+                ),
+            }
+        positions.append(
+            {
+                "position_key": position_key,
+                "incumbent_character_id": incumbent,
+                "task_key": task_key,
+                "task_type": task_type,
+                "target": target,
+                "frozen": frozen,
+                "progress": progress,
+            }
+        )
+    position_keys = [str(row["position_key"]) for row in positions]
+    if position_keys != sorted(position_keys, key=lambda key: key.encode("utf-8")):
+        raise ValueError("council.positions must use UTF-8 bytewise lexical order")
+    if len(position_keys) != len(set(position_keys)):
+        raise ValueError("council.positions must be duplicate-free")
+    if not _CORE_COUNCIL_POSITION_KEYS.issubset(position_keys):
+        raise ValueError("council.positions does not cover all core positions")
+    return {
+        **council,
+        "owner_character_id": owner_character_id,
+        "positions": positions,
+        "unavailable_reason": None,
+    }
 
 
 def _normalize_provenance(value: object) -> dict[str, str]:
@@ -747,6 +934,20 @@ def normalize_campaign_root_context_v1(
             "native_flag_count": flag_count,
         }
 
+    admitted_council_scope = (
+        primary_title is not None
+        and government is not None
+        and "government_is_landless_adventurer" not in government["flags"]
+        and "government_is_nomadic" not in government["flags"]
+    )
+    council = _normalize_council(
+        frame.get("council"),
+        player_character_id=player_character_id,
+        admitted=admitted_council_scope,
+    )
+    if readiness["council_ready"] is not (council["status"] == "available"):
+        raise ValueError("council readiness disagrees with council status")
+
     return {
         **frame,
         "local_player_id": local_player_id,
@@ -757,6 +958,7 @@ def normalize_campaign_root_context_v1(
         "player_domain_size": player_domain_size,
         "player_domain_limit": player_domain_limit,
         "player_targeting_faction_count": player_targeting_faction_count,
+        "council": council,
         "primary_title": primary_title,
         "primary_title_succession_character_ids": (
             primary_title_succession_character_ids

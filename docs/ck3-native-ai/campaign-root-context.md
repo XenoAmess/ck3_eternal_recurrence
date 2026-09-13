@@ -589,7 +589,8 @@ Python contract/driver/service/MCP/live-harness 与 turn-bundle 聚焦测试 nor
    成功后才能升为 production-live primitive。
 3. [static-ready] canonical `ck3_search_entities_v1` 已消费相关人物上下文并发布 title/capital/liege components；
    `ck3_query_turn_bundle_v1` 已聚合最低 ruler/realm/succession alerts、收入资源门、健康分档、domain capacity 与目标派系最低警报。
-   M1 仍缺 council、partition 及上述共享 live 验收；faction identity/power/deadline 留给后续治理响应包，不得标 complete。
+   M1 的 partition 与 council 已 static-ready；仍缺上述共享两场景 live 验收。faction identity/power/deadline 留给后续治理响应包，
+   不得标 complete。
 4. 补 live 矩阵：至少一个非-duchy rank、一个非-feudal government，以及 landless/legal-absent 根；六级 tier 与 unavailable
    路径已有 deterministic exact-build fixture，但 fixture 不能替代这些 live 值。
 5. 建立 loaded rule-definition registry 的只读映射，只有这样 planner 才能把当前 84 个 setting token 还原为
@@ -604,6 +605,19 @@ The campaign root now includes the title-ID-sorted `held_title_partition` and
 `held_title_partition_ready`. Each row is resolved from the player's native
 held-title vector and contains the current engine first heir. This closes the
 static partition input described in [held-title succession partition
-v1](held-title-partition-v1.md). The remaining G2-M1 component blocker is the
-council reader; all pending campaign-root extensions still share one bounded
-two-scene live read.
+v1](held-title-partition-v1.md). The council extension below closes the other
+M1 component input; both still share one bounded two-scene live read.
+
+## 2026-09-13 typed council extension
+
+The same campaign-root transaction now includes a typed `council` component.
+It dynamically enumerates every materialized active position from the player's
+land state, resolves full-generation incumbent/owner identities, stable
+position/task keys, general/county/court targets, frozen state and
+infinite/percentage/value progress. Within
+`standard_landed_non_nomadic_core_v1`, the five standard core positions are
+present exactly once and may be proven vacant. Auxiliary vacancies remain
+explicitly incomplete. Landless, nomadic or missing-primary-title roots retain
+an available campaign root with a typed unavailable council component. The
+implementation is `static-ready / live=false`; it joins the existing shared
+two-scene paused live gate rather than creating a field-specific long run.

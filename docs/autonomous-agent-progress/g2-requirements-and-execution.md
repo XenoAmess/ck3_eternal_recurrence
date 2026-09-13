@@ -81,7 +81,8 @@ reader/source-contract 与 Python normal/optimized 聚焦测试均 GREEN。
 合法可空 capital、immediate/top liege 与 independent；相邻 holder 保留 source role，再按 top liege 归一 realm identity。
 entity-directory 的当前 title/realm components 因而已完整。`ck3_query_turn_bundle_v1` 已聚合最低 ruler/realm/succession alerts、
 玩家完整月收入、exact-build health 和 domain size/limit，`ruler_resources_ready`、`ruler_health_alert_ready` 与
-`realm_domain_ready` 都可由真实输入变绿。M1 仍缺 council、partition 与共享 live 验收，固定 G2 完成数仍是 `0/8`。
+`realm_domain_ready` 都可由真实输入变绿。逐头衔 partition 与 typed council 也已接入同一 root/bundle；M1 只剩共享两场景 live
+验收，固定 G2 完成数仍是 `0/8`。
 下一次允许实机时只在本来就需要的 paused G2 会话顺带读取两个非空 vector、related contexts、income、health 和 domain capacity
 并验证 directory/bundle，不为单字段安排长跑。
 
@@ -214,3 +215,23 @@ optimized Python. Status is `static-ready / live=false`; the extension will use
 the existing shared bounded two-scene paused read, without a dedicated long
 run. G2-M1 now lacks the council observation and that shared live acceptance;
 G2 remains `0/8`.
+
+## G2-M1 typed council observation static-ready
+
+The exact-build campaign-root reader now enumerates the player's dynamic
+active-council-task vector and publishes every materialized position with a
+full-generation incumbent and owner, stable position/task keys,
+general/county/court typed targets, frozen state, and
+infinite/percentage/value progress. Within
+`standard_landed_non_nomadic_core_v1`, the five standard positions occur
+exactly once and can be proven vacant. Auxiliary vacancies remain explicitly
+incomplete instead of being guessed.
+
+The Python contract and `ck3_query_turn_bundle_v1` now preserve that component.
+A fully observed supported scene can reach `available/ready=true`; a landless,
+nomadic or missing-primary-title root remains available while its council is
+typed unavailable. Native Release reader/serializer and source-contract
+fixtures are GREEN, the bridge DLL compiles and links, and the focused Python
+suite passes `47/47` in normal and optimized modes. Status is
+`static-ready / live=false`; G2-M1 now needs only its existing bounded
+independent/vassal paused live gate, and G2 remains `0/8`.

@@ -66,12 +66,18 @@ int main(int argc, char **argv) {
       kCampaignRootContextV1BackendId !=
           "ck3-1.19.0.6-native-campaign-root-context-v1" ||
       kCampaignRootGovernmentFallbackSlotRva != 0x570CB50 ||
+      kCampaignRootActiveCouncilTaskStorageSlotRva != 0x570C778 ||
+      kCampaignRootActiveCouncilTaskFallbackSlotRva != 0x570C6D8 ||
       kCampaignRootGameRuleSelectionServiceSlotRva != 0x5754B48 ||
       kCampaignRootMonthlyGoldIncomeRva != 0x28DBE90 ||
       kCampaignRootHealthRva != 0x2619AD0 ||
       kCampaignRootDomainSizeRva != 0x260BA50 ||
       kCampaignRootDomainLimitRva != 0x260BA20 ||
       kCampaignRootHasTargetingFactionTriggerRva != 0x283FAE0 ||
+      kCampaignRootCouncilPositionLookupRva != 0x23F7800 ||
+      kCampaignRootCouncilActiveTaskIdsEnumeratorRva != 0x2666CD0 ||
+      kCampaignRootCouncilValueProgressCurrentRva != 0x2D650A0 ||
+      kCampaignRootCouncilValueProgressMaximumRva != 0x2D65390 ||
       kCampaignRootPrimaryTitleRva != 0x25F3350 ||
       kCampaignRootCapitalProvinceRva != 0x2606760 ||
       kCampaignRootImmediateLiegeRva != 0x2613480 ||
@@ -87,6 +93,10 @@ int main(int argc, char **argv) {
                     "NativeCampaignRootMonthlyGoldIncomeV1",
                     "NativeCampaignRootCharacterFixedPointV1",
                     "NativeCampaignRootCharacterInt32V1",
+                    "CampaignRootCouncilPositionV1",
+                    "CampaignRootCouncilStatusV1",
+                    "auxiliary_vacancies_complete",
+                    "NativeCampaignRootCouncilValueProgressV1",
                     "game.command.query-campaign-root-context-v1",
                     "ck3-1.19.0.6-native-campaign-root-context-v1"}) ||
       !ContainsAll(reader,
@@ -107,6 +117,8 @@ int main(int argc, char **argv) {
                     "primary_title_succession_unavailable",
                     "ReadHeldTitlePartition",
                     "held_title_partition_unavailable",
+                    "ReadCouncil",
+                    "council_unavailable",
                     "player_monthly_gold_income_unavailable",
                     "player_health_unavailable",
                     "player_domain_unavailable",
@@ -119,6 +131,17 @@ int main(int argc, char **argv) {
                     "kCampaignRootHealthRva",
                     "kLandedTitleSuccessionDataOffset = 0x278",
                     "kLandStateHeldTitleIdsOffset = 0x1E0",
+                    "kLandStateActiveCouncilTaskIdsOffset = 0x230",
+                    "kLandStateActiveCouncilTaskCountOffset = 0x23C",
+                    "kActiveCouncilTaskScopesOffset = 0x38",
+                    "kCouncilScopesTargetTagOffset = 0x08",
+                    "kCouncilScopesTargetValueOffset = 0x10",
+                    "kCouncilTaskTypeKeyOffset = 0x18",
+                    "kCouncilTaskTypePositionTypeOffset = 0x38",
+                    "ResolveCouncilProvinceTarget",
+                    "InvokeCouncilValueProgress",
+                    "kCoreCouncilPositionKeys",
+                    "auxiliary_vacancies_complete = false",
                     "kLandedTitleHolderCharacterIdOffset = 0x258",
                     "CharacterBelongsToPlayerSubrealm",
                     "observed_id != full_id",
@@ -135,6 +158,11 @@ int main(int argc, char **argv) {
                     "\\\"primary_title_succession_character_ids\\\"",
                     "\\\"held_title_partition\\\"",
                     "\\\"held_title_partition_ready\\\"",
+                    "\\\"council\\\"",
+                    "\\\"council_ready\\\"",
+                    "\\\"auxiliary_vacancies_complete\\\"",
+                    "\\\"council_active_task_ids_enumerator_rva\\\"",
+                    "\\\"council_value_progress_current_rva\\\"",
                     "\\\"player_monthly_gold_income\\\"",
                     "\\\"player_health\\\"",
                     "\\\"player_domain_size\\\"",
@@ -154,7 +182,7 @@ int main(int argc, char **argv) {
                     "typed_available",
                     "typed_unavailable"}) ||
       !ContainsAll(common_mailbox_header,
-                   {"twenty-nine fixed slots", "permitted_executor_nonary",
+                   {"permitted_frontend_executor", "permitted_executor_nonary",
                     "permitted_executor_duodenary",
                     "permitted_executor_sexvigintary"}) ||
       !ContainsAll(common_mailbox_source,
@@ -192,6 +220,19 @@ int main(int argc, char **argv) {
                     "\"held_title_partition\"",
                     "D7C6700177B5401E712DA7913FE46468C7868450A12488422005E5CBAAFB19A9",
                     "8D3696555ADB3F338244D1E8872C3721707D7B90EEE7E6AD95DD38020195EEA2",
+                    "\"council\"",
+                    "\"coverage_key\": \"standard_landed_non_nomadic_core_v1\"",
+                    "\"data_offset\": \"0x230\"",
+                    "\"count_offset\": \"0x23C\"",
+                    "\"storage_slot_rva\": \"0x570C778\"",
+                    "\"fallback_slot_rva\": \"0x570C6D8\"",
+                    "E386DB4C0D6E816CF72A82F44C61D3438BCC689C247DB59EF8D447178E5DDEBB",
+                    "1AF11F60D6173AAC65266C116B11C7F6E82FEC74F8AAC6974ADEBD657ABB0FD0",
+                    "B09B2952F63E29621504B4B3CC333AF2C20A5F9521D737052834A285D3654497",
+                    "D132CBD9FEC317C0FE88437D1AC1E232E90483CD3FF42FBAD1F08C4DDF9612DD",
+                    "A35A4A73FF93C7B818D433558AD2F288016575AC2B2E3398DC779B1A1A97FA7E",
+                    "4A555E79AEC9F4A4448B66E618A05A15A851111D29D76D64420284B7DB44D60E",
+                    "D12BA93AA4CBFC6382DECBCA92B4BEED8CB02754CEE821D2B441A0320AF56ABF",
                     "\"player_monthly_gold_income\"",
                     "\"player_health\"",
                     "\"player_domain_capacity\"",
@@ -220,6 +261,17 @@ int main(int argc, char **argv) {
                     "\"held_title_partition_order\": "
                     "\"ascending_full_generation_landed_title_id\"",
                     "\"held_title_partition_all_or_nothing\": true",
+                    "\"council_coverage_key\": "
+                    "\"standard_landed_non_nomadic_core_v1\"",
+                    "\"council_active_task_list_offsets\"",
+                    "\"council_active_task_storage_slot_rva\": "
+                    "\"0x570C778\"",
+                    "\"council_active_task_fallback_slot_rva\": "
+                    "\"0x570C6D8\"",
+                    "\"council_all_materialized_positions_published\": true",
+                    "\"council_auxiliary_vacancies_complete\": false",
+                    "\"council_outside_scope_is_component_unavailable\": true",
+                    "\"council_outside_scope_preserves_root_ready\": true",
                     "\"player_monthly_gold_income_scale\": 100000",
                     "\"player_health_scale\": 100000",
                     "\"player_health_rva\": \"0x2619AD0\"",

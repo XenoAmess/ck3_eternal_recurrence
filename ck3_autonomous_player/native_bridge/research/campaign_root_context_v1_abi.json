@@ -16,6 +16,8 @@
     "landed_title_storage_slot_rva": "0x570C410",
     "landed_title_fallback_slot_rva": "0x570C3F8",
     "government_fallback_slot_rva": "0x570CB50",
+    "active_council_task_storage_slot_rva": "0x570C778",
+    "active_council_task_fallback_slot_rva": "0x570C6D8",
     "game_rule_selection_service_slot_rva": "0x5754B48",
     "game_rule_token_fallback_slot_rva": "0x57D7430"
   },
@@ -25,6 +27,10 @@
     "domain_size_rva": "0x260BA50",
     "domain_limit_rva": "0x260BA20",
     "has_targeting_faction_trigger_rva": "0x283FAE0",
+    "council_position_lookup_rva": "0x23F7800",
+    "council_active_task_ids_enumerator_rva": "0x2666CD0",
+    "council_value_progress_current_rva": "0x2D650A0",
+    "council_value_progress_maximum_rva": "0x2D65390",
     "primary_title_rva": "0x25F3350",
     "capital_province_rva": "0x2606760",
     "immediate_liege_rva": "0x2613480",
@@ -250,6 +256,161 @@
       "sha256": "8D3696555ADB3F338244D1E8872C3721707D7B90EEE7E6AD95DD38020195EEA2"
     },
     "same_frame": "the complete normalized title/heir vector participates in the existing two-sample equality gate"
+  },
+  "council": {
+    "published_field": "council",
+    "readiness_field": "council_ready",
+    "coverage_key": "standard_landed_non_nomadic_core_v1",
+    "coverage_boundary": "the player has a primary landed title and neither government_is_landless_adventurer nor government_is_nomadic; all materialized active positions are published, while only the five stock core positions have proven vacancy rows",
+    "outside_scope": "typed council status unavailable with reason outside_standard_landed_non_nomadic_core_scope; the enclosing campaign-root payload remains available and council_ready is false",
+    "active_task_list": {
+      "character_land_state_offset": "0x1B8",
+      "data_offset": "0x230",
+      "count_offset": "0x23C",
+      "element": "full-generation ActiveCouncilTaskID",
+      "maximum_count": 4096,
+      "exact_enumerator_slice": {
+        "start_rva": "0x2666CD0",
+        "end_rva_exclusive": "0x2666E0C",
+        "size": "0x13C",
+        "sha256": "E386DB4C0D6E816CF72A82F44C61D3438BCC689C247DB59EF8D447178E5DDEBB"
+      }
+    },
+    "active_task_storage": {
+      "storage_slot_rva": "0x570C778",
+      "fallback_slot_rva": "0x570C6D8",
+      "identity_offset": "0x10",
+      "full_generation_equality_required": true
+    },
+    "active_task_layout": {
+      "+0x10": "full-generation ActiveCouncilTaskID",
+      "+0x18": "CouncilTaskType pointer",
+      "+0x20": "raw Q100000 current progress for non-value progress kinds",
+      "+0x35": "frozen boolean byte",
+      "+0x38": "CouncilTaskScopes: incumbent CharacterID",
+      "+0x3C": "CouncilTaskScopes: council owner CharacterID",
+      "+0x40": "CouncilTaskScopes: typed target tag",
+      "+0x48": "CouncilTaskScopes: typed target full ID"
+    },
+    "task_type_layout": {
+      "+0x18": "stable authored task key as MSVC std::string",
+      "+0x38": "CouncilPositionType pointer",
+      "+0x40": "task type enum: general=0, county=1, court=2",
+      "+0x4C": "progress kind enum: infinite=0, percentage=1, value=2",
+      "position_type_key_offset": "0x18"
+    },
+    "exact_evidence": {
+      "character_position_lookup": {
+        "start_rva": "0x23F7800",
+        "end_rva_exclusive": "0x23F792E",
+        "size": "0x12E",
+        "sha256": "A1635EE0E875A0D93B24894B88E71CDC86B60849ECA938C3B2877014D0FDF1F7"
+      },
+      "get_councillor_registration": {
+        "start_rva": "0x4CEDD0",
+        "end_rva_exclusive": "0x4CEFBA",
+        "size": "0x1EA",
+        "sha256": "3B4B6420030E0294A3FC3691E47866A44E692A3F46AFA4BA3384241CE5EE8CEC"
+      },
+      "get_councillor_wrapper": {
+        "start_rva": "0x23BC2F0",
+        "end_rva_exclusive": "0x23BC352",
+        "size": "0x62",
+        "sha256": "25F0239708FE4ECCA45CC22AE1CCADA99510402E6CE0A2E217584B8C2D5B888A"
+      },
+      "incumbent_id_leaf": {
+        "start_rva": "0xA711F0",
+        "end_rva_exclusive": "0xA711F9",
+        "size": "0x9",
+        "sha256": "1AF11F60D6173AAC65266C116B11C7F6E82FEC74F8AAC6974ADEBD657ABB0FD0"
+      },
+      "get_task_type_registration": {
+        "start_rva": "0x4CE820",
+        "end_rva_exclusive": "0x4CEA0C",
+        "size": "0x1EC",
+        "sha256": "C6C1FDCA12B5AC6E532B600F825B64446F9F5F3F87A904609A0632BE5A87947C"
+      },
+      "task_type_thunk": {
+        "start_rva": "0x23BC030",
+        "end_rva_exclusive": "0x23BC035",
+        "size": "0x5",
+        "sha256": "3683F137B736168AB28ECDB5BA1EF48071827BA55062056EA0580738D852F7B3"
+      },
+      "task_type_leaf": {
+        "start_rva": "0xAA2330",
+        "end_rva_exclusive": "0xAA2335",
+        "size": "0x5",
+        "sha256": "0C6B8858E139E1A255688DFC8B1FCA61C89CCEA689E8DA8BCD4276A9918F1DBE"
+      },
+      "owner_and_task_key_validator": {
+        "start_rva": "0x23BA9D0",
+        "end_rva_exclusive": "0x23BABA0",
+        "size": "0x1D0",
+        "sha256": "B09B2952F63E29621504B4B3CC333AF2C20A5F9521D737052834A285D3654497"
+      },
+      "county_target_dispatch": {
+        "start_rva": "0x23BA450",
+        "end_rva_exclusive": "0x23BA4B4",
+        "size": "0x64",
+        "sha256": "D132CBD9FEC317C0FE88437D1AC1E232E90483CD3FF42FBAD1F08C4DDF9612DD"
+      },
+      "court_target_resolver": {
+        "start_rva": "0x23BA4C0",
+        "end_rva_exclusive": "0x23BA514",
+        "size": "0x54",
+        "sha256": "A35A4A73FF93C7B818D433558AD2F288016575AC2B2E3398DC779B1A1A97FA7E"
+      },
+      "frozen_leaf": {
+        "start_rva": "0x23BABA0",
+        "end_rva_exclusive": "0x23BABA5",
+        "size": "0x5",
+        "sha256": "F47DCC5FDF6BF192F97D4CF14EAA998DF0232935D7CB09617D8AC18A2AE90B29"
+      }
+    },
+    "typed_targets": {
+      "general": "not applicable",
+      "county": "tag 8 plus ProvinceID at ActiveCouncilTask+0x48, validated by game_data province-array identity roundtrip",
+      "court": "tag 4 plus full-generation CharacterID at ActiveCouncilTask+0x48, validated by Character storage identity roundtrip"
+    },
+    "progress": {
+      "scale": 100000,
+      "percentage_maximum_raw": 10000000,
+      "current_core": {
+        "start_rva": "0x23BAC10",
+        "end_rva_exclusive": "0x23BAC4F",
+        "size": "0x3F",
+        "sha256": "2227E60C4BCA908F5D4F46859C837CD1445CE50284A02C020E19E040F00225D6"
+      },
+      "maximum_core": {
+        "start_rva": "0x23BAC50",
+        "end_rva_exclusive": "0x23BAC9F",
+        "size": "0x4F",
+        "sha256": "AA79313B8F07F7E6652BC91EFD5D9B47B4A75B36B3A50508B2E812DD0D8282D0"
+      },
+      "value_current_evaluator": {
+        "start_rva": "0x2D650A0",
+        "end_rva_exclusive": "0x2D65390",
+        "size": "0x2F0",
+        "sha256": "4A555E79AEC9F4A4448B66E618A05A15A851111D29D76D64420284B7DB44D60E"
+      },
+      "value_maximum_evaluator": {
+        "start_rva": "0x2D65390",
+        "end_rva_exclusive": "0x2D65683",
+        "size": "0x2F3",
+        "sha256": "D12BA93AA4CBFC6382DECBCA92B4BEED8CB02754CEE821D2B441A0320AF56ABF"
+      }
+    },
+    "canonical_order": "unsigned UTF-8 bytewise position key",
+    "duplicate_position_keys": "reject the complete council component",
+    "core_vacancy_rows": [
+      "councillor_chancellor",
+      "councillor_steward",
+      "councillor_marshal",
+      "councillor_spymaster",
+      "councillor_court_chaplain"
+    ],
+    "auxiliary_vacancies_complete": false,
+    "same_frame": "the complete normalized council component participates in the existing two-sample equality gate"
   },
   "canonicalization": {
     "comparator": "unsigned_utf8_bytewise_lexicographical",

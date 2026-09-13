@@ -56,6 +56,67 @@ struct CampaignRootRelatedCharacterV1 {
                          const CampaignRootRelatedCharacterV1 &) = default;
 };
 
+enum class CampaignRootCouncilTaskTypeV1 : std::uint32_t {
+  general = 0,
+  county = 1,
+  court = 2,
+};
+
+enum class CampaignRootCouncilProgressKindV1 : std::uint32_t {
+  infinite = 0,
+  percentage = 1,
+  value = 2,
+};
+
+struct CampaignRootCouncilTargetV1 {
+  std::optional<std::int32_t> province_id;
+  std::optional<std::int32_t> character_id;
+
+  friend bool operator==(const CampaignRootCouncilTargetV1 &,
+                         const CampaignRootCouncilTargetV1 &) = default;
+};
+
+struct CampaignRootCouncilProgressV1 {
+  CampaignRootCouncilProgressKindV1 kind =
+      CampaignRootCouncilProgressKindV1::infinite;
+  std::optional<FixedPointValue> current;
+  std::optional<FixedPointValue> maximum;
+
+  friend bool operator==(const CampaignRootCouncilProgressV1 &,
+                         const CampaignRootCouncilProgressV1 &) = default;
+};
+
+struct CampaignRootCouncilPositionV1 {
+  std::string position_key;
+  std::optional<std::int32_t> incumbent_character_id;
+  std::optional<std::string> task_key;
+  std::optional<CampaignRootCouncilTaskTypeV1> task_type;
+  std::optional<CampaignRootCouncilTargetV1> target;
+  std::optional<bool> frozen;
+  std::optional<CampaignRootCouncilProgressV1> progress;
+
+  friend bool operator==(const CampaignRootCouncilPositionV1 &,
+                         const CampaignRootCouncilPositionV1 &) = default;
+};
+
+enum class CampaignRootCouncilStatusV1 : std::uint32_t {
+  unavailable = 0,
+  available = 1,
+};
+
+struct CampaignRootCouncilV1 {
+  CampaignRootCouncilStatusV1 status =
+      CampaignRootCouncilStatusV1::unavailable;
+  std::string coverage_key;
+  std::int32_t owner_character_id = -1;
+  std::vector<CampaignRootCouncilPositionV1> positions;
+  bool auxiliary_vacancies_complete = false;
+  std::string unavailable_reason;
+
+  friend bool operator==(const CampaignRootCouncilV1 &,
+                         const CampaignRootCouncilV1 &) = default;
+};
+
 struct CampaignRootReadinessV1 {
   bool player_identity_ready = false;
   bool player_monthly_gold_income_ready = false;
@@ -65,6 +126,7 @@ struct CampaignRootReadinessV1 {
   bool primary_title_ready = false;
   bool primary_title_succession_ready = false;
   bool held_title_partition_ready = false;
+  bool council_ready = false;
   bool capital_ready = false;
   bool lieges_ready = false;
   bool direct_landed_vassals_ready = false;
@@ -95,6 +157,7 @@ struct CampaignRootContextV1 {
   std::optional<std::int32_t> player_domain_size;
   std::optional<std::int32_t> player_domain_limit;
   std::optional<std::int32_t> player_targeting_faction_count;
+  std::optional<CampaignRootCouncilV1> council;
   std::optional<CampaignRootTitleV1> primary_title;
   std::vector<std::int32_t> primary_title_succession_character_ids;
   std::vector<CampaignRootHeldTitleSuccessionV1> held_title_partition;
@@ -161,6 +224,10 @@ inline constexpr std::uintptr_t kCampaignRootLandedTitleFallbackSlotRva =
     0x570C3F8;
 inline constexpr std::uintptr_t kCampaignRootGovernmentFallbackSlotRva =
     0x570CB50;
+inline constexpr std::uintptr_t kCampaignRootActiveCouncilTaskStorageSlotRva =
+    0x570C778;
+inline constexpr std::uintptr_t kCampaignRootActiveCouncilTaskFallbackSlotRva =
+    0x570C6D8;
 inline constexpr std::uintptr_t kCampaignRootGameRuleSelectionServiceSlotRva =
     0x5754B48;
 inline constexpr std::uintptr_t kCampaignRootGameRuleTokenFallbackSlotRva =
@@ -173,6 +240,14 @@ inline constexpr std::uintptr_t kCampaignRootDomainSizeRva = 0x260BA50;
 inline constexpr std::uintptr_t kCampaignRootDomainLimitRva = 0x260BA20;
 inline constexpr std::uintptr_t kCampaignRootHasTargetingFactionTriggerRva =
     0x283FAE0;
+inline constexpr std::uintptr_t kCampaignRootCouncilPositionLookupRva =
+    0x23F7800;
+inline constexpr std::uintptr_t kCampaignRootCouncilActiveTaskIdsEnumeratorRva =
+    0x2666CD0;
+inline constexpr std::uintptr_t kCampaignRootCouncilValueProgressCurrentRva =
+    0x2D650A0;
+inline constexpr std::uintptr_t kCampaignRootCouncilValueProgressMaximumRva =
+    0x2D65390;
 inline constexpr std::uintptr_t kCampaignRootCapitalProvinceRva = 0x2606760;
 inline constexpr std::uintptr_t kCampaignRootImmediateLiegeRva = 0x2613480;
 inline constexpr std::uintptr_t kCampaignRootTopLiegeRva = 0x2613600;
@@ -204,6 +279,9 @@ using NativeCampaignRootProvinceHolderCharacterIdV1 =
         void *province, std::int32_t *output);
 using NativeCampaignRootScriptIdentifierNameV1 =
     const std::string *(XAR_CAMPAIGN_ROOT_FASTCALL *)(std::int32_t identifier);
+using NativeCampaignRootCouncilValueProgressV1 =
+    std::int64_t *(XAR_CAMPAIGN_ROOT_FASTCALL *)(
+        void *task_type, std::int64_t *output, void *task_scopes);
 
 #undef XAR_CAMPAIGN_ROOT_FASTCALL
 
@@ -218,12 +296,18 @@ struct CampaignRootNativeEnvironmentV1 {
   void **landed_title_storage_slot = nullptr;
   void **landed_title_fallback_slot = nullptr;
   void **government_fallback_slot = nullptr;
+  void **active_council_task_storage_slot = nullptr;
+  void **active_council_task_fallback_slot = nullptr;
   void **game_rule_selection_service_slot = nullptr;
   void **game_rule_token_fallback_slot = nullptr;
   NativeCampaignRootMonthlyGoldIncomeV1 monthly_gold_income = nullptr;
   NativeCampaignRootCharacterFixedPointV1 health = nullptr;
   NativeCampaignRootCharacterInt32V1 domain_size = nullptr;
   NativeCampaignRootCharacterInt32V1 domain_limit = nullptr;
+  NativeCampaignRootCouncilValueProgressV1 council_value_progress_current =
+      nullptr;
+  NativeCampaignRootCouncilValueProgressV1 council_value_progress_maximum =
+      nullptr;
   NativeCampaignRootCharacterResolverV1 primary_title = nullptr;
   NativeCampaignRootCharacterResolverV1 capital_province = nullptr;
   NativeCampaignRootCharacterResolverV1 immediate_liege = nullptr;

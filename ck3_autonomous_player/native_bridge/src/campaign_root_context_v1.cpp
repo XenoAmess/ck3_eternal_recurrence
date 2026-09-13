@@ -3,6 +3,7 @@
 #include <windows.h>
 
 #include <algorithm>
+#include <array>
 #include <cstddef>
 #include <cstdint>
 #include <cstring>
@@ -27,6 +28,8 @@ constexpr std::size_t kCharacterDeathMarkerOffset = 0x1C8;
 constexpr std::size_t kCharacterLandStateOffset = 0x1B8;
 constexpr std::size_t kLandStateTargetingFactionsCountOffset = 0x12C;
 constexpr std::size_t kLandStateHeldTitleIdsOffset = 0x1E0;
+constexpr std::size_t kLandStateActiveCouncilTaskIdsOffset = 0x230;
+constexpr std::size_t kLandStateActiveCouncilTaskCountOffset = 0x23C;
 constexpr std::size_t kVectorCapacityOffset = 0x08;
 constexpr std::size_t kVectorCountOffset = 0x0C;
 constexpr std::size_t kStorageSlotsOffset = 0x20;
@@ -51,6 +54,20 @@ constexpr std::size_t kAdjacencyRowKindOffset = 0x00;
 constexpr std::size_t kAdjacencyRowTargetProvinceIdOffset = 0x04;
 constexpr std::size_t kGovernmentKeyOffset = 0x18;
 constexpr std::size_t kGovernmentFlagsOffset = 0x48;
+constexpr std::size_t kActiveCouncilTaskIdentityOffset = 0x10;
+constexpr std::size_t kActiveCouncilTaskTypeOffset = 0x18;
+constexpr std::size_t kActiveCouncilTaskProgressOffset = 0x20;
+constexpr std::size_t kActiveCouncilTaskFrozenOffset = 0x35;
+constexpr std::size_t kActiveCouncilTaskScopesOffset = 0x38;
+constexpr std::size_t kCouncilScopesIncumbentIdOffset = 0x00;
+constexpr std::size_t kCouncilScopesOwnerIdOffset = 0x04;
+constexpr std::size_t kCouncilScopesTargetTagOffset = 0x08;
+constexpr std::size_t kCouncilScopesTargetValueOffset = 0x10;
+constexpr std::size_t kCouncilTaskTypeKeyOffset = 0x18;
+constexpr std::size_t kCouncilTaskTypePositionTypeOffset = 0x38;
+constexpr std::size_t kCouncilTaskTypeKindOffset = 0x40;
+constexpr std::size_t kCouncilTaskTypeProgressKindOffset = 0x4C;
+constexpr std::size_t kCouncilPositionTypeKeyOffset = 0x18;
 constexpr std::size_t kSpanCountOffset = 0x0C;
 constexpr std::size_t kSelectedRuleTokenDataOffset = 0x08;
 constexpr std::size_t kSelectedRuleTokenCountOffset = 0x14;
@@ -67,8 +84,17 @@ constexpr std::int32_t kMaximumGovernmentFlags = 4'096;
 constexpr std::int32_t kMaximumSelectedRuleTokens = 16'384;
 constexpr std::int32_t kMaximumTitleSuccessors = 4'096;
 constexpr std::int32_t kMaximumHeldTitles = 4'096;
+constexpr std::int32_t kMaximumActiveCouncilTasks = 4'096;
 constexpr std::size_t kMaximumStableKeyBytes = 1'024;
 constexpr std::int64_t kFixedPointScale = 100'000;
+constexpr std::int64_t kPercentageProgressMaximum =
+    100 * kFixedPointScale;
+constexpr std::string_view kCouncilCoverageKey =
+    "standard_landed_non_nomadic_core_v1";
+constexpr std::array<std::string_view, 5> kCoreCouncilPositionKeys{
+    "councillor_chancellor", "councillor_steward",
+    "councillor_marshal", "councillor_spymaster",
+    "councillor_court_chaplain"};
 
 bool Utf8BytewiseLess(std::string_view left,
                       std::string_view right) noexcept {
@@ -89,6 +115,7 @@ struct ObservationV1 {
   std::int32_t player_domain_size = 0;
   std::int32_t player_domain_limit = 0;
   std::int32_t player_targeting_faction_count = 0;
+  game::CampaignRootCouncilV1 council;
   std::optional<game::CampaignRootTitleV1> primary_title;
   std::vector<std::int32_t> primary_title_succession_character_ids;
   std::vector<game::CampaignRootHeldTitleSuccessionV1> held_title_partition;
@@ -225,12 +252,16 @@ bool EnvironmentIsExact(
       environment.landed_title_storage_slot == nullptr ||
       environment.landed_title_fallback_slot == nullptr ||
       environment.government_fallback_slot == nullptr ||
+      environment.active_council_task_storage_slot == nullptr ||
+      environment.active_council_task_fallback_slot == nullptr ||
       environment.game_rule_selection_service_slot == nullptr ||
       environment.game_rule_token_fallback_slot == nullptr ||
       environment.monthly_gold_income == nullptr ||
       environment.health == nullptr ||
       environment.domain_size == nullptr ||
       environment.domain_limit == nullptr ||
+      environment.council_value_progress_current == nullptr ||
+      environment.council_value_progress_maximum == nullptr ||
       environment.primary_title == nullptr ||
       environment.capital_province == nullptr ||
       environment.immediate_liege == nullptr ||
@@ -266,6 +297,12 @@ bool EnvironmentIsExact(
              environment.government_fallback_slot) ==
              base + kCampaignRootGovernmentFallbackSlotRva &&
          reinterpret_cast<std::uintptr_t>(
+             environment.active_council_task_storage_slot) ==
+             base + kCampaignRootActiveCouncilTaskStorageSlotRva &&
+         reinterpret_cast<std::uintptr_t>(
+             environment.active_council_task_fallback_slot) ==
+             base + kCampaignRootActiveCouncilTaskFallbackSlotRva &&
+         reinterpret_cast<std::uintptr_t>(
              environment.game_rule_selection_service_slot) ==
              base + kCampaignRootGameRuleSelectionServiceSlotRva &&
          reinterpret_cast<std::uintptr_t>(
@@ -279,6 +316,12 @@ bool EnvironmentIsExact(
              base + kCampaignRootDomainSizeRva &&
          reinterpret_cast<std::uintptr_t>(environment.domain_limit) ==
              base + kCampaignRootDomainLimitRva &&
+         reinterpret_cast<std::uintptr_t>(
+             environment.council_value_progress_current) ==
+             base + kCampaignRootCouncilValueProgressCurrentRva &&
+         reinterpret_cast<std::uintptr_t>(
+             environment.council_value_progress_maximum) ==
+             base + kCampaignRootCouncilValueProgressMaximumRva &&
          reinterpret_cast<std::uintptr_t>(environment.primary_title) ==
              base + kCampaignRootPrimaryTitleRva &&
          reinterpret_cast<std::uintptr_t>(environment.capital_province) ==
@@ -432,6 +475,24 @@ bool InvokeIdentifierName(
   output = resolver(identifier);
   return true;
 #endif
+}
+
+bool InvokeCouncilValueProgress(
+    NativeCampaignRootCouncilValueProgressV1 resolver, void *task_type,
+    void *task_scopes, std::int64_t &output) noexcept {
+  output = 0;
+  std::int64_t *returned = nullptr;
+#if defined(_MSC_VER)
+  __try {
+    returned = resolver(task_type, &output, task_scopes);
+  } __except (EXCEPTION_EXECUTE_HANDLER) {
+    output = 0;
+    return false;
+  }
+#else
+  returned = resolver(task_type, &output, task_scopes);
+#endif
+  return returned == &output;
 }
 
 using SelectedRuleSetResolverV1 = void *(*)(void *service);
@@ -1344,6 +1405,282 @@ bool ReadGovernment(const CampaignRootNativeEnvironmentV1 &environment,
   return true;
 }
 
+bool CouncilScopeIsAdmitted(const ObservationV1 &output) noexcept {
+  if (!output.primary_title.has_value() || !output.government.has_value()) {
+    return false;
+  }
+  const auto &flags = output.government->flags;
+  return std::find(flags.begin(), flags.end(),
+                   "government_is_landless_adventurer") == flags.end() &&
+         std::find(flags.begin(), flags.end(), "government_is_nomadic") ==
+             flags.end();
+}
+
+bool ResolveCouncilProvinceTarget(const CampaignRootAccessV1 &access,
+                                  const ObservationV1 &root,
+                                  std::int32_t province_id) noexcept {
+  void *province_array = nullptr;
+  std::int32_t province_count = 0;
+  void *province = nullptr;
+  std::int32_t observed_id = -1;
+  return province_id > 0 &&
+         ReadValue(access, root.game_data, kGameDataProvinceArrayOffset,
+                   province_array) &&
+         ReadValue(access, root.game_data, kGameDataProvinceCountOffset,
+                   province_count) &&
+         province_array != nullptr && province_count > 0 &&
+         province_count <= kMaximumProvinces && province_id < province_count &&
+         ReadValue(access, province_array,
+                   static_cast<std::size_t>(province_id) * sizeof(void *),
+                   province) &&
+         province != nullptr &&
+         ReadValue(access, province, kProvinceIdentityOffset, observed_id) &&
+         observed_id == province_id;
+}
+
+bool ReadCouncilPosition(
+    const CampaignRootNativeEnvironmentV1 &environment,
+    const CampaignRootAccessV1 &access, const ObservationV1 &root,
+    void *active_task,
+    game::CampaignRootCouncilPositionV1 &output) noexcept {
+  output = {};
+  void *task_type = nullptr;
+  void *position_type = nullptr;
+  const void *position_key_address = nullptr;
+  const void *task_key_address = nullptr;
+  std::int32_t incumbent_id = -1;
+  std::int32_t owner_id = -1;
+  std::int32_t task_type_raw = -1;
+  std::int32_t progress_kind_raw = -1;
+  std::uint8_t frozen_raw = 0;
+  if (!ReadValue(access, active_task, kActiveCouncilTaskTypeOffset,
+                 task_type) ||
+      task_type == nullptr ||
+      !ReadValue(access, task_type, kCouncilTaskTypePositionTypeOffset,
+                 position_type) ||
+      position_type == nullptr ||
+      !CheckedAddress(position_type, kCouncilPositionTypeKeyOffset,
+                      position_key_address) ||
+      !ReadNativeString(access, position_key_address, output.position_key) ||
+      !CheckedAddress(task_type, kCouncilTaskTypeKeyOffset,
+                      task_key_address) ||
+      !ReadNativeString(access, task_key_address,
+                        output.task_key.emplace()) ||
+      !ReadValue(access, active_task,
+                 kActiveCouncilTaskScopesOffset +
+                     kCouncilScopesIncumbentIdOffset,
+                 incumbent_id) ||
+      !ReadValue(access, active_task,
+                 kActiveCouncilTaskScopesOffset +
+                     kCouncilScopesOwnerIdOffset,
+                 owner_id) ||
+      incumbent_id <= 0 || owner_id != root.player_character_id ||
+      ResolveComponent(access, environment.character_storage_slot,
+                       environment.character_fallback_slot, incumbent_id,
+                       kCharacterIdentityOffset) == nullptr ||
+      ResolveComponent(access, environment.character_storage_slot,
+                       environment.character_fallback_slot, owner_id,
+                       kCharacterIdentityOffset) != root.player_character ||
+      !ReadValue(access, task_type, kCouncilTaskTypeKindOffset,
+                 task_type_raw) ||
+      task_type_raw < 0 || task_type_raw > 2 ||
+      !ReadValue(access, task_type, kCouncilTaskTypeProgressKindOffset,
+                 progress_kind_raw) ||
+      progress_kind_raw < 0 || progress_kind_raw > 2 ||
+      !ReadValue(access, active_task, kActiveCouncilTaskFrozenOffset,
+                 frozen_raw) ||
+      frozen_raw > 1) {
+    output = {};
+    return false;
+  }
+
+  output.incumbent_character_id = incumbent_id;
+  output.task_type =
+      static_cast<game::CampaignRootCouncilTaskTypeV1>(task_type_raw);
+  output.frozen = frozen_raw != 0;
+  if (*output.task_type == game::CampaignRootCouncilTaskTypeV1::county) {
+    std::uint16_t target_tag = 0;
+    std::int32_t province_id = -1;
+    if (!ReadValue(access, active_task,
+                   kActiveCouncilTaskScopesOffset +
+                       kCouncilScopesTargetTagOffset,
+                   target_tag) ||
+        target_tag != 8 ||
+        !ReadValue(access, active_task,
+                   kActiveCouncilTaskScopesOffset +
+                       kCouncilScopesTargetValueOffset,
+                   province_id) ||
+        !ResolveCouncilProvinceTarget(access, root, province_id)) {
+      output = {};
+      return false;
+    }
+    output.target = game::CampaignRootCouncilTargetV1{province_id,
+                                                       std::nullopt};
+  } else if (*output.task_type ==
+             game::CampaignRootCouncilTaskTypeV1::court) {
+    std::uint16_t target_tag = 0;
+    std::int32_t character_id = -1;
+    if (!ReadValue(access, active_task,
+                   kActiveCouncilTaskScopesOffset +
+                       kCouncilScopesTargetTagOffset,
+                   target_tag) ||
+        target_tag != 4 ||
+        !ReadValue(access, active_task,
+                   kActiveCouncilTaskScopesOffset +
+                       kCouncilScopesTargetValueOffset,
+                   character_id) ||
+        ResolveComponent(access, environment.character_storage_slot,
+                         environment.character_fallback_slot, character_id,
+                         kCharacterIdentityOffset) == nullptr) {
+      output = {};
+      return false;
+    }
+    output.target = game::CampaignRootCouncilTargetV1{std::nullopt,
+                                                       character_id};
+  }
+
+  game::CampaignRootCouncilProgressV1 progress{};
+  progress.kind = static_cast<game::CampaignRootCouncilProgressKindV1>(
+      progress_kind_raw);
+  if (progress.kind ==
+      game::CampaignRootCouncilProgressKindV1::percentage) {
+    std::int64_t current = 0;
+    if (!ReadValue(access, active_task, kActiveCouncilTaskProgressOffset,
+                   current) ||
+        current < 0 || current > kPercentageProgressMaximum) {
+      output = {};
+      return false;
+    }
+    progress.current = game::FixedPointValue{current, kFixedPointScale};
+    progress.maximum = game::FixedPointValue{kPercentageProgressMaximum,
+                                              kFixedPointScale};
+  } else if (progress.kind ==
+             game::CampaignRootCouncilProgressKindV1::value) {
+    const void *scope_address = nullptr;
+    std::int64_t current = 0;
+    std::int64_t maximum = 0;
+    if (!CheckedAddress(active_task, kActiveCouncilTaskScopesOffset,
+                        scope_address) ||
+        !InvokeCouncilValueProgress(
+            environment.council_value_progress_current, task_type,
+            const_cast<void *>(scope_address), current) ||
+        !InvokeCouncilValueProgress(
+            environment.council_value_progress_maximum, task_type,
+            const_cast<void *>(scope_address), maximum) ||
+        current < 0 || maximum <= 0 || current > maximum) {
+      output = {};
+      return false;
+    }
+    progress.current = game::FixedPointValue{current, kFixedPointScale};
+    progress.maximum = game::FixedPointValue{maximum, kFixedPointScale};
+  }
+  output.progress = progress;
+  return true;
+}
+
+bool ReadCouncil(const CampaignRootNativeEnvironmentV1 &environment,
+                 const CampaignRootAccessV1 &access, void *land_state,
+                 ObservationV1 &output) noexcept {
+  output.council = {};
+  output.council.coverage_key.assign(kCouncilCoverageKey);
+  output.council.owner_character_id = output.player_character_id;
+  output.council.auxiliary_vacancies_complete = false;
+  if (!CouncilScopeIsAdmitted(output)) {
+    output.council.status =
+        game::CampaignRootCouncilStatusV1::unavailable;
+    output.council.unavailable_reason =
+        "outside_standard_landed_non_nomadic_core_scope";
+    return true;
+  }
+  if (land_state == nullptr) {
+    return false;
+  }
+
+  void *active_task_ids = nullptr;
+  std::int32_t active_task_count = 0;
+  if (!ReadValue(access, land_state, kLandStateActiveCouncilTaskIdsOffset,
+                 active_task_ids) ||
+      !ReadValue(access, land_state, kLandStateActiveCouncilTaskCountOffset,
+                 active_task_count) ||
+      active_task_count < 0 ||
+      active_task_count > kMaximumActiveCouncilTasks ||
+      (active_task_count > 0 && active_task_ids == nullptr)) {
+    return false;
+  }
+  try {
+    output.council.positions.reserve(
+        static_cast<std::size_t>(active_task_count) +
+        kCoreCouncilPositionKeys.size());
+  } catch (...) {
+    return false;
+  }
+
+  for (std::int32_t index = 0; index < active_task_count; ++index) {
+    std::int32_t active_task_id = -1;
+    if (!ReadValue(access, active_task_ids,
+                   static_cast<std::size_t>(index) *
+                       sizeof(active_task_id),
+                   active_task_id)) {
+      return false;
+    }
+    void *active_task = ResolveComponent(
+        access, environment.active_council_task_storage_slot,
+        environment.active_council_task_fallback_slot, active_task_id,
+        kActiveCouncilTaskIdentityOffset);
+    game::CampaignRootCouncilPositionV1 position{};
+    if (active_task == nullptr ||
+        !ReadCouncilPosition(environment, access, output, active_task,
+                             position) ||
+        std::any_of(output.council.positions.begin(),
+                    output.council.positions.end(),
+                    [&position](const auto &existing) {
+                      return existing.position_key == position.position_key;
+                    })) {
+      return false;
+    }
+    try {
+      output.council.positions.push_back(std::move(position));
+    } catch (...) {
+      return false;
+    }
+  }
+
+  for (const auto core_key : kCoreCouncilPositionKeys) {
+    if (std::none_of(output.council.positions.begin(),
+                     output.council.positions.end(),
+                     [core_key](const auto &position) {
+                       return position.position_key == core_key;
+                     })) {
+      game::CampaignRootCouncilPositionV1 vacant{};
+      vacant.position_key.assign(core_key);
+      try {
+        output.council.positions.push_back(std::move(vacant));
+      } catch (...) {
+        return false;
+      }
+    }
+  }
+  std::sort(output.council.positions.begin(), output.council.positions.end(),
+            [](const auto &left, const auto &right) {
+              return Utf8BytewiseLess(left.position_key,
+                                      right.position_key);
+            });
+  if (std::adjacent_find(
+          output.council.positions.begin(), output.council.positions.end(),
+          [](const auto &left, const auto &right) {
+            return left.position_key == right.position_key;
+          }) != output.council.positions.end() ||
+      ResolveComponent(access, environment.character_storage_slot,
+                       environment.character_fallback_slot,
+                       output.player_character_id,
+                       kCharacterIdentityOffset) != output.player_character) {
+    return false;
+  }
+  output.council.status = game::CampaignRootCouncilStatusV1::available;
+  output.council.unavailable_reason.clear();
+  return true;
+}
+
 bool ReadSelectedRuleTokens(
     const CampaignRootNativeEnvironmentV1 &environment,
     const CampaignRootAccessV1 &access, ObservationV1 &output) noexcept {
@@ -1499,6 +1836,10 @@ bool ReadObservation(const CampaignRootNativeEnvironmentV1 &environment,
     failure = "government_flags_unavailable";
     return false;
   }
+  if (!ReadCouncil(environment, access, land_state, output)) {
+    failure = "council_unavailable";
+    return false;
+  }
   if (!ReadSelectedRuleTokens(environment, access, output)) {
     failure = "selected_game_rule_tokens_unavailable";
     return false;
@@ -1530,6 +1871,10 @@ CampaignRootNativeEnvironmentV1 BindCampaignRootNativeEnvironmentV1(
       module_base + kCampaignRootLandedTitleFallbackSlotRva);
   output.government_fallback_slot = reinterpret_cast<void **>(
       module_base + kCampaignRootGovernmentFallbackSlotRva);
+  output.active_council_task_storage_slot = reinterpret_cast<void **>(
+      module_base + kCampaignRootActiveCouncilTaskStorageSlotRva);
+  output.active_council_task_fallback_slot = reinterpret_cast<void **>(
+      module_base + kCampaignRootActiveCouncilTaskFallbackSlotRva);
   output.game_rule_selection_service_slot = reinterpret_cast<void **>(
       module_base + kCampaignRootGameRuleSelectionServiceSlotRva);
   output.game_rule_token_fallback_slot = reinterpret_cast<void **>(
@@ -1543,6 +1888,12 @@ CampaignRootNativeEnvironmentV1 BindCampaignRootNativeEnvironmentV1(
       module_base + kCampaignRootDomainSizeRva);
   output.domain_limit = reinterpret_cast<NativeCampaignRootCharacterInt32V1>(
       module_base + kCampaignRootDomainLimitRva);
+  output.council_value_progress_current = reinterpret_cast<
+      NativeCampaignRootCouncilValueProgressV1>(
+      module_base + kCampaignRootCouncilValueProgressCurrentRva);
+  output.council_value_progress_maximum = reinterpret_cast<
+      NativeCampaignRootCouncilValueProgressV1>(
+      module_base + kCampaignRootCouncilValueProgressMaximumRva);
   output.primary_title = reinterpret_cast<
       NativeCampaignRootCharacterResolverV1>(
       module_base + kCampaignRootPrimaryTitleRva);
@@ -1640,6 +1991,7 @@ game::ReadCampaignRootContextResultV1 ReadCampaignRootContextV1(
     output.player_domain_limit = first.player_domain_limit;
     output.player_targeting_faction_count =
         first.player_targeting_faction_count;
+    output.council = std::move(first.council);
     output.primary_title = std::move(first.primary_title);
     output.primary_title_succession_character_ids =
         std::move(first.primary_title_succession_character_ids);
@@ -1660,9 +2012,26 @@ game::ReadCampaignRootContextResultV1 ReadCampaignRootContextV1(
         std::move(first.selected_game_rule_tokens);
     output.native_selected_game_rule_token_count =
         first.native_selected_game_rule_token_count;
-    output.readiness = {true, true, true, true, true, true, true, true,
-                        true, true, true, true, true, true, true, true,
-                        true};
+    output.readiness.player_identity_ready = true;
+    output.readiness.player_monthly_gold_income_ready = true;
+    output.readiness.player_health_ready = true;
+    output.readiness.player_domain_ready = true;
+    output.readiness.player_targeting_factions_ready = true;
+    output.readiness.primary_title_ready = true;
+    output.readiness.primary_title_succession_ready = true;
+    output.readiness.held_title_partition_ready = true;
+    output.readiness.council_ready =
+        output.council->status ==
+        game::CampaignRootCouncilStatusV1::available;
+    output.readiness.capital_ready = true;
+    output.readiness.lieges_ready = true;
+    output.readiness.direct_landed_vassals_ready = true;
+    output.readiness.adjacent_external_province_holders_ready = true;
+    output.readiness.related_character_contexts_ready = true;
+    output.readiness.government_ready = true;
+    output.readiness.selected_game_rule_tokens_ready = true;
+    output.readiness.same_frame_ready = true;
+    output.readiness.ready = true;
     output.unavailable_reason.clear();
     return game::ReadCampaignRootContextResultV1::available;
   } catch (...) {

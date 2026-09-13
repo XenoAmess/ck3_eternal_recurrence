@@ -2,7 +2,7 @@
 
 ## 状态与施工范围
 
-- **[static-confirmed; implementation/live pending]** 本专题冻结 G2-M1 当前统治者内阁观测所需的最小字段、首个可落地 native 入口和仍未闭合的边。本包只使用 exact-build EXE、随游戏发布的原版 council 定义与 GUI reflection 调用点，没有启动 CK3，也没有修改 bridge、MCP 或 planner。
+- **[static-ready; live pending]** `campaign-root-context-v1` 已实现当前统治者内阁的只读 typed observation：动态枚举全部已物化 active position，并为标准 landed、非 nomadic 范围补齐五个核心席位的可证空缺。实现与 ABI 证据均绑定 exact-build；本包没有启动 CK3，production paused live 仍待既定 G2-M1 两场景验收。
 - 目标是把 `campaign-root-context-v1` 与 `xar.ck3.turn-bundle/v1` 中当前 unavailable 的 council 输入变成同一 paused frame 的 typed observation。它不实现任命、换任务、发展策略或其它内阁动作。
 - M1 首次 live gate 只要求当前封建统治者场景。游牧 kurultai、天朝 ministry 和 vizier 变体进入同一可扩展 schema，但不能由首个封建 fixture 冒充已经覆盖。
 - 宫廷司祭只作为 opaque council position/task 被观察。信仰、教义、教义条目、宗教热情、改宗和宗教改革继续遵守 owner-deferred 边界。
@@ -31,7 +31,7 @@
 | 游牧 | `councillor_kurultai_1` 至 `councillor_kurultai_4` | `government_is_nomadic` |
 | 天朝 ministry | `minister_personnel`、`minister_justice`、`minister_works`、`minister_grand_marshal` | `tgp_has_access_to_ministry_trigger` |
 
-因此不能把“内阁”硬编码成固定五席，也不能用 GUI 当前可见行数定义完整性。首个实现应冻结这 15 个 key 的 exact-build allowlist，再由 native active-position/task 状态判定本角色的 effective set。
+因此不能把“内阁”硬编码成固定五席，也不能用 GUI 当前可见行数定义完整性。当前 reader 从玩家 land-state 的动态 active-task 向量发布全部已物化 position key；五个核心 key 只用于补出该有效范围内的空缺行。未物化的 spouse、vizier、kurultai、ministry 或 modded 辅助席位空缺不宣称已完整覆盖。
 
 ### Task type 与 progress kind
 
@@ -70,156 +70,135 @@
 | registration `0x4E32B0..0x4E3428` | 377 | `084A2DC06E381D34C4C726EABD4FEFBE0942B9226AFA1BC6FC2B940459257BEB` |
 | registration `0x4E3430..0x4E35B4` | 389 | `9418521840D9B267426BDC69F731A2F8029E488AFAB4B90B9A37A4A7D176DFD8` |
 
-### ActiveCouncilTask 最小布局与进度
+### ActiveCouncilTask 动态集合与布局
 
-**[static-confirmed]** 当前已闭合的直接字段为：
+**[static-confirmed]** `0x2666CD0` 直接遍历 `CCharacter+0x1B8` land-state 的 `+0x230` ID 数据和 `+0x23C` 数量。每个元素是 full-generation `ActiveCouncilTaskID`，经 `module+0x570C778` storage 解引用并以对象 `+0x10` round-trip；失败 fallback 是 `module+0x570C6D8`。因此 production reader 无需调用 GUI，也无需冻结 15-key allowlist：动态向量就是该角色所有已物化 active position 的事实源。
 
-| 偏移 | 语义 | 证据边界 |
-|---:|---|---|
-| `+0x10` | full-generation ActiveCouncilTask ID | core 的对象 ID round-trip |
-| `+0x18` | `CouncilTaskType*` | progress getter 读取其 `+0x4C` progress-kind enum |
-| `+0x20` | 非 value 任务的 raw current progress | `GetProgressFloat` core |
-| `+0x35` | `IsFrozen` byte | `0x23BABA0` 直接读 byte |
-| `+0x38` | `CouncilTaskScopes` | value current/max evaluator 的 scope 参数 |
+| 对象 | 偏移 | 语义 |
+|---|---:|---|
+| land-state | `+0x230/+0x23C` | active-task ID data/count |
+| `ActiveCouncilTask` | `+0x10` | full-generation task ID |
+| `ActiveCouncilTask` | `+0x18` | `CouncilTaskType*` |
+| `ActiveCouncilTask` | `+0x20` | 非 value progress 的 raw current Q100000 |
+| `ActiveCouncilTask` | `+0x35` | frozen byte |
+| `ActiveCouncilTask` scopes | `+0x38/+0x3C` | incumbent / council-owner CharacterID |
+| `ActiveCouncilTask` scopes | `+0x40/+0x48` | typed target tag / full ID |
+| `CouncilTaskType` | `+0x18` | 稳定 authored task key，MSVC `std::string` |
+| `CouncilTaskType` | `+0x38` | `CouncilPositionType*` |
+| `CouncilTaskType` | `+0x40/+0x4C` | task-type / progress-kind enum |
+| `CouncilPositionType` | `+0x18` | 稳定 position key，MSVC `std::string` |
 
-`GetProgressFloat` 注册名位于 `0x4306F18`，callback `0x23BBE30` 到 core `0x23BAC10`；`GetProgressMaxFloat` 注册名位于 `0x4306E68`，callback `0x23BBE70` 到 core `0x23BAC50`。两个 UI float getter 都把 raw 值按 Q100000 缩放。percentage 的 max raw 为 `10,000,000`，即 `100 * Q100000`；value 的 current/max 分别调用 `0x2D650A0` / `0x2D65390`，并传入 `task+0x38` scopes。
+`ActiveCouncilTask.GetCouncillor` 的 registration `0x4CEDD0..0x4CEFBA` 到 wrapper `0x23BC2F0`，再到 leaf `0xA711F0`；leaf 直接读 `task+0x38`，wrapper 随后用 Character storage 做 generation 校验。`GetTaskType` registration `0x4CE820..0x4CEA0C` 到 thunk `0x23BC030` 和 leaf `0xAA2330`，leaf 直接返回 `task+0x18`。validator `0x23BA9D0` 又以 `taskType+0x18` 作为 authored key，并验证 `task+0x3C` 是 incumbent 的 immediate liege，也就是 council owner。
 
 | 精确切片 | 长度 | SHA-256 |
 |---|---:|---|
-| current core `0x23BAC10..0x23BAC4E` | 63 | `2227E60C4BCA908F5D4F46859C837CD1445CE50284A02C020E19E040F00225D6` |
-| max core `0x23BAC50..0x23BAC9E` | 79 | `AA79313B8F07F7E6652BC91EFD5D9B47B4A75B36B3A50508B2E812DD0D8282D0` |
+| dynamic scan `0x2666CD0..0x2666E0C` | 316 | `E386DB4C0D6E816CF72A82F44C61D3438BCC689C247DB59EF8D447178E5DDEBB` |
+| `GetCouncillor` registration `0x4CEDD0..0x4CEFBA` | 490 | `3B4B6420030E0294A3FC3691E47866A44E692A3F46AFA4BA3384241CE5EE8CEC` |
+| incumbent wrapper `0x23BC2F0..0x23BC352` | 98 | `25F0239708FE4ECCA45CC22AE1CCADA99510402E6CE0A2E217584B8C2D5B888A` |
+| incumbent leaf `0xA711F0..0xA711F9` | 9 | `1AF11F60D6173AAC65266C116B11C7F6E82FEC74F8AAC6974ADEBD657ABB0FD0` |
+| `GetTaskType` registration `0x4CE820..0x4CEA0C` | 492 | `C6C1FDCA12B5AC6E532B600F825B64446F9F5F3F87A904609A0632BE5A87947C` |
+| task-type thunk / leaf | 5 / 5 | `3683F137B736168AB28ECDB5BA1EF48071827BA55062056EA0580738D852F7B3` / `0C6B8858E139E1A255688DFC8B1FCA61C89CCEA689E8DA8BCD4276A9918F1DBE` |
+| owner/key validator `0x23BA9D0..0x23BABA0` | 464 | `B09B2952F63E29621504B4B3CC333AF2C20A5F9521D737052834A285D3654497` |
 
-`GetETA` callback 会返回 formatter/localization string，不适合作为 machine ABI。若以后需要 ETA，应从 typed raw progress 与已证 rate 计算，不能把本地化文本塞进状态合同。
+### Typed target 与 progress
+
+**[static-confirmed]** target core `0x23BA450` 按 `CouncilTaskType+0x40` 分支：`general=0` 无 target；`county=1` 要求 scope tag `8`，把 `task+0x48` 当 ProvinceID 并通过 `game_data+0x140/+0x14C` province array；`court=2` 要求 tag `4`，把 `task+0x48` 当 full-generation CharacterID 并经 Character storage round-trip。
+
+`GetProgressFloat` core `0x23BAC10` 与 `GetProgressMaxFloat` core `0x23BAC50` 证明 progress-kind enum 为 `infinite=0`、`percentage=1`、`value=2`。两个 UI getter 都按 Q100000 缩放；percentage 的 maximum raw 固定为 `10,000,000`。value current/max 调用只读 evaluator `0x2D650A0` / `0x2D65390`，参数为 `CouncilTaskType*`、调用者的 `int64` 输出和 `task+0x38` scopes。
+
+| 精确切片 | 长度 | SHA-256 |
+|---|---:|---|
+| county dispatch `0x23BA450..0x23BA4B4` | 100 | `D132CBD9FEC317C0FE88437D1AC1E232E90483CD3FF42FBAD1F08C4DDF9612DD` |
+| court target `0x23BA4C0..0x23BA514` | 84 | `A35A4A73FF93C7B818D433558AD2F288016575AC2B2E3398DC779B1A1A97FA7E` |
+| frozen leaf `0x23BABA0..0x23BABA5` | 5 | `F47DCC5FDF6BF192F97D4CF14EAA998DF0232935D7CB09617D8AC18A2AE90B29` |
+| current/max core | 63 / 79 | `2227E60C4BCA908F5D4F46859C837CD1445CE50284A02C020E19E040F00225D6` / `AA79313B8F07F7E6652BC91EFD5D9B47B4A75B36B3A50508B2E812DD0D8282D0` |
+| value current evaluator `0x2D650A0..0x2D65390` | 752 | `4A555E79AEC9F4A4448B66E618A05A15A851111D29D76D64420284B7DB44D60E` |
+| value max evaluator `0x2D65390..0x2D65683` | 755 | `D12BA93AA4CBFC6382DECBCA92B4BEED8CB02754CEE821D2B441A0320AF56ABF` |
+
+`GetETA` 返回 formatter/localization string，不进入 machine ABI。以后如需 ETA，应从 typed raw progress 与另行闭合的 rate 计算。
 
 ### GUI 只作 reflection 佐证
 
-**[static-confirmed]** 原版 `window_council.gui` 使用 `CouncilWindow.GetCouncillor(position_key)`、`GuiCouncilPosition.GetActiveCouncilTask`，随后读取 `ActiveCouncilTask.GetPositionType`、`GetCouncillor`、`GetTaskTypeOrDefault`、`GetTaskTarget`、`GetProgressFloat`、`GetProgressMaxFloat`、`GetETA` 和 `IsFrozen`。`shared/misc_components.gui` 还直接从 `GetPlayer.GetCouncillorPosition('councillor_court_chaplain')` 取得 active task。
-
-这些调用确认 surface 存在，但 GUI 的 `GetTaskTarget` 和 `GetETA` 都面向显示文本，不能当 typed identity。首个 native reader 不应实例化或依赖 `CouncilWindow`。
+**[static-confirmed]** 原版 `window_council.gui` 使用 `CouncilWindow.GetCouncillor(position_key)`、`GuiCouncilPosition.GetActiveCouncilTask`，随后读取 `GetCouncillor`、`GetTaskTypeOrDefault`、`GetTaskTarget`、progress 和 frozen。GUI 的 target/ETA 面向显示文本；production reader 不实例化 `CouncilWindow`，也不依赖画面、OCR 或焦点。
 
 ## 原版任务选择树
 
-下图来自 exact-build 原版 task 定义，描述 authored AI 数据的候选和权重语义。runtime scheduler、候选归一化与切换 cadence 尚未闭合，图中虚线分支保持 unknown。本包不设计 counter-policy。
+下图描述 exact-build authored AI 数据。runtime scheduler 与切换 cadence 仍是后续策略研究的 unknown，不阻塞当前只读 observation。
 
 ```mermaid
 flowchart TD
-    P[按 valid_position 判断席位有效] --> S[枚举 is_shown 且 valid 的 task]
-    S --> W[以 ai_will_do 形成 task 权重]
+    P[valid_position 判定有效席位] --> S[枚举 is_shown 且 valid 的 task]
+    S --> W[ai_will_do 形成 task 权重]
     W --> K{task type}
     K -->|general| G[无 target]
-    K -->|county| C[枚举 ai_county_target / county_target]
+    K -->|county| C[枚举 county target]
     K -->|court| R[枚举 court target]
-    C --> CS[ai_target_score > 0 的目标 weighted random]
-    R --> RS[ai_target_score > 0 的目标 weighted random]
+    C --> CS[ai_target_score 大于 0 后 weighted random]
+    R --> RS[ai_target_score 大于 0 后 weighted random]
     G --> A[选择 active task]
     CS --> A
     RS --> A
     S -->|无合法候选| D[default general / infinite]
-    H[当前 active task 可获得 authored hysteresis 加权] --> W
-    A -. runtime scheduler / cadence unknown .-> T[写入 ActiveCouncilTask]
-    D -. runtime fallback materialization unknown .-> T
+    A -. scheduler/cadence unknown .-> T[写入 ActiveCouncilTask]
+    D -. fallback materialization unknown .-> T
 ```
 
-## 推荐的 native 数据流
+## 已实现的 native 数据流
 
 ```mermaid
 flowchart LR
-    C[campaign-root CCharacter*] --> Q[0x23F7800 character + position key]
-    Q --> DB[compiled position database]
-    DB --> I[0x2666CD0 full ActiveCouncilTask ID]
-    I --> ST[storage module+0x570C778]
+    C[campaign-root CCharacter] --> LS[land-state +0x230/+0x23C]
+    LS --> I[full ActiveCouncilTaskID vector]
+    I --> ST[storage + generation round-trip]
     ST --> A[ActiveCouncilTask]
-    A --> TY[+0x18 task type / progress kind]
-    A --> FR[+0x35 frozen]
-    A --> SC[+0x38 scopes]
-    A -. incumbent resolver unknown .-> CH[CharacterID]
-    TY -. stable task-key reverse mapping unknown .-> TK[task key]
-    SC -. typed target decode unknown .-> TG[ProvinceID / CharacterID]
-    TY --> PR[raw progress current / max]
-    CH --> DS[same paused-frame double sample]
+    A --> PT[position key]
+    A --> CH[incumbent CharacterID]
+    A --> TK[authored task key/type]
+    A --> TG[typed target]
+    A --> PR[typed raw progress + frozen]
+    PT --> DS[same paused-frame double sample]
+    CH --> DS
     TK --> DS
     TG --> DS
     PR --> DS
-    FR --> DS
     DS --> CR[campaign-root council component]
     CR --> TB[turn bundle realm_state.council]
 ```
 
-## 最小 schema 建议
+## 已实现合同与诚实边界
 
-`campaign-root-context-v1` 增加一个 `council` component，并沿用 application-main paused、同 public/native revision、同 snapshot/date 的两次相同采样事务。turn bundle 只投影这一份事实源，不另建第二个 council RPC。
+`campaign-root-context-v1` 现在发布：`status`、`coverage_key`、owner、按 unsigned UTF-8 byte order 排序的 positions、`auxiliary_vacancies_complete` 与 typed unavailable reason。每个 occupied row 发布 incumbent、task key/type、typed target、frozen 和 typed progress；vacant row 的这些字段全部为 `null`。
 
-```json
-{
-  "council": {
-    "status": "available",
-    "owner_character_id": 123,
-    "positions": [
-      {
-        "position_key": "councillor_steward",
-        "incumbent_character_id": 456,
-        "task_key": "task_develop_county",
-        "task_type": "county",
-        "target": {
-          "status": "available",
-          "kind": "province",
-          "province_id": 789
-        },
-        "frozen": false,
-        "progress": {
-          "status": "available",
-          "kind": "value",
-          "current_raw_q100000": 4200000,
-          "max_raw_q100000": 10000000
-        }
-      }
-    ]
-  }
-}
-```
+- 在 `standard_landed_non_nomadic_core_v1` 范围内，动态向量的全部已物化辅助席位都会发布；五个标准核心席位若未物化，则补成可证空缺行。
+- `auxiliary_vacancies_complete=false` 是固定诚实边界：当前实现无法由动态向量证明未物化的 spouse、vizier、ministry、modded 辅助席位是空缺还是不适用。
+- landless adventurer、nomadic 或无 primary landed title 时，council component 返回 `outside_standard_landed_non_nomadic_core_scope`，`council_ready=false`；其余 campaign-root 字段仍可 available，顶层 `readiness.ready` 不被这个范围外组件拖成 false。
+- 任一 active-task generation mismatch、重复 position key、owner 不符、task/target 类型不符、非法 target identity、结构读取失败或双样本漂移都会让完整 campaign-root 返回 typed unavailable；不发布部分旧值。
+- `general` target 为 `null`；`infinite` current/maximum 为 `null`；county target 发布 ProvinceID，court target 发布 CharacterID。
+- `GetETA`、GUI tooltip、main skill、powerful-vassal 标志不进入 M1 最小合同。
 
-合同规则：
-
-- 席位合法但空缺时仍保留 position row，`incumbent_character_id=null`；非法席位不能伪装成空缺。
-- `general` task 的 target 为 `not_applicable`；`infinite` progress 的 current/max 为 `not_applicable`。
-- `county` target 至少发布带 generation 校验的 `ProvinceID`；需要 county title 时可后续加 `county_title_id`，不能用显示名替代。
-- `court` target 发布带 generation 校验的 `CharacterID`。
-- position row 按 position key 的 unsigned UTF-8 byte order 排序；不要使用会随 government 和 UI layout 改变的屏幕顺序。
-- 任一 required row 发生非法 ID、重复 key、task type 与 target kind 不符、首尾样本漂移或结构读取失败，整个 council component 返回 typed unavailable。不得用部分旧值补齐。
-- `GetETA` 文本、GUI tooltip、main skill、powerful-vassal 标志均不进入 M1 最小合同。main skill 属于后续效果评估，powerful-vassal 属于治理/派系响应。
-
-turn bundle 的 `realm_state.council` 应原样投影该 component。只有同时满足下列条件，`readiness.realm_council_ready` 才能变为 `true`：
-
-1. council owner 与 played character 相同；
-2. exact active-position set 中每个 effective seat 恰好出现一次；
-3. 每行都有稳定 position key、incumbent 或已证空缺、稳定 task key/type、frozen，以及适用时的 typed target 和 typed progress；
-4. 所有非空 CharacterID / ProvinceID 完成 full-generation round-trip；
-5. 同一 paused frame 的两次采样逐字段相同。
-
-首个 current-feudal live gate 应至少覆盖常规五席，以及该角色实际有效的 spouse 或 vizier row；它不把 nomad/ministry/vizier 未出现分支标成 live-complete。
+聚焦 native fixture 已覆盖动态辅助 position、两个核心空缺、general/infinite、county/value、court/percentage，以及 target tag mismatch、ActiveCouncilTask generation mismatch 与 value-progress 双样本漂移。
 
 ## 仍需闭合的边
 
 | 状态 | 缺口 | 下一项精确工作 |
 |---|---|---|
-| **[unknown]** | incumbent resolver / offset | 从 ActiveCouncilTask 对应的 `GetCouncillor` registration 隔离 leaf；同名 reflection 在多类上注册，不能直接选第一个 xref |
-| **[unknown]** | `CouncilTaskType*` 到稳定 task key | 闭合 `GetTaskTypeOrDefault` 或 task database 的 pointer-to-key 反查，不发布地址或本地化名 |
-| **[unknown]** | county/court typed target scope 布局 | 按 task type 分支解码 scopes，并对 ProvinceID / CharacterID 做 generation round-trip；不用 `GetTaskTarget` 显示字符串 |
-| **[unknown]** | legal vacant 与 invalid-government position 的 fallback 差异 | 先静态闭合 `0x23F7800` caller/fallback 语义；仍不充分时才在一次既定 M1 paused fixture 中对照 |
-| **[unknown]** | runtime scheduler/cadence | 只影响后续 counter-policy，不阻塞首个只读 snapshot；保留在原生树虚线分支 |
-| **[live pending]** | feudal effective-seat completeness | 在既定两场景 M1 live 中做一次有界 paused query，不安排专用长跑 |
-| **[live pending]** | nomad/ministry/vizier variants | 后续各自独立 fixture；不能由 feudal scene 推断 |
+| **[live pending]** | current-feudal 实机值与原版 panel 对照 | 只在既定 G2-M1 两场景做一次 paused query；不为 council 单独长跑 |
+| **[live pending]** | dynamic auxiliary occupied row | 若既定场景自然存在 spouse/vizier/ministry occupied row，一并核对；缺失不阻断首个五核心 gate |
+| **[static/live pending]** | auxiliary vacancy completeness | 后续按具体 government 冻结 effective-position 原生集合；在此之前保持 `auxiliary_vacancies_complete=false` |
+| **[unknown]** | runtime scheduler/cadence | 仅影响后续任务切换 counter-policy；继续保留在原生树虚线分支 |
+| **[owner-deferred]** | 通用宗教内阁策略 | 宫廷司祭当前只作 opaque position/task；不借此扩展 faith/doctrine 树 |
 
-## 最小实施与验收顺序
+`task_develop_county` 现在解锁“当前 steward 在何处发展、进度多少”的可见输入。是否切换任务、如何挑县和何时换人仍需先闭合 scheduler/候选行为，再设计 counter-policy。
 
-1. 在现有 campaign-root mailbox 内增加 `CouncilSnapshotV1`，使用冻结的 15-key allowlist 和 `0x23F7800`，不创建新 service/RPC。
-2. 静态闭合 effective-seat / fallback 语义、incumbent resolver、stable task-key reverse mapping，以及 general/county/court 三种 typed target。
-3. 复用已有 CharacterID / ProvinceID generation 校验；增加 frozen 与 Q100000 raw progress；做同帧 double sample。
-4. Python contract 先发布 campaign-root council，再让 turn bundle 原样投影；未全部闭合前继续 `realm_council_ready=false`。
-5. 聚焦 fixture 只覆盖：一个常规封建已填充 council、一个空缺席位、一个 general/infinite、一个 county/value；失败例覆盖 generation mismatch、重复 position、target-type mismatch 与 sample drift。
-6. 在已经要求的 M1 两场景 live 中做一次 paused 读取。原版 panel 只供人工对照，native typed row 才是验收事实；不为单字段另跑长期 campaign。
+## 实现与静态验收
 
-`task_develop_county` 解锁的是“知道当前 steward 正在何处发展、进度多少”的可见价值。是否应切换到该任务、如何挑县和何时换人仍需在本专题原生 runtime tree 继续闭合后再设计策略。
+原生实现位于 `campaign_root_context_v1.hpp/.cpp` 与 serializer；exact-build 布局、RVA 和逐切片 SHA-256 冻结在 `native_bridge/research/campaign_root_context_v1_abi.json`，source contract 位于对应 `research/fixtures/`。2026-09-13 使用既有 MSVC x64 Release 构建完成以下有界验证：
+
+- `xar_ck3_campaign_root_context_v1_test.exe`：GREEN，覆盖 reader、serializer、动态/空缺 position、typed target/progress、generation failure 和 same-frame drift；
+- `xar_ck3_campaign_root_context_v1_source_contract_test.exe`：GREEN，确认 compiled binding、只读源码边界、ABI 与 fixture 字段一致；
+- `xar_ck3_bridge.dll`：Release 增量编译及链接成功。
+
+这些结果把能力提升到 `static-ready`，不能替代 production paused live artifact。
 
 ## 静态证据账本
 

@@ -86,12 +86,12 @@
   派系 identity/type/power/discontent/deadline 仍未发布。
 - [static-ready, live pending] [turn-bundle-v1.md](turn-bundle-v1.md) 发布 `ck3_query_turn_bundle_v1`，把一个缓存 state snapshot 与一次
   同绑定 campaign-root query 聚合为 ruler/realm/succession/pending/war/alerts 六域；最低三域警报、收入资源门与 domain capacity
-  与目标派系最低警报已可用，健康分档、低健康告警和逐头衔 partition 也已有真实 native 输入；council 保持 typed unavailable，
-  因此完整 readiness 仍为 false。
-- [static-confirmed; implementation/live pending] [council-and-development.md](council-and-development.md) 冻结 exact-build
-  `CCharacter* + position_key -> ActiveCouncilTask` 的首个读取入口、15-key position vocabulary、task type/progress 语义与最小
-  campaign-root/turn-bundle schema；任职者、稳定 task key、typed target 和 effective-seat fallback 仍明确为 unknown，未闭合前
-  `realm_council_ready` 保持 false。首个 live 只进入既定 M1 封建两场景验收，不安排专用长跑。
+  与目标派系最低警报已可用，健康分档、逐头衔 partition 和 typed council 也已有真实 native 输入；当前场景所有组件具备观测时
+  bundle 才为 `available/ready=true`，可选 snapshot 面缺失或 council 超出已声明范围时仍诚实保持 `partial`。
+- [static-ready; public projection/live pending] [council-and-development.md](council-and-development.md) 已把 exact-build
+  land-state 动态 active-task 向量、任职者与 owner、稳定 position/task key、general/county/court typed target、三类 progress 和 frozen
+  接入 campaign-root native 双采样。全部已物化辅助席位都会发布，五个标准 landed 非 nomadic 核心席位可补出空缺；辅助席位空缺
+  仍明确标记不完整。首个 live 只进入既定 M1 两场景验收，不安排专用长跑。
 - [static-confirmed + production-live] [loaded-feature-manifest.md](loaded-feature-manifest.md) 区分当前进程 effective gameplay feature
   bitset、script-visible `has_dlc` runtime set 与独立 store entitlement service；冻结完整 44-entry feature vocabulary、三套
   exact-build registry/service RVA与 typed wire。bridge/MCP 已在真实 paused frame 双查询完成 44 rows/29 runtime keys，artifact

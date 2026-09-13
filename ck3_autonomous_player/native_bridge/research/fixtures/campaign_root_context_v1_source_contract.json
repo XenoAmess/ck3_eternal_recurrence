@@ -26,6 +26,7 @@
     "player_domain_size",
     "player_domain_limit",
     "player_targeting_faction_count",
+    "council",
     "primary_title",
     "primary_title_succession_character_ids",
     "held_title_partition",
@@ -57,6 +58,7 @@
     "primary_title_unavailable",
     "primary_title_succession_unavailable",
     "held_title_partition_unavailable",
+    "council_unavailable",
     "capital_unavailable",
     "lieges_unavailable",
     "direct_landed_vassals_unavailable",
@@ -119,6 +121,42 @@
     "0x284"
   ],
   "held_title_partition_all_or_nothing": true,
+  "council_coverage_key": "standard_landed_non_nomadic_core_v1",
+  "council_scope": "primary_landed_title_and_not_landless_adventurer_or_nomadic",
+  "council_active_task_list_offsets": [
+    "0x230",
+    "0x23C"
+  ],
+  "council_active_task_storage_slot_rva": "0x570C778",
+  "council_active_task_fallback_slot_rva": "0x570C6D8",
+  "council_active_task_identity_offset": "0x10",
+  "council_task_type_offset": "0x18",
+  "council_task_key_offset": "0x18",
+  "council_position_type_offset": "0x38",
+  "council_position_key_offset": "0x18",
+  "council_progress_offset": "0x20",
+  "council_frozen_offset": "0x35",
+  "council_scopes_offset": "0x38",
+  "council_target_tags": {
+    "county_province": 8,
+    "court_character": 4
+  },
+  "council_value_progress_functions": [
+    "0x2D650A0",
+    "0x2D65390"
+  ],
+  "council_core_vacancy_rows": [
+    "councillor_chancellor",
+    "councillor_steward",
+    "councillor_marshal",
+    "councillor_spymaster",
+    "councillor_court_chaplain"
+  ],
+  "council_all_materialized_positions_published": true,
+  "council_auxiliary_vacancies_complete": false,
+  "council_outside_scope_is_component_unavailable": true,
+  "council_outside_scope_preserves_root_ready": true,
+  "council_same_frame": "complete_component_two_sample_equality",
   "player_monthly_gold_income_scale": 100000,
   "player_health_scale": 100000,
   "player_health_rva": "0x2619AD0",

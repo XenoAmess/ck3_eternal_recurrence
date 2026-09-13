@@ -407,6 +407,21 @@ def build_turn_bundle_v1(
             "threatened": faction_threat,
         },
     )
+    council = root.get("council")
+    if not isinstance(council, dict):
+        raise ValueError("campaign-root council is malformed")
+    council_status = council.get("status")
+    if council_status == "available":
+        council_component = _component("available", council)
+        council_ready = True
+    elif council_status == "unavailable":
+        council_reason = council.get("unavailable_reason")
+        if not isinstance(council_reason, str) or not council_reason:
+            raise ValueError("unavailable council lacks a reason")
+        council_component = _component("unavailable", reason=council_reason)
+        council_ready = False
+    else:
+        raise ValueError("campaign-root council status is malformed")
     realm_state = {
         "top_liege_character_id": _positive_int(
             root.get("top_liege_character_id"), "top_liege_character_id"
@@ -418,9 +433,7 @@ def build_turn_bundle_v1(
         ),
         "adjacent_holder_top_liege_character_ids": adjacent_top_lieges,
         "domain": domain,
-        "council": _component(
-            "unavailable", reason="realm_council_observation_not_implemented"
-        ),
+        "council": council_component,
         "faction_alert": faction_alert,
     }
     if not isinstance(realm_state["independent"], bool):
@@ -568,21 +581,21 @@ def build_turn_bundle_v1(
         "ruler_resources_ready": gold_ready and income_ready,
         "realm_relationship_alerts_ready": True,
         "realm_domain_ready": True,
-        "realm_council_ready": False,
+        "realm_council_ready": council_ready,
         "realm_faction_alert_ready": True,
         "succession_primary_title_alert_ready": True,
         "succession_partition_ready": True,
         "event_pending_ready": pending_ready,
         "war_summary_ready": war_ready,
         "minimum_alerts_ready": True,
-        "ready": False,
     }
+    readiness["ready"] = all(readiness.values())
     assert not readiness["ruler_resources_ready"] or (
         gold_ready and income_ready
     )
     return {
         "schema": TURN_BUNDLE_V1_SCHEMA,
-        "status": "partial",
+        "status": "available" if readiness["ready"] else "partial",
         "binding": copy.deepcopy(result["binding"]),
         "ruler_state": _component("available", ruler_state),
         "realm_state": _component("available", realm_state),

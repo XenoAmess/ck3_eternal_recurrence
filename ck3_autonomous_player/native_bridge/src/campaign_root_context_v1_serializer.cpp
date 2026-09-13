@@ -68,6 +68,32 @@ bool ReadinessAll(const game::CampaignRootReadinessV1 &value,
          value.same_frame_ready == expected && value.ready == expected;
 }
 
+std::string_view CouncilTaskTypeKey(
+    game::CampaignRootCouncilTaskTypeV1 value) noexcept {
+  switch (value) {
+  case game::CampaignRootCouncilTaskTypeV1::general:
+    return "general";
+  case game::CampaignRootCouncilTaskTypeV1::county:
+    return "county";
+  case game::CampaignRootCouncilTaskTypeV1::court:
+    return "court";
+  }
+  return {};
+}
+
+std::string_view CouncilProgressKindKey(
+    game::CampaignRootCouncilProgressKindV1 value) noexcept {
+  switch (value) {
+  case game::CampaignRootCouncilProgressKindV1::infinite:
+    return "infinite";
+  case game::CampaignRootCouncilProgressKindV1::percentage:
+    return "percentage";
+  case game::CampaignRootCouncilProgressKindV1::value:
+    return "value";
+  }
+  return {};
+}
+
 std::string_view TierKey(std::int32_t raw) noexcept {
   switch (raw) {
   case 1:
@@ -88,7 +114,7 @@ std::string_view TierKey(std::int32_t raw) noexcept {
 }
 
 bool ValidUnavailableReason(std::string_view reason) noexcept {
-  constexpr std::array<std::string_view, 22> reasons = {
+  constexpr std::array<std::string_view, 23> reasons = {
       "unsupported_build",
       "requires_application_main",
       "requires_paused",
@@ -108,6 +134,7 @@ bool ValidUnavailableReason(std::string_view reason) noexcept {
       "adjacent_external_province_holders_unavailable",
       "related_character_contexts_unavailable",
       "government_flags_unavailable",
+      "council_unavailable",
       "selected_game_rule_tokens_unavailable",
       "state_changed",
       "internal_error",
@@ -193,6 +220,107 @@ bool ValidHeldTitlePartition(
   return primary_count == 1;
 }
 
+bool ValidCouncilProgress(
+    const game::CampaignRootCouncilProgressV1 &progress) noexcept {
+  const auto kind = CouncilProgressKindKey(progress.kind);
+  if (kind.empty()) {
+    return false;
+  }
+  if (progress.kind ==
+      game::CampaignRootCouncilProgressKindV1::infinite) {
+    return !progress.current.has_value() && !progress.maximum.has_value();
+  }
+  return progress.current.has_value() && progress.maximum.has_value() &&
+         progress.current->scale == 100'000 &&
+         progress.maximum->scale == 100'000 &&
+         progress.current->raw >= 0 && progress.maximum->raw > 0 &&
+         progress.current->raw <= progress.maximum->raw &&
+         (progress.kind !=
+              game::CampaignRootCouncilProgressKindV1::percentage ||
+          progress.maximum->raw == 10'000'000);
+}
+
+bool ValidCouncil(const game::CampaignRootCouncilV1 &council,
+                  std::int32_t player_character_id) noexcept {
+  constexpr std::array<std::string_view, 5> core_keys{
+      "councillor_chancellor", "councillor_steward",
+      "councillor_marshal", "councillor_spymaster",
+      "councillor_court_chaplain"};
+  if (council.coverage_key != "standard_landed_non_nomadic_core_v1" ||
+      council.owner_character_id != player_character_id ||
+      council.auxiliary_vacancies_complete) {
+    return false;
+  }
+  if (council.status == game::CampaignRootCouncilStatusV1::unavailable) {
+    return council.positions.empty() &&
+           council.unavailable_reason ==
+               "outside_standard_landed_non_nomadic_core_scope";
+  }
+  if (council.status != game::CampaignRootCouncilStatusV1::available ||
+      !council.unavailable_reason.empty() ||
+      council.positions.size() < core_keys.size() ||
+      !std::is_sorted(council.positions.begin(), council.positions.end(),
+                      [](const auto &left, const auto &right) {
+                        return Utf8BytewiseLess(left.position_key,
+                                                right.position_key);
+                      })) {
+    return false;
+  }
+  std::string_view previous;
+  for (const auto &position : council.positions) {
+    if (!ValidToken(position.position_key) ||
+        (!previous.empty() && previous == position.position_key)) {
+      return false;
+    }
+    previous = position.position_key;
+    const bool vacant = !position.incumbent_character_id.has_value();
+    if (vacant) {
+      if (position.task_key.has_value() || position.task_type.has_value() ||
+          position.target.has_value() || position.frozen.has_value() ||
+          position.progress.has_value()) {
+        return false;
+      }
+      continue;
+    }
+    if (*position.incumbent_character_id <= 0 ||
+        !position.task_key.has_value() ||
+        !ValidToken(*position.task_key) ||
+        !position.task_type.has_value() ||
+        CouncilTaskTypeKey(*position.task_type).empty() ||
+        !position.frozen.has_value() || !position.progress.has_value() ||
+        !ValidCouncilProgress(*position.progress)) {
+      return false;
+    }
+    if (*position.task_type ==
+        game::CampaignRootCouncilTaskTypeV1::general) {
+      if (position.target.has_value()) {
+        return false;
+      }
+    } else if (!position.target.has_value() ||
+               (*position.task_type ==
+                    game::CampaignRootCouncilTaskTypeV1::county &&
+                (!position.target->province_id.has_value() ||
+                 *position.target->province_id <= 0 ||
+                 position.target->character_id.has_value())) ||
+               (*position.task_type ==
+                    game::CampaignRootCouncilTaskTypeV1::court &&
+                (!position.target->character_id.has_value() ||
+                 *position.target->character_id <= 0 ||
+                 position.target->province_id.has_value()))) {
+      return false;
+    }
+  }
+  return std::all_of(core_keys.begin(), core_keys.end(),
+                     [&council](std::string_view key) {
+                       return std::count_if(
+                                  council.positions.begin(),
+                                  council.positions.end(),
+                                  [key](const auto &position) {
+                                    return position.position_key == key;
+                                  }) == 1;
+                     });
+}
+
 bool ValidRelatedCharacters(
     const std::vector<game::CampaignRootRelatedCharacterV1> &values,
     std::int32_t player_character_id,
@@ -260,6 +388,7 @@ bool ValidAvailable(const game::CampaignRootContextV1 &context) noexcept {
       *context.player_domain_limit < 1 ||
       !context.player_targeting_faction_count.has_value() ||
       *context.player_targeting_faction_count < 0 ||
+      !context.council.has_value() ||
       !context.top_liege_character_id.has_value() ||
       *context.top_liege_character_id <= 0 ||
       !context.independent.has_value() ||
@@ -275,6 +404,7 @@ bool ValidAvailable(const game::CampaignRootContextV1 &context) noexcept {
                                context.primary_title,
                                context.primary_title_succession_character_ids,
                                *context.player_character_id) ||
+      !ValidCouncil(*context.council, *context.player_character_id) ||
       !ValidCharacterIds(context.direct_landed_vassal_character_ids,
                          *context.player_character_id) ||
       !ValidCharacterIds(
@@ -296,6 +426,11 @@ bool ValidAvailable(const game::CampaignRootContextV1 &context) noexcept {
           context.adjacent_external_province_holder_character_ids) ||
       !ReadinessAll(context.readiness, true) ||
       !context.unavailable_reason.empty()) {
+    return false;
+  }
+  if (context.readiness.council_ready !=
+      (context.council->status ==
+       game::CampaignRootCouncilStatusV1::available)) {
     return false;
   }
   if (context.primary_title.has_value()) {
@@ -348,6 +483,7 @@ bool ValidUnavailable(const game::CampaignRootContextV1 &context) noexcept {
          !context.player_domain_size.has_value() &&
          !context.player_domain_limit.has_value() &&
          !context.player_targeting_faction_count.has_value() &&
+         !context.council.has_value() &&
          !context.primary_title.has_value() &&
          context.primary_title_succession_character_ids.empty() &&
          context.held_title_partition.empty() &&
@@ -360,6 +496,7 @@ bool ValidUnavailable(const game::CampaignRootContextV1 &context) noexcept {
          context.related_character_contexts.empty() &&
          context.selected_game_rule_tokens.empty() &&
          context.native_selected_game_rule_token_count == 0 &&
+         !context.readiness.council_ready &&
          ReadinessAll(context.readiness, false) &&
          ValidUnavailableReason(context.unavailable_reason);
 }
@@ -451,6 +588,107 @@ bool AppendRelatedCharacters(
   return true;
 }
 
+bool AppendFixedPoint(std::string &output,
+                      const std::optional<game::FixedPointValue> &value) {
+  if (!value.has_value()) {
+    output += "null";
+    return true;
+  }
+  output += "{\"raw\":";
+  if (!AppendNumber(output, value->raw)) {
+    return false;
+  }
+  output += ",\"scale\":";
+  if (!AppendNumber(output, value->scale)) {
+    return false;
+  }
+  output.push_back('}');
+  return true;
+}
+
+bool AppendCouncil(std::string &output,
+                   const game::CampaignRootCouncilV1 &council) {
+  output += "{\"status\":\"";
+  output += council.status == game::CampaignRootCouncilStatusV1::available
+                ? "available"
+                : "unavailable";
+  output += "\",\"coverage_key\":";
+  AppendJsonString(output, council.coverage_key);
+  output += ",\"owner_character_id\":";
+  if (!AppendNumber(output, council.owner_character_id)) {
+    return false;
+  }
+  output += ",\"positions\":[";
+  for (std::size_t index = 0; index < council.positions.size(); ++index) {
+    const auto &position = council.positions[index];
+    if (index != 0) {
+      output.push_back(',');
+    }
+    output += "{\"position_key\":";
+    AppendJsonString(output, position.position_key);
+    output += ",\"incumbent_character_id\":";
+    AppendOptionalInt32(output, position.incumbent_character_id);
+    output += ",\"task_key\":";
+    if (position.task_key.has_value()) {
+      AppendJsonString(output, *position.task_key);
+    } else {
+      output += "null";
+    }
+    output += ",\"task_type\":";
+    if (position.task_type.has_value()) {
+      AppendJsonString(output, CouncilTaskTypeKey(*position.task_type));
+    } else {
+      output += "null";
+    }
+    output += ",\"target\":";
+    if (!position.target.has_value()) {
+      output += "null";
+    } else if (position.target->province_id.has_value()) {
+      output += "{\"kind\":\"province\",\"province_id\":";
+      if (!AppendNumber(output, *position.target->province_id)) {
+        return false;
+      }
+      output.push_back('}');
+    } else {
+      output += "{\"kind\":\"character\",\"character_id\":";
+      if (!AppendNumber(output, *position.target->character_id)) {
+        return false;
+      }
+      output.push_back('}');
+    }
+    output += ",\"frozen\":";
+    AppendOptionalBool(output, position.frozen);
+    output += ",\"progress\":";
+    if (!position.progress.has_value()) {
+      output += "null";
+    } else {
+      output += "{\"kind\":";
+      AppendJsonString(output,
+                       CouncilProgressKindKey(position.progress->kind));
+      output += ",\"current\":";
+      if (!AppendFixedPoint(output, position.progress->current)) {
+        return false;
+      }
+      output += ",\"maximum\":";
+      if (!AppendFixedPoint(output, position.progress->maximum)) {
+        return false;
+      }
+      output.push_back('}');
+    }
+    output.push_back('}');
+  }
+  output += "],\"auxiliary_vacancies_complete\":";
+  output += council.auxiliary_vacancies_complete ? "true" : "false";
+  output += ",\"unavailable_reason\":";
+  if (council.unavailable_reason.empty()) {
+    output += "null";
+  } else {
+    AppendJsonString(output, council.unavailable_reason);
+  }
+  output.push_back('}');
+  return true;
+}
+
 void AppendReadiness(std::string &output,
                      const game::CampaignRootReadinessV1 &value) {
   output += "{\"player_identity_ready\":";
@@ -469,6 +707,8 @@ void AppendReadiness(std::string &output,
   output += value.primary_title_succession_ready ? "true" : "false";
   output += ",\"held_title_partition_ready\":";
   output += value.held_title_partition_ready ? "true" : "false";
+  output += ",\"council_ready\":";
+  output += value.council_ready ? "true" : "false";
   output += ",\"capital_ready\":";
   output += value.capital_ready ? "true" : "false";
   output += ",\"lieges_ready\":";
@@ -502,6 +742,11 @@ void AppendProvenance(std::string &output) {
   output += "\"domain_size_rva\":\"0x260BA50\",";
   output += "\"domain_limit_rva\":\"0x260BA20\",";
   output += "\"has_targeting_faction_trigger_rva\":\"0x283FAE0\",";
+  output += "\"council_position_lookup_rva\":\"0x23F7800\",";
+  output += "\"council_active_task_ids_enumerator_rva\":\"0x2666CD0\",";
+  output += "\"council_active_task_storage_slot_rva\":\"0x570C778\",";
+  output += "\"council_value_progress_current_rva\":\"0x2D650A0\",";
+  output += "\"council_value_progress_maximum_rva\":\"0x2D65390\",";
   output += "\"primary_title_rva\":\"0x25F3350\",";
   output += "\"held_title_ids_offset\":\"0x1E0\",";
   output += "\"capital_province_rva\":\"0x2606760\",";
@@ -576,6 +821,12 @@ std::string SerializeCampaignRootContextV1(
   AppendOptionalInt32(output, context.player_domain_limit);
   output += ",\"player_targeting_faction_count\":";
   AppendOptionalInt32(output, context.player_targeting_faction_count);
+  output += ",\"council\":";
+  if (!context.council.has_value()) {
+    output += "null";
+  } else if (!AppendCouncil(output, *context.council)) {
+    return {};
+  }
   output += ",\"primary_title\":";
   if (!context.primary_title.has_value()) {
     output += "null";

@@ -1319,3 +1319,18 @@ strategic-power primitive；余下入口只有 policy-level campaign dominance�
   `42/42` are GREEN. Status is `static-ready / live=false`; this field joins the
   existing bounded shared campaign-root live read. M1 now lacks council plus
   that shared live acceptance, so global G2 remains `0/8`.
+
+## 2026-09-13: G2-M1 typed council observation
+
+- The exact-build reader consumes the land-state active-task ID vector and
+  publishes every materialized council position with generation-validated
+  incumbent/owner identities, stable task and position keys, typed targets,
+  frozen state and typed progress. Five standard landed, non-nomadic core
+  positions are complete; auxiliary vacancies remain explicitly incomplete.
+- The campaign-root contract and turn bundle preserve the component. Supported
+  scenes can make `realm_council_ready=true`; out-of-scope landless or nomadic
+  scenes keep the root available while the component is typed unavailable.
+- Native Release reader/serializer and source-contract fixtures are GREEN, the
+  bridge DLL links, and Python normal/optimized `47/47` are GREEN. Status is
+  `static-ready / live=false`; M1 now lacks only its existing bounded two-scene
+  paused live gate, and global G2 remains `0/8`.

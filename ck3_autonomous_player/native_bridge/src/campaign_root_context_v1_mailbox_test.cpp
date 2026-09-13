@@ -155,7 +155,7 @@ game::ReadCampaignRootContextResultV1 ReadCampaignRootContextV1(
   output.player_character_alive = frame.played_character_alive;
   output.top_liege_character_id = frame.played_character_id;
   output.independent = true;
-  output.readiness = {true, true, true, true, true, true, true, true};
+  output.readiness.ready = true;
   return game::ReadCampaignRootContextResultV1::available;
 }
 

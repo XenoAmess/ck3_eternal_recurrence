@@ -1690,6 +1690,7 @@ class GameplayBridgeService:
             "player_domain_size",
             "player_domain_limit",
             "player_targeting_faction_count",
+            "council",
             "primary_title",
             "primary_title_succession_character_ids",
             "held_title_partition",

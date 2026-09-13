@@ -22,6 +22,55 @@ DATE_RAW = 53_182_008
 PLAYER_ID = 12_345
 
 
+def _council() -> dict[str, object]:
+    vacant = {
+        "incumbent_character_id": None,
+        "task_key": None,
+        "task_type": None,
+        "target": None,
+        "frozen": None,
+        "progress": None,
+    }
+    return {
+        "status": "available",
+        "coverage_key": "standard_landed_non_nomadic_core_v1",
+        "owner_character_id": PLAYER_ID,
+        "positions": [
+            {
+                "position_key": "councillor_chancellor",
+                "incumbent_character_id": 40,
+                "task_key": "task_foreign_affairs",
+                "task_type": "general",
+                "target": None,
+                "frozen": False,
+                "progress": {
+                    "kind": "infinite",
+                    "current": None,
+                    "maximum": None,
+                },
+            },
+            {"position_key": "councillor_court_chaplain", **vacant},
+            {"position_key": "councillor_marshal", **vacant},
+            {"position_key": "councillor_spymaster", **vacant},
+            {
+                "position_key": "councillor_steward",
+                "incumbent_character_id": 40,
+                "task_key": "task_develop_county",
+                "task_type": "county",
+                "target": {"kind": "province", "province_id": 70},
+                "frozen": False,
+                "progress": {
+                    "kind": "value",
+                    "current": {"raw": 2_000_000, "scale": 100_000},
+                    "maximum": {"raw": 10_000_000, "scale": 100_000},
+                },
+            },
+        ],
+        "auxiliary_vacancies_complete": False,
+        "unavailable_reason": None,
+    }
+
+
 def _snapshot() -> dict[str, object]:
     return {
         "snapshot_id": SNAPSHOT_ID,
@@ -75,6 +124,7 @@ def _root(*, available: bool = True) -> dict[str, object]:
         "player_domain_size": 6 if available else None,
         "player_domain_limit": 7 if available else None,
         "player_targeting_faction_count": 2 if available else None,
+        "council": _council() if available else None,
         "primary_title": (
             {"title_id": 90, "tier_raw": 4, "tier_key": "kingdom"}
             if available
@@ -160,9 +210,9 @@ class TurnBundleV1Tests(unittest.TestCase):
         result = build_turn_bundle_v1(_snapshot(), _root())
 
         self.assertEqual(result["schema"], TURN_BUNDLE_V1_SCHEMA)
-        self.assertEqual(result["status"], "partial")
+        self.assertEqual(result["status"], "available")
         self.assertTrue(result["readiness"]["minimum_alerts_ready"])
-        self.assertFalse(result["readiness"]["ready"])
+        self.assertTrue(result["readiness"]["ready"])
         ruler = result["ruler_state"]["value"]
         self.assertEqual(ruler["gold"]["value"]["raw"], 2_500_000)
         self.assertEqual(ruler["stress_points"]["value"], 120)
@@ -194,6 +244,8 @@ class TurnBundleV1Tests(unittest.TestCase):
             },
         )
         self.assertTrue(result["readiness"]["realm_faction_alert_ready"])
+        self.assertTrue(result["readiness"]["realm_council_ready"])
+        self.assertEqual(realm["council"]["value"]["status"], "available")
         self.assertEqual(
             realm["faction_alert"]["value"],
             {"targeting_faction_count": 2, "threatened": True},
@@ -242,6 +294,16 @@ class TurnBundleV1Tests(unittest.TestCase):
         context["primary_title_succession_character_ids"] = []
         context["held_title_partition"] = []
         context["capital_province_id"] = None
+        context["council"] = {
+            "status": "unavailable",
+            "coverage_key": "standard_landed_non_nomadic_core_v1",
+            "owner_character_id": PLAYER_ID,
+            "positions": [],
+            "auxiliary_vacancies_complete": False,
+            "unavailable_reason": (
+                "outside_standard_landed_non_nomadic_core_scope"
+            ),
+        }
 
         result = build_turn_bundle_v1(_snapshot(), root)
 
@@ -258,6 +320,10 @@ class TurnBundleV1Tests(unittest.TestCase):
         )
         self.assertEqual(succession["partition"]["status"], "not_applicable")
         self.assertTrue(result["alerts"]["value"]["ruler_landless"]["value"])
+        realm = result["realm_state"]["value"]
+        self.assertEqual(realm["council"]["status"], "unavailable")
+        self.assertFalse(result["readiness"]["realm_council_ready"])
+        self.assertEqual(result["status"], "partial")
 
     def test_available_title_without_successor_raises_minimum_alert(self) -> None:
         root = _root()
