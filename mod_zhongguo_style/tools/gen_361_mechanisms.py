@@ -542,8 +542,18 @@ zg361_next_mechanism_decision = {
 			var:zg361_mechanism_configured_n < 361
 		}
 	}
-	is_valid = { NOT = { has_character_flag = zg361_mechanism_next_pending } }
-	is_valid_showing_failures_only = { NOT = { has_character_flag = zg361_mechanism_next_pending } }
+	is_valid = {
+		custom_description = {
+			text = zg361_next_mechanism_decision_ready
+			NOT = { has_character_flag = zg361_mechanism_next_pending }
+		}
+	}
+	is_valid_showing_failures_only = {
+		custom_description = {
+			text = zg361_next_mechanism_decision_ready
+			NOT = { has_character_flag = zg361_mechanism_next_pending }
+		}
+	}
 	effect = { add_character_flag = zg361_mechanism_next_pending }
 }
 
@@ -562,9 +572,18 @@ zg361_reference_charter_decision = {
 	}
 	is_valid = {
 		prestige >= 250
-		NOT = { has_character_flag = zg361_reference_charter_pending }
+		custom_description = {
+			text = zg361_reference_charter_decision_ready
+			NOT = { has_character_flag = zg361_reference_charter_pending }
+		}
 	}
-	is_valid_showing_failures_only = { prestige >= 250 }
+	is_valid_showing_failures_only = {
+		prestige >= 250
+		custom_description = {
+			text = zg361_reference_charter_decision_ready
+			NOT = { has_character_flag = zg361_reference_charter_pending }
+		}
+	}
 	cost = { prestige = 250 }
 	effect = { add_character_flag = zg361_reference_charter_pending }
 }
@@ -1225,10 +1244,12 @@ def localization_values(
         "zg361_next_mechanism_decision_desc": "考功司仍有制度悬而未决。召开评审会后，裁定会立即记入组织账簿；只有已经立案的具体事项，才会据此办理款项、人事或职位变动。" if is_chinese else "The policy office still has unresolved matters. A ruling enters the organizational ledger immediately; payments, personnel actions, or position changes occur only when a concrete case already exists.",
         "zg361_next_mechanism_decision_tooltip": "从未定案制度中打开下一项评审。" if is_chinese else "Open the next unresolved policy for review.",
         "zg361_next_mechanism_decision_confirm": "打开下一项制度评审" if is_chinese else "Open the next policy review",
+        "zg361_next_mechanism_decision_ready": "考功司当前没有等待入卷的制度裁定。" if is_chinese else "No institutional ruling is currently awaiting entry in the register.",
         "zg361_reference_charter_decision": "颁行《三六一考功章程》" if is_chinese else "Enact the Reference 361 Charter",
         "zg361_reference_charter_decision_desc": "考功司已汇编一套包含 361 项制度的参考章程。颁行后，各项推荐裁定与相应制度债会立即记入组织账簿；没有具体案卷时，不会据此发放款项，也不会办理任命、招募、调岗或退款。" if is_chinese else "The policy office has compiled a reference charter covering all 361 matters. Enacting it records every recommended ruling and related policy debt immediately; without a concrete case, it issues no payment, appointment, hire, transfer, or refund.",
         "zg361_reference_charter_decision_tooltip": "将 361 项推荐裁定一并记入组织账簿；具体事项仍须另有案卷。" if is_chinese else "Record all 361 recommended rulings in the organizational ledger; concrete actions still require a separate case.",
         "zg361_reference_charter_decision_confirm": "采用全部 361 项推荐默认值，立即写入组织账本" if is_chinese else "Adopt all 361 recommended defaults and write them to the organizational ledger",
+        "zg361_reference_charter_decision_ready": "当前没有另一份《三六一考功章程》等待颁行。" if is_chinese else "No other copy of the Reference 361 Charter is awaiting enactment.",
         "zg361_mechanism_choice_a_tt": "审慎办理会改善证据、信任或组织能力，但也会消耗行政、财政或短期交付能力。" if is_chinese else "Careful handling improves evidence, trust, or capability while consuming administrative, fiscal, or short-term delivery capacity.",
         "zg361_mechanism_choice_b_tt": "从速办理能换取眼前结果，却会把风险、倦怠、技术债或申诉债留给以后。" if is_chinese else "Expedited handling improves the immediate result while carrying risk, burnout, technical debt, or appeal debt into later reviews.",
         "zg361_mechanism_choice_c_tt": "本局搁置：本项不会自动再次提案；立即登记制度债，并进入你自己的上司考核。" if is_chinese else "Shelve for this campaign: this item will not be proposed again automatically; policy debt is recorded immediately and feeds your superior's review.",

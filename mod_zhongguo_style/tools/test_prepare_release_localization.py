@@ -1210,7 +1210,9 @@ class ReleaseLocalizationTests(unittest.TestCase):
         )
         for validity_path in ("is_valid", "is_valid_showing_failures_only"):
             self.assertIn(
-                f"{validity_path} = {{ zg361_review_now_business_valid_trigger = yes }}",
+                f"{validity_path} = {{ custom_description = {{ text = "
+                "zg361_review_now_decision_valid_desc "
+                "zg361_review_now_business_valid_trigger = yes } }",
                 decision,
             )
         self.assertIn(

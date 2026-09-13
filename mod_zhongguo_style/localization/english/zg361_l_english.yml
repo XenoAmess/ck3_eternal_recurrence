@@ -22,6 +22,7 @@
  zg361_review_now_decision:0 "Conduct Performance Review Now"
  zg361_review_now_decision_desc:0 "Start this year's review now and freeze the direct-official roster. Self review, peer evidence, calibration, and publication follow in later stages; results normally arrive about 330 days later. Starts must be at least one year apart, and only one review may settle per calendar year."
  zg361_review_now_decision_tooltip:0 "Start the review and freeze at least one direct incumbent official; this does not create an immediate ranking."
+ zg361_review_now_decision_valid_desc:0 "No review season remains unresolved, and at least one direct incumbent official is eligible for review."
  zg361_review_now_decision_confirm:0 "Start the review"
  zg361_ratio_strict_decision:0 "Bottom Quota: Strict 361 (10%)"
  zg361_ratio_strict_decision_desc:0 "Enforce the distribution: with five or more in the pool, someone must take the 3.25."

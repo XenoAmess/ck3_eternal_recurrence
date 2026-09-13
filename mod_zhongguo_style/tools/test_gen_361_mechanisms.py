@@ -347,6 +347,29 @@ class MechanismGenerationTests(unittest.TestCase):
                     f"\t\tlimit = {{ var:{variable} >= {threshold} }}", climate
                 )
 
+    def test_player_decisions_hide_internal_pending_flags(self) -> None:
+        decisions_path = (
+            MOD_ROOT / "common" / "decisions" / "zg361_mechanism_decisions.txt"
+        )
+        decisions = self.rendered[decisions_path].decode("utf-8-sig")
+        for decision_key, flag, description_key in (
+            (
+                "zg361_next_mechanism_decision",
+                "zg361_mechanism_next_pending",
+                "zg361_next_mechanism_decision_ready",
+            ),
+            (
+                "zg361_reference_charter_decision",
+                "zg361_reference_charter_pending",
+                "zg361_reference_charter_decision_ready",
+            ),
+        ):
+            region = decisions.split(f"{decision_key} = {{", 1)[1].split("\n}", 1)[0]
+            with self.subTest(decision=decision_key):
+                self.assertEqual(region.count("custom_description = {"), 2)
+                self.assertEqual(region.count(f"text = {description_key}"), 2)
+                self.assertEqual(region.count(f"has_character_flag = {flag}"), 2)
+
     def test_policy_localization_renders_ids_and_line_breaks_literally(self) -> None:
         chinese_path = (
             MOD_ROOT

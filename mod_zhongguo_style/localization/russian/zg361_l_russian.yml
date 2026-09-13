@@ -22,6 +22,7 @@
  zg361_review_now_decision:0 "Провести аттестацию немедленно"
  zg361_review_now_decision_desc:0 "Start this year's review now and freeze the direct-official roster. Self review, peer evidence, calibration, and publication follow in later stages; results normally arrive about 330 days later. Starts must be at least one year apart, and only one review may settle per calendar year."
  zg361_review_now_decision_tooltip:0 "Немедленно аттестовать хотя бы одного действующего прямого подчинённого чиновника; в том же календарном году повторная аттестация невозможна."
+ zg361_review_now_decision_valid_desc:0 "No review season remains unresolved, and at least one direct incumbent official is eligible for review."
  zg361_review_now_decision_confirm:0 "Объявить результаты!"
  zg361_ratio_strict_decision:0 "Квота аутсайдеров: жёсткое 361 (10%)"
  zg361_ratio_strict_decision_desc:0 "Принудительное распределение: при пяти и более в пуле кто-то обязан получить 3.25."

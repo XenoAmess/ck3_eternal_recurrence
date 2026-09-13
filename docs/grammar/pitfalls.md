@@ -210,3 +210,9 @@ R79 fresh split product 实机确认上述签名归零。
 - 链路断点：每环节 `debug_log = "XAR: ..."` → 读 `debug.log`
 - 全局存储验证：直接看 `tutorial.txt`
 - 死亡链测试：控制台 `die`；事件测试：`event <id>`
+
+## 决议条件暴露内部旗标（2026-09-13，CK3 1.19.0.6 实机）
+
+| 现象 | 原因 | 解法 |
+|---|---|---|
+| 决议条件直接显示 `zg361_*` 等内部名称，并被本地化成“……旗标”，破坏玩家沉浸感 | 玩家可见的 `is_valid` / `is_valid_showing_failures_only` 直接包含 `has_character_flag`；CK3 会为未包装的 trigger 自动生成技术性条件文本。R629 人工实机在天朝二期决议面板确认该现象 | 保留旗标作为内部状态，在玩家可见条件外包一层 `custom_description`，用世界观内文案解释业务状态；生成器同时产出本地化与回归测试。不要改旗标语义，也不要把内部 ID 当作正式文案。R629 使用的是修复前 staging，修复后画面仍需下一轮 fresh product 抽检 |

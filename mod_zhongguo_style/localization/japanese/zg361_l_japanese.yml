@@ -22,6 +22,7 @@
  zg361_review_now_decision:0 "今すぐ業績考課を実施"
  zg361_review_now_decision_desc:0 "Start this year's review now and freeze the direct-official roster. Self review, peer evidence, calibration, and publication follow in later stages; results normally arrive about 330 days later. Starts must be at least one year apart, and only one review may settle per calendar year."
  zg361_review_now_decision_tooltip:0 "直属の現職官吏を少なくとも一名、ただちに考課する。同じ暦年内に再度実施することはできない。"
+ zg361_review_now_decision_valid_desc:0 "No review season remains unresolved, and at least one direct incumbent official is eligible for review."
  zg361_review_now_decision_confirm:0 "ランキングを発表する！"
  zg361_ratio_strict_decision:0 "最下位枠：厳格な361（10%）"
  zg361_ratio_strict_decision_desc:0 "強制配分を徹底する。評価プールが5名以上の場合は、必ず誰かが3.25を背負う。"
