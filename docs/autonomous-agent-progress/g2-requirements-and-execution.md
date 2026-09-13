@@ -273,3 +273,16 @@ turn bundle 全部门为 GREEN；角色切换前后日期均为 `53178264`，PID
 仍为 `9104CCB8AE9D5776166FBBAEDA9B43BD08CBAA2CB5C057332EB8B7A1A212CC63`，cleanup 证明进程树消失。完整 artifact 位于
 `Z:\ck3_mod_rewrite_process_assets\g2-m1-r639-700fae3\g2-m1-two-scene-live.json`，SHA-256
 `CFF681146A344AE18FDEB36C20BDAEAFC2A30344023CC7827E9A77006C3530DB`。这关闭 M1 的既定 visible outcome，G2 为 `1/8`。
+## 2026-09-14 GEN-034-D source-bound postwar evidence composer
+
+`raiktor_three_way_exit_postwar_evidence.py` now joins the two native postwar
+domains into the strict verifier input. It requires exact equality between the
+retained source capture and the authorized action frame's complete persistent,
+current and CArmy generation sets, and then binds the cleanup query back to the
+same set. The directional persisted truce must be identical in two consecutive
+reads on the successor native revision, with expiry equal to
+`post_date_raw + evaluated_days * 24`. A valid `no_truce`, any surviving
+generation or frame drift retains RED. ACK is never state evidence and the
+composer performs no CK3, filesystem or MCP operation. The focused
+recommendation/action-gate/evidence/verifier suite passes `26/26` under normal
+and optimized Python. Status remains `static-ready / live=false`.

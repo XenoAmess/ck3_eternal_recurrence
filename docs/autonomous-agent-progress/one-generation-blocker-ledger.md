@@ -1566,3 +1566,18 @@ one recommendation, one action and the bounded postwar/cold-restore checks.
 - Focused recommendation/action-gate/verifier tests pass `20/20` in normal and
   optimized Python. Status remains `static-ready / live=false`; the queued C
   horizon and one bounded D execution remain the live blockers.
+## GEN-034-D source-bound postwar evidence composer (2026-09-14)
+
+- A pure evidence composer now joins the retained source capture, the current
+  action-frame generic war-bound observation, the successor snapshot, one raw
+  exact-store cleanup query and two raw persisted-truce queries. The complete
+  persistent/current/CArmy generation sets must match before source-specific
+  cleanup can be asserted; WarID absence by itself remains insufficient.
+- The truce reads must be consecutive, normalize to the same native payload,
+  remain on the successor native revision and contain the exact directional
+  expiry frozen by the authorization. A valid `no_truce` or surviving source
+  generation produces a named RED instead of a synthetic evidence packet.
+- The emitted packet is consumed unchanged by the six-check verifier and can
+  close its pure fixture. Focused recommendation/action-gate/evidence/verifier
+  tests pass `26/26` in normal and optimized Python. No CK3, filesystem or MCP
+  operation occurs in the composer; live action and cold restore remain open.

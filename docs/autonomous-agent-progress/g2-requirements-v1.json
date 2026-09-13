@@ -41,7 +41,8 @@
         "GEN-034-C bounded two-query managed live runner static-ready (normal/optimized 4/4)",
         "GEN-034-D additive played-character prestige snapshot observation static-ready",
         "GEN-034-D route-bound six-item postcondition expectations frozen in recommendation certificate",
-        "GEN-034-D pure postcondition verifier static-ready (normal/optimized focused suite 20/20)"
+        "GEN-034-D pure postcondition verifier static-ready (normal/optimized focused suite 20/20)",
+        "GEN-034-D source-bound cleanup/truce evidence composer static-ready (normal/optimized focused suite 26/26)"
       ],
       "planner_consumer": "three-way exit recommendation and one semantic exit action",
       "visible_outcome": "compare continue, white peace and surrender on one paused frame, submit once, then verify postwar state and cold restore",
@@ -179,10 +180,10 @@
         "id": "GEN-034-D",
         "name": "three-way recommendation, one action and postwar verification",
         "status": "blocked_live",
-        "latest_evidence": "v2 recommendation/action gate freeze exact expectations and a pure verifier consumes standard action, snapshot, evidence and save/restore results; focused normal/optimized recommendation+gate+verifier tests 20/20; live action/postcondition/cold restore pending"
+        "latest_evidence": "v2 recommendation/action gate freeze exact expectations; a pure composer binds source generations, cleanup and two stable persisted-truce reads; the pure verifier consumes action, snapshot, evidence and save/restore results; focused normal/optimized suite 26/26; live action/postcondition/cold restore pending"
       }
     ]
   },
   "religion_boundary": "deferred except the minimum native result needed by holy-war execution and marriage legality or acceptance",
-  "updated_at": "2026-09-14T02:59:00+08:00"
+  "updated_at": "2026-09-14T03:17:00+08:00"
 }

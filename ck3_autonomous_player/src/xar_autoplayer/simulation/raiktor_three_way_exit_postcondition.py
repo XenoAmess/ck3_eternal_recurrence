@@ -48,7 +48,9 @@ def provide_raiktor_three_way_exit_postcondition(
 
     if action_gate_value is None:
         return _result(blockers=["action_authorization_unavailable"])
-    authorization = _authorization(action_gate_value)
+    authorization = normalize_raiktor_three_way_exit_authorization(
+        action_gate_value
+    )
     action = _object(authorization["action"], "authorization.action")
     plan = _object(
         authorization["postcondition_plan"], "authorization.postcondition_plan"
@@ -147,7 +149,10 @@ def provide_raiktor_three_way_exit_postcondition(
     )
 
 
-def _authorization(value: object) -> dict[str, object]:
+def normalize_raiktor_three_way_exit_authorization(
+    value: object,
+) -> dict[str, object]:
+    """Validate and return one exact action-gate authorization."""
     gate = _object(value, "action gate")
     if (
         gate.get("schema") != ACTION_GATE_PROVIDER_SCHEMA
@@ -585,5 +590,6 @@ __all__ = [
     "PROVIDER_ID",
     "PROVIDER_SCHEMA",
     "ThreeWayExitPostconditionError",
+    "normalize_raiktor_three_way_exit_authorization",
     "provide_raiktor_three_way_exit_postcondition",
 ]

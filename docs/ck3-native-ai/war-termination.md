@@ -2465,3 +2465,21 @@ No CK3 run was performed for this package. Consequently the historical public
 terms wire remains `actual_expiry_observable=false / expiry_date_raw=null`,
 and decision/action/`GEN-034` remain false until two retained post-result
 paused frames prove the candidate.
+## 2026-09-14 source-bound postwar evidence composition
+
+[static-ready / live pending] `raiktor_three_way_exit_postwar_evidence.py`
+connects the loss and truce native domains to the three-way postcondition
+verifier. A retained source capture is reusable only when its complete
+persistent CRegiment, current CArmyRegiment and CArmy generation sets exactly
+match the current authorized action frame. The postwar cleanup reader must then
+report every one of those exact identities destroyed. This combines source
+attribution from the creation point with liveness from the action-bound
+exact-store query; old-WarID absence alone still proves no regiment cleanup.
+
+The directional truce uses two consecutive native reads on the successor
+native revision. Both normalized payloads must be identical, owner/toward must
+match the frozen player/opponent, and persisted expiry must equal the post date
+plus the frozen evaluated days. A valid `no_truce`, a surviving generation or
+frame drift returns RED and emits no verifier evidence. The composer is pure
+and accesses no game, file or MCP service. Focused normal and optimized suites
+pass `26/26`; live readiness remains unchanged.
