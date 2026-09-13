@@ -6,6 +6,7 @@
   "production_wiring": true,
   "live_paused_pump_observed": true,
   "live_typed_executor_observed": false,
+  "frontend_live_typed_executor_observed": true,
   "candidate_id": "application_main_thread_war_entry_v1",
   "offline_fixture_only": true,
   "frozen_inputs": {

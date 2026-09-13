@@ -283,6 +283,10 @@ export 的公开结果为闭合 schema，包含 `status`、`designer_observed`�
   证据不等于这次新增浏览器按钮已经完成 live 点击验收，也不补写 entitlement 或 CoA resource winner。聚焦验证为 Quarkus
   10/10、Vitest 25/25、前端 production build 与 Quarkus package GREEN；
 - CK3 frontend exact-build 握手：已真实取得，并广告新 capability；
+- 原生 frontend MCP 导航已在 2026-09-13 达到 `production-live primitive`：官方 MCP SDK 闭环为
+  `query(main_menu) → activate-frontend-new-game-v1 → query(bookmarks)`，动作的十项检查全为 true，且明确为零 OCR、零键盘、零鼠标；
+  artifact `mcp-frontend-route-live3.json` 为 408,936 bytes，SHA-256
+  `1EBBFA6052967E02F2C929CDD11A76A312B75F85487E9B65DE0158CA7C14DDD5`，受管 CK3 清理与 Steam 离线状态均已验证；
 - 隔离 attempt 5 补齐 `frontend_snapshot` 绑定；attempt 6 暴露剪贴板函数槽的瞬时初始化状态；attempt 8 又证明
   gameplay 生命周期门禁会让角色设计器永远无法安装 hook。现在 hook 在 exact adapter 选定后即于 frontend 启动，瞬时槽缺失仍在
   heartbeat 延迟重试；精确构建或入口身份失败保持永久拒绝。

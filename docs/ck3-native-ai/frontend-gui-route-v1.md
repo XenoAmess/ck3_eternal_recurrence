@@ -1,6 +1,6 @@
 # CK3 frontend GUI route MCP v1
 
-状态：`mcp-static-ready / live=false`
+状态：`production-live primitive`
 适配目标：CK3 `1.19.0.6`，EXE SHA-256
 `2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86`
 
@@ -91,8 +91,11 @@ proof。
 - fresh MSVC build 已生成 DLL；
 - 原生 fixture 覆盖“无 Jomini/game state 时 frontend executor 可用、gameplay executor 仍拒绝”；
 - Python contract/service/native-driver/MCP closed-schema 测试覆盖 route、ACK 与独立 postcondition；
-- 当前尚未重启 CK3，因此 `live=false`；
+- 2026-09-13 的受管 CK3 `1.19.0.6` 验收通过：官方 MCP SDK 先返回 `main_menu`，固定原生动作 ACK 后由独立查询返回 `bookmarks`；
+- 十项闭环检查均为 true，包括 `postcondition_verified`、原生语义 backend，以及 `uses_ocr=false`、`uses_keyboard=false`、`uses_mouse=false`；
+- artifact 为 `artifacts/coa-clipboard-probe-2026-09-08/mcp-frontend-route-live3.json`，408,936 bytes，SHA-256 `1EBBFA6052967E02F2C929CDD11A76A312B75F85487E9B65DE0158CA7C14DDD5`；源码 commit `84e1f5f139ef4d299fe7635f44f01144083ac8e0`，DLL SHA-256 `8FE08D0FE6E2793866CB6C3164472CB1CAC10BD05A45B1996FCB321537A515F0`；
+- Steam 全程离线；`cleanup_proven=true`、`tree_gone=true`，验收后没有残留 CK3 进程；
 - `open_kaishek` 没有 frontend GUI/CoA domain，本包预验证为 `not-applicable`。
 
-下一次 live 只需用 MCP 完成 `query(main_menu) → activate → query(bookmarks)`。若该首片 GREEN，再按相同固定 allowlist 方法补
+下一步按相同固定 allowlist 方法补
 `pick_any_character_button` 之后的 ruler selection、ruler designer 与 CoA 页动作；禁止以鼠标链代替缺失 primitive。

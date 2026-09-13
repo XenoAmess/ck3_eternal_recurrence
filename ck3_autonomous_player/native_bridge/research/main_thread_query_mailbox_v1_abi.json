@@ -9,6 +9,7 @@
   "production_wiring": true,
   "live_observation": true,
   "live_executor_observation": false,
+  "frontend_live_executor_observation": true,
   "candidate_id": "application_main_thread_war_entry_v1",
   "native_abi": {
     "imports": {
@@ -154,6 +155,18 @@
     "timeout_policy": "active_hook_calls_pending_keeps_bridge_lifecycle_stopping_and_allows_retry",
     "delayed_hook_policy": "stop_requested_skips_drain_but_still_calls_pinned_original_and_preserves_return_and_LastError",
     "PROCESS_DETACH": "signal_stop_only_never_wait_under_loader_lock"
+  },
+  "frontend_live_acceptance": {
+    "date": "2026-09-13",
+    "status": "production-live primitive",
+    "repository_head": "84e1f5f139ef4d299fe7635f44f01144083ac8e0",
+    "bridge_dll_sha256": "8FE08D0FE6E2793866CB6C3164472CB1CAC10BD05A45B1996FCB321537A515F0",
+    "artifact": "artifacts/coa-clipboard-probe-2026-09-08/mcp-frontend-route-live3.json",
+    "artifact_size": 408936,
+    "artifact_sha256": "1EBBFA6052967E02F2C929CDD11A76A312B75F85487E9B65DE0158CA7C14DDD5",
+    "sequence": "official MCP query(main_menu) -> native semantic activate -> independent query(bookmarks)",
+    "interaction": "no OCR, mouse, or keyboard",
+    "managed_cleanup": true
   },
   "application_main_heartbeat_observation": {
     "transport": "existing_250ms_heartbeat_metadata_not_capability_not_command_not_MCP",

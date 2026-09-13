@@ -47,8 +47,13 @@ slot `0x4FE0A68` to `SDL_PollEvent` `0x3CD3730`. The bridge now retries an
 exact CAS on that slot after its startup resolver thunk `0x3C9B8C0` has been
 replaced, and observes exact return `0x3A2EEA9`. If the original poll invokes
 the lower `PeekMessageW` hook, the changed epoch suppresses a duplicate drain.
-This frontend path is static/fixture-ready until a new managed MCP artifact
-proves the semantic route query and transition.
+The managed official-MCP artifact `mcp-frontend-route-live3.json` now proves
+this path in CK3: route `main_menu`, native semantic activation, and an
+independent route `bookmarks`, with no OCR, mouse, or keyboard. Its SHA-256 is
+`1EBBFA6052967E02F2C929CDD11A76A312B75F85487E9B65DE0158CA7C14DDD5`;
+managed cleanup removed the CK3 process tree. The frontend boundary and this
+one fixed action are therefore a `production-live primitive`; later frontend
+routes remain outside that claim.
 
 The route-contact, actual-contact, combat-v3, ongoing battle-control and
 title-map-navigation typed executors have exact-build live results; war-entry

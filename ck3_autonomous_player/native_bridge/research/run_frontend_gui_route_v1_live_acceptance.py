@@ -175,7 +175,7 @@ async def _mcp_sequence(
     def record(call: dict[str, object]) -> None:
         call_summary["total"] = int(call_summary["total"]) + 1
         call_summary["last_call"] = call
-        if len(calls) < 32 or call.get("is_error") is False:
+        if len(calls) < 32:
             calls.append(call)
         else:
             call_summary["omitted"] = int(call_summary["omitted"]) + 1
