@@ -265,9 +265,17 @@ async def _execute_action_tail(
     action_step = action["literal"]
     war_id = action["war_id"]
     read_commands = read_phase.get("allowed_gameplay_commands")
-    if not isinstance(read_commands, list) or len(read_commands) not in {2, 4}:
+    replay_without_reads = bool(
+        isinstance(read_commands, list)
+        and not read_commands
+        and read_phase.get("checkpoint_replay_recommendation") is True
+        and route == "continue"
+    )
+    if not replay_without_reads and (
+        not isinstance(read_commands, list) or len(read_commands) not in {2, 4}
+    ):
         raise Gen034ActionRunnerError(
-            "recommendation phase lacks an admitted two- or four-read command list"
+            "recommendation phase lacks an admitted replay, two- or four-read list"
         )
     origin = _structured_record(
         read_phase.get("before_snapshot"), "recommendation source snapshot"

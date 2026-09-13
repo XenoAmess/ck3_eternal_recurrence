@@ -235,6 +235,39 @@ postcondition tests pass `21/21` in normal and optimized Python, including a
 stalled first snapshot followed by a valid successor. One R660 replay of this
 changed behavior is justified; another unchanged retry is not.
 
+## R660 proved the cold-paused command-order constraint
+
+R660 used one unique managed process and repeated the corrected five-second
+observation. Its recommendation path was again entirely GREEN and submitted
+exactly one `resume-map`, followed by 42 read-only snapshots. Every snapshot
+remained at the original paused revision and date. This disproves the timing
+hypothesis and keeps the action result RED. Report and final driver-state
+SHA-256 values are
+`B3588619AD28FBBF367B8CFD25E4E8CFAB7CF60C187087C73F175537035223DD`
+and `D0A24FE4E81DE06D950582C205D22AB4F965C28B2C775465A33D15C9B85A5EEE`.
+The input checkpoint and driver state were unchanged and cleanup returned the
+CK3 count to zero.
+
+Existing R655/R656 evidence gives the actionable difference: their successful
+time advance submitted `resume-map` as the first gameplay command after cold
+restore. R659/R660 first executed worker-thread options and terms reads, then
+the queued map command never materialized. This matches the separately retained
+application-main scheduling RED and justifies changing command order instead
+of increasing the wait or repeating the same attempt.
+
+`raiktor_checkpoint_replay_recommendation_provider.py` now rebinds the complete
+hash-bound production `continue` recommendation to a fresh PID before any
+gameplay command. It requires identical checkpoint, driver state,
+snapshot/revisions/date/connection/episode/player/WarID/opponent, retains both
+runtime frames and rejects every route except `continue`. The ordinary action
+gate recognizes this explicit replay certificate. The specialized runner can
+therefore submit `resume-map` first and uses zero fresh exit or power queries.
+Focused provider/gate/action tests pass `24/24` in normal and optimized Python.
+The R661 no-launch preflight is GREEN at
+`Z:\ck3_mod_rewrite_process_assets\g2-gen034-r661-checkpoint-replay-action-preflight.json`,
+SHA-256
+`49BD658725E833E318947B6E465A75C6594EF0569940B9345C800993E929210A`.
+
 ## Exact action admission
 
 `raiktor_three_way_exit_action_gate.py` is the final side-effect-free handoff

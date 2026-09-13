@@ -289,9 +289,8 @@ class Gen034ThreeWayExitActionLiveAcceptanceTests(unittest.TestCase):
     def test_continue_waits_for_a_real_successor_without_resubmitting(self) -> None:
         gate = _authorized("continue")
         read = _read_phase(gate)
-        read["allowed_gameplay_commands"] = read[
-            "allowed_gameplay_commands"
-        ][:2]
+        read["allowed_gameplay_commands"] = []
+        read["checkpoint_replay_recommendation"] = True
         before = read["before_snapshot"]["structured_content"]
         stalled = deepcopy(before)
         stalled = _with_history(

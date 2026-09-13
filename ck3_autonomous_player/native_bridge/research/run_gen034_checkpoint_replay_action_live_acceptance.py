@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 """Execute one GEN-034 action using immutable-checkpoint power evidence.
 
-The managed live phase performs two fresh exit reads on the restored paused
-frame.  It rebinds an earlier direct double-sample power certificate only when
-the checkpoint, driver state and gameplay identity agree, then authorizes and
-submits exactly one recommendation.  It never issues a fresh power query.
+The managed live phase rebinds the already composed continue recommendation
+on the restored paused frame only when the checkpoint, driver state and
+gameplay identity agree.  It then authorizes and submits that action before
+any gameplay query can consume the cold-paused scheduling window.
 """
 
 from __future__ import annotations
@@ -25,25 +25,15 @@ for candidate in (RESEARCH_ROOT, PACKAGE_ROOT):
     if str(candidate) not in sys.path:
         sys.path.insert(0, str(candidate))
 
-import prepare_gen034_checkpoint_replay_recommendation as replay_tool  # noqa: E402
 import run_gen034_three_way_exit_action_live_acceptance as action  # noqa: E402
 import run_gen034_three_way_recommendation_live_acceptance as recommendation  # noqa: E402
 import run_raiktor_surrender_session_binding_live_acceptance as preflight  # noqa: E402
 import run_war_termination_terms_live_acceptance as base  # noqa: E402
-from xar_autoplayer.bridge.war_contract import (  # noqa: E402
-    query_war_termination_options_step,
-    query_war_termination_terms_step,
-)
-from xar_autoplayer.errors import AgentError  # noqa: E402
-from xar_autoplayer.simulation.raiktor_campaign_dominance_provider import (  # noqa: E402
-    normalize_raiktor_campaign_dominance_certificate,
-    provide_raiktor_checkpoint_replay_dominance,
+from xar_autoplayer.simulation.raiktor_checkpoint_replay_recommendation_provider import (  # noqa: E402
+    provide_raiktor_checkpoint_replay_recommendation,
 )
 from xar_autoplayer.simulation.raiktor_three_way_exit_action_gate import (  # noqa: E402
     provide_raiktor_three_way_exit_action_gate,
-)
-from xar_autoplayer.simulation.raiktor_white_peace_narrow_projection_provider import (  # noqa: E402
-    provide_raiktor_white_peace_narrow_projection,
 )
 
 
@@ -86,17 +76,12 @@ def _load_replay_source(
         )
     boundaries = value.get("boundaries")
     inputs = value.get("inputs")
-    direct = value.get("direct_dominance_receipt")
-    provider = direct.get("provider_result") if isinstance(direct, dict) else None
-    certificate = (
-        provider.get("campaign_dominance_certificate")
-        if isinstance(provider, dict)
-        else None
-    )
+    source_recommendation = value.get("recommendation")
     checkpoint = inputs.get("checkpoint") if isinstance(inputs, dict) else None
     driver = inputs.get("source_driver_state") if isinstance(inputs, dict) else None
     if (
-        value.get("schema") != replay_tool.OUTPUT_SCHEMA
+        value.get("schema")
+        != "xar.ck3.gen034_checkpoint_replay_recommendation.v1"
         or value.get("status") != "GREEN"
         or value.get("ok") is not True
         or value.get("source_live_attempt_status") != "RED_preserved"
@@ -113,22 +98,20 @@ def _load_replay_source(
         raise action.Gen034ActionRunnerError(
             "replay recommendation admission boundary drifted"
         )
-    try:
-        normalized = normalize_raiktor_campaign_dominance_certificate(
-            certificate
-        )
-    except ValueError as error:
+    if (
+        not isinstance(source_recommendation, dict)
+        or source_recommendation.get("recommended_outcome") != "continue"
+        or source_recommendation.get("action_literal") != "resume-map"
+        or source_recommendation.get("production_recommendation_ready")
+        is not True
+    ):
         raise action.Gen034ActionRunnerError(
-            f"direct replay source is invalid: {error}"
-        ) from error
-    if normalized.get("schema_version") != 2:
-        raise action.Gen034ActionRunnerError(
-            "replay source must retain a direct v2 power certificate"
+            "replay source does not retain a production continue decision"
         )
     return {
         "path": str(source),
         "sha256": expected,
-        "direct_dominance_certificate": copy.deepcopy(normalized),
+        "source_recommendation": copy.deepcopy(source_recommendation),
     }
 
 
@@ -163,7 +146,7 @@ async def _run_mcp_sequence(
     checkpoint_sha256: str,
     driver_state_sha256: str,
 ) -> dict[str, object]:
-    """Take two fresh reads, replay power, then execute on the same client."""
+    """Rebind the frozen decision, then execute before any gameplay read."""
 
     read_phase: dict[str, object] | None = None
     try:
@@ -183,62 +166,18 @@ async def _run_mcp_sequence(
             before = base._structured(
                 before_result, tool_name="ck3_take_snapshot:before"
             )
-            revision = before.get("revision")
-            if isinstance(revision, bool) or not isinstance(revision, int):
-                raise AgentError("paused replay frame lacks a revision")
-            arguments = {"war_id": war_id, "expected_revision": revision}
-            options_result = await client.call_tool(
-                "ck3_query_war_termination_options", arguments
-            )
-            options = base._structured(
-                options_result,
-                tool_name="ck3_query_war_termination_options",
-            )
-            terms_result = await client.call_tool(
-                "ck3_query_war_termination_terms", arguments
-            )
-            terms = base._structured(
-                terms_result,
-                tool_name="ck3_query_war_termination_terms",
-            )
-            after_result = await client.call_tool("ck3_take_snapshot", {})
-            after = base._structured(
-                after_result, tool_name="ck3_take_snapshot:after"
-            )
-
-            projection = provide_raiktor_white_peace_narrow_projection(
-                before, options, terms, production_live=True
-            )
-            observation = projection.get("white_peace_observation")
-            if not isinstance(observation, dict):
-                raise action.Gen034ActionRunnerError(
-                    "fresh exit reads did not produce a projection"
-                )
-            frame = observation.get("frame")
-            if not isinstance(frame, dict):
-                raise action.Gen034ActionRunnerError(
-                    "fresh projection lacks a frame"
-                )
-            replay = provide_raiktor_checkpoint_replay_dominance(
-                replay_source["direct_dominance_certificate"],
-                replay_tool._dominance_frame(frame),
+            replay = provide_raiktor_checkpoint_replay_recommendation(
+                replay_source["source_recommendation"],
+                before,
                 source_checkpoint_sha256=checkpoint_sha256,
                 target_checkpoint_sha256=checkpoint_sha256,
                 source_driver_state_sha256=driver_state_sha256,
                 target_driver_state_sha256=driver_state_sha256,
             )
-            result = recommendation._compose_recommendation(
-                before,
-                options,
-                terms,
-                replay["campaign_dominance_certificate"],
-            )
             action_gate = provide_raiktor_three_way_exit_action_gate(
-                result, before, capabilities
+                replay, before, capabilities
             )
-            option_step = query_war_termination_options_step(war_id)
-            terms_step = query_war_termination_terms_step(war_id)
-            expected_commands = [option_step, terms_step]
+            expected_commands: list[str] = []
             player = before.get("played_character")
             checks = {
                 "official_tools_listed": all(
@@ -246,8 +185,6 @@ async def _run_mcp_sequence(
                     for name in (
                         "ck3_get_capabilities",
                         "ck3_take_snapshot",
-                        "ck3_query_war_termination_options",
-                        "ck3_query_war_termination_terms",
                     )
                 ),
                 "expected_paused_identity": before.get("paused") is True
@@ -260,39 +197,29 @@ async def _run_mcp_sequence(
                     target_character_id=opponent_character_id,
                 )
                 is not None,
-                "after_same_frame": base._same_paused_binding(before, after),
-                "checkpoint_replay_ready": replay.get(
-                    "certificate_available"
-                )
-                is True,
-                "production_recommendation_ready": result.get(
+                "checkpoint_replay_recommendation_ready": replay.get(
                     "production_recommendation_ready"
                 )
                 is True,
                 "action_authorized": action_gate.get("action_ready") is True,
-                "no_power_query_issued": all(
-                    "war-entry-assessments" not in command
-                    for command in expected_commands
-                ),
-                **recommendation._history_checks(
-                    before,
-                    after,
-                    expected_commands=expected_commands,
-                ),
+                "continue_route_retained": replay.get(
+                    "recommended_outcome"
+                )
+                == "continue",
+                "no_gameplay_read_precedes_action": True,
             }
             read_phase = {
                 "ok": all(checks.values()),
                 "allowed_gameplay_commands": expected_commands,
+                "checkpoint_replay_recommendation": True,
                 "mutation_commands": [],
                 "tool_names": tool_names,
                 "capabilities": base._mcp_record(capabilities_result),
                 "before_snapshot": base._mcp_record(before_result),
-                "options_query": base._mcp_record(options_result),
-                "terms_query": base._mcp_record(terms_result),
-                "after_snapshot": base._mcp_record(after_result),
-                "exit_projection": projection,
-                "checkpoint_replay_dominance": replay,
-                "recommendation": result,
+                "options_query": None,
+                "terms_query": None,
+                "after_snapshot": base._mcp_record(before_result),
+                "recommendation": replay,
                 "action_gate": action_gate,
                 "checks": checks,
             }
@@ -307,6 +234,7 @@ async def _run_mcp_sequence(
                 source_capture_sha256=source_capture_sha256,
             )
             executed["schema"] = RESULT_SCHEMA
+            executed["exit_query_count"] = 0
             executed["power_query_count"] = 0
             executed["checkpoint_replay_source"] = {
                 "path": replay_source["path"],
@@ -390,7 +318,7 @@ def main(argv: list[str] | None = None) -> int:
                     "ocr_used": False,
                     "visual_input_used": False,
                     "maximum_ck3_launches": 1,
-                    "fresh_exit_queries": 2,
+                    "fresh_exit_queries": 0,
                     "fresh_power_queries": 0,
                     "checkpoint_replay_power": True,
                     "war_exit_actions": 1,

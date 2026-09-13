@@ -22,6 +22,11 @@ from xar_autoplayer.simulation.raiktor_three_way_exit_recommendation import (
     PROVIDER_ID as RECOMMENDATION_PROVIDER_ID,
     PROVIDER_SCHEMA as RECOMMENDATION_PROVIDER_SCHEMA,
 )
+from xar_autoplayer.simulation.raiktor_checkpoint_replay_recommendation_provider import (
+    CONTRACT as REPLAY_RECOMMENDATION_CONTRACT,
+    PROVIDER_ID as REPLAY_RECOMMENDATION_PROVIDER_ID,
+    PROVIDER_SCHEMA as REPLAY_RECOMMENDATION_PROVIDER_SCHEMA,
+)
 
 
 CONTRACT = "raiktor-three-way-exit-action-gate-v1"
@@ -147,15 +152,26 @@ def provide_raiktor_three_way_exit_action_gate(
 def _recommendation(
     value: object,
 ) -> tuple[dict[str, object], dict[str, object]]:
-    if not isinstance(value, dict) or (
-        value.get("schema") != RECOMMENDATION_PROVIDER_SCHEMA
-        or value.get("provider") != RECOMMENDATION_PROVIDER_ID
-    ):
+    if not isinstance(value, dict):
+        raise ThreeWayExitActionGateError("recommendation provider drifted")
+    identity = (value.get("schema"), value.get("provider"))
+    contracts = {
+        (
+            RECOMMENDATION_PROVIDER_SCHEMA,
+            RECOMMENDATION_PROVIDER_ID,
+        ): RECOMMENDATION_CONTRACT,
+        (
+            REPLAY_RECOMMENDATION_PROVIDER_SCHEMA,
+            REPLAY_RECOMMENDATION_PROVIDER_ID,
+        ): REPLAY_RECOMMENDATION_CONTRACT,
+    }
+    expected_contract = contracts.get(identity)
+    if expected_contract is None:
         raise ThreeWayExitActionGateError("recommendation provider drifted")
     certificate = value.get("recommendation_certificate")
     if not isinstance(certificate, dict) or (
         certificate.get("schema_version") != 1
-        or certificate.get("contract") != RECOMMENDATION_CONTRACT
+        or certificate.get("contract") != expected_contract
     ):
         raise ThreeWayExitActionGateError("recommendation certificate drifted")
     expected_hash = certificate.get("certificate_sha256")
