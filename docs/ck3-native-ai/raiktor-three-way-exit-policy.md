@@ -562,3 +562,20 @@ Current round R641 completed the two intended read-only native queries at one pa
 The same live payload reports `war_duration_days=0`, `player_relative_war_score=0`, `native_validator_passed=false` and an unavailable final recipient response for white peace. The projection must therefore retain `white_peace_native_option_unavailable` and `white_peace_final_recipient_response_unavailable`; it may not manufacture utility evidence from the acceptance score. GEN-034-C remains open pending a reachable paused frame with an available final white-peace option.
 
 Current round R644 confirms that behavior after the consumer repair. Exact-build admission, both official-MCP query envelopes, same-frame binding, the two-command read-only history delta, source invariants and process cleanup are GREEN. The projection returns only the two typed blockers above and the immediate-exit evaluation is absent. This is production-live negative evidence; it does not satisfy the positive same-frame comparison gate. The zero-day checkpoint must not be replayed again for C.
+
+Current round R645 then consumed the nearest later checkpoint at date
+`53187096`, where the same war is 135 days old. The native validator and final
+recipient response are still unavailable. This rules out that existing input
+without expanding into intermediate-date enumeration. The retained report is
+`Z:\ck3_mod_rewrite_process_assets\g2-gen034c-r645-3c7e79c\report.json`,
+SHA-256 `C6858122FCC4120E4715E220D4B711BF05180B741C294185A69C4BFE51A201FE`.
+
+The next source preparation is constrained by
+`run_gen034_white_peace_horizon_checkpoint.py`: restore the immutable 135-day
+checkpoint, issue one semantic resume, poll official read-only snapshots, and
+stop at the first event, character drift, war end, unexpected pause or date
+bound violation. At target date `53192616` it may pause once, query the native
+termination option once and save once only if the option validator and final
+recipient response are both available. The runner cannot select an event or
+submit any exit. This produces one reusable 365-day checkpoint or one specific
+RED; it is not a general campaign long run.

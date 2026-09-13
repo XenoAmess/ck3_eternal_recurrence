@@ -1391,3 +1391,21 @@ one recommendation, one action and the bounded postwar/cold-restore checks.
 - New round R644 extended only the cold-readiness budget. It reached CharacterID `29829`, WarID `33554473`, date `53183856` and completed exactly the options/terms read pair. All 13 exact-build checks, official MCP envelopes, same paused before/after binding, exact two-command history delta, cleanup and source hashes are valid. The 3,509,196-byte report is `Z:\ck3_mod_rewrite_process_assets\g2-gen034c-r644-63bb714\report.json`, SHA-256 `9844B817995A876C1B48C7BDDF42826B4866F8E8C9680EB79F0EA53D4FECBA0B`; driver-state SHA-256 is `7D92159CC19E988600A713A2BA0217A4B99133BD18183ED4FD1D9765EEB9845E`.
 - The projection now correctly returns `evidence_required` with exactly `white_peace_native_option_unavailable` and `white_peace_final_recipient_response_unavailable`; the evaluator is absent and no action or time advance occurred. This closes the negative-path live proof and supersedes R641 for consumer behavior, but does not close C or change GEN-034 `2/4`.
 - Do not repeat this zero-day frame. The next input must reuse an existing Raiktor checkpoint at the already-frozen white-peace admission horizon if present; only if absent may a bounded preparation runner advance and save that one war. Broad preview stays disabled, and the C run remains two-read/no-action.
+
+## GEN-034-C 135-day evidence and 365-day preparation seam (2026-09-14)
+
+- Current round R645 reused the R456 pre-action source at date `53187096` and
+  observed `war_duration_days=135`. White peace remains unavailable in the
+  exact native option and its final recipient response, so this is retained
+  typed negative evidence rather than a C completion. Report SHA-256 is
+  `C6858122FCC4120E4715E220D4B711BF05180B741C294185A69C4BFE51A201FE`;
+  cleanup and source invariants are GREEN.
+- The 135-day frame will not be rerun and no intermediate dates will be
+  enumerated. The reusable horizon runner advances only to target date
+  `53192616` (365 war days), stops on the first event/identity/war/pause RED,
+  permits one resume and at most one pause, and saves only after one native
+  option query proves white-peace validation and final-response availability.
+  It contains no event-selection or war-termination call. Focused tests pass
+  normal/optimized `4/4`.
+- GEN-034 stays `2/4`; the next evidence attempt is the one bounded preparation
+  run. No public MCP schema, native ABI or open_kaishek consumer changed.
