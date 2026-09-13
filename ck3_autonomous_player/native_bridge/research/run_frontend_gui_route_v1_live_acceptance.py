@@ -3,7 +3,7 @@
 
 This runner launches one managed, non-debug CK3 process at the main menu,
 injects the exact bridge DLL, and uses the official MCP SDK to prove the
-semantic route transition ``main_menu -> bookmarks``.  It never sends mouse
+semantic route transition ``main_menu -> bookmarks -> lobby``.  It never sends mouse
 or keyboard input and never interprets pixels or OCR.
 """
 
@@ -44,9 +44,13 @@ EXPECTED_CK3_SHA256 = (
     "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86"
 )
 QUERY_CAPABILITY = "game.command.query-frontend-gui-route-v1"
-ACTIVATE_CAPABILITY = "game.command.activate-frontend-new-game-v1"
+ACTIVATE_NEW_GAME_CAPABILITY = "game.command.activate-frontend-new-game-v1"
+ACTIVATE_PICK_ANY_CAPABILITY = (
+    "game.command.activate-frontend-pick-any-character-v1"
+)
 QUERY_TOOL = "ck3_query_frontend_gui_route_v1"
-ACTIVATE_TOOL = "ck3_activate_frontend_new_game_v1"
+ACTIVATE_NEW_GAME_TOOL = "ck3_activate_frontend_new_game_v1"
+ACTIVATE_PICK_ANY_TOOL = "ck3_activate_frontend_pick_any_character_v1"
 _PROFILE_EXCLUDES = frozenset(
     {"crashes", "dumps", "exceptions", "logs", "save games", "last_save.ck3"}
 )
@@ -194,7 +198,7 @@ async def _mcp_sequence(
     async with Client(create_server(driver)) as client:
         listed = await client.list_tools()
         tools = {tool.name: tool for tool in listed.tools}
-        required = {QUERY_TOOL, ACTIVATE_TOOL}
+        required = {QUERY_TOOL, ACTIVATE_NEW_GAME_TOOL, ACTIVATE_PICK_ANY_TOOL}
         schemas = {
             name: tools[name].input_schema
             for name in sorted(required)
@@ -228,8 +232,18 @@ async def _mcp_sequence(
                 capability_call.get("is_error") is False
                 and isinstance(advertised, list)
                 and isinstance(hello_caps, list)
-                and {QUERY_CAPABILITY, ACTIVATE_CAPABILITY} <= set(advertised)
-                and {QUERY_CAPABILITY, ACTIVATE_CAPABILITY} <= set(hello_caps)
+                and {
+                    QUERY_CAPABILITY,
+                    ACTIVATE_NEW_GAME_CAPABILITY,
+                    ACTIVATE_PICK_ANY_CAPABILITY,
+                }
+                <= set(advertised)
+                and {
+                    QUERY_CAPABILITY,
+                    ACTIVATE_NEW_GAME_CAPABILITY,
+                    ACTIVATE_PICK_ANY_CAPABILITY,
+                }
+                <= set(hello_caps)
             ):
                 break
             await asyncio.sleep(0.25)
@@ -257,21 +271,60 @@ async def _mcp_sequence(
                 last_route=before,
             )
 
-        action_call = await _call(client, ACTIVATE_TOOL)
-        record(action_call)
-        action = _structured(action_call)
-        after = action.get("after") if isinstance(action.get("after"), dict) else {}
+        new_game_call = await _call(client, ACTIVATE_NEW_GAME_TOOL)
+        record(new_game_call)
+        new_game = _structured(new_game_call)
+        after_new_game = (
+            new_game.get("after")
+            if isinstance(new_game.get("after"), dict)
+            else {}
+        )
+        if (
+            new_game_call.get("is_error") is not False
+            or after_new_game.get("route") != "bookmarks"
+        ):
+            return red(
+                "new-game MCP action did not reach bookmarks",
+                tool_schemas=schemas,
+                capabilities=_structured(capability_call or {}),
+                before=before,
+                new_game=new_game,
+            )
+
+        pick_any_call = await _call(client, ACTIVATE_PICK_ANY_TOOL)
+        record(pick_any_call)
+        pick_any = _structured(pick_any_call)
+        after_pick_any = (
+            pick_any.get("after")
+            if isinstance(pick_any.get("after"), dict)
+            else {}
+        )
         checks = {
             "closed_zero_input_tools": set(schemas) == required,
             "before_main_menu": before.get("route") == "main_menu",
-            "action_not_error": action_call.get("is_error") is False,
-            "action_verified": action.get("status") == "verified",
-            "postcondition_verified": action.get("postcondition_verified") is True,
-            "after_bookmarks": after.get("route") == "bookmarks",
-            "no_ocr": action.get("uses_ocr") is False,
-            "no_keyboard": action.get("uses_keyboard") is False,
-            "no_mouse": action.get("uses_mouse") is False,
-            "native_semantic_backend": action.get("input_backend")
+            "new_game_not_error": new_game_call.get("is_error") is False,
+            "new_game_verified": new_game.get("status") == "verified",
+            "new_game_postcondition_verified": new_game.get(
+                "postcondition_verified"
+            )
+            is True,
+            "after_bookmarks": after_new_game.get("route") == "bookmarks",
+            "new_game_no_ocr": new_game.get("uses_ocr") is False,
+            "new_game_no_keyboard": new_game.get("uses_keyboard") is False,
+            "new_game_no_mouse": new_game.get("uses_mouse") is False,
+            "new_game_native_semantic_backend": new_game.get("input_backend")
+            == "native_gui_semantic_activation",
+            "pick_any_not_error": pick_any_call.get("is_error") is False,
+            "pick_any_verified": pick_any.get("status") == "verified",
+            "pick_any_postcondition_verified": pick_any.get(
+                "postcondition_verified"
+            )
+            is True,
+            "after_lobby": after_pick_any.get("route") == "lobby",
+            "pick_any_no_ocr": pick_any.get("uses_ocr") is False,
+            "pick_any_no_keyboard": pick_any.get("uses_keyboard") is False,
+            "pick_any_no_mouse": pick_any.get("uses_mouse") is False,
+            "pick_any_native_semantic_backend": pick_any.get("input_backend")
             == "native_gui_semantic_activation",
         }
         return {
@@ -279,7 +332,8 @@ async def _mcp_sequence(
             "tool_schemas": schemas,
             "capabilities": _structured(capability_call or {}),
             "before": before,
-            "action": action,
+            "new_game": new_game,
+            "pick_any_character": pick_any,
             "calls": calls,
             "call_summary": call_summary,
             "checks": checks,
