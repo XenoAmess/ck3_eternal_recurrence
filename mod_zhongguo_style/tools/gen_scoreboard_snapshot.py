@@ -2544,7 +2544,7 @@ def detail_gui() -> list[str]:
     lines = [
         "vbox = {",
         "\tname = \"zg361_scoreboard_detail_panel\"",
-        "\tlayoutpolicy_horizontal = expanding layoutpolicy_vertical = expanding spacing = 10 margin = { 20 8 }",
+        "\tlayoutpolicy_horizontal = expanding layoutpolicy_vertical = expanding spacing = 10 margin = { 20 8 } ignoreinvisible = yes",
         f"\tvisible = \"[And(GetVariableSystem.HasValue('zg361_scoreboard_view', 'detail'), Or({managed_visible}, {received_visible}))]\"",
         "\thbox = { layoutpolicy_horizontal = expanding spacing = 14",
         f"\t\tbutton_standard = {{ name = \"zg361_scoreboard_detail_back\" size = {{ 118 44 }} text = \"zg361_scoreboard_detail_back\" onclick = \"{DETAIL_CLEAR_ACTION}\" onclick = \"[GetVariableSystem.Set('zg361_scoreboard_view', 'list')]\" onclick = \"[GetVariableSystem.Set('zg361_scoreboard_detail_tab', 'facts')]\" }}",

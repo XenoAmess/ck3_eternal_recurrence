@@ -1291,6 +1291,7 @@ class ScoreboardSnapshotTests(unittest.TestCase):
         detail_layout = gui.split(
             'name = "zg361_scoreboard_detail_panel"', 1
         )[1][:320]
+        self.assertIn("ignoreinvisible = yes", detail_layout)
         self.assertNotIn("restrictparent_min", detail_layout)
 
         viewport_pages = [
