@@ -702,6 +702,68 @@ rqa_verify_succession_effect = {
 					has_title_law = single_heir_succession_law
 					NOT = { any_de_jure_county = { always = yes } }
 				}
+			}
+			debug_log = "RQA: PROBE PASS phase3_succession_title"
+		}
+		else = { debug_log = "RQA: PROBE FAIL phase3_succession_title" }
+		if = {
+			limit = { var:rqa_personal_county = { holder = root } }
+			debug_log = "RQA: PROBE PASS phase3_succession_personal_county"
+		}
+		else = { debug_log = "RQA: PROBE FAIL phase3_succession_personal_county" }
+		if = {
+			limit = {
+				var:rqa_loyal_direct = {
+					top_liege = root
+					primary_title = root.var:rqa_loyal_primary_title
+				}
+				var:rqa_loyal_indirect = { top_liege = root }
+			}
+			debug_log = "RQA: PROBE PASS phase3_succession_loyal_realm"
+		}
+		else = { debug_log = "RQA: PROBE FAIL phase3_succession_loyal_realm" }
+		if = {
+			limit = {
+				tgp_has_access_to_ministry_trigger = yes
+				global_var:rmtm_ministry_entitlement_title = { holder = root }
+			}
+			debug_log = "RQA: PROBE PASS phase3_succession_ministry_entitlement"
+		}
+		else = { debug_log = "RQA: PROBE FAIL phase3_succession_ministry_entitlement" }
+		if = {
+			limit = {
+				exists = cp:councillor_chancellor
+				cp:councillor_chancellor = { has_character_flag = rqa_prechaos_minister_chancellor has_title = title:e_minister_chancellor }
+				exists = cp:councillor_spymaster
+				cp:councillor_spymaster = { has_character_flag = rqa_prechaos_minister_censor has_title = title:e_minister_censor }
+				exists = cp:minister_grand_marshal
+				cp:minister_grand_marshal = { has_character_flag = rqa_prechaos_minister_grand_marshal has_title = title:e_minister_grand_marshal }
+				exists = cp:minister_personnel
+				cp:minister_personnel = { has_character_flag = rqa_prechaos_minister_personnel has_title = title:e_minister_of_personnel }
+				exists = cp:councillor_steward
+				cp:councillor_steward = { has_character_flag = rqa_prechaos_minister_revenue has_title = title:e_minister_of_revenue }
+				exists = cp:councillor_court_chaplain
+				cp:councillor_court_chaplain = { has_character_flag = rqa_prechaos_minister_rites has_title = title:e_minister_of_rites }
+				exists = cp:councillor_marshal
+				cp:councillor_marshal = { has_character_flag = rqa_prechaos_minister_war has_title = title:e_minister_of_war }
+				exists = cp:minister_justice
+				cp:minister_justice = { has_character_flag = rqa_prechaos_minister_justice has_title = title:e_minister_of_justice }
+				exists = cp:minister_works
+				cp:minister_works = { has_character_flag = rqa_prechaos_minister_works has_title = title:e_minister_of_works }
+			}
+			debug_log = "RQA: PROBE PASS phase3_succession_exact_ministers"
+		}
+		else = { debug_log = "RQA: PROBE FAIL phase3_succession_exact_ministers" }
+		if = {
+			limit = {
+				is_alive = yes
+				is_independent_ruler = yes
+				var:rqa_later_title = {
+					holder = root
+					has_variable = rmtm_restoration_hegemony
+					has_title_law = single_heir_succession_law
+					NOT = { any_de_jure_county = { always = yes } }
+				}
 				var:rqa_loyal_direct = {
 					top_liege = root
 					primary_title = root.var:rqa_loyal_primary_title
