@@ -235,7 +235,7 @@ postcondition tests pass `21/21` in normal and optimized Python, including a
 stalled first snapshot followed by a valid successor. One R660 replay of this
 changed behavior is justified; another unchanged retry is not.
 
-## R660 proved the cold-paused command-order constraint
+## R660 disproved the observation-timing repair
 
 R660 used one unique managed process and repeated the corrected five-second
 observation. Its recommendation path was again entirely GREEN and submitted
@@ -248,12 +248,11 @@ and `D0A24FE4E81DE06D950582C205D22AB4F965C28B2C775465A33D15C9B85A5EEE`.
 The input checkpoint and driver state were unchanged and cleanup returned the
 CK3 count to zero.
 
-Existing R655/R656 evidence gives the actionable difference: their successful
-time advance submitted `resume-map` as the first gameplay command after cold
-restore. R659/R660 first executed worker-thread options and terms reads, then
-the queued map command never materialized. This matches the separately retained
-application-main scheduling RED and justifies changing command order instead
-of increasing the wait or repeating the same attempt.
+R655/R656 had already shown that `resume-map` can advance a cold-restored
+production process immediately. At this point their apparent actionable
+difference was command order: R659/R660 performed worker-thread reads before
+the map command. The first-command experiment below tested that hypothesis
+directly. Increasing the wait or repeating R660 was already unjustified.
 
 `raiktor_checkpoint_replay_recommendation_provider.py` now rebinds the complete
 hash-bound production `continue` recommendation to a fresh PID before any
@@ -267,6 +266,35 @@ The R661 no-launch preflight is GREEN at
 `Z:\ck3_mod_rewrite_process_assets\g2-gen034-r661-checkpoint-replay-action-preflight.json`,
 SHA-256
 `49BD658725E833E318947B6E465A75C6594EF0569940B9345C800993E929210A`.
+
+## R661 isolates the RED to the R459 map-control fixture
+
+R661 used unique PID `194108` and submitted `resume-map` as the first gameplay
+command after the immutable R459 checkpoint was cold-restored. It performed
+zero fresh exit queries and zero fresh power queries. The replay provider,
+production recommendation, action gate and exact one-command delta were GREEN;
+the bridge acknowledged the command as submitted. Forty-five read-only
+observations over five seconds nevertheless remained on snapshot `native:3`,
+public revision `4`, native revision `3` and raw date `53183856`, with the map
+still paused. The required successor therefore remained RED.
+
+The report is
+`Z:\ck3_mod_rewrite_process_assets\g2-gen034-r661-checkpoint-replay-action-ed1ebb0\report.json`,
+SHA-256
+`BD6682AAB5DBD71E5E5ED327C050750CA695ADD0E289D25587A64AAB36EB5DA2`;
+the final driver state is SHA-256
+`C9D503E912C82CD1FD86C820C025CF105F1E16CBAFEE9AE9068874655B53ED84`.
+The source checkpoint and driver-state hashes were unchanged, cleanup was
+GREEN, and the process count returned to zero.
+
+This supersedes the tentative command-order explanation above. R655/R656 used
+a different checkpoint and source frame (`53187096`) and observed an immediate
+successor after the same first-command shape, whereas the R459 frame
+(`53183856`) does not. The remaining failure is scoped to map-control execution
+from this immutable fixture; it is not a missing recommendation, authorization
+or observation wait. The RED remains recorded, GEN-034 stays `2/4`, and no more
+unchanged R459 retries are allowed. G2 work proceeds on the next visible-value
+milestone while this fixture-specific lifecycle seam remains separately open.
 
 ## Exact action admission
 

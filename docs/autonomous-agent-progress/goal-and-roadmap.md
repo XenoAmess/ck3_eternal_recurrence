@@ -409,6 +409,8 @@ tyranny；健康、压力与生育；法律、政府、文化、创新与非宗�
    新轮次 R639 已在同一 paused production PID 内完成独立/vassal 双场景，两个 root 和 turn bundle 均 ready，非空 relationship
    vectors 与 occupied council task 均实机成立；M1 已 `complete`。派系身份、成员、力量、诉求、不满度和最后期限保留为后续治理深度；
 3. `G2-M2`：`event-context-v2` 接入共享 registry recommendation，并以三个自然事件闭合选择与状态后置；
+   R661 已将 R459 的 GEN-034 剩余 RED 限定为 fixture-specific map-control execution；相同输入不再重跑，主动施工转入 M2，
+   但 GEN-034 的 `2/4` 状态与 RED 继续保留；
 4. `G2-M3/M4`：把继承、health/stress/legitimacy、vassal/faction alert、建设和内阁组成 realm-survival 与和平治理 OODA；
 5. `G2-M5–M7`：家庭/外交/完整战争，谋略/制度/活动，以及按 runtime identity 启用的政府/DLC adapter 和长期 qualification。
 

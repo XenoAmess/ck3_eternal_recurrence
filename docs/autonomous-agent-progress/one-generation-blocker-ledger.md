@@ -1598,3 +1598,27 @@ one recommendation, one action and the bounded postwar/cold-restore checks.
   candidate build is GREEN. This removes the static execution blocker but does
   not supply live action, resource delta, truce, cleanup or cold-restore proof.
   GEN-034 remains `2/4` and the next action is one bounded managed lifecycle.
+
+## GEN-034-D R657-R661 immutable replay boundary (2026-09-14)
+
+- R657 retained two successful same-frame exit reads before the application-main
+  strategic-power query failed. R658 moved power first and failed at the same
+  boundary. Their report SHA-256 values are `80F42145...73C` and
+  `2D654EDB...4BF`; the RED is preserved rather than converted into evidence.
+- A reusable, hash-bound offline join reuses R471's production power evidence
+  with R657's exact R459 exit terms. It emits a production `continue`
+  recommendation without authorizing a live action. The recommendation report
+  SHA-256 is `D9222517...4E9`.
+- R659 submitted one authorized `resume-map` after two fresh reads but sampled
+  the same frame. R660 then observed 42 read-only snapshots for five seconds
+  without a successor. R661 removed all fresh reads and made `resume-map` the
+  first gameplay command; its unique PID `194108` still remained paused across
+  45 read-only observations at `native:3` / revision `4` / date `53183856`.
+  R661 report SHA-256 is `BD6682AA...5DA2`, final driver-state SHA-256 is
+  `C9D503E9...ED84`, source inputs are unchanged and cleanup is GREEN.
+- R655/R656 used a different checkpoint/source frame and advanced immediately
+  with the same first-command shape. The remaining RED is therefore scoped to
+  R459 map-control execution, not recommendation or action ordering. No more
+  unchanged R459 retries are permitted. GEN-034 remains `2/4`, G2 remains
+  `1/8`, and the active implementation queue moves to G2-M2 production event
+  loops while this fixture seam remains recorded.

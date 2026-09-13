@@ -43,11 +43,12 @@
         "GEN-034-D route-bound six-item postcondition expectations frozen in recommendation certificate",
         "GEN-034-D pure postcondition verifier static-ready (normal/optimized focused suite 20/20)",
         "GEN-034-D source-bound cleanup/truce evidence composer static-ready (normal/optimized focused suite 26/26)",
-        "GEN-034-D bounded action runner and termination-bound cleanup dispatch static-ready (normal/optimized focused suite 29/29; MSVC candidate build GREEN)"
+        "GEN-034-D bounded action runner and termination-bound cleanup dispatch static-ready (normal/optimized focused suite 29/29; MSVC candidate build GREEN)",
+        "R661 immutable replay: production continue recommendation and one submitted resume, but no successor across 45 observations; fixture-scoped map-control RED"
       ],
       "planner_consumer": "three-way exit recommendation and one semantic exit action",
       "visible_outcome": "compare continue, white peace and surrender on one paused frame, submit once, then verify postwar state and cold restore",
-      "open_blocker": "the queued event and one bounded production horizon remain for C; D's recommendation, pre-action source binding, one-action runner, material evidence composer and six-check verifier are static-ready, while one bounded live action plus checkpoint/cold restore remain"
+      "open_blocker": "R459 map-control execution remains RED after an authorized first-command resume produced no successor; unchanged fixture retries are stopped. C still needs a reachable same-frame white-peace comparison and D still needs one terminating action plus material postconditions and cold restore."
     },
     {
       "id": "G2-M1",
@@ -181,10 +182,10 @@
         "id": "GEN-034-D",
         "name": "three-way recommendation, one action and postwar verification",
         "status": "blocked_live",
-        "latest_evidence": "v2 recommendation/action gate freezes exact expectations; the managed runner revalidates source generations before one action, gathers cleanup/two truce reads and performs one checkpoint/cold restore; the default-OFF cleanup dispatch accepts a same-WarID white-peace or surrender ACK; normal/optimized focused suite 29/29 and MSVC candidate build GREEN; live execution pending"
+        "latest_evidence": "Production continue recommendation and revision-bound action admission are proven; R661 submitted one first-command resume with zero fresh reads but the immutable R459 frame stayed paused across 45 observations. Terminating action/material/cold-restore proof remains blocked_live."
       }
     ]
   },
   "religion_boundary": "deferred except the minimum native result needed by holy-war execution and marriage legality or acceptance",
-  "updated_at": "2026-09-14T03:51:00+08:00"
+  "updated_at": "2026-09-14T07:04:00+08:00"
 }
