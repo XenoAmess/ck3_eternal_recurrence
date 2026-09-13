@@ -1231,6 +1231,7 @@ class NativeHeadlessGameplayDriver:
         *,
         endpoint: NativeBridgeEndpoint | None = None,
         command_timeout_seconds: float = 10.0,
+        frontend_transition_timeout_seconds: float = 120.0,
         life_advance_timeout_seconds: float = 30.0,
         state_dir: str | os.PathLike[str] | None = None,
         save_dir: str | os.PathLike[str] | None = None,
@@ -1249,6 +1250,10 @@ class NativeHeadlessGameplayDriver:
         self.pipe_name = _validate_pipe_name(pipe_name)
         self.command_timeout_seconds = _positive_seconds(
             command_timeout_seconds, "command_timeout_seconds"
+        )
+        self.frontend_transition_timeout_seconds = _positive_seconds(
+            frontend_transition_timeout_seconds,
+            "frontend_transition_timeout_seconds",
         )
         self.life_advance_timeout_seconds = _positive_seconds(
             life_advance_timeout_seconds, "life_advance_timeout_seconds"
@@ -3520,6 +3525,38 @@ class NativeHeadlessGameplayDriver:
                 f"native frontend GUI route is malformed: {error}"
             ) from error
 
+    def _wait_for_frontend_gui_route_v1(
+        self, expected_route: str
+    ) -> dict[str, object]:
+        deadline = time.monotonic() + self.frontend_transition_timeout_seconds
+        last_route: dict[str, object] | None = None
+        last_error: BridgeUnavailableError | None = None
+        while time.monotonic() < deadline:
+            try:
+                last_route = self.query_frontend_gui_route_v1()
+                last_error = None
+            except BridgeUnavailableError as error:
+                # CK3 can suspend its application-main GUI pump while loading
+                # from Bookmarks into the ruler-selection map.  A timed-out or
+                # temporarily rejected observation is not the action's
+                # postcondition; retry until the bounded transition deadline.
+                last_error = error
+            else:
+                if last_route["route"] == expected_route:
+                    return last_route
+            remaining = deadline - time.monotonic()
+            if remaining > 0:
+                time.sleep(min(0.25, remaining))
+        detail = (
+            f"last route was {last_route.get('route')}"
+            if last_route is not None
+            else f"last query failed: {last_error}"
+        )
+        raise BridgeUnavailableError(
+            f"frontend route {expected_route} was not observed before the "
+            f"transition deadline; {detail}"
+        )
+
     def activate_frontend_new_game_v1(self) -> dict[str, object]:
         """Activate CK3's named New Game widget and prove Bookmarks opened."""
 
@@ -3534,11 +3571,7 @@ class NativeHeadlessGameplayDriver:
             required_capability=ACTIVATE_FRONTEND_NEW_GAME_V1_CAPABILITY,
             allow_frontend_revision_zero=True,
         )
-        deadline = time.monotonic() + self.command_timeout_seconds
-        after = self.query_frontend_gui_route_v1()
-        while after["route"] != "bookmarks" and time.monotonic() < deadline:
-            time.sleep(0.05)
-            after = self.query_frontend_gui_route_v1()
+        after = self._wait_for_frontend_gui_route_v1("bookmarks")
         try:
             return normalize_frontend_new_game_v1(
                 acknowledgement,
@@ -3566,11 +3599,7 @@ class NativeHeadlessGameplayDriver:
             ),
             allow_frontend_revision_zero=True,
         )
-        deadline = time.monotonic() + self.command_timeout_seconds
-        after = self.query_frontend_gui_route_v1()
-        while after["route"] != "lobby" and time.monotonic() < deadline:
-            time.sleep(0.05)
-            after = self.query_frontend_gui_route_v1()
+        after = self._wait_for_frontend_gui_route_v1("lobby")
         try:
             return normalize_frontend_pick_any_character_v1(
                 acknowledgement,

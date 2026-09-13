@@ -23,6 +23,7 @@ from xar_autoplayer.bridge.frontend_gui_route_contract import (
 )
 from xar_autoplayer.bridge.mcp_server import create_server
 from xar_autoplayer.bridge.native_driver import NativeHeadlessGameplayDriver
+from xar_autoplayer.bridge.driver import BridgeUnavailableError
 from xar_autoplayer.bridge.service import GameplayBridgeService
 
 
@@ -202,6 +203,29 @@ class FrontendGuiRouteV1ContractTests(unittest.TestCase):
                     "allow_frontend_revision_zero": True,
                 }
             ],
+        )
+
+    def test_frontend_transition_retries_temporary_query_unavailability(
+        self,
+    ) -> None:
+        driver = object.__new__(NativeHeadlessGameplayDriver)
+        driver.frontend_transition_timeout_seconds = 1.0
+        observations: list[object] = [
+            RuntimeError("application-main pump is loading"),
+            _route("unavailable"),
+            _route("lobby"),
+        ]
+
+        def query() -> dict[str, object]:
+            observation = observations.pop(0)
+            if isinstance(observation, BaseException):
+                raise BridgeUnavailableError(str(observation))
+            return observation
+
+        driver.query_frontend_gui_route_v1 = query
+        self.assertEqual(
+            driver._wait_for_frontend_gui_route_v1("lobby")["route"],
+            "lobby",
         )
 
     def test_service_preserves_zero_input_native_contract(self) -> None:
