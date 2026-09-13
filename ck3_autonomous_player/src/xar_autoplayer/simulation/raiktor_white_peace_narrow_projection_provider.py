@@ -51,6 +51,17 @@ _UNOBSERVED_DYNAMIC_EFFECTS = [
     "attacker_accolade_white_peace_prestige_delta",
     "laamp_actual_settlement_outside_cb_effect",
 ]
+_SURRENDER_NONVALUED_EFFECTS = {
+    "targeting_faction_discontent_delta",
+    "glory_hound_vassal_opinion_rows",
+    "antagonistic_clan_vassal_opinion_rows",
+    "existing_house_feud_score_delta",
+    "attacker_mandala_piety_experience_delta",
+    "defender_mandala_serenity",
+    "defender_accolade_glory",
+    "laamp_actual_settlement_outside_cb_effect",
+    "war_bound_army_losses",
+}
 
 
 class WhitePeaceNarrowProjectionError(ValueError):
@@ -277,6 +288,9 @@ def provide_raiktor_white_peace_narrow_projection(
         observation=observation,
         source_evidence=evidence,
         unobserved_dynamic_effects=_UNOBSERVED_DYNAMIC_EFFECTS,
+        surrender_unobserved_dynamic_effects=(
+            _surrender_unobserved_dynamic_effects(terms)
+        ),
     )
 
 
@@ -512,12 +526,31 @@ def _source_evidence(terms: dict[str, object]) -> dict[str, object]:
     }
 
 
+def _surrender_unobserved_dynamic_effects(
+    terms: dict[str, object]
+) -> list[str]:
+    values = terms.get("unobserved_dynamic_effects")
+    if not isinstance(values, list):
+        raise WhitePeaceNarrowProjectionError(
+            "Raiktor terms lack unobserved dynamic effects"
+        )
+    result = [
+        value for value in values if value in _SURRENDER_NONVALUED_EFFECTS
+    ]
+    if set(result) != _SURRENDER_NONVALUED_EFFECTS:
+        raise WhitePeaceNarrowProjectionError(
+            "Raiktor surrender uncertainty set drifted"
+        )
+    return result
+
+
 def _result(
     *,
     blockers: list[str],
     observation: dict[str, object] | None = None,
     source_evidence: dict[str, object] | None = None,
     unobserved_dynamic_effects: list[str] | None = None,
+    surrender_unobserved_dynamic_effects: list[str] | None = None,
 ) -> dict[str, object]:
     return {
         "schema": PROVIDER_SCHEMA,
@@ -532,6 +565,9 @@ def _result(
         "source_evidence": source_evidence,
         "unobserved_dynamic_effects": list(
             unobserved_dynamic_effects or _UNOBSERVED_DYNAMIC_EFFECTS
+        ),
+        "surrender_unobserved_dynamic_effects": list(
+            surrender_unobserved_dynamic_effects or []
         ),
         "blockers": blockers,
         "boundaries": [

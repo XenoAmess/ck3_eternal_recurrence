@@ -1366,3 +1366,9 @@ one recommendation, one action and the bounded postwar/cold-restore checks.
   production frame plus versioned utility evaluation. Therefore GEN-034 stays
   `2/4`, with D still requiring one recommendation, one semantic action and the
   postwar/checkpoint/cold-restore verification.
+
+## GEN-034-C immediate-exit evaluator update (2026-09-13)
+
+- The static-ready narrow projection now feeds a strict same-unit evaluator for white peace and surrender. It binds the exact surrender aggregate, repository budget profile and utility model and records per-feature contributions, uncertainty penalties and hard-budget eligibility.
+- The evaluator preserves seven white-peace and nine surrender effects as unobserved; current regiments are not misreported as proven surrender losses. Focused normal/optimized projection and evaluator tests pass `10/10`.
+- This output does not value continue, recommend among three exits or authorize an action. C remains blocked only on one bounded production frame, so GEN-034 stays `2/4`; D remains the later one-recommendation, one-action and postwar/cold-restore package.

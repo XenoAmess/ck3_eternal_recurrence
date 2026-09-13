@@ -72,3 +72,31 @@ GEN-034-C remains open until one bounded managed CK3 session supplies a real
 same-frame projection and the new strategy utility model evaluates it. That run
 must use the next CK3 round, must not call the disabled broad preview, and does
 not justify a long-running scenario matrix.
+
+## Same-unit immediate-exit evaluator
+
+`raiktor_exit_utility_evaluator.py` consumes the projection, its hash-bound
+surrender aggregate session, the versioned budget profile and the versioned
+utility model. It maps both immediate exits into the same nine-feature
+`strategy_utility_q100000` vector. Gold and prestige use truncating Q100000
+multiplication; discrete claims, favors, truce days, prisoner releases, title
+changes, hostage transfers and proven war-bound soldier losses use direct
+integer coefficients.
+
+The evaluator applies the model's bounded per-effect uncertainty penalty to
+seven white-peace effects and nine surrender effects that the narrow queries do
+not value. It also applies the existing option-specific hard budgets before
+reporting a pairwise preference. Generic current regiment strength is not
+relabelled as a proven surrender loss. In the representative fixture, white
+peace scores `-29,025,000` and surrender scores `-74,725,000`; white peace is
+nevertheless ineligible because that frame would grant a favor while the
+versioned white-peace budget forbids one. This illustrates why the certificate
+keeps utility and budget eligibility separate.
+
+The output is comparison evidence only. It deliberately has no continue-war
+utility, full three-way recommendation, action literal or submission authority.
+The focused projection-plus-evaluator tests pass `10/10` in normal and optimized
+Python. GEN-034-C remains `blocked_live`: one bounded production frame must
+prove the same projection/evaluation path before C can close. The next
+integration package will value continue separately from measured strategic
+power, then produce the one three-way decision required by GEN-034-D.

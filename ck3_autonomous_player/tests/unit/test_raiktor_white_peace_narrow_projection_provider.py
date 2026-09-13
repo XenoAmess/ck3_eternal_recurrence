@@ -168,6 +168,13 @@ class RaiktorWhitePeaceNarrowProjectionProviderTests(unittest.TestCase):
             "participant_ally_fame_deltas",
             result["unobserved_dynamic_effects"],
         )
+        self.assertEqual(
+            result["source_evidence"]["game_version"], "1.19.0.6"
+        )
+        self.assertIn(
+            "war_bound_army_losses",
+            result["surrender_unobserved_dynamic_effects"],
+        )
 
         comparison = provide_raiktor_same_frame_white_peace_comparison(
             source_checkpoint_value=_source(observation["frame"]),
