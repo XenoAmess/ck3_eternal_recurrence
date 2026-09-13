@@ -65,8 +65,14 @@ DUPLICATE_PATTERNS = (
 )
 REQUIRED_MARKERS = (
     "AUBT: TEST BEGIN source-live",
-    "AUBT: TEST PASS native_decision_priority_selection",
+    "AUBT: TEST PASS native_decision_priority_continue_selection",
+    "AUBT: TEST PASS domain_limit_normalized_zero",
     "AUBT: TEST PASS treasury_priority_one_tier",
+    "AUBT: TEST PASS domain_limit_zero_builds",
+    "AUBT: TEST PASS over_limit_pause_zero_side_effect",
+    "AUBT: TEST PASS domain_limit_recovery_resumes",
+    "AUBT: TEST PASS over_limit_continue_builds",
+    "AUBT: TEST PASS legacy_no_pause_flag_continues",
     "AUBT: TEST PASS disabled_zero_side_effect",
     "AUBT: TEST PASS personal_gold_fallback",
     "AUBT: TEST PASS reenabled_loop_stopped_cleanly",
@@ -560,68 +566,106 @@ def verify_protected_snapshot(
             )
 
 
-def exercise_funding_selector_ui(artifacts: Path) -> dict[str, object]:
-    """Exercise the production decision's native three-choice selector once."""
+def exercise_policy_selector_ui(artifacts: Path) -> dict[str, object]:
+    """Exercise all six production policies through the native scroll list."""
 
-    second_step = isolated.open_decision_detail(
+    isolated.open_decision_detail(
         "启用自动建造",
-        "选择资金来源",
+        "选择资金与超直辖策略",
         artifacts,
-        "05_funding_selector",
+        "05_policy_selector",
         contains=False,
     )
     option_labels = (
-        ("treasury_only", "只用国库"),
-        ("personal_only", "只用个人金钱"),
-        ("treasury_first", "优先国库"),
+        ("treasury_only_pause", "只用国库｜超直辖暂停"),
+        ("treasury_only_continue", "只用国库｜超直辖继续"),
+        ("personal_only_pause", "只用个人｜超直辖暂停"),
+        ("personal_only_continue", "只用个人｜超直辖继续"),
+        ("treasury_first_pause", "优先国库｜超直辖暂停"),
+        ("treasury_first_continue", "优先国库｜超直辖继续"),
     )
     centers: dict[str, tuple[int, int]] = {}
+    scroll_attempts: dict[str, int] = {}
+
+    def visible_option_center(image) -> tuple[int, int] | None:
+        for _, label in option_labels:
+            center = acceptance.find_ocr_text(
+                image, label, acceptance.FULL_SCREEN_REGION, contains=False
+            )
+            if center is not None:
+                return center
+        return None
+
+    # The controller may initially reveal the default at the bottom. Derive a
+    # real on-screen list anchor from OCR, then wheel to the top without any
+    # assumed desktop, screenshot, panel, or image dimensions.
+    initial = acceptance.ImageGrab.grab()
+    anchor = visible_option_center(initial)
+    if anchor is None:
+        initial.save(artifacts / "05_policy_selector_no_anchor.png")
+        raise acceptance.RunnerError("native policy list has no OCR-visible option anchor")
+    acceptance.pyautogui.moveTo(*anchor, duration=0.2)
+    acceptance.pyautogui.scroll(30)
+    time.sleep(0.8)
+
+    selected_for_gate = {
+        "treasury_only_pause",
+        "personal_only_continue",
+        "treasury_first_continue",
+    }
     for key, label in option_labels:
-        centers[key] = acceptance.wait_for_ocr_text(
-            label,
-            acceptance.FULL_SCREEN_REGION,
-            15,
-            artifacts,
-            f"05_funding_selector_{key}.png",
-            contains=False,
-            stable_hits=1,
-        )
-    ordered_y = [centers[key][1] for key, _ in option_labels]
-    if ordered_y != sorted(ordered_y) or len(set(ordered_y)) != len(ordered_y):
-        raise acceptance.RunnerError(
-            f"funding choices are not rendered in the required order: {ordered_y}"
-        )
-    width, height = acceptance.pyautogui.size()
-    acceptance.pyautogui.moveTo(int(width * 0.05), int(height * 0.50))
-    time.sleep(0.5)
-    acceptance.ImageGrab.grab().save(artifacts / "05_funding_selector_default.png")
-    for key, _ in option_labels:
-        acceptance.deliberate_click(centers[key], f"production funding option {key}")
-        acceptance.pyautogui.moveTo(int(width * 0.05), int(height * 0.50))
-        time.sleep(0.5)
-        acceptance.ImageGrab.grab().save(
-            artifacts / f"05_funding_selector_selected_{key}.png"
-        )
+        for attempt in range(9):
+            acceptance.focus_ck3()
+            image = acceptance.ImageGrab.grab()
+            center = acceptance.find_ocr_text(
+                image, label, acceptance.FULL_SCREEN_REGION, contains=False
+            )
+            if center is not None:
+                centers[key] = center
+                scroll_attempts[key] = attempt
+                image.save(artifacts / f"05_policy_selector_{key}.png")
+                break
+            anchor = visible_option_center(image)
+            if anchor is None:
+                image.save(artifacts / f"05_policy_selector_{key}_no_anchor.png")
+                raise acceptance.RunnerError(
+                    f"native policy list lost its OCR anchor while seeking {label}"
+                )
+            acceptance.pyautogui.moveTo(*anchor, duration=0.2)
+            acceptance.pyautogui.scroll(-3)
+            time.sleep(0.8)
+        else:
+            image.save(artifacts / f"05_policy_selector_{key}_missing.png")
+            raise acceptance.RunnerError(
+                f"native policy choice was not reachable by scrolling: {label}"
+            )
+
+        if key in selected_for_gate:
+            acceptance.deliberate_click(centers[key], f"production policy option {key}")
+            time.sleep(0.5)
+            acceptance.ImageGrab.grab().save(
+                artifacts / f"05_policy_selector_selected_{key}.png"
+            )
 
     # The final selected item is treasury-first. Execute the real production
-    # decision and let the fixture prove that it persisted as the no-flag
-    # legacy/default state before any fixture mutation occurs.
+    # continue policy. The fixture proves that its no-pause/no-funding-flag
+    # representation preserves the 3.0.0 old-save behavior.
     second_step = acceptance.wait_for_ocr_text(
-        "选择资金来源",
+        "选择资金与超直辖策略",
         acceptance.FULL_SCREEN_REGION,
         10,
         artifacts,
-        "05_funding_selector_second_step.png",
+        "05_policy_selector_second_step.png",
         contains=False,
         stable_hits=1,
     )
-    acceptance.deliberate_click(second_step, "production funding option confirmation")
+    acceptance.deliberate_click(second_step, "production policy option confirmation")
     final_confirm = acceptance.wait_for_ocr_text(
         "当然",
         acceptance.FULL_SCREEN_REGION,
         15,
         artifacts,
-        "05_funding_selector_final_confirmation.png",
+        "05_policy_selector_final_confirmation.png",
         contains=False,
         stable_hits=1,
     )
@@ -631,14 +675,16 @@ def exercise_funding_selector_ui(artifacts: Path) -> dict[str, object]:
         acceptance.FULL_SCREEN_REGION,
         15,
         artifacts,
-        "05_funding_selector_executed.png",
+        "05_policy_selector_executed.png",
         contains=False,
         stable_hits=1,
     )
     return {
         "option_order": [key for key, _ in option_labels],
         "option_centers": {key: list(value) for key, value in centers.items()},
-        "selected_and_executed": "treasury_first",
+        "scroll_attempts": scroll_attempts,
+        "interaction_samples": sorted(selected_for_gate),
+        "selected_and_executed": "treasury_first_continue",
         "second_step_center": list(second_step),
         "final_confirm_center": list(final_confirm),
         "disable_decision_center_after_execution": list(disabled_row),
@@ -699,7 +745,7 @@ def run_cell(
         acceptance.navigate_lobby(artifacts)
         isolated.wait_for_gameplay_hud(artifacts)
         acceptance.ensure_game_paused(artifacts, "04_gameplay")
-        funding_ui = exercise_funding_selector_ui(artifacts)
+        policy_ui = exercise_policy_selector_ui(artifacts)
         acceptance.set_speed_five_and_unpause(artifacts, "aub_live")
         for marker in REQUIRED_MARKERS:
             stream.wait(marker, 120)
@@ -725,7 +771,15 @@ def run_cell(
         ensure_final_pause_by_date(artifacts, "09_final_map")
         stream.validate()
         evidence = {
-            "native_funding_selector": funding_ui,
+            "native_policy_selector": policy_ui,
+            "domain_limit_policy": {
+                "exact_boundary_zero_builds": True,
+                "over_limit_minus_one_pauses_without_side_effects": True,
+                "automatic_resume_at_zero": True,
+                "continue_policy_builds_at_minus_one": True,
+                "old_save_without_flag_continues": True,
+                "global_loop_remains_active_while_paused": True,
+            },
             "treasury_priority": True,
             "personal_gold_fallback": True,
             "treasury_only": {

@@ -27,28 +27,38 @@ auto_build.0004 = {
     
     immediate = {
         hidden_effect = {
-            save_scope_as = aub_payer
-            # Building on_complete receives the construction payer as
-            # scope:character in vanilla. add_building preserves saved scopes,
-            # so provide the same context for immediate automatic upgrades.
-            save_scope_as = character
-            # 仅遍历当前玩家直接持有、未出租且能承载普通省份建筑的地产。
-            every_directly_owned_province = {
+            # 无四期 flag 等价于 3.0.0 的“超直辖仍修建”。选择暂停时，
+            # 只有原版普通超直辖警报尚未触发（可用直辖数 >= 0）才执行整轮。
+            if = {
                 limit = {
-                    has_ongoing_construction = no
-                    barony = { is_leased_out = no }
                     OR = {
-                        has_holding_type = castle_holding
-                        has_holding_type = city_holding
-                        has_holding_type = church_holding
-                        has_holding_type = tribal_holding
-                        has_holding_type = temple_citadel_holding
+                        NOT = { has_character_flag = aub_pause_when_over_domain_limit }
+                        domain_limit_available >= 0
                     }
                 }
-                province_owner = { save_scope_as = holder }
-                province_owner = { save_scope_as = build_owner }
-                county = { save_scope_as = county }
-                aub_upgrade_all_supported_buildings_effect = yes
+                save_scope_as = aub_payer
+                # Building on_complete receives the construction payer as
+                # scope:character in vanilla. add_building preserves saved scopes,
+                # so provide the same context for immediate automatic upgrades.
+                save_scope_as = character
+                # 仅遍历当前玩家直接持有、未出租且能承载普通省份建筑的地产。
+                every_directly_owned_province = {
+                    limit = {
+                        has_ongoing_construction = no
+                        barony = { is_leased_out = no }
+                        OR = {
+                            has_holding_type = castle_holding
+                            has_holding_type = city_holding
+                            has_holding_type = church_holding
+                            has_holding_type = tribal_holding
+                            has_holding_type = temple_citadel_holding
+                        }
+                    }
+                    province_owner = { save_scope_as = holder }
+                    province_owner = { save_scope_as = build_owner }
+                    county = { save_scope_as = county }
+                    aub_upgrade_all_supported_buildings_effect = yes
+                }
             }
         }
     }

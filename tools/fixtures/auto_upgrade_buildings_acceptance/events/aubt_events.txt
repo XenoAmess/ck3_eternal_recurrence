@@ -11,10 +11,11 @@ aubt.0 = {
 				has_character_flag = enable_auto_build
 				NOT = { has_character_flag = aub_funding_treasury_only }
 				NOT = { has_character_flag = aub_funding_personal_only }
+				NOT = { has_character_flag = aub_pause_when_over_domain_limit }
 			}
-			debug_log = "AUBT: TEST PASS native_decision_priority_selection"
+			debug_log = "AUBT: TEST PASS native_decision_priority_continue_selection"
 		}
-		else = { debug_log = "AUBT: TEST FAIL native_decision_priority_selection" }
+		else = { debug_log = "AUBT: TEST FAIL native_decision_priority_continue_selection" }
 		# Force a government that actually exposes CK3 1.19's treasury resource.
 		# No funding flags is the frozen legacy/treasury-first save state.
 		change_government = celestial_government
@@ -47,6 +48,33 @@ aubt.0 = {
 			}
 			add_building = barracks_01
 		}
+		# Normalize the disposable fixture character to the exact vanilla boundary.
+		# Stacking one-point modifiers make this independent of bookmark stats,
+		# government, innovations and the number of directly held counties.
+		set_variable = { name = aubt_domain_adjust_guard value = 0 }
+		while = {
+			limit = {
+				domain_limit_available > 0
+				var:aubt_domain_adjust_guard < 64
+			}
+			add_character_modifier = { modifier = aubt_domain_limit_adjust_down }
+			change_variable = { name = aubt_domain_adjust_guard add = 1 }
+		}
+		while = {
+			limit = {
+				domain_limit_available < 0
+				var:aubt_domain_adjust_guard < 128
+			}
+			add_character_modifier = { modifier = aubt_domain_limit_adjust_up }
+			change_variable = { name = aubt_domain_adjust_guard add = 1 }
+		}
+		remove_variable = aubt_domain_adjust_guard
+		if = {
+			limit = { domain_limit_available = 0 }
+			debug_log = "AUBT: TEST PASS domain_limit_normalized_zero"
+		}
+		else = { debug_log = "AUBT: TEST FAIL domain_limit_normalized_zero" }
+		add_character_flag = aub_pause_when_over_domain_limit
 		add_character_flag = enable_auto_build
 		aub_start_global_loop_effect = yes
 		trigger_event = { id = aubt.1 days = 3 }
@@ -138,8 +166,136 @@ aubt.1 = {
 			debug_log = "AUBT: TEST PASS treasury_priority_one_tier"
 		}
 		else = { debug_log = "AUBT: TEST FAIL treasury_priority_one_tier" }
+		if = {
+			limit = {
+				global_var:aubt_province = {
+					has_building = barracks_02
+					NOT = { has_building_or_higher = barracks_03 }
+				}
+				global_var:aubt_player = {
+					domain_limit_available = 0
+					has_character_flag = aub_pause_when_over_domain_limit
+					treasury < var:aubt_treasury_before
+					gold = var:aubt_gold_before
+				}
+			}
+			debug_log = "AUBT: TEST PASS domain_limit_zero_builds"
+		}
+		else = { debug_log = "AUBT: TEST FAIL domain_limit_zero_builds" }
+		global_var:aubt_player = {
+			capital_province = {
+				remove_building = barracks_02
+				add_building = barracks_01
+			}
+			set_variable = { name = aubt_gold_before value = gold }
+			set_variable = { name = aubt_treasury_before value = treasury }
+			add_character_modifier = { modifier = aubt_domain_limit_over_one }
+		}
+		trigger_event = { id = aubt.20 days = 16 }
+	}
+}
+
+# A complete 15-day tick while exactly one holding over the limit must leave
+# the building and every payment source untouched without stopping the loop.
+aubt.20 = {
+	scope = none
+	hidden = yes
+	immediate = {
+		if = {
+			limit = {
+				global_var:aubt_province = {
+					has_building = barracks_01
+					NOT = { has_building = barracks_02 }
+				}
+				global_var:aubt_player = {
+					domain_limit_available = -1
+					has_character_flag = aub_pause_when_over_domain_limit
+					gold = var:aubt_gold_before
+					treasury = var:aubt_treasury_before
+				}
+				has_global_variable = aub_auto_build_loop_started
+			}
+			debug_log = "AUBT: TEST PASS over_limit_pause_zero_side_effect"
+		}
+		else = { debug_log = "AUBT: TEST FAIL over_limit_pause_zero_side_effect" }
+		global_var:aubt_player = {
+			remove_character_modifier = aubt_domain_limit_over_one
+			set_variable = { name = aubt_gold_before value = gold }
+			set_variable = { name = aubt_treasury_before value = treasury }
+		}
+		trigger_event = { id = aubt.21 days = 16 }
+	}
+}
+
+# Removing only the one-point over-limit modifier restores the exact zero
+# boundary. The still-running loop must resume without re-enabling anything.
+aubt.21 = {
+	scope = none
+	hidden = yes
+	immediate = {
+		if = {
+			limit = {
+				global_var:aubt_province = {
+					has_building = barracks_02
+					NOT = { has_building_or_higher = barracks_03 }
+				}
+				global_var:aubt_player = {
+					domain_limit_available = 0
+					has_character_flag = aub_pause_when_over_domain_limit
+					treasury < var:aubt_treasury_before
+					gold = var:aubt_gold_before
+				}
+				has_global_variable = aub_auto_build_loop_started
+			}
+			debug_log = "AUBT: TEST PASS domain_limit_recovery_resumes"
+		}
+		else = { debug_log = "AUBT: TEST FAIL domain_limit_recovery_resumes" }
+		global_var:aubt_player = {
+			capital_province = {
+				remove_building = barracks_02
+				add_building = barracks_01
+			}
+			set_variable = { name = aubt_gold_before value = gold }
+			set_variable = { name = aubt_treasury_before value = treasury }
+			remove_character_flag = aub_pause_when_over_domain_limit
+			add_character_modifier = { modifier = aubt_domain_limit_over_one }
+		}
+		trigger_event = { id = aubt.22 days = 16 }
+	}
+}
+
+# Absence of the pause flag is both the selected “continue” policy and the
+# frozen 3.0.0 old-save representation. It must build at -1 and keep one loop.
+aubt.22 = {
+	scope = none
+	hidden = yes
+	immediate = {
+		if = {
+			limit = {
+				global_var:aubt_province = {
+					has_building = barracks_02
+					NOT = { has_building_or_higher = barracks_03 }
+				}
+				global_var:aubt_player = {
+					domain_limit_available = -1
+					NOT = { has_character_flag = aub_pause_when_over_domain_limit }
+					treasury < var:aubt_treasury_before
+					gold = var:aubt_gold_before
+				}
+				has_global_variable = aub_auto_build_loop_started
+			}
+			debug_log = "AUBT: TEST PASS over_limit_continue_builds"
+			debug_log = "AUBT: TEST PASS legacy_no_pause_flag_continues"
+		}
+		else = {
+			debug_log = "AUBT: TEST FAIL over_limit_continue_builds"
+			debug_log = "AUBT: TEST FAIL legacy_no_pause_flag_continues"
+		}
 		global_var:aubt_player = {
 			remove_character_flag = enable_auto_build
+			remove_character_modifier = aubt_domain_limit_over_one
+			remove_character_modifier = aubt_domain_limit_adjust_down
+			remove_character_modifier = aubt_domain_limit_adjust_up
 		}
 		trigger_event = { id = aubt.2 days = 16 }
 	}

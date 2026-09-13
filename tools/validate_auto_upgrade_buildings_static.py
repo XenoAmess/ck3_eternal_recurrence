@@ -29,13 +29,27 @@ LOC_KEYS = {
     "enable_auto_build_desc",
     "enable_auto_build_text",
     "enable_auto_build_confirm",
-    "enable_auto_build_choose_funding_button",
+    "enable_auto_build_choose_policy_button",
     "aub_funding_treasury_only",
     "aub_funding_treasury_only_desc",
     "aub_funding_personal_only",
     "aub_funding_personal_only_desc",
     "aub_funding_treasury_first",
     "aub_funding_treasury_first_desc",
+    "aub_policy_treasury_only_pause",
+    "aub_policy_treasury_only_pause_desc",
+    "aub_policy_treasury_only_continue",
+    "aub_policy_treasury_only_continue_desc",
+    "aub_policy_personal_only_pause",
+    "aub_policy_personal_only_pause_desc",
+    "aub_policy_personal_only_continue",
+    "aub_policy_personal_only_continue_desc",
+    "aub_policy_treasury_first_pause",
+    "aub_policy_treasury_first_pause_desc",
+    "aub_policy_treasury_first_continue",
+    "aub_policy_treasury_first_continue_desc",
+    "aub_over_domain_pause_desc",
+    "aub_over_domain_continue_desc",
     "disable_auto_build",
     "disable_auto_build_tooltip",
     "disable_auto_build_desc",
@@ -141,11 +155,15 @@ def validate_vanilla(game_root: Path) -> tuple[list[str], bool]:
     return [], True
 
 
-def validate(game_root: Path = DEFAULT_GAME_ROOT) -> tuple[list[str], bool]:
+def validate(
+    game_root: Path = DEFAULT_GAME_ROOT,
+    *,
+    release_localization: bool = False,
+) -> tuple[list[str], bool]:
     errors = builder.source_errors(MOD)
     descriptor = text("descriptor.mod").replace("\r\n", "\n")
     expected_descriptor = (
-        'version="3.0.0"\n'
+        'version="4.0.0"\n'
         'tags={\n\t"Balance"\n}\n'
         'name="自动升级建筑（XenoAmess维护版）"\n'
         'supported_version="1.19.0.6"\n'
@@ -217,44 +235,89 @@ def validate(game_root: Path = DEFAULT_GAME_ROOT) -> tuple[list[str], bool]:
         for fragment in (
             'gui = "decision_view_widget_option_list_generic"',
             "controller = decision_option_list_controller",
-            "decision_to_second_step_button = enable_auto_build_choose_funding_button",
+            "decision_to_second_step_button = enable_auto_build_choose_policy_button",
             "show_from_start = yes",
         ):
             if enable_decision.count(fragment) != 1:
                 errors.append(f"funding selector contract drifted: {fragment}")
         choices = re.findall(
-            r"(?m)^\s*value\s*=\s*(aub_funding_[a-z_]+_choice)\s*$",
+            r"(?m)^\s*value\s*=\s*(aub_policy_[a-z_]+_choice)\s*$",
             enable_decision,
         )
-        if choices != [
-            "aub_funding_treasury_only_choice",
-            "aub_funding_personal_only_choice",
-            "aub_funding_treasury_first_choice",
-        ]:
-            errors.append("funding selector must preserve its three choices and order")
+        expected_choices = [
+            "aub_policy_treasury_only_pause_choice",
+            "aub_policy_treasury_only_continue_choice",
+            "aub_policy_personal_only_pause_choice",
+            "aub_policy_personal_only_continue_choice",
+            "aub_policy_treasury_first_pause_choice",
+            "aub_policy_treasury_first_continue_choice",
+        ]
+        if choices != expected_choices:
+            errors.append("policy selector must contain the ordered 3x2 choice product")
         if enable_decision.count("is_default = yes") != 1 or not re.search(
-            r"value\s*=\s*aub_funding_treasury_first_choice.*?is_default\s*=\s*yes",
+            r"value\s*=\s*aub_policy_treasury_first_continue_choice.*?is_default\s*=\s*yes",
             enable_decision,
             flags=re.DOTALL,
         ):
-            errors.append("treasury-first funding choice must be the only default")
-        for choice, flag in (
-            ("aub_funding_treasury_only_choice", "aub_funding_treasury_only"),
-            ("aub_funding_personal_only_choice", "aub_funding_personal_only"),
+            errors.append("treasury-first/continue policy must be the only default")
+        for choice in expected_choices:
+            localization = choice.removesuffix("_choice")
+            for fragment in (
+                f"localization = {localization}",
+                f"current_description = {localization}_desc",
+            ):
+                if enable_decision.count(fragment) != 1:
+                    errors.append(f"policy choice presentation drifted: {fragment}")
+        for choice, count in (
+            ("aub_policy_treasury_only_pause_choice", 2),
+            ("aub_policy_treasury_only_continue_choice", 1),
+            ("aub_policy_personal_only_pause_choice", 2),
+            ("aub_policy_personal_only_continue_choice", 1),
+            ("aub_policy_treasury_first_pause_choice", 1),
+            ("aub_policy_treasury_first_continue_choice", 0),
         ):
-            if enable_decision.count(f"scope:{choice} = yes") != 1:
-                errors.append(f"funding choice scope is not projected exactly once: {choice}")
+            if enable_decision.count(f"scope:{choice} = yes") != count:
+                errors.append(f"policy choice projection count drifted: {choice}")
+        for flag in (
+            "aub_funding_treasury_only",
+            "aub_funding_personal_only",
+            "aub_pause_when_over_domain_limit",
+        ):
             if enable_decision.count(f"add_character_flag = {flag}") != 1:
-                errors.append(f"persistent funding flag is not set exactly once: {flag}")
+                errors.append(f"persistent policy flag is not set exactly once: {flag}")
             if enable_decision.count(f"remove_character_flag = {flag}") != 1:
-                errors.append(f"persistent funding flag is not normalized before enable: {flag}")
+                errors.append(f"persistent policy flag is not normalized before enable: {flag}")
     disable_decision = extract_block(decisions, "disable_auto_build")
     if disable_decision is None:
         errors.append("disable decision block is missing")
     else:
-        for flag in ("aub_funding_treasury_only", "aub_funding_personal_only"):
+        for flag in (
+            "aub_funding_treasury_only",
+            "aub_funding_personal_only",
+            "aub_pause_when_over_domain_limit",
+        ):
             if disable_decision.count(f"remove_character_flag = {flag}") != 1:
-                errors.append(f"disable decision does not clear funding flag: {flag}")
+                errors.append(f"disable decision does not clear policy flag: {flag}")
+    build_pass = extract_block(events, "auto_build.0004")
+    global_loop = extract_block(events, "auto_build.0005")
+    if build_pass is None or global_loop is None:
+        errors.append("auto-build pass or global loop block is missing")
+    else:
+        pause_flag = "has_character_flag = aub_pause_when_over_domain_limit"
+        threshold = "domain_limit_available >= 0"
+        iterator = "every_directly_owned_province = {"
+        for fragment in (pause_flag, threshold, iterator):
+            if build_pass.count(fragment) != 1:
+                errors.append(f"domain-limit build-pass gate drifted: {fragment}")
+        payer_scope = "save_scope_as = aub_payer"
+        if not (
+            0 <= build_pass.find(pause_flag) < build_pass.find(payer_scope)
+            and 0 <= build_pass.find(threshold) < build_pass.find(payer_scope)
+            and build_pass.find(payer_scope) < build_pass.find(iterator)
+        ):
+            errors.append("domain-limit gate must precede payer scopes and province iteration")
+        if pause_flag in global_loop or "domain_limit_available" in global_loop:
+            errors.append("global loop must continue scheduling players while building is paused")
     if "ai_check_frequency" in decisions or decisions.count("ai_check_interval = 0") != 2:
         errors.append("decisions must use CK3 1.19 ai_check_interval syntax")
     if "auto_build.0001" in events:
@@ -393,7 +456,7 @@ def validate(game_root: Path = DEFAULT_GAME_ROOT) -> tuple[list[str], bool]:
     english_entries = localized_entries.get("english", {})
     for language, _ in languages:
         entries = localized_entries.get(language, {})
-        if language not in {"english", "simp_chinese"}:
+        if release_localization and language not in {"english", "simp_chinese"}:
             for key in sorted(LOC_KEYS & english_entries.keys() & entries.keys()):
                 if entries[key] == english_entries[key]:
                     errors.append(f"English localization placeholder remains: {language}:{key}")
@@ -416,6 +479,7 @@ def validate(game_root: Path = DEFAULT_GAME_ROOT) -> tuple[list[str], bool]:
 
     fixture_files = {
         "descriptor.mod",
+        "common/modifiers/aubt_modifiers.txt",
         "common/on_action/aubt_on_actions.txt",
         "events/aubt_events.txt",
         "localization/english/aubt_l_english.yml",
@@ -444,8 +508,14 @@ def validate(game_root: Path = DEFAULT_GAME_ROOT) -> tuple[list[str], bool]:
                 errors.append(f"acceptance fixture has unbalanced braces: {relative}")
     for marker in (
         "AUBT: TEST BEGIN source-live",
-        "AUBT: TEST PASS native_decision_priority_selection",
+        "AUBT: TEST PASS native_decision_priority_continue_selection",
+        "AUBT: TEST PASS domain_limit_normalized_zero",
         "AUBT: TEST PASS treasury_priority_one_tier",
+        "AUBT: TEST PASS domain_limit_zero_builds",
+        "AUBT: TEST PASS over_limit_pause_zero_side_effect",
+        "AUBT: TEST PASS domain_limit_recovery_resumes",
+        "AUBT: TEST PASS over_limit_continue_builds",
+        "AUBT: TEST PASS legacy_no_pause_flag_continues",
         "AUBT: TEST PASS disabled_zero_side_effect",
         "AUBT: TEST PASS personal_gold_fallback",
         "AUBT: TEST PASS reenabled_loop_stopped_cleanly",
@@ -474,6 +544,11 @@ def validate(game_root: Path = DEFAULT_GAME_ROOT) -> tuple[list[str], bool]:
     if "on_game_start_after_lobby = {" not in fixture_script:
         errors.append("acceptance fixture is not wired to the post-lobby start")
     for fragment in (
+        "aubt_domain_limit_adjust_down = {",
+        "aubt_domain_limit_adjust_up = {",
+        "aubt_domain_limit_over_one = {",
+        "domain_limit_available = 0",
+        "domain_limit_available = -1",
         "change_government = celestial_government",
         "has_treasury = yes",
         "change_government = tribal_government",
@@ -498,6 +573,8 @@ def validate(game_root: Path = DEFAULT_GAME_ROOT) -> tuple[list[str], bool]:
         workshop_description = WORKSHOP_DESCRIPTION.read_text(encoding="utf-8")
         for fragment in (
             "[h1]自动升级建筑（XenoAmess维护版）[/h1]",
+            "Version 4.0.0 · CK3 1.19.0.6",
+            "[h1]4.0.0 更新记录[/h1]",
             "[h1]原作、致谢与授权[/h1]",
             "[url=https://steamcommunity.com/sharedfiles/filedetails/?id=3596580780]自动升级建筑（新版）[/url]",
             "致谢：[/b]感谢原 Mod 作者的创作与维护劳动，本维护版以原作提供的玩法和内容为基础。",
@@ -515,8 +592,16 @@ def validate(game_root: Path = DEFAULT_GAME_ROOT) -> tuple[list[str], bool]:
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--game-root", type=Path, default=DEFAULT_GAME_ROOT)
+    parser.add_argument(
+        "--release-localization",
+        action="store_true",
+        help="reject English placeholders in the seven non-authoring languages",
+    )
     args = parser.parse_args(argv)
-    errors, vanilla_checked = validate(args.game_root)
+    errors, vanilla_checked = validate(
+        args.game_root,
+        release_localization=args.release_localization,
+    )
     if errors:
         print("AUTO UPGRADE BUILDINGS STATIC VALIDATION FAILED", file=sys.stderr)
         for error in errors:

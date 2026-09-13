@@ -1,0 +1,16 @@
+﻿aubt_domain_limit_adjust_down = {
+	icon = stewardship_negative
+	stacking = yes
+	domain_limit = -1
+}
+
+aubt_domain_limit_adjust_up = {
+	icon = stewardship_positive
+	stacking = yes
+	domain_limit = 1
+}
+
+aubt_domain_limit_over_one = {
+	icon = stewardship_negative
+	domain_limit = -1
+}
