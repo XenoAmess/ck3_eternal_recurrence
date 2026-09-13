@@ -6,8 +6,8 @@
   `2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86`。
 - **[implementation-confirmed]** native state snapshot 新增顶层 `played_character_gold`，以 `{raw, scale}` 发布玩家当前金币；
   `scale` 固定为 `100000`，`raw` 接受负数以保留真实债务，不把负余额误判为读取失败。
-- **[live pending]** 该字段和 `trait_specific.8001` 后置比较器均为 `static-ready / live=false`。现有 R414 artifact 只冻结了
-  选择前事件窗口，没有由当前实现产出的金币帧或选择后读数。下次允许占用 CK3 时只需一次有界事件动作验证。
+- **[production-live]** R664 已在同一角色的选择前后帧读取金币并关闭 `trait_specific.8001` 后置：Q100000 raw
+  `2042495773 -> 2043995773`，delta `+1500000`，比较器为 `verified_change`。
 
 ## Exact-build 读取路径
 
@@ -60,8 +60,9 @@ effect profile 明确写 `runtime_delta_exact=false`，比较器只承诺同一�
 4. 同角色且 `post_raw > pre_raw` 才是 `verified_change`；不变、下降、身份漂移或读数缺失均不能通过；
 5. 实际 delta 作为观测结果保存，但不得声称它在执行前精确等于 `15` 或其它常量。
 
-这使 `.8001` 成为 G2-M2 第二条具备真实物质状态后置的事件路径。它仍须一次 bounded production action 才能升级；不得为该
-单事件开启长期游玩或扩大事件矩阵。
+这使 `.8001` 成为 G2-M2 第一条完成 production recommendation/action/material postcondition 的目标事件路径。R664 只执行
+`select-event-option-2` 和 `save-checkpoint`，没有推进日期或扩大事件矩阵；完整 report SHA-256 为
+`AB718B94A809C485683D2508133B3AF1AE750E55457096EB12753129E72EBC63`。
 
 ## 聚焦验证
 

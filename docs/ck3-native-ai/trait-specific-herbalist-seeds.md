@@ -6,9 +6,9 @@
   `2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86`。
 - [paused live RED] R414 attempt 6 在 PID `202268` / connection generation `1` 的真实暂停帧命中 instance
   `1075`：ROOT 为玩家，saved scope 为空，native `0/1` 均 shown/enabled；动作尚未提交。
-- [counter-policy static-ready, live action pending] 可移植合同选择 authored `2` / native `1`，并已接入同角色金币严格增加的
-  material comparator。当前 RED 是恢复 harness 缺少该原版事件合同，不证明天朝二期产品失败；旧 instance 消失或前进且
-  金币后置通过前，不能升级为 production-live loop。
+- [production-live loop] R664 从 R414 immutable checkpoint 冷恢复，按可移植合同选择 authored `2` / native `1`，并观察到
+  event instance `1075 -> null`、玩家金币 Q100000 raw `2042495773 -> 2043995773`。material comparator 返回
+  `verified_change`，successor checkpoint 已保存。
 
 ## 原版入口与效果树
 
@@ -47,8 +47,9 @@ treasury 与 era，基础下限为 `15` whole gold；因此合同只承诺正向
 
 通用 state snapshot 已从既有 exact-build `extension+0x100` leaf 发布 Q100000 玩家金币。planner 绑定选择前 snapshot/revision、
 full CharacterID 与 raw 余额，action 记录同角色前后观察；只有 `post_raw > pre_raw` 才通过。不变、下降、身份漂移或缺读数均不构成
-成功证据。详见 [`played-character-gold.md`](played-character-gold.md)。该链仍是 `static-ready / live=false`，下一次只需复用
-R414 近边界做一轮有界动作，不扩成长跑。
+成功证据。详见 [`played-character-gold.md`](played-character-gold.md)。R664 已在不推进时间、只执行一次事件选择的有界轮次中
+关闭该链；report SHA-256 `AB718B94A809C485683D2508133B3AF1AE750E55457096EB12753129E72EBC63`，successor checkpoint
+SHA-256 `8506B83CC77F64F47F242B8CE59F383E1C265FEA47F5CA535BBB95F1F6F72616`。
 
 ## 证据
 

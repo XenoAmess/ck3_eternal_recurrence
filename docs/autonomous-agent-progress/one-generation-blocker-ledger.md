@@ -1622,3 +1622,24 @@ one recommendation, one action and the bounded postwar/cold-restore checks.
   unchanged R459 retries are permitted. GEN-034 remains `2/4`, G2 remains
   `1/8`, and the active implementation queue moves to G2-M2 production event
   loops while this fixture seam remains recorded.
+
+## G2-M2 R662-R664 first material event loop (2026-09-14)
+
+- R662 stopped before mutation because the new runner compared the advertised
+  concrete `select-event-option-1/2` steps with a literal `...-N` placeholder.
+  Exact-build failure report SHA-256 is `C29D2289...5248`; cleanup and immutable
+  source checks are GREEN. The one-line gate repair is commit `3a30488`.
+- R663 passed exact-build but the fresh application-main event-window query
+  timed out. No event action was submitted; report SHA-256 is
+  `548A064C...534C`, cleanup and source checks are GREEN. Because the immutable
+  checkpoint is itself sealed by R414's production query, commit `b4542f2`
+  replaces this repeated read with a hash/identity-bound context replay.
+- R664 is GREEN on unique PID `124060`: registry objective
+  `increase_liquid_reserve_without_random_persistence` chose
+  `trait_specific.8001` native option 1, instance `1075 -> null`, and gold raw
+  `2042495773 -> 2043995773` (`+1500000`, Q100000). Exact command delta is one
+  `select-event-option-2` plus one `save-checkpoint`; date `53783472` did not
+  advance. Report SHA-256 is `AB718B94...BC63`, successor checkpoint SHA-256 is
+  `8506B83C...2616`, source inputs are unchanged and cleanup is GREEN.
+- G2-M2 now has `1/3` required production material event loops. Global G2 stays
+  `1/8`; two target loops remain and no dedicated event long-run is authorized.

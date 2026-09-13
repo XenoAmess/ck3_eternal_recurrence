@@ -3,8 +3,8 @@
 ## 目的与状态
 
 G2-M2 的最小验收要求 planner 对三个自然 production 事件明确记录目标和 utility，且至少两个多选事件不能靠固定首项继续。
-当前三个 exact-build 目标事件现已发布 `xar.ck3.vanilla-event-campaign-utility/v1`，状态为
-**source-structured / static-ready / live=false**。
+当前三个 exact-build 目标事件现已发布 `xar.ck3.vanilla-event-campaign-utility/v1`。其中 `trait_specific.8001` 已完成
+production-live material loop；其余两项仍为 **source-structured / static-ready / live=false**。
 
 该 profile 是 source-reviewed ordinal comparison。它回答“在这个已冻结事件和当前 bounded continuation 目标下，为何选择这一项”，
 不把压力、金币、XP、trait 与时间成本强行换算成一个未经实测的数值。`cross_event_numeric_score` 因此必须为 `null`，
@@ -87,7 +87,19 @@ R663 证明 R414 checkpoint 冷恢复后的 application-main event-window query 
 重复这个已失败读口，而是复用 checkpoint 本身封存的真实 source query，并让选择成为恢复后的第一条 gameplay command。
 
 该工具可以供三个目标事件及后续具有同一 material-postcondition 合同的原版事件复用，不绑定固定 PID、机器账号、CK3 轮次或
-绝对输入路径。当前状态为 `static-ready / live=false`；首个输入使用 R414 的 `trait_specific.8001` 冻结 checkpoint。
+绝对输入路径。验收器已由 R664 在 R414 的 `trait_specific.8001` 冻结 checkpoint 上完成首条 production-live 使用；其余目标仍待各自输入。
+
+## R664 `trait_specific.8001` production-live loop
+
+R664 在唯一 PID `124060` 上从 R414 immutable checkpoint 冷恢复，并把 source query 重新绑定到当前 `native:3` / revision `4` /
+date `53783472` / CharacterID `32904` / event instance `1075`。registry recommendation 按 objective
+`increase_liquid_reserve_without_random_persistence` 选择 authored 2/native 1；唯一变更命令为 `select-event-option-2` 与
+`save-checkpoint`，没有推进时间。
+
+事件 instance `1075 -> null`、revision `4 -> 5`。玩家金币 Q100000 raw 从 `2042495773` 增至 `2043995773`，delta
+`+1500000`，material comparator 返回 `verified_change`。successor checkpoint SHA-256 为
+`8506B83C...2616`；完整 report SHA-256 为 `AB718B94...BC63`。源 checkpoint/driver state 未变、cleanup GREEN、CK3=0。
+这关闭 G2-M2 的第一条目标事件 loop，但 M2 仍需另外两条 production material loop 才能完成。
 
 ## 聚焦验证
 
