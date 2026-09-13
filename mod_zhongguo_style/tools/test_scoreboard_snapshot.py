@@ -1285,27 +1285,25 @@ class ScoreboardSnapshotTests(unittest.TestCase):
         panel_layout = gui.split(
             'name = "zg361_scoreboard_panel"', 1
         )[1].split("header_pattern = {", 1)[0]
-        self.assertIn(
-            "layoutpolicy_horizontal = expanding layoutpolicy_vertical = expanding",
-            panel_layout,
-        )
-        self.assertIn("restrictparent_min = yes ignoreinvisible = yes", panel_layout)
+        self.assertIn("size = { 100% 100% } ignoreinvisible = yes", panel_layout)
+        self.assertNotIn("restrictparent_min", panel_layout)
 
         detail_layout = gui.split(
             'name = "zg361_scoreboard_detail_panel"', 1
         )[1][:320]
-        self.assertIn("restrictparent_min = yes ignoreinvisible = yes", detail_layout)
+        self.assertNotIn("restrictparent_min", detail_layout)
 
-        bounded_pages = [
+        viewport_pages = [
             "zg361_scoreboard_page_managed",
             "zg361_scoreboard_page_received",
             "zg361_scoreboard_page_system",
             *(f"zg361_scoreboard_detail_page_{page}" for page in DETAIL_PAGES),
         ]
-        for name in bounded_pages:
+        for name in viewport_pages:
             with self.subTest(page=name):
                 page_layout = gui.split(f'name = "{name}"', 1)[1][:320]
-                self.assertIn("restrictparent_min = yes", page_layout)
+                self.assertIn("layoutpolicy_vertical = expanding", page_layout)
+                self.assertNotIn("restrictparent_min", page_layout)
 
     def test_three_by_three_geometry_and_modal_blocking_contract(self) -> None:
         gui = outputs()[MOD_ROOT / "gui" / "zg361_scoreboard.gui"].decode(

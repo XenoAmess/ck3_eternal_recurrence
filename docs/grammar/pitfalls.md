@@ -222,4 +222,4 @@ R79 fresh split product 实机确认上述签名归零。
 
 | 现象 | 原因 | 解法 |
 |---|---|---|
-| 页面虽然声明了 `scrollbox` 和纵向滚动条，长列表仍越过固定窗口底边，滚动条也不出现 | 固定尺寸窗口内的布局链没有用 `restrictparent_min = yes` 阻断内容最小高度向上传播；同一 `vbox` 中切换的隐藏页也未设 `ignoreinvisible = yes`。滚动视口因此被内容或隐藏页反向撑大，`as_needed` 判断不到受限高度。R629 的绩效详情“事实”页实机复现 | 固定窗口的根布局和每个直接页容器都限制 parent minimum；承载互斥页的 `vbox` 忽略隐藏子项；每个滚动面补 `scissor = yes`，继续保留双轴 `as_needed` 与标准 scrollbar。生成器测试必须枚举所有滚动面和页容器。修复后只需用 fresh product 抽检一个长详情页和一个长名单页，不把布局缺陷扩大成长跑 |
+| 页面虽然声明了 `scrollbox` 和纵向滚动条，长列表仍越过固定窗口底边，滚动条也不出现；错误补上 `restrictparent_min = yes` 后，整个百分比面板又会被内容撑出屏幕并只剩黑色背景 | R629 先证明滚动视口没有绑定到固定面板的实际高度；R630 进一步证明 `restrictparent_min` 不能用于这条 `90%` 百分比面板链，它会把长内容的 minimum size 重新传给外层。隐藏页也必须从同一根布局的尺寸计算中排除 | 保持外层面板 `size = { 90% 90% }`，其直接 `vbox` 显式使用 `size = { 100% 100% } ignoreinvisible = yes`，让头部、页签和唯一可见页在这个固定视口内分配空间；页容器与 `scrollbox` 只用 `layoutpolicy_vertical = expanding`，不得再加 `restrictparent_min`。七个滚动面保留 `scissor = yes`、双轴 `as_needed` 和标准 scrollbar。生成器测试必须同时断言固定根视口、七个裁切面以及禁用这条错误属性 |
