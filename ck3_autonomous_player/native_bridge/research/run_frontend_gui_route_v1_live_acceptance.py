@@ -44,11 +44,13 @@ EXPECTED_CK3_SHA256 = (
     "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86"
 )
 QUERY_CAPABILITY = "game.command.query-frontend-gui-route-v1"
+INSPECT_CAPABILITY = "game.command.inspect-frontend-gui-tree-v1"
 ACTIVATE_NEW_GAME_CAPABILITY = "game.command.activate-frontend-new-game-v1"
 ACTIVATE_PICK_ANY_CAPABILITY = (
     "game.command.activate-frontend-pick-any-character-v1"
 )
 QUERY_TOOL = "ck3_query_frontend_gui_route_v1"
+INSPECT_TOOL = "ck3_inspect_frontend_gui_tree_v1"
 ACTIVATE_NEW_GAME_TOOL = "ck3_activate_frontend_new_game_v1"
 ACTIVATE_PICK_ANY_TOOL = "ck3_activate_frontend_pick_any_character_v1"
 _PROFILE_EXCLUDES = frozenset(
@@ -198,7 +200,12 @@ async def _mcp_sequence(
     async with Client(create_server(driver)) as client:
         listed = await client.list_tools()
         tools = {tool.name: tool for tool in listed.tools}
-        required = {QUERY_TOOL, ACTIVATE_NEW_GAME_TOOL, ACTIVATE_PICK_ANY_TOOL}
+        required = {
+            QUERY_TOOL,
+            INSPECT_TOOL,
+            ACTIVATE_NEW_GAME_TOOL,
+            ACTIVATE_PICK_ANY_TOOL,
+        }
         schemas = {
             name: tools[name].input_schema
             for name in sorted(required)
@@ -234,12 +241,14 @@ async def _mcp_sequence(
                 and isinstance(hello_caps, list)
                 and {
                     QUERY_CAPABILITY,
+                    INSPECT_CAPABILITY,
                     ACTIVATE_NEW_GAME_CAPABILITY,
                     ACTIVATE_PICK_ANY_CAPABILITY,
                 }
                 <= set(advertised)
                 and {
                     QUERY_CAPABILITY,
+                    INSPECT_CAPABILITY,
                     ACTIVATE_NEW_GAME_CAPABILITY,
                     ACTIVATE_PICK_ANY_CAPABILITY,
                 }
@@ -294,6 +303,9 @@ async def _mcp_sequence(
         pick_any_call = await _call(client, ACTIVATE_PICK_ANY_TOOL)
         record(pick_any_call)
         pick_any = _structured(pick_any_call)
+        inspection_call = await _call(client, INSPECT_TOOL)
+        record(inspection_call)
+        inspection = _structured(inspection_call)
         after_pick_any = (
             pick_any.get("after")
             if isinstance(pick_any.get("after"), dict)
@@ -326,6 +338,11 @@ async def _mcp_sequence(
             "pick_any_no_mouse": pick_any.get("uses_mouse") is False,
             "pick_any_native_semantic_backend": pick_any.get("input_backend")
             == "native_gui_semantic_activation",
+            "tree_inspection_available": (
+                inspection_call.get("is_error") is False
+                and inspection.get("status") == "available"
+                and inspection.get("read_only") is True
+            ),
         }
         return {
             "mcp_sdk": "official-python-client",
@@ -334,6 +351,7 @@ async def _mcp_sequence(
             "before": before,
             "new_game": new_game,
             "pick_any_character": pick_any,
+            "tree_inspection_after_pick_any": inspection,
             "calls": calls,
             "call_summary": call_summary,
             "checks": checks,

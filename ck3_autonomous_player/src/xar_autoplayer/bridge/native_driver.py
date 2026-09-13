@@ -318,9 +318,12 @@ from .frontend_gui_route_contract import (
     ACTIVATE_FRONTEND_NEW_GAME_V1_STEP,
     ACTIVATE_FRONTEND_PICK_ANY_CHARACTER_V1_CAPABILITY,
     ACTIVATE_FRONTEND_PICK_ANY_CHARACTER_V1_STEP,
+    INSPECT_FRONTEND_GUI_TREE_V1_CAPABILITY,
+    INSPECT_FRONTEND_GUI_TREE_V1_STEP,
     QUERY_FRONTEND_GUI_ROUTE_V1_CAPABILITY,
     QUERY_FRONTEND_GUI_ROUTE_V1_STEP,
     frontend_gui_route_binding_from_capabilities,
+    normalize_frontend_gui_tree_inspection_v1,
     normalize_frontend_gui_route_v1,
     normalize_frontend_new_game_v1,
     normalize_frontend_pick_any_character_v1,
@@ -3524,6 +3527,22 @@ class NativeHeadlessGameplayDriver:
         except ValueError as error:
             raise BridgeUnavailableError(
                 f"native frontend GUI route is malformed: {error}"
+            ) from error
+
+    def inspect_frontend_gui_tree_v1(self) -> dict[str, object]:
+        """Read a bounded native GUI-name census on the main thread."""
+
+        raw = self._execute_primitive_step(
+            INSPECT_FRONTEND_GUI_TREE_V1_STEP,
+            expected_revision=0,
+            required_capability=INSPECT_FRONTEND_GUI_TREE_V1_CAPABILITY,
+            allow_frontend_revision_zero=True,
+        )
+        try:
+            return normalize_frontend_gui_tree_inspection_v1(raw)
+        except ValueError as error:
+            raise BridgeUnavailableError(
+                f"native frontend GUI tree inspection is malformed: {error}"
             ) from error
 
     def _wait_for_frontend_gui_route_v1(

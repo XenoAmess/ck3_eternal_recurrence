@@ -156,6 +156,11 @@ bool ExecuteFrontendGuiRouteMailboxV1(
     return false;
   }
   query->result = {};
+  if (query->operation == FrontendGuiRouteOperationV1::inspect_tree) {
+    ZhongguoScoreboardAccessV1 access{};
+    return InspectNamedGuiTreeV1(query->environment, access,
+                                 query->result.tree_inspection);
+  }
   if (!ResolveRoute(*query, query->result)) return false;
   if (query->operation == FrontendGuiRouteOperationV1::query) return true;
   if (query->operation == FrontendGuiRouteOperationV1::open_new_game) {

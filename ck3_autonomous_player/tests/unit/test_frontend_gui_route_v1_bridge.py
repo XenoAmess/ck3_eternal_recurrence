@@ -15,9 +15,12 @@ from xar_autoplayer.bridge.frontend_gui_route_contract import (
     ACTIVATE_FRONTEND_NEW_GAME_V1_STEP,
     ACTIVATE_FRONTEND_PICK_ANY_CHARACTER_V1_CAPABILITY,
     ACTIVATE_FRONTEND_PICK_ANY_CHARACTER_V1_STEP,
+    INSPECT_FRONTEND_GUI_TREE_V1_CAPABILITY,
+    INSPECT_FRONTEND_GUI_TREE_V1_STEP,
     QUERY_FRONTEND_GUI_ROUTE_V1_CAPABILITY,
     QUERY_FRONTEND_GUI_ROUTE_V1_STEP,
     frontend_gui_route_binding_from_capabilities,
+    normalize_frontend_gui_tree_inspection_v1,
     normalize_frontend_gui_route_v1,
     normalize_frontend_new_game_v1,
     normalize_frontend_pick_any_character_v1,
@@ -96,6 +99,7 @@ class _FrontendDriver:
             "snapshot": False,
             "bridge_capabilities": [
                 QUERY_FRONTEND_GUI_ROUTE_V1_CAPABILITY,
+                INSPECT_FRONTEND_GUI_TREE_V1_CAPABILITY,
                 ACTIVATE_FRONTEND_NEW_GAME_V1_CAPABILITY,
                 ACTIVATE_FRONTEND_PICK_ANY_CHARACTER_V1_CAPABILITY,
             ],
@@ -103,6 +107,31 @@ class _FrontendDriver:
 
     def query_frontend_gui_route_v1(self) -> dict[str, object]:
         return _route("main_menu")
+
+    def inspect_frontend_gui_tree_v1(self) -> dict[str, object]:
+        return {
+            "schema": "ck3-frontend-gui-tree-inspection-v1",
+            "schema_version": 1,
+            "step": INSPECT_FRONTEND_GUI_TREE_V1_STEP,
+            "accepted": True,
+            "status": "available",
+            "root_available": True,
+            "truncated": False,
+            "widget_count": 1,
+            "widgets": [
+                {
+                    "runtime_name": "lobbyview",
+                    "depth": 1,
+                    "effective_visible": True,
+                    "enabled": True,
+                }
+            ],
+            "backend_id": "native-headless",
+            "read_only": True,
+            "uses_ocr": False,
+            "uses_keyboard": False,
+            "uses_mouse": False,
+        }
 
     def activate_frontend_new_game_v1(self) -> dict[str, object]:
         return _action()
@@ -112,6 +141,42 @@ class _FrontendDriver:
 
 
 class FrontendGuiRouteV1ContractTests(unittest.TestCase):
+    def test_tree_inspection_is_bounded_typed_and_read_only(self) -> None:
+        normalized = normalize_frontend_gui_tree_inspection_v1(
+            {
+                "step": INSPECT_FRONTEND_GUI_TREE_V1_STEP,
+                "accepted": True,
+                "status": "available",
+                "root_available": True,
+                "truncated": False,
+                "widget_count": 1,
+                "widgets": [
+                    {
+                        "runtime_name": "lobbyview",
+                        "depth": 1,
+                        "effective_visible": True,
+                        "enabled": True,
+                    }
+                ],
+                "backend_id": "native-headless",
+            }
+        )
+        self.assertEqual(normalized["widgets"][0]["runtime_name"], "lobbyview")
+        self.assertTrue(normalized["read_only"])
+        self.assertFalse(normalized["uses_ocr"])
+        with self.assertRaisesRegex(ValueError, "malformed"):
+            normalize_frontend_gui_tree_inspection_v1(
+                {
+                    "step": INSPECT_FRONTEND_GUI_TREE_V1_STEP,
+                    "accepted": True,
+                    "status": "available",
+                    "root_available": True,
+                    "truncated": False,
+                    "widget_count": 513,
+                    "widgets": [],
+                }
+            )
+
     def test_frontend_binding_allows_snapshot_during_pregame_lobby(self) -> None:
         capabilities = {
             "backend_id": "native-headless",
@@ -263,6 +328,7 @@ class FrontendGuiRouteV1ContractTests(unittest.TestCase):
     def test_service_preserves_zero_input_native_contract(self) -> None:
         service = GameplayBridgeService(_FrontendDriver())
         self.assertEqual(service.query_frontend_gui_route_v1()["route"], "main_menu")
+        self.assertTrue(service.inspect_frontend_gui_tree_v1()["read_only"])
         self.assertTrue(
             service.activate_frontend_new_game_v1()["postcondition_verified"]
         )
@@ -286,6 +352,7 @@ class FrontendGuiRouteV1McpTests(unittest.IsolatedAsyncioTestCase):
             tools = {tool.name: tool for tool in listed.tools}
             for name in (
                 "ck3_query_frontend_gui_route_v1",
+                "ck3_inspect_frontend_gui_tree_v1",
                 "ck3_activate_frontend_new_game_v1",
                 "ck3_activate_frontend_pick_any_character_v1",
             ):
@@ -294,6 +361,14 @@ class FrontendGuiRouteV1McpTests(unittest.IsolatedAsyncioTestCase):
             query = await client.call_tool("ck3_query_frontend_gui_route_v1", {})
             self.assertFalse(query.is_error)
             self.assertEqual(query.structured_content["route"], "main_menu")
+            inspection = await client.call_tool(
+                "ck3_inspect_frontend_gui_tree_v1", {}
+            )
+            self.assertFalse(inspection.is_error)
+            self.assertEqual(
+                inspection.structured_content["widgets"][0]["runtime_name"],
+                "lobbyview",
+            )
             action = await client.call_tool(
                 "ck3_activate_frontend_new_game_v1", {}
             )

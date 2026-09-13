@@ -23,6 +23,7 @@ bookmarks --activate-frontend-pick-any-character-v1--> lobby
 
 ```text
 ck3_query_frontend_gui_route_v1()
+ck3_inspect_frontend_gui_tree_v1()
 ck3_activate_frontend_new_game_v1()
 ck3_activate_frontend_pick_any_character_v1()
 ```
@@ -32,6 +33,9 @@ ck3_activate_frontend_pick_any_character_v1()
 ```text
 game.command.query-frontend-gui-route-v1
 query-frontend-gui-route-v1
+
+game.command.inspect-frontend-gui-tree-v1
+inspect-frontend-gui-tree-v1
 
 game.command.activate-frontend-new-game-v1
 activate-frontend-new-game-v1
@@ -71,6 +75,11 @@ activate-frontend-pick-any-character-v1
 运行时不会根据这些磁盘文本猜页面；DLL 每次都从当前 GUI owner 重新解析固定 root/descendant，读取 runtime name、vtable、
 visibility 和 enabled 状态。route priority 为 `coat_of_arms_designer > ruler_designer > lobby > bookmarks > main_menu > unavailable`。
 
+当固定 route 返回 `unavailable` 时，零输入 `ck3_inspect_frontend_gui_tree_v1()` 可在同一 application-main mailbox 上对当前 GUI
+owner 做只读广度枚举。它最多返回 512 个非空 runtime name，以及深度、effective visibility、enabled；遍历上限为 4,096
+节点、深度 64，达到任一上限即标记 `truncated=true`。调用方不能提供控件名、地址、遍历上限或回调；该工具只用于以原生
+结构化证据识别缺失页面，不执行控件，也不读取屏幕。
+
 ## application-main 与 gameplay 隔离
 
 旧 mailbox 只在连续两个“暂停、Jomini state 和 game state 均有效”的 SDL pump 后允许局内 typed executor。前端没有这些对象，
@@ -106,5 +115,8 @@ proof。
 - 首次 live attempt 已保留为 `mcp-frontend-route-lobby-live1.json`（94,811 bytes，SHA-256 `B8A98F66B942B785629FED6255E276E313CB8E5870DF809D64A05D6A36039763`）。原生动作已令 Bookmarks 进入加载，但加载期 application-main GUI pump 暂停，单次 route command 超时，结果为 RED；`cleanup_proven=true`，不是能力 GREEN。
 - driver 现在以独立的 120 秒 frontend transition deadline 重试暂时超时/拒绝的 route 查询；每次查询仍由原生邮箱自己 fail closed，只有最终观察到目标 route 才报告 verified。聚焦测试包含“暂时不可用 → unavailable → lobby”的恢复向量。
 - 第二次 live attempt `mcp-frontend-route-lobby-live2.json`（94,795 bytes，SHA-256 `87650AC340C0049B3279816DE1D49DE14C9CCC79027BD0DCD158CBFEAD24C9D8`）证明加载后 CK3 已开始发布 gameplay snapshot；route transport 此时误复用 CoA 专用的 `snapshot=false` frontend binding，因而被 Python 侧拒绝。GUI route 现改用独立 exact-bridge binding：同一 PID、连接代次、adapter、build hash 与 capability 必须成立，但允许 pregame lobby 同时存在 snapshot。该 attempt 同样是 RED 且 cleanup GREEN。
+- 一次仅完成 runner 参数检查的 setup RED 保留为 `mcp-frontend-route-lobby-live3.json`（690 bytes，SHA-256 `ACAE42ADE9A86954CFA872471BA337819195B426A2F4187EEC77D72C05B8D967`）；Steam 路径写错，在启动 CK3 前即停止，不属于能力 attempt。
+- 第三次真实 attempt `mcp-frontend-route-lobby-live4.json`（94,822 bytes，SHA-256 `7F7180A929095C2D24416AE0B1F20C2741F47AB63DFD810C1820F00034C839C0`）在修正 binding 后持续取得结构化 route 响应，但加载完成后的 route 始终为 `unavailable`，120 秒后按合同 RED。游戏日志证明已进入 `In Game` idler，说明源码推定的 `lobbyview` 身份尚未被 runtime 证实；cleanup 与 Steam offline 均为 GREEN。
+- 因此新增上述有界只读 GUI tree inspector，Release DLL 编译链接、mailbox source-contract 与 Python contract/service/official-MCP `7/7` 均 GREEN，状态为 `mcp-static-ready / live=false`。它是为这次可复现 route-identity 缺口补齐的 MCP 观测功能，不是 OCR 或桌面自动化替代品。
 
-下一步先用受管 CK3 对 `bookmarks → lobby` 做官方 MCP live 验收；通过后继续补 lobby 的确定性角色选择、ruler designer 与 CoA 页动作，禁止以鼠标链代替缺失 primitive。
+下一步用受管 CK3 在同一路径末端调用 tree inspector，以 runtime name 证据修正 `bookmarks → lobby` 的后置条件；通过后继续补 lobby 的确定性角色选择、ruler designer 与 CoA 页动作，禁止以鼠标链代替缺失 primitive。

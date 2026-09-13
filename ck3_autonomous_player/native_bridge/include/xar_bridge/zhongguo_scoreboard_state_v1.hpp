@@ -247,6 +247,24 @@ struct ZhongguoScoreboardAccessV1 : ZhongguoCaseAccessV1 {
   ResolveZhongguoFixtureGuiV1 resolve_fixture_gui = nullptr;
 };
 
+inline constexpr std::size_t kNamedGuiTreeInspectionMaximumWidgetsV1 = 512;
+
+struct NamedGuiWidgetInspectionV1 {
+  std::string runtime_name;
+  std::uint32_t depth = 0;
+  bool effective_visible = false;
+  bool enabled = false;
+};
+
+struct NamedGuiTreeInspectionV1 {
+  bool root_available = false;
+  bool truncated = false;
+  std::size_t widget_count = 0;
+  std::array<NamedGuiWidgetInspectionV1,
+             kNamedGuiTreeInspectionMaximumWidgetsV1>
+      widgets{};
+};
+
 enum class ZhongguoScoreboardProviderReadModeV1 : std::uint32_t {
   unavailable = 0,
   publish_observation = 1,
@@ -304,6 +322,15 @@ bool ReadGuiWidgetRuntimeV1(
     const ZhongguoScoreboardAccessV1 &access, void *widget,
     std::string &runtime_name, void *&vtable, bool &effective_visible,
     bool &enabled) noexcept;
+
+// Breadth-first, read-only diagnostics for the current exact-build GUI owner.
+// The fixed limits keep this zero-input MCP research primitive bounded while
+// still exposing shallow runtime names needed to replace source-file guesses
+// with native evidence. Empty runtime names are omitted.
+bool InspectNamedGuiTreeV1(
+    const ZhongguoScoreboardNativeEnvironmentV1 &environment,
+    const ZhongguoScoreboardAccessV1 &access,
+    NamedGuiTreeInspectionV1 &output) noexcept;
 
 ZhongguoScoreboardNativeEnvironmentV1 BindZhongguoScoreboardNativeEnvironmentV1(
     std::uintptr_t module_base, bool exact_build_admitted) noexcept;

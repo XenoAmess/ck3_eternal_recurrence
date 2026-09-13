@@ -3104,6 +3104,40 @@ std::string CommandResultFrame(std::string_view request_id,
   return result;
 }
 
+std::string FrontendGuiTreeInspectionResultFrame(
+    std::string_view request_id,
+    const xar::ck3_11906::NamedGuiTreeInspectionV1 &inspection) {
+  std::string result =
+      "{\"type\":\"command_result\",\"protocol_version\":1,\"request_id\":";
+  AppendJsonString(result, request_id);
+  result +=
+      ",\"ok\":true,\"result\":{\"step\":\"inspect-frontend-gui-tree-v1\",";
+  result += "\"accepted\":true,\"status\":\"";
+  result += inspection.root_available ? "available" : "unavailable";
+  result += "\",\"root_available\":";
+  result += inspection.root_available ? "true" : "false";
+  result += ",\"truncated\":";
+  result += inspection.truncated ? "true" : "false";
+  result += ",\"widget_count\":";
+  result += Number(inspection.widget_count);
+  result += ",\"widgets\":[";
+  for (std::size_t index = 0; index < inspection.widget_count; ++index) {
+    if (index != 0) result += ',';
+    const auto &widget = inspection.widgets[index];
+    result += "{\"runtime_name\":";
+    AppendJsonString(result, widget.runtime_name);
+    result += ",\"depth\":";
+    result += Number(widget.depth);
+    result += ",\"effective_visible\":";
+    result += widget.effective_visible ? "true" : "false";
+    result += ",\"enabled\":";
+    result += widget.enabled ? "true" : "false";
+    result += '}';
+  }
+  result += "]}}";
+  return result;
+}
+
 std::string_view TacticalDailySentinelStateName(
     xar::ck3_11906::TacticalDailySentinelStateV1 state) noexcept {
   using State = xar::ck3_11906::TacticalDailySentinelStateV1;
@@ -5514,6 +5548,7 @@ void RunConnectedSession(
               tactical_sentinel_request{};
           std::uint64_t tactical_sentinel_cancel_generation = 0;
           if (step == xar::ck3_11906::kFrontendGuiRouteV1Step ||
+              step == xar::ck3_11906::kFrontendGuiTreeInspectionV1Step ||
               step == xar::ck3_11906::kFrontendGuiOpenNewGameV1Step ||
               step == xar::ck3_11906::kFrontendGuiPickAnyCharacterV1Step) {
             std::uint64_t expected_revision = 0;
@@ -5531,6 +5566,10 @@ void RunConnectedSession(
               if (step == xar::ck3_11906::kFrontendGuiRouteV1Step) {
                 query.operation =
                     xar::ck3_11906::FrontendGuiRouteOperationV1::query;
+              } else if (step == xar::ck3_11906::
+                                     kFrontendGuiTreeInspectionV1Step) {
+                query.operation = xar::ck3_11906::
+                    FrontendGuiRouteOperationV1::inspect_tree;
               } else if (step ==
                          xar::ck3_11906::kFrontendGuiOpenNewGameV1Step) {
                 query.operation = xar::ck3_11906::
@@ -5586,6 +5625,11 @@ void RunConnectedSession(
                         request_id, step, true,
                         xar::ck3_11906::FrontendGuiRouteNameV1(
                             query.result.route));
+                  } else if (query.operation == xar::ck3_11906::
+                                                    FrontendGuiRouteOperationV1::
+                                                        inspect_tree) {
+                    response = FrontendGuiTreeInspectionResultFrame(
+                        request_id, query.result.tree_inspection);
                   } else if (query.result.target_resolved &&
                              query.result.dispatch_invoked) {
                     response = CommandResultFrame(

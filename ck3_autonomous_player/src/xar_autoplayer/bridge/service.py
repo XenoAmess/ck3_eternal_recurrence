@@ -6606,6 +6606,30 @@ class GameplayBridgeService:
             )
         return result
 
+    def inspect_frontend_gui_tree_v1(self) -> dict[str, object]:
+        """Inspect bounded native GUI names without screen interpretation."""
+
+        inspect = getattr(self.driver, "inspect_frontend_gui_tree_v1", None)
+        if not callable(inspect):
+            raise UnsupportedStepError(
+                "selected backend has no native frontend GUI tree inspector"
+            )
+        result = inspect()
+        if (
+            not isinstance(result, dict)
+            or result.get("schema")
+            != "ck3-frontend-gui-tree-inspection-v1"
+            or result.get("schema_version") != 1
+            or result.get("read_only") is not True
+            or result.get("uses_ocr") is not False
+            or result.get("uses_keyboard") is not False
+            or result.get("uses_mouse") is not False
+        ):
+            raise BridgeUnavailableError(
+                "native frontend GUI tree inspector returned malformed data"
+            )
+        return result
+
     def activate_frontend_new_game_v1(self) -> dict[str, object]:
         """Open New Game semantically; the driver must prove Bookmarks."""
 

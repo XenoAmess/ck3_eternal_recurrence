@@ -33,7 +33,7 @@
 namespace xar::game {
 namespace {
 
-constexpr std::size_t kBaseCapabilityCount = 85;
+constexpr std::size_t kBaseCapabilityCount = 86;
 constexpr std::size_t kCapabilityCount =
     kBaseCapabilityCount
 #if defined(XAR_CK3_ENABLE_G2_ACTUAL_TRUCE_EXPIRY_CANDIDATE_V1)
@@ -136,6 +136,7 @@ constexpr std::array<std::string_view, kCapabilityCount> kCapabilities{
     ck3_11906::kCoatOfArmsDesignerProbeV1Capability,
     ck3_11906::kCoatOfArmsDesignerExportV1Capability,
     ck3_11906::kFrontendGuiRouteV1Capability,
+    ck3_11906::kFrontendGuiTreeInspectionV1Capability,
     ck3_11906::kFrontendGuiOpenNewGameV1Capability,
     ck3_11906::kFrontendGuiPickAnyCharacterV1Capability,
     ck3_11906::kTitleMapNavigationV1Capability,

@@ -9,6 +9,11 @@ QUERY_FRONTEND_GUI_ROUTE_V1_CAPABILITY: Final = (
     "game.command.query-frontend-gui-route-v1"
 )
 QUERY_FRONTEND_GUI_ROUTE_V1_STEP: Final = "query-frontend-gui-route-v1"
+INSPECT_FRONTEND_GUI_TREE_V1_CAPABILITY: Final = (
+    "game.command.inspect-frontend-gui-tree-v1"
+)
+INSPECT_FRONTEND_GUI_TREE_V1_STEP: Final = "inspect-frontend-gui-tree-v1"
+INSPECT_FRONTEND_GUI_TREE_V1_MAXIMUM_WIDGETS: Final = 512
 ACTIVATE_FRONTEND_NEW_GAME_V1_CAPABILITY: Final = (
     "game.command.activate-frontend-new-game-v1"
 )
@@ -122,6 +127,70 @@ def normalize_frontend_gui_route_v1(result: object) -> dict[str, object]:
         "accepted": True,
         "route": result["status"],
         "backend_id": result.get("backend_id"),
+    }
+
+
+def normalize_frontend_gui_tree_inspection_v1(
+    result: object,
+) -> dict[str, object]:
+    if not isinstance(result, dict):
+        raise ValueError("frontend GUI tree inspection must be an object")
+    widgets = result.get("widgets")
+    widget_count = result.get("widget_count")
+    if (
+        result.get("step") != INSPECT_FRONTEND_GUI_TREE_V1_STEP
+        or result.get("accepted") is not True
+        or result.get("status") not in {"available", "unavailable"}
+        or not isinstance(result.get("root_available"), bool)
+        or not isinstance(result.get("truncated"), bool)
+        or not isinstance(widget_count, int)
+        or isinstance(widget_count, bool)
+        or not 0 <= widget_count <= INSPECT_FRONTEND_GUI_TREE_V1_MAXIMUM_WIDGETS
+        or not isinstance(widgets, list)
+        or len(widgets) != widget_count
+        or (result["status"] == "available") is not result["root_available"]
+    ):
+        raise ValueError("frontend GUI tree inspection is malformed")
+    normalized_widgets: list[dict[str, object]] = []
+    for row in widgets:
+        if not isinstance(row, dict):
+            raise ValueError("frontend GUI widget inspection is malformed")
+        runtime_name = row.get("runtime_name")
+        depth = row.get("depth")
+        if (
+            not isinstance(runtime_name, str)
+            or not runtime_name
+            or len(runtime_name.encode("utf-8")) > 127
+            or not isinstance(depth, int)
+            or isinstance(depth, bool)
+            or not 0 <= depth <= 64
+            or not isinstance(row.get("effective_visible"), bool)
+            or not isinstance(row.get("enabled"), bool)
+        ):
+            raise ValueError("frontend GUI widget inspection is malformed")
+        normalized_widgets.append(
+            {
+                "runtime_name": runtime_name,
+                "depth": depth,
+                "effective_visible": row["effective_visible"],
+                "enabled": row["enabled"],
+            }
+        )
+    return {
+        "schema": "ck3-frontend-gui-tree-inspection-v1",
+        "schema_version": 1,
+        "step": INSPECT_FRONTEND_GUI_TREE_V1_STEP,
+        "accepted": True,
+        "status": result["status"],
+        "root_available": result["root_available"],
+        "truncated": result["truncated"],
+        "widget_count": widget_count,
+        "widgets": normalized_widgets,
+        "backend_id": result.get("backend_id"),
+        "read_only": True,
+        "uses_ocr": False,
+        "uses_keyboard": False,
+        "uses_mouse": False,
     }
 
 

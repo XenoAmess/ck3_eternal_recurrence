@@ -1529,6 +1529,86 @@ bool ReadGuiWidgetRuntimeV1(
           true);
 }
 
+bool InspectNamedGuiTreeV1(
+    const ZhongguoScoreboardNativeEnvironmentV1 &environment,
+    const ZhongguoScoreboardAccessV1 &access,
+    NamedGuiTreeInspectionV1 &output) noexcept {
+  output = {};
+  if (environment.offline_fixture_function_overrides) return false;
+  void *context = nullptr;
+  void *owner = nullptr;
+  if (!ResolveGuiContextAndOwner(environment, access, context, owner)) {
+    return false;
+  }
+  void *global_root = nullptr;
+  if (!ReadValue(access, owner, kZhongguoGuiOwnerRootWidgetOffset,
+                 global_root)) {
+    return false;
+  }
+  if (global_root == nullptr) return true;
+  output.root_available = true;
+
+  struct Pending {
+    void *widget = nullptr;
+    std::uint32_t depth = 0;
+  };
+  std::array<Pending, kMaximumWidgetTraversal> pending{};
+  std::size_t head = 0;
+  std::size_t tail = 1;
+  pending[0] = {global_root, 0};
+  while (head < tail) {
+    const auto current = pending[head++];
+    std::string runtime_name;
+    void *vtable = nullptr;
+    bool visible = false;
+    bool enabled = false;
+    if (!ReadGuiWidgetRuntimeV1(access, current.widget, runtime_name, vtable,
+                                visible, enabled)) {
+      return false;
+    }
+    if (!runtime_name.empty()) {
+      if (output.widget_count >= output.widgets.size()) {
+        output.truncated = true;
+        return true;
+      }
+      auto &row = output.widgets[output.widget_count++];
+      row.runtime_name = std::move(runtime_name);
+      row.depth = current.depth;
+      row.effective_visible = visible;
+      row.enabled = enabled;
+    }
+    if (current.depth >= kMaximumWidgetDepth) {
+      output.truncated = true;
+      continue;
+    }
+    void **children = nullptr;
+    std::int32_t count = 0;
+    if (!ReadValue(access, current.widget, kZhongguoWidgetChildrenOffset,
+                   children) ||
+        !ReadValue(access, current.widget, kZhongguoWidgetChildCountOffset,
+                   count) ||
+        count < 0 || count > kMaximumWidgetChildren ||
+        (count != 0 && children == nullptr)) {
+      return false;
+    }
+    if (tail + static_cast<std::size_t>(count) > pending.size()) {
+      output.truncated = true;
+      return true;
+    }
+    for (std::int32_t index = 0; index < count; ++index) {
+      void *child = nullptr;
+      if (!ReadValue(access, children,
+                     static_cast<std::size_t>(index) * sizeof(void *), child)) {
+        return false;
+      }
+      if (child != nullptr) {
+        pending[tail++] = {child, current.depth + 1};
+      }
+    }
+  }
+  return true;
+}
+
 ZhongguoScoreboardNativeEnvironmentV1 BindZhongguoScoreboardNativeEnvironmentV1(
     std::uintptr_t module_base, bool exact_build_admitted) noexcept {
   ZhongguoScoreboardNativeEnvironmentV1 environment{};

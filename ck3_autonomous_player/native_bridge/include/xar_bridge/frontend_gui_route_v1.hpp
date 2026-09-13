@@ -13,6 +13,10 @@ inline constexpr std::string_view kFrontendGuiRouteV1Capability =
     "game.command.query-frontend-gui-route-v1";
 inline constexpr std::string_view kFrontendGuiRouteV1Step =
     "query-frontend-gui-route-v1";
+inline constexpr std::string_view kFrontendGuiTreeInspectionV1Capability =
+    "game.command.inspect-frontend-gui-tree-v1";
+inline constexpr std::string_view kFrontendGuiTreeInspectionV1Step =
+    "inspect-frontend-gui-tree-v1";
 inline constexpr std::string_view kFrontendGuiOpenNewGameV1Capability =
     "game.command.activate-frontend-new-game-v1";
 inline constexpr std::string_view kFrontendGuiOpenNewGameV1Step =
@@ -28,6 +32,7 @@ enum class FrontendGuiRouteOperationV1 : std::uint32_t {
   query = 0,
   open_new_game = 1,
   pick_any_character = 2,
+  inspect_tree = 3,
 };
 
 enum class FrontendGuiRouteV1 : std::uint32_t {
@@ -44,6 +49,7 @@ struct FrontendGuiRouteResultV1 {
   bool target_resolved = false;
   bool dispatch_invoked = false;
   bool native_handled = false;
+  NamedGuiTreeInspectionV1 tree_inspection{};
 };
 
 struct FrontendGuiRouteMailboxContextV1 {
