@@ -20,6 +20,7 @@ import java.util.stream.Collectors;
 public class StdioCoatOfArmsMcpClient implements CoatOfArmsMcpClient {
     private static final Set<String> REQUIRED_TOOLS = Set.of(
             "ck3_take_snapshot",
+            "ck3_activate_frontend_coat_of_arms_designer_v1",
             "ck3_probe_coat_of_arms_source_v1",
             "ck3_export_coat_of_arms_source_v1",
             "ck3_query_coat_of_arms_resource_catalog_v1",

@@ -34,6 +34,14 @@ public class CoatOfArmsResource {
         return mcp.callTool("ck3_take_snapshot", Map.of());
     }
 
+    @POST
+    @Path("/open-native-designer")
+    public Object openNativeDesigner() {
+        return mcp.callTool(
+                "ck3_activate_frontend_coat_of_arms_designer_v1",
+                Map.of());
+    }
+
     @GET
     @Path("/resources")
     public Object resources(

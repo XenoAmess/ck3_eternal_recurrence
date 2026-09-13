@@ -328,6 +328,17 @@ export interface CoatOfArmsExportResult {
   [key: string]: unknown
 }
 
+export interface FrontendCoatOfArmsDesignerActionResult {
+  status: 'verified'
+  action: 'open_coat_of_arms_designer'
+  postcondition_verified: true
+  after: {
+    route: 'coat_of_arms_designer'
+    [key: string]: unknown
+  }
+  [key: string]: unknown
+}
+
 export class CompanionRequestError extends Error {
   constructor(
     message: string,
@@ -375,6 +386,11 @@ export function createCk3CompanionClient(
 
   return {
     session: () => get<Ck3SessionSnapshot>('/session'),
+    openNativeDesigner: () =>
+      post<FrontendCoatOfArmsDesignerActionResult>(
+        '/open-native-designer',
+        {},
+      ),
     resources: (parameters: {
       kind: CoatOfArmsResourceKind
       query?: string

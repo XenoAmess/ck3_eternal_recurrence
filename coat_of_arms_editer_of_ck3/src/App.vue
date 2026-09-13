@@ -231,6 +231,28 @@ async function refreshSession() {
   }
 }
 
+async function openNativeDesigner() {
+  mcpBusy.value = true
+  try {
+    const result = await companion.openNativeDesigner()
+    if (
+      result.status !== 'verified'
+      || result.action !== 'open_coat_of_arms_designer'
+      || result.postcondition_verified !== true
+      || result.after?.route !== 'coat_of_arms_designer'
+    ) {
+      throw new Error('MCP 未证明 CK3 已进入家徽设计页')
+    }
+    mcpStatus.value = '家徽设计页已打开'
+    ElMessage.success('CK3 已通过原生语义 MCP 打开王朝家徽设计页')
+  } catch (error) {
+    mcpStatus.value = '打开家徽页失败'
+    ElMessage.error(`原生家徽页打开失败：${errorMessage(error)}`)
+  } finally {
+    mcpBusy.value = false
+  }
+}
+
 async function loadRuntimeFeatures() {
   runtimeFeatureBusy.value = true
   runtimeEnabledFeatureCount.value = null
@@ -543,11 +565,12 @@ importSource()
             <el-button size="small" :loading="mcpBusy" @click="refreshSession">连接</el-button>
           </div>
           <div class="mcp-actions">
+            <el-button :loading="mcpBusy" @click="openNativeDesigner">打开原生家徽页</el-button>
             <el-button :loading="mcpBusy" :disabled="errorCount > 0" @click="probeInCk3(false)">原生检测</el-button>
             <el-button type="primary" plain :loading="mcpBusy" :disabled="errorCount > 0" @click="probeInCk3(true)">应用到设计器</el-button>
             <el-button :loading="mcpBusy" @click="exportFromCk3">从 CK3 读取</el-button>
           </div>
-          <p>检测和应用需要 CK3 已停在纹章设计器；“应用”只改变 working state，不等于上层保存。</p>
+          <p>“打开”要求 CK3 已停在角色设计器；检测和应用要求已进入家徽页。“应用”只改变 working state，不等于上层保存。</p>
         </div>
 
         <div v-if="visibleDiagnostics.length" class="diagnostics">

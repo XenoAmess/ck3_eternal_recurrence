@@ -30,6 +30,28 @@ class CoatOfArmsResourceTest {
     }
 
     @Test
+    void nativeDesignerActionIsAClosedZeroInputMcpCall() {
+        when(mcp.callTool(
+                        eq("ck3_activate_frontend_coat_of_arms_designer_v1"),
+                        eq(Map.of())))
+                .thenReturn(Map.of(
+                        "status", "verified",
+                        "action", "open_coat_of_arms_designer"));
+
+        given()
+                .contentType("application/json")
+                .body(Map.of())
+                .when().post("/api/ck3/coat-of-arms/open-native-designer")
+                .then()
+                .statusCode(200)
+                .body("status", equalTo("verified"))
+                .body("action", equalTo("open_coat_of_arms_designer"));
+
+        verify(mcp).callTool(
+                "ck3_activate_frontend_coat_of_arms_designer_v1", Map.of());
+    }
+
+    @Test
     void resourceCatalogIsForwardedToTheMcpTool() {
         Map<String, Object> response = Map.of(
                 "schema", "ck3-coat-of-arms-resource-catalog-v1",

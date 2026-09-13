@@ -176,7 +176,7 @@ exact 安装 EXE 后同一套测试为 `106 passed / 0 failed`，因此前者不
 就是调用 `OpenDynastyCoatOfArmsDesigner` 并设置 `coat_of_arms_customization_open='dynasty'` 的编辑按钮。
 
 据此新增的零输入 `ck3_activate_frontend_coat_of_arms_designer_v1()` 只允许上述固定 leaf，且必须独立观察 route
-`coat_of_arms_designer` 与可见 `coat_of_arms_page` 才返回 verified。Release DLL 2,702,848 bytes，SHA-256
-`C7EA035BED0DE7BEC78771C5220CE018854376FA6AACD7BC487DC509C59628F9`；Python 普通/优化模式各 `11/11`、runner
+`coat_of_arms_designer` 与可见 `coat_of_arms_page` 才返回 verified。rebase 到 exact `master` 后的 Release DLL 为
+2,702,848 bytes，SHA-256 `973B9EB1A4BAA926811CD06237A8B8173CC4459C7F9140221AFD45242E537095`；Python 普通/优化模式各 `11/11`、runner
 普通/优化模式各 `2/2`，原生套件为首次 100/106 加修正后失败六项 6/6，即等价 `106/106`。该最后一段仍为
 `mcp-static-ready / live=false`，下一次共享槽位可用时做一次受管 live，不以鼠标链代替。

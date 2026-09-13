@@ -43,6 +43,28 @@ describe('CK3 companion client', () => {
     expect(JSON.parse(fetchMock.mock.calls[1][1].body)).toEqual({ expectedRevision: 8 })
   })
 
+  it('opens the native CoA page through the closed zero-input route', async () => {
+    const payload = {
+      status: 'verified',
+      action: 'open_coat_of_arms_designer',
+      postcondition_verified: true,
+      after: { route: 'coat_of_arms_designer' },
+    }
+    const fetchMock = vi.fn().mockResolvedValue(new Response(
+      JSON.stringify(payload),
+      { status: 200, headers: { 'Content-Type': 'application/json' } },
+    ))
+    vi.stubGlobal('fetch', fetchMock)
+
+    const result = await createCk3CompanionClient().openNativeDesigner()
+
+    expect(result).toEqual(payload)
+    expect(new URL(fetchMock.mock.calls[0][0]).pathname)
+      .toBe('/api/ck3/coat-of-arms/open-native-designer')
+    expect(fetchMock.mock.calls[0][1].method).toBe('POST')
+    expect(JSON.parse(fetchMock.mock.calls[0][1].body)).toEqual({})
+  })
+
   it('encodes an exact manifest asset name', async () => {
     const fetchMock = vi.fn().mockResolvedValue(new Response(JSON.stringify({
       schema: 'ck3-coat-of-arms-resource-asset-v1',

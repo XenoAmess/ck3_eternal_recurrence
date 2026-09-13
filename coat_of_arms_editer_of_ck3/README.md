@@ -30,7 +30,7 @@ pnpm dev
 ```
 
 浏览器不能直接启动本机 stdio MCP，所以 `backend/` 提供必要且很薄的 Maven + Java + Quarkus 伴随服务。它只允许调用
-`ck3_take_snapshot`、九项 CoA MCP 工具和一项原生 runtime-feature 查询，不实现第二套后端解析器，也不触碰 OCR、鼠标或屏幕。
+`ck3_take_snapshot`、九项 CoA MCP 工具、一项原生 runtime-feature 查询和一项固定 CoA 页动作，不实现第二套后端解析器，也不触碰 OCR、鼠标或屏幕。
 
 ## 启动伴随服务
 
@@ -49,6 +49,7 @@ mvn -f backend/pom.xml quarkus:dev
 
 | REST | MCP | 是否需要已运行的 CK3 |
 |---|---|---:|
+| `POST /api/ck3/coat-of-arms/open-native-designer` | `ck3_activate_frontend_coat_of_arms_designer_v1` | 是，且需停在角色设计器；只接受固定王朝家徽按钮 |
 | `GET /api/ck3/coat-of-arms/resources` | `ck3_query_coat_of_arms_resource_catalog_v1` | 否，只读安装目录 |
 | `GET /api/ck3/coat-of-arms/asset` | `ck3_read_coat_of_arms_resource_asset_v1` | 否，只读 manifest 内的精确 DDS |
 | `GET /api/ck3/coat-of-arms/render-support` | `ck3_read_coat_of_arms_render_support_v1` | 否，只读 shader、命名颜色、surface mask 与 `_default.dds` |
@@ -68,6 +69,9 @@ mvn -f backend/pom.xml test
 mvn -f backend/pom.xml package
 java -jar backend/target/quarkus-app/quarkus-run.jar
 ```
+
+当前基线：Vitest `37/37`、Vite production build、Quarkus REST `11/11` 与 Maven package 均 GREEN。
+“打开原生家徽页”只调用固定、零参数的王朝家徽按钮 MCP，并要求独立 route 后置条件；它不会接受浏览器传入的控件名、路径、指针或桌面输入。
 
 实现依据为 [Quarkus REST Jackson](https://quarkus.io/extensions/io.quarkus/quarkus-rest-jackson/) 和
 [MCP Java SDK stdio client](https://java.sdk.modelcontextprotocol.io/latest/client/)。
