@@ -388,11 +388,13 @@ async def _run_mcp_sequence(
             options, admission_checks = horizon._white_peace_admission(
                 options_query, war_id=war_id
             )
+            final = await _take_snapshot(
+                client, results, label="post-termination-query"
+            )
+            _append_sample(samples, final, war_id=war_id)
             if not all(admission_checks.values()):
                 raise RuntimeError("white peace is unavailable at the horizon")
 
-            final = await _take_snapshot(client, results, label="pre-save")
-            _append_sample(samples, final, war_id=war_id)
             revision = _plain_revision(final, label="pre-save frame")
             commands.append("save-checkpoint")
             save_result = await client.call_tool(
