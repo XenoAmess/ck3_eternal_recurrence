@@ -15,11 +15,18 @@ ACTIVATE_FRONTEND_NEW_GAME_V1_CAPABILITY: Final = (
 ACTIVATE_FRONTEND_NEW_GAME_V1_STEP: Final = (
     "activate-frontend-new-game-v1"
 )
+ACTIVATE_FRONTEND_PICK_ANY_CHARACTER_V1_CAPABILITY: Final = (
+    "game.command.activate-frontend-pick-any-character-v1"
+)
+ACTIVATE_FRONTEND_PICK_ANY_CHARACTER_V1_STEP: Final = (
+    "activate-frontend-pick-any-character-v1"
+)
 FRONTEND_GUI_ROUTES_V1: Final = frozenset(
     {
         "unavailable",
         "main_menu",
         "bookmarks",
+        "lobby",
         "ruler_designer",
         "coat_of_arms_designer",
     }
@@ -69,6 +76,43 @@ def normalize_frontend_new_game_v1(
         "accepted": True,
         "status": "verified",
         "action": "open_new_game",
+        "input_backend": "native_gui_semantic_activation",
+        "uses_ocr": False,
+        "uses_keyboard": False,
+        "uses_mouse": False,
+        "before": before,
+        "acknowledgement": dict(acknowledgement),
+        "after": after,
+        "postcondition_verified": True,
+        "backend_id": acknowledgement.get("backend_id"),
+    }
+
+
+def normalize_frontend_pick_any_character_v1(
+    acknowledgement: object,
+    *,
+    before: dict[str, object],
+    after: dict[str, object],
+) -> dict[str, object]:
+    if not isinstance(acknowledgement, dict):
+        raise ValueError("frontend pick-any-character acknowledgement must be an object")
+    if (
+        acknowledgement.get("step")
+        != ACTIVATE_FRONTEND_PICK_ANY_CHARACTER_V1_STEP
+        or acknowledgement.get("accepted") is not True
+        or acknowledgement.get("status")
+        != "acknowledged_verification_pending"
+        or before.get("route") != "bookmarks"
+        or after.get("route") != "lobby"
+    ):
+        raise ValueError("frontend pick-any-character postcondition is not proven")
+    return {
+        "schema": "ck3-frontend-gui-action-v1",
+        "schema_version": 1,
+        "step": ACTIVATE_FRONTEND_PICK_ANY_CHARACTER_V1_STEP,
+        "accepted": True,
+        "status": "verified",
+        "action": "pick_any_character",
         "input_backend": "native_gui_semantic_activation",
         "uses_ocr": False,
         "uses_keyboard": False,

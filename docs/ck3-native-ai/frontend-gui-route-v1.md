@@ -6,23 +6,25 @@
 
 ## 目的与边界
 
-该 primitive 用于补齐开局前无法取得 gameplay snapshot 时的语义导航。它读取 CK3 当前 GUI owner tree，并只允许一个固定动作：
-从主菜单激活原版 `new_game_button`。它不截图、不做 OCR，不发送鼠标或键盘事件，也不接受调用方提供的 native pointer、
+该 primitive 用于补齐开局前无法取得 gameplay snapshot 时的语义导航。它读取 CK3 当前 GUI owner tree，并只允许编译期固定动作：
+从主菜单激活原版 `new_game_button`，或从书签页激活 `pick_any_character_button`。它不截图、不做 OCR，不发送鼠标或键盘事件，也不接受调用方提供的 native pointer、
 控件名或回调地址。
 
 首版只闭合：
 
 ```text
 main_menu --activate-frontend-new-game-v1--> bookmarks
+bookmarks --activate-frontend-pick-any-character-v1--> lobby
 ```
 
-bookmarks → ruler designer → coat-of-arms designer 目前只支持路由观察，尚无动作 primitive。上层 Finish 也不在 v1 范围内。
+第二段目前为 `mcp-static-ready / live=false`；lobby → ruler designer → coat-of-arms designer 尚无动作 primitive。上层 Finish 也不在 v1 范围内。
 
 ## MCP 合同
 
 ```text
 ck3_query_frontend_gui_route_v1()
 ck3_activate_frontend_new_game_v1()
+ck3_activate_frontend_pick_any_character_v1()
 ```
 
 对应 bridge capability/step：
@@ -33,11 +35,14 @@ query-frontend-gui-route-v1
 
 game.command.activate-frontend-new-game-v1
 activate-frontend-new-game-v1
+
+game.command.activate-frontend-pick-any-character-v1
+activate-frontend-pick-any-character-v1
 ```
 
-路由枚举为 `unavailable`、`main_menu`、`bookmarks`、`ruler_designer`、`coat_of_arms_designer`。动作要求 before route 为
-`main_menu`；原生调用只返回 `acknowledged_verification_pending`。driver 必须另行轮询 route，并且仅在 after route 为
-`bookmarks` 时返回：
+路由枚举为 `unavailable`、`main_menu`、`bookmarks`、`lobby`、`ruler_designer`、`coat_of_arms_designer`。两个动作分别要求
+`main_menu → bookmarks` 与 `bookmarks → lobby`；原生调用只返回 `acknowledged_verification_pending`。driver 必须另行轮询 route，
+只有目标 route 被独立观察到才返回：
 
 ```json
 {
@@ -58,12 +63,13 @@ activate-frontend-new-game-v1
 | 文件 | bytes | SHA-256 | v1 使用的固定身份 |
 |---|---:|---|---|
 | `game/gui/frontend_main.gui` | 48,636 | `F75D4EF3DEB22C15195B71A54624D3054879FDE046F30A761A19212E6D7EA614` | root `mainmenu_panel_bottom`；button `new_game_button`；`onclick = [FrontEndMainView.OnNewGame]`；shortcut `menu_1` |
-| `game/gui/frontend_bookmarks.gui` | 111,993 | `C853B48F42A5A3B84208B2FC570C02F5FCB5DA217133553C6A5B70B7F8F0F267` | root `frontend_bookmarks`；后续候选 `pick_any_character_button` |
+| `game/gui/frontend_bookmarks.gui` | 111,993 | `C853B48F42A5A3B84208B2FC570C02F5FCB5DA217133553C6A5B70B7F8F0F267` | root `frontend_bookmarks`；button `pick_any_character_button`；动画结束调用 `GameSetup.OnCustomStart` |
+| `game/gui/multiplayer_types.gui` | 56,911 | `93912D008D2362955470E7F42029280C41E3E316E28D8D1055EE09DFBE8BC3A3` | ruler-selection root `lobbyview`；后续设计器入口调用 `TryStartRulerDesigning` |
 | `game/gui/window_ruler_designer.gui` | 118,240 | `C5761FD395E0C3D7FDF320DDE41DA900928F0A2EB217524E25348CCCC07ABDC9` | root `ruler_designer`；page `coat_of_arms_page` |
 | `game/gui/shared/coa_designer.gui` | 56,297 | `2F3B863A7FEA692D630825052426CCC674403D096C37DD470E63C923D2D356EC` | CoA designer 结构来源；v1 不从文件文本执行动作 |
 
 运行时不会根据这些磁盘文本猜页面；DLL 每次都从当前 GUI owner 重新解析固定 root/descendant，读取 runtime name、vtable、
-visibility 和 enabled 状态。route priority 为 `coat_of_arms_designer > ruler_designer > bookmarks > main_menu > unavailable`。
+visibility 和 enabled 状态。route priority 为 `coat_of_arms_designer > ruler_designer > lobby > bookmarks > main_menu > unavailable`。
 
 ## application-main 与 gameplay 隔离
 
@@ -77,14 +83,14 @@ proof。
 
 ## 动作验证
 
-`new_game_button` 动作按以下顺序 fail closed：
+固定按钮动作按以下顺序 fail closed：
 
-1. 当前 route 必须是 `main_menu`；
-2. 从 `mainmenu_panel_bottom` 重新解析 `new_game_button`；
+1. 当前 route 必须与动作匹配：`main_menu` 或 `bookmarks`；
+2. 从固定 root 重新解析固定 target：`mainmenu_panel_bottom/new_game_button` 或 `frontend_bookmarks/pick_any_character_button`；
 3. runtime name 精确匹配且控件 visible/enabled；
 4. target GUI context、button vtable slot、callback group 与 modal admission 通过现有 exact-build 原生 dispatcher；
 5. 调用 `CPdxGuiShortcutManager`；该返回值只算 ACK；
-6. Python driver 独立查询并观察 `bookmarks`，才能报告 verified。
+6. Python driver 独立查询并观察对应的 `bookmarks` 或 `lobby`，才能报告 verified。
 
 ## 验收状态与下一步
 
@@ -96,6 +102,6 @@ proof。
 - artifact 为 `artifacts/coa-clipboard-probe-2026-09-08/mcp-frontend-route-live3.json`，408,936 bytes，SHA-256 `1EBBFA6052967E02F2C929CDD11A76A312B75F85487E9B65DE0158CA7C14DDD5`；源码 commit `84e1f5f139ef4d299fe7635f44f01144083ac8e0`，DLL SHA-256 `8FE08D0FE6E2793866CB6C3164472CB1CAC10BD05A45B1996FCB321537A515F0`；
 - Steam 全程离线；`cleanup_proven=true`、`tree_gone=true`，验收后没有残留 CK3 进程；
 - `open_kaishek` 没有 frontend GUI/CoA domain，本包预验证为 `not-applicable`。
+- `activate-frontend-pick-any-character-v1` 已通过 Release 编译、adapter registry、mailbox/source-contract 与官方 MCP closed-schema 测试，状态为 `mcp-static-ready / live=false`。
 
-下一步按相同固定 allowlist 方法补
-`pick_any_character_button` 之后的 ruler selection、ruler designer 与 CoA 页动作；禁止以鼠标链代替缺失 primitive。
+下一步先用受管 CK3 对 `bookmarks → lobby` 做官方 MCP live 验收；通过后继续补 lobby 的确定性角色选择、ruler designer 与 CoA 页动作，禁止以鼠标链代替缺失 primitive。

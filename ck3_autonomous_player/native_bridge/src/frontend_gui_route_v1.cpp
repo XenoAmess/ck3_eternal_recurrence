@@ -16,11 +16,12 @@ struct FixedWidgetProbeV1 {
   FrontendGuiRouteV1 route;
 };
 
-constexpr std::array<FixedWidgetProbeV1, 4> kRoutePriority{{
+constexpr std::array<FixedWidgetProbeV1, 5> kRoutePriority{{
     {"ruler_designer", "coat_of_arms_page",
      FrontendGuiRouteV1::coat_of_arms_designer},
     {"ruler_designer", "ruler_designer",
      FrontendGuiRouteV1::ruler_designer},
+    {"lobbyview", "lobbyview", FrontendGuiRouteV1::lobby},
     {"frontend_bookmarks", "frontend_bookmarks",
      FrontendGuiRouteV1::bookmarks},
     {"mainmenu_panel_bottom", "mainmenu_panel_bottom",
@@ -97,13 +98,16 @@ bool ResolveRoute(const FrontendGuiRouteMailboxContextV1 &query,
   return true;
 }
 
-bool DispatchOpenNewGame(FrontendGuiRouteMailboxContextV1 &query) noexcept {
-  if (query.result.route != FrontendGuiRouteV1::main_menu) return false;
+bool DispatchFixedNamedWidget(FrontendGuiRouteMailboxContextV1 &query,
+                              FrontendGuiRouteV1 expected_route,
+                              std::string_view root_name,
+                              std::string_view target_name) noexcept {
+  if (query.result.route != expected_route) return false;
   ZhongguoScoreboardAccessV1 access{};
   void *root = nullptr;
   void *target = nullptr;
   if (!ResolveNamedGuiWidgetV1(query.environment, access,
-                               "mainmenu_panel_bottom", "new_game_button",
+                               root_name, target_name,
                                root, target) ||
       target == nullptr) {
     return false;
@@ -114,7 +118,7 @@ bool DispatchOpenNewGame(FrontendGuiRouteMailboxContextV1 &query) noexcept {
   bool enabled = false;
   if (!ReadGuiWidgetRuntimeV1(access, target, runtime_name, vtable,
                               visible, enabled) ||
-      runtime_name != "new_game_button" || !visible || !enabled) {
+      runtime_name != target_name || !visible || !enabled) {
     return false;
   }
   query.result.target_resolved = true;
@@ -123,9 +127,22 @@ bool DispatchOpenNewGame(FrontendGuiRouteMailboxContextV1 &query) noexcept {
   if (instance_pointer.empty() || vtable_pointer.empty()) return false;
   query.result.dispatch_invoked = DispatchZhongguoScoreboardActionNativeV1(
       &query.dispatch_environment, game::ZhongguoScoreboardActionV1::open,
-      "new_game_button", "new_game_button", instance_pointer,
+      target_name, runtime_name, instance_pointer,
       vtable_pointer, query.result.native_handled);
   return query.result.dispatch_invoked;
+}
+
+bool DispatchOpenNewGame(FrontendGuiRouteMailboxContextV1 &query) noexcept {
+  return DispatchFixedNamedWidget(query, FrontendGuiRouteV1::main_menu,
+                                  "mainmenu_panel_bottom",
+                                  "new_game_button");
+}
+
+bool DispatchPickAnyCharacter(
+    FrontendGuiRouteMailboxContextV1 &query) noexcept {
+  return DispatchFixedNamedWidget(query, FrontendGuiRouteV1::bookmarks,
+                                  "frontend_bookmarks",
+                                  "pick_any_character_button");
 }
 
 } // namespace
@@ -141,8 +158,12 @@ bool ExecuteFrontendGuiRouteMailboxV1(
   query->result = {};
   if (!ResolveRoute(*query, query->result)) return false;
   if (query->operation == FrontendGuiRouteOperationV1::query) return true;
-  return query->operation == FrontendGuiRouteOperationV1::open_new_game &&
-         DispatchOpenNewGame(*query);
+  if (query->operation == FrontendGuiRouteOperationV1::open_new_game) {
+    return DispatchOpenNewGame(*query);
+  }
+  return query->operation ==
+             FrontendGuiRouteOperationV1::pick_any_character &&
+         DispatchPickAnyCharacter(*query);
 }
 
 std::string_view FrontendGuiRouteNameV1(FrontendGuiRouteV1 route) noexcept {
@@ -151,6 +172,8 @@ std::string_view FrontendGuiRouteNameV1(FrontendGuiRouteV1 route) noexcept {
     return "main_menu";
   case FrontendGuiRouteV1::bookmarks:
     return "bookmarks";
+  case FrontendGuiRouteV1::lobby:
+    return "lobby";
   case FrontendGuiRouteV1::ruler_designer:
     return "ruler_designer";
   case FrontendGuiRouteV1::coat_of_arms_designer:

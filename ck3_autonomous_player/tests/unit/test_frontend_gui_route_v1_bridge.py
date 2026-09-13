@@ -13,10 +13,13 @@ sys.path.insert(0, str(PROJECT_ROOT / "src"))
 from xar_autoplayer.bridge.frontend_gui_route_contract import (
     ACTIVATE_FRONTEND_NEW_GAME_V1_CAPABILITY,
     ACTIVATE_FRONTEND_NEW_GAME_V1_STEP,
+    ACTIVATE_FRONTEND_PICK_ANY_CHARACTER_V1_CAPABILITY,
+    ACTIVATE_FRONTEND_PICK_ANY_CHARACTER_V1_STEP,
     QUERY_FRONTEND_GUI_ROUTE_V1_CAPABILITY,
     QUERY_FRONTEND_GUI_ROUTE_V1_STEP,
     normalize_frontend_gui_route_v1,
     normalize_frontend_new_game_v1,
+    normalize_frontend_pick_any_character_v1,
 )
 from xar_autoplayer.bridge.mcp_server import create_server
 from xar_autoplayer.bridge.native_driver import NativeHeadlessGameplayDriver
@@ -58,6 +61,30 @@ def _action() -> dict[str, object]:
     }
 
 
+def _pick_any_character_action() -> dict[str, object]:
+    return {
+        "schema": "ck3-frontend-gui-action-v1",
+        "schema_version": 1,
+        "step": ACTIVATE_FRONTEND_PICK_ANY_CHARACTER_V1_STEP,
+        "accepted": True,
+        "status": "verified",
+        "action": "pick_any_character",
+        "input_backend": "native_gui_semantic_activation",
+        "uses_ocr": False,
+        "uses_keyboard": False,
+        "uses_mouse": False,
+        "before": _route("bookmarks"),
+        "acknowledgement": {
+            "step": ACTIVATE_FRONTEND_PICK_ANY_CHARACTER_V1_STEP,
+            "accepted": True,
+            "status": "acknowledged_verification_pending",
+        },
+        "after": _route("lobby"),
+        "postcondition_verified": True,
+        "backend_id": "native-headless",
+    }
+
+
 class _FrontendDriver:
     def capabilities(self) -> dict[str, object]:
         return {
@@ -68,6 +95,7 @@ class _FrontendDriver:
             "bridge_capabilities": [
                 QUERY_FRONTEND_GUI_ROUTE_V1_CAPABILITY,
                 ACTIVATE_FRONTEND_NEW_GAME_V1_CAPABILITY,
+                ACTIVATE_FRONTEND_PICK_ANY_CHARACTER_V1_CAPABILITY,
             ],
         }
 
@@ -76,6 +104,9 @@ class _FrontendDriver:
 
     def activate_frontend_new_game_v1(self) -> dict[str, object]:
         return _action()
+
+    def activate_frontend_pick_any_character_v1(self) -> dict[str, object]:
+        return _pick_any_character_action()
 
 
 class FrontendGuiRouteV1ContractTests(unittest.TestCase):
@@ -104,6 +135,19 @@ class FrontendGuiRouteV1ContractTests(unittest.TestCase):
         self.assertFalse(normalized_action["uses_ocr"])
         self.assertFalse(normalized_action["uses_keyboard"])
         self.assertFalse(normalized_action["uses_mouse"])
+
+        normalized_pick_any = normalize_frontend_pick_any_character_v1(
+            {
+                "step": ACTIVATE_FRONTEND_PICK_ANY_CHARACTER_V1_STEP,
+                "accepted": True,
+                "status": "acknowledged_verification_pending",
+                "backend_id": "native-headless",
+            },
+            before=_route("bookmarks"),
+            after=_route("lobby"),
+        )
+        self.assertEqual(normalized_pick_any["action"], "pick_any_character")
+        self.assertTrue(normalized_pick_any["postcondition_verified"])
 
         with self.assertRaisesRegex(ValueError, "postcondition"):
             normalize_frontend_new_game_v1(
@@ -166,6 +210,11 @@ class FrontendGuiRouteV1ContractTests(unittest.TestCase):
         self.assertTrue(
             service.activate_frontend_new_game_v1()["postcondition_verified"]
         )
+        self.assertTrue(
+            service.activate_frontend_pick_any_character_v1()[
+                "postcondition_verified"
+            ]
+        )
 
 
 @unittest.skipIf(
@@ -182,6 +231,7 @@ class FrontendGuiRouteV1McpTests(unittest.IsolatedAsyncioTestCase):
             for name in (
                 "ck3_query_frontend_gui_route_v1",
                 "ck3_activate_frontend_new_game_v1",
+                "ck3_activate_frontend_pick_any_character_v1",
             ):
                 self.assertEqual(tools[name].input_schema.get("required", []), [])
                 self.assertFalse(tools[name].input_schema["additionalProperties"])
@@ -193,6 +243,13 @@ class FrontendGuiRouteV1McpTests(unittest.IsolatedAsyncioTestCase):
             )
             self.assertFalse(action.is_error)
             self.assertTrue(action.structured_content["postcondition_verified"])
+            pick_any = await client.call_tool(
+                "ck3_activate_frontend_pick_any_character_v1", {}
+            )
+            self.assertFalse(pick_any.is_error)
+            self.assertTrue(
+                pick_any.structured_content["postcondition_verified"]
+            )
 
 
 if __name__ == "__main__":

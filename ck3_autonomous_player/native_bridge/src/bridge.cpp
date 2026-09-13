@@ -5514,7 +5514,8 @@ void RunConnectedSession(
               tactical_sentinel_request{};
           std::uint64_t tactical_sentinel_cancel_generation = 0;
           if (step == xar::ck3_11906::kFrontendGuiRouteV1Step ||
-              step == xar::ck3_11906::kFrontendGuiOpenNewGameV1Step) {
+              step == xar::ck3_11906::kFrontendGuiOpenNewGameV1Step ||
+              step == xar::ck3_11906::kFrontendGuiPickAnyCharacterV1Step) {
             std::uint64_t expected_revision = 0;
             if (!xar::bridge::JsonUnsignedField(
                     incoming.payload, "expected_revision",
@@ -5527,11 +5528,17 @@ void RunConnectedSession(
             } else {
               xar::ck3_11906::FrontendGuiRouteMailboxContextV1 query{};
               query.mailbox = &g_main_thread_query_mailbox_v1;
-              query.operation =
-                  step == xar::ck3_11906::kFrontendGuiRouteV1Step
-                      ? xar::ck3_11906::FrontendGuiRouteOperationV1::query
-                      : xar::ck3_11906::
-                            FrontendGuiRouteOperationV1::open_new_game;
+              if (step == xar::ck3_11906::kFrontendGuiRouteV1Step) {
+                query.operation =
+                    xar::ck3_11906::FrontendGuiRouteOperationV1::query;
+              } else if (step ==
+                         xar::ck3_11906::kFrontendGuiOpenNewGameV1Step) {
+                query.operation = xar::ck3_11906::
+                    FrontendGuiRouteOperationV1::open_new_game;
+              } else {
+                query.operation = xar::ck3_11906::
+                    FrontendGuiRouteOperationV1::pick_any_character;
+              }
               const auto module_base = reinterpret_cast<std::uintptr_t>(
                   GetModuleHandleW(nullptr));
               query.environment = xar::ck3_11906::

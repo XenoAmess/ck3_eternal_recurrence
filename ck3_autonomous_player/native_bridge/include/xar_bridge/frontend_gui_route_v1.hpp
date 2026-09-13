@@ -17,12 +17,17 @@ inline constexpr std::string_view kFrontendGuiOpenNewGameV1Capability =
     "game.command.activate-frontend-new-game-v1";
 inline constexpr std::string_view kFrontendGuiOpenNewGameV1Step =
     "activate-frontend-new-game-v1";
+inline constexpr std::string_view kFrontendGuiPickAnyCharacterV1Capability =
+    "game.command.activate-frontend-pick-any-character-v1";
+inline constexpr std::string_view kFrontendGuiPickAnyCharacterV1Step =
+    "activate-frontend-pick-any-character-v1";
 inline constexpr std::string_view kFrontendGuiRouteV1BackendId =
     "ck3-1.19.0.6-native-frontend-gui-route-v1";
 
 enum class FrontendGuiRouteOperationV1 : std::uint32_t {
   query = 0,
   open_new_game = 1,
+  pick_any_character = 2,
 };
 
 enum class FrontendGuiRouteV1 : std::uint32_t {
@@ -31,6 +36,7 @@ enum class FrontendGuiRouteV1 : std::uint32_t {
   bookmarks = 2,
   ruler_designer = 3,
   coat_of_arms_designer = 4,
+  lobby = 5,
 };
 
 struct FrontendGuiRouteResultV1 {

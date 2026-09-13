@@ -6629,6 +6629,31 @@ class GameplayBridgeService:
             )
         return result
 
+    def activate_frontend_pick_any_character_v1(self) -> dict[str, object]:
+        """Open the ruler-selection lobby; the driver proves the route."""
+
+        activate = getattr(
+            self.driver, "activate_frontend_pick_any_character_v1", None
+        )
+        if not callable(activate):
+            raise UnsupportedStepError(
+                "selected backend has no native frontend pick-any-character action"
+            )
+        result = activate()
+        if (
+            not isinstance(result, dict)
+            or result.get("schema") != "ck3-frontend-gui-action-v1"
+            or result.get("schema_version") != 1
+            or result.get("postcondition_verified") is not True
+            or result.get("uses_ocr") is not False
+            or result.get("uses_keyboard") is not False
+            or result.get("uses_mouse") is not False
+        ):
+            raise BridgeUnavailableError(
+                "native frontend pick-any-character action lacks its postcondition"
+            )
+        return result
+
     def query_current_event_window_context_v1(
         self,
         event_instance_id: int,
