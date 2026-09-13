@@ -692,12 +692,13 @@ rqa_verify_succession_effect = {
 	if = {
 		limit = { has_character_flag = rqa_waiting_for_succession }
 		remove_character_flag = rqa_waiting_for_succession
+		save_scope_as = rqa_successor
 		if = {
 			limit = {
 				is_alive = yes
 				is_independent_ruler = yes
 				var:rqa_later_title = {
-					holder = root
+					holder = scope:rqa_successor
 					has_variable = rmtm_restoration_hegemony
 					has_title_law = single_heir_succession_law
 					NOT = { any_de_jure_county = { always = yes } }
@@ -707,17 +708,17 @@ rqa_verify_succession_effect = {
 		}
 		else = { debug_log = "RQA: PROBE FAIL phase3_succession_title" }
 		if = {
-			limit = { var:rqa_personal_county = { holder = root } }
+			limit = { var:rqa_personal_county = { holder = scope:rqa_successor } }
 			debug_log = "RQA: PROBE PASS phase3_succession_personal_county"
 		}
 		else = { debug_log = "RQA: PROBE FAIL phase3_succession_personal_county" }
 		if = {
 			limit = {
 				var:rqa_loyal_direct = {
-					top_liege = root
-					primary_title = root.var:rqa_loyal_primary_title
+					top_liege = scope:rqa_successor
+					primary_title = scope:rqa_successor.var:rqa_loyal_primary_title
 				}
-				var:rqa_loyal_indirect = { top_liege = root }
+				var:rqa_loyal_indirect = { top_liege = scope:rqa_successor }
 			}
 			debug_log = "RQA: PROBE PASS phase3_succession_loyal_realm"
 		}
@@ -725,7 +726,7 @@ rqa_verify_succession_effect = {
 		if = {
 			limit = {
 				tgp_has_access_to_ministry_trigger = yes
-				global_var:rmtm_ministry_entitlement_title = { holder = root }
+				global_var:rmtm_ministry_entitlement_title = { holder = scope:rqa_successor }
 			}
 			debug_log = "RQA: PROBE PASS phase3_succession_ministry_entitlement"
 		}
@@ -759,19 +760,19 @@ rqa_verify_succession_effect = {
 				is_alive = yes
 				is_independent_ruler = yes
 				var:rqa_later_title = {
-					holder = root
+					holder = scope:rqa_successor
 					has_variable = rmtm_restoration_hegemony
 					has_title_law = single_heir_succession_law
 					NOT = { any_de_jure_county = { always = yes } }
 				}
 				var:rqa_loyal_direct = {
-					top_liege = root
-					primary_title = root.var:rqa_loyal_primary_title
+					top_liege = scope:rqa_successor
+					primary_title = scope:rqa_successor.var:rqa_loyal_primary_title
 				}
-				var:rqa_loyal_indirect = { top_liege = root }
-				var:rqa_personal_county = { holder = root }
+				var:rqa_loyal_indirect = { top_liege = scope:rqa_successor }
+				var:rqa_personal_county = { holder = scope:rqa_successor }
 				tgp_has_access_to_ministry_trigger = yes
-				global_var:rmtm_ministry_entitlement_title = { holder = root }
+				global_var:rmtm_ministry_entitlement_title = { holder = scope:rqa_successor }
 				exists = cp:councillor_chancellor
 				cp:councillor_chancellor = { has_character_flag = rqa_prechaos_minister_chancellor has_title = title:e_minister_chancellor }
 				exists = cp:councillor_spymaster
