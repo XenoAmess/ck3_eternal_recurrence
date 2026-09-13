@@ -388,6 +388,7 @@ def find_vanilla_game_root() -> Path | None:
     candidates.extend(
         [
             ROOT / "Crusader Kings III/game",
+            Path(r"C:\SteamLibrary\steamapps\common\Crusader Kings III\game"),
             Path(r"D:\Program Files (x86)\Steam\steamapps\common\Crusader Kings III\game"),
         ]
     )
