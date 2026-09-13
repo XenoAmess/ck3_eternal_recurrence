@@ -101,4 +101,5 @@ Workshop item：`3798404599`
 - 已完成：运行时与 fixture 实现；18 项静态合同、九语/35 文件静态校验、10 项构建测试与 deterministic 双构建 GREEN；产品/fixture `open_kaishek` parser root scan GREEN。
 - 已保留：`R0008-source` 为 RED。MCP readiness 与四期 title binding 已通过；失败暴露 title law 在无持有者时过早添加、销毁 `h_china` 后才补官导致原版 liege 无 holder，以及 ministry trigger 嵌套 scope 错误。三项根因均已作窄修复，RED 目录没有覆盖。
 - 已保留：`R0009-source` 为 RED。继承法／继承人、个人伯爵领、四期 title binding 与两次真实附庸拒绝均已通过；九席和忠臣主头衔／封臣树失败。日志证明九个 landless ministry title 被误当普通弱势帝国头衔释放、裁剪，随后原版官职继承把同一宰相连续塞入多个席位；批量补缺又把忠臣诸侯选为大臣并按原版规则上收其封臣树。当前窄修复显式保护未叛现任、只清退明确叛离者并把真实空缺交回正常任免。
+- 已保留：`R0010-source` 为 RED。九席 exact incumbents、忠臣主头衔／国号／封臣树和此前机制全部转为 PASS；唯一失败是随机预选的某个诸侯在原版群雄重组后不再满足【提议附庸】完整资格。fixture 已改为在重组完成后，从带确切五年 title reference 且当刻通过真实 interaction validity 的全部独立者中抽取两个不同样本，受控忠／叛角色仍单独承担身份断言。
 - 待完成：修复后的源码树 L1、新真实截图（若可清晰表现三/四期）、正式构建、Workshop 上传、公开回读、全新缓存 L3、changelog/tag/master push 与官方 CI。

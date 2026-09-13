@@ -536,6 +536,55 @@ rqa_verify_chaos_effect = {
 		debug_log = "RQA: TEST PASS phase4_recent_independence_titles_bound"
 	}
 	else = { debug_log = "RQA: TEST FAIL phase4_recent_independence_titles_bound" }
+	# Select the live interaction samples only after all vanilla Chaos
+	# reorganization has finished. The original controlled defect/control rulers
+	# remain the title-binding assertions above, while these two samples are drawn
+	# from the complete set of actually released titles and are required to satisfy
+	# the engine's full Offer Vassalization validity path at this exact moment.
+	random_independent_ruler = {
+		limit = {
+			this != root
+			primary_title = {
+				exists = var:rmtm_recently_independent_from_restoration_hegemony
+				var:rmtm_recently_independent_from_restoration_hegemony = root.var:rqa_later_title
+			}
+			root = {
+				is_character_interaction_valid = {
+					interaction = offer_vassalization_interaction
+					recipient = prev
+				}
+			}
+		}
+		save_scope_as = rqa_vassalization_target_a
+	}
+	if = {
+		limit = { exists = scope:rqa_vassalization_target_a }
+		random_independent_ruler = {
+			limit = {
+				this != root
+				this != scope:rqa_vassalization_target_a
+				primary_title = {
+					exists = var:rmtm_recently_independent_from_restoration_hegemony
+					var:rmtm_recently_independent_from_restoration_hegemony = root.var:rqa_later_title
+				}
+				root = {
+					is_character_interaction_valid = {
+						interaction = offer_vassalization_interaction
+						recipient = prev
+					}
+				}
+			}
+			save_scope_as = rqa_vassalization_target_b
+		}
+	}
+	if = {
+		limit = { exists = scope:rqa_vassalization_target_a }
+		set_variable = { name = rqa_vassalization_target_a value = scope:rqa_vassalization_target_a }
+	}
+	if = {
+		limit = { exists = scope:rqa_vassalization_target_b }
+		set_variable = { name = rqa_vassalization_target_b value = scope:rqa_vassalization_target_b }
+	}
 	add_character_flag = rqa_after_chaos_event_ready
 	add_character_flag = rqa_vassalization_probe_pending
 	debug_log = "RQA: TEST PASS chaos_matrix_complete"
@@ -548,17 +597,19 @@ rqa_execute_vassalization_probe_effect = {
 		remove_character_flag = rqa_vassalization_probe_pending
 		if = {
 			limit = {
+				exists = var:rqa_vassalization_target_a
+				exists = var:rqa_vassalization_target_b
 				is_character_interaction_valid = {
 					interaction = offer_vassalization_interaction
-					recipient = var:rqa_defecting_direct
+					recipient = var:rqa_vassalization_target_a
 				}
 				is_character_interaction_valid = {
 					interaction = offer_vassalization_interaction
-					recipient = var:rqa_control_ruler
+					recipient = var:rqa_vassalization_target_b
 				}
 			}
 			debug_log = "RQA: TEST PASS phase4_offer_vassalization_paths_valid"
-			var:rqa_defecting_direct = {
+			var:rqa_vassalization_target_a = {
 				run_interaction = {
 					interaction = offer_vassalization_interaction
 					actor = root
@@ -566,7 +617,7 @@ rqa_execute_vassalization_probe_effect = {
 					execute_threshold = accept
 				}
 			}
-			var:rqa_control_ruler = {
+			var:rqa_vassalization_target_b = {
 				run_interaction = {
 					interaction = offer_vassalization_interaction
 					actor = root
@@ -586,11 +637,11 @@ rqa_verify_vassalization_probe_effect = {
 		remove_character_flag = rqa_waiting_for_vassalization_probe
 		if = {
 			limit = {
-				var:rqa_defecting_direct = {
+				var:rqa_vassalization_target_a = {
 					is_independent_ruler = yes
 					NOT = { top_liege = root }
 				}
-				var:rqa_control_ruler = {
+				var:rqa_vassalization_target_b = {
 					is_independent_ruler = yes
 					NOT = { top_liege = root }
 				}
