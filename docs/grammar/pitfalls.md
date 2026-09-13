@@ -223,3 +223,9 @@ R79 fresh split product 实机确认上述签名归零。
 | 现象 | 原因 | 解法 |
 |---|---|---|
 | 页面虽然声明了 `scrollbox` 和纵向滚动条，长列表仍越过固定窗口底边，滚动条也不出现；错误补上 `restrictparent_min = yes` 后，整个百分比面板又会被内容撑出屏幕并只剩黑色背景；只修根层后黑屏消失，但详情页仍裁底且滚轮无效 | R629 先证明滚动视口没有绑定到固定面板高度；R630 证明 `restrictparent_min` 会把长内容的 minimum size 传给 `90%` 外层；R632/R633 又证明仅排除隐藏详情页仍不够。七个滚动面把 `set_parent_size_to_minimum = yes` 写在通用 `scrollbox_content` 包装层，scrollwidget 因而接受内容高度，视口和内容之间没有形成可滚动差值 | 外层面板保持 `size = { 90% 90% }`，直接 `vbox` 用 `size = { 100% 100% } ignoreinvisible = yes`，详情切换层也保留 `ignoreinvisible = yes`。页容器与 scrollbox 只纵向扩展，禁止 `restrictparent_min`；`scrollbox_content` 直接包含唯一内容 `vbox`，禁止在包装层设置 `set_parent_size_to_minimum`。七个滚动面保留 `scissor = yes`、双轴 `as_needed` 和标准 scrollbar；测试断言两种反向传播属性均不存在。R634 实机确认长详情在固定视口内显示滚动条，内容区滚轮可从首行滚至末行，名单页宽度和高度均未回归 |
+
+## 决议展示条件暴露 `character_var_equal`（2026-09-13，CK3 1.19.0.6 实机）
+
+| 现象 | 原因 | 解法 |
+|---|---|---|
+| 不可用决议的悬浮框以紫色显示 `character_var_equal has no localization`；把完整业务 trigger 包进 `custom_description` 后，该界面又可能直接显示自定义键缺少本地化 | `is_valid` 和 `is_valid_showing_failures_only` 同时调用含 `var:<name> = current_year` 的共享 trigger。CK3 在展示失败原因时展开后一条路径，并尝试把内部变量比较谓词渲染成本地化条件；R635、R636 分别实证两种泄露 | 对照 exact-build 原版范式，把完整业务合法性只保留在 `is_valid`；`is_valid_showing_failures_only` 只放适合直接展示的条件。若业务说明已由决议描述完整承载，可令展示路径为 `always = yes`，避免展开内部变量树。必须用静态合同继续锁住业务 trigger，并在同一存档实测按钮仍不可用、技术键消失。R637 复验 GREEN，日志增量 0 |
