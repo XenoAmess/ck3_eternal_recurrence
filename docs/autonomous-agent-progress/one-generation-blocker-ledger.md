@@ -1426,3 +1426,28 @@ one recommendation, one action and the bounded postwar/cold-restore checks.
   a definition key. The next bounded run exists only to capture that same event
   through the official MCP and freeze it for source review; it cannot continue
   toward the horizon or choose an option. GEN-034 remains `2/4`.
+
+## GEN-034-C R647 exact event capture (2026-09-14)
+
+- Current round R647 issued the same sole resume, paused on the first interrupt,
+  queried `ck3_query_current_event_window_context_v1` and saved the unresolved
+  event. It identified exact-build `chancellor_task.1104`, instance `7`, at
+  date `53187648`; the root is CharacterID `29829`, all five saved scopes are
+  typed Character scopes, and native option `0` is the only shown/enabled
+  continuation. No event option or war-exit action was submitted.
+- Exact source SHA-256 is
+  `EAF95612E4AEC6BF0CEDBC1ACA1C66C8087DD280BC42A60296F824437A5A46EB`.
+  `.1103` directly triggers `.1104`, whose sole option applies only the
+  authored timed neighbor-opinion modifier. The reusable vanilla-event registry
+  already records the event, selected option and the same root/role relations.
+- The retained RED report is 120,058 bytes at
+  `Z:\ck3_mod_rewrite_process_assets\g2-gen034c-r647-1975271\report.json`,
+  SHA-256 `B9EC5A960EDBD96A4B82E88F530FAF9E4362DB8C94FD43AA99D70481EFE35DA7`.
+  Its unresolved checkpoint is 69,333,480 bytes, SHA-256
+  `01CAACED503F803E201CA4646D598DA0AAA152452E198D8CE719A77A48DB49B2`.
+  Cleanup and immutable-source checks are GREEN.
+- GEN-034 remains `2/4`. The immediate blocker is limited to consuming three
+  already-versioned relationship fields: exact `character_scopes`, alias
+  `character_scope_matches_any`, and distinct
+  `character_scope_differs_from`. That consumer must fail closed on missing,
+  ambiguous or drifted Character identities before the checkpoint can proceed.

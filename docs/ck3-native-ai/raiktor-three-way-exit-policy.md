@@ -589,3 +589,20 @@ Because the base snapshot is intentionally lossy and contains no event
 definition key, one deterministic capture rerun is required for the existing
 current-event MCP to satisfy the vanilla-event identification SOP. No gameplay
 option is authorized by that capture.
+
+Current round R647 completed that bounded capture. The exact event is vanilla
+`chancellor_task.1104`, instance `7`, at day 158/date `53187648`. Its root and
+five saved Character scopes match the existing exact-build registry contract:
+`councillor_liege` is the player, `councillor`, `chancellor` and
+`active_councillor` are the same non-player Character, and `neighbor` is a
+different non-player Character. Native option `0` is the sole shown/enabled
+option. Exact source SHA-256 is
+`EAF95612E4AEC6BF0CEDBC1ACA1C66C8087DD280BC42A60296F824437A5A46EB`;
+the only authored effect grants the neighbor a timed positive opinion of root.
+
+The unresolved event checkpoint SHA-256 is `01CAACED...49B2`; report SHA-256
+is `B9EC5A96...5DA7`. No new native observation or event record is required.
+The current RED is a Python consumer gap: the direct registry policy cannot yet
+evaluate its existing exact-character, alias and distinct-character relation
+fields. Until those checks are implemented and all pass on the frozen frame,
+no option is authorized and the white-peace horizon remains unreached.
