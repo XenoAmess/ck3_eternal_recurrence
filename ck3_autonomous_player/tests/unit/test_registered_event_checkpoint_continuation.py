@@ -120,3 +120,15 @@ def test_runner_source_forbids_time_and_war_exit_commands() -> None:
     assert '"step": "life-advance"' not in source
     assert '"step": "offer-white-peace-' not in source
     assert '"step": "surrender-war-' not in source
+
+
+def test_runner_preserves_nested_mcp_failure_reason() -> None:
+    error = ExceptionGroup(
+        "unhandled errors in a TaskGroup",
+        [RuntimeError("application-main event-window query timed out")],
+    )
+
+    assert HARNESS._format_sequence_error(error) == (
+        "ExceptionGroup: unhandled errors in a TaskGroup (1 sub-exception) "
+        "[RuntimeError: application-main event-window query timed out]"
+    )

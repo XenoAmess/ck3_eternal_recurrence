@@ -41,6 +41,17 @@ from xar_autoplayer.vanilla_events.policy import (  # noqa: E402
 REPORT_KIND = "ck3_registered_event_checkpoint_continuation"
 
 
+def _format_sequence_error(error: BaseException) -> str:
+    """Preserve the concrete MCP failure hidden by anyio TaskGroup wrapping."""
+
+    headline = f"{type(error).__name__}: {error}"
+    nested = getattr(error, "exceptions", None)
+    if not isinstance(nested, tuple) or not nested:
+        return headline
+    details = "; ".join(_format_sequence_error(item) for item in nested)
+    return f"{headline} [{details}]"
+
+
 def _parser() -> argparse.ArgumentParser:
     parser = evaluation._parser()
     parser.description = __doc__
@@ -242,7 +253,7 @@ async def _run_mcp_sequence(
                 final_result, tool_name="ck3_take_snapshot:final"
             )
     except BaseException as error:
-        sequence_error = f"{type(error).__name__}: {error}"
+        sequence_error = _format_sequence_error(error)
 
     checkpoint_path = (
         Path(str(checkpoint.get("path"))).resolve()
