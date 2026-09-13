@@ -55,6 +55,24 @@ rqa_execute_succession_gui = {
 	effect = { rqa_execute_succession_effect = yes }
 }
 
+rqa_execute_vassalization_probe_gui = {
+	scope = character
+	is_shown = {
+		is_ai = no
+		has_character_flag = rqa_vassalization_probe_pending
+	}
+	effect = { rqa_execute_vassalization_probe_effect = yes }
+}
+
+rqa_verify_vassalization_probe_gui = {
+	scope = character
+	is_shown = {
+		is_ai = no
+		has_character_flag = rqa_waiting_for_vassalization_probe
+	}
+	effect = { rqa_verify_vassalization_probe_effect = yes }
+}
+
 rqa_verify_succession_gui = {
 	scope = character
 	is_shown = {

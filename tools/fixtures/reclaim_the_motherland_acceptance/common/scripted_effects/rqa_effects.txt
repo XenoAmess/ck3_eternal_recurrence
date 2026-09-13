@@ -537,8 +537,68 @@ rqa_verify_chaos_effect = {
 	}
 	else = { debug_log = "RQA: TEST FAIL phase4_recent_independence_titles_bound" }
 	add_character_flag = rqa_after_chaos_event_ready
-	add_character_flag = rqa_ready_for_succession
+	add_character_flag = rqa_vassalization_probe_pending
 	debug_log = "RQA: TEST PASS chaos_matrix_complete"
+	}
+}
+
+rqa_execute_vassalization_probe_effect = {
+	if = {
+		limit = { has_character_flag = rqa_vassalization_probe_pending }
+		remove_character_flag = rqa_vassalization_probe_pending
+		if = {
+			limit = {
+				is_character_interaction_valid = {
+					interaction = offer_vassalization_interaction
+					recipient = var:rqa_defecting_direct
+				}
+				is_character_interaction_valid = {
+					interaction = offer_vassalization_interaction
+					recipient = var:rqa_control_ruler
+				}
+			}
+			debug_log = "RQA: TEST PASS phase4_offer_vassalization_paths_valid"
+			var:rqa_defecting_direct = {
+				run_interaction = {
+					interaction = offer_vassalization_interaction
+					actor = root
+					recipient = this
+					execute_threshold = accept
+				}
+			}
+			var:rqa_control_ruler = {
+				run_interaction = {
+					interaction = offer_vassalization_interaction
+					actor = root
+					recipient = this
+					execute_threshold = accept
+				}
+			}
+			add_character_flag = rqa_waiting_for_vassalization_probe
+		}
+		else = { debug_log = "RQA: TEST FAIL phase4_offer_vassalization_paths_valid" }
+	}
+}
+
+rqa_verify_vassalization_probe_effect = {
+	if = {
+		limit = { has_character_flag = rqa_waiting_for_vassalization_probe }
+		remove_character_flag = rqa_waiting_for_vassalization_probe
+		if = {
+			limit = {
+				var:rqa_defecting_direct = {
+					is_independent_ruler = yes
+					NOT = { top_liege = root }
+				}
+				var:rqa_control_ruler = {
+					is_independent_ruler = yes
+					NOT = { top_liege = root }
+				}
+			}
+			debug_log = "RQA: TEST PASS phase4_two_released_rulers_refused_immediate_vassalization"
+			add_character_flag = rqa_ready_for_succession
+		}
+		else = { debug_log = "RQA: TEST FAIL phase4_two_released_rulers_refused_immediate_vassalization" }
 	}
 }
 
