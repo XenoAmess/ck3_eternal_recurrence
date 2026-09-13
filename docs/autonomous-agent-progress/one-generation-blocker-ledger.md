@@ -1467,3 +1467,19 @@ one recommendation, one action and the bounded postwar/cold-restore checks.
   GEN-034 remains `2/4`; the next action is one managed event acknowledgement
   from the R647 checkpoint, followed by a successor checkpoint or the next
   typed interrupt. No native ABI, public MCP wire or open_kaishek shape changed.
+
+## GEN-034-C bounded registered-event continuation runner (2026-09-14)
+
+- `run_registered_event_checkpoint_continuation.py` is static-ready. It
+  cold-restores a path/hash-bound event checkpoint, queries the official current
+  event context, accepts only a shared-registry `recommended` option, selects it
+  once and saves one successor checkpoint. Event instance, revision, key,
+  CharacterID, WarID and date are bound before mutation.
+- The postcondition requires the event to close with the same paused character,
+  date and active war. A chained event, identity drift or policy rejection is a
+  RED before checkpoint promotion. Time advance, broad preview and all three
+  war-exit actions are absent. Focused normal/optimized tests pass
+  `14 passed / 7 subtests` per mode.
+- This runner reuses the existing official MCP and versioned registry. It adds
+  no public protocol or native ABI and does not affect open_kaishek. GEN-034
+  stays `2/4` pending one bounded live use on the R647 unresolved checkpoint.

@@ -616,3 +616,12 @@ remain blocked pending their own source/live review. Normal and optimized tests
 pass `24 tests / 200 subtests` per mode, and the retained R647 context replays
 with zero failed checks. This is static plus production-context replay evidence;
 the event remains unresolved in CK3 until the next managed round.
+
+The live action is isolated in a reusable registered-event checkpoint runner.
+It can issue one exact registry-authorized event option and one checkpoint save,
+but has no time-resume or war-exit path. Before selection it binds event
+instance/revision/key plus player, war and date; after selection it requires the
+event to disappear while the same paused war remains. Normal and optimized
+focused tests pass `14 passed / 7 subtests` per mode. This keeps the current
+event acknowledgement separate from the later white-peace observation and
+prevents a successful event click from being counted as GEN-034-C evidence.
