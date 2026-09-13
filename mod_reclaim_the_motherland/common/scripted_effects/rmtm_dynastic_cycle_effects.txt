@@ -27,9 +27,6 @@ rmtm_create_restoration_hegemony_effect = {
 		set_definitive_form = yes
 		set_can_be_named_after_dynasty = no
 		set_can_use_nomadic_naming = no
-		# A Later Dynasty is a single political inheritance. The title follows the
-		# ruler's primary heir instead of partitioning the surviving court realm.
-		add_title_law = single_heir_succession_law
 		set_always_follows_primary_heir = yes
 	}
 	# Only one surviving Later Dynasty may exercise the old central ministry at a
@@ -51,6 +48,11 @@ rmtm_create_restoration_hegemony_effect = {
 		}
 	}
 	resolve_title_and_vassal_change = scope:rmtm_restoration_title_change
+	# Title laws require a holder. Install the single-heir law only after the title
+	# grant has resolved, then keep it aligned with the ruler's primary heir.
+	scope:rmtm_restoration_hegemony_title = {
+		add_title_law = single_heir_succession_law
+	}
 
 	# Naming must happen after the grant. The vanilla on_title_gain path moves a
 	# custom name from a newly granted Chinese title to an unnamed primary title;
@@ -64,6 +66,12 @@ rmtm_create_restoration_hegemony_effect = {
 	}
 	rmtm_freeze_restoration_hegemony_name_effect = yes
 
+}
+
+# Character scope: old emperor after the released court has been reconciled while
+# h_china still has a holder. This deliberately runs after fill_the_ministry_effect:
+# vanilla resolves new ministry titles through h_china's holder during on_title_gain.
+rmtm_finalize_restoration_hegemony_effect = {
 	# The old emperor loses only the Chinese Hegemony. All counties, duchies,
 	# kingdoms and unrelated personal titles remain untouched.
 	destroy_title = title:h_china
@@ -205,6 +213,11 @@ rmtm_chaos_shattering_effect = {
 		# Fill only seats actually vacated by defectors. Vanilla's helper preserves
 		# every incumbent whose council position still matches the ministry title.
 		scope:old_emperor_temp = { fill_the_ministry_effect = yes }
+		# Finalize the Later Dynasty only after ministry title grants can resolve
+		# their de-jure liege through the still-held h_china title.
+		scope:old_emperor_temp = {
+			rmtm_finalize_restoration_hegemony_effect = yes
+		}
 		every_in_list = {
 			list = former_vassals
 			# Let the former vassals of the hegemon become regular conquerors.

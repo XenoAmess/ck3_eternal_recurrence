@@ -445,10 +445,23 @@ class TestReclaimTheMotherlandContract(unittest.TestCase):
         self.assertEqual(len(created_title_scopes), 1)
         created = created_title_scopes[0]
         self.assertTrue(
-            has_assignment(created, "add_title_law", "single_heir_succession_law")
-        )
-        self.assertTrue(
             has_assignment(created, "set_always_follows_primary_heir", "yes")
+        )
+        law_scopes = [
+            scope
+            for scope in descendant_blocks(
+                creator, "scope:rmtm_restoration_hegemony_title"
+            )
+            if has_assignment(
+                scope, "add_title_law", "single_heir_succession_law"
+            )
+        ]
+        self.assertEqual(len(law_scopes), 1)
+        self.assertLess(
+            text.index(
+                "resolve_title_and_vassal_change = scope:rmtm_restoration_title_change"
+            ),
+            text.index("add_title_law = single_heir_succession_law"),
         )
 
         migration = direct_block(parsed, "rmtm_migrate_restoration_hegemonies_effect")
@@ -481,7 +494,10 @@ class TestReclaimTheMotherlandContract(unittest.TestCase):
         self.assertTrue(has_assignment(access, "has_title", "title:h_china"))
         self.assertIn("NOT = { exists = holder }", trigger_text)
         self.assertIn("exists = global_var:rmtm_ministry_entitlement_title", trigger_text)
-        self.assertIn("holder = root", trigger_text)
+        self.assertIn(
+            "primary_title = global_var:rmtm_ministry_entitlement_title",
+            trigger_text,
+        )
         self.assertIn("has_variable = rmtm_restoration_hegemony", trigger_text)
 
         custom_text, custom_file = read_script(CUSTOM_EFFECTS)
@@ -497,6 +513,21 @@ class TestReclaimTheMotherlandContract(unittest.TestCase):
         )
         self.assertEqual(custom_text.count("fill_the_ministry_effect = yes"), 1)
         self.assertIn("name = rmtm_ministry_entitlement_title", custom_text)
+        self.assertLess(
+            custom_text.index("fill_the_ministry_effect = yes"),
+            custom_text.index("rmtm_finalize_restoration_hegemony_effect = yes"),
+        )
+        finalizer = direct_block(
+            custom_file, "rmtm_finalize_restoration_hegemony_effect"
+        )
+        self.assertTrue(has_assignment(finalizer, "destroy_title", "title:h_china"))
+        self.assertTrue(
+            has_assignment(
+                finalizer,
+                "set_primary_title_to",
+                "scope:rmtm_restoration_hegemony_title",
+            )
+        )
 
     def test_phase_four_generated_interaction_is_exact_narrow_projection(self) -> None:
         data = VASSALIZATION_OVERRIDE.read_bytes()

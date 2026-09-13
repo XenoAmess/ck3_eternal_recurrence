@@ -199,15 +199,24 @@ rqa_initialize_effect = {
 				exists = scope:rqa_control_ruler
 				exists = scope:rqa_personal_county
 				scope:rqa_song_emperor = {
-					cp:councillor_chancellor ?= { has_character_flag = rqa_prechaos_minister_chancellor has_title = title:e_minister_chancellor }
-					cp:councillor_spymaster ?= { has_character_flag = rqa_prechaos_minister_censor has_title = title:e_minister_censor }
-					cp:minister_grand_marshal ?= { has_character_flag = rqa_prechaos_minister_grand_marshal has_title = title:e_minister_grand_marshal }
-					cp:minister_personnel ?= { has_character_flag = rqa_prechaos_minister_personnel has_title = title:e_minister_of_personnel }
-					cp:councillor_steward ?= { has_character_flag = rqa_prechaos_minister_revenue has_title = title:e_minister_of_revenue }
-					cp:councillor_court_chaplain ?= { has_character_flag = rqa_prechaos_minister_rites has_title = title:e_minister_of_rites }
-					cp:councillor_marshal ?= { has_character_flag = rqa_prechaos_minister_war has_title = title:e_minister_of_war }
-					cp:minister_justice ?= { has_character_flag = rqa_prechaos_minister_justice has_title = title:e_minister_of_justice }
-					cp:minister_works ?= { has_character_flag = rqa_prechaos_minister_works has_title = title:e_minister_of_works }
+					exists = cp:councillor_chancellor
+					cp:councillor_chancellor = { has_character_flag = rqa_prechaos_minister_chancellor has_title = title:e_minister_chancellor }
+					exists = cp:councillor_spymaster
+					cp:councillor_spymaster = { has_character_flag = rqa_prechaos_minister_censor has_title = title:e_minister_censor }
+					exists = cp:minister_grand_marshal
+					cp:minister_grand_marshal = { has_character_flag = rqa_prechaos_minister_grand_marshal has_title = title:e_minister_grand_marshal }
+					exists = cp:minister_personnel
+					cp:minister_personnel = { has_character_flag = rqa_prechaos_minister_personnel has_title = title:e_minister_of_personnel }
+					exists = cp:councillor_steward
+					cp:councillor_steward = { has_character_flag = rqa_prechaos_minister_revenue has_title = title:e_minister_of_revenue }
+					exists = cp:councillor_court_chaplain
+					cp:councillor_court_chaplain = { has_character_flag = rqa_prechaos_minister_rites has_title = title:e_minister_of_rites }
+					exists = cp:councillor_marshal
+					cp:councillor_marshal = { has_character_flag = rqa_prechaos_minister_war has_title = title:e_minister_of_war }
+					exists = cp:minister_justice
+					cp:minister_justice = { has_character_flag = rqa_prechaos_minister_justice has_title = title:e_minister_of_justice }
+					exists = cp:minister_works
+					cp:minister_works = { has_character_flag = rqa_prechaos_minister_works has_title = title:e_minister_of_works }
 				}
 				scope:rqa_song_emperor = {
 					top_participant_group:dynastic_cycle = {
@@ -396,19 +405,69 @@ rqa_verify_chaos_effect = {
 				holder = root
 				this = root.var:rqa_later_title
 			}
-			cp:councillor_chancellor ?= { has_character_flag = rqa_prechaos_minister_chancellor has_title = title:e_minister_chancellor }
-			cp:councillor_spymaster ?= { has_character_flag = rqa_prechaos_minister_censor has_title = title:e_minister_censor }
-			cp:minister_grand_marshal ?= { has_character_flag = rqa_prechaos_minister_grand_marshal has_title = title:e_minister_grand_marshal }
-			cp:minister_personnel ?= { has_character_flag = rqa_prechaos_minister_personnel has_title = title:e_minister_of_personnel }
-			cp:councillor_steward ?= { has_character_flag = rqa_prechaos_minister_revenue has_title = title:e_minister_of_revenue }
-			cp:councillor_court_chaplain ?= { has_character_flag = rqa_prechaos_minister_rites has_title = title:e_minister_of_rites }
-			cp:councillor_marshal ?= { has_character_flag = rqa_prechaos_minister_war has_title = title:e_minister_of_war }
-			cp:minister_justice ?= { has_character_flag = rqa_prechaos_minister_justice has_title = title:e_minister_of_justice }
-			cp:minister_works ?= { has_character_flag = rqa_prechaos_minister_works has_title = title:e_minister_of_works }
+			exists = cp:councillor_chancellor
+			cp:councillor_chancellor = { has_character_flag = rqa_prechaos_minister_chancellor has_title = title:e_minister_chancellor }
+			exists = cp:councillor_spymaster
+			cp:councillor_spymaster = { has_character_flag = rqa_prechaos_minister_censor has_title = title:e_minister_censor }
+			exists = cp:minister_grand_marshal
+			cp:minister_grand_marshal = { has_character_flag = rqa_prechaos_minister_grand_marshal has_title = title:e_minister_grand_marshal }
+			exists = cp:minister_personnel
+			cp:minister_personnel = { has_character_flag = rqa_prechaos_minister_personnel has_title = title:e_minister_of_personnel }
+			exists = cp:councillor_steward
+			cp:councillor_steward = { has_character_flag = rqa_prechaos_minister_revenue has_title = title:e_minister_of_revenue }
+			exists = cp:councillor_court_chaplain
+			cp:councillor_court_chaplain = { has_character_flag = rqa_prechaos_minister_rites has_title = title:e_minister_of_rites }
+			exists = cp:councillor_marshal
+			cp:councillor_marshal = { has_character_flag = rqa_prechaos_minister_war has_title = title:e_minister_of_war }
+			exists = cp:minister_justice
+			cp:minister_justice = { has_character_flag = rqa_prechaos_minister_justice has_title = title:e_minister_of_justice }
+			exists = cp:minister_works
+			cp:minister_works = { has_character_flag = rqa_prechaos_minister_works has_title = title:e_minister_of_works }
 		}
 		debug_log = "RQA: TEST PASS phase3_nine_ministry_incumbents_retained"
 	}
 	else = { debug_log = "RQA: TEST FAIL phase3_nine_ministry_incumbents_retained" }
+	if = {
+		limit = {
+			exists = var:rqa_loyal_direct
+			var:rqa_loyal_direct = { liege = root top_liege = root }
+		}
+		debug_log = "RQA: TEST PASS phase2_loyal_direct_still_attached"
+	}
+	else = { debug_log = "RQA: TEST FAIL phase2_loyal_direct_still_attached" }
+	if = {
+		limit = {
+			var:rqa_loyal_direct = {
+				var:rmtm_loyalty_outcome = flag:stay
+				var:rmtm_loyalty_reason = flag:bound_by_grace
+			}
+		}
+		debug_log = "RQA: TEST PASS phase2_loyal_resolution_retained"
+	}
+	else = { debug_log = "RQA: TEST FAIL phase2_loyal_resolution_retained" }
+	if = {
+		limit = {
+			exists = var:rqa_loyal_primary_title
+			var:rqa_loyal_direct = { primary_title = root.var:rqa_loyal_primary_title }
+			var:rqa_loyal_primary_title = {
+				holder = root.var:rqa_loyal_direct
+				is_title_localization_key_used = rqa_phase2_loyal_title_name
+			}
+		}
+		debug_log = "RQA: TEST PASS phase2_loyal_title_identity_retained"
+	}
+	else = { debug_log = "RQA: TEST FAIL phase2_loyal_title_identity_retained" }
+	if = {
+		limit = {
+			exists = var:rqa_loyal_indirect
+			var:rqa_loyal_indirect = {
+				liege = root.var:rqa_loyal_direct
+				top_liege = root
+			}
+		}
+		debug_log = "RQA: TEST PASS phase2_loyal_subtree_retained"
+	}
+	else = { debug_log = "RQA: TEST FAIL phase2_loyal_subtree_retained" }
 	if = {
 		limit = {
 			exists = var:rqa_loyal_direct
@@ -536,15 +595,24 @@ rqa_verify_succession_effect = {
 				var:rqa_personal_county = { holder = root }
 				tgp_has_access_to_ministry_trigger = yes
 				global_var:rmtm_ministry_entitlement_title = { holder = root }
-				cp:councillor_chancellor ?= { has_character_flag = rqa_prechaos_minister_chancellor has_title = title:e_minister_chancellor }
-				cp:councillor_spymaster ?= { has_character_flag = rqa_prechaos_minister_censor has_title = title:e_minister_censor }
-				cp:minister_grand_marshal ?= { has_character_flag = rqa_prechaos_minister_grand_marshal has_title = title:e_minister_grand_marshal }
-				cp:minister_personnel ?= { has_character_flag = rqa_prechaos_minister_personnel has_title = title:e_minister_of_personnel }
-				cp:councillor_steward ?= { has_character_flag = rqa_prechaos_minister_revenue has_title = title:e_minister_of_revenue }
-				cp:councillor_court_chaplain ?= { has_character_flag = rqa_prechaos_minister_rites has_title = title:e_minister_of_rites }
-				cp:councillor_marshal ?= { has_character_flag = rqa_prechaos_minister_war has_title = title:e_minister_of_war }
-				cp:minister_justice ?= { has_character_flag = rqa_prechaos_minister_justice has_title = title:e_minister_of_justice }
-				cp:minister_works ?= { has_character_flag = rqa_prechaos_minister_works has_title = title:e_minister_of_works }
+				exists = cp:councillor_chancellor
+				cp:councillor_chancellor = { has_character_flag = rqa_prechaos_minister_chancellor has_title = title:e_minister_chancellor }
+				exists = cp:councillor_spymaster
+				cp:councillor_spymaster = { has_character_flag = rqa_prechaos_minister_censor has_title = title:e_minister_censor }
+				exists = cp:minister_grand_marshal
+				cp:minister_grand_marshal = { has_character_flag = rqa_prechaos_minister_grand_marshal has_title = title:e_minister_grand_marshal }
+				exists = cp:minister_personnel
+				cp:minister_personnel = { has_character_flag = rqa_prechaos_minister_personnel has_title = title:e_minister_of_personnel }
+				exists = cp:councillor_steward
+				cp:councillor_steward = { has_character_flag = rqa_prechaos_minister_revenue has_title = title:e_minister_of_revenue }
+				exists = cp:councillor_court_chaplain
+				cp:councillor_court_chaplain = { has_character_flag = rqa_prechaos_minister_rites has_title = title:e_minister_of_rites }
+				exists = cp:councillor_marshal
+				cp:councillor_marshal = { has_character_flag = rqa_prechaos_minister_war has_title = title:e_minister_of_war }
+				exists = cp:minister_justice
+				cp:minister_justice = { has_character_flag = rqa_prechaos_minister_justice has_title = title:e_minister_of_justice }
+				exists = cp:minister_works
+				cp:minister_works = { has_character_flag = rqa_prechaos_minister_works has_title = title:e_minister_of_works }
 			}
 			debug_log = "RQA: TEST PASS phase3_later_dynasty_realm_and_ministry_inherited"
 			add_character_flag = rqa_waiting_for_recent_independence_expiry

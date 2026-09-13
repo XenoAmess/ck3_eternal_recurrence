@@ -220,6 +220,7 @@ def validate() -> list[str]:
         "rmtm_freeze_restoration_hegemony_name_effect",
         "situation_dynastic_cycle_claim_mandate_decision",
         "rmtm_chaos_shattering_effect",
+        "rmtm_finalize_restoration_hegemony_effect",
         "rmtm_migrate_restoration_hegemonies_effect",
         "rmtm_on_game_start",
         "offer_vassalization_interaction",
@@ -315,6 +316,10 @@ def validate() -> list[str]:
         r"(?m)^\s*force_step_down_landed_titles\s*=", custom_shattering
     ):
         errors.append("custom shattering must not force the former hegemon to step down")
+    if custom_shattering.index("fill_the_ministry_effect = yes") > custom_shattering.index(
+        "rmtm_finalize_restoration_hegemony_effect = yes"
+    ):
+        errors.append("ministry vacancies must be filled before h_china is destroyed")
 
     loyalty_values = scripts.get(
         "common/script_values/rmtm_loyalty_values.txt", ""

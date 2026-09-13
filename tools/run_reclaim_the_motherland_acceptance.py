@@ -73,6 +73,7 @@ VANILLA_GAME_RULES = (
 PIPE_PREFIX = r"\\.\pipe\xar_ck3_bridge_reclaim_"
 BOOT_TIMEOUT_SECONDS = 30 * 60
 SLOT_WAIT_TIMEOUT_SECONDS = 30 * 60
+SLOT_POLL_INTERVAL_SECONDS = 10 * 60
 POSTFLIGHT_STABILITY_SECONDS = 5
 RUNS_ROOT = ROOT.parent / f"{ROOT.name}_process_assets" / "reclaim" / "runs"
 PRODUCT_OUTER = "reclaim_acceptance.mod"
@@ -102,6 +103,10 @@ REQUIRED_MARKERS = (
     "RQA: TEST PASS later_dynasty_empty_de_jure_and_personal_land_retained",
     "RQA: TEST PASS later_dynasty_single_heir_law_and_heir_ready",
     "RQA: TEST PASS phase3_nine_ministry_incumbents_retained",
+    "RQA: TEST PASS phase2_loyal_direct_still_attached",
+    "RQA: TEST PASS phase2_loyal_resolution_retained",
+    "RQA: TEST PASS phase2_loyal_title_identity_retained",
+    "RQA: TEST PASS phase2_loyal_subtree_retained",
     "RQA: TEST PASS phase2_loyal_title_name_and_subtree_retained",
     "RQA: TEST PASS phase2_disloyal_pro_hegemon_defected",
     "RQA: TEST PASS non_pro_hegemon_direct_released",
@@ -181,22 +186,24 @@ def wait_for_ck3_slot(
         lock = exclusive_launch_lock(game_exe)
         try:
             lock.__enter__()
-            break
         except AgentError:
             waited = time.monotonic() - started
             if waited >= timeout_seconds:
                 raise acceptance.RunnerError(
                     f"timed out waiting for the shared CK3 slot after {waited:.1f}s"
                 )
-            time.sleep(5)
+            time.sleep(SLOT_POLL_INTERVAL_SECONDS)
+            continue
+        if not acceptance.ck3_is_running():
+            break
+        lock.__exit__(None, None, None)
+        waited = time.monotonic() - started
+        if waited >= timeout_seconds:
+            raise acceptance.RunnerError(
+                f"CK3 remained in use after {waited:.1f}s"
+            )
+        time.sleep(SLOT_POLL_INTERVAL_SECONDS)
     try:
-        while acceptance.ck3_is_running():
-            waited = time.monotonic() - started
-            if waited >= timeout_seconds:
-                raise acceptance.RunnerError(
-                    f"CK3 remained in use after {waited:.1f}s"
-                )
-            time.sleep(5)
         yield round(time.monotonic() - started, 3)
     finally:
         lock.__exit__(None, None, None)

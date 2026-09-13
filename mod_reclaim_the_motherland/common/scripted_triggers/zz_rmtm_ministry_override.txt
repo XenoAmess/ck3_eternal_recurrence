@@ -9,8 +9,8 @@ tgp_has_access_to_ministry_trigger = {
 		AND = {
 			title:h_china = { NOT = { exists = holder } }
 			exists = global_var:rmtm_ministry_entitlement_title
+			primary_title = global_var:rmtm_ministry_entitlement_title
 			global_var:rmtm_ministry_entitlement_title = {
-				holder = root
 				has_variable = rmtm_restoration_hegemony
 			}
 		}
