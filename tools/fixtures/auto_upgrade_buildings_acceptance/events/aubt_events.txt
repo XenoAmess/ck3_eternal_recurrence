@@ -16,68 +16,86 @@ aubt.0 = {
 			debug_log = "AUBT: TEST PASS native_decision_priority_continue_selection"
 		}
 		else = { debug_log = "AUBT: TEST FAIL native_decision_priority_continue_selection" }
+		# Quiesce the production loop selected through the UI. Derived domain
+		# values are recalculated only between event invocations, so the fixture
+		# normalizes by one point per game day before seeding a fresh single loop.
+		remove_character_flag = enable_auto_build
+		remove_global_variable = aub_auto_build_loop_started
 		# Force a government that actually exposes CK3 1.19's treasury resource.
 		# No funding flags is the frozen legacy/treasury-first save state.
 		change_government = celestial_government
-		set_variable = { name = aubt_reset_gold value = gold }
-		if = {
-			limit = { var:aubt_reset_gold > 0 }
-			remove_short_term_gold = var:aubt_reset_gold
-		}
-		set_variable = { name = aubt_reset_treasury value = treasury }
-		if = {
-			limit = { var:aubt_reset_treasury > 0 }
-			remove_treasury = var:aubt_reset_treasury
-		}
-		add_gold = 100000
-		add_treasury = 100000
-		set_variable = { name = aubt_gold_before value = gold }
-		set_variable = { name = aubt_treasury_before value = treasury }
-		capital_province = {
-			set_global_variable = { name = aubt_province value = this }
-			if = {
-				limit = { has_building_or_higher = barracks_01 }
-				if = { limit = { has_building = barracks_08 } remove_building = barracks_08 }
-				else_if = { limit = { has_building = barracks_07 } remove_building = barracks_07 }
-				else_if = { limit = { has_building = barracks_06 } remove_building = barracks_06 }
-				else_if = { limit = { has_building = barracks_05 } remove_building = barracks_05 }
-				else_if = { limit = { has_building = barracks_04 } remove_building = barracks_04 }
-				else_if = { limit = { has_building = barracks_03 } remove_building = barracks_03 }
-				else_if = { limit = { has_building = barracks_02 } remove_building = barracks_02 }
-				else = { remove_building = barracks_01 }
-			}
-			add_building = barracks_01
-		}
-		# Normalize the disposable fixture character to the exact vanilla boundary.
-		# Stacking one-point modifiers make this independent of bookmark stats,
-		# government, innovations and the number of directly held counties.
 		set_variable = { name = aubt_domain_adjust_guard value = 0 }
-		while = {
-			limit = {
-				domain_limit_available > 0
-				var:aubt_domain_adjust_guard < 64
+		trigger_event = { id = aubt.10 days = 1 }
+	}
+}
+
+# Character modifier results are committed between these daily invocations.
+# This reaches exactly zero without assuming bookmark stats or screen values.
+aubt.10 = {
+	scope = none
+	hidden = yes
+	immediate = {
+		global_var:aubt_player = {
+			if = {
+				limit = {
+					domain_limit_available > 0
+					var:aubt_domain_adjust_guard < 64
+				}
+				add_character_modifier = { modifier = aubt_domain_limit_adjust_down }
+				change_variable = { name = aubt_domain_adjust_guard add = 1 }
+				trigger_event = { id = aubt.10 days = 1 }
 			}
-			add_character_modifier = { modifier = aubt_domain_limit_adjust_down }
-			change_variable = { name = aubt_domain_adjust_guard add = 1 }
-		}
-		while = {
-			limit = {
-				domain_limit_available < 0
-				var:aubt_domain_adjust_guard < 128
+			else_if = {
+				limit = {
+					domain_limit_available < 0
+					var:aubt_domain_adjust_guard < 64
+				}
+				add_character_modifier = { modifier = aubt_domain_limit_adjust_up }
+				change_variable = { name = aubt_domain_adjust_guard add = 1 }
+				trigger_event = { id = aubt.10 days = 1 }
 			}
-			add_character_modifier = { modifier = aubt_domain_limit_adjust_up }
-			change_variable = { name = aubt_domain_adjust_guard add = 1 }
+			else_if = {
+				limit = { domain_limit_available = 0 }
+				remove_variable = aubt_domain_adjust_guard
+				debug_log = "AUBT: TEST PASS domain_limit_normalized_zero"
+				set_variable = { name = aubt_reset_gold value = gold }
+				if = {
+					limit = { var:aubt_reset_gold > 0 }
+					remove_short_term_gold = var:aubt_reset_gold
+				}
+				set_variable = { name = aubt_reset_treasury value = treasury }
+				if = {
+					limit = { var:aubt_reset_treasury > 0 }
+					remove_treasury = var:aubt_reset_treasury
+				}
+				add_gold = 100000
+				add_treasury = 100000
+				set_variable = { name = aubt_gold_before value = gold }
+				set_variable = { name = aubt_treasury_before value = treasury }
+				capital_province = {
+					set_global_variable = { name = aubt_province value = this }
+					if = {
+						limit = { has_building_or_higher = barracks_01 }
+						if = { limit = { has_building = barracks_08 } remove_building = barracks_08 }
+						else_if = { limit = { has_building = barracks_07 } remove_building = barracks_07 }
+						else_if = { limit = { has_building = barracks_06 } remove_building = barracks_06 }
+						else_if = { limit = { has_building = barracks_05 } remove_building = barracks_05 }
+						else_if = { limit = { has_building = barracks_04 } remove_building = barracks_04 }
+						else_if = { limit = { has_building = barracks_03 } remove_building = barracks_03 }
+						else_if = { limit = { has_building = barracks_02 } remove_building = barracks_02 }
+						else = { remove_building = barracks_01 }
+					}
+					add_building = barracks_01
+				}
+				add_character_flag = aub_pause_when_over_domain_limit
+				add_character_flag = enable_auto_build
+				aub_start_global_loop_effect = yes
+				trigger_event = { id = aubt.1 days = 3 }
+			}
+			else = {
+				debug_log = "AUBT: TEST FAIL domain_limit_normalized_zero"
+			}
 		}
-		remove_variable = aubt_domain_adjust_guard
-		if = {
-			limit = { domain_limit_available = 0 }
-			debug_log = "AUBT: TEST PASS domain_limit_normalized_zero"
-		}
-		else = { debug_log = "AUBT: TEST FAIL domain_limit_normalized_zero" }
-		add_character_flag = aub_pause_when_over_domain_limit
-		add_character_flag = enable_auto_build
-		aub_start_global_loop_effect = yes
-		trigger_event = { id = aubt.1 days = 3 }
 	}
 }
 
