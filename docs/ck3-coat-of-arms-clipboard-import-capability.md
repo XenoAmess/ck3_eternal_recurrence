@@ -673,7 +673,7 @@ CoatOfArms
 - 提供图层/实例结构化表单与浏览器近似预览，且明确不冒充 CK3 renderer；
 - 基础游戏 pattern/emblem 目录已经接入结构化选择器，并可按名字筛选首批 200 个 emblem；
 - 必要的 Quarkus 伴随服务使用官方 Java MCP SDK 连接现有 Python stdio server，前端可刷新 session revision、执行原生
-  detect/apply，以及载入原生 Copy/export 返回源码；伴随服务只允许九个相关工具（snapshot + 八个 CoA MCP）；
+  detect/apply，以及载入原生 Copy/export 返回源码；伴随服务只允许十个相关工具（snapshot + 九个 CoA MCP）；
 - manifest-owned 单素材与 render-support 已接入浏览器：除 DXT1/DXT5 顶层 mip 解码外，还能解码 `_default.dds` 使用的
   无压缩 BGRA8 并在受限 `textured_emblem` 行内显示原始纹理；主路径按随游戏发布的 shader 源码合成三通道调色、mask、
   实例变换、surface detail 和 blend，仍明确不冒充 native GPU 像素完全一致。
@@ -681,8 +681,6 @@ CoatOfArms
 尚未完成的下一阶段能力：
 
 - 继续补 DLC/mod playset 合并与运行时注册证据；
-- 浏览器 → Quarkus REST → Java MCP client 的交互外壳尚需单独 live 验收；原生 MCP round-trip 已 GREEN，但不拿它冒充
-  浏览器端到端 live；
 - CK3 原生 PNG/像素验证 primitive，用于闭合浏览器源码模型与 native GPU 的差异；
 - 解析/验证 textured emblem 的完整字段与最终合成路径；当前只闭合已实机检测的 `texture="_default.dds"` 形态和素材原始像素。
 
