@@ -25,9 +25,9 @@ from xar_autoplayer.simulation.raiktor_exit_utility_evaluator import (
 )
 
 
-CONTRACT = "raiktor-three-way-exit-recommendation-v4"
-PROVIDER_SCHEMA = "xar.ck3.raiktor_three_way_exit_recommendation.v3"
-PROVIDER_ID = "raiktor-three-way-exit-recommendation-provider-v3"
+CONTRACT = "raiktor-three-way-exit-recommendation-v5"
+PROVIDER_SCHEMA = "xar.ck3.raiktor_three_way_exit_recommendation.v4"
+PROVIDER_ID = "raiktor-three-way-exit-recommendation-provider-v4"
 UTILITY_UNIT = "strategy_utility_q100000"
 
 TERMINATION_POSTCONDITIONS = (
@@ -193,6 +193,7 @@ def provide_raiktor_three_way_exit_recommendation(
             "measured_power_is_not_campaign_forecast": True,
             "continue_is_strategy_baseline_minus_tail_penalty": True,
             "native_execution_availability_excludes_immediate_options": True,
+            "checkpoint_replay_power_input": dominance["schema_version"] == 3,
             "action_submitted": False,
             "postcondition_verified": False,
             "gen034_closed": False,

@@ -112,6 +112,53 @@ application-main power samples immediately after the first paused snapshot,
 then performs the options and terms reads that do not depend on that scheduling
 window. The four-read budget and same-frame checks are unchanged.
 
+R658 showed that query order was not a sufficient repair: the first
+application-main power read failed before either worker-thread exit read ran.
+This remains a native scheduling RED. R657 and R658 are retained as failed
+attempts; neither advanced the date, submitted an action, nor changed the
+frozen checkpoint. Repeating the same launch is not an acceptance strategy.
+
+## Immutable-checkpoint power replay
+
+The v3 campaign-dominance certificate supplies a bounded recovery path for the
+read-only recommendation. It accepts a direct v2 double-sample certificate
+from one process and rebinds its measured power to a different process only
+when all of these values agree:
+
+- checkpoint SHA-256 and pre-launch driver-state SHA-256;
+- snapshot/public/native revision, raw date and connection generation;
+- episode identity, pause state, WarID, player and primary opponent;
+- distinct source and target process IDs.
+
+The certificate keeps both runtime frames and marks
+`same_runtime_frame_ready=false` and
+`immutable_checkpoint_state_replay=true`. It therefore does not rewrite a PID
+or claim that separately collected evidence came from one process. It only
+asserts that a read-only strategic-power sample is reusable after restoring the
+same immutable gameplay state. The recommendation records whether this replay
+form was used. It still does not authorize or submit an action.
+
+The concrete evidence join is R471 power plus R657 terms. Both derive from the
+same 68,603,154-byte checkpoint
+`FAA32578602EF546D991C364D196292C70C2D491FBCC6D4558FAB31444E14E78`
+and the same pre-launch driver state
+`A5DB3F1E5FEDCD019B60FDAB0380E072D9D8465E330DD6D080AA3D0208994B5E`.
+Their state identity is snapshot `native:3`, public revision `4`, native
+revision `3`, raw date `53183856`, connection generation `1`, episode
+`native-29829-6df1a5025f07`, WarID `33554473`, player `29829` and opponent
+`28551`. R471's source report SHA-256 is
+`F467676201497A75C08ED5F6C72AFE64618337C73EFD2BA816B981470CE1E7CD`;
+R657's failed report and final driver-state SHA-256 values are respectively
+`80F421452B975F0DA74216F4EA6FD896187C274B68E5D52710243C2FAB60673C`
+and `D0D4B7D389B7ACD387315E6194DA8D9662A24FC9F1F593F0B84D07E41DD7EC53`.
+The R658 failure remains separate evidence with report SHA-256
+`2D654EDB045C353AE05DC70B8C8E97D4C7400A317E86185F234B69ED0B6214BF`.
+
+Focused dominance, projection, evaluation, recommendation, action-gate and
+postcondition tests pass `41/41` in normal Python and `41/41` with optimized
+assertions. These tests validate the join contract; producing the composed
+artifact and executing any resulting action remain the next bounded steps.
+
 ## Exact action admission
 
 `raiktor_three_way_exit_action_gate.py` is the final side-effect-free handoff

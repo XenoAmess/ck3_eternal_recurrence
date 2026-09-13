@@ -5,6 +5,7 @@ import unittest
 
 from xar_autoplayer.simulation.raiktor_campaign_dominance_provider import (
     normalize_raiktor_campaign_dominance_certificate,
+    provide_raiktor_checkpoint_replay_dominance,
     provide_raiktor_campaign_dominance,
 )
 from xar_autoplayer.simulation.raiktor_three_way_exit_intake import (
@@ -168,6 +169,55 @@ class CampaignDominanceProviderTests(unittest.TestCase):
         self.assertEqual(certificate, retained["certificate"])
         self.assertFalse(result["production_recommendation_ready"])
         self.assertFalse(result["action_ready"])
+
+    def test_rebinds_only_an_identical_checkpoint_to_a_distinct_pid(self) -> None:
+        source = _provide()["campaign_dominance_certificate"]
+        target = copy.deepcopy(source["frame"])
+        target["ck3_pid"] += 1
+
+        result = provide_raiktor_checkpoint_replay_dominance(
+            source,
+            target,
+            source_checkpoint_sha256="B" * 64,
+            target_checkpoint_sha256="B" * 64,
+            source_driver_state_sha256="C" * 64,
+            target_driver_state_sha256="C" * 64,
+        )
+
+        replay = result["campaign_dominance_certificate"]
+        self.assertEqual(replay["schema_version"], 3)
+        self.assertEqual(replay["frame"], target)
+        self.assertEqual(replay["power"], source["power"])
+        self.assertEqual(
+            replay,
+            normalize_raiktor_campaign_dominance_certificate(replay),
+        )
+        self.assertFalse(replay["boundaries"]["same_runtime_frame_ready"])
+
+    def test_replay_rejects_checkpoint_or_gameplay_identity_drift(self) -> None:
+        source = _provide()["campaign_dominance_certificate"]
+        target = copy.deepcopy(source["frame"])
+        target["ck3_pid"] += 1
+        with self.assertRaisesRegex(ValueError, "immutable input"):
+            provide_raiktor_checkpoint_replay_dominance(
+                source,
+                target,
+                source_checkpoint_sha256="B" * 64,
+                target_checkpoint_sha256="D" * 64,
+                source_driver_state_sha256="C" * 64,
+                target_driver_state_sha256="C" * 64,
+            )
+
+        target["date_raw"] += 24
+        with self.assertRaisesRegex(ValueError, "gameplay state"):
+            provide_raiktor_checkpoint_replay_dominance(
+                source,
+                target,
+                source_checkpoint_sha256="B" * 64,
+                target_checkpoint_sha256="B" * 64,
+                source_driver_state_sha256="C" * 64,
+                target_driver_state_sha256="C" * 64,
+            )
 
 
 if __name__ == "__main__":

@@ -16,7 +16,28 @@ import re
 CONTRACT = "raiktor-campaign-dominance-certificate-v2"
 PROVIDER_ID = "raiktor-active-war-power-dominance-provider-v1"
 PROVIDER_SCHEMA = "xar.ck3.raiktor_campaign_dominance_provider.v1"
+CHECKPOINT_REPLAY_CONTRACT = (
+    "raiktor-campaign-dominance-checkpoint-replay-certificate-v3"
+)
+CHECKPOINT_REPLAY_PROVIDER_ID = (
+    "raiktor-checkpoint-power-dominance-replay-provider-v1"
+)
+CHECKPOINT_REPLAY_PROVIDER_SCHEMA = (
+    "xar.ck3.raiktor_checkpoint_dominance_replay_provider.v1"
+)
 _SHA256_RE = re.compile(r"^[0-9A-F]{64}$")
+_CHECKPOINT_STATE_FRAME_KEYS = {
+    "snapshot_id",
+    "snapshot_revision",
+    "native_revision",
+    "date_raw",
+    "connection_generation",
+    "episode_run_id",
+    "paused",
+    "war_id",
+    "actor_character_id",
+    "opponent_character_id",
+}
 
 
 def provide_raiktor_campaign_dominance(
@@ -126,11 +147,14 @@ def normalize_raiktor_campaign_dominance_certificate(
     """Validate a provider result by deterministic re-rendering rules."""
 
     item = _dict(value, "certificate")
-    if (
-        item.get("schema_version") != 2
-        or item.get("contract") != CONTRACT
-        or item.get("status") != "complete"
-    ):
+    version = item.get("schema_version")
+    if version == 2:
+        expected_contract = CONTRACT
+    elif version == 3:
+        expected_contract = CHECKPOINT_REPLAY_CONTRACT
+    else:
+        expected_contract = None
+    if item.get("contract") != expected_contract or item.get("status") != "complete":
         raise ValueError("campaign dominance certificate identity drifted")
     frame = _dict(item.get("frame"), "certificate.frame")
     power = _dict(item.get("power"), "certificate.power")
@@ -142,16 +166,7 @@ def normalize_raiktor_campaign_dominance_certificate(
         "evidence", "producer", "boundaries",
     }:
         raise ValueError("campaign dominance certificate keys drifted")
-    if frame.get("paused") is not True:
-        raise ValueError("campaign dominance certificate must be paused")
-    for key in (
-        "connection_generation", "ck3_pid",
-    ):
-        _positive_int32(frame.get(key), f"frame.{key}")
-    for key in ("snapshot_revision", "native_revision"):
-        _positive_int64(frame.get(key), f"frame.{key}")
-    for key in ("war_id", "actor_character_id", "opponent_character_id"):
-        _full_id(frame.get(key), f"frame.{key}")
+    _validate_certificate_frame(frame, name="frame")
     actor = _positive_int64(
         power.get("actor_power_total_raw"), "actor_power_total_raw"
     )
@@ -176,10 +191,11 @@ def normalize_raiktor_campaign_dominance_certificate(
         raise ValueError("campaign dominance double sample is not stable")
     _sha256(evidence.get("source_artifact_sha256"), "source artifact")
     _sha256(evidence.get("query_payload_sha256"), "query payload")
-    if (
-        producer.get("producer_id") != PROVIDER_ID
-        or producer.get("production_live_input") is not True
-        or boundaries != {
+    if producer.get("production_live_input") is not True:
+        raise ValueError("campaign dominance boundary drifted")
+    if version == 2:
+        expected_producer = PROVIDER_ID
+        expected_boundaries = {
             "measured_strategic_power_ready": True,
             "campaign_outcome_forecast_ready": False,
             "exit_utility_ready": False,
@@ -187,9 +203,153 @@ def normalize_raiktor_campaign_dominance_certificate(
             "action_ready": False,
             "action_literal": None,
         }
+    else:
+        expected_producer = CHECKPOINT_REPLAY_PROVIDER_ID
+        expected_boundaries = {
+            "measured_strategic_power_ready": True,
+            "campaign_outcome_forecast_ready": False,
+            "exit_utility_ready": False,
+            "recommended_outcome": None,
+            "action_ready": False,
+            "action_literal": None,
+            "same_runtime_frame_ready": False,
+            "immutable_checkpoint_state_replay": True,
+        }
+        _validate_checkpoint_replay_evidence(evidence, target_frame=frame)
+    if producer.get("producer_id") != expected_producer or boundaries != (
+        expected_boundaries
     ):
         raise ValueError("campaign dominance boundary drifted")
     return item
+
+
+def provide_raiktor_checkpoint_replay_dominance(
+    source_certificate_value: object,
+    target_frame_value: object,
+    *,
+    source_checkpoint_sha256: str,
+    target_checkpoint_sha256: str,
+    source_driver_state_sha256: str,
+    target_driver_state_sha256: str,
+) -> dict[str, object]:
+    """Rebind stable power only across identical immutable checkpoint state."""
+
+    source = normalize_raiktor_campaign_dominance_certificate(
+        source_certificate_value
+    )
+    if source["schema_version"] != 2:
+        raise ValueError("checkpoint replay source must be a direct certificate")
+    source_checkpoint = _sha256(
+        source_checkpoint_sha256, "source_checkpoint_sha256"
+    )
+    target_checkpoint = _sha256(
+        target_checkpoint_sha256, "target_checkpoint_sha256"
+    )
+    source_driver = _sha256(
+        source_driver_state_sha256, "source_driver_state_sha256"
+    )
+    target_driver = _sha256(
+        target_driver_state_sha256, "target_driver_state_sha256"
+    )
+    if source_checkpoint != target_checkpoint or source_driver != target_driver:
+        raise ValueError("checkpoint replay immutable input identity drifted")
+
+    target_frame = dict(_dict(target_frame_value, "target_frame"))
+    _validate_certificate_frame(target_frame, name="target_frame")
+    source_frame = source["frame"]
+    if any(
+        source_frame.get(key) != target_frame.get(key)
+        for key in _CHECKPOINT_STATE_FRAME_KEYS
+    ):
+        raise ValueError("checkpoint replay gameplay state identity drifted")
+    if source_frame["ck3_pid"] == target_frame["ck3_pid"]:
+        raise ValueError("checkpoint replay requires distinct runtime processes")
+
+    evidence = {
+        **source["evidence"],
+        "source_certificate_sha256": _canonical_sha256(source),
+        "checkpoint_sha256": source_checkpoint,
+        "driver_state_sha256": source_driver,
+        "source_runtime_frame": dict(source_frame),
+        "checkpoint_state_equivalent": True,
+    }
+    certificate = {
+        "schema_version": 3,
+        "contract": CHECKPOINT_REPLAY_CONTRACT,
+        "status": "complete",
+        "frame": target_frame,
+        "power": dict(source["power"]),
+        "evidence": evidence,
+        "producer": {
+            "producer_id": CHECKPOINT_REPLAY_PROVIDER_ID,
+            "producer_version": "1.0.0",
+            "production_live_input": True,
+        },
+        "boundaries": {
+            "measured_strategic_power_ready": True,
+            "campaign_outcome_forecast_ready": False,
+            "exit_utility_ready": False,
+            "recommended_outcome": None,
+            "action_ready": False,
+            "action_literal": None,
+            "same_runtime_frame_ready": False,
+            "immutable_checkpoint_state_replay": True,
+        },
+    }
+    normalize_raiktor_campaign_dominance_certificate(certificate)
+    return {
+        "schema": CHECKPOINT_REPLAY_PROVIDER_SCHEMA,
+        "provider": CHECKPOINT_REPLAY_PROVIDER_ID,
+        "status": "available",
+        "certificate_available": True,
+        "campaign_dominance_certificate": certificate,
+        "blockers": [],
+        "boundaries": [
+            "same_immutable_checkpoint_and_driver_state_only",
+            "source_and_target_runtime_processes_remain_distinct",
+            "factual_power_relation_only",
+            "does_not_recommend_or_submit_an_action",
+        ],
+    }
+
+
+def _validate_certificate_frame(
+    frame: dict[str, object], *, name: str
+) -> None:
+    if frame.get("paused") is not True:
+        raise ValueError("campaign dominance certificate must be paused")
+    _text(frame.get("snapshot_id"), f"{name}.snapshot_id")
+    _text(frame.get("episode_run_id"), f"{name}.episode_run_id")
+    _int32(frame.get("date_raw"), f"{name}.date_raw")
+    for key in ("connection_generation", "ck3_pid"):
+        _positive_int32(frame.get(key), f"{name}.{key}")
+    for key in ("snapshot_revision", "native_revision"):
+        _positive_int64(frame.get(key), f"{name}.{key}")
+    for key in ("war_id", "actor_character_id", "opponent_character_id"):
+        _full_id(frame.get(key), f"{name}.{key}")
+
+
+def _validate_checkpoint_replay_evidence(
+    evidence: dict[str, object], *, target_frame: dict[str, object]
+) -> None:
+    if evidence.get("checkpoint_state_equivalent") is not True:
+        raise ValueError("checkpoint replay equivalence is absent")
+    for key in (
+        "source_certificate_sha256",
+        "checkpoint_sha256",
+        "driver_state_sha256",
+    ):
+        _sha256(evidence.get(key), f"evidence.{key}")
+    source_frame = _dict(
+        evidence.get("source_runtime_frame"),
+        "evidence.source_runtime_frame",
+    )
+    _validate_certificate_frame(source_frame, name="source_runtime_frame")
+    if any(
+        source_frame.get(key) != target_frame.get(key)
+        for key in _CHECKPOINT_STATE_FRAME_KEYS
+    ) or source_frame.get("ck3_pid") == target_frame.get("ck3_pid"):
+        raise ValueError("checkpoint replay runtime frames are inconsistent")
 
 
 def _normalize_snapshot(
@@ -359,7 +519,10 @@ def _canonical_sha256(value: object) -> str:
 
 
 __all__ = [
-    "CONTRACT", "PROVIDER_ID", "PROVIDER_SCHEMA",
+    "CHECKPOINT_REPLAY_CONTRACT", "CHECKPOINT_REPLAY_PROVIDER_ID",
+    "CHECKPOINT_REPLAY_PROVIDER_SCHEMA", "CONTRACT", "PROVIDER_ID",
+    "PROVIDER_SCHEMA",
     "normalize_raiktor_campaign_dominance_certificate",
+    "provide_raiktor_checkpoint_replay_dominance",
     "provide_raiktor_campaign_dominance",
 ]
