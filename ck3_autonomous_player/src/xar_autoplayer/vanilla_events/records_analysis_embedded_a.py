@@ -826,6 +826,65 @@ def _build_analysis() -> dict[str, dict[str, object]]:
         "plan/province scope and single-rendered-option shape, and leaves R502 "
         "numeric identities and date in observations only."
     )
+
+    epidemic_analysis = analysis["epidemic_events.1060"]
+    epidemic_analysis["migrated_from"]["review_kind"] = (
+        "exact-build-original-definition-caller-and-live-scope-variant-review"
+    )
+    epidemic_analysis.update({
+        "source_sha256": {
+            "events/dlc/ce1/epidemic_events.txt": (
+                "FEF2972BD4F778818CD3A414C337D036F5132C1598FEBAB0E2623E0252DB7A1E"
+            ),
+            "common/on_action/ce1_on_actions.txt": (
+                "96B42FA1A542836171A2A608B7155A8A80D30B0D8F8D9742EBE8AFF231B85E16"
+            ),
+        },
+        "definition_lines": "1722-1995",
+        "caller_semantics": (
+            "the monthly epidemic_ongoing_events pool has a 95 percent "
+            "no-event branch and lists .1060 at weight 100; the event itself "
+            "has a fifteen-year cooldown"
+        ),
+        "immediate_effect": (
+            "creates the plague-witch-hunt story and randomly blames animals, "
+            "a character trait, or a religious minority; only the religious-"
+            "minority branch exports the opaque faith_to_blame scope"
+        ),
+        "option_semantics": {
+            "0": (
+                "very-high-piety response with piety and trait-dependent "
+                "effects; hidden in the R608 projection"
+            ),
+            "1": (
+                "accepts rampant witch trials for ten years and may add "
+                "trait-dependent stress"
+            ),
+            "2": (
+                "slows witch trials for ten years, may add trait-dependent "
+                "stress, and schedules no additional event"
+            ),
+        },
+        "live_scope_variant_boundary": (
+            "R608 observed epidemic, epidemic_scope, story_scope, and the "
+            "religious-minority-only faith_to_blame scope with rendered native "
+            "options 1 and 2; the earlier three-scope shape remains separately "
+            "admitted"
+        ),
+        "safe_option_rationale": (
+            "native option 2 preserves the reviewed terminal route and avoids "
+            "the rampant-witch-trials modifier; the extra faith scope changes "
+            "presentation context, not the selected option effects"
+        ),
+    })
+    epidemic_analysis["existing_boundaries"][
+        "campaign_specific_binding_fields"
+    ] = []
+    epidemic_analysis["existing_boundaries"]["boundary_note"] = (
+        "The reusable contract binds root through $player and admits only the "
+        "reviewed three-scope projection or the R608 four-scope projection with "
+        "an opaque typed faith identity."
+    )
     return analysis
 
 
@@ -1356,6 +1415,44 @@ _TRAVEL_COMPLETION_1000_OBSERVATIONS: Final[
 }
 
 
+_EPIDEMIC_1060_OBSERVATIONS: Final[dict[str, dict[str, object]]] = {
+    "epidemic_events.1060": {
+        "exemplars": [
+            *_LEGACY_MIGRATION_OBSERVATIONS[
+                "epidemic_events.1060"
+            ]["exemplars"],
+        {
+            "run": "R608",
+            "kind": "scope-variant-pre-selection-live-red",
+            "artifact": (
+                "_runtime/p2-capture-r604-plus-e68cf74-20260913/capture/cell/"
+                "phase2_promo_phase2_hc_workforce_mature_endgame_source_"
+                "zg361we_360_native_event_wait_gate.json"
+            ),
+            "artifact_sha256": (
+                "092451C4F9B2006982922F0D953790197FBC98A8938C6B2D0822E67BF8C8D82F"
+            ),
+            "date_raw": 53368992,
+            "event_instance_id": 624,
+            "root_character_id": 32904,
+            "saved_scope_raw_types": {
+                "epidemic": 50,
+                "epidemic_scope": 50,
+                "story_scope": 17,
+                "faith_to_blame": 13,
+            },
+            "rendered_native_option_indices": [1, 2],
+            "snapshot_option_count": 3,
+            "snapshot_revision": 124,
+            "connection_generation": 1,
+            "bridge_pid": 129788,
+            "selection_attempted": False,
+            "process_restart_required": False,
+        }],
+    },
+}
+
+
 VANILLA_EMBEDDED_A_OBSERVATIONS: Final[
     dict[str, dict[str, object]]
 ] = {
@@ -1366,6 +1463,7 @@ VANILLA_EMBEDDED_A_OBSERVATIONS: Final[
     **_STRESS_THRESHOLD_1011_OBSERVATIONS,
     **_TRAIT_SPECIFIC_INTERACTIONS_0011_OBSERVATIONS,
     **_TRAVEL_COMPLETION_1000_OBSERVATIONS,
+    **_EPIDEMIC_1060_OBSERVATIONS,
 }
 
 

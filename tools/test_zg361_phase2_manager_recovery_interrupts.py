@@ -2732,6 +2732,53 @@ if new_event_key not in reloaded.KNOWN_TIMELINE_INTERRUPTS:
         self.assertEqual(contract["selected_native_option_index"], 2)
         self.assertEqual(contract["max_occurrences"], 1)
 
+        faith_scapegoat_context = _context(
+            event_key=event_key,
+            instance_id=624,
+            date_raw=53368992,
+            player=32904,
+            scopes=[
+                _scope("epidemic", "epidemic"),
+                _scope("epidemic_scope", "epidemic"),
+                _scope("story_scope", "story"),
+                _scope("faith_to_blame", "faith"),
+            ],
+            native_option_indices=(1, 2),
+        )
+        faith_checks = production._known_interrupt_checks(
+            snapshot={
+                "date_raw": 53368992,
+                "active_event": {"option_count": 3},
+            },
+            event={"event_instance_id": 624},
+            context=faith_scapegoat_context,
+            event_key=event_key,
+            contract=contract,
+        )
+        self.assertTrue(all(faith_checks.values()), faith_checks)
+        effective = production._interrupt_contract_for_context(
+            faith_scapegoat_context,
+            contract,
+        )
+        self.assertEqual(effective["saved_scope_count"], 4)
+        self.assertEqual(effective["scope_types"]["faith_to_blame"], "faith")
+
+        wrong_faith_type = copy.deepcopy(faith_scapegoat_context)
+        wrong_faith_type["saved_scopes"][3] = _scope(
+            "faith_to_blame", "character", 32904
+        )
+        wrong_faith_checks = production._known_interrupt_checks(
+            snapshot={
+                "date_raw": 53368992,
+                "active_event": {"option_count": 3},
+            },
+            event={"event_instance_id": 624},
+            context=wrong_faith_type,
+            event_key=event_key,
+            contract=contract,
+        )
+        self.assertFalse(wrong_faith_checks["scope:faith_to_blame:type"])
+
         drifted = copy.deepcopy(context)
         drifted["saved_scopes"][2] = _scope("story_scope", "situation")
         drift_checks = production._known_interrupt_checks(

@@ -1011,7 +1011,9 @@ _LEGACY_EMBEDDED_A_VANILLA_TIMELINE_CONTRACTS: Final[
         # modifier, but option 1 permits rampant witch trials while option 2
         # explicitly slows them and starts no additional event. Bind the two
         # epidemic aliases plus the source-created story before selecting the
-        # deterministic option 2 route.
+        # deterministic option 2 route. The religious-minority random branch
+        # also exports faith_to_blame; keep that exact live shape as a separate
+        # variant instead of weakening the base projection.
         "date_raw": 53225568,
         "date_policy": "product-observation-window",
         "root_character_id": 32904,
@@ -1028,6 +1030,21 @@ _LEGACY_EMBEDDED_A_VANILLA_TIMELINE_CONTRACTS: Final[
             "story_scope",
         ),),
         "saved_scope_count": 3,
+        "scope_variants": ({
+            "saved_scope_names": (
+                "epidemic",
+                "epidemic_scope",
+                "story_scope",
+                "faith_to_blame",
+            ),
+            "saved_scope_count": 4,
+            "scope_types": {
+                "epidemic": "epidemic",
+                "epidemic_scope": "epidemic",
+                "story_scope": "story",
+                "faith_to_blame": "faith",
+            },
+        },),
         "option_count": 2,
         "snapshot_option_count": 3,
         "native_option_indices": (1, 2),

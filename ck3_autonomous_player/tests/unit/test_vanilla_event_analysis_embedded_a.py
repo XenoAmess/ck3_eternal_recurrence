@@ -51,6 +51,8 @@ def test_analysis_is_json_safe_and_only_reviewed_event_claims_source_hashes() ->
             assert len(record["source_sha256"]) == 3
         elif event_key == "culture_notification.1111":
             assert len(record["source_sha256"]) == 2
+        elif event_key == "epidemic_events.1060":
+            assert len(record["source_sha256"]) == 2
         else:
             assert "source_sha256" not in record
 
@@ -83,6 +85,9 @@ def test_each_record_carries_exact_build_and_migration_boundary() -> None:
             "culture_notification.1111": (
                 "exact-build-original-definition-and-live-repeat-review"
             ),
+            "epidemic_events.1060": (
+                "exact-build-original-definition-caller-and-live-scope-variant-review"
+            ),
         }.get(event_key, "migration-only-no-new-full-definition-review")
         assert record["migrated_from"]["review_kind"] == expected_review
         assert record["review_summary"]
@@ -104,6 +109,7 @@ def test_migration_observations_join_existing_live_evidence() -> None:
         if event_key in {
             "tgp_movement_events.0070",
             "culture_notification.1111",
+            "epidemic_events.1060",
         }:
             assert migrated["exemplars"][0] == observation["exemplars"][0]
         else:
@@ -121,6 +127,11 @@ def test_migration_observations_join_existing_live_evidence() -> None:
     assert VANILLA_EMBEDDED_A_OBSERVATIONS[
         "stress_threshold.1011"
     ]["exemplars"][0]["run"] == "R498"
+    epidemic = VANILLA_EMBEDDED_A_OBSERVATIONS[
+        "epidemic_events.1060"
+    ]["exemplars"][1]
+    assert epidemic["run"] == "R608"
+    assert epidemic["saved_scope_raw_types"]["faith_to_blame"] == 13
     assert "trait_specific_interactions.0011" not in (
         EMBEDDED_A_VANILLA_OBSERVATIONS
     )
