@@ -2413,7 +2413,6 @@ def tab_gui(prefix: str) -> list[str]:
         "\t\tscrollbar_horizontal = { using = Scrollbar_Horizontal }",
         "\t\tscrollbar_vertical = { using = Scrollbar_Vertical }",
         "\t\tblockoverride \"scrollbox_content\" {",
-        "\t\t\tset_parent_size_to_minimum = yes",
         f"\t\t\tvbox = {{ minimumsize = {{ {TABLE_CONTENT_WIDTH} 0 }} layoutpolicy_horizontal = expanding spacing = 8",
         "\t\t\t\thbox = {",
         "\t\t\t\t\tlayoutpolicy_horizontal = expanding spacing = 18 margin = { 18 0 }",
@@ -2518,7 +2517,6 @@ def detail_page_gui(page: str) -> list[str]:
         "\t\tscrollbar_horizontal = { using = Scrollbar_Horizontal }",
         "\t\tscrollbar_vertical = { using = Scrollbar_Vertical }",
         "\t\tblockoverride \"scrollbox_content\" {",
-        "\t\t\tset_parent_size_to_minimum = yes",
         f"\t\t\tvbox = {{ minimumsize = {{ {DETAIL_CONTENT_WIDTH} 0 }} layoutpolicy_horizontal = expanding spacing = 3",
     ]
     if fields:
@@ -2597,7 +2595,6 @@ def ledger_tab_gui() -> list[str]:
         "\t\tscrollbar_horizontal = { using = Scrollbar_Horizontal }",
         "\t\tscrollbar_vertical = { using = Scrollbar_Vertical }",
         "\t\tblockoverride \"scrollbox_content\" {",
-        "\t\t\tset_parent_size_to_minimum = yes",
         f"\t\t\tvbox = {{ minimumsize = {{ {LEDGER_CONTENT_WIDTH} 0 }} layoutpolicy_horizontal = expanding spacing = 14 margin = {{ 34 24 }}",
         "\t\t\t\ttext_label_center = { layoutpolicy_horizontal = expanding text = \"zg361_ledger_title\" default_format = \"#high\" using = Font_Size_Large }",
         "\t\t\t\thbox = { layoutpolicy_horizontal = expanding spacing = 12",

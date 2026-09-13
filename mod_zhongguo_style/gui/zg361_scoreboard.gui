@@ -55,7 +55,6 @@ window = {
 						scrollbar_horizontal = { using = Scrollbar_Horizontal }
 						scrollbar_vertical = { using = Scrollbar_Vertical }
 						blockoverride "scrollbox_content" {
-							set_parent_size_to_minimum = yes
 							vbox = { minimumsize = { 1120 0 } layoutpolicy_horizontal = expanding spacing = 8
 								hbox = {
 									layoutpolicy_horizontal = expanding spacing = 18 margin = { 18 0 }
@@ -3451,7 +3450,6 @@ window = {
 						scrollbar_horizontal = { using = Scrollbar_Horizontal }
 						scrollbar_vertical = { using = Scrollbar_Vertical }
 						blockoverride "scrollbox_content" {
-							set_parent_size_to_minimum = yes
 							vbox = { minimumsize = { 1120 0 } layoutpolicy_horizontal = expanding spacing = 8
 								hbox = {
 									layoutpolicy_horizontal = expanding spacing = 18 margin = { 18 0 }
@@ -6868,7 +6866,6 @@ window = {
 							scrollbar_horizontal = { using = Scrollbar_Horizontal }
 							scrollbar_vertical = { using = Scrollbar_Vertical }
 							blockoverride "scrollbox_content" {
-								set_parent_size_to_minimum = yes
 								vbox = { minimumsize = { 720 0 } layoutpolicy_horizontal = expanding spacing = 3
 									hbox = { visible = "[Or(GetScriptedGui('zg361_scoreboard_detail_managed_gui').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End), GetScriptedGui('zg361_sb_detail_kpi_frozen_available_gui').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End))]" layoutpolicy_horizontal = expanding spacing = 16 margin = { 28 7 }
 										text_single = { min_width = 390 max_width = 390 text = "zg361_scoreboard_detail_field_kpi_frozen" default_format = "#weak" align = nobaseline }
@@ -7002,7 +6999,6 @@ window = {
 							scrollbar_horizontal = { using = Scrollbar_Horizontal }
 							scrollbar_vertical = { using = Scrollbar_Vertical }
 							blockoverride "scrollbox_content" {
-								set_parent_size_to_minimum = yes
 								vbox = { minimumsize = { 720 0 } layoutpolicy_horizontal = expanding spacing = 3
 									hbox = { visible = "[Or(GetScriptedGui('zg361_scoreboard_detail_managed_gui').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End), GetScriptedGui('zg361_sb_detail_peer_n_available_gui').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End))]" layoutpolicy_horizontal = expanding spacing = 16 margin = { 28 7 }
 										text_single = { min_width = 390 max_width = 390 text = "zg361_scoreboard_detail_field_peer_n" default_format = "#weak" align = nobaseline }
@@ -7103,7 +7099,6 @@ window = {
 							scrollbar_horizontal = { using = Scrollbar_Horizontal }
 							scrollbar_vertical = { using = Scrollbar_Vertical }
 							blockoverride "scrollbox_content" {
-								set_parent_size_to_minimum = yes
 								vbox = { minimumsize = { 720 0 } layoutpolicy_horizontal = expanding spacing = 3
 									hbox = { visible = "[Or(GetScriptedGui('zg361_scoreboard_detail_managed_gui').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End), GetScriptedGui('zg361_sb_detail_cohort_n_available_gui').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End))]" layoutpolicy_horizontal = expanding spacing = 16 margin = { 28 7 }
 										text_single = { min_width = 390 max_width = 390 text = "zg361_scoreboard_detail_field_cohort_n" default_format = "#weak" align = nobaseline }
@@ -7247,7 +7242,6 @@ window = {
 							scrollbar_horizontal = { using = Scrollbar_Horizontal }
 							scrollbar_vertical = { using = Scrollbar_Vertical }
 							blockoverride "scrollbox_content" {
-								set_parent_size_to_minimum = yes
 								vbox = { minimumsize = { 720 0 } layoutpolicy_horizontal = expanding spacing = 3
 									hbox = { visible = "[Or(GetScriptedGui('zg361_scoreboard_detail_managed_gui').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End), GetScriptedGui('zg361_sb_detail_roster_employment_state_available_gui').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End))]" layoutpolicy_horizontal = expanding spacing = 16 margin = { 28 7 }
 										text_single = { min_width = 390 max_width = 390 text = "zg361_scoreboard_detail_field_roster_employment_state" default_format = "#weak" align = nobaseline }
@@ -7514,7 +7508,6 @@ window = {
 						scrollbar_horizontal = { using = Scrollbar_Horizontal }
 						scrollbar_vertical = { using = Scrollbar_Vertical }
 						blockoverride "scrollbox_content" {
-							set_parent_size_to_minimum = yes
 							vbox = { minimumsize = { 760 0 } layoutpolicy_horizontal = expanding spacing = 14 margin = { 34 24 }
 								text_label_center = { layoutpolicy_horizontal = expanding text = "zg361_ledger_title" default_format = "#high" using = Font_Size_Large }
 								hbox = { layoutpolicy_horizontal = expanding spacing = 12

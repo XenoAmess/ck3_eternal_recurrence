@@ -1274,8 +1274,9 @@ class ScoreboardSnapshotTests(unittest.TestCase):
             content = gui.split(marker, 1)[1].split(
                 'blockoverride "scrollbox_content" {', 1
             )[1]
-            self.assertIn("set_parent_size_to_minimum = yes", content)
             self.assertIn(f"minimumsize = {{ {content_width} 0 }}", content)
+
+        self.assertNotIn("set_parent_size_to_minimum = yes", gui)
 
         self.assertEqual(gui.count("scrollbarpolicy_horizontal = as_needed"), 7)
         self.assertEqual(gui.count("scrollbarpolicy_vertical = as_needed"), 7)
