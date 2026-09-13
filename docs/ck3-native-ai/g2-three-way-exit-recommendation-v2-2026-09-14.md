@@ -86,3 +86,20 @@ run this recommendation once, submit its single action, verify the relevant
 postconditions, save a checkpoint and cold-restore it. The existing R471 power
 certificate is evidence for the native query/provider, not a reusable value at
 the later horizon because its paused frame differs.
+
+## Bounded same-frame recommendation runner
+
+`run_gen034_three_way_recommendation_live_acceptance.py` prepares the read-only
+half of that lifecycle. From an already admitted horizon checkpoint it performs
+exactly one termination-options query, one narrow terms query and two stable
+strategic-power queries. The before/between/after snapshots must remain on the
+same paused identity, and native history must contain exactly those four reads.
+
+The runner builds a fresh v2 dominance certificate on that frame and invokes
+the recommendation provider in the same process. A GREEN report requires one
+production recommendation and one typed planned action. It records the plan but
+contains no action submission, time advance or exit mutation. Focused normal
+and optimized tests pass `4/4`, and the CLI surface loads successfully without
+starting CK3. This avoids spending another live run merely to refresh R471's
+stale-frame value; the later action runner can consume the frozen same-frame
+recommendation artifact.

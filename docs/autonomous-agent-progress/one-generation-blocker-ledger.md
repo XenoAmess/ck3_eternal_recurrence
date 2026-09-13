@@ -1514,3 +1514,9 @@ one recommendation, one action and the bounded postwar/cold-restore checks.
   same-frame power reads, then execute one recommendation and verify the action,
   material postconditions, checkpoint and cold restore. GEN-034 remains `2/4`;
   G2 remains `1/8`; no CK3 process was used for this package.
+- The same-frame read phase is now executable as one bounded managed runner. It
+  admits exactly one option query, one terms query and two power queries, then
+  freezes the production recommendation and planned action without submitting
+  it. Normal/optimized focused tests pass `4/4`. Remaining implementation is
+  the one-action/postcondition/checkpoint/cold-restore executor; live use stays
+  queued under the owner's CK3 hold.

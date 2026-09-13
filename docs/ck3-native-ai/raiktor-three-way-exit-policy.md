@@ -654,3 +654,10 @@ while its status remains `blocked_live`. The later horizon must re-query power
 on the C frame; R471 proves the provider and native primitive but cannot be
 reused across dates. Full details are in
 [g2-three-way-exit-recommendation-v2-2026-09-14.md](g2-three-way-exit-recommendation-v2-2026-09-14.md).
+
+The bounded recommendation runner now performs that refresh without a separate
+live session: one options read, one terms read and two power reads on the same
+paused horizon frame, followed by in-process recommendation. Its exact history
+contract forbids action submission and time advance. Focused normal/optimized
+tests pass `4/4`; the next offline package is the one-action/postcondition
+executor that will consume this frozen output after CK3 use is permitted.
