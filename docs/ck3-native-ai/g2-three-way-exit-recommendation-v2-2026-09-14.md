@@ -159,6 +159,30 @@ postcondition tests pass `41/41` in normal Python and `41/41` with optimized
 assertions. These tests validate the join contract; producing the composed
 artifact and executing any resulting action remain the next bounded steps.
 
+## Composed recommendation evidence
+
+`prepare_gen034_checkpoint_replay_recommendation.py` performs the join as a
+reusable, no-launch tool. It hash-checks the R471 report and its GREEN
+reclassification, the R657 report and final driver state, the checkpoint and
+its pre-launch driver state. It then verifies that R657 ended with exactly two
+successful retained exit reads followed by the application-main power RED.
+It reconstructs the paused snapshot from the report's own readiness payload,
+projects the exit terms, issues a v3 replay certificate and runs the v4
+recommendation provider. The tool neither starts nor attaches to CK3.
+
+The resulting artifact is
+`Z:\ck3_mod_rewrite_process_assets\g2-gen034-checkpoint-replay-recommendation-v1\recommendation.json`,
+SHA-256
+`D9222517FCFF5FF295A9E00A3E1DAE8840DFD92CACEE84423AEBF6C20D7644E9`.
+It is GREEN for the offline composition while retaining
+`source_live_attempt_status=RED_preserved`. The recommendation is `continue`
+with planned literal `resume-map`: white peace is unavailable and breaches
+the frozen prestige/favor budgets, while surrender has lower utility than the
+continue baseline under the versioned model. The report explicitly records
+that no current live session exists, no authorization was issued and no
+action was submitted. A fresh live paused frame is still required before the
+action gate can authorize that plan.
+
 ## Exact action admission
 
 `raiktor_three_way_exit_action_gate.py` is the final side-effect-free handoff
