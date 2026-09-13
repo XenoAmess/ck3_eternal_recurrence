@@ -65,8 +65,13 @@ export function validateCoatOfArms(coatOfArms: CoatOfArms): Diagnostic[] {
     const context = `colored_emblem ${emblemIndex + 1}`
     validateResourceName(emblem.texture, `${context} texture`, diagnostics)
     validateColors(emblem.colors, context, diagnostics)
-    if (!emblem.mask.every(Number.isFinite)) {
-      diagnostics.push({ severity: 'error', message: `${context} mask 含非有限数值` })
+    if (!emblem.mask.every((value) => (
+      Number.isInteger(value) && value >= 1 && value <= 3
+    ))) {
+      diagnostics.push({
+        severity: 'error',
+        message: `${context} mask 只能包含分区索引 1、2、3`,
+      })
     }
     emblem.instances.forEach((instance, instanceIndex) => {
       const instanceContext = `${context} instance ${instanceIndex + 1}`

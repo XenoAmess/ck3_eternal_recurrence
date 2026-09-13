@@ -71,7 +71,7 @@ mvn -f backend/pom.xml package
 java -jar backend/target/quarkus-app/quarkus-run.jar
 ```
 
-当前基线：Vitest `38/38`、Vite production build、Quarkus REST `14/14` 与 Maven package 均 GREEN。
+当前基线：Vitest `39/39`、Vite production build、Quarkus REST `14/14` 与 Maven package 均 GREEN。
 “打开原生家徽页”只调用固定、零参数的王朝家徽按钮 MCP，并要求独立 route 后置条件；它不会接受浏览器传入的控件名、路径、指针或桌面输入。
 
 probe/export 不再错误地假设家徽页必有 gameplay snapshot。binding 端点先验证 native-headless、named-pipe、exact
@@ -81,6 +81,9 @@ CK3 `1.19.0.6`/EXE SHA、连接代次/PID 及 probe/export capability；有 snap
 底层动作已由受管实机 artifact `mcp-frontend-route-coa-page-live5.json` 闭合为 `production-live primitive`：官方 MCP
 独立观察到 `coat_of_arms_designer` 以及可见、enabled 的 `coat_of_arms_page`，Steam 离线与 cleanup 均为 GREEN。
 该证据不覆盖角色设计器上层 Finish。
+
+Mask 编辑只接受整数分区索引 1、2、3。exact 原版语料实际使用 `{ 1 }`、`{ 2 }`、`{ 2 3 }`，MCP 另已检测
+`{ 1 2 3 }`，随附 shader 对应 R/G/B 三通道；其他值会形成阻止导出的诊断，不会被输入框静默丢弃。
 
 实现依据为 [Quarkus REST Jackson](https://quarkus.io/extensions/io.quarkus/quarkus-rest-jackson/) 和
 [MCP Java SDK stdio client](https://java.sdk.modelcontextprotocol.io/latest/client/)。

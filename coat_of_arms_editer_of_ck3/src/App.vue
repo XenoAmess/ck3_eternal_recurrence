@@ -202,7 +202,9 @@ function removeEmblem(index: number) {
 
 function parseMask(value: string) {
   if (!activeEmblem.value) return
-  activeEmblem.value.mask = value.split(/[\s,]+/).map(Number).filter(Number.isFinite)
+  activeEmblem.value.mask = value.trim()
+    ? value.trim().split(/[\s,]+/).map(Number)
+    : []
 }
 
 function errorMessage(error: unknown): string {

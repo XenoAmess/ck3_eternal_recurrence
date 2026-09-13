@@ -30,4 +30,20 @@ describe('CK3 coat of arms structured-model validation', () => {
     expect(diagnostics.some((item) => item.severity === 'error' && item.message.includes('depth'))).toBe(true)
     expect(diagnostics.some((item) => item.severity === 'warning' && item.message.includes('_default.dds'))).toBe(true)
   })
+
+  it('accepts only the three integer mask channels proven by the engine model', () => {
+    const accepted = createCoatOfArms()
+    accepted.coloredEmblems[0].mask = [1, 2, 3]
+    expect(validateCoatOfArms(accepted).some((item) => item.message.includes('mask')))
+      .toBe(false)
+
+    for (const mask of [[0], [4], [1.5], [Number.NaN]]) {
+      const rejected = createCoatOfArms()
+      rejected.coloredEmblems[0].mask = mask
+      expect(validateCoatOfArms(rejected)).toContainEqual(expect.objectContaining({
+        severity: 'error',
+        message: expect.stringContaining('分区索引 1、2、3'),
+      }))
+    }
+  })
 })
