@@ -1520,3 +1520,9 @@ one recommendation, one action and the bounded postwar/cold-restore checks.
   it. Normal/optimized focused tests pass `4/4`. Remaining implementation is
   the one-action/postcondition/checkpoint/cold-restore executor; live use stays
   queued under the owner's CK3 hold.
+- Exact action admission is now implemented offline. It verifies the
+  recommendation hash, complete paused identity, empty event slot and current
+  action/capability advertisement before emitting one revision-bound
+  authorization. It is integrated into the recommendation report but performs
+  no mutation. Related normal/optimized tests pass `18/18`; the remaining D
+  blocker is execution plus observed postconditions and cold restore.

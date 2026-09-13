@@ -48,6 +48,9 @@ from xar_autoplayer.simulation.raiktor_exit_utility_model_provider import (  # n
 from xar_autoplayer.simulation.raiktor_owner_budget_profile_provider import (  # noqa: E402
     provide_raiktor_owner_budget_profile,
 )
+from xar_autoplayer.simulation.raiktor_three_way_exit_action_gate import (  # noqa: E402
+    provide_raiktor_three_way_exit_action_gate,
+)
 from xar_autoplayer.simulation.raiktor_three_way_exit_recommendation import (  # noqa: E402
     provide_raiktor_three_way_exit_recommendation,
 )
@@ -160,6 +163,9 @@ async def _run_mcp_sequence(
         tool_names = sorted(tool.name for tool in listed.tools)
         capabilities_result = await client.call_tool("ck3_get_capabilities", {})
         records.append(capabilities_result)
+        capabilities = base._structured(
+            capabilities_result, tool_name="ck3_get_capabilities"
+        )
         before_result = await client.call_tool("ck3_take_snapshot", {})
         records.append(before_result)
         before = base._structured(
@@ -245,6 +251,9 @@ async def _run_mcp_sequence(
         terms,
         dominance["campaign_dominance_certificate"],
     )
+    action_gate = provide_raiktor_three_way_exit_action_gate(
+        recommendation, before, capabilities
+    )
     option_step = query_war_termination_options_step(war_id)
     terms_step = query_war_termination_terms_step(war_id)
     power_step = query_war_entry_assessments_step([opponent_character_id])
@@ -285,7 +294,8 @@ async def _run_mcp_sequence(
             "production_recommendation_ready"
         )
         is True,
-        "exactly_one_action_planned": recommendation.get("action_ready") is True
+        "exactly_one_action_planned": action_gate.get("action_ready") is True
+        and action_gate.get("action_literal") == action
         and isinstance(action, str)
         and action in {
             "resume-map",
@@ -320,6 +330,7 @@ async def _run_mcp_sequence(
         "after_snapshot": base._mcp_record(after_result),
         "dominance": dominance,
         "recommendation": recommendation,
+        "action_gate": action_gate,
         "checks": checks,
         "ok": all(checks.values()),
     }

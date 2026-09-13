@@ -103,3 +103,20 @@ and optimized tests pass `4/4`, and the CLI surface loads successfully without
 starting CK3. This avoids spending another live run merely to refresh R471's
 stale-frame value; the later action runner can consume the frozen same-frame
 recommendation artifact.
+
+## Exact action admission
+
+`raiktor_three_way_exit_action_gate.py` is the final side-effect-free handoff
+before the managed executor. It validates the recommendation certificate hash,
+then binds its action to the current paused snapshot's revision, date,
+connection generation, episode, PID, WarID, player and primary opponent. An
+active event blocks the handoff. The exact action step must be advertised;
+white peace and surrender additionally require their typed bridge capability.
+
+On success the gate emits one hash-bound authorization with the expected
+revision and the recommendation's postcondition plan. It never invokes the
+command, and explicitly leaves ACK, postcondition, cold restore and GEN-034
+closure false. Static recommendations, stale snapshots, missing actions or
+missing capabilities remain blocked. Focused normal and optimized suites pass
+`18/18` across the recommendation, runner and action-gate contracts. The
+read-only recommendation runner now records this authorization in its report.

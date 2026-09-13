@@ -661,3 +661,11 @@ paused horizon frame, followed by in-process recommendation. Its exact history
 contract forbids action submission and time advance. Focused normal/optimized
 tests pass `4/4`; the next offline package is the one-action/postcondition
 executor that will consume this frozen output after CK3 use is permitted.
+
+The pre-action handoff is also static-ready. A pure action gate hash-validates
+the recommendation and requires the current paused snapshot plus advertised
+action/capability to match the certificate exactly. It emits one revision-bound
+authorization while keeping submission, ACK, postcondition and cold restore
+false. Related normal/optimized suites pass `18/18`. This authorization is now
+part of the read-only runner output; the remaining implementation boundary is
+the executor and postcondition observer.
