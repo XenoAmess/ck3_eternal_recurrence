@@ -1,0 +1,18 @@
+﻿# GENERATED FILE — edit tools/gen_361_career_hc_runtime.py
+zg361_career_hc_automanage_bridge_gui = {
+    scope = character
+    is_shown = {
+        is_ai = no
+        has_character_flag = zg361_career_hc_automanage_pending
+    }
+    effect = {
+        if = {
+            limit = {
+                is_ai = no
+                has_character_flag = zg361_career_hc_automanage_pending
+            }
+            remove_character_flag = zg361_career_hc_automanage_pending
+            trigger_event = zg361ch.949
+        }
+    }
+}

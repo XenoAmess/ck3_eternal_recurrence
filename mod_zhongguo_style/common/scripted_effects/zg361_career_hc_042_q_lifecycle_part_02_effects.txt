@@ -104,11 +104,17 @@ zg361_career_hc_resolve_q_outcome_effect = {
         }
         set_variable = { name = zg361_ch_q_visible_receipt_revision value = var:zg361_case_q_revision }
         if = {
-            limit = { var:zg361_case_q_owner = { is_ai = no } }
+            limit = { var:zg361_case_q_owner = {
+                is_ai = no
+                NOT = { zg361_career_hc_automanage_enabled_trigger = yes }
+            } }
             var:zg361_case_q_owner = { trigger_event = { id = zg361ch.906 days = 1 } }
         }
         if = {
-            limit = { is_ai = no }
+            limit = {
+                is_ai = no
+                NOT = { zg361_career_hc_automanage_enabled_trigger = yes }
+            }
             trigger_event = { id = zg361ch.906 days = 1 }
         }
         debug_log = "ZG361CH: completed Q career/HC case"

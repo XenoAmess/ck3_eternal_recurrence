@@ -1,0 +1,28 @@
+﻿# GENERATED FILE — edit tools/gen_361_career_hc_runtime.py
+zg361_career_hc_automanage_enabled_trigger = {
+    has_variable = zg361_ch_automanage_route
+    OR = {
+        var:zg361_ch_automanage_route = 1
+        var:zg361_ch_automanage_route = 2
+        var:zg361_ch_automanage_route = 3
+    }
+}
+
+zg361_career_hc_automanage_evidence_current_trigger = {
+    has_variable = zg361_ch_automanage_route
+    var:zg361_ch_automanage_route = 1
+}
+
+zg361_career_hc_automanage_expedient_current_trigger = {
+    has_variable = zg361_ch_automanage_route
+    var:zg361_ch_automanage_route = 2
+}
+
+zg361_career_hc_automanage_defer_current_trigger = {
+    has_variable = zg361_ch_automanage_route
+    var:zg361_ch_automanage_route = 3
+}
+
+zg361_career_hc_automanage_off_current_trigger = {
+    NOT = { zg361_career_hc_automanage_enabled_trigger = yes }
+}

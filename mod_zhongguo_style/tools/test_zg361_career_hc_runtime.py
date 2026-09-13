@@ -20,6 +20,10 @@ from zg361_effect_sharding import MAX_EFFECTS_PER_SHARD, top_level_effect_blocks
 MOD_ROOT = Path(__file__).resolve().parents[1]
 EVENTS_PATH = MOD_ROOT / "events/zg361_career_hc_runtime_events.txt"
 CHINESE_LOC_PATH = MOD_ROOT / "localization/simp_chinese/zg361_career_hc_l_simp_chinese.yml"
+AUTOMANAGE_TRIGGERS_PATH = MOD_ROOT / "common/scripted_triggers/zg361_career_hc_automanage_triggers.txt"
+AUTOMANAGE_GUI_PATH = MOD_ROOT / "common/scripted_guis/zg361_career_hc_automanage_guis.txt"
+DECISIONS_PATH = MOD_ROOT / "common/decisions/zg361_decisions.txt"
+DECISION_BRIDGE_PATH = MOD_ROOT / "gui/zg361_decision_bridge.gui"
 
 
 def effect_paths() -> tuple[Path, ...]:
@@ -133,7 +137,7 @@ class CareerHcRuntimeTests(unittest.TestCase):
 
     def test_generated_outputs_are_current_bom_and_complete(self) -> None:
         rendered = generator.outputs()
-        self.assertEqual(len(rendered), len(generator.effect_shard_outputs()) + 10)
+        self.assertEqual(len(rendered), len(generator.effect_shard_outputs()) + 12)
         self.assertEqual(
             {path.parent.name for path in rendered if path.suffix == ".yml"},
             {
@@ -219,6 +223,7 @@ class CareerHcRuntimeTests(unittest.TestCase):
             + len(generator.DOMAINS)
             + 1  # exact externally-blocked transfer retry
             + 1  # one player portfolio batching choice
+            + 1  # persistent player automanage control
         )
         self.assertEqual(len(event_ids), expected_events)
         self.assertEqual(len(event_ids), len(set(event_ids)))
@@ -449,7 +454,7 @@ class CareerHcRuntimeTests(unittest.TestCase):
 
     def test_player_business_windows_are_serial_d_plus_one_with_five_field_guards(self) -> None:
         self.assertEqual(self.events.count("# Player manager business window #"), 44)
-        self.assertEqual(self.events.count("theme = stewardship"), 45)
+        self.assertEqual(self.events.count("theme = stewardship"), 46)
         for domain in generator.DOMAINS:
             mechanisms = generator.domain_mechanisms(domain)
             for index, mechanism_id in enumerate(mechanisms):
@@ -552,6 +557,65 @@ class CareerHcRuntimeTests(unittest.TestCase):
                     f"trigger_event = {{ id = zg361ch.{completion} days = 1 }}",
                     outcome,
                 )
+
+    def test_persistent_automanage_skips_normal_portfolio_prompts_but_keeps_fallbacks(self) -> None:
+        triggers = AUTOMANAGE_TRIGGERS_PATH.read_text(encoding="utf-8-sig")
+        gui = AUTOMANAGE_GUI_PATH.read_text(encoding="utf-8-sig")
+        decisions = DECISIONS_PATH.read_text(encoding="utf-8-sig")
+        decision_bridge = DECISION_BRIDGE_PATH.read_text(encoding="utf-8-sig")
+        self.assertEqual(brace_balance(triggers), 0)
+        self.assertEqual(brace_balance(gui), 0)
+        self.assertEqual(brace_balance(decisions), 0)
+        self.assertIn("zg361_career_hc_automanage_enabled_trigger = {", triggers)
+        for route, label in ((1, "evidence"), (2, "expedient"), (3, "defer")):
+            self.assertIn(
+                f"zg361_career_hc_automanage_{label}_current_trigger = {{",
+                triggers,
+            )
+            self.assertIn(f"var:zg361_ch_automanage_route = {route}", triggers)
+
+        decision = block(decisions, "zg361_career_hc_automanage_decision")
+        self.assertIn("is_ai = no", decision)
+        self.assertIn("has_game_rule = zg361_on", decision)
+        self.assertIn("zg361_is_celestial_liege_trigger = yes", decision)
+        self.assertIn("add_character_flag = zg361_career_hc_automanage_pending", decision)
+        self.assertIn("text = zg361_career_hc_automanage_decision_ready", decision)
+        self.assertIn("NOT = { has_character_flag = zg361_career_hc_automanage_pending }", decision)
+
+        self.assertIn("is_ai = no", gui)
+        self.assertIn("remove_character_flag = zg361_career_hc_automanage_pending", gui)
+        self.assertIn(f"trigger_event = zg361ch.{generator.AUTOMANAGE_EVENT}", gui)
+        self.assertIn('name = "zg361_career_hc_automanage"', decision_bridge)
+        self.assertEqual(
+            decision_bridge.count("zg361_career_hc_automanage_bridge_gui"),
+            2,
+        )
+        event = block(self.events, f"zg361ch.{generator.AUTOMANAGE_EVENT}")
+        self.assertIn("is_ai = no", event)
+        for route, letter in ((1, "a"), (2, "b"), (3, "c")):
+            self.assertIn(f"name = zg361ch.{generator.AUTOMANAGE_EVENT}.{letter}", event)
+            self.assertIn(
+                f"set_variable = {{ name = zg361_ch_automanage_route value = {route} }}",
+                event,
+            )
+        self.assertIn("remove_variable = zg361_ch_automanage_route", event)
+
+        d_open = block(self.effects, "zg361_career_hc_open_d_case_effect")
+        self.assertIn("root.var:zg361_ch_automanage_route", d_open)
+        self.assertIn("zg361_career_hc_m019_background_apply_effect = yes", d_open)
+        self.assertIn(
+            f"trigger_event = {{ id = zg361ch.{generator.BATCH_CHOICE_EVENT} days = 1 }}",
+            d_open,
+        )
+        q_outcome = block(self.effects, "zg361_career_hc_resolve_q_outcome_effect")
+        p_queue = block(self.events, f"zg361ch.{generator.QUEUE_EVENTS['p']}")
+        self.assertIn("NOT = { zg361_career_hc_automanage_enabled_trigger = yes }", q_outcome)
+        self.assertIn("NOT = { zg361_career_hc_automanage_enabled_trigger = yes }", p_queue)
+
+        # Exact numbered cards remain generated for detailed play and for a
+        # single failed guard/resource preflight under custody.
+        for mechanism_id in generator.EXPECTED_IDS:
+            self.assertIn(f"zg361ch.{mechanism_id} = {{", self.events)
 
     def test_player_rulings_expose_authored_effect_tooltips(self) -> None:
         batch = block(self.events, f"zg361ch.{generator.BATCH_CHOICE_EVENT}")
@@ -1282,7 +1346,9 @@ class CareerHcRuntimeTests(unittest.TestCase):
             source = block(self.events, f"zg361ch.{event_id}")
             self.assertIn("trigger = { is_ai = no }", source)
             self.assertNotIn("hidden = yes", source)
-        self.assertIn("var:zg361_case_q_owner = { is_ai = no }", self.effects)
+        q_outcome = block(self.effects, "zg361_career_hc_resolve_q_outcome_effect")
+        self.assertIn("var:zg361_case_q_owner = {", q_outcome)
+        self.assertIn("zg361_career_hc_automanage_enabled_trigger", q_outcome)
         for domain in generator.DOMAINS[:-1]:
             outcome = block(
                 self.effects,
@@ -1350,6 +1416,23 @@ class CareerHcRuntimeTests(unittest.TestCase):
             for suffix in ("t", "desc", "a"):
                 self.assertIn(f"zg361ch.{event_id}.{suffix}:0", english)
                 self.assertIn(f"zg361ch.{event_id}.{suffix}:0", chinese)
+        for key in (
+            "zg361_career_hc_automanage_title_off",
+            "zg361_career_hc_automanage_title_evidence",
+            "zg361_career_hc_automanage_title_expedient",
+            "zg361_career_hc_automanage_title_defer",
+            "zg361_career_hc_automanage_decision_desc",
+            f"zg361ch.{generator.AUTOMANAGE_EVENT}.t",
+            f"zg361ch.{generator.AUTOMANAGE_EVENT}.desc",
+            f"zg361ch.{generator.AUTOMANAGE_EVENT}.a.tt",
+            f"zg361ch.{generator.AUTOMANAGE_EVENT}.b.tt",
+            f"zg361ch.{generator.AUTOMANAGE_EVENT}.c.tt",
+            f"zg361ch.{generator.AUTOMANAGE_EVENT}.d.tt",
+        ):
+            self.assertIn(f"{key}:0", english)
+            self.assertIn(f"{key}:0", chinese)
+        self.assertIn("今后每一名被选中立卷的直属官员", chinese)
+        self.assertIn("正常案卷无需点击事件", chinese)
 
     def test_every_chinese_body_has_a_literal_fact_opening_and_unique_substance(self) -> None:
         rows = localization_map(CHINESE_LOC_PATH)

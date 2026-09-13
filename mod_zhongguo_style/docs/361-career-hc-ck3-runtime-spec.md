@@ -7,6 +7,7 @@
 生成结果：
 
 - `common/scripted_effects/zg361_career_hc_NNN_<purpose>_effects.txt`（47 个用途分片；每片 1–10 个顶层 effect）
+- `common/scripted_triggers/zg361_career_hc_automanage_triggers.txt` 与 `common/scripted_guis/zg361_career_hc_automanage_guis.txt`
 - `events/zg361_career_hc_runtime_events.txt`
 - `localization/*/zg361_career_hc_l_*.yml`（简中、英文原创；其余七语为日常开发期英文结构占位）
 
@@ -74,6 +75,8 @@ zg361_career_hc_settle_pp_transfer_effect
 玩家管理者先在 D+1 收到一次 `zg361ch.950` 审理方式卡。A/B/C 分别为全部 44 项冻结证据优先、从权办理或逐项留债的统一口径；每项仍调用原 manager/core/consumer 并留下独立回执。付款、编制、身份、期限或其他 guard 不满足时，只把失败的编号恢复为原逐案卡，不静默跳过，也不让前面已经成立的编号重放。D 不设统一口径，保留全部 44 项逐案裁决。
 
 R629 人工体验证明旧路径虽然每天最多一张业务窗，但 A/B/C 仍需点击 1 张办案方式卡、22 张关键裁决和 6 张只负责收存的分域结案卡，共 29 次，形成连续弹窗疲劳。优化后的正常 A/B/C 路径只保留审理方式卡与 Q 域后的总案回执，共 2 次必要点击；D 路为审理方式卡、44 张裁决与 1 张总案回执，共 46 次且由玩家明确选择。D/M/N/O/P 的结案结果继续写入案卷和 debug receipt，但不再生成阻塞玩家的中间回执；Q 的最终回执汇总六域。这个改动不延长中央流水线，P116 的 90/150 日特殊时钟和所有其他真实延期义务保持原语义。
+
+决议 `zg361_career_hc_automanage_decision` 提供跨周期托管按钮。默认关闭；玩家可选择循证、从权、暂缓三种长期口径，或随时关闭并恢复逐卷询问。设置保存在玩家管理者的 `zg361_ch_automanage_route`，只在下一份新立案卷时复制到当事官员的本卷冻结变量；已经打开的案卷不被中途改写。托管启用后，正常案卷既不显示开卷方式卡，也不显示最终收存回执，因此没有异常时为 0 次点击；身份、资源或五元 guard 失败仍只回退精确编号的原裁决卡。托管不扩大取人范围：中央 adapter 每周期仍只按固定排序选取一名合格直属官员，也不会让 AI 获得玩家入口。
 
 每个回退为可见编号的三条选项只有在当前五元身份仍精确匹配且编号 receipt
 成功写入/消费后，才把下一项排到 `days = 1`；D→M→N→O→P→Q 使用五个 hidden queue event，先验证
@@ -333,9 +336,10 @@ R629 只证明旧版本的呈现缺陷真实存在；新增 tooltip 尚未进入
 `test_zg361_career_hc_runtime.py` 检查：
 
 - 44 ID、六领域、阶段分组与模型 registry 精确一致；
-- 57 个生成结果可复现且均有 UTF-8 BOM；
+- 59 个生成结果可复现且均有 UTF-8 BOM；
 - 唯一 manager-scope portfolio adapter、首名合格直属选择、同周期防重放和只首开 D；
 - 一次审理方式选择、A/B/C 对 44 项的逐项统一办理、D 模式 44 项完整保留、条件或资源失败时精确回退原编号，以及五条 hidden 跨域边、单一最终回执、关闭五元校验与同日最多一张回退业务窗；
+- 托管决议、玩家限定 GUI bridge、三种跨周期默认与关闭路径；托管正常路径 0 次点击，异常精确回退，且每周期仍只选择一名直属官员；
 - 授权 AI 只走后台 manager receipt/consumer，不触发玩家业务事件；
 - 每个 open/manager/core/consumer 的权限、五元 guard、receipt 与 write→consumer；
 - 所有阶段屏障、真实 delayed event、P116 的 90/150 日分支和 route C 超时；

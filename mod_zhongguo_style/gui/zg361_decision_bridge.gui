@@ -24,4 +24,9 @@ window = {
 		trigger_when = "[GetScriptedGui('zg361_ratio_policy_bridge_gui').IsShown( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
 		on_start = "[GetScriptedGui('zg361_ratio_policy_bridge_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
 	}
+	state = {
+		name = "zg361_career_hc_automanage"
+		trigger_when = "[GetScriptedGui('zg361_career_hc_automanage_bridge_gui').IsShown( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+		on_start = "[GetScriptedGui('zg361_career_hc_automanage_bridge_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+	}
 }

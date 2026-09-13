@@ -61,6 +61,7 @@ NEXT_DOMAIN = {
 # They deliberately do not overlap the numbered player events or 901-906
 # completion receipts.
 QUEUE_EVENTS = {"d": 951, "m": 952, "n": 953, "o": 954, "p": 955}
+AUTOMANAGE_EVENT = 949
 BATCH_CHOICE_EVENT = 950
 
 EXPECTED_IDS = tuple(
@@ -745,6 +746,15 @@ def render_batch_route_guard() -> str:
             }'''
 
 
+def render_automanage_guard() -> str:
+    return '''has_variable = zg361_ch_automanage_route
+            OR = {
+                var:zg361_ch_automanage_route = 1
+                var:zg361_ch_automanage_route = 2
+                var:zg361_ch_automanage_route = 3
+            }'''
+
+
 def render_subject_entry(domain: DomainSpec, mechanism_id: int) -> str:
     """Enter one numbered ruling from assessed-official scope.
 
@@ -876,11 +886,16 @@ def render_domain_open(domain: DomainSpec) -> str:
             )
     all_resets = "\n        ".join((*receipt_resets, *cost_resets, *deadline_resets))
     count = len(ids)
-    player_start = (
-        f"root = {{ trigger_event = {{ id = zg361ch.{BATCH_CHOICE_EVENT} days = 1 }} }}"
-        if domain.key == "d"
-        else render_subject_entry(domain, ids[0])
-    )
+    player_start = render_subject_entry(domain, ids[0])
+    if domain.key == "d":
+        player_start = f'''if = {{
+                limit = {{ root = {{
+                    {render_automanage_guard()}
+                }} }}
+                set_variable = {{ name = zg361_ch_player_batch_route value = root.var:zg361_ch_automanage_route }}
+                zg361_career_hc_m019_background_apply_effect = yes
+            }}
+            else = {{ root = {{ trigger_event = {{ id = zg361ch.{BATCH_CHOICE_EVENT} days = 1 }} }} }}'''
     return f'''# Open domain {domain.key.upper()} on one assessed direct vassal.
 zg361_career_hc_open_{domain.key}_case_effect = {{
     remove_variable = zg361_ch_runtime_applied
@@ -2394,11 +2409,17 @@ def render_outcome(domain: DomainSpec, completion_event: int) -> str:
     completion_dispatch = ""
     if domain.key == "q":
         completion_dispatch = f'''if = {{
-            limit = {{ var:{row["owner"]} = {{ is_ai = no }} }}
+            limit = {{ var:{row["owner"]} = {{
+                is_ai = no
+                NOT = {{ zg361_career_hc_automanage_enabled_trigger = yes }}
+            }} }}
             var:{row["owner"]} = {{ trigger_event = {{ id = zg361ch.{completion_event} days = 1 }} }}
         }}
         if = {{
-            limit = {{ is_ai = no }}
+            limit = {{
+                is_ai = no
+                NOT = {{ zg361_career_hc_automanage_enabled_trigger = yes }}
+            }}
             trigger_event = {{ id = zg361ch.{completion_event} days = 1 }}
         }}'''
     return f'''zg361_career_hc_resolve_{domain.key}_outcome_effect = {{
@@ -2585,6 +2606,119 @@ zg361ch.{BATCH_CHOICE_EVENT} = {{
 }}'''
 
 
+def render_automanage_option(route: int) -> str:
+    letter = "abc"[route - 1]
+    current_trigger = ("evidence", "expedient", "defer")[route - 1]
+    return f'''option = {{
+    name = zg361ch.{AUTOMANAGE_EVENT}.{letter}
+    show_as_unavailable = {{
+        custom_description = {{
+            text = zg361_career_hc_automanage_already_current
+            zg361_career_hc_automanage_{current_trigger}_current_trigger = yes
+        }}
+    }}
+    custom_tooltip = zg361ch.{AUTOMANAGE_EVENT}.{letter}.tt
+    hidden_effect = {{
+        set_variable = {{ name = zg361_ch_automanage_route value = {route} }}
+    }}
+}}'''
+
+
+def render_automanage_event() -> str:
+    options = "\n".join(render_automanage_option(route) for route in (1, 2, 3))
+    return f'''# Persistent player control for future Career/HC portfolios.
+zg361ch.{AUTOMANAGE_EVENT} = {{
+    type = character_event
+    theme = stewardship
+    title = zg361ch.{AUTOMANAGE_EVENT}.t
+    desc = {{
+        desc = zg361ch.{AUTOMANAGE_EVENT}.desc
+        first_valid = {{
+            triggered_desc = {{
+                trigger = {{ zg361_career_hc_automanage_evidence_current_trigger = yes }}
+                desc = zg361_career_hc_automanage_current_evidence
+            }}
+            triggered_desc = {{
+                trigger = {{ zg361_career_hc_automanage_expedient_current_trigger = yes }}
+                desc = zg361_career_hc_automanage_current_expedient
+            }}
+            triggered_desc = {{
+                trigger = {{ zg361_career_hc_automanage_defer_current_trigger = yes }}
+                desc = zg361_career_hc_automanage_current_defer
+            }}
+            desc = zg361_career_hc_automanage_current_off
+        }}
+    }}
+    trigger = {{
+        is_ai = no
+        has_game_rule = zg361_on
+        zg361_is_celestial_liege_trigger = yes
+    }}
+    {options}
+    option = {{
+        name = zg361ch.{AUTOMANAGE_EVENT}.d
+        show_as_unavailable = {{
+            custom_description = {{
+                text = zg361_career_hc_automanage_already_current
+                zg361_career_hc_automanage_off_current_trigger = yes
+            }}
+        }}
+        custom_tooltip = zg361ch.{AUTOMANAGE_EVENT}.d.tt
+        hidden_effect = {{ remove_variable = zg361_ch_automanage_route }}
+    }}
+}}'''
+
+
+def render_automanage_triggers() -> bytes:
+    return generated('''zg361_career_hc_automanage_enabled_trigger = {
+    has_variable = zg361_ch_automanage_route
+    OR = {
+        var:zg361_ch_automanage_route = 1
+        var:zg361_ch_automanage_route = 2
+        var:zg361_ch_automanage_route = 3
+    }
+}
+
+zg361_career_hc_automanage_evidence_current_trigger = {
+    has_variable = zg361_ch_automanage_route
+    var:zg361_ch_automanage_route = 1
+}
+
+zg361_career_hc_automanage_expedient_current_trigger = {
+    has_variable = zg361_ch_automanage_route
+    var:zg361_ch_automanage_route = 2
+}
+
+zg361_career_hc_automanage_defer_current_trigger = {
+    has_variable = zg361_ch_automanage_route
+    var:zg361_ch_automanage_route = 3
+}
+
+zg361_career_hc_automanage_off_current_trigger = {
+    NOT = { zg361_career_hc_automanage_enabled_trigger = yes }
+}''')
+
+
+def render_automanage_gui() -> bytes:
+    return generated(f'''zg361_career_hc_automanage_bridge_gui = {{
+    scope = character
+    is_shown = {{
+        is_ai = no
+        has_character_flag = zg361_career_hc_automanage_pending
+    }}
+    effect = {{
+        if = {{
+            limit = {{
+                is_ai = no
+                has_character_flag = zg361_career_hc_automanage_pending
+            }}
+            remove_character_flag = zg361_career_hc_automanage_pending
+            trigger_event = zg361ch.{AUTOMANAGE_EVENT}
+        }}
+    }}
+}}''')
+
+
 def render_business_event(
     mechanism_id: int,
     domain: DomainSpec,
@@ -2627,7 +2761,10 @@ def render_queue_event(domain: DomainSpec) -> str:
             }}
             else = {{
                 zg361_career_hc_finalize_{domain.key}_portfolio_effect = yes
-                root = {{ trigger_event = {{ id = zg361ch.906 days = 1 }} }}
+                if = {{
+                    limit = {{ root = {{ NOT = {{ zg361_career_hc_automanage_enabled_trigger = yes }} }} }}
+                    root = {{ trigger_event = {{ id = zg361ch.906 days = 1 }} }}
+                }}
             }}
         }}'''
     else:
@@ -2771,7 +2908,11 @@ def generated_effect_residue(expected: set[Path]) -> tuple[Path, ...]:
 
 
 def render_events() -> bytes:
-    sections = ["namespace = zg361ch", render_batch_choice_event()]
+    sections = [
+        "namespace = zg361ch",
+        render_automanage_event(),
+        render_batch_choice_event(),
+    ]
     for domain in DOMAINS:
         mechanisms = domain_mechanisms(domain)
         for index, mechanism_id in enumerate(mechanisms):
@@ -2804,6 +2945,30 @@ def localization_rows(language: str) -> list[str]:
     if english:
         rows.extend(
             (
+                ' zg361_career_hc_automanage_decision:0 "Personnel docket custody"',
+                ' zg361_career_hc_automanage_decision_confirm:0 "Adjust custody"',
+                ' zg361_career_hc_automanage_decision_tooltip:0 "Set or disable a persistent review method for future career and workforce portfolios."',
+                ' zg361_career_hc_automanage_title_off:0 "Personnel docket custody: off"',
+                ' zg361_career_hc_automanage_title_evidence:0 "Personnel docket custody: evidence-led"',
+                ' zg361_career_hc_automanage_title_expedient:0 "Personnel docket custody: expedient"',
+                ' zg361_career_hc_automanage_title_defer:0 "Personnel docket custody: defer"',
+                ' zg361_career_hc_automanage_decision_desc:0 "Set the lasting default for future career and workforce portfolios. Custody skips the opening policy card and final filing receipt; only an exact case that lacks its required identity or resources returns for your ruling."',
+                ' zg361_career_hc_automanage_current_off:0 "Current setting: off. Each new portfolio asks for a review method."',
+                ' zg361_career_hc_automanage_current_evidence:0 "Current setting: evidence-led custody."',
+                ' zg361_career_hc_automanage_current_expedient:0 "Current setting: expedient custody."',
+                ' zg361_career_hc_automanage_current_defer:0 "Current setting: defer custody."',
+                ' zg361_career_hc_automanage_decision_ready:0 "No other custody-setting request is waiting to be recorded."',
+                ' zg361_career_hc_automanage_already_current:0 "This is already the active custody setting."',
+                f' zg361ch.{AUTOMANAGE_EVENT}.t:0 "Set personnel docket custody"',
+                f' zg361ch.{AUTOMANAGE_EVENT}.desc:0 "The selected setting persists across review cycles and applies to every future direct official chosen for a new career and workforce portfolio. An already-open portfolio keeps its frozen method."',
+                f' zg361ch.{AUTOMANAGE_EVENT}.a:0 "Enable evidence-led custody."',
+                f' zg361ch.{AUTOMANAGE_EVENT}.b:0 "Enable expedient custody."',
+                f' zg361ch.{AUTOMANAGE_EVENT}.c:0 "Enable defer custody."',
+                f' zg361ch.{AUTOMANAGE_EVENT}.d:0 "Turn custody off and ask at the start of each portfolio."',
+                f' zg361ch.{AUTOMANAGE_EVENT}.a.tt:0 "Every future portfolio uses the evidence-led route for all forty-four rulings. Only exact guard or resource failures interrupt play; otherwise the portfolio requires no event click."',
+                f' zg361ch.{AUTOMANAGE_EVENT}.b.tt:0 "Every future portfolio uses the expedient route for all forty-four rulings. Only exact guard or resource failures interrupt play; otherwise the portfolio requires no event click."',
+                f' zg361ch.{AUTOMANAGE_EVENT}.c.tt:0 "Every future portfolio uses the defer route for all forty-four rulings and preserves each original dated obligation. Only exact guard failures interrupt play; otherwise the portfolio requires no event click."',
+                f' zg361ch.{AUTOMANAGE_EVENT}.d.tt:0 "Future portfolios return to the opening review-method card and one final filing receipt."',
                 f' zg361ch.{BATCH_CHOICE_EVENT}.t:0 "Set this portfolio\'s review method"',
                 f' zg361ch.{BATCH_CHOICE_EVENT}.desc:0 "This portfolio contains forty-four career and headcount rulings. A streamlined method applies one policy to every case while preserving each formal record; only cases that lack their required conditions or resources return for an individual ruling. Detailed review remains available."',
                 f' zg361ch.{BATCH_CHOICE_EVENT}.a:0 "Streamlined: settle all forty-four cases by traceable evidence; present exceptions separately."',
@@ -2819,6 +2984,30 @@ def localization_rows(language: str) -> list[str]:
     else:
         rows.extend(
             (
+                ' zg361_career_hc_automanage_decision:0 "人事与编制案卷托管"',
+                ' zg361_career_hc_automanage_decision_confirm:0 "调整托管"',
+                ' zg361_career_hc_automanage_decision_tooltip:0 "为今后的人事与编制案卷设置或关闭长期默认审理方式。"',
+                ' zg361_career_hc_automanage_title_off:0 "人事案卷托管：未启用"',
+                ' zg361_career_hc_automanage_title_evidence:0 "人事案卷托管：循证"',
+                ' zg361_career_hc_automanage_title_expedient:0 "人事案卷托管：从权"',
+                ' zg361_career_hc_automanage_title_defer:0 "人事案卷托管：暂缓"',
+                ' zg361_career_hc_automanage_decision_desc:0 "为今后的人事与编制案卷设置长期默认口径。启用托管后不再弹出开卷方式和最终收存回执；只有身份或资源条件不满足的具体异常案才交由你裁决。"',
+                ' zg361_career_hc_automanage_current_off:0 "当前：未托管。每份新案卷仍会询问审理方式。"',
+                ' zg361_career_hc_automanage_current_evidence:0 "当前：循证托管。"',
+                ' zg361_career_hc_automanage_current_expedient:0 "当前：从权托管。"',
+                ' zg361_career_hc_automanage_current_defer:0 "当前：暂缓托管。"',
+                ' zg361_career_hc_automanage_decision_ready:0 "当前没有另一项托管设置等待登记。"',
+                ' zg361_career_hc_automanage_already_current:0 "这已经是当前生效的托管设置。"',
+                f' zg361ch.{AUTOMANAGE_EVENT}.t:0 "设置人事案卷托管"',
+                f' zg361ch.{AUTOMANAGE_EVENT}.desc:0 "所选口径会跨考核周期保留，并应用于今后每一名被选中立卷的直属官员；已经开启的案卷继续使用其冻结口径。"',
+                f' zg361ch.{AUTOMANAGE_EVENT}.a:0 "开启循证托管。"',
+                f' zg361ch.{AUTOMANAGE_EVENT}.b:0 "开启从权托管。"',
+                f' zg361ch.{AUTOMANAGE_EVENT}.c:0 "开启暂缓托管。"',
+                f' zg361ch.{AUTOMANAGE_EVENT}.d:0 "关闭托管，每份新案卷重新询问。"',
+                f' zg361ch.{AUTOMANAGE_EVENT}.a.tt:0 "今后每份案卷的四十四项均按循证路线办理；只有精确的身份或资源条件失败才会打断游玩，正常案卷无需点击事件。"',
+                f' zg361ch.{AUTOMANAGE_EVENT}.b.tt:0 "今后每份案卷的四十四项均按从权路线办理；只有精确的身份或资源条件失败才会打断游玩，正常案卷无需点击事件。"',
+                f' zg361ch.{AUTOMANAGE_EVENT}.c.tt:0 "今后每份案卷的四十四项均按暂缓路线办理，并保留各项原定期限；只有精确的身份条件失败才会打断游玩，正常案卷无需点击事件。"',
+                f' zg361ch.{AUTOMANAGE_EVENT}.d.tt:0 "今后的案卷恢复开卷时询问审理方式，并在办结后呈报一次总回执。"',
                 f' zg361ch.{BATCH_CHOICE_EVENT}.t:0 "确定本轮审理方式"',
                 f' zg361ch.{BATCH_CHOICE_EVENT}.desc:0 "本轮共有四十四项职业与编制裁决。精简办理会按同一口径逐项写入原有案卷；只有条件或资源不足的异常项才单独呈报。若要逐案权衡，仍可选择完整审理。"',
                 f' zg361ch.{BATCH_CHOICE_EVENT}.a:0 "精简办理：四十四项一律依可追溯证据裁定；异常项另报。"',
@@ -2956,6 +3145,12 @@ def outputs() -> dict[Path, bytes]:
     validate_specs()
     rendered = effect_shard_outputs()
     rendered[MOD_ROOT / "events" / "zg361_career_hc_runtime_events.txt"] = render_events()
+    rendered[
+        MOD_ROOT / "common" / "scripted_triggers" / "zg361_career_hc_automanage_triggers.txt"
+    ] = render_automanage_triggers()
+    rendered[
+        MOD_ROOT / "common" / "scripted_guis" / "zg361_career_hc_automanage_guis.txt"
+    ] = render_automanage_gui()
     for language in (
         "english",
         "simp_chinese",

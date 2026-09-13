@@ -1,5 +1,5 @@
 ﻿# ZhongGuo 361 Style — decisions
-# 末位比例单入口 + 立即开榜。AI 不主动使用（ai_check_interval = 0），AI 侧由年度 tick 静默覆盖。
+# 开榜、结果、末位比例与人事托管入口。AI 不主动使用（ai_check_interval = 0），AI 侧由年度 tick 静默覆盖。
 
 # 立即开展绩效考核（提前开榜）
 zg361_review_now_decision = {
@@ -135,5 +135,76 @@ zg361_ratio_policy_decision = {
 	# 决议 effect 会被 UI 预评估：只发一次性请求，由不可见 GUI bridge 打开三选项事件。
 	effect = {
 		add_character_flag = zg361_ratio_policy_pending
+	}
+}
+
+# 人事与编制案卷托管：长期默认口径；精确异常仍回退玩家裁决。
+zg361_career_hc_automanage_decision = {
+	decision_group_type = zg361
+	picture = {
+		reference = "gfx/interface/illustrations/decisions/decision_realm.dds"
+	}
+	ai_check_interval = 0
+
+	title = {
+		first_valid = {
+			triggered_desc = {
+				trigger = { zg361_career_hc_automanage_evidence_current_trigger = yes }
+				desc = zg361_career_hc_automanage_title_evidence
+			}
+			triggered_desc = {
+				trigger = { zg361_career_hc_automanage_expedient_current_trigger = yes }
+				desc = zg361_career_hc_automanage_title_expedient
+			}
+			triggered_desc = {
+				trigger = { zg361_career_hc_automanage_defer_current_trigger = yes }
+				desc = zg361_career_hc_automanage_title_defer
+			}
+			desc = zg361_career_hc_automanage_title_off
+		}
+	}
+
+	desc = {
+		desc = zg361_career_hc_automanage_decision_desc
+		first_valid = {
+			triggered_desc = {
+				trigger = { zg361_career_hc_automanage_evidence_current_trigger = yes }
+				desc = zg361_career_hc_automanage_current_evidence
+			}
+			triggered_desc = {
+				trigger = { zg361_career_hc_automanage_expedient_current_trigger = yes }
+				desc = zg361_career_hc_automanage_current_expedient
+			}
+			triggered_desc = {
+				trigger = { zg361_career_hc_automanage_defer_current_trigger = yes }
+				desc = zg361_career_hc_automanage_current_defer
+			}
+			desc = zg361_career_hc_automanage_current_off
+		}
+	}
+
+	confirm_text = zg361_career_hc_automanage_decision_confirm
+
+	is_shown = {
+		is_ai = no
+		zg361_is_celestial_liege_trigger = yes
+		has_game_rule = zg361_on
+	}
+	is_valid = {
+		custom_description = {
+			text = zg361_career_hc_automanage_decision_ready
+			NOT = { has_character_flag = zg361_career_hc_automanage_pending }
+		}
+	}
+	is_valid_showing_failures_only = {
+		custom_description = {
+			text = zg361_career_hc_automanage_decision_ready
+			NOT = { has_character_flag = zg361_career_hc_automanage_pending }
+		}
+	}
+
+	# 决议 effect 只发一次性请求；不可见 GUI bridge 在下一帧打开设置事件。
+	effect = {
+		add_character_flag = zg361_career_hc_automanage_pending
 	}
 }

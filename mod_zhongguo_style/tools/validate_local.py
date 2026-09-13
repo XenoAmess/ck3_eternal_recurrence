@@ -421,9 +421,13 @@ def check_runtime_invariants() -> None:
     events = read_text(MOD_ROOT / "events" / "zg361_events.txt")
     registrations = read_text(MOD_ROOT / "gui" / "scripted_widgets" / "zg361_scripted_widgets.txt")
     scoreboard_gui = read_text(MOD_ROOT / "gui" / "zg361_scoreboard.gui")
+    decision_bridge = read_text(MOD_ROOT / "gui" / "zg361_decision_bridge.gui")
     scripted_guis = read_text(MOD_ROOT / "common" / "scripted_guis" / "zg361_scoreboard_guis.txt")
     ratio_scripted_guis = read_text(
         MOD_ROOT / "common" / "scripted_guis" / "zg361_ratio_policy_guis.txt"
+    )
+    career_hc_automanage_guis = read_text(
+        MOD_ROOT / "common" / "scripted_guis" / "zg361_career_hc_automanage_guis.txt"
     )
     on_actions = read_text(MOD_ROOT / "common" / "on_action" / "zg361_on_actions.txt")
     activity = read_text(MOD_ROOT / "common" / "activities" / "activity_types" / "zg361_jingcha.txt")
@@ -528,8 +532,8 @@ def check_runtime_invariants() -> None:
         err("obsolete review carrier event must not remain orphaned")
     if "add_character_flag = zg361_review_now_pending" not in decisions:
         err("review decision is missing its one-shot GUI bridge flag")
-    if len(re.findall(r"\bpicture\s*=\s*\{\s*reference\s*=", decisions, re.S)) != 3:
-        err("all three 361 decision entries must declare an existing vanilla picture")
+    if len(re.findall(r"\bpicture\s*=\s*\{\s*reference\s*=", decisions, re.S)) != 4:
+        err("all four 361 decision entries must declare an existing vanilla picture")
     if "zg361_review_now_bridge_gui" not in scripted_guis:
         err("review decision scripted GUI bridge is missing")
     if "zg361_ratio_policy_decision = {" not in decisions:
@@ -549,6 +553,23 @@ def check_runtime_invariants() -> None:
     ):
         if ratio_bridge_token not in ratio_scripted_guis:
             err(f"bottom-quota decision bridge missing token: {ratio_bridge_token}")
+    if "zg361_career_hc_automanage_decision = {" not in decisions:
+        err("career/HC persistent automanage decision is missing")
+    for automanage_bridge_token in (
+        "zg361_career_hc_automanage_bridge_gui = {",
+        "is_ai = no",
+        "remove_character_flag = zg361_career_hc_automanage_pending",
+        "trigger_event = zg361ch.949",
+    ):
+        if automanage_bridge_token not in career_hc_automanage_guis:
+            err(f"career/HC automanage bridge missing token: {automanage_bridge_token}")
+    for automanage_timer_token in (
+        'name = "zg361_career_hc_automanage"',
+        "GetScriptedGui('zg361_career_hc_automanage_bridge_gui').IsShown",
+        "GetScriptedGui('zg361_career_hc_automanage_bridge_gui').Execute",
+    ):
+        if automanage_timer_token not in decision_bridge:
+            err(f"career/HC automanage decision timer missing token: {automanage_timer_token}")
     ratio_selector = events.split("zg361.54 = {", 1)
     if len(ratio_selector) != 2:
         err("bottom-quota three-option selector event zg361.54 is missing")

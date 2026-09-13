@@ -94,7 +94,19 @@ zg361_career_hc_open_d_case_effect = {
             }
             else_if = {
                 limit = { root = { is_ai = no zg361_is_celestial_liege_trigger = yes } }
-                root = { trigger_event = { id = zg361ch.950 days = 1 } }
+                if = {
+                limit = { root = {
+                    has_variable = zg361_ch_automanage_route
+            OR = {
+                var:zg361_ch_automanage_route = 1
+                var:zg361_ch_automanage_route = 2
+                var:zg361_ch_automanage_route = 3
+            }
+                } }
+                set_variable = { name = zg361_ch_player_batch_route value = root.var:zg361_ch_automanage_route }
+                zg361_career_hc_m019_background_apply_effect = yes
+            }
+            else = { root = { trigger_event = { id = zg361ch.950 days = 1 } } }
             }
             debug_log = "ZG361CH: opened D career/HC case"
         }
