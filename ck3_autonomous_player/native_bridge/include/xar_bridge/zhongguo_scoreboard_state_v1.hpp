@@ -291,6 +291,20 @@ bool ResolveZhongguoScoreboardNativeGuiContextAndOwnerV1(
     const ZhongguoScoreboardAccessV1 &access, void *&context,
     void *&owner) noexcept;
 
+// Exact-build GUI primitives shared by fixed semantic MCP adapters. These
+// never accept an arbitrary native pointer: callers provide names from their
+// own compile-time allowlist, and the implementation resolves them afresh
+// from CK3's current GUI owner tree on the application main thread.
+bool ResolveNamedGuiWidgetV1(
+    const ZhongguoScoreboardNativeEnvironmentV1 &environment,
+    const ZhongguoScoreboardAccessV1 &access, std::string_view root_name,
+    std::string_view descendant_name, void *&root, void *&widget) noexcept;
+
+bool ReadGuiWidgetRuntimeV1(
+    const ZhongguoScoreboardAccessV1 &access, void *widget,
+    std::string &runtime_name, void *&vtable, bool &effective_visible,
+    bool &enabled) noexcept;
+
 ZhongguoScoreboardNativeEnvironmentV1 BindZhongguoScoreboardNativeEnvironmentV1(
     std::uintptr_t module_base, bool exact_build_admitted) noexcept;
 

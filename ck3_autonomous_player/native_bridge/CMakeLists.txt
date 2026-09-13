@@ -282,6 +282,7 @@ add_library(xar_ck3_bridge SHARED
   src/event_window_context_v1.cpp
   src/event_window_context_v1_mailbox.cpp
   src/event_window_context_v1_serializer.cpp
+  src/frontend_gui_route_v1.cpp
   src/game_adapter.cpp
   src/g2_truce_native_callsite_observer_v1.cpp
   src/g2_truce_preview_entry_observer_v1.cpp

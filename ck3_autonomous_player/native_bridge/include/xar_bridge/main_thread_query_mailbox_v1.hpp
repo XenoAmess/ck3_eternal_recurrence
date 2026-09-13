@@ -60,6 +60,8 @@ inline constexpr std::size_t kGameStateDateRawOffset = 0x08;
 
 inline constexpr std::uint32_t kMainThreadQueryMaximumDrainPerPump = 1;
 inline constexpr std::uint64_t
+    kMainThreadQueryMinimumOwnerVerifiedPumpEpochs = 2;
+inline constexpr std::uint64_t
     kMainThreadQueryMinimumPausedOwnerVerifiedPumpEpochs = 2;
 
 using PeekMessageWFunctionV1 =
@@ -141,6 +143,7 @@ enum class MainThreadQuerySubmitResultV1 : std::uint32_t {
   mailbox_busy = 4,
   infrastructure_failed = 5,
   executor_submission_disabled = 6,
+  application_main_not_observed = 7,
 };
 
 enum class MainThreadQueryCancelResultV1 : std::uint32_t {
@@ -198,9 +201,9 @@ struct MainThreadQueryInstallEnvironmentV1 {
   MainThreadMemoryProtectV1 memory_protect_override = nullptr;
   std::size_t system_page_size_override = 0;
   bool executor_submission_enabled = false;
-  // At least one slot is non-null in production.  These exact typed callback
+  // At least one slot is non-null in production. These exact typed callback
   // identities prevent the infrastructure from becoming a generic native-call
-  // trampoline. V1 has twenty-nine fixed slots for the bounded war-entry,
+  // trampoline. V1 has fixed gameplay slots for the bounded war-entry,
   // route-contact, actual-contact, combat-v3, ongoing-battle, full-CombatID
   // lifecycle, campaign-root, loaded-feature, pending-interaction and
   // current-event-window read-only, explicit title-map presentation, B1
@@ -210,7 +213,9 @@ struct MainThreadQueryInstallEnvironmentV1 {
   // normal-exit/HC lifecycle snapshot and fail-closed scoreboard-action
   // transport executors, the two Phase-2 closed business postconditions and
   // the B3 manager-governance lifecycle snapshot and the fixed career-HC /
-  // workforce route-B postcondition and the full B1-cycle snapshot.
+  // workforce route-B postcondition and the full B1-cycle snapshot. A
+  // separate fixed frontend slot is admitted by application-main ownership
+  // without weakening the paused-gameplay admission of these slots.
   MainThreadQueryExecutorV1 permitted_executor = nullptr;
   MainThreadQueryExecutorV1 permitted_executor_secondary = nullptr;
   MainThreadQueryExecutorV1 permitted_executor_tertiary = nullptr;
@@ -242,6 +247,10 @@ struct MainThreadQueryInstallEnvironmentV1 {
   MainThreadQueryExecutorV1 permitted_executor_novemvigintary = nullptr;
   MainThreadQueryExecutorV1 permitted_executor_trigintary = nullptr;
   MainThreadQueryExecutorV1 permitted_executor_untrigintary = nullptr;
+  // The frontend route executor is the only fixed callback admitted before a
+  // gameplay/Jomini frame exists. It still runs at the exact SDL/CK3
+  // application-main boundary and cannot be supplied by protocol data.
+  MainThreadQueryExecutorV1 permitted_frontend_executor = nullptr;
 };
 
 struct MainThreadQueryMailboxDiagnosticsV1 {
@@ -249,6 +258,7 @@ struct MainThreadQueryMailboxDiagnosticsV1 {
       MainThreadQueryMailboxStateV1::detached;
   std::uint32_t failure_flags = 0;
   std::uint64_t pump_epochs = 0;
+  std::uint64_t owner_verified_pump_epochs = 0;
   std::uint64_t paused_owner_verified_pump_epochs = 0;
   std::uint64_t executed_requests = 0;
   std::uint64_t completed_sequence = 0;
@@ -267,6 +277,7 @@ struct MainThreadQueryMailboxDiagnosticsV1 {
   bool iat_installed = false;
   bool stop_requested = false;
   bool executor_submission_enabled = false;
+  bool application_main_observed = false;
   bool paused_main_thread_observed = false;
   bool ready = false;
 };
@@ -279,6 +290,7 @@ struct MainThreadQueryMailboxV1 {
   std::atomic<std::uint64_t> published_sequence{0};
   std::atomic<std::uint64_t> completed_sequence{0};
   std::atomic<std::uint64_t> pump_epochs{0};
+  std::atomic<std::uint64_t> owner_verified_pump_epochs{0};
   std::atomic<std::uint64_t> paused_owner_verified_pump_epochs{0};
   std::atomic<std::uint64_t> executed_requests{0};
   std::atomic<std::uint32_t> owner_thread_id{0};
@@ -344,11 +356,14 @@ struct MainThreadQueryMailboxV1 {
   MainThreadQueryExecutorV1 permitted_executor_novemvigintary = nullptr;
   MainThreadQueryExecutorV1 permitted_executor_trigintary = nullptr;
   MainThreadQueryExecutorV1 permitted_executor_untrigintary = nullptr;
+  MainThreadQueryExecutorV1 permitted_frontend_executor = nullptr;
 
   // Written only inside the exact-return drain guard.  The worker consumes
   // only the atomic consecutive count; this stamp never crosses threads.
   MainThreadExecutionStampV1 last_verified_stamp{};
   bool last_verified_stamp_valid = false;
+  MainThreadExecutionStampV1 last_owner_verified_stamp{};
+  bool last_owner_verified_stamp_valid = false;
 
   // Single-producer/single-consumer slot.  The publishing/queued release-store
   // is the ownership boundary for these plain fields.

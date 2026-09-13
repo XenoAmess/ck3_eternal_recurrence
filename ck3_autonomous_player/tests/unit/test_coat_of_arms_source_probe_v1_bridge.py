@@ -250,7 +250,7 @@ class _FrontendServiceDriver:
 
 
 class CoatOfArmsSourceProbeV1ContractTests(unittest.TestCase):
-    def test_native_hook_bootstraps_before_gameplay_snapshot_gate(self) -> None:
+    def test_native_hook_bootstraps_before_frontend_mailbox(self) -> None:
         bridge_source = (
             PROJECT_ROOT / "native_bridge" / "src" / "bridge.cpp"
         ).read_text(encoding="utf-8")
@@ -264,9 +264,13 @@ class CoatOfArmsSourceProbeV1ContractTests(unittest.TestCase):
         )
         self.assertLess(worker, install)
         self.assertLess(install, gameplay_lifetime)
+        frontend_install = bridge_source.index(
+            "mailbox_lifetime.MaybeInstallFrontend();", gameplay_lifetime
+        )
+        self.assertLess(gameplay_lifetime, frontend_install)
 
         maybe_install = bridge_source.index(
-            "void MaybeInstall(const xar::game::Snapshot &snapshot) noexcept"
+            "void MaybeInstallFrontend() noexcept"
         )
         lifetime_destructor = bridge_source.index(
             "~WarEntryApplicationMainMailboxWorkerLifetime()", maybe_install

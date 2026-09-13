@@ -313,6 +313,14 @@ from .coat_of_arms_source_export_contract import (
     normalize_coat_of_arms_source_export_v1_result,
     normalize_native_coat_of_arms_source_export_v1_result,
 )
+from .frontend_gui_route_contract import (
+    ACTIVATE_FRONTEND_NEW_GAME_V1_CAPABILITY,
+    ACTIVATE_FRONTEND_NEW_GAME_V1_STEP,
+    QUERY_FRONTEND_GUI_ROUTE_V1_CAPABILITY,
+    QUERY_FRONTEND_GUI_ROUTE_V1_STEP,
+    normalize_frontend_gui_route_v1,
+    normalize_frontend_new_game_v1,
+)
 from .loaded_feature_manifest_contract import (
     QUERY_LOADED_FEATURE_MANIFEST_V1_CAPABILITY,
     QUERY_LOADED_FEATURE_MANIFEST_V1_STEP,
@@ -3491,6 +3499,52 @@ class NativeHeadlessGameplayDriver:
         except ValueError as error:
             raise BridgeUnavailableError(
                 f"native coat-of-arms export projection is malformed: {error}"
+            ) from error
+
+    def query_frontend_gui_route_v1(self) -> dict[str, object]:
+        """Read the current CK3 frontend page on the native main thread."""
+
+        raw = self._execute_primitive_step(
+            QUERY_FRONTEND_GUI_ROUTE_V1_STEP,
+            expected_revision=0,
+            required_capability=QUERY_FRONTEND_GUI_ROUTE_V1_CAPABILITY,
+            allow_frontend_revision_zero=True,
+        )
+        try:
+            return normalize_frontend_gui_route_v1(raw)
+        except ValueError as error:
+            raise BridgeUnavailableError(
+                f"native frontend GUI route is malformed: {error}"
+            ) from error
+
+    def activate_frontend_new_game_v1(self) -> dict[str, object]:
+        """Activate CK3's named New Game widget and prove Bookmarks opened."""
+
+        before = self.query_frontend_gui_route_v1()
+        if before["route"] != "main_menu":
+            raise BridgeUnavailableError(
+                "frontend new-game action requires the main_menu route"
+            )
+        acknowledgement = self._execute_primitive_step(
+            ACTIVATE_FRONTEND_NEW_GAME_V1_STEP,
+            expected_revision=0,
+            required_capability=ACTIVATE_FRONTEND_NEW_GAME_V1_CAPABILITY,
+            allow_frontend_revision_zero=True,
+        )
+        deadline = time.monotonic() + self.command_timeout_seconds
+        after = self.query_frontend_gui_route_v1()
+        while after["route"] != "bookmarks" and time.monotonic() < deadline:
+            time.sleep(0.05)
+            after = self.query_frontend_gui_route_v1()
+        try:
+            return normalize_frontend_new_game_v1(
+                acknowledgement,
+                before=before,
+                after=after,
+            )
+        except ValueError as error:
+            raise BridgeUnavailableError(
+                f"native frontend new-game action is unverified: {error}"
             ) from error
 
     def _center_map_on_landed_title_v1_unrecorded(

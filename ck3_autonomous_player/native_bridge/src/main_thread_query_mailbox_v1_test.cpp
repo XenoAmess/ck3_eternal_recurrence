@@ -21,6 +21,7 @@
 namespace {
 
 const char *g_failure_stage = "not_started";
+xar::ck3_11906::MainThreadQueryMailboxV1 g_test_mailbox{};
 
 struct FakeMemoryProtection {
   void *slot = nullptr;
@@ -351,6 +352,15 @@ bool ExecuteNovemvigintary(
   return Execute(opaque, stamp);
 }
 
+bool ExecuteFrontend(
+    void *opaque,
+    const xar::ck3_11906::MainThreadExecutionStampV1 &stamp) noexcept {
+  auto &context = *static_cast<ExecutorContext *>(opaque);
+  ++context.calls;
+  context.observed = stamp;
+  return context.return_value;
+}
+
 struct BlockingExecutorContext {
   HANDLE entered = nullptr;
   HANDLE release = nullptr;
@@ -653,7 +663,7 @@ bool TestMailboxStateMachine() {
   }
 
   void *iat = reinterpret_cast<void *>(&FakePeekMessage);
-  static MainThreadQueryMailboxV1 mailbox{};
+  auto &mailbox = g_test_mailbox;
   if (!InstallMainThreadQueryMailboxV1(
           mailbox,
           runtime.Environment(fake_module_base, &iat, &FakePeekMessage)) ||
@@ -1248,6 +1258,77 @@ bool TestMailboxStateMachine() {
   return true;
 }
 
+bool TestFrontendMailboxWithoutGameplayState() {
+  using namespace xar::ck3_11906;
+  g_failure_stage = "frontend_without_gameplay_state";
+  constexpr std::uint32_t owner_thread = 0x51U;
+  constexpr std::uintptr_t fake_module_base = 0x140000000ULL;
+  FakeRuntime runtime(owner_thread, 0);
+  runtime.jomini_state_slot = 0;
+  runtime.game_state_slot = 0;
+
+  void *iat = reinterpret_cast<void *>(&FakePeekMessage);
+  auto &mailbox = g_test_mailbox;
+  auto environment =
+      runtime.Environment(fake_module_base, &iat, &FakePeekMessage);
+  environment.permitted_executor = &Execute;
+  environment.permitted_frontend_executor = &ExecuteFrontend;
+  if (!InstallMainThreadQueryMailboxV1(mailbox, environment)) {
+    g_failure_stage = "frontend_install";
+    return false;
+  }
+
+  ExecutorContext context{};
+  MainThreadQueryTicketV1 ticket{};
+  if (TrySubmitMainThreadQueryV1(mailbox, &ExecuteFrontend, &context,
+                                ticket) != MainThreadQuerySubmitResultV1::
+                                               application_main_not_observed) {
+    g_failure_stage = "frontend_preproof_admission";
+    return false;
+  }
+  if (ObserveMainThreadPumpAndDrainV1(
+          mailbox, kSdlWindowsPumpFirstPeekReturnRva, owner_thread) ||
+      ObserveMainThreadPumpAndDrainV1(
+          mailbox, kSdlWindowsPumpFirstPeekReturnRva, owner_thread)) {
+    g_failure_stage = "frontend_proof_pumps";
+    return false;
+  }
+  const auto diagnostics = ReadMainThreadQueryMailboxDiagnosticsV1(mailbox);
+  if (!diagnostics.application_main_observed ||
+      diagnostics.paused_main_thread_observed || diagnostics.ready ||
+      diagnostics.owner_verified_pump_epochs != 2 ||
+      diagnostics.paused_owner_verified_pump_epochs != 0) {
+    g_failure_stage = "frontend_diagnostics";
+    return false;
+  }
+  if (TrySubmitMainThreadQueryV1(mailbox, &Execute, &context, ticket) !=
+      MainThreadQuerySubmitResultV1::paused_main_thread_not_observed) {
+    g_failure_stage = "frontend_gameplay_isolation";
+    return false;
+  }
+  if (TrySubmitMainThreadQueryV1(mailbox, &ExecuteFrontend, &context,
+                                ticket) !=
+      MainThreadQuerySubmitResultV1::submitted) {
+    g_failure_stage = "frontend_submit";
+    return false;
+  }
+  if (!ObserveMainThreadPumpAndDrainV1(
+          mailbox, kSdlWindowsPumpFirstPeekReturnRva, owner_thread) ||
+      context.calls != 1 || context.observed.jomini_state != 0 ||
+      context.observed.game_state != 0 || context.observed.paused ||
+      WaitForMainThreadQueryV1(mailbox, ticket, 0) !=
+          MainThreadQueryWaitResultV1::completed ||
+      ReclaimMainThreadQueryV1(mailbox, ticket) !=
+          MainThreadQueryReclaimResultV1::reclaimed ||
+      UninstallMainThreadQueryMailboxV1(mailbox, 10) !=
+          MainThreadQueryUninstallResultV1::uninstalled ||
+      iat != reinterpret_cast<void *>(&FakePeekMessage)) {
+    g_failure_stage = "frontend_execute_and_cleanup";
+    return false;
+  }
+  return true;
+}
+
 bool TestSourceContract(int argc, char **argv) {
   if (argc != 7) {
     std::fprintf(stderr, "mailbox source contract argc=%d\n", argc);
@@ -1413,7 +1494,7 @@ bool TestSourceContract(int argc, char **argv) {
     return false;
   }
 
-  constexpr std::array<std::string_view, 104> bridge_tokens{
+  constexpr std::array<std::string_view, 106> bridge_tokens{
       "HeartbeatFrame",
       "main_thread_query_mailbox_v1",
       "installed",
@@ -1439,6 +1520,7 @@ bool TestSourceContract(int argc, char **argv) {
       "expected_lifecycle == 1 ? TRUE : FALSE",
       "kMainThreadQueryMailboxV1AdapterId",
       "kMainThreadQueryMailboxV1CandidateId",
+      "frontend_gui_route_and_fixed_action",
       "typed_war_entry_route_actual_contact_combat_v3_battle_control_battle_transition_reinforcement_assignment_campaign_root_context_loaded_feature_manifest_pending_character_interaction_context_current_event_window_title_map_navigation",
       "ExecuteWarEntryAssessmentMailboxQueryV1",
       "ExecuteRouteContactHorizonMailboxQueryV1",
@@ -1470,6 +1552,9 @@ bool TestSourceContract(int argc, char **argv) {
       "ExecuteZhongguoPromotionSourceMailboxV1",
       "ExecuteSetPlayedCharacterMailboxV1",
       "ExecuteZhongguoB1CycleSnapshotMailboxQueryV1",
+      "ExecuteFrontendGuiRouteMailboxV1",
+      "kFrontendGuiRouteV1Step",
+      "kFrontendGuiOpenNewGameV1Step",
       "kTitleMapNavigationV1Step",
       "ParseTitleMapNavigationRequestV1",
       "request.expected_snapshot_revision != state_revision",
@@ -1509,14 +1594,12 @@ bool TestSourceContract(int argc, char **argv) {
       "permitted_executor_septemvigintary",
       "permitted_executor_octovigintary",
       "permitted_executor_novemvigintary",
+      "permitted_frontend_executor",
       "kWarEntryAssessmentsV1FirstLiveMaximumTargets",
       "CaptureWarEntryBridgeFrame",
       "ReadSnapshot(*context->game",
-      "void MaybeInstall(const xar::game::Snapshot &snapshot)",
-      "!snapshot.paused",
-      "!snapshot.map_ready",
-      "!snapshot.has_played_character",
-      "!snapshot.played_character_alive",
+      "void MaybeInstallFrontend() noexcept",
+      "mailbox_lifetime.MaybeInstallFrontend();",
       "&mailbox_lifetime",
   };
   for (const auto token : bridge_tokens) {
@@ -1587,12 +1670,36 @@ bool TestSourceContract(int argc, char **argv) {
     std::fprintf(stderr, "mailbox route ordering contract failed\n");
     return false;
   }
+  const auto frontend_handler =
+      bridge.find("step == xar::ck3_11906::kFrontendGuiRouteV1Step");
+  const auto frontend_revision_parse =
+      bridge.find("JsonUnsignedField(", frontend_handler);
+  const auto frontend_revision_zero =
+      bridge.find("expected_revision != 0", frontend_revision_parse);
+  const auto frontend_submit =
+      bridge.find("TrySubmitMainThreadQueryV1(", frontend_revision_zero);
+  if (frontend_handler == std::string::npos ||
+      frontend_revision_parse == std::string::npos ||
+      frontend_revision_zero == std::string::npos ||
+      frontend_submit == std::string::npos ||
+      !(frontend_handler < frontend_revision_parse &&
+        frontend_revision_parse < frontend_revision_zero &&
+        frontend_revision_zero < frontend_submit)) {
+    std::fprintf(stderr, "mailbox frontend ordering contract failed\n");
+    return false;
+  }
   const auto lifetime_constructor = bridge.find(
       "explicit WarEntryApplicationMainMailboxWorkerLifetime(");
-  const auto maybe_install = bridge.find(
-      "void MaybeInstall(const xar::game::Snapshot &snapshot)");
+  const auto maybe_install_frontend =
+      bridge.find("void MaybeInstallFrontend() noexcept");
   const auto iat_install = bridge.find(
       "installed_ = xar::ck3_11906::InstallMainThreadQueryMailboxV1(");
+  const auto maybe_install =
+      bridge.find("void MaybeInstall(const xar::game::Snapshot &)");
+  const auto worker_main =
+      bridge.find("DWORD WINAPI WorkerMain(void *) noexcept");
+  const auto frontend_bootstrap =
+      bridge.find("mailbox_lifetime.MaybeInstallFrontend();", worker_main);
   const auto connected_session = bridge.find("void RunConnectedSession(");
   const auto hello_connection_generation = bridge.find(
       "\\\"connection_generation\\\":");
@@ -1601,12 +1708,18 @@ bool TestSourceContract(int argc, char **argv) {
   const auto readiness_observer = bridge.find(
       "&mailbox_lifetime", hello_publish);
   if (lifetime_constructor == std::string::npos ||
+      maybe_install_frontend == std::string::npos ||
       maybe_install == std::string::npos || iat_install == std::string::npos ||
+      worker_main == std::string::npos ||
+      frontend_bootstrap == std::string::npos ||
       connected_session == std::string::npos ||
       hello_connection_generation == std::string::npos ||
       hello_publish == std::string::npos ||
       readiness_observer == std::string::npos ||
-      !(lifetime_constructor < maybe_install && maybe_install < iat_install) ||
+      !(lifetime_constructor < maybe_install_frontend &&
+        maybe_install_frontend < iat_install &&
+        iat_install < maybe_install) ||
+      !(worker_main < frontend_bootstrap) ||
       !(hello_connection_generation < connected_session &&
         connected_session < hello_publish &&
         hello_publish < readiness_observer)) {
@@ -1703,6 +1816,10 @@ bool TestSourceContract(int argc, char **argv) {
 
 int main(int argc, char **argv) {
   if (!TestMailboxStateMachine()) {
+    std::fprintf(stderr, "mailbox fixture failed at %s\n", g_failure_stage);
+    return 1;
+  }
+  if (!TestFrontendMailboxWithoutGameplayState()) {
     std::fprintf(stderr, "mailbox fixture failed at %s\n", g_failure_stage);
     return 1;
   }

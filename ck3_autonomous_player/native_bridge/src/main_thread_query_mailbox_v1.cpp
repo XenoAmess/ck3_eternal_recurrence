@@ -238,9 +238,6 @@ bool ReadExecutionStamp(MainThreadQueryMailboxV1 &mailbox,
     const auto jomini_state =
         LoadAt<std::uintptr_t>(mailbox.jomini_state_slot);
     const auto game_state = LoadAt<std::uintptr_t>(mailbox.game_state_slot);
-    if (jomini_state == 0 || game_state == 0) {
-      return false;
-    }
     std::uintptr_t rng_wrapper = 0;
     std::uintptr_t rng_state = 0;
     std::uint32_t owner_thread_id = 0;
@@ -272,9 +269,12 @@ bool ReadExecutionStamp(MainThreadQueryMailboxV1 &mailbox,
     const auto tls_main_thread_marker =
         LoadAt<std::uint8_t>(tls_context, kMainThreadTlsMarkerOffset);
     const auto paused =
+        jomini_state != 0 &&
         LoadAt<std::uint8_t>(jomini_state, kJominiPausedOffset) != 0;
-    const auto date_raw =
-        LoadAt<std::int32_t>(game_state, kGameStateDateRawOffset);
+    const auto date_raw = game_state != 0
+                              ? LoadAt<std::int32_t>(
+                                    game_state, kGameStateDateRawOffset)
+                              : 0;
 
     // A second direct read is mandatory even before an executor is admitted.
     // It rejects an object replacement at the exact pump boundary without
@@ -286,10 +286,13 @@ bool ReadExecutionStamp(MainThreadQueryMailboxV1 &mailbox,
         LoadAt<std::uint8_t>(tls_context, kMainThreadTlsMarkerOffset) !=
             tls_main_thread_marker ||
         LoadAt<std::uintptr_t>(mailbox.jomini_state_slot) != jomini_state ||
-        (LoadAt<std::uint8_t>(jomini_state, kJominiPausedOffset) != 0) !=
-            paused ||
+        (jomini_state != 0 &&
+         (LoadAt<std::uint8_t>(jomini_state, kJominiPausedOffset) != 0) !=
+             paused) ||
         LoadAt<std::uintptr_t>(mailbox.game_state_slot) != game_state ||
-        LoadAt<std::int32_t>(game_state, kGameStateDateRawOffset) != date_raw) {
+        (game_state != 0 &&
+         LoadAt<std::int32_t>(game_state, kGameStateDateRawOffset) !=
+             date_raw)) {
       return false;
     }
 
@@ -342,6 +345,17 @@ bool SameVerifiedPumpIdentity(const MainThreadExecutionStampV1 &left,
          left.date_raw == right.date_raw && left.paused && right.paused;
 }
 
+bool SameOwnerVerifiedPumpIdentity(
+    const MainThreadExecutionStampV1 &left,
+    const MainThreadExecutionStampV1 &right) noexcept {
+  return left.thread_id == right.thread_id &&
+         left.tls_initialized_flag_address ==
+             right.tls_initialized_flag_address &&
+         left.tls_initialized == right.tls_initialized &&
+         left.tls_context == right.tls_context &&
+         left.tls_main_thread_marker == right.tls_main_thread_marker;
+}
+
 void ResetConsecutivePausedPumpProof(
     MainThreadQueryMailboxV1 &mailbox) noexcept {
   mailbox.last_verified_stamp = {};
@@ -351,12 +365,20 @@ void ResetConsecutivePausedPumpProof(
                                                    std::memory_order_release);
 }
 
+void ResetConsecutiveOwnerPumpProof(
+    MainThreadQueryMailboxV1 &mailbox) noexcept {
+  mailbox.last_owner_verified_stamp = {};
+  mailbox.last_owner_verified_stamp_valid = false;
+  mailbox.owner_verified_pump_epochs.store(0, std::memory_order_release);
+}
+
 void RequestConsecutivePausedPumpProofReset(
     MainThreadQueryMailboxV1 &mailbox) noexcept {
   mailbox.proof_reset_requested.store(true, std::memory_order_release);
   mailbox.owner_thread_id.store(0, std::memory_order_release);
   mailbox.paused_owner_verified_pump_epochs.store(0,
                                                    std::memory_order_release);
+  mailbox.owner_verified_pump_epochs.store(0, std::memory_order_release);
 }
 
 void PublishObservedStamp(MainThreadQueryMailboxV1 &mailbox,
@@ -400,6 +422,24 @@ void AdvanceConsecutivePausedPumpProof(
   mailbox.owner_thread_id.store(stamp.thread_id, std::memory_order_release);
   mailbox.paused_owner_verified_pump_epochs.store(next,
                                                    std::memory_order_release);
+}
+
+void AdvanceConsecutiveOwnerPumpProof(
+    MainThreadQueryMailboxV1 &mailbox,
+    const MainThreadExecutionStampV1 &stamp) noexcept {
+  const bool consecutive =
+      mailbox.last_owner_verified_stamp_valid &&
+      SameOwnerVerifiedPumpIdentity(mailbox.last_owner_verified_stamp, stamp);
+  const auto next =
+      consecutive
+          ? mailbox.owner_verified_pump_epochs.load(
+                std::memory_order_relaxed) +
+                1
+          : 1;
+  mailbox.last_owner_verified_stamp = stamp;
+  mailbox.last_owner_verified_stamp_valid = true;
+  mailbox.owner_thread_id.store(stamp.thread_id, std::memory_order_release);
+  mailbox.owner_verified_pump_epochs.store(next, std::memory_order_release);
 }
 
 bool IsTerminal(MainThreadQueryMailboxStateV1 state) noexcept {
@@ -464,7 +504,8 @@ bool InstallMainThreadQueryMailboxV1(
       environment.permitted_executor_octovigintary == nullptr &&
       environment.permitted_executor_novemvigintary == nullptr &&
       environment.permitted_executor_trigintary == nullptr &&
-      environment.permitted_executor_untrigintary == nullptr) {
+      environment.permitted_executor_untrigintary == nullptr &&
+      environment.permitted_frontend_executor == nullptr) {
     AddFailure(mailbox, main_thread_query_failure_request_identity);
     return false;
   }
@@ -551,6 +592,7 @@ bool InstallMainThreadQueryMailboxV1(
   mailbox.published_sequence.store(0, std::memory_order_release);
   mailbox.completed_sequence.store(0, std::memory_order_release);
   mailbox.pump_epochs.store(0, std::memory_order_release);
+  mailbox.owner_verified_pump_epochs.store(0, std::memory_order_release);
   mailbox.paused_owner_verified_pump_epochs.store(
       0, std::memory_order_release);
   mailbox.executed_requests.store(0, std::memory_order_release);
@@ -643,12 +685,16 @@ bool InstallMainThreadQueryMailboxV1(
       environment.permitted_executor_trigintary;
   mailbox.permitted_executor_untrigintary =
       environment.permitted_executor_untrigintary;
+  mailbox.permitted_frontend_executor =
+      environment.permitted_frontend_executor;
   mailbox.executor = nullptr;
   mailbox.executor_context = nullptr;
   mailbox.executor_succeeded = false;
   mailbox.execution_stamp = {};
   mailbox.last_verified_stamp = {};
   mailbox.last_verified_stamp_valid = false;
+  mailbox.last_owner_verified_stamp = {};
+  mailbox.last_owner_verified_stamp_valid = false;
   mailbox.stop_requested.store(false, std::memory_order_release);
   mailbox.iat_hook_installed.store(false, std::memory_order_release);
   mailbox.proof_reset_requested.store(false, std::memory_order_release);
@@ -805,7 +851,8 @@ MainThreadQuerySubmitResultV1 TrySubmitMainThreadQueryV1(
        mailbox.permitted_executor_octovigintary != nullptr ||
        mailbox.permitted_executor_novemvigintary != nullptr ||
        mailbox.permitted_executor_trigintary != nullptr ||
-       mailbox.permitted_executor_untrigintary != nullptr) &&
+       mailbox.permitted_executor_untrigintary != nullptr ||
+       mailbox.permitted_frontend_executor != nullptr) &&
       executor != mailbox.permitted_executor &&
       executor != mailbox.permitted_executor_secondary &&
       executor != mailbox.permitted_executor_tertiary &&
@@ -836,7 +883,8 @@ MainThreadQuerySubmitResultV1 TrySubmitMainThreadQueryV1(
       executor != mailbox.permitted_executor_octovigintary &&
       executor != mailbox.permitted_executor_novemvigintary &&
       executor != mailbox.permitted_executor_trigintary &&
-      executor != mailbox.permitted_executor_untrigintary) {
+      executor != mailbox.permitted_executor_untrigintary &&
+      executor != mailbox.permitted_frontend_executor) {
     return MainThreadQuerySubmitResultV1::invalid_request;
   }
   if (!mailbox.executor_submission_enabled) {
@@ -852,10 +900,21 @@ MainThreadQuerySubmitResultV1 TrySubmitMainThreadQueryV1(
   if (mailbox.failure_flags.load(std::memory_order_acquire) != 0) {
     return MainThreadQuerySubmitResultV1::infrastructure_failed;
   }
-  if (mailbox.owner_thread_id.load(std::memory_order_acquire) == 0 ||
-      mailbox.paused_owner_verified_pump_epochs.load(
-          std::memory_order_acquire) <
-          kMainThreadQueryMinimumPausedOwnerVerifiedPumpEpochs) {
+  const bool frontend_executor =
+      executor == mailbox.permitted_frontend_executor;
+  if (mailbox.owner_thread_id.load(std::memory_order_acquire) == 0) {
+    return frontend_executor
+               ? MainThreadQuerySubmitResultV1::application_main_not_observed
+               : MainThreadQuerySubmitResultV1::paused_main_thread_not_observed;
+  }
+  if (frontend_executor) {
+    if (mailbox.owner_verified_pump_epochs.load(std::memory_order_acquire) <
+        kMainThreadQueryMinimumOwnerVerifiedPumpEpochs) {
+      return MainThreadQuerySubmitResultV1::application_main_not_observed;
+    }
+  } else if (mailbox.paused_owner_verified_pump_epochs.load(
+                 std::memory_order_acquire) <
+             kMainThreadQueryMinimumPausedOwnerVerifiedPumpEpochs) {
     return MainThreadQuerySubmitResultV1::paused_main_thread_not_observed;
   }
 
@@ -991,6 +1050,7 @@ bool ObserveMainThreadPumpAndDrainV1(
   if (mailbox.proof_reset_requested.exchange(false,
                                               std::memory_order_acq_rel)) {
     ResetConsecutivePausedPumpProof(mailbox);
+    ResetConsecutiveOwnerPumpProof(mailbox);
   }
 
   MainThreadExecutionStampV1 before{};
@@ -999,6 +1059,7 @@ bool ObserveMainThreadPumpAndDrainV1(
     before.thread_id = current_thread_id;
     PublishObservedStamp(mailbox, before, false);
     ResetConsecutivePausedPumpProof(mailbox);
+    ResetConsecutiveOwnerPumpProof(mailbox);
     mailbox.drain_guard.clear(std::memory_order_release);
     return false;
   }
@@ -1006,6 +1067,7 @@ bool ObserveMainThreadPumpAndDrainV1(
   if (before.tls_initialized != 1 ||
       before.tls_main_thread_marker != 1 || before.tls_context == 0) {
     ResetConsecutivePausedPumpProof(mailbox);
+    ResetConsecutiveOwnerPumpProof(mailbox);
     AddFailure(mailbox, main_thread_query_failure_tls_identity);
     auto queued = MainThreadQueryMailboxStateV1::queued;
     if (mailbox.state.compare_exchange_strong(
@@ -1018,16 +1080,33 @@ bool ObserveMainThreadPumpAndDrainV1(
     mailbox.drain_guard.clear(std::memory_order_release);
     return false;
   }
-  if (!before.paused) {
+  AdvanceConsecutiveOwnerPumpProof(mailbox, before);
+  const auto queued_executor = mailbox.executor;
+  const bool frontend_request_queued =
+      mailbox.state.load(std::memory_order_acquire) ==
+          MainThreadQueryMailboxStateV1::queued &&
+      queued_executor != nullptr &&
+      queued_executor == mailbox.permitted_frontend_executor;
+  const bool gameplay_pause_observed =
+      before.paused && before.jomini_state != 0 && before.game_state != 0;
+  if (!gameplay_pause_observed) {
     ResetConsecutivePausedPumpProof(mailbox);
-    mailbox.drain_guard.clear(std::memory_order_release);
-    return false;
+    // ResetConsecutivePausedPumpProof also clears the shared owner id for the
+    // paused proof. Restore the independently verified frontend owner before
+    // deciding whether the fixed frontend executor may drain.
+    mailbox.owner_thread_id.store(before.thread_id,
+                                  std::memory_order_release);
+    if (!frontend_request_queued) {
+      mailbox.drain_guard.clear(std::memory_order_release);
+      return false;
+    }
+  } else {
+    AdvanceConsecutivePausedPumpProof(mailbox, before);
   }
-
-  AdvanceConsecutivePausedPumpProof(mailbox, before);
   if (mailbox.proof_reset_requested.exchange(false,
                                               std::memory_order_acq_rel)) {
     ResetConsecutivePausedPumpProof(mailbox);
+    ResetConsecutiveOwnerPumpProof(mailbox);
     mailbox.drain_guard.clear(std::memory_order_release);
     return false;
   }
@@ -1047,6 +1126,7 @@ bool ObserveMainThreadPumpAndDrainV1(
                                               std::memory_order_acq_rel) ||
       mailbox.failure_flags.load(std::memory_order_acquire) != 0) {
     ResetConsecutivePausedPumpProof(mailbox);
+    ResetConsecutiveOwnerPumpProof(mailbox);
     mailbox.completed_sequence.store(sequence, std::memory_order_release);
     mailbox.state.store(MainThreadQueryMailboxStateV1::infrastructure_failed,
                         std::memory_order_release);
@@ -1085,6 +1165,7 @@ bool ObserveMainThreadPumpAndDrainV1(
   mailbox.completed_sequence.store(sequence, std::memory_order_release);
   if (!after_ready || !SameExecutionBoundary(before, after)) {
     ResetConsecutivePausedPumpProof(mailbox);
+    ResetConsecutiveOwnerPumpProof(mailbox);
     AddFailure(mailbox, main_thread_query_failure_post_execution_drift);
     mailbox.state.store(MainThreadQueryMailboxStateV1::infrastructure_failed,
                         std::memory_order_release);
@@ -1105,6 +1186,8 @@ MainThreadQueryMailboxDiagnosticsV1 ReadMainThreadQueryMailboxDiagnosticsV1(
   output.failure_flags =
       mailbox.failure_flags.load(std::memory_order_acquire);
   output.pump_epochs = mailbox.pump_epochs.load(std::memory_order_acquire);
+  output.owner_verified_pump_epochs =
+      mailbox.owner_verified_pump_epochs.load(std::memory_order_acquire);
   output.paused_owner_verified_pump_epochs =
       mailbox.paused_owner_verified_pump_epochs.load(
           std::memory_order_acquire);
@@ -1142,6 +1225,10 @@ MainThreadQueryMailboxDiagnosticsV1 ReadMainThreadQueryMailboxDiagnosticsV1(
   output.stop_requested =
       mailbox.stop_requested.load(std::memory_order_acquire);
   output.executor_submission_enabled = mailbox.executor_submission_enabled;
+  output.application_main_observed =
+      output.owner_thread_id != 0 &&
+      output.owner_verified_pump_epochs >=
+          kMainThreadQueryMinimumOwnerVerifiedPumpEpochs;
   output.paused_main_thread_observed =
       output.owner_thread_id != 0 &&
       output.paused_owner_verified_pump_epochs >=

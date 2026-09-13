@@ -1476,6 +1476,59 @@ bool ResolveZhongguoScoreboardNativeGuiContextAndOwnerV1(
   return ResolveGuiContextAndOwner(environment, access, context, owner);
 }
 
+bool ResolveNamedGuiWidgetV1(
+    const ZhongguoScoreboardNativeEnvironmentV1 &environment,
+    const ZhongguoScoreboardAccessV1 &access, std::string_view root_name,
+    std::string_view descendant_name, void *&root, void *&widget) noexcept {
+  root = nullptr;
+  widget = nullptr;
+  if (root_name.empty() || descendant_name.empty() ||
+      environment.offline_fixture_function_overrides) {
+    return false;
+  }
+  void *context = nullptr;
+  void *owner = nullptr;
+  if (!ResolveGuiContextAndOwner(environment, access, context, owner)) {
+    return false;
+  }
+  std::string root_lookup{root_name};
+  root = CallFindTopLevelWidget(environment.find_top_level_widget, owner,
+                                &root_lookup);
+  if (root == nullptr || !WidgetNameEquals(access, root, root_name)) {
+    void *global_root = nullptr;
+    if (!ReadValue(access, owner, kZhongguoGuiOwnerRootWidgetOffset,
+                   global_root) ||
+        global_root == nullptr) {
+      root = nullptr;
+      return true;
+    }
+    root = FindDescendant(access, global_root, root_name);
+  }
+  if (root == nullptr) return true;
+  widget = descendant_name == root_name
+               ? root
+               : FindDescendant(access, root, descendant_name);
+  return true;
+}
+
+bool ReadGuiWidgetRuntimeV1(
+    const ZhongguoScoreboardAccessV1 &access, void *widget,
+    std::string &runtime_name, void *&vtable, bool &effective_visible,
+    bool &enabled) noexcept {
+  runtime_name.clear();
+  vtable = nullptr;
+  effective_visible = false;
+  enabled = false;
+  std::uint8_t flags = 0;
+  return widget != nullptr && ReadWidgetName(access, widget, runtime_name) &&
+         ReadValue(access, widget, 0, vtable) && vtable != nullptr &&
+         ReadValue(access, widget, kZhongguoWidgetHiddenFlagsOffset, flags) &&
+         (effective_visible =
+              (flags & kZhongguoWidgetEffectiveHiddenMask) == 0,
+          enabled = (flags & kZhongguoWidgetEffectiveDisabledMask) == 0,
+          true);
+}
+
 ZhongguoScoreboardNativeEnvironmentV1 BindZhongguoScoreboardNativeEnvironmentV1(
     std::uintptr_t module_base, bool exact_build_admitted) noexcept {
   ZhongguoScoreboardNativeEnvironmentV1 environment{};

@@ -97,7 +97,7 @@ int main(int argc, char **argv) {
            "typed_available", "typed_unavailable"}) &&
       ContainsAll(
           adapter,
-          {"kBaseCapabilityCount = 82",
+          {"kBaseCapabilityCount = 84",
            "std::array<std::string_view, kCapabilityCount>",
            "kZhongguoAiOwnedCaseSnapshotV1Capability"}) &&
       ContainsAll(

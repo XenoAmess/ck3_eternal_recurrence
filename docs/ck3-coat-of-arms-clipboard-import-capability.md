@@ -6,7 +6,8 @@
 >
 > 精确基线：CK3 `1.19.0.6 (Scribe)`，Steam build `23530548`
 >
-> 路线：MCP-first；截图或鼠标只用于把隔离测试实例导航到纹章页，不作为语法判定证据
+> 路线：MCP-first；页面识别与导航也必须优先使用原生语义 MCP。历史 UI 导航证据只保留为过程记录，
+> 不授权在 MCP 缺能力时继续回退到 OCR、鼠标或键盘链。
 
 ## 1. 结论
 
@@ -68,6 +69,10 @@ ck3_export_coat_of_arms_source_v1(
     expected_revision: integer
 )
 
+ck3_query_frontend_gui_route_v1()
+
+ck3_activate_frontend_new_game_v1()
+
 ck3_query_coat_of_arms_resource_catalog_v1(
     game_directory: string,
     kind: "pattern" | "colored_emblem" | "color",
@@ -116,6 +121,8 @@ ck3_read_coat_of_arms_configured_resource_asset_v1(
 ```text
 game.command.probe-coat-of-arms-source-v1
 game.command.export-coat-of-arms-source-v1
+game.command.query-frontend-gui-route-v1
+game.command.activate-frontend-new-game-v1
 ```
 
 probe 不属于自动游玩 planner 的无参数 action 集合，只能由调用方显式提供源码；export 则调用游戏自己的
@@ -377,6 +384,39 @@ SHA-256 `3B2B55F2B931D2FB8424B108F7954478B158C796005403F992F6A11A20D4917D`，并
 
 这把当前编辑器的实证状态提升为 `browser-mcp-live`。它仍只改变 designer working state；没有点击上层 Finish，不能声称
 保存进角色/王朝或跨存档持久化。它也没有闭合运行时 DLC/mod effective registry、CK3 原生像素回读，或任意未列入矩阵的语法。
+
+### 3.6 前端导航 MCP 补完与历史偏差
+
+2026-09-13 的 `matrix3` 尝试在 MCP 尚不能识别/操作 CK3 开局前页面时，错误复用了鼠标/键盘导航链。这与本任务已经明确的
+“MCP 欠缺时优先补 MCP”原则冲突。该 attempt 已停止且不得作为能力证据：
+
+- artifact：`artifacts/coa-clipboard-probe-2026-09-08/mcp-live-matrix3.json`；
+- 大小：2,686 bytes；SHA-256：
+  `E529C7DFE24BE22830D2A3D5535C9AF7FF0F1F2145DF8A3FD3982D84F32C4914`；
+- `commands=[]`，没有发出任何 CoA MCP 命令；
+- `exit_reason=stop`、`cleanup_proven=true`、`tree_gone=true`，没有残留 CK3/host/watchdog 进程；
+- 它只证明导航 harness 失败，不是任何语法的 RED/GREEN。
+
+随后新增的 MCP v1 首片完全不使用屏幕解释或合成输入：
+
+```text
+ck3_query_frontend_gui_route_v1()
+  -> unavailable | main_menu | bookmarks | ruler_designer | coat_of_arms_designer
+
+ck3_activate_frontend_new_game_v1()
+  -> 仅在 main_menu 解析固定 new_game_button
+  -> 调用 CK3 原生 CPdxGuiShortcutManager 路径
+  -> 再独立查询，只有观察到 bookmarks 才返回 verified
+```
+
+原生 DLL 在 exact SDL/CK3 application-main pump 中重新解析当前 GUI owner tree；传输层不能提供控件指针、控件名或回调地址。
+`new_game_button` 也必须同时满足 runtime name、可见、可用、GUI context、button vtable、callback group 与 modal admission。
+动作调用本身只产生 `acknowledged_verification_pending`，Python driver 必须独立看到路由从 `main_menu` 变为 `bookmarks`，
+才投影 `postcondition_verified=true`。公开结果固定声明 `uses_ocr=false`、`uses_keyboard=false`、`uses_mouse=false`。
+
+这一首片当前是 `mcp-static-ready / live=false`：原生 fresh build 已生成，application-main/paused-gameplay 门禁隔离和 Python
+closed-schema 测试已加入；尚未重启 CK3 做 live，因此不得把它写成 production-live。`open_kaishek` 当前没有前端 GUI/CoA
+domain，预验证为 `not-applicable`，不能代替下一次 CK3 live。
 
 ## 4. 原版实际调用链
 
@@ -646,10 +686,13 @@ Web 端若要提供随机生成，应在自己的数据模型中完成选择，�
 
 本轮已实机闭合“输入源码 → 原生检测/预览 → 应用 → 原生 Copy/export → 原样再应用 → 稳定再次导出”，并补齐 frontend
 生命周期与 Windows 换行规范化。基础游戏 designer manifest 资源目录也已通过离线 MCP 工具分页暴露；运行中 CK3 的完整
-effective feature 与 script `has_dlc` truth 已有 production-live 原生 primitive，并接入编辑器。仍未通过 MCP 闭合的能力有：
+effective feature 与 script `has_dlc` truth 已有 production-live 原生 primitive，并接入编辑器。前端路由识别和
+`main_menu → bookmarks` 已达到 `mcp-static-ready`，但尚未 live。仍未通过 MCP 闭合的能力有：
 
 - 读取 CK3 原生 preview 的最终像素或直接导出 PNG（浏览器已能按随附 shader 源码离线合成，但不替代 native pixel）；
 - 完成角色设计器上层 Finish；
+- 从 bookmarks 选择可自定义角色、打开 ruler designer、切换到 coat-of-arms 页面的剩余固定语义动作；这些动作应继续扩展
+  GUI-tree MCP allowlist，不得回退到坐标、OCR 或键盘；
 - 枚举游戏当前运行时实际注册且已合并 DLC/mod override 的 pattern/emblem/color 资源；现有 runtime feature truth 只证明
   gameplay gate，不提供 CoA VFS/registry winner；
 - 跨 CK3 build 自动适配 RVA 与字段。

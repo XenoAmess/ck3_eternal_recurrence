@@ -730,6 +730,20 @@ def _ck3_query_loaded_feature_manifest_v1(
     )
 
 
+def _ck3_query_frontend_gui_route_v1(
+    service: GameplayBridgeService,
+) -> dict[str, object]:
+    """Read the current CK3 frontend page without screen interpretation."""
+    return service.query_frontend_gui_route_v1()
+
+
+def _ck3_activate_frontend_new_game_v1(
+    service: GameplayBridgeService,
+) -> dict[str, object]:
+    """Activate CK3's named New Game widget and verify Bookmarks opened."""
+    return service.activate_frontend_new_game_v1()
+
+
 def _ck3_query_pending_character_interaction_context_v1(
     service: GameplayBridgeService,
     pending_interaction_id: int,
@@ -1460,6 +1474,16 @@ def create_server(driver: GameplayBridgeDriver):
         )
 
     @server.tool()
+    def ck3_query_frontend_gui_route_v1() -> dict[str, object]:
+        """Read CK3's current native frontend route; no OCR or input."""
+        return _ck3_query_frontend_gui_route_v1(service)
+
+    @server.tool()
+    def ck3_activate_frontend_new_game_v1() -> dict[str, object]:
+        """Semantically open New Game and independently verify Bookmarks."""
+        return _ck3_activate_frontend_new_game_v1(service)
+
+    @server.tool()
     def ck3_query_coat_of_arms_resource_catalog_v1(
         game_directory: str,
         kind: str,
@@ -1894,6 +1918,12 @@ def create_server(driver: GameplayBridgeDriver):
     )
     _forbid_unknown_tool_arguments_v1(
         server, "ck3_export_coat_of_arms_source_v1"
+    )
+    _forbid_unknown_tool_arguments_v1(
+        server, "ck3_query_frontend_gui_route_v1"
+    )
+    _forbid_unknown_tool_arguments_v1(
+        server, "ck3_activate_frontend_new_game_v1"
     )
     _forbid_unknown_tool_arguments_v1(
         server, "ck3_query_coat_of_arms_resource_catalog_v1"

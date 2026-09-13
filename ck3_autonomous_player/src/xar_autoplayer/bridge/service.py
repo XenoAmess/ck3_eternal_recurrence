@@ -6586,6 +6586,48 @@ class GameplayBridgeService:
             "loaded_feature_manifest": normalized,
         }
 
+    def query_frontend_gui_route_v1(self) -> dict[str, object]:
+        """Read CK3's current frontend page through the native GUI tree."""
+
+        query = getattr(self.driver, "query_frontend_gui_route_v1", None)
+        if not callable(query):
+            raise UnsupportedStepError(
+                "selected backend has no native frontend GUI route observer"
+            )
+        result = query()
+        if (
+            not isinstance(result, dict)
+            or result.get("schema") != "ck3-frontend-gui-route-v1"
+            or result.get("schema_version") != 1
+        ):
+            raise BridgeUnavailableError(
+                "native frontend GUI route observer returned malformed data"
+            )
+        return result
+
+    def activate_frontend_new_game_v1(self) -> dict[str, object]:
+        """Open New Game semantically; the driver must prove Bookmarks."""
+
+        activate = getattr(self.driver, "activate_frontend_new_game_v1", None)
+        if not callable(activate):
+            raise UnsupportedStepError(
+                "selected backend has no native frontend new-game action"
+            )
+        result = activate()
+        if (
+            not isinstance(result, dict)
+            or result.get("schema") != "ck3-frontend-gui-action-v1"
+            or result.get("schema_version") != 1
+            or result.get("postcondition_verified") is not True
+            or result.get("uses_ocr") is not False
+            or result.get("uses_keyboard") is not False
+            or result.get("uses_mouse") is not False
+        ):
+            raise BridgeUnavailableError(
+                "native frontend new-game action lacks its postcondition"
+            )
+        return result
+
     def query_current_event_window_context_v1(
         self,
         event_instance_id: int,

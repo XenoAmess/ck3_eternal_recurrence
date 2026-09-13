@@ -1,0 +1,164 @@
+#include "xar_bridge/frontend_gui_route_v1.hpp"
+
+#include <windows.h>
+
+#include <array>
+#include <charconv>
+#include <cstdint>
+#include <string>
+
+namespace xar::ck3_11906 {
+namespace {
+
+struct FixedWidgetProbeV1 {
+  std::string_view root_name;
+  std::string_view widget_name;
+  FrontendGuiRouteV1 route;
+};
+
+constexpr std::array<FixedWidgetProbeV1, 4> kRoutePriority{{
+    {"ruler_designer", "coat_of_arms_page",
+     FrontendGuiRouteV1::coat_of_arms_designer},
+    {"ruler_designer", "ruler_designer",
+     FrontendGuiRouteV1::ruler_designer},
+    {"frontend_bookmarks", "frontend_bookmarks",
+     FrontendGuiRouteV1::bookmarks},
+    {"mainmenu_panel_bottom", "mainmenu_panel_bottom",
+     FrontendGuiRouteV1::main_menu},
+}};
+
+bool IsExecutingFrontendSlot(
+    const FrontendGuiRouteMailboxContextV1 &query,
+    const MainThreadExecutionStampV1 &stamp) noexcept {
+  if (query.mailbox == nullptr || query.ticket.sequence == 0 ||
+      stamp.pump_epoch == 0 || stamp.thread_id == 0 ||
+      stamp.tls_initialized_flag_address == 0 || stamp.tls_initialized != 1 ||
+      stamp.tls_context == 0 || stamp.tls_main_thread_marker != 1 ||
+      GetCurrentThreadId() != stamp.thread_id) {
+    return false;
+  }
+  const auto &mailbox = *query.mailbox;
+  return mailbox.state.load(std::memory_order_acquire) ==
+             MainThreadQueryMailboxStateV1::executing &&
+         !mailbox.stop_requested.load(std::memory_order_acquire) &&
+         mailbox.failure_flags.load(std::memory_order_acquire) == 0 &&
+         mailbox.published_sequence.load(std::memory_order_acquire) ==
+             query.ticket.sequence &&
+         mailbox.owner_thread_id.load(std::memory_order_acquire) ==
+             stamp.thread_id &&
+         mailbox.owner_verified_pump_epochs.load(std::memory_order_acquire) >=
+             kMainThreadQueryMinimumOwnerVerifiedPumpEpochs &&
+         mailbox.executor == &ExecuteFrontendGuiRouteMailboxV1 &&
+         mailbox.executor_context ==
+             const_cast<FrontendGuiRouteMailboxContextV1 *>(&query);
+}
+
+std::string FormatPointer(void *value) {
+  if (value == nullptr) return {};
+  std::array<char, 2 + sizeof(std::uintptr_t) * 2 + 1> buffer{};
+  buffer[0] = '0';
+  buffer[1] = 'x';
+  const auto converted = std::to_chars(
+      buffer.data() + 2, buffer.data() + buffer.size() - 1,
+      reinterpret_cast<std::uintptr_t>(value), 16);
+  if (converted.ec != std::errc{}) return {};
+  for (char *cursor = buffer.data() + 2; cursor < converted.ptr; ++cursor) {
+    if (*cursor >= 'a' && *cursor <= 'f') *cursor -= ('a' - 'A');
+  }
+  return std::string(buffer.data(), converted.ptr);
+}
+
+bool ResolveRoute(const FrontendGuiRouteMailboxContextV1 &query,
+                  FrontendGuiRouteResultV1 &result) noexcept {
+  ZhongguoScoreboardAccessV1 access{};
+  for (const auto &probe : kRoutePriority) {
+    void *root = nullptr;
+    void *widget = nullptr;
+    if (!ResolveNamedGuiWidgetV1(query.environment, access,
+                                 probe.root_name, probe.widget_name,
+                                 root, widget)) {
+      return false;
+    }
+    if (widget == nullptr) continue;
+    std::string runtime_name;
+    void *vtable = nullptr;
+    bool visible = false;
+    bool enabled = false;
+    if (!ReadGuiWidgetRuntimeV1(access, widget, runtime_name, vtable,
+                                visible, enabled)) {
+      return false;
+    }
+    if (visible && runtime_name == probe.widget_name) {
+      result.route = probe.route;
+      return true;
+    }
+  }
+  result.route = FrontendGuiRouteV1::unavailable;
+  return true;
+}
+
+bool DispatchOpenNewGame(FrontendGuiRouteMailboxContextV1 &query) noexcept {
+  if (query.result.route != FrontendGuiRouteV1::main_menu) return false;
+  ZhongguoScoreboardAccessV1 access{};
+  void *root = nullptr;
+  void *target = nullptr;
+  if (!ResolveNamedGuiWidgetV1(query.environment, access,
+                               "mainmenu_panel_bottom", "new_game_button",
+                               root, target) ||
+      target == nullptr) {
+    return false;
+  }
+  std::string runtime_name;
+  void *vtable = nullptr;
+  bool visible = false;
+  bool enabled = false;
+  if (!ReadGuiWidgetRuntimeV1(access, target, runtime_name, vtable,
+                              visible, enabled) ||
+      runtime_name != "new_game_button" || !visible || !enabled) {
+    return false;
+  }
+  query.result.target_resolved = true;
+  const auto instance_pointer = FormatPointer(target);
+  const auto vtable_pointer = FormatPointer(vtable);
+  if (instance_pointer.empty() || vtable_pointer.empty()) return false;
+  query.result.dispatch_invoked = DispatchZhongguoScoreboardActionNativeV1(
+      &query.dispatch_environment, game::ZhongguoScoreboardActionV1::open,
+      "new_game_button", "new_game_button", instance_pointer,
+      vtable_pointer, query.result.native_handled);
+  return query.result.dispatch_invoked;
+}
+
+} // namespace
+
+bool ExecuteFrontendGuiRouteMailboxV1(
+    void *opaque_context,
+    const MainThreadExecutionStampV1 &stamp) noexcept {
+  auto *query = static_cast<FrontendGuiRouteMailboxContextV1 *>(
+      opaque_context);
+  if (query == nullptr || !IsExecutingFrontendSlot(*query, stamp)) {
+    return false;
+  }
+  query->result = {};
+  if (!ResolveRoute(*query, query->result)) return false;
+  if (query->operation == FrontendGuiRouteOperationV1::query) return true;
+  return query->operation == FrontendGuiRouteOperationV1::open_new_game &&
+         DispatchOpenNewGame(*query);
+}
+
+std::string_view FrontendGuiRouteNameV1(FrontendGuiRouteV1 route) noexcept {
+  switch (route) {
+  case FrontendGuiRouteV1::main_menu:
+    return "main_menu";
+  case FrontendGuiRouteV1::bookmarks:
+    return "bookmarks";
+  case FrontendGuiRouteV1::ruler_designer:
+    return "ruler_designer";
+  case FrontendGuiRouteV1::coat_of_arms_designer:
+    return "coat_of_arms_designer";
+  case FrontendGuiRouteV1::unavailable:
+  default:
+    return "unavailable";
+  }
+}
+
+} // namespace xar::ck3_11906
