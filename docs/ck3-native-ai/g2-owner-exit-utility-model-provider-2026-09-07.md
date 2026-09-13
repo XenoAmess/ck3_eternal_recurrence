@@ -1,5 +1,10 @@
 # G2 owner-authored exit utility model provider (2026-09-07)
 
+> Superseded for the active G2 strategy path on 2026-09-13 by
+> [the versioned repository model](g2-versioned-exit-utility-model-2026-09-13.md).
+> This legacy provider remains available for explicit owner-authored artifacts;
+> its former external-approval wait is no longer a GEN-034 prerequisite.
+
 Status: **provider static-ready; repository template is deliberately draft;
 owner approval and every downstream live gate remain false**.
 

@@ -167,7 +167,7 @@
         "id": "GEN-034-C",
         "name": "same-frame white-peace comparison",
         "status": "blocked_live",
-        "latest_evidence": "terms and comparison contracts are static-ready"
+        "latest_evidence": "versioned strategy utility model 1.0.0 is static-ready; narrow same-frame white-peace terms and evaluator remain live-blocked"
       },
       {
         "id": "GEN-034-D",
@@ -178,5 +178,5 @@
     ]
   },
   "religion_boundary": "deferred except the minimum native result needed by holy-war execution and marriage legality or acceptance",
-  "updated_at": "2026-09-13T21:18:00+08:00"
+  "updated_at": "2026-09-13T22:35:00+08:00"
 }

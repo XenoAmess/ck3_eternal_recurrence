@@ -1342,3 +1342,14 @@ strategic-power primitive；余下入口只有 policy-level campaign dominance�
 - Fix commit `700fae3fcca5af1ebfee26d4cbaf26d3c5f0a2a9` follows the frozen stock enumerator: stale/reused generations are skipped, unreadable pointers still fail, and every admitted member still round-trips its full CharacterID. The directly affected native fixture is GREEN and includes a non-null stale-generation control.
 - New round R639 is GREEN in one PID/connection generation on unchanged date `53178264`. Independent ruler `29829` and vassal ruler `36108` both have ready roots and turn bundles; relationship vectors, related contexts, partition and six occupied council tasks per scene are observed. Source SHA-256 stays `9104CCB8...12CC63`; cleanup proves the process tree gone.
 - The 444,994-byte artifact at `Z:\ck3_mod_rewrite_process_assets\g2-m1-r639-700fae3\g2-m1-two-scene-live.json` has SHA-256 `CFF681146A344AE18FDEB36C20BDAEAFC2A30344023CC7827E9A77006C3530DB`. G2-M1 is complete and global G2 advances to `1/8`. Deeper faction data and broader rank/government matrices remain later milestones rather than reopening M1.
+
+## GEN-034 utility-model prerequisite update (2026-09-13)
+
+The former wait for a separate owner-approved utility file is closed as a
+workflow blocker. The active path now uses the versioned, replaceable
+`raiktor_exit_utility_v1.json` baseline and strict provider; model and budget
+bytes are independently hash-bound, and an operator override must bind the
+default model identity. This is strategy configuration rather than native-AI
+equivalence or live evidence. GEN-034 remains `2/4`: C still requires one
+same-frame narrow white-peace observation plus evaluation, and D still requires
+one recommendation, one action and the bounded postwar/cold-restore checks.

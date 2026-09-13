@@ -1,0 +1,49 @@
+{
+  "schema_version": 2,
+  "contract": "raiktor-strategy-exit-utility-model-source-v2",
+  "model_version": "1.0.0",
+  "activation": {
+    "kind": "repository_default",
+    "source": "G2 GEN-034 replaceable strategy baseline",
+    "base_model_id": null,
+    "base_model_version": null
+  },
+  "model_id": "raiktor-exit-balanced-utility-v1",
+  "model_provenance": "Versioned project strategy for comparing continue, white peace and surrender. It is a replaceable planner preference model, not an owner approval record, CK3 observation or native-AI semantic claim.",
+  "utility_unit": "strategy_utility_q100000",
+  "budget_profile_binding": {
+    "profile_id": "raiktor-exit-balanced-v1",
+    "profile_version": "1.0.0",
+    "profile_source_sha256": "4206D725EC702701725221EB274E1F248E607F3127B720D033779FD71154FD11"
+  },
+  "domain_coefficients_q100000": {
+    "primary_gold_transfer_raw": -100000,
+    "attacker_prestige_delta_raw": 20000,
+    "declared_claim_removed_count": -25000000,
+    "favor_hook_applied": -10000000,
+    "truce_day_count": -1000,
+    "pow_release_count": 1000000,
+    "title_holder_change_count": 25000000,
+    "hostage_transfer_count": -5000000,
+    "war_bound_soldier_loss_count": -100000
+  },
+  "nonlinear_policy": {
+    "rule_id": "hard-budget-reject-v1",
+    "parameters_raw": {}
+  },
+  "uncertainty_policy": {
+    "rule_id": "bounded-unobserved-effect-penalty-v1",
+    "parameters_raw": {
+      "per_unobserved_effect_penalty_raw": 2500000,
+      "maximum_total_penalty_raw": 25000000
+    }
+  },
+  "tail_risk_policy": {
+    "rule_id": "measured-power-relation-penalty-v1",
+    "parameters_raw": {
+      "opponent_stronger_continue_penalty_raw": 50000000,
+      "parity_continue_penalty_raw": 10000000,
+      "player_stronger_continue_penalty_raw": 0
+    }
+  }
+}
