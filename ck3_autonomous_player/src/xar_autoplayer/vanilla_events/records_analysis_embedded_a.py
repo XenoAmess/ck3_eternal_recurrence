@@ -1448,6 +1448,37 @@ _EPIDEMIC_1060_OBSERVATIONS: Final[dict[str, dict[str, object]]] = {
             "bridge_pid": 129788,
             "selection_attempted": False,
             "process_restart_required": False,
+        }, {
+            "run": "R613",
+            "kind": "production-live-base-projection-green",
+            "artifact": (
+                "_runtime/p2-capture-r609-plus-e658753-20260913/capture/cell/"
+                "phase2_promo_phase2_hc_workforce_mature_endgame_source_"
+                "zg361we_360_native_event_wait_gate.json"
+            ),
+            "artifact_sha256": (
+                "7C4DD599138D0E3666A0A16337AA301DF52B43F3BB47836B721797501211BFB7"
+            ),
+            "date_raw": 53368272,
+            "event_instance_id": 624,
+            "root_character_id": 32904,
+            "saved_scope_raw_types": {
+                "epidemic": 50,
+                "epidemic_scope": 50,
+                "story_scope": 17,
+            },
+            "rendered_native_option_indices": [1, 2],
+            "snapshot_option_count": 3,
+            "snapshot_revision": 111,
+            "selected_option_number": 3,
+            "selected_native_option_index": 2,
+            "postcondition_verified": True,
+            "starting_snapshot_id": "native:33",
+            "ending_snapshot_id": "native:34",
+            "connection_generation": 1,
+            "bridge_pid": 215080,
+            "process_restart_required": False,
+            "mcp_only": True,
         }],
     },
 }

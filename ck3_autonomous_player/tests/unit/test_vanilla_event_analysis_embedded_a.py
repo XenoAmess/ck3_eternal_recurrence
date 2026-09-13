@@ -132,6 +132,12 @@ def test_migration_observations_join_existing_live_evidence() -> None:
     ]["exemplars"][1]
     assert epidemic["run"] == "R608"
     assert epidemic["saved_scope_raw_types"]["faith_to_blame"] == 13
+    epidemic_green = VANILLA_EMBEDDED_A_OBSERVATIONS[
+        "epidemic_events.1060"
+    ]["exemplars"][2]
+    assert epidemic_green["run"] == "R613"
+    assert epidemic_green["postcondition_verified"] is True
+    assert "faith_to_blame" not in epidemic_green["saved_scope_raw_types"]
     assert "trait_specific_interactions.0011" not in (
         EMBEDDED_A_VANILLA_OBSERVATIONS
     )
