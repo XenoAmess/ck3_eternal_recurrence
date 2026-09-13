@@ -1211,7 +1211,7 @@ class ReleaseLocalizationTests(unittest.TestCase):
         for validity_path in ("is_valid", "is_valid_showing_failures_only"):
             self.assertIn(
                 f"{validity_path} = {{ custom_description = {{ text = "
-                "zg361_review_now_decision_valid_desc "
+                "zg361_review_now_business_ready "
                 "zg361_review_now_business_valid_trigger = yes } }",
                 decision,
             )
@@ -1224,12 +1224,12 @@ class ReleaseLocalizationTests(unittest.TestCase):
 
         expected = {
             "english": (
-                "Start this year's review now and freeze the direct-official roster. Self review, peer evidence, calibration, and publication follow in later stages; results normally arrive about 330 days later. Starts must be at least one year apart, and only one review may settle per calendar year.",
-                "Start the review and freeze at least one direct incumbent official; this does not create an immediate ranking.",
+                "Do not wait for the next Jingcha summons. Start this year's review now and freeze the direct-official roster. This decision opens the same review process used by Jingcha, but it neither hosts the Jingcha activity nor fulfills that duty. Self review, peer evidence, calibration, and publication follow in later stages; results normally arrive about 330 days later. Starts must be at least one year apart, and only one review may settle per calendar year.",
+                "Start the review season early and freeze at least one direct incumbent official; this neither hosts Jingcha nor fulfills its duty.",
             ),
             "simp_chinese": (
-                "不等年度绩效季，现在就启动本年度考核并冻结直属官员名册。自评、互评、校准与公示会在后续阶段依次推进，通常约三百三十日后出榜。每次发起至少间隔一年，且同一自然年最多结算一次。",
-                "立即启动考核流程并冻结至少一名直属在任官员；不会当场生成排名。",
+                "不等下一次京察召集，现在就提前启动本年度考核并冻结直属官员名册。本决议只开启与京察共用的考核流程，不举办“京察大计”，也不视为完成京察履责。自评、互评、校准与公示会在后续阶段依次推进，通常约三百三十日后出榜。每次发起至少间隔一年，且同一自然年最多结算一次。",
+                "提前开启考核季并冻结至少一名直属在任官员；不举办京察，也不视为完成京察履责。",
             ),
             "french": (
                 "Ordonnez au bureau des examens de classer immédiatement vos officiers directs au lieu d'attendre la saison annuelle. Les officiers déjà évalués cette année ne seront pas réexaminés.",
@@ -1263,11 +1263,11 @@ class ReleaseLocalizationTests(unittest.TestCase):
         # Daily-development changes author Chinese and English; the other seven
         # description values intentionally use the corrected English source
         # until the release localization workflow translates them again.
-        english_description = expected["english"][0]
+        english_description, english_tooltip = expected["english"]
         for language in (
             "french", "german", "japanese", "korean", "polish", "russian", "spanish"
         ):
-            expected[language] = (english_description, expected[language][1])
+            expected[language] = (english_description, english_tooltip)
         for language, (description, tooltip) in expected.items():
             with self.subTest(language=language):
                 path = (
@@ -1283,6 +1283,24 @@ class ReleaseLocalizationTests(unittest.TestCase):
                 self.assertEqual(
                     tooltip, values["zg361_review_now_decision_tooltip"]
                 )
+                self.assertIn("zg361_review_now_business_ready", values)
+                self.assertNotIn("zg361_review_now_decision_valid_desc", values)
+                if language == "simp_chinese":
+                    self.assertEqual(
+                        "提前启动本年度考核", values["zg361_review_now_decision"]
+                    )
+                    self.assertEqual(
+                        "提前开考", values["zg361_review_now_decision_confirm"]
+                    )
+                else:
+                    self.assertEqual(
+                        "Start This Year's Review Early",
+                        values["zg361_review_now_decision"],
+                    )
+                    self.assertEqual(
+                        "Start the early review",
+                        values["zg361_review_now_decision_confirm"],
+                    )
 
 
 if __name__ == "__main__":

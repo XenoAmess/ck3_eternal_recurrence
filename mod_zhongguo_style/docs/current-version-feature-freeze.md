@@ -20,7 +20,7 @@
 | 功能 | 当前行为 | 权威入口/实现 |
 |---|---|---|
 | 游戏规则 | 系统开关；每年或每三年；严格末位 10%、宽松 5% 或关闭末位 | `common/game_rules/zg361_game_rules.txt` |
-| 周期入口 | 年度 playable pulse 派发京察/后台考核；玩家也可花 150 威望提前开榜；同一考核者同一自然年只能结算一次 | `common/on_action/zg361_on_actions.txt`、`common/decisions/zg361_decisions.txt`、`common/scripted_effects/zg361_effects.txt` |
+| 周期入口 | 年度 playable pulse 下达京察召令并在当天启动考核季；玩家也可花 150 威望提前启动同一考核流程。手动入口不举办京察、不完成京察履责；同一考核者同一自然年只能结算一次 | `common/on_action/zg361_on_actions.txt`、`common/decisions/zg361_decisions.txt`、`common/scripted_effects/zg361_effects.txt` |
 | KPI 与冻结名册 | 枚举合格管理者的直属在任有地封臣；计算效率、贤能与成长、上司评价、战争/派系/性格、奋斗/摸鱼、互评、京察拒办和组织账本反馈 | `common/scripted_triggers/zg361_triggers.txt`、`common/script_values/zg361_values.txt`、`common/scripted_effects/zg361_effects.txt` |
 | 361 强制分布 | 三人及以上排序并按 3.75 / 3.5 / 3.25 分档；头部约 30%，末位按规则 10%/5%/0%；新人首轮免进 3.25；一至两人仍排名并全员结算 3.5 | `common/script_values/zg361_values.txt`、`common/scripted_effects/zg361_effects.txt` |
 | 玩家校准会 | 玩家管理者可做边界晋升交换，或原子地降一人、救一人；新人保护继续生效，并有曝光风险 | `common/scripted_effects/zg361_effects.txt`、`events/zg361_events.txt` |
@@ -29,12 +29,14 @@
 | 3.25 与双扣 | 地方国库 -50、个人金币 -25、贤能 -60（适用时）、一年俸禄 -25%（适用时），进入 PIP 并累计连续末位 | 同上；常量见 `common/script_values/zg361_values.txt` |
 | 告身与申诉 | 被上司考核的玩家看到上司、档位、KPI、同组名次/人数；3.25 可付 150 威望申诉，成功后按回执退回三笔即时罚没、停止未结束减俸并同步修榜；重复/陈旧申诉幂等拒绝 | `events/zg361_events.txt`、`common/character_interactions/zg361_interactions.txt`、`common/scripted_effects/zg361_effects.txt` |
 | 连续末位处置 | 连续两次 3.25 进入末位处置；已有夺爵、致仕、降岗留用和再留一年等结果，AI 与玩家管理者分别走后台/事件入口 | 同上 |
-| 京察 | 免费、定期弹出的半强制活动；玩家默认应举办。拒办使原直属上司好感 -20 三年，并在上司下一次考核时造成一次性 KPI -50；独立领主改扣威望 200。合法失能、在押或来宾归零时只豁免集会，官员考核仍结算 | `common/activities/activity_types/zg361_jingcha.txt`、`events/zg361_jingcha_events.txt`、`common/scripted_effects/zg361_jingcha_mandate_effects.txt` |
+| 京察 | 免费、定期弹出的半强制履责活动；召令下达时考核季已经启动，举办活动只完成京察义务并给出活动收益，不负责启动考核或生成排名。拒办使原直属上司好感 -20 三年，并在上司下一次考核时造成一次性 KPI -50；独立领主改扣威望 200。合法失能、在押或来宾归零时只豁免集会，官员考核仍结算 | `common/activities/activity_types/zg361_jingcha.txt`、`events/zg361_jingcha_events.txt`、`common/scripted_effects/zg361_jingcha_mandate_effects.txt` |
 | 考核榜 | 结算后、淘汰前冻结所辖榜和本人收到榜；显示最多 80 行及显示数/总数；包括名次、人物、KPI、价值观、档位、连续次数、PIP/晋升状态，并提供制度驾驶舱 | `common/scripted_effects/zg361_effects.txt`、`common/scripted_effects/zg361_generated_scoreboard_[0-9][0-9]_*.txt` 用途分片、`gui/zg361_scoreboard.gui` |
 | 绩效谈话与同僚反馈 | 可谈绩效；合格受评者可推荐或踩同一直属队列的同僚，写入下一轮 KPI 输入 | `common/character_interactions/zg361_interactions.txt` |
 | 361 项政策配置 | 编号 001–361 均有政策卡、A/B/C 选择、持久选择变量、AI 路径和 14 本共享组织账；正常考核逐次抛出未配置项，也可用原生决议查看下一项/参考章程 | `common/decisions/zg361_mechanism_decisions.txt`、`common/scripted_effects/zg361_generated_mechanism_effects.txt`、`events/zg361_generated_mechanism_events.txt` |
 
 361 项政策配置层当前复用 17 类 A/B 后果 profile 和统一暂缓路径，共 35 类账本 payload。它实现的是“逐号选择、持久配置、共享账本及有限 KPI 回流”，不是 361 套独立领域状态机。逐号机器清单见 [361 机制实现清单](361-mechanism-implementation-manifest.md)。
+
+“绩效考核”是从冻结名册到自评、互评、校准、公示和结算的底层流程；“京察大计”是正常周期召集这条流程时附带的履责活动。正常路径在京察召令下达当天开考，玩家是否承办、拒办或依法获豁免都不会取消该考核季。“提前启动本年度考核”仅用于不等下一次召令而手动开考，不创建京察召令、不打开活动规划器，也不抵销未来或当前的京察义务。
 
 ## 3. 权限与直属边界
 
@@ -130,7 +132,7 @@
 ### B. 京察与周期批次
 
 - 年度与三年规则；一至两人仍收到义务；
-- 免费规划器、退出不算举办、真正完成活动才考核；
+- 召令下达当天即启动考核季；退出规划器不算履责，只有真正完成活动才算京察已办；
 - 主动拒办、自然等待 300 日逾期、合法失能/在押/来宾归零免责；
 - 有上司时 -20 好感三年 + 下一次 KPI -50 且只消费一次，独立领主只扣威望 200；
 - 原上司绑定在调任后仍正确，不产生“自己考核自己”。

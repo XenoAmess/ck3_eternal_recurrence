@@ -1,7 +1,7 @@
 ﻿# ZhongGuo 361 Style — decisions
 # 开榜、结果、末位比例与人事托管入口。AI 不主动使用（ai_check_interval = 0），AI 侧由年度 tick 静默覆盖。
 
-# 立即开展绩效考核（提前开榜）
+# 提前启动本年度绩效考核（手动开考，不履行京察活动）
 zg361_review_now_decision = {
 	decision_group_type = zg361
 	picture = {
@@ -16,13 +16,13 @@ zg361_review_now_decision = {
 	}
 	is_valid = {
 		custom_description = {
-			text = zg361_review_now_decision_valid_desc
+			text = zg361_review_now_business_ready
 			zg361_review_now_business_valid_trigger = yes
 		}
 	}
 	is_valid_showing_failures_only = {
 		custom_description = {
-			text = zg361_review_now_decision_valid_desc
+			text = zg361_review_now_business_ready
 			zg361_review_now_business_valid_trigger = yes
 		}
 	}
