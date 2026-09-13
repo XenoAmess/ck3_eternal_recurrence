@@ -632,3 +632,25 @@ The report (`228692C3...AD65`) binds checkpoint `01CAACED...49B2`, driver state
 CharacterID/WarID/date while proving CK3 was not started and no profile was
 prepared. The owner has temporarily prohibited CK3 use, so this admitted action
 remains queued and no new CK3 round exists.
+
+## 2026-09-14 GEN-034-D v2 recommendation path
+
+The legacy full-campaign forecast v1 remains unproduced, but it no longer
+prevents the bounded Raiktor loop from making a conservative strategy choice.
+The new v2 provider consumes the production-capable immediate-exit evaluator
+and same-frame measured-power certificate. Continue has a zero strategy
+baseline minus the repository model's versioned relation penalty; this is
+explicitly a policy heuristic, not a campaign outcome forecast.
+
+All three eligible options are compared in `strategy_utility_q100000`, with the
+existing minimum switch margin. Only complete production-live inputs on the
+same snapshot/revision/date/connection/episode/PID/WarID/player/opponent can
+emit one typed action literal. The provider separately freezes the action's
+postcondition checklist and keeps submission, postcondition and GEN-034 closure
+false. Focused normal/optimized tests pass `7/7`; no CK3 process was used.
+
+This moves GEN-034-D from an abstract dependency to a static-ready action plan,
+while its status remains `blocked_live`. The later horizon must re-query power
+on the C frame; R471 proves the provider and native primitive but cannot be
+reused across dates. Full details are in
+[g2-three-way-exit-recommendation-v2-2026-09-14.md](g2-three-way-exit-recommendation-v2-2026-09-14.md).

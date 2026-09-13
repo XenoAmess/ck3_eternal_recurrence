@@ -1,0 +1,88 @@
+# G2 Raiktor three-way exit recommendation v2
+
+Status: **static-ready / production input path defined / live action pending**.
+
+## Problem closed by this package
+
+The legacy `raiktor-campaign-dominance-certificate-v1` consumer required a
+complete campaign outcome forecast, encounter distribution, finance endurance
+and continue/surrender utility intervals. No production producer exists for
+that combined object. GEN-034-A later delivered a narrower production-live
+fact: a stable same-frame measurement of both war leaders' strategic power.
+Keeping the old forecast object as the only route to a recommendation left the
+new observation disconnected from GEN-034-D.
+
+`raiktor_three_way_exit_recommendation.py` adds the intended minimal policy
+path. It composes:
+
+- the existing white-peace versus surrender utility evaluation;
+- the v2 measured-power dominance certificate;
+- the repository budget profile and versioned utility model already bound by
+  the immediate-exit evaluation.
+
+The old full-forecast v1 remains a valid research and quality-improvement
+target. It is no longer a prerequisite for this bounded Raiktor exit loop.
+
+## Continue-war value
+
+Continue is not relabelled as a win probability or campaign forecast. Its
+base utility is zero, then the model's existing
+`measured-power-relation-penalty-v1` subtracts one versioned tail penalty:
+
+| Measured relation | Continue penalty |
+|---|---:|
+| actor stronger | `0` |
+| equal | `10,000,000` |
+| opponent stronger | `50,000,000` |
+
+These values come from
+`ck3_autonomous_player/strategies/raiktor_exit_utility_v1.json`; they are
+replaceable strategy configuration, not native-AI behavior or a claim about
+the campaign's true outcome. White peace and surrender retain their observed
+terms, hard-budget eligibility and bounded unobserved-effect penalties.
+
+The provider compares all eligible options in the shared
+`strategy_utility_q100000` unit. It publishes a unique recommendation only
+when the leading utility exceeds the runner-up by the budget profile's
+`minimum_switch_margin_raw`. Otherwise it returns
+`three_way_underdetermined`.
+
+## Same-frame and action rules
+
+The immediate-exit and power certificates must agree on snapshot/public/native
+revision, date, connection generation, episode, PID, WarID, player and primary
+opponent. Missing power is a typed blocker; cross-frame evidence is rejected.
+
+Static fixtures may exercise the choice rule, but cannot produce an action.
+Only a unique recommendation with production-live immediate-exit inputs and a
+production-live measured-power certificate emits one of:
+
+- `resume-map` for continue;
+- `offer-white-peace-{WarID}` for white peace;
+- `surrender-war-{WarID}` for surrender.
+
+The certificate fixes `single_action_only=true`. It also freezes route-specific
+postconditions. A termination route requires old WarID absence, frozen gold,
+prestige and claim disposition, directional truce days/expiry, prisoner and
+favor results, source-specific war-regiment cleanup, and postwar checkpoint
+cold-restore rebinding. A continue route requires the same war/player/episode
+and an observed resumed successor revision.
+
+Emitting a plan does not claim the command ran. `action_submitted`,
+`postcondition_verified` and `gen034_closed` remain false until the bounded
+managed runner produces those observations.
+
+## Verification and remaining live work
+
+Focused normal and optimized Python tests pass `7/7` in each mode. They cover
+all three winners, insufficient winning margin, missing measured power,
+cross-frame rejection, static-input action suppression and the production-live
+single-action mapping. No CK3 process or desktop resource was used.
+
+GEN-034-D now has a concrete recommendation/action contract, but remains
+`blocked_live`. GEN-034-C must first reach a white-peace-admitted paused frame.
+At that same frame the managed path must take two stable strategic-power reads,
+run this recommendation once, submit its single action, verify the relevant
+postconditions, save a checkpoint and cold-restore it. The existing R471 power
+certificate is evidence for the native query/provider, not a reusable value at
+the later horizon because its paused frame differs.

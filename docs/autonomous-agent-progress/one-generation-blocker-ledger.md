@@ -1497,3 +1497,20 @@ one recommendation, one action and the bounded postwar/cold-restore checks.
 - The owner has placed a temporary CK3-use hold. This preflight creates no CK3
   round and consumes no screen resource. GEN-034 remains `2/4`; continue with
   offline implementation and retain the admitted live command for later.
+
+## GEN-034-D v2 recommendation contract (2026-09-14)
+
+- The old full campaign-forecast v1 is no longer the only recommendation path.
+  A new bounded provider uses the existing production-capable immediate-exit
+  utility result and a same-frame v2 measured-power certificate. Continue is a
+  versioned strategy baseline minus the model's relation penalty, explicitly
+  not a battle or campaign forecast.
+- A unique margin winner maps to one typed action; static fixtures cannot emit
+  it. The provider binds snapshot/revisions/date/connection/episode/PID/WarID
+  and both characters, and records route-specific postconditions without
+  claiming submission or verification. Normal/optimized focused tests pass
+  `7/7`.
+- Remaining blocker: resolve the queued event, reach the C horizon, take two
+  same-frame power reads, then execute one recommendation and verify the action,
+  material postconditions, checkpoint and cold restore. GEN-034 remains `2/4`;
+  G2 remains `1/8`; no CK3 process was used for this package.
