@@ -1801,6 +1801,18 @@ fixture-confirmed，并已有独立 six-domain same-frame aggregation fixture；
 5. 如果只能跨日才观察 applied，日收入与 truce 起算日可能污染精确 delta；此时记 capability RED 并补 action-boundary observer，不能只用
    WarID 消失冒充六域 postcondition GREEN。保存 postwar checkpoint 后才继续 G2 turns。
 
+### 2026-09-14：三路动作后置验证合同
+
+[static-ready / live pending] `raiktor_three_way_exit_postcondition.py` 直接消费三路 action gate 的 hash-bound authorization，
+不重新计算选择或条款。对 white peace / surrender，动作结果只证明 exact literal 已提交；独立后继 paused snapshot 才核对旧 full-generation
+WarID 消失与冻结 gold/prestige 后值。action-bound evidence 还必须同时绑定 authorization SHA 和 post snapshot ID，证明 source-specific
+war-bound generation 全部 destroyed，以及 attacker→defender persisted truce 的 `expiry = queried_date + evaluated_days * 24`。
+
+最终冷恢复门复用原生 `save-checkpoint` / `restore-checkpoint` 结果：保存 SHA 必须前后一致，lifecycle 必须给出替换 PID，恢复 snapshot
+必须重新绑定同一 episode、玩家、日期、资源值与 WarID 缺失。上述六项全部为真时才发布 `gen034_closed=true`。continue 路线只验证一次
+`resume-map` 后 successor revision、日期推进、同一玩家/episode 和同 WarID 仍活动；它可以验证本次动作，但不能关闭 GEN-034。
+普通和 optimized 聚焦测试各 `20/20` GREEN。本节没有新增 native/MCP 字段，也没有进行实机验收。
+
 ### 2026-09-01：四域并入正式 terms wire（实机待验）
 
 [static/fixture-ready / pending paused MCP live] `ReadWarTerminationTerms` 的既有 Raiktor 分支现已直接聚合

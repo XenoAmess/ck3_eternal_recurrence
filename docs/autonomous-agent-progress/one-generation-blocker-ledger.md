@@ -1552,3 +1552,17 @@ one recommendation, one action and the bounded postwar/cold-restore checks.
 - Focused recommendation/action-gate suites pass `14/14` in normal and
   optimized Python. This is offline contract progress only; GEN-034 remains
   `2/4`, G2 remains `1/8`.
+
+## GEN-034-D pure postcondition verifier (2026-09-14)
+
+- The six frozen termination expectations now have one executable pure
+  verifier. It consumes the existing action result, successor paused snapshot,
+  action-bound source-loss/truce evidence, and native save/restore results; it
+  performs no command, filesystem operation or CK3 access.
+- An ACK proves only exact authorized submission. GEN-034 can close only after
+  old WarID absence, exact gold and prestige balances, source-specific cleanup,
+  directional persisted truce expiry, and cold-restored semantic identity all
+  pass. A verified continue result deliberately leaves GEN-034 open.
+- Focused recommendation/action-gate/verifier tests pass `20/20` in normal and
+  optimized Python. Status remains `static-ready / live=false`; the queued C
+  horizon and one bounded D execution remain the live blockers.

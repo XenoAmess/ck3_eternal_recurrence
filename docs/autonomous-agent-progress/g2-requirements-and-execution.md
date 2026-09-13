@@ -68,6 +68,13 @@ recommendation certificate 已把 D 的后置门冻结成可执行数据：玩�
 `WarID/loss/truce/resources -> checkpoint/cold restore`；claims、prisoners、favor 继续参与决策效用，但不额外扩大
 里程碑后置范围。
 
+纯函数 `raiktor_three_way_exit_postcondition.py` 已把这六项数据接到现有结果形态：动作 ACK 只验证授权 literal 的一次提交；
+同一热会话的后继 paused snapshot 独立核对旧 WarID、gold 和 prestige；action-bound 战后证据核对 source-specific cleanup 与
+方向性 persisted truce 的精确天数/到期日；原生 `save-checkpoint`、`restore-checkpoint` 和冷启动后 snapshot 再核对 SHA、替换 PID、
+角色、episode、日期、资源及 WarID 缺失。六项全部成立才允许 `gen034_closed=true`。continue 路线只核对 successor revision、
+日期、同一战事和角色，永远不关闭 GEN-034。该合同为 `static-ready / live=false`，普通和 optimized 聚焦套件各 `20/20` GREEN；
+它没有新增 MCP/native schema，也没有执行 CK3。
+
 ## GEN-034 后的固定顺序
 
 GEN-034 关闭后立即转向公共 P1，不再继续横向扩展单一 CB 的 ABI：
