@@ -106,6 +106,10 @@ class Gen034WhitePeaceHorizonCheckpointTests(unittest.TestCase):
 
     def test_source_forbids_event_selection_and_termination_calls(self) -> None:
         source = SCRIPT.read_text(encoding="utf-8")
+        self.assertIn(
+            '"ck3_query_current_event_window_context_v1"', source
+        )
+        self.assertIn('"event_encountered_before_horizon"', source)
         self.assertNotIn('"step": "select-event-option-', source)
         self.assertNotIn('"step": "surrender-war-', source)
         self.assertNotIn('"step": "offer-white-peace-', source)

@@ -4,10 +4,11 @@
 The runner cold-restores an existing pre-action Raiktor checkpoint, resumes
 time once through the official MCP surface, and polls read-only snapshots.  It
 stops on the first event, identity drift, ended war, unexpected native pause,
-or the requested date.  At the date boundary it pauses once, queries the
-native termination options once, and saves only when the white-peace option
-and its final recipient response are observable.  It never selects an event
-or submits a war-termination action.
+or the requested date.  At an event it pauses, captures the exact native event
+context, and saves that unresolved frame.  At the date boundary it pauses,
+queries the native termination options once, and saves only when the
+white-peace option and its final recipient response are observable.  It never
+selects an event or submits a war-termination action.
 """
 
 from __future__ import annotations
@@ -34,6 +35,10 @@ import run_war_termination_terms_live_acceptance as base  # noqa: E402
 from xar_autoplayer.bridge.war_contract import (  # noqa: E402
     normalize_war_termination_options,
     query_war_termination_options_step,
+)
+from xar_autoplayer.bridge.event_window_context_contract import (  # noqa: E402
+    QUERY_CURRENT_EVENT_WINDOW_CONTEXT_V1_CAPABILITY,
+    QUERY_CURRENT_EVENT_WINDOW_CONTEXT_V1_STEP,
 )
 
 
@@ -182,11 +187,17 @@ def _exact_build_proof(
     raw = capabilities if isinstance(capabilities, dict) else {}
     steps = raw.get("action_steps")
     step_set = set(steps) if isinstance(steps, list) else set()
+    advertised = raw.get("bridge_capabilities")
     result["checks"].update(
         {
             "resume_map_step": "resume-map" in step_set,
             "pause_map_step": "pause-map" in step_set,
             "save_checkpoint_step": "save-checkpoint" in step_set,
+            "event_context_bridge_capability": isinstance(advertised, list)
+            and (
+                QUERY_CURRENT_EVENT_WINDOW_CONTEXT_V1_CAPABILITY
+                in advertised
+            ),
         }
     )
     result["ok"] = all(result["checks"].values())
@@ -217,6 +228,8 @@ async def _run_mcp_sequence(
     sequence_error: str | None = None
     options: dict[str, object] | None = None
     admission_checks: dict[str, bool] = {}
+    event_context: dict[str, object] | None = None
+    stop_reason: str | None = None
     checkpoint: dict[str, object] | None = None
     before: dict[str, object] = {}
     final: dict[str, object] = {}
@@ -260,6 +273,7 @@ async def _run_mcp_sequence(
             deadline = time.monotonic() + horizon_timeout
             running_observed = False
             boundary: dict[str, object] | None = None
+            event_boundary: dict[str, object] | None = None
             while time.monotonic() < deadline:
                 snapshot_result = await client.call_tool(
                     "ck3_take_snapshot", {}
@@ -277,7 +291,8 @@ async def _run_mcp_sequence(
                 if _active_war(snapshot, war_id) is None:
                     raise RuntimeError("Raiktor war ended before the horizon")
                 if snapshot.get("active_event") is not None:
-                    raise RuntimeError("event encountered before the horizon")
+                    event_boundary = snapshot
+                    break
                 date_raw = snapshot.get("date_raw")
                 if isinstance(date_raw, bool) or not isinstance(date_raw, int):
                     raise RuntimeError("horizon snapshot lacks date_raw")
@@ -289,8 +304,10 @@ async def _run_mcp_sequence(
                     boundary = snapshot
                     break
                 await asyncio.sleep(poll_interval)
-            if boundary is None:
+            if boundary is None and event_boundary is None:
                 raise RuntimeError("white-peace horizon timed out")
+            boundary = event_boundary or boundary
+            assert boundary is not None
             if boundary.get("paused") is not True:
                 pause_result = await client.call_tool(
                     "ck3_execute_step", {"step": "pause-map"}
@@ -319,35 +336,76 @@ async def _run_mcp_sequence(
             if boundary.get("paused") is not True:
                 raise RuntimeError("pause-map postcondition was not observed")
             final = boundary
-            if boundary.get("active_event") is not None:
-                raise RuntimeError("event occupied the horizon boundary")
             boundary_date = boundary.get("date_raw")
-            if (
-                isinstance(boundary_date, bool)
-                or not isinstance(boundary_date, int)
-                or boundary_date < target_date_raw
-                or boundary_date > target_date_raw + MAX_OVERSHOOT_RAW
-            ):
-                raise RuntimeError("paused horizon exceeded its date bound")
             boundary_revision = boundary.get("revision")
             if isinstance(boundary_revision, bool) or not isinstance(
                 boundary_revision, int
             ):
-                raise RuntimeError("paused horizon lacks a public revision")
+                raise RuntimeError("paused boundary lacks a public revision")
 
-            options_result = await client.call_tool(
-                "ck3_query_war_termination_options",
-                {"war_id": war_id, "expected_revision": boundary_revision},
-            )
-            mcp_results.append(options_result)
-            options_query = base._structured(
-                options_result,
-                tool_name="ck3_query_war_termination_options",
-            )
-            expected_commands.append(query_war_termination_options_step(war_id))
-            options, admission_checks = _white_peace_admission(
-                options_query, war_id=war_id
-            )
+            if event_boundary is not None:
+                active_event = boundary.get("active_event")
+                event_instance_id = (
+                    active_event.get("instance_id")
+                    if isinstance(active_event, dict)
+                    else None
+                )
+                if (
+                    isinstance(event_instance_id, bool)
+                    or not isinstance(event_instance_id, int)
+                    or event_instance_id <= 0
+                ):
+                    raise RuntimeError("event boundary lacks a stable instance")
+                context_result = await client.call_tool(
+                    "ck3_query_current_event_window_context_v1",
+                    {
+                        "event_instance_id": event_instance_id,
+                        "expected_revision": boundary_revision,
+                    },
+                )
+                mcp_results.append(context_result)
+                context_query = base._structured(
+                    context_result,
+                    tool_name="ck3_query_current_event_window_context_v1",
+                )
+                expected_commands.append(
+                    QUERY_CURRENT_EVENT_WINDOW_CONTEXT_V1_STEP
+                )
+                context_value = context_query.get(
+                    "current_event_window_context"
+                )
+                event_context = (
+                    dict(context_value)
+                    if isinstance(context_value, dict)
+                    else None
+                )
+                stop_reason = "event_encountered_before_horizon"
+            else:
+                if boundary.get("active_event") is not None:
+                    raise RuntimeError("event occupied the horizon boundary")
+                if (
+                    isinstance(boundary_date, bool)
+                    or not isinstance(boundary_date, int)
+                    or boundary_date < target_date_raw
+                    or boundary_date > target_date_raw + MAX_OVERSHOOT_RAW
+                ):
+                    raise RuntimeError("paused horizon exceeded its date bound")
+
+                options_result = await client.call_tool(
+                    "ck3_query_war_termination_options",
+                    {"war_id": war_id, "expected_revision": boundary_revision},
+                )
+                mcp_results.append(options_result)
+                options_query = base._structured(
+                    options_result,
+                    tool_name="ck3_query_war_termination_options",
+                )
+                expected_commands.append(
+                    query_war_termination_options_step(war_id)
+                )
+                options, admission_checks = _white_peace_admission(
+                    options_query, war_id=war_id
+                )
             pre_save_result = await client.call_tool(
                 "ck3_take_snapshot", {}
             )
@@ -359,7 +417,7 @@ async def _run_mcp_sequence(
             compact = _compact_snapshot(pre_save, war_id=war_id)
             if not samples or compact != samples[-1]:
                 samples.append(compact)
-            if not all(admission_checks.values()):
+            if event_boundary is None and not all(admission_checks.values()):
                 raise RuntimeError("white peace is unavailable at the horizon")
 
             pre_save_revision = pre_save.get("revision")
@@ -407,6 +465,7 @@ async def _run_mcp_sequence(
                 "ck3_get_capabilities",
                 "ck3_take_snapshot",
                 "ck3_execute_step",
+                "ck3_query_current_event_window_context_v1",
                 "ck3_query_war_termination_options",
                 "ck3_save_checkpoint",
             )
@@ -443,6 +502,7 @@ async def _run_mcp_sequence(
         "allowed_gameplay_commands": [
             "resume-map",
             "pause-map",
+            QUERY_CURRENT_EVENT_WINDOW_CONTEXT_V1_STEP,
             query_war_termination_options_step(war_id),
             "save-checkpoint",
         ],
@@ -457,7 +517,9 @@ async def _run_mcp_sequence(
         "snapshot_samples": samples,
         "normalized_termination_options": options,
         "white_peace_admission_checks": admission_checks,
+        "encountered_event_context": event_context,
         "prepared_checkpoint": checkpoint,
+        "stop_reason": stop_reason,
         "sequence_error": sequence_error,
         "checks": checks,
         "ok": all(checks.values()),
@@ -508,6 +570,13 @@ def main(argv: list[str] | None = None) -> int:
                 },
             )
             payload["no_launch_preflight"] = preflight_payload
+            sequence = payload.get("mcp_sequence")
+            if (
+                payload.get("ok") is not True
+                and isinstance(sequence, dict)
+                and isinstance(sequence.get("stop_reason"), str)
+            ):
+                payload["error"] = sequence["stop_reason"]
             base._write_json_atomic(Path(str(payload["report_path"])), payload)
     except BaseException as error:
         print(f"ERROR: {type(error).__name__}: {error}", file=sys.stderr)

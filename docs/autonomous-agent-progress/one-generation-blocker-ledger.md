@@ -1409,3 +1409,20 @@ one recommendation, one action and the bounded postwar/cold-restore checks.
   normal/optimized `4/4`.
 - GEN-034 stays `2/4`; the next evidence attempt is the one bounded preparation
   run. No public MCP schema, native ABI or open_kaishek consumer changed.
+
+## GEN-034-C R646 deterministic event interrupt (2026-09-14)
+
+- The first horizon attempt advanced once from war day 135 and encountered
+  active event instance `7` at day 158/date `53187648`. It stopped before any
+  option, termination action or checkpoint write. Exact-build proof, immutable
+  source and cleanup are GREEN. Retained report SHA-256 is
+  `47B9F94BFDAA12DB47435351F958C3A6C608745B82AE942D5A3782AC17808AA9`.
+- The base wrapper labelled the failed sequence generically as a paused
+  double-sample failure; snapshot evidence makes the event interrupt explicit.
+  The horizon runner now emits `event_encountered_before_horizon`, pauses once,
+  queries the existing exact-build current-event context and saves the
+  unresolved frame. Event selection remains absent from source and policy.
+- R646 does not satisfy the vanilla-event SOP because the lossy snapshot lacks
+  a definition key. The next bounded run exists only to capture that same event
+  through the official MCP and freeze it for source review; it cannot continue
+  toward the horizon or choose an option. GEN-034 remains `2/4`.

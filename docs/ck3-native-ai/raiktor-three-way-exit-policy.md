@@ -572,10 +572,20 @@ SHA-256 `C6858122FCC4120E4715E220D4B711BF05180B741C294185A69C4BFE51A201FE`.
 
 The next source preparation is constrained by
 `run_gen034_white_peace_horizon_checkpoint.py`: restore the immutable 135-day
-checkpoint, issue one semantic resume, poll official read-only snapshots, and
-stop at the first event, character drift, war end, unexpected pause or date
-bound violation. At target date `53192616` it may pause once, query the native
-termination option once and save once only if the option validator and final
-recipient response are both available. The runner cannot select an event or
-submit any exit. This produces one reusable 365-day checkpoint or one specific
-RED; it is not a general campaign long run.
+checkpoint, issue one semantic resume and poll official read-only snapshots.
+At target date `53192616` it may pause once, query the native termination
+option once and save once only if the option validator and final recipient
+response are both available. At an earlier event it pauses, captures the exact
+native event context and saves that unresolved event frame, then exits RED. It
+cannot select an event or submit any exit.
+
+Current round R646 proved that interrupt path is needed. At day 158/date
+`53187648`, active event instance `7` appeared after the sole resume command.
+The run stopped before selection; exact-build, source and cleanup checks are
+valid. The generic outer wrapper reported a paused double-sample failure, but
+the retained samples prove the event interrupt. Report SHA-256 is
+`47B9F94BFDAA12DB47435351F958C3A6C608745B82AE942D5A3782AC17808AA9`.
+Because the base snapshot is intentionally lossy and contains no event
+definition key, one deterministic capture rerun is required for the existing
+current-event MCP to satisfy the vanilla-event identification SOP. No gameplay
+option is authorized by that capture.
