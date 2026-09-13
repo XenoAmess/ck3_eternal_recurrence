@@ -205,11 +205,23 @@ aubt.1 = {
 				remove_building = barracks_02
 				add_building = barracks_01
 			}
-			set_variable = { name = aubt_gold_before value = gold }
-			set_variable = { name = aubt_treasury_before value = treasury }
 			add_character_modifier = { modifier = aubt_domain_limit_over_one }
 		}
-		trigger_event = { id = aubt.20 days = 16 }
+		trigger_event = { id = aubt.23 days = 12 }
+	}
+}
+
+# Snapshot immediately before the known S+16 global-loop tick. This excludes
+# unrelated monthly income from the exact zero-side-effect balance assertion.
+aubt.23 = {
+	scope = none
+	hidden = yes
+	immediate = {
+		global_var:aubt_player = {
+			set_variable = { name = aubt_gold_before value = gold }
+			set_variable = { name = aubt_treasury_before value = treasury }
+		}
+		trigger_event = { id = aubt.20 days = 2 }
 	}
 }
 
@@ -238,10 +250,21 @@ aubt.20 = {
 		else = { debug_log = "AUBT: TEST FAIL over_limit_pause_zero_side_effect" }
 		global_var:aubt_player = {
 			remove_character_modifier = aubt_domain_limit_over_one
+		}
+		trigger_event = { id = aubt.24 days = 13 }
+	}
+}
+
+# Snapshot immediately before the next normal tick after returning to zero.
+aubt.24 = {
+	scope = none
+	hidden = yes
+	immediate = {
+		global_var:aubt_player = {
 			set_variable = { name = aubt_gold_before value = gold }
 			set_variable = { name = aubt_treasury_before value = treasury }
 		}
-		trigger_event = { id = aubt.21 days = 16 }
+		trigger_event = { id = aubt.21 days = 2 }
 	}
 }
 
@@ -273,12 +296,23 @@ aubt.21 = {
 				remove_building = barracks_02
 				add_building = barracks_01
 			}
-			set_variable = { name = aubt_gold_before value = gold }
-			set_variable = { name = aubt_treasury_before value = treasury }
 			remove_character_flag = aub_pause_when_over_domain_limit
 			add_character_modifier = { modifier = aubt_domain_limit_over_one }
 		}
-		trigger_event = { id = aubt.22 days = 16 }
+		trigger_event = { id = aubt.25 days = 13 }
+	}
+}
+
+# Snapshot immediately before the over-limit continue-policy tick.
+aubt.25 = {
+	scope = none
+	hidden = yes
+	immediate = {
+		global_var:aubt_player = {
+			set_variable = { name = aubt_gold_before value = gold }
+			set_variable = { name = aubt_treasury_before value = treasury }
+		}
+		trigger_event = { id = aubt.22 days = 2 }
 	}
 }
 
