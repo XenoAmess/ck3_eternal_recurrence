@@ -15,16 +15,10 @@ zg361_review_now_decision = {
 		has_game_rule = zg361_on
 	}
 	is_valid = {
-		custom_description = {
-			text = zg361_review_ready_tt
-			zg361_review_now_business_valid_trigger = yes
-		}
+		zg361_review_now_business_valid_trigger = yes
 	}
 	is_valid_showing_failures_only = {
-		custom_description = {
-			text = zg361_review_ready_tt
-			zg361_review_now_business_valid_trigger = yes
-		}
+		zg361_review_now_business_valid_trigger = yes
 	}
 
 	cost = { prestige = 150 }
