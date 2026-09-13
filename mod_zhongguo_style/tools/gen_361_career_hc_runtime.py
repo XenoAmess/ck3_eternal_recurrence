@@ -363,6 +363,30 @@ ROUTE_LABELS_OVERRIDE_EN = {
     ),
 }
 
+# Extra player-visible timing that is committed by the numbered business
+# projection but is not already explicit in the option label.  Keep this map
+# narrow: the option label remains the primary statement of the direct result.
+ROUTE_TOOLTIP_DETAIL_CN = {
+    107: "候选的准备度档案将在两个考核周期后到期复核。",
+}
+ROUTE_TOOLTIP_DETAIL_EN = {
+    107: "The candidate's readiness record becomes due for review two review cycles later.",
+}
+DEFER_TOOLTIP_OVERRIDE_CN = {
+    116: (
+        "本项不在此刻放人；九十日放人时钟继续生效，且不消耗仅有一次的六十日延期。"
+        "同时登记一笔下周期制度债，本局不再重提；案卷随后按次日节点继续。"
+    ),
+}
+DEFER_TOOLTIP_OVERRIDE_EN = {
+    116: (
+        "The official is not released now; the 90-day release clock remains in force, "
+        "without consuming the single 60-day extension. One next-cycle policy debt is "
+        "also recorded, this item stops recurring in this campaign, and the case continues "
+        "on its next-day step."
+    ),
+}
+
 OBJECT_KIND_CN = {
     "candidate": "候选人",
     "vacancy": "岗位空缺",
@@ -2527,6 +2551,7 @@ def render_business_option(
     continuation = render_subject_successor(domain, mechanism_id)
     return f'''option = {{
     name = zg361ch.m{mechanism_id:03d}.{letter}
+    custom_tooltip = zg361ch.m{mechanism_id:03d}.{letter}.tt
 {option_trigger}    scope:{scopes["subject"]} = {{
         zg361_career_hc_m{mechanism_id:03d}_manager_apply_effect = {{ ROUTE = {route} }}
     }}
@@ -2549,6 +2574,7 @@ def render_batch_choice_option(route: int) -> str:
     letter = "abc"[route - 1]
     return f'''option = {{
     name = zg361ch.{BATCH_CHOICE_EVENT}.{letter}
+    custom_tooltip = zg361ch.{BATCH_CHOICE_EVENT}.{letter}.tt
     scope:{scopes["subject"]} = {{
         set_variable = {{ name = zg361_ch_player_batch_route value = {route} }}
         zg361_career_hc_m019_background_apply_effect = yes
@@ -2571,6 +2597,7 @@ zg361ch.{BATCH_CHOICE_EVENT} = {{
     {options}
     option = {{
         name = zg361ch.{BATCH_CHOICE_EVENT}.d
+        custom_tooltip = zg361ch.{BATCH_CHOICE_EVENT}.d.tt
         scope:{scopes["subject"]} = {{ remove_variable = zg361_ch_player_batch_route }}
         trigger_event = {{ id = zg361ch.19 days = 1 }}
     }}
@@ -2799,6 +2826,10 @@ def localization_rows(language: str) -> list[str]:
                 f' zg361ch.{BATCH_CHOICE_EVENT}.b:0 "Put execution speed first in twenty-two routine cases; present any case lacking the required conditions separately."',
                 f' zg361ch.{BATCH_CHOICE_EVENT}.c:0 "Defer twenty-two routine cases, recording one next-cycle policy debt for each case."',
                 f' zg361ch.{BATCH_CHOICE_EVENT}.d:0 "Present all forty-four cases individually for my separate rulings."',
+                f' zg361ch.{BATCH_CHOICE_EVENT}.a.tt:0 "Twenty-two routine cases that meet their conditions are recorded individually under the evidence-led route; any case that cannot be applied is presented separately. The twenty-two consequential rulings remain individual, and the first arrives on the next-day step."',
+                f' zg361ch.{BATCH_CHOICE_EVENT}.b.tt:0 "Twenty-two routine cases that meet their conditions are recorded individually under the expedient route; any case that cannot be applied is presented separately. The twenty-two consequential rulings remain individual, and the first arrives on the next-day step."',
+                f' zg361ch.{BATCH_CHOICE_EVENT}.c.tt:0 "Each of the twenty-two routine cases records one next-cycle policy debt without using current capacity, then stops recurring in this campaign. The twenty-two consequential rulings remain individual, and the first arrives on the next-day step."',
+                f' zg361ch.{BATCH_CHOICE_EVENT}.d.tt:0 "No common route is set. All forty-four rulings remain individual, and the first arrives on the next-day step."',
             )
         )
     else:
@@ -2810,6 +2841,10 @@ def localization_rows(language: str) -> list[str]:
                 f' zg361ch.{BATCH_CHOICE_EVENT}.b:0 "二十二项常规案一律从权办理，优先照顾关系与眼前速度；条件不足者单独呈报。"',
                 f' zg361ch.{BATCH_CHOICE_EVENT}.c:0 "搁置二十二项常规案，每案记下一笔下周期制度债。"',
                 f' zg361ch.{BATCH_CHOICE_EVENT}.d:0 "全部四十四项逐案呈报，由我分别裁决。"',
+                f' zg361ch.{BATCH_CHOICE_EVENT}.a.tt:0 "条件齐备的二十二项常规案将逐案按循证路线登记；不能执行的事项改为单独呈报。另二十二项关键裁决仍逐项呈报，首项在次日节点到达。"',
+                f' zg361ch.{BATCH_CHOICE_EVENT}.b.tt:0 "条件齐备的二十二项常规案将逐案按从权路线登记；不能执行的事项改为单独呈报。另二十二项关键裁决仍逐项呈报，首项在次日节点到达。"',
+                f' zg361ch.{BATCH_CHOICE_EVENT}.c.tt:0 "二十二项常规案各记一笔下周期制度债，不占用当前容量，并在本局停止重提。另二十二项关键裁决仍逐项呈报，首项在次日节点到达。"',
+                f' zg361ch.{BATCH_CHOICE_EVENT}.d.tt:0 "不设统一办理路线。四十四项裁决全部逐项呈报，首项在次日节点到达。"',
             )
         )
     for domain_index, domain in enumerate(DOMAINS, start=1):
@@ -2874,6 +2909,39 @@ def localization_rows(language: str) -> list[str]:
             route_b_cn += "；上司公私各付5，当事人公私各收5"
             route_a_en += " The direct manager pays 5 treasury and 5 personal gold; the official receives both amounts."
             route_b_en += " The direct manager pays 5 treasury and 5 personal gold; the official receives both amounts."
+        route_detail_en = ROUTE_TOOLTIP_DETAIL_EN.get(mechanism_id, "")
+        route_detail_cn = ROUTE_TOOLTIP_DETAIL_CN.get(mechanism_id, "")
+        route_a_tt_en = (
+            f"Recorded result: {route_a_en} {route_detail_en} This ruling closes immediately "
+            "and counts toward the evidence-led route. At this domain's close, an evidence-led majority "
+            "grants the official 50 Prestige and the manager 25 Prestige. The case then "
+            "continues on its next-day step."
+        )
+        route_b_tt_en = (
+            f"Recorded result: {route_b_en} {route_detail_en} This ruling closes immediately "
+            "and counts toward the expedient route. At this domain's close, an expedient majority "
+            "gives the official a minor Stress gain and costs the manager 25 Prestige. "
+            "The case then continues on its next-day step."
+        )
+        route_c_tt_en = DEFER_TOOLTIP_OVERRIDE_EN.get(
+            mechanism_id,
+            "This ruling closes without an immediate business action. One next-cycle policy "
+            "debt is recorded immediately, and this item stops recurring in this campaign. "
+            "The case then continues on its next-day step.",
+        )
+        route_a_tt_cn = (
+            f"登记结果：{route_a_cn}。{route_detail_cn}本项立即办结并计入循证路线；本领域结案时，"
+            "循证路线若多于从权路线，当事人获得50威望，上司获得25威望。案卷随后按次日节点继续。"
+        )
+        route_b_tt_cn = (
+            f"登记结果：{route_b_cn}。{route_detail_cn}本项立即办结并计入从权路线；本领域结案时，"
+            "从权路线若多于循证路线，当事人承受少量压力，上司失去25威望。案卷随后按次日节点继续。"
+        )
+        route_c_tt_cn = DEFER_TOOLTIP_OVERRIDE_CN.get(
+            mechanism_id,
+            "本项不采取即时处置并直接办结；立即登记一笔下周期制度债，且本局不再重提。"
+            "案卷随后按次日节点继续。",
+        )
         rows.extend(
             (
                 f' zg361ch.m{mechanism_id:03d}.name:0 "{title}"',
@@ -2881,6 +2949,9 @@ def localization_rows(language: str) -> list[str]:
                 f' zg361ch.m{mechanism_id:03d}.a:0 "{route_a_en}"' if english else f' zg361ch.m{mechanism_id:03d}.a:0 "{route_a_cn}"',
                 f' zg361ch.m{mechanism_id:03d}.b:0 "{route_b_en}"' if english else f' zg361ch.m{mechanism_id:03d}.b:0 "{route_b_cn}"',
                 f' zg361ch.m{mechanism_id:03d}.c:0 "Shelve this ruling, record next-cycle policy debt, and do not propose it again this campaign."' if english else f' zg361ch.m{mechanism_id:03d}.c:0 "搁置本项，记下周期制度债；本局不再提案。"',
+                f' zg361ch.m{mechanism_id:03d}.a.tt:0 "{route_a_tt_en}"' if english else f' zg361ch.m{mechanism_id:03d}.a.tt:0 "{route_a_tt_cn}"',
+                f' zg361ch.m{mechanism_id:03d}.b.tt:0 "{route_b_tt_en}"' if english else f' zg361ch.m{mechanism_id:03d}.b.tt:0 "{route_b_tt_cn}"',
+                f' zg361ch.m{mechanism_id:03d}.c.tt:0 "{route_c_tt_en}"' if english else f' zg361ch.m{mechanism_id:03d}.c.tt:0 "{route_c_tt_cn}"',
             )
         )
     return normalize_localization_rows(rows) if not english else rows

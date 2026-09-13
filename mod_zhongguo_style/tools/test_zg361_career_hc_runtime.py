@@ -537,6 +537,48 @@ class CareerHcRuntimeTests(unittest.TestCase):
         # domain receipts, instead of 44 business cards plus six receipts.
         self.assertEqual(1 + len(generator.VISIBLE_RULING_IDS) + len(generator.DOMAINS), 29)
 
+    def test_player_rulings_expose_authored_effect_tooltips(self) -> None:
+        batch = block(self.events, f"zg361ch.{generator.BATCH_CHOICE_EVENT}")
+        for letter in "abcd":
+            self.assertIn(
+                f"custom_tooltip = zg361ch.{generator.BATCH_CHOICE_EVENT}.{letter}.tt",
+                batch,
+            )
+
+        chinese = localization_map(CHINESE_LOC_PATH)
+        english = localization_map(
+            MOD_ROOT / "localization/english/zg361_career_hc_l_english.yml"
+        )
+        for mechanism_id in generator.EXPECTED_IDS:
+            event = block(self.events, f"zg361ch.{mechanism_id}")
+            for letter in "abc":
+                key = f"zg361ch.m{mechanism_id:03d}.{letter}.tt"
+                with self.subTest(mechanism=mechanism_id, route=letter):
+                    self.assertIn(f"custom_tooltip = {key}", event)
+                    self.assertIn(key, chinese)
+                    self.assertIn(key, english)
+                    self.assertNotIn("没有直接影响", chinese[key])
+                    self.assertNotIn("No direct effects", english[key])
+
+        # R629's reported card must explain both its direct state and the
+        # deferred review committed by the actual #107 business projection.
+        self.assertIn("按证据登记继任准备度", chinese["zg361ch.m107.a.tt"])
+        self.assertIn("两个考核周期后到期复核", chinese["zg361ch.m107.a.tt"])
+        self.assertIn("直接登记为已具备继任资格", chinese["zg361ch.m107.b.tt"])
+        self.assertIn("下周期制度债", chinese["zg361ch.m107.c.tt"])
+        self.assertIn("次日节点", chinese["zg361ch.m107.c.tt"])
+        self.assertIn("九十日放人时钟继续生效", chinese["zg361ch.m116.c.tt"])
+        self.assertIn("不消耗仅有一次的六十日延期", chinese["zg361ch.m116.c.tt"])
+
+        # The seven funded rulings disclose the real two-account transfer;
+        # ordinary rulings must not claim that cost.
+        for mechanism_id in generator.DUAL_COST_IDS:
+            for letter in "ab":
+                value = chinese[f"zg361ch.m{mechanism_id:03d}.{letter}.tt"]
+                self.assertIn("上司公私各付5", value)
+                self.assertIn("当事人公私各收5", value)
+        self.assertNotIn("公私各付5", chinese["zg361ch.m107.a.tt"])
+
     def test_background_rulings_use_original_core_receipt_and_visible_fallback(self) -> None:
         for mechanism_id in generator.BATCHABLE_IDS:
             domain = generator.DOMAIN_BY_ID[mechanism_id]
