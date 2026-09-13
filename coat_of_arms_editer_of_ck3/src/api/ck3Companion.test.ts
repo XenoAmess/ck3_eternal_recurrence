@@ -65,6 +65,32 @@ describe('CK3 companion client', () => {
     expect(JSON.parse(fetchMock.mock.calls[0][1].body)).toEqual({})
   })
 
+  it('reads the exact CoA source binding independently of gameplay snapshots', async () => {
+    const payload = {
+      schema: 'coat-of-arms-source-binding-v1',
+      schema_version: 1,
+      status: 'bound',
+      revision_source: 'frontend',
+      revision: 0,
+      connection_generation: 3,
+      bridge_pid: 19424,
+      game_version: '1.19.0.6',
+      executable_sha256: '2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86',
+    }
+    const fetchMock = vi.fn().mockResolvedValue(new Response(
+      JSON.stringify(payload),
+      { status: 200, headers: { 'Content-Type': 'application/json' } },
+    ))
+    vi.stubGlobal('fetch', fetchMock)
+
+    const result = await createCk3CompanionClient().sourceBinding()
+
+    expect(result).toEqual(payload)
+    expect(new URL(fetchMock.mock.calls[0][0]).pathname)
+      .toBe('/api/ck3/coat-of-arms/binding')
+    expect(fetchMock.mock.calls[0][1].method).toBeUndefined()
+  })
+
   it('encodes an exact manifest asset name', async () => {
     const fetchMock = vi.fn().mockResolvedValue(new Response(JSON.stringify({
       schema: 'ck3-coat-of-arms-resource-asset-v1',

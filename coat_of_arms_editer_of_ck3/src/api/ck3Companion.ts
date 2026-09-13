@@ -313,6 +313,18 @@ export interface Ck3SessionSnapshot {
   [key: string]: unknown
 }
 
+export interface CoatOfArmsSourceBinding {
+  schema: 'coat-of-arms-source-binding-v1'
+  schema_version: 1
+  status: 'bound'
+  revision_source: 'frontend' | 'snapshot'
+  revision: number
+  connection_generation: number
+  bridge_pid: number
+  game_version: '1.19.0.6'
+  executable_sha256: string
+}
+
 export interface CoatOfArmsProbeResult {
   status: 'detected' | 'applied' | 'not_detected' | 'apply_failed' | 'unavailable'
   detected: boolean
@@ -386,6 +398,7 @@ export function createCk3CompanionClient(
 
   return {
     session: () => get<Ck3SessionSnapshot>('/session'),
+    sourceBinding: () => get<CoatOfArmsSourceBinding>('/binding'),
     openNativeDesigner: () =>
       post<FrontendCoatOfArmsDesignerActionResult>(
         '/open-native-designer',

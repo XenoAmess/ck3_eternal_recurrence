@@ -59,6 +59,7 @@ mvn -f backend/pom.xml quarkus:dev
 | `GET /api/ck3/coat-of-arms/configured-resources` | `ck3_query_coat_of_arms_configured_resource_catalog_v1` | 否，分页读取目录/ZIP 模组 manifest 候选与同名冲突 |
 | `GET /api/ck3/coat-of-arms/configured-asset` | `ck3_read_coat_of_arms_configured_resource_asset_v1` | 否，以绑定当前配置的 opaque ID 读取模组 DDS |
 | `GET /api/ck3/coat-of-arms/session` | `ck3_take_snapshot` | 是 |
+| `GET /api/ck3/coat-of-arms/binding` | `ck3_get_capabilities`，有 snapshot 时再调用 `ck3_take_snapshot` | 是；返回 probe/export 可用的 snapshot revision 或精确 frontend `revision=0` |
 | `POST /api/ck3/coat-of-arms/probe` | `ck3_probe_coat_of_arms_source_v1` | 是，且需打开纹章设计器 |
 | `POST /api/ck3/coat-of-arms/export` | `ck3_export_coat_of_arms_source_v1` | 是，且需打开纹章设计器 |
 
@@ -70,8 +71,12 @@ mvn -f backend/pom.xml package
 java -jar backend/target/quarkus-app/quarkus-run.jar
 ```
 
-当前基线：Vitest `37/37`、Vite production build、Quarkus REST `11/11` 与 Maven package 均 GREEN。
+当前基线：Vitest `38/38`、Vite production build、Quarkus REST `14/14` 与 Maven package 均 GREEN。
 “打开原生家徽页”只调用固定、零参数的王朝家徽按钮 MCP，并要求独立 route 后置条件；它不会接受浏览器传入的控件名、路径、指针或桌面输入。
+
+probe/export 不再错误地假设家徽页必有 gameplay snapshot。binding 端点先验证 native-headless、named-pipe、exact
+CK3 `1.19.0.6`/EXE SHA、连接代次/PID 及 probe/export capability；有 snapshot 时返回其正 revision，没有 snapshot
+时返回原生合同允许的 frontend `revision=0`。断线、build 不匹配或 capability 缺失都会 fail closed。
 
 底层动作已由受管实机 artifact `mcp-frontend-route-coa-page-live5.json` 闭合为 `production-live primitive`：官方 MCP
 独立观察到 `coat_of_arms_designer` 以及可见、enabled 的 `coat_of_arms_page`，Steam 离线与 cleanup 均为 GREEN。

@@ -8,6 +8,7 @@ import static org.mockito.Mockito.when;
 
 import io.quarkus.test.InjectMock;
 import io.quarkus.test.junit.QuarkusTest;
+import java.util.List;
 import java.util.Map;
 import org.junit.jupiter.api.Test;
 
@@ -15,6 +16,34 @@ import org.junit.jupiter.api.Test;
 class CoatOfArmsResourceTest {
     @InjectMock
     CoatOfArmsMcpClient mcp;
+
+    private static Map<String, Object> nativeCapabilities(
+            boolean snapshot,
+            boolean connected) {
+        List<String> capabilities = List.of(
+                "game.command.probe-coat-of-arms-source-v1",
+                "game.command.export-coat-of-arms-source-v1");
+        return Map.of(
+                "backend_id", "native-headless",
+                "mode", "native-headless",
+                "source", "injected-dll-named-pipe",
+                "visual_fallback", false,
+                "snapshot", snapshot,
+                "bridge_capabilities", capabilities,
+                "diagnostics", Map.of(
+                        "connected", connected,
+                        "connection_generation", 3,
+                        "bridge_pid", 19424,
+                        "hello", Map.of(
+                                "ck3_build_match", true,
+                                "game_adapter_status", "ready",
+                                "expected_ck3_version", "1.19.0.6",
+                                "expected_ck3_sha256",
+                                "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+                                "connection_generation", 3,
+                                "pid", 19424,
+                                "capabilities", capabilities)));
+    }
 
     @Test
     void sessionExposesTheCurrentMcpRevision() {
@@ -27,6 +56,55 @@ class CoatOfArmsResourceTest {
                 .statusCode(200)
                 .body("revision", equalTo(7))
                 .body("source", equalTo("native"));
+    }
+
+    @Test
+    void sourceBindingUsesRevisionZeroForAnExactConnectedFrontend() {
+        when(mcp.callTool(eq("ck3_get_capabilities"), eq(Map.of())))
+                .thenReturn(nativeCapabilities(false, true));
+
+        given()
+                .when().get("/api/ck3/coat-of-arms/binding")
+                .then()
+                .statusCode(200)
+                .body("schema", equalTo("coat-of-arms-source-binding-v1"))
+                .body("status", equalTo("bound"))
+                .body("revision_source", equalTo("frontend"))
+                .body("revision", equalTo(0))
+                .body("connection_generation", equalTo(3))
+                .body("bridge_pid", equalTo(19424));
+
+        verify(mcp).callTool("ck3_get_capabilities", Map.of());
+    }
+
+    @Test
+    void sourceBindingUsesThePositiveSnapshotRevisionWhenAvailable() {
+        when(mcp.callTool(eq("ck3_get_capabilities"), eq(Map.of())))
+                .thenReturn(nativeCapabilities(true, true));
+        when(mcp.callTool(eq("ck3_take_snapshot"), eq(Map.of())))
+                .thenReturn(Map.of("revision", 17, "source", "native"));
+
+        given()
+                .when().get("/api/ck3/coat-of-arms/binding")
+                .then()
+                .statusCode(200)
+                .body("status", equalTo("bound"))
+                .body("revision_source", equalTo("snapshot"))
+                .body("revision", equalTo(17));
+
+        verify(mcp).callTool("ck3_take_snapshot", Map.of());
+    }
+
+    @Test
+    void sourceBindingRejectsADisconnectedFrontend() {
+        when(mcp.callTool(eq("ck3_get_capabilities"), eq(Map.of())))
+                .thenReturn(nativeCapabilities(false, false));
+
+        given()
+                .when().get("/api/ck3/coat-of-arms/binding")
+                .then()
+                .statusCode(503)
+                .body("status", equalTo("mcp_unavailable"));
     }
 
     @Test

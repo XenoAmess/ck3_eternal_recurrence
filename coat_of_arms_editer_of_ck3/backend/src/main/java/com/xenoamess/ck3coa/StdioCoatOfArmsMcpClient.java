@@ -19,6 +19,7 @@ import java.util.stream.Collectors;
 @ApplicationScoped
 public class StdioCoatOfArmsMcpClient implements CoatOfArmsMcpClient {
     private static final Set<String> REQUIRED_TOOLS = Set.of(
+            "ck3_get_capabilities",
             "ck3_take_snapshot",
             "ck3_activate_frontend_coat_of_arms_designer_v1",
             "ck3_probe_coat_of_arms_source_v1",

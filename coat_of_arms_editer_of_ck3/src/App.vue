@@ -209,19 +209,34 @@ function errorMessage(error: unknown): string {
   return error instanceof Error ? error.message : String(error)
 }
 
-async function getCurrentRevision(): Promise<number> {
-  const snapshot = await companion.session()
-  if (!Number.isSafeInteger(snapshot.revision) || snapshot.revision < 0) {
-    throw new Error('MCP snapshot 没有有效 revision')
+async function getCurrentCoaRevision(): Promise<number> {
+  const binding = await companion.sourceBinding()
+  if (
+    binding.schema !== 'coat-of-arms-source-binding-v1'
+    || binding.status !== 'bound'
+    || !Number.isSafeInteger(binding.revision)
+    || binding.revision < 0
+    || (binding.revision_source === 'frontend' && binding.revision !== 0)
+    || (binding.revision_source === 'snapshot' && binding.revision < 1)
+  ) {
+    throw new Error('MCP 没有返回有效的家徽源码绑定')
   }
-  mcpStatus.value = `已连接 · revision ${snapshot.revision}`
+  mcpStatus.value = `已连接 · ${binding.revision_source} revision ${binding.revision}`
+  return binding.revision
+}
+
+async function getCurrentGameplayRevision(): Promise<number> {
+  const snapshot = await companion.session()
+  if (!Number.isSafeInteger(snapshot.revision) || snapshot.revision < 1) {
+    throw new Error('MCP snapshot 没有有效的正 revision')
+  }
   return snapshot.revision
 }
 
 async function refreshSession() {
   mcpBusy.value = true
   try {
-    await getCurrentRevision()
+    await getCurrentCoaRevision()
     ElMessage.success('已连接本机 CK3 MCP')
   } catch (error) {
     mcpStatus.value = '不可用'
@@ -259,7 +274,7 @@ async function loadRuntimeFeatures() {
   runtimeFeatureCount.value = null
   runtimeDlcKeys.value = null
   try {
-    const revision = await getCurrentRevision()
+    const revision = await getCurrentGameplayRevision()
     const result = await companion.runtimeFeatures(revision)
     if (result.status !== 'available') {
       runtimeFeatureStatus.value = `不可用 · ${result.unavailable_reason ?? 'unknown'}`
@@ -287,7 +302,7 @@ async function probeInCk3(apply: boolean) {
   }
   mcpBusy.value = true
   try {
-    const revision = await getCurrentRevision()
+    const revision = await getCurrentCoaRevision()
     const result = await companion.probe(output.value, revision, apply)
     mcpStatus.value = `${result.status} · revision ${revision}`
     if (result.status === 'detected' || result.status === 'applied') {
@@ -306,7 +321,7 @@ async function probeInCk3(apply: boolean) {
 async function exportFromCk3() {
   mcpBusy.value = true
   try {
-    const revision = await getCurrentRevision()
+    const revision = await getCurrentCoaRevision()
     const result = await companion.exportSource(revision)
     mcpStatus.value = `${result.status} · revision ${revision}`
     if (result.status !== 'exported' || !result.source) {

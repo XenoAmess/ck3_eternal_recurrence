@@ -17,6 +17,14 @@ import java.util.Map;
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 public class CoatOfArmsResource {
+    private static final String COAT_OF_ARMS_PROBE_CAPABILITY =
+            "game.command.probe-coat-of-arms-source-v1";
+    private static final String COAT_OF_ARMS_EXPORT_CAPABILITY =
+            "game.command.export-coat-of-arms-source-v1";
+    private static final String EXPECTED_GAME_VERSION = "1.19.0.6";
+    private static final String EXPECTED_EXECUTABLE_SHA256 =
+            "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86";
+
     private final CoatOfArmsMcpClient mcp;
     private final McpConfiguration configuration;
 
@@ -32,6 +40,81 @@ public class CoatOfArmsResource {
     @Path("/session")
     public Object session() {
         return mcp.callTool("ck3_take_snapshot", Map.of());
+    }
+
+    @GET
+    @Path("/binding")
+    public Object sourceBinding() {
+        Map<?, ?> capabilities = requireMap(
+                mcp.callTool("ck3_get_capabilities", Map.of()),
+                "MCP capabilities");
+        if (!"native-headless".equals(capabilities.get("backend_id"))
+                || !"native-headless".equals(capabilities.get("mode"))
+                || !"injected-dll-named-pipe".equals(capabilities.get("source"))
+                || !Boolean.FALSE.equals(capabilities.get("visual_fallback"))
+                || !containsString(
+                        capabilities.get("bridge_capabilities"),
+                        COAT_OF_ARMS_PROBE_CAPABILITY)
+                || !containsString(
+                        capabilities.get("bridge_capabilities"),
+                        COAT_OF_ARMS_EXPORT_CAPABILITY)) {
+            throw new McpGatewayException(
+                    "MCP capabilities do not expose the exact native CoA binding");
+        }
+        Map<?, ?> diagnostics = requireMap(
+                capabilities.get("diagnostics"), "MCP diagnostics");
+        Map<?, ?> hello = requireMap(diagnostics.get("hello"), "MCP hello");
+        long connectionGeneration = positiveLong(
+                diagnostics.get("connection_generation"),
+                "MCP connection generation");
+        long bridgePid = positiveLong(
+                diagnostics.get("bridge_pid"), "MCP bridge PID");
+        if (!Boolean.TRUE.equals(diagnostics.get("connected"))
+                || !Boolean.TRUE.equals(hello.get("ck3_build_match"))
+                || !"ready".equals(hello.get("game_adapter_status"))
+                || !EXPECTED_GAME_VERSION.equals(hello.get("expected_ck3_version"))
+                || !EXPECTED_EXECUTABLE_SHA256.equals(
+                        hello.get("expected_ck3_sha256"))
+                || positiveLong(
+                        hello.get("connection_generation"),
+                        "MCP hello connection generation") != connectionGeneration
+                || positiveLong(hello.get("pid"), "MCP hello PID") != bridgePid
+                || !containsString(
+                        hello.get("capabilities"), COAT_OF_ARMS_PROBE_CAPABILITY)
+                || !containsString(
+                        hello.get("capabilities"), COAT_OF_ARMS_EXPORT_CAPABILITY)) {
+            throw new McpGatewayException(
+                    "MCP native CoA binding is disconnected or not the exact build");
+        }
+
+        Object snapshotState = capabilities.get("snapshot");
+        long revision;
+        String revisionSource;
+        if (Boolean.TRUE.equals(snapshotState)) {
+            Map<?, ?> snapshot = requireMap(
+                    mcp.callTool("ck3_take_snapshot", Map.of()),
+                    "MCP snapshot");
+            revision = positiveLong(snapshot.get("revision"), "MCP snapshot revision");
+            revisionSource = "snapshot";
+        } else if (Boolean.FALSE.equals(snapshotState)) {
+            revision = 0;
+            revisionSource = "frontend";
+        } else {
+            throw new McpGatewayException(
+                    "MCP capabilities lack a boolean snapshot state");
+        }
+
+        Map<String, Object> result = new LinkedHashMap<>();
+        result.put("schema", "coat-of-arms-source-binding-v1");
+        result.put("schema_version", 1);
+        result.put("status", "bound");
+        result.put("revision_source", revisionSource);
+        result.put("revision", revision);
+        result.put("connection_generation", connectionGeneration);
+        result.put("bridge_pid", bridgePid);
+        result.put("game_version", EXPECTED_GAME_VERSION);
+        result.put("executable_sha256", EXPECTED_EXECUTABLE_SHA256);
+        return result;
     }
 
     @POST
@@ -220,6 +303,36 @@ public class CoatOfArmsResource {
         return mcp.callTool(
                 "ck3_export_coat_of_arms_source_v1",
                 Map.of("expected_revision", request.expectedRevision()));
+    }
+
+    private static Map<?, ?> requireMap(Object value, String label) {
+        if (!(value instanceof Map<?, ?> map)) {
+            throw new McpGatewayException(label + " is not an object");
+        }
+        return map;
+    }
+
+    private static long positiveLong(Object value, String label) {
+        if (!(value instanceof Number number)) {
+            throw new McpGatewayException(label + " is not an integer");
+        }
+        long result = number.longValue();
+        if (result < 1 || number.doubleValue() != (double) result) {
+            throw new McpGatewayException(label + " is not a positive integer");
+        }
+        return result;
+    }
+
+    private static boolean containsString(Object value, String expected) {
+        if (!(value instanceof Iterable<?> items)) {
+            return false;
+        }
+        for (Object item : items) {
+            if (expected.equals(item)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public record ProbeRequest(String source, long expectedRevision, boolean apply) {}

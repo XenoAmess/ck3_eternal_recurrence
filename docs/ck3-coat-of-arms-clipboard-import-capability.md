@@ -757,7 +757,9 @@ CoatOfArms
 - 基础游戏 pattern/emblem 目录已经接入结构化选择器，并可按名字筛选首批 200 个 emblem；
 - 必要的 Quarkus 伴随服务使用官方 Java MCP SDK 连接现有 Python stdio server，前端可刷新 session revision、读取同帧
   runtime feature/script-DLC truth、通过固定动作打开王朝家徽页、执行原生 detect/apply，以及载入原生 Copy/export 返回源码；
-  伴随服务只允许十二个相关工具（snapshot + 九个 CoA MCP + 一个 runtime-feature MCP + 一个固定 frontend action）；
+  新 binding 端点从 `ck3_get_capabilities` 验证 exact native 连接，有 snapshot 时返回正 revision，无 snapshot 时返回 probe/export
+  合同允许的 frontend `revision=0`，从而不再把 gameplay snapshot 错当作前端设计器的必需条件；
+  伴随服务只允许十三个相关工具（capabilities + snapshot + 九个 CoA MCP + 一个 runtime-feature MCP + 一个固定 frontend action）；
 - manifest-owned 单素材与 render-support 已接入浏览器：除 DXT1/DXT5 顶层 mip 解码外，还能解码 `_default.dds` 使用的
   无压缩 BGRA8 并在受限 `textured_emblem` 行内显示原始纹理；主路径按随游戏发布的 shader 源码合成三通道调色、mask、
   实例变换、surface detail 和 blend，仍明确不冒充 native GPU 像素完全一致。
@@ -771,8 +773,8 @@ CoatOfArms
 浏览器无法直接启动本机 stdio MCP，因此已引入 Maven + Java + Quarkus 伴随服务。后端只负责 REST/MCP 会话转接与
 本机资源索引，不承担“执行 CK3 脚本”的虚构能力；当前也没有 DDS 转换或素材缓存。
 
-当前前端有 Vitest `37/37` parser/serializer/validator/capability-matrix/API/DDS/renderer 回归和 Vite production build 验收；
-Quarkus REST 测试 `11/11` 且 Maven package GREEN。后续扩展仍以本文的原生 MCP 证据为协议来源，
+当前前端有 Vitest `38/38` parser/serializer/validator/capability-matrix/API/DDS/renderer 回归和 Vite production build 验收；
+Quarkus REST 测试 `14/14` 且 Maven package GREEN。后续扩展仍以本文的原生 MCP 证据为协议来源，
 不会把旧 UI 观察或第三方 parser 行为固化成 CK3 引擎事实。
 
 ## 10. 辅助参考边界
