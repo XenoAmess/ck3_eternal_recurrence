@@ -120,6 +120,17 @@ identity, paused state, date, and two consecutive pump epochs. RNG wrapper,
 state, and owner are captured in `MainThreadExecutionStampV1` and heartbeat
 diagnostics, but are excluded from streak, submit, and post-execution checks.
 
+Two consecutive 2026-09-14 cold-checkpoint attempts (current rounds R650 and
+R651 at the time of capture) exposed a real paused-idle edge: the mailbox had
+already proven its application-main owner, but an event-context ticket stayed
+queued until its eight-second budget expired because no new SDL/PeekMessage
+pump arrived.  A successful fixed-executor publication now posts one best-effort
+`WM_NULL` thread message to that already verified owner TID.  The message has no
+gameplay effect; it only wakes the normal Windows/SDL pump so the existing hook
+can drain the ticket.  A failed post is ignored and the same bounded wait still
+fails closed.  This does not add an executor, command, capability, or public
+wire field.
+
 ## Install and process lifetime
 
 The PeekMessageW IAT lives on a read-only page. Install and uninstall use the same bounded

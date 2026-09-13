@@ -1535,7 +1535,7 @@ bool TestSourceContract(int argc, char **argv) {
     return false;
   }
 
-  constexpr std::array<std::string_view, 111> bridge_tokens{
+  constexpr std::array<std::string_view, 113> bridge_tokens{
       "HeartbeatFrame",
       "main_thread_query_mailbox_v1",
       "installed",
@@ -1611,6 +1611,8 @@ bool TestSourceContract(int argc, char **argv) {
       "query.dispatch_ticket_sequence",
       "TitleMapNavigationResultFrame",
       "TrySubmitMainThreadQueryV1",
+      "PostThreadMessageW(",
+      "WM_NULL",
       "permitted_executor",
       "permitted_executor_secondary",
       "permitted_executor_tertiary",
