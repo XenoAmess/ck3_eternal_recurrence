@@ -258,6 +258,11 @@ class Gen034ThreeWayExitActionLiveAcceptanceTests(unittest.TestCase):
     def test_continue_executes_once_without_claiming_gen034_closure(self) -> None:
         gate = _authorized("continue")
         read = _read_phase(gate)
+        # The immutable-checkpoint replay mode needs only the two exit reads;
+        # the direct same-frame mode retains its two additional power reads.
+        read["allowed_gameplay_commands"] = read[
+            "allowed_gameplay_commands"
+        ][:2]
         before = read["before_snapshot"]["structured_content"]
         post = _post(gate, route="continue")
         action_step = gate["authorization"]["action"]["literal"]

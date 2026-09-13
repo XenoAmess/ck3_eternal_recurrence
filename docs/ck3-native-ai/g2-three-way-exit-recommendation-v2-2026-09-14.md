@@ -183,6 +183,29 @@ that no current live session exists, no authorization was issued and no
 action was submitted. A fresh live paused frame is still required before the
 action gate can authorize that plan.
 
+## Bounded replay action runner
+
+`run_gen034_checkpoint_replay_action_live_acceptance.py` consumes that report
+through a hash-bound admission path. On the fresh restored process it issues
+only one options query and one terms query, creates a new replay certificate
+for the current PID, recomputes the recommendation, runs the ordinary action
+gate and submits the single authorized semantic action. It does not issue a
+strategic-power query. The shared action tail now accepts either the original
+four-read list or this exact two-read list; its command-history and
+postcondition checks remain unchanged.
+
+Focused runner/provider/action tests pass `35/35` in normal Python and
+`35/35` with optimized assertions. The R659 no-launch preflight is
+`ready-to-run`, used no CK3 process and did not prepare a profile. Its report
+is
+`Z:\ck3_mod_rewrite_process_assets\g2-gen034-r659-checkpoint-replay-action-bef0527-preflight.json`,
+SHA-256
+`ECF06B29D139FD1E5D22F8375B2B6B6A88B7C5A3835D29EDBC613AE3B2F70FB3`.
+The admitted live run is bounded to one launch, two fresh exit reads, zero
+fresh power reads and one strategic action. If `continue` remains the winner,
+the runner verifies only the resumed successor and deliberately leaves
+`gen034_closed=false`; it does not extend into a war long-run.
+
 ## Exact action admission
 
 `raiktor_three_way_exit_action_gate.py` is the final side-effect-free handoff

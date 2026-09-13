@@ -262,9 +262,9 @@ async def _execute_action_tail(
     action_step = action["literal"]
     war_id = action["war_id"]
     read_commands = read_phase.get("allowed_gameplay_commands")
-    if not isinstance(read_commands, list) or len(read_commands) != 4:
+    if not isinstance(read_commands, list) or len(read_commands) not in {2, 4}:
         raise Gen034ActionRunnerError(
-            "recommendation phase lacks its exact four-read command list"
+            "recommendation phase lacks an admitted two- or four-read command list"
         )
     origin = _structured_record(
         read_phase.get("before_snapshot"), "recommendation source snapshot"
