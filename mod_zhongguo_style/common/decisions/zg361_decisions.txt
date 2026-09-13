@@ -1,5 +1,5 @@
 ﻿# ZhongGuo 361 Style — decisions
-# 末位比例三决议 + 立即开榜。AI 不主动使用（ai_check_interval = 0），AI 侧由年度 tick 静默覆盖。
+# 末位比例单入口 + 立即开榜。AI 不主动使用（ai_check_interval = 0），AI 侧由年度 tick 静默覆盖。
 
 # 立即开展绩效考核（提前开榜）
 zg361_review_now_decision = {
@@ -65,8 +65,8 @@ zg361_view_result_statement_decision = {
 	}
 }
 
-# 末位比例：刚性 361（10%）
-zg361_ratio_strict_decision = {
+# 末位比例：单一配置入口，三档选择在 zg361.54 中完成。
+zg361_ratio_policy_decision = {
 	decision_group_type = zg361
 	picture = {
 		reference = "gfx/interface/illustrations/decisions/decision_realm.dds"
@@ -74,77 +74,66 @@ zg361_ratio_strict_decision = {
 	ai_check_interval = 0
 	cooldown = { years = 1 }
 
-	is_shown = {
-		zg361_is_celestial_liege_trigger = yes
-		has_game_rule = zg361_on
-		trigger_if = {
-			limit = { has_variable = zg361_ratio_override }
-			NOT = { var:zg361_ratio_override = 10 }
+	title = {
+		first_valid = {
+			triggered_desc = {
+				trigger = { zg361_ratio_policy_strict_current_trigger = yes }
+				desc = zg361_ratio_policy_title_strict
+			}
+			triggered_desc = {
+				trigger = { zg361_ratio_policy_relaxed_current_trigger = yes }
+				desc = zg361_ratio_policy_title_relaxed
+			}
+			triggered_desc = {
+				trigger = { zg361_ratio_policy_off_current_trigger = yes }
+				desc = zg361_ratio_policy_title_off
+			}
+			desc = zg361_ratio_policy_decision
 		}
 	}
-	is_valid = { prestige >= 75 }
-	is_valid_showing_failures_only = { prestige >= 75 }
 
-	cost = { prestige = 75 }
-
-	effect = {
-		set_variable = { name = zg361_ratio_override value = 10 }
-		debug_log = "ZG361: liege set bottom ratio override to strict (10%)"
-	}
-}
-
-# 末位比例：松绑（5%）
-zg361_ratio_relaxed_decision = {
-	decision_group_type = zg361
-	picture = {
-		reference = "gfx/interface/illustrations/decisions/decision_realm.dds"
-	}
-	ai_check_interval = 0
-	cooldown = { years = 1 }
-
-	is_shown = {
-		zg361_is_celestial_liege_trigger = yes
-		has_game_rule = zg361_on
-		trigger_if = {
-			limit = { has_variable = zg361_ratio_override }
-			NOT = { var:zg361_ratio_override = 5 }
+	desc = {
+		desc = zg361_ratio_policy_decision_desc
+		first_valid = {
+			triggered_desc = {
+				trigger = { zg361_ratio_policy_strict_current_trigger = yes }
+				desc = zg361_ratio_policy_current_strict
+			}
+			triggered_desc = {
+				trigger = { zg361_ratio_policy_relaxed_current_trigger = yes }
+				desc = zg361_ratio_policy_current_relaxed
+			}
+			triggered_desc = {
+				trigger = { zg361_ratio_policy_off_current_trigger = yes }
+				desc = zg361_ratio_policy_current_off
+			}
+			desc = zg361_ratio_policy_current_strict
 		}
 	}
-	is_valid = { prestige >= 75 }
-	is_valid_showing_failures_only = { prestige >= 75 }
-
-	cost = { prestige = 75 }
-
-	effect = {
-		set_variable = { name = zg361_ratio_override value = 5 }
-		debug_log = "ZG361: liege set bottom ratio override to relaxed (5%)"
-	}
-}
-
-# 末位比例：放养（0%）
-zg361_ratio_off_decision = {
-	decision_group_type = zg361
-	picture = {
-		reference = "gfx/interface/illustrations/decisions/decision_realm.dds"
-	}
-	ai_check_interval = 0
-	cooldown = { years = 1 }
 
 	is_shown = {
 		zg361_is_celestial_liege_trigger = yes
 		has_game_rule = zg361_on
-		trigger_if = {
-			limit = { has_variable = zg361_ratio_override }
-			NOT = { var:zg361_ratio_override = 0 }
+	}
+	is_valid = {
+		prestige >= 75
+		custom_description = {
+			text = zg361_ratio_policy_decision_ready
+			NOT = { has_character_flag = zg361_ratio_policy_pending }
 		}
 	}
-	is_valid = { prestige >= 75 }
-	is_valid_showing_failures_only = { prestige >= 75 }
+	is_valid_showing_failures_only = {
+		prestige >= 75
+		custom_description = {
+			text = zg361_ratio_policy_decision_ready
+			NOT = { has_character_flag = zg361_ratio_policy_pending }
+		}
+	}
 
 	cost = { prestige = 75 }
 
+	# 决议 effect 会被 UI 预评估：只发一次性请求，由不可见 GUI bridge 打开三选项事件。
 	effect = {
-		set_variable = { name = zg361_ratio_override value = 0 }
-		debug_log = "ZG361: liege set bottom ratio override to off (0%)"
+		add_character_flag = zg361_ratio_policy_pending
 	}
 }

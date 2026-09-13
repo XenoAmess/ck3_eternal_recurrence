@@ -422,6 +422,9 @@ def check_runtime_invariants() -> None:
     registrations = read_text(MOD_ROOT / "gui" / "scripted_widgets" / "zg361_scripted_widgets.txt")
     scoreboard_gui = read_text(MOD_ROOT / "gui" / "zg361_scoreboard.gui")
     scripted_guis = read_text(MOD_ROOT / "common" / "scripted_guis" / "zg361_scoreboard_guis.txt")
+    ratio_scripted_guis = read_text(
+        MOD_ROOT / "common" / "scripted_guis" / "zg361_ratio_policy_guis.txt"
+    )
     on_actions = read_text(MOD_ROOT / "common" / "on_action" / "zg361_on_actions.txt")
     activity = read_text(MOD_ROOT / "common" / "activities" / "activity_types" / "zg361_jingcha.txt")
     mandate_effects = read_text(
@@ -525,10 +528,42 @@ def check_runtime_invariants() -> None:
         err("obsolete review carrier event must not remain orphaned")
     if "add_character_flag = zg361_review_now_pending" not in decisions:
         err("review decision is missing its one-shot GUI bridge flag")
-    if len(re.findall(r"\bpicture\s*=\s*\{\s*reference\s*=", decisions, re.S)) != 5:
-        err("all five 361 decisions must declare an existing vanilla picture")
+    if len(re.findall(r"\bpicture\s*=\s*\{\s*reference\s*=", decisions, re.S)) != 3:
+        err("all three 361 decision entries must declare an existing vanilla picture")
     if "zg361_review_now_bridge_gui" not in scripted_guis:
         err("review decision scripted GUI bridge is missing")
+    if "zg361_ratio_policy_decision = {" not in decisions:
+        err("bottom quota must use one consolidated policy decision")
+    for obsolete_ratio_decision in (
+        "zg361_ratio_strict_decision",
+        "zg361_ratio_relaxed_decision",
+        "zg361_ratio_off_decision",
+    ):
+        if obsolete_ratio_decision in decisions:
+            err(f"obsolete separate ratio decision remains: {obsolete_ratio_decision}")
+    for ratio_bridge_token in (
+        "zg361_ratio_policy_bridge_gui = {",
+        "is_ai = no",
+        "remove_character_flag = zg361_ratio_policy_pending",
+        "trigger_event = zg361.54",
+    ):
+        if ratio_bridge_token not in ratio_scripted_guis:
+            err(f"bottom-quota decision bridge missing token: {ratio_bridge_token}")
+    ratio_selector = events.split("zg361.54 = {", 1)
+    if len(ratio_selector) != 2:
+        err("bottom-quota three-option selector event zg361.54 is missing")
+    else:
+        ratio_selector_body = ratio_selector[1].split(
+            "# ============================================================", 1
+        )[0]
+        if ratio_selector_body.count("\toption = {") != 3:
+            err("bottom-quota selector must expose exactly three event options")
+        for ratio in (10, 5, 0):
+            if (
+                f"set_variable = {{ name = zg361_ratio_override value = {ratio} }}"
+                not in ratio_selector_body
+            ):
+                err(f"bottom-quota selector is missing the {ratio}% route")
     if re.search(r"add_gold\s*=\s*\{\s*value\s*=\s*0\s+subtract", events):
         err("negative add_gold pattern is invalid on CK3 1.19")
     if "trigger = {\n\t\tzg361_is_elimination_candidate_trigger = yes" not in events:

@@ -448,6 +448,81 @@ zg361.53 = {
 	option = { name = zg361.53.a }
 }
 
+# 玩家领主：末位比例单入口三档选择。
+zg361.54 = {
+	type = character_event
+	theme = crown
+	title = zg361.54.t
+	desc = {
+		desc = zg361.54.desc
+		first_valid = {
+			triggered_desc = {
+				trigger = { zg361_ratio_policy_strict_current_trigger = yes }
+				desc = zg361_ratio_policy_current_strict
+			}
+			triggered_desc = {
+				trigger = { zg361_ratio_policy_relaxed_current_trigger = yes }
+				desc = zg361_ratio_policy_current_relaxed
+			}
+			triggered_desc = {
+				trigger = { zg361_ratio_policy_off_current_trigger = yes }
+				desc = zg361_ratio_policy_current_off
+			}
+			desc = zg361_ratio_policy_current_strict
+		}
+	}
+	trigger = {
+		is_ai = no
+		zg361_is_celestial_liege_trigger = yes
+		has_game_rule = zg361_on
+	}
+
+	option = {
+		name = zg361.54.a
+		show_as_unavailable = {
+			custom_description = {
+				text = zg361_ratio_policy_already_current
+				zg361_ratio_policy_strict_current_trigger = yes
+			}
+		}
+		custom_tooltip = zg361.54.a.tt
+		hidden_effect = {
+			set_variable = { name = zg361_ratio_override value = 10 }
+			debug_log = "ZG361: liege set bottom ratio override to strict (10%)"
+		}
+	}
+
+	option = {
+		name = zg361.54.b
+		show_as_unavailable = {
+			custom_description = {
+				text = zg361_ratio_policy_already_current
+				zg361_ratio_policy_relaxed_current_trigger = yes
+			}
+		}
+		custom_tooltip = zg361.54.b.tt
+		hidden_effect = {
+			set_variable = { name = zg361_ratio_override value = 5 }
+			debug_log = "ZG361: liege set bottom ratio override to relaxed (5%)"
+		}
+	}
+
+	option = {
+		name = zg361.54.c
+		show_as_unavailable = {
+			custom_description = {
+				text = zg361_ratio_policy_already_current
+				zg361_ratio_policy_off_current_trigger = yes
+			}
+		}
+		custom_tooltip = zg361.54.c.tt
+		hidden_effect = {
+			set_variable = { name = zg361_ratio_override value = 0 }
+			debug_log = "ZG361: liege set bottom ratio override to off (0%)"
+		}
+	}
+}
+
 # ============================================================
 # 玩家领主：末位淘汰名单（批量处置；逐人处置走角色互动）
 # ============================================================

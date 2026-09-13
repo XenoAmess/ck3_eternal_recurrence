@@ -38,8 +38,12 @@ class Phase2Ck3WiringTests(unittest.TestCase):
         )
         cls.events = read("events/zg361_events.txt")
         cls.decisions = read("common/decisions/zg361_decisions.txt")
+        cls.triggers = read("common/scripted_triggers/zg361_triggers.txt")
         cls.interactions = read("common/character_interactions/zg361_interactions.txt")
         cls.scripted_guis = read("common/scripted_guis/zg361_scoreboard_guis.txt")
+        cls.ratio_scripted_guis = read(
+            "common/scripted_guis/zg361_ratio_policy_guis.txt"
+        )
         cls.bridge = read("gui/zg361_decision_bridge.gui")
         cls.scoreboard = read_checked_in_scoreboard_effects(MOD_ROOT)
 
@@ -303,6 +307,63 @@ class Phase2Ck3WiringTests(unittest.TestCase):
         self.assertIn('name = "zg361_view_result_statement"', self.bridge)
         self.assertNotIn("button", self.bridge.lower())
 
+    def test_bottom_quota_uses_one_decision_and_three_option_event(self) -> None:
+        self.assertEqual(self.decisions.count("zg361_ratio_policy_decision = {"), 1)
+        for obsolete in (
+            "zg361_ratio_strict_decision",
+            "zg361_ratio_relaxed_decision",
+            "zg361_ratio_off_decision",
+        ):
+            self.assertNotIn(obsolete, self.decisions)
+
+        decision = self.decisions.split("zg361_ratio_policy_decision = {", 1)[1]
+        self.assertIn("cooldown = { years = 1 }", decision)
+        self.assertIn("cost = { prestige = 75 }", decision)
+        self.assertIn("add_character_flag = zg361_ratio_policy_pending", decision)
+        for current in ("strict", "relaxed", "off"):
+            self.assertIn(
+                f"zg361_ratio_policy_{current}_current_trigger = yes", decision
+            )
+            self.assertIn(f"zg361_ratio_policy_title_{current}", decision)
+
+        for current, ratio in (("strict", 10), ("relaxed", 5), ("off", 0)):
+            match = re.search(
+                rf"zg361_ratio_policy_{current}_current_trigger\s*=\s*\{{"
+                rf"(?P<body>.*?)^\}}",
+                self.triggers,
+                re.M | re.S,
+            )
+            self.assertIsNotNone(match)
+            body = match.group("body")
+            self.assertIn("trigger_if = {", body)
+            self.assertIn("limit = { has_variable = zg361_ratio_override }", body)
+            self.assertIn(f"var:zg361_ratio_override = {ratio}", body)
+            self.assertIn(
+                f"trigger_else = {{ has_game_rule = zg361_ratio_{current} }}", body
+            )
+
+        selector = self.events.split("zg361.54 = {", 1)[1].split(
+            "# ============================================================", 1
+        )[0]
+        self.assertEqual(selector.count("\toption = {"), 3)
+        self.assertEqual(selector.count("show_as_unavailable = {"), 3)
+        self.assertEqual(selector.count("hidden_effect = {"), 3)
+        self.assertIn("is_ai = no", selector)
+        for ratio in (10, 5, 0):
+            self.assertIn(
+                f"set_variable = {{ name = zg361_ratio_override value = {ratio} }}",
+                selector,
+            )
+
+        self.assertIn("zg361_ratio_policy_bridge_gui = {", self.ratio_scripted_guis)
+        self.assertIn("is_ai = no", self.ratio_scripted_guis)
+        self.assertIn(
+            "remove_character_flag = zg361_ratio_policy_pending",
+            self.ratio_scripted_guis,
+        )
+        self.assertIn("trigger_event = zg361.54", self.ratio_scripted_guis)
+        self.assertIn('name = "zg361_ratio_policy"', self.bridge)
+
     def test_subject_interaction_is_bound_to_frozen_owner_and_open_clock(self) -> None:
         appeal = self.interactions.split("zg361_appeal_interaction = {", 1)[1].split(
             "zg361_review_talk_interaction = {", 1
@@ -349,7 +410,9 @@ class Phase2Ck3WiringTests(unittest.TestCase):
             "events/zg361_events.txt",
             "common/decisions/zg361_decisions.txt",
             "common/character_interactions/zg361_interactions.txt",
+            "common/scripted_triggers/zg361_triggers.txt",
             "common/scripted_guis/zg361_scoreboard_guis.txt",
+            "common/scripted_guis/zg361_ratio_policy_guis.txt",
             "gui/zg361_decision_bridge.gui",
         )
         for relative in paths:

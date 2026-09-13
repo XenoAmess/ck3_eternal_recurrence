@@ -263,3 +263,29 @@ zg361_is_elimination_candidate_trigger = {
 	has_variable = zg361_streak_bottom
 	var:zg361_streak_bottom >= 2
 }
+
+# 玩家调节末位比例时显示当前生效档位。领主 override 优先；没有 override
+# 才回落到开局游戏规则，与配额计算和经理治理快照的优先级一致。
+zg361_ratio_policy_strict_current_trigger = {
+	trigger_if = {
+		limit = { has_variable = zg361_ratio_override }
+		var:zg361_ratio_override = 10
+	}
+	trigger_else = { has_game_rule = zg361_ratio_strict }
+}
+
+zg361_ratio_policy_relaxed_current_trigger = {
+	trigger_if = {
+		limit = { has_variable = zg361_ratio_override }
+		var:zg361_ratio_override = 5
+	}
+	trigger_else = { has_game_rule = zg361_ratio_relaxed }
+}
+
+zg361_ratio_policy_off_current_trigger = {
+	trigger_if = {
+		limit = { has_variable = zg361_ratio_override }
+		var:zg361_ratio_override = 0
+	}
+	trigger_else = { has_game_rule = zg361_ratio_off }
+}

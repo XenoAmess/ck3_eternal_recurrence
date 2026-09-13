@@ -1,0 +1,21 @@
+﻿# ZhongGuo 361 Style — bottom-quota decision bridge
+
+zg361_ratio_policy_bridge_gui = {
+	scope = character
+
+	is_shown = {
+		is_ai = no
+		has_character_flag = zg361_ratio_policy_pending
+	}
+
+	effect = {
+		if = {
+			limit = {
+				is_ai = no
+				has_character_flag = zg361_ratio_policy_pending
+			}
+			remove_character_flag = zg361_ratio_policy_pending
+			trigger_event = zg361.54
+		}
+	}
+}
