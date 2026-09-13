@@ -118,5 +118,7 @@ proof。
 - 一次仅完成 runner 参数检查的 setup RED 保留为 `mcp-frontend-route-lobby-live3.json`（690 bytes，SHA-256 `ACAE42ADE9A86954CFA872471BA337819195B426A2F4187EEC77D72C05B8D967`）；Steam 路径写错，在启动 CK3 前即停止，不属于能力 attempt。
 - 第三次真实 attempt `mcp-frontend-route-lobby-live4.json`（94,822 bytes，SHA-256 `7F7180A929095C2D24416AE0B1F20C2741F47AB63DFD810C1820F00034C839C0`）在修正 binding 后持续取得结构化 route 响应，但加载完成后的 route 始终为 `unavailable`，120 秒后按合同 RED。游戏日志证明已进入 `In Game` idler，说明源码推定的 `lobbyview` 身份尚未被 runtime 证实；cleanup 与 Steam offline 均为 GREEN。
 - 因此新增上述有界只读 GUI tree inspector，Release DLL 编译链接、mailbox source-contract 与 Python contract/service/official-MCP `7/7` 均 GREEN，状态为 `mcp-static-ready / live=false`。它是为这次可复现 route-identity 缺口补齐的 MCP 观测功能，不是 OCR 或桌面自动化替代品。
+- `live5` 是另一份启动前 setup RED：管道名缺少 `\\.\pipe\` 前缀，未启动 CK3；artifact 为 1,667 bytes，SHA-256 `F6827D482FACBF642167B1B5E768957C37E9CAB957A024BE8250003B9E0B8EAC`。
+- `mcp-frontend-route-lobby-live6.json`（352,192 bytes，SHA-256 `E0E8FF03AD61C71F4A9E52613FF27D5056502FF3579B961DF4E2134AE1B4675F`）的 inspector 以 native structured data 直接观察到可见、enabled 的 `lobbyview` 位于全局 root 深度 2；旧 fixed-name resolver 却返回 `unavailable`。根因是 resolver 的 4,096 节点深度优先预算被同层大型局内窗口的深子树先耗尽。固定名称解析现改为同上限的广度优先，优先覆盖浅层 top-level 身份；不扩大节点、深度、名称或动作边界。该 attempt 的 Steam offline 与 cleanup 均为 GREEN，但动作因旧 resolver 仍报告 RED。
 
 下一步用受管 CK3 在同一路径末端调用 tree inspector，以 runtime name 证据修正 `bookmarks → lobby` 的后置条件；通过后继续补 lobby 的确定性角色选择、ruler designer 与 CoA 页动作，禁止以鼠标链代替缺失 primitive。

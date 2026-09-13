@@ -623,11 +623,12 @@ void *FindDescendant(const ZhongguoScoreboardAccessV1 &access, void *root,
     std::size_t depth = 0;
   };
   std::array<Pending, kMaximumWidgetTraversal> pending{};
-  std::size_t size = 1;
+  std::size_t head = 0;
+  std::size_t tail = 1;
   pending[0] = {root, 0};
   std::size_t visited = 0;
-  while (size != 0 && visited++ < kMaximumWidgetTraversal) {
-    const auto current = pending[--size];
+  while (head < tail && visited++ < kMaximumWidgetTraversal) {
+    const auto current = pending[head++];
     if (WidgetNameEquals(access, current.widget, expected)) {
       return current.widget;
     }
@@ -640,7 +641,7 @@ void *FindDescendant(const ZhongguoScoreboardAccessV1 &access, void *root,
                    count) ||
         count < 0 || count > kMaximumWidgetChildren ||
         (count != 0 && children == nullptr) ||
-        size + static_cast<std::size_t>(count) > pending.size()) {
+        tail + static_cast<std::size_t>(count) > pending.size()) {
       return nullptr;
     }
     for (std::int32_t index = 0; index < count; ++index) {
@@ -649,7 +650,7 @@ void *FindDescendant(const ZhongguoScoreboardAccessV1 &access, void *root,
                      static_cast<std::size_t>(index) * sizeof(void *), child)) {
         return nullptr;
       }
-      if (child != nullptr) pending[size++] = {child, current.depth + 1};
+      if (child != nullptr) pending[tail++] = {child, current.depth + 1};
     }
   }
   return nullptr;
