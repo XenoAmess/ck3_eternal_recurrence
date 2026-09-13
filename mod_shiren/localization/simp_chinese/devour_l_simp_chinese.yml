@@ -1,0 +1,51 @@
+﻿l_simp_chinese:
+ execution_interaction:0 "处决"
+ execute_prisoner_interaction:0 "处决"
+ 
+ devour_bone_name:0 "[bone_victim.GetUINameNoTooltip]之骨"
+ devour_bone_desc:0 "[bone_victim.GetUIName]被吃掉了，这是[bone_victim.GetSheHe]被吃剩的骨头。"
+
+
+ trait_devour_master:0 "食人魔王"
+ trait_devour_master_desc:0 "此人跨越了道德与理智的边界，通过无止境地吞食同类的血肉来获得可怖的力量。"
+ trait_track_cannibal_track:0 "食人恶行"
+ trait_track_cannibal_track_desc:0 "随着葬身腹中的人类逐渐增多，其残暴凶名与体魄愈发骇人。"
+
+
+ EXECUTION_DEVOUR:0 "砍头……然后吃掉！"
+ devour_as_execution_tooltip:0 "你将吞食此人，将其生命与潜质彻底占为己有。"
+ devour_imprison_desc:0 "凶名赫赫"
+
+
+ trait_devour_stat_5:0 "被吃掉的皇帝"
+ trait_devour_stat_5_desc:0 "此人曾身负帝国至尊血统，最终却只是沦为了食人魔王的腹中之餐。"
+ trait_devour_stat_4:0 "被吃掉的国王"
+ trait_devour_stat_4_desc:0 "一位国王的生命与气数，皆已尽数化作食人魔王的力量。"
+ trait_devour_stat_3:0 "被吃掉的公爵"
+ trait_devour_stat_3_desc:0 "一位尊贵的公爵，如今也不过是一具被消化干净的残渣。"
+ trait_devour_stat_2:0 "被吃掉的伯爵"
+ trait_devour_stat_2_desc:0 "一名贵族的血肉，已被食人魔王彻底咽下。"
+ trait_devour_stat_1:0 "被吃掉的普通人"
+ trait_devour_stat_1_desc:0 "一个无足轻重的灵魂，其微薄的生命化作了食人魔王的食粮。"
+
+ mass_devour_button_tooltip:0 "#T 批量吃掉#!\n将地牢中所有未被锁定的囚犯尽数吃掉！"
+ devour_ledger_button_tooltip:0 "#T 食人记录#!\n翻开你的食人名册，查阅所有被使用者的详细档案！"
+ mass_devour_title:0 "批量吃掉"
+ mass_devour_desc_1:0 "吃掉在你的地牢中的所有未锁定角色。"
+ mass_devour_desc_2:0 "这将会汲取他们的血肉与精华，转化为你的力量！"
+ mass_devour_confirm:0 "食用"
+ devour_ledger_title:0 "#devour_red 食人记录#!"
+ devour_ledger_empty:0 "你的名册上一片空白，尚未有任何人类被你食用……"
+ devour_ledger_close:0 "合上名册"
+ devour_ledger_stat_prefix:0 "已食用："
+ devour_ledger_stat_commoner:0 "普通人、"
+ devour_ledger_stat_county:0 "伯爵、"
+ devour_ledger_stat_duchy:0 "公爵、"
+ devour_ledger_stat_kingdom:0 "国王、"
+ devour_ledger_stat_empire:0 "皇帝"
+ devour_stat_5_label:0 "#devour_purple 获得基础属性5点#!"
+ devour_stat_4_label:0 "#devour_blue 获得基础属性4点#!"
+ devour_stat_3_label:0 "#devour_green 获得基础属性3点#!"
+ devour_stat_2_label:0 "#devour_white 获得基础属性2点#!"
+ devour_stat_1_label:0 "#devour_gray 获得基础属性1点#!"
+ devour_eaten_date:0 "于[Character.GetDeathDate.GetString]食用"

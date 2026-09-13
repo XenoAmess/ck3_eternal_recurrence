@@ -1,0 +1,20 @@
+devour_bone_modifier_common = {
+	enemy_hostile_scheme_success_chance_add = -5
+	dread_baseline_add = 5
+}
+
+devour_bone_modifier_duchy = {
+	enemy_hostile_scheme_success_chance_add = -10
+	dread_baseline_add = 10
+}
+
+devour_bone_modifier_kingdom = {
+	enemy_hostile_scheme_success_chance_add = -20
+	dread_baseline_add = 20
+}
+
+devour_bone_modifier_empire = {
+	domain_limit = 1
+	enemy_hostile_scheme_success_chance_add = -40
+	dread_baseline_add = 40
+}

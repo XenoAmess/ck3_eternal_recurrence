@@ -1,0 +1,612 @@
+devour_steal_genes_effect = {
+	# 1. 智力
+	if = {
+		limit = { $VICTIM$ = { has_trait = intellect_good_3 } }
+		if = {
+			limit = { NOT = { $DEVOURER$ = { has_trait = intellect_good_3 } } }
+			if = {
+				limit = { $DEVOURER$ = { has_trait = intellect_good_2 } }
+				random_list = {
+					20 = { $DEVOURER$ = { remove_trait = intellect_good_2 add_trait = intellect_good_3 } }
+					80 = { $VICTIM$ = { remove_trait = intellect_good_3 } }
+				}
+			}
+			else_if = {
+				limit = { $DEVOURER$ = { has_trait = intellect_good_1 } }
+				random_list = {
+					40 = { $DEVOURER$ = { remove_trait = intellect_good_1 add_trait = intellect_good_2 } $VICTIM$ = { remove_trait = intellect_good_3 add_trait = intellect_good_2 } }
+					60 = { $VICTIM$ = { remove_trait = intellect_good_3 } }
+				}
+			}
+			else = {
+				random_list = {
+					80 = { $DEVOURER$ = { add_trait = intellect_good_1 } $VICTIM$ = { remove_trait = intellect_good_3 add_trait = intellect_good_1 } }
+					20 = { $VICTIM$ = { remove_trait = intellect_good_3 } }
+				}
+			}
+		}
+		else = { $VICTIM$ = { remove_trait = intellect_good_3 } }
+	}
+	else_if = {
+		limit = { $VICTIM$ = { has_trait = intellect_good_2 } }
+		if = {
+			limit = { NOT = { $DEVOURER$ = { OR = { has_trait = intellect_good_3 has_trait = intellect_good_2 } } } }
+			if = {
+				limit = { $DEVOURER$ = { has_trait = intellect_good_1 } }
+				random_list = {
+					30 = { $DEVOURER$ = { remove_trait = intellect_good_1 add_trait = intellect_good_2 } }
+					70 = { $VICTIM$ = { remove_trait = intellect_good_2 } }
+				}
+			}
+			else = {
+				random_list = {
+					60 = { $DEVOURER$ = { add_trait = intellect_good_1 } $VICTIM$ = { remove_trait = intellect_good_2 add_trait = intellect_good_1 } }
+					40 = { $VICTIM$ = { remove_trait = intellect_good_2 } }
+				}
+			}
+		}
+		else = { $VICTIM$ = { remove_trait = intellect_good_2 } }
+	}
+	else_if = {
+		limit = { $VICTIM$ = { has_trait = intellect_good_1 } }
+		if = {
+			limit = { NOT = { $DEVOURER$ = { OR = { has_trait = intellect_good_3 has_trait = intellect_good_2 has_trait = intellect_good_1 } } } }
+			random_list = {
+				40 = { $DEVOURER$ = { add_trait = intellect_good_1 } }
+				60 = { $VICTIM$ = { remove_trait = intellect_good_1 } }
+			}
+		}
+		else = { $VICTIM$ = { remove_trait = intellect_good_1 } }
+	}
+	else_if = {
+		limit = { $VICTIM$ = { has_trait = intelligent } }
+		if = {
+			limit = { NOT = { $DEVOURER$ = { OR = { has_trait = genius has_trait = intelligent } } } }
+			if = {
+				limit = { $DEVOURER$ = { has_trait = quick } }
+				random_list = {
+					30 = { $DEVOURER$ = { remove_trait = quick add_trait = intelligent } }
+					70 = { $VICTIM$ = { remove_trait = intelligent } }
+				}
+			}
+			else = {
+				random_list = {
+					60 = {
+						$DEVOURER$ = { add_trait = quick }
+						$VICTIM$ = { remove_trait = intelligent add_trait = quick }
+					}
+					40 = { $VICTIM$ = { remove_trait = intelligent } }
+				}
+			}
+		}
+		else = { $VICTIM$ = { remove_trait = intelligent } }
+	}
+	else_if = {
+		limit = { $VICTIM$ = { has_trait = quick } }
+		if = {
+			limit = { NOT = { $DEVOURER$ = { OR = { has_trait = genius has_trait = intelligent has_trait = quick } } } }
+			random_list = {
+				40 = { $DEVOURER$ = { add_trait = quick } }
+				60 = { $VICTIM$ = { remove_trait = quick } }
+			}
+		}
+		else = { $VICTIM$ = { remove_trait = quick } }
+	}
+
+	# 2. 体质系（海格力斯、健壮、硬朗）
+	if = {
+		limit = { $VICTIM$ = { has_trait = physique_good_3 } }
+		if = {
+			limit = { NOT = { $DEVOURER$ = { has_trait = physique_good_3 } } }
+			if = {
+				limit = { $DEVOURER$ = { has_trait = physique_good_2 } }
+				random_list = {
+					20 = { $DEVOURER$ = { remove_trait = physique_good_2 add_trait = physique_good_3 } }
+					80 = { $VICTIM$ = { remove_trait = physique_good_3 } }
+				}
+			}
+			else_if = {
+				limit = { $DEVOURER$ = { has_trait = physique_good_1 } }
+				random_list = {
+					40 = {
+						$DEVOURER$ = { remove_trait = physique_good_1 add_trait = physique_good_2 }
+						$VICTIM$ = { remove_trait = physique_good_3 add_trait = physique_good_2 }
+					}
+					60 = { $VICTIM$ = { remove_trait = physique_good_3 } }
+				}
+			}
+			else = {
+				random_list = {
+					80 = {
+						$DEVOURER$ = { add_trait = physique_good_1 }
+						$VICTIM$ = { remove_trait = physique_good_3 add_trait = physique_good_1 }
+					}
+					20 = { $VICTIM$ = { remove_trait = physique_good_3 } }
+				}
+			}
+		}
+		else = { $VICTIM$ = { remove_trait = physique_good_3 } }
+	}
+	else_if = {
+		limit = { $VICTIM$ = { has_trait = physique_good_2 } }
+		if = {
+			limit = { NOT = { $DEVOURER$ = { OR = { has_trait = physique_good_3 has_trait = physique_good_2 } } } }
+			if = {
+				limit = { $DEVOURER$ = { has_trait = physique_good_1 } }
+				random_list = {
+					30 = { $DEVOURER$ = { remove_trait = physique_good_1 add_trait = physique_good_2 } }
+					70 = { $VICTIM$ = { remove_trait = physique_good_2 } }
+				}
+			}
+			else = {
+				random_list = {
+					60 = {
+						$DEVOURER$ = { add_trait = physique_good_1 }
+						$VICTIM$ = { remove_trait = physique_good_2 add_trait = physique_good_1 }
+					}
+					40 = { $VICTIM$ = { remove_trait = physique_good_2 } }
+				}
+			}
+		}
+		else = { $VICTIM$ = { remove_trait = physique_good_2 } }
+	}
+	else_if = {
+		limit = { $VICTIM$ = { has_trait = physique_good_1 } }
+		if = {
+			limit = { NOT = { $DEVOURER$ = { OR = { has_trait = physique_good_3 has_trait = physique_good_2 has_trait = physique_good_1 } } } }
+			random_list = {
+				40 = { $DEVOURER$ = { add_trait = physique_good_1 } }
+				60 = { $VICTIM$ = { remove_trait = physique_good_1 } }
+			}
+		}
+		else = { $VICTIM$ = { remove_trait = physique_good_1 } }
+	}
+
+	# 3. 美貌系（倾国倾城、貌美如花、眉清目秀）
+	if = {
+		limit = { $VICTIM$ = { has_trait = beauty_good_3 } }
+		if = {
+			limit = { NOT = { $DEVOURER$ = { has_trait = beauty_good_3 } } }
+			if = {
+				limit = { $DEVOURER$ = { has_trait = beauty_good_2 } }
+				random_list = {
+					20 = { $DEVOURER$ = { remove_trait = beauty_good_2 add_trait = beauty_good_3 } }
+					80 = { $VICTIM$ = { remove_trait = beauty_good_3 } }
+				}
+			}
+			else_if = {
+				limit = { $DEVOURER$ = { has_trait = beauty_good_1 } }
+				random_list = {
+					40 = {
+						$DEVOURER$ = { remove_trait = beauty_good_1 add_trait = beauty_good_2 }
+						$VICTIM$ = { remove_trait = beauty_good_3 add_trait = beauty_good_2 }
+					}
+					60 = { $VICTIM$ = { remove_trait = beauty_good_3 } }
+				}
+			}
+			else = {
+				random_list = {
+					80 = {
+						$DEVOURER$ = { add_trait = beauty_good_1 }
+						$VICTIM$ = { remove_trait = beauty_good_3 add_trait = beauty_good_1 }
+					}
+					20 = { $VICTIM$ = { remove_trait = beauty_good_3 } }
+				}
+			}
+		}
+		else = { $VICTIM$ = { remove_trait = beauty_good_3 } }
+	}
+	else_if = {
+		limit = { $VICTIM$ = { has_trait = beauty_good_2 } }
+		if = {
+			limit = { NOT = { $DEVOURER$ = { OR = { has_trait = beauty_good_3 has_trait = beauty_good_2 } } } }
+			if = {
+				limit = { $DEVOURER$ = { has_trait = beauty_good_1 } }
+				random_list = {
+					30 = { $DEVOURER$ = { remove_trait = beauty_good_1 add_trait = beauty_good_2 } }
+					70 = { $VICTIM$ = { remove_trait = beauty_good_2 } }
+				}
+			}
+			else = {
+				random_list = {
+					60 = {
+						$DEVOURER$ = { add_trait = beauty_good_1 }
+						$VICTIM$ = { remove_trait = beauty_good_2 add_trait = beauty_good_1 }
+					}
+					40 = { $VICTIM$ = { remove_trait = beauty_good_2 } }
+				}
+			}
+		}
+		else = { $VICTIM$ = { remove_trait = beauty_good_2 } }
+	}
+	else_if = {
+		limit = { $VICTIM$ = { has_trait = beauty_good_1 } }
+		if = {
+			limit = { NOT = { $DEVOURER$ = { OR = { has_trait = beauty_good_3 has_trait = beauty_good_2 has_trait = beauty_good_1 } } } }
+			random_list = {
+				40 = { $DEVOURER$ = { add_trait = beauty_good_1 } }
+				60 = { $VICTIM$ = { remove_trait = beauty_good_1 } }
+			}
+		}
+		else = { $VICTIM$ = { remove_trait = beauty_good_1 } }
+	}
+
+	# 4. 纯血与多产
+	if = {
+		limit = { $VICTIM$ = { has_trait = pure_blooded } }
+		if = {
+			limit = { NOT = { $DEVOURER$ = { has_trait = pure_blooded } } }
+			random_list = {
+				20 = { $DEVOURER$ = { add_trait = pure_blooded } }
+				80 = { $VICTIM$ = { remove_trait = pure_blooded } }
+			}
+		}
+		else = { $VICTIM$ = { remove_trait = pure_blooded } }
+	}
+	if = {
+		limit = { $VICTIM$ = { has_trait = fecund } }
+		if = {
+			limit = { NOT = { $DEVOURER$ = { has_trait = fecund } } }
+			random_list = {
+				20 = { $DEVOURER$ = { add_trait = fecund } }
+				80 = { $VICTIM$ = { remove_trait = fecund } }
+			}
+		}
+		else = { $VICTIM$ = { remove_trait = fecund } }
+	}
+
+	# 5. 将领特质
+	if = {
+		limit = { $VICTIM$ = { has_trait = military_engineer } }
+		if = {
+			limit = { NOT = { $DEVOURER$ = { has_trait = military_engineer } } }
+			random_list = {
+				20 = { $DEVOURER$ = { add_trait = military_engineer } }
+				80 = { $VICTIM$ = { remove_trait = military_engineer } }
+			}
+		}
+		else = { $VICTIM$ = { remove_trait = military_engineer } }
+	}
+	if = {
+		limit = { $VICTIM$ = { has_trait = organizer } }
+		if = {
+			limit = { NOT = { $DEVOURER$ = { has_trait = organizer } } }
+			random_list = {
+				20 = { $DEVOURER$ = { add_trait = organizer } }
+				80 = { $VICTIM$ = { remove_trait = organizer } }
+			}
+		}
+		else = { $VICTIM$ = { remove_trait = organizer } }
+	}
+	if = {
+		limit = { $VICTIM$ = { has_trait = logistician } }
+		if = {
+			limit = { NOT = { $DEVOURER$ = { has_trait = logistician } } }
+			random_list = {
+				20 = { $DEVOURER$ = { add_trait = logistician } }
+				80 = { $VICTIM$ = { remove_trait = logistician } }
+			}
+		}
+		else = { $VICTIM$ = { remove_trait = logistician } }
+	}
+	if = {
+		limit = { $VICTIM$ = { has_trait = flexible_leader } }
+		if = {
+			limit = { NOT = { $DEVOURER$ = { has_trait = flexible_leader } } }
+			random_list = {
+				20 = { $DEVOURER$ = { add_trait = flexible_leader } }
+				80 = { $VICTIM$ = { remove_trait = flexible_leader } }
+			}
+		}
+		else = { $VICTIM$ = { remove_trait = flexible_leader } }
+	}
+	if = {
+		limit = { $VICTIM$ = { has_trait = aggressive_attacker } }
+		if = {
+			limit = { NOT = { $DEVOURER$ = { OR = { has_trait = aggressive_attacker has_trait = unyielding_defender } } } }
+			random_list = {
+				20 = { $DEVOURER$ = { add_trait = aggressive_attacker } }
+				80 = { $VICTIM$ = { remove_trait = aggressive_attacker } }
+			}
+		}
+		else = { $VICTIM$ = { remove_trait = aggressive_attacker } }
+	}
+	if = {
+		limit = { $VICTIM$ = { has_trait = unyielding_defender } }
+		if = {
+			limit = { NOT = { $DEVOURER$ = { OR = { has_trait = aggressive_attacker has_trait = unyielding_defender } } } }
+			random_list = {
+				20 = { $DEVOURER$ = { add_trait = unyielding_defender } }
+				80 = { $VICTIM$ = { remove_trait = unyielding_defender } }
+			}
+		}
+		else = { $VICTIM$ = { remove_trait = unyielding_defender } }
+	}
+	if = {
+		limit = { $VICTIM$ = { has_trait = cautious_leader } }
+		if = {
+			limit = { NOT = { $DEVOURER$ = { OR = { has_trait = cautious_leader has_trait = reckless } } } }
+			random_list = {
+				20 = { $DEVOURER$ = { add_trait = cautious_leader } }
+				80 = { $VICTIM$ = { remove_trait = cautious_leader } }
+			}
+		}
+		else = { $VICTIM$ = { remove_trait = cautious_leader } }
+	}
+	if = {
+		limit = { $VICTIM$ = { has_trait = reckless } }
+		if = {
+			limit = { NOT = { $DEVOURER$ = { OR = { has_trait = cautious_leader has_trait = reckless } } } }
+			random_list = {
+				20 = { $DEVOURER$ = { add_trait = reckless } }
+				80 = { $VICTIM$ = { remove_trait = reckless } }
+			}
+		}
+		else = { $VICTIM$ = { remove_trait = reckless } }
+	}
+	if = {
+		limit = { $VICTIM$ = { has_trait = holy_warrior } }
+		if = {
+			limit = { NOT = { $DEVOURER$ = { has_trait = holy_warrior } } }
+			random_list = {
+				20 = { $DEVOURER$ = { add_trait = holy_warrior } }
+				80 = { $VICTIM$ = { remove_trait = holy_warrior } }
+			}
+		}
+		else = { $VICTIM$ = { remove_trait = holy_warrior } }
+	}
+	if = {
+		limit = { $VICTIM$ = { has_trait = forder } }
+		if = {
+			limit = { NOT = { $DEVOURER$ = { has_trait = forder } } }
+			random_list = {
+				20 = { $DEVOURER$ = { add_trait = forder } }
+				80 = { $VICTIM$ = { remove_trait = forder } }
+			}
+		}
+		else = { $VICTIM$ = { remove_trait = forder } }
+	}
+	if = {
+		limit = { $VICTIM$ = { has_trait = open_terrain_expert } }
+		if = {
+			limit = { NOT = { $DEVOURER$ = { has_trait = open_terrain_expert } } }
+			random_list = {
+				20 = { $DEVOURER$ = { add_trait = open_terrain_expert } }
+				80 = { $VICTIM$ = { remove_trait = open_terrain_expert } }
+			}
+		}
+		else = { $VICTIM$ = { remove_trait = open_terrain_expert } }
+	}
+	if = {
+		limit = { $VICTIM$ = { has_trait = rough_terrain_expert } }
+		if = {
+			limit = { NOT = { $DEVOURER$ = { has_trait = rough_terrain_expert } } }
+			random_list = {
+				20 = { $DEVOURER$ = { add_trait = rough_terrain_expert } }
+				80 = { $VICTIM$ = { remove_trait = rough_terrain_expert } }
+			}
+		}
+		else = { $VICTIM$ = { remove_trait = rough_terrain_expert } }
+	}
+	if = {
+		limit = { $VICTIM$ = { has_trait = forest_fighter } }
+		if = {
+			limit = { NOT = { $DEVOURER$ = { has_trait = forest_fighter } } }
+			random_list = {
+				20 = { $DEVOURER$ = { add_trait = forest_fighter } }
+				80 = { $VICTIM$ = { remove_trait = forest_fighter } }
+			}
+		}
+		else = { $VICTIM$ = { remove_trait = forest_fighter } }
+	}
+	if = {
+		limit = { $VICTIM$ = { has_trait = desert_warrior } }
+		if = {
+			limit = { NOT = { $DEVOURER$ = { has_trait = desert_warrior } } }
+			random_list = {
+				20 = { $DEVOURER$ = { add_trait = desert_warrior } }
+				80 = { $VICTIM$ = { remove_trait = desert_warrior } }
+			}
+		}
+		else = { $VICTIM$ = { remove_trait = desert_warrior } }
+	}
+	if = {
+		limit = { $VICTIM$ = { has_trait = jungle_stalker } }
+		if = {
+			limit = { NOT = { $DEVOURER$ = { has_trait = jungle_stalker } } }
+			random_list = {
+				20 = { $DEVOURER$ = { add_trait = jungle_stalker } }
+				80 = { $VICTIM$ = { remove_trait = jungle_stalker } }
+			}
+		}
+		else = { $VICTIM$ = { remove_trait = jungle_stalker } }
+	}
+	if = {
+		limit = { $VICTIM$ = { has_trait = winter_soldier } }
+		if = {
+			limit = { NOT = { $DEVOURER$ = { has_trait = winter_soldier } } }
+			random_list = {
+				20 = { $DEVOURER$ = { add_trait = winter_soldier } }
+				80 = { $VICTIM$ = { remove_trait = winter_soldier } }
+			}
+		}
+		else = { $VICTIM$ = { remove_trait = winter_soldier } }
+	}
+	if = {
+		limit = { $VICTIM$ = { has_trait = reaver } }
+		if = {
+			limit = { NOT = { $DEVOURER$ = { has_trait = reaver } } }
+			random_list = {
+				20 = { $DEVOURER$ = { add_trait = reaver } }
+				80 = { $VICTIM$ = { remove_trait = reaver } }
+			}
+		}
+		else = { $VICTIM$ = { remove_trait = reaver } }
+	}
+}
+
+devour_single_character_effect = {
+	scope:victim = {
+		set_variable = do_not_prune
+	}
+
+	# 1. 判定头衔加属性，并在死者身上烙印永不消失的特质！
+	if = {
+		limit = { scope:victim = { highest_held_title_tier >= tier_empire } }
+		root = {
+			random_list = { 1 = { add_diplomacy_skill = 1 } 1 = { add_martial_skill = 1 } 1 = { add_stewardship_skill = 1 } 1 = { add_intrigue_skill = 1 } 1 = { add_learning_skill = 1 } 1 = { add_prowess_skill = 1 } }
+			random_list = { 1 = { add_diplomacy_skill = 1 } 1 = { add_martial_skill = 1 } 1 = { add_stewardship_skill = 1 } 1 = { add_intrigue_skill = 1 } 1 = { add_learning_skill = 1 } 1 = { add_prowess_skill = 1 } }
+			random_list = { 1 = { add_diplomacy_skill = 1 } 1 = { add_martial_skill = 1 } 1 = { add_stewardship_skill = 1 } 1 = { add_intrigue_skill = 1 } 1 = { add_learning_skill = 1 } 1 = { add_prowess_skill = 1 } }
+			random_list = { 1 = { add_diplomacy_skill = 1 } 1 = { add_martial_skill = 1 } 1 = { add_stewardship_skill = 1 } 1 = { add_intrigue_skill = 1 } 1 = { add_learning_skill = 1 } 1 = { add_prowess_skill = 1 } }
+			random_list = { 1 = { add_diplomacy_skill = 1 } 1 = { add_martial_skill = 1 } 1 = { add_stewardship_skill = 1 } 1 = { add_intrigue_skill = 1 } 1 = { add_learning_skill = 1 } 1 = { add_prowess_skill = 1 } }
+		}
+		scope:victim = { add_trait = devour_stat_5 }
+	}
+	else_if = {
+		limit = { scope:victim = { highest_held_title_tier = tier_kingdom } }
+		root = {
+			random_list = { 1 = { add_diplomacy_skill = 1 } 1 = { add_martial_skill = 1 } 1 = { add_stewardship_skill = 1 } 1 = { add_intrigue_skill = 1 } 1 = { add_learning_skill = 1 } 1 = { add_prowess_skill = 1 } }
+			random_list = { 1 = { add_diplomacy_skill = 1 } 1 = { add_martial_skill = 1 } 1 = { add_stewardship_skill = 1 } 1 = { add_intrigue_skill = 1 } 1 = { add_learning_skill = 1 } 1 = { add_prowess_skill = 1 } }
+			random_list = { 1 = { add_diplomacy_skill = 1 } 1 = { add_martial_skill = 1 } 1 = { add_stewardship_skill = 1 } 1 = { add_intrigue_skill = 1 } 1 = { add_learning_skill = 1 } 1 = { add_prowess_skill = 1 } }
+			random_list = { 1 = { add_diplomacy_skill = 1 } 1 = { add_martial_skill = 1 } 1 = { add_stewardship_skill = 1 } 1 = { add_intrigue_skill = 1 } 1 = { add_learning_skill = 1 } 1 = { add_prowess_skill = 1 } }
+		}
+		scope:victim = { add_trait = devour_stat_4 }
+	}
+	else_if = {
+		limit = { scope:victim = { highest_held_title_tier = tier_duchy } }
+		root = {
+			random_list = { 1 = { add_diplomacy_skill = 1 } 1 = { add_martial_skill = 1 } 1 = { add_stewardship_skill = 1 } 1 = { add_intrigue_skill = 1 } 1 = { add_learning_skill = 1 } 1 = { add_prowess_skill = 1 } }
+			random_list = { 1 = { add_diplomacy_skill = 1 } 1 = { add_martial_skill = 1 } 1 = { add_stewardship_skill = 1 } 1 = { add_intrigue_skill = 1 } 1 = { add_learning_skill = 1 } 1 = { add_prowess_skill = 1 } }
+			random_list = { 1 = { add_diplomacy_skill = 1 } 1 = { add_martial_skill = 1 } 1 = { add_stewardship_skill = 1 } 1 = { add_intrigue_skill = 1 } 1 = { add_learning_skill = 1 } 1 = { add_prowess_skill = 1 } }
+		}
+		scope:victim = { add_trait = devour_stat_3 }
+	}
+	else_if = {
+		limit = { scope:victim = { highest_held_title_tier = tier_county } }
+		root = {
+			random_list = { 1 = { add_diplomacy_skill = 1 } 1 = { add_martial_skill = 1 } 1 = { add_stewardship_skill = 1 } 1 = { add_intrigue_skill = 1 } 1 = { add_learning_skill = 1 } 1 = { add_prowess_skill = 1 } }
+			random_list = { 1 = { add_diplomacy_skill = 1 } 1 = { add_martial_skill = 1 } 1 = { add_stewardship_skill = 1 } 1 = { add_intrigue_skill = 1 } 1 = { add_learning_skill = 1 } 1 = { add_prowess_skill = 1 } }
+		}
+		scope:victim = { add_trait = devour_stat_2 }
+	}
+	else = {
+		root = {
+			random_list = { 1 = { add_diplomacy_skill = 1 } 1 = { add_martial_skill = 1 } 1 = { add_stewardship_skill = 1 } 1 = { add_intrigue_skill = 1 } 1 = { add_learning_skill = 1 } 1 = { add_prowess_skill = 1 } }
+		}
+		scope:victim = { add_trait = devour_stat_1 }
+	}
+
+	# 2. 吃神职人员加 200 虔诚
+	if = {
+		limit = {
+			scope:victim = {
+				OR = {
+					is_clergy = yes
+					has_trait = devoted
+					has_council_position = councillor_court_chaplain
+					AND = {
+						exists = faith.religious_head
+						this = faith.religious_head
+					}
+				}
+			}
+		}
+		root = { add_piety = 200 }
+	}
+
+	# 3. 基因与特质掠夺
+	devour_steal_genes_effect = {
+		DEVOURER = root
+		VICTIM = scope:victim
+	}
+	devour_give_bone_effect = {
+		DEVOURER = root
+		VICTIM = scope:victim
+	}
+
+	# 4. 处死受害者并加入手账列表
+	scope:victim = {
+		death = {
+			death_reason = death_execution
+			killer = root
+		}
+	}
+	root = {
+		add_to_variable_list = {
+			name = devoured_ledger_list
+			target = scope:victim
+		}
+		stress_impact = {
+			base = medium_stress_impact_loss
+		}
+		if = {
+			limit = { NOT = { has_trait = devour_master } }
+			add_trait = devour_master
+		}
+		add_trait_xp = {
+			trait = devour_master
+			track = cannibal_track
+			value = 1
+		}
+	}
+}
+devour_give_bone_effect = {
+	$VICTIM$ = {
+		save_scope_as = bone_victim
+	}
+	if = {
+		limit = { $VICTIM$ = { highest_held_title_tier >= tier_empire } }
+		$DEVOURER$ = {
+			create_artifact = {
+				name = devour_bone_name
+				description = devour_bone_desc
+				creator = $VICTIM$
+				type = miscellaneous
+				visuals = devour_bone_visual
+				rarity = illustrious
+				modifier = devour_bone_modifier_empire
+			}
+		}
+	}
+	else_if = {
+		limit = { $VICTIM$ = { highest_held_title_tier = tier_kingdom } }
+		$DEVOURER$ = {
+			create_artifact = {
+				name = devour_bone_name
+				description = devour_bone_desc
+				creator = $VICTIM$
+				type = miscellaneous
+				visuals = devour_bone_visual
+				rarity = famed
+				modifier = devour_bone_modifier_kingdom
+			}
+		}
+	}
+	else_if = {
+		limit = { $VICTIM$ = { highest_held_title_tier = tier_duchy } }
+		$DEVOURER$ = {
+			create_artifact = {
+				name = devour_bone_name
+				description = devour_bone_desc
+				creator = $VICTIM$
+				type = miscellaneous
+				visuals = devour_bone_visual
+				rarity = masterwork
+				modifier = devour_bone_modifier_duchy
+			}
+		}
+	}
+	else = {
+		$DEVOURER$ = {
+			create_artifact = {
+				name = devour_bone_name
+				description = devour_bone_desc
+				creator = $VICTIM$
+				type = miscellaneous
+				visuals = devour_bone_visual
+				rarity = common
+				modifier = devour_bone_modifier_common
+			}
+		}
+	}
+}

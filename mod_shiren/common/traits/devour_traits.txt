@@ -1,0 +1,64 @@
+devour_stat_5 = {
+	shown_in_ruler_designer = no
+	icon = "beichi.dds"
+}
+
+devour_stat_4 = {
+	shown_in_ruler_designer = no
+	icon = "beichi.dds"
+}
+
+devour_stat_3 = {
+	shown_in_ruler_designer = no
+	icon = "beichi.dds"
+}
+
+devour_stat_2 = {
+	shown_in_ruler_designer = no
+	icon = "beichi.dds"
+}
+
+devour_stat_1 = {
+	shown_in_ruler_designer = no
+	icon = "beichi.dds"
+}
+
+# 饕餮履历成长特质（带进度条）
+devour_master = {
+	shown_in_ruler_designer = yes
+	icon = "chiren.dds"
+
+	tracks = {
+		cannibal_track = {
+			# 1级：吃10人
+			10 = {
+				hostile_scheme_phase_duration_add = -20
+				owned_hostile_scheme_success_chance_max_add = 10
+				owned_hostile_scheme_success_chance_add = 10
+			}
+		
+			# 2级：吃30人（自动累加1级，只写新增）
+			30 = {
+				hostile_scheme_phase_duration_add = -40
+				owned_hostile_scheme_success_chance_max_add = 20
+				owned_hostile_scheme_success_chance_add = 10
+			}
+			# 3级：吃50人
+			50 = {
+				stress_gain_mult = -0.5
+				health = 0.5
+			}
+			# 4级：吃80人
+			80 = {
+				abduct_scheme_phase_duration_add = -20
+				health = 0.75
+			}
+			# 5级：吃100人
+			100 = {
+				max_hostile_schemes_add = 1
+				owned_scheme_secrecy_add = 40
+				dread_baseline_add = 999
+			}
+		}
+	}
+}

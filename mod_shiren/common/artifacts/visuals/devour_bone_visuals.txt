@@ -1,0 +1,3 @@
+devour_bone_visual = {
+	icon = "artifact_bone.dds"
+}

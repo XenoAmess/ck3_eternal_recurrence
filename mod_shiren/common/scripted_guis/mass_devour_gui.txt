@@ -1,0 +1,86 @@
+mass_devour_all_prisoners = {
+	scope = character
+
+	is_shown = {
+		OR = {
+			has_trait = cannibal
+			faith = { has_doctrine_parameter = cannibalism_legal }
+		}
+	}
+
+	is_valid = {
+		any_prisoner = {
+			count >= 1
+		}
+	}
+
+	effect = {
+		every_prisoner = {
+			limit = {
+				NOR = {
+					has_character_flag = mass_action_locked
+					has_character_flag = is_mass_action_locked
+				}
+			}
+			save_scope_as = victim
+			# 调用吞噬结算引擎（算头衔加点、偷特质、记录到名录）
+			devour_single_character_effect = yes
+		}
+
+		send_interface_toast = {
+			type = event_toast_effect_good
+			title = "大快朵颐！"
+			custom_tooltip = "你将地牢中的囚犯尽数吞噬，并在【饕餮手账】中记录下了这场血肉盛宴！"
+		}
+	}
+}
+
+# 决议调用：打开手账
+open_devour_ledger_sgui = {
+	scope = character
+	effect = {
+		set_variable = devour_ledger_open
+	}
+}
+
+# 窗口调用：关闭手账
+close_devour_ledger_sgui = {
+	scope = character
+	effect = {
+		remove_variable = devour_ledger_open
+	}
+}
+# 打开手账时自动盘点吃过的人数
+refresh_devour_counts = {
+	scope = character
+	effect = {
+		set_variable = { name = devour_count_empire value = 0 }
+		set_variable = { name = devour_count_kingdom value = 0 }
+		set_variable = { name = devour_count_duchy value = 0 }
+		set_variable = { name = devour_count_county value = 0 }
+		set_variable = { name = devour_count_commoner value = 0 }
+
+		every_in_list = {
+			variable = devoured_ledger_list
+			if = {
+				limit = { has_trait = devour_stat_5 }
+				prev = { change_variable = { name = devour_count_empire add = 1 } }
+			}
+			else_if = {
+				limit = { has_trait = devour_stat_4 }
+				prev = { change_variable = { name = devour_count_kingdom add = 1 } }
+			}
+			else_if = {
+				limit = { has_trait = devour_stat_3 }
+				prev = { change_variable = { name = devour_count_duchy add = 1 } }
+			}
+			else_if = {
+				limit = { has_trait = devour_stat_2 }
+				prev = { change_variable = { name = devour_count_county add = 1 } }
+			}
+			else = {
+				prev = { change_variable = { name = devour_count_commoner add = 1 } }
+			}
+		}
+	}
+}
