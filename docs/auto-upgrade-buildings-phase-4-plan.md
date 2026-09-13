@@ -1,6 +1,6 @@
 # “自动升级建筑”四期：超直辖暂停策略需求与开发计划
 
-状态：**implementation-complete；4.0.0 发布级九语、逻辑矩阵 R0032 与专属决议插图 R0033 均 GREEN，尚待 Workshop、fresh-cache 与 changelog 收口**
+状态：**release-complete；4.0.0 已完成九语、R0032 逻辑矩阵、R0033 专属插图、Workshop、公开 Change Notes、fresh-cache、changelog 与离线恢复**
 
 候选版本：`4.0.0`
 
@@ -199,6 +199,15 @@ CK3 1.19.0.6 的 `common/decisions/_decisions.info` 明确规定一个决议最�
 若六项 UI 门禁失败并改为两阶段事件流程，增加约 0.75–1.25 小时。正式发布另计约 1–2 小时，用于发布级七语补齐、staging/tag、Workshop 上传、完整 Change Notes、公开逐字回读、fresh-cache 复核、永久 changelog、commit/push 与 Steam 离线恢复；只有用户明确要求发布时才进入该流程。
 
 四期 implementation-complete 必须同时满足：六种组合可选、暂停/继续的 `0/-1/恢复` 状态机 GREEN、旧存档继续语义不变、15 日循环未中断、二三期抽样回归 GREEN、静态全量回归与正式构建 GREEN。release-complete 还必须完成 Workshop、fresh-cache、完整 Change Notes、永久 changelog 与 Git/tag 收口。
+
+### 4.0.0 发布收口（2026-09-14）
+
+- `auto-upgrade-buildings-v4.0.0` 固定到 `fa814795c9630df56e9aab6a3414fb4ae99d0726`；正式 16 文件 manifest／ZIP SHA-256 为 `55B91CB59F0FC847C3714041D390A0ED7BC84596A1E35179B717198F58B5680F`／`67C88612DD422307587B65FD99D27F6517B2363B95491E32FC89E503CC45074E`。
+- 原生 Steamworks 只更新维护版物品 `3800124956`，回执 `EResult=1`、无待处理法律协议；公开标题、2,377 字符规范化描述和 Change Notes 条目 `1789335499` 均匿名逐字回读一致。原作 `3596580780` 未修改。
+- 旧 15 文件缓存先移动到可恢复证据目录；首次空目录下载明确因 `No Connection` 失败且未生成目标，自动重连后单次重试成功。新缓存 16 文件／970,267 字节，逐路径、大小与 SHA-256 严格匹配正式 manifest。
+- 上传前出现另一仓库任务刚启动 CK3 的竞态，本发布在不可逆提交前停止并等待其自行清理，未强启、接管或终止游戏；复核账号无 `inGameInfo` 且 CK3 为 0 后才提交。
+- Steam 已在 06:11:39 恢复离线且客户端未退出：`WantsOfflineMode=1`、本地 Steamworks `BLoggedOn=false`、用户发起的 logoff 后无重连、CK3 为 0。
+- 永久发布事实、兼容边界与证据哈希见 [4.0.0 changelog](release-changelogs/auto-upgrade-buildings/4.0.0.md)；本机证据根为 `D:\workspace\auto-upgrade-buildings-v4.0.0-publication\steam`。
 
 ## 10. 依据
 
