@@ -72,8 +72,10 @@ java -jar backend/target/quarkus-app/quarkus-run.jar
 仓库内的原生 `ck3_export_coat_of_arms_source_v1` MCP Copy/export primitive 已在 CK3 `1.19.0.6` 真实进程完成同会话
 apply → export → reapply → export。两次引擎 canonical 输出均为 327 bytes、SHA-256
 `9F84F667B413D2BA24FA101A28D6F455AD93B638F90D9C2A21A91EF264B93C93`，证明该实测字段组合已形成原生 fixed point。
-浏览器与伴随服务接线已经完成，但该轮没有单独执行浏览器 → REST → Java MCP 的 live UI 验收，因此不会拿原生 MCP 结果、
-REST mock、OCR 或屏幕自动化冒充浏览器端到端 live。
+真实浏览器 live UI 随后完成“连接 → 应用到设计器 → 从 CK3 读取”：Vue 实际发出的 3 次 session GET、1 次 probe POST 和
+1 次 export POST 全部 HTTP 200，并经 `Quarkus REST → MCP Java SDK → Python stdio MCP → native bridge` 到达同一 CK3
+designer。probe 为 `applied`，原生 Copy/export 返回 483-byte CRLF canonical 源码，前端重新解析后诊断为空。该闭环仍只证明
+designer working state；上层 Finish/持久化、运行时 DLC/mod effective registry 和 CK3 原生像素回读尚未完成。
 
 `ck3_query_coat_of_arms_resource_catalog_v1` 已能在不启动 CK3 的情况下分页读取 exact 1.19.0.6 基础游戏 designer manifest；
 它已经接入前端，并通过 `REST → Java MCP SDK → Python stdio MCP` 对本机安装完成后台贯通；结果明确不声称包含

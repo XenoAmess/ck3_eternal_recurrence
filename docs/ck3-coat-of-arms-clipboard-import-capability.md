@@ -41,6 +41,7 @@ designer 的 working state。
 | `mcp-applied` | 在 `mcp-detected` 基础上调用原生 paste，并验证 designer working state 已切到候选纹章 |
 | `mcp-exported` | MCP 调用当前 designer 的原生 Copy，成功读取本次回调写入剪贴板的非空源码并绑定其字节数与 SHA-256 |
 | `mcp-roundtrip` | 同一 CK3 进程和 exact binding 中完成 apply → export → 原样 reapply → export，且两次 canonical export 字节完全相同 |
+| `browser-mcp-live` | 真实浏览器中的 Vue UI 经 Quarkus REST、Java MCP SDK、Python stdio MCP 和 native bridge 完成 apply/export，并把原生 Copy 结果写回编辑器 |
 | `legacy-ui` | 早期人工/UI 辅助观察；仅作补充，不作为 MCP-first 最终证据 |
 | `unresolved` | 证据不足、含义歧义或资源与语法尚未拆开验证 |
 
@@ -238,6 +239,9 @@ export 的公开结果为闭合 schema，包含 `status`、`designer_observed`�
 - Web 编辑器的 Quarkus 伴随服务已完成真实后台贯通：`REST → MCP Java SDK 2.0.1 stdio client → Python MCP server →`
   `ck3_query_coat_of_arms_resource_catalog_v1` 返回 exact-build 两项 pattern 和完整 provenance；该贯通未启动或操作 CK3，
   也没有使用 OCR。Quarkus REST 映射 3/3、前端 API/parser 8/8、production build GREEN；
+- Web 编辑器随后在真实浏览器和 CK3 进程间完成 `Vue → Quarkus REST → MCP Java SDK 2.0.1 → Python stdio MCP →`
+  `native bridge → CoatOfArmsDesigner` 的 apply/export 闭环；浏览器实际发出 3 次 session GET、1 次 probe POST 和 1 次
+  export POST，全部 HTTP 200。当前 Quarkus 测试 9/9、Vitest 24/24、前端 production build 与 Quarkus package 均 GREEN；
 - 新增 manifest-owned asset reader 后，同一后台链路读取 `ce_martlet.dds` 的 87,536 bytes DXT5，base64 解码 SHA 与
   `25EFE25D83047430EF09C1E6490CA48BD2A79865CCCF668EED0844381B3F7BA3` 完全一致；Quarkus 4/4、前端 API/parser/DDS
   decoder 12/12 与 production build GREEN。`pattern__solid_designer.dds` 则为 128×128 DXT1；
@@ -313,6 +317,56 @@ coa = {
 `721337A077F71BEFCE42D6F157CDE4B01C16DA174D0D6E8DBEF5CD3F151DF601`。artifact 记录一次加载期 snapshot
 `native game state is not available yet`，随后 snapshot、apply、export、reapply、export 全部成功；结束时
 `exit_reason=stop`、`cleanup_proven=true`、`tree_gone=true`，没有遗留 CK3 进程。
+
+### 3.5 2026-09-13 浏览器到 CK3 的 MCP live 闭环
+
+在上一节原生 fixed point 之后，又以仓库 commit `8bbff3039248db03507bed43f73e963952b051ef` 启动独立 CK3
+`1.19.0.6` 会话和正式构建的前后端。真实无头 Edge 打开 `http://localhost:5173/`，按可见按钮文字依次点击“连接”、
+“应用到设计器”和“从 CK3 读取”。浏览器自身记录到 5 次实际 fetch：3 次
+`GET /api/ck3/coat-of-arms/session`、1 次 `POST /api/ck3/coat-of-arms/probe`、1 次
+`POST /api/ck3/coat-of-arms/export`，全部为 HTTP 200。链路为：
+
+```text
+Vue 3 UI
+  → Quarkus REST
+  → MCP Java SDK 2.0.1 stdio client
+  → Python MCP server
+  → named pipe native bridge
+  → CK3 CoatOfArmsDesigner
+```
+
+会话精确绑定 PID `17168`、snapshot `native:1`、public revision `2`、native revision `1`、connection generation `1`；
+`map_ready=true`，designer hook 为 `installed=true`、`failure=0`。送入 UI 的 599-byte CRLF 文本 SHA-256 为
+`C0B71A1D085ED4114CABF5ED1CC32EDF6C44D2AB847D37FA13013A0505EBE67E`，覆盖：
+
+- `rgb { 32 64 160 }` typed color；
+- 单值 `mask = { 1 }`；
+- 两个重复 `instance`；
+- 小数 position/scale/depth、正负 rotation，以及第二实例的负 X scale。
+
+probe 返回 `status=applied`、`detected=true`、`designer_observed=true`、`applied=true`。随后 export 返回
+`status=exported`、`designer_observed=true`、`copy_invoked=true`、`clipboard_read=true`。引擎写回 483-byte CRLF
+canonical 源码，SHA-256 为 `6860C20BB90C74C017F12B7F3F6A275A49F4FE5A5F97C23E00AF9C7E1F55E1D5`；可观察到：
+
+- outer key 改写为 `coa_rd_dynasty_1110059313`；
+- `mask = { 1 }` 扩写为 `mask={ 1 0 0 }`；
+- position、scale 和 depth 规范化为六位小数；
+- 两个 instance、第二实例的负 X scale 与两种 rotation 均保留。
+
+export 结果被同一个 Vue 页面重新解析并写回 textarea，诊断列表为空；浏览器 DOM 按 Web 规则把 CRLF 规范为 LF，因而页面内
+文本为 455 bytes、SHA-256 `9F1E57C3075989E9A74BBF478116258C645DB262C328B0788957697283D1729C`。这不是引擎输出发生漂移，
+而是 textarea 的换行表示不同；REST 响应中仍保留原始 483-byte CRLF 源码及其 hash。
+
+浏览器链路 artifact 为
+`artifacts/coa-clipboard-probe-2026-09-08/browser-quarkus-mcp-live-e2e1.json`，54,897 bytes，SHA-256
+`DB491DA4E37D1DB26DAA9EEED8D577E73A9D6547FC382D2A85E8F5C0C407DAF6`。进程宿主 artifact 为同目录
+`mcp-rest-live-host1.json`，2,581 bytes，SHA-256
+`F1C933ADD15126A0AFE61A51CD47BA09D814EA6AE0D954C052884974F08A38F0`；它绑定本轮 fresh bridge 2,639,360 bytes、
+SHA-256 `3B2B55F2B931D2FB8424B108F7954478B158C796005403F992F6A11A20D4917D`，并在退出时证明
+`exit_reason=stop`、`cleanup_proven=true`、`tree_gone=true`。两份运行 artifact 按过程证据政策保留在本机、不提交 Git。
+
+这把当前编辑器的实证状态提升为 `browser-mcp-live`。它仍只改变 designer working state；没有点击上层 Finish，不能声称
+保存进角色/王朝或跨存档持久化。它也没有闭合运行时 DLC/mod effective registry、CK3 原生像素回读，或任意未列入矩阵的语法。
 
 ## 4. 原版实际调用链
 
