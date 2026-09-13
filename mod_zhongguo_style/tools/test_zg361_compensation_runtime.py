@@ -1339,6 +1339,7 @@ class CompensationRuntimeTests(unittest.TestCase):
                     option_pattern = re.compile(
                         rf"option\s*=\s*\{{\s*"
                         rf"name\s*=\s*zg361comp\.1\.{key}\.r{route}\s*"
+                        rf"custom_tooltip\s*=\s*zg361comp\.1\.{key}\.r{route}\s*"
                         rf"trigger\s*=\s*\{{\s*"
                         rf"{trigger_pattern}\s*\}}\s*"
                         rf"zg361_comp_portfolio_apply_stage_effect\s*=\s*\{{\s*"
@@ -1571,10 +1572,12 @@ class CompensationRuntimeTests(unittest.TestCase):
             for key, _domain_number, _state in generator.PORTFOLIO_STAGES
             for route in (1, 2, 3)
         )
+        self.assertEqual(player_card.count("custom_tooltip = zg361comp.1."), 42)
         for key in option_keys:
             with self.subTest(option_localization=key):
                 self.assertIn(f" {key}:0 ", english)
                 self.assertIn(f" {key}:0 ", chinese)
+                self.assertIn(f"custom_tooltip = {key}", player_card)
         self.assertNotIn("zg361comp.1.a:0", english)
         self.assertNotIn("zg361comp.1.b:0", english)
         self.assertNotIn("zg361comp.1.c:0", english)

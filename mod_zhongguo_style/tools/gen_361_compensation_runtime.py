@@ -2856,6 +2856,7 @@ def render_events() -> bytes:
     portfolio_options = "\n".join(
         f'''    option = {{
         name = zg361comp.1.{key}.r{route}
+        custom_tooltip = zg361comp.1.{key}.r{route}
         trigger = {{
 {textwrap.indent(portfolio_option_trigger(key, domain_number, state, route), "            ")}
         }}

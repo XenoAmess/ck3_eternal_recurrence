@@ -1,6 +1,6 @@
 ﻿# 361 薪酬、发放与长期激励 CK3 运行时
 
-状态：**CK3 script static-ready；尚无 CK3 解析日志、MCP paused snapshot 或玩家实机证据**
+状态：**CK3 script static-ready；R630 已实见统一薪酬案卷及旧 hover 缺陷，本次 tooltip 修复待 fresh CK3 复验**
 
 生成器：`tools/gen_361_compensation_runtime.py`
 
@@ -85,7 +85,11 @@ grade 的唯一数值投影为 `1 -> 325 (3.25)`、`2 -> 350 (3.50)`、`3 -> 375
 
 统一玩家事件不是三个空泛按钮：L 四阶段、AE 五阶段、AF 五阶段共 14 组 `triggered_desc` 在选择前列明该阶段
 A/B/C 的实际双账户金额、欠付/期限、份额、门槛和离任后果。结案卡再直接投影奖金、薪酬单与长期份额账的数值；
-薪酬透明度只显示制度口径和匿名数值，不泄露具名同僚薪酬。当前这些仍只是静态可加载投影，尚未获得玩家实机证据。
+薪酬透明度只显示制度口径和匿名数值，不泄露具名同僚薪酬。R630 在 production staging 实见 `zg361comp.1`
+的 L1 卡片：三条按钮正文已经准确列出总报酬、奖金、国库/私库付款和零支付结果，但 hover 因只调用内部
+`zg361_comp_portfolio_apply_stage_effect` 而显示“没有直接影响”。生成器现在把各按钮自己的本地化结果同时绑定为
+`custom_tooltip`，统一覆盖 14 阶段 × 3 路线的 42 条选项；它只改变披露层，不复制或改写业务 effect、门槛或账目。
+R630 仍加载修复前 staging，因此该呈现修复保持 static-ready，待下一轮 fresh 产品抽检后再升级为 live。
 
 ## 三、五元身份、receipt 与写入消费链
 
