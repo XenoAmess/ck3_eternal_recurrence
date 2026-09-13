@@ -120,3 +120,18 @@ closure false. Static recommendations, stale snapshots, missing actions or
 missing capabilities remain blocked. Focused normal and optimized suites pass
 `18/18` across the recommendation, runner and action-gate contracts. The
 read-only recommendation runner now records this authorization in its report.
+
+## Post-action prestige observation
+
+GEN-034-D can now observe the player's post-action prestige after the old WarID
+has disappeared. The additive `played_character_prestige` state-snapshot field
+reuses the exact `extension+0x130` signed Q100000 leaf already exercised by the
+war-exit terms reader. Legacy snapshots may omit it; malformed fixed-point
+objects fail closed.
+
+This closes only the offline visibility gap. The action executor must still
+bind the pre-action balance and delta from the recommendation terms, submit one
+authorized action, then compare the next paused snapshot before accepting the
+prestige postcondition. Native fixture and focused normal/optimized Python
+tests are GREEN; production-live evidence remains pending under the owner's
+CK3-use hold.

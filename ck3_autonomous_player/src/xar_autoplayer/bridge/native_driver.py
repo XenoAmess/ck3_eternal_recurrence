@@ -17371,6 +17371,9 @@ def _semantic_snapshot_from_frame(frame: dict[str, object]) -> dict[str, object]
         "played_character_gold": _played_character_gold(
             state.get("played_character_gold")
         ),
+        "played_character_prestige": _played_character_prestige(
+            state.get("played_character_prestige")
+        ),
         "pending_character_interaction": (
             _pending_character_interaction(
                 state.get("pending_character_interaction")
@@ -22911,6 +22914,22 @@ def _played_character_gold(value: object) -> dict[str, int] | None:
         or value.get("scale") != 100_000
     ):
         raise ValueError("native played_character_gold is malformed")
+    return {"raw": raw, "scale": 100_000}
+
+
+def _played_character_prestige(value: object) -> dict[str, int] | None:
+    if value is None:
+        return None
+    if not isinstance(value, dict) or set(value) != {"raw", "scale"}:
+        raise ValueError("native played_character_prestige is malformed")
+    raw = value.get("raw")
+    if (
+        isinstance(raw, bool)
+        or not isinstance(raw, int)
+        or not -(2**63) <= raw <= 2**63 - 1
+        or value.get("scale") != 100_000
+    ):
+        raise ValueError("native played_character_prestige is malformed")
     return {"raw": raw, "scale": 100_000}
 
 

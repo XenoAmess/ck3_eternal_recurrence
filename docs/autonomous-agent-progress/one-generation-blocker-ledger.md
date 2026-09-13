@@ -1526,3 +1526,15 @@ one recommendation, one action and the bounded postwar/cold-restore checks.
   authorization. It is integrated into the recommendation report but performs
   no mutation. Related normal/optimized tests pass `18/18`; the remaining D
   blocker is execution plus observed postconditions and cold restore.
+
+## GEN-034-D post-action prestige observation (2026-09-14)
+
+- The generic paused state snapshot now publishes additive signed Q100000
+  `played_character_prestige`, using the exact `CCharacter extension+0x130`
+  leaf already exercised by the war-exit terms reader. This is the minimum
+  missing observation needed after the old WarID disappears.
+- Native fixture and focused Python normal/optimized tests are GREEN. Legacy
+  snapshots may omit the field and malformed fixed-point values fail closed.
+- Status remains `static-ready / live=false`. It does not prove submission or
+  the expected delta; action, WarID/loss/truce/resource comparison, checkpoint
+  and cold restore remain open. GEN-034 stays `2/4`, G2 stays `1/8`.

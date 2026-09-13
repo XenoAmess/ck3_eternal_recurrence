@@ -55,9 +55,13 @@ operator override 必须绑定默认 profile ID/version，实际输入按源文�
 `GEN-034-A` 已由 `raiktor_campaign_dominance_provider.py` 和 hash-bound CLI 闭合。R471 receipt 为
 `Z:\ck3_mod_rewrite\_runtime\g2-gen034-a-campaign-dominance-20260912\r471-certificate.json`，SHA-256
 `AB0DB5678F65631D63E5A54BA66B61A6F5956179C0A4D3970B78BEAC5E9E0569`。它只发布实测兵力关系；campaign forecast、exit utility、
-recommendation 与 action 均保持关闭。`GEN-034-C/D` 需要 CK3 时必须服从 T0 资源让位和单实例轮次规则。
+recommendation 与 action 均保持关闭。`GEN-034-C/D` 需要 CK3 时必须服从 G2 单实例轮次规则与当前 owner 的 CK3 使用限制。
 下一次 live 只允许一个有界 paused 场景，完成同帧 white-peace comparison；若输入齐全则在同一受管会话继续唯一 action 与
 postwar 验证。单字段修复只跑聚焦测试和这一个场景，不扩成永久长跑。
+
+`GEN-034-D` 已补齐通用 `played_character_prestige` paused-snapshot 字段，复用条款 reader 的 exact-build
+`extension+0x130` leaf。这样旧 WarID 消失后仍能比较冻结的 attacker prestige 余额与预期 delta。该字段目前仅
+`static-ready / live=false`；它不证明动作、delta、truce、loss 或 cold restore。
 
 ## GEN-034 后的固定顺序
 

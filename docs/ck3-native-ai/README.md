@@ -110,6 +110,9 @@
 - [static-confirmed + implementation-confirmed, live pending] [played-character-gold.md](played-character-gold.md)
   复用 exact-build `CCharacter+0x1A8 -> extension+0x100` 金币 leaf，把当前玩家 signed Q100000 余额作为顶层加法字段接入
   state snapshot；`trait_specific.8001` 的同角色严格增加后置已 static-ready，真实选择前后对账仍待一次有界实机。
+- [static-confirmed + implementation-confirmed, live pending] [played-character-prestige.md](played-character-prestige.md)
+  复用战争退出 reader 已验证的 `CCharacter+0x1A8 -> extension+0x130` leaf，把当前玩家 signed Q100000
+  威望作为通用 snapshot 加法字段发布，供 GEN-034-D 在旧 WarID 消失后核对冻结的 prestige delta。
 - [static-confirmed + historical action live, material live pending] [heir-death-stress.md](heir-death-stress.md)
   冻结 `death_management.1007` 的唯一选项、distinct dead-character scope 与 authored `+20` 压力档案；R374 已有 instance
   advance，但当时没有压力字段，因此同角色 non-decreasing material 对账只到 static-ready，今后遇到时有界补证。
