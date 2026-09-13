@@ -2,6 +2,10 @@
 # Reclaim the Motherland - Phase 2 loyalty score
 #########################################################
 
+# Phase 4 duration: five 365-day CK3 years. The external live fixture overrides
+# this value to one day so it can exercise the real expiry path in a bounded run.
+rmtm_recent_independence_duration_days = 1825
+
 # Character scope: a direct, landed Pro-Hegemon vassal.
 # Required saved scope: old_emperor_temp.
 rmtm_pro_hegemon_loyalty_score_value = {

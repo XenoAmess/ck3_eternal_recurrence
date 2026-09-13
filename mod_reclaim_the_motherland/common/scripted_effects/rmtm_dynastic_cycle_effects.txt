@@ -191,7 +191,7 @@ rmtm_chaos_shattering_effect = {
 				set_variable = {
 					name = rmtm_recently_independent_from_restoration_hegemony
 					value = scope:rmtm_restoration_hegemony_title
-					years = 5
+					days = rmtm_recent_independence_duration_days
 				}
 			}
 		}

@@ -304,7 +304,7 @@ def validate() -> list[str]:
         "rmtm_freeze_restoration_hegemony_name_effect = yes",
         "destroy_title = title:h_china",
         "name = rmtm_recently_independent_from_restoration_hegemony",
-        "years = 5",
+        "days = rmtm_recent_independence_duration_days",
         "fill_the_ministry_effect = yes",
     ):
         if fragment not in custom_shattering:
@@ -315,6 +315,17 @@ def validate() -> list[str]:
         r"(?m)^\s*force_step_down_landed_titles\s*=", custom_shattering
     ):
         errors.append("custom shattering must not force the former hegemon to step down")
+
+    loyalty_values = scripts.get(
+        "common/script_values/rmtm_loyalty_values.txt", ""
+    )
+    if not re.search(
+        r"(?m)^rmtm_recent_independence_duration_days\s*=\s*1825\s*$",
+        loyalty_values,
+    ):
+        errors.append(
+            "release recent-independence duration must remain exactly 1825 days"
+        )
 
     generated_interaction = MOD / vassalization.OUTPUT.relative_to(ROOT / builder.PRODUCT_ID)
     if generated_interaction.is_file():

@@ -100,10 +100,15 @@ REQUIRED_MARKERS = (
     "RQA: TEST PASS original_movement_identity_frozen",
     "RQA: TEST PASS original_chaos_event_dispatched",
     "RQA: TEST PASS later_dynasty_empty_de_jure_and_personal_land_retained",
+    "RQA: TEST PASS later_dynasty_single_heir_law_and_heir_ready",
+    "RQA: TEST PASS phase3_nine_ministry_incumbents_retained",
     "RQA: TEST PASS phase2_loyal_title_name_and_subtree_retained",
     "RQA: TEST PASS phase2_disloyal_pro_hegemon_defected",
     "RQA: TEST PASS non_pro_hegemon_direct_released",
+    "RQA: TEST PASS phase4_recent_independence_titles_bound",
     "RQA: TEST PASS chaos_matrix_complete",
+    "RQA: TEST PASS phase3_later_dynasty_realm_and_ministry_inherited",
+    "RQA: TEST PASS phase4_recent_independence_expired",
     "RQA: TEST PASS china_control_reset",
     "RQA: TEST PASS fifty_percent_below_claim_threshold",
     "RQA: TEST PASS original_fifty_one_percent_threshold_reached",
@@ -224,6 +229,12 @@ def fixture_errors() -> list[str]:
         "character:han_8052",
         "change_phase = { phase = situation_dynastic_cycle_phase_chaos }",
         "rmtm_holds_restoration_hegemony_trigger = yes",
+        "has_title_law = single_heir_succession_law",
+        "rmtm_recent_independence_duration_days = 1",
+        "rmtm_recently_independent_from_restoration_hegemony",
+        "phase3_nine_ministry_incumbents_retained",
+        "phase3_later_dynasty_realm_and_ministry_inherited",
+        "phase4_recent_independence_expired",
         "var:rmtm_loyalty_outcome = flag:stay",
         "var:rmtm_loyalty_outcome = flag:defect",
         "is_title_localization_key_used = rqa_phase2_loyal_title_name",
@@ -242,13 +253,13 @@ def preflight(
     product_kaishek = acceptance.run_open_kaishek_preflight(
         root=SOURCE,
         profile="ck3-1.19.0.6",
-        fixture="reclaim-0.2.0-product",
+        fixture="reclaim-0.4.0-product",
         scope="run_reclaim_the_motherland_acceptance.product",
     )
     fixture_kaishek = acceptance.run_open_kaishek_preflight(
         root=FIXTURE,
         profile="ck3-1.19.0.6",
-        fixture="reclaim-0.2.0-live-fixture",
+        fixture="reclaim-0.4.0-live-fixture",
         scope="run_reclaim_the_motherland_acceptance.fixture",
     )
     kaishek = {"product": product_kaishek, "fixture": fixture_kaishek}
@@ -828,6 +839,68 @@ def advance_queued_phase_transition(
     return evidence
 
 
+def advance_recent_independence_expiry(
+    service: GameplayBridgeService,
+    stream: MarkerStream,
+    artifacts: Path,
+    timeout_s: float = 45,
+) -> dict[str, object]:
+    """Advance at speed one until the fixture-compressed product timer expires."""
+
+    before = service.snapshot()
+    if before.get("paused") is not True:
+        raise acceptance.RunnerError("recent-independence expiry precondition is not paused")
+    speed_ack = service.execute_step(
+        "set-speed-1", expected_revision=int(before["revision"])
+    )
+    speed_snapshot = service.snapshot()
+    resume_ack = service.execute_step(
+        "resume-map", expected_revision=int(speed_snapshot["revision"])
+    )
+    wait_error: BaseException | None = None
+    try:
+        stream.wait("RQA: TEST PASS phase4_recent_independence_expired", timeout_s)
+    except BaseException as error:
+        wait_error = error
+    running = service.snapshot()
+    pause_ack: dict[str, object] | None = None
+    paused = running
+    if running.get("paused") is not True:
+        pause_ack = service.execute_step(
+            "pause-map", expected_revision=int(running["revision"])
+        )
+        deadline = time.monotonic() + 5
+        while time.monotonic() < deadline:
+            paused = service.snapshot()
+            if paused.get("paused") is True:
+                break
+            time.sleep(0.1)
+        else:
+            raise acceptance.RunnerError("recent-independence expiry map did not pause")
+    evidence = {
+        "schema_version": 1,
+        "result": "GREEN" if wait_error is None else "RED",
+        "reason": (
+            "fixture overrides the release's 1825-day script value to one day and "
+            "exercises the same product timed-variable expiry path"
+        ),
+        "release_duration_days": 1825,
+        "fixture_duration_days": 1,
+        "before": before,
+        "speed_ack": speed_ack,
+        "resume_ack": resume_ack,
+        "after_running": running,
+        "pause_ack": pause_ack,
+        "after_paused": paused,
+        "marker_observed": wait_error is None,
+        "error": None if wait_error is None else str(wait_error),
+    }
+    write_json(artifacts / "09_recent_independence_expiry.json", evidence)
+    if wait_error is not None:
+        raise wait_error
+    return evidence
+
+
 def select_current_event_first_option(
     service: GameplayBridgeService,
     expected_event_key: str,
@@ -1017,23 +1090,34 @@ def run_scenario(
     )
     close_decisions_panel(artifacts, "08_later_dynasty_native")
 
-    click_decision("准备复辟门槛", "丈量河山", artifacts, "09_prepare_threshold")
+    click_decision(
+        "验证后朝继承", "传位于嗣君", artifacts, "09_test_succession"
+    )
+    stream.wait("RQA: TEST PASS phase3_later_dynasty_realm_and_ministry_inherited", 120)
+    isolated.wait_for_gameplay_hud(artifacts)
+    succession_snapshot = service.snapshot()
+    write_json(artifacts / "09_mcp_after_succession.json", succession_snapshot)
+    recent_independence_expiry = advance_recent_independence_expiry(
+        service, stream, artifacts
+    )
+
+    click_decision("准备复辟门槛", "丈量河山", artifacts, "10_prepare_threshold")
     stream.wait("RQA: TEST PASS restoration_decision_ready", 180)
     visibility = decision_visibility_evidence(artifacts)
-    click_decision("宣称复辟", "复我河山", artifacts, "10_restore")
+    click_decision("宣称复辟", "复我河山", artifacts, "11_restore")
     stream.wait("RQA: TEST DONE reclaim", 120)
     acceptance.wait_for_ocr_text(
         "重整河山验收完成",
         acceptance.FULL_SCREEN_REGION,
         30,
         artifacts,
-        "11_acceptance_complete.png",
+        "12_acceptance_complete.png",
         stable_hits=1,
     )
     restoration_event_close = select_current_event_first_option(
-        service, "rqa.2", artifacts, "11_close_complete_event"
+        service, "rqa.2", artifacts, "12_close_complete_event"
     )
-    close_decisions_panel(artifacts, "11_restored_native")
+    close_decisions_panel(artifacts, "12_restored_native")
     final_snapshot = service.snapshot()
     if final_snapshot.get("paused") is not True:
         service.execute_step(
@@ -1045,7 +1129,7 @@ def run_scenario(
             if final_snapshot.get("paused") is True:
                 break
             time.sleep(0.1)
-    write_json(artifacts / "11_mcp_final_paused.json", final_snapshot)
+    write_json(artifacts / "12_mcp_final_paused.json", final_snapshot)
     stream.validate()
     return {
         "mcp_first": True,
@@ -1055,6 +1139,9 @@ def run_scenario(
             "snapshot-after-player-switch",
             "resume-map-for-phase-transition",
             "pause-map-after-phase-transition-if-needed",
+            "set-speed-1-for-bounded-expiry",
+            "resume-map-for-bounded-expiry",
+            "pause-map-after-bounded-expiry-if-needed",
             "query-current-event-window-context-v1",
             "select-event-option-1",
             "center-map-on-landed-title-v1:b_kaifeng",
@@ -1075,6 +1162,8 @@ def run_scenario(
         "later_dynasty_native_ocr": later_native_rows,
         "later_dynasty_event_ocr": later_rows,
         "later_dynasty_event_close": later_event_close,
+        "succession_snapshot": succession_snapshot,
+        "recent_independence_expiry": recent_independence_expiry,
         "restoration_event_close": restoration_event_close,
         "initial_snapshot_id": before.get("snapshot_id"),
         "song_snapshot_id": switched.get("snapshot_id"),

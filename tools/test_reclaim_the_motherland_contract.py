@@ -49,6 +49,10 @@ FIXTURE_EFFECTS = (
     ROOT
     / "tools/fixtures/reclaim_the_motherland_acceptance/common/scripted_effects/rqa_effects.txt"
 )
+FIXTURE_VALUES = (
+    ROOT
+    / "tools/fixtures/reclaim_the_motherland_acceptance/common/script_values/rqa_values.txt"
+)
 
 RULE = "rmtm_hegemon_fate"
 RECLAIM_SETTING = "rmtm_reclaim_the_motherland"
@@ -509,6 +513,23 @@ class TestReclaimTheMotherlandContract(unittest.TestCase):
             text.count("rmtm_recently_independent_from_restoration_hegemony"), 2
         )
         self.assertIn(f"# Vanilla file SHA-256: {vassalization.SOURCE_SHA256}", text)
+
+    def test_phase_four_recent_independence_duration_and_live_compression(self) -> None:
+        release_text, _ = read_script(LOYALTY_VALUES)
+        fixture_text, _ = read_script(FIXTURE_VALUES)
+        custom_text, _ = read_script(CUSTOM_EFFECTS)
+        self.assertRegex(
+            release_text,
+            r"(?m)^rmtm_recent_independence_duration_days\s*=\s*1825\s*$",
+        )
+        self.assertRegex(
+            fixture_text,
+            r"(?m)^rmtm_recent_independence_duration_days\s*=\s*1\s*$",
+        )
+        self.assertIn(
+            "days = rmtm_recent_independence_duration_days", custom_text
+        )
+        self.assertNotIn("years = 5", custom_text)
 
     def test_phase_four_twelve_identity_acceptance_vectors(self) -> None:
         # Only the four identity branches touched by the generated projection are

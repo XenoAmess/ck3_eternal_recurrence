@@ -30,6 +30,10 @@ rqa_initialize_effect = {
 	else = { debug_log = "RQA: TEST FAIL exact_build_song_emperor" }
 
 	scope:rqa_song_emperor = {
+		# Ensure all nine seats exist before the transition, then tag the exact
+		# incumbents so post-Chaos and post-succession checks prove identity rather
+		# than merely seeing a newly filled office.
+		fill_the_ministry_effect = yes
 		every_vassal = {
 			limit = {
 				is_landed = yes
@@ -45,6 +49,7 @@ rqa_initialize_effect = {
 					is_landed = yes
 					highest_held_title_tier = tier_kingdom
 					any_vassal = { is_landed = yes }
+					tgp_is_any_minister = no
 				}
 				save_scope_as = rqa_loyal_direct
 			set_variable = {
@@ -70,6 +75,7 @@ rqa_initialize_effect = {
 					is_landed = yes
 					highest_held_title_tier >= tier_county
 					this != scope:rqa_loyal_direct
+					tgp_is_any_minister = no
 				}
 				save_scope_as = rqa_defecting_direct
 				set_variable = {
@@ -85,8 +91,90 @@ rqa_initialize_effect = {
 					highest_held_title_tier >= tier_county
 					this != scope:rqa_loyal_direct
 					this != scope:rqa_defecting_direct
+					tgp_is_any_minister = no
 				}
-			save_scope_as = rqa_control_ruler
+				save_scope_as = rqa_control_ruler
+			}
+		cp:councillor_chancellor ?= {
+			add_character_flag = rqa_prechaos_minister_chancellor
+			if = {
+				limit = { is_landed = yes liege = root }
+				set_variable = { name = movement_member value = flag:pro_hegemon }
+				remove_trait = disloyal
+				add_trait = loyal
+			}
+		}
+		cp:councillor_spymaster ?= {
+			add_character_flag = rqa_prechaos_minister_censor
+			if = {
+				limit = { is_landed = yes liege = root }
+				set_variable = { name = movement_member value = flag:pro_hegemon }
+				remove_trait = disloyal
+				add_trait = loyal
+			}
+		}
+		cp:minister_grand_marshal ?= {
+			add_character_flag = rqa_prechaos_minister_grand_marshal
+			if = {
+				limit = { is_landed = yes liege = root }
+				set_variable = { name = movement_member value = flag:pro_hegemon }
+				remove_trait = disloyal
+				add_trait = loyal
+			}
+		}
+		cp:minister_personnel ?= {
+			add_character_flag = rqa_prechaos_minister_personnel
+			if = {
+				limit = { is_landed = yes liege = root }
+				set_variable = { name = movement_member value = flag:pro_hegemon }
+				remove_trait = disloyal
+				add_trait = loyal
+			}
+		}
+		cp:councillor_steward ?= {
+			add_character_flag = rqa_prechaos_minister_revenue
+			if = {
+				limit = { is_landed = yes liege = root }
+				set_variable = { name = movement_member value = flag:pro_hegemon }
+				remove_trait = disloyal
+				add_trait = loyal
+			}
+		}
+		cp:councillor_court_chaplain ?= {
+			add_character_flag = rqa_prechaos_minister_rites
+			if = {
+				limit = { is_landed = yes liege = root }
+				set_variable = { name = movement_member value = flag:pro_hegemon }
+				remove_trait = disloyal
+				add_trait = loyal
+			}
+		}
+		cp:councillor_marshal ?= {
+			add_character_flag = rqa_prechaos_minister_war
+			if = {
+				limit = { is_landed = yes liege = root }
+				set_variable = { name = movement_member value = flag:pro_hegemon }
+				remove_trait = disloyal
+				add_trait = loyal
+			}
+		}
+		cp:minister_justice ?= {
+			add_character_flag = rqa_prechaos_minister_justice
+			if = {
+				limit = { is_landed = yes liege = root }
+				set_variable = { name = movement_member value = flag:pro_hegemon }
+				remove_trait = disloyal
+				add_trait = loyal
+			}
+		}
+		cp:minister_works ?= {
+			add_character_flag = rqa_prechaos_minister_works
+			if = {
+				limit = { is_landed = yes liege = root }
+				set_variable = { name = movement_member value = flag:pro_hegemon }
+				remove_trait = disloyal
+				add_trait = loyal
+			}
 		}
 		every_vassal = {
 			limit = { is_landed = yes }
@@ -110,6 +198,17 @@ rqa_initialize_effect = {
 				exists = scope:rqa_loyal_primary_title
 				exists = scope:rqa_control_ruler
 				exists = scope:rqa_personal_county
+				scope:rqa_song_emperor = {
+					cp:councillor_chancellor ?= { has_character_flag = rqa_prechaos_minister_chancellor has_title = title:e_minister_chancellor }
+					cp:councillor_spymaster ?= { has_character_flag = rqa_prechaos_minister_censor has_title = title:e_minister_censor }
+					cp:minister_grand_marshal ?= { has_character_flag = rqa_prechaos_minister_grand_marshal has_title = title:e_minister_grand_marshal }
+					cp:minister_personnel ?= { has_character_flag = rqa_prechaos_minister_personnel has_title = title:e_minister_of_personnel }
+					cp:councillor_steward ?= { has_character_flag = rqa_prechaos_minister_revenue has_title = title:e_minister_of_revenue }
+					cp:councillor_court_chaplain ?= { has_character_flag = rqa_prechaos_minister_rites has_title = title:e_minister_of_rites }
+					cp:councillor_marshal ?= { has_character_flag = rqa_prechaos_minister_war has_title = title:e_minister_of_war }
+					cp:minister_justice ?= { has_character_flag = rqa_prechaos_minister_justice has_title = title:e_minister_of_justice }
+					cp:minister_works ?= { has_character_flag = rqa_prechaos_minister_works has_title = title:e_minister_of_works }
+				}
 				scope:rqa_song_emperor = {
 					top_participant_group:dynastic_cycle = {
 						participant_group_type = hegemon_ruler
@@ -281,6 +380,37 @@ rqa_verify_chaos_effect = {
 	else = { debug_log = "RQA: TEST FAIL later_dynasty_empty_de_jure_and_personal_land_retained" }
 	if = {
 		limit = {
+			var:rqa_later_title = {
+				has_title_law = single_heir_succession_law
+				exists = current_heir
+			}
+		}
+		debug_log = "RQA: TEST PASS later_dynasty_single_heir_law_and_heir_ready"
+	}
+	else = { debug_log = "RQA: TEST FAIL later_dynasty_single_heir_law_and_heir_ready" }
+	if = {
+		limit = {
+			tgp_has_access_to_ministry_trigger = yes
+			exists = global_var:rmtm_ministry_entitlement_title
+			global_var:rmtm_ministry_entitlement_title = {
+				holder = root
+				this = root.var:rqa_later_title
+			}
+			cp:councillor_chancellor ?= { has_character_flag = rqa_prechaos_minister_chancellor has_title = title:e_minister_chancellor }
+			cp:councillor_spymaster ?= { has_character_flag = rqa_prechaos_minister_censor has_title = title:e_minister_censor }
+			cp:minister_grand_marshal ?= { has_character_flag = rqa_prechaos_minister_grand_marshal has_title = title:e_minister_grand_marshal }
+			cp:minister_personnel ?= { has_character_flag = rqa_prechaos_minister_personnel has_title = title:e_minister_of_personnel }
+			cp:councillor_steward ?= { has_character_flag = rqa_prechaos_minister_revenue has_title = title:e_minister_of_revenue }
+			cp:councillor_court_chaplain ?= { has_character_flag = rqa_prechaos_minister_rites has_title = title:e_minister_of_rites }
+			cp:councillor_marshal ?= { has_character_flag = rqa_prechaos_minister_war has_title = title:e_minister_of_war }
+			cp:minister_justice ?= { has_character_flag = rqa_prechaos_minister_justice has_title = title:e_minister_of_justice }
+			cp:minister_works ?= { has_character_flag = rqa_prechaos_minister_works has_title = title:e_minister_of_works }
+		}
+		debug_log = "RQA: TEST PASS phase3_nine_ministry_incumbents_retained"
+	}
+	else = { debug_log = "RQA: TEST FAIL phase3_nine_ministry_incumbents_retained" }
+	if = {
+		limit = {
 			exists = var:rqa_loyal_direct
 			var:rqa_loyal_direct = {
 				liege = root
@@ -329,9 +459,117 @@ rqa_verify_chaos_effect = {
 		debug_log = "RQA: TEST PASS non_pro_hegemon_direct_released"
 	}
 	else = { debug_log = "RQA: TEST FAIL non_pro_hegemon_direct_released" }
+	if = {
+		limit = {
+			var:rqa_defecting_direct = {
+				primary_title = {
+					exists = var:rmtm_recently_independent_from_restoration_hegemony
+					var:rmtm_recently_independent_from_restoration_hegemony = root.var:rqa_later_title
+				}
+			}
+			var:rqa_control_ruler = {
+				primary_title = {
+					exists = var:rmtm_recently_independent_from_restoration_hegemony
+					var:rmtm_recently_independent_from_restoration_hegemony = root.var:rqa_later_title
+				}
+			}
+		}
+		debug_log = "RQA: TEST PASS phase4_recent_independence_titles_bound"
+	}
+	else = { debug_log = "RQA: TEST FAIL phase4_recent_independence_titles_bound" }
 	add_character_flag = rqa_after_chaos_event_ready
-	add_character_flag = rqa_ready_for_threshold
+	add_character_flag = rqa_ready_for_succession
 	debug_log = "RQA: TEST PASS chaos_matrix_complete"
+	}
+}
+
+rqa_execute_succession_effect = {
+	if = {
+		limit = { has_character_flag = rqa_succession_pending }
+		remove_character_flag = rqa_succession_pending
+		remove_character_flag = rqa_ready_for_succession
+		save_scope_as = rqa_predecessor
+		var:rqa_later_title = {
+			current_heir = { save_scope_as = rqa_later_heir }
+		}
+		if = {
+			limit = {
+				exists = scope:rqa_later_heir
+				scope:rqa_later_heir = { is_alive = yes }
+			}
+			scope:rqa_later_heir = {
+				set_variable = { name = rqa_later_title value = scope:rqa_predecessor.var:rqa_later_title }
+				set_variable = { name = rqa_loyal_direct value = scope:rqa_predecessor.var:rqa_loyal_direct }
+				set_variable = { name = rqa_loyal_indirect value = scope:rqa_predecessor.var:rqa_loyal_indirect }
+				set_variable = { name = rqa_defecting_direct value = scope:rqa_predecessor.var:rqa_defecting_direct }
+				set_variable = { name = rqa_loyal_primary_title value = scope:rqa_predecessor.var:rqa_loyal_primary_title }
+				set_variable = { name = rqa_control_ruler value = scope:rqa_predecessor.var:rqa_control_ruler }
+				set_variable = { name = rqa_personal_county value = scope:rqa_predecessor.var:rqa_personal_county }
+				add_character_flag = rqa_waiting_for_succession
+			}
+			set_player_character = scope:rqa_later_heir
+			scope:rqa_predecessor = { death = { death_reason = death_natural_causes } }
+		}
+		else = { debug_log = "RQA: TEST FAIL later_dynasty_heir_missing_before_death" }
+	}
+}
+
+rqa_verify_succession_effect = {
+	if = {
+		limit = { has_character_flag = rqa_waiting_for_succession }
+		remove_character_flag = rqa_waiting_for_succession
+		if = {
+			limit = {
+				is_alive = yes
+				is_independent_ruler = yes
+				var:rqa_later_title = {
+					holder = root
+					has_variable = rmtm_restoration_hegemony
+					has_title_law = single_heir_succession_law
+					NOT = { any_de_jure_county = { always = yes } }
+				}
+				var:rqa_loyal_direct = {
+					top_liege = root
+					primary_title = root.var:rqa_loyal_primary_title
+				}
+				var:rqa_loyal_indirect = { top_liege = root }
+				var:rqa_personal_county = { holder = root }
+				tgp_has_access_to_ministry_trigger = yes
+				global_var:rmtm_ministry_entitlement_title = { holder = root }
+				cp:councillor_chancellor ?= { has_character_flag = rqa_prechaos_minister_chancellor has_title = title:e_minister_chancellor }
+				cp:councillor_spymaster ?= { has_character_flag = rqa_prechaos_minister_censor has_title = title:e_minister_censor }
+				cp:minister_grand_marshal ?= { has_character_flag = rqa_prechaos_minister_grand_marshal has_title = title:e_minister_grand_marshal }
+				cp:minister_personnel ?= { has_character_flag = rqa_prechaos_minister_personnel has_title = title:e_minister_of_personnel }
+				cp:councillor_steward ?= { has_character_flag = rqa_prechaos_minister_revenue has_title = title:e_minister_of_revenue }
+				cp:councillor_court_chaplain ?= { has_character_flag = rqa_prechaos_minister_rites has_title = title:e_minister_of_rites }
+				cp:councillor_marshal ?= { has_character_flag = rqa_prechaos_minister_war has_title = title:e_minister_of_war }
+				cp:minister_justice ?= { has_character_flag = rqa_prechaos_minister_justice has_title = title:e_minister_of_justice }
+				cp:minister_works ?= { has_character_flag = rqa_prechaos_minister_works has_title = title:e_minister_of_works }
+			}
+			debug_log = "RQA: TEST PASS phase3_later_dynasty_realm_and_ministry_inherited"
+			add_character_flag = rqa_waiting_for_recent_independence_expiry
+		}
+		else = { debug_log = "RQA: TEST FAIL phase3_later_dynasty_realm_and_ministry_inherited" }
+	}
+}
+
+rqa_verify_recent_independence_expiry_effect = {
+	if = {
+		limit = { has_character_flag = rqa_waiting_for_recent_independence_expiry }
+		remove_character_flag = rqa_waiting_for_recent_independence_expiry
+		if = {
+			limit = {
+				var:rqa_defecting_direct.primary_title = {
+					NOT = { exists = var:rmtm_recently_independent_from_restoration_hegemony }
+				}
+				var:rqa_control_ruler.primary_title = {
+					NOT = { exists = var:rmtm_recently_independent_from_restoration_hegemony }
+				}
+			}
+			debug_log = "RQA: TEST PASS phase4_recent_independence_expired"
+			add_character_flag = rqa_ready_for_threshold
+		}
+		else = { debug_log = "RQA: TEST FAIL phase4_recent_independence_expired" }
 	}
 }
 

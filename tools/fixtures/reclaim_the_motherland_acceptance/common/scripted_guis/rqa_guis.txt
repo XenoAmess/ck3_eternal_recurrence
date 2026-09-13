@@ -46,6 +46,40 @@ rqa_prepare_threshold_gui = {
 	effect = { rqa_prepare_threshold_effect = yes }
 }
 
+rqa_execute_succession_gui = {
+	scope = character
+	is_shown = {
+		is_ai = no
+		has_character_flag = rqa_succession_pending
+	}
+	effect = { rqa_execute_succession_effect = yes }
+}
+
+rqa_verify_succession_gui = {
+	scope = character
+	is_shown = {
+		is_ai = no
+		has_character_flag = rqa_waiting_for_succession
+		var:rqa_later_title = { holder = root }
+	}
+	effect = { rqa_verify_succession_effect = yes }
+}
+
+rqa_verify_recent_independence_expiry_gui = {
+	scope = character
+	is_shown = {
+		is_ai = no
+		has_character_flag = rqa_waiting_for_recent_independence_expiry
+		var:rqa_defecting_direct.primary_title = {
+			NOT = { exists = var:rmtm_recently_independent_from_restoration_hegemony }
+		}
+		var:rqa_control_ruler.primary_title = {
+			NOT = { exists = var:rmtm_recently_independent_from_restoration_hegemony }
+		}
+	}
+	effect = { rqa_verify_recent_independence_expiry_effect = yes }
+}
+
 rqa_verify_restoration_gui = {
 	scope = character
 	is_shown = {

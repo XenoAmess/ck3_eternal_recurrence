@@ -1,0 +1,4 @@
+﻿# Acceptance-only time compression. The product's exact release value is 1825
+# days; this later-loaded fixture exercises the same timed-variable expiry path
+# after one real game day.
+rmtm_recent_independence_duration_days = 1
