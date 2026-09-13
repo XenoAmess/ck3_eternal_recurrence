@@ -18059,7 +18059,7 @@ def pause_bound_native_event_for_definition_query(
         if not (
             isinstance(pause_submission, dict)
             and pause_submission.get("accepted") is True
-            and pause_submission.get("status") == "submitted"
+            and pause_submission.get("status") in {"submitted", "already_paused"}
         ):
             fail("native pause-map was not accepted before event-definition query")
 

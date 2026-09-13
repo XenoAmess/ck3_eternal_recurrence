@@ -7602,10 +7602,12 @@ def main() -> int:
             available: bool,
             paused: bool = True,
             drift_after_pause: str | None = None,
+            pause_status: str = "submitted",
         ) -> None:
             self.available = available
             self.paused = paused
             self.drift_after_pause = drift_after_pause
+            self.pause_status = pause_status
             self.revision = 40
             self.date_raw = 53146848
             self.event_instance_id = 9
@@ -7641,7 +7643,7 @@ def main() -> int:
                 self.event_instance_id += 1
             elif self.drift_after_pause == "character":
                 self.character_id += 1
-            return {"step": step, "accepted": True, "status": "submitted"}
+            return {"step": step, "accepted": True, "status": self.pause_status}
 
         def query_current_event_window_context_v1(
             self, event_instance_id: int, *, expected_revision: int
@@ -7748,6 +7750,30 @@ def main() -> int:
         assert already_paused_gate["evidence"]["pause_submission"][
             "status"
         ] == "not_needed_already_paused"
+
+    with tempfile.TemporaryDirectory() as temporary:
+        artifacts = Path(temporary)
+        raced_pause_service = DefinitionTargetService(
+            available=True,
+            paused=False,
+            pause_status="already_paused",
+        )
+        raced_pause_gate = capture.pause_bound_native_event_for_definition_query(
+            raced_pause_service,
+            artifacts,
+            stem="mock_policy_020_pause_raced_with_event",
+        )
+        raced_pause_identity = capture.query_event_definition_identity(
+            raced_pause_service,
+            raced_pause_gate["snapshot"],
+        )
+        assert raced_pause_service.pause_calls == [("pause-map", 40)]
+        assert raced_pause_service.query_calls == [(9, 41)]
+        assert raced_pause_identity["event_definition_key"] == "zg361m.20"
+        assert raced_pause_gate["evidence"]["result"] == "GREEN"
+        assert raced_pause_gate["evidence"]["pause_submission"][
+            "status"
+        ] == "already_paused"
 
     with tempfile.TemporaryDirectory() as temporary:
         artifacts = Path(temporary)
