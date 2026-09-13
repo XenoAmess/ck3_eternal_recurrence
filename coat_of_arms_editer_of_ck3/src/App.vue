@@ -15,6 +15,7 @@ import {
   type NamedColorMap,
 } from './domain/renderer'
 import { serializeCoatOfArms } from './domain/serializer'
+import { validateCoatOfArms } from './domain/validation'
 import {
   createCoatOfArms,
   createColoredEmblem,
@@ -89,7 +90,16 @@ const configuredEmblemResources = ref<CoatOfArmsConfiguredResourceItem[]>([])
 
 const output = computed(() => serializeCoatOfArms(coatOfArms.value))
 const activeEmblem = computed(() => coatOfArms.value.coloredEmblems[selectedEmblem.value])
-const errorCount = computed(() => diagnostics.value.filter((item) => item.severity === 'error').length)
+const visibleDiagnostics = computed<Diagnostic[]>(() => {
+  const items = [...diagnostics.value, ...validateCoatOfArms(coatOfArms.value)]
+  if (new TextEncoder().encode(output.value).length > 128 * 1024) {
+    items.push({ severity: 'error', message: '确定性导出超过原生 MCP 的 128 KiB 输入上限' })
+  }
+  return items.filter((item, index) => items.findIndex((candidate) => (
+    candidate.severity === item.severity && candidate.message === item.message
+  )) === index)
+})
+const errorCount = computed(() => visibleDiagnostics.value.filter((item) => item.severity === 'error').length)
 const renderedPreviewUrl = computed(() => {
   const rendered = renderCoatOfArms(
     coatOfArms.value,
@@ -135,8 +145,16 @@ function importSource() {
 }
 
 async function copyOutput() {
-  await navigator.clipboard.writeText(output.value)
-  ElMessage.success('CK3 纹章代码已复制；多行换行使用 CRLF')
+  if (errorCount.value > 0) {
+    ElMessage.error('请先修复确定性导出诊断')
+    return
+  }
+  try {
+    await navigator.clipboard.writeText(output.value)
+    ElMessage.success('CK3 纹章代码已复制；多行换行使用 CRLF')
+  } catch (error) {
+    ElMessage.error(`剪贴板写入失败：${errorMessage(error)}`)
+  }
 }
 
 async function pasteSource() {
@@ -531,8 +549,8 @@ importSource()
           <p>检测和应用需要 CK3 已停在纹章设计器；“应用”只改变 working state，不等于上层保存。</p>
         </div>
 
-        <div v-if="diagnostics.length" class="diagnostics">
-          <div v-for="(item, index) in diagnostics" :key="index" :class="['diagnostic', item.severity]">
+        <div v-if="visibleDiagnostics.length" class="diagnostics">
+          <div v-for="(item, index) in visibleDiagnostics" :key="index" :class="['diagnostic', item.severity]">
             <span>{{ item.severity.toUpperCase() }}</span>
             <p>{{ item.message }}<small v-if="item.line">（{{ item.line }}:{{ item.column }}）</small></p>
           </div>

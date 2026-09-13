@@ -7,6 +7,7 @@ import type {
   TexturedEmblem,
 } from './types'
 import { createCoatOfArms, createInstance } from './types'
+import { validateCoatOfArms } from './validation'
 
 type TokenKind = 'atom' | 'string' | 'equals' | 'open' | 'close' | 'eof'
 
@@ -232,27 +233,70 @@ function scalar(
   })
   let result = valueText(matches.at(-1)!.value)
   const seen = new Set<string>()
-  while (result.startsWith('@') && variables.has(result) && !seen.has(result)) {
+  while (result.startsWith('@')) {
+    if (seen.has(result)) {
+      diagnostics.push({
+        severity: 'error',
+        message: `${key} 的静态变量引用形成循环：${[...seen, result].join(' -> ')}`,
+        line: matches.at(-1)!.token.line,
+        column: matches.at(-1)!.token.column,
+      })
+      break
+    }
+    if (!variables.has(result)) {
+      diagnostics.push({
+        severity: 'error',
+        message: `${key} 引用了未声明的静态变量 ${result}`,
+        line: matches.at(-1)!.token.line,
+        column: matches.at(-1)!.token.column,
+      })
+      break
+    }
     seen.add(result)
     result = variables.get(result)!
   }
   return result
 }
 
-function numberList(value: AstValue | undefined, fallback: number[]): number[] {
-  if (!value || value.kind !== 'block') return [...fallback]
-  const parsed = value.items
-    .filter((item): item is AstAtom => item.kind === 'atom')
-    .map((item) => Number(item.text))
-  return parsed.length && parsed.every(Number.isFinite) ? parsed : [...fallback]
+function numberList(
+  value: AstValue | undefined,
+  fallback: number[],
+  diagnostics: Diagnostic[],
+  field: string,
+): number[] {
+  if (!value) return [...fallback]
+  if (value.kind !== 'block') {
+    diagnostics.push({ severity: 'error', message: `${field} 必须是数值块` })
+    return [...fallback]
+  }
+  if (!value.items.length || value.items.some((item) => item.kind !== 'atom')) {
+    diagnostics.push({ severity: 'error', message: `${field} 只能包含数值` })
+    return [...fallback]
+  }
+  const parsed = (value.items as AstAtom[]).map((item) => Number(item.text))
+  if (!parsed.every(Number.isFinite)) {
+    diagnostics.push({ severity: 'error', message: `${field} 含无效数值` })
+    return [...fallback]
+  }
+  return parsed
 }
 
 function parseInstance(block: AstBlock, diagnostics: Diagnostic[]): CoatOfArmsInstance {
   const fallback = createInstance()
   diagnoseLooseValues(block, 'instance', diagnostics)
   const entries = assignments(block)
-  const position = numberList(entries.find((entry) => entry.key === 'position')?.value, fallback.position)
-  const scale = numberList(entries.find((entry) => entry.key === 'scale')?.value, fallback.scale)
+  const position = numberList(
+    entries.find((entry) => entry.key === 'position')?.value,
+    fallback.position,
+    diagnostics,
+    'position',
+  )
+  const scale = numberList(
+    entries.find((entry) => entry.key === 'scale')?.value,
+    fallback.scale,
+    diagnostics,
+    'scale',
+  )
   if (position.length !== 2) diagnostics.push({ severity: 'warning', message: 'position 应有两个数值' })
   if (scale.length !== 2) diagnostics.push({ severity: 'warning', message: 'scale 应有两个数值' })
   const readNumber = (key: string, value: number) => {
@@ -283,9 +327,34 @@ export function parseCoatOfArms(source: string): ImportResult {
   try {
     const document = new Parser(tokenize(source)).parseDocument()
     const topLevel = document.filter(isAssignment)
+    for (const item of document.filter((candidate) => !isAssignment(candidate))) {
+      diagnostics.push({
+        severity: 'error',
+        message: `不支持的顶层游离值：${valueText(item)}`,
+      })
+    }
     const variables = new Map<string, string>()
-    for (const entry of topLevel.filter((entry) => entry.key.startsWith('@'))) {
+    const variableEntries = topLevel.filter((entry) => entry.key.startsWith('@'))
+    for (const entry of variableEntries) {
+      if (variables.has(entry.key)) {
+        diagnostics.push({
+          severity: 'error',
+          message: `静态变量 ${entry.key} 重复声明；确定性优先级不明确`,
+          line: entry.token.line,
+          column: entry.token.column,
+        })
+      }
       variables.set(entry.key, valueText(entry.value))
+    }
+    for (const entry of topLevel.filter(
+      (candidate) => !candidate.key.startsWith('@') && candidate.value.kind !== 'block',
+    )) {
+      diagnostics.push({
+        severity: 'error',
+        message: `不支持的顶层标量：${entry.key}`,
+        line: entry.token.line,
+        column: entry.token.column,
+      })
     }
     const outer = topLevel.filter((entry) => !entry.key.startsWith('@') && entry.value.kind === 'block')
     if (!outer.length) throw new ParseFailure('需要 name = { ... } 外层对象', topLevel[0]?.token ?? { kind: 'eof', text: '', line: 1, column: 1 })
@@ -318,7 +387,12 @@ export function parseCoatOfArms(source: string): ImportResult {
         coloredEmblems.push({
           texture: scalar(emblemEntries, 'texture', 'ce_martlet.dds', diagnostics, variables),
           colors: [1, 2, 3].map((index) => scalar(emblemEntries, `color${index}`, index === 1 ? 'yellow' : 'white', diagnostics, variables)) as [string, string, string],
-          mask: numberList(findLastAssignment(emblemEntries, 'mask')?.value, [1]),
+          mask: numberList(
+            findLastAssignment(emblemEntries, 'mask')?.value,
+            [1],
+            diagnostics,
+            'colored_emblem mask',
+          ),
           instances: emblemEntries
             .filter((item) => item.key === 'instance' && item.value.kind === 'block')
             .map((item) => parseInstance(item.value as AstBlock, diagnostics)),
@@ -343,8 +417,8 @@ export function parseCoatOfArms(source: string): ImportResult {
       coloredEmblems,
       texturedEmblems,
     }
-    if (!coatOfArms.pattern) diagnostics.push({ severity: 'warning', message: '缺少 pattern；CK3 虽可能接受，但结果依赖默认值' })
-    if (variables.size) diagnostics.push({ severity: 'info', message: `已展开 ${variables.size} 个静态 @变量；导出使用确定字面量` })
+    diagnostics.push(...validateCoatOfArms(coatOfArms))
+    if (variables.size) diagnostics.push({ severity: 'info', message: `已读取 ${variables.size} 个静态 @变量声明；可解析引用已展开为确定字面量` })
     return { coatOfArms, diagnostics }
   } catch (error) {
     if (error instanceof ParseFailure) {

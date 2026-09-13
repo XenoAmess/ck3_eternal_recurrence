@@ -22,6 +22,24 @@ describe('CK3 coat of arms parser', () => {
     expect(result.diagnostics.map((item) => item.message).join(' ')).toContain('parent')
   })
 
+  it('rejects unresolved, cyclic and duplicate static variables', () => {
+    const unresolved = parseCoatOfArms('coa={color1=@missing}')
+    const cyclic = parseCoatOfArms('@a=@b @b=@a coa={color1=@a}')
+    const duplicate = parseCoatOfArms('@a=blue @a=red coa={color1=@a}')
+
+    expect(unresolved.diagnostics.some((item) => item.message.includes('未声明'))).toBe(true)
+    expect(cyclic.diagnostics.some((item) => item.message.includes('循环'))).toBe(true)
+    expect(duplicate.diagnostics.some((item) => item.message.includes('重复声明'))).toBe(true)
+  })
+
+  it('rejects loose values and scalar assignments outside the wrapper', () => {
+    const loose = parseCoatOfArms('garbage coa={pattern="pattern_solid.dds"}')
+    const scalar = parseCoatOfArms('unexpected=yes coa={pattern="pattern_solid.dds"}')
+
+    expect(loose.diagnostics.some((item) => item.message.includes('顶层游离值'))).toBe(true)
+    expect(scalar.diagnostics.some((item) => item.message.includes('顶层标量'))).toBe(true)
+  })
+
   it('serializes deterministic CRLF source with a coa wrapper', () => {
     const result = parseCoatOfArms('79={pattern="pattern_solid.dds" color1=blue}')
     const output = serializeCoatOfArms(result.coatOfArms)
@@ -57,6 +75,28 @@ describe('CK3 coat of arms parser', () => {
 
     expect(template.diagnostics.some((item) => item.severity === 'error')).toBe(true)
     expect(duplicate.diagnostics.some((item) => item.severity === 'error')).toBe(true)
+  })
+
+  it('rejects color expressions outside the proven deterministic subset', () => {
+    const tagged = parseCoatOfArms(
+      'coa={pattern="pattern_solid.dds" color1=effect { add_gold=1000 }}',
+    )
+    const unicode = parseCoatOfArms(
+      'coa={pattern="pattern_solid.dds" color1="蓝色"}',
+    )
+
+    expect(tagged.diagnostics.some((item) => item.message.includes('rgb/hsv'))).toBe(true)
+    expect(unicode.diagnostics.some((item) => item.message.includes('rgb/hsv'))).toBe(true)
+  })
+
+  it('does not silently replace malformed numeric blocks with defaults', () => {
+    const result = parseCoatOfArms(
+      'coa={pattern="pattern_solid.dds" colored_emblem={texture="ce_martlet.dds" mask={one} instance={position={x=1} scale=wide rotation=nope depth=nan}}}',
+    )
+
+    expect(result.diagnostics.filter((item) => item.severity === 'error').length).toBeGreaterThanOrEqual(3)
+    expect(result.diagnostics.map((item) => item.message).join(' ')).toContain('position')
+    expect(result.diagnostics.map((item) => item.message).join(' ')).toContain('mask')
   })
 
   it('round-trips the only live-detected textured emblem shape', () => {

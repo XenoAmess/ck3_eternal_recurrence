@@ -697,13 +697,14 @@ Web 端若要提供随机生成，应在自己的数据模型中完成选择，�
 
 本轮已实机闭合“输入源码 → 原生检测/预览 → 应用 → 原生 Copy/export → 原样再应用 → 稳定再次导出”，并补齐 frontend
 生命周期与 Windows 换行规范化。基础游戏 designer manifest 资源目录也已通过离线 MCP 工具分页暴露；运行中 CK3 的完整
-effective feature 与 script `has_dlc` truth 已有 production-live 原生 primitive，并接入编辑器。前端路由识别和
-`main_menu → bookmarks` 已达到 `mcp-static-ready`，但尚未 live。仍未通过 MCP 闭合的能力有：
+effective feature 与 script `has_dlc` truth 已有 production-live 原生 primitive，并接入编辑器。前端路由的
+`main_menu → bookmarks → 未选角 lobby` 已达到 `production-live primitive`；修正后的 lobby 随机可玩角色选择和
+`lobby → ruler_designer` 为 `mcp-static-ready / live=false`。仍未通过 MCP 闭合的能力有：
 
 - 读取 CK3 原生 preview 的最终像素或直接导出 PNG（浏览器已能按随附 shader 源码离线合成，但不替代 native pixel）；
 - 完成角色设计器上层 Finish；
-- 从 bookmarks 选择可自定义角色、打开 ruler designer、切换到 coat-of-arms 页面的剩余固定语义动作；这些动作应继续扩展
-  GUI-tree MCP allowlist，不得回退到坐标、OCR 或键盘；
+- 实机闭合 lobby 随机可玩角色选择与打开 ruler designer，再从 live native tree 确定切换到 coat-of-arms 页面的固定语义动作；
+  这些动作应继续扩展 GUI-tree MCP allowlist，不得回退到坐标、OCR 或键盘；
 - 枚举游戏当前运行时实际注册且已合并 DLC/mod override 的 pattern/emblem/color 资源；现有 runtime feature truth 只证明
   gameplay gate，不提供 CoA VFS/registry winner；
 - 跨 CK3 build 自动适配 RVA 与字段。
@@ -731,6 +732,9 @@ CoatOfArms
 当前首个可运行基线已经做到：
 
 - parser 识别未知字段并给出带位置诊断，serializer 只输出稳定白名单；
+- parser 拒绝未声明、循环或重复的静态 `@变量`，以及 wrapper 外的顶层标量/游离值；
+- 结构化表单持续复核命名颜色或 `rgb`/`hsv` 三分量字面量、可打印 ASCII 资源名、有限数值与 128 KiB 原生输入上限；
+  因而导入后再手工填入伪 CK3 tagged block 或非法数值也会阻止复制和原生 MCP 请求；
 - 语法合法、资源存在、引擎检测、designer 应用是四个不同状态；
 - 多顶层、重复标量、body-only、模板 DSL 默认拒绝；
 - 简单静态 `@变量` 在导入时展开，`parent` 保留为诊断而不混进确定性导出；
@@ -753,7 +757,7 @@ CoatOfArms
 浏览器无法直接启动本机 stdio MCP，因此已引入 Maven + Java + Quarkus 伴随服务。后端只负责 REST/MCP 会话转接与
 本机资源索引，不承担“执行 CK3 脚本”的虚构能力；当前也没有 DDS 转换或素材缓存。
 
-首版有 Vitest parser/serializer 回归和 Vite production build 验收。后续扩展仍以本文的原生 MCP 证据为协议来源，
+当前前端有 Vitest `32/32` parser/serializer/validator/API/DDS/renderer 回归和 Vite production build 验收。后续扩展仍以本文的原生 MCP 证据为协议来源，
 不会把旧 UI 观察或第三方 parser 行为固化成 CK3 引擎事实。
 
 ## 10. 辅助参考边界
