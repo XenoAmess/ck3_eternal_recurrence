@@ -29,6 +29,7 @@ RUNTIME_FILES = frozenset(
         "common/scripted_triggers/aub_building_triggers.txt",
         "descriptor.mod",
         "events/auto_build.txt",
+        "gfx/interface/illustrations/decisions/decision_auto_upgrade_buildings.dds",
         "localization/english/auto_build_l_english.yml",
         "localization/french/auto_build_l_french.yml",
         "localization/german/auto_build_l_german.yml",

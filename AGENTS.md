@@ -7,7 +7,7 @@
 - `mod_remove_mandala/` — “肃清曼荼罗伪信”独立版源目录；正式发布只使用 `build_remove_mandala_release.py` 生成的 15 文件 staging
 - `mod_xenoamess_quality_of_life/` — “XenoAmess的体验优化”独立版源目录；Workshop item id：**3798133925**；正式发布只使用 `build_xenoamess_quality_of_life_release.py` 生成的 19 文件 staging
 - `mod_reclaim_the_motherland/` — “重整河山”独立版源目录；Workshop item id：**3798404599**；正式发布只使用 `build_reclaim_the_motherland_release.py` 生成的 28 文件 staging
-- `mod_auto_upgrade_buildings/` — “自动升级建筑（XenoAmess维护版）”源码；维护版 Workshop item id：**3800124956**；上游 **3596580780** 仅作来源身份，禁止作为维护版发布目标；正式上传只使用 `build_auto_upgrade_buildings_release.py` 生成的 15 文件 staging，维护与验收见 `docs/auto-upgrade-buildings-*.md`
+- `mod_auto_upgrade_buildings/` — “自动升级建筑（XenoAmess维护版）”源码；维护版 Workshop item id：**3800124956**；上游 **3596580780** 仅作来源身份，禁止作为维护版发布目标；正式上传只使用 `build_auto_upgrade_buildings_release.py` 生成的 16 文件 staging，维护与验收见 `docs/auto-upgrade-buildings-*.md`
 - `Crusader Kings III/` — 游戏本体目录（仅作参考/逆向用，已被 .gitignore 排除）
 - `docs/` — 知识库（跨存档存储机制、GUI 系统、语法踩坑），改机制前先读
 - `docs/autonomous-agent-progress/` — 自动游玩智能体的统一目标/路线图、日报、周报、月报与日/周计划会入口；能力状态必须回链原生专题与实机证据
@@ -71,6 +71,7 @@ py tools/compose_remove_mandala_key_art.py                  # 肃清曼荼罗主
 py tools/compose_remove_mandala_workshop_media.py --artifacts <run> # GREEN 实机截图 → 两张低于 2 MB JPEG
 py tools/gen_reclaim_the_motherland_title_names.py          # 后朝标准朝号的九语确定性组合 key
 py tools/compose_reclaim_the_motherland_key_art.py          # 重整河山主视觉 → 640×640、低于 1 MB thumbnail
+py tools/compose_auto_upgrade_buildings_decision_art.py     # 自动升级建筑源图 → 1100×440 DXT1 DDS
 py tools/compose_reclaim_the_motherland_workshop_media.py --artifacts <run> # 开封镜头 GREEN 实机截图 → 三张低于 2 MB JPEG
 py tools/compose_trait_stars.py                             # 10 级特质星标 → 120×120 RGBA DDS
 py mod_zhongguo_style/tools/gen_361_mechanisms.py           # 361 目录、领域合同与制度卡
@@ -86,7 +87,7 @@ py tools/build_reclaim_the_motherland_release.py --check    # 重整河山临时
 py tools/build_reclaim_the_motherland_release.py            # 生成 28 文件 staging、manifest 与 ZIP
 py tools/gen_auto_upgrade_buildings.py                      # 自动升级建筑 43 条建筑链
 py tools/build_auto_upgrade_buildings_release.py --check    # 自动升级建筑临时双构建
-py tools/build_auto_upgrade_buildings_release.py            # 生成 14 文件 staging、manifest 与 ZIP
+py tools/build_auto_upgrade_buildings_release.py            # 生成 16 文件 staging、manifest 与 ZIP
 ```
 
 上述脚本生成器与素材投影工具中，**不要手改 `GENERATED FILE` 标记的文件**。计分参数只改 `tools/scoring_data.py`，
@@ -106,6 +107,8 @@ py tools/build_auto_upgrade_buildings_release.py            # 生成 14 文件 s
 `py tools/gen_courtier_creator.py`，并审阅生成的五类目录、224 项元数据与 95 组冲突。只运行生成器不会重新读取游戏文件。
 三张决议源图位于 `images/decision_*.png`；修改后运行 `py tools/compose_decision_art.py`，不要手改
 `gfx/interface/illustrations/decisions/decision_xar_*.dds`。静态校验会逐字节重建并检查 DXT1 输出。
+自动升级建筑的决议源图为 `images/auto_upgrade_buildings_decision.png`；修改后运行
+`py tools/compose_auto_upgrade_buildings_decision_art.py`，不要手改其 `decision_auto_upgrade_buildings.dds`。静态校验会逐字节重建并检查 1100×440 DXT1 输出。
 白绮独立版主视觉源图为 `images/vivhite_courtier_key_art.png`；修改后运行
 `py tools/compose_vivhite_key_art.py`，不要手改其 `thumbnail.png`。静态校验会逐像素重建并检查 PNG。
 十级特质星标由 `tools/compose_trait_stars.py` 程序化生成；不要手改

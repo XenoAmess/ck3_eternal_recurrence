@@ -1,6 +1,6 @@
 # “自动升级建筑”四期：超直辖暂停策略需求与开发计划
 
-状态：**implementation-complete；4.0.0 发布级七语 L0 与 R0032 排他实机 GREEN，尚待 Workshop、fresh-cache 与 changelog 收口**
+状态：**implementation-complete；4.0.0 发布级九语与逻辑矩阵 R0032 GREEN，用户定稿的专属决议插图已通过 L0，尚待一次针对插图加载的实机复核及 Workshop、fresh-cache、changelog 收口**
 
 候选版本：`4.0.0`
 
@@ -127,7 +127,7 @@ CK3 1.19.0.6 的 `common/decisions/_decisions.info` 明确规定一个决议最�
 - 校验 `.0004` 的门禁只出现一次，并且位于省份遍历之前；`.0005` 仍会调度暂停玩家。
 - 校验无暂停 flag 的旧存档路径等价于 3.0.0。
 - 继续通过 165 链 / 605 边、4 个 Great Project 排除、三期支付矩阵、生成可重复性、本地化结构、release allowlist、manifest 与 deterministic ZIP 回归。
-- 正式 staging 预计仍为 15 个文件；本期无需新增运行时文件。
+- 四期机制本身不新增运行时文件；随后按用户明确要求加入一张专属决议 DDS，因此正式 staging 从历史 15 个文件有依据地增加为 16 个。源 PNG、提示词和投影脚本不进入 staging。
 
 ### P3：一次抽样实机验收
 
@@ -144,6 +144,7 @@ CK3 1.19.0.6 的 `common/decisions/_decisions.info` 明确规定一个决议最�
 7. 禁用后证明新 flag 被清理、已排队轮询零副作用；重新启用可以改选另一策略。
 8. 四期新增状态机只抽样代表性普通槽；同一成熟 fixture 顺带复跑二期建筑与三期资金矩阵，不另起 CK3 轮次。
 9. 项目相关 `error.log` / `debug.log` 诊断为零，源树、fixture、真实用户资料与 Steam 状态符合隔离合同。
+10. R0032 后新增的专属决议插图只做一次聚焦实机复核：决议面板真实加载该图、没有紫块／缺图，人物和建筑主题在实际裁切中可辨；不重复已经由 R0032 证明的完整机制矩阵。
 
 正式轮次使用该机器与本 Mod 在执行时由分配器给出的下一个递增编号，不在计划中预占历史 `R` 号。启动前必须取得 CK3 排他槽并证明 CK3 进程数为 0；本次计划编写不占用 CK3 或屏幕。
 
@@ -180,10 +181,11 @@ CK3 1.19.0.6 的 `common/decisions/_decisions.info` 明确规定一个决议最�
 - 实机 runner 的所有选项点击均来自当前截图 OCR 坐标；滚动只以实际可见选项为锚，不假定桌面、截图或面板尺寸。
 - 9 语发布文案已补齐并完成键集、BOM、保护 token 与非英文占位检查。MiniMax-M3 只生成候选，最终文本已人工复核并修正可能暗示拆分付款的译法。
 - 用户追加的 UI 缺陷已经闭环：六个原生 choice value 均补齐 `<value>_tooltip`；只在 `is_shown` 保留真人门禁，内部 AI／character flag 与 loop seed 全部移入 `hidden_effect`；确认页只显示当前所选组合的一段自然语言，不再强制换行。
-- L0 已通过：静态验证（165 链）、snapshot、26 项翻译调用器测试、7 项 release builder 测试及 15 文件可重复构建；当前产品 ZIP SHA-256 `0C71BB51EB1F3EA659F451FA19C09ED39E5C70D3814CDF3DE149D741885F037B`。正式 manifest 随最终发布 commit 重新冻结。
+- L0 已通过：静态验证（165 链）、snapshot、26 项翻译调用器测试、7 项 release builder 测试及 16 文件可重复构建。专属插图由权威 PNG 确定性投影为 `1100×440` DXT1 DDS，并受逐字节重建门禁保护；正式 manifest 与 ZIP 随最终发布 commit 重新冻结。
 - `desktop-3fevhd2-1c74096080--auto-upgrade-buildings--R0031` 已证明六项 hover、无原始 key／AI／flag 泄露、自然确认文案和四期完整状态机 GREEN；之后被原版单按钮【已宣战】模态框暂停，按 RED attempt 永久保留于 `D:\workspace\ck3_auto_upgrade_runtime\phase4-live-r6-20260914`。
 - `desktop-3fevhd2-1c74096080--auto-upgrade-buildings--R0032` 全量 GREEN：六项 hover、选择/确认、`0/-1/恢复`、暂停零副作用、继续策略、旧存档默认、三种资金、禁止拆分付款、禁用/重启，以及主建筑、普通、公国、特殊、混合资源和负向路径抽样全部通过；共保全 46 条 AUBT 记录（29 条 `TEST PASS`，所有必需 marker 各出现一次），项目诊断为 0，产品/fixture/源码未被游戏改写，受保护存储保持不变。证据入口为 `D:\workspace\ck3_auto_upgrade_runtime\phase4-live-r7-20260914\report.json`。
 - R0032 的 Open Kaishek 层因该工具未登记 `auto-upgrade-buildings-1.19.0-source` fixture 而标为 `not-applicable / unknown-fixture`；同一报告中的 root parser 为 GREEN，真实 CK3 非调试实机为 GREEN。该工具覆盖缺口与产品结论分开记录。
+- R0032 后用户选择了新的专属决议插图，因此 R0032 继续作为全部玩法和 UI 文案的权威 GREEN；新增美术只需一次不重复逻辑矩阵的聚焦加载验收。美术来源、提示词、哈希与投影合同见 [决议插图记录](auto-upgrade-buildings-art.md)。
 
 | 工作包 | 预计工时 |
 | --- | ---: |

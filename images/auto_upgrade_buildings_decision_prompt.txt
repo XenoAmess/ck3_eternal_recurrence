@@ -1,0 +1,8 @@
+Use case: identity-preserve / stylized-concept
+Asset type: Crusader Kings III decision illustration designed for a 1100x440 banner crop.
+Reference character: images/glassfire_avatar.png. Preserve the silver-white tousled bob, long side strands, pale youthful face, magenta eyes, black high-neck clothing, and the signature green code rain, RGB separation, cyan/magenta/red tearing, scanlines, and digital corruption.
+Scene: a candlelit medieval castle administrative chamber. The character remains extremely busy, writing with a quill amid overlapping architectural plans, ledgers, rolled drawings, wax-sealed orders, drafting tools, a castle model, and a visible construction site.
+Emotion: quietly sad, exhausted, and resigned rather than angry or frantic. Lowered tearful eyes, a small closed downturned mouth, gently supported cheek, and slumped shoulders; no clenched teeth, snarl, scowl, aggressive glare, or panic.
+Style: richly painted historical strategy-game illustration with medieval oil-paint texture beneath prominent cyber-glitch mixed media.
+Composition: one main character around center-left; face and both hands visible; all important content survives a 2.5:1 center crop.
+Constraints: no prose text, UI, watermark, modern physical technology, weapons, additional foreground characters, gore, wounds, disfigurement, sexualization, duplicated limbs, or extra fingers. Abstract digits and code glyphs are required as texture.

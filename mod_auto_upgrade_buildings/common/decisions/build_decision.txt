@@ -1,6 +1,6 @@
 ﻿enable_auto_build = {
     picture = {
-        reference = "gfx/interface/illustrations/decisions/decision_misc.dds"
+        reference = "gfx/interface/illustrations/decisions/decision_auto_upgrade_buildings.dds"
     }
     decision_group_type = realm
     ai_check_interval = 0
@@ -156,7 +156,7 @@
 
 disable_auto_build = {
     picture = {
-        reference = "gfx/interface/illustrations/decisions/decision_misc.dds"
+        reference = "gfx/interface/illustrations/decisions/decision_auto_upgrade_buildings.dds"
     }
     decision_group_type = realm
     ai_check_interval = 0

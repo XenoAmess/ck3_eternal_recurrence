@@ -11,6 +11,7 @@ import sys
 from pathlib import Path
 
 import build_auto_upgrade_buildings_release as builder
+import compose_auto_upgrade_buildings_decision_art as decision_art
 import extract_auto_upgrade_buildings as extractor
 import gen_auto_upgrade_buildings as generator
 from auto_upgrade_buildings_data import CHAINS, EDGES, EXCLUDED_EDGES, SNAPSHOT
@@ -195,6 +196,14 @@ def validate(
     ):
         if not balanced_braces(value):
             errors.append(f"unbalanced Clausewitz text: {relative}")
+    decision_art_reference = (
+        'reference = "gfx/interface/illustrations/decisions/'
+        'decision_auto_upgrade_buildings.dds"'
+    )
+    if decisions.count(decision_art_reference) != 2:
+        errors.append("enable and disable decisions must share the custom decision art")
+    if "decision_misc.dds" in decisions:
+        errors.append("vanilla miscellaneous decision art reference remains")
     for path, expected in generator.generated_outputs().items():
         if not path.is_file() or path.read_bytes() != expected:
             errors.append(f"generated runtime is stale: {path.relative_to(ROOT).as_posix()}")
@@ -541,6 +550,22 @@ def validate(
         errors.append("thumbnail.png is not a PNG")
     elif struct.unpack(">II", data[16:24]) != (600, 600):
         errors.append("upstream thumbnail.png must remain 600x600")
+
+    if not decision_art.SOURCE.is_file():
+        errors.append("Auto Upgrade Buildings decision source art is missing")
+    elif not decision_art.OUTPUT.is_file():
+        errors.append("generated Auto Upgrade Buildings decision art is missing")
+    else:
+        expected_art = decision_art.dds_bytes()
+        actual_art = decision_art.OUTPUT.read_bytes()
+        if actual_art != expected_art:
+            errors.append("generated Auto Upgrade Buildings decision art is stale")
+        elif (
+            actual_art[:4] != b"DDS "
+            or actual_art[84:88] != b"DXT1"
+            or struct.unpack("<II", actual_art[12:20]) != (440, 1100)
+        ):
+            errors.append("Auto Upgrade Buildings decision art must be 1100x440 DXT1 DDS")
 
     fixture_files = {
         "descriptor.mod",
