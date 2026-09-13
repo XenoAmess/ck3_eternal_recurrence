@@ -79,6 +79,18 @@ class Gen034WhitePeaceEvaluationLiveAcceptanceTests(unittest.TestCase):
             )["exact_read_only_command_delta"]
         )
 
+    def test_unavailable_white_peace_preserves_typed_projection(self) -> None:
+        projection, evaluation = HARNESS._evaluate_live_inputs(
+            _snapshot(), _options_query(available=False), _terms_query()
+        )
+
+        self.assertEqual(projection["status"], "evidence_required")
+        self.assertIn(
+            "white_peace_native_option_unavailable",
+            projection["blockers"],
+        )
+        self.assertIsNone(evaluation)
+
     def test_exact_build_requires_both_narrow_query_capabilities(self) -> None:
         terms_capability = HARNESS.base.QUERY_WAR_TERMINATION_TERMS_CAPABILITY
         options_capability = HARNESS.QUERY_WAR_TERMINATION_OPTIONS_CAPABILITY

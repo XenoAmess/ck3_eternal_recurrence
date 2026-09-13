@@ -3021,9 +3021,17 @@ def normalize_war_termination_options(
         "cb_allows_white_peace",
         "options",
     }
-    if set(value) != expected_keys:
+    allowed_keys = {
+        frozenset(expected_keys),
+        frozenset(expected_keys | {"source"}),
+    }
+    if frozenset(value) not in allowed_keys:
         raise ValueError(
             "native war_termination_options top-level schema is malformed"
+        )
+    if "source" in value and value.get("source") != "native":
+        raise ValueError(
+            "native war_termination_options.source is malformed"
         )
     war_id = _positive_int32_id(value.get("war_id"), "war_id")
     if expected_war_id is not None and war_id != _positive_int32_id(

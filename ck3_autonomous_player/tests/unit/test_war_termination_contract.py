@@ -184,6 +184,15 @@ class WarTerminationContractTests(unittest.TestCase):
             {"raw": -2_900_000, "scale": 100_000},
         )
 
+    def test_normalizer_accepts_its_native_output_idempotently(self) -> None:
+        normalized = normalize_war_termination_options(
+            _termination_options()
+        )
+
+        self.assertEqual(
+            normalize_war_termination_options(normalized), normalized
+        )
+
     def test_final_recipient_status_is_typed_and_not_inferred_from_score(
         self,
     ) -> None:
@@ -271,6 +280,9 @@ class WarTerminationContractTests(unittest.TestCase):
         decorated_top_level = _termination_options()
         decorated_top_level["terms_observable"] = False
         malformed_rows.append(decorated_top_level)
+        malformed_source = _termination_options()
+        malformed_source["source"] = "fixture"
+        malformed_rows.append(malformed_source)
         bad_acceptance_scale = _termination_options()
         bad_acceptance_scale["options"]["white_peace"]["ai_acceptance"][
             "scale"

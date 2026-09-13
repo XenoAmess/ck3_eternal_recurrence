@@ -554,3 +554,9 @@ intake retains it while forecast, utility, recommendation and action remain
 false. GEN-034 is now `2/4`: same-frame white-peace comparison and the
 integrated recommendation/action package remain.
 Whole-program G2 remains `0/8`; the former `T1=90%` label is retired.
+
+## 2026-09-14 first bounded GEN-034-C frame
+
+Current round R641 completed the two intended read-only native queries at one paused revision. It exposed a consumer defect rather than a native query failure: the canonical options normalizer adds `source=native`, while a second normalization by the white-peace projection previously rejected that field. The repaired normalizer accepts both the undecorated producer shape and its own canonical output, validates the source value, and remains exact about every gameplay field.
+
+The same live payload reports `war_duration_days=0`, `player_relative_war_score=0`, `native_validator_passed=false` and an unavailable final recipient response for white peace. The projection must therefore retain `white_peace_native_option_unavailable` and `white_peace_final_recipient_response_unavailable`; it may not manufacture utility evidence from the acceptance score. GEN-034-C remains open pending a reachable paused frame with an available final white-peace option.

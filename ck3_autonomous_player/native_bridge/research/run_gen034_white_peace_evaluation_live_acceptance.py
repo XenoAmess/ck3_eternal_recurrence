@@ -130,13 +130,15 @@ def _evaluate_live_inputs(
     snapshot: dict[str, object],
     options: dict[str, object],
     terms: dict[str, object],
-) -> tuple[dict[str, object], dict[str, object]]:
+) -> tuple[dict[str, object], dict[str, object] | None]:
     projection = provide_raiktor_white_peace_narrow_projection(
         snapshot,
         options,
         terms,
         production_live=True,
     )
+    if projection.get("observation_ready") is not True:
+        return projection, None
     evaluation = evaluate_raiktor_immediate_exit_utilities(
         projection,
         terms.get("raiktor_surrender_aggregate_session"),
@@ -203,7 +205,8 @@ async def _run_mcp_sequence(
         options_step=options_step,
         terms_step=terms_step,
     )
-    certificate_value = evaluation.get("evaluation_certificate")
+    evaluation_value = evaluation if isinstance(evaluation, dict) else {}
+    certificate_value = evaluation_value.get("evaluation_certificate")
     certificate = (
         certificate_value if isinstance(certificate_value, dict) else {}
     )
@@ -239,20 +242,20 @@ async def _run_mcp_sequence(
         "projection_ready": projection.get("observation_ready") is True,
         "projection_production_live": projection.get("production_live")
         is True,
-        "evaluation_ready": evaluation.get("utility_evaluation_ready")
+        "evaluation_ready": evaluation_value.get("utility_evaluation_ready")
         is True,
-        "evaluation_production_live": evaluation.get(
+        "evaluation_production_live": evaluation_value.get(
             "production_live_inputs"
         )
         is True,
         "continue_still_closed": boundaries.get("continue_utility_ready")
         is False,
-        "full_recommendation_still_closed": evaluation.get(
+        "full_recommendation_still_closed": evaluation_value.get(
             "full_three_way_recommendation_ready"
         )
         is False,
-        "action_still_closed": evaluation.get("action_ready") is False
-        and evaluation.get("action_literal") is None,
+        "action_still_closed": evaluation_value.get("action_ready") is False
+        and evaluation_value.get("action_literal") is None,
         **history,
     }
     return {
