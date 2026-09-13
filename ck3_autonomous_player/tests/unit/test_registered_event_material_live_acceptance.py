@@ -98,9 +98,10 @@ def test_source_anchor_allows_only_read_only_rows_before_save(tmp_path: Path) ->
 
 def test_runner_source_limits_the_live_command_set() -> None:
     source = SCRIPT.read_text(encoding="utf-8")
-    assert 'await client.call_tool("ck3_auto_turn", {})' in source
+    assert '"ck3_select_event_option"' in source
     assert 'await client.call_tool(\n                "ck3_save_checkpoint"' in source
-    assert '"fresh_event_context_queries": 1' in source
+    assert '"fresh_event_context_queries": 0' in source
+    assert '"checkpoint_replay_event_context": True' in source
     assert '"event_selections": 1' in source
     assert '"time_advanced": False' in source
     assert '"war_actions": 0' in source

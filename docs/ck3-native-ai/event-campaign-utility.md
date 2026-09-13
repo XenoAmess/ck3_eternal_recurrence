@@ -78,9 +78,13 @@ visitor、更多事件、基于实时压力/财政/继承风险的动态目标�
 ## 通用有界实机验收器
 
 `run_registered_event_material_live_acceptance.py` 将上述最小完成门落成可复用执行链。它只接受保存前由 exact current-event query
-绑定、且二者之间仅包含成功只读查询的 immutable checkpoint。冷恢复后 production planner 必须先执行一次新的事件窗口查询，
-下一 OODA 才能按 registry recommendation 选择唯一目标选项；runner 随后要求 old instance advance、material comparator 返回
-`verified_change`，并只保存一个同日期 successor checkpoint。整轮禁止推进时间和任何战争动作。
+绑定、且二者之间仅包含成功只读查询的 immutable checkpoint。冷恢复后 runner 必须把这个 source query 的 event
+instance/date/player/option projection 重新绑定到当前 snapshot，才允许 production registry policy 生成 recommendation；随后只选择
+该选项，要求 old instance advance、material comparator 返回 `verified_change`，并保存一个同日期 successor checkpoint。整轮禁止
+推进时间和任何战争动作。
+
+R663 证明 R414 checkpoint 冷恢复后的 application-main event-window query 会超时，且未提交任何选择。该 RED 保留；验收器不再
+重复这个已失败读口，而是复用 checkpoint 本身封存的真实 source query，并让选择成为恢复后的第一条 gameplay command。
 
 该工具可以供三个目标事件及后续具有同一 material-postcondition 合同的原版事件复用，不绑定固定 PID、机器账号、CK3 轮次或
 绝对输入路径。当前状态为 `static-ready / live=false`；首个输入使用 R414 的 `trait_specific.8001` 冻结 checkpoint。

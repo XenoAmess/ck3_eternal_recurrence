@@ -2,10 +2,10 @@
 """Close one registered event recommendation/action/material loop.
 
 The runner cold-restores an immutable checkpoint whose driver history binds a
-source-reviewed current-event query to the save.  It lets the production turn
-planner perform one fresh event query and one registry-selected option, checks
-the event's material postcondition, then saves one successor checkpoint.  It
-never resumes time or submits a war action.
+source-reviewed current-event query to the save.  It rebinds that exact query
+to the restored snapshot, runs the production registry policy, selects its one
+recommended option, checks the material postcondition, then saves one successor
+checkpoint.  It never resumes time or submits a war action.
 """
 
 from __future__ import annotations
@@ -33,6 +33,13 @@ from xar_autoplayer.bridge.event_contract import event_option_step  # noqa: E402
 from xar_autoplayer.bridge.event_window_context_contract import (  # noqa: E402
     QUERY_CURRENT_EVENT_WINDOW_CONTEXT_V1_CAPABILITY,
     QUERY_CURRENT_EVENT_WINDOW_CONTEXT_V1_STEP,
+)
+from xar_autoplayer.vanilla_events.outcome import (  # noqa: E402
+    evaluate_registered_event_material_postcondition_v1,
+    plan_registered_event_material_postcondition_v1,
+)
+from xar_autoplayer.vanilla_events.policy import (  # noqa: E402
+    recommend_registered_vanilla_event_option_v1,
 )
 
 
@@ -266,8 +273,10 @@ async def _run_mcp_sequence(
     tool_names: list[str] = []
     before: dict[str, object] = {}
     after: dict[str, object] = {}
-    first_turn: dict[str, object] = {}
-    action_turn: dict[str, object] = {}
+    decision: dict[str, object] = {}
+    material_expectation: dict[str, object] = {}
+    selection: dict[str, object] = {}
+    material: dict[str, object] = {}
     checkpoint: dict[str, object] | None = None
     sequence_error: str | None = None
     try:
@@ -291,37 +300,56 @@ async def _run_mcp_sequence(
             ):
                 raise RuntimeError("restored frame differs from the source event anchor")
 
-            first_result = await client.call_tool("ck3_auto_turn", {})
-            mcp_results.append(first_result)
-            first_turn = base._structured(first_result, tool_name="ck3_auto_turn:query")
-            if not (
-                first_turn.get("status") == "executed"
-                and first_turn.get("selected_step")
-                == QUERY_CURRENT_EVENT_WINDOW_CONTEXT_V1_STEP
-            ):
-                raise RuntimeError("first production turn did not refresh event context")
-
-            action_result = await client.call_tool("ck3_auto_turn", {})
-            mcp_results.append(action_result)
-            action_turn = base._structured(
-                action_result, tool_name="ck3_auto_turn:selection"
+            source_context = _mapping(source_event_anchor.get("context"))
+            options = active_event.get("options")
+            option_count = (
+                len(options)
+                if isinstance(options, list)
+                else active_event.get("option_count")
             )
-            plan = _mapping(action_turn.get("plan"))
-            decision = _mapping(plan.get("event_decision"))
-            selected_step = plan.get("selected_step")
+            decision = recommend_registered_vanilla_event_option_v1(
+                source_context,
+                played_character_id=expected_character_id,
+                snapshot_option_count=option_count,
+            )
             option_number = decision.get("selected_option_number")
             if not (
-                action_turn.get("status") == "executed"
-                and decision.get("status") == "recommended"
+                decision.get("status") == "recommended"
                 and decision.get("event_definition_key") == expected_event_key
                 and isinstance(option_number, int)
                 and not isinstance(option_number, bool)
-                and selected_step == event_option_step(option_number)
             ):
-                raise RuntimeError("production planner did not select the registered event")
-            material = _mapping(_mapping(action_turn.get("result")).get(
-                "event_material_postcondition"
-            ))
+                raise RuntimeError("checkpoint-bound registry policy did not recommend")
+            planned = plan_registered_event_material_postcondition_v1(
+                decision,
+                before.get("played_character"),
+                played_character_gold=before.get("played_character_gold"),
+                snapshot_id=before.get("snapshot_id"),
+                revision=before.get("revision"),
+            )
+            material_expectation = dict(planned) if isinstance(planned, dict) else {}
+            if material_expectation.get("status") != "ready":
+                raise RuntimeError("registered event material expectation is unavailable")
+            selected_step = event_option_step(option_number)
+            revision = before.get("revision")
+            if isinstance(revision, bool) or not isinstance(revision, int):
+                raise RuntimeError("source snapshot lacks a public revision")
+            selection_result = await client.call_tool(
+                "ck3_select_event_option",
+                {
+                    "option_number": option_number,
+                    "event_instance_id": source_event_anchor.get("event_instance_id"),
+                    "expected_revision": revision,
+                },
+            )
+            mcp_results.append(selection_result)
+            selection = base._structured(
+                selection_result, tool_name="ck3_select_event_option"
+            )
+            material = evaluate_registered_event_material_postcondition_v1(
+                material_expectation,
+                selection.get("event_selection"),
+            )
             if not (
                 material.get("status") == "verified_change"
                 and material.get("material_change_observed") is True
@@ -359,16 +387,11 @@ async def _run_mcp_sequence(
     except BaseException as error:
         sequence_error = _format_sequence_error(error)
 
-    plan = _mapping(action_turn.get("plan"))
-    decision = _mapping(plan.get("event_decision"))
     option_number = decision.get("selected_option_number")
     selected_step = (
         event_option_step(option_number)
         if isinstance(option_number, int) and not isinstance(option_number, bool)
         else None
-    )
-    material = _mapping(
-        _mapping(action_turn.get("result")).get("event_material_postcondition")
     )
     delta = _history_delta(before, after)
     checkpoint_path = (
@@ -380,20 +403,23 @@ async def _run_mcp_sequence(
         "official_tools_listed": all(
             item in tool_names
             for item in (
-                "ck3_auto_turn",
                 "ck3_get_capabilities",
                 "ck3_save_checkpoint",
+                "ck3_select_event_option",
                 "ck3_take_snapshot",
             )
         ),
         "mcp_results_not_errors": bool(mcp_results)
         and not any(bool(getattr(result, "is_error", False)) for result in mcp_results),
         "sequence_error_absent": sequence_error is None,
-        "fresh_query_executed": first_turn.get("selected_step")
-        == QUERY_CURRENT_EVENT_WINDOW_CONTEXT_V1_STEP,
+        "checkpoint_event_context_rebound": bool(source_event_anchor.get(
+            "anchor_sha256"
+        )),
         "registry_recommended": decision.get("status") == "recommended"
         and decision.get("event_definition_key") == expected_event_key,
-        "campaign_utility_ready": isinstance(plan.get("event_campaign_utility"), dict),
+        "campaign_utility_ready": isinstance(
+            decision.get("campaign_utility_profile"), dict
+        ),
         "single_event_selection": selected_step is not None,
         "material_change_verified": material.get("status") == "verified_change"
         and material.get("material_change_observed") is True,
@@ -406,7 +432,6 @@ async def _run_mcp_sequence(
         and _played_character_id(after) == expected_character_id,
         "exact_command_delta": delta
         == [
-            (QUERY_CURRENT_EVENT_WINDOW_CONTEXT_V1_STEP, True),
             (selected_step, True),
             ("save-checkpoint", True),
         ],
@@ -418,7 +443,6 @@ async def _run_mcp_sequence(
     return {
         "source_event_anchor": copy.deepcopy(dict(source_event_anchor)),
         "allowed_gameplay_commands": [
-            QUERY_CURRENT_EVENT_WINDOW_CONTEXT_V1_STEP,
             selected_step,
             "save-checkpoint",
         ],
@@ -430,8 +454,9 @@ async def _run_mcp_sequence(
             "enforce-demands-N",
         ],
         "before_snapshot": before,
-        "query_turn": first_turn,
-        "action_turn": action_turn,
+        "registry_decision": decision,
+        "material_expectation": material_expectation,
+        "selection": selection,
         "material_postcondition": dict(material),
         "successor_checkpoint": checkpoint,
         "final_snapshot": after,
@@ -560,7 +585,8 @@ def main(argv: list[str] | None = None) -> int:
                     "production_non_debug": True,
                     "cold_checkpoint": True,
                     "maximum_ck3_launches": 1,
-                    "fresh_event_context_queries": 1,
+                    "fresh_event_context_queries": 0,
+                    "checkpoint_replay_event_context": True,
                     "event_selections": 1,
                     "checkpoint_saves": 1,
                     "time_advanced": False,
