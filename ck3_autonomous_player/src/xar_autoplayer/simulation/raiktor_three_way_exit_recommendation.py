@@ -34,10 +34,7 @@ TERMINATION_POSTCONDITIONS = (
     "old_full_generation_war_id_absent",
     "gold_matches_frozen_terms",
     "attacker_prestige_matches_frozen_terms",
-    "declared_claim_disposition_matches_selected_exit",
     "directional_truce_days_and_expiry_observed",
-    "frozen_prisoner_release_pairs_no_longer_held",
-    "favor_hook_presence_matches_frozen_terms",
     "source_specific_war_bound_regiments_absent",
     "postwar_checkpoint_cold_restore_rebinds_identity",
 )
@@ -155,6 +152,13 @@ def provide_raiktor_three_way_exit_recommendation(
         if recommendation in {"white_peace", "surrender"}
         else []
     )
+    postcondition_plan = _postcondition_plan(
+        outcome=recommendation,
+        frame=certificate["frame"],
+        options=options,
+        surrender_session_value=surrender_session_value,
+        requirements=requirements,
+    )
     recommendation_certificate = {
         "schema_version": 1,
         "contract": CONTRACT,
@@ -184,12 +188,7 @@ def provide_raiktor_three_way_exit_recommendation(
             "war_id": dominance["frame"]["war_id"],
             "single_action_only": True,
         },
-        "postcondition_plan": {
-            "requirements": requirements,
-            "verified": False,
-            "gen034_completion_eligible": recommendation
-            in {"white_peace", "surrender"},
-        },
+        "postcondition_plan": postcondition_plan,
         "boundaries": {
             "measured_power_is_not_campaign_forecast": True,
             "continue_is_strategy_baseline_minus_tail_penalty": True,
@@ -345,6 +344,126 @@ def _action_literal(outcome: object, *, war_id: int) -> str:
     if outcome == "surrender":
         return surrender_war_step(war_id)
     raise ThreeWayExitRecommendationError("recommended outcome is unavailable")
+
+
+def _postcondition_plan(
+    *,
+    outcome: object,
+    frame: dict[str, object],
+    options: dict[str, dict[str, object]],
+    surrender_session_value: object,
+    requirements: list[str],
+) -> dict[str, object]:
+    plan: dict[str, object] = {
+        "schema_version": 1,
+        "route": outcome,
+        "requirements": requirements,
+        "expectations": None,
+        "verified": False,
+        "gen034_completion_eligible": outcome in {"white_peace", "surrender"},
+    }
+    if outcome == "continue":
+        plan["expectations"] = {
+            "war_id": frame["war_id"],
+            "played_character_id": frame["primary_attacker_character_id"],
+            "episode_id": frame["episode_id"],
+            "successor_revision_required": True,
+        }
+        return plan
+    if outcome not in {"white_peace", "surrender"}:
+        return plan
+
+    selected = options[outcome]
+    features = _object(selected.get("features"), f"{outcome}.features")
+    session = _object(surrender_session_value, "surrender session")
+    aggregate = _object(session.get("aggregate"), "surrender aggregate")
+    domains = _object(aggregate.get("domains"), "surrender domains")
+    gold = _resource_balance(
+        domains,
+        domain="gold",
+        field="attacker_current_gold",
+        expected_character_id=frame["primary_attacker_character_id"],
+    )
+    prestige = _resource_balance(
+        domains,
+        domain="prestige",
+        field="attacker_current_prestige",
+        expected_character_id=frame["primary_attacker_character_id"],
+    )
+    gold_delta = -_nonnegative_int(
+        features.get("primary_gold_transfer_raw"),
+        f"{outcome}.primary_gold_transfer_raw",
+    )
+    prestige_delta = _signed_int(
+        features.get("attacker_prestige_delta_raw"),
+        f"{outcome}.attacker_prestige_delta_raw",
+    )
+    truce_days = _nonnegative_int(
+        features.get("truce_day_count"), f"{outcome}.truce_day_count"
+    )
+    plan["expectations"] = {
+        "war_id": frame["war_id"],
+        "played_character_id": frame["primary_attacker_character_id"],
+        "opponent_character_id": frame["primary_defender_character_id"],
+        "resources": {
+            "scale": 100_000,
+            "gold": _resource_expectation(gold, delta_raw=gold_delta),
+            "prestige": _resource_expectation(
+                prestige, delta_raw=prestige_delta
+            ),
+        },
+        "truce": {
+            "owner_character_id": frame["primary_attacker_character_id"],
+            "toward_character_id": frame["primary_defender_character_id"],
+            "evaluated_days": truce_days,
+            "persisted_expiry_required": True,
+        },
+        "source_specific_loss": {
+            "war_id": frame["war_id"],
+            "required_cleanup_status": "destroyed",
+        },
+        "checkpoint": {"cold_restore_required": True},
+    }
+    return plan
+
+
+def _resource_balance(
+    domains: dict[str, object],
+    *,
+    domain: str,
+    field: str,
+    expected_character_id: object,
+) -> int:
+    domain_value = _object(domains.get(domain), f"{domain} domain")
+    payload = _object(domain_value.get("payload"), f"{domain} payload")
+    balance = _object(payload.get(field), field)
+    value = _object(balance.get("value"), f"{field}.value")
+    if balance.get("character_id") != expected_character_id:
+        raise ThreeWayExitRecommendationError(
+            f"{field} character identity drifted"
+        )
+    if value.get("scale") != 100_000:
+        raise ThreeWayExitRecommendationError(f"{field} scale drifted")
+    return _signed_int(value.get("raw"), f"{field}.raw")
+
+
+def _resource_expectation(pre_raw: int, *, delta_raw: int) -> dict[str, int]:
+    post_raw = pre_raw + delta_raw
+    if not -(2**63) <= post_raw <= 2**63 - 1:
+        raise ThreeWayExitRecommendationError(
+            "post-action resource balance overflows int64"
+        )
+    return {
+        "pre_raw": pre_raw,
+        "delta_raw": delta_raw,
+        "post_raw": post_raw,
+    }
+
+
+def _object(value: object, name: str) -> dict[str, object]:
+    if not isinstance(value, dict):
+        raise ThreeWayExitRecommendationError(f"{name} is malformed")
+    return value
 
 
 def _result(

@@ -1538,3 +1538,17 @@ one recommendation, one action and the bounded postwar/cold-restore checks.
 - Status remains `static-ready / live=false`. It does not prove submission or
   the expected delta; action, WarID/loss/truce/resource comparison, checkpoint
   and cold restore remain open. GEN-034 stays `2/4`, G2 stays `1/8`.
+
+## GEN-034-D frozen postcondition expectations (2026-09-14)
+
+- The recommendation certificate now freezes exact player gold/prestige
+  `pre_raw`, selected `delta_raw` and expected `post_raw`, plus WarID, opponent,
+  truce days, destroyed cleanup and cold-restore requirements. The action gate
+  carries this same object without recomputing it.
+- D's postcondition surface is aligned with its accepted requirement:
+  WarID/loss/truce/resources followed by checkpoint/cold restore. Claims,
+  prisoners and favor stay in route utility but no longer enlarge this
+  milestone's live gate.
+- Focused recommendation/action-gate suites pass `14/14` in normal and
+  optimized Python. This is offline contract progress only; GEN-034 remains
+  `2/4`, G2 remains `1/8`.

@@ -135,3 +135,27 @@ authorized action, then compare the next paused snapshot before accepting the
 prestige postcondition. Native fixture and focused normal/optimized Python
 tests are GREEN; production-live evidence remains pending under the owner's
 CK3-use hold.
+
+## Frozen postcondition expectations
+
+The recommendation certificate now carries concrete route-bound expectations,
+not only requirement names. For a termination it freezes the player's pre-action
+gold and prestige, the selected deltas and exact expected post-action balances,
+plus WarID, opponent, evaluated truce days, required destroyed cleanup state and
+cold-restore requirement. The action gate copies this object unchanged into its
+authorization.
+
+The D completion gate follows the fixed G2 requirement:
+
+1. old full-generation WarID absent;
+2. gold equals the frozen post-action balance;
+3. prestige equals the frozen post-action balance;
+4. directional truce days and persisted expiry observed;
+5. source-specific war-bound regiments destroyed;
+6. postwar checkpoint cold-restores to the same identity.
+
+Claims, prisoner pairs and favor remain inputs to the selected route's utility
+model. They are not extra GEN-034-D postcondition gates because the milestone's
+accepted visible outcome is `WarID/loss/truce/resources -> checkpoint/cold
+restore`. Focused recommendation/action-gate suites pass `14/14` in normal and
+optimized Python. No CK3 process or public MCP/native schema was used or changed.

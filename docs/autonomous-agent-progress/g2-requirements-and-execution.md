@@ -63,6 +63,11 @@ postwar 验证。单字段修复只跑聚焦测试和这一个场景，不扩成
 `extension+0x130` leaf。这样旧 WarID 消失后仍能比较冻结的 attacker prestige 余额与预期 delta。该字段目前仅
 `static-ready / live=false`；它不证明动作、delta、truce、loss 或 cold restore。
 
+recommendation certificate 已把 D 的后置门冻结成可执行数据：玩家 gold/prestige 的前值、selected delta 和精确后值，
+以及 WarID、对手、truce days、destroyed cleanup 与 cold-restore 要求。正式 D 门严格采用本页定义的
+`WarID/loss/truce/resources -> checkpoint/cold restore`；claims、prisoners、favor 继续参与决策效用，但不额外扩大
+里程碑后置范围。
+
 ## GEN-034 后的固定顺序
 
 GEN-034 关闭后立即转向公共 P1，不再继续横向扩展单一 CB 的 ABI：

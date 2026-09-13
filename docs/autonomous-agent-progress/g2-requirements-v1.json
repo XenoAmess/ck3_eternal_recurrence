@@ -39,7 +39,8 @@
         "GEN-034-C Raiktor white-peace narrow projection provider static-ready (normal/optimized 6/6)",
         "GEN-034-C white-peace/surrender same-unit evaluator static-ready (normal/optimized 10/10)",
         "GEN-034-C bounded two-query managed live runner static-ready (normal/optimized 4/4)",
-        "GEN-034-D additive played-character prestige snapshot observation static-ready"
+        "GEN-034-D additive played-character prestige snapshot observation static-ready",
+        "GEN-034-D route-bound six-item postcondition expectations frozen in recommendation certificate"
       ],
       "planner_consumer": "three-way exit recommendation and one semantic exit action",
       "visible_outcome": "compare continue, white peace and surrender on one paused frame, submit once, then verify postwar state and cold restore",
@@ -177,10 +178,10 @@
         "id": "GEN-034-D",
         "name": "three-way recommendation, one action and postwar verification",
         "status": "blocked_live",
-        "latest_evidence": "v2 recommendation, bounded four-read runner and exact snapshot/capability action gate produce one hash-bound action authorization; additive played-character prestige snapshot field removes the post-action prestige visibility gap; live action/postcondition/cold restore pending"
+        "latest_evidence": "v2 recommendation and action gate now freeze exact gold/prestige pre-delta-post values plus WarID/truce/loss/cold-restore expectations; focused normal/optimized recommendation+gate tests 14/14; live action/postcondition/cold restore pending"
       }
     ]
   },
   "religion_boundary": "deferred except the minimum native result needed by holy-war execution and marriage legality or acceptance",
-  "updated_at": "2026-09-14T02:27:00+08:00"
+  "updated_at": "2026-09-14T02:39:00+08:00"
 }

@@ -167,6 +167,22 @@ class RaiktorThreeWayExitRecommendationTests(unittest.TestCase):
             ],
             list(TERMINATION_POSTCONDITIONS),
         )
+        expectations = result["recommendation_certificate"][
+            "postcondition_plan"
+        ]["expectations"]
+        self.assertEqual(
+            expectations["resources"]["gold"],
+            {"pre_raw": 35_000_000, "delta_raw": 0, "post_raw": 35_000_000},
+        )
+        self.assertEqual(
+            expectations["resources"]["prestige"],
+            {
+                "pre_raw": 12_345_678,
+                "delta_raw": -3_500_000,
+                "post_raw": 8_845_678,
+            },
+        )
+        self.assertEqual(expectations["truce"]["evaluated_days"], 1825)
         self.assertFalse(result["postcondition_verified"])
         self.assertFalse(result["gen034_closed"])
 
@@ -176,11 +192,41 @@ class RaiktorThreeWayExitRecommendationTests(unittest.TestCase):
         self.assertEqual(result["recommended_outcome"], "surrender")
         self.assertTrue(result["action_ready"])
         self.assertEqual(result["action_literal"], "surrender-war-50331699")
+        expectations = result["recommendation_certificate"][
+            "postcondition_plan"
+        ]["expectations"]
+        self.assertEqual(
+            expectations["resources"]["gold"],
+            {
+                "pre_raw": 35_000_000,
+                "delta_raw": -15_000_000,
+                "post_raw": 20_000_000,
+            },
+        )
+        self.assertEqual(
+            expectations["resources"]["prestige"],
+            {
+                "pre_raw": 12_345_678,
+                "delta_raw": -7_000_000,
+                "post_raw": 5_345_678,
+            },
+        )
 
     def test_actor_stronger_relation_selects_continue(self) -> None:
         result = _provide(production_live=True, relation="actor_stronger")
 
         self.assertEqual(result["recommended_outcome"], "continue")
+        self.assertEqual(
+            result["recommendation_certificate"]["postcondition_plan"][
+                "expectations"
+            ],
+            {
+                "war_id": 50331699,
+                "played_character_id": 29829,
+                "episode_id": "fixture-native-29829-episode",
+                "successor_revision_required": True,
+            },
+        )
         self.assertEqual(result["action_literal"], "resume-map")
 
     def test_large_margin_requirement_remains_underdetermined(self) -> None:
