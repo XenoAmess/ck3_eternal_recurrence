@@ -643,3 +643,21 @@ and the same council projection in the turn bundle. The bundle itself may stay
 `partial` when unrelated optional pending-event or war observations are absent.
 The runner never advances time or saves and verifies the source-save SHA before
 and after the attempt.
+
+## R638 current-generation storage correction
+
+The first bounded live attempt returned typed RED
+`direct_landed_vassals_unavailable` for both characters before any later root
+field could publish. Its exact-build frame, player switch, paused date and
+process cleanup were otherwise valid. The cause was in the new full Character
+storage scan: it treated every non-null slot whose object's low 24-bit identity
+did not match the slot index as a fatal read failure.
+
+Exact-build stock Character enumerators already define these as reusable or
+stale-generation rows and continue past them. The campaign-root scanner now
+uses the same rule: an unreadable slot pointer remains a failure, while a
+readable non-current-generation identity is excluded before alive, liege and
+primary-title evaluation. The offline fixture includes such a non-null reused
+row so this distinction remains covered. This correction does not weaken the
+published vector: every admitted member still round-trips its full generation
+ID, and the live gate still requires a nonempty direct-vassal sample.

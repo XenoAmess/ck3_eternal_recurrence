@@ -935,13 +935,21 @@ bool ReadDirectLandedVassals(
     }
 
     std::int32_t character_id = -1;
-    void *death = nullptr;
     if (!ReadValue(access, character, kCharacterIdentityOffset,
-                   character_id) ||
-        character_id <= 0 ||
+                   character_id)) {
+      return false;
+    }
+    // Component storage capacity includes reusable slots. A non-null row can
+    // still carry an object from another generation; stock character scans in
+    // this exact build reject that row and continue. It is not a readable
+    // member of the current Character store generation.
+    if (character_id <= 0 ||
         (static_cast<std::uint32_t>(character_id) & 0x00FFFFFFU) !=
-            static_cast<std::uint32_t>(index) ||
-        !ReadValue(access, character, kCharacterDeathMarkerOffset, death)) {
+            static_cast<std::uint32_t>(index)) {
+      continue;
+    }
+    void *death = nullptr;
+    if (!ReadValue(access, character, kCharacterDeathMarkerOffset, death)) {
       return false;
     }
     if (death != nullptr) {

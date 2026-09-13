@@ -223,6 +223,10 @@ struct Fixture {
         Address(external_province_holder);
     void *first_successor_pointer = Address(first_successor);
     void *second_successor_pointer = Address(second_successor);
+    // A non-null reusable slot from another generation must be skipped. This
+    // mirrors the stock exact-build Character storage enumerators and prevents
+    // one stale row from making the complete current-generation scan unknown.
+    Put(character_slots, 0 * 0x10 + 0x08, immediate_liege_pointer);
     Put(character_slots, 1 * 0x10 + 0x08, player_character_pointer);
     Put(character_slots, 2 * 0x10 + 0x08, immediate_liege_pointer);
     Put(character_slots, 3 * 0x10 + 0x08, top_liege_pointer);
