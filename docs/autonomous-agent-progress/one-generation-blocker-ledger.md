@@ -1293,3 +1293,14 @@ strategic-power primitive；余下入口只有 policy-level campaign dominance�
 - The slice deliberately excludes faction identities, types, members, power, discontent, demands and deadlines. Native reader/source-contract
   fixtures and focused Python normal/optimized `40/40` are GREEN. Status is `static-ready / live=false`; it will share the next bounded paused
   G2 read instead of creating a dedicated long run. M1 still lacks health, council and partition, and global G2 remains `0/8`.
+
+## 2026-09-13: G2-M1 player health observation
+
+- `Character.GetHealth` is frozen through exact-build reflection name RVA `0x4324C10`, registration `0x509CB0..0x509E12`, thunk
+  `0x2622660..0x2622696` and core `0x2619AD0..0x2619B18` (SHA-256 `B6E37007...A89840`). Campaign-root now calls that core, requires the
+  caller output pointer, generation-revalidates the played Character and double-samples signed Q100000 health.
+- The turn bundle publishes the raw value, `dying_or_worse / below_fine / fine_or_better` and `ruler_health_below_fine` using the stock
+  `death_chance_dying_health=1.5` and `fine_health=3.0` thresholds. No treatment or prognosis policy is claimed.
+- Native fixtures and focused Python normal/optimized `42/42` are GREEN. Status is `static-ready / live=false`; the next shared bounded paused
+  G2 read will verify it with the other pending campaign-root fields. M1 now lacks council and partition plus two-scene live acceptance, so
+  global G2 remains `0/8`.

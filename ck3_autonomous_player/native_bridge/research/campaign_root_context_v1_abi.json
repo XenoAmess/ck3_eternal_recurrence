@@ -21,6 +21,7 @@
   },
   "functions": {
     "monthly_gold_income_rva": "0x28DBE90",
+    "health_rva": "0x2619AD0",
     "domain_size_rva": "0x260BA50",
     "domain_limit_rva": "0x260BA20",
     "has_targeting_faction_trigger_rva": "0x283FAE0",
@@ -40,6 +41,36 @@
     "identity_gate": "the played Character pointer must roundtrip through full-generation Character storage after evaluation",
     "same_frame": "the signed Q100000 result participates in the existing two-sample equality gate",
     "cached_leaf_excluded": "CCharacter extension+0x2B0 is diagnostic only because paused live evidence showed it lagging the complete evaluator"
+  },
+  "player_health": {
+    "published_field": "player_health",
+    "reflection_name": "Character.GetHealth",
+    "reflection_name_rva": "0x4324C10",
+    "registration_range_rva": "0x509CB0..0x509E12",
+    "reflection_thunk_range_rva": "0x2622660..0x2622696",
+    "function_rva": "0x2619AD0",
+    "function_end_rva_exclusive": "0x2619B18",
+    "function_sha256": "B6E3700766AD592A3E9B2C1F01D8AE9B8DA4774A6F009B5D30A0DA4380A89840",
+    "signature": "int64_t* __fastcall(void* character, int64_t* output)",
+    "return_contract": "the function must return the caller-provided int64 output pointer",
+    "scale": 100000,
+    "semantics": "current Character health as signed Q100000; the exact function reads the Character extension health leaf and returns zero when the extension is absent",
+    "identity_gate": "the played Character pointer must roundtrip through full-generation Character storage after evaluation",
+    "same_frame": "the signed Q100000 result participates in the existing two-sample equality gate",
+    "stock_script_thresholds": {
+      "fine_health": 3,
+      "poor_health": 1,
+      "dying_health": 0,
+      "death_chance_starts_health": 3,
+      "death_chance_dying_health": 1.5,
+      "source": "game/common/script_values/00_basic_values.txt:1450"
+    },
+    "planner_band_contract": {
+      "dying_or_worse": "raw <= 150000",
+      "below_fine": "150000 < raw < 300000",
+      "fine_or_better": "raw >= 300000",
+      "alert": "ruler_health_below_fine iff raw < 300000"
+    }
   },
   "player_domain_capacity": {
     "published_fields": ["player_domain_size", "player_domain_limit"],

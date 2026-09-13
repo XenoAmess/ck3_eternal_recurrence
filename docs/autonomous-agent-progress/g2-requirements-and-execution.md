@@ -80,9 +80,10 @@ reader/source-contract 与 Python normal/optimized 聚焦测试均 GREEN。
 相邻外部 Province holder 的稳定 CharacterID。新增 `related_character_contexts` 在同一双采样中逐 ID 发布 native primary title、
 合法可空 capital、immediate/top liege 与 independent；相邻 holder 保留 source role，再按 top liege 归一 realm identity。
 entity-directory 的当前 title/realm components 因而已完整。`ck3_query_turn_bundle_v1` 已聚合最低 ruler/realm/succession alerts、
-玩家完整月收入和 exact-build domain size/limit，`ruler_resources_ready` 与 `realm_domain_ready` 都可由真实输入变绿。M1 仍缺
-health、council、faction、partition 与共享 live 验收，固定 G2 完成数仍是 `0/8`。下一次允许实机时只在本来就需要的 paused G2
-会话顺带读取两个非空 vector、related contexts、income 和 domain capacity 并验证 directory/bundle，不为单字段安排长跑。
+玩家完整月收入、exact-build health 和 domain size/limit，`ruler_resources_ready`、`ruler_health_alert_ready` 与
+`realm_domain_ready` 都可由真实输入变绿。M1 仍缺 council、partition 与共享 live 验收，固定 G2 完成数仍是 `0/8`。
+下一次允许实机时只在本来就需要的 paused G2 会话顺带读取两个非空 vector、related contexts、income、health 和 domain capacity
+并验证 directory/bundle，不为单字段安排长跑。
 
 ## G2-M2 离线 direct-projection consumer
 
@@ -179,5 +180,20 @@ event-context-v2 effect visitor 与更多事件仍是扩展债，不再作为这
 
 状态为 `static-ready / live=false`。MSVC Release reader/source-contract fixtures 为 GREEN，Python campaign-root、live-harness 与
 turn-bundle 聚焦测试在普通及 optimized 模式均为 `40/40`。它将与已经待验的 related contexts、收入和 domain capacity 共用
-一次有界 paused R558 读取；不为该单字段扩成长跑。G2-M1 仍缺 health、council、partition 及两场景 live 验收，G2 总完成数保持
+一次有界 paused G2 读取；不为该单字段扩成长跑。G2-M1 仍缺 council、partition 及两场景 live 验收，G2 总完成数保持
 `0/8`。
+
+## G2-M1 玩家健康观测 static-ready
+
+`campaign-root-context-v1` 已接入 exact-build `Character.GetHealth` core `0x2619AD0`，发布 signed Q100000
+`player_health`，并沿用 application-main、全 generation CharacterID 回读和双采样一致性。原生调用失败或 identity 漂移返回
+`player_health_unavailable`；跨采样变化返回 `state_changed`，不把缓存、OCR 或历史值补进当前帧。
+
+`ck3_query_turn_bundle_v1` 保留 raw health，并按原版 `death_chance_dying_health=1.5` 与 `fine_health=3.0` 形成
+`dying_or_worse / below_fine / fine_or_better` 三档；`raw < 300000` 时发布 `ruler_health_below_fine`。该切片只关闭最低健康风险输入，
+不宣称治疗、疾病归因、预后、生育力或死亡概率策略已经完成。
+
+MSVC Release reader/source-contract fixtures 为 GREEN；Python campaign-root、live-harness 与 turn-bundle 聚焦测试普通及 optimized
+模式均为 `42/42`。状态为 `static-ready / live=false`；没有启动 CK3、录制器、injector 或桌面输入。它将与其它 campaign-root
+扩展共用下一次本来就需要的有界 paused G2 读取，不安排单字段长跑。M1 仍缺 council、partition 与两场景 live 验收，G2 总完成数
+保持 `0/8`。

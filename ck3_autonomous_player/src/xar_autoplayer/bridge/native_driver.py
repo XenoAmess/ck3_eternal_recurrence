@@ -8933,6 +8933,7 @@ class NativeHeadlessGameplayDriver:
             "player_character_id",
             "player_character_alive",
             "player_monthly_gold_income",
+            "player_health",
             "player_domain_size",
             "player_domain_limit",
             "player_targeting_faction_count",

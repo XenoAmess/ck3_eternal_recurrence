@@ -46,6 +46,7 @@ UNAVAILABLE_REASONS = (
     "player_identity_unavailable",
     "player_character_generation_mismatch",
     "player_monthly_gold_income_unavailable",
+    "player_health_unavailable",
     "player_domain_unavailable",
     "player_targeting_factions_unavailable",
     "primary_title_unavailable",
@@ -66,6 +67,7 @@ def _readiness(ready: bool) -> dict[str, bool]:
     return {
         "player_identity_ready": ready,
         "player_monthly_gold_income_ready": ready,
+        "player_health_ready": ready,
         "player_domain_ready": ready,
         "player_targeting_factions_ready": ready,
         "primary_title_ready": ready,
@@ -90,6 +92,7 @@ def _provenance() -> dict[str, str]:
         ),
         "backend_id": CAMPAIGN_ROOT_CONTEXT_V1_BACKEND_ID,
         "monthly_gold_income_rva": "0x28DBE90",
+        "character_health_rva": "0x2619AD0",
         "domain_size_rva": "0x260BA50",
         "domain_limit_rva": "0x260BA20",
         "has_targeting_faction_trigger_rva": "0x283FAE0",
@@ -158,6 +161,11 @@ def _frame(
         "player_character_alive": True if available else None,
         "player_monthly_gold_income": (
             {"raw": 570_772, "scale": 100_000}
+            if available
+            else None
+        ),
+        "player_health": (
+            {"raw": 275_000, "scale": 100_000}
             if available
             else None
         ),
@@ -237,6 +245,7 @@ def _driver_result(status: str = "available") -> dict[str, object]:
         "player_character_id",
         "player_character_alive",
         "player_monthly_gold_income",
+        "player_health",
         "player_domain_size",
         "player_domain_limit",
         "player_targeting_faction_count",
@@ -245,11 +254,11 @@ def _driver_result(status: str = "available") -> dict[str, object]:
         "capital_province_id",
         "immediate_liege_character_id",
         "top_liege_character_id",
-            "independent",
-            "direct_landed_vassal_character_ids",
-            "adjacent_external_province_holder_character_ids",
-            "related_character_contexts",
-            "government",
+        "independent",
+        "direct_landed_vassal_character_ids",
+        "adjacent_external_province_holder_character_ids",
+        "related_character_contexts",
+        "government",
         "selected_game_rule_tokens",
         "native_selected_game_rule_token_count",
         "readiness",
@@ -311,6 +320,10 @@ class CampaignRootContextV1ContractTests(unittest.TestCase):
 
         self.assertEqual(normalized["status"], "available")
         self.assertEqual(normalized["local_player_id"], 0)
+        self.assertEqual(
+            normalized["player_health"],
+            {"raw": 275_000, "scale": 100_000},
+        )
         self.assertEqual(normalized["player_domain_size"], 6)
         self.assertEqual(normalized["player_domain_limit"], 7)
         self.assertEqual(normalized["player_targeting_faction_count"], 2)
@@ -449,6 +462,12 @@ class CampaignRootContextV1ContractTests(unittest.TestCase):
             ].__setitem__("scale", 1),
             "income_shape": lambda row: row.__setitem__(
                 "player_monthly_gold_income", {"raw": 570_772}
+            ),
+            "health_scale": lambda row: row[
+                "player_health"
+            ].__setitem__("scale", 1),
+            "health_shape": lambda row: row.__setitem__(
+                "player_health", {"raw": 275_000}
             ),
             "negative_domain_size": lambda row: row.__setitem__(
                 "player_domain_size", -1
@@ -872,6 +891,7 @@ class CampaignRootContextV1ServiceTests(unittest.TestCase):
         self.assertFalse(result["readiness"]["ready"])
         ruler = result["ruler_state"]["value"]
         self.assertEqual(ruler["stress_points"]["value"], 120)
+        self.assertEqual(ruler["health_band"]["value"]["key"], "below_fine")
         succession = result["succession_state"]["value"]
         self.assertEqual(
             succession["primary_title_heir_character_id"]["value"], 98_765

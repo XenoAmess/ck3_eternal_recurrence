@@ -68,6 +68,25 @@ def _fixed_point_component(value: object, name: str) -> dict[str, object]:
     return _component("available", {"raw": raw, "scale": 100_000})
 
 
+def _health_band(value: dict[str, object]) -> dict[str, object]:
+    raw = int(value["value"]["raw"])
+    if raw <= 150_000:
+        key = "dying_or_worse"
+    elif raw < 300_000:
+        key = "below_fine"
+    else:
+        key = "fine_or_better"
+    return _component(
+        "available",
+        {
+            "key": key,
+            "health": copy.deepcopy(value["value"]),
+            "below_fine": raw < 300_000,
+            "at_or_below_death_chance_dying": raw <= 150_000,
+        },
+    )
+
+
 def _binding(
     snapshot: object,
     campaign_root_result: object,
@@ -297,6 +316,10 @@ def build_turn_bundle_v1(
         root.get("player_monthly_gold_income"),
         "player_monthly_gold_income",
     )
+    health = _fixed_point_component(
+        root.get("player_health"),
+        "player_health",
+    )
 
     primary_title = root.get("primary_title")
     primary_title_component = (
@@ -327,9 +350,7 @@ def build_turn_bundle_v1(
         "gold": gold,
         "income": income,
         "stress_points": stress,
-        "health_band": _component(
-            "unavailable", reason="ruler_health_observation_not_implemented"
-        ),
+        "health_band": _health_band(health),
     }
 
     direct_vassals = root.get("direct_landed_vassal_character_ids")
@@ -455,6 +476,9 @@ def build_turn_bundle_v1(
         "ruler_dead": _component("available", not alive),
         "ruler_landless": _component("available", primary_title is None),
         "ruler_stress_at_or_above_100": high_stress,
+        "ruler_health_below_fine": _component(
+            "available", int(health["value"]["raw"]) < 300_000
+        ),
         "realm_has_no_direct_landed_vassals": _component(
             "available", not direct_vassals
         ),
@@ -471,7 +495,7 @@ def build_turn_bundle_v1(
         "root_identity_ready": True,
         "ruler_alive_alert_ready": True,
         "ruler_stress_alert_ready": stress_ready,
-        "ruler_health_alert_ready": False,
+        "ruler_health_alert_ready": True,
         "ruler_resources_ready": gold_ready and income_ready,
         "realm_relationship_alerts_ready": True,
         "realm_domain_ready": True,

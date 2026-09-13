@@ -9,9 +9,9 @@
   native revision, snapshot ID, date and paused frame.
 - It already delivers truthful minimum alerts for ruler alive/landless state,
   direct-vassal and adjacent-holder presence, the primary title's first
-  ordered successor, monthly income and current domain size/limit. The full
-  bundle stays `status=partial` and `readiness.ready=false` because health,
-  council and partition are not yet observed. The minimum targeting-faction
+  ordered successor, monthly income, current health and current domain
+  size/limit. The full bundle stays `status=partial` and
+  `readiness.ready=false` because council and partition are not yet observed. The minimum targeting-faction
   alert is observed, while faction identity, power and deadlines remain open.
 - This aggregation changes no native mailbox, DLL, game object or action path.
   Native AI decision-tree research is N/A because the package groups observed
@@ -31,12 +31,12 @@ The response contains six typed domains:
 
 | Domain | Available now | Explicit gap |
 |---|---|---|
-| `ruler_state` | CharacterID, alive, primary title, capital, government, exact-build monthly income, optional current gold and raw stress points | health band |
+| `ruler_state` | CharacterID, alive, primary title, capital, government, exact-build monthly income and health band, optional current gold and raw stress points | health treatment, disease/injury cause and prognosis |
 | `realm_state` | top liege, independent state, direct landed-vassal IDs, adjacent Province-holder IDs and grouped top-liege IDs, native domain size/limit with derived available/over-limit counts, targeting-faction count and minimum threat boolean | holding identities/buildings/construction, council, faction identities/types/power/discontent/deadline |
 | `succession_state` | ordered primary-title successor IDs, first primary-title heir and no-heir alert | per-title partition/law/claims |
 | `pending_state` | current normalized event and pending character interaction, including proven absence | unavailable only when the source snapshot lacks that observation surface |
 | `war_state` | sorted WarID, player side, primary opponent and relative score summaries | unavailable only when the source snapshot lacks `active_wars` |
-| `alerts` | dead, landless, raw stress threshold, direct-vassal absence, adjacent-holder presence, primary-title no-heir and targeting-faction threat | health and partition consequences |
+| `alerts` | dead, landless, raw stress threshold, low-health threshold, direct-vassal absence, adjacent-holder presence, primary-title no-heir and targeting-faction threat | treatment and partition consequences |
 
 Every domain uses the common component shape:
 
@@ -65,8 +65,12 @@ It does not mean the G2-M1 acceptance gate is complete. `realm_domain_ready`
 now means exact-build `GetDomainSize` and `GetDomainLimit` both produced valid
 same-frame values; it does not claim holding identities, buildings,
 construction or grace-period penalty state. The broader `readiness.ready`
-remains false until the same-frame query can also supply health, council,
-partition components. `realm_faction_alert_ready=true` means only that the
+remains false until the same-frame query can also supply council and partition
+components. `ruler_health_alert_ready=true` means `Character.GetHealth`
+supplied signed Q100000 health and the bundle applied its frozen `1.5/3.0`
+cutoffs; `raw < 300000` raises `ruler_health_below_fine`, while
+`raw <= 150000` enters `dying_or_worse`. It does not claim treatment or death
+probability. `realm_faction_alert_ready=true` means only that the
 exact-build targeting-faction count and its nonzero alert are available; it
 does not claim faction prioritization or response readiness. Monthly income is required in every
 available campaign-root frame; current gold remains an optional
@@ -96,13 +100,14 @@ text, historical artifacts or another frame.
 ## Focused verification
 
 - Contract fixtures cover successor order, high-stress, gold, exact-build
-  monthly-income projection, domain size/limit projection and targeting-faction alert projection,
+  monthly-income and health projection, health cutoff boundaries, domain
+  size/limit projection and targeting-faction alert projection,
   adjacent holder-to-top-liege grouping, WarID sorting, landless and heirless
   `not_applicable`, root typed unavailable, missing optional surfaces and
   cross-frame/identity drift rejection.
 - Service integration reuses the already exact-bound campaign-root call.
 - The official MCP SDK lists and calls `ck3_query_turn_bundle_v1`.
-- The focused campaign-root/live-harness/turn-bundle suite passes `39/39` in
+- The focused campaign-root/live-harness/turn-bundle suite passes `42/42` in
   normal and optimized modes; the native reader and source contract are
   independently executable and GREEN.
 
@@ -115,6 +120,6 @@ dedicated long run is not required.
 
 The next highest-value off-screen work is the smallest exact-build read-only
 slice that can turn one currently unavailable decision input into real state.
-Priority within M1 is council, then health and full partition. Deeper faction
+Priority within M1 is council, then full partition. Deeper faction
 identity/power/deadline inputs belong to the later governance response package. Each new field should enter this same bundle only after its native
 evidence and focused fixture are complete.

@@ -131,6 +131,9 @@ struct Fixture {
   bool monthly_income_available = true;
   std::int64_t monthly_income_raw = 570'772;
   std::uint32_t monthly_income_calls = 0;
+  bool health_available = true;
+  std::int64_t health_raw = 275'000;
+  std::uint32_t health_calls = 0;
   bool domain_available = true;
   std::int32_t domain_size = 6;
   std::int32_t domain_limit = 7;
@@ -372,6 +375,18 @@ std::int64_t *__fastcall ResolveMonthlyGoldIncome(
   return output;
 }
 
+std::int64_t *__fastcall ResolveHealth(void *character,
+                                       std::int64_t *output) noexcept {
+  if (g_fixture == nullptr || output == nullptr ||
+      character != Address(g_fixture->player_character) ||
+      !g_fixture->health_available) {
+    return nullptr;
+  }
+  ++g_fixture->health_calls;
+  *output = g_fixture->health_raw;
+  return output;
+}
+
 std::int32_t __fastcall ResolveDomainSize(void *character) noexcept {
   if (g_fixture == nullptr ||
       character != Address(g_fixture->player_character) ||
@@ -527,6 +542,7 @@ xar::ck3_11906::CampaignRootNativeEnvironmentV1 Environment(Fixture &fixture) {
   environment.game_rule_token_fallback_slot =
       &fixture.rule_token_fallback_slot;
   environment.monthly_gold_income = &ResolveMonthlyGoldIncome;
+  environment.health = &ResolveHealth;
   environment.domain_size = &ResolveDomainSize;
   environment.domain_limit = &ResolveDomainLimit;
   environment.primary_title = &ResolvePrimaryTitle;
@@ -554,6 +570,7 @@ bool AllReadiness(const xar::game::CampaignRootReadinessV1 &value,
                   bool expected) {
   return value.player_identity_ready == expected &&
          value.player_monthly_gold_income_ready == expected &&
+         value.player_health_ready == expected &&
          value.player_domain_ready == expected &&
          value.player_targeting_factions_ready == expected &&
          value.primary_title_ready == expected &&
@@ -576,6 +593,7 @@ bool ClearedUnavailable(const xar::game::CampaignRootContextV1 &value,
          !value.local_player_id && !value.player_character_id &&
          !value.player_character_alive && !value.primary_title &&
          !value.player_monthly_gold_income &&
+         !value.player_health &&
          !value.player_domain_size && !value.player_domain_limit &&
          !value.player_targeting_faction_count &&
          value.primary_title_succession_character_ids.empty() &&
@@ -622,7 +640,9 @@ bool TestAvailableAndSerializer() {
       result.player_character_alive != true ||
       result.player_monthly_gold_income !=
           xar::game::FixedPointValue{570'772, 100'000} ||
-      fixture.monthly_income_calls != 2 || result.player_domain_size != 6 ||
+      fixture.monthly_income_calls != 2 ||
+      result.player_health != xar::game::FixedPointValue{275'000, 100'000} ||
+      fixture.health_calls != 2 || result.player_domain_size != 6 ||
       result.player_domain_limit != 7 || fixture.domain_size_calls != 2 ||
       fixture.domain_limit_calls != 2 ||
       result.player_targeting_faction_count != 2 || !result.primary_title ||
@@ -666,6 +686,7 @@ bool TestAvailableAndSerializer() {
       "\"local_player_id\":7,\"player_character_id\":33554433,"
       "\"player_character_alive\":true,"
       "\"player_monthly_gold_income\":{\"raw\":570772,"
+      "\"scale\":100000},\"player_health\":{\"raw\":275000,"
       "\"scale\":100000},\"player_domain_size\":6,"
       "\"player_domain_limit\":7,"
       "\"player_targeting_faction_count\":2,\"primary_title\":{"
@@ -698,6 +719,7 @@ bool TestAvailableAndSerializer() {
       "\"],\"native_selected_game_rule_token_count\":4,"
       "\"readiness\":{\"player_identity_ready\":true,"
       "\"player_monthly_gold_income_ready\":true,"
+      "\"player_health_ready\":true,"
       "\"player_domain_ready\":true,"
       "\"player_targeting_factions_ready\":true,"
       "\"primary_title_ready\":true,"
@@ -714,6 +736,7 @@ bool TestAvailableAndSerializer() {
       "\"2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86\","
       "\"backend_id\":\"ck3-1.19.0.6-native-campaign-root-context-v1\","
       "\"monthly_gold_income_rva\":\"0x28DBE90\","
+      "\"character_health_rva\":\"0x2619AD0\","
       "\"domain_size_rva\":\"0x260BA50\","
       "\"domain_limit_rva\":\"0x260BA20\","
       "\"has_targeting_faction_trigger_rva\":\"0x283FAE0\","
@@ -829,6 +852,19 @@ bool TestMonthlyIncomeFailureIsTypedUnavailable() {
              result, "player_monthly_gold_income_unavailable");
 }
 
+bool TestHealthFailureIsTypedUnavailable() {
+  Fixture fixture;
+  fixture.health_available = false;
+  const auto environment = Environment(fixture);
+  const auto access = Access(fixture);
+  const xar::ck3_11906::CampaignRootContextRequestV1 request{41};
+  xar::game::CampaignRootContextV1 result{};
+  return xar::ck3_11906::ReadCampaignRootContextV1(
+             environment, access, request, result) ==
+             xar::game::ReadCampaignRootContextResultV1::unavailable &&
+         ClearedUnavailable(result, "player_health_unavailable");
+}
+
 bool TestDomainFailureIsTypedUnavailable() {
   Fixture fixture;
   fixture.domain_available = false;
@@ -916,6 +952,10 @@ int main() {
   }
   if (!TestMonthlyIncomeFailureIsTypedUnavailable()) {
     std::cerr << "monthly income fixture failed\n";
+    return 1;
+  }
+  if (!TestHealthFailureIsTypedUnavailable()) {
+    std::cerr << "player health fixture failed\n";
     return 1;
   }
   if (!TestDomainFailureIsTypedUnavailable()) {

@@ -72,6 +72,9 @@
 - [static-ready, live pending] [player-monthly-gold-income-v1.md](player-monthly-gold-income-v1.md) 复用战争结算已实证的
   `0x28DBE90` 完整月收入求值器，把玩家 signed Q100000 income 接入 campaign-root 双采样；缓存 `extension+0x2B0` 因实测滞后
   继续只作诊断。turn bundle 的 ruler resource gate 现在由 current gold 与 monthly income 共同决定。
+- [static-ready, live pending] [player-health-v1.md](player-health-v1.md) 冻结 `Character.GetHealth` 的 reflection registration、
+  thunk 与 exact core `0x2619AD0`，把玩家 signed Q100000 health 接入 campaign-root 双采样；turn bundle 以原版
+  `1.5/3.0` 阈值发布最低健康分档和 `ruler_health_below_fine` 告警，治疗、病因与死亡概率仍属后续策略。
 - [static-ready, live pending] [player-domain-capacity-v1.md](player-domain-capacity-v1.md) 冻结 `GetDomainSize`
   `0x260BA50` 与 `GetDomainLimit` `0x260BA20` 的 reflection registration/core 链，把玩家直辖规模和当前上限接入
   campaign-root 双采样与 turn bundle；holdings 明细、建筑、施工及 grace-period 惩罚仍未发布。
@@ -80,7 +83,7 @@
   派系 identity/type/power/discontent/deadline 仍未发布。
 - [static-ready, live pending] [turn-bundle-v1.md](turn-bundle-v1.md) 发布 `ck3_query_turn_bundle_v1`，把一个缓存 state snapshot 与一次
   同绑定 campaign-root query 聚合为 ruler/realm/succession/pending/war/alerts 六域；最低三域警报、收入资源门与 domain capacity
-  与目标派系最低警报已可用，健康、council 与 partition 保持 typed unavailable，因此完整 readiness 仍为 false。
+  与目标派系最低警报已可用，健康分档和低健康告警也已有真实 native 输入；council 与 partition 保持 typed unavailable，因此完整 readiness 仍为 false。
 - [static-confirmed + production-live] [loaded-feature-manifest.md](loaded-feature-manifest.md) 区分当前进程 effective gameplay feature
   bitset、script-visible `has_dlc` runtime set 与独立 store entitlement service；冻结完整 44-entry feature vocabulary、三套
   exact-build registry/service RVA与 typed wire。bridge/MCP 已在真实 paused frame 双查询完成 44 rows/29 runtime keys，artifact

@@ -67,6 +67,11 @@ def _root(*, available: bool = True) -> dict[str, object]:
             if available
             else None
         ),
+        "player_health": (
+            {"raw": 275_000, "scale": 100_000}
+            if available
+            else None
+        ),
         "player_domain_size": 6 if available else None,
         "player_domain_limit": 7 if available else None,
         "player_targeting_faction_count": 2 if available else None,
@@ -139,6 +144,19 @@ class TurnBundleV1Tests(unittest.TestCase):
         self.assertEqual(ruler["stress_points"]["value"], 120)
         self.assertEqual(ruler["income"]["status"], "available")
         self.assertEqual(ruler["income"]["value"]["raw"], 570_772)
+        self.assertEqual(
+            ruler["health_band"]["value"],
+            {
+                "key": "below_fine",
+                "health": {"raw": 275_000, "scale": 100_000},
+                "below_fine": True,
+                "at_or_below_death_chance_dying": False,
+            },
+        )
+        self.assertTrue(result["readiness"]["ruler_health_alert_ready"])
+        self.assertTrue(
+            result["alerts"]["value"]["ruler_health_below_fine"]["value"]
+        )
         self.assertTrue(result["readiness"]["ruler_resources_ready"])
         realm = result["realm_state"]["value"]
         self.assertTrue(result["readiness"]["realm_domain_ready"])
@@ -286,6 +304,38 @@ class TurnBundleV1Tests(unittest.TestCase):
             "raw": 570_772,
             "scale": 1,
         }
+
+        with self.assertRaises(ValueError):
+            build_turn_bundle_v1(_snapshot(), root)
+
+    def test_health_bands_follow_stock_strategy_thresholds(self) -> None:
+        for raw, key, below_fine, dying_or_worse in (
+            (150_000, "dying_or_worse", True, True),
+            (150_001, "below_fine", True, False),
+            (299_999, "below_fine", True, False),
+            (300_000, "fine_or_better", False, False),
+        ):
+            with self.subTest(raw=raw):
+                root = _root()
+                context = root["campaign_root_context"]
+                assert isinstance(context, dict)
+                context["player_health"] = {
+                    "raw": raw,
+                    "scale": 100_000,
+                }
+                result = build_turn_bundle_v1(_snapshot(), root)
+                band = result["ruler_state"]["value"]["health_band"]["value"]
+                self.assertEqual(band["key"], key)
+                self.assertEqual(band["below_fine"], below_fine)
+                self.assertEqual(
+                    band["at_or_below_death_chance_dying"], dying_or_worse
+                )
+
+    def test_rejects_malformed_campaign_root_health(self) -> None:
+        root = _root()
+        context = root["campaign_root_context"]
+        assert isinstance(context, dict)
+        context["player_health"] = {"raw": 275_000, "scale": 1}
 
         with self.assertRaises(ValueError):
             build_turn_bundle_v1(_snapshot(), root)

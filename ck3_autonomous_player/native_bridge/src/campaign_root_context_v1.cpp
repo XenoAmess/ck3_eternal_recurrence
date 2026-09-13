@@ -80,6 +80,7 @@ struct ObservationV1 {
   std::int32_t player_character_id = -1;
   bool player_character_alive = false;
   game::FixedPointValue player_monthly_gold_income;
+  game::FixedPointValue player_health;
   std::int32_t player_domain_size = 0;
   std::int32_t player_domain_limit = 0;
   std::int32_t player_targeting_faction_count = 0;
@@ -221,6 +222,7 @@ bool EnvironmentIsExact(
       environment.game_rule_selection_service_slot == nullptr ||
       environment.game_rule_token_fallback_slot == nullptr ||
       environment.monthly_gold_income == nullptr ||
+      environment.health == nullptr ||
       environment.domain_size == nullptr ||
       environment.domain_limit == nullptr ||
       environment.primary_title == nullptr ||
@@ -265,6 +267,8 @@ bool EnvironmentIsExact(
              base + kCampaignRootGameRuleTokenFallbackSlotRva &&
          reinterpret_cast<std::uintptr_t>(environment.monthly_gold_income) ==
              base + kCampaignRootMonthlyGoldIncomeRva &&
+         reinterpret_cast<std::uintptr_t>(environment.health) ==
+             base + kCampaignRootHealthRva &&
          reinterpret_cast<std::uintptr_t>(environment.domain_size) ==
              base + kCampaignRootDomainSizeRva &&
          reinterpret_cast<std::uintptr_t>(environment.domain_limit) ==
@@ -368,6 +372,24 @@ bool InvokeCharacterInt32(NativeCampaignRootCharacterInt32V1 resolver,
   output = resolver(character);
   return true;
 #endif
+}
+
+bool InvokeCharacterFixedPoint(
+    NativeCampaignRootCharacterFixedPointV1 resolver, void *character,
+    std::int64_t &output) noexcept {
+  output = 0;
+  std::int64_t *returned = nullptr;
+#if defined(_MSC_VER)
+  __try {
+    returned = resolver(character, &output);
+  } __except (EXCEPTION_EXECUTE_HANDLER) {
+    output = 0;
+    return false;
+  }
+#else
+  returned = resolver(character, &output);
+#endif
+  return returned == &output;
 }
 
 bool InvokeProvinceHolderCharacterId(
@@ -1272,6 +1294,17 @@ bool ReadObservation(const CampaignRootNativeEnvironmentV1 &environment,
   }
   output.player_monthly_gold_income = {
       monthly_income_raw, kFixedPointScale};
+  std::int64_t health_raw = 0;
+  if (!InvokeCharacterFixedPoint(environment.health, output.player_character,
+                                 health_raw) ||
+      ResolveComponent(access, environment.character_storage_slot,
+                       environment.character_fallback_slot,
+                       output.player_character_id,
+                       kCharacterIdentityOffset) != output.player_character) {
+    failure = "player_health_unavailable";
+    return false;
+  }
+  output.player_health = {health_raw, kFixedPointScale};
   if (!InvokeCharacterInt32(environment.domain_size,
                             output.player_character,
                             output.player_domain_size) ||
@@ -1371,6 +1404,8 @@ CampaignRootNativeEnvironmentV1 BindCampaignRootNativeEnvironmentV1(
   output.monthly_gold_income = reinterpret_cast<
       NativeCampaignRootMonthlyGoldIncomeV1>(
       module_base + kCampaignRootMonthlyGoldIncomeRva);
+  output.health = reinterpret_cast<NativeCampaignRootCharacterFixedPointV1>(
+      module_base + kCampaignRootHealthRva);
   output.domain_size = reinterpret_cast<NativeCampaignRootCharacterInt32V1>(
       module_base + kCampaignRootDomainSizeRva);
   output.domain_limit = reinterpret_cast<NativeCampaignRootCharacterInt32V1>(
@@ -1467,6 +1502,7 @@ game::ReadCampaignRootContextResultV1 ReadCampaignRootContextV1(
     output.player_character_id = first.player_character_id;
     output.player_character_alive = first.player_character_alive;
     output.player_monthly_gold_income = first.player_monthly_gold_income;
+    output.player_health = first.player_health;
     output.player_domain_size = first.player_domain_size;
     output.player_domain_limit = first.player_domain_limit;
     output.player_targeting_faction_count =
@@ -1491,7 +1527,7 @@ game::ReadCampaignRootContextResultV1 ReadCampaignRootContextV1(
     output.native_selected_game_rule_token_count =
         first.native_selected_game_rule_token_count;
     output.readiness = {true, true, true, true, true, true, true, true,
-                        true, true, true, true, true, true, true};
+                        true, true, true, true, true, true, true, true};
     output.unavailable_reason.clear();
     return game::ReadCampaignRootContextResultV1::available;
   } catch (...) {

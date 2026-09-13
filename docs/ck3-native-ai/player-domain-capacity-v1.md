@@ -109,6 +109,6 @@ grace-period 惩罚状态。
   memory operand，并支持 `--source-rva-start/--source-rva-end` 有界扫描；本次用它
   复现了上述四条 registration/name 引用。
 
-完整 M1 仍缺 health、council、faction 与 partition 观测，以及共享的两场景
+完整 M1 仍缺 council 与 partition 观测，以及共享的两场景
 paused live 验收。完整和平治理仍缺 holdings/buildings/construction 与相应动作、
 策略和后置验证。

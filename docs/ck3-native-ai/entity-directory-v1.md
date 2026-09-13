@@ -115,7 +115,7 @@ identity，再交给婚姻、外交、战争或后续 realm-state 查询。相�
 同时仍能追溯 Province-holder source role。它暂时不能按姓名、距离、资源或效用搜索，也不能直接选出“最强邻国”。
 
 最低 `ruler-state-v1` / `realm-state-v1` / primary-title succession alerts 已由
-[turn-bundle-v1.md](turn-bundle-v1.md) 聚合；完整 bundle 仍缺 income/health/domain/council/faction/partition 观测。本工具的 live 互证与两个来源
+[turn-bundle-v1.md](turn-bundle-v1.md) 聚合；income、health、domain 与最低 faction alert 已补齐，完整 bundle 仍缺 council/partition 观测。本工具的 live 互证与两个来源
 vector 共用下一次 already-required paused G2 双查询和 cold restore，不为它单开长跑。
 
 ## 静态验收

@@ -53,6 +53,7 @@ bool ReadinessAll(const game::CampaignRootReadinessV1 &value,
                   bool expected) noexcept {
   return value.player_identity_ready == expected &&
          value.player_monthly_gold_income_ready == expected &&
+         value.player_health_ready == expected &&
          value.player_domain_ready == expected &&
          value.player_targeting_factions_ready == expected &&
          value.primary_title_ready == expected &&
@@ -86,7 +87,7 @@ std::string_view TierKey(std::int32_t raw) noexcept {
 }
 
 bool ValidUnavailableReason(std::string_view reason) noexcept {
-  constexpr std::array<std::string_view, 20> reasons = {
+  constexpr std::array<std::string_view, 21> reasons = {
       "unsupported_build",
       "requires_application_main",
       "requires_paused",
@@ -94,6 +95,7 @@ bool ValidUnavailableReason(std::string_view reason) noexcept {
       "player_identity_unavailable",
       "player_character_generation_mismatch",
       "player_monthly_gold_income_unavailable",
+      "player_health_unavailable",
       "player_domain_unavailable",
       "player_targeting_factions_unavailable",
       "primary_title_unavailable",
@@ -209,6 +211,8 @@ bool ValidAvailable(const game::CampaignRootContextV1 &context) noexcept {
       !context.player_character_alive.has_value() ||
       !context.player_monthly_gold_income.has_value() ||
       context.player_monthly_gold_income->scale != 100'000 ||
+      !context.player_health.has_value() ||
+      context.player_health->scale != 100'000 ||
       !context.player_domain_size.has_value() ||
       *context.player_domain_size < 0 ||
       !context.player_domain_limit.has_value() ||
@@ -295,6 +299,7 @@ bool ValidUnavailable(const game::CampaignRootContextV1 &context) noexcept {
          !context.player_character_id.has_value() &&
          !context.player_character_alive.has_value() &&
          !context.player_monthly_gold_income.has_value() &&
+         !context.player_health.has_value() &&
          !context.player_domain_size.has_value() &&
          !context.player_domain_limit.has_value() &&
          !context.player_targeting_faction_count.has_value() &&
@@ -406,6 +411,8 @@ void AppendReadiness(std::string &output,
   output += value.player_identity_ready ? "true" : "false";
   output += ",\"player_monthly_gold_income_ready\":";
   output += value.player_monthly_gold_income_ready ? "true" : "false";
+  output += ",\"player_health_ready\":";
+  output += value.player_health_ready ? "true" : "false";
   output += ",\"player_domain_ready\":";
   output += value.player_domain_ready ? "true" : "false";
   output += ",\"player_targeting_factions_ready\":";
@@ -443,6 +450,7 @@ void AppendProvenance(std::string &output) {
   output += "\",\"backend_id\":\"";
   output += kCampaignRootContextV1BackendId;
   output += "\",\"monthly_gold_income_rva\":\"0x28DBE90\",";
+  output += "\"character_health_rva\":\"0x2619AD0\",";
   output += "\"domain_size_rva\":\"0x260BA50\",";
   output += "\"domain_limit_rva\":\"0x260BA20\",";
   output += "\"has_targeting_faction_trigger_rva\":\"0x283FAE0\",";
@@ -495,6 +503,20 @@ std::string SerializeCampaignRootContextV1(
     }
     output += ",\"scale\":";
     if (!AppendNumber(output, context.player_monthly_gold_income->scale)) {
+      return {};
+    }
+    output.push_back('}');
+  }
+  output += ",\"player_health\":";
+  if (!context.player_health.has_value()) {
+    output += "null";
+  } else {
+    output += "{\"raw\":";
+    if (!AppendNumber(output, context.player_health->raw)) {
+      return {};
+    }
+    output += ",\"scale\":";
+    if (!AppendNumber(output, context.player_health->scale)) {
       return {};
     }
     output.push_back('}');

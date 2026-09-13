@@ -50,6 +50,11 @@ def _context(
             if available
             else None
         ),
+        "player_health": (
+            {"raw": 275_000, "scale": 100_000}
+            if available
+            else None
+        ),
         "player_domain_size": 6 if available else None,
         "player_domain_limit": 7 if available else None,
         "player_targeting_faction_count": 2 if available else None,
@@ -147,6 +152,7 @@ def _context(
         "readiness": {
             "player_identity_ready": available,
             "player_monthly_gold_income_ready": available,
+            "player_health_ready": available,
             "player_domain_ready": available,
             "player_targeting_factions_ready": available,
             "primary_title_ready": available,
@@ -171,6 +177,7 @@ def _context(
                 "ck3-1.19.0.6-native-campaign-root-context-v1"
             ),
             "monthly_gold_income_rva": "0x28DBE90",
+            "character_health_rva": "0x2619AD0",
             "domain_size_rva": "0x260BA50",
             "domain_limit_rva": "0x260BA20",
             "has_targeting_faction_trigger_rva": "0x283FAE0",

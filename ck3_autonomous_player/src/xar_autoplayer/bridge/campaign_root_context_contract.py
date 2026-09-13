@@ -28,6 +28,7 @@ _FIELDS: Final = {
     "player_character_id",
     "player_character_alive",
     "player_monthly_gold_income",
+    "player_health",
     "player_domain_size",
     "player_domain_limit",
     "player_targeting_faction_count",
@@ -62,6 +63,7 @@ _GOVERNMENT_FIELDS: Final = {"key", "flags", "native_flag_count"}
 _READINESS_KEYS: Final = (
     "player_identity_ready",
     "player_monthly_gold_income_ready",
+    "player_health_ready",
     "player_domain_ready",
     "player_targeting_factions_ready",
     "primary_title_ready",
@@ -82,6 +84,7 @@ _PROVENANCE_FIELDS: Final = {
     "executable_sha256",
     "backend_id",
     "monthly_gold_income_rva",
+    "character_health_rva",
     "domain_size_rva",
     "domain_limit_rva",
     "has_targeting_faction_trigger_rva",
@@ -98,6 +101,7 @@ _PROVENANCE_VALUES: Final = {
     "executable_sha256": CAMPAIGN_ROOT_CONTEXT_V1_EXECUTABLE_SHA256,
     "backend_id": CAMPAIGN_ROOT_CONTEXT_V1_BACKEND_ID,
     "monthly_gold_income_rva": "0x28DBE90",
+    "character_health_rva": "0x2619AD0",
     "domain_size_rva": "0x260BA50",
     "domain_limit_rva": "0x260BA20",
     "has_targeting_faction_trigger_rva": "0x283FAE0",
@@ -117,6 +121,7 @@ _UNAVAILABLE_REASONS: Final = {
     "player_identity_unavailable",
     "player_character_generation_mismatch",
     "player_monthly_gold_income_unavailable",
+    "player_health_unavailable",
     "player_domain_unavailable",
     "player_targeting_factions_unavailable",
     "primary_title_unavailable",
@@ -144,6 +149,7 @@ _UNAVAILABLE_NULL_FIELDS: Final = {
     "player_character_id",
     "player_character_alive",
     "player_monthly_gold_income",
+    "player_health",
     "player_domain_size",
     "player_domain_limit",
     "player_targeting_faction_count",
@@ -525,6 +531,10 @@ def normalize_campaign_root_context_v1(
         frame.get("player_monthly_gold_income"),
         "player_monthly_gold_income",
     )
+    player_health = _fixed_point(
+        frame.get("player_health"),
+        "player_health",
+    )
     player_domain_size = _int(
         frame.get("player_domain_size"),
         "player_domain_size",
@@ -653,6 +663,7 @@ def normalize_campaign_root_context_v1(
         "player_character_id": player_character_id,
         "player_character_alive": player_character_alive,
         "player_monthly_gold_income": player_monthly_gold_income,
+        "player_health": player_health,
         "player_domain_size": player_domain_size,
         "player_domain_limit": player_domain_limit,
         "player_targeting_faction_count": player_targeting_faction_count,

@@ -68,6 +68,7 @@ int main(int argc, char **argv) {
       kCampaignRootGovernmentFallbackSlotRva != 0x570CB50 ||
       kCampaignRootGameRuleSelectionServiceSlotRva != 0x5754B48 ||
       kCampaignRootMonthlyGoldIncomeRva != 0x28DBE90 ||
+      kCampaignRootHealthRva != 0x2619AD0 ||
       kCampaignRootDomainSizeRva != 0x260BA50 ||
       kCampaignRootDomainLimitRva != 0x260BA20 ||
       kCampaignRootHasTargetingFactionTriggerRva != 0x283FAE0 ||
@@ -84,6 +85,7 @@ int main(int argc, char **argv) {
   if (!ContainsAll(header,
                    {"void **government_fallback_slot",
                     "NativeCampaignRootMonthlyGoldIncomeV1",
+                    "NativeCampaignRootCharacterFixedPointV1",
                     "NativeCampaignRootCharacterInt32V1",
                     "game.command.query-campaign-root-context-v1",
                     "ck3-1.19.0.6-native-campaign-root-context-v1"}) ||
@@ -104,6 +106,7 @@ int main(int argc, char **argv) {
                     "ReadPrimaryTitleSuccession",
                     "primary_title_succession_unavailable",
                     "player_monthly_gold_income_unavailable",
+                    "player_health_unavailable",
                     "player_domain_unavailable",
                     "player_targeting_factions_unavailable",
                     "kCampaignRootDomainSizeRva",
@@ -111,6 +114,7 @@ int main(int argc, char **argv) {
                     "kCharacterLandStateOffset = 0x1B8",
                     "kLandStateTargetingFactionsCountOffset = 0x12C",
                     "kCampaignRootMonthlyGoldIncomeRva",
+                    "kCampaignRootHealthRva",
                     "kLandedTitleSuccessionDataOffset = 0x278",
                     "CharacterBelongsToPlayerSubrealm",
                     "observed_id != full_id",
@@ -126,6 +130,7 @@ int main(int argc, char **argv) {
                     "\\\"related_character_contexts\\\"",
                     "\\\"primary_title_succession_character_ids\\\"",
                     "\\\"player_monthly_gold_income\\\"",
+                    "\\\"player_health\\\"",
                     "\\\"player_domain_size\\\"",
                     "\\\"player_domain_limit\\\"",
                     "\\\"player_targeting_faction_count\\\"",
@@ -133,6 +138,7 @@ int main(int argc, char **argv) {
                     "\\\"domain_limit_rva\\\"",
                     "\\\"has_targeting_faction_trigger_rva\\\"",
                     "\\\"monthly_gold_income_rva\\\"",
+                    "\\\"character_health_rva\\\"",
                     "\\\"relationship_role\\\"",
                     "\\\"unavailable_reason\\\"",
                     "\\\"provenance\\\""}) ||
@@ -169,6 +175,7 @@ int main(int argc, char **argv) {
                     "\"resolved_rva\": \"0x570CB50\"",
                     "\"province_holder_character_id_rva\": \"0x220C3F0\"",
                     "\"monthly_gold_income_rva\": \"0x28DBE90\"",
+                    "\"health_rva\": \"0x2619AD0\"",
                     "\"domain_size_rva\": \"0x260BA50\"",
                     "\"domain_limit_rva\": \"0x260BA20\"",
                     "\"has_targeting_faction_trigger_rva\": \"0x283FAE0\"",
@@ -177,6 +184,7 @@ int main(int argc, char **argv) {
                     "\"related_character_contexts\"",
                     "\"primary_title_succession\"",
                     "\"player_monthly_gold_income\"",
+                    "\"player_health\"",
                     "\"player_domain_capacity\"",
                     "\"player_targeting_factions\"",
                     "\"character_land_state_offset\": \"0x1B8\"",
@@ -201,6 +209,8 @@ int main(int argc, char **argv) {
                     "\"primary_title_succession_order\": "
                     "\"native_title_succession_order\"",
                     "\"player_monthly_gold_income_scale\": 100000",
+                    "\"player_health_scale\": 100000",
+                    "\"player_health_rva\": \"0x2619AD0\"",
                     "\"player_domain_size_minimum\": 0",
                     "\"player_domain_limit_minimum\": 1",
                     "\"player_targeting_faction_count_minimum\": 0",
