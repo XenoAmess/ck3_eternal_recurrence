@@ -1,6 +1,6 @@
 # CK3 纹章设计器剪贴板导入能力报告
 
-> 调研日期：2026-09-08 至 2026-09-11
+> 调研日期：2026-09-08 至 2026-09-13
 >
 > 页面：角色设计器 → 自定义纹章 → 设计你自己的纹章 → 从剪贴板粘贴
 >
@@ -39,6 +39,8 @@ designer 的 working state。
 | `mcp-static-ready` | MCP/原生能力、闭合 schema 与自动测试已实现，但尚未在真实 CK3 进程中执行；不能作为语法结论 |
 | `mcp-detected` | MCP 精确绑定到本次 CK3 进程，写入并回读相同源码，原生 `CanPaste` 为真且取得 preview handle |
 | `mcp-applied` | 在 `mcp-detected` 基础上调用原生 paste，并验证 designer working state 已切到候选纹章 |
+| `mcp-exported` | MCP 调用当前 designer 的原生 Copy，成功读取本次回调写入剪贴板的非空源码并绑定其字节数与 SHA-256 |
+| `mcp-roundtrip` | 同一 CK3 进程和 exact binding 中完成 apply → export → 原样 reapply → export，且两次 canonical export 字节完全相同 |
 | `legacy-ui` | 早期人工/UI 辅助观察；仅作补充，不作为 MCP-first 最终证据 |
 | `unresolved` | 证据不足、含义歧义或资源与语法尚未拆开验证 |
 
@@ -220,8 +222,8 @@ binding
 export 的公开结果为闭合 schema，包含 `status`、`designer_observed`、`copy_invoked`、`clipboard_read`、
 `source`、`source_sha256`、`source_bytes`、`reason` 与同一 exact binding。成功状态只有 `exported`；已进入 designer callback
 但未能调用 Copy 或未能读取剪贴板时返回 `unavailable`，不会泄露上一次成功结果；超时未观察到 designer 则整次命令失败。
-当前实现限制输出为非空 ASCII、
-无 NUL、最多 128 KiB。它已经达到 `mcp-static-ready`，尚未在真实 CK3 中执行，因此本报告仍不使用它改写任何语法结论。
+当前实现限制输出为非空 ASCII、无 NUL、最多 128 KiB。2026-09-13 已在真实 CK3 进程中取得 `mcp-exported`，并与
+`mcp-applied` 组成同会话 `mcp-roundtrip`；具体载荷与边界见 3.4。
 
 ### 3.3 验证状态
 
@@ -230,7 +232,7 @@ export 的公开结果为闭合 schema，包含 `status`、`designer_observed`�
 - native bridge fresh build：成功；
 - native protocol 与 adapter registry CTest：2/2 GREEN；
 - Copy/export MCP primitive 已完成 closed-schema 注册、exact-build RVA/prologue 身份校验、UI-thread 调用、剪贴板读取、
-  SHA-256 与 exact binding 投影，当前为 `mcp-static-ready`；遵守用户当前“不占用 CK3/主屏幕”的要求，live 结果明确待验；
+  SHA-256 与 exact binding 投影，并在 2026-09-13 的同进程 round-trip 中达到 `mcp-exported`；
 - 离线 resource catalog 已对本机 exact 1.19.0.6 安装执行：基础游戏 manifest 共定义 42 个 pattern（38 个 designer 可见）、
   1,578 个 colored emblem（1,576 个可见）和 13 个背景色；该结果不含 DLC/mod override，也不是运行时注册证明；
 - Web 编辑器的 Quarkus 伴随服务已完成真实后台贯通：`REST → MCP Java SDK 2.0.1 stdio client → Python MCP server →`
@@ -268,6 +270,49 @@ export 的公开结果为闭合 schema，包含 `status`、`designer_observed`�
   public revision `4`、connection generation `1`，结束时 `cleanup_proven=true` 且进程树为零。
 - attempt 8 的 LF-only 多行载荷真实暴露 `CF_UNICODETEXT` 回读会转为 CRLF；同一载荷改用 CRLF 后为 `detected`。
   MCP 合同随后补成调用方换行规范化，避免把有效语法误报成 `clipboard_readback_mismatch`。
+
+### 3.4 2026-09-13 同进程 canonical round-trip
+
+隔离的 CK3 `1.19.0.6` 会话绑定 PID `23008`、snapshot `native:3`、public revision `4`、native revision `3`、
+connection generation `1`。导航截图只用于进入完整纹章设计器；以下判断全部来自 MCP 的原生 reader/Copy 回调与结构化结果。
+
+送入 `ck3_probe_coat_of_arms_source_v1(apply=true)` 的确定性载荷覆盖 pattern、根级三色、一个 colored emblem、
+emblem 三色以及 position/scale/rotation/depth：
+
+```text
+coa = {
+    pattern = "pattern_solid.dds"
+    color1 = blue
+    color2 = yellow
+    color3 = white
+    colored_emblem = {
+        texture = "ce_fleur.dds"
+        color1 = red
+        color2 = black
+        color3 = white
+        instance = {
+            position = { 0.250000 0.650000 }
+            scale = { 0.420000 0.420000 }
+            rotation = 17
+            depth = 3
+        }
+    }
+}
+```
+
+第一次 apply 返回 `status=applied`、`detected=true`、`designer_observed=true`、`applied=true`。紧接着原生 Copy
+返回 327 bytes 的 canonical 源码，SHA-256 为
+`9F84F667B413D2BA24FA101A28D6F455AD93B638F90D9C2A21A91EF264B93C93`。可观察到引擎把 outer key 改为
+`coa_rd_dynasty_2974550562`，规范化空白和字段顺序，并把 `depth=3` 写成 `depth=3.000000`。
+
+把这 327 bytes 原样 reapply 后再次 Copy，第二次仍返回完全相同的 327 bytes 与 SHA-256；两个 probe 均为 `applied`，
+两个 export 均为 `exported`。因此上述字段组合在该 exact build 上已经形成同会话 canonical fixed point。该结果不证明
+跨会话 outer key 恒定，不证明未包含字段的 copy-back 规则，也不等于点击上层 Finish 或保存进角色/王朝。
+
+本轮 fresh bridge 为 2,636,800 bytes，SHA-256
+`721337A077F71BEFCE42D6F157CDE4B01C16DA174D0D6E8DBEF5CD3F151DF601`。artifact 记录一次加载期 snapshot
+`native game state is not available yet`，随后 snapshot、apply、export、reapply、export 全部成功；结束时
+`exit_reason=stop`、`cleanup_proven=true`、`tree_gone=true`，没有遗留 CK3 进程。
 
 ## 4. 原版实际调用链
 
@@ -388,8 +433,8 @@ depth = 1.01
 - 重复 `colored_emblem` 与重复 `instance` 可共同应用；
 - 多行源码经 MCP 统一为 CRLF 后再写入 Windows 剪贴板。
 
-“注释在 copy-back 丢失”和“HSV 被 copy-back 规范化成 RGB”仍来自早期辅助观察；Copy/export MCP primitive 已静态就绪，
-但尚未实机执行，所以仍需等待 live 复核。
+“注释在 copy-back 丢失”和“HSV 被 copy-back 规范化成 RGB”仍来自早期辅助观察；2026-09-13 的 Copy/export live
+round-trip 没有包含注释或 HSV，因此不能用该轮结果升级这两个更细结论。
 
 ### 5.3 推荐的最小输出
 
@@ -535,16 +580,16 @@ Web 端若要提供随机生成，应在自己的数据模型中完成选择，�
 
 ## 8. 目前 MCP 能力仍缺什么
 
-本轮已实机闭合“输入源码 → 原生检测/预览 → 可选应用”，并补齐 frontend 生命周期与 Windows 换行规范化。
-游戏自身 Copy/export 已通过 MCP/原生实现并完成静态验收，但尚未取得 live 证据；基础游戏 designer manifest 资源目录也已
-通过离线 MCP 工具分页暴露。仍未通过 MCP 暴露的能力有：
+本轮已实机闭合“输入源码 → 原生检测/预览 → 应用 → 原生 Copy/export → 原样再应用 → 稳定再次导出”，并补齐 frontend
+生命周期与 Windows 换行规范化。基础游戏 designer manifest 资源目录也已通过离线 MCP 工具分页暴露。仍未通过 MCP
+闭合的能力有：
 
 - 读取 CK3 原生 preview 的最终像素或直接导出 PNG（浏览器已能按随附 shader 源码离线合成，但不替代 native pixel）；
 - 完成角色设计器上层 Finish；
 - 枚举游戏当前运行时实际注册且已合并 DLC/mod override 的 pattern/emblem/color 资源；
 - 跨 CK3 build 自动适配 RVA 与字段。
 
-按 MCP-first 原则，后续若需要 canonical round-trip、资源清单或截图无关的视觉验收，应继续补这些原生/MCP primitive，
+按 MCP-first 原则，后续若需要运行时合并资源清单或截图无关的视觉验收，应继续补这些原生/MCP primitive，
 而不是用 OCR 猜文字、按钮状态或 copy-back 内容。
 
 ## 9. `coat_of_arms_editer_of_ck3` 的实现约束与当前状态
@@ -582,8 +627,8 @@ CoatOfArms
 尚未完成的下一阶段能力：
 
 - 继续补 DLC/mod playset 合并与运行时注册证据；
-- 在重新获准占用 CK3 后，对编辑器的 detect/apply/Copy-export 做 live round-trip 验收；当前只是接口与静态实现 GREEN，
-  不把 REST mock 或离线 catalog 贯通写成 designer live；
+- 浏览器 → Quarkus REST → Java MCP client 的交互外壳尚需单独 live 验收；原生 MCP round-trip 已 GREEN，但不拿它冒充
+  浏览器端到端 live；
 - CK3 原生 PNG/像素验证 primitive，用于闭合浏览器源码模型与 native GPU 的差异；
 - 解析/验证 textured emblem 的完整字段与最终合成路径；当前只闭合已实机检测的 `texture="_default.dds"` 形态和素材原始像素。
 
@@ -628,6 +673,8 @@ CoatOfArms
 | attempt 8 MCP live artifact（27 条原生请求、cleanup GREEN） | `B40E16DD700EEB0FD0703B909955563F04D5810543D2E28D9D72E0DDE081CD2F` |
 | attempt 8 `xar_ck3_bridge.dll`（2,507,776 bytes） | `EC534B8D4D3BFA16FCA9BCA8DA4DD2CF393019C86892AFAD0BCF372E541C59CD` |
 | Copy/export static build `xar_ck3_bridge.dll`（2,551,808 bytes；rebase 后 exact master） | `F28BFFA0F82A6F9C51DC0E8491DE93578B443A00957F73E6B11BCB660C395FF8` |
+| 09 月 13 日 MCP same-session round-trip artifact（26,521 bytes；cleanup GREEN） | `9EB7DC0AE1F7EBF2F7D5F8518DE948AACD929104AAFF7447B0B8375B19D0DE84` |
+| 09 月 13 日 round-trip `xar_ck3_bridge.dll`（2,636,800 bytes） | `721337A077F71BEFCE42D6F157CDE4B01C16DA174D0D6E8DBEF5CD3F151DF601` |
 | `50_coa_designer_patterns.txt`（42 项/38 可见） | `3BAA46C11BD24E7D9F9F6D1DF3E51403D016AB4CAC7290A6541ED25561425B7B` |
 | `50_coa_designer_emblems.txt`（1,578 项/1,576 可见） | `3D6529702F91FA352E07B0C64E4C33A88E5F86C2AAF0EF2D0CEB69CF6D600F3C` |
 | `50_coa_designer_palettes.txt`（13 色） | `3AE2EA0F3B751D61C08A06408FA2EDA2ADC3FF6FBF204298D3D8CDC9613B87B4` |

@@ -69,8 +69,11 @@ java -jar backend/target/quarkus-app/quarkus-run.jar
 实现依据为 [Quarkus REST Jackson](https://quarkus.io/extensions/io.quarkus/quarkus-rest-jackson/) 和
 [MCP Java SDK stdio client](https://java.sdk.modelcontextprotocol.io/latest/client/)。
 
-仓库内的原生 `ck3_export_coat_of_arms_source_v1` MCP Copy/export primitive 已完成静态构建与 closed-schema 测试，
-尚未在真实 CK3 进程中验收；浏览器与伴随服务接线已经完成，但不会用 REST mock、OCR 或屏幕自动化冒充 live 能力。
+仓库内的原生 `ck3_export_coat_of_arms_source_v1` MCP Copy/export primitive 已在 CK3 `1.19.0.6` 真实进程完成同会话
+apply → export → reapply → export。两次引擎 canonical 输出均为 327 bytes、SHA-256
+`9F84F667B413D2BA24FA101A28D6F455AD93B638F90D9C2A21A91EF264B93C93`，证明该实测字段组合已形成原生 fixed point。
+浏览器与伴随服务接线已经完成，但该轮没有单独执行浏览器 → REST → Java MCP 的 live UI 验收，因此不会拿原生 MCP 结果、
+REST mock、OCR 或屏幕自动化冒充浏览器端到端 live。
 
 `ck3_query_coat_of_arms_resource_catalog_v1` 已能在不启动 CK3 的情况下分页读取 exact 1.19.0.6 基础游戏 designer manifest；
 它已经接入前端，并通过 `REST → Java MCP SDK → Python stdio MCP` 对本机安装完成后台贯通；结果明确不声称包含
