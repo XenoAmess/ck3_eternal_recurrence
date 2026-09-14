@@ -1,0 +1,62 @@
+{
+  "schema_version": 1,
+  "contract": "change-steward-develop-county-task-v1",
+  "game_version": "1.19.0.6",
+  "executable_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+  "backend_id": "ck3-1.19.0.6-native-steward-develop-county-action-v1",
+  "command": {
+    "type": "CChangeCouncilTaskCommand",
+    "command_type_code": 11851,
+    "task_key": "task_develop_county",
+    "known_static_factory_callsites": [
+      "0x0C50889",
+      "0x0C50F58",
+      "0x1904C4F",
+      "0x1904FAB"
+    ],
+    "known_static_validator_rva": "0x26E1240",
+    "known_static_submit_rva": "0x00973E00",
+    "command_abi_certified": false,
+    "production_capability_advertised": false,
+    "reason": "The object constructor arguments, exact task/location packet ownership, and apply lifecycle have not been captured on the exact build. Static RVAs alone do not authorize dispatch."
+  },
+  "observer_capture_seam": {
+    "id": "steward-develop-county-command-observer-v1",
+    "purpose": "Capture one vanilla UI construction, validation, submit and next paused task observation without mutating command state.",
+    "required_fields": [
+      "councillor_character_id",
+      "task_type_internal_id",
+      "task_key",
+      "typed_location_kind",
+      "target_county_title_id",
+      "target_capital_province_id",
+      "validator_result",
+      "native_reason_key",
+      "submit_seen",
+      "next_paused_active_task_key",
+      "next_paused_target_province_id"
+    ],
+    "status": "pending_live_capture"
+  },
+  "public_contract": {
+    "capability": "game.command.change-steward-develop-county-task-v1",
+    "step": "change-steward-develop-county-task-v1",
+    "mcp_tool": "ck3_change_steward_develop_county_task_v1",
+    "failure_classes": [
+      "request_contract",
+      "snapshot_binding",
+      "councillor_binding",
+      "task_or_target_legality",
+      "native_command_dispatch"
+    ],
+    "ack_statuses": [
+      "submitted_verification_pending",
+      "rejected_before_submit"
+    ],
+    "receipt_statuses": [
+      "applied",
+      "rejected",
+      "postcondition_failed"
+    ]
+  }
+}

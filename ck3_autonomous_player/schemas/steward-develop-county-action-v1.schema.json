@@ -1,0 +1,180 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://xar.invalid/schemas/steward-develop-county-action-v1.schema.json",
+  "title": "Steward Develop County request, ACK or independent receipt v1",
+  "oneOf": [
+    {"$ref": "#/$defs/request"},
+    {"$ref": "#/$defs/ack"},
+    {"$ref": "#/$defs/receipt"}
+  ],
+  "$defs": {
+    "positiveInt32": {"type": "integer", "minimum": 1, "maximum": 2147483647},
+    "uint64": {"type": "integer", "minimum": 0, "maximum": 18446744073709551615},
+    "int32": {"type": "integer", "minimum": -2147483648, "maximum": 2147483647},
+    "int64": {"type": "integer", "minimum": -9223372036854775808, "maximum": 9223372036854775807},
+    "requestId": {"type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,63}$"},
+    "exactBuild": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["game_version", "executable_sha256", "backend_id"],
+      "properties": {
+        "game_version": {"const": "1.19.0.6"},
+        "executable_sha256": {"const": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86"},
+        "backend_id": {"const": "ck3-1.19.0.6-native-steward-develop-county-action-v1"}
+      }
+    },
+    "request": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "councillor_character_id", "task_key", "target_county_title_id",
+        "expected_revision", "replace_existing_task"
+      ],
+      "properties": {
+        "councillor_character_id": {"$ref": "#/$defs/positiveInt32"},
+        "task_key": {"const": "task_develop_county"},
+        "target_county_title_id": {"$ref": "#/$defs/positiveInt32"},
+        "expected_revision": {"type": "integer", "minimum": 1, "maximum": 18446744073709551615},
+        "replace_existing_task": {"type": "boolean"}
+      }
+    },
+    "ack": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "schema_version", "contract_stage", "status", "verification_pending",
+        "request_id", "pre_snapshot_revision", "pre_native_snapshot_revision",
+        "councillor_character_id", "task_key", "target_county_title_id",
+        "submitted_target_province_id", "replaced_existing_task", "failure_class",
+        "rejection_reason", "native_reason_key", "exact_build"
+      ],
+      "properties": {
+        "schema_version": {"const": 1},
+        "contract_stage": {"const": "exact_build_action_seam_pending_command_abi_certification"},
+        "status": {"enum": ["submitted_verification_pending", "rejected_before_submit"]},
+        "verification_pending": {"type": "boolean"},
+        "request_id": {"$ref": "#/$defs/requestId"},
+        "pre_snapshot_revision": {"$ref": "#/$defs/uint64"},
+        "pre_native_snapshot_revision": {"$ref": "#/$defs/uint64"},
+        "councillor_character_id": {"$ref": "#/$defs/positiveInt32"},
+        "task_key": {"const": "task_develop_county"},
+        "target_county_title_id": {"$ref": "#/$defs/positiveInt32"},
+        "submitted_target_province_id": {"$ref": "#/$defs/int32"},
+        "replaced_existing_task": {"type": "boolean"},
+        "failure_class": {
+          "enum": ["none", "request_contract", "snapshot_binding", "councillor_binding", "task_or_target_legality", "native_command_dispatch"]
+        },
+        "rejection_reason": {"type": ["string", "null"], "minLength": 1},
+        "native_reason_key": {"type": ["string", "null"], "minLength": 1},
+        "exact_build": {"$ref": "#/$defs/exactBuild"}
+      },
+      "allOf": [
+        {
+          "if": {"properties": {"status": {"const": "submitted_verification_pending"}}, "required": ["status"]},
+          "then": {
+            "properties": {
+              "verification_pending": {"const": true},
+              "pre_snapshot_revision": {"minimum": 1},
+              "pre_native_snapshot_revision": {"minimum": 1},
+              "submitted_target_province_id": {"minimum": 1},
+              "failure_class": {"const": "none"},
+              "rejection_reason": {"type": "null"},
+              "native_reason_key": {"type": "null"}
+            }
+          },
+          "else": {
+            "properties": {
+              "verification_pending": {"const": false},
+              "pre_snapshot_revision": {"const": 0},
+              "pre_native_snapshot_revision": {"const": 0},
+              "submitted_target_province_id": {"const": -1},
+              "replaced_existing_task": {"const": false},
+              "failure_class": {"enum": ["request_contract", "snapshot_binding", "councillor_binding", "task_or_target_legality", "native_command_dispatch"]},
+              "rejection_reason": {"type": "string", "minLength": 1}
+            }
+          }
+        }
+      ]
+    },
+    "receipt": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "schema_version", "status", "request_id", "reason",
+        "post_snapshot_revision", "post_native_snapshot_revision",
+        "post_observed_date_raw", "councillor_character_id", "active_task_key",
+        "target_county_title_id", "target_province_id", "progress_kind",
+        "progress_current_raw", "progress_max_raw", "progress_frozen",
+        "postcondition_verified"
+      ],
+      "properties": {
+        "schema_version": {"const": 1},
+        "status": {"enum": ["applied", "rejected", "postcondition_failed"]},
+        "request_id": {"$ref": "#/$defs/requestId"},
+        "reason": {"type": ["string", "null"], "minLength": 1},
+        "post_snapshot_revision": {"$ref": "#/$defs/uint64"},
+        "post_native_snapshot_revision": {"$ref": "#/$defs/uint64"},
+        "post_observed_date_raw": {"$ref": "#/$defs/int32"},
+        "councillor_character_id": {"$ref": "#/$defs/int32"},
+        "active_task_key": {"type": "string"},
+        "target_county_title_id": {"anyOf": [{"$ref": "#/$defs/positiveInt32"}, {"type": "null"}]},
+        "target_province_id": {"anyOf": [{"$ref": "#/$defs/positiveInt32"}, {"type": "null"}]},
+        "progress_kind": {"type": "string"},
+        "progress_current_raw": {"anyOf": [{"$ref": "#/$defs/int64"}, {"type": "null"}]},
+        "progress_max_raw": {"anyOf": [{"$ref": "#/$defs/int64"}, {"type": "null"}]},
+        "progress_frozen": {"type": ["boolean", "null"]},
+        "postcondition_verified": {"type": "boolean"}
+      },
+      "allOf": [
+        {
+          "if": {"properties": {"status": {"const": "applied"}}, "required": ["status"]},
+          "then": {
+            "properties": {
+              "reason": {"type": "null"},
+              "post_snapshot_revision": {"minimum": 1},
+              "post_native_snapshot_revision": {"minimum": 1},
+              "councillor_character_id": {"$ref": "#/$defs/positiveInt32"},
+              "active_task_key": {"const": "task_develop_county"},
+              "target_county_title_id": {"$ref": "#/$defs/positiveInt32"},
+              "target_province_id": {"$ref": "#/$defs/positiveInt32"},
+              "progress_kind": {"const": "value"},
+              "progress_current_raw": {"$ref": "#/$defs/int64"},
+              "progress_max_raw": {"$ref": "#/$defs/int64"},
+              "progress_frozen": {"type": "boolean"},
+              "postcondition_verified": {"const": true}
+            }
+          }
+        },
+        {
+          "if": {"properties": {"status": {"const": "rejected"}}, "required": ["status"]},
+          "then": {
+            "properties": {
+              "reason": {"type": "string", "minLength": 1},
+              "post_snapshot_revision": {"const": 0},
+              "post_native_snapshot_revision": {"const": 0},
+              "post_observed_date_raw": {"const": 0},
+              "councillor_character_id": {"const": -1},
+              "active_task_key": {"const": ""},
+              "target_county_title_id": {"type": "null"},
+              "target_province_id": {"type": "null"},
+              "progress_kind": {"const": ""},
+              "progress_current_raw": {"type": "null"},
+              "progress_max_raw": {"type": "null"},
+              "progress_frozen": {"type": "null"},
+              "postcondition_verified": {"const": false}
+            }
+          }
+        },
+        {
+          "if": {"properties": {"status": {"const": "postcondition_failed"}}, "required": ["status"]},
+          "then": {
+            "properties": {
+              "reason": {"type": "string", "minLength": 1},
+              "postcondition_verified": {"const": false}
+            }
+          }
+        }
+      ]
+    }
+  }
+}

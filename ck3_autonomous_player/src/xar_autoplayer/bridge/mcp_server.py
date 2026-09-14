@@ -395,6 +395,25 @@ def _ck3_query_steward_develop_county_candidates_v1(
     )
 
 
+def _ck3_change_steward_develop_county_task_v1(
+    service: GameplayBridgeService,
+    councillor_character_id: int,
+    target_county_title_id: int,
+    expected_revision: int,
+    replace_existing_task: bool,
+    task_key: str = "task_develop_county",
+) -> dict[str, object]:
+    """Submit the fixed native Develop County task; return an ACK only."""
+
+    return service.change_steward_develop_county_task_v1(
+        councillor_character_id,
+        task_key,
+        target_county_title_id,
+        expected_revision=expected_revision,
+        replace_existing_task=replace_existing_task,
+    )
+
+
 def _ck3_search_entities_v1(
     service: GameplayBridgeService,
     expected_revision: int,
@@ -1194,6 +1213,25 @@ def create_server(driver: GameplayBridgeDriver):
         )
 
     @server.tool()
+    def ck3_change_steward_develop_county_task_v1(
+        councillor_character_id: int,
+        target_county_title_id: int,
+        expected_revision: int,
+        replace_existing_task: bool,
+        task_key: str = "task_develop_county",
+    ) -> dict[str, object]:
+        """Submit Develop County; verify the result in a later paused frame."""
+
+        return _ck3_change_steward_develop_county_task_v1(
+            service,
+            councillor_character_id,
+            target_county_title_id,
+            expected_revision,
+            replace_existing_task,
+            task_key,
+        )
+
+    @server.tool()
     def ck3_search_entities_v1(
         expected_revision: int,
         relation_filter: str = "any",
@@ -1926,6 +1964,9 @@ def create_server(driver: GameplayBridgeDriver):
     )
     _forbid_unknown_tool_arguments_v1(
         server, "ck3_query_steward_develop_county_candidates_v1"
+    )
+    _forbid_unknown_tool_arguments_v1(
+        server, "ck3_change_steward_develop_county_task_v1"
     )
     _forbid_unknown_tool_arguments_v1(
         server, "ck3_query_zhongguo_b1_cycle_snapshot_v1"

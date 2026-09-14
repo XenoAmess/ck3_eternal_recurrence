@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import copy
+import uuid
 
 from .driver import (
     BridgeUnavailableError,
@@ -86,6 +87,12 @@ from .steward_develop_county_contract import (
     QUERY_STEWARD_DEVELOP_COUNTY_CANDIDATES_V1_CAPABILITY,
     QUERY_STEWARD_DEVELOP_COUNTY_CANDIDATES_V1_STEP,
     normalize_steward_develop_county_candidates_v1,
+)
+from .steward_develop_county_action_contract import (
+    CHANGE_STEWARD_DEVELOP_COUNTY_TASK_V1_CAPABILITY,
+    CHANGE_STEWARD_DEVELOP_COUNTY_TASK_V1_TRANSPORT_CAPABILITY,
+    build_change_steward_develop_county_request_v1,
+    normalize_change_steward_develop_county_ack_v1,
 )
 from .entity_directory_contract import build_entity_directory_v1
 from .turn_bundle_contract import build_turn_bundle_v1
@@ -2121,6 +2128,110 @@ class GameplayBridgeService:
             },
             "steward_develop_county_candidates": copy.deepcopy(normalized),
         }
+
+    def change_steward_develop_county_task_v1(
+        self,
+        councillor_character_id: int,
+        task_key: str,
+        target_county_title_id: int,
+        *,
+        expected_revision: int,
+        replace_existing_task: bool,
+    ) -> dict[str, object]:
+        """Submit one fixed Develop County task and return only its ACK.
+
+        The candidate query and source snapshot are rebound immediately before
+        dispatch.  A submitted ACK remains verification-pending; this method
+        never fabricates a receipt from request values.
+        """
+
+        request = build_change_steward_develop_county_request_v1(
+            request_id=f"steward-dev-{uuid.uuid4().hex}",
+            councillor_character_id=councillor_character_id,
+            task_key=task_key,
+            target_county_title_id=target_county_title_id,
+            expected_revision=expected_revision,
+            replace_existing_task=replace_existing_task,
+        )
+        snapshot = self.snapshot()
+        if snapshot.get("paused") is not True:
+            raise BridgeUnavailableError(
+                "steward develop-county actions require a paused CK3 snapshot"
+            )
+        if snapshot.get("revision") != expected_revision:
+            raise PreSubmissionRevisionMismatchError(
+                "steward develop-county action source revision is stale"
+            )
+        candidates_result = self.query_steward_develop_county_candidates_v1(
+            expected_revision=expected_revision
+        )
+        candidates = candidates_result.get(
+            "steward_develop_county_candidates"
+        )
+        candidate_rows = (
+            candidates.get("candidates")
+            if isinstance(candidates, dict)
+            else None
+        )
+        if (
+            not isinstance(candidates, dict)
+            or candidates.get("status") != "available"
+            or candidates.get("readiness") is not True
+            or candidates.get("task_key") != request.task_key
+            or candidates.get("steward_character_id")
+            != request.councillor_character_id
+            or not isinstance(candidate_rows, list)
+            or not any(
+                isinstance(row, dict)
+                and row.get("county_title_id")
+                == request.target_county_title_id
+                and row.get("native_legal") is True
+                for row in candidate_rows
+            )
+        ):
+            raise BridgeUnavailableError(
+                "steward develop-county request is not bound to an available "
+                "same-frame native candidate"
+            )
+        bridge_capabilities = self.capabilities().get("bridge_capabilities")
+        if not (
+            isinstance(bridge_capabilities, list)
+            and CHANGE_STEWARD_DEVELOP_COUNTY_TASK_V1_TRANSPORT_CAPABILITY
+            in bridge_capabilities
+        ):
+            raise UnsupportedStepError(
+                "selected backend lacks the fail-closed steward "
+                "develop-county action transport"
+            )
+        executor = getattr(
+            self.driver, "change_steward_develop_county_task_v1", None
+        )
+        if not callable(executor):
+            raise UnsupportedStepError(
+                "selected backend has no typed steward develop-county executor"
+            )
+        raw = executor(request, expected_revision=expected_revision)
+        try:
+            ack = normalize_change_steward_develop_county_ack_v1(
+                raw, expected_request=request
+            )
+        except (TypeError, ValueError) as error:
+            raise BridgeUnavailableError(
+                f"steward develop-county action ACK is malformed: {error}"
+            ) from error
+        production_advertised = (
+            CHANGE_STEWARD_DEVELOP_COUNTY_TASK_V1_CAPABILITY
+            in bridge_capabilities
+        )
+        if (
+            ack["status"] == "submitted_verification_pending"
+            and not production_advertised
+        ):
+            raise BridgeUnavailableError(
+                "steward develop-county action returned a submitted ACK while "
+                "its production capability is unadvertised"
+            )
+        return ack
 
     def search_entities_v1(
         self,

@@ -168,6 +168,30 @@ ChangeStewardDevelopCountyRequestV1 {
 
 `expected_active_task` 必须完整复述同一 paused frame 的当前 steward 绑定；general task 的 target 为 null。`candidate_ref` 必须与候选 query 返回的单行 identity 精确匹配，不能只传显示名、数组下标或裸 county index。端点内部固定解析 `task_develop_county`，请求没有可变 `task_key` 字段。
 
+DEVACT2 对 MCP 暴露的是上述内部合同的最小投影：
+
+```text
+ck3_change_steward_develop_county_task_v1(
+  councillor_character_id,
+  task_key = "task_develop_county",
+  target_county_title_id,
+  expected_revision,
+  replace_existing_task
+)
+```
+
+service 必须用 `expected_revision` 对应的 paused snapshot 和同 revision
+candidate query 补齐 episode、generation、native revision、date、player、owner、
+active-task binding 与 capital ProvinceID；任一项不能精确补齐就拒绝提交。这里保留
+`task_key` 只是让调用者显式确认动作类型，唯一合法值仍是
+`task_develop_county`，不能借此调用其他 council task。
+
+机器失败同时发布细分 `rejection_reason` 和五类稳定
+`failure_class`：`request_contract`、`snapshot_binding`、
+`councillor_binding`、`task_or_target_legality`、
+`native_command_dispatch`。分类用于下游分流，原版返回的 localization key 仍原样
+放在 `native_reason_key`，不会被分类字段替代。
+
 ### 提交顺序
 
 1. 进入 application-main 事务，确认 paused、episode/generation、两类 revision、date 与 player 未漂移。
@@ -275,7 +299,11 @@ ChangeStewardDevelopCountyReceiptV1 {
 | `develop_county_action_contract_static_ready` | `true` | 本专题冻结请求、失败、ACK 与 receipt |
 | `develop_county_native_command_spine_static_ready` | `true` | UI/AI 同命令、validator 与 submit seam 已在 exact build 闭合 |
 | `develop_county_command_apply_lifecycle_ready` | `false` | 闭合命令执行回调和 cancel/start 精确顺序，或以独立 postcondition 覆盖所需产品语义 |
-| `develop_county_action_implementation_ready` | `false` | bridge/MCP action 与独立 verifier 实现并通过 fixture |
+| `develop_county_action_implementation_ready` | `true`（static/fixture） | native/Python action、五类失败、ACK 与独立 receipt verifier 已通过聚焦 fixture；此项不代表原生命令 ABI 已认证 |
 | `develop_county_action_production_live` | `false` | 新 paused live artifact 获得 `applied` receipt |
 
-本文只把下一项施工从“猜 action ABI”推进到可实现的静态合同。它没有把候选 query、动作实现、ACK 或实机后置验证冒充已完成。
+DEVACT2 实现了 `change-steward-develop-county-task-v1` 的 native 核心、Python
+service/MCP 投影和独立 receipt verifier。exact-build command factory、validator 与
+submit ABI 尚未以 observer/capture 证据认证，因此生产 capability 保持不广告；绑定器
+也不会仅凭已知 RVA 打开提交路径。下一项施工是用唯一 command observer/capture seam
+冻结真实构造参数与提交生命周期，然后再进行一次短 paused live receipt 验收。
