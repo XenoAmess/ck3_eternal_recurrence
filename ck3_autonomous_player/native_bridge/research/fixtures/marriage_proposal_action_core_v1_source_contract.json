@@ -1,0 +1,95 @@
+{
+  "schema_version": 1,
+  "private_key": "marriage_proposal_action_core_v1",
+  "status": "static-ready-private-action-core-unwired",
+  "advertised": false,
+  "base_commit": "58ef8337c7132d6569c84d03616a37cee5fd9d2f",
+  "exact_build": {
+    "product_version": "1.19.0.6",
+    "executable_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86"
+  },
+  "files": {
+    "header": "include/xar_bridge/marriage_proposal_action_core_v1.hpp",
+    "implementation": "src/marriage_proposal_action_core_v1.cpp",
+    "unit_test": "src/marriage_proposal_action_core_v1_test.cpp"
+  },
+  "inputs": {
+    "semantic_observer": "include/xar_bridge/marriage_matchmaking_observer_v1.hpp",
+    "private_source_adapter_contract": "research/fixtures/marriage_matchmaking_source_adapter_v1_source_contract.json"
+  },
+  "action_preconditions": [
+    "exact-build admission matches the pinned CK3 1.19.0.6 executable hash",
+    "two complete MARRIAGE2 observations are byte-for-field identical and each advertises same-frame readiness",
+    "snapshot ID, public revision, native revision, proof epoch, date and full subject CharacterID match the request",
+    "the selected full candidate CharacterID preserves its exact native rank and signed score and meets the caller score floor",
+    "redirected actor, recipient, secondary actor, secondary recipient and intermediary IDs match the selected semantic row",
+    "complete Can Send is true, raw ai_accept matches and meets the caller floor, and the special-aware final answer allows send",
+    "the native-final predicted outcome is marriage or betrothal"
+  ],
+  "single_submit_state_machine": {
+    "states": [
+      "idle",
+      "submit_claimed",
+      "receipt_pending",
+      "terminal"
+    ],
+    "claim": "an atomic idle-to-submit_claimed transition occurs immediately before the sole native submit callback",
+    "repeat": "every later execute call on the same state is rejected without invoking submit again",
+    "ack": "a successful queue handoff returns submitted_receipt_pending; it never claims that CK3 applied or accepted the proposal",
+    "native_reject": "a rejected or unavailable submit callback is terminal and remains rejected_before_submit"
+  },
+  "receipt_contract": {
+    "freshness": "a later paused observation must advance public revision, native revision and proof epoch without moving date backwards",
+    "identity": "the full subject and candidate IDs, identity round trips and liveness are rechecked",
+    "relationship": "both parties must independently report the same spouse or betrothal edge; one-sided or simultaneous marriage/betrothal evidence is an observation failure",
+    "alliance": "both parties must independently report the same alliance edge; the receipt records both a present and an absent alliance as an observed result",
+    "pending": "no relationship plus native pending remains verification_pending and leaves the action state open for a later receipt",
+    "success": "a symmetric spouse or betrothal edge matching the pinned predicted outcome closes as succeeded_marriage or succeeded_betrothal",
+    "refusal": "an explicit native refused resolution with no resulting relationship closes as refused",
+    "invalidation": "an explicit invalidated resolution, identity/liveness loss, an outcome-kind change, or accepted-without-relationship closes as invalidated"
+  },
+  "religion_boundary": {
+    "mode": "native_final_result_only",
+    "allowed": [
+      "the complete Can Send result inherited from MARRIAGE2",
+      "the raw and special-aware final acceptance results inherited from MARRIAGE2",
+      "the observed final marriage or betrothal relationship"
+    ],
+    "forbidden": [
+      "faith projection",
+      "doctrine projection",
+      "tenet projection",
+      "fervor projection",
+      "general religion policy"
+    ]
+  },
+  "verification": {
+    "normal": "GREEN fixture executable compiled with MSVC C++20 /Od /W4 /WX",
+    "optimized": "GREEN fixture executable compiled with MSVC C++20 /O2 /W4 /WX",
+    "covered_results": [
+      "single submit and pending ACK",
+      "snapshot, candidate, legality, acceptance, score-floor and five-role rejection",
+      "native submit certification and rejection",
+      "pending receipt",
+      "successful marriage with alliance",
+      "successful betrothal without alliance",
+      "explicit refusal",
+      "explicit invalidation",
+      "stale and one-sided relationship/alliance receipt rejection"
+    ],
+    "fixture_scope": "offline deterministic semantic and submit doubles; no CK3 process was started"
+  },
+  "remaining_integration": [
+    "shared private glue to capture the MARRIAGE2 semantic observation on application-main",
+    "exact-build native proposal command construction and one-shot queue submit callback",
+    "version-bound bilateral spouse, betrothal, alliance and proposal-resolution receipt observer",
+    "CMake and private bridge owner integration",
+    "paused live proposal plus later receipt acceptance"
+  ],
+  "forbidden_shared_edits": [
+    "CMakeLists.txt",
+    "src/bridge.cpp",
+    "schemas/protocol.schema.json",
+    "public MCP capability registration"
+  ]
+}
