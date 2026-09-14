@@ -49,7 +49,7 @@ branch ref，不覆盖构建目录、artifact、录像、日志、用户脏工�
   已改为 generation-bound `...v1-generation-N`、paused/generation 检查和后续 GEN-030/032 终端边界。旧实现不再接回。
 - 主工作树中 7 个未跟踪 helper/source 文件的 blob 均能在 master 历史中找到，后来已经删除或被正式 runner 取代：
   `run_current_event_scopes_live_acceptance.py`、`one_generation_run.py`、两份对应测试、canary helper/handoff 和
-  `run_one_generation_canary.ps1`。它们作为现场保留，不重新加入发布树。
+  `run_one_generation_canary.py`（其后已恢复为受测 Python 入口）。历史现场仍保留，不重新加入发布树。
 
 ### branch retirement ledger
 

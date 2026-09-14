@@ -25,11 +25,11 @@ profile 独立冻结：
   `F52203F2395819CCB7A37153DBD36AB9CC6F6E168F4B44D179D3979ABF939D7B`；injector SHA-256
   `8A46DE3BFBF567E34BA99E61AEFA7F59DA248C4AE89791BB74E12820B4380B99`。
 
-入口是 [run_one_generation_canary.ps1](../../tools/run_one_generation_canary.ps1)。`-Profile` 只接受 `legacy` 或
+入口是 [run_one_generation_canary.py](../../tools/run_one_generation_canary.py)。`--profile` 只接受 `legacy` 或
 `claim-cb-white-peace`，省略时仍是 `legacy`。脚本默认只生成 dry-run JSON，
-不创建 target；只有显式 `-Execute` 才运行。执行路径还要求当前 token 为 `xenoa`、当前 desktop 为
+不创建 target；只有显式 `--execute` 才运行。执行路径还要求当前 token 为 `xenoa`、当前 desktop 为
 `WinSta0\Default`、没有现存 `ck3.exe`，并拒绝任何已存在 target。target 限定为当前 `%TEMP%` 的新后代；
-复制使用非 mirror、非 purge 的 `robocopy /E`。失败后保留新 target 供诊断，绝不删除或回写 source。
+复制使用 Python `shutil.copytree`，不执行 mirror 或 purge。失败后保留新 target 供诊断，绝不删除或回写 source。
 
 ## claim_cb 白和平正常桌面命令
 
@@ -37,49 +37,49 @@ profile 独立冻结：
 `C:\Users\xenoa\AppData\Local\Temp\xar-claim-white-peace-runtime-51fe8cf`。只有该目录不存在、确需重建时，
 才从认识 `51fe8cf` commit 的隔离 clone 创建；不要对尚不认识该 commit 的 `Z:\ck3_mod_rewrite` 运行此命令：
 
-```powershell
-git -C "C:\Users\xenoa\AppData\Local\Temp\xar-one-generation-milestone-20260827-113758" `
-  worktree add --detach `
-  "C:\Users\xenoa\AppData\Local\Temp\xar-claim-white-peace-runtime-51fe8cf" `
+```bat
+git -C "C:\Users\xenoa\AppData\Local\Temp\xar-one-generation-milestone-20260827-113758" ^
+  worktree add --detach ^
+  "C:\Users\xenoa\AppData\Local\Temp\xar-claim-white-peace-runtime-51fe8cf" ^
   51fe8cf6cb55de5ca01db4ed215e0abff52213a6
 ```
 
-然后在普通 `xenoa / WinSta0\Default` PowerShell 先运行 dry-run：
+然后在普通 `xenoa / WinSta0\Default` 交互桌面先运行 dry-run：
 
-```powershell
-powershell.exe -NoProfile -ExecutionPolicy Bypass -File `
-  "C:\Users\xenoa\AppData\Local\Temp\xar-agent-mainline-worktree-20260827-1254\tools\run_one_generation_canary.ps1" `
-  -Profile claim-cb-white-peace `
-  -RepoRoot "C:\Users\xenoa\AppData\Local\Temp\xar-claim-white-peace-runtime-51fe8cf" `
-  -GameDir "Z:\ck3_mod_rewrite\Crusader Kings III" `
-  -PythonPath "Z:\ck3_mod_rewrite\tools\.venv\Scripts\python.exe" `
-  -BridgeDll "Z:\ck3_mod_rewrite\ck3_autonomous_player\native_bridge\build-claim-white-peace-51fe8cf-msvc\xar_ck3_bridge.dll" `
-  -BridgeInjector "Z:\ck3_mod_rewrite\ck3_autonomous_player\native_bridge\build-claim-white-peace-51fe8cf-msvc\xar_ck3_bridge_injector.exe"
+```bat
+Z:\ck3_mod_rewrite\tools\.venv\Scripts\python.exe ^
+  D:\workspace\ck3_eternal_recurrence\tools\run_one_generation_canary.py ^
+  --profile claim-cb-white-peace ^
+  --repo-root "C:\Users\xenoa\AppData\Local\Temp\xar-claim-white-peace-runtime-51fe8cf" ^
+  --game-dir "Z:\ck3_mod_rewrite\Crusader Kings III" ^
+  --python-path "Z:\ck3_mod_rewrite\tools\.venv\Scripts\python.exe" ^
+  --bridge-dll "Z:\ck3_mod_rewrite\ck3_autonomous_player\native_bridge\build-claim-white-peace-51fe8cf-msvc\xar_ck3_bridge.dll" ^
+  --bridge-injector "Z:\ck3_mod_rewrite\ck3_autonomous_player\native_bridge\build-claim-white-peace-51fe8cf-msvc\xar_ck3_bridge_injector.exe"
 ```
 
 claim profile 的默认产物路径是相对 `RepoRoot` 的
 `ck3_autonomous_player/native_bridge/build-claim-white-peace-51fe8cf-msvc/`。因为 clean worktree 通常不包含 ignored
 build 目录，上面的正常桌面命令显式指向主仓库里的冻结产物，但脚本本身没有硬编码盘符。确认 JSON 的
 `profile=claim-cb-white-peace`、`git_revision`、四项 SHA、pipe、`host_observed` 和 `execute_host_required` 一致后，
-在同一窗口给同一命令追加 `-Execute`。
+在同一窗口给同一命令追加 `--execute`。
 
 ## legacy 正常桌面命令与隔离边界
 
-先在普通 `xenoa / WinSta0\Default` PowerShell 运行 dry-run：
+先在普通 `xenoa / WinSta0\Default` 交互桌面运行 dry-run：
 
-```powershell
-powershell.exe -NoProfile -ExecutionPolicy Bypass -File `
-  "C:\Users\xenoa\AppData\Local\Temp\xar-agent-mainline-worktree-20260827-1254\tools\run_one_generation_canary.ps1" `
-  -RepoRoot "C:\Users\xenoa\AppData\Local\Temp\xar-one-generation-milestone-20260827-113758" `
-  -GameDir "Z:\ck3_mod_rewrite\Crusader Kings III" `
-  -PythonPath "Z:\ck3_mod_rewrite\tools\.venv\Scripts\python.exe" `
-  -BridgeDll "Z:\ck3_mod_rewrite\ck3_autonomous_player\native_bridge\.build-event-scopes-a860702-msvc\xar_ck3_bridge.dll" `
-  -BridgeInjector "Z:\ck3_mod_rewrite\ck3_autonomous_player\native_bridge\.build-event-window-cea30a0-msvc2\xar_ck3_bridge_injector.exe"
+```bat
+Z:\ck3_mod_rewrite\tools\.venv\Scripts\python.exe ^
+  D:\workspace\ck3_eternal_recurrence\tools\run_one_generation_canary.py ^
+  --repo-root "C:\Users\xenoa\AppData\Local\Temp\xar-one-generation-milestone-20260827-113758" ^
+  --game-dir "Z:\ck3_mod_rewrite\Crusader Kings III" ^
+  --python-path "Z:\ck3_mod_rewrite\tools\.venv\Scripts\python.exe" ^
+  --bridge-dll "Z:\ck3_mod_rewrite\ck3_autonomous_player\native_bridge\.build-event-scopes-a860702-msvc\xar_ck3_bridge.dll" ^
+  --bridge-injector "Z:\ck3_mod_rewrite\ck3_autonomous_player\native_bridge\.build-event-window-cea30a0-msvc2\xar_ck3_bridge_injector.exe"
 ```
 
-这条旧命令省略 `-Profile`，因此保持 `legacy`。它只对应 `480f287 + 旧 DLL + 旧 injector` 的冻结组合；不得把
+这条旧命令省略 `--profile`，因此保持 `legacy`。它只对应 `480f287 + 旧 DLL + 旧 injector` 的冻结组合；不得把
 `51fe8cf` source、新 DLL 或新 injector 混入 legacy，也不得用 claim profile 搭配旧产物。dry-run 可显式覆盖
-`Expected*` 以验证夹具；`-Execute` 会在复制 target 前要求所有 Expected* 严格等于所选 profile 的 canonical
+`--expected-*` 以验证夹具；`--execute` 会在复制 target 前要求所有 expected identity 严格等于所选 profile 的 canonical
 identity，不能用 override 绕过。
 
 这里两条即时命令都引用隔离 mainline 中已经具备双 profile 的 helper。`Z:\ck3_mod_rewrite\tools` 在本变更合入前仍是
@@ -87,8 +87,7 @@ identity，不能用 override 绕过。
 所选 profile 的 canonical identity 不变。
 
 确认 JSON 的 `profile=legacy`、`git_revision`、四项 SHA、pipe、`host_observed` 和 `execute_host_required` 一致后，在同一窗口给同一命令
-追加 `-Execute`。必须使用上面的显式 `powershell.exe ... -ExecutionPolicy Bypass -File` 形式；本机默认 execution policy
-会阻止直接 `& script.ps1`。脚本会：
+追加 `--execute`。入口由 Python 直接执行，不依赖 shell execution policy。脚本会：
 
 1. 原子占用一个从未存在的新 target，再完整复制 production6b state；
 2. 核对 target checkpoint 与 driver-state 逐字节等于 source；

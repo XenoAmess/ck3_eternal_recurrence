@@ -1,10 +1,10 @@
 from __future__ import annotations
 
 import hashlib
+import importlib.util
 import json
 import os
 from pathlib import Path
-import shutil
 import subprocess
 import sys
 import tempfile
@@ -12,8 +12,13 @@ import unittest
 
 
 REPO_ROOT = Path(__file__).resolve().parents[3]
-HELPER = REPO_ROOT / "tools" / "run_one_generation_canary.ps1"
+HELPER = REPO_ROOT / "tools" / "run_one_generation_canary.py"
 PIPE = r"\\.\pipe\xar_ck3_restore_exact2_7aff1d0"
+
+SPEC = importlib.util.spec_from_file_location("run_one_generation_canary", HELPER)
+assert SPEC is not None and SPEC.loader is not None
+CANARY = importlib.util.module_from_spec(SPEC)
+SPEC.loader.exec_module(CANARY)
 
 
 class OneGenerationCanaryHelperTests(unittest.TestCase):
@@ -22,21 +27,20 @@ class OneGenerationCanaryHelperTests(unittest.TestCase):
     ) -> None:
         source = HELPER.read_text(encoding="utf-8")
         self.assertIn("fresh canary target already exists; refusing overwrite", source)
-        self.assertIn("/E /COPY:DAT /DCOPY:DAT", source)
-        self.assertNotIn("/MIR", source)
-        self.assertNotIn("/PURGE", source)
+        self.assertIn("shutil.copytree", source)
+        self.assertIn("without purge or mirror", source)
         self.assertIn("WinSta0\\Default", source)
         self.assertNotIn("CodexSandbox", source)
         self.assertIn("native-one-generation", source)
         self.assertIn('"--max-turns", "20"', source)
-        self.assertIn('[double]$TimeoutSeconds = 21600', source)
+        self.assertIn("default=21_600", source)
         self.assertGreaterEqual(source.count('"--bridge-mode", "disabled"'), 2)
         self.assertIn("bounded_incomplete (expected canary result)", source)
         self.assertIn("run_bound_exhausted", source)
-        self.assertIn("Test-ArtifactBinding", source)
+        self.assertIn("def artifact_binding", source)
         self.assertIn("stdout_report_matches_persisted", source)
         self.assertIn("post_canary_ck3_process_count", source)
-        self.assertIn('[ValidateSet("legacy", "claim-cb-white-peace")]', source)
+        self.assertIn('"claim-cb-white-peace": {', source)
         self.assertIn("51fe8cf6cb55de5ca01db4ed215e0abff52213a6", source)
         self.assertIn(
             "12FD30A079982E3B01FAD6442574D7938E795A84A59B4EBDD53023135B04F37D",
@@ -59,10 +63,8 @@ class OneGenerationCanaryHelperTests(unittest.TestCase):
             source,
         )
 
-    @unittest.skipUnless(os.name == "nt", "PowerShell handoff targets Windows")
+    @unittest.skipUnless(os.name == "nt", "canary handoff targets Windows")
     def test_dry_run_validates_fixture_without_creating_target(self) -> None:
-        powershell = shutil.which("powershell.exe")
-        self.assertIsNotNone(powershell)
         with tempfile.TemporaryDirectory(prefix="xar-canary-plan-") as temporary:
             root = Path(temporary)
             source_state, checkpoint = self._make_source_state(root)
@@ -76,37 +78,33 @@ class OneGenerationCanaryHelperTests(unittest.TestCase):
 
             result = subprocess.run(
                 [
-                    powershell,
-                    "-NoProfile",
-                    "-ExecutionPolicy",
-                    "Bypass",
-                    "-File",
-                    str(HELPER),
-                    "-RepoRoot",
-                    str(REPO_ROOT),
-                    "-SourceState",
-                    str(source_state),
-                    "-TargetState",
-                    str(target),
-                    "-GameDir",
-                    str(game_dir),
-                    "-PythonPath",
                     sys.executable,
-                    "-BridgeDll",
+                    str(HELPER),
+                    "--repo-root",
+                    str(REPO_ROOT),
+                    "--source-state",
+                    str(source_state),
+                    "--target-state",
+                    str(target),
+                    "--game-dir",
+                    str(game_dir),
+                    "--python-path",
+                    sys.executable,
+                    "--bridge-dll",
                     str(dll),
-                    "-BridgeInjector",
+                    "--bridge-injector",
                     str(injector),
-                    "-ExpectedCheckpointSize",
+                    "--expected-checkpoint-size",
                     str(checkpoint.stat().st_size),
-                    "-ExpectedCheckpointSha256",
+                    "--expected-checkpoint-sha256",
                     self._sha256(checkpoint),
-                    "-ExpectedDriverStateSha256",
+                    "--expected-driver-state-sha256",
                     self._sha256(driver_state),
-                    "-ExpectedBridgeDllSha256",
+                    "--expected-bridge-dll-sha256",
                     self._sha256(dll),
-                    "-ExpectedBridgeInjectorSha256",
+                    "--expected-bridge-injector-sha256",
                     self._sha256(injector),
-                    "-SkipRepositoryCheck",
+                    "--skip-repository-check",
                 ],
                 check=True,
                 capture_output=True,
@@ -131,12 +129,10 @@ class OneGenerationCanaryHelperTests(unittest.TestCase):
             )
             self.assertFalse(target.exists())
 
-    @unittest.skipUnless(os.name == "nt", "PowerShell handoff targets Windows")
+    @unittest.skipUnless(os.name == "nt", "canary handoff targets Windows")
     def test_claim_white_peace_profile_dry_run_records_identity_without_target(
         self,
     ) -> None:
-        powershell = shutil.which("powershell.exe")
-        self.assertIsNotNone(powershell)
         with tempfile.TemporaryDirectory(prefix="xar-claim-canary-plan-") as temporary:
             root = Path(temporary)
             source_state, checkpoint = self._make_source_state(root)
@@ -164,37 +160,33 @@ class OneGenerationCanaryHelperTests(unittest.TestCase):
 
             result = subprocess.run(
                 [
-                    powershell,
-                    "-NoProfile",
-                    "-ExecutionPolicy",
-                    "Bypass",
-                    "-File",
-                    str(HELPER),
-                    "-Profile",
-                    "claim-cb-white-peace",
-                    "-RepoRoot",
-                    str(fixture_repo),
-                    "-SourceState",
-                    str(source_state),
-                    "-TargetState",
-                    str(target),
-                    "-GameDir",
-                    str(game_dir),
-                    "-PythonPath",
                     sys.executable,
-                    "-ExpectedRepoRevision",
+                    str(HELPER),
+                    "--profile",
+                    "claim-cb-white-peace",
+                    "--repo-root",
+                    str(fixture_repo),
+                    "--source-state",
+                    str(source_state),
+                    "--target-state",
+                    str(target),
+                    "--game-dir",
+                    str(game_dir),
+                    "--python-path",
+                    sys.executable,
+                    "--expected-repo-revision",
                     "a" * 40,
-                    "-ExpectedCheckpointSize",
+                    "--expected-checkpoint-size",
                     str(checkpoint.stat().st_size),
-                    "-ExpectedCheckpointSha256",
+                    "--expected-checkpoint-sha256",
                     self._sha256(checkpoint),
-                    "-ExpectedDriverStateSha256",
+                    "--expected-driver-state-sha256",
                     self._sha256(driver_state),
-                    "-ExpectedBridgeDllSha256",
+                    "--expected-bridge-dll-sha256",
                     self._sha256(dll),
-                    "-ExpectedBridgeInjectorSha256",
+                    "--expected-bridge-injector-sha256",
                     self._sha256(injector),
-                    "-SkipRepositoryCheck",
+                    "--skip-repository-check",
                 ],
                 check=True,
                 capture_output=True,
@@ -216,10 +208,8 @@ class OneGenerationCanaryHelperTests(unittest.TestCase):
             )
             self.assertFalse(target.exists())
 
-    @unittest.skipUnless(os.name == "nt", "PowerShell handoff targets Windows")
+    @unittest.skipUnless(os.name == "nt", "canary handoff targets Windows")
     def test_existing_target_is_rejected_without_mutation(self) -> None:
-        powershell = shutil.which("powershell.exe")
-        self.assertIsNotNone(powershell)
         with tempfile.TemporaryDirectory(prefix="xar-canary-existing-") as temporary:
             root = Path(temporary)
             source_state, checkpoint = self._make_source_state(root)
@@ -236,37 +226,33 @@ class OneGenerationCanaryHelperTests(unittest.TestCase):
 
             result = subprocess.run(
                 [
-                    powershell,
-                    "-NoProfile",
-                    "-ExecutionPolicy",
-                    "Bypass",
-                    "-File",
-                    str(HELPER),
-                    "-RepoRoot",
-                    str(REPO_ROOT),
-                    "-SourceState",
-                    str(source_state),
-                    "-TargetState",
-                    str(target),
-                    "-GameDir",
-                    str(game_dir),
-                    "-PythonPath",
                     sys.executable,
-                    "-BridgeDll",
+                    str(HELPER),
+                    "--repo-root",
+                    str(REPO_ROOT),
+                    "--source-state",
+                    str(source_state),
+                    "--target-state",
+                    str(target),
+                    "--game-dir",
+                    str(game_dir),
+                    "--python-path",
+                    sys.executable,
+                    "--bridge-dll",
                     str(dll),
-                    "-BridgeInjector",
+                    "--bridge-injector",
                     str(injector),
-                    "-ExpectedCheckpointSize",
+                    "--expected-checkpoint-size",
                     str(checkpoint.stat().st_size),
-                    "-ExpectedCheckpointSha256",
+                    "--expected-checkpoint-sha256",
                     self._sha256(checkpoint),
-                    "-ExpectedDriverStateSha256",
+                    "--expected-driver-state-sha256",
                     self._sha256(driver_state),
-                    "-ExpectedBridgeDllSha256",
+                    "--expected-bridge-dll-sha256",
                     self._sha256(dll),
-                    "-ExpectedBridgeInjectorSha256",
+                    "--expected-bridge-injector-sha256",
                     self._sha256(injector),
-                    "-SkipRepositoryCheck",
+                    "--skip-repository-check",
                 ],
                 check=False,
                 capture_output=True,
@@ -279,111 +265,45 @@ class OneGenerationCanaryHelperTests(unittest.TestCase):
             self.assertEqual(sentinel.read_text(encoding="utf-8"), "keep")
             self.assertEqual(list(target.iterdir()), [sentinel])
 
-    @unittest.skipUnless(os.name == "nt", "PowerShell handoff targets Windows")
     def test_artifact_binding_accepts_exact_sidecar_and_rejects_escape(self) -> None:
-        powershell = shutil.which("powershell.exe")
-        self.assertIsNotNone(powershell)
         with tempfile.TemporaryDirectory(prefix="xar-canary-artifact-") as temporary:
             root = Path(temporary)
-            source_state, checkpoint = self._make_source_state(root)
-            driver_state = source_state / "native-session" / "driver-state.json"
-            game_dir = self._make_game_dir(root)
-            dll = root / "xar_ck3_bridge.dll"
-            injector = root / "xar_ck3_bridge_injector.exe"
-            dll.write_bytes(b"fixture dll")
-            injector.write_bytes(b"fixture injector")
             run_dir = root / "artifact-run"
             run_dir.mkdir()
             sidecar = run_dir / "first-blocker.json"
             sidecar.write_text('{"kind":"run_bound_exhausted"}\n', encoding="utf-8")
             outside = root / "outside.json"
             outside.write_text("{}\n", encoding="utf-8")
-
-            environment = os.environ.copy()
-            environment.update(
+            valid = CANARY.artifact_binding(
+                run_dir,
                 {
-                    "XAR_CANARY_HELPER": str(HELPER),
-                    "XAR_CANARY_REPO": str(REPO_ROOT),
-                    "XAR_CANARY_SOURCE": str(source_state),
-                    "XAR_CANARY_TARGET": str(root / "fresh-target"),
-                    "XAR_CANARY_GAME": str(game_dir),
-                    "XAR_CANARY_PYTHON": sys.executable,
-                    "XAR_CANARY_DLL": str(dll),
-                    "XAR_CANARY_INJECTOR": str(injector),
-                    "XAR_CANARY_CHECKPOINT_SIZE": str(checkpoint.stat().st_size),
-                    "XAR_CANARY_CHECKPOINT_SHA": self._sha256(checkpoint),
-                    "XAR_CANARY_DRIVER_SHA": self._sha256(driver_state),
-                    "XAR_CANARY_DLL_SHA": self._sha256(dll),
-                    "XAR_CANARY_INJECTOR_SHA": self._sha256(injector),
-                    "XAR_CANARY_RUN": str(run_dir),
-                    "XAR_CANARY_SIDECAR": str(sidecar),
-                }
+                    "path": "first-blocker.json",
+                    "size": sidecar.stat().st_size,
+                    "sha256": self._sha256(sidecar),
+                },
+                "first-blocker.json",
+                "fixture",
             )
-            command = (
-                "$null = . $env:XAR_CANARY_HELPER "
-                "-RepoRoot $env:XAR_CANARY_REPO "
-                "-SourceState $env:XAR_CANARY_SOURCE "
-                "-TargetState $env:XAR_CANARY_TARGET "
-                "-GameDir $env:XAR_CANARY_GAME "
-                "-PythonPath $env:XAR_CANARY_PYTHON "
-                "-BridgeDll $env:XAR_CANARY_DLL "
-                "-BridgeInjector $env:XAR_CANARY_INJECTOR "
-                "-ExpectedCheckpointSize $env:XAR_CANARY_CHECKPOINT_SIZE "
-                "-ExpectedCheckpointSha256 $env:XAR_CANARY_CHECKPOINT_SHA "
-                "-ExpectedDriverStateSha256 $env:XAR_CANARY_DRIVER_SHA "
-                "-ExpectedBridgeDllSha256 $env:XAR_CANARY_DLL_SHA "
-                "-ExpectedBridgeInjectorSha256 $env:XAR_CANARY_INJECTOR_SHA "
-                "-SkipRepositoryCheck; "
-                "$item = Get-Item -LiteralPath $env:XAR_CANARY_SIDECAR; "
-                "$entry = [pscustomobject]@{path='first-blocker.json';"
-                "size=[long]$item.Length;sha256=(Get-FileHash -LiteralPath "
-                "$item.FullName -Algorithm SHA256).Hash}; "
-                "$valid = Test-ArtifactBinding -RunDir $env:XAR_CANARY_RUN "
-                "-Entry $entry -ExpectedRelativePath 'first-blocker.json' "
-                "-Label 'fixture'; "
-                "$escape = Test-ArtifactBinding -RunDir $env:XAR_CANARY_RUN "
-                "-Entry ([pscustomobject]@{path='../outside.json';size=3;"
-                "sha256=('0' * 64)}) -ExpectedRelativePath '../outside.json' "
-                "-Label 'escape'; "
-                "[pscustomobject]@{valid=$valid.ok;escape=$escape.ok;"
-                "escape_error=$escape.error}|ConvertTo-Json -Compress"
+            escape = CANARY.artifact_binding(
+                run_dir,
+                {"path": "../outside.json", "size": 3, "sha256": "0" * 64},
+                "../outside.json",
+                "escape",
             )
-            result = subprocess.run(
-                [
-                    powershell,
-                    "-NoProfile",
-                    "-ExecutionPolicy",
-                    "Bypass",
-                    "-Command",
-                    command,
-                ],
-                check=True,
-                capture_output=True,
-                text=True,
-                encoding="utf-8",
-                env=environment,
-            )
-            payload = json.loads(result.stdout)
-            self.assertTrue(payload["valid"])
-            self.assertFalse(payload["escape"])
-            self.assertIn("escapes the run directory", payload["escape_error"])
+            self.assertTrue(valid["ok"])
+            self.assertFalse(escape["ok"])
+            self.assertIn("escapes the run directory", escape["error"])
 
-    @unittest.skipUnless(os.name == "nt", "PowerShell handoff targets Windows")
+    @unittest.skipUnless(os.name == "nt", "canary handoff targets Windows")
     def test_execute_cannot_override_the_canonical_checkpoint(self) -> None:
-        powershell = shutil.which("powershell.exe")
-        self.assertIsNotNone(powershell)
         result = subprocess.run(
             [
-                powershell,
-                "-NoProfile",
-                "-ExecutionPolicy",
-                "Bypass",
-                "-File",
+                sys.executable,
                 str(HELPER),
-                "-RepoRoot",
+                "--repo-root",
                 str(REPO_ROOT),
-                "-Execute",
-                "-ExpectedCheckpointSize",
+                "--execute",
+                "--expected-checkpoint-size",
                 "1",
             ],
             check=False,
@@ -394,22 +314,16 @@ class OneGenerationCanaryHelperTests(unittest.TestCase):
         self.assertNotEqual(result.returncode, 0)
         self.assertIn("canonical production6b", result.stderr)
 
-    @unittest.skipUnless(os.name == "nt", "PowerShell handoff targets Windows")
+    @unittest.skipUnless(os.name == "nt", "canary handoff targets Windows")
     def test_execute_cannot_override_the_fixed_canary_bounds(self) -> None:
-        powershell = shutil.which("powershell.exe")
-        self.assertIsNotNone(powershell)
         result = subprocess.run(
             [
-                powershell,
-                "-NoProfile",
-                "-ExecutionPolicy",
-                "Bypass",
-                "-File",
+                sys.executable,
                 str(HELPER),
-                "-RepoRoot",
+                "--repo-root",
                 str(REPO_ROOT),
-                "-Execute",
-                "-TimeoutSeconds",
+                "--execute",
+                "--timeout-seconds",
                 "3600",
             ],
             check=False,
@@ -420,24 +334,18 @@ class OneGenerationCanaryHelperTests(unittest.TestCase):
         self.assertNotEqual(result.returncode, 0)
         self.assertIn("fixed canary bounds", result.stderr)
 
-    @unittest.skipUnless(os.name == "nt", "PowerShell handoff targets Windows")
+    @unittest.skipUnless(os.name == "nt", "canary handoff targets Windows")
     def test_claim_white_peace_execute_rejects_noncanonical_identity(self) -> None:
-        powershell = shutil.which("powershell.exe")
-        self.assertIsNotNone(powershell)
         result = subprocess.run(
             [
-                powershell,
-                "-NoProfile",
-                "-ExecutionPolicy",
-                "Bypass",
-                "-File",
+                sys.executable,
                 str(HELPER),
-                "-Profile",
+                "--profile",
                 "claim-cb-white-peace",
-                "-RepoRoot",
+                "--repo-root",
                 str(REPO_ROOT),
-                "-Execute",
-                "-ExpectedBridgeDllSha256",
+                "--execute",
+                "--expected-bridge-dll-sha256",
                 "A2B78F371A16A87B2A911E1E832C07A5701E2E7B3C42FA046006A41C233702DF",
             ],
             check=False,
