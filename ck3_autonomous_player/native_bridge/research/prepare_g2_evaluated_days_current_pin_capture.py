@@ -229,11 +229,11 @@ def _process_inventory() -> dict[str, Any]:
     return {"counts": counts, "all_zero": all(value == 0 for value in counts.values())}
 
 
-def _ps_quote(value: object) -> str:
-    return "'" + str(value).replace("'", "''") + "'"
+def _string_argv(values: list[object]) -> list[str]:
+    return [str(value) for value in values]
 
 
-def build_commands(manifest: dict[str, Any], *, repo_root: Path) -> dict[str, str]:
+def build_commands(manifest: dict[str, Any], *, repo_root: Path) -> dict[str, Any]:
     paths = _mapping(manifest["paths"], "paths")
     hashes = _mapping(manifest["sha256"], "sha256")
     identity = _mapping(manifest["identity"], "identity")
@@ -273,14 +273,14 @@ def build_commands(manifest: dict[str, Any], *, repo_root: Path) -> dict[str, st
         "--readiness-timeout",
         timeouts["readiness_seconds"],
     ]
-    runner_command = " ".join(
-        ["&", *(_ps_quote(item) for item in runner_arguments)]
-    )
+    runner_argv = _string_argv(runner_arguments)
     if manifest.get("candidate_kind") == "production_leaf_context_v1":
         return {
-            "runner": runner_command,
-            "analyzer": "",
-            "combined": runner_command,
+            "schema": "xar.ck3.python_launch_plan.v1",
+            "runner_argv": runner_argv,
+            "analyzer_argv": [],
+            "environment": {},
+            "exit_policy": "runner",
             "private_jsonl": "",
             "runner_report": str(runner_report),
             "analysis_report": "",
@@ -306,30 +306,12 @@ def build_commands(manifest: dict[str, Any], *, repo_root: Path) -> dict[str, st
         "--expected-date-raw",
         identity["date_raw"],
     ]
-    analyzer_command = " ".join(
-        ["&", *(_ps_quote(item) for item in analyzer_arguments)]
-    )
-    combined = (
-        "& { $env:"
-        + PRIVATE_CAPTURE_ENVIRONMENT
-        + " = "
-        + _ps_quote(sidecar)
-        + "; "
-        + runner_command
-        + "; $runnerExit = $LASTEXITCODE; "
-        + analyzer_command
-        + "; $analysisExit = $LASTEXITCODE; "
-        + "Remove-Item Env:"
-        + PRIVATE_CAPTURE_ENVIRONMENT
-        + " -ErrorAction SilentlyContinue; "
-        + "if ($analysisExit -eq 0) { exit 0 }; "
-        + "Write-Error ('private analysis failed; runner exit=' + $runnerExit + "
-        + " ', analysis exit=' + $analysisExit); exit $analysisExit }"
-    )
     return {
-        "runner": runner_command,
-        "analyzer": analyzer_command,
-        "combined": combined,
+        "schema": "xar.ck3.python_launch_plan.v1",
+        "runner_argv": runner_argv,
+        "analyzer_argv": _string_argv(analyzer_arguments),
+        "environment": {PRIVATE_CAPTURE_ENVIRONMENT: str(sidecar)},
+        "exit_policy": "analyzer-after-runner",
         "private_jsonl": str(sidecar),
         "runner_report": str(runner_report),
         "analysis_report": str(analysis_report),
@@ -706,7 +688,7 @@ def run_preflight(
             "runner_report": commands["runner_report"],
             "analysis_report": commands["analysis_report"],
         },
-        "unique_powershell_command": commands["combined"],
+        "python_launch_plan": commands,
     }
     _write_json_atomic(report_path, payload)
     return payload
@@ -725,7 +707,7 @@ def main(argv: list[str] | None = None) -> int:
                 "ok": payload["ok"],
                 "status": payload["status"],
                 "report": payload["report"],
-                "unique_powershell_command": payload["unique_powershell_command"],
+                "python_launch_plan": payload["python_launch_plan"],
             },
             ensure_ascii=False,
             indent=2,

@@ -180,10 +180,6 @@ def _process_inventory() -> dict[str, object]:
     return {"counts": counts, "all_zero": all(v == 0 for v in counts.values())}
 
 
-def _ps_quote(value: object) -> str:
-    return "'" + str(value).replace("'", "''") + "'"
-
-
 def validate_manifest_contract(manifest: dict[str, Any]) -> None:
     if manifest.get("schema") != EXPECTED_SCHEMA:
         raise ValueError("unexpected current-pin manifest schema")
@@ -228,9 +224,9 @@ def validate_manifest_contract(manifest: dict[str, Any]) -> None:
         raise ValueError("live command authorization boundary changed")
 
 
-def build_command(manifest: dict[str, Any]) -> str:
+def build_python_argv(manifest: dict[str, Any]) -> list[str]:
     argv = _mapping(manifest["live_command"], "live_command")["argv"]
-    return " ".join(["&", *(_ps_quote(value) for value in argv)])
+    return [str(value) for value in argv]
 
 
 def run_preflight(
@@ -432,7 +428,7 @@ def run_preflight(
         "checks": checks,
         "boundaries": manifest["boundaries"],
         "b7_dependency": manifest["b7_dependency"],
-        "unique_powershell_command": build_command(manifest),
+        "unique_python_argv": build_python_argv(manifest),
     }
     report_path.parent.mkdir(parents=True, exist_ok=True)
     temporary = report_path.with_name(report_path.name + ".tmp")
@@ -464,9 +460,7 @@ def main(argv: list[str] | None = None) -> int:
                 "ok": payload["ok"],
                 "status": payload["status"],
                 "report": payload["report"],
-                "unique_powershell_command": payload[
-                    "unique_powershell_command"
-                ],
+                "unique_python_argv": payload["unique_python_argv"],
             },
             ensure_ascii=False,
             indent=2,

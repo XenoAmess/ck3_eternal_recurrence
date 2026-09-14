@@ -137,7 +137,12 @@ def verify(manifest_path: Path) -> dict[str, object]:
     }
     inventory_before = process_inventory()
     attempt = Path(run["attempt_dir"]).expanduser().resolve()
-    command = str(run["unique_powershell_command"])
+    command_argv = run["unique_python_argv"]
+    if not isinstance(command_argv, list) or not all(
+        isinstance(item, str) for item in command_argv
+    ):
+        raise ValueError("run.unique_python_argv must be a string array")
+    command = subprocess.list2cmdline(command_argv)
     checks = {
         "source_commit_exact": source.get("commit") == EXPECTED_SOURCE_COMMIT,
         "source_zip_exact": expected_hashes.get("source_zip")

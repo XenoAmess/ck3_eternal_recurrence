@@ -316,7 +316,20 @@ def verify_projects_metrics_no_launch_candidate(
                 and observed_count <= 20
             )
             shard_counts.append(observed_count)
-    launch_command = str(ck3_launch.get("powershell", ""))
+    raw_launch_argv = ck3_launch.get("python_argv")
+    launch_argv = (
+        raw_launch_argv
+        if isinstance(raw_launch_argv, list)
+        and all(isinstance(value, str) for value in raw_launch_argv)
+        else []
+    )
+    launch_command = subprocess.list2cmdline(launch_argv)
+    recorded_executable = Path(str(manifest.get("ck3_executable_path", "")))
+    recorded_game_root = (
+        recorded_executable.parent.parent
+        if recorded_executable.parent.name.casefold() == "binaries"
+        else recorded_executable.parent
+    )
     native_fingerprint, native_file_count = _native_source_fingerprint(
         source_root / "ck3_autonomous_player/native_bridge"
     )
@@ -523,19 +536,20 @@ def verify_projects_metrics_no_launch_candidate(
                 and max(shard_counts, default=21) <= 10
             )
         ),
-        "exact_ck3_command_frozen_not_executed": (
+        "exact_python_argv_frozen_not_executed": (
             not v2_manifest
             or (
                 ck3_launch.get("executed") is False
                 and ck3_launch.get("starts_ck3") is True
+                and ck3_launch.get("runtime") == "python"
+                and bool(launch_argv)
+                and Path(launch_argv[0]).name.casefold()
+                in {"python.exe", "python3.exe"}
                 and "native-session" in launch_command
                 and "--cold-start-checkpoint" in launch_command
                 and str(bridge_path) in launch_command
                 and str(injector_path) in launch_command
-                and str(manifest.get("ck3_executable_path", ""))
-                .replace("/binaries/ck3.exe", "")
-                .replace("\\binaries\\ck3.exe", "")
-                in launch_command
+                and str(recorded_game_root) in launch_command
                 and str(attempt.get("attempt_id", "")) in launch_command
             )
         ),

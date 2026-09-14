@@ -143,7 +143,7 @@ zg361_we_ad_external_position_receipt_hash — same immutable receipt tuple chec
 
 ## L0 commands
 
-```powershell
+```text
 py tools/gen_zg361_workforce_appointment_fact.py --check
 py tools/test_zg361_workforce_appointment_fact.py -v
 py -O tools/test_zg361_workforce_appointment_fact.py -v

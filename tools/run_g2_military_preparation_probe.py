@@ -1,4 +1,4 @@
-"""PowerShell-independent bootstrap for the G2 military live runner.
+"""Shell-independent bootstrap for the G2 military live runner.
 
 This file intentionally imports only the standard library.  It resolves the
 existing project runtime explicitly and never falls back to the Python that

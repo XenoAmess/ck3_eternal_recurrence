@@ -49,14 +49,26 @@ class G2Index7Readiness300PreflightTests(unittest.TestCase):
             205.7,
         )
 
-    def test_unique_command_is_fresh_index7_only_and_explicit(self) -> None:
-        command = self.module.build_unique_command(self.manifest)
-        self.assertEqual(command.count("run_war_termination_terms_live_acceptance.py"), 1)
-        self.assertEqual(command.count("--readiness-timeout"), 1)
-        self.assertIn("--readiness-timeout' '300'", command)
-        self.assertIn("--timeout' '420'", command)
-        self.assertIn("g2-index7-private-v2.jsonl", command)
-        self.assertNotIn("surrender", command.lower().replace("run_war_termination_terms_live_acceptance.py", ""))
+    def test_python_launch_plan_is_fresh_index7_only_and_explicit(self) -> None:
+        plan = self.module.build_python_launch_plan(self.manifest)
+        argv = plan["argv"]
+        self.assertEqual(plan["schema"], "xar.ck3.python_launch_plan.v1")
+        self.assertEqual(
+            sum("run_war_termination_terms_live_acceptance.py" in item for item in argv),
+            1,
+        )
+        self.assertEqual(argv.count("--readiness-timeout"), 1)
+        self.assertEqual(argv[argv.index("--readiness-timeout") + 1], "300")
+        self.assertEqual(argv[argv.index("--timeout") + 1], "420")
+        self.assertIn(
+            "g2-index7-private-v2.jsonl",
+            next(iter(plan["environment"].values())),
+        )
+        command = " ".join(argv)
+        self.assertNotIn(
+            "surrender",
+            command.lower().replace("run_war_termination_terms_live_acceptance.py", ""),
+        )
         self.assertNotIn("white-peace", command.lower())
         self.assertNotIn("enforce", command.lower())
 

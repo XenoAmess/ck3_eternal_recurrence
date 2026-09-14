@@ -177,10 +177,24 @@ def _upgrade_to_v2(manifest: Path, root: Path, tmp_path: Path) -> None:
         "ck3_launch": {
             "starts_ck3": True,
             "executed": False,
-            "powershell": (
-                f"run {payload['ck3_executable_path']} {bridge} {injector} "
-                f"native-session --cold-start-checkpoint {attempt_id}"
-            ),
+            "runtime": "python",
+            "python_argv": [
+                sys.executable,
+                "-m",
+                "xar_autoplayer.cli",
+                "--state-dir",
+                attempt_id,
+                "--game-dir",
+                str(Path(payload["ck3_executable_path"]).parent),
+                "--bridge-mode",
+                "native-headless",
+                "--bridge-dll",
+                bridge,
+                "--bridge-injector",
+                injector,
+                "native-session",
+                "--cold-start-checkpoint",
+            ],
         }
     }
     abi_path = root / (
@@ -374,7 +388,7 @@ def test_v2_candidate_binds_stage_checkpoint_effect_limit_and_launch_plan(
     assert report["checks"]["production_stage7_precedes_stage8"] is True
     assert report["checks"]["checkpoint_state_v2_bound"] is True
     assert report["checks"]["purpose_effect_shards_within_limit"] is True
-    assert report["checks"]["exact_ck3_command_frozen_not_executed"] is True
+    assert report["checks"]["exact_python_argv_frozen_not_executed"] is True
 
 
 def test_v2_candidate_rejects_reversed_stage_overfull_shard_and_execution(
@@ -414,7 +428,7 @@ def test_v2_candidate_rejects_reversed_stage_overfull_shard_and_execution(
         "production_stage7_precedes_stage8",
         "checkpoint_state_v2_bound",
         "purpose_effect_shards_within_limit",
-        "exact_ck3_command_frozen_not_executed",
+        "exact_python_argv_frozen_not_executed",
     }.issubset(report["failed_checks"])
 
 

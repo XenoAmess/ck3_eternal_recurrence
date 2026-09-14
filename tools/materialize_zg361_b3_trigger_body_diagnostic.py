@@ -391,15 +391,6 @@ def _run_open_kaishek(
     }
 
 
-def _powershell_command(argv: Sequence[str]) -> str:
-    def quote(value: str) -> str:
-        if not value or any(char.isspace() or char in "'`$" for char in value):
-            return "'" + value.replace("'", "''") + "'"
-        return value
-
-    return " ".join(quote(value) for value in argv)
-
-
 def _launch_contract(
     *,
     candidate: Path,
@@ -459,8 +450,8 @@ def _launch_contract(
     return {
         "unique": True,
         "executed": False,
+        "runtime": "python",
         "argv": argv,
-        "powershell_command": _powershell_command(argv),
         "artifacts_dir_absent": True,
         "ck3_started": False,
         "runner": {

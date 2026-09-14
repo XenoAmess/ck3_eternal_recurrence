@@ -471,16 +471,24 @@ class G2EvaluatedDaysCurrentPinCapturePreflightTests(unittest.TestCase):
             self.assertTrue(report["checks"]["exact_leaf_context_chain"])
             self.assertTrue(report["checks"]["private_leaf_context_option_on"])
 
-    def test_unique_command_runs_runner_then_analyzer(self) -> None:
-        commands = PREFLIGHT.build_commands(self.manifest, repo_root=ROOT.parents[0])
-        combined = commands["combined"]
-        self.assertEqual(combined.count("run_war_termination_terms_live_acceptance.py"), 1)
-        self.assertEqual(combined.count("analyze_g2_evaluated_days_private_capture.py"), 1)
-        self.assertEqual(combined.count("--war-id"), 1)
-        self.assertEqual(combined.count("--expected-war-id"), 1)
-        self.assertIn("$runnerExit = $LASTEXITCODE", combined)
-        self.assertIn("if ($analysisExit -eq 0) { exit 0 }", combined)
-        self.assertIn(PREFLIGHT.PRIVATE_CAPTURE_ENVIRONMENT, combined)
+    def test_python_launch_plan_runs_runner_then_analyzer(self) -> None:
+        plan = PREFLIGHT.build_commands(self.manifest, repo_root=ROOT.parents[0])
+        runner = plan["runner_argv"]
+        analyzer = plan["analyzer_argv"]
+        self.assertEqual(plan["schema"], "xar.ck3.python_launch_plan.v1")
+        self.assertEqual(
+            sum("run_war_termination_terms_live_acceptance.py" in item for item in runner),
+            1,
+        )
+        self.assertEqual(
+            sum("analyze_g2_evaluated_days_private_capture.py" in item for item in analyzer),
+            1,
+        )
+        self.assertEqual(runner.count("--war-id"), 1)
+        self.assertEqual(analyzer.count("--expected-war-id"), 1)
+        self.assertEqual(plan["exit_policy"], "analyzer-after-runner")
+        self.assertIn(PREFLIGHT.PRIVATE_CAPTURE_ENVIRONMENT, plan["environment"])
+        combined = " ".join([*runner, *analyzer])
         for forbidden in ("surrender-war", "offer-white-peace", "enforce-demands", "life-advance"):
             self.assertNotIn(forbidden, combined)
 
@@ -489,13 +497,15 @@ class G2EvaluatedDaysCurrentPinCapturePreflightTests(unittest.TestCase):
             root = Path(raw)
             manifest, repo = self._production_fixture(root)
             PREFLIGHT.validate_manifest_contract(manifest)
-            commands = PREFLIGHT.build_commands(manifest, repo_root=repo)
-            combined = commands["combined"]
-            self.assertEqual(combined.count("runner.py"), 1)
-            self.assertEqual(combined.count("--war-id"), 1)
-            self.assertNotIn("analyzer", combined)
-            self.assertNotIn(PREFLIGHT.PRIVATE_CAPTURE_ENVIRONMENT, combined)
-            self.assertEqual(commands["private_jsonl"], "")
+            plan = PREFLIGHT.build_commands(manifest, repo_root=repo)
+            runner = plan["runner_argv"]
+            combined = " ".join(runner)
+            self.assertEqual(sum("runner.py" in item for item in runner), 1)
+            self.assertEqual(runner.count("--war-id"), 1)
+            self.assertEqual(plan["analyzer_argv"], [])
+            self.assertEqual(plan["environment"], {})
+            self.assertEqual(plan["exit_policy"], "runner")
+            self.assertEqual(plan["private_jsonl"], "")
             for forbidden in (
                 "surrender-war",
                 "offer-white-peace",

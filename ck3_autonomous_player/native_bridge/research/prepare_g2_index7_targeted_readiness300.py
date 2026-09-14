@@ -3,7 +3,7 @@
 
 This is a no-launch preflight.  It hashes immutable inputs, checks that the
 instrumented DLL contains the private v2 capture markers, rejects a reused
-attempt directory, and writes exactly one PowerShell launch command.  It does
+attempt directory, and writes one exact Python launch plan.  It does
 not import or invoke the live runner.
 """
 
@@ -57,10 +57,6 @@ def _expected_hash(value: object, name: str) -> str:
     return result
 
 
-def _ps_quote(value: object) -> str:
-    return "'" + str(value).replace("'", "''") + "'"
-
-
 def _resolve_runner(path: str) -> Path:
     candidate = Path(path)
     return candidate.resolve() if candidate.is_absolute() else (REPO_ROOT / candidate).resolve()
@@ -94,7 +90,7 @@ def validate_manifest_contract(manifest: dict[str, Any]) -> None:
         raise ValueError("private/read-only boundaries changed")
 
 
-def build_unique_command(manifest: dict[str, Any]) -> str:
+def build_python_launch_plan(manifest: dict[str, Any]) -> dict[str, object]:
     paths = _mapping(manifest["paths"], "paths")
     hashes = _mapping(manifest["sha256"], "sha256")
     identity = _mapping(manifest["identity"], "identity")
@@ -120,16 +116,14 @@ def build_unique_command(manifest: dict[str, Any]) -> str:
         "--timeout", str(int(float(timeouts["session_seconds"]))),
         "--readiness-timeout", str(int(float(timeouts["readiness_seconds"]))),
     ]
-    invocation = " ".join(["&", *(_ps_quote(item) for item in arguments)])
-    return (
-        "& { $env:"
-        + str(private["environment_variable"])
-        + " = "
-        + _ps_quote(output)
-        + "; "
-        + invocation
-        + "; if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE } }"
-    )
+    return {
+        "schema": "xar.ck3.python_launch_plan.v1",
+        "argv": arguments,
+        "environment": {
+            str(private["environment_variable"]): str(output),
+        },
+        "exit_policy": "runner",
+    }
 
 
 def _write_json_atomic(path: Path, payload: object) -> None:
@@ -181,7 +175,7 @@ def run_preflight(manifest_path: Path, report_path: Path) -> dict[str, Any]:
         "runner_default_is_300": "default=300.0" in runner_source,
         "preflight_did_not_launch_ck3": True,
     }
-    command = build_unique_command(manifest)
+    launch_plan = build_python_launch_plan(manifest)
     payload = {
         "schema": "xar.ck3.g2_index7_targeted_readiness300_preflight.v1",
         "status": "ready-to-run" if all(checks.values()) else "red",
@@ -196,7 +190,7 @@ def run_preflight(manifest_path: Path, report_path: Path) -> dict[str, Any]:
         "hash_checks": hash_checks,
         "checks": checks,
         "boundaries": manifest["boundaries"],
-        "unique_powershell_command": command,
+        "python_launch_plan": launch_plan,
     }
     if report_path.exists():
         raise FileExistsError(f"preflight report already exists: {report_path}")
@@ -215,7 +209,7 @@ def main(argv: list[str] | None = None) -> int:
         "ok": payload["ok"],
         "status": payload["status"],
         "report": str(args.report.resolve()),
-        "unique_powershell_command": payload["unique_powershell_command"],
+        "python_launch_plan": payload["python_launch_plan"],
     }, ensure_ascii=False, indent=2))
     return 0 if payload["ok"] else 1
 
