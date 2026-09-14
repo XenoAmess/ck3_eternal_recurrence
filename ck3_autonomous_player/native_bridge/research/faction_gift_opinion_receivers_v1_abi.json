@@ -1,0 +1,348 @@
+{
+  "schema": "xar.ck3.faction_gift_opinion_receivers_v1.abi",
+  "schema_version": 1,
+  "work_package": "FACTION16-GIFT-OPINION-ABI",
+  "research_stage": "static_confirmed_no_ck3_launch",
+  "build": {
+    "game_version": "1.19.0.6",
+    "image_base": "0x140000000",
+    "executable_size": 95206008,
+    "executable_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86"
+  },
+  "stock_contract": {
+    "fixture": "fixtures/g2_m4_faction_gift_response_v1_source_contract.json",
+    "opinion_effect": "scope:recipient add_opinion target=scope:actor modifier=gift_opinion opinion=send_gift_opinion",
+    "gift_opinion_hash_murmur3_x86_32_seed_0": "0xCA82155B",
+    "send_gift_opinion_hash_murmur3_x86_32_seed_0": "0xF8A1F946",
+    "send_gift_opinion_result_domain": "0..100 before conversion, by the frozen max=100 script branch"
+  },
+  "character_identity": {
+    "storage_slot_rva": "0x570C130",
+    "fallback_slot_rva": "0x570C138",
+    "storage_slots_offset": "0x20",
+    "storage_capacity_offset": "0x2C",
+    "storage_slot_stride": "0x10",
+    "storage_slot_object_offset": "0x08",
+    "index_mask": "0x00FFFFFF",
+    "character_full_generation_id_offset": "0x18",
+    "character_extension_offset": "0x1A8",
+    "character_death_data_offset": "0x1C8",
+    "gate": "resolve by low-24 index, reject null/fallback, require CCharacter+0x18 equals the requested full ID, and repeat pointer plus full-ID validation at the end of the same application-main transaction"
+  },
+  "recipient_opinion_of_player": {
+    "receiver": {
+      "signature": "int32_t __fastcall ReadCharacterOpinion(CCharacter* opinion_owner, CCharacter* toward)",
+      "rva": "0x2610A50",
+      "end_rva_exclusive": "0x2610AB9",
+      "size": 105,
+      "sha256": "7E67D546F4F2F0E82E10D956FA9B3E3370A95A721EFDEEBF1CE2427E9FE51436",
+      "arguments": "RCX=recipient, RDX=player, EAX=signed total opinion"
+    },
+    "native_trigger_proof": {
+      "class": "COpinionTrigger<false>",
+      "rtti_type_descriptor_rva": "0x5515368",
+      "complete_object_locator_rva": "0x49E4D90",
+      "vtable_rva": "0x43B0088",
+      "evaluate_virtual_slot": 32,
+      "evaluate_rva": "0x288C3F0",
+      "evaluate_end_rva_exclusive": "0x288C536",
+      "evaluate_sha256": "D229E7372C7B257880AB346524419F86BC34704EF65C51F47C0DA70781D10E51",
+      "receiver_call_rva": "0x288C514"
+    },
+    "call_chain": [
+      "0x231B1A0(opinion_owner,toward,false) supplies the base and derived static opinion",
+      "when owner+0x1A8 is non-null and owner differs from toward, 0x2697E90(extension,owner,toward,null) adds active and temporary contributions",
+      "the result is clamped to the engine global opinion minimum and maximum"
+    ],
+    "transaction_gate": "resolve recipient and player independently, call with recipient as owner, then require the same two pointers and full generation IDs before publishing"
+  },
+  "gift_opinion_definition": {
+    "database_slot_rva": "0x57C0970",
+    "null_fallback_slot_rva": "0x57C7840",
+    "lookup_signature": "COpinionModifier const* __fastcall LookupOpinionModifier(Database*, int32_t stable_hash)",
+    "lookup_rva": "0x231D3E0",
+    "lookup_end_rva_exclusive": "0x231D51A",
+    "lookup_sha256": "52DEC3240018EDDBA5DA50025D848E54315FFDA6059B6B4784ED4752D43373D7",
+    "database_layout": {
+      "reader_lock_offset": "0xEB8",
+      "rows_offset": "0x198",
+      "mask_or_count_offset": "0x1A4",
+      "sentinel_offset": "0x1A8",
+      "row_stride": "0x18",
+      "row_probe_state_offset": "0x04",
+      "row_hash_offset": "0x08",
+      "row_definition_pointer_offset": "0x10"
+    },
+    "object_layout": {
+      "stable_hash_offset": "0x14",
+      "canonical_msvc_string_offset": "0x18",
+      "canonical_string_size_offset": "0x28",
+      "canonical_string_capacity_offset": "0x30",
+      "secondary_vptr_offset": "0x80",
+      "object_size": "0x88"
+    },
+    "rtti": {
+      "name": ".?AVCOpinionModifier@@",
+      "type_descriptor_rva": "0x50EC0B0",
+      "primary_complete_object_locator_rva": "0x4A5E848",
+      "primary_vtable_rva": "0x43F67E0",
+      "primary_vtable_prefix_length": 24,
+      "primary_vtable_prefix_sha256": "0F243723209B477B6EAC98316E11D710BDF2E06BA9CFFB2680F249D48DA38867",
+      "secondary_complete_object_locator_rva": "0x4A5E870",
+      "secondary_complete_object_locator_offset": "0x80",
+      "secondary_complete_object_locator_cd_offset": 4,
+      "secondary_vtable_rva": "0x43F6800",
+      "secondary_vtable_prefix_length": 40,
+      "secondary_vtable_prefix_sha256": "C98263A42A72D09B6A5998F1B5C15377AEAE60A12F33AE0B456211A16C95F877",
+      "null_primary_vtable_rva": "0x43F63C0",
+      "null_secondary_vtable_rva": "0x43F63E0"
+    },
+    "constructor": {
+      "rva": "0x2B518B0",
+      "end_rva_exclusive": "0x2B51950",
+      "sha256": "146530DC596F2661130A8D6EC8BA0084317B16C702A02EF77B54B868DAC52A70"
+    },
+    "identity_gate": "hash exact bytes gift_opinion to signed int32 -897444517 / 0xCA82155B; require lookup result non-null and unequal to the fallback, primary and secondary vptrs, virtual slot zero true, object+0x14 hash round-trip and object+0x18 exact canonical string; retain pointer only synchronously; fresh lookup after traversal must return the identical pointer and repeat all fields"
+  },
+  "gift_opinion_observation": {
+    "find_group": {
+      "signature": "ActiveOpinionGroup* __fastcall FindActiveOpinionGroup(CharacterExtension* extension, uint32_t target_full_character_id)",
+      "rva": "0x2696D90",
+      "end_rva_exclusive": "0x2696E1A",
+      "size": 138,
+      "sha256": "A61D4F9A10F1362F865155F8F7FF8E09416CDBD754FBB0226373EA7AD13FC586"
+    },
+    "extension_target_table_layout": {
+      "rows_offset": "0x08",
+      "signed_count_offset": "0x14",
+      "row_stride": "0x10",
+      "row_target_full_generation_id_offset": "0x00",
+      "row_group_pointer_offset": "0x08",
+      "lookup": "binary search by the complete target CharacterID"
+    },
+    "active_group_layout": {
+      "entries_offset": "0x08",
+      "signed_count_offset": "0x14",
+      "entry_stride": 8
+    },
+    "active_opinion_layout": {
+      "modifier_pointer_offset": "0x08",
+      "allowed_vtable_rvas": ["0x4300DF8", "0x4300DC0"],
+      "allowed_types": ["CActiveOpinion", "CTemporaryOpinion"]
+    },
+    "date_and_decay_aware_value": {
+      "signature": "int32_t __fastcall GetActiveOpinionCurrentValue(CActiveOpinion const* active)",
+      "rva": "0x230F280",
+      "end_rva_exclusive": "0x230F532",
+      "size": 690,
+      "sha256": "0732D4D0E18E4FF584E83210D9291BB53CB2064CEAC50913449D1DA2725EFE47"
+    },
+    "sum_receiver": {
+      "signature": "int32_t __fastcall SumActiveOpinionModifierValue(ActiveOpinionGroup const* group, COpinionModifier const* modifier)",
+      "rva": "0x23101A0",
+      "end_rva_exclusive": "0x2310205",
+      "size": 101,
+      "sha256": "CBCD22394F7EF7C298F99F1E9C715067BCCFBDD5661CBB2AC5BB3631E66AED9A"
+    },
+    "native_trigger_proof": {
+      "class": "CHasOpinionModifierTrigger<false>",
+      "rtti_type_descriptor_rva": "0x5515540",
+      "complete_object_locator_rva": "0x49E4F48",
+      "vtable_rva": "0x43AF7C8",
+      "evaluate_virtual_slot": 25,
+      "evaluate_rva": "0x288BC50",
+      "evaluate_end_rva_exclusive": "0x288BF41",
+      "evaluate_sha256": "F6B073AC3756EEF78A94F238C963837C15C4AA94D19DFCE5329B30868F4E6F8E",
+      "find_group_call_rva": "0x288BD2E",
+      "sum_call_rva": "0x288BD92"
+    },
+    "result_contract": "presence is a separate boolean set only when at least one non-null active entry has active+0x08 exactly equal to the validated gift_opinion definition pointer; value is the sum receiver result and may be zero, so value!=0 is never a presence test"
+  },
+  "send_gift_opinion_definition": {
+    "database_slot_rva": "0x570C638",
+    "null_fallback_slot_rva": "0x570C630",
+    "database_getter_rva": "0x999AF0",
+    "database_getter_end_rva_exclusive": "0x999B47",
+    "database_getter_sha256": "4E0246E4FB97D18607FA9CBF72F6030825B4FA0BF1340DABDC3FEBCBD0CA9AED",
+    "lookup_rva": "0x9999B0",
+    "lookup_end_rva_exclusive": "0x999AEA",
+    "lookup_sha256": "B1BD5B25EB20D8B81D65BAE5942F3D233480910D40C2B11540BCC6E7A53D07E2",
+    "registry_vector_layout": {
+      "data_offset": "0xF08",
+      "capacity_offset": "0xF10",
+      "count_offset": "0xF14",
+      "stride": 8
+    },
+    "object_layout": {
+      "stable_hash_offset": "0x14",
+      "canonical_msvc_string_offset": "0x18",
+      "canonical_string_size_offset": "0x28",
+      "canonical_string_capacity_offset": "0x30",
+      "integer_constant_offset": "0x68",
+      "fixed_constant_raw_offset": "0x70",
+      "compiled_tree_offset": "0x78",
+      "integer_constant_present_flag_offset": "0x82",
+      "fixed_constant_present_flag_offset": "0x83",
+      "secondary_vptr_offset": "0x88",
+      "object_size": "0x90"
+    },
+    "rtti": {
+      "name": ".?AVCJominiNamedValue@@",
+      "type_descriptor_rva": "0x51122A0",
+      "primary_complete_object_locator_rva": "0x4B48758",
+      "primary_vtable_rva": "0x44C9EA0",
+      "primary_vtable_prefix_length": 24,
+      "primary_vtable_prefix_sha256": "3FE91CC938BB402A393739E2386031FE29567FBE9E286F47300061501E2EADCF",
+      "secondary_complete_object_locator_rva": "0x4B48848",
+      "secondary_complete_object_locator_offset": "0x88",
+      "secondary_vtable_rva": "0x44C9F10",
+      "secondary_vtable_prefix_length": 40,
+      "secondary_vtable_prefix_sha256": "E12596469593C9DB88CFCF156F4BB447FDB55D776FF703818B43F0200F3D4ADC",
+      "null_primary_vtable_rva": "0x44C9DB0",
+      "null_secondary_vtable_rva": "0x44C9D78"
+    },
+    "constructor": {
+      "rva": "0x333A220",
+      "end_rva_exclusive": "0x333A295",
+      "sha256": "8D4703ABCEAFC359CA89810C116BA787FBE9D9EA802BC8C6E4CA1E87D2956DF5"
+    },
+    "identity_gate": "freshly hash exact bytes send_gift_opinion to signed int32 -123602618 / 0xF8A1F946 and fresh lookup; require non-null and unequal to the fallback, exact primary/secondary vptrs, slot-zero true, object hash and canonical string round-trip, and exact pointer equality on a second same-transaction fresh lookup; retain nothing across playset reload"
+  },
+  "send_gift_opinion_preview": {
+    "interaction_context": {
+      "size": "0x338",
+      "primary_event_target_scope_offset": "0x08",
+      "primary_event_target_scope_size": "0x168",
+      "actor_full_generation_id_offset": "0x2D8",
+      "recipient_full_generation_id_offset": "0x2DC",
+      "constructor_signature": "void* __fastcall ConstructCharacterInteractionContext(void* context, CCharacterInteraction* interaction, int32_t actor_full_id, int32_t recipient_full_id, void* extra_context, bool initialize_special_data)",
+      "constructor_rva": "0x2C3EE50",
+      "refresh_signature": "void __fastcall RefreshCharacterInteractionContext(void* context, bool refresh)",
+      "refresh_rva": "0x2C40950",
+      "finalize_signature": "void __fastcall FinalizeCharacterInteractionContext(void* context)",
+      "finalize_rva": "0x2C40B20",
+      "destructor_signature": "void __fastcall DestroyCharacterInteractionContext(void* context)",
+      "destructor_rva": "0x2C3F380"
+    },
+    "scope_clone": {
+      "signature": "void* __fastcall CloneEventTargetScope(void* destination_0x168, EventTargetScope const* source)",
+      "rva": "0x3358E00",
+      "end_rva_exclusive": "0x3358EE9",
+      "sha256": "99A378FCDFA266541F77B5FEEEEC753BC02CBCA73F2D20FE486D7D03BEB1AFE0",
+      "stock_callsite_rva": "0x2C44320",
+      "stock_callsite_end_rva_exclusive": "0x2C4440B",
+      "stock_callsite_sha256": "745E0C0F6FC5283A340F5C55881C972E51D5DE5E24644D3D0F16AD917F5EE91F",
+      "recipe": "clone context+0x08; overwrite clone+0x00 uint16 root kind with 4 and clone+0x08 uint64 payload with the zero-extended recipient full ID; preserve the cloned actor and recipient named aliases"
+    },
+    "evaluation_support": {
+      "support_118_constructor_signature": "void* __fastcall ConstructEvaluationSupport118(void* self)",
+      "support_118_constructor_rva": "0x3354330",
+      "support_118_constructor_end_rva_exclusive": "0x33543B2",
+      "support_118_constructor_sha256": "8FF1EA95F300F3CA2F6FF20E267CD150DC95A72665F1A4CA8CC140B2146DA973",
+      "support_2a8_constructor_signature": "void* __fastcall ConstructEvaluationSupport2A8(void* self)",
+      "support_2a8_constructor_rva": "0x3354280",
+      "support_2a8_constructor_logical_end_rva_exclusive": "0x335432B",
+      "support_2a8_constructor_logical_sha256": "CAAD6CC5E363916FE783AFDB299DFAF4FECBA51B5B649896059EE28ED371AA80",
+      "internal_context_size": "0x28",
+      "internal_context_layout": {
+        "offset_0x00": "cloned recipient-root scope pointer",
+        "offset_0x08": "null",
+        "offset_0x10": "same cloned scope pointer",
+        "offset_0x18": "support_118 pointer",
+        "offset_0x20": "byte copied from module+0x570C3F4"
+      },
+      "teardown": "destroy support_2a8 rows, then support_118 rows, then cloned scope in the stock MIL4 owner order; finally destroy the character-interaction context"
+    },
+    "source_descriptor": {
+      "size": "0x28",
+      "layout": {
+        "offset_0x00": "canonical definition name data pointer",
+        "offset_0x08": "uint32 name length",
+        "offset_0x0C": "byte zero",
+        "offset_0x10": "int32 -1",
+        "offset_0x18": "uint64 zero",
+        "offset_0x20": "uint32 zero",
+        "offset_0x24": "byte one"
+      },
+      "stock_builder_and_fixed_call_rva": "0x2309580",
+      "stock_builder_and_fixed_call_end_rva_exclusive": "0x23097A4",
+      "stock_builder_and_fixed_call_sha256": "1CB93475D75173A811BCFA6D7031910D4387A0CC0C4B01236A64708881053D55"
+    },
+    "fixed_receiver": {
+      "signature": "int64_t* __fastcall EvaluateNamedFixed(CJominiNamedValue const* definition, int64_t* output_q100000, void* primary_context, void* secondary_context, SourceDescriptor const* stack_argument_5)",
+      "rva": "0x3369820",
+      "end_rva_exclusive": "0x33699B3",
+      "size": 403,
+      "sha256": "88C220FD822BE90E6E8DF71E1FC26214D62E5218493F5FCF1B64C2CD80A2DC04",
+      "required_arguments": "RCX=definition, RDX=&raw, R8=internal context, R9=null, fifth stack argument=the exact 0x28 source descriptor; RAX must equal RDX",
+      "abi_correction": "this is a five-argument receiver; the fifth source descriptor is read from callee-entry rsp+0x28 and must not be omitted or mislabeled as R9"
+    },
+    "integer_semantics": {
+      "stock_add_opinion_chain": ["0x2EDC1B0", "0x3373000", "0x3369600", "0x9A3740"],
+      "named_integer_receiver_signature": "int32_t __fastcall EvaluateNamedInteger(CJominiNamedValue const* definition, void* outer_evaluation_context, void* internal_context, SourceDescriptor const* source)",
+      "named_integer_receiver_rva": "0x3369600",
+      "named_integer_receiver_end_rva_exclusive": "0x3369814",
+      "named_integer_receiver_sha256": "FBD31B0B587BCAC30E2B0A68D9A48CC1C396B38D6A59FE1A05045DE2307CE16E",
+      "tree_integer_receiver_rva": "0x9A3740",
+      "tree_integer_receiver_end_rva_exclusive": "0x9A3828",
+      "tree_integer_receiver_sha256": "918D1284664D5D9676641689DC7C90CFBF5491A8D4AF3A6B4400338F4A5F59FB",
+      "conversion_tail_rva": "0x9A37ED",
+      "conversion_tail_end_rva_exclusive": "0x9A3828",
+      "conversion_tail_sha256": "C8E714DF0F7FBAC7EAB6B641F1ECC1E6F2497DC3AF10959D0BBFE2FA5BA982C6",
+      "conversion": "int32_t((raw < 0 ? raw - 50000 : raw + 50000) / 100000) using C++ signed division toward zero: nearest integer with ties away from zero",
+      "range": "reject raw outside [INT32_MIN*100000, INT32_MAX*100000]; the engine logs but does not clamp an out-of-range value",
+      "implementation_choice": "the cloned-scope recipe provides the fixed receiver's proven internal context but not an AddOpinion EffectContext; therefore evaluate raw through the five-argument fixed receiver and reproduce the exact frozen integer conversion, rather than passing an unproven object as the named integer receiver's outer context"
+    },
+    "same_frame_transaction": [
+      "resolve and full-generation validate player and recipient",
+      "prepare and finalize gift_interaction context with player as actor and target as recipient",
+      "clone the complete interaction scope and rewrite only its root to recipient",
+      "freshly resolve and fully identity-check send_gift_opinion",
+      "construct support and internal context plus exact source descriptor",
+      "evaluate raw twice and require equality; range-check and apply exact nearest/ties-away conversion",
+      "freshly re-resolve both definitions and both characters and require all pointers, hashes, strings, vptrs and full IDs unchanged",
+      "tear down in stock order before leaving the application-main callback"
+    ]
+  },
+  "native_spans": [
+    {"name":"construct_named_definition_identity_header","rva_start":"0x345E690","rva_end_exclusive":"0x345E726","length":150,"sha256":"F9AFF9921EE4029F1E3B369DD73D232EF20E9B35719210A4A6850F993D891D71"},
+    {"name":"construct_jomini_named_value","rva_start":"0x333A220","rva_end_exclusive":"0x333A295","length":117,"sha256":"8D4703ABCEAFC359CA89810C116BA787FBE9D9EA802BC8C6E4CA1E87D2956DF5"},
+    {"name":"construct_opinion_modifier","rva_start":"0x2B518B0","rva_end_exclusive":"0x2B51950","length":160,"sha256":"146530DC596F2661130A8D6EC8BA0084317B16C702A02EF77B54B868DAC52A70"},
+    {"name":"pure_stable_key_hash","rva_start":"0x3B8B000","rva_end_exclusive":"0x3B8B087","length":135,"sha256":"E42410BF40CBE818FED8B771988E102AE129BCE08CD7F975EB7A1EB2E5CD70DD"},
+    {"name":"read_character_opinion","rva_start":"0x2610A50","rva_end_exclusive":"0x2610AB9","length":105,"sha256":"7E67D546F4F2F0E82E10D956FA9B3E3370A95A721EFDEEBF1CE2427E9FE51436"},
+    {"name":"opinion_trigger_evaluate","rva_start":"0x288C3F0","rva_end_exclusive":"0x288C536","length":326,"sha256":"D229E7372C7B257880AB346524419F86BC34704EF65C51F47C0DA70781D10E51"},
+    {"name":"find_active_opinion_group_logical","rva_start":"0x2696D90","rva_end_exclusive":"0x2696E1A","length":138,"sha256":"A61D4F9A10F1362F865155F8F7FF8E09416CDBD754FBB0226373EA7AD13FC586"},
+    {"name":"get_active_opinion_current_value_logical","rva_start":"0x230F280","rva_end_exclusive":"0x230F532","length":690,"sha256":"0732D4D0E18E4FF584E83210D9291BB53CB2064CEAC50913449D1DA2725EFE47"},
+    {"name":"sum_active_opinion_modifier_value","rva_start":"0x23101A0","rva_end_exclusive":"0x2310205","length":101,"sha256":"CBCD22394F7EF7C298F99F1E9C715067BCCFBDD5661CBB2AC5BB3631E66AED9A"},
+    {"name":"has_opinion_modifier_trigger_evaluate","rva_start":"0x288BC50","rva_end_exclusive":"0x288BF41","length":753,"sha256":"F6B073AC3756EEF78A94F238C963837C15C4AA94D19DFCE5329B30868F4E6F8E"},
+    {"name":"opinion_modifier_lookup","rva_start":"0x231D3E0","rva_end_exclusive":"0x231D51A","length":314,"sha256":"52DEC3240018EDDBA5DA50025D848E54315FFDA6059B6B4784ED4752D43373D7"},
+    {"name":"named_value_database_getter","rva_start":"0x999AF0","rva_end_exclusive":"0x999B47","length":87,"sha256":"4E0246E4FB97D18607FA9CBF72F6030825B4FA0BF1340DABDC3FEBCBD0CA9AED"},
+    {"name":"named_value_lookup","rva_start":"0x9999B0","rva_end_exclusive":"0x999AEA","length":314,"sha256":"B1BD5B25EB20D8B81D65BAE5942F3D233480910D40C2B11540BCC6E7A53D07E2"},
+    {"name":"construct_character_interaction_context","rva_start":"0x2C3EE50","rva_end_exclusive":"0x2C3EFF9","length":425,"sha256":"A9CDB9706153581B01B24ADAD38204703CC4AF0CBA2F381EB4E49C064E9CE83A"},
+    {"name":"refresh_character_interaction_context","rva_start":"0x2C40950","rva_end_exclusive":"0x2C40A95","length":325,"sha256":"E8B013125E941249414E5F3511FEDA200396540C7E8EA6F385129365EABD55AC"},
+    {"name":"finalize_character_interaction_context","rva_start":"0x2C40B20","rva_end_exclusive":"0x2C40BFE","length":222,"sha256":"1A6393A2BF0D6B5AEA4BB71CA261B63147336CCFBE42F5BA9EA7A09AB5472661"},
+    {"name":"destroy_character_interaction_context","rva_start":"0x2C3F380","rva_end_exclusive":"0x2C3F3F7","length":119,"sha256":"73750E22CE5812AF14800917FCFCFE11E98F5E28C16FBB0D339CC87A915A669F"},
+    {"name":"clone_event_target_scope","rva_start":"0x3358E00","rva_end_exclusive":"0x3358EE9","length":233,"sha256":"99A378FCDFA266541F77B5FEEEEC753BC02CBCA73F2D20FE486D7D03BEB1AFE0"},
+    {"name":"gift_preview_scope_stock_callsite","rva_start":"0x2C44320","rva_end_exclusive":"0x2C4440B","length":235,"sha256":"745E0C0F6FC5283A340F5C55881C972E51D5DE5E24644D3D0F16AD917F5EE91F"},
+    {"name":"construct_evaluation_support_118","rva_start":"0x3354330","rva_end_exclusive":"0x33543B2","length":130,"sha256":"8FF1EA95F300F3CA2F6FF20E267CD150DC95A72665F1A4CA8CC140B2146DA973"},
+    {"name":"construct_evaluation_support_2a8_logical","rva_start":"0x3354280","rva_end_exclusive":"0x335432B","length":171,"sha256":"CAAD6CC5E363916FE783AFDB299DFAF4FECBA51B5B649896059EE28ED371AA80"},
+    {"name":"stock_source_descriptor_and_fixed_call","rva_start":"0x2309580","rva_end_exclusive":"0x23097A4","length":548,"sha256":"1CB93475D75173A811BCFA6D7031910D4387A0CC0C4B01236A64708881053D55"},
+    {"name":"evaluate_named_fixed_five_argument","rva_start":"0x3369820","rva_end_exclusive":"0x33699B3","length":403,"sha256":"88C220FD822BE90E6E8DF71E1FC26214D62E5218493F5FCF1B64C2CD80A2DC04"},
+    {"name":"add_opinion_execution","rva_start":"0x2ED9EF0","rva_end_exclusive":"0x2EDA358","length":1128,"sha256":"73E8E2BF468AEDE5C55BD4D380B703A9CAC8CC91F4C16F5747AF72F4978E56AC"},
+    {"name":"evaluate_add_opinion_integer","rva_start":"0x2EDC1B0","rva_end_exclusive":"0x2EDC209","length":89,"sha256":"6288A803B5144B21311282A48D5C2FB2D22C230A0C7D871D6A60234AF6D980F4"},
+    {"name":"evaluate_generic_integer","rva_start":"0x3373000","rva_end_exclusive":"0x337312F","length":303,"sha256":"82D70BEF987F60478D1AC4102C2ABF60E0723AAE93E06F72BD4DDEAED3893DF4"},
+    {"name":"evaluate_named_integer","rva_start":"0x3369600","rva_end_exclusive":"0x3369814","length":532,"sha256":"FBD31B0B587BCAC30E2B0A68D9A48CC1C396B38D6A59FE1A05045DE2307CE16E"},
+    {"name":"evaluate_fixed_tree_as_integer","rva_start":"0x9A3740","rva_end_exclusive":"0x9A3828","length":232,"sha256":"918D1284664D5D9676641689DC7C90CFBF5491A8D4AF3A6B4400338F4A5F59FB"}
+  ],
+  "thread_and_effect_boundary": {
+    "thread": "application-main only",
+    "gameplay": "all three receivers are read-only; registry lookup mutates only its reader-lock word and evaluators may write profiler/diagnostic state",
+    "lifetime": "all engine objects and pointers are borrowed only for one synchronous same-frame transaction"
+  },
+  "minimal_implementation_interface": {
+    "recipient_opinion_of_player": "bool ReadRecipientOpinion(player_full_id, recipient_full_id, int32_t& total)",
+    "gift_opinion": "bool ReadGiftOpinion(player_full_id, recipient_full_id, bool& present, int32_t& current_value)",
+    "preview": "bool ReadSendGiftOpinionPreview(prepared_gift_context, int32_t& delta)",
+    "failure": "any identity, vtable, generation, count, pointer-stability, evaluator-range or repeated-sample failure keeps the existing typed RED and publishes no partial value"
+  }
+}
