@@ -756,6 +756,8 @@ constexpr std::uintptr_t kDestroyMergeArmiesCommandRva = 0x26B5330;
 constexpr std::uintptr_t kGetCasusBelliTypeDatabaseRva = 0x088E260;
 constexpr std::uintptr_t kGetCharacterInteractionDatabaseRva = 0x0831890;
 constexpr std::uintptr_t kHashStableKeyRva = 0x3B8B000;
+constexpr std::uintptr_t kLookupCharacterInteractionRva = 0x0997930;
+constexpr std::uintptr_t kEvaluateCharacterInteractionCostRva = 0x2CDB7B0;
 constexpr std::uintptr_t kLookupSchemeTypeRva = 0x0A48C70;
 constexpr std::uintptr_t kLookupHookTypeRva = 0x288D350;
 constexpr std::uintptr_t kEvaluateCasusBelliRva = 0x2D95D00;
@@ -9880,6 +9882,12 @@ Bindings BindCurrentProcess(bool executable_matches) noexcept {
           module + kGetCharacterInteractionDatabaseRva);
   result.hash_stable_key =
       reinterpret_cast<HashStableKey>(module + kHashStableKeyRva);
+  result.lookup_character_interaction =
+      reinterpret_cast<LookupCharacterInteraction>(
+          module + kLookupCharacterInteractionRva);
+  result.evaluate_character_interaction_cost =
+      reinterpret_cast<EvaluateCharacterInteractionCost>(
+          module + kEvaluateCharacterInteractionCostRva);
   result.lookup_scheme_type =
       reinterpret_cast<LookupSchemeType>(module + kLookupSchemeTypeRva);
   result.lookup_hook_type =

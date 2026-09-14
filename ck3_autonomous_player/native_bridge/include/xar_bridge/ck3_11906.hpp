@@ -128,6 +128,11 @@ using GetCharacterInteractionDatabase = void *(*)();
 using HashStableKey = std::int32_t (*)(void *context,
                                       const char *data,
                                       std::uint32_t size);
+using LookupCharacterInteraction = void *(*)(void *database,
+                                              std::int32_t key_hash);
+using EvaluateCharacterInteractionCost = void (*)(
+    const void *compiled_cost_block, const void *event_target_scope,
+    std::int64_t *output_by_resource);
 using LookupSchemeType = void *(*)(void *database, std::int32_t key_hash);
 using LookupHookType = void *(*)(void *database, std::int32_t key_hash);
 using EvaluateCasusBelli = bool (*)(void *casus_belli_type,
@@ -400,6 +405,9 @@ struct Bindings {
   GetCharacterInteractionDatabase get_character_interaction_database =
       nullptr;
   HashStableKey hash_stable_key = nullptr;
+  LookupCharacterInteraction lookup_character_interaction = nullptr;
+  EvaluateCharacterInteractionCost evaluate_character_interaction_cost =
+      nullptr;
   LookupSchemeType lookup_scheme_type = nullptr;
   LookupHookType lookup_hook_type = nullptr;
   EvaluateCasusBelli evaluate_casus_belli = nullptr;

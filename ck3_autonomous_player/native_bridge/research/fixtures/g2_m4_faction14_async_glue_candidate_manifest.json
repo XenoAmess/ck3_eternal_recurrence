@@ -1,0 +1,64 @@
+{
+  "schema_version": 1,
+  "work_package": "G2-M4-FACTION14-ASYNC-GLUE",
+  "status": "static-ready-partial-observer",
+  "live": false,
+  "source_branch": "wp-g2-m4-faction14-async-glue-20260915",
+  "baseline_commit": "633f2a82b76334e04951b6e2d7af4a986256eade",
+  "stack": [
+    "92f09c7801035c19a7c606471627a0e0dc5d5394",
+    "3929894cfe403b1178e340cae5a208654384181c",
+    "4c494b73118e63ecd8b052e0002e66cb88a289b1",
+    "633f2a82b76334e04951b6e2d7af4a986256eade"
+  ],
+  "exact_build": {
+    "game_version": "1.19.0.6",
+    "executable_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86"
+  },
+  "cmake_option": {
+    "name": "XAR_CK3_ENABLE_G2_FACTION_GIFT_MITIGATION_ASYNC_PRIVATE_GLUE_V1",
+    "default": false,
+    "implies_private_targeting_probe": true
+  },
+  "publication": {
+    "channel": "private heartbeat",
+    "terminal_only": true,
+    "public_schema_changed": false,
+    "public_mcp_changed": false,
+    "pointer_free": true,
+    "frame_binding": [
+      "targeting published generation",
+      "campaign snapshot revision",
+      "CK3 raw date",
+      "played character full-generation ID",
+      "application-main pump epoch"
+    ]
+  },
+  "production_sources_connected": {
+    "targeting_rows": "FACTION9 exact-build observer/probe",
+    "action_core": "FACTION10 bounded ACK/receipt core",
+    "source_adapter": "FACTION11 row/details adapter",
+    "native_binder": "FACTION12 exact-anchor binder",
+    "player_gold": "ReadSnapshot Q100000",
+    "recipient_identity": "generation-safe character storage resolver",
+    "recipient_ai": "player-character manager exclusion",
+    "direct_landed_vassal": "campaign-root REALM2 IDs",
+    "gift_definition": "loaded interaction database lookup at RVA 0x997930 with hash and canonical key round trip",
+    "gift_legality": "generic character-interaction context and validator",
+    "gift_auto_accept": "exact definition trigger/scalar",
+    "gift_gold_cost": "compiled cost evaluator RVA 0x2CDB7B0, resource row gold",
+    "gift_submit": "generic send command constructor and submit channel 0x0E"
+  },
+  "typed_reds": [
+    {
+      "key": "faction_at_war_receiver_unclosed",
+      "effect": "source_faction_requery_complete remains false and action submission is rejected"
+    },
+    {
+      "key": "gift_opinion_receiver_unclosed",
+      "effect": "recipient_opinion_query_complete remains false, opinion_delta serializes null, and action submission is rejected"
+    }
+  ],
+  "next_exact_build_entry": "close the CFaction active-war predicate and recipient opinion/gift_opinion modifier receiver, then reuse the already-connected generic validate/send chain without changing public MCP/schema",
+  "ck3_started": false
+}

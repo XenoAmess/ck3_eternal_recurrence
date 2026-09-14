@@ -162,6 +162,12 @@ option(
 )
 
 option(
+  XAR_CK3_ENABLE_G2_FACTION_GIFT_MITIGATION_ASYNC_PRIVATE_GLUE_V1
+  "Run the private exact-build faction gift preview/action mailbox"
+  OFF
+)
+
+option(
   XAR_CK3_ENABLE_G2_COUNCIL_COMPOSITION_STEWARD_CANDIDATES_PRIVATE_PROBE_V1
   "Run one private exact-build paused steward-candidate query"
   OFF
@@ -611,7 +617,8 @@ if(XAR_CK3_ENABLE_G2_MILITARY_PREPARATION_SUMMARY_PRIVATE_PROBE_V1)
     XAR_CK3_ENABLE_G2_MILITARY_PREPARATION_SUMMARY_PRIVATE_PROBE_V1=1
   )
 endif()
-if(XAR_CK3_ENABLE_G2_FACTION_TARGETING_ROW_ASYNC_PRIVATE_PROBE_V1)
+if(XAR_CK3_ENABLE_G2_FACTION_TARGETING_ROW_ASYNC_PRIVATE_PROBE_V1 OR
+   XAR_CK3_ENABLE_G2_FACTION_GIFT_MITIGATION_ASYNC_PRIVATE_GLUE_V1)
   if(MSVC)
     set_source_files_properties(
       src/bridge.cpp
@@ -629,6 +636,30 @@ if(XAR_CK3_ENABLE_G2_FACTION_TARGETING_ROW_ASYNC_PRIVATE_PROBE_V1)
     src/faction_targeting_row_probe_v1_serializer.cpp
   )
   target_compile_definitions(xar_ck3_bridge PRIVATE
+    XAR_CK3_ENABLE_G2_FACTION_TARGETING_ROW_ASYNC_PRIVATE_PROBE_V1=1
+  )
+endif()
+if(XAR_CK3_ENABLE_G2_FACTION_GIFT_MITIGATION_ASYNC_PRIVATE_GLUE_V1)
+  if(MSVC)
+    set_source_files_properties(
+      src/bridge.cpp
+      src/ck3_11906.cpp
+      src/main_thread_query_mailbox_v1.cpp
+      src/faction_gift_mitigation_action_v1.cpp
+      src/faction_gift_mitigation_source_action_adapter_v1.cpp
+      src/faction_gift_mitigation_native_binder_v1.cpp
+      src/faction_gift_mitigation_async_glue_v1.cpp
+      PROPERTIES COMPILE_OPTIONS "/W4;/WX;/permissive-"
+    )
+  endif()
+  target_sources(xar_ck3_bridge PRIVATE
+    src/faction_gift_mitigation_action_v1.cpp
+    src/faction_gift_mitigation_source_action_adapter_v1.cpp
+    src/faction_gift_mitigation_native_binder_v1.cpp
+    src/faction_gift_mitigation_async_glue_v1.cpp
+  )
+  target_compile_definitions(xar_ck3_bridge PRIVATE
+    XAR_CK3_ENABLE_G2_FACTION_GIFT_MITIGATION_ASYNC_PRIVATE_GLUE_V1=1
     XAR_CK3_ENABLE_G2_FACTION_TARGETING_ROW_ASYNC_PRIVATE_PROBE_V1=1
   )
 endif()
@@ -1821,6 +1852,28 @@ if(BUILD_TESTING)
       ${CMAKE_CURRENT_SOURCE_DIR}/include/xar_bridge/main_thread_query_mailbox_v1.hpp
       ${CMAKE_CURRENT_SOURCE_DIR}/src/main_thread_query_mailbox_v1.cpp
       ${CMAKE_CURRENT_SOURCE_DIR}/research/fixtures/faction_targeting_row_async_glue_v1_source_contract.json
+  )
+
+  add_executable(xar_ck3_faction_gift_mitigation_async_glue_v1_test
+    src/faction_gift_mitigation_action_v1.cpp
+    src/faction_gift_mitigation_source_action_adapter_v1.cpp
+    src/faction_gift_mitigation_native_binder_v1.cpp
+    src/faction_gift_mitigation_async_glue_v1.cpp
+    src/faction_gift_mitigation_async_glue_v1_test.cpp
+  )
+  target_include_directories(
+    xar_ck3_faction_gift_mitigation_async_glue_v1_test PRIVATE include)
+  target_compile_definitions(
+    xar_ck3_faction_gift_mitigation_async_glue_v1_test PRIVATE
+    NOMINMAX WIN32_LEAN_AND_MEAN UNICODE _UNICODE)
+  if(MSVC)
+    target_compile_options(
+      xar_ck3_faction_gift_mitigation_async_glue_v1_test PRIVATE
+      /W4 /WX /permissive- /EHsc /UNDEBUG)
+  endif()
+  add_test(
+    NAME xar_ck3_native_bridge_faction_gift_mitigation_async_glue_v1
+    COMMAND xar_ck3_faction_gift_mitigation_async_glue_v1_test
   )
 
   add_executable(

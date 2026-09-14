@@ -42,6 +42,9 @@
 #include "xar_bridge/faction_targeting_row_probe_v1.hpp"
 #include "xar_bridge/faction_targeting_row_probe_v1_serializer.hpp"
 #endif
+#if defined(XAR_CK3_ENABLE_G2_FACTION_GIFT_MITIGATION_ASYNC_PRIVATE_GLUE_V1)
+#include "xar_bridge/faction_gift_mitigation_async_glue_v1.hpp"
+#endif
 #include "xar_bridge/pending_character_interaction_context_v1_mailbox.hpp"
 #include "xar_bridge/phase2_completion_observer_v1.hpp"
 #include "xar_bridge/phase2_post_call_list_identity_observer_v1.hpp"
@@ -343,6 +346,15 @@ static std::uint32_t g_faction_targeting_row_last_submit_v1 = 0;
 static std::uint32_t g_faction_targeting_row_last_wait_v1 = 0;
 static std::uint32_t g_faction_targeting_row_last_reclaim_v1 = 0;
 static std::uint32_t g_faction_targeting_row_async_failure_v1 = 0;
+#endif
+#if defined(XAR_CK3_ENABLE_G2_FACTION_GIFT_MITIGATION_ASYNC_PRIVATE_GLUE_V1)
+static xar::ck3_11906::FactionGiftMitigationAsyncContextV1
+    g_faction_gift_mitigation_async_query_v1{};
+static bool g_faction_gift_mitigation_query_in_flight_v1 = false;
+static bool g_faction_gift_mitigation_terminal_published_v1 = false;
+static std::uint32_t g_faction_gift_mitigation_last_submit_v1 = 0;
+static std::uint32_t g_faction_gift_mitigation_last_wait_v1 = 0;
+static std::uint32_t g_faction_gift_mitigation_last_reclaim_v1 = 0;
 #endif
 static xar::bridge::G2TrucePreviewEntryObserverV1State
     g_g2_truce_preview_entry_observer_v1{};
@@ -765,6 +777,152 @@ void DriveFactionTargetingRowAsyncPrivateProbeV1(
                   xar::ck3_11906::MainThreadQueryReclaimResultV1::reclaimed
           ? FactionTargetingRowAsyncStateV1::awaiting_observer
           : FactionTargetingRowAsyncStateV1::blocked;
+}
+#endif
+
+#if defined(XAR_CK3_ENABLE_G2_FACTION_GIFT_MITIGATION_ASYNC_PRIVATE_GLUE_V1)
+bool SelectFactionGiftMitigationCandidateV1(
+    std::uint32_t &source_faction_id,
+    std::uint32_t &recipient_character_id) noexcept {
+  source_faction_id = 0;
+  recipient_character_id = 0;
+  const auto &rows = g_faction_targeting_row_terminal_result_v1;
+  const auto &root = g_faction_targeting_row_campaign_query_v1.result;
+  if (rows.terminal !=
+          xar::bridge::FactionTargetingRowProbeTerminalV1::ready ||
+      !root.readiness.same_frame_ready ||
+      !root.player_character_id.has_value() ||
+      *root.player_character_id <= 0) {
+    return false;
+  }
+  auto direct = root.direct_landed_vassal_character_ids;
+  std::sort(direct.begin(), direct.end());
+  const auto eligible = [&](std::uint32_t character_id) noexcept {
+    return character_id != 0 &&
+           character_id !=
+               static_cast<std::uint32_t>(*root.player_character_id) &&
+           std::binary_search(direct.begin(), direct.end(),
+                              static_cast<std::int32_t>(character_id));
+  };
+  for (std::size_t index = 0; index < rows.faction_count; ++index) {
+    const auto &row = rows.factions[index];
+    if (row.target_character_id !=
+        static_cast<std::uint32_t>(*root.player_character_id)) {
+      continue;
+    }
+    if (row.leader_present && eligible(row.leader_character_id)) {
+      source_faction_id = row.faction_id;
+      recipient_character_id = row.leader_character_id;
+      return true;
+    }
+    for (std::size_t member = 0;
+         member < row.character_member_count; ++member) {
+      if (!eligible(row.character_member_ids[member])) continue;
+      source_faction_id = row.faction_id;
+      recipient_character_id = row.character_member_ids[member];
+      return true;
+    }
+  }
+  return false;
+}
+
+void DriveFactionGiftMitigationAsyncPrivateGlueV1(
+    const std::optional<xar::game::Snapshot> &snapshot,
+    std::uint64_t revision) noexcept {
+  if (g_faction_gift_mitigation_terminal_published_v1 ||
+      !g_faction_targeting_row_terminal_published_v1) {
+    return;
+  }
+  auto &query = g_faction_gift_mitigation_async_query_v1;
+  if (!g_faction_gift_mitigation_query_in_flight_v1) {
+    std::uint32_t source_faction_id = 0;
+    std::uint32_t recipient_character_id = 0;
+    if (!snapshot.has_value() || revision == 0 || !snapshot->paused ||
+        !snapshot->map_ready || !snapshot->has_played_character ||
+        snapshot->played_character_id <= 0 ||
+        snapshot->date_raw !=
+            g_faction_targeting_row_terminal_result_v1.observed_binding
+                .date_raw ||
+        revision != g_faction_targeting_row_terminal_result_v1
+                        .observed_binding.snapshot_revision ||
+        !SelectFactionGiftMitigationCandidateV1(
+            source_faction_id, recipient_character_id)) {
+      query = {};
+      query.completion = xar::ck3_11906::
+          FactionGiftMitigationAsyncCompletionV1::unavailable;
+      query.failure_flags = xar::ck3_11906::
+          faction_gift_async_failure_recipient;
+      g_faction_gift_mitigation_terminal_published_v1 = true;
+      return;
+    }
+    query = {};
+    query.mailbox = &g_main_thread_query_mailbox_v1;
+    query.bindings = xar::ck3_11906::BindCurrentProcess(true);
+    query.module_base =
+        reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr));
+    query.expected_snapshot = *snapshot;
+    query.targeting_rows = g_faction_targeting_row_terminal_result_v1;
+    query.direct_landed_vassal_character_ids =
+        g_faction_targeting_row_campaign_query_v1.result
+            .direct_landed_vassal_character_ids;
+    std::sort(query.direct_landed_vassal_character_ids.begin(),
+              query.direct_landed_vassal_character_ids.end());
+    query.source_faction_id = source_faction_id;
+    query.recipient_character_id = recipient_character_id;
+    const auto submit = xar::ck3_11906::TrySubmitMainThreadQueryV1(
+        g_main_thread_query_mailbox_v1,
+        &xar::ck3_11906::ExecuteFactionGiftMitigationAsyncMailboxV1,
+        &query, query.ticket);
+    g_faction_gift_mitigation_last_submit_v1 =
+        static_cast<std::uint32_t>(submit);
+    if (submit ==
+        xar::ck3_11906::MainThreadQuerySubmitResultV1::submitted) {
+      g_faction_gift_mitigation_query_in_flight_v1 = true;
+    }
+    return;
+  }
+  if (g_main_thread_query_mailbox_v1.published_sequence.load(
+          std::memory_order_acquire) != query.ticket.sequence) {
+    return;
+  }
+  const auto state = g_main_thread_query_mailbox_v1.state.load(
+      std::memory_order_acquire);
+  if (state == xar::ck3_11906::MainThreadQueryMailboxStateV1::queued ||
+      state == xar::ck3_11906::MainThreadQueryMailboxStateV1::executing) {
+    return;
+  }
+  xar::ck3_11906::MainThreadQueryWaitResultV1 wait =
+      xar::ck3_11906::MainThreadQueryWaitResultV1::ticket_mismatch;
+  if (state == xar::ck3_11906::MainThreadQueryMailboxStateV1::completed) {
+    wait = xar::ck3_11906::MainThreadQueryWaitResultV1::completed;
+  } else if (state == xar::ck3_11906::
+                          MainThreadQueryMailboxStateV1::executor_failed) {
+    wait = xar::ck3_11906::MainThreadQueryWaitResultV1::executor_failed;
+  } else if (state == xar::ck3_11906::
+                          MainThreadQueryMailboxStateV1::cancelled) {
+    wait = xar::ck3_11906::MainThreadQueryWaitResultV1::cancelled;
+  } else if (state == xar::ck3_11906::
+                          MainThreadQueryMailboxStateV1::infrastructure_failed) {
+    wait = xar::ck3_11906::MainThreadQueryWaitResultV1::infrastructure_failed;
+  } else {
+    return;
+  }
+  g_faction_gift_mitigation_last_wait_v1 =
+      static_cast<std::uint32_t>(wait);
+  const auto reclaim = xar::ck3_11906::ReclaimMainThreadQueryV1(
+      g_main_thread_query_mailbox_v1, query.ticket);
+  g_faction_gift_mitigation_last_reclaim_v1 =
+      static_cast<std::uint32_t>(reclaim);
+  g_faction_gift_mitigation_query_in_flight_v1 = false;
+  if (wait != xar::ck3_11906::MainThreadQueryWaitResultV1::completed ||
+      reclaim != xar::ck3_11906::
+                     MainThreadQueryReclaimResultV1::reclaimed) {
+    query.completion = xar::ck3_11906::
+        FactionGiftMitigationAsyncCompletionV1::unavailable;
+    query.failure_flags |=
+        xar::ck3_11906::faction_gift_async_failure_frame;
+  }
+  g_faction_gift_mitigation_terminal_published_v1 = true;
 }
 #endif
 
@@ -1405,6 +1563,10 @@ std::string HeartbeatFrame(std::uint64_t sequence) {
 #if defined(XAR_CK3_ENABLE_G2_FACTION_TARGETING_ROW_ASYNC_PRIVATE_PROBE_V1)
   result +=
       ",\"faction_targeting_row_async_private_probe_enabled\":true";
+#endif
+#if defined(XAR_CK3_ENABLE_G2_FACTION_GIFT_MITIGATION_ASYNC_PRIVATE_GLUE_V1)
+  result +=
+      ",\"faction_gift_mitigation_async_private_glue_enabled\":true";
 #endif
 #if defined(XAR_CK3_ENABLE_G2_COUNCIL_COMPOSITION_STEWARD_CANDIDATES_PRIVATE_PROBE_V1)
   result +=
@@ -2272,6 +2434,29 @@ std::string HeartbeatFrame(std::uint64_t sequence) {
   if (g_faction_targeting_row_terminal_published_v1) {
     result += xar::bridge::SerializeFactionTargetingRowProbeV1(
         g_faction_targeting_row_terminal_result_v1);
+  } else {
+    result += "null";
+  }
+#endif
+#if defined(XAR_CK3_ENABLE_G2_FACTION_GIFT_MITIGATION_ASYNC_PRIVATE_GLUE_V1)
+  result += "},\"g2_faction_gift_mitigation_async_glue_v1\":{";
+  result += "\"private_build\":true,\"default_off\":true,";
+  result += "\"terminal_only_publication\":true,\"query_in_flight\":";
+  result += g_faction_gift_mitigation_query_in_flight_v1 ? "true" : "false";
+  result += ",\"terminal_published\":";
+  result +=
+      g_faction_gift_mitigation_terminal_published_v1 ? "true" : "false";
+  result += ",\"last_submit_result\":";
+  result += Number(g_faction_gift_mitigation_last_submit_v1);
+  result += ",\"last_wait_result\":";
+  result += Number(g_faction_gift_mitigation_last_wait_v1);
+  result += ",\"last_reclaim_result\":";
+  result += Number(g_faction_gift_mitigation_last_reclaim_v1);
+  result += ",\"terminal_result\":";
+  if (g_faction_gift_mitigation_terminal_published_v1) {
+    result += xar::ck3_11906::
+        SerializeFactionGiftMitigationAsyncContextV1(
+            g_faction_gift_mitigation_async_query_v1);
   } else {
     result += "null";
   }
@@ -6256,6 +6441,10 @@ public:
         &xar::bridge::
             ExecuteCouncilCompositionStewardCandidatesPrivateProbeV1;
 #endif
+#if defined(XAR_CK3_ENABLE_G2_FACTION_GIFT_MITIGATION_ASYNC_PRIVATE_GLUE_V1)
+    environment.permitted_executor_quattuortrigintary =
+        &xar::ck3_11906::ExecuteFactionGiftMitigationAsyncMailboxV1;
+#endif
     environment.permitted_frontend_executor =
         &xar::ck3_11906::ExecuteFrontendGuiRouteMailboxV1;
     installed_ = xar::ck3_11906::InstallMainThreadQueryMailboxV1(
@@ -6668,6 +6857,10 @@ void RunConnectedSession(
 #if defined(XAR_CK3_ENABLE_G2_FACTION_TARGETING_ROW_ASYNC_PRIVATE_PROBE_V1)
       DriveFactionTargetingRowAsyncPrivateProbeV1(
           game, previous_snapshot, state_revision);
+#endif
+#if defined(XAR_CK3_ENABLE_G2_FACTION_GIFT_MITIGATION_ASYNC_PRIVATE_GLUE_V1)
+      DriveFactionGiftMitigationAsyncPrivateGlueV1(previous_snapshot,
+                                                    state_revision);
 #endif
 #if defined(XAR_CK3_ENABLE_G2_MILITARY_PREPARATION_SUMMARY_PRIVATE_PROBE_V1)
       DriveMilitaryPreparationSummaryPrivateProbeV1(previous_snapshot,
