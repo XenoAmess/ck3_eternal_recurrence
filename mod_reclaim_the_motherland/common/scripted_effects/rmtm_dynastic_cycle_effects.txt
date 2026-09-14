@@ -467,6 +467,172 @@ rmtm_chaos_shattering_effect = {
 	}
 }
 
+# Character scope: a living Later-Dynasty ruler in the vanilla on_death hook.
+# CK3 1.19.0.6 calculates a valid current_heir for our single-heir dynamic
+# Hegemony, but later discards the title because it has no de-jure counties. Move
+# the exact title, its de-facto vassal realm and the existing ministry to that
+# already-calculated heir while the predecessor is still alive. Personal titles
+# are deliberately untouched and continue through ordinary succession.
+rmtm_handoff_restoration_hegemony_on_death_effect = {
+	if = {
+		limit = {
+			has_game_rule = rmtm_reclaim_the_motherland
+			primary_title = {
+				has_variable = rmtm_restoration_hegemony
+				exists = current_heir
+				current_heir = { is_alive = yes }
+			}
+		}
+
+		primary_title = {
+			save_temporary_scope_as = rmtm_inherited_restoration_title
+			current_heir = { save_temporary_scope_as = rmtm_restoration_heir }
+		}
+
+		# Freeze exact incumbents before changing the title holder. Council access is
+		# title-bound, so the old council can disappear as soon as the Hegemony moves.
+		if = {
+			limit = { exists = cp:councillor_chancellor }
+			cp:councillor_chancellor = { save_temporary_scope_as = rmtm_inherited_chancellor }
+		}
+		if = {
+			limit = { exists = cp:councillor_spymaster }
+			cp:councillor_spymaster = { save_temporary_scope_as = rmtm_inherited_censor }
+		}
+		if = {
+			limit = { exists = cp:minister_grand_marshal }
+			cp:minister_grand_marshal = { save_temporary_scope_as = rmtm_inherited_grand_marshal }
+		}
+		if = {
+			limit = { exists = cp:minister_personnel }
+			cp:minister_personnel = { save_temporary_scope_as = rmtm_inherited_personnel }
+		}
+		if = {
+			limit = { exists = cp:councillor_steward }
+			cp:councillor_steward = { save_temporary_scope_as = rmtm_inherited_revenue }
+		}
+		if = {
+			limit = { exists = cp:councillor_court_chaplain }
+			cp:councillor_court_chaplain = { save_temporary_scope_as = rmtm_inherited_rites }
+		}
+		if = {
+			limit = { exists = cp:councillor_marshal }
+			cp:councillor_marshal = { save_temporary_scope_as = rmtm_inherited_war }
+		}
+		if = {
+			limit = { exists = cp:minister_justice }
+			cp:minister_justice = { save_temporary_scope_as = rmtm_inherited_justice }
+		}
+		if = {
+			limit = { exists = cp:minister_works }
+			cp:minister_works = { save_temporary_scope_as = rmtm_inherited_works }
+		}
+
+		# A landed heir may already have an unnamed primary title. Vanilla Chinese
+		# title-gain logic can move the Later title's custom dynasty name onto it. Mark
+		# only that exact pre-existing title so the name can be moved back afterward.
+		scope:rmtm_restoration_heir = {
+			if = {
+				limit = {
+					is_ruler = yes
+					exists = primary_title
+					primary_title = { has_custom_title_name = no }
+				}
+				primary_title = {
+					save_temporary_scope_as = rmtm_heir_previous_primary_title
+					set_variable = {
+						name = rmtm_title_name_recovery_candidate
+						value = yes
+					}
+				}
+			}
+		}
+
+		create_title_and_vassal_change = {
+			type = inherited
+			save_scope_as = rmtm_restoration_inheritance_change
+			add_claim_on_loss = no
+		}
+		scope:rmtm_inherited_restoration_title = {
+			change_title_holder_include_vassals = {
+				holder = scope:rmtm_restoration_heir
+				change = scope:rmtm_restoration_inheritance_change
+			}
+		}
+		resolve_title_and_vassal_change = scope:rmtm_restoration_inheritance_change
+
+		scope:rmtm_restoration_heir = {
+			set_primary_title_to = scope:rmtm_inherited_restoration_title
+		}
+		set_global_variable = {
+			name = rmtm_ministry_entitlement_title
+			value = scope:rmtm_inherited_restoration_title
+		}
+
+		if = {
+			limit = {
+				exists = scope:rmtm_heir_previous_primary_title
+				scope:rmtm_heir_previous_primary_title = {
+					has_variable = rmtm_title_name_recovery_candidate
+					has_custom_title_name = yes
+				}
+				scope:rmtm_inherited_restoration_title = {
+					has_custom_title_name = no
+				}
+			}
+			scope:rmtm_heir_previous_primary_title = {
+				move_title_name_to = scope:rmtm_inherited_restoration_title
+				reset_title_name = yes
+			}
+		}
+		if = {
+			limit = { exists = scope:rmtm_heir_previous_primary_title }
+			scope:rmtm_heir_previous_primary_title = {
+				remove_variable = rmtm_title_name_recovery_candidate
+			}
+		}
+
+		# Rebind only seats that were occupied. Empty seats stay empty, while every
+		# living incumbent keeps both the same office and the same ministry title.
+		if = {
+			limit = { exists = scope:rmtm_inherited_chancellor scope:rmtm_inherited_chancellor = { is_alive = yes } }
+			scope:rmtm_restoration_heir = { assign_councillor_type = { type = councillor_chancellor target = scope:rmtm_inherited_chancellor remove_existing_councillor = yes } }
+		}
+		if = {
+			limit = { exists = scope:rmtm_inherited_censor scope:rmtm_inherited_censor = { is_alive = yes } }
+			scope:rmtm_restoration_heir = { assign_councillor_type = { type = councillor_spymaster target = scope:rmtm_inherited_censor remove_existing_councillor = yes } }
+		}
+		if = {
+			limit = { exists = scope:rmtm_inherited_grand_marshal scope:rmtm_inherited_grand_marshal = { is_alive = yes } }
+			scope:rmtm_restoration_heir = { assign_councillor_type = { type = minister_grand_marshal target = scope:rmtm_inherited_grand_marshal remove_existing_councillor = yes } }
+		}
+		if = {
+			limit = { exists = scope:rmtm_inherited_personnel scope:rmtm_inherited_personnel = { is_alive = yes } }
+			scope:rmtm_restoration_heir = { assign_councillor_type = { type = minister_personnel target = scope:rmtm_inherited_personnel remove_existing_councillor = yes } }
+		}
+		if = {
+			limit = { exists = scope:rmtm_inherited_revenue scope:rmtm_inherited_revenue = { is_alive = yes } }
+			scope:rmtm_restoration_heir = { assign_councillor_type = { type = councillor_steward target = scope:rmtm_inherited_revenue remove_existing_councillor = yes } }
+		}
+		if = {
+			limit = { exists = scope:rmtm_inherited_rites scope:rmtm_inherited_rites = { is_alive = yes } }
+			scope:rmtm_restoration_heir = { assign_councillor_type = { type = councillor_court_chaplain target = scope:rmtm_inherited_rites remove_existing_councillor = yes } }
+		}
+		if = {
+			limit = { exists = scope:rmtm_inherited_war scope:rmtm_inherited_war = { is_alive = yes } }
+			scope:rmtm_restoration_heir = { assign_councillor_type = { type = councillor_marshal target = scope:rmtm_inherited_war remove_existing_councillor = yes } }
+		}
+		if = {
+			limit = { exists = scope:rmtm_inherited_justice scope:rmtm_inherited_justice = { is_alive = yes } }
+			scope:rmtm_restoration_heir = { assign_councillor_type = { type = minister_justice target = scope:rmtm_inherited_justice remove_existing_councillor = yes } }
+		}
+		if = {
+			limit = { exists = scope:rmtm_inherited_works scope:rmtm_inherited_works = { is_alive = yes } }
+			scope:rmtm_restoration_heir = { assign_councillor_type = { type = minister_works target = scope:rmtm_inherited_works remove_existing_councillor = yes } }
+		}
+	}
+}
+
 # Global-scope save migration. Version 0.2.0 Later titles already carry the
 # durable marker, so adding the missing succession law is idempotent. If the
 # unique ministry entitlement is absent, the first surviving marked title found

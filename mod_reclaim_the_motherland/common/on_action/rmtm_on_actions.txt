@@ -6,8 +6,31 @@ on_game_start_after_lobby = {
 	}
 }
 
+# The engine discards an empty-de-jure dynamic Hegemony during ordinary death
+# succession even when it has a valid current_heir and a single-heir law. Extend
+# the vanilla pre-death hook so the exact Later title and its de-facto realm are
+# handed to that heir before the engine evaluates title validity.
+on_death = {
+	on_actions = {
+		rmtm_on_death
+	}
+}
+
 rmtm_on_game_start = {
 	effect = {
 		rmtm_migrate_restoration_hegemonies_effect = yes
+	}
+}
+
+rmtm_on_death = {
+	trigger = {
+		has_game_rule = rmtm_reclaim_the_motherland
+		primary_title = {
+			has_variable = rmtm_restoration_hegemony
+			exists = current_heir
+		}
+	}
+	effect = {
+		rmtm_handoff_restoration_hegemony_on_death_effect = yes
 	}
 }

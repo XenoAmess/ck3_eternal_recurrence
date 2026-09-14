@@ -486,6 +486,89 @@ class TestReclaimTheMotherlandContract(unittest.TestCase):
         )
         self.assertNotIn("trigger_event", on_action_text)
 
+    def test_phase_three_predeath_handoff_preserves_exact_realm_and_ministry(self) -> None:
+        custom_text, custom_file = read_script(CUSTOM_EFFECTS)
+        handoff = direct_block(
+            custom_file, "rmtm_handoff_restoration_hegemony_on_death_effect"
+        )
+        self.assertTrue(has_assignment(handoff, "has_game_rule", RECLAIM_SETTING))
+        self.assertTrue(has_assignment(handoff, "has_variable", MARKER))
+        self.assertTrue(has_key(handoff, "current_heir"))
+        self.assertTrue(has_assignment(handoff, "type", "inherited"))
+        self.assertTrue(has_key(handoff, "change_title_holder_include_vassals"))
+        self.assertTrue(
+            has_assignment(
+                handoff,
+                "set_primary_title_to",
+                "scope:rmtm_inherited_restoration_title",
+            )
+        )
+        self.assertTrue(
+            has_assignment(
+                handoff,
+                "name",
+                "rmtm_ministry_entitlement_title",
+            )
+        )
+        handoff_text = custom_text[
+            custom_text.index(
+                "rmtm_handoff_restoration_hegemony_on_death_effect = {"
+            ) : custom_text.index("# Global-scope save migration")
+        ]
+        self.assertNotIn("destroy_title =", handoff_text)
+        self.assertNotIn("title:h_china", handoff_text)
+
+        inherited_positions = {
+            "councillor_chancellor",
+            "councillor_spymaster",
+            "minister_grand_marshal",
+            "minister_personnel",
+            "councillor_steward",
+            "councillor_court_chaplain",
+            "councillor_marshal",
+            "minister_justice",
+            "minister_works",
+        }
+        assignment_types = {
+            value
+            for block in descendant_blocks(handoff, "assign_councillor_type")
+            for value in scalar_values(block, "type", recursive=False)
+        }
+        self.assertEqual(assignment_types, inherited_positions)
+        self.assertEqual(
+            len(descendant_blocks(handoff, "assign_councillor_type")),
+            len(inherited_positions),
+        )
+        self.assertTrue(
+            has_assignment(
+                handoff,
+                "move_title_name_to",
+                "scope:rmtm_inherited_restoration_title",
+            )
+        )
+        self.assertTrue(
+            has_assignment(
+                handoff,
+                "remove_variable",
+                "rmtm_title_name_recovery_candidate",
+            )
+        )
+
+        on_action_text, on_actions = read_script(ON_ACTIONS)
+        death = direct_block(on_actions, "on_death")
+        self.assertTrue(has_key(death, "on_actions"))
+        self.assertIn("rmtm_on_death", on_action_text)
+        callback = direct_block(on_actions, "rmtm_on_death")
+        self.assertTrue(has_assignment(callback, "has_game_rule", RECLAIM_SETTING))
+        self.assertTrue(has_assignment(callback, "has_variable", MARKER))
+        self.assertTrue(
+            has_assignment(
+                callback,
+                "rmtm_handoff_restoration_hegemony_on_death_effect",
+                "yes",
+            )
+        )
+
     def test_phase_three_ministry_is_unique_and_only_defectors_leave_office(self) -> None:
         trigger_text, trigger_file = read_script(MINISTRY_TRIGGER_OVERRIDE)
         access = direct_block(trigger_file, "tgp_has_access_to_ministry_trigger")
