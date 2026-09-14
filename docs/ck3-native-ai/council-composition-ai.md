@@ -2,7 +2,7 @@
 
 ## 状态与范围
 
-- **[private-live capture GREEN / production reader pending]** 本专题冻结常规内阁席位的人选集合入口、职位与候选合法性、解职/调任/交换门、主要能力，以及强力封臣席位压力。R684 已在 exact-build、paused、同线程条件下捕获 `councillor_steward` 的 11 行候选向量；按需调用的生产 reader、公开 MCP、planner 与任命动作仍未实现。
+- **[private-live capture GREEN / private reader core static-ready / binding pending]** 本专题冻结常规内阁席位的人选集合入口、职位与候选合法性、解职/调任/交换门、主要能力，以及强力封臣席位压力。R684 已在 exact-build、paused、同线程条件下捕获 `councillor_steward` 的 11 行候选向量；COUNCIL6 已实现 fail-closed private reader core，生产绑定、公开 MCP、planner 与任命动作仍未实现。
 - **[unknown]** exact-build EXE 明确保留 `ai_council.cpp` 子系统及 council AI 开关，但没有在脚本、define 或当前已闭合的 reflection/GUI 表面暴露“候选综合分数”、各输入权重、重排 cadence 或最终选择理由。本文不把职位主能力排序、`COUNCIL_TASK_SWITCH_SCORE` 或 GUI 顺序冒充原版人选 AI 公式。
 - 本专题以现有 [内阁观测与发展任务](council-and-development.md) 的 active position/incumbent 结果为输入，增加人选与动作预检，不改变 `campaign-root-context-v1`。
 - 宫廷司祭仅发布 position identity、最终候选合法性与不透明拒绝原因。信仰、教义、教义条目、宗教热情、改宗和宗教改革不进入合同或我方策略。
@@ -35,6 +35,14 @@ R684 在候选构建 `bb5911cedc7af70c43312d16a88c75ec50aac4f6` 上只执行了�
 | capture/report | SHA-256 `F19AA907292EA53EB3D2F69658F59A871D34B5960200FA5F0DE68FEC096F3CAB` / `9215C1FED4EF164C5F4272250BB412E047DE1223A03BA93C9A71A3CEB58F9B6F` |
 
 这项证据关闭的是**一个非空总管候选向量的 row stride、full-generation identity 与同帧寿命**。原始 8 字节行是瞬时 native pointer 表示，只作为 stride/逐行 identity 解析证据保留，绝不能进入公开查询。它不证明空列表、其它席位、GUI 最终排序、主能力、强力封臣压力、意见、guest 状态、候选合法性或原版 AI 总分。R684 也不是可按需调用的生产 reader；不得把 private capture 写成 public capability 或 planner-ready。
+
+## COUNCIL6 private reader core
+
+COUNCIL6 实现 `g2_council_composition_steward_candidates_reader_v1` 的 **static-ready private core**。核心只接收依赖注入的 exact-build environment 与 native callbacks，不注册 CMake、bridge、MCP 或公开 schema。它在一次函数调用内严格执行：校验 exact build 与 application-main → 捕获预期 paused frame/owner/active steward task → 以 `R8B=1` 调用 producer 一次 → 逐行复制 full CharacterID 并做 generation round-trip → 拒绝重复 ID → 在同一 transaction 内调用 release 一次 → 复读 frame binding → 按 unsigned full CharacterID 排序并保留 `native_collection_ordinal` → 最后发布。
+
+R684 的 11 个 CharacterID 已作为聚焦 fixture 输入；成功输出包含同样 11 个 ID。producer 调用之后发生的 span、row、generation、duplicate 或 frame failure 都会先 release，再返回零行 unavailable；release 自身失败返回 `temporary_vector_release_failed`，不发布部分结果。离线空向量是 fixture-only 行为覆盖，不冒充 live empty-list 证据。
+
+生产绑定尚未注册：`producer_address`、exact temporary-vector release、campaign-root active steward task resolution 与 mailbox glue 仍由下一工作包完成。因此公开 capability 不存在，production query 未通过，planner-ready 仍为 false。
 
 ## 已闭合的原版规则
 
@@ -200,7 +208,7 @@ flowchart TD
 
 ## 最小下一阶段只读查询合同（尚未发布）
 
-R684 解锁的是**总管候选 identity provider**，不是原先草案中的整套内阁决策查询。下一工作包先实现 private `council_composition_steward_candidates_reader_v1`：在现有 application-main mailbox 的一个 paused transaction 内，从 campaign-root 取得 actual player 与 active `councillor_steward` task，使用 `R8B=1` 调用冻结的 producer，同步复制 full CharacterID，并在同一 transaction 内释放临时输出。调用前后必须复核 owner、task、position、date、public/native revision 与 paused 状态。
+R684 解锁的是**总管候选 identity provider**，不是原先草案中的整套内阁决策查询。COUNCIL6 已实现 private `council_composition_steward_candidates_reader_v1` 核心：它在一个调用中完成 paused binding、producer、identity copy、generation round-trip、release、frame recheck 与原子发布。下一工作包只需把核心绑定到现有 application-main mailbox 的 campaign-root actual player、active `councillor_steward` task、exact producer 与 exact release；调用前后仍必须复核 owner、task、position、date、public/native revision 与 paused 状态。
 
 该 provider 的最小结果投影如下；这是实现合同，不是已发布 schema：
 
@@ -280,13 +288,13 @@ R684 解锁的是**总管候选 identity provider**，不是原先草案中的�
 
 该输出会解锁玩家可见价值：自动玩家能指出具体席位、具体人选、能力变化、政治收益与换人代价，并在合法性不足时给出可读 blocker。它不等待原版隐藏总分闭合，也不把 recommendation 当作 action ACK。
 
-## R684 后的唯一下一实现
+## COUNCIL6 后的唯一下一集成
 
-已经通过的 `0x105820F` observer 不再重复长跑，也不再作为下一 probe。唯一下一实现 seam 是：**在现有 main-thread query mailbox 的同一 paused transaction 内，按需调用 steward producer、复制 candidate full IDs、释放临时向量并复核 frame binding**。首个实现只生成上一节的 private provider；不改公开 MCP/schema，不读 GUI，不保存 native pointer，不提交任命动作。
+private core 已完成，不再重复 R684 observer 或另写一套 reader。唯一下一集成 seam 是：**把 exact producer、临时向量 release 和 campaign-root active steward task resolution 注入现有 main-thread query mailbox**。集成者拥有共享 CMake/bridge 写入权；core 本身继续不登记公开 capability。
 
-临时输出释放是本阶段必须与调用一起闭合的寿命边：复制结束后采用 exact-build 已定位的 refresh cleanup 语义释放 output，随后才允许 mailbox completion。若无法证明释放成功，返回 `temporary_vector_release_failed`，不发布部分列表。provider 的 source/fixture 测试通过后，下一次实机只验证一次按需 paused query；不会重跑同一 R684 GUI 捕获场景。
+绑定必须证明 producer 地址为 module base + `0x293BD00`，release 采用 exact-build refresh cleanup 语义，且每次 producer invocation 都在 mailbox completion 前恰好调用一次 release。聚焦 suspended fixture 先验证 shared glue；随后只做一次按需 paused query，核对 11 个 R684 身份或当前同帧合法变体、release receipt、frame binding 和零写入。不会重跑同一 R684 GUI 捕获长跑。
 
-这个窄 provider GREEN 后，再依次接：compiled `valid_position` / `valid_character`，主能力和政治输入，fire/reassign/swap preview，公开只读 MCP，真实空缺与 occupied replacement 两个代表性 paused artifact，最后才接最小 planner。任命 semantic action 保持独立工作包，提交前复检 owner/position/candidate，提交后重读 active position；不得调用绕过原版规则的 script effect。
+该窄绑定 GREEN 后，再依次接：compiled `valid_position` / `valid_character`，主能力和政治输入，fire/reassign/swap preview，公开只读 MCP，真实空缺与 occupied replacement 两个代表性 paused artifact，最后才接最小 planner。任命 semantic action 保持独立工作包，提交前复检 owner/position/candidate，提交后重读 active position；不得调用绕过原版规则的 script effect。
 
 ## 未闭合边界
 
@@ -294,7 +302,7 @@ R684 解锁的是**总管候选 identity provider**，不是原先草案中的�
 |---|---|---|
 | **[unknown]** | 原版 AI composition utility、输入权重和 tie-break | `native_ai_score_ready=false`；不阻塞我方 planner |
 | **[unknown]** | 原版 AI 席位重算 cadence 与 `last_appointed_councillor` 语义 | 不推断换人时机；Mermaid 保留虚线 |
-| **[private-live capture GREEN / provider pending]** | 空列表、其它席位与按需 producer 调用/释放尚未实机互证 | R684 已关闭总管非空向量的 8-byte row、11 个唯一 full ID、同线程与同帧寿命；下一步只实现窄 private provider |
+| **[private core static-ready / binding pending]** | 空列表与其它席位未实机互证；exact producer/release/mailbox glue 尚未注册 | R684 已关闭总管非空向量证据；COUNCIL6 core 已闭合原子复制、release 与 fail-closed 流程；下一步只做 shared binding |
 | **[static entry only]** | fire/reassign/swap 的完整 machine reason | 允许稳定粗粒度 reason；禁止解析 loc 猜原因 |
 | **[owner-deferred]** | 宫廷司祭通用信仰/教义策略 | 仅最终合法性和 opaque reason |
 | **[not implemented]** | read-only MCP、planner 与 semantic action | 按上节顺序推进，状态不得写 live/action-ready |

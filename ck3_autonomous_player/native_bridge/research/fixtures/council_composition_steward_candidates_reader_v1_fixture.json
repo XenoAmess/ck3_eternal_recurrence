@@ -1,0 +1,109 @@
+{
+  "schema_version": 1,
+  "kind": "council_composition_steward_candidates_reader_v1_fixture",
+  "source_live_contract": "council_composition_steward_r684_live_capture_v1.json",
+  "offline_fixture": true,
+  "exact_build": {
+    "product_version": "1.19.0.6",
+    "executable_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86"
+  },
+  "input": {
+    "snapshot_id": "native:3",
+    "public_revision": 4,
+    "native_revision": 3,
+    "date_raw": 53178264,
+    "paused": true,
+    "owner_character_id": 29829,
+    "owner_identity_round_trip": true,
+    "active_task_id": 7159,
+    "active_task_identity_round_trip": true,
+    "position_key": "councillor_steward",
+    "native_capacity": 64,
+    "native_count": 11,
+    "native_character_ids": [
+      30784,
+      33437,
+      33888,
+      35637,
+      57582,
+      33435,
+      34333,
+      34867,
+      32440,
+      43706,
+      33433
+    ],
+    "candidate_identity_round_trip": true
+  },
+  "expected_available_output": {
+    "candidate_collection_complete": true,
+    "temporary_vector_released": true,
+    "candidates": [
+      {
+        "character_id": 30784,
+        "native_collection_ordinal": 0
+      },
+      {
+        "character_id": 32440,
+        "native_collection_ordinal": 8
+      },
+      {
+        "character_id": 33433,
+        "native_collection_ordinal": 10
+      },
+      {
+        "character_id": 33435,
+        "native_collection_ordinal": 5
+      },
+      {
+        "character_id": 33437,
+        "native_collection_ordinal": 1
+      },
+      {
+        "character_id": 33888,
+        "native_collection_ordinal": 2
+      },
+      {
+        "character_id": 34333,
+        "native_collection_ordinal": 6
+      },
+      {
+        "character_id": 34867,
+        "native_collection_ordinal": 7
+      },
+      {
+        "character_id": 35637,
+        "native_collection_ordinal": 3
+      },
+      {
+        "character_id": 43706,
+        "native_collection_ordinal": 9
+      },
+      {
+        "character_id": 57582,
+        "native_collection_ordinal": 4
+      }
+    ]
+  },
+  "focused_failure_cases": [
+    "exact_build_not_admitted",
+    "application_main_thread_required",
+    "not_paused",
+    "position_outside_coverage",
+    "candidate_collection_unavailable",
+    "candidate_span_invalid",
+    "candidate_row_unreadable",
+    "candidate_generation_mismatch",
+    "duplicate_candidate_id",
+    "temporary_vector_release_failed",
+    "date_drift"
+  ],
+  "failure_contract": {
+    "post_producer_failures_release_once": true,
+    "unavailable_candidate_count": 0,
+    "partial_rows_published": false
+  },
+  "public_abi_changed": false,
+  "public_readiness_changed": false,
+  "next_entry": "council_composition_steward_candidates_reader_v1_private_native_binding"
+}

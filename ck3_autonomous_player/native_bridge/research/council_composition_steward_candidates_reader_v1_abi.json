@@ -1,0 +1,63 @@
+{
+  "schema_version": 1,
+  "private_key": "g2_council_composition_steward_candidates_reader_v1",
+  "status": "static-ready-private-core-unbound",
+  "visibility": "private-not-advertised",
+  "exact_build": {
+    "product_version": "1.19.0.6",
+    "executable_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86"
+  },
+  "coverage": {
+    "position_keys": [
+      "councillor_steward"
+    ],
+    "candidate_fields": [
+      "character_id",
+      "native_collection_ordinal"
+    ],
+    "excluded_fields": [
+      "native_pointer",
+      "raw_row_bytes",
+      "candidate_legality",
+      "main_skill",
+      "powerful_vassal_pressure",
+      "opinion",
+      "action_preview",
+      "native_ai_score"
+    ]
+  },
+  "native_seam": {
+    "producer_rva": "0x293BD00",
+    "gui_eligibility_mode": true,
+    "temporary_vector_header": "data uintptr + capacity int32 + count int32",
+    "row_stride_bytes": 8,
+    "maximum_published_rows": 64,
+    "maximum_admitted_native_capacity": 65536
+  },
+  "transaction": {
+    "executor": "application-main paused mailbox transaction",
+    "steps": [
+      "capture and validate expected snapshot/owner/active steward task",
+      "invoke the exact producer once with R8B=1",
+      "validate the bounded candidate span",
+      "copy each pointer-derived full CharacterID and generation-round-trip it",
+      "reject duplicate full CharacterID values",
+      "release the temporary native vector exactly once",
+      "recapture and compare snapshot/owner/task/position/date/revisions",
+      "sort copied rows by unsigned full CharacterID while retaining native ordinals",
+      "publish only after all gates pass"
+    ],
+    "failure_atomicity": "all unavailable results publish zero candidate rows",
+    "release_rule": "every producer invocation is followed by one release call before completion; release failure overrides partial results"
+  },
+  "readiness": {
+    "private_core_implemented": true,
+    "r684_nonempty_vector_fixture": true,
+    "native_binding_registered": false,
+    "public_capability_registered": false,
+    "production_query_live": false,
+    "planner_ready": false
+  },
+  "forbidden_public_capability": "game.query.council-composition-candidates-v1",
+  "unique_next_integration_entry": "bind producer, exact temporary-vector release and campaign-root steward task resolution into the existing main-thread query mailbox"
+}

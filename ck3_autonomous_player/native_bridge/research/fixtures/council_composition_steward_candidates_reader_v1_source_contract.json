@@ -1,0 +1,48 @@
+{
+  "schema_version": 1,
+  "private_key": "g2_council_composition_steward_candidates_reader_v1",
+  "files": {
+    "header": "include/xar_bridge/council_composition_steward_candidates_reader_v1.hpp",
+    "implementation": "src/council_composition_steward_candidates_reader_v1.cpp",
+    "unit_test": "src/council_composition_steward_candidates_reader_v1_test.cpp",
+    "abi": "research/council_composition_steward_candidates_reader_v1_abi.json",
+    "fixture": "research/fixtures/council_composition_steward_candidates_reader_v1_fixture.json"
+  },
+  "required_header_tokens": [
+    "kCouncilCompositionStewardCandidatesReaderPrivateKeyV1",
+    "kCouncilCompositionStewardCandidatesReaderExecutableSha256V1",
+    "kCouncilCompositionStewardCandidatesReaderPositionKeyV1",
+    "kCouncilCompositionStewardCandidatesProducerRvaV1",
+    "CouncilCompositionStewardNativeCandidateVectorV1",
+    "played_character_identity_round_trip",
+    "active_task_identity_round_trip",
+    "ProduceCouncilCompositionStewardCandidatesV1",
+    "ReleaseCouncilCompositionStewardCandidatesV1",
+    "ReadCouncilCompositionStewardCandidatesV1",
+    "temporary_vector_released"
+  ],
+  "required_implementation_tokens": [
+    "application_main_thread_required",
+    "candidate_collection_unavailable",
+    "candidate_span_invalid",
+    "candidate_generation_mismatch",
+    "duplicate_candidate_id",
+    "temporary_vector_release_failed",
+    "access.release(access.context, vector)",
+    "ClassifyFrameDrift",
+    "std::sort"
+  ],
+  "required_test_tokens": [
+    "TestR684ElevenRowsSuccess",
+    "TestEmptyVectorFixtureSuccess",
+    "TestPostProducerFailuresAlwaysRelease",
+    "TestReleaseAndFrameFailuresStayClosed",
+    "fixture.release_calls == 1",
+    "std::vector<int>{1, 2, 3, 1}"
+  ],
+  "forbidden_shared_edits": [
+    "CMakeLists.txt",
+    "src/bridge.cpp"
+  ],
+  "forbidden_public_capability": "game.query.council-composition-candidates-v1"
+}
