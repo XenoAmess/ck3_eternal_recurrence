@@ -448,3 +448,21 @@ six occupied council tasks per scene are observed on unchanged date `53178264`.
 The source save is unchanged and managed cleanup is proven. Artifact SHA-256 is
 `CFF681146A344AE18FDEB36C20BDAEAFC2A30344023CC7827E9A77006C3530DB`.
 G2-M1 is complete and the fixed program denominator is now `1/8`.
+
+### 2026-09-14 G2-M3 paused cold-restore pickup gate
+
+The R679 bounded differential did not reach campaign-root reading. The request
+was published but cancelled before execution while the paused application-main
+pump epoch remained `11208 -> 11208`; executor starts and executed requests
+both remained `0 -> 0`. The run performed zero gameplay, retained date
+`53789952`, captured no succession expectation and cleaned up successfully.
+This is a production RED in the cold-restore paused pickup path.
+
+The mailbox partial-admission FIX1 is still only static/candidate evidence
+because R679 returned no typed root payload. G2-M3 therefore remains
+`in_progress` and global G2 remains `1/8`. Before another CK3 round, FIX2 must
+restore observable application-main pump progress for a published request on
+this cold paused boundary. The next live gate is one short differential that
+proves pickup, then observes the FIX1 available-but-partial root, derived
+partial turn bundle and succession expectation. A naturally occurring death
+and successor continuation remain a later, separate M3 integration gate.
