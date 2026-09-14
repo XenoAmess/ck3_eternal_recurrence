@@ -103,6 +103,16 @@ The focused contract, service, strategy and driver suite passes `10/10` under
 normal and optimized Python. It covers automatic capture/reconciliation,
 same-PID recovery, matched successor continuation, zero CK3 command/restart,
 and fail-closed mismatch handling. The existing immutable-seed replay path is
-also retained for its distinct terminal case. Production readiness still
-requires one bounded natural-death artifact proving the same sequence against
-the exact build.
+also retained for its distinct terminal case.
+
+The ordinary bounded `native-auto-run` owner now treats a completed
+`played_character_changed` settlement as
+`natural_successor_continuation_pending`, executes the next planner turn, and
+verifies the continuation before resuming gameplay. Its report contains a
+`natural_succession_transitions` ledger with the predecessor/successor IDs,
+old/new episode run IDs, matched reconciliation, unchanged process/frame proof,
+and explicit zero CK3 command/restart fields. The strict one-generation owner
+still stops at death, and the immutable-seed next-episode owner keeps its own
+separate lifecycle. Focused runner boundary tests pass `4/4` under normal and
+optimized Python. Production readiness still requires one bounded
+natural-death artifact proving the sequence against the exact build.

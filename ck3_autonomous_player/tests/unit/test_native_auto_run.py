@@ -97,7 +97,9 @@ class _NativeAutoRunHarness:
         self.heartbeat_date_raw = self.date_raw
         self.heartbeat_lag_capability_reads = 0
         self.terminal = False
+        self.terminal_reason: str | None = None
         self.episode_character_id = 707
+        self.played_character_id = 707
         self.episode_run_id = "native-707-test-run"
         self.bridge_pid = 4242
         self.connection_generation = 1
@@ -245,15 +247,18 @@ class _NativeAutoRunHarness:
             "map_ready": map_ready,
             "paused": True,
             "played_character": {
-                "character_id": self.episode_character_id,
-                "alive": not self.terminal,
+                "character_id": self.played_character_id,
+                "alive": (
+                    self.terminal_reason == "played_character_changed"
+                    or not self.terminal
+                ),
             },
             "episode_character_id": self.episode_character_id,
             "episode_run_id": self.episode_run_id,
             "episode_identity_pending": False,
             "one_life_terminal": self.terminal,
             "one_life_terminal_reason": (
-                "played_character_dead" if self.terminal else None
+                self.terminal_reason if self.terminal else None
             ),
             "one_life_settlement_status": (
                 "ready" if self.settlement is not None else "pending"
@@ -420,6 +425,7 @@ class _NativeAutoRunHarness:
             "lagged_advance",
             "slow_advance",
             "terminal_advance",
+            "natural_terminal_advance",
             "advance_to_event",
             "no_delta_advance",
             "identity_change",
@@ -431,6 +437,7 @@ class _NativeAutoRunHarness:
                 "lagged_advance",
                 "slow_advance",
                 "terminal_advance",
+                "natural_terminal_advance",
                 "advance_to_event",
                 "identity_change",
             }:
@@ -445,6 +452,11 @@ class _NativeAutoRunHarness:
                     self.heartbeat_date_raw = self.date_raw
                 if action == "terminal_advance":
                     self.terminal = True
+                    self.terminal_reason = "played_character_dead"
+                if action == "natural_terminal_advance":
+                    self.terminal = True
+                    self.terminal_reason = "played_character_changed"
+                    self.played_character_id = 808
                 if action == "advance_to_event":
                     self.active_event_id = 900
                 if action == "identity_change":
@@ -600,10 +612,12 @@ class _NativeAutoRunHarness:
                 "immutable": True,
             }
             self.terminal = False
+            self.terminal_reason = None
             self.settlement = None
             self.date_raw = int(seed["date_raw"])
             self.heartbeat_date_raw = self.date_raw
             self.episode_character_id = int(seed["character_id"])
+            self.played_character_id = self.episode_character_id
             self.episode_run_id = "native-707-next-test-run"
             self.bridge_pid = 4343
             self.connection_generation = (
@@ -663,8 +677,65 @@ class _NativeAutoRunHarness:
                 "snapshot_id": f"native:{self.native_revision}",
                 "revision": self.public_revision,
             }
+        elif action == "continue_natural_successor":
+            if (
+                not self.terminal
+                or self.terminal_reason != "played_character_changed"
+                or self.settlement is None
+            ):
+                raise AssertionError(
+                    "natural successor action lacks a completed transition"
+                )
+            step = "continue-as-reconciled-successor"
+            predecessor_character_id = self.episode_character_id
+            predecessor_run_id = self.episode_run_id
+            successor_character_id = self.played_character_id
+            successor_binding = {
+                "snapshot_id": f"native:{self.native_revision}",
+                "revision": self.public_revision,
+                "native_revision": self.native_revision,
+                "date_raw": self.date_raw,
+            }
+            self.episode_character_id = successor_character_id
+            self.episode_run_id = "native-808-natural-test-run"
+            self.terminal = False
+            self.terminal_reason = None
+            self.settlement = None
+            self.driver_state_restored = False
+            self.driver_state_restore_kind = "natural_succession"
+            self.episode_binding_state = "active_natural_successor"
+            result = {
+                "step": step,
+                "accepted": True,
+                "status": "continued",
+                "backend_id": "native-headless",
+                "source": "native-played-character-transition",
+                "lifecycle_intent": "natural_succession",
+                "predecessor_character_id": predecessor_character_id,
+                "successor_character_id": successor_character_id,
+                "source_episode_run_id": predecessor_run_id,
+                "episode_run_id": self.episode_run_id,
+                "reconciliation": {
+                    "status": "available",
+                    "verdict": "matched",
+                    "successor_match": True,
+                    "title_distribution_match": True,
+                    "predecessor_character_id": predecessor_character_id,
+                    "actual_successor_character_id": successor_character_id,
+                    "successor_binding": successor_binding,
+                },
+                "continue_as_heir_after_death": True,
+                "heir_gameplay_actions": 0,
+                "ck3_command_submitted": False,
+                "process_restarted": False,
+                "date_raw": self.date_raw,
+                "snapshot_id": f"native:{self.native_revision}",
+                "revision": self.public_revision,
+            }
+            self.history = []
         elif action in {
             "death_terminal",
+            "death_terminal_changed",
             "death_terminal_source_mismatch",
             "death_terminal_score_mismatch",
             "death_terminal_unavailable",
@@ -701,8 +772,12 @@ class _NativeAutoRunHarness:
                 "step": step,
                 "accepted": True,
                 "terminal": True,
-                "terminal_kind": "native_played_character_dead",
-                "terminal_reason": "played_character_dead",
+                "terminal_kind": (
+                    "native_played_character_changed"
+                    if action == "death_terminal_changed"
+                    else "native_played_character_dead"
+                ),
+                "terminal_reason": self.terminal_reason,
                 "episode_character_id": self.episode_character_id,
                 "settlement_status": settlement_status,
                 "settlement_unavailable": (
@@ -2373,6 +2448,52 @@ class NativeAutoRunTests(unittest.TestCase):
             ["life-advance", "life-advance", "death-terminal"],
         )
         self.assertNotIn("start-next-episode", harness.events)
+
+    def test_bounded_run_continues_on_reconciled_natural_successor(self) -> None:
+        report, harness = self._run(
+            [
+                "advance",
+                "natural_terminal_advance",
+                "death_terminal_changed",
+                "continue_natural_successor",
+                "advance",
+            ],
+            checkpoint_every_eligible_advances=1,
+        )
+
+        self.assertTrue(report["ok"], report.get("error"))
+        self.assertEqual(report["status"], "turn_limit")
+        self.assertEqual(report["outcome"], "qualified")
+        transitions = report["natural_succession_transitions"]
+        self.assertEqual(len(transitions), 1)
+        transition = transitions[0]
+        self.assertEqual(transition["status"], "verified")
+        self.assertEqual(transition["predecessor_character_id"], 707)
+        self.assertEqual(transition["successor_character_id"], 808)
+        self.assertEqual(
+            transition["source_episode_run_id"], "native-707-test-run"
+        )
+        self.assertEqual(
+            transition["episode_run_id"], "native-808-natural-test-run"
+        )
+        self.assertTrue(transition["same_campaign_frame"])
+        self.assertFalse(transition["ck3_command_submitted"])
+        self.assertFalse(transition["process_restarted"])
+        self.assertEqual(harness.bridge_pid, 4242)
+        self.assertEqual(harness.connection_generation, 1)
+        self.assertEqual(
+            report["checkpoints"][-1]["episode_character_id"], 808
+        )
+        self.assertEqual(
+            [row["selected_step"] for row in report["auto_run"]["turns"]],
+            [
+                "life-advance",
+                "life-advance",
+                "death-terminal",
+                "continue-as-reconciled-successor",
+                "life-advance",
+            ],
+        )
 
     def test_next_episode_requires_seed_reload_gameplay_and_checkpoint(self) -> None:
         report, harness = self._run(

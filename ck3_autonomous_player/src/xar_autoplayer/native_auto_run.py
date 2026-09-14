@@ -36,6 +36,9 @@ from .bridge.settlement_contract import (
     normalize_one_life_settlement,
     settlement_ready_for_episode,
 )
+from .bridge.succession_transition_contract import (
+    CONTINUE_AS_RECONCILED_SUCCESSOR_STEP,
+)
 from .bridge.war_contract import (
     is_life_advance_step,
     parse_offer_white_peace_step,
@@ -70,7 +73,11 @@ _ELIGIBLE_ADVANCE_STEPS = frozenset(
 )
 _TERMINAL_STEPS = frozenset({"death-terminal", "strategy-review"})
 _RECOVERY_STEPS = frozenset(
-    {"restore-checkpoint", "start-next-episode"}
+    {
+        "restore-checkpoint",
+        "start-next-episode",
+        CONTINUE_AS_RECONCILED_SUCCESSOR_STEP,
+    }
 )
 _PENDING_INTERACTION_REPLY_STATUSES = {
     "accept-pending-character-interaction": "accepted",
@@ -217,10 +224,12 @@ def native_auto_run(
     modal_decision_pending = False
     terminal_proof: dict[str, object] | None = None
     next_episode_transition: dict[str, object] | None = None
+    natural_succession_transitions: list[dict[str, object]] = []
     post_transition_visible_gameplay_turns = 0
     post_transition_last_gameplay_turn_index: int | None = None
     post_transition_checkpoint: dict[str, object] | None = None
     initial_episode: dict[str, object] | None = None
+    current_episode: dict[str, object] | None = None
     same_episode_binding = True
     status = "starting"
     primary_error: str | None = None
@@ -404,6 +413,7 @@ def native_auto_run(
             "episode_run_id": readiness.get("episode_run_id"),
             "date_raw": readiness.get("date_raw"),
         }
+        current_episode = copy.deepcopy(initial_episode)
         if completion_contract in strict_completion_contracts:
             try:
                 _verify_one_generation_binding(readiness, initial_episode)
@@ -784,6 +794,35 @@ def native_auto_run(
                         error=error,
                     )
                     raise
+            if step == CONTINUE_AS_RECONCILED_SUCCESSOR_STEP:
+                try:
+                    natural_transition = (
+                        _verify_natural_succession_transition(
+                            outcome.get("result"),
+                            snapshot=after_snapshot,
+                            binding=after,
+                            before=before,
+                        )
+                    )
+                except AgentError as error:
+                    capture_first_failure(
+                        stage="postcondition",
+                        kind="natural_succession_transition_invalid",
+                        message=str(error),
+                        error=error,
+                    )
+                    raise
+                natural_succession_transitions.append(natural_transition)
+                current_episode = {
+                    "episode_character_id": natural_transition[
+                        "successor_character_id"
+                    ],
+                    "episode_run_id": natural_transition[
+                        "episode_run_id"
+                    ],
+                    "date_raw": natural_transition["date_raw"],
+                }
+                evidence.append("natural_successor_continued")
             counts[turn_class] += 1
             if (
                 turn_class == "gameplay"
@@ -812,7 +851,7 @@ def native_auto_run(
                         outcome.get("result"),
                         snapshot=after_snapshot,
                         binding=after,
-                        initial_episode=initial_episode,
+                        initial_episode=current_episode,
                     )
                 except AgentError as error:
                     capture_first_failure(
@@ -949,6 +988,14 @@ def native_auto_run(
             if step == "death-terminal":
                 if completion_contract == "next_episode":
                     status = "next_episode_pending"
+                elif (
+                    completion_contract == "bounded"
+                    and isinstance(outcome.get("result"), dict)
+                    and outcome["result"].get("terminal_reason")
+                    == "played_character_changed"
+                ):
+                    status = "natural_successor_continuation_pending"
+                    continue
                 else:
                     status = "episode_complete"
                     break
@@ -1330,6 +1377,7 @@ def native_auto_run(
         },
         "checkpoints": checkpoints,
         "terminal": terminal_proof,
+        "natural_succession_transitions": natural_succession_transitions,
         "next_episode": (
             {
                 "transition": next_episode_transition,
@@ -1594,7 +1642,16 @@ def _readiness_observation(
             "episode run is unavailable",
         ),
         (isinstance(control, dict), "native session control is unavailable"),
-        (isinstance(control, dict) and control.get("episode_binding_state") in {"active_new", "active_resumed"}, "episode identity is not active"),
+        (
+            isinstance(control, dict)
+            and control.get("episode_binding_state")
+            in {
+                "active_new",
+                "active_resumed",
+                "active_natural_successor",
+            },
+            "episode identity is not active",
+        ),
         (isinstance(mailbox, dict) and mailbox.get("date_raw") == snapshot.get("date_raw"), "mailbox date differs from paused snapshot"),
         (isinstance(mailbox, dict) and mailbox.get("paused") is True, "mailbox did not observe paused state"),
     ]
@@ -1918,6 +1975,107 @@ def _checkpoint_proves_next_episode_ooda(
         and not isinstance(turn_index, bool)
         and turn_index >= last_gameplay_turn_index
     )
+
+
+def _verify_natural_succession_transition(
+    result: object,
+    *,
+    snapshot: dict[str, object],
+    binding: dict[str, object],
+    before: dict[str, object],
+) -> dict[str, object]:
+    """Prove a same-process new episode on CK3's played successor."""
+
+    if not isinstance(result, dict):
+        raise AgentError("natural successor continuation returned no result")
+    predecessor_id = before.get("episode_character_id")
+    predecessor_run_id = before.get("episode_run_id")
+    successor_id = before.get("played_character_id")
+    successor_run_id = result.get("episode_run_id")
+    reconciliation = result.get("reconciliation")
+    successor_binding = (
+        reconciliation.get("successor_binding")
+        if isinstance(reconciliation, dict)
+        else None
+    )
+    played = snapshot.get("played_character")
+    same_frame_keys = (
+        "bridge_pid",
+        "connection_generation",
+        "snapshot_id",
+        "revision",
+        "native_revision",
+        "date_raw",
+    )
+    if (
+        isinstance(predecessor_id, bool)
+        or not isinstance(predecessor_id, int)
+        or not isinstance(predecessor_run_id, str)
+        or not predecessor_run_id
+        or isinstance(successor_id, bool)
+        or not isinstance(successor_id, int)
+        or successor_id == predecessor_id
+        or before.get("played_character_alive") is not True
+        or before.get("one_life_terminal") is not True
+        or before.get("one_life_terminal_reason")
+        != "played_character_changed"
+        or result.get("step") != CONTINUE_AS_RECONCILED_SUCCESSOR_STEP
+        or result.get("accepted") is not True
+        or result.get("status") != "continued"
+        or result.get("source") != "native-played-character-transition"
+        or result.get("lifecycle_intent") != "natural_succession"
+        or result.get("predecessor_character_id") != predecessor_id
+        or result.get("successor_character_id") != successor_id
+        or result.get("source_episode_run_id") != predecessor_run_id
+        or not isinstance(successor_run_id, str)
+        or not successor_run_id
+        or successor_run_id == predecessor_run_id
+        or result.get("continue_as_heir_after_death") is not True
+        or result.get("heir_gameplay_actions") != 0
+        or result.get("ck3_command_submitted") is not False
+        or result.get("process_restarted") is not False
+        or any(binding.get(key) != before.get(key) for key in same_frame_keys)
+        or snapshot.get("episode_character_id") != successor_id
+        or snapshot.get("episode_run_id") != successor_run_id
+        or not isinstance(played, dict)
+        or played.get("character_id") != successor_id
+        or played.get("alive") is not True
+        or snapshot.get("one_life_terminal") is True
+        or snapshot.get("one_life_terminal_reason") is not None
+        or binding.get("episode_binding_state")
+        != "active_natural_successor"
+        or binding.get("driver_state_restore_kind") != "natural_succession"
+        or not isinstance(reconciliation, dict)
+        or reconciliation.get("status") != "available"
+        or reconciliation.get("verdict") != "matched"
+        or reconciliation.get("successor_match") is not True
+        or reconciliation.get("title_distribution_match") is not True
+        or reconciliation.get("predecessor_character_id") != predecessor_id
+        or reconciliation.get("actual_successor_character_id") != successor_id
+        or not isinstance(successor_binding, dict)
+        or any(
+            successor_binding.get(key) != before.get(key)
+            for key in ("snapshot_id", "revision", "native_revision", "date_raw")
+        )
+    ):
+        raise AgentError(
+            "natural successor continuation lacks a matched same-process "
+            "episode transition"
+        )
+    return {
+        "status": "verified",
+        "predecessor_character_id": predecessor_id,
+        "successor_character_id": successor_id,
+        "source_episode_run_id": predecessor_run_id,
+        "episode_run_id": successor_run_id,
+        "date_raw": binding.get("date_raw"),
+        "same_campaign_frame": True,
+        "ck3_command_submitted": False,
+        "process_restarted": False,
+        "reconciliation": copy.deepcopy(reconciliation),
+        "predecessor_binding": _public_binding(before),
+        "successor_episode_binding": _public_binding(binding),
+    }
 
 
 def _verify_one_generation_terminal(
