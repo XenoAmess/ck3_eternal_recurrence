@@ -883,8 +883,12 @@ def advance_recent_independence_expiry(
     """Advance at speed one until the fixture-compressed product timer expires."""
 
     before = service.snapshot()
+    precondition_pause_ack: dict[str, object] | None = None
+    precondition_pause_retries: list[str] = []
     if before.get("paused") is not True:
-        raise acceptance.RunnerError("recent-independence expiry precondition is not paused")
+        precondition_pause_ack, before, precondition_pause_retries = pause_running_map(
+            service, "recent-independence expiry precondition"
+        )
     speed_ack = service.execute_step(
         "set-speed-1", expected_revision=int(before["revision"])
     )
@@ -910,6 +914,8 @@ def advance_recent_independence_expiry(
         ),
         "release_duration_days": 1825,
         "fixture_duration_days": 1,
+        "precondition_pause_ack": precondition_pause_ack,
+        "precondition_pause_retries": precondition_pause_retries,
         "before": before,
         "speed_ack": speed_ack,
         "resume_ack": resume_ack,
