@@ -1,0 +1,1219 @@
+{
+  "schema": "xar.ck3.government_runtime_adapter_native_tree.v1",
+  "result": "STATIC_NATIVE_TREE_FROZEN",
+  "status": "research-only; observer contract defined; adapter and planner implementation not started",
+  "scope": {
+    "domain": "effective government runtime identity, nonreligious native AI policy switches, and DLC feature adapter inputs",
+    "game_version": "1.19.0.6",
+    "religious_governments_identity_only": true,
+    "religious_government_keys": [
+      "theocracy_government",
+      "holy_order_government"
+    ],
+    "religion_status": "owner-deferred",
+    "excluded": [
+      "faith, doctrine, tenet, fervor, conversion and religious reformation policy",
+      "holy-order behavior beyond stable government identity",
+      "bridge, CMake, public schema, planner and action implementation",
+      "CK3 launch, process attachment and live acceptance"
+    ]
+  },
+  "exact_build": {
+    "game_version": "1.19.0.6",
+    "executable_relative_path": "binaries/ck3.exe",
+    "executable_size": 95206008,
+    "executable_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+    "image_base": "0x140000000",
+    "research_repository_baseline": "35cacc7b8f54070cf9e08d2b2ad946ae21d28c07"
+  },
+  "repo_dependencies": {
+    "campaign_root_context_v1_abi.json": {
+      "size": 19699,
+      "sha256": "83B273D04F3477E7198D1413CC1AB196D0D1E0415AC9CC5FBBC4B14FDE5CF805"
+    },
+    "loaded_feature_manifest_v1_abi.json": {
+      "size": 1684,
+      "sha256": "9DC64C4E3BAD60C2EB0F5A5841E3A9D1F72FF69D09DBA9FC9965B00D0C47BF04"
+    },
+    "fixtures/campaign_root_context_v1_source_contract.json": {
+      "size": 7110,
+      "sha256": "083F9AF96CBB78DFEBFC560E401E5F40151C39AE4F2287A7EE1EE64661B6F714"
+    },
+    "fixtures/loaded_feature_manifest_v1_source_contract.json": {
+      "size": 1262,
+      "sha256": "E84822D7B14A946B7460F5DA2DC9D90CAAAEE6DDCD658166F8BE7F0952472760"
+    }
+  },
+  "source_files": {
+    "common/governments/_governments.info": {
+      "size": 26465,
+      "sha256": "14CA628A2C68B9DF4F7D6EABD6ACC44BF32BCDAF62D59ABD758729D0C71AFE5F",
+      "required_tokens": [
+        "perform_religious_reformation = yes",
+        "ai_ruler_desired_kingdom_titles = -1",
+        "ai_can_reassign_council_positions",
+        "Default is yes"
+      ]
+    },
+    "common/governments/00_government_types.txt": {
+      "size": 32088,
+      "sha256": "4AA234FD63CE8BBE73DAE4369A7E80FE8A33E779A22B41B80C3998F0FEE6D656",
+      "required_tokens": [
+        "feudal_government = {",
+        "nomad_government = {",
+        "celestial_government = {",
+        "has_tgp_dlc_trigger = yes"
+      ]
+    },
+    "common/governments/01_japan_government_types.txt": {
+      "size": 4819,
+      "sha256": "453DBC17F91338FC31F847D2680D9C4DA04B270BE5A1BE793F1E258385CC0AF3",
+      "required_tokens": [
+        "japan_administrative_government = {",
+        "japan_feudal_government = {",
+        "has_tgp_dlc_trigger = yes"
+      ]
+    },
+    "common/scripted_triggers/00_has_dlc_scripted_triggers.txt": {
+      "size": 2568,
+      "sha256": "E3CD5A7D72017861A5EB4D6EB9A41A345234243197148BA5AE1B4BD7B8AC630F",
+      "required_tokens": [
+        "has_ep3_dlc_trigger = {",
+        "has_dlc_feature = roads_to_power",
+        "has_dlc_feature = khans_of_the_steppe",
+        "has_dlc_feature = all_under_heaven"
+      ]
+    },
+    "common/defines/00_defines.txt": {
+      "size": 119477,
+      "sha256": "C1ECA141C71EC1E741CA5336E01BB538EEFAEC05B0684EDEC477CFC9053C3807",
+      "required_tokens": [
+        "AI_RULER_DESIRED_KINGDOM_TITLES_DEFAULT = { -1 -1 -1 -1 -1 -1 3 }",
+        "AI_RULER_DESIRED_EMPIRE_TITLES_DEFAULT = { -1 -1 -1 -1 -1 -1 1 }"
+      ]
+    },
+    "common/defines/ai/00_ai.txt": {
+      "size": 65153,
+      "sha256": "C78F9CD8DF9938CC9F38E817BCB6E32CD13720B5BD9DE077B85E3E1C6F030293",
+      "required_tokens": [
+        "RARE_TASK_TICK = {"
+      ]
+    },
+    "common/on_action/game_start.txt": {
+      "size": 226026,
+      "sha256": "84C0101F3273205433F6484A6184887BA377C57FEF18F735337369E0A2ED136C",
+      "required_tokens": [
+        "has_mpo_dlc_trigger = no",
+        "has_tgp_dlc_trigger = no",
+        "change_government = tribal_government",
+        "change_government = feudal_government"
+      ]
+    }
+  },
+  "government_schema": {
+    "nonreligious_ai_defaults": {
+      "use_lifestyle": true,
+      "arrange_marriage": true,
+      "use_goals": true,
+      "use_decisions": true,
+      "use_scripted_guis": true,
+      "use_legends": true,
+      "use_great_projects": false
+    },
+    "deliberately_excluded_default": {
+      "perform_religious_reformation": {
+        "source_default": true,
+        "policy": "owner-deferred religion domain; never projected as a G2 adapter decision input"
+      }
+    },
+    "special_native_ai_fields": [
+      "ai_ruler_desired_kingdom_titles",
+      "ai_ruler_desired_empire_titles",
+      "ai_can_reassign_council_positions"
+    ],
+    "stock_title_retention_defaults_by_tier": {
+      "kingdom": [
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        3
+      ],
+      "empire": [
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        1
+      ]
+    },
+    "rare_task_tick_days_by_tier": [
+      180,
+      720,
+      360,
+      180,
+      180,
+      180,
+      180
+    ],
+    "interpretation": "The effective government row selects policy. Default and authored override values are inputs; exact native legality and command evaluators remain authoritative."
+  },
+  "stock_key_flag_manifest_sha256": "7641BF95087F22F86ACD7892BAF7E44B02BA4FC2DCDC52ED4EB2DAC4327190BA",
+  "government_registry": [
+    {
+      "key": "feudal_government",
+      "source": "common/governments/00_government_types.txt",
+      "flags": [
+        "government_is_feudal",
+        "government_is_settled",
+        "may_elevate_co_monarch",
+        "government_uses_crown_authority",
+        "government_uses_domain_limit"
+      ],
+      "mechanic_type": "feudal",
+      "mechanic_default": true,
+      "fallback_priority": 1,
+      "can_get_feature_gates": [],
+      "nonreligious_ai_overrides": {
+        "use_legends": true
+      },
+      "effective_nonreligious_ai_switches": {
+        "use_lifestyle": true,
+        "arrange_marriage": true,
+        "use_goals": true,
+        "use_decisions": true,
+        "use_scripted_guis": true,
+        "use_legends": true,
+        "use_great_projects": false
+      },
+      "special_ai_scripts": {
+        "ai_ruler_desired_kingdom_titles": "default",
+        "ai_ruler_desired_empire_titles": "default",
+        "ai_can_reassign_council_positions": "default"
+      },
+      "ai_war_modifiers": {}
+    },
+    {
+      "key": "republic_government",
+      "source": "common/governments/00_government_types.txt",
+      "flags": [
+        "government_is_republic",
+        "government_is_settled",
+        "government_uses_domain_limit"
+      ],
+      "mechanic_type": null,
+      "mechanic_default": false,
+      "fallback_priority": 0,
+      "can_get_feature_gates": [],
+      "nonreligious_ai_overrides": {
+        "arrange_marriage": false,
+        "use_goals": false,
+        "use_scripted_guis": false,
+        "use_legends": false
+      },
+      "effective_nonreligious_ai_switches": {
+        "use_lifestyle": true,
+        "arrange_marriage": false,
+        "use_goals": false,
+        "use_decisions": true,
+        "use_scripted_guis": false,
+        "use_legends": false,
+        "use_great_projects": false
+      },
+      "special_ai_scripts": {
+        "ai_ruler_desired_kingdom_titles": "default",
+        "ai_ruler_desired_empire_titles": "default",
+        "ai_can_reassign_council_positions": "default"
+      },
+      "ai_war_modifiers": {}
+    },
+    {
+      "key": "theocracy_government",
+      "source": "common/governments/00_government_types.txt",
+      "flags": [
+        "government_is_theocracy",
+        "government_is_settled",
+        "government_uses_domain_limit"
+      ],
+      "mechanic_type": "theocracy",
+      "mechanic_default": true,
+      "fallback_priority": 0,
+      "can_get_feature_gates": [],
+      "nonreligious_ai_overrides": {
+        "use_legends": false
+      },
+      "effective_nonreligious_ai_switches": {
+        "use_lifestyle": true,
+        "arrange_marriage": true,
+        "use_goals": true,
+        "use_decisions": true,
+        "use_scripted_guis": true,
+        "use_legends": false,
+        "use_great_projects": false
+      },
+      "special_ai_scripts": {
+        "ai_ruler_desired_kingdom_titles": "default",
+        "ai_ruler_desired_empire_titles": "default",
+        "ai_can_reassign_council_positions": "default"
+      },
+      "ai_war_modifiers": {}
+    },
+    {
+      "key": "clan_government",
+      "source": "common/governments/00_government_types.txt",
+      "flags": [
+        "government_is_clan",
+        "may_appoint_viziers",
+        "government_is_settled",
+        "government_uses_crown_authority",
+        "government_uses_domain_limit"
+      ],
+      "mechanic_type": "clan",
+      "mechanic_default": true,
+      "fallback_priority": 2,
+      "can_get_feature_gates": [],
+      "nonreligious_ai_overrides": {
+        "use_legends": true
+      },
+      "effective_nonreligious_ai_switches": {
+        "use_lifestyle": true,
+        "arrange_marriage": true,
+        "use_goals": true,
+        "use_decisions": true,
+        "use_scripted_guis": true,
+        "use_legends": true,
+        "use_great_projects": false
+      },
+      "special_ai_scripts": {
+        "ai_ruler_desired_kingdom_titles": "default",
+        "ai_ruler_desired_empire_titles": "default",
+        "ai_can_reassign_council_positions": "default"
+      },
+      "ai_war_modifiers": {}
+    },
+    {
+      "key": "tribal_government",
+      "source": "common/governments/00_government_types.txt",
+      "flags": [
+        "government_is_tribal",
+        "government_is_tribal_excluding_wanua",
+        "use_prestige_to_buy_maa",
+        "government_is_settled",
+        "government_can_raid_rule",
+        "may_elevate_co_monarch",
+        "government_uses_domain_limit"
+      ],
+      "mechanic_type": null,
+      "mechanic_default": false,
+      "fallback_priority": 0,
+      "can_get_feature_gates": [],
+      "nonreligious_ai_overrides": {
+        "use_legends": true
+      },
+      "effective_nonreligious_ai_switches": {
+        "use_lifestyle": true,
+        "arrange_marriage": true,
+        "use_goals": true,
+        "use_decisions": true,
+        "use_scripted_guis": true,
+        "use_legends": true,
+        "use_great_projects": false
+      },
+      "special_ai_scripts": {
+        "ai_ruler_desired_kingdom_titles": "default",
+        "ai_ruler_desired_empire_titles": "default",
+        "ai_can_reassign_council_positions": "default"
+      },
+      "ai_war_modifiers": {
+        "ai_war_chance": "0.25"
+      }
+    },
+    {
+      "key": "wanua_government",
+      "source": "common/governments/00_government_types.txt",
+      "flags": [
+        "government_is_tribal",
+        "government_is_wanua",
+        "government_is_settled",
+        "government_can_raid_rule",
+        "government_enables_naval_raiding",
+        "government_enables_river_travel",
+        "may_elevate_co_monarch"
+      ],
+      "mechanic_type": null,
+      "mechanic_default": false,
+      "fallback_priority": 0,
+      "can_get_feature_gates": [
+        "all_under_heaven"
+      ],
+      "nonreligious_ai_overrides": {
+        "use_legends": true
+      },
+      "effective_nonreligious_ai_switches": {
+        "use_lifestyle": true,
+        "arrange_marriage": true,
+        "use_goals": true,
+        "use_decisions": true,
+        "use_scripted_guis": true,
+        "use_legends": true,
+        "use_great_projects": false
+      },
+      "special_ai_scripts": {
+        "ai_ruler_desired_kingdom_titles": "default",
+        "ai_ruler_desired_empire_titles": "default",
+        "ai_can_reassign_council_positions": "default"
+      },
+      "ai_war_modifiers": {
+        "ai_war_chance": "-0.5"
+      }
+    },
+    {
+      "key": "mercenary_government",
+      "source": "common/governments/00_government_types.txt",
+      "flags": [
+        "government_uses_crown_authority",
+        "cannot_be_vassal_or_liege",
+        "government_is_mercenary"
+      ],
+      "mechanic_type": "mercenary",
+      "mechanic_default": true,
+      "fallback_priority": 0,
+      "can_get_feature_gates": [],
+      "nonreligious_ai_overrides": {
+        "arrange_marriage": false,
+        "use_goals": false,
+        "use_scripted_guis": false,
+        "use_legends": false
+      },
+      "effective_nonreligious_ai_switches": {
+        "use_lifestyle": true,
+        "arrange_marriage": false,
+        "use_goals": false,
+        "use_decisions": true,
+        "use_scripted_guis": false,
+        "use_legends": false,
+        "use_great_projects": false
+      },
+      "special_ai_scripts": {
+        "ai_ruler_desired_kingdom_titles": "default",
+        "ai_ruler_desired_empire_titles": "default",
+        "ai_can_reassign_council_positions": "default"
+      },
+      "ai_war_modifiers": {}
+    },
+    {
+      "key": "holy_order_government",
+      "source": "common/governments/00_government_types.txt",
+      "flags": [
+        "government_uses_crown_authority",
+        "cannot_be_vassal_or_liege",
+        "government_is_holy_order"
+      ],
+      "mechanic_type": "holy_order",
+      "mechanic_default": true,
+      "fallback_priority": 0,
+      "can_get_feature_gates": [],
+      "nonreligious_ai_overrides": {
+        "arrange_marriage": false,
+        "use_goals": false,
+        "use_scripted_guis": false,
+        "use_legends": false
+      },
+      "effective_nonreligious_ai_switches": {
+        "use_lifestyle": true,
+        "arrange_marriage": false,
+        "use_goals": false,
+        "use_decisions": true,
+        "use_scripted_guis": false,
+        "use_legends": false,
+        "use_great_projects": false
+      },
+      "special_ai_scripts": {
+        "ai_ruler_desired_kingdom_titles": "default",
+        "ai_ruler_desired_empire_titles": "default",
+        "ai_can_reassign_council_positions": "default"
+      },
+      "ai_war_modifiers": {}
+    },
+    {
+      "key": "administrative_government",
+      "source": "common/governments/00_government_types.txt",
+      "flags": [
+        "government_is_administrative",
+        "government_has_influence",
+        "government_has_treasury",
+        "government_has_title_men_at_arms",
+        "government_has_powerful_families",
+        "government_is_settled",
+        "government_uses_domicile_but_not_adventurer",
+        "government_uses_domain_limit",
+        "government_uses_admin_province_obligations"
+      ],
+      "mechanic_type": "administrative",
+      "mechanic_default": true,
+      "fallback_priority": 3,
+      "can_get_feature_gates": [],
+      "nonreligious_ai_overrides": {},
+      "effective_nonreligious_ai_switches": {
+        "use_lifestyle": true,
+        "arrange_marriage": true,
+        "use_goals": true,
+        "use_decisions": true,
+        "use_scripted_guis": true,
+        "use_legends": true,
+        "use_great_projects": false
+      },
+      "special_ai_scripts": {
+        "ai_ruler_desired_kingdom_titles": "default",
+        "ai_ruler_desired_empire_titles": "default",
+        "ai_can_reassign_council_positions": "default"
+      },
+      "ai_war_modifiers": {}
+    },
+    {
+      "key": "landless_adventurer_government",
+      "source": "common/governments/00_government_types.txt",
+      "flags": [
+        "cannot_be_vassal_or_liege",
+        "government_is_landless_adventurer",
+        "has_unique_government_perks"
+      ],
+      "mechanic_type": "landless_adventurer",
+      "mechanic_default": true,
+      "fallback_priority": 0,
+      "can_get_feature_gates": [],
+      "nonreligious_ai_overrides": {
+        "use_goals": false,
+        "use_scripted_guis": false,
+        "use_legends": false
+      },
+      "effective_nonreligious_ai_switches": {
+        "use_lifestyle": true,
+        "arrange_marriage": true,
+        "use_goals": false,
+        "use_decisions": true,
+        "use_scripted_guis": false,
+        "use_legends": false,
+        "use_great_projects": false
+      },
+      "special_ai_scripts": {
+        "ai_ruler_desired_kingdom_titles": "default",
+        "ai_ruler_desired_empire_titles": "default",
+        "ai_can_reassign_council_positions": "default"
+      },
+      "ai_war_modifiers": {}
+    },
+    {
+      "key": "nomad_government",
+      "source": "common/governments/00_government_types.txt",
+      "flags": [
+        "government_is_nomadic",
+        "government_has_herd",
+        "government_can_raid_rule",
+        "government_can_use_tributary_men_at_arms",
+        "can_start_war_with_raised_troops",
+        "ignores_faith_marriage_penalties",
+        "no_hostile_attrition_in_steppe",
+        "movement_speed_from_government",
+        "land_raiding_movement_speed_from_government",
+        "can_raze_holdings",
+        "government_uses_domicile_but_not_adventurer"
+      ],
+      "mechanic_type": "nomad",
+      "mechanic_default": true,
+      "fallback_priority": 0,
+      "can_get_feature_gates": [
+        "khans_of_the_steppe"
+      ],
+      "nonreligious_ai_overrides": {},
+      "effective_nonreligious_ai_switches": {
+        "use_lifestyle": true,
+        "arrange_marriage": true,
+        "use_goals": true,
+        "use_decisions": true,
+        "use_scripted_guis": true,
+        "use_legends": true,
+        "use_great_projects": false
+      },
+      "special_ai_scripts": {
+        "ai_ruler_desired_kingdom_titles": "default",
+        "ai_ruler_desired_empire_titles": "default",
+        "ai_can_reassign_council_positions": "default"
+      },
+      "ai_war_modifiers": {
+        "ai_war_chance": "2",
+        "ai_war_cooldown": "-0.5"
+      }
+    },
+    {
+      "key": "herder_government",
+      "source": "common/governments/00_government_types.txt",
+      "flags": [
+        "government_is_herder",
+        "government_has_herd",
+        "ignores_faith_marriage_penalties"
+      ],
+      "mechanic_type": "herder",
+      "mechanic_default": true,
+      "fallback_priority": 0,
+      "can_get_feature_gates": [],
+      "nonreligious_ai_overrides": {
+        "use_lifestyle": false,
+        "arrange_marriage": false,
+        "use_goals": false,
+        "use_decisions": false,
+        "use_scripted_guis": false,
+        "use_legends": false
+      },
+      "effective_nonreligious_ai_switches": {
+        "use_lifestyle": false,
+        "arrange_marriage": false,
+        "use_goals": false,
+        "use_decisions": false,
+        "use_scripted_guis": false,
+        "use_legends": false,
+        "use_great_projects": false
+      },
+      "special_ai_scripts": {
+        "ai_ruler_desired_kingdom_titles": "default",
+        "ai_ruler_desired_empire_titles": "default",
+        "ai_can_reassign_council_positions": "default"
+      },
+      "ai_war_modifiers": {}
+    },
+    {
+      "key": "celestial_government",
+      "source": "common/governments/00_government_types.txt",
+      "flags": [
+        "government_is_celestial",
+        "government_has_merit",
+        "government_has_influence",
+        "government_has_treasury",
+        "government_has_title_men_at_arms",
+        "government_has_powerful_families",
+        "government_has_county_tier_noble_families",
+        "government_is_settled",
+        "government_uses_domicile_but_not_adventurer",
+        "government_uses_domain_limit",
+        "government_uses_admin_province_obligations",
+        "government_uses_merit_family_aspirations",
+        "has_special_house_aspirations"
+      ],
+      "mechanic_type": null,
+      "mechanic_default": false,
+      "fallback_priority": 3,
+      "can_get_feature_gates": [],
+      "nonreligious_ai_overrides": {},
+      "effective_nonreligious_ai_switches": {
+        "use_lifestyle": true,
+        "arrange_marriage": true,
+        "use_goals": true,
+        "use_decisions": true,
+        "use_scripted_guis": true,
+        "use_legends": true,
+        "use_great_projects": false
+      },
+      "special_ai_scripts": {
+        "ai_ruler_desired_kingdom_titles": "scripted",
+        "ai_ruler_desired_empire_titles": "scripted",
+        "ai_can_reassign_council_positions": "scripted"
+      },
+      "ai_war_modifiers": {}
+    },
+    {
+      "key": "mandala_government",
+      "source": "common/governments/00_government_types.txt",
+      "flags": [
+        "uses_mandala_aspects",
+        "uses_mandala_decrees",
+        "government_is_mandala",
+        "has_coerce_tributary_scheme",
+        "additional_piety_from_religious_buildings",
+        "can_perform_ritual_contracts",
+        "subjects_gain_piety_based_on_overlord_piety_level",
+        "has_special_house_aspirations",
+        "government_is_settled",
+        "has_unique_government_perks",
+        "no_powerful_vassals"
+      ],
+      "mechanic_type": "mandala",
+      "mechanic_default": true,
+      "fallback_priority": 0,
+      "can_get_feature_gates": [
+        "all_under_heaven"
+      ],
+      "nonreligious_ai_overrides": {},
+      "effective_nonreligious_ai_switches": {
+        "use_lifestyle": true,
+        "arrange_marriage": true,
+        "use_goals": true,
+        "use_decisions": true,
+        "use_scripted_guis": true,
+        "use_legends": true,
+        "use_great_projects": false
+      },
+      "special_ai_scripts": {
+        "ai_ruler_desired_kingdom_titles": "default",
+        "ai_ruler_desired_empire_titles": "default",
+        "ai_can_reassign_council_positions": "default"
+      },
+      "ai_war_modifiers": {}
+    },
+    {
+      "key": "steppe_admin_government",
+      "source": "common/governments/00_government_types.txt",
+      "flags": [
+        "government_is_steppe_admin",
+        "government_can_raid_rule",
+        "government_can_use_tributary_men_at_arms",
+        "government_has_merit",
+        "government_has_influence",
+        "government_has_treasury",
+        "government_has_title_men_at_arms",
+        "government_has_powerful_families",
+        "government_has_county_tier_noble_families",
+        "ignores_faith_marriage_penalties",
+        "land_raiding_movement_speed_from_government",
+        "can_raze_holdings",
+        "government_is_settled",
+        "government_uses_domicile_but_not_adventurer",
+        "government_uses_domain_limit",
+        "government_uses_admin_province_obligations",
+        "government_uses_merit_family_aspirations",
+        "has_special_house_aspirations"
+      ],
+      "mechanic_type": null,
+      "mechanic_default": false,
+      "fallback_priority": 0,
+      "can_get_feature_gates": [
+        "all_under_heaven"
+      ],
+      "nonreligious_ai_overrides": {},
+      "effective_nonreligious_ai_switches": {
+        "use_lifestyle": true,
+        "arrange_marriage": true,
+        "use_goals": true,
+        "use_decisions": true,
+        "use_scripted_guis": true,
+        "use_legends": true,
+        "use_great_projects": false
+      },
+      "special_ai_scripts": {
+        "ai_ruler_desired_kingdom_titles": "scripted",
+        "ai_ruler_desired_empire_titles": "scripted",
+        "ai_can_reassign_council_positions": "default"
+      },
+      "ai_war_modifiers": {
+        "ai_war_chance": "2",
+        "ai_war_cooldown": "-0.5"
+      }
+    },
+    {
+      "key": "meritocratic_government",
+      "source": "common/governments/00_government_types.txt",
+      "flags": [
+        "government_is_meritocratic",
+        "government_has_merit",
+        "government_has_influence",
+        "government_has_treasury",
+        "government_has_title_men_at_arms",
+        "government_has_powerful_families",
+        "government_has_county_tier_noble_families",
+        "government_is_settled",
+        "government_uses_domicile_but_not_adventurer",
+        "government_uses_domain_limit",
+        "government_uses_admin_province_obligations",
+        "government_uses_merit_family_aspirations",
+        "has_special_house_aspirations"
+      ],
+      "mechanic_type": null,
+      "mechanic_default": false,
+      "fallback_priority": 0,
+      "can_get_feature_gates": [
+        "all_under_heaven"
+      ],
+      "nonreligious_ai_overrides": {},
+      "effective_nonreligious_ai_switches": {
+        "use_lifestyle": true,
+        "arrange_marriage": true,
+        "use_goals": true,
+        "use_decisions": true,
+        "use_scripted_guis": true,
+        "use_legends": true,
+        "use_great_projects": false
+      },
+      "special_ai_scripts": {
+        "ai_ruler_desired_kingdom_titles": "scripted",
+        "ai_ruler_desired_empire_titles": "scripted",
+        "ai_can_reassign_council_positions": "default"
+      },
+      "ai_war_modifiers": {}
+    },
+    {
+      "key": "japan_administrative_government",
+      "source": "common/governments/01_japan_government_types.txt",
+      "flags": [
+        "government_is_japan_administrative",
+        "government_has_influence",
+        "government_has_title_men_at_arms",
+        "government_has_powerful_families",
+        "government_has_county_tier_noble_families",
+        "has_special_house_aspirations",
+        "government_is_settled",
+        "government_uses_domicile_but_not_adventurer",
+        "has_unique_government_perks",
+        "government_uses_admin_province_obligations",
+        "government_has_house_blocs"
+      ],
+      "mechanic_type": null,
+      "mechanic_default": false,
+      "fallback_priority": 0,
+      "can_get_feature_gates": [
+        "all_under_heaven"
+      ],
+      "nonreligious_ai_overrides": {},
+      "effective_nonreligious_ai_switches": {
+        "use_lifestyle": true,
+        "arrange_marriage": true,
+        "use_goals": true,
+        "use_decisions": true,
+        "use_scripted_guis": true,
+        "use_legends": true,
+        "use_great_projects": false
+      },
+      "special_ai_scripts": {
+        "ai_ruler_desired_kingdom_titles": "default",
+        "ai_ruler_desired_empire_titles": "default",
+        "ai_can_reassign_council_positions": "default"
+      },
+      "ai_war_modifiers": {}
+    },
+    {
+      "key": "japan_feudal_government",
+      "source": "common/governments/01_japan_government_types.txt",
+      "flags": [
+        "may_elevate_co_monarch",
+        "government_is_japan_feudal",
+        "government_has_county_tier_noble_families",
+        "has_special_house_aspirations",
+        "government_is_settled",
+        "government_uses_domicile_but_not_adventurer",
+        "has_unique_government_perks",
+        "government_has_house_blocs"
+      ],
+      "mechanic_type": null,
+      "mechanic_default": false,
+      "fallback_priority": 0,
+      "can_get_feature_gates": [
+        "all_under_heaven"
+      ],
+      "nonreligious_ai_overrides": {
+        "use_legends": true
+      },
+      "effective_nonreligious_ai_switches": {
+        "use_lifestyle": true,
+        "arrange_marriage": true,
+        "use_goals": true,
+        "use_decisions": true,
+        "use_scripted_guis": true,
+        "use_legends": true,
+        "use_great_projects": false
+      },
+      "special_ai_scripts": {
+        "ai_ruler_desired_kingdom_titles": "default",
+        "ai_ruler_desired_empire_titles": "default",
+        "ai_can_reassign_council_positions": "default"
+      },
+      "ai_war_modifiers": {}
+    }
+  ],
+  "native_runtime_identity": {
+    "image_base": "0x140000000",
+    "resolver_semantics": {
+      "alive_landed": "load Character+0x1B8 land-state and return land-state+0x3F0",
+      "alive_unlanded": "resolve employer/liege full-generation CharacterID through Character storage, then return that character's effective government",
+      "dead": "load Character+0x1C8 dead-state and return dead-state+0x88",
+      "invalid_or_none": "return canonical no-government object from pointer slot module+0x570CB50"
+    },
+    "government_layout": {
+      "stable_key": "CGovernmentType+0x18 MSVC string",
+      "flags": "CGovernmentType+0x48 sorted int32 identifier span; data +0x00, signed count +0x0C",
+      "flag_id_to_stable_name": "0x3B588E0 / 0x3B58970; copy exact bytes and never intern",
+      "runtime_rule": "publish the runtime stable key and complete runtime flag set; the stock registry is a verifier fixture, never a runtime allowlist"
+    },
+    "government_resolver": {
+      "start_rva": "0x26165B0",
+      "end_rva_exclusive": "0x261668B",
+      "unwind_rva": "0x4C38E20",
+      "sha256": "3ADC9AECCF798F877D763DC572B920FE57F5208B7FFDCC7B4A7B9E7D8B0D5AFC"
+    },
+    "government_flag_evaluator": {
+      "start_rva": "0x2839340",
+      "end_rva_exclusive": "0x2839464",
+      "unwind_rva": "0x4C4FD08",
+      "sha256": "FEAA2ED0199AB59F37CB9ED02F01EA1B44741DEFC474941FA8C226B9A3651273",
+      "binary_search_helper_rva": "0xB1C4A0",
+      "binary_search_helper_sha256": "8E640ECA4C250E646173B63A96F33C0D19EF7D5F781687C47E78862EA8D77A7C"
+    },
+    "government_flag_binary_search_helper": {
+      "start_rva": "0xB1C4A0",
+      "end_rva_exclusive": "0xB1C4B1",
+      "unwind_rva": "0x4C60850",
+      "sha256": "8E640ECA4C250E646173B63A96F33C0D19EF7D5F781687C47E78862EA8D77A7C",
+      "semantics": "binary search a sorted int32 identifier span and return membership"
+    },
+    "government_link_leaf": {
+      "start_rva": "0x19D5780",
+      "end_rva_exclusive": "0x19D57F9",
+      "unwind_rva": "0x4C38E20",
+      "sha256": "97357A9A22B25AC73D4CBEB76C1450982B879140AFD1D870449F0902F71036B8",
+      "vtable_rva": "0x41D5400",
+      "vtable_slot": 4,
+      "semantics": "resolve character government and return its stable identifier at object+0x10"
+    },
+    "instruction_anchors": [
+      {
+        "rva": "0x26165B0",
+        "hex": "40534883EC20488B4110488BD94883C110FF500884C00F84980000000F1F4000",
+        "meaning": "government resolver prologue and alive-state dispatch"
+      },
+      {
+        "rva": "0x2616664",
+        "hex": "488B05E5640F03",
+        "meaning": "canonical no-government pointer-slot load resolving to module+0x570CB50"
+      },
+      {
+        "rva": "0x283943B",
+        "hex": "488BCBE86DD1DDFF488D5650488D48484C8D9C2440020000498B5B10498B7318498BE35FE93C302EFE",
+        "meaning": "flag evaluator calls resolver, passes government+0x48 and requested identifier to binary search"
+      },
+      {
+        "rva": "0x19D57D4",
+        "hex": "69D303E8D40DC40033C9C7032B00000048894B084863401048894308488BC348",
+        "meaning": "CGovernmentTypeLink leaf calls the resolver and copies the government identifier"
+      }
+    ],
+    "rtti": [
+      {
+        "name": ".?AVCGovernmentType@@",
+        "type_descriptor_rva": "0x50C2270",
+        "vtable_rva": "0x44063E8",
+        "col_rva": "0x4A7DBF0"
+      },
+      {
+        "name": ".?AVCGovernmentTypeLink@@",
+        "type_descriptor_rva": "0x533E640",
+        "vtable_rva": "0x41D5400",
+        "col_rva": "0x47C3EB8"
+      }
+    ]
+  },
+  "adapter_feature_requirements": {
+    "source_query_contract": "loaded-feature-manifest-v1",
+    "selection_truth": "effective_feature_flags are authoritative; script_dlc_keys only corroborate product presence; entitlement status must remain unavailable until store verdict provenance closes",
+    "prohibited_inference": [
+      "do not infer enabled features from installed files, descriptors or stock government definitions",
+      "do not infer a government key from feature flags",
+      "do not treat stock rows as a runtime allowlist for modded governments"
+    ],
+    "vocabulary": [
+      "admin_gov",
+      "advanced_aspirations",
+      "all_under_heaven",
+      "barter_troops",
+      "khans_of_the_steppe",
+      "landless_adventurer",
+      "landless_playable",
+      "merit_admin",
+      "nomads",
+      "roads_to_power"
+    ],
+    "runtime_product_corroboration": {
+      "Roads to Power": [
+        "landless_playable",
+        "admin_gov",
+        "roads_to_power",
+        "landless_adventurer",
+        "advanced_aspirations"
+      ],
+      "Khans of the Steppe": [
+        "khans_of_the_steppe",
+        "nomads",
+        "landless_playable"
+      ],
+      "All Under Heaven": [
+        "landless_playable",
+        "all_under_heaven",
+        "merit_admin",
+        "advanced_aspirations",
+        "barter_troops"
+      ]
+    },
+    "government_rows": [
+      {
+        "government_key": "feudal_government",
+        "adapter_status": "core_supported",
+        "adapter_family": "core_landed",
+        "required_effective_features": [],
+        "capability_profile_features": [],
+        "source_direct_feature_gates": []
+      },
+      {
+        "government_key": "republic_government",
+        "adapter_status": "unsupported_nonplayer_identity",
+        "adapter_family": null,
+        "required_effective_features": [],
+        "capability_profile_features": [],
+        "source_direct_feature_gates": []
+      },
+      {
+        "government_key": "theocracy_government",
+        "adapter_status": "owner_deferred_religious",
+        "adapter_family": null,
+        "required_effective_features": [],
+        "capability_profile_features": [],
+        "source_direct_feature_gates": []
+      },
+      {
+        "government_key": "clan_government",
+        "adapter_status": "core_supported",
+        "adapter_family": "core_landed",
+        "required_effective_features": [],
+        "capability_profile_features": [],
+        "source_direct_feature_gates": []
+      },
+      {
+        "government_key": "tribal_government",
+        "adapter_status": "core_supported",
+        "adapter_family": "core_tribal",
+        "required_effective_features": [],
+        "capability_profile_features": [],
+        "source_direct_feature_gates": []
+      },
+      {
+        "government_key": "wanua_government",
+        "adapter_status": "adapter_spec_ready_not_implemented",
+        "adapter_family": "tgp_wanua",
+        "required_effective_features": [
+          "all_under_heaven"
+        ],
+        "capability_profile_features": [
+          "all_under_heaven",
+          "landless_playable"
+        ],
+        "source_direct_feature_gates": [
+          "all_under_heaven"
+        ]
+      },
+      {
+        "government_key": "mercenary_government",
+        "adapter_status": "unsupported_nonplayer_identity",
+        "adapter_family": null,
+        "required_effective_features": [],
+        "capability_profile_features": [],
+        "source_direct_feature_gates": []
+      },
+      {
+        "government_key": "holy_order_government",
+        "adapter_status": "owner_deferred_religious",
+        "adapter_family": null,
+        "required_effective_features": [],
+        "capability_profile_features": [],
+        "source_direct_feature_gates": []
+      },
+      {
+        "government_key": "administrative_government",
+        "adapter_status": "adapter_spec_ready_not_implemented",
+        "adapter_family": "rtp_administrative",
+        "required_effective_features": [
+          "admin_gov"
+        ],
+        "capability_profile_features": [
+          "admin_gov",
+          "roads_to_power",
+          "advanced_aspirations"
+        ],
+        "source_direct_feature_gates": []
+      },
+      {
+        "government_key": "landless_adventurer_government",
+        "adapter_status": "adapter_spec_ready_not_implemented",
+        "adapter_family": "rtp_landless_adventurer",
+        "required_effective_features": [
+          "landless_adventurer"
+        ],
+        "capability_profile_features": [
+          "landless_playable",
+          "landless_adventurer",
+          "roads_to_power"
+        ],
+        "source_direct_feature_gates": []
+      },
+      {
+        "government_key": "nomad_government",
+        "adapter_status": "adapter_spec_ready_not_implemented",
+        "adapter_family": "mpo_nomad",
+        "required_effective_features": [
+          "khans_of_the_steppe",
+          "nomads"
+        ],
+        "capability_profile_features": [
+          "khans_of_the_steppe",
+          "nomads",
+          "landless_playable"
+        ],
+        "source_direct_feature_gates": [
+          "khans_of_the_steppe"
+        ]
+      },
+      {
+        "government_key": "herder_government",
+        "adapter_status": "adapter_spec_ready_not_implemented",
+        "adapter_family": "mpo_herder",
+        "required_effective_features": [
+          "khans_of_the_steppe",
+          "nomads"
+        ],
+        "capability_profile_features": [
+          "khans_of_the_steppe",
+          "nomads"
+        ],
+        "source_direct_feature_gates": []
+      },
+      {
+        "government_key": "celestial_government",
+        "adapter_status": "adapter_spec_ready_not_implemented",
+        "adapter_family": "tgp_celestial",
+        "required_effective_features": [
+          "all_under_heaven"
+        ],
+        "capability_profile_features": [
+          "all_under_heaven",
+          "merit_admin",
+          "advanced_aspirations",
+          "barter_troops"
+        ],
+        "source_direct_feature_gates": []
+      },
+      {
+        "government_key": "mandala_government",
+        "adapter_status": "adapter_spec_ready_not_implemented",
+        "adapter_family": "tgp_mandala",
+        "required_effective_features": [
+          "all_under_heaven"
+        ],
+        "capability_profile_features": [
+          "all_under_heaven",
+          "advanced_aspirations",
+          "barter_troops"
+        ],
+        "source_direct_feature_gates": [
+          "all_under_heaven"
+        ]
+      },
+      {
+        "government_key": "steppe_admin_government",
+        "adapter_status": "adapter_spec_ready_not_implemented",
+        "adapter_family": "tgp_steppe_administrative",
+        "required_effective_features": [
+          "all_under_heaven"
+        ],
+        "capability_profile_features": [
+          "all_under_heaven",
+          "merit_admin",
+          "advanced_aspirations",
+          "barter_troops"
+        ],
+        "source_direct_feature_gates": [
+          "all_under_heaven"
+        ]
+      },
+      {
+        "government_key": "meritocratic_government",
+        "adapter_status": "adapter_spec_ready_not_implemented",
+        "adapter_family": "tgp_meritocratic",
+        "required_effective_features": [
+          "all_under_heaven"
+        ],
+        "capability_profile_features": [
+          "all_under_heaven",
+          "merit_admin",
+          "advanced_aspirations",
+          "barter_troops"
+        ],
+        "source_direct_feature_gates": [
+          "all_under_heaven"
+        ]
+      },
+      {
+        "government_key": "japan_administrative_government",
+        "adapter_status": "adapter_spec_ready_not_implemented",
+        "adapter_family": "tgp_japan_administrative",
+        "required_effective_features": [
+          "all_under_heaven"
+        ],
+        "capability_profile_features": [
+          "all_under_heaven",
+          "merit_admin",
+          "advanced_aspirations"
+        ],
+        "source_direct_feature_gates": [
+          "all_under_heaven"
+        ]
+      },
+      {
+        "government_key": "japan_feudal_government",
+        "adapter_status": "adapter_spec_ready_not_implemented",
+        "adapter_family": "tgp_japan_feudal",
+        "required_effective_features": [
+          "all_under_heaven"
+        ],
+        "capability_profile_features": [
+          "all_under_heaven",
+          "advanced_aspirations"
+        ],
+        "source_direct_feature_gates": [
+          "all_under_heaven"
+        ]
+      }
+    ],
+    "mismatch_semantics": "A recognized adapter row with any required effective feature false is unavailable_feature_mismatch; no fallback adapter is silently selected.",
+    "unknown_government_semantics": "A runtime key absent from the stock table is unadapted_runtime_government and retains its full observed flags for a later versioned adapter."
+  },
+  "runtime_transition_evidence": {
+    "mpo_disabled": "game_start converts nomad_government and herder_government to tribal_government when has_mpo_dlc_trigger=no",
+    "tgp_disabled": "game_start converts wanua to tribal and mandala/celestial/meritocratic/steppe_admin/Japanese governments to feudal when has_tgp_dlc_trigger=no",
+    "boundary": "These startup conversions support adapter feature mismatch diagnostics. They are not a runtime mutation mechanism for the autonomous player."
+  },
+  "observer_contract": {
+    "file": "fixtures/government_runtime_adapter_observer_v1_contract.json",
+    "implementation_status": "contract_only"
+  },
+  "integration_impact": {
+    "bridge_changed": false,
+    "cmake_changed": false,
+    "public_schema_changed": false,
+    "planner_changed": false,
+    "open_kaishek_impact": "none; research and a prospective observer contract only",
+    "next_consumer": "G2-M7 runtime identity adapter selection and cross-inheritance goal-memory work"
+  },
+  "acceptance": {
+    "modes": [
+      "python-normal",
+      "python-optimized"
+    ],
+    "game_process_started": false,
+    "game_process_attached": false,
+    "static_evidence_only": true
+  },
+  "unknowns": [
+    "A single main-thread observer that atomically composes government identity and the loaded feature vector is not implemented.",
+    "Adapter policy matrices and cross-inheritance goal-memory behavior are not implemented or live-validated.",
+    "Entitlement provenance remains unavailable and is not inferred from false cache values.",
+    "Religious government behavior remains owner-deferred."
+  ]
+}

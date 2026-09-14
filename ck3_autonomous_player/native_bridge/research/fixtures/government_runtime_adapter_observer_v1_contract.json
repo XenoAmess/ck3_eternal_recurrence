@@ -1,0 +1,121 @@
+{
+  "schema_version": 1,
+  "contract": "government-runtime-adapter-observer-v1",
+  "capability": "game.command.query-government-runtime-adapter-observer-v1",
+  "step": "query-government-runtime-adapter-observer-v1",
+  "implementation_status": "contract_only",
+  "game_version": "1.19.0.6",
+  "executable_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+  "application_main_only": true,
+  "requires_paused": true,
+  "read_only": true,
+  "mutation_surface": null,
+  "source_contracts": [
+    {
+      "capability": "game.command.query-campaign-root-context-v1",
+      "research_abi": "../campaign_root_context_v1_abi.json",
+      "required_fields": [
+        "frame",
+        "player_character_id",
+        "government",
+        "readiness.government_ready",
+        "readiness.same_frame_ready"
+      ],
+      "government_fields": [
+        "key",
+        "flags"
+      ]
+    },
+    {
+      "capability": "game.command.query-loaded-feature-manifest-v1",
+      "research_abi": "../loaded_feature_manifest_v1_abi.json",
+      "required_fields": [
+        "effective_feature_flags",
+        "script_dlc_keys",
+        "entitlements",
+        "frame"
+      ],
+      "effective_feature_count": 44
+    }
+  ],
+  "atomicity": {
+    "required": true,
+    "rule": "copy government identity and the full loaded-feature manifest inside one main-thread, two-sample frame/root identity gate",
+    "orchestration_join_forbidden": "Two independently returned command results must not be called same-frame solely because the outer orchestrator joined them."
+  },
+  "published_fields": {
+    "status": [
+      "available",
+      "unavailable"
+    ],
+    "backend_id": "ck3-1.19.0.6-native-government-runtime-adapter-observer-v1",
+    "frame": "nonnegative exact engine frame",
+    "player_character_id": "positive full-generation CharacterID",
+    "government": {
+      "stable_key": "runtime string copied from CGovernmentType+0x18",
+      "flags": "complete stable-name vector, unsigned UTF-8 bytewise sorted with multiplicity preserved"
+    },
+    "effective_feature_flags": "all 44 explicit booleans in frozen native index order with stable keys",
+    "script_dlc_keys": "complete runtime set in unsigned UTF-8 bytewise order",
+    "entitlements": "unavailable with exact reason store_verdict_provenance_unclosed",
+    "adapter": {
+      "status": [
+        "core_supported",
+        "adapter_spec_ready_not_implemented",
+        "unsupported_nonplayer_identity",
+        "owner_deferred_religious",
+        "unavailable_feature_mismatch",
+        "unadapted_runtime_government"
+      ],
+      "family": "nullable stable adapter family from the frozen table",
+      "required_effective_features": "stable feature-key vector",
+      "capability_profile_features": "explicit relevant feature boolean map",
+      "requirements_met": "true only when every required effective feature is true"
+    }
+  },
+  "feature_gate_vocabulary": [
+    "admin_gov",
+    "advanced_aspirations",
+    "all_under_heaven",
+    "barter_troops",
+    "khans_of_the_steppe",
+    "landless_adventurer",
+    "landless_playable",
+    "merit_admin",
+    "nomads",
+    "roads_to_power"
+  ],
+  "adapter_selection": [
+    "Select the row only by exact runtime government stable key.",
+    "Evaluate required features only from the same observation's effective_feature_flags.",
+    "Use script_dlc_keys as corroborating product identity, never to reconstruct feature booleans.",
+    "Return unavailable_feature_mismatch when a required feature is false.",
+    "Return unadapted_runtime_government for unknown or mod-added keys and keep the observed key and flags.",
+    "Return owner_deferred_religious for theocracy_government and holy_order_government without examining faith, doctrine, tenet, fervor or holy-order mechanics."
+  ],
+  "entitlement_semantics": {
+    "ready": false,
+    "status": "unavailable",
+    "reason": "store_verdict_provenance_unclosed",
+    "rule": "A cached false value must not be published as not_entitled."
+  },
+  "unavailable_reasons": [
+    "unsupported_build",
+    "requires_application_main",
+    "requires_paused",
+    "map_not_ready",
+    "player_unavailable",
+    "government_flags_unavailable",
+    "feature_root_unavailable",
+    "feature_counter_mismatch",
+    "feature_registry_drift",
+    "script_dlc_set_unavailable",
+    "state_changed",
+    "internal_error"
+  ],
+  "all_or_nothing": true,
+  "live_acceptance": {
+    "status": "not_run",
+    "reason": "research-only package; CK3 launch and bridge implementation are out of scope"
+  }
+}
