@@ -235,9 +235,32 @@ flowchart TD
 
 ## readiness 与遗留 unknown
 
-本包只把 stock tree 和 exact-build source/native substrate 冻结为 static-ready。observer 尚未实现，
-paused live artifact 不存在，action 没有设计，public MCP 与 planner 都不 ready；G2 的囚犯/犯罪整项因此仍 absent，
-已有 pay_ransom 拒绝 loop 继续作为通用 interaction primitive 证据。
+### PRISONER2 私有 semantic core
+
+**G2-M6-PRISONER2-PRIVATE-OBSERVER** 已把上述合同落成 default-off、value-only 的
+player_prisoner_management_snapshot_v1 semantic core。它接收 future exact-build adapter 在同一 paused
+application-main turn 取得的两份完整 source sample；两份样本和前后 frame 必须完全一致，played character
+由 frame 绑定，不接受 caller-supplied character ID。输出按 full prisoner ID 排序，且只包含 copied ID、
+fixed key、boolean 和 integer，没有 native pointer 或 borrowed lifetime。
+
+每个囚犯 row 现在表达 jailer equality、custody、监禁天数、三种 opaque native-final crime/reason 结果，以及
+ransom、无条件 release、execute、move-to-dungeon、move-to-house-arrest 与 torture 的 finalized preview。
+ransom 另保留 payer、selected option、resource/amount 和 native-final acceptance。宗教派生输入仍不进入
+semantic core；输出只有 religious_details_exposed=false，reason source 固定为 native_opaque_final。
+
+独立 fixture 的正向样本包含两名囚犯，其中一名的 gold ransom 已 finalized 为 can_send=true、
+would_accept_now=true，因而 ransom_candidate_available=true 且整体 semantic_ready=true。另一组 fixture
+证明 native evaluator/role 未闭合时 snapshot 仍可保留 typed unknown，但相应 readiness 必须为 false；
+它不能冒充 P0 可用。集合不完整或 count/total 不一致、ID 重复、jailer 不匹配、非 native-final source、
+preview/terms 不变量失败和双采样漂移都会拒绝整份输出。
+
+MSVC x64 C++20 的独立测试在 /Od /W4 /WX 与 /O2 /DNDEBUG /W4 /WX 下都完成
+**9/9 GREEN**。这证明 private semantic core 和 standalone fixture；未接 CMake、shared bridge、schema、
+MCP 或 source adapter，也没有启动 CK3。真实 prisoner enumerator 和 paused live artifact 仍待后续工作包。
+
+因此 stock tree、exact-build source/native substrate 和 private semantic core 为 static-ready。
+paused live artifact 不存在，action 没有设计，public MCP 与 planner 都不 ready；G2 的囚犯/犯罪整项仍不能标
+production-live。已有 pay_ransom 拒绝 loop 继续只作为通用 interaction primitive 证据。
 
 必须继续闭合：
 
