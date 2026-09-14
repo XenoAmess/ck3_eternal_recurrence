@@ -245,3 +245,11 @@ DEV3 先证明旧轮次 R681 的 campaign-root checkpoint 不在标准 landed co
 已存在的双角色 campaign-root live runner 会把 `first_character_id` 传给该 gate，因此在第一幕查询或角色切换前不会再接受“地图已就绪、角色尚未发布”的过早帧。聚焦回归同时覆盖：旧轮次 R682 的空身份帧会继续等待、错误但稳定的其他角色会超时 RED、非法期望 ID 会在启动动作前拒绝；normal 与 `python -O` 模式均通过。
 
 这次修复只改变 live harness 的放行条件，没有修改 native observer、public steward v1、MCP schema 或 action。下一次另行授权的 live 轮次仍应使用同一冻结 R639 存档；只有在角色 `29829` 的 played/episode 双绑定稳定后，才允许执行一次 Council → steward → `task_develop_county` 目标刷新。
+
+#### DEV6 / 旧轮次 R683：expected-character readiness live GREEN
+
+旧轮次 R683 对 DEV4 的期望角色稳定门禁给出了实机证明：放行帧处于 `paused=true`，`played_character.character_id=29829` 且 projected `episode_character_id=29829`，两个身份在稳定窗内共同绑定后 harness 才进入后续观测。旧轮次 R682 仅因 `map_ready` 与 paused 便过早放行、随后看到空 `episode_character_id` 的故障未再复现；因此 DEV4 readiness gate 由聚焦回归提升为 **production-live GREEN**。
+
+本轮的下一个结果要与 readiness 分开解释：当次启用的是 `g2_domain_construction_candidate_observer_v1`，不是 steward develop-county observer。它在有界的 60 秒 paused 观测窗内保持 installed，failure flags、read failures 和 accepted captures 均为零，但 producer call count 也为零，最终状态为 `no_producer_return_observed`。这是该 construction producer 调用点没有在当前输入边界内命中的独立 **NO-GO**，不是 readiness RED，也不是 observer RED；它没有提供 steward 候选行、row ABI 或 native legality 映射证据，因此不改变本专题 P0 reader 的尚未闭合边界。
+
+冻结证据位于 `Z:\ck3_mod_rewrite_process_assets\g2-m4-r683-construction-observer-live-50b69df`，`artifact-manifest.json` SHA-256 为 `177F4F3EAB41570F005132E294ADEEBBEEA6DD7E1BF704CF004DB0F00F846DF4`。本轮 UI 输入为零、游戏日期未推进、源存档未改变，结束后清理证明通过。
