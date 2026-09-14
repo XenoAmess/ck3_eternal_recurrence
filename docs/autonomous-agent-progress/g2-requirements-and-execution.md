@@ -381,3 +381,20 @@ pass `4/4`, including both existing terminal modes. This package changes the
 private runner report shape but no native ABI, public MCP tool, DLL, game file,
 dependency or load order. M3 remains `in_progress / static-ready` and global G2
 remains `1/8` pending one bounded exact-build natural-death artifact.
+
+## R676 celestial council prerequisite RED
+
+The first production attempt at M3 expectation capture stopped on turn 1 with
+`turn_bundle is unavailable`. Its only native query returned
+`council_unavailable`: the campaign-root council reader admitted the existing
+celestial ruler into a scope whose five-seat standard council layout does not
+cover celestial ministries. The run submitted no gameplay action, advanced no
+date, and cleaned the process tree successfully.
+
+The minimal native correction adds `government_is_celestial` to the existing
+out-of-scope predicate. It preserves a typed unavailable council component and
+keeps all other campaign-root fields eligible to publish. Focused reader,
+source-contract and mailbox fixtures pass, including a celestial case with an
+invalid standard task hidden behind the scope gate. The next action is one
+short corrected-DLL replay in R677; the natural-death integration gate remains
+separate and receives no dedicated long run.

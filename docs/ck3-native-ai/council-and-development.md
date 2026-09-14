@@ -171,7 +171,7 @@ flowchart LR
 
 - 在 `standard_landed_non_nomadic_core_v1` 范围内，动态向量的全部已物化辅助席位都会发布；五个标准核心席位若未物化，则补成可证空缺行。
 - `auxiliary_vacancies_complete=false` 是固定诚实边界：当前实现无法由动态向量证明未物化的 spouse、vizier、ministry、modded 辅助席位是空缺还是不适用。
-- landless adventurer、nomadic 或无 primary landed title 时，council component 返回 `outside_standard_landed_non_nomadic_core_scope`，`council_ready=false`；其余 campaign-root 字段仍可 available，顶层 `readiness.ready` 不被这个范围外组件拖成 false。
+- landless adventurer、nomadic、celestial government 或无 primary landed title 时，council component 返回 `outside_standard_landed_non_nomadic_core_scope`，`council_ready=false`；其余 campaign-root 字段仍可 available，顶层 `readiness.ready` 不被这个范围外组件拖成 false。R676 在天朝角色 `32904` 的真实暂停帧证明 celestial ministry 不能按标准五席内阁布局读取；该范围修正只跳过未承诺的内阁组件，不放宽继承、头衔、健康、经济等同帧字段。
 - 任一 active-task generation mismatch、重复 position key、owner 不符、task/target 类型不符、非法 target identity、结构读取失败或双样本漂移都会让完整 campaign-root 返回 typed unavailable；不发布部分旧值。
 - `general` target 为 `null`；`infinite` current/maximum 为 `null`；county target 发布 ProvinceID，court target 发布 CharacterID。
 - `GetETA`、GUI tooltip、main skill、powerful-vassal 标志不进入 M1 最小合同。

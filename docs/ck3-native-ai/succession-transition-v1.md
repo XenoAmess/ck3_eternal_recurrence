@@ -116,3 +116,14 @@ still stops at death, and the immutable-seed next-episode owner keeps its own
 separate lifecycle. Focused runner boundary tests pass `4/4` under normal and
 optimized Python. Production readiness still requires one bounded
 natural-death artifact proving the sequence against the exact build.
+
+## R676 celestial council prerequisite RED
+
+R676 exposed a prerequisite scope bug before the first expectation could be
+retained: the campaign-root reader attempted its standard five-seat council
+layout on CharacterID `32904`'s celestial government and returned
+`council_unavailable`. No gameplay command was submitted and cleanup was
+GREEN. The native scope repair leaves celestial council typed unavailable but
+allows the same-frame succession and held-title data to reach the turn bundle.
+This RED remains open until the corrected DLL passes one short R677 replay;
+it does not justify a natural-death long run.

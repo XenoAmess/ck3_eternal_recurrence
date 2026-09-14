@@ -1421,6 +1421,8 @@ bool CouncilScopeIsAdmitted(const ObservationV1 &output) noexcept {
   return std::find(flags.begin(), flags.end(),
                    "government_is_landless_adventurer") == flags.end() &&
          std::find(flags.begin(), flags.end(), "government_is_nomadic") ==
+             flags.end() &&
+         std::find(flags.begin(), flags.end(), "government_is_celestial") ==
              flags.end();
 }
 

@@ -1251,6 +1251,38 @@ bool TestCouncilDynamicPositionAndFailureBoundaries() {
          ClearedUnavailable(result, "state_changed");
 }
 
+bool TestCelestialCouncilIsOutsideStandardScope() {
+  Fixture fixture;
+  const auto identifier = fixture.identifier_names.find(20);
+  if (identifier == fixture.identifier_names.end()) {
+    return false;
+  }
+  fixture.native_strings[&identifier->second] = "government_is_celestial";
+  // A celestial ministry does not use the standard five-seat council layout.
+  // Keep an invalid standard task behind the scope gate to prove that the
+  // reader does not dereference the incompatible representation.
+  fixture.active_task_ids[0] += 0x01000000;
+  const auto environment = Environment(fixture);
+  const auto access = Access(fixture);
+  const xar::ck3_11906::CampaignRootContextRequestV1 request{41};
+  xar::game::CampaignRootContextV1 result{};
+  return xar::ck3_11906::ReadCampaignRootContextV1(
+             environment, access, request, result) ==
+             xar::game::ReadCampaignRootContextResultV1::available &&
+         result.government.has_value() &&
+         std::find(result.government->flags.begin(),
+                   result.government->flags.end(),
+                   "government_is_celestial") !=
+             result.government->flags.end() &&
+         result.council.has_value() &&
+         result.council->status ==
+             xar::game::CampaignRootCouncilStatusV1::unavailable &&
+         result.council->unavailable_reason ==
+             "outside_standard_landed_non_nomadic_core_scope" &&
+         !result.readiness.council_ready &&
+         AllReadiness(result.readiness, true);
+}
+
 bool TestTargetingFactionCountSemantics() {
   Fixture no_land_state;
   void *null_land_state = nullptr;
@@ -1342,6 +1374,10 @@ int main() {
   }
   if (!TestCouncilDynamicPositionAndFailureBoundaries()) {
     std::cerr << "council dynamic/failure fixture failed\n";
+    return 1;
+  }
+  if (!TestCelestialCouncilIsOutsideStandardScope()) {
+    std::cerr << "celestial council scope fixture failed\n";
     return 1;
   }
   if (!TestTargetingFactionCountSemantics()) {

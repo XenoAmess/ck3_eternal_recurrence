@@ -119,6 +119,7 @@ int main(int argc, char **argv) {
                     "held_title_partition_unavailable",
                     "ReadCouncil",
                     "council_unavailable",
+                    "government_is_celestial",
                     "player_monthly_gold_income_unavailable",
                     "player_health_unavailable",
                     "player_domain_unavailable",

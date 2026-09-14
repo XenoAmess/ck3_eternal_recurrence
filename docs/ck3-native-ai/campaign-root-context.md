@@ -679,3 +679,23 @@ The 444,994-byte artifact is
 `Z:\ck3_mod_rewrite_process_assets\g2-m1-r639-700fae3\g2-m1-two-scene-live.json`,
 SHA-256 `CFF681146A344AE18FDEB36C20BDAEAFC2A30344023CC7827E9A77006C3530DB`.
 This closes the G2-M1 visible outcome without a field-specific long run.
+
+## R676 celestial council scope RED and repair
+
+R676 cold-restored the existing CharacterID `32904` checkpoint and reached an
+exact paused frame at `date_raw=53789952`. The first campaign-root query
+returned typed `council_unavailable`, which made the derived turn bundle
+unavailable before any gameplay command or date advance. Existing frozen live
+evidence identifies the same ruler as `celestial government`.
+
+The reader's scope predicate was too broad: it excluded only landless and
+nomadic rulers, then attempted the standard five-seat council memory layout on
+the celestial ministry representation. The corrected predicate classifies
+`government_is_celestial` as outside
+`standard_landed_non_nomadic_core_v1`. Campaign-root therefore keeps its
+succession, held-title, health, income, domain and relationship observations
+available while the council component truthfully reports
+`outside_standard_landed_non_nomadic_core_scope`. A native fixture places an
+invalid standard task behind the celestial scope gate and proves it is not
+dereferenced. Celestial ministry observation itself remains a later,
+separately scoped capability.

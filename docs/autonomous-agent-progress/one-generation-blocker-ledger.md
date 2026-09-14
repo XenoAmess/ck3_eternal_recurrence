@@ -1751,3 +1751,18 @@ pass `4/4`, including both existing terminal modes. This package changes the
 private runner report shape but no native ABI, public MCP tool, DLL, game file,
 dependency or load order. M3 remains `in_progress / static-ready` and global G2
 remains `1/8` pending one bounded exact-build natural-death artifact.
+
+## R676 celestial council scope RED (2026-09-14)
+
+- Exact paused CharacterID `32904` at date `53789952` returned
+  `council_unavailable` on the first campaign-root read, causing
+  `turn_bundle is unavailable` before gameplay input. Run/driver/error hashes
+  are `CE1C66A4...E24CF7`, `C83767D4...3ED7C`, and
+  `4C3C2EF4...E0C7F`; cleanup is GREEN.
+- Existing evidence identifies the ruler as celestial government. The council
+  scope predicate was broader than its five-seat memory-layout contract. The
+  minimal repair marks `government_is_celestial` outside that component while
+  retaining every other root observation.
+- Focused native fixtures and candidate DLL build are GREEN. The blocker stays
+  open pending one short R677 replay; natural death remains the later M3 gate
+  and receives no dedicated long run.
