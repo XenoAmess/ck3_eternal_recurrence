@@ -270,6 +270,28 @@ async function openNativeDesigner() {
   }
 }
 
+async function commitNativeDesign() {
+  mcpBusy.value = true
+  try {
+    const result = await companion.commitNativeDesign()
+    if (
+      result.status !== 'verified'
+      || result.action !== 'commit_dynasty_coat_of_arms'
+      || result.postcondition_verified !== true
+      || result.after?.route !== 'ruler_designer'
+    ) {
+      throw new Error('MCP 未证明家徽已提交回角色设计器')
+    }
+    mcpStatus.value = '家徽已提交回角色设计器'
+    ElMessage.success('CK3 已通过原生 Finish 提交王朝家徽')
+  } catch (error) {
+    mcpStatus.value = '提交失败'
+    ElMessage.error(`MCP 提交失败：${errorMessage(error)}`)
+  } finally {
+    mcpBusy.value = false
+  }
+}
+
 async function loadRuntimeFeatures() {
   runtimeFeatureBusy.value = true
   runtimeEnabledFeatureCount.value = null
@@ -586,8 +608,9 @@ importSource()
             <el-button :loading="mcpBusy" :disabled="errorCount > 0" @click="probeInCk3(false)">原生检测</el-button>
             <el-button type="primary" plain :loading="mcpBusy" :disabled="errorCount > 0" @click="probeInCk3(true)">应用到设计器</el-button>
             <el-button :loading="mcpBusy" @click="exportFromCk3">从 CK3 读取</el-button>
+            <el-button type="success" plain :loading="mcpBusy" @click="commitNativeDesign">提交回角色设计器</el-button>
           </div>
-          <p>“打开”要求 CK3 已停在角色设计器；检测和应用要求已进入家徽页。“应用”只改变 working state，不等于上层保存。</p>
+          <p>“打开”要求 CK3 已停在角色设计器；检测和应用要求已进入家徽页。“应用”只改变家徽页 working state；“提交”调用原生王朝 Finish 并验证返回角色设计器，但仍不等于完成整个角色创建。</p>
         </div>
 
         <div v-if="visibleDiagnostics.length" class="diagnostics">

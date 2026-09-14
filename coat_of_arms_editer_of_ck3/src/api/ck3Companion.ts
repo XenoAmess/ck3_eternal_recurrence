@@ -351,6 +351,17 @@ export interface FrontendCoatOfArmsDesignerActionResult {
   [key: string]: unknown
 }
 
+export interface FrontendDynastyCoatOfArmsCommitResult {
+  status: 'verified'
+  action: 'commit_dynasty_coat_of_arms'
+  postcondition_verified: true
+  after: {
+    route: 'ruler_designer'
+    [key: string]: unknown
+  }
+  [key: string]: unknown
+}
+
 export class CompanionRequestError extends Error {
   constructor(
     message: string,
@@ -402,6 +413,11 @@ export function createCk3CompanionClient(
     openNativeDesigner: () =>
       post<FrontendCoatOfArmsDesignerActionResult>(
         '/open-native-designer',
+        {},
+      ),
+    commitNativeDesign: () =>
+      post<FrontendDynastyCoatOfArmsCommitResult>(
+        '/commit-native-design',
         {},
       ),
     resources: (parameters: {

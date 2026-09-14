@@ -130,6 +130,28 @@ class CoatOfArmsResourceTest {
     }
 
     @Test
+    void nativeDynastyCommitIsAClosedZeroInputMcpCall() {
+        when(mcp.callTool(
+                        eq("ck3_commit_frontend_dynasty_coat_of_arms_v1"),
+                        eq(Map.of())))
+                .thenReturn(Map.of(
+                        "status", "verified",
+                        "action", "commit_dynasty_coat_of_arms"));
+
+        given()
+                .contentType("application/json")
+                .body(Map.of())
+                .when().post("/api/ck3/coat-of-arms/commit-native-design")
+                .then()
+                .statusCode(200)
+                .body("status", equalTo("verified"))
+                .body("action", equalTo("commit_dynasty_coat_of_arms"));
+
+        verify(mcp).callTool(
+                "ck3_commit_frontend_dynasty_coat_of_arms_v1", Map.of());
+    }
+
+    @Test
     void resourceCatalogIsForwardedToTheMcpTool() {
         Map<String, Object> response = Map.of(
                 "schema", "ck3-coat-of-arms-resource-catalog-v1",

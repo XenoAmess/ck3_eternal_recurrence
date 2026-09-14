@@ -266,6 +266,17 @@ bool DispatchOpenCoatOfArmsDesigner(
   return query.result.dispatch_invoked;
 }
 
+bool DispatchCommitDynastyCoatOfArms(
+    FrontendGuiRouteMailboxContextV1 &query) noexcept {
+  // window_ruler_designer.gui:3318-3351 binds this exact named button to
+  // FinishDynastyCoatOfArmsDesigner, followed by clearing the variable that
+  // owns the dedicated CoA page. Resolve it from the live ruler-designer tree
+  // so callers cannot substitute another button or a raw widget pointer.
+  return DispatchFixedNamedWidget(
+      query, FrontendGuiRouteV1::coat_of_arms_designer, "ruler_designer",
+      "dynasty_finish_button");
+}
+
 } // namespace
 
 bool ExecuteFrontendGuiRouteMailboxV1(
@@ -295,9 +306,13 @@ bool ExecuteFrontendGuiRouteMailboxV1(
   if (query->operation == FrontendGuiRouteOperationV1::open_ruler_designer) {
     return DispatchOpenRulerDesigner(*query);
   }
+  if (query->operation ==
+      FrontendGuiRouteOperationV1::open_coat_of_arms_designer) {
+    return DispatchOpenCoatOfArmsDesigner(*query);
+  }
   return query->operation ==
-             FrontendGuiRouteOperationV1::open_coat_of_arms_designer &&
-         DispatchOpenCoatOfArmsDesigner(*query);
+             FrontendGuiRouteOperationV1::commit_dynasty_coat_of_arms &&
+         DispatchCommitDynastyCoatOfArms(*query);
 }
 
 std::string_view FrontendGuiRouteNameV1(FrontendGuiRouteV1 route) noexcept {

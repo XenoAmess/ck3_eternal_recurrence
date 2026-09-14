@@ -333,6 +333,8 @@ from .coat_of_arms_source_export_contract import (
 from .frontend_gui_route_contract import (
     ACTIVATE_FRONTEND_COAT_OF_ARMS_DESIGNER_V1_CAPABILITY,
     ACTIVATE_FRONTEND_COAT_OF_ARMS_DESIGNER_V1_STEP,
+    COMMIT_FRONTEND_DYNASTY_COAT_OF_ARMS_V1_CAPABILITY,
+    COMMIT_FRONTEND_DYNASTY_COAT_OF_ARMS_V1_STEP,
     ACTIVATE_FRONTEND_NEW_GAME_V1_CAPABILITY,
     ACTIVATE_FRONTEND_NEW_GAME_V1_STEP,
     ACTIVATE_FRONTEND_PICK_ANY_CHARACTER_V1_CAPABILITY,
@@ -346,12 +348,14 @@ from .frontend_gui_route_contract import (
     QUERY_FRONTEND_GUI_ROUTE_V1_CAPABILITY,
     QUERY_FRONTEND_GUI_ROUTE_V1_STEP,
     frontend_gui_route_binding_from_capabilities,
+    frontend_coat_of_arms_dynasty_finish_ready_v1,
     frontend_lobby_default_ruler_designer_ready_v1,
     frontend_lobby_random_playable_actionable_v1,
     frontend_ruler_designer_dynasty_coa_target_ready_v1,
     normalize_frontend_gui_tree_inspection_v1,
     normalize_frontend_gui_route_v1,
     normalize_frontend_new_game_v1,
+    normalize_frontend_commit_dynasty_coat_of_arms_v1,
     normalize_frontend_open_coat_of_arms_designer_v1,
     normalize_frontend_open_ruler_designer_v1,
     normalize_frontend_pick_any_character_v1,
@@ -4037,6 +4041,41 @@ class NativeHeadlessGameplayDriver:
         except ValueError as error:
             raise BridgeUnavailableError(
                 f"native coat-of-arms action is unverified: {error}"
+            ) from error
+
+    def commit_frontend_dynasty_coat_of_arms_v1(self) -> dict[str, object]:
+        """Commit the dynasty CoA and prove the designer page closed."""
+
+        before = self.query_frontend_gui_route_v1()
+        if before["route"] != "coat_of_arms_designer":
+            raise BridgeUnavailableError(
+                "frontend dynasty coat-of-arms commit requires the "
+                "coat_of_arms_designer route"
+            )
+        before_inspection = self._wait_for_frontend_gui_tree_v1(
+            frontend_coat_of_arms_dynasty_finish_ready_v1,
+            "coat-of-arms dynasty finish target ready",
+        )
+        acknowledgement = self._execute_primitive_step(
+            COMMIT_FRONTEND_DYNASTY_COAT_OF_ARMS_V1_STEP,
+            expected_revision=0,
+            required_capability=(
+                COMMIT_FRONTEND_DYNASTY_COAT_OF_ARMS_V1_CAPABILITY
+            ),
+            allow_frontend_revision_zero=True,
+        )
+        after = self._wait_for_frontend_gui_route_v1("ruler_designer")
+        try:
+            return normalize_frontend_commit_dynasty_coat_of_arms_v1(
+                acknowledgement,
+                before=before,
+                before_inspection=before_inspection,
+                after=after,
+            )
+        except ValueError as error:
+            raise BridgeUnavailableError(
+                "native dynasty coat-of-arms commit is unverified: "
+                f"{error}"
             ) from error
 
     def _center_map_on_landed_title_v1_unrecorded(

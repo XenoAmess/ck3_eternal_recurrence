@@ -45,6 +45,12 @@ ACTIVATE_FRONTEND_COAT_OF_ARMS_DESIGNER_V1_CAPABILITY: Final = (
 ACTIVATE_FRONTEND_COAT_OF_ARMS_DESIGNER_V1_STEP: Final = (
     "activate-frontend-coat-of-arms-designer-v1"
 )
+COMMIT_FRONTEND_DYNASTY_COAT_OF_ARMS_V1_CAPABILITY: Final = (
+    "game.command.commit-frontend-dynasty-coat-of-arms-v1"
+)
+COMMIT_FRONTEND_DYNASTY_COAT_OF_ARMS_V1_STEP: Final = (
+    "commit-frontend-dynasty-coat-of-arms-v1"
+)
 PREPARE_FRONTEND_CUSTOM_RULER_V1_STEP: Final = (
     "prepare-frontend-custom-ruler-v1"
 )
@@ -515,6 +521,72 @@ def normalize_frontend_open_coat_of_arms_designer_v1(
         "accepted": True,
         "status": "verified",
         "action": "open_coat_of_arms_designer",
+        "input_backend": "native_gui_semantic_activation",
+        "uses_ocr": False,
+        "uses_keyboard": False,
+        "uses_mouse": False,
+        "before": before,
+        "before_inspection": before_inspection,
+        "acknowledgement": dict(acknowledgement),
+        "after": after,
+        "postcondition_verified": True,
+        "backend_id": acknowledgement.get("backend_id"),
+    }
+
+
+def frontend_coat_of_arms_dynasty_finish_ready_v1(value: object) -> bool:
+    """Recognize only the live dynasty Finish button on the CoA page."""
+
+    if not isinstance(value, dict):
+        return False
+    widgets = value.get("widgets")
+    return bool(
+        value.get("schema") == "ck3-frontend-gui-tree-inspection-v1"
+        and value.get("schema_version") == 1
+        and value.get("status") == "available"
+        and value.get("scope_root_name") == "ruler_designer"
+        and value.get("root_available") is True
+        and isinstance(widgets, list)
+        and any(
+            isinstance(row, dict)
+            and row.get("child_path") == "0/2/1/1"
+            and row.get("runtime_name") == "dynasty_finish_button"
+            and row.get("effective_visible") is True
+            and row.get("enabled") is True
+            for row in widgets
+        )
+    )
+
+
+def normalize_frontend_commit_dynasty_coat_of_arms_v1(
+    acknowledgement: object,
+    *,
+    before: dict[str, object],
+    before_inspection: dict[str, object],
+    after: dict[str, object],
+) -> dict[str, object]:
+    if not isinstance(acknowledgement, dict):
+        raise ValueError("frontend dynasty coat-of-arms acknowledgement must be an object")
+    if (
+        acknowledgement.get("step")
+        != COMMIT_FRONTEND_DYNASTY_COAT_OF_ARMS_V1_STEP
+        or acknowledgement.get("accepted") is not True
+        or acknowledgement.get("status")
+        != "acknowledged_verification_pending"
+        or before.get("route") != "coat_of_arms_designer"
+        or not frontend_coat_of_arms_dynasty_finish_ready_v1(
+            before_inspection
+        )
+        or after.get("route") != "ruler_designer"
+    ):
+        raise ValueError("frontend dynasty coat-of-arms commit is not proven")
+    return {
+        "schema": "ck3-frontend-gui-action-v1",
+        "schema_version": 1,
+        "step": COMMIT_FRONTEND_DYNASTY_COAT_OF_ARMS_V1_STEP,
+        "accepted": True,
+        "status": "verified",
+        "action": "commit_dynasty_coat_of_arms",
         "input_backend": "native_gui_semantic_activation",
         "uses_ocr": False,
         "uses_keyboard": False,

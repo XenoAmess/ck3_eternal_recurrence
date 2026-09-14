@@ -3,9 +3,10 @@
 
 This runner launches one managed, non-debug CK3 process at the main menu,
 injects the exact bridge DLL, and uses the official MCP SDK to prove the
-semantic route through ``coat_of_arms_designer``.  An opt-in matrix then
-collects detect/apply/native-Copy evidence on that same page.  It never sends
-mouse or keyboard input and never interprets pixels or OCR.
+semantic route through ``coat_of_arms_designer``. Opt-in checks can collect a
+detect/apply/native-Copy matrix or commit one design through the exact dynasty
+Finish button, reopen it, and compare native Copy bytes. It never sends mouse
+or keyboard input and never interprets pixels or OCR.
 """
 
 from __future__ import annotations
@@ -70,6 +71,9 @@ ACTIVATE_RULER_DESIGNER_CAPABILITY = (
 ACTIVATE_COAT_OF_ARMS_DESIGNER_CAPABILITY = (
     "game.command.activate-frontend-coat-of-arms-designer-v1"
 )
+COMMIT_DYNASTY_COAT_OF_ARMS_CAPABILITY = (
+    "game.command.commit-frontend-dynasty-coat-of-arms-v1"
+)
 PROBE_COAT_OF_ARMS_CAPABILITY = "game.command.probe-coat-of-arms-source-v1"
 EXPORT_COAT_OF_ARMS_CAPABILITY = "game.command.export-coat-of-arms-source-v1"
 QUERY_TOOL = "ck3_query_frontend_gui_route_v1"
@@ -82,6 +86,9 @@ ACTIVATE_PREPARE_CUSTOM_RULER_TOOL = (
 ACTIVATE_RULER_DESIGNER_TOOL = "ck3_activate_frontend_ruler_designer_v1"
 ACTIVATE_COAT_OF_ARMS_DESIGNER_TOOL = (
     "ck3_activate_frontend_coat_of_arms_designer_v1"
+)
+COMMIT_DYNASTY_COAT_OF_ARMS_TOOL = (
+    "ck3_commit_frontend_dynasty_coat_of_arms_v1"
 )
 SNAPSHOT_TOOL = "ck3_take_snapshot"
 PROBE_COAT_OF_ARMS_TOOL = "ck3_probe_coat_of_arms_source_v1"
@@ -106,6 +113,14 @@ def _parser() -> argparse.ArgumentParser:
         "--syntax-matrix",
         action="store_true",
         help="collect the checked-in CoA detect/apply/Copy matrix after routing",
+    )
+    parser.add_argument(
+        "--commit-roundtrip",
+        action="store_true",
+        help=(
+            "apply one CoA, commit with native dynasty Finish, reopen, and "
+            "compare native Copy bytes"
+        ),
     )
     parser.add_argument("--output", type=Path, required=True)
     return parser
@@ -489,10 +504,121 @@ async def _collect_syntax_matrix(
     }
 
 
+async def _collect_commit_roundtrip(
+    client: Client,
+    record: Any,
+) -> dict[str, object]:
+    source = (
+        'coa={pattern="pattern_solid.dds" color1=rgb { 17 83 149 } '
+        'color2=white color3=black colored_emblem={texture="ce_martlet.dds" '
+        'color1=white mask={1} instance={position={0.37 0.61} '
+        'scale={-0.42 0.58} rotation=-23 depth=1.01}}}'
+    )
+    capability_call = await _call(client, "ck3_get_capabilities")
+    record(capability_call)
+    capabilities = _structured(capability_call)
+    snapshot_call: dict[str, object] | None = None
+    if capability_call.get("is_error") is not False:
+        return {"ok": False, "error": "commit capabilities call failed"}
+    if capabilities.get("snapshot") is True:
+        snapshot_call = await _call(client, SNAPSHOT_TOOL)
+        record(snapshot_call)
+        revision = _structured(snapshot_call).get("revision")
+        if not isinstance(revision, int) or isinstance(revision, bool) or revision < 1:
+            return {"ok": False, "error": "commit snapshot lacks revision"}
+        binding_mode = "snapshot"
+    elif capabilities.get("snapshot") is False:
+        revision = 0
+        binding_mode = "frontend"
+    else:
+        return {"ok": False, "error": "commit capabilities lack snapshot state"}
+
+    apply_call = await _call(
+        client,
+        PROBE_COAT_OF_ARMS_TOOL,
+        {"source": source, "expected_revision": revision, "apply": True},
+    )
+    record(apply_call)
+    before_export_call = await _call(
+        client, EXPORT_COAT_OF_ARMS_TOOL, {"expected_revision": revision}
+    )
+    record(before_export_call)
+    commit_call = await _call(client, COMMIT_DYNASTY_COAT_OF_ARMS_TOOL)
+    record(commit_call)
+    reopen_call = await _call(client, ACTIVATE_COAT_OF_ARMS_DESIGNER_TOOL)
+    record(reopen_call)
+    after_export_call = await _call(
+        client, EXPORT_COAT_OF_ARMS_TOOL, {"expected_revision": revision}
+    )
+    record(after_export_call)
+
+    applied = _structured(apply_call)
+    before_export = _structured(before_export_call)
+    committed = _structured(commit_call)
+    reopened = _structured(reopen_call)
+    after_export = _structured(after_export_call)
+    before_sha = before_export.get("source_sha256")
+    checks = {
+        "apply_not_error": apply_call.get("is_error") is False,
+        "applied": applied.get("status") == "applied",
+        "before_exported": (
+            before_export_call.get("is_error") is False
+            and before_export.get("status") == "exported"
+            and isinstance(before_sha, str)
+            and len(before_sha) == 64
+        ),
+        "commit_not_error": commit_call.get("is_error") is False,
+        "commit_verified": (
+            committed.get("status") == "verified"
+            and committed.get("action") == "commit_dynasty_coat_of_arms"
+            and committed.get("postcondition_verified") is True
+            and isinstance(committed.get("after"), dict)
+            and committed["after"].get("route") == "ruler_designer"
+        ),
+        "commit_no_ocr_keyboard_mouse": (
+            committed.get("uses_ocr") is False
+            and committed.get("uses_keyboard") is False
+            and committed.get("uses_mouse") is False
+        ),
+        "reopen_verified": (
+            reopen_call.get("is_error") is False
+            and reopened.get("status") == "verified"
+            and isinstance(reopened.get("after"), dict)
+            and reopened["after"].get("route") == "coat_of_arms_designer"
+        ),
+        "after_exported": (
+            after_export_call.get("is_error") is False
+            and after_export.get("status") == "exported"
+        ),
+        "native_copy_bytes_preserved_after_commit_reopen": (
+            isinstance(before_sha, str)
+            and after_export.get("source_sha256") == before_sha
+            and after_export.get("source_bytes") == before_export.get("source_bytes")
+            and after_export.get("source") == before_export.get("source")
+        ),
+    }
+    return {
+        "ok": all(checks.values()),
+        "binding_mode": binding_mode,
+        "expected_revision": revision,
+        "source": source,
+        "source_sha256": hashlib.sha256(source.encode("ascii")).hexdigest().upper(),
+        "capabilities_call": capability_call,
+        "snapshot_call": snapshot_call,
+        "apply": apply_call,
+        "before_commit_export": before_export_call,
+        "commit": commit_call,
+        "reopen": reopen_call,
+        "after_reopen_export": after_export_call,
+        "checks": checks,
+    }
+
+
 async def _mcp_sequence(
     driver: NativeHeadlessGameplayDriver,
     timeout: float,
     syntax_matrix: dict[str, object] | None = None,
+    commit_roundtrip: bool = False,
 ) -> dict[str, object]:
     deadline = time.monotonic() + timeout
     calls: list[dict[str, object]] = []
@@ -532,13 +658,24 @@ async def _mcp_sequence(
             ACTIVATE_PREPARE_CUSTOM_RULER_TOOL,
             ACTIVATE_RULER_DESIGNER_TOOL,
             ACTIVATE_COAT_OF_ARMS_DESIGNER_TOOL,
+            COMMIT_DYNASTY_COAT_OF_ARMS_TOOL,
         }
         matrix_required = (
             {SNAPSHOT_TOOL, PROBE_COAT_OF_ARMS_TOOL, EXPORT_COAT_OF_ARMS_TOOL}
             if syntax_matrix is not None
             else set()
         )
-        required = route_required | matrix_required
+        commit_required = (
+            {
+                SNAPSHOT_TOOL,
+                PROBE_COAT_OF_ARMS_TOOL,
+                EXPORT_COAT_OF_ARMS_TOOL,
+                COMMIT_DYNASTY_COAT_OF_ARMS_TOOL,
+            }
+            if commit_roundtrip
+            else set()
+        )
+        required = route_required | matrix_required | commit_required
         schemas = {
             name: tools[name].input_schema
             for name in sorted(required)
@@ -558,7 +695,7 @@ async def _mcp_sequence(
                 "frontend MCP tools are not closed zero-input tools",
                 tool_schemas=schemas,
             )
-        if syntax_matrix is not None and not (
+        if (syntax_matrix is not None or commit_roundtrip) and not (
             _schema_is_zero_input(schemas.get(SNAPSHOT_TOOL))
             and _schema_has_required_fields(
                 schemas.get(PROBE_COAT_OF_ARMS_TOOL),
@@ -581,11 +718,18 @@ async def _mcp_sequence(
             ACTIVATE_SELECT_RANDOM_PLAYABLE_CAPABILITY,
             ACTIVATE_RULER_DESIGNER_CAPABILITY,
             ACTIVATE_COAT_OF_ARMS_DESIGNER_CAPABILITY,
+            COMMIT_DYNASTY_COAT_OF_ARMS_CAPABILITY,
         }
         if syntax_matrix is not None:
             required_capabilities |= {
                 PROBE_COAT_OF_ARMS_CAPABILITY,
                 EXPORT_COAT_OF_ARMS_CAPABILITY,
+            }
+        if commit_roundtrip:
+            required_capabilities |= {
+                PROBE_COAT_OF_ARMS_CAPABILITY,
+                EXPORT_COAT_OF_ARMS_CAPABILITY,
+                COMMIT_DYNASTY_COAT_OF_ARMS_CAPABILITY,
             }
 
         capability_call: dict[str, object] | None = None
@@ -795,6 +939,18 @@ async def _mcp_sequence(
             checks["syntax_matrix_evidence_complete"] = (
                 matrix_result.get("ok") is True
             )
+        commit_result: dict[str, object] | None = None
+        if commit_roundtrip:
+            if all(checks.values()):
+                commit_result = await _collect_commit_roundtrip(client, record)
+            else:
+                commit_result = {
+                    "ok": False,
+                    "error": "route checks failed before commit round-trip",
+                }
+            checks["commit_roundtrip_evidence_complete"] = (
+                commit_result.get("ok") is True
+            )
         return {
             "mcp_sdk": "official-python-client",
             "tool_schemas": schemas,
@@ -809,6 +965,7 @@ async def _mcp_sequence(
                 coat_of_arms_inspection
             ),
             "syntax_matrix": matrix_result,
+            "commit_roundtrip": commit_result,
             "calls": calls,
             "call_summary": call_summary,
             "checks": checks,
@@ -831,6 +988,7 @@ def _run(args: argparse.Namespace) -> tuple[dict[str, object], int]:
     syntax_matrix = (
         _load_syntax_matrix() if getattr(args, "syntax_matrix", False) else None
     )
+    commit_roundtrip = bool(getattr(args, "commit_roundtrip", False))
     state_dir = args.state_dir.resolve()
     output = args.output.resolve()
     if state_dir.exists():
@@ -857,6 +1015,7 @@ def _run(args: argparse.Namespace) -> tuple[dict[str, object], int]:
         },
         "syntax_matrix_requested": syntax_matrix is not None,
         "syntax_matrix_plan": syntax_matrix,
+        "commit_roundtrip_requested": commit_roundtrip,
     }
     handle = None
     driver: NativeHeadlessGameplayDriver | None = None
@@ -920,6 +1079,7 @@ def _run(args: argparse.Namespace) -> tuple[dict[str, object], int]:
                 driver,
                 float(args.timeout),
                 syntax_matrix=syntax_matrix,
+                commit_roundtrip=commit_roundtrip,
             )
         )
         report["sequence"] = sequence

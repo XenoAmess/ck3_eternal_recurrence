@@ -13,7 +13,7 @@ coat-of-arms render description，不把该入口描述成任意 CK3 脚本执�
 - 导入后继续对表单模型执行确定性校验：颜色语法、可打印 ASCII 资源名、有限数值和原生 128 KiB 上限不合格时，禁止复制或发送 MCP；
 - 内置 exact 1.19.0.6 的机器可读语法能力矩阵，逐项展示例子、原生 `detected/applied/not_detected` 结果、编辑器策略与证据边界；
 - 展开简单静态 `@变量`；保留已证实可应用/Copy 的受限 `parent` 数据库引用；重复标量按 CK3 后值优先并警告，多顶层仍阻止静默丢数据；
-- 通过本机 Quarkus 伴随服务调用 typed MCP：读取基础游戏资源目录、单个 DDS、渲染支撑数据、当前 `dlc_load.json`、目录/ZIP 模组 manifest 与 DDS 候选，以及运行中 CK3 的 effective feature / script `has_dlc` truth；获取 session revision，执行原生检测/应用和 Copy/export；
+- 通过本机 Quarkus 伴随服务调用 typed MCP：读取基础游戏资源目录、单个 DDS、渲染支撑数据、当前 `dlc_load.json`、目录/ZIP 模组 manifest 与 DDS 候选，以及运行中 CK3 的 effective feature / script `has_dlc` truth；获取 session revision，执行原生检测/应用、Copy/export，并以固定的原生王朝 Finish 动作提交回角色设计器；
 - 在浏览器解码原版 DXT1 pattern、DXT5 colored emblem、`coa_mask_texture.dds` 以及 `_default.dds` 使用的无压缩 BGRA8 顶层 mip；
 - 按 CK3 随附的 Clausewitz/Jomini shader 源码翻译三通道调色、pattern mask、flip→rotate→scale→translate、surface detail 和 alpha blend；GPU 采样/色彩空间及引擎未公开的 `FallbackColor` 绑定仍不冒充逐像素一致。
 
@@ -30,7 +30,7 @@ pnpm dev
 ```
 
 浏览器不能直接启动本机 stdio MCP，所以 `backend/` 提供必要且很薄的 Maven + Java + Quarkus 伴随服务。它只允许调用
-`ck3_take_snapshot`、九项 CoA MCP 工具、一项原生 runtime-feature 查询和一项固定 CoA 页动作，不实现第二套后端解析器，也不触碰 OCR、鼠标或屏幕。
+`ck3_take_snapshot`、九项 CoA MCP 工具、一项原生 runtime-feature 查询和两项固定 CoA 页面动作，不实现第二套后端解析器，也不触碰 OCR、鼠标或屏幕。
 
 ## 启动伴随服务
 
@@ -50,6 +50,7 @@ mvn -f backend/pom.xml quarkus:dev
 | REST | MCP | 是否需要已运行的 CK3 |
 |---|---|---:|
 | `POST /api/ck3/coat-of-arms/open-native-designer` | `ck3_activate_frontend_coat_of_arms_designer_v1` | 是，且需停在角色设计器；只接受固定王朝家徽按钮 |
+| `POST /api/ck3/coat-of-arms/commit-native-design` | `ck3_commit_frontend_dynasty_coat_of_arms_v1` | 是，且需停在王朝家徽页；只接受固定 `dynasty_finish_button`，成功后验证返回角色设计器 |
 | `GET /api/ck3/coat-of-arms/resources` | `ck3_query_coat_of_arms_resource_catalog_v1` | 否，只读安装目录 |
 | `GET /api/ck3/coat-of-arms/asset` | `ck3_read_coat_of_arms_resource_asset_v1` | 否，只读 manifest 内的精确 DDS |
 | `GET /api/ck3/coat-of-arms/render-support` | `ck3_read_coat_of_arms_render_support_v1` | 否，只读 shader、命名颜色、surface mask 与 `_default.dds` |
@@ -71,8 +72,8 @@ mvn -f backend/pom.xml package
 java -jar backend/target/quarkus-app/quarkus-run.jar
 ```
 
-当前基线：Vitest `39/39`、Vite production build、Quarkus REST `14/14` 与 Maven package 均 GREEN。
-“打开原生家徽页”只调用固定、零参数的王朝家徽按钮 MCP，并要求独立 route 后置条件；它不会接受浏览器传入的控件名、路径、指针或桌面输入。
+当前基线：Vitest `40/40`、Vite production build、Quarkus REST `15/15` 与 Maven test 均 GREEN。
+“打开原生家徽页”和“提交回角色设计器”都只调用固定、零参数的王朝家徽 MCP，并要求独立 route 后置条件；它们不会接受浏览器传入的控件名、路径、指针或桌面输入。提交动作已经完成静态实现与定向测试，真实 CK3 往返证据将在受管实机验收后单独记录。
 
 probe/export 不再错误地假设家徽页必有 gameplay snapshot。binding 端点先验证 native-headless、named-pipe、exact
 CK3 `1.19.0.6`/EXE SHA、连接代次/PID 及 probe/export capability；有 snapshot 时返回其正 revision，没有 snapshot

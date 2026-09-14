@@ -65,6 +65,28 @@ describe('CK3 companion client', () => {
     expect(JSON.parse(fetchMock.mock.calls[0][1].body)).toEqual({})
   })
 
+  it('commits the native dynasty coat of arms through a zero-input POST', async () => {
+    const payload = {
+      status: 'verified',
+      action: 'commit_dynasty_coat_of_arms',
+      postcondition_verified: true,
+      after: { route: 'ruler_designer' },
+    }
+    const fetchMock = vi.fn().mockResolvedValue(new Response(
+      JSON.stringify(payload),
+      { status: 200, headers: { 'Content-Type': 'application/json' } },
+    ))
+    vi.stubGlobal('fetch', fetchMock)
+
+    const result = await createCk3CompanionClient().commitNativeDesign()
+
+    expect(result).toEqual(payload)
+    expect(new URL(fetchMock.mock.calls[0][0]).pathname)
+      .toBe('/api/ck3/coat-of-arms/commit-native-design')
+    expect(fetchMock.mock.calls[0][1].method).toBe('POST')
+    expect(JSON.parse(fetchMock.mock.calls[0][1].body)).toEqual({})
+  })
+
   it('reads the exact CoA source binding independently of gameplay snapshots', async () => {
     const payload = {
       schema: 'coat-of-arms-source-binding-v1',

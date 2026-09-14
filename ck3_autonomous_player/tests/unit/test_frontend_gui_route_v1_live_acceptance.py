@@ -63,8 +63,24 @@ class FrontendGuiRouteLiveAcceptanceContractTests(unittest.TestCase):
         self.assertIn(
             '"ck3_activate_frontend_coat_of_arms_designer_v1"', source
         )
+        self.assertIn(
+            '"game.command.commit-frontend-dynasty-coat-of-arms-v1"',
+            source,
+        )
+        self.assertIn(
+            '"ck3_commit_frontend_dynasty_coat_of_arms_v1"', source
+        )
         self.assertIn('== "coat_of_arms_designer"', source)
         self.assertIn('row.get("runtime_name") == "coat_of_arms_page"', source)
+
+    def test_runner_has_opt_in_native_finish_roundtrip(self) -> None:
+        source = RUNNER.read_text(encoding="utf-8")
+
+        self.assertIn('"--commit-roundtrip"', source)
+        self.assertIn('"commit_dynasty_coat_of_arms"', source)
+        self.assertIn(
+            '"native_copy_bytes_preserved_after_commit_reopen"', source
+        )
 
     def test_checked_in_syntax_matrix_is_closed_and_targeted(self) -> None:
         payload = json.loads(MATRIX.read_text(encoding="utf-8"))

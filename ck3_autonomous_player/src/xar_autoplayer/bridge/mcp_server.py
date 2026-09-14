@@ -817,6 +817,13 @@ def _ck3_activate_frontend_coat_of_arms_designer_v1(
     return service.activate_frontend_coat_of_arms_designer_v1()
 
 
+def _ck3_commit_frontend_dynasty_coat_of_arms_v1(
+    service: GameplayBridgeService,
+) -> dict[str, object]:
+    """Commit the current dynasty CoA and verify the dedicated page closed."""
+    return service.commit_frontend_dynasty_coat_of_arms_v1()
+
+
 def _ck3_query_pending_character_interaction_context_v1(
     service: GameplayBridgeService,
     pending_interaction_id: int,
@@ -1621,6 +1628,11 @@ def create_server(driver: GameplayBridgeDriver):
         return _ck3_activate_frontend_coat_of_arms_designer_v1(service)
 
     @server.tool()
+    def ck3_commit_frontend_dynasty_coat_of_arms_v1() -> dict[str, object]:
+        """Commit the dynasty coat of arms through the exact native Finish."""
+        return _ck3_commit_frontend_dynasty_coat_of_arms_v1(service)
+
+    @server.tool()
     def ck3_query_coat_of_arms_resource_catalog_v1(
         game_directory: str,
         kind: str,
@@ -2085,6 +2097,9 @@ def create_server(driver: GameplayBridgeDriver):
     )
     _forbid_unknown_tool_arguments_v1(
         server, "ck3_activate_frontend_coat_of_arms_designer_v1"
+    )
+    _forbid_unknown_tool_arguments_v1(
+        server, "ck3_commit_frontend_dynasty_coat_of_arms_v1"
     )
     _forbid_unknown_tool_arguments_v1(
         server, "ck3_query_coat_of_arms_resource_catalog_v1"

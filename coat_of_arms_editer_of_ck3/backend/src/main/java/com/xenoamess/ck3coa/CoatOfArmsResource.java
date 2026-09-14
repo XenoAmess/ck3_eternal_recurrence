@@ -125,6 +125,14 @@ public class CoatOfArmsResource {
                 Map.of());
     }
 
+    @POST
+    @Path("/commit-native-design")
+    public Object commitNativeDesign() {
+        return mcp.callTool(
+                "ck3_commit_frontend_dynasty_coat_of_arms_v1",
+                Map.of());
+    }
+
     @GET
     @Path("/resources")
     public Object resources(

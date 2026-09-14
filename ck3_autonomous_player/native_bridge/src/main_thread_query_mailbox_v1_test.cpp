@@ -1689,7 +1689,7 @@ bool TestSourceContract(int argc, char **argv) {
     return false;
   }
 
-  constexpr std::array<std::string_view, 111> bridge_tokens{
+  constexpr std::array<std::string_view, 112> bridge_tokens{
       "HeartbeatFrame",
       "main_thread_query_mailbox_v1",
       "installed",
@@ -1755,6 +1755,7 @@ bool TestSourceContract(int argc, char **argv) {
       "kFrontendGuiSelectRandomPlayableV1Step",
       "kFrontendGuiOpenRulerDesignerV1Step",
       "kFrontendGuiOpenCoatOfArmsDesignerV1Step",
+      "kFrontendGuiCommitDynastyCoatOfArmsV1Step",
       "kTitleMapNavigationV1Step",
       "ParseTitleMapNavigationRequestV1",
       "request.expected_snapshot_revision != state_revision",

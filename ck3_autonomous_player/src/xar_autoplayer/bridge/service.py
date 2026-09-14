@@ -7301,6 +7301,32 @@ class GameplayBridgeService:
             )
         return result
 
+    def commit_frontend_dynasty_coat_of_arms_v1(self) -> dict[str, object]:
+        """Commit the current dynasty CoA through the exact native Finish."""
+
+        commit = getattr(
+            self.driver, "commit_frontend_dynasty_coat_of_arms_v1", None
+        )
+        if not callable(commit):
+            raise UnsupportedStepError(
+                "selected backend has no native dynasty coat-of-arms commit"
+            )
+        result = commit()
+        if (
+            not isinstance(result, dict)
+            or result.get("schema") != "ck3-frontend-gui-action-v1"
+            or result.get("schema_version") != 1
+            or result.get("action") != "commit_dynasty_coat_of_arms"
+            or result.get("postcondition_verified") is not True
+            or result.get("uses_ocr") is not False
+            or result.get("uses_keyboard") is not False
+            or result.get("uses_mouse") is not False
+        ):
+            raise BridgeUnavailableError(
+                "native dynasty coat-of-arms commit lacks its postcondition"
+            )
+        return result
+
     def query_current_event_window_context_v1(
         self,
         event_instance_id: int,

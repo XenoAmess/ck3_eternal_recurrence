@@ -56,7 +56,7 @@ designer 的 working state。
 用实际安装的 Python MCP SDK `2.0.0` 连接现有 stdio server 时，补能力前共列出 62 个工具，
 没有 coat-of-arms、clipboard 或 designer 工具。也就是说，旧 MCP 无法回答本报告的核心问题。
 
-本轮先后新增两个原生工具和七个离线资源/渲染工具：
+本轮先后新增原生 CoA source、frontend route/action 工具和七个离线资源/渲染工具：
 
 ```text
 ck3_probe_coat_of_arms_source_v1(
@@ -72,6 +72,10 @@ ck3_export_coat_of_arms_source_v1(
 ck3_query_frontend_gui_route_v1()
 
 ck3_activate_frontend_new_game_v1()
+
+ck3_activate_frontend_coat_of_arms_designer_v1()
+
+ck3_commit_frontend_dynasty_coat_of_arms_v1()
 
 ck3_query_coat_of_arms_resource_catalog_v1(
     game_directory: string,
@@ -123,6 +127,8 @@ game.command.probe-coat-of-arms-source-v1
 game.command.export-coat-of-arms-source-v1
 game.command.query-frontend-gui-route-v1
 game.command.activate-frontend-new-game-v1
+game.command.activate-frontend-coat-of-arms-designer-v1
+game.command.commit-frontend-dynasty-coat-of-arms-v1
 ```
 
 probe 不属于自动游玩 planner 的无参数 action 集合，只能由调用方显式提供源码；export 则调用游戏自己的
@@ -142,8 +148,10 @@ MCP 合同明确区分三种绑定：
 - EXE SHA-256 与版本完全匹配；
 - `ck3_build_match=true` 且 capability 由同一 hello 广告。
 
-Hybrid 后端中的两个工具都强制直达 native，
-不会回退到 OCR、坐标或视觉驱动。
+Hybrid 后端中的 probe/export 与固定 frontend 动作都强制直达 native，
+不会回退到 OCR、坐标或视觉驱动。`ck3_commit_frontend_dynasty_coat_of_arms_v1` 只解析实时
+`ruler_designer` 树中的固定 `dynasty_finish_button`，并要求动作前为 `coat_of_arms_designer`、动作后为
+`ruler_designer`；调用方不能传控件名、路径或指针。该动作当前为 `mcp-static-ready`，不能在实机往返完成前写成已提交事实。
 
 resource catalog 不启动 CK3，也不经过视觉路线。它先校验 `binaries/ck3.exe` 的 exact-build SHA-256，然后读取原版
 `50_coa_designer_patterns.txt`、`50_coa_designer_emblems.txt` 与 `50_coa_designer_palettes.txt`，按原版设计器顺序分页返回
