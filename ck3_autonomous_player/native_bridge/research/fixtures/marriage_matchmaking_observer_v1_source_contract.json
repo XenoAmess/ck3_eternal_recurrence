@@ -1,0 +1,58 @@
+{
+  "schema_version": 1,
+  "private_key": "marriage_matchmaking_observer_v1",
+  "files": {
+    "header": "include/xar_bridge/marriage_matchmaking_observer_v1.hpp",
+    "implementation": "src/marriage_matchmaking_observer_v1.cpp",
+    "unit_test": "src/marriage_matchmaking_observer_v1_test.cpp",
+    "abi": "research/marriage_matchmaking_observer_v1_abi.json"
+  },
+  "required_header_tokens": [
+    "kMarriageMatchmakingObserverPrivateKeyV1",
+    "kMarriageCandidateEnumeratorRvaV1",
+    "kMarriageCandidateScoreFilterRvaV1",
+    "kMarriageCompleteCanSendRvaV1",
+    "kMarriageRecipientAiAcceptRvaV1",
+    "kMarriageOuterAnswerRvaV1",
+    "kMarriageNativeRankedRowStrideV1",
+    "MarriageMatchmakingPairRolesV1",
+    "native_candidate_score",
+    "recipient_ai_accept_raw",
+    "ReadMarriageRankedCandidatesV1",
+    "EvaluateMarriageCandidateV1",
+    "ReadMarriageMatchmakingObserverV1"
+  ],
+  "required_implementation_tokens": [
+    "application_main_thread_required",
+    "ranked_source_unavailable",
+    "native_sample_drift",
+    "if (first != second)",
+    "ClassifyFrameDrift(before, after)",
+    "recipient_ai_accept_scale",
+    "native_final_results_only",
+    "\\\"advertised\\\":false"
+  ],
+  "required_test_tokens": [
+    "TestNormalObservation",
+    "TestExactCandidateFilterPreservesNativeRank",
+    "TestRankedSourceUnavailableIsNotEmptySuccess",
+    "TestSampleAndFrameDriftFailAtomically",
+    "TestCandidateAndPairValidation",
+    "TestAdmissionAndThreadGuards",
+    "kMarriageNativeRankedRowCharacterIdOffsetV1",
+    "faith",
+    "doctrine",
+    "tenet",
+    "fervor"
+  ],
+  "forbidden_shared_edits": [
+    "CMakeLists.txt",
+    "src/bridge.cpp",
+    "schemas/protocol.schema.json"
+  ],
+  "forbidden_public_capabilities": [
+    "game.query.marriage-matchmaking-observer-v1",
+    "game.query.marriage-matchmaking-v1",
+    "game.action.arrange-ranked-marriage-v1"
+  ]
+}

@@ -1,0 +1,120 @@
+{
+  "schema_version": 1,
+  "private_key": "marriage_matchmaking_observer_v1",
+  "status": "static-ready-private-core-unwired",
+  "visibility": "private-not-advertised",
+  "exact_build": {
+    "product_version": "1.19.0.6",
+    "executable_path": "binaries/ck3.exe",
+    "executable_size": 95206008,
+    "executable_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86"
+  },
+  "native_entry_points": {
+    "enumerate_candidates_rva": "0x1890470",
+    "score_filter_candidates_rva": "0x1890D90",
+    "candidate_gate_and_score_rva": "0x1890F40",
+    "complete_can_send_rva": "0x2C43F00",
+    "recipient_ai_accept_rva": "0x2C44320",
+    "outer_answer_rva": "0x2C43B40",
+    "outcome_dispatch_rva": "0x2282DE0",
+    "production_callsites": {
+      "enumerate_candidates": "0x18FA4C3",
+      "score_filter_candidates": "0x18FAF36",
+      "recipient_ai_accept": "0x18FA932",
+      "complete_can_send": "0x18FAB4C"
+    },
+    "binding_rule": "module-relative exact-build addresses are immutable inputs to the private integration adapter; every address must match the pinned RVA set"
+  },
+  "ranked_row_layout": {
+    "stride_bytes": 16,
+    "candidate_character_id_offset": 8,
+    "native_candidate_score_offset": 12,
+    "score_type": "signed-int32",
+    "identity": "full generation-bearing CharacterID",
+    "maximum_rows": 8,
+    "ordering": "preserve native scored-row order and native rank"
+  },
+  "private_adapter_contract": {
+    "ranked_source": "read_ranked_candidates invokes the pinned native enumerate and score/filter path for the subject strategy and copies no more than eight full IDs and total scores",
+    "pair_evaluation": "evaluate_candidate constructs and finalizes the direct five-role marriage context, then consumes pinned complete Can Send, raw ai_accept, special-aware outer answer and native outcome classification",
+    "subject_scope": "direct played-character matchmaking only; subject and matchmaker are the same full CharacterID",
+    "entry_point_ownership": "the private core validates and passes exact-build entry points; native owner/context construction remains the next isolated integration package",
+    "pointer_policy": "native pointers and strategy/context owners are transient adapter inputs and are never serialized"
+  },
+  "output_contract": {
+    "request": [
+      "expected_snapshot_id",
+      "expected_public_revision",
+      "expected_native_revision",
+      "expected_date_raw",
+      "subject_character_id",
+      "matchmaker_character_id",
+      "limit<=8",
+      "optional candidate_character_id filter"
+    ],
+    "candidate_row": [
+      "native rank",
+      "subject/matchmaker/candidate full CharacterIDs",
+      "native candidate score",
+      "five redirected role CharacterIDs",
+      "complete Can Send bool and opaque raw status",
+      "recipient ai_accept raw at scale 100000",
+      "special-aware recipient answer raw status and allows-send bool",
+      "native predicted marriage or betrothal outcome"
+    ],
+    "ranked_source_unavailable": "top-level unavailable with an explicit ranked_source_unavailable reason; never an available empty list",
+    "candidate_filter": "an exact filter preserves the row's original native rank"
+  },
+  "transaction": {
+    "executor": "paused application-main private read-only observer",
+    "steps": [
+      "capture and validate snapshot/revisions/date/played CharacterID",
+      "read complete ranked source and all per-row native evaluations",
+      "repeat the complete native sample",
+      "reject any source drift",
+      "recapture and compare the paused frame",
+      "copy bounded rows and publish"
+    ],
+    "failure_atomicity": "unavailable output publishes zero candidate rows",
+    "same_frame_definition": "both complete native samples occur between matching paused frame captures"
+  },
+  "religion_boundary": {
+    "projection": "native final results only",
+    "allowed": [
+      "complete Can Send result",
+      "raw and special-aware final acceptance results",
+      "opaque native status values"
+    ],
+    "forbidden": [
+      "faith tree",
+      "doctrine tree",
+      "tenet tree",
+      "fervor model",
+      "Python reimplementation of religious marriage legality"
+    ]
+  },
+  "readiness": {
+    "private_core_implemented": true,
+    "exact_build_entry_points_bound": true,
+    "ranked_candidate_contract": true,
+    "pair_character_id_contract": true,
+    "native_score_contract": true,
+    "complete_can_send_contract": true,
+    "recipient_ai_accept_contract": true,
+    "recipient_answer_contract": true,
+    "predicted_outcome_contract": true,
+    "same_frame_double_sample": true,
+    "native_strategy_adapter_bound": false,
+    "native_pair_context_adapter_bound": false,
+    "public_capability_registered": false,
+    "production_query_live": false,
+    "relationship_postcondition_ready": false,
+    "alliance_pair_postcondition_ready": false,
+    "planner_ready": false
+  },
+  "evidence": {
+    "native_tree": "docs/ck3-native-ai/marriage-and-alliance.md",
+    "exact_build_registry": "docs/ck3-native-ai/research/marriage-matchmaking-1.19.0.6.json"
+  },
+  "unique_next_integration_entry": "bind a validated played-character strategy owner to read_ranked_candidates, then build the direct five-role context in evaluate_candidate and run a paused live query before public MCP registration"
+}

@@ -696,6 +696,25 @@ MCP 参数只含 `subject_character_id`、`limit<=8` 与可选 `candidate_charac
 | `relationship_postcondition` | 既有 direct relationship reader；后续扩任意 pair | 验证 actual secondary pair |
 | `alliance_pairs_before/after` | 待闭合 `MarriageInfo.GetAllianceItems` row/relation getter | 验证具体联盟 delta |
 
+#### G2-M5-MARRIAGE2 私有核心
+
+[static-ready] `marriage_matchmaking_observer_v1` 已在私有、未注册状态实现第一段可集成核心。它固定
+`0x1890470 / 0x1890D90 / 0x1890F40` 候选与总分入口，以及 `0x2C43F00 / 0x2C44320 /
+0x2C43B40 / 0x2282DE0` 的 complete Can Send、raw `ai_accept`、special-aware answer 与 outcome
+入口；一次最多复制八个 16-byte ranked row，并分别保留原生 rank、完整候选 CharacterID 和 signed score。
+
+核心强制 direct 玩家本人范围：`subject_character_id == matchmaker_character_id`，逐行结果同时保存 subject、
+matchmaker、candidate 与 redirect 后五角色完整 ID，防止把答复人和实际结婚双方混为一谈。候选源与逐行判定是两个独立的
+native adapter seam；两次完整读取必须相同，且前后 paused frame 的 snapshot、revision、proof epoch、日期和玩家 ID
+必须不变，才会原子发布。strategy 不可用返回顶层 `ranked_source_unavailable`，不能伪装成可用空列表；指定候选过滤仍保留
+其原生 rank。
+
+宗教边界没有扩大：序列化只说明 `native_final_results_only`，只消费原生 final legality/acceptance 的 bool、raw 或
+opaque status，不发布或重算 faith、doctrine、tenet、fervor。私有核心、ABI 与独立 fixture test 位于
+`ck3_autonomous_player/native_bridge/{include,src,research}`；没有接入共享 CMake、`bridge.cpp` 或公开 schema，也没有新增
+MCP capability 或 live artifact。当前诚实状态是 `static-ready-private-core-unwired`；下一项唯一入口仍是给两个 adapter seam
+绑定已验证的 played-character strategy owner 和 direct five-role context，再做 paused live query。
+
 第一项可直接施工的 P0 切片是：在现有 `query-arrange-marriage-choices` 旁增加只读 ranked query，按本次冻结的 strategy
 入口调用 `0x1890470 → 0x1890D90`，复制前 8 个完整 ID/score，再为每行构造 direct five-role context，发布 complete Can Send、
 raw/final acceptance 和 marriage/betrothal 预期。若 human player 在某 lifecycle 没有可用 strategy，返回明确
