@@ -17,6 +17,7 @@ from typing import Iterable
 
 HELPER_NAME = "_wait_for_readiness"
 CHARACTER_FIELD = "episode_character_id"
+PRIVATE_PROBE_FORBIDDEN_KEYWORDS = frozenset({"expected_character_id"})
 
 
 class ContractError(ValueError):
@@ -34,8 +35,10 @@ def _single(
     return materialized[0]
 
 
-def readiness_keyword_contract(readiness_source: str) -> tuple[str, ...]:
-    """Return the helper's exact keyword-only argument names from source."""
+def readiness_keyword_contract(
+    readiness_source: str,
+) -> tuple[tuple[str, ...], tuple[str, ...]]:
+    """Return the helper's required and optional keyword-only arguments."""
 
     tree = ast.parse(readiness_source)
     helper = _single(
@@ -55,12 +58,19 @@ def readiness_keyword_contract(readiness_source: str) -> tuple[str, ...]:
         raise ContractError(
             f"{HELPER_NAME} positional contract differs: {positional!r}"
         )
-    keywords = tuple(argument.arg for argument in helper.args.kwonlyargs)
-    if not keywords:
+    required = tuple(
+        argument.arg
+        for argument, default in zip(helper.args.kwonlyargs, helper.args.kw_defaults)
+        if default is None
+    )
+    optional = tuple(
+        argument.arg
+        for argument, default in zip(helper.args.kwonlyargs, helper.args.kw_defaults)
+        if default is not None
+    )
+    if not required:
         raise ContractError(f"{HELPER_NAME} has no keyword-only contract")
-    if any(default is not None for default in helper.args.kw_defaults):
-        raise ContractError(f"{HELPER_NAME} keyword defaults are not frozen")
-    return keywords
+    return required, optional
 
 
 def _call_name(node: ast.Call) -> str | None:
@@ -146,7 +156,7 @@ def validate_runner_contract(
 ) -> dict[str, object]:
     """Validate one runner and return its frozen, serializable contract."""
 
-    keyword_contract = readiness_keyword_contract(readiness_source)
+    required_keywords, optional_keywords = readiness_keyword_contract(readiness_source)
     tree = ast.parse(runner_source)
     call = _single(
         (
@@ -162,15 +172,21 @@ def validate_runner_contract(
     if any(keyword.arg is None for keyword in call.keywords):
         raise ContractError(f"{HELPER_NAME} call must not use **kwargs")
     actual_keywords = tuple(keyword.arg for keyword in call.keywords)
-    unsupported = sorted(set(actual_keywords) - set(keyword_contract))
+    supported_keywords = set(required_keywords) | set(optional_keywords)
+    unsupported = sorted(set(actual_keywords) - supported_keywords)
     if unsupported:
         raise ContractError(
             f"unsupported {HELPER_NAME} keyword arguments: {unsupported!r}"
         )
-    if actual_keywords != keyword_contract:
+    forbidden = sorted(set(actual_keywords) & PRIVATE_PROBE_FORBIDDEN_KEYWORDS)
+    if forbidden:
+        raise ContractError(
+            f"private probe must not pass readiness keyword arguments: {forbidden!r}"
+        )
+    if actual_keywords != required_keywords:
         raise ContractError(
             f"{HELPER_NAME} keyword contract differs: "
-            f"{actual_keywords!r} != {keyword_contract!r}"
+            f"{actual_keywords!r} != {required_keywords!r}"
         )
 
     owner = _constant_assignment(tree, "EXPECTED_OWNER")
@@ -197,7 +213,11 @@ def validate_runner_contract(
         "status": "green",
         "helper": HELPER_NAME,
         "positional_arguments": ["driver"],
-        "keyword_arguments": list(keyword_contract),
+        "keyword_arguments": list(required_keywords),
+        "optional_helper_keyword_arguments": list(optional_keywords),
+        "forbidden_private_probe_keyword_arguments": sorted(
+            PRIVATE_PROBE_FORBIDDEN_KEYWORDS
+        ),
         "expected_character_id": expected_character_id,
         "character_binding_source": "post-readiness internal semantic snapshot",
         "readiness_call_line": call.lineno,

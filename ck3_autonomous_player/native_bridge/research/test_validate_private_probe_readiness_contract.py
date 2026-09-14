@@ -27,6 +27,7 @@ def _wait_for_readiness(
     poll_interval_seconds,
     cold_start_checkpoint,
     allow_terminal,
+    expected_character_id=None,
 ):
     return {}
 """
@@ -61,7 +62,7 @@ class PrivateProbeReadinessContractTest(unittest.TestCase):
     def test_r689_unsupported_character_keyword_is_rejected(self) -> None:
         with self.assertRaisesRegex(
             MODULE.ContractError,
-            "unsupported .*expected_character_id",
+            "must not pass .*expected_character_id",
         ):
             MODULE.validate_runner_contract(
                 readiness_source=READINESS_SOURCE,
@@ -77,6 +78,13 @@ class PrivateProbeReadinessContractTest(unittest.TestCase):
         )
         self.assertEqual(result["status"], "green")
         self.assertNotIn("expected_character_id", result["keyword_arguments"])
+        self.assertEqual(
+            result["optional_helper_keyword_arguments"], ["expected_character_id"]
+        )
+        self.assertEqual(
+            result["forbidden_private_probe_keyword_arguments"],
+            ["expected_character_id"],
+        )
         self.assertEqual(result["expected_character_id"], 29829)
         self.assertEqual(
             result["character_binding_source"],

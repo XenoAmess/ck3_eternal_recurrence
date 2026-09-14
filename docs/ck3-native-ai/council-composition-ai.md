@@ -471,10 +471,13 @@ harness RED; it neither passes nor disproves the private Council reader.
 
 `validate_private_probe_readiness_contract.py` now compares an artifact-local
 runner's one `_wait_for_readiness` call with the helper's actual source
-signature. A runner must supply only `driver` positionally and the complete,
-ordered keyword-only helper contract. Variadic arguments and unsupported
-keywords are rejected. In particular, player identity is not an input to the
-readiness helper.
+signature. It freezes required and optional keyword-only arguments separately;
+a runner must supply only `driver` positionally and every required keyword in
+source order. Variadic and unsupported arguments are rejected. The later
+master helper accepts `expected_character_id` as an optional input, but bounded
+private probes deliberately forbid it so their owner binding remains an
+independent observation after readiness. R689 used the older runtime signature,
+where that same argument caused the preserved TypeError.
 
 The owner binding remains mandatory and independent: after readiness returns,
 the runner must take an internal semantic snapshot and compare its
