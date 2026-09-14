@@ -57,8 +57,16 @@ def _parser() -> argparse.ArgumentParser:
         default=[],
         help="Expected registered event key before the target; repeat in order.",
     )
+    parser.add_argument(
+        "--expected-prelude-date-raw",
+        action="append",
+        type=int,
+        default=[],
+        help="Exact date for each expected prelude event; repeat in order.",
+    )
     parser.add_argument("--horizon-timeout", type=float, default=180.0)
     parser.add_argument("--poll-interval", type=float, default=0.1)
+    parser.add_argument("--event-settle-timeout", type=float, default=5.0)
     return parser
 
 
@@ -283,16 +291,20 @@ async def _run_mcp_sequence(
     target_date_raw: int,
     expected_event_key: str,
     expected_prelude_events: list[str],
+    expected_prelude_dates: list[int],
     horizon_timeout: float,
     poll_interval: float,
+    event_settle_timeout: float,
 ) -> dict[str, object]:
     del war_id
     from mcp import Client
 
     if target_date_raw <= expected_date_raw:
         raise ValueError("target date must be later than the source date")
-    if horizon_timeout <= 0 or poll_interval <= 0:
-        raise ValueError("horizon timeout and poll interval must be positive")
+    if horizon_timeout <= 0 or poll_interval <= 0 or event_settle_timeout <= 0:
+        raise ValueError("horizon and polling timeouts must be positive")
+    if len(expected_prelude_events) != len(expected_prelude_dates):
+        raise ValueError("prelude event keys and dates must have equal counts")
 
     server = base.create_server(driver)
     results: list[object] = []
@@ -437,9 +449,31 @@ async def _run_mcp_sequence(
                     maximum_date_raw=target_date_raw,
                 )
                 if current.get("active_event") is None:
-                    if current.get("date_raw") >= target_date_raw:
+                    next_event_date = (
+                        expected_prelude_dates[len(preludes)]
+                        if len(preludes) < len(expected_prelude_dates)
+                        else target_date_raw
+                    )
+                    if current.get("date_raw") == next_event_date:
+                        settle_deadline = min(
+                            deadline, time.monotonic() + event_settle_timeout
+                        )
+                        while time.monotonic() < settle_deadline:
+                            await asyncio.sleep(poll_interval)
+                            current = await _snapshot(
+                                client, results, label="event-settle"
+                            )
+                            final = current
+                            if current.get("active_event") is not None:
+                                break
+                        if current.get("active_event") is None:
+                            raise RuntimeError(
+                                "declared event did not materialize on its paused date"
+                            )
+                    elif current.get("date_raw") >= target_date_raw:
                         raise RuntimeError("target event was absent at the exact date boundary")
-                    continue
+                    else:
+                        continue
 
                 context = await _query_event(client, results, commands, current)
                 event_key = context.get("event_definition_key")
@@ -448,9 +482,16 @@ async def _run_mcp_sequence(
                     if len(preludes) < len(expected_prelude_events)
                     else expected_event_key
                 )
-                if event_key != expected_next:
+                expected_next_date = (
+                    expected_prelude_dates[len(preludes)]
+                    if len(preludes) < len(expected_prelude_dates)
+                    else target_date_raw
+                )
+                if event_key != expected_next or current.get("date_raw") != expected_next_date:
                     raise RuntimeError(
-                        f"event order drifted: expected {expected_next}, observed {event_key}"
+                        "event order or date drifted: "
+                        f"expected {expected_next}@{expected_next_date}, "
+                        f"observed {event_key}@{current.get('date_raw')}"
                     )
                 decision = _recommend(
                     snapshot=current,
@@ -592,8 +633,10 @@ async def _run_mcp_sequence(
         "target_date_raw": target_date_raw,
         "expected_event_key": expected_event_key,
         "expected_prelude_events": expected_prelude_events,
+        "expected_prelude_dates_raw": expected_prelude_dates,
         "horizon_timeout_seconds": horizon_timeout,
         "poll_interval_seconds": poll_interval,
+        "event_settle_timeout_seconds": event_settle_timeout,
         "allowed_gameplay_commands": [
             "resume-map",
             "pause-map",
@@ -681,6 +724,12 @@ def _preflight(args: argparse.Namespace) -> tuple[dict[str, object], int]:
         "declared_event_order": all(
             isinstance(item, str) and bool(item.strip())
             for item in args.expected_prelude_event
+        )
+        and len(args.expected_prelude_event) == len(args.expected_prelude_date_raw)
+        and args.expected_prelude_date_raw == sorted(args.expected_prelude_date_raw)
+        and all(
+            args.expected_date_raw < item < args.target_date_raw
+            for item in args.expected_prelude_date_raw
         ),
         "preflight_did_not_launch_ck3": True,
         "preflight_did_not_prepare_profile": True,
@@ -702,6 +751,7 @@ def _preflight(args: argparse.Namespace) -> tuple[dict[str, object], int]:
             "source_date_raw": args.expected_date_raw,
             "target_date_raw": args.target_date_raw,
             "expected_prelude_events": args.expected_prelude_event,
+            "expected_prelude_dates_raw": args.expected_prelude_date_raw,
         },
         "identities": identities,
         "source_checkpoint_anchor": anchor,
@@ -728,8 +778,10 @@ def main(argv: list[str] | None = None) -> int:
                     target_date_raw=args.target_date_raw,
                     expected_event_key=args.expected_event_key,
                     expected_prelude_events=list(args.expected_prelude_event),
+                    expected_prelude_dates=list(args.expected_prelude_date_raw),
                     horizon_timeout=args.horizon_timeout,
                     poll_interval=args.poll_interval,
+                    event_settle_timeout=args.event_settle_timeout,
                 ),
                 exact_build_runner=_exact_build_proof,
                 report_kind=REPORT_KIND,
@@ -742,6 +794,9 @@ def main(argv: list[str] | None = None) -> int:
                     "timeline_speed": 1,
                     "maximum_date_raw": args.target_date_raw,
                     "expected_prelude_events": list(args.expected_prelude_event),
+                    "expected_prelude_dates_raw": list(
+                        args.expected_prelude_date_raw
+                    ),
                     "target_event_selections": 1,
                     "checkpoint_saves": 1,
                     "war_actions": 0,

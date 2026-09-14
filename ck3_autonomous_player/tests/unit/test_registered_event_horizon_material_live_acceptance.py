@@ -74,7 +74,8 @@ def test_runner_uses_registry_for_preludes_and_material_target() -> None:
     resume = source.index('base._structured(resume, tool_name="ck3_execute_step:resume")')
     day_edge = source.index('label="day-edge"', resume)
     pause = source.index('"step": "pause-map"', day_edge)
-    assert set_speed < speed_materialized < resume < day_edge < pause
+    settle = source.index('label="event-settle"', pause)
+    assert set_speed < speed_materialized < resume < day_edge < pause < settle
 
 
 def test_exact_build_gate_requires_timeline_capabilities() -> None:

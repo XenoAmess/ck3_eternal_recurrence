@@ -21,7 +21,8 @@ R555 已证明一条短轨迹：source `date_raw=53155680`，依次经过 `sway_
 
 R666 证明 speed 5 下先等待事件再暂停会跨过 `sway_outcome.1001` 所在日期；R667 又证明 resume 后立即 pause 会产生大量零日期脉冲，最终仍可能
 跨日。R668 进一步证明 command `submitted` 不是状态已物化：必须先观察 `speed=1`，再提交 resume 并观察 `paused=false`，之后才能等待日期首次增加并
-立即暂停。单次脉冲超过 24 raw 会直接 RED；这些轮次都在选择前停止，source 未变且 cleanup GREEN，因此保留为 harness RED，不是产品结果。
+立即暂停。R669 已取得两个连续 `+24 raw`，同时证明事件会在到达日期后的暂停刷新中才物化；现行入口只在调用者声明的事件日期等待最多 5 秒，不在普通
+日期增加等待。单次脉冲超过 24 raw 会直接 RED；这些轮次都在选择前停止，source 未变且 cleanup GREEN，因此保留为 harness RED，不是产品结果。
 
 ## 验收边界
 
