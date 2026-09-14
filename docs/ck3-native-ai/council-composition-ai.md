@@ -582,3 +582,15 @@ not allocated. The reusable closure test now builds a temporary candidate-local
 `src` plus the one required tool blob, clears `PYTHONPATH`/`PYTHONHOME`, launches
 Python with `-I`, imports all four runner modules and `build_release`, then
 checks every imported `__file__` and SHA-256 against the sealed identity.
+
+The replacement sealed candidate is
+`g2-m4-council14-r691-self-contained-runtime-e5c6b4d`. Its candidate-manifest
+SHA-256 is
+`645CDCFA8A9B03E87C14E5D0C8967BA9783BD2AB08A75EA9C3A305C45B13FD02`
+and its sealed-prep manifest SHA-256 is
+`D585577C8A6AFF83537257DB4A26FF05EA2BD6EB479E4ACD46D8B847355C790C`.
+The only formal no-launch preflight was GREEN: the isolated import probe bound
+all five modules to candidate-local files, the 596-file sealed inventory
+matched, and CK3 inventory remained zero. The unique proposed pipe is
+`\\.\pipe\xar_ck3_bridge_g2_m4_council14_r691_e5c6b4d`; R691 remains
+unallocated and no `live-r691` directory exists.

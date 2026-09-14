@@ -1,0 +1,80 @@
+{
+  "schema": "xar.ck3.g2_m4_council14_r691_self_contained_runtime_candidate_receipt_v1",
+  "status": "green-no-launch",
+  "work_package": "G2-M4-COUNCIL14-R691-SELF-CONTAINED-RUNTIME",
+  "baseline_commit": "dd36d1b7e8e3a79260a888efaeadd4b922df5f7f",
+  "implementation_commit": "e5c6b4db63bf5d407c8bb04746f1e9d620b9599a",
+  "preserved_r690_red": {
+    "report_sha256": "E2D562A9BC88BFEA1752AAE55473B1148824B019917138FB3BF1B34D55C82F50",
+    "classification": "harness_driver_api_mismatch",
+    "ck3_launched": true,
+    "cleanup_proven": true,
+    "saves_unchanged": true
+  },
+  "preserved_council13_candidate": {
+    "path": "Z:\\ck3_mod_rewrite_process_assets\\g2-m4-council13-r691-driver-contract-37bd888",
+    "sealed_prep_manifest_sha256": "0EA046F6522947285C82802B45E393610AC797C9492A43BAC5927C05691EA4B6",
+    "live_r691_exists": false,
+    "modified": false
+  },
+  "preserved_first_council14_candidate": {
+    "path": "Z:\\ck3_mod_rewrite_process_assets\\g2-m4-council14-r691-self-contained-runtime-b311d31",
+    "candidate_manifest_sha256": "7D9B9DB2CBD62DA35D56B3350396E1B2C7DABB035B4D62FB65AED011A99E8819",
+    "sealed_prep_manifest_sha256": "8BFB2DEAB572182AABD2720E2DECF782031CD8DCEAA8DB2A8870A054B67B97E9",
+    "preflight_red_receipt": "Z:\\ck3_mod_rewrite_process_assets\\g2-m4-council14-r691-self-contained-runtime-b311d31-preflight-red.json",
+    "preflight_red_receipt_sha256": "ED65E5EC1995BA1170DC64C5F2749E03F652568F570DD1E9ECDA3C32484B57A4",
+    "failure": "ModuleNotFoundError: No module named 'build_release'",
+    "ck3_launched": false,
+    "round_allocated": false,
+    "live_r691_exists": false,
+    "retried": false
+  },
+  "candidate": {
+    "path": "Z:\\ck3_mod_rewrite_process_assets\\g2-m4-council14-r691-self-contained-runtime-e5c6b4d",
+    "candidate_manifest_sha256": "645CDCFA8A9B03E87C14E5D0C8967BA9783BD2AB08A75EA9C3A305C45B13FD02",
+    "sealed_prep_manifest_sha256": "D585577C8A6AFF83537257DB4A26FF05EA2BD6EB479E4ACD46D8B847355C790C",
+    "sealed_file_count": 596,
+    "actual_file_count_including_seal_and_pointer": 598,
+    "unique_pipe": "\\\\.\\pipe\\xar_ck3_bridge_g2_m4_council14_r691_e5c6b4d",
+    "suggested_round": "R691",
+    "round_allocated": false,
+    "ck3_launched": false,
+    "live_r691_exists": false
+  },
+  "runtime_source": {
+    "candidate_relative": "source-repo/ck3_autonomous_player/src",
+    "source_commit": "dd36d1b7e8e3a79260a888efaeadd4b922df5f7f",
+    "source_tree_git_oid": "e73e30b1d73b29f1ae4a6e4c469358f9f927942c",
+    "source_tree_sha256": "3D36052C784221EFFAEB2F7559A01E835201E57425CDF7952150B626C4A5041C",
+    "file_count": 475,
+    "total_size_bytes": 39669719,
+    "candidate_tools_relative": "source-repo/tools",
+    "build_release_git_blob_oid": "d7f050fc668e5cc16445b6db4efe9f5493a61ee6",
+    "tools_tree_sha256": "79D7B12E481B29D67059E7B9308FB1912CD5A22AFC9523FFF87FED2E1FD3B576",
+    "tools_file_count": 1,
+    "tools_total_size_bytes": 19357,
+    "external_workspace_root_allowed": false,
+    "module_file_and_sha_asserted": true
+  },
+  "verification": {
+    "normal_contract": "6 tests passed",
+    "optimized_contract": "6 tests passed",
+    "temporary_isolated_import_closure": "green",
+    "temporary_isolated_import_python_flag": "-I",
+    "temporary_isolated_import_environment": "PYTHONPATH and PYTHONHOME removed",
+    "formal_candidate_no_launch_preflight": "green",
+    "formal_candidate_preflight_runs": 1,
+    "formal_candidate_isolated_import": "green",
+    "formal_candidate_sealed_inventory": "green",
+    "formal_candidate_ck3_inventory": 0,
+    "ck3_launched": false
+  },
+  "scope": {
+    "dll_changed": false,
+    "game_files_changed": false,
+    "public_schema_changed": false,
+    "shared_bridge_changed": false,
+    "planner_changed": false,
+    "mcp_changed": false
+  }
+}
