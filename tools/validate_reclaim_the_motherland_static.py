@@ -299,6 +299,7 @@ def validate() -> list[str]:
         "create_dynamic_title = {",
         "tier = hegemony",
         "add_title_law = single_heir_succession_law",
+        "set_landless_title = yes",
         "set_destroy_if_invalid_heir = yes",
         "set_global_variable = {",
         "name = rmtm_ministry_entitlement_title",

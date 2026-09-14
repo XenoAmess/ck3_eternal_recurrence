@@ -490,6 +490,7 @@ class TestReclaimTheMotherlandContract(unittest.TestCase):
         custom_text, custom_file = read_script(CUSTOM_EFFECTS)
         creator = direct_block(custom_file, "rmtm_create_restoration_hegemony_effect")
         created = descendant_blocks(creator, "scope:new_title")[0]
+        self.assertTrue(has_assignment(created, "set_landless_title", "yes"))
         self.assertTrue(
             has_assignment(created, "set_destroy_if_invalid_heir", "yes")
         )
@@ -498,10 +499,12 @@ class TestReclaimTheMotherlandContract(unittest.TestCase):
         )
 
         migration = direct_block(custom_file, "rmtm_migrate_restoration_hegemonies_effect")
+        self.assertTrue(has_assignment(migration, "set_landless_title", "yes"))
         self.assertTrue(
             has_assignment(migration, "set_destroy_if_invalid_heir", "yes")
         )
         self.assertEqual(custom_text.count("set_destroy_if_invalid_heir = yes"), 2)
+        self.assertEqual(custom_text.count("set_landless_title = yes"), 2)
 
         # Handoff is delegated to the same engine contract used by vanilla empty
         # titular offices. A nested title/vassal transaction inside on_death is

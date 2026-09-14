@@ -22,10 +22,11 @@ rmtm_create_restoration_hegemony_effect = {
 		set_capital_county = scope:old_emperor_temp.capital_county
 		set_color_from_title = title:h_china
 		set_coa = title:h_china
-		# Vanilla uses this together with always_follows_primary_heir for
-		# empty-de-jure titular offices (notably temporal heads of faith). It
-		# makes the title follow its valid calculated heir instead of falling
-		# through the ordinary empty-title destruction path.
+		# The Later realm is a landed ruler's empty titular office, not a de-jure
+		# territorial title. Vanilla noble-family and titular-office contracts use
+		# this three-flag combination so the exact title can follow a valid primary
+		# heir without being discarded merely for having no de-jure counties.
+		set_landless_title = yes
 		set_destroy_if_invalid_heir = yes
 		set_delete_on_destroy = yes
 		set_no_automatic_claims = yes
@@ -656,6 +657,7 @@ rmtm_migrate_restoration_hegemonies_effect = {
 					}
 					add_title_law = single_heir_succession_law
 				}
+				set_landless_title = yes
 				set_always_follows_primary_heir = yes
 				set_destroy_if_invalid_heir = yes
 				if = {
