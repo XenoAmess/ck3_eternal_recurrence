@@ -32,6 +32,17 @@ def _wait_for_readiness(
     return {}
 """
 
+DRIVER_SOURCE = """
+class NativeHeadlessGameplayDriver:
+    def take_internal_semantic_snapshot(self) -> dict[str, object]:
+        transport_error = self._transport_error()
+        if transport_error is not None:
+            raise RuntimeError(transport_error)
+        snapshot = self._with_one_life_episode(self.state.semantic_snapshot())
+        self._observe_arrange_marriage_outcome(snapshot)
+        return snapshot
+"""
+
 GOOD_RUNNER = """
 EXPECTED_OWNER = 29829
 
@@ -66,6 +77,7 @@ class PrivateProbeReadinessContractTest(unittest.TestCase):
         ):
             MODULE.validate_runner_contract(
                 readiness_source=READINESS_SOURCE,
+                driver_source=DRIVER_SOURCE,
                 runner_source=LEGACY_RUNNER,
                 expected_character_id=29829,
             )
@@ -73,6 +85,7 @@ class PrivateProbeReadinessContractTest(unittest.TestCase):
     def test_supported_call_and_independent_character_check_are_accepted(self) -> None:
         result = MODULE.validate_runner_contract(
             readiness_source=READINESS_SOURCE,
+            driver_source=DRIVER_SOURCE,
             runner_source=GOOD_RUNNER,
             expected_character_id=29829,
         )
@@ -90,6 +103,50 @@ class PrivateProbeReadinessContractTest(unittest.TestCase):
             result["character_binding_source"],
             "post-readiness internal semantic snapshot",
         )
+        self.assertEqual(
+            result["driver_snapshot_api"]["call_shape"],
+            "driver.take_internal_semantic_snapshot()",
+        )
+
+    def test_missing_driver_snapshot_api_is_rejected_before_launch(self) -> None:
+        with self.assertRaisesRegex(
+            MODULE.ContractError,
+            "take_internal_semantic_snapshot definition",
+        ):
+            MODULE.validate_runner_contract(
+                readiness_source=READINESS_SOURCE,
+                driver_source="class NativeHeadlessGameplayDriver:\n    pass\n",
+                runner_source=GOOD_RUNNER,
+                expected_character_id=29829,
+            )
+
+    def test_wrong_driver_snapshot_call_shape_is_rejected(self) -> None:
+        incompatible = DRIVER_SOURCE.replace(
+            "take_internal_semantic_snapshot(self)",
+            "take_internal_semantic_snapshot(self, expected_revision)",
+        )
+        with self.assertRaisesRegex(MODULE.ContractError, "must accept only self"):
+            MODULE.validate_runner_contract(
+                readiness_source=READINESS_SOURCE,
+                driver_source=incompatible,
+                runner_source=GOOD_RUNNER,
+                expected_character_id=29829,
+            )
+
+    def test_public_snapshot_substitution_is_rejected(self) -> None:
+        incompatible_runner = GOOD_RUNNER.replace(
+            "driver.take_internal_semantic_snapshot()", "driver.take_snapshot()"
+        )
+        with self.assertRaisesRegex(
+            MODULE.ContractError,
+            "post-readiness semantic snapshot assignment",
+        ):
+            MODULE.validate_runner_contract(
+                readiness_source=READINESS_SOURCE,
+                driver_source=DRIVER_SOURCE,
+                runner_source=incompatible_runner,
+                expected_character_id=29829,
+            )
 
 
 if __name__ == "__main__":

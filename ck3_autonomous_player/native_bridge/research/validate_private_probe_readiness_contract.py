@@ -1,9 +1,11 @@
-"""Validate a private-probe runner against the live readiness helper signature.
+"""Validate private-probe readiness and paused-snapshot driver APIs.
 
 The bounded live runners import the private ``_wait_for_readiness`` helper from
 ``native_auto_run.py``.  This validator keeps artifact-local runners from
 inventing keyword arguments and also requires their character binding check to
-remain an explicit post-readiness semantic-snapshot check.
+remain an explicit post-readiness semantic-snapshot check.  It additionally
+proves that the operator's ``NativeHeadlessGameplayDriver`` implements the
+zero-argument internal semantic snapshot method before any process launch.
 """
 
 from __future__ import annotations
@@ -18,6 +20,8 @@ from typing import Iterable
 HELPER_NAME = "_wait_for_readiness"
 CHARACTER_FIELD = "episode_character_id"
 PRIVATE_PROBE_FORBIDDEN_KEYWORDS = frozenset({"expected_character_id"})
+DRIVER_CLASS = "NativeHeadlessGameplayDriver"
+SNAPSHOT_METHOD = "take_internal_semantic_snapshot"
 
 
 class ContractError(ValueError):
@@ -71,6 +75,83 @@ def readiness_keyword_contract(
     if not required:
         raise ContractError(f"{HELPER_NAME} has no keyword-only contract")
     return required, optional
+
+
+def driver_snapshot_api_contract(driver_source: str) -> dict[str, object]:
+    """Validate the concrete paused semantic-snapshot API on the driver class."""
+
+    tree = ast.parse(driver_source)
+    driver = _single(
+        (
+            node
+            for node in tree.body
+            if isinstance(node, ast.ClassDef) and node.name == DRIVER_CLASS
+        ),
+        description=f"{DRIVER_CLASS} definition",
+    )
+    if not isinstance(driver, ast.ClassDef):
+        raise ContractError(f"{DRIVER_CLASS} is not a class")
+    method = _single(
+        (
+            node
+            for node in driver.body
+            if isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef))
+            and node.name == SNAPSHOT_METHOD
+        ),
+        description=f"{DRIVER_CLASS}.{SNAPSHOT_METHOD} definition",
+    )
+    if not isinstance(method, ast.FunctionDef):
+        raise ContractError(f"{DRIVER_CLASS}.{SNAPSHOT_METHOD} must be synchronous")
+    if (
+        [argument.arg for argument in method.args.posonlyargs + method.args.args]
+        != ["self"]
+        or method.args.kwonlyargs
+        or method.args.vararg is not None
+        or method.args.kwarg is not None
+        or method.args.defaults
+    ):
+        raise ContractError(
+            f"{DRIVER_CLASS}.{SNAPSHOT_METHOD} must accept only self"
+        )
+
+    state_calls = [
+        node
+        for node in ast.walk(method)
+        if isinstance(node, ast.Call)
+        and isinstance(node.func, ast.Attribute)
+        and node.func.attr == "semantic_snapshot"
+        and isinstance(node.func.value, ast.Attribute)
+        and node.func.value.attr == "state"
+        and isinstance(node.func.value.value, ast.Name)
+        and node.func.value.value.id == "self"
+        and not node.args
+        and not node.keywords
+    ]
+    _single(state_calls, description="self.state.semantic_snapshot() call")
+    one_life_calls = [
+        node
+        for node in ast.walk(method)
+        if isinstance(node, ast.Call)
+        and isinstance(node.func, ast.Attribute)
+        and node.func.attr == "_with_one_life_episode"
+        and isinstance(node.func.value, ast.Name)
+        and node.func.value.id == "self"
+        and len(node.args) == 1
+        and not node.keywords
+    ]
+    _single(one_life_calls, description="self._with_one_life_episode(...) call")
+    returns = [node for node in ast.walk(method) if isinstance(node, ast.Return)]
+    if not returns:
+        raise ContractError(f"{DRIVER_CLASS}.{SNAPSHOT_METHOD} has no return")
+    return {
+        "class": DRIVER_CLASS,
+        "method": SNAPSHOT_METHOD,
+        "call_shape": "driver.take_internal_semantic_snapshot()",
+        "positional_arguments": [],
+        "keyword_arguments": [],
+        "state_source": "self.state.semantic_snapshot()",
+        "one_life_projection": "self._with_one_life_episode",
+    }
 
 
 def _call_name(node: ast.Call) -> str | None:
@@ -151,12 +232,14 @@ def _is_character_binding_check(node: ast.AST) -> bool:
 def validate_runner_contract(
     *,
     readiness_source: str,
+    driver_source: str,
     runner_source: str,
     expected_character_id: int,
 ) -> dict[str, object]:
     """Validate one runner and return its frozen, serializable contract."""
 
     required_keywords, optional_keywords = readiness_keyword_contract(readiness_source)
+    snapshot_api = driver_snapshot_api_contract(driver_source)
     tree = ast.parse(runner_source)
     call = _single(
         (
@@ -220,6 +303,7 @@ def validate_runner_contract(
         ),
         "expected_character_id": expected_character_id,
         "character_binding_source": "post-readiness internal semantic snapshot",
+        "driver_snapshot_api": snapshot_api,
         "readiness_call_line": call.lineno,
         "snapshot_line": snapshot.lineno,
         "character_check_line": check.lineno,
@@ -229,11 +313,13 @@ def validate_runner_contract(
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--readiness-source", type=Path, required=True)
+    parser.add_argument("--driver-source", type=Path, required=True)
     parser.add_argument("--runner", type=Path, required=True)
     parser.add_argument("--expected-character-id", type=int, required=True)
     args = parser.parse_args(argv)
     result = validate_runner_contract(
         readiness_source=args.readiness_source.read_text(encoding="utf-8-sig"),
+        driver_source=args.driver_source.read_text(encoding="utf-8-sig"),
         runner_source=args.runner.read_text(encoding="utf-8-sig"),
         expected_character_id=args.expected_character_id,
     )

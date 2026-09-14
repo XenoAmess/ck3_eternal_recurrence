@@ -508,3 +508,36 @@ copies only the old sealed inventory, advances the output directory to
 This is a harness recovery only: the private DLL, saved game, public schema,
 and government/gameplay behavior do not change, and R690 remains unallocated
 until the single CK3 owner performs a later live run.
+
+## COUNCIL13: R690 driver-API RED and the R691 prelaunch contract
+
+The actual R690 run preserved a second harness RED. CK3 started, reached the
+stable-readiness return, and then the artifact runner called
+`NativeHeadlessGameplayDriver.take_internal_semantic_snapshot()`. The operator
+workspace class did not implement that method, so the run stopped with
+`AttributeError` before the private Council heartbeat was read. The frozen
+`live-r690/report.json` SHA-256 is
+`E2D562A9BC88BFEA1752AAE55473B1148824B019917138FB3BF1B34D55C82F50`.
+Cleanup proves that the CK3 process tree and watchdog are gone, while both the
+source and target saves remain at
+`9104CCB8AE9D5776166FBBAEDA9B43BD08CBAA2CB5C057332EB8B7A1A212CC63`.
+This remains a harness RED and provides no Council capability result.
+
+The integrated driver source at baseline
+`a905af184798439a41cdc6f63bfeb47d67f62608` defines a synchronous, self-only
+`take_internal_semantic_snapshot()` method. It reads
+`self.state.semantic_snapshot()`, applies `_with_one_life_episode`, observes the
+marriage outcome, and returns the semantic frame. Commit
+`79b8d2acfbe1f80a7a7f88da3fed7cda1791017c` introduced this API. The reusable
+validator now parses the operator workspace's actual `native_driver.py` as well
+as the readiness helper and runner. It rejects a missing method, arguments
+beyond `self`, a missing state semantic read or one-life projection, and a
+runner that substitutes the transcript-bearing public `take_snapshot()` call.
+
+Every COUNCIL13 invoke first runs this no-launch source contract against the
+selected operator workspace. A failed contract returns before the artifact
+runner and its process-creation path can run. The next actual round is R691,
+with R690 as its old round. An earlier incompatible but unlaunched R691
+candidate did not allocate or consume the round. The fresh Council candidate
+uses its own hash-bound directory and named pipe; the R690 candidate and live
+RED remain immutable.
