@@ -138,6 +138,12 @@ option(
 )
 
 option(
+  XAR_CK3_ENABLE_COUNCIL_COMPOSITION_CANDIDATE_OBSERVER_V1
+  "Install the private exact-build paused council-candidate observer"
+  OFF
+)
+
+option(
   XAR_CK3_ENABLE_G2_TRUCE_PREVIEW_ENTRY_OBSERVER_V1
   "Emit private diagnostics for the exact-vtable G2 truce preview observer"
   OFF
@@ -288,6 +294,8 @@ add_library(xar_ck3_bridge SHARED
   src/steward_develop_county_candidates_v1_serializer.cpp
   src/steward_develop_county_action_v1.cpp
   src/steward_develop_county_enumerator_observer_v1.cpp
+  src/council_composition_candidate_observer_v1.cpp
+  src/council_composition_candidate_observer_v1_serializer.cpp
   src/ck3_11906.cpp
   src/ck3_11906_adapter.cpp
   src/coat_of_arms_designer_probe_v1.cpp
@@ -535,6 +543,11 @@ if(XAR_CK3_ENABLE_G2_DOMAIN_CONSTRUCTION_CANDIDATE_OBSERVER_V1)
   )
   target_compile_definitions(xar_ck3_bridge PRIVATE
     XAR_CK3_ENABLE_G2_DOMAIN_CONSTRUCTION_CANDIDATE_OBSERVER_V1=1
+  )
+endif()
+if(XAR_CK3_ENABLE_COUNCIL_COMPOSITION_CANDIDATE_OBSERVER_V1)
+  target_compile_definitions(xar_ck3_bridge PRIVATE
+    XAR_CK3_ENABLE_COUNCIL_COMPOSITION_CANDIDATE_OBSERVER_V1=1
   )
 endif()
 if(XAR_CK3_ENABLE_G2_TRUCE_PREVIEW_ENTRY_OBSERVER_V1 OR
@@ -1575,6 +1588,33 @@ if(BUILD_TESTING)
       ${CMAKE_CURRENT_SOURCE_DIR}/research/test_domain_construction_candidate_observer_v1_source_contract.py
       --root ${CMAKE_CURRENT_SOURCE_DIR}/../..
       --ck3-executable "${XAR_CK3_EXECUTABLE_PATH}"
+  )
+
+  add_executable(xar_ck3_council_composition_candidate_observer_v1_test
+    src/council_composition_candidate_observer_v1.cpp
+    src/council_composition_candidate_observer_v1_serializer.cpp
+    src/council_composition_candidate_observer_v1_test.cpp
+  )
+  target_include_directories(
+    xar_ck3_council_composition_candidate_observer_v1_test PRIVATE include)
+  target_compile_definitions(
+    xar_ck3_council_composition_candidate_observer_v1_test PRIVATE
+    NOMINMAX WIN32_LEAN_AND_MEAN UNICODE _UNICODE)
+  if(MSVC)
+    target_compile_options(
+      xar_ck3_council_composition_candidate_observer_v1_test
+      PRIVATE /W4 /permissive- /EHsc)
+  endif()
+  add_test(
+    NAME xar_ck3_native_bridge_council_composition_candidate_observer_v1
+    COMMAND xar_ck3_council_composition_candidate_observer_v1_test
+      ${CMAKE_CURRENT_SOURCE_DIR}/research/fixtures/council_composition_candidate_observer_v1_capture.json
+      ${CMAKE_CURRENT_SOURCE_DIR}/include/xar_bridge/council_composition_candidate_observer_v1.hpp
+      ${CMAKE_CURRENT_SOURCE_DIR}/src/council_composition_candidate_observer_v1.cpp
+      ${CMAKE_CURRENT_SOURCE_DIR}/src/bridge.cpp
+      ${CMAKE_CURRENT_SOURCE_DIR}/CMakeLists.txt
+      ${CMAKE_CURRENT_SOURCE_DIR}/research/council_composition_candidate_observer_v1_abi.json
+      ${CMAKE_CURRENT_SOURCE_DIR}/research/fixtures/council_composition_candidate_observer_v1_source_contract.json
   )
 
   add_executable(xar_ck3_zhongguo_case_snapshot_v1_test

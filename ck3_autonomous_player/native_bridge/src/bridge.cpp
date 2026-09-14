@@ -12,6 +12,7 @@
 #include "xar_bridge/domain_construction_candidate_observer_v1.hpp"
 #include "xar_bridge/domain_construction_candidate_observer_v1_serializer.hpp"
 #endif
+#include "xar_bridge/council_composition_candidate_observer_v1.hpp"
 #include "xar_bridge/coat_of_arms_designer_probe_v1.hpp"
 #include "xar_bridge/frontend_gui_route_v1.hpp"
 #include "xar_bridge/cold_map_vfs_observer_v1.hpp"
@@ -174,6 +175,11 @@ constexpr bool kStewardDevelopCountyEnumeratorObserverEnabledV1 = true;
 #else
 constexpr bool kStewardDevelopCountyEnumeratorObserverEnabledV1 = false;
 #endif
+#if defined(XAR_CK3_ENABLE_COUNCIL_COMPOSITION_CANDIDATE_OBSERVER_V1)
+constexpr bool kCouncilCompositionCandidateObserverEnabledV1 = true;
+#else
+constexpr bool kCouncilCompositionCandidateObserverEnabledV1 = false;
+#endif
 // The exact preview-entry hook is now the production reader's synchronous
 // access to the native leaf context.  The compile option below only controls
 // the private diagnostic object emitted later in HeartbeatFrame.
@@ -250,6 +256,8 @@ static xar::bridge::StewardDevelopCountyEnumeratorObserverStateV1
 static xar::bridge::DomainConstructionCandidateObserverStateV1
     g_domain_construction_candidate_observer_v1{};
 #endif
+static xar::bridge::CouncilCompositionCandidateObserverStateV1
+    g_council_composition_candidate_observer_v1{};
 static xar::bridge::G2TrucePreviewEntryObserverV1State
     g_g2_truce_preview_entry_observer_v1{};
 
@@ -637,6 +645,11 @@ std::string HeartbeatFrame(std::uint64_t sequence) {
       xar::bridge::ReadDomainConstructionCandidateObserverDiagnosticsV1(
           g_domain_construction_candidate_observer_v1);
 #endif
+#if defined(XAR_CK3_ENABLE_COUNCIL_COMPOSITION_CANDIDATE_OBSERVER_V1)
+  const auto council_composition_candidate_observer =
+      xar::bridge::ReadCouncilCompositionCandidateObserverDiagnosticsV1(
+          g_council_composition_candidate_observer_v1);
+#endif
 #if defined(XAR_CK3_ENABLE_G2_TRUCE_PREVIEW_ENTRY_OBSERVER_V1)
   const auto g2_truce_preview_entry_observer =
       xar::bridge::ReadG2TrucePreviewEntryObserverV1Diagnostics(
@@ -677,6 +690,9 @@ std::string HeartbeatFrame(std::uint64_t sequence) {
 #endif
 #if defined(XAR_CK3_ENABLE_G2_DOMAIN_CONSTRUCTION_CANDIDATE_OBSERVER_V1)
   result += ",\"g2_domain_construction_candidate_observer_enabled\":true";
+#endif
+#if defined(XAR_CK3_ENABLE_COUNCIL_COMPOSITION_CANDIDATE_OBSERVER_V1)
+  result += ",\"council_composition_candidate_observer_enabled\":true";
 #endif
   result += ",\"zhongguo_scoreboard_production_candidate_enabled\":";
   result += xar::ck3_11906::kZhongguoScoreboardProductionCandidateEnabledV1
@@ -1372,6 +1388,16 @@ std::string HeartbeatFrame(std::uint64_t sequence) {
     result += '}';
   }
   result += ']';
+#endif
+#if defined(XAR_CK3_ENABLE_COUNCIL_COMPOSITION_CANDIDATE_OBSERVER_V1)
+  result += "},\"council_composition_candidate_observer_v1\":";
+  auto council_json = xar::bridge::
+      SerializeCouncilCompositionCandidateObserverDiagnosticsV1(
+          council_composition_candidate_observer);
+  if (!council_json.empty() && council_json.back() == '}') {
+    council_json.pop_back();
+  }
+  result += council_json;
 #endif
 #if defined(XAR_CK3_ENABLE_G2_TRUCE_PREVIEW_ENTRY_OBSERVER_V1)
   result += "},\"g2_truce_preview_entry_observer_v1\":{";
@@ -12207,6 +12233,22 @@ XarCk3BridgePrepareStartup(LPVOID) noexcept {
     }
   }
 #endif
+  if (kCouncilCompositionCandidateObserverEnabledV1) {
+    xar::bridge::CouncilCompositionCandidateObserverEnvironmentV1
+        environment{};
+    environment.exact_build_admitted = true;
+    environment.primary_thread_suspended_proven = true;
+    environment.module_base =
+        reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr));
+    environment.ui_thread_id_source =
+        &g_main_thread_query_mailbox_v1.owner_thread_id;
+    environment.paused_source =
+        &g_main_thread_query_mailbox_v1.observed_paused;
+    if (!xar::bridge::InstallCouncilCompositionCandidateObserverV1(
+            g_council_composition_candidate_observer_v1, environment)) {
+      return FALSE;
+    }
+  }
   if (kG2TrucePreviewEntryObserverEnabledV1) {
     xar::bridge::G2TrucePreviewEntryObserverEnvironmentV1 environment{};
     environment.exact_build_admitted = true;

@@ -382,3 +382,32 @@ probe 通过后，生产 reader 仍须在 application-main paused transaction �
 | `game/localization/english/relations_l_english.yml` | `2B369151CE8D3363D35B02DCBAC742D235184EC0EA944038D412D280E9CE5385` | powerful-vassal 是否期待席位的展示语义 |
 
 这里的 `game/...` 都是 `Crusader Kings III/game/...` 下的 exact-build 原版文件。静态 GUI/reflection 入口和 authored 数据把 reader 的施工入口闭合到可实现程度；只有生产 paused artifact 才能把 `council-composition-candidates-v1` 提升为 `production-live primitive`。
+
+## COUNCIL3: default-off paused capture observer
+
+The private observer for the frozen post-return seam is implemented behind
+`XAR_CK3_ENABLE_COUNCIL_COMPOSITION_CANDIDATE_OBSERVER_V1`, which remains
+`OFF` by default. It does not add a public MCP capability, schema, service, or
+policy action. A capture is admitted only after the central adapter has matched
+the 1.19.0.6 executable SHA, installation occurred while the primary thread was
+suspended, the callback runs on the main-thread mailbox owner, the mailbox says
+the game is paused, and the native vector has a bounded readable span.
+
+The callback copies the owner full ID, active-task full ID, position key,
+candidate full IDs, and each opaque eight-byte vector row into atomics during
+the same frame. It never keeps a typed native pointer for later use. The private
+heartbeat diagnostic explicitly carries `private_build=true`,
+`advertised=false`, capture consistency, gate failures, duplicate-ID count and
+opaque row bytes. Static source and ABI fixtures live beside the native bridge.
+
+For the one paused capture candidate, configure a dedicated Release build with:
+
+```powershell
+cmake -S ck3_autonomous_player/native_bridge -B <private-build-dir> `
+  -DXAR_CK3_ENABLE_COUNCIL_COMPOSITION_CANDIDATE_OBSERVER_V1=ON
+```
+
+This build is only a capture instrument. Readiness remains **static-ready**
+until one real paused candidate window produces an artifact with a stable UI
+thread, readable nonnegative count, full-ID rows, and no duplicate IDs. Only
+that result can unlock the production reader and later public read-only query.

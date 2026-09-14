@@ -1,0 +1,9 @@
+{
+  "schema_version": 1,
+  "option": {"name": "XAR_CK3_ENABLE_COUNCIL_COMPOSITION_CANDIDATE_OBSERVER_V1", "default": "OFF"},
+  "exact_build_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+  "required_patch_bytes_hex": "4C8D4D8041B001498BD2E8F13A8E01",
+  "required_rvas": ["0x1058200", "0x105820A", "0x105820F", "0x293BD00"],
+  "required_behavior": ["private_build", "advertised_false", "ui_calling_thread_gate", "paused_gate", "bounded_readable_span", "same_frame_id_and_row_copy", "no_cross_frame_native_pointer"],
+  "forbidden_public_capability": "game.query.council-composition-candidates-v1"
+}

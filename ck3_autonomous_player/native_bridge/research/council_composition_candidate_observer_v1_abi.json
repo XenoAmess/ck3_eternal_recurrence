@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "observer": "council-composition-candidate-observer-v1",
+  "visibility": "private-default-off",
+  "exact_build": {
+    "version": "1.19.0.6",
+    "executable_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86"
+  },
+  "seam": {
+    "patch_rva": "0x1058200",
+    "call_rva": "0x105820A",
+    "continue_rva": "0x105820F",
+    "producer_rva": "0x293BD00",
+    "patch_bytes_hex": "4C8D4D8041B001498BD2E8F13A8E01",
+    "refresh_function": {"rva_start": "0x10580F0", "rva_end_exclusive": "0x105841E", "sha256": "E7D1A1C2A2ABF7D62478C06FFF7D592FE0CF7682F8CF53D84D90EFE8545B748A"},
+    "producer_function": {"rva_start": "0x293BD00", "rva_end_exclusive": "0x293BF96", "sha256": "A2264828FA0A077650A1D74DD3C9861F81B7C219BC9D32DE7C11369BF6E890D8"},
+    "call_return_slice": {"rva_start": "0x1058200", "rva_end_exclusive": "0x1058238", "sha256": "BB3B4F20EB48B3D57014EA59880AF2D8C127D40EFF825DF8BEFB50879629A251"}
+  },
+  "post_return_inputs": {
+    "owner_character": "saved RCX; full CharacterID at +0x18",
+    "active_task": "saved RDX; full ActiveCouncilTask ID at +0x10",
+    "position_identity": "active task +0x18 -> task type; task type +0x38 -> position type; MSVC string key at +0x18",
+    "candidate_vector": "temporary [rbp-0x80]: data qword +0, capacity int32 +8, count int32 +12; entries are 8-byte CCharacter pointers"
+  },
+  "runtime_gates": ["central exact executable SHA adapter admission", "installed while primary thread is suspended", "callback thread equals main-thread mailbox owner", "mailbox observed_paused is true", "count/capacity/span/readability all valid"],
+  "lifetime": "all IDs and each eight-byte row are copied synchronously; no native pointer is retained across the callback frame"
+}
