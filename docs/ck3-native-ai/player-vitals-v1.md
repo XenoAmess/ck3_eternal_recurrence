@@ -9,7 +9,7 @@
 | `health` | **production-live primitive** | 当前玩家的 signed Q100000 health；`fine_or_better / below_fine / dying_or_worse`；是否低于 `fine_health` | 病因、伤病/疾病列表、治疗选择、死亡概率、预后和生育力 |
 | `stress` | **production-live primitive** | 当前玩家的非负 stress points；是否达到第一个 100 点阈值 | 精确的下一次 mental-break 结果、trait 修正后的选项代价、应对 decision 可用性 |
 | `legitimacy` | **exact-build static + read-only research-live；通用 ruler state absent** | exact getter/layout、合法零语义，以及战争退出研究帧中的当前 raw balance | 通用 paused snapshot 中的 active legitimacy type、current level；任何 vassal 的 expected level；稳定治理策略 |
-| `xar.ck3.player-vitals/v1` 聚合 | **contract-frozen；尚未实现** | 规定三个分量的同帧形状、局部 readiness 和最低策略投影 | 在 legitimacy 分量补齐前不得写成 `vitals_ready=true` |
+| `xar.ck3.player-vitals/v1` 聚合 | **static-ready；待共享 bounded live** | `ck3_query_turn_bundle_v1` 已同帧聚合 health/stress，并以局部 readiness 保留缺失 legitimacy；三个最低 planner 信号已结构化 | 在 legitimacy 分量补齐前不得写成 `vitals_ready=true` |
 
 旧的 [玩家健康专题](player-health-v1.md) 和 [玩家压力专题](played-character-stress.md) 记录了各自实现时的 static-ready 边界。其后同一场 R639 bounded live 已同时命中 health 与 stress，因此本表是截至 2026-09-14 的统一能力状态。R639 只命中了健康正常、压力低于 100 的分支；低健康与高压力的数值边界仍只有 deterministic fixture/source 证据。
 
@@ -153,6 +153,23 @@ flowchart TD
     "legitimacy_balance_ready": false,
     "legitimacy_classification_ready": false,
     "vitals_ready": false
+  },
+  "planner_signals": {
+    "succession_preparation_priority": {
+      "status": "available",
+      "value": "elevated",
+      "unavailable_reason": null
+    },
+    "avoid_discretionary_stress_gain": {
+      "status": "available",
+      "value": false,
+      "unavailable_reason": null
+    },
+    "protect_legitimacy_floor": {
+      "status": "unavailable",
+      "value": null,
+      "unavailable_reason": "player_legitimacy_state_unavailable"
+    }
   }
 }
 ```
@@ -200,9 +217,9 @@ player-vitals 不直接发命令。realm-survival planner 只消费以下三个�
 ## 下一实现顺序与验收
 
 1. **P0：补通用 legitimacy state。** 在既有 same-frame player reader 中读取 raw balance、engine-selected type key 和 engine current level；冻结 exact-build source/ABI，保留 full-generation identity 与双采样。不要先实现阈值重算器。
-2. **P0：投影 player-vitals。** 在 `turn-bundle-v1` 中聚合 health、stress、legitimacy，增加分量 readiness；保留原字段兼容。公共 schema 变化落地时立即启动 open_kaishek 配套适配。
-3. **P0：接 realm-survival planner。** 只实现上表三个可见信号，并用现有 succession readiness 形成联合优先级；不得把“读到数值”记作医疗或治理 OODA 完成。
+2. **P0 已完成：投影 player-vitals。** `ck3_query_turn_bundle_v1` 的 `ruler_state.value.vitals` 已聚合 health、stress 和 typed-unavailable legitimacy，并保留旧 `health_band` / `stress_points`。公共 additive schema 已通知 open_kaishek 配套适配；不新增 native RPC 或 MCP tool。
+3. **P0 已完成：接 realm-survival planner 最低信号。** `planner_signals` 只发布上表三个 typed component，并用同帧 succession 的 no-heir / partition risk 计算继承优先级。legitimacy 缺口只关闭 `protect_legitimacy_floor`；health/stress 及其可证信号继续可用。
 4. **P1：一次共享 bounded live。** 在下一次本来就需要的 paused G2 场景中同时读取普通 legitimacy 和 celestial/mandate legitimacy（若场景自然可得），核对 type/level/raw 与 component-local failure。一个健康/压力/合法性字段都不安排永久长跑。
 5. **P1：深度域按真实 blocker 追加。** 只有 planner 因病因/治疗或 vassal expectation 缺口无法作出高价值决策时，再分别施工 disease/treatment query 或 per-vassal legitimacy expectation；二者不阻塞 v1 raw/type/level 落地。
 
-本工作包只新增本专题文档，不改变 native/MCP/schema/ABI/version/dependency，因此当前不触发 open_kaishek 代码适配，也不需要 CK3、桌面、DLL 或游戏文件操作。
+实现位于 `bridge/player_vitals_contract.py`，由既有 turn-bundle service 和 MCP tool 直接投影。`legitimacy` 当前固定为 `player_legitimacy_state_unavailable`；这不会改变 turn-bundle 顶层 `readiness.ready`，也不会删除已验证的 health/stress。定向 fixture 覆盖局部缺失、三个 planner 信号、合法性 floor / engine-proven not-applicable 的未来输入形状以及同帧绑定拒绝；normal 与 `-O` 均通过。本包不启动 CK3，不修改 native/DLL/游戏文件，后续只在本来就需要的 paused 场景中共享实机验收。

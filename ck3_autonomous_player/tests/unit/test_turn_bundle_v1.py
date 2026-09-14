@@ -230,6 +230,28 @@ class TurnBundleV1Tests(unittest.TestCase):
                 "at_or_below_death_chance_dying": False,
             },
         )
+        vitals = ruler["vitals"]
+        self.assertEqual(vitals["schema"], "xar.ck3.player-vitals/v1")
+        self.assertEqual(vitals["status"], "partial")
+        self.assertEqual(vitals["health"]["value"]["band"], "below_fine")
+        self.assertEqual(vitals["stress"]["value"]["points"], 120)
+        self.assertEqual(vitals["legitimacy"]["status"], "unavailable")
+        self.assertFalse(vitals["readiness"]["vitals_ready"])
+        self.assertEqual(
+            vitals["planner_signals"]["succession_preparation_priority"][
+                "value"
+            ],
+            "elevated",
+        )
+        self.assertTrue(
+            vitals["planner_signals"]["avoid_discretionary_stress_gain"][
+                "value"
+            ]
+        )
+        self.assertEqual(
+            vitals["planner_signals"]["protect_legitimacy_floor"]["status"],
+            "unavailable",
+        )
         self.assertTrue(result["readiness"]["ruler_health_alert_ready"])
         self.assertTrue(
             result["alerts"]["value"]["ruler_health_below_fine"]["value"]
@@ -461,6 +483,10 @@ class TurnBundleV1Tests(unittest.TestCase):
         self.assertEqual(ruler["gold"]["status"], "unavailable")
         self.assertFalse(result["readiness"]["ruler_resources_ready"])
         self.assertEqual(ruler["stress_points"]["status"], "unavailable")
+        self.assertEqual(ruler["vitals"]["health"]["status"], "available")
+        self.assertEqual(ruler["vitals"]["stress"]["status"], "unavailable")
+        self.assertTrue(ruler["vitals"]["readiness"]["health_ready"])
+        self.assertFalse(ruler["vitals"]["readiness"]["stress_ready"])
         self.assertEqual(
             result["pending_state"]["value"]["active_event"]["status"],
             "unavailable",

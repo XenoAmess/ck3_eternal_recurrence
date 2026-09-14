@@ -415,7 +415,7 @@ def _ck3_query_turn_bundle_v1(
     service: GameplayBridgeService,
     expected_revision: int,
 ) -> dict[str, object]:
-    """Aggregate the current paused ruler, realm and succession alerts."""
+    """Aggregate the current paused ruler, vitals, realm and succession."""
     return service.query_turn_bundle_v1(
         expected_revision=expected_revision,
     )
@@ -1213,7 +1213,7 @@ def create_server(driver: GameplayBridgeDriver):
     def ck3_query_turn_bundle_v1(
         expected_revision: int,
     ) -> dict[str, object]:
-        """Read one same-frame planner bundle with typed readiness gaps."""
+        """Read one same-frame planner bundle with typed local readiness."""
         return _ck3_query_turn_bundle_v1(
             service,
             expected_revision,

@@ -2147,7 +2147,7 @@ class GameplayBridgeService:
         *,
         expected_revision: int,
     ) -> dict[str, object]:
-        """Aggregate current root, alert, pending and war observations."""
+        """Aggregate root, player vitals, alerts, pending and war state."""
 
         snapshot = self.snapshot()
         root = self.query_campaign_root_context_v1(

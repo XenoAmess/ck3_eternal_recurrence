@@ -8,6 +8,7 @@ from typing import Final
 from .campaign_root_context_contract import (
     QUERY_CAMPAIGN_ROOT_CONTEXT_V1_CAPABILITY,
 )
+from .player_vitals_contract import build_player_vitals_v1
 
 
 TURN_BUNDLE_V1_SCHEMA: Final = "xar.ck3.turn-bundle/v1"
@@ -543,6 +544,13 @@ def build_turn_bundle_v1(
         "no_primary_title_heir_alert": no_heir_alert,
         "partition": partition,
     }
+    ruler_state["vitals"] = build_player_vitals_v1(
+        turn_bundle_binding=result["binding"],
+        character_id=character_id,
+        health_band=ruler_state["health_band"],
+        stress_points=ruler_state["stress_points"],
+        succession_state=succession_state,
+    )
 
     pending_state, pending_ready = _pending_state(snapshot)
     war_state, war_ready = _war_state(snapshot)

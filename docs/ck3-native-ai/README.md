@@ -78,6 +78,9 @@
 - [static-ready, live pending] [player-health-v1.md](player-health-v1.md) 冻结 `Character.GetHealth` 的 reflection registration、
   thunk 与 exact core `0x2619AD0`，把玩家 signed Q100000 health 接入 campaign-root 双采样；turn bundle 以原版
   `1.5/3.0` 阈值发布最低健康分档和 `ruler_health_below_fine` 告警，治疗、病因与死亡概率仍属后续策略。
+- [static-ready; shared bounded live pending] [player-vitals-v1.md](player-vitals-v1.md) 在既有
+  `ck3_query_turn_bundle_v1` 内同帧组合 health、stress 与局部 typed-unavailable legitimacy；缺正统性不会删除前两者，
+  三个最低 realm-survival planner 信号按各自输入 fail closed。旧 health/stress 字段继续兼容，不新增 native RPC。
 - [static-ready, live pending] [player-domain-capacity-v1.md](player-domain-capacity-v1.md) 冻结 `GetDomainSize`
   `0x260BA50` 与 `GetDomainLimit` `0x260BA20` 的 reflection registration/core 链，把玩家直辖规模和当前上限接入
   campaign-root 双采样与 turn bundle；holdings 明细、建筑、施工及 grace-period 惩罚仍未发布。

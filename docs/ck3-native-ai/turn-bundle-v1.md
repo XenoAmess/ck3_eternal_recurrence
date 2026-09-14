@@ -98,6 +98,15 @@ The raw stress alert uses `stress_points >= 100`. It reports the first CK3
 stress-break threshold as a boolean and preserves the raw points; it is not a
 health estimate or a complete stress-management policy.
 
+`ruler_state.value.vitals` is the additive `xar.ck3.player-vitals/v1`
+projection. It reuses this bundle's health, stress, CharacterID, native
+revision, snapshot ID and date rather than issuing another native query. Its
+component-local readiness deliberately remains separate from the broader
+turn-bundle readiness: while general legitimacy state is absent, vitals is
+`partial`, health and stress remain available, and only the legitimacy planner
+signal is unavailable. Legacy `health_band` and `stress_points` stay in place
+for existing consumers.
+
 ## Binding and failure behavior
 
 The aggregator rejects:

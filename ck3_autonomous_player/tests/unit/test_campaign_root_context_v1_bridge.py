@@ -1085,6 +1085,11 @@ class CampaignRootContextV1ServiceTests(unittest.TestCase):
         ruler = result["ruler_state"]["value"]
         self.assertEqual(ruler["stress_points"]["value"], 120)
         self.assertEqual(ruler["health_band"]["value"]["key"], "below_fine")
+        self.assertEqual(ruler["vitals"]["schema"], "xar.ck3.player-vitals/v1")
+        self.assertEqual(ruler["vitals"]["status"], "partial")
+        self.assertTrue(ruler["vitals"]["readiness"]["health_ready"])
+        self.assertTrue(ruler["vitals"]["readiness"]["stress_ready"])
+        self.assertFalse(ruler["vitals"]["readiness"]["vitals_ready"])
         self.assertTrue(result["readiness"]["realm_council_ready"])
         self.assertEqual(
             result["realm_state"]["value"]["council"]["value"]["status"],
@@ -1182,6 +1187,12 @@ class CampaignRootContextV1McpTests(unittest.IsolatedAsyncioTestCase):
         bundle = bundle_result.structured_content
         self.assertEqual(bundle["schema"], "xar.ck3.turn-bundle/v1")
         self.assertTrue(bundle["readiness"]["minimum_alerts_ready"])
+        vitals = bundle["ruler_state"]["value"]["vitals"]
+        self.assertEqual(vitals["schema"], "xar.ck3.player-vitals/v1")
+        self.assertEqual(vitals["status"], "partial")
+        self.assertTrue(vitals["readiness"]["health_ready"])
+        self.assertTrue(vitals["readiness"]["stress_ready"])
+        self.assertFalse(vitals["readiness"]["vitals_ready"])
 
 
 if __name__ == "__main__":
