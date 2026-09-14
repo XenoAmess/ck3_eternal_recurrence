@@ -70,10 +70,11 @@ def test_runner_uses_registry_for_preludes_and_material_target() -> None:
     assert '"war_actions": 0' in source
     assert '"maximum_date_raw": args.target_date_raw' in source
     set_speed = source.index('"step": "set-speed-1"')
+    speed_materialized = source.index('current.get("speed") == 1', set_speed)
     resume = source.index('base._structured(resume, tool_name="ck3_execute_step:resume")')
     day_edge = source.index('label="day-edge"', resume)
     pause = source.index('"step": "pause-map"', day_edge)
-    assert set_speed < resume < day_edge < pause
+    assert set_speed < speed_materialized < resume < day_edge < pause
 
 
 def test_exact_build_gate_requires_timeline_capabilities() -> None:

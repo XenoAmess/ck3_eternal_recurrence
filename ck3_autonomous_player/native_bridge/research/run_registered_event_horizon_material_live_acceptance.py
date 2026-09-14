@@ -152,6 +152,7 @@ def _compact_snapshot(snapshot: Mapping[str, object]) -> dict[str, object]:
         "native_revision": snapshot.get("native_revision"),
         "date_raw": snapshot.get("date_raw"),
         "paused": snapshot.get("paused"),
+        "speed": snapshot.get("speed"),
         "character_id": player.get("character_id"),
         "stress_points": player.get("stress_points"),
         "gold": copy.deepcopy(dict(gold)) if gold else None,
@@ -340,12 +341,19 @@ async def _run_mcp_sequence(
             )
             results.append(speed_result)
             base._structured(speed_result, tool_name="ck3_execute_step:set-speed-1")
-            current = await _snapshot(client, results, label="after-set-speed-1")
+            speed_deadline = time.monotonic() + 10.0
+            current = before
+            while time.monotonic() < speed_deadline:
+                current = await _snapshot(client, results, label="after-set-speed-1")
+                if current.get("speed") == 1:
+                    break
+                await asyncio.sleep(poll_interval)
             if not (
-                current.get("paused") is True
+                current.get("speed") == 1
+                and current.get("paused") is True
                 and current.get("date_raw") == expected_date_raw
             ):
-                raise RuntimeError("set-speed-1 changed the paused source frame")
+                raise RuntimeError("set-speed-1 did not materialize on the paused source")
 
             deadline = time.monotonic() + horizon_timeout
             while time.monotonic() < deadline:
@@ -364,9 +372,12 @@ async def _run_mcp_sequence(
                     results.append(resume)
                     base._structured(resume, tool_name="ck3_execute_step:resume")
 
-                    advance_deadline = min(deadline, time.monotonic() + 10.0)
+                    advance_deadline = min(deadline, time.monotonic() + 30.0)
+                    running_observed = False
                     while time.monotonic() < advance_deadline:
                         current = await _snapshot(client, results, label="day-edge")
+                        if current.get("paused") is False:
+                            running_observed = True
                         if (
                             current.get("active_event") is not None
                             or current.get("date_raw") != pulse_start_date
@@ -375,6 +386,8 @@ async def _run_mcp_sequence(
                         await asyncio.sleep(poll_interval)
                     else:
                         raise RuntimeError("speed-1 day edge was not observed")
+                    if not running_observed and current.get("active_event") is None:
+                        raise RuntimeError("resume-map did not materialize before the day edge")
                     current_date = current.get("date_raw")
                     if not (
                         isinstance(pulse_start_date, int)
