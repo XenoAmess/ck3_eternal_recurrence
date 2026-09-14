@@ -470,3 +470,10 @@ flowchart TD
 - [production-live] New round R674 cold-restored the last complete R673 checkpoint under Python fix commit c1d91c0a08c3cf0b520c881ea8727a6b99d79351. Its three bounded turns were exactly: query-declarable-wars, query-war-entry-assessments-v1-1-38436, and one NO_DECLARE life-advance from date 53786352 to 53787072. This proves the later frame no longer inherits the old declaration rows and that a fresh legal target remains queryable.
 - [production-live] The run ended turn_limit / qualified / ok=true with 3/3 successful turns, no first blocker, and a final checkpoint. Preflight, run log, driver-state and checkpoint SHA-256 are 4E0BC602...F03BE, C5B37439...1CC09, A6033D85...4567E and 4F72E469...61686. Managed cleanup is GREEN and CK3/injector are absent.
 - [inference] R673 remains a retained RED, while its operational blocker is closed by the proportional R674 differential. No native DLL or public MCP surface changed. Ordinary campaign progression may resume; registered-event completion remains 1/3.
+
+
+### R675 ordinary campaign confirmation
+
+- [production-live] Current round R675 completed 12/12 ordinary planner turns: four fresh declaration queries, four same-frame one-target power queries and four NO_DECLARE 30-day advances. Date moved from 53787072 to 53789952. CK3 changed the preferred current target from 38436 to 83395 after the first advance, and the next declaration query propagated that change before any assessment.
+- [production-live] The run ended turn_limit / qualified / ok=true with no first blocker. Run log, final driver-state and checkpoint SHA-256 are D42D7EF7...32A5A, 0AD53440...1F53 and 223E4C65...16092. Cleanup is GREEN and CK3/injector are absent.
+- [inference] The declaration frame-binding now holds across repeated ordinary campaign cycles, so the R673 repair needs no broader replay. No registered target event appeared; G2-M2 remains 1/3.

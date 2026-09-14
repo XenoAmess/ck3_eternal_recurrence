@@ -1675,3 +1675,10 @@ one recommendation, one action and the bounded postwar/cold-restore checks.
 - Fix commit c1d91c0 bound declaration rows to their exact paused frame. New round R674 cold-restored checkpoint F2E84CF1...D27B, then completed a fresh declaration query, a successful current-target assessment and one NO_DECLARE advance in three turns.
 - The run is qualified with no first blocker. Preflight/run/driver/checkpoint SHA-256 are 4E0BC602...F03BE, C5B37439...1CC09, A6033D85...4567E and 4F72E469...61686; cleanup is GREEN and no CK3/injector survives.
 - R673 remains a historical RED. Its operational blocker is closed, so no further dedicated replay is authorized. G2-M2 stays 1/3 and ordinary encounter-driven progress resumes.
+
+
+## R675 post-fix ordinary campaign evidence (2026-09-14)
+
+- Current round R675 completed four consecutive fresh declaration/power/advance cycles, 12/12 successful turns and date 53787072 to 53789952. The current legal target changed from 38436 to 83395 after the first advance and was refreshed before assessment.
+- Status is qualified with no blocker; log/driver/checkpoint SHA-256 are D42D7EF7...32A5A, 0AD53440...1F53 and 223E4C65...16092. Cleanup is GREEN and all CK3/injector processes are gone.
+- The R673 operational blocker remains closed and receives no more replay. No registered target event appeared; G2-M2 remains 1/3.
