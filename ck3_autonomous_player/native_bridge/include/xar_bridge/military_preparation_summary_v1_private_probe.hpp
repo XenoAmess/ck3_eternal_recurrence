@@ -54,6 +54,15 @@ bool PublishMilitaryPreparationSummaryPrivateProbeFailureV1(
     MilitaryPreparationSummaryPrivateProbeV1 &probe,
     std::uint32_t failure_flags) noexcept;
 
+// Observes an already submitted mailbox ticket without waiting or cancelling
+// it.  A queued/executing request remains pending across worker heartbeats so
+// the next proven application-main pump can own it.  Terminal states publish
+// exactly one private result; the caller may then reclaim the ticket.
+bool TryPublishMilitaryPreparationSummaryPrivateProbeMailboxV1(
+    MilitaryPreparationSummaryPrivateProbeV1 &probe,
+    const xar::ck3_11906::MainThreadQueryMailboxV1 &mailbox,
+    const xar::ck3_11906::MainThreadQueryTicketV1 &ticket) noexcept;
+
 std::string SerializeMilitaryPreparationSummaryPrivateProbeV1(
     const MilitaryPreparationSummaryPrivateProbeV1 &probe);
 

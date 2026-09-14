@@ -124,6 +124,42 @@ bool PublishMilitaryPreparationSummaryPrivateProbeFailureV1(
   return true;
 }
 
+bool TryPublishMilitaryPreparationSummaryPrivateProbeMailboxV1(
+    MilitaryPreparationSummaryPrivateProbeV1 &probe,
+    const xar::ck3_11906::MainThreadQueryMailboxV1 &mailbox,
+    const xar::ck3_11906::MainThreadQueryTicketV1 &ticket) noexcept {
+  if (!probe.installed || !probe.request_prepared ||
+      probe.result_published) {
+    return false;
+  }
+  if (ticket.sequence == 0 ||
+      mailbox.published_sequence.load(std::memory_order_acquire) !=
+          ticket.sequence) {
+    return PublishMilitaryPreparationSummaryPrivateProbeFailureV1(
+        probe, military_preparation_summary_failure_application_main);
+  }
+
+  const auto state = mailbox.state.load(std::memory_order_acquire);
+  if (state == xar::ck3_11906::MainThreadQueryMailboxStateV1::publishing ||
+      state == xar::ck3_11906::MainThreadQueryMailboxStateV1::queued ||
+      state == xar::ck3_11906::MainThreadQueryMailboxStateV1::executing) {
+    return false;
+  }
+  if (state == xar::ck3_11906::MainThreadQueryMailboxStateV1::completed &&
+      mailbox.completed_sequence.load(std::memory_order_acquire) ==
+          ticket.sequence &&
+      probe.execution_result_ready) {
+    return PublishMilitaryPreparationSummaryPrivateProbeV1(probe);
+  }
+
+  return PublishMilitaryPreparationSummaryPrivateProbeFailureV1(
+      probe,
+      state == xar::ck3_11906::MainThreadQueryMailboxStateV1::
+                   infrastructure_failed
+          ? military_preparation_summary_failure_frame_changed
+          : military_preparation_summary_failure_application_main);
+}
+
 std::string SerializeMilitaryPreparationSummaryPrivateProbeV1(
     const MilitaryPreparationSummaryPrivateProbeV1 &probe) {
   std::string output =

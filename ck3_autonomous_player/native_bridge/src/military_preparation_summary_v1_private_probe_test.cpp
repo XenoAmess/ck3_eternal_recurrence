@@ -143,6 +143,89 @@ void TestStampDriftPublishesUnavailable() {
          military_preparation_summary_failure_frame_changed);
 }
 
+void TestMailboxPublicationDoesNotCancelQueuedWork() {
+  Fixture fixture{};
+  MilitaryPreparationSummaryPrivateProbeV1 probe{};
+  assert(InstallMilitaryPreparationSummaryPrivateProbeV1(
+      probe, Environment(fixture)));
+  assert(PrepareMilitaryPreparationSummaryPrivateProbeV1(
+      probe, fixture.frame, fixture.frame.snapshot_revision));
+
+  xar::ck3_11906::MainThreadQueryMailboxV1 mailbox{};
+  const xar::ck3_11906::MainThreadQueryTicketV1 ticket{17};
+  mailbox.published_sequence.store(ticket.sequence,
+                                   std::memory_order_release);
+  mailbox.state.store(
+      xar::ck3_11906::MainThreadQueryMailboxStateV1::queued,
+      std::memory_order_release);
+  assert(!TryPublishMilitaryPreparationSummaryPrivateProbeMailboxV1(
+      probe, mailbox, ticket));
+  assert(!probe.result_published);
+
+  mailbox.state.store(
+      xar::ck3_11906::MainThreadQueryMailboxStateV1::executing,
+      std::memory_order_release);
+  assert(!TryPublishMilitaryPreparationSummaryPrivateProbeMailboxV1(
+      probe, mailbox, ticket));
+  assert(!probe.result_published);
+
+  xar::ck3_11906::MainThreadExecutionStampV1 stamp{};
+  stamp.thread_id = 77;
+  stamp.date_raw = fixture.frame.date_raw;
+  stamp.paused = true;
+  assert(ExecuteMilitaryPreparationSummaryPrivateProbeV1(&probe, stamp));
+  mailbox.completed_sequence.store(ticket.sequence,
+                                   std::memory_order_release);
+  mailbox.state.store(
+      xar::ck3_11906::MainThreadQueryMailboxStateV1::completed,
+      std::memory_order_release);
+  assert(TryPublishMilitaryPreparationSummaryPrivateProbeMailboxV1(
+      probe, mailbox, ticket));
+  assert(probe.result_published);
+  assert(probe.published_execution_count == 1);
+  assert(probe.published_result.status ==
+         MilitaryPreparationSummaryStatusV1::available);
+}
+
+void TestMailboxTerminalFailuresRemainUnavailable() {
+  Fixture fixture{};
+  MilitaryPreparationSummaryPrivateProbeV1 cancelled{};
+  assert(InstallMilitaryPreparationSummaryPrivateProbeV1(
+      cancelled, Environment(fixture)));
+  assert(PrepareMilitaryPreparationSummaryPrivateProbeV1(
+      cancelled, fixture.frame, fixture.frame.snapshot_revision));
+  xar::ck3_11906::MainThreadQueryMailboxV1 mailbox{};
+  const xar::ck3_11906::MainThreadQueryTicketV1 ticket{23};
+  mailbox.published_sequence.store(ticket.sequence,
+                                   std::memory_order_release);
+  mailbox.completed_sequence.store(ticket.sequence,
+                                   std::memory_order_release);
+  mailbox.state.store(
+      xar::ck3_11906::MainThreadQueryMailboxStateV1::cancelled,
+      std::memory_order_release);
+  assert(TryPublishMilitaryPreparationSummaryPrivateProbeMailboxV1(
+      cancelled, mailbox, ticket));
+  assert(cancelled.published_result.status ==
+         MilitaryPreparationSummaryStatusV1::unavailable);
+  assert(cancelled.published_result.failure_flags ==
+         military_preparation_summary_failure_application_main);
+
+  MilitaryPreparationSummaryPrivateProbeV1 infrastructure{};
+  assert(InstallMilitaryPreparationSummaryPrivateProbeV1(
+      infrastructure, Environment(fixture)));
+  assert(PrepareMilitaryPreparationSummaryPrivateProbeV1(
+      infrastructure, fixture.frame, fixture.frame.snapshot_revision));
+  mailbox.state.store(
+      xar::ck3_11906::MainThreadQueryMailboxStateV1::infrastructure_failed,
+      std::memory_order_release);
+  assert(TryPublishMilitaryPreparationSummaryPrivateProbeMailboxV1(
+      infrastructure, mailbox, ticket));
+  assert(infrastructure.published_result.status ==
+         MilitaryPreparationSummaryStatusV1::unavailable);
+  assert(infrastructure.published_result.failure_flags ==
+         military_preparation_summary_failure_frame_changed);
+}
+
 std::string ReadFile(const char *path) {
   std::ifstream input(path, std::ios::binary);
   assert(input);
@@ -179,6 +262,8 @@ void TestPrivateBridgeSourceContract(int argc, char **argv) {
 int main(int argc, char **argv) {
   TestDefaultOffAndOneShotAvailablePublication();
   TestStampDriftPublishesUnavailable();
+  TestMailboxPublicationDoesNotCancelQueuedWork();
+  TestMailboxTerminalFailuresRemainUnavailable();
   TestPrivateBridgeSourceContract(argc, argv);
   return 0;
 }

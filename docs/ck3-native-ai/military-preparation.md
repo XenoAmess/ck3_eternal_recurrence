@@ -578,3 +578,51 @@ This work package does not modify private core or binding code. The available
 evidence does not identify a unique C++ repair and any such change would be a
 guess. A shared profile-staging glue follow-up is required. Public native/MCP
 schemas did not change, so `open_kaishek` needs no adaptation.
+
+
+## MIL10 / R686: application-main timeout mapping RED
+
+[live-red-preserved] Current round R686 is terminated. The frozen raw evidence
+is `Z:/ck3_mod_rewrite_process_assets/g2-m4-mil9-r686-prep-5b33d3a/live-r686/raw-probe.json`
+(SHA-256 `071FE87F780532F5004B62F150EB6943DA39CCF54EBAA478E38E5A7C3DC30E5B`).
+It closes both diagnostic mappings:
+
+- `failure_flags=8` is
+  `military_preparation_summary_failure_application_main` (`1U << 3`);
+- `last_wait_result=4` is
+  `MainThreadQueryWaitResultV1::timeout_cancelled_before_execution`.
+
+The same heartbeat proves the mailbox was installed, failure-free, ready, and
+had observed a paused application-main owner. It recorded 6755 pump epochs and
+6755 owner-verified pump epochs. The private request was submitted as sequence
+1, but `executor_started_requests=0`, `executor_started_sequence=0`, and
+`executed_requests=0`. Its `completed_sequence=1` was the terminal cancellation
+record, while `published_execution_count=1` counted the private failure
+publication rather than a native evaluator execution. The full machine-readable
+mapping is in
+[`military_preparation_summary_v1_r686_red.json`](../../ck3_autonomous_player/native_bridge/research/fixtures/military_preparation_summary_v1_r686_red.json).
+
+[source-confirmed] The private `DriveMilitaryPreparationSummaryPrivateProbeV1`
+path submitted the unsolicited query and immediately called
+`WaitForMainThreadQueryV1(..., 1000)` on the bridge worker. When no main-thread
+pump claimed the still-queued request inside that caller-side window,
+`WaitForMainThreadQueryV1` atomically cancelled it and returned value 4. The
+private drive mapped that non-completed result to the application-main failure
+bit and published it. Therefore R686 did not reach the MIL4 session, definition,
+or evaluator path. The RED is a worker wait versus application-main pump
+scheduling-window defect; it is not evidence that the already proven
+application-main owner was absent.
+
+[minimal-private-fix] The private probe now exposes
+`TryPublishMilitaryPreparationSummaryPrivateProbeMailboxV1`. It treats
+`publishing`, `queued`, and `executing` as pending across worker heartbeats and
+does not wait or cancel. It publishes the evaluator result only after the
+matching ticket reaches `completed`; terminal mailbox failures remain
+`unavailable`. This preserves the one-shot and all-ten-values-or-unavailable
+contracts and does not relax `available` or `observation_ready`.
+
+The shared `bridge.cpp` call site is outside this work package's write boundary.
+A focused glue follow-up must replace the private drive's synchronous 1000-ms
+wait with the new non-cancelling observer and reclaim the ticket only after a
+terminal result has been published. It needs no CMake, public native/MCP schema,
+or `open_kaishek` change. No CK3 retry belongs to this analysis package.
