@@ -1,0 +1,111 @@
+{
+  "schema_version": 1,
+  "contract": "g2-domain-construction-candidate-cost-legality-decoder-v1",
+  "status": "offline-deterministic-fixture",
+  "exact_build": {
+    "product_version": "1.19.0.6",
+    "executable_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86"
+  },
+  "offline_fixture": true,
+  "raw_pointer_fields_persisted": false,
+  "cases": [
+    {
+      "case": "building_actionable",
+      "candidate": {
+        "kind": "building_in_holding",
+        "candidate_id": "building:17:4:16777258"
+      },
+      "expected_binding": {"generation": 42, "proof_epoch": 91, "date_raw": 777},
+      "observed_binding": {"generation": 42, "proof_epoch": 91, "date_raw": 777},
+      "cost_raw": [100, 0, 50, -1, 0, 0, 0, 0],
+      "resource_balance_raw": [101, 0, 51, 0, 0, 0, 0, 0],
+      "final_legality": {"observed": true, "branch": "building", "allowed": true},
+      "expected": {
+        "ready": true,
+        "native_affordable": true,
+        "native_final_legal": true,
+        "actionable": true,
+        "blocking_resource_mask": 0,
+        "rejection_reason": "none",
+        "unavailable": "none"
+      }
+    },
+    {
+      "case": "holding_insufficient_resource",
+      "candidate": {
+        "kind": "new_holding",
+        "candidate_id": "holding:867:3"
+      },
+      "expected_binding": {"generation": 42, "proof_epoch": 91, "date_raw": 777},
+      "observed_binding": {"generation": 42, "proof_epoch": 91, "date_raw": 777},
+      "cost_raw": [100, 0, 20, -1, 0, 0, 0, 0],
+      "resource_balance_raw": [100, 0, 19, -50, 0, 0, 0, 0],
+      "final_legality": {"observed": false, "branch": "new_holding", "allowed": false},
+      "expected": {
+        "ready": true,
+        "native_affordable": false,
+        "native_final_legal": false,
+        "actionable": false,
+        "first_blocking_resource_slot": 0,
+        "blocking_resource_mask": 5,
+        "rejection_reason": "insufficient_resource",
+        "unavailable": "none"
+      }
+    },
+    {
+      "case": "building_final_legality_rejected",
+      "candidate": {
+        "kind": "building_in_holding",
+        "candidate_id": "building:17:4:16777258"
+      },
+      "expected_binding": {"generation": 42, "proof_epoch": 91, "date_raw": 777},
+      "observed_binding": {"generation": 42, "proof_epoch": 91, "date_raw": 777},
+      "cost_raw": [1, 0, 0, 0, 0, 0, 0, 0],
+      "resource_balance_raw": [2, 0, 0, 0, 0, 0, 0, 0],
+      "final_legality": {"observed": true, "branch": "building", "allowed": false},
+      "expected": {
+        "ready": true,
+        "native_affordable": true,
+        "native_final_legal": false,
+        "actionable": false,
+        "blocking_resource_mask": 0,
+        "rejection_reason": "building_native_final_legality_rejected",
+        "unavailable": "none"
+      }
+    },
+    {
+      "case": "binding_date_drift",
+      "candidate": {
+        "kind": "building_in_holding",
+        "candidate_id": "building:17:4:16777258"
+      },
+      "expected_binding": {"generation": 42, "proof_epoch": 91, "date_raw": 777},
+      "observed_binding": {"generation": 42, "proof_epoch": 91, "date_raw": 778},
+      "cost_raw": [1, 0, 0, 0, 0, 0, 0, 0],
+      "resource_balance_raw": [2, 0, 0, 0, 0, 0, 0, 0],
+      "final_legality": {"observed": true, "branch": "building", "allowed": true},
+      "expected": {
+        "ready": false,
+        "actionable": false,
+        "unavailable": "binding_drift"
+      }
+    },
+    {
+      "case": "affordable_without_final_observation",
+      "candidate": {
+        "kind": "new_holding",
+        "candidate_id": "holding:867:3"
+      },
+      "expected_binding": {"generation": 42, "proof_epoch": 91, "date_raw": 777},
+      "observed_binding": {"generation": 42, "proof_epoch": 91, "date_raw": 777},
+      "cost_raw": [1, 0, 0, 0, 0, 0, 0, 0],
+      "resource_balance_raw": [2, 0, 0, 0, 0, 0, 0, 0],
+      "final_legality": {"observed": false, "branch": "new_holding", "allowed": false},
+      "expected": {
+        "ready": false,
+        "actionable": false,
+        "unavailable": "final_legality_unobserved"
+      }
+    }
+  ]
+}

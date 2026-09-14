@@ -1,0 +1,106 @@
+{
+  "contract": "g2-domain-construction-candidate-cost-legality-decoder-v1",
+  "schema_version": 1,
+  "status": "static-ready-private-candidate-cost-legality-decoder",
+  "reverse_engineering_entry": "native_runtime_candidate_cost_affordability_and_final_legality_decoder",
+  "exact_build": {
+    "product_version": "1.19.0.6",
+    "executable_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+    "executable_size": 95206008,
+    "image_base": "0x140000000"
+  },
+  "input": {
+    "upstream_private_contract": "g2-domain-construction-candidate-identity-decoder-v1",
+    "candidate_identity_required": true,
+    "snapshot_binding": [
+      "generation",
+      "proof_epoch",
+      "date_raw"
+    ],
+    "cost_vector": {
+      "slot_count": 8,
+      "element": "signed int64 raw",
+      "projection_source_qword_offsets": [
+        0,
+        8,
+        16,
+        32,
+        40,
+        48,
+        64,
+        72
+      ]
+    },
+    "resource_balance_vector": {
+      "slot_count": 8,
+      "element": "signed int64 raw",
+      "layout": "contiguous qwords in native affordability order"
+    },
+    "native_final_legality": {
+      "building_branch": "observed result from 0x26CD410",
+      "new_holding_branch": "observed result from 0x275C7F0"
+    }
+  },
+  "decode": {
+    "affordability_predicate_per_slot": "cost <= 0 || cost < resource_balance",
+    "equal_positive_cost_and_balance": "insufficient_resource",
+    "first_blocking_slot": "lowest slot rejected by native loop order",
+    "blocking_resource_mask": "all rejected slots",
+    "unaffordable_final_observation": "not required because native returns before final legality",
+    "affordable_final_observation": "required and branch must match candidate kind",
+    "typed_rejection_reasons": [
+      "insufficient_resource",
+      "building_native_final_legality_rejected",
+      "holding_native_final_legality_rejected"
+    ],
+    "typed_unavailable": [
+      "candidate_identity",
+      "generation",
+      "proof_epoch",
+      "binding_drift",
+      "null_pointer",
+      "address_overflow",
+      "memory_read",
+      "final_legality_unobserved",
+      "candidate_kind_branch_mismatch"
+    ],
+    "raw_pointer_in_output": false,
+    "native_localized_failure_text_claimed": false
+  },
+  "exact_static_evidence": {
+    "cost_variant_and_eight_slot_projection": "0x18D1828..0x18D18F3",
+    "building_cost_builder_call": "0x18D184F -> 0x29190F0",
+    "new_holding_cost_builder_call": "0x18D18C3 -> 0x275D680",
+    "eight_slot_strict_affordability": "0x18D18F3..0x18D1924",
+    "building_final_legality_call": "0x18D2A05 -> 0x26CD410",
+    "new_holding_final_legality_call": "0x18D2B09 -> 0x275C7F0"
+  },
+  "binding": {
+    "generation": "expected and observed values must be equal, nonzero, and even",
+    "proof_epoch": "expected and observed values must be equal and nonzero",
+    "date_raw": "expected and observed values must be equal",
+    "drift": "typed unavailable; no actionable result"
+  },
+  "readiness": {
+    "private_decoder_core_ready": true,
+    "exact_spans_ready": true,
+    "normal_standalone_test_ready": true,
+    "optimized_standalone_test_ready": true,
+    "w4_wx_ready": true,
+    "paired_native_runtime_capture_ready": false,
+    "public_candidate_reader_ready": false,
+    "public_mcp_ready": false
+  },
+  "scope": {
+    "private_research_only": true,
+    "read_only_game_state": true,
+    "shared_cmake_modified": false,
+    "shared_bridge_modified": false,
+    "public_schema_modified": false,
+    "mcp_modified": false,
+    "ck3_started": false
+  },
+  "r687_boundary": "R687 remains BOUNDED_NO_GO: its paused attempt produced zero candidate rows. This static decoder consumes only explicitly bound offline/private observations and does not reinterpret R687 as a live hit.",
+  "unique_next_reverse_engineering_entry": "native_runtime_candidate_cost_legality_live_capture_observer",
+  "evidence_limit": "Exact-build static code and standalone fixtures prove the eight-slot raw comparison and typed final-gate outcomes. Resource slot business names, localized native diagnostics, a live paired capture, public query/action wiring, and CK3 acceptance remain unproved."
+}

@@ -16,6 +16,10 @@
   安装与 admission 均无失败，但存档始终停在同一日期，没有完成原生日更，故 `producer_calls=0` 并按合同收口为
   `BOUNDED_NO_GO`；这不是 hook 失效证据。DEV8 已把它接入默认 `OFF` 的私有 bridge 构建和 heartbeat；私有构建只发布
   `advertised=false` 的诊断对象，不进入 hello capability、公共 MCP/schema 或 planner。
+- **[DEV16 static-ready private decoder]** 私有 `native_runtime_candidate_cost_affordability_and_final_legality_decoder`
+  已静态闭合 selected candidate 的八槽 raw cost、同序 resource balance、严格 affordability 边界以及两种候选的 native-final
+  legality 结果，并把结果绑定到 candidate identity、generation、proof epoch 和 date。它尚无 paired live capture，不提升公共
+  candidate reader、MCP 或 action readiness。
 - **[static-confirmed cadence boundary]** `CDailyTickCommand` final stage `0x26D3E80` 每次完成日更时调用一次
   `CAIManager` update `0x18876D0`，建设 runtime entry 位于该 pass 的内部列表路由。每条通过 raw gates 的 runtime entry
   调用 producer 恰好一次；全局每日至少/至多命中多少个 owner、存钱目标何时重试仍未闭合，不能写成“每个角色每天必建”或
@@ -117,8 +121,9 @@ RTTI 与 vtable 把 effect 绑定到以下路径：
 8. `0x2EBF4FC` 再做最终合法性，随后解析 slot/holding 并调用 `0x21F6800` 提交施工。
 
 这比 `_buildings.info` 的“randomly”更具体：**入围带内按候选 score 带权随机**，不是均匀随机，也不是固定取第一名。
-八槽资源的字段映射和相等边界尚未逐槽闭合，不能从这段汇编臆造公开 ABI；v1 只发布已经能用原生 evaluator 得到的
-gold/prestige/piety 成本以及最终 affordability，任何未映射非零槽都必须让成本 readiness 失败。
+八槽资源的业务字段名尚未逐槽闭合，不能从这段汇编臆造 gold/prestige/piety 映射。DEV16 已静态证明原生循环按固定八槽顺序
+比较 signed qword，并使用严格条件 `cost <= 0 || cost < balance`；正成本等于余额也会被拒绝。公共 v1 仍须在未映射非零槽存在时
+让成本 readiness 失败。
 
 `0x1921810` 还调用 `0x19221C0`、`0x19224F0`、`0x19227C0` 等子枚举器，并把结果继续交给候选评分/合法性帮助函数。
 这些子枚举器的普通建筑、domicile 与其他 building class 映射尚未全部命名，图中保留为 unknown；不能凭调用顺序给类型贴标签。
@@ -476,7 +481,35 @@ selector 送回原生 validation。私有 decoder 因此只在下面两个互斥
 `/W4 /WX` standalone runner 全部位于 `native_bridge/research/`，未接入 shared CMake、bridge、schema 或 MCP。
 
 R687 仍是 paused、`producer_calls=0` 的 `BOUNDED_NO_GO`；本包没有启动 CK3，也没有把 offline fixture 冒充 runtime row。
-下一唯一静态入口为 `native_runtime_candidate_cost_affordability_and_final_legality_decoder`，它不能阻塞已经闭合的身份解码。
+身份 decoder 的下一入口 `native_runtime_candidate_cost_affordability_and_final_legality_decoder` 已由 DEV16 静态闭合；身份结果本身
+仍可独立使用，不依赖后续 live capture。
+
+### DEV16-COST-LEGALITY-DECODER：成本、余额与最终合法性静态闭合
+
+状态为 `static-ready-private-candidate-cost-legality-decoder`。selected-row consumer 的
+`0x18D1828..0x18D18F3` 对两个候选形状分别调用成本 builder：已有 holding 的建筑候选在 `0x18D184F` 调
+`0x29190F0`，新 holding 候选在 `0x18D18C3` 调 `0x275D680`。两条路径都把结果投影为相同的八个 signed-qword
+本地槽，源结构偏移依次为 `0x00, 0x08, 0x10, 0x20, 0x28, 0x30, 0x40, 0x48`。槽的业务名称仍未证明，decoder
+因此发布固定顺序的 raw 数组，不伪造资源名称。
+
+`0x18D18F3..0x18D1924` 严格按槽 `0..7` 比较。非正成本直接通过；正成本只有在 `cost < resource_balance`
+时通过，所以 `cost == resource_balance` 是确定的 `insufficient_resource`。decoder 返回全部失败槽 bitmask 和原生循环首先失败的
+槽位。资金不足是已知业务拒绝：此时 native 在 final gate 前返回，`final_legality.observed=false` 合法，结果为 ready 但不可执行。
+
+资金充足时，已有 holding 的建筑候选必须绑定 `0x18D2A05 -> 0x26CD410` 的 bool 结果，新 holding 候选必须绑定
+`0x18D2B09 -> 0x275C7F0` 的 bool 结果。分支匹配且结果为 false 时分别返回
+`building_native_final_legality_rejected` 或 `holding_native_final_legality_rejected`。这些是 exact 控制流派生的稳定 typed reason，
+并非原版本地化诊断字符串。资金充足但 final 结果未观测、候选 kind 与 gate 分支不匹配、地址/读取失败都会返回 typed
+unavailable，不能用 `null` 或成功的 `unknown` 收口。
+
+每项结果同时携带 DEV15 的 pointer-free `candidate_id` 和一个完整 binding：expected/observed `generation` 必须相同、非零且为偶数，
+`proof_epoch` 必须相同且非零，`date_raw` 必须相同。任何漂移都拒绝 actionable 结果。decoder 输出只保存自有标量和八槽数组，
+不保留成本、余额或候选对象地址。实现、ABI、source contract、fixture 与 normal/optimized `/W4 /WX` runner 均为
+`native_bridge/research/` 私有资产；本包没有改 shared CMake、bridge、schema 或 MCP，也没有启动 CK3。
+
+R687 的 `BOUNDED_NO_GO` 不变，因为该轮没有产生候选行。DEV16 只闭合 exact-build static decoder 与 offline fixture；下一唯一入口是
+`native_runtime_candidate_cost_legality_live_capture_observer`，用于在未来获授权轮次中取得与 identity/generation/proof/date 同帧的
+paired observation，在那以前不得宣称 production-live 或公共 candidate query ready。
 
 ## 最小只读输入合同：`domain-construction-candidates-v1`
 

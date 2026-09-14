@@ -1,0 +1,100 @@
+{
+  "schema_version": 1,
+  "contract": "g2-domain-construction-candidate-cost-legality-decoder-v1-source",
+  "status": "static-ready-private-candidate-cost-legality-decoder",
+  "exact_build": {
+    "product_version": "1.19.0.6",
+    "executable_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+    "executable_size": 95206008
+  },
+  "exact_spans": [
+    {
+      "name": "cost_variant_and_eight_slot_projection",
+      "rva": "0x18D1828",
+      "size": 203,
+      "sha256": "71ECE40A7B53DE46255AF723D9643B4D0E404777369259BB3529200D3F8A994D",
+      "hex": "488B4F10488B01FF1084C07476488B47104C8D8090F506004C8B8888F50600488B5708488D4DFFE89C780401488BD00F57C00F1145BF0F1145CF0F1145DF0F1145EF488B0848894DBF488B480848894DC7488B481048894DCF488B4020488945D7488B4228488945DF488B4230488945E7488B4240488945EF488B4248488945F7EB48488B4F18488B01FF1084C074284C8BC6488B5718488D4DFFE8B8BDE800488BD00F57C00F1145BF0F1145CF0F1145DF0F1145EFEB8A0F57C00F1145BF0F1145CF0F1145DF0F1145EF"
+    },
+    {
+      "name": "eight_slot_strict_affordability",
+      "rva": "0x18D18F3",
+      "size": 49,
+      "sha256": "F10EC35D3893CFF2692AD2A7F38779620B55CD71929924EC290E9EE4D485C94F",
+      "hex": "32C06666660F1F840000000000480FBEC8488D14CD00000000488B4C15BF4885C97E06483B0C1A7D21FEC03C0875DEB001"
+    },
+    {
+      "name": "building_final_legality",
+      "rva": "0x18D29E8",
+      "size": 45,
+      "sha256": "BFE83016E0D717E5A38F046702BAF1221521793739D053CF22AAD1798091799D",
+      "hex": "488B01FF1084C0746B488B07488BCFFF503084C0745E33D2488D4C2430E806AADF0084C0744EF6056BFAE803FD"
+    },
+    {
+      "name": "holding_final_legality",
+      "rva": "0x18D2AF0",
+      "size": 41,
+      "sha256": "38F399216E1E23CA9881AC0B8679CC05084CA594F772F2460C341AF609941A4B",
+      "hex": "C7442428020000004C896424204533C94C8B4424588B542454E8E29CE80084C0745CF60567F9E803FD"
+    }
+  ],
+  "direct_call_targets": [
+    {"span": "cost_variant_and_eight_slot_projection", "call_rva": "0x18D184F", "target_rva": "0x29190F0"},
+    {"span": "cost_variant_and_eight_slot_projection", "call_rva": "0x18D18C3", "target_rva": "0x275D680"},
+    {"span": "building_final_legality", "call_rva": "0x18D2A05", "target_rva": "0x26CD410"},
+    {"span": "holding_final_legality", "call_rva": "0x18D2B09", "target_rva": "0x275C7F0"}
+  ],
+  "required_header_tokens": [
+    "kDomainConstructionResourceSlotCountV1 = 8",
+    "generation",
+    "proof_epoch",
+    "date_raw",
+    "cost_raw",
+    "resource_balance_raw",
+    "blocking_resource_mask",
+    "insufficient_resource",
+    "final_legality_unobserved",
+    "DecodeDomainConstructionCandidateCostLegalityV1"
+  ],
+  "required_source_tokens": [
+    "BindingsEqual",
+    "source.expected_binding.generation & 1U",
+    "kDomainConstructionResourceVectorBytesV1",
+    "costs[slot] <= 0 || costs[slot] < balances[slot]",
+    "first_blocking_resource_slot",
+    "insufficient_resource",
+    "final_legality_unobserved",
+    "candidate_kind_branch_mismatch",
+    "building_native_final_legality_rejected",
+    "holding_native_final_legality_rejected"
+  ],
+  "required_test_tokens": [
+    "TestBuildingActionable",
+    "TestStrictAffordabilityAndBlockingMask",
+    "TestNativeFinalLegalityRejections",
+    "TestBindingAndFinalObservationUnavailable",
+    "TestMemoryAndIdentityUnavailable",
+    "building:17:4:16777258",
+    "holding:867:3",
+    "blocking_resource_mask == 0x05U"
+  ],
+  "required_runner_tokens": [
+    "vswhere.exe",
+    "vcvars64.bat",
+    "/W4",
+    "/WX",
+    "/Od",
+    "/O2",
+    "GREEN_W4WX"
+  ],
+  "implementation": {
+    "header": "research/domain_construction_candidate_cost_legality_decoder_v1.hpp",
+    "source": "research/domain_construction_candidate_cost_legality_decoder_v1.cpp",
+    "test": "research/domain_construction_candidate_cost_legality_decoder_v1_test.cpp",
+    "runner": "research/run_domain_construction_candidate_cost_legality_decoder_v1_tests.py",
+    "shared_cmake_modified": false,
+    "shared_bridge_modified": false,
+    "public_schema_modified": false,
+    "mcp_modified": false
+  },
+  "unique_next_reverse_engineering_entry": "native_runtime_candidate_cost_legality_live_capture_observer"
+}
