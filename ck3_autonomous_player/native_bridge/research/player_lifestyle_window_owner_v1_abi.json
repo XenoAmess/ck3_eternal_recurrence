@@ -1,0 +1,435 @@
+{
+  "contract": "player-lifestyle-window-owner-static-abi-v1",
+  "game_version": "1.19.0.6",
+  "architecture": "msvc-x64",
+  "evidence_kind": "offline exact-build executable and stock UI source analysis",
+  "read_only": true,
+  "live_validated": false,
+  "game_process_started": false,
+  "status": "static-confirmed owner and final-gate seam; private observer not implemented",
+  "exact_build": {
+    "executable": {
+      "path": "binaries/ck3.exe",
+      "bytes": 95206008,
+      "sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86"
+    },
+    "stock_sources": [
+      {
+        "path": "game/gui/window_character_lifestyle.gui",
+        "bytes": 43297,
+        "sha256": "C506945C15D57BDDF79179E97739151334B03249544BA6FD8243B1E657669B07"
+      },
+      {
+        "path": "game/gui/hud.gui",
+        "bytes": 215506,
+        "sha256": "1AE3F1371E0A9C43D0B62FC1C1F3A0CDBB0EAB9CF08B85545556CBF3D7386312"
+      },
+      {
+        "path": "game/gui/shared/cooltip.gui",
+        "bytes": 214381,
+        "sha256": "702A1135D22B28C7A73B902A730D906481C5EFB003C6929FE9DCF4350BE74A34"
+      },
+      {
+        "path": "game/localization/english/gui/lifestyle_window_l_english.yml",
+        "bytes": 5828,
+        "sha256": "99482844675CC535804E4160025E461B528AA85B166CFF4F21DF78E68EC1132E"
+      }
+    ]
+  },
+  "rtti": {
+    "type": "CCharacterLifestyleWindow",
+    "type_descriptor_rva": "0x527E7B8",
+    "class_hierarchy_descriptor_rva": "0x46EA460",
+    "primary_complete_object_locator_rva": "0x46EB268",
+    "secondary_complete_object_locator_rva": "0x46EB218",
+    "decorated_name": ".?AVCCharacterLifestyleWindow@@",
+    "primary_vtable_rva": "0x4148BE8",
+    "primary_vtable_function_rvas": [
+      "0x132C570",
+      "0x132C670",
+      "0xF3EB10",
+      "0x132C970",
+      "0x1006FB0",
+      "0x1F30930",
+      "0x1F30950",
+      "0x1F30970",
+      "0x1F30A00",
+      "0x1F30A10",
+      "0x132BAE0",
+      "0xAA33F0",
+      "0x132C710",
+      "0x7E6490",
+      "0x7E6490",
+      "0x7E6490",
+      "0x7E6490",
+      "0x132C6E0",
+      "0xF48780",
+      "0xF48800",
+      "0xCFF9D0",
+      "0x7E9220",
+      "0xAA33D0",
+      "0x7E9230"
+    ],
+    "secondary_vtable_rva": "0x4148BC0",
+    "secondary_vtable_function_rvas": [
+      "0x133CE18",
+      "0x36E7370",
+      "0x1006EC0",
+      "0x7E6490"
+    ],
+    "object_bytes": "0x170"
+  },
+  "owner_path": {
+    "owner_type": "CIngameInterfaceHandler",
+    "global_root_pointer_rva": "0x570F7B8",
+    "resolution": "root = *(module+0x570F7B8); idler_base = *(root+0x10); __RTDynamicCast at 0x3E631F4 to CIngameInterfaceIdlerGfx; handler = *(cast+0x88); window = *(handler+0x1A8)",
+    "idler_gfx_type_descriptor_rva": "0x501EF50",
+    "handler_primary_vtable_rva": "0x40AF630",
+    "handler_primary_vtable_function_rvas": [
+      "0xA72A80",
+      "0xA734B0",
+      "0xA756B0",
+      "0xA75960",
+      "0xA759E0",
+      "0xA75A40",
+      "0x7E9220",
+      "0xA75C40"
+    ],
+    "constructor_and_registration_rva": "0xA8C020",
+    "source_owner_argument": "rcx",
+    "published_instance": "load pointer from CIngameInterfaceHandler + 0x1A8 afresh for every complete sample",
+    "publication_evidence": "0xA8C171 loads old handler+0x1A8 and 0xA8C178 replaces it with the newly constructed instance; the old object is released before registration at handler+0x5B8",
+    "owner_round_trip": "window + 0xD0 must equal the same CIngameInterfaceHandler",
+    "offset_collision_warning": "handler+0x1A8 is the lifestyle-window owner slot; it is unrelated to CCharacter+0x1A8 in the LIFE2 character-state tree",
+    "attached_widget": "window + 0x78; 0x132C670 resolves/stores it and 0xF3EB10 releases then zeros it",
+    "forbidden": "do not allocate 0x170, copy the registered object, install either vtable, call the data binder, or retain the instance across owner/lifecycle drift"
+  },
+  "open_and_bind_path": {
+    "stock_call": "OpenGameViewData('lifestyle', GetPlayer.GetID)",
+    "registration": "0xA1494B registers callback 0xA02CD0 through 0x967080",
+    "view_index": "callback maps lifestyle to enum 0x22; handler pointer-array base 0x98 plus 0x22*8 equals handler+0x1A8",
+    "queue": "0xA794D0 drains queued view data; 0xA942C0 resolves handler+0x98+enum*8; 0xA795D2 calls window vtable+0x90",
+    "binder": "primary slot 18 is 0xF48780; it decodes the typed full CharacterID, writes window+0xF8, then calls slot 3 0x132C970",
+    "observer_rule": "the passive observer may inspect this path as evidence but must not enqueue, bind, refresh, open, or close a view"
+  },
+  "window_layout": {
+    "gui_widget_pointer": "0x78",
+    "gui_context_pointer": "0xC8",
+    "handler_owner_pointer": "0xD0",
+    "bound_character_id_u32": "0xF8",
+    "lifestyles_span": {
+      "data": "0x100",
+      "capacity_i32": "0x108",
+      "count_i32": "0x10C",
+      "allocator": "0x110",
+      "element_bytes": 8
+    },
+    "perk_tree_rows": {
+      "data": "0x118",
+      "capacity_i32": "0x120",
+      "count_i32": "0x124",
+      "allocator": "0x128",
+      "element_bytes": "0x78",
+      "note": "row+0x68 is compared to the definition+0x5E0 integer identity during refresh; nested perk-node layout remains outside this contract"
+    },
+    "focus_span": {
+      "data": "0x130",
+      "capacity_i32": "0x138",
+      "count_i32": "0x13C",
+      "allocator": "0x140",
+      "element_bytes": 8,
+      "element": "FocusType definition pointer"
+    },
+    "selected_lifestyle_pointer": "0x148",
+    "selected_focus_pointer": "0x150",
+    "perk_confirmation_pointer": "0x158",
+    "focus_confirmation_pointer": "0x160"
+  },
+  "lifecycle": [
+    {
+      "phase": "construct/register",
+      "rva": "0xA8C020",
+      "effect": "allocate 0x170, install exact vtables, initialize +0xF8 to -1 and all three spans empty, publish at CIngameInterfaceHandler+0x1A8, register with handler+0x5B8"
+    },
+    {
+      "phase": "attach widget",
+      "rva": "0x132C670",
+      "effect": "resolve the stock named root through the base view fields, store +0x78, then initialize/refresh when present"
+    },
+    {
+      "phase": "bind OpenGameViewData payload",
+      "rva": "0xF48780",
+      "effect": "decode the incoming typed value with default -1, write u32 at +0xF8, tail-call primary vtable slot +0x18 (0x132C970 refresh)"
+    },
+    {
+      "phase": "compare payload",
+      "rva": "0xF48800",
+      "effect": "decode the typed value and compare it with +0xF8 without rebinding"
+    },
+    {
+      "phase": "refresh",
+      "rvas": [
+        "0x132C970",
+        "0x132CB70"
+      ],
+      "effect": "full-generation resolve +0xF8 and rebuild lifestyles; when selected lifestyle +0x148 changes, 0x132CB70 clears/rebuilds perk-tree rows and the focus vector; focus entries are 8-byte definition pointers"
+    },
+    {
+      "phase": "detach widget",
+      "rva": "0xF3EB10",
+      "effect": "release +0x78 and set it to null"
+    },
+    {
+      "phase": "destroy",
+      "rva": "0x132C570",
+      "effect": "release focus, perk-tree, and lifestyle containers, restore base vtables, destroy base, optionally free 0x170"
+    },
+    {
+      "phase": "handler cleanup or GUI reload",
+      "rvas": [
+        "0xA756B0",
+        "0xA8C171"
+      ],
+      "effect": "clear handler owner slots before virtual deletion, or replace handler+0x1A8 and release the previous registered window; all cached pointers become invalid"
+    }
+  ],
+  "methods": {
+    "GetLifestyles": {
+      "direct_rva": "0xB755D0",
+      "returns": "window+0x100"
+    },
+    "GetPerkTrees": {
+      "direct_rva": "0xCCC4D0",
+      "returns": "window+0x118"
+    },
+    "GetFocuses": {
+      "direct_rva": "0xCEBE10",
+      "returns": "window+0x130"
+    },
+    "CanSelectFocus": {
+      "direct_rva": "0x132D4A0",
+      "candidate": "FocusType* from the validated focus span",
+      "final_evaluator_pointer_slot_rva": "0x4323C10",
+      "exact_evaluator_target_rva": "0x25DF570"
+    },
+    "CanSelectPerk": {
+      "direct_rva": "0x132D640",
+      "candidate": "CharacterPerk* from the exact stable-key database",
+      "final_evaluator_pointer_slot_rva": "0x4323A80",
+      "exact_evaluator_target_rva": "0x25DFAF0"
+    },
+    "CanSelectPerkIgnoreCost": {
+      "direct_rva": "0x132D700",
+      "candidate": "CharacterPerk* from the exact stable-key database",
+      "evaluator_rva": "0x25DFEA0",
+      "authorization": false
+    }
+  },
+  "identity_gate": {
+    "played_character_id_global_rva": "0x4FE7EE0",
+    "initial_bytes": "FFFFFFFF00000000",
+    "native_gate": "all three CanSelect methods return false before evaluator construction unless window+0xF8 equals module+0x4FE7EE0",
+    "observer_stronger_gate": "also resolve the full ID through exact Character storage and require CCharacter+0x18 to equal the complete ID before and after candidate evaluation"
+  },
+  "exact_pointer_slots": [
+    {
+      "name": "CanSelectFocus evaluator",
+      "slot_rva": "0x4323C10",
+      "target_rva": "0x25DF570"
+    },
+    {
+      "name": "CanSelectPerk evaluator",
+      "slot_rva": "0x4323A80",
+      "target_rva": "0x25DFAF0"
+    }
+  ],
+  "safe_private_observer_seam": {
+    "thread": "application-main only",
+    "mutation": "none",
+    "admission": [
+      "paused snapshot/revision/date acquired",
+      "fresh root -> idler -> CIngameInterfaceHandler -> window resolution completed",
+      "fresh window = *(handler+0x1A8)",
+      "handler primary vtable matches the exact RVA",
+      "primary and secondary vtables match exact RVAs",
+      "window+0xD0 equals the freshly resolved handler",
+      "window+0xF8 equals played full CharacterID and passes storage round-trip",
+      "all spans have nonnegative count, count <= capacity, nonnull readable data when count > 0",
+      "focus candidates are exact pointer members of the captured focus span",
+      "perk candidates are exact pointer members of the version-bound CharacterPerk stable-key database"
+    ],
+    "sample": "capture all admission anchors, candidate identities, and gate outputs twice without advancing the paused frame; reacquire the complete root/handler/window path for each sample and publish only if handler, window, vtables, full player ID, revision/date, spans, candidates, and results are identical",
+    "diagnostic_only": "window+0x78 reports stock widget attachment; the getters and final evaluators do not dereference it, so null is not by itself a passive-observer rejection",
+    "failure": "return lifestyle_window_unbound_or_stale when +0xF8 is not the current full CharacterID; return a distinct invalid-container/materialization reason when a span fails validation; an empty, fully scanned stable candidate list is known-empty",
+    "call_boundary": "GetFocuses/GetPerkTrees merely expose embedded models. Call CanSelectFocus/CanSelectPerk only with provenance-checked candidates. IgnoreCost is explanatory frontier state and never authorizes an action."
+  },
+  "resolved": [
+    "portable exact-build root -> CIngameInterfaceHandler -> registered window owner path and owner round-trip",
+    "primary and secondary dynamic type",
+    "construct/publish/attach/bind/refresh/detach/destroy lifecycle",
+    "full CharacterID binding field and current-player equality gate",
+    "focus pointer-span layout",
+    "perk-tree top-level row span layout",
+    "final focus/perk bool evaluator entries and ignore-cost distinction"
+  ],
+  "unknown": [
+    "nested PerkGuiTree node layout; the first private observer should use the existing exact CharacterPerk stable-key database for candidate pointers",
+    "human-readable complete block-reason enum behind CanSelectFocusDesc/CanSelectPerkDesc",
+    "whether +0xF8 and the candidate spans are already materialized before the stock lifestyle window has ever been bound in the current frontend lifecycle",
+    "live paused validation of bound open and subsequently detached/closed window states"
+  ],
+  "evidence_regions": [
+    {
+      "name": "construct_publish_owner",
+      "start_rva": "0xA8C020",
+      "end_rva": "0xA8C1D1",
+      "length": "0x1B1",
+      "sha256": "3DF46696C28CAD2E393DD914BFF3D0384C1067F1950378DEBBA64307BF6C6DBE",
+      "meaning": "constructs the exact window, publishes CIngameInterfaceHandler+0x1A8 and registers it"
+    },
+    {
+      "name": "window_destructor",
+      "start_rva": "0x132C570",
+      "end_rva": "0x132C662",
+      "length": "0xF2",
+      "sha256": "33DD074287327866FFF11053340F16ED4116AF81BBE1FBF73537A9876F11E500",
+      "meaning": "container cleanup and base destruction"
+    },
+    {
+      "name": "attach_widget",
+      "start_rva": "0x132C670",
+      "end_rva": "0x132C6D1",
+      "length": "0x61",
+      "sha256": "04CC9367B50081CD87C56B7086BC88C224E21F5D6124839971796A939FB6C201",
+      "meaning": "resolves/stores the real GUI widget and refreshes"
+    },
+    {
+      "name": "detach_widget",
+      "start_rva": "0xF3EB10",
+      "end_rva": "0xF3EB30",
+      "length": "0x20",
+      "sha256": "A1D9A27E71437A79BA4B64352679133F8E47879680D10E6AF0D00EC6EC7FE397",
+      "meaning": "releases and clears +0x78"
+    },
+    {
+      "name": "window_refresh_front",
+      "start_rva": "0x132C970",
+      "end_rva": "0x132CB4C",
+      "length": "0x1DC",
+      "sha256": "C89AA01974C389C5C7E07A782DD627065417E37739841B719E59FE351DD38637",
+      "meaning": "resolves bound full ID and refreshes view state"
+    },
+    {
+      "name": "window_candidate_model_refresh",
+      "start_rva": "0x132CB70",
+      "end_rva": "0x132D197",
+      "length": "0x627",
+      "sha256": "C5457EE4A87F00A1B7B276F66A2B4A4CBA64B722CE3700FF1B9EB9B86B04FA4B",
+      "meaning": "rebuilds perk-tree and focus models"
+    },
+    {
+      "name": "typed_character_id_bind",
+      "start_rva": "0xF48780",
+      "end_rva": "0xF487F9",
+      "length": "0x79",
+      "sha256": "FD8FDD1996CBE3BFD32337FD3B7F00C2A18FCEAEE45414B0256BA67A347B9BE9",
+      "meaning": "decodes payload, writes +0xF8, invokes refresh"
+    },
+    {
+      "name": "typed_character_id_compare",
+      "start_rva": "0xF48800",
+      "end_rva": "0xF48873",
+      "length": "0x73",
+      "sha256": "50AED22D03C3D12074052CD5F35EAB8115DA3952FE0DDEE0F5EF8B0DFB749020",
+      "meaning": "compares typed payload to +0xF8"
+    },
+    {
+      "name": "get_lifestyles_leaf",
+      "start_rva": "0xB755D0",
+      "end_rva": "0xB755D8",
+      "length": "0x8",
+      "sha256": "8A861BED787DC2C96BAE1B792D7AAB642E6FAA9082837AFB0038497AEE50F809",
+      "meaning": "returns +0x100"
+    },
+    {
+      "name": "get_perk_trees_leaf",
+      "start_rva": "0xCCC4D0",
+      "end_rva": "0xCCC4D8",
+      "length": "0x8",
+      "sha256": "FA4B4348FC6F5BE93312D900C6D06F45743568B10D7D81FEA980150DF0603B14",
+      "meaning": "returns +0x118"
+    },
+    {
+      "name": "get_focuses_leaf",
+      "start_rva": "0xCEBE10",
+      "end_rva": "0xCEBE18",
+      "length": "0x8",
+      "sha256": "C09D9193BA2CF3EBBBB4FA1440A6E20765C55BA70C6834D9AC175DD848450E86",
+      "meaning": "returns +0x130"
+    },
+    {
+      "name": "can_select_focus",
+      "start_rva": "0x132D4A0",
+      "end_rva": "0x132D569",
+      "length": "0xC9",
+      "sha256": "9A1E9FB5CB97220FC3E657C8F174C9C390BDE36E5F0CA46BE8B3556A98B08C91",
+      "meaning": "player-ID gate plus final focus evaluator"
+    },
+    {
+      "name": "can_select_perk",
+      "start_rva": "0x132D640",
+      "end_rva": "0x132D6FA",
+      "length": "0xBA",
+      "sha256": "F73EF1DF57A910CB3D287D2A1FB640D3A8D47A6FE494E7369713CC492C23D8EF",
+      "meaning": "player-ID gate plus final perk evaluator"
+    },
+    {
+      "name": "can_select_perk_ignore_cost",
+      "start_rva": "0x132D700",
+      "end_rva": "0x132D7B4",
+      "length": "0xB4",
+      "sha256": "7F69A64668B66E639034E9669BDE062E2EB194A65EA44B3F3C0EC58B749D43E0",
+      "meaning": "player-ID gate plus ignore-cost evaluator"
+    },
+    {
+      "name": "root_to_ingame_interface_handler",
+      "start_rva": "0xAA43C0",
+      "end_rva": "0xAA440A",
+      "length": "0x4A",
+      "sha256": "1741A42D9B2425B66C2738B28128D9DA0CC95E46C37B118E74C646C74D209822",
+      "meaning": "loads the process root, follows +0x10, performs the exact dynamic cast, then reads CIngameInterfaceIdlerGfx+0x88 handler"
+    },
+    {
+      "name": "open_view_registration",
+      "start_rva": "0xA14930",
+      "end_rva": "0xA14990",
+      "length": "0x60",
+      "sha256": "41E2791F89C0D79D491C09F51D65B0E61D09D2CBA6DF3130874818F893C77D20",
+      "meaning": "registers the lifestyle OpenGameViewData callback path"
+    },
+    {
+      "name": "open_view_dispatch",
+      "start_rva": "0xA795A0",
+      "end_rva": "0xA795D8",
+      "length": "0x38",
+      "sha256": "4A13FCF232806A8F4B173CD8983BC0DA3E6521C3B792E6C005FF1AC0AA360F6C",
+      "meaning": "resolves queued view-data target and dispatches through the window bind-data vtable slot"
+    },
+    {
+      "name": "handler_view_slot_lookup",
+      "start_rva": "0xA942C0",
+      "end_rva": "0xA9436B",
+      "length": "0xAB",
+      "sha256": "ADB59D472367F0D288ADB3D3C66169D1E9823A93C7DB6F6BCE77690F3307C124",
+      "meaning": "maps a bounded game-view enum to handler+0x98+enum*8; lifestyle enum 0x22 reaches +0x1A8"
+    },
+    {
+      "name": "handler_cleanup_clear_then_delete",
+      "start_rva": "0xA757D7",
+      "end_rva": "0xA7580F",
+      "length": "0x38",
+      "sha256": "58665043851F7ADA49298D21C908755C7CA48B260937AA865D5426AECFD7FD96",
+      "meaning": "walks handler view slots, clears each owner pointer before virtual deletion"
+    }
+  ]
+}

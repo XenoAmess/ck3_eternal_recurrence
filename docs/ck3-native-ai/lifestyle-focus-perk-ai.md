@@ -402,3 +402,123 @@ current-player lifestyle window owner，再调用 exact enumerator 和 final eva
 
 本包的静态证据不影响 open_kaishek：没有公共 capability、schema、协议、依赖或版本变更。后续接共享 bridge/MCP 时才会
 触发兼容层配对工作包；接线后仍须用一次 bounded paused snapshot 验证无重心、已有重心、已解锁 perk 与候选边界。
+## G2-M4-LIFE3-WINDOW-OWNER-RESEARCH：真实窗口 owner 与最终合法性入口
+
+> 状态：`static-confirmed`。本节只冻结 CK3 1.19.0.6 的原版窗口实例、生命周期与只读调用前置；没有启动 CK3，也没有把静态 fixture 当作 live。机器可复核合同为 `ck3_autonomous_player/native_bridge/research/player_lifestyle_window_owner_v1_abi.json`。
+
+### exact-build 输入
+
+| 输入 | bytes | SHA-256 | 本节用途 |
+|---|---:|---|---|
+| `binaries/ck3.exe` | 95,206,008 | `2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86` | owner、RTTI、容器与 evaluator |
+| `game/gui/window_character_lifestyle.gui` | 43,297 | `C506945C15D57BDDF79179E97739151334B03249544BA6FD8243B1E657669B07` | 窗口上下文、候选列表和 GUI gate |
+| `game/gui/hud.gui` | 215,506 | `1AE3F1371E0A9C43D0B62FC1C1F3A0CDBB0EAB9CF08B85545556CBF3D7386312` | 当前玩家 CharacterID 的打开参数 |
+| `game/gui/shared/cooltip.gui` | 214,381 | `702A1135D22B28C7A73B902A730D906481C5EFB003C6929FE9DCF4350BE74A34` | perk 最终 gate 与原因文本调用 |
+| `game/localization/english/gui/lifestyle_window_l_english.yml` | 5,828 | `99482844675CC535804E4160025E461B528AA85B166CFF4F21DF78E68EC1132E` | `CanSelect*Desc` 原因接口 |
+
+`hud.gui:3613` 调用 `OpenGameViewData('lifestyle', GetPlayer.GetID)`。窗口根在 `window_character_lifestyle.gui:15-16` 取得 `GetCharacter` 和已选 lifestyle；focus 列表来自 `:599`，focus 按钮用 `CanSelectFocus/SelectFocus`（`:639-641`）；perk tree 来自 `:919`，perk 按钮用 `CanSelectPerk`（`:1043-1045`）。`:996` 的 `CanSelectPerkIgnoreCost` 只解释技能树前沿，不能授权花点。
+
+### 从进程根到真实 owner
+
+RTTI type descriptor `module+0x527E7B8` 是 `CCharacterLifestyleWindow`；主 vtable 为 `module+0x4148BE8`，`this+0x10` 的次 vtable 为 `module+0x4148BC0`，对象大小 `0x170`。静态闭合的可达路径是：
+
+```text
+root = *(module + 0x570F7B8)
+idler_base = *(root + 0x10)
+idler_gfx = __RTDynamicCast(idler_base, CIngameInterfaceIdlerGfx)
+handler = *(idler_gfx + 0x88)
+window = *(handler + 0x1A8)
+```
+
+`0xAA43C0..0xAA440A` 覆盖 root、`+0x10`、exact RTTI cast 和 `+0x88` 取 handler；handler 主 vtable 为 `module+0x40AF630`。初始化函数 `0xA8C020..0xA8C1D1` 构造名为 `character_lifestyle_window`、来源为 `gui/window_character_lifestyle.gui` 的对象，在 `0xA8C171..0xA8C18E` 替换 `handler+0x1A8`，并写入 `window+0xD0=handler`。
+
+`handler+0x1A8` 是 lifestyle window owner slot；它与 LIFE2 角色状态树的 `CCharacter+0x1A8` 没有关系。每次完整采样都必须重新解析 root、idler、handler、window，并验证窗口双 vtable 与 `window+0xD0` 回链。不得分配 `0x170`、复制注册对象、手装 vtable、伪造窗口或缓存 native pointer 到下一次采样。
+
+三个 getter 没有动态类型保护，只返回字段地址：
+
+- `GetLifestyles 0xB755D0` → `this+0x100`
+- `GetPerkTrees 0xCCC4D0` → `this+0x118`
+- `GetFocuses 0xCEBE10` → `this+0x130`
+
+所以非空 `this` 并不等于正确窗口；真实 owner、vtable、回链和完整 CharacterID 缺一不可。
+
+### 打开、绑定、刷新与销毁
+
+`OpenGameViewData` 的 lifestyle 注册点 `0xA1494B` 绑定 callback `0xA02CD0`。callback 把 lifestyle 映射成 view enum `0x22`；handler 视图数组基址是 `+0x98`，因此 `0x98 + 0x22*8 = 0x1A8`。队列由 `0xA794D0` 排空，`0xA942C0` 找到 slot，`0xA795D2` 调用窗口 vtable `+0x90`。该 slot 18 是 `0xF48780`：解码 typed full CharacterID，写 `window+0xF8`，再调用 slot 3 `0x132C970` 刷新。
+
+| 阶段 | exact RVA | 已闭合行为 |
+|---|---|---|
+| construct/publish | `0xA8C020` | 双 vtable；`+0xF8=-1`；三个 model 为空；发布到 `handler+0x1A8` |
+| attach | `0x132C670` | 查找 stock widget 写 `+0x78`，存在时初始化 |
+| bind data | `0xF48780` | 解码 full CharacterID，写 `+0xF8`，调用 refresh |
+| compare data | `0xF48800` | 比较 typed payload 与 `+0xF8`，不改绑定 |
+| refresh | `0x132C970` / `0x132CB70` | 重建 lifestyle；`+0x148` 所选 lifestyle 改变时重建 perk rows 和 focus vector |
+| detach | `0xF3EB10` | 释放并清零 `+0x78` widget |
+| destroy | `0x132C570` | 释放三个 model 和窗口 |
+| handler cleanup | `0xA756B0` | 在 `[handler+0x98, handler+0x5B8)` 先清 owner slot 再 virtual delete |
+
+GUI reload 也会替换 `handler+0x1A8` 并析构旧窗口，因此任一上轮指针都不得复用。反过来，`+0x78` 只是 stock widget 的挂接诊断：三个 getter 与两个最终 evaluator 都不解引用它。窗口关闭或 detach 后 `+0x78=null` 本身不构成只读 observer 的拒绝理由。
+
+顶层 model 布局：
+
+| model | data | capacity | count | allocator | element |
+|---|---:|---:|---:|---:|---|
+| lifestyles | `+0x100` | `+0x108` | `+0x10C` | `+0x110` | 8-byte definition pointer |
+| perk trees | `+0x118` | `+0x120` | `+0x124` | `+0x128` | `0x78`-byte GUI row |
+| focuses | `+0x130` | `+0x138` | `+0x13C` | `+0x140` | 8-byte `FocusType*` |
+
+perk row `+0x68` 与 definition `+0x5E0` 的整数 identity 在刷新中参与对照。嵌套 perk-node row 仍是 unknown；首版私有 observer 应复用 exact-build `CharacterPerk` stable-key database 和 pointer membership，不依赖该嵌套布局。
+
+### 最终合法性与最小只读 seam
+
+`window+0xF8` 是完整 CharacterID。下列入口都先要求它等于 `*(module+0x4FE7EE0)` 当前玩家 ID，不等就在构造 evaluator 前返回 false：
+
+- `CanSelectFocus 0x132D4A0` → `*(module+0x4323C10) = module+0x25DF570`
+- `CanSelectPerk 0x132D640` → `*(module+0x4323A80) = module+0x25DFAF0`
+- `CanSelectPerkIgnoreCost 0x132D700` → `module+0x25DFEA0`，仅作解释
+
+这三个入口会使用原版 allocator/evaluator，只允许在 application-main 调用。私有 observer 的最小顺序为：
+
+1. 在 paused transaction 取得 snapshot revision/date 与当前玩家完整 ID；重新解析完整 root → idler → handler → window。
+2. 验证 handler vtable、窗口双 vtable、`window+0xD0=handler`、`window+0xF8` 等于当前玩家，并通过 Character storage 与 `CCharacter+0x18` 做 generation round-trip。
+3. 验证所有 span 的 signed count 非负、`count<=capacity`，非空时 data 和完整区间可读。focus 参数只能来自本次 focus span；perk 参数只能来自 exact stable-key database 且通过 pointer membership。
+4. 调用最终 `CanSelectFocus` / `CanSelectPerk`；`IgnoreCost` 只提供前沿解释。
+5. 不推进 paused frame，重新解析完整路径并第二次采样。owner、vtable、ID、revision/date、span、候选和 gate 全部稳定才发布 semantic key。
+
+`+0xF8` 不匹配时返回 `lifestyle_window_unbound_or_stale`；span 无效或未物化使用独立的 container/materialization unavailable reason。只有完整稳定扫描得到零候选才是 `known-empty`。observer 不得主动调用 binder、refresh、open 或 close 来制造可观测状态。
+
+```mermaid
+flowchart TD
+    R["*(module+0x570F7B8)"] --> I["RTTI cast to CIngameInterfaceIdlerGfx"]
+    I --> H["fresh handler = *(idler+0x88)"]
+    H --> W["fresh window = *(handler+0x1A8)"]
+    W --> V{"handler/window vtables<br/>and +0xD0 round-trip valid?"}
+    V -->|no| U["typed unavailable"]
+    V -->|yes| C{"+0xF8 == played full ID<br/>and storage round-trip?"}
+    C -->|no| S["lifestyle_window_unbound_or_stale"]
+    C -->|yes| F["validated FocusType span"]
+    C -->|yes| P["exact CharacterPerk stable-key DB"]
+    F --> CF["CanSelectFocus final evaluator"]
+    P --> CP["CanSelectPerk final evaluator"]
+    P --> CI["IgnoreCost: explanation only"]
+    CF --> D["same-frame full reacquire/sample"]
+    CP --> D
+    CI --> D
+    D -->|identical| PUB["publish known-empty or stable-key candidates"]
+    D -->|drift| U
+    PT["nested PerkGuiTree nodes"] -. unknown .-> P
+    RE["complete CanSelect*Desc reasons"] -. unknown .-> PUB
+```
+
+### resolved、unknown 与下一施工入口
+
+本轮 resolved：portable exact-build root → `CIngameInterfaceHandler` → 注册窗口路径、handler/window vtable、owner 回链、open/bind/refresh/detach/destroy 生命周期、`+0xF8` 完整 ID gate、focus span、perk-tree 顶层 row span、最终 focus/perk evaluator，以及 ignore-cost 非授权边界。
+
+真实 unknown：
+
+- 构造时 `+0xF8=-1`，只有 bind-data `0xF48780` 写入；静态证据不能证明从未打开 lifestyle view 时已经绑定当前玩家。
+- `+0x118` 的嵌套 perk-node row 尚未完整冻结；首版用 exact stable-key database 绕开。
+- `CanSelectFocusDesc/CanSelectPerkDesc` 的完整人类可读原因映射尚未闭合；最终布尔 gate 已闭合。
+- 尚无 paused live artifact，需要验证窗口已打开及随后关闭/detach 时的 `+0xF8`、候选容器与同帧双采样稳定性。
+
+下一最小施工是专属 `player_lifestyle_window_candidates_v1` 私有 observer：复用现有 root/current-player/snapshot 环境，只读返回 focus/perk stable key、`can_select` 和 `can_select_ignore_cost`。它不得调用 `0xF48780`、`0x132C970`、`SelectFocus` 或 `SelectPerk`，也不得扩公共 MCP/schema。static/fixture GREEN 后，仍需在唯一 CK3 轮次中取得 bounded paused artifact，才能从 `static-ready` 升为 `production-live primitive`。
