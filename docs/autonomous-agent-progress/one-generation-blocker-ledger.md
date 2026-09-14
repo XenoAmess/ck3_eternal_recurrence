@@ -1714,3 +1714,22 @@ one recommendation, one action and the bounded postwar/cold-restore checks.
 - This does not yet continue gameplay as the heir. The next active blocker is
   the runner integration and one bounded natural transition artifact; no public
   MCP/native surface changed.
+
+## G2-M3 real-successor continuation static-ready
+
+The planner service now refreshes the persisted succession expectation on each
+eligible paused living frame and reconciles it on the first eligible
+`played_character_changed` successor frame. After the predecessor's normal
+death settlement completes, the strategy selects
+`continue-as-reconciled-successor` only when both the successor identity and
+predecessor-title distribution match. The driver keeps the live campaign and
+process, sends no CK3 command, clears character-scoped caches, and binds a new
+one-life run to CK3's already-played successor.
+
+A missing or mismatched reconciliation blocks this path and cannot fall back to
+immutable-seed replay. Focused contract/service/strategy/driver tests pass
+`10/10` in normal and optimized Python, including the existing distinct seed
+replay regression. Status remains `in_progress / static-ready`; one bounded
+exact-build natural-death artifact is the remaining integration gate. No native
+ABI, MCP tool, game file, dependency, launch configuration or load order
+changed.

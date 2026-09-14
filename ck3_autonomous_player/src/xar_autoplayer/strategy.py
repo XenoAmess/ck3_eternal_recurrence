@@ -57,6 +57,9 @@ from .bridge.event_window_context_contract import (
     normalize_current_event_window_context_v1,
 )
 from .bridge.settlement_contract import ONE_LIFE_SETTLEMENT_CAPABILITY
+from .bridge.succession_transition_contract import (
+    CONTINUE_AS_RECONCILED_SUCCESSOR_STEP,
+)
 from .bridge.war_contract import (
     MAX_ROUTE_CONTACT_HOSTILE_IDS,
     RAISE_TROOPS_STEP,
@@ -4969,19 +4972,80 @@ def choose_one_life_turn(
             and completed_terminal.get("settlement_status")
             in {None, "complete"}
         ):
+            succession_reconciliation = (
+                snapshot.get("succession_reconciliation")
+                if isinstance(snapshot, dict)
+                else None
+            )
+            successor_continuation_ready = bool(
+                terminal_reason == "played_character_changed"
+                and isinstance(succession_reconciliation, dict)
+                and succession_reconciliation.get("status") == "available"
+                and succession_reconciliation.get("verdict") == "matched"
+                and succession_reconciliation.get("successor_match") is True
+                and succession_reconciliation.get(
+                    "title_distribution_match"
+                )
+                is True
+                and CONTINUE_AS_RECONCILED_SUCCESSOR_STEP
+                in available_steps
+            )
+            successor_reconciliation_red = bool(
+                terminal_reason == "played_character_changed"
+                and isinstance(succession_reconciliation, dict)
+                and succession_reconciliation.get("status") == "available"
+                and succession_reconciliation.get("verdict") != "matched"
+            )
+            successor_reconciliation_pending = bool(
+                terminal_reason == "played_character_changed"
+                and not successor_continuation_ready
+                and not successor_reconciliation_red
+            )
             return {
                 "policy": "one-life-turn-v1",
-                "phase": "terminal_complete",
-                "selected_step": (
-                    "start-next-episode"
-                    if "start-next-episode" in available_steps
-                    else None
+                "phase": (
+                    "terminal_succession_reconciliation_red"
+                    if successor_reconciliation_red
+                    else (
+                        "terminal_successor_reconciliation_pending"
+                        if successor_reconciliation_pending
+                        else "terminal_complete"
+                    )
                 ),
-                "reason": "this one-life episode is already settled",
+                "selected_step": (
+                    CONTINUE_AS_RECONCILED_SUCCESSOR_STEP
+                    if successor_continuation_ready
+                    else (
+                        "start-next-episode"
+                        if (
+                            terminal_reason != "played_character_changed"
+                            and "start-next-episode" in available_steps
+                        )
+                        else None
+                    )
+                ),
+                "reason": (
+                    "the completed life can continue on CK3's reconciled "
+                    "played successor"
+                    if successor_continuation_ready
+                    else (
+                        "the observed successor or inherited predecessor "
+                        "estate disagrees with the retained expectation"
+                        if successor_reconciliation_red
+                        else (
+                            "the played successor still requires a matched "
+                            "predecessor-estate reconciliation"
+                            if successor_reconciliation_pending
+                            else "this one-life episode is already settled"
+                        )
+                    )
+                ),
                 "terminal_reason": terminal_reason,
                 "episode_character_id": episode_character_id,
                 "score": completed_terminal.get("score"),
-                "continue_as_heir_after_death": False,
+                "continue_as_heir_after_death": (
+                    successor_continuation_ready
+                ),
                 "heir_gameplay_actions": 0,
             }
         if (

@@ -103,11 +103,12 @@
         "immutable-seed cross-episode loop",
         "per-held-title first-heir partition production-live primitive",
         "succession expectation and predecessor-estate reconciliation contract static-ready (normal/optimized 5/5)",
-        "driver-state expectation retention and same-PID transition reconciliation fixture-ready (normal/optimized 10/10 focused tests)"
+        "driver-state expectation retention and same-PID transition reconciliation fixture-ready (normal/optimized 10/10 focused tests)",
+        "automatic planner capture/reconciliation and matched real-successor continuation static-ready (normal/optimized 10/10 focused tests)"
       ],
       "planner_consumer": "survival, inheritance and post-succession goal selection",
       "visible_outcome": "predict title distribution before a natural death, reconcile actual inheritance and continue as the real successor",
-      "open_blocker": "The current per-title engine projection, persisted expectation and pure same-PID reconciliation are static/fixture-ready. The production runner must capture a current expectation before natural death, query the first paused successor frame, reconcile it and continue as that real successor. Legitimacy and deeper faction state remain later survival-policy inputs."
+      "open_blocker": "The production path now captures a current expectation, reconciles the first eligible paused played-successor frame, settles the predecessor, and starts a new one-life identity on the real successor without a CK3 command, restart or immutable-seed replay. One bounded exact-build natural-death artifact remains required. Legitimacy and deeper faction state remain later survival-policy inputs."
     },
     {
       "id": "G2-M4",

@@ -6100,10 +6100,13 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
         self.assertFalse(result["result"]["continue_as_heir_after_death"])
         completed_plan = service.plan_turn()["plan"]
         completed_turn = service.auto_turn()
-        self.assertEqual(completed_plan["phase"], "terminal_complete")
+        self.assertEqual(
+            completed_plan["phase"],
+            "terminal_successor_reconciliation_pending",
+        )
         self.assertIsNone(completed_plan["selected_step"])
         self.assertEqual(completed_plan["heir_gameplay_actions"], 0)
-        self.assertEqual(completed_turn["status"], "terminal")
+        self.assertEqual(completed_turn["status"], "blocked")
 
     def test_split_army_half_expands_and_returns_queue_only_receipt(self) -> None:
         endpoint = FakeEndpoint()

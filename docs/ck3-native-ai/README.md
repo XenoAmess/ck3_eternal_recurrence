@@ -657,4 +657,4 @@ flowchart TD
   white-peace comparison before any single recommendation/action. No CK3 was
   launched for this package.
 
-- [static-ready, integration/live pending] [Succession transition v1](succession-transition-v1.md) freezes the current per-title first-heir projection and reconciles only the predecessor estate after a real played-character transition; driver retention and successor continuation remain pending.
+- [static-ready, production live pending] [Succession transition v1](succession-transition-v1.md) freezes the current per-title first-heir projection, reconciles only the predecessor estate after a real played-character transition, and starts a new one-life identity on the matched CK3 successor without a command or restart.

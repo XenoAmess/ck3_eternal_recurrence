@@ -6,19 +6,26 @@ from pathlib import Path
 import sys
 import tempfile
 import unittest
+from unittest import mock
 
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(PROJECT_ROOT / "src"))
 
 from xar_autoplayer.bridge.succession_transition_contract import (
+    CONTINUE_AS_RECONCILED_SUCCESSOR_STEP,
     SUCCESSION_EXPECTATION_V1_SCHEMA,
     SUCCESSION_RECONCILIATION_V1_SCHEMA,
     freeze_succession_expectation_v1,
     normalize_succession_expectation_v1,
     reconcile_succession_transition_v1,
 )
+from xar_autoplayer.bridge.campaign_root_context_contract import (
+    QUERY_CAMPAIGN_ROOT_CONTEXT_V1_STEP,
+)
 from xar_autoplayer.bridge.native_driver import NativeHeadlessGameplayDriver
+from xar_autoplayer.bridge.service import GameplayBridgeService
+from xar_autoplayer.strategy import choose_one_life_turn
 
 
 class _FakeEndpoint:
@@ -286,6 +293,38 @@ class SuccessionTransitionContractTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             reconcile_succession_transition_v1(expectation, active, self.post)
 
+    def test_mismatched_reconciliation_blocks_seed_replay_fallback(self) -> None:
+        plan = choose_one_life_turn(
+            [
+                {
+                    "command": "death-terminal",
+                    "ok": True,
+                    "result": {
+                        "terminal": True,
+                        "settlement_status": "complete",
+                        "score": 123,
+                    },
+                }
+            ],
+            snapshot={
+                "one_life_terminal_reason": "played_character_changed",
+                "episode_character_id": 100,
+                "succession_reconciliation": {
+                    "status": "available",
+                    "verdict": "unexpected_successor",
+                    "successor_match": False,
+                    "title_distribution_match": True,
+                },
+            },
+            action_steps=["start-next-episode"],
+        )
+
+        self.assertEqual(
+            plan["phase"], "terminal_succession_reconciliation_red"
+        )
+        self.assertIsNone(plan["selected_step"])
+        self.assertFalse(plan["continue_as_heir_after_death"])
+
     def test_persisted_expectation_normalizer_rejects_identity_drift(self) -> None:
         expectation = freeze_succession_expectation_v1(
             self.pre,
@@ -327,9 +366,23 @@ class SuccessionTransitionContractTests(unittest.TestCase):
                 ],
                 primary_heir=200,
             )
-            retained = driver.retain_succession_expectation_v1(
-                pre_bundle, expected_revision=int(before["revision"])
+            service = GameplayBridgeService(driver)
+            with mock.patch.object(
+                service, "query_turn_bundle_v1", return_value=pre_bundle
+            ) as query, mock.patch.object(
+                service,
+                "capabilities",
+                return_value={
+                    "action_steps": [QUERY_CAMPAIGN_ROOT_CONTEXT_V1_STEP],
+                    "bridge_capabilities": [],
+                },
+            ):
+                service.plan_turn()
+                prepared = driver.take_internal_semantic_snapshot()
+            query.assert_called_once_with(
+                expected_revision=int(before["revision"])
             )
+            retained = prepared["succession_expectation"]
             state_path = state_dir / "native-session" / "driver-state.json"
             persisted = json.loads(state_path.read_text(encoding="utf-8"))
             self.assertEqual(persisted["succession_expectation"], retained)
@@ -370,16 +423,79 @@ class SuccessionTransitionContractTests(unittest.TestCase):
                 ],
                 primary_heir=400,
             )
-            reconciliation = (
-                restored.reconcile_retained_succession_transition_v1(
-                    post_bundle,
-                    expected_revision=int(transition["revision"]),
+            restored_service = GameplayBridgeService(restored)
+            with mock.patch.object(
+                restored_service,
+                "query_turn_bundle_v1",
+                return_value=post_bundle,
+            ) as query, mock.patch.object(
+                restored_service,
+                "capabilities",
+                return_value={
+                    "action_steps": [QUERY_CAMPAIGN_ROOT_CONTEXT_V1_STEP],
+                    "bridge_capabilities": [],
+                },
+            ):
+                restored_service.plan_turn()
+                reconciled_snapshot = (
+                    restored.take_internal_semantic_snapshot()
                 )
+            query.assert_called_once_with(
+                expected_revision=int(transition["revision"])
             )
+            reconciliation = reconciled_snapshot["succession_reconciliation"]
             self.assertEqual(reconciliation["verdict"], "matched")
             self.assertEqual(
                 restored.succession_transition_state_v1()["reconciliation"],
                 reconciliation,
+            )
+
+            predecessor_run_id = transition["episode_run_id"]
+            restored._record_command(
+                "death-terminal",
+                ok=True,
+                result={
+                    "terminal": True,
+                    "settlement_status": "complete",
+                    "score": 123,
+                    "one_life_settlement": {"final_score": 123},
+                    "cross_run_strategy": {
+                        "recorded_episode": {
+                            "run_id": predecessor_run_id,
+                            "score": 123,
+                        }
+                    },
+                },
+            )
+            self.assertIn(
+                CONTINUE_AS_RECONCILED_SUCCESSOR_STEP,
+                restored.capabilities()["action_steps"],
+            )
+            plan = restored_service.plan_turn()["plan"]
+            self.assertEqual(
+                plan["selected_step"],
+                CONTINUE_AS_RECONCILED_SUCCESSOR_STEP,
+            )
+            turn = restored_service.auto_turn()
+            self.assertEqual(turn["status"], "executed")
+            continuation = turn["result"]
+            self.assertEqual(
+                continuation["lifecycle_intent"], "natural_succession"
+            )
+            self.assertTrue(continuation["continue_as_heir_after_death"])
+            self.assertFalse(continuation["ck3_command_submitted"])
+            self.assertFalse(continuation["process_restarted"])
+            self.assertEqual(continuation["predecessor_character_id"], 100)
+            self.assertEqual(continuation["successor_character_id"], 200)
+            self.assertNotEqual(
+                continuation["episode_run_id"], predecessor_run_id
+            )
+            continued_snapshot = restored.take_snapshot()
+            self.assertFalse(continued_snapshot["one_life_terminal"])
+            self.assertEqual(continued_snapshot["episode_character_id"], 200)
+            self.assertEqual(
+                continued_snapshot["native_command_history"][0]["command"],
+                CONTINUE_AS_RECONCILED_SUCCESSOR_STEP,
             )
             restored.close()
 

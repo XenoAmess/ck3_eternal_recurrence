@@ -2,7 +2,7 @@
 
 ## Status and purpose
 
-- **[fixture-ready, production integration/live pending]** The pure contract freezes the
+- **[static-ready, production live pending]** The contract and planner integration freeze the
   current engine-calculated first heir of every title held by the living
   episode ruler, then reconciles that bounded predecessor-title set after CK3
   changes the played character.
@@ -47,7 +47,8 @@ flowchart LR
   D --> E[paused successor turn bundle]
   E --> F[predecessor-estate reconciliation]
   F --> G{successor and title result}
-  G -->|match| H[eligible for continuation integration]
+  G -->|match| H[finish predecessor settlement]
+  H --> J[bind a new episode to CK3's played successor]
   G -->|mismatch| I[typed reconciliation RED]
 ```
 
@@ -58,10 +59,21 @@ hypothetical law changes, or the actual holder of a title absent from the new
 player's holdings. These require additional native observations only when they
 block a concrete survival decision.
 
-The contract does not yet change the one-life terminal policy. The production
-runner must call the driver retention/reconciliation path around a real natural
-transition and then expose a distinct continuation path that does not confuse
-inheritance with immutable-seed replay.
+The planner service now refreshes the retained expectation on each eligible
+paused living frame. On `played_character_changed`, it queries the first
+eligible paused successor frame and reconciles the predecessor estate before
+planning another action. It first completes the predecessor's ordinary
+`death-terminal` settlement, then exposes
+`continue-as-reconciled-successor` only for a fully matched reconciliation.
+That continuation sends no CK3 command and performs no process restart. It
+keeps the current campaign and creates a fresh one-life episode identity bound
+to CK3's already-played successor.
+
+An unavailable or mismatched reconciliation blocks the continuation. The
+strategy does not fall back to `start-next-episode` for a
+`played_character_changed` terminal, because immutable-seed replay would hide
+the real succession result. Immutable-seed replay remains available for the
+separate dead/missing-character terminal paths.
 
 ## Focused verification
 
@@ -87,9 +99,10 @@ the runner must query a fresh turn bundle instead of reusing an earlier
 projection. A natural `played_character_changed` transition keeps the old
 expectation long enough to compare the first paused successor frame.
 
-The focused contract/driver suite passes `7/7` and the three existing player
-rebind, daemon hot-restore and compact persistence regressions pass `3/3`, all
-under normal and optimized Python. The first attempted regression command used
-the repository root and therefore could not resolve sibling test helpers; the
-correct existing test working directory passed immediately. That invocation
-error changed no product state and is not a CK3 RED.
+The focused contract, service, strategy and driver suite passes `10/10` under
+normal and optimized Python. It covers automatic capture/reconciliation,
+same-PID recovery, matched successor continuation, zero CK3 command/restart,
+and fail-closed mismatch handling. The existing immutable-seed replay path is
+also retained for its distinct terminal case. Production readiness still
+requires one bounded natural-death artifact proving the same sequence against
+the exact build.

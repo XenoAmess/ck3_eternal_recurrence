@@ -14,6 +14,9 @@ SUCCESSION_EXPECTATION_V1_SCHEMA: Final = (
 SUCCESSION_RECONCILIATION_V1_SCHEMA: Final = (
     "xar.ck3.succession-reconciliation/v1"
 )
+CONTINUE_AS_RECONCILED_SUCCESSOR_STEP: Final = (
+    "continue-as-reconciled-successor"
+)
 _EXPECTATION_FIELDS: Final = {
     "schema",
     "status",

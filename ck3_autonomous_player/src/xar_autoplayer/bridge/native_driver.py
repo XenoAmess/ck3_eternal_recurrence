@@ -135,6 +135,7 @@ from .campaign_root_context_contract import (
     normalize_campaign_root_context_v1,
 )
 from .succession_transition_contract import (
+    CONTINUE_AS_RECONCILED_SUCCESSOR_STEP,
     freeze_succession_expectation_v1,
     normalize_succession_expectation_v1,
     reconcile_succession_transition_v1,
@@ -1668,8 +1669,40 @@ class NativeHeadlessGameplayDriver:
             episode_seed = copy.deepcopy(self._episode_seed)
             completed_terminal = self._completed_terminal_result_locked()
             episode_transition = copy.deepcopy(self._episode_transition)
+            succession_reconciliation = copy.deepcopy(
+                self._succession_reconciliation
+            )
+        successor_continuation_ready = bool(
+            terminal_reason == "played_character_changed"
+            and completed_terminal is not None
+            and isinstance(succession_reconciliation, dict)
+            and succession_reconciliation.get("status") == "available"
+            and succession_reconciliation.get("verdict") == "matched"
+            and succession_reconciliation.get("successor_match") is True
+            and succession_reconciliation.get("title_distribution_match")
+            is True
+            and isinstance(
+                succession_reconciliation.get("successor_binding"), dict
+            )
+            and all(
+                succession_reconciliation["successor_binding"].get(key)
+                == current_snapshot.get(key)
+                for key in (
+                    "snapshot_id",
+                    "revision",
+                    "native_revision",
+                    "date_raw",
+                )
+            )
+        )
+        if successor_continuation_ready:
+            action_steps.add(CONTINUE_AS_RECONCILED_SUCCESSOR_STEP)
+            composite_action_steps.append(
+                CONTINUE_AS_RECONCILED_SUCCESSOR_STEP
+            )
         if (
             isinstance(terminal_reason, str)
+            and terminal_reason != "played_character_changed"
             and completed_terminal is not None
             and self.state_dir is not None
             and self._episode_seed_matches_file(episode_seed)
@@ -5162,6 +5195,13 @@ class NativeHeadlessGameplayDriver:
             and step in capabilities.get("composite_action_steps", [])
         ):
             return self._execute_start_next_episode(
+                expected_revision=expected_revision
+            )
+        if (
+            step == CONTINUE_AS_RECONCILED_SUCCESSOR_STEP
+            and step in capabilities.get("composite_action_steps", [])
+        ):
+            return self._execute_continue_as_reconciled_successor(
                 expected_revision=expected_revision
             )
         if route_contact_advance is not None:
@@ -13894,6 +13934,129 @@ class NativeHeadlessGameplayDriver:
             "paused": resumed.get("paused"),
             "snapshot_id": resumed["snapshot_id"],
             "revision": resumed["revision"],
+        }
+
+    def _execute_continue_as_reconciled_successor(
+        self,
+        *,
+        expected_revision: int | None,
+    ) -> dict[str, object]:
+        """Start a new life episode on CK3's already-played real successor."""
+
+        snapshot = self.take_snapshot()
+        revision = int(snapshot["revision"])
+        if expected_revision is not None:
+            _validate_revision(expected_revision, "expected_revision")
+            if expected_revision != revision:
+                raise PreSubmissionRevisionMismatchError(
+                    "successor continuation crossed the current revision"
+                )
+        played = snapshot.get("played_character")
+        if (
+            snapshot.get("paused") is not True
+            or snapshot.get("map_ready") is not True
+            or snapshot.get("one_life_terminal_reason")
+            != "played_character_changed"
+            or not isinstance(played, dict)
+            or played.get("alive") is not True
+        ):
+            raise BridgeUnavailableError(
+                "successor continuation requires the paused played successor"
+            )
+        actual_successor_id = played.get("character_id")
+        if (
+            isinstance(actual_successor_id, bool)
+            or not isinstance(actual_successor_id, int)
+            or actual_successor_id <= 0
+        ):
+            raise BridgeUnavailableError(
+                "successor continuation lacks a valid played CharacterID"
+            )
+        with self._driver_state_lock:
+            completed_terminal = self._completed_terminal_result_locked()
+            reconciliation = copy.deepcopy(self._succession_reconciliation)
+            predecessor_id = self._episode_character_id
+            predecessor_run_id = self._episode_run_id
+            if (
+                completed_terminal is None
+                or not isinstance(reconciliation, dict)
+                or reconciliation.get("status") != "available"
+                or reconciliation.get("verdict") != "matched"
+                or reconciliation.get("successor_match") is not True
+                or reconciliation.get("title_distribution_match") is not True
+                or reconciliation.get("predecessor_character_id")
+                != predecessor_id
+                or reconciliation.get("actual_successor_character_id")
+                != actual_successor_id
+                or not isinstance(
+                    reconciliation.get("successor_binding"), dict
+                )
+                or any(
+                    reconciliation["successor_binding"].get(key)
+                    != snapshot.get(key)
+                    for key in (
+                        "snapshot_id",
+                        "revision",
+                        "native_revision",
+                        "date_raw",
+                    )
+                )
+            ):
+                raise BridgeUnavailableError(
+                    "successor continuation requires a matched retained reconciliation"
+                )
+            successor_run_id = (
+                f"native-{actual_successor_id}-{uuid.uuid4().hex[:12]}"
+            )
+            # The just-completed life has already been written to the cross-run
+            # strategy by death-terminal. The natural successor starts a new
+            # life history in the same live campaign and current CK3 process.
+            self._command_history = []
+            self._last_checkpoint = None
+            self._rollback_war_failures = []
+            self._rollback_war_failures_migration_required = False
+            self._managed_restore_transaction = None
+            self._episode_character_id = actual_successor_id
+            self._episode_run_id = successor_run_id
+            self._driver_state_restored = False
+            self._driver_state_restore_kind = "natural_succession"
+            self._episode_binding_state = "active_natural_successor"
+            self._succession_expectation = None
+            self._succession_reconciliation = None
+            self._declarable_wars = []
+            self._declaration_query_sequence = None
+            self._declaration_query_binding = None
+            self._army_strength_query = None
+            self._combat_simulation_inputs_query = None
+            self._combat_simulation_inputs_v3_query = None
+            self._battle_control_snapshot_v1_query = None
+            self._active_combat_retreat_v1_token = None
+            self._war_entry_assessments_query = None
+            self._war_termination_options = {}
+            self._war_termination_terms = {}
+            self._war_termination_exit_terms = {}
+            self._arrange_marriage_choices = []
+            self._arrange_marriage_query_sequence = None
+            self._driver_state_dirty = True
+        return {
+            "step": CONTINUE_AS_RECONCILED_SUCCESSOR_STEP,
+            "accepted": True,
+            "status": "continued",
+            "backend_id": "native-headless",
+            "source": "native-played-character-transition",
+            "lifecycle_intent": "natural_succession",
+            "predecessor_character_id": predecessor_id,
+            "successor_character_id": actual_successor_id,
+            "source_episode_run_id": predecessor_run_id,
+            "episode_run_id": successor_run_id,
+            "reconciliation": reconciliation,
+            "continue_as_heir_after_death": True,
+            "heir_gameplay_actions": 0,
+            "ck3_command_submitted": False,
+            "process_restarted": False,
+            "date_raw": snapshot.get("date_raw"),
+            "snapshot_id": snapshot.get("snapshot_id"),
+            "revision": revision,
         }
 
     def _execute_native_death_terminal(

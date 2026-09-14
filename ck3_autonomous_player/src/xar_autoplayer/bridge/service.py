@@ -378,6 +378,96 @@ class GameplayBridgeService:
             "private_observers": {},
         }
 
+    def _prepare_succession_transition_v1(
+        self,
+        snapshot: dict[str, object],
+        available_steps: set[str],
+    ) -> dict[str, object]:
+        """Freeze or reconcile the private same-campaign succession ledger."""
+
+        retain = getattr(
+            self.driver, "retain_succession_expectation_v1", None
+        )
+        reconcile = getattr(
+            self.driver, "reconcile_retained_succession_transition_v1", None
+        )
+        if not (
+            callable(retain)
+            and callable(reconcile)
+            and snapshot.get("paused") is True
+            and snapshot.get("map_ready") is True
+            and QUERY_CAMPAIGN_ROOT_CONTEXT_V1_STEP in available_steps
+        ):
+            return snapshot
+        revision = snapshot.get("revision")
+        if isinstance(revision, bool) or not isinstance(revision, int):
+            return snapshot
+        terminal_reason = snapshot.get("one_life_terminal_reason")
+        expectation = snapshot.get("succession_expectation")
+        reconciliation = snapshot.get("succession_reconciliation")
+        if terminal_reason == "played_character_changed":
+            successor_binding = (
+                reconciliation.get("successor_binding")
+                if isinstance(reconciliation, dict)
+                else None
+            )
+            reconciliation_is_current = bool(
+                isinstance(successor_binding, dict)
+                and all(
+                    successor_binding.get(key) == snapshot.get(key)
+                    for key in (
+                        "snapshot_id",
+                        "revision",
+                        "native_revision",
+                        "date_raw",
+                    )
+                )
+            )
+            if isinstance(expectation, dict) and not reconciliation_is_current:
+                turn_bundle = self.query_turn_bundle_v1(
+                    expected_revision=revision
+                )
+                reconcile(turn_bundle, expected_revision=revision)
+                refreshed = getattr(
+                    self.driver, "take_internal_semantic_snapshot", None
+                )
+                return refreshed() if callable(refreshed) else self.snapshot()
+            return snapshot
+        if terminal_reason is not None:
+            return snapshot
+        if (
+            snapshot.get("active_event") is not None
+            or snapshot.get("pending_character_interaction") is not None
+        ):
+            return snapshot
+        binding = (
+            expectation.get("binding")
+            if isinstance(expectation, dict)
+            else None
+        )
+        current_binding = {
+            key: snapshot.get(key)
+            for key in (
+                "snapshot_id",
+                "revision",
+                "native_revision",
+                "date_raw",
+            )
+        }
+        if not isinstance(binding, dict) or any(
+            binding.get(key) != value
+            for key, value in current_binding.items()
+        ):
+            turn_bundle = self.query_turn_bundle_v1(
+                expected_revision=revision
+            )
+            retain(turn_bundle, expected_revision=revision)
+            refreshed = getattr(
+                self.driver, "take_internal_semantic_snapshot", None
+            )
+            return refreshed() if callable(refreshed) else self.snapshot()
+        return snapshot
+
     def plan_turn(self) -> dict[str, object]:
         internal_snapshot = getattr(
             self.driver, "take_internal_semantic_snapshot", None
@@ -390,6 +480,11 @@ class GameplayBridgeService:
         )
         snapshot = (
             internal_snapshot() if use_internal_view else self.snapshot()
+        )
+        capabilities = self.capabilities()
+        available_steps = action_step_set(capabilities)
+        snapshot = self._prepare_succession_transition_v1(
+            snapshot, available_steps
         )
         capabilities = self.capabilities()
         available_steps = action_step_set(capabilities)
