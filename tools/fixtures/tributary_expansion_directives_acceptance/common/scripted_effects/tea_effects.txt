@@ -198,6 +198,26 @@ tea_setup_and_execute_effect = {
 					add = scope:actor.var:tea_accept_subsidy
 				}
 			}
+			if = {
+				limit = { ted_expansion_directive_context_is_valid_trigger = yes }
+				debug_log = "TEA: OBSERVED accept_context_valid"
+			}
+			else = { debug_log = "TEA: TEST FAIL accept_context_invalid" }
+			scope:recipient = { add_character_flag = ted_directed_expansion_authorized }
+			if = {
+				limit = {
+					scope:recipient = {
+						can_declare_war = {
+							defender = scope:secondary_recipient
+							casus_belli = ted_directed_county_expansion_cb
+							target_titles = { scope:target }
+						}
+					}
+				}
+				debug_log = "TEA: OBSERVED accept_can_declare_war"
+			}
+			else = { debug_log = "TEA: TEST FAIL accept_cannot_declare_war" }
+			scope:recipient = { remove_character_flag = ted_directed_expansion_authorized }
 			add_prestige = -150
 			ted_accept_expansion_directive_effect = { SUBSIDIZED = yes }
 			random_character_war = {
