@@ -102,6 +102,16 @@ def _exact_build_proof(
     raw = material._mapping(capabilities)
     advertised = raw.get("bridge_capabilities")
     steps = raw.get("action_steps")
+    # The cold source is deliberately event-free, so concrete query/select
+    # steps are not present until the first event becomes active. Their generic
+    # capabilities remain required and every live call is checked after the
+    # event appears.
+    result["checks"]["action_steps"] = (
+        isinstance(steps, list)
+        and "save-checkpoint" in steps
+        and "resume-map" in steps
+        and "pause-map" in steps
+    )
     result["checks"].update(
         {
             "timeline_capabilities": isinstance(advertised, list)

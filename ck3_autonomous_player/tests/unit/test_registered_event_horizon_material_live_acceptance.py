@@ -92,8 +92,6 @@ def test_exact_build_gate_requires_timeline_capabilities() -> None:
         },
         "bridge_capabilities": capabilities,
         "action_steps": [
-            HARNESS.QUERY_CURRENT_EVENT_WINDOW_CONTEXT_V1_STEP,
-            "select-event-option-1",
             "save-checkpoint",
             "resume-map",
             "pause-map",

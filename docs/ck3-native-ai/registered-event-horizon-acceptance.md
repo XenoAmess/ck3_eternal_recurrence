@@ -25,6 +25,7 @@ GREEN 必须同时证明：
 
 - exact-build、DLL、注入器、checkpoint 与 driver-state 哈希一致；
 - source 是预期玩家、日期、暂停且无活动事件的地图帧；
+- 初始无事件帧要求通用 query/select capability 与当下可执行的 resume/pause/save steps；具体 query/select step 由事件出现后的真实调用验证；
 - 前置事件按声明顺序出现，均由 production registry 推荐并关闭；
 - 目标事件在 exact target date 出现，registry 发布 campaign utility；
 - 目标选项只提交一次，event instance 前进，material comparator 观测到真实变化；
