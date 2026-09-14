@@ -186,7 +186,7 @@ bool ExecuteCampaignRootContextMailboxQueryV1(
             game::ReadCampaignRootContextResultV1::available &&
         query->result.status ==
             game::CampaignRootContextStatusV1::available &&
-        query->result.readiness.ready;
+        query->result.readiness.same_frame_ready;
     const bool typed_unavailable =
         query->read_result ==
             game::ReadCampaignRootContextResultV1::unavailable &&

@@ -10,6 +10,7 @@ namespace {
 
 xar::game::Snapshot g_snapshot{};
 bool g_reader_available = true;
+bool g_reader_ready = true;
 std::uint32_t g_reader_calls = 0;
 
 void PrimeMailbox(
@@ -87,8 +88,9 @@ bool TestDirectInvocationRejected() {
          g_reader_calls == 0;
 }
 
-bool TestTypedCompletion(bool available) {
+bool TestTypedCompletion(bool available, bool ready) {
   g_reader_available = available;
+  g_reader_ready = ready;
   xar::ck3_11906::MainThreadQueryMailboxV1 mailbox{};
   xar::ck3_11906::CampaignRootContextMailboxContextV1 query{};
   PrimeMailbox(mailbox, query, available ? 10 : 11);
@@ -109,7 +111,9 @@ bool TestTypedCompletion(bool available) {
                xar::game::ReadCampaignRootContextResultV1::available &&
            query.result.status ==
                xar::game::CampaignRootContextStatusV1::available &&
-           query.result.readiness.ready &&
+           query.result.readiness.same_frame_ready &&
+           query.result.readiness.ready == ready &&
+           query.result.readiness.selected_game_rule_tokens_ready == ready &&
            query.result.unavailable_reason.empty();
   }
   return query.read_result ==
@@ -155,7 +159,9 @@ game::ReadCampaignRootContextResultV1 ReadCampaignRootContextV1(
   output.player_character_alive = frame.played_character_alive;
   output.top_liege_character_id = frame.played_character_id;
   output.independent = true;
-  output.readiness.ready = true;
+  output.readiness.same_frame_ready = true;
+  output.readiness.selected_game_rule_tokens_ready = g_reader_ready;
+  output.readiness.ready = g_reader_ready;
   return game::ReadCampaignRootContextResultV1::available;
 }
 
@@ -176,7 +182,8 @@ int main() {
     std::cerr << "campaign-root direct invocation fixture failed\n";
     return 1;
   }
-  if (!TestTypedCompletion(true) || !TestTypedCompletion(false)) {
+  if (!TestTypedCompletion(true, true) || !TestTypedCompletion(true, false) ||
+      !TestTypedCompletion(false, false)) {
     std::cerr << "campaign-root typed completion fixture failed\n";
     return 1;
   }
