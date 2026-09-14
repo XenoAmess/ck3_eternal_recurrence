@@ -87,6 +87,15 @@ inline constexpr std::uintptr_t kCultureSourceCanBeFascinationRvaV1 =
 CultureInnovationSourceNativeAccessV1
 DirectCultureInnovationSourceNativeAccessV1() noexcept;
 
+// Resolves the exact generation-bearing CharacterID through the same frozen
+// component store used by the culture reader. The returned pointer is valid
+// only for the caller's current application-main execution and must never be
+// published or retained after that execution.
+bool ResolveExactBuildCultureInnovationPlayedCharacterV1(
+    CultureInnovationSourceAdapterContextV1 &context,
+    std::int32_t player_character_id,
+    std::uintptr_t &played_character) noexcept;
+
 CultureInnovationSourceAdapterFailureV1
 ReadExactBuildCultureInnovationSourceV1(
     CultureInnovationSourceAdapterContextV1 &context,

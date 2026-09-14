@@ -430,6 +430,25 @@ void TestDirectBindingsAreConcrete() {
   assert(direct.can_be_fascination != nullptr);
 }
 
+void TestResolvesPlayedCharacterThroughFrozenStore() {
+  Fixture fixture(0, 0, 0);
+  auto context = fixture.Context();
+  std::uintptr_t played_character = 0;
+  assert(ck3::ResolveExactBuildCultureInnovationPlayedCharacterV1(
+      context, 0, played_character));
+  assert(played_character == Fixture::kPlayedCharacter);
+  assert(context.last_failure ==
+         ck3::CultureInnovationSourceAdapterFailureV1::none);
+
+  played_character = Fixture::kPlayedCharacter;
+  assert(!ck3::ResolveExactBuildCultureInnovationPlayedCharacterV1(
+      context, 1, played_character));
+  assert(played_character == 0);
+  assert(context.last_failure ==
+         ck3::CultureInnovationSourceAdapterFailureV1::
+             player_identity_round_trip_failed);
+}
+
 } // namespace
 
 int main() {
@@ -437,6 +456,7 @@ int main() {
   TestLegalZeroAndAbsentAreObserved();
   TestTypedFailuresAndCallback();
   TestDirectBindingsAreConcrete();
-  std::cout << "culture_innovation_source_adapter_v1_test: 4/4 GREEN\n";
+  TestResolvesPlayedCharacterThroughFrozenStore();
+  std::cout << "culture_innovation_source_adapter_v1_test: 5/5 GREEN\n";
   return 0;
 }

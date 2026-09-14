@@ -48,7 +48,7 @@ bool ValidSnapshotId(std::string_view value) noexcept {
     if (!((character >= 'a' && character <= 'z') ||
           (character >= 'A' && character <= 'Z') ||
           (character >= '0' && character <= '9') || character == '_' ||
-          character == '-' || character == '.')) {
+          character == '-' || character == '.' || character == ':')) {
       return false;
     }
   }

@@ -1,0 +1,65 @@
+{
+  "schema_version": 1,
+  "candidate_id": "g2-culture-innovation-snapshot-v1-async-private",
+  "candidate_status": "static-ready",
+  "game_build": "1.19.0.6",
+  "executable_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+  "stack": {
+    "culture2_private_core": "a84ce64e164e9ccef79eb1e7221bb22f487cdea1",
+    "culture3_source_adapter": "3e6f9141b88b5978cf6b2f8670f1a3d5edbe10b8",
+    "culture4_async_glue_branch": "wp-g2-m6-culture4-async-glue-20260915"
+  },
+  "integration": {
+    "baseline": "f70e210d7688c91a987e1a1497ecf214d592511b",
+    "branch": "int-g2-culture2-4-20260915",
+    "culture2_rebased": "a0011628ad65e51cd2855c8e2b5f3d8282fb927e",
+    "culture3_rebased": "5d61346cfd17ad48c82742808d501bc7c667c80b"
+  },
+  "build_option": "XAR_CK3_ENABLE_G2_CULTURE_INNOVATION_ASYNC_PRIVATE_PROBE_V1",
+  "main_thread_mailbox": {
+    "fixed_slot_index": 40,
+    "fixed_slot": "permitted_executor_quadragintary",
+    "reserved_slot_indices": [36, 37, 38, 39]
+  },
+  "default_enabled": false,
+  "read_only": true,
+  "terminal_only_publication": true,
+  "frame_binding": [
+    "snapshot_id",
+    "public_revision",
+    "native_revision",
+    "proof_epoch",
+    "date_raw",
+    "player_character_id"
+  ],
+  "public_mcp_schema_changed": false,
+  "public_capability_advertised": false,
+  "raw_pointers_published": false,
+  "ck3_started": false,
+  "acceptance": {
+    "normal_msbuild_w4_wx": "GREEN",
+    "optimized_msbuild_w4_wx": "GREEN",
+    "default_off_release_link": "GREEN",
+    "normal_candidate_dll": {
+      "bytes": 8244224,
+      "sha256": "15C61D8243E312A424739E363C6BDE42BC92D3A6B10EDD0D89DDDA618A55485B"
+    },
+    "normal_focused_test": {
+      "bytes": 1115136,
+      "sha256": "B893EDED8C881B4A1FBA9F6129A3A7C88EEC428E2FF7F6DB88FA4F7D4A694DA2"
+    },
+    "optimized_candidate_dll": {
+      "bytes": 3090432,
+      "sha256": "B2A8A906EF57EEC0F16E49C58C9E7C2CE1ECA37AB11DD479C71CF79EB4222171"
+    },
+    "optimized_focused_test": {
+      "bytes": 128512,
+      "sha256": "3E42C923E556C6AC3CD53C14E4744501B9D88C40C0BB18C4B2C0AAB3B406485A"
+    },
+    "default_off_release_dll": {
+      "bytes": 2875904,
+      "sha256": "273BF70EB489DD5A2329C2AE08673D4E0BE460C43EF9402D903D71AD2AFBCD96"
+    },
+    "paused_live_snapshot": "pending-separate-ck3-owner"
+  }
+}

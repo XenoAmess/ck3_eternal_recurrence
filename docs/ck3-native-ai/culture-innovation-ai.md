@@ -217,6 +217,16 @@ P0 验收必须满足：同一 paused revision 内文化 identity、文化领袖
 
 当前 readiness 是 `static-ready for private P0 reader`，不是 `production-live primitive`，更不是文化玩法 complete。
 
+### CULTURE4 集成合同
+
+私有异步 reader 使用 application-main mailbox 固定槽位 40，即
+`permitted_executor_quadragintary`。槽位 34 属于 faction gift mitigation，
+槽位 35 属于 domain construction；36–39 已预留，文化集成不得覆盖这些
+身份。该槽位只允许 `ExecuteCultureInnovationMailboxQueryV1`，并在 install
+空值判定、environment-to-mailbox copy 和提交 allowlist 中保持同一身份。
+这是 private static-ready 接线，不改变公共 MCP schema；paused-live 验收仍由
+独占 CK3 负责人另行完成。
+
 ## Focused 验证
 
 本工作包只运行与该研究切片相称的验证：

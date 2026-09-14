@@ -21,6 +21,9 @@
 #if defined(XAR_CK3_ENABLE_G2_COUNCIL_COMPOSITION_STEWARD_CANDIDATES_PRIVATE_PROBE_V1)
 #include "xar_bridge/council_composition_steward_candidates_private_probe_v1.hpp"
 #endif
+#if defined(XAR_CK3_ENABLE_G2_CULTURE_INNOVATION_ASYNC_PRIVATE_PROBE_V1)
+#include "xar_bridge/culture_innovation_snapshot_v1_mailbox.hpp"
+#endif
 #include "xar_bridge/coat_of_arms_designer_probe_v1.hpp"
 #include "xar_bridge/frontend_gui_route_v1.hpp"
 #include "xar_bridge/cold_map_vfs_observer_v1.hpp"
@@ -237,6 +240,12 @@ static xar::ck3_11906::MainThreadQueryMailboxV1
 static xar::bridge::MarriageSharedGlueStateV1 g_marriage_shared_glue_v1{};
 static xar::bridge::MarriageCandidateInternalRouteStateV1
     g_marriage_candidate_internal_route_v1{};
+#if defined(XAR_CK3_ENABLE_G2_CULTURE_INNOVATION_ASYNC_PRIVATE_PROBE_V1)
+static xar::ck3_11906::CultureInnovationAsyncPrivateProbeV1
+    g_culture_innovation_async_private_probe_v1{};
+static xar::ck3_11906::Bindings
+    g_culture_innovation_async_private_bindings_v1{};
+#endif
 static xar::ck3_11906::CoatOfArmsDesignerProbeHookStateV1
     g_coat_of_arms_designer_probe_hook_v1{};
 static xar::ck3_11906::BattleTerminalJournalDetourStateV1
@@ -2490,6 +2499,16 @@ std::string HeartbeatFrame(std::uint64_t sequence) {
   result += ",\"last_wait_result\":";
   result += Number(
       g_council_composition_steward_candidates_private_probe_last_wait_v1);
+#endif
+#if defined(XAR_CK3_ENABLE_G2_CULTURE_INNOVATION_ASYNC_PRIVATE_PROBE_V1)
+  result += "},\"g2_culture_innovation_snapshot_v1_async_private\":";
+  auto culture_probe_json =
+      xar::ck3_11906::SerializeCultureInnovationAsyncPrivateProbeV1(
+          g_culture_innovation_async_private_probe_v1);
+  if (!culture_probe_json.empty() && culture_probe_json.back() == '}') {
+    culture_probe_json.pop_back();
+  }
+  result += culture_probe_json;
 #endif
 #if defined(XAR_CK3_ENABLE_G2_DOMAIN_CONSTRUCTION_RUNTIME_OBSERVER_V1)
   result += "},\"g2_domain_construction_native_runtime_callsite_observer_v1\":";
@@ -6508,6 +6527,10 @@ public:
     // Marriage owns fixed slot 38.
     environment.permitted_executor_octotrigintary =
         &xar::bridge::ExecuteMarriageCandidateInternalRouteV1;
+#if defined(XAR_CK3_ENABLE_G2_CULTURE_INNOVATION_ASYNC_PRIVATE_PROBE_V1)
+    environment.permitted_executor_quadragintary =
+        &xar::ck3_11906::ExecuteCultureInnovationMailboxQueryV1;
+#endif
     environment.permitted_frontend_executor =
         &xar::ck3_11906::ExecuteFrontendGuiRouteMailboxV1;
     installed_ = xar::ck3_11906::InstallMainThreadQueryMailboxV1(
@@ -6949,6 +6972,15 @@ void RunConnectedSession(
 #if defined(XAR_CK3_ENABLE_G2_COUNCIL_COMPOSITION_STEWARD_CANDIDATES_PRIVATE_PROBE_V1)
       DriveCouncilCompositionStewardCandidatesPrivateProbeV1(
           previous_snapshot, state_revision);
+#endif
+#if defined(XAR_CK3_ENABLE_G2_CULTURE_INNOVATION_ASYNC_PRIVATE_PROBE_V1)
+      xar::ck3_11906::DriveCultureInnovationAsyncPrivateProbeV1(
+          g_culture_innovation_async_private_probe_v1,
+          g_main_thread_query_mailbox_v1,
+          g_culture_innovation_async_private_bindings_v1,
+          reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr)),
+          previous_snapshot.has_value() ? &*previous_snapshot : nullptr,
+          state_revision, state_revision);
 #endif
       ++sequence;
       connected = xar::bridge::WriteFrame(pipe, HeartbeatFrame(sequence));
@@ -13152,6 +13184,12 @@ DWORD WINAPI WorkerMain(void *) noexcept {
       exact_ck3_build);
   WarEntryApplicationMainMailboxWorkerLifetime mailbox_lifetime(*game);
   mailbox_lifetime.MaybeInstallFrontend();
+#if defined(XAR_CK3_ENABLE_G2_CULTURE_INNOVATION_ASYNC_PRIVATE_PROBE_V1)
+  if (exact_ck3_build) {
+    g_culture_innovation_async_private_bindings_v1 =
+        xar::ck3_11906::BindCurrentProcess(true);
+  }
+#endif
 #if defined(XAR_CK3_ENABLE_G2_MILITARY_PREPARATION_SUMMARY_PRIVATE_PROBE_V1)
   if (exact_ck3_build &&
       !InitializeMilitaryPreparationSummaryPrivateProbeV1(

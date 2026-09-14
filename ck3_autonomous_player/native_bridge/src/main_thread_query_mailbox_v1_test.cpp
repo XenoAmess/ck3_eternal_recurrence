@@ -366,6 +366,12 @@ bool ExecuteNovemvigintary(
   return Execute(opaque, stamp);
 }
 
+bool ExecuteQuadragintary(
+    void *opaque,
+    const xar::ck3_11906::MainThreadExecutionStampV1 &stamp) noexcept {
+  return Execute(opaque, stamp);
+}
+
 bool ExecuteFrontend(
     void *opaque,
     const xar::ck3_11906::MainThreadExecutionStampV1 &stamp) noexcept {
@@ -1269,9 +1275,8 @@ bool TestMailboxStateMachine() {
     return false;
   }
 
-  // Production exposes twenty-nine exact typed identities, never a generic
-  // callback slot. Every admitted identity executes normally; any other
-  // callback is rejected before it can enter the queue.
+  // Exercise the original twenty-nine identities and fixed slot 40. Slots
+  // 36-39 stay reserved and are deliberately not populated here.
   auto typed_environment =
       runtime.Environment(fake_module_base, &iat, &FakePeekMessage);
   typed_environment.permitted_executor = &Execute;
@@ -1309,6 +1314,8 @@ bool TestMailboxStateMachine() {
       &ExecuteOctovigintary;
   typed_environment.permitted_executor_novemvigintary =
       &ExecuteNovemvigintary;
+  typed_environment.permitted_executor_quadragintary =
+      &ExecuteQuadragintary;
   g_failure_stage = "typed_executor_registry";
   if (!InstallMainThreadQueryMailboxV1(mailbox, typed_environment) ||
       ObserveMainThreadPumpAndDrainV1(
@@ -1326,7 +1333,7 @@ bool TestMailboxStateMachine() {
           MainThreadQuerySubmitResultV1::invalid_request) {
     return false;
   }
-  constexpr std::array<MainThreadQueryExecutorV1, 29> typed_executors{
+  constexpr std::array<MainThreadQueryExecutorV1, 30> typed_executors{
       &Execute, &ExecuteSecondary, &ExecuteTertiary, &ExecuteQuaternary,
       &ExecuteQuinary, &ExecuteSenary, &ExecuteSeptenary, &ExecuteOctonary,
       &ExecuteNonary, &ExecuteDenary, &ExecuteUndenary,
@@ -1336,7 +1343,8 @@ bool TestMailboxStateMachine() {
       &ExecuteUnvigintary, &ExecuteDuovigintary, &ExecuteTrivigintary,
       &ExecuteQuattuorvigintary, &ExecuteQuinquevigintary,
       &ExecuteSexvigintary, &ExecuteSeptemvigintary,
-      &ExecuteOctovigintary, &ExecuteNovemvigintary};
+      &ExecuteOctovigintary, &ExecuteNovemvigintary,
+      &ExecuteQuadragintary};
   for (const auto executor : typed_executors) {
     MainThreadQueryTicketV1 typed_ticket{};
     if (TrySubmitMainThreadQueryV1(mailbox, executor, &typed_context,
@@ -1547,7 +1555,7 @@ bool TestSourceContract(int argc, char **argv) {
     std::fprintf(stderr, "mailbox compile-time identity contract failed\n");
     return false;
   }
-  constexpr std::array<std::string_view, 78> source_tokens{
+  constexpr std::array<std::string_view, 79> source_tokens{
       "InterlockedCompareExchangePointer",
       "kPeekMessageWIatSlotRva",
       "kSdlWindowsPumpFirstPeekReturnRva",
@@ -1622,6 +1630,7 @@ bool TestSourceContract(int argc, char **argv) {
       "mailbox.permitted_executor_sextrigintary",
       "mailbox.permitted_executor_septentrigintary",
       "mailbox.permitted_executor_octotrigintary",
+      "mailbox.permitted_executor_quadragintary",
       "Process-lifetime pin",
       "mailbox.failure_flags.load(std::memory_order_acquire) != 0",
       "PostThreadMessageW(",

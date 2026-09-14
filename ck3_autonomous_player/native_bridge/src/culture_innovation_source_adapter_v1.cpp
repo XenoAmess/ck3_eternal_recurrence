@@ -326,6 +326,34 @@ DirectCultureInnovationSourceNativeAccessV1() noexcept {
   return output;
 }
 
+bool ResolveExactBuildCultureInnovationPlayedCharacterV1(
+    CultureInnovationSourceAdapterContextV1 &context,
+    std::int32_t player_character_id,
+    std::uintptr_t &played_character) noexcept {
+  played_character = 0;
+  context.last_failure = Failure::none;
+  if (context.module_base == 0 || player_character_id < 0 ||
+      context.native.read_memory == nullptr) {
+    context.last_failure = Failure::invalid_context;
+    return false;
+  }
+  if (!ResolveComponent(context, kCultureSourceCharacterStoreSlotV1,
+                        player_character_id,
+                        kCultureSourceCharacterIdentityOffsetV1,
+                        played_character)) {
+    context.last_failure = Failure::player_identity_round_trip_failed;
+    return false;
+  }
+  std::uintptr_t fallback = 0;
+  if (!ReadModulePointer(context, kCultureSourceCharacterFallbackSlotV1,
+                         fallback) || played_character == fallback) {
+    played_character = 0;
+    context.last_failure = Failure::player_identity_round_trip_failed;
+    return false;
+  }
+  return true;
+}
+
 CultureInnovationSourceAdapterFailureV1
 ReadExactBuildCultureInnovationSourceV1(
     CultureInnovationSourceAdapterContextV1 &context,
