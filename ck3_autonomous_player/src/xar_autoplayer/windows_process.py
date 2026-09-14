@@ -19,6 +19,16 @@ def _property_value(properties: Any, name: str) -> Any:
     return properties(name).Value
 
 
+def _execute_wmi_method(service: Any, *arguments: Any) -> Any:
+    """Call the pywin32 spelling exposed by either dynamic dispatch mode."""
+
+    try:
+        execute = service.ExecMethod_
+    except AttributeError:
+        execute = service.ExecMethod
+    return execute(*arguments)
+
+
 def create_process_via_windows_management(
     command_line: str, current_directory: str | None = None
 ) -> int | None:
@@ -47,7 +57,9 @@ def create_process_via_windows_management(
         parameters.Properties_("CommandLine").Value = command_line
         if current_directory is not None:
             parameters.Properties_("CurrentDirectory").Value = current_directory
-        output = service.ExecMethod_("Win32_Process", "Create", parameters)
+        output = _execute_wmi_method(
+            service, "Win32_Process", "Create", parameters
+        )
         return_value = int(_property_value(output.Properties_, "ReturnValue"))
         if return_value != 0:
             raise WindowsProcessCreationError(return_value)
