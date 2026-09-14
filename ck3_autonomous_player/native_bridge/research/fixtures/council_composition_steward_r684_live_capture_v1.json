@@ -1,0 +1,193 @@
+{
+  "schema_version": 1,
+  "kind": "g2_m4_council_composition_steward_r684_live_capture_contract",
+  "status": "private-live-capture-green-production-reader-pending",
+  "exact_build": {
+    "product_version": "1.19.0.6",
+    "executable_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+    "candidate_source_commit": "bb5911cedc7af70c43312d16a88c75ec50aac4f6",
+    "observer_seam": {
+      "producer_call_rva": "0x105820A",
+      "post_return_rva": "0x105820F",
+      "producer_rva": "0x293BD00",
+      "row_stride_bytes": 8
+    }
+  },
+  "source_artifact": {
+    "stem": "g2-m4-r684-council-composition-observer-live-bb5911c",
+    "candidate_manifest_sha256": "AEFA4B431F28AD23BA4B1C3D52444464DCF38FAC38922A962888963CE74E8191",
+    "report_sha256": "9215C1FED4EF164C5F4272250BB412E047DE1223A03BA93C9A71A3CEB58F9B6F",
+    "capture_sha256": "F19AA907292EA53EB3D2F69658F59A871D34B5960200FA5F0DE68FEC096F3CAB",
+    "raw_rows_sha256": "328BB46BAA038A3021E0A94C802C0B8C3AF675B8B27C1A07E9244FD67B4EA50E",
+    "post_trigger_screenshot_sha256": "14BFA16A57A99F2A700307DE1CD145678FC54C1C214E6D85828066D0F07E0458"
+  },
+  "paused_binding": {
+    "snapshot_id": "native:3",
+    "public_revision": 4,
+    "native_revision": 3,
+    "date_raw": 53178264,
+    "paused": true,
+    "episode_character_id": 29829,
+    "owner_character_id": 29829,
+    "active_task_id": 7159,
+    "position_key": "councillor_steward",
+    "ui_thread_id": 180348,
+    "callback_thread_id": 180348
+  },
+  "observer": {
+    "private_build": true,
+    "read_only": true,
+    "advertised": false,
+    "installed": true,
+    "failure_flags": 0,
+    "capture_status": "captured",
+    "call_count": 1,
+    "accepted_count": 1,
+    "rejected_count": 0,
+    "ignored_after_capture_count": 0,
+    "capture_failure_flags": 0,
+    "consistent": true,
+    "complete": true
+  },
+  "candidate_vector": {
+    "capacity": 64,
+    "count": 11,
+    "captured_row_count": 11,
+    "duplicate_character_id_count": 0,
+    "raw_size": 88,
+    "raw_sha256": "328BB46BAA038A3021E0A94C802C0B8C3AF675B8B27C1A07E9244FD67B4EA50E",
+    "rows": [
+      {
+        "native_collection_ordinal": 0,
+        "character_id": 30784,
+        "raw_row_bytes_hex": "000001E438AE75C0",
+        "raw_row_sha256": "284E64569F00285305E2D92567892DA2FBF11F66B5B433B594BE4A3E5B569B29"
+      },
+      {
+        "native_collection_ordinal": 1,
+        "character_id": 33437,
+        "raw_row_bytes_hex": "000001E438C13E70",
+        "raw_row_sha256": "17BDBDF6530EC2EC6952AF0D37755A4FCF72EDB725CBD80E8A62A4BE16C9FD02"
+      },
+      {
+        "native_collection_ordinal": 2,
+        "character_id": 33888,
+        "raw_row_bytes_hex": "000001E438C46FF0",
+        "raw_row_sha256": "E66D9E004309871EDD98392CCA2D983EDCA78048DB455F5B8142DE1D2E7B125D"
+      },
+      {
+        "native_collection_ordinal": 3,
+        "character_id": 35637,
+        "raw_row_bytes_hex": "000001E438D0D210",
+        "raw_row_sha256": "AA5A1613365243651210CF9E9ACDB2C69A930B674CFE1648087C4C5CC68EC013"
+      },
+      {
+        "native_collection_ordinal": 4,
+        "character_id": 57582,
+        "raw_row_bytes_hex": "000001E43AB9F0B0",
+        "raw_row_sha256": "F9C16BB61E9329A45092DA90D219C6EAC7FB7323F02C2D296E90EF9F8212B7F9"
+      },
+      {
+        "native_collection_ordinal": 5,
+        "character_id": 33435,
+        "raw_row_bytes_hex": "000001E438C13AD0",
+        "raw_row_sha256": "2C7209148D8B77DCB8C4944A1906095CAB9D1C92E70A85B0CDD4D46DBFBDD341"
+      },
+      {
+        "native_collection_ordinal": 6,
+        "character_id": 34333,
+        "raw_row_bytes_hex": "000001E438C79680",
+        "raw_row_sha256": "254741B52B15E983D7996180046F984ED4A11DEC53DF597480D8C2E5BE020855"
+      },
+      {
+        "native_collection_ordinal": 7,
+        "character_id": 34867,
+        "raw_row_bytes_hex": "000001E438CB5E70",
+        "raw_row_sha256": "1A171A4D4B1149F1774C6F28B417FE34662CEA42037689B61D7AE9FCCD689F88"
+      },
+      {
+        "native_collection_ordinal": 8,
+        "character_id": 32440,
+        "raw_row_bytes_hex": "000001E438BA2F50",
+        "raw_row_sha256": "B3C74135E5FC897E33E1D918B6C8058A9C8B75C83BA79DFD329BB4BAA5B52A42"
+      },
+      {
+        "native_collection_ordinal": 9,
+        "character_id": 43706,
+        "raw_row_bytes_hex": "000001E4391533C0",
+        "raw_row_sha256": "5960BE16AFDA9B7109F4BB847794CF3457ECF9073CAD97EA63A6F43F18E9D99B"
+      },
+      {
+        "native_collection_ordinal": 10,
+        "character_id": 33433,
+        "raw_row_bytes_hex": "000001E438C13730",
+        "raw_row_sha256": "E019D19C9CD32BB5EEBD77B7EB63152E278E8F086BECF98DA01DA54E81512090"
+      }
+    ]
+  },
+  "non_mutation": {
+    "date_advance": false,
+    "save_mutation": false,
+    "council_action_submit": false,
+    "source_save_unchanged": true,
+    "target_save_unchanged": true,
+    "cleanup_proven": true,
+    "final_ck3_inventory_empty": true
+  },
+  "proves": [
+    "one exact-build paused councillor_steward GUI refresh reached the frozen post-return seam",
+    "the producer returned one bounded nonempty 11-row vector with eight-byte entries",
+    "all 11 rows yielded unique full CharacterID values in the same callback frame",
+    "owner, active task, position, date, revision and candidate identities were copied on the UI thread"
+  ],
+  "does_not_prove": [
+    "empty candidate list behavior",
+    "candidate vectors for any position other than councillor_steward",
+    "main skill, powerful-vassal pressure, opinion, guest status or action legality fields",
+    "native AI composition utility, scheduling, tie-break or selection reason",
+    "a callable production reader, public MCP capability, planner or semantic action"
+  ],
+  "next_implementation_contract": {
+    "stage": "private-native-readonly-steward-candidate-provider-before-publication",
+    "coverage_position_keys": [
+      "councillor_steward"
+    ],
+    "execution": "application-main paused mailbox transaction",
+    "inputs": [
+      "campaign-root actual player full CharacterID and resolved CCharacter pointer",
+      "same-frame active councillor_steward task full identity and resolved task pointer",
+      "fixed producer mode R8B=1"
+    ],
+    "required_output_fields": [
+      "snapshot_id",
+      "public_revision",
+      "native_revision",
+      "date_raw",
+      "paused",
+      "owner_character_id",
+      "position_key",
+      "candidate_collection_complete",
+      "candidate_character_ids",
+      "native_collection_ordinals"
+    ],
+    "required_gates": [
+      "exact executable identity",
+      "main-thread ownership",
+      "paused before and after",
+      "owner, active task, position, date and revisions unchanged",
+      "bounded output span",
+      "full-generation candidate round-trip",
+      "no duplicate candidate CharacterID",
+      "temporary producer output released in the same transaction"
+    ],
+    "forbidden_output_fields": [
+      "native pointers",
+      "raw row bytes",
+      "invented legality reasons",
+      "invented native AI scores"
+    ],
+    "public_capability_ready": false,
+    "planner_ready": false,
+    "unique_next_entry": "same-frame steward producer invocation and temporary-vector release inside the existing main-thread query mailbox"
+  }
+}

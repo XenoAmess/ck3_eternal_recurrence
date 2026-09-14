@@ -2,7 +2,7 @@
 
 ## 状态与范围
 
-- **[static-confirmed / capture seam closed / implementation pending]** 本专题冻结常规内阁席位的人选集合入口、职位与候选合法性、解职/调任/交换门、主要能力，以及强力封臣席位压力。exact-build 候选 producer、唯一 GUI 列表调用点、临时输出布局与对象寿命已经闭合；建议的 `council-composition-candidates-v1` 仍未实现，也没有 production paused artifact。
+- **[private-live capture GREEN / production reader pending]** 本专题冻结常规内阁席位的人选集合入口、职位与候选合法性、解职/调任/交换门、主要能力，以及强力封臣席位压力。R684 已在 exact-build、paused、同线程条件下捕获 `councillor_steward` 的 11 行候选向量；按需调用的生产 reader、公开 MCP、planner 与任命动作仍未实现。
 - **[unknown]** exact-build EXE 明确保留 `ai_council.cpp` 子系统及 council AI 开关，但没有在脚本、define 或当前已闭合的 reflection/GUI 表面暴露“候选综合分数”、各输入权重、重排 cadence 或最终选择理由。本文不把职位主能力排序、`COUNCIL_TASK_SWITCH_SCORE` 或 GUI 顺序冒充原版人选 AI 公式。
 - 本专题以现有 [内阁观测与发展任务](council-and-development.md) 的 active position/incumbent 结果为输入，增加人选与动作预检，不改变 `campaign-root-context-v1`。
 - 宫廷司祭仅发布 position identity、最终候选合法性与不透明拒绝原因。信仰、教义、教义条目、宗教热情、改宗和宗教改革不进入合同或我方策略。
@@ -18,6 +18,23 @@
 | 本专题 G2 集成基线 | `1957b6d0ce133f76d56552b76a3ec96f7c740135` |
 
 下述 RVA 均以这份 EXE 的模块基址为零点。EXE、build、council position、government 或 scripted trigger 数据变化后，入口与语义必须重新定位。
+
+## R684 private-live capture GREEN
+
+R684 在候选构建 `bb5911cedc7af70c43312d16a88c75ec50aac4f6` 上只执行了一次 bounded paused 观察。候选窗目标为 `councillor_steward`；捕获点是冻结的 `0x105820A` producer 调用之后、GUI row 构造之前的 `0x105820F`。完整证据位于外部 artifact `g2-m4-r684-council-composition-observer-live-bb5911c`，仓内冻结投影为 `ck3_autonomous_player/native_bridge/research/fixtures/council_composition_steward_r684_live_capture_v1.json`。
+
+| 证据 | R684 结果 |
+|---|---|
+| exact build | CK3 `1.19.0.6`；EXE SHA-256 `2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86` |
+| 同帧绑定 | snapshot `native:3`；public/native revision `4/3`；`date_raw=53178264`；paused |
+| owner / task / position | `29829` / `7159` / `councillor_steward`；owner 与 episode character 相同 |
+| observer | installed；private；read-only；未 advertised；call/accepted=`1/1`；两类 failure flags 均为 `0` |
+| vector | capacity `64`；count/captured `11/11`；11 个唯一 full CharacterID；每行 8 字节；callback thread 等于 UI thread |
+| 非变更边界 | 未推进日期、未提交 council action、源与目标存档 SHA 未变、退出后 CK3 inventory 为空 |
+| 原始行 | 88 bytes；SHA-256 `328BB46BAA038A3021E0A94C802C0B8C3AF675B8B27C1A07E9244FD67B4EA50E` |
+| capture/report | SHA-256 `F19AA907292EA53EB3D2F69658F59A871D34B5960200FA5F0DE68FEC096F3CAB` / `9215C1FED4EF164C5F4272250BB412E047DE1223A03BA93C9A71A3CEB58F9B6F` |
+
+这项证据关闭的是**一个非空总管候选向量的 row stride、full-generation identity 与同帧寿命**。原始 8 字节行是瞬时 native pointer 表示，只作为 stride/逐行 identity 解析证据保留，绝不能进入公开查询。它不证明空列表、其它席位、GUI 最终排序、主能力、强力封臣压力、意见、guest 状态、候选合法性或原版 AI 总分。R684 也不是可按需调用的生产 reader；不得把 private capture 写成 public capability 或 planner-ready。
 
 ## 已闭合的原版规则
 
@@ -155,8 +172,9 @@ flowchart TD
     VP -->|yes| AF{"auto_fill active?"}
     AF -->|yes| AO["engine-managed position / player selection unavailable"]
     AF -->|no| PL["0x105820A native candidate producer"]
-    PL --> COPY["0x105820F copy full IDs before temp free"]
-    COPY --> VC{"compiled valid_character?"}
+    PL --> COPY["0x105820F same-frame copy before temp free"]
+    COPY --> LIVE["R684: steward / 11 unique full IDs / 8-byte rows"]
+    LIVE --> VC{"compiled valid_character?"}
     VC -->|no| REJ["omit or typed ineligible reason"]
     VC -->|yes| MODE{"candidate/current-seat relation"}
     MODE -->|guest| RG["recruit_then_assign prerequisite"]
@@ -180,110 +198,56 @@ flowchart TD
 
 虚线分支只描述已确认存在、但仍未闭合的原版内部决策。它不阻塞我方基于公开输入实施一套可解释的最小策略。
 
-## `council-composition-candidates-v1` 最小只读合同
+## 最小下一阶段只读查询合同（尚未发布）
 
-建议 MCP tool 为 `ck3_query_council_composition_candidates_v1`，schema 为 `xar.ck3.council-composition-candidates/v1`。query 必须与现有 campaign-root 的 actual player、public/native revision、date、pause state 和 snapshot identity 同帧绑定。
+R684 解锁的是**总管候选 identity provider**，不是原先草案中的整套内阁决策查询。下一工作包先实现 private `council_composition_steward_candidates_reader_v1`：在现有 application-main mailbox 的一个 paused transaction 内，从 campaign-root 取得 actual player 与 active `councillor_steward` task，使用 `R8B=1` 调用冻结的 producer，同步复制 full CharacterID，并在同一 transaction 内释放临时输出。调用前后必须复核 owner、task、position、date、public/native revision 与 paused 状态。
+
+该 provider 的最小结果投影如下；这是实现合同，不是已发布 schema：
 
 ```json
 {
-  "schema": "xar.ck3.council-composition-candidates/v1",
   "status": "available",
   "unavailable_reason": null,
   "snapshot": {
-    "snapshot_id": "...",
-    "public_revision": 0,
-    "native_revision": 0,
-    "date_raw": 0,
+    "snapshot_id": "native:3",
+    "public_revision": 4,
+    "native_revision": 3,
+    "date_raw": 53178264,
     "paused": true
   },
-  "owner_character_id": 0,
-  "coverage": {
-    "position_coverage_key": "standard_landed_non_nomadic_core_v1",
-    "candidate_collection_source": "potential_councillor_refresh_producer",
-    "candidate_collection_complete": true
-  },
-  "opinion_constants": {
-    "powerful_vassal_without_seat": -40,
-    "on_council": 10,
-    "fired_from_council": -20,
-    "fired_from_council_years": 10
-  },
-  "positions": [
+  "owner_character_id": 29829,
+  "position_key": "councillor_steward",
+  "candidate_collection_complete": true,
+  "candidates": [
     {
-      "position_key": "councillor_steward",
-      "position_valid": true,
-      "main_skill_key": "stewardship",
-      "player_selectable": true,
-      "auto_fill_active": false,
-      "incumbent_character_id": 0,
-      "incumbent_main_skill": 0,
-      "can_fire_incumbent": true,
-      "can_reassign_position": true,
-      "change_once_locked": false,
-      "position_block_reasons": [],
-      "candidates": [
-        {
-          "character_id": 0,
-          "main_skill": 0,
-          "is_powerful_vassal": false,
-          "cares_about_council_seat": false,
-          "seat_pressure_active": false,
-          "opinion_of_owner": 0,
-          "is_current_councillor": false,
-          "current_position_key": null,
-          "is_guest": false,
-          "action_kind": "assign",
-          "legal": true,
-          "requires_recruitment": false,
-          "reason_codes": [],
-          "native_reason_key": null
-        }
-      ]
+      "character_id": 30784,
+      "native_collection_ordinal": 0
     }
   ],
-  "native_ai": {
-    "composition_score_ready": false,
-    "composition_score": null,
-    "scheduler_ready": false,
-    "selected_reason_codes": []
-  },
   "readiness": {
     "identity_ready": true,
-    "positions_ready": true,
     "candidate_collection_ready": true,
-    "candidate_legality_ready": true,
-    "main_skills_ready": true,
-    "powerful_vassal_pressure_ready": true,
-    "opinion_ready": true,
-    "action_preview_ready": true,
+    "candidate_legality_ready": false,
+    "main_skill_ready": false,
+    "powerful_vassal_pressure_ready": false,
+    "opinion_ready": false,
+    "action_preview_ready": false,
     "native_ai_score_ready": false,
-    "planner_ready": true
+    "planner_ready": false
   }
 }
 ```
 
-### 字段约束
+字段和失败边界：
 
-- positions 按 unsigned UTF-8 bytes 的 `position_key` 排序；candidates 按 unsigned full `CharacterID` 排序。collection source 固定映射到本 build 的 `0x105820A → 0x105820F` 调用点；producer 遍历顺序只能作为可选 `native_collection_ordinal`，不能作为稳定 ID、GUI 最终顺序或评分。
-- identity 使用 full-generation ID，并在 candidate collection 后逐行 generation round-trip；一行 stale 会使整份 query typed unavailable，不能静默删行后宣称集合完整。
-- `candidate_collection_complete=true` 只允许用于 exact native collection 成功、列表前后 owner/position/date/revision 稳定的场景。范围外 government/position 返回 `partial` 或 `unavailable`，沿用 campaign-root coverage reason。
-- `position_block_reasons` 与 candidate `reason_codes` 是稳定 machine vocabulary；`native_reason_key` 只保存 exact evaluator 暴露的 key，不解析本地化成语义。
-- `native_ai_score_ready=false` 不会自动拖低 `planner_ready`。我方 planner 使用已发布的事实做自己的可解释策略；只有调用方明确要求复现原版 AI 选择时，才因该字段返回 unavailable。
-- 宫廷司祭 candidate 不增加 faith/doctrine 结构。最终 `legal` 可用时 planner 可消费；失败原因只给 `chaplain_rule_denied`。
-- guest 的 `recruit_then_assign` 不等于任命 ready。后续需要独立招募 action 的接受度、成本、提交回执与 postcondition，才能形成完整动作链。
+- 第一阶段 coverage 只有 `councillor_steward`。其它 position 必须返回 `position_outside_coverage`，不得由 R684 外推。
+- 生产输出按 unsigned full CharacterID 排序；`native_collection_ordinal` 只保留 producer 顺序用于诊断，不表示 GUI 顺序、评分或 tie-break。
+- identity 在复制后逐行做 generation round-trip。任何 stale 行、重复 ID、异常 capacity/count、不可读 span 或调用前后绑定漂移，都使整份结果 unavailable。
+- 最小 unavailable vocabulary 是 `snapshot_identity_mismatch`、`not_paused`、`revision_drift`、`date_drift`、`active_steward_task_unavailable`、`position_outside_coverage`、`candidate_collection_unavailable`、`candidate_generation_mismatch`、`duplicate_candidate_id` 与 `temporary_vector_release_failed`。
+- 公开结果禁止包含 native pointer、原始行字节或根据 tooltip/顺序猜测的合法性与原版 AI 分数。
+- private provider 通过 source fixture 与 suspended fixture 后，才允许登记公开 `game.query.council-composition-candidates-v1` / `xar.ck3.council-composition-candidates/v1`；登记后还必须取得一次按需 query 的 paused artifact，才能把该窄 primitive 写为 production-live。
 
-### 最小 reason vocabulary
-
-| 层 | reason code | 触发边界 |
-|---|---|---|
-| query | `snapshot_identity_mismatch`、`not_paused`、`revision_drift`、`date_drift` | 无法与 campaign-root 同帧绑定 |
-| collection | `position_outside_coverage`、`candidate_collection_unavailable`、`candidate_generation_mismatch`、`duplicate_candidate_id` | position 或候选集合不完整 |
-| position | `position_invalid`、`position_auto_filled`、`position_fire_blocked`、`position_reassign_blocked`、`change_once_locked` | 席位当前不可改变 |
-| basics | `candidate_unavailable`、`candidate_underage`、`candidate_incapable`、`candidate_imprisoned`、`candidate_at_war_with_liege`、`candidate_hire_blocked`、`candidate_travel_option` | `can_be_councillor_basics_trigger` 的稳定投影 |
-| role | `candidate_role_invalid`、`candidate_hostage`、`candidate_mutually_exclusive_position`、`chaplain_rule_denied` | position-specific `valid_character` |
-| action | `pending_interaction`、`swap_invalid`、`guest_requires_recruitment`、`incumbent_cannot_be_fired` | row/command 前置 |
-
-只有能够从 native evaluator 或 compiled trigger 可靠区分的原因才能发布细分 code。若 evaluator 只返回 false 与整体 tooltip，则使用上层 `candidate_role_invalid` / `position_*_blocked`，保留 `native_reason_key`；不能从英文 tooltip 猜细分原因。
+完整 planner 需要的 `valid_position`、`valid_character`、主能力、powerful-vassal/cares、意见、fire/reassign/swap 预检继续作为后续扩展字段。它们没有被 R684 观测，不得预先标成 ready。宫廷司祭仍只允许消费最终 opaque 合法性，不扩展 faith/doctrine 数据。
 
 ## 我方 planner 的可见结果
 
@@ -316,11 +280,13 @@ flowchart TD
 
 该输出会解锁玩家可见价值：自动玩家能指出具体席位、具体人选、能力变化、政治收益与换人代价，并在合法性不足时给出可读 blocker。它不等待原版隐藏总分闭合，也不把 recommendation 当作 action ACK。
 
-## 唯一下一 probe 与后续实现边界
+## R684 后的唯一下一实现
 
-当前唯一下一 probe 是一个 **default-off、exact-build 绑定的 `0x105820F` post-return observer**。它只在模块 SHA、包含函数 hash、调用点字节和 application/UI calling thread 全部匹配时启用；在 producer 返回后、GUI row 构造前，同步复制 `{owner full ID, active-task full ID, position identity, R8B, count, candidate full IDs, calling thread ID}`，随后立即退出，不修改容器和游戏状态。一次 paused 手工打开目标席位候选窗的捕获必须证明：count 非负、所有 candidate generation round-trip 成功、没有 duplicate、空列表能与 UI 空状态对应、捕获线程与 GUI refresh 线程一致。该 observer 之外不并列其它猜测性 probe。
+已经通过的 `0x105820F` observer 不再重复长跑，也不再作为下一 probe。唯一下一实现 seam 是：**在现有 main-thread query mailbox 的同一 paused transaction 内，按需调用 steward producer、复制 candidate full IDs、释放临时向量并复核 frame binding**。首个实现只生成上一节的 private provider；不改公开 MCP/schema，不读 GUI，不保存 native pointer，不提交任命动作。
 
-probe 通过后，生产 reader 仍须在 application-main paused transaction 中复用 campaign-root 的 owner、active positions、incumbents、date 与 revision，并对每个 position/candidate 调用 compiled `valid_position` / `valid_character` 与原生 fire/reassign/swap evaluator。之后才能冻结 ABI/fixture、发布只读 MCP、取得真实空缺和 occupied replacement 两个 paused artifact，再接最小 planner。任命 semantic action 保持独立工作包，需 commit-time 复检与 active-position postcondition；不得调用跳过规则的 script effect。
+临时输出释放是本阶段必须与调用一起闭合的寿命边：复制结束后采用 exact-build 已定位的 refresh cleanup 语义释放 output，随后才允许 mailbox completion。若无法证明释放成功，返回 `temporary_vector_release_failed`，不发布部分列表。provider 的 source/fixture 测试通过后，下一次实机只验证一次按需 paused query；不会重跑同一 R684 GUI 捕获场景。
+
+这个窄 provider GREEN 后，再依次接：compiled `valid_position` / `valid_character`，主能力和政治输入，fire/reassign/swap preview，公开只读 MCP，真实空缺与 occupied replacement 两个代表性 paused artifact，最后才接最小 planner。任命 semantic action 保持独立工作包，提交前复检 owner/position/candidate，提交后重读 active position；不得调用绕过原版规则的 script effect。
 
 ## 未闭合边界
 
@@ -328,7 +294,7 @@ probe 通过后，生产 reader 仍须在 application-main paused transaction �
 |---|---|---|
 | **[unknown]** | 原版 AI composition utility、输入权重和 tie-break | `native_ai_score_ready=false`；不阻塞我方 planner |
 | **[unknown]** | 原版 AI 席位重算 cadence 与 `last_appointed_councillor` 语义 | 不推断换人时机；Mermaid 保留虚线 |
-| **[static-confirmed / live probe pending]** | producer 的两个 owner land-state 容器成员名、运行时空列表与 generation 互证 | collection source、entry layout、生命周期和唯一 seam 已闭合；只执行上节唯一 observer，不手拼集合 |
+| **[private-live capture GREEN / provider pending]** | 空列表、其它席位与按需 producer 调用/释放尚未实机互证 | R684 已关闭总管非空向量的 8-byte row、11 个唯一 full ID、同线程与同帧寿命；下一步只实现窄 private provider |
 | **[static entry only]** | fire/reassign/swap 的完整 machine reason | 允许稳定粗粒度 reason；禁止解析 loc 猜原因 |
 | **[owner-deferred]** | 宫廷司祭通用信仰/教义策略 | 仅最终合法性和 opaque reason |
 | **[not implemented]** | read-only MCP、planner 与 semantic action | 按上节顺序推进，状态不得写 live/action-ready |
@@ -407,7 +373,9 @@ cmake -S ck3_autonomous_player/native_bridge -B <private-build-dir> `
   -DXAR_CK3_ENABLE_COUNCIL_COMPOSITION_CANDIDATE_OBSERVER_V1=ON
 ```
 
-This build is only a capture instrument. Readiness remains **static-ready**
-until one real paused candidate window produces an artifact with a stable UI
-thread, readable nonnegative count, full-ID rows, and no duplicate IDs. Only
-that result can unlock the production reader and later public read-only query.
+This build is only a capture instrument. R684 satisfied that one-shot gate for
+`councillor_steward`: one paused UI-thread callback copied 11 unique full IDs
+from 11 eight-byte rows with zero observer/capture failures. The frozen evidence
+is `fixtures/council_composition_steward_r684_live_capture_v1.json`. This closes
+the private capture seam only; the production reader, public query, planner and
+action remain unimplemented.
