@@ -1,0 +1,96 @@
+{
+  "schema_version": 1,
+  "private_key": "character_interaction_preview_v1_source_adapter",
+  "status": "static-ready-private-source-adapter",
+  "visibility": "private-not-advertised",
+  "upstream": {
+    "private_key": "character_interaction_preview_v1",
+    "baseline_commit": "24f14db60c887e4a6e04bc2f8e47e6ca95346b18",
+    "wire_status": "private-core-only"
+  },
+  "exact_build": {
+    "product_version": "1.19.0.6",
+    "executable_path": "binaries/ck3.exe",
+    "executable_size": 95206008,
+    "executable_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86"
+  },
+  "native_entries": {
+    "character_storage_slot_rva": "0x570C130",
+    "definition_database_getter_rva": "0x831890",
+    "stable_key_hash_rva": "0x3B8B000",
+    "loaded_definition_lookup_rva": "0x997930",
+    "construct_two_role_context_rva": "0x2C3EE50",
+    "refresh_context_rva": "0x2C40950",
+    "finalize_context_rva": "0x2C40B20",
+    "final_can_send_rva": "0x2C43F00",
+    "generic_cost_evaluator_rva": "0x2CDB7B0",
+    "auto_accept_trigger_evaluator_rva": "0x334C510",
+    "intermediary_raw_rva": "0x2C44220",
+    "recipient_raw_rva": "0x2C44320",
+    "outer_final_answer_rva": "0x2C43B40",
+    "human_player_predicate_rva": "0x28BCEB0",
+    "destroy_context_rva": "0x2C3F380"
+  },
+  "call_contract": {
+    "stable_key_hash": "int32(database, key_data, uint32 key_size); the loaded database is passed as the first argument",
+    "definition_lookup": "pointer(database, signed stable-key hash), followed by the upstream canonical key/hash round-trip",
+    "construct": "pointer(storage, definition, actor full CharacterID, recipient full CharacterID, null extra, initialize_special_data=true)",
+    "refresh": "void(owned context, true)",
+    "finalize": "void(owned context)",
+    "can_send": "bool(finalized context, null error output); false is a valid available value",
+    "costs": "void(definition+0x38, context+0x08, caller-zeroed int64[10])",
+    "auto_accept": "definition+0x2580 trigger via 0x334C510(trigger, context+0x08), otherwise strict uint8 0/1 at definition+0x2A48",
+    "raw_acceptance": "int64 pointer(context, int64 output pointer) for intermediary then recipient",
+    "outer_acceptance": "uint8(context, answer_mode=1, flag=0, null, null); only statuses 0..2 publish",
+    "recipient_kind": "0x28BCEB0(full recipient CharacterID) distinguishes human_pending from ai_final",
+    "destroy": "void(owned context), exactly once after every successful construction"
+  },
+  "owned_transaction": {
+    "thread": "existing upstream application-main predicate",
+    "frame": "existing upstream paused frame capture",
+    "per_sample": [
+      "resolve database, stable hash and canonical definition afresh",
+      "resolve actor and recipient by lower-24-bit slot plus complete signed int32 identity",
+      "construct one caller-owned 0x338 context",
+      "refresh true and finalize",
+      "copy final CanSend, ten signed cost slots and acceptance",
+      "destroy and clear the owned context before returning"
+    ],
+    "sampling": "the upstream core runs two complete equal samples inside one outer frame",
+    "cleanup_failure": "terminal for the bound adapter state; no second native read is attempted",
+    "pointer_policy": "database, definition, character and context pointers are never serialized or retained after the call"
+  },
+  "surface": {
+    "shared_cmake_modified": false,
+    "bridge_registration_modified": false,
+    "public_schema_modified": false,
+    "mcp_modified": false,
+    "action_or_command_surface_present": false,
+    "ck3_process_required_for_static_tests": false
+  },
+  "fixtures": {
+    "available": "research/fixtures/character_interaction_preview_v1_source_adapter_available.json",
+    "source_contract": "research/fixtures/character_interaction_preview_v1_source_adapter_contract.json",
+    "native_modes": [
+      "MSVC /Od /W4 /WX",
+      "MSVC /O2 /DNDEBUG /W4 /WX"
+    ],
+    "contract_modes": [
+      "Python normal",
+      "Python -O"
+    ]
+  },
+  "readiness": {
+    "private_source_adapter_implemented": true,
+    "canonical_definition_lookup_wired": true,
+    "generation_bearing_roles_wired": true,
+    "owned_context_lifecycle_wired": true,
+    "final_can_send_wired": true,
+    "generic_costs_wired": true,
+    "final_acceptance_wired": true,
+    "same_frame_double_sample_inherited": true,
+    "public_capability_registered": false,
+    "production_query_live": false
+  },
+  "unique_next_integration_entry": "a later owner may bind this private adapter to the existing application-main paused mailbox without changing its native transaction"
+}

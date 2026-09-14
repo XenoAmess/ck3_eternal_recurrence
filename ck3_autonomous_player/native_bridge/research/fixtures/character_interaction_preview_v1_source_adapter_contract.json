@@ -1,0 +1,45 @@
+{
+  "schema_version": 1,
+  "private_key": "character_interaction_preview_v1_source_adapter",
+  "upstream_private_key": "character_interaction_preview_v1",
+  "upstream_baseline_commit": "24f14db60c887e4a6e04bc2f8e47e6ca95346b18",
+  "exact_build": {
+    "product_version": "1.19.0.6",
+    "executable_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86"
+  },
+  "required_source_semantics": [
+    "full operation override table or exact-build defaults",
+    "loaded interaction database is passed into stable-key hashing and lookup",
+    "canonical definition identity remains enforced by the upstream core",
+    "actor and recipient keep complete generation-bearing CharacterIDs",
+    "constructor receives null extra context and initialize_special_data true",
+    "owned context is refreshed true, finalized, read and destroyed exactly once",
+    "cost evaluator consumes definition plus 0x38 and context scope plus 0x08",
+    "auto-accept trigger and strict scalar fallback are mutually exclusive",
+    "human recipient never receives a fabricated AI acceptance",
+    "outer AI status uses answer mode 1 and publishes only 0, 1 or 2",
+    "every sample re-resolves all borrowed native inputs",
+    "the upstream core compares two complete samples inside one paused frame",
+    "cleanup failure remains terminal RED"
+  ],
+  "native_test_cases": [
+    "available canonical AI preview",
+    "CanSend false and outer rejection remain available observations",
+    "trigger auto-accept bypasses raw and outer scoring",
+    "human recipient becomes human_pending without raw or outer scoring",
+    "intermediary raw precedes recipient and outer scoring",
+    "generation mismatch fails before context construction",
+    "second-sample cost drift fails atomically after both contexts are destroyed",
+    "destroy failure makes the adapter terminal and prevents another native read",
+    "partial operation overrides and wrong executable hash cannot bind"
+  ],
+  "forbidden_surfaces": [
+    "command submission",
+    "interaction execution",
+    "public bridge registration",
+    "public schema projection",
+    "MCP registration",
+    "shared CMake edits"
+  ],
+  "expected_available_fixture": "character_interaction_preview_v1_source_adapter_available.json"
+}
