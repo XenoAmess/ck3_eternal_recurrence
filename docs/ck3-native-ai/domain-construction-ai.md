@@ -31,6 +31,9 @@
   已冻结 building/new-holding 的 command context、两个 final validator、materialize/ownership、`0x341D990` receiver queue 和
   fresh receipt source。receiver 返回 true 只形成 pending ACK；offline executor fixture 不能声明 production。exact native executor
   仍未接入 application-main，未产生 CK3 命令。
+- **[DEV20 static-ready shared glue]** `static-ready-shared-construction-glue-candidate-ready-native-live-pending` 已把 DEV18/DEV19
+  编入 shared runtime，并提供 concrete publication 双采样到 pointer-free semantic candidate、一次性 backend stage、typed RED 与 fresh
+  receipt 的最小 glue。公共 action/schema/MCP 未注册；真实 candidate 与 exact native backend 仍待新轮次。
 - **[static-confirmed cadence boundary]** `CDailyTickCommand` final stage `0x26D3E80` 每次完成日更时调用一次
   `CAIManager` update `0x18876D0`，建设 runtime entry 位于该 pass 的内部列表路由。每条通过 raw gates 的 runtime entry
   调用 producer 恰好一次；全局每日至少/至多命中多少个 owner、存钱目标何时重试仍未闭合，不能写成“每个角色每天必建”或
@@ -598,6 +601,26 @@ receipt source 复用 DEV18 的 fresh verifier。accepted queue ACK 后仍停在
 normal/`-O` 验证均为 GREEN；实现仅新增 private research adapter/test/ABI/source contract 和本专题增量，没有修改 shared CMake、
 bridge、schema 或 MCP，没有启动 CK3。R687 的 `BOUNDED_NO_GO` 不变。下一入口为
 `bind_exact_construction_native_executor_on_application_main_then_validate_in_new_ck3_round`。
+
+### DEV20-CONSTRUCTION-SHARED-GLUE：shared candidate/backend 接线
+
+状态为 `static-ready-shared-construction-glue-candidate-ready-native-live-pending`。CMake 现将 DEV18 semantic core、DEV19 native-submit
+adapter 与 `domain_construction_shared_glue_v1.cpp` 编入 `xar_ck3_bridge`，但不新增公共 capability、action、schema 或 MCP。shared glue
+接收两份 DEV17 publication sample，直接复用 DEV18 的完整双采样和确定性选择，生成一个 pointer-free semantic candidate request。
+这使后续 exact collector 取得 concrete publication 后已有共享 request 生成入口；当前 fixture/static candidate 明确保持
+`candidate_live=false`，没有把 R687 零命中解释成真实候选。
+
+backend glue 以四个窄 stage 接口承接 DEV19：native final validator、command materialize、固定 flags `7` 的 receiver transfer，以及仅用于
+余留 ownership 的 release。glue 自己生成 execution trace，validator/materialize/receiver 每个 state 各最多调用一次；receiver 接管后
+仍只进入 `pending_receipt`。重复 submit 在进入 backend 前设置 `duplicate_submit` RED。candidate/binding、exact build、application-main、
+backend 未接线、validator、materialize、receiver、ownership lifecycle 与 receipt 各保留独立 RED bit，同时保留 DEV18/DEV19 的具体 typed
+failure。receiver 没有清空 holder 时，glue 会尝试释放余留 ownership，但仍保留 lifecycle RED，不能以成功清理掩盖合同漂移。
+
+默认 shared runtime 没有把 concrete native backend 标成 bound，也没有从 `bridge.cpp` 暴露入口。offline fixture backend 只验证 glue；
+DEV19 仍将 `production_native_path=false`，因此 callback seam 不能冒充 production。fresh receipt 继续要求更新后的 identity/generation/
+proof/date 与 target-building、target-holding 或八槽精确扣减证据；stale/缺失 receipt 记录 RED 并保持 pending，允许后续真实 fresh observation
+完成验证。focused normal `/Od` 与 optimized `/O2` 均以 `/W4 /WX` 验证。未启动 CK3，R687 `BOUNDED_NO_GO` 不变。下一入口为
+`bind_concrete_domain_construction_candidate_collector_and_exact_native_backend_then_validate_in_authorized_new_round`。
 
 ## 最小只读输入合同：`domain-construction-candidates-v1`
 

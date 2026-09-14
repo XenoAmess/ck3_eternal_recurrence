@@ -330,6 +330,9 @@ add_library(xar_ck3_bridge SHARED
   src/steward_develop_county_candidates_v1_serializer.cpp
   src/steward_develop_county_action_v1.cpp
   src/steward_develop_county_enumerator_observer_v1.cpp
+  research/domain_construction_semantic_action_core_v1.cpp
+  research/domain_construction_native_submit_adapter_v1.cpp
+  src/domain_construction_shared_glue_v1.cpp
   src/council_composition_candidate_observer_v1.cpp
   src/council_composition_candidate_observer_v1_serializer.cpp
   src/ck3_11906.cpp
@@ -432,6 +435,7 @@ add_library(xar_ck3_bridge SHARED
   src/zhongguo_result_case_snapshot_v1_mailbox.cpp
   src/zhongguo_result_case_snapshot_v1_serializer.cpp
 )
+target_include_directories(xar_ck3_bridge PRIVATE research src)
 if(XAR_CK3_ENABLE_G2_WAR_BOUND_LOSS_CANDIDATE_V1)
   target_sources(xar_ck3_bridge PRIVATE
     src/raiktor_war_bound_loss_candidate_v1.cpp
@@ -1825,6 +1829,24 @@ if(BUILD_TESTING)
       ${CMAKE_CURRENT_SOURCE_DIR}/research/test_domain_construction_runtime_callsite_observer_v1_source_contract.py
       --root ${CMAKE_CURRENT_SOURCE_DIR}/../..
       --ck3-executable "${XAR_CK3_EXECUTABLE_PATH}"
+  )
+
+  add_executable(xar_ck3_domain_construction_shared_glue_v1_test
+    research/domain_construction_semantic_action_core_v1.cpp
+    research/domain_construction_native_submit_adapter_v1.cpp
+    src/domain_construction_shared_glue_v1.cpp
+    src/domain_construction_shared_glue_v1_test.cpp
+  )
+  target_include_directories(
+    xar_ck3_domain_construction_shared_glue_v1_test PRIVATE research src)
+  if(MSVC)
+    target_compile_options(
+      xar_ck3_domain_construction_shared_glue_v1_test PRIVATE
+      /W4 /WX /permissive- /EHsc /UNDEBUG)
+  endif()
+  add_test(
+    NAME xar_ck3_native_bridge_domain_construction_shared_glue_v1
+    COMMAND xar_ck3_domain_construction_shared_glue_v1_test
   )
 
   add_executable(xar_ck3_council_composition_candidate_observer_v1_test

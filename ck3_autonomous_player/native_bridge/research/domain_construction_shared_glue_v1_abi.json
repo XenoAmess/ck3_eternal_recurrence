@@ -1,0 +1,82 @@
+{
+  "contract": "g2-domain-construction-shared-glue-v1",
+  "schema_version": 1,
+  "status": "static-ready-shared-construction-glue-candidate-ready-native-live-pending",
+  "upstream_private_contract": "g2-domain-construction-native-submit-adapter-v1",
+  "build_integration": {
+    "shared_library": "xar_ck3_bridge",
+    "compiled_sources": [
+      "research/domain_construction_semantic_action_core_v1.cpp",
+      "research/domain_construction_native_submit_adapter_v1.cpp",
+      "src/domain_construction_shared_glue_v1.cpp"
+    ],
+    "public_capability_registered": false,
+    "public_action_registered": false,
+    "public_schema_changed": false,
+    "mcp_changed": false
+  },
+  "candidate_preparation": {
+    "input": "two DEV17 cost-legality publication samples",
+    "output": "one pointer-free DEV18 semantic action request",
+    "selection": "DEV18 deterministic candidate_id order",
+    "typed_red": "DEV18 selection failure retained plus candidate_selection RED bit",
+    "fixture_or_static_candidate_ready": true,
+    "concrete_live_candidate_ready": false
+  },
+  "native_backend": {
+    "stages": [
+      "exact native final validator",
+      "command materialization",
+      "receiver flags 7 queue transfer",
+      "leftover ownership release"
+    ],
+    "stage_counts": "validator, materialize and receiver are each called at most once per state",
+    "borrowed_command_pointer_persisted": false,
+    "default_concrete_backend_bound": false,
+    "offline_fixture_can_claim_production": false,
+    "receiver_ack_is_applied": false
+  },
+  "typed_red_bits": [
+    "candidate_selection",
+    "candidate_binding",
+    "exact_build",
+    "application_main_thread",
+    "native_backend_unwired",
+    "validator",
+    "materialize",
+    "receiver",
+    "ownership_lifecycle",
+    "receipt",
+    "duplicate_submit"
+  ],
+  "receipt": {
+    "phase_after_receiver_ack": "pending_receipt",
+    "accepted_evidence": [
+      "fresh matching target building state",
+      "fresh matching target holding state",
+      "fresh exact eight-slot resource deduction"
+    ],
+    "failed_or_stale_receipt": "typed receipt RED retained while phase remains pending_receipt"
+  },
+  "readiness": {
+    "shared_library_compilation_ready": true,
+    "concrete_candidate_request_generation_ready": true,
+    "typed_red_ready": true,
+    "single_submit_ready": true,
+    "fresh_receipt_ready": true,
+    "concrete_live_candidate_observed": false,
+    "exact_native_backend_bound": false,
+    "production_live_acceptance_ready": false
+  },
+  "scope": {
+    "shared_cmake_modified": true,
+    "shared_runtime_source_modified": true,
+    "bridge_registration_modified": false,
+    "public_schema_modified": false,
+    "mcp_modified": false,
+    "ck3_started": false
+  },
+  "r687_boundary": "R687 remains BOUNDED_NO_GO. DEV20 compiled shared glue but did not reinterpret the zero-hit artifact or submit a command.",
+  "unique_next_integration_entry": "bind_concrete_domain_construction_candidate_collector_and_exact_native_backend_then_validate_in_authorized_new_round",
+  "evidence_limit": "Normal and optimized fixtures prove shared candidate preparation, typed RED, one-shot backend staging and fresh receipt semantics. No concrete live candidate, CK3 queue ACK or applied construction receipt was observed."
+}
