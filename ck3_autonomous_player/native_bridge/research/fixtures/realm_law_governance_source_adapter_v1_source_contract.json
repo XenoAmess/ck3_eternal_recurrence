@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "artifact_id": "realm_law_governance_source_adapter_v1",
+  "status": "static-ready",
+  "build": {
+    "game_version": "1.19.0.6",
+    "executable_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+    "law1_evidence_revision": "g2_nonreligious_law_contract_succession_native_tree_v1@d2fc0fd",
+    "law2_core_commit": "c87628f73df415caa4736c4d9e1b48f89153d371"
+  },
+  "transaction": [
+    "capture_paused_application_main_frame",
+    "resolve_player_each_sample",
+    "resolve_law_container_each_sample",
+    "enumerate_realm_law_groups_and_candidates_each_sample",
+    "engine_final_legality_and_cost",
+    "copy_succession_shape_and_title_successor_baseline",
+    "require_equal_value_samples_and_equal_frame"
+  ],
+  "boundary": {
+    "read_only": true,
+    "no_native_pointer_cache": true,
+    "no_effect_or_command": true,
+    "no_gui_click": true,
+    "shared_bridge_changed": false,
+    "public_schema_changed": false,
+    "cmake_changed": false,
+    "mcp_changed": false,
+    "ck3_launched": false,
+    "shared_glue_required": true,
+    "live_validation_required": true
+  }
+}

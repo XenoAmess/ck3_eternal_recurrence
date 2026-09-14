@@ -1,0 +1,26 @@
+{
+  "schema_version": 1,
+  "artifact_id": "realm_law_governance_source_adapter_v1_stable_fixture",
+  "status": "offline-fixture",
+  "played_character_id": 32904,
+  "law_groups": {
+    "crown_authority": {
+      "active_law": "crown_authority_2",
+      "enactable_candidate": "crown_authority_1",
+      "blocked_candidate": "crown_authority_3",
+      "blocked_reason": "cooldown_active",
+      "prestige_cost_raw": 10000000
+    },
+    "succession_order_laws": {
+      "active_law": "partition_succession_law",
+      "enactable_candidate": "high_partition_succession_law",
+      "primary_heir_minimum_share_raw": 50000,
+      "prestige_cost_raw": 50000000
+    }
+  },
+  "held_title_successors": {
+    "101": [201, 301],
+    "102": [401]
+  },
+  "claim": "The fixture validates adapter conversion only and is not CK3 live evidence."
+}
