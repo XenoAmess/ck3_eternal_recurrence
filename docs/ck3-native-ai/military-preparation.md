@@ -652,3 +652,39 @@ The suggested new round is R688. Stop immediately after a terminal publication
 and preserve the raw probe before semantic validation. Acceptance remains
 `status=available`, `failure_flags=0`, and `observation_ready=true`; R686 remains
 the preserved RED and this static glue is not production-live evidence.
+
+## MIL13 no-start harness RED and MIL14 wrapper contract
+
+[harness-red-preserved] The frozen MIL13 artifact is
+`Z:/ck3_mod_rewrite_process_assets/g2-m4-mil13-r688-live-432545e`.
+Its artifact manifest SHA-256 is
+`ECAC52912F42D863671B3332AC79FABA1A80A7F774F28A9746FC5E38C98DFAC5`.
+The PowerShell entry first met the machine's unsigned-script policy; after the
+same file was admitted with `ExecutionPolicy Bypass`, the runner rejected its
+pipe argument before constructing the native driver. The candidate manifest
+held the canonical value `\\.\pipe\xar_ck3_bridge_g2_m4_r688_military_432545e`,
+but the hand-written wrapper supplied `\.\pipe\xar_ck3_bridge_g2_m4_r688_military_432545e`.
+No CK3 process was launched, so R688 has no PID or creation time; no raw probe
+exists. The source save and frozen candidate hashes remained unchanged and the
+postflight CK3/helper inventory was empty. This is a harness RED, not evidence
+about the MIL12 native fix.
+
+[minimal-reusable-fix]
+`generate_bounded_private_probe_wrapper.py` now generates the PowerShell
+entrypoint. The wrapper reads `next_live.unique_pipe` from the candidate
+manifest at execution time, validates the exact ordinal `\\.\pipe\` prefix and
+safe suffix, and places that same string object in the runner argument vector.
+It then compares the argument and manifest values ordinally before either a
+dry run or the real runner may proceed. This removes the duplicated hand-written
+pipe literal that caused MIL13. It also verifies the frozen save, DLL, injector,
+and exact-build executable hashes.
+
+The focused test reproduces and rejects the one-leading-backslash legacy value,
+then executes a no-launch PowerShell dry run and compares both strings and their
+UTF-16 code units. Normal and Python `-O` modes cover the same contract. The
+generated wrapper must be invoked through the explicit project runtime with
+PowerShell `-ExecutionPolicy Bypass`; dry run reports `ck3_launched=false`.
+The old MIL12 candidate remains immutable. A new candidate may retain R688
+because MIL13 never launched CK3, but only one real R688 launch is permitted.
+This harness-only change does not alter the bridge DLL, public native/MCP
+schema, planner, or `open_kaishek`.
