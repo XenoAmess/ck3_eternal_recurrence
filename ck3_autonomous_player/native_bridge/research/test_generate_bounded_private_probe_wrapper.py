@@ -51,7 +51,7 @@ class BoundedWrapperTest(unittest.TestCase):
                 json.dumps({"next_live": {"unique_pipe": canonical}}),
                 encoding="utf-8",
             )
-            wrapper = root / "run.ps1"
+            wrapper = root / "run.py"
             wrapper.write_text(
                 MODULE.render_wrapper(
                     manifest_relative="candidate-manifest.json",
@@ -70,25 +70,21 @@ class BoundedWrapperTest(unittest.TestCase):
                     candidate_revision="4" * 40,
                     publish_timeout=20,
                 ),
-                encoding="utf-8-sig",
+                encoding="utf-8",
             )
             completed = subprocess.run(
                 [
-                    "powershell.exe",
-                    "-NoProfile",
-                    "-ExecutionPolicy",
-                    "Bypass",
-                    "-File",
-                    str(wrapper),
-                    "-Python",
                     sys.executable,
-                    "-GameDir",
+                    str(wrapper),
+                    "--python",
+                    sys.executable,
+                    "--game-dir",
                     str(root / "game"),
-                    "-ArtifactDir",
+                    "--artifact-dir",
                     str(root / "artifact"),
-                    "-StateDir",
+                    "--state-dir",
                     str(root / "state"),
-                    "-DryRun",
+                    "--dry-run",
                 ],
                 check=False,
                 capture_output=True,

@@ -1,4 +1,4 @@
-"""Generate a PowerShell launcher that preserves a manifest's pipe verbatim."""
+"""Generate a Python launcher that preserves a manifest's pipe verbatim."""
 
 from __future__ import annotations
 
@@ -24,15 +24,11 @@ def validate_named_pipe(value: object) -> str:
     return value
 
 
-def _ps_single_quote(value: str) -> str:
-    return "'" + value.replace("'", "''") + "'"
-
-
 def _relative(value: str, name: str) -> str:
     path = Path(value)
     if path.is_absolute() or ".." in path.parts:
         raise ValueError(f"{name} must stay below the candidate root")
-    return str(path).replace("/", "\\")
+    return path.as_posix()
 
 
 def _required_match(pattern: re.Pattern[str], value: str, name: str) -> str:
@@ -77,117 +73,137 @@ def render_wrapper(
     if expected_character_id <= 0 or publish_timeout <= 0:
         raise ValueError("character id and publish timeout must be positive")
 
-    replacements = {
-        "@@MANIFEST@@": _ps_single_quote(manifest_relative),
-        "@@BOOTSTRAP@@": _ps_single_quote(bootstrap_relative),
-        "@@SAVE@@": _ps_single_quote(save_relative),
-        "@@DLL@@": _ps_single_quote(dll_relative),
-        "@@INJECTOR@@": _ps_single_quote(injector_relative),
-        "@@SAVE_NAME@@": _ps_single_quote(save_name),
-        "@@SAVE_SHA@@": _ps_single_quote(expected_save_sha256.upper()),
-        "@@DLL_SHA@@": _ps_single_quote(expected_dll_sha256.upper()),
-        "@@INJECTOR_SHA@@": _ps_single_quote(expected_injector_sha256.upper()),
-        "@@EXE_SHA@@": _ps_single_quote(expected_game_exe_sha256.upper()),
-        "@@CHARACTER@@": str(expected_character_id),
-        "@@OLD_ROUND@@": _ps_single_quote(old_round),
-        "@@NEW_ROUND@@": _ps_single_quote(new_round),
-        "@@REVISION@@": _ps_single_quote(candidate_revision.lower()),
-        "@@TIMEOUT@@": str(publish_timeout),
+    constants = {
+        "MANIFEST_RELATIVE": manifest_relative,
+        "BOOTSTRAP_RELATIVE": bootstrap_relative,
+        "SAVE_RELATIVE": save_relative,
+        "DLL_RELATIVE": dll_relative,
+        "INJECTOR_RELATIVE": injector_relative,
+        "SAVE_NAME": save_name,
+        "SAVE_SHA": expected_save_sha256.upper(),
+        "DLL_SHA": expected_dll_sha256.upper(),
+        "INJECTOR_SHA": expected_injector_sha256.upper(),
+        "EXE_SHA": expected_game_exe_sha256.upper(),
+        "EXPECTED_CHARACTER": expected_character_id,
+        "OLD_ROUND": old_round,
+        "NEW_ROUND": new_round,
+        "CANDIDATE_REVISION": candidate_revision.lower(),
+        "PUBLISH_TIMEOUT": publish_timeout,
     }
-    template = r'''param(
-  [Parameter(Mandatory=$true)][string]$Python,
-  [Parameter(Mandatory=$true)][string]$GameDir,
-  [Parameter(Mandatory=$true)][string]$ArtifactDir,
-  [Parameter(Mandatory=$true)][string]$StateDir,
-  [switch]$DryRun
-)
-$ErrorActionPreference = "Stop"
-$root = Split-Path -Parent $MyInvocation.MyCommand.Path
-$manifest = Join-Path $root @@MANIFEST@@
-$bootstrap = Join-Path $root @@BOOTSTRAP@@
-$save = Join-Path $root @@SAVE@@
-$dll = Join-Path $root @@DLL@@
-$injector = Join-Path $root @@INJECTOR@@
-$gameExe = Join-Path $GameDir "binaries\ck3.exe"
-$manifestObject = Get-Content -LiteralPath $manifest -Raw | ConvertFrom-Json
-$manifestPipe = [string]$manifestObject.next_live.unique_pipe
-$requiredPrefix = "\\.\pipe\"
-if (-not $manifestPipe.StartsWith($requiredPrefix, [StringComparison]::Ordinal)) {
-  throw "manifest pipe does not start with the canonical \\\\.\\pipe\\ prefix"
-}
-$pipeSuffix = $manifestPipe.Substring($requiredPrefix.Length)
-if ($pipeSuffix -notmatch '^[A-Za-z0-9._-]+$') {
-  throw "manifest pipe has a non-canonical suffix"
-}
-foreach ($inputPath in @($manifest, $bootstrap, $save, $dll, $injector, $gameExe)) {
-  if (-not (Test-Path -LiteralPath $inputPath -PathType Leaf)) {
-    throw "required input is missing: $inputPath"
-  }
-}
-function Require-Sha256([string]$Path, [string]$Expected) {
-  $actual = (Get-FileHash -Algorithm SHA256 -LiteralPath $Path).Hash
-  if (-not [string]::Equals($actual, $Expected, [StringComparison]::OrdinalIgnoreCase)) {
-    throw "SHA-256 mismatch: $Path"
-  }
-}
-Require-Sha256 $save @@SAVE_SHA@@
-Require-Sha256 $dll @@DLL_SHA@@
-Require-Sha256 $injector @@INJECTOR_SHA@@
-Require-Sha256 $gameExe @@EXE_SHA@@
-$manifestSha = (Get-FileHash -Algorithm SHA256 -LiteralPath $manifest).Hash
-$runnerArguments = @(
-  '--artifact-dir', $ArtifactDir,
-  '--state-dir', $StateDir,
-  '--game-dir', $GameDir,
-  '--source-save', $save,
-  '--save-name', @@SAVE_NAME@@,
-  '--expected-save-sha256', @@SAVE_SHA@@,
-  '--candidate-manifest', $manifest,
-  '--expected-candidate-manifest-sha256', $manifestSha,
-  '--bridge-dll', $dll,
-  '--expected-bridge-dll-sha256', @@DLL_SHA@@,
-  '--bridge-injector', $injector,
-  '--expected-bridge-injector-sha256', @@INJECTOR_SHA@@,
-  '--expected-game-exe-sha256', @@EXE_SHA@@,
-  '--expected-character-id', '@@CHARACTER@@',
-  '--pipe', $manifestPipe,
-  '--old-round', @@OLD_ROUND@@,
-  '--new-round', @@NEW_ROUND@@,
-  '--candidate-revision', @@REVISION@@,
-  '--publish-timeout', '@@TIMEOUT@@'
-)
-$pipeIndex = [Array]::IndexOf($runnerArguments, '--pipe')
-$argumentPipe = [string]$runnerArguments[$pipeIndex + 1]
-if (-not [string]::Equals($argumentPipe, $manifestPipe, [StringComparison]::Ordinal)) {
-  throw "runner pipe argument differs from candidate manifest"
-}
-if ($DryRun) {
-  [ordered]@{
-    schema = 'xar.ck3.bounded_private_probe_wrapper_dry_run_v1'
-    status = 'green'
-    ck3_launched = $false
-    manifest_pipe = $manifestPipe
-    argument_pipe = $argumentPipe
-    argument_pipe_utf16 = @($argumentPipe.ToCharArray() | ForEach-Object { [int][char]$_ })
-    manifest_sha256 = $manifestSha
-  } | ConvertTo-Json -Depth 5
-  exit 0
-}
-& $Python $bootstrap --python $Python --runtime-preflight-output (Join-Path $ArtifactDir "runtime-preflight.json") -- @runnerArguments
-exit $LASTEXITCODE
+    constants_source = "\n".join(
+        f"{name} = {value!r}" for name, value in constants.items()
+    )
+    return f'''#!/usr/bin/env python3
+"""Generated bounded private-probe launcher; do not edit."""
+
+from __future__ import annotations
+
+import argparse
+import hashlib
+import json
+from pathlib import Path
+import re
+import subprocess
+
+
+PIPE_PREFIX = {PIPE_PREFIX!r}
+{constants_source}
+
+
+def sha256(path: Path) -> str:
+    return hashlib.sha256(path.read_bytes()).hexdigest().upper()
+
+
+def main() -> int:
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--python", required=True)
+    parser.add_argument("--game-dir", type=Path, required=True)
+    parser.add_argument("--artifact-dir", type=Path, required=True)
+    parser.add_argument("--state-dir", type=Path, required=True)
+    parser.add_argument("--dry-run", action="store_true")
+    args = parser.parse_args()
+
+    root = Path(__file__).resolve().parent
+    manifest = root / MANIFEST_RELATIVE
+    bootstrap = root / BOOTSTRAP_RELATIVE
+    save = root / SAVE_RELATIVE
+    dll = root / DLL_RELATIVE
+    injector = root / INJECTOR_RELATIVE
+    game_exe = args.game_dir.resolve() / "binaries" / "ck3.exe"
+    manifest_object = json.loads(manifest.read_text(encoding="utf-8-sig"))
+    manifest_pipe = manifest_object.get("next_live", {{}}).get("unique_pipe")
+    if not isinstance(manifest_pipe, str) or not manifest_pipe.startswith(PIPE_PREFIX):
+        raise RuntimeError("manifest pipe lacks the canonical named-pipe prefix")
+    if re.fullmatch(r"[A-Za-z0-9._-]+", manifest_pipe[len(PIPE_PREFIX):]) is None:
+        raise RuntimeError("manifest pipe has a non-canonical suffix")
+    for input_path in (manifest, bootstrap, save, dll, injector, game_exe):
+        if not input_path.is_file():
+            raise RuntimeError(f"required input is missing: {{input_path}}")
+    for path, expected in (
+        (save, SAVE_SHA),
+        (dll, DLL_SHA),
+        (injector, INJECTOR_SHA),
+        (game_exe, EXE_SHA),
+    ):
+        if sha256(path) != expected:
+            raise RuntimeError(f"SHA-256 mismatch: {{path}}")
+    manifest_sha = sha256(manifest)
+    runner_arguments = [
+        "--artifact-dir", str(args.artifact_dir.resolve()),
+        "--state-dir", str(args.state_dir.resolve()),
+        "--game-dir", str(args.game_dir.resolve()),
+        "--source-save", str(save),
+        "--save-name", SAVE_NAME,
+        "--expected-save-sha256", SAVE_SHA,
+        "--candidate-manifest", str(manifest),
+        "--expected-candidate-manifest-sha256", manifest_sha,
+        "--bridge-dll", str(dll),
+        "--expected-bridge-dll-sha256", DLL_SHA,
+        "--bridge-injector", str(injector),
+        "--expected-bridge-injector-sha256", INJECTOR_SHA,
+        "--expected-game-exe-sha256", EXE_SHA,
+        "--expected-character-id", str(EXPECTED_CHARACTER),
+        "--pipe", manifest_pipe,
+        "--old-round", OLD_ROUND,
+        "--new-round", NEW_ROUND,
+        "--candidate-revision", CANDIDATE_REVISION,
+        "--publish-timeout", str(PUBLISH_TIMEOUT),
+    ]
+    argument_pipe = runner_arguments[runner_arguments.index("--pipe") + 1]
+    if argument_pipe != manifest_pipe:
+        raise RuntimeError("runner pipe argument differs from candidate manifest")
+    if args.dry_run:
+        print(json.dumps({{
+            "schema": "xar.ck3.bounded_private_probe_wrapper_dry_run_v1",
+            "status": "green",
+            "ck3_launched": False,
+            "manifest_pipe": manifest_pipe,
+            "argument_pipe": argument_pipe,
+            "argument_pipe_utf16": [ord(value) for value in argument_pipe],
+            "manifest_sha256": manifest_sha,
+        }}, ensure_ascii=False, indent=2))
+        return 0
+    completed = subprocess.run([
+        args.python,
+        str(bootstrap),
+        "--python", args.python,
+        "--runtime-preflight-output", str(args.artifact_dir / "runtime-preflight.json"),
+        "--",
+        *runner_arguments,
+    ], check=False)
+    return completed.returncode
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())
 '''
-    for needle, replacement in replacements.items():
-        template = template.replace(needle, replacement)
-    if "@@" in template:
-        raise RuntimeError("unresolved wrapper template token")
-    return template
 
 
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--candidate-root", type=Path, required=True)
     parser.add_argument("--manifest-relative", default="candidate-manifest.json")
-    parser.add_argument("--output-relative", default="run-bounded-private-probe.ps1")
+    parser.add_argument("--output-relative", default="run-bounded-private-probe.py")
     parser.add_argument("--bootstrap-relative", required=True)
     parser.add_argument("--save-relative", required=True)
     parser.add_argument("--dll-relative", required=True)
@@ -229,7 +245,7 @@ def main(argv: list[str] | None = None) -> int:
             candidate_revision=args.candidate_revision,
             publish_timeout=args.publish_timeout,
         ),
-        encoding="utf-8-sig",
+        encoding="utf-8",
         newline="\n",
     )
     return 0
