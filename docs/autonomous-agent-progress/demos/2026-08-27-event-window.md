@@ -18,11 +18,11 @@
 
 可复用录制命令：
 
-```powershell
-& powershell.exe -NoProfile -ExecutionPolicy Bypass -File 'tools\record_event_window_demo.ps1'
+```bat
+tools\.venv\Scripts\python.exe tools\record_event_window_demo.py
 ```
 
-录制器会自动启动/关闭两次 CK3、生成同次 live artifact、封装 MP4、添加 silent AAC 兼容音轨、计算哈希并删除临时 MKV。
+Python 录制器会自动启动/关闭两次 CK3、生成同次 live artifact、封装 MP4、添加 silent AAC 兼容音轨、计算哈希并删除临时 MKV。
 
 ## 一句话成果
 
@@ -59,50 +59,42 @@ index、cancel 和 empty typed-effect-indicator surface。
 
 ## 30 秒读取既有 artifact
 
-在仓库根目录打开 PowerShell：
+在 Python 中读取冻结 artifact：
 
-```powershell
-$artifact = 'C:\Users\xenoa\AppData\Local\Temp\xar-current-event-window-context-cea30a0-live-attempt4.json'
-$j = Get-Content -LiteralPath $artifact -Raw | ConvertFrom-Json
-$frame = $j.cold_stage.sequence.first_query.current_event_window_context
-[pscustomobject]@{
-  ok = $j.ok
-  evidence = $j.evidence_classification
-  seed_pid = $j.cross_stage_proof.seed_bridge_pid
-  cold_pid = $j.cross_stage_proof.cold_bridge_pid
-  instance = $j.cross_stage_proof.current_event_instance_id
-  key = $j.cross_stage_proof.event_definition_key
-  native_indices = (@($frame.options.native_option_index) -join ',')
-  cancel_flags = (@($frame.options.cancel) -join ',')
-  cold_double_query_equal = $j.cold_stage.sequence.checks.adjacent_context_frames_strictly_equal
-  cleanup = $j.disposable_cleanup.ok
-  no_ck3_after = $j.no_ck3_processes_after
-}
-```
+```python
+import json
+from pathlib import Path
 
-随后展示每条 option：
-
-```powershell
-$frame.options | Select-Object rendered_index,native_option_index,shown,enabled,resolved_name,unavailable_reason,cancel,fallback
+artifact = Path(r"C:\Users\xenoa\AppData\Local\Temp\xar-current-event-window-context-cea30a0-live-attempt4.json")
+j = json.loads(artifact.read_text(encoding="utf-8-sig"))
+frame = j["cold_stage"]["sequence"]["first_query"]["current_event_window_context"]
+print({
+    "ok": j["ok"],
+    "evidence": j["evidence_classification"],
+    "seed_pid": j["cross_stage_proof"]["seed_bridge_pid"],
+    "cold_pid": j["cross_stage_proof"]["cold_bridge_pid"],
+    "instance": j["cross_stage_proof"]["current_event_instance_id"],
+    "key": j["cross_stage_proof"]["event_definition_key"],
+    "native_indices": [row["native_option_index"] for row in frame["options"]],
+    "cancel_flags": [row["cancel"] for row in frame["options"]],
+    "cold_double_query_equal": j["cold_stage"]["sequence"]["checks"]["adjacent_context_frames_strictly_equal"],
+    "cleanup": j["disposable_cleanup"]["ok"],
+    "no_ck3_after": j["no_ck3_processes_after"],
+})
+for row in frame["options"]:
+    print({key: row.get(key) for key in (
+        "rendered_index", "native_option_index", "shown", "enabled",
+        "resolved_name", "unavailable_reason", "cancel", "fallback",
+    )})
 ```
 
 ## 完整实机复跑
 
 完整复跑会自动启动并关闭两个 CK3 进程，约需 3 分钟。录制期间不要手动操作 CK3；runner 会保持暂停并且不选择任何
-事件选项。每次必须使用全新的 pipe/output 名：
+事件选项。Python 录制入口会生成全新的 pipe/output 名：
 
-```powershell
-$stamp = Get-Date -Format 'yyyyMMdd-HHmmss'
-$demoOutput = Join-Path $env:TEMP "xar-current-event-window-context-demo-$stamp.json"
-$demoPipe = "\\.\pipe\xar-event-window-context-demo-$stamp"
-$env:XAR_EVENT_WINDOW_ISOLATED_SOURCE_ROOT = 'C:\Users\xenoa\AppData\Local\Temp\xar-event-window-cea30a0-source'
-& 'tools\.venv\Scripts\python.exe' 'ck3_autonomous_player\native_bridge\research\run_current_event_window_context_live_acceptance.py' `
-  --game-dir 'Crusader Kings III' `
-  --bridge-pipe $demoPipe `
-  --bridge-dll 'ck3_autonomous_player\native_bridge\.build-event-window-cea30a0-msvc2\xar_ck3_bridge.dll' `
-  --expected-bridge-dll-sha256 '52398435F8AA5177D6D507BFAA38CD2578EB988F0629F1C5E13360CC91FB3BB0' `
-  --bridge-injector 'ck3_autonomous_player\native_bridge\.build-event-window-cea30a0-msvc2\xar_ck3_bridge_injector.exe' `
-  --output $demoOutput
+```bat
+tools\.venv\Scripts\python.exe tools\record_event_window_demo.py
 ```
 
 成功摘要应包含 `ok: true`、完整 instance/key、seed/cold 两组 process-local 数值和 `error: null`。不要为了视频修改
