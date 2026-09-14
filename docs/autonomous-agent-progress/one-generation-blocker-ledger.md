@@ -1668,3 +1668,10 @@ one recommendation, one action and the bounded postwar/cold-restore checks.
 - Current round R673 completed five normal NO_DECLARE campaign advances before a one-target assessment failed with target_not_declarable at native:159, date 53787792. The failed request made no gameplay mutation. Run log SHA-256 is CF92D2D...4DE3, final driver-state SHA-256 is 30902F5E...BA0B, and cleanup is GREEN.
 - Evidence shows one declaration query at the starting frame followed by repeated assessment/advance pairs. The Python driver kept the original declaration rows across native revisions, so the planner could select a target whose legality had expired. The native evaluator correctly rejected it; the RED is classified as a Python cross-frame cache defect.
 - Declaration rows and generated target actions now require exact paused-frame, connection and episode ownership. Any new snapshot clears them and returns the strategy to query-declarable-wars; query results that cross frames never enter the cache. Focused normal/optimized tests pass 14/14. One short R674 checkpoint replay remains before this operational blocker can close.
+
+
+### R674 closure of the stale-declaration operational blocker
+
+- Fix commit c1d91c0 bound declaration rows to their exact paused frame. New round R674 cold-restored checkpoint F2E84CF1...D27B, then completed a fresh declaration query, a successful current-target assessment and one NO_DECLARE advance in three turns.
+- The run is qualified with no first blocker. Preflight/run/driver/checkpoint SHA-256 are 4E0BC602...F03BE, C5B37439...1CC09, A6033D85...4567E and 4F72E469...61686; cleanup is GREEN and no CK3/injector survives.
+- R673 remains a historical RED. Its operational blocker is closed, so no further dedicated replay is authorized. G2-M2 stays 1/3 and ordinary encounter-driven progress resumes.
