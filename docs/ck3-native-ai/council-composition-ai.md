@@ -541,3 +541,32 @@ with R690 as its old round. An earlier incompatible but unlaunched R691
 candidate did not allocate or consume the round. The fresh Council candidate
 uses its own hash-bound directory and named pipe; the R690 candidate and live
 RED remain immutable.
+
+## COUNCIL14: self-contained R691 runtime source
+
+The COUNCIL13 no-launch check selected Python source through the operator
+`workspace_root`. On the authorized Windows operator that value resolved to a
+detached legacy checkout at `e9c8a229`; its driver SHA-256 began `8A3C` and it
+lacked `take_internal_semantic_snapshot()`. Integrated master
+`dd36d1b7e8e3a79260a888efaeadd4b922df5f7f` contains that API. This is the
+source-selection defect behind the preserved harness RED; the private Council
+reader still has no live result.
+
+COUNCIL14 copies the complete tracked `ck3_autonomous_player/src` tree from
+that master into `source-repo/` inside a new immutable candidate. A
+candidate-local identity binds the Git commit, Git tree object, aggregate
+path/size/content SHA-256, and the exact hashes of `native_driver`,
+`native_auto_run`, `environment`, and `runtime`. The sealed prep manifest also
+lists every copied source file. Both preflight and the live runner verify this
+identity before importing; after import they require each module `__file__`
+and SHA-256 to match its candidate-local file. The operator runtime config no
+longer contains `workspace_root`, so another checkout cannot choose executable
+Python code. Python and CK3 installation paths remain replaceable operator
+inputs and contain no credentials.
+
+The normal and optimized contract tests cover commit/tree binding, byte drift,
+module-path escape, and the internal snapshot API. The candidate verifier is
+still no-launch: it checks the sealed inventory, local imports, and an empty
+CK3 inventory. R691 remains unallocated until the single CK3 owner accepts and
+runs this candidate. The earlier incompatible R691 candidates and the R690
+runtime RED stay unchanged.
