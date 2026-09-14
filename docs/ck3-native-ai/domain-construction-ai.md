@@ -352,6 +352,25 @@ sentinel 在 `0x26D3E80` 中先执行 original，因此会先经过本页的 `CA
 机器可读证据与下一轮合同见
 `ck3_autonomous_player/native_bridge/research/fixtures/g2_domain_construction_runtime_trigger_analysis_v1.json`。
 
+### DEV14：R691 一日事务候选的无启动重冻结
+
+DEV14 将 DEV13 的 construction one-day 候选按唯一下一轮 `R691` 重新物化到
+`Z:\ck3_mod_rewrite_process_assets\g2-m4-dev14-r691-construction-one-day-candidate-e08f4a1`。冻结源仍是
+`e08f4a1b5a807f176b29ce280383d93d9c051879`，exact-build EXE、save 和 8 个 native 二进制均逐哈希复用；没有重编译或改动
+公共 MCP/schema/shared bridge/CMake。旧 R690 candidate 在冻结前后保持不变：其 `candidate-manifest.json` SHA-256 仍为
+`7FE54643ED8E117F9802327C987BC4C6E36B4C767F8A470DE6983464D07B7584`，`prep-manifest.json` SHA-256 仍为
+`BD2410AA0302E133B1AFDBBAC6132FD7B2556316E50F0E026FED9F999C753A64`。
+
+R691 候选把 mutable state、live output 与进程端点分别固定为 `state-r691`、`live-r691` 和
+`\\.\pipe\xar_ck3_bridge_g2_m4_dev14_r691_construction_one_day_e08f4a1`；Python entry 默认只做 seal、exact-build、profile、
+save、source commit、全局 CK3 零实例与合同一致性检查。实际执行必须显式使用 `--execute`，并额外提供由唯一 CK3 owner 写入的
+`R690 -> R691` authorization；当前候选没有该授权，也没有分配或启动 R691。候选 manifest SHA-256 为
+`B19047BC31B819E5C8F0532366D2FA2C3EFDEFBC9220D6FBCB0782303C86C243`，sealed manifest SHA-256 为
+`9F1806CBC4F4BC4ABAAFBCBF7A9898EC7292DFDD9682CFBE360D9E04122B5260`，封印清单包含 4,749 个文件、
+550,091,594 bytes。独立 normal 与 `-O` no-launch 复验均为 `GREEN_NO_LAUNCH`，两次均观测 `ck3_processes=[]`、
+`ck3_launched=false`。此证据只把下一轮候选提升为 `static-ready / live pending`；R691 后续仍须由唯一 CK3 owner 按单实例规则启动，
+并依据 DEV12 的 `GREEN / RED / BOUNDED_NO_GO` 一日边界收口。
+
 ## 预算储备与“存钱”边界
 
 `00_ai.txt:100-168` 冻结了通用 AI 财政背景：
@@ -564,5 +583,7 @@ construction loop 跑通后再扩展 outcome delta，不把收益解析提前做
   没有取得候选行；不能把它写成 candidate reader live。
 - **[bounded live NO-GO]** R687 证明 runtime observer 安装、private heartbeat 和 cleanup 正常，但 paused shape 没有完成日更；
   `producer_calls=0` 与现已闭合的 daily call chain 一致，不能据此声称 runtime hook 已 live 命中。
+- **[static-ready / live pending]** DEV14 已把 unchanged DEV13 candidate 重冻结到唯一 `R691` round/path/pipe 合同，并由 normal 与
+  `-O` 全量 seal verifier 证明 no-launch GREEN；这不是 R691 实机证据，也不改变 R687 的 bounded NO-GO。
 - **[live pending]** 没有 `domain-construction-candidates-v1` 生产 reader 或 MCP fixture，故本专题仍是 exact-build tree +
   contract-ready，不提升为 production-live primitive。
