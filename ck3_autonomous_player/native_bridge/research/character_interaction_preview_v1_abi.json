@@ -1,0 +1,150 @@
+{
+  "schema_version": 1,
+  "private_key": "character_interaction_preview_v1",
+  "status": "static-ready-private-core-unwired",
+  "visibility": "private-not-advertised",
+  "exact_build": {
+    "product_version": "1.19.0.6",
+    "executable_path": "binaries/ck3.exe",
+    "executable_size": 95206008,
+    "executable_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86"
+  },
+  "request": {
+    "frame_identity": [
+      "snapshot_id",
+      "public_revision",
+      "native_revision",
+      "date_raw"
+    ],
+    "payload": [
+      "actor_character_id",
+      "recipient_character_id",
+      "interaction_key"
+    ],
+    "payload_shape": "two_role_no_target_no_options",
+    "first_allowlist": [
+      "gift_interaction",
+      "recruit_guest_interaction",
+      "invite_to_court_interaction",
+      "offer_vassalization_interaction",
+      "demand_payment_interaction"
+    ]
+  },
+  "native_entry_contract": {
+    "character_storage_slot_rva": "0x570C130",
+    "definition_database_getter_rva": "0x831890",
+    "stable_key_hash_rva": "0x3B8B000",
+    "loaded_definition_lookup_rva": "0x997930",
+    "construct_two_role_context_rva": "0x2C3EE50",
+    "refresh_context_rva": "0x2C40950",
+    "finalize_context_rva": "0x2C40B20",
+    "final_can_send_rva": "0x2C43F00",
+    "generic_cost_evaluator_rva": "0x2CDB7B0",
+    "auto_accept_trigger_evaluator_rva": "0x334C510",
+    "intermediary_raw_rva": "0x2C44220",
+    "recipient_raw_rva": "0x2C44320",
+    "outer_final_answer_rva": "0x2C43B40",
+    "destroy_context_rva": "0x2C3F380",
+    "auto_accept_layout": {
+      "trigger_offset": "0x2580",
+      "scalar_fallback_offset": "0x2A48",
+      "trigger_rule": "invoke 0x334C510 only when the trigger pointer is non-null; otherwise accept only the scalar bool 0/1"
+    },
+    "definition_identity": {
+      "runtime_ordinal_offset": "0x10",
+      "stable_hash_offset": "0x14",
+      "canonical_msvc_string_offset": "0x18",
+      "rule": "lookup result is accepted only when the canonical key and unsigned 32-bit stable hash both round-trip; runtime ordinal is process-local evidence"
+    },
+    "character_identity": {
+      "storage_slots_offset": "0x20",
+      "storage_capacity_offset": "0x2C",
+      "slot_stride": "0x10",
+      "slot_object_offset": "0x08",
+      "character_id_offset": "0x18",
+      "death_data_offset": "0x1C8",
+      "rule": "the lower 24-bit slot index and complete signed int32 generation-bearing CharacterID must both match"
+    }
+  },
+  "preview_output": {
+    "definition": "canonical key, unsigned stable hash, diagnostic runtime ordinal",
+    "roles": "complete signed int32 actor and recipient CharacterIDs",
+    "can_send": "authoritative final validator result; false remains an available preview value",
+    "costs": {
+      "raw_scale": 100000,
+      "payer_role": "actor",
+      "application_timing": "on_send",
+      "resource_order": [
+        "gold",
+        "prestige",
+        "piety",
+        "renown",
+        "influence",
+        "herd",
+        "treasury",
+        "treasury_or_gold",
+        "merit",
+        "barter_goods"
+      ],
+      "signed_values": true
+    },
+    "acceptance": {
+      "kinds": [
+        "auto_accept",
+        "ai_final",
+        "human_pending"
+      ],
+      "ai_final": "recipient raw Q100000 plus optional intermediary raw and authoritative outer status 0..2; would_accept_now is exactly status != 2",
+      "human_pending": "known non-applicability; no opponent AI answer is fabricated",
+      "unknown_outer_status": "top-level unavailable"
+    }
+  },
+  "transaction": {
+    "executor": "application-main paused private observer",
+    "steps": [
+      "capture and validate the requested paused frame",
+      "resolve the loaded database, pass it through the exact hash ABI, resolve the allowlisted definition, then round-trip key and hash",
+      "resolve actor and recipient through generation-bearing character storage",
+      "construct, refresh and finalize one owned two-role context",
+      "read final Can Send, signed ten-slot generic costs and final acceptance",
+      "destroy the context",
+      "repeat the complete native sample and reject any drift",
+      "recapture and compare the outer frame before publishing"
+    ],
+    "failure_atomicity": "an unavailable result publishes no definition, roles, costs, acceptance or readiness",
+    "pointer_policy": "definition, character and context pointers are transient and never serialized",
+    "negative_value_policy": "Can Send false, final rejection and signed negative cost slots are valid observed values, not infrastructure failures"
+  },
+  "evidence_dependencies": {
+    "diplomatic_tree": "research/core_diplomatic_proposals_v1_contract.json",
+    "structured_terms": "docs/ck3-native-ai/interaction-structured-terms.md",
+    "pending_identity": "research/pending_character_interaction_context_v1_abi.json"
+  },
+  "fixtures": {
+    "available": "research/fixtures/character_interaction_preview_v1_available.json",
+    "native_modes": [
+      "MSVC /Od",
+      "MSVC /O2 /DNDEBUG"
+    ],
+    "contract_modes": [
+      "Python normal",
+      "Python -O"
+    ]
+  },
+  "readiness": {
+    "private_core_implemented": true,
+    "definition_lookup_entry_closed": true,
+    "generation_bearing_character_lookup_implemented": true,
+    "finalized_two_role_context_entry_closed": true,
+    "final_can_send_entry_closed": true,
+    "generic_cost_entry_closed": true,
+    "final_acceptance_entry_closed": true,
+    "same_frame_double_sample": true,
+    "native_binding_registered": false,
+    "public_capability_registered": false,
+    "action_surface_registered": false,
+    "production_query_live": false,
+    "planner_ready": false
+  },
+  "unique_next_integration_entry": "wire this private core to the existing application-main paused mailbox and direct guarded native invokers, then obtain one fixed-build paused live preview before considering any public MCP projection"
+}

@@ -1,0 +1,55 @@
+{
+  "schema_version": 1,
+  "private_key": "character_interaction_preview_v1",
+  "files": {
+    "header": "include/xar_bridge/character_interaction_preview_v1.hpp",
+    "implementation": "src/character_interaction_preview_v1.cpp",
+    "unit_test": "src/character_interaction_preview_v1_test.cpp",
+    "abi": "research/character_interaction_preview_v1_abi.json",
+    "available_fixture": "research/fixtures/character_interaction_preview_v1_available.json"
+  },
+  "required_header_tokens": [
+    "kCharacterInteractionPreviewPrivateKeyV1",
+    "kCharacterInteractionPreviewDefinitionLookupRvaV1",
+    "kCharacterInteractionPreviewCharacterStorageSlotRvaV1",
+    "kCharacterInteractionPreviewCanSendRvaV1",
+    "kCharacterInteractionPreviewCostEvaluatorRvaV1",
+    "kCharacterInteractionPreviewIntermediaryRawRvaV1",
+    "kCharacterInteractionPreviewRecipientRawRvaV1",
+    "kCharacterInteractionPreviewOuterFinalRvaV1",
+    "CharacterInteractionAcceptanceKindV1",
+    "ReadCharacterInteractionPreviewV1"
+  ],
+  "required_implementation_tokens": [
+    "definition_identity_mismatch",
+    "character_identity_mismatch",
+    "context_cleanup_failed",
+    "acceptance_invariant_failed",
+    "if (first != second)",
+    "ClassifyFrameDrift(before, after)",
+    "two_role_no_target_no_options",
+    "treasury_or_gold",
+    "\\\"action_surface_present\\\":false"
+  ],
+  "required_test_tokens": [
+    "TestAvailableFixture",
+    "TestFinalRejectionRemainsAvailable",
+    "TestKnownNonAiAcceptanceBranches",
+    "TestDefinitionAndRecipientLookupFailuresAreAtomic",
+    "TestDriftAndCleanupFailuresStayRed",
+    "TestInvalidAcceptanceAndAllowlistStayRed",
+    "TestBoundEnvironment"
+  ],
+  "forbidden_shared_edits": [
+    "CMakeLists.txt",
+    "src/bridge.cpp",
+    "include/xar_bridge/game_contract.hpp",
+    "ck3_workshop_mcp"
+  ],
+  "forbidden_mutation_tokens": [
+    "construct_send_character_interaction_command",
+    "submit_gameplay_command",
+    "send-core-character-interaction-v1",
+    "game.action."
+  ]
+}

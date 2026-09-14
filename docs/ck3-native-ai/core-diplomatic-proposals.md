@@ -171,6 +171,18 @@ observer 需要增加 opaque `subject_kind=tributary`、`suzerain`/`top_suzerain
 
 朝贡扩展复用同一 preview，再增加 typed suzerain/obligation/cooldown；教育、grant titles、grant vassal 和 ransom 各有专属 action，因为它们的角色形状和 special payload 不同。
 
+## DIPLO2 私有 preview 核心
+
+`character_interaction_preview_v1` 已实现为 **static-ready、private、unwired** 的只读 native core。它没有进入共享 CMake、bridge、schema 或 MCP，也没有 command constructor / submit 路径。当前只接受 DIPLO1 首批五个普通两角色 definition，payload 固定为 `two_role_no_target_no_options`：
+
+- 通过 `0x3B8B000 → 0x831890 → 0x997930` 查找 loaded definition，并对 `+0x14` hash 与 `+0x18` canonical key 做双向 round-trip；
+- 通过 `module+0x570C130` character storage 和完整 signed-int32 CharacterID 解析 actor / recipient，低 24 位 slot 命中但 generation 不同仍为 RED；
+- 每个样本独立构造、refresh、finalize、读取最终 `0x2C43F00` Can Send、`0x2CDB7B0` 十槽 signed cost，以及 `0x2C44220 / 0x2C44320 / 0x2C43B40` raw/final acceptance，随后销毁 owned context；
+- 在匹配的 paused frame capture 之间重复完整样本。definition、角色、Can Send、任一 cost slot、acceptance 或 outer frame 漂移都会失败原子化为 `unavailable`，不会发布半成品；
+- `can_send=false`、outer status `2` 和负 cost raw 都是可用的原生结果。human recipient 明确为 `human_pending`，不伪造 opponent AI acceptance；其它未知 outer status 保留 RED。
+
+接口与边界见 [`character_interaction_preview_v1_abi.json`](../../ck3_autonomous_player/native_bridge/research/character_interaction_preview_v1_abi.json)。独立 `/Od` 与 `/O2 /DNDEBUG` native fixture 只证明核心合同；尚未接 application-main mailbox，也没有 CK3 live 或 planner readiness。下一入口是私有 mailbox/invoker 接线并取得同 build paused live preview，公共 MCP 和动作继续后置。
+
 ## 尚未闭合
 
 - 原版 AI interaction scheduler 的 exact tick 顺序、随机候选抽样、tie-break 与最终概率 draw；
