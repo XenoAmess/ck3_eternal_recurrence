@@ -192,6 +192,37 @@ RTTI 冻结 `CStartActivityCommand`：
 
 最小施工顺序是：先用 HostView RTTI/vtable 把上述两个方法映射到最终 evaluator；在正常只读 planner traversal 上做一次 private capture；解码 stable key 和 copied-value lifetime；最后接入 main-thread query。第一版不得公开 AI candidate raw pointer 或复制 GUI 缓存为长期状态。
 
+#### `activity_planning_snapshot_v1` private observer core
+
+P0 宴会现已有独立、默认关闭的 private observer core：
+`activity_planning_snapshot_v1_private_observer.hpp/.cpp`。它还没有接入共享
+bridge、公共 schema 或 MCP。native binder 必须在 application-main 的暂停帧内提供一次
+transient capture session；core 在 session 释放前深拷贝 stable key、地点 ID、地点权重、
+selected option/intent/invite-rule key 和配置费用数值，并在释放后重读 frame/owner。
+前后 revision、date 或 owner 任一变化都会使整个结果成为 `frame_changed`，不会发布混帧快照。
+
+这个 private 合同明确区分三类来源：
+
+- `can_plan_final` 只有来源为 `host_view_final_can_plan` 时才可标记 known；目录可见性、
+  脚本摘要、AI score 或 tooltip 文本都不能替代最终 `CanPlanActivity` 判定；
+- 地点候选只有完整的 `native_legal_location_collection` 才会进入
+  `candidate_inputs_ready`；每行只保存 stable location ID/key、原生权重与 typed selectable；
+- 费用只有 `native_authoritative_configured_cost` 才会进入
+  `configured_cost_ready`；`ui_predicted_cost` 输入会被拒绝，避免把粗略 UI 估算当成
+  commit-time 配置费用。
+
+尚未闭合的字段不会用默认 `false`、空 key 或长期 `null` 冒充观测结果。每个 bool、
+integer、text 或 collection 都携带 `known/unknown` 状态；unknown 必须携带具体 reason，
+例如 `native_final_evaluator_unresolved`、`native_candidate_collection_unresolved` 或
+`native_configured_cost_unresolved`。输出结构使用固定容量 copied values，类型层面不保存
+native pointer；private JSON 也固定声明 `raw_pointer_fields_persisted=false`。
+
+独立 normal/optimized 测试覆盖 exact-build/default-off、完整宴会输入深拷贝、known-false
+与 typed-unknown 区分、final evaluator 来源门、`ui_predicted_cost` 拒绝、候选完整性、
+帧漂移及 capture session 释放。当前状态仍是 `static-ready private core`：ACTIVITY1 冻结的
+HostView 最终 evaluator RVA、stable-key/native collection binder 和 paused live artifact
+仍未闭合，所以不能宣称 public query、production-live 或 action-ready。
+
 ### Action：`start_activity_v1`
 
 Observer live GREEN 后复用 `CStartActivityCommand`：
