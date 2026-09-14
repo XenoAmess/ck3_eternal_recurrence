@@ -1643,3 +1643,9 @@ one recommendation, one action and the bounded postwar/cold-restore checks.
   `8506B83C...2616`, source inputs are unchanged and cleanup is GREEN.
 - G2-M2 now has `1/3` required production material event loops. Global G2 stays
   `1/8`; two target loops remain and no dedicated event long-run is authorized.
+
+## G2-M2 bounded horizon REDs and replay cutoff (2026-09-14)
+
+- R665-R670 exercised only the short, frozen R555-to-`tgp_travel_events.0030` trajectory. Each run stopped before the target action and preserved its RED. The runner fixes produced by these facts are separately committed through `89ae41f`; the latest report SHA-256 is `79FB89A4...ED3B`.
+- R670 submitted only `set-speed-1`, did not observe its state within the bounded ten-second window, and therefore sent no resume, event query, or selection. Source integrity and process cleanup are GREEN. This is a harness/runtime-materialization RED, not a gameplay success.
+- The old R555 source is removed from the active retry queue. `tgp_travel_events.0030` remains pending for a new near-event encounter. R374's nearest pre-`death_management.1007` autosave is about 231 game days earlier, so `.1007` material stress proof also remains encounter-driven. No dedicated single-event long run is authorized. G2-M2 remains `1/3` and global G2 remains `1/8`.

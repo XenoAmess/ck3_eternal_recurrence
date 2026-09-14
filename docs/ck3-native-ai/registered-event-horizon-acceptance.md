@@ -36,3 +36,9 @@ GREEN 必须同时证明：
 - 目标选项只提交一次，event instance 前进，material comparator 观测到真实变化；
 - successor checkpoint 落盘、source 不变、CK3 cleanup GREEN；
 - 完整 native command delta 与实际允许的 resume/pause/query/select/save 序列一致。
+
+## R670 disposition
+
+R670 exposed one more bounded runtime condition on the unchanged source: `set-speed-1` was submitted, but speed one did not materialize within ten seconds. The runner sent no resume, query, or option selection. Source integrity and cleanup are GREEN. The report is `Z:\ck3_mod_rewrite_process_assets\g2-m2-r670-tgp0030-material-89ae41f\report.json`, SHA-256 `79FB89A4D28AF6841BBBC60C70A30CA469D550FB988FF374280D56F7FC5ED3B0`.
+
+The old R555 timeline is removed from the active retry queue. `tgp_travel_events.0030` remains pending for a new near-event encounter; R665-R670 remain harness RED and do not change its live status.
