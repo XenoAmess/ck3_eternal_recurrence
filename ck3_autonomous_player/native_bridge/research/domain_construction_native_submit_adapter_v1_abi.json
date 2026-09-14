@@ -1,0 +1,95 @@
+{
+  "contract": "g2-domain-construction-native-submit-adapter-v1",
+  "schema_version": 1,
+  "status": "static-ready-private-construction-native-submit-adapter-unwired",
+  "upstream_private_contract": "g2-domain-construction-semantic-action-core-v1",
+  "exact_build": {
+    "product_version": "1.19.0.6",
+    "executable_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+    "executable_size": 95206008,
+    "image_base": "0x140000000"
+  },
+  "command_context": {
+    "building_in_holding": {
+      "candidate_id": "building:<holding_province_id>:<candidate_selector>:<building_type_id>",
+      "native_fields": [
+        "actor_or_holder_id at command+0x20",
+        "holding_province_id at command+0x24",
+        "candidate_selector at command+0x28",
+        "building_type_id at command+0x2C"
+      ],
+      "validator_rva": "0x26CD410"
+    },
+    "new_holding": {
+      "candidate_id": "holding:<candidate_province_id>:<candidate_selector>",
+      "native_fields": [
+        "actor_or_holder_id at command+0x20",
+        "candidate_selector at command+0x24",
+        "borrowed candidate native object at command+0x28"
+      ],
+      "validator_rva": "0x275C7F0",
+      "borrowed_pointer_persisted": false
+    },
+    "binding_required": [
+      "candidate_id",
+      "candidate_kind",
+      "nonzero even generation",
+      "nonzero proof_epoch",
+      "date_raw"
+    ]
+  },
+  "native_submission": {
+    "application_main_thread_required": true,
+    "exact_build_identity_required": true,
+    "maximum_executor_calls_per_state": 1,
+    "maximum_validator_calls": 1,
+    "maximum_materialize_calls": 1,
+    "maximum_receiver_calls": 1,
+    "receiver_rva": "0x341D990",
+    "receiver_flags": 7,
+    "receiver_true_meaning": "command ownership accepted into receiver queue; pending ACK only",
+    "receiver_sequence_source": "receiver+0x3EC copied to command+0x0C before queue insertion",
+    "receiver_true_is_applied": false,
+    "lifecycle": "heap command is moved from materialization wrapper to transfer holder, then moved or destroyed and zeroed by receiver; caller destroys only a non-null leftover wrapper"
+  },
+  "receipt_source": {
+    "accepted_sources": [
+      "fresh target building state for building_in_holding",
+      "fresh target holding state for new_holding",
+      "fresh exact eight-slot resource deduction"
+    ],
+    "fresh_binding": "strictly newer even generation and proof_epoch, non-older date, matching identity and receiver sequence",
+    "ack_without_fresh_evidence": "remain pending_receipt",
+    "queue_callback_claimed_as_applied": false
+  },
+  "executor_boundary": {
+    "offline_callback_allowed_for_standalone_test": true,
+    "offline_callback_can_claim_production": false,
+    "adapter_can_set_production_native_path": false,
+    "production_executor_requirement": "future shared wiring must replace the offline executor boundary with an exact-build application-main executor; DEV19 state remains non-production",
+    "production_executor_wired": false
+  },
+  "readiness": {
+    "pointer_free_command_context_ready": true,
+    "building_and_new_holding_validator_contract_ready": true,
+    "receiver_queue_lifecycle_contract_ready": true,
+    "single_submit_pending_ack_state_ready": true,
+    "fresh_receipt_source_adapter_ready": true,
+    "exact_spans_ready": true,
+    "normal_optimized_w4_wx_ready": true,
+    "production_executor_wired": false,
+    "public_action_ready": false,
+    "production_live_acceptance_ready": false
+  },
+  "scope": {
+    "private_research_only": true,
+    "shared_cmake_modified": false,
+    "shared_bridge_modified": false,
+    "public_schema_modified": false,
+    "mcp_modified": false,
+    "ck3_started": false
+  },
+  "r687_boundary": "R687 remains BOUNDED_NO_GO. DEV19 is exact-build static/private and submitted no CK3 command.",
+  "unique_next_integration_entry": "bind_exact_construction_native_executor_on_application_main_then_validate_in_new_ck3_round",
+  "evidence_limit": "Exact spans and standalone tests close the private command/validator/receiver/lifecycle/receipt contract. The executor callback used in tests is explicitly offline, cannot set production_native_path, and supplies no production or live proof."
+}

@@ -1,0 +1,132 @@
+{
+  "contract": "g2-domain-construction-native-submit-adapter-v1-source-contract",
+  "schema_version": 1,
+  "status": "static-ready-private-construction-native-submit-adapter-unwired",
+  "exact_build": {
+    "product_version": "1.19.0.6",
+    "executable_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+    "executable_size": 95206008,
+    "image_base": "0x140000000"
+  },
+  "implementation": {
+    "header": "research/domain_construction_native_submit_adapter_v1.hpp",
+    "source": "research/domain_construction_native_submit_adapter_v1.cpp",
+    "test": "research/domain_construction_native_submit_adapter_v1_test.cpp",
+    "runner": "research/run_domain_construction_native_submit_adapter_v1_tests.py"
+  },
+  "required_header_tokens": [
+    "kDomainConstructionBuildingValidatorRvaV1",
+    "kDomainConstructionHoldingValidatorRvaV1",
+    "kDomainConstructionReceiverRvaV1",
+    "DomainConstructionNativeCommandContextV1",
+    "DomainConstructionTransientNativeSubmitContextV1",
+    "DomainConstructionNativeExecutionTraceV1",
+    "DomainConstructionNativeReceiptSourceV1",
+    "BeginDomainConstructionNativeSubmitV1",
+    "ObserveDomainConstructionNativeReceiptV1"
+  ],
+  "required_source_tokens": [
+    "ParseBuildingIdentity",
+    "ParseHoldingIdentity",
+    "exact_build_identity_matches",
+    "application_main_thread",
+    "validator_call_count != 1U",
+    "materialize_call_count != 1U",
+    "receiver_call_count != 1U",
+    "leftover_wrapper_lifecycle_complete",
+    "executor_call_count",
+    "pending_receipt",
+    "ObserveDomainConstructionFreshReceiptV1"
+  ],
+  "required_test_tokens": [
+    "TestBuildingContextAndExactlyOnePendingAck",
+    "TestNewHoldingContextAndFreshHoldingReceipt",
+    "TestAckCannotMasqueradeAsApplied",
+    "TestTypedPreSubmitAndNativeStageFailures",
+    "TestOfflineCallbackCannotClaimProduction"
+  ],
+  "required_runner_tokens": [
+    "/W4",
+    "/WX",
+    "/Od",
+    "/O2",
+    "domain-construction-native-submit-adapter-{mode}: GREEN_W4WX"
+  ],
+  "exact_spans": [
+    {
+      "name": "building_command_context_and_validator",
+      "rva": "0x18D29A0",
+      "size": 123,
+      "sha256": "AD877181C745D0E6E52B481F35B7A6884E1AB2BBC874076D162353A22C919288",
+      "hex": "8B4F10418B4618C6442438004C8964243C4489642444488D1593C6A5024889542430488D151FC7A502488954244889442450894C24548B75F089742458488B4DE08B41108944245C488B01FF1084C0746B488B07488BCFFF503084C0745E33D2488D4C2430E806AADF0084C0744EF6056BFAE803FD0F8553010000"
+    },
+    {
+      "name": "building_materialize_and_receiver",
+      "rva": "0x18D2A1B",
+      "size": 61,
+      "sha256": "E4966704C7C3AAA24AB3C2A9E94D878AF88EC9AA7B9085579068B65E686CFDAB",
+      "hex": "488B442430488D95E80A0000488D4C2430FF504090488B084C892048898DE00A000041B807000000488D95E00A0000488D0D9FF7E803E83AAFB40190E9"
+    },
+    {
+      "name": "new_holding_command_context_and_validator",
+      "rva": "0x18D2A5C",
+      "size": 191,
+      "sha256": "5DFFFD3C8C63B39C527A6A199427036762C3ED580CAFDA18D75285B43D4C942F",
+      "hex": "498B86C00100004885C074068B98400A0000C6442438004C8964243C4489642444488D05A406A6024889442430488D05D005A6024889442448895C245089742454488B4DE848894C2458488B01FF1084C00F84BB0000004C8B05DEA1E3034D85C0742A8B4424508BC881E1FFFFFF00413B482C73188BD14803D2498B4820488B4CD1084885C974053941087407488B0D68A1E303C7442428020000004C896424204533C94C8B4424588B542454E8E29CE80084C0745CF60567F9E803FD7553"
+    },
+    {
+      "name": "new_holding_materialize_and_receiver",
+      "rva": "0x18D2B1B",
+      "size": 60,
+      "sha256": "F806D6C7E3BBF846FD6A6E1246AC915EAC8DAD619CDD64C58577F046F0C10A0B",
+      "hex": "488B442430488D95E80A0000488D4C2430FF504090488B084C892048898DE00A000041B807000000488D95E00A0000488D0D9FF6E803E83AAEB40190"
+    },
+    {
+      "name": "common_leftover_wrapper_lifecycle",
+      "rva": "0x18D2B57",
+      "size": 23,
+      "sha256": "FD618A090B775409004A7074A907157B1F1B2E19D5D6688B6D5CBEB0A7DD8160",
+      "hex": "488B8DE80A00004885C9740B488B01BA01000000FF1090"
+    },
+    {
+      "name": "receiver_queue_and_ownership_lifecycle",
+      "rva": "0x341D990",
+      "size": 250,
+      "sha256": "28AC1C7F76E546A569234B3B1C05ED2746F364EF2FC61450AC13A95681E5650A",
+      "hex": "4C894C242048895424105356574883EC20418BD8488BFA488BF1418BC0C1E803A8017407488B0280480820488B89D80300004885C97408488B12E8518001000FB6C32401488B0F80BE9A02000000743684C075320FB651080FB6C224063C067425F6C20875204885C9740A488B01BA01000000FF1048C7070000000032C04883C4205F5E5BC38B86EC03000089410C488BB6D0030000C1EB0280E301488B0748C7070000000048894424587423488D4E78FF15214CBB00488D542458488BCEE87C7A3FFD488D4E78FF15FA4BBB00EB0E488D542458488BCEE8637A3FFD90488B0F4885C9740A488B01BA01000000FF10B0014883C4205F5E5BC3"
+    },
+    {
+      "name": "building_native_final_validator",
+      "rva": "0x26CD410",
+      "size": 156,
+      "sha256": "C4F31A0A14151172DA2D810B007F48A75C77FFB4ACB3FCCC0B998C48B7C4612D",
+      "hex": "48895C2408574883EC304C8B050FED0303488BFA488BD94D85C074288B51208BC225FFFFFF00413B402C73188BC8498B40204803C9488B4CC8084885C974053951187407488B0DDDEC0303488B41104883C110FF500884C0750B488B5C24404883C4305FC3E8D67219FE8B532C488BC8E8CB3A0000448B4B284C8BC08B53248B4B2048897C2428C644242001E8BFF82800488B5C24404883C4305FC3"
+    },
+    {
+      "name": "new_holding_native_final_validator_entry",
+      "rva": "0x275C7F0",
+      "size": 155,
+      "sha256": "F17C80FC5EFECC6788E9A3D195FFFFD5BAC4FC14EFC79924956879D71B0EEACC",
+      "hex": "48895C2410488974241848897C2420554154415541564157488DAC2480FEFFFF4881EC80020000498BD9498BF8448BEA488BF14533F64489B5B0010000488B01FF500884C075234885DB0F845B060000458D4613488D15E5CBBD01488BCBE8CDE90BFE32C0E947060000488B07488BCFFF1084C075254885DB0F842C06000041B818000000488D153CCBBD01488BCBE89CE90BFE32C0E916060000"
+    }
+  ],
+  "direct_call_targets": [
+    {"span": "building validator", "call_rva": "0x18D2A05", "target_rva": "0x26CD410"},
+    {"span": "building receiver", "call_rva": "0x18D2A51", "target_rva": "0x341D990"},
+    {"span": "new holding validator", "call_rva": "0x18D2B09", "target_rva": "0x275C7F0"},
+    {"span": "new holding receiver", "call_rva": "0x18D2B51", "target_rva": "0x341D990"},
+    {"span": "building final legality", "call_rva": "0x26CD49C", "target_rva": "0x295CD60"},
+    {"span": "receiver pre-hook", "call_rva": "0x341D9CA", "target_rva": "0x3435A20"},
+    {"span": "receiver locked queue insert", "call_rva": "0x341DA4F", "target_rva": "0x8154D0"},
+    {"span": "receiver direct queue insert", "call_rva": "0x341DA68", "target_rva": "0x8154D0"}
+  ],
+  "semantic_assertions": {
+    "receiver_true_is_pending_ack_only": true,
+    "ack_is_application_success": false,
+    "raw_pointer_fields_persisted": false,
+    "offline_callback_can_claim_production": false,
+    "adapter_can_set_production_native_path": false,
+    "exactly_once_submit_guarded_by_state": true,
+    "fresh_receipt_required": true
+  }
+}

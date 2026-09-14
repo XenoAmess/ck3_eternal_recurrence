@@ -27,6 +27,10 @@
 - **[DEV18 static-ready private action core]** 私有 construction semantic action core 已能双采样筛选 DEV17 的 available/actionable
   building 与 new-holding 候选，以 candidate ID 确定性选一项并只 submit 一次。accepted ACK 只进入 `pending_receipt`；必须由 fresh
   receipt 证明匹配目标状态或八槽资源精确扣减后才能成为 `applied`。该核心尚未接入 shared action/bridge。
+- **[DEV19 static-ready private native-submit adapter]** `static-ready-private-construction-native-submit-adapter-unwired`
+  已冻结 building/new-holding 的 command context、两个 final validator、materialize/ownership、`0x341D990` receiver queue 和
+  fresh receipt source。receiver 返回 true 只形成 pending ACK；offline executor fixture 不能声明 production。exact native executor
+  仍未接入 application-main，未产生 CK3 命令。
 - **[static-confirmed cadence boundary]** `CDailyTickCommand` final stage `0x26D3E80` 每次完成日更时调用一次
   `CAIManager` update `0x18876D0`，建设 runtime entry 位于该 pass 的内部列表路由。每条通过 raw gates 的 runtime entry
   调用 producer 恰好一次；全局每日至少/至多命中多少个 owner、存钱目标何时重试仍未闭合，不能写成“每个角色每天必建”或
@@ -567,6 +571,33 @@ research 私有核心；没有修改 shared CMake、bridge、schema 或 MCP，�
 `BOUNDED_NO_GO` 不变。下一唯一入口为
 `wire_private_construction_semantic_action_core_after_live_candidate_collector`，须在 DEV17 live collector 接线并取得真实 available candidate
 之后执行。
+
+### DEV19-CONSTRUCTION-NATIVE-SUBMIT：exact command、receiver 与 receipt 边界
+
+状态为 `static-ready-private-construction-native-submit-adapter-unwired`。DEV19 从 DEV18 的 pointer-free semantic request 解析两种
+确定形状，并逐项绑定 candidate ID/kind、非零偶数 generation、非零 proof epoch 和 date；observed binding 有任何漂移都在 native
+executor 前失败。已有 holding 的 building command 在 `0x18D29A0..0x18D2A1B` 构造：command `+0x20/+0x24/+0x28/+0x2C`
+依次承载 actor/holder identity、holding/province identity、candidate selector 和 building-type identity，随后调用
+`0x26CD410` final validator。新 holding command 在 `0x18D2A5C..0x18D2B1B` 构造：`+0x20/+0x24` 保存 actor/holder identity 和
+selector，`+0x28` 只在同步调用期借用 candidate native object，随后调用 `0x275C7F0`。持久化 command context 不保存该指针。
+
+validator 通过后，两条路径都通过 command vtable `+0x40` materialize heap command，把 ownership 从 wrapper 移入 transfer holder，
+以固定 flags `7` 调用 `0x341D990`。receiver 的 exact span `0x341D990..0x341DA8A` 显示：拒绝时销毁 command 并把 holder 清零；
+受理时先把 `[receiver+0x3EC]` 序号写入 command `+0x0C`，再把 command 移入 `[receiver+0x3D0]` 所属 queue，通过
+`0x8154D0` 插入并清理余留 ownership。caller 的 `0x18D2B57..0x18D2B6E` 只销毁仍非空的 wrapper。因而 receiver 的 bool/sequence
+只能解释为“本次 command 已受理入队”的 pending ACK，不能解释为 building/holding 已创建。
+
+private adapter 对每个 state 最多调用 executor 一次，并要求 execution trace 中 validator、materialize、receiver 各恰好一次，ownership
+holder 已清零且 leftover wrapper 生命周期闭合。standalone runner 的 callback 明确是 `offline_fixture`；即使 fixture 自称使用 exact
+地址，也无法把 state 标为 `production_native_path`。生产路径还必须由 exact-build application-main executor 使用本合同地址完成绑定；
+本包没有用 callback seam 或 `unknown` 冒充 production。
+
+receipt source 复用 DEV18 的 fresh verifier。accepted queue ACK 后仍停在 `pending_receipt`，只有同 identity 与 receiver sequence、严格
+更新的偶数 generation/proof epoch、非更旧 date，并观察到匹配 target building、匹配 target holding 或八槽余额精确扣减之一，才进入
+`applied`。ACK、queue callback、stale binding 或没有状态/资源证据都不能关闭动作。normal/optimized `/W4 /WX` standalone 与 exact-span
+normal/`-O` 验证均为 GREEN；实现仅新增 private research adapter/test/ABI/source contract 和本专题增量，没有修改 shared CMake、
+bridge、schema 或 MCP，没有启动 CK3。R687 的 `BOUNDED_NO_GO` 不变。下一入口为
+`bind_exact_construction_native_executor_on_application_main_then_validate_in_new_ck3_round`。
 
 ## 最小只读输入合同：`domain-construction-candidates-v1`
 
