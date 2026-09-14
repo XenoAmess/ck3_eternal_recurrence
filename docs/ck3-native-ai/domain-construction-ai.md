@@ -24,6 +24,9 @@
   和双采样 publication core 已实现：它能从 exact application-main collector frame 的借用地址同步复制并发布真正
   `available=true` 的 pointer-free 候选，所有 identity/binding/branch/payload 漂移保留旧 generation 并产生 typed RED。该核心尚未
   接入 shared default-off collector，也没有 production live capture。
+- **[DEV18 static-ready private action core]** 私有 construction semantic action core 已能双采样筛选 DEV17 的 available/actionable
+  building 与 new-holding 候选，以 candidate ID 确定性选一项并只 submit 一次。accepted ACK 只进入 `pending_receipt`；必须由 fresh
+  receipt 证明匹配目标状态或八槽资源精确扣减后才能成为 `applied`。该核心尚未接入 shared action/bridge。
 - **[static-confirmed cadence boundary]** `CDailyTickCommand` final stage `0x26D3E80` 每次完成日更时调用一次
   `CAIManager` update `0x18876D0`，建设 runtime entry 位于该 pass 的内部列表路由。每条通过 raw gates 的 runtime entry
   调用 producer 恰好一次；全局每日至少/至多命中多少个 owner、存钱目标何时重试仍未闭合，不能写成“每个角色每天必建”或
@@ -536,8 +539,34 @@ fixture 覆盖 actionable available、资金不足但 available、五类必要 d
 
 本包仅新增 `native_bridge/research/` 私有 adapter/observer/ABI/source contract/fixture/standalone tests 和本专题增量，没有修改 shared
 CMake、bridge、schema 或 MCP，没有启动 CK3。R687 仍为 `BOUNDED_NO_GO`，offline source-memory fixture 也不计作 production live。
-下一唯一集成入口为 `wire_private_cost_legality_live_observer_into_default_off_exact_application_main_collector`；只有接线后的获授权新轮次
-取得 paired application-main capture，才能提升相应 live readiness。
+DEV17 observer 的下一集成入口仍为 `wire_private_cost_legality_live_observer_into_default_off_exact_application_main_collector`；只有接线后的
+获授权新轮次取得 paired application-main capture，才能提升相应 live readiness。DEV18 已独立完成其下游 private action core，不能
+反向替代这个 live 前置。
+
+### DEV18-CONSTRUCTION-ACTION-CORE：确定性单次提交与 fresh receipt
+
+状态为 `static-ready-private-construction-semantic-action-core-unwired`。输入是两份完整 candidate publication sample。每份 row 必须
+`available && ready && actionable && native_affordable && native_final_legal`，且无 rejection/unavailable；known native rejection 仍
+保留在输入中供观察，但不进入提交候选。两个 sample 按 pointer-free `candidate_id` 排序，并逐项核对 building/new-holding kind、
+publication/candidate generation、proof epoch、date、八槽 cost、八槽 resource balance、affordability 和 native-final 结果。缺项、重复
+identity 或任一漂移都在 submit 前失败。
+
+通过双采样的 actionable rows 以 `candidate_id` 字典序稳定排序并选第一项。因此输入枚举顺序不影响结果，且 building 与 new holding
+走同一选择合同。semantic request 复制 candidate ID/kind/binding/cost/resource-before，不保存 publication 或进程指针。一个 action state
+只允许调用 submit callback 一次；transport 失败或 rejected/zero ACK 进入明确失败态，accepted ACK 只记录 token 并进入
+`pending_receipt`，`applied` 仍为 false，再次调用 begin 不会产生第二次 submit。
+
+receipt 必须匹配 ACK token、candidate ID 和 kind，并携带严格更新的非零偶数 generation、严格更新的 proof epoch 以及不早于提交时的
+date。fresh receipt 只有满足以下任一证据才进入 `applied`：building 候选观察到匹配 target building 状态；new-holding 候选观察到匹配
+target holding 状态；或八槽余额全部可读，所有正成本槽恰好减少相应 raw cost，零/负成本槽保持不变。仅有 ACK、stale receipt、错误
+identity、未观察目标且资源没有精确扣减时都继续停在 pending，不能冒充成功。
+
+standalone fixture 覆盖乱序候选的确定选择、known rejection 排除、single submit、ACK pending、stale receipt、building target receipt、
+new-holding exact-resource receipt，以及 identity/generation/proof/date/cost/resource/native-final 双采样漂移。normal/optimized runner 只编译
+research 私有核心；没有修改 shared CMake、bridge、schema 或 MCP，没有启动 CK3，也没有产生真实命令 ACK/receipt。R687 的
+`BOUNDED_NO_GO` 不变。下一唯一入口为
+`wire_private_construction_semantic_action_core_after_live_candidate_collector`，须在 DEV17 live collector 接线并取得真实 available candidate
+之后执行。
 
 ## 最小只读输入合同：`domain-construction-candidates-v1`
 

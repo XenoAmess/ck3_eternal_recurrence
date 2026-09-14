@@ -1,0 +1,62 @@
+{
+  "schema_version": 1,
+  "contract": "g2-domain-construction-semantic-action-core-v1",
+  "status": "offline-deterministic-action-fixture",
+  "offline_fixture": true,
+  "ck3_submit_performed": false,
+  "cases": [
+    {
+      "case": "deterministic_building_single_submit",
+      "first_sample_order": ["holding:867:3", "holding:900:1", "building:17:4:16777258"],
+      "second_sample_order": ["building:17:4:16777258", "holding:867:3", "holding:900:1"],
+      "known_rejected_candidate": "holding:900:1",
+      "expected": {
+        "selected": "building:17:4:16777258",
+        "submit_calls": 1,
+        "ack_received": true,
+        "phase_after_ack": "pending_receipt",
+        "applied_after_ack": false
+      }
+    },
+    {
+      "case": "fresh_target_state_receipt",
+      "submitted_binding": {"generation": 42, "proof_epoch": 91, "date_raw": 777},
+      "receipt_binding": {"generation": 44, "proof_epoch": 92, "date_raw": 777},
+      "target_building_state_observed": true,
+      "expected": {"phase": "applied", "applied": true}
+    },
+    {
+      "case": "fresh_exact_resource_receipt",
+      "candidate": "holding:867:3",
+      "cost_raw": [20, 0, -1, 0, 0, 0, 0, 0],
+      "resource_balance_before": [200, 0, 9, 0, 0, 0, 0, 0],
+      "resource_balance_after": [180, 0, 9, 0, 0, 0, 0, 0],
+      "expected": {"phase": "applied", "applied": true}
+    },
+    {
+      "case": "ack_and_nonexact_receipt_not_success",
+      "ack_received": true,
+      "target_state_observed": false,
+      "resource_balance_before": [200, 0, 9, 0, 0, 0, 0, 0],
+      "resource_balance_after": [200, 0, 9, 0, 0, 0, 0, 0],
+      "expected": {
+        "phase": "pending_receipt",
+        "applied": false,
+        "receipt_failure": "evidence_missing"
+      }
+    },
+    {
+      "case": "double_sample_drift_before_submit",
+      "typed_failures_covered": [
+        "identity_drift",
+        "generation_drift",
+        "proof_epoch_drift",
+        "date_drift",
+        "cost_drift",
+        "resource_drift",
+        "native_final_drift"
+      ],
+      "expected": {"submit_calls": 0, "applied": false}
+    }
+  ]
+}

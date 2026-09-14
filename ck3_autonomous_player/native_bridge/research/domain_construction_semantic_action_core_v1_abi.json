@@ -1,0 +1,85 @@
+{
+  "contract": "g2-domain-construction-semantic-action-core-v1",
+  "schema_version": 1,
+  "status": "static-ready-private-construction-semantic-action-core-unwired",
+  "upstream_private_contract": "g2-domain-construction-cost-legality-live-observer-v1",
+  "input": {
+    "samples": 2,
+    "candidate_requirements": [
+      "publication available with nonzero even publication_generation",
+      "candidate ready and actionable",
+      "native affordability and native-final legality true",
+      "no typed rejection or unavailable result",
+      "candidate binding generation nonzero and even",
+      "candidate proof_epoch nonzero"
+    ],
+    "double_sample_equal_fields": [
+      "candidate_id and building/new-holding kind",
+      "publication and candidate generation",
+      "proof_epoch",
+      "date_raw",
+      "all eight cost slots and affordability results",
+      "all eight resource balance slots",
+      "native-final legality, rejection and actionable result"
+    ],
+    "known_rejected_candidates": "available but non-actionable candidates remain observable and are excluded from submission"
+  },
+  "selection": {
+    "algorithm": "sort actionable candidates by pointer-free candidate_id and choose the lexicographically first row",
+    "deterministic": true,
+    "duplicate_identity": "typed selection failure",
+    "sample_drift": "typed selection failure before submit"
+  },
+  "submission": {
+    "semantic_request": [
+      "candidate_id",
+      "candidate_kind",
+      "generation",
+      "proof_epoch",
+      "date_raw",
+      "cost_raw[8]",
+      "resource_balance_before[8]"
+    ],
+    "maximum_submit_calls_per_state": 1,
+    "accepted_ack_phase": "pending_receipt",
+    "ack_is_success": false,
+    "zero_or_rejected_ack": "submit_rejected"
+  },
+  "fresh_receipt": {
+    "binding": [
+      "generation is nonzero, even and strictly newer",
+      "proof_epoch is strictly newer",
+      "date_raw is not older",
+      "ack token, candidate_id and candidate_kind match"
+    ],
+    "success_evidence_any": [
+      "matching target building state observed for a building candidate",
+      "matching target holding state observed for a new-holding candidate",
+      "all eight resource balances observed with exact positive-cost deduction and nonpositive slots unchanged"
+    ],
+    "missing_or_stale_evidence": "remain pending_receipt; never promote ACK to applied"
+  },
+  "readiness": {
+    "deterministic_double_sample_selection_ready": true,
+    "building_candidate_ready": true,
+    "new_holding_candidate_ready": true,
+    "single_submit_ready": true,
+    "pending_ack_boundary_ready": true,
+    "fresh_target_state_receipt_ready": true,
+    "fresh_exact_resource_receipt_ready": true,
+    "shared_action_wiring_ready": false,
+    "public_action_ready": false,
+    "production_live_acceptance_ready": false
+  },
+  "scope": {
+    "private_research_only": true,
+    "shared_cmake_modified": false,
+    "shared_bridge_modified": false,
+    "public_schema_modified": false,
+    "mcp_modified": false,
+    "ck3_started": false
+  },
+  "r687_boundary": "R687 remains BOUNDED_NO_GO and supplied no construction candidate. DEV18 is an offline-tested private action core and does not claim a submit or receipt from CK3.",
+  "unique_next_integration_entry": "wire_private_construction_semantic_action_core_after_live_candidate_collector",
+  "evidence_limit": "Standalone fixtures prove deterministic selection, one submit, ACK-as-pending and fresh receipt verification. No CK3 command was submitted, no target construction state was observed live, and no public action is registered."
+}
