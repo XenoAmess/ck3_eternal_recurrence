@@ -276,10 +276,6 @@ rqa_enter_chaos_effect = {
 					save_scope_as = rqa_current_movement
 				}
 				set_variable = {
-					name = movement_member
-					value = scope:rqa_current_movement
-				}
-				set_variable = {
 					name = former_movement_member
 					value = scope:rqa_current_movement
 				}

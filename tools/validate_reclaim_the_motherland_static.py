@@ -193,7 +193,6 @@ def validate() -> list[str]:
         errors.append(f"duplicate common definitions: {duplicate_definitions}")
     allowed_vanilla_overrides = {
         "offer_vassalization_interaction",
-        "on_death",
         "on_game_start_after_lobby",
         "situation_dynastic_cycle_claim_mandate_decision",
         "tgp_has_access_to_ministry_trigger",
@@ -222,9 +221,7 @@ def validate() -> list[str]:
         "situation_dynastic_cycle_claim_mandate_decision",
         "rmtm_chaos_shattering_effect",
         "rmtm_finalize_restoration_hegemony_effect",
-        "rmtm_handoff_restoration_hegemony_on_death_effect",
         "rmtm_migrate_restoration_hegemonies_effect",
-        "rmtm_on_death",
         "rmtm_on_game_start",
         "offer_vassalization_interaction",
         "tgp_has_access_to_ministry_trigger",
@@ -302,6 +299,7 @@ def validate() -> list[str]:
         "create_dynamic_title = {",
         "tier = hegemony",
         "add_title_law = single_heir_succession_law",
+        "set_destroy_if_invalid_heir = yes",
         "set_global_variable = {",
         "name = rmtm_ministry_entitlement_title",
         "name = rmtm_restoration_hegemony",

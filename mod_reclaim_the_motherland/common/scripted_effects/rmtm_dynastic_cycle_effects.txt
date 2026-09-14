@@ -22,6 +22,11 @@ rmtm_create_restoration_hegemony_effect = {
 		set_capital_county = scope:old_emperor_temp.capital_county
 		set_color_from_title = title:h_china
 		set_coa = title:h_china
+		# Vanilla uses this together with always_follows_primary_heir for
+		# empty-de-jure titular offices (notably temporal heads of faith). It
+		# makes the title follow its valid calculated heir instead of falling
+		# through the ordinary empty-title destruction path.
+		set_destroy_if_invalid_heir = yes
 		set_delete_on_destroy = yes
 		set_no_automatic_claims = yes
 		set_definitive_form = yes
@@ -652,6 +657,7 @@ rmtm_migrate_restoration_hegemonies_effect = {
 					add_title_law = single_heir_succession_law
 				}
 				set_always_follows_primary_heir = yes
+				set_destroy_if_invalid_heir = yes
 				if = {
 					limit = {
 						NOT = { exists = global_var:rmtm_ministry_entitlement_title }
