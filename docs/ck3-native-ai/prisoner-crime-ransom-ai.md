@@ -258,18 +258,39 @@ MSVC x64 C++20 的独立测试在 /Od /W4 /WX 与 /O2 /DNDEBUG /W4 /WX 下都完
 **9/9 GREEN**。这证明 private semantic core 和 standalone fixture；未接 CMake、shared bridge、schema、
 MCP 或 source adapter，也没有启动 CK3。真实 prisoner enumerator 和 paused live artifact 仍待后续工作包。
 
-因此 stock tree、exact-build source/native substrate 和 private semantic core 为 static-ready。
+### PRISONER3 exact-build collector source adapter
+
+**G2-M6-PRISONER3-SOURCE-ADAPTER** 在 `e9652edd` 上增加 private source adapter。它只接受
+1.19.0.6 exact executable SHA、application-main thread 和 paused frame；输入不是 caller 填好的 semantic
+sample，而是每次 callback 序列内有效的 player、prisoner collector 与 prisoner row borrowed memory lease。
+每个 lease 都携带 native address、identity、generation 和 full CharacterID，collector 另携带
+`complete/total_count/row_count`。第二次采样会重新解析所有 lease，不复用第一次地址。
+
+adapter 为每个 row 分别调用 opaque native-final imprisonment/banishment/execution reason、specialized ransom
+preview，以及 unconditional release、execute、move-to-dungeon、move-to-house-arrest、torture finalized preview。
+只有两次完整值样本一致、最后 frame 未漂移且 PRISONER2 core 接受，才发布 value-only snapshot。player、
+collector、prisoner 的 identity 漂移和 generation/lifecycle 漂移都有独立 typed failure；集合截断、count
+不一致、读取失败、final evaluator 失败或 preview 值漂移继续 fail-closed。宗教派生信息不进入 adapter 数据面，
+只允许存在于引擎已经给出的 opaque final boolean 内。
+
+standalone collector-memory fixture 用两名囚犯完成双采样，其中一名 gold ransom 的 native-final 结果为
+`can_send=true`、`would_accept_now=true`；最终 `ransom_candidate_available=true`、`semantic_ready=true`。
+MSVC x64 C++20 在 `/Od /UNDEBUG /W4 /WX` 与 `/O2 /DNDEBUG /W4 /WX` 下均为 **8/8 GREEN**，
+exact-build/source verifier 在 normal 与 `-O` 下均为 **GREEN_STATIC**。这些结果证明 private adapter 到
+semantic core 的静态事务；本包没有接 CMake/shared bridge/schema/MCP，也没有启动 CK3，因此没有
+paused live artifact。生产 DLL 仍需把 exact-build collector 与 final evaluator 实现绑定到这些 callbacks。
+
+因此 stock tree、exact-build source/native substrate、private semantic core 和 private collector source adapter
+为 static-ready。
 paused live artifact 不存在，action 没有设计，public MCP 与 planner 都不 ready；G2 的囚犯/犯罪整项仍不能标
 production-live。已有 pay_ransom 拒绝 loop 继续只作为通用 interaction primitive 证据。
 
 必须继续闭合：
 
-1. Character.GetPrisoners/CourtWindow.GetPrisoners backing method、容器布局、所有权与生命周期；
-2. 完整 prison relation、custody kind 与 imprisonment duration getter；
-3. imprisonment/banishment/execution reasons 的 exact native surface；
-4. ransom 三种角色构造和各 option payload ownership；
-5. gold/current/extortionate/favor/influence/herd/hook 的准确 resource-term vector；
-6. 每种 punishment 的 final consequence/tyranny presentation；
-7. 至少含一名真实囚犯、能得到两类 final result 的自然 paused fixture。
+1. 在生产 DLL 内绑定 Character.GetPrisoners/CourtWindow.GetPrisoners backing method、容器布局与 lease lifecycle；
+2. 把 prison relation、custody、duration 和三类 reason native surface 接到已冻结 callback；
+3. 把 ransom 三种角色、option ownership/resource terms 和 release/punish finalized context 接到 callback；
+4. 为每种 punishment 补 final consequence/tyranny presentation；
+5. 产出至少含一名真实囚犯、能得到两类 final result 的自然 paused fixture。
 
 以上 unknown 是下一轮可施工入口，不是把缺字段长期输出 null 的许可。
