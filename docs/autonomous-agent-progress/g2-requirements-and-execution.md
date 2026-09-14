@@ -459,3 +459,51 @@ may one short new round R679 replay test root publication, partial turn-bundle
 construction and succession-expectation capture. R678 remains RED, the
 optional-component contract is not production-live, and the independent
 natural-death M3 gate remains pending.
+
+## R680 cold-pump RED, FIX3 and R681 bounded GREEN
+
+R680 ran FIX2 commit `324dab573f48b9ab3439a9a0eb0eb1c8edb2478f`
+once under the three-turn ceiling. Its first campaign-root ticket still ended
+`timeout_cancelled_before_execution`: pump epoch stayed `9849 -> 9849`,
+executor starts stayed `0 -> 0`, and executed requests stayed `0 -> 0`. The
+attempt completed `0/1` turns without gameplay or date advance. Probe, run,
+driver and cleanup-inventory SHA-256 are
+`A1E9B898DC5015EE84A64EE57C7DB05CA7B3A6172CE88C64A537424BF082B997`,
+`4C34D4FFD31B18455B640B8B78E956ACF1919CD126AD47FE9E91277C48DC18DD`,
+`FCDB79A80C9A0B431DD5F9C4D986CDE61781770650CF697BBABF2832777619EE`,
+and `F27BCDE1C86F37E60CC900E308CD504352E58A7D1627DB35D156D05827F0611F`.
+
+FIX3 commit `080bc507ee9c2e1c2fa1decd787a3927c15a12e4` requires native
+auto-run to observe a pump epoch newer than the current cold binding baseline
+before it declares readiness. Focused normal and Python `-O` tests pass `2/2`
+in each mode. R681 subsequently completed the typed campaign-root request,
+which proves behaviorally that the fresh-epoch gate passed and the executor
+started and executed. The successful exact epoch values were not serialized
+and are not part of the evidence claim.
+
+R681 completed all `3/3` bounded turns. Campaign root was `available`;
+celestial council was typed `unavailable` with
+`outside_standard_landed_non_nomadic_core_scope`; selected game-rule tokens
+were `[]` with native count `0`, component readiness false and aggregate
+readiness false. The planner consumed the resulting `partial` turn bundle and
+captured successor expectation `32904 -> 88187` for primary county title
+`16761`. Two queries and one `life-advance` advanced the date 30 days from
+`53789952` to `53790672`. Final checkpoint SHA-256 is
+`CDCC3771B1179667ECD017817781B2A93A412EA82EC9455B08EECE170F2FBC61`
+at history index `625`.
+
+The frozen artifact is
+`Z:\ck3_mod_rewrite_process_assets\g2-m3-r681-cold-pump-edge-080bc50`.
+Acceptance, run, final driver-state and cleanup-inventory SHA-256 are
+`2BED139B270AB09C18582AAF67E418E17B012C017A70C0A18BF0830259246B14`,
+`EFBFF36A2C21EB4809396BD1A8FF1899023175C23C52F228CB4CB53403A4C866`,
+`19421B49B2C474C443B1E594759EAA7546411F85209394D51618C7F195F40734`,
+and `086138C344901BFF61A571A7ED96100DBB1E441CB06067BF85FCD9EC0636B2D1`.
+Cleanup is GREEN and CK3/injector are zero.
+
+This closes the mailbox/cold-readiness operational blocker. G2-M3 remains
+`in_progress` and global G2 remains `1/8`. Its only integration gate is one
+bounded naturally encountered exact-build death that reconciles actual
+successor/title distribution against the captured expectation and continues
+in the same campaign as the real successor; no dedicated death long run is
+authorized.

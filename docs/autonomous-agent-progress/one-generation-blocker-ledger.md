@@ -1814,3 +1814,34 @@ remains `1/8` pending one bounded exact-build natural-death artifact.
   optional contract production-live before R679 returns the partial bundle and
   captures the succession expectation; natural death remains a separate M3
   gate.
+
+## G2-M3 mailbox/cold-readiness blocker closed by R681 (2026-09-14)
+
+- R680 showed that FIX2 did not clear the cold paused-pump boundary. Under its
+  single three-turn allowance, the first campaign-root ticket timed out before
+  execution with pump epoch `9849 -> 9849`, executor starts `0 -> 0` and
+  executed requests `0 -> 0`. It completed `0/1` turns with unchanged date and
+  no gameplay. Probe/run/driver/cleanup hashes are `A1E9B898...82B997`,
+  `4C34D4FF...C18DD`, `FCDB79A8...619EE`, and `F27BCDE1...61F1F`.
+- FIX3 commit `080bc507ee9c2e1c2fa1decd787a3927c15a12e4` requires a pump
+  epoch observed after the current cold binding baseline before admitting
+  readiness. R681's completed typed campaign-root result proves this behavioral
+  fresh-epoch gate and executor completion. Successful exact epoch values were
+  not serialized and are not asserted.
+- R681 completed `3/3` bounded turns: campaign root `available`, celestial
+  council typed `unavailable`, selected game-rule tokens empty with readiness
+  false, aggregate readiness false, and a planner-consumed `partial` bundle.
+  It captured succession expectation `32904 -> 88187` for primary title
+  `16761`, advanced 30 days (`53789952 -> 53790672`) and saved checkpoint
+  `CDCC3771B1179667ECD017817781B2A93A412EA82EC9455B08EECE170F2FBC61`.
+- Evidence root is
+  `Z:\ck3_mod_rewrite_process_assets\g2-m3-r681-cold-pump-edge-080bc50`.
+  Acceptance/run/driver/cleanup-inventory hashes are
+  `2BED139B...6B14`, `EFBFF36A...5C866`, `19421B49...40734`, and
+  `086138C3...B2D1`. Cleanup is GREEN and no CK3/injector process remains.
+- **Closure:** mailbox pickup, partial-root publication, partial-bundle
+  consumption and pre-death expectation capture are production-live for this
+  exact build. G2-M3 stays `in_progress`, global G2 stays `1/8`, and the only
+  remaining integration gate is a bounded naturally encountered death that
+  reconciles the actual successor/title distribution and continues in the same
+  campaign as the real successor.
