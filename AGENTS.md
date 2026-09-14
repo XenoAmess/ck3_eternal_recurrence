@@ -73,6 +73,7 @@ py tools/compose_remove_mandala_workshop_media.py --artifacts <run> # GREEN 实�
 py tools/gen_reclaim_the_motherland_title_names.py          # 后朝标准朝号的九语确定性组合 key
 py tools/compose_reclaim_the_motherland_key_art.py          # 重整河山主视觉 → 640×640、低于 1 MB thumbnail
 py tools/compose_tributary_expansion_directives_key_art.py  # 驱策朝贡国主视觉 → 640×640、低于 1 MB thumbnail
+py tools/compose_tributary_expansion_directives_workshop_media.py --artifacts <run> # 驱策朝贡国 GREEN 实机截图 → 一张低于 2 MB JPEG
 py tools/compose_auto_upgrade_buildings_decision_art.py     # 自动升级建筑源图 → 1100×440 DXT1 DDS
 py tools/compose_reclaim_the_motherland_workshop_media.py --artifacts <run> # 开封镜头 GREEN 实机截图 → 三张低于 2 MB JPEG
 py tools/compose_trait_stars.py                             # 10 级特质星标 → 120×120 RGBA DDS
