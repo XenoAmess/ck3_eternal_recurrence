@@ -25,6 +25,10 @@
 #include "xar_bridge/g2_truce_preview_entry_observer_v1.hpp"
 #include "xar_bridge/loaded_feature_manifest_v1_mailbox.hpp"
 #include "xar_bridge/main_thread_query_mailbox_v1.hpp"
+#if defined(XAR_CK3_ENABLE_G2_MILITARY_PREPARATION_SUMMARY_PRIVATE_PROBE_V1)
+#include "xar_bridge/military_preparation_summary_v1_binding.hpp"
+#include "xar_bridge/military_preparation_summary_v1_private_probe.hpp"
+#endif
 #include "xar_bridge/pending_character_interaction_context_v1_mailbox.hpp"
 #include "xar_bridge/phase2_completion_observer_v1.hpp"
 #include "xar_bridge/phase2_post_call_list_identity_observer_v1.hpp"
@@ -258,8 +262,123 @@ static xar::bridge::DomainConstructionCandidateObserverStateV1
 #endif
 static xar::bridge::CouncilCompositionCandidateObserverStateV1
     g_council_composition_candidate_observer_v1{};
+#if defined(XAR_CK3_ENABLE_G2_MILITARY_PREPARATION_SUMMARY_PRIVATE_PROBE_V1)
+static xar::bridge::MilitaryPreparationSummaryBindingStateV1
+    g_military_preparation_summary_binding_v1{};
+static xar::bridge::MilitaryPreparationSummaryPrivateProbeV1
+    g_military_preparation_summary_private_probe_v1{};
+static xar::ck3_11906::MainThreadQueryTicketV1
+    g_military_preparation_summary_private_probe_ticket_v1{};
+static bool g_military_preparation_summary_private_probe_in_flight_v1 = false;
+static std::uint32_t
+    g_military_preparation_summary_private_probe_last_submit_v1 = 0;
+static std::uint32_t
+    g_military_preparation_summary_private_probe_last_wait_v1 = 0;
+#endif
 static xar::bridge::G2TrucePreviewEntryObserverV1State
     g_g2_truce_preview_entry_observer_v1{};
+
+#if defined(XAR_CK3_ENABLE_G2_MILITARY_PREPARATION_SUMMARY_PRIVATE_PROBE_V1)
+bool InitializeMilitaryPreparationSummaryPrivateProbeV1(
+    std::uintptr_t module_base) noexcept {
+  xar::bridge::MilitaryPreparationSummaryEnvironmentV1 core{};
+  core.observer_enabled = true;
+  core.exact_build_admitted = true;
+  core.admitted_executable_sha256 =
+      xar::bridge::kMilitaryPreparationSummaryExecutableSha256V1;
+  core.callback_context =
+      &g_military_preparation_summary_private_probe_v1;
+  core.read_frame =
+      &xar::bridge::ReadMilitaryPreparationSummaryPrivateProbeFrameV1;
+
+  xar::bridge::MilitaryPreparationSummaryBindingEnvironmentV1 binding{};
+  binding.binding_enabled = true;
+  binding.exact_build_admitted = true;
+  binding.admitted_executable_sha256 =
+      xar::bridge::kMilitaryPreparationSummaryExecutableSha256V1;
+  binding.module_base = module_base;
+  if (!xar::bridge::BindMilitaryPreparationSummaryV1(
+          binding, g_military_preparation_summary_binding_v1, core)) {
+    return false;
+  }
+  return xar::bridge::InstallMilitaryPreparationSummaryPrivateProbeV1(
+      g_military_preparation_summary_private_probe_v1, core);
+}
+
+void DriveMilitaryPreparationSummaryPrivateProbeV1(
+    const std::optional<xar::game::Snapshot> &snapshot,
+    std::uint64_t revision) noexcept {
+  auto &probe = g_military_preparation_summary_private_probe_v1;
+  if (!probe.installed || probe.result_published) return;
+
+  if (!g_military_preparation_summary_private_probe_in_flight_v1) {
+    if (!probe.request_prepared) {
+      if (!snapshot.has_value() || revision == 0 ||
+          !snapshot->map_ready || !snapshot->paused ||
+          !snapshot->has_played_character ||
+          snapshot->played_character_id <= 0) {
+        return;
+      }
+      const xar::bridge::MilitaryPreparationFrameIdentityV1 frame{
+          revision, snapshot->date_raw, snapshot->played_character_id, 0,
+          snapshot->paused};
+      if (!xar::bridge::PrepareMilitaryPreparationSummaryPrivateProbeV1(
+              probe, frame, revision)) {
+        return;
+      }
+    }
+    const auto submit = xar::ck3_11906::TrySubmitMainThreadQueryV1(
+        g_main_thread_query_mailbox_v1,
+        &xar::bridge::ExecuteMilitaryPreparationSummaryPrivateProbeV1,
+        &probe, g_military_preparation_summary_private_probe_ticket_v1);
+    g_military_preparation_summary_private_probe_last_submit_v1 =
+        static_cast<std::uint32_t>(submit);
+    if (submit ==
+        xar::ck3_11906::MainThreadQuerySubmitResultV1::submitted) {
+      g_military_preparation_summary_private_probe_in_flight_v1 = true;
+    } else if (submit != xar::ck3_11906::MainThreadQuerySubmitResultV1::
+                             paused_main_thread_not_observed &&
+               submit != xar::ck3_11906::MainThreadQuerySubmitResultV1::
+                             mailbox_busy &&
+               submit != xar::ck3_11906::MainThreadQuerySubmitResultV1::
+                             application_main_not_observed) {
+      (void)xar::bridge::
+          PublishMilitaryPreparationSummaryPrivateProbeFailureV1(
+              probe, xar::bridge::
+                         military_preparation_summary_failure_callbacks);
+    }
+  }
+  if (!g_military_preparation_summary_private_probe_in_flight_v1) return;
+
+  const auto wait = xar::ck3_11906::WaitForMainThreadQueryV1(
+      g_main_thread_query_mailbox_v1,
+      g_military_preparation_summary_private_probe_ticket_v1, 1'000);
+  g_military_preparation_summary_private_probe_last_wait_v1 =
+      static_cast<std::uint32_t>(wait);
+  if (wait == xar::ck3_11906::MainThreadQueryWaitResultV1::
+                  timeout_executor_already_running) {
+    return;
+  }
+  if (wait == xar::ck3_11906::MainThreadQueryWaitResultV1::completed) {
+    (void)xar::bridge::PublishMilitaryPreparationSummaryPrivateProbeV1(
+        probe);
+  } else {
+    (void)xar::bridge::
+        PublishMilitaryPreparationSummaryPrivateProbeFailureV1(
+            probe,
+            wait == xar::ck3_11906::MainThreadQueryWaitResultV1::
+                        infrastructure_failed
+                ? xar::bridge::
+                      military_preparation_summary_failure_frame_changed
+                : xar::bridge::
+                      military_preparation_summary_failure_application_main);
+  }
+  (void)xar::ck3_11906::ReclaimMainThreadQueryV1(
+      g_main_thread_query_mailbox_v1,
+      g_military_preparation_summary_private_probe_ticket_v1);
+  g_military_preparation_summary_private_probe_in_flight_v1 = false;
+}
+#endif
 
 #if defined(XAR_CK3_ENABLE_G2_DOMAIN_CONSTRUCTION_CANDIDATE_OBSERVER_V1)
 bool ReadDomainConstructionCandidateCaptureAdmissionV1(
@@ -693,6 +812,9 @@ std::string HeartbeatFrame(std::uint64_t sequence) {
 #endif
 #if defined(XAR_CK3_ENABLE_COUNCIL_COMPOSITION_CANDIDATE_OBSERVER_V1)
   result += ",\"council_composition_candidate_observer_enabled\":true";
+#endif
+#if defined(XAR_CK3_ENABLE_G2_MILITARY_PREPARATION_SUMMARY_PRIVATE_PROBE_V1)
+  result += ",\"military_preparation_summary_private_probe_enabled\":true";
 #endif
   result += ",\"zhongguo_scoreboard_production_candidate_enabled\":";
   result += xar::ck3_11906::kZhongguoScoreboardProductionCandidateEnabledV1
@@ -1505,6 +1627,25 @@ std::string HeartbeatFrame(std::uint64_t sequence) {
       phase2_producer_identity_observer.selected_last_thread_id,
       phase2_producer_identity_observer.selected_last_timestamp_qpc);
 #undef XAR_APPEND_PHASE2_PRODUCER_HISTOGRAM_FIELD
+#endif
+#if defined(XAR_CK3_ENABLE_G2_MILITARY_PREPARATION_SUMMARY_PRIVATE_PROBE_V1)
+  result += "},\"g2_military_preparation_summary_v1_private_probe\":";
+  auto military_probe_json = xar::bridge::
+      SerializeMilitaryPreparationSummaryPrivateProbeV1(
+          g_military_preparation_summary_private_probe_v1);
+  if (!military_probe_json.empty() && military_probe_json.back() == '}') {
+    military_probe_json.pop_back();
+  }
+  result += military_probe_json;
+  result += ",\"query_in_flight\":";
+  result += g_military_preparation_summary_private_probe_in_flight_v1
+                ? "true"
+                : "false";
+  result += ",\"last_submit_result\":";
+  result += Number(
+      g_military_preparation_summary_private_probe_last_submit_v1);
+  result += ",\"last_wait_result\":";
+  result += Number(g_military_preparation_summary_private_probe_last_wait_v1);
 #endif
 #if defined(XAR_CK3_ENABLE_G2_DOMAIN_CONSTRUCTION_CANDIDATE_OBSERVER_V1)
   result += "},\"g2_domain_construction_candidate_observer_v1\":";
@@ -5442,6 +5583,10 @@ public:
         &xar::ck3_11906::ExecuteZhongguoCompensationAf5MailboxQueryV1;
     environment.permitted_executor_untrigintary =
         &xar::ck3_11906::ExecuteZhongguoWorkforceOwnerMailboxQueryV1;
+#if defined(XAR_CK3_ENABLE_G2_MILITARY_PREPARATION_SUMMARY_PRIVATE_PROBE_V1)
+    environment.permitted_executor_duotrigintary =
+        &xar::bridge::ExecuteMilitaryPreparationSummaryPrivateProbeV1;
+#endif
     environment.permitted_frontend_executor =
         &xar::ck3_11906::ExecuteFrontendGuiRouteMailboxV1;
     installed_ = xar::ck3_11906::InstallMainThreadQueryMailboxV1(
@@ -5851,6 +5996,10 @@ void RunConnectedSession(
           g_coat_of_arms_designer_probe_hook_v1);
       xar::ck3_11906::TryInstallMainThreadFrontendBoundaryHookV1(
           g_main_thread_query_mailbox_v1);
+#if defined(XAR_CK3_ENABLE_G2_MILITARY_PREPARATION_SUMMARY_PRIVATE_PROBE_V1)
+      DriveMilitaryPreparationSummaryPrivateProbeV1(previous_snapshot,
+                                                     state_revision);
+#endif
       ++sequence;
       connected = xar::bridge::WriteFrame(pipe, HeartbeatFrame(sequence));
       if (connected && game.supports_snapshot()) {
@@ -12022,6 +12171,13 @@ DWORD WINAPI WorkerMain(void *) noexcept {
       exact_ck3_build);
   WarEntryApplicationMainMailboxWorkerLifetime mailbox_lifetime(*game);
   mailbox_lifetime.MaybeInstallFrontend();
+#if defined(XAR_CK3_ENABLE_G2_MILITARY_PREPARATION_SUMMARY_PRIVATE_PROBE_V1)
+  if (exact_ck3_build &&
+      !InitializeMilitaryPreparationSummaryPrivateProbeV1(
+          reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr)))) {
+    return 1;
+  }
+#endif
   WorkerState state{};
   state.zhongguo_scoreboard_provider_session_id = NewProviderSessionId();
   while (WaitForSingleObject(g_stop_event, 0) == WAIT_TIMEOUT) {

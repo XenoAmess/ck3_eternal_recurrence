@@ -144,6 +144,12 @@ option(
 )
 
 option(
+  XAR_CK3_ENABLE_G2_MILITARY_PREPARATION_SUMMARY_PRIVATE_PROBE_V1
+  "Run one private exact-build paused military-preparation summary probe"
+  OFF
+)
+
+option(
   XAR_CK3_ENABLE_G2_TRUCE_PREVIEW_ENTRY_OBSERVER_V1
   "Emit private diagnostics for the exact-vtable G2 truce preview observer"
   OFF
@@ -548,6 +554,26 @@ endif()
 if(XAR_CK3_ENABLE_COUNCIL_COMPOSITION_CANDIDATE_OBSERVER_V1)
   target_compile_definitions(xar_ck3_bridge PRIVATE
     XAR_CK3_ENABLE_COUNCIL_COMPOSITION_CANDIDATE_OBSERVER_V1=1
+  )
+endif()
+if(XAR_CK3_ENABLE_G2_MILITARY_PREPARATION_SUMMARY_PRIVATE_PROBE_V1)
+  if(MSVC)
+    set_source_files_properties(
+      src/military_preparation_summary_v1.cpp
+      src/military_preparation_summary_v1_binding.cpp
+      src/military_preparation_summary_v1_private_probe.cpp
+      src/military_preparation_summary_v1_serializer.cpp
+      PROPERTIES COMPILE_OPTIONS "/W4;/WX;/permissive-"
+    )
+  endif()
+  target_sources(xar_ck3_bridge PRIVATE
+    src/military_preparation_summary_v1.cpp
+    src/military_preparation_summary_v1_binding.cpp
+    src/military_preparation_summary_v1_private_probe.cpp
+    src/military_preparation_summary_v1_serializer.cpp
+  )
+  target_compile_definitions(xar_ck3_bridge PRIVATE
+    XAR_CK3_ENABLE_G2_MILITARY_PREPARATION_SUMMARY_PRIVATE_PROBE_V1=1
   )
 endif()
 if(XAR_CK3_ENABLE_G2_TRUCE_PREVIEW_ENTRY_OBSERVER_V1 OR
@@ -1615,6 +1641,31 @@ if(BUILD_TESTING)
       ${CMAKE_CURRENT_SOURCE_DIR}/CMakeLists.txt
       ${CMAKE_CURRENT_SOURCE_DIR}/research/council_composition_candidate_observer_v1_abi.json
       ${CMAKE_CURRENT_SOURCE_DIR}/research/fixtures/council_composition_candidate_observer_v1_source_contract.json
+  )
+
+  add_executable(xar_ck3_military_preparation_summary_v1_private_probe_test
+    src/military_preparation_summary_v1.cpp
+    src/military_preparation_summary_v1_private_probe.cpp
+    src/military_preparation_summary_v1_serializer.cpp
+    src/military_preparation_summary_v1_private_probe_test.cpp
+  )
+  target_include_directories(
+    xar_ck3_military_preparation_summary_v1_private_probe_test PRIVATE include)
+  target_compile_definitions(
+    xar_ck3_military_preparation_summary_v1_private_probe_test PRIVATE
+    NOMINMAX WIN32_LEAN_AND_MEAN UNICODE _UNICODE)
+  if(MSVC)
+    target_compile_options(
+      xar_ck3_military_preparation_summary_v1_private_probe_test
+      PRIVATE /W4 /WX /permissive- /EHsc /UNDEBUG)
+  endif()
+  add_test(
+    NAME xar_ck3_native_bridge_military_preparation_summary_v1_private_probe
+    COMMAND xar_ck3_military_preparation_summary_v1_private_probe_test
+      ${CMAKE_CURRENT_SOURCE_DIR}/src/bridge.cpp
+      ${CMAKE_CURRENT_SOURCE_DIR}/CMakeLists.txt
+      ${CMAKE_CURRENT_SOURCE_DIR}/include/xar_bridge/main_thread_query_mailbox_v1.hpp
+      ${CMAKE_CURRENT_SOURCE_DIR}/src/main_thread_query_mailbox_v1.cpp
   )
 
   add_executable(xar_ck3_zhongguo_case_snapshot_v1_test

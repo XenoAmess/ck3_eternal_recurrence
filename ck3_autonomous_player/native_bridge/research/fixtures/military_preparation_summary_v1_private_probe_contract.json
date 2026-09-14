@@ -1,0 +1,40 @@
+{
+  "schema": "xar.ck3.private.military_preparation_summary_v1.private_probe_contract",
+  "schema_version": 1,
+  "status": "candidate_ready_no_ck3_launch",
+  "compile_gate": {
+    "name": "XAR_CK3_ENABLE_G2_MILITARY_PREPARATION_SUMMARY_PRIVATE_PROBE_V1",
+    "default": false
+  },
+  "heartbeat": {
+    "private_key": "g2_military_preparation_summary_v1_private_probe",
+    "read_only": true,
+    "advertised": false,
+    "one_shot": true,
+    "requires_exact_build": "1.19.0.6",
+    "requires_executable_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+    "requires_paused_application_main": true,
+    "raw_pointer_fields_persisted": false
+  },
+  "transaction": {
+    "transport": "main_thread_query_mailbox_v1",
+    "result": "military_preparation_summary_v1",
+    "all_ten_values_or_unavailable": true,
+    "same_frame_double_evaluation": true,
+    "teardown_required": true
+  },
+  "public_surface": {
+    "native_capability_registered": false,
+    "mcp_schema_changed": false,
+    "open_kaishek_change_required": false
+  },
+  "validation": {
+    "msvc_release": true,
+    "new_military_sources_w4_wx": true,
+    "private_probe_test": "GREEN",
+    "main_thread_mailbox_regression": "GREEN",
+    "suspended_injection": "GREEN",
+    "ck3_live": false
+  },
+  "next_evidence": "one exact-build paused live heartbeat with status=available and observation_ready=true, followed by same-frame visible-value cross-check"
+}

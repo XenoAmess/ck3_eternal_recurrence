@@ -506,3 +506,24 @@ flowchart TD
 
 下一施工入口仍保持唯一：把该专属 adapter 编进 default-off 私有 probe，在 exact build 的 application-main paused callback 中取得一笔
 `available + observation_ready=true` 结果，并与同帧可见值交叉检查。完成这一步以前，不发布永久 `unavailable` 的公共 query，也不开始 MAA action 或 planner 扩张。
+
+## MIL5：默认关闭的 application-main 私有探针
+
+[candidate-ready-no-CK3-launch] MIL5 已把 MIL3 core 与 MIL4 exact session binding 接到显式开启的
+`XAR_CK3_ENABLE_G2_MILITARY_PREPARATION_SUMMARY_PRIVATE_PROBE_V1`。该 CMake 开关默认是 `OFF`；开启后的候选
+只在 bridge 已观察到 exact `1.19.0.6`、暂停、有效玩家角色与非零 snapshot revision 时，向既有
+`main_thread_query_mailbox_v1` 提交一次固定 executor。求值仍在已证明的 CK3 application-main 边界同步完成，
+worker 只在 mailbox 返回 `completed` 后复制无指针结果，并通过 heartbeat 私有键
+`g2_military_preparation_summary_v1_private_probe` 发布。
+
+探针是一次性的：同一 DLL 生命周期不会反复评价十个 definition，不会推进日期、提交 UI/游戏动作、保存游戏或注册公共
+capability。mailbox 在执行前后的 stamp 漂移、非暂停、错误线程、binding/session/evaluator/teardown 任一失败都会保持
+`unavailable`；不会发布部分值。探针 payload 明示 `private_build=true`、`read_only=true`、
+`advertised=false` 和 `raw_pointer_fields_persisted=false`。机器合同位于
+[`military_preparation_summary_v1_private_probe_contract.json`](../../ck3_autonomous_player/native_bridge/research/fixtures/military_preparation_summary_v1_private_probe_contract.json)。
+
+本包没有启动 CK3。Release MSVC 候选已编译，新增 military core/binding/probe/serializer 源按 `/W4 /WX` 通过；
+私有探针语义、main-thread mailbox 回归和通用 suspended-injection 三项聚焦测试均为 GREEN。当前状态仍不是
+production-live：下一步只需用这份固定候选做一次暂停实机 heartbeat，要求
+`status=available`、`observation_ready=true`，再与同帧可见军力/骑士值交叉检查。实机证据通过以前，公共 native/MCP
+查询继续缺席，`open_kaishek` 不需要适配。
