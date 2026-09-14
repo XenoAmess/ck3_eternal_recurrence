@@ -1414,6 +1414,7 @@ def _wait_for_readiness(
     deadline = time.monotonic() + timeout_seconds
     stable_key: tuple[object, ...] | None = None
     stable_since: float | None = None
+    cold_ready_pump_epoch: int | None = None
     last_reason = "native DLL has not connected"
     last_observation: dict[str, object] | None = None
     last_readiness_diagnostics: dict[str, object] | None = None
@@ -1452,6 +1453,9 @@ def _wait_for_readiness(
             last_reason = reason
             last_observation = observation
             if ready:
+                current_pump_epoch = _main_thread_query_pump_epoch(
+                    capabilities
+                )
                 key = (
                     observation.get("bridge_pid"),
                     observation.get("connection_generation"),
@@ -1464,16 +1468,66 @@ def _wait_for_readiness(
                 if key != stable_key:
                     stable_key = key
                     stable_since = now
-                if stable_since is not None and now - stable_since >= stable_seconds:
+                    cold_ready_pump_epoch = (
+                        current_pump_epoch
+                        if cold_start_checkpoint
+                        else None
+                    )
+                cold_pump_advanced = bool(
+                    not cold_start_checkpoint
+                    or (
+                        current_pump_epoch is not None
+                        and cold_ready_pump_epoch is not None
+                        and current_pump_epoch > cold_ready_pump_epoch
+                    )
+                )
+                if cold_start_checkpoint and not cold_pump_advanced:
+                    last_reason = (
+                        "application-main pump has not advanced after cold "
+                        "checkpoint readiness: "
+                        f"baseline={cold_ready_pump_epoch!r}, "
+                        f"current={current_pump_epoch!r}"
+                    )
+                if (
+                    cold_pump_advanced
+                    and stable_since is not None
+                    and now - stable_since >= stable_seconds
+                ):
                     return observation
             else:
                 stable_key = None
                 stable_since = None
+                cold_ready_pump_epoch = None
         except (BridgeUnavailableError, UnsupportedStepError) as error:
             last_reason = str(error)
             stable_key = None
             stable_since = None
+            cold_ready_pump_epoch = None
         time.sleep(min(poll_interval_seconds, max(0.0, deadline - now)))
+
+
+def _main_thread_query_pump_epoch(
+    capabilities: dict[str, object],
+) -> int | None:
+    diagnostics = capabilities.get("diagnostics")
+    heartbeat = (
+        diagnostics.get("last_heartbeat")
+        if isinstance(diagnostics, dict)
+        else None
+    )
+    mailbox = (
+        heartbeat.get("main_thread_query_mailbox_v1")
+        if isinstance(heartbeat, dict)
+        else None
+    )
+    pump_epoch = mailbox.get("pump_epochs") if isinstance(mailbox, dict) else None
+    return (
+        pump_epoch
+        if isinstance(pump_epoch, int)
+        and not isinstance(pump_epoch, bool)
+        and pump_epoch >= 0
+        else None
+    )
 
 
 def _compact_readiness_diagnostics(

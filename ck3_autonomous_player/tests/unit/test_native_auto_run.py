@@ -96,6 +96,8 @@ class _NativeAutoRunHarness:
         self.public_revision = 101
         self.heartbeat_date_raw = self.date_raw
         self.heartbeat_lag_capability_reads = 0
+        self.pump_epochs = 40
+        self.advance_pump_epochs = True
         self.terminal = False
         self.terminal_reason: str | None = None
         self.episode_character_id = 707
@@ -191,6 +193,8 @@ class _NativeAutoRunHarness:
         return report
 
     def capabilities(self) -> dict[str, object]:
+        if not self.persistent_unavailable and self.advance_pump_epochs:
+            self.pump_epochs += 1
         diagnostics = self._diagnostics()
         if self.heartbeat_lag_capability_reads > 0:
             self.heartbeat_lag_capability_reads -= 1
@@ -923,6 +927,7 @@ class _NativeAutoRunHarness:
                 "date_raw": self.heartbeat_date_raw,
                 "paused": True,
                 "executed_requests": len(self.history),
+                "pump_epochs": self.pump_epochs,
             }
             semantic_state_available = True
             rejected_state_snapshot_count = 0
@@ -2037,6 +2042,84 @@ class NativeAutoRunTests(unittest.TestCase):
             "managed native-session exited before auto-run stop",
             report["first_blocker"]["message"],
         )
+
+    def test_cold_readiness_waits_for_a_post_binding_pump_epoch(self) -> None:
+        harness = _NativeAutoRunHarness(
+            self.spec,
+            [],
+            initial_unready_snapshot=False,
+            cold_start=True,
+        )
+        harness.advance_pump_epochs = False
+        driver = harness.make_driver(
+            self.config.pipe_name,
+            state_dir=self.spec.state_dir,
+            save_dir=self.spec.profile_dir / "save games",
+            route_contact_timeline_speed=3,
+            allow_route_contact_high_speed_ab=False,
+            allow_stationary_objective_hold_sentinel_canary=False,
+        )
+        with self.assertRaises(
+            native_auto_run_module.NativeReadinessTimeoutError
+        ) as caught:
+            native_auto_run_module._wait_for_readiness(
+                driver,
+                session_done=threading.Event(),
+                session_state={},
+                timeout_seconds=0.02,
+                stable_seconds=0.0,
+                poll_interval_seconds=0.001,
+                cold_start_checkpoint=True,
+                allow_terminal=False,
+            )
+        self.assertIn(
+            "application-main pump has not advanced after cold checkpoint "
+            "readiness: baseline=40, current=40",
+            str(caught.exception),
+        )
+
+        harness.advance_pump_epochs = True
+        binding = native_auto_run_module._wait_for_readiness(
+            driver,
+            session_done=threading.Event(),
+            session_state={},
+            timeout_seconds=0.05,
+            stable_seconds=0.0,
+            poll_interval_seconds=0.001,
+            cold_start_checkpoint=True,
+            allow_terminal=False,
+        )
+        self.assertEqual(binding["episode_binding_state"], "active_resumed")
+        self.assertGreater(harness.pump_epochs, 40)
+
+    def test_hot_readiness_does_not_require_a_new_pump_epoch(self) -> None:
+        harness = _NativeAutoRunHarness(
+            self.spec,
+            [],
+            initial_unready_snapshot=False,
+            cold_start=False,
+        )
+        harness.advance_pump_epochs = False
+        driver = harness.make_driver(
+            self.config.pipe_name,
+            state_dir=self.spec.state_dir,
+            save_dir=self.spec.profile_dir / "save games",
+            route_contact_timeline_speed=3,
+            allow_route_contact_high_speed_ab=False,
+            allow_stationary_objective_hold_sentinel_canary=False,
+        )
+        binding = native_auto_run_module._wait_for_readiness(
+            driver,
+            session_done=threading.Event(),
+            session_state={},
+            timeout_seconds=0.05,
+            stable_seconds=0.0,
+            poll_interval_seconds=0.001,
+            cold_start_checkpoint=False,
+            allow_terminal=False,
+        )
+        self.assertEqual(binding["episode_binding_state"], "active_new")
+        self.assertEqual(harness.pump_epochs, 40)
 
     def test_persistent_readiness_unavailable_preserves_diagnostics(self) -> None:
         report, harness = self._run(

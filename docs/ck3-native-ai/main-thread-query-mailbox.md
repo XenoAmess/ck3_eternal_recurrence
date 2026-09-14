@@ -135,6 +135,39 @@ message queue and proves publish, inert wake, same-thread drain, one executor
 call, terminal reclaim, and clean uninstall. No executor, command, capability,
 timeout, paused/date gate, or public wire field changes.
 
+R680 proved that the inert wake is necessary but is not a cold-restore
+completion barrier. The candidate at
+`324dab573f48b9ab3439a9a0eb0eb1c8edb2478f` restored checkpoint SHA-256
+`223E4C65FC618D0256FB2078CDD3A94EC3FB3FDABAB7382D848A32EC33716092`.
+CK3 was still completing load work: the final debug anchors were
+`Setup powerful vassals among a total of [40165] living character` at
+14:44:01 and the persistent-reader diagnostic at 14:44:02. The runner then
+accepted heartbeat sequence 798 and semantic frame `native:3` as cold-ready
+from an earlier verified mailbox sample. It published the first campaign-root
+ticket while application-main had not returned through another SDL/Windows
+pump. A posted `WM_NULL` can wake a sleeping message loop; it cannot preempt
+application-main while that thread is executing load finalization.
+
+The eight-second ticket probe consequently remained
+`pump_epochs=9849 -> 9849`, `executor_started_requests=0 -> 0`, and
+`executed_requests=0 -> 0`. Its `published_sequence=1` proves publication, but
+`completed_sequence=1` does not prove execution: the worker timeout changed
+the still-queued ticket to `cancelled` and `CancelMainThreadQueryV1` wrote the
+completed sequence. The frozen probe is
+`g2-m3-r680-mailbox-wake-324dab5/mailbox-probe-v1.json`, SHA-256
+`A1E9B898DC5015EE84A64EE57C7DB05CA7B3A6172CE88C64A537424BF082B997`.
+
+Cold-checkpoint runner readiness therefore records `pump_epochs` when the
+map, paused frame, restored episode identity, and mailbox first form one
+stable binding. It releases the first planner turn only after the same binding
+reports a strictly later pump epoch. This is a lifecycle ordering check around
+the initial cold restore. Hot readiness and replan readiness keep their prior
+behavior; query timeouts, retries, paused/date admission, native executors,
+the DLL, and public command/schema surfaces are unchanged. A focused fixture
+holds the epoch fixed to reproduce the readiness timeout, then advances it to
+prove admission; a separate hot fixture proves that hot readiness does not
+acquire the new condition.
+
 ## Install and process lifetime
 
 The PeekMessageW IAT lives on a read-only page. Install and uninstall use the same bounded
