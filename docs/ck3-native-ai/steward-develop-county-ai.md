@@ -252,4 +252,4 @@ DEV3 先证明旧轮次 R681 的 campaign-root checkpoint 不在标准 landed co
 
 本轮的下一个结果要与 readiness 分开解释：当次启用的是 `g2_domain_construction_candidate_observer_v1`，不是 steward develop-county observer。它在有界的 60 秒 paused 观测窗内保持 installed，failure flags、read failures 和 accepted captures 均为零，但 producer call count 也为零，最终状态为 `no_producer_return_observed`。这是该 construction producer 调用点没有在当前输入边界内命中的独立 **NO-GO**，不是 readiness RED，也不是 observer RED；它没有提供 steward 候选行、row ABI 或 native legality 映射证据，因此不改变本专题 P0 reader 的尚未闭合边界。
 
-冻结证据位于 `Z:\ck3_mod_rewrite_process_assets\g2-m4-r683-construction-observer-live-50b69df`，`artifact-manifest.json` SHA-256 为 `177F4F3EAB41570F005132E294ADEEBBEEA6DD7E1BF704CF004DB0F00F846DF4`。本轮 UI 输入为零、游戏日期未推进、源存档未改变，结束后清理证明通过。
+冻结证据位于 `Z:\ck3_mod_rewrite_process_assets\g2-m4-r683-construction-observer-live-50b69df`，最终自包含的 `artifact-manifest.json` SHA-256 为 `C3D2301E647BBDEF1A7CFB33CF2795EA9905BFBC98671371DD2C5D66055DFABC`。旧值 `177F4F3EAB41570F005132E294ADEEBBEEA6DD7E1BF704CF004DB0F00F846DF4` 是复制四个 exact candidate binaries 之前的历史 seal，已由最终 manifest 的 `previous_manifest_sha256` 保留。本轮 UI 输入为零、游戏日期未推进、源存档未改变，结束后清理证明通过。
