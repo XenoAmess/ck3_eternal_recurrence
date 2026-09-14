@@ -158,10 +158,10 @@ CK3 `1.19.0.6`、EXE SHA-256
 注册 MCP 不等于 CK3 native session 已就绪。fresh build 产物被 Git 忽略；换机器后应在 x64 Visual
 Studio developer shell 中运行 `plan` 输出的 `fresh_native_build_command`，或直接调用：
 
-```powershell
-& ck3_autonomous_player\native_bridge\tools\build_fresh.ps1 `
-  -BuildDir <new-empty-build-dir> `
-  -Ck3ExecutablePath <CK3-root>\binaries\ck3.exe
+```text
+py ck3_autonomous_player\native_bridge\tools\build_fresh.py ^
+  --build-dir <new-empty-build-dir> ^
+  --ck3-executable-path <CK3-root>\binaries\ck3.exe
 ```
 
 然后把 fresh DLL/injector 显式交给 plan/doctor：

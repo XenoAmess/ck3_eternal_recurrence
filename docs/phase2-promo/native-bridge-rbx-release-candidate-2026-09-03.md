@@ -16,7 +16,7 @@ the existing `freeze165b` bridge and it does not promote any live capability.
 
 The source fingerprint covers `CMakeLists.txt` and every `.cpp`, `.hpp`, `.h`,
 and `.c` file below `include/` and `src/`, using the same algorithm as
-`native_bridge/tools/build_fresh.ps1`. No native source was dirty when the
+`native_bridge/tools/build_fresh.py`. No native source was dirty when the
 candidate was recorded.
 
 ## Build configuration

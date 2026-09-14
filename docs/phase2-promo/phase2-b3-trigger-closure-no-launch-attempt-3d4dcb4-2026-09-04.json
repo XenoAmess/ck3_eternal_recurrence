@@ -2697,9 +2697,9 @@
         "sha256": "D2637F27B338017B17AF71B17981DE651B3F25BD304AFC70723ED269D8BFB6AC"
       },
       {
-        "bytes": 10391,
-        "path": "ck3_autonomous_player/native_bridge/tools/build_fresh.ps1",
-        "sha256": "34BA65E6E311475C7F560194706F958C84C3B40B3983BD168EB5B01729742263"
+        "bytes": 9639,
+        "path": "ck3_autonomous_player/native_bridge/tools/build_fresh.py",
+        "sha256": "87717EA71F26F524FFFA86387207557EEB75FFC08D7DDBBA4E1472AE73BF4C8F"
       },
       {
         "bytes": 35530,

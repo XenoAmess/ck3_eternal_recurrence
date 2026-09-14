@@ -312,13 +312,11 @@ def native_session_command(layout: PortableMcpLayout) -> list[str] | None:
 
 def fresh_native_build_command(layout: PortableMcpLayout) -> list[str]:
     return [
-        "powershell.exe",
-        "-NoProfile",
-        "-File",
-        str(PACKAGE_ROOT / "native_bridge" / "tools" / "build_fresh.ps1"),
-        "-BuildDir",
+        sys.executable,
+        str(PACKAGE_ROOT / "native_bridge" / "tools" / "build_fresh.py"),
+        "--build-dir",
         str(layout.base_dir / "native-bridge-build"),
-        "-Ck3ExecutablePath",
+        "--ck3-executable-path",
         str(layout.game_dir / "binaries" / "ck3.exe"),
     ]
 

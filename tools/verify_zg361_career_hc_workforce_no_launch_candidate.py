@@ -47,7 +47,7 @@ def _native_source_fingerprint(root: Path) -> str:
         )
     lines = []
     for path in sorted(files, key=lambda item: str(item.resolve()).lower()):
-        # Match build_fresh.ps1 byte-for-byte on Windows: its source-relative
+        # Match build_fresh.py byte-for-byte on Windows: its source-relative
         # fingerprint uses native backslash separators.
         relative = str(path.relative_to(native))
         lines.append(f"{relative}\0{_sha256(path)}")

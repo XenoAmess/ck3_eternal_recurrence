@@ -8,7 +8,7 @@
     "native_source_fingerprint_sha256": "C640BEDF73A1789D1E28CBD41F60A86E12E08F643345E99B5D666DCC599DA39C",
     "frozen_files": {
       "ck3_autonomous_player/native_bridge/CMakeLists.txt": "7CF8F2D408AD6841F3199B770DE2DB92CA6DF49BCBD77A307E056D86585A9C22",
-      "ck3_autonomous_player/native_bridge/tools/build_fresh.ps1": "34BA65E6E311475C7F560194706F958C84C3B40B3983BD168EB5B01729742263",
+      "ck3_autonomous_player/native_bridge/tools/build_fresh.py": "87717EA71F26F524FFFA86387207557EEB75FFC08D7DDBBA4E1472AE73BF4C8F",
       "ck3_autonomous_player/native_bridge/include/xar_bridge/zhongguo_career_hc_workforce_postcondition_v1.hpp": "E9DB907EB1C0DB71BF0EE7B8486B697CCDCE4ED3DDF8A0A515E50F2DC87DF72F",
       "ck3_autonomous_player/native_bridge/include/xar_bridge/zhongguo_career_hc_workforce_postcondition_v1_mailbox.hpp": "083DB807C0B5BCB90C2AD6106EE23CF80F8045117E7A55147597B5549F27A1DB",
       "ck3_autonomous_player/native_bridge/include/xar_bridge/main_thread_query_mailbox_v1.hpp": "5E247DF42197CB9B07CE7EE7DB4D247735F67757DF1E27B321739A3F86044DFD",

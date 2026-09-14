@@ -234,7 +234,7 @@ def native_source_rows() -> tuple[list[dict[str, object]], str]:
         )
     paths = sorted(paths, key=lambda value: str(value).lower())
     rows = [record(path, relative_to=NATIVE_ROOT) for path in paths]
-    # Match build_fresh.ps1 exactly: its fingerprint uses Windows-relative
+    # Match build_fresh.py exactly: its fingerprint uses Windows-relative
     # paths even though the portable inventory above uses POSIX separators.
     native_prefix = str(NATIVE_ROOT.resolve())
     relative_windows = [
@@ -255,7 +255,7 @@ def tracked_validation_rows() -> list[dict[str, object]]:
             "ls-files",
             "--",
             "ck3_autonomous_player/native_bridge/research",
-            "ck3_autonomous_player/native_bridge/tools/build_fresh.ps1",
+            "ck3_autonomous_player/native_bridge/tools/build_fresh.py",
             "docs/ck3-native-ai",
         ]
     )

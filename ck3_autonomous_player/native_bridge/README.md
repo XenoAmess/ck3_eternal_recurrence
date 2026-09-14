@@ -85,8 +85,8 @@ for the migration contract and per-capability upgrade workflow.
 Use an x64 Visual Studio developer shell and the fresh-build helper for every
 DLL that will be injected into CK3:
 
-```powershell
-.\tools\build_fresh.ps1
+```text
+py tools\build_fresh.py
 ```
 
 The helper always allocates a new `build-fresh-*` directory and refuses an
@@ -105,12 +105,12 @@ objects.
 To choose the fresh path explicitly, or only inspect the intended build without
 creating it:
 
-```powershell
-.\tools\build_fresh.ps1 -BuildDir ..\build-fresh-production
-.\tools\build_fresh.ps1 -BuildDir ..\build-fresh-production -PlanOnly
+```text
+py tools\build_fresh.py --build-dir ..\build-fresh-production
+py tools\build_fresh.py --build-dir ..\build-fresh-production --plan-only
 ```
 
-`-BuildDir` must not already exist. `-SkipTests` is available for a diagnostic
+`--build-dir` must not already exist. `--skip-tests` is available for a diagnostic
 compile, but such an artifact is not a production-tested bridge.
 
 The offline tests inject only into the purpose-built

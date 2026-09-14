@@ -1145,7 +1145,7 @@ live variant；production runner 实际从共享条目解析一个真实 encount
   构建目录复核，并记录候选 DLL/injector SHA；不能把“build 命令返回成功”当作所有 translation units 已按新 header
   重编译的证据，也不能为消除 RED 去调用任何会写真实 combat 的 refresh helper。
 - 2026-08-28 的 Visual Studio 18 / CMake 4.3 fresh configure 又实测到另一条合法输出：`rules.ninja` 已直接以 UTF-8
-  保存 `注意: 包含文件:`，不再是需要 code-page 逆转换的 mojibake。`build_fresh.ps1` 现在只接受两种 exact 结果：
+  保存 `注意: 包含文件:`，不再是需要 code-page 逆转换的 mojibake。`build_fresh.py` 现在只接受两种 exact 结果：
   已正确的 direct UTF-8 原样保留，或旧 CMake 的已知 mojibake 做一次确定性修复；其它前缀继续 fail closed，随后仍必须由
   `ninja -t deps` 证明 `ck3_11906.hpp` 同时进入 producer/consumer 对象。fresh Release 目录
   `xar-native-gen015-20260828T0145Z` 以 `direct-2052-utf8` 模式完成 `37/37` CTest；DLL/injector SHA-256 分别为
@@ -1155,7 +1155,7 @@ live variant；production runner 实际从共享条目解析一个真实 encount
   被执行。这是 runner 调用错误，不是 native capability RED。Windows build 必须使用 Visual Studio/CMake 随附的原生
   `ctest.exe`（当前为 `C:\Program Files\Microsoft Visual Studio\18\Community\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\ctest.exe`）
   并把 build directory 设为工作目录；同一 G2 build 随后真实完成 `44/44` GREEN。
-- 2026-08-30 在普通 PowerShell 外壳内串联 `vcvars64.bat` 与 `build_fresh.ps1` 时，`cmd.exe` 会在执行整行前展开
+- 2026-08-30 在旧外壳内串联 `vcvars64.bat` 与旧构建入口时，`cmd.exe` 会在执行整行前展开
   `%PATH%`；若在 `call vcvars64.bat` 后再写 `set "PATH=<cmake>;<ninja>;%PATH%"`，该旧值会把刚注入的 MSVC
   `cl.exe` 路径覆盖掉，helper 会报 `cl is required`。同机 `vcvars64.bat` 还要求先让 Visual Studio Installer 目录中的
   `vswhere.exe` 可见。可复现做法是先把 Installer 目录加入 PATH，再用 `cmd /v:on` 和延迟展开

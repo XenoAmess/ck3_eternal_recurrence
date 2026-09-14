@@ -173,5 +173,5 @@ same_frame_ready
 `fatal error C1083: 无法打开编译器生成的文件: “”: Invalid argument`。失败目录应原样保留作诊断，
 不能把这类 harness RED 记成 capability RED。相同源码改用短绝对 fresh root
 （本轮为 `Z:\xar-ai20-20260831-02`）后，完整 DLL 构建和 focused CTest 均通过。
-后续同类原生 provider 应优先给 `build_fresh.ps1 -BuildDir` 传入短绝对路径，同时仍保留脚本的
+后续同类原生 provider 应优先给 `build_fresh.py --build-dir` 传入短绝对路径，同时仍保留脚本的
 source fingerprint 与 `ck3_11906.hpp` Ninja dependency gate。
