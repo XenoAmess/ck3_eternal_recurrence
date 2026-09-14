@@ -1,0 +1,90 @@
+{
+  "schema": "xar.ck3.g2_m4_council13_r691_driver_contract_candidate_receipt_v1",
+  "status": "green-no-launch",
+  "work_package": "G2-M4-COUNCIL13-R691-DRIVER-CONTRACT",
+  "baseline_commit": "a905af184798439a41cdc6f63bfeb47d67f62608",
+  "implementation_commit": "37bd888cdfc654f239dbf8f59194fb590e4b2c24",
+  "r690_red": {
+    "preserved_artifact": "Z:\\ck3_mod_rewrite_process_assets\\g2-m4-council12-r690-bom-safe-1669785\\live-r690\\report.json",
+    "classification": "harness_driver_api_mismatch",
+    "report_sha256": "E2D562A9BC88BFEA1752AAE55473B1148824B019917138FB3BF1B34D55C82F50",
+    "failure": "AttributeError: missing take_internal_semantic_snapshot",
+    "ck3_launched": true,
+    "cleanup_proven": true,
+    "process_tree_gone": true,
+    "source_save_unchanged": true,
+    "target_save_unchanged": true,
+    "save_sha256": "9104CCB8AE9D5776166FBBAEDA9B43BD08CBAA2CB5C057332EB8B7A1A212CC63"
+  },
+  "driver_snapshot_api_contract": {
+    "class": "NativeHeadlessGameplayDriver",
+    "method": "take_internal_semantic_snapshot",
+    "call_shape": "driver.take_internal_semantic_snapshot()",
+    "positional_arguments": [],
+    "keyword_arguments": [],
+    "state_source": "self.state.semantic_snapshot()",
+    "one_life_projection": "self._with_one_life_episode",
+    "introduced_commit": "79b8d2acfbe1f80a7a7f88da3fed7cda1791017c",
+    "operator_workspace_source_checked_before_every_live_invoke": true
+  },
+  "source_candidate": {
+    "path": "Z:\\ck3_mod_rewrite_process_assets\\g2-m4-council12-r690-bom-safe-1669785",
+    "candidate_manifest_sha256": "5C59E143A63FFC1699A17E9F2E8CA7630019279CDF361E8FD226783ECC962DC5",
+    "sealed_prep_manifest_sha256": "93B680E80CE8B62E2D402E8CB9F391A282D123873A0B5F106AA359261DB68E8B",
+    "sealed_file_count": 117,
+    "runtime_changed_file": "fresh-profile-state/profile/pdx_settings.txt",
+    "runtime_changed_file_current_sha256": "592AB6C67BF24600FA3679509F63E0688DDF45A372FE709E71D7F35CD48F5244",
+    "preserved_unchanged": true
+  },
+  "sealed_file_recovery": {
+    "path": "fresh-profile-state/profile/pdx_settings.txt",
+    "expected_sha256": "52BF916EC3F1CD2ACC14618743F26202302F5EBE74ACD993E773F85897449C5B",
+    "source_sealed_manifest_sha256": "DA0DF733D815FD2191FF7DAAAF1670872DD985759F199A9FFD527C158E96242D",
+    "copied_only_into_new_candidate": true
+  },
+  "unlaunched_incompatible_candidate": {
+    "path": "Z:\\ck3_mod_rewrite_process_assets\\g2-m4-council13-r691-driver-contract-1060914",
+    "candidate_manifest_sha256": "8F57475130416276D497BF1C5FDD18870AA844347EF4F8C864739FC839E506EA",
+    "sealed_prep_manifest_sha256": "D8C03BC50EDCBAD2A1C9BA9CDB3F368B00B4B47AEFD8FCDDB1D4858B0FFA1AF7",
+    "failure": "runner asserted R689 -> R691 instead of R690 -> R691",
+    "round_allocated": false,
+    "ck3_launched": false,
+    "live_r691_exists": false,
+    "eligible_for_live_use": false
+  },
+  "candidate": {
+    "path": "Z:\\ck3_mod_rewrite_process_assets\\g2-m4-council13-r691-driver-contract-37bd888",
+    "candidate_manifest_sha256": "58511E7D4DE30A144412281C371724D2797D1A8B3EF85ECC274D3A076F53B59C",
+    "sealed_prep_manifest_sha256": "0EA046F6522947285C82802B45E393610AC797C9492A43BAC5927C05691EA4B6",
+    "sealed_file_count": 117,
+    "actual_file_count_including_seal_and_pointer": 119,
+    "sealed_inventory_exact": true,
+    "unique_pipe": "\\\\.\\pipe\\xar_ck3_bridge_g2_m4_council13_r691_37bd888",
+    "old_round": "R690",
+    "suggested_new_round": "R691",
+    "round_allocated": false,
+    "ck3_launched": false,
+    "live_r691_exists": false,
+    "bridge_dll_sha256": "6CA0DA042254189ACC8110E7684580F69F9661F35C50A95D999CDD089796EC7D",
+    "source_save_sha256": "9104CCB8AE9D5776166FBBAEDA9B43BD08CBAA2CB5C057332EB8B7A1A212CC63",
+    "expected_steward_candidates_sha256": "B3D477590BCC46C6E7B6DCB90967278C13EA385A081AFC0C7612D817E9EEA800"
+  },
+  "verification": {
+    "normal_unit": "5 tests passed",
+    "optimized_unit": "5 tests passed",
+    "normal_candidate_preflight": "green",
+    "candidate_preflight_runs": 1,
+    "candidate_preflight_file_count": 117,
+    "readiness_call_contract": "green",
+    "driver_snapshot_api_contract": "green",
+    "ck3_launched": false
+  },
+  "scope": {
+    "dll_changed": false,
+    "game_files_changed": false,
+    "public_schema_changed": false,
+    "shared_bridge_changed": false,
+    "planner_changed": false,
+    "mcp_changed": false
+  }
+}
