@@ -231,39 +231,75 @@ rmtm_complete_restoration_succession_effect = {
 		resolve_title_and_vassal_change = scope:rmtm_succession_realm_change
 
 		if = {
-			limit = { exists = scope:rmtm_succession_title.var:rmtm_succession_chancellor scope:rmtm_succession_title.var:rmtm_succession_chancellor = { is_alive = yes } }
+			limit = {
+				exists = scope:rmtm_succession_title.var:rmtm_succession_chancellor
+				scope:rmtm_succession_title.var:rmtm_succession_chancellor = { is_alive = yes }
+				NOT = { cp:councillor_chancellor ?= { this = scope:rmtm_succession_title.var:rmtm_succession_chancellor } }
+			}
 			assign_councillor_type = { type = councillor_chancellor target = scope:rmtm_succession_title.var:rmtm_succession_chancellor remove_existing_councillor = yes }
 		}
 		if = {
-			limit = { exists = scope:rmtm_succession_title.var:rmtm_succession_censor scope:rmtm_succession_title.var:rmtm_succession_censor = { is_alive = yes } }
+			limit = {
+				exists = scope:rmtm_succession_title.var:rmtm_succession_censor
+				scope:rmtm_succession_title.var:rmtm_succession_censor = { is_alive = yes }
+				NOT = { cp:councillor_spymaster ?= { this = scope:rmtm_succession_title.var:rmtm_succession_censor } }
+			}
 			assign_councillor_type = { type = councillor_spymaster target = scope:rmtm_succession_title.var:rmtm_succession_censor remove_existing_councillor = yes }
 		}
 		if = {
-			limit = { exists = scope:rmtm_succession_title.var:rmtm_succession_grand_marshal scope:rmtm_succession_title.var:rmtm_succession_grand_marshal = { is_alive = yes } }
+			limit = {
+				exists = scope:rmtm_succession_title.var:rmtm_succession_grand_marshal
+				scope:rmtm_succession_title.var:rmtm_succession_grand_marshal = { is_alive = yes }
+				NOT = { cp:minister_grand_marshal ?= { this = scope:rmtm_succession_title.var:rmtm_succession_grand_marshal } }
+			}
 			assign_councillor_type = { type = minister_grand_marshal target = scope:rmtm_succession_title.var:rmtm_succession_grand_marshal remove_existing_councillor = yes }
 		}
 		if = {
-			limit = { exists = scope:rmtm_succession_title.var:rmtm_succession_personnel scope:rmtm_succession_title.var:rmtm_succession_personnel = { is_alive = yes } }
+			limit = {
+				exists = scope:rmtm_succession_title.var:rmtm_succession_personnel
+				scope:rmtm_succession_title.var:rmtm_succession_personnel = { is_alive = yes }
+				NOT = { cp:minister_personnel ?= { this = scope:rmtm_succession_title.var:rmtm_succession_personnel } }
+			}
 			assign_councillor_type = { type = minister_personnel target = scope:rmtm_succession_title.var:rmtm_succession_personnel remove_existing_councillor = yes }
 		}
 		if = {
-			limit = { exists = scope:rmtm_succession_title.var:rmtm_succession_revenue scope:rmtm_succession_title.var:rmtm_succession_revenue = { is_alive = yes } }
+			limit = {
+				exists = scope:rmtm_succession_title.var:rmtm_succession_revenue
+				scope:rmtm_succession_title.var:rmtm_succession_revenue = { is_alive = yes }
+				NOT = { cp:councillor_steward ?= { this = scope:rmtm_succession_title.var:rmtm_succession_revenue } }
+			}
 			assign_councillor_type = { type = councillor_steward target = scope:rmtm_succession_title.var:rmtm_succession_revenue remove_existing_councillor = yes }
 		}
 		if = {
-			limit = { exists = scope:rmtm_succession_title.var:rmtm_succession_rites scope:rmtm_succession_title.var:rmtm_succession_rites = { is_alive = yes } }
+			limit = {
+				exists = scope:rmtm_succession_title.var:rmtm_succession_rites
+				scope:rmtm_succession_title.var:rmtm_succession_rites = { is_alive = yes }
+				NOT = { cp:councillor_court_chaplain ?= { this = scope:rmtm_succession_title.var:rmtm_succession_rites } }
+			}
 			assign_councillor_type = { type = councillor_court_chaplain target = scope:rmtm_succession_title.var:rmtm_succession_rites remove_existing_councillor = yes }
 		}
 		if = {
-			limit = { exists = scope:rmtm_succession_title.var:rmtm_succession_war scope:rmtm_succession_title.var:rmtm_succession_war = { is_alive = yes } }
+			limit = {
+				exists = scope:rmtm_succession_title.var:rmtm_succession_war
+				scope:rmtm_succession_title.var:rmtm_succession_war = { is_alive = yes }
+				NOT = { cp:councillor_marshal ?= { this = scope:rmtm_succession_title.var:rmtm_succession_war } }
+			}
 			assign_councillor_type = { type = councillor_marshal target = scope:rmtm_succession_title.var:rmtm_succession_war remove_existing_councillor = yes }
 		}
 		if = {
-			limit = { exists = scope:rmtm_succession_title.var:rmtm_succession_justice scope:rmtm_succession_title.var:rmtm_succession_justice = { is_alive = yes } }
+			limit = {
+				exists = scope:rmtm_succession_title.var:rmtm_succession_justice
+				scope:rmtm_succession_title.var:rmtm_succession_justice = { is_alive = yes }
+				NOT = { cp:minister_justice ?= { this = scope:rmtm_succession_title.var:rmtm_succession_justice } }
+			}
 			assign_councillor_type = { type = minister_justice target = scope:rmtm_succession_title.var:rmtm_succession_justice remove_existing_councillor = yes }
 		}
 		if = {
-			limit = { exists = scope:rmtm_succession_title.var:rmtm_succession_works scope:rmtm_succession_title.var:rmtm_succession_works = { is_alive = yes } }
+			limit = {
+				exists = scope:rmtm_succession_title.var:rmtm_succession_works
+				scope:rmtm_succession_title.var:rmtm_succession_works = { is_alive = yes }
+				NOT = { cp:minister_works ?= { this = scope:rmtm_succession_title.var:rmtm_succession_works } }
+			}
 			assign_councillor_type = { type = minister_works target = scope:rmtm_succession_title.var:rmtm_succession_works remove_existing_councillor = yes }
 		}
 

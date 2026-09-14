@@ -533,6 +533,8 @@ class TestReclaimTheMotherlandContract(unittest.TestCase):
                 "minister_works",
             },
         )
+        for position in inherited_positions:
+            self.assertIn(f"NOT = {{ cp:{position} ?=", custom_text)
 
         on_action_text, on_actions = read_script(ON_ACTIONS)
         death = direct_block(on_actions, "on_death")
