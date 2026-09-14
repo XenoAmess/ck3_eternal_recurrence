@@ -1,0 +1,283 @@
+{
+  "schema_version": 1,
+  "contract_id": "g2-m6-culture1-native-tree",
+  "status": "static-confirmed-research-only",
+  "game_build": "1.19.0.6",
+  "executable": {
+    "path": "binaries/ck3.exe",
+    "size": 95206008,
+    "sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+    "image_base": "0x140000000"
+  },
+  "scope": {
+    "runtime_observer_changed": false,
+    "public_abi_changed": false,
+    "public_schema_changed": false,
+    "planner_changed": false,
+    "ck3_started": false,
+    "religion_domain_expanded": false
+  },
+  "stock_sources": [
+    {
+      "path": "game/common/culture/innovations/_culture_innovations.info",
+      "sha256": "6D804E83024FCC2AECB9BD6B1CDD52D5000AA59A14E557FA4E92D2AAB96C623E"
+    },
+    {
+      "path": "game/common/culture/innovations/00_cultural_maa_innovations.txt",
+      "sha256": "10DAE818E195DFA83752D94889F9608424AD670123EEA71CF381459ED48D334C"
+    },
+    {
+      "path": "game/common/culture/innovations/00_early_medieval_innovations.txt",
+      "sha256": "5B28496D23675132AAD00F3EBC2462996CE1B591D923E674662A4A2DF93CAA1A"
+    },
+    {
+      "path": "game/common/culture/innovations/00_fp3_innovations.txt",
+      "sha256": "9E2792B99B4315665017005F1E6128A4CFF6FF0C1728CEA146644698E2E7657C"
+    },
+    {
+      "path": "game/common/culture/innovations/00_high_medieval_innovations.txt",
+      "sha256": "9EABF296CC3D6508AC9E11E1A3D6CC7DA4F3178F0C8F4A3118AE5756FFECC750"
+    },
+    {
+      "path": "game/common/culture/innovations/00_late_medieval_innovations.txt",
+      "sha256": "698552703DA08AA058B05D518944111F53FE2688E7AFF01CD69F3ADE949403BA"
+    },
+    {
+      "path": "game/common/culture/innovations/00_tribal_innovations.txt",
+      "sha256": "E878E75EFA1DBA64557B254A68C4A1F4379EA92209BFB6821D6876DB68F1F961"
+    },
+    {
+      "path": "game/common/culture/innovations/01_fp1_innovations.txt",
+      "sha256": "9CF9C537EF8CC58CB46648F89160F61194CC84C330935A274423E620B6E23B2F"
+    },
+    {
+      "path": "game/common/culture/innovations/02_ce1_innovations.txt",
+      "sha256": "A16D6A3C1CAE660070275E6CDBE317AD45C5A6417E41B56D6D99A09A81F7FB60"
+    },
+    {
+      "path": "game/common/culture/innovations/tgp_innovations.txt",
+      "sha256": "5839E67AAFD742DA5C3193A5540AE9AAEC9882A3449B480C45F3242BB38D54A7"
+    },
+    {
+      "path": "game/common/culture/eras/_culture_eras.info",
+      "sha256": "0525CC5CAACEC73FE2612302785A88B2802F8167FB7573CE84D38FDC6D1556B9"
+    },
+    {
+      "path": "game/common/culture/eras/00_culture_eras.txt",
+      "sha256": "F1A99261B3F2F3A7428BA779BB8B3F04D5C7B190E270561D15E33006892C4FAE"
+    },
+    {
+      "path": "game/common/defines/00_defines.txt",
+      "sha256": "C1ECA141C71EC1E741CA5336E01BB538EEFAEC05B0684EDEC477CFC9053C3807"
+    },
+    {
+      "path": "game/gui/window_culture.gui",
+      "sha256": "1584484A03402CC3CDD37F261391FA3F2F55EA3CBC3558C49D82493DECCC4569"
+    }
+  ],
+  "innovation_inventory": {
+    "definition_count": 108,
+    "era_counts": {
+      "culture_era_tribal": 38,
+      "culture_era_early_medieval": 23,
+      "culture_era_high_medieval": 23,
+      "culture_era_late_medieval": 24
+    },
+    "group_counts": {
+      "culture_group_civic": 56,
+      "culture_group_military": 52
+    },
+    "skill_counts": {
+      "diplomacy": 16,
+      "martial": 33,
+      "stewardship": 39,
+      "intrigue": 1,
+      "learning": 19
+    },
+    "with_ai_weight_for_fascination": 108,
+    "with_ai_weight_for_spread": 0,
+    "with_potential": 32,
+    "with_can_progress": 3,
+    "can_progress_keys": [
+      "innovation_french_peerage",
+      "innovation_rocket_cart",
+      "innovation_composite_crossbow"
+    ],
+    "fascination_weight_templates": {
+      "plain_100": 37,
+      "early_100_else_0": 23,
+      "high_100_else_0": 24,
+      "late_100_else_0": 24
+    },
+    "cross_era_exception": {
+      "key": "innovation_tiefutu",
+      "declared_era": "culture_era_tribal",
+      "fascination_gate": "culture_era_high_medieval"
+    }
+  },
+  "native_strings": [
+    { "name": "CultureInnovation", "rva": "0x4413CA8", "value": "CultureInnovation" },
+    { "name": "CanBeFascination", "rva": "0x40D2480", "value": "CanBeFascination" },
+    { "name": "CanPlayerSetAsFascination", "rva": "0x40D2498", "value": "CanPlayerSetAsFascination" },
+    { "name": "SelectAsFascination", "rva": "0x40D2450", "value": "SelectAsFascination" },
+    { "name": "IsPlayerCultureHead", "rva": "0x40D24B8", "value": "IsPlayerCultureHead" },
+    { "name": "CanGainProgress", "rva": "0x40D2688", "value": "CanGainProgress" },
+    { "name": "GetProgress", "rva": "0x40D51F0", "value": "GetProgress" },
+    { "name": "SelectNewSpreadMarker", "rva": "0x42FEA10", "value": "SelectNewSpreadMarker" },
+    { "name": "SelectFascinationInternal", "rva": "0x42FEA28", "value": "SelectFascinationInternal" },
+    { "name": "culture.cpp", "rva": "0x42FEBD8", "value": "C:\\mnt\\gsg\\ck3\\titus\\source\\logic\\culture.cpp" }
+  ],
+  "native_anchors": [
+    {
+      "name": "monthly_culture_bucket_dispatch",
+      "rva": "0x2714ECC",
+      "bytes_hex": "488D0C49498B5CCE78496384CE84000000488D2CC3483BDD741A8BD7488B0BE8B0B8BAFF4883C30848"
+    },
+    {
+      "name": "culture_tick_marks_invalid_fascination_for_reselection",
+      "rva": "0x22C06CD",
+      "bytes_hex": "488B8D60080000488B01FF1084C07428488B8560080000486340104869C89007000048038D4007000033D2E883D6A80084C0740432C0EB02B0018885FC080000"
+    },
+    {
+      "name": "culture_tick_calls_fascination_selector_when_marked",
+      "rva": "0x22C0961",
+      "bytes_hex": "4438A5FC0800000F8488010000488BCDE84A460000"
+    },
+    {
+      "name": "select_fascination_internal_entry",
+      "rva": "0x22C4FC0",
+      "bytes_hex": "48895C24185556574154415541564157488DAC2470FEFFFF4881EC900200004C"
+    },
+    {
+      "name": "select_fascination_candidate_vector",
+      "rva": "0x22C504A",
+      "bytes_hex": "498BBE700700004963867C0700004C8D3CC7458D6C2404493BFF0F8470010000660F1F440000"
+    },
+    {
+      "name": "select_fascination_completion_and_can_gain_gate",
+      "rva": "0x22C5085",
+      "bytes_hex": "49038E4007000048817918809698000F843301000033D2E8DF8CA80084C00F8424010000"
+    },
+    {
+      "name": "select_fascination_script_weight_evaluation",
+      "rva": "0x22C5119",
+      "bytes_hex": "488D8E100300004C8D4C24484533C0488D5520E88FD1F1FE8BD8488D8D"
+    },
+    {
+      "name": "select_fascination_result_write",
+      "rva": "0x22C5316",
+      "bytes_hex": "488B00498986600800004885FF74214489"
+    },
+    {
+      "name": "culture_get_fascination_state",
+      "rva": "0x22C31C0",
+      "bytes_hex": "40534883EC20488BD9488B8960080000488B01FF1084C0750D488B0530D44F034883C4205BC3488B8360080000486348104869C190070000480383400700004883C4205BC3"
+    },
+    {
+      "name": "culture_get_head_identity",
+      "rva": "0x22C3B60",
+      "bytes_hex": "488B05C98544034885C074298B91F80800008BCA81E1FFFFFF003B482C7316488B40204803C9488B44C8084885C074053950187407488B059C854403C3"
+    },
+    {
+      "name": "innovation_get_culture_era_state",
+      "rva": "0x2D4DC60",
+      "bytes_hex": "4883EC38488B4110488B90000200004863421085C0781C488B49083B81340700007D10486BC058480381280700004883C438C3"
+    },
+    {
+      "name": "innovation_can_gain_progress",
+      "rva": "0x2D4FA10",
+      "bytes_hex": "4C89442418534883EC20488BDA4885C9742033D2E857E3FFFF488D54244088442440488BCBE8D6FAABFDB0014883C4205BC332C04883C4205BC3"
+    },
+    {
+      "name": "innovation_get_progress",
+      "rva": "0xE37E20",
+      "bytes_hex": "4C894424184883EC284C8BC24885C9741D488B4118488D542440498BC84889442440E88957B3FFB0014883C428C332C04883C428C3"
+    },
+    {
+      "name": "innovation_is_fascination",
+      "rva": "0x2D4FBC0",
+      "bytes_hex": "4C894424184883EC284C8BCA4885C974284C8B4108488D542440488B4110498BC9493980600800000F94442440E81EF9ABFDB0014883C428C332C04883C428C3"
+    },
+    {
+      "name": "innovation_has_spread_marker",
+      "rva": "0x2D4FB80",
+      "bytes_hex": "4C894424184883EC284C8BCA4885C974284C8B4108488D542440488B4110498BC9493980480800000F94442440E85EF9ABFDB0014883C428C332C04883C428C3"
+    },
+    {
+      "name": "player_can_set_fascination",
+      "rva": "0x2926310",
+      "bytes_hex": "48895C2408574883EC20488B01488BDA488BF9FF1084C074394863471085C078313B834C0700007D294869C89007000048038B400700004881791880969800741133D2488B5C24304883C4205FE91E7A4200488B5C243032C04883C4205FC3"
+    },
+    {
+      "name": "select_as_fascination_gui_wrapper",
+      "rva": "0xC02860",
+      "bytes_hex": "40534883EC50488B41108B5010488B41088B4010C64424280033DB48895C242C895C2434488D0D25DB720348894C2420488D0DB1DB720348894C24388B0D3E56"
+    },
+    {
+      "name": "select_as_fascination_command_queue",
+      "rva": "0xC028A6",
+      "bytes_hex": "8944244489542448488B053BDB7203488D542478488D4C2420FFD090488B0848891848894C2460448D430E488D542460488D0D13F9B504E8"
+    }
+  ],
+  "exact_layout": {
+    "culture_era_state_vector": "CCulture+0x728 count CCulture+0x734 stride 0x58",
+    "innovation_state_vector": "CCulture+0x740 count CCulture+0x74C stride 0x790",
+    "innovation_definition_vector": "CCulture+0x770 count CCulture+0x77C",
+    "spread_marker": "CCulture+0x848",
+    "fascination_marker": "CCulture+0x860",
+    "culture_head_handle": "CCulture+0x8F8",
+    "needs_fascination_reselection": "CCulture+0x8FC",
+    "innovation_state_culture": "CCultureInnovation+0x8",
+    "innovation_state_type": "CCultureInnovation+0x10",
+    "innovation_state_progress": "CCultureInnovation+0x18",
+    "innovation_complete_fixed_point": 10000000
+  },
+  "p0_read_only_slice": {
+    "name": "culture_innovation_snapshot_v1",
+    "unique_next_implementation_entry": "implement_private_exact_build_culture_innovation_snapshot_v1_reader",
+    "minimum_fields": [
+      "revision",
+      "game_build",
+      "exe_sha256",
+      "player_character_id",
+      "culture_id",
+      "culture_head_character_id",
+      "is_player_culture_head",
+      "current_fascination_key",
+      "eras[].key",
+      "eras[].progress",
+      "innovations[].key",
+      "innovations[].era_key",
+      "innovations[].group_key",
+      "innovations[].skill",
+      "innovations[].progress",
+      "innovations[].is_active",
+      "innovations[].can_gain_progress",
+      "innovations[].can_be_fascination",
+      "innovations[].is_fascination",
+      "innovations[].has_spread_marker"
+    ],
+    "readiness_gate": "paused snapshot is coherent, exact-build bound, and every candidate has non-null identity/progress/gates"
+  },
+  "action_seam": {
+    "name": "select_culture_fascination_v1",
+    "status": "design-only-after-p0-live",
+    "preflight": [
+      "is_player_culture_head == true",
+      "target.can_be_fascination == true",
+      "target.is_active == false",
+      "target.is_fascination == false",
+      "snapshot revision and exact-build binding still match"
+    ],
+    "execution": "construct and queue the native CSelectCultureFascinationCommand; never write CCulture+0x860 directly",
+    "postcondition": "on a later paused revision, current_fascination_key equals the target and exactly that candidate reports is_fascination=true",
+    "ack_is_success": false
+  },
+  "unknowns": [
+    "The engine fallback/default for ai_weight_for_spread is not stated by the schema and no stock innovation overrides it.",
+    "The private reader still needs paused-live proof before any field may be promoted to production-live.",
+    "The final command rejection and user-facing reason surface for CSelectCultureFascinationCommand is not closed.",
+    "The precise month in which a culture's 30-way update bucket runs is internal scheduling detail and is not a planner contract.",
+    "DLC-specific innovation benefit valuation remains planner policy input and is not inferred from vanilla fascination weights."
+  ]
+}
