@@ -1789,3 +1789,28 @@ remains `1/8` pending one bounded exact-build natural-death artifact.
   differential replay proving partial-bundle expectation capture. R678 is not
   a natural-death run; the naturally occurring death/reconciliation artifact
   remains the later M3 integration gate.
+
+## R678 application-main executor timeout and partial mailbox gap (2026-09-14)
+
+- Commit `764e1c4` and DLL `68E3746D...B2ED2B76` passed no-launch preflight,
+  then the only campaign-root command at history index `621` ended
+  `timeout_cancelled_before_execution`. The executor did not take the request;
+  this attempt therefore did not return either the expected partial result or
+  a business-data unavailable reason.
+- The run completed `0/1` turns, sent no gameplay input, left date `53789952`
+  unchanged and captured no succession expectation. Cleanup is GREEN and the
+  old round R678 process is terminated. Metadata/run/driver/cleanup hashes are
+  `DF7401C0...016BD`, `51D66A8D...11456BF`, `2CE3FA57...DE79BFD`, and
+  `D7007C3D...FA303`.
+- A separate source audit found that
+  `campaign_root_context_v1_mailbox.cpp` defines `typed_available` as also
+  requiring aggregate `readiness.ready=true`. That contradicts the candidate
+  contract's valid available root with optional rule-token readiness false;
+  once executed, that shape would be converted to `internal_error`. This is a
+  deterministic follow-up defect, not an inferred cause of the observed
+  executor timeout.
+- The blocker stays open. Repair the mailbox admission and its focused fixture,
+  then run one short new round R679 differential replay. Do not claim the
+  optional contract production-live before R679 returns the partial bundle and
+  captures the succession expectation; natural death remains a separate M3
+  gate.

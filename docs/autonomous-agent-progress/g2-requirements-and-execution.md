@@ -429,3 +429,33 @@ show the partial bundle and succession expectation are usable; it must not be
 reported as passed before that evidence exists. A later naturally occurring
 death remains the independent M3 end-to-end transition gate, and this defect
 does not authorize waiting for or manufacturing one during R678.
+
+## R678 executor timeout RED and mailbox partial-admission gap
+
+R678 ran the three-turn candidate from commit `764e1c4` with DLL
+`68E3746D35601C3197165A91ED85C5E5AA5C362C5EEF882123487E52B2ED2B76`.
+Preflight was GREEN, but command-history entry `621` ended as
+`timeout_cancelled_before_execution`: the application-main executor never took
+the campaign-root request. The attempt therefore completed `0/1` turns, sent
+no gameplay input, retained date `53789952`, captured no succession
+expectation, and produced no campaign-root payload from which to judge the
+optional rule-token contract. Cleanup is GREEN and the old round R678 process
+is terminated. Metadata, run-log, final driver-state and cleanup-inventory
+SHA-256 are `DF7401C0B447B6312843A6AB670FBFFAA37AC6C2EC152BB2C51E8606DD7016BD`,
+`51D66A8DBC032B858B9C62351FF4FE30993CA2A6FE5863B2A65103B1111456BF`,
+`2CE3FA573E6A52AB586AD8E743FC3AFF09EBB9F902C0E3202C4DAA78FDE79BFD`, and
+`D7007C3D0D496550463BDE6112DE3ED869D367DACB7DB8BE9F384BC61B0FA303`.
+
+A separate post-run source inspection found a deterministic downstream gap;
+it is not presented as the cause of this request-not-executed timeout.
+`campaign_root_context_v1_mailbox.cpp` currently recognizes
+`typed_available` only when aggregate `readiness.ready=true`. The candidate's
+intended optional-component result is deliberately `status=available` with
+`selected_game_rule_tokens_ready=false` and `ready=false`, so a future
+successfully executed partial read would be converted to `internal_error` at
+mailbox completion. The next package must align that mailbox predicate and its
+focused fixture with the partial-ready root contract. Only after that repair
+may one short new round R679 replay test root publication, partial turn-bundle
+construction and succession-expectation capture. R678 remains RED, the
+optional-component contract is not production-live, and the independent
+natural-death M3 gate remains pending.
