@@ -1,0 +1,141 @@
+{
+  "schema": "xar.player_lifestyle_selection_native_adapter_v1_abi",
+  "status": "static-ready",
+  "game_version": "1.19.0.6",
+  "executable": {
+    "path_hint": "Crusader Kings III/binaries/ck3.exe",
+    "size": 95206008,
+    "sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86"
+  },
+  "scope": {
+    "input_contracts": [
+      "player_lifestyle_window_source_adapter_v1",
+      "player_lifestyle_selection_action_v1"
+    ],
+    "private": true,
+    "public_bridge_or_schema_changed": false,
+    "live_claim": false
+  },
+  "gui_evidence": {
+    "file": "Crusader Kings III/game/gui/window_character_lifestyle.gui",
+    "focus_expression": "[CharacterLifestyleWindow.SelectFocus(FocusType.Self)]",
+    "perk_expression": "[CharacterLifestyleWindow.SelectPerk(Perk.Self)]",
+    "boundary": "SelectFocus RVA 0x132D320 and SelectPerk RVA 0x132D1A0 install confirmation state at window+0x160 and window+0x158. They are forbidden adapter entry points because they open UI confirmation instead of submitting the gameplay command."
+  },
+  "common_submit": {
+    "manager_rva": "0x57621F0",
+    "wrapper_rva": "0x973E00",
+    "signature": "bool(void *manager, void *command, uint32_t channel_flags)",
+    "channel_flags": "0x0E",
+    "ownership": "The wrapper synchronously calls command primary-vtable +0x40 to create an independent heap clone, transfers that clone to the locked queue at RVA 0x341D990, and destroys a rejected clone. The adapter command remains a stack object.",
+    "result_boundary": "true proves only that the queue accepted exactly one clone. It never proves the selection was applied. LIFE6 must issue a pending ACK and verify a later fresh state receipt."
+  },
+  "commands": {
+    "focus": {
+      "confirmation_accept_rva": "0x132BC80",
+      "size": "0x38",
+      "primary_vtable_rva": "0x4323BE0",
+      "secondary_vtable_rva": "0x4323BB0",
+      "validator_slot": "primary+0x30",
+      "validator_rva": "0x25DF570",
+      "clone_slot": "primary+0x40",
+      "clone_rva": "0x25EBF70",
+      "executor_slot": "secondary+0x08",
+      "executor_rva": "0x25DF400",
+      "fields": {
+        "+0x20": "bound full player CharacterID",
+        "+0x28": "exact FocusType pointer",
+        "+0x30": "current full player CharacterID"
+      }
+    },
+    "perk": {
+      "confirmation_accept_rva": "0x132BB00",
+      "size": "0x30",
+      "primary_vtable_rva": "0x4323A50",
+      "secondary_vtable_rva": "0x4323A20",
+      "validator_slot": "primary+0x30",
+      "validator_rva": "0x25DFAF0",
+      "clone_slot": "primary+0x40",
+      "clone_rva": "0x25EC070",
+      "executor_slot": "secondary+0x08",
+      "executor_rva": "0x25DFA50",
+      "fields": {
+        "+0x20": "bound full player CharacterID",
+        "+0x28": "exact CharacterPerk pointer"
+      }
+    }
+  },
+  "dispatch_contract": [
+    "Run only on application-main while the game transaction is paused.",
+    "Re-enter LIFE5 immediately before dispatch so root, RTTI idler, handler+0x1A8 window, owner round-trip, window+0xF8, Character storage round-trip, candidate provenance and final CanSelect are freshly resolved.",
+    "Resolve the requested stable key exactly once in the fresh source. A missing or duplicate key fails closed.",
+    "Construct only the exact command layout, call its final exact validator, then invoke the common submit wrapper exactly once. There is no retry.",
+    "Never call SelectFocus, SelectPerk, open, bind or refresh, and never reinterpret submit acceptance as applied state."
+  ],
+  "evidence_regions": [
+    {
+      "name": "perk_confirmation_accept",
+      "start_rva": "0x132BB00",
+      "end_rva": "0x132BBC2",
+      "length": "0xC2",
+      "sha256": "27CFA5E7DC59C0B0F6C03A1613D48E49FBE409EFA8FF71CBD423CAEBC3BB9A50"
+    },
+    {
+      "name": "focus_confirmation_accept",
+      "start_rva": "0x132BC80",
+      "end_rva": "0x132BD59",
+      "length": "0xD9",
+      "sha256": "03C87BF6EFB372E7A6DC3CABF6824D94D6AB34F8CFBA0807F2C8A0A3774E601E"
+    },
+    {
+      "name": "common_submit_clone_queue",
+      "start_rva": "0x973E00",
+      "end_rva": "0x973E6C",
+      "length": "0x6C",
+      "sha256": "DE559EA4ADE7CC7BA5AD44612C15B28FD66B59FC69F4B1BF6C52431E750537F8"
+    },
+    {
+      "name": "focus_command_clone",
+      "start_rva": "0x25EBF70",
+      "end_rva": "0x25EBFF3",
+      "length": "0x83",
+      "sha256": "BE5721DCC855FEC62865526466AEE267ECE3CA0F506B12640018BBD2C8BC7000"
+    },
+    {
+      "name": "perk_command_clone",
+      "start_rva": "0x25EC070",
+      "end_rva": "0x25EC0EC",
+      "length": "0x7C",
+      "sha256": "19F62F91997FE6B2BC34D239758BD2E8C32FC9271A50C342F48D37B2E180FD31"
+    },
+    {
+      "name": "focus_command_execute",
+      "start_rva": "0x25DF400",
+      "end_rva": "0x25DF566",
+      "length": "0x166",
+      "sha256": "34BB8591CDE044C362F265ABDF71EF961CD0237EE8BDBC9115C6BC26FE480DF1"
+    },
+    {
+      "name": "perk_command_execute",
+      "start_rva": "0x25DFA50",
+      "end_rva": "0x25DFAE9",
+      "length": "0x99",
+      "sha256": "B571678EA293AF56F00DCE19A758D86B55E35FD28BEF0FE9378494C9821EAC6E"
+    },
+    {
+      "name": "perk_command_vtables",
+      "start_rva": "0x4323A20",
+      "end_rva": "0x4323A98",
+      "length": "0x78",
+      "sha256": "AFA3AC0AB2DC0788A7479966CC09464F95D1453DB6A3FED85D138786A8D3FAA9"
+    },
+    {
+      "name": "focus_command_vtables",
+      "start_rva": "0x4323BB0",
+      "end_rva": "0x4323C28",
+      "length": "0x78",
+      "sha256": "662DD0B9B8F4A8EA7BDBE7197DD79734412FB8160D8898B902236533B4E8AC00"
+    }
+  ],
+  "remaining_live_boundary": "No CK3 process was started for LIFE7. The adapter remains static-ready until the single CK3 owner validates one paused exact-build focus/perk submission and LIFE6 proves the postcondition from a fresh receipt."
+}
