@@ -1,0 +1,178 @@
+{
+  "schema_version": 1,
+  "contract": "g2-faction-targeting-row-observer-v1-source-contract",
+  "status": "static-ready-pending-paused-live-capture",
+  "game_build": {
+    "product_version": "1.19.0.6",
+    "executable_size": 95206008,
+    "executable_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86"
+  },
+  "stock_gui": {
+    "relative_path": "game/gui/window_factions.gui",
+    "size": 25169,
+    "sha256": "798F177B1DB914B34CCE177D8CD29F336E182BC6BB24294BD46ECE7B27392770",
+    "anchors": {
+      "targeting_datamodel": "172: datamodel = [FactionsWindow.GetTargetingFactions]",
+      "targeting_visibility": "173: visible = [FactionsWindow.HasTargetingFactions]",
+      "row_context": "428: datacontext = [FactionItem.GetFaction]"
+    }
+  },
+  "native_spans": [
+    {
+      "name": "get_targeting_factions_registration",
+      "rva_start": "0x201390",
+      "rva_end_exclusive": "0x201508",
+      "length": 376,
+      "sha256": "C9F89AB4FE8F53ED0210F8FD5293A01A902B816DE6B35C5B77E45426B605FCA5"
+    },
+    {
+      "name": "get_targeting_factions_gui_callback",
+      "rva_start": "0x1395F00",
+      "rva_end_exclusive": "0x1395F58",
+      "length": 88,
+      "sha256": "155C75947CB74AC359F252CF3215AC618990CF6EE466071649818E424647AF29"
+    },
+    {
+      "name": "get_targeting_factions_leaf",
+      "rva_start": "0xF6F790",
+      "rva_end_exclusive": "0xF6F798",
+      "length": 8,
+      "sha256": "3CEE76F17C23BCDDC5DEDFD8660B1ADADA742D989DC0195A8A63B0770AB210B1"
+    },
+    {
+      "name": "has_targeting_factions_leaf",
+      "rva_start": "0x1393C40",
+      "rva_end_exclusive": "0x1393C4B",
+      "length": 11,
+      "sha256": "72604001B2A3C36A0DFD68F6B24BD57E627F9773DBAE65977FABC3E5378036DC"
+    },
+    {
+      "name": "targeting_collection_count_adapter",
+      "rva_start": "0x96DB70",
+      "rva_end_exclusive": "0x96DB82",
+      "length": 18,
+      "sha256": "7796327934E1674DD9751744541FF8B5E7C744EC328CC92CE37C56E028E3B7B6"
+    },
+    {
+      "name": "targeting_collection_slice_adapter",
+      "rva_start": "0x13A32C0",
+      "rva_end_exclusive": "0x13A3325",
+      "length": 101,
+      "sha256": "7ACA0CDA7200FEE4591AA4AB1BDFB14638B050338E92AD7D969931309578FC1D"
+    },
+    {
+      "name": "targeting_collection_item_adapter",
+      "rva_start": "0x13A3130",
+      "rva_end_exclusive": "0x13A32C0",
+      "length": 400,
+      "sha256": "5551B207BC3DA5DA5DA53E4FA1CAB89D230A4163837973D75C84A55C1C1A8AE1"
+    },
+    {
+      "name": "faction_item_get_faction_registration",
+      "rva_start": "0x1FCEE0",
+      "rva_end_exclusive": "0x1FD038",
+      "length": 344,
+      "sha256": "FBAA6A1CBE7361ABB999789CCD22EFA60600038E8FABD815272CAFE5A7942A2D"
+    },
+    {
+      "name": "faction_item_get_faction_resolver",
+      "rva_start": "0xE6F440",
+      "rva_end_exclusive": "0xE6F479",
+      "length": 57,
+      "sha256": "093AB3215B63F34B2A33181701DFDF95EDD9BA69A478D06FB0C00A433D6F2BB5"
+    },
+    {
+      "name": "faction_item_power_registration",
+      "rva_start": "0x1FD5A0",
+      "rva_end_exclusive": "0x1FD691",
+      "length": 241,
+      "sha256": "BF65B47961503CAFD5A49D1FCB81AAFE4795D38C72ECA917BCB645ACD2A0097F"
+    },
+    {
+      "name": "faction_item_power_callback",
+      "rva_start": "0x1394C30",
+      "rva_end_exclusive": "0x1394C63",
+      "length": 51,
+      "sha256": "8C7B3CB13035F14A21A3EFBA8C96438942C04915267B17924A531246E5212C82"
+    },
+    {
+      "name": "faction_item_power_implementation",
+      "rva_start": "0x138EF90",
+      "rva_end_exclusive": "0x138F20F",
+      "length": 639,
+      "sha256": "021D7E2DFB629367A3676F2B81E98F0A018C871C2ECF9A7AC5DCEA37862F1AA9"
+    },
+    {
+      "name": "faction_item_increasing_registration",
+      "rva_start": "0x1FE320",
+      "rva_end_exclusive": "0x1FE40E",
+      "length": 238,
+      "sha256": "2F2FA8D4A3C8C1566A4BA48A38437FEC38E6D528F00FE35E178E22E076378888"
+    },
+    {
+      "name": "faction_item_increasing_callback",
+      "rva_start": "0x1395130",
+      "rva_end_exclusive": "0x1395168",
+      "length": 56,
+      "sha256": "A92F21EB108EB3C7DBE3BCD2BC2804AFF52CD46C28ED968430102E63BB230435"
+    },
+    {
+      "name": "faction_item_increasing_implementation",
+      "rva_start": "0x1390070",
+      "rva_end_exclusive": "0x13900D6",
+      "length": 102,
+      "sha256": "680E91BA78046B90898BB20A07DD3F005B985A4EC4776BCBF2C0B962C73593C0"
+    },
+    {
+      "name": "faction_item_at_max_registration",
+      "rva_start": "0x1FF420",
+      "rva_end_exclusive": "0x1FF59A",
+      "length": 378,
+      "sha256": "2DC439F126B0A0D697EEC574E6E994A624497074E4AED0E931897929FF22EBD5"
+    },
+    {
+      "name": "faction_item_at_max_callback_and_implementation",
+      "rva_start": "0x13956E0",
+      "rva_end_exclusive": "0x1395754",
+      "length": 116,
+      "sha256": "4C4288025F501BE23640C51073CD02C97047B60D3C9C282A41E797E3585BD283"
+    }
+  ],
+  "patch": {
+    "rva": "0x1395F0E",
+    "continue_rva": "0x1395F1D",
+    "anchor_hex": "E87D98BDFF4889442420488D542430",
+    "anchor_sha256": "0D9601AA9BC920EBC379DC1FAE673EA2D4F3A0CBF6D806C648CEA3EE505EA5B5",
+    "direct_getter_target_rva": "0xF6F790"
+  },
+  "required_header_tokens": [
+    "kFactionTargetingRowObserverInstalledByDefaultV1 = false",
+    "kFactionTargetingRowObserverPatchRvaV1",
+    "kFactionTargetingIdentityResolverRvaV1",
+    "FactionTargetingRowCaptureAdmissionV1",
+    "CaptureFactionTargetingRowsV1"
+  ],
+  "required_implementation_tokens": [
+    "SameAdmission(first_admission, second_admission)",
+    "index * kFactionTargetingRowStrideV1",
+    "round_trip == faction_id",
+    "std::adjacent_find",
+    "published_generation.store(generation + 1",
+    "published_generation.store(generation + 2"
+  ],
+  "required_serializer_tokens": [
+    "raw_pointer_fields_persisted",
+    "raw_row_bytes_persisted",
+    "campaign_root_count_equivalence",
+    "public_targeting_rows"
+  ],
+  "public_impact": {
+    "public_abi_changed": false,
+    "public_capability_changed": false,
+    "public_targeting_rows_ready": false
+  },
+  "campaign_root_count_equivalence_ready": false,
+  "raw_pointer_fields_persisted": false,
+  "raw_row_bytes_persisted": false,
+  "unique_next_reverse_engineering_entry": "faction_item_target_character_getter_and_campaign_root_count_equivalence"
+}

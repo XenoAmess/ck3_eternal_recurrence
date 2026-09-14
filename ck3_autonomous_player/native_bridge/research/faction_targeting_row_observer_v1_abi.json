@@ -1,0 +1,101 @@
+{
+  "contract": "g2-faction-targeting-row-observer-v1",
+  "schema_version": 1,
+  "status": "static-ready-pending-paused-live-capture",
+  "exact_build": {
+    "product_version": "1.19.0.6",
+    "executable_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+    "image_base": "0x140000000"
+  },
+  "targeting_span": {
+    "gui_datamodel": "FactionsWindow.GetTargetingFactions",
+    "registration_rva": "0x201390",
+    "registration_end_exclusive": "0x201508",
+    "gui_callback_rva": "0x1395F00",
+    "gui_callback_end_exclusive": "0x1395F58",
+    "leaf_getter_rva": "0xF6F790",
+    "leaf_getter_end_exclusive": "0xF6F798",
+    "owner_container_offset": "0x138",
+    "container_data_offset": "0x00",
+    "container_unknown_word_offset": "0x08",
+    "container_count_offset": "0x0C",
+    "container_count_type": "signed int32",
+    "row_stride": 24,
+    "maximum_captured_rows": 64,
+    "unknown_word_semantics_ready": false
+  },
+  "adapter_evidence": {
+    "count_adapter_rva": "0x96DB70",
+    "count_adapter_end_exclusive": "0x96DB82",
+    "slice_adapter_rva": "0x13A32C0",
+    "slice_adapter_end_exclusive": "0x13A3325",
+    "item_adapter_rva": "0x13A3130",
+    "item_adapter_end_exclusive": "0x13A32C0",
+    "row_semantics": "inline 0x18-byte FactionItem rows; only the uint32 faction identity at +0x00 is read",
+    "producer_writer_ready": false,
+    "producer_limit": "The leaf getter is folded and has multiple direct callsites. No exact producer/writer is claimed by this package."
+  },
+  "stable_identity": {
+    "gui_method": "FactionItem.GetFaction",
+    "registration_rva": "0x1FCEE0",
+    "registration_end_exclusive": "0x1FD038",
+    "resolver_rva": "0xE6F440",
+    "resolver_end_exclusive": "0xE6F479",
+    "row_faction_id_offset": "0x00",
+    "row_faction_id_type": "uint32 full-generation engine identity",
+    "resolved_faction_round_trip_offset": "0x10",
+    "round_trip_required": true
+  },
+  "capture_seam": {
+    "owner": "GetTargetingFactions GUI callback immediately after the exact leaf getter",
+    "patch_rva": "0x1395F0E",
+    "continue_rva": "0x1395F1D",
+    "patch_bytes": 15,
+    "anchor_hex": "E87D98BDFF4889442420488D542430",
+    "anchor_sha256": "0D9601AA9BC920EBC379DC1FAE673EA2D4F3A0CBF6D806C648CEA3EE505EA5B5",
+    "installed_by_default": false,
+    "compile_option": "XAR_CK3_ENABLE_G2_FACTION_TARGETING_ROW_OBSERVER_V1"
+  },
+  "transaction": {
+    "install_requires": [
+      "exact executable SHA-256 admission",
+      "primary application thread suspended proof",
+      "exact patch anchor"
+    ],
+    "each_capture_requires": [
+      "admission before the first targeting-state read",
+      "current thread equals application-main thread",
+      "paused proof",
+      "two equal container data/count snapshots",
+      "two equal faction-id copies from inline 0x18-byte rows",
+      "equal proof epoch, revision, date and player identity after the second copy",
+      "every faction id resolves and round-trips",
+      "faction identities are unique"
+    ],
+    "publication": "owned sorted faction ids are published with an odd/even generation; any failure retains the previous generation"
+  },
+  "pointer_boundary": {
+    "raw_pointer_fields_persisted": false,
+    "raw_pointer_hashes_persisted": false,
+    "raw_row_bytes_persisted": false,
+    "process_local_addresses": "container and row addresses are used only during the synchronous capture and are never published"
+  },
+  "readiness": {
+    "exact_targeting_span_ready": true,
+    "stable_faction_identity_ready": true,
+    "same_frame_capture_core_ready": true,
+    "paused_live_artifact_ready": false,
+    "campaign_root_count_equivalence_ready": false,
+    "target_character_identity_ready": false,
+    "public_targeting_rows_ready": false
+  },
+  "scope": {
+    "private_build_only": true,
+    "read_only_game_state": true,
+    "public_abi_changed": false,
+    "public_capability_changed": false,
+    "ck3_started": false
+  },
+  "unique_next_reverse_engineering_entry": "faction_item_target_character_getter_and_campaign_root_count_equivalence",
+  "evidence_limit": "The exact GUI targeting span and FactionItem full-generation faction identity round-trip are closed. The row target-character getter and equivalence to campaign-root land_state+0x12C remain unresolved, so this private observer is not wired into the public faction-alert query."
+}

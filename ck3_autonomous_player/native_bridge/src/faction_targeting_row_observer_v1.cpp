@@ -1,0 +1,716 @@
+#include "xar_bridge/faction_targeting_row_observer_v1.hpp"
+
+#include <algorithm>
+#include <array>
+#include <cstring>
+#include <initializer_list>
+#include <limits>
+
+namespace xar::bridge {
+namespace {
+
+static_assert(sizeof(void *) == 8,
+              "faction targeting row observer is x64-only");
+
+constexpr std::array<std::uint8_t,
+                     kFactionTargetingRowObserverPatchBytesV1>
+    kPatchAnchor{0xE8, 0x7D, 0x98, 0xBD, 0xFF,
+                 0x48, 0x89, 0x44, 0x24, 0x20,
+                 0x48, 0x8D, 0x54, 0x24, 0x30};
+
+std::atomic<FactionTargetingRowObserverStateV1 *> g_active_observer{nullptr};
+
+struct TargetingContainerHeaderV1 {
+  std::uintptr_t row_data = 0;
+  std::int32_t count = 0;
+};
+
+void AddFailure(FactionTargetingRowObserverStateV1 &state,
+                FactionTargetingRowObserverFailureV1 failure) noexcept {
+  state.failure_flags.fetch_or(static_cast<std::uint32_t>(failure),
+                               std::memory_order_acq_rel);
+}
+
+bool DefaultMemoryRead(void *, std::uintptr_t address, void *output,
+                       std::size_t size) noexcept {
+  if (address == 0 || output == nullptr || size == 0) return false;
+#if defined(_MSC_VER)
+  __try {
+#endif
+    std::memcpy(output, reinterpret_cast<const void *>(address), size);
+    return true;
+#if defined(_MSC_VER)
+  } __except (EXCEPTION_EXECUTE_HANDLER) {
+    return false;
+  }
+#endif
+}
+
+bool DefaultMemoryWrite(void *, std::uintptr_t address, const void *source,
+                        std::size_t size) noexcept {
+  if (address == 0 || source == nullptr || size == 0) return false;
+#if defined(_MSC_VER)
+  __try {
+#endif
+    std::memcpy(reinterpret_cast<void *>(address), source, size);
+    return true;
+#if defined(_MSC_VER)
+  } __except (EXCEPTION_EXECUTE_HANDLER) {
+    return false;
+  }
+#endif
+}
+
+void *DefaultVirtualAlloc(void *, std::size_t size, DWORD allocation_type,
+                          DWORD protection) noexcept {
+  return VirtualAlloc(nullptr, size, allocation_type, protection);
+}
+
+bool DefaultVirtualFree(void *, void *address, std::size_t size,
+                        DWORD free_type) noexcept {
+  return VirtualFree(address, size, free_type) != FALSE;
+}
+
+bool DefaultVirtualProtect(void *, void *address, std::size_t size,
+                           DWORD new_protection,
+                           DWORD &old_protection) noexcept {
+  old_protection = 0;
+  return VirtualProtect(address, size, new_protection, &old_protection) != FALSE;
+}
+
+bool DefaultFlushInstructionCache(void *, const void *address,
+                                  std::size_t size) noexcept {
+  return FlushInstructionCache(GetCurrentProcess(), address, size) != FALSE;
+}
+
+bool AddRva(std::uintptr_t base, std::uintptr_t rva,
+            std::uintptr_t &output) noexcept {
+  if (base == 0 ||
+      rva > (std::numeric_limits<std::uintptr_t>::max)() - base) {
+    output = 0;
+    return false;
+  }
+  output = base + rva;
+  return true;
+}
+
+std::uintptr_t Resolve(std::uintptr_t override_address,
+                       std::uintptr_t module_base,
+                       std::uintptr_t rva) noexcept {
+  if (override_address != 0) return override_address;
+  std::uintptr_t output = 0;
+  (void)AddRva(module_base, rva, output);
+  return output;
+}
+
+bool ReadMemory(const FactionTargetingRowObserverStateV1 &state,
+                std::uintptr_t address, void *output,
+                std::size_t size) noexcept {
+  return state.memory_read != nullptr &&
+      state.memory_read(state.memory_context, address, output, size);
+}
+
+bool WriteMemory(const FactionTargetingRowObserverStateV1 &state,
+                 std::uintptr_t address, const void *source,
+                 std::size_t size) noexcept {
+  return state.memory_write != nullptr &&
+      state.memory_write(state.memory_context, address, source, size);
+}
+
+bool BytesEqual(const FactionTargetingRowObserverStateV1 &state,
+                std::uintptr_t address, const std::uint8_t *expected,
+                std::size_t size) noexcept {
+  std::array<std::uint8_t, kFactionTargetingRowObserverPatchBytesV1> actual{};
+  if (size > actual.size() ||
+      !ReadMemory(state, address, actual.data(), size)) {
+    return false;
+  }
+  return std::memcmp(actual.data(), expected, size) == 0;
+}
+
+template <std::size_t Size>
+void Emit(std::array<std::uint8_t, Size> &output, std::size_t &cursor,
+          std::initializer_list<std::uint8_t> bytes) noexcept {
+  for (const auto byte : bytes) output[cursor++] = byte;
+}
+
+template <std::size_t Size>
+void EmitU64(std::array<std::uint8_t, Size> &output, std::size_t &cursor,
+             std::uintptr_t value) noexcept {
+  const auto encoded = static_cast<std::uint64_t>(value);
+  std::memcpy(output.data() + cursor, &encoded, sizeof(encoded));
+  cursor += sizeof(encoded);
+}
+
+template <std::size_t Size>
+void EmitAbsoluteCall(std::array<std::uint8_t, Size> &output,
+                      std::size_t &cursor, std::uintptr_t target) noexcept {
+  Emit(output, cursor, {0xFF, 0x15, 0x02, 0x00, 0x00, 0x00, 0xEB, 0x08});
+  EmitU64(output, cursor, target);
+}
+
+template <std::size_t Size>
+void EmitAbsoluteJump(std::array<std::uint8_t, Size> &output,
+                      std::size_t &cursor, std::uintptr_t target) noexcept {
+  Emit(output, cursor, {0xFF, 0x25, 0x00, 0x00, 0x00, 0x00});
+  EmitU64(output, cursor, target);
+}
+
+template <std::size_t Size>
+void EmitPreserveVolatile(std::array<std::uint8_t, Size> &output,
+                          std::size_t &cursor) noexcept {
+  Emit(output, cursor,
+       {0x9C, 0x50, 0x51, 0x52, 0x41, 0x50,
+        0x41, 0x51, 0x41, 0x52, 0x41, 0x53});
+  Emit(output, cursor, {0x48, 0x83, 0xEC, 0x20});
+}
+
+template <std::size_t Size>
+void EmitRestoreVolatile(std::array<std::uint8_t, Size> &output,
+                         std::size_t &cursor) noexcept {
+  Emit(output, cursor, {0x48, 0x83, 0xC4, 0x20});
+  Emit(output, cursor,
+       {0x41, 0x5B, 0x41, 0x5A, 0x41, 0x59,
+        0x41, 0x58, 0x5A, 0x59, 0x58, 0x9D});
+}
+
+extern "C" void FactionTargetingRowPostGetterThunkV1(
+    std::uintptr_t targeting_container_address) noexcept {
+  auto *state = g_active_observer.load(std::memory_order_acquire);
+  if (state == nullptr) return;
+  LARGE_INTEGER timestamp{};
+  (void)QueryPerformanceCounter(&timestamp);
+  (void)CaptureFactionTargetingRowsV1(
+      *state, targeting_container_address, GetCurrentThreadId(),
+      static_cast<std::uint64_t>(timestamp.QuadPart));
+}
+
+bool BuildStub(FactionTargetingRowObserverStateV1 &state,
+               std::array<std::uint8_t,
+                          kFactionTargetingRowObserverStubCapacityV1>
+                   &stub) noexcept {
+  stub.fill(0x90);
+  std::size_t cursor = 0;
+
+  EmitAbsoluteCall(stub, cursor, state.original_getter_target);
+  Emit(stub, cursor, {0x48, 0x89, 0x44, 0x24, 0x20});
+  Emit(stub, cursor, {0x48, 0x8D, 0x54, 0x24, 0x30});
+  EmitPreserveVolatile(stub, cursor);
+  Emit(stub, cursor, {0x48, 0x8B, 0xC8});
+  EmitAbsoluteCall(
+      stub, cursor,
+      reinterpret_cast<std::uintptr_t>(&FactionTargetingRowPostGetterThunkV1));
+  EmitRestoreVolatile(stub, cursor);
+  EmitAbsoluteJump(stub, cursor, state.continue_target);
+  return cursor <= stub.size();
+}
+
+void BuildPatch(std::uintptr_t stub_address,
+                std::array<std::uint8_t,
+                           kFactionTargetingRowObserverPatchBytesV1>
+                    &patch) noexcept {
+  patch.fill(0x90);
+  std::size_t cursor = 0;
+  EmitAbsoluteJump(patch, cursor, stub_address);
+}
+
+enum class TargetWriteResult { success, failed, rollback_unproven };
+
+TargetWriteResult WriteTarget(
+    FactionTargetingRowObserverStateV1 &state,
+    const std::uint8_t *expected, const std::uint8_t *replacement) noexcept {
+  if (!BytesEqual(state, state.patch_target, expected,
+                  kFactionTargetingRowObserverPatchBytesV1)) {
+    AddFailure(state, faction_targeting_row_observer_failure_anchor);
+    return TargetWriteResult::failed;
+  }
+  DWORD old_protection = 0;
+  if (state.virtual_protect == nullptr ||
+      !state.virtual_protect(state.memory_context,
+                             reinterpret_cast<void *>(state.patch_target),
+                             kFactionTargetingRowObserverPatchBytesV1,
+                             PAGE_EXECUTE_READWRITE, old_protection)) {
+    AddFailure(state,
+               faction_targeting_row_observer_failure_target_protection);
+    return TargetWriteResult::failed;
+  }
+  const bool wrote = WriteMemory(state, state.patch_target, replacement,
+                                 kFactionTargetingRowObserverPatchBytesV1);
+  const bool flushed = wrote && state.flush_instruction_cache != nullptr &&
+      state.flush_instruction_cache(
+          state.memory_context,
+          reinterpret_cast<const void *>(state.patch_target),
+          kFactionTargetingRowObserverPatchBytesV1);
+  DWORD ignored = 0;
+  const bool restored = state.virtual_protect(
+      state.memory_context, reinterpret_cast<void *>(state.patch_target),
+      kFactionTargetingRowObserverPatchBytesV1, old_protection, ignored);
+  if (wrote && flushed && restored &&
+      BytesEqual(state, state.patch_target, replacement,
+                 kFactionTargetingRowObserverPatchBytesV1)) {
+    return TargetWriteResult::success;
+  }
+  if (!flushed) AddFailure(state, faction_targeting_row_observer_failure_flush);
+  DWORD rollback_old = 0;
+  const bool rollback_protected = state.virtual_protect(
+      state.memory_context, reinterpret_cast<void *>(state.patch_target),
+      kFactionTargetingRowObserverPatchBytesV1, PAGE_EXECUTE_READWRITE,
+      rollback_old);
+  const bool rollback_written = rollback_protected &&
+      WriteMemory(state, state.patch_target, expected,
+                  kFactionTargetingRowObserverPatchBytesV1);
+  const bool rollback_flushed = rollback_written &&
+      state.flush_instruction_cache(
+          state.memory_context,
+          reinterpret_cast<const void *>(state.patch_target),
+          kFactionTargetingRowObserverPatchBytesV1);
+  DWORD rollback_ignored = 0;
+  const bool rollback_restored = rollback_protected &&
+      state.virtual_protect(
+          state.memory_context, reinterpret_cast<void *>(state.patch_target),
+          kFactionTargetingRowObserverPatchBytesV1, rollback_old,
+          rollback_ignored);
+  const bool rollback_proven = rollback_flushed && rollback_restored &&
+      BytesEqual(state, state.patch_target, expected,
+                 kFactionTargetingRowObserverPatchBytesV1);
+  if (!rollback_proven) {
+    AddFailure(state, faction_targeting_row_observer_failure_rollback);
+    return TargetWriteResult::rollback_unproven;
+  }
+  return TargetWriteResult::failed;
+}
+
+bool SameAdmission(const FactionTargetingRowCaptureAdmissionV1 &first,
+                   const FactionTargetingRowCaptureAdmissionV1 &second) {
+  return first.application_main_thread_id ==
+             second.application_main_thread_id &&
+      first.paused == second.paused &&
+      first.proof_epoch == second.proof_epoch &&
+      first.snapshot_revision == second.snapshot_revision &&
+      first.date_raw == second.date_raw &&
+      first.player_character_id == second.player_character_id;
+}
+
+bool ReadContainer(
+    const FactionTargetingRowObserverStateV1 &state,
+    std::uintptr_t address, TargetingContainerHeaderV1 &header) noexcept {
+  if (address == 0 ||
+      address > (std::numeric_limits<std::uintptr_t>::max)() - 0x0C ||
+      !ReadMemory(state, address, &header.row_data, sizeof(header.row_data)) ||
+      !ReadMemory(state, address + 0x0C, &header.count,
+                  sizeof(header.count)) ||
+      header.count < 0 ||
+      header.count >
+          static_cast<std::int32_t>(kFactionTargetingRowObserverMaximumRowsV1) ||
+      (header.count != 0 && header.row_data == 0)) {
+    return false;
+  }
+  const auto count = static_cast<std::size_t>(header.count);
+  return count == 0 ||
+      header.row_data <=
+          (std::numeric_limits<std::uintptr_t>::max)() -
+              (count - 1) * kFactionTargetingRowStrideV1;
+}
+
+bool ResolveIdentity(FactionTargetingRowObserverStateV1 &state,
+                     std::uintptr_t row_address,
+                     std::uint32_t &faction_id) noexcept {
+  faction_id = 0;
+  if (!ReadMemory(state, row_address, &faction_id, sizeof(faction_id)) ||
+      faction_id == 0) {
+    return false;
+  }
+  std::uintptr_t resolved = 0;
+  if (state.identity_resolver_override != nullptr) {
+    if (!state.identity_resolver_override(state.identity_resolver_context,
+                                          faction_id, resolved)) {
+      return false;
+    }
+  } else {
+    using Resolver = void *(*)(const std::uint32_t *) noexcept;
+    if (state.identity_resolver_target == 0) return false;
+    const auto resolver =
+        reinterpret_cast<Resolver>(state.identity_resolver_target);
+    resolved = reinterpret_cast<std::uintptr_t>(resolver(&faction_id));
+  }
+  std::uint32_t round_trip = 0;
+  return resolved != 0 &&
+      ReadMemory(state, resolved + 0x10, &round_trip, sizeof(round_trip)) &&
+      round_trip == faction_id;
+}
+
+void ClearResolved(FactionTargetingRowObserverStateV1 &state) noexcept {
+  state.offline_fixture = false;
+  state.module_base = 0;
+  state.patch_target = 0;
+  state.continue_target = 0;
+  state.original_getter_target = 0;
+  state.identity_resolver_target = 0;
+  state.stub = nullptr;
+  state.memory_context = nullptr;
+  state.memory_read = nullptr;
+  state.memory_write = nullptr;
+  state.virtual_free = nullptr;
+  state.virtual_protect = nullptr;
+  state.flush_instruction_cache = nullptr;
+  state.capture_admission_context = nullptr;
+  state.capture_admission_probe = nullptr;
+  state.identity_resolver_context = nullptr;
+  state.identity_resolver_override = nullptr;
+}
+
+bool ReleaseStub(FactionTargetingRowObserverStateV1 &state) noexcept {
+  if (state.stub == nullptr || state.virtual_free == nullptr) return true;
+  return state.virtual_free(state.memory_context, state.stub, 0, MEM_RELEASE);
+}
+
+} // namespace
+
+bool CaptureFactionTargetingRowsV1(
+    FactionTargetingRowObserverStateV1 &state,
+    std::uintptr_t targeting_container_address,
+    std::uint32_t current_thread_id, std::uint64_t timestamp_qpc) noexcept {
+  auto &observation = state.observation;
+  observation.callback_count.fetch_add(1, std::memory_order_relaxed);
+
+  FactionTargetingRowCaptureAdmissionV1 first_admission{};
+  if (state.capture_admission_probe == nullptr ||
+      !state.capture_admission_probe(state.capture_admission_context,
+                                     first_admission)) {
+    AddFailure(state, faction_targeting_row_observer_failure_capture_admission);
+    return false;
+  }
+  if (first_admission.application_main_thread_id == 0 ||
+      current_thread_id != first_admission.application_main_thread_id) {
+    observation.rejected_application_main_count.fetch_add(
+        1, std::memory_order_relaxed);
+    return false;
+  }
+  if (!first_admission.paused) {
+    observation.rejected_paused_count.fetch_add(1,
+                                                std::memory_order_relaxed);
+    return false;
+  }
+
+  TargetingContainerHeaderV1 first_header{};
+  TargetingContainerHeaderV1 second_header{};
+  if (!ReadContainer(state, targeting_container_address, first_header)) {
+    observation.span_read_failure_count.fetch_add(1,
+                                                  std::memory_order_relaxed);
+    return false;
+  }
+
+  const auto count = static_cast<std::size_t>(first_header.count);
+  std::array<std::uint32_t, kFactionTargetingRowObserverMaximumRowsV1>
+      first_ids{};
+  for (std::size_t index = 0; index < count; ++index) {
+    const auto row_address =
+        first_header.row_data + index * kFactionTargetingRowStrideV1;
+    if (!ResolveIdentity(state, row_address, first_ids[index])) {
+      observation.identity_failure_count.fetch_add(1,
+                                                   std::memory_order_relaxed);
+      AddFailure(state,
+                 faction_targeting_row_observer_failure_identity_resolver);
+      return false;
+    }
+  }
+
+  if (!ReadContainer(state, targeting_container_address, second_header)) {
+    observation.span_read_failure_count.fetch_add(1,
+                                                  std::memory_order_relaxed);
+    return false;
+  }
+  if (first_header.row_data != second_header.row_data ||
+      first_header.count != second_header.count) {
+    observation.span_stability_failure_count.fetch_add(
+        1, std::memory_order_relaxed);
+    return false;
+  }
+  std::array<std::uint32_t, kFactionTargetingRowObserverMaximumRowsV1>
+      second_ids{};
+  for (std::size_t index = 0; index < count; ++index) {
+    const auto row_address =
+        second_header.row_data + index * kFactionTargetingRowStrideV1;
+    if (!ReadMemory(state, row_address, &second_ids[index],
+                    sizeof(second_ids[index]))) {
+      observation.span_read_failure_count.fetch_add(1,
+                                                    std::memory_order_relaxed);
+      return false;
+    }
+  }
+
+  FactionTargetingRowCaptureAdmissionV1 second_admission{};
+  if (!state.capture_admission_probe(state.capture_admission_context,
+                                     second_admission) ||
+      !SameAdmission(first_admission, second_admission)) {
+    observation.rejected_state_change_count.fetch_add(
+        1, std::memory_order_relaxed);
+    return false;
+  }
+
+  const bool same_span = std::equal(first_ids.begin(),
+                                    first_ids.begin() + count,
+                                    second_ids.begin());
+  if (!same_span) {
+    observation.span_stability_failure_count.fetch_add(
+        1, std::memory_order_relaxed);
+    return false;
+  }
+
+  std::sort(first_ids.begin(), first_ids.begin() + count);
+  if (std::adjacent_find(first_ids.begin(), first_ids.begin() + count) !=
+      first_ids.begin() + count) {
+    observation.identity_failure_count.fetch_add(1,
+                                                 std::memory_order_relaxed);
+    return false;
+  }
+
+  const auto generation = observation.published_generation.load(
+      std::memory_order_relaxed);
+  observation.published_generation.store(generation + 1,
+                                         std::memory_order_release);
+  observation.last_proof_epoch.store(first_admission.proof_epoch,
+                                     std::memory_order_relaxed);
+  observation.last_snapshot_revision.store(first_admission.snapshot_revision,
+                                            std::memory_order_relaxed);
+  observation.last_date_raw.store(first_admission.date_raw,
+                                  std::memory_order_relaxed);
+  observation.last_player_character_id.store(
+      first_admission.player_character_id, std::memory_order_relaxed);
+  observation.last_faction_count.store(static_cast<std::uint32_t>(count),
+                                       std::memory_order_relaxed);
+  for (std::size_t index = 0;
+       index < kFactionTargetingRowObserverMaximumRowsV1; ++index) {
+    observation.last_faction_ids[index].store(first_ids[index],
+                                              std::memory_order_relaxed);
+  }
+  observation.last_thread_id.store(current_thread_id,
+                                   std::memory_order_relaxed);
+  observation.last_timestamp_qpc.store(timestamp_qpc,
+                                       std::memory_order_relaxed);
+  observation.accepted_capture_count.fetch_add(1,
+                                               std::memory_order_relaxed);
+  observation.published_generation.store(generation + 2,
+                                         std::memory_order_release);
+  return true;
+}
+
+bool InstallFactionTargetingRowObserverV1(
+    FactionTargetingRowObserverStateV1 &state,
+    const FactionTargetingRowObserverEnvironmentV1 &environment) noexcept {
+  if (state.installed.load(std::memory_order_acquire) != 0 ||
+      g_active_observer.load(std::memory_order_acquire) != nullptr) {
+    AddFailure(state, faction_targeting_row_observer_failure_already_installed);
+    return false;
+  }
+  if (!environment.exact_build_admitted ||
+      environment.admitted_executable_sha256 !=
+          kFactionTargetingRowObserverExecutableSha256V1) {
+    AddFailure(state, faction_targeting_row_observer_failure_exact_build);
+    return false;
+  }
+  if (!environment.primary_thread_suspended_proven) {
+    AddFailure(
+        state,
+        faction_targeting_row_observer_failure_primary_thread_suspended);
+    return false;
+  }
+  if (environment.capture_admission_probe == nullptr) {
+    AddFailure(state, faction_targeting_row_observer_failure_capture_admission);
+    return false;
+  }
+  const bool has_override =
+      environment.patch_target_override != 0 ||
+      environment.continue_target_override != 0 ||
+      environment.original_getter_target_override != 0 ||
+      environment.identity_resolver_target_override != 0 ||
+      environment.memory_read_override != nullptr ||
+      environment.memory_write_override != nullptr ||
+      environment.virtual_alloc_override != nullptr ||
+      environment.virtual_free_override != nullptr ||
+      environment.virtual_protect_override != nullptr ||
+      environment.flush_instruction_cache_override != nullptr ||
+      environment.identity_resolver_override != nullptr;
+  if (has_override && !environment.offline_fixture) {
+    AddFailure(state,
+               faction_targeting_row_observer_failure_unsupported_override);
+    return false;
+  }
+
+  state.offline_fixture = environment.offline_fixture;
+  state.module_base = environment.module_base;
+  state.patch_target = Resolve(environment.patch_target_override,
+                               environment.module_base,
+                               kFactionTargetingRowObserverPatchRvaV1);
+  state.continue_target = Resolve(environment.continue_target_override,
+                                  environment.module_base,
+                                  kFactionTargetingRowObserverContinueRvaV1);
+  state.original_getter_target = Resolve(
+      environment.original_getter_target_override, environment.module_base,
+      kFactionTargetingRowGetterRvaV1);
+  state.identity_resolver_target = Resolve(
+      environment.identity_resolver_target_override, environment.module_base,
+      kFactionTargetingIdentityResolverRvaV1);
+  state.memory_context = environment.memory_context;
+  state.memory_read = environment.memory_read_override != nullptr
+      ? environment.memory_read_override
+      : &DefaultMemoryRead;
+  state.memory_write = environment.memory_write_override != nullptr
+      ? environment.memory_write_override
+      : &DefaultMemoryWrite;
+  auto virtual_alloc = environment.virtual_alloc_override != nullptr
+      ? environment.virtual_alloc_override
+      : &DefaultVirtualAlloc;
+  state.virtual_free = environment.virtual_free_override != nullptr
+      ? environment.virtual_free_override
+      : &DefaultVirtualFree;
+  state.virtual_protect = environment.virtual_protect_override != nullptr
+      ? environment.virtual_protect_override
+      : &DefaultVirtualProtect;
+  state.flush_instruction_cache =
+      environment.flush_instruction_cache_override != nullptr
+      ? environment.flush_instruction_cache_override
+      : &DefaultFlushInstructionCache;
+  state.capture_admission_context = environment.capture_admission_context;
+  state.capture_admission_probe = environment.capture_admission_probe;
+  state.identity_resolver_context = environment.identity_resolver_context;
+  state.identity_resolver_override = environment.identity_resolver_override;
+
+  if (state.patch_target == 0 || state.continue_target == 0 ||
+      state.original_getter_target == 0 ||
+      state.identity_resolver_target == 0 ||
+      !BytesEqual(state, state.patch_target, kPatchAnchor.data(),
+                  kPatchAnchor.size())) {
+    AddFailure(state, faction_targeting_row_observer_failure_anchor);
+    ClearResolved(state);
+    return false;
+  }
+  std::memcpy(state.original_patch_bytes.data(), kPatchAnchor.data(),
+              kPatchAnchor.size());
+  state.stub = virtual_alloc(state.memory_context,
+                             kFactionTargetingRowObserverStubCapacityV1,
+                             MEM_COMMIT | MEM_RESERVE, PAGE_READWRITE);
+  if (state.stub == nullptr) {
+    AddFailure(state, faction_targeting_row_observer_failure_allocation);
+    ClearResolved(state);
+    return false;
+  }
+  std::array<std::uint8_t, kFactionTargetingRowObserverStubCapacityV1> stub{};
+  if (!BuildStub(state, stub) ||
+      !WriteMemory(state, reinterpret_cast<std::uintptr_t>(state.stub),
+                   stub.data(), stub.size())) {
+    AddFailure(state, faction_targeting_row_observer_failure_allocation);
+    (void)ReleaseStub(state);
+    ClearResolved(state);
+    return false;
+  }
+  DWORD old_stub_protection = 0;
+  if (!state.virtual_protect(state.memory_context, state.stub, stub.size(),
+                             PAGE_EXECUTE_READ, old_stub_protection) ||
+      !state.flush_instruction_cache(state.memory_context, state.stub,
+                                     stub.size())) {
+    AddFailure(state,
+               faction_targeting_row_observer_failure_stub_protection);
+    (void)ReleaseStub(state);
+    ClearResolved(state);
+    return false;
+  }
+
+  BuildPatch(reinterpret_cast<std::uintptr_t>(state.stub),
+             state.installed_patch_bytes);
+  g_active_observer.store(&state, std::memory_order_release);
+  const auto write = WriteTarget(state, state.original_patch_bytes.data(),
+                                 state.installed_patch_bytes.data());
+  if (write == TargetWriteResult::success) {
+    state.installed.store(1, std::memory_order_release);
+    return true;
+  }
+  if (write == TargetWriteResult::rollback_unproven) {
+    state.installed.store(1, std::memory_order_release);
+    return false;
+  }
+  g_active_observer.store(nullptr, std::memory_order_release);
+  (void)ReleaseStub(state);
+  ClearResolved(state);
+  return false;
+}
+
+bool UninstallFactionTargetingRowObserverV1(
+    FactionTargetingRowObserverStateV1 &state) noexcept {
+  if (state.installed.load(std::memory_order_acquire) == 0 ||
+      g_active_observer.load(std::memory_order_acquire) != &state) {
+    AddFailure(state, faction_targeting_row_observer_failure_already_installed);
+    return false;
+  }
+  const auto write = WriteTarget(state, state.installed_patch_bytes.data(),
+                                 state.original_patch_bytes.data());
+  if (write != TargetWriteResult::success) {
+    AddFailure(state, faction_targeting_row_observer_failure_rollback);
+    return false;
+  }
+  state.installed.store(0, std::memory_order_release);
+  g_active_observer.store(nullptr, std::memory_order_release);
+  const bool released = ReleaseStub(state);
+  if (released) ClearResolved(state);
+  return released;
+}
+
+FactionTargetingRowObserverDiagnosticsV1
+ReadFactionTargetingRowObserverDiagnosticsV1(
+    const FactionTargetingRowObserverStateV1 &state) noexcept {
+  FactionTargetingRowObserverDiagnosticsV1 output{};
+  output.installed = state.installed.load(std::memory_order_acquire) != 0;
+  output.offline_fixture = state.offline_fixture;
+  output.failure_flags = state.failure_flags.load(std::memory_order_acquire);
+  const auto &source = state.observation;
+  auto &target = output.observation;
+  target.callback_count = source.callback_count.load(std::memory_order_acquire);
+  target.rejected_application_main_count =
+      source.rejected_application_main_count.load(std::memory_order_acquire);
+  target.rejected_paused_count =
+      source.rejected_paused_count.load(std::memory_order_acquire);
+  target.rejected_state_change_count =
+      source.rejected_state_change_count.load(std::memory_order_acquire);
+  target.span_read_failure_count =
+      source.span_read_failure_count.load(std::memory_order_acquire);
+  target.span_stability_failure_count =
+      source.span_stability_failure_count.load(std::memory_order_acquire);
+  target.identity_failure_count =
+      source.identity_failure_count.load(std::memory_order_acquire);
+  target.accepted_capture_count =
+      source.accepted_capture_count.load(std::memory_order_acquire);
+
+  for (std::size_t attempt = 0; attempt < 8; ++attempt) {
+    const auto before =
+        source.published_generation.load(std::memory_order_acquire);
+    if ((before & 1U) != 0) continue;
+    target.last_proof_epoch =
+        source.last_proof_epoch.load(std::memory_order_relaxed);
+    target.last_snapshot_revision =
+        source.last_snapshot_revision.load(std::memory_order_relaxed);
+    target.last_date_raw =
+        source.last_date_raw.load(std::memory_order_relaxed);
+    target.last_player_character_id =
+        source.last_player_character_id.load(std::memory_order_relaxed);
+    target.last_faction_count =
+        source.last_faction_count.load(std::memory_order_relaxed);
+    for (std::size_t index = 0; index < target.last_faction_ids.size();
+         ++index) {
+      target.last_faction_ids[index] =
+          source.last_faction_ids[index].load(std::memory_order_relaxed);
+    }
+    target.last_thread_id =
+        source.last_thread_id.load(std::memory_order_relaxed);
+    target.last_timestamp_qpc =
+        source.last_timestamp_qpc.load(std::memory_order_relaxed);
+    const auto after =
+        source.published_generation.load(std::memory_order_acquire);
+    if (before == after && (after & 1U) == 0) {
+      target.published_generation = after;
+      break;
+    }
+  }
+  return output;
+}
+
+} // namespace xar::bridge

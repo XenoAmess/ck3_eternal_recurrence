@@ -3,7 +3,7 @@
 ## 状态与结论
 
 - **原版 AI 与命令路径：`static-confirmed`。** 本文冻结 `gift_interaction` 的原版 AI 选人、合法性、自动接受、扣款与好感效果，并闭合 exact-build 中按稳定 key 查找 `CCharacterInteraction`、构造两角色上下文、校验和提交命令的原始调用链。
-- **逐派系/候选观测：`research`。** 当前 production-live `campaign-root-context-v1` 只有 `player_targeting_faction_count` 和 REALM2 的 `direct_landed_vassal_character_ids`。它们能证明“有目标派系”和“有哪些直属有地封臣”，不能证明某个封臣属于哪一支派系。
+- **逐派系/候选观测：`static-ready` 私有原语。** 当前 production-live `campaign-root-context-v1` 仍只有 `player_targeting_faction_count` 和 REALM2 的 `direct_landed_vassal_character_ids`。FACTION2-CORE 已闭合 exact-build targeting collection 的 inline row span、`0x18` stride 与稳定 faction identity，并实现 default-OFF 私有事务化复制；尚无 paused live artifact，也没有 target character/member、type、war、power/discontent 或公共 query，因此不能证明某个封臣属于哪一支派系。
 - **赠礼动作：`research`。** 本工作包只给出最小 typed observation/action 合同和施工入口，没有修改 bridge、公共 MCP、schema、planner 或动作实现，也没有启动 CK3。
 - **首个可见 OODA：** 从真实 targeting faction row 中选一名直属有地、AI 控制、尚无 `gift_opinion` 的成员，读取引擎最终赠礼成本与好感增量，满足预算后执行一次 `gift_interaction`；随后验证金币转移与该角色的 `gift_opinion`，并重新读取原派系状态。
 
@@ -251,6 +251,14 @@ stale、身份漂移、预算不足、interaction invalid、重复 modifier 或 
 
 ## 施工顺序
 
+### FACTION2-CORE：首个私有 row observer
+
+exact `1.19.0.6` 的 `FactionsWindow.GetTargetingFactions` callback 在 `0x1395F0E` 调用 leaf getter `0xF6F790`，后者返回 `FactionsWindow+0x138`。`HasTargetingFactions` 从容器 `+0x0C` 读取 signed `int32` count；原版 count/slice/item adapters `0x96DB70`、`0x13A32C0`、`0x13A3130` 共同证明容器 `+0x00` 是 row data，row 为 inline `0x18` bytes。`FactionItem.GetFaction` resolver `0xE6F440` 从 row `+0x00` 读取 full-generation `uint32` faction identity，并要求解析对象 `+0x10` round-trip 相等。leaf getter 存在多个折叠 callsite，本包没有证据指定唯一 producer/writer，不能沿用早期的 producer 猜测。
+
+私有 `faction_targeting_row_observer_v1` 默认关闭，只在 exact executable hash、安装时主线程 suspended、运行时 paused application-main admission 同时成立时读取。它在同一 admission 下重复读取容器 data/count 与每个 row `+0x00` identity，逐项 resolver round-trip，随后只发布排序后的自有 `faction_ids`；原始地址、地址哈希和 `0x18` row bytes 都不写入 artifact。失败保留上一代完整 snapshot。离线 fixture 与 source contract 已通过，状态为 `static-ready-pending-paused-live-capture`，不能写成 production-live，也没有改变公共 MCP/schema/readiness。
+
+下一处唯一施工入口是 `FactionItem` 的 target-character getter 与 `player_targeting_faction_count` 对 campaign-root count 的同帧等价证明。两项闭合前，`campaign_root_count_equivalence_ready=false`、`target_character_identity_ready=false` 和 `public_targeting_rows_ready=false`。
+
 ### FACTION-OBS1：逐派系与成员观测
 
 按 [玩家目标派系告警 v1](player-targeting-factions-v1.md) 的 P0 路线，先闭合 targeting-faction span、engine-stable identity、type、war、leader/member、power/discontent 与 stock dangerous predicate。`player_targeting_faction_count` 必须与逐行枚举严格一致。此步是当前最高 blocker。
@@ -271,7 +279,7 @@ stale、身份漂移、预算不足、interaction invalid、重复 modifier 或 
 
 ## 尚未闭合的分支
 
-- targeting faction collection 的 pointer/span、element stride、stable identity 与 member vector；
+- targeting faction collection 的 paused live capture、target character/member vector 与 campaign-root count 等价；
 - faction row 的 final power/discontent getters 与同帧稳定读取；
 - `gift_value` / `send_gift_opinion` 的 exact actor/recipient receiver 和最终类型转换；
 - recipient -> actor 的 modifier-specific opinion observer；
