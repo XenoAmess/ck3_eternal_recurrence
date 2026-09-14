@@ -20,6 +20,10 @@
   已静态闭合 selected candidate 的八槽 raw cost、同序 resource balance、严格 affordability 边界以及两种候选的 native-final
   legality 结果，并把结果绑定到 candidate identity、generation、proof epoch 和 date。它尚无 paired live capture，不提升公共
   candidate reader、MCP 或 action readiness。
+- **[DEV17 static-ready private live-observer core]** `native_runtime_candidate_cost_legality_live_capture_observer` 的私有 source adapter
+  和双采样 publication core 已实现：它能从 exact application-main collector frame 的借用地址同步复制并发布真正
+  `available=true` 的 pointer-free 候选，所有 identity/binding/branch/payload 漂移保留旧 generation 并产生 typed RED。该核心尚未
+  接入 shared default-off collector，也没有 production live capture。
 - **[static-confirmed cadence boundary]** `CDailyTickCommand` final stage `0x26D3E80` 每次完成日更时调用一次
   `CAIManager` update `0x18876D0`，建设 runtime entry 位于该 pass 的内部列表路由。每条通过 raw gates 的 runtime entry
   调用 producer 恰好一次；全局每日至少/至多命中多少个 owner、存钱目标何时重试仍未闭合，不能写成“每个角色每天必建”或
@@ -507,9 +511,33 @@ unavailable，不能用 `null` 或成功的 `unknown` 收口。
 不保留成本、余额或候选对象地址。实现、ABI、source contract、fixture 与 normal/optimized `/W4 /WX` runner 均为
 `native_bridge/research/` 私有资产；本包没有改 shared CMake、bridge、schema 或 MCP，也没有启动 CK3。
 
-R687 的 `BOUNDED_NO_GO` 不变，因为该轮没有产生候选行。DEV16 只闭合 exact-build static decoder 与 offline fixture；下一唯一入口是
-`native_runtime_candidate_cost_legality_live_capture_observer`，用于在未来获授权轮次中取得与 identity/generation/proof/date 同帧的
-paired observation，在那以前不得宣称 production-live 或公共 candidate query ready。
+R687 的 `BOUNDED_NO_GO` 不变，因为该轮没有产生候选行。DEV16 只闭合 exact-build static decoder 与 offline fixture；其下一入口
+`native_runtime_candidate_cost_legality_live_capture_observer` 已由 DEV17 完成私有核心，在 shared collector 接线和真实 capture 前仍
+不得宣称 production-live 或公共 candidate query ready。
+
+### DEV17-COST-LEGALITY-LIVE-OBSERVER：application-main 双采样 publication core
+
+状态为 `static-ready-private-cost-legality-live-observer-core-unwired`。source adapter 接受 exact-build admission、非零
+application-main owner/current thread、live session、expected/observed binding，以及 collector frame 中借用的 selected `0x28`
+row、八槽 projected cost、八槽 resource balance 和 native-final `observed/branch/allowed`。它在同一次同步调用中复制 row，调用
+DEV15 identity decoder，再调用 DEV16 cost/legality decoder；输出仅保留 candidate ID、kind、binding、两个 owned 八槽数组和 typed
+结果。row/object/cost/balance 的进程地址及 raw row bytes 都不会进入 publication。
+
+observer core 对两个完整 source sample 分别执行上述读取，再逐项比较 candidate identity、generation、proof epoch、date、final
+branch/observed/allowed、全部 cost/balance、affordability 和最终 actionability。只有两份完整结果一致时才把 generation 先置奇数，
+复制 owned candidate，最后以新偶数 generation 发布 `available=true`。`candidate.actionable=true` 是可立即执行候选；原生已知的
+`insufficient_resource` 或 final gate rejection 仍发布为 available candidate，并以 `actionable=false` 和 typed rejection 表示，
+不能折叠成 unavailable。
+
+identity、generation、proof epoch、date 或 branch 不一致分别设置对应 typed RED bit；application-main/session/read failure、cost、
+balance、final observation/result 漂移也都有独立 RED。任一 RED 都不覆盖上一份完整 publication，也不推进 complete generation。
+fixture 覆盖 actionable available、资金不足但 available、五类必要 drift RED、payload drift、application-main rejection 与旧 generation
+保留。因此核心能够产生非空 available candidate，而非以 `null` 收口。
+
+本包仅新增 `native_bridge/research/` 私有 adapter/observer/ABI/source contract/fixture/standalone tests 和本专题增量，没有修改 shared
+CMake、bridge、schema 或 MCP，没有启动 CK3。R687 仍为 `BOUNDED_NO_GO`，offline source-memory fixture 也不计作 production live。
+下一唯一集成入口为 `wire_private_cost_legality_live_observer_into_default_off_exact_application_main_collector`；只有接线后的获授权新轮次
+取得 paired application-main capture，才能提升相应 live readiness。
 
 ## 最小只读输入合同：`domain-construction-candidates-v1`
 

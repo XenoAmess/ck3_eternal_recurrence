@@ -1,0 +1,64 @@
+{
+  "schema_version": 1,
+  "contract": "g2-domain-construction-cost-legality-live-observer-v1",
+  "status": "offline-source-memory-fixture",
+  "exact_build": {
+    "product_version": "1.19.0.6",
+    "executable_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86"
+  },
+  "offline_fixture": true,
+  "production_live_capture": false,
+  "raw_pointer_fields_persisted": false,
+  "raw_row_bytes_persisted": false,
+  "cases": [
+    {
+      "case": "actionable_available_double_sample",
+      "sample_count": 2,
+      "binding": {"generation": 42, "proof_epoch": 91, "date_raw": 777},
+      "candidate_id": "building:17:4:16777258",
+      "branch": "building",
+      "cost_raw": [100, 0, 50, -1, 0, 0, 0, 0],
+      "resource_balance_raw": [101, 0, 51, 0, 0, 0, 0, 0],
+      "native_final_allowed": true,
+      "expected": {
+        "available": true,
+        "publication_generation": 2,
+        "candidate_ready": true,
+        "actionable": true,
+        "typed_red_flags": 0
+      }
+    },
+    {
+      "case": "known_insufficient_candidate_available",
+      "sample_count": 2,
+      "binding": {"generation": 42, "proof_epoch": 91, "date_raw": 777},
+      "candidate_id": "holding:867:3",
+      "branch": "new_holding",
+      "cost_raw": [100, 0, 20, 0, 0, 0, 0, 0],
+      "resource_balance_raw": [100, 0, 19, 0, 0, 0, 0, 0],
+      "native_final_observed": false,
+      "expected": {
+        "available": true,
+        "candidate_ready": true,
+        "actionable": false,
+        "rejection_reason": "insufficient_resource",
+        "blocking_resource_mask": 5,
+        "typed_red_flags": 0
+      }
+    },
+    {
+      "case": "identity_binding_branch_drift_red",
+      "sample_count": 2,
+      "first_binding": {"generation": 42, "proof_epoch": 91, "date_raw": 777},
+      "second_binding": {"generation": 44, "proof_epoch": 92, "date_raw": 778},
+      "first_candidate_id": "building:17:4:16777258",
+      "second_candidate_id": "building:17:5:16777258",
+      "branch_mismatch_attempt": true,
+      "expected": {
+        "new_publication": false,
+        "typed_red": ["identity", "generation", "proof_epoch", "date", "branch"],
+        "previous_complete_generation_retained": true
+      }
+    }
+  ]
+}

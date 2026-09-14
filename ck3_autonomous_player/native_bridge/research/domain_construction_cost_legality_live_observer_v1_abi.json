@@ -1,0 +1,99 @@
+{
+  "contract": "g2-domain-construction-cost-legality-live-observer-v1",
+  "schema_version": 1,
+  "status": "static-ready-private-cost-legality-live-observer-core-unwired",
+  "reverse_engineering_entry": "native_runtime_candidate_cost_legality_live_capture_observer",
+  "exact_build": {
+    "product_version": "1.19.0.6",
+    "executable_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+    "executable_size": 95206008,
+    "image_base": "0x140000000"
+  },
+  "upstream_private_contracts": [
+    "g2-domain-construction-native-runtime-callsite-observer-v1",
+    "g2-domain-construction-candidate-identity-decoder-v1",
+    "g2-domain-construction-candidate-cost-legality-decoder-v1"
+  ],
+  "source_adapter": {
+    "executor": "exact-build application-main collector frame",
+    "borrowed_inputs": [
+      "selected 0x28 candidate row",
+      "three candidate object identities read synchronously at object+0x10",
+      "eight signed-qword projected cost slots",
+      "eight signed-qword resource balance slots",
+      "native-final observed/branch/allowed scalars"
+    ],
+    "admission": [
+      "exact build admitted",
+      "current thread equals nonzero application-main owner",
+      "session live",
+      "expected/observed generation equal, nonzero and even",
+      "expected/observed proof_epoch equal and nonzero",
+      "expected/observed date_raw equal"
+    ],
+    "owned_output": "pointer-free candidate identity, binding, raw cost/balance arrays, affordability, native-final legality and typed rejection reason",
+    "raw_pointer_fields_persisted": false,
+    "raw_row_bytes_persisted": false
+  },
+  "double_sample": {
+    "complete_source_reads": 2,
+    "equal_fields": [
+      "candidate_id and candidate kind",
+      "generation",
+      "proof_epoch",
+      "date_raw",
+      "native-final branch/observed/allowed",
+      "all eight costs",
+      "all eight resource balances",
+      "affordability, blocking slot/mask, rejection and actionable result"
+    ],
+    "publication": "mutex-synchronized available pointer-free candidate under a new complete even publication generation",
+    "failure_atomicity": "any typed RED retains the previous complete publication generation"
+  },
+  "typed_red": [
+    "exact_build",
+    "application_main",
+    "session",
+    "identity",
+    "generation",
+    "proof_epoch",
+    "date",
+    "branch",
+    "memory",
+    "final_observation",
+    "cost",
+    "resource_balance",
+    "final_legality"
+  ],
+  "availability": {
+    "actionable_candidate": "available=true, candidate.ready=true, candidate.actionable=true",
+    "known_native_rejection": "available=true, candidate.ready=true, candidate.actionable=false with typed rejection",
+    "ambiguous_or_drifted_sample": "no new publication; typed RED is retained in observer diagnostics"
+  },
+  "readiness": {
+    "source_adapter_core_ready": true,
+    "same_admission_double_sample_ready": true,
+    "pointer_free_available_publication_ready": true,
+    "typed_red_retains_previous_generation_ready": true,
+    "exact_spans_ready": true,
+    "normal_standalone_test_ready": true,
+    "optimized_standalone_test_ready": true,
+    "w4_wx_ready": true,
+    "production_live_capture_ready": false,
+    "shared_collector_wiring_ready": false,
+    "public_candidate_reader_ready": false,
+    "public_mcp_ready": false
+  },
+  "scope": {
+    "private_research_only": true,
+    "read_only_game_state": true,
+    "shared_cmake_modified": false,
+    "shared_bridge_modified": false,
+    "public_schema_modified": false,
+    "mcp_modified": false,
+    "ck3_started": false
+  },
+  "r687_boundary": "R687 remains BOUNDED_NO_GO with producer_calls=0. DEV17 implements the source adapter and publication core but does not invent a row or relabel an offline fixture as production live.",
+  "unique_next_integration_entry": "wire_private_cost_legality_live_observer_into_default_off_exact_application_main_collector",
+  "evidence_limit": "Standalone source-memory fixtures prove that the unwired private core can produce available pointer-free candidates and preserves typed RED. No CK3 process was started and no production application-main candidate was captured."
+}
