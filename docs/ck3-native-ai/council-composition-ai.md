@@ -455,3 +455,32 @@ legitimately produce another complete vector. Acceptance requires typed
 zero gameplay writes and retained cleanup evidence. Public MCP, legality,
 skills, political inputs, planner and council actions remain later work
 packages.
+
+## COUNCIL10/11: R689 runner RED and the R690 readiness-call contract
+
+Current round R689 did not reach the private Council heartbeat. The one-shot
+runner launched CK3, then failed immediately with
+`TypeError: _wait_for_readiness() got an unexpected keyword argument
+'expected_character_id'`. The frozen RED is under
+`g2-m4-council9-r689-prep-a04ee02/live-r689`; its artifact-manifest SHA-256 is
+`C35876FDD3A817E872DF7987622C2B62FC56BEADF4E011A8A24CF98EE161939B`.
+No raw probe was produced, both the source and target save remained at
+`9104CCB8AE9D5776166FBBAEDA9B43BD08CBAA2CB5C057332EB8B7A1A212CC63`,
+and process-tree cleanup returned CK3 and its bridge helpers to zero. This is a
+harness RED; it neither passes nor disproves the private Council reader.
+
+`validate_private_probe_readiness_contract.py` now compares an artifact-local
+runner's one `_wait_for_readiness` call with the helper's actual source
+signature. A runner must supply only `driver` positionally and the complete,
+ordered keyword-only helper contract. Variadic arguments and unsupported
+keywords are rejected. In particular, player identity is not an input to the
+readiness helper.
+
+The owner binding remains mandatory and independent: after readiness returns,
+the runner must take an internal semantic snapshot and compare its
+`episode_character_id` with the frozen owner `29829`. The validator checks that
+source order explicitly. Focused normal and optimized tests reproduce the R689
+unsupported-keyword rejection and accept the corrected call plus the
+post-readiness identity check. The next candidate is therefore R690 and remains
+no-launch/static-ready until one new paused, zero-action live run records the
+private heartbeat.
