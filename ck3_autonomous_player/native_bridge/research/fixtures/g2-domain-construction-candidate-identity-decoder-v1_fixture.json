@@ -1,0 +1,61 @@
+{
+  "schema_version": 1,
+  "contract": "g2-domain-construction-candidate-identity-decoder-v1",
+  "status": "offline-deterministic-fixture",
+  "exact_build": {
+    "product_version": "1.19.0.6",
+    "executable_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86"
+  },
+  "offline_fixture": true,
+  "raw_pointer_fields_persisted": false,
+  "cases": [
+    {
+      "case": "building_in_holding",
+      "source_identity_cells": {
+        "holding_province_id": 17,
+        "building_type_id": 16777258,
+        "candidate_province_id": -1,
+        "candidate_selector": 4,
+        "native_ai_value": 240,
+        "row_active": 1
+      },
+      "expected": {
+        "ready": true,
+        "kind": "building_in_holding",
+        "candidate_id": "building:17:4:16777258"
+      }
+    },
+    {
+      "case": "new_holding",
+      "source_identity_cells": {
+        "holding_province_id": -1,
+        "building_type_id": -1,
+        "candidate_province_id": 867,
+        "candidate_selector": 3,
+        "native_ai_value": 240,
+        "row_active": 1
+      },
+      "expected": {
+        "ready": true,
+        "kind": "new_holding",
+        "candidate_id": "holding:867:3"
+      }
+    },
+    {
+      "case": "ambiguous_identity_shape",
+      "source_identity_cells": {
+        "holding_province_id": 17,
+        "building_type_id": 16777258,
+        "candidate_province_id": 867,
+        "candidate_selector": 4,
+        "native_ai_value": 240,
+        "row_active": 1
+      },
+      "expected": {
+        "ready": false,
+        "failure": "identity_shape",
+        "candidate_id": ""
+      }
+    }
+  ]
+}

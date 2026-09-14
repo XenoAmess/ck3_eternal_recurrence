@@ -1,0 +1,66 @@
+{
+  "contract": "g2-domain-construction-candidate-identity-decoder-v1",
+  "schema_version": 1,
+  "status": "static-ready-private-candidate-identity-decoder",
+  "exact_build": {
+    "product_version": "1.19.0.6",
+    "executable_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+    "executable_size": 95206008,
+    "image_base": "0x140000000"
+  },
+  "input": {
+    "upstream_private_contract": "g2-domain-construction-native-runtime-callsite-observer-v1",
+    "row_bytes": 40,
+    "fields": {
+      "0x00": "signed int32 native_ai_value; native selection consumes the low dword",
+      "0x08": "holding/province object or exact-build null object",
+      "0x10": "building-type object or exact-build null object",
+      "0x18": "new-holding candidate province object or exact-build null object",
+      "0x20": "signed int32 candidate selector; -1 is rejected by the row builder",
+      "0x24": "row-active byte; admitted rows equal 1"
+    }
+  },
+  "identity_decode": {
+    "object_identity_offset": 16,
+    "building_in_holding": {
+      "shape": "holding_province_id >= 0 && building_type_id >= 0 && candidate_province_id < 0",
+      "candidate_id": "building:<holding_province_id>:<candidate_selector>:<building_type_id>"
+    },
+    "new_holding": {
+      "shape": "holding_province_id < 0 && building_type_id < 0 && candidate_province_id >= 0",
+      "candidate_id": "holding:<candidate_province_id>:<candidate_selector>"
+    },
+    "ambiguous_shape": "typed failure; never serialized as a ready or unknown identity",
+    "raw_pointer_in_output": false
+  },
+  "exact_static_evidence": {
+    "existing_holding_row_constructor": "0x1921A3A..0x1921A85",
+    "new_holding_selector_gate": "0x19220B0..0x19220BA",
+    "new_holding_row_constructor": "0x1922154..0x19221A6",
+    "selected_row_copy": "0x18D3E96..0x18D3EC0",
+    "building_command_scalar_reads": "0x18D299C..0x18D29E8",
+    "new_holding_candidate_forward": "0x18D2A95..0x18D2AA6 and 0x18D2AF8..0x18D2B09"
+  },
+  "readiness": {
+    "private_decoder_core_ready": true,
+    "exact_spans_ready": true,
+    "normal_standalone_test_ready": true,
+    "optimized_standalone_test_ready": true,
+    "w4_wx_ready": true,
+    "paired_native_runtime_capture_ready": false,
+    "public_candidate_reader_ready": false,
+    "public_mcp_ready": false
+  },
+  "scope": {
+    "private_research_only": true,
+    "read_only_game_state": true,
+    "shared_cmake_modified": false,
+    "shared_bridge_modified": false,
+    "public_schema_modified": false,
+    "mcp_modified": false,
+    "ck3_started": false
+  },
+  "r687_boundary": "R687 remains BOUNDED_NO_GO: its paused attempt produced zero rows. This static decoder does not create or reinterpret a live capture.",
+  "unique_next_reverse_engineering_entry": "native_runtime_candidate_cost_affordability_and_final_legality_decoder",
+  "evidence_limit": "Exact-build static code and standalone fixtures prove deterministic pointer-free identities for both construction row variants. No CK3 process was started, no native runtime row was captured by this work package, and no public query or action readiness is promoted."
+}

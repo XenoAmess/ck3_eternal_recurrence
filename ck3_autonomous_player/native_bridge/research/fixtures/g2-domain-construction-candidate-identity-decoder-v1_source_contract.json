@@ -1,0 +1,110 @@
+{
+  "schema_version": 1,
+  "contract": "g2-domain-construction-candidate-identity-decoder-v1-source",
+  "status": "static-ready-private-candidate-identity-decoder",
+  "exact_build": {
+    "product_version": "1.19.0.6",
+    "executable_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+    "executable_size": 95206008
+  },
+  "exact_spans": [
+    {
+      "name": "existing_holding_row_constructor",
+      "rva": "0x1921A3A",
+      "size": 75,
+      "sha256": "770DDDAF54430DEB6EEF7D70DE2154D0E29350ACF120B8D26F5BA2E9ADDDDB8C",
+      "hex": "488B0507E5E903488944244848B809E1D1C6116BF12948F7E9488B8C249000000048C1FA0E488BC2488974243848C1E83F4803D048897C244089542430488D542430896C2450E84B8E48FF"
+    },
+    {
+      "name": "new_holding_selector_gate",
+      "rva": "0x19220B0",
+      "size": 10,
+      "sha256": "16FBECD85AFCA7AF4C5BB6390FB43DBA595A7D8CF72EC07AB75803F10C7A9FA9",
+      "hex": "4183F9FF0F8403010000"
+    },
+    {
+      "name": "new_holding_row_constructor",
+      "rva": "0x1922154",
+      "size": 82,
+      "sha256": "D029F6754E5D515AE9C02FEBBDFED2EF13F6A4A8B9414B57D878555632715798",
+      "hex": "488B054DDAE9034889442440488B0541AADE03488944244848B809E1D1C6116BF12948F7E9488B8C249000000048C1FA0E488BC248897C245048C1E83F4803D0895C245889542438488D542438E82A8748FF"
+    },
+    {
+      "name": "selected_row_copy",
+      "rva": "0x18D3E96",
+      "size": 42,
+      "sha256": "A72B7C5FE69064BC3CECFFD18078AB01B5639D5001E95B58549EC06884825E10",
+      "hex": "4863C6488D0C80410F1004CA410F114500410F104CCA10410F114D10F2410F1044CA20F2410F114520B0"
+    },
+    {
+      "name": "building_command_scalar_reads",
+      "rva": "0x18D299C",
+      "size": 76,
+      "sha256": "33D99966224835FA165F09F2FDBFFDD4731D4F538C344CAD94B119976F0B88BE",
+      "hex": "488B7DD88B4F10418B4618C6442438004C8964243C4489642444488D1593C6A5024889542430488D151FC7A502488954244889442450894C24548B75F089742458488B4DE08B41108944245C"
+    },
+    {
+      "name": "new_holding_candidate_forward",
+      "rva": "0x18D2A95",
+      "size": 17,
+      "sha256": "8FA2719A7CEC9B76A8878EA037DF65941143966A01623C8E8BE2020AC81FB263",
+      "hex": "895C245089742454488B4DE848894C2458"
+    },
+    {
+      "name": "new_holding_validation_forward",
+      "rva": "0x18D2AF8",
+      "size": 17,
+      "sha256": "69C31D26E80009B4BED45624D4A95F6D6FA5B8C7D2C042273F15B1701B8CCD41",
+      "hex": "4C896424204533C94C8B4424588B542454"
+    }
+  ],
+  "required_header_tokens": [
+    "kDomainConstructionCandidateRowBytesV1 = 0x28",
+    "kDomainConstructionObjectIdentityOffsetV1 = 0x10",
+    "building_in_holding",
+    "new_holding",
+    "holding_province_id",
+    "building_type_id",
+    "candidate_province_id",
+    "candidate_selector",
+    "DecodeDomainConstructionCandidateIdentityV1"
+  ],
+  "required_source_tokens": [
+    "LoadObjectIdentity",
+    "row[0x24] != 1U",
+    "LoadRowValue<std::uintptr_t>(row, 0x08)",
+    "LoadRowValue<std::uintptr_t>(row, 0x10)",
+    "LoadRowValue<std::uintptr_t>(row, 0x18)",
+    "LoadRowValue<std::int32_t>(row, 0x20)",
+    "building:",
+    "holding:",
+    "identity_shape"
+  ],
+  "required_test_tokens": [
+    "TestBuildingCandidate",
+    "TestNewHoldingCandidate",
+    "TestTypedFailures",
+    "building:17:4:16777258",
+    "holding:867:3",
+    "address_overflow",
+    "identity_shape"
+  ],
+  "required_runner_tokens": [
+    "vswhere.exe",
+    "vcvars64.bat",
+    "/W4",
+    "/WX",
+    "/Od",
+    "/O2",
+    "GREEN_W4WX"
+  ],
+  "implementation": {
+    "header": "research/domain_construction_candidate_identity_decoder_v1.hpp",
+    "source": "research/domain_construction_candidate_identity_decoder_v1.cpp",
+    "test": "research/domain_construction_candidate_identity_decoder_v1_test.cpp",
+    "runner": "research/run_domain_construction_candidate_identity_decoder_v1_tests.py",
+    "shared_cmake_modified": false,
+    "shared_bridge_modified": false
+  },
+  "unique_next_reverse_engineering_entry": "native_runtime_candidate_cost_affordability_and_final_legality_decoder"
+}

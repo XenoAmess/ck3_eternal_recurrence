@@ -283,7 +283,8 @@ producer 自身为 `0x1921810..0x19219BA`，共 `426` bytes，SHA-256
 
 完整机器可读账本位于
 `ck3_autonomous_player/native_bridge/research/fixtures/g2_domain_construction_producer_entry_v1.json`。原始字段含义、
-正常 scheduler cadence、候选 identity、资源槽、预算 owner、final legality 和队列仍保持 `unknown`。
+正常 scheduler cadence、资源槽的业务命名、预算 owner、final legality 和队列仍保持 `unknown`；候选行的
+holding/building/candidate 标量 identity 由下文 DEV15 私有 decoder 静态闭合。
 
 ### DEV7：native runtime callsite observer
 
@@ -436,7 +437,8 @@ flowchart TD
     C1 -. "[unknown] exact class name" .-> P["candidate rows"]
     C2 -. "[unknown] exact class name" .-> P
     C3 -. "[unknown] exact class name" .-> P
-    P --> L{"is_enabled + three can_construct gates<br/>and native final legality"}
+    P --> ID["[static] private identity decoder<br/>holding/building/candidate scalar IDs"]
+    ID --> L{"is_enabled + three can_construct gates<br/>and native final legality"}
     L -->|fail| R["reject / typed reason"]
     L -->|pass| V["evaluate authored ai_value"]
     V --> O["sort descending"]
@@ -451,6 +453,30 @@ flowchart TD
     U --> I["province construction in progress"]
     I -. "[unknown] completion-to-reevaluation delay" .-> E
 ```
+
+### DEV15-CANDIDATE-IDENTITY-DECODER：候选行身份静态闭合
+
+状态为 `static-ready-private-candidate-identity-decoder`。1.19.0.6 exact-build 中的两个行构造器共同证明
+0x28 行是一个带空对象哨兵的 tagged union：`0x1921A3A..0x1921A85` 写已有 holding 的建筑候选，
+`0x19220B0..0x19221A6` 写新 holding 候选。两者都写低 dword 原生分、三个对象槽 `+0x08/+0x10/+0x18`、
+`+0x20` candidate selector 和 `+0x24=1`。`0x18D3E96..0x18D3EC0` 又逐字节复制完整 0x28 行，所以下游
+解码不能只保存 score。
+
+`0x18D299C..0x18D29E8` 在建筑提交支路读取 holding/province 对象与 building-type 对象的 `+0x10` 标量身份，
+并携带 `+0x20` selector；`0x18D2A95..0x18D2B09` 在新 holding 支路把 `+0x18` candidate province 与同一
+selector 送回原生 validation。私有 decoder 因此只在下面两个互斥形状之一成立时返回 ready：
+
+- `holding_province_id >= 0 && building_type_id >= 0 && candidate_province_id < 0`，生成
+  `building:<holding_province_id>:<candidate_selector>:<building_type_id>`；
+- `holding_province_id < 0 && building_type_id < 0 && candidate_province_id >= 0`，生成
+  `holding:<candidate_province_id>:<candidate_selector>`。
+
+其他组合、`selector=-1`、非 `+0x24=1`、地址溢出或读失败都是 typed unavailable，不返回成功的 `unknown`。
+输出只含自有标量和确定性 candidate ID，不保留任何进程内指针。实现、ABI、source contract、fixture 与 normal/optimized
+`/W4 /WX` standalone runner 全部位于 `native_bridge/research/`，未接入 shared CMake、bridge、schema 或 MCP。
+
+R687 仍是 paused、`producer_calls=0` 的 `BOUNDED_NO_GO`；本包没有启动 CK3，也没有把 offline fixture 冒充 runtime row。
+下一唯一静态入口为 `native_runtime_candidate_cost_affordability_and_final_legality_decoder`，它不能阻塞已经闭合的身份解码。
 
 ## 最小只读输入合同：`domain-construction-candidates-v1`
 
