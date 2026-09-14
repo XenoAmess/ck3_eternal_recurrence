@@ -37,8 +37,6 @@ existing truce/war-bound readiness gates are unchanged.
 
 ## Reproduction
 
-```powershell
-$env:PYTHONPATH = 'ck3_autonomous_player/src'
-& 'Z:\ck3_mod_rewrite\tools\.venv\Scripts\python.exe' -m pytest -q --disable-warnings `
-  ck3_autonomous_player/tests/unit/test_g2_activity_type_schema_boundary.py
+```text
+py tools/run_with_env.py --env "PYTHONPATH=ck3_autonomous_player/src" -- "Z:\ck3_mod_rewrite\tools\.venv\Scripts\python.exe" -m pytest -q --disable-warnings ck3_autonomous_player/tests/unit/test_g2_activity_type_schema_boundary.py
 ```

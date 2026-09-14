@@ -93,7 +93,7 @@ Incident/B2/Workforce/AI-owned 只读观测，而不是在已经推进过的 see
 
 ## 离线验收
 
-```powershell
+```text
 py tools/test_zg361_phase2_b2_action_cell.py
 py -O tools/test_zg361_phase2_b2_action_cell.py
 ```

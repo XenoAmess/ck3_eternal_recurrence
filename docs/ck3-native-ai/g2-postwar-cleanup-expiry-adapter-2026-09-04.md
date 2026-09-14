@@ -57,7 +57,7 @@ CK3 evidence.
 
 Executed command:
 
-```powershell
+```text
 py ck3_autonomous_player/native_bridge/research/run_g2_postwar_cleanup_expiry_receipt.py --manifest ck3_autonomous_player/native_bridge/research/fixtures/g2_postwar_cleanup_expiry_adapter_v1_manifest.json --output "Z:\ck3_mod_rewrite_process_assets\zg361\g2-postwar-cleanup-expiry-dispatch-a01f8cb-20260904\preflight.json"
 ```
 

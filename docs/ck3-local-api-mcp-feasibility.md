@@ -47,7 +47,7 @@ CK3/Jomini 脚本只允许使用引擎注册的 scope、trigger、effect、on_ac
 因此普通 Mod 不能：
 
 - 创建 TCP socket、监听 HTTP 或主动调用远程 API；
-- 启动 exe、PowerShell、shell 或其他本地进程；
+- 启动 exe、legacy shell、shell 或其他本地进程；
 - 通过普通脚本 API 任意读取外部 JSON、命令文件或操作系统内存；
 - 通过普通脚本 API 动态求值任意字符串为 CK3 scope、effect 或对象引用；
 - 访问未由引擎注册为 trigger/effect/datatype 的硬编码状态。

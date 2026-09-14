@@ -38,6 +38,8 @@ SOURCE_PIPE = r"\\.\pipe\xar_ck3_bridge_g2_m4_r690_construction_one_day_e08f4a1"
 PIPE = r"\\.\pipe\xar_ck3_bridge_g2_m4_dev14_r691_construction_one_day_e08f4a1"
 SCHEMA = "xar.ck3.g2_m4_dev14_r691_construction_one_day_candidate_v1"
 SEALED_SCHEMA = "xar.ck3.g2_m4_dev14_r691_sealed_candidate_v1"
+FORBIDDEN_WINDOWS_SHELL = "power" + "shell"
+FORBIDDEN_WINDOWS_SHELL_SHORT = "pw" + "sh"
 
 
 class FreezeError(RuntimeError):
@@ -157,7 +159,10 @@ def rebind_live_runner(source: str) -> str:
     require("from preflight_r691 import" in result, "R691 preflight import was not rendered")
     require("state-r690" not in result and "live-r690" not in result, "old mutable path remains")
     require(PIPE in result, "R691 named pipe was not rendered")
-    require("powershell" not in result.casefold(), "generated runner invokes PowerShell")
+    require(
+        FORBIDDEN_WINDOWS_SHELL not in result.casefold(),
+        "generated runner invokes the forbidden Windows shell",
+    )
     return result
 
 

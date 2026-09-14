@@ -32,31 +32,30 @@ contract.
 Run the generator from any clone. All deployment-specific values below belong
 to that target machine and are intentionally not committed:
 
-```powershell
-$repo = (Resolve-Path '<repository-clone>').Path
-$runtimeBundle = (Resolve-Path '<byte-identical-runtime-bundle>').Path
-$deployment = '<external-operator-deployment-directory>'
+```python
+from pathlib import Path
+import subprocess
 
-& '<target-python>' -B `
-  "$repo\ck3_autonomous_player\native_bridge\research\prepare_g2_source_specific_operator_profile.py" `
-  --target-id '<portable-target-id>' `
-  --display-name '<display-name>' `
-  --token-user '<exact-target-token-user>' `
-  --desktop '<exact-target-desktop>' `
-  --machine '<exact-target-machine>' `
-  --endpoint-port '<unused-target-port>' `
-  --advertised-url '<client-reachable-MCP-URL>' `
-  --state-directory "$deployment\state" `
-  --repository-root "$repo" `
-  --python-executable '<target-python>' `
-  --preflight-output "$deployment\g2-no-launch-preflight.json" `
-  --profile-settings-template '<known-good-profile>\pdx_settings.txt' `
-  --game-executable '<CK3-install>\binaries\ck3.exe' `
-  --bookmark-events '<CK3-install>\game\events\bookmark_events.txt' `
-  --capture-executable "$runtimeBundle\xar_ck3_raiktor_war_bound_private_capture_v1.exe" `
-  --bridge-dll "$runtimeBundle\xar_ck3_bridge.dll" `
-  --bridge-injector "$runtimeBundle\xar_ck3_bridge_injector.exe" `
-  --profile-output "$deployment\operator-profile.json"
+repo = Path("<repository-clone>").resolve()
+runtime_bundle = Path("<byte-identical-runtime-bundle>").resolve()
+deployment = Path("<external-operator-deployment-directory>")
+target_python = "<target-python>"
+subprocess.run([
+    target_python, "-B", str(repo / "ck3_autonomous_player/native_bridge/research/prepare_g2_source_specific_operator_profile.py"),
+    "--target-id", "<portable-target-id>", "--display-name", "<display-name>",
+    "--token-user", "<exact-target-token-user>", "--desktop", "<exact-target-desktop>",
+    "--machine", "<exact-target-machine>", "--endpoint-port", "<unused-target-port>",
+    "--advertised-url", "<client-reachable-MCP-URL>", "--state-directory", str(deployment / "state"),
+    "--repository-root", str(repo), "--python-executable", target_python,
+    "--preflight-output", str(deployment / "g2-no-launch-preflight.json"),
+    "--profile-settings-template", r"<known-good-profile>\pdx_settings.txt",
+    "--game-executable", r"<CK3-install>\binaries\ck3.exe",
+    "--bookmark-events", r"<CK3-install>\game\events\bookmark_events.txt",
+    "--capture-executable", str(runtime_bundle / "xar_ck3_raiktor_war_bound_private_capture_v1.exe"),
+    "--bridge-dll", str(runtime_bundle / "xar_ck3_bridge.dll"),
+    "--bridge-injector", str(runtime_bundle / "xar_ck3_bridge_injector.exe"),
+    "--profile-output", str(deployment / "operator-profile.json"),
+], check=True)
 ```
 
 The manifest path defaults to the manifest in that clone; `--manifest` may

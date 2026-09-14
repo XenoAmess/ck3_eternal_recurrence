@@ -14,11 +14,8 @@ does not change the shared bridge DLL or the standalone C++ observer.
 Run from
 `Z:\ck3_mod_rewrite\_root-promo-split-20260902` with an absent output path:
 
-```powershell
-& "Z:\ck3_mod_rewrite\tools\.venv\Scripts\python.exe" -B `
-  "ck3_autonomous_player\native_bridge\research\prepare_raiktor_source_specific_war_loss_capture.py" `
-  --contract "ck3_autonomous_player\native_bridge\research\fixtures\raiktor_source_specific_war_loss_attribution_v1_contract.json" `
-  --output "Z:\ck3_mod_rewrite_process_assets\zg361\g2-source-specific-war-loss-provider-523432a-20260905\runbook-preflight-r1.json"
+```text
+"Z:\ck3_mod_rewrite\tools\.venv\Scripts\python.exe" -B "ck3_autonomous_player\native_bridge\research\prepare_raiktor_source_specific_war_loss_capture.py" --contract "ck3_autonomous_player\native_bridge\research\fixtures\raiktor_source_specific_war_loss_attribution_v1_contract.json" --output "Z:\ck3_mod_rewrite_process_assets\zg361\g2-source-specific-war-loss-provider-523432a-20260905\runbook-preflight-r1.json"
 ```
 
 The command was run once without CK3. Result:
@@ -129,12 +126,8 @@ below:
 Immediately normalize that raw capture, before any readiness decision, with
 an absent output path:
 
-```powershell
-& "Z:\ck3_mod_rewrite\tools\.venv\Scripts\python.exe" -B `
-  "ck3_autonomous_player\native_bridge\research\prepare_raiktor_source_specific_war_loss_capture.py" `
-  --contract "ck3_autonomous_player\native_bridge\research\fixtures\raiktor_source_specific_war_loss_attribution_v1_contract.json" `
-  --capture "<fresh-attempt>\capture.json" `
-  --output "<fresh-attempt>\source-normalization.json"
+```text
+"Z:\ck3_mod_rewrite\tools\.venv\Scripts\python.exe" -B "ck3_autonomous_player\native_bridge\research\prepare_raiktor_source_specific_war_loss_capture.py" --contract "ck3_autonomous_player\native_bridge\research\fixtures\raiktor_source_specific_war_loss_attribution_v1_contract.json" --capture "<fresh-attempt>\capture.json" --output "<fresh-attempt>\source-normalization.json"
 ```
 
 The normalized output must contain a nonempty `source_set_sha256`, the same

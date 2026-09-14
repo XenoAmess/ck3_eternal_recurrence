@@ -28,10 +28,12 @@ release-localization audit。该 audit 只允许在明确的 ZhongGuo 发布 tag
    - 哪些英文占位或新增文案确实需要翻译。
 5. 修改前阅读 `AGENTS.md`、README、贡献指南、`docs/grammar/localization.md`、相关生成器和本工作流，遵守当时的项目规范。
 
-安全的存在性检查只能输出状态，例如 PowerShell：
+安全的存在性检查只能输出状态，例如 Python：
 
-```powershell
-if ($env:MINIMAX_API_KEY) { "configured" } else { "missing" }
+```python
+import os
+
+print("configured" if os.environ.get("MINIMAX_API_KEY") else "missing")
 ```
 
 不得运行会展开或打印变量值的命令。
@@ -83,12 +85,8 @@ MiniMax-M3 只能承担低风险、机械性的翻译工作。
 返回候选 JSON，**不会写入 yml**；
 候选仍必须由当前执行者亲自审阅并用正常文件编辑流程落盘。示例：
 
-```powershell
-py tools/translate_localization_minimax.py `
-  --source path/to/source_l_english.yml --source-language English `
-  --reference path/to/source_l_simp_chinese.yml --reference-language "Simplified Chinese" `
-  --target french="French (France)" --context "Short, task-specific UI context" `
-  --key first_key --key second_key --protect "Product Name"
+```text
+py tools/translate_localization_minimax.py --source path/to/source_l_english.yml --source-language English --reference path/to/source_l_simp_chinese.yml --reference-language "Simplified Chinese" --target french="French (France)" --context "Short, task-specific UI context" --key first_key --key second_key --protect "Product Name"
 ```
 
 `--key` 用于由调用者选择最小必要的小批次；不传时才翻译源文件全部 key。`--protect` 可重复传入必须逐字保留的
@@ -201,7 +199,7 @@ MiniMax 输出一律视为不可信输入，不得未经检查直接写入项目
 1. 重新比较所有语言文件与基准语言，确认目标语言不再缺 key 或英文占位。
 2. 运行项目已有的国际化校验、静态校验、格式检查和相关测试，至少包括：
 
-```powershell
+```text
 py tools/validate_static.py
 py tools/build_release.py --check
 ```

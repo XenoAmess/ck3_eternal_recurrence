@@ -211,10 +211,8 @@ recipient AI score/final decision 仍 typed unavailable。victory 与 defeat 没
 
 本次实际使用的命令为：
 
-```powershell
-& "tools\.venv\Scripts\python.exe" `
-  "ck3_autonomous_player\native_bridge\research\run_pending_character_interaction_special_war_binding_live_acceptance.py" `
-  --output "C:\Users\xenoa\AppData\Local\Temp\xar-pending-special-war-binding-v1-live-attempt2.json"
+```text
+"tools\.venv\Scripts\python.exe" "ck3_autonomous_player\native_bridge\research\run_pending_character_interaction_special_war_binding_live_acceptance.py" --output "C:\Users\xenoa\AppData\Local\Temp\xar-pending-special-war-binding-v1-live-attempt2.json"
 ```
 
 该 GREEN 只升级 ordinary white-peace binding live readiness。Attempt 1 继续是 RED；同一路径不得覆盖重跑。

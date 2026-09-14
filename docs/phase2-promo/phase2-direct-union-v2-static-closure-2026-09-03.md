@@ -261,12 +261,10 @@ the first failing range is attributable.
 
 Generate a fresh disposable snapshot or a selected range as follows:
 
-```powershell
-$src = 'Z:\ck3_mod_rewrite\_runtime\phase2-group-bisect-20260903\direct-union-v2\common\scripted_effects\zg361_workforce_endgame_runtime_effects.txt'
-$out = 'Z:\ck3_mod_rewrite\_runtime\phase2-workforce-segments-rerun-20260903'
-py tools/phase2_workforce_block_segments.py --source $src --output $out --chunk-size 16
-py tools/phase2_workforce_block_segments.py --source $src --output "$out-left" --ranges 0-161
-py tools/phase2_workforce_block_segments.py --source $src --output "$out-right" --ranges 162-323
+```text
+py tools/phase2_workforce_block_segments.py --source Z:\ck3_mod_rewrite\_runtime\phase2-group-bisect-20260903\direct-union-v2\common\scripted_effects\zg361_workforce_endgame_runtime_effects.txt --output Z:\ck3_mod_rewrite\_runtime\phase2-workforce-segments-rerun-20260903 --chunk-size 16
+py tools/phase2_workforce_block_segments.py --source Z:\ck3_mod_rewrite\_runtime\phase2-group-bisect-20260903\direct-union-v2\common\scripted_effects\zg361_workforce_endgame_runtime_effects.txt --output Z:\ck3_mod_rewrite\_runtime\phase2-workforce-segments-rerun-20260903-left --ranges 0-161
+py tools/phase2_workforce_block_segments.py --source Z:\ck3_mod_rewrite\_runtime\phase2-group-bisect-20260903\direct-union-v2\common\scripted_effects\zg361_workforce_endgame_runtime_effects.txt --output Z:\ck3_mod_rewrite\_runtime\phase2-workforce-segments-rerun-20260903-right --ranges 162-323
 ```
 
 Copy a selected file only into a *fresh disposable product root* at the same

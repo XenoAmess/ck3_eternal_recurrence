@@ -247,7 +247,7 @@ artifact RED。runner 不因 unavailable 而选择 fallback，也不提交任何
 frame equality、full-ID/revision drift、key/两 int32/option/readiness/effect/scopes malformed、跨 PID/checkpoint 绑定以及
 preflight 不得 launch：
 
-```powershell
+```text
 py -m unittest ck3_autonomous_player.tests.unit.test_current_event_window_context_live_acceptance -v
 ```
 
@@ -259,15 +259,8 @@ immutable capability RED；旧
 Attempt4 使用同一 detached clean production source/binary 与独立 pipe/output；不传 `--state-dir`，继续用默认
 `%TEMP%\xew-<32-hex>` root 复验 path gate：
 
-```powershell
-$env:XAR_EVENT_WINDOW_ISOLATED_SOURCE_ROOT = 'C:\Users\xenoa\AppData\Local\Temp\xar-event-window-cea30a0-source'
-& 'tools\.venv\Scripts\python.exe' 'ck3_autonomous_player\native_bridge\research\run_current_event_window_context_live_acceptance.py' `
-  --game-dir 'Crusader Kings III' `
-  --bridge-pipe '\\.\pipe\xar-event-window-context-cea30a0-attempt4' `
-  --bridge-dll 'ck3_autonomous_player\native_bridge\.build-event-window-cea30a0-msvc2\xar_ck3_bridge.dll' `
-  --expected-bridge-dll-sha256 '52398435F8AA5177D6D507BFAA38CD2578EB988F0629F1C5E13360CC91FB3BB0' `
-  --bridge-injector 'ck3_autonomous_player\native_bridge\.build-event-window-cea30a0-msvc2\xar_ck3_bridge_injector.exe' `
-  --output 'C:\Users\xenoa\AppData\Local\Temp\xar-current-event-window-context-cea30a0-live-attempt4.json'
+```text
+py tools/run_with_env.py --env "XAR_EVENT_WINDOW_ISOLATED_SOURCE_ROOT=C:\Users\xenoa\AppData\Local\Temp\xar-event-window-cea30a0-source" -- "tools\.venv\Scripts\python.exe" "ck3_autonomous_player\native_bridge\research\run_current_event_window_context_live_acceptance.py" --game-dir "Crusader Kings III" --bridge-pipe "\\.\pipe\xar-event-window-context-cea30a0-attempt4" --bridge-dll "ck3_autonomous_player\native_bridge\.build-event-window-cea30a0-msvc2\xar_ck3_bridge.dll" --expected-bridge-dll-sha256 "52398435F8AA5177D6D507BFAA38CD2578EB988F0629F1C5E13360CC91FB3BB0" --bridge-injector "ck3_autonomous_player\native_bridge\.build-event-window-cea30a0-msvc2\xar_ck3_bridge_injector.exe" --output "C:\Users\xenoa\AppData\Local\Temp\xar-current-event-window-context-cea30a0-live-attempt4.json"
 ```
 
 上述命令已经成功执行，output 现为 immutable Attempt4 证据，不得覆盖或复用同名 pipe。重跑演示必须使用新的 pipe/output 名；

@@ -186,7 +186,7 @@ observer 需要增加 opaque `subject_kind=tributary`、`suzerain`/`top_suzerain
 
 ## 离线复验
 
-```powershell
+```text
 py -B ck3_autonomous_player/native_bridge/research/verify_core_diplomatic_proposals_v1_contract.py --game-root "<CK3 安装根目录>"
 py -B -O ck3_autonomous_player/native_bridge/research/verify_core_diplomatic_proposals_v1_contract.py --game-root "<CK3 安装根目录>"
 ```

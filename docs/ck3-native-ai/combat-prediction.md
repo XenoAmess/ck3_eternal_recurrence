@@ -544,47 +544,28 @@ flowchart TD
 
 以下命令只读取磁盘文件，不启动或附加 CK3：
 
-```powershell
-Get-FileHash 'Crusader Kings III\binaries\ck3.exe' -Algorithm SHA256
+```text
+py tools/file_sha256.py "Crusader Kings III/binaries/ck3.exe"
 
-& 'tools\.venv\Scripts\python.exe' `
-  'ck3_autonomous_player\native_bridge\research\find_xrefs.py' `
-  0x19186E0 0x1917830 0x19179E0 0x191AC70 0xC6D780 0xC6E9B0
+'tools\.venv\Scripts\python.exe' 'ck3_autonomous_player\native_bridge\research\find_xrefs.py' 0x19186E0 0x1917830 0x19179E0 0x191AC70 0xC6D780 0xC6E9B0
 
-& 'tools\.venv\Scripts\python.exe' `
-  'ck3_autonomous_player\native_bridge\research\disasm_ck3.py' `
-  0x19186E0 --size 0x13A0
+'tools\.venv\Scripts\python.exe' 'ck3_autonomous_player\native_bridge\research\disasm_ck3.py' 0x19186E0 --size 0x13A0
 
-& 'tools\.venv\Scripts\python.exe' `
-  'ck3_autonomous_player\native_bridge\research\disasm_ck3.py' `
-  0x19179E0 --size 0x720
+'tools\.venv\Scripts\python.exe' 'ck3_autonomous_player\native_bridge\research\disasm_ck3.py' 0x19179E0 --size 0x720
 
-& 'tools\.venv\Scripts\python.exe' `
-  'ck3_autonomous_player\native_bridge\research\disasm_ck3.py' `
-  0x1919CE0 --size 0xA20
+'tools\.venv\Scripts\python.exe' 'ck3_autonomous_player\native_bridge\research\disasm_ck3.py' 0x1919CE0 --size 0xA20
 
-& 'tools\.venv\Scripts\python.exe' `
-  'ck3_autonomous_player\native_bridge\research\disasm_ck3.py' `
-  0x184AF50 --size 0x650
+'tools\.venv\Scripts\python.exe' 'ck3_autonomous_player\native_bridge\research\disasm_ck3.py' 0x184AF50 --size 0x650
 
-& 'tools\.venv\Scripts\python.exe' `
-  'ck3_autonomous_player\native_bridge\research\find_xrefs.py' `
-  0x1919CE0 0x184AF50 0x184B170
+'tools\.venv\Scripts\python.exe' 'ck3_autonomous_player\native_bridge\research\find_xrefs.py' 0x1919CE0 0x184AF50 0x184B170
 
-& 'tools\.venv\Scripts\python.exe' `
-  'ck3_autonomous_player\native_bridge\research\disasm_ck3.py' `
-  0x27BD9E0 --size 0xD0
+'tools\.venv\Scripts\python.exe' 'ck3_autonomous_player\native_bridge\research\disasm_ck3.py' 0x27BD9E0 --size 0xD0
 
-& 'tools\.venv\Scripts\python.exe' `
-  'ck3_autonomous_player\native_bridge\research\disasm_ck3.py' `
-  0x226F350 --size 0x80
+'tools\.venv\Scripts\python.exe' 'ck3_autonomous_player\native_bridge\research\disasm_ck3.py' 0x226F350 --size 0x80
 
-& 'tools\.venv\Scripts\python.exe' `
-  'ck3_autonomous_player\native_bridge\research\find_rtti.py' `
-  'CAISubunitStack|SAIPowerAndStrengthEntry'
+'tools\.venv\Scripts\python.exe' 'ck3_autonomous_player\native_bridge\research\find_rtti.py' 'CAISubunitStack|SAIPowerAndStrengthEntry'
 
-rg -a -b -o 'CalcCombatPredictionAndEdgesChangingAdvantage' `
-  'Crusader Kings III\binaries\ck3.exe'
+rg -a -b -o 'CalcCombatPredictionAndEdgesChangingAdvantage' 'Crusader Kings III\binaries\ck3.exe'
 ```
 
 [static-confirmed] 关键复核区间：

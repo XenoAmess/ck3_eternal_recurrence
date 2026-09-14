@@ -39,20 +39,15 @@ duplicate, missing, or symlinked entries are rejected.
 
 The default remains broad:
 
-```powershell
-py tools/zg361_phase2_product_projection.py `
-  --source Z:\path\to\mod_zhongguo_style `
-  --output Z:\path\to\projection-manifest.json
+```text
+py tools/zg361_phase2_product_projection.py --source Z:\path\to\mod_zhongguo_style --output Z:\path\to\projection-manifest.json
 ```
 
 The checked-in core baseline is selected explicitly.  Use the exact frozen
 legacy overlay (or its disposable bisect copy), not the current canonical tree:
 
-```powershell
-py tools/zg361_phase2_product_projection.py `
-  --source Z:\ck3_mod_rewrite\_runtime\phase2-bisect-source-legacy51-20260903\mod_zhongguo_style `
-  --output Z:\tmp\core-generated.json `
-  --projection core
+```text
+py tools/zg361_phase2_product_projection.py --source Z:\ck3_mod_rewrite\_runtime\phase2-bisect-source-legacy51-20260903\mod_zhongguo_style --output Z:\tmp\core-generated.json --projection core
 ```
 
 The generator command above creates a new manifest from the source.  For the
@@ -64,26 +59,15 @@ formal byte-authoritative baseline, pass the checked-in
 Each group directory is an external product root and remains untouched.  For
 example, prepare independent hash-bound manifests for `none` and `workforce`:
 
-```powershell
-$bisect = 'Z:\ck3_mod_rewrite\_runtime\phase2-group-bisect-20260903'
-py tools/zg361_phase2_product_projection.py `
-  --source "$bisect\none\zhongguo_361" `
-  --output "$bisect\none\projection-none.json" `
-  --projection none
-py tools/zg361_phase2_product_projection.py `
-  --source "$bisect\workforce\zhongguo_361" `
-  --output "$bisect\workforce\projection-workforce.json" `
-  --projection workforce
+```text
+py tools/zg361_phase2_product_projection.py --source Z:\ck3_mod_rewrite\_runtime\phase2-group-bisect-20260903\none\zhongguo_361 --output Z:\ck3_mod_rewrite\_runtime\phase2-group-bisect-20260903\none\projection-none.json --projection none
+py tools/zg361_phase2_product_projection.py --source Z:\ck3_mod_rewrite\_runtime\phase2-group-bisect-20260903\workforce\zhongguo_361 --output Z:\ck3_mod_rewrite\_runtime\phase2-group-bisect-20260903\workforce\projection-workforce.json --projection workforce
 ```
 
 Then give one generated manifest and its matching source to one runner attempt:
 
-```powershell
-py tools/run_zg361_phase2_seed_capture.py `
-  ...existing pinned runner arguments... `
-  --product-source "$bisect\none\zhongguo_361" `
-  --product-projection none `
-  --product-projection-manifest "$bisect\none\projection-none.json"
+```text
+py tools/run_zg361_phase2_seed_capture.py ...existing pinned runner arguments... --product-source Z:\ck3_mod_rewrite\_runtime\phase2-group-bisect-20260903\none\zhongguo_361 --product-projection none --product-projection-manifest Z:\ck3_mod_rewrite\_runtime\phase2-group-bisect-20260903\none\projection-none.json
 ```
 
 Repeat in a fresh attempt directory for `workforce` (or `b1`, `b2`,

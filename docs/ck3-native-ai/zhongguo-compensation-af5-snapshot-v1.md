@@ -97,7 +97,7 @@ flowchart TD
 
 2026-09-11 实际执行，工作目录为仓库根：
 
-```powershell
+```text
 py -m unittest discover -s ck3_autonomous_player/tests/unit -p test_zhongguo_compensation_af5_snapshot_v1_bridge.py -q
 # Ran 6 tests; OK
 
@@ -114,7 +114,7 @@ git diff --check
 
 同日还对真实 C++ 测试可执行文件输出的 [cold-terminal JSON](Z:/ck3_mod_rewrite/_runtime/r401-af5-bld1/af5-native-fixture.json) 做了一次跨语言验证。该文件来自 `xar_ck3_zhongguo_compensation_af5_snapshot_v1_test.exe --json`，仍是合成 fixture。实际执行：
 
-```powershell
+```text
 @'
 from pathlib import Path
 import json, sys

@@ -166,7 +166,7 @@ def discover_codex_command(explicit: Path | str | None = None) -> Path | None:
         return _resolved(explicit)
     for name in ("codex.cmd", "codex.exe", "codex"):
         found = shutil.which(name)
-        if found and Path(found).suffix.lower() != ".ps1":
+        if found and Path(found).suffix.lower() in {"", ".cmd", ".exe"}:
             return _resolved(found)
     return None
 

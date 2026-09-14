@@ -78,10 +78,10 @@ fixture 源文件 SHA-256：`9687d77fb158080450024aed2ab0ef589a8eccbb37d6f6e0411
 
 实际命令（工作目录为本 worktree；两次 parse 后再运行测试）：
 
-```powershell
+```text
 java -jar Z:/workspace/open_kaishek/kaishek-cli/target/kaishek-cli-0.1.0-SNAPSHOT.jar parse mod_zhongguo_style/common/scripted_guis/zg361_promotion_source_progress_guis.txt
 java -jar Z:/workspace/open_kaishek/kaishek-cli/target/kaishek-cli-0.1.0-SNAPSHOT.jar parse mod_zhongguo_style/common/scripted_triggers/zg361_triggers.txt
-& Z:/ck3_mod_rewrite/tools/.venv/Scripts/python.exe tools/test_zg361_promotion_source_b1_witness.py -v
+Z:/ck3_mod_rewrite/tools/.venv/Scripts/python.exe tools/test_zg361_promotion_source_b1_witness.py -v
 ```
 
 focused 测试 `4/4 GREEN`：D0 新旧对照、late-review 兼容、idle/legacy-only/subject-only/AI 排除、

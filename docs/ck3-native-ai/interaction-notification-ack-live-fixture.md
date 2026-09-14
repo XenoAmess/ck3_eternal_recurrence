@@ -240,24 +240,14 @@ sequenceDiagram
 
 Focused static/unit：
 
-```powershell
-& "tools\.venv\Scripts\python.exe" -m pytest -q `
-  "ck3_autonomous_player\tests\unit\test_pending_character_interaction_notification_ack_live_acceptance.py"
+```text
+"tools\.venv\Scripts\python.exe" -m pytest -q "ck3_autonomous_player\tests\unit\test_pending_character_interaction_notification_ack_live_acceptance.py"
 ```
 
 实机必须把 Python consumer 也绑定到隔离 commit `70bf8e6`，不能只冻结 DLL 后从共享 dirty source 导入：
 
-```powershell
-$env:XAR_ACK_ISOLATED_SOURCE_ROOT = `
-  "C:\Users\xenoa\AppData\Local\Temp\xar-ack-source-70bf8e6"
-& "tools\.venv\Scripts\python.exe" `
-  "ck3_autonomous_player\native_bridge\research\run_pending_character_interaction_notification_ack_live_acceptance.py" `
-  --game-dir "Crusader Kings III" `
-  --bridge-pipe "\\.\pipe\xar-ck3-notification-ack-70bf8e6-attempt8" `
-  --bridge-dll "ck3_autonomous_player\native_bridge\.build-pending-interaction-v1-review-msvc\xar_ck3_bridge.dll" `
-  --expected-bridge-dll-sha256 "BFB1E38FCA879681074C4AB64C077F0111A7A828EA3E5284D21E0B362F40D9A9" `
-  --bridge-injector "ck3_autonomous_player\native_bridge\.build-pending-interaction-v1-review-msvc\xar_ck3_bridge_injector.exe" `
-  --output "artifacts\pending-notification-ack-70bf8e6-live-attempt8-fixture-definition.json"
+```text
+py tools/run_with_env.py --env "XAR_ACK_ISOLATED_SOURCE_ROOT=C:\Users\xenoa\AppData\Local\Temp\xar-ack-source-70bf8e6" -- "tools\.venv\Scripts\python.exe" "ck3_autonomous_player\native_bridge\research\run_pending_character_interaction_notification_ack_live_acceptance.py" --game-dir "Crusader Kings III" --bridge-pipe "\\.\pipe\xar-ck3-notification-ack-70bf8e6-attempt8" --bridge-dll "ck3_autonomous_player\native_bridge\.build-pending-interaction-v1-review-msvc\xar_ck3_bridge.dll" --expected-bridge-dll-sha256 "BFB1E38FCA879681074C4AB64C077F0111A7A828EA3E5284D21E0B362F40D9A9" --bridge-injector "ck3_autonomous_player\native_bridge\.build-pending-interaction-v1-review-msvc\xar_ck3_bridge_injector.exe" --output "artifacts\pending-notification-ack-70bf8e6-live-attempt8-fixture-definition.json"
 ```
 
 无论 GREEN/RED，artifact 都必须保留 stage、旧/新 full ID、public/native revision、date、EXE/DLL/injector 完整 hash、

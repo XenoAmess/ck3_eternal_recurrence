@@ -21,13 +21,8 @@ recorder.
 For a quick, read-only handoff view of both editorial cuts, run
 `zhongguo_phase2_promo_delivery_queue.py` with the two generated runbooks:
 
-```powershell
-py tools/zhongguo_phase2_promo_delivery_queue.py `
-  --character-runbook <CHARACTER_RUNBOOK> `
-  --institution-runbook <INSTITUTION_RUNBOOK> `
-  --capture-root <GREEN_OR_PENDING_CAPTURE_ROOT> `
-  --output <QUEUE_REPORT_JSON> `
-  --text
+```text
+py tools/zhongguo_phase2_promo_delivery_queue.py --character-runbook <CHARACTER_RUNBOOK> --institution-runbook <INSTITUTION_RUNBOOK> --capture-root <GREEN_OR_PENDING_CAPTURE_ROOT> --output <QUEUE_REPORT_JSON> --text
 ```
 
 The report lists each canonical span's producer/handler/query/postcondition,
@@ -55,10 +50,8 @@ live proof.
 the next canonical seed.  Its CLI only writes a plan and cannot create a
 gameplay service:
 
-```powershell
-py tools/zg361_phase2_loaded_seed_live.py --plan-only `
-  --seed-contract tools/zg361_phase2_seed_contract.json `
-  --output $env:TEMP/zg361-phase2-loaded-seed-v2-plan.json
+```text
+py tools/zg361_phase2_loaded_seed_live.py --plan-only --seed-contract tools/zg361_phase2_seed_contract.json --output <external-temp-directory>/zg361-phase2-loaded-seed-v2-plan.json
 ```
 
 Until the canonical contract becomes `ready`, the plan remains

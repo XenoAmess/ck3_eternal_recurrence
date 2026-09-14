@@ -21,7 +21,7 @@
 
 分配器入口：
 
-```powershell
+```text
 py tools/ck3_live_run_id.py machine
 py tools/ck3_live_run_id.py list-mods
 py tools/ck3_live_run_id.py allocate --mod auto-upgrade-buildings

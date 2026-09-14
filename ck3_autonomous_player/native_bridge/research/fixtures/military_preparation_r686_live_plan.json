@@ -27,7 +27,7 @@
       "repo-local tools/.venv/Scripts/python.exe"
     ],
     "arbitrary_path_python_fallback": false,
-    "powershell_required": false,
+    "python_only": true,
     "missing_runtime_result": "prelaunch RED with zero CK3 launch"
   },
   "evidence_order": [

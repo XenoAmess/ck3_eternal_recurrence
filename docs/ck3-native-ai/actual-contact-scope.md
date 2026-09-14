@@ -31,13 +31,13 @@
 
 复现命令均为 bounded、只读：
 
-```powershell
-Get-FileHash -Algorithm SHA256 "Crusader Kings III/binaries/ck3.exe"
-& "tools/.venv/Scripts/python.exe" "ck3_autonomous_player/native_bridge/research/disasm_ck3.py" 0x27F9B50 --size 0xA0
-& "tools/.venv/Scripts/python.exe" "ck3_autonomous_player/native_bridge/research/disasm_ck3.py" 0x2208320 --size 0x5D0
-& "tools/.venv/Scripts/python.exe" "ck3_autonomous_player/native_bridge/research/disasm_ck3.py" 0x2209450 --size 0x8D0
-& "tools/.venv/Scripts/python.exe" "ck3_autonomous_player/native_bridge/research/disasm_ck3.py" 0x2303CF0 --size 0x270
-& "tools/.venv/Scripts/python.exe" "ck3_autonomous_player/native_bridge/research/find_xrefs.py" 0x2208320
+```text
+py tools/file_sha256.py "Crusader Kings III/binaries/ck3.exe"
+"tools/.venv/Scripts/python.exe" "ck3_autonomous_player/native_bridge/research/disasm_ck3.py" 0x27F9B50 --size 0xA0
+"tools/.venv/Scripts/python.exe" "ck3_autonomous_player/native_bridge/research/disasm_ck3.py" 0x2208320 --size 0x5D0
+"tools/.venv/Scripts/python.exe" "ck3_autonomous_player/native_bridge/research/disasm_ck3.py" 0x2209450 --size 0x8D0
+"tools/.venv/Scripts/python.exe" "ck3_autonomous_player/native_bridge/research/disasm_ck3.py" 0x2303CF0 --size 0x270
+"tools/.venv/Scripts/python.exe" "ck3_autonomous_player/native_bridge/research/find_xrefs.py" 0x2208320
 ```
 
 完整范围清单在 ABI 的 `reproduction.required_ranges`。所有地址都是 RVA，不含 image base。

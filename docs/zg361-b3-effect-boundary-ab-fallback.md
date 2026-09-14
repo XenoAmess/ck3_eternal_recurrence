@@ -93,19 +93,14 @@ r3 内存规划结果：
 
 只读复核 r3，不生成 B：
 
-```powershell
-py tools/plan_zg361_b3_effect_split_fallback.py `
-  --source-root "Z:\ck3_mod_rewrite_process_assets\zg361\b3e-27b66b3-20260904-063948Z\product-source" `
-  --require-r3-identity
+```text
+py tools/plan_zg361_b3_effect_split_fallback.py --source-root "Z:\ck3_mod_rewrite_process_assets\zg361\b3e-27b66b3-20260904-063948Z\product-source" --require-r3-identity
 ```
 
 r4 被确认为 pure performance RED 后，以 **语义修正后的 A** 为输入生成一次性 B。输出路径和 sidecar 必须不存在：
 
-```powershell
-py tools/plan_zg361_b3_effect_split_fallback.py `
-  --source-root <r4-A-source> `
-  --output-root <new-r4-B-source> `
-  --manifest <new-r4-B-sidecar.json>
+```text
+py tools/plan_zg361_b3_effect_split_fallback.py --source-root <r4-A-source> --output-root <new-r4-B-source> --manifest <new-r4-B-sidecar.json>
 ```
 
 不要对 r4 使用 `--require-r3-identity`：语义修正本来就会改变 block hash。规划器仍会要求 effect 名称和用途锚点与 r3 相同，并证明 B 完整继承 A 的新 block 字节和调用图；名称/顺序变化则 fail-closed，先更新用途计划。

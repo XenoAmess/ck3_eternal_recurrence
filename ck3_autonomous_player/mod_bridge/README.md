@@ -45,7 +45,7 @@ XAR_MCP:END|schema=1|request_id=xar_req_000001
 
 ## 静态验证
 
-```powershell
+```text
 py -m unittest discover -s ck3_autonomous_player/mod_bridge/tests -p "test_*.py"
 ```
 

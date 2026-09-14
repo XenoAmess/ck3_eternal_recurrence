@@ -35,8 +35,8 @@ wrapper 因 stdin 永久 EOF 而错误退出。capabilities/status 只披露 con
    profile 是每台 target 的部署配置，不提交 token、密码或 bearer credential。
 2. 在目标操作者的正常交互 shell 中启动一次 server；该 shell 必须已经位于 profile 声明的 desktop：
 
-   ```powershell
-   & "<python>" "<repo>\ck3_autonomous_player\operator_mcp_server.py" --profile "<profile.json>"
+   ```text
+   "<python>" "<repo>\ck3_autonomous_player\operator_mcp_server.py" --profile "<profile.json>"
    ```
 
 3. Codex client 将 profile 的 `advertised_url` 注册为 Streamable HTTP MCP endpoint，并刷新 client/session。

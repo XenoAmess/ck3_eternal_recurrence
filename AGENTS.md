@@ -59,7 +59,7 @@
 
 ## 构建/生成
 
-```powershell
+```text
 py XenoAmess_s_Eternal_Recurrence/tools/gen_highscore.py   # 位阈值体系
 py tools/gen_pools.py                                       # 祝福/诅咒奖池（100+100）
 py tools/gen_contracts.py                                   # 本世契约、PB、图鉴与里程碑事件
@@ -190,7 +190,7 @@ py tools/build_auto_upgrade_buildings_release.py            # 生成 16 文件 s
 
 **静态 L0（跨平台/CI）**：
 
-```powershell
+```text
 py -m pip install -r tools/requirements-static.txt
 # The external promo wheel is intentionally a separate requirement file.
 py -m pip install -r tools/requirements-promo-toolchain.txt
@@ -198,6 +198,7 @@ py tools/test_gen_no_heir_gui.py
 py tools/test_build_release.py
 py tools/test_build_vivhite_release.py
 py tools/test_build_auto_upgrade_buildings_release.py
+py tools/validate_python_only.py
 py tools/validate_static.py
 py tools/validate_vivhite_static.py
 py tools/validate_auto_upgrade_buildings_static.py
@@ -212,9 +213,9 @@ py tools/build_auto_upgrade_buildings_release.py --check
 创建或更新 `tools\.venv` 后，除 `tools/requirements.txt` 外，必须使用同一解释器单独执行
 `-m pip install -r tools/requirements-promo-toolchain.txt`；该依赖不再由通用 requirements 文件间接引入。
 
-```powershell
-& "tools\.venv\Scripts\python.exe" "tools\run_acceptance.py"
-& "tools\.venv\Scripts\python.exe" "tools\run_vivhite_acceptance.py"
+```text
+tools\.venv\Scripts\python.exe tools\run_acceptance.py
+tools\.venv\Scripts\python.exe tools\run_vivhite_acceptance.py
 ```
 
 一键全流程（备份现场 → **静态 loc 校验** → 同步代码 → 过大厅 → 自测规则档全链断言 → 恢复现场），
@@ -233,7 +234,7 @@ GREEN/RED + 退出码，约 5-6 分钟。原理与坐标表见 `docs/testing-wor
 手动测试前也必须先同步（或直接 `robocopy XenoAmess_s_Eternal_Recurrence <工坊缓存> /MIR`）。
 
 手动兜底（runner 不可用时）：
-1. `Start-Process binaries/ck3.exe -ArgumentList "-debug_mode"` 启动
+1. 通过 Python `subprocess.Popen(["binaries/ck3.exe", "-debug_mode"])` 启动
 2. 日志：`Documents\Paradox Interactive\Crusader Kings III\logs\error.log`（解析/运行时错误）、
    `debug.log`（`debug_log` 标记，本项目用 `XAR:` 前缀）
 3. 全局存储落盘文件：`Documents\Paradox Interactive\Crusader Kings III\tutorial.txt`

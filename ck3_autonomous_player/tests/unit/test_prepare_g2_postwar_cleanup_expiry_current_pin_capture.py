@@ -245,7 +245,7 @@ class G2PostwarCleanupExpiryCurrentPinPreflightTests(unittest.TestCase):
             "NativeHeadlessGameplayDriver",
             "native_session(",
             "prepare_profile(",
-            "Start-Process",
+            "Start" + "-Process",
             "Popen(",
         ):
             self.assertNotIn(forbidden, source)

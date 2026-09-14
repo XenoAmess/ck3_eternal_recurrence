@@ -112,16 +112,24 @@ detach、写 marker、删除 ref。删除 ref 时禁止 prune/remove worktree，
    `origin/master` 猜它已同步；
 5. 最终再重复枚举，确认只剩 `master`、ledger 中的 active `wip/`/必要 `release/`，以及明确记录的临时 exception。
 
-PowerShell 的最小发现入口：
+Python 的最小发现入口：
 
-```powershell
-Get-ChildItem $env:TEMP -Directory -Filter 'xar*' | ForEach-Object {
-  $repo = $_.FullName
-  if (Test-Path (Join-Path $repo '.git\config')) {
-    git -c "safe.directory=$repo" -C $repo config --get remote.origin.url
-    git -c "safe.directory=$repo" -C $repo rev-parse --git-common-dir
-  }
-}
+```python
+from pathlib import Path
+import subprocess
+import tempfile
+
+for repo in Path(tempfile.gettempdir()).glob("xar*"):
+    if not repo.is_dir() or not (repo / ".git" / "config").is_file():
+        continue
+    for git_args in (
+        ("config", "--get", "remote.origin.url"),
+        ("rev-parse", "--git-common-dir"),
+    ):
+        subprocess.run(
+            ["git", "-c", f"safe.directory={repo}", "-C", str(repo), *git_args],
+            check=True,
+        )
 ```
 
 冻结 clone 可能因历史 object pack 不完整而 fetch 报 `unresolved deltas` / `invalid index-pack output`。这属于冻结环境事实，

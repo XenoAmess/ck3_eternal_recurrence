@@ -11,13 +11,8 @@ offline regression without starting CK3:
 
 Command (from `_root-promo-split-20260902`):
 
-```
-$env:PYTHONPATH='ck3_autonomous_player/src';
-& 'Z:\ck3_mod_rewrite\tools\.venv\Scripts\python.exe' -m pytest -q --disable-warnings \
-  ck3_autonomous_player/tests/unit/test_raiktor_surrender_truce_contract.py \
-  ck3_autonomous_player/tests/unit/test_g2_truce_preview_entry_observer_seam.py \
-  ck3_autonomous_player/tests/unit/test_g2_truce_preview_entry_observer_v1_contract.py \
-  ck3_autonomous_player/tests/unit/test_g2_truce_preview_entry_observer_integration.py
+```text
+py tools/run_with_env.py --env "PYTHONPATH=ck3_autonomous_player/src" -- "Z:\ck3_mod_rewrite\tools\.venv\Scripts\python.exe" -m pytest -q --disable-warnings ck3_autonomous_player/tests/unit/test_raiktor_surrender_truce_contract.py ck3_autonomous_player/tests/unit/test_g2_truce_preview_entry_observer_seam.py ck3_autonomous_player/tests/unit/test_g2_truce_preview_entry_observer_v1_contract.py ck3_autonomous_player/tests/unit/test_g2_truce_preview_entry_observer_integration.py
 ```
 
 The slice covers:

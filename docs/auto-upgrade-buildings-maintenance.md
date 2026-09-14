@@ -58,7 +58,7 @@
   真实用户资料不变，退出后以 Get-Process/WMI 双源确认 CK3 进程数为 0。该结果只能分类为 environment RED，不能证明玩法 GREEN，
   也没有证据把它归因于本 mod。证据保存在
   `D:\workspace\ck3_auto_upgrade_runtime\R410-maintained-live\artifacts`。
-- R0006 的环境 RED 根因已确认：本任务早先遗留的 `rg.exe` PID 12388（父 PowerShell PID 22848）从 21:45 起扫描整个
+- R0006 的环境 RED 根因已确认：本任务早先遗留的 `rg.exe` PID 12388（父 legacy shell PID 22848）从 21:45 起扫描整个
   `D:\workspace`，令 D 盘平均队列约 14、峰值 16、平均传输延迟约 40 ms，而吞吐仅约 7.5 MB/s。按用户指令只终止这两个
   精确进程后，D 盘平均队列降至约 0.007、延迟约 0.3 ms；R0007 在同一 D 盘本体上 11 分 48 秒到达主菜单，证明阻断来自
   I/O 竞争，不是 CK3 或本 mod 死锁。

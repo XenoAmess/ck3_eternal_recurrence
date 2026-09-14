@@ -574,7 +574,7 @@ interaction context，并返回通过 native validation 的两个 ID。它解决
 机器可读的 RVA、bounded byte-range hash、direct-call edge 和 source anchor 在
 [`research/marriage-matchmaking-1.19.0.6.json`](research/marriage-matchmaking-1.19.0.6.json)。任意获授权机器可用自己的安装根复核：
 
-```powershell
+```text
 py docs/ck3-native-ai/research/verify-marriage-matchmaking.py --game-root "D:\Games\Crusader Kings III"
 ```
 

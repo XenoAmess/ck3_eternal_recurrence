@@ -281,13 +281,13 @@
 
 至少应回归：
 
-```powershell
+```text
 py tools/validate_static.py
-& "tools\.venv\Scripts\python.exe" "tools\run_acceptance.py" --scenario selftest
-& "tools\.venv\Scripts\python.exe" "tools\run_acceptance.py" --scenario death-edges
-& "tools\.venv\Scripts\python.exe" "tools\run_acceptance.py" --scenario bargain-reopen
-& "tools\.venv\Scripts\python.exe" "tools\run_acceptance.py" --scenario courtier-creator
-& "tools\.venv\Scripts\python.exe" "tools\run_acceptance.py" --scenario balance-long --balance-fixture synthetic --balance-smoke-pairs 2
+"tools\.venv\Scripts\python.exe" "tools\run_acceptance.py" --scenario selftest
+"tools\.venv\Scripts\python.exe" "tools\run_acceptance.py" --scenario death-edges
+"tools\.venv\Scripts\python.exe" "tools\run_acceptance.py" --scenario bargain-reopen
+"tools\.venv\Scripts\python.exe" "tools\run_acceptance.py" --scenario courtier-creator
+"tools\.venv\Scripts\python.exe" "tools\run_acceptance.py" --scenario balance-long --balance-fixture synthetic --balance-smoke-pairs 2
 ```
 
 当前 `--balance-smoke-pairs` 只允许 `1|2`。完整 40 年长测可作为非门禁 soak/stability/telemetry 执行；它不替代策略化平衡测试。

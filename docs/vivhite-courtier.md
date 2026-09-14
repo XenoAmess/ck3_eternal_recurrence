@@ -43,7 +43,7 @@ snapshot records CK3 `1.19.0.6`, source `00_traits.txt` SHA-256
 validator reconstructs the RGB pixels exactly and still enforces PNG format, 640×640 dimensions and the launcher's 1 MB
 limit. Encoded PNG bytes are not compared because zlib output is not stable across Pillow builds.
 
-```powershell
+```text
 py tools/gen_vivhite_courtier.py
 py tools/gen_vivhite_courtier.py --check
 py tools/compose_vivhite_key_art.py
@@ -63,7 +63,7 @@ sign-off.
 
 ## Build And Static Gates
 
-```powershell
+```text
 py tools/test_build_vivhite_release.py
 py tools/validate_vivhite_static.py
 py tools/build_vivhite_release.py --check
@@ -96,11 +96,11 @@ all bind commit `092e61bf2fa9d90167eea91369ac8bb4bfa1b543`.
 `tools/run_vivhite_acceptance.py` runs three serialized, non-debug CK3 cells. A formal run uses the default `all`
 selection and omits `--keep-userdirs`; individual scenarios are available for diagnosis:
 
-```powershell
-& "tools\.venv\Scripts\python.exe" "tools\run_vivhite_acceptance.py"
-& "tools\.venv\Scripts\python.exe" "tools\run_vivhite_acceptance.py" --scenario vivhite-alone
-& "tools\.venv\Scripts\python.exe" "tools\run_vivhite_acceptance.py" --scenario original-then-vivhite
-& "tools\.venv\Scripts\python.exe" "tools\run_vivhite_acceptance.py" --scenario vivhite-then-original
+```text
+"tools\.venv\Scripts\python.exe" "tools\run_vivhite_acceptance.py"
+"tools\.venv\Scripts\python.exe" "tools\run_vivhite_acceptance.py" --scenario vivhite-alone
+"tools\.venv\Scripts\python.exe" "tools\run_vivhite_acceptance.py" --scenario original-then-vivhite
+"tools\.venv\Scripts\python.exe" "tools\run_vivhite_acceptance.py" --scenario vivhite-then-original
 ```
 
 1. Vivhite alone proves open/cancel, 119-gold disabled confirm, default 120-gold purchase, configured 348-gold purchase, selected Aluk faith context, close/reopen retention and AI rejection.

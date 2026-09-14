@@ -70,15 +70,8 @@ pins the adapter and every executable/source dependency. Important hashes:
 
 The no-launch command is:
 
-```powershell
-& "Z:\ck3_mod_rewrite\tools\.venv\Scripts\python.exe" -B `
-  "ck3_autonomous_player\native_bridge\research\run_g2_source_specific_war_loss_live_adapter.py" `
-  --manifest "ck3_autonomous_player\native_bridge\research\fixtures\g2_source_specific_war_loss_live_adapter_v1_manifest.json" `
-  --preflight-output "<fresh-output>" `
-  --profile-settings-template "<known-good-profile>\pdx_settings.txt" `
-  --game-root "<CK3-install-root>" `
-  --expected-war-id 50331699 `
-  --verify-only
+```text
+"Z:\ck3_mod_rewrite\tools\.venv\Scripts\python.exe" -B "ck3_autonomous_player\native_bridge\research\run_g2_source_specific_war_loss_live_adapter.py" --manifest "ck3_autonomous_player\native_bridge\research\fixtures\g2_source_specific_war_loss_live_adapter_v1_manifest.json" --preflight-output "<fresh-output>" --profile-settings-template "<known-good-profile>\pdx_settings.txt" --game-root "<CK3-install-root>" --expected-war-id 50331699 --verify-only
 ```
 
 It produced
@@ -177,22 +170,8 @@ readiness field.
 After the coordinator grants an exclusive CK3 slot, the concrete default-OFF
 command is:
 
-```powershell
-& "Z:\ck3_mod_rewrite\tools\.venv\Scripts\python.exe" -B `
-  "ck3_autonomous_player\native_bridge\research\run_g2_source_specific_war_loss_live_adapter.py" `
-  --manifest "ck3_autonomous_player\native_bridge\research\fixtures\g2_source_specific_war_loss_live_adapter_v1_manifest.json" `
-  --preflight-output "<fresh-attempt>\preflight.json" `
-  --artifact-dir "<fresh-attempt>\artifacts" `
-  --userdir "<fresh-empty-userdir>" `
-  --profile-settings-template "<known-good-profile>\pdx_settings.txt" `
-  --game-root "<CK3-install-root>" `
-  --capture-executable "<runtime-bundle>\xar_ck3_raiktor_war_bound_private_capture_v1.exe" `
-  --bridge-dll "<runtime-bundle>\xar_ck3_bridge.dll" `
-  --bridge-injector "<runtime-bundle>\xar_ck3_bridge_injector.exe" `
-  --expected-character-id 29829 `
-  --expected-war-id 50331699 `
-  --postwar-timeout 45 `
-  --authorize-private-live
+```text
+"Z:\ck3_mod_rewrite\tools\.venv\Scripts\python.exe" -B "ck3_autonomous_player\native_bridge\research\run_g2_source_specific_war_loss_live_adapter.py" --manifest "ck3_autonomous_player\native_bridge\research\fixtures\g2_source_specific_war_loss_live_adapter_v1_manifest.json" --preflight-output "<fresh-attempt>\preflight.json" --artifact-dir "<fresh-attempt>\artifacts" --userdir "<fresh-empty-userdir>" --profile-settings-template "<known-good-profile>\pdx_settings.txt" --game-root "<CK3-install-root>" --capture-executable "<runtime-bundle>\xar_ck3_raiktor_war_bound_private_capture_v1.exe" --bridge-dll "<runtime-bundle>\xar_ck3_bridge.dll" --bridge-injector "<runtime-bundle>\xar_ck3_bridge_injector.exe" --expected-character-id 29829 --expected-war-id 50331699 --postwar-timeout 45 --authorize-private-live
 ```
 
 Without `--authorize-private-live`, the command stops after no-launch

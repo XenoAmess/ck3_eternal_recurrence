@@ -128,14 +128,14 @@ PASS: already_running=1 inherited_pipe=0 explicit_pipe=1 injected=1 hello=1 hear
 For direct use against an x64 process that has inherited
 `XAR_CK3_BRIDGE_PIPE`:
 
-```powershell
+```text
 .\xar_ck3_bridge_injector.exe <pid> .\xar_ck3_bridge.dll
 ```
 
 For a process that is already running and therefore did not inherit the pipe
 environment variable, start the pipe server first and use:
 
-```powershell
+```text
 .\xar_ck3_bridge_injector.exe --pipe \\.\pipe\xar_ck3_native <pid> .\xar_ck3_bridge.dll
 ```
 

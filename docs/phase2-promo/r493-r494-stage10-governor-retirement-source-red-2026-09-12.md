@@ -42,7 +42,7 @@ P1 保持 **`8/9 = 88.9%`**，唯一未完成项仍是玩家可见 `zg361mg.120`
 
 只重放与本事件有关的两个确定性测试：
 
-```powershell
+```text
 Z:\ck3_mod_rewrite\tools\.venv\Scripts\python.exe -m pytest ck3_autonomous_player/tests/unit/test_zhongguo_promotion_source_progress_v1.py::test_product_path_stops_before_scenario_invalidating_interrupt ck3_autonomous_player/tests/unit/test_zhongguo_promotion_source_progress_v1.py::test_product_path_rejects_interrupt_identity_drift_before_action
 Z:\ck3_mod_rewrite\tools\.venv\Scripts\python.exe -O -m pytest ck3_autonomous_player/tests/unit/test_zhongguo_promotion_source_progress_v1.py::test_product_path_stops_before_scenario_invalidating_interrupt ck3_autonomous_player/tests/unit/test_zhongguo_promotion_source_progress_v1.py::test_product_path_rejects_interrupt_identity_drift_before_action
 ```

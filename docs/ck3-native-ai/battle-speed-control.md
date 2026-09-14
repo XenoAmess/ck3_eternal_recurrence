@@ -299,15 +299,8 @@ sentinel 五档串行 A/B 从同一 immutable active-battle checkpoint 运行；
 resume 只提交一次；即使 bridge 没来得及发布 running frame 而直接看到更晚日期的 paused frame，也不得对已经触发的 arm 再次
 resume。RED 恢复后允许在 paused 状态用新 generation 替换仍为 armed 的旧实验。
 
-```powershell
-py ck3_autonomous_player/native_bridge/research/run_battle_speed_matrix_live_acceptance.py `
-  --state-dir <disposable-battle-state> --game-dir <CK3-game-dir> `
-  --bridge-pipe <unique-pipe> --bridge-dll <sentinel-build-dll> `
-  --bridge-injector <injector> --output <sentinel-1to5.json> `
-  --cold-start-checkpoint --mode sentinel-envelope `
-  --sentinel-mode decision --subject-army-id <ArmyID> `
-  --sentinel-army-ids <subject-and-other-watched-ArmyIDs...> `
-  --speeds 1 2 3 4 5 --samples-per-speed 2 --target-days 3
+```text
+py ck3_autonomous_player/native_bridge/research/run_battle_speed_matrix_live_acceptance.py --state-dir <disposable-battle-state> --game-dir <CK3-game-dir> --bridge-pipe <unique-pipe> --bridge-dll <sentinel-build-dll> --bridge-injector <injector> --output <sentinel-1to5.json> --cold-start-checkpoint --mode sentinel-envelope --sentinel-mode decision --subject-army-id <ArmyID> --sentinel-army-ids <subject-and-other-watched-ArmyIDs...> --speeds 1 2 3 4 5 --samples-per-speed 2 --target-days 3
 ```
 
 `--sentinel-army-ids` 默认只监视 subject；同侧存在多支参战军时必须把完整 watch set 显式传入（最多 64 支，去重且必须包含
@@ -348,61 +341,34 @@ date fallback 或 roster/retreat/reopen stop 是诚实的 sentinel stop，但 cr
 把上述 `last_save.ck3` 放进一次性 state 后，先用现有单场 probe 在原日期物化 managed checkpoint；2026-08-28 live
 矩阵已按此流程完成，下面保留复现实验入口：
 
-```powershell
-py ck3_autonomous_player/native_bridge/research/run_battle_control_live_acceptance.py `
-  --state-dir <disposable-battle-state> --game-dir <CK3-game-dir> `
-  --bridge-pipe <bootstrap-pipe> --bridge-dll <exact-build-dll> `
-  --bridge-injector <injector> --output <bootstrap-artifact.json> `
-  --subject-army-id 83886341 --save-checkpoint --advance-days 0
+```text
+py ck3_autonomous_player/native_bridge/research/run_battle_control_live_acceptance.py --state-dir <disposable-battle-state> --game-dir <CK3-game-dir> --bridge-pipe <bootstrap-pipe> --bridge-dll <exact-build-dll> --bridge-injector <injector> --output <bootstrap-artifact.json> --subject-army-id 83886341 --save-checkpoint --advance-days 0
 ```
 
 bootstrap artifact 与生成的 `xar_checkpoint.ck3` SHA-256 审阅一致后，才运行下面的冷恢复矩阵。
 
 五档中性停表包络示例：
 
-```powershell
-py ck3_autonomous_player/native_bridge/research/run_battle_speed_matrix_live_acceptance.py `
-  --state-dir <disposable-neutral-state> --game-dir <CK3-game-dir> `
-  --bridge-pipe <unique-pipe> --bridge-dll <exact-build-dll> `
-  --bridge-injector <injector> --output <artifact.json> `
-  --cold-start-checkpoint --mode stop-envelope `
-  --speeds 1 2 3 4 5 --samples-per-speed 6 --target-days 1
+```text
+py ck3_autonomous_player/native_bridge/research/run_battle_speed_matrix_live_acceptance.py --state-dir <disposable-neutral-state> --game-dir <CK3-game-dir> --bridge-pipe <unique-pipe> --bridge-dll <exact-build-dll> --bridge-injector <injector> --output <artifact.json> --cold-start-checkpoint --mode stop-envelope --speeds 1 2 3 4 5 --samples-per-speed 6 --target-days 1
 ```
 
 从已知 battle seed 量化五档停表包络时，必须显式声明实验场景；默认 `neutral` 仍会拒绝 active war：
 
-```powershell
-py ck3_autonomous_player/native_bridge/research/run_battle_speed_matrix_live_acceptance.py `
-  --state-dir <disposable-battle-state> --game-dir <CK3-game-dir> `
-  --bridge-pipe <unique-pipe> --bridge-dll <exact-build-dll> `
-  --bridge-injector <injector> --output <artifact.json> `
-  --cold-start-checkpoint --mode stop-envelope `
-  --stop-envelope-scenario active-battle --subject-army-id 83886341 `
-  --speeds 1 2 3 4 5 --samples-per-speed 2 --target-days 1
+```text
+py ck3_autonomous_player/native_bridge/research/run_battle_speed_matrix_live_acceptance.py --state-dir <disposable-battle-state> --game-dir <CK3-game-dir> --bridge-pipe <unique-pipe> --bridge-dll <exact-build-dll> --bridge-injector <injector> --output <artifact.json> --cold-start-checkpoint --mode stop-envelope --stop-envelope-scenario active-battle --subject-army-id 83886341 --speeds 1 2 3 4 5 --samples-per-speed 2 --target-days 1
 ```
 
 已接战 1/2/3 parity 示例：
 
-```powershell
-py ck3_autonomous_player/native_bridge/research/run_battle_speed_matrix_live_acceptance.py `
-  --state-dir <disposable-battle-state> --game-dir <CK3-game-dir> `
-  --bridge-pipe <unique-pipe> --bridge-dll <exact-build-dll> `
-  --bridge-injector <injector> --output <artifact.json> `
-  --cold-start-checkpoint --mode battle-parity --subject-army-id 83886341 `
-  --speeds 1 2 3 --samples-per-speed 6 --target-days 1
+```text
+py ck3_autonomous_player/native_bridge/research/run_battle_speed_matrix_live_acceptance.py --state-dir <disposable-battle-state> --game-dir <CK3-game-dir> --bridge-pipe <unique-pipe> --bridge-dll <exact-build-dll> --bridge-injector <injector> --output <artifact.json> --cold-start-checkpoint --mode battle-parity --subject-army-id 83886341 --speeds 1 2 3 --samples-per-speed 6 --target-days 1
 ```
 
 五档终局等价性示例：
 
-```powershell
-py ck3_autonomous_player/native_bridge/research/run_battle_speed_matrix_live_acceptance.py `
-  --state-dir <disposable-battle-state> --game-dir <CK3-game-dir> `
-  --bridge-pipe <unique-pipe> --bridge-dll <exact-build-dll> `
-  --bridge-injector <injector> --output <artifact.json> `
-  --cold-start-checkpoint --mode terminal-parity --subject-army-id 83886341 `
-  --speeds 1 2 3 4 5 --samples-per-speed 1 `
-  --terminal-max-days 45 --terminal-max-pause-lag-days 1 `
-  --slice-timeout 180 --timeout 1800
+```text
+py ck3_autonomous_player/native_bridge/research/run_battle_speed_matrix_live_acceptance.py --state-dir <disposable-battle-state> --game-dir <CK3-game-dir> --bridge-pipe <unique-pipe> --bridge-dll <exact-build-dll> --bridge-injector <injector> --output <artifact.json> --cold-start-checkpoint --mode terminal-parity --subject-army-id 83886341 --speeds 1 2 3 4 5 --samples-per-speed 1 --terminal-max-days 45 --terminal-max-pause-lag-days 1 --slice-timeout 180 --timeout 1800
 ```
 
 `terminal-parity` 在每臂恢复后先做两次 paused battle-control query，锁定相同起始 frame 与 exact CombatID；随后
@@ -479,22 +445,10 @@ ordered roster、current/soft/hard ledger 与 side strength。不同实际 elaps
 
 同一 checkpoint 的两个隔离 state 分别运行：
 
-```powershell
-& '<python>' 'ck3_autonomous_player/agent.py' `
-  --state-dir <speed-1-state> --game-dir <CK3-game-dir> `
-  --bridge-mode native-headless --bridge-pipe <speed-1-pipe> `
-  --bridge-dll <exact-build-dll> --bridge-injector <injector> `
-  native-one-generation --max-turns 80 --timeout 1800 `
-  --readiness-timeout 300 --checkpoint-every-advances 3 `
-  --route-contact-speed 1
+```text
+'<python>' 'ck3_autonomous_player/agent.py' --state-dir <speed-1-state> --game-dir <CK3-game-dir> --bridge-mode native-headless --bridge-pipe <speed-1-pipe> --bridge-dll <exact-build-dll> --bridge-injector <injector> native-one-generation --max-turns 80 --timeout 1800 --readiness-timeout 300 --checkpoint-every-advances 3 --route-contact-speed 1
 
-& '<python>' 'ck3_autonomous_player/agent.py' `
-  --state-dir <speed-3-state> --game-dir <CK3-game-dir> `
-  --bridge-mode native-headless --bridge-pipe <speed-3-pipe> `
-  --bridge-dll <exact-build-dll> --bridge-injector <injector> `
-  native-one-generation --max-turns 80 --timeout 1800 `
-  --readiness-timeout 300 --checkpoint-every-advances 3 `
-  --route-contact-speed 3
+'<python>' 'ck3_autonomous_player/agent.py' --state-dir <speed-3-state> --game-dir <CK3-game-dir> --bridge-mode native-headless --bridge-pipe <speed-3-pipe> --bridge-dll <exact-build-dll> --bridge-injector <injector> native-one-generation --max-turns 80 --timeout 1800 --readiness-timeout 300 --checkpoint-every-advances 3 --route-contact-speed 3
 ```
 
 两臂必须从 size/SHA/date/history/episode 全同的 checkpoint 开始。最小 GREEN 条件是：两臂都至少完成 10 个
@@ -595,7 +549,7 @@ roster/join、route、retreat、reopen、native pause 或 deadline 都只产生�
 舍入残差 `0.156s`。只看 advance 也只有 `42.199 d/min`，所以减少 query 函数本身的微秒或继续优化 daily hook 都不能闭合目标。
 复算命令为：
 
-```powershell
+```text
 xar-throughput-report <run>/report.json
 ```
 

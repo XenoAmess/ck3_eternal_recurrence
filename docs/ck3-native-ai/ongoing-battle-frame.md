@@ -481,31 +481,20 @@ planner-selected exact target 动作。
 
 ## 复现命令
 
-```powershell
-Get-FileHash -Algorithm SHA256 'Crusader Kings III/binaries/ck3.exe'
+```text
+py tools/file_sha256.py "Crusader Kings III/binaries/ck3.exe"
 
-& 'tools/.venv/Scripts/python.exe' `
-  'ck3_autonomous_player/native_bridge/research/disasm_ck3.py' 0x23D0520 --size 0xE0
-& 'tools/.venv/Scripts/python.exe' `
-  'ck3_autonomous_player/native_bridge/research/disasm_ck3.py' 0x23CDF70 --size 0x110
-& 'tools/.venv/Scripts/python.exe' `
-  'ck3_autonomous_player/native_bridge/research/disasm_ck3.py' 0x23CB840 --size 0x90
-& 'tools/.venv/Scripts/python.exe' `
-  'ck3_autonomous_player/native_bridge/research/disasm_ck3.py' 0x23CC340 --size 0x90
-& 'tools/.venv/Scripts/python.exe' `
-  'ck3_autonomous_player/native_bridge/research/disasm_ck3.py' 0x2308D50 --size 0xA0
-& 'tools/.venv/Scripts/python.exe' `
-  'ck3_autonomous_player/native_bridge/research/disasm_ck3.py' 0x2309E80 --size 0x1A0
-& 'tools/.venv/Scripts/python.exe' `
-  'ck3_autonomous_player/native_bridge/research/disasm_ck3.py' 0x23CE080 --size 0xA0
-& 'tools/.venv/Scripts/python.exe' `
-  'ck3_autonomous_player/native_bridge/research/disasm_ck3.py' 0x27FB617 --size 0x160
-& 'tools/.venv/Scripts/python.exe' `
-  'ck3_autonomous_player/native_bridge/research/disasm_ck3.py' 0x230A590 --size 0x80
-& 'tools/.venv/Scripts/python.exe' `
-  'ck3_autonomous_player/native_bridge/research/disasm_ck3.py' 0x2308250 --size 0x600
-& 'tools/.venv/Scripts/python.exe' `
-  'ck3_autonomous_player/native_bridge/research/disasm_ck3.py' 0x26165B0 --size 0x80
+'tools/.venv/Scripts/python.exe' 'ck3_autonomous_player/native_bridge/research/disasm_ck3.py' 0x23D0520 --size 0xE0
+'tools/.venv/Scripts/python.exe' 'ck3_autonomous_player/native_bridge/research/disasm_ck3.py' 0x23CDF70 --size 0x110
+'tools/.venv/Scripts/python.exe' 'ck3_autonomous_player/native_bridge/research/disasm_ck3.py' 0x23CB840 --size 0x90
+'tools/.venv/Scripts/python.exe' 'ck3_autonomous_player/native_bridge/research/disasm_ck3.py' 0x23CC340 --size 0x90
+'tools/.venv/Scripts/python.exe' 'ck3_autonomous_player/native_bridge/research/disasm_ck3.py' 0x2308D50 --size 0xA0
+'tools/.venv/Scripts/python.exe' 'ck3_autonomous_player/native_bridge/research/disasm_ck3.py' 0x2309E80 --size 0x1A0
+'tools/.venv/Scripts/python.exe' 'ck3_autonomous_player/native_bridge/research/disasm_ck3.py' 0x23CE080 --size 0xA0
+'tools/.venv/Scripts/python.exe' 'ck3_autonomous_player/native_bridge/research/disasm_ck3.py' 0x27FB617 --size 0x160
+'tools/.venv/Scripts/python.exe' 'ck3_autonomous_player/native_bridge/research/disasm_ck3.py' 0x230A590 --size 0x80
+'tools/.venv/Scripts/python.exe' 'ck3_autonomous_player/native_bridge/research/disasm_ck3.py' 0x2308250 --size 0x600
+'tools/.venv/Scripts/python.exe' 'ck3_autonomous_player/native_bridge/research/disasm_ck3.py' 0x26165B0 --size 0x80
 ```
 
 关键复核点：`0x23D0520` 的 entry 初始化；`0x23CDFC3/0x23CDFCB` 的 soft/current 写点；

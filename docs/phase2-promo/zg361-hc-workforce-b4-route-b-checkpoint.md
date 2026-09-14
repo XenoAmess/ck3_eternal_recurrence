@@ -51,20 +51,14 @@ career-HC provider remains default-off in this B4 producer.
 
 No-launch producer preflight:
 
-```powershell
-& .\tools\.venv\Scripts\python.exe tools/preflight_zg361_phase2_hc_workforce_route_b_capture.py
+```text
+.\tools\.venv\Scripts\python.exe tools/preflight_zg361_phase2_hc_workforce_route_b_capture.py
 ```
 
 The future explicit live command is:
 
-```powershell
-& .\tools\.venv\Scripts\python.exe tools/run_zhongguo_acceptance.py `
-  --phase2-hc-workforce-route-b-capture-live `
-  --phase2-hc-workforce-route-b-checkpoint-output <NEW_PRE_B_CK3> `
-  --phase2-hc-workforce-route-b-registry-output <NEW_REGISTRY_JSON> `
-  --phase2-seed-contract <CANONICAL_SEED_CONTRACT_JSON> `
-  --bridge-dll <EXACT_BUILD_DLL> `
-  --bridge-injector <EXACT_BUILD_INJECTOR>
+```text
+.\tools\.venv\Scripts\python.exe tools/run_zhongguo_acceptance.py --phase2-hc-workforce-route-b-capture-live --phase2-hc-workforce-route-b-checkpoint-output <NEW_PRE_B_CK3> --phase2-hc-workforce-route-b-registry-output <NEW_REGISTRY_JSON> --phase2-seed-contract <CANONICAL_SEED_CONTRACT_JSON> --bridge-dll <EXACT_BUILD_DLL> --bridge-injector <EXACT_BUILD_INJECTOR>
 ```
 
 Both output paths are mandatory, must differ, and must not exist. Supplying
@@ -105,20 +99,15 @@ provider-observed B6 result.
 
 No-launch static preflight:
 
-```powershell
-& .\tools\.venv\Scripts\python.exe tools/preflight_zg361_phase2_hc_workforce_route_b_live.py
+```text
+.\tools\.venv\Scripts\python.exe tools/preflight_zg361_phase2_hc_workforce_route_b_live.py
 ```
 
 It reports the entry itself GREEN while the nested live gate remains RED if no
 qualified registry was supplied. A real replay command is:
 
-```powershell
-& .\tools\.venv\Scripts\python.exe tools/run_zhongguo_acceptance.py `
-  --phase2-hc-workforce-route-b-live `
-  --phase2-hc-workforce-route-b-checkpoint-registry <REAL_REGISTRY_JSON> `
-  --phase2-seed-contract <MATCHING_SEED_CONTRACT_JSON> `
-  --bridge-dll <EXACT_BUILD_DLL> `
-  --bridge-injector <EXACT_BUILD_INJECTOR>
+```text
+.\tools\.venv\Scripts\python.exe tools/run_zhongguo_acceptance.py --phase2-hc-workforce-route-b-live --phase2-hc-workforce-route-b-checkpoint-registry <REAL_REGISTRY_JSON> --phase2-seed-contract <MATCHING_SEED_CONTRACT_JSON> --bridge-dll <EXACT_BUILD_DLL> --bridge-injector <EXACT_BUILD_INJECTOR>
 ```
 
 Do not add the B6 enable flag to the first replay merely because its transport
@@ -196,13 +185,13 @@ remains `static-ready-live-pending`.
 
 Offline verification:
 
-```powershell
+```text
 py tools/test_zg361_phase2_hc_workforce_route_b_checkpoint.py -q
 py tools/test_zg361_phase2_hc_workforce_route_b_checkpoint_preflight.py -q
 py tools/test_zg361_phase2_hc_workforce_route_b_checkpoint_registry.py -q
-& .\tools\.venv\Scripts\python.exe tools/test_zg361_phase2_hc_workforce_route_b_live_entry.py -q
-& .\tools\.venv\Scripts\python.exe tools/test_zg361_phase2_hc_workforce_route_b_capture_preflight.py -q
+.\tools\.venv\Scripts\python.exe tools/test_zg361_phase2_hc_workforce_route_b_live_entry.py -q
+.\tools\.venv\Scripts\python.exe tools/test_zg361_phase2_hc_workforce_route_b_capture_preflight.py -q
 py tools/zg361_phase2_hc_workforce_route_b_checkpoint_preflight.py
-& .\tools\.venv\Scripts\python.exe tools/preflight_zg361_phase2_hc_workforce_route_b_live.py
-& .\tools\.venv\Scripts\python.exe tools/preflight_zg361_phase2_hc_workforce_route_b_capture.py
+.\tools\.venv\Scripts\python.exe tools/preflight_zg361_phase2_hc_workforce_route_b_live.py
+.\tools\.venv\Scripts\python.exe tools/preflight_zg361_phase2_hc_workforce_route_b_capture.py
 ```

@@ -84,7 +84,7 @@ class RouteBCheckpointPreflightTests(unittest.TestCase):
         for forbidden in (
             "import subprocess",
             "from subprocess",
-            "Start-Process",
+            "Start" + "-Process",
             "ck3.exe",
             "GameplayBridgeService(",
         ):

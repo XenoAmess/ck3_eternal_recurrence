@@ -752,34 +752,22 @@ roadmap 要求的优势接战、劣势绕行/撤退、战中增援、主动撤�
 
 以下命令只读磁盘，不启动或附加 CK3：
 
-```powershell
-Get-FileHash 'Crusader Kings III/binaries/ck3.exe' -Algorithm SHA256
+```text
+py tools/file_sha256.py "Crusader Kings III/binaries/ck3.exe"
 
-rg -n 'COMBAT_RATIO_THRESHOLD|ASK_FOR_HELP|RETREAT_COMBAT|STAND_AND_FIGHT|PLAYER_SUPPORT' `
-  'Crusader Kings III/game/common/defines/ai/00_ai.txt'
+rg -n 'COMBAT_RATIO_THRESHOLD|ASK_FOR_HELP|RETREAT_COMBAT|STAND_AND_FIGHT|PLAYER_SUPPORT' 'Crusader Kings III/game/common/defines/ai/00_ai.txt'
 
-rg -n 'MANEUVER_PHASE_DAYS|PURSUIT_PHASE_DAYS|MIN_DAYS_BEFORE_MANUAL_RETREAT|SHATTERED_RETREAT' `
-  'Crusader Kings III/game/common/defines/00_defines.txt'
+rg -n 'MANEUVER_PHASE_DAYS|PURSUIT_PHASE_DAYS|MIN_DAYS_BEFORE_MANUAL_RETREAT|SHATTERED_RETREAT' 'Crusader Kings III/game/common/defines/00_defines.txt'
 
-& 'tools/.venv/Scripts/python.exe' `
-  'ck3_autonomous_player/native_bridge/research/find_xrefs.py' `
-  0x19186E0 0x184B170 0x18CE240 0x18CFC20 0x2308250 0x2308850 0x2309070 0x23CA360
+'tools/.venv/Scripts/python.exe' 'ck3_autonomous_player/native_bridge/research/find_xrefs.py' 0x19186E0 0x184B170 0x18CE240 0x18CFC20 0x2308250 0x2308850 0x2309070 0x23CA360
 
-& 'tools/.venv/Scripts/python.exe' `
-  'ck3_autonomous_player/native_bridge/research/disasm_ck3.py' `
-  0x184AF50 --size 0x720
+'tools/.venv/Scripts/python.exe' 'ck3_autonomous_player/native_bridge/research/disasm_ck3.py' 0x184AF50 --size 0x720
 
-& 'tools/.venv/Scripts/python.exe' `
-  'ck3_autonomous_player/native_bridge/research/disasm_ck3.py' `
-  0x18CE240 --size 0x320
+'tools/.venv/Scripts/python.exe' 'ck3_autonomous_player/native_bridge/research/disasm_ck3.py' 0x18CE240 --size 0x320
 
-& 'tools/.venv/Scripts/python.exe' `
-  'ck3_autonomous_player/native_bridge/research/disasm_ck3.py' `
-  0x2308250 --size 0x600
+'tools/.venv/Scripts/python.exe' 'ck3_autonomous_player/native_bridge/research/disasm_ck3.py' 0x2308250 --size 0x600
 
-& 'tools/.venv/Scripts/python.exe' `
-  'ck3_autonomous_player/native_bridge/research/disasm_ck3.py' `
-  0x230A010 --size 0x580
+'tools/.venv/Scripts/python.exe' 'ck3_autonomous_player/native_bridge/research/disasm_ck3.py' 0x230A010 --size 0x580
 ```
 
 关键复核点：

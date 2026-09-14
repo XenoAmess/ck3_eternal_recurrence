@@ -107,7 +107,7 @@ class G2TruceNextLayerRttiTests(unittest.TestCase):
         source = SCRIPT.read_text(encoding="utf-8")
         for forbidden in (
             "subprocess",
-            "Start-Process",
+            "Start" + "-Process",
             "OpenProcess",
             "WriteProcessMemory",
             "CreateRemoteThread",

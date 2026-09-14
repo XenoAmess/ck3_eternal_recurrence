@@ -22,7 +22,7 @@ coat-of-arms render description，不把该入口描述成任意 CK3 脚本执�
 
 ## 开发
 
-```powershell
+```text
 pnpm install
 pnpm test
 pnpm build
@@ -36,13 +36,23 @@ pnpm dev
 
 需要 JDK 17+、Maven，以及已经安装 Python MCP SDK 的 Python 环境。以下路径按本机 checkout 修改；state 目录必须是专用目录：
 
-```powershell
-$env:COA_MCP_PYTHON='D:\path\to\python.exe'
-$env:COA_MCP_PYTHONPATH='D:\path\to\repo\ck3_autonomous_player\src'
-$env:COA_MCP_STATE_DIR='D:\path\to\coa-companion-state'
-$env:XAR_CK3_GAME_DIR='D:\path\to\Crusader Kings III'
-$env:XAR_CK3_USER_DIR='C:\Users\name\Documents\Paradox Interactive\Crusader Kings III'
-mvn -f backend/pom.xml quarkus:dev
+```python
+import os
+import subprocess
+
+environment = os.environ.copy()
+environment.update({
+    "COA_MCP_PYTHON": r"D:\path\to\python.exe",
+    "COA_MCP_PYTHONPATH": r"D:\path\to\repo\ck3_autonomous_player\src",
+    "COA_MCP_STATE_DIR": r"D:\path\to\coa-companion-state",
+    "XAR_CK3_GAME_DIR": r"D:\path\to\Crusader Kings III",
+    "XAR_CK3_USER_DIR": r"C:\Users\name\Documents\Paradox Interactive\Crusader Kings III",
+})
+subprocess.run(
+    ["mvn", "-f", "backend/pom.xml", "quarkus:dev"],
+    check=True,
+    env=environment,
+)
 ```
 
 前端默认访问 `http://localhost:8080`；需要改变地址时设置 `VITE_CK3_COMPANION_URL`。伴随服务公开：
@@ -68,7 +78,7 @@ mvn -f backend/pom.xml quarkus:dev
 
 后端测试与可运行包：
 
-```powershell
+```text
 mvn -f backend/pom.xml test
 mvn -f backend/pom.xml package
 java -jar backend/target/quarkus-app/quarkus-run.jar

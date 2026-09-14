@@ -61,16 +61,10 @@ GREEN 集中实录投影到该 run 的外部 artifact 目录。这样既保留 8
 
 在仓库根目录运行：
 
-```powershell
-& tools\.venv\Scripts\python.exe mod_zhongguo_style\tools\build_promo_video.py `
-  --manifest mod_zhongguo_style\promo\promo-manifest.json `
-  --output artifacts\zg361\promo\draft-animatic.mp4 `
-  --work-dir artifacts\zg361\promo\work `
-  --validate-only
+```text
+tools\.venv\Scripts\python.exe mod_zhongguo_style\tools\build_promo_video.py --manifest mod_zhongguo_style\promo\promo-manifest.json --output artifacts\zg361\promo\draft-animatic.mp4 --work-dir artifacts\zg361\promo\work --validate-only
 
-& tools\.venv\Scripts\python.exe mod_zhongguo_style\tools\validate_promo_video.py `
-  --manifest mod_zhongguo_style\promo\promo-manifest.json `
-  --stage draft
+tools\.venv\Scripts\python.exe mod_zhongguo_style\tools\validate_promo_video.py --manifest mod_zhongguo_style\promo\promo-manifest.json --stage draft
 ```
 
 `--validate-only` 不创建目录、不调用 Edge TTS、不编码视频。它会检查 13 项核心主题、中文/英文关键词、
@@ -83,8 +77,8 @@ GREEN 集中实录投影到该 run 的外部 artifact 目录。这样既保留 8
 `xar-promo build`。入口默认从独立仓库的 GitHub Release `v0.2.1` wheel 加载已冻结的
 adapter/preset；从仓库根目录执行前先安装：
 
-```powershell
-& tools\.venv\Scripts\python.exe -m pip install -r tools\requirements-promo-toolchain.txt
+```text
+tools\.venv\Scripts\python.exe -m pip install -r tools\requirements-promo-toolchain.txt
 ```
 
 本地开发或验收 fixture 可设置 `XAR_PROMO_SOURCE`（兼容别名
@@ -101,51 +95,8 @@ live capture 或宣传素材。把 `$evidence` 改成不会被 Git 跟踪的外�
 时间戳。故意把 capture、work、TTS、FFmpeg、ffprobe 和字体指向不存在的哨兵路径，可以直接
 发现入口是否越过了 no-write 边界：
 
-```powershell
-$python = (Resolve-Path "tools\.venv\Scripts\python.exe").Path
-$stamp = (Get-Date).ToUniversalTime().ToString("yyyyMMddTHHmmssZ")
-$evidence = Join-Path $env:TEMP "xar-phase2-preflight-$stamp"
-New-Item -ItemType Directory -Path $evidence | Out-Null
-$config = (Resolve-Path "mod_zhongguo_style\promo\phase2-promo-project.json").Path
-$configShaBefore = (Get-FileHash -LiteralPath $config -Algorithm SHA256).Hash
-$capture = Join-Path $evidence "capture-root-not-created"
-$work = Join-Path $evidence "work-dir-not-created"
-$tts = Join-Path $evidence "tts-cache-not-read"
-$ffmpeg = Join-Path $evidence "ffmpeg-not-run.exe"
-$ffprobe = Join-Path $evidence "ffprobe-not-run.exe"
-$zhFont = Join-Path $evidence "zh-font-not-read.ttf"
-$enFont = Join-Path $evidence "en-font-not-read.ttf"
-$stdout = Join-Path $evidence "stdout.txt"
-$stderr = Join-Path $evidence "stderr.txt"
-
-& $python mod_zhongguo_style\tools\build_phase2_promo_video.py `
-  --project-config $config `
-  --capture-root $capture `
-  --work-dir $work `
-  --tts-cache $tts `
-  --ffmpeg $ffmpeg `
-  --ffprobe $ffprobe `
-  --zh-font-file $zhFont `
-  --en-font-file $enFont `
-  --run-id "phase2-preflight-$stamp" `
-  --validate-only 1> $stdout 2> $stderr
-$exitCode = $LASTEXITCODE
-
-$sentinels = @($capture, $work, $tts, $ffmpeg, $ffprobe, $zhFont, $enFont)
-$unexpected = @($sentinels | Where-Object { Test-Path -LiteralPath $_ })
-if ($unexpected.Count -ne 0) { throw "validate-only created or touched: $($unexpected -join ', ')" }
-$configShaAfter = (Get-FileHash -LiteralPath $config -Algorithm SHA256).Hash
-if ($configShaAfter -ne $configShaBefore) { throw "project config changed during validate-only" }
-if (Select-String -LiteralPath $stderr -Pattern "Traceback") { throw "unexpected Python traceback" }
-[ordered]@{
-  schema_version = 1
-  kind = "zhongguo-361-phase2-validate-only-preflight"
-  exit_code = $exitCode
-  config_sha256 = $configShaAfter
-  stdout = $stdout
-  stderr = $stderr
-  sentinels_absent = ($unexpected.Count -eq 0)
-} | ConvertTo-Json | Set-Content -LiteralPath (Join-Path $evidence "result.json") -Encoding utf8
+```text
+tools\.venv\Scripts\python.exe mod_zhongguo_style\tools\run_phase2_validate_only_preflight.py
 ```
 
 当前签入的 `phase2-promo-project.json` 有意把十章都标为 `planned`，因此这条命令应返回
@@ -164,12 +115,8 @@ FFmpeg/ffprobe 或任何外部命令，不写 run manifest、日志、partial、
 
 二期必须显式使用：
 
-```powershell
-& $python tools\run_zhongguo_acceptance.py `
-  --phase2-promo-capture `
-  --artifacts-dir $phase2Capture `
-  --bridge-dll $bridgeDll `
-  --bridge-injector $bridgeInjector
+```text
+<python> tools\run_zhongguo_acceptance.py --phase2-promo-capture --artifacts-dir <PHASE2_CAPTURE_ROOT> --bridge-dll <BRIDGE_DLL> --bridge-injector <BRIDGE_INJECTOR>
 ```
 
 该入口绑定 `phase2-capture-contract-v1.schema.json` 中固定顺序的八个 span：
@@ -210,8 +157,10 @@ capture bundle 后，才运行普通（非 `--validate-only`）候选构建。�
 如果 capture 由天朝二期 seed runner 产生，先把同一 attempt 的
 `preflight.json` 作为 `--seed-preflight-report` 传给 builder：
 
-```powershell
-$seedPreflight = "C:\captures\zhongguo-361-phase2\seed-attempt\artifacts\preflight.json"
+```python
+from pathlib import Path
+
+seed_preflight = Path(r"C:\captures\zhongguo-361-phase2\seed-attempt\artifacts\preflight.json")
 ```
 
 builder 会只接受 `run_zg361_phase2_seed_capture.py --preflight-only` 产出的
@@ -231,24 +180,25 @@ projection-only 和全部 immutable checks。报告声明的 `paths.artifacts` �
 没有传该参数时仍允许保留候选（便于迁移旧 capture），但结果会明确加入
 `phase-two seed preflight report is not bound` blocker，因而不能成为 release-ready。
 
-```powershell
-$python = (Resolve-Path "tools\.venv\Scripts\python.exe").Path
-$config = (Resolve-Path "mod_zhongguo_style\promo\phase2-promo-project.json").Path
-$stamp = (Get-Date).ToUniversalTime().ToString("yyyyMMddTHHmmssZ")
-$greenCapture = "C:\captures\zhongguo-361-phase2\green-run"
-$ttsCache = "C:\caches\xar-promo\xiaoxiao"
-$ffmpegExe = "C:\tools\ffmpeg.exe"
-$ffprobeExe = "C:\tools\ffprobe.exe"
-$run = Join-Path $env:TEMP "xar-phase2-candidate-$stamp"
-& $python mod_zhongguo_style\tools\build_phase2_promo_video.py `
-  --project-config $config `
-  --capture-root $greenCapture `
-  --seed-preflight-report $seedPreflight `
-  --work-dir (Join-Path $run "attempt") `
-  --tts-cache $ttsCache `
-  --ffmpeg $ffmpegExe `
-  --ffprobe $ffprobeExe `
-  --run-id "phase2-candidate-$stamp"
+```python
+from datetime import datetime, timezone
+from pathlib import Path
+import subprocess
+import tempfile
+
+stamp = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
+run = Path(tempfile.gettempdir()) / f"xar-phase2-candidate-{stamp}"
+subprocess.run([
+    str(Path("tools/.venv/Scripts/python.exe").resolve()),
+    "mod_zhongguo_style/tools/build_phase2_promo_video.py",
+    "--project-config", str(Path("mod_zhongguo_style/promo/phase2-promo-project.json").resolve()),
+    "--capture-root", r"C:\captures\zhongguo-361-phase2\green-run",
+    "--seed-preflight-report", str(seed_preflight),
+    "--work-dir", str(run / "attempt"),
+    "--tts-cache", r"C:\caches\xar-promo\xiaoxiao",
+    "--ffmpeg", r"C:\tools\ffmpeg.exe", "--ffprobe", r"C:\tools\ffprobe.exe",
+    "--run-id", f"phase2-candidate-{stamp}",
+], check=True)
 ```
 
 候选构建会在 attempt 内保留 `phase2-pipeline-result.json`、完整的成功或部分输出、命令
@@ -267,21 +217,9 @@ unreviewed run，并保存配置声明的旁白 artifact 与最终 deliverable
 
 这一步需要联网调用 Edge TTS，但只生成一章很短的流水线测试：
 
-```powershell
-$stamp = Get-Date -Format "yyyyMMdd-HHmmss"
-$run = "artifacts\zg361\promo\smoke-$stamp"
-
-& tools\.venv\Scripts\python.exe mod_zhongguo_style\tools\build_promo_video.py `
-  --manifest mod_zhongguo_style\promo\smoke-manifest.json `
-  --output "$run\zg361-promo-pipeline-smoke.mp4" `
-  --work-dir "$run\work" `
-  --take-id "xiaoxiao-smoke-$stamp"
-
-& tools\.venv\Scripts\python.exe mod_zhongguo_style\tools\validate_promo_video.py `
-  --manifest mod_zhongguo_style\promo\smoke-manifest.json `
-  --stage draft `
-  --video "$run\zg361-promo-pipeline-smoke.mp4" `
-  --sample-dir "$run\qa-samples"
+```text
+tools\.venv\Scripts\python.exe mod_zhongguo_style\tools\build_promo_video.py --manifest mod_zhongguo_style\promo\smoke-manifest.json --output artifacts\zg361\promo\smoke-<UTC_TIMESTAMP>\zg361-promo-pipeline-smoke.mp4 --work-dir artifacts\zg361\promo\smoke-<UTC_TIMESTAMP>\work --take-id xiaoxiao-smoke-<UTC_TIMESTAMP>
+tools\.venv\Scripts\python.exe mod_zhongguo_style\tools\validate_promo_video.py --manifest mod_zhongguo_style\promo\smoke-manifest.json --stage draft --video artifacts\zg361\promo\smoke-<UTC_TIMESTAMP>\zg361-promo-pipeline-smoke.mp4 --sample-dir artifacts\zg361\promo\smoke-<UTC_TIMESTAMP>\qa-samples
 ```
 
 smoke 只能证明中文配音、双语字幕和媒体流水线能工作，不能证明 mod 玩法或正式宣传片完成。
@@ -292,58 +230,17 @@ smoke 只能证明中文配音、双语字幕和媒体流水线能工作，不�
 evidence index，以及实际打开的六张政策卡 `#001/#007/#020/#022/#026/#361`。它不声称录到了
 `#002/#015/#035`。拿到 GREEN run 后执行：
 
-```powershell
-$capture = "Z:\ck3_mod_rewrite_process_assets\zg361\promo\captures\<green-run>"
-$release = "$capture\release\zg361-promo-release-manifest.json"
+```text
+tools\.venv\Scripts\python.exe mod_zhongguo_style\tools\prepare_promo_release_manifest.py --artifact-root Z:\ck3_mod_rewrite_process_assets\zg361\promo\captures\<green-run> --output Z:\ck3_mod_rewrite_process_assets\zg361\promo\captures\<green-run>\release\zg361-promo-release-manifest.json
+tools\.venv\Scripts\python.exe mod_zhongguo_style\tools\prepare_promo_visual_audit.py --release-manifest Z:\ck3_mod_rewrite_process_assets\zg361\promo\captures\<green-run>\release\zg361-promo-release-manifest.json --output-dir Z:\ck3_mod_rewrite_process_assets\zg361\promo\captures\<green-run>\release\visual-audit-evidence-<UTC_TIMESTAMP> --sampling-interval-seconds 1.0
 
-& tools\.venv\Scripts\python.exe mod_zhongguo_style\tools\prepare_promo_release_manifest.py `
-  --artifact-root $capture `
-  --output $release
-
-$auditEvidence = "$capture\release\visual-audit-evidence-$(Get-Date -Format 'yyyyMMdd-HHmmss')"
-& tools\.venv\Scripts\python.exe mod_zhongguo_style\tools\prepare_promo_visual_audit.py `
-  --release-manifest $release `
-  --output-dir $auditEvidence `
-  --sampling-interval-seconds 1.0
-
-# 这里必须暂停自动流水线：逐章以 1× 完整观看，并检查每张 still。生成器只会产出 PENDING，绝不代签 GREEN。
-$pendingSpec = "$auditEvidence\promo-visual-audit-spec.PENDING.json"
-$auditSpec = "$auditEvidence\promo-visual-audit-spec.SIGNED.json"
-# 人工审阅后，把 PENDING spec 另存为 $auditSpec，并填写真实 reviewer、带时区 reviewed_at_utc、
-# 全部 captured chapter id 与五项 true attestation；原 PENDING 文件和所有证据保持不动。
-$auditReport = "$capture\release\promo-visual-audit-report.json"
-& tools\.venv\Scripts\python.exe mod_zhongguo_style\tools\audit_promo_visuals.py audit `
-  --spec $auditSpec `
-  --output $auditReport
-
-$auditSha = (Get-FileHash $auditReport -Algorithm SHA256).Hash
-& tools\.venv\Scripts\python.exe mod_zhongguo_style\tools\audit_promo_visuals.py verify `
-  --report $auditReport `
-  --expected-report-sha256 $auditSha
-
-& tools\.venv\Scripts\python.exe mod_zhongguo_style\tools\validate_promo_video.py `
-  --manifest $release `
-  --stage release `
-  --visual-audit-report $auditReport `
-  --expected-audit-sha256 $auditSha
-
-$stamp = Get-Date -Format "yyyyMMdd-HHmmss"
-$videoRoot = "$capture\release\video-$stamp"
-& tools\.venv\Scripts\python.exe mod_zhongguo_style\tools\build_promo_video.py `
-  --manifest $release `
-  --output "$videoRoot\zg361-promo-release.mp4" `
-  --work-dir "$videoRoot\work" `
-  --take-id "zg361-release-$stamp" `
-  --visual-audit-report $auditReport `
-  --expected-audit-sha256 $auditSha
-
-& tools\.venv\Scripts\python.exe mod_zhongguo_style\tools\validate_promo_video.py `
-  --manifest $release `
-  --stage release `
-  --video "$videoRoot\zg361-promo-release.mp4" `
-  --sample-dir "$videoRoot\qa-samples" `
-  --visual-audit-report $auditReport `
-  --expected-audit-sha256 $auditSha
+# 人工完整观看后，把 PENDING spec 复制为 SIGNED spec，写入真实 reviewer、reviewed_at_utc 与全部 chapter attestation；保留原 PENDING 文件。
+tools\.venv\Scripts\python.exe mod_zhongguo_style\tools\audit_promo_visuals.py audit --spec Z:\ck3_mod_rewrite_process_assets\zg361\promo\captures\<green-run>\release\visual-audit-evidence-<UTC_TIMESTAMP>\promo-visual-audit-spec.SIGNED.json --output Z:\ck3_mod_rewrite_process_assets\zg361\promo\captures\<green-run>\release\promo-visual-audit-report.json
+py tools\file_sha256.py Z:\ck3_mod_rewrite_process_assets\zg361\promo\captures\<green-run>\release\promo-visual-audit-report.json
+tools\.venv\Scripts\python.exe mod_zhongguo_style\tools\audit_promo_visuals.py verify --report Z:\ck3_mod_rewrite_process_assets\zg361\promo\captures\<green-run>\release\promo-visual-audit-report.json --expected-report-sha256 <AUDIT_REPORT_SHA256>
+tools\.venv\Scripts\python.exe mod_zhongguo_style\tools\validate_promo_video.py --manifest Z:\ck3_mod_rewrite_process_assets\zg361\promo\captures\<green-run>\release\zg361-promo-release-manifest.json --stage release --visual-audit-report Z:\ck3_mod_rewrite_process_assets\zg361\promo\captures\<green-run>\release\promo-visual-audit-report.json --expected-audit-sha256 <AUDIT_REPORT_SHA256>
+tools\.venv\Scripts\python.exe mod_zhongguo_style\tools\build_promo_video.py --manifest Z:\ck3_mod_rewrite_process_assets\zg361\promo\captures\<green-run>\release\zg361-promo-release-manifest.json --output Z:\ck3_mod_rewrite_process_assets\zg361\promo\captures\<green-run>\release\video-<UTC_TIMESTAMP>\zg361-promo-release.mp4 --work-dir Z:\ck3_mod_rewrite_process_assets\zg361\promo\captures\<green-run>\release\video-<UTC_TIMESTAMP>\work --take-id zg361-release-<UTC_TIMESTAMP> --visual-audit-report Z:\ck3_mod_rewrite_process_assets\zg361\promo\captures\<green-run>\release\promo-visual-audit-report.json --expected-audit-sha256 <AUDIT_REPORT_SHA256>
+tools\.venv\Scripts\python.exe mod_zhongguo_style\tools\validate_promo_video.py --manifest Z:\ck3_mod_rewrite_process_assets\zg361\promo\captures\<green-run>\release\zg361-promo-release-manifest.json --stage release --video Z:\ck3_mod_rewrite_process_assets\zg361\promo\captures\<green-run>\release\video-<UTC_TIMESTAMP>\zg361-promo-release.mp4 --sample-dir Z:\ck3_mod_rewrite_process_assets\zg361\promo\captures\<green-run>\release\video-<UTC_TIMESTAMP>\qa-samples --visual-audit-report Z:\ck3_mod_rewrite_process_assets\zg361\promo\captures\<green-run>\release\promo-visual-audit-report.json --expected-audit-sha256 <AUDIT_REPORT_SHA256>
 ```
 
 投影器只接受报告与 evidence index 都为 GREEN、timeline 与报告一致、原始 MKV/六张政策图均在 index 中且
@@ -359,12 +256,8 @@ $videoRoot = "$capture\release\video-$stamp"
 投影完成后、调用正式媒体验证和渲染前，必须为该外部 manifest 建立一份
 `zg361_promo_visual_audit_spec` JSON，并运行独立门禁。先让 producer 在新的外部目录提取证据：
 
-```powershell
-$auditEvidence = "$capture\release\visual-audit-evidence-$(Get-Date -Format 'yyyyMMdd-HHmmss')"
-& tools\.venv\Scripts\python.exe mod_zhongguo_style\tools\prepare_promo_visual_audit.py `
-  --release-manifest $release `
-  --output-dir $auditEvidence `
-  --sampling-interval-seconds 1.0
+```text
+tools\.venv\Scripts\python.exe mod_zhongguo_style\tools\prepare_promo_visual_audit.py --release-manifest <capture-root>\release\zg361-promo-release-manifest.json --output-dir <capture-root>\release\visual-audit-evidence-<UTC_TIMESTAMP> --sampling-interval-seconds 1.0
 ```
 
 producer 会按 source SHA 与精确时间戳合并重叠章节的相同帧，以 manifest 中每段 `start_seconds` / `end_seconds`
@@ -377,18 +270,10 @@ JSON 由现有 RapidOCR 生成并绑定 PNG SHA。角色 `subject_id`、history 
 全部为 false；因此直接交给 audit 只会得到 RED。审阅者必须以 1× 完整观看全部 captured clip、检查每张 still，
 再把 PENDING 文件**另存**为新的 SIGNED spec，填入真实签核信息。之后才运行：
 
-```powershell
-$auditSpec = "$auditEvidence\promo-visual-audit-spec.SIGNED.json"
-$auditReport = "$capture\release\promo-visual-audit-report.json"
-
-& tools\.venv\Scripts\python.exe mod_zhongguo_style\tools\audit_promo_visuals.py audit `
-  --spec $auditSpec `
-  --output $auditReport
-
-$auditSha = (Get-FileHash $auditReport -Algorithm SHA256).Hash
-& tools\.venv\Scripts\python.exe mod_zhongguo_style\tools\audit_promo_visuals.py verify `
-  --report $auditReport `
-  --expected-report-sha256 $auditSha
+```text
+tools\.venv\Scripts\python.exe mod_zhongguo_style\tools\audit_promo_visuals.py audit --spec <visual-audit-evidence>\promo-visual-audit-spec.SIGNED.json --output <capture-root>\release\promo-visual-audit-report.json
+py tools\file_sha256.py <capture-root>\release\promo-visual-audit-report.json
+tools\.venv\Scripts\python.exe mod_zhongguo_style\tools\audit_promo_visuals.py verify --report <capture-root>\release\promo-visual-audit-report.json --expected-report-sha256 <AUDIT_REPORT_SHA256>
 ```
 
 spec 使用绝对路径和声明的 `bytes` / `sha256`，至少包含：
@@ -439,14 +324,8 @@ OCR、静帧、报告和 timeline 都原样保留。输出文件已存在时，m
 
 ## 正式验收
 
-```powershell
-& tools\.venv\Scripts\python.exe mod_zhongguo_style\tools\validate_promo_video.py `
-  --manifest <external-capture-run>\release\zg361-promo-release-manifest.json `
-  --stage release `
-  --video <candidate.mp4> `
-  --sample-dir <new-qa-directory> `
-  --visual-audit-report <promo-visual-audit-report.json> `
-  --expected-audit-sha256 <64-hex-report-sha256>
+```text
+tools\.venv\Scripts\python.exe mod_zhongguo_style\tools\validate_promo_video.py --manifest <external-capture-run>\release\zg361-promo-release-manifest.json --stage release --video <candidate.mp4> --sample-dir <new-qa-directory> --visual-audit-report <promo-visual-audit-report.json> --expected-audit-sha256 <64-hex-report-sha256>
 ```
 
 门禁要求：零占位、首章为生成标题卡、每个外部素材使用绝对路径并声明正确的 bytes/SHA-256、全部实机素材声明已排除 CK3 loading、H.264/yuv420p、AAC 48 kHz

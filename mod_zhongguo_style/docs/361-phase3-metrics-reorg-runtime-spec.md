@@ -46,7 +46,7 @@
 
 ## 本地复验
 
-```powershell
+```text
 py -m py_compile mod_zhongguo_style/tools/zg361_phase3_metrics_reorg_model.py mod_zhongguo_style/tools/test_zg361_phase3_metrics_reorg_model.py
 py -m unittest -v mod_zhongguo_style/tools/test_zg361_phase3_metrics_reorg_model.py
 git diff --check -- mod_zhongguo_style/tools/zg361_phase3_metrics_reorg_model.py mod_zhongguo_style/tools/test_zg361_phase3_metrics_reorg_model.py mod_zhongguo_style/docs/361-phase3-metrics-reorg-runtime-spec.md

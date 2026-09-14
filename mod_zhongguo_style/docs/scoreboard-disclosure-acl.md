@@ -67,7 +67,7 @@ manager managed view 仍使用原 `CASE_FIELDS`，并从 owner 为该 manager、
 
 ## 静态验收
 
-```powershell
+```text
 py -B mod_zhongguo_style/tools/gen_scoreboard_snapshot.py --check
 py -B mod_zhongguo_style/tools/test_scoreboard_snapshot.py
 py -B mod_zhongguo_style/tools/validate_local.py

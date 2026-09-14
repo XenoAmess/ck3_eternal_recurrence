@@ -248,7 +248,7 @@ FAILED / RELAPSED → 新案号二次 PIP | 真实空缺转岗 | 有成本 recei
 
 在 `mod_zhongguo_style/tools` 下运行：
 
-```powershell
+```text
 py -m unittest -v test_zg361_b2_runtime.py
 py -m unittest -v test_zg361_b2_semantic_model.py
 py -m unittest -v test_gen_361_b2_runtime.py

@@ -108,8 +108,8 @@ The following command was never executed and is no longer authorized. It is
 retained only to preserve the append-only audit record; use the replacement
 manifest and command from the `a01f8cb` refreeze instead.
 
-```powershell
-& "Z:\ck3_mod_rewrite\tools\.venv\Scripts\python.exe" "Z:\ck3_mod_rewrite\tools\run_zhongguo_acceptance.py" "--artifacts-dir" "Z:\ck3_mod_rewrite_process_assets\zg361\promotion-source-production-capture-live-attempt-366f30f-20260904T082656Z" "--phase2-promotion-source-checkpoint-live" "--phase2-promotion-source-checkpoint-timeout-seconds" "600" "--bridge-dll" "Z:\ck3_mod_rewrite_process_assets\zg361\promotion-source-production-capture-candidate-366f30f-20260904T082656Z\xar_ck3_bridge.dll" "--bridge-injector" "Z:\ck3_mod_rewrite_process_assets\zg361\promotion-source-production-capture-candidate-366f30f-20260904T082656Z\xar_ck3_bridge_injector.exe" "--bridge-pipe" "\\.\pipe\xar_ck3_bridge_zg361_9de2ca28a89041abbe216fd9a56026ed" "--phase2-seed-contract" "Z:\ck3_mod_rewrite\tools\zg361_phase2_seed_contract.json"
+```text
+"Z:\ck3_mod_rewrite\tools\.venv\Scripts\python.exe" "Z:\ck3_mod_rewrite\tools\run_zhongguo_acceptance.py" "--artifacts-dir" "Z:\ck3_mod_rewrite_process_assets\zg361\promotion-source-production-capture-live-attempt-366f30f-20260904T082656Z" "--phase2-promotion-source-checkpoint-live" "--phase2-promotion-source-checkpoint-timeout-seconds" "600" "--bridge-dll" "Z:\ck3_mod_rewrite_process_assets\zg361\promotion-source-production-capture-candidate-366f30f-20260904T082656Z\xar_ck3_bridge.dll" "--bridge-injector" "Z:\ck3_mod_rewrite_process_assets\zg361\promotion-source-production-capture-candidate-366f30f-20260904T082656Z\xar_ck3_bridge_injector.exe" "--bridge-pipe" "\\.\pipe\xar_ck3_bridge_zg361_9de2ca28a89041abbe216fd9a56026ed" "--phase2-seed-contract" "Z:\ck3_mod_rewrite\tools\zg361_phase2_seed_contract.json"
 ```
 
 The manifest stores the same command as a 15-element `argv` vector; the

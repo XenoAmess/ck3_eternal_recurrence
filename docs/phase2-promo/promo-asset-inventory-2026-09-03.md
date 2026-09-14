@@ -24,7 +24,7 @@
 
 生成器入口（仅在素材 intake GREEN 后运行）：
 
-```powershell
+```text
 py tools/zhongguo_phase2_footage_intake.py --capture-root <GREEN_CAPTURE_ROOT> --output <INTAKE_REPORT>
 py mod_zhongguo_style/tools/validate_phase2_authoring_claims.py --ledger mod_zhongguo_style/promo/phase2-authoring-character-claims.json --validate-only
 py mod_zhongguo_style/tools/validate_phase2_authoring_claims.py --ledger mod_zhongguo_style/promo/phase2-authoring-institution-claims.json --validate-only

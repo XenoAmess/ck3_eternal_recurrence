@@ -109,9 +109,9 @@ action 原始报告保存在 `05_phase2_ai_owned_case_gameplay_action_cell.json`
 
 离线回归：
 
-```powershell
-& "tools\.venv\Scripts\python.exe" "ck3_autonomous_player\tests\unit\test_zhongguo_ai_owned_case_action.py"
-& "tools\.venv\Scripts\python.exe" "tools\test_run_zhongguo_promo_capture.py"
+```text
+"tools\.venv\Scripts\python.exe" "ck3_autonomous_player\tests\unit\test_zhongguo_ai_owned_case_action.py"
+"tools\.venv\Scripts\python.exe" "tools\test_run_zhongguo_promo_capture.py"
 ```
 
 普通与 `-O` 都必须通过；它们只证明 helper/runner/fake MCP 合同，不把结果升级为 live。真实 paused artifact 仍待 seed-generation 实机槽释放后取得。

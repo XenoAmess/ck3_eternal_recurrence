@@ -76,14 +76,14 @@ xar_balance_<fixture>
 
 单格摇测：
 
-```powershell
-& "tools\.venv\Scripts\python.exe" "tools\run_acceptance.py" --scenario balance-long --balance-fixture count
+```text
+"tools\.venv\Scripts\python.exe" "tools\run_acceptance.py" --scenario balance-long --balance-fixture count
 ```
 
 完整串行矩阵：
 
-```powershell
-& "tools\.venv\Scripts\python.exe" "tools\run_balance_matrix.py"
+```text
+"tools\.venv\Scripts\python.exe" "tools\run_balance_matrix.py"
 ```
 
 每格都有独立 JSON/JUnit、截图、OCR、增量日志和现场恢复；聚合器另写 `balance-matrix.json` 与 `balance-matrix.md`。

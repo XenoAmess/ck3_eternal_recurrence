@@ -28,7 +28,7 @@
 
 ## 自动检查
 
-```powershell
+```text
 py tools/test_reclaim_the_motherland_contract.py
 py tools/test_build_reclaim_the_motherland_release.py
 py tools/validate_reclaim_the_motherland_static.py

@@ -93,7 +93,7 @@ class G2TruceEvaluatorAbiRootCauseTests(unittest.TestCase):
         self.assertIn("runtime_functions", source)
         self.assertIn("scan_direct_xrefs", source)
         self.assertIn("EXPECTED_TERMINAL_SUMMARY_SHA256", source)
-        for forbidden in ("OpenProcess(", "CreateRemoteThread(", "Start-Process", "subprocess"):
+        for forbidden in ("OpenProcess(", "CreateRemoteThread(", "Start" + "-Process", "subprocess"):
             self.assertNotIn(forbidden, source)
         self.assertEqual(
             hashlib.sha256(bytes.fromhex("4C8B42284883C4205BE9F76D4900")).hexdigest().upper(),

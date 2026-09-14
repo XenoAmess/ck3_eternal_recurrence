@@ -93,7 +93,7 @@ three-way decision/action readiness and `GEN-034` remain false. T1 remains
 
 Focused acceptance:
 
-```powershell
+```text
 py -B -m unittest \
   ck3_autonomous_player.tests.unit.test_g2_source_specific_war_loss_outer_owner \
   ck3_autonomous_player.tests.unit.test_g2_source_specific_war_loss_lifecycle \

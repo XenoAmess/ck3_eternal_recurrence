@@ -15,11 +15,9 @@
 
 验证器只读明确传入的 game root，不启动游戏，也不依赖固定账号或固定机器路径：
 
-```powershell
-py ck3_autonomous_player/native_bridge/research/verify_non_religious_activity_native_tree_1_19_0_6.py `
-  --game-root "<CK3 installation root>"
-py -O ck3_autonomous_player/native_bridge/research/verify_non_religious_activity_native_tree_1_19_0_6.py `
-  --game-root "<CK3 installation root>"
+```text
+py ck3_autonomous_player/native_bridge/research/verify_non_religious_activity_native_tree_1_19_0_6.py --game-root "<CK3 installation root>"
+py -O ck3_autonomous_player/native_bridge/research/verify_non_religious_activity_native_tree_1_19_0_6.py --game-root "<CK3 installation root>"
 ```
 
 ## Exact-build 冻结

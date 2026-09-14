@@ -136,13 +136,13 @@ GREEN。当前四类 source 中 promotion、projects/metrics、incidents/operati
 
 ## 当前执行命令
 
-```powershell
+```text
 # 静态总门
-& Z:\ck3_mod_rewrite\tools\.venv\Scripts\python.exe tools\validate_static.py
+Z:\ck3_mod_rewrite\tools\.venv\Scripts\python.exe tools\validate_static.py
 
 # Promotion 精确事件与业务 choreography
-& Z:\ck3_mod_rewrite\tools\.venv\Scripts\python.exe tools\test_zg361_phase2_promotion_source_checkpoint_runner.py
-& Z:\ck3_mod_rewrite\tools\.venv\Scripts\python.exe tools\test_zg361_phase2_promotion_source_choreography.py
+Z:\ck3_mod_rewrite\tools\.venv\Scripts\python.exe tools\test_zg361_phase2_promotion_source_checkpoint_runner.py
+Z:\ck3_mod_rewrite\tools\.venv\Scripts\python.exe tools\test_zg361_phase2_promotion_source_choreography.py
 
 # CK3 启动仍由 run_zhongguo_acceptance.py 串行执行；同一 product/bridge 的连续
 # 场景复用受管 session。harness RED 可写 RETAINED receipt 并由独立 client 接续；

@@ -192,7 +192,7 @@ contract 是下一片：`subject_contract_governance_snapshot_v1` 先发布 full
 
 本冻结只需要运行下面两条，二者同时核对 EXE、原版脚本、PE RVA、已有 ABI substrate、机器可读契约与本文关键结论；不启动 CK3，也不扩大到全仓验收：
 
-```powershell
+```text
 py ck3_autonomous_player/native_bridge/research/test_nonreligious_law_contract_succession_native_tree_v1.py --ck3-executable "Z:\ck3_mod_rewrite\Crusader Kings III\binaries\ck3.exe" --game-root "Z:\ck3_mod_rewrite\Crusader Kings III\game"
 py -O ck3_autonomous_player/native_bridge/research/test_nonreligious_law_contract_succession_native_tree_v1.py --ck3-executable "Z:\ck3_mod_rewrite\Crusader Kings III\binaries\ck3.exe" --game-root "Z:\ck3_mod_rewrite\Crusader Kings III\game"
 ```

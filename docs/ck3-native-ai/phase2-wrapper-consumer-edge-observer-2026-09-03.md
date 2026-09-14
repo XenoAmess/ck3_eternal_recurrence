@@ -250,7 +250,7 @@ capture environment problem: it launches the exact seed runner through
 `CreateProcessW` with `STARTUPINFO.lpDesktop=WinSta0\\Default`, is no-launch
 by default, and leaves the runner's legal/commerce policy unchanged. An
 equivalent manual invocation from an already interactive
-`xenoa / WinSta0\\Default` PowerShell is also available. Neither path changes
+`xenoa / WinSta0\\Default` legacy shell is also available. Neither path changes
 the injected native bridge. The later history comparison below reclassifies
 the normal desktop as the least-confounded environment A/B for the startup
 chain, in addition to its original legal-capture purpose. No desktop launch

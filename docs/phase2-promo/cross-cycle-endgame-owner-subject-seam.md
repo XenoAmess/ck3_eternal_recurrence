@@ -122,28 +122,20 @@ rebind, option selection, or ACK as state evidence.
 
 Read-only prefix preflight (does not launch CK3):
 
-```powershell
-py tools/preflight_zg361_phase2_cross_cycle_endgame_source_capture.py `
-  --prefix <three-entry-live-pending-manifest.json> `
-  --expected-seed-lineage-id <zg361-phase2-seed-sha>
+```text
+py tools/preflight_zg361_phase2_cross_cycle_endgame_source_capture.py --prefix <three-entry-live-pending-manifest.json> --expected-seed-lineage-id <zg361-phase2-seed-sha>
 ```
 
 Explicit live invocation (the owner and date must be known checkpoint
 bindings, not values inferred after launch):
 
-```powershell
-py tools/run_zhongguo_acceptance.py `
-  --phase2-endgame-source-capture-live `
-  --phase2-endgame-source-capture-prefix <three-entry-manifest.json> `
-  --phase2-endgame-source-owner-character-id <character-id> `
-  --phase2-endgame-source-date-raw <date-raw> `
-  --phase2-seed-contract <ready-seed-contract.json> `
-  --artifacts-dir <new-artifact-directory>
+```text
+py tools/run_zhongguo_acceptance.py --phase2-endgame-source-capture-live --phase2-endgame-source-capture-prefix <three-entry-manifest.json> --phase2-endgame-source-owner-character-id <character-id> --phase2-endgame-source-date-raw <date-raw> --phase2-seed-contract <ready-seed-contract.json> --artifacts-dir <new-artifact-directory>
 ```
 
 Run the offline audit without launching CK3:
 
-```powershell
+```text
 py tools/preflight_zg361_phase2_cross_cycle_endgame_rebind.py
 py -m unittest tools.test_zg361_phase2_cross_cycle_endgame_live_seam
 py tools/test_zg361_phase2_cross_cycle_endgame_source_capture.py

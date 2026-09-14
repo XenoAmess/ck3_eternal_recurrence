@@ -105,20 +105,8 @@ a genuine managed seed producer for the exact r2 product tree, and the same
 command with `--preflight` inserted must return exit 0 before removing that
 flag:
 
-```powershell
-Set-Location -LiteralPath 'Z:\ck3_mod_rewrite\_hc-workforce-route-b-source-capture-candidate-20260904'
-& 'Z:\ck3_mod_rewrite\tools\.venv\Scripts\python.exe' 'tools\run_zhongguo_acceptance.py' `
-  --phase2-hc-workforce-route-b-capture-live `
-  --phase2-hc-workforce-route-b-checkpoint-output 'Z:\ck3_mod_rewrite_process_assets\zg361\b4-route-b-source-capture-9c87280-20260904-r2\future-live-output\hc-workforce-route-b-pre-option-b-9c87280-r2.ck3' `
-  --phase2-hc-workforce-route-b-registry-output 'Z:\ck3_mod_rewrite_process_assets\zg361\b4-route-b-source-capture-9c87280-20260904-r2\future-live-output\hc-workforce-route-b-registry-9c87280-r2.json' `
-  --bridge-dll 'Z:\ck3_mod_rewrite_process_assets\zg361\b4-route-b-source-capture-9c87280-20260904-r2\native\xar_ck3_bridge.dll' `
-  --bridge-injector 'Z:\ck3_mod_rewrite_process_assets\zg361\b4-route-b-source-capture-9c87280-20260904-r2\native\xar_ck3_bridge_injector.exe' `
-  --bridge-pipe '\\.\pipe\xar_ck3_bridge_zg361_9c87280187250077afd99deb48e4126d' `
-  --phase2-seed-contract 'Z:\ck3_mod_rewrite_process_assets\zg361\b4-route-b-source-capture-9c87280-20260904-r2\future-live-output\zg361_phase2_seed_contract.current-product.json' `
-  --phase2-product-source 'Z:\ck3_mod_rewrite_process_assets\zg361\b4-route-b-source-capture-9c87280-20260904-r2\product-source' `
-  --phase2-product-projection 'b4-route-b-wait360411-9c87280-r2' `
-  --phase2-product-projection-manifest 'Z:\ck3_mod_rewrite_process_assets\zg361\b4-route-b-source-capture-9c87280-20260904-r2\product-projection.json' `
-  --artifacts-dir 'Z:\ck3_mod_rewrite_process_assets\zg361\b4-route-b-source-capture-9c87280-20260904-r2\live-artifacts-r2'
+```text
+py tools/run_with_env.py --cwd Z:\ck3_mod_rewrite\_hc-workforce-route-b-source-capture-candidate-20260904 -- Z:\ck3_mod_rewrite\tools\.venv\Scripts\python.exe tools\run_zhongguo_acceptance.py --phase2-hc-workforce-route-b-capture-live --phase2-hc-workforce-route-b-checkpoint-output Z:\ck3_mod_rewrite_process_assets\zg361\b4-route-b-source-capture-9c87280-20260904-r2\future-live-output\hc-workforce-route-b-pre-option-b-9c87280-r2.ck3 --phase2-hc-workforce-route-b-registry-output Z:\ck3_mod_rewrite_process_assets\zg361\b4-route-b-source-capture-9c87280-20260904-r2\future-live-output\hc-workforce-route-b-registry-9c87280-r2.json --bridge-dll Z:\ck3_mod_rewrite_process_assets\zg361\b4-route-b-source-capture-9c87280-20260904-r2\native\xar_ck3_bridge.dll --bridge-injector Z:\ck3_mod_rewrite_process_assets\zg361\b4-route-b-source-capture-9c87280-20260904-r2\native\xar_ck3_bridge_injector.exe --bridge-pipe \\.\pipe\xar_ck3_bridge_zg361_9c87280187250077afd99deb48e4126d --phase2-seed-contract Z:\ck3_mod_rewrite_process_assets\zg361\b4-route-b-source-capture-9c87280-20260904-r2\future-live-output\zg361_phase2_seed_contract.current-product.json --phase2-product-source Z:\ck3_mod_rewrite_process_assets\zg361\b4-route-b-source-capture-9c87280-20260904-r2\product-source --phase2-product-projection b4-route-b-wait360411-9c87280-r2 --phase2-product-projection-manifest Z:\ck3_mod_rewrite_process_assets\zg361\b4-route-b-source-capture-9c87280-20260904-r2\product-projection.json --artifacts-dir Z:\ck3_mod_rewrite_process_assets\zg361\b4-route-b-source-capture-9c87280-20260904-r2\live-artifacts-r2
 ```
 
 The remaining live checkpoint is therefore singular: create a real canonical

@@ -36,11 +36,11 @@ Workshop 上传、fresh-cache 严格核验和正式发布事实记录在 `docs/r
 
 同一候选上的发布本地化工作包一次通过：
 
-```powershell
-& tools/.venv/Scripts/python.exe tools/test_translate_localization_minimax.py
-& tools/.venv/Scripts/python.exe tools/validate_xenoamess_quality_of_life.py --release-localization
-& tools/.venv/Scripts/python.exe tools/test_build_xenoamess_quality_of_life_release.py
-& tools/.venv/Scripts/python.exe tools/build_xenoamess_quality_of_life_release.py --check
+```text
+tools/.venv/Scripts/python.exe tools/test_translate_localization_minimax.py
+tools/.venv/Scripts/python.exe tools/validate_xenoamess_quality_of_life.py --release-localization
+tools/.venv/Scripts/python.exe tools/test_build_xenoamess_quality_of_life_release.py
+tools/.venv/Scripts/python.exe tools/build_xenoamess_quality_of_life_release.py --check
 ```
 
 结果：26/26 翻译调用器测试、发布本地化门禁、8/8 builder 测试、24 文件确定性双构建全部 GREEN。该次文档冻结前开发快照的 manifest SHA-256 为 `617c4eb6d4dc3e9b2b717465c21351de9d45640b896d56d9e5bb8af53309a058`，ZIP SHA-256 为 `58f79aa467615d11d1473898b5b9e08f63b08d609a0ef0c68c575bffc5bbe9b8`；正式 tag 构建哈希以后续 changelog 为准。
@@ -49,11 +49,8 @@ Workshop 上传、fresh-cache 严格核验和正式发布事实记录在 `docs/r
 
 命令：
 
-```powershell
-& tools/.venv/Scripts/python.exe tools/run_xenoamess_quality_of_life_acceptance.py `
-  --artifacts-dir 'D:\workspace\ck3_xqol_phase2_release_live1' `
-  --bridge-dll 'D:\workspace\ck3_xqol_publication\ck3_autonomous_player\build-fresh-xqol-1.0.1\xar_ck3_bridge.dll' `
-  --bridge-injector 'D:\workspace\ck3_xqol_publication\ck3_autonomous_player\build-fresh-xqol-1.0.1\xar_ck3_bridge_injector.exe'
+```text
+tools/.venv/Scripts/python.exe tools/run_xenoamess_quality_of_life_acceptance.py --artifacts-dir 'D:\workspace\ck3_xqol_phase2_release_live1' --bridge-dll 'D:\workspace\ck3_xqol_publication\ck3_autonomous_player\build-fresh-xqol-1.0.1\xar_ck3_bridge.dll' --bridge-injector 'D:\workspace\ck3_xqol_publication\ck3_autonomous_player\build-fresh-xqol-1.0.1\xar_ck3_bridge_injector.exe'
 ```
 
 - 最终结果：GREEN；退出码 0；耗时 1069.261 秒，其中本机冷启动约 11 分钟，runner 的启动等待上限为 30 分钟。

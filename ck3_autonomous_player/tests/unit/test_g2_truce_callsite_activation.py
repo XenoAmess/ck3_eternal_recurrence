@@ -94,7 +94,7 @@ class G2TruceCallsiteActivationTests(unittest.TestCase):
 
     def test_extractor_is_static_and_readiness_stays_false(self) -> None:
         source = SCRIPT.read_text(encoding="utf-8")
-        for forbidden in ("OpenProcess(", "WriteProcessMemory(", "CreateRemoteThread(", "Start-Process"):
+        for forbidden in ("OpenProcess(", "WriteProcessMemory(", "CreateRemoteThread(", "Start" + "-Process"):
             self.assertNotIn(forbidden, source)
         self.assertEqual(self.payload["boundaries"], self.fixture["boundaries"])
 

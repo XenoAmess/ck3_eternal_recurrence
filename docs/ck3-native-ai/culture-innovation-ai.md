@@ -221,9 +221,8 @@ P0 验收必须满足：同一 paused revision 内文化 identity、文化领袖
 
 本工作包只运行与该研究切片相称的验证：
 
-```powershell
-py ck3_autonomous_player/native_bridge/research/culture_innovation_v1_source_contract.py `
-  --ck3-root "Z:\ck3_mod_rewrite\Crusader Kings III"
+```text
+py ck3_autonomous_player/native_bridge/research/culture_innovation_v1_source_contract.py --ck3-root "Z:\ck3_mod_rewrite\Crusader Kings III"
 ```
 
 该命令重算 14 个 stock 文件哈希，解析 108 个创新定义和四种 fascination 权重模板，验证 GUI/define 语义 token，并逐字节核对 EXE string/机器码锚点。它不启动 CK3，不声称完成 live 验收。

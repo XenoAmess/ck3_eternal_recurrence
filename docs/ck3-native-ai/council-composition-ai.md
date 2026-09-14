@@ -386,9 +386,8 @@ opaque row bytes. Static source and ABI fixtures live beside the native bridge.
 
 For the one paused capture candidate, configure a dedicated Release build with:
 
-```powershell
-cmake -S ck3_autonomous_player/native_bridge -B <private-build-dir> `
-  -DXAR_CK3_ENABLE_COUNCIL_COMPOSITION_CANDIDATE_OBSERVER_V1=ON
+```text
+cmake -S ck3_autonomous_player/native_bridge -B <private-build-dir> -DXAR_CK3_ENABLE_COUNCIL_COMPOSITION_CANDIDATE_OBSERVER_V1=ON
 ```
 
 This build is only a capture instrument. R684 satisfied that one-shot gate for

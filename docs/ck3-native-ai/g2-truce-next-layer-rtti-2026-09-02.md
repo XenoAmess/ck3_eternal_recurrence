@@ -226,7 +226,7 @@ unchanged.
 rejects a reused attempt directory, verifies the Python runtime, runner,
 checkpoint, driver state, CK3 executable, DLL, injector, and open_kaishek
 preflight hashes, checks the private v2 markers in the DLL, and emits one
-PowerShell command. It cannot launch CK3. The verify-only artifact is:
+legacy shell command. It cannot launch CK3. The verify-only artifact is:
 
 `Z:\ck3_mod_rewrite_process_assets\zg361\g2-index7-readiness300-ready-20260902T2017\no-launch-preflight-v2.json`
 

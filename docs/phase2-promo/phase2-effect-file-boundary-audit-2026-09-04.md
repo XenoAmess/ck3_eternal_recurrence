@@ -29,7 +29,7 @@ R79 已真实挂载该精确产品。180 秒时 loader 仍在 database init，ru
 
 运行：
 
-```powershell
+```text
 py mod_zhongguo_style/tools/effect_file_boundaries.py
 ```
 

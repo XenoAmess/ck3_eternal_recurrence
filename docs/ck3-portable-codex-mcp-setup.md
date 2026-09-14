@@ -17,7 +17,7 @@ native build/session 命令只是 JSON 字段，只有操作者另行执行时�
 
 在仓库根目录运行：
 
-```powershell
+```text
 py ck3_autonomous_player\codex_mcp_setup.py plan
 py ck3_autonomous_player\codex_mcp_setup.py setup
 py ck3_autonomous_player\codex_mcp_setup.py doctor
@@ -115,7 +115,7 @@ available/unavailable 语义。
 不要从 `xenoa` 的进程代写 `CodexSandboxOffline` 的 Codex 配置，也不要让两者共享 state、userdir
 或 named pipe。分别登录或以对应账户启动 shell，在每个账户中各运行一次同样的 `setup`：
 
-```powershell
+```text
 # 在 xenoa shell 中
 py ck3_autonomous_player\codex_mcp_setup.py --account xenoa setup
 
@@ -126,11 +126,8 @@ py ck3_autonomous_player\codex_mcp_setup.py --account CodexSandboxOffline setup
 执行写操作时，入口会核对 `--account` 与当前 Windows 账户；不匹配直接 RED。`plan` 仍可为另一账户
 生成预览，例如：
 
-```powershell
-py ck3_autonomous_player\codex_mcp_setup.py `
-  --account CodexSandboxOffline `
-  --local-app-data C:\Users\CodexSandboxOffline\AppData\Local `
-  plan
+```text
+py ck3_autonomous_player\codex_mcp_setup.py --account CodexSandboxOffline --local-app-data C:\Users\CodexSandboxOffline\AppData\Local plan
 ```
 
 每个 state 根都有 `portable-mcp-layout-v1.json`，doctor 要求其账户、server、pipe 和路径与当前计划
@@ -166,12 +163,8 @@ py ck3_autonomous_player\native_bridge\tools\build_fresh.py ^
 
 然后把 fresh DLL/injector 显式交给 plan/doctor：
 
-```powershell
-py ck3_autonomous_player\codex_mcp_setup.py `
-  --game-dir <CK3-root> `
-  --bridge-dll <build-dir>\xar_ck3_bridge.dll `
-  --bridge-injector <build-dir>\xar_ck3_bridge_injector.exe `
-  doctor --require-native-assets
+```text
+py ck3_autonomous_player\codex_mcp_setup.py --game-dir <CK3-root> --bridge-dll <build-dir>\xar_ck3_bridge.dll --bridge-injector <build-dir>\xar_ck3_bridge_injector.exe doctor --require-native-assets
 ```
 
 严格 doctor 会计算 CK3 EXE SHA-256，并要求 exact build、DLL、injector、per-user venv、layout marker、

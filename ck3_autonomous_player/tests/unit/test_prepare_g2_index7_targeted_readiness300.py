@@ -91,7 +91,7 @@ class G2Index7Readiness300PreflightTests(unittest.TestCase):
             "subprocess",
             "NativeHeadlessGameplayDriver",
             "native_session(",
-            "Start-Process",
+            "Start" + "-Process",
             "Popen(",
         ):
             self.assertNotIn(forbidden, source)

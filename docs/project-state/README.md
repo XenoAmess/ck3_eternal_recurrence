@@ -14,7 +14,7 @@
 
 生成器为 [`tools/project_delivery_state.py`](../../tools/project_delivery_state.py)。在仓库根目录运行：
 
-```powershell
+```text
 py tools/project_delivery_state.py render --verify-artifacts
 py -m unittest tools.test_project_delivery_state
 py -O -m unittest tools.test_project_delivery_state

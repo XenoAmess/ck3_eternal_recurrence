@@ -24,11 +24,11 @@
 
 以下命令于 2026-09-11 在同一工作树一次通过：
 
-```powershell
-& tools/.venv/Scripts/python.exe tools/test_translate_localization_minimax.py
-& tools/.venv/Scripts/python.exe tools/validate_xenoamess_quality_of_life.py --release-localization
-& tools/.venv/Scripts/python.exe tools/test_build_xenoamess_quality_of_life_release.py
-& tools/.venv/Scripts/python.exe tools/build_xenoamess_quality_of_life_release.py --check
+```text
+tools/.venv/Scripts/python.exe tools/test_translate_localization_minimax.py
+tools/.venv/Scripts/python.exe tools/validate_xenoamess_quality_of_life.py --release-localization
+tools/.venv/Scripts/python.exe tools/test_build_xenoamess_quality_of_life_release.py
+tools/.venv/Scripts/python.exe tools/build_xenoamess_quality_of_life_release.py --check
 ```
 
 结果：26/26 翻译调用器测试 GREEN，XQOL 发布本地化门禁 GREEN，8/8 构建器测试 GREEN，24 文件确定性双构建 GREEN。开发候选 manifest SHA-256 为 `617c4eb6d4dc3e9b2b717465c21351de9d45640b896d56d9e5bb8af53309a058`，ZIP SHA-256 为 `58f79aa467615d11d1473898b5b9e08f63b08d609a0ef0c68c575bffc5bbe9b8`。

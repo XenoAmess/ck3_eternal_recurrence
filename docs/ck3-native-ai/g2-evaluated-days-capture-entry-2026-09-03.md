@@ -155,14 +155,14 @@ build option、private/default marker、driver identity、Open Kaishek current p
 第一次 preflight 只因当时已有一个 `ck3.exe` 占用独占槽而 RED；没有停止、附加或干预该进程。槽释放后使用
 新报告名复跑得到 `ready-to-run`：
 
-```powershell
+```text
 Z:\ck3_mod_rewrite\tools\.venv\Scripts\python.exe -B ck3_autonomous_player/native_bridge/research/prepare_g2_evaluated_days_current_pin_capture.py --report Z:\ck3_mod_rewrite_process_assets\zg361\g2-evaluated-days-current-pin-20260904T1200\preflight-current-pin-r2.json
 ```
 
 报告 SHA-256 为
 `E364750DF68022062238BD7BB3568645D223ADD3E2711997DC5E4E5E0A7751EC`；其中全部 input/source hash、
 private/default build contract、driver anchor、exact evaluator、Open Kaishek 静态兼容、空独占槽与 fresh attempt
-检查均为 true。报告给出唯一 PowerShell 命令：按 manifest 指向的同一 frozen checkpoint 启动 shared runner，
+检查均为 true。报告给出唯一 legacy shell 命令：按 manifest 指向的同一 frozen checkpoint 启动 shared runner，
 只发两次 `query-war-termination-terms-v1-50331699`，随后无论 public runner 是否 RED 都执行 private analyzer。
 未来 attempt 固定为
 `Z:\ck3_mod_rewrite_process_assets\zg361\g2-evaluated-days-current-pin-20260904T1200\live-current-pin-dual-query-r1`。
@@ -197,7 +197,7 @@ runner report 的顶层 `ExceptionGroup` 丢失了上述首错细节，但 sessi
 analyzer 已据本次实证做最小修复：分别报告这两个事实，保留不完整组的 `pre_call` stage，并把该精确模式归类为
 `capability_red_process_exit_during_first_evaluator_call`。修复后只读重分析为预期 RED：
 
-```powershell
+```text
 Z:\ck3_mod_rewrite\tools\.venv\Scripts\python.exe -B ck3_autonomous_player/native_bridge/research/analyze_g2_evaluated_days_private_capture.py --runner-report Z:\ck3_mod_rewrite_process_assets\zg361\g2-evaluated-days-current-pin-20260904T1200\live-current-pin-dual-query-r1\report.json --private-jsonl Z:\ck3_mod_rewrite_process_assets\zg361\g2-evaluated-days-current-pin-20260904T1200\live-current-pin-dual-query-r1\g2-evaluated-days-private-v3.jsonl --output Z:\ck3_mod_rewrite_process_assets\zg361\g2-evaluated-days-current-pin-20260904T1200\live-current-pin-dual-query-r1\evaluated-days-private-analysis-r3.json --expected-war-id 50331699 --expected-character-id 29829 --expected-date-raw 53223936
 ```
 
@@ -273,9 +273,9 @@ preflight、analyzer 与 preview integration 测试在 normal/`-O` 下各 48 项
 附加 CK3，也未发送游戏命令。
 
 合入 canonical root 后，下一次独占槽应先重新运行以下 no-launch preflight（报告名必须保持新鲜），再只执行
-其 `unique_powershell_command`：
+其 `python_launch_plan`：
 
-```powershell
+```text
 Z:\ck3_mod_rewrite\tools\.venv\Scripts\python.exe -B ck3_autonomous_player/native_bridge/research/prepare_g2_evaluated_days_current_pin_capture.py --manifest ck3_autonomous_player/native_bridge/research/fixtures/g2_evaluated_days_leaf_context_v2_live_manifest.json --report Z:\ck3_mod_rewrite_process_assets\zg361\g2-leaf-context-v2-20260904\preflight-leaf-context-v2-canonical-r1.json
 ```
 
@@ -307,11 +307,11 @@ bytes、exact leaf-context chain、open_kaishek pin、空独占槽和全新 atte
 SHA-256 为 `1C2FC5AB1D41885051AEE34311C62F445A7C7B57CDBBF85315E33E23C96A0DEE`。合入 canonical root
 后仍须用新的报告名再做一次 no-launch 路径绑定：
 
-```powershell
+```text
 Z:\ck3_mod_rewrite\tools\.venv\Scripts\python.exe -B ck3_autonomous_player/native_bridge/research/prepare_g2_evaluated_days_current_pin_capture.py --manifest ck3_autonomous_player/native_bridge/research/fixtures/g2_evaluated_days_leaf_context_v2_live_manifest.json --report Z:\ck3_mod_rewrite_process_assets\zg361\g2-leaf-context-v2-integration-249e6fb-20260904\preflight-leaf-context-v2-canonical-r1.json
 ```
 
-只有该报告为 GREEN 时才可执行其 `unique_powershell_command`；对应 fresh attempt 是
+只有该报告为 GREEN 时才可执行其 `python_launch_plan`；对应 fresh attempt 是
 `Z:\ck3_mod_rewrite_process_assets\zg361\g2-leaf-context-v2-integration-249e6fb-20260904\live-leaf-context-dual-query-r1`。
 本次没有启动/附加 CK3，没有发送游戏命令；public/readiness 与 `GEN-034=unresolved` 继续不变。
 

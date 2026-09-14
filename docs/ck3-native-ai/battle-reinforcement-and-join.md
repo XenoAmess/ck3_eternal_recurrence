@@ -696,27 +696,25 @@ mod 的 production AI session 中发生。
 
 ## 可复现命令
 
-```powershell
-Get-FileHash -Algorithm SHA256 'Crusader Kings III/binaries/ck3.exe'
-Get-FileHash -Algorithm SHA256 'Crusader Kings III/game/common/defines/ai/00_ai.txt'
+```text
+py tools/file_sha256.py "Crusader Kings III/binaries/ck3.exe" "Crusader Kings III/game/common/defines/ai/00_ai.txt"
 
-& tools/.venv/Scripts/python.exe ck3_autonomous_player/native_bridge/research/find_rtti.py `
-  'CAIUnitStack|CAISubunitStack|CAIWarCoordinator|CAIManager'
+tools/.venv/Scripts/python.exe ck3_autonomous_player/native_bridge/research/find_rtti.py 'CAIUnitStack|CAISubunitStack|CAIWarCoordinator|CAIManager'
 
-& tools/.venv/Scripts/python.exe ck3_autonomous_player/native_bridge/research/find_xrefs.py 0x18550D0
-& tools/.venv/Scripts/python.exe ck3_autonomous_player/native_bridge/research/find_xrefs.py 0x1848570
-& tools/.venv/Scripts/python.exe ck3_autonomous_player/native_bridge/research/find_xrefs.py 0x19186E0
+tools/.venv/Scripts/python.exe ck3_autonomous_player/native_bridge/research/find_xrefs.py 0x18550D0
+tools/.venv/Scripts/python.exe ck3_autonomous_player/native_bridge/research/find_xrefs.py 0x1848570
+tools/.venv/Scripts/python.exe ck3_autonomous_player/native_bridge/research/find_xrefs.py 0x19186E0
 
-& tools/.venv/Scripts/python.exe ck3_autonomous_player/native_bridge/research/disasm_ck3.py 0x18876D0 --size 0x250
-& tools/.venv/Scripts/python.exe ck3_autonomous_player/native_bridge/research/disasm_ck3.py 0x18550D0 --size 0x390
-& tools/.venv/Scripts/python.exe ck3_autonomous_player/native_bridge/research/disasm_ck3.py 0x1846730 --size 0x330
-& tools/.venv/Scripts/python.exe ck3_autonomous_player/native_bridge/research/disasm_ck3.py 0x1848310 --size 0x260
-& tools/.venv/Scripts/python.exe ck3_autonomous_player/native_bridge/research/disasm_ck3.py 0x1848570 --size 0x380
-& tools/.venv/Scripts/python.exe ck3_autonomous_player/native_bridge/research/disasm_ck3.py 0x1872BF0 --size 0x4E0
-& tools/.venv/Scripts/python.exe ck3_autonomous_player/native_bridge/research/disasm_ck3.py 0x22475E0 --size 0x290
-& tools/.venv/Scripts/python.exe ck3_autonomous_player/native_bridge/research/disasm_ck3.py 0x18721B0 --size 0x230
-& tools/.venv/Scripts/python.exe ck3_autonomous_player/native_bridge/research/disasm_ck3.py 0x186B190 --size 0x160
-& tools/.venv/Scripts/python.exe ck3_autonomous_player/native_bridge/research/disasm_ck3.py 0x2208320 --size 0x930
-& tools/.venv/Scripts/python.exe ck3_autonomous_player/native_bridge/research/disasm_ck3.py 0x23040A0 --size 0x340
-& tools/.venv/Scripts/python.exe ck3_autonomous_player/native_bridge/research/disasm_ck3.py 0x23C9100 --size 0x310
+tools/.venv/Scripts/python.exe ck3_autonomous_player/native_bridge/research/disasm_ck3.py 0x18876D0 --size 0x250
+tools/.venv/Scripts/python.exe ck3_autonomous_player/native_bridge/research/disasm_ck3.py 0x18550D0 --size 0x390
+tools/.venv/Scripts/python.exe ck3_autonomous_player/native_bridge/research/disasm_ck3.py 0x1846730 --size 0x330
+tools/.venv/Scripts/python.exe ck3_autonomous_player/native_bridge/research/disasm_ck3.py 0x1848310 --size 0x260
+tools/.venv/Scripts/python.exe ck3_autonomous_player/native_bridge/research/disasm_ck3.py 0x1848570 --size 0x380
+tools/.venv/Scripts/python.exe ck3_autonomous_player/native_bridge/research/disasm_ck3.py 0x1872BF0 --size 0x4E0
+tools/.venv/Scripts/python.exe ck3_autonomous_player/native_bridge/research/disasm_ck3.py 0x22475E0 --size 0x290
+tools/.venv/Scripts/python.exe ck3_autonomous_player/native_bridge/research/disasm_ck3.py 0x18721B0 --size 0x230
+tools/.venv/Scripts/python.exe ck3_autonomous_player/native_bridge/research/disasm_ck3.py 0x186B190 --size 0x160
+tools/.venv/Scripts/python.exe ck3_autonomous_player/native_bridge/research/disasm_ck3.py 0x2208320 --size 0x930
+tools/.venv/Scripts/python.exe ck3_autonomous_player/native_bridge/research/disasm_ck3.py 0x23040A0 --size 0x340
+tools/.venv/Scripts/python.exe ck3_autonomous_player/native_bridge/research/disasm_ck3.py 0x23C9100 --size 0x310
 ```

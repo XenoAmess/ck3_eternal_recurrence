@@ -11,6 +11,9 @@ permissions:
 jobs:
   static:
     runs-on: windows-latest
+    defaults:
+      run:
+        shell: cmd
     steps:
       - uses: actions/checkout@v5
         with:
@@ -29,7 +32,7 @@ jobs:
         run: |
           python -m pip install -r tools/requirements-promo-toolchain.txt
           python -m xar_promo --version
-          python -m xar_promo --help | Out-Null
+          python -m xar_promo --help >NUL
           python tools/test_promo_toolchain_loader.py
       - name: Compile Python tools
         run: |
@@ -71,8 +74,8 @@ jobs:
           python tools/test_gen_zhongguo_acceptance_cases.py
           python tools/test_zg361_clean_promo_fixture.py
           python tools/test_zg361_phase2_seed_fixture.py
-          # The normal invocation carries the semantic assertions; -O is an
-          # import/runtime compatibility smoke for the same seed-only tree.
+          REM The normal invocation carries the semantic assertions; -O is an
+          REM import/runtime compatibility smoke for the same seed-only tree.
           python -O tools/test_zg361_phase2_seed_fixture.py
           python tools/test_zg361_phase2_b2_checkpoint_matrix.py
           python -O tools/test_zg361_phase2_b2_checkpoint_matrix.py
@@ -85,8 +88,8 @@ jobs:
           python tools/test_zg361_phase2_seed_bootstrap.py
           python tools/test_kaishek_preflight.py
           python tools/test_acceptance_open_kaishek_coverage.py
-          # Keep the bootstrap helper's optimized import path covered too;
-          # semantic assertions remain covered by the normal run above.
+          REM Keep the bootstrap helper's optimized import path covered too;
+          REM semantic assertions remain covered by the normal run above.
           python -O tools/test_zg361_phase2_seed_bootstrap.py
           python tools/test_zhongguo_phase2_promo_producer.py
           python -O tools/test_zhongguo_phase2_promo_producer.py
@@ -115,6 +118,7 @@ jobs:
       - name: Test and validate ZhongGuo 361 promo project
         run: |
           python mod_zhongguo_style/tools/test_promo_video.py
+          python mod_zhongguo_style/tools/test_python_runbooks.py
           python mod_zhongguo_style/tools/test_build_phase2_promo_video.py
           python -O mod_zhongguo_style/tools/test_build_phase2_promo_video.py
           python mod_zhongguo_style/tools/test_preflight_phase2_media.py
@@ -129,6 +133,10 @@ jobs:
         run: python tools/test_verify_workshop_publication.py
       - name: Test full-agent showcase builder
         run: python tools/test_build_full_agent_showcase.py
+      - name: Enforce Python-only Windows automation
+        run: |
+          python tools/test_validate_python_only.py
+          python tools/validate_python_only.py
       - name: Validate generated and static content
         run: python tools/validate_static.py
       - name: Validate Vivhite standalone content

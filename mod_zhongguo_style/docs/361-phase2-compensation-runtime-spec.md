@@ -131,7 +131,7 @@ payable = paid + owed − returned
 
 运行：
 
-```powershell
+```text
 cd mod_zhongguo_style/tools
 py test_zg361_phase2_compensation_model.py
 ```

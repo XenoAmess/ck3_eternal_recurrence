@@ -8,9 +8,8 @@
 
 在可写 fresh checkout `Z:\ck3_mod_rewrite\_runtime\promo-tool-fresh-20260903` 执行：
 
-```powershell
-git -c safe.directory="Z:\ck3_mod_rewrite\_runtime\promo-tool-fresh-20260903" `
-  -C "Z:\ck3_mod_rewrite\_runtime\promo-tool-fresh-20260903" fetch origin main --prune
+```text
+git -c safe.directory="Z:\ck3_mod_rewrite\_runtime\promo-tool-fresh-20260903" -C "Z:\ck3_mod_rewrite\_runtime\promo-tool-fresh-20260903" fetch origin main --prune
 ```
 
 结果：

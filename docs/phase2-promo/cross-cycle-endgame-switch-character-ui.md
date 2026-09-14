@@ -57,7 +57,7 @@ capability，不承担选角或业务证明。
 
 ## 不启动 CK3 的 preflight
 
-```powershell
+```text
 py tools/preflight_zg361_phase2_cross_cycle_endgame_switch_ui.py
 ```
 
@@ -68,7 +68,7 @@ py tools/preflight_zg361_phase2_cross_cycle_endgame_switch_ui.py
 
 在真实第三周期 `#356` source registry 与 subject 的真实 primary-title key 已经确定后，只使用：
 
-```powershell
+```text
 py tools/run_zhongguo_acceptance.py --phase2-promo-capture --phase2-source-checkpoint-registry <schema-2-registry.json> --phase2-endgame-product-switch-title-key <subject-primary-title-key>
 ```
 

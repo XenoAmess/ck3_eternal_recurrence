@@ -202,10 +202,8 @@ suffix，保留 `[old_route.front]` 并让军队走完当前边。它既不会�
 
 1. 对新 manifest 运行：
 
-   ```powershell
-   py ck3_autonomous_player/native_bridge/research/scan_anchors.py `
-     --exe "<new-ck3.exe>" `
-     --manifest "<new-build-anchors.json>"
+   ```text
+   py ck3_autonomous_player/native_bridge/research/scan_anchors.py --exe "<new-ck3.exe>" --manifest "<new-build-anchors.json>"
    ```
 
 2. 为新 adapter 建独立 layout/command fixture。fixture 必须故意让易混淆字段取不同值，例如 public component ArmyID 与 command-target ID、CK3GameData 与 interaction database 使用不同 trap object；否则错误基址或错误 ID 可能被测试数据掩盖。

@@ -77,10 +77,8 @@ fixture 画面混入二期。双片 attestation 必须为每版列出相同顺�
 
 运行：
 
-```powershell
-py tools/zhongguo_phase2_dual_cut_completion.py `
-  --input <dual-completion-attestation.json> `
-  --output <dual-completion-report.json>
+```text
+py tools/zhongguo_phase2_dual_cut_completion.py --input <dual-completion-attestation.json> --output <dual-completion-report.json>
 ```
 
 输出路径已存在时工具直接拒绝覆盖。GREEN 报告中的七项 checks 必须全部为 `true`，且 `status` 才会是
@@ -88,7 +86,7 @@ py tools/zhongguo_phase2_dual_cut_completion.py `
 
 ## 测试
 
-```powershell
+```text
 py tools/test_zhongguo_phase2_dual_cut_completion.py
 py -O tools/test_zhongguo_phase2_dual_cut_completion.py
 py tools/test_zhongguo_phase2_final_promo_completion.py

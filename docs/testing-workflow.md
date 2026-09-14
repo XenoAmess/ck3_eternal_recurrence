@@ -2,8 +2,11 @@
 
 ## 启动与日志
 
-```powershell
-Start-Process "...\binaries\ck3.exe" -ArgumentList "-debug_mode"
+```python
+from pathlib import Path
+import subprocess
+
+subprocess.Popen([str(Path("...") / "binaries" / "ck3.exe"), "-debug_mode"])
 ```
 
 日志目录 `Documents\Paradox Interactive\Crusader Kings III\logs\`：
@@ -124,21 +127,23 @@ RED 已保留为环境问题证据，不能覆盖这次干净目录结果。
 可设置 `XAR_PROMO_SOURCE`（兼容别名 `XAR_PROMO_TOOLCHAIN_SOURCE`）指向独立 checkout 或其 `src` 目录，
 以覆盖已安装 wheel：
 
-```powershell
-$PromoPython = (Resolve-Path "tools\.venv\Scripts\python.exe").Path
-& $PromoPython -m pip install -r tools\requirements-promo-toolchain.txt
-# Optional source-checkout override (do not set this for a wheel-only run):
-# $env:XAR_PROMO_SOURCE = "Z:\workspace\xar_promo_toolchain"
-& $PromoPython -m xar_promo --version
-& $PromoPython -m xar_promo --help
-$PromoCommands = @("init", "start-run", "validate", "preserve", "signoff", "plan", "build", "audit", "review", "export")
-foreach ($PromoCommand in $PromoCommands) {
-    & $PromoPython -m xar_promo $PromoCommand --help
-    if ($LASTEXITCODE -ne 0) { throw "xar-promo help RED: $PromoCommand" }
-}
+```python
+from pathlib import Path
+import os
+import subprocess
+
+python = Path("tools/.venv/Scripts/python.exe").resolve()
+environment = os.environ.copy()
+# Optional source-checkout override (omit this for a wheel-only run):
+# environment["XAR_PROMO_SOURCE"] = r"Z:\workspace\xar_promo_toolchain"
+subprocess.run([str(python), "-m", "pip", "install", "-r", "tools/requirements-promo-toolchain.txt"], check=True)
+subprocess.run([str(python), "-m", "xar_promo", "--version"], check=True, env=environment)
+subprocess.run([str(python), "-m", "xar_promo", "--help"], check=True, env=environment)
+for command in ("init", "start-run", "validate", "preserve", "signoff", "plan", "build", "audit", "review", "export"):
+    subprocess.run([str(python), "-m", "xar_promo", command, "--help"], check=True, env=environment)
 ```
 
-这里的 `$PromoPython` 必须先按本节末尾的 venv 规则解析；secondary worktree 不得临时把它替换成裸 `py`。
+这里的 `python` 必须先按本节末尾的 venv 规则解析；secondary worktree 不得临时把它替换成裸 `py`。
 
 ### 分层与证据流
 
@@ -202,27 +207,27 @@ Release wheel。需要源码调试时，再设置 `XAR_PROMO_SOURCE`（或兼容
 
 runner 共用同一套现场备份恢复、静态校验、工坊同步和 OCR 大厅导航。`selftest`、`persistence-restart`、`death-edges`、`death-with-heir`、`bargain-reopen`、`progression-ui`、`scoring-matrix`、`courtier-creator`、`balance-long` 加载开发树；四个生产 smoke 会先生成 production-only release 投影，再将该投影 `/MIR` 到工坊缓存后启动 CK3。
 
-```powershell
-& "Z:\ck3_mod_rewrite\tools\.venv\Scripts\python.exe" "Z:\ck3_mod_rewrite\tools\run_acceptance.py"
-& "Z:\ck3_mod_rewrite\tools\.venv\Scripts\python.exe" "Z:\ck3_mod_rewrite\tools\run_acceptance.py" --scenario on-first-life
-& "Z:\ck3_mod_rewrite\tools\.venv\Scripts\python.exe" "Z:\ck3_mod_rewrite\tools\run_acceptance.py" --scenario on-recorded
-& "Z:\ck3_mod_rewrite\tools\.venv\Scripts\python.exe" "Z:\ck3_mod_rewrite\tools\run_acceptance.py" --scenario on-high-budget
-& "Z:\ck3_mod_rewrite\tools\.venv\Scripts\python.exe" "Z:\ck3_mod_rewrite\tools\run_acceptance.py" --scenario off
-& "Z:\ck3_mod_rewrite\tools\.venv\Scripts\python.exe" "Z:\ck3_mod_rewrite\tools\run_acceptance.py" --scenario persistence-restart
-& "Z:\ck3_mod_rewrite\tools\.venv\Scripts\python.exe" "Z:\ck3_mod_rewrite\tools\run_acceptance.py" --scenario death-edges
-& "Z:\ck3_mod_rewrite\tools\.venv\Scripts\python.exe" "Z:\ck3_mod_rewrite\tools\run_acceptance.py" --scenario death-with-heir
-& "Z:\ck3_mod_rewrite\tools\.venv\Scripts\python.exe" "Z:\ck3_mod_rewrite\tools\run_acceptance.py" --scenario bargain-reopen
-& "Z:\ck3_mod_rewrite\tools\.venv\Scripts\python.exe" "Z:\ck3_mod_rewrite\tools\run_acceptance.py" --scenario progression-ui
-& "Z:\ck3_mod_rewrite\tools\.venv\Scripts\python.exe" "Z:\ck3_mod_rewrite\tools\run_acceptance.py" --scenario scoring-matrix
-& "Z:\ck3_mod_rewrite\tools\.venv\Scripts\python.exe" "Z:\ck3_mod_rewrite\tools\run_acceptance.py" --scenario courtier-creator
-& "Z:\ck3_mod_rewrite\tools\.venv\Scripts\python.exe" "Z:\ck3_mod_rewrite\tools\run_acceptance.py" --scenario balance-long --balance-fixture count
-& "Z:\ck3_mod_rewrite\tools\.venv\Scripts\python.exe" "Z:\ck3_mod_rewrite\tools\run_balance_matrix.py"
-& "Z:\ck3_mod_rewrite\tools\.venv\Scripts\python.exe" "Z:\ck3_mod_rewrite\tools\run_terminal_acceptance.py" --mode observer
-& "Z:\ck3_mod_rewrite\tools\.venv\Scripts\python.exe" "Z:\ck3_mod_rewrite\tools\run_terminal_acceptance.py" --mode ironman
-& "Z:\ck3_mod_rewrite\tools\.venv\Scripts\python.exe" "Z:\ck3_mod_rewrite\tools\run_vivhite_acceptance.py"
-& "Z:\ck3_mod_rewrite\tools\.venv\Scripts\python.exe" "Z:\ck3_mod_rewrite\tools\run_vivhite_acceptance.py" --scenario vivhite-alone
-& "Z:\ck3_mod_rewrite\tools\.venv\Scripts\python.exe" "Z:\ck3_mod_rewrite\tools\run_vivhite_acceptance.py" --scenario original-then-vivhite
-& "Z:\ck3_mod_rewrite\tools\.venv\Scripts\python.exe" "Z:\ck3_mod_rewrite\tools\run_vivhite_acceptance.py" --scenario vivhite-then-original
+```text
+"Z:\ck3_mod_rewrite\tools\.venv\Scripts\python.exe" "Z:\ck3_mod_rewrite\tools\run_acceptance.py"
+"Z:\ck3_mod_rewrite\tools\.venv\Scripts\python.exe" "Z:\ck3_mod_rewrite\tools\run_acceptance.py" --scenario on-first-life
+"Z:\ck3_mod_rewrite\tools\.venv\Scripts\python.exe" "Z:\ck3_mod_rewrite\tools\run_acceptance.py" --scenario on-recorded
+"Z:\ck3_mod_rewrite\tools\.venv\Scripts\python.exe" "Z:\ck3_mod_rewrite\tools\run_acceptance.py" --scenario on-high-budget
+"Z:\ck3_mod_rewrite\tools\.venv\Scripts\python.exe" "Z:\ck3_mod_rewrite\tools\run_acceptance.py" --scenario off
+"Z:\ck3_mod_rewrite\tools\.venv\Scripts\python.exe" "Z:\ck3_mod_rewrite\tools\run_acceptance.py" --scenario persistence-restart
+"Z:\ck3_mod_rewrite\tools\.venv\Scripts\python.exe" "Z:\ck3_mod_rewrite\tools\run_acceptance.py" --scenario death-edges
+"Z:\ck3_mod_rewrite\tools\.venv\Scripts\python.exe" "Z:\ck3_mod_rewrite\tools\run_acceptance.py" --scenario death-with-heir
+"Z:\ck3_mod_rewrite\tools\.venv\Scripts\python.exe" "Z:\ck3_mod_rewrite\tools\run_acceptance.py" --scenario bargain-reopen
+"Z:\ck3_mod_rewrite\tools\.venv\Scripts\python.exe" "Z:\ck3_mod_rewrite\tools\run_acceptance.py" --scenario progression-ui
+"Z:\ck3_mod_rewrite\tools\.venv\Scripts\python.exe" "Z:\ck3_mod_rewrite\tools\run_acceptance.py" --scenario scoring-matrix
+"Z:\ck3_mod_rewrite\tools\.venv\Scripts\python.exe" "Z:\ck3_mod_rewrite\tools\run_acceptance.py" --scenario courtier-creator
+"Z:\ck3_mod_rewrite\tools\.venv\Scripts\python.exe" "Z:\ck3_mod_rewrite\tools\run_acceptance.py" --scenario balance-long --balance-fixture count
+"Z:\ck3_mod_rewrite\tools\.venv\Scripts\python.exe" "Z:\ck3_mod_rewrite\tools\run_balance_matrix.py"
+"Z:\ck3_mod_rewrite\tools\.venv\Scripts\python.exe" "Z:\ck3_mod_rewrite\tools\run_terminal_acceptance.py" --mode observer
+"Z:\ck3_mod_rewrite\tools\.venv\Scripts\python.exe" "Z:\ck3_mod_rewrite\tools\run_terminal_acceptance.py" --mode ironman
+"Z:\ck3_mod_rewrite\tools\.venv\Scripts\python.exe" "Z:\ck3_mod_rewrite\tools\run_vivhite_acceptance.py"
+"Z:\ck3_mod_rewrite\tools\.venv\Scripts\python.exe" "Z:\ck3_mod_rewrite\tools\run_vivhite_acceptance.py" --scenario vivhite-alone
+"Z:\ck3_mod_rewrite\tools\.venv\Scripts\python.exe" "Z:\ck3_mod_rewrite\tools\run_vivhite_acceptance.py" --scenario original-then-vivhite
+"Z:\ck3_mod_rewrite\tools\.venv\Scripts\python.exe" "Z:\ck3_mod_rewrite\tools\run_vivhite_acceptance.py" --scenario vivhite-then-original
 ```
 
 原 mod 场景基线与边界：
@@ -251,7 +256,7 @@ runner 共用同一套现场备份恢复、静态校验、工坊同步和 OCR �
 - 陈旧 crash control 绝不由 `prepare-profile`、`smoke` 或下一次启动自动删除。只能显式执行 `agent.py recover-stale-control --run-id <finalized-RED-run-id>`：在 state/launch 双锁内验证 source report 与归档哈希、环境和 game exe、record/ready/marker nonce、所有记录 identity 当前不存在、命名 Job 不存在、双源 CK3 清点稳定为空；成功 report 先以“active marker 已消失且 marker 归档哈希匹配”为完成条件写前日志，再做末次即时 inventory、末次 Job absence，最后用 nonce+哈希 CAS 归档 unsafe marker。该 CAS 是最后一次 recovery 证据/控制提交，之后不再写 recovery report/artifact；锁实现仍可清理自己的 owner 文件。write-ahead report 可在 CAS 前已含条件式 `ok=true`，单看该字段不算成功，必须由 `validate_recovery_report()` 同时观察 active marker absent 与归档 marker SHA-256 匹配。旧事故的外置 watchdog-final 不受源 report manifest 绑定，恢复证据必须明确 `source_report_bound=false`，不能把它当成历史 cleanup 证明。恢复另建 report，声明 `historical_cleanup_proven=false`、`current_absence_proven=true`，源 crash RED 永不修改或升级；任一未知、漂移或中途失败都保留/恢复 marker 并 RED。旧 RED `20260821T211059Z-crash-833b9587` 已由 `20260821T215805Z-recovery-46a3518c` 显式恢复并经 `validate_recovery_report()` 重放通过；源 report SHA-256 仍为 `eb429f5513f6610b433ee0349e571cd4f4fd8278cb666fbfc58c01896aa6a68f`，四份 control 原哈希归档且 active 路径消失。该恢复只解除阻塞，不改变旧 RED。
 - runtime 实现提交 `98d55caf3ed4a398b0a3bd7bc8e6ee16591d8f26` 在环境 SHA-256 `5e7fb63ef98a7fd802caa864b64c593053c68bfb5f1798321cde6b02d6cd0d5f` 下完成本轮资格：普通 `smoke` `20260821T215910Z-780cd6cb` 与 post-resume `crash-smoke` `20260821T220127Z-crash-adc0ac63` 均 finalized GREEN。该历史 normal 是 format v1：`validate_smoke_report()` 只复算其无密钥事件链、final tail 与 finalized/ok，下面的 load/cleanup/protected/production 硬字段另行逐项断言；`validate_crash_report()` 重放 crash 归档的完整 schema 与内部一致性。两次都是 non-debug、两帧可见【新游戏】、enabled inventory 精确单项本 mod、唯一隔离 production mount、零未知 mount；crash run 中真实 supervisor 精确句柄退出码 77，CK3 与两个 sentinel 所在命名 Job 销毁，四个 pinned handle 退出，watchdog 返回 0，四类 control 消失，双源 CK3 连续 5 秒为空，之后 protected postflight 与 production tree 复核通过。两份都没有作出游戏内玩法选择、`valid_score_episode=false`，不证明规则页已视觉确认 Growth+100，也不是有效得分局；ordinary/crash 的旧主菜单观察器可能发送合成 Alt 获取前台，不能将其称作全程零输入证明。
 - Phase B 的 `agent.py menu-smoke --timeout 180` 是独立 sealed lifecycle，不复用 acceptance 的导航或普通 smoke 的 OCR 聚焦副作用。命令在启动 CK3 前必须从当前 state 中找到同一 environment、时间有序的 self-contained format v2 ordinary GREEN 与 post-resume crash GREEN，完整重放后复制进本次 run；当前 runtime 一旦改变，旧资格自动失效。场景能力精确只有 `main_menu.new_game`，大厅 `bookmark_lobby.start_game` 必须保持 forbidden；fresh frame 后、任何鼠标移动前向主 `events.jsonl` fsync `ui_input_armed`，最终只允许一次 `SendInput(LEFTDOWN+LEFTUP)` 批次。GREEN 必须看到两帧稳定书签页，RED 必须保留实际 receipt/WAL 前缀并仍走受控清理。无害 Win32 helper 已实测 96 DPI、client/screen 换算、前台/Z-order/180×120 topmost 遮挡、WMI 空 `ExecutablePath` 的 pinned-handle 信任和两记录输入；桌面枚举中可见的 `(0,0,1,1)` ghost HWND 仅在宽高都不超过 1 时忽略，最终点击点仍须由 `WindowFromPoint` 精确命中。Windows foreground-lock 偶发拒绝 helper overlay 抢焦点时，夹具只记录实际前台结果，但独立 Z-order 遮挡反证仍必须拒绝目标像素。该 helper 不等于 CK3 实机输入；在提交、重新 prepare 并取得同环境两项资格前禁止运行 menu smoke。
-- 2026-08-22 的第一次真实菜单竖切以提交 `226d80e`、环境 `219c77d9d5e8b7e50e32314f2f8fcb57130fedc3c853880677e4149c425556ba`、ordinary `20260822T005515Z-03f296c7` 与 crash `20260822T005727Z-crash-38023ffc` 资格运行。`20260822T010001Z-menu-193c8062` 在任何 `ui_*` WAL、action receipt、鼠标移动或 `SendInput` 前因 CK3 失去前台而安全 RED；tracked cleanup、全局 CK3 空清点和 protected/production postflight 均完成。该不可变报告同时实测到 COM WMI 的 DMTF 创建时间 `20260822090033.870978+480` 与 PowerShell CIM UTC ISO `2026-08-22T01:00:33.8709780Z` 表示同一进程时刻，且 29 个 DLC mount 按引擎日志顺序而非字典序出现。回放器现严格解析两种时间后比较 UTC，并保留 DLC engine order、要求绝对白名单成员和不重复；旧 RED 已可原样回放但仍是 RED。后续前台协议在唯一窗口绑定后先 fsync `foreground_activation_planned/armed`，只允许一次 direct `SetForegroundWindow` 与至多一次 caller→当前 foreground thread 的严格 attach/detach fallback，detach 或身份未知时不重试；成功才写 finished attestation。`GetLastInputInfo` 相等只记录采样值未变，不证明无人输入。该修订改变 runtime，旧两项资格不能用于下一次菜单尝试。
+- 2026-08-22 的第一次真实菜单竖切以提交 `226d80e`、环境 `219c77d9d5e8b7e50e32314f2f8fcb57130fedc3c853880677e4149c425556ba`、ordinary `20260822T005515Z-03f296c7` 与 crash `20260822T005727Z-crash-38023ffc` 资格运行。`20260822T010001Z-menu-193c8062` 在任何 `ui_*` WAL、action receipt、鼠标移动或 `SendInput` 前因 CK3 失去前台而安全 RED；tracked cleanup、全局 CK3 空清点和 protected/production postflight 均完成。该不可变报告同时实测到 COM WMI 的 DMTF 创建时间 `20260822090033.870978+480` 与 legacy shell CIM UTC ISO `2026-08-22T01:00:33.8709780Z` 表示同一进程时刻，且 29 个 DLC mount 按引擎日志顺序而非字典序出现。回放器现严格解析两种时间后比较 UTC，并保留 DLC engine order、要求绝对白名单成员和不重复；旧 RED 已可原样回放但仍是 RED。后续前台协议在唯一窗口绑定后先 fsync `foreground_activation_planned/armed`，只允许一次 direct `SetForegroundWindow` 与至多一次 caller→当前 foreground thread 的严格 attach/detach fallback，detach 或身份未知时不重试；成功才写 finished attestation。`GetLastInputInfo` 相等只记录采样值未变，不证明无人输入。该修订改变 runtime，旧两项资格不能用于下一次菜单尝试。
 - 提交 `af3df58` 在环境 `31e68f6d8e439643a7ff8fcb6029d72f93a85ead2d74bb58d24042c382753f72` 下重新取得 ordinary `20260822T020912Z-7dc8269d` 与 crash `20260822T021144Z-crash-b010d18c` 两项 GREEN。唯一一次后续菜单 run `20260822T021436Z-menu-c9b3d667` 在稳定主菜单观察前因客户区被外部置顶窗口 `(2130,1095)-(2560,1392)` 遮挡而安全 RED。公开回放确认无 `visible_main_menu_attested`、`ui_*`、receipt、鼠标或 `SendInput`，tracked cleanup、双源空清点与 protected/production postflight 完整。事后只读活体查询把 HWND 定位为 Kaspersky `avpui.exe` 的 WPF `AlertWindow`，但原 run 只绑定 HWND/矩形，产品身份不是历史归档证明。自主玩家不自动关闭安全软件通知；外部窗口须由用户自行处理，原 run/候选不得重试。
 - 后续 ordinary producer/report 已升级到 format v2：两帧 PNG/OCR、initial/final debug 前缀、load、diagnostics、精确 process/pre-resume/shutdown、protected、production 与完整 artifact inventory 全部使用 run-relative 引用，公开 `validate_smoke_report()` 从归档字节重跑 OCR、日志解析和硬条件，并支持搬移后删除源目录。最终 event 先以 report-body hash 写入并 fsync；最终 report 用同目录临时文件先 flush/fsync，再 atomic replace provisional。live 菜单资格和新 archive 只接受 v2 normal；v1 仅允许外层为历史 RED、且没有任何 `ui_*` 输入 WAL、bookmark、navigation、action/receipt 的菜单档只读回放；纯观察 PNG/JSON 可以保留，但永不授权输入。无密钥 SHA-256 仍只证明 archive schema 与内部一致性，不证明历史执行真实性。该升级改变 runtime 指纹，因此 `af3df58` 的 ordinary/crash 资格只保留为历史证据，下一次尝试必须在新提交与新 environment 下重新取得两项资格。
 - 提交 `38fd5fa` 在环境 `75f8c6b0271d82183ba2d345a48e4a191e36ea2fd85d98b9a8d30327ce6c7367` 下取得 ordinary v2 `20260822T033531Z-9a595275` 与 crash `20260822T033759Z-crash-f289e776` 两项公开回放 GREEN。唯一菜单 run `20260822T034104Z-menu-49f9b8bd` 的 foreground transaction 以 `already_foreground` 完成，且未调用 SetForeground/attach/合成输入；两次已落盘 capture 都通过前后 foreground/unobscured guard，但 PNG 是 2560×1440 全黑、OCR 为空，第三次 capture 的前或后 guard 才报告 foreground lost。主链无 visible 主菜单、`ui_*`、bookmark、navigation、action/receipt 或 SendInput，cleanup、双源空清点、protected 与 production postflight 全部通过。旧异常未保存失败瞬间的 actual foreground HWND/PID/TID，因此当前档不能区分外部抢焦、同进程另一 HWND 或空前台；下一提交必须先把单次只读 loss sample 绑定进主链与公开 RED replay，禁止用延时或第二次 foreground activation 猜测性重试。
@@ -816,16 +821,8 @@ live variant；production runner 实际从共享条目解析一个真实 encount
   `profile/save games/xar_checkpoint.ck3` 与 `native-session/driver-state.json`；副本继续使用 driver state 已绑定的 pipe 名，
   然后从包含候选 Python policy 的干净 runtime 执行：
 
-  ```powershell
-  & "<python>" "<candidate-runtime>\ck3_autonomous_player\agent.py" `
-    --state-dir "<fresh-cloned-state>" `
-    --game-dir "<CK3-dir>" `
-    --bridge-mode native-headless `
-    --bridge-pipe "<checkpoint-driver-state-pipe>" `
-    --bridge-dll "<exact-build-xar_ck3_bridge.dll>" `
-    --bridge-injector "<exact-build-xar_ck3_bridge_injector.exe>" `
-    native-auto-run --turns 40 --timeout 7200 --readiness-timeout 300 `
-    --cold-start-checkpoint
+  ```text
+  "<python>" "<candidate-runtime>\ck3_autonomous_player\agent.py" --state-dir "<fresh-cloned-state>" --game-dir "<CK3-dir>" --bridge-mode native-headless --bridge-pipe "<checkpoint-driver-state-pipe>" --bridge-dll "<exact-build-xar_ck3_bridge.dll>" --bridge-injector "<exact-build-xar_ck3_bridge_injector.exe>" native-auto-run --turns 40 --timeout 7200 --readiness-timeout 300 --cold-start-checkpoint
   ```
 
   旧 production artifact 直接作为 speed-1 baseline，不重复消耗一次 CK3 长跑。候选若在 40 turns 内没有至少 6 个
@@ -1178,8 +1175,12 @@ live variant；production runner 实际从共享条目解析一个真实 encount
 
 在每个环节插 `debug_log = "XAR: <步骤名>"`（项目约定 XAR: 前缀），然后：
 
-```powershell
-(Select-String -Path "...\logs\debug.log" -Pattern "XAR:").Line
+```python
+from pathlib import Path
+
+for line in Path(".../logs/debug.log").read_text(encoding="utf-8", errors="replace").splitlines():
+    if "XAR:" in line:
+        print(line)
 ```
 
 链条断在哪一目了然。生成器生成的文件也可以带标记（本项目导入 scripted_gui 每条都带 k 值标记）。
@@ -1472,15 +1473,8 @@ CharacterID=29829`。GEN-032 第三次 runner 在 `episode_complete` 返回，�
 
 正式命令（运行时另设置本 worktree 的 Git safe-directory 临时环境，不修改全局配置）：
 
-```powershell
-& "Z:\ck3_mod_rewrite\tools\.venv\Scripts\python.exe" ck3_autonomous_player\agent.py `
-  --state-dir "C:\Users\xenoa\AppData\Local\Temp\xar-marriage-reject-c21c096-state" `
-  --game-dir "Z:\ck3_mod_rewrite\Crusader Kings III" `
-  --bridge-mode native-headless --bridge-pipe "\\.\pipe\xar_ck3_restore_exact2_7aff1d0" `
-  --bridge-dll "C:\Users\xenoa\AppData\Local\Temp\xar-gen031-war-query-build-20260828T2025\xar_ck3_bridge.dll" `
-  --bridge-injector "C:\Users\xenoa\AppData\Local\Temp\xar-gen031-war-query-build-20260828T2025\xar_ck3_bridge_injector.exe" `
-  native-next-episode --max-turns 30 --timeout 1800 --readiness-timeout 300 `
-  --checkpoint-every-advances 1 --route-contact-speed 3
+```text
+"Z:\ck3_mod_rewrite\tools\.venv\Scripts\python.exe" ck3_autonomous_player\agent.py --state-dir "C:\Users\xenoa\AppData\Local\Temp\xar-marriage-reject-c21c096-state" --game-dir "Z:\ck3_mod_rewrite\Crusader Kings III" --bridge-mode native-headless --bridge-pipe "\\.\pipe\xar_ck3_restore_exact2_7aff1d0" --bridge-dll "C:\Users\xenoa\AppData\Local\Temp\xar-gen031-war-query-build-20260828T2025\xar_ck3_bridge.dll" --bridge-injector "C:\Users\xenoa\AppData\Local\Temp\xar-gen031-war-query-build-20260828T2025\xar_ck3_bridge_injector.exe" native-next-episode --max-turns 30 --timeout 1800 --readiness-timeout 300 --checkpoint-every-advances 1 --route-contact-speed 3
 ```
 
 三次 artifact 均独立保留：
@@ -1588,12 +1582,8 @@ transport 可以先连接并持续 heartbeat，但 CK3 仍可能卡在 database/
 
 仓库工具 `tools/zg361_phase2_loader_stage.py` 把这条经验做成了可执行门：
 
-```powershell
-py tools/zg361_phase2_loader_stage.py `
-  --log-dir "<isolated-userdir>\logs" `
-  --progress-jsonl "<artifacts>\loader-stage-progress.jsonl" `
-  --timeout-seconds 300 `
-  --fatal-stall-seconds 45
+```text
+py tools/zg361_phase2_loader_stage.py --log-dir "<isolated-userdir>\logs" --progress-jsonl "<artifacts>\loader-stage-progress.jsonl" --timeout-seconds 300 --fatal-stall-seconds 45
 ```
 
 - 输入只允许 CK3 自己 append 的 `debug.log/error.log`；输出也只 append JSONL。监控者不得轮询读取另一个 producer 正在
@@ -1612,7 +1602,7 @@ py tools/zg361_phase2_loader_stage.py `
 
 离线门禁：
 
-```powershell
+```text
 py tools/test_zg361_phase2_loader_stage.py
 py -O tools/test_zg361_phase2_loader_stage.py
 py tools/test_zg361_phase2_seed_fixture.py
@@ -1649,7 +1639,7 @@ Confirm/Continue 与明确外部商业上下文组合时硬停；外部商业与
 后置状态。共享模块只接收本次 runner 的 isolated
 userdir；不会读取、复制或修改真实 profile。相关无启动回归：
 
-```powershell
+```text
 py -m unittest ck3_autonomous_player.tests.unit.test_raiktor_war_bound_capture_runner
 py -m unittest tools.test_zhongguo_phase2_promo_runner_plumbing
 py tools/test_run_zg361_phase2_seed_capture.py
@@ -1956,12 +1946,8 @@ provenance 的 R375 单玩家 `SAV0101` 后，fresh PID 立即恢复玩家 `3290
 `tools/inspect_ck3_save_player_topology.py` 把 R482 前曾临时执行的 Rakaly 文本扫描迁成通用 CLI。工具不绑定账号、机器路径、
 轮次或固定角色；调用者显式传入 save、Rakaly executable 和可选的目标 CharacterID：
 
-```powershell
-py tools/inspect_ck3_save_player_topology.py `
-  --save <checkpoint.ck3> `
-  --rakaly <rakaly.exe> `
-  --player-character-id <CharacterID> `
-  --output <report.json>
+```text
+py tools/inspect_ck3_save_player_topology.py --save <checkpoint.ck3> --rakaly <rakaly.exe> --player-character-id <CharacterID> --output <report.json>
 ```
 
 输出合同为 `ck3_save_player_topology_offline_v1`。它记录 source/Rakaly/melted SHA-256、游戏版本、metadata 玩家数、全部
@@ -2607,7 +2593,7 @@ B1 fix 与 AF5 terminal 是独立 P1 工作包，各自使用 hash-bound product
 
 当短验收在事件链中途到达绝对日期边界时，可在下一次启动前运行：
 
-```powershell
+```text
 py tools/inspect_ck3_save_scheduled_events.py --save <checkpoint.ck3> --rakaly <rakaly.exe> --event-prefix zg361b1. --root-character-id 29037 --output <report.json>
 ```
 
@@ -2629,7 +2615,7 @@ R490 证明 45 日不是充分上限：共同上级合账已成功，随后才�
 
 通用离线检查命令为：
 
-```powershell
+```text
 py tools/inspect_ck3_save_character_scope.py --melted <gamestate> --root-character-id <id> --root-variable <name> --list <name> --referenced-variable <name> --output <report.json>
 ```
 
@@ -2645,7 +2631,7 @@ R494 的 `ep3_interactions_events.0630` 在 source 后第 88 个游戏日到达�
 
 需要从冻结世界枚举未知 root 时，使用同一通用工具的 discovery 模式：
 
-```powershell
+```text
 py tools/inspect_ck3_save_character_scope.py --melted <gamestate> --discover-root-variable <name> --root-variable <name> --list <name> --referenced-variable <name> --output <report.json>
 ```
 
@@ -2740,7 +2726,7 @@ exact-build provenance 和 Stage 10 专用 readiness。源 RED 的 `result` 不�
 字段”这一已实证误判。真实产品失败、未出现目标事件、角色/帧不一致、F 未终结、
 越界或已提交目标 ACK 都继续返回 RED。聚焦验证命令为：
 
-```powershell
+```text
 py tools/test_extract_zg361_stage10_terminal_gate.py -v
 py -O tools/test_extract_zg361_stage10_terminal_gate.py -v
 ```
@@ -2759,7 +2745,7 @@ production entry 的绝对日期截止并在运行中执行。operator 只暴露
 registry 组装。到达目标、出现新 RED 或用尽 30 日边界后立即 cleanup；不得为
 单个来源继续扩大观察窗。聚焦静态命令为：
 
-```powershell
+```text
 py tools/test_zg361_phase2_endgame_source_action_cell.py
 py tools/test_zg361_phase2_endgame_source_operator_job.py
 py -O tools/test_zg361_phase2_endgame_source_action_cell.py

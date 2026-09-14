@@ -118,36 +118,17 @@ profile 已在 `7bc0e4f` runtime 下重新 prepare 并 verify（没有启动 CK3
 
 若源代码没有变化，接手时不需要再次 prepare；可直接 `verify-profile`。若确实修改了 runtime，才重新 prepare/verify 并记录新哈希：
 
-```powershell
-$env:GIT_CONFIG_COUNT='1'
-$env:GIT_CONFIG_KEY_0='safe.directory'
-$env:GIT_CONFIG_VALUE_0='C:/Users/xenoa/AppData/Local/Temp/xar-agent-mainline-worktree-20260827-1254'
-& 'Z:\ck3_mod_rewrite\tools\.venv\Scripts\python.exe' 'ck3_autonomous_player\agent.py' `
-  --state-dir 'C:\Users\xenoa\AppData\Local\Temp\xar-marriage-reject-c21c096-state' `
-  --game-dir 'Z:\ck3_mod_rewrite\Crusader Kings III' --bridge-mode disabled prepare-profile
-& 'Z:\ck3_mod_rewrite\tools\.venv\Scripts\python.exe' 'ck3_autonomous_player\agent.py' `
-  --state-dir 'C:\Users\xenoa\AppData\Local\Temp\xar-marriage-reject-c21c096-state' `
-  --game-dir 'Z:\ck3_mod_rewrite\Crusader Kings III' --bridge-mode disabled verify-profile
+```text
+py tools/run_with_env.py --env GIT_CONFIG_COUNT=1 --env GIT_CONFIG_KEY_0=safe.directory --env GIT_CONFIG_VALUE_0=C:/Users/xenoa/AppData/Local/Temp/xar-agent-mainline-worktree-20260827-1254 -- "Z:\ck3_mod_rewrite\tools\.venv\Scripts\python.exe" "ck3_autonomous_player\agent.py" --state-dir "C:\Users\xenoa\AppData\Local\Temp\xar-marriage-reject-c21c096-state" --game-dir "Z:\ck3_mod_rewrite\Crusader Kings III" --bridge-mode disabled prepare-profile
+py tools/run_with_env.py --env GIT_CONFIG_COUNT=1 --env GIT_CONFIG_KEY_0=safe.directory --env GIT_CONFIG_VALUE_0=C:/Users/xenoa/AppData/Local/Temp/xar-agent-mainline-worktree-20260827-1254 -- "Z:\ck3_mod_rewrite\tools\.venv\Scripts\python.exe" "ck3_autonomous_player\agent.py" --state-dir "C:\Users\xenoa\AppData\Local\Temp\xar-marriage-reject-c21c096-state" --game-dir "Z:\ck3_mod_rewrite\Crusader Kings III" --bridge-mode disabled verify-profile
 ```
 
 ## 2026-08-29 零启动恢复前检 artifact
 
 在不启动 CK3、不操作桌面且不加载 DLL/injector 的条件下，已对本交接唯一恢复点执行正式 preflight：
 
-```powershell
-$env:GIT_CONFIG_COUNT='1'
-$env:GIT_CONFIG_KEY_0='safe.directory'
-$env:GIT_CONFIG_VALUE_0='C:/Users/xenoa/AppData/Local/Temp/xar-agent-mainline-worktree-20260827-1254'
-& 'Z:\ck3_mod_rewrite\tools\.venv\Scripts\python.exe' 'ck3_autonomous_player\agent.py' `
-  --state-dir 'C:\Users\xenoa\AppData\Local\Temp\xar-marriage-reject-c21c096-state' `
-  --game-dir 'Z:\ck3_mod_rewrite\Crusader Kings III' `
-  --bridge-mode disabled `
-  --bridge-pipe '\\.\pipe\xar_ck3_restore_exact2_7aff1d0' `
-  native-one-generation-preflight `
-  --expected-character-id 29829 `
-  --expected-episode-run-id 'native-29829-ee172aa720db' `
-  --expected-checkpoint-sha256 '0DF9CB6615FC19B89D4067F74C72E23221B84A337795546957725DB455C4869C' `
-  --expected-driver-state-sha256 'E066C1D45673D54DB2E3A58D9C0EE2B1EE8ADB4909936C4534B3A94A04DDFD00'
+```text
+py tools/run_with_env.py --env GIT_CONFIG_COUNT=1 --env GIT_CONFIG_KEY_0=safe.directory --env GIT_CONFIG_VALUE_0=C:/Users/xenoa/AppData/Local/Temp/xar-agent-mainline-worktree-20260827-1254 -- "Z:\ck3_mod_rewrite\tools\.venv\Scripts\python.exe" "ck3_autonomous_player\agent.py" --state-dir "C:\Users\xenoa\AppData\Local\Temp\xar-marriage-reject-c21c096-state" --game-dir "Z:\ck3_mod_rewrite\Crusader Kings III" --bridge-mode disabled --bridge-pipe "\\.\pipe\xar_ck3_restore_exact2_7aff1d0" native-one-generation-preflight --expected-character-id 29829 --expected-episode-run-id native-29829-ee172aa720db --expected-checkpoint-sha256 0DF9CB6615FC19B89D4067F74C72E23221B84A337795546957725DB455C4869C --expected-driver-state-sha256 E066C1D45673D54DB2E3A58D9C0EE2B1EE8ADB4909936C4534B3A94A04DDFD00
 ```
 
 - run：`20260829T144043Z-one-generation-preflight-5f4202db`
@@ -205,19 +186,8 @@ run dir：
 先执行上一节的 `native-one-generation-preflight` 并取得精确四项 pin 的 GREEN，再确认当前 `origin/master` 包含 runtime baseline
 `7bc0e4f` 与本交接文档。然后在 mainline worktree 运行：
 
-```powershell
-$env:GIT_CONFIG_COUNT='1'
-$env:GIT_CONFIG_KEY_0='safe.directory'
-$env:GIT_CONFIG_VALUE_0='C:/Users/xenoa/AppData/Local/Temp/xar-agent-mainline-worktree-20260827-1254'
-& 'Z:\ck3_mod_rewrite\tools\.venv\Scripts\python.exe' 'ck3_autonomous_player\agent.py' `
-  --state-dir 'C:\Users\xenoa\AppData\Local\Temp\xar-marriage-reject-c21c096-state' `
-  --game-dir 'Z:\ck3_mod_rewrite\Crusader Kings III' `
-  --bridge-mode native-headless `
-  --bridge-pipe '\\.\pipe\xar_ck3_restore_exact2_7aff1d0' `
-  --bridge-dll 'C:\Users\xenoa\AppData\Local\Temp\xar-gen031-war-query-build-20260828T2025\xar_ck3_bridge.dll' `
-  --bridge-injector 'C:\Users\xenoa\AppData\Local\Temp\xar-gen031-war-query-build-20260828T2025\xar_ck3_bridge_injector.exe' `
-  native-one-generation --max-turns 50000 --timeout 604800 `
-  --readiness-timeout 300 --checkpoint-every-advances 3 --route-contact-speed 3
+```text
+py tools/run_with_env.py --env GIT_CONFIG_COUNT=1 --env GIT_CONFIG_KEY_0=safe.directory --env GIT_CONFIG_VALUE_0=C:/Users/xenoa/AppData/Local/Temp/xar-agent-mainline-worktree-20260827-1254 -- "Z:\ck3_mod_rewrite\tools\.venv\Scripts\python.exe" "ck3_autonomous_player\agent.py" --state-dir "C:\Users\xenoa\AppData\Local\Temp\xar-marriage-reject-c21c096-state" --game-dir "Z:\ck3_mod_rewrite\Crusader Kings III" --bridge-mode native-headless --bridge-pipe "\\.\pipe\xar_ck3_restore_exact2_7aff1d0" --bridge-dll "C:\Users\xenoa\AppData\Local\Temp\xar-gen031-war-query-build-20260828T2025\xar_ck3_bridge.dll" --bridge-injector "C:\Users\xenoa\AppData\Local\Temp\xar-gen031-war-query-build-20260828T2025\xar_ck3_bridge_injector.exe" native-one-generation --max-turns 50000 --timeout 604800 --readiness-timeout 300 --checkpoint-every-advances 3 --route-contact-speed 3
 ```
 
 stationary speed 3 已是 production 默认，不需要旧 canary flag。不要重复 20-turn canary；直接执行正式长跑。

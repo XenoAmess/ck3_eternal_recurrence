@@ -106,7 +106,7 @@ AK: DRAFTED → PILOTED → EFFECTIVE → AUDITED → MEASURED → MIGRATED
 
 验证命令：
 
-```powershell
+```text
 py -m py_compile mod_zhongguo_style/tools/zg361_phase2_manager_talent_model.py mod_zhongguo_style/tools/test_zg361_phase2_manager_talent_model.py
 py mod_zhongguo_style/tools/test_zg361_phase2_manager_talent_model.py
 git diff --check -- mod_zhongguo_style/tools/zg361_phase2_manager_talent_model.py mod_zhongguo_style/tools/test_zg361_phase2_manager_talent_model.py mod_zhongguo_style/docs/361-phase2-manager-talent-runtime-spec.md

@@ -13,7 +13,7 @@
 
 运行：
 
-```powershell
+```text
 py tools/compose_auto_upgrade_buildings_decision_art.py
 py tools/compose_auto_upgrade_buildings_decision_art.py --check
 ```

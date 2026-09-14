@@ -74,7 +74,7 @@ flowchart TD
 
 2026-09-11 在仓库根实际执行：
 
-```powershell
+```text
 py -m unittest discover -s ck3_autonomous_player/tests/unit -p test_zhongguo_workforce_owner_snapshot_v1_bridge.py -q
 # Ran 6 tests; OK
 

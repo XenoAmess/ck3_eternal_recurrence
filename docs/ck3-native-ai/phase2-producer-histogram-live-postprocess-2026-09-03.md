@@ -42,11 +42,8 @@ the runner's bound bridge PID. A mismatch is RED, not an observation result.
 
 The parser is read-only and never starts CK3:
 
-```powershell
-py -B ck3_autonomous_player/native_bridge/research/analyze_phase2_producer_histogram_live.py `
-  --runner-report <attempt>/artifacts/runner-report.json `
-  --observer-manifest <frozen-native-seam.json> `
-  --output <attempt>/artifacts/producer-histogram-v2-postprocess.json
+```text
+py -B ck3_autonomous_player/native_bridge/research/analyze_phase2_producer_histogram_live.py --runner-report <attempt>/artifacts/runner-report.json --observer-manifest <frozen-native-seam.json> --output <attempt>/artifacts/producer-histogram-v2-postprocess.json
 ```
 
 ## Decision gate

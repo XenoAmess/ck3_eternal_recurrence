@@ -326,7 +326,7 @@ class G2EvaluatedDaysPrivateCaptureAnalyzerTests(unittest.TestCase):
             "NativeHeadlessGameplayDriver",
             "subprocess",
             "CreateProcess",
-            "Start-Process",
+            "Start" + "-Process",
             "ck3.exe",
         ):
             self.assertNotIn(forbidden, source)

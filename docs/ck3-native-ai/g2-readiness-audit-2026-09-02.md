@@ -84,9 +84,8 @@ attacker/defender/claimant roles, exact-build provenance, equal non-negative
 
 Static contract tests:
 
-```powershell
-$env:PYTHONPATH = 'ck3_autonomous_player/src'
-py -3.13 -m unittest ck3_autonomous_player.tests.unit.test_raiktor_truce_probe -v
+```text
+py tools/run_with_env.py --env PYTHONPATH=ck3_autonomous_player/src -- py -3.13 -m unittest ck3_autonomous_player.tests.unit.test_raiktor_truce_probe -v
 ```
 
 These tests use synthetic payloads and the frozen source contract only; they
@@ -101,19 +100,11 @@ The canonical checkout is `Z:\workspace\open_kaishek` on `main` (also
 contract commit `b306a95`).  Bind the checkout and jar explicitly, then run a
 fixture-only smoke before any future parent acceptance command:
 
-```powershell
-$kaishekRoot = 'Z:\workspace\open_kaishek'
-$kaishekJar = Join-Path $kaishekRoot 'kaishek-cli\target\kaishek-cli-0.1.0-SNAPSHOT.jar'
-$java = 'C:\jdk-21\bin\java.exe'
-
+```text
 # Build with a writable Maven repository when the default C:\.m2 is unavailable.
 # The build is optional if the jar was already built from the bound commit.
-mvn -o -ntp -Dmaven.repo.local='Z:\ck3_mod_rewrite\_g2-maven-repo' `
-  -f (Join-Path $kaishekRoot 'pom.xml') -DskipTests package
-
-& $java -jar $kaishekJar preflight `
-  --profile ck3-1.19.0.6-zg361 `
-  --fixture synthetic-361-014
+mvn -o -ntp -Dmaven.repo.local=Z:\ck3_mod_rewrite\_g2-maven-repo -f Z:\workspace\open_kaishek\pom.xml -DskipTests package
+C:\jdk-21\bin\java.exe -jar Z:\workspace\open_kaishek\kaishek-cli\target\kaishek-cli-0.1.0-SNAPSHOT.jar preflight --profile ck3-1.19.0.6-zg361 --fixture synthetic-361-014
 ```
 
 The command emits one JSON object with schema
@@ -129,10 +120,8 @@ are superseded and must not be used as current provenance.
 
 For the loader boundary, the intentionally RED diagnostic fixture is:
 
-```powershell
-& $java -jar $kaishekJar preflight `
-  --profile ck3-1.19.0.6-zg361 `
-  --fixture ck3-calculated-value-014
+```text
+C:\jdk-21\bin\java.exe -jar Z:\workspace\open_kaishek\kaishek-cli\target\kaishek-cli-0.1.0-SNAPSHOT.jar preflight --profile ck3-1.19.0.6-zg361 --fixture ck3-calculated-value-014
 ```
 
 Its expected diagnostic is

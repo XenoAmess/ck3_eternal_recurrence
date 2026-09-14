@@ -216,7 +216,7 @@ X 的执行顺序是语义顺序而非编号排序：先冻结 #201 时间线，
 
 本包可执行：
 
-```powershell
+```text
 py tools/gen_361_incident_platform_runtime.py --check
 py -m unittest -v tools/test_zg361_incident_platform_runtime.py
 ```

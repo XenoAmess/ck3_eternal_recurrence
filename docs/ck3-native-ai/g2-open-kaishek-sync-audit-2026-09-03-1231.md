@@ -63,10 +63,8 @@ schema 的显式负夹具、测试、CLI 注册和边界文档；既有
 - shaded CLI JAR SHA-256：
   `FC85947E9976B80345C10A9789A6520C8ABCEF557365284570C18C4677D891CC`
 
-```powershell
-& 'Z:\ck3_mod_rewrite\tools\.venv\Scripts\python.exe' `
-  'ck3_autonomous_player/native_bridge/research/verify_g2_open_kaishek_compatibility.py' `
-  --checkout 'Z:\workspace\open_kaishek' --require-checkout --require-clean
+```text
+'Z:\ck3_mod_rewrite\tools\.venv\Scripts\python.exe' 'ck3_autonomous_player/native_bridge/research/verify_g2_open_kaishek_compatibility.py' --checkout 'Z:\workspace\open_kaishek' --require-checkout --require-clean
 ```
 
 结果：`status=GREEN_STATIC`、`ok=true`；root capability/profile/commit、

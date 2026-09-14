@@ -123,34 +123,18 @@ authoring promotion 会逐项强制核对这 16 个槽：顺序必须与该 cut 
 
 ## 无媒体校验
 
-```powershell
-py mod_zhongguo_style/tools/validate_phase2_authoring_claims.py `
-  --ledger mod_zhongguo_style/promo/phase2-authoring-character-claims.json `
-  --validate-only
+```text
+py mod_zhongguo_style/tools/validate_phase2_authoring_claims.py --ledger mod_zhongguo_style/promo/phase2-authoring-character-claims.json --validate-only
 
-py mod_zhongguo_style/tools/validate_phase2_authoring_claims.py `
-  --ledger mod_zhongguo_style/promo/phase2-authoring-institution-claims.json `
-  --validate-only
+py mod_zhongguo_style/tools/validate_phase2_authoring_claims.py --ledger mod_zhongguo_style/promo/phase2-authoring-institution-claims.json --validate-only
 ```
 
 两份 no-media runbook 使用同一个 `<GREEN_EIGHT_SPAN_CAPTURE>`，但必须指定不同的新目录：
 
-```powershell
-py tools/plan_zhongguo_phase2_final_promo.py `
-  --project-config mod_zhongguo_style/promo/phase2-promo-character-project.json `
-  --authoring-ledger mod_zhongguo_style/promo/phase2-authoring-character-claims.json `
-  --capture-root <GREEN_EIGHT_SPAN_CAPTURE> `
-  --tts-cache <SHARED_CONTENT_ADDRESSED_CACHE> `
-  --work-dir <NEW_CHARACTER_WORK_DIR> `
-  --output <NEW_CHARACTER_RUNBOOK_JSON>
+```text
+py tools/plan_zhongguo_phase2_final_promo.py --project-config mod_zhongguo_style/promo/phase2-promo-character-project.json --authoring-ledger mod_zhongguo_style/promo/phase2-authoring-character-claims.json --capture-root <GREEN_EIGHT_SPAN_CAPTURE> --tts-cache <SHARED_CONTENT_ADDRESSED_CACHE> --work-dir <NEW_CHARACTER_WORK_DIR> --output <NEW_CHARACTER_RUNBOOK_JSON>
 
-py tools/plan_zhongguo_phase2_final_promo.py `
-  --project-config mod_zhongguo_style/promo/phase2-promo-institution-project.json `
-  --authoring-ledger mod_zhongguo_style/promo/phase2-authoring-institution-claims.json `
-  --capture-root <GREEN_EIGHT_SPAN_CAPTURE> `
-  --tts-cache <SHARED_CONTENT_ADDRESSED_CACHE> `
-  --work-dir <NEW_INSTITUTION_WORK_DIR> `
-  --output <NEW_INSTITUTION_RUNBOOK_JSON>
+py tools/plan_zhongguo_phase2_final_promo.py --project-config mod_zhongguo_style/promo/phase2-promo-institution-project.json --authoring-ledger mod_zhongguo_style/promo/phase2-authoring-institution-claims.json --capture-root <GREEN_EIGHT_SPAN_CAPTURE> --tts-cache <SHARED_CONTENT_ADDRESSED_CACHE> --work-dir <NEW_INSTITUTION_WORK_DIR> --output <NEW_INSTITUTION_RUNBOOK_JSON>
 ```
 
 runbook 会把正确的 `--cut`、配置、默认 run ID、artifact ID 与输出路径写入后续命令。正式制作前仍须先 fresh fetch/fast-forward
@@ -168,142 +152,19 @@ legacy 名称，以免审阅者无法判断正在签哪一个版本。
 
 ### 人物线版本
 
-```powershell
-$Repo = 'Z:\ck3_mod_rewrite\_root-promo-split-20260902'
-$Promo = 'Z:\workspace\xar_promo_toolchain'
-$Python = 'Z:\ck3_mod_rewrite\tools\.venv\Scripts\python.exe'
-$Capture = '<GREEN_EIGHT_SPAN_CAPTURE>'
-$SeedPreflight = '<GREEN_SEED_PREFLIGHT_JSON>'
-$TtsCache = '<SHARED_CONTENT_ADDRESSED_TTS_CACHE>'
-$Work = '<NEW_CHARACTER_WORK_DIR>'
-$Authoring = "$Work-authoring"
-$env:XAR_PROMO_SOURCE = $Promo
-$env:PYTHONPATH = (Join-Path $Promo 'src')
-
-git -C $Promo fetch origin
-git -C $Promo merge --ff-only origin/main
-if (git -C $Promo status --short) { throw 'promo tool checkout is dirty' }
-$ToolHead = git -C $Promo rev-parse HEAD
-if ($ToolHead -ne (git -C $Promo rev-parse origin/main)) { throw 'promo tool HEAD != origin/main' }
-
-& $Python "$Repo\tools\zhongguo_phase2_footage_intake.py" `
-  --capture-root $Capture --output "$Authoring\footage-intake.json"
-
-# 这里暂停：具名审阅者按人物线 source checklist 以 1.0x 看完八段原片，
-# 将真实签署的 zg361_phase2_source_review_receipt 写入下列路径。
-$SourceReview = "$Authoring\source-review-receipt.json"
-
-& $Python "$Repo\mod_zhongguo_style\tools\promote_phase2_reviewed_authoring.py" `
-  --project-config "$Repo\mod_zhongguo_style\promo\phase2-promo-character-project.json" `
-  --authoring-ledger "$Repo\mod_zhongguo_style\promo\phase2-authoring-character-claims.json" `
-  --footage-intake-report "$Authoring\footage-intake.json" `
-  --source-review-receipt $SourceReview `
-  --output-project "$Authoring\phase2-promo-character-project.json" `
-  --output-receipt "$Authoring\authoring-promotion-receipt.json"
-
-& $Python "$Repo\mod_zhongguo_style\tools\preflight_phase2_media.py" `
-  --output "$Authoring\media-preflight.json" `
-  --project-config "$Authoring\phase2-promo-character-project.json" `
-  --expected-toolchain-head $ToolHead --capture-root $Capture `
-  --planned-work-dir $Work --planned-tts-cache $TtsCache
-$MediaSha = (Get-FileHash -Algorithm SHA256 "$Authoring\media-preflight.json").Hash
-
-& $Python "$Repo\mod_zhongguo_style\tools\prime_phase2_tts_cache.py" `
-  --cut character-led `
-  --project-config "$Authoring\phase2-promo-character-project.json" `
-  --media-preflight-report "$Authoring\media-preflight.json" `
-  --expected-media-preflight-sha256 $MediaSha --tts-cache $TtsCache `
-  --output "$Authoring\tts-cache-prime-receipt.json"
-
-& $Python "$Repo\mod_zhongguo_style\tools\build_phase2_promo_video.py" `
-  --cut character-led `
-  --project-config "$Authoring\phase2-promo-character-project.json" `
-  --capture-root $Capture --seed-preflight-report $SeedPreflight `
-  --media-preflight-report "$Authoring\media-preflight.json" `
-  --expected-media-preflight-sha256 $MediaSha `
-  --work-dir $Work --tts-cache $TtsCache `
-  --run-id phase2-character-led-candidate --validate-only
-
-& $Python "$Repo\mod_zhongguo_style\tools\build_phase2_promo_video.py" `
-  --cut character-led `
-  --project-config "$Authoring\phase2-promo-character-project.json" `
-  --capture-root $Capture --seed-preflight-report $SeedPreflight `
-  --media-preflight-report "$Authoring\media-preflight.json" `
-  --expected-media-preflight-sha256 $MediaSha `
-  --work-dir $Work --tts-cache $TtsCache `
-  --run-id phase2-character-led-candidate
+```text
+Z:\ck3_mod_rewrite\tools\.venv\Scripts\python.exe mod_zhongguo_style\tools\run_phase2_cut_pipeline.py --repository Z:\ck3_mod_rewrite\_root-promo-split-20260902 --python Z:\ck3_mod_rewrite\tools\.venv\Scripts\python.exe build --cut character-led --toolchain Z:\workspace\xar_promo_toolchain --capture <GREEN_EIGHT_SPAN_CAPTURE> --seed-preflight <GREEN_SEED_PREFLIGHT_JSON> --tts-cache <SHARED_CONTENT_ADDRESSED_TTS_CACHE> --work-dir <NEW_CHARACTER_WORK_DIR> --source-review-receipt <NEW_CHARACTER_WORK_DIR>-authoring\source-review-receipt.json
 ```
 
-人物线候选固定落到 `$Work\deliverable\zhongguo-361-phase2-character-led.mp4`。
+人物线候选固定落到 `<NEW_CHARACTER_WORK_DIR>\deliverable\zhongguo-361-phase2-character-led.mp4`。
 
 ### 制度群像版本
 
-```powershell
-$Repo = 'Z:\ck3_mod_rewrite\_root-promo-split-20260902'
-$Promo = 'Z:\workspace\xar_promo_toolchain'
-$Python = 'Z:\ck3_mod_rewrite\tools\.venv\Scripts\python.exe'
-$Capture = '<GREEN_EIGHT_SPAN_CAPTURE>'
-$SeedPreflight = '<GREEN_SEED_PREFLIGHT_JSON>'
-$TtsCache = '<SHARED_CONTENT_ADDRESSED_TTS_CACHE>'
-$Work = '<NEW_INSTITUTION_WORK_DIR>'
-$Authoring = "$Work-authoring"
-$env:XAR_PROMO_SOURCE = $Promo
-$env:PYTHONPATH = (Join-Path $Promo 'src')
-
-git -C $Promo fetch origin
-git -C $Promo merge --ff-only origin/main
-if (git -C $Promo status --short) { throw 'promo tool checkout is dirty' }
-$ToolHead = git -C $Promo rev-parse HEAD
-if ($ToolHead -ne (git -C $Promo rev-parse origin/main)) { throw 'promo tool HEAD != origin/main' }
-
-& $Python "$Repo\tools\zhongguo_phase2_footage_intake.py" `
-  --capture-root $Capture --output "$Authoring\footage-intake.json"
-
-# 这里暂停：另一份制度群像 source checklist 必须由具名审阅者真实看完并签署。
-$SourceReview = "$Authoring\source-review-receipt.json"
-
-& $Python "$Repo\mod_zhongguo_style\tools\promote_phase2_reviewed_authoring.py" `
-  --project-config "$Repo\mod_zhongguo_style\promo\phase2-promo-institution-project.json" `
-  --authoring-ledger "$Repo\mod_zhongguo_style\promo\phase2-authoring-institution-claims.json" `
-  --footage-intake-report "$Authoring\footage-intake.json" `
-  --source-review-receipt $SourceReview `
-  --output-project "$Authoring\phase2-promo-institution-project.json" `
-  --output-receipt "$Authoring\authoring-promotion-receipt.json"
-
-& $Python "$Repo\mod_zhongguo_style\tools\preflight_phase2_media.py" `
-  --output "$Authoring\media-preflight.json" `
-  --project-config "$Authoring\phase2-promo-institution-project.json" `
-  --expected-toolchain-head $ToolHead --capture-root $Capture `
-  --planned-work-dir $Work --planned-tts-cache $TtsCache
-$MediaSha = (Get-FileHash -Algorithm SHA256 "$Authoring\media-preflight.json").Hash
-
-& $Python "$Repo\mod_zhongguo_style\tools\prime_phase2_tts_cache.py" `
-  --cut institution-led `
-  --project-config "$Authoring\phase2-promo-institution-project.json" `
-  --media-preflight-report "$Authoring\media-preflight.json" `
-  --expected-media-preflight-sha256 $MediaSha --tts-cache $TtsCache `
-  --output "$Authoring\tts-cache-prime-receipt.json"
-
-& $Python "$Repo\mod_zhongguo_style\tools\build_phase2_promo_video.py" `
-  --cut institution-led `
-  --project-config "$Authoring\phase2-promo-institution-project.json" `
-  --capture-root $Capture --seed-preflight-report $SeedPreflight `
-  --media-preflight-report "$Authoring\media-preflight.json" `
-  --expected-media-preflight-sha256 $MediaSha `
-  --work-dir $Work --tts-cache $TtsCache `
-  --run-id phase2-institution-led-candidate --validate-only
-
-& $Python "$Repo\mod_zhongguo_style\tools\build_phase2_promo_video.py" `
-  --cut institution-led `
-  --project-config "$Authoring\phase2-promo-institution-project.json" `
-  --capture-root $Capture --seed-preflight-report $SeedPreflight `
-  --media-preflight-report "$Authoring\media-preflight.json" `
-  --expected-media-preflight-sha256 $MediaSha `
-  --work-dir $Work --tts-cache $TtsCache `
-  --run-id phase2-institution-led-candidate
+```text
+Z:\ck3_mod_rewrite\tools\.venv\Scripts\python.exe mod_zhongguo_style\tools\run_phase2_cut_pipeline.py --repository Z:\ck3_mod_rewrite\_root-promo-split-20260902 --python Z:\ck3_mod_rewrite\tools\.venv\Scripts\python.exe build --cut institution-led --toolchain Z:\workspace\xar_promo_toolchain --capture <GREEN_EIGHT_SPAN_CAPTURE> --seed-preflight <GREEN_SEED_PREFLIGHT_JSON> --tts-cache <SHARED_CONTENT_ADDRESSED_TTS_CACHE> --work-dir <NEW_INSTITUTION_WORK_DIR> --source-review-receipt <NEW_INSTITUTION_WORK_DIR>-authoring\source-review-receipt.json
 ```
 
-制度群像候选固定落到 `$Work\deliverable\zhongguo-361-phase2-institution-led.mp4`。builder 在不改变八段 capture/evidence canonical 顺序的前提下，将前台顺序改为“事实/配额 → 经理 → 告身/PIP → 晋升 → HC → 项目 → 事故 → 跨周期”，并在项目场后回切告身/PIP、在跨周期场后回切经理案卷。每次回切都显式裁成 2 秒，只复用已验证 source span 的画面，不重复原旁白；builder 生成独立的 48 kHz 双声道静音 WAV，并以独立 segment / narration artifact 留下可审计边界。
+制度群像候选固定落到 `<NEW_INSTITUTION_WORK_DIR>\deliverable\zhongguo-361-phase2-institution-led.mp4`。builder 在不改变八段 capture/evidence canonical 顺序的前提下，将前台顺序改为“事实/配额 → 经理 → 告身/PIP → 晋升 → HC → 项目 → 事故 → 跨周期”，并在项目场后回切告身/PIP、在跨周期场后回切经理案卷。每次回切都显式裁成 2 秒，只复用已验证 source span 的画面，不重复原旁白；builder 生成独立的 48 kHz 双声道静音 WAV，并以独立 segment / narration artifact 留下可审计边界。
 
 ## 候选生成后的项目级 materializer
 
@@ -311,55 +172,17 @@ $MediaSha = (Get-FileHash -Algorithm SHA256 "$Authoring\media-preflight.json").H
 
 人物线：
 
-```powershell
-$Run = "$Work\candidate-run\run-manifest.json"
-$Post = "$Work\candidate-run\post-candidate"
-$Export = "$Work-export"
-
-& $Python "$Repo\mod_zhongguo_style\tools\materialize_phase2_post_candidate.py" `
-  --cut character-led `
-  --project-config "$Authoring\phase2-promo-character-project.json" `
-  --run-manifest $Run --output-root $Post --export-directory $Export `
-  --validate-only
-
-& $Python "$Repo\mod_zhongguo_style\tools\materialize_phase2_post_candidate.py" `
-  --cut character-led `
-  --project-config "$Authoring\phase2-promo-character-project.json" `
-  --run-manifest $Run --output-root $Post --export-directory $Export
-
-& $Python -m xar_promo.cli audit $Run `
-  --subject-artifact-id zhongguo-361-phase2-character-led-video `
-  --evidence-bundle "$Post\evidence-bundle.json" `
-  --report "$Post\automated-audit.json" `
-  --report-artifact-id character-led-automated-audit
+```text
+Z:\ck3_mod_rewrite\tools\.venv\Scripts\python.exe mod_zhongguo_style\tools\run_phase2_cut_pipeline.py --repository Z:\ck3_mod_rewrite\_root-promo-split-20260902 --python Z:\ck3_mod_rewrite\tools\.venv\Scripts\python.exe post --cut character-led --work-dir <NEW_CHARACTER_WORK_DIR> --export-directory <NEW_CHARACTER_WORK_DIR>-export --toolchain Z:\workspace\xar_promo_toolchain
 ```
 
 制度群像线：
 
-```powershell
-$Run = "$Work\candidate-run\run-manifest.json"
-$Post = "$Work\candidate-run\post-candidate"
-$Export = "$Work-export"
-
-& $Python "$Repo\mod_zhongguo_style\tools\materialize_phase2_post_candidate.py" `
-  --cut institution-led `
-  --project-config "$Authoring\phase2-promo-institution-project.json" `
-  --run-manifest $Run --output-root $Post --export-directory $Export `
-  --validate-only
-
-& $Python "$Repo\mod_zhongguo_style\tools\materialize_phase2_post_candidate.py" `
-  --cut institution-led `
-  --project-config "$Authoring\phase2-promo-institution-project.json" `
-  --run-manifest $Run --output-root $Post --export-directory $Export
-
-& $Python -m xar_promo.cli audit $Run `
-  --subject-artifact-id zhongguo-361-phase2-institution-led-video `
-  --evidence-bundle "$Post\evidence-bundle.json" `
-  --report "$Post\automated-audit.json" `
-  --report-artifact-id institution-led-automated-audit
+```text
+Z:\ck3_mod_rewrite\tools\.venv\Scripts\python.exe mod_zhongguo_style\tools\run_phase2_cut_pipeline.py --repository Z:\ck3_mod_rewrite\_root-promo-split-20260902 --python Z:\ck3_mod_rewrite\tools\.venv\Scripts\python.exe post --cut institution-led --work-dir <NEW_INSTITUTION_WORK_DIR> --export-directory <NEW_INSTITUTION_WORK_DIR>-export --toolchain Z:\workspace\xar_promo_toolchain
 ```
 
-每个 `$Post` 都会留下以下确定路径：`bound-ffprobe.json`、`final-storyboard.json`、`evidence-plan.json`、`evidence-bundle.json`、`automated-audit.json`、`pending-review/review-package.json`、`pending-review/review-template.json`、`release-export-policy.json` 和 `materialization-receipt.json`。后两份真人回执必须另写到 `human-reviews/claims-and-source-pass.json` 与 `human-reviews/final-candidate-pass.json`，两位具名审阅者均须以 1.0x 看完精确候选；materializer 不创建这两个文件。
+每个 `candidate-run/post-candidate` 目录都会留下以下确定路径：`bound-ffprobe.json`、`final-storyboard.json`、`evidence-plan.json`、`evidence-bundle.json`、`automated-audit.json`、`pending-review/review-package.json`、`pending-review/review-template.json`、`release-export-policy.json` 和 `materialization-receipt.json`。后两份真人回执必须另写到 `human-reviews/claims-and-source-pass.json` 与 `human-reviews/final-candidate-pass.json`，两位具名审阅者均须以 1.0x 看完精确候选；materializer 不创建这两个文件。
 
 两份真人回执齐全后，由操作员向 `materialization-receipt.json` 内的 `commands.signoff.fixed_argv` 追加真实的 `--reviewer` 与 `--decision approved|rejected`，再执行。只有真实批准已进入 run manifest，才执行 receipt 内已经完全实例化的 `commands.export_validate_only` 和 `commands.export`。`commands.publish` 固定为 `null`；外部发布仍须另有明确的 publish-target authority，不能由 materializer 猜测或代签。
 

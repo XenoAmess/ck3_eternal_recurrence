@@ -185,16 +185,76 @@
     "ck3_launch": {
       "starts_ck3": true,
       "executed": false,
-      "powershell": "& 'Z:\\ck3_mod_rewrite\\tools\\.venv\\Scripts\\python.exe' 'Z:\\ck3_mod_rewrite\\_root-promo-split-20260902\\ck3_autonomous_player\\agent.py' --state-dir 'Z:\\ck3_mod_rewrite_process_assets\\zg361\\projects-metrics-source-capture-no-launch-5c54014-20260904T080922Z\\live-attempt\\state' --game-dir 'Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III' --bridge-mode native-headless --bridge-pipe '\\\\.\\pipe\\xar_ck3_zg361_projects_metrics_5c54014_080922' --bridge-dll 'Z:\\ck3_mod_rewrite_process_assets\\zg361\\projects-metrics-source-capture-no-launch-5c54014-20260904T080922Z\\candidate-build\\xar_ck3_bridge.dll' --bridge-injector 'Z:\\ck3_mod_rewrite_process_assets\\zg361\\projects-metrics-source-capture-no-launch-5c54014-20260904T080922Z\\candidate-build\\xar_ck3_bridge_injector.exe' native-session --timeout 21600 --cold-start-checkpoint",
-      "precondition": "the attempt state profile must first be materialized product-only with hash-bound xar_checkpoint.ck3; this candidate does not fabricate that save"
+      "precondition": "the attempt state profile must first be materialized product-only with hash-bound xar_checkpoint.ck3; this candidate does not fabricate that save",
+      "runtime": "python",
+      "argv": [
+        "Z:\\ck3_mod_rewrite\\tools\\.venv\\Scripts\\python.exe",
+        "Z:\\ck3_mod_rewrite\\_root-promo-split-20260902\\ck3_autonomous_player\\agent.py",
+        "--state-dir",
+        "Z:\\ck3_mod_rewrite_process_assets\\zg361\\projects-metrics-source-capture-no-launch-5c54014-20260904T080922Z\\live-attempt\\state",
+        "--game-dir",
+        "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III",
+        "--bridge-mode",
+        "native-headless",
+        "--bridge-pipe",
+        "\\\\.\\pipe\\xar_ck3_zg361_projects_metrics_5c54014_080922",
+        "--bridge-dll",
+        "Z:\\ck3_mod_rewrite_process_assets\\zg361\\projects-metrics-source-capture-no-launch-5c54014-20260904T080922Z\\candidate-build\\xar_ck3_bridge.dll",
+        "--bridge-injector",
+        "Z:\\ck3_mod_rewrite_process_assets\\zg361\\projects-metrics-source-capture-no-launch-5c54014-20260904T080922Z\\candidate-build\\xar_ck3_bridge_injector.exe",
+        "native-session",
+        "--timeout",
+        "21600",
+        "--cold-start-checkpoint"
+      ]
     },
     "observe_route_a": {
       "executed": false,
-      "powershell": "& 'Z:\\ck3_mod_rewrite\\tools\\.venv\\Scripts\\python.exe' 'Z:\\ck3_mod_rewrite\\_root-promo-split-20260902\\tools\\zg361_phase2_projects_metrics_source_checkpoint.py' --live --bridge-pipe '\\\\.\\pipe\\xar_ck3_zg361_projects_metrics_5c54014_080922' --state-dir 'Z:\\ck3_mod_rewrite_process_assets\\zg361\\projects-metrics-source-capture-no-launch-5c54014-20260904T080922Z\\live-attempt\\state' --save-dir 'Z:\\ck3_mod_rewrite_process_assets\\zg361\\projects-metrics-source-capture-no-launch-5c54014-20260904T080922Z\\live-attempt\\state\\profile\\save games' observe-ui --route A --capture-lineage 'Z:\\ck3_mod_rewrite_process_assets\\zg361\\projects-metrics-source-capture-no-launch-5c54014-20260904T080922Z\\live-attempt\\capture-lineage.json' --output 'Z:\\ck3_mod_rewrite_process_assets\\zg361\\projects-metrics-source-capture-no-launch-5c54014-20260904T080922Z\\live-attempt\\cp26-route-a-ui-receipt.json'"
+      "runtime": "python",
+      "argv": [
+        "Z:\\ck3_mod_rewrite\\tools\\.venv\\Scripts\\python.exe",
+        "Z:\\ck3_mod_rewrite\\_root-promo-split-20260902\\tools\\zg361_phase2_projects_metrics_source_checkpoint.py",
+        "--live",
+        "--bridge-pipe",
+        "\\\\.\\pipe\\xar_ck3_zg361_projects_metrics_5c54014_080922",
+        "--state-dir",
+        "Z:\\ck3_mod_rewrite_process_assets\\zg361\\projects-metrics-source-capture-no-launch-5c54014-20260904T080922Z\\live-attempt\\state",
+        "--save-dir",
+        "Z:\\ck3_mod_rewrite_process_assets\\zg361\\projects-metrics-source-capture-no-launch-5c54014-20260904T080922Z\\live-attempt\\state\\profile\\save games",
+        "observe-ui",
+        "--route",
+        "A",
+        "--capture-lineage",
+        "Z:\\ck3_mod_rewrite_process_assets\\zg361\\projects-metrics-source-capture-no-launch-5c54014-20260904T080922Z\\live-attempt\\capture-lineage.json",
+        "--output",
+        "Z:\\ck3_mod_rewrite_process_assets\\zg361\\projects-metrics-source-capture-no-launch-5c54014-20260904T080922Z\\live-attempt\\cp26-route-a-ui-receipt.json"
+      ]
     },
     "capture_checkpoint": {
       "executed": false,
-      "powershell": "& 'Z:\\ck3_mod_rewrite\\tools\\.venv\\Scripts\\python.exe' 'Z:\\ck3_mod_rewrite\\_root-promo-split-20260902\\tools\\zg361_phase2_projects_metrics_source_checkpoint.py' --live --bridge-pipe '\\\\.\\pipe\\xar_ck3_zg361_projects_metrics_5c54014_080922' --state-dir 'Z:\\ck3_mod_rewrite_process_assets\\zg361\\projects-metrics-source-capture-no-launch-5c54014-20260904T080922Z\\live-attempt\\state' --save-dir 'Z:\\ck3_mod_rewrite_process_assets\\zg361\\projects-metrics-source-capture-no-launch-5c54014-20260904T080922Z\\live-attempt\\state\\profile\\save games' capture-checkpoint --owner-character-id 32904 --capture-lineage 'Z:\\ck3_mod_rewrite_process_assets\\zg361\\projects-metrics-source-capture-no-launch-5c54014-20260904T080922Z\\live-attempt\\capture-lineage.json' --ui-receipt 'Z:\\ck3_mod_rewrite_process_assets\\zg361\\projects-metrics-source-capture-no-launch-5c54014-20260904T080922Z\\live-attempt\\cp26-route-a-ui-receipt.json' --checkpoint-root 'Z:\\ck3_mod_rewrite_process_assets\\zg361\\projects-metrics-source-capture-no-launch-5c54014-20260904T080922Z\\live-attempt\\checkpoint' --registry 'Z:\\ck3_mod_rewrite_process_assets\\zg361\\projects-metrics-source-capture-no-launch-5c54014-20260904T080922Z\\live-attempt\\projects-metrics-source-checkpoint-registry.json'"
+      "runtime": "python",
+      "argv": [
+        "Z:\\ck3_mod_rewrite\\tools\\.venv\\Scripts\\python.exe",
+        "Z:\\ck3_mod_rewrite\\_root-promo-split-20260902\\tools\\zg361_phase2_projects_metrics_source_checkpoint.py",
+        "--live",
+        "--bridge-pipe",
+        "\\\\.\\pipe\\xar_ck3_zg361_projects_metrics_5c54014_080922",
+        "--state-dir",
+        "Z:\\ck3_mod_rewrite_process_assets\\zg361\\projects-metrics-source-capture-no-launch-5c54014-20260904T080922Z\\live-attempt\\state",
+        "--save-dir",
+        "Z:\\ck3_mod_rewrite_process_assets\\zg361\\projects-metrics-source-capture-no-launch-5c54014-20260904T080922Z\\live-attempt\\state\\profile\\save games",
+        "capture-checkpoint",
+        "--owner-character-id",
+        "32904",
+        "--capture-lineage",
+        "Z:\\ck3_mod_rewrite_process_assets\\zg361\\projects-metrics-source-capture-no-launch-5c54014-20260904T080922Z\\live-attempt\\capture-lineage.json",
+        "--ui-receipt",
+        "Z:\\ck3_mod_rewrite_process_assets\\zg361\\projects-metrics-source-capture-no-launch-5c54014-20260904T080922Z\\live-attempt\\cp26-route-a-ui-receipt.json",
+        "--checkpoint-root",
+        "Z:\\ck3_mod_rewrite_process_assets\\zg361\\projects-metrics-source-capture-no-launch-5c54014-20260904T080922Z\\live-attempt\\checkpoint",
+        "--registry",
+        "Z:\\ck3_mod_rewrite_process_assets\\zg361\\projects-metrics-source-capture-no-launch-5c54014-20260904T080922Z\\live-attempt\\projects-metrics-source-checkpoint-registry.json"
+      ]
     }
   },
   "static_preflight_command": "Z:\\ck3_mod_rewrite\\tools\\.venv\\Scripts\\python.exe tools/verify_zg361_projects_metrics_no_launch_candidate.py --manifest ck3_autonomous_player/native_bridge/research/fixtures/zhongguo_projects_metrics_source_capture_no_launch_candidate_5c54014_20260904.json --check",

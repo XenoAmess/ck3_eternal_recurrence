@@ -155,9 +155,8 @@ typed MCP 调用能到达它。即使错误 backend 把 step 塞进 `action_step
 mirror、已知与未知 native rejection、timeout、malformed envelope、相机原始向量和 settled/
 write-blocked gate、session drift，以及官方 MCP SDK 的 list/call/error 路径。
 
-```powershell
-& tools\.venv\Scripts\python.exe -m unittest `
-  ck3_autonomous_player.tests.unit.test_title_map_navigation_v1_bridge
+```text
+tools\.venv\Scripts\python.exe -m unittest ck3_autonomous_player.tests.unit.test_title_map_navigation_v1_bridge
 ```
 
 当前静态 fixture 明示 `evidence_level=static-ready`、`live_claim=false`；其中 TitleID 和相机

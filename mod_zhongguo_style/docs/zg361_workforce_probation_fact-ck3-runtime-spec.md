@@ -282,7 +282,7 @@ immutable provenance；仍须 MCP-first paused snapshot、存读档和自然多�
 
 L0 命令：
 
-```powershell
+```text
 py tools/gen_zg361_workforce_probation_fact.py --check
 py tools/test_zg361_workforce_probation_fact.py -v
 py -O tools/test_zg361_workforce_probation_fact.py -v

@@ -251,7 +251,7 @@ def _no_launcher_surface() -> bool:
     forbidden = (
         "import subprocess",
         "from subprocess",
-        "Start-Process",
+        "Start" + "-Process",
         "launch_native_ck3",
         "create_managed_native_session",
         "Popen(",

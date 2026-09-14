@@ -100,27 +100,14 @@ DLL 进程内连接计数，新 CK3 可从 `1` 开始。因此旧版“两个 su
 
 现有受管入口是 `tools/run_zhongguo_acceptance.py`。候选 DLL 接线完成后先执行不启动游戏的同模式 preflight：
 
-```powershell
-python tools/run_zhongguo_acceptance.py `
-  --preflight `
-  --phase2-live-batch `
-  --phase2-seed-contract <READY_SEED_CONTRACT_JSON> `
-  --bridge-dll <CANDIDATE_XAR_CK3_BRIDGE_DLL> `
-  --bridge-injector <MATCHING_INJECTOR_EXE> `
-  --bridge-pipe \\.\pipe\xar_ck3_bridge_zg361_<32_HEX> `
-  --artifacts-dir <NEW_PREFLIGHT_ARTIFACT_DIR>
+```text
+python tools/run_zhongguo_acceptance.py --preflight --phase2-live-batch --phase2-seed-contract <READY_SEED_CONTRACT_JSON> --bridge-dll <CANDIDATE_XAR_CK3_BRIDGE_DLL> --bridge-injector <MATCHING_INJECTOR_EXE> --bridge-pipe \\.\pipe\xar_ck3_bridge_zg361_<32_HEX> --artifacts-dir <NEW_PREFLIGHT_ARTIFACT_DIR>
 ```
 
 preflight GREEN 后，用**新的** artifact 目录去掉 `--preflight` 执行同一入口：
 
-```powershell
-python tools/run_zhongguo_acceptance.py `
-  --phase2-live-batch `
-  --phase2-seed-contract <READY_SEED_CONTRACT_JSON> `
-  --bridge-dll <SAME_CANDIDATE_XAR_CK3_BRIDGE_DLL> `
-  --bridge-injector <SAME_MATCHING_INJECTOR_EXE> `
-  --bridge-pipe \\.\pipe\xar_ck3_bridge_zg361_<NEW_32_HEX> `
-  --artifacts-dir <NEW_LIVE_ARTIFACT_DIR>
+```text
+python tools/run_zhongguo_acceptance.py --phase2-live-batch --phase2-seed-contract <READY_SEED_CONTRACT_JSON> --bridge-dll <SAME_CANDIDATE_XAR_CK3_BRIDGE_DLL> --bridge-injector <SAME_MATCHING_INJECTOR_EXE> --bridge-pipe \\.\pipe\xar_ck3_bridge_zg361_<NEW_32_HEX> --artifacts-dir <NEW_LIVE_ARTIFACT_DIR>
 ```
 
 当前 `phase2-live-batch` 已接入完整两-surface 批量 collector，不再退回单个自适应 primitive。尚缺的是上述两份 real-CK3 产品状态 checkpoint 与窄 provider；在它们存在前，runner 会在动作前 RED。批量采集器在 action result 仍报告 `production_capability_advertised=false` 时仍会独立调用 `verify_zhongguo_scoreboard_action_v1_postcondition`，保存 typed proof，但让本次整体结果继续保持 RED/`promotion_eligible=false`；候选宏不能为了绕过 runner 的 fail-closed 分支而把广告改成 true。

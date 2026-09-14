@@ -19,12 +19,8 @@ open_kaishek 的 Java capability/profile 源码，以及外部仓库的
 
 ## 可复现命令与证据
 
-```powershell
-& "tools\.venv\Scripts\python.exe" `
-  "ck3_autonomous_player/native_bridge/research/verify_g2_open_kaishek_compatibility.py" `
-  --checkout "Z:\workspace\open_kaishek" `
-  --require-checkout --require-clean `
-  --output "artifacts/g2-open-kaishek-compatibility/2026-09-03/audit.json"
+```text
+"tools\.venv\Scripts\python.exe" "ck3_autonomous_player/native_bridge/research/verify_g2_open_kaishek_compatibility.py" --checkout "Z:\workspace\open_kaishek" --require-checkout --require-clean --output "artifacts/g2-open-kaishek-compatibility/2026-09-03/audit.json"
 ```
 
 审计回执：

@@ -64,7 +64,7 @@ Central generator 当前为 10 个按用途拆分的 effect 文件，顶层定�
 
 最短复核命令：
 
-```powershell
+```text
 Z:\ck3_mod_rewrite\tools\.venv\Scripts\python.exe tools/verify_zg361_projects_metrics_no_launch_candidate.py --manifest ck3_autonomous_player/native_bridge/research/fixtures/zhongguo_projects_metrics_source_capture_no_launch_candidate_5c54014_20260904.json --check
 ```
 
@@ -75,8 +75,8 @@ Z:\ck3_mod_rewrite\tools\.venv\Scripts\python.exe tools/verify_zg361_projects_me
 product-only，并包含 hash-bound `xar_checkpoint.ck3` 后才可执行；本次没有制造该
 save，也没有建立 live-attempt 目录。
 
-```powershell
-& 'Z:\ck3_mod_rewrite\tools\.venv\Scripts\python.exe' 'Z:\ck3_mod_rewrite\_root-promo-split-20260902\ck3_autonomous_player\agent.py' --state-dir 'Z:\ck3_mod_rewrite_process_assets\zg361\projects-metrics-source-capture-no-launch-5c54014-20260904T080922Z\live-attempt\state' --game-dir 'Z:\SteamLibrary\steamapps\common\Crusader Kings III' --bridge-mode native-headless --bridge-pipe '\\.\pipe\xar_ck3_zg361_projects_metrics_5c54014_080922' --bridge-dll 'Z:\ck3_mod_rewrite_process_assets\zg361\projects-metrics-source-capture-no-launch-5c54014-20260904T080922Z\candidate-build\xar_ck3_bridge.dll' --bridge-injector 'Z:\ck3_mod_rewrite_process_assets\zg361\projects-metrics-source-capture-no-launch-5c54014-20260904T080922Z\candidate-build\xar_ck3_bridge_injector.exe' native-session --timeout 21600 --cold-start-checkpoint
+```text
+'Z:\ck3_mod_rewrite\tools\.venv\Scripts\python.exe' 'Z:\ck3_mod_rewrite\_root-promo-split-20260902\ck3_autonomous_player\agent.py' --state-dir 'Z:\ck3_mod_rewrite_process_assets\zg361\projects-metrics-source-capture-no-launch-5c54014-20260904T080922Z\live-attempt\state' --game-dir 'Z:\SteamLibrary\steamapps\common\Crusader Kings III' --bridge-mode native-headless --bridge-pipe '\\.\pipe\xar_ck3_zg361_projects_metrics_5c54014_080922' --bridge-dll 'Z:\ck3_mod_rewrite_process_assets\zg361\projects-metrics-source-capture-no-launch-5c54014-20260904T080922Z\candidate-build\xar_ck3_bridge.dll' --bridge-injector 'Z:\ck3_mod_rewrite_process_assets\zg361\projects-metrics-source-capture-no-launch-5c54014-20260904T080922Z\candidate-build\xar_ck3_bridge_injector.exe' native-session --timeout 21600 --cold-start-checkpoint
 ```
 
 manifest 另行冻结 route A 的 `observe-ui` 与 owner `32904` 的

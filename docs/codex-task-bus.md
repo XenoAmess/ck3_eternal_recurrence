@@ -14,26 +14,14 @@
 
 ## 安装与命令
 
-```powershell
+```text
 py tools/codex_task_bus.py install
-$bus = 'D:\workspace\.codex-task-bus\bin\codex_task_bus.py'
-
-py $bus register --task ck3-xqol-release-20260909 `
-  --repo D:\workspace\ck3_xqol_publication `
-  --summary '发布 XenoAmess的体验优化' `
-  --next-step 'fresh-cache L3' `
-  --resource 'origin/master' --resource 'CK3'
-
-py $bus status --task ck3-xqol-release-20260909 --state waiting `
-  --summary '等待 CK3 进入主菜单' --next-step 'L3 游戏内断言'
-
-py $bus notify --task ck3-xqol-release-20260909 --to '*' --level warning `
-  --message 'origin/master 已推进；推送前请 fetch + rebase'
-
-py $bus poll --task ck3-xqol-release-20260909 --ack
-py $bus list
-py $bus status --task ck3-xqol-release-20260909 --state done `
-  --summary 'Workshop 发布闭环完成'
+py D:\workspace\.codex-task-bus\bin\codex_task_bus.py register --task ck3-xqol-release-20260909 --repo D:\workspace\ck3_xqol_publication --summary "发布 XenoAmess的体验优化" --next-step "fresh-cache L3" --resource origin/master --resource CK3
+py D:\workspace\.codex-task-bus\bin\codex_task_bus.py status --task ck3-xqol-release-20260909 --state waiting --summary "等待 CK3 进入主菜单" --next-step "L3 游戏内断言"
+py D:\workspace\.codex-task-bus\bin\codex_task_bus.py notify --task ck3-xqol-release-20260909 --to * --level warning --message "origin/master 已推进；推送前请 fetch + rebase"
+py D:\workspace\.codex-task-bus\bin\codex_task_bus.py poll --task ck3-xqol-release-20260909 --ack
+py D:\workspace\.codex-task-bus\bin\codex_task_bus.py list
+py D:\workspace\.codex-task-bus\bin\codex_task_bus.py status --task ck3-xqol-release-20260909 --state done --summary "Workshop 发布闭环完成"
 ```
 
 `poll --ack` 只返回游标后的广播或定向事件，并原子推进游标；不带 `--ack` 可只读预览。

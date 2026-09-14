@@ -30,7 +30,7 @@
 `common/scripted_effects/build_scripted_effect.txt` 与 `common/scripted_triggers/aub_building_triggers.txt` 是生成文件。建筑图谱来自
 `../tools/auto_upgrade_buildings_1_19_0_6.json`；刷新 exact 原版定义时先运行提取器，再运行生成器：
 
-```powershell
+```text
 py tools/extract_auto_upgrade_buildings.py --check
 py tools/gen_auto_upgrade_buildings.py
 py tools/validate_auto_upgrade_buildings_static.py

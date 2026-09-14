@@ -94,11 +94,8 @@ Runner 只识别窄接口 `restore_phase2_span_source_checkpoint_v1`。它接收
 
 四个真实 checkpoint 与 source receipt 已由各自实机轮次产生后，使用宣传专用 assembler 冻结并生成 registry：
 
-```powershell
-py tools/zhongguo_phase2_source_checkpoint_registry.py `
-  --capture-manifest <GREEN_REAL_CK3_SOURCE_CHECKPOINT_CAPTURE_MANIFEST.json> `
-  --checkpoint-root <NEW_OR_CONTENT_IDENTICAL_CHECKPOINT_ARCHIVE_DIR> `
-  --output <NEW_SOURCE_CHECKPOINT_REGISTRY.json>
+```text
+py tools/zhongguo_phase2_source_checkpoint_registry.py --capture-manifest <GREEN_REAL_CK3_SOURCE_CHECKPOINT_CAPTURE_MANIFEST.json> --checkpoint-root <NEW_OR_CONTENT_IDENTICAL_CHECKPOINT_ARCHIVE_DIR> --output <NEW_SOURCE_CHECKPOINT_REGISTRY.json>
 ```
 
 capture manifest 必须是 `zg361_phase2_source_checkpoint_capture_manifest` schema 2，按 Promotion、Projects、Incident、
@@ -107,11 +104,8 @@ provider/UI GREEN source receipt；assembler 不补默认值、不生成事件�
 
 Promotion 的第一条真实输入可由显式 live 入口单独采集：
 
-```powershell
-py tools/run_zhongguo_acceptance.py `
-  --phase2-promotion-source-checkpoint-live `
-  --phase2-seed-contract <READY_SEED_CONTRACT.json> `
-  --phase2-frontend-first-load-save-name <SAVE_AT_ZG361PP_147_OPTION1>
+```text
+py tools/run_zhongguo_acceptance.py --phase2-promotion-source-checkpoint-live --phase2-seed-contract <READY_SEED_CONTRACT.json> --phase2-frontend-first-load-save-name <SAVE_AT_ZG361PP_147_OPTION1>
 ```
 
 该模式在受管、product-only session 中遇到 `zg361pp.9100` 时固定选择逐案处理 D；A–C 会按产品定义后台办理

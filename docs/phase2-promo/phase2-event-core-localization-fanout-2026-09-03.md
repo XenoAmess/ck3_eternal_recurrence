@@ -46,7 +46,7 @@ The projection utility uses three independent digests:
 
 Generate the tracked audit artifact (read-only with respect to product trees):
 
-```powershell
+```text
 py tools/generate_phase2_localization_fanout_manifest.py
 ```
 
@@ -55,20 +55,14 @@ existing runner.  The command below shows the exact Phase 2 options; retain the
 other pinned bridge/fixture arguments from the normal runbook and use a fresh
 attempt directory:
 
-```powershell
-py tools/run_zg361_phase2_seed_capture.py `
-  ...pinned runner arguments... `
-  --product-source "Z:\ck3_mod_rewrite\_runtime\phase2-bisect-source-direct-union-v2-20260903\mod_zhongguo_style" `
-  --product-projection event-core-locfanout `
-  --product-projection-manifest "Z:\ck3_mod_rewrite\_runtime\phase2-event-loc-manifests-20260903\projection-event-core-locfanout-201.json"
+```text
+py tools/run_zg361_phase2_seed_capture.py ...pinned runner arguments... --product-source "Z:\ck3_mod_rewrite\_runtime\phase2-bisect-source-direct-union-v2-20260903\mod_zhongguo_style" --product-projection event-core-locfanout --product-projection-manifest "Z:\ck3_mod_rewrite\_runtime\phase2-event-loc-manifests-20260903\projection-event-core-locfanout-201.json"
 ```
 
 The all-language comparison can be replayed only with its own pair:
 
-```powershell
---product-source "Z:\ck3_mod_rewrite\_runtime\phase2-event-locfull-clean-20260903\mod_zhongguo_style" `
---product-projection event-core-locfull `
---product-projection-manifest "Z:\ck3_mod_rewrite\_runtime\phase2-event-loc-manifests-20260903\projection-event-core-locfull-261.json"
+```text
+--product-source "Z:\ck3_mod_rewrite\_runtime\phase2-event-locfull-clean-20260903\mod_zhongguo_style" --product-projection event-core-locfull --product-projection-manifest "Z:\ck3_mod_rewrite\_runtime\phase2-event-loc-manifests-20260903\projection-event-core-locfull-261.json"
 ```
 
 Never mix a manifest with another source root.  The runner and projection

@@ -245,6 +245,6 @@ shown/enabled and the post-action 8-fact current-cycle seal, readiness remains
 
 ## Offline verification
 
-```powershell
+```text
 py tools/test_zg361_phase2_hc_workforce_route_b_choreography_audit.py -q
 ```

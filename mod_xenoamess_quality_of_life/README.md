@@ -16,7 +16,7 @@
 
 ## 开发与验证
 
-```powershell
+```text
 py tools/gen_xqol_phase2.py --check
 py tools/validate_xenoamess_quality_of_life.py
 py tools/test_build_xenoamess_quality_of_life_release.py

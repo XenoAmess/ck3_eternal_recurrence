@@ -234,7 +234,7 @@ owner + subject + cycle_serial + case_serial + expected_local_state
 
 ## 八、L0 验证与下一道门
 
-```powershell
+```text
 py tools/gen_361_feedback_promotion_pip_runtime.py --check
 py tools/test_zg361_feedback_promotion_pip_runtime.py -v
 py tools/test_zg361_phase2_career_model.py -v

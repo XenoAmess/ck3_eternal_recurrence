@@ -63,7 +63,7 @@ Machine-readable details are in
 `ck3_autonomous_player/native_bridge/research/zhongguo_career_hc_workforce_postcondition_v1_abi.json`
 and its source contract. Static verification is:
 
-```powershell
+```text
 py tools/preflight_zg361_phase2_hc_workforce_b6.py
 ```
 

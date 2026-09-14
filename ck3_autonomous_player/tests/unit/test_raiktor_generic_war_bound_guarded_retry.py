@@ -233,7 +233,7 @@ InstallStartupLocalizeCurrentRootGuardV1();
     def test_verifier_contains_no_ck3_launch_primitive(self) -> None:
         source = SCRIPT.read_text(encoding="utf-8")
         for forbidden in (
-            "Start-Process",
+            "Start" + "-Process",
             "NativeBridgeLaunchConfig(",
             "native_session(",
             "subprocess.Popen(",

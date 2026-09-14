@@ -95,7 +95,7 @@ The no-launch tool is
 `ck3_autonomous_player/native_bridge/research/prepare_g2_postwar_retention_expiry_capture.py`.
 The executed command was:
 
-```powershell
+```text
 py ck3_autonomous_player/native_bridge/research/prepare_g2_postwar_retention_expiry_capture.py --manifest ck3_autonomous_player/native_bridge/research/fixtures/g2_postwar_retention_expiry_no_launch_manifest.json --output "Z:\ck3_mod_rewrite_process_assets\zg361\g2-postwar-retention-expiry-2911ed7-20260904\preflight.json"
 ```
 

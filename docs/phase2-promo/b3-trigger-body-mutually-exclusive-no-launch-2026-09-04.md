@@ -95,12 +95,12 @@ closure GREEN（reachable effect/event/trigger = 1,868 / 560 / 16，三类 missi
 
 V1：
 
-```powershell
+```text
 Z:\ck3_mod_rewrite\tools\.venv\Scripts\python.exe Z:\ck3_mod_rewrite\_wt-b3-trigger-body-diagnostic\tools\run_zhongguo_acceptance.py --phase2-live-batch --bridge-dll Z:\ck3_mod_rewrite_process_assets\zg361\b3g-fecd2f2-20260904-073033Z\native-build\xar_ck3_bridge.dll --bridge-injector Z:\ck3_mod_rewrite_process_assets\zg361\b3g-fecd2f2-20260904-073033Z\native-build\xar_ck3_bridge_injector.exe --bridge-pipe \\.\pipe\xar_ck3_bridge_zg361_0f0d11aa4816a2c4259d7da9bc5e8240 --phase2-seed-contract Z:\ck3_mod_rewrite\_wt-b3-trigger-body-diagnostic\tools\zg361_phase2_seed_contract.json --phase2-product-source Z:\ck3_mod_rewrite_process_assets\zg361\b3-r5-trigger-body-bisect-abi-8d2065c-20260904T093334Z\v1\product-source --phase2-product-projection b3-r5-trigger-body-bisect-v1 --phase2-product-projection-manifest Z:\ck3_mod_rewrite_process_assets\zg361\b3-r5-trigger-body-bisect-abi-8d2065c-20260904T093334Z\v1\projection.json --artifacts-dir Z:\ck3_mod_rewrite_process_assets\zg361\b3-r5-trigger-body-bisect-abi-8d2065c-20260904T093334Z\v1\artifacts-live --discard-userdir
 ```
 
 V2：
 
-```powershell
+```text
 Z:\ck3_mod_rewrite\tools\.venv\Scripts\python.exe Z:\ck3_mod_rewrite\_wt-b3-trigger-body-diagnostic\tools\run_zhongguo_acceptance.py --phase2-live-batch --bridge-dll Z:\ck3_mod_rewrite_process_assets\zg361\b3g-fecd2f2-20260904-073033Z\native-build\xar_ck3_bridge.dll --bridge-injector Z:\ck3_mod_rewrite_process_assets\zg361\b3g-fecd2f2-20260904-073033Z\native-build\xar_ck3_bridge_injector.exe --bridge-pipe \\.\pipe\xar_ck3_bridge_zg361_1d543a39d36a0abb17020119ca579038 --phase2-seed-contract Z:\ck3_mod_rewrite\_wt-b3-trigger-body-diagnostic\tools\zg361_phase2_seed_contract.json --phase2-product-source Z:\ck3_mod_rewrite_process_assets\zg361\b3-r5-trigger-body-bisect-abi-8d2065c-20260904T093334Z\v2\product-source --phase2-product-projection b3-r5-trigger-body-bisect-v2 --phase2-product-projection-manifest Z:\ck3_mod_rewrite_process_assets\zg361\b3-r5-trigger-body-bisect-abi-8d2065c-20260904T093334Z\v2\projection.json --artifacts-dir Z:\ck3_mod_rewrite_process_assets\zg361\b3-r5-trigger-body-bisect-abi-8d2065c-20260904T093334Z\v2\artifacts-live --discard-userdir
 ```

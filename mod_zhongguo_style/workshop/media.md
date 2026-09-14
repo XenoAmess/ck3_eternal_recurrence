@@ -64,10 +64,10 @@ Recommended captions (Chinese first) are:
 From the repository root, render the tracked projection without changing the
 source artifact:
 
-```powershell
-& "tools\.venv\Scripts\python.exe" "mod_zhongguo_style\tools\compose_workshop_media.py"
-& "tools\.venv\Scripts\python.exe" "mod_zhongguo_style\tools\compose_workshop_media.py" --check
-& "tools\.venv\Scripts\python.exe" "mod_zhongguo_style\tools\test_compose_workshop_media.py"
+```text
+"tools\.venv\Scripts\python.exe" "mod_zhongguo_style\tools\compose_workshop_media.py"
+"tools\.venv\Scripts\python.exe" "mod_zhongguo_style\tools\compose_workshop_media.py" --check
+"tools\.venv\Scripts\python.exe" "mod_zhongguo_style\tools\test_compose_workshop_media.py"
 python mod_zhongguo_style/tools/compose_workshop_media.py --check-tracked
 ```
 
@@ -86,16 +86,9 @@ capture first. This validates the root/cell reports, evidence index, timeline
 marks, raw MKV, all six captured policy cards, and exact source hashes before
 it writes any lock. It does not write JPEGs:
 
-```powershell
-$capture = "Z:\ck3_mod_rewrite_process_assets\zg361\promo\captures\<final-green-run>"
-$lock = "$capture\release\workshop-media-policy-lock.json"
-
-& "tools\.venv\Scripts\python.exe" "mod_zhongguo_style\tools\compose_workshop_media.py" `
-  --artifacts $capture --create-policy-lock $lock
-
-& "tools\.venv\Scripts\python.exe" "mod_zhongguo_style\tools\compose_workshop_media.py" `
-  --artifacts $capture --policy-lock $lock --policy-cards-only `
-  --output "$capture\release\workshop-media-preview"
+```text
+tools\.venv\Scripts\python.exe mod_zhongguo_style\tools\compose_workshop_media.py --artifacts Z:\ck3_mod_rewrite_process_assets\zg361\promo\captures\<final-green-run> --create-policy-lock Z:\ck3_mod_rewrite_process_assets\zg361\promo\captures\<final-green-run>\release\workshop-media-policy-lock.json
+tools\.venv\Scripts\python.exe mod_zhongguo_style\tools\compose_workshop_media.py --artifacts Z:\ck3_mod_rewrite_process_assets\zg361\promo\captures\<final-green-run> --policy-lock Z:\ck3_mod_rewrite_process_assets\zg361\promo\captures\<final-green-run>\release\workshop-media-policy-lock.json --policy-cards-only --output Z:\ck3_mod_rewrite_process_assets\zg361\promo\captures\<final-green-run>\release\workshop-media-preview
 ```
 
 Visually inspect the two preview JPEGs, retain that external lock and preview,

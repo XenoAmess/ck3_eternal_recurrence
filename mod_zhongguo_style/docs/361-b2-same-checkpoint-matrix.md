@@ -133,7 +133,7 @@ result = run_b2_same_checkpoint_matrix(
 
 初始实现轮按协调要求未修改 `tools/run_zhongguo_acceptance.py`。离线测试：
 
-```powershell
+```text
 py tools/test_zg361_phase2_b2_checkpoint_matrix.py
 py -O tools/test_zg361_phase2_b2_checkpoint_matrix.py
 ```

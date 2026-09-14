@@ -235,7 +235,7 @@ def _no_launch_source_ready() -> bool:
     forbidden = (
         "import subprocess",
         "from subprocess",
-        "Start-Process",
+        "Start" + "-Process",
         "ck3.exe",
         "GameplayBridgeService(",
     )

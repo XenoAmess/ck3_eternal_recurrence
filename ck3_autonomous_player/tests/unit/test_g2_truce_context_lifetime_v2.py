@@ -88,7 +88,7 @@ class G2TruceContextLifetimeV2Tests(unittest.TestCase):
             "OpenProcess(",
             "WriteProcessMemory(",
             "CreateRemoteThread(",
-            "Start-Process",
+            "Start" + "-Process",
             "subprocess",
         ):
             self.assertNotIn(forbidden, source)

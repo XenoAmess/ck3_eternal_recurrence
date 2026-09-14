@@ -311,7 +311,7 @@ A/B 只复制 Career/HC 权威 `manager_object_{id,owner,subject,cycle,case,stat
 
 ## 九、静态验收与下一步实机
 
-```powershell
+```text
 py -m py_compile tools/gen_361_manager_governance_runtime.py tools/zg361_manager_governance_model.py tools/test_zg361_manager_governance_model.py tools/test_zg361_manager_governance_runtime.py
 py tools/gen_361_manager_governance_runtime.py --check
 py tools/test_zg361_manager_governance_model.py

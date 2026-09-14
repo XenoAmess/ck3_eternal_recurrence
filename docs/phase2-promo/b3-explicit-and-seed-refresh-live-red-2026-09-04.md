@@ -328,7 +328,7 @@ ZhongGuo loader 诊断，也不是缺失 provider。runner 按 fail-closed 合�
 - final cleanup 为 GREEN：PID `29172` 的 `tree_gone=true / job_active_processes_final=0`，watchdog absent、control files
   absent、contract errors 为空；审计时 CK3 进程数为 0。
 - 本轮按冻结命令原名生成 `Z:\p2o\f\relay-live.json`，post-run clean source 中也没有 pycache；现有 artifact 没有显示
-  第二轮两项 execution/provenance 偏差重现。sidecar 本身不记录父 PowerShell 对 wrapper interpreter 的完整 argv，因此不把
+  第二轮两项 execution/provenance 偏差重现。sidecar 本身不记录父 legacy shell 对 wrapper interpreter 的完整 argv，因此不把
   `-B` 的实际使用单独提升为已证明事实。
 
 ### 第三轮核心 artifact

@@ -24,7 +24,7 @@ B1 十二个用途组的顶层 effect 数依次为：`8, 10, 9, 8, 7, 6, 8, 4, 6
 
 ## 校验入口
 
-```powershell
+```text
 py mod_zhongguo_style/tools/gen_361_mechanisms.py --check
 py mod_zhongguo_style/tools/gen_361_b1_runtime.py --check
 py mod_zhongguo_style/tools/effect_file_boundaries.py

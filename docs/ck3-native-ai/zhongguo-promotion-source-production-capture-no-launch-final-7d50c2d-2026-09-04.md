@@ -82,8 +82,8 @@ exception.
 This runner-owned command is the only command frozen for a future CK3 serial
 gate. It has not been executed:
 
-```powershell
-& "Z:\ck3_mod_rewrite\_root-promo-split-20260902\tools\.venv\Scripts\python.exe" "Z:\ck3_mod_rewrite\_root-promo-split-20260902\tools\run_zhongguo_acceptance.py" "--artifacts-dir" "Z:\ck3_mod_rewrite_process_assets\zg361\promotion-source-production-capture-live-attempt-7d50c2d-20260904T095918Z" "--phase2-promotion-source-checkpoint-live" "--phase2-promotion-source-checkpoint-timeout-seconds" "600" "--bridge-dll" "Z:\ck3_mod_rewrite_process_assets\zg361\promotion-source-production-capture-candidate-ff89dcd-20260904T095918Z\xar_ck3_bridge.dll" "--bridge-injector" "Z:\ck3_mod_rewrite_process_assets\zg361\promotion-source-production-capture-candidate-ff89dcd-20260904T095918Z\xar_ck3_bridge_injector.exe" "--bridge-pipe" "\\.\pipe\xar_ck3_bridge_zg361_d1c5a4e578b043a88a0d9e2b6cf77134" "--phase2-seed-contract" "Z:\ck3_mod_rewrite\_root-promo-split-20260902\tools\zg361_phase2_seed_contract.json"
+```text
+"Z:\ck3_mod_rewrite\_root-promo-split-20260902\tools\.venv\Scripts\python.exe" "Z:\ck3_mod_rewrite\_root-promo-split-20260902\tools\run_zhongguo_acceptance.py" "--artifacts-dir" "Z:\ck3_mod_rewrite_process_assets\zg361\promotion-source-production-capture-live-attempt-7d50c2d-20260904T095918Z" "--phase2-promotion-source-checkpoint-live" "--phase2-promotion-source-checkpoint-timeout-seconds" "600" "--bridge-dll" "Z:\ck3_mod_rewrite_process_assets\zg361\promotion-source-production-capture-candidate-ff89dcd-20260904T095918Z\xar_ck3_bridge.dll" "--bridge-injector" "Z:\ck3_mod_rewrite_process_assets\zg361\promotion-source-production-capture-candidate-ff89dcd-20260904T095918Z\xar_ck3_bridge_injector.exe" "--bridge-pipe" "\\.\pipe\xar_ck3_bridge_zg361_d1c5a4e578b043a88a0d9e2b6cf77134" "--phase2-seed-contract" "Z:\ck3_mod_rewrite\_root-promo-split-20260902\tools\zg361_phase2_seed_contract.json"
 ```
 
 The honest status remains `static-ready-live-pending` until a real paused

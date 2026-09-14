@@ -121,14 +121,8 @@ live action run are retained.
 
 The formal runner now exposes a dedicated product-only capture mode:
 
-```powershell
-& "tools\.venv\Scripts\python.exe" "tools\run_zhongguo_acceptance.py" `
-  --phase2-incident-source-checkpoint-capture `
-  --phase2-frontend-first-load-save-name <REAL_PRODUCT_SAVE> `
-  --phase2-seed-contract <MATCHING_REAL_SEED_CONTRACT> `
-  --phase2-product-source <EXACT_PRODUCT_TREE> `
-  --bridge-dll <EXACT_BUILD_BRIDGE_DLL> `
-  --bridge-injector <EXACT_BUILD_INJECTOR>
+```text
+"tools\.venv\Scripts\python.exe" "tools\run_zhongguo_acceptance.py" --phase2-incident-source-checkpoint-capture --phase2-frontend-first-load-save-name <REAL_PRODUCT_SAVE> --phase2-seed-contract <MATCHING_REAL_SEED_CONTRACT> --phase2-product-source <EXACT_PRODUCT_TREE> --bridge-dll <EXACT_BUILD_BRIDGE_DLL> --bridge-injector <EXACT_BUILD_INJECTOR>
 ```
 
 After the managed product save reaches a paused map, this mode only polls
@@ -154,9 +148,8 @@ the full strict receipt; it does not turn an ACK into source evidence.
 
 The implementation can be checked without creating a service or starting CK3:
 
-```powershell
-& "tools\.venv\Scripts\python.exe" `
-  "tools\preflight_zg361_phase2_incident_source_capture.py"
+```text
+"tools\.venv\Scripts\python.exe" "tools\preflight_zg361_phase2_incident_source_capture.py"
 ```
 
 With no retained live paths this returns static GREEN while the separate live

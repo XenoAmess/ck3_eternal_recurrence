@@ -100,8 +100,8 @@ there is no exception requiring live evidence.
 The following runner-owned command was never executed and is now revoked. It
 is retained only as append-only evidence:
 
-```powershell
-& "Z:\ck3_mod_rewrite\_root-promo-split-20260902\tools\.venv\Scripts\python.exe" "Z:\ck3_mod_rewrite\_root-promo-split-20260902\tools\run_zhongguo_acceptance.py" "--artifacts-dir" "Z:\ck3_mod_rewrite_process_assets\zg361\promotion-source-production-capture-live-attempt-a01f8cb-20260904T085119Z" "--phase2-promotion-source-checkpoint-live" "--phase2-promotion-source-checkpoint-timeout-seconds" "600" "--bridge-dll" "Z:\ck3_mod_rewrite_process_assets\zg361\promotion-source-production-capture-candidate-a01f8cb-20260904T085119Z\xar_ck3_bridge.dll" "--bridge-injector" "Z:\ck3_mod_rewrite_process_assets\zg361\promotion-source-production-capture-candidate-a01f8cb-20260904T085119Z\xar_ck3_bridge_injector.exe" "--bridge-pipe" "\\.\pipe\xar_ck3_bridge_zg361_38d097690e12445f810d29a20e8dcf81" "--phase2-seed-contract" "Z:\ck3_mod_rewrite\_root-promo-split-20260902\tools\zg361_phase2_seed_contract.json"
+```text
+"Z:\ck3_mod_rewrite\_root-promo-split-20260902\tools\.venv\Scripts\python.exe" "Z:\ck3_mod_rewrite\_root-promo-split-20260902\tools\run_zhongguo_acceptance.py" "--artifacts-dir" "Z:\ck3_mod_rewrite_process_assets\zg361\promotion-source-production-capture-live-attempt-a01f8cb-20260904T085119Z" "--phase2-promotion-source-checkpoint-live" "--phase2-promotion-source-checkpoint-timeout-seconds" "600" "--bridge-dll" "Z:\ck3_mod_rewrite_process_assets\zg361\promotion-source-production-capture-candidate-a01f8cb-20260904T085119Z\xar_ck3_bridge.dll" "--bridge-injector" "Z:\ck3_mod_rewrite_process_assets\zg361\promotion-source-production-capture-candidate-a01f8cb-20260904T085119Z\xar_ck3_bridge_injector.exe" "--bridge-pipe" "\\.\pipe\xar_ck3_bridge_zg361_38d097690e12445f810d29a20e8dcf81" "--phase2-seed-contract" "Z:\ck3_mod_rewrite\_root-promo-split-20260902\tools\zg361_phase2_seed_contract.json"
 ```
 
 The candidate no longer has machine authorization after the source advance.

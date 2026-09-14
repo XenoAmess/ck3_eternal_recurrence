@@ -244,7 +244,7 @@ Bad Leaver 可标记 clawback eligibility，但该标记本身不能直接吞掉
 
 静态验收应运行：
 
-```powershell
+```text
 py mod_zhongguo_style/tools/gen_361_compensation_runtime.py --check
 py mod_zhongguo_style/tools/test_zg361_compensation_runtime.py
 py mod_zhongguo_style/tools/test_zg361_phase2_compensation_model.py

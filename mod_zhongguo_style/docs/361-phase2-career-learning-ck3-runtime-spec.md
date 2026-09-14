@@ -144,7 +144,7 @@ manager-scope portfolio 在 owner 上分别冻结 `ah_expected` 与 `ai_expected
 
 ## 十、静态验收
 
-```powershell
+```text
 py -m py_compile tools/gen_361_career_learning_runtime.py tools/test_zg361_career_learning_runtime.py
 py tools/gen_361_career_learning_runtime.py --check
 py -m unittest tools/test_zg361_career_learning_runtime.py

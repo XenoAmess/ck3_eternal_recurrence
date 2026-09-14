@@ -61,25 +61,37 @@ Launcher 内置 Electron `42.7.0`、Node `24.18.0`；Greenworks 包版本为 `0.
 
 先校验输入，再完整提取到一次性目录：
 
-```powershell
-$launcherRoot = Join-Path $env:LOCALAPPDATA 'Programs\Paradox Interactive\launcher\launcher-v2.2026.11.1'
-$asarPath = Join-Path $launcherRoot 'resources\app.asar'
-$extractRoot = Join-Path $env:TEMP 'pdx-launcher-2026.11.1-asar'
+```python
+from pathlib import Path
+import hashlib
+import os
+import subprocess
+import tempfile
 
-Get-FileHash -Algorithm SHA256 -LiteralPath $asarPath
-npx.cmd --yes @electron/asar extract $asarPath $extractRoot
-
-Get-FileHash -Algorithm SHA256 -LiteralPath (Join-Path $extractRoot 'dist\main\index.mjs')
-Get-FileHash -Algorithm SHA256 -LiteralPath (Join-Path $extractRoot 'dist\preload\index.mjs')
-Get-FileHash -Algorithm SHA256 -LiteralPath (Join-Path $extractRoot 'dist\renderer\assets\mods-upload-0bs69VFp.js')
+launcher_root = Path(os.environ["LOCALAPPDATA"]) / "Programs/Paradox Interactive/launcher/launcher-v2.2026.11.1"
+asar_path = launcher_root / "resources/app.asar"
+extract_root = Path(tempfile.gettempdir()) / "pdx-launcher-2026.11.1-asar"
+def sha256(path: Path) -> str:
+    return hashlib.file_digest(path.open("rb"), "sha256").hexdigest().upper()
+print(asar_path, sha256(asar_path))
+subprocess.run(["npx.cmd", "--yes", "@electron/asar", "extract", str(asar_path), str(extract_root)], check=True)
+for relative in ("dist/main/index.mjs", "dist/preload/index.mjs", "dist/renderer/assets/mods-upload-0bs69VFp.js"):
+    path = extract_root / relative
+    print(path, sha256(path))
 ```
 
 用于定位本结论的只读检索：
 
-```powershell
-rg -n --fixed-strings 'PublishModHandler' (Join-Path $extractRoot 'dist\main\index.mjs')
-rg -n --fixed-strings '@IPC_MODS_UPLOAD/UPLOAD_MOD' $extractRoot
-rg -n 'remote-debugging|openDevTools|toggleDevTools|globalShortcut|before-input-event' (Join-Path $extractRoot 'dist\main\index.mjs')
+```python
+from pathlib import Path
+import subprocess
+import tempfile
+
+extract_root = Path(tempfile.gettempdir()) / "pdx-launcher-2026.11.1-asar"
+main = extract_root / "dist/main/index.mjs"
+subprocess.run(["rg", "-n", "--fixed-strings", "PublishModHandler", str(main)], check=False)
+subprocess.run(["rg", "-n", "--fixed-strings", "@IPC_MODS_UPLOAD/UPLOAD_MOD", str(extract_root)], check=False)
+subprocess.run(["rg", "-n", r"remote-debugging|openDevTools|toggleDevTools|globalShortcut|before-input-event", str(main)], check=False)
 ```
 
 提取物只用于逆向核验，不应提交进仓库。升级 Launcher 后必须重新记录版本、ASAR SHA、内部文件名和哈希，不能把上述 bundle 名视为稳定 ABI。
@@ -177,20 +189,21 @@ POST https://api.paradox-interactive.com/profiles
 
 只做 DNS/TLS/HTTP 可达性检查、不读取或发送 Launcher token/cookie，可运行：
 
-```powershell
-$uri = 'https://api.paradox-interactive.com/profiles?namespace=social'
-try {
-  $r = Invoke-WebRequest -Uri $uri -Method Get -MaximumRedirection 0 -TimeoutSec 15 -UseBasicParsing
-  [pscustomobject]@{ Reachable = $true; Status = [int]$r.StatusCode; Host = ([uri]$uri).Host }
-} catch {
-  $status = if ($_.Exception.Response) { [int]$_.Exception.Response.StatusCode } else { $null }
-  [pscustomobject]@{
-    Reachable = $null -ne $status
-    Status = $status
-    Error = if ($status) { $null } else { $_.Exception.Message }
-    Host = ([uri]$uri).Host
-  }
-}
+```python
+from urllib.error import HTTPError, URLError
+from urllib.parse import urlparse
+from urllib.request import build_opener, HTTPRedirectHandler, Request
+
+uri = "https://api.paradox-interactive.com/profiles?namespace=social"
+opener = build_opener(HTTPRedirectHandler())
+try:
+    with opener.open(Request(uri, method="GET"), timeout=15) as response:
+        result = {"reachable": True, "status": response.status, "host": urlparse(uri).hostname}
+except HTTPError as error:
+    result = {"reachable": True, "status": error.code, "host": urlparse(uri).hostname}
+except URLError as error:
+    result = {"reachable": False, "status": None, "error": str(error.reason), "host": urlparse(uri).hostname}
+print(result)
 ```
 
 其中 `401`/`403` 仍表示 DNS、TLS 和 HTTP 路由已通；没有 HTTP 状态码的 DNS、连接或 TLS 错误才表示链路未通。该命令不得添加 `Authorization`、Cookie 或 `-UseDefaultCredentials`。当前发布处置是不再重复 POST 用户名，也不通过退出/重登 PDX 账号修复；主线程改走直接 Steamworks 调用链。

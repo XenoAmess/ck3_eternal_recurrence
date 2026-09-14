@@ -79,7 +79,7 @@ receipt，也没有鼠标移动、`SendInput` 或游戏点击。tracked shutdown
 tree 复核均完成。这证明前台门禁确实阻止了误点，但不证明菜单导航成功，也不允许用同一候选直接重试。
 
 该不可变 RED 还暴露了两种跨 Windows API 的证据编码差异：COM WMI 把创建时间写成带本地偏移的 DMTF
-`20260822090033.870978+480`，PowerShell CIM 清点把同一时刻写成 UTC ISO
+`20260822090033.870978+480`，legacy shell CIM 清点把同一时刻写成 UTC ISO
 `2026-08-22T01:00:33.8709780Z`；`runtime_dlc_mounts` 则保持 debug log 的引擎出现顺序，并非字典序集合。当前 validator
 严格解析两种时间后比较同一 UTC 时刻，并对 DLC mount 保留原顺序、要求绝对路径、白名单成员和不重复。修订后旧 RED
 可以原样公开回放；它没有被改写成 GREEN。由于这些修订改变 runtime 指纹，旧 ordinary/crash 资格也不能用于下一次尝试。

@@ -29,7 +29,7 @@
 
 在 `ce458af` 上执行：
 
-```powershell
+```text
 py mod_zhongguo_style/tools/effect_file_boundaries.py
 ```
 

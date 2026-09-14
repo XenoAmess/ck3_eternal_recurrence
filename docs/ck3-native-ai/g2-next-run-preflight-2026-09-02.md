@@ -49,15 +49,8 @@ Run the following against a fresh, immutable copy of the intended phase-two
 source tree before any native runner command (the root path is deliberately a
 caller-supplied fixture, not a repository dependency):
 
-```powershell
-$kaishekRoot = 'Z:\workspace\open_kaishek'
-$kaishekJar = Join-Path $kaishekRoot 'kaishek-cli\target\kaishek-cli-0.1.0-SNAPSHOT.jar'
-$java = 'C:\jdk-21\bin\java.exe'
-
-& $java -jar $kaishekJar preflight `
-  --root '<fresh immutable phase2 source copy>' `
-  --profile ck3-1.19.0.6-zg361 `
-  --fixture synthetic-361-014
+```text
+C:\jdk-21\bin\java.exe -jar Z:\workspace\open_kaishek\kaishek-cli\target\kaishek-cli-0.1.0-SNAPSHOT.jar preflight --root "<fresh immutable phase2 source copy>" --profile ck3-1.19.0.6-zg361 --fixture synthetic-361-014
 ```
 
 Archive the single JSON output together with the checkout commit and JAR
@@ -76,11 +69,8 @@ The same JAR may be smoke-checked without a source root using
 
 Run once, from the exact parent commit that will be used for the attempt:
 
-```powershell
-$env:PYTHONPATH = 'ck3_autonomous_player/src'
-py -3.13 -m unittest `
-  ck3_autonomous_player.tests.unit.test_raiktor_truce_probe `
-  ck3_autonomous_player.tests.unit.test_war_termination_terms_live_acceptance -v
+```text
+py tools/run_with_env.py --env PYTHONPATH=ck3_autonomous_player/src -- py -3.13 -m unittest ck3_autonomous_player.tests.unit.test_raiktor_truce_probe ck3_autonomous_player.tests.unit.test_war_termination_terms_live_acceptance -v
 ```
 
 The focused contract suite must remain green.  It verifies the pointer-only

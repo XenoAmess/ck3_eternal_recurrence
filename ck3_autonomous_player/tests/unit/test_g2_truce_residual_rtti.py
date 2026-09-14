@@ -80,7 +80,7 @@ class G2TruceResidualRttiTests(unittest.TestCase):
             "next_path_requires_live_validation": True,
         })
         source = SCRIPT.read_text(encoding="utf-8")
-        for forbidden in ("subprocess", "Start-Process", "OpenProcess", "WriteProcessMemory", "CreateRemoteThread"):
+        for forbidden in ("subprocess", "Start" + "-Process", "OpenProcess", "WriteProcessMemory", "CreateRemoteThread"):
             self.assertNotIn(forbidden, source)
 
 

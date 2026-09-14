@@ -10,7 +10,7 @@
 
 命令：
 
-```powershell
+```text
 java -jar D:/workspace/open_kaishek/kaishek-cli/target/kaishek-cli-0.1.0-SNAPSHOT-shaded.jar corpus --file mod_xenoamess_quality_of_life
 java -jar D:/workspace/open_kaishek/kaishek-cli/target/kaishek-cli-0.1.0-SNAPSHOT-shaded.jar preflight --root mod_xenoamess_quality_of_life --profile ck3-1.19.0.6
 java -jar D:/workspace/open_kaishek/kaishek-cli/target/kaishek-cli-0.1.0-SNAPSHOT-shaded.jar parse --file mod_xenoamess_quality_of_life/gui/event_window_widgets/xqol_conversion_threshold_slider.gui

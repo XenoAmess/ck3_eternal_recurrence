@@ -744,44 +744,26 @@ target 的 native retreat。
 
 以下命令只读磁盘，不启动或附加 CK3：
 
-```powershell
-Get-FileHash 'Crusader Kings III/binaries/ck3.exe' -Algorithm SHA256
+```text
+py tools/file_sha256.py "Crusader Kings III/binaries/ck3.exe"
 
-rg -n 'UPDATE_TARGETS_TICK|MAX_RAID_DAYS|MAX_BARTER_DAYS|RAID_COOLDOWN_DAYS|BARTER_COOLDOWN_DAYS|COUNTER_RAID|MIN_STRENGTH_TO_RAID|STAND_AND_FIGHT' `
-  'Crusader Kings III/game/common/defines/ai/00_ai.txt'
+rg -n 'UPDATE_TARGETS_TICK|MAX_RAID_DAYS|MAX_BARTER_DAYS|RAID_COOLDOWN_DAYS|BARTER_COOLDOWN_DAYS|COUNTER_RAID|MIN_STRENGTH_TO_RAID|STAND_AND_FIGHT' 'Crusader Kings III/game/common/defines/ai/00_ai.txt'
 
-rg -n 'MIN_DAYS_BEFORE_MANUAL_RETREAT|PURSUIT_PHASE_DAYS|SHATTERED_RETREAT|MOVEMENT_SPEED_RETREAT' `
-  'Crusader Kings III/game/common/defines/00_defines.txt'
+rg -n 'MIN_DAYS_BEFORE_MANUAL_RETREAT|PURSUIT_PHASE_DAYS|SHATTERED_RETREAT|MOVEMENT_SPEED_RETREAT' 'Crusader Kings III/game/common/defines/00_defines.txt'
 
-& 'tools/.venv/Scripts/python.exe' `
-  'ck3_autonomous_player/native_bridge/research/find_xrefs.py' `
-  0x2308250 0x2308850 0x26B49E0 `
-  0x570DCB0 0x570DCB4 0x570DBC0 0x570DBC8 `
-  0x570DCD0 0x570DCD8 0x570DCE0
+'tools/.venv/Scripts/python.exe' 'ck3_autonomous_player/native_bridge/research/find_xrefs.py' 0x2308250 0x2308850 0x26B49E0 0x570DCB0 0x570DCB4 0x570DBC0 0x570DBC8 0x570DCD0 0x570DCD8 0x570DCE0
 
-& 'tools/.venv/Scripts/python.exe' `
-  'ck3_autonomous_player/native_bridge/research/disasm_ck3.py' `
-  0x18CB790 --size 0x5D0
+'tools/.venv/Scripts/python.exe' 'ck3_autonomous_player/native_bridge/research/disasm_ck3.py' 0x18CB790 --size 0x5D0
 
-& 'tools/.venv/Scripts/python.exe' `
-  'ck3_autonomous_player/native_bridge/research/disasm_ck3.py' `
-  0x18CE240 --size 0x2F0
+'tools/.venv/Scripts/python.exe' 'ck3_autonomous_player/native_bridge/research/disasm_ck3.py' 0x18CE240 --size 0x2F0
 
-& 'tools/.venv/Scripts/python.exe' `
-  'ck3_autonomous_player/native_bridge/research/disasm_ck3.py' `
-  0x18CFC20 --size 0x2F0
+'tools/.venv/Scripts/python.exe' 'ck3_autonomous_player/native_bridge/research/disasm_ck3.py' 0x18CFC20 --size 0x2F0
 
-& 'tools/.venv/Scripts/python.exe' `
-  'ck3_autonomous_player/native_bridge/research/disasm_ck3.py' `
-  0x2308250 --size 0x600
+'tools/.venv/Scripts/python.exe' 'ck3_autonomous_player/native_bridge/research/disasm_ck3.py' 0x2308250 --size 0x600
 
-& 'tools/.venv/Scripts/python.exe' `
-  'ck3_autonomous_player/native_bridge/research/disasm_ck3.py' `
-  0x2308850 --size 0x280
+'tools/.venv/Scripts/python.exe' 'ck3_autonomous_player/native_bridge/research/disasm_ck3.py' 0x2308850 --size 0x280
 
-& 'tools/.venv/Scripts/python.exe' `
-  'ck3_autonomous_player/native_bridge/research/disasm_ck3.py' `
-  0x26B4710 --size 0x2D0
+'tools/.venv/Scripts/python.exe' 'ck3_autonomous_player/native_bridge/research/disasm_ck3.py' 0x26B4710 --size 0x2D0
 ```
 
 关键静态复核点：

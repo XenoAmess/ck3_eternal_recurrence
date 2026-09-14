@@ -164,7 +164,7 @@ cycle/case/state/type/id/consumer、`due_cycle=cycle+1`、`escalation_count=0`�
 
 L0：
 
-```powershell
+```text
 py tools/gen_zg361_workforce_attribution_fact.py --check
 py tools/test_zg361_workforce_attribution_fact.py -v
 py -O tools/test_zg361_workforce_attribution_fact.py -v

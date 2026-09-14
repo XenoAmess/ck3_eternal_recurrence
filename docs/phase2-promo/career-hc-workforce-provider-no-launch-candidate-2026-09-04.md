@@ -71,7 +71,7 @@ executable.
 
 From this worktree root:
 
-```powershell
+```text
 Z:\ck3_mod_rewrite\tools\.venv\Scripts\python.exe tools/verify_zg361_career_hc_workforce_no_launch_candidate.py --manifest ck3_autonomous_player/native_bridge/research/fixtures/zhongguo_career_hc_workforce_postcondition_v1_no_launch_candidate_20260904.json --check
 ```
 

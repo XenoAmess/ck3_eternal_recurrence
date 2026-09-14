@@ -269,10 +269,8 @@ fixture 成功外推到其它 definition。
 
 ## 聚焦复现
 
-```powershell
-& "tools\.venv\Scripts\python.exe" `
-  "ck3_autonomous_player\native_bridge\research\verify_scheme_state_1_19_0_6_abi.py" `
-  --game-root "<CK3-root>"
+```text
+"tools\.venv\Scripts\python.exe" "ck3_autonomous_player\native_bridge\research\verify_scheme_state_1_19_0_6_abi.py" --game-root "<CK3-root>"
 ```
 
 通过条件是 exact EXE、12 份原版 script/GUI、逐行锚点、RTTI/literal、完整 native span 与既有 interaction action seam

@@ -8,7 +8,7 @@
 2026-09-05 10:19:53（Asia/Shanghai），先检查 `Z:\workspace\xar_promo_toolchain`
 的版本、分支和 clean 状态，然后实际执行：
 
-```powershell
+```text
 git -C Z:\workspace\xar_promo_toolchain pull --ff-only origin main
 git -C Z:\workspace\xar_promo_toolchain rev-parse HEAD origin/main
 git -C Z:\workspace\xar_promo_toolchain status --short
@@ -37,10 +37,8 @@ git -C Z:\workspace\xar_promo_toolchain describe --tags --always
 `promo_toolchain_loader` 消费，不是 Python 本身的模块搜索参数；因此直接运行工具 CLI
 时还应明确设置如下 `PYTHONPATH`，以保持与 wrapper 相同的最新源码：
 
-```powershell
-$env:XAR_PROMO_SOURCE = 'Z:\workspace\xar_promo_toolchain'
-$env:PYTHONPATH = 'Z:\workspace\xar_promo_toolchain\src'
-& 'Z:\ck3_mod_rewrite\tools\.venv\Scripts\python.exe' -m xar_promo --help
+```text
+py tools/run_with_env.py --env XAR_PROMO_SOURCE=Z:\workspace\xar_promo_toolchain --env PYTHONPATH=Z:\workspace\xar_promo_toolchain\src -- Z:\ck3_mod_rewrite\tools\.venv\Scripts\python.exe -m xar_promo --help
 ```
 
 共享解释器可在不影响进行中任务时按当前 `tools/requirements-promo-toolchain.txt` 升级到
@@ -52,15 +50,8 @@ hash-pinned `0.2.1` wheel；本轮 source override 的 GREEN 不依赖该升级�
 唯一新增的制作准备是运行现有 `preflight_phase2_media.py`，实测当前网络语音目录、字体、
 字幕内存布局、FFmpeg/ffprobe 编解码能力和拟用输出路径。命令为：
 
-```powershell
-$env:XAR_PROMO_SOURCE = 'Z:\workspace\xar_promo_toolchain'
-& 'Z:\ck3_mod_rewrite\tools\.venv\Scripts\python.exe' mod_zhongguo_style/tools/preflight_phase2_media.py `
-  --output Z:\ck3_mod_rewrite\_runtime\phase2-promo-preflight-20260905-1021\media-environment-character.json `
-  --project-config mod_zhongguo_style/promo/phase2-promo-character-project.json `
-  --expected-toolchain-head 57c42fca13ea459432c1caf76e069a1fbccf602c `
-  --planned-work-dir Z:\ck3_mod_rewrite_process_assets\zg361\promo\phase2-character-led-final-20260905 `
-  --planned-tts-cache Z:\ck3_mod_rewrite_process_assets\zg361\promo\phase2-tts-cache `
-  --planned-export-dir Z:\ck3_mod_rewrite_process_assets\zg361\promo\phase2-character-led-export-20260905
+```text
+py tools/run_with_env.py --env XAR_PROMO_SOURCE=Z:\workspace\xar_promo_toolchain -- Z:\ck3_mod_rewrite\tools\.venv\Scripts\python.exe mod_zhongguo_style/tools/preflight_phase2_media.py --output Z:\ck3_mod_rewrite\_runtime\phase2-promo-preflight-20260905-1021\media-environment-character.json --project-config mod_zhongguo_style/promo/phase2-promo-character-project.json --expected-toolchain-head 57c42fca13ea459432c1caf76e069a1fbccf602c --planned-work-dir Z:\ck3_mod_rewrite_process_assets\zg361\promo\phase2-character-led-final-20260905 --planned-tts-cache Z:\ck3_mod_rewrite_process_assets\zg361\promo\phase2-tts-cache --planned-export-dir Z:\ck3_mod_rewrite_process_assets\zg361\promo\phase2-character-led-export-20260905
 ```
 
 运行前只创建新的 receipt 父目录，没有创建候选 workdir 或媒体。退出码 `0`，
@@ -86,15 +77,8 @@ $env:XAR_PROMO_SOURCE = 'Z:\workspace\xar_promo_toolchain'
 按协调者后续明确工作包，制度版另跑一次现有预检，绑定它自己的 draft 配置。
 没有重跑人物版、拉取或旧单测；沿用本日 10:19 已更新的工具 HEAD 和明确源码覆盖：
 
-```powershell
-$env:XAR_PROMO_SOURCE = 'Z:\workspace\xar_promo_toolchain'
-& 'Z:\ck3_mod_rewrite\tools\.venv\Scripts\python.exe' mod_zhongguo_style/tools/preflight_phase2_media.py `
-  --output Z:\ck3_mod_rewrite\_runtime\phase2-promo-preflight-20260905-1058\media-environment-institution.json `
-  --project-config mod_zhongguo_style/promo/phase2-promo-institution-project.json `
-  --expected-toolchain-head 57c42fca13ea459432c1caf76e069a1fbccf602c `
-  --planned-work-dir Z:\ck3_mod_rewrite_process_assets\zg361\promo\phase2-institution-led-final-20260905 `
-  --planned-tts-cache Z:\ck3_mod_rewrite_process_assets\zg361\promo\phase2-tts-cache `
-  --planned-export-dir Z:\ck3_mod_rewrite_process_assets\zg361\promo\phase2-institution-led-export-20260905
+```text
+py tools/run_with_env.py --env XAR_PROMO_SOURCE=Z:\workspace\xar_promo_toolchain -- Z:\ck3_mod_rewrite\tools\.venv\Scripts\python.exe mod_zhongguo_style/tools/preflight_phase2_media.py --output Z:\ck3_mod_rewrite\_runtime\phase2-promo-preflight-20260905-1058\media-environment-institution.json --project-config mod_zhongguo_style/promo/phase2-promo-institution-project.json --expected-toolchain-head 57c42fca13ea459432c1caf76e069a1fbccf602c --planned-work-dir Z:\ck3_mod_rewrite_process_assets\zg361\promo\phase2-institution-led-final-20260905 --planned-tts-cache Z:\ck3_mod_rewrite_process_assets\zg361\promo\phase2-tts-cache --planned-export-dir Z:\ck3_mod_rewrite_process_assets\zg361\promo\phase2-institution-led-export-20260905
 ```
 
 只新建 append-only receipt 父目录，退出码 `0`，环境 `GREEN`。新回执独立于人物版：

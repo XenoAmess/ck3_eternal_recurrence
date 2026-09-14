@@ -151,7 +151,7 @@ descriptor，同时临时写入 staging 内层 descriptor 并把该版本发布�
 
 上传成功后，从 clean tag 另建不发布的临时 sidecar：
 
-```powershell
+```text
 py tools/build_vivhite_release.py --release --workshop-item-id <new-id> --output <temporary-output>
 ```
 

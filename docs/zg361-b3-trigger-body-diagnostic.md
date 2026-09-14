@@ -102,14 +102,8 @@ literal，因此这里只把它记录为现场进度观察，不把它提升为�
 
 物化命令：
 
-```powershell
-py tools/materialize_zg361_b3_trigger_body_diagnostic.py `
-  --output-root "Z:\ck3_mod_rewrite_process_assets\zg361\b3h-fecd2f2-trigger-false-20260904-081911Z\product" `
-  --manifest "Z:\ck3_mod_rewrite_process_assets\zg361\b3h-fecd2f2-trigger-false-20260904-081911Z\diagnostic-manifest.json" `
-  --projection-manifest "Z:\ck3_mod_rewrite_process_assets\zg361\b3h-fecd2f2-trigger-false-20260904-081911Z\projection.json" `
-  --parser-report "Z:\ck3_mod_rewrite_process_assets\zg361\b3h-fecd2f2-trigger-false-20260904-081911Z\open-kaishek-preflight.json" `
-  --artifacts-dir "Z:\ck3_mod_rewrite_process_assets\zg361\b3h-fecd2f2-trigger-false-20260904-081911Z\artifacts-live" `
-  --bridge-pipe "\\.\pipe\xar_ck3_bridge_zg361_b3f15e0819114a8c9d0276e3415a6c2d"
+```text
+py tools/materialize_zg361_b3_trigger_body_diagnostic.py --output-root "Z:\ck3_mod_rewrite_process_assets\zg361\b3h-fecd2f2-trigger-false-20260904-081911Z\product" --manifest "Z:\ck3_mod_rewrite_process_assets\zg361\b3h-fecd2f2-trigger-false-20260904-081911Z\diagnostic-manifest.json" --projection-manifest "Z:\ck3_mod_rewrite_process_assets\zg361\b3h-fecd2f2-trigger-false-20260904-081911Z\projection.json" --parser-report "Z:\ck3_mod_rewrite_process_assets\zg361\b3h-fecd2f2-trigger-false-20260904-081911Z\open-kaishek-preflight.json" --artifacts-dir "Z:\ck3_mod_rewrite_process_assets\zg361\b3h-fecd2f2-trigger-false-20260904-081911Z\artifacts-live" --bridge-pipe "\\.\pipe\xar_ck3_bridge_zg361_b3f15e0819114a8c9d0276e3415a6c2d"
 ```
 
 该命令只能对不存在的输出执行一次；当前候选已经物化，禁止在同一路径重跑。
@@ -118,7 +112,7 @@ py tools/materialize_zg361_b3_trigger_body_diagnostic.py `
 
 以下历史命令已经执行；对应 artifact 必须保留，不得重跑或再当作 body 归因：
 
-```powershell
+```text
 Z:\ck3_mod_rewrite\tools\.venv\Scripts\python.exe Z:\ck3_mod_rewrite\_wt-b3-trigger-body-diagnostic\tools\run_zhongguo_acceptance.py --phase2-live-batch --bridge-dll Z:\ck3_mod_rewrite_process_assets\zg361\b3g-fecd2f2-20260904-073033Z\native-build\xar_ck3_bridge.dll --bridge-injector Z:\ck3_mod_rewrite_process_assets\zg361\b3g-fecd2f2-20260904-073033Z\native-build\xar_ck3_bridge_injector.exe --bridge-pipe \\.\pipe\xar_ck3_bridge_zg361_b3f15e0819114a8c9d0276e3415a6c2d --phase2-seed-contract Z:\ck3_mod_rewrite\_worktrees\b3-trigger-closure-r5\tools\zg361_phase2_seed_contract.json --phase2-product-source Z:\ck3_mod_rewrite_process_assets\zg361\b3h-fecd2f2-trigger-false-20260904-081911Z\product --phase2-product-projection b3-trigger-body-always-false-diagnostic-fecd2f2 --phase2-product-projection-manifest Z:\ck3_mod_rewrite_process_assets\zg361\b3h-fecd2f2-trigger-false-20260904-081911Z\projection.json --artifacts-dir Z:\ck3_mod_rewrite_process_assets\zg361\b3h-fecd2f2-trigger-false-20260904-081911Z\artifacts-live --discard-userdir
 ```
 
@@ -158,7 +152,7 @@ sidecar：
 
 v2 已执行的唯一 live 命令（禁止重跑）：
 
-```powershell
+```text
 Z:\ck3_mod_rewrite\tools\.venv\Scripts\python.exe Z:\ck3_mod_rewrite\_wt-b3-trigger-body-diagnostic\tools\run_zhongguo_acceptance.py --phase2-live-batch --bridge-dll Z:\ck3_mod_rewrite_process_assets\zg361\b3g-fecd2f2-20260904-073033Z\native-build\xar_ck3_bridge.dll --bridge-injector Z:\ck3_mod_rewrite_process_assets\zg361\b3g-fecd2f2-20260904-073033Z\native-build\xar_ck3_bridge_injector.exe --bridge-pipe \\.\pipe\xar_ck3_bridge_zg361_927e9842f6a54496abf29588dd4b93bd --phase2-seed-contract Z:\ck3_mod_rewrite\_worktrees\b3-trigger-closure-r5\tools\zg361_phase2_seed_contract.json --phase2-product-source Z:\ck3_mod_rewrite_process_assets\zg361\b3i-fecd2f2-trigger-abi-false-20260904-084813Z\product --phase2-product-projection b3-trigger-body-abi-consuming-false-diagnostic-fecd2f2 --phase2-product-projection-manifest Z:\ck3_mod_rewrite_process_assets\zg361\b3i-fecd2f2-trigger-abi-false-20260904-084813Z\projection.json --artifacts-dir Z:\ck3_mod_rewrite_process_assets\zg361\b3i-fecd2f2-trigger-abi-false-20260904-084813Z\artifacts-live --discard-userdir
 ```
 

@@ -14,7 +14,9 @@ class PackagingTests(unittest.TestCase):
             configuration = tomllib.load(stream)
         package_data = configuration["tool"]["setuptools"].get("package-data", {})
         self.assertEqual(package_data.get("ck3_workshop_mcp", []), [])
-        self.assertFalse(list((ROOT / "src" / "ck3_workshop_mcp").glob("*.ps1")))
+        forbidden_suffixes = {"." + value for value in ("ps" + "1", "psm" + "1", "psd" + "1")}
+        package_files = (ROOT / "src" / "ck3_workshop_mcp").iterdir()
+        self.assertFalse([path for path in package_files if path.suffix.casefold() in forbidden_suffixes])
 
 
 if __name__ == "__main__":

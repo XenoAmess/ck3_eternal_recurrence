@@ -57,7 +57,7 @@ It selects, in order, an explicit `--python`, `XAR_PYTHON`, a
 `tools/.venv`.  If none exists, or required runtime distributions are missing,
 it writes a prelaunch RED and starts no CK3 process.
 
-The bootstrap is a direct Python entry and does not depend on PowerShell script
+The bootstrap is a direct Python entry and does not depend on legacy shell script
 execution policy.  A portable invocation shape is:
 
 ```text

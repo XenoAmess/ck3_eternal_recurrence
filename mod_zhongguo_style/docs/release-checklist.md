@@ -24,30 +24,28 @@ fixture GREEN 和 CK3 实机 GREEN 必须分开记录，不能互相代替。0.3
 
 在同一候选上执行并记录退出码与输出：
 
-```powershell
-& "tools\.venv\Scripts\python.exe" mod_zhongguo_style/tools/gen_361_mechanisms.py
-& "tools\.venv\Scripts\python.exe" mod_zhongguo_style/tools/gen_scoreboard_snapshot.py
-& "tools\.venv\Scripts\python.exe" mod_zhongguo_style/tools/test_gen_361_mechanisms.py
-& "tools\.venv\Scripts\python.exe" mod_zhongguo_style/tools/test_scoreboard_snapshot.py
-& "tools\.venv\Scripts\python.exe" mod_zhongguo_style/tools/test_prepare_release_localization.py
-& "tools\.venv\Scripts\python.exe" mod_zhongguo_style/tools/validate_local.py
-& "tools\.venv\Scripts\python.exe" mod_zhongguo_style/tools/prepare_release_localization.py audit `
-  --write-report mod_zhongguo_style/docs/release-localization-audit.json
-& "tools\.venv\Scripts\python.exe" mod_zhongguo_style/tools/compose_thumbnail.py --check
-& "tools\.venv\Scripts\python.exe" mod_zhongguo_style/tools/test_compose_workshop_media.py
-& "tools\.venv\Scripts\python.exe" mod_zhongguo_style/tools/compose_workshop_media.py --check-tracked
-& "tools\.venv\Scripts\python.exe" mod_zhongguo_style/tools/test_promo_video.py
-& "tools\.venv\Scripts\python.exe" mod_zhongguo_style/tools/test_prepare_promo_release_manifest.py
-& "tools\.venv\Scripts\python.exe" mod_zhongguo_style/tools/test_prepare_promo_visual_audit.py
-& "tools\.venv\Scripts\python.exe" mod_zhongguo_style/tools/test_audit_promo_visuals.py
-& "tools\.venv\Scripts\python.exe" mod_zhongguo_style/tools/validate_promo_video.py `
-  --manifest mod_zhongguo_style/promo/promo-manifest.json --stage draft
-& "tools\.venv\Scripts\python.exe" tools/test_gen_zhongguo_acceptance_cases.py
-& "tools\.venv\Scripts\python.exe" tools/test_run_zhongguo_promo_capture.py
-& "tools\.venv\Scripts\python.exe" tools/test_run_zhongguo_workshop_acceptance.py
-& "tools\.venv\Scripts\python.exe" tools/test_build_mod_zhongguo_style_release.py
-& "tools\.venv\Scripts\python.exe" tools/test_verify_zhongguo_workshop_cache.py
-& "tools\.venv\Scripts\python.exe" tools/build_mod_zhongguo_style_release.py --check
+```text
+"tools\.venv\Scripts\python.exe" mod_zhongguo_style/tools/gen_361_mechanisms.py
+"tools\.venv\Scripts\python.exe" mod_zhongguo_style/tools/gen_scoreboard_snapshot.py
+"tools\.venv\Scripts\python.exe" mod_zhongguo_style/tools/test_gen_361_mechanisms.py
+"tools\.venv\Scripts\python.exe" mod_zhongguo_style/tools/test_scoreboard_snapshot.py
+"tools\.venv\Scripts\python.exe" mod_zhongguo_style/tools/test_prepare_release_localization.py
+"tools\.venv\Scripts\python.exe" mod_zhongguo_style/tools/validate_local.py
+"tools\.venv\Scripts\python.exe" mod_zhongguo_style/tools/prepare_release_localization.py audit --write-report mod_zhongguo_style/docs/release-localization-audit.json
+"tools\.venv\Scripts\python.exe" mod_zhongguo_style/tools/compose_thumbnail.py --check
+"tools\.venv\Scripts\python.exe" mod_zhongguo_style/tools/test_compose_workshop_media.py
+"tools\.venv\Scripts\python.exe" mod_zhongguo_style/tools/compose_workshop_media.py --check-tracked
+"tools\.venv\Scripts\python.exe" mod_zhongguo_style/tools/test_promo_video.py
+"tools\.venv\Scripts\python.exe" mod_zhongguo_style/tools/test_prepare_promo_release_manifest.py
+"tools\.venv\Scripts\python.exe" mod_zhongguo_style/tools/test_prepare_promo_visual_audit.py
+"tools\.venv\Scripts\python.exe" mod_zhongguo_style/tools/test_audit_promo_visuals.py
+"tools\.venv\Scripts\python.exe" mod_zhongguo_style/tools/validate_promo_video.py --manifest mod_zhongguo_style/promo/promo-manifest.json --stage draft
+"tools\.venv\Scripts\python.exe" tools/test_gen_zhongguo_acceptance_cases.py
+"tools\.venv\Scripts\python.exe" tools/test_run_zhongguo_promo_capture.py
+"tools\.venv\Scripts\python.exe" tools/test_run_zhongguo_workshop_acceptance.py
+"tools\.venv\Scripts\python.exe" tools/test_build_mod_zhongguo_style_release.py
+"tools\.venv\Scripts\python.exe" tools/test_verify_zhongguo_workshop_cache.py
+"tools\.venv\Scripts\python.exe" tools/build_mod_zhongguo_style_release.py --check
 ```
 
 - [x] 生成器重跑后 `git diff --exit-code`，证明产物未陈旧。
@@ -83,11 +81,8 @@ generation、全部成功调用的 `target_write_blocked=false` 和 OCR/像素�
 
 上传前正式命令（`--bridge-pipe` 默认自动生成本次运行唯一 nonce，不应复用固定 pipe）：
 
-```powershell
-& "tools\.venv\Scripts\python.exe" tools/run_zhongguo_acceptance.py `
-  --promo-capture `
-  --bridge-dll <exact-build-production-bridge.dll> `
-  --bridge-injector <exact-build-injector.exe>
+```text
+"tools\.venv\Scripts\python.exe" tools/run_zhongguo_acceptance.py --promo-capture --bridge-dll <exact-build-production-bridge.dll> --bridge-injector <exact-build-injector.exe>
 ```
 
 `--promo-camera-probe` 只是在上述正式会话 RED 后用于定向诊断的可选模式；它不启动 FFmpeg、不冒充 361 全链、
@@ -126,9 +121,9 @@ production smoke 位于 `Z:\ck3_mod_rewrite_process_assets\zg361\release\fresh-c
 - [x] 工坊 media strip 已按 `01 → 08` 上传并保存；匿名公开 HTML 恰含 8 个 `highlight_strip_item`，实际数量和顺序复核通过。
 - [x] 八图与最终 BBCode 采用同一个 image-bearing commit，并通过独立严格门：
 
-```powershell
-& "tools\.venv\Scripts\python.exe" mod_zhongguo_style/tools/test_validate_workshop_description.py
-& "tools\.venv\Scripts\python.exe" mod_zhongguo_style/tools/validate_workshop_description.py
+```text
+"tools\.venv\Scripts\python.exe" mod_zhongguo_style/tools/test_validate_workshop_description.py
+"tools\.venv\Scripts\python.exe" mod_zhongguo_style/tools/validate_workshop_description.py
 ```
 
 - [x] 宣传视频所用原始录屏、TTS 输入、`zh-CN-XiaoxiaoNeural` 音轨、双语字幕源、剪辑工程、中间导出和失败版本均保留，不进入 mod staging。
@@ -158,7 +153,7 @@ production smoke 位于 `Z:\ck3_mod_rewrite_process_assets\zg361\release\fresh-c
 
 ## 5. 正式构建
 
-```powershell
+```text
 py tools/build_mod_zhongguo_style_release.py --release
 ```
 
@@ -169,10 +164,8 @@ py tools/build_mod_zhongguo_style_release.py --release
 - [x] staging 中不存在 README、docs、tools、workshop、images、artifacts、fixture/test 路径或 `remote_file_id`。
 - [x] 对 staging 运行 canonical manifest 验证 GREEN：
 
-```powershell
-py tools/build_mod_zhongguo_style_release.py `
-  --verify dist/mod_zhongguo_style `
-  --manifest dist/mod_zhongguo_style-v<version>.manifest.json
+```text
+py tools/build_mod_zhongguo_style_release.py --verify dist/mod_zhongguo_style --manifest dist/mod_zhongguo_style-v<version>.manifest.json
 ```
 
 - [x] ZIP 根目录恰为 `mod_zhongguo_style/`；ZIP 内容与 staging manifest 完全一致。
@@ -190,38 +183,23 @@ py tools/build_mod_zhongguo_style_release.py `
 - [x] 上传后立即重建 canonical staging，清除 Launcher 临时注入的内层 `remote_file_id`；重建结果仍为 51 文件及本表记录的正式哈希。
 - [x] 用新 ID 从同一 clean tag 生成一份仅用于核验的 ID-bearing sidecar：
 
-```powershell
-py tools/build_mod_zhongguo_style_release.py --release `
-  --workshop-item-id <new-item-id> `
-  --output <temporary-output>
+```text
+py tools/build_mod_zhongguo_style_release.py --release --workshop-item-id <workshop-id> --output <temporary-output>
 ```
 
 - [x] 新 ID 的缓存叶目录在下载前确认为不存在；从该空路径强制下载新 item，得到 51 文件、6,931,940 bytes 的 fresh cache。
 - [x] 新鲜缓存只允许 Launcher 的 descriptor 换行规范化与末行唯一正确 ID 注入，其余文件逐字节匹配：
 
-```powershell
-py tools/build_mod_zhongguo_style_release.py `
-  --verify <fresh-workshop-cache> `
-  --manifest <id-bearing-manifest> `
-  --workshop-cache
+```text
+py tools/build_mod_zhongguo_style_release.py --verify <fresh-workshop-cache> --manifest <id-bearing-manifest> --workshop-cache
 
-py tools/verify_zhongguo_workshop_cache.py `
-  --cache-leaf <fresh-workshop-cache> `
-  --manifest <id-bearing-manifest> `
-  --zip <id-bearing-formal-zip> `
-  --descriptor-policy launcher-injected `
-  --report <external-fresh-cache-report.json>
+py tools/verify_zhongguo_workshop_cache.py --cache-leaf <fresh-workshop-cache> --manifest <id-bearing-manifest> --zip <id-bearing-formal-zip> --descriptor-policy launcher-injected --report <external-fresh-cache-report.json>
 ```
 
 - [x] 从新鲜 Workshop 缓存运行一次 production smoke；报告明确写 `verified_workshop_cache`，不借用开发树结论。
 
-```powershell
-& "tools\.venv\Scripts\python.exe" tools/run_zhongguo_acceptance.py `
-  --artifacts-dir <new-immutable-artifact-root> `
-  --workshop-cache-source <fresh-workshop-cache> `
-  --workshop-manifest <id-bearing-manifest> `
-  --bridge-dll <exact-build-production-bridge.dll> `
-  --bridge-injector <exact-build-injector.exe>
+```text
+"tools\.venv\Scripts\python.exe" tools/run_zhongguo_acceptance.py --artifacts-dir <new-immutable-artifact-root> --workshop-cache-source <fresh-workshop-cache> --workshop-manifest <id-bearing-manifest> --bridge-dll <exact-build-production-bridge.dll> --bridge-injector <exact-build-injector.exe>
 ```
 
 该模式会在启动 CK3 前再次执行逐文件 Workshop manifest 核验，并要求缓存叶目录名等于新 item ID、sidecar

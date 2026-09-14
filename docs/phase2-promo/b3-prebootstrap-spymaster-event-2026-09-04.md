@@ -105,9 +105,8 @@ evidence is claimed.
 
 Command:
 
-```powershell
-& "Z:\ck3_mod_rewrite\tools\.venv\Scripts\python.exe" -B `
-  "tools/test_run_zg361_phase2_seed_capture.py"
+```text
+"Z:\ck3_mod_rewrite\tools\.venv\Scripts\python.exe" -B "tools/test_run_zg361_phase2_seed_capture.py"
 ```
 
 Result: GREEN.  CK3 launch count for this implementation task: `0`.

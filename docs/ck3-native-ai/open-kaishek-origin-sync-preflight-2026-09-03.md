@@ -20,8 +20,8 @@ HEAD != refs/remotes/origin/main  -> stale
 
 在需要把 open_kaishek 作为当前主线配套工具的验收前设置：
 
-```powershell
-$env:XAR_KAISHEK_REQUIRE_ORIGIN_SYNC = "1"
+```text
+py tools/run_with_env.py --env XAR_KAISHEK_REQUIRE_ORIGIN_SYNC=1 -- <python-command>
 ```
 
 或者在 Python 调用中传入 `require_origin_sync=True`。门槛通过后才会执行

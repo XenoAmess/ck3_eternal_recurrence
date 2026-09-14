@@ -58,22 +58,22 @@
 
 下面命令只读检查宣传工具版本和工作树，不拉取、不修改工具 checkout，也不会启动 CK3：
 
-```powershell
-$ZgPromo = 'Z:\workspace\xar_promo_toolchain'
-$ZgToolHead = (& git -c "safe.directory=$ZgPromo" -C $ZgPromo rev-parse HEAD).Trim()
-$ZgToolOrigin = (& git -c "safe.directory=$ZgPromo" -C $ZgPromo rev-parse origin/main).Trim()
-$ZgToolDirty = (& git -c "safe.directory=$ZgPromo" -C $ZgPromo status --porcelain)
-if ($ZgToolDirty) { throw 'promo tool checkout is dirty' }
-if ($ZgToolHead -ne $ZgToolOrigin) { throw 'promo tool HEAD != origin/main' }
-if ($ZgToolHead -ne '57c42fca13ea459432c1caf76e069a1fbccf602c') {
-    throw 'the recorded production tool receipt must be refreshed before use'
-}
+```python
+from pathlib import Path
+import os
+import subprocess
 
-$env:XAR_PROMO_SOURCE = $ZgPromo
-$env:PYTHONPATH = (Join-Path $ZgPromo 'src')
-$ZgPython = 'Z:\ck3_mod_rewrite\tools\.venv\Scripts\python.exe'
-& $ZgPython -m unittest discover `
-  -s (Join-Path $ZgPromo 'tests') -q
+promo = Path(r"Z:\workspace\xar_promo_toolchain")
+def git(*args: str) -> str:
+    return subprocess.run(["git", "-c", f"safe.directory={promo}", "-C", str(promo), *args], check=True, capture_output=True, text=True).stdout.strip()
+head = git("rev-parse", "HEAD")
+if git("status", "--porcelain") or head != git("rev-parse", "origin/main"):
+    raise RuntimeError("promo tool checkout must be a clean origin/main checkout")
+if head != "57c42fca13ea459432c1caf76e069a1fbccf602c":
+    raise RuntimeError("refresh the recorded production tool receipt before use")
+environment = os.environ.copy()
+environment.update(XAR_PROMO_SOURCE=str(promo), PYTHONPATH=str(promo / "src"))
+subprocess.run([r"Z:\ck3_mod_rewrite\tools\.venv\Scripts\python.exe", "-m", "unittest", "discover", "-s", str(promo / "tests"), "-q"], check=True, env=environment)
 ```
 
 这次实际复跑结果是 `Ran 263 tests ... OK (skipped=2)`。如果远端主线在正式 TTS/渲染前发生新提交，必须重新完成“更新 → 核对 → 测试 → 绑定 receipt”这一整步，不能沿用旧 HEAD。
@@ -82,30 +82,8 @@ $ZgPython = 'Z:\ck3_mod_rewrite\tools\.venv\Scripts\python.exe'
 
 将下面变量替换为真实、已验证的输入后，先运行**不带 `--execute`** 的计划命令。它只写一个新的 `capture-plan.json`；任何缺口都会保持 `RED`，并返回非零码。`<...>` 不能原样执行。
 
-```powershell
-$ZgRepo = 'Z:\ck3_mod_rewrite\_root-promo-split-20260902'
-$ZgPython = 'Z:\ck3_mod_rewrite\tools\.venv\Scripts\python.exe'
-$ZgAttemptStamp = (Get-Date).ToUniversalTime().ToString('yyyyMMdd-HHmmss')
-$ZgAttempt = "Z:\ck3_mod_rewrite\_runtime\phase2-promo-capture-$ZgAttemptStamp"
-$ZgSourceCommit = '<FROZEN_40_HEX_SOURCE_COMMIT>'
-$ZgObserver = '<GREEN_COMPLETION_OBSERVER_JSON>'
-$ZgSeed = '<GREEN_READY_SEED_CONTRACT_JSON>'
-$ZgMedia = '<GREEN_MEDIA_PREFLIGHT_JSON>'
-$ZgMediaSha = '<SHA256_OF_GREEN_MEDIA_PREFLIGHT_JSON>'
-$ZgBridgeDir = 'Z:\ck3_mod_rewrite\_runtime\bridge-fresh-release-freeze165b-20260903'
-$ZgBridgeDll = "$ZgBridgeDir\xar_ck3_bridge.dll"
-$ZgBridgeInjector = "$ZgBridgeDir\xar_ck3_bridge_injector.exe"
-
-& $ZgPython "$ZgRepo\tools\run_zhongguo_phase2_capture_attempt.py" `
-  --attempt-dir $ZgAttempt `
-  --source-root $ZgRepo `
-  --source-git-commit $ZgSourceCommit `
-  --observer-artifact $ZgObserver `
-  --seed-contract $ZgSeed `
-  --media-preflight-report $ZgMedia `
-  --expected-media-preflight-sha256 $ZgMediaSha `
-  --bridge-dll $ZgBridgeDll `
-  --bridge-injector $ZgBridgeInjector
+```text
+Z:\ck3_mod_rewrite\tools\.venv\Scripts\python.exe Z:\ck3_mod_rewrite\_root-promo-split-20260902\tools\run_zhongguo_phase2_capture_attempt.py --attempt-dir Z:\ck3_mod_rewrite\_runtime\phase2-promo-capture-<UTC_TIMESTAMP> --source-root Z:\ck3_mod_rewrite\_root-promo-split-20260902 --source-git-commit <FROZEN_40_HEX_SOURCE_COMMIT> --observer-artifact <GREEN_COMPLETION_OBSERVER_JSON> --seed-contract <GREEN_READY_SEED_CONTRACT_JSON> --media-preflight-report <GREEN_MEDIA_PREFLIGHT_JSON> --expected-media-preflight-sha256 <SHA256_OF_GREEN_MEDIA_PREFLIGHT_JSON> --bridge-dll Z:\ck3_mod_rewrite\_runtime\bridge-fresh-release-freeze165b-20260903\xar_ck3_bridge.dll --bridge-injector Z:\ck3_mod_rewrite\_runtime\bridge-fresh-release-freeze165b-20260903\xar_ck3_bridge_injector.exe
 ```
 
 这个 wrapper 的 `--execute` 是唯一的 CK3 启动边界。当前 runner 的 Phase2 producer 还要求 source checkpoint registry；因此计划变为 GREEN 后，实际启动命令应显式补上该 registry，而不能只照抄一个缺 registry 的旧 `single_capture_command`。
@@ -114,26 +92,9 @@ $ZgBridgeInjector = "$ZgBridgeDir\xar_ck3_bridge_injector.exe"
 
 以下命令会启动 CK3，当前整理阶段**没有执行**。操作员必须先确认上面的 plan 为 `GREEN / ready-to-run`，并核对 `$ZgSourceRegistry` 是同一真实 lineage 的 registry。保留默认 userdir，不要加 `--discard-userdir`，以便保存失败证据。
 
-```powershell
-$ZgRepo = 'Z:\ck3_mod_rewrite\_root-promo-split-20260902'
-$ZgPython = 'Z:\ck3_mod_rewrite\tools\.venv\Scripts\python.exe'
-$ZgAttempt = '<THE_NEW_GREEN_CAPTURE_ATTEMPT_DIR>'
-$ZgCaptureOut = "$ZgAttempt\capture"
-$ZgSeed = '<GREEN_READY_SEED_CONTRACT_JSON>'
-$ZgSourceRegistry = '<GREEN_SOURCE_CHECKPOINT_REGISTRY_JSON>'
-$ZgBridgeDll = '<EXACT_BUILD_xar_ck3_bridge.dll>'
-$ZgBridgeInjector = '<EXACT_BUILD_xar_ck3_bridge_injector.exe>'
-$ZgBridgePipe = "\\.\pipe\xar_ck3_bridge_zg361_phase2_capture_$([guid]::NewGuid().ToString('N'))"
-
-# EXECUTION BOUNDARY: this line starts CK3 and the recorder.
-& $ZgPython "$ZgRepo\tools\run_zhongguo_acceptance.py" `
-  --phase2-promo-capture `
-  --artifacts-dir $ZgCaptureOut `
-  --phase2-seed-contract $ZgSeed `
-  --phase2-source-checkpoint-registry $ZgSourceRegistry `
-  --bridge-dll $ZgBridgeDll `
-  --bridge-injector $ZgBridgeInjector `
-  --bridge-pipe $ZgBridgePipe
+```text
+# EXECUTION BOUNDARY: this command starts CK3 and the recorder.
+Z:\ck3_mod_rewrite\tools\.venv\Scripts\python.exe Z:\ck3_mod_rewrite\_root-promo-split-20260902\tools\run_zhongguo_acceptance.py --phase2-promo-capture --artifacts-dir <THE_NEW_GREEN_CAPTURE_ATTEMPT_DIR>\capture --phase2-seed-contract <GREEN_READY_SEED_CONTRACT_JSON> --phase2-source-checkpoint-registry <GREEN_SOURCE_CHECKPOINT_REGISTRY_JSON> --bridge-dll <EXACT_BUILD_xar_ck3_bridge.dll> --bridge-injector <EXACT_BUILD_xar_ck3_bridge_injector.exe> --bridge-pipe \\.\pipe\xar_ck3_bridge_zg361_phase2_capture_<UUID_HEX>
 ```
 
 录制返回后，只有当 `$ZgCaptureOut\report.json`、`$ZgCaptureOut\cell\promo\capture-timeline.json`、`$ZgCaptureOut\evidence-index.json` 和 `$ZgCaptureOut\cell\04_phase2_seed_loaded.json` 都存在且内容为真实 `GREEN` 时，才继续 intake。否则保留失败目录，换新的 attempt 目录重试，不覆盖旧证据。
@@ -142,14 +103,8 @@ $ZgBridgePipe = "\\.\pipe\xar_ck3_bridge_zg361_phase2_capture_$([guid]::NewGuid(
 
 ### 1. 只读 intake（共享一次，不能用 fixture）
 
-```powershell
-$ZgRepo = 'Z:\ck3_mod_rewrite\_root-promo-split-20260902'
-$ZgPython = 'Z:\ck3_mod_rewrite\tools\.venv\Scripts\python.exe'
-$ZgCapture = '<GREEN_CAPTURE_ROOT>'
-$ZgIntake = '<NEW_INTAKE_REPORT_JSON>'
-
-& $ZgPython "$ZgRepo\tools\zhongguo_phase2_footage_intake.py" `
-  --capture-root $ZgCapture --output $ZgIntake
+```text
+Z:\ck3_mod_rewrite\tools\.venv\Scripts\python.exe Z:\ck3_mod_rewrite\_root-promo-split-20260902\tools\zhongguo_phase2_footage_intake.py --capture-root <GREEN_CAPTURE_ROOT> --output <NEW_INTAKE_REPORT_JSON>
 ```
 
 `GREEN` intake 必须报告八个 canonical span、同一 seed/save lineage、真实 CK3 source/game/mount、raw recording hash 和全量 clean begin/end。`RED / footage_pending` 不能进入 builder。
@@ -158,119 +113,14 @@ $ZgIntake = '<NEW_INTAKE_REPORT_JSON>'
 
 以下两个分支可以在同一份 `GREEN` intake 后并行，但每个 cut 必须使用自己的 authoring/work/run/output 路径。先由指定审阅者把真实签署的 `$ZgSourceReview` 写好，再运行 promotion；命令不会替代人工审阅。
 
-```powershell
-$ZgRepo = 'Z:\ck3_mod_rewrite\_root-promo-split-20260902'
-$ZgPython = 'Z:\ck3_mod_rewrite\tools\.venv\Scripts\python.exe'
-$ZgPromo = 'Z:\workspace\xar_promo_toolchain'
-$env:XAR_PROMO_SOURCE = $ZgPromo
-$env:PYTHONPATH = (Join-Path $ZgPromo 'src')
-$ZgCapture = '<GREEN_CAPTURE_ROOT>'
-$ZgIntake = '<GREEN_INTAKE_REPORT_JSON>'
-$ZgToolHead = '57c42fca13ea459432c1caf76e069a1fbccf602c'
-
-# Character line (use a new, empty work root)
-$ZgCharRoot = '<NEW_CHARACTER_AUTHORING_ROOT>'
-$ZgCharProject = "$ZgCharRoot\phase2-promo-character-project.json"
-$ZgCharMedia = "$ZgCharRoot\media-preflight.json"
-$ZgCharMediaSha = '<CHARACTER_MEDIA_PREFLIGHT_SHA256>'
-$ZgCharTts = '<NEW_CHARACTER_TTS_CACHE>'
-$ZgCharWork = '<NEW_CHARACTER_WORK_DIR>'
-
-& $ZgPython "$ZgRepo\mod_zhongguo_style\tools\promote_phase2_reviewed_authoring.py" `
-  --project-config "$ZgRepo\mod_zhongguo_style\promo\phase2-promo-character-project.json" `
-  --authoring-ledger "$ZgRepo\mod_zhongguo_style\promo\phase2-authoring-character-claims.json" `
-  --footage-intake-report $ZgIntake `
-  --source-review-receipt "$ZgCharRoot\source-review-receipt.json" `
-  --output-project $ZgCharProject `
-  --output-receipt "$ZgCharRoot\authoring-promotion-receipt.json"
-
-& $ZgPython "$ZgRepo\mod_zhongguo_style\tools\preflight_phase2_media.py" `
-  --output $ZgCharMedia `
-  --project-config $ZgCharProject `
-  --expected-toolchain-head $ZgToolHead `
-  --capture-root $ZgCapture `
-  --planned-work-dir $ZgCharWork `
-  --planned-tts-cache $ZgCharTts `
-  --planned-export-dir '<NEW_CHARACTER_EXPORT_DIR>'
-$ZgCharMediaSha = (Get-FileHash -Algorithm SHA256 $ZgCharMedia).Hash
-
-& $ZgPython "$ZgRepo\mod_zhongguo_style\tools\prime_phase2_tts_cache.py" `
-  --cut character-led --project-config $ZgCharProject `
-  --media-preflight-report $ZgCharMedia `
-  --expected-media-preflight-sha256 $ZgCharMediaSha `
-  --tts-cache $ZgCharTts `
-  --output "$ZgCharRoot\tts-cache-prime-receipt.json" `
-  --ffmpeg ffmpeg --ffprobe ffprobe
-
-& $ZgPython "$ZgRepo\mod_zhongguo_style\tools\build_phase2_promo_video.py" `
-  --cut character-led --project-config $ZgCharProject `
-  --capture-root $ZgCapture --seed-preflight-report '<GREEN_SEED_PREFLIGHT_JSON>' `
-  --media-preflight-report $ZgCharMedia `
-  --expected-media-preflight-sha256 $ZgCharMediaSha `
-  --work-dir $ZgCharWork --tts-cache $ZgCharTts `
-  --ffmpeg ffmpeg --ffprobe ffprobe `
-  --run-id phase2-character-led-candidate --validate-only
-
-& $ZgPython "$ZgRepo\mod_zhongguo_style\tools\build_phase2_promo_video.py" `
-  --cut character-led --project-config $ZgCharProject `
-  --capture-root $ZgCapture --seed-preflight-report '<GREEN_SEED_PREFLIGHT_JSON>' `
-  --media-preflight-report $ZgCharMedia `
-  --expected-media-preflight-sha256 $ZgCharMediaSha `
-  --work-dir $ZgCharWork --tts-cache $ZgCharTts `
-  --ffmpeg ffmpeg --ffprobe ffprobe `
-  --run-id phase2-character-led-candidate
+```text
+Z:\ck3_mod_rewrite\tools\.venv\Scripts\python.exe Z:\ck3_mod_rewrite\_root-promo-split-20260902\mod_zhongguo_style\tools\run_phase2_cut_pipeline.py --repository Z:\ck3_mod_rewrite\_root-promo-split-20260902 --python Z:\ck3_mod_rewrite\tools\.venv\Scripts\python.exe build --cut character-led --toolchain Z:\workspace\xar_promo_toolchain --expected-toolchain-head 57c42fca13ea459432c1caf76e069a1fbccf602c --capture <GREEN_CAPTURE_ROOT> --seed-preflight <GREEN_SEED_PREFLIGHT_JSON> --tts-cache <NEW_CHARACTER_TTS_CACHE> --work-dir <NEW_CHARACTER_WORK_DIR> --authoring-root <NEW_CHARACTER_AUTHORING_ROOT> --source-review-receipt <NEW_CHARACTER_AUTHORING_ROOT>\source-review-receipt.json --planned-export-directory <NEW_CHARACTER_EXPORT_DIR> --ffmpeg ffmpeg --ffprobe ffprobe
 ```
 
 Institution line uses the identical sequence with its own values:
 
-```powershell
-$ZgInstRoot = '<NEW_INSTITUTION_AUTHORING_ROOT>'
-$ZgInstProject = "$ZgInstRoot\phase2-promo-institution-project.json"
-$ZgInstMedia = "$ZgInstRoot\media-preflight.json"
-$ZgInstMediaSha = '<INSTITUTION_MEDIA_PREFLIGHT_SHA256>'
-$ZgInstTts = '<NEW_INSTITUTION_TTS_CACHE>'
-$ZgInstWork = '<NEW_INSTITUTION_WORK_DIR>'
-
-& $ZgPython "$ZgRepo\mod_zhongguo_style\tools\promote_phase2_reviewed_authoring.py" `
-  --project-config "$ZgRepo\mod_zhongguo_style\promo\phase2-promo-institution-project.json" `
-  --authoring-ledger "$ZgRepo\mod_zhongguo_style\promo\phase2-authoring-institution-claims.json" `
-  --footage-intake-report $ZgIntake `
-  --source-review-receipt "$ZgInstRoot\source-review-receipt.json" `
-  --output-project $ZgInstProject `
-  --output-receipt "$ZgInstRoot\authoring-promotion-receipt.json"
-
-& $ZgPython "$ZgRepo\mod_zhongguo_style\tools\preflight_phase2_media.py" `
-  --output $ZgInstMedia --project-config $ZgInstProject `
-  --expected-toolchain-head $ZgToolHead --capture-root $ZgCapture `
-  --planned-work-dir $ZgInstWork --planned-tts-cache $ZgInstTts `
-  --planned-export-dir '<NEW_INSTITUTION_EXPORT_DIR>'
-$ZgInstMediaSha = (Get-FileHash -Algorithm SHA256 $ZgInstMedia).Hash
-
-& $ZgPython "$ZgRepo\mod_zhongguo_style\tools\prime_phase2_tts_cache.py" `
-  --cut institution-led --project-config $ZgInstProject `
-  --media-preflight-report $ZgInstMedia `
-  --expected-media-preflight-sha256 $ZgInstMediaSha `
-  --tts-cache $ZgInstTts `
-  --output "$ZgInstRoot\tts-cache-prime-receipt.json" `
-  --ffmpeg ffmpeg --ffprobe ffprobe
-
-& $ZgPython "$ZgRepo\mod_zhongguo_style\tools\build_phase2_promo_video.py" `
-  --cut institution-led --project-config $ZgInstProject `
-  --capture-root $ZgCapture --seed-preflight-report '<GREEN_SEED_PREFLIGHT_JSON>' `
-  --media-preflight-report $ZgInstMedia `
-  --expected-media-preflight-sha256 $ZgInstMediaSha `
-  --work-dir $ZgInstWork --tts-cache $ZgInstTts `
-  --ffmpeg ffmpeg --ffprobe ffprobe `
-  --run-id phase2-institution-led-candidate --validate-only
-
-& $ZgPython "$ZgRepo\mod_zhongguo_style\tools\build_phase2_promo_video.py" `
-  --cut institution-led --project-config $ZgInstProject `
-  --capture-root $ZgCapture --seed-preflight-report '<GREEN_SEED_PREFLIGHT_JSON>' `
-  --media-preflight-report $ZgInstMedia `
-  --expected-media-preflight-sha256 $ZgInstMediaSha `
-  --work-dir $ZgInstWork --tts-cache $ZgInstTts `
-  --ffmpeg ffmpeg --ffprobe ffprobe `
-  --run-id phase2-institution-led-candidate
+```text
+Z:\ck3_mod_rewrite\tools\.venv\Scripts\python.exe Z:\ck3_mod_rewrite\_root-promo-split-20260902\mod_zhongguo_style\tools\run_phase2_cut_pipeline.py --repository Z:\ck3_mod_rewrite\_root-promo-split-20260902 --python Z:\ck3_mod_rewrite\tools\.venv\Scripts\python.exe build --cut institution-led --toolchain Z:\workspace\xar_promo_toolchain --expected-toolchain-head 57c42fca13ea459432c1caf76e069a1fbccf602c --capture <GREEN_CAPTURE_ROOT> --seed-preflight <GREEN_SEED_PREFLIGHT_JSON> --tts-cache <NEW_INSTITUTION_TTS_CACHE> --work-dir <NEW_INSTITUTION_WORK_DIR> --authoring-root <NEW_INSTITUTION_AUTHORING_ROOT> --source-review-receipt <NEW_INSTITUTION_AUTHORING_ROOT>\source-review-receipt.json --planned-export-directory <NEW_INSTITUTION_EXPORT_DIR> --ffmpeg ffmpeg --ffprobe ffprobe
 ```
 
 候选 build 不是 release approval。每个 cut 随后还要独立执行 materializer、`xar_promo audit`、两轮全长 1.0x 人工 review、sign-off、`xar_promo validate/export` 和授权发布回执；任意一步失败都保留该 cut 的 RED attempt，不借另一版的结果开绿灯。

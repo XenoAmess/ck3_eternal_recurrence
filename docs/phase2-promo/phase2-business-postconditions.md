@@ -101,11 +101,11 @@ generation 与 player identity；缺字段或伪装成 fixture backend 都 fail-
 
 ## 静态验证
 
-```powershell
-& "Z:\ck3_mod_rewrite\tools\.venv\Scripts\python.exe" tools/test_zhongguo_phase2_business_postconditions.py
-& "Z:\ck3_mod_rewrite\tools\.venv\Scripts\python.exe" -O tools/test_zhongguo_phase2_business_postconditions.py
-& "Z:\ck3_mod_rewrite\tools\.venv\Scripts\python.exe" tools/test_zhongguo_phase2_provider_packets.py
-& "Z:\ck3_mod_rewrite\tools\.venv\Scripts\python.exe" -O tools/test_zhongguo_phase2_provider_packets.py
+```text
+"Z:\ck3_mod_rewrite\tools\.venv\Scripts\python.exe" tools/test_zhongguo_phase2_business_postconditions.py
+"Z:\ck3_mod_rewrite\tools\.venv\Scripts\python.exe" -O tools/test_zhongguo_phase2_business_postconditions.py
+"Z:\ck3_mod_rewrite\tools\.venv\Scripts\python.exe" tools/test_zhongguo_phase2_provider_packets.py
+"Z:\ck3_mod_rewrite\tools\.venv\Scripts\python.exe" -O tools/test_zhongguo_phase2_provider_packets.py
 ```
 
 测试覆盖四个 GREEN fixture，以及 ACK-only、revision-only、不可见校准事件、scoreboard fingerprint 未变、promotion 跨 case、未 posted

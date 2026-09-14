@@ -92,7 +92,7 @@ subtitle inspection.
 
 Run the read-only check with:
 
-```powershell
+```text
 py mod_zhongguo_style/tools/validate_phase2_authoring_claims.py --validate-only
 py mod_zhongguo_style/tools/test_validate_phase2_authoring_claims.py
 py -O mod_zhongguo_style/tools/test_validate_phase2_authoring_claims.py
@@ -107,15 +107,8 @@ pending release states; and has no write or render mode.
 
 The final-video no-media planner binds this exact ledger by bytes and SHA-256:
 
-```powershell
-py tools/plan_zhongguo_phase2_final_promo.py `
-  --output <new-runbook.json> `
-  --capture-root <lineage-bound-green-capture> `
-  --seed-preflight-report <preflight.json> `
-  --media-preflight-report <media-receipt.json> `
-  --expected-media-preflight-sha256 <receipt-sha256> `
-  --tts-cache <future-content-addressed-cache> `
-  --work-dir <future-new-attempt>
+```text
+py tools/plan_zhongguo_phase2_final_promo.py --output <new-runbook.json> --capture-root <lineage-bound-green-capture> --seed-preflight-report <preflight.json> --media-preflight-report <media-receipt.json> --expected-media-preflight-sha256 <receipt-sha256> --tts-cache <future-content-addressed-cache> --work-dir <future-new-attempt>
 ```
 
 All ten validated draft claims make the runbook authoring-input gate GREEN; the
@@ -168,10 +161,8 @@ footage and cannot upgrade an unsupported claim.
 
 Inspect an existing capture without producing media:
 
-```powershell
-py tools/zhongguo_phase2_footage_intake.py `
-  --capture-root <lineage-bound-green-capture> `
-  --output <new-intake-report.json>
+```text
+py tools/zhongguo_phase2_footage_intake.py --capture-root <lineage-bound-green-capture> --output <new-intake-report.json>
 ```
 
 The same intake now runs inside

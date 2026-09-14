@@ -80,6 +80,6 @@ CK3 进程。槽释放后只用全新目录完成 no-launch preflight，未复�
 
 下列命令由 GREEN no-launch preflight 精确签发，但因 activation condition 未发生而标记 `do_not_launch=true`：
 
-```powershell
+```text
 Z:\ck3_mod_rewrite\tools\.venv\Scripts\python.exe Z:\ck3_mod_rewrite\_wt-b3-trigger-body-diagnostic\tools\run_zhongguo_acceptance.py --phase2-live-batch --bridge-dll Z:\ck3_mod_rewrite_process_assets\zg361\b3g-fecd2f2-20260904-073033Z\native-build\xar_ck3_bridge.dll --bridge-injector Z:\ck3_mod_rewrite_process_assets\zg361\b3g-fecd2f2-20260904-073033Z\native-build\xar_ck3_bridge_injector.exe --bridge-pipe \\.\pipe\xar_ck3_bridge_zg361_05d22eefe44245df7ed2845e2066f9ff --phase2-seed-contract Z:\ck3_mod_rewrite\_wt-b3-trigger-body-diagnostic\tools\zg361_phase2_seed_contract.json --phase2-product-source Z:\ck3_mod_rewrite_process_assets\zg361\b3-exact-helper-split-6758e83-20260904T100659Z\product-source --phase2-product-projection b3-r5-exact-helper-split-v1 --phase2-product-projection-manifest Z:\ck3_mod_rewrite_process_assets\zg361\b3-exact-helper-split-6758e83-20260904T100659Z\projection.json --artifacts-dir Z:\ck3_mod_rewrite_process_assets\zg361\b3-exact-helper-split-6758e83-20260904T100659Z\artifacts-live --discard-userdir
 ```

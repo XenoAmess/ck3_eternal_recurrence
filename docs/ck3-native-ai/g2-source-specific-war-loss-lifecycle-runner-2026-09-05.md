@@ -75,7 +75,7 @@ It reports `GREEN_STATIC_SOURCE_SPECIFIC_LIFECYCLE_RUNNER` with
 
 Focused acceptance:
 
-```powershell
+```text
 py -B -m unittest \
   ck3_autonomous_player.tests.unit.test_g2_source_specific_war_loss_lifecycle \
   ck3_autonomous_player.tests.unit.test_run_g2_postwar_cleanup_expiry_live_acceptance \

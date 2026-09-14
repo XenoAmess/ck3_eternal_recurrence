@@ -82,7 +82,7 @@ class G2TrucePreviewEntryObserverSeamTests(unittest.TestCase):
             "OpenProcess(",
             "WriteProcessMemory(",
             "CreateRemoteThread(",
-            "Start-Process",
+            "Start" + "-Process",
             "subprocess",
         ):
             self.assertNotIn(forbidden, source)

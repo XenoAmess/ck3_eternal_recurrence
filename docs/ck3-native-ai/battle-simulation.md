@@ -1090,12 +1090,12 @@ per-regiment/context，避免把它们塞进每 250 ms heartbeat。
 
 只读反汇编可从仓库根目录复现，例如：
 
-```powershell
-& "tools/.venv/Scripts/python.exe" ck3_autonomous_player/native_bridge/research/disasm_ck3.py 0x27FB617 --size 0x160
-& "tools/.venv/Scripts/python.exe" ck3_autonomous_player/native_bridge/research/disasm_ck3.py 0x2309E80 --size 0x190
-& "tools/.venv/Scripts/python.exe" ck3_autonomous_player/native_bridge/research/disasm_ck3.py 0x23CBFA0 --size 0x1E8
-& "tools/.venv/Scripts/python.exe" ck3_autonomous_player/native_bridge/research/disasm_ck3.py 0x23CB1D0 --size 0x5F0
-& "tools/.venv/Scripts/python.exe" ck3_autonomous_player/native_bridge/research/disasm_ck3.py 0x230A2A0 --size 0x2EB
+```text
+"tools/.venv/Scripts/python.exe" ck3_autonomous_player/native_bridge/research/disasm_ck3.py 0x27FB617 --size 0x160
+"tools/.venv/Scripts/python.exe" ck3_autonomous_player/native_bridge/research/disasm_ck3.py 0x2309E80 --size 0x190
+"tools/.venv/Scripts/python.exe" ck3_autonomous_player/native_bridge/research/disasm_ck3.py 0x23CBFA0 --size 0x1E8
+"tools/.venv/Scripts/python.exe" ck3_autonomous_player/native_bridge/research/disasm_ck3.py 0x23CB1D0 --size 0x5F0
+"tools/.venv/Scripts/python.exe" ck3_autonomous_player/native_bridge/research/disasm_ck3.py 0x230A2A0 --size 0x2EB
 ```
 
 同版本原版数据锚点：

@@ -110,9 +110,9 @@
 
 ## 7. 复验命令
 
-```powershell
+```text
 py mod_zhongguo_style/tools/validate_local.py
-& "tools\.venv\Scripts\python.exe" "tools\run_zhongguo_acceptance.py"
+"tools\.venv\Scripts\python.exe" "tools\run_zhongguo_acceptance.py"
 ```
 
 ## 8. 第十二次候选：GUI 阻塞闭环与两个独立夹具 RED

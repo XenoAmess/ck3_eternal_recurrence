@@ -6,11 +6,8 @@ without starting CK3 or changing any public ABI/readiness state. The parser is
 
 Run it against the frozen runner report and the exact caller extractor artifact:
 
-```powershell
-py -3.13 ck3_autonomous_player/native_bridge/research/analyze_phase2_wrapper_entry_live.py `
-  --runner-report <live-artifacts\runner-report.json> `
-  --caller-artifact Z:\ck3_mod_rewrite_process_assets\zg361\phase2-native-gate-20260902\completion-wrapper-callers-static-extract.json `
-  --output <live-artifacts\wrapper-entry-postprocess.json>
+```text
+py -3.13 ck3_autonomous_player/native_bridge/research/analyze_phase2_wrapper_entry_live.py --runner-report <live-artifacts\runner-report.json> --caller-artifact Z:\ck3_mod_rewrite_process_assets\zg361\phase2-native-gate-20260902\completion-wrapper-callers-static-extract.json --output <live-artifacts\wrapper-entry-postprocess.json>
 ```
 
 ## Checklist

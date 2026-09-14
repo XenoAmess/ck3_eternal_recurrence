@@ -43,11 +43,8 @@ fetch/fast-forward，并重新证明宣传工具工作树 clean 且 `HEAD == ori
 其中 Promotion、Projects、Incident、Endgame 四项必须按上述固定顺序写入
 `zg361_phase2_canonical_source_checkpoint_registry`。registry assembler 只冻结已存在的真实 bytes/receipt：
 
-```powershell
-& $Python "$Repo\tools\zhongguo_phase2_source_checkpoint_registry.py" `
-  --capture-manifest $SourceCheckpointCaptureManifest `
-  --checkpoint-root $SourceCheckpointArchive `
-  --output $SourceCheckpointRegistry
+```text
+<python> <repository>\tools\zhongguo_phase2_source_checkpoint_registry.py --capture-manifest <SOURCE_CHECKPOINT_CAPTURE_MANIFEST> --checkpoint-root <SOURCE_CHECKPOINT_ARCHIVE> --output <SOURCE_CHECKPOINT_REGISTRY>
 ```
 
 它不会生成事件、checkpoint 或 provider/UI receipt。缺任一真实输入时必须保持 RED。
@@ -70,22 +67,8 @@ fetch/fast-forward，并重新证明宣传工具工作树 clean 且 `HEAD == ori
 
 以下只生成 no-launch attempt manifest；它不会启动 CK3。所有路径必须换成真实、hash-bound 输入：
 
-```powershell
-& $Python "$Repo\tools\run_zhongguo_phase2_capture_attempt.py" `
-  --attempt-dir $NewAttempt `
-  --source-root $Repo `
-  --source-git-commit $PinnedSourceCommit `
-  --observer-artifact $CompletionObserver `
-  --seed-contract $ReadySeedContract `
-  --media-preflight-report $FreshMediaPreflight `
-  --expected-media-preflight-sha256 $FreshMediaPreflightSha256 `
-  --bridge-dll $BridgeDll `
-  --bridge-injector $BridgeInjector `
-  --source-checkpoint-registry $SourceCheckpointRegistry `
-  --product-source $ProductSource `
-  --product-projection $ProductProjectionName `
-  --product-projection-manifest $ProductProjectionManifest `
-  --frontend-first-load-save-name $SeedSaveName
+```text
+<python> <repository>\tools\run_zhongguo_phase2_capture_attempt.py --attempt-dir <NEW_ATTEMPT> --source-root <repository> --source-git-commit <PINNED_SOURCE_COMMIT> --observer-artifact <COMPLETION_OBSERVER> --seed-contract <READY_SEED_CONTRACT> --media-preflight-report <FRESH_MEDIA_PREFLIGHT> --expected-media-preflight-sha256 <FRESH_MEDIA_PREFLIGHT_SHA256> --bridge-dll <BRIDGE_DLL> --bridge-injector <BRIDGE_INJECTOR> --source-checkpoint-registry <SOURCE_CHECKPOINT_REGISTRY> --product-source <PRODUCT_SOURCE> --product-projection <PRODUCT_PROJECTION_NAME> --product-projection-manifest <PRODUCT_PROJECTION_MANIFEST> --frontend-first-load-save-name <SEED_SAVE_NAME>
 ```
 
 只有该 manifest 为 GREEN 后，才可在 CK3 串行槽用完全相同参数加 `--execute`。失败 attempt 必须保留，不能覆盖重跑。
@@ -103,45 +86,28 @@ fetch/fast-forward，并重新证明宣传工具工作树 clean 且 `HEAD == ori
 
 正式制作时才执行以下第一步；**本轮未执行**：
 
-```powershell
-git -C $Promo fetch origin main --prune
-git -C $Promo merge --ff-only origin/main
-if (git -C $Promo status --short) { throw 'promo tool checkout is dirty' }
-$ToolHead = git -C $Promo rev-parse HEAD
-if ($ToolHead -ne (git -C $Promo rev-parse origin/main)) {
-  throw 'promo tool HEAD != origin/main'
-}
-$env:XAR_PROMO_SOURCE = $Promo
+```python
+from pathlib import Path
+import os
+import subprocess
+
+promo = Path(r"Z:\workspace\xar_promo_toolchain")
+subprocess.run(["git", "-C", str(promo), "fetch", "origin", "main", "--prune"], check=True)
+subprocess.run(["git", "-C", str(promo), "rebase", "origin/main"], check=True)
+dirty = subprocess.run(["git", "-C", str(promo), "status", "--short"], check=True, capture_output=True, text=True).stdout
+head = subprocess.run(["git", "-C", str(promo), "rev-parse", "HEAD"], check=True, capture_output=True, text=True).stdout.strip()
+origin = subprocess.run(["git", "-C", str(promo), "rev-parse", "origin/main"], check=True, capture_output=True, text=True).stdout.strip()
+if dirty or head != origin:
+    raise RuntimeError("promo tool checkout is not a clean origin/main checkout")
+environment = os.environ.copy()
+environment["XAR_PROMO_SOURCE"] = str(promo)
 ```
 
 每个 cut 先对同一个 GREEN capture 分别做 footage intake、具名 1.0× source review、authoring promotion 与 fresh
 media preflight，再运行：
 
-```powershell
-# $Cut = 'character-led' 或 'institution-led'
-# $Project/$RunId/$Work 必须使用该 cut 自己的值和新目录。
-& $Python "$Repo\mod_zhongguo_style\tools\prime_phase2_tts_cache.py" `
-  --cut $Cut --project-config $Project `
-  --media-preflight-report $MediaPreflight `
-  --expected-media-preflight-sha256 $MediaSha256 `
-  --tts-cache $TtsCache --output $TtsPrimeReceipt `
-  --ffmpeg ffmpeg --ffprobe ffprobe
-
-& $Python "$Repo\mod_zhongguo_style\tools\build_phase2_promo_video.py" `
-  --cut $Cut --project-config $Project --capture-root $Capture `
-  --seed-preflight-report $SeedPreflight `
-  --media-preflight-report $MediaPreflight `
-  --expected-media-preflight-sha256 $MediaSha256 `
-  --work-dir $Work --tts-cache $TtsCache `
-  --ffmpeg ffmpeg --ffprobe ffprobe --run-id $RunId --validate-only
-
-& $Python "$Repo\mod_zhongguo_style\tools\build_phase2_promo_video.py" `
-  --cut $Cut --project-config $Project --capture-root $Capture `
-  --seed-preflight-report $SeedPreflight `
-  --media-preflight-report $MediaPreflight `
-  --expected-media-preflight-sha256 $MediaSha256 `
-  --work-dir $Work --tts-cache $TtsCache `
-  --ffmpeg ffmpeg --ffprobe ffprobe --run-id $RunId
+```text
+<python> <repository>\mod_zhongguo_style\tools\run_phase2_cut_pipeline.py --repository <repository> --python <python> build --cut <character-led-or-institution-led> --toolchain <promo-toolchain> --capture <GREEN_CAPTURE_ROOT> --seed-preflight <GREEN_SEED_PREFLIGHT_JSON> --tts-cache <NEW_CUT_TTS_CACHE> --work-dir <NEW_CUT_WORK_DIR> --source-review-receipt <SIGNED_SOURCE_REVIEW_RECEIPT>
 ```
 
 固定映射：

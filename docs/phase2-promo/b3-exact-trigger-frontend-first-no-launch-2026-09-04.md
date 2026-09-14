@@ -38,7 +38,7 @@
 
 ## 已消费的 long-root 命令
 
-```powershell
+```text
 Z:\ck3_mod_rewrite\tools\.venv\Scripts\python.exe Z:\ck3_mod_rewrite\_wt-b3-trigger-body-diagnostic\tools\run_zhongguo_acceptance.py --phase2-live-batch --bridge-dll Z:\ck3_mod_rewrite_process_assets\zg361\b3g-fecd2f2-20260904-073033Z\native-build\xar_ck3_bridge.dll --bridge-injector Z:\ck3_mod_rewrite_process_assets\zg361\b3g-fecd2f2-20260904-073033Z\native-build\xar_ck3_bridge_injector.exe --bridge-pipe \\.\pipe\xar_ck3_bridge_zg361_8357298ee3e7895ad1c3012f464e53b5 --phase2-seed-contract Z:\ck3_mod_rewrite\_wt-b3-trigger-body-diagnostic\tools\zg361_phase2_seed_contract.json --phase2-product-source Z:\ck3_mod_rewrite_process_assets\zg361\b3-r5-exact-and-wrapper-4d3c284-20260904T095828Z\product-source --phase2-product-projection b3-r5-exact-trigger-explicit-and-4d3c284 --phase2-product-projection-manifest Z:\ck3_mod_rewrite_process_assets\zg361\b3-r5-exact-and-wrapper-4d3c284-20260904T095828Z\projection.json --phase2-frontend-first-load-save-name autosave --phase2-frontend-first-timeout-seconds 180 --artifacts-dir Z:\ck3_mod_rewrite_process_assets\zg361\b3-r5-exact-and-wrapper-frontend-first-1beb8d1-20260904T101416Z\artifacts-live --discard-userdir
 ```
 
@@ -157,20 +157,8 @@ action step 时 preflight 可 GREEN；删除其 bridge capability 或把 query f
 
 正式命令形态如下；artifact root、pipe、DLL、injector 与 product projection 必须每轮换成已冻结的真实值：
 
-```powershell
-& "tools\.venv\Scripts\python.exe" "tools\run_zhongguo_acceptance.py" `
-  --phase2-b3-manager-governance-live `
-  --phase2-frontend-first-load-save-name autosave `
-  --phase2-frontend-first-timeout-seconds 180 `
-  --phase2-seed-contract <ready-seed-contract> `
-  --phase2-product-source <immutable-product-source> `
-  --phase2-product-projection <projection-name> `
-  --phase2-product-projection-manifest <projection-manifest> `
-  --bridge-dll <exact-build-dll> `
-  --bridge-injector <paired-injector> `
-  --bridge-pipe \\.\pipe\xar_ck3_bridge_zg361_<fresh-32hex> `
-  --artifacts-dir <fresh-short-artifact-root> `
-  --discard-userdir
+```text
+"tools\.venv\Scripts\python.exe" "tools\run_zhongguo_acceptance.py" --phase2-b3-manager-governance-live --phase2-frontend-first-load-save-name autosave --phase2-frontend-first-timeout-seconds 180 --phase2-seed-contract <ready-seed-contract> --phase2-product-source <immutable-product-source> --phase2-product-projection <projection-name> --phase2-product-projection-manifest <projection-manifest> --bridge-dll <exact-build-dll> --bridge-injector <paired-injector> --bridge-pipe \\.\pipe\xar_ck3_bridge_zg361_<fresh-32hex> --artifacts-dir <fresh-short-artifact-root> --discard-userdir
 ```
 
 本轮只完成 runner/static-ready 施工，没有启动 CK3，也没有生成新的 live artifact。回归覆盖 capability scope、selector 实际绑定、

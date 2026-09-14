@@ -35,7 +35,7 @@ CK3 `1.19.0.6` / EXE SHA-256
 
 外部仓命令：
 
-```powershell
+```text
 mvn -o -ntp -pl kaishek-cli -am '-Dtest=ZhongguoPromotionSourceTransportCapabilityProfileTest,G2PostwarCleanupExpiryAdapterMetadataTest' '-Dsurefire.failIfNoSpecifiedTests=false' package
 java -jar kaishek-cli/target/kaishek-cli-0.1.0-SNAPSHOT.jar parse <changed-product-file>
 ```
@@ -55,9 +55,8 @@ SHA-256 为 `14FD1469EE1D590F714F6B5C11A14C5EBDAAB2186B81FFFD4BCEE3C00AD987E2`�
 
 主仓命令（显式使用已验证主 worktree venv）：
 
-```powershell
-$env:PYTHONPATH='ck3_autonomous_player/src'
-& Z:\ck3_mod_rewrite\tools\.venv\Scripts\python.exe -m pytest -q --disable-warnings ck3_autonomous_player/tests/unit/test_g2_open_kaishek_compatibility.py ck3_autonomous_player/tests/unit/test_raiktor_surrender_truce_contract.py
+```text
+py tools/run_with_env.py --env "PYTHONPATH=ck3_autonomous_player/src" -- "Z:\ck3_mod_rewrite\tools\.venv\Scripts\python.exe" -m pytest -q --disable-warnings ck3_autonomous_player/tests/unit/test_g2_open_kaishek_compatibility.py ck3_autonomous_player/tests/unit/test_raiktor_surrender_truce_contract.py
 ```
 
 `13 passed, 16 subtests passed in 0.33s`。现有 available-checkout 测试确认

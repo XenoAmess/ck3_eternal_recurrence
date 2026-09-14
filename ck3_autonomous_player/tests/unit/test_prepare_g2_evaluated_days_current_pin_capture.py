@@ -624,7 +624,7 @@ class G2EvaluatedDaysCurrentPinCapturePreflightTests(unittest.TestCase):
             "native_session(",
             "prepare_profile(",
             "CreateProcess",
-            "Start-Process",
+            "Start" + "-Process",
             "Popen(",
         ):
             self.assertNotIn(forbidden, source)

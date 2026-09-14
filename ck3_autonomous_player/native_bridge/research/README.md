@@ -16,7 +16,7 @@ Pinned executable:
 
 Run the dependency-free offline verifier from the repository root:
 
-```powershell
+```text
 py ck3_autonomous_player/native_bridge/research/scan_anchors.py
 ```
 
@@ -303,7 +303,7 @@ not a zero-intrusion claim, gameplay acceptance, containment, or repair.
 
 Build and offline verification:
 
-```powershell
+```text
 py research/build_particle2_factory_debug_capture.py
 research/build-particle2-factory-debug-capture/particle2_factory_debug_capture.exe --self-test
 py -m unittest tests.unit.test_particle2_factory_debug_capture -v

@@ -156,10 +156,9 @@ white-peace provider 和本策略接成一个纯离线调用入口。它只消�
 
 ## 离线验收
 
-```powershell
-$env:PYTHONPATH = "ck3_autonomous_player/src;ck3_autonomous_player/tests/unit"
-py -m unittest ck3_autonomous_player/tests/unit/test_raiktor_three_way_exit_policy.py
-py -O -m unittest ck3_autonomous_player/tests/unit/test_raiktor_three_way_exit_policy.py
+```text
+py tools/run_with_env.py --env "PYTHONPATH=ck3_autonomous_player/src;ck3_autonomous_player/tests/unit" -- py -m unittest ck3_autonomous_player/tests/unit/test_raiktor_three_way_exit_policy.py
+py tools/run_with_env.py --env "PYTHONPATH=ck3_autonomous_player/src;ck3_autonomous_player/tests/unit" -- py -O -m unittest ck3_autonomous_player/tests/unit/test_raiktor_three_way_exit_policy.py
 ```
 
 测试覆盖三种稳健赢家、区间重叠、missing provider、stale hash、incomplete domain、owner

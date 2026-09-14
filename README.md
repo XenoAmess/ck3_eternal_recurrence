@@ -87,7 +87,7 @@ GitHub Release： https://github.com/XenoAmess/ck3_eternal_recurrence/releases/t
 
 源码地址 https://github.com/XenoAmess/ck3_eternal_recurrence.git
 
-```powershell
+```text
 py -m pip install -r tools/requirements-static.txt
 py XenoAmess_s_Eternal_Recurrence/tools/gen_highscore.py
 py tools/gen_pools.py
@@ -108,8 +108,8 @@ py tools/build_release.py --check
 py tools/build_vivhite_release.py --check
 py tools/build_release.py   # dist staging + manifest JSON + deterministic ZIP
 py tools/build_vivhite_release.py   # independent Vivhite staging
-& "tools\.venv\Scripts\python.exe" "tools\run_acceptance.py"
-& "tools\.venv\Scripts\python.exe" "tools\run_vivhite_acceptance.py"
+"tools\.venv\Scripts\python.exe" "tools\run_acceptance.py"
+"tools\.venv\Scripts\python.exe" "tools\run_vivhite_acceptance.py"
 ```
 
 Windows CK3 acceptance 的固定依赖位于 `tools/requirements.txt`；CI/L0 只安装

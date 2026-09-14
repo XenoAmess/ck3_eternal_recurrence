@@ -20,11 +20,11 @@
 
 ## 自动检查
 
-```powershell
-& tools/.venv/Scripts/python.exe tools/test_translate_localization_minimax.py
-& tools/.venv/Scripts/python.exe tools/test_build_xenoamess_quality_of_life_release.py
-& tools/.venv/Scripts/python.exe tools/validate_xenoamess_quality_of_life.py --release-localization
-& tools/.venv/Scripts/python.exe tools/build_xenoamess_quality_of_life_release.py --check
+```text
+tools/.venv/Scripts/python.exe tools/test_translate_localization_minimax.py
+tools/.venv/Scripts/python.exe tools/test_build_xenoamess_quality_of_life_release.py
+tools/.venv/Scripts/python.exe tools/validate_xenoamess_quality_of_life.py --release-localization
+tools/.venv/Scripts/python.exe tools/build_xenoamess_quality_of_life_release.py --check
 ```
 
 发布构建器的 `--release` 模式会拒绝七种目标语言中与英文逐字相同的占位值、空值、key 集合漂移、BOM/header 错误和 CK3 格式 token 漂移。

@@ -198,7 +198,7 @@ class B4HCWorkforcePreflightTests(unittest.TestCase):
             "import subprocess",
             "from subprocess",
             "Popen(",
-            "Start-Process",
+            "Start" + "-Process",
             "ck3.exe",
             "GameplayBridgeService(",
         ):

@@ -16,10 +16,9 @@ Authoritative inputs:
 Use the verified project interpreter and install the integration before invoking
 the generic CLI:
 
-```powershell
-$python = 'D:\workspace\ck3_eternal_recurrence\tools\.venv\Scripts\python.exe'
-& $python -m pip install -e 'promo\reclaim_the_motherland\integration'
-& $python -m xar_promo validate 'promo\reclaim_the_motherland\promo-project.json' --json
+```text
+D:\workspace\ck3_eternal_recurrence\tools\.venv\Scripts\python.exe -m pip install -e promo\reclaim_the_motherland\integration
+D:\workspace\ck3_eternal_recurrence\tools\.venv\Scripts\python.exe -m xar_promo validate promo\reclaim_the_motherland\promo-project.json --json
 ```
 
 Every narration, capture, render, audit and review attempt uses a new directory

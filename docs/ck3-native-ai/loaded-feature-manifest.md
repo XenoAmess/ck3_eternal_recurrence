@@ -428,19 +428,16 @@ entitlement component status、相邻双查询结果与 cleanup 证明。命令 
 
 复现静态证据的只读命令：
 
-```powershell
-Get-FileHash "Crusader Kings III/binaries/ck3.exe" -Algorithm SHA256
-& "tools/.venv/Scripts/python.exe" "ck3_autonomous_player/native_bridge/research/find_rtti.py" `
-  "CHasDLCFeatureTrigger|CHasDLCTrigger|CDLCDescriptor|C(Steam)?StoreContext"
-& "tools/.venv/Scripts/python.exe" "ck3_autonomous_player/native_bridge/research/find_rtti.py" `
-  "CDlcFeatureFlagManager|SDlcBasedTradition|SDlcPillarFallback"
-& "tools/.venv/Scripts/python.exe" "ck3_autonomous_player/native_bridge/research/disasm_ck3.py" 0x289B350 --size 0x120
-& "tools/.venv/Scripts/python.exe" "ck3_autonomous_player/native_bridge/research/disasm_ck3.py" 0x33D7CF0 --size 0x120
-& "tools/.venv/Scripts/python.exe" "ck3_autonomous_player/native_bridge/research/disasm_ck3.py" 0x2040F90 --size 0xBF0
-& "tools/.venv/Scripts/python.exe" "ck3_autonomous_player/native_bridge/research/disasm_ck3.py" 0x3560190 --size 0x3C0
-& "tools/.venv/Scripts/python.exe" "ck3_autonomous_player/native_bridge/research/disasm_ck3.py" 0x355D580 --size 0x120
-& "tools/.venv/Scripts/python.exe" "ck3_autonomous_player/native_bridge/research/find_xrefs.py" `
-  0x3560550 0x355D580 0x5762590 0x570F868 0x44E0A58 0x44E0A40
+```text
+py tools/file_sha256.py "Crusader Kings III/binaries/ck3.exe"
+"tools/.venv/Scripts/python.exe" "ck3_autonomous_player/native_bridge/research/find_rtti.py" "CHasDLCFeatureTrigger|CHasDLCTrigger|CDLCDescriptor|C(Steam)?StoreContext"
+"tools/.venv/Scripts/python.exe" "ck3_autonomous_player/native_bridge/research/find_rtti.py" "CDlcFeatureFlagManager|SDlcBasedTradition|SDlcPillarFallback"
+"tools/.venv/Scripts/python.exe" "ck3_autonomous_player/native_bridge/research/disasm_ck3.py" 0x289B350 --size 0x120
+"tools/.venv/Scripts/python.exe" "ck3_autonomous_player/native_bridge/research/disasm_ck3.py" 0x33D7CF0 --size 0x120
+"tools/.venv/Scripts/python.exe" "ck3_autonomous_player/native_bridge/research/disasm_ck3.py" 0x2040F90 --size 0xBF0
+"tools/.venv/Scripts/python.exe" "ck3_autonomous_player/native_bridge/research/disasm_ck3.py" 0x3560190 --size 0x3C0
+"tools/.venv/Scripts/python.exe" "ck3_autonomous_player/native_bridge/research/disasm_ck3.py" 0x355D580 --size 0x120
+"tools/.venv/Scripts/python.exe" "ck3_autonomous_player/native_bridge/research/find_xrefs.py" 0x3560550 0x355D580 0x5762590 0x570F868 0x44E0A58 0x44E0A40
 ```
 
 ## 下一项可见施工

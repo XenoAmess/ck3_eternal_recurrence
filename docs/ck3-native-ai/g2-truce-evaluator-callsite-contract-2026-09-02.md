@@ -29,16 +29,15 @@ slice records why that distinction matters.
 
 The reusable verifier is:
 
-```powershell
-py -3.13 ck3_autonomous_player/native_bridge/research/verify_raiktor_truce_evaluator_callsite_v1.py `
-  --exe 'Z:\ck3_mod_rewrite\Crusader Kings III\binaries\ck3.exe'
+```text
+py -3.13 ck3_autonomous_player/native_bridge/research/verify_raiktor_truce_evaluator_callsite_v1.py --exe 'Z:\ck3_mod_rewrite\Crusader Kings III\binaries\ck3.exe'
 ```
 
 It reads only the executable and exits `PASS`/`FAIL`; it never starts or
 attaches to CK3.  The focused contract test also checks the relative-call
 targets and all frozen span digests:
 
-```powershell
+```text
 py -3.13 -m unittest ck3_autonomous_player.tests.unit.test_raiktor_truce_evaluator_callsite_contract -v
 ```
 

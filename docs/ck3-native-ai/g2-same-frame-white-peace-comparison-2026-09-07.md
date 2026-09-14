@@ -36,16 +36,8 @@ source checkpoint 是 snapshot 锚。provider 必须同时证明：
 离线文件入口为
 `prepare_g2_same_frame_white_peace_comparison.py`。三项输入都必须给出 exact bytes SHA-256，输出路径必须尚不存在：
 
-```powershell
-& "Z:\ck3_mod_rewrite\tools\.venv\Scripts\python.exe" `
-  "ck3_autonomous_player\native_bridge\research\prepare_g2_same_frame_white_peace_comparison.py" `
-  --source-checkpoint <source-checkpoint.json> `
-  --source-checkpoint-sha256 <SOURCE_SHA256> `
-  --white-peace-observation <white-peace-observation.json> `
-  --white-peace-observation-sha256 <WHITE_SHA256> `
-  --surrender-terms <surrender-six-domain.json> `
-  --surrender-terms-sha256 <SURRENDER_SHA256> `
-  --output <new-comparison.json>
+```text
+"Z:\ck3_mod_rewrite\tools\.venv\Scripts\python.exe" "ck3_autonomous_player\native_bridge\research\prepare_g2_same_frame_white_peace_comparison.py" --source-checkpoint <source-checkpoint.json> --source-checkpoint-sha256 <SOURCE_SHA256> --white-peace-observation <white-peace-observation.json> --white-peace-observation-sha256 <WHITE_SHA256> --surrender-terms <surrender-six-domain.json> --surrender-terms-sha256 <SURRENDER_SHA256> --output <new-comparison.json>
 ```
 
 runner 不枚举、不启动、不附加、不查询或终止 CK3，也不发送 mutation。无论输入自身是否声称 live，顶层恒为

@@ -38,23 +38,13 @@ promotion-source 的干净入口，不证明后续 B1/Central/PP 或 `zg361pp.14
 
 若已经单独取得四份 MCP JSON，也可用以下命令离线物化新的候选（本命令不启动 CK3）：
 
-```powershell
-& "tools\.venv\Scripts\python.exe" "tools\zg361_phase2_manager_seed_bootstrap.py" `
-  --event-context "<run>\event-context.json" `
-  --paused-snapshot "<run>\paused-snapshot.json" `
-  --event-close "<run>\event-close.json" `
-  --checkpoint-response "<run>\save-checkpoint.json" `
-  --profile "<isolated-profile>" `
-  --output-dir "<new-empty-run-dir>" `
-  --base-contract "tools\zg361_phase2_manager_seed_contract.json" `
-  --source-git-commit "<40-hex-commit>" `
-  --product-tree-sha256 "<64-hex-product-tree>" `
-  --fixture-tree-sha256 "<64-hex-manager-fixture-tree>"
+```text
+"tools\.venv\Scripts\python.exe" "tools\zg361_phase2_manager_seed_bootstrap.py" --event-context "<run>\event-context.json" --paused-snapshot "<run>\paused-snapshot.json" --event-close "<run>\event-close.json" --checkpoint-response "<run>\save-checkpoint.json" --profile "<isolated-profile>" --output-dir "<new-empty-run-dir>" --base-contract "tools\zg361_phase2_manager_seed_contract.json" --source-git-commit "<40-hex-commit>" --product-tree-sha256 "<64-hex-product-tree>" --fixture-tree-sha256 "<64-hex-manager-fixture-tree>"
 ```
 
 专项静态门同时执行普通与 `-O` smoke：
 
-```powershell
+```text
 py tools/test_zg361_phase2_manager_seed_fixture.py
 py -O tools/test_zg361_phase2_manager_seed_fixture.py
 py tools/test_zg361_phase2_manager_seed_bootstrap.py
@@ -240,18 +230,8 @@ artifacts)`：它只使用现有 `snapshot`、`query_current_event_window_contex
 
 完成一次 MCP 捕获后的物化命令为：
 
-```powershell
-& "tools\.venv\Scripts\python.exe" "tools\zg361_phase2_seed_bootstrap.py" `
-  --event-context "<run>\event-context.json" `
-  --paused-snapshot "<run>\paused-snapshot.json" `
-  --event-close "<run>\event-close.json" `
-  --checkpoint-response "<run>\save-checkpoint.json" `
-  --profile "<isolated-profile>" `
-  --output-dir "<new-empty-run-dir>" `
-  --source-git-commit "<40-hex-commit>" `
-  --product-tree-sha256 "<64-hex-product-tree>" `
-  --fixture-tree-sha256 "<64-hex-seed-fixture-tree>" `
-  --provider-probes "<attempt>\artifacts\provider-probes.json"
+```text
+"tools\.venv\Scripts\python.exe" "tools\zg361_phase2_seed_bootstrap.py" --event-context "<run>\event-context.json" --paused-snapshot "<run>\paused-snapshot.json" --event-close "<run>\event-close.json" --checkpoint-response "<run>\save-checkpoint.json" --profile "<isolated-profile>" --output-dir "<new-empty-run-dir>" --source-git-commit "<40-hex-commit>" --product-tree-sha256 "<64-hex-product-tree>" --fixture-tree-sha256 "<64-hex-seed-fixture-tree>" --provider-probes "<attempt>\artifacts\provider-probes.json"
 ```
 
 省略 `--provider-probes` 仍可生成 typed selector/checkpoint 所证明的 ready seed，但会明确记录
@@ -260,7 +240,7 @@ artifacts)`：它只使用现有 `snapshot`、`query_current_event_window_contex
 
 fixture/loader/helper 的静态验收：
 
-```powershell
+```text
 py tools/test_zg361_phase2_seed_fixture.py
 py -O tools/test_zg361_phase2_seed_fixture.py
 py tools/test_zg361_phase2_loader_stage.py
@@ -344,18 +324,8 @@ attempt 07 的 `run_seed_capture.py` 是冻结现场中的一次性脚本，路�
 transport 连接后直接进入 `900s` event wait。它只属于失败现场，**不得重跑或改写**。仓库内的新入口是
 `tools/run_zg361_phase2_seed_capture.py`；它以显式参数建立新 attempt，不读取或覆盖 attempt 07：
 
-```powershell
-py tools/run_zg361_phase2_seed_capture.py `
-  --clean-source "<attempt>\source" `
-  --attempt-dir "<attempt>" `
-  --artifacts-dir "<attempt>\artifacts" `
-  --source-zip "<attempt>\head-source.zip" `
-  --git-sha "<40-hex-frozen-HEAD>" `
-  --game-dir "<CK3-install>" `
-  --bridge-dll "<frozen-bridge>\xar_ck3_bridge.dll" `
-  --injector "<frozen-bridge>\xar_ck3_bridge_injector.exe" `
-  --pipe '\\.\pipe\xar_ck3_bridge_zg361_<unique-id>' `
-  --seed-contract "<attempt>\source\tools\zg361_phase2_seed_contract.json"
+```text
+py tools/run_zg361_phase2_seed_capture.py --clean-source "<attempt>\source" --attempt-dir "<attempt>" --artifacts-dir "<attempt>\artifacts" --source-zip "<attempt>\head-source.zip" --git-sha "<40-hex-frozen-HEAD>" --game-dir "<CK3-install>" --bridge-dll "<frozen-bridge>\xar_ck3_bridge.dll" --injector "<frozen-bridge>\xar_ck3_bridge_injector.exe" --pipe '\\.\pipe\xar_ck3_bridge_zg361_<unique-id>' --seed-contract "<attempt>\source\tools\zg361_phase2_seed_contract.json"
 ```
 
 调用者必须创建一个全新的 attempt；`native-state` 必须不存在、artifact 目录必须为空。runner 拒绝重用非空 artifact，因而
@@ -406,7 +376,7 @@ tree 不等价、mount 不是一加一、HKL 从未 GREEN、cleanup/driver close
 
 离线验收（不启动 CK3）：
 
-```powershell
+```text
 py tools/test_run_zg361_phase2_seed_capture.py
 py -O tools/test_run_zg361_phase2_seed_capture.py
 ```

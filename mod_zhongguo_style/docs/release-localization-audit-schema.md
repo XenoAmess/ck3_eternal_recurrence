@@ -6,9 +6,8 @@
 
 生成命令：
 
-```powershell
-py mod_zhongguo_style/tools/prepare_release_localization.py audit `
-  --write-report mod_zhongguo_style/docs/release-localization-audit.json
+```text
+py mod_zhongguo_style/tools/prepare_release_localization.py audit --write-report mod_zhongguo_style/docs/release-localization-audit.json
 ```
 
 ## Schema v1

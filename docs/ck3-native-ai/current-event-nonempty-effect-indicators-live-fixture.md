@@ -121,11 +121,8 @@ GUI backing rows 与 typed query，不能声称视觉图标已经人工/截图�
 
 2026-08-27 已执行、未启动 CK3：
 
-```powershell
-& 'tools\.venv\Scripts\python.exe' -m unittest `
-  ck3_autonomous_player.tests.unit.test_current_event_window_context_live_acceptance `
-  ck3_autonomous_player.tests.unit.test_current_event_nonempty_effect_indicators_live_acceptance `
-  ck3_autonomous_player.tests.unit.test_event_window_context_v1_bridge -v
+```text
+'tools\.venv\Scripts\python.exe' -m unittest ck3_autonomous_player.tests.unit.test_current_event_window_context_live_acceptance ck3_autonomous_player.tests.unit.test_current_event_nonempty_effect_indicators_live_acceptance ck3_autonomous_player.tests.unit.test_event_window_context_v1_bridge -v
 ```
 
 结果为 `49/49` GREEN。focused 新增 suite 为 `15/15`；覆盖 exact fixture bytes、scoped profile 恢复、短路径、cold
@@ -136,16 +133,8 @@ playset 无 mod_bridge、空对照、三种 typed row、错误 identity/row orde
 
 2026-08-27 08:58:38–09:01:14（Asia/Shanghai）执行以下命令；它已经成功结束，原 output 与 pipe 名不得覆盖或复用：
 
-```powershell
-$env:XAR_EVENT_WINDOW_ISOLATED_SOURCE_ROOT = 'C:\Users\xenoa\AppData\Local\Temp\xar-event-window-cea30a0-source'
-& 'tools\.venv\Scripts\python.exe' `
-  'ck3_autonomous_player\native_bridge\research\run_current_event_nonempty_effect_indicators_live_acceptance.py' `
-  --game-dir 'Crusader Kings III' `
-  --bridge-pipe '\\.\pipe\xar-event-nonempty-indicators-attempt1' `
-  --bridge-dll 'ck3_autonomous_player\native_bridge\.build-event-window-cea30a0-msvc2\xar_ck3_bridge.dll' `
-  --expected-bridge-dll-sha256 '52398435F8AA5177D6D507BFAA38CD2578EB988F0629F1C5E13360CC91FB3BB0' `
-  --bridge-injector 'ck3_autonomous_player\native_bridge\.build-event-window-cea30a0-msvc2\xar_ck3_bridge_injector.exe' `
-  --output 'C:\Users\xenoa\AppData\Local\Temp\xar-current-event-nonempty-indicators-attempt1.json'
+```text
+py tools/run_with_env.py --env "XAR_EVENT_WINDOW_ISOLATED_SOURCE_ROOT=C:\Users\xenoa\AppData\Local\Temp\xar-event-window-cea30a0-source" -- "tools\.venv\Scripts\python.exe" "ck3_autonomous_player\native_bridge\research\run_current_event_nonempty_effect_indicators_live_acceptance.py" --game-dir "Crusader Kings III" --bridge-pipe "\\.\pipe\xar-event-nonempty-indicators-attempt1" --bridge-dll "ck3_autonomous_player\native_bridge\.build-event-window-cea30a0-msvc2\xar_ck3_bridge.dll" --expected-bridge-dll-sha256 "52398435F8AA5177D6D507BFAA38CD2578EB988F0629F1C5E13360CC91FB3BB0" --bridge-injector "ck3_autonomous_player\native_bridge\.build-event-window-cea30a0-msvc2\xar_ck3_bridge_injector.exe" --output "C:\Users\xenoa\AppData\Local\Temp\xar-current-event-nonempty-indicators-attempt1.json"
 ```
 
 冻结结果：

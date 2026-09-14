@@ -31,7 +31,7 @@ transfers no Gold, and removes the cooldown.
 
 Commands:
 
-```powershell
+```text
 py tools/test_build_tributary_expansion_directives_release.py
 py tools/validate_tributary_expansion_directives_static.py
 py tools/compose_tributary_expansion_directives_key_art.py --check

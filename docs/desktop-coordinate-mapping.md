@@ -18,13 +18,8 @@
 
 下面的数字仅演示参数形状，不是默认分辨率或默认倍率：
 
-```powershell
-& "tools\.venv\Scripts\python.exe" "tools\desktop_coordinate_map.py" `
-  --source-image "D:\artifacts\before.png" `
-  --preview-left 0 --preview-top 0 `
-  --preview-width 1600 --preview-height 900 `
-  --observed-x 800 --observed-y 450 `
-  --click --receipt "D:\artifacts\after.png"
+```text
+"tools\.venv\Scripts\python.exe" "tools\desktop_coordinate_map.py" --source-image "D:\artifacts\before.png" --preview-left 0 --preview-top 0 --preview-width 1600 --preview-height 900 --observed-x 800 --observed-y 450 --click --receipt "D:\artifacts\after.png"
 ```
 
 脚本输出 machine-readable JSON，包括预览内容矩形、观察点、源图尺寸、当前桌面尺寸和最终桌面点位。
@@ -50,8 +45,8 @@ UIA 通过精确 HWND、Name、AutomationId 定位的语义动作不经过截图
 
 ## 验证命令
 
-```powershell
-& "tools\.venv\Scripts\python.exe" "tools\test_desktop_coordinate_map.py"
+```text
+"tools\.venv\Scripts\python.exe" "tools\test_desktop_coordinate_map.py"
 ```
 
 测试覆盖 X/Y 独立换算、不同宽高比、带偏移的预览内容矩形和所有越界/非法尺寸拒绝分支。
