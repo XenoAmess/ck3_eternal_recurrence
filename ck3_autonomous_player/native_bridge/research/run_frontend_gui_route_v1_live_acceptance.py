@@ -77,6 +77,9 @@ ACTIVATE_COAT_OF_ARMS_DESIGNER_CAPABILITY = (
 INSPECT_COAT_OF_ARMS_TREE_CAPABILITY = (
     "game.command.inspect-frontend-coat-of-arms-tree-v1"
 )
+INSPECT_COAT_OF_ARMS_PATTERN_GRID_CAPABILITY = (
+    "game.command.inspect-frontend-coat-of-arms-pattern-grid-v1"
+)
 ACTIVATE_COAT_OF_ARMS_CUSTOM_MODE_CAPABILITY = (
     "game.command.activate-frontend-coat-of-arms-custom-mode-v1"
 )
@@ -98,6 +101,9 @@ ACTIVATE_COAT_OF_ARMS_DESIGNER_TOOL = (
 )
 INSPECT_COAT_OF_ARMS_TREE_TOOL = (
     "ck3_inspect_frontend_coat_of_arms_tree_v1"
+)
+INSPECT_COAT_OF_ARMS_PATTERN_GRID_TOOL = (
+    "ck3_inspect_frontend_coat_of_arms_pattern_grid_v1"
 )
 ACTIVATE_COAT_OF_ARMS_CUSTOM_MODE_TOOL = (
     "ck3_activate_frontend_coat_of_arms_custom_mode_v1"
@@ -701,6 +707,11 @@ async def _collect_custom_mode_census(
     after_call = await _call(client, INSPECT_COAT_OF_ARMS_TREE_TOOL)
     record(after_call)
     after = _structured(after_call)
+    pattern_grid_call = await _call(
+        client, INSPECT_COAT_OF_ARMS_PATTERN_GRID_TOOL
+    )
+    record(pattern_grid_call)
+    pattern_grid = _structured(pattern_grid_call)
     after_route = (
         activated.get("after")
         if isinstance(activated.get("after"), dict)
@@ -711,7 +722,6 @@ async def _collect_custom_mode_census(
         if isinstance(activated.get("after_inspection"), dict)
         else {}
     )
-    pattern_grid = _summarize_pattern_grid(after)
     checks = {
         "before_inspection_not_error": before_call.get("is_error") is False,
         "before_custom_mode_target_ready": (
@@ -739,8 +749,16 @@ async def _collect_custom_mode_census(
             frontend_coat_of_arms_background_patterns_ready_v1(after)
         ),
         "pattern_grid_census_recorded": (
-            isinstance(pattern_grid.get("descendant_count"), int)
-            and isinstance(pattern_grid.get("inspection_truncated"), bool)
+            pattern_grid_call.get("is_error") is False
+            and pattern_grid.get("scope_root_name")
+            == "coat_of_arms_pattern_grid"
+            and pattern_grid.get("direct_children_complete") is True
+            and isinstance(pattern_grid.get("direct_child_count"), int)
+            and pattern_grid.get("direct_child_count", 0) > 0
+            and pattern_grid.get("read_only") is True
+            and pattern_grid.get("uses_ocr") is False
+            and pattern_grid.get("uses_keyboard") is False
+            and pattern_grid.get("uses_mouse") is False
         ),
     }
     return {
@@ -748,7 +766,7 @@ async def _collect_custom_mode_census(
         "before_inspection": before_call,
         "activation": activate_call,
         "after_inspection": after_call,
-        "pattern_grid": pattern_grid,
+        "pattern_grid": pattern_grid_call,
         "checks": checks,
     }
 
@@ -818,6 +836,7 @@ async def _mcp_sequence(
         custom_mode_required = (
             {
                 INSPECT_COAT_OF_ARMS_TREE_TOOL,
+                INSPECT_COAT_OF_ARMS_PATTERN_GRID_TOOL,
                 ACTIVATE_COAT_OF_ARMS_CUSTOM_MODE_TOOL,
             }
             if custom_mode_census
@@ -896,6 +915,7 @@ async def _mcp_sequence(
         if custom_mode_census:
             required_capabilities |= {
                 INSPECT_COAT_OF_ARMS_TREE_CAPABILITY,
+                INSPECT_COAT_OF_ARMS_PATTERN_GRID_CAPABILITY,
                 ACTIVATE_COAT_OF_ARMS_CUSTOM_MODE_CAPABILITY,
             }
 

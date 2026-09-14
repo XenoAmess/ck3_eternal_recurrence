@@ -29,6 +29,8 @@ from xar_autoplayer.bridge.frontend_gui_route_contract import (
     INSPECT_FRONTEND_GUI_TREE_V1_STEP,
     INSPECT_FRONTEND_COAT_OF_ARMS_TREE_V1_CAPABILITY,
     INSPECT_FRONTEND_COAT_OF_ARMS_TREE_V1_STEP,
+    INSPECT_FRONTEND_COAT_OF_ARMS_PATTERN_GRID_V1_CAPABILITY,
+    INSPECT_FRONTEND_COAT_OF_ARMS_PATTERN_GRID_V1_STEP,
     QUERY_FRONTEND_GUI_ROUTE_V1_CAPABILITY,
     QUERY_FRONTEND_GUI_ROUTE_V1_STEP,
     frontend_gui_route_binding_from_capabilities,
@@ -39,6 +41,7 @@ from xar_autoplayer.bridge.frontend_gui_route_contract import (
     frontend_ruler_designer_dynasty_coa_target_ready_v1,
     normalize_frontend_gui_tree_inspection_v1,
     normalize_frontend_coat_of_arms_tree_inspection_v1,
+    normalize_frontend_coat_of_arms_pattern_grid_inspection_v1,
     normalize_frontend_commit_dynasty_coat_of_arms_v1,
     normalize_frontend_enter_coat_of_arms_custom_mode_v1,
     normalize_frontend_gui_route_v1,
@@ -340,6 +343,49 @@ def _coat_of_arms_page_inspection(
     }
 
 
+def _coat_of_arms_pattern_grid_inspection() -> dict[str, object]:
+    rows = [
+        {
+            "runtime_name": "",
+            "child_path": "",
+            "depth": 0,
+            "child_count": 38,
+            "vtable_rva": 72466168,
+            "effective_visible": True,
+            "enabled": True,
+        },
+        *[
+            {
+                "runtime_name": "",
+                "child_path": str(index),
+                "depth": 1,
+                "child_count": 2,
+                "vtable_rva": 72466168,
+                "effective_visible": True,
+                "enabled": True,
+            }
+            for index in range(38)
+        ],
+    ]
+    return {
+        "schema": "ck3-frontend-gui-tree-inspection-v1",
+        "schema_version": 1,
+        "step": INSPECT_FRONTEND_COAT_OF_ARMS_PATTERN_GRID_V1_STEP,
+        "accepted": True,
+        "status": "available",
+        "scope_root_name": "coat_of_arms_pattern_grid",
+        "root_available": True,
+        "truncated": True,
+        "widget_count": len(rows),
+        "widgets": rows,
+        "backend_id": "native-headless",
+        "read_only": True,
+        "uses_ocr": False,
+        "uses_keyboard": False,
+        "uses_mouse": False,
+    }
+
+
 def _enter_coat_of_arms_custom_mode_action() -> dict[str, object]:
     return normalize_frontend_enter_coat_of_arms_custom_mode_v1(
         {
@@ -366,6 +412,7 @@ class _FrontendDriver:
                 QUERY_FRONTEND_GUI_ROUTE_V1_CAPABILITY,
                 INSPECT_FRONTEND_GUI_TREE_V1_CAPABILITY,
                 INSPECT_FRONTEND_COAT_OF_ARMS_TREE_V1_CAPABILITY,
+                INSPECT_FRONTEND_COAT_OF_ARMS_PATTERN_GRID_V1_CAPABILITY,
                 ACTIVATE_FRONTEND_NEW_GAME_V1_CAPABILITY,
                 ACTIVATE_FRONTEND_PICK_ANY_CHARACTER_V1_CAPABILITY,
                 ACTIVATE_FRONTEND_SELECT_RANDOM_PLAYABLE_V1_CAPABILITY,
@@ -410,6 +457,13 @@ class _FrontendDriver:
 
     def inspect_frontend_coat_of_arms_tree_v1(self) -> dict[str, object]:
         return _coat_of_arms_page_inspection()
+
+    def inspect_frontend_coat_of_arms_pattern_grid_v1(
+        self,
+    ) -> dict[str, object]:
+        return normalize_frontend_coat_of_arms_pattern_grid_inspection_v1(
+            _coat_of_arms_pattern_grid_inspection()
+        )
 
     def activate_frontend_new_game_v1(self) -> dict[str, object]:
         return _action()
@@ -494,6 +548,24 @@ class FrontendGuiRouteV1ContractTests(unittest.TestCase):
         self.assertTrue(frontend_coat_of_arms_background_patterns_ready_v1(ready))
         ready["widgets"][-1]["effective_visible"] = False
         self.assertFalse(frontend_coat_of_arms_background_patterns_ready_v1(ready))
+
+    def test_coa_pattern_grid_requires_every_fixed_root_direct_child(self) -> None:
+        raw = _coat_of_arms_pattern_grid_inspection()
+        normalized = normalize_frontend_coat_of_arms_pattern_grid_inspection_v1(
+            raw
+        )
+        self.assertEqual(normalized["scope_root_name"], "coat_of_arms_pattern_grid")
+        self.assertEqual(normalized["direct_child_count"], 38)
+        self.assertTrue(normalized["direct_children_complete"])
+        self.assertTrue(normalized["truncated"])
+
+        incomplete = _coat_of_arms_pattern_grid_inspection()
+        incomplete["widgets"] = incomplete["widgets"][:-1]
+        incomplete["widget_count"] = len(incomplete["widgets"])
+        with self.assertRaisesRegex(ValueError, "direct children are incomplete"):
+            normalize_frontend_coat_of_arms_pattern_grid_inspection_v1(
+                incomplete
+            )
 
     def test_frontend_binding_allows_snapshot_during_pregame_lobby(self) -> None:
         capabilities = {
@@ -845,6 +917,11 @@ class FrontendGuiRouteV1ContractTests(unittest.TestCase):
             service.inspect_frontend_coat_of_arms_tree_v1()["read_only"]
         )
         self.assertTrue(
+            service.inspect_frontend_coat_of_arms_pattern_grid_v1()[
+                "direct_children_complete"
+            ]
+        )
+        self.assertTrue(
             service.activate_frontend_new_game_v1()["postcondition_verified"]
         )
         self.assertTrue(
@@ -894,6 +971,7 @@ class FrontendGuiRouteV1McpTests(unittest.IsolatedAsyncioTestCase):
                 "ck3_query_frontend_gui_route_v1",
                 "ck3_inspect_frontend_gui_tree_v1",
                 "ck3_inspect_frontend_coat_of_arms_tree_v1",
+                "ck3_inspect_frontend_coat_of_arms_pattern_grid_v1",
                 "ck3_activate_frontend_new_game_v1",
                 "ck3_activate_frontend_pick_any_character_v1",
                 "ck3_activate_frontend_prepare_custom_ruler_v1",
@@ -922,6 +1000,13 @@ class FrontendGuiRouteV1McpTests(unittest.IsolatedAsyncioTestCase):
             self.assertEqual(
                 coa_inspection.structured_content["scope_root_name"],
                 "coat_of_arms_page",
+            )
+            pattern_grid = await client.call_tool(
+                "ck3_inspect_frontend_coat_of_arms_pattern_grid_v1", {}
+            )
+            self.assertFalse(pattern_grid.is_error)
+            self.assertEqual(
+                pattern_grid.structured_content["direct_child_count"], 38
             )
             action = await client.call_tool(
                 "ck3_activate_frontend_new_game_v1", {}

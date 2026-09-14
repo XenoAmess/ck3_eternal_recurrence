@@ -24,6 +24,7 @@ public class StdioCoatOfArmsMcpClient implements CoatOfArmsMcpClient {
             "ck3_activate_frontend_coat_of_arms_designer_v1",
             "ck3_commit_frontend_dynasty_coat_of_arms_v1",
             "ck3_inspect_frontend_coat_of_arms_tree_v1",
+            "ck3_inspect_frontend_coat_of_arms_pattern_grid_v1",
             "ck3_activate_frontend_coat_of_arms_custom_mode_v1",
             "ck3_probe_coat_of_arms_source_v1",
             "ck3_export_coat_of_arms_source_v1",

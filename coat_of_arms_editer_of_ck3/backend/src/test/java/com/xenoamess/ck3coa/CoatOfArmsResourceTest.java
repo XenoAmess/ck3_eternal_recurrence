@@ -172,6 +172,29 @@ class CoatOfArmsResourceTest {
     }
 
     @Test
+    void nativePatternGridIsAFixedRootZeroInputMcpCall() {
+        when(mcp.callTool(
+                        eq("ck3_inspect_frontend_coat_of_arms_pattern_grid_v1"),
+                        eq(Map.of())))
+                .thenReturn(Map.of(
+                        "status", "available",
+                        "scope_root_name", "coat_of_arms_pattern_grid",
+                        "direct_child_count", 38,
+                        "direct_children_complete", true));
+
+        given()
+                .when().get("/api/ck3/coat-of-arms/native-pattern-grid")
+                .then()
+                .statusCode(200)
+                .body("scope_root_name", equalTo("coat_of_arms_pattern_grid"))
+                .body("direct_child_count", equalTo(38))
+                .body("direct_children_complete", equalTo(true));
+
+        verify(mcp).callTool(
+                "ck3_inspect_frontend_coat_of_arms_pattern_grid_v1", Map.of());
+    }
+
+    @Test
     void nativeCustomModeIsAClosedZeroInputMcpCall() {
         when(mcp.callTool(
                         eq("ck3_activate_frontend_coat_of_arms_custom_mode_v1"),

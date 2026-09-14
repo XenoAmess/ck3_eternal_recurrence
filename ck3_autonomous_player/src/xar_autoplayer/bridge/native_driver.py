@@ -349,6 +349,8 @@ from .frontend_gui_route_contract import (
     INSPECT_FRONTEND_GUI_TREE_V1_STEP,
     INSPECT_FRONTEND_COAT_OF_ARMS_TREE_V1_CAPABILITY,
     INSPECT_FRONTEND_COAT_OF_ARMS_TREE_V1_STEP,
+    INSPECT_FRONTEND_COAT_OF_ARMS_PATTERN_GRID_V1_CAPABILITY,
+    INSPECT_FRONTEND_COAT_OF_ARMS_PATTERN_GRID_V1_STEP,
     QUERY_FRONTEND_GUI_ROUTE_V1_CAPABILITY,
     QUERY_FRONTEND_GUI_ROUTE_V1_STEP,
     frontend_gui_route_binding_from_capabilities,
@@ -360,6 +362,7 @@ from .frontend_gui_route_contract import (
     frontend_ruler_designer_dynasty_coa_target_ready_v1,
     normalize_frontend_gui_tree_inspection_v1,
     normalize_frontend_coat_of_arms_tree_inspection_v1,
+    normalize_frontend_coat_of_arms_pattern_grid_inspection_v1,
     normalize_frontend_gui_route_v1,
     normalize_frontend_new_game_v1,
     normalize_frontend_commit_dynasty_coat_of_arms_v1,
@@ -3838,6 +3841,29 @@ class NativeHeadlessGameplayDriver:
         except ValueError as error:
             raise BridgeUnavailableError(
                 "native coat-of-arms GUI tree inspection is malformed: "
+                f"{error}"
+            ) from error
+
+    def inspect_frontend_coat_of_arms_pattern_grid_v1(
+        self,
+    ) -> dict[str, object]:
+        """Read every direct child of the fixed native CoA pattern grid."""
+
+        raw = self._execute_primitive_step(
+            INSPECT_FRONTEND_COAT_OF_ARMS_PATTERN_GRID_V1_STEP,
+            expected_revision=0,
+            required_capability=(
+                INSPECT_FRONTEND_COAT_OF_ARMS_PATTERN_GRID_V1_CAPABILITY
+            ),
+            allow_frontend_revision_zero=True,
+        )
+        try:
+            return normalize_frontend_coat_of_arms_pattern_grid_inspection_v1(
+                raw
+            )
+        except ValueError as error:
+            raise BridgeUnavailableError(
+                "native coat-of-arms pattern-grid inspection is malformed: "
                 f"{error}"
             ) from error
 

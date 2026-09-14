@@ -141,6 +141,14 @@ public class CoatOfArmsResource {
                 Map.of());
     }
 
+    @GET
+    @Path("/native-pattern-grid")
+    public Object nativePatternGrid() {
+        return mcp.callTool(
+                "ck3_inspect_frontend_coat_of_arms_pattern_grid_v1",
+                Map.of());
+    }
+
     @POST
     @Path("/enter-native-custom-mode")
     public Object enterNativeCustomMode() {

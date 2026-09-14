@@ -7204,6 +7204,41 @@ class GameplayBridgeService:
             )
         return result
 
+    def inspect_frontend_coat_of_arms_pattern_grid_v1(
+        self,
+    ) -> dict[str, object]:
+        """Inspect the fixed native CoA pattern grid without screen input."""
+
+        inspect = getattr(
+            self.driver,
+            "inspect_frontend_coat_of_arms_pattern_grid_v1",
+            None,
+        )
+        if not callable(inspect):
+            raise UnsupportedStepError(
+                "selected backend has no native coat-of-arms pattern-grid inspector"
+            )
+        result = inspect()
+        if (
+            not isinstance(result, dict)
+            or result.get("schema")
+            != "ck3-frontend-gui-tree-inspection-v1"
+            or result.get("schema_version") != 1
+            or result.get("step")
+            != "inspect-frontend-coat-of-arms-pattern-grid-v1"
+            or result.get("scope_root_name")
+            != "coat_of_arms_pattern_grid"
+            or result.get("direct_children_complete") is not True
+            or result.get("read_only") is not True
+            or result.get("uses_ocr") is not False
+            or result.get("uses_keyboard") is not False
+            or result.get("uses_mouse") is not False
+        ):
+            raise BridgeUnavailableError(
+                "native coat-of-arms pattern-grid inspector returned malformed data"
+            )
+        return result
+
     def activate_frontend_new_game_v1(self) -> dict[str, object]:
         """Open New Game semantically; the driver must prove Bookmarks."""
 

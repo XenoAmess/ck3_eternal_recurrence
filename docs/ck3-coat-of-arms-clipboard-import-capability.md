@@ -804,9 +804,16 @@ effective feature 与 script `has_dlc` truth 已有 production-live 原生 primi
 
 这次 scoped census 取得了一个重要但仍有限的运行时边界：512 项遍历在 `coat_of_arms_page` 根上截断；
 `patterns_scrollbox` 下可枚举 10 个后代、3 个直接子项，其中固定网格容器
-`0/3/0/2/1/1/2/0/0/0/0` 报告 `child_count=38`，但其 38 个 pattern item 尚未进入本次返回集。因此已经证明背景 pattern
-网格在 custom mode 中实际物化，尚未取得每个 pattern item 的名称/纹理身份。下一步应继续新增一个固定根到该网格容器的零输入
-MCP inspector；不得把 `child_count=38` 外推为完整资源 registry，也仍不证明同名 DDS 的 VFS 最终胜者。
+`0/3/0/2/1/1/2/0/0/0/0` 报告 `child_count=38`，但其 38 个 pattern item 尚未进入本次返回集。
+
+2026-09-15 已沿 MCP 路线补完零输入 `ck3_inspect_frontend_coat_of_arms_pattern_grid_v1()`。原生层只从固定
+`ruler_designer` 根解析完整路径 `0/2/0/3/0/2/1/1/2/0/0/0/0`，并逐级核对
+`coat_of_arms_page → background_panel → patterns → patterns_scrollbox` 的 runtime name、可见性和 enabled；调用方不能提供
+root、child path、指针或遍历上限。网格本身必须保持空 runtime name、可见且 enabled。底层为有界广度优先遍历，Python 合同进一步
+要求根的 `child_count` 与深度 1 的 `0..N-1` 路径完全相等，因此不会再把“只读到 child_count”误报为“直接子项已枚举”。该链已贯通
+原生桥、native driver/service、官方 MCP、Quarkus REST 与 TypeScript 客户端，并通过原生 `127/127` CTest；当前状态仍是
+`mcp-static-ready / live=false`。必须再跑一轮受管 CK3 才能把新工具返回的 38 个直接子项提升为 live 事实；即使届时完整返回，
+也不得把 GUI item 外推为完整资源 registry 或同名 DDS 的 VFS 最终胜者。
 
 ## 9. `coat_of_arms_editer_of_ck3` 的实现约束与当前状态
 
@@ -845,10 +852,10 @@ CoatOfArms
 - 必要的 Quarkus 伴随服务使用官方 Java MCP SDK 连接现有 Python stdio server，前端可刷新 session revision、读取同帧
   runtime feature/script-DLC truth、通过固定动作打开王朝家徽页、执行原生 detect/apply、载入原生 Copy/export 返回源码，
   并通过另一项固定动作把王朝家徽提交回角色设计器；
-  另有一个只读、限定 `coat_of_arms_page` 的树检查和一个固定自定义模式动作，为后续从原版数据模型枚举资源建立入口；
+  另有一个只读、限定 `coat_of_arms_page` 的树检查、一个固定自定义模式动作和一个固定 pattern 网格根检查，为后续从原版数据模型枚举资源建立入口；
   新 binding 端点从 `ck3_get_capabilities` 验证 exact native 连接，有 snapshot 时返回正 revision，无 snapshot 时返回 probe/export
   合同允许的 frontend `revision=0`，从而不再把 gameplay snapshot 错当作前端设计器的必需条件；
-  伴随服务只允许十六个相关工具（capabilities + snapshot + 十三项 CoA 专用 MCP + 一个 runtime-feature MCP）；
+  伴随服务只允许十七个相关工具（capabilities + snapshot + 十四项 CoA 专用 MCP + 一个 runtime-feature MCP）；
 - manifest-owned 单素材与 render-support 已接入浏览器：除 DXT1/DXT5 顶层 mip 解码外，还能解码 `_default.dds` 使用的
   无压缩 BGRA8 并在受限 `textured_emblem` 行内显示原始纹理；主路径按随游戏发布的 shader 源码合成三通道调色、mask、
   实例变换、surface detail 和 blend，仍明确不冒充 native GPU 像素完全一致。
@@ -862,8 +869,8 @@ CoatOfArms
 浏览器无法直接启动本机 stdio MCP，因此已引入 Maven + Java + Quarkus 伴随服务。后端只负责 REST/MCP 会话转接与
 本机资源索引，不承担“执行 CK3 脚本”的虚构能力；当前也没有 DDS 转换或素材缓存。
 
-当前前端有 Vitest `42/42` parser/serializer/validator/capability-matrix/API/DDS/renderer 回归和 Vite production build 验收；
-Quarkus REST 测试 `17/17` 且 Maven test GREEN。后续扩展仍以本文的原生 MCP 证据为协议来源，
+当前前端有 Vitest `43/43` parser/serializer/validator/capability-matrix/API/DDS/renderer 回归和 Vite production build 验收；
+Quarkus REST 测试 `18/18` 且 Maven test GREEN。后续扩展仍以本文的原生 MCP 证据为协议来源，
 不会把旧 UI 观察或第三方 parser 行为固化成 CK3 引擎事实。
 
 ## 10. 辅助参考边界
@@ -909,6 +916,7 @@ Quarkus REST 测试 `17/17` 且 Maven test GREEN。后续扩展仍以本文的�
 | 09 月 14 日王朝 Finish 往返 artifact（1,594,848 bytes；cleanup GREEN；source `8231b2f1`） | `6569F652DB057520EB24A2DB3CC9FE2CD8F8C2A6BE8E76597F8F244BE6EFCEB8` |
 | 09 月 14 日 Finish 往返 `xar_ck3_bridge.dll`（2,814,464 bytes） | `3B432B97F69392552BE3C6A2E5369FB228973FD73750CCD6EF9AB0316BD7664D` |
 | 09 月 14 日 Finish 往返 injector（39,936 bytes） | `506F0A7E093AFEF2BDB39FF49C373964ED0950CD9582E66BAC6AE21713D833EE` |
+| 09 月 15 日固定 pattern 网格 inspector 静态构建（2,818,560 bytes；`live=false`） | `2CEA58975B3ABF3B75453F4A85705B0BFC2DB999AD219E96F65E77B7BE47BB06` |
 | `50_coa_designer_patterns.txt`（42 项/38 可见） | `3BAA46C11BD24E7D9F9F6D1DF3E51403D016AB4CAC7290A6541ED25561425B7B` |
 | `50_coa_designer_emblems.txt`（1,578 项/1,576 可见） | `3D6529702F91FA352E07B0C64E4C33A88E5F86C2AAF0EF2D0CEB69CF6D600F3C` |
 | `50_coa_designer_palettes.txt`（13 色） | `3AE2EA0F3B751D61C08A06408FA2EDA2ADC3FF6FBF204298D3D8CDC9613B87B4` |

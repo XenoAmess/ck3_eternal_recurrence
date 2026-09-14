@@ -107,6 +107,29 @@ describe('CK3 companion client', () => {
     expect(fetchMock.mock.calls[0][1].method).toBeUndefined()
   })
 
+  it('reads the complete direct children of the fixed native pattern grid', async () => {
+    const fetchMock = vi.fn().mockResolvedValue(new Response(
+      JSON.stringify({
+        schema: 'ck3-frontend-gui-tree-inspection-v1',
+        step: 'inspect-frontend-coat-of-arms-pattern-grid-v1',
+        status: 'available',
+        scope_root_name: 'coat_of_arms_pattern_grid',
+        direct_child_count: 38,
+        direct_children_complete: true,
+      }),
+      { status: 200, headers: { 'Content-Type': 'application/json' } },
+    ))
+    vi.stubGlobal('fetch', fetchMock)
+
+    const result = await createCk3CompanionClient().nativePatternGrid()
+
+    expect(result.direct_child_count).toBe(38)
+    expect(result.direct_children_complete).toBe(true)
+    expect(new URL(fetchMock.mock.calls[0][0]).pathname)
+      .toBe('/api/ck3/coat-of-arms/native-pattern-grid')
+    expect(fetchMock.mock.calls[0][1].method).toBeUndefined()
+  })
+
   it('enters native custom mode with an empty closed request', async () => {
     const fetchMock = vi.fn().mockResolvedValue(new Response(
       JSON.stringify({

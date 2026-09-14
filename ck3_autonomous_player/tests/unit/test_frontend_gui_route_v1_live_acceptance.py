@@ -93,6 +93,13 @@ class FrontendGuiRouteLiveAcceptanceContractTests(unittest.TestCase):
             '"ck3_inspect_frontend_coat_of_arms_tree_v1"', source
         )
         self.assertIn(
+            '"game.command.inspect-frontend-coat-of-arms-pattern-grid-v1"',
+            source,
+        )
+        self.assertIn(
+            '"ck3_inspect_frontend_coat_of_arms_pattern_grid_v1"', source
+        )
+        self.assertIn(
             '"game.command.activate-frontend-coat-of-arms-custom-mode-v1"',
             source,
         )
@@ -186,6 +193,23 @@ class FrontendGuiRouteLiveAcceptanceContractTests(unittest.TestCase):
                         "after_inspection": after,
                     },
                     after,
+                    {
+                        "schema": "ck3-frontend-gui-tree-inspection-v1",
+                        "schema_version": 1,
+                        "step": "inspect-frontend-coat-of-arms-pattern-grid-v1",
+                        "status": "available",
+                        "scope_root_name": "coat_of_arms_pattern_grid",
+                        "root_available": True,
+                        "truncated": False,
+                        "widget_count": 39,
+                        "direct_child_count": 38,
+                        "direct_children_complete": True,
+                        "widgets": [],
+                        "read_only": True,
+                        "uses_ocr": False,
+                        "uses_keyboard": False,
+                        "uses_mouse": False,
+                    },
                 ]
 
             async def call_tool(self, name, arguments):
@@ -201,11 +225,11 @@ class FrontendGuiRouteLiveAcceptanceContractTests(unittest.TestCase):
         )
 
         self.assertTrue(result["ok"])
-        self.assertEqual(len(recorded), 3)
-        self.assertTrue(result["pattern_grid"]["materialized"])
-        self.assertEqual(result["pattern_grid"]["descendant_count"], 1)
+        self.assertEqual(len(recorded), 4)
+        self.assertFalse(result["pattern_grid"]["is_error"])
         self.assertEqual(
-            result["pattern_grid"]["runtime_name_counts"], {"pattern_item": 1}
+            result["pattern_grid"]["structured_content"]["direct_child_count"],
+            38,
         )
 
     def test_checked_in_syntax_matrix_is_closed_and_targeted(self) -> None:

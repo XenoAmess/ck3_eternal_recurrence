@@ -387,6 +387,25 @@ export interface FrontendCoatOfArmsTreeInspection {
   [key: string]: unknown
 }
 
+export interface FrontendCoatOfArmsPatternGridInspection {
+  schema: 'ck3-frontend-gui-tree-inspection-v1'
+  schema_version: 1
+  step: 'inspect-frontend-coat-of-arms-pattern-grid-v1'
+  status: 'available'
+  scope_root_name: 'coat_of_arms_pattern_grid'
+  root_available: true
+  truncated: boolean
+  widget_count: number
+  direct_child_count: number
+  direct_children_complete: true
+  widgets: FrontendCoatOfArmsTreeInspection['widgets']
+  read_only: true
+  uses_ocr: false
+  uses_keyboard: false
+  uses_mouse: false
+  [key: string]: unknown
+}
+
 export interface FrontendCoatOfArmsCustomModeActionResult {
   status: 'verified'
   action: 'enter_coat_of_arms_custom_mode'
@@ -459,6 +478,8 @@ export function createCk3CompanionClient(
       ),
     nativeDesignerTree: () =>
       get<FrontendCoatOfArmsTreeInspection>('/native-designer-tree'),
+    nativePatternGrid: () =>
+      get<FrontendCoatOfArmsPatternGridInspection>('/native-pattern-grid'),
     enterNativeCustomMode: () =>
       post<FrontendCoatOfArmsCustomModeActionResult>(
         '/enter-native-custom-mode',

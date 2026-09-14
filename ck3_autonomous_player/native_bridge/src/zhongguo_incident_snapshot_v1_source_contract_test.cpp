@@ -185,7 +185,7 @@ int main(int argc, char **argv) {
           "mailbox") ||
       !require_tokens(
           adapter,
-          {"kBaseCapabilityCount = 89",
+          {"kBaseCapabilityCount = 95",
            "std::array<std::string_view, kCapabilityCount>",
            "kZhongguoIncidentSnapshotV1Capability"},
           "adapter") ||

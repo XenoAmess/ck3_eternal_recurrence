@@ -409,6 +409,10 @@ bool GameAdapter::supports_step(std::string_view step) const noexcept {
     capability = ck3_11906::kFrontendGuiTreeInspectionV1Capability;
   } else if (step == ck3_11906::kFrontendCoatOfArmsTreeInspectionV1Step) {
     capability = ck3_11906::kFrontendCoatOfArmsTreeInspectionV1Capability;
+  } else if (step ==
+             ck3_11906::kFrontendCoatOfArmsPatternGridInspectionV1Step) {
+    capability =
+        ck3_11906::kFrontendCoatOfArmsPatternGridInspectionV1Capability;
   } else if (step == ck3_11906::kFrontendGuiOpenNewGameV1Step) {
     capability = ck3_11906::kFrontendGuiOpenNewGameV1Capability;
   } else if (step == ck3_11906::kFrontendGuiPickAnyCharacterV1Step) {

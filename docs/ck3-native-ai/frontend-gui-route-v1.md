@@ -29,11 +29,15 @@ route/page 后置条件完成实机闭合；上层 Finish 仍不在当前闭环�
 ```text
 ck3_query_frontend_gui_route_v1()
 ck3_inspect_frontend_gui_tree_v1()
+ck3_inspect_frontend_coat_of_arms_tree_v1()
+ck3_inspect_frontend_coat_of_arms_pattern_grid_v1()
 ck3_activate_frontend_new_game_v1()
 ck3_activate_frontend_pick_any_character_v1()
 ck3_activate_frontend_prepare_custom_ruler_v1()
 ck3_activate_frontend_ruler_designer_v1()
 ck3_activate_frontend_coat_of_arms_designer_v1()
+ck3_activate_frontend_coat_of_arms_custom_mode_v1()
+ck3_commit_frontend_dynasty_coat_of_arms_v1()
 ```
 
 对应 bridge capability/step：
@@ -44,6 +48,12 @@ query-frontend-gui-route-v1
 
 game.command.inspect-frontend-gui-tree-v1
 inspect-frontend-gui-tree-v1
+
+game.command.inspect-frontend-coat-of-arms-tree-v1
+inspect-frontend-coat-of-arms-tree-v1
+
+game.command.inspect-frontend-coat-of-arms-pattern-grid-v1
+inspect-frontend-coat-of-arms-pattern-grid-v1
 
 game.command.activate-frontend-new-game-v1
 activate-frontend-new-game-v1
@@ -59,6 +69,12 @@ activate-frontend-ruler-designer-v1
 
 game.command.activate-frontend-coat-of-arms-designer-v1
 activate-frontend-coat-of-arms-designer-v1
+
+game.command.activate-frontend-coat-of-arms-custom-mode-v1
+activate-frontend-coat-of-arms-custom-mode-v1
+
+game.command.commit-frontend-dynasty-coat-of-arms-v1
+commit-frontend-dynasty-coat-of-arms-v1
 ```
 
 路由枚举为 `unavailable`、`main_menu`、`bookmarks`、`lobby`、`ruler_designer`、`coat_of_arms_designer`。动作分别要求
@@ -101,6 +117,15 @@ owner 做只读广度枚举。它最多返回 512 个节点的 runtime name、�
 route 可识别时，inspector 会自动把固定 route root 作为 `scope_root_name` 并枚举其子树；route 不可识别时才回退全局 root。
 每行包含相对 root 的只读 `child_path`、runtime name（允许空，覆盖原版无名控件）、child count 和模块相对 vtable RVA，仍不暴露
 可回传的绝对 native pointer。该扩展用于确定 `lobbyview` 内无显式 name 的原版设计器按钮结构，不能由 MCP 调用方选择任意 root。
+
+CoA 另有两个更窄的零输入只读入口。`ck3_inspect_frontend_coat_of_arms_tree_v1()` 仅允许当前 route 为
+`coat_of_arms_designer`，并从固定 `ruler_designer` 解析可见、enabled 的 `coat_of_arms_page`。
+`ck3_inspect_frontend_coat_of_arms_pattern_grid_v1()` 再把 root 收窄到背景页无名网格：固定完整 child path 为
+`0/2/0/3/0/2/1/1/2/0/0/0/0`，且四个有名祖先必须依次匹配
+`coat_of_arms_page → background_panel → patterns → patterns_scrollbox`。调用方仍不能提供 root、path、pointer 或 limit。
+其结果使用有界广度优先遍历，Python 合同要求根报告的全部直接子项 `0..N-1` 均实际出现在结果中；深层节点仍可因 512 行上限
+标记 `truncated=true`。该固定网格入口当前为 `mcp-static-ready / live=false`：原生完整构建与 `127/127` CTest、Python
+contract/service/native-driver/official-MCP、Quarkus REST 和 Vue API 回归已通过，但尚未用新工具取得受管 CK3 实机结果。
 
 ## application-main 与 gameplay 隔离
 

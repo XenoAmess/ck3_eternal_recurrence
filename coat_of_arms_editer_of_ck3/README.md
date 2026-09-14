@@ -13,7 +13,7 @@ coat-of-arms render description，不把该入口描述成任意 CK3 脚本执�
 - 导入后继续对表单模型执行确定性校验：颜色语法、可打印 ASCII 资源名、有限数值和原生 128 KiB 上限不合格时，禁止复制或发送 MCP；
 - 内置 exact 1.19.0.6 的机器可读语法能力矩阵，逐项展示例子、原生 `detected/applied/not_detected` 结果、编辑器策略与证据边界；
 - 展开简单静态 `@变量`；保留已证实可应用/Copy 的受限 `parent` 数据库引用；重复标量按 CK3 后值优先并警告，多顶层仍阻止静默丢数据；
-- 通过本机 Quarkus 伴随服务调用 typed MCP：读取基础游戏资源目录、单个 DDS、渲染支撑数据、当前 `dlc_load.json`、目录/ZIP 模组 manifest 与 DDS 候选，以及运行中 CK3 的 effective feature / script `has_dlc` truth；获取 session revision，执行原生检测/应用、Copy/export，以固定的原生王朝 Finish 动作提交回角色设计器，并可通过固定自定义模式按钮进入背景图案页、只读检查 `coat_of_arms_page` 子树；
+- 通过本机 Quarkus 伴随服务调用 typed MCP：读取基础游戏资源目录、单个 DDS、渲染支撑数据、当前 `dlc_load.json`、目录/ZIP 模组 manifest 与 DDS 候选，以及运行中 CK3 的 effective feature / script `has_dlc` truth；获取 session revision，执行原生检测/应用、Copy/export，以固定的原生王朝 Finish 动作提交回角色设计器，并可通过固定自定义模式按钮进入背景图案页、只读检查 `coat_of_arms_page` 子树及固定 pattern 网格根；
 - 在浏览器解码原版 DXT1 pattern、DXT5 colored emblem、`coa_mask_texture.dds` 以及 `_default.dds` 使用的无压缩 BGRA8 顶层 mip；
 - 按 CK3 随附的 Clausewitz/Jomini shader 源码翻译三通道调色、pattern mask、flip→rotate→scale→translate、surface detail 和 alpha blend；GPU 采样/色彩空间及引擎未公开的 `FallbackColor` 绑定仍不冒充逐像素一致。
 
@@ -30,7 +30,7 @@ pnpm dev
 ```
 
 浏览器不能直接启动本机 stdio MCP，所以 `backend/` 提供必要且很薄的 Maven + Java + Quarkus 伴随服务。它只允许调用
-`ck3_get_capabilities`、`ck3_take_snapshot`、十三项 CoA 专用 MCP 工具和一项原生 runtime-feature 查询，共 16 项；不实现第二套后端解析器，也不触碰 OCR、鼠标或屏幕。
+`ck3_get_capabilities`、`ck3_take_snapshot`、十四项 CoA 专用 MCP 工具和一项原生 runtime-feature 查询，共 17 项；不实现第二套后端解析器，也不触碰 OCR、鼠标或屏幕。
 
 ## 启动伴随服务
 
@@ -62,6 +62,7 @@ subprocess.run(
 | `POST /api/ck3/coat-of-arms/open-native-designer` | `ck3_activate_frontend_coat_of_arms_designer_v1` | 是，且需停在角色设计器；只接受固定王朝家徽按钮 |
 | `POST /api/ck3/coat-of-arms/commit-native-design` | `ck3_commit_frontend_dynasty_coat_of_arms_v1` | 是，且需停在王朝家徽页；只接受固定 `dynasty_finish_button`，成功后验证返回角色设计器 |
 | `GET /api/ck3/coat-of-arms/native-designer-tree` | `ck3_inspect_frontend_coat_of_arms_tree_v1` | 是；只读检查当前可见的 `coat_of_arms_page` 子树，不接受控件名、路径或指针 |
+| `GET /api/ck3/coat-of-arms/native-pattern-grid` | `ck3_inspect_frontend_coat_of_arms_pattern_grid_v1` | 是，且需停在已打开的背景图案页；只读检查编译期固定的无名网格根并要求直接子项完整，不接受控件名、路径、指针或遍历上限 |
 | `POST /api/ck3/coat-of-arms/enter-native-custom-mode` | `ck3_activate_frontend_coat_of_arms_custom_mode_v1` | 是，且需停在王朝家徽模式选择页；只接受原版两个互斥固定按钮，并验证背景图案网格可见 |
 | `GET /api/ck3/coat-of-arms/resources` | `ck3_query_coat_of_arms_resource_catalog_v1` | 否，只读安装目录 |
 | `GET /api/ck3/coat-of-arms/asset` | `ck3_read_coat_of_arms_resource_asset_v1` | 否，只读 manifest 内的精确 DDS |
@@ -84,7 +85,7 @@ mvn -f backend/pom.xml package
 java -jar backend/target/quarkus-app/quarkus-run.jar
 ```
 
-当前基线：Vitest `42/42`、Vite production build、Quarkus REST `17/17` 与 Maven test 均 GREEN。
+当前基线：Vitest `43/43`、Vite production build、Quarkus REST `18/18` 与 Maven test 均 GREEN。
 “打开原生家徽页”和“提交回角色设计器”都只调用固定、零参数的王朝家徽 MCP，并要求独立 route 后置条件；它们不会接受浏览器传入的控件名、路径、指针或桌面输入。提交动作已在 exact CK3 `1.19.0.6` 完成受管实机往返：Finish 前后重开家徽页的原生 Copy 均为 330 bytes，SHA-256 均为 `4769FD42836E68FA35DC07FBA23BEABCC589E5A33087314F1D6287E5C53C305A`；该结论仍不覆盖完成整个角色创建或战役/存档持久化。
 
 probe/export 不再错误地假设家徽页必有 gameplay snapshot。binding 端点先验证 native-headless、named-pipe、exact
@@ -98,8 +99,11 @@ CK3 `1.19.0.6`/EXE SHA、连接代次/PID 及 probe/export capability；有 snap
 
 `coat_of_arms_page` 专用树检查与固定自定义模式动作已经达到 `production-live primitive`：Python official-MCP/contract 回归、
 原生 Release、adapter/mailbox CTest、Quarkus、Vue 和一次受管真实 CK3 official-MCP 路由均已通过。live census 证明 custom mode
-背景网格容器实际存在并报告 38 个 child；不过 512 项页面级遍历在进入这些 child 前截断，尚不能把这 38 项映射为具体 pattern
-资源名，也不能据此推断同名 DDS 的最终 VFS 胜者。
+背景网格容器实际存在并报告 38 个 child；不过 512 项页面级遍历在进入这些 child 前截断。为此新增的零输入
+`ck3_inspect_frontend_coat_of_arms_pattern_grid_v1` 从 `ruler_designer` 经编译期固定路径解析该无名网格，并要求四级有名祖先、
+可见性、enabled 状态以及全部直接子项同时成立。它已通过原生 127/127 CTest、Python official-MCP、Quarkus 与 Vue 回归，当前状态为
+`mcp-static-ready / live=false`；在新一轮受管 CK3 实机运行完成前，不能声称已由该新工具枚举 38 项，更不能把 GUI 子项外推成
+具体 pattern 资源名或同名 DDS 的最终 VFS 胜者。
 
 Mask 编辑只接受整数分区索引 1、2、3。exact 原版语料实际使用 `{ 1 }`、`{ 2 }`、`{ 2 3 }`；MCP 进一步实际应用了
 `{ 1 2 3 }`，且原生 Copy 将它作为默认全通道省略。随附 shader 对应 R/G/B 三通道。其他值会形成阻止导出的诊断，不会被输入框静默丢弃。

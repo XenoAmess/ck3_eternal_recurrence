@@ -20,6 +20,12 @@ INSPECT_FRONTEND_COAT_OF_ARMS_TREE_V1_CAPABILITY: Final = (
 INSPECT_FRONTEND_COAT_OF_ARMS_TREE_V1_STEP: Final = (
     "inspect-frontend-coat-of-arms-tree-v1"
 )
+INSPECT_FRONTEND_COAT_OF_ARMS_PATTERN_GRID_V1_CAPABILITY: Final = (
+    "game.command.inspect-frontend-coat-of-arms-pattern-grid-v1"
+)
+INSPECT_FRONTEND_COAT_OF_ARMS_PATTERN_GRID_V1_STEP: Final = (
+    "inspect-frontend-coat-of-arms-pattern-grid-v1"
+)
 INSPECT_FRONTEND_GUI_TREE_V1_MAXIMUM_WIDGETS: Final = 512
 ACTIVATE_FRONTEND_NEW_GAME_V1_CAPABILITY: Final = (
     "game.command.activate-frontend-new-game-v1"
@@ -192,6 +198,7 @@ def normalize_frontend_gui_tree_inspection_v1(
             "lobbyview",
             "ruler_designer",
             "coat_of_arms_page",
+            "coat_of_arms_pattern_grid",
         }
         or not isinstance(result.get("root_available"), bool)
         or not isinstance(result.get("truncated"), bool)
@@ -282,6 +289,67 @@ def normalize_frontend_coat_of_arms_tree_inspection_v1(
         {**result, "step": INSPECT_FRONTEND_GUI_TREE_V1_STEP}
     )
     normalized["step"] = INSPECT_FRONTEND_COAT_OF_ARMS_TREE_V1_STEP
+    return normalized
+
+
+def normalize_frontend_coat_of_arms_pattern_grid_inspection_v1(
+    result: object,
+) -> dict[str, object]:
+    """Normalize a fixed-root census with every direct pattern child present."""
+
+    if (
+        not isinstance(result, dict)
+        or result.get("step")
+        != INSPECT_FRONTEND_COAT_OF_ARMS_PATTERN_GRID_V1_STEP
+        or result.get("scope_root_name") != "coat_of_arms_pattern_grid"
+    ):
+        raise ValueError(
+            "frontend coat-of-arms pattern-grid inspection is malformed"
+        )
+    normalized = normalize_frontend_gui_tree_inspection_v1(
+        {**result, "step": INSPECT_FRONTEND_GUI_TREE_V1_STEP}
+    )
+    widgets = normalized["widgets"]
+    if not isinstance(widgets, list) or not widgets:
+        raise ValueError(
+            "frontend coat-of-arms pattern-grid inspection is malformed"
+        )
+    root = widgets[0]
+    if not isinstance(root, dict):
+        raise ValueError(
+            "frontend coat-of-arms pattern-grid inspection is malformed"
+        )
+    direct_child_count = root.get("child_count")
+    direct_paths = {
+        row.get("child_path")
+        for row in widgets
+        if isinstance(row, dict) and row.get("depth") == 1
+    }
+    expected_paths = (
+        {str(index) for index in range(direct_child_count)}
+        if isinstance(direct_child_count, int)
+        and not isinstance(direct_child_count, bool)
+        and 0 < direct_child_count
+        < INSPECT_FRONTEND_GUI_TREE_V1_MAXIMUM_WIDGETS
+        else set()
+    )
+    if (
+        normalized.get("status") != "available"
+        or normalized.get("root_available") is not True
+        or root.get("runtime_name") != ""
+        or root.get("child_path") != ""
+        or root.get("depth") != 0
+        or root.get("effective_visible") is not True
+        or root.get("enabled") is not True
+        or not expected_paths
+        or direct_paths != expected_paths
+    ):
+        raise ValueError(
+            "frontend coat-of-arms pattern-grid direct children are incomplete"
+        )
+    normalized["step"] = INSPECT_FRONTEND_COAT_OF_ARMS_PATTERN_GRID_V1_STEP
+    normalized["direct_child_count"] = direct_child_count
+    normalized["direct_children_complete"] = True
     return normalized
 
 

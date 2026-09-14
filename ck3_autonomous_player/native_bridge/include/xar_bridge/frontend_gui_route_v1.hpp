@@ -23,6 +23,12 @@ inline constexpr std::string_view
 inline constexpr std::string_view
     kFrontendCoatOfArmsTreeInspectionV1Step =
         "inspect-frontend-coat-of-arms-tree-v1";
+inline constexpr std::string_view
+    kFrontendCoatOfArmsPatternGridInspectionV1Capability =
+        "game.command.inspect-frontend-coat-of-arms-pattern-grid-v1";
+inline constexpr std::string_view
+    kFrontendCoatOfArmsPatternGridInspectionV1Step =
+        "inspect-frontend-coat-of-arms-pattern-grid-v1";
 inline constexpr std::string_view kFrontendGuiOpenNewGameV1Capability =
     "game.command.activate-frontend-new-game-v1";
 inline constexpr std::string_view kFrontendGuiOpenNewGameV1Step =
@@ -68,6 +74,7 @@ enum class FrontendGuiRouteOperationV1 : std::uint32_t {
   commit_dynasty_coat_of_arms = 7,
   inspect_coat_of_arms_tree = 8,
   enter_coat_of_arms_custom_mode = 9,
+  inspect_coat_of_arms_pattern_grid = 10,
 };
 
 enum class FrontendGuiRouteV1 : std::uint32_t {

@@ -6738,6 +6738,8 @@ void RunConnectedSession(
               step == xar::ck3_11906::kFrontendGuiTreeInspectionV1Step ||
               step == xar::ck3_11906::
                           kFrontendCoatOfArmsTreeInspectionV1Step ||
+              step == xar::ck3_11906::
+                          kFrontendCoatOfArmsPatternGridInspectionV1Step ||
               step == xar::ck3_11906::kFrontendGuiOpenNewGameV1Step ||
               step == xar::ck3_11906::kFrontendGuiPickAnyCharacterV1Step ||
               step == xar::ck3_11906::
@@ -6772,6 +6774,10 @@ void RunConnectedSession(
                                      kFrontendCoatOfArmsTreeInspectionV1Step) {
                 query.operation = xar::ck3_11906::
                     FrontendGuiRouteOperationV1::inspect_coat_of_arms_tree;
+              } else if (step == xar::ck3_11906::
+                                     kFrontendCoatOfArmsPatternGridInspectionV1Step) {
+                query.operation = xar::ck3_11906::FrontendGuiRouteOperationV1::
+                    inspect_coat_of_arms_pattern_grid;
               } else if (step ==
                          xar::ck3_11906::kFrontendGuiOpenNewGameV1Step) {
                 query.operation = xar::ck3_11906::
@@ -6853,7 +6859,10 @@ void RunConnectedSession(
                                                         inspect_tree ||
                              query.operation == xar::ck3_11906::
                                                     FrontendGuiRouteOperationV1::
-                                                        inspect_coat_of_arms_tree) {
+                                                        inspect_coat_of_arms_tree ||
+                             query.operation == xar::ck3_11906::
+                                                    FrontendGuiRouteOperationV1::
+                                                        inspect_coat_of_arms_pattern_grid) {
                     response = FrontendGuiTreeInspectionResultFrame(
                         request_id, step, query.result.tree_inspection);
                   } else if (query.result.target_resolved &&

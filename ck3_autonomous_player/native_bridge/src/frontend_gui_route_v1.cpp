@@ -144,6 +144,90 @@ bool InspectCoatOfArmsTree(
                                   query.result.tree_inspection);
 }
 
+bool InspectCoatOfArmsPatternGrid(
+    FrontendGuiRouteMailboxContextV1 &query) noexcept {
+  if (!ResolveRoute(query, query.result) ||
+      query.result.route != FrontendGuiRouteV1::coat_of_arms_designer) {
+    return false;
+  }
+
+  // CK3 1.19.0.6 coa_designer.gui, verified against the live custom-mode
+  // background page. Every index remains native-owned and compile-time fixed;
+  // callers cannot substitute a path, name, pointer, or traversal limit.
+  constexpr std::array<std::uint32_t, 2> kCoatOfArmsPagePath{{0, 2}};
+  constexpr std::array<std::uint32_t, 8> kBackgroundPanelPath{{
+      0, 2, 0, 3, 0, 2, 1, 1,
+  }};
+  constexpr std::array<std::uint32_t, 9> kPatternsPath{{
+      0, 2, 0, 3, 0, 2, 1, 1, 2,
+  }};
+  constexpr std::array<std::uint32_t, 11> kPatternsScrollboxPath{{
+      0, 2, 0, 3, 0, 2, 1, 1, 2, 0, 0,
+  }};
+  constexpr std::array<std::uint32_t, 13> kPatternGridPath{{
+      0, 2, 0, 3, 0, 2, 1, 1, 2, 0, 0, 0, 0,
+  }};
+
+  struct FixedAncestor {
+    const std::uint32_t *path;
+    std::size_t path_size;
+    std::string_view runtime_name;
+  };
+  const std::array<FixedAncestor, 4> kAncestors{{
+      {kCoatOfArmsPagePath.data(), kCoatOfArmsPagePath.size(),
+       "coat_of_arms_page"},
+      {kBackgroundPanelPath.data(), kBackgroundPanelPath.size(),
+       "background_panel"},
+      {kPatternsPath.data(), kPatternsPath.size(), "patterns"},
+      {kPatternsScrollboxPath.data(), kPatternsScrollboxPath.size(),
+       "patterns_scrollbox"},
+  }};
+
+  ZhongguoScoreboardAccessV1 access{};
+  for (const auto &ancestor : kAncestors) {
+    void *root = nullptr;
+    void *target = nullptr;
+    if (!ResolveFixedGuiChildPathV1(
+            query.environment, access, "ruler_designer", ancestor.path,
+            ancestor.path_size, root, target) ||
+        root == nullptr || target == nullptr) {
+      return false;
+    }
+    std::string runtime_name;
+    void *vtable = nullptr;
+    bool visible = false;
+    bool enabled = false;
+    if (!ReadGuiWidgetRuntimeV1(access, target, runtime_name, vtable, visible,
+                                enabled) ||
+        runtime_name != ancestor.runtime_name || !visible || !enabled) {
+      return false;
+    }
+  }
+
+  void *root = nullptr;
+  void *grid = nullptr;
+  if (!ResolveFixedGuiChildPathV1(
+          query.environment, access, "ruler_designer", kPatternGridPath.data(),
+          kPatternGridPath.size(), root, grid) ||
+      root == nullptr || grid == nullptr) {
+    return false;
+  }
+  std::string runtime_name;
+  void *vtable = nullptr;
+  bool visible = false;
+  bool enabled = false;
+  if (!ReadGuiWidgetRuntimeV1(access, grid, runtime_name, vtable, visible,
+                              enabled) ||
+      !runtime_name.empty() || !visible || !enabled) {
+    return false;
+  }
+  return InspectNamedGuiSubtreeV1(
+             access, query.environment.module_base, grid,
+             "coat_of_arms_pattern_grid", query.result.tree_inspection) &&
+         query.result.tree_inspection.widget_count > 1 &&
+         query.result.tree_inspection.widgets[0].child_count > 0;
+}
+
 bool DispatchFixedNamedWidget(FrontendGuiRouteMailboxContextV1 &query,
                               FrontendGuiRouteV1 expected_route,
                               std::string_view root_name,
@@ -374,6 +458,10 @@ bool ExecuteFrontendGuiRouteMailboxV1(
   if (query->operation ==
       FrontendGuiRouteOperationV1::inspect_coat_of_arms_tree) {
     return InspectCoatOfArmsTree(*query);
+  }
+  if (query->operation ==
+      FrontendGuiRouteOperationV1::inspect_coat_of_arms_pattern_grid) {
+    return InspectCoatOfArmsPatternGrid(*query);
   }
   if (!ResolveRoute(*query, query->result)) return false;
   if (query->operation == FrontendGuiRouteOperationV1::query) return true;

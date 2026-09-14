@@ -310,6 +310,9 @@ int main() {
                 "game.command.inspect-frontend-coat-of-arms-tree-v1") ||
       !Contains(
           known.capabilities,
+          "game.command.inspect-frontend-coat-of-arms-pattern-grid-v1") ||
+      !Contains(
+          known.capabilities,
           "game.command.activate-frontend-coat-of-arms-custom-mode-v1") ||
       !Contains(known.capabilities,
                 "game.command.query-pending-character-interaction-context-v1") ||
@@ -613,6 +616,8 @@ int main() {
           "commit-frontend-dynasty-coat-of-arms-v1") ||
       !exact_adapter->supports_step(
           "inspect-frontend-coat-of-arms-tree-v1") ||
+      !exact_adapter->supports_step(
+          "inspect-frontend-coat-of-arms-pattern-grid-v1") ||
       !exact_adapter->supports_step(
           "activate-frontend-coat-of-arms-custom-mode-v1") ||
       !exact_adapter->supports_step("center-map-on-landed-title-v1") ||

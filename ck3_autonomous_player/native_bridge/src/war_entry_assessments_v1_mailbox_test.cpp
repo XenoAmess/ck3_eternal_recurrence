@@ -365,7 +365,7 @@ bool SourceContract(int argc, char **argv) {
          Contains(source, "return true") &&
          Contains(abi, "\"production_wiring\": true") &&
          Contains(abi, "\"live_boundary_observation\": true") &&
-         Contains(abi, "\"live_executor_observation\": false") &&
+         Contains(abi, "\"live_executor_observation\": true") &&
          Contains(abi, "RNG owner is provenance only") &&
          Contains(abi, "\"first_live_target_limit\": 1") &&
          Contains(abi, "\"process_pin_static_mailbox_fixture\": true") &&
