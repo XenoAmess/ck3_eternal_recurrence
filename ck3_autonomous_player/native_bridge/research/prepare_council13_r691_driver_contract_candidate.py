@@ -228,6 +228,18 @@ def patch_runner(output: Path) -> None:
         ("r690", "r691"),
     ):
         text = text.replace(old, new)
+    text = replace_required(
+        text,
+        'args.old_round != "R689" or args.new_round != "R691"',
+        'args.old_round != "R690" or args.new_round != "R691"',
+        label="runner actual round assertion",
+    )
+    text = replace_required(
+        text,
+        "this prepared one-shot is frozen to R689 -> R691",
+        "this prepared one-shot is frozen to R690 -> R691",
+        label="runner actual round error",
+    )
     if "driver.take_internal_semantic_snapshot()" not in text:
         raise RuntimeError("runner paused semantic snapshot call differs")
     path.write_text(text, encoding="utf-8")
