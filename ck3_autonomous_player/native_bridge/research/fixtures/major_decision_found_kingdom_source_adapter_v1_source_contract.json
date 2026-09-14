@@ -1,0 +1,64 @@
+{
+  "schema_version": 1,
+  "artifact_id": "major_decision_found_kingdom_source_adapter_v1",
+  "status": "static-ready",
+  "build": {
+    "game_version": "1.19.0.6",
+    "executable_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+    "decision_source_revision": "major-decision-found-kingdom-1.19.0.6-source-freeze-v1@a33bf13a",
+    "semantic_core_commit": "efaf97ae8e0b88af330d3409a59f869792022b70"
+  },
+  "transaction": [
+    "capture_paused_application_main_frame",
+    "resolve_played_character_each_sample",
+    "resolve_decision_database_each_sample",
+    "lookup_found_kingdom_decision_each_sample",
+    "evaluate_three_eligibility_groups_each_sample",
+    "evaluate_dynamic_four_resource_cost_each_sample",
+    "evaluate_affordability_each_sample",
+    "evaluate_can_take_each_sample",
+    "require_equal_value_samples_and_equal_frame",
+    "feed_major_decision_found_kingdom_observer_v1"
+  ],
+  "definition_binding": {
+    "decision_id": "found_kingdom_decision",
+    "decision_block_sha256": "4AA72233FD9266CD36C18DF10E9DBFC21B967003201F61B575C687FAA380C7DF",
+    "decision_database_identity_round_trip": true,
+    "definition_identity_round_trip": true,
+    "definition_source_fingerprint_round_trip": true
+  },
+  "evaluated_fields": {
+    "eligibility": [
+      "is_shown",
+      "is_valid",
+      "is_valid_showing_failures_only"
+    ],
+    "cost_q100000": [
+      "gold",
+      "treasury",
+      "prestige",
+      "piety"
+    ],
+    "final": [
+      "is_affordable",
+      "can_take"
+    ],
+    "unknown_only_permitted": false,
+    "false_is_a_valid_observation": true
+  },
+  "boundary": {
+    "private_unregistered": true,
+    "read_only": true,
+    "no_native_pointer_cache": true,
+    "no_effect_callback": true,
+    "effect_preview_provided": false,
+    "decision_execution_permitted": false,
+    "shared_bridge_changed": false,
+    "public_schema_changed": false,
+    "cmake_changed": false,
+    "mcp_changed": false,
+    "ck3_launched": false,
+    "shared_glue_required": true,
+    "live_validation_required": true
+  }
+}

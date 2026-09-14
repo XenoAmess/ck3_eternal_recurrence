@@ -1,0 +1,46 @@
+{
+  "schema_version": 1,
+  "artifact_id": "major_decision_found_kingdom_source_adapter_v1_stable_fixture",
+  "mode": "offline-fixture",
+  "build": "1.19.0.6",
+  "frame": {
+    "snapshot_revision": 901,
+    "native_revision": 19006,
+    "proof_epoch": 44,
+    "date_raw": 56000000,
+    "played_character_id": 32904,
+    "paused": true,
+    "map_ready": true
+  },
+  "database": {
+    "identity": 71,
+    "generation": 5,
+    "identity_round_trip": true
+  },
+  "definition": {
+    "decision_id": "found_kingdom_decision",
+    "identity": 81,
+    "generation": 6,
+    "identity_round_trip": true,
+    "source_block_sha256_round_trip": true
+  },
+  "first_sample": {
+    "is_shown": true,
+    "is_valid": true,
+    "is_valid_showing_failures_only": true,
+    "cost_q100000": {
+      "gold": 0,
+      "treasury": 30000000,
+      "prestige": 50000000,
+      "piety": 20000000
+    },
+    "is_affordable": true,
+    "can_take": true
+  },
+  "second_sample": "identical_to_first_sample",
+  "effect_preview": {
+    "state": "unavailable",
+    "reason": "effect_preview_not_provided",
+    "executable": false
+  }
+}
