@@ -291,7 +291,33 @@ flowchart LR
 
 同帧 join 必须复用现有私有 observer admission 的 `proof_epoch`、`snapshot_revision`、`date_raw`、`player_character_id` 四键，并在发布前同时要求：captured row count 等于 campaign-root count；每个 row 的 `CFaction+0x40` 都解析并 round-trip 为 admitted player；合法零 count 对应空 rows。仅凭两个采样“日期相同”不够。
 
-当前 readiness 边界为：`target_character_getter_source_ready=true`、`campaign_root_count_equivalence_source_ready=true`、`same_frame_join_contract_ready=true`；`private_target_and_count_observer_ready=false`、`paused_live_equivalence_artifact_ready=false`、`member_identity_ready=false`、`public_targeting_rows_ready=false`。唯一下一实现入口是 `extend_faction_targeting_row_observer_v1_with_resolved_target_identity_and_campaign_root_count_same_admission_gate`。地址、哈希和断言由 `faction_target_character_count_equivalence_v1_source_contract.py` 与同名 ABI/fixture 固定。
+> Historical FACTION3 boundary (superseded by FACTION4 below): 当前 readiness 边界为：`target_character_getter_source_ready=true`、`campaign_root_count_equivalence_source_ready=true`、`same_frame_join_contract_ready=true`；`private_target_and_count_observer_ready=false`、`paused_live_equivalence_artifact_ready=false`、`member_identity_ready=false`、`public_targeting_rows_ready=false`。唯一下一实现入口是 `extend_faction_targeting_row_observer_v1_with_resolved_target_identity_and_campaign_root_count_same_admission_gate`。地址、哈希和断言由 `faction_target_character_count_equivalence_v1_source_contract.py` 与同名 ABI/fixture 固定。
+
+### FACTION4-CORE: private target identity and count join
+
+FACTION4 consumes the FACTION3 source seam without changing any public MCP or
+schema. `FactionTargetingRowCaptureAdmissionV1` now carries the campaign-root
+`player_targeting_faction_count` beside `proof_epoch`, `snapshot_revision`,
+`date_raw`, and `player_character_id`. A capture is accepted only when that
+non-negative count equals the `FactionsWindow+0x144` row count before any
+publication, and the second admission repeats every join value.
+
+For each inline `0x18` row, the observer resolves the faction identity, checks
+the `CFaction+0x10` round-trip, reads the target CharacterID at `CFaction+0x40`,
+resolves it through exact-build `0x82B270`, checks `CCharacter+0x18`, and
+requires the result to equal the admitted player. It repeats faction/target
+resolution for the second span copy, then publishes owned `(faction_id,
+target_character_id)` pairs sorted by faction identity together with the
+campaign-root count. A target/count mismatch retains the previous generation
+and increments a dedicated counter and failure bit.
+
+The deterministic capture fixture proves two rows `[7,42]`, target identities
+`[29829,29829]`, and campaign-root count `2`; the observer/source contracts and
+MSVC `/W4 /WX` test are GREEN. This is
+`static-ready-private-target-count-pending-paused-live`: paused exact-build live
+equivalence, member vectors, type, war, power/discontent, and public
+query/readiness remain open. The unique next reverse-engineering entry is
+`faction_leader_and_character_member_vector_semantics`.
 
 ### FACTION-OBS1：逐派系与成员观测
 

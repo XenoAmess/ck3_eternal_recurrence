@@ -1,7 +1,7 @@
 {
   "contract": "g2-faction-targeting-row-observer-v1",
   "schema_version": 1,
-  "status": "static-ready-pending-paused-live-capture",
+  "status": "static-ready-private-target-count-pending-paused-live",
   "exact_build": {
     "product_version": "1.19.0.6",
     "executable_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
@@ -66,13 +66,16 @@
       "admission before the first targeting-state read",
       "current thread equals application-main thread",
       "paused proof",
+      "captured row count equals admitted campaign-root player_targeting_faction_count",
       "two equal container data/count snapshots",
-      "two equal faction-id copies from inline 0x18-byte rows",
-      "equal proof epoch, revision, date and player identity after the second copy",
+      "two equal faction-id and target-character-id copies from inline 0x18-byte rows",
+      "equal proof epoch, revision, date, player identity and campaign-root targeting count after the second copy",
       "every faction id resolves and round-trips",
+      "every target CharacterID resolves and full-generation round-trips",
+      "every target CharacterID equals the admitted player identity",
       "faction identities are unique"
     ],
-    "publication": "owned sorted faction ids are published with an odd/even generation; any failure retains the previous generation"
+    "publication": "owned faction/target-character identity pairs sorted by faction id plus the admitted campaign-root count are published with an odd/even generation; any failure retains the previous generation"
   },
   "pointer_boundary": {
     "raw_pointer_fields_persisted": false,
@@ -85,9 +88,10 @@
     "stable_faction_identity_ready": true,
     "same_frame_capture_core_ready": true,
     "paused_live_artifact_ready": false,
-    "campaign_root_count_equivalence_ready": false,
-    "target_character_identity_ready": false,
-    "public_targeting_rows_ready": false
+    "campaign_root_count_equivalence_ready": true,
+    "target_character_identity_ready": true,
+    "public_targeting_rows_ready": false,
+    "private_target_and_count_observer_ready": true
   },
   "scope": {
     "private_build_only": true,
@@ -96,6 +100,26 @@
     "public_capability_changed": false,
     "ck3_started": false
   },
-  "unique_next_reverse_engineering_entry": "faction_item_target_character_getter_and_campaign_root_count_equivalence",
-  "evidence_limit": "The exact GUI targeting span and FactionItem full-generation faction identity round-trip are closed. The row target-character getter and equivalence to campaign-root land_state+0x12C remain unresolved, so this private observer is not wired into the public faction-alert query."
+  "unique_next_reverse_engineering_entry": "faction_leader_and_character_member_vector_semantics",
+  "evidence_limit": "FACTION4-CORE implements the private/default-off same-admission target CharacterID and campaign-root count gates with deterministic fixtures. Paused live capture, member vectors, type, war, power/discontent and public MCP/schema promotion remain unproven.",
+  "implementation_revision": "FACTION4-CORE",
+  "target_character_identity": {
+    "source_contract": "faction_target_character_count_equivalence_v1",
+    "faction_target_character_id_offset": "0x40",
+    "character_identity_resolver_rva": "0x82B270",
+    "resolved_character_round_trip_offset": "0x18",
+    "round_trip_required": true,
+    "target_must_equal_admitted_player_character_id": true
+  },
+  "same_admission_join": {
+    "join_keys": [
+      "proof_epoch",
+      "snapshot_revision",
+      "date_raw",
+      "player_character_id"
+    ],
+    "admitted_campaign_root_field": "player_targeting_faction_count",
+    "count_gate": "FactionsWindow+0x144 row count equals admitted campaign-root count",
+    "target_gate": "every resolved CFaction+0x40 CharacterID equals admitted player_character_id"
+  }
 }

@@ -21,7 +21,7 @@ inline constexpr std::string_view
         "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86";
 inline constexpr std::string_view
     kFactionTargetingRowObserverNextReverseEngineeringEntryV1 =
-        "faction_item_target_character_getter_and_campaign_root_count_equivalence";
+        "faction_leader_and_character_member_vector_semantics";
 
 inline constexpr std::uintptr_t kFactionTargetingRowObserverPatchRvaV1 =
     0x1395F0E;
@@ -30,6 +30,8 @@ inline constexpr std::uintptr_t kFactionTargetingRowObserverContinueRvaV1 =
 inline constexpr std::uintptr_t kFactionTargetingRowGetterRvaV1 = 0xF6F790;
 inline constexpr std::uintptr_t kFactionTargetingIdentityResolverRvaV1 =
     0xE6F440;
+inline constexpr std::uintptr_t
+    kFactionTargetingCharacterIdentityResolverRvaV1 = 0x82B270;
 inline constexpr std::size_t kFactionTargetingRowObserverPatchBytesV1 = 15;
 inline constexpr std::size_t kFactionTargetingRowObserverStubCapacityV1 = 192;
 inline constexpr std::size_t kFactionTargetingRowStrideV1 = 0x18;
@@ -50,6 +52,8 @@ enum FactionTargetingRowObserverFailureV1 : std::uint32_t {
   faction_targeting_row_observer_failure_flush = 1U << 9,
   faction_targeting_row_observer_failure_rollback = 1U << 10,
   faction_targeting_row_observer_failure_identity_resolver = 1U << 11,
+  faction_targeting_row_observer_failure_target_character = 1U << 12,
+  faction_targeting_row_observer_failure_count_equivalence = 1U << 13,
 };
 
 struct FactionTargetingRowCaptureAdmissionV1 {
@@ -59,6 +63,7 @@ struct FactionTargetingRowCaptureAdmissionV1 {
   std::uint64_t snapshot_revision = 0;
   std::int32_t date_raw = 0;
   std::uint32_t player_character_id = 0;
+  std::int32_t player_targeting_faction_count = -1;
 };
 
 using FactionTargetingRowCaptureAdmissionProbeV1 = bool (*)(
@@ -73,6 +78,9 @@ using FactionTargetingRowMemoryWriteV1 = bool (*)(
 using FactionTargetingRowIdentityResolverOverrideV1 = bool (*)(
     void *context, std::uint32_t faction_id,
     std::uintptr_t &resolved_faction) noexcept;
+using FactionTargetingRowCharacterIdentityResolverOverrideV1 = bool (*)(
+    void *context, std::uint32_t character_id,
+    std::uintptr_t &resolved_character) noexcept;
 using FactionTargetingRowVirtualAllocV1 = void *(*)(
     void *context, std::size_t size, DWORD allocation_type,
     DWORD protection) noexcept;
@@ -94,6 +102,7 @@ struct FactionTargetingRowObserverEnvironmentV1 {
   std::uintptr_t continue_target_override = 0;
   std::uintptr_t original_getter_target_override = 0;
   std::uintptr_t identity_resolver_target_override = 0;
+  std::uintptr_t character_identity_resolver_target_override = 0;
   void *memory_context = nullptr;
   FactionTargetingRowMemoryReadV1 memory_read_override = nullptr;
   FactionTargetingRowMemoryWriteV1 memory_write_override = nullptr;
@@ -107,6 +116,9 @@ struct FactionTargetingRowObserverEnvironmentV1 {
   void *identity_resolver_context = nullptr;
   FactionTargetingRowIdentityResolverOverrideV1
       identity_resolver_override = nullptr;
+  void *character_identity_resolver_context = nullptr;
+  FactionTargetingRowCharacterIdentityResolverOverrideV1
+      character_identity_resolver_override = nullptr;
 };
 
 struct FactionTargetingRowObservationV1 {
@@ -117,16 +129,22 @@ struct FactionTargetingRowObservationV1 {
   std::atomic<std::uint64_t> span_read_failure_count{0};
   std::atomic<std::uint64_t> span_stability_failure_count{0};
   std::atomic<std::uint64_t> identity_failure_count{0};
+  std::atomic<std::uint64_t> target_character_failure_count{0};
+  std::atomic<std::uint64_t> count_equivalence_failure_count{0};
   std::atomic<std::uint64_t> accepted_capture_count{0};
   std::atomic<std::uint64_t> published_generation{0};
   std::atomic<std::uint64_t> last_proof_epoch{0};
   std::atomic<std::uint64_t> last_snapshot_revision{0};
   std::atomic<std::int32_t> last_date_raw{0};
   std::atomic<std::uint32_t> last_player_character_id{0};
+  std::atomic<std::int32_t> last_campaign_root_targeting_faction_count{-1};
   std::atomic<std::uint32_t> last_faction_count{0};
   std::array<std::atomic<std::uint32_t>,
              kFactionTargetingRowObserverMaximumRowsV1>
       last_faction_ids{};
+  std::array<std::atomic<std::uint32_t>,
+             kFactionTargetingRowObserverMaximumRowsV1>
+      last_target_character_ids{};
   std::atomic<std::uint32_t> last_thread_id{0};
   std::atomic<std::uint64_t> last_timestamp_qpc{0};
 };
@@ -143,6 +161,7 @@ struct FactionTargetingRowObserverStateV1 {
   std::uintptr_t continue_target = 0;
   std::uintptr_t original_getter_target = 0;
   std::uintptr_t identity_resolver_target = 0;
+  std::uintptr_t character_identity_resolver_target = 0;
   void *stub = nullptr;
   std::array<std::uint8_t, kFactionTargetingRowObserverPatchBytesV1>
       original_patch_bytes{};
@@ -159,6 +178,9 @@ struct FactionTargetingRowObserverStateV1 {
   void *identity_resolver_context = nullptr;
   FactionTargetingRowIdentityResolverOverrideV1
       identity_resolver_override = nullptr;
+  void *character_identity_resolver_context = nullptr;
+  FactionTargetingRowCharacterIdentityResolverOverrideV1
+      character_identity_resolver_override = nullptr;
 };
 
 struct FactionTargetingRowObservationDiagnosticsV1 {
@@ -169,15 +191,20 @@ struct FactionTargetingRowObservationDiagnosticsV1 {
   std::uint64_t span_read_failure_count = 0;
   std::uint64_t span_stability_failure_count = 0;
   std::uint64_t identity_failure_count = 0;
+  std::uint64_t target_character_failure_count = 0;
+  std::uint64_t count_equivalence_failure_count = 0;
   std::uint64_t accepted_capture_count = 0;
   std::uint64_t published_generation = 0;
   std::uint64_t last_proof_epoch = 0;
   std::uint64_t last_snapshot_revision = 0;
   std::int32_t last_date_raw = 0;
   std::uint32_t last_player_character_id = 0;
+  std::int32_t last_campaign_root_targeting_faction_count = -1;
   std::uint32_t last_faction_count = 0;
   std::array<std::uint32_t, kFactionTargetingRowObserverMaximumRowsV1>
       last_faction_ids{};
+  std::array<std::uint32_t, kFactionTargetingRowObserverMaximumRowsV1>
+      last_target_character_ids{};
   std::uint32_t last_thread_id = 0;
   std::uint64_t last_timestamp_qpc = 0;
 };

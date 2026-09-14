@@ -102,23 +102,49 @@ bool FixtureFlush(void *, const void *, std::size_t) noexcept {
 struct ResolvedFactionFixture {
   std::array<std::uint8_t, 0x10> prefix{};
   std::uint32_t faction_id = 0;
+  std::array<std::uint8_t, 0x2C> between_identity_and_target{};
+  std::uint32_t target_character_id = 0;
 };
 
 static_assert(offsetof(ResolvedFactionFixture, faction_id) == 0x10);
+static_assert(offsetof(ResolvedFactionFixture, target_character_id) == 0x40);
+
+struct ResolvedCharacterFixture {
+  std::array<std::uint8_t, 0x18> prefix{};
+  std::uint32_t character_id = 0;
+};
+
+static_assert(offsetof(ResolvedCharacterFixture, character_id) == 0x18);
 
 struct ResolverFixture {
   std::array<ResolvedFactionFixture, 3> factions{};
-  bool fail = false;
+  std::array<ResolvedCharacterFixture, 3> characters{};
+  bool fail_faction = false;
+  bool fail_character = false;
 };
 
-bool ResolveIdentity(void *context, std::uint32_t faction_id,
-                     std::uintptr_t &resolved) noexcept {
+bool ResolveFactionIdentity(void *context, std::uint32_t faction_id,
+                            std::uintptr_t &resolved) noexcept {
   auto &fixture = *static_cast<ResolverFixture *>(context);
   resolved = 0;
-  if (fixture.fail) return false;
+  if (fixture.fail_faction) return false;
   for (auto &faction : fixture.factions) {
     if (faction.faction_id == faction_id) {
       resolved = reinterpret_cast<std::uintptr_t>(&faction);
+      return true;
+    }
+  }
+  return false;
+}
+
+bool ResolveCharacterIdentity(void *context, std::uint32_t character_id,
+                              std::uintptr_t &resolved) noexcept {
+  auto &fixture = *static_cast<ResolverFixture *>(context);
+  resolved = 0;
+  if (fixture.fail_character) return false;
+  for (auto &character : fixture.characters) {
+    if (character.character_id == character_id) {
+      resolved = reinterpret_cast<std::uintptr_t>(&character);
       return true;
     }
   }
@@ -142,6 +168,8 @@ FactionTargetingRowObserverEnvironmentV1 Environment(
                                        memory.target.size());
   environment.original_getter_target_override = 0x123456789ABCDEF0ULL;
   environment.identity_resolver_target_override = 0x0FEDCBA987654321ULL;
+  environment.character_identity_resolver_target_override =
+      0x1020304050607080ULL;
   environment.memory_context = &memory;
   environment.memory_read_override = &FixtureRead;
   environment.memory_write_override = &FixtureWrite;
@@ -152,7 +180,10 @@ FactionTargetingRowObserverEnvironmentV1 Environment(
   environment.capture_admission_context = &admission;
   environment.capture_admission_probe = &ReadAdmission;
   environment.identity_resolver_context = &resolver;
-  environment.identity_resolver_override = &ResolveIdentity;
+  environment.identity_resolver_override = &ResolveFactionIdentity;
+  environment.character_identity_resolver_context = &resolver;
+  environment.character_identity_resolver_override =
+      &ResolveCharacterIdentity;
   return environment;
 }
 
@@ -199,10 +230,13 @@ void TestDefaultOffAndExactHashGuard() {
 std::string TestAdmissionBeforeReadAndStableIdentityCapture() {
   FixtureMemory memory{};
   AdmissionFixture admission{};
-  admission.value = {77, true, 42, 412, 777, 29829};
+  admission.value = {77, true, 42, 412, 777, 29829, 2};
   ResolverFixture resolver{};
   resolver.factions[0].faction_id = 42;
+  resolver.factions[0].target_character_id = 29829;
   resolver.factions[1].faction_id = 7;
+  resolver.factions[1].target_character_id = 29829;
+  resolver.characters[0].character_id = 29829;
   FactionTargetingRowObserverStateV1 state{};
   const auto environment = Environment(memory, admission, resolver);
   assert(xar::bridge::InstallFactionTargetingRowObserverV1(state,
@@ -211,6 +245,8 @@ std::string TestAdmissionBeforeReadAndStableIdentityCapture() {
   assert(ContainsU64(memory.stub,
                      environment.original_getter_target_override));
   assert(ContainsU64(memory.stub, environment.continue_target_override));
+  assert(state.character_identity_resolver_target ==
+         environment.character_identity_resolver_target_override);
 
   const auto reads_after_install = memory.read_count;
   assert(!xar::bridge::CaptureFactionTargetingRowsV1(state, 1, 76, 1000));
@@ -238,13 +274,24 @@ std::string TestAdmissionBeforeReadAndStableIdentityCapture() {
   assert(capture.last_snapshot_revision == 412);
   assert(capture.last_date_raw == 777);
   assert(capture.last_player_character_id == 29829);
+  assert(capture.last_campaign_root_targeting_faction_count == 2);
   assert(capture.last_faction_count == 2);
   assert(capture.last_faction_ids[0] == 7);
   assert(capture.last_faction_ids[1] == 42);
+  assert(capture.last_target_character_ids[0] == 29829);
+  assert(capture.last_target_character_ids[1] == 29829);
 
   const std::string serialized =
       xar::bridge::SerializeFactionTargetingRowObserverV1(diagnostics);
   assert(serialized.find("\"faction_ids\":[7,42]") != std::string::npos);
+  assert(serialized.find("\"target_character_ids\":[29829,29829]") !=
+         std::string::npos);
+  assert(serialized.find(
+             "\"campaign_root_targeting_faction_count\":2") !=
+         std::string::npos);
+  assert(serialized.find(
+             "\"campaign_root_count_equivalence\":true") !=
+         std::string::npos);
   assert(serialized.find("\"raw_pointer_fields_persisted\":false") !=
          std::string::npos);
   assert(serialized.find("\"raw_row_bytes_persisted\":false") !=
@@ -264,9 +311,11 @@ std::string TestAdmissionBeforeReadAndStableIdentityCapture() {
 void TestTransactionalRejectionKeepsPreviousGeneration() {
   FixtureMemory memory{};
   AdmissionFixture admission{};
-  admission.value = {12, true, 9, 99, 1234, 29829};
+  admission.value = {12, true, 9, 99, 1234, 29829, 1};
   ResolverFixture resolver{};
   resolver.factions[0].faction_id = 11;
+  resolver.factions[0].target_character_id = 29829;
+  resolver.characters[0].character_id = 29829;
   FactionTargetingRowObserverStateV1 state{};
   assert(xar::bridge::InstallFactionTargetingRowObserverV1(
       state, Environment(memory, admission, resolver)));
@@ -280,7 +329,7 @@ void TestTransactionalRejectionKeepsPreviousGeneration() {
       xar::bridge::ReadFactionTargetingRowObserverDiagnosticsV1(state);
   assert(before.observation.published_generation == 2);
 
-  resolver.fail = true;
+  resolver.fail_faction = true;
   assert(!xar::bridge::CaptureFactionTargetingRowsV1(
       state, reinterpret_cast<std::uintptr_t>(&container), 12, 2001));
   auto after =
@@ -288,7 +337,7 @@ void TestTransactionalRejectionKeepsPreviousGeneration() {
   assert(after.observation.published_generation == 2);
   assert(after.observation.last_faction_ids[0] == 11);
 
-  resolver.fail = false;
+  resolver.fail_faction = false;
   admission.calls = 0;
   admission.drift_on_second = true;
   assert(!xar::bridge::CaptureFactionTargetingRowsV1(
@@ -297,11 +346,36 @@ void TestTransactionalRejectionKeepsPreviousGeneration() {
   assert(after.observation.published_generation == 2);
   assert(after.observation.rejected_state_change_count == 1);
 
+  admission.calls = 0;
+  admission.drift_on_second = false;
+  admission.value.player_targeting_faction_count = 2;
+  assert(!xar::bridge::CaptureFactionTargetingRowsV1(
+      state, reinterpret_cast<std::uintptr_t>(&container), 12, 2003));
+  after = xar::bridge::ReadFactionTargetingRowObserverDiagnosticsV1(state);
+  assert(after.observation.published_generation == 2);
+  assert(after.observation.count_equivalence_failure_count == 1);
+  assert((after.failure_flags &
+          xar::bridge::faction_targeting_row_observer_failure_count_equivalence) !=
+         0);
+
+  admission.value.player_targeting_faction_count = 1;
+  resolver.factions[0].target_character_id = 29999;
+  resolver.characters[1].character_id = 29999;
+  admission.calls = 0;
+  assert(!xar::bridge::CaptureFactionTargetingRowsV1(
+      state, reinterpret_cast<std::uintptr_t>(&container), 12, 2004));
+  after = xar::bridge::ReadFactionTargetingRowObserverDiagnosticsV1(state);
+  assert(after.observation.published_generation == 2);
+  assert(after.observation.target_character_failure_count == 1);
+  assert((after.failure_flags &
+          xar::bridge::faction_targeting_row_observer_failure_target_character) !=
+         0);
+
   TargetingContainerFixture oversized{0, 0, 65};
   admission.calls = 0;
   admission.drift_on_second = false;
   assert(!xar::bridge::CaptureFactionTargetingRowsV1(
-      state, reinterpret_cast<std::uintptr_t>(&oversized), 12, 2003));
+      state, reinterpret_cast<std::uintptr_t>(&oversized), 12, 2005));
   after = xar::bridge::ReadFactionTargetingRowObserverDiagnosticsV1(state);
   assert(after.observation.published_generation == 2);
   assert(after.observation.span_read_failure_count == 1);

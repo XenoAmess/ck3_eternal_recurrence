@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Verify FACTION2-CORE's exact targeting-span and identity evidence."""
+"""Verify FACTION4-CORE's private target/count observer contract."""
 
 from __future__ import annotations
 
@@ -105,9 +105,29 @@ def check(root: Path, *, ck3_root: Path | None = None) -> None:
             / "research/fixtures/faction_targeting_row_observer_v1_capture_fixture.json"
         ).read_text(encoding="utf-8")
     )
+    source_evidence = json.loads(
+        (
+            native
+            / "research/fixtures/faction_target_character_count_equivalence_v1_source_contract.json"
+        ).read_text(encoding="utf-8")
+    )
 
     _require(abi["schema_version"] == 1, "ABI schema drifted")
     _require(contract["schema_version"] == 1, "source contract schema drifted")
+    _require(
+        abi["status"]
+        == contract["status"]
+        == "static-ready-private-target-count-pending-paused-live",
+        "FACTION4 private observer status drifted",
+    )
+    _require(
+        source_evidence["readiness"]["target_character_getter_source_ready"]
+        and source_evidence["readiness"][
+            "campaign_root_count_equivalence_source_ready"
+        ]
+        and source_evidence["readiness"]["same_frame_join_contract_ready"],
+        "FACTION3 source evidence was demoted",
+    )
     for token in contract["required_header_tokens"]:
         _require(token in header, f"missing header token: {token}")
     for token in contract["required_implementation_tokens"]:
@@ -120,9 +140,19 @@ def check(root: Path, *, ck3_root: Path | None = None) -> None:
         "private/default-off boundary drifted",
     )
     _require(
-        abi["readiness"]["campaign_root_count_equivalence_ready"] is False
-        and abi["readiness"]["target_character_identity_ready"] is False,
-        "unresolved public join was promoted without evidence",
+        abi["readiness"]["campaign_root_count_equivalence_ready"] is True
+        and abi["readiness"]["target_character_identity_ready"] is True
+        and abi["readiness"]["private_target_and_count_observer_ready"] is True
+        and abi["readiness"]["paused_live_artifact_ready"] is False
+        and abi["readiness"]["public_targeting_rows_ready"] is False,
+        "private target/count readiness boundary drifted",
+    )
+    _require(
+        contract["campaign_root_count_equivalence_ready"] is True
+        and contract["target_character_identity_ready"] is True
+        and contract["private_target_and_count_observer_ready"] is True
+        and contract["paused_live_equivalence_artifact_ready"] is False,
+        "source-contract readiness boundary drifted",
     )
     _require(
         abi["targeting_span"]["row_stride"] == 0x18
@@ -136,14 +166,21 @@ def check(root: Path, *, ck3_root: Path | None = None) -> None:
         "next reverse-engineering seam drifted",
     )
     _require(
-        capture["status"] == "fixture-captured-private-stable-identities"
+        capture["status"]
+        == "fixture-captured-private-target-and-count-equivalent"
         and capture["offline_fixture"] is True,
         "offline fixture status drifted",
     )
     _require(
         capture["capture"]["faction_ids"] == [7, 42]
+        and capture["capture"]["target_character_ids"] == [29829, 29829]
+        and capture["capture"]["player_character_id"] == 29829
+        and capture["capture"]["campaign_root_targeting_faction_count"] == 2
+        and capture["capture"]["faction_count"] == 2
+        and capture["readiness"]["target_character_identity"] is True
+        and capture["readiness"]["campaign_root_count_equivalence"] is True
         and capture["readiness"]["public_targeting_rows"] is False,
-        "fixture identity/public boundary drifted",
+        "fixture target/count/public boundary drifted",
     )
     _require(
         capture["raw_pointer_fields_persisted"] is False
@@ -241,6 +278,18 @@ def check(root: Path, *, ck3_root: Path | None = None) -> None:
         _at(image, sections, 0xE6F44C, 2) == bytes.fromhex("8B11")
         and _at(image, sections, 0xE6F46C, 3) == bytes.fromhex("395010"),
         "FactionItem full-generation identity round-trip drifted",
+    )
+    _require(
+        _at(image, sections, 0x19D82C0, 6)
+        == bytes.fromhex("443940107407")
+        and _at(image, sections, 0x19D82CD, 16)
+        == bytes.fromhex("8B404048894208488BC2C70204000000"),
+        "CFaction target CharacterID projection drifted",
+    )
+    _require(
+        _at(image, sections, 0x82B27C, 2) == bytes.fromhex("8B11")
+        and _at(image, sections, 0x82B29C, 3) == bytes.fromhex("395018"),
+        "Character full-generation identity round-trip drifted",
     )
 
     for span in contract["native_spans"]:

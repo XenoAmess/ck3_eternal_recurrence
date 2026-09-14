@@ -25,6 +25,11 @@ struct TargetingContainerHeaderV1 {
   std::int32_t count = 0;
 };
 
+struct ResolvedTargetingRowV1 {
+  std::uint32_t faction_id = 0;
+  std::uint32_t target_character_id = 0;
+};
+
 void AddFailure(FactionTargetingRowObserverStateV1 &state,
                 FactionTargetingRowObserverFailureV1 failure) noexcept {
   state.failure_flags.fetch_or(static_cast<std::uint32_t>(failure),
@@ -288,7 +293,9 @@ bool SameAdmission(const FactionTargetingRowCaptureAdmissionV1 &first,
       first.proof_epoch == second.proof_epoch &&
       first.snapshot_revision == second.snapshot_revision &&
       first.date_raw == second.date_raw &&
-      first.player_character_id == second.player_character_id;
+      first.player_character_id == second.player_character_id &&
+      first.player_targeting_faction_count ==
+          second.player_targeting_faction_count;
 }
 
 bool ReadContainer(
@@ -312,31 +319,83 @@ bool ReadContainer(
               (count - 1) * kFactionTargetingRowStrideV1;
 }
 
-bool ResolveIdentity(FactionTargetingRowObserverStateV1 &state,
-                     std::uintptr_t row_address,
-                     std::uint32_t &faction_id) noexcept {
-  faction_id = 0;
-  if (!ReadMemory(state, row_address, &faction_id, sizeof(faction_id)) ||
-      faction_id == 0) {
-    return false;
+enum class ResolveRowIdentityResultV1 {
+  success,
+  faction_identity_failed,
+  target_character_failed,
+};
+
+ResolveRowIdentityResultV1 ResolveRowIdentity(
+    FactionTargetingRowObserverStateV1 &state,
+    std::uintptr_t row_address, std::uint32_t admitted_player_character_id,
+    ResolvedTargetingRowV1 &output) noexcept {
+  output = {};
+  if (!ReadMemory(state, row_address, &output.faction_id,
+                  sizeof(output.faction_id)) ||
+      output.faction_id == 0) {
+    return ResolveRowIdentityResultV1::faction_identity_failed;
   }
-  std::uintptr_t resolved = 0;
+  std::uintptr_t resolved_faction = 0;
   if (state.identity_resolver_override != nullptr) {
     if (!state.identity_resolver_override(state.identity_resolver_context,
-                                          faction_id, resolved)) {
-      return false;
+                                          output.faction_id,
+                                          resolved_faction)) {
+      return ResolveRowIdentityResultV1::faction_identity_failed;
     }
   } else {
     using Resolver = void *(*)(const std::uint32_t *) noexcept;
-    if (state.identity_resolver_target == 0) return false;
+    if (state.identity_resolver_target == 0) {
+      return ResolveRowIdentityResultV1::faction_identity_failed;
+    }
     const auto resolver =
         reinterpret_cast<Resolver>(state.identity_resolver_target);
-    resolved = reinterpret_cast<std::uintptr_t>(resolver(&faction_id));
+    resolved_faction = reinterpret_cast<std::uintptr_t>(
+        resolver(&output.faction_id));
   }
-  std::uint32_t round_trip = 0;
-  return resolved != 0 &&
-      ReadMemory(state, resolved + 0x10, &round_trip, sizeof(round_trip)) &&
-      round_trip == faction_id;
+  std::uint32_t faction_round_trip = 0;
+  if (resolved_faction == 0 ||
+      resolved_faction >
+          (std::numeric_limits<std::uintptr_t>::max)() - 0x40 ||
+      !ReadMemory(state, resolved_faction + 0x10, &faction_round_trip,
+                  sizeof(faction_round_trip)) ||
+      faction_round_trip != output.faction_id) {
+    return ResolveRowIdentityResultV1::faction_identity_failed;
+  }
+  if (!ReadMemory(state, resolved_faction + 0x40,
+                  &output.target_character_id,
+                  sizeof(output.target_character_id)) ||
+      output.target_character_id == 0 ||
+      output.target_character_id != admitted_player_character_id) {
+    return ResolveRowIdentityResultV1::target_character_failed;
+  }
+
+  std::uintptr_t resolved_character = 0;
+  if (state.character_identity_resolver_override != nullptr) {
+    if (!state.character_identity_resolver_override(
+            state.character_identity_resolver_context,
+            output.target_character_id, resolved_character)) {
+      return ResolveRowIdentityResultV1::target_character_failed;
+    }
+  } else {
+    using Resolver = void *(*)(const std::uint32_t *) noexcept;
+    if (state.character_identity_resolver_target == 0) {
+      return ResolveRowIdentityResultV1::target_character_failed;
+    }
+    const auto resolver = reinterpret_cast<Resolver>(
+        state.character_identity_resolver_target);
+    resolved_character = reinterpret_cast<std::uintptr_t>(
+        resolver(&output.target_character_id));
+  }
+  std::uint32_t character_round_trip = 0;
+  if (resolved_character == 0 ||
+      resolved_character >
+          (std::numeric_limits<std::uintptr_t>::max)() - 0x18 ||
+      !ReadMemory(state, resolved_character + 0x18, &character_round_trip,
+                  sizeof(character_round_trip)) ||
+      character_round_trip != output.target_character_id) {
+    return ResolveRowIdentityResultV1::target_character_failed;
+  }
+  return ResolveRowIdentityResultV1::success;
 }
 
 void ClearResolved(FactionTargetingRowObserverStateV1 &state) noexcept {
@@ -346,6 +405,7 @@ void ClearResolved(FactionTargetingRowObserverStateV1 &state) noexcept {
   state.continue_target = 0;
   state.original_getter_target = 0;
   state.identity_resolver_target = 0;
+  state.character_identity_resolver_target = 0;
   state.stub = nullptr;
   state.memory_context = nullptr;
   state.memory_read = nullptr;
@@ -357,6 +417,8 @@ void ClearResolved(FactionTargetingRowObserverStateV1 &state) noexcept {
   state.capture_admission_probe = nullptr;
   state.identity_resolver_context = nullptr;
   state.identity_resolver_override = nullptr;
+  state.character_identity_resolver_context = nullptr;
+  state.character_identity_resolver_override = nullptr;
 }
 
 bool ReleaseStub(FactionTargetingRowObserverStateV1 &state) noexcept {
@@ -401,16 +463,35 @@ bool CaptureFactionTargetingRowsV1(
   }
 
   const auto count = static_cast<std::size_t>(first_header.count);
-  std::array<std::uint32_t, kFactionTargetingRowObserverMaximumRowsV1>
-      first_ids{};
+  if (first_admission.player_targeting_faction_count < 0 ||
+      first_admission.player_targeting_faction_count != first_header.count) {
+    observation.count_equivalence_failure_count.fetch_add(
+        1, std::memory_order_relaxed);
+    AddFailure(state,
+               faction_targeting_row_observer_failure_count_equivalence);
+    return false;
+  }
+  std::array<ResolvedTargetingRowV1,
+             kFactionTargetingRowObserverMaximumRowsV1>
+      first_rows{};
   for (std::size_t index = 0; index < count; ++index) {
     const auto row_address =
         first_header.row_data + index * kFactionTargetingRowStrideV1;
-    if (!ResolveIdentity(state, row_address, first_ids[index])) {
+    const auto resolved = ResolveRowIdentity(
+        state, row_address, first_admission.player_character_id,
+        first_rows[index]);
+    if (resolved == ResolveRowIdentityResultV1::faction_identity_failed) {
       observation.identity_failure_count.fetch_add(1,
                                                    std::memory_order_relaxed);
       AddFailure(state,
                  faction_targeting_row_observer_failure_identity_resolver);
+      return false;
+    }
+    if (resolved == ResolveRowIdentityResultV1::target_character_failed) {
+      observation.target_character_failure_count.fetch_add(
+          1, std::memory_order_relaxed);
+      AddFailure(state,
+                 faction_targeting_row_observer_failure_target_character);
       return false;
     }
   }
@@ -426,15 +507,27 @@ bool CaptureFactionTargetingRowsV1(
         1, std::memory_order_relaxed);
     return false;
   }
-  std::array<std::uint32_t, kFactionTargetingRowObserverMaximumRowsV1>
-      second_ids{};
+  std::array<ResolvedTargetingRowV1,
+             kFactionTargetingRowObserverMaximumRowsV1>
+      second_rows{};
   for (std::size_t index = 0; index < count; ++index) {
     const auto row_address =
         second_header.row_data + index * kFactionTargetingRowStrideV1;
-    if (!ReadMemory(state, row_address, &second_ids[index],
-                    sizeof(second_ids[index]))) {
-      observation.span_read_failure_count.fetch_add(1,
-                                                    std::memory_order_relaxed);
+    const auto resolved = ResolveRowIdentity(
+        state, row_address, first_admission.player_character_id,
+        second_rows[index]);
+    if (resolved == ResolveRowIdentityResultV1::faction_identity_failed) {
+      observation.identity_failure_count.fetch_add(1,
+                                                   std::memory_order_relaxed);
+      AddFailure(state,
+                 faction_targeting_row_observer_failure_identity_resolver);
+      return false;
+    }
+    if (resolved == ResolveRowIdentityResultV1::target_character_failed) {
+      observation.target_character_failure_count.fetch_add(
+          1, std::memory_order_relaxed);
+      AddFailure(state,
+                 faction_targeting_row_observer_failure_target_character);
       return false;
     }
   }
@@ -448,18 +541,30 @@ bool CaptureFactionTargetingRowsV1(
     return false;
   }
 
-  const bool same_span = std::equal(first_ids.begin(),
-                                    first_ids.begin() + count,
-                                    second_ids.begin());
+  const bool same_span = std::equal(
+      first_rows.begin(), first_rows.begin() + count, second_rows.begin(),
+      [](const ResolvedTargetingRowV1 &left,
+         const ResolvedTargetingRowV1 &right) {
+        return left.faction_id == right.faction_id &&
+            left.target_character_id == right.target_character_id;
+      });
   if (!same_span) {
     observation.span_stability_failure_count.fetch_add(
         1, std::memory_order_relaxed);
     return false;
   }
 
-  std::sort(first_ids.begin(), first_ids.begin() + count);
-  if (std::adjacent_find(first_ids.begin(), first_ids.begin() + count) !=
-      first_ids.begin() + count) {
+  std::sort(first_rows.begin(), first_rows.begin() + count,
+            [](const ResolvedTargetingRowV1 &left,
+               const ResolvedTargetingRowV1 &right) {
+              return left.faction_id < right.faction_id;
+            });
+  if (std::adjacent_find(
+          first_rows.begin(), first_rows.begin() + count,
+          [](const ResolvedTargetingRowV1 &left,
+             const ResolvedTargetingRowV1 &right) {
+            return left.faction_id == right.faction_id;
+          }) != first_rows.begin() + count) {
     observation.identity_failure_count.fetch_add(1,
                                                  std::memory_order_relaxed);
     return false;
@@ -477,12 +582,17 @@ bool CaptureFactionTargetingRowsV1(
                                   std::memory_order_relaxed);
   observation.last_player_character_id.store(
       first_admission.player_character_id, std::memory_order_relaxed);
+  observation.last_campaign_root_targeting_faction_count.store(
+      first_admission.player_targeting_faction_count,
+      std::memory_order_relaxed);
   observation.last_faction_count.store(static_cast<std::uint32_t>(count),
                                        std::memory_order_relaxed);
   for (std::size_t index = 0;
        index < kFactionTargetingRowObserverMaximumRowsV1; ++index) {
-    observation.last_faction_ids[index].store(first_ids[index],
+    observation.last_faction_ids[index].store(first_rows[index].faction_id,
                                               std::memory_order_relaxed);
+    observation.last_target_character_ids[index].store(
+        first_rows[index].target_character_id, std::memory_order_relaxed);
   }
   observation.last_thread_id.store(current_thread_id,
                                    std::memory_order_relaxed);
@@ -524,13 +634,15 @@ bool InstallFactionTargetingRowObserverV1(
       environment.continue_target_override != 0 ||
       environment.original_getter_target_override != 0 ||
       environment.identity_resolver_target_override != 0 ||
+      environment.character_identity_resolver_target_override != 0 ||
       environment.memory_read_override != nullptr ||
       environment.memory_write_override != nullptr ||
       environment.virtual_alloc_override != nullptr ||
       environment.virtual_free_override != nullptr ||
       environment.virtual_protect_override != nullptr ||
       environment.flush_instruction_cache_override != nullptr ||
-      environment.identity_resolver_override != nullptr;
+      environment.identity_resolver_override != nullptr ||
+      environment.character_identity_resolver_override != nullptr;
   if (has_override && !environment.offline_fixture) {
     AddFailure(state,
                faction_targeting_row_observer_failure_unsupported_override);
@@ -551,6 +663,10 @@ bool InstallFactionTargetingRowObserverV1(
   state.identity_resolver_target = Resolve(
       environment.identity_resolver_target_override, environment.module_base,
       kFactionTargetingIdentityResolverRvaV1);
+  state.character_identity_resolver_target = Resolve(
+      environment.character_identity_resolver_target_override,
+      environment.module_base,
+      kFactionTargetingCharacterIdentityResolverRvaV1);
   state.memory_context = environment.memory_context;
   state.memory_read = environment.memory_read_override != nullptr
       ? environment.memory_read_override
@@ -575,10 +691,15 @@ bool InstallFactionTargetingRowObserverV1(
   state.capture_admission_probe = environment.capture_admission_probe;
   state.identity_resolver_context = environment.identity_resolver_context;
   state.identity_resolver_override = environment.identity_resolver_override;
+  state.character_identity_resolver_context =
+      environment.character_identity_resolver_context;
+  state.character_identity_resolver_override =
+      environment.character_identity_resolver_override;
 
   if (state.patch_target == 0 || state.continue_target == 0 ||
       state.original_getter_target == 0 ||
       state.identity_resolver_target == 0 ||
+      state.character_identity_resolver_target == 0 ||
       !BytesEqual(state, state.patch_target, kPatchAnchor.data(),
                   kPatchAnchor.size())) {
     AddFailure(state, faction_targeting_row_observer_failure_anchor);
@@ -677,6 +798,10 @@ ReadFactionTargetingRowObserverDiagnosticsV1(
       source.span_stability_failure_count.load(std::memory_order_acquire);
   target.identity_failure_count =
       source.identity_failure_count.load(std::memory_order_acquire);
+  target.target_character_failure_count =
+      source.target_character_failure_count.load(std::memory_order_acquire);
+  target.count_equivalence_failure_count =
+      source.count_equivalence_failure_count.load(std::memory_order_acquire);
   target.accepted_capture_count =
       source.accepted_capture_count.load(std::memory_order_acquire);
 
@@ -692,12 +817,18 @@ ReadFactionTargetingRowObserverDiagnosticsV1(
         source.last_date_raw.load(std::memory_order_relaxed);
     target.last_player_character_id =
         source.last_player_character_id.load(std::memory_order_relaxed);
+    target.last_campaign_root_targeting_faction_count =
+        source.last_campaign_root_targeting_faction_count.load(
+            std::memory_order_relaxed);
     target.last_faction_count =
         source.last_faction_count.load(std::memory_order_relaxed);
     for (std::size_t index = 0; index < target.last_faction_ids.size();
          ++index) {
       target.last_faction_ids[index] =
           source.last_faction_ids[index].load(std::memory_order_relaxed);
+      target.last_target_character_ids[index] =
+          source.last_target_character_ids[index].load(
+              std::memory_order_relaxed);
     }
     target.last_thread_id =
         source.last_thread_id.load(std::memory_order_relaxed);
