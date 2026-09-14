@@ -356,6 +356,7 @@ def _run_live(
             poll_interval_seconds=0.05,
             cold_start_checkpoint=False,
             allow_terminal=False,
+            expected_character_id=args.first_character_id,
         )
         before_caps = driver.capabilities()
         values["capabilities_before"] = before_caps

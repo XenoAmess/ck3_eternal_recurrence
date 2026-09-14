@@ -216,3 +216,32 @@ ABI 与证据边界见 `native_bridge/research/steward_develop_county_enumerator
 - **[inference]** “发展一次后轮换”是 completed-task fallback、cooldown 与权重组合的策略解释；scheduler cadence 未闭合，因此不能当 exact 运行时保证。
 - **[unknown]** 完整 task pool 最终抽样、无 target score 的具体 RNG 分布、任务切换 command、取消/重派成本与同帧后置 ABI。
 - **[live pending]** G2-M4-DEV1 没有 paused snapshot；available 只由隔离 source fixture 证明，生产 reader 明确 typed-unavailable，因此不改变 `council-and-development.md` 已有 production-live 状态，也不把 P0 或 M4 标为 complete。
+
+#### DEV3 / 旧轮次 R682：live harness RED，未进入 observer ABI 验收
+
+DEV3 先证明旧轮次 R681 的 campaign-root checkpoint 不在标准 landed council 范围内，无法在“只加载、零 UI”边界触发 `CCouncilWindow` 的 county/value refresh，因此以 no-launch RED 收口。随后 DEV3B 改用已冻结的 R639 标准统治者存档：角色 `29829`，源存档 SHA-256 为 `9104CCB8AE9D5776166FBBAEDA9B43BD08CBAA2CB5C057332EB8B7A1A212CC63`。
+
+旧轮次 R682 在 fixed commit `7429d84a33359eabde8cbd69bbcc474782c1b507` 上直接以 `-loadsave=dev3b_r639` 启动，CK3 PID 为 `163928`，creation time 为 `20260914160709.405754+480`。日志在 `16:10:33` 进入 `Load Save` idler，并在 `16:10:37` 进入 game-state setup。live harness 随后看到首个 `map_ready=true`、`paused=true` 的语义帧，但该帧的 `played_character.character_id` 尚未发布；`NativeHeadlessGameplayDriver` 因而也尚未绑定 `episode_character_id`。旧 harness 仅凭 map-ready 与 paused 就放行到身份断言，得到 `episode_character_id=null` 并触发 RED。
+
+该 RED 的边界如下：
+
+- 它是 **harness readiness RED**，不是 CK3 启动崩溃。停止前受管 Job 仍有一个活动 CK3 进程，`stop_tracked(require_running=True)` 无合同错误；exit code `1` 来自随后受管终止。
+- 没有发出任何 UI 输入，没有推进日期，没有选择或提交 council task；源存档与一次性副本的哈希在停止后均未改变。
+- harness 尚未读取并验证 private observer heartbeat，也没有触发 `0x105629C`；因此 observer 安装状态、row ABI、候选 identity 和 native legality 均不能从本轮判为成功或失败，继续保持 `unknown`。
+- 清理通过：CK3 Job 归零、watchdog absent、控制文件清除，CK3 / injector / watchdog 三路均无残留。
+
+冻结 artifact 位于 `Z:\ck3_mod_rewrite_process_assets\g2-m4-r682-devcounty-observer-r639-7429d84`；artifact manifest SHA-256 为 `9FB6C13F6352BEC9A568D4DFBF60508DFCA727DAD0FFD9D66308AE8A41FC3470`。该目录中的 `red-analysis.json`、`round-metadata.json` 和 `postflight-three-route-zero.json` 分别保存分类、轮次身份与清理证明。不得把本轮 RED 写成 observer ABI RED，也不得据此生成 raw row 映射。
+
+#### DEV4：期望角色绑定成为可复用 live readiness gate
+
+`native_auto_run._wait_for_readiness(...)` 现在接受可选的 `expected_character_id`。已知存档身份且随后会发出 UI 或 gameplay 输入的 live runner 必须传入该值。放行条件同时包括：
+
+1. 原有 native transport、exact-build、mailbox、`map_ready`、`paused` 与 active episode 条件全部满足；
+2. `played_character.character_id` 是有效整数且存活；
+3. projected `episode_character_id` 与 played character 相等；
+4. 两个 ID 都等于调用者冻结的期望角色；
+5. bridge/session/date/run binding 以及 played/episode 两个 ID 在指定 `stable_seconds` 内不变。
+
+已存在的双角色 campaign-root live runner 会把 `first_character_id` 传给该 gate，因此在第一幕查询或角色切换前不会再接受“地图已就绪、角色尚未发布”的过早帧。聚焦回归同时覆盖：旧轮次 R682 的空身份帧会继续等待、错误但稳定的其他角色会超时 RED、非法期望 ID 会在启动动作前拒绝；normal 与 `python -O` 模式均通过。
+
+这次修复只改变 live harness 的放行条件，没有修改 native observer、public steward v1、MCP schema 或 action。下一次另行授权的 live 轮次仍应使用同一冻结 R639 存档；只有在角色 `29829` 的 played/episode 双绑定稳定后，才允许执行一次 Council → steward → `task_develop_county` 目标刷新。

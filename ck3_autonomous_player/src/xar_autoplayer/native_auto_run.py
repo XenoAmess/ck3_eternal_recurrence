@@ -1410,7 +1410,22 @@ def _wait_for_readiness(
     poll_interval_seconds: float,
     cold_start_checkpoint: bool,
     allow_terminal: bool,
+    expected_character_id: int | None = None,
 ) -> dict[str, object]:
+    """Wait for a stable native frame, optionally pinned to one character.
+
+    Callers that will issue UI or gameplay input against a known save must
+    provide ``expected_character_id``.  A map-ready frame can precede the
+    played-character and episode projections during direct load.
+    """
+    if expected_character_id is not None and (
+        isinstance(expected_character_id, bool)
+        or not isinstance(expected_character_id, int)
+        or expected_character_id <= 0
+    ):
+        raise AgentError(
+            "expected readiness character id must be a positive integer"
+        )
     deadline = time.monotonic() + timeout_seconds
     stable_key: tuple[object, ...] | None = None
     stable_since: float | None = None
@@ -1449,6 +1464,7 @@ def _wait_for_readiness(
                 snapshot,
                 cold_start_checkpoint=cold_start_checkpoint,
                 allow_terminal=allow_terminal,
+                expected_character_id=expected_character_id,
             )
             last_reason = reason
             last_observation = observation
@@ -1464,6 +1480,8 @@ def _wait_for_readiness(
                     observation.get("native_revision"),
                     observation.get("date_raw"),
                     observation.get("episode_run_id"),
+                    observation.get("played_character_id"),
+                    observation.get("episode_character_id"),
                 )
                 if key != stable_key:
                     stable_key = key
@@ -1633,6 +1651,7 @@ def _readiness_observation(
     *,
     cold_start_checkpoint: bool,
     allow_terminal: bool,
+    expected_character_id: int | None = None,
 ) -> tuple[bool, str, dict[str, object]]:
     observation = _compact_binding(capabilities, snapshot)
     diagnostics = capabilities.get("diagnostics")
@@ -1755,6 +1774,21 @@ def _readiness_observation(
                         bool,
                     ),
                     "played character id is unavailable",
+                ),
+            ]
+        )
+    if expected_character_id is not None:
+        checks.extend(
+            [
+                (
+                    snapshot.get("episode_character_id")
+                    == expected_character_id,
+                    "episode character does not match expected character",
+                ),
+                (
+                    isinstance(played, dict)
+                    and played.get("character_id") == expected_character_id,
+                    "played character does not match expected character",
                 ),
             ]
         )

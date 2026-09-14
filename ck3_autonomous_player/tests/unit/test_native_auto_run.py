@@ -2121,6 +2121,123 @@ class NativeAutoRunTests(unittest.TestCase):
         self.assertEqual(binding["episode_binding_state"], "active_new")
         self.assertEqual(harness.pump_epochs, 40)
 
+    def test_expected_character_readiness_waits_past_early_map_frame(self) -> None:
+        harness = _NativeAutoRunHarness(
+            self.spec,
+            [],
+            initial_unready_snapshot=False,
+            cold_start=False,
+        )
+        harness.episode_character_id = 29_829
+        harness.played_character_id = 29_829
+        harness.episode_run_id = "native-29829-r682-regression"
+        driver = harness.make_driver(
+            self.config.pipe_name,
+            state_dir=self.spec.state_dir,
+            save_dir=self.spec.profile_dir / "save games",
+            route_contact_timeline_speed=3,
+            allow_route_contact_high_speed_ab=False,
+            allow_stationary_objective_hold_sentinel_canary=False,
+        )
+        original_snapshot = driver.take_snapshot
+        observations: list[dict[str, object]] = []
+
+        def staged_snapshot() -> dict[str, object]:
+            snapshot = original_snapshot()
+            if not observations:
+                snapshot["played_character"] = None
+                snapshot["episode_character_id"] = None
+                snapshot["episode_run_id"] = None
+            observations.append(copy.deepcopy(snapshot))
+            return snapshot
+
+        driver.take_snapshot = staged_snapshot  # type: ignore[method-assign]
+        binding = native_auto_run_module._wait_for_readiness(
+            driver,
+            session_done=threading.Event(),
+            session_state={},
+            timeout_seconds=0.1,
+            stable_seconds=0.005,
+            poll_interval_seconds=0.001,
+            cold_start_checkpoint=False,
+            allow_terminal=False,
+            expected_character_id=29_829,
+        )
+
+        self.assertTrue(observations[0]["map_ready"])
+        self.assertTrue(observations[0]["paused"])
+        self.assertIsNone(observations[0]["played_character"])
+        self.assertIsNone(observations[0]["episode_character_id"])
+        self.assertGreaterEqual(len(observations), 3)
+        self.assertEqual(binding["played_character_id"], 29_829)
+        self.assertEqual(binding["episode_character_id"], 29_829)
+
+    def test_expected_character_readiness_rejects_other_stable_character(self) -> None:
+        harness = _NativeAutoRunHarness(
+            self.spec,
+            [],
+            initial_unready_snapshot=False,
+            cold_start=False,
+        )
+        driver = harness.make_driver(
+            self.config.pipe_name,
+            state_dir=self.spec.state_dir,
+            save_dir=self.spec.profile_dir / "save games",
+            route_contact_timeline_speed=3,
+            allow_route_contact_high_speed_ab=False,
+            allow_stationary_objective_hold_sentinel_canary=False,
+        )
+        with self.assertRaises(
+            native_auto_run_module.NativeReadinessTimeoutError
+        ) as caught:
+            native_auto_run_module._wait_for_readiness(
+                driver,
+                session_done=threading.Event(),
+                session_state={},
+                timeout_seconds=0.02,
+                stable_seconds=0.0,
+                poll_interval_seconds=0.001,
+                cold_start_checkpoint=False,
+                allow_terminal=False,
+                expected_character_id=29_829,
+            )
+
+        self.assertIn(
+            "episode character does not match expected character",
+            str(caught.exception),
+        )
+
+    def test_expected_character_readiness_rejects_invalid_id(self) -> None:
+        harness = _NativeAutoRunHarness(
+            self.spec,
+            [],
+            initial_unready_snapshot=False,
+            cold_start=False,
+        )
+        driver = harness.make_driver(
+            self.config.pipe_name,
+            state_dir=self.spec.state_dir,
+            save_dir=self.spec.profile_dir / "save games",
+            route_contact_timeline_speed=3,
+            allow_route_contact_high_speed_ab=False,
+            allow_stationary_objective_hold_sentinel_canary=False,
+        )
+        with self.assertRaisesRegex(
+            AgentError,
+            "expected readiness character id must be a positive integer",
+        ):
+            native_auto_run_module._wait_for_readiness(
+                driver,
+                session_done=threading.Event(),
+                session_state={},
+                timeout_seconds=0.02,
+                stable_seconds=0.0,
+                poll_interval_seconds=0.001,
+                cold_start_checkpoint=False,
+                allow_terminal=False,
+                expected_character_id=0,
+            )
+
     def test_persistent_readiness_unavailable_preserves_diagnostics(self) -> None:
         report, harness = self._run(
             ["advance"],
