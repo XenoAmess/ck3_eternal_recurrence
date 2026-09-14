@@ -1,0 +1,11 @@
+Initial release of Tributary Expansion Directives — 驱策朝贡国.
+
+- Adds a player-only Expansion Directive interaction for direct AI tributaries.
+- Lets the suzerain choose one eligible neighboring foreign county.
+- Charges 150 Prestige for every valid order; Prestige level affects acceptance.
+- Adds an optional war subsidy equal to 12 months of tributary income, clamped to 50–500 Gold and paid only on acceptance.
+- Starts one dedicated county conquest with the tributary as primary attacker.
+- Awards the conquered county to the tributary on victory; white peace and defeat transfer no land.
+- Keeps a five-year per-tributary cooldown after acceptance or valid refusal.
+- Includes English, Simplified Chinese, French, German, Japanese, Korean, Polish, Russian, and Spanish localization.
+- Supports CK3 1.19.0.6 with no DLC or mod dependency.

@@ -1,0 +1,43 @@
+﻿ted_expansion_directive_context_is_valid_trigger = {
+	scope:actor ?= {
+		is_alive = yes
+		is_landed = yes
+		is_ai = no
+	}
+	scope:recipient ?= {
+		is_alive = yes
+		is_landed = yes
+		is_ai = yes
+		is_adult = yes
+		is_imprisoned = no
+		is_at_war = no
+		has_raised_armies = no
+		is_tributary_of = scope:actor
+	}
+	scope:secondary_recipient ?= {
+		is_alive = yes
+		is_landed = yes
+		top_liege = this
+		NOT = { this = scope:actor }
+		NOT = { this = scope:recipient }
+		NOT = { is_tributary_of = scope:actor }
+		in_diplomatic_range = scope:recipient
+	}
+	scope:target ?= {
+		is_title_created = yes
+		is_landless_type_title = no
+		tier = tier_county
+		holder ?= {
+			top_liege = scope:secondary_recipient
+		}
+	}
+	scope:recipient = {
+		any_character_to_title_neighboring_county = {
+			this = scope:target
+		}
+	}
+	trigger_if = {
+		limit = { scope:offer_war_subsidy = yes }
+		scope:actor.gold >= ted_war_subsidy_value
+	}
+}

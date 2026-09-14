@@ -1,0 +1,9 @@
+﻿ted_war_subsidy_value = {
+	value = scope:recipient.monthly_character_income
+	multiply = 12
+	min = 50
+	max = 500
+	divide = 5
+	ceiling = yes
+	multiply = 5
+}

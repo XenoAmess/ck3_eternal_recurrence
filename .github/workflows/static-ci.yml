@@ -45,6 +45,8 @@ jobs:
         run: python tools/test_build_ox_here_release.py
       - name: Test Mandala Purge release tooling
         run: python tools/test_build_remove_mandala_release.py
+      - name: Test Tributary Expansion Directives release tooling
+        run: python tools/test_build_tributary_expansion_directives_release.py
       - name: Test Auto Upgrade Buildings release tooling
         run: python tools/test_build_auto_upgrade_buildings_release.py
       - name: Test machine- and mod-scoped CK3 live-run IDs
@@ -130,6 +132,8 @@ jobs:
         run: |
           python tools/validate_remove_mandala_static.py
           python -m py_compile tools/run_remove_mandala_acceptance.py
+      - name: Validate Tributary Expansion Directives standalone content
+        run: python tools/validate_tributary_expansion_directives_static.py
       - name: Validate Auto Upgrade Buildings standalone content
         run: |
           python tools/gen_auto_upgrade_buildings.py --check
@@ -150,6 +154,8 @@ jobs:
         run: python tools/build_ox_here_release.py --check
       - name: Verify reproducible Mandala Purge release
         run: python tools/build_remove_mandala_release.py --check
+      - name: Verify reproducible Tributary Expansion Directives release
+        run: python tools/build_tributary_expansion_directives_release.py --check
       - name: Verify reproducible Auto Upgrade Buildings release
         run: python tools/build_auto_upgrade_buildings_release.py --check
       - name: Verify reproducible Reclaim the Motherland release
@@ -168,6 +174,9 @@ jobs:
       - name: Build manual Mandala Purge release candidate
         if: github.event_name == 'workflow_dispatch' && !startsWith(github.ref, 'refs/tags/v')
         run: python tools/build_remove_mandala_release.py
+      - name: Build manual Tributary Expansion Directives release candidate
+        if: github.event_name == 'workflow_dispatch' && !startsWith(github.ref, 'refs/tags/v')
+        run: python tools/build_tributary_expansion_directives_release.py
       - name: Build manual Auto Upgrade Buildings release candidate
         if: github.event_name == 'workflow_dispatch' && !startsWith(github.ref, 'refs/tags/v')
         run: python tools/build_auto_upgrade_buildings_release.py
@@ -189,6 +198,9 @@ jobs:
       - name: Build tagged Mandala Purge release candidate
         if: startsWith(github.ref, 'refs/tags/remove-mandala-v')
         run: python tools/build_remove_mandala_release.py --release
+      - name: Build tagged Tributary Expansion Directives release candidate
+        if: startsWith(github.ref, 'refs/tags/tributary-expansion-directives-v')
+        run: python tools/build_tributary_expansion_directives_release.py --release
       - name: Build tagged Auto Upgrade Buildings release candidate
         if: startsWith(github.ref, 'refs/tags/auto-upgrade-buildings-v')
         run: python tools/build_auto_upgrade_buildings_release.py --release
@@ -199,7 +211,7 @@ jobs:
         if: startsWith(github.ref, 'refs/tags/zhongguo-361-v')
         run: python tools/build_mod_zhongguo_style_release.py --release
       - name: Upload release candidate
-        if: github.event_name == 'workflow_dispatch' || startsWith(github.ref, 'refs/tags/v') || startsWith(github.ref, 'refs/tags/ox-here-v') || startsWith(github.ref, 'refs/tags/remove-mandala-v') || startsWith(github.ref, 'refs/tags/auto-upgrade-buildings-v') || startsWith(github.ref, 'refs/tags/reclaim-motherland-v') || startsWith(github.ref, 'refs/tags/zhongguo-361-v')
+        if: github.event_name == 'workflow_dispatch' || startsWith(github.ref, 'refs/tags/v') || startsWith(github.ref, 'refs/tags/ox-here-v') || startsWith(github.ref, 'refs/tags/remove-mandala-v') || startsWith(github.ref, 'refs/tags/tributary-expansion-directives-v') || startsWith(github.ref, 'refs/tags/auto-upgrade-buildings-v') || startsWith(github.ref, 'refs/tags/reclaim-motherland-v') || startsWith(github.ref, 'refs/tags/zhongguo-361-v')
         uses: actions/upload-artifact@v6
         with:
           name: release-candidate-${{ github.run_id }}-${{ github.run_attempt }}

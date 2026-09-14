@@ -1,0 +1,256 @@
+﻿ted_issue_expansion_directive_interaction = {
+	category = interaction_category_diplomacy
+	interface_priority = 65
+	icon = icon_coax_to_war
+	desc = ted_issue_expansion_directive_interaction_desc
+
+	target_type = title
+	target_filter = secondary_recipient_realm_titles
+
+	populate_recipient_list = {
+		scope:recipient = {
+			every_character_to_title_neighboring_county = {
+				limit = {
+					is_title_created = yes
+					is_landless_type_title = no
+					holder ?= {
+						top_liege = this
+						is_landed = yes
+						is_alive = yes
+						NOT = { this = scope:actor }
+						NOT = { this = scope:recipient }
+						NOT = { is_tributary_of = scope:actor }
+						in_diplomatic_range = scope:recipient
+					}
+				}
+				holder.top_liege = { add_to_list = characters }
+			}
+		}
+	}
+
+	can_be_picked_title = {
+		scope:target = {
+			is_title_created = yes
+			is_landless_type_title = no
+			tier = tier_county
+			holder ?= { top_liege = scope:secondary_recipient }
+		}
+		scope:recipient = {
+			custom_tooltip = {
+				text = ted_target_must_border_tributary_tt
+				any_character_to_title_neighboring_county = {
+					this = scope:target
+				}
+			}
+		}
+	}
+
+	has_valid_target = {
+		scope:target ?= {
+			is_title_created = yes
+			tier = tier_county
+			holder ?= { top_liege = scope:secondary_recipient }
+		}
+	}
+
+	is_shown = {
+		scope:actor = {
+			is_ai = no
+			is_landed = yes
+		}
+		scope:recipient = {
+			is_ai = yes
+			is_landed = yes
+			is_tributary_of = scope:actor
+		}
+	}
+
+	is_valid_showing_failures_only = {
+		scope:actor = {
+			is_alive = yes
+			prestige >= 150
+		}
+		scope:recipient = {
+			custom_tooltip = {
+				text = ted_tributary_must_be_ready_tt
+				is_alive = yes
+				is_adult = yes
+				is_imprisoned = no
+				is_at_war = no
+				has_raised_armies = no
+				is_tributary_of = scope:actor
+			}
+			custom_tooltip = {
+				text = ted_tributary_needs_neighbor_target_tt
+				any_character_to_title_neighboring_county = {
+					is_title_created = yes
+					is_landless_type_title = no
+					holder ?= {
+						top_liege = this
+						is_landed = yes
+						is_alive = yes
+						NOT = { this = scope:actor }
+						NOT = { this = scope:recipient }
+						NOT = { is_tributary_of = scope:actor }
+						in_diplomatic_range = scope:recipient
+					}
+				}
+			}
+		}
+	}
+
+	send_options_exclusive = no
+	send_option = {
+		flag = offer_war_subsidy
+		localization = ted_offer_war_subsidy_option
+		starts_enabled = { always = no }
+		is_valid = {
+			scope:actor.gold >= ted_war_subsidy_value
+		}
+	}
+
+	ai_instant_response = yes
+	popup_on_receive = yes
+	ai_maybe = yes
+	can_send_despite_rejection = yes
+	greeting = positive
+	notification_text = ted_expansion_directive_notification
+	pre_answer_yes_key = ted_expansion_directive_accept
+	pre_answer_no_key = ted_expansion_directive_decline
+	cooldown_against_recipient = { years = 5 }
+	cost = { prestige = 150 }
+
+	on_accept = {
+		scope:recipient = {
+			add_character_flag = ted_directed_expansion_authorized
+		}
+		if = {
+			limit = {
+				ted_expansion_directive_context_is_valid_trigger = yes
+				scope:recipient = {
+					can_declare_war = {
+						defender = scope:secondary_recipient
+						casus_belli = ted_directed_county_expansion_cb
+						target_titles = { scope:target }
+					}
+				}
+			}
+			if = {
+				limit = { scope:offer_war_subsidy = yes }
+				scope:actor = {
+					pay_short_term_gold = {
+						gold = ted_war_subsidy_value
+						target = scope:recipient
+					}
+				}
+			}
+			scope:recipient = {
+				start_war = {
+					casus_belli = ted_directed_county_expansion_cb
+					target = scope:secondary_recipient
+					target_title = scope:target
+				}
+				remove_character_flag = ted_directed_expansion_authorized
+			}
+			scope:actor = {
+				send_interface_toast = {
+					type = event_toast_effect_good
+					title = ted_expansion_directive_accepted_toast
+					left_icon = scope:recipient
+				}
+			}
+		}
+		else = {
+			scope:recipient = {
+				remove_character_flag = ted_directed_expansion_authorized
+			}
+			scope:actor = {
+				add_prestige = 150
+				remove_interaction_cooldown_against = {
+					interaction = ted_issue_expansion_directive_interaction
+					target = scope:recipient
+				}
+				send_interface_toast = {
+					type = event_toast_effect_bad
+					title = ted_expansion_directive_invalidated_toast
+					left_icon = scope:recipient
+				}
+			}
+		}
+	}
+
+	on_decline = {
+		if = {
+			limit = { ted_expansion_directive_context_is_valid_trigger = yes }
+			scope:actor = {
+				send_interface_toast = {
+					type = event_toast_effect_bad
+					title = ted_expansion_directive_declined_toast
+					left_icon = scope:recipient
+				}
+			}
+		}
+		else = {
+			scope:actor = {
+				add_prestige = 150
+				remove_interaction_cooldown_against = {
+					interaction = ted_issue_expansion_directive_interaction
+					target = scope:recipient
+				}
+				send_interface_toast = {
+					type = event_toast_effect_bad
+					title = ted_expansion_directive_invalidated_toast
+					left_icon = scope:recipient
+				}
+			}
+		}
+	}
+
+	ai_potential = { always = no }
+
+	ai_accept = {
+		base = -25
+		opinion_modifier = {
+			opinion_target = scope:actor
+			multiplier = 0.5
+		}
+		modifier = {
+			add = {
+				value = 10
+				multiply = scope:actor.prestige_level
+			}
+			scope:actor.prestige_level > 0
+			desc = ted_actor_prestige_level_reason
+		}
+		modifier = {
+			add = 60
+			scope:offer_war_subsidy = yes
+			desc = ted_war_subsidy_reason
+		}
+		modifier = {
+			add = 25
+			scope:recipient.military_strength >= scope:secondary_recipient.military_strength
+			desc = ted_tributary_stronger_reason
+		}
+		modifier = {
+			add = -75
+			scope:recipient.military_strength < scope:secondary_recipient.military_strength
+			desc = ted_tributary_weaker_reason
+		}
+		modifier = {
+			add = -25
+			scope:recipient = { is_in_debt = yes }
+			desc = ted_tributary_in_debt_reason
+		}
+		modifier = {
+			add = 10
+			scope:recipient = { has_trait = ambitious }
+			desc = ted_tributary_ambitious_reason
+		}
+		modifier = {
+			add = -10
+			scope:recipient = { has_trait = content }
+			desc = ted_tributary_content_reason
+		}
+	}
+}

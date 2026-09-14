@@ -7,6 +7,7 @@
 - `mod_remove_mandala/` — “肃清曼荼罗伪信”独立版源目录；正式发布只使用 `build_remove_mandala_release.py` 生成的 15 文件 staging
 - `mod_xenoamess_quality_of_life/` — “XenoAmess的体验优化”独立版源目录；Workshop item id：**3798133925**；正式发布只使用 `build_xenoamess_quality_of_life_release.py` 生成的 19 文件 staging
 - `mod_reclaim_the_motherland/` — “重整河山”独立版源目录；Workshop item id：**3798404599**；正式发布只使用 `build_reclaim_the_motherland_release.py` 生成的 28 文件 staging
+- `mod_tributary_expansion_directives/` — “驱策朝贡国 / Tributary Expansion Directives”独立版源目录；正式发布只使用 `build_tributary_expansion_directives_release.py` 生成的 15 文件 staging
 - `mod_auto_upgrade_buildings/` — “自动升级建筑（XenoAmess维护版）”源码；维护版 Workshop item id：**3800124956**；上游 **3596580780** 仅作来源身份，禁止作为维护版发布目标；正式上传只使用 `build_auto_upgrade_buildings_release.py` 生成的 16 文件 staging，维护与验收见 `docs/auto-upgrade-buildings-*.md`
 - `Crusader Kings III/` — 游戏本体目录（仅作参考/逆向用，已被 .gitignore 排除）
 - `docs/` — 知识库（跨存档存储机制、GUI 系统、语法踩坑），改机制前先读
@@ -71,6 +72,7 @@ py tools/compose_remove_mandala_key_art.py                  # 肃清曼荼罗主
 py tools/compose_remove_mandala_workshop_media.py --artifacts <run> # GREEN 实机截图 → 两张低于 2 MB JPEG
 py tools/gen_reclaim_the_motherland_title_names.py          # 后朝标准朝号的九语确定性组合 key
 py tools/compose_reclaim_the_motherland_key_art.py          # 重整河山主视觉 → 640×640、低于 1 MB thumbnail
+py tools/compose_tributary_expansion_directives_key_art.py  # 驱策朝贡国主视觉 → 640×640、低于 1 MB thumbnail
 py tools/compose_auto_upgrade_buildings_decision_art.py     # 自动升级建筑源图 → 1100×440 DXT1 DDS
 py tools/compose_reclaim_the_motherland_workshop_media.py --artifacts <run> # 开封镜头 GREEN 实机截图 → 三张低于 2 MB JPEG
 py tools/compose_trait_stars.py                             # 10 级特质星标 → 120×120 RGBA DDS
@@ -85,6 +87,8 @@ py tools/build_remove_mandala_release.py --check            # 肃清曼荼罗临
 py tools/build_remove_mandala_release.py                    # 生成 15 文件 staging、manifest 与 ZIP
 py tools/build_reclaim_the_motherland_release.py --check    # 重整河山临时双构建
 py tools/build_reclaim_the_motherland_release.py            # 生成 28 文件 staging、manifest 与 ZIP
+py tools/build_tributary_expansion_directives_release.py --check # 驱策朝贡国临时双构建
+py tools/build_tributary_expansion_directives_release.py    # 生成 15 文件 staging、manifest 与 ZIP
 py tools/gen_auto_upgrade_buildings.py                      # 自动升级建筑 43 条建筑链
 py tools/build_auto_upgrade_buildings_release.py --check    # 自动升级建筑临时双构建
 py tools/build_auto_upgrade_buildings_release.py            # 生成 16 文件 staging、manifest 与 ZIP

@@ -1,0 +1,103 @@
+﻿ted_directed_county_expansion_cb = {
+	icon = county_conquest_cb
+	group = conquest
+
+	combine_into_one = no
+	should_show_war_goal_subview = yes
+	mutually_exclusive_titles = { always = yes }
+
+	allowed_for_character = {
+		is_landed = yes
+		has_character_flag = ted_directed_expansion_authorized
+	}
+
+	allowed_against_character = {
+		scope:attacker != scope:defender
+		scope:attacker.top_liege != scope:defender.top_liege
+	}
+
+	target_titles = all
+	target_title_tier = county
+	ignore_effect = change_title_holder
+
+	valid_to_start = {
+		scope:target = {
+			is_title_created = yes
+			is_landless_type_title = no
+			holder ?= { top_liege = scope:defender.top_liege }
+		}
+	}
+
+	should_invalidate = {
+		NOT = {
+			any_in_list = {
+				list = target_titles
+				any_in_de_jure_hierarchy = {
+					tier = tier_county
+					holder = {
+						OR = {
+							this = scope:defender
+							target_is_liege_or_above = scope:defender
+						}
+					}
+				}
+			}
+		}
+	}
+
+	on_invalidated_desc = msg_county_conquest_war_invalidated_message
+	on_invalidated = {
+		scope:attacker = {
+			remove_character_flag = ted_directed_expansion_authorized
+		}
+	}
+
+	on_declaration = {
+		scope:attacker = {
+			remove_character_flag = ted_directed_expansion_authorized
+		}
+		on_declared_war = yes
+	}
+
+	on_victory_desc = { desc = ted_directed_county_expansion_victory_desc }
+	on_victory = {
+		scope:attacker = { show_pow_release_message_effect = yes }
+		create_title_and_vassal_change = {
+			type = conquest
+			save_scope_as = change
+			add_claim_on_loss = yes
+		}
+		every_in_list = {
+			list = target_titles
+			change_title_holder = {
+				holder = scope:attacker
+				change = scope:change
+			}
+		}
+		resolve_title_and_vassal_change = scope:change
+		add_truce_attacker_victory_effect = yes
+	}
+
+	on_white_peace_desc = { desc = ted_directed_county_expansion_white_peace_desc }
+	on_white_peace = {
+		scope:attacker = { show_pow_release_message_effect = yes }
+		add_truce_white_peace_effect = yes
+	}
+
+	on_defeat_desc = { desc = ted_directed_county_expansion_defeat_desc }
+	on_defeat = {
+		scope:attacker = { show_pow_release_message_effect = yes }
+		add_truce_attacker_defeat_effect = yes
+	}
+
+	transfer_behavior = transfer
+	on_primary_attacker_death = inherit
+	on_primary_defender_death = inherit
+	attacker_allies_inherit = yes
+	defender_allies_inherit = yes
+	use_de_jure_wargoal_only = yes
+
+	war_name = "ted_directed_expansion_war_name"
+	war_name_base = "ted_directed_expansion_war_name_base"
+	cb_name = "ted_directed_county_expansion_cb_name"
+}
