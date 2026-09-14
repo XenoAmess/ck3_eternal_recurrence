@@ -119,7 +119,7 @@ mod_<product_key>/
 ├─ localization/
 ├─ gui/                    # 有 UI 时
 ├─ gfx/                    # 有运行时素材时
-└─ thumbnail.png           # 需要 Workshop 预览时
+└─ thumbnail.png           # 正式发布 Workshop 时必须提供的封面图
 
 tools/build_<product_key>_release.py
 tools/test_build_<product_key>_release.py
@@ -220,6 +220,12 @@ docs/release-changelogs/<product_key>/
 - 真实 UI 中没有 raw key、fallback、截断或越出安全区。
 - 图片源文件、生成投影、运行时格式和引用路径一一对应。
 - Workshop thumbnail、正文图片和 media strip 是不同交付物，不混入 Mod staging。
+- **每个新独立 Mod 首发必须至少提供一张真实 CK3 玩法实机截图，并单独上传到 Steam Workshop media strip。**
+  `thumbnail.png`、生成式主视觉、概念图、静态合成图和测试夹具画面都不能代替玩法实机截图。截图必须来自本次正式候选或与其
+  字节等价的 production projection，画面不得包含 acceptance marker、测试决议、调试控制台或其他玩家不可见测试 UI。
+- 首发实机截图必须有仓库跟踪的清单，记录原始 GREEN artifact、源图 SHA-256、必要裁切/压缩、上传副本 SHA-256、展示顺序和用途。
+  Workshop 副本遵守平台大小限制；上传后必须匿名回读公开页，核对 `highlight_strip_item` 数量、顺序和实际放大图。没有这些证据，
+  即使 Mod 内容、封面、标题和描述已经公开，也不得把新独立 Mod 首发标记为完成。
 
 图片来源、DDS 投影和静态 parity 见 [`image-assets.md`](image-assets.md)；宣传素材还必须保留来源与授权记录，见
 [`asset-provenance.md`](asset-provenance.md)。
@@ -325,13 +331,13 @@ Git 只允许线性历史：从最新 `origin/master` 工作，远端移动时 f
 
 1. 确认发布产品、版本、目标 Workshop item 和相对上一公开版的变化。
 2. `fetch + rebase` 到最新主线，完成发布级国际化与资产审阅。
-3. 完成要求的 L0–L3；云端 L0 不替代本地 CK3 实机。
+3. 完成要求的 L0–L3；云端 L0 不替代本地 CK3 实机。新独立 Mod 首发同时从正式候选取得至少一张干净玩法实机截图，写入截图清单并生成符合 Workshop 限制的上传副本。
 4. 在 clean exact commit 上建立与 descriptor 匹配的产品 tag。
 5. 只通过产品 release builder 生成 production staging、manifest 和 deterministic ZIP。
 6. 检查 staging 不含测试标识、开发工具、过程素材或预存的内层 `remote_file_id`。
 7. 本地外层 `.mod` 指向正式 staging，经 Steam 初始化成功的 PDX Launcher 上传；不直接上传仓库源目录。
 8. 若出现新的 Workshop Legal Agreement，停止并等待物品所有者亲自处理。
-9. 回读匿名 API/公开页面，核对 item ID、标题、描述、标签、DLC、可见性、preview 和 media strip。
+9. 回读匿名 API/公开页面，核对 item ID、标题、描述、标签、DLC、可见性、preview 和 media strip；新独立 Mod 首发必须证明至少一张玩法实机截图已经公开可见，且数量、顺序和放大图与截图清单一致。
 10. 从空路径下载 fresh Workshop cache，执行严格 manifest 校验及产品要求的实机复核。
 11. 上传后从 exact tag 重建 canonical staging，清除 Launcher 临时注入的内层 `remote_file_id`；外层 `.mod` 保留正确 item ID。
 12. 创建或更新 GitHub Release，核对远端附件与本地冻结产物 hash。
@@ -348,6 +354,7 @@ Git 只允许线性历史：从最新 `origin/master` 工作，远端移动时 f
 - 原版依据和 scope 调用链已确认。
 - 命名空间、descriptor、本地加载路径和日志基线正确。
 - 至少一条玩家可见垂直闭环在真实 CK3 中通过。
+- 若准备首发到 Workshop，至少一张来自正式候选的干净玩法实机截图、上传副本和截图清单已经形成；封面或生成式主视觉不能代替。
 - 权威数据、生成器、运行时、展示、测试与发布投影边界明确。
 - 版本、DLC、旧存档和兼容限制已记录。
 
@@ -364,6 +371,7 @@ Git 只允许线性历史：从最新 `origin/master` 工作，远端移动时 f
 - 正式 tag、staging、manifest、ZIP 和 SHA-256 可互相回链。
 - 发布所需 L0–L3 已在精确候选上完成。
 - Workshop 页面与远端内容正确。
+- 新独立 Mod 首发的 Steam media strip 至少包含一张已登记、已匿名回读的真实玩法实机截图；只有 thumbnail 的页面不得标为发布完成。
 - fresh-cache 严格校验及要求的实机复核通过。
 - canonical staging 已恢复，内层 descriptor 无 `remote_file_id`。
 - GitHub Release、永久 changelog 和发布验收记录已推送。
