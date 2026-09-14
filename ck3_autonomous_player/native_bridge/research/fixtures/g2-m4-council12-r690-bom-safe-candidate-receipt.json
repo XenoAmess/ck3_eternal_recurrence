@@ -1,0 +1,71 @@
+{
+  "schema": "xar.ck3.g2_m4_council12_r690_bom_safe_candidate_receipt_v1",
+  "status": "green-no-launch",
+  "work_package": "G2-M4-COUNCIL12-R690-BOM-FIX",
+  "baseline_commit": "62609dd192c7256e3c11e101d61c925475c4846c",
+  "implementation_commit": "1669785837dbee660f58d8b46fbe48ccfd86a240",
+  "red": {
+    "preserved_artifact": "Z:\\ck3_mod_rewrite_process_assets\\g2-m4-council12-r690-prelaunch-red-5187ab8",
+    "classification": "harness_prelaunch_json_bom",
+    "report_sha256": "CE99DA6C7AF647A467764178D8B01B6E9E7951AB5903882A72AE1F161764D414",
+    "artifact_manifest_sha256": "74A6D2400D44445C8DC2334DC45B6BE104EE861BF3C98CE84336933C5A1E3108",
+    "ck3_launched": false,
+    "process_creation_reached": false
+  },
+  "source_candidate": {
+    "path": "Z:\\ck3_mod_rewrite_process_assets\\g2-m4-council11-r690-harness-candidate-5187ab8",
+    "sealed_prep_manifest_sha256": "DA0DF733D815FD2191FF7DAAAF1670872DD985759F199A9FFD527C158E96242D",
+    "candidate_manifest_sha256": "C40AE642FFA40362772A1DEC94FFE300185E09A90DB48376E856578426E80C5C",
+    "expected_steward_candidates_sha256": "B3D477590BCC46C6E7B6DCB90967278C13EA385A081AFC0C7612D817E9EEA800",
+    "expected_steward_candidates_prefix": "EF-BB-BF-7B",
+    "empty_live_r689_entries": 0,
+    "unchanged_after_materialization": true
+  },
+  "candidate": {
+    "path": "Z:\\ck3_mod_rewrite_process_assets\\g2-m4-council12-r690-bom-safe-1669785",
+    "candidate_manifest_sha256": "5C59E143A63FFC1699A17E9F2E8CA7630019279CDF361E8FD226783ECC962DC5",
+    "sealed_prep_manifest_sha256": "93B680E80CE8B62E2D402E8CB9F391A282D123873A0B5F106AA359261DB68E8B",
+    "sealed_file_count": 117,
+    "actual_file_count_including_seal_and_pointer": 119,
+    "sealed_inventory_exact": true,
+    "unique_pipe": "\\\\.\\pipe\\xar_ck3_bridge_g2_m4_council12_r690_1669785",
+    "bridge_dll_sha256": "6CA0DA042254189ACC8110E7684580F69F9661F35C50A95D999CDD089796EC7D",
+    "source_save_sha256": "9104CCB8AE9D5776166FBBAEDA9B43BD08CBAA2CB5C057332EB8B7A1A212CC63",
+    "expected_steward_candidates_sha256": "B3D477590BCC46C6E7B6DCB90967278C13EA385A081AFC0C7612D817E9EEA800",
+    "live_r689_exists": false,
+    "live_r690_exists": false,
+    "round_allocated": false,
+    "ck3_launched": false
+  },
+  "json_input_contract": {
+    "implementation": "ck3_autonomous_player/native_bridge/research/json_input_contract.py",
+    "loader": "load_json_object",
+    "encoding": "utf-8-sig",
+    "accepts": [
+      "utf-8",
+      "utf-8-bom"
+    ],
+    "negative_cases": [
+      "legacy utf-8 reader reproduces JSONDecodeError",
+      "malformed JSON",
+      "non-UTF-8 input",
+      "schema mismatch"
+    ]
+  },
+  "verification": {
+    "normal_unit": "5 tests passed",
+    "optimized_unit": "5 tests passed",
+    "normal_candidate_preflight": "green",
+    "optimized_candidate_preflight": "green",
+    "candidate_preflight_file_count": 117,
+    "readiness_call_contract": "green",
+    "ck3_launched": false
+  },
+  "scope": {
+    "dll_changed": false,
+    "game_files_changed": false,
+    "public_schema_changed": false,
+    "bridge_changed": false,
+    "planner_changed": false
+  }
+}
