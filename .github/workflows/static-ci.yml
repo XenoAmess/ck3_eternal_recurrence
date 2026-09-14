@@ -122,6 +122,8 @@ jobs:
           python mod_zhongguo_style/tools/validate_promo_video.py --manifest mod_zhongguo_style/promo/promo-manifest.json --stage draft
       - name: Test MiniMax localization caller
         run: python tools/test_translate_localization_minimax.py
+      - name: Test Workshop public readback verifier
+        run: python tools/test_verify_workshop_publication.py
       - name: Test full-agent showcase builder
         run: python tools/test_build_full_agent_showcase.py
       - name: Validate generated and static content
