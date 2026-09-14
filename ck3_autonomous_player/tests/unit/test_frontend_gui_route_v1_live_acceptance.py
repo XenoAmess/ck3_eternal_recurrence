@@ -82,6 +82,132 @@ class FrontendGuiRouteLiveAcceptanceContractTests(unittest.TestCase):
             '"native_copy_bytes_preserved_after_commit_reopen"', source
         )
 
+    def test_runner_has_opt_in_native_custom_mode_census(self) -> None:
+        source = RUNNER.read_text(encoding="utf-8")
+
+        self.assertIn('"--custom-mode-census"', source)
+        self.assertIn(
+            '"game.command.inspect-frontend-coat-of-arms-tree-v1"', source
+        )
+        self.assertIn(
+            '"ck3_inspect_frontend_coat_of_arms_tree_v1"', source
+        )
+        self.assertIn(
+            '"game.command.activate-frontend-coat-of-arms-custom-mode-v1"',
+            source,
+        )
+        self.assertIn(
+            '"ck3_activate_frontend_coat_of_arms_custom_mode_v1"', source
+        )
+        self.assertIn('"pattern_grid_census_recorded"', source)
+
+    def test_custom_mode_collector_records_materialized_pattern_subtree(
+        self,
+    ) -> None:
+        module = _load_runner_module()
+
+        def inspection(*, custom_target: bool, patterns: bool):
+            widgets = []
+            if custom_target:
+                widgets.append(
+                    {
+                        "runtime_name": "button_custom_mode",
+                        "child_path": "0/3/0/2/1/0/0/1/1/0",
+                        "depth": 10,
+                        "child_count": 0,
+                        "vtable_rva": 1,
+                        "effective_visible": True,
+                        "enabled": True,
+                    }
+                )
+            if patterns:
+                widgets.extend(
+                    [
+                        {
+                            "runtime_name": "coa_designer_tabs",
+                            "child_path": "0/3/0/2/0",
+                            "effective_visible": True,
+                            "enabled": True,
+                        },
+                        {
+                            "runtime_name": "background_panel",
+                            "child_path": "0/3/0/2/1/1",
+                            "effective_visible": True,
+                            "enabled": True,
+                        },
+                        {
+                            "runtime_name": "patterns",
+                            "child_path": "0/3/0/2/1/1/2",
+                            "effective_visible": True,
+                            "enabled": True,
+                        },
+                        {
+                            "runtime_name": "patterns_scrollbox",
+                            "child_path": "0/3/0/2/1/1/2/0/0",
+                            "effective_visible": True,
+                            "enabled": True,
+                        },
+                        {
+                            "runtime_name": "pattern_item",
+                            "child_path": "0/3/0/2/1/1/2/0/0/0",
+                            "child_count": 3,
+                            "effective_visible": True,
+                            "enabled": True,
+                        },
+                    ]
+                )
+            return {
+                "schema": "ck3-frontend-gui-tree-inspection-v1",
+                "schema_version": 1,
+                "step": "inspect-frontend-coat-of-arms-tree-v1",
+                "status": "available",
+                "scope_root_name": "coat_of_arms_page",
+                "root_available": True,
+                "truncated": False,
+                "widget_count": len(widgets),
+                "widgets": widgets,
+            }
+
+        before = inspection(custom_target=True, patterns=False)
+        after = inspection(custom_target=False, patterns=True)
+
+        class FakeClient:
+            def __init__(self) -> None:
+                self.responses = [
+                    before,
+                    {
+                        "status": "verified",
+                        "action": "enter_coat_of_arms_custom_mode",
+                        "postcondition_verified": True,
+                        "uses_ocr": False,
+                        "uses_keyboard": False,
+                        "uses_mouse": False,
+                        "after": {"route": "coat_of_arms_designer"},
+                        "after_inspection": after,
+                    },
+                    after,
+                ]
+
+            async def call_tool(self, name, arguments):
+                return SimpleNamespace(
+                    content=[],
+                    is_error=False,
+                    structured_content=self.responses.pop(0),
+                )
+
+        recorded = []
+        result = asyncio.run(
+            module._collect_custom_mode_census(FakeClient(), recorded.append)
+        )
+
+        self.assertTrue(result["ok"])
+        self.assertEqual(len(recorded), 3)
+        self.assertTrue(result["pattern_grid"]["materialized"])
+        self.assertEqual(result["pattern_grid"]["descendant_count"], 1)
+        self.assertEqual(
+            result["pattern_grid"]["runtime_name_counts"], {"pattern_item": 1}
+        )
+
     def test_checked_in_syntax_matrix_is_closed_and_targeted(self) -> None:
         payload = json.loads(MATRIX.read_text(encoding="utf-8"))
 

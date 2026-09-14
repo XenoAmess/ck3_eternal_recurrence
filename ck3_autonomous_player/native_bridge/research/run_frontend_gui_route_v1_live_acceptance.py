@@ -4,9 +4,10 @@
 This runner launches one managed, non-debug CK3 process at the main menu,
 injects the exact bridge DLL, and uses the official MCP SDK to prove the
 semantic route through ``coat_of_arms_designer``. Opt-in checks can collect a
-detect/apply/native-Copy matrix or commit one design through the exact dynasty
-Finish button, reopen it, and compare native Copy bytes. It never sends mouse
-or keyboard input and never interprets pixels or OCR.
+detect/apply/native-Copy matrix, census the native custom-mode pattern tree, or
+commit one design through the exact dynasty Finish button, reopen it, and
+compare native Copy bytes. It never sends mouse or keyboard input and never
+interprets pixels or OCR.
 """
 
 from __future__ import annotations
@@ -34,6 +35,8 @@ from xar_autoplayer.bridge.coat_of_arms_source_probe_contract import (  # noqa: 
     encode_coat_of_arms_source_v1,
 )
 from xar_autoplayer.bridge.frontend_gui_route_contract import (  # noqa: E402
+    frontend_coat_of_arms_background_patterns_ready_v1,
+    frontend_coat_of_arms_custom_mode_target_ready_v1,
     frontend_lobby_default_ruler_designer_ready_v1,
 )
 from xar_autoplayer.bridge.mcp_server import create_server  # noqa: E402
@@ -71,6 +74,12 @@ ACTIVATE_RULER_DESIGNER_CAPABILITY = (
 ACTIVATE_COAT_OF_ARMS_DESIGNER_CAPABILITY = (
     "game.command.activate-frontend-coat-of-arms-designer-v1"
 )
+INSPECT_COAT_OF_ARMS_TREE_CAPABILITY = (
+    "game.command.inspect-frontend-coat-of-arms-tree-v1"
+)
+ACTIVATE_COAT_OF_ARMS_CUSTOM_MODE_CAPABILITY = (
+    "game.command.activate-frontend-coat-of-arms-custom-mode-v1"
+)
 COMMIT_DYNASTY_COAT_OF_ARMS_CAPABILITY = (
     "game.command.commit-frontend-dynasty-coat-of-arms-v1"
 )
@@ -86,6 +95,12 @@ ACTIVATE_PREPARE_CUSTOM_RULER_TOOL = (
 ACTIVATE_RULER_DESIGNER_TOOL = "ck3_activate_frontend_ruler_designer_v1"
 ACTIVATE_COAT_OF_ARMS_DESIGNER_TOOL = (
     "ck3_activate_frontend_coat_of_arms_designer_v1"
+)
+INSPECT_COAT_OF_ARMS_TREE_TOOL = (
+    "ck3_inspect_frontend_coat_of_arms_tree_v1"
+)
+ACTIVATE_COAT_OF_ARMS_CUSTOM_MODE_TOOL = (
+    "ck3_activate_frontend_coat_of_arms_custom_mode_v1"
 )
 COMMIT_DYNASTY_COAT_OF_ARMS_TOOL = (
     "ck3_commit_frontend_dynasty_coat_of_arms_v1"
@@ -113,6 +128,14 @@ def _parser() -> argparse.ArgumentParser:
         "--syntax-matrix",
         action="store_true",
         help="collect the checked-in CoA detect/apply/Copy matrix after routing",
+    )
+    parser.add_argument(
+        "--custom-mode-census",
+        action="store_true",
+        help=(
+            "enter native CoA custom mode and census the materialized "
+            "background-pattern widget tree"
+        ),
     )
     parser.add_argument(
         "--commit-roundtrip",
@@ -614,10 +637,127 @@ async def _collect_commit_roundtrip(
     }
 
 
+def _summarize_pattern_grid(inspection: object) -> dict[str, object]:
+    """Summarize only the bounded subtree below vanilla patterns_scrollbox."""
+
+    scrollbox_path = "0/3/0/2/1/1/2/0/0"
+    widgets = inspection.get("widgets") if isinstance(inspection, dict) else None
+    rows = [row for row in widgets if isinstance(row, dict)] if isinstance(
+        widgets, list
+    ) else []
+    descendants = [
+        row
+        for row in rows
+        if isinstance(row.get("child_path"), str)
+        and row["child_path"].startswith(scrollbox_path + "/")
+    ]
+    direct_children = [
+        row
+        for row in descendants
+        if "/" not in row["child_path"][len(scrollbox_path) + 1 :]
+    ]
+    named_counts: dict[str, int] = {}
+    for row in descendants:
+        name = row.get("runtime_name")
+        if isinstance(name, str):
+            named_counts[name] = named_counts.get(name, 0) + 1
+    largest_children = sorted(
+        descendants,
+        key=lambda row: (-int(row.get("child_count", 0)), str(row["child_path"])),
+    )[:32]
+    return {
+        "scrollbox_path": scrollbox_path,
+        "inspection_widget_count": (
+            inspection.get("widget_count") if isinstance(inspection, dict) else None
+        ),
+        "inspection_truncated": (
+            inspection.get("truncated") if isinstance(inspection, dict) else None
+        ),
+        "descendant_count": len(descendants),
+        "visible_descendant_count": sum(
+            row.get("effective_visible") is True for row in descendants
+        ),
+        "enabled_descendant_count": sum(
+            row.get("enabled") is True for row in descendants
+        ),
+        "direct_child_count": len(direct_children),
+        "materialized": bool(descendants),
+        "runtime_name_counts": dict(sorted(named_counts.items())),
+        "direct_children": direct_children[:64],
+        "largest_child_count_rows": largest_children,
+    }
+
+
+async def _collect_custom_mode_census(
+    client: Client,
+    record: Any,
+) -> dict[str, object]:
+    before_call = await _call(client, INSPECT_COAT_OF_ARMS_TREE_TOOL)
+    record(before_call)
+    before = _structured(before_call)
+    activate_call = await _call(client, ACTIVATE_COAT_OF_ARMS_CUSTOM_MODE_TOOL)
+    record(activate_call)
+    activated = _structured(activate_call)
+    after_call = await _call(client, INSPECT_COAT_OF_ARMS_TREE_TOOL)
+    record(after_call)
+    after = _structured(after_call)
+    after_route = (
+        activated.get("after")
+        if isinstance(activated.get("after"), dict)
+        else {}
+    )
+    embedded_after = (
+        activated.get("after_inspection")
+        if isinstance(activated.get("after_inspection"), dict)
+        else {}
+    )
+    pattern_grid = _summarize_pattern_grid(after)
+    checks = {
+        "before_inspection_not_error": before_call.get("is_error") is False,
+        "before_custom_mode_target_ready": (
+            frontend_coat_of_arms_custom_mode_target_ready_v1(before)
+        ),
+        "activation_not_error": activate_call.get("is_error") is False,
+        "activation_verified": (
+            activated.get("status") == "verified"
+            and activated.get("action") == "enter_coat_of_arms_custom_mode"
+            and activated.get("postcondition_verified") is True
+        ),
+        "activation_no_ocr_keyboard_mouse": (
+            activated.get("uses_ocr") is False
+            and activated.get("uses_keyboard") is False
+            and activated.get("uses_mouse") is False
+        ),
+        "route_remains_coat_of_arms_designer": (
+            after_route.get("route") == "coat_of_arms_designer"
+        ),
+        "embedded_background_patterns_ready": (
+            frontend_coat_of_arms_background_patterns_ready_v1(embedded_after)
+        ),
+        "separate_after_inspection_not_error": after_call.get("is_error") is False,
+        "separate_background_patterns_ready": (
+            frontend_coat_of_arms_background_patterns_ready_v1(after)
+        ),
+        "pattern_grid_census_recorded": (
+            isinstance(pattern_grid.get("descendant_count"), int)
+            and isinstance(pattern_grid.get("inspection_truncated"), bool)
+        ),
+    }
+    return {
+        "ok": all(checks.values()),
+        "before_inspection": before_call,
+        "activation": activate_call,
+        "after_inspection": after_call,
+        "pattern_grid": pattern_grid,
+        "checks": checks,
+    }
+
+
 async def _mcp_sequence(
     driver: NativeHeadlessGameplayDriver,
     timeout: float,
     syntax_matrix: dict[str, object] | None = None,
+    custom_mode_census: bool = False,
     commit_roundtrip: bool = False,
 ) -> dict[str, object]:
     deadline = time.monotonic() + timeout
@@ -675,7 +815,20 @@ async def _mcp_sequence(
             if commit_roundtrip
             else set()
         )
-        required = route_required | matrix_required | commit_required
+        custom_mode_required = (
+            {
+                INSPECT_COAT_OF_ARMS_TREE_TOOL,
+                ACTIVATE_COAT_OF_ARMS_CUSTOM_MODE_TOOL,
+            }
+            if custom_mode_census
+            else set()
+        )
+        required = (
+            route_required
+            | matrix_required
+            | commit_required
+            | custom_mode_required
+        )
         schemas = {
             name: tools[name].input_schema
             for name in sorted(required)
@@ -693,6 +846,15 @@ async def _mcp_sequence(
         ):
             return red(
                 "frontend MCP tools are not closed zero-input tools",
+                tool_schemas=schemas,
+            )
+
+        if custom_mode_census and not all(
+            _schema_is_zero_input(schemas.get(name))
+            for name in custom_mode_required
+        ):
+            return red(
+                "coat-of-arms custom-mode MCP tools are not closed zero-input tools",
                 tool_schemas=schemas,
             )
         if (syntax_matrix is not None or commit_roundtrip) and not (
@@ -730,6 +892,11 @@ async def _mcp_sequence(
                 PROBE_COAT_OF_ARMS_CAPABILITY,
                 EXPORT_COAT_OF_ARMS_CAPABILITY,
                 COMMIT_DYNASTY_COAT_OF_ARMS_CAPABILITY,
+            }
+        if custom_mode_census:
+            required_capabilities |= {
+                INSPECT_COAT_OF_ARMS_TREE_CAPABILITY,
+                ACTIVATE_COAT_OF_ARMS_CUSTOM_MODE_CAPABILITY,
             }
 
         capability_call: dict[str, object] | None = None
@@ -924,6 +1091,20 @@ async def _mcp_sequence(
             ),
         }
         matrix_result: dict[str, object] | None = None
+        custom_mode_result: dict[str, object] | None = None
+        if custom_mode_census:
+            if all(checks.values()):
+                custom_mode_result = await _collect_custom_mode_census(
+                    client, record
+                )
+            else:
+                custom_mode_result = {
+                    "ok": False,
+                    "error": "route checks failed before custom-mode census",
+                }
+            checks["custom_mode_census_evidence_complete"] = (
+                custom_mode_result.get("ok") is True
+            )
         if syntax_matrix is not None:
             if all(checks.values()):
                 matrix_result = await _collect_syntax_matrix(
@@ -964,6 +1145,7 @@ async def _mcp_sequence(
             "tree_inspection_after_coat_of_arms_designer": (
                 coat_of_arms_inspection
             ),
+            "custom_mode_census": custom_mode_result,
             "syntax_matrix": matrix_result,
             "commit_roundtrip": commit_result,
             "calls": calls,
@@ -989,6 +1171,7 @@ def _run(args: argparse.Namespace) -> tuple[dict[str, object], int]:
         _load_syntax_matrix() if getattr(args, "syntax_matrix", False) else None
     )
     commit_roundtrip = bool(getattr(args, "commit_roundtrip", False))
+    custom_mode_census = bool(getattr(args, "custom_mode_census", False))
     state_dir = args.state_dir.resolve()
     output = args.output.resolve()
     if state_dir.exists():
@@ -1015,6 +1198,7 @@ def _run(args: argparse.Namespace) -> tuple[dict[str, object], int]:
         },
         "syntax_matrix_requested": syntax_matrix is not None,
         "syntax_matrix_plan": syntax_matrix,
+        "custom_mode_census_requested": custom_mode_census,
         "commit_roundtrip_requested": commit_roundtrip,
     }
     handle = None
@@ -1079,6 +1263,7 @@ def _run(args: argparse.Namespace) -> tuple[dict[str, object], int]:
                 driver,
                 float(args.timeout),
                 syntax_matrix=syntax_matrix,
+                custom_mode_census=custom_mode_census,
                 commit_roundtrip=commit_roundtrip,
             )
         )
