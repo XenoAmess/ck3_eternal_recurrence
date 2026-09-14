@@ -1,6 +1,6 @@
 # 重整河山：设计与实现说明
 
-状态：**0.4.0（三、四期）发布候选已实现；L0、`open_kaishek` parser root scan 与源码树 MCP-first L1 均已完成。** 当前公开版本仍为 0.2.0，正式 staging、Workshop 更新与 fresh-cache L3 完成前不把候选写成发布事实。
+状态：**0.4.0（三、四期）已正式发布。** L0、`open_kaishek` parser root scan、源码树 MCP-first L1、Workshop 更新、公开回读、全新订阅缓存和 fresh-cache L3 均为 GREEN；Steam 已恢复离线模式。
 
 ## 1. 产品目标
 
@@ -241,7 +241,7 @@ mod_reclaim_the_motherland/
 3. “尊王派封臣”按直属封臣判断，并完整保留这些直属封臣原有的下级 realm 树，不跨级抽取间接尊王派。
 4. 别人先取得天命时不销毁后朝；后朝可跨王朝周期传承，并在未来群雄割据中复辟。
 
-`0.2.0` 没有真正执行死亡继承，因此其跨代声明已经撤回；`0.4.0` 候选以显式单继承法、同一 title object 次日恢复和实际旧君死亡用例重新建立该结论。源码树 R0024 已 GREEN；正式发布事实只在 fresh-cache L3 同样 GREEN 后写入。
+`0.2.0` 没有真正执行死亡继承，因此其跨代声明已经撤回；`0.4.0` 以显式单继承法、同一 title object 次日恢复和实际旧君死亡用例重新建立该结论。源码树 `R0024-source` 与全新订阅缓存 `R0026-workshop` 均为 GREEN。
 
 ## 12. 当前实现与验证证据
 
@@ -266,4 +266,4 @@ mod_reclaim_the_motherland/
 
 源码树 L1 实机 run 为 `D:\workspace\ck3_reclaim_phase2_20260913_process_assets\reclaim\runs\desktop-3fevhd2-1c74096080--reclaim-the-motherland--R0004-source`，wrapper `report.json` SHA-256 为 `962c679a10ae669201eff32cb62f2cb442ab5189cffd0037ee9af4f03071f85a`，有效 `cell/report.json` SHA-256 为 `53ed9ecf85166c4f3e0335777c641b64f5043ffe7b7ec0fe56db1fd6b9bb83e9`。它通过 MCP readiness 和语义化事件选择完成 20 个顺序标记：必留忠臣原样保住【青徐路】头衔、名称与封臣树，必叛尊王诸侯脱离，一次性结果与【人心向背】总结可见；一期的后宋、空法理、个人领地、50%/51% 边界、复辟可见而天命不可见，以及完整原版天命效果＋后朝销毁也全部回归。运行中 source/runtime 未改写，项目 diagnostics 为 0，保护存储未变化，原生进程树和隔离 userdir 均完成清理。
 
-完整 L0/L1/L3 证据和保留的 RED attempt 说明见 `docs/acceptance-report.md`，九语发布审阅见 `../docs/reclaim-release-localization-review-2026-09-13.md`。0.2.0 使用四张来自最终 GREEN run 的真实游戏截图，其中【人心向背】为首图，地图镜头由原生 MCP 定位到大宋首都开封。Workshop item `3798404599` 已公开更新：描述与入库 BBCode 精确一致，Change Notes 的 508 字/14 行全文已匿名精确回读，全新 32 文件订阅缓存严格核对并完成同矩阵 MCP-first L3。
+完整 L0/L1/L3 证据和保留的 RED attempt 说明见 `docs/acceptance-report.md`，0.4.0 永久发行记录见 `../docs/release-changelogs/reclaim-motherland/0.4.0.md`，九语发布审阅见 `../docs/reclaim-release-localization-review-2026-09-13.md`。四张代表性画面均来自真实 CK3，其中【人心向背】为首图，地图镜头由原生 MCP 定位到大宋首都开封。Workshop item `3798404599` 的 5,720 字符描述与入库 BBCode 精确一致，Change Notes 的 542 字／11 行全文已匿名精确回读，全新 35 文件订阅缓存严格核对并完成同矩阵 MCP-first L3。

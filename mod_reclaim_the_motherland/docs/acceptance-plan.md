@@ -1,6 +1,6 @@
 # 重整河山 0.4.0 验收方案
 
-状态：**执行中。运行时实现、L0、`open_kaishek` parser root scan 与源码树 MCP-first L1 已完成；正式发布与 fresh-cache L3 尚待最终证据。**
+状态：**COMPLETE。运行时、L0、`open_kaishek` parser root scan、源码树 L1、正式发布、公开回读与 fresh-cache L3 全部完成。**
 
 目标游戏：CK3 `1.19.0.6`
 
@@ -104,4 +104,4 @@ Workshop item：`3798404599`
 - 已保留：`R0010-source` 为 RED。九席 exact incumbents、忠臣主头衔／国号／封臣树和此前机制全部转为 PASS；唯一失败是随机预选的某个诸侯在原版群雄重组后不再满足【提议附庸】完整资格。fixture 已改为在重组完成后，从带确切五年 title reference 且当刻通过真实 interaction validity 的全部独立者中抽取两个不同样本，受控忠／叛角色仍单独承担身份断言。
 - 已保留：`R0011..R0023-source` 的每次失败都使用独立目录。它们依次暴露并修复了继承事务时序、空法理动态霸权在死亡结算中被销毁、继承后忠臣 realm 恢复、九席幂等复位和强制跳相位 fixture 的原版 `movement_member` 前置条件；任何 RED 均未覆盖或改写为 GREEN。
 - 已完成：`R0024-source` 为最终源码树 GREEN。36 个严格 marker 全部出现；同一后朝 title object、受控个人伯爵领、忠臣主头衔和封臣树、唯一官署 entitlement、九名 exact incumbents、两次真实附庸拒绝、五年状态到期、50%/51% 边界和复辟销毁全部通过，`project_diagnostics=[]`。
-- 待完成：正式构建、Workshop 上传、公开回读、全新缓存 L3、changelog/tag/master push 与官方 CI。
+- 已完成：正式 35 文件构建、Workshop item `3798404599` 更新、公开 BBCode／Change Notes 精确回读、全新缓存严格核对与 `R0026-workshop` L3 GREEN；永久 changelog 已落地，Steam 已恢复离线模式。exact-master CI 结果由最终收口 commit 继续绑定。

@@ -1,6 +1,6 @@
 # 重整河山 0.4.0 验收报告
 
-状态：**发布执行中。L0 GREEN、源码树 MCP-first L1 GREEN；Workshop 上传、公开回读与 fresh-cache L3 待完成。**
+状态：**COMPLETE。L0、源码树 MCP-first L1、Workshop 发布、公开描述与 Change Notes 精确回读、全新订阅缓存及 fresh-cache L3 均为 GREEN；Steam 已恢复离线模式。**
 
 验收日期：2026-09-14
 
@@ -62,9 +62,27 @@ Run：`D:\workspace\ck3_reclaim_phase34_20260914_process_assets\reclaim\runs\R00
 
 `R0008..R0023-source` 均永久保留在 `D:\workspace\ck3_reclaim_phase34_20260914_process_assets\reclaim\runs\`，没有覆盖。它们先后暴露并修复：title law 添加时序、销毁 `h_china` 后才补官、官署 entitlement scope、landless ministry title 被弱势头衔裁剪、批量补官上收忠臣 realm、随机外交样本失去 eligibility、死亡窗口内强移交被 CK3 后续结算覆盖、空法理动态霸权被销毁、次日恢复后的 loyal realm、已留任大臣重复授职，以及强制相位 fixture 缺少原版 `movement_member` 前置条件。`R0024-source` 是取代这些 RED 的首个全绿候选。
 
-## 5. 待发布证据
+## 5. 正式构建与 Steam 发布
 
-以下字段只有实际发布发生后才填写：exact master/tag、35 文件最终 manifest/ZIP、Steam 上传回执、公开标题/BBCode/Change Notes 精确回读、全新订阅缓存逐文件核对、fresh-cache L3、最终 Steam Offline Mode、永久 changelog 和 exact-master CI 终态。
+- 版本／tag：`0.4.0` / `reclaim-motherland-v0.4.0`；release tag target `23078f51d1b294b9db5dfc0a195051a48e3563a4`。
+- 正式树：35 文件；manifest SHA-256 `34a950d331de7bff525c56df7fa5d0b018ee61cc42050924cc0c56aa7e6dd935`；deterministic ZIP SHA-256 `73d52162d28c67b5e9f144017dfaf4c52f7483fd4407718efaf870a90362c64d`；thumbnail SHA-256 `564a558d5dc280e9049fb6907db36418a9a29085802da2ce8bed0f1dff6e1c38`。
+- 第一次原生 MCP submit 因 11,017-byte 双语描述超过 Steam 8,000-byte 字段上限返回 `EResult=8`，没有更新公开物品；失败回执 SHA-256 `37976aa76fb72e202a8afd381505798b3931cc69eb5ae31a86b5c40a34ad3aca` 已永久保留。
+- BBCode 在不改变机制口径的前提下压缩为 7,946 bytes／5,720 个规范化字符，并先以 commit `ffb60e535346038ec43ae94c1ffd642d315d0bd0` 推送。新 operation 随后只更新既有 item `3798404599`，`EResult=1`、无需法律协议；成功回执 SHA-256 `3222f4d29eb06765750eec58d8c23046ca1d46d31f61a3ae5e902b2c81ae4f54`。
+- 匿名公开回读为 `result=1`、public、标题 `Reclaim the Motherland — 重整河山`、文件大小 1,006,824 bytes、`time_updated=1789357628`；公开描述与入库 BBCode 精确一致，规范化 SHA-256 `d31d4fea0c0c1b383dca4c67d911970be6bf99dc1de31eb7122d37d33b05309f`。
+- Change Notes entry `1789357628` 与入库 542 字／11 行正文逐字一致，规范化 SHA-256 `127609b585ed5268d998d8439614c023ec4133557889f8f977343ddab9ce63f5`。四张真实游戏图均 HTTP 200，公开页继续显示所需 DLC `Crusader Kings III: All Under Heaven`。
+- 永久 item／Change Notes 回读位于 `D:\workspace\reclaim-motherland-v0.4.0-publication\steam\`，JSON SHA-256 分别为 `9ab39b5d67fc28b869e7ed390d2cbe998ea0c6d206b785e239a235b94506b81d` / `f8726e6ff7932d41c075aeec61cc81b9840b6f7b31ea61c7cead3d98ba1bb25b`。
+
+## 6. Workshop fresh-cache L3
+
+- 原 32 文件／949,064-byte 缓存已完整移动到 `D:\workspace\reclaim-motherland-v0.4.0-publication\steam\3798404599.before-v0.4.0-20260914-1149`，没有删除；Steam console 强制下载后得到 `C:\SteamLibrary\steamapps\workshop\content\1158310\3798404599` 的 35 文件／1,006,824 bytes 新缓存。
+- builder 严格 Workshop-cache verifier 逐文件匹配最终 manifest；内层 `descriptor.mod` 无 `remote_file_id`，thumbnail SHA 与正式树一致。
+- 最终 run：`D:\workspace\ck3_reclaim_phase34_20260914_process_assets\reclaim\runs\R0026-workshop`；wrapper/cell SHA-256 `8c5e80d758a2b109e139696d5adf091345eec10f237883394f8fa9ce173f49e4` / `c479210aaea41fe914235c14d6488275b436db18a8c36708c54f159c1c261968`。
+- wrapper/cell GREEN；36 个严格 marker、MCP readiness、保护存储、source/runtime 不变与原生进程树清理全部 GREEN；`project_diagnostics=[]`。总时长 783.749 秒，slot wait 0.142 秒，native episode `native-29829-f02dab9d7d5e`。
+- runtime product/fixture SHA-256 与源码树 L1 相同：`30ecb34ae286991f4d243958efc0ec7e18db9c0fc09925875d49a665933560af` / `dce171a266a630036d6623c3a68a03a39fdf9b28db255c8cfef84c047bca517c`。
+- `R0025-workshop` 是未显式传入迁移后 `C:` CK3 路径的 environment-only preflight RED，未启动游戏；没有覆盖。`R0026-workshop` 以 exact EXE 路径完成取代。
+- fresh-cache／Offline Mode attestation SHA-256 `cebddf4bea4b73412ecee286a6f53f12dc92b48d5b3806baa14c2c57ebfb65f8` / `687bb2b274b95afc7549d4b682c90312ddd2e0aca0b26d99a682be0d4a0f7b82`。Steam native probe 确认 `BLoggedOn=false`，连接日志记录 user-initiated logoff 且不自动重连；Steam 保持运行，CK3 为 0。
+
+完整发行记录见 `docs/release-changelogs/reclaim-motherland/0.4.0.md`。受控验收证明已定位公式、两个真实 interaction 目标、跨代后朝／官署、定时到期和复辟全链；没有把尚未执行的三个自然局首年分布冒充为统计结论。
 
 ---
 

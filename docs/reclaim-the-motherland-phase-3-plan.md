@@ -1,6 +1,6 @@
 # 《重整河山》三期需求静态分析与版本计划
 
-状态：**implemented / source-L1 GREEN；已并入联合 `0.4.0` 发布候选，Workshop 与 fresh-cache L3 待完成**
+状态：**release-complete；已并入联合 `0.4.0`，源码树 L1、Workshop、fresh-cache L3 与永久 changelog 全部 GREEN**
 
 计划版本：原拟 `0.3.0`，实际与四期合并为 `0.4.0`
 

@@ -1,6 +1,6 @@
-# 重整河山 0.2.0：Steam 实机截图清单
+# 重整河山：Steam 实机截图清单
 
-状态：四张图均来自同一次 **GREEN 的 CK3 1.19.0.6 源码树 MCP-first 验收**，已完成确定性裁切、逐张视觉检查、入库及公开 URL 复核；0.2.0 Workshop BBCode 已按本表顺序展示。
+状态：四张图均来自同一次 **GREEN 的 CK3 1.19.0.6 源码树 MCP-first 验收**，已完成确定性裁切、逐张视觉检查、入库及公开 URL 复核；0.4.0 Workshop BBCode 继续按本表顺序展示。
 
 ## 权威来源
 
@@ -46,3 +46,11 @@ Workshop BBCode 必须使用 commit-pinned GitHub raw URL；Steam media strip �
 - Change Notes entry `1789251577` 与入库 508 字、14 行文本精确一致。
 - Fresh-cache L3：`desktop-3fevhd2-1c74096080--reclaim-the-motherland--R0007`，wrapper/cell GREEN，20 个顺序标记，项目 diagnostics 为 0；完整证据见 `mod_reclaim_the_motherland/docs/acceptance-report.md`。
 - 必需 DLC 沿用并公开显示 `Crusader Kings III: All Under Heaven`；中文在全部仓库文案中统一为《溥天之下》。
+
+### 0.4.0 更新复核
+
+- 0.4.0 于 2026-09-14 更新同一公开 item `3798404599`；匿名接口返回 `result=1`、`visibility=0`、`time_updated=1789357628`。
+- 公开描述与入库 BBCode 的 5,720 个规范化字符精确一致；四个 commit-pinned raw URL 再次全部返回 HTTP 200，Content-Length 与本表一致。
+- Change Notes entry `1789357628` 与入库 542 字／11 行正文精确一致。
+- 全新 35 文件订阅缓存严格匹配正式 manifest；`R0026-workshop` 从该缓存完成 36-marker MCP-first L3，wrapper/cell GREEN、项目 diagnostics 为 0。
+- 完整身份、回执、哈希与离线恢复见 `docs/release-changelogs/reclaim-motherland/0.4.0.md`。
