@@ -1,0 +1,57 @@
+{
+  "schema_version": "xar.g2.faction-targeting-row-async-glue.source-contract.v1",
+  "status": "candidate-ready-no-ck3-launch-pending-paused-live",
+  "exact_build": {
+    "game_version": "1.19.0.6",
+    "executable_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86"
+  },
+  "baseline_commit": "9dea3de4947ad70c4db0da484ee90cfcdf080d38",
+  "compile_option": "XAR_CK3_ENABLE_G2_FACTION_TARGETING_ROW_ASYNC_PRIVATE_PROBE_V1",
+  "default_enabled": false,
+  "public_capability_advertised": false,
+  "shared_bridge_contract": {
+    "observer_install_phase": "XarCk3BridgePrepareStartup while primary thread is suspended",
+    "mailbox_executor": "ExecuteCampaignRootContextMailboxQueryV1",
+    "heartbeat_driver": "DriveFactionTargetingRowAsyncPrivateProbeV1",
+    "async_states": [
+      "waiting-snapshot",
+      "query-queued",
+      "query-executing",
+      "awaiting-observer",
+      "terminal",
+      "blocked"
+    ],
+    "queued_is_terminal": false,
+    "executing_is_terminal": false,
+    "queued_or_executing_reclaimed": false,
+    "mailbox_terminal_states": [
+      "completed",
+      "executor_failed",
+      "cancelled",
+      "infrastructure_failed"
+    ],
+    "blocking_wait_used": false,
+    "campaign_root_success_publishes_observer_admission": true,
+    "observer_terminal_requires_same_binding": [
+      "proof_epoch",
+      "snapshot_revision",
+      "date_raw",
+      "player_character_id"
+    ],
+    "terminal_result_is_null_until_probe_terminal": true,
+    "raw_pointers_persisted": false
+  },
+  "focused_verification": {
+    "configurations": ["MSVC /Od /W4 /WX", "MSVC /O2 /W4 /WX"],
+    "tests": [
+      "xar_ck3_native_bridge_faction_targeting_row_probe_v1",
+      "xar_ck3_native_bridge_campaign_root_context_v1_mailbox",
+      "xar_ck3_native_bridge_suspended_injection"
+    ]
+  },
+  "live_boundary": {
+    "ck3_launched_by_package": false,
+    "paused_heartbeat_artifact_ready": false,
+    "next_seam": "capture_faction_targeting_row_probe_v1_paused_live_heartbeat"
+  }
+}

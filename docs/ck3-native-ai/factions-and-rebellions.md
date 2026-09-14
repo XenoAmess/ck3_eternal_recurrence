@@ -508,6 +508,45 @@ The only next seam is
 `wire_faction_targeting_row_probe_v1_into_shared_bridge_private_heartbeat`.
 That wiring must remain private and must not promote public readiness.
 
+### FACTION8-ASYNC-GLUE: cross-heartbeat private publication
+
+FACTION8 wires the FACTION7 terminal adapter into the shared bridge without
+adding a public MCP, schema field, planner input, or advertised capability. A
+default-off build option installs the existing targeting-row observer from
+`XarCk3BridgePrepareStartup`, where the injector still proves the primary
+thread is suspended. The observer remains read-only and private.
+
+The heartbeat driver first submits the existing campaign-root context query.
+It then follows the same nonblocking cross-heartbeat lifecycle as the military
+private probe: `queued` and `executing` are pending states, return immediately,
+and are never reclaimed or reported as a terminal result. Only the mailbox
+states `completed`, `executor_failed`, `cancelled`, and
+`infrastructure_failed` enter terminal handling. A completed query must still
+prove an unchanged paused snapshot, application-main execution stamp, stable
+campaign-root result, nonzero player identity, and nonnegative targeting count
+before its admission is published.
+
+Successful campaign-root admission moves the driver to `awaiting-observer`.
+The observer must publish a nonzero even generation with the exact admitted
+`proof_epoch`, `snapshot_revision`, `date_raw`, and `player_character_id`.
+Only then does FACTION7 produce `ready`, `known-empty`, or typed `unavailable`.
+The private heartbeat contains observer diagnostics and async lifecycle fields,
+but keeps `terminal_result` equal to JSON `null` until that real probe terminal
+exists. It never persists a CK3 pointer.
+
+The source contract and MSVC `/Od` and `/O2`, `/W4 /WX` focused fixtures cover
+the FACTION probe, campaign-root mailbox, suspended injection, nonblocking
+pending states, terminal-only reclaim, and private heartbeat serialization.
+This package is `candidate-ready-no-ck3-launch-pending-paused-live`: shared
+private wiring is static-ready, while paused live evidence, public targeting
+rows, public MCP/schema readiness, faction type, war, power/discontent, and
+gift action policy remain open.
+
+The only next seam is
+`capture_faction_targeting_row_probe_v1_paused_live_heartbeat`. It must use one
+controlled paused exact-build run and preserve `known-empty` if the natural
+save has no targeting faction; it must not promote the result publicly.
+
 ### FACTION-OBS1：逐派系与成员观测
 
 按 [玩家目标派系告警 v1](player-targeting-factions-v1.md) 的 P0 路线，先闭合 targeting-faction span、engine-stable identity、type、war、leader/member、power/discontent 与 stock dangerous predicate。`player_targeting_faction_count` 必须与逐行枚举严格一致。此步是当前最高 blocker。

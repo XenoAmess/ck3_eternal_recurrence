@@ -8,6 +8,8 @@
 #include <cassert>
 #include <cstddef>
 #include <cstdint>
+#include <fstream>
+#include <iterator>
 #include <string>
 
 namespace {
@@ -188,9 +190,102 @@ void TestZeroMemberIdentityRejected() {
   assert(result.faction_count == 0);
 }
 
+std::string ReadText(const char *path) {
+  std::ifstream input(path, std::ios::binary);
+  assert(input.good());
+  return std::string(std::istreambuf_iterator<char>(input),
+                     std::istreambuf_iterator<char>());
+}
+
+void TestAsyncPrivateBridgeSourceContract(int argc, char **argv) {
+  if (argc == 1) {
+    return;
+  }
+  assert(argc == 6);
+  const auto bridge = ReadText(argv[1]);
+  const auto cmake = ReadText(argv[2]);
+  const auto mailbox_header = ReadText(argv[3]);
+  const auto mailbox_source = ReadText(argv[4]);
+  const auto async_fixture = ReadText(argv[5]);
+
+  const auto driver_begin = bridge.find(
+      "void DriveFactionTargetingRowAsyncPrivateProbeV1(");
+  assert(driver_begin != std::string::npos);
+  const auto driver_end = bridge.find(
+      "#if defined(XAR_CK3_ENABLE_G2_COUNCIL_COMPOSITION", driver_begin);
+  assert(driver_end != std::string::npos);
+  const auto driver = bridge.substr(driver_begin, driver_end - driver_begin);
+  assert(driver.find("TrySubmitMainThreadQueryV1") != std::string::npos);
+  assert(driver.find("ExecuteCampaignRootContextMailboxQueryV1") !=
+         std::string::npos);
+  assert(driver.find("WaitForMainThreadQueryV1") == std::string::npos);
+
+  const auto queued = driver.find("MainThreadQueryMailboxStateV1::queued");
+  const auto queued_return = driver.find("return;", queued);
+  const auto executing =
+      driver.find("MainThreadQueryMailboxStateV1::executing", queued_return);
+  const auto executing_return = driver.find("return;", executing);
+  const auto reclaim = driver.find("ReclaimMainThreadQueryV1", executing_return);
+  assert(queued != std::string::npos && queued_return != std::string::npos);
+  assert(executing != std::string::npos &&
+         executing_return != std::string::npos);
+  assert(reclaim != std::string::npos);
+  assert(queued < queued_return && queued_return < executing &&
+         executing < executing_return && executing_return < reclaim);
+  assert(driver.find("PublishFactionTargetingRowAdmissionV1(query)") !=
+         std::string::npos);
+  assert(driver.find("awaiting_observer") != std::string::npos);
+  assert(driver.find("PublishFactionTargetingRowTerminalV1(observer)") !=
+         std::string::npos);
+
+  const auto startup = bridge.find("XarCk3BridgePrepareStartup(LPVOID)");
+  assert(startup != std::string::npos);
+  const auto install = bridge.find("InstallFactionTargetingRowObserverV1", startup);
+  assert(install != std::string::npos);
+  assert(bridge.find("primary_thread_suspended", startup) < install);
+  assert(bridge.find("ReadFactionTargetingRowCaptureAdmissionV1", startup) <
+         install);
+
+  assert(bridge.find("\\\"g2_faction_targeting_row_probe_v1_async\\\"") !=
+         std::string::npos);
+  assert(bridge.find("\\\"advertised\\\":false") != std::string::npos);
+  assert(bridge.find("\\\"terminal_published\\\"") != std::string::npos);
+  assert(bridge.find("\\\"terminal_result\\\"") != std::string::npos);
+  assert(bridge.find("result += \"null\"") != std::string::npos);
+
+  assert(cmake.find(
+             "XAR_CK3_ENABLE_G2_FACTION_TARGETING_ROW_ASYNC_PRIVATE_PROBE_V1") !=
+         std::string::npos);
+  assert(cmake.find("src/faction_targeting_row_observer_v1.cpp") !=
+         std::string::npos);
+  assert(cmake.find("src/faction_targeting_row_probe_v1.cpp") !=
+         std::string::npos);
+  assert(mailbox_header.find("permitted_executor_nonary") !=
+         std::string::npos);
+  assert(mailbox_source.find("executor != mailbox.permitted_executor_nonary") !=
+         std::string::npos);
+  assert(async_fixture.find(
+             "xar.g2.faction-targeting-row-async-glue.source-contract.v1") !=
+         std::string::npos);
+  assert(async_fixture.find(
+             "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86") !=
+         std::string::npos);
+  assert(async_fixture.find("\"queued_is_terminal\": false") !=
+         std::string::npos);
+  assert(async_fixture.find("\"executing_is_terminal\": false") !=
+         std::string::npos);
+  assert(async_fixture.find("\"queued_or_executing_reclaimed\": false") !=
+         std::string::npos);
+  assert(async_fixture.find("\"blocking_wait_used\": false") !=
+         std::string::npos);
+  assert(async_fixture.find(
+             "capture_faction_targeting_row_probe_v1_paused_live_heartbeat") !=
+         std::string::npos);
+}
+
 } // namespace
 
-int main() {
+int main(int argc, char **argv) {
   static_assert(!xar::bridge::kFactionTargetingRowProbePublicByDefaultV1);
   TestReady();
   TestKnownEmpty();
@@ -200,5 +295,6 @@ int main() {
   TestUnpausedBinding();
   TestObserverFlagsPropagate();
   TestZeroMemberIdentityRejected();
+  TestAsyncPrivateBridgeSourceContract(argc, argv);
   return 0;
 }

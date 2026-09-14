@@ -156,6 +156,12 @@ option(
 )
 
 option(
+  XAR_CK3_ENABLE_G2_FACTION_TARGETING_ROW_ASYNC_PRIVATE_PROBE_V1
+  "Run one private exact-build paused targeting-faction row probe"
+  OFF
+)
+
+option(
   XAR_CK3_ENABLE_G2_COUNCIL_COMPOSITION_STEWARD_CANDIDATES_PRIVATE_PROBE_V1
   "Run one private exact-build paused steward-candidate query"
   OFF
@@ -603,6 +609,27 @@ if(XAR_CK3_ENABLE_G2_MILITARY_PREPARATION_SUMMARY_PRIVATE_PROBE_V1)
   )
   target_compile_definitions(xar_ck3_bridge PRIVATE
     XAR_CK3_ENABLE_G2_MILITARY_PREPARATION_SUMMARY_PRIVATE_PROBE_V1=1
+  )
+endif()
+if(XAR_CK3_ENABLE_G2_FACTION_TARGETING_ROW_ASYNC_PRIVATE_PROBE_V1)
+  if(MSVC)
+    set_source_files_properties(
+      src/bridge.cpp
+      src/faction_targeting_row_observer_v1.cpp
+      src/faction_targeting_row_observer_v1_serializer.cpp
+      src/faction_targeting_row_probe_v1.cpp
+      src/faction_targeting_row_probe_v1_serializer.cpp
+      PROPERTIES COMPILE_OPTIONS "/W4;/WX;/permissive-"
+    )
+  endif()
+  target_sources(xar_ck3_bridge PRIVATE
+    src/faction_targeting_row_observer_v1.cpp
+    src/faction_targeting_row_observer_v1_serializer.cpp
+    src/faction_targeting_row_probe_v1.cpp
+    src/faction_targeting_row_probe_v1_serializer.cpp
+  )
+  target_compile_definitions(xar_ck3_bridge PRIVATE
+    XAR_CK3_ENABLE_G2_FACTION_TARGETING_ROW_ASYNC_PRIVATE_PROBE_V1=1
   )
 endif()
 if(XAR_CK3_ENABLE_G2_COUNCIL_COMPOSITION_STEWARD_CANDIDATES_PRIVATE_PROBE_V1)
@@ -1769,6 +1796,31 @@ if(BUILD_TESTING)
       ${CMAKE_CURRENT_SOURCE_DIR}/CMakeLists.txt
       ${CMAKE_CURRENT_SOURCE_DIR}/include/xar_bridge/main_thread_query_mailbox_v1.hpp
       ${CMAKE_CURRENT_SOURCE_DIR}/src/main_thread_query_mailbox_v1.cpp
+  )
+
+  add_executable(xar_ck3_faction_targeting_row_probe_v1_test
+    src/faction_targeting_row_probe_v1.cpp
+    src/faction_targeting_row_probe_v1_serializer.cpp
+    src/faction_targeting_row_probe_v1_test.cpp
+  )
+  target_include_directories(
+    xar_ck3_faction_targeting_row_probe_v1_test PRIVATE include)
+  target_compile_definitions(
+    xar_ck3_faction_targeting_row_probe_v1_test PRIVATE
+    NOMINMAX WIN32_LEAN_AND_MEAN UNICODE _UNICODE)
+  if(MSVC)
+    target_compile_options(
+      xar_ck3_faction_targeting_row_probe_v1_test
+      PRIVATE /W4 /WX /permissive- /EHsc /UNDEBUG)
+  endif()
+  add_test(
+    NAME xar_ck3_native_bridge_faction_targeting_row_probe_v1
+    COMMAND xar_ck3_faction_targeting_row_probe_v1_test
+      ${CMAKE_CURRENT_SOURCE_DIR}/src/bridge.cpp
+      ${CMAKE_CURRENT_SOURCE_DIR}/CMakeLists.txt
+      ${CMAKE_CURRENT_SOURCE_DIR}/include/xar_bridge/main_thread_query_mailbox_v1.hpp
+      ${CMAKE_CURRENT_SOURCE_DIR}/src/main_thread_query_mailbox_v1.cpp
+      ${CMAKE_CURRENT_SOURCE_DIR}/research/fixtures/faction_targeting_row_async_glue_v1_source_contract.json
   )
 
   add_executable(

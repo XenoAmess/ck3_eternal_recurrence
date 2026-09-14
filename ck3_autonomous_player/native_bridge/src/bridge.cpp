@@ -36,6 +36,12 @@
 #include "xar_bridge/military_preparation_summary_v1_binding.hpp"
 #include "xar_bridge/military_preparation_summary_v1_private_probe.hpp"
 #endif
+#if defined(XAR_CK3_ENABLE_G2_FACTION_TARGETING_ROW_ASYNC_PRIVATE_PROBE_V1)
+#include "xar_bridge/faction_targeting_row_observer_v1.hpp"
+#include "xar_bridge/faction_targeting_row_observer_v1_serializer.hpp"
+#include "xar_bridge/faction_targeting_row_probe_v1.hpp"
+#include "xar_bridge/faction_targeting_row_probe_v1_serializer.hpp"
+#endif
 #include "xar_bridge/pending_character_interaction_context_v1_mailbox.hpp"
 #include "xar_bridge/phase2_completion_observer_v1.hpp"
 #include "xar_bridge/phase2_post_call_list_identity_observer_v1.hpp"
@@ -299,6 +305,45 @@ static std::uint32_t
 static std::uint32_t
     g_military_preparation_summary_private_probe_last_wait_v1 = 0;
 #endif
+#if defined(XAR_CK3_ENABLE_G2_FACTION_TARGETING_ROW_ASYNC_PRIVATE_PROBE_V1)
+enum class FactionTargetingRowAsyncStateV1 : std::uint32_t {
+  waiting_snapshot = 0,
+  query_queued = 1,
+  query_executing = 2,
+  awaiting_observer = 3,
+  terminal = 4,
+  blocked = 5,
+};
+
+struct FactionTargetingRowAdmissionBridgeStateV1 {
+  std::atomic<std::uint64_t> generation{0};
+  std::atomic<std::uint64_t> proof_epoch{0};
+  std::atomic<std::uint64_t> snapshot_revision{0};
+  std::atomic<std::int32_t> date_raw{0};
+  std::atomic<std::uint32_t> player_character_id{0};
+  std::atomic<std::int32_t> player_targeting_faction_count{-1};
+};
+
+static xar::bridge::FactionTargetingRowObserverStateV1
+    g_faction_targeting_row_observer_v1{};
+static FactionTargetingRowAdmissionBridgeStateV1
+    g_faction_targeting_row_admission_v1{};
+static xar::ck3_11906::CampaignRootContextMailboxContextV1
+    g_faction_targeting_row_campaign_query_v1{};
+static xar::bridge::FactionTargetingRowProbeBindingV1
+    g_faction_targeting_row_required_binding_v1{};
+static xar::bridge::FactionTargetingRowProbeResultV1
+    g_faction_targeting_row_terminal_result_v1{};
+static FactionTargetingRowAsyncStateV1
+    g_faction_targeting_row_async_state_v1 =
+        FactionTargetingRowAsyncStateV1::waiting_snapshot;
+static bool g_faction_targeting_row_query_in_flight_v1 = false;
+static bool g_faction_targeting_row_terminal_published_v1 = false;
+static std::uint32_t g_faction_targeting_row_last_submit_v1 = 0;
+static std::uint32_t g_faction_targeting_row_last_wait_v1 = 0;
+static std::uint32_t g_faction_targeting_row_last_reclaim_v1 = 0;
+static std::uint32_t g_faction_targeting_row_async_failure_v1 = 0;
+#endif
 static xar::bridge::G2TrucePreviewEntryObserverV1State
     g_g2_truce_preview_entry_observer_v1{};
 
@@ -415,6 +460,311 @@ void DriveMilitaryPreparationSummaryPrivateProbeV1(
       g_main_thread_query_mailbox_v1,
       g_military_preparation_summary_private_probe_ticket_v1);
   g_military_preparation_summary_private_probe_in_flight_v1 = false;
+}
+#endif
+
+#if defined(XAR_CK3_ENABLE_G2_FACTION_TARGETING_ROW_ASYNC_PRIVATE_PROBE_V1)
+std::string_view FactionTargetingRowAsyncStateNameV1(
+    FactionTargetingRowAsyncStateV1 state) noexcept {
+  switch (state) {
+  case FactionTargetingRowAsyncStateV1::waiting_snapshot:
+    return "waiting-snapshot";
+  case FactionTargetingRowAsyncStateV1::query_queued:
+    return "query-queued";
+  case FactionTargetingRowAsyncStateV1::query_executing:
+    return "query-executing";
+  case FactionTargetingRowAsyncStateV1::awaiting_observer:
+    return "awaiting-observer";
+  case FactionTargetingRowAsyncStateV1::terminal:
+    return "terminal";
+  case FactionTargetingRowAsyncStateV1::blocked:
+    return "blocked";
+  }
+  return "blocked";
+}
+
+bool ReadFactionTargetingRowCaptureAdmissionV1(
+    void *context,
+    xar::bridge::FactionTargetingRowCaptureAdmissionV1 &admission) noexcept {
+  auto *mailbox = static_cast<xar::ck3_11906::MainThreadQueryMailboxV1 *>(
+      context);
+  const auto before =
+      g_faction_targeting_row_admission_v1.generation.load(
+          std::memory_order_acquire);
+  if (mailbox == nullptr || before == 0 || (before & 1U) != 0 ||
+      !mailbox->observed_stamp_read_success.load(std::memory_order_acquire)) {
+    return false;
+  }
+
+  xar::bridge::FactionTargetingRowCaptureAdmissionV1 candidate{};
+  candidate.proof_epoch =
+      g_faction_targeting_row_admission_v1.proof_epoch.load(
+          std::memory_order_relaxed);
+  candidate.snapshot_revision =
+      g_faction_targeting_row_admission_v1.snapshot_revision.load(
+          std::memory_order_relaxed);
+  candidate.date_raw =
+      g_faction_targeting_row_admission_v1.date_raw.load(
+          std::memory_order_relaxed);
+  candidate.player_character_id =
+      g_faction_targeting_row_admission_v1.player_character_id.load(
+          std::memory_order_relaxed);
+  candidate.player_targeting_faction_count =
+      g_faction_targeting_row_admission_v1
+          .player_targeting_faction_count.load(std::memory_order_relaxed);
+  const auto after =
+      g_faction_targeting_row_admission_v1.generation.load(
+          std::memory_order_acquire);
+
+  const auto owner_thread_id =
+      mailbox->owner_thread_id.load(std::memory_order_acquire);
+  const auto observed_thread_id =
+      mailbox->observed_current_thread_id.load(std::memory_order_acquire);
+  if (before != after || (after & 1U) != 0 || owner_thread_id == 0 ||
+      observed_thread_id != owner_thread_id ||
+      GetCurrentThreadId() != owner_thread_id ||
+      mailbox->observed_tls_initialized.load(std::memory_order_acquire) == 0 ||
+      mailbox->observed_tls_main_thread_marker.load(
+          std::memory_order_acquire) == 0 ||
+      !mailbox->observed_paused.load(std::memory_order_acquire) ||
+      mailbox->observed_date_raw.load(std::memory_order_acquire) !=
+          candidate.date_raw ||
+      mailbox->pump_epochs.load(std::memory_order_acquire) <
+          candidate.proof_epoch ||
+      candidate.proof_epoch == 0 || candidate.snapshot_revision == 0 ||
+      candidate.player_character_id == 0 ||
+      candidate.player_targeting_faction_count < 0) {
+    return false;
+  }
+
+  candidate.application_main_thread_id = owner_thread_id;
+  candidate.paused = true;
+  admission = candidate;
+  return true;
+}
+
+void PublishFactionTargetingRowAdmissionV1(
+    const xar::ck3_11906::CampaignRootContextMailboxContextV1 &query) noexcept {
+  const auto generation =
+      g_faction_targeting_row_admission_v1.generation.load(
+          std::memory_order_relaxed);
+  const auto write_generation =
+      (generation & 1U) == 0 ? generation + 1 : generation + 2;
+  g_faction_targeting_row_admission_v1.generation.store(
+      write_generation, std::memory_order_release);
+  g_faction_targeting_row_admission_v1.proof_epoch.store(
+      query.execution_stamp.pump_epoch, std::memory_order_relaxed);
+  g_faction_targeting_row_admission_v1.snapshot_revision.store(
+      query.result.snapshot_revision, std::memory_order_relaxed);
+  g_faction_targeting_row_admission_v1.date_raw.store(
+      query.result.date_raw, std::memory_order_relaxed);
+  g_faction_targeting_row_admission_v1.player_character_id.store(
+      static_cast<std::uint32_t>(*query.result.player_character_id),
+      std::memory_order_relaxed);
+  g_faction_targeting_row_admission_v1.player_targeting_faction_count.store(
+      *query.result.player_targeting_faction_count,
+      std::memory_order_relaxed);
+  g_faction_targeting_row_admission_v1.generation.store(
+      write_generation + 1, std::memory_order_release);
+}
+
+void ResetFactionTargetingRowCampaignQueryV1(
+    const xar::game::Snapshot &snapshot, std::uint64_t revision) noexcept {
+  auto &query = g_faction_targeting_row_campaign_query_v1;
+  query.mailbox = &g_main_thread_query_mailbox_v1;
+  query.ticket = {};
+  query.bindings = xar::ck3_11906::BindCurrentProcess(true);
+  query.environment = xar::ck3_11906::BindCampaignRootNativeEnvironmentV1(
+      reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr)), true);
+  query.access = {};
+  query.request = {};
+  query.request.expected_snapshot_revision = revision;
+  query.expected_snapshot = snapshot;
+  query.completion =
+      xar::ck3_11906::CampaignRootContextMailboxCompletionV1::not_executed;
+  query.read_result = xar::game::ReadCampaignRootContextResultV1::unavailable;
+  query.result = {};
+  query.execution_stamp = {};
+  query.executor_invocations = 0;
+}
+
+void PublishFactionTargetingRowTerminalV1(
+    const xar::bridge::FactionTargetingRowObserverDiagnosticsV1 &observer) {
+  g_faction_targeting_row_terminal_result_v1 =
+      xar::bridge::ProbeFactionTargetingRowsV1(
+          observer, g_faction_targeting_row_required_binding_v1);
+  g_faction_targeting_row_terminal_published_v1 = true;
+  g_faction_targeting_row_async_state_v1 =
+      FactionTargetingRowAsyncStateV1::terminal;
+}
+
+void DriveFactionTargetingRowAsyncPrivateProbeV1(
+    const xar::game::GameAdapter &game,
+    const std::optional<xar::game::Snapshot> &snapshot,
+    std::uint64_t revision) noexcept {
+  if (g_faction_targeting_row_terminal_published_v1 ||
+      g_faction_targeting_row_async_state_v1 ==
+          FactionTargetingRowAsyncStateV1::blocked) {
+    return;
+  }
+
+  if (g_faction_targeting_row_async_state_v1 ==
+      FactionTargetingRowAsyncStateV1::awaiting_observer) {
+    const auto observer =
+        xar::bridge::ReadFactionTargetingRowObserverDiagnosticsV1(
+            g_faction_targeting_row_observer_v1);
+    const auto &capture = observer.observation;
+    const auto exact_binding =
+        capture.last_proof_epoch ==
+            g_faction_targeting_row_required_binding_v1.proof_epoch &&
+        capture.last_snapshot_revision ==
+            g_faction_targeting_row_required_binding_v1.snapshot_revision &&
+        capture.last_date_raw ==
+            g_faction_targeting_row_required_binding_v1.date_raw &&
+        capture.last_player_character_id ==
+            g_faction_targeting_row_required_binding_v1.player_character_id;
+    if (!observer.installed ||
+        observer.failure_flags !=
+            xar::bridge::faction_targeting_row_observer_failure_none) {
+      PublishFactionTargetingRowTerminalV1(observer);
+    } else if (capture.published_generation != 0 &&
+               (capture.published_generation & 1U) == 0 && exact_binding) {
+      PublishFactionTargetingRowTerminalV1(observer);
+    }
+    return;
+  }
+
+  auto &query = g_faction_targeting_row_campaign_query_v1;
+  if (!g_faction_targeting_row_query_in_flight_v1) {
+    if (!snapshot.has_value() || revision == 0 || !snapshot->map_ready ||
+        !snapshot->paused || !snapshot->has_played_character ||
+        !snapshot->played_character_alive ||
+        snapshot->played_character_id <= 0) {
+      return;
+    }
+    xar::game::Snapshot current{};
+    if (!xar::game::ReadSnapshot(game, current) || current != *snapshot) {
+      return;
+    }
+    ResetFactionTargetingRowCampaignQueryV1(current, revision);
+    const auto submit = xar::ck3_11906::TrySubmitMainThreadQueryV1(
+        g_main_thread_query_mailbox_v1,
+        &xar::ck3_11906::ExecuteCampaignRootContextMailboxQueryV1, &query,
+        query.ticket);
+    g_faction_targeting_row_last_submit_v1 =
+        static_cast<std::uint32_t>(submit);
+    if (submit == xar::ck3_11906::MainThreadQuerySubmitResultV1::submitted) {
+      g_faction_targeting_row_query_in_flight_v1 = true;
+      g_faction_targeting_row_async_state_v1 =
+          FactionTargetingRowAsyncStateV1::query_queued;
+    } else if (
+        submit != xar::ck3_11906::MainThreadQuerySubmitResultV1::
+                      paused_main_thread_not_observed &&
+        submit != xar::ck3_11906::MainThreadQuerySubmitResultV1::
+                      mailbox_busy &&
+        submit != xar::ck3_11906::MainThreadQuerySubmitResultV1::
+                      application_main_not_observed) {
+      g_faction_targeting_row_async_failure_v1 |= 1U;
+      g_faction_targeting_row_async_state_v1 =
+          FactionTargetingRowAsyncStateV1::blocked;
+    }
+  }
+  if (!g_faction_targeting_row_query_in_flight_v1) return;
+
+  if (g_main_thread_query_mailbox_v1.published_sequence.load(
+          std::memory_order_acquire) != query.ticket.sequence) {
+    return;
+  }
+  const auto mailbox_state =
+      g_main_thread_query_mailbox_v1.state.load(std::memory_order_acquire);
+  if (mailbox_state ==
+      xar::ck3_11906::MainThreadQueryMailboxStateV1::queued) {
+    g_faction_targeting_row_async_state_v1 =
+        FactionTargetingRowAsyncStateV1::query_queued;
+    return;
+  }
+  if (mailbox_state ==
+      xar::ck3_11906::MainThreadQueryMailboxStateV1::executing) {
+    g_faction_targeting_row_async_state_v1 =
+        FactionTargetingRowAsyncStateV1::query_executing;
+    return;
+  }
+
+  auto terminal_wait =
+      xar::ck3_11906::MainThreadQueryWaitResultV1::ticket_mismatch;
+  switch (mailbox_state) {
+  case xar::ck3_11906::MainThreadQueryMailboxStateV1::completed:
+    terminal_wait = xar::ck3_11906::MainThreadQueryWaitResultV1::completed;
+    break;
+  case xar::ck3_11906::MainThreadQueryMailboxStateV1::executor_failed:
+    terminal_wait =
+        xar::ck3_11906::MainThreadQueryWaitResultV1::executor_failed;
+    break;
+  case xar::ck3_11906::MainThreadQueryMailboxStateV1::cancelled:
+    terminal_wait = xar::ck3_11906::MainThreadQueryWaitResultV1::cancelled;
+    break;
+  case xar::ck3_11906::MainThreadQueryMailboxStateV1::infrastructure_failed:
+    terminal_wait =
+        xar::ck3_11906::MainThreadQueryWaitResultV1::infrastructure_failed;
+    break;
+  default:
+    return;
+  }
+  g_faction_targeting_row_last_wait_v1 =
+      static_cast<std::uint32_t>(terminal_wait);
+
+  bool completion_snapshot_stable = false;
+  xar::game::Snapshot completion_snapshot{};
+  if (terminal_wait ==
+      xar::ck3_11906::MainThreadQueryWaitResultV1::completed) {
+    completion_snapshot_stable =
+        xar::game::ReadSnapshot(game, completion_snapshot) &&
+        completion_snapshot == query.expected_snapshot;
+  }
+  const bool root_available =
+      terminal_wait ==
+          xar::ck3_11906::MainThreadQueryWaitResultV1::completed &&
+      query.completion == xar::ck3_11906::
+                              CampaignRootContextMailboxCompletionV1::
+                                  completed &&
+      completion_snapshot_stable &&
+      query.result.status == xar::game::CampaignRootContextStatusV1::available &&
+      query.result.readiness.same_frame_ready &&
+      query.result.player_character_id.has_value() &&
+      *query.result.player_character_id > 0 &&
+      query.result.player_targeting_faction_count.has_value() &&
+      *query.result.player_targeting_faction_count >= 0 &&
+      query.execution_stamp.paused && query.execution_stamp.pump_epoch != 0;
+
+  if (root_available) {
+    g_faction_targeting_row_required_binding_v1 = {
+        true, query.execution_stamp.pump_epoch,
+        query.result.snapshot_revision, query.result.date_raw,
+        static_cast<std::uint32_t>(*query.result.player_character_id)};
+    PublishFactionTargetingRowAdmissionV1(query);
+  } else {
+    g_faction_targeting_row_async_failure_v1 |=
+        terminal_wait ==
+                xar::ck3_11906::MainThreadQueryWaitResultV1::completed
+            ? 4U
+            : 2U;
+  }
+
+  const auto reclaimed = xar::ck3_11906::ReclaimMainThreadQueryV1(
+      g_main_thread_query_mailbox_v1, query.ticket);
+  g_faction_targeting_row_last_reclaim_v1 =
+      static_cast<std::uint32_t>(reclaimed);
+  g_faction_targeting_row_query_in_flight_v1 = false;
+  if (reclaimed !=
+      xar::ck3_11906::MainThreadQueryReclaimResultV1::reclaimed) {
+    g_faction_targeting_row_async_failure_v1 |= 8U;
+  }
+  g_faction_targeting_row_async_state_v1 =
+      root_available &&
+              reclaimed ==
+                  xar::ck3_11906::MainThreadQueryReclaimResultV1::reclaimed
+          ? FactionTargetingRowAsyncStateV1::awaiting_observer
+          : FactionTargetingRowAsyncStateV1::blocked;
 }
 #endif
 
@@ -1007,6 +1357,11 @@ std::string HeartbeatFrame(std::uint64_t sequence) {
       xar::bridge::ReadPhase2ProducerIdentityDiagnosticsV1(
           g_phase2_producer_identity_observer_v1);
 #endif
+#if defined(XAR_CK3_ENABLE_G2_FACTION_TARGETING_ROW_ASYNC_PRIVATE_PROBE_V1)
+  const auto faction_targeting_row_observer =
+      xar::bridge::ReadFactionTargetingRowObserverDiagnosticsV1(
+          g_faction_targeting_row_observer_v1);
+#endif
   std::string result =
       "{\"type\":\"heartbeat\",\"protocol_version\":1,\"sequence\":";
   result += Number(sequence);
@@ -1046,6 +1401,10 @@ std::string HeartbeatFrame(std::uint64_t sequence) {
 #endif
 #if defined(XAR_CK3_ENABLE_G2_MILITARY_PREPARATION_SUMMARY_PRIVATE_PROBE_V1)
   result += ",\"military_preparation_summary_private_probe_enabled\":true";
+#endif
+#if defined(XAR_CK3_ENABLE_G2_FACTION_TARGETING_ROW_ASYNC_PRIVATE_PROBE_V1)
+  result +=
+      ",\"faction_targeting_row_async_private_probe_enabled\":true";
 #endif
 #if defined(XAR_CK3_ENABLE_G2_COUNCIL_COMPOSITION_STEWARD_CANDIDATES_PRIVATE_PROBE_V1)
   result +=
@@ -1882,6 +2241,40 @@ std::string HeartbeatFrame(std::uint64_t sequence) {
       g_military_preparation_summary_private_probe_last_submit_v1);
   result += ",\"last_wait_result\":";
   result += Number(g_military_preparation_summary_private_probe_last_wait_v1);
+#endif
+#if defined(XAR_CK3_ENABLE_G2_FACTION_TARGETING_ROW_ASYNC_PRIVATE_PROBE_V1)
+  result += "},\"g2_faction_targeting_row_probe_v1_async\":{";
+  result += "\"private_build\":true,\"read_only\":true,";
+  result += "\"advertised\":false,\"async_state\":";
+  AppendJsonString(
+      result,
+      FactionTargetingRowAsyncStateNameV1(
+          g_faction_targeting_row_async_state_v1));
+  result += ",\"query_in_flight\":";
+  result += g_faction_targeting_row_query_in_flight_v1 ? "true" : "false";
+  result += ",\"terminal_published\":";
+  result += g_faction_targeting_row_terminal_published_v1 ? "true" : "false";
+  result += ",\"last_submit_result\":";
+  result += Number(g_faction_targeting_row_last_submit_v1);
+  result += ",\"last_wait_result\":";
+  result += Number(g_faction_targeting_row_last_wait_v1);
+  result += ",\"last_reclaim_result\":";
+  result += Number(g_faction_targeting_row_last_reclaim_v1);
+  result += ",\"async_failure_flags\":";
+  result += Number(g_faction_targeting_row_async_failure_v1);
+  result += ",\"admission_generation\":";
+  result += Number(g_faction_targeting_row_admission_v1.generation.load(
+      std::memory_order_acquire));
+  result += ",\"observer\":";
+  result += xar::bridge::SerializeFactionTargetingRowObserverV1(
+      faction_targeting_row_observer);
+  result += ",\"terminal_result\":";
+  if (g_faction_targeting_row_terminal_published_v1) {
+    result += xar::bridge::SerializeFactionTargetingRowProbeV1(
+        g_faction_targeting_row_terminal_result_v1);
+  } else {
+    result += "null";
+  }
 #endif
 #if defined(XAR_CK3_ENABLE_G2_COUNCIL_COMPOSITION_STEWARD_CANDIDATES_PRIVATE_PROBE_V1)
   result +=
@@ -6270,6 +6663,10 @@ void RunConnectedSession(
           g_coat_of_arms_designer_probe_hook_v1);
       xar::ck3_11906::TryInstallMainThreadFrontendBoundaryHookV1(
           g_main_thread_query_mailbox_v1);
+#if defined(XAR_CK3_ENABLE_G2_FACTION_TARGETING_ROW_ASYNC_PRIVATE_PROBE_V1)
+      DriveFactionTargetingRowAsyncPrivateProbeV1(
+          game, previous_snapshot, state_revision);
+#endif
 #if defined(XAR_CK3_ENABLE_G2_MILITARY_PREPARATION_SUMMARY_PRIVATE_PROBE_V1)
       DriveMilitaryPreparationSummaryPrivateProbeV1(previous_snapshot,
                                                      state_revision);
@@ -12572,6 +12969,25 @@ XarCk3BridgePrepareStartup(LPVOID) noexcept {
           battle_terminal_environment)) {
     return FALSE;
   }
+#if defined(XAR_CK3_ENABLE_G2_FACTION_TARGETING_ROW_ASYNC_PRIVATE_PROBE_V1)
+  {
+    xar::bridge::FactionTargetingRowObserverEnvironmentV1 environment{};
+    environment.exact_build_admitted = true;
+    environment.admitted_executable_sha256 =
+        xar::bridge::kFactionTargetingRowObserverExecutableSha256V1;
+    environment.primary_thread_suspended_proven = true;
+    environment.module_base =
+        reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr));
+    environment.capture_admission_context =
+        &g_main_thread_query_mailbox_v1;
+    environment.capture_admission_probe =
+        &ReadFactionTargetingRowCaptureAdmissionV1;
+    if (!xar::bridge::InstallFactionTargetingRowObserverV1(
+            g_faction_targeting_row_observer_v1, environment)) {
+      return FALSE;
+    }
+  }
+#endif
   if (kPhase2CompletionObserverEnabledV1) {
     xar::bridge::Phase2CompletionObserverV1Environment environment{};
     environment.exact_build_admitted = true;
