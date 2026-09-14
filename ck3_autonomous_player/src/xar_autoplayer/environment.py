@@ -81,8 +81,8 @@ _GIT_STATUS_RETRY_DELAYS_SECONDS = (0.05, 0.1)
 def process_creation_utc(value: object) -> datetime:
     """Parse the two exact Windows process-time encodings used by this agent.
 
-    COM WMI exposes DMTF local time with a minute offset, while the global
-    PowerShell CIM inventory serializes the same value as seven-digit UTC ISO.
+    COM WMI exposes DMTF local time with a minute offset, while archived legacy
+    inventory evidence may serialize the same value as seven-digit UTC ISO.
     Raw strings remain in evidence; this helper is only for strict cross-source
     identity comparison.
     """
@@ -1040,82 +1040,21 @@ def ck3_process_inventory() -> dict[str, object]:
         raise UnsafeCleanupError(
             f"CK3 tasklist inventory returned unexpected output: {unexpected!r}"
         )
-    wmi_script = (
-        "$rows=@(Get-CimInstance -ClassName Win32_Process "
-        "-Filter \"Name='ck3.exe'\"|ForEach-Object{[pscustomobject]@{"
-        "pid=[int]$_.ProcessId;parent_pid=[int]$_.ParentProcessId;"
-        "name=[string]$_.Name;executable=[string]$_.ExecutablePath;"
-        "creation_date=$_.CreationDate.ToUniversalTime().ToString('o')}});"
-        "ConvertTo-Json -InputObject $rows -Compress"
-    )
-    try:
-        wmi_result = subprocess.run(
-            [
-                "powershell.exe",
-                "-NoProfile",
-                "-NonInteractive",
-                "-Command",
-                wmi_script,
-            ],
-            capture_output=True,
-            text=True,
-            errors="replace",
-            check=False,
-            timeout=15,
-        )
-    except subprocess.TimeoutExpired as error:
-        raise UnsafeCleanupError("CK3 WMI inventory timed out") from error
-    if wmi_result.returncode != 0 or wmi_result.stderr.strip():
-        if _is_access_denied(wmi_result.stderr):
-            processes = _toolhelp_ck3_processes()
-            wmi_pids = [int(item["pid"]) for item in processes]
-            if sorted(tasklist_pids) != wmi_pids:
-                raise UnsafeCleanupError(
-                    "CK3 process inventories disagree: "
-                    f"tasklist={sorted(tasklist_pids)!r}, "
-                    f"toolhelp={wmi_pids!r}"
-                )
-            return {
-                "tasklist_returncode": result.returncode,
-                "tasklist_pids": sorted(tasklist_pids),
-                "wmi_pids": wmi_pids,
-                "processes": processes,
-            }
-        raise UnsafeCleanupError(
-            "CK3 WMI inventory failed: "
-            f"rc={wmi_result.returncode}, stderr={wmi_result.stderr.strip()!r}"
-        )
-    try:
-        decoded = json.loads(wmi_result.stdout)
-        if not isinstance(decoded, list):
-            raise ValueError("WMI JSON root is not an array")
-        processes = sorted(
-            (
-                {
-                    "pid": int(item["pid"]),
-                    "parent_pid": int(item["parent_pid"]),
-                    "name": str(item["name"]),
-                    "executable": str(item["executable"] or ""),
-                    "creation_date": str(item["creation_date"]),
-                }
-                for item in decoded
-            ),
-            key=lambda item: int(item["pid"]),
-        )
-    except (ValueError, KeyError, TypeError, json.JSONDecodeError) as error:
-        raise UnsafeCleanupError(
-            f"CK3 WMI inventory returned malformed JSON: {wmi_result.stdout!r}"
-        ) from error
-    wmi_pids = [int(item["pid"]) for item in processes]
-    if sorted(tasklist_pids) != wmi_pids:
+    processes = _toolhelp_ck3_processes()
+    native_pids = [int(item["pid"]) for item in processes]
+    if sorted(tasklist_pids) != native_pids:
         raise UnsafeCleanupError(
             "CK3 process inventories disagree: "
-            f"tasklist={sorted(tasklist_pids)!r}, wmi={wmi_pids!r}"
+            f"tasklist={sorted(tasklist_pids)!r}, toolhelp={native_pids!r}"
         )
     return {
         "tasklist_returncode": result.returncode,
         "tasklist_pids": sorted(tasklist_pids),
-        "wmi_pids": wmi_pids,
+        # Compatibility field retained for archived report readers. New code
+        # records the actual backend explicitly and consumes native_pids.
+        "wmi_pids": native_pids,
+        "native_pids": native_pids,
+        "inventory_backend": "tasklist+toolhelp32",
         "processes": processes,
     }
 

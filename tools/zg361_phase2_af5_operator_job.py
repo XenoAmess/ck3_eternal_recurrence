@@ -10,6 +10,8 @@ from __future__ import annotations
 
 import argparse
 import copy
+import ctypes
+from ctypes import wintypes
 from datetime import datetime, timezone
 import hashlib
 import importlib
@@ -151,22 +153,50 @@ def ck3_pids() -> list[int]:
 
     if sys.platform != "win32":
         return []
-    command = (
-        "@(Get-Process -Name ck3 -ErrorAction SilentlyContinue | "
-        "Select-Object -ExpandProperty Id) | ConvertTo-Json -Compress"
-    )
-    completed = subprocess.run(
-        ["powershell.exe", "-NoProfile", "-NonInteractive", "-Command", command],
-        check=True,
-        capture_output=True,
-        text=True,
-    )
-    text = completed.stdout.strip()
-    if not text:
-        return []
-    value = json.loads(text)
-    values = value if isinstance(value, list) else [value]
-    return sorted(int(item) for item in values)
+    kernel32 = ctypes.WinDLL("kernel32", use_last_error=True)
+
+    class ProcessEntry32W(ctypes.Structure):
+        _fields_ = [
+            ("dwSize", wintypes.DWORD),
+            ("cntUsage", wintypes.DWORD),
+            ("th32ProcessID", wintypes.DWORD),
+            ("th32DefaultHeapID", ctypes.c_size_t),
+            ("th32ModuleID", wintypes.DWORD),
+            ("cntThreads", wintypes.DWORD),
+            ("th32ParentProcessID", wintypes.DWORD),
+            ("pcPriClassBase", wintypes.LONG),
+            ("dwFlags", wintypes.DWORD),
+            ("szExeFile", wintypes.WCHAR * 260),
+        ]
+
+    kernel32.CreateToolhelp32Snapshot.argtypes = [wintypes.DWORD, wintypes.DWORD]
+    kernel32.CreateToolhelp32Snapshot.restype = wintypes.HANDLE
+    kernel32.Process32FirstW.argtypes = [
+        wintypes.HANDLE,
+        ctypes.POINTER(ProcessEntry32W),
+    ]
+    kernel32.Process32FirstW.restype = wintypes.BOOL
+    kernel32.Process32NextW.argtypes = [
+        wintypes.HANDLE,
+        ctypes.POINTER(ProcessEntry32W),
+    ]
+    kernel32.Process32NextW.restype = wintypes.BOOL
+    kernel32.CloseHandle.argtypes = [wintypes.HANDLE]
+    snapshot = kernel32.CreateToolhelp32Snapshot(0x00000002, 0)
+    if snapshot == wintypes.HANDLE(-1).value:
+        raise ctypes.WinError(ctypes.get_last_error())
+    result: list[int] = []
+    try:
+        entry = ProcessEntry32W()
+        entry.dwSize = ctypes.sizeof(entry)
+        available = kernel32.Process32FirstW(snapshot, ctypes.byref(entry))
+        while available:
+            if str(entry.szExeFile).casefold() == "ck3.exe":
+                result.append(int(entry.th32ProcessID))
+            available = kernel32.Process32NextW(snapshot, ctypes.byref(entry))
+    finally:
+        kernel32.CloseHandle(snapshot)
+    return sorted(result)
 
 
 def git_identity(repository_root: Path) -> dict[str, object]:

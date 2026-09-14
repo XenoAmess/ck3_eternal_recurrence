@@ -12,6 +12,8 @@ injects the bridge, or issues a gameplay command API mutation.
 from __future__ import annotations
 
 import argparse
+import ctypes
+from ctypes import wintypes
 from datetime import datetime, timezone
 import hashlib
 import json
@@ -81,24 +83,80 @@ SICILY_SAFE_OPTION = "教宗和皇帝都可以保留他们的土地"
 
 def process_inventory() -> list[dict[str, object]]:
     runner_pid = os.getpid()
-    command = [
-        "powershell.exe",
-        "-NoProfile",
-        "-NonInteractive",
-        "-Command",
-        "Get-CimInstance Win32_Process | Where-Object { "
-        "$_.Name -in @('ck3.exe','python.exe','pythonw.exe') } | "
-        "Select-Object ProcessId,ParentProcessId,Name,ExecutablePath | "
-        "ConvertTo-Json -Compress",
-    ]
-    result = subprocess.run(command, capture_output=True, text=True, timeout=15)
-    if result.returncode != 0:
-        raise RuntimeError(f"process inventory failed: {result.stderr.strip()}")
-    text = result.stdout.strip()
-    if not text:
+    if os.name != "nt":
         return []
-    decoded = json.loads(text)
-    rows = decoded if isinstance(decoded, list) else [decoded]
+    kernel32 = ctypes.WinDLL("kernel32", use_last_error=True)
+
+    class ProcessEntry32W(ctypes.Structure):
+        _fields_ = [
+            ("dwSize", wintypes.DWORD),
+            ("cntUsage", wintypes.DWORD),
+            ("th32ProcessID", wintypes.DWORD),
+            ("th32DefaultHeapID", ctypes.c_size_t),
+            ("th32ModuleID", wintypes.DWORD),
+            ("cntThreads", wintypes.DWORD),
+            ("th32ParentProcessID", wintypes.DWORD),
+            ("pcPriClassBase", wintypes.LONG),
+            ("dwFlags", wintypes.DWORD),
+            ("szExeFile", wintypes.WCHAR * 260),
+        ]
+
+    kernel32.CreateToolhelp32Snapshot.argtypes = [wintypes.DWORD, wintypes.DWORD]
+    kernel32.CreateToolhelp32Snapshot.restype = wintypes.HANDLE
+    kernel32.Process32FirstW.argtypes = [
+        wintypes.HANDLE,
+        ctypes.POINTER(ProcessEntry32W),
+    ]
+    kernel32.Process32FirstW.restype = wintypes.BOOL
+    kernel32.Process32NextW.argtypes = [
+        wintypes.HANDLE,
+        ctypes.POINTER(ProcessEntry32W),
+    ]
+    kernel32.Process32NextW.restype = wintypes.BOOL
+    kernel32.OpenProcess.argtypes = [wintypes.DWORD, wintypes.BOOL, wintypes.DWORD]
+    kernel32.OpenProcess.restype = wintypes.HANDLE
+    kernel32.QueryFullProcessImageNameW.argtypes = [
+        wintypes.HANDLE,
+        wintypes.DWORD,
+        wintypes.LPWSTR,
+        ctypes.POINTER(wintypes.DWORD),
+    ]
+    kernel32.QueryFullProcessImageNameW.restype = wintypes.BOOL
+    kernel32.CloseHandle.argtypes = [wintypes.HANDLE]
+    snapshot = kernel32.CreateToolhelp32Snapshot(0x00000002, 0)
+    if snapshot == wintypes.HANDLE(-1).value:
+        raise ctypes.WinError(ctypes.get_last_error())
+    rows: list[dict[str, object]] = []
+    try:
+        entry = ProcessEntry32W()
+        entry.dwSize = ctypes.sizeof(entry)
+        available = kernel32.Process32FirstW(snapshot, ctypes.byref(entry))
+        while available:
+            name = str(entry.szExeFile)
+            if name.casefold() in {"ck3.exe", "python.exe", "pythonw.exe"}:
+                executable = ""
+                handle = kernel32.OpenProcess(0x00001000, False, entry.th32ProcessID)
+                if handle:
+                    try:
+                        size = wintypes.DWORD(32768)
+                        buffer = ctypes.create_unicode_buffer(size.value)
+                        if kernel32.QueryFullProcessImageNameW(
+                            handle, 0, buffer, ctypes.byref(size)
+                        ):
+                            executable = buffer.value
+                    finally:
+                        kernel32.CloseHandle(handle)
+                rows.append(
+                    {
+                        "ProcessId": int(entry.th32ProcessID),
+                        "ParentProcessId": int(entry.th32ParentProcessID),
+                        "Name": name,
+                        "ExecutablePath": executable,
+                    }
+                )
+            available = kernel32.Process32NextW(snapshot, ctypes.byref(entry))
+    finally:
+        kernel32.CloseHandle(snapshot)
     rows_by_pid = {int(row["ProcessId"]): row for row in rows}
     exempt_runner_chain = {runner_pid}
     cursor = runner_pid

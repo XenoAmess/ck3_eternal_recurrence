@@ -21,7 +21,7 @@ production、非 debug、仅加载本 mod 的正常游戏里扮演玩家。
 - 原版 81 个声明默认规则，加 `xar_on`、`xar_inherit_100`、`xar_score_growth`，总计 84 个 setting。
 - 简中、2560×1440、云存档关闭；`tutorial.txt` 只在首次创建，之后不读取、不清空、不回滚。
 - 同一 state 的锁覆盖 prepare/verify/smoke；同一 CK3 安装的全局启动锁覆盖完整 smoke 启停周期。每次启动前和退出后
-  都用 `tasklist` 与 WMI 双源清点 CK3，任一查询失败、格式异常或结果不一致都按 unknown 拒绝继续，绝不把查询失败解释成零进程。
+  都用 `tasklist` 与 Python 直接调用的 Toolhelp32 双源清点 CK3，任一查询失败、格式异常或结果不一致都按 unknown 拒绝继续，绝不把查询失败解释成零进程。
 - unsafe marker 在启动 watchdog 前建立；watchdog 先持有并复核 supervisor 的 PID、可执行路径和创建时间，之后才写 ready。
   CK3 以 `CREATE_SUSPENDED` 创建，先进入 kill-on-close Job、完成 WMI 身份验证并原子写入 launch record，resume 前还要让
   双源全局清点精确只看见这个新 PID，因此第一条 CK3 指令开始就在 Job 内。record 绑定 nonce、父 PID、可执行路径和创建时间；
@@ -224,36 +224,36 @@ Alt 获取前台，因此只能说“没有作出游戏内玩法选择”，不�
 
 使用项目现有桌面依赖环境：
 
-```powershell
-& "tools\.venv\Scripts\python.exe" "ck3_autonomous_player\agent.py" doctor
-& "tools\.venv\Scripts\python.exe" "ck3_autonomous_player\agent.py" prepare-profile
-& "tools\.venv\Scripts\python.exe" "ck3_autonomous_player\agent.py" verify-profile
-& "tools\.venv\Scripts\python.exe" "ck3_autonomous_player\agent.py" smoke
-& "tools\.venv\Scripts\python.exe" "ck3_autonomous_player\agent.py" crash-smoke
-& "tools\.venv\Scripts\python.exe" "ck3_autonomous_player\agent.py" menu-smoke --timeout 180
-& "tools\.venv\Scripts\python.exe" "ck3_autonomous_player\agent.py" opening-smoke --ordinary-events 3 --timeout 900
-& "tools\.venv\Scripts\python.exe" "ck3_autonomous_player\agent.py" opening-replay --observation <observation.json> --check steward-development-active
-& "tools\.venv\Scripts\python.exe" "ck3_autonomous_player\agent.py" opening-step --step steward-development --timeout 240
-& "tools\.venv\Scripts\python.exe" "ck3_autonomous_player\agent.py" opening-step --step economic-event-cycle --timeout 240
-& "tools\.venv\Scripts\python.exe" "ck3_autonomous_player\agent.py" opening-step --step save-checkpoint --timeout 240
-& "tools\.venv\Scripts\python.exe" "ck3_autonomous_player\agent.py" opening-step --step restore-checkpoint --timeout 240
-& "tools\.venv\Scripts\python.exe" "ck3_autonomous_player\agent.py" opening-step --step auto-turn --timeout 240
-& "tools\.venv\Scripts\python.exe" "ck3_autonomous_player\agent.py" opening-step --step auto-run --timeout 900
-& "tools\.venv\Scripts\python.exe" "ck3_autonomous_player\agent.py" opening-step --step death-terminal --timeout 240
-& "tools\.venv\Scripts\python.exe" "ck3_autonomous_player\agent.py" strategy-review
-& "tools\.venv\Scripts\python.exe" "ck3_autonomous_player\agent.py" opening-dev-session --timeout 21600
-& "tools\.venv\Scripts\python.exe" "ck3_autonomous_player\agent.py" recover-stale-control --run-id <finalized-RED-run-id>
-& "tools\.venv\Scripts\python.exe" -m pip install "mcp==2.0.0"
-& "tools\.venv\Scripts\python.exe" "ck3_autonomous_player\mcp_server.py" --driver vision-report --transport stdio
-& "tools\.venv\Scripts\python.exe" "ck3_autonomous_player\mcp_server.py" --driver vision-session --transport stdio
-& "tools\.venv\Scripts\python.exe" "ck3_autonomous_player\mcp_server.py" --driver mod --userdir <isolated-ck3-userdir> --transport stdio
-& "tools\.venv\Scripts\python.exe" "ck3_autonomous_player\mcp_server.py" --driver hybrid --userdir <isolated-ck3-userdir> --transport stdio
-& "tools\.venv\Scripts\python.exe" "ck3_autonomous_player\mcp_server.py" --driver native-headless --pipe-name '\\.\pipe\xar_ck3_bridge_mcp' --transport stdio
-& "tools\.venv\Scripts\python.exe" "ck3_autonomous_player\mcp_server.py" --driver hybrid-fallback --pipe-name '\\.\pipe\xar_ck3_bridge_mcp' --userdir <isolated-ck3-userdir> --state-dir <XarAutoplayer-state> --transport stdio
-& "tools\.venv\Scripts\python.exe" "ck3_autonomous_player\agent.py" --bridge-mode native-headless --bridge-pipe '\\.\pipe\xar_ck3_bridge_mcp' --bridge-dll <xar_ck3_bridge.dll> --bridge-injector <xar_ck3_bridge_injector.exe> native-session --timeout 21600
-& "tools\.venv\Scripts\python.exe" "ck3_autonomous_player\agent.py" --state-dir <XarAutoplayer-state> --bridge-mode native-headless --bridge-pipe '\\.\pipe\xar_ck3_bridge_mcp' --bridge-dll <xar_ck3_bridge.dll> --bridge-injector <xar_ck3_bridge_injector.exe> native-auto-run --turns 20 --timeout 21600 --readiness-timeout 300 --cold-start-checkpoint
-& "tools\.venv\Scripts\python.exe" "ck3_autonomous_player\agent.py" --state-dir <XarAutoplayer-state> --game-dir <CK3-dir> --bridge-mode disabled --bridge-pipe '<checkpoint-driver-state-pipe>' native-one-generation-preflight --expected-character-id <CharacterID> --expected-episode-run-id <episode-run-id> --expected-checkpoint-sha256 <checkpoint-sha256> --expected-driver-state-sha256 <driver-state-sha256>
-& "tools\.venv\Scripts\python.exe" "ck3_autonomous_player\agent.py" --state-dir <XarAutoplayer-state> --bridge-mode native-headless --bridge-pipe '<checkpoint-driver-state-pipe>' --bridge-dll <xar_ck3_bridge.dll> --bridge-injector <xar_ck3_bridge_injector.exe> native-one-generation --max-turns 50000 --timeout 604800 --readiness-timeout 300 --checkpoint-every-advances 3 --route-contact-speed 3
+```bat
+"tools\.venv\Scripts\python.exe" "ck3_autonomous_player\agent.py" doctor
+"tools\.venv\Scripts\python.exe" "ck3_autonomous_player\agent.py" prepare-profile
+"tools\.venv\Scripts\python.exe" "ck3_autonomous_player\agent.py" verify-profile
+"tools\.venv\Scripts\python.exe" "ck3_autonomous_player\agent.py" smoke
+"tools\.venv\Scripts\python.exe" "ck3_autonomous_player\agent.py" crash-smoke
+"tools\.venv\Scripts\python.exe" "ck3_autonomous_player\agent.py" menu-smoke --timeout 180
+"tools\.venv\Scripts\python.exe" "ck3_autonomous_player\agent.py" opening-smoke --ordinary-events 3 --timeout 900
+"tools\.venv\Scripts\python.exe" "ck3_autonomous_player\agent.py" opening-replay --observation <observation.json> --check steward-development-active
+"tools\.venv\Scripts\python.exe" "ck3_autonomous_player\agent.py" opening-step --step steward-development --timeout 240
+"tools\.venv\Scripts\python.exe" "ck3_autonomous_player\agent.py" opening-step --step economic-event-cycle --timeout 240
+"tools\.venv\Scripts\python.exe" "ck3_autonomous_player\agent.py" opening-step --step save-checkpoint --timeout 240
+"tools\.venv\Scripts\python.exe" "ck3_autonomous_player\agent.py" opening-step --step restore-checkpoint --timeout 240
+"tools\.venv\Scripts\python.exe" "ck3_autonomous_player\agent.py" opening-step --step auto-turn --timeout 240
+"tools\.venv\Scripts\python.exe" "ck3_autonomous_player\agent.py" opening-step --step auto-run --timeout 900
+"tools\.venv\Scripts\python.exe" "ck3_autonomous_player\agent.py" opening-step --step death-terminal --timeout 240
+"tools\.venv\Scripts\python.exe" "ck3_autonomous_player\agent.py" strategy-review
+"tools\.venv\Scripts\python.exe" "ck3_autonomous_player\agent.py" opening-dev-session --timeout 21600
+"tools\.venv\Scripts\python.exe" "ck3_autonomous_player\agent.py" recover-stale-control --run-id <finalized-RED-run-id>
+"tools\.venv\Scripts\python.exe" -m pip install "mcp==2.0.0"
+"tools\.venv\Scripts\python.exe" "ck3_autonomous_player\mcp_server.py" --driver vision-report --transport stdio
+"tools\.venv\Scripts\python.exe" "ck3_autonomous_player\mcp_server.py" --driver vision-session --transport stdio
+"tools\.venv\Scripts\python.exe" "ck3_autonomous_player\mcp_server.py" --driver mod --userdir <isolated-ck3-userdir> --transport stdio
+"tools\.venv\Scripts\python.exe" "ck3_autonomous_player\mcp_server.py" --driver hybrid --userdir <isolated-ck3-userdir> --transport stdio
+"tools\.venv\Scripts\python.exe" "ck3_autonomous_player\mcp_server.py" --driver native-headless --pipe-name '\\.\pipe\xar_ck3_bridge_mcp' --transport stdio
+"tools\.venv\Scripts\python.exe" "ck3_autonomous_player\mcp_server.py" --driver hybrid-fallback --pipe-name '\\.\pipe\xar_ck3_bridge_mcp' --userdir <isolated-ck3-userdir> --state-dir <XarAutoplayer-state> --transport stdio
+"tools\.venv\Scripts\python.exe" "ck3_autonomous_player\agent.py" --bridge-mode native-headless --bridge-pipe '\\.\pipe\xar_ck3_bridge_mcp' --bridge-dll <xar_ck3_bridge.dll> --bridge-injector <xar_ck3_bridge_injector.exe> native-session --timeout 21600
+"tools\.venv\Scripts\python.exe" "ck3_autonomous_player\agent.py" --state-dir <XarAutoplayer-state> --bridge-mode native-headless --bridge-pipe '\\.\pipe\xar_ck3_bridge_mcp' --bridge-dll <xar_ck3_bridge.dll> --bridge-injector <xar_ck3_bridge_injector.exe> native-auto-run --turns 20 --timeout 21600 --readiness-timeout 300 --cold-start-checkpoint
+"tools\.venv\Scripts\python.exe" "ck3_autonomous_player\agent.py" --state-dir <XarAutoplayer-state> --game-dir <CK3-dir> --bridge-mode disabled --bridge-pipe '<checkpoint-driver-state-pipe>' native-one-generation-preflight --expected-character-id <CharacterID> --expected-episode-run-id <episode-run-id> --expected-checkpoint-sha256 <checkpoint-sha256> --expected-driver-state-sha256 <driver-state-sha256>
+"tools\.venv\Scripts\python.exe" "ck3_autonomous_player\agent.py" --state-dir <XarAutoplayer-state> --bridge-mode native-headless --bridge-pipe '<checkpoint-driver-state-pipe>' --bridge-dll <xar_ck3_bridge.dll> --bridge-injector <xar_ck3_bridge_injector.exe> native-one-generation --max-turns 50000 --timeout 604800 --readiness-timeout 300 --checkpoint-every-advances 3 --route-contact-speed 3
 ```
 
 Codex 的按 Windows 用户 MCP 安装、stdio 注册、独立 pipe/state/userdir 和 no-launch doctor 统一走

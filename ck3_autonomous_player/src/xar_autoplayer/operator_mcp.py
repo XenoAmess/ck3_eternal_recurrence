@@ -354,32 +354,58 @@ class NativeProcessInspector:
         if not _PROCESS_NAME.fullmatch(process_name):
             raise ValueError("invalid process name")
         if os.name == "nt":
-            stem = process_name[:-4] if process_name.lower().endswith(".exe") else process_name
-            script = (
-                "$items=@(Get-Process -Name '"
-                + stem
-                + "' -ErrorAction SilentlyContinue); "
-                "@($items | ForEach-Object {[int]$_.Id}) | ConvertTo-Json -Compress"
+            expected = (
+                process_name
+                if process_name.casefold().endswith(".exe")
+                else process_name + ".exe"
             )
-            completed = subprocess.run(
-                [
-                    "powershell.exe",
-                    "-NoProfile",
-                    "-NonInteractive",
-                    "-Command",
-                    script,
-                ],
-                check=True,
-                capture_output=True,
-                text=True,
-                timeout=10,
-            )
-            raw = completed.stdout.strip()
-            if not raw:
-                return []
-            value = json.loads(raw)
-            rows = value if isinstance(value, list) else [value]
-            return sorted(int(item) for item in rows)
+            kernel32 = ctypes.WinDLL("kernel32", use_last_error=True)
+
+            class ProcessEntry32W(ctypes.Structure):
+                _fields_ = [
+                    ("dwSize", wintypes.DWORD),
+                    ("cntUsage", wintypes.DWORD),
+                    ("th32ProcessID", wintypes.DWORD),
+                    ("th32DefaultHeapID", ctypes.c_size_t),
+                    ("th32ModuleID", wintypes.DWORD),
+                    ("cntThreads", wintypes.DWORD),
+                    ("th32ParentProcessID", wintypes.DWORD),
+                    ("pcPriClassBase", wintypes.LONG),
+                    ("dwFlags", wintypes.DWORD),
+                    ("szExeFile", wintypes.WCHAR * 260),
+                ]
+
+            kernel32.CreateToolhelp32Snapshot.argtypes = [
+                wintypes.DWORD,
+                wintypes.DWORD,
+            ]
+            kernel32.CreateToolhelp32Snapshot.restype = wintypes.HANDLE
+            kernel32.Process32FirstW.argtypes = [
+                wintypes.HANDLE,
+                ctypes.POINTER(ProcessEntry32W),
+            ]
+            kernel32.Process32FirstW.restype = wintypes.BOOL
+            kernel32.Process32NextW.argtypes = [
+                wintypes.HANDLE,
+                ctypes.POINTER(ProcessEntry32W),
+            ]
+            kernel32.Process32NextW.restype = wintypes.BOOL
+            kernel32.CloseHandle.argtypes = [wintypes.HANDLE]
+            snapshot = kernel32.CreateToolhelp32Snapshot(0x00000002, 0)
+            if snapshot == wintypes.HANDLE(-1).value:
+                raise ctypes.WinError(ctypes.get_last_error())
+            result: list[int] = []
+            try:
+                entry = ProcessEntry32W()
+                entry.dwSize = ctypes.sizeof(entry)
+                available = kernel32.Process32FirstW(snapshot, ctypes.byref(entry))
+                while available:
+                    if str(entry.szExeFile).casefold() == expected.casefold():
+                        result.append(int(entry.th32ProcessID))
+                    available = kernel32.Process32NextW(snapshot, ctypes.byref(entry))
+            finally:
+                kernel32.CloseHandle(snapshot)
+            return sorted(result)
         result: list[int] = []
         for child in Path("/proc").iterdir():
             if not child.name.isdigit():

@@ -1087,29 +1087,26 @@ class TrackedShutdownTests(unittest.TestCase):
             stdout='"ck3.exe","123","Console","1","1 K"\n',
             stderr="",
         )
-        wmi = subprocess.CompletedProcess(
-            args=["powershell"], returncode=0, stdout="[]\n", stderr=""
-        )
         with mock.patch(
             "xar_autoplayer.environment.subprocess.run",
-            side_effect=[tasklist, wmi],
+            return_value=tasklist,
+        ), mock.patch(
+            "xar_autoplayer.environment._toolhelp_ck3_processes",
+            return_value=[],
         ):
             with self.assertRaisesRegex(AgentError, "inventories disagree"):
                 ck3_process_inventory()
 
-    def test_wmi_access_denied_uses_cross_checked_toolhelp_inventory(self) -> None:
+    def test_toolhelp_inventory_is_cross_checked_with_tasklist(self) -> None:
         tasklist = subprocess.CompletedProcess(
             args=["tasklist"],
             returncode=0,
             stdout="INFO: No tasks are running which match the specified criteria.\n",
             stderr="",
         )
-        wmi = subprocess.CompletedProcess(
-            args=["powershell"], returncode=1, stdout="", stderr="Access denied"
-        )
         with mock.patch(
             "xar_autoplayer.environment.subprocess.run",
-            side_effect=[tasklist, wmi],
+            return_value=tasklist,
         ), mock.patch(
             "xar_autoplayer.environment._toolhelp_ck3_processes",
             return_value=[],
@@ -1120,25 +1117,27 @@ class TrackedShutdownTests(unittest.TestCase):
                     "tasklist_returncode": 0,
                     "tasklist_pids": [],
                     "wmi_pids": [],
+                    "native_pids": [],
+                    "inventory_backend": "tasklist+toolhelp32",
                     "processes": [],
                 },
             )
 
-    def test_wmi_non_access_failure_remains_fail_closed(self) -> None:
+    def test_toolhelp_failure_remains_fail_closed(self) -> None:
         tasklist = subprocess.CompletedProcess(
             args=["tasklist"],
             returncode=0,
             stdout="INFO: No tasks are running which match the specified criteria.\n",
             stderr="",
         )
-        wmi = subprocess.CompletedProcess(
-            args=["powershell"], returncode=1, stdout="", stderr="RPC failure"
-        )
         with mock.patch(
             "xar_autoplayer.environment.subprocess.run",
-            side_effect=[tasklist, wmi],
+            return_value=tasklist,
+        ), mock.patch(
+            "xar_autoplayer.environment._toolhelp_ck3_processes",
+            side_effect=AgentError("Toolhelp snapshot failed"),
         ):
-            with self.assertRaisesRegex(AgentError, "WMI inventory failed"):
+            with self.assertRaisesRegex(AgentError, "Toolhelp snapshot failed"):
                 ck3_process_inventory()
 
     def test_watchdog_accepts_empty_wmi_path_for_handle_authentication(self) -> None:
