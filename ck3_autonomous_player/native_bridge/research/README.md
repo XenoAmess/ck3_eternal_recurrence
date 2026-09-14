@@ -24,6 +24,27 @@ The DLL separately hashes its current process executable and advertises game
 capabilities only for this exact digest. A different CK3 build retains only
 bridge identity/heartbeat/ping.
 
+## Found-kingdom major-decision source freeze
+
+The dependency-free
+`verify_major_decision_found_kingdom_source.py` verifier binds the same exact
+executable plus the stock decision schema, `found_kingdom_decision`, its
+`create_custom_kingdom_effect`, the landed/administrative helper, and the
+`custom_kingdoms` game rule. The machine-readable source tree is
+`major_decision_found_kingdom_1_19_0_6_source.json`; the proposed
+played-character-only, paused, read-only observer boundary is
+`fixtures/major_decision_found_kingdom_observer_v1_source_contract.json`.
+Run both normal and optimized modes with an operator-selected installation:
+
+```powershell
+py ck3_autonomous_player/native_bridge/research/verify_major_decision_found_kingdom_source.py --game-root <CK3-root>
+py -O ck3_autonomous_player/native_bridge/research/verify_major_decision_found_kingdom_source.py --game-root <CK3-root>
+```
+
+This source-only slice does not implement a reader, MCP query, planner policy,
+decision command, or live acceptance. Piety remains a generic authored cost;
+faith and religion semantics are outside the slice.
+
 ## Startup particle2 null-slot containment
 
 Three no-DLL controls—including a no-save main-menu launch—reproduced CK3

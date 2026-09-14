@@ -101,6 +101,10 @@
 - [static-confirmed; observer/action live pending] [lifestyle-focus-perk-ai.md](lifestyle-focus-perk-ai.md) 冻结 CK3 1.19.0.6 的
   focus 候选、原生 AI 权重、perk 父图、关键只读 getter 与 GUI/native gate/action seam。LIFE1 没有启动 CK3；public observer、
   focus/perk semantic action 与 paused 后置验证仍未实现，不能由静态树或 GUI seam 推高 action readiness。
+- [static-confirmed; observer/action pending] [major-decision-found-kingdom.md](major-decision-found-kingdom.md) 冻结
+  `found_kingdom_decision` 的 duchy-only 60 月原生 AI 候选、完整 eligibility、四态动态费用矩阵、固定 100%
+  AI 分数及 `create_custom_kingdom_effect` 法理/头衔/event 树；source JSON、normal/-O verifier 与 played-character-only
+  最小只读 observer 输入合同已交付。native evaluator、MCP、planner、paused live 与动作后置均未实现；宗教域不在本切片。
 - [static-ready contract/fixture; production reader/live pending] [steward-develop-county-ai.md](steward-develop-county-ai.md) 闭合
   `task_develop_county` 对默认 `task_collect_taxes` 的 authored 储备/冷却权重、AI domain 候选过滤、无
   `ai_target_score` 的随机目标边界，以及完成后五/十五年冷却。独立 `query-steward-develop-county-candidates-v1`

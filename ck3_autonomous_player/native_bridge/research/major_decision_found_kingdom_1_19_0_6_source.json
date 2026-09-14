@@ -1,0 +1,203 @@
+{
+  "schema_version": 1,
+  "contract": "major-decision-found-kingdom-1.19.0.6-source-freeze-v1",
+  "status": "static-confirmed; observer contract only; no CK3 launch, attach, or live snapshot in this work package",
+  "scope": "nonreligious major decision P0 slice: found_kingdom_decision",
+  "build": {
+    "version": "1.19.0.6",
+    "platform": "Windows x64",
+    "image_base": "0x140000000",
+    "exe_relative_path": "binaries/ck3.exe",
+    "exe_size": 95206008,
+    "exe_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86"
+  },
+  "religion_scope": {
+    "status": "owner-deferred",
+    "excluded": [
+      "faith eligibility",
+      "doctrine",
+      "tenet",
+      "fervor",
+      "conversion",
+      "religious reform",
+      "holy order"
+    ],
+    "piety_boundary": "piety is retained only as the authored generic resource cost; no faith or religion semantics are inferred"
+  },
+  "sources": [
+    {
+      "relative_path": "game/common/decisions/_decisions.info",
+      "size": 9468,
+      "sha256": "106977B58220107B66F537AADDA965F5A0602140DFB9BA7C79F3BA8BDD91CD9E",
+      "line_anchors": [
+        { "line": 107, "text": "\tai_goal = yes/no \t\t\t\t# If set, the AI will consider the decision a \"goal\" and consider it alongside major costs like title creation and holding construction. It will ignore ai_check_interval. Should only be used for things with such major costs that budgeting for it is important, as it is less performant than using a high ai_check_interval" },
+        { "line": 109, "text": "\tai_check_interval = 42\t\t\t# How many months to go between each check of this decision. Has to be set (or 'ai_check_interval_by_tier') , except if ai_goal = yes is set. An interval of 0 means the AI will never check this decision." },
+        { "line": 110, "text": "\tai_check_interval_by_tier = {\t# How often should the ai check this decision by tier of top title (in months). '0' means it is never considered. Used instead of 'ai_check_interval'. All tiers are required to be defined." },
+        { "line": 125, "text": "\tis_shown = { ... }\t\t\t\t# is decision available to the character; scope: character; default: { always = yes }" },
+        { "line": 126, "text": "\tis_valid_showing_failures_only = { ... }\t# can execute decision; these will be shown in the confirm button tooltip if they fail; scope: character; default: { always = yes }" },
+        { "line": 127, "text": "\tis_valid = { ... }\t\t\t\t# can execute decision; these will be shown in the detail view under Requirements; scope: character; default: { always = yes }" },
+        { "line": 140, "text": "\teffect = { ... }\t\t\t\t# effect to execute when decision is taken; scope: character" },
+        { "line": 142, "text": "\tai_potential = { ... }\t\t\t# trigger whether the AI should look at it or not" },
+        { "line": 143, "text": "\tai_will_do = { ... }\t\t\t# Returns the % chance of executing executing the decision. 0 will never execute it, 100 will alwasy execute it. Will also determine the default option (if the decision has those) for players ." }
+      ]
+    },
+    {
+      "relative_path": "game/common/decisions/80_major_decisions.txt",
+      "size": 75651,
+      "sha256": "4E406B77DCEE8E98DB4875973030AAF0FDB18A9CD6505EAC374B75D481718471",
+      "line_anchors": [
+        { "line": 1000, "text": "found_kingdom_decision = {" },
+        { "line": 1016, "text": "\tdecision_group_type = major" },
+        { "line": 1020, "text": "\t\tduchy = 60" },
+        { "line": 1036, "text": "\tis_valid = {" },
+        { "line": 1061, "text": "\tis_valid_showing_failures_only = {" },
+        { "line": 1066, "text": "\tcost = {" },
+        { "line": 1100, "text": "\teffect = {" },
+        { "line": 1118, "text": "\tai_potential = {" },
+        { "line": 1122, "text": "\tai_will_do = {" },
+        { "line": 1125, "text": "}" }
+      ],
+      "blocks": [
+        {
+          "key": "found_kingdom_decision",
+          "first_line": 1000,
+          "last_line": 1125,
+          "canonical_sha256": "4AA72233FD9266CD36C18DF10E9DBFC21B967003201F61B575C687FAA380C7DF"
+        }
+      ]
+    },
+    {
+      "relative_path": "game/common/scripted_effects/00_major_decisions_scripted_effects_3.txt",
+      "size": 21500,
+      "sha256": "725196DDCED6919A1EBCC091B09B5BD716A28EC88760E26E769796212298634D",
+      "line_anchors": [
+        { "line": 242, "text": "create_custom_kingdom_effect = {" },
+        { "line": 258, "text": "\t\tcreate_dynamic_title = {" },
+        { "line": 262, "text": "\t\tcreate_title_and_vassal_change = {" },
+        { "line": 275, "text": "\t\tresolve_title_and_vassal_change = scope:change" },
+        { "line": 396, "text": "\t\tset_primary_title_to = scope:new_title" },
+        { "line": 398, "text": "\t\ttrigger_event = major_decisions.1101" },
+        { "line": 406, "text": "\t\t\t\ttrigger_event = major_decisions.1102" },
+        { "line": 442, "text": "\t\t\t\t\ttrigger_event = major_decisions.1105" },
+        { "line": 447, "text": "}" }
+      ],
+      "blocks": [
+        {
+          "key": "create_custom_kingdom_effect",
+          "first_line": 242,
+          "last_line": 447,
+          "canonical_sha256": "11944754762E1683CD11512658CBA527D69AE70E4E8AED90B43F80C2ACC8F4AF"
+        }
+      ]
+    },
+    {
+      "relative_path": "game/common/scripted_triggers/00_available_for_events_triggers.txt",
+      "size": 25903,
+      "sha256": "5566A89A7D93BFB80DCF5A2F065BE0F058BE13E0B84470D1182B82D8D6384A44",
+      "line_anchors": [
+        { "line": 897, "text": "is_landed_or_landless_administrative = {" },
+        { "line": 899, "text": "\t\tis_landed = yes" },
+        { "line": 900, "text": "\t\tis_landless_administrative = yes" },
+        { "line": 902, "text": "}" }
+      ],
+      "blocks": [
+        {
+          "key": "is_landed_or_landless_administrative",
+          "first_line": 897,
+          "last_line": 902,
+          "canonical_sha256": "93D02A414949621FF0D8B17BBD3D1E2321D056C57D621DC353F3CD85A35A7569"
+        }
+      ]
+    },
+    {
+      "relative_path": "game/common/game_rules/00_game_rules.txt",
+      "size": 25164,
+      "sha256": "01B247EBABB2D59D26DB88249D95AD0E285BE2EFFDB1D3969E1D00B2E9DAE715",
+      "line_anchors": [
+        { "line": 904, "text": "custom_kingdoms = {" },
+        { "line": 910, "text": "\tdefault = on_custom_kingdoms" },
+        { "line": 912, "text": "\ton_custom_kingdoms = {" },
+        { "line": 916, "text": "\toff_custom_kingdoms = {" },
+        { "line": 919, "text": "}" }
+      ],
+      "blocks": [
+        {
+          "key": "custom_kingdoms",
+          "first_line": 904,
+          "last_line": 919,
+          "canonical_sha256": "E7C3165AE575BC32CC0ED9671F3FAFD6AF9F4CA0B685096EE07CDF5783FE7A8A"
+        }
+      ]
+    }
+  ],
+  "decision_tree": {
+    "decision_id": "found_kingdom_decision",
+    "group": "major",
+    "ai_goal": false,
+    "candidate": {
+      "interval_months_by_top_title_tier": {
+        "barony": 0,
+        "county": 0,
+        "duchy": 60,
+        "kingdom": 0,
+        "empire": 0,
+        "hegemony": 0
+      },
+      "ai_potential": "always = yes",
+      "source_semantics": "interval 0 is never considered; duchy tier is considered every 60 months"
+    },
+    "eligibility": {
+      "is_shown_all": [
+        "highest_held_title_tier = tier_duchy",
+        "NOT has_game_rule = off_custom_kingdoms",
+        "is_landed_or_landless_administrative = yes",
+        "is_confederation_member = no"
+      ],
+      "is_valid_all": [
+        "prestige_level >= 3",
+        "top_liege = this",
+        "held duchy count > 2 OR sub_realm_size >= 30",
+        "if government_is_nomadic then nomadic_authority in {3,4,5}"
+      ],
+      "failure_only_all": [
+        "is_available_adult = yes",
+        "is_at_war = no"
+      ],
+      "landed_or_administrative_expansion": "is_landed = yes OR is_landless_administrative = yes"
+    },
+    "cost_matrix": [
+      { "has_treasury": false, "is_nomadic": false, "gold": 300, "treasury": 0, "prestige": 500, "piety": 200 },
+      { "has_treasury": true, "is_nomadic": false, "gold": 0, "treasury": 300, "prestige": 500, "piety": 200 },
+      { "has_treasury": false, "is_nomadic": true, "gold": 0, "treasury": 0, "prestige": 500, "piety": 0 },
+      { "has_treasury": true, "is_nomadic": true, "gold": 0, "treasury": 300, "prestige": 500, "piety": 0 }
+    ],
+    "score": {
+      "ai_will_do_base_percent": 100,
+      "modifiers": []
+    },
+    "effect": {
+      "entry": "create_custom_kingdom_effect = yes",
+      "ordered_authored_operations": [
+        "save founder and old primary title scopes",
+        "create dynamic kingdom title",
+        "create title-and-vassal change, assign the new title to root, then resolve the change",
+        "choose a represented de-jure empire when one is found and set it as the new kingdom's de-jure liege",
+        "move every held duchy and every fully controlled unheld duchy found by the authored scan under the new kingdom",
+        "copy coat of arms, color, and capital from the old primary title",
+        "set the new kingdom as primary title",
+        "trigger major_decisions.1101 for the founder and .1102/.1105 notification paths for affected players"
+      ],
+      "human_only_tail": [
+        "on the first human execution, set global_var:found_kingdom_decision to root",
+        "on the first human execution, set global_var:found_kingdom_decision_kingdom to root.primary_title"
+      ]
+    }
+  },
+  "observer_contract": "research/fixtures/major_decision_found_kingdom_observer_v1_source_contract.json",
+  "unknowns": [
+    "The exact native scheduler container, due-date state, evaluator call order, and definition object layout are not frozen by this source-only slice.",
+    "The source describes ai_will_do as a percent, but no live sample or native RNG call chain was captured in this work package.",
+    "Affordability aggregation and the exact ordering of automatic cost deduction versus effect dispatch are not stated by _decisions.info.",
+    "No read-only native observer, MCP tool, action path, or production paused artifact is implemented here."
+  ]
+}

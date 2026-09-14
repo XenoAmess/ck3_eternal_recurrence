@@ -1,0 +1,89 @@
+{
+  "schema_version": 1,
+  "contract": "major-decision-found-kingdom-observer-v1-source-contract",
+  "status": "design input; implementation and live validation pending",
+  "capability": "game.command.query-major-decision-found-kingdom-v1",
+  "step": "query-major-decision-found-kingdom-v1",
+  "read_only": true,
+  "application_main_only": true,
+  "requires_paused": true,
+  "actor_scope": "played_character_only",
+  "decision_allowlist": [
+    "found_kingdom_decision"
+  ],
+  "definition_binding": {
+    "game_version": "1.19.0.6",
+    "exe_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+    "source_contract": "major-decision-found-kingdom-1.19.0.6-source-freeze-v1",
+    "decision_block_sha256": "4AA72233FD9266CD36C18DF10E9DBFC21B967003201F61B575C687FAA380C7DF",
+    "effect_block_sha256": "11944754762E1683CD11512658CBA527D69AE70E4E8AED90B43F80C2ACC8F4AF"
+  },
+  "request": {
+    "fields": [],
+    "implicit_actor": "played_character_id from the bound campaign-root snapshot"
+  },
+  "same_frame_fields": [
+    "snapshot_id",
+    "frame",
+    "played_character_id",
+    "decision_id",
+    "definition_revision",
+    "top_title_tier",
+    "is_shown",
+    "is_valid",
+    "is_valid_showing_failures_only",
+    "is_affordable",
+    "can_take",
+    "evaluated_cost.gold",
+    "evaluated_cost.treasury",
+    "evaluated_cost.prestige",
+    "evaluated_cost.piety"
+  ],
+  "static_definition_fields": [
+    "decision_group_type",
+    "ai_check_interval_months_by_tier",
+    "ai_potential_contract",
+    "ai_will_do_contract",
+    "effect_source_fingerprint"
+  ],
+  "failure_model": {
+    "status": [
+      "available",
+      "unavailable"
+    ],
+    "unavailable_reasons": [
+      "unsupported_build",
+      "requires_application_main",
+      "requires_paused",
+      "map_not_ready",
+      "played_character_unavailable",
+      "decision_database_unavailable",
+      "decision_definition_missing",
+      "decision_evaluator_unavailable",
+      "state_changed",
+      "internal_error"
+    ],
+    "predicate_failures": "false values remain available observations; they are not transport errors"
+  },
+  "same_frame_contract": {
+    "double_observation": true,
+    "frame_before_after_equal": true,
+    "played_character_identity_equal": true,
+    "definition_revision_equal": true,
+    "all_runtime_fields_from_one_evaluation_epoch": true
+  },
+  "effect_boundary": {
+    "mode": "source_fingerprint_only",
+    "preview_result": "unavailable",
+    "reason": "the source tree is frozen, but no exact-build native effect-preview evaluator or postcondition observer is identified",
+    "must_not_execute_effect": true
+  },
+  "forbidden": [
+    "execute decision",
+    "deduct cost",
+    "advance time",
+    "write decision manager or character state",
+    "return synthetic predicate values when the native evaluator is unavailable"
+  ],
+  "readiness_gate": "true only after exact-build definition lookup, played-character evaluator lifetime, evaluated dynamic costs, all three eligibility predicates, affordability/can_take, and same-frame stability are implemented and verified in a production paused snapshot"
+}
