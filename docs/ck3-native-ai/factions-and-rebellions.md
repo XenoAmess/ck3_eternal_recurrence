@@ -3,7 +3,7 @@
 ## 状态与结论
 
 - **原版 AI 与命令路径：`static-confirmed`。** 本文冻结 `gift_interaction` 的原版 AI 选人、合法性、自动接受、扣款与好感效果，并闭合 exact-build 中按稳定 key 查找 `CCharacterInteraction`、构造两角色上下文、校验和提交命令的原始调用链。
-- **逐派系/候选观测：`static-ready` 私有原语。** 当前 production-live `campaign-root-context-v1` 仍只有 `player_targeting_faction_count` 和 REALM2 的 `direct_landed_vassal_character_ids`。FACTION2-CORE 已闭合 targeting collection 的 inline row span、`0x18` stride 与稳定 faction identity；FACTION3-EVIDENCE 又闭合了 exact-build `CFactionTargetLink` 目标角色 getter 和窗口刷新后 row count 对 `land_state+0x12C` 的静态等价。尚无 paused live artifact，也没有 member、type、war、power/discontent 或公共 query，因此仍不能证明某个封臣属于哪一支派系。
+- **逐派系/候选观测：`static-ready` 私有原语。** 当前 production-live `campaign-root-context-v1` 仍只有 `player_targeting_faction_count` 和 REALM2 的 `direct_landed_vassal_character_ids`。FACTION2-CORE 已闭合 targeting collection 的 inline row span、`0x18` stride 与稳定 faction identity；FACTION3-EVIDENCE 闭合了 exact-build 目标角色 getter和 campaign-root count 等价；FACTION6-CORE 又把 canonical nullable leader 与 `0x20` character-member rows 接进同一 private、default-off capture。它仍没有 paused live/heartbeat artifact，也没有 type、war、power/discontent 或公共 query，因此公共能力仍不能证明某个封臣属于哪一支派系。
 - **赠礼动作：`research`。** 本工作包只给出最小 typed observation/action 合同和施工入口，没有修改 bridge、公共 MCP、schema、planner 或动作实现，也没有启动 CK3。
 - **首个可见 OODA：** 从真实 targeting faction row 中选一名直属有地、AI 控制、尚无 `gift_opinion` 的成员，读取引擎最终赠礼成本与好感增量，满足预算后执行一次 `gift_interaction`；随后验证金币转移与该角色的 `gift_opinion`，并重新读取原派系状态。
 
@@ -404,12 +404,61 @@ the previous complete private generation. A valid zero character count
 publishes an empty member list. A legal no-leader state remains distinct from
 a read failure.
 
-The single next private seam is
-`extend_faction_targeting_row_observer_v1_with_leader_and_character_member_vector_same_admission_double_sample`.
-Status remains `static-confirmed-next-private-reader`: no paused live artifact,
-runtime observer, public MCP/schema, or public readiness changed. Faction type,
-war, power/discontent, the stock dangerous predicate, gift preview/action,
-all-type leader containment, and member-row tail semantics remain open.
+This evidence package's implementation seam was
+`extend_faction_targeting_row_observer_v1_with_leader_and_character_member_vector_same_admission_double_sample`;
+FACTION6-CORE below consumes it. The evidence boundary itself remains static:
+it does not provide a paused live artifact or prove all-type leader
+containment. Faction type, war, power/discontent, the stock dangerous
+predicate, gift preview/action, and member-row tail semantics remain open.
+
+### FACTION6-CORE: private canonical leader and character-member capture
+
+FACTION6 extends the existing default-off private observer without changing a
+public MCP, schema, capability, planner input, or heartbeat payload. For each
+already admitted targeting row it rereads the same `CFaction`, keeps the
+canonical leader from `CFaction+0x44` separate from presentation-only special
+character data, and copies the complete character-member collection at
+`CFaction+0x48`. The embedded collection is bounded to 64 members per faction;
+a signed count below zero, a count above that bound, a positive count with null
+data, or overflow in `count * 0x20` is a typed member-span failure.
+
+Each `0x20` member row contributes only its full-generation CharacterID at
+`+0x08`. The reader requires row owner FactionID `+0x0C` to equal the enclosing
+targeting-row faction identity, resolves every CharacterID through the frozen
+Character resolver, and requires `CCharacter+0x18` to round-trip. Member IDs
+must be unique within their faction. Row vtables, borrowed pointers and opaque
+bytes `+0x10..+0x1F` remain process-local and are never published.
+
+Leader absence is a legal nullable result. It is distinct from a memory-read,
+stability or invalid non-null CharacterID failure, and the reader never
+substitutes `special_character`. `leader_present_in_character_members` is
+derived only from equality with the captured member IDs. It is reported as a
+fact; it is not required to be true across every faction type.
+
+The first and second copies run under two equal FACTION4 admissions. Both
+copies cover `CFaction+0x10`, target `+0x40`, leader `+0x44`, member
+data/count, and every member ID/owner pair. Any leader, member span, identity,
+ownership, uniqueness or second-copy drift increments its dedicated private
+counter/failure bit and retains the previously published complete generation.
+A stable zero member count publishes an empty list. Accepted rows remain
+sorted by faction identity while each member list follows one deterministic
+owned-ID order.
+
+The deterministic fixture covers a faction with a canonical leader and two
+members, plus a legal no-leader faction with an empty member list. It verifies
+bounded collection handling, owner and Character round-trips, derived leader
+membership, same-admission double sampling, typed rejection, and
+previous-generation retention. This is
+`static-ready-private-leader-member-pending-paused-live-heartbeat`: the private
+implementation and fixture are ready, while `paused_live_artifact_ready`,
+`heartbeat_private_observer_ready`, `public_targeting_rows_ready`, public MCP
+and public schema readiness remain false.
+
+The only next seam is one controlled paused exact-build capture that also
+proves the private observer appears in the expected heartbeat diagnostic. It
+must contain either a real targeting faction or retain a bounded, explicit
+no-row result; it must not promote the data publicly. Its stable name is
+`capture_faction_targeting_row_observer_v1_paused_live_leader_member_heartbeat`.
 
 ### FACTION-OBS1：逐派系与成员观测
 

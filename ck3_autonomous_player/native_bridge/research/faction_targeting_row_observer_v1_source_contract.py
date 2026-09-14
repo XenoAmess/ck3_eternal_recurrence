@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Verify FACTION4-CORE's private target/count observer contract."""
+"""Verify FACTION6-CORE's private leader/member observer contract."""
 
 from __future__ import annotations
 
@@ -111,14 +111,20 @@ def check(root: Path, *, ck3_root: Path | None = None) -> None:
             / "research/fixtures/faction_target_character_count_equivalence_v1_source_contract.json"
         ).read_text(encoding="utf-8")
     )
+    leader_member_evidence = json.loads(
+        (
+            native
+            / "research/fixtures/faction_leader_character_members_v1_source_contract.json"
+        ).read_text(encoding="utf-8")
+    )
 
     _require(abi["schema_version"] == 1, "ABI schema drifted")
     _require(contract["schema_version"] == 1, "source contract schema drifted")
     _require(
         abi["status"]
         == contract["status"]
-        == "static-ready-private-target-count-pending-paused-live",
-        "FACTION4 private observer status drifted",
+        == "static-ready-private-leader-member-pending-paused-live-heartbeat",
+        "FACTION6 private observer status drifted",
     )
     _require(
         source_evidence["readiness"]["target_character_getter_source_ready"]
@@ -128,6 +134,11 @@ def check(root: Path, *, ck3_root: Path | None = None) -> None:
         and source_evidence["readiness"]["same_frame_join_contract_ready"],
         "FACTION3 source evidence was demoted",
     )
+    for key in contract["leader_member_source_evidence"]["required_readiness"]:
+        _require(
+            leader_member_evidence["readiness"][key] is True,
+            f"FACTION5 source evidence was demoted: {key}",
+        )
     for token in contract["required_header_tokens"]:
         _require(token in header, f"missing header token: {token}")
     for token in contract["required_implementation_tokens"]:
@@ -136,29 +147,68 @@ def check(root: Path, *, ck3_root: Path | None = None) -> None:
         _require(token in serializer, f"missing serializer token: {token}")
     _require(
         abi["capture_seam"]["installed_by_default"] is False
-        and contract["public_impact"]["public_targeting_rows_ready"] is False,
+        and contract["public_impact"]["public_targeting_rows_ready"] is False
+        and contract["public_impact"]["public_schema_changed"] is False
+        and contract["public_impact"]["heartbeat_payload_changed"] is False,
         "private/default-off boundary drifted",
     )
     _require(
         abi["readiness"]["campaign_root_count_equivalence_ready"] is True
         and abi["readiness"]["target_character_identity_ready"] is True
         and abi["readiness"]["private_target_and_count_observer_ready"] is True
+        and abi["readiness"]["leader_identity_ready"] is True
+        and abi["readiness"]["canonical_leader_nullable_semantics_ready"] is True
+        and abi["readiness"]["character_member_vector_ready"] is True
+        and abi["readiness"]["character_member_identity_ready"] is True
+        and abi["readiness"]["character_member_ownership_ready"] is True
+        and abi["readiness"]["private_leader_member_observer_ready"] is True
         and abi["readiness"]["paused_live_artifact_ready"] is False
+        and abi["readiness"]["heartbeat_private_observer_ready"] is False
         and abi["readiness"]["public_targeting_rows_ready"] is False,
-        "private target/count readiness boundary drifted",
+        "private leader/member readiness boundary drifted",
     )
     _require(
         contract["campaign_root_count_equivalence_ready"] is True
         and contract["target_character_identity_ready"] is True
         and contract["private_target_and_count_observer_ready"] is True
+        and contract["leader_identity_ready"] is True
+        and contract["canonical_leader_nullable_semantics_ready"] is True
+        and contract["character_member_vector_ready"] is True
+        and contract["character_member_identity_ready"] is True
+        and contract["character_member_ownership_ready"] is True
+        and contract["private_leader_member_observer_ready"] is True
         and contract["paused_live_equivalence_artifact_ready"] is False,
         "source-contract readiness boundary drifted",
+    )
+    _require(
+        contract["paused_live_leader_member_artifact_ready"] is False
+        and contract["heartbeat_private_observer_ready"] is False,
+        "live/heartbeat boundary was over-promoted",
     )
     _require(
         abi["targeting_span"]["row_stride"] == 0x18
         and abi["adapter_evidence"]["producer_writer_ready"] is False
         and "producer" not in abi,
         "inline FactionItem row/evidence boundary drifted",
+    )
+    leader = abi["canonical_leader_identity"]
+    members = abi["character_member_vector"]
+    _require(
+        leader["faction_leader_character_id_offset"] == "0x44"
+        and leader["nullable"] is True
+        and leader["special_character_substitution_allowed"] is False,
+        "canonical nullable leader contract drifted",
+    )
+    _require(
+        members["faction_embedded_container_offset"] == "0x48"
+        and members["container_count_offset"] == "0x0C"
+        and members["maximum_members_per_faction"] == 64
+        and members["element_stride"] == 0x20
+        and members["element_member_character_id_offset"] == "0x08"
+        and members["element_owner_faction_id_offset"] == "0x0C"
+        and members["owner_must_equal_enclosing_faction_id"] is True
+        and members["member_ids_unique_within_faction"] is True,
+        "character-member layout/admission contract drifted",
     )
     _require(
         contract["unique_next_reverse_engineering_entry"]
@@ -167,7 +217,7 @@ def check(root: Path, *, ck3_root: Path | None = None) -> None:
     )
     _require(
         capture["status"]
-        == "fixture-captured-private-target-and-count-equivalent"
+        == "fixture-captured-private-leader-member-vector"
         and capture["offline_fixture"] is True,
         "offline fixture status drifted",
     )
@@ -179,21 +229,54 @@ def check(root: Path, *, ck3_root: Path | None = None) -> None:
         and capture["capture"]["faction_count"] == 2
         and capture["readiness"]["target_character_identity"] is True
         and capture["readiness"]["campaign_root_count_equivalence"] is True
+        and capture["readiness"]["canonical_nullable_leader"] is True
+        and capture["readiness"]["character_member_vector"] is True
+        and capture["readiness"]["member_identity"] is True
+        and capture["readiness"]["member_ownership"] is True
+        and capture["readiness"]["same_admission_leader_member"] is True
         and capture["readiness"]["public_targeting_rows"] is False,
-        "fixture target/count/public boundary drifted",
+        "fixture leader/member/public boundary drifted",
+    )
+    _require(
+        capture["capture"]["factions"]
+        == [
+            {
+                "faction_id": 7,
+                "target_character_id": 29829,
+                "leader_character_id": None,
+                "leader_present_in_character_members": False,
+                "character_member_ids": [],
+            },
+            {
+                "faction_id": 42,
+                "target_character_id": 29829,
+                "leader_character_id": 4001,
+                "leader_present_in_character_members": True,
+                "character_member_ids": [4001, 4002],
+            },
+        ],
+        "fixture canonical leader/member rows drifted",
     )
     _require(
         capture["raw_pointer_fields_persisted"] is False
         and capture["raw_row_bytes_persisted"] is False,
         "pointer persistence boundary drifted",
     )
+    _require(
+        capture["raw_member_row_bytes_persisted"] is False,
+        "member row bytes leaked into the fixture",
+    )
     prohibited_capture_keys = {
         "module_base",
         "owner_pointer",
         "data_pointer",
         "row_pointer",
+        "member_row_pointer",
+        "member_data_pointer",
+        "member_vtable",
         "pointer_hash",
         "raw_row_bytes",
+        "raw_member_row_bytes",
     }
     _require(
         prohibited_capture_keys.isdisjoint(set(_walk(capture))),
@@ -219,6 +302,8 @@ def check(root: Path, *, ck3_root: Path | None = None) -> None:
         "datamodel = \"[FactionsWindow.GetTargetingFactions]\"",
         "visible = \"[FactionsWindow.HasTargetingFactions]\"",
         "datacontext = \"[FactionItem.GetFaction]\"",
+        "datamodel = \"[FactionItem.GetCharacterMembers]\"",
+        "datacontext = \"[FactionCharacterMember.GetMember]\"",
     ):
         _require(token in gui_text, f"stock GUI anchor missing: {token}")
 
@@ -290,6 +375,27 @@ def check(root: Path, *, ck3_root: Path | None = None) -> None:
         _at(image, sections, 0x82B27C, 2) == bytes.fromhex("8B11")
         and _at(image, sections, 0x82B29C, 3) == bytes.fromhex("395018"),
         "Character full-generation identity round-trip drifted",
+    )
+    _require(
+        _at(image, sections, 0x19D8360, 6)
+        == bytes.fromhex("443940107407")
+        and _at(image, sections, 0x19D836D, 17)
+        == bytes.fromhex("8B404448894208488BC2C70204000000C3"),
+        "canonical leader projection drifted",
+    )
+    _require(
+        _at(image, sections, 0x1394CB4, 4) == bytes.fromhex("4883C048")
+        and _at(image, sections, 0x1395059, 4) == bytes.fromhex("83785400")
+        and _at(image, sections, 0x13A3AC2, 8)
+        == bytes.fromhex("8B480C4C8B002BCB")
+        and _at(image, sections, 0x13A3AD8, 10)
+        == bytes.fromhex("0F44D148C1E0054903C0"),
+        "character-member container/count/0x20 stride drifted",
+    )
+    _require(
+        _at(image, sections, 0x23741AF, 4) == bytes.fromhex("448B410C")
+        and _at(image, sections, 0x23741FD, 4) == bytes.fromhex("458B5908"),
+        "member owner/Character identity relation drifted",
     )
 
     for span in contract["native_spans"]:

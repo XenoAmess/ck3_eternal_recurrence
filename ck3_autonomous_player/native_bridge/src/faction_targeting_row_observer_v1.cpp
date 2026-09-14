@@ -25,9 +25,28 @@ struct TargetingContainerHeaderV1 {
   std::int32_t count = 0;
 };
 
+struct CharacterMemberContainerHeaderV1 {
+  std::uintptr_t row_data = 0;
+  std::int32_t count = 0;
+};
+
 struct ResolvedTargetingRowV1 {
   std::uint32_t faction_id = 0;
+  std::uintptr_t resolved_faction_address = 0;
   std::uint32_t target_character_id = 0;
+  std::uint32_t raw_leader_character_id = 0;
+  bool leader_present = false;
+  std::uint32_t leader_character_id = 0;
+  std::uintptr_t character_member_row_data = 0;
+  std::uint32_t character_member_count = 0;
+  std::array<std::uint32_t,
+             kFactionTargetingRowObserverMaximumCharacterMembersPerFactionV1>
+      character_member_ids{};
+};
+
+struct CharacterMemberIdentityRowV1 {
+  std::uint32_t character_id = 0;
+  std::uint32_t owner_faction_id = 0;
 };
 
 void AddFailure(FactionTargetingRowObserverStateV1 &state,
@@ -316,13 +335,87 @@ bool ReadContainer(
   return count == 0 ||
       header.row_data <=
           (std::numeric_limits<std::uintptr_t>::max)() -
-              (count - 1) * kFactionTargetingRowStrideV1;
+               (count - 1) * kFactionTargetingRowStrideV1;
+}
+
+bool ReadCharacterMemberContainer(
+    const FactionTargetingRowObserverStateV1 &state,
+    std::uintptr_t resolved_faction,
+    CharacterMemberContainerHeaderV1 &header) noexcept {
+  constexpr std::uintptr_t kContainerOffset = 0x48;
+  constexpr std::uintptr_t kCountOffset = 0x54;
+  constexpr std::size_t kMemberStride = 0x20;
+  constexpr std::size_t kOwnerEndOffset = 0x10;
+  if (resolved_faction == 0 ||
+      resolved_faction >
+          (std::numeric_limits<std::uintptr_t>::max)() - kCountOffset ||
+      !ReadMemory(state, resolved_faction + kContainerOffset,
+                  &header.row_data, sizeof(header.row_data)) ||
+      !ReadMemory(state, resolved_faction + kCountOffset, &header.count,
+                  sizeof(header.count)) ||
+      header.count < 0 ||
+      header.count > static_cast<std::int32_t>(
+          kFactionTargetingRowObserverMaximumCharacterMembersPerFactionV1) ||
+      (header.count != 0 && header.row_data == 0)) {
+    return false;
+  }
+  const auto count = static_cast<std::size_t>(header.count);
+  return count == 0 ||
+      header.row_data <=
+          (std::numeric_limits<std::uintptr_t>::max)() -
+              (count - 1) * kMemberStride - kOwnerEndOffset;
+}
+
+enum class CharacterIdentityResolutionV1 {
+  resolved,
+  unresolved,
+  invalid,
+};
+
+CharacterIdentityResolutionV1 ResolveCharacterIdentity(
+    FactionTargetingRowObserverStateV1 &state,
+    std::uint32_t character_id) noexcept {
+  std::uintptr_t resolved_character = 0;
+  if (state.character_identity_resolver_override != nullptr) {
+    if (!state.character_identity_resolver_override(
+            state.character_identity_resolver_context, character_id,
+            resolved_character)) {
+      resolved_character = 0;
+      return CharacterIdentityResolutionV1::unresolved;
+    }
+  } else {
+    using Resolver = void *(*)(const std::uint32_t *) noexcept;
+    if (state.character_identity_resolver_target == 0) {
+      return CharacterIdentityResolutionV1::invalid;
+    }
+    const auto resolver = reinterpret_cast<Resolver>(
+        state.character_identity_resolver_target);
+    resolved_character = reinterpret_cast<std::uintptr_t>(
+        resolver(&character_id));
+    if (resolved_character == 0) {
+      return CharacterIdentityResolutionV1::unresolved;
+    }
+  }
+  std::uint32_t character_round_trip = 0;
+  if (resolved_character == 0 ||
+      resolved_character >
+          (std::numeric_limits<std::uintptr_t>::max)() - 0x18 ||
+      !ReadMemory(state, resolved_character + 0x18, &character_round_trip,
+                  sizeof(character_round_trip)) ||
+      character_round_trip != character_id) {
+    return CharacterIdentityResolutionV1::invalid;
+  }
+  return CharacterIdentityResolutionV1::resolved;
 }
 
 enum class ResolveRowIdentityResultV1 {
   success,
   faction_identity_failed,
   target_character_failed,
+  leader_character_failed,
+  member_span_failed,
+  member_identity_failed,
+  member_ownership_failed,
 };
 
 ResolveRowIdentityResultV1 ResolveRowIdentity(
@@ -361,6 +454,7 @@ ResolveRowIdentityResultV1 ResolveRowIdentity(
       faction_round_trip != output.faction_id) {
     return ResolveRowIdentityResultV1::faction_identity_failed;
   }
+  output.resolved_faction_address = resolved_faction;
   if (!ReadMemory(state, resolved_faction + 0x40,
                   &output.target_character_id,
                   sizeof(output.target_character_id)) ||
@@ -369,33 +463,107 @@ ResolveRowIdentityResultV1 ResolveRowIdentity(
     return ResolveRowIdentityResultV1::target_character_failed;
   }
 
-  std::uintptr_t resolved_character = 0;
-  if (state.character_identity_resolver_override != nullptr) {
-    if (!state.character_identity_resolver_override(
-            state.character_identity_resolver_context,
-            output.target_character_id, resolved_character)) {
-      return ResolveRowIdentityResultV1::target_character_failed;
-    }
-  } else {
-    using Resolver = void *(*)(const std::uint32_t *) noexcept;
-    if (state.character_identity_resolver_target == 0) {
-      return ResolveRowIdentityResultV1::target_character_failed;
-    }
-    const auto resolver = reinterpret_cast<Resolver>(
-        state.character_identity_resolver_target);
-    resolved_character = reinterpret_cast<std::uintptr_t>(
-        resolver(&output.target_character_id));
-  }
-  std::uint32_t character_round_trip = 0;
-  if (resolved_character == 0 ||
-      resolved_character >
-          (std::numeric_limits<std::uintptr_t>::max)() - 0x18 ||
-      !ReadMemory(state, resolved_character + 0x18, &character_round_trip,
-                  sizeof(character_round_trip)) ||
-      character_round_trip != output.target_character_id) {
+  if (ResolveCharacterIdentity(state, output.target_character_id) !=
+      CharacterIdentityResolutionV1::resolved) {
     return ResolveRowIdentityResultV1::target_character_failed;
   }
+
+  if (resolved_faction >
+          (std::numeric_limits<std::uintptr_t>::max)() - 0x44 ||
+      !ReadMemory(state, resolved_faction + 0x44,
+                  &output.raw_leader_character_id,
+                  sizeof(output.raw_leader_character_id))) {
+    return ResolveRowIdentityResultV1::leader_character_failed;
+  }
+  const auto leader_resolution = output.raw_leader_character_id == 0
+      ? CharacterIdentityResolutionV1::unresolved
+      : ResolveCharacterIdentity(state, output.raw_leader_character_id);
+  if (leader_resolution == CharacterIdentityResolutionV1::invalid) {
+    return ResolveRowIdentityResultV1::leader_character_failed;
+  }
+  output.leader_present =
+      leader_resolution == CharacterIdentityResolutionV1::resolved;
+  output.leader_character_id = output.leader_present
+      ? output.raw_leader_character_id
+      : 0;
+
+  CharacterMemberContainerHeaderV1 member_header{};
+  if (!ReadCharacterMemberContainer(state, resolved_faction,
+                                    member_header)) {
+    return ResolveRowIdentityResultV1::member_span_failed;
+  }
+  output.character_member_row_data = member_header.row_data;
+  output.character_member_count =
+      static_cast<std::uint32_t>(member_header.count);
+  for (std::size_t index = 0;
+       index < static_cast<std::size_t>(member_header.count); ++index) {
+    CharacterMemberIdentityRowV1 member{};
+    const auto member_row_address = member_header.row_data + index * 0x20;
+    if (!ReadMemory(state, member_row_address + 0x08, &member,
+                    sizeof(member))) {
+      return ResolveRowIdentityResultV1::member_span_failed;
+    }
+    if (member.owner_faction_id != output.faction_id) {
+      return ResolveRowIdentityResultV1::member_ownership_failed;
+    }
+    if (ResolveCharacterIdentity(state, member.character_id) !=
+        CharacterIdentityResolutionV1::resolved) {
+      return ResolveRowIdentityResultV1::member_identity_failed;
+    }
+    if (std::find(output.character_member_ids.begin(),
+                  output.character_member_ids.begin() + index,
+                  member.character_id) !=
+        output.character_member_ids.begin() + index) {
+      return ResolveRowIdentityResultV1::member_identity_failed;
+    }
+    output.character_member_ids[index] = member.character_id;
+  }
   return ResolveRowIdentityResultV1::success;
+}
+
+bool RecordRowResolutionFailure(
+    FactionTargetingRowObserverStateV1 &state,
+    ResolveRowIdentityResultV1 result) noexcept {
+  auto &observation = state.observation;
+  switch (result) {
+  case ResolveRowIdentityResultV1::success:
+    return false;
+  case ResolveRowIdentityResultV1::faction_identity_failed:
+    observation.identity_failure_count.fetch_add(1,
+                                                 std::memory_order_relaxed);
+    AddFailure(state,
+               faction_targeting_row_observer_failure_identity_resolver);
+    return true;
+  case ResolveRowIdentityResultV1::target_character_failed:
+    observation.target_character_failure_count.fetch_add(
+        1, std::memory_order_relaxed);
+    AddFailure(state,
+               faction_targeting_row_observer_failure_target_character);
+    return true;
+  case ResolveRowIdentityResultV1::leader_character_failed:
+    observation.leader_character_failure_count.fetch_add(
+        1, std::memory_order_relaxed);
+    AddFailure(state,
+               faction_targeting_row_observer_failure_leader_character);
+    return true;
+  case ResolveRowIdentityResultV1::member_span_failed:
+    observation.member_span_failure_count.fetch_add(
+        1, std::memory_order_relaxed);
+    AddFailure(state, faction_targeting_row_observer_failure_member_span);
+    return true;
+  case ResolveRowIdentityResultV1::member_identity_failed:
+    observation.member_identity_failure_count.fetch_add(
+        1, std::memory_order_relaxed);
+    AddFailure(state, faction_targeting_row_observer_failure_member_identity);
+    return true;
+  case ResolveRowIdentityResultV1::member_ownership_failed:
+    observation.member_ownership_failure_count.fetch_add(
+        1, std::memory_order_relaxed);
+    AddFailure(state,
+               faction_targeting_row_observer_failure_member_ownership);
+    return true;
+  }
+  return true;
 }
 
 void ClearResolved(FactionTargetingRowObserverStateV1 &state) noexcept {
@@ -480,18 +648,7 @@ bool CaptureFactionTargetingRowsV1(
     const auto resolved = ResolveRowIdentity(
         state, row_address, first_admission.player_character_id,
         first_rows[index]);
-    if (resolved == ResolveRowIdentityResultV1::faction_identity_failed) {
-      observation.identity_failure_count.fetch_add(1,
-                                                   std::memory_order_relaxed);
-      AddFailure(state,
-                 faction_targeting_row_observer_failure_identity_resolver);
-      return false;
-    }
-    if (resolved == ResolveRowIdentityResultV1::target_character_failed) {
-      observation.target_character_failure_count.fetch_add(
-          1, std::memory_order_relaxed);
-      AddFailure(state,
-                 faction_targeting_row_observer_failure_target_character);
+    if (RecordRowResolutionFailure(state, resolved)) {
       return false;
     }
   }
@@ -516,18 +673,7 @@ bool CaptureFactionTargetingRowsV1(
     const auto resolved = ResolveRowIdentity(
         state, row_address, first_admission.player_character_id,
         second_rows[index]);
-    if (resolved == ResolveRowIdentityResultV1::faction_identity_failed) {
-      observation.identity_failure_count.fetch_add(1,
-                                                   std::memory_order_relaxed);
-      AddFailure(state,
-                 faction_targeting_row_observer_failure_identity_resolver);
-      return false;
-    }
-    if (resolved == ResolveRowIdentityResultV1::target_character_failed) {
-      observation.target_character_failure_count.fetch_add(
-          1, std::memory_order_relaxed);
-      AddFailure(state,
-                 faction_targeting_row_observer_failure_target_character);
+    if (RecordRowResolutionFailure(state, resolved)) {
       return false;
     }
   }
@@ -541,17 +687,63 @@ bool CaptureFactionTargetingRowsV1(
     return false;
   }
 
-  const bool same_span = std::equal(
+  const bool same_targeting_span = std::equal(
       first_rows.begin(), first_rows.begin() + count, second_rows.begin(),
       [](const ResolvedTargetingRowV1 &left,
          const ResolvedTargetingRowV1 &right) {
         return left.faction_id == right.faction_id &&
+            left.resolved_faction_address == right.resolved_faction_address &&
             left.target_character_id == right.target_character_id;
       });
-  if (!same_span) {
+  if (!same_targeting_span) {
     observation.span_stability_failure_count.fetch_add(
         1, std::memory_order_relaxed);
     return false;
+  }
+
+  const bool same_leaders = std::equal(
+      first_rows.begin(), first_rows.begin() + count, second_rows.begin(),
+      [](const ResolvedTargetingRowV1 &left,
+         const ResolvedTargetingRowV1 &right) {
+        return left.raw_leader_character_id ==
+                   right.raw_leader_character_id &&
+            left.leader_present == right.leader_present &&
+            left.leader_character_id == right.leader_character_id;
+      });
+  if (!same_leaders) {
+    observation.leader_stability_failure_count.fetch_add(
+        1, std::memory_order_relaxed);
+    AddFailure(state,
+               faction_targeting_row_observer_failure_leader_stability);
+    return false;
+  }
+
+  const bool same_member_spans = std::equal(
+      first_rows.begin(), first_rows.begin() + count, second_rows.begin(),
+      [](const ResolvedTargetingRowV1 &left,
+         const ResolvedTargetingRowV1 &right) {
+        return left.character_member_row_data ==
+                   right.character_member_row_data &&
+            left.character_member_count == right.character_member_count &&
+            std::equal(
+                left.character_member_ids.begin(),
+                left.character_member_ids.begin() +
+                    left.character_member_count,
+                right.character_member_ids.begin());
+      });
+  if (!same_member_spans) {
+    observation.member_stability_failure_count.fetch_add(
+        1, std::memory_order_relaxed);
+    AddFailure(state,
+               faction_targeting_row_observer_failure_member_stability);
+    return false;
+  }
+
+  for (std::size_t index = 0; index < count; ++index) {
+    auto &row = first_rows[index];
+    std::sort(row.character_member_ids.begin(),
+              row.character_member_ids.begin() +
+                  row.character_member_count);
   }
 
   std::sort(first_rows.begin(), first_rows.begin() + count,
@@ -593,6 +785,35 @@ bool CaptureFactionTargetingRowsV1(
                                               std::memory_order_relaxed);
     observation.last_target_character_ids[index].store(
         first_rows[index].target_character_id, std::memory_order_relaxed);
+    observation.last_leader_present[index].store(
+        first_rows[index].leader_present ? 1U : 0U,
+        std::memory_order_relaxed);
+    observation.last_leader_character_ids[index].store(
+        first_rows[index].leader_character_id, std::memory_order_relaxed);
+    const bool leader_present_in_members =
+        first_rows[index].leader_present &&
+        std::binary_search(
+            first_rows[index].character_member_ids.begin(),
+            first_rows[index].character_member_ids.begin() +
+                first_rows[index].character_member_count,
+            first_rows[index].leader_character_id);
+    observation.last_leader_present_in_character_members[index].store(
+        leader_present_in_members ? 1U : 0U, std::memory_order_relaxed);
+    observation.last_character_member_counts[index].store(
+        first_rows[index].character_member_count,
+        std::memory_order_relaxed);
+    for (std::size_t member_index = 0;
+         member_index <
+             kFactionTargetingRowObserverMaximumCharacterMembersPerFactionV1;
+         ++member_index) {
+      const auto flat_index =
+          index *
+              kFactionTargetingRowObserverMaximumCharacterMembersPerFactionV1 +
+          member_index;
+      observation.last_character_member_ids[flat_index].store(
+          first_rows[index].character_member_ids[member_index],
+          std::memory_order_relaxed);
+    }
   }
   observation.last_thread_id.store(current_thread_id,
                                    std::memory_order_relaxed);
@@ -802,6 +1023,18 @@ ReadFactionTargetingRowObserverDiagnosticsV1(
       source.target_character_failure_count.load(std::memory_order_acquire);
   target.count_equivalence_failure_count =
       source.count_equivalence_failure_count.load(std::memory_order_acquire);
+  target.leader_character_failure_count =
+      source.leader_character_failure_count.load(std::memory_order_acquire);
+  target.leader_stability_failure_count =
+      source.leader_stability_failure_count.load(std::memory_order_acquire);
+  target.member_span_failure_count =
+      source.member_span_failure_count.load(std::memory_order_acquire);
+  target.member_stability_failure_count =
+      source.member_stability_failure_count.load(std::memory_order_acquire);
+  target.member_identity_failure_count =
+      source.member_identity_failure_count.load(std::memory_order_acquire);
+  target.member_ownership_failure_count =
+      source.member_ownership_failure_count.load(std::memory_order_acquire);
   target.accepted_capture_count =
       source.accepted_capture_count.load(std::memory_order_acquire);
 
@@ -829,6 +1062,29 @@ ReadFactionTargetingRowObserverDiagnosticsV1(
       target.last_target_character_ids[index] =
           source.last_target_character_ids[index].load(
               std::memory_order_relaxed);
+      target.last_leader_present[index] =
+          source.last_leader_present[index].load(std::memory_order_relaxed);
+      target.last_leader_character_ids[index] =
+          source.last_leader_character_ids[index].load(
+              std::memory_order_relaxed);
+      target.last_leader_present_in_character_members[index] =
+          source.last_leader_present_in_character_members[index].load(
+              std::memory_order_relaxed);
+      target.last_character_member_counts[index] =
+          source.last_character_member_counts[index].load(
+              std::memory_order_relaxed);
+      for (std::size_t member_index = 0;
+           member_index <
+               kFactionTargetingRowObserverMaximumCharacterMembersPerFactionV1;
+           ++member_index) {
+        const auto flat_index =
+            index *
+                kFactionTargetingRowObserverMaximumCharacterMembersPerFactionV1 +
+            member_index;
+        target.last_character_member_ids[flat_index] =
+            source.last_character_member_ids[flat_index].load(
+                std::memory_order_relaxed);
+      }
     }
     target.last_thread_id =
         source.last_thread_id.load(std::memory_order_relaxed);

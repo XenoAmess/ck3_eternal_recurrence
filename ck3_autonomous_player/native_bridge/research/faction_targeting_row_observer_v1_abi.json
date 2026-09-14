@@ -1,7 +1,7 @@
 {
   "contract": "g2-faction-targeting-row-observer-v1",
   "schema_version": 1,
-  "status": "static-ready-private-target-count-pending-paused-live",
+  "status": "static-ready-private-leader-member-pending-paused-live-heartbeat",
   "exact_build": {
     "product_version": "1.19.0.6",
     "executable_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
@@ -68,20 +68,27 @@
       "paused proof",
       "captured row count equals admitted campaign-root player_targeting_faction_count",
       "two equal container data/count snapshots",
-      "two equal faction-id and target-character-id copies from inline 0x18-byte rows",
-      "equal proof epoch, revision, date, player identity and campaign-root targeting count after the second copy",
+      "two equal faction-id, target-character-id, canonical-leader and complete character-member copies from each inline 0x18-byte targeting row",
+      "equal proof epoch, revision, date, player identity and campaign-root targeting count after the second complete copy",
       "every faction id resolves and round-trips",
-      "every target CharacterID resolves and full-generation round-trips",
-      "every target CharacterID equals the admitted player identity",
+      "every target CharacterID resolves, full-generation round-trips and equals the admitted player identity",
+      "canonical leader is either a legal nullable absence or a resolved full-generation CharacterID; special character is never substituted",
+      "each signed character-member count is between zero and the per-faction bound of 64",
+      "positive member count has non-null data and count*0x20 addressing is overflow-safe",
+      "every member CharacterID resolves and full-generation round-trips",
+      "every member row owner FactionID equals the enclosing targeting-row faction identity",
+      "member CharacterIDs are unique within each faction",
       "faction identities are unique"
     ],
-    "publication": "owned faction/target-character identity pairs sorted by faction id plus the admitted campaign-root count are published with an odd/even generation; any failure retains the previous generation"
+    "publication": "owned faction, target, nullable canonical-leader and bounded character-member identities sorted by faction id plus the admitted campaign-root count are published with an odd/even generation; any failure retains the previous complete generation"
   },
   "pointer_boundary": {
     "raw_pointer_fields_persisted": false,
     "raw_pointer_hashes_persisted": false,
     "raw_row_bytes_persisted": false,
-    "process_local_addresses": "container and row addresses are used only during the synchronous capture and are never published"
+    "process_local_addresses": "targeting/member containers and rows are borrowed only during synchronous capture and are never published",
+    "raw_member_row_bytes_persisted": false,
+    "raw_member_vtables_persisted": false
   },
   "readiness": {
     "exact_targeting_span_ready": true,
@@ -91,18 +98,27 @@
     "campaign_root_count_equivalence_ready": true,
     "target_character_identity_ready": true,
     "public_targeting_rows_ready": false,
-    "private_target_and_count_observer_ready": true
+    "private_target_and_count_observer_ready": true,
+    "leader_identity_ready": true,
+    "canonical_leader_nullable_semantics_ready": true,
+    "character_member_vector_ready": true,
+    "character_member_identity_ready": true,
+    "character_member_ownership_ready": true,
+    "private_leader_member_observer_ready": true,
+    "heartbeat_private_observer_ready": false
   },
   "scope": {
     "private_build_only": true,
     "read_only_game_state": true,
     "public_abi_changed": false,
     "public_capability_changed": false,
-    "ck3_started": false
+    "ck3_started": false,
+    "heartbeat_payload_changed": false,
+    "public_schema_changed": false
   },
-  "unique_next_reverse_engineering_entry": "faction_leader_and_character_member_vector_semantics",
-  "evidence_limit": "FACTION4-CORE implements the private/default-off same-admission target CharacterID and campaign-root count gates with deterministic fixtures. Paused live capture, member vectors, type, war, power/discontent and public MCP/schema promotion remain unproven.",
-  "implementation_revision": "FACTION4-CORE",
+  "unique_next_reverse_engineering_entry": "capture_faction_targeting_row_observer_v1_paused_live_leader_member_heartbeat",
+  "evidence_limit": "FACTION6-CORE implements the private/default-off same-admission canonical nullable leader and bounded 0x20 character-member reader with deterministic fixtures and previous-generation retention. Paused exact-build live/heartbeat capture, type, war, power/discontent, stock dangerous predicate and public MCP/schema promotion remain unproven.",
+  "implementation_revision": "FACTION6-CORE",
   "target_character_identity": {
     "source_contract": "faction_target_character_count_equivalence_v1",
     "faction_target_character_id_offset": "0x40",
@@ -120,6 +136,51 @@
     ],
     "admitted_campaign_root_field": "player_targeting_faction_count",
     "count_gate": "FactionsWindow+0x144 row count equals admitted campaign-root count",
-    "target_gate": "every resolved CFaction+0x40 CharacterID equals admitted player_character_id"
+    "target_gate": "every resolved CFaction+0x40 CharacterID equals admitted player_character_id",
+    "double_sample_fields": [
+      "CFaction+0x10 faction identity",
+      "CFaction+0x40 target CharacterID",
+      "CFaction+0x44 canonical nullable leader CharacterID",
+      "CFaction+0x48 member data and CFaction+0x54 signed count",
+      "each 0x20 member row CharacterID +0x08 and owner FactionID +0x0C"
+    ],
+    "previous_generation_retained_on_failure": true
+  },
+  "canonical_leader_identity": {
+    "faction_leader_character_id_offset": "0x44",
+    "identity_type": "uint32 full-generation engine CharacterID",
+    "character_identity_resolver_rva": "0x82B270",
+    "resolved_character_round_trip_offset": "0x18",
+    "nullable": true,
+    "legal_empty_is_not_failure": true,
+    "special_character_substitution_allowed": false,
+    "leader_present_in_character_members": "derived only by comparing the accepted canonical leader ID with accepted character_member_ids"
+  },
+  "character_member_vector": {
+    "faction_embedded_container_offset": "0x48",
+    "container_extent": 24,
+    "container_data_offset": "0x00",
+    "container_unknown_word_offset": "0x08",
+    "container_count_offset": "0x0C",
+    "container_count_type": "signed int32",
+    "maximum_members_per_faction": 64,
+    "element_stride": 32,
+    "element_member_character_id_offset": "0x08",
+    "element_owner_faction_id_offset": "0x0C",
+    "row_tail_opaque_start": "0x10",
+    "member_character_round_trip_offset": "0x18",
+    "owner_must_equal_enclosing_faction_id": true,
+    "member_ids_unique_within_faction": true,
+    "zero_count_semantics": "valid empty character_member_ids list",
+    "count_separation": "per-faction character-member count is independent of outer targeting_faction_count and the stock display total that adds county members"
+  },
+  "typed_failures": {
+    "leader_character": "canonical leader field cannot be read, or a resolver-produced non-null Character object fails full-generation round-trip; an unresolved leader remains a legal nullable absence",
+    "leader_stability": "canonical leader presence or identity differs between the two same-admission copies",
+    "member_span": "signed count, bound, null-data or overflow-safe 0x20 addressing fails",
+    "member_stability": "member data/count or complete member ID/owner sequence differs between copies",
+    "member_identity": "member CharacterID cannot be read, resolved, full-generation round-tripped or is duplicated within its faction",
+    "member_ownership": "member row owner FactionID does not equal the enclosing targeting-row faction identity",
+    "failure_publication": "all failures reject the candidate capture and retain the previous complete generation"
   }
 }

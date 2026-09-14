@@ -21,7 +21,7 @@ inline constexpr std::string_view
         "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86";
 inline constexpr std::string_view
     kFactionTargetingRowObserverNextReverseEngineeringEntryV1 =
-        "faction_leader_and_character_member_vector_semantics";
+        "capture_faction_targeting_row_observer_v1_paused_live_leader_member_heartbeat";
 
 inline constexpr std::uintptr_t kFactionTargetingRowObserverPatchRvaV1 =
     0x1395F0E;
@@ -36,6 +36,12 @@ inline constexpr std::size_t kFactionTargetingRowObserverPatchBytesV1 = 15;
 inline constexpr std::size_t kFactionTargetingRowObserverStubCapacityV1 = 192;
 inline constexpr std::size_t kFactionTargetingRowStrideV1 = 0x18;
 inline constexpr std::size_t kFactionTargetingRowObserverMaximumRowsV1 = 64;
+inline constexpr std::size_t
+    kFactionTargetingRowObserverMaximumCharacterMembersPerFactionV1 = 64;
+inline constexpr std::size_t
+    kFactionTargetingRowObserverMaximumCharacterMembersV1 =
+        kFactionTargetingRowObserverMaximumRowsV1 *
+        kFactionTargetingRowObserverMaximumCharacterMembersPerFactionV1;
 inline constexpr bool kFactionTargetingRowObserverInstalledByDefaultV1 = false;
 
 enum FactionTargetingRowObserverFailureV1 : std::uint32_t {
@@ -54,6 +60,12 @@ enum FactionTargetingRowObserverFailureV1 : std::uint32_t {
   faction_targeting_row_observer_failure_identity_resolver = 1U << 11,
   faction_targeting_row_observer_failure_target_character = 1U << 12,
   faction_targeting_row_observer_failure_count_equivalence = 1U << 13,
+  faction_targeting_row_observer_failure_leader_character = 1U << 14,
+  faction_targeting_row_observer_failure_leader_stability = 1U << 15,
+  faction_targeting_row_observer_failure_member_span = 1U << 16,
+  faction_targeting_row_observer_failure_member_stability = 1U << 17,
+  faction_targeting_row_observer_failure_member_identity = 1U << 18,
+  faction_targeting_row_observer_failure_member_ownership = 1U << 19,
 };
 
 struct FactionTargetingRowCaptureAdmissionV1 {
@@ -131,6 +143,12 @@ struct FactionTargetingRowObservationV1 {
   std::atomic<std::uint64_t> identity_failure_count{0};
   std::atomic<std::uint64_t> target_character_failure_count{0};
   std::atomic<std::uint64_t> count_equivalence_failure_count{0};
+  std::atomic<std::uint64_t> leader_character_failure_count{0};
+  std::atomic<std::uint64_t> leader_stability_failure_count{0};
+  std::atomic<std::uint64_t> member_span_failure_count{0};
+  std::atomic<std::uint64_t> member_stability_failure_count{0};
+  std::atomic<std::uint64_t> member_identity_failure_count{0};
+  std::atomic<std::uint64_t> member_ownership_failure_count{0};
   std::atomic<std::uint64_t> accepted_capture_count{0};
   std::atomic<std::uint64_t> published_generation{0};
   std::atomic<std::uint64_t> last_proof_epoch{0};
@@ -145,6 +163,21 @@ struct FactionTargetingRowObservationV1 {
   std::array<std::atomic<std::uint32_t>,
              kFactionTargetingRowObserverMaximumRowsV1>
       last_target_character_ids{};
+  std::array<std::atomic<std::uint8_t>,
+             kFactionTargetingRowObserverMaximumRowsV1>
+      last_leader_present{};
+  std::array<std::atomic<std::uint32_t>,
+             kFactionTargetingRowObserverMaximumRowsV1>
+      last_leader_character_ids{};
+  std::array<std::atomic<std::uint8_t>,
+             kFactionTargetingRowObserverMaximumRowsV1>
+      last_leader_present_in_character_members{};
+  std::array<std::atomic<std::uint32_t>,
+             kFactionTargetingRowObserverMaximumRowsV1>
+      last_character_member_counts{};
+  std::array<std::atomic<std::uint32_t>,
+             kFactionTargetingRowObserverMaximumCharacterMembersV1>
+      last_character_member_ids{};
   std::atomic<std::uint32_t> last_thread_id{0};
   std::atomic<std::uint64_t> last_timestamp_qpc{0};
 };
@@ -193,6 +226,12 @@ struct FactionTargetingRowObservationDiagnosticsV1 {
   std::uint64_t identity_failure_count = 0;
   std::uint64_t target_character_failure_count = 0;
   std::uint64_t count_equivalence_failure_count = 0;
+  std::uint64_t leader_character_failure_count = 0;
+  std::uint64_t leader_stability_failure_count = 0;
+  std::uint64_t member_span_failure_count = 0;
+  std::uint64_t member_stability_failure_count = 0;
+  std::uint64_t member_identity_failure_count = 0;
+  std::uint64_t member_ownership_failure_count = 0;
   std::uint64_t accepted_capture_count = 0;
   std::uint64_t published_generation = 0;
   std::uint64_t last_proof_epoch = 0;
@@ -205,6 +244,17 @@ struct FactionTargetingRowObservationDiagnosticsV1 {
       last_faction_ids{};
   std::array<std::uint32_t, kFactionTargetingRowObserverMaximumRowsV1>
       last_target_character_ids{};
+  std::array<std::uint8_t, kFactionTargetingRowObserverMaximumRowsV1>
+      last_leader_present{};
+  std::array<std::uint32_t, kFactionTargetingRowObserverMaximumRowsV1>
+      last_leader_character_ids{};
+  std::array<std::uint8_t, kFactionTargetingRowObserverMaximumRowsV1>
+      last_leader_present_in_character_members{};
+  std::array<std::uint32_t, kFactionTargetingRowObserverMaximumRowsV1>
+      last_character_member_counts{};
+  std::array<std::uint32_t,
+             kFactionTargetingRowObserverMaximumCharacterMembersV1>
+      last_character_member_ids{};
   std::uint32_t last_thread_id = 0;
   std::uint64_t last_timestamp_qpc = 0;
 };

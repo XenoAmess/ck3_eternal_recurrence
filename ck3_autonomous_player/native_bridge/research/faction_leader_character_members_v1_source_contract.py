@@ -157,11 +157,13 @@ def check(root: Path, *, ck3_root: Path | None = None) -> None:
         "research-only scope drifted",
     )
     _require(
-        upstream["status"] == "static-ready-private-target-count-pending-paused-live"
+        upstream["status"]
+        == "static-ready-private-leader-member-pending-paused-live-heartbeat"
         and upstream["readiness"]["private_target_and_count_observer_ready"] is True
+        and upstream["readiness"]["private_leader_member_observer_ready"] is True
         and upstream["unique_next_reverse_engineering_entry"]
-        == "faction_leader_and_character_member_vector_semantics",
-        "FACTION4 prerequisite drifted",
+        == "capture_faction_targeting_row_observer_v1_paused_live_leader_member_heartbeat",
+        "FACTION6 leader/member contract consumption drifted",
     )
     for token in contract["upstream_private_observer_tokens"]:
         _require(token in observer_text, f"upstream observer token missing: {token}")
