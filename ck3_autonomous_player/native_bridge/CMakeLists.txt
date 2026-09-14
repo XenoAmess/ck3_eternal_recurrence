@@ -168,6 +168,12 @@ option(
 )
 
 option(
+  XAR_CK3_ENABLE_G2_ACTIVE_SCHEME_PRIVATE_CANDIDATE_V1
+  "Compile the private active-scheme observer/action core for a hash-bound candidate"
+  OFF
+)
+
+option(
   XAR_CK3_ENABLE_G2_COUNCIL_COMPOSITION_STEWARD_CANDIDATES_PRIVATE_PROBE_V1
   "Run one private exact-build paused steward-candidate query"
   OFF
@@ -457,6 +463,20 @@ add_library(xar_ck3_bridge SHARED
   src/zhongguo_result_case_snapshot_v1_serializer.cpp
 )
 target_include_directories(xar_ck3_bridge PRIVATE research src)
+if(XAR_CK3_ENABLE_G2_ACTIVE_SCHEME_PRIVATE_CANDIDATE_V1)
+  target_sources(xar_ck3_bridge PRIVATE
+    src/active_scheme_state_v1_private_observer.cpp
+    src/active_scheme_state_v1_private_source_adapter.cpp
+    src/active_scheme_state_v1_private_native_binder.cpp
+    src/active_scheme_semantic_action_v1_private.cpp
+    src/active_scheme_semantic_action_v1_private_native_command_adapter.cpp
+    src/active_scheme_interaction_definition_resolver_v1_private.cpp
+    src/active_scheme_paused_live_native_glue_v1_private.cpp
+  )
+  target_compile_definitions(xar_ck3_bridge PRIVATE
+    XAR_CK3_ENABLE_G2_ACTIVE_SCHEME_PRIVATE_CANDIDATE_V1=1
+  )
+endif()
 if(XAR_CK3_ENABLE_G2_WAR_BOUND_LOSS_CANDIDATE_V1)
   target_sources(xar_ck3_bridge PRIVATE
     src/raiktor_war_bound_loss_candidate_v1.cpp
