@@ -209,6 +209,28 @@ tea_setup_and_execute_effect = {
 				save_scope_as = tea_directive_war
 			}
 			if = {
+				limit = { exists = scope:tea_directive_war }
+				debug_log = "TEA: OBSERVED accept_war_started"
+			}
+			else = { debug_log = "TEA: TEST FAIL accept_war_not_started" }
+			if = {
+				limit = { prestige = var:tea_accept_prestige_expected }
+				debug_log = "TEA: OBSERVED accept_prestige_exact"
+			}
+			else = { debug_log = "TEA: TEST FAIL accept_prestige_mismatch" }
+			if = {
+				limit = { gold = var:tea_accept_gold_expected }
+				debug_log = "TEA: OBSERVED accept_suzerain_gold_exact"
+			}
+			else = { debug_log = "TEA: TEST FAIL accept_suzerain_gold_mismatch" }
+			if = {
+				limit = {
+					scope:recipient = { gold = var:tea_accept_gold_expected }
+				}
+				debug_log = "TEA: OBSERVED accept_tributary_gold_exact"
+			}
+			else = { debug_log = "TEA: TEST FAIL accept_tributary_gold_mismatch" }
+			if = {
 				limit = {
 					exists = scope:tea_directive_war
 					prestige = var:tea_accept_prestige_expected

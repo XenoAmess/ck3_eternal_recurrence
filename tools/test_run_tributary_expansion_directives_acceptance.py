@@ -32,6 +32,15 @@ class TributaryExpansionAcceptanceRunnerTests(unittest.TestCase):
         ):
             self.assertIn(token, joined)
 
+    def test_marker_stream_reads_tea_prefix(self) -> None:
+        with tempfile.TemporaryDirectory() as raw:
+            log = Path(raw) / "debug.log"
+            log.write_text("noise\nTEA: TEST BEGIN tributary_expansion_directives\n", encoding="utf-8")
+            stream = runner.TeaMarkerStream(log)
+            stream.pump()
+            self.assertEqual(len(stream.lines), 1)
+            self.assertIn("TEA: TEST BEGIN", stream.lines[0])
+
     def test_bootstrap_projects_only_release_runtime(self) -> None:
         with tempfile.TemporaryDirectory() as raw:
             profile = Path(raw) / "profile"

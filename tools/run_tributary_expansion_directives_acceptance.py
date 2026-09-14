@@ -8,6 +8,7 @@ import os
 import re
 import shutil
 import sys
+import time
 from pathlib import Path, PurePosixPath
 
 DEFAULT_CK3_EXE = Path(
@@ -45,6 +46,65 @@ REQUIRED_MARKERS = (
 REMOTE_FILE_ID_LINE = re.compile(
     r'(?m)^[ \t]*remote_file_id[ \t]*=[ \t]*"([0-9]+)"[ \t]*(?:\r?\n|$)'
 )
+
+
+class TeaMarkerStream:
+    def __init__(self, path: Path):
+        self.path = path
+        self.offset = 0
+        self.pending = b""
+        self.lines: list[str] = []
+
+    def pump(self, final: bool = False) -> None:
+        try:
+            with self.path.open("rb") as source:
+                source.seek(0, 2)
+                size = source.tell()
+                if size < self.offset:
+                    self.offset = 0
+                    self.pending = b""
+                source.seek(self.offset)
+                data = source.read()
+                self.offset = source.tell()
+        except OSError as error:
+            if final:
+                raise acceptance.RunnerError(f"cannot finalize fixture log: {error}") from error
+            data = b""
+        payload = self.pending + data
+        if final:
+            complete, self.pending = payload, b""
+        else:
+            boundary = max(payload.rfind(b"\n"), payload.rfind(b"\r"))
+            if boundary < 0:
+                self.pending = payload
+                return
+            complete, self.pending = payload[: boundary + 1], payload[boundary + 1 :]
+        for line in complete.decode("utf-8", errors="ignore").splitlines():
+            if "TEA:" in line:
+                stripped = line.strip()
+                self.lines.append(stripped)
+                log(stripped)
+        failures = [line for line in self.lines if "TEA: TEST FAIL" in line]
+        if failures:
+            raise acceptance.RunnerError(f"fixture failure marker: {failures[-1]}")
+
+    def wait(self, marker: str, timeout_s: float = 15) -> None:
+        deadline = time.time() + timeout_s
+        while time.time() < deadline:
+            self.pump()
+            if any(marker in line for line in self.lines):
+                return
+            time.sleep(acceptance.POLL_INTERVAL_S)
+        raise acceptance.RunnerError(f"fixture marker timeout: {marker}")
+
+    def validate(self, final: bool = False) -> None:
+        self.pump(final=final)
+        for marker in REQUIRED_MARKERS:
+            count = sum(marker in line for line in self.lines)
+            if count != 1:
+                raise acceptance.RunnerError(
+                    f"fixture marker count for {marker!r} is {count}, expected 1"
+                )
 
 
 def log(message: str) -> None:
@@ -214,7 +274,7 @@ def bootstrap_userdir(userdir: Path) -> dict[str, object]:
     }
 
 
-def run_scenario(stream: harness.MarkerStream, artifacts: Path) -> dict[str, object]:
+def run_scenario(stream: TeaMarkerStream, artifacts: Path) -> dict[str, object]:
     confirm = isolated.open_decision_detail(
         "开始朝贡扩张指令实机验收",
         "建立朝贡关系并执行分支",
@@ -269,6 +329,7 @@ def configure_harness(source: Path) -> None:
         "tea.",
     )
     harness.REQUIRED_MARKERS = REQUIRED_MARKERS
+    harness.MarkerStream = TeaMarkerStream
     harness.log = log
     harness.fixture_source_errors = fixture_source_errors
     harness.product_source_errors = product_source_errors
