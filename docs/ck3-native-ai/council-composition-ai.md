@@ -2,7 +2,7 @@
 
 ## 状态与范围
 
-- **[static-confirmed / implementation pending]** 本专题冻结常规内阁席位的人选集合入口、职位与候选合法性、解职/调任/交换门、主要能力，以及强力封臣席位压力。建议的 `council-composition-candidates-v1` 仍未实现，也没有 production paused artifact。
+- **[static-confirmed / capture seam closed / implementation pending]** 本专题冻结常规内阁席位的人选集合入口、职位与候选合法性、解职/调任/交换门、主要能力，以及强力封臣席位压力。exact-build 候选 producer、唯一 GUI 列表调用点、临时输出布局与对象寿命已经闭合；建议的 `council-composition-candidates-v1` 仍未实现，也没有 production paused artifact。
 - **[unknown]** exact-build EXE 明确保留 `ai_council.cpp` 子系统及 council AI 开关，但没有在脚本、define 或当前已闭合的 reflection/GUI 表面暴露“候选综合分数”、各输入权重、重排 cadence 或最终选择理由。本文不把职位主能力排序、`COUNCIL_TASK_SWITCH_SCORE` 或 GUI 顺序冒充原版人选 AI 公式。
 - 本专题以现有 [内阁观测与发展任务](council-and-development.md) 的 active position/incumbent 结果为输入，增加人选与动作预检，不改变 `campaign-root-context-v1`。
 - 宫廷司祭仅发布 position identity、最终候选合法性与不透明拒绝原因。信仰、教义、教义条目、宗教热情、改宗和宗教改革不进入合同或我方策略。
@@ -15,7 +15,7 @@
 | CK3 build | `1.19.0.6` |
 | `binaries/ck3.exe` 大小 | `95,206,008` bytes |
 | `binaries/ck3.exe` SHA-256 | `2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86` |
-| 本专题仓库基线 | `a1844cbd099c7e1d3e56eea78ea2c728747e4db6` |
+| 本专题 G2 集成基线 | `1957b6d0ce133f76d56552b76a3ec96f7c740135` |
 
 下述 RVA 均以这份 EXE 的模块基址为零点。EXE、build、council position、government 或 scripted trigger 数据变化后，入口与语义必须重新定位。
 
@@ -114,7 +114,7 @@ EXE 内嵌源码单元字符串 `C:\mnt\gsg\ck3\titus\source\logic\ai\ai_council
 
 | 表面 | registration / owner | handler | 已证边界 |
 |---|---|---|---|
-| `GetPotentialCouncillorList` | `0x143270..0x14347A` | entry `0xD50000`，位于 PDATA `0xD4FF40..0xD50408` | 产生 GUI candidate list；精确 population domain 与顺序规则仍需 native fixture 闭合 |
+| `GetPotentialCouncillorList` | `0x143270..0x14347A` | `0xD49C00` thunk → `0xB75420` leaf | 返回 `CPotentialCouncillorWindow+0xF8` 内嵌的 `CPotentialCouncillorList*`；它只是 getter，不生产候选 |
 | `CanFireCouncillor` | `0x1437F0..0x1438D4` | `0x105D690..0x105D6C8` | 当前 incumbent/position 的解职布尔值 |
 | `GetFireCouncillorTooltip` | `0x1438E0..0x143A5D` | `0x105D960..0x105D9A2` | 解职失败的原生展示文本入口 |
 | `CanReassignCouncillor` | `0x143A60..0x143B4D` | `0x105D9B0..0x105DA26` | 当前 position 的换人布尔值 |
@@ -122,7 +122,29 @@ EXE 内嵌源码单元字符串 `C:\mnt\gsg\ck3\titus\source\logic\ai\ai_council
 
 候选 row 的 `set_position` / `swap_position` dispatcher 为 `0x10573C0..0x1057673`，tooltip dispatcher 为 `0x1057680..0x1057F01`，`can_swap` 为 `0x1057F10..0x10580EE`。dispatcher 会解析带 generation 的 character identity，并进入 mutation/交互 machinery；所以生产 query 应抽取其中的候选枚举与合法性 evaluator，不能通过“打开隐藏 GUI 后模拟点击”取得只读结果。
 
-当前没有把 `GetPotentialCouncillorList` 的内部 population domain、默认排序和每条失败原因解析到稳定 native ABI，因此这些边保持 `unknown`。实现时应以候选 handler 的真实输出为 collection source，再对每行调用最终合法性，而不是由 `direct_landed_vassal_character_ids` 加 courtiers 猜一个集合。
+### 候选 producer、容器与唯一捕获点
+
+RTTI 和构造函数把 getter 背后的对象关系闭合为：
+
+- `CPotentialCouncillorWindow` TypeDescriptor / COL / vtable 分别位于 `0x5232A40` / `0x469D860` / `0x411BD70`；构造函数 `0x1058780..0x10589A6` 在 `0x105882E` 取 `window+0xF8`，随后于 `0x1058842` 写入 `CPotentialCouncillorList` vtable `0x411BB68`；
+- 因而 list 是 window 的内嵌子对象，不是全局容器，也没有独立于 window 的寿命。`list+0x1B0` 是回指 owner window 的指针；`list+0x1B8` 是带 generation 的 active council task identity；
+- list vtable slot 6 指向刷新函数 `0x10580F0..0x105841E`。只允许在该 GUI refresh 的调用线程同步观察；不得在后台线程持有或稍后解引用 window/list 指针。
+
+刷新函数在 `0x105820A` 调用候选 producer `0x293BD00..0x293BF96`，返回点 `0x105820F` 是本 build 唯一有界的候选捕获 seam。调用现场为：
+
+| 寄存器/栈槽 | 静态确认的值 |
+|---|---|
+| `RCX` | 当前 council owner 的 `CCharacter*`；generation 解析失败时使用引擎 fallback owner |
+| `RDX` | 由 `list+0x1B8` generation 校验后得到的 active council task；`task+0x18 → +0x38` 给出 `CouncilPositionType*` |
+| `R8B` | GUI 路径固定为 `1` |
+| `R9` | 指向 `[rbp-0x80]` 临时输出头 |
+| 返回后的 `[rbp-0x80]` | `data` qword；`[rbp-0x74]` 为非负 `count` dword；每项是 8-byte `CCharacter*` |
+
+producer 从 owner land-state 的 `+0xA8` 与 `+0x218` 两个 authored identity 容器枚举，输入项为 4-byte full-generation ID。两个域都执行 generation 解析、排除 incumbent、排除 owner、直接关系 owner 校验，以及 position/candidate evaluator；第一个域还执行由 `R8B` 控制的额外 eligibility gate。当前静态证据不为这两个内部域编造“廷臣/封臣”等成员名。输出顺序保持 producer 的遍历顺序，`0x293BD00` 内没有排序；GUI 随后才构造 row，故该顺序也不能冒充原版 AI 分数。
+
+刷新函数从 `0x105820F` 开始以 `data + count*8` 为界遍历，每项通过 `candidate+0x18` 读取 full `CharacterID`，再调用 `0xD05BE0` 构造/过滤 GUI row。临时输出在 `0x10583E5..0x1058402` 释放，仅在这一次 refresh 中有效。observer 必须在 `0x105820F` 立即复制 full IDs 和 owner/task/position 元数据到自有缓冲，不能保留任何 `CCharacter*`、task、window 或 list 指针。
+
+对整个 `.text` 的直接 `call 0x293BD00` 扫描得到四处调用：`0x105820A`、`0x190691B`、`0x26A1FD4`、`0x27E7554`。后三处使用 `R8B=0` 且不属于 `CPotentialCouncillorList` refresh；全局 hook producer 会混入其它上下文。由包含函数、`R8B=1` 和 post-call RVA 三项共同限定的 `0x105820F` 才是本合同的唯一捕获点。静态扫描不声称排除所有可能的间接调用。
 
 ## 原版决策树
 
@@ -132,8 +154,9 @@ flowchart TD
     VP -->|no| NX["position unavailable"]
     VP -->|yes| AF{"auto_fill active?"}
     AF -->|yes| AO["engine-managed position / player selection unavailable"]
-    AF -->|no| PL["native potential-councillor collection"]
-    PL --> VC{"compiled valid_character?"}
+    AF -->|no| PL["0x105820A native candidate producer"]
+    PL --> COPY["0x105820F copy full IDs before temp free"]
+    COPY --> VC{"compiled valid_character?"}
     VC -->|no| REJ["omit or typed ineligible reason"]
     VC -->|yes| MODE{"candidate/current-seat relation"}
     MODE -->|guest| RG["recruit_then_assign prerequisite"]
@@ -176,7 +199,7 @@ flowchart TD
   "owner_character_id": 0,
   "coverage": {
     "position_coverage_key": "standard_landed_non_nomadic_core_v1",
-    "candidate_collection_source": "native_potential_councillor_list",
+    "candidate_collection_source": "potential_councillor_refresh_producer",
     "candidate_collection_complete": true
   },
   "opinion_constants": {
@@ -241,7 +264,7 @@ flowchart TD
 
 ### 字段约束
 
-- positions 按 unsigned UTF-8 bytes 的 `position_key` 排序；candidates 按 unsigned full `CharacterID` 排序。原版 GUI 顺序只能作为可选 `native_display_ordinal`，不能作为稳定 ID 或评分。
+- positions 按 unsigned UTF-8 bytes 的 `position_key` 排序；candidates 按 unsigned full `CharacterID` 排序。collection source 固定映射到本 build 的 `0x105820A → 0x105820F` 调用点；producer 遍历顺序只能作为可选 `native_collection_ordinal`，不能作为稳定 ID、GUI 最终顺序或评分。
 - identity 使用 full-generation ID，并在 candidate collection 后逐行 generation round-trip；一行 stale 会使整份 query typed unavailable，不能静默删行后宣称集合完整。
 - `candidate_collection_complete=true` 只允许用于 exact native collection 成功、列表前后 owner/position/date/revision 稳定的场景。范围外 government/position 返回 `partial` 或 `unavailable`，沿用 campaign-root coverage reason。
 - `position_block_reasons` 与 candidate `reason_codes` 是稳定 machine vocabulary；`native_reason_key` 只保存 exact evaluator 暴露的 key，不解析本地化成语义。
@@ -293,14 +316,11 @@ flowchart TD
 
 该输出会解锁玩家可见价值：自动玩家能指出具体席位、具体人选、能力变化、政治收益与换人代价，并在合法性不足时给出可读 blocker。它不等待原版隐藏总分闭合，也不把 recommendation 当作 action ACK。
 
-## 后续施工顺序
+## 唯一下一 probe 与后续实现边界
 
-1. 在 application-main paused transaction 中复用 campaign-root 的 owner、active positions、incumbents、date 与 revision。
-2. 绑定 `GetPotentialCouncillorList` 的真实 collection source，闭合 population domain、entry layout、generation 规则和空列表语义；不要由现有 direct-vassal vector 拼候选。
-3. 对每个 position/candidate 调用 compiled `valid_position` / `valid_character` 与原生 fire/reassign/swap evaluator，冻结 source contract、ABI 和 deterministic fixtures。
-4. 发布独立只读 MCP tool 与 turn-bundle 可选 projection；先完成两个 paused 场景：一个真实空缺、一个 occupied replacement，并至少包含一位 active powerful vassal 和一条 blocked reason。
-5. 在真实 paused artifact 中要求双查询稳定、`planner_ready=true`，再接最小 planner recommendation。read-only live 不能升级为 action-ready。
-6. 任命 semantic action 另开工作包：绑定 snapshot/owner/position/candidate/revision，commit 前复检，调用与 GUI 同源的规则型 command，返回 typed receipt，并以 active position postcondition 闭环。不得调用跳过规则的 script effect。
+当前唯一下一 probe 是一个 **default-off、exact-build 绑定的 `0x105820F` post-return observer**。它只在模块 SHA、包含函数 hash、调用点字节和 application/UI calling thread 全部匹配时启用；在 producer 返回后、GUI row 构造前，同步复制 `{owner full ID, active-task full ID, position identity, R8B, count, candidate full IDs, calling thread ID}`，随后立即退出，不修改容器和游戏状态。一次 paused 手工打开目标席位候选窗的捕获必须证明：count 非负、所有 candidate generation round-trip 成功、没有 duplicate、空列表能与 UI 空状态对应、捕获线程与 GUI refresh 线程一致。该 observer 之外不并列其它猜测性 probe。
+
+probe 通过后，生产 reader 仍须在 application-main paused transaction 中复用 campaign-root 的 owner、active positions、incumbents、date 与 revision，并对每个 position/candidate 调用 compiled `valid_position` / `valid_character` 与原生 fire/reassign/swap evaluator。之后才能冻结 ABI/fixture、发布只读 MCP、取得真实空缺和 occupied replacement 两个 paused artifact，再接最小 planner。任命 semantic action 保持独立工作包，需 commit-time 复检与 active-position postcondition；不得调用跳过规则的 script effect。
 
 ## 未闭合边界
 
@@ -308,7 +328,7 @@ flowchart TD
 |---|---|---|
 | **[unknown]** | 原版 AI composition utility、输入权重和 tie-break | `native_ai_score_ready=false`；不阻塞我方 planner |
 | **[unknown]** | 原版 AI 席位重算 cadence 与 `last_appointed_councillor` 语义 | 不推断换人时机；Mermaid 保留虚线 |
-| **[static entry only]** | `GetPotentialCouncillorList` population domain、row layout、默认排序 | 实现必须先闭合 collection source 与 generation，不手拼集合 |
+| **[static-confirmed / live probe pending]** | producer 的两个 owner land-state 容器成员名、运行时空列表与 generation 互证 | collection source、entry layout、生命周期和唯一 seam 已闭合；只执行上节唯一 observer，不手拼集合 |
 | **[static entry only]** | fire/reassign/swap 的完整 machine reason | 允许稳定粗粒度 reason；禁止解析 loc 猜原因 |
 | **[owner-deferred]** | 宫廷司祭通用信仰/教义策略 | 仅最终合法性和 opaque reason |
 | **[not implemented]** | read-only MCP、planner 与 semantic action | 按上节顺序推进，状态不得写 live/action-ready |
@@ -320,7 +340,13 @@ flowchart TD
 | `PotentialCouncillorWindow` type registration `0x10600B0..0x10602CA` | 538 | `B2C9AD2D30900BC38B424118F7793EB75BC9A0421761307B74DFAD3E5608C387` |
 | `GuiCouncilPosition` type registration `0x10604F0..0x106070A` | 538 | `1CF986EF8B95505040DF14A4BC538D33A1302B46E38AED1ADB5B801643E534E9` |
 | candidate-list registration `0x143270..0x14347A` | 522 | `E299496622FD4F85528161BCC38D1366CD8508BDC4E3C88845104FCD1562F700` |
-| candidate-list PDATA `0xD4FF40..0xD50408` | 1,224 | `8FE82E96468C1FF9E2B84FD4241739264778AA606344D13C3324F36B8D9168AA` |
+| `GetPotentialCouncillorList` thunk `0xD49C00..0xD49C05`（bytes `E9 1B B8 E2 FF`） | 5 | `8A92A8AF50B3AE0D6E548147B0CDA1EC07790973D06D1E17A7A817F0DDEACF53` |
+| getter leaf `0xB75420..0xB75428`（bytes `48 8D 81 F8 00 00 00 C3`） | 8 | `33B159575A0657705DC11673DE9520E8CC3CCE8C3547DC133D471E9C0EDC1A51` |
+| `CPotentialCouncillorWindow` constructor `0x1058780..0x10589A6` | 550 | `A9BDFDC3E7728AA0358CDD247B48DD155682F7E301DB1060D7703561F1B329A6` |
+| `CPotentialCouncillorList` vtable `0x411BB68..0x411BBF0` | 136 | `853D0D85B52B9659D570446AE20213904F89249B7825046CBDCD5A3F7E183D90` |
+| candidate-list refresh `0x10580F0..0x105841E` | 814 | `E7D1A1C2A2ABF7D62478C06FFF7D592FE0CF7682F8CF53D84D90EFE8545B748A` |
+| producer call/return slice `0x1058200..0x1058238`（prefix bytes `4C 8D 4D 80 41 B0 01 49 8B D2 E8 F1 3A 8E 01`） | 56 | `BB3B4F20EB48B3D57014EA59880AF2D8C127D40EFF825DF8BEFB50879629A251` |
+| candidate producer `0x293BD00..0x293BF96` | 662 | `A2264828FA0A077650A1D74DD3C9861F81B7C219BC9D32DE7C11369BF6E890D8` |
 | `CanFireCouncillor` registration `0x1437F0..0x1438D4` | 228 | `08A567710BB57BBBB21653EE252DC3B928FF03BDBA24E62056CBEF15507E7159` |
 | `CanFireCouncillor` handler `0x105D690..0x105D6C8` | 56 | `BADEAB04A18F96BA6B1850E63F878B06F039018AF7571707F28378D5B106B878` |
 | fire-tooltip registration `0x1438E0..0x143A5D` | 381 | `5005B0C97479A386C1DC2D0BA1D574414DF5B2D1CB7A93ACC85E81B1609B7DE3` |
