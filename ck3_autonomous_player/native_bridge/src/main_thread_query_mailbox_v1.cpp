@@ -1028,6 +1028,12 @@ MainThreadQuerySubmitResultV1 TrySubmitMainThreadQueryV1(
   ticket.sequence = sequence;
   mailbox.state.store(MainThreadQueryMailboxStateV1::queued,
                       std::memory_order_release);
+  // A loaded game may be paused with no pending Windows input. Wake the
+  // already verified application-main owner with an inert thread message so
+  // its normal SDL/PeekMessage loop reaches the installed drain hook. Posting
+  // is best effort: failure leaves the bounded queued wait fail-closed.
+  (void)PostThreadMessageW(
+      mailbox.owner_thread_id.load(std::memory_order_acquire), WM_NULL, 0, 0);
   return MainThreadQuerySubmitResultV1::submitted;
 }
 

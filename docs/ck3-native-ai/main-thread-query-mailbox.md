@@ -120,6 +120,21 @@ identity, paused state, date, and two consecutive pump epochs. RNG wrapper,
 state, and owner are captured in `MainThreadExecutionStampV1` and heartbeat
 diagnostics, but are excluded from streak, submit, and post-execution checks.
 
+R679 exposed a cold-checkpoint paused-idle regression after campaign-root
+publication: for eight seconds `pump_epochs` remained `11208 -> 11208` and
+`executor_started_requests` remained `0 -> 0`; the ticket ended as
+`timeout_cancelled_before_execution`. The current source had lost the inert
+wake originally added by `f854cef` when unrelated commit `a4e2ba0` reversed
+the same eight source lines. A successful fixed-executor publication therefore
+posts one best-effort `WM_NULL` thread message to the already verified owner
+TID. The message carries zero `wParam` and `lParam` and has no gameplay effect;
+it only wakes the normal Windows/SDL pump so the existing hook can drain the
+ticket on that same owner thread. A failed post remains non-fatal and the same
+bounded wait fails closed. The Win32 fixture now creates a real owner-thread
+message queue and proves publish, inert wake, same-thread drain, one executor
+call, terminal reclaim, and clean uninstall. No executor, command, capability,
+timeout, paused/date gate, or public wire field changes.
+
 ## Install and process lifetime
 
 The PeekMessageW IAT lives on a read-only page. Install and uninstall use the same bounded
