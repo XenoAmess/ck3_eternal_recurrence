@@ -1,0 +1,665 @@
+{
+  "contract": "realm_law_enact_mutation_v1_abi",
+  "contract_version": 1,
+  "status": "exact-build static-ready; shared glue and paused live receipt pending",
+  "build": {
+    "game_version": "1.19.0.6",
+    "executable": "binaries/ck3.exe",
+    "architecture": "x86_64",
+    "machine": "0x8664",
+    "preferred_image_base": "0x140000000",
+    "image_size": "0x5C2D000",
+    "file_size": 95206008,
+    "sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86"
+  },
+  "receiver": {
+    "type": "GuiLaw private receiver",
+    "calling_convention": "Microsoft x64; RCX is this and AL carries bool results",
+    "layout": {
+      "+0x00": "CLaw pointer",
+      "+0x08": "captured played-character identity pointer; +0x08 is compared byte-for-byte as int32 with module+0x4FE7EE0"
+    },
+    "resolution": "0x3DDF770 requires the captured identity to equal the current played CharacterID, generation-resolves that ID through storage module+0x570C130 with fallback module+0x570C138, requires CCharacter+0x1B8, rejects an invalid or already-active law, then calls 0x2C7D930 with R8=null",
+    "no_pointer_cache": "the command path carries a CLaw pointer only inside the engine-owned CAddLawCommand clone; callers must rebuild the GuiLaw receiver and re-run the final evaluator before each submission"
+  },
+  "call_chain": {
+    "reflection_registration": "0x7DF870 [0x7DF870,0x7DF934) registers the literal Enact with callback 0x3DE0880",
+    "gui_entry": "0x3DE0880 [0x3DE0880,0x3DE089C) checks RCX and calls 0x3DDF8C0",
+    "gui_enact": "0x3DDF8C0 [0x3DDF8C0,0x3DDF9BC) re-runs 0x3DDF770, builds a 0x168-byte CEnactLawConfirmationPopup, and retains the target CLaw at popup+0x160",
+    "confirmation": "CEnactLawConfirmationPopup primary vtable+0x48 is 0x3DDEEC0; it builds a 0x30-byte CAddLawCommand and calls 0x973E00 with manager module+0x57621F0 and flags 0x0E",
+    "clone_and_queue": "0x973E00 calls CAddLawCommand primary vtable+0x40 to clone, then calls locked queue entry 0x341D990; its AL return is queue acceptance only",
+    "command_validation": "CAddLawCommand primary vtable+0x30 is 0x25E2690; it resolves command+0x20 CharacterID and tail-calls 0x2C7DAA0(target CLaw, CCharacter, error sink), which reaches the same final evaluator 0x2C7D930",
+    "command_execution": "CAddLawCommand primary vtable+0x38 is 0x803620, which adjusts this by +0x18 and enters 0x26B2750. Its 0x26B27D5 call reaches 0x26B2890; callsite 0x26B29BC invokes secondary vtable+0x08, 0x25E2640. Secondary this is primary object+0x18, so the leaf reads CharacterID at secondary+0x08 and CLaw at secondary+0x10, resolves the character, and tail-calls 0x260ACB0(character, law, 7, null)",
+    "mutation": "0x260ACB0 [0x260ACB0,0x260AD6A) builds a transient law mutation context with 0x25FEF00, selects the existing entry whose CLaw+0x38 value equals target CLaw+0x38, calls logical apply routine 0x25FF0F0, and invokes finalizer 0x25FEFA0. The apply span removes/compacts the old entry at 0x25FF1A2-0x25FF1F5, inserts the target at 0x25FF22F-0x25FF25B, and marks the change at 0x25FF267. The finalizer emits registered token 0x328A law_changed",
+    "serialization": "CAddLawCommand primary vtable+0x80 is 0x25E26E0; it writes command+0x20 under registered native field tag 0x6EC character and serializes the target law persistent identity reached from command+0x28 under registered tag 0x2FF2 law. Primary vtable+0x88 is the continuous deserialization dispatcher 0x25E2780-0x25E2849, which handles those same tags and writes +0x20/+0x28"
+  },
+  "calling_conventions": {
+    "0x3DDF770": "bool __fastcall(GuiLaw* this); AL result",
+    "0x2C7D930": "bool __fastcall(CLaw* law, CCharacter* actor, void* optional_error_sink); RCX/RDX/R8, AL result",
+    "0x2C7DAA0": "bool __fastcall(CLaw* law, CCharacter* actor, void* optional_error_sink); RCX/RDX/R8, AL result",
+    "0x3DDEEC0": "void __fastcall(CEnactLawConfirmationPopup* this); RCX",
+    "0x25E2690": "bool __fastcall(CAddLawCommand* this, void* optional_error_sink); RCX/RDX, AL result",
+    "0x25E26E0": "void __fastcall(CAddLawCommand* this, void* archive_writer); RCX/RDX",
+    "0x25E2780": "deserialize dispatch entry; RCX command, RDX archive reader, R8D native field tag",
+    "0x973E00": "bool __fastcall(void* command_manager, void* command, uint32_t flags); RCX/RDX/R8D, AL queue result",
+    "0x25E2640": "void __fastcall(void* secondary_this); RCX points to CAddLawCommand+0x18",
+    "0x260ACB0": "void __fastcall(CCharacter* actor, CLaw* target, uint8_t source_code, void* optional_selection); RCX/RDX/R8B/R9",
+    "0x25FF0F0": "void __fastcall(void* mutation_context, CLaw* target, void* selected_native_member); RCX/RDX/R8"
+  },
+  "command": {
+    "rtti_type_descriptor_rva": "0x54C18C8",
+    "rtti_name": ".?AVCAddLawCommand@@",
+    "size": "0x30",
+    "layout": {
+      "+0x00": "primary vtable module+0x4323730",
+      "+0x08": "base command flag byte, zero in GuiLaw confirmation submit",
+      "+0x0C": "base command field, zero in GuiLaw confirmation submit",
+      "+0x10": "base command field, zero in GuiLaw confirmation submit",
+      "+0x14": "base command field, zero in GuiLaw confirmation submit",
+      "+0x18": "secondary vtable module+0x4323700",
+      "+0x20": "full generation-bearing played CharacterID copied from module+0x4FE7EE0",
+      "+0x28": "target CLaw pointer"
+    },
+    "primary_vtable": {
+      "rva": "0x4323730",
+      "+0x00": "0x963C60 deleting destructor",
+      "+0x30": "0x25E2690 validator adapter",
+      "+0x38": "0x803620 framework execution-dispatch adjustor",
+      "+0x40": "0x25EC5B0 0x30-byte heap clone",
+      "+0x48": "0x25EC630 returns native class key 0x2FF3",
+      "+0x80": "0x25E26E0 serializer",
+      "+0x88": "0x25E2780 deserializer dispatch"
+    },
+    "secondary_vtable": {
+      "rva": "0x4323700",
+      "object_offset": "0x18",
+      "+0x00": "0x26B2850 adjustor/deleting entry",
+      "+0x08": "0x25E2640 executor"
+    },
+    "submit_flags": "0x0E",
+    "ack_boundary": "0x973E00 AL=true proves only that the locked command queue retained the heap clone; effective law, resource deltas and succession shape require a later paused receipt"
+  },
+  "native_registry": {
+    "command": "entry module+0x42C2AE0 is id 0x2FF3 and pointer module+0x429D240 to add_law",
+    "character_field": "entry module+0x42B7C20 is id 0x6EC and pointer module+0x4095758 to character",
+    "law_field": "entry module+0x42C2AD0 is id 0x2FF2 and pointer module+0x40F87C4 to law",
+    "change_notification": "entry module+0x42C5070 is id 0x328A and pointer module+0x42A1180 to law_changed"
+  },
+  "popup": {
+    "rtti_type_descriptor_rva": "0x56FA7A0",
+    "rtti_name": ".?AVCEnactLawConfirmationPopup@@",
+    "size": "0x168",
+    "primary_vtable_rva": "0x4590F30",
+    "can_confirm_slot": "+0x38 -> 0x3DDEF20",
+    "confirm_submit_slot": "+0x48 -> 0x3DDEEC0",
+    "target_law_offset": "+0x160"
+  },
+  "instruction_spans": [
+    {
+      "name": "gui_law_enact_registration",
+      "rva": "0x7DF870",
+      "end_rva": "0x7DF934",
+      "size": "0xC4",
+      "sha256": "A3B429A8AE524E4957960D92A561D7558B8F3032DC7914DD235F05941B05626E",
+      "runtime_functions": [
+        [
+          "0x7DF870",
+          "0x7DF934",
+          "0x4C4E814"
+        ]
+      ]
+    },
+    {
+      "name": "gui_law_enact_reflection_callback",
+      "rva": "0x3DE0880",
+      "end_rva": "0x3DE089C",
+      "size": "0x1C",
+      "sha256": "933D0540B343A2D3BA24F4DAB309A441DA0DE753E1F4515F623C37B8C7403683",
+      "runtime_functions": [
+        [
+          "0x3DE0880",
+          "0x3DE089C",
+          "0x4C38E54"
+        ]
+      ]
+    },
+    {
+      "name": "gui_law_can_enact_receiver",
+      "rva": "0x3DDF770",
+      "end_rva": "0x3DDF819",
+      "size": "0xA9",
+      "sha256": "99878CBEA6C1F72BF956B042B3DC0EA99498B838401A3D118F9DA1C4F2F8F552",
+      "runtime_functions": [
+        [
+          "0x3DDF770",
+          "0x3DDF819",
+          "0x4C39588"
+        ]
+      ]
+    },
+    {
+      "name": "engine_final_law_evaluator",
+      "rva": "0x2C7D930",
+      "end_rva": "0x2C7DA9D",
+      "size": "0x16D",
+      "sha256": "19DF78424757D57F98B4AC0A3A4483B71A0262F61361E22DB9343D05FAFBB053",
+      "runtime_functions": [
+        [
+          "0x2C7D930",
+          "0x2C7DA9D",
+          "0x4DE29BC"
+        ]
+      ]
+    },
+    {
+      "name": "engine_final_command_validator",
+      "rva": "0x2C7DAA0",
+      "end_rva": "0x2C7DBD5",
+      "size": "0x135",
+      "sha256": "D626F7242CAA153AC91710BA570C3BE995CBA4DEE6EB4FCA081EFDCD3D1E44C9",
+      "runtime_functions": [
+        [
+          "0x2C7DAA0",
+          "0x2C7DBD5",
+          "0x4DE29F0"
+        ]
+      ]
+    },
+    {
+      "name": "gui_law_enact_popup_builder",
+      "rva": "0x3DDF8C0",
+      "end_rva": "0x3DDF9BC",
+      "size": "0xFC",
+      "sha256": "098E3CBFDF01914AF549211A7416C89A9649358CB948D7CE7DA7AB80E5A5F172",
+      "runtime_functions": [
+        [
+          "0x3DDF8C0",
+          "0x3DDF9BC",
+          "0x4F2CED0"
+        ]
+      ]
+    },
+    {
+      "name": "popup_confirm_add_law_submit",
+      "rva": "0x3DDEEC0",
+      "end_rva": "0x3DDEF1F",
+      "size": "0x5F",
+      "sha256": "A87F23F36C57F82856DB60676D5E8B3CA0B375DFF2FF446E44256A1384EA6278",
+      "runtime_functions": [
+        [
+          "0x3DDEEC0",
+          "0x3DDEF1F",
+          "0x4F2CDCC"
+        ]
+      ]
+    },
+    {
+      "name": "add_law_command_executor_leaf",
+      "rva": "0x25E2640",
+      "end_rva": "0x25E268B",
+      "size": "0x4B",
+      "sha256": "E1F214A62378DDEC95101BF8A5CBB96B2C3B77E444104938FC1B237668489B15",
+      "runtime_functions": []
+    },
+    {
+      "name": "add_law_command_validator_adapter_leaf",
+      "rva": "0x25E2690",
+      "end_rva": "0x25E26DE",
+      "size": "0x4E",
+      "sha256": "A2324CCA52063F1D308DD4470CF1183574E972BC85E580EE0DE83C3DB4C6A6B0",
+      "runtime_functions": []
+    },
+    {
+      "name": "add_law_command_heap_clone",
+      "rva": "0x25EC5B0",
+      "end_rva": "0x25EC62C",
+      "size": "0x7C",
+      "sha256": "39336CAFA6C9649B740C57C3396877699BDDAA958C15722AD79CFBF64AF8B204",
+      "runtime_functions": [
+        [
+          "0x25EC5B0",
+          "0x25EC62C",
+          "0x4C39588"
+        ]
+      ]
+    },
+    {
+      "name": "add_law_command_serializer",
+      "rva": "0x25E26E0",
+      "end_rva": "0x25E277F",
+      "size": "0x9F",
+      "sha256": "62EECCEB502016F098239A1C9FE7ADDB17AC02CE8EDBF5510060D611EE5A0EB8",
+      "runtime_functions": [
+        [
+          "0x25E26E0",
+          "0x25E277F",
+          "0x4C39588"
+        ]
+      ]
+    },
+    {
+      "name": "submit_command_clone_and_queue",
+      "rva": "0x973E00",
+      "end_rva": "0x973E6C",
+      "size": "0x6C",
+      "sha256": "DE559EA4ADE7CC7BA5AD44612C15B28FD66B59FC69F4B1BF6C52431E750537F8",
+      "runtime_functions": [
+        [
+          "0x973E00",
+          "0x973E6C",
+          "0x4C4E2BC"
+        ]
+      ]
+    },
+    {
+      "name": "locked_command_queue",
+      "rva": "0x341D990",
+      "end_rva": "0x341DA8A",
+      "size": "0xFA",
+      "sha256": "28AC1C7F76E546A569234B3B1C05ED2746F364EF2FC61450AC13A95681E5650A",
+      "runtime_functions": [
+        [
+          "0x341D990",
+          "0x341DA8A",
+          "0x4E6E644"
+        ]
+      ]
+    },
+    {
+      "name": "law_mutation_dispatch",
+      "rva": "0x260ACB0",
+      "end_rva": "0x260AD6A",
+      "size": "0xBA",
+      "sha256": "86F49D059BBC84A1C26DAFB646F8446313505FB25221E74DD0D9F3DB0040A53B",
+      "runtime_functions": [
+        [
+          "0x260ACB0",
+          "0x260AD6A",
+          "0x4D98A30"
+        ]
+      ]
+    },
+    {
+      "name": "law_mutation_apply_logical_span",
+      "rva": "0x25FF0F0",
+      "end_rva": "0x25FF2AC",
+      "size": "0x1BC",
+      "sha256": "3B80175307D4CC5CDD860E75A6C0839324ECA78406DD0E37F5A9DA7EAA5AFCBB",
+      "runtime_functions": [
+        [
+          "0x25FF0F0",
+          "0x25FF174",
+          "0x4D97DD8"
+        ],
+        [
+          "0x25FF174",
+          "0x25FF186",
+          "0x4D97DE4"
+        ],
+        [
+          "0x25FF186",
+          "0x25FF21F",
+          "0x4D97DF8"
+        ],
+        [
+          "0x25FF21F",
+          "0x25FF283",
+          "0x4D97E0C"
+        ],
+        [
+          "0x25FF283",
+          "0x25FF2AC",
+          "0x4D97E1C"
+        ]
+      ]
+    },
+    {
+      "name": "add_law_primary_vtable",
+      "rva": "0x4323730",
+      "end_rva": "0x43237C0",
+      "size": "0x90",
+      "sha256": "80887472B09EDC25732EED44178C845BAAA675D1D47FF6E95E3EBAD1D09EE5DE",
+      "runtime_functions": []
+    },
+    {
+      "name": "add_law_secondary_vtable",
+      "rva": "0x4323700",
+      "end_rva": "0x4323728",
+      "size": "0x28",
+      "sha256": "6676E6DB6E1F19E1684E7178A7122836D9468333FE8FACFF885619C7376A76FE",
+      "runtime_functions": []
+    },
+    {
+      "name": "enact_popup_primary_vtable",
+      "rva": "0x4590F30",
+      "end_rva": "0x4590F88",
+      "size": "0x58",
+      "sha256": "CD3B7B625CB5C8C2D7BD5A56F19B878C66F2C6EED592F2D22606FD50E8B812DB",
+      "runtime_functions": []
+    },
+    {
+      "name": "command_framework_execution_adjustor_leaf",
+      "rva": "0x803620",
+      "end_rva": "0x803629",
+      "size": "0x9",
+      "sha256": "610780A6CE279F49AC53E56DA78A854CF59B83D0D07B2850381DF5E048D444AD",
+      "runtime_functions": []
+    },
+    {
+      "name": "command_framework_dispatch_gate",
+      "rva": "0x26B2750",
+      "end_rva": "0x26B2849",
+      "size": "0xF9",
+      "sha256": "BA8BE78920AF57E57F057566D865B370A6CBD378D0922E92AD7B2860E0B46A97",
+      "runtime_functions": [
+        [
+          "0x26B2750",
+          "0x26B2849",
+          "0x4DA339C"
+        ]
+      ]
+    },
+    {
+      "name": "command_framework_secondary_callsite",
+      "rva": "0x26B29BC",
+      "end_rva": "0x26B29C5",
+      "size": "0x9",
+      "sha256": "D5532554CC958F45E10A76FF2382F5AA0BC3FE0673C6D272E78B5326620F788C",
+      "runtime_functions": []
+    },
+    {
+      "name": "add_law_command_deserializer_logical_span",
+      "rva": "0x25E2780",
+      "end_rva": "0x25E2849",
+      "size": "0xC9",
+      "sha256": "6637A71F6B7E9B0C92BAB5AD863FF81112F17825C8222BB7CD61D19F24DAEDF0",
+      "runtime_functions": [
+        [
+          "0x25E2780",
+          "0x25E27B8",
+          "0x4C5A7BC"
+        ],
+        [
+          "0x25E27B8",
+          "0x25E2820",
+          "0x4D95B18"
+        ],
+        [
+          "0x25E2820",
+          "0x25E2833",
+          "0x4D95B30"
+        ],
+        [
+          "0x25E2833",
+          "0x25E2849",
+          "0x4D95B48"
+        ]
+      ]
+    },
+    {
+      "name": "law_mutation_finalizer",
+      "rva": "0x25FEFA0",
+      "end_rva": "0x25FF0EE",
+      "size": "0x14E",
+      "sha256": "5F6F68BDAEB3FE7BDB3D159BFF2C59C4EAA06A7B3C14C2F4294347B18590D058",
+      "runtime_functions": [
+        [
+          "0x25FEFA0",
+          "0x25FF0EE",
+          "0x4D97DC0"
+        ]
+      ]
+    }
+  ],
+  "relative_edges": [
+    {
+      "name": "registers_enact_callback",
+      "kind": "rip_relative",
+      "instruction_rva": "0x7DF8DC",
+      "instruction_size": 7,
+      "displacement_offset": 3,
+      "target_rva": "0x3DE0880"
+    },
+    {
+      "name": "reflection_calls_gui_enact",
+      "kind": "rel32",
+      "instruction_rva": "0x3DE0889",
+      "instruction_size": 5,
+      "displacement_offset": 1,
+      "target_rva": "0x3DDF8C0"
+    },
+    {
+      "name": "gui_enact_rechecks_can_enact",
+      "kind": "rel32",
+      "instruction_rva": "0x3DDF8D3",
+      "instruction_size": 5,
+      "displacement_offset": 1,
+      "target_rva": "0x3DDF770"
+    },
+    {
+      "name": "can_enact_calls_final_evaluator",
+      "kind": "rel32",
+      "instruction_rva": "0x3DDF7FC",
+      "instruction_size": 5,
+      "displacement_offset": 1,
+      "target_rva": "0x2C7D930"
+    },
+    {
+      "name": "popup_confirm_calls_submit",
+      "kind": "rel32",
+      "instruction_rva": "0x3DDEF14",
+      "instruction_size": 5,
+      "displacement_offset": 1,
+      "target_rva": "0x973E00"
+    },
+    {
+      "name": "submit_calls_locked_queue",
+      "kind": "rel32",
+      "instruction_rva": "0x973E41",
+      "instruction_size": 5,
+      "displacement_offset": 1,
+      "target_rva": "0x341D990"
+    },
+    {
+      "name": "validator_adapter_tailcalls_command_validator",
+      "kind": "rel32",
+      "instruction_rva": "0x25E26D9",
+      "instruction_size": 5,
+      "displacement_offset": 1,
+      "target_rva": "0x2C7DAA0"
+    },
+    {
+      "name": "command_validator_reuses_final_evaluator",
+      "kind": "rel32",
+      "instruction_rva": "0x2C7DBCE",
+      "instruction_size": 5,
+      "displacement_offset": 1,
+      "target_rva": "0x2C7D930"
+    },
+    {
+      "name": "executor_tailcalls_mutation_dispatch",
+      "kind": "rel32",
+      "instruction_rva": "0x25E2686",
+      "instruction_size": 5,
+      "displacement_offset": 1,
+      "target_rva": "0x260ACB0"
+    },
+    {
+      "name": "mutation_dispatch_calls_apply",
+      "kind": "rel32",
+      "instruction_rva": "0x260AD4C",
+      "instruction_size": 5,
+      "displacement_offset": 1,
+      "target_rva": "0x25FF0F0"
+    },
+    {
+      "name": "execution_adjustor_enters_framework_dispatch",
+      "kind": "rel32",
+      "instruction_rva": "0x803624",
+      "instruction_size": 5,
+      "displacement_offset": 1,
+      "target_rva": "0x26B2750"
+    },
+    {
+      "name": "framework_dispatch_calls_secondary_router",
+      "kind": "rel32",
+      "instruction_rva": "0x26B27D8",
+      "instruction_size": 5,
+      "displacement_offset": 1,
+      "target_rva": "0x26B2890"
+    },
+    {
+      "name": "mutation_dispatch_calls_finalizer",
+      "kind": "rel32",
+      "instruction_rva": "0x260AD57",
+      "instruction_size": 5,
+      "displacement_offset": 1,
+      "target_rva": "0x25FEFA0"
+    }
+  ],
+  "absolute_pointer_edges": [
+    {
+      "name": "add_law_secondary_executor",
+      "pointer_rva": "0x4323708",
+      "target_rva": "0x25E2640"
+    },
+    {
+      "name": "add_law_primary_destructor",
+      "pointer_rva": "0x4323730",
+      "target_rva": "0x963C60"
+    },
+    {
+      "name": "add_law_primary_validator",
+      "pointer_rva": "0x4323760",
+      "target_rva": "0x25E2690"
+    },
+    {
+      "name": "add_law_primary_clone",
+      "pointer_rva": "0x4323770",
+      "target_rva": "0x25EC5B0"
+    },
+    {
+      "name": "add_law_primary_serializer",
+      "pointer_rva": "0x43237B0",
+      "target_rva": "0x25E26E0"
+    },
+    {
+      "name": "add_law_primary_deserializer",
+      "pointer_rva": "0x43237B8",
+      "target_rva": "0x25E2780"
+    },
+    {
+      "name": "popup_can_confirm",
+      "pointer_rva": "0x4590F68",
+      "target_rva": "0x3DDEF20"
+    },
+    {
+      "name": "popup_confirm_submit",
+      "pointer_rva": "0x4590F78",
+      "target_rva": "0x3DDEEC0"
+    },
+    {
+      "name": "gui_law_enact_initializer",
+      "pointer_rva": "0x4013628",
+      "target_rva": "0x7DF870"
+    },
+    {
+      "name": "add_law_primary_execution_dispatch",
+      "pointer_rva": "0x4323768",
+      "target_rva": "0x803620"
+    },
+    {
+      "name": "character_registry_name",
+      "pointer_rva": "0x42B7C28",
+      "target_rva": "0x4095758"
+    },
+    {
+      "name": "law_registry_name",
+      "pointer_rva": "0x42C2AD8",
+      "target_rva": "0x40F87C4"
+    },
+    {
+      "name": "add_law_registry_name",
+      "pointer_rva": "0x42C2AE8",
+      "target_rva": "0x429D240"
+    },
+    {
+      "name": "law_changed_registry_name",
+      "pointer_rva": "0x42C5078",
+      "target_rva": "0x42A1180"
+    }
+  ],
+  "ascii_evidence": [
+    {
+      "name": "gui_law_enact_method",
+      "rva": "0x4590D34",
+      "value": "Enact"
+    },
+    {
+      "name": "add_law_command_rtti",
+      "rva": "0x54C18D8",
+      "value": ".?AVCAddLawCommand@@"
+    },
+    {
+      "name": "enact_popup_rtti",
+      "rva": "0x56FA7B0",
+      "value": ".?AVCEnactLawConfirmationPopup@@"
+    },
+    {
+      "name": "character_registry_literal",
+      "rva": "0x4095758",
+      "value": "character"
+    },
+    {
+      "name": "law_registry_literal",
+      "rva": "0x40F87C4",
+      "value": "law"
+    },
+    {
+      "name": "add_law_registry_literal",
+      "rva": "0x429D240",
+      "value": "add_law"
+    },
+    {
+      "name": "law_changed_registry_literal",
+      "rva": "0x42A1180",
+      "value": "law_changed"
+    }
+  ],
+  "integration_boundary": {
+    "closed_blocker": "exact 1.19.0.6 GuiLaw evaluator, confirmation-to-CAddLawCommand construction, CAddLawCommand layout, validator, clone, serializer, queue, executor and mutation entries are frozen without guessed offsets",
+    "remaining": [
+      "private LAW5 operation-table glue that constructs a fresh GuiLaw/CAddLawCommand from LAW3 identities on the application main thread",
+      "shared CMake/bridge/schema/MCP registration",
+      "one paused live submission plus later effective-law/resource/succession receipt"
+    ],
+    "forbidden_claims": [
+      "queue acceptance is not enactment success",
+      "the confirmation popup is not the mutation routine",
+      "an injected fixture callback is not native ABI evidence",
+      "raw CLaw or CCharacter pointers may not be retained across frames"
+    ]
+  },
+  "uint64_evidence": [
+    {
+      "name": "character_field_tag",
+      "rva": "0x42B7C20",
+      "value": "0x6EC"
+    },
+    {
+      "name": "law_field_tag",
+      "rva": "0x42C2AD0",
+      "value": "0x2FF2"
+    },
+    {
+      "name": "add_law_command_class_key",
+      "rva": "0x42C2AE0",
+      "value": "0x2FF3"
+    },
+    {
+      "name": "law_changed_notification_key",
+      "rva": "0x42C5070",
+      "value": "0x328A"
+    }
+  ]
+}
