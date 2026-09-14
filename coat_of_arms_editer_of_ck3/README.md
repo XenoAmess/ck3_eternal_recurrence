@@ -73,15 +73,16 @@ java -jar backend/target/quarkus-app/quarkus-run.jar
 ```
 
 当前基线：Vitest `40/40`、Vite production build、Quarkus REST `15/15` 与 Maven test 均 GREEN。
-“打开原生家徽页”和“提交回角色设计器”都只调用固定、零参数的王朝家徽 MCP，并要求独立 route 后置条件；它们不会接受浏览器传入的控件名、路径、指针或桌面输入。提交动作已经完成静态实现与定向测试，真实 CK3 往返证据将在受管实机验收后单独记录。
+“打开原生家徽页”和“提交回角色设计器”都只调用固定、零参数的王朝家徽 MCP，并要求独立 route 后置条件；它们不会接受浏览器传入的控件名、路径、指针或桌面输入。提交动作已在 exact CK3 `1.19.0.6` 完成受管实机往返：Finish 前后重开家徽页的原生 Copy 均为 330 bytes，SHA-256 均为 `4769FD42836E68FA35DC07FBA23BEABCC589E5A33087314F1D6287E5C53C305A`；该结论仍不覆盖完成整个角色创建或战役/存档持久化。
 
 probe/export 不再错误地假设家徽页必有 gameplay snapshot。binding 端点先验证 native-headless、named-pipe、exact
 CK3 `1.19.0.6`/EXE SHA、连接代次/PID 及 probe/export capability；有 snapshot 时返回其正 revision，没有 snapshot
 时返回原生合同允许的 frontend `revision=0`。断线、build 不匹配或 capability 缺失都会 fail closed。
 
-底层动作已由受管实机 artifact `mcp-frontend-route-coa-page-live5.json` 闭合为 `production-live primitive`：官方 MCP
-独立观察到 `coat_of_arms_designer` 以及可见、enabled 的 `coat_of_arms_page`，Steam 离线与 cleanup 均为 GREEN。
-该证据不覆盖角色设计器上层 Finish。
+打开动作已由受管实机 artifact `mcp-frontend-route-coa-page-live5.json` 闭合为 `production-live primitive`：官方 MCP
+独立观察到 `coat_of_arms_designer` 以及可见、enabled 的 `coat_of_arms_page`。固定王朝 Finish 则由
+`mcp-frontend-dynasty-finish-roundtrip-live7.json` 闭合：动作前精确观察 `dynasty_finish_button`，动作后验证返回
+`ruler_designer`，重开后的原生 Copy 与提交前逐字节一致；Steam 离线与 cleanup 均为 GREEN。
 
 Mask 编辑只接受整数分区索引 1、2、3。exact 原版语料实际使用 `{ 1 }`、`{ 2 }`、`{ 2 3 }`；MCP 进一步实际应用了
 `{ 1 2 3 }`，且原生 Copy 将它作为默认全通道省略。随附 shader 对应 R/G/B 三通道。其他值会形成阻止导出的诊断，不会被输入框静默丢弃。
@@ -99,7 +100,8 @@ apply → export → reapply → export。两次引擎 canonical 输出均为 32
 真实浏览器 live UI 随后完成“连接 → 应用到设计器 → 从 CK3 读取”：Vue 实际发出的 3 次 session GET、1 次 probe POST 和
 1 次 export POST 全部 HTTP 200，并经 `Quarkus REST → MCP Java SDK → Python stdio MCP → native bridge` 到达同一 CK3
 designer。probe 为 `applied`，原生 Copy/export 返回 483-byte CRLF canonical 源码，前端重新解析后诊断为空。该闭环仍只证明
-designer working state；上层 Finish/持久化、运行时 DLC/mod effective registry 和 CK3 原生像素回读尚未完成。
+designer working state；王朝 Finish 的后续 MCP 往返已完成，但整个角色创建/战役持久化、运行时 DLC/mod effective registry
+和 CK3 原生像素回读尚未完成。
 
 `ck3_query_coat_of_arms_resource_catalog_v1` 已能在不启动 CK3 的情况下分页读取 exact 1.19.0.6 基础游戏 designer manifest；
 它已经接入前端，并通过 `REST → Java MCP SDK → Python stdio MCP` 对本机安装完成后台贯通；结果明确不声称包含

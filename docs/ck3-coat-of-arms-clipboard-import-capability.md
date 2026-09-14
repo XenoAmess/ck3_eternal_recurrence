@@ -1,6 +1,6 @@
 # CK3 纹章设计器剪贴板导入能力报告
 
-> 调研日期：2026-09-08 至 2026-09-13
+> 调研日期：2026-09-08 至 2026-09-14
 >
 > 页面：角色设计器 → 自定义纹章 → 设计你自己的纹章 → 从剪贴板粘贴
 >
@@ -42,12 +42,13 @@ designer 的 working state。
 | `mcp-applied` | 在 `mcp-detected` 基础上调用原生 paste，并验证 designer working state 已切到候选纹章 |
 | `mcp-exported` | MCP 调用当前 designer 的原生 Copy，成功读取本次回调写入剪贴板的非空源码并绑定其字节数与 SHA-256 |
 | `mcp-roundtrip` | 同一 CK3 进程和 exact binding 中完成 apply → export → 原样 reapply → export，且两次 canonical export 字节完全相同 |
+| `mcp-committed` | MCP 只激活实时 GUI 树中的固定王朝 Finish，验证 route 从 `coat_of_arms_designer` 返回 `ruler_designer`，重开后原生 Copy 字节不变 |
 | `browser-mcp-live` | 真实浏览器中的 Vue UI 经 Quarkus REST、Java MCP SDK、Python stdio MCP 和 native bridge 完成 apply/export，并把原生 Copy 结果写回编辑器 |
 | `legacy-ui` | 早期人工/UI 辅助观察；仅作补充，不作为 MCP-first 最终证据 |
 | `unresolved` | 证据不足、含义歧义或资源与语法尚未拆开验证 |
 
-“真正保存进角色/王朝/家族/头衔”还需要完成上层窗口的 Finish。`mcp-applied` 只证明当前纹章设计器 working state 已改变，
-不冒充上层保存或跨存档持久化。
+`mcp-applied` 只证明当前纹章设计器 working state 已改变。2026-09-14 新增的 `mcp-committed` 进一步证明王朝 Finish
+已把该状态提交回仍在运行的角色设计器；它仍不冒充“完成整个角色创建”、进入战役后的王朝/家族/头衔状态或跨存档持久化。
 
 ## 3. MCP-first 探测能力
 
@@ -151,7 +152,8 @@ MCP 合同明确区分三种绑定：
 Hybrid 后端中的 probe/export 与固定 frontend 动作都强制直达 native，
 不会回退到 OCR、坐标或视觉驱动。`ck3_commit_frontend_dynasty_coat_of_arms_v1` 只解析实时
 `ruler_designer` 树中的固定 `dynasty_finish_button`，并要求动作前为 `coat_of_arms_designer`、动作后为
-`ruler_designer`；调用方不能传控件名、路径或指针。该动作当前为 `mcp-static-ready`，不能在实机往返完成前写成已提交事实。
+`ruler_designer`；调用方不能传控件名、路径或指针。受管实机往返已经把该动作从 `mcp-static-ready` 提升为
+`mcp-committed`，但证据范围止于角色设计器内的王朝家徽提交。
 
 resource catalog 不启动 CK3，也不经过视觉路线。它先校验 `binaries/ck3.exe` 的 exact-build SHA-256，然后读取原版
 `50_coa_designer_patterns.txt`、`50_coa_designer_emblems.txt` 与 `50_coa_designer_palettes.txt`，按原版设计器顺序分页返回
@@ -252,7 +254,13 @@ export 的公开结果为闭合 schema，包含 `status`、`designer_observed`�
 - Python contract、service、native driver、hybrid、离线资源索引/读取和真实 MCP SDK tools/list/call：30 项聚焦测试 GREEN；
   不带 MCP SDK 的普通 Python 环境同组测试 30 项 GREEN，其中 3 项 SDK 集成测试按设计跳过；
 - native bridge fresh build：成功；
-- native protocol 与 adapter registry CTest：2/2 GREEN；
+- native protocol、adapter registry 与 main-thread mailbox CTest：3/3 GREEN；
+- 王朝 Finish 的 Python contract/driver/service/MCP/live-runner 聚焦测试 18/18 GREEN；Vue 40/40、Quarkus REST 15/15、
+  Vite production build 与 Maven test GREEN；
+- 2026-09-14 受管实机通过官方 MCP SDK 完成 apply → 原生 Copy → 固定 `dynasty_finish_button` → 返回
+  `ruler_designer` → MCP 重开家徽页 → 原生 Copy。两次 Copy 均为 330 bytes、SHA-256
+  `4769FD42836E68FA35DC07FBA23BEABCC589E5A33087314F1D6287E5C53C305A`，原文逐字节相等；route/action checks、
+  cleanup、双锁释放与 Steam 离线均 GREEN，全程 OCR/keyboard/mouse 为 false；
 - Copy/export MCP primitive 已完成 closed-schema 注册、exact-build RVA/prologue 身份校验、UI-thread 调用、剪贴板读取、
   SHA-256 与 exact binding 投影，并在 2026-09-13 的同进程 round-trip 中达到 `mcp-exported`；
 - 离线 resource catalog 已对本机 exact 1.19.0.6 安装执行：基础游戏 manifest 共定义 42 个 pattern（38 个 designer 可见）、
@@ -442,6 +450,25 @@ ck3_activate_frontend_new_game_v1()
 `coat_of_arms_page`、`dynasty_detail_input` 与 `dynasty_finish_button`，因此该段现为 `production-live primitive`。
 `open_kaishek` 没有前端 GUI/CoA domain，预验证为 `not-applicable`；不得用鼠标、键盘或 OCR 绕过。
 
+### 3.7 王朝 Finish 与提交后重开往返
+
+原版 `window_ruler_designer.gui:3342-3348` 的 `dynasty_finish_button` 调用
+`RulerDesignerWindow.FinishDynastyCoatOfArmsDesigner`，随后清除拥有独立家徽页的
+`coat_of_arms_customization_open`。据此实现的 `ck3_commit_frontend_dynasty_coat_of_arms_v1()` 是零参数闭合工具：原生层只从
+实时 `ruler_designer` owner tree 解析固定名字；Python 层还要求 child path `0/2/1/1`、可见、enabled、动作前 route 为
+`coat_of_arms_designer`、动作后 route 为 `ruler_designer`。任何一项不符都 fail closed。
+
+2026-09-14 的唯一受管实机 attempt 先应用一份确定纹章并原生 Copy，再调用该 Finish，随后用既有固定动作重开王朝家徽页并
+再次原生 Copy。动作返回 `status=verified`、`action=commit_dynasty_coat_of_arms`、`postcondition_verified=true`；两次 Copy
+均为 330 bytes、SHA-256 `4769FD42836E68FA35DC07FBA23BEABCC589E5A33087314F1D6287E5C53C305A`，原文逐字节相等。
+artifact `mcp-frontend-dynasty-finish-roundtrip-live7.json` 为 1,594,848 bytes，SHA-256
+`6569F652DB057520EB24A2DB3CC9FE2CD8F8C2A6BE8E76597F8F244BE6EFCEB8`，绑定仓库
+`8231b2f1139970d4c3a8eb8191309255b61784c3` 和 exact CK3 `1.19.0.6`。MCP-only、OCR/keyboard/mouse=false、
+Steam 离线、cleanup、进程树清零与双锁释放均为 GREEN。
+
+这证明的是“家徽设计器 working state 经王朝 Finish 提交回当前角色设计器，且可重开得到相同 canonical CoA”。它没有点击
+角色设计器最外层的创建/完成按钮，没有进入一局游戏，也没有重载存档，所以不得扩张为战役实体或跨存档持久化结论。
+
 ## 4. 原版实际调用链
 
 ### 4.1 GUI 只调用原生 designer
@@ -512,6 +539,13 @@ apply 的后置条件是 `+0xEC == 1` 且 `+0xE8 == paste 前的 +0xF0`。
 
 这些是静态源码事实，不等于浏览器已经得到 CK3 GPU 的逐像素输出；特别是 `FallbackColor` 的 CPU 侧绑定、采样边界和 GPU
 色彩空间仍需以后通过原生像素读取闭合。
+
+### 4.4 王朝 Finish 是独立的上层提交路径
+
+剪贴板 reader、paste 与 Copy 只操作 `CoatOfArmsDesigner` 的 working state；提交回角色设计器由
+`RulerDesignerWindow.FinishDynastyCoatOfArmsDesigner` 单独负责。Web 编辑器因此把“应用到设计器”和“提交回角色设计器”做成
+两个不同按钮与两个不同 MCP 合同：前者允许继续编辑/回读，后者关闭家徽页并验证回到 `ruler_designer`。纹章载荷本身不能调用
+这个 Finish，也不能把任意 GUI expression 或 effect 塞进文本来取得同等能力。
 
 ## 5. 哪些语法能导入并实际生效
 
@@ -739,10 +773,10 @@ template = {
 生命周期与 Windows 换行规范化。基础游戏 designer manifest 资源目录也已通过离线 MCP 工具分页暴露；运行中 CK3 的完整
 effective feature 与 script `has_dlc` truth 已有 production-live 原生 primitive，并接入编辑器。前端路由的
 `main_menu → bookmarks → lobby 随机可玩角色 → ruler_designer → coat_of_arms_designer` 已达到
-`production-live primitive`。仍未通过 MCP 闭合的能力有：
+`production-live primitive`；固定王朝 Finish 及提交后重开/Copy 一致性也已达到 `mcp-committed`。仍未通过 MCP 闭合的能力有：
 
 - 读取 CK3 原生 preview 的最终像素或直接导出 PNG（浏览器已能按随附 shader 源码离线合成，但不替代 native pixel）；
-- 完成角色设计器上层 Finish；
+- 完成整个角色创建，并验证进入战役后实际王朝/家族/头衔状态及跨存档持久化；
 - 枚举游戏当前运行时实际注册且已合并 DLC/mod override 的 pattern/emblem/color 资源；现有 runtime feature truth 只证明
   gameplay gate，不提供 CoA VFS/registry winner；
 - 跨 CK3 build 自动适配 RVA 与字段。
@@ -789,10 +823,11 @@ CoatOfArms
 - 提供图层/实例结构化表单与浏览器近似预览，且明确不冒充 CK3 renderer；
 - 基础游戏 pattern/emblem 目录已经接入结构化选择器，并可按名字筛选首批 200 个 emblem；
 - 必要的 Quarkus 伴随服务使用官方 Java MCP SDK 连接现有 Python stdio server，前端可刷新 session revision、读取同帧
-  runtime feature/script-DLC truth、通过固定动作打开王朝家徽页、执行原生 detect/apply，以及载入原生 Copy/export 返回源码；
+  runtime feature/script-DLC truth、通过固定动作打开王朝家徽页、执行原生 detect/apply、载入原生 Copy/export 返回源码，
+  并通过另一项固定动作把王朝家徽提交回角色设计器；
   新 binding 端点从 `ck3_get_capabilities` 验证 exact native 连接，有 snapshot 时返回正 revision，无 snapshot 时返回 probe/export
   合同允许的 frontend `revision=0`，从而不再把 gameplay snapshot 错当作前端设计器的必需条件；
-  伴随服务只允许十三个相关工具（capabilities + snapshot + 九个 CoA MCP + 一个 runtime-feature MCP + 一个固定 frontend action）；
+  伴随服务只允许十四个相关工具（capabilities + snapshot + 九个 CoA MCP + 一个 runtime-feature MCP + 两个固定 frontend action）；
 - manifest-owned 单素材与 render-support 已接入浏览器：除 DXT1/DXT5 顶层 mip 解码外，还能解码 `_default.dds` 使用的
   无压缩 BGRA8 并在受限 `textured_emblem` 行内显示原始纹理；主路径按随游戏发布的 shader 源码合成三通道调色、mask、
   实例变换、surface detail 和 blend，仍明确不冒充 native GPU 像素完全一致。
@@ -806,8 +841,8 @@ CoatOfArms
 浏览器无法直接启动本机 stdio MCP，因此已引入 Maven + Java + Quarkus 伴随服务。后端只负责 REST/MCP 会话转接与
 本机资源索引，不承担“执行 CK3 脚本”的虚构能力；当前也没有 DDS 转换或素材缓存。
 
-当前前端有 Vitest `39/39` parser/serializer/validator/capability-matrix/API/DDS/renderer 回归和 Vite production build 验收；
-Quarkus REST 测试 `14/14` 且 Maven package GREEN。后续扩展仍以本文的原生 MCP 证据为协议来源，
+当前前端有 Vitest `40/40` parser/serializer/validator/capability-matrix/API/DDS/renderer 回归和 Vite production build 验收；
+Quarkus REST 测试 `15/15` 且 Maven test GREEN。后续扩展仍以本文的原生 MCP 证据为协议来源，
 不会把旧 UI 观察或第三方 parser 行为固化成 CK3 引擎事实。
 
 ## 10. 辅助参考边界
@@ -850,6 +885,9 @@ Quarkus REST 测试 `14/14` 且 Maven package GREEN。后续扩展仍以本文�
 | 09 月 14 日 15 例 MCP apply/Copy 矩阵（1,130,288 bytes；cleanup GREEN） | `0C5F2F88765224219F7F824DD9F1215E4D2B9EBAB024F0677B5F7506D8F5F84A` |
 | 09 月 14 日矩阵 `xar_ck3_bridge.dll`（2,813,440 bytes；source `e2a05929`） | `412A9A869A1B4E43DFE6CCF521D43806FC10EDA24F9B934B76C242BA04B3582C` |
 | 09 月 14 日矩阵 injector（39,936 bytes） | `4675729904ACC23A017998FC06583CF476FC073AD0790C43A6736FAA8437A237` |
+| 09 月 14 日王朝 Finish 往返 artifact（1,594,848 bytes；cleanup GREEN；source `8231b2f1`） | `6569F652DB057520EB24A2DB3CC9FE2CD8F8C2A6BE8E76597F8F244BE6EFCEB8` |
+| 09 月 14 日 Finish 往返 `xar_ck3_bridge.dll`（2,814,464 bytes） | `3B432B97F69392552BE3C6A2E5369FB228973FD73750CCD6EF9AB0316BD7664D` |
+| 09 月 14 日 Finish 往返 injector（39,936 bytes） | `506F0A7E093AFEF2BDB39FF49C373964ED0950CD9582E66BAC6AE21713D833EE` |
 | `50_coa_designer_patterns.txt`（42 项/38 可见） | `3BAA46C11BD24E7D9F9F6D1DF3E51403D016AB4CAC7290A6541ED25561425B7B` |
 | `50_coa_designer_emblems.txt`（1,578 项/1,576 可见） | `3D6529702F91FA352E07B0C64E4C33A88E5F86C2AAF0EF2D0CEB69CF6D600F3C` |
 | `50_coa_designer_palettes.txt`（13 色） | `3AE2EA0F3B751D61C08A06408FA2EDA2ADC3FF6FBF204298D3D8CDC9613B87B4` |
