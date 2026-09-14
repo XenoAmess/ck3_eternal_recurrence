@@ -1,0 +1,51 @@
+{
+  "schema": "xar.ck3.private.military_preparation_r686_live_plan_v1",
+  "status": "static-ready-no-launch",
+  "round": {
+    "old": "R685",
+    "new": "R686",
+    "current_before_execute": "R686 pending launch",
+    "single_global_ck3_instance_required": true
+  },
+  "profile": {
+    "fresh_state_required": true,
+    "enabled_mods_in_order": [
+      "mod/xar_autoplayer.mod",
+      "mod/xar_mcp_bridge.mod"
+    ],
+    "companion_receipt": "profile/xar-mod-bridge-companion.json",
+    "production_release_projection_modified": false,
+    "repository_descriptors_modified": false,
+    "required_military_wrapper_count": 5
+  },
+  "runtime": {
+    "bootstrap": "tools/run_g2_military_preparation_probe.py",
+    "selection": [
+      "--python",
+      "XAR_PYTHON",
+      "--workspace-root or XAR_WORKSPACE_ROOT",
+      "repo-local tools/.venv/Scripts/python.exe"
+    ],
+    "arbitrary_path_python_fallback": false,
+    "powershell_required": false,
+    "missing_runtime_result": "prelaunch RED with zero CK3 launch"
+  },
+  "evidence_order": [
+    "profile preflight GREEN before exclusive CK3 ownership",
+    "write round-ownership.json as R686 pending launch",
+    "obtain single-instance launch and state locks",
+    "launch one exact-build process",
+    "wait for one stable paused heartbeat",
+    "persist raw-probe.json before semantic validation",
+    "require status=available, failure_flags=0, observation_ready=true",
+    "stop immediately and prove cleanup"
+  ],
+  "forbidden": [
+    "same-round R685 retry",
+    "UI or gameplay input",
+    "date advance",
+    "save mutation",
+    "public MCP or schema registration",
+    "open_kaishek adaptation before a public interface change"
+  ]
+}
