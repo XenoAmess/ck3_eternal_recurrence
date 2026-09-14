@@ -1,0 +1,198 @@
+{
+  "schema": "xar.ck3.non_religious_activity_native_tree.v1",
+  "result": "STATIC_NATIVE_TREE_FROZEN",
+  "status": "research-only; observer and action not implemented",
+  "exact_build": {
+    "product_version": "1.19.0.6",
+    "executable_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+    "executable_size": 95206008,
+    "image_base": "0x140000000"
+  },
+  "script_sources": {
+    "game/common/activities/activity_types/_activity_type.info": "C021CE8A0A72B071CD47B4ACEB4A1A1A7D48E37300918BCE9E0FCDB31EE72156",
+    "game/common/activities/activity_types/feast.txt": "CE9B72F84B534CE5B8E0764FBFE0552CDBE889ABDEC370747643014B2668FB7C",
+    "game/common/activities/activity_types/hunt.txt": "E3CA2E899FE45AEB8234EA747AF8D1286D1DECBB054E07BB4DEB2E91C0FF6BDB",
+    "game/common/activities/activity_types/tour.txt": "28449EECF31E7D76AEBA304F6FE7DC6461CAEFC3CA2172D99FEA453CDC63FE66",
+    "game/common/defines/ai/00_ai.txt": "C78F9CD8DF9938CC9F38E817BCB6E32CD13720B5BD9DE077B85E3E1C6F030293"
+  },
+  "schema_semantics": {
+    "discovery": "is_shown is evaluated with the potential host as root",
+    "host_legality": "can_plan is optional and falls back to can_start_showing_failures_only; can_start is the final start check",
+    "continuation": "is_valid is evaluated with activity root and activity/host scopes",
+    "host_selection": "eligible scores must exceed ACTIVITY_SCORE_THRESHOLD=20; the highest score becomes the candidate and its score is used as a percent chance",
+    "location_selection": "candidate provinces use weighted random ai_will_select_province; multi-location count uses ai_select_num_provinces",
+    "cost": "cost is the authoritative configured-resource cost; ui_predicted_cost is only a rough expected value",
+    "outcome": "on_start runs at creation and on_complete after the final phase; an AI-only completed activity persists at most one extra day"
+  },
+  "activity_slices": {
+    "activity_feast": {
+      "priority": "P0",
+      "shape": "single-location; province_filter=domicile_domain; AI province_filter=capital; holding required",
+      "host_gate_summary": "landed or landless-administrative, above barony; no cooldown; available adult; continuation requires a living capable un-imprisoned eligible host and attendees once active",
+      "ai_gate_summary": "after year three, no war, not focused on capital construction, sufficient short-term gold/treasury or override; county rulers normally require ai_sociability>=100; uncrowned AI blocked",
+      "ai_score_summary": "base 30, -0.25*greed, +0.5*sociability, negative energy and trait/state modifiers; exact native/script result must remain authoritative",
+      "ai_check_months": {"barony": 0, "county": 60, "duchy": 60, "kingdom": 60, "empire": 60, "hegemony": 60},
+      "guest_summary": "max 40; adult, healthy and in diplomatic range; host and guest intent lists default to reduce_stress_intent",
+      "cost_summary": "resource can be gold, treasury, piety or barter according to exact government/house state; revenue-minister branch multiplies applicable base feast cost by 0.85",
+      "phase_summary": "one predefined meal phase; host schedules progression after one month; completion dispatches conclusion/reward effects",
+      "why_first": "base non-grand activity with one location and the smallest planning payload of the three frozen types"
+    },
+    "activity_hunt": {
+      "priority": "P1 after feast",
+      "shape": "single-location; player domicile_realm and AI domicile_domain province filters",
+      "host_gate_summary": "above barony and playable; no cooldown; available adult; exact can_hunt_trigger; landless host requires three valid courtiers; nomad host must be landed",
+      "ai_gate_summary": "after year three, no war, not focused on capital construction, finance/warlike/nomad gates, county rulers normally require ai_boldness>=100; uncrowned AI blocked",
+      "ai_score_summary": "starts from zero and includes -10 base, county -20, -0.5*greed, +1*boldness, +0.5*sociability, negative energy and many type/trait modifiers",
+      "ai_check_months": {"barony": 0, "county": 60, "duchy": 60, "kingdom": 60, "empire": 60, "hegemony": 60},
+      "guest_summary": "max 20; adult or narrow nomad-child exception, capable, can_hunt_trigger and diplomatic range; join chance begins at 10 plus native modifiers",
+      "cost_summary": "gold, treasury, herd and other government-sensitive resource paths; dynamic scaling and hunt options make the payload larger than feast",
+      "phase_summary": "normal hunt phase advances after six weeks and schedules outcome events at days 21, 28 and 35",
+      "deferral_reason": "additional type/options and an opaque faith-dependent native gate; religion detail is deliberately excluded"
+    },
+    "activity_tour": {
+      "priority": "P2",
+      "shape": "grand, realm-filtered, multi-location holder planner; up to ten pickable phases and one phase per province",
+      "host_gate_summary": "landed above barony, DLC features tours_and_tournaments and advanced_activities, non-administrative; start requires duke+, age 12+, three vassals, five courtiers/guests and no civil war",
+      "ai_gate_summary": "no war; uncrowned AI blocked; score base 30 with strong first-kingdom-tour and repeat/wealth/state modifiers",
+      "ai_score_summary": "base 30; liege grand activity -1000; first kingdom-level tour +200; exact remaining branches remain script/native authoritative",
+      "ai_check_months": {"barony": 0, "county": 0, "duchy": 60, "kingdom": 60, "empire": 60, "hegemony": 60},
+      "guest_summary": "max 100; host intent defaults to justice and guest intent to reduce_stress; join chance begins at 10 plus native modifiers",
+      "cost_summary": "gold or treasury with era and option scaling; ui_predicted_cost averages options and is not commit-time cost",
+      "phase_summary": "multi-stop route with multiple phase types and per-province weights/validity; completion cleans route-specific state and distributes results",
+      "deferral_reason": "DLC gate, route selection, options and multi-location payload should reuse the proven feast host loop rather than lead it"
+    }
+  },
+  "native_ai_host_chain": {
+    "source_identity": {
+      "diagnostic_rva": "0x419BBB0",
+      "diagnostic": "AI tried to create an invalid '{}' activity with reason: '{}'",
+      "source_path_rva": "0x419BC18",
+      "source_path": "C:\\mnt\\gsg\\ck3\\titus\\source\\logic\\ai\\ai_activity.cpp"
+    },
+    "function": {
+      "pdata": ["0x18E0780", "0x18E115E", "0x4CED3C0"],
+      "sha256": "0C2158D3A475D0E62ADAFE812B2AD9921D60DE28C2517B1E9440110EC08DDF1B"
+    },
+    "candidate_generator_call": {"call_rva": "0x18E0850", "target_rva": "0x18C7230"},
+    "candidate_row_observation": {
+      "stride": 16,
+      "score": "signed int32 at +0x00",
+      "activity_type": "opaque CActivityType pointer at +0x08; selected at 0x18E0952",
+      "limit": "identity/key layout and ownership are not decoded and raw pointers must never enter a public contract"
+    },
+    "selection_loop": {"span": "0x18E0940..0x18E0952", "rule": "retain row with greatest signed score"},
+    "percent_roll": {"span": "0x18E095F..0x18E09B8", "rule": "derive integer 1..100 and reject when roll >= selected score"},
+    "planning_rows_call": {"call_rva": "0x18E0BB4", "target_rva": "0x18DF5B0"},
+    "command_build": {
+      "call_rva": "0x18E10C5",
+      "target_rva": "0x18E1160",
+      "target_pdata": ["0x18E1160", "0x18E140F", "0x4CED458"],
+      "target_sha256": "1F47D0E35C9142BBF80D37F18284490A9095AC44F63A0FDB279188CA65CF2C76"
+    },
+    "queue_submit": {"call_rva": "0x18E10E8", "target_rva": "0x973E00", "flags": 7},
+    "boundary": "This is an AI scheduler path. Its 60-month activity cadence is unsuitable as the player discovery query and must not be forced for player automation."
+  },
+  "native_command_surfaces": {
+    "start": {
+      "rtti": ".?AVCStartActivityCommand@@",
+      "type_descriptor_rva": "0x54CDF38",
+      "primary_vtable_rva": "0x432E690",
+      "primary_col_rva": "0x4970B70",
+      "secondary_vtable_rva": "0x432E438",
+      "secondary_col_rva": "0x4970B98",
+      "object_size_from_clone": "0x508",
+      "clone_rva": "0x26CA920",
+      "clone_sha256": "C82279265EE83C155830033B603E070C7CD6544210BAFBF6EF23459A534DF842",
+      "payload_validation_thunk_rva": "0x26C8070",
+      "payload_validator_rva": "0x219A8B0",
+      "payload_validator_sha256": "3644C3B9560B9E28BC39E80F38AD0D27F92F1D90C8552D9B2212F082BCDF6B5D",
+      "secondary_dispatch_rva": "0x26C8050",
+      "dispatch_target_rva": "0x2700340",
+      "boundary": "Class identity, size, clone, validation and dispatch are frozen; constructor field semantics, public-safe request construction and postcondition are not closed."
+    },
+    "join": {
+      "rtti": ".?AVCJoinActivityCommand@@",
+      "type_descriptor_rva": "0x54CE660",
+      "primary_vtable_rva": "0x432E3A0",
+      "primary_col_rva": "0x4970AD0",
+      "secondary_vtable_rva": "0x432E370",
+      "secondary_col_rva": "0x4970AA8",
+      "object_size_from_clone": "0x398",
+      "clone_rva": "0x26CAB10",
+      "validator_rva": "0x26C8550",
+      "validator_sha256": "51139090F12C4B7A54A121BFA278BC2219D115303CEEC472C8FE07B594E884E1",
+      "execute_rva": "0x26C8480",
+      "execute_sha256": "580CAEF608066E0078ED1C7DDBA077F81CFF61D43B3907B9267AD6EF29BCBD7A",
+      "boundary": "Character/activity identities and an opaque payload are visible structurally, but invite/open-activity discovery and full join reason semantics remain unknown."
+    },
+    "ai_force_host_effect": {
+      "rtti": ".?AVAIAttemptToHostActivityEffect@@",
+      "type_descriptor_rva": "0x55CA618",
+      "vtable_rva": "0x442F278",
+      "col_rva": "0x4AA2898",
+      "execute_slot": 22,
+      "execute_rva": "0x2E60180",
+      "execute_sha256": "CA3EACC9C5285C591327D33743C48214DCB27AE01E4AA9ABF700C71B0BCE65F0",
+      "ai_manager_call_rva": "0x2E60241",
+      "ai_manager_target_rva": "0x2368420",
+      "non_ai_diagnostic_rva": "0x442DE08",
+      "non_ai_diagnostic": "Trying to force non-AI character %s to host an activity %s",
+      "excluded": "The executable diagnoses non-AI use. This effect is neither a player query nor the player start action seam."
+    }
+  },
+  "p0_slice": {
+    "activity_type": "activity_feast",
+    "observer_contract": "activity_host_candidates_v1",
+    "observer_fields": [
+      "frame/owner binding",
+      "activity type stable key",
+      "shown",
+      "can_plan",
+      "can_start",
+      "native failure display keys/text",
+      "valid location ids and native weights",
+      "selected option/intents/invite-rule stable keys",
+      "authoritative configured resource costs",
+      "affordable",
+      "cooldown state"
+    ],
+    "next_observer_seam": {
+      "target": "CActivityListDetailHostView CanPlanActivity/GetCanPlanActivityTooltip backing evaluator",
+      "string_rvas": {"CanPlanActivity": "0x4096760", "GetCanPlanActivityTooltip": "0x4096778"},
+      "why": "It evaluates the played character's planner state without waiting for the AI's 60-month scheduler or submitting a command.",
+      "implementation_order": "map HostView RTTI/vtable method to its final native evaluator, capture one normal read-only planner traversal, then expose a main-thread query with stable keys and copied values only"
+    },
+    "next_action_seam": {
+      "target": "CStartActivityCommand native payload validator and secondary dispatch",
+      "validator": "0x26C8070 -> 0x219A8B0",
+      "dispatch": "0x26C8050 -> 0x2700340",
+      "requirements": "construct a fresh exact-build payload from stable activity/location/option/invite/intent keys; validate at commit time; enqueue once; verify a new hosted activity owned by the same player and matching activity_feast",
+      "prohibition": "do not copy a captured 0x508 object, call AIAttemptToHostActivityEffect, force script effects, or treat command ACK as the postcondition"
+    },
+    "outcome_verification": "after start, observe activity owner/type/state/current phase and terminal completion or invalidation; normal event windows remain governed by the existing generic event OODA"
+  },
+  "unknowns": [
+    "CActivityType database owner/enumerator and stable key field in native memory",
+    "exact CActivityListDetailHostView CanPlanActivity and tooltip method RVAs and their final evaluator",
+    "full 16-byte AI host candidate row ownership and CActivityType identity layout",
+    "complete CStartActivityCommand 0x508 payload field semantics and public-safe constructor",
+    "authoritative cost-vector resource slot mapping for treasury, herd, barter, piety and prestige",
+    "pending invites/open activities collection and native can-join failure-reason surface",
+    "activity lifecycle state/phase terminal observer and exact invalidation reason surface",
+    "runtime DLC availability and current-save eligibility for activity_tour",
+    "faith-dependent hunt/guest branches, retained only as opaque native allow/deny results",
+    "option, intent, guest and location policies required after the minimal feast host loop"
+  ],
+  "boundaries": {
+    "religious_activities_excluded": true,
+    "faith_details_exposed": false,
+    "ck3_started": false,
+    "process_attached": false,
+    "game_state_mutated": false,
+    "observer_implemented": false,
+    "action_implemented": false,
+    "public_schema_changed": false,
+    "public_mcp_changed": false,
+    "planner_changed": false
+  }
+}
