@@ -487,3 +487,25 @@ unsupported-keyword rejection and accept the corrected call plus the
 post-readiness identity check. The next candidate is therefore R690 and remains
 no-launch/static-ready until one new paused, zero-action live run records the
 private heartbeat.
+
+## COUNCIL12: R690 prelaunch BOM RED and reusable JSON input contract
+
+The sealed COUNCIL11 R690 candidate reached no process-creation call. Its
+artifact-local runner created an empty `live-r689/` directory and then parsed
+`expected-steward-candidates.json` through `encoding="utf-8"`. The frozen input
+starts with `EF BB BF`, so `json.loads` raised `JSONDecodeError: Unexpected
+UTF-8 BOM`. CK3 was never created. The RED report SHA-256 is
+`CE99DA6C7AF647A467764178D8B01B6E9E7951AB5903882A72AE1F161764D414`;
+its artifact manifest SHA-256 is
+`74A6D2400D44445C8DC2334DC45B6BE104EE861BF3C98CE84336933C5A1E3108`.
+The sealed candidate, BOM input, and empty directory remain frozen evidence.
+
+Artifact JSON consumers now share `json_input_contract.load_json_object`.
+Its strict `utf-8-sig` decode accepts ordinary UTF-8 and exactly the reproduced
+UTF-8-BOM input while malformed JSON, non-UTF-8 input, non-object roots, and
+schema mismatches fail through one typed exception. Candidate materialization
+copies only the old sealed inventory, advances the output directory to
+`live-r690/`, binds a fresh harness commit and pipe, and seals a new manifest.
+This is a harness recovery only: the private DLL, saved game, public schema,
+and government/gameplay behavior do not change, and R690 remains unallocated
+until the single CK3 owner performs a later live run.
