@@ -1,0 +1,46 @@
+{
+  "schema": "xar.player_prisoner_management_action_v1_contract",
+  "status": "static-ready",
+  "game_version": "1.19.0.6",
+  "executable_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+  "private_key": "player_prisoner_management_action_v1",
+  "baseline": {
+    "source_adapter": "player_prisoner_management_source_adapter_v1@f12a02e2f503eead23beceebe4078c79ae04ecbc",
+    "snapshot": "player_prisoner_management_snapshot_v1@e9652edd8bc970172b834defe5d2007409a42ab4"
+  },
+  "actions": {
+    "ransom": {
+      "precondition": "The target row's native-final ransom preview is shown, valid and Can Send. Payer, selected option, resource key and exact fixed-point amount are copied unchanged. When an answer is required, the opaque native-final would_accept_now must be known true.",
+      "receipt": "A fresh complete player-prisoner collection no longer contains the exact full prisoner CharacterID."
+    },
+    "release_unconditional": {
+      "precondition": "The target row's native-final unconditional-release preview is shown, valid and Can Send.",
+      "receipt": "A fresh complete player-prisoner collection no longer contains the exact full prisoner CharacterID."
+    },
+    "punish_execute": {
+      "precondition": "The target row's execute reason is present only as an opaque native-final boolean and the native-final execute preview is shown, valid and Can Send. The reason value is recorded but never reconstructed or used instead of Can Send.",
+      "receipt": "A fresh complete player-prisoner collection no longer contains the exact full prisoner CharacterID."
+    }
+  },
+  "pre_submit_binding": [
+    "Exact build SHA admission and a separately certified command ABI are mandatory; the semantic-core binder does not certify production dispatch.",
+    "Request binds full generation-bearing player and prisoner CharacterIDs, public revision, native revision, proof epoch and date.",
+    "Capture the complete PRISONER3 value snapshot twice on application-main in the same paused state.",
+    "Require byte-semantic equality of identity, revisions, proof/date, complete rows, native-final previews and readiness before submit.",
+    "Submit exactly once. A false submit result is final for that attempt and is never retried."
+  ],
+  "ack_boundary": "A successful submit returns submitted_verification_pending only. Command acceptance or ACK never means the game applied the action.",
+  "receipt_binding": [
+    "The receipt function owns a new PRISONER3 snapshot capture.",
+    "Public revision, native revision and proof epoch must all increase; date cannot go backwards; the exact player full ID must remain bound.",
+    "The complete collection must be reread. Presence of the exact target full ID is postcondition_failed; absence is applied."
+  ],
+  "religion_boundary": "No faith, doctrine, tenet, conversion or religious option is exposed or interpreted. Any faith-derived legality is consumed only inside the engine's opaque native-final result and finalized Can Send preview.",
+  "excluded": [
+    "torture and custody-change commands, because PRISONER3 does not yet expose a post-action marker sufficient for an honest receipt",
+    "native command construction and submission ABI",
+    "public bridge, schema or MCP publication",
+    "planner policy"
+  ],
+  "live_boundary": "No CK3 instance was started and no command was submitted. This core remains static-ready until a later exact-build native adapter and the single CK3 owner produce a paused live pending ACK plus fresh verified receipt."
+}
