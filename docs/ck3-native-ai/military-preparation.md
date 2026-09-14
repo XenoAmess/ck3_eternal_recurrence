@@ -527,3 +527,54 @@ capability。mailbox 在执行前后的 stamp 漂移、非暂停、错误线程�
 production-live：下一步只需用这份固定候选做一次暂停实机 heartbeat，要求
 `status=available`、`observation_ready=true`，再与同帧可见军力/骑士值交叉检查。实机证据通过以前，公共 native/MCP
 查询继续缺席，`open_kaishek` 不需要适配。
+
+
+## MIL6 / R685 private-heartbeat RED and the next live seam
+
+[live-red-preserved] Current round R685 is terminated. The frozen artifact is
+`Z:/ck3_mod_rewrite_process_assets/g2-m4-mil6-private-probe-live-9e74743`;
+its `report.json` SHA-256 is
+`CE2CD56D9C3901A70CCDA119C154B315E137C78146749684CD21B4C990401C68`.
+The exact `1.19.0.6`, paused, Character `29829`, `date_raw=53178264` run
+published one private result, but that result had `status=unavailable`.
+The capability RED therefore remains open. This is neither production-live
+evidence nor permission to register a public query.
+
+The R685 runner left one evidence gap. It called
+`validate_published(probe, initial_date)` before writing `capture.json`. The
+status assertion raised, so the full `probe.result.failure_flags` was never
+persisted. The actual R685 flag must not be guessed as `512` or any other
+value. The machine-readable evidence and narrowed gate set are recorded in
+[`military_preparation_summary_v1_r685_red.json`](../../ck3_autonomous_player/native_bridge/research/fixtures/military_preparation_summary_v1_r685_red.json).
+
+[exact-loaded-playset-confirmed] The frozen profile enabled only
+`mod/xar_autoplayer.mod`. Its production manifest SHA-256 is
+`5265E64A81C05949569C4A00C627D31C6C0EB2E82D9A300DDDF63FED860D8A24`
+and it contains 86 files. The loaded tree has neither
+`common/script_values/xar_mcp_military_preparation_summary_v1.txt` nor any of
+the five `xar_mcp_military_*` wrapper keys. Their authoritative file exists
+only under repository `ck3_autonomous_player/mod_bridge`. The current
+`prepare_profile` projection consumes `build_release.DEFAULT_SOURCE` and did
+not put `mod_bridge` in the enabled playset. Consequently, after a session
+begins, the first wrapper lookup must hit
+`military_preparation_summary_failure_definition` (value `512`). This proves
+a deterministic definition blocker in the loaded-playset composition. Because
+the raw result is absent, it does not prove this was the first gate actually
+hit during R685.
+
+There is one next live seam. A shared profile-staging work package must put
+exactly one byte-identical wrapper provider in the enabled playset, then run
+[`verify_military_preparation_live_profile.py`](../../ck3_autonomous_player/native_bridge/research/verify_military_preparation_live_profile.py)
+and require `status=green` before CK3 ownership is acquired. The next runner
+must write the complete diagnostics/probe object to `raw-probe.json`
+immediately after observing `result_published=true`, before it calls
+`validate_published`. It may then perform one new exact-build, paused-only,
+zero-UI, zero-gameplay-action, zero-date-advance heartbeat and stop
+immediately. Acceptance remains `status=available`, `failure_flags=0`, and
+`observation_ready=true`. R685 must not be retried, and `unavailable` must not
+be accepted.
+
+This work package does not modify private core or binding code. The available
+evidence does not identify a unique C++ repair and any such change would be a
+guess. A shared profile-staging glue follow-up is required. Public native/MCP
+schemas did not change, so `open_kaishek` needs no adaptation.

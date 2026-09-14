@@ -1,0 +1,74 @@
+{
+  "schema": "xar.ck3.private.military_preparation_summary_v1.r685_red",
+  "schema_version": 1,
+  "status": "red_preserved",
+  "live_artifact": {
+    "path": "Z:/ck3_mod_rewrite_process_assets/g2-m4-mil6-private-probe-live-9e74743",
+    "report_sha256": "CE2CD56D9C3901A70CCDA119C154B315E137C78146749684CD21B4C990401C68",
+    "round": "R685 terminated",
+    "game_version": "1.19.0.6",
+    "executable_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+    "candidate_revision": "9e747430a71d8714edb04c11230ba0abcff41577",
+    "played_character_id": 29829,
+    "date_raw": 53178264,
+    "paused": true,
+    "published_status": "unavailable",
+    "report_error": "published result field status mismatch: 'unavailable'"
+  },
+  "raw_result_evidence": {
+    "persisted_before_semantic_validation": false,
+    "failure_flags_observed": false,
+    "failure_flags": null,
+    "reason": "run_r685.py called validate_published before writing capture.json; the status exception prevented persistence of the probe/result object"
+  },
+  "loaded_playset_evidence": {
+    "environment_sha256": "7F3E2BAC8AC428E55BBDA4AD166DE522ADDA1B28DC0110AF9763B383E472E525",
+    "production_manifest_sha256": "5265E64A81C05949569C4A00C627D31C6C0EB2E82D9A300DDDF63FED860D8A24",
+    "production_tree_sha256": "F4E63FFFA6CF9332BA41EB5985D1CB72F280F4BF375A15473F4638F43CF944BE",
+    "production_file_count": 86,
+    "enabled_mods": [
+      "mod/xar_autoplayer.mod"
+    ],
+    "wrapper_relative_path": "common/script_values/xar_mcp_military_preparation_summary_v1.txt",
+    "loaded_wrapper_present": false,
+    "loaded_wrapper_keys_present": false,
+    "repository_wrapper_sha256": "48A1045AB50BC89A84AE80C0BA7908F29CFE58D310B322ED03399CF319C57CCF",
+    "profile_composition_cause": "prepare_profile projected build_release.DEFAULT_SOURCE only; the repository mod_bridge tree containing the five required wrappers was not in the enabled playset"
+  },
+  "gate_analysis": {
+    "guaranteed_blocker_if_session_begins": "military_preparation_summary_failure_definition",
+    "guaranteed_blocker_value": 512,
+    "actual_r685_failure_flag_conclusion": "unresolved because the raw published result was not persisted",
+    "excluded_by_persisted_envelope_or_readiness": [
+      "disabled",
+      "exact_build",
+      "callbacks",
+      "frame_read_before",
+      "not_paused",
+      "revision",
+      "character",
+      "frame_changed"
+    ],
+    "not_excluded_without_raw_result": [
+      "application_main",
+      "session",
+      "definition",
+      "evaluation",
+      "unstable_values",
+      "teardown"
+    ]
+  },
+  "minimal_next_seam": {
+    "profile_preflight": "Run verify_military_preparation_live_profile.py and require status=green before obtaining CK3 ownership",
+    "profile_fix": "Stage exactly one byte-identical wrapper provider into the enabled loaded playset",
+    "runner_instrumentation": "Immediately after result_published becomes true, write the full diagnostics/probe object to raw-probe.json, then call validate_published",
+    "live_scope": "one new exact-build paused-only zero-action heartbeat; stop immediately; no same-round retry",
+    "acceptance_unchanged": "status=available, failure_flags=0, observation_ready=true"
+  },
+  "public_surface": {
+    "native_capability_changed": false,
+    "mcp_schema_changed": false,
+    "open_kaishek_change_required": false,
+    "shared_profile_staging_follow_up_required": true
+  }
+}
