@@ -626,3 +626,29 @@ A focused glue follow-up must replace the private drive's synchronous 1000-ms
 wait with the new non-cancelling observer and reclaim the ticket only after a
 terminal result has been published. It needs no CMake, public native/MCP schema,
 or `open_kaishek` change. No CK3 retry belongs to this analysis package.
+
+## MIL12: cross-heartbeat private military query glue
+
+[static-ready] The private `DriveMilitaryPreparationSummaryPrivateProbeV1`
+call site now submits once and observes the mailbox on later bridge heartbeats.
+`publishing`, `queued`, and `executing` remain in flight. Only a matching
+terminal state may publish the one-shot result and reclaim the ticket. The
+drive no longer calls `WaitForMainThreadQueryV1`, so a queued request cannot be
+cancelled merely because the bridge worker's former 1000-ms window elapsed.
+This directly removes the R686 `last_wait_result=4` failure path while retaining
+the existing terminal failure mapping and the all-ten-values-or-unavailable
+contract.
+
+The focused source contract requires the military drive to call
+`TryPublishMilitaryPreparationSummaryPrivateProbeMailboxV1` and reclaim only
+after that helper reports publication; it also rejects any synchronous wait in
+that drive. This change is limited to the military private probe. The council
+private probe and all public native/MCP schemas are unchanged, so
+`open_kaishek` requires no adaptation.
+
+The next bounded live seam is one exact-build `1.19.0.6`, paused-only,
+zero-action private heartbeat using the frozen self-contained MIL12 candidate.
+The suggested new round is R688. Stop immediately after a terminal publication
+and preserve the raw probe before semantic validation. Acceptance remains
+`status=available`, `failure_flags=0`, and `observation_ready=true`; R686 remains
+the preserved RED and this static glue is not production-live evidence.

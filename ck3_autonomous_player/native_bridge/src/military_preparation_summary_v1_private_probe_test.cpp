@@ -251,6 +251,17 @@ void TestPrivateBridgeSourceContract(int argc, char **argv) {
   assert(bridge.find(
              "ExecuteMilitaryPreparationSummaryPrivateProbeV1") !=
          std::string::npos);
+  const auto drive_begin = bridge.find(
+      "void DriveMilitaryPreparationSummaryPrivateProbeV1(");
+  assert(drive_begin != std::string::npos);
+  const auto drive_end = bridge.find("\n#endif", drive_begin);
+  assert(drive_end != std::string::npos);
+  const auto drive = bridge.substr(drive_begin, drive_end - drive_begin);
+  assert(drive.find(
+             "TryPublishMilitaryPreparationSummaryPrivateProbeMailboxV1") !=
+         std::string::npos);
+  assert(drive.find("ReclaimMainThreadQueryV1") != std::string::npos);
+  assert(drive.find("WaitForMainThreadQueryV1") == std::string::npos);
   assert(mailbox_header.find("permitted_executor_duotrigintary") !=
          std::string::npos);
   assert(mailbox_source.find("permitted_executor_duotrigintary") !=
