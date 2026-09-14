@@ -1,0 +1,19 @@
+﻿xar_mcp_military_current_strength_final = {
+	value = current_military_strength
+}
+
+xar_mcp_military_max_strength_final = {
+	value = max_military_strength
+}
+
+xar_mcp_military_number_of_knights_final = {
+	value = number_of_knights
+}
+
+xar_mcp_military_max_number_of_knights_final = {
+	value = max_number_of_knights
+}
+
+xar_mcp_military_maa_gold_expense_relative_final = {
+	value = character_men_at_arms_expense_gold_relative
+}

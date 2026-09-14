@@ -1,0 +1,43 @@
+{
+  "schema": "xar.ck3.private.military_preparation_summary_v1.binding_fixture",
+  "schema_version": 1,
+  "fixture_only": true,
+  "frame": {
+    "snapshot_revision": 42,
+    "date_raw": 12345,
+    "played_character_id": 305419896,
+    "gameplay_rng_fingerprint": 9001,
+    "paused": true
+  },
+  "expected_values": {
+    "current_military_strength_raw": 100000000,
+    "max_military_strength_raw": 120000000,
+    "number_of_knights_raw": 500000,
+    "max_number_of_knights_raw": 700000,
+    "maa_gold_expense_relative_raw": 18000,
+    "maa_gold_min_raw": 15000,
+    "maa_gold_ideal_raw": 40000,
+    "maa_gold_max_raw": 60000,
+    "maa_gold_chance_below_min_raw": 40000,
+    "maa_gold_chance_below_ideal_raw": 10000
+  },
+  "expected_calls": {
+    "construct_calls": 1,
+    "destroy_calls": 1,
+    "construct_support_calls": 1,
+    "destroy_support_calls": 1,
+    "resolve_character_calls": 1,
+    "hash_calls": 20,
+    "database_calls": 20,
+    "lookup_calls": 20,
+    "valid_calls": 20,
+    "evaluate_calls": 20
+  },
+  "failure_cases": [
+    "default_off_or_wrong_hash_performs_no state read",
+    "evaluation_failure tears down exactly once and publishes no values",
+    "teardown_failure publishes no values",
+    "stock_fixed_slot_identity_mismatch publishes no values",
+    "production configuration rejects fixture operation overrides"
+  ]
+}

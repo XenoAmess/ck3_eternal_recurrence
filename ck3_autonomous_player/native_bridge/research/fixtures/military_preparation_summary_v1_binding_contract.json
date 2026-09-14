@@ -1,0 +1,42 @@
+{
+  "schema": "xar.ck3.private.military_preparation_summary_v1.binding_contract",
+  "schema_version": 1,
+  "research_stage": "static_ready_no_ck3_launch",
+  "build": {
+    "game_version": "1.19.0.6",
+    "executable_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+    "abi_fixture": "military_preparation_summary_v1_binding_abi.json",
+    "offline_fixture": "military_preparation_summary_v1_binding_fixture.json"
+  },
+  "admission": {
+    "binding_enabled_by_default": false,
+    "exact_hash_required": true,
+    "production_operation_overrides_allowed": false,
+    "application_main_and_paused_gates_owned_by_core": true
+  },
+  "transaction": {
+    "root_scope_sessions": 1,
+    "value_passes": 2,
+    "values_per_pass": 10,
+    "named_fixed_evaluator_calls": 20,
+    "support_container_owner_lifetime": "one paired session",
+    "definition_cache": false,
+    "teardown_is_terminal": true,
+    "partial_values_published_on_failure": false
+  },
+  "source_contract": {
+    "military_preparation_summary_v1_binding.hpp": "ABCD6D9E48545B6A2A248F794B7E232DB8CC5799720D476E9BD4F8EE3991C656",
+    "military_preparation_summary_v1_binding.cpp": "F4AB355681D587FC8AFDE1E63F070E9C96CF6EF626A8C2EDCC9E83093703B682",
+    "military_preparation_summary_v1_binding_test.cpp": "F9BD81A4BC4ADF3604385EDC15E54F931AA234CF38881FB8A89A3C13765F4701",
+    "military_preparation_summary_v1_binding_source_contract_test.cpp": "858D6D3C984B02C76079BE56C0D1E23A9E118ED235A2D4C9864E0E067AEC4A4E",
+    "verify_military_preparation_summary_v1_binding_abi.py": "AFF8EDE547D84E58CC950027A0840F257F66791B7DAAABB03E37317050F31E74",
+    "xar_mcp_military_preparation_summary_v1.txt": "48A1045AB50BC89A84AE80C0BA7908F29CFE58D310B322ED03399CF319C57CCF",
+    "military_preparation_summary_v1_binding_abi.json": "AB9671F582562CC2ADC2EFA0F58775C7A045A649548008E1478E9BB8FEC19786",
+    "military_preparation_summary_v1_binding_fixture.json": "E7EFB9E94A0DD0B3D4E75139EA8EBD06C834B9C84A6A1AD52609086BADA304E3"
+  },
+  "public_capability_registered": false,
+  "public_mcp_schema_changed": false,
+  "shared_cmake_changed": false,
+  "ck3_launched": false,
+  "next_step": "compile the private adapter into a default-off probe and obtain one exact-build paused available result before any public query is proposed"
+}

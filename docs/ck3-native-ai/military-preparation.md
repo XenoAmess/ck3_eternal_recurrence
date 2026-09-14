@@ -449,3 +449,60 @@ flowchart TD
 - [unknown] mercenary market 的无 GUI owner、距离/文化过滤调用链、最终费用 core、AI 公司排序与和平合约处理。
 - [owner-deferred] holy order、通用 faith/doctrine/tenet/fervor、改宗与宗教改革不在本文和后续通用军事准备合同内；不得借 mercenary 邻接接口扩域。
 - [non-goal] 本文不实现猜测策略，不把原版 AI 概率当我方选择概率，不把 GUI presence 当 native ABI，不启动 CK3，也不改变现有 turn bundle、resource contract 或 action protocol。
+
+
+## MIL4：exact session binding 与五个只读 wrapper
+
+[static-ready] MIL4 已把 MIL3 留下的唯一 `begin_session/end_session` seam 闭合为默认关闭的私有 adapter。机器可复核 ABI 在
+[`military_preparation_summary_v1_binding_abi.json`](../../ck3_autonomous_player/native_bridge/research/fixtures/military_preparation_summary_v1_binding_abi.json)，离线调用夹具在
+[`military_preparation_summary_v1_binding_fixture.json`](../../ck3_autonomous_player/native_bridge/research/fixtures/military_preparation_summary_v1_binding_fixture.json)。本轮没有启动 CK3，也没有注册公共 capability 或 MCP schema，因此当前状态仍是 **private-core-static-ready**，不能写成 production-live。
+
+绑定按 exact `0x337B210` 证明的 owner 形状，在整笔二十次求值事务开始时构造 `0x3354330` 与 `0x3354280` 两个 support container 和一个 `0x28` internal context；十个 definition 的两遍采样都使用已证明接收 loaded named definition 的 `0x3369820`。事务结束时按 owner 原顺序清理 support containers，再清理同一笔事务持有的 `0x168` root scope。这里没有把结构不同的 loaded named definition 误传给通用 value owner `0x337B210`：
+
+1. 用主 Character store `0x570C130` 按 full-generation ID 解析玩家角色，要求对象 `+0x18` 回读完全相等，并拒绝 fallback `0x570C138`；
+2. 调 `0x81F190` 构造 root scope，写入 kind `4` 与 `+0x08` 完整 CharacterID；
+3. 每一遍都重新 hash、查询 loaded database 并解析十个 definition；五个 stock key 还必须与 `0x34/0x35/0x36/0x43/0x44` 固定槽 pointer identity 相同；
+4. 二十次求值分别调用 named FixedPoint evaluator `0x3369820`，共同借用本 session 的 internal context；definition 与 database 仍逐次解析且不缓存；
+5. 无论求值在哪一点失败，MIL3 core 都只调用一次 `end_session`。它先清理 support containers，再按 `scope+0x118` tail、`scope+0x100` polymorphic rows、`scope+0x18` named rows 的顺序清理 root；清理开始前即把 session 标成终态，失败后不对半析构对象重试；
+6. 只有两遍十值相等、frame identity 未变且 teardown 成功时，core 才复制无指针 payload。任一步失败均不发布局部结果。
+
+析构证据现已完整：`0x81E900..0x81E976` 的 118 字节 SHA-256 为
+`0F1A84CDD95DD6DB78E7A49D4FC754164BB8340F4374073DC71F7531D63C0DB8`；`0x81E980..0x81E9DD` 的完整 93 字节 SHA-256 为
+`7156A7E95CB379797E67D986F4CDBE2936EE932F6DCA093CDAD0669DE1994D10`。`0x2A8` support rows 的完整 `0x969BA0..0x969BE9` 73 字节 SHA-256 为
+`A44085ACBBFFFBF575179D89A316FA967E849F39393FBDBB91DCB2E509C96035`。root scope 使用的构造与三段清理路径也是 exact-build
+`combat_phase_event_trace_v1.cpp` 已使用的路径；MIL4 没有凭 PDATA 的首个缩短区间猜函数结束位置。
+
+五个 wrapper 位于 `mod_bridge/common/script_values/xar_mcp_military_preparation_summary_v1.txt`，只包含单一 read expression：
+
+| loaded key | expression |
+|---|---|
+| `xar_mcp_military_current_strength_final` | `current_military_strength` |
+| `xar_mcp_military_max_strength_final` | `max_military_strength` |
+| `xar_mcp_military_number_of_knights_final` | `number_of_knights` |
+| `xar_mcp_military_max_number_of_knights_final` | `max_number_of_knights` |
+| `xar_mcp_military_maa_gold_expense_relative_final` | `character_men_at_arms_expense_gold_relative` |
+
+它们不含 `random`、`effect =` 或 `save_scope`，并随 playset 正常编译。adapter 不在运行时伪造 AST，也不缓存 wrapper definition。
+
+```mermaid
+flowchart TD
+    A["private binding default OFF"] --> B{"explicit enable + exact SHA + application-main + paused?"}
+    B -. "no" .-> U["unavailable; zero native transaction"]
+    B -->|yes| C["resolve full-generation CharacterID"]
+    C --> S["0x81F190: one 0x168 root scope"]
+    S --> SC["construct support owners + internal context"]
+    SC --> P1["pass 1: fresh lookup + 0x3369820 × 10"]
+    P1 --> P2["pass 2: fresh lookup + 0x3369820 × 10"]
+    P2 --> G{"values/frame stable?"}
+    G -->|yes| D["support + exact root teardown"]
+    G -. "no" .-> D
+    D --> H{"teardown success?"}
+    H -->|yes + stable| O["private available payload; no pointers"]
+    H -. "failure" .-> U
+    O -. "one paused exact-build capture still required" .-> L["[unknown] production-live value cross-check"]
+    classDef unknown stroke-dasharray: 6 4,fill:#fff4e5,stroke:#b36b00;
+    class U,L unknown;
+```
+
+下一施工入口仍保持唯一：把该专属 adapter 编进 default-off 私有 probe，在 exact build 的 application-main paused callback 中取得一笔
+`available + observation_ready=true` 结果，并与同帧可见值交叉检查。完成这一步以前，不发布永久 `unavailable` 的公共 query，也不开始 MAA action 或 planner 扩张。

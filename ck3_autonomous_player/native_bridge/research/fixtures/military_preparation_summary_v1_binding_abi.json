@@ -1,0 +1,108 @@
+{
+  "schema": "xar.ck3.private.military_preparation_summary_v1.binding_abi",
+  "schema_version": 1,
+  "research_stage": "static_confirmed_no_ck3_launch",
+  "build": {
+    "game_version": "1.19.0.6",
+    "executable_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+    "base_commit": "bb5911cedc7af70c43312d16a88c75ec50aac4f6"
+  },
+  "session": {
+    "root_scope_size": "0x168",
+    "constructor": {
+      "rva": "0x81F190",
+      "end_rva_exclusive": "0x81F24A",
+      "size": 186,
+      "sha256": "E119B49AA2F41C1E491435E90877DEB8F0DF42906226AAC2977F51A561443FA7"
+    },
+    "character_kind": 4,
+    "kind_offset": "0x00",
+    "full_generation_character_id_offset": "0x08",
+    "character_storage_slot_rva": "0x570C130",
+    "character_fallback_slot_rva": "0x570C138",
+    "character_identity_offset": "0x18"
+  },
+  "evaluation": {
+    "context_owner": {
+      "rva": "0x337B210",
+      "end_rva_exclusive": "0x337B301",
+      "size": 241,
+      "sha256": "CB13198F69D3B6478062F511DA9F4BC0319CFD2CEE8079E3E9E097BB29A70235"
+    },
+    "support_118_constructor": {
+      "rva": "0x3354330",
+      "end_rva_exclusive": "0x33543B2",
+      "size": 130,
+      "sha256": "8FF1EA95F300F3CA2F6FF20E267CD150DC95A72665F1A4CA8CC140B2146DA973"
+    },
+    "support_2a8_constructor": {
+      "rva": "0x3354280",
+      "end_rva_exclusive": "0x335432B",
+      "size": 171,
+      "sha256": "CAAD6CC5E363916FE783AFDB299DFAF4FECBA51B5B649896059EE28ED371AA80"
+    },
+    "fixed_evaluator": {
+      "rva": "0x3369820",
+      "end_rva_exclusive": "0x33699B3",
+      "size": 403,
+      "sha256": "88C220FD822BE90E6E8DF71E1FC26214D62E5218493F5FCF1B64C2CD80A2DC04",
+      "r9_source_descriptor": null
+    },
+    "evaluation_flag_rva": "0x570C3F4",
+    "internal_context": {
+      "size": "0x28",
+      "offset_0x00": "root scope",
+      "offset_0x08": null,
+      "offset_0x10": "same root scope",
+      "offset_0x18": "support_118",
+      "offset_0x20": "evaluation flag byte"
+    },
+    "lifetime": "0x337B210 proves both constructor calls, internal-context layout and cleanup order; MIL4 reproduces that owner once per twenty-call session and passes the shared internal context to the named fixed evaluator",
+    "binding_choice": "use the proven named-definition evaluator 0x3369820 for all ten definitions; do not pass a loaded named definition to the structurally different generic-value owner 0x337B210"
+  },
+  "teardown": {
+    "order": [
+      "scope+0x118 tail",
+      "scope+0x100 polymorphic rows and allocator deallocation",
+      "scope+0x18 trivial named rows and allocator deallocation"
+    ],
+    "tail_destructor": {
+      "rva": "0x81E900",
+      "end_rva_exclusive": "0x81E976",
+      "size": 118,
+      "bytes_hex": "48895C24084889742410574883EC2033F6488BF94839713074224883C130E85D000000488B4F40448D4608488B5730488B01FF501048897730897738483977107424488D4F10E815FFFFFF488B4F2041B808000000488B5710488B01FF501048897710897718488B5C2430488B7424384883C4205FC3",
+      "sha256": "0F1A84CDD95DD6DB78E7A49D4FC754164BB8340F4374073DC71F7531D63C0DB8"
+    },
+    "rows48_destructor": {
+      "rva": "0x81E980",
+      "end_rva_exclusive": "0x81E9DD",
+      "size": 93,
+      "bytes_hex": "4889742410574883EC208B790C488BF185FF7E3748895C2430488B190F1F4000488B0333D2488BCBFF10FFCF4883C34885FF7FEC488B5C2430C7460C00000000488B7424384883C4205FC3488B742438C7410C000000004883C4205FC3",
+      "sha256": "7156A7E95CB379797E67D986F4CDBE2936EE932F6DCA093CDAD0669DE1994D10"
+    },
+    "support_2a8_row_destructor": {
+      "rva": "0x969BA0",
+      "end_rva_exclusive": "0x969BE9",
+      "size": 73,
+      "bytes_hex": "48895C2410564883EC208B590C488BF185DB7E3548897C2430488B390F1F4000488BCFE828540000FFCB4883C75085DB7FEE488B7C2430C7460C00000000488B5C24384883C4205EC3",
+      "sha256": "A44085ACBBFFFBF575179D89A316FA967E849F39393FBDBB91DCB2E509C96035"
+    },
+    "evidence_reuse": "the same exact constructor and three-stage destructor sequence is already used by combat_phase_event_trace_v1.cpp on this build"
+  },
+  "loaded_definition_resolution": {
+    "hash_rva": "0x3B8B000",
+    "database_getter_rva": "0x999AF0",
+    "lookup_rva": "0x9999B0",
+    "stock_fixed_slots": ["0x34", "0x35", "0x36", "0x43", "0x44"],
+    "stock_gate": "the lookup result must equal the in-range fixed-slot pointer on every pass",
+    "pointer_lifetime": "definitions and database are borrowed for the synchronous callback only and are never retained"
+  },
+  "wrapper_contract": {
+    "relative_path": "ck3_autonomous_player/mod_bridge/common/script_values/xar_mcp_military_preparation_summary_v1.txt",
+    "count": 5,
+    "read_only": true,
+    "contains_random": false,
+    "contains_effect": false,
+    "contains_save_scope": false
+  }
+}
