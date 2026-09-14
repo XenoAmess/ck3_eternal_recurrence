@@ -124,17 +124,17 @@ inline constexpr std::string_view kStewardDevelopCountyCandidatesV1BackendId =
     "ck3-1.19.0.6-native-steward-develop-county-candidates-v1";
 inline constexpr std::string_view
     kStewardDevelopCountyCandidatesV1ContractStage =
-        "exact_build_contract_fixture_pending_live_reader";
+        "exact_build_enumerator_observer_pending_live_layout_closure";
 inline constexpr std::string_view kStewardDevelopCountyCandidatesV1TaskKey =
     "task_develop_county";
 inline constexpr std::string_view
     kStewardDevelopCountyCandidatesV1TargetSelectionMode =
         "engine_random_unscored";
 inline constexpr std::string_view kStewardDevelopCountyCandidatesV1ReaderMode =
-    "contract_fixture_pending_live_reader";
+    "native_enumerator_observer_pending_live_reader";
 inline constexpr std::string_view
     kStewardDevelopCountyCandidatesV1NextReverseEngineeringEntry =
-        "task_develop_county_native_candidate_enumerator_and_final_legality_call";
+        "paused_live_develop_county_enumerator_capture_then_row_identity_and_final_legality";
 
 // ABI-independent test source. It is rejected unless the environment is
 // explicitly offline and has no production module binding.

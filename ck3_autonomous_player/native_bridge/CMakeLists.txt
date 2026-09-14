@@ -126,6 +126,12 @@ option(
 )
 
 option(
+  XAR_CK3_ENABLE_STEWARD_DEVELOP_COUNTY_ENUMERATOR_OBSERVER_V1
+  "Install the private exact-build steward develop-county enumerator observer"
+  OFF
+)
+
+option(
   XAR_CK3_ENABLE_G2_TRUCE_PREVIEW_ENTRY_OBSERVER_V1
   "Emit private diagnostics for the exact-vtable G2 truce preview observer"
   OFF
@@ -275,6 +281,7 @@ add_library(xar_ck3_bridge SHARED
   src/steward_develop_county_candidates_v1_mailbox.cpp
   src/steward_develop_county_candidates_v1_serializer.cpp
   src/steward_develop_county_action_v1.cpp
+  src/steward_develop_county_enumerator_observer_v1.cpp
   src/ck3_11906.cpp
   src/ck3_11906_adapter.cpp
   src/coat_of_arms_designer_probe_v1.cpp
@@ -508,6 +515,11 @@ endif()
 if(XAR_CK3_ENABLE_G2_TRUCE_NATIVE_CALLSITE_OBSERVER_V1)
   target_compile_definitions(xar_ck3_bridge PRIVATE
     XAR_CK3_ENABLE_G2_TRUCE_NATIVE_CALLSITE_OBSERVER_V1=1
+  )
+endif()
+if(XAR_CK3_ENABLE_STEWARD_DEVELOP_COUNTY_ENUMERATOR_OBSERVER_V1)
+  target_compile_definitions(xar_ck3_bridge PRIVATE
+    XAR_CK3_ENABLE_STEWARD_DEVELOP_COUNTY_ENUMERATOR_OBSERVER_V1=1
   )
 endif()
 if(XAR_CK3_ENABLE_G2_TRUCE_PREVIEW_ENTRY_OBSERVER_V1 OR
@@ -1464,6 +1476,35 @@ if(BUILD_TESTING)
       ${CMAKE_CURRENT_SOURCE_DIR}/src/bridge.cpp
       ${CMAKE_CURRENT_SOURCE_DIR}/research/steward_develop_county_candidates_v1_abi.json
       ${CMAKE_CURRENT_SOURCE_DIR}/research/fixtures/steward_develop_county_candidates_v1_source_contract.json
+      ${CMAKE_CURRENT_SOURCE_DIR}/include/xar_bridge/steward_develop_county_enumerator_observer_v1.hpp
+      ${CMAKE_CURRENT_SOURCE_DIR}/src/steward_develop_county_enumerator_observer_v1.cpp
+      ${CMAKE_CURRENT_SOURCE_DIR}/research/steward_develop_county_enumerator_observer_v1_abi.json
+      ${CMAKE_CURRENT_SOURCE_DIR}/research/fixtures/steward_develop_county_enumerator_observer_v1_source_contract.json
+      ${CMAKE_CURRENT_SOURCE_DIR}/CMakeLists.txt
+  )
+
+  add_executable(xar_ck3_steward_develop_county_enumerator_observer_v1_test
+    src/steward_develop_county_enumerator_observer_v1.cpp
+    src/steward_develop_county_enumerator_observer_v1_test.cpp
+  )
+  target_include_directories(
+    xar_ck3_steward_develop_county_enumerator_observer_v1_test
+    PRIVATE include)
+  target_compile_definitions(
+    xar_ck3_steward_develop_county_enumerator_observer_v1_test PRIVATE
+    NOMINMAX
+    WIN32_LEAN_AND_MEAN
+    UNICODE
+    _UNICODE
+  )
+  if(MSVC)
+    target_compile_options(
+      xar_ck3_steward_develop_county_enumerator_observer_v1_test
+      PRIVATE /W4 /permissive- /EHsc)
+  endif()
+  add_test(
+    NAME xar_ck3_native_bridge_steward_develop_county_enumerator_observer_v1
+    COMMAND xar_ck3_steward_develop_county_enumerator_observer_v1_test
   )
 
   add_executable(xar_ck3_zhongguo_case_snapshot_v1_test

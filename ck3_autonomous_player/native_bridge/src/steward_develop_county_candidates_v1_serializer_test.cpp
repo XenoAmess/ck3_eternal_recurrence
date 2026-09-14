@@ -39,11 +39,12 @@ bool TestUnavailable() {
          Contains(json, "\"same_frame_stable\":false") &&
          Contains(json, "\"readiness\":false") &&
          Contains(json,
-                  "\"reader_mode\":\"contract_fixture_pending_live_reader\"") &&
+                  "\"reader_mode\":"
+                  "\"native_enumerator_observer_pending_live_reader\"") &&
          Contains(
              json,
              "\"next_reverse_engineering_entry\":"
-             "\"task_develop_county_native_candidate_enumerator_and_final_legality_call\"");
+             "\"paused_live_develop_county_enumerator_capture_then_row_identity_and_final_legality\"");
 }
 
 bool TestAvailable() {

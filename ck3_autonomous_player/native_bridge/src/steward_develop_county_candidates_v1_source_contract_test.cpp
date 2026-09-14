@@ -32,8 +32,8 @@ bool ContainsAll(std::string_view value,
 } // namespace
 
 int main(int argc, char **argv) {
-  if (argc != 10) {
-    std::cerr << "expected nine source-contract paths\n";
+  if (argc != 15) {
+    std::cerr << "expected fourteen source-contract paths\n";
     return 1;
   }
   const auto header = ReadAll(argv[1]);
@@ -45,9 +45,16 @@ int main(int argc, char **argv) {
   const auto bridge = ReadAll(argv[7]);
   const auto abi = ReadAll(argv[8]);
   const auto fixture = ReadAll(argv[9]);
+  const auto observer_header = ReadAll(argv[10]);
+  const auto observer = ReadAll(argv[11]);
+  const auto observer_abi = ReadAll(argv[12]);
+  const auto observer_fixture = ReadAll(argv[13]);
+  const auto cmake = ReadAll(argv[14]);
   if (header.empty() || reader.empty() || serializer.empty() ||
       mailbox.empty() || game_adapter.empty() || adapter.empty() ||
-      bridge.empty() || abi.empty() || fixture.empty()) {
+      bridge.empty() || abi.empty() || fixture.empty() ||
+      observer_header.empty() || observer.empty() || observer_abi.empty() ||
+      observer_fixture.empty() || cmake.empty()) {
     std::cerr << "source-contract input is unreadable\n";
     return 1;
   }
@@ -94,9 +101,9 @@ int main(int argc, char **argv) {
            "\\\"cultural_acceptance_threshold_passed\\\""}) ||
       !ContainsAll(
           header,
-          {"exact_build_contract_fixture_pending_live_reader",
-           "contract_fixture_pending_live_reader",
-           "task_develop_county_native_candidate_enumerator_and_final_legality_call"})) {
+          {"exact_build_enumerator_observer_pending_live_layout_closure",
+           "native_enumerator_observer_pending_live_reader",
+           "paused_live_develop_county_enumerator_capture_then_row_identity_and_final_legality"})) {
     return 1;
   }
 
@@ -123,13 +130,33 @@ int main(int argc, char **argv) {
                     "native-headless"}) ||
       !ContainsAll(abi,
                    {"\"production_reader_enabled\": false",
-                    "\"admitted_rvas\": []",
-                    "task_develop_county_native_candidate_enumerator_and_final_legality_call"}) ||
+                    "\"function_rva\": \"0x105B6A0\"",
+                    "steward-develop-county-enumerator-observer-v1",
+                    "reader_not_implemented_is_temporary"}) ||
       !ContainsAll(fixture,
-                   {"\"production_reader\": \"strict_unavailable_by_default\"",
+                   {"\"production_reader\": \"strict_unavailable_pending_paused_live_layout_closure\"",
                     "\"available_status_scope\": \"offline_fixture_only\"",
                     "\"available_requires_two_stable_samples\": true",
-                    "\"mutator_surface\": false"})) {
+                    "\"mutator_surface\": false"}) ||
+      !ContainsAll(observer_header,
+                   {"kStewardDevelopCountyEnumeratorObserverPatchRvaV1 = 0x1056289",
+                    "kStewardDevelopCountyEnumeratorObserverCallRvaV1 = 0x105629C",
+                    "kStewardDevelopCountyEnumeratorRvaV1 = 0x105B6A0",
+                    "kStewardDevelopCountyEnumeratorObserverInstalledByDefaultV1 = false"}) ||
+      !ContainsAll(observer,
+                   {"kPatchAnchor", "task_develop_county",
+                    "EmitRelocatedNativeCall", "ReadObservationInputs",
+                    "CaptureStewardDevelopCountyEnumeratorPostCallV1"}) ||
+      !ContainsAll(observer_abi,
+                   {"\"status\": \"static-ready-pending-paused-live-capture\"",
+                    "\"anchor_sha256\": \"9E088A43C2E77EBF603BC9959B7DBD4E2973F18B958AE417701CCE46DEE29A0C\"",
+                    "\"public_readiness_changed\": false"}) ||
+      !ContainsAll(observer_fixture,
+                   {"\"available_live_payload_claimed\": false",
+                    "\"steward_v1_field_set_changed\": false"}) ||
+      !ContainsAll(cmake,
+                   {"XAR_CK3_ENABLE_STEWARD_DEVELOP_COUNTY_ENUMERATOR_OBSERVER_V1",
+                    "xar_ck3_steward_develop_county_enumerator_observer_v1_test"})) {
     return 1;
   }
 

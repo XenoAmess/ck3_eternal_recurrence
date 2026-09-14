@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "contract": "steward-develop-county-candidates-v1-source-contract",
-  "contract_stage": "exact_build_contract_fixture_pending_live_reader",
+  "contract_stage": "exact_build_enumerator_observer_pending_live_layout_closure",
   "capability": "game.command.query-steward-develop-county-candidates-v1",
   "step": "query-steward-develop-county-candidates-v1",
   "command_result_key": "steward_develop_county_candidates",
@@ -9,9 +9,10 @@
   "payload_provenance_backend_id": "ck3-1.19.0.6-native-steward-develop-county-candidates-v1",
   "task_key": "task_develop_county",
   "target_selection_mode": "engine_random_unscored",
-  "production_reader": "strict_unavailable_by_default",
-  "live_reader_status": "pending_exact_build_abi",
-  "reader_mode": "contract_fixture_pending_live_reader",
+  "production_reader": "strict_unavailable_pending_paused_live_layout_closure",
+  "live_reader_status": "enumerator_observer_static_ready_pending_paused_capture",
+  "reader_mode": "native_enumerator_observer_pending_live_reader",
+  "private_observer_contract": "steward-develop-county-enumerator-observer-v1",
   "available_status_scope": "offline_fixture_only",
   "identity_contract": "full_positive_int32",
   "raw_numeric_contract": {
@@ -74,6 +75,7 @@
   "unavailable_readiness": false,
   "available_requires_complete_fields": true,
   "available_requires_two_stable_samples": true,
-  "next_reverse_engineering_entry": "task_develop_county_native_candidate_enumerator_and_final_legality_call",
+  "next_reverse_engineering_entry": "paused_live_develop_county_enumerator_capture_then_row_identity_and_final_legality",
+  "reader_not_implemented_terminal": false,
   "mutator_surface": false
 }

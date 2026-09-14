@@ -7,6 +7,7 @@
 #include "xar_bridge/campaign_root_context_v1_mailbox.hpp"
 #include "xar_bridge/player_faction_alerts_v1_mailbox.hpp"
 #include "xar_bridge/steward_develop_county_candidates_v1_mailbox.hpp"
+#include "xar_bridge/steward_develop_county_enumerator_observer_v1.hpp"
 #include "xar_bridge/coat_of_arms_designer_probe_v1.hpp"
 #include "xar_bridge/frontend_gui_route_v1.hpp"
 #include "xar_bridge/cold_map_vfs_observer_v1.hpp"
@@ -164,6 +165,11 @@ constexpr bool kG2TruceNativeCallsiteObserverEnabledV1 = true;
 #else
 constexpr bool kG2TruceNativeCallsiteObserverEnabledV1 = false;
 #endif
+#if defined(XAR_CK3_ENABLE_STEWARD_DEVELOP_COUNTY_ENUMERATOR_OBSERVER_V1)
+constexpr bool kStewardDevelopCountyEnumeratorObserverEnabledV1 = true;
+#else
+constexpr bool kStewardDevelopCountyEnumeratorObserverEnabledV1 = false;
+#endif
 // The exact preview-entry hook is now the production reader's synchronous
 // access to the native leaf context.  The compile option below only controls
 // the private diagnostic object emitted later in HeartbeatFrame.
@@ -234,6 +240,8 @@ static xar::bridge::Phase2WrapperConsumerEdgeStateV1
     g_phase2_wrapper_consumer_edge_observer_v1{};
 static xar::bridge::G2TruceNativeCallsiteObserverV1State
     g_g2_truce_native_callsite_observer_v1{};
+static xar::bridge::StewardDevelopCountyEnumeratorObserverStateV1
+    g_steward_develop_county_enumerator_observer_v1{};
 static xar::bridge::G2TrucePreviewEntryObserverV1State
     g_g2_truce_preview_entry_observer_v1{};
 
@@ -542,6 +550,11 @@ std::string HeartbeatFrame(std::uint64_t sequence) {
       xar::bridge::ReadG2TruceNativeCallsiteObserverV1Diagnostics(
           g_g2_truce_native_callsite_observer_v1);
 #endif
+#if defined(XAR_CK3_ENABLE_STEWARD_DEVELOP_COUNTY_ENUMERATOR_OBSERVER_V1)
+  const auto steward_develop_county_enumerator_observer =
+      xar::bridge::ReadStewardDevelopCountyEnumeratorObserverDiagnosticsV1(
+          g_steward_develop_county_enumerator_observer_v1);
+#endif
 #if defined(XAR_CK3_ENABLE_G2_TRUCE_PREVIEW_ENTRY_OBSERVER_V1)
   const auto g2_truce_preview_entry_observer =
       xar::bridge::ReadG2TrucePreviewEntryObserverV1Diagnostics(
@@ -577,6 +590,9 @@ std::string HeartbeatFrame(std::uint64_t sequence) {
   result += kVfsMountLifecycleObserverEnabledV1 ? "true" : "false";
   result += ",\"g2_truce_preview_entry_observer_enabled\":";
   result += kG2TrucePreviewEntryObserverEnabledV1 ? "true" : "false";
+#if defined(XAR_CK3_ENABLE_STEWARD_DEVELOP_COUNTY_ENUMERATOR_OBSERVER_V1)
+  result += ",\"steward_develop_county_enumerator_observer_enabled\":true";
+#endif
   result += ",\"zhongguo_scoreboard_production_candidate_enabled\":";
   result += xar::ck3_11906::kZhongguoScoreboardProductionCandidateEnabledV1
                 ? "true"
@@ -1214,6 +1230,60 @@ std::string HeartbeatFrame(std::uint64_t sequence) {
     result += Number(callsite.last_post_thread_id);
     result += ",\"last_post_timestamp_qpc\":";
     result += Number(callsite.last_post_timestamp_qpc);
+    result += '}';
+  }
+  result += ']';
+#endif
+#if defined(XAR_CK3_ENABLE_STEWARD_DEVELOP_COUNTY_ENUMERATOR_OBSERVER_V1)
+  result += "},\"steward_develop_county_enumerator_observer_v1\":{";
+  result += "\"private_build\":true,\"read_only\":true,\"advertised\":false,\"installed\":";
+  result += steward_develop_county_enumerator_observer.installed ? "true"
+                                                                  : "false";
+  result += ",\"failure_flags\":";
+  result += Number(steward_develop_county_enumerator_observer.failure_flags);
+  const auto &develop_observation =
+      steward_develop_county_enumerator_observer.observation;
+  result += ",\"call_count\":";
+  result += Number(develop_observation.call_count);
+  result += ",\"task_key_read_failure_count\":";
+  result += Number(develop_observation.task_key_read_failure_count);
+  result += ",\"capture_read_failure_count\":";
+  result += Number(develop_observation.capture_read_failure_count);
+  result += ",\"develop_capture_count\":";
+  result += Number(develop_observation.develop_capture_count);
+  result += ",\"last_task_type\":";
+  result += Number(develop_observation.last_task_type);
+  result += ",\"last_gui_task_state\":";
+  result += Number(develop_observation.last_gui_task_state);
+  result += ",\"last_scope_word0\":";
+  result += Number(develop_observation.last_scope_word0);
+  result += ",\"last_scope_word1\":";
+  result += Number(develop_observation.last_scope_word1);
+  result += ",\"last_vector_data\":";
+  result += Number(develop_observation.last_vector_data);
+  result += ",\"last_vector_capacity\":";
+  result += SignedNumber(develop_observation.last_vector_capacity);
+  result += ",\"last_vector_count\":";
+  result += SignedNumber(develop_observation.last_vector_count);
+  result += ",\"last_captured_row_count\":";
+  result += Number(develop_observation.last_captured_row_count);
+  result += ",\"last_rows_truncated\":";
+  result += develop_observation.last_rows_truncated ? "true" : "false";
+  result += ",\"last_thread_id\":";
+  result += Number(develop_observation.last_thread_id);
+  result += ",\"last_timestamp_qpc\":";
+  result += Number(develop_observation.last_timestamp_qpc);
+  result += ",\"rows\":[";
+  for (std::uint32_t index = 0;
+       index < develop_observation.last_captured_row_count; ++index) {
+    if (index != 0) result += ',';
+    const auto &row = develop_observation.rows[index];
+    result += "{\"candidate\":";
+    result += Number(row.candidate);
+    result += ",\"task_type\":";
+    result += Number(row.task_type);
+    result += ",\"query_owner\":";
+    result += Number(row.query_owner);
     result += '}';
   }
   result += ']';
@@ -12010,6 +12080,18 @@ XarCk3BridgePrepareStartup(LPVOID) noexcept {
         reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr));
     if (!xar::bridge::InstallG2TruceNativeCallsiteObserverV1(
             g_g2_truce_native_callsite_observer_v1, environment)) {
+      return FALSE;
+    }
+  }
+  if (kStewardDevelopCountyEnumeratorObserverEnabledV1) {
+    xar::bridge::StewardDevelopCountyEnumeratorObserverEnvironmentV1
+        environment{};
+    environment.exact_build_admitted = true;
+    environment.primary_thread_suspended_proven = true;
+    environment.module_base =
+        reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr));
+    if (!xar::bridge::InstallStewardDevelopCountyEnumeratorObserverV1(
+            g_steward_develop_county_enumerator_observer_v1, environment)) {
       return FALSE;
     }
   }

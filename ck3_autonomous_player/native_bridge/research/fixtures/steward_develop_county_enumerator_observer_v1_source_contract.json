@@ -1,0 +1,51 @@
+{
+  "contract": "steward-develop-county-enumerator-observer-v1-source",
+  "required_header_tokens": [
+    "kStewardDevelopCountyEnumeratorObserverPatchRvaV1 = 0x1056289",
+    "kStewardDevelopCountyEnumeratorObserverCallRvaV1 = 0x105629C",
+    "kStewardDevelopCountyEnumeratorObserverContinueRvaV1 = 0x10562A1",
+    "kStewardDevelopCountyEnumeratorRvaV1 = 0x105B6A0",
+    "kStewardDevelopCountyEnumeratorObserverInstalledByDefaultV1 = false",
+    "last_vector_count",
+    "last_rows_truncated",
+    "CaptureStewardDevelopCountyEnumeratorPostCallV1",
+    "UninstallStewardDevelopCountyEnumeratorObserverV1"
+  ],
+  "required_implementation_tokens": [
+    "kPatchAnchor",
+    "task_develop_county",
+    "kGuiTaskVectorOffset = 0x100",
+    "kGuiTaskScopeOffset = 0x120",
+    "StewardDevelopCountyEnumeratorPostThunkV1",
+    "EmitRelocatedNativeCall",
+    "state.enumerator_target",
+    "QueryPerformanceCounter",
+    "GetCurrentThreadId",
+    "TargetWriteResult::rollback_unproven",
+    "RecordStewardDevelopCountyEnumeratorObservationV1"
+  ],
+  "required_bridge_tokens": [
+    "XAR_CK3_ENABLE_STEWARD_DEVELOP_COUNTY_ENUMERATOR_OBSERVER_V1",
+    "steward_develop_county_enumerator_observer_v1",
+    "InstallStewardDevelopCountyEnumeratorObserverV1",
+    "private_build",
+    "read_only",
+    "advertised",
+    "develop_capture_count",
+    "rows"
+  ],
+  "fixture_cases": [
+    "default build remains disabled and exact-build admission is mandatory",
+    "task_develop_county filters and copies persistent native 0x18-byte rows",
+    "other tasks are ignored and an unreadable task key is counted",
+    "capture is bounded at 32 rows and explicit truncation is retained",
+    "the exact anchor builds one relocated-call trampoline and uninstall restores it",
+    "target flush failure restores original bytes"
+  ],
+  "public_contract": {
+    "steward_v1_field_set_changed": false,
+    "public_readiness_changed": false,
+    "available_live_payload_claimed": false,
+    "ck3_started": false
+  }
+}

@@ -6,7 +6,7 @@
   `task_collect_taxes` 的 authored task 权重、发展目标候选过滤、任务完成后的冷却，以及发展进度的原版数据来源。
 - **[unknown]** 引擎何时重新评估 `ai_will_do`、何时在多个正权重任务间抽样、无
   `ai_target_score` 时的精确随机分布和任务切换 command ABI 尚未闭合。图中均以虚线表示。
-- **[static-ready; live reader pending]** `query-steward-develop-county-candidates-v1` 的严格 v1 合同、native mailbox/serializer、离线 source fixture、Python service 与 MCP 查询面已经实现；生产 reader 因候选枚举和最终 legality ABI 尚未闭合，只会明确返回 `reader_not_implemented`。本包没有启动 CK3，也没有新增动作。
+- **[static-ready; exact enumerator observer ready; live reader pending]** `query-steward-develop-county-candidates-v1` 的严格 v1 合同、native mailbox/serializer、离线 source fixture、Python service 与 MCP 查询面已经实现。DEV2 已把候选枚举收窄到 exact `CCouncilWindow` 调用点和一个默认关闭的只读 observer；生产 reader 仍因 paused-live 行 identity、最终 legality 与发展输入 ABI 未闭合而返回 `reader_not_implemented`。该返回现在是有明确 capture 入口的临时状态，不是终态。本包没有启动 CK3，也没有新增动作。
 - 施工范围只覆盖和平治理中最高价值的 steward 发展分支。`task_promote_culture`、
   `task_accept_culture`、`task_convince_dejure` 仍参与完整 steward 任务池，但不在本包内假装已完成比较。
   宫廷司祭及通用 faith/doctrine 系统继续遵守 owner-deferred 边界。
@@ -169,10 +169,29 @@ flowchart TD
 `query-steward-develop-county-candidates-v1`；MCP 工具
 `ck3_query_steward_develop_county_candidates_v1(expected_revision)` 只在 paused snapshot 上执行，并把 public/native revision、日期与 snapshot identity 绑定到同一查询。
 
-v1 payload 固定 `contract_stage=exact_build_contract_fixture_pending_live_reader`。离线 fixture 可以验证完整 available 形状、full-generation identity 往返、重复 ID 拒绝、native-legal-only 候选、双采样与前后 frame 稳定性；这一 fixture 不进入生产模块读取。生产 exact-build 路径在尚无 ABI 时返回 `status=unavailable`、`unavailable_reason=reader_not_implemented`、`readiness=false`、空候选和空观测值，不能把现有 active task 或 Python 重写的 trigger 当成候选结果。
+v1 payload 固定 `contract_stage=exact_build_enumerator_observer_pending_live_layout_closure`。离线 fixture 可以验证完整 available 形状、full-generation identity 往返、重复 ID 拒绝、native-legal-only 候选、双采样与前后 frame 稳定性；这一 fixture 不进入生产模块读取。生产 exact-build 路径在 paused-live 行 identity 尚未闭合时返回 `status=unavailable`、`unavailable_reason=reader_not_implemented`、`readiness=false`、空候选和空观测值，不能把现有 active task、observer 原始指针或 Python 重写的 trigger 当成候选结果。
 
 候选顺序原样保留 native 枚举顺序，但 v1 不把顺序解释为分数或偏好；`target_selection_mode=engine_random_unscored` 继续是唯一允许的原版目标选择语义。当前唯一后续逆向入口记录为
-`task_develop_county_native_candidate_enumerator_and_final_legality_call`。只有该 exact-build 枚举器、最终 task/county legality、rate evaluator 和 identity round-trip 在真实 paused frame 共同闭合后，才可把 `reader_mode` 从 `contract_fixture_pending_live_reader` 提升并开展有界 live 验收。
+`paused_live_develop_county_enumerator_capture_then_row_identity_and_final_legality`。只有原始枚举行的 county identity、最终 task/county legality、rate evaluator 和 identity round-trip 在真实 paused frame 共同闭合后，才可把 `reader_mode` 从 `native_enumerator_observer_pending_live_reader` 提升并开展有界 live 验收。
+
+#### Exact 枚举器与唯一 capture seam（G2-M4-DEV2）
+
+对 SHA 已冻结的 `ck3.exe` 做有界反汇编与直接调用交叉引用后，`RVA 0x105B6A0` 只有两个 direct-call xref：
+
+- `0x10545EA` 是只需要“是否至少有一个位置”的 validity probe，调用前把栈上 bool 设为 `true`，返回后只检查输出 count 是否非零；
+- `0x105629C` 是 `CCouncilWindow` 的 county/value task refresh 路径，调用前把 bool 设为 `false`，把输出绑定到 `RDI+0x100`，因而保留完整枚举行。这个调用点是下一轮 live capture 的唯一入口。
+
+`0x105B6A0` 的静态数据流证明输出 vector 为 `data qword / capacity int32 / count int32`，每行宽 `0x18`，三项 qword 依次为 raw candidate pointer、传入 task-type pointer、query-owner pointer。它还证明 task type 从 `R8` 传入、scope 从 `R9` 传入。静态证据尚不能把第一项 raw pointer 命名成 county title、province 或 GUI wrapper，也不能把“出现在 vector 中”直接升级成公共 `native_legal=true`；这些语义必须由一次 paused exact-build capture 配合 full-generation round-trip 闭合。
+
+DEV2 新增 `steward_develop_county_enumerator_observer_v1`：
+
+- 只在 private build 的 `XAR_CK3_ENABLE_STEWARD_DEVELOP_COUNTY_ENUMERATOR_OBSERVER_V1` 显式开启，默认关闭且不广告公共 capability；
+- 只在 primary thread 尚未恢复时安装，逐字节核验 `0x1056289..0x10562A0` 的 24-byte exact anchor；
+- trampoline 原样执行被覆盖的 scope/vector 写入和唯一 native call，调用后只复制 raw vector 元数据及最多 32 个 `0x18` 行，不主动调用枚举器、不提交命令、不改游戏状态；
+- 用已复用的 `CCouncilTaskType+0x18` key 布局只保留 `task_develop_county`，并分别计数 key 读取失败、vector 读取失败和显式截断；
+- 安装/卸载具备 exact identity 和原字节回滚，private heartbeat 暴露 raw capture，公共 steward v1 字段集合与 readiness 均未改变。
+
+ABI 与证据边界见 `native_bridge/research/steward_develop_county_enumerator_observer_v1_abi.json`。本轮没有运行 CK3，因此 observer 的 `static-ready` 只说明 anchor、trampoline、过滤、行复制和回滚经过离线验证；它不是 live row，也不允许把公共 P0 标为 production-live。
 
 ### P1：只读 task-pool comparison
 

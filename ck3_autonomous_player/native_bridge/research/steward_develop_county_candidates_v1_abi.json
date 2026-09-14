@@ -3,7 +3,7 @@
   "capability": "game.command.query-steward-develop-county-candidates-v1",
   "game_version": "1.19.0.6",
   "exe_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
-  "contract_stage": "exact_build_contract_fixture_pending_live_reader",
+  "contract_stage": "exact_build_enumerator_observer_pending_live_layout_closure",
   "production_reader_enabled": false,
   "known_reusable_context": {
     "campaign_root_query": "query-campaign-root-context-v1",
@@ -13,8 +13,7 @@
   "unproven_native_dependencies": [
     "final task shown evaluator",
     "final task valid evaluator and typed failure mapping",
-    "native legal county-domain enumerator",
-    "full-generation county-title to capital-province identity path",
+    "paused-live classification of raw enumerator candidate pointers into full-generation county-title identity",
     "steward_increase_development_value evaluator",
     "current gold evaluator for the same frame",
     "no_ai_increase_development final boolean",
@@ -24,10 +23,25 @@
     "terrain stable-key reader",
     "same-culture and cultural-acceptance threshold final booleans"
   ],
-  "admitted_rvas": [],
-  "reader_mode": "contract_fixture_pending_live_reader",
-  "next_reverse_engineering_entry": "task_develop_county_native_candidate_enumerator_and_final_legality_call",
-  "failure_policy": "reader_not_implemented",
+  "admitted_rvas": [
+    {
+      "name": "CCouncilWindow county/value all-candidates refresh callsite",
+      "patch_rva": "0x1056289",
+      "call_instruction_rva": "0x105629C",
+      "continue_rva": "0x10562A1",
+      "anchor_sha256": "9E088A43C2E77EBF603BC9959B7DBD4E2973F18B958AE417701CCE46DEE29A0C"
+    },
+    {
+      "name": "native council task target enumerator",
+      "function_rva": "0x105B6A0",
+      "direct_call_xrefs": ["0x10545EA", "0x105629C"],
+      "output_row_stride": 24
+    }
+  ],
+  "observer_contract": "steward-develop-county-enumerator-observer-v1",
+  "reader_mode": "native_enumerator_observer_pending_live_reader",
+  "next_reverse_engineering_entry": "paused_live_develop_county_enumerator_capture_then_row_identity_and_final_legality",
+  "failure_policy": "reader_not_implemented_is_temporary_until_paused_live_layout_closure",
   "fixture_policy": "available payloads require an explicit offline fixture source and complete two-sample equality",
   "write_surface": false
 }

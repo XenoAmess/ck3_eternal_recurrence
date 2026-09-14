@@ -1,0 +1,86 @@
+{
+  "contract": "steward-develop-county-enumerator-observer-v1",
+  "schema_version": 1,
+  "status": "static-ready-pending-paused-live-capture",
+  "exact_build": {
+    "product_version": "1.19.0.6",
+    "executable_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+    "image_base": "0x140000000"
+  },
+  "source_contract": {
+    "task_file": "game/common/council_tasks/00_steward_tasks.txt",
+    "task_file_sha256": "B3087378E04D0CDF7B1C1BEBF97FD17E36D8684DDD157D4FB0647B1D5681FC4B",
+    "task_key": "task_develop_county",
+    "ai_county_target": "domain",
+    "target_selection_mode": "engine_random_unscored"
+  },
+  "native_enumerator": {
+    "function_rva": "0x105B6A0",
+    "direct_call_xrefs": [
+      "0x10545EA",
+      "0x105629C"
+    ],
+    "signature_candidate": "void __fastcall(void *query_owner, RawVector24 *output, const CCouncilTaskType *task_type, const SCouncilTaskScopes *scopes, bool first_only)",
+    "output_row_stride": 24,
+    "output_row_static_shape": [
+      "candidate_pointer",
+      "task_type_pointer",
+      "query_owner_pointer"
+    ]
+  },
+  "capture_seam": {
+    "owner": "CCouncilWindow county/value task refresh path",
+    "patch_rva": "0x1056289",
+    "call_instruction_rva": "0x105629C",
+    "continue_rva": "0x10562A1",
+    "patch_bytes": 24,
+    "anchor_hex": "410F110189870C010000410F11491088442420E8FF530000",
+    "anchor_sha256": "9E088A43C2E77EBF603BC9959B7DBD4E2973F18B958AE417701CCE46DEE29A0C",
+    "pre_call_registers": {
+      "RCX": "RDI gui task state / enumerator query owner",
+      "RDX": "RDI+0x100 persistent output vector",
+      "R8": "RSI CCouncilTaskType pointer",
+      "R9": "RDI+0x120 SCouncilTaskScopes",
+      "stack_0x20": "false; enumerate all rather than validity first-hit"
+    },
+    "persistent_layout": {
+      "output_vector": "gui_task_state+0x100: data qword, capacity int32, count int32",
+      "scope": "gui_task_state+0x120; first two raw full-generation words retained without semantic relabeling",
+      "task_type": "gui_task_state+0x140 and RSI",
+      "task_key": "CCouncilTaskType+0x18 MSVC string; exact match filters task_develop_county"
+    }
+  },
+  "private_telemetry": {
+    "maximum_rows": 32,
+    "row_truncation_is_explicit": true,
+    "clock": "QueryPerformanceCounter",
+    "thread": "GetCurrentThreadId",
+    "raw_pointers_are_capture_evidence_only": true,
+    "public_candidate_identity_claimed": false
+  },
+  "detour_semantics": {
+    "exact_anchor_required": true,
+    "primary_thread_suspended_required": true,
+    "installed_by_default": false,
+    "relocated_original_call": true,
+    "rollback_restores_original_bytes": true,
+    "autonomous_enumerator_request": false,
+    "mutation_executed": false
+  },
+  "scope": {
+    "compile_option": "XAR_CK3_ENABLE_STEWARD_DEVELOP_COUNTY_ENUMERATOR_OBSERVER_V1",
+    "private_build_only": true,
+    "read_only_game_state": true,
+    "public_abi_changed": false,
+    "public_steward_v1_field_set_changed": false,
+    "public_readiness_changed": false,
+    "ck3_started": false
+  },
+  "next_live_closure": [
+    "capture task_develop_county rows in one paused exact-build frame",
+    "classify candidate_pointer into county title or province identity with full-generation round-trip",
+    "locate the final per-row legality result/evaluator rather than infer it from GUI inclusion",
+    "bind development level/progress/rate/max, terrain and culture filter inputs to the same candidate"
+  ],
+  "evidence_limit": "Static source and exact disassembly prove a runnable all-candidates observer seam and raw 0x18-byte output rows. No paused native row was captured, so candidate-pointer semantics, final legality, development inputs and public reader readiness remain unclosed."
+}
