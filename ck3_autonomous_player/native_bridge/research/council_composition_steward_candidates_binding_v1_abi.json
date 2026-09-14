@@ -1,0 +1,83 @@
+{
+  "schema_version": 1,
+  "private_key": "g2_council_composition_steward_candidates_binding_v1",
+  "status": "static-ready-private-binding-unregistered",
+  "visibility": "private-not-advertised",
+  "exact_build": {
+    "product_version": "1.19.0.6",
+    "executable_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+    "image_base": "0x140000000"
+  },
+  "producer": {
+    "rva": "0x293BD00",
+    "calling_convention": "Microsoft x64: RCX owner CCharacter*, RDX active council task*, R8B GUI eligibility=1, R9 native vector object*; no consumed return value",
+    "native_vector_layout": {
+      "size_bytes": 24,
+      "data_address_offset": 0,
+      "capacity_int32_offset": 8,
+      "count_int32_offset": 12,
+      "allocator_pointer_offset": 16
+    },
+    "append_helper_rva": "0x8154D0",
+    "append_reads_allocator_pointer_at": "vector+0x10"
+  },
+  "temporary_vector_allocator": {
+    "object_size_bytes": 528,
+    "vtable_rva": "0x4098A20",
+    "inline_bytes_offset": 8,
+    "inline_candidate_capacity": 64,
+    "fallback_allocator_pointer_offset": 520,
+    "fallback_allocator_object_rva": "0x4FEBE00",
+    "initialize_span_rva": "0x91E320",
+    "initialize_result": "data=allocator+8, capacity=64",
+    "release_adapter_rva": "0x7E8FB0",
+    "release_call": "allocator, data, element_size=8",
+    "release_behavior": "inline data is a no-op; grown data is delegated through allocator vtable+0x38 to the fallback allocator vtable+0x10"
+  },
+  "active_steward_task_resolution": {
+    "character_land_state_offset": 440,
+    "land_state_task_ids_data_offset": 560,
+    "land_state_task_ids_count_offset": 572,
+    "task_storage_slot_rva": "0x570C778",
+    "task_fallback_slot_rva": "0x570C6D8",
+    "storage_slots_offset": 32,
+    "storage_capacity_offset": 44,
+    "storage_slot_stride": 16,
+    "storage_object_offset": 8,
+    "full_task_id_offset": 16,
+    "task_type_pointer_offset": 24,
+    "task_type_position_pointer_offset": 56,
+    "position_key_msvc_string_offset": 24,
+    "task_owner_full_character_id_offset": 60,
+    "required_position_key": "councillor_steward",
+    "selection_rule": "exactly one generation-valid active task for the played owner and required position; zero, duplicate, malformed or owner-mismatched matches remain unavailable"
+  },
+  "transaction": {
+    "admission": "application-main and paused before the producer",
+    "binding": "upstream snapshot/date/revisions/played owner plus same-frame generation-valid active steward task",
+    "lifetime": "binding state owns the 0x210 allocator and 0x18 vector object from one producer entry through one release callback",
+    "release_pairing": "every admitted producer callback, including a producer failure after vector initialization, leaves one terminal release callback for the Council6 core",
+    "after_frame": "active task is independently resolved again after release; Council6 compares pointer, full identity and frame fields before publication",
+    "failure_policy": "fail closed with no candidate rows"
+  },
+  "readiness": {
+    "private_core_implemented": true,
+    "production_private_binding_implemented": true,
+    "exact_producer_bound": true,
+    "exact_release_bound": true,
+    "active_steward_task_resolution_bound": true,
+    "shared_cmake_registered": false,
+    "bridge_mailbox_glue_registered": false,
+    "public_capability_registered": false,
+    "production_query_live": false,
+    "planner_ready": false
+  },
+  "unknown_or_excluded": [
+    "other council positions",
+    "compiled valid_position and valid_character reasons",
+    "candidate skill, politics and native AI score",
+    "public serialization and MCP schema",
+    "semantic fire, reassign or swap actions"
+  ],
+  "unique_next_integration_entry": "a separate glue work package may register these private sources and adapt the existing application-main campaign snapshot callback; it must not change this exact native object contract"
+}

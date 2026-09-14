@@ -1,0 +1,47 @@
+{
+  "schema_version": 1,
+  "private_key": "g2_council_composition_steward_candidates_binding_v1",
+  "required_sources": [
+    "include/xar_bridge/council_composition_steward_candidates_binding_v1.hpp",
+    "src/council_composition_steward_candidates_binding_v1.cpp",
+    "src/council_composition_steward_candidates_binding_v1_test.cpp",
+    "research/council_composition_steward_candidates_binding_v1_abi.json",
+    "research/fixtures/council_composition_steward_candidates_binding_v1_fixture.json"
+  ],
+  "required_header_tokens": [
+    "kCouncilCompositionStewardInlineAllocatorVtableRvaV1 = 0x4098A20",
+    "kCouncilCompositionStewardInlineAllocatorFallbackRvaV1 = 0x4FEBE00",
+    "kCouncilCompositionStewardInlineAllocatorInitializeRvaV1 = 0x91E320",
+    "kCouncilCompositionStewardInlineAllocatorReleaseRvaV1 = 0x7E8FB0",
+    "kCouncilCompositionStewardInlineAllocatorSizeV1",
+    "CouncilCompositionStewardCandidatesBindingNativeVectorV1",
+    "BindCouncilCompositionStewardCandidatesV1"
+  ],
+  "required_implementation_tokens": [
+    "offsetof(CouncilCompositionStewardCandidatesBindingNativeVectorV1,",
+    "kActiveTaskStorageSlotRva = 0x570C778",
+    "kActiveTaskFallbackSlotRva = 0x570C6D8",
+    "ResolveActiveStewardTask",
+    "state.transaction_active = true",
+    "state.operations.invoke_producer(",
+    "state.operations.release_allocation(",
+    "frame.active_task_identity_round_trip = true",
+    "core_access.capture_frame = &CaptureFrameThunk",
+    "core_access.produce = &ProduceThunk",
+    "core_access.release = &ReleaseThunk"
+  ],
+  "forbidden_shared_changes": [
+    "CMakeLists.txt",
+    "src/bridge.cpp",
+    "public MCP schema"
+  ],
+  "exact_executable_slices": [
+    {"rva": "0x293BD00", "size": 662, "sha256": "A2264828FA0A077650A1D74DD3C9861F81B7C219BC9D32DE7C11369BF6E890D8"},
+    {"rva": "0x8154D0", "size": 227, "sha256": "361BBFD83F5EE8F77E7AD7B5062AC5C47AEAB0DE4480E895282BC136FFE0546E"},
+    {"rva": "0x91E320", "size": 15, "sha256": "18FDA0CA73D46F674A4278204F8F8A78D06621393FCC793F5ED706C7F95A2C46"},
+    {"rva": "0x7E8FB0", "size": 58, "sha256": "713F21ED3585FDF7D226EBEF14CDD488CBE394D4A489FDC3227BEA74F126A604"},
+    {"rva": "0x4098A20", "size": 64, "sha256": "A35EE3D306E7DDD806647BC07F367E40B094A9C8BDDA24DE62A23D6935A4D49D"},
+    {"rva": "0x10583E5", "size": 29, "sha256": "BB8A485A34258014E1FC024FE69822338841327CFF879FE683791CE3ACF15446"},
+    {"rva": "0x2666CDA", "size": 159, "sha256": "D118CEC463355455CBA72038E4924940E12CDEBA10562044B4A303F24EB22E22"}
+  ]
+}

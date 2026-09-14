@@ -288,13 +288,17 @@ R684 解锁的是**总管候选 identity provider**，不是原先草案中的�
 
 该输出会解锁玩家可见价值：自动玩家能指出具体席位、具体人选、能力变化、政治收益与换人代价，并在合法性不足时给出可读 blocker。它不等待原版隐藏总分闭合，也不把 recommendation 当作 action ACK。
 
-## COUNCIL6 后的唯一下一集成
+## COUNCIL7：private production binding 已静态闭合
 
-private core 已完成，不再重复 R684 observer 或另写一套 reader。唯一下一集成 seam 是：**把 exact producer、临时向量 release 和 campaign-root active steward task resolution 注入现有 main-thread query mailbox**。集成者拥有共享 CMake/bridge 写入权；core 本身继续不登记公开 capability。
+`council_composition_steward_candidates_binding_v1` 已把 COUNCIL6 core 的三项 native 依赖固定为 exact-build 私有绑定，但仍未登记 CMake、bridge command 或公开 MCP。producer 的真实第四参数不是 16-byte header，而是 24-byte 对象：`data + capacity + count + allocator*`。append helper `0x8154D0` 在扩容时读取 `vector+0x10`；因此 binding 持有完整 `0x18` 对象，不能把 core 的三字段镜像直接传给 `0x293BD00`。
 
-绑定必须证明 producer 地址为 module base + `0x293BD00`，release 采用 exact-build refresh cleanup 语义，且每次 producer invocation 都在 mailbox completion 前恰好调用一次 release。聚焦 suspended fixture 先验证 shared glue；随后只做一次按需 paused query，核对 11 个 R684 身份或当前同帧合法变体、release receipt、frame binding 和零写入。不会重跑同一 R684 GUI 捕获长跑。
+临时 allocator 也已经闭合：对象大小 `0x210`，vtable 为 module base + `0x4098A20`，`+0x08` 起始的内联缓冲容纳 64 个 8-byte 指针，`+0x208` 指向 module base + `0x4FEBE00` 的 fallback allocator。初始化 leaf `0x91E320` 返回内联 data/capacity；release adapter `0x7E8FB0` 对内联地址 no-op，对扩容地址经 vtable `+0x38` 取得 fallback allocator，再调用其 `+0x10` 释放。binding 从一次 producer 入口到 Council6 的一次 release callback 独占该对象；producer 初始化后的失败同样配对 release，release 失败保持 RED/unavailable。
 
-该窄绑定 GREEN 后，再依次接：compiled `valid_position` / `valid_character`，主能力和政治输入，fire/reassign/swap preview，公开只读 MCP，真实空缺与 occupied replacement 两个代表性 paused artifact，最后才接最小 planner。任命 semantic action 保持独立工作包，提交前复检 owner/position/candidate，提交后重读 active position；不得调用绕过原版规则的 script effect。
+active steward task 不依赖 GUI list 指针。binding 从同帧 played `CCharacter+0x1B8` 读取 land state，再读取 `+0x230/+0x23C` 的 active-task full-ID vector，经 `0x570C778/0x570C6D8` storage/fallback 做 generation round-trip；只有 `task+0x18 -> task-type+0x38 -> position-type+0x18` 为 `councillor_steward` 且 `task+0x3C` owner full ID 等于 played owner 的唯一任务才可进入 producer。零匹配、重复匹配、generation 失配、owner 失配和畸形字符串全部 fail-closed。after-frame 会重新解析一次 task，COUNCIL6 再比较 snapshot、revision、date、owner 与 task identity。
+
+本阶段通过了 MSVC x64 C++20 `/W4 /WX` 聚焦 fixture，以及 normal/`-O` source 与 exact-EXE slice 验证。能力状态仍是 **private static-ready binding / shared glue pending**；未运行 CK3，也未产生 production query artifact。唯一下一集成是独立 glue 工作包：把这两个私有源登记到共享构建，并把现有 application-main paused campaign frame callback 适配给 binding；之后只做一次按需 paused query，核对 R684 的 11 个身份或当前同帧合法变体、release receipt、frame binding 和零写入，不重跑 GUI 捕获长跑。
+
+glue GREEN 后，再依次接：compiled `valid_position` / `valid_character`，主能力和政治输入，fire/reassign/swap preview，公开只读 MCP，真实空缺与 occupied replacement 两个代表性 paused artifact，最后才接最小 planner。任命 semantic action 保持独立工作包，提交前复检 owner/position/candidate，提交后重读 active position；不得调用绕过原版规则的 script effect。
 
 ## 未闭合边界
 
@@ -302,7 +306,7 @@ private core 已完成，不再重复 R684 observer 或另写一套 reader。唯
 |---|---|---|
 | **[unknown]** | 原版 AI composition utility、输入权重和 tie-break | `native_ai_score_ready=false`；不阻塞我方 planner |
 | **[unknown]** | 原版 AI 席位重算 cadence 与 `last_appointed_councillor` 语义 | 不推断换人时机；Mermaid 保留虚线 |
-| **[private core static-ready / binding pending]** | 空列表与其它席位未实机互证；exact producer/release/mailbox glue 尚未注册 | R684 已关闭总管非空向量证据；COUNCIL6 core 已闭合原子复制、release 与 fail-closed 流程；下一步只做 shared binding |
+| **[private binding static-ready / shared glue pending]** | 空列表与其它席位未实机互证；private binding 尚未进入共享构建/main-thread mailbox | R684 已关闭总管非空向量证据；COUNCIL6 core 与 COUNCIL7 exact producer/release/task binding 已闭合；下一步只做 shared glue 与一次按需 paused query |
 | **[static entry only]** | fire/reassign/swap 的完整 machine reason | 允许稳定粗粒度 reason；禁止解析 loc 猜原因 |
 | **[owner-deferred]** | 宫廷司祭通用信仰/教义策略 | 仅最终合法性和 opaque reason |
 | **[not implemented]** | read-only MCP、planner 与 semantic action | 按上节顺序推进，状态不得写 live/action-ready |
@@ -321,6 +325,12 @@ private core 已完成，不再重复 R684 observer 或另写一套 reader。唯
 | candidate-list refresh `0x10580F0..0x105841E` | 814 | `E7D1A1C2A2ABF7D62478C06FFF7D592FE0CF7682F8CF53D84D90EFE8545B748A` |
 | producer call/return slice `0x1058200..0x1058238`（prefix bytes `4C 8D 4D 80 41 B0 01 49 8B D2 E8 F1 3A 8E 01`） | 56 | `BB3B4F20EB48B3D57014EA59880AF2D8C127D40EFF825DF8BEFB50879629A251` |
 | candidate producer `0x293BD00..0x293BF96` | 662 | `A2264828FA0A077650A1D74DD3C9861F81B7C219BC9D32DE7C11369BF6E890D8` |
+| vector append helper `0x8154D0..0x8155B3` | 227 | `361BBFD83F5EE8F77E7AD7B5062AC5C47AEAB0DE4480E895282BC136FFE0546E` |
+| inline allocator vtable `0x4098A20..0x4098A60` | 64 | `A35EE3D306E7DDD806647BC07F367E40B094A9C8BDDA24DE62A23D6935A4D49D` |
+| inline span initializer `0x91E320..0x91E32F` | 15 | `18FDA0CA73D46F674A4278204F8F8A78D06621393FCC793F5ED706C7F95A2C46` |
+| allocator release adapter `0x7E8FB0..0x7E8FEA` | 58 | `713F21ED3585FDF7D226EBEF14CDD488CBE394D4A489FDC3227BEA74F126A604` |
+| refresh release sequence `0x10583E5..0x1058402` | 29 | `BB8A485A34258014E1FC024FE69822338841327CFF879FE683791CE3ACF15446` |
+| active-task vector/identity/position slice `0x2666CDA..0x2666D79` | 159 | `D118CEC463355455CBA72038E4924940E12CDEBA10562044B4A303F24EB22E22` |
 | `CanFireCouncillor` registration `0x1437F0..0x1438D4` | 228 | `08A567710BB57BBBB21653EE252DC3B928FF03BDBA24E62056CBEF15507E7159` |
 | `CanFireCouncillor` handler `0x105D690..0x105D6C8` | 56 | `BADEAB04A18F96BA6B1850E63F878B06F039018AF7571707F28378D5B106B878` |
 | fire-tooltip registration `0x1438E0..0x143A5D` | 381 | `5005B0C97479A386C1DC2D0BA1D574414DF5B2D1CB7A93ACC85E81B1609B7DE3` |
