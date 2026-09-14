@@ -1,0 +1,148 @@
+{
+  "schema_version": 1,
+  "private_key": "character_interaction_proposal_payload_source_extension_v1",
+  "status": "static-ready-private-payload-source-extension",
+  "visibility": "private-not-registered",
+  "upstream": {
+    "private_key": "character_interaction_proposal_action_core_v1",
+    "baseline_commit": "9f987c9d53fc73130de68c74480e5e671560a797",
+    "preview_private_key": "character_interaction_preview_v1",
+    "typed_payload_source_keys": [
+      "educate_child_interaction",
+      "offer_ward_interaction",
+      "offer_guardianship_interaction",
+      "grant_titles_interaction",
+      "grant_vassal_interaction",
+      "ransom_interaction"
+    ]
+  },
+  "exact_build": {
+    "product_version": "1.19.0.6",
+    "executable_size": 95206008,
+    "executable_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+    "code_anchors": [
+      {
+        "name": "construct_all_character_roles",
+        "rva": "0x2C3F000",
+        "size": 64,
+        "sha256": "1A6F6EEAEF35268E39F2F6342F5B578B2EC22A832D3FBF0C4EF02C258E740124"
+      },
+      {
+        "name": "grant_titles_offer_factory",
+        "rva": "0x1002B80",
+        "size": 64,
+        "sha256": "3136A6BC74741EC265E30676CF7CDE3CB65895079F04C8DC4A75716132EF6640"
+      },
+      {
+        "name": "grant_titles_offer_selected_id_reader",
+        "rva": "0x24BA9E0",
+        "size": 64,
+        "sha256": "F71924574E9F0209DDD1D7B4B7691F4B100D219697AE10F1D092A3BE241B8553"
+      }
+    ]
+  },
+  "stock_sources": [
+    {
+      "relative_path": "game/common/character_interactions/00_education_interactions.txt",
+      "size": 93188,
+      "sha256": "841CC160D73DD5C24519D3160FBA0D6098873904A736FDEB0B27781AF7393474"
+    },
+    {
+      "relative_path": "game/common/character_interactions/00_grant_titles_interaction.txt",
+      "size": 55250,
+      "sha256": "A506859B5260D6E923FB26922C6247CEC6FE62699FDE1D101EBBBB3B3524FE9D"
+    },
+    {
+      "relative_path": "game/common/character_interactions/00_vassal_interactions.txt",
+      "size": 89993,
+      "sha256": "1249CAC40138D48210A07245746C4A6683C5F58F3141C04A20DB2C00B6375BF8"
+    },
+    {
+      "relative_path": "game/common/character_interactions/00_prison_interactions.txt",
+      "size": 201766,
+      "sha256": "3E05C94CDCE4D42CCE8256D2D79CD78FEB1C9D5B79DAA64AA8243AA0C658F22B"
+    }
+  ],
+  "collector_memory": {
+    "context_size": "0x338",
+    "definition_offset": "0x00",
+    "actor_full_character_id_offset": "0x2D8",
+    "recipient_full_character_id_offset": "0x2DC",
+    "secondary_actor_full_character_id_offset": "0x2E0",
+    "secondary_recipient_full_character_id_offset": "0x2E4",
+    "intermediary_full_character_id_offset": "0x2E8",
+    "selected_options_data_offset": "0x300",
+    "selected_options_capacity_offset": "0x308",
+    "selected_options_count_offset": "0x30C",
+    "special_data_offset": "0x330",
+    "definition_selected_options_count_offset": "0x2554"
+  },
+  "identity_contract": {
+    "character_storage_slot_rva": "0x570C130",
+    "landed_title_storage_slot_rva": "0x570C410",
+    "slot_mask": "0x00FFFFFF",
+    "slot_stride": "0x10",
+    "slot_object_offset": "0x08",
+    "character_full_id_offset": "0x18",
+    "landed_title_full_id_offset": "0x10",
+    "rule": "low 24 bits choose the storage slot; the complete signed int32 ID must equal the object identity, preserving generation"
+  },
+  "typed_payloads": {
+    "educate_child_interaction": "secondary_recipient ward -> secondary_actor guardian",
+    "offer_ward_interaction": "secondary_actor ward -> secondary_recipient guardian",
+    "offer_guardianship_interaction": "secondary_recipient ward -> secondary_actor guardian",
+    "grant_titles_interaction": "recipient plus the complete generation-bearing LandedTitleID vector from CGrantTitlesOffer",
+    "grant_vassal_interaction": "secondary_actor transferred vassal -> recipient",
+    "ransom_interaction": "secondary_recipient prisoner -> actor, with a selected exact authored payment option"
+  },
+  "grant_titles_offer": {
+    "vtable_rva": "0x4112BA8",
+    "selected_id_data_offset": "0x08",
+    "selected_id_capacity_offset": "0x10",
+    "selected_id_count_offset": "0x14",
+    "element": "signed int32 full LandedTitleID",
+    "maximum_published_count": 128
+  },
+  "send_options": {
+    "education_authored_order": [
+      "convert_culture",
+      "convert_faith",
+      "university",
+      "hook"
+    ],
+    "ransom_authored_order": [
+      "extortionate_gold",
+      "extortionate_current_gold",
+      "gold",
+      "current_gold",
+      "favor",
+      "influence",
+      "herd"
+    ],
+    "religious_option_policy": "convert_faith remains deferred and returns RED unavailable"
+  },
+  "binding": {
+    "frame": "the collector must be paused and exactly match snapshot ID, public revision, native revision, proof epoch and date of the finalized preview",
+    "definition": "the context definition pointer must equal a fresh canonical lookup for the interaction key",
+    "roles_and_titles": "every present full ID is generation-resolved from exact collector storage before publication",
+    "fingerprint": "canonical key, every full role ID, selected-option mask and ordered full title IDs are carried into the DIPLO4 payload"
+  },
+  "scope": {
+    "shared_cmake_modified": false,
+    "bridge_registration_modified": false,
+    "public_schema_modified": false,
+    "mcp_modified": false,
+    "command_or_submit_surface_present": false,
+    "ck3_started": false,
+    "generic_religion_expanded": false
+  },
+  "readiness": {
+    "six_typed_payload_sources_implemented": true,
+    "exact_collector_memory_bound": true,
+    "full_generation_identity_preserved": true,
+    "frame_proof_and_date_preserved": true,
+    "religious_option_deferred": true,
+    "private_source_wired_to_public_bridge": false,
+    "production_action_live": false
+  }
+}

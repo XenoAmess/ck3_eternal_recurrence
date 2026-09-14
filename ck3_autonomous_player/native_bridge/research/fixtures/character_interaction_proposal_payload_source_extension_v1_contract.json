@@ -1,0 +1,74 @@
+{
+  "schema_version": 1,
+  "private_key": "character_interaction_proposal_payload_source_extension_v1",
+  "upstream_private_key": "character_interaction_proposal_action_core_v1",
+  "upstream_baseline_commit": "9f987c9d53fc73130de68c74480e5e671560a797",
+  "exact_build": {
+    "product_version": "1.19.0.6",
+    "executable_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86"
+  },
+  "expected_payload_sources": [
+    {
+      "interaction_key": "educate_child_interaction",
+      "subject": "secondary_recipient:ward",
+      "object": "secondary_actor:guardian"
+    },
+    {
+      "interaction_key": "offer_ward_interaction",
+      "subject": "secondary_actor:ward",
+      "object": "secondary_recipient:guardian"
+    },
+    {
+      "interaction_key": "offer_guardianship_interaction",
+      "subject": "secondary_recipient:ward",
+      "object": "secondary_actor:guardian"
+    },
+    {
+      "interaction_key": "grant_titles_interaction",
+      "subject": "recipient",
+      "object": "actor",
+      "extra": "ordered full LandedTitleID vector"
+    },
+    {
+      "interaction_key": "grant_vassal_interaction",
+      "subject": "secondary_actor:transferred_vassal",
+      "object": "recipient"
+    },
+    {
+      "interaction_key": "ransom_interaction",
+      "subject": "secondary_recipient:prisoner",
+      "object": "actor",
+      "extra": "nonempty exact authored option mask"
+    }
+  ],
+  "required_source_semantics": [
+    "canonical definition pointer identity",
+    "generation-bearing actor, recipient and secondary role IDs",
+    "generation-bearing selected LandedTitleIDs",
+    "paused same-snapshot proof epoch and date binding",
+    "selected option count agrees with the canonical definition",
+    "malformed collector memory remains unavailable",
+    "religious education option remains deferred",
+    "payload fingerprint contains every typed source field",
+    "source read never submits an interaction"
+  ],
+  "native_test_cases": [
+    "all six typed payload sources",
+    "character generation mismatch remains RED",
+    "proof epoch and date drift remain RED",
+    "convert-faith education option remains RED deferred",
+    "grant-titles special-data vtable identity mismatch remains RED",
+    "selected title generation mismatch remains RED",
+    "malformed selected option byte remains RED",
+    "wrong exact-build hash remains RED"
+  ],
+  "forbidden_surfaces": [
+    "command submission",
+    "public bridge registration",
+    "public schema projection",
+    "MCP registration",
+    "shared CMake edits",
+    "generic religion expansion",
+    "CK3 launch"
+  ]
+}
