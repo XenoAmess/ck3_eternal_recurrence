@@ -3,6 +3,7 @@ numpy==2.5.2
 PyAutoGUI==0.9.54
 pyperclip==1.11.0
 pywin32==312
+comtypes>=1.4,<2
 rapidocr-onnxruntime==1.2.3
 opencv-python==5.0.0.93
 edge-tts==7.2.8
