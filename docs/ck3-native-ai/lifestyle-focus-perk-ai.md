@@ -522,3 +522,32 @@ flowchart TD
 - 尚无 paused live artifact，需要验证窗口已打开及随后关闭/detach 时的 `+0xF8`、候选容器与同帧双采样稳定性。
 
 下一最小施工是专属 `player_lifestyle_window_candidates_v1` 私有 observer：复用现有 root/current-player/snapshot 环境，只读返回 focus/perk stable key、`can_select` 和 `can_select_ignore_cost`。它不得调用 `0xF48780`、`0x132C970`、`SelectFocus` 或 `SelectPerk`，也不得扩公共 MCP/schema。static/fixture GREEN 后，仍需在唯一 CK3 轮次中取得 bounded paused artifact，才能从 `static-ready` 升为 `production-live primitive`。
+
+## G2-M4-LIFE4-PRIVATE-OBSERVER：私有窗口候选核心
+
+> 状态：`static-ready`。本节对应的实现与独立测试为
+> `player_lifestyle_window_candidates_v1.hpp/.cpp/_test.cpp`。本轮没有启动
+> CK3，没有接入公共 bridge/MCP/schema，也没有产生 paused live artifact。
+
+LIFE4 把 LIFE3 的 owner seam 固定成一个默认不发布的只读核心。调用者每次
+`read_source` 都必须从 `*(module+0x570F7B8)` 重新解析 root、exact RTTI idler、
+`handler+0x1A8` 窗口，并递增 `root_acquisition_serial`；核心会拒绝第二次序号未
+严格递增的样本。每次样本同时验证 handler/窗口双 vtable、`window+0xD0`
+owner 回链、`window+0xF8` 当前完整玩家 ID、Character storage round-trip、三个
+窗口 span、focus-span pointer membership、exact CharacterPerk database membership
+以及三个 final evaluator 的实际调用证明。
+
+输出只含 stable key、所属 lifestyle key 与只读 gate。`CanSelectPerkIgnoreCost`
+仍只是解释技能树前沿，不能授权动作。完整、稳定的零行扫描分别发布为
+`known_empty`；窗口尚未绑定当前玩家或角色 generation 回链失效时发布 typed
+`lifestyle_window_unbound_or_stale`；owner、container、materialization、evaluator、
+provenance 与同帧漂移各有独立 failure key。access surface 没有 open、bind、
+refresh、close、`SelectFocus` 或 `SelectPerk` 回调，因此 fixture 不能借主动刷新
+制造可观测状态。
+
+独立 fixture 覆盖完整 unsigned CharacterID、两次 fresh root acquisition、
+owner/vtable/F8、合法非空与 `known_empty`、container/materialization、candidate
+provenance、final gate、stable-key 去重、owner/gate/frame drift 和 typed source
+失败。它证明的是核心合同与静态候选物化，production adapter、公共 snapshot glue
+和唯一 CK3 轮次中的 paused 对照仍是后续工作；在 live artifact 出现前状态不得写成
+`production-live primitive`。
