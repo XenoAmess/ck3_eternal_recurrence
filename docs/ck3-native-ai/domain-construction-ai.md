@@ -6,9 +6,10 @@
   `80%` 入围带、带权随机选择、预算储备背景、施工提交边以及原版对“存钱等目标”的明确说明。
 - **[research / contract-ready]** 文末定义 `domain-construction-candidates-v1` 最小只读输入合同，供和平治理
   planner 选择玩家直辖领地中的新建或单级升级目标。合同尚未实现，不能标记为 `static-ready` 或 live。
-- **[BUILD2 static-ready / live pending]** 本施工包实现了默认关闭的私有
+- **[BUILD2 static-ready + R683 bounded live NO-GO]** 本施工包实现了默认关闭的私有
   `g2_domain_construction_candidate_observer_v1`，在 BUILD1 已冻结的候选 producer 返回边界采集调用上下文和原始
-  `0x28` 行。它不新增公共 bridge/MCP/schema，不发布候选语义，也不把离线 fixture 写成 live。
+  `0x28` 行。R683 证明 DEV4 readiness 与 observer 安装均正常，但冻结的强制 effect callsite 在 60 秒 paused 窗口中零次经过，
+  因而按预定口径收口为 `NO-GO / no_producer_return_observed`。它不新增公共 bridge/MCP/schema，也不发布候选语义。
 - **[unknown]** 正常 AI scheduler 把建设挂在哪一种 task tick、多久重新评估一次、已选存钱目标保存于何处及何时
   失效，当前 exact-build 证据尚未闭合。原版通用 task tick 只能作为背景，不能冒充建筑专用 cadence。
 - 范围只包括省份建筑的新建与升级。新建 holding、Great Project 和 domicile 动作不进入 v1；原版 AI 的共同候选池
@@ -203,6 +204,95 @@ BUILD2 实现完成后只安排一次有界 capture，不为一个未命中的 o
 `research / contract-ready`：BUILD2 不读取 final legality、成本/预算、施工队列，也没有证明任何候选属于玩家。fixture 只验证
 observer 和解析器，不得冒充生产 hit；没有真实 `observer.jsonl` 与同会话 `report.json` 时不得写 `production-live`。
 
+## R683 结果与 native runtime 入口
+
+### R683：有界 NO-GO，不是 RED
+
+R683 的最终自包含 artifact manifest SHA-256 为
+`C3D2301E647BBDEF1A7CFB33CF2795EA9905BFBC98671371DD2C5D66055DFABC`；其中
+`previous_manifest_sha256=177F4F3EAB41570F005132E294ADEEBBEEA6DD7E1BF704CF004DB0F00F846DF4` 是复制四个 exact
+candidate binary 前的历史 seal。`report.json` SHA-256 为
+`E1E8A7C7C829E0AC9191D8E9E745EC5D176BA0CEA6291AA4F7EBBC4E6BA1CC75`。现行结论只使用最终 seal。
+
+| R683 事实 | 结果 |
+|---|---|
+| exact build / source | CK3 `1.19.0.6`，EXE SHA 同本文冻结值；source commit `50b69df3e40115520dcc49c6a63ac8634101907d` |
+| DEV4 readiness | **live GREEN**：`map_ready=true`、`paused=true`，`played_character_id=29829` 与 `episode_character_id=29829` 同时匹配 |
+| observer 生命周期 | `installed=true`、`failure_flags=0`，结束时 cleanup proven |
+| 观察结果 | 60 秒内 `producer_calls=0`、`accepted_captures=0`，`NO-GO / no_producer_return_observed`，`red=null` |
+| 游戏状态变化 | UI 输入 `0`；日期未推进；源/目标存档 SHA 均未变化 |
+
+这个 NO-GO 的解释范围比“producer 没运行”更窄。BUILD2 observer patch 在 forced effect 的
+`0x2EBEE86 -> 0x1921810` callsite，而不是 producer 函数入口。R683 只证明该 paused 场景没有经过这个强制 effect；它没有观察
+另一个直接调用 producer 的 native runtime callsite。重复同一 paused 等待不会增加信息量，也不能通过调用 effect 或 producer
+制造命中。
+
+### 第二个 direct xref：native runtime caller
+
+对 exact EXE `.text` 做指令对齐反汇编后，`0x1921810` 只有两个 direct `CALL` xref：
+
+| callsite | caller | 证据边界 |
+|---|---|---|
+| `0x2EBEE86` | `AIAttemptToBuildBuildingEffect::execute` `0x2EBED90` | 已由 BUILD2 observer 覆盖；需要脚本强制 effect |
+| `0x18D294F` | native runtime 函数 `0x18D2560..0x18D2B89` | 与 effect 无关的第二条原版入口；scheduler 名称与 cadence 仍 unknown |
+
+`0x18D2560..0x18D2B89` 共 `1577` bytes，SHA-256
+`4D94C8EB8EF3AC2AC0F5CB6720E89350D431150E9B12EDBF8B93236643CE3923`。producer call 前的 exact 指令为：
+
+```text
+0x18D2948  lea rdx,[rbp+0x60]    ; caller-local RawVector40
+0x18D294C  mov rcx,rsi           ; retained producer owner
+0x18D294F  call 0x1921810
+```
+
+该 `0x18D2948..0x18D2954` span 为 `12` bytes，hex
+`488D5560488BCEE8BCEE0400`，SHA-256
+`7AD8DDEEE17F6EDCFCB58B1D8987E22B40B35CBEF217A334B84B33E76E9922FB`。返回后从 `0x18D2954` 开始把同一 local
+vector 交给 `0x18D17E0` 消费；这证明 runtime path 与 forced effect path 共享同一个 producer，但不证明两者后续选择和提交逻辑相同。
+
+producer 自身为 `0x1921810..0x19219BA`，共 `426` bytes，SHA-256
+`E33EF0DFAB7E16B10523D3BE71C4C7B37EA27B20D1A12728AF9DEC3E60D83A12`。其
+`0x1921810..0x19218BD` dispatch head 的 SHA-256 为
+`4E5B138871EA0E88D7249525585F2D374E06817D4A84DE8D247E1E986FB54876`，并确认三个 direct child call：
+`0x192189C -> 0x19221C0`、`0x19218AA -> 0x19224F0`、`0x19218B8 -> 0x19227C0`。子枚举器的类型名仍不猜。
+
+### 已冻结的触发前置
+
+下列条件只按指令语义记录；字段和 predicate 的业务名称尚未闭合：
+
+1. `0x18D2584` 要求 `byte[owner+0x16] & 0x0A != 0`，`0x18D258E` 要求
+   `byte[owner+0x2A] == 0`，否则直接走公共返回点 `0x18D2B6E`。
+2. `0x18D25AC..0x18D25D1` 要求从 `[owner+0x18]+0x1B8` 选择的 opaque substate（或 global fallback）在
+   `+0x318/+0x0C` 的计数为零。当前不得把它命名为“施工队列”或 cooldown。
+3. `0x18D26AA -> 0x19017F0` 必须返回 false；true 会写 `byte[state+0x142]=1` 并退出。若
+   `0x18D2781` 的 deterministic threshold 进入条件分支，`0x1900640` 与 `0x18FE5E0` 也必须都返回 false。
+4. 最后一段可见 gate 是 `0x18D2821..0x18D2862`：先由 `0x1879280(owner, 3, scratch)` 准备 scratch，随后
+   `0x1922BF0([owner+0x18], scratch, flag)` 必须返回 true。该 span SHA-256 为
+   `B96B5175AC183091A9890BC990A89961F1875FC27ACC70A280B44DC86DB4BF21`。
+5. `0x18D2560` 的执行所有权有三条已确认入口：`0x183DE04` 在 `[owner+0x20]` 非空且
+   `byte[state+0xC2] != 0` 时调用；`0x1886E0D` 与 `0x1886F5B` 在 state 为空或该字节为零、且 global
+   `0x4F54C2F != 0` 时调用。它们证明原版在不同路径间路由执行权，不足以命名 task class 或推出重评天数。
+
+完整机器可读账本位于
+`ck3_autonomous_player/native_bridge/research/fixtures/g2_domain_construction_producer_entry_v1.json`。原始字段含义、
+正常 scheduler cadence、候选 identity、资源槽、预算 owner、final legality 和队列仍保持 `unknown`。
+
+### 唯一下一施工点
+
+下一包只实现 default-off 私有 `g2_domain_construction_native_runtime_callsite_observer_v1`，把被动观察点移到
+`0x18D2948..0x18D2958`。这个 `16` bytes anchor 为
+`488D5560488BCEE8BCEE0400488D45D0`，SHA-256
+`8534255F75D4595B57E2093C6F67AC196C7FF71D596C2122258DED90151F31A6`。stub 必须按原顺序重放：
+
+1. `lea rdx,[rbp+0x60]`、`mov rcx,rsi`；
+2. 原生 `call 0x1921810` **恰好一次**；
+3. 在同一返回帧把 local vector 有界复制到私有存储；
+4. 重放 `lea rax,[rbp-0x30]`，从 `0x18D2958` 继续。
+
+这条 seam 不调用 forced effect，不主动调用 producer，不碰 `0x21F6800`，也不修改公共 bridge/MCP/schema/action/planner。
+先完成 source-contract、exact anchor 和 suspended focused tests；不得重跑 R683 的 forced-effect paused wait。将来若安排 live，
+只等这个不同 native callsite 的第一次自然经过即收口，仍不强制触发 producer。
+
 ## 预算储备与“存钱”边界
 
 `00_ai.txt:100-168` 冻结了通用 AI 财政背景：
@@ -246,10 +336,16 @@ unknown。planner 不应复制这种可能锁死经济的行为，应使用自�
 
 ```mermaid
 flowchart TD
-    S["[static] normal AI scheduler"] -. "[unknown] task class / cadence" .-> E["building evaluation"]
+    S["[static] native execution-owner dispatch<br/>0x183DE04 / 0x1886E0D / 0x1886F5B"] -. "[unknown] task class / cadence" .-> T["runtime caller 0x18D2560"]
+    T --> G{"raw entry and predicate gates pass?"}
+    G -->|no| X2["return without producer"]
+    G -->|yes| E["producer 0x1921810 via 0x18D294F"]
     F["[static] forced scripted effect<br/>0x2EBED90"] --> A{"has AI object?"}
     A -->|no| X["diagnostic; no build"]
-    A -->|yes| E
+    A -->|yes| E2["producer 0x1921810 via 0x2EBEE86"]
+    R683["[live] R683 forced-callsite observer"] --> N0["NO-GO: zero forced-effect calls"]
+    N0 -. "[unknown] says nothing about runtime callsite" .-> T
+    E2 --> C
     E --> C["[static] enumerate all potential buildings<br/>includes domicile; excludes holdings / Great Projects"]
     C --> C1["sub-enumerator 0x19221C0"]
     C --> C2["sub-enumerator 0x19224F0"]
@@ -385,7 +481,8 @@ construction loop 跑通后再扩展 outcome delta，不把收益解析提前做
    分作为起步证据，同时使用确定性排序保证可复现。
 2. 原版明确存在存钱锁死风险。玩家代理必须有应急储备和等待上限，不能因一个高分昂贵建筑无限阻塞所有低价投资。
 3. 当前 gold/income/domain count 足以说明“有多少直辖容量”，不够定位任何可施工槽。下一施工入口就是本专题的按需只读
-   candidate query，不是继续靠 GUI 图像猜按钮，也不是先写 mutation。
+   candidate query；其下一静态施工入口已收窄为 `0x18D2948` native runtime callsite 的 default-off 被动 observer，
+   不是继续靠 GUI 图像猜按钮，也不是先写 mutation。
 4. 新建 holding、Great Project、domicile 与完整建筑收益另开能力包；不应把它们混入 v1，亦不能把 v1 宣称为完整十年经济治理。
 
 ## 证据边界
@@ -398,5 +495,7 @@ construction loop 跑通后再扩展 outcome delta，不把收益解析提前做
   queue reader 和代表性 paused snapshot 互证。
 - **[unknown]** normal scheduler cadence、建设预算桶的精确绑定、八槽资源全映射、存钱状态 owner/lifetime、子枚举器类型名、
   多省同轮调度和完成后重评延迟。
-- **[live pending]** 没有 `domain-construction-candidates-v1` 生产 reader、MCP fixture 或 paused artifact，故本专题只把 M4 建设域从
-  `research` 推进到 exact-build tree + contract-ready，不提升为 production-live primitive。
+- **[bounded live NO-GO]** R683 已证明 DEV4 readiness、observer admission 与无状态改动边界，但只观察了 forced-effect callsite，
+  没有取得候选行；不能把它写成 candidate reader live。
+- **[live pending]** 没有 `domain-construction-candidates-v1` 生产 reader 或 MCP fixture，故本专题仍是 exact-build tree +
+  contract-ready，不提升为 production-live primitive。

@@ -1,0 +1,167 @@
+{
+  "contract": "g2_domain_construction_producer_entry_v1",
+  "schema_version": 1,
+  "status": "static-confirmed-after-r683-no-go",
+  "exact_build": {
+    "product_version": "1.19.0.6",
+    "executable_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+    "image_base": "0x140000000"
+  },
+  "r683": {
+    "fixed_commit": "50b69df3e40115520dcc49c6a63ac8634101907d",
+    "artifact_manifest_sha256": "C3D2301E647BBDEF1A7CFB33CF2795EA9905BFBC98671371DD2C5D66055DFABC",
+    "previous_pre_binary_seal_sha256": "177F4F3EAB41570F005132E294ADEEBBEEA6DD7E1BF704CF004DB0F00F846DF4",
+    "report_sha256": "E1E8A7C7C829E0AC9191D8E9E745EC5D176BA0CEA6291AA4F7EBBC4E6BA1CC75",
+    "classification": "NO-GO",
+    "result": "no_producer_return_observed",
+    "red": null,
+    "observer_installed": true,
+    "failure_flags": 0,
+    "producer_calls": 0,
+    "accepted_captures": 0,
+    "observation_seconds": 60.0,
+    "dev4_readiness_live": {
+      "map_ready": true,
+      "paused": true,
+      "played_character_id": 29829,
+      "episode_character_id": 29829
+    },
+    "state_changes": {
+      "ui_inputs": 0,
+      "date_advanced": false,
+      "source_save_unchanged": true,
+      "target_save_unchanged": true
+    },
+    "cleanup_proven": true,
+    "scope_of_result": "The default-off observer wrapped only the forced-effect callsite at 0x2EBEE86. Zero calls therefore means that this bounded paused shape did not traverse that callsite; it does not rule out the separate native runtime callsite at 0x18D294F."
+  },
+  "producer": {
+    "function_rva": "0x1921810",
+    "function_end_rva_exclusive": "0x19219BA",
+    "function_size": 426,
+    "function_sha256": "E33EF0DFAB7E16B10523D3BE71C4C7B37EA27B20D1A12728AF9DEC3E60D83A12",
+    "known_signature_boundary": "void __fastcall(void *producer_owner, RawVector40 *output)",
+    "known_output_row_stride": 40,
+    "direct_call_xrefs": [
+      {
+        "call_rva": "0x18D294F",
+        "kind": "native-runtime-caller",
+        "caller_function_rva": "0x18D2560"
+      },
+      {
+        "call_rva": "0x2EBEE86",
+        "kind": "forced-scripted-effect",
+        "caller_function_rva": "0x2EBED90"
+      }
+    ],
+    "dispatch_head": {
+      "begin_rva": "0x1921810",
+      "end_rva_exclusive": "0x19218BD",
+      "size": 173,
+      "sha256": "4E5B138871EA0E88D7249525585F2D374E06817D4A84DE8D247E1E986FB54876",
+      "confirmed_sub_enumerator_calls": [
+        "0x192189C -> 0x19221C0",
+        "0x19218AA -> 0x19224F0",
+        "0x19218B8 -> 0x19227C0"
+      ]
+    }
+  },
+  "native_runtime_entry": {
+    "caller_function_rva": "0x18D2560",
+    "caller_end_rva_exclusive": "0x18D2B89",
+    "caller_size": 1577,
+    "caller_sha256": "4D94C8EB8EF3AC2AC0F5CB6720E89350D431150E9B12EDBF8B93236643CE3923",
+    "producer_call": {
+      "begin_rva": "0x18D2948",
+      "call_instruction_rva": "0x18D294F",
+      "end_rva_exclusive": "0x18D2954",
+      "bytes_hex": "488D5560488BCEE8BCEE0400",
+      "sha256": "7AD8DDEEE17F6EDCFCB58B1D8987E22B40B35CBEF217A334B84B33E76E9922FB",
+      "registers": {
+        "RCX": "the 0x18D2560 caller owner retained in RSI",
+        "RDX": "caller-local RawVector40 at RBP+0x60"
+      }
+    },
+    "raw_trigger_prerequisites": [
+      {
+        "span": "0x18D2584..0x18D258E",
+        "condition": "byte[owner+0x16] & 0x0A != 0"
+      },
+      {
+        "span": "0x18D258E..0x18D2598",
+        "condition": "byte[owner+0x2A] == 0"
+      },
+      {
+        "span": "0x18D25AC..0x18D25D1",
+        "condition": "the selected opaque substate counter at +0x318/+0x0C, or its global fallback, equals zero",
+        "semantic_name": null
+      },
+      {
+        "span": "0x18D26AA..0x18D26CC",
+        "condition": "opaque predicate 0x19017F0 returns false; true marks byte[state+0x142] and exits"
+      },
+      {
+        "span": "0x18D2781..0x18D27D2",
+        "condition": "if the deterministic threshold branch is entered, opaque predicates 0x1900640 and 0x18FE5E0 must both return false"
+      },
+      {
+        "span": "0x18D2821..0x18D2862",
+        "condition": "after 0x1879280 prepares mode 3 scratch state, opaque predicate 0x1922BF0 must return true",
+        "sha256": "B96B5175AC183091A9890BC990A89961F1875FC27ACC70A280B44DC86DB4BF21"
+      }
+    ],
+    "owner_dispatch": [
+      {
+        "call_rva": "0x183DE04",
+        "condition": "state=[owner+0x20] is non-null and byte[state+0xC2] is nonzero",
+        "span": "0x183DDF6..0x183DE12",
+        "sha256": "28876F4DC9F8B48C26B8B317FD9243133DF57F62D70DC6ADC4CCB74BE178B96B"
+      },
+      {
+        "call_rva": "0x1886E0D",
+        "condition": "state is null or byte[state+0xC2] is zero, and global byte 0x4F54C2F is nonzero",
+        "span": "0x1886DEB..0x1886E12",
+        "sha256": "B2EF124B531270047296B148626CDB93E03B78FEE98146E27720B5F04E6D7BFC"
+      },
+      {
+        "call_rva": "0x1886F5B",
+        "condition": "state is null or byte[state+0xC2] is zero, and global byte 0x4F54C2F is nonzero",
+        "span": "0x1886F39..0x1886F60",
+        "sha256": "7BFDA91C9B6278F0E7E08B107215090B6AF7208DFEF77469875C64403CAC99DE"
+      }
+    ],
+    "semantic_boundary": "The instructions prove routing and branch conditions, but do not yet name owner+0x16, owner+0x2A, state+0xC2, global 0x4F54C2F, or the opaque predicate meanings. They also do not close scheduler cadence."
+  },
+  "next_minimum_implementation_seam": {
+    "id": "g2_domain_construction_native_runtime_callsite_observer_v1",
+    "compile_default": "OFF",
+    "patch_begin_rva": "0x18D2948",
+    "patch_end_rva_exclusive": "0x18D2958",
+    "continue_rva": "0x18D2958",
+    "patch_bytes": 16,
+    "anchor_hex": "488D5560488BCEE8BCEE0400488D45D0",
+    "anchor_sha256": "8534255F75D4595B57E2093C6F67AC196C7FF71D596C2122258DED90151F31A6",
+    "required_replay": [
+      "lea rdx,[rbp+0x60]",
+      "mov rcx,rsi",
+      "call 0x1921810 exactly once",
+      "copy the returned RawVector40 synchronously into private bounded storage",
+      "lea rax,[rbp-0x30]",
+      "continue at 0x18D2958"
+    ],
+    "forbidden": [
+      "calling 0x1921810 autonomously",
+      "calling ai_attempt_to_build_building_effect",
+      "calling the construction submit seam",
+      "changing public bridge, MCP, schema, action or planner",
+      "repeating the R683 forced-effect paused wait"
+    ],
+    "first_completion_boundary": "Source-contract, exact-anchor and isolated suspended tests only. A later live attempt, if scheduled, observes the first natural traversal of this different native callsite and terminates without forcing the producer."
+  },
+  "unknown": [
+    "semantic names of the runtime entry raw fields and predicates",
+    "normal scheduler task class and cadence",
+    "candidate row identity beyond score_raw at offset zero",
+    "resource-slot mapping, budget owner, final legality and construction queue"
+  ]
+}
