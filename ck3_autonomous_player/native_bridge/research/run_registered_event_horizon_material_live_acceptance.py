@@ -44,6 +44,7 @@ from xar_autoplayer.vanilla_events.policy import (  # noqa: E402
 REPORT_KIND = "ck3_registered_event_horizon_material_live_acceptance"
 RESUME_CAPABILITY = "game.command.resume-map"
 PAUSE_CAPABILITY = "game.command.pause-map"
+SPEED_ONE_CAPABILITY = "game.command.set-speed-1"
 
 
 def _parser() -> argparse.ArgumentParser:
@@ -109,15 +110,18 @@ def _exact_build_proof(
     result["checks"]["action_steps"] = (
         isinstance(steps, list)
         and "save-checkpoint" in steps
+        and "set-speed-1" in steps
         and "resume-map" in steps
         and "pause-map" in steps
     )
     result["checks"].update(
         {
             "timeline_capabilities": isinstance(advertised, list)
+            and SPEED_ONE_CAPABILITY in advertised
             and RESUME_CAPABILITY in advertised
             and PAUSE_CAPABILITY in advertised,
             "timeline_steps": isinstance(steps, list)
+            and "set-speed-1" in steps
             and "resume-map" in steps
             and "pause-map" in steps,
         }
@@ -326,12 +330,29 @@ async def _run_mcp_sequence(
                 maximum_date_raw=target_date_raw,
             )
 
+            commands.append("set-speed-1")
+            speed_result = await client.call_tool(
+                "ck3_execute_step",
+                {
+                    "step": "set-speed-1",
+                    "expected_revision": _revision(before, label="set speed"),
+                },
+            )
+            results.append(speed_result)
+            base._structured(speed_result, tool_name="ck3_execute_step:set-speed-1")
+            current = await _snapshot(client, results, label="after-set-speed-1")
+            if not (
+                current.get("paused") is True
+                and current.get("date_raw") == expected_date_raw
+            ):
+                raise RuntimeError("set-speed-1 changed the paused source frame")
+
             deadline = time.monotonic() + horizon_timeout
-            current = before
             while time.monotonic() < deadline:
                 if current.get("active_event") is None:
                     if current.get("date_raw") >= target_date_raw:
                         raise RuntimeError("target event did not appear by its exact date")
+                    pulse_start_date = current.get("date_raw")
                     commands.append("resume-map")
                     resume = await client.call_tool(
                         "ck3_execute_step",
@@ -342,16 +363,38 @@ async def _run_mcp_sequence(
                     )
                     results.append(resume)
                     base._structured(resume, tool_name="ck3_execute_step:resume")
-                    # Preserve the proven source cadence: stop immediately after
-                    # every resume submission, then inspect that paused day.
-                    # Waiting for an event before pausing can skip an earlier
-                    # queued event at speed 5.
-                    commands.append("pause-map")
-                    pause = await client.call_tool(
-                        "ck3_execute_step", {"step": "pause-map"}
-                    )
-                    results.append(pause)
-                    base._structured(pause, tool_name="ck3_execute_step:pause")
+
+                    advance_deadline = min(deadline, time.monotonic() + 10.0)
+                    while time.monotonic() < advance_deadline:
+                        current = await _snapshot(client, results, label="day-edge")
+                        if (
+                            current.get("active_event") is not None
+                            or current.get("date_raw") != pulse_start_date
+                        ):
+                            break
+                        await asyncio.sleep(poll_interval)
+                    else:
+                        raise RuntimeError("speed-1 day edge was not observed")
+                    current_date = current.get("date_raw")
+                    if not (
+                        isinstance(pulse_start_date, int)
+                        and not isinstance(pulse_start_date, bool)
+                        and isinstance(current_date, int)
+                        and not isinstance(current_date, bool)
+                        and pulse_start_date <= current_date <= pulse_start_date + 24
+                    ):
+                        raise RuntimeError("one speed-1 pulse exceeded one game day")
+                    if current.get("paused") is not True:
+                        commands.append("pause-map")
+                        pause = await client.call_tool(
+                            "ck3_execute_step",
+                            {
+                                "step": "pause-map",
+                                "expected_revision": _revision(current, label="day-edge pause"),
+                            },
+                        )
+                        results.append(pause)
+                        base._structured(pause, tool_name="ck3_execute_step:pause")
 
                 boundary: dict[str, object] | None = None
                 pause_deadline = min(deadline, time.monotonic() + 10.0)
@@ -541,6 +584,7 @@ async def _run_mcp_sequence(
         "allowed_gameplay_commands": [
             "resume-map",
             "pause-map",
+            "set-speed-1",
             QUERY_CURRENT_EVENT_WINDOW_CONTEXT_V1_STEP,
             "select-event-option-N",
             "save-checkpoint",
@@ -682,6 +726,7 @@ def main(argv: list[str] | None = None) -> int:
                     "cold_checkpoint": True,
                     "maximum_ck3_launches": 1,
                     "time_advanced": True,
+                    "timeline_speed": 1,
                     "maximum_date_raw": args.target_date_raw,
                     "expected_prelude_events": list(args.expected_prelude_event),
                     "target_event_selections": 1,
