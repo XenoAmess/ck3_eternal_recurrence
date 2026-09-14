@@ -1749,6 +1749,25 @@ bool ReadSelectedRuleTokens(
   return true;
 }
 
+bool ReadTargetingFactionCount(
+    const CampaignRootNativeEnvironmentV1 &environment,
+    const CampaignRootAccessV1 &access, void *player_character,
+    std::int32_t player_character_id, std::int32_t &output,
+    void *&land_state) noexcept {
+  output = 0;
+  land_state = nullptr;
+  return ReadValue(access, player_character, kCharacterLandStateOffset,
+                   land_state) &&
+         (land_state == nullptr ||
+          (ReadValue(access, land_state,
+                     kLandStateTargetingFactionsCountOffset, output) &&
+           output >= 0)) &&
+         ResolveComponent(access, environment.character_storage_slot,
+                          environment.character_fallback_slot,
+                          player_character_id, kCharacterIdentityOffset) ==
+             player_character;
+}
+
 bool ReadObservation(const CampaignRootNativeEnvironmentV1 &environment,
                      const CampaignRootAccessV1 &access,
                      ObservationV1 &output,
@@ -1797,17 +1816,10 @@ bool ReadObservation(const CampaignRootNativeEnvironmentV1 &environment,
     return false;
   }
   void *land_state = nullptr;
-  if (!ReadValue(access, output.player_character, kCharacterLandStateOffset,
-                 land_state) ||
-      (land_state != nullptr &&
-       (!ReadValue(access, land_state,
-                   kLandStateTargetingFactionsCountOffset,
-                   output.player_targeting_faction_count) ||
-        output.player_targeting_faction_count < 0)) ||
-      ResolveComponent(access, environment.character_storage_slot,
-                       environment.character_fallback_slot,
-                       output.player_character_id,
-                       kCharacterIdentityOffset) != output.player_character) {
+  if (!ReadTargetingFactionCount(
+          environment, access, output.player_character,
+          output.player_character_id, output.player_targeting_faction_count,
+          land_state)) {
     failure = "player_targeting_factions_unavailable";
     return false;
   }
@@ -1934,6 +1946,40 @@ CampaignRootNativeEnvironmentV1 BindCampaignRootNativeEnvironmentV1(
       NativeCampaignRootScriptIdentifierNameV1>(
       module_base + kCampaignRootScriptIdentifierNameRva);
   return output;
+}
+
+bool ReadCampaignRootTargetingFactionCountV1(
+    const CampaignRootNativeEnvironmentV1 &environment,
+    const CampaignRootAccessV1 &access,
+    std::int32_t expected_player_character_id,
+    std::int32_t &output) noexcept {
+  output = 0;
+  try {
+    if (!environment.exact_build_admitted ||
+        (environment.module_base == 0 &&
+         !environment.offline_fixture_function_overrides) ||
+        expected_player_character_id <= 0 || access.is_main_thread == nullptr ||
+        !access.is_main_thread(access.context)) {
+      return false;
+    }
+    ObservationV1 observation{};
+    if (!ReadPlayerIdentity(environment, access, observation) ||
+        observation.player_character_id != expected_player_character_id) {
+      return false;
+    }
+    void *land_state = nullptr;
+    std::int32_t count = 0;
+    if (!ReadTargetingFactionCount(
+            environment, access, observation.player_character,
+            observation.player_character_id, count, land_state)) {
+      return false;
+    }
+    output = count;
+    return true;
+  } catch (...) {
+    output = 0;
+    return false;
+  }
 }
 
 game::ReadCampaignRootContextResultV1 ReadCampaignRootContextV1(

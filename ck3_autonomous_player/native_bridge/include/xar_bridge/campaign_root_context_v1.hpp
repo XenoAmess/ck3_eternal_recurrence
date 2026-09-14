@@ -351,6 +351,14 @@ game::ReadCampaignRootContextResultV1 ReadCampaignRootContextV1(
     const CampaignRootContextRequestV1 &request,
     game::CampaignRootContextV1 &output) noexcept;
 
+// Reuses the exact-build campaign-root identity and land-state path for
+// focused read-only queries. The caller must already be on application-main.
+bool ReadCampaignRootTargetingFactionCountV1(
+    const CampaignRootNativeEnvironmentV1 &environment,
+    const CampaignRootAccessV1 &access,
+    std::int32_t expected_player_character_id,
+    std::int32_t &output) noexcept;
+
 std::string SerializeCampaignRootContextV1(
     const game::CampaignRootContextV1 &context);
 

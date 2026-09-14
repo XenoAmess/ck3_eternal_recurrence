@@ -1,0 +1,26 @@
+{
+  "schema_version": 1,
+  "capability": "game.command.query-player-faction-alerts-v1",
+  "game_version": "1.19.0.6",
+  "exe_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+  "contract_stage": "targeting_count_live_rows_and_county_fixture_pending_native_readers",
+  "production_reader_enabled": true,
+  "production_components": {
+    "targeting_faction_count": "campaign_root_exact_build_reader_reuse",
+    "targeting_factions": "strict_unavailable_pending_native_reader",
+    "county_exposures": "strict_unavailable_pending_native_reader"
+  },
+  "campaign_root_reuse": {
+    "character_land_state_offset": "0x1B8",
+    "land_state_targeting_faction_count_offset": "0x12C",
+    "has_targeting_faction_trigger_rva": "0x283FAE0",
+    "identity_gate": "full_generation_character_roundtrip_after_count_read",
+    "minimum": 0,
+    "same_frame": "two count samples enclosed by equal paused frames"
+  },
+  "admitted_rvas": ["0x283FAE0"],
+  "reader_mode": "campaign_root_targeting_count_with_fixture_only_details",
+  "next_reverse_engineering_entry": "faction_alert_targeting_span_and_sub_realm_county_membership_readers",
+  "exact_ultimatum_timing_ready": false,
+  "write_surface": false
+}

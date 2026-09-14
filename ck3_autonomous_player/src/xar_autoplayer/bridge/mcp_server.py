@@ -414,6 +414,16 @@ def _ck3_change_steward_develop_county_task_v1(
     )
 
 
+def _ck3_query_player_faction_alerts_v1(
+    service: GameplayBridgeService,
+    expected_revision: int,
+) -> dict[str, object]:
+    """Observe exact targeting-faction and county-exposure alert components."""
+    return service.query_player_faction_alerts_v1(
+        expected_revision=expected_revision,
+    )
+
+
 def _ck3_search_entities_v1(
     service: GameplayBridgeService,
     expected_revision: int,
@@ -1232,6 +1242,16 @@ def create_server(driver: GameplayBridgeDriver):
         )
 
     @server.tool()
+    def ck3_query_player_faction_alerts_v1(
+        expected_revision: int,
+    ) -> dict[str, object]:
+        """Read native player-faction alert rows and planner projection."""
+        return _ck3_query_player_faction_alerts_v1(
+            service,
+            expected_revision,
+        )
+
+    @server.tool()
     def ck3_search_entities_v1(
         expected_revision: int,
         relation_filter: str = "any",
@@ -1967,6 +1987,9 @@ def create_server(driver: GameplayBridgeDriver):
     )
     _forbid_unknown_tool_arguments_v1(
         server, "ck3_change_steward_develop_county_task_v1"
+    )
+    _forbid_unknown_tool_arguments_v1(
+        server, "ck3_query_player_faction_alerts_v1"
     )
     _forbid_unknown_tool_arguments_v1(
         server, "ck3_query_zhongguo_b1_cycle_snapshot_v1"

@@ -94,6 +94,12 @@ from .steward_develop_county_action_contract import (
     build_change_steward_develop_county_request_v1,
     normalize_change_steward_develop_county_ack_v1,
 )
+from .player_faction_alerts_contract import (
+    QUERY_PLAYER_FACTION_ALERTS_V1_CAPABILITY,
+    QUERY_PLAYER_FACTION_ALERTS_V1_STEP,
+    normalize_player_faction_alerts_v1,
+    validate_player_faction_war_handoffs_v1,
+)
 from .entity_directory_contract import build_entity_directory_v1
 from .turn_bundle_contract import build_turn_bundle_v1
 from .zhongguo_case_snapshot_contract import (
@@ -2232,6 +2238,170 @@ class GameplayBridgeService:
                 "its production capability is unadvertised"
             )
         return ack
+
+    def query_player_faction_alerts_v1(
+        self,
+        *,
+        expected_revision: int,
+    ) -> dict[str, object]:
+        """Read exact-build targeting-faction and county alert components."""
+        snapshot = self.snapshot()
+        if snapshot.get("paused") is not True:
+            raise BridgeUnavailableError(
+                "player faction alert queries require a paused CK3 snapshot"
+            )
+        revision = snapshot.get("revision")
+        if (
+            isinstance(revision, bool)
+            or not isinstance(revision, int)
+            or revision < 0
+        ):
+            raise BridgeUnavailableError(
+                "player faction alert query lacks a valid snapshot revision"
+            )
+        if (
+            isinstance(expected_revision, bool)
+            or not isinstance(expected_revision, int)
+            or expected_revision < 0
+        ):
+            raise ValueError("expected_revision must be a non-negative integer")
+        if expected_revision != revision:
+            raise BridgeUnavailableError(
+                "player faction alert revision mismatch: expected "
+                f"{expected_revision}, current {revision}"
+            )
+        native_revision = snapshot.get("native_revision")
+        if (
+            isinstance(native_revision, bool)
+            or not isinstance(native_revision, int)
+            or not 1 <= native_revision <= 2**64 - 1
+        ):
+            raise BridgeUnavailableError(
+                "player faction alert query lacks a positive native revision"
+            )
+        date_raw = snapshot.get("date_raw")
+        if (
+            isinstance(date_raw, bool)
+            or not isinstance(date_raw, int)
+            or not -(2**31) <= date_raw <= 2**31 - 1
+        ):
+            raise BridgeUnavailableError(
+                "player faction alert query lacks a signed int32 date"
+            )
+        snapshot_id = snapshot.get("snapshot_id")
+        if not isinstance(snapshot_id, str) or not snapshot_id:
+            raise BridgeUnavailableError(
+                "player faction alert query lacks a snapshot identity"
+            )
+        capabilities = self.capabilities()
+        bridge_capabilities = capabilities.get("bridge_capabilities")
+        if not (
+            isinstance(bridge_capabilities, list)
+            and QUERY_PLAYER_FACTION_ALERTS_V1_CAPABILITY in bridge_capabilities
+            and QUERY_PLAYER_FACTION_ALERTS_V1_STEP in action_step_set(capabilities)
+        ):
+            raise UnsupportedStepError(
+                "selected backend cannot query player faction alerts"
+            )
+        result = self.execute_step(
+            QUERY_PLAYER_FACTION_ALERTS_V1_STEP,
+            expected_revision=expected_revision,
+        )
+        required_keys = {
+            "step",
+            "accepted",
+            "status",
+            "query_sequence",
+            "snapshot_revision",
+            "player_faction_alerts",
+            "backend_id",
+            "player_faction_alerts_ready",
+            "queried_snapshot_id",
+            "queried_revision",
+            "queried_native_revision",
+        }
+        if (
+            not isinstance(result, dict)
+            or set(result) != required_keys
+            or result.get("step") != QUERY_PLAYER_FACTION_ALERTS_V1_STEP
+            or result.get("accepted") is not True
+            or result.get("snapshot_revision") != native_revision
+        ):
+            raise BridgeUnavailableError(
+                "player faction alert backend returned a malformed result"
+            )
+        sequence = result.get("query_sequence")
+        if (
+            isinstance(sequence, bool)
+            or not isinstance(sequence, int)
+            or not 1 <= sequence <= 2**64 - 1
+        ):
+            raise BridgeUnavailableError(
+                "player faction alert result lacks query_sequence"
+            )
+        try:
+            normalized = normalize_player_faction_alerts_v1(
+                result.get("player_faction_alerts"),
+                expected_date_raw=date_raw,
+                expected_snapshot_revision=native_revision,
+            )
+            validate_player_faction_war_handoffs_v1(
+                normalized, snapshot.get("active_wars")
+            )
+        except ValueError as error:
+            raise BridgeUnavailableError(
+                f"player faction alert result is malformed: {error}"
+            ) from error
+        if (
+            result.get("status") != normalized["status"]
+            or not isinstance(result.get("backend_id"), str)
+            or not result.get("backend_id")
+            or result.get("player_faction_alerts_ready")
+            is not normalized["readiness"]["alert_ready"]
+            or result.get("queried_snapshot_id") != snapshot_id
+            or result.get("queried_revision") != revision
+            or result.get("queried_native_revision") != native_revision
+        ):
+            raise BridgeUnavailableError(
+                "player faction alert result mirrors disagree with its frame"
+            )
+        current = self.snapshot()
+        if not (
+            current.get("paused") is True
+            and current.get("revision") == revision
+            and current.get("snapshot_id") == snapshot_id
+            and current.get("native_revision") == native_revision
+            and current.get("date_raw") == date_raw
+            and current.get("episode_run_id") == snapshot.get("episode_run_id")
+        ):
+            raise BridgeUnavailableError(
+                "player faction alert query crossed a snapshot revision"
+            )
+        return {
+            **result,
+            "schema_version": 1,
+            "scope": "exact-player-faction-alerts",
+            "build": {
+                "version": normalized["provenance"]["game_version"],
+                "exe_sha256": normalized["provenance"]["executable_sha256"],
+            },
+            "source": {
+                "snapshot_id": snapshot_id,
+                "revision": revision,
+                "native_revision": native_revision,
+                "date_raw": date_raw,
+                "paused": True,
+                "backend_id": snapshot.get("backend_id"),
+            },
+            "binding": {
+                "snapshot_id": snapshot_id,
+                "revision": revision,
+                "native_revision": native_revision,
+                "date_raw": date_raw,
+                "expected_revision": expected_revision,
+            },
+            "player_faction_alerts": copy.deepcopy(normalized),
+        }
 
     def search_entities_v1(
         self,

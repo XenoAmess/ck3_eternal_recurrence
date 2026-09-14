@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "contract": "player-faction-alerts-v1-source-contract",
+  "contract_stage": "targeting_count_live_rows_and_county_fixture_pending_native_readers",
+  "capability": "game.command.query-player-faction-alerts-v1",
+  "step": "query-player-faction-alerts-v1",
+  "command_result_key": "player_faction_alerts",
+  "command_ready_mirror": "player_faction_alerts_ready",
+  "command_result_backend_id": "native-headless",
+  "payload_provenance_backend_id": "ck3-1.19.0.6-native-player-faction-alerts-v1",
+  "production_targeting_count": "campaign_root_exact_build_reader_reuse",
+  "production_targeting_rows": "strict_unavailable_by_default",
+  "production_county_exposure": "strict_unavailable_by_default",
+  "available_status_scope": "production_count_partial_or_complete_offline_fixture",
+  "same_frame_contract": "two_component_samples_enclosed_by_equal_paused_frames",
+  "public_unavailable_reasons": [
+    "unsupported_build",
+    "requires_application_main",
+    "requires_paused",
+    "state_changed",
+    "reader_not_implemented"
+  ],
+  "component_unavailable_reasons": {
+    "targeting_rows": "targeting_rows_native_reader_not_frozen",
+    "county_exposure": "county_exposure_native_reader_not_frozen"
+  },
+  "zero_targeting_count_proves_empty_rows": true,
+  "unknown_faction_type_key_preserved": true,
+  "stock_dangerous_predicate": {
+    "human_leader": "dangerous",
+    "peasant_faction": "months_until_max_discontent <= 12",
+    "all_other_types": "discontent_per_month.raw > 0",
+    "war_handoff_precedes_planner_alert_classification": true
+  },
+  "county_exposure_predicate": "populist_faction && target != player && power.raw > power_threshold.raw",
+  "planner_unavailable_contract": "present_and_dangerous_null_with_all_identity_lists_empty",
+  "exact_ultimatum_timing_ready": false,
+  "next_reverse_engineering_entry": "faction_alert_targeting_span_and_sub_realm_county_membership_readers",
+  "mutator_surface": false
+}

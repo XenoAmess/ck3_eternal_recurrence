@@ -268,6 +268,9 @@ add_library(xar_ck3_bridge SHARED
   src/campaign_root_context_v1.cpp
   src/campaign_root_context_v1_mailbox.cpp
   src/campaign_root_context_v1_serializer.cpp
+  src/player_faction_alerts_v1.cpp
+  src/player_faction_alerts_v1_mailbox.cpp
+  src/player_faction_alerts_v1_serializer.cpp
   src/steward_develop_county_candidates_v1.cpp
   src/steward_develop_county_candidates_v1_mailbox.cpp
   src/steward_develop_county_candidates_v1_serializer.cpp
@@ -734,6 +737,8 @@ if(BUILD_TESTING)
     src/battle_transition_v1_mailbox.cpp
     src/campaign_root_context_v1.cpp
     src/campaign_root_context_v1_mailbox.cpp
+    src/player_faction_alerts_v1.cpp
+    src/player_faction_alerts_v1_mailbox.cpp
     src/steward_develop_county_candidates_v1.cpp
     src/steward_develop_county_candidates_v1_mailbox.cpp
     src/combat_simulation_inputs_v3_mailbox.cpp
@@ -1229,6 +1234,85 @@ if(BUILD_TESTING)
       ${CMAKE_CURRENT_SOURCE_DIR}/src/bridge.cpp
       ${CMAKE_CURRENT_SOURCE_DIR}/research/campaign_root_context_v1_abi.json
       ${CMAKE_CURRENT_SOURCE_DIR}/research/fixtures/campaign_root_context_v1_source_contract.json
+  )
+
+  add_executable(xar_ck3_player_faction_alerts_v1_test
+    src/player_faction_alerts_v1.cpp
+    src/player_faction_alerts_v1_serializer.cpp
+    src/player_faction_alerts_v1_test.cpp
+  )
+  target_include_directories(
+    xar_ck3_player_faction_alerts_v1_test PRIVATE include)
+  target_compile_definitions(
+    xar_ck3_player_faction_alerts_v1_test PRIVATE
+    NOMINMAX WIN32_LEAN_AND_MEAN UNICODE _UNICODE)
+  if(MSVC)
+    target_compile_options(xar_ck3_player_faction_alerts_v1_test PRIVATE
+      /W4 /permissive- /EHsc)
+  endif()
+  add_test(NAME xar_ck3_native_bridge_player_faction_alerts_v1
+    COMMAND xar_ck3_player_faction_alerts_v1_test)
+
+  add_executable(xar_ck3_player_faction_alerts_v1_serializer_test
+    src/player_faction_alerts_v1_serializer.cpp
+    src/player_faction_alerts_v1_serializer_test.cpp
+  )
+  target_include_directories(
+    xar_ck3_player_faction_alerts_v1_serializer_test PRIVATE include)
+  target_compile_definitions(
+    xar_ck3_player_faction_alerts_v1_serializer_test PRIVATE
+    NOMINMAX WIN32_LEAN_AND_MEAN UNICODE _UNICODE)
+  if(MSVC)
+    target_compile_options(
+      xar_ck3_player_faction_alerts_v1_serializer_test PRIVATE
+      /W4 /permissive- /EHsc)
+  endif()
+  add_test(NAME xar_ck3_native_bridge_player_faction_alerts_v1_serializer
+    COMMAND xar_ck3_player_faction_alerts_v1_serializer_test)
+
+  add_executable(xar_ck3_player_faction_alerts_v1_mailbox_test
+    src/player_faction_alerts_v1_mailbox.cpp
+    src/player_faction_alerts_v1_mailbox_test.cpp
+  )
+  target_include_directories(
+    xar_ck3_player_faction_alerts_v1_mailbox_test PRIVATE include)
+  target_compile_definitions(
+    xar_ck3_player_faction_alerts_v1_mailbox_test PRIVATE
+    NOMINMAX WIN32_LEAN_AND_MEAN UNICODE _UNICODE)
+  if(MSVC)
+    target_compile_options(
+      xar_ck3_player_faction_alerts_v1_mailbox_test PRIVATE
+      /W4 /permissive- /EHsc)
+  endif()
+  add_test(NAME xar_ck3_native_bridge_player_faction_alerts_v1_mailbox
+    COMMAND xar_ck3_player_faction_alerts_v1_mailbox_test)
+
+  add_executable(xar_ck3_player_faction_alerts_v1_source_contract_test
+    src/player_faction_alerts_v1_source_contract_test.cpp
+  )
+  target_include_directories(
+    xar_ck3_player_faction_alerts_v1_source_contract_test PRIVATE include)
+  target_compile_definitions(
+    xar_ck3_player_faction_alerts_v1_source_contract_test PRIVATE
+    NOMINMAX WIN32_LEAN_AND_MEAN UNICODE _UNICODE)
+  if(MSVC)
+    target_compile_options(
+      xar_ck3_player_faction_alerts_v1_source_contract_test PRIVATE
+      /W4 /permissive- /EHsc)
+  endif()
+  add_test(NAME xar_ck3_native_bridge_player_faction_alerts_v1_source_contract
+    COMMAND xar_ck3_player_faction_alerts_v1_source_contract_test
+      ${CMAKE_CURRENT_SOURCE_DIR}/include/xar_bridge/player_faction_alerts_v1.hpp
+      ${CMAKE_CURRENT_SOURCE_DIR}/src/player_faction_alerts_v1.cpp
+      ${CMAKE_CURRENT_SOURCE_DIR}/src/player_faction_alerts_v1_serializer.cpp
+      ${CMAKE_CURRENT_SOURCE_DIR}/src/player_faction_alerts_v1_mailbox.cpp
+      ${CMAKE_CURRENT_SOURCE_DIR}/include/xar_bridge/campaign_root_context_v1.hpp
+      ${CMAKE_CURRENT_SOURCE_DIR}/src/campaign_root_context_v1.cpp
+      ${CMAKE_CURRENT_SOURCE_DIR}/src/game_adapter.cpp
+      ${CMAKE_CURRENT_SOURCE_DIR}/src/ck3_11906_adapter.cpp
+      ${CMAKE_CURRENT_SOURCE_DIR}/src/bridge.cpp
+      ${CMAKE_CURRENT_SOURCE_DIR}/research/player_faction_alerts_v1_abi.json
+      ${CMAKE_CURRENT_SOURCE_DIR}/research/fixtures/player_faction_alerts_v1_source_contract.json
   )
 
   add_executable(xar_ck3_steward_develop_county_candidates_v1_test

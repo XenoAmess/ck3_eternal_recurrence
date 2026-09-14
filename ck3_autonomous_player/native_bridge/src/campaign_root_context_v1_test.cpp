@@ -1310,18 +1310,35 @@ bool TestUnavailableRuleTokensPreserveRootObservation() {
 }
 
 bool TestTargetingFactionCountSemantics() {
+  Fixture normal;
+  auto environment = Environment(normal);
+  auto access = Access(normal);
+  std::int32_t focused_count = -1;
+  if (!xar::ck3_11906::ReadCampaignRootTargetingFactionCountV1(
+          environment, access, Fixture::kPlayerCharacterId, focused_count) ||
+      focused_count != 2 ||
+      xar::ck3_11906::ReadCampaignRootTargetingFactionCountV1(
+          environment, access, Fixture::kImmediateLiegeId, focused_count)) {
+    return false;
+  }
+
   Fixture no_land_state;
   void *null_land_state = nullptr;
   Put(no_land_state.player_character, 0x1B8, null_land_state);
   no_land_state.resolved_primary_title = Address(no_land_state.title_fallback);
-  auto environment = Environment(no_land_state);
-  auto access = Access(no_land_state);
+  environment = Environment(no_land_state);
+  access = Access(no_land_state);
   const xar::ck3_11906::CampaignRootContextRequestV1 request{41};
   xar::game::CampaignRootContextV1 result{};
   if (xar::ck3_11906::ReadCampaignRootContextV1(
           environment, access, request, result) !=
           xar::game::ReadCampaignRootContextResultV1::available ||
       result.player_targeting_faction_count != 0) {
+    return false;
+  }
+  if (!xar::ck3_11906::ReadCampaignRootTargetingFactionCountV1(
+          environment, access, Fixture::kPlayerCharacterId, focused_count) ||
+      focused_count != 0) {
     return false;
   }
 
@@ -1335,7 +1352,10 @@ bool TestTargetingFactionCountSemantics() {
              environment, access, request, result) ==
              xar::game::ReadCampaignRootContextResultV1::unavailable &&
          ClearedUnavailable(result,
-                            "player_targeting_factions_unavailable");
+                            "player_targeting_factions_unavailable") &&
+         !xar::ck3_11906::ReadCampaignRootTargetingFactionCountV1(
+             environment, access, Fixture::kPlayerCharacterId,
+             focused_count);
 }
 
 bool TestStateChangedAndUnsupportedBuild() {
