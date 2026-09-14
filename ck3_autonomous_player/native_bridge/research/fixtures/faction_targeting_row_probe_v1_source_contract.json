@@ -1,0 +1,173 @@
+{
+  "schema_version": 1,
+  "contract": "g2-faction-targeting-row-probe-v1-source-contract",
+  "status": "static-ready-private-probe-pending-shared-wiring",
+  "game_build": {
+    "product_version": "1.19.0.6",
+    "executable_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86"
+  },
+  "implementation": {
+    "header": "include/xar_bridge/faction_targeting_row_probe_v1.hpp",
+    "source": "src/faction_targeting_row_probe_v1.cpp",
+    "serializer_header": "include/xar_bridge/faction_targeting_row_probe_v1_serializer.hpp",
+    "serializer_source": "src/faction_targeting_row_probe_v1_serializer.cpp",
+    "test": "src/faction_targeting_row_probe_v1_test.cpp"
+  },
+  "upstream": {
+    "abi": "research/faction_targeting_row_observer_v1_abi.json",
+    "source_contract": "research/fixtures/faction_targeting_row_observer_v1_source_contract.json",
+    "capture_fixture": "research/fixtures/faction_targeting_row_observer_v1_capture_fixture.json",
+    "required_status": "static-ready-private-leader-member-pending-paused-live-heartbeat",
+    "required_private_readiness": [
+      "private_target_and_count_observer_ready",
+      "private_leader_member_observer_ready"
+    ],
+    "required_public_false": [
+      "paused_live_artifact_ready",
+      "heartbeat_private_observer_ready",
+      "public_targeting_rows_ready"
+    ],
+    "diagnostics_snapshot_contract": "ReadFactionTargetingRowObserverDiagnosticsV1 copies one stable even published generation by comparing before and after generation values"
+  },
+  "binding_contract": {
+    "paused_required": true,
+    "exact_match_fields": [
+      "proof_epoch",
+      "snapshot_revision",
+      "date_raw",
+      "player_character_id"
+    ],
+    "published_generation_nonzero_even": true,
+    "mismatch_terminal": "unavailable",
+    "partial_rows_on_mismatch": false
+  },
+  "terminal_contract": {
+    "ready": "valid nonempty complete capture",
+    "known_empty": "valid complete zero-row capture with campaign-root count zero",
+    "unavailable": "one or more typed probe gates failed",
+    "wire_names": {
+      "ready": "ready",
+      "known_empty": "known-empty",
+      "unavailable": "unavailable"
+    }
+  },
+  "required_header_tokens": [
+    "kFactionTargetingRowProbePrivateKeyV1",
+    "g2_faction_targeting_row_probe_v1",
+    "kFactionTargetingRowProbePublicByDefaultV1 = false",
+    "FactionTargetingRowProbeTerminalV1",
+    "known_empty = 1",
+    "ready = 2",
+    "faction_targeting_row_probe_unavailable_observer_not_installed",
+    "faction_targeting_row_probe_unavailable_observer_failure",
+    "faction_targeting_row_probe_unavailable_no_generation",
+    "faction_targeting_row_probe_unavailable_odd_generation",
+    "faction_targeting_row_probe_unavailable_stale_binding",
+    "faction_targeting_row_probe_unavailable_invalid_capture",
+    "faction_targeting_row_probe_unavailable_unpaused",
+    "bool paused = false",
+    "std::uint64_t proof_epoch = 0",
+    "std::uint64_t snapshot_revision = 0",
+    "std::int32_t date_raw = 0",
+    "std::uint32_t player_character_id = 0",
+    "std::uint32_t observer_failure_flags",
+    "std::uint64_t published_generation = 0",
+    "required_binding",
+    "observed_binding",
+    "ProbeFactionTargetingRowsV1"
+  ],
+  "required_implementation_tokens": [
+    "capture.last_proof_epoch == required.proof_epoch",
+    "capture.last_snapshot_revision == required.snapshot_revision",
+    "capture.last_date_raw == required.date_raw",
+    "capture.last_player_character_id == required.player_character_id",
+    "last_campaign_root_targeting_faction_count",
+    "kFactionTargetingRowObserverMaximumRowsV1",
+    "kFactionTargetingRowObserverMaximumCharacterMembersPerFactionV1",
+    "target_character_id != capture.last_player_character_id",
+    "std::find(first, last, 0U) != last",
+    "std::adjacent_find",
+    "std::binary_search",
+    "result.observer_failure_flags = observer.failure_flags",
+    "result.published_generation = observer.observation.published_generation",
+    "!required_binding.paused",
+    "faction_targeting_row_probe_unavailable_unpaused",
+    "result.published_generation == 0",
+    "(result.published_generation & 1U) != 0",
+    "faction_targeting_row_probe_unavailable_stale_binding",
+    "faction_targeting_row_probe_unavailable_invalid_capture",
+    "result.faction_count = capture.last_faction_count",
+    "FactionTargetingRowProbeTerminalV1::known_empty",
+    "FactionTargetingRowProbeTerminalV1::ready",
+    "return \"known-empty\""
+  ],
+  "required_upstream_snapshot_tokens": [
+    "const auto before =",
+    "source.published_generation.load(std::memory_order_acquire)",
+    "const auto after =",
+    "before == after && (after & 1U) == 0",
+    "target.published_generation = after"
+  ],
+  "required_serializer_tokens": [
+    "SerializeFactionTargetingRowProbeV1",
+    "kFactionTargetingRowProbePrivateKeyV1",
+    "\"private\":true",
+    "\"raw_pointers_persisted\":false",
+    "\"terminal\":\"",
+    "\"unavailable_reasons\":" ,
+    "\"observer_failure_flags\":" ,
+    "\"published_generation\":" ,
+    "\"required_binding\":" ,
+    "\"observed_binding\":" ,
+    "\"faction_count\":" ,
+    "\"factions\":[",
+    "\"paused\":" ,
+    "\"proof_epoch\":" ,
+    "\"snapshot_revision\":" ,
+    "\"date_raw\":" ,
+    "\"player_character_id\":" ,
+    "\"leader_character_id\":" ,
+    "output += \"null\"",
+    "\"leader_present_in_character_members\":" ,
+    "\"character_member_ids\":["
+  ],
+  "required_test_tokens": [
+    "TestReady()",
+    "TestKnownEmpty()",
+    "TestUnavailable()",
+    "TestStaleBinding()",
+    "TestOddGeneration()",
+    "TestUnpausedBinding()",
+    "TestObserverFlagsPropagate()",
+    "TestZeroMemberIdentityRejected()",
+    "\"terminal\":\"ready\"",
+    "\"terminal\":\"known-empty\"",
+    "\"terminal\":\"unavailable\"",
+    "\"raw_pointers_persisted\":false",
+    "\"leader_character_id\":null",
+    "\"character_member_ids\":[4001,4002]"
+  ],
+  "fixtures": {
+    "ready": "research/fixtures/faction_targeting_row_probe_v1_ready_fixture.json",
+    "known_empty": "research/fixtures/faction_targeting_row_probe_v1_known_empty_fixture.json",
+    "unavailable": "research/fixtures/faction_targeting_row_probe_v1_unavailable_fixture.json"
+  },
+  "pointer_boundary": {
+    "raw_pointer_fields_persisted": false,
+    "raw_pointer_hashes_persisted": false,
+    "raw_row_bytes_persisted": false,
+    "raw_member_row_bytes_persisted": false
+  },
+  "public_impact": {
+    "public_abi_changed": false,
+    "public_capability_changed": false,
+    "shared_bridge_wiring_ready": false,
+    "heartbeat_private_probe_ready": false,
+    "paused_live_artifact_ready": false,
+    "public_targeting_rows_ready": false,
+    "public_mcp_ready": false,
+    "public_schema_changed": false
+  },
+  "unique_next_reverse_engineering_entry": "wire_faction_targeting_row_probe_v1_into_shared_bridge_private_heartbeat",
+  "implementation_revision": "FACTION7-PROBE"
+}

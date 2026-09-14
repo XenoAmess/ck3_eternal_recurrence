@@ -1,0 +1,94 @@
+{
+  "schema_version": 1,
+  "schema": "g2_faction_targeting_row_probe_v1",
+  "case": "ready",
+  "status": "fixture-ready-private",
+  "offline_fixture": true,
+  "exact_build": {
+    "product_version": "1.19.0.6",
+    "executable_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86"
+  },
+  "required_binding": {
+    "paused": true,
+    "proof_epoch": 42,
+    "snapshot_revision": 412,
+    "date_raw": 777,
+    "player_character_id": 29829
+  },
+  "source_diagnostics": {
+    "installed": true,
+    "failure_flags": 0,
+    "published_generation": 2,
+    "proof_epoch": 42,
+    "snapshot_revision": 412,
+    "date_raw": 777,
+    "player_character_id": 29829,
+    "campaign_root_targeting_faction_count": 2,
+    "faction_count": 2,
+    "factions": [
+      {
+        "faction_id": 7,
+        "target_character_id": 29829,
+        "leader_character_id": null,
+        "leader_present_in_character_members": false,
+        "character_member_ids": []
+      },
+      {
+        "faction_id": 42,
+        "target_character_id": 29829,
+        "leader_character_id": 4001,
+        "leader_present_in_character_members": true,
+        "character_member_ids": [
+          4001,
+          4002
+        ]
+      }
+    ]
+  },
+  "expected_result": {
+    "terminal_token": "ready",
+    "wire_terminal": "ready",
+    "unavailable_reasons": 0,
+    "observer_failure_flags": 0,
+    "published_generation": 2,
+    "required_binding": {
+      "paused": true,
+      "proof_epoch": 42,
+      "snapshot_revision": 412,
+      "date_raw": 777,
+      "player_character_id": 29829
+    },
+    "observed_binding": {
+      "paused": true,
+      "proof_epoch": 42,
+      "snapshot_revision": 412,
+      "date_raw": 777,
+      "player_character_id": 29829
+    },
+    "faction_count": 2,
+    "factions": [
+      {
+        "faction_id": 7,
+        "target_character_id": 29829,
+        "leader_character_id": null,
+        "leader_present_in_character_members": false,
+        "character_member_ids": []
+      },
+      {
+        "faction_id": 42,
+        "target_character_id": 29829,
+        "leader_character_id": 4001,
+        "leader_present_in_character_members": true,
+        "character_member_ids": [
+          4001,
+          4002
+        ]
+      }
+    ]
+  },
+  "raw_pointers_persisted": false,
+  "raw_pointer_fields_persisted": false,
+  "raw_row_bytes_persisted": false,
+  "raw_member_row_bytes_persisted": false,
+  "public_readiness_changed": false
+}

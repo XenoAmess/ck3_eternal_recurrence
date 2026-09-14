@@ -460,6 +460,54 @@ must contain either a real targeting faction or retain a bounded, explicit
 no-row result; it must not promote the data publicly. Its stable name is
 `capture_faction_targeting_row_observer_v1_paused_live_leader_member_heartbeat`.
 
+### FACTION7-PROBE: private terminal adapter over FACTION6 diagnostics
+
+FACTION7 adds a read-only private adapter over the owned
+`FactionTargetingRowObserverDiagnosticsV1` value. It does not read CK3 memory
+or retain any observer pointer. The caller supplies a paused binding, and the
+probe requires exact equality for `proof_epoch`, `snapshot_revision`,
+`date_raw`, and `player_character_id`. It also requires a nonzero even
+`published_generation`. The upstream
+`ReadFactionTargetingRowObserverDiagnosticsV1` copy is the stability owner: it
+accepts a generation only when the before and after generation samples are
+equal and even.
+
+The terminal result is deliberately three-valued:
+
+- `ready` means the bound capture is complete and contains at least one row;
+- `known_empty` (wire name `known-empty`) means the complete bound capture and
+  admitted campaign-root count are both zero;
+- `unavailable` means one or more typed gates failed. It returns the probe
+  `unavailable_reasons` bitset and the complete upstream
+  `observer_failure_flags`, while suppressing every partial faction row.
+
+Typed probe reasons cover an uninstalled observer, upstream failure flags, no
+generation, an odd generation, a stale four-key binding, an invalid capture
+shape, and an unpaused caller binding. Capture-shape validation rechecks the
+64-faction and 64-members-per-faction bounds, campaign-root count equality,
+strictly sorted nonzero faction identities, player target equality, nullable
+canonical-leader consistency, sorted unique nonzero member identities, and
+the derived leader-in-members value. A legal zero-row capture remains an
+observed result rather than an error.
+
+The private serializer owns only scalar identities. It emits the terminal,
+typed flags, generation, required and observed bindings, nullable leader, and
+member IDs; `raw_pointers_persisted` is explicitly false. The deterministic
+fixtures cover `ready`, `known_empty`, and upstream-failure `unavailable`,
+including the FACTION6 rows for faction 7 (no leader, no members) and faction
+42 (leader 4001, members 4001 and 4002).
+
+This package is
+`static-ready-private-probe-pending-shared-wiring`. Paused live evidence,
+shared bridge wiring, private heartbeat readiness, public targeting rows,
+public MCP and public schema readiness all remain false. The observed
+`paused` field is provenance for an admitted stable observer generation; it is
+not a new live query of the current pause state.
+
+The only next seam is
+`wire_faction_targeting_row_probe_v1_into_shared_bridge_private_heartbeat`.
+That wiring must remain private and must not promote public readiness.
+
 ### FACTION-OBS1：逐派系与成员观测
 
 按 [玩家目标派系告警 v1](player-targeting-factions-v1.md) 的 P0 路线，先闭合 targeting-faction span、engine-stable identity、type、war、leader/member、power/discontent 与 stock dangerous predicate。`player_targeting_faction_count` 必须与逐行枚举严格一致。此步是当前最高 blocker。

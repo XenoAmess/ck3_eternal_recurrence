@@ -1,0 +1,162 @@
+{
+  "contract": "g2-faction-targeting-row-probe-v1",
+  "schema_version": 1,
+  "status": "static-ready-private-probe-pending-shared-wiring",
+  "exact_build": {
+    "product_version": "1.19.0.6",
+    "executable_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86"
+  },
+  "input": {
+    "contract": "g2-faction-targeting-row-observer-v1",
+    "implementation_revision": "FACTION6-CORE",
+    "diagnostics_type": "FactionTargetingRowObserverDiagnosticsV1",
+    "reader": "ReadFactionTargetingRowObserverDiagnosticsV1",
+    "consumes_owned_diagnostics_only": true,
+    "reads_game_memory": false,
+    "maximum_factions": 64,
+    "maximum_character_members_per_faction": 64
+  },
+  "private_surface": {
+    "private_key": "g2_faction_targeting_row_probe_v1",
+    "probe_function": "ProbeFactionTargetingRowsV1",
+    "serializer_function": "SerializeFactionTargetingRowProbeV1",
+    "default_public": false,
+    "shared_bridge_wired": false,
+    "heartbeat_wired": false
+  },
+  "binding": {
+    "paused_required": true,
+    "exact_match_fields": [
+      "proof_epoch",
+      "snapshot_revision",
+      "date_raw",
+      "player_character_id"
+    ],
+    "generation": {
+      "field": "published_generation",
+      "nonzero_required": true,
+      "even_required": true,
+      "stability_source": "one transactionally snapshotted ReadFactionTargetingRowObserverDiagnosticsV1 value"
+    },
+    "failure_behavior": "any unpaused, zero/odd-generation or four-key mismatch is unavailable and publishes no faction rows"
+  },
+  "terminal_contract": {
+    "enum_type": "FactionTargetingRowProbeTerminalV1",
+    "ready": {
+      "enum_token": "ready",
+      "wire_name": "ready",
+      "meaning": "a valid bound capture contains at least one complete targeting-faction row"
+    },
+    "known_empty": {
+      "enum_token": "known_empty",
+      "wire_name": "known-empty",
+      "meaning": "a valid bound capture has both observer faction count and admitted campaign-root targeting count equal to zero"
+    },
+    "unavailable": {
+      "enum_token": "unavailable",
+      "wire_name": "unavailable",
+      "meaning": "one or more typed probe gates failed; no partial faction rows are returned"
+    },
+    "all_rows_or_unavailable": true,
+    "legal_empty_is_not_unavailable": true
+  },
+  "unavailable_reason_bits": {
+    "observer_not_installed": "faction_targeting_row_probe_unavailable_observer_not_installed",
+    "observer_failure": "faction_targeting_row_probe_unavailable_observer_failure",
+    "no_generation": "faction_targeting_row_probe_unavailable_no_generation",
+    "odd_generation": "faction_targeting_row_probe_unavailable_odd_generation",
+    "stale_binding": "faction_targeting_row_probe_unavailable_stale_binding",
+    "invalid_capture": "faction_targeting_row_probe_unavailable_invalid_capture",
+    "unpaused": "faction_targeting_row_probe_unavailable_unpaused"
+  },
+  "observer_failure_passthrough": {
+    "field": "observer_failure_flags",
+    "typed": true,
+    "source_failure_bits": [
+      "exact_build",
+      "primary_thread_suspended",
+      "capture_admission",
+      "unsupported_override",
+      "already_installed",
+      "anchor",
+      "allocation",
+      "stub_protection",
+      "target_protection",
+      "flush",
+      "rollback",
+      "identity_resolver",
+      "target_character",
+      "count_equivalence",
+      "leader_character",
+      "leader_stability",
+      "member_span",
+      "member_stability",
+      "member_identity",
+      "member_ownership"
+    ],
+    "nonzero_forces_unavailable": true
+  },
+  "capture_shape": {
+    "faction_count_equals_campaign_root_count": true,
+    "faction_ids_nonzero_strictly_sorted": true,
+    "target_character_equals_bound_player": true,
+    "canonical_leader_nullable": true,
+    "leader_membership_is_derived_and_checked": true,
+    "member_ids_nonzero_sorted_unique": true,
+    "member_count_bounded": true,
+    "no_partial_rows_on_unavailable": true
+  },
+  "wire": {
+    "schema": "g2_faction_targeting_row_probe_v1",
+    "private": true,
+    "fields": [
+      "terminal",
+      "unavailable_reasons",
+      "observer_failure_flags",
+      "published_generation",
+      "required_binding",
+      "observed_binding",
+      "faction_count",
+      "factions"
+    ],
+    "faction_fields": [
+      "faction_id",
+      "target_character_id",
+      "leader_character_id",
+      "leader_present_in_character_members",
+      "character_member_ids"
+    ],
+    "nullable_leader_serialization": "JSON null",
+    "raw_pointers_persisted": false
+  },
+  "pointer_boundary": {
+    "raw_pointer_fields_persisted": false,
+    "raw_pointer_hashes_persisted": false,
+    "raw_row_bytes_persisted": false,
+    "raw_member_row_bytes_persisted": false,
+    "owned_scalar_identities_only": true
+  },
+  "readiness": {
+    "private_probe_core_ready": true,
+    "private_serializer_ready": true,
+    "deterministic_terminal_fixtures_ready": true,
+    "paused_live_artifact_ready": false,
+    "shared_bridge_wiring_ready": false,
+    "heartbeat_private_probe_ready": false,
+    "public_targeting_rows_ready": false,
+    "public_mcp_ready": false,
+    "public_schema_ready": false
+  },
+  "scope": {
+    "private_build_only": true,
+    "read_only_game_state": true,
+    "public_abi_changed": false,
+    "public_capability_changed": false,
+    "heartbeat_payload_changed": false,
+    "public_schema_changed": false,
+    "ck3_started": false
+  },
+  "unique_next_reverse_engineering_entry": "wire_faction_targeting_row_probe_v1_into_shared_bridge_private_heartbeat",
+  "evidence_limit": "FACTION7-PROBE has deterministic source and fixtures only. No shared bridge/heartbeat wiring or paused exact-build live artifact exists, and no public MCP/schema/capability is promoted.",
+  "implementation_revision": "FACTION7-PROBE"
+}
