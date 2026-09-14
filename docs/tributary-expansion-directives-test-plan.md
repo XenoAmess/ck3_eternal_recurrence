@@ -50,19 +50,23 @@ mods in order: the 16-file production projection and an external acceptance
 fixture. Preserve the exact CK3 version, executable SHA-256, runtime tree hash,
 mount order, logs, screenshot, and controlled process shutdown.
 
-The fixture must establish and read back a deterministic suzerain, direct AI
-tributary, independent neighboring defender, and selected county. It then
-executes the same production effect chain and records exact-once markers for:
+The initial-release live cell must establish and read back a deterministic
+suzerain and direct AI tributary, then select a neighboring county for which
+the engine's exact production `can_declare_war` check succeeds. It executes the
+same production response effects and records exact-once markers for:
 
 - load/bootstrap and the real direct tributary relationship;
 - valid refusal: Prestige -150, Gold unchanged, no war;
 - valid subsidized acceptance: Prestige -150, exact subsidy transfer, one war;
-- war binding: tributary attacker, chosen defender, chosen county, dedicated CB;
-- victory: selected county transfers to tributary, not suzerain, while the
-  tributary relationship survives;
-- white peace and defeat: no county transfer;
-- invalid second legality check: Prestige refunded, Gold unchanged, no war,
-  cooldown removed.
+- war binding: tributary attacker, chosen defender, and the dedicated CB.
+
+The dedicated CB's victory, white-peace, defeat, truce, inheritance, and title
+transfer definitions remain mandatory L0 contracts. They are not described as
+executed live unless a later artifact contains their explicit outcome markers.
+The first-release cell likewise does not claim production interaction-selector
+UI coverage, an invalidated-response cooldown-refund scenario, save/reload, or
+post-war tribute-delta coverage. Those gaps must be listed in its machine report
+and the release acceptance record instead of being silently promoted to GREEN.
 
 Any `ted`-attributed parser/runtime diagnostic, missing marker, second war,
 unexpected resource delta, source/runtime mutation, protected-profile change,
@@ -70,10 +74,16 @@ or untracked CK3 process is RED.
 
 ## L3 player-path and release gate
 
-Automated UI smoke must prove the production interaction is visible on a
-direct AI tributary, opens the secondary-ruler/county selector, shows the
-dynamic subsidy, and can be sent. Fixture calls alone must not be described as
-UI-path coverage.
+Fixture calls alone must not be described as production interaction UI-path
+coverage. When a production selector smoke is executed, it must separately
+prove that the interaction is visible on a direct AI tributary, opens the
+secondary-ruler/county selector, shows the dynamic subsidy, and can be sent.
+
+Before an initial Workshop release, at least one clean real gameplay screenshot
+must be projected from a GREEN candidate artifact, entered in
+`workshop/tributary_expansion_directives_screenshots.md`, uploaded to the Steam
+media strip, and publicly read back. Thumbnail art and fixture/test UI cannot
+substitute for this screenshot.
 
 After publishing, rebuild an ID-bearing manifest, download to a fresh empty
 Workshop cache, strictly verify every runtime byte (allowing only the launcher's

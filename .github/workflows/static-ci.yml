@@ -46,7 +46,10 @@ jobs:
       - name: Test Mandala Purge release tooling
         run: python tools/test_build_remove_mandala_release.py
       - name: Test Tributary Expansion Directives release tooling
-        run: python tools/test_build_tributary_expansion_directives_release.py
+        run: |
+          python tools/test_build_tributary_expansion_directives_release.py
+          python tools/test_run_tributary_expansion_directives_acceptance.py
+          python tools/test_compose_tributary_expansion_directives_workshop_media.py
       - name: Test Auto Upgrade Buildings release tooling
         run: python tools/test_build_auto_upgrade_buildings_release.py
       - name: Test machine- and mod-scoped CK3 live-run IDs
@@ -135,7 +138,10 @@ jobs:
           python tools/validate_remove_mandala_static.py
           python -m py_compile tools/run_remove_mandala_acceptance.py
       - name: Validate Tributary Expansion Directives standalone content
-        run: python tools/validate_tributary_expansion_directives_static.py
+        run: |
+          python tools/validate_tributary_expansion_directives_static.py
+          python -m py_compile tools/run_tributary_expansion_directives_acceptance.py
+          python -m py_compile tools/compose_tributary_expansion_directives_workshop_media.py
       - name: Validate Auto Upgrade Buildings standalone content
         run: |
           python tools/gen_auto_upgrade_buildings.py --check

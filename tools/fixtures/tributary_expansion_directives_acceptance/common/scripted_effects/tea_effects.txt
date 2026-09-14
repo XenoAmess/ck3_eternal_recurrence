@@ -71,37 +71,48 @@ tea_setup_and_execute_effect = {
 
 		if = {
 			limit = { exists = scope:recipient }
-			scope:recipient = {
-				random_neighboring_top_liege_realm_owner = {
-					limit = {
-						is_ai = yes
-						is_alive = yes
-						is_landed = yes
-						is_at_war = no
-						this != root
-						this != scope:recipient
-						NOT = { is_tributary_of = root }
-					}
-					save_scope_as = secondary_recipient
-				}
-			}
-		}
-
-		if = {
-			limit = {
-				exists = scope:recipient
-				exists = scope:secondary_recipient
+			start_tributary_interaction_effect = {
+				TRIBUTARY = scope:recipient
+				SUZERAIN = root
 			}
 			scope:recipient = {
+				add_character_flag = ted_directed_expansion_authorized
 				every_character_to_title_neighboring_county = {
 					limit = {
 						is_title_created = yes
 						is_landless_type_title = no
 						tier = tier_county
-						holder ?= { top_liege = scope:secondary_recipient }
+						save_temporary_scope_as = tea_candidate_target
+						holder ?= {
+							top_liege = {
+								save_temporary_scope_as = tea_candidate_defender
+								is_ai = yes
+								is_alive = yes
+								is_landed = yes
+								is_at_war = no
+								top_liege = this
+								this != scope:actor
+								this != scope:recipient
+								NOT = { is_tributary_of = scope:actor }
+							}
+						}
+						scope:recipient = {
+							can_declare_war = {
+								defender = scope:tea_candidate_defender
+								casus_belli = ted_directed_county_expansion_cb
+								target_titles = { scope:tea_candidate_target }
+							}
+						}
 					}
-					save_scope_as = target
+					if = {
+						limit = { NOT = { exists = scope:target } }
+						save_scope_as = target
+						holder = {
+							top_liege = { save_scope_as = secondary_recipient }
+						}
+					}
 				}
+				remove_character_flag = ted_directed_expansion_authorized
 			}
 		}
 
@@ -117,10 +128,6 @@ tea_setup_and_execute_effect = {
 				value = scope:secondary_recipient
 			}
 			set_variable = { name = tea_target value = scope:target }
-			start_tributary_interaction_effect = {
-				TRIBUTARY = scope:recipient
-				SUZERAIN = root
-			}
 			if = {
 				limit = {
 					scope:recipient = {
@@ -220,13 +227,15 @@ tea_setup_and_execute_effect = {
 			scope:recipient = { remove_character_flag = ted_directed_expansion_authorized }
 			add_prestige = -150
 			ted_accept_expansion_directive_effect = { SUBSIDIZED = yes }
-			random_character_war = {
-				limit = {
-					using_cb = ted_directed_county_expansion_cb
-					primary_attacker = scope:recipient
-					primary_defender = scope:secondary_recipient
+			scope:recipient = {
+				random_character_war = {
+					limit = {
+						using_cb = ted_directed_county_expansion_cb
+						primary_attacker = scope:recipient
+						primary_defender = scope:secondary_recipient
+					}
+					save_scope_as = tea_directive_war
 				}
-				save_scope_as = tea_directive_war
 			}
 			if = {
 				limit = { exists = scope:tea_directive_war }
@@ -277,29 +286,35 @@ tea_setup_and_execute_effect = {
 }
 
 tea_verify_attacker_effect = {
-	character:han_8052 = {
-		remove_character_flag = tea_verify_attacker_pending
-		save_scope_as = actor
-		var:tea_recipient = { save_scope_as = recipient }
-		var:tea_secondary_recipient = { save_scope_as = secondary_recipient }
-		var:tea_target = { save_scope_as = target }
-	}
 	if = {
 		limit = {
-			this = scope:recipient
-			scope:recipient = {
-				is_ai = no
-				is_tributary_of = scope:actor
-			}
-			scope:actor.var:tea_directive_war = {
-				using_cb = ted_directed_county_expansion_cb
-				primary_attacker = scope:recipient
-				primary_defender = scope:secondary_recipient
-			}
+			NOT = { has_character_flag = tea_verify_attacker_completed }
 		}
-		debug_log = "TEA: TEST PASS war_attacker_defender_binding"
-		debug_log = "TEA: TEST GAP complete_war_outcomes_save_reload_and_tribute_not_executed"
-		debug_log = "TEA: TEST DONE tributary_expansion_directives"
+		add_character_flag = tea_verify_attacker_completed
+		character:han_8052 = {
+			remove_character_flag = tea_verify_attacker_pending
+			save_scope_as = actor
+			var:tea_recipient = { save_scope_as = recipient }
+			var:tea_secondary_recipient = { save_scope_as = secondary_recipient }
+			var:tea_target = { save_scope_as = target }
+		}
+		if = {
+			limit = {
+				this = scope:recipient
+				scope:recipient = {
+					is_ai = no
+					is_tributary_of = scope:actor
+				}
+				scope:actor.var:tea_directive_war = {
+					using_cb = ted_directed_county_expansion_cb
+					primary_attacker = scope:recipient
+					primary_defender = scope:secondary_recipient
+				}
+			}
+			debug_log = "TEA: TEST PASS war_attacker_defender_binding"
+			debug_log = "TEA: TEST GAP complete_war_outcomes_save_reload_and_tribute_not_executed"
+			debug_log = "TEA: TEST DONE tributary_expansion_directives"
+		}
+		else = { tea_finish_with_failure_effect = yes }
 	}
-	else = { tea_finish_with_failure_effect = yes }
 }

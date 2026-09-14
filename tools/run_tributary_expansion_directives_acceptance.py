@@ -136,6 +136,7 @@ def fixture_source_errors() -> list[str]:
             "ted_decline_expansion_directive_effect = yes",
             "ted_accept_expansion_directive_effect = { SUBSIDIZED = yes }",
             "using_cb = ted_directed_county_expansion_cb",
+            "add_character_flag = tea_verify_attacker_completed",
         ):
             if token not in text:
                 errors.append(f"fixture contract missing {token}")
@@ -291,7 +292,6 @@ def run_scenario(stream: TeaMarkerStream, artifacts: Path) -> dict[str, object]:
     )
     stream.wait("TEA: TEST PASS switched_to_supported_player", 30)
     isolated.wait_for_gameplay_hud(artifacts)
-    acceptance.ensure_game_paused(artifacts, "06_switched_player")
     stream.wait("TEA: TEST DONE tributary_expansion_directives", 60)
     stream.validate()
     acceptance.ImageGrab.grab().save(artifacts / "07_directed_war_live.png")

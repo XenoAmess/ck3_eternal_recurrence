@@ -1,0 +1,74 @@
+#!/usr/bin/env python3
+"""Tests for Tributary Expansion Directives Workshop gameplay media."""
+
+from __future__ import annotations
+
+import json
+import tempfile
+import unittest
+from pathlib import Path
+
+from PIL import Image
+
+import compose_tributary_expansion_directives_workshop_media as media
+
+
+class TributaryExpansionWorkshopMediaTests(unittest.TestCase):
+    def setUp(self) -> None:
+        self.temp = tempfile.TemporaryDirectory(prefix="ted-media-test-")
+        self.root = Path(self.temp.name)
+        self.artifacts = self.root / "run"
+        (self.artifacts / "cell").mkdir(parents=True)
+        self.output = self.root / "output"
+
+    def tearDown(self) -> None:
+        self.temp.cleanup()
+
+    def write_report(self, result: str = "GREEN") -> None:
+        report = {
+            "result": result,
+            "cell": {
+                "result": result,
+                "scenario_evidence": {
+                    "direct_tributary_constructed": True,
+                    "dedicated_war_started": True,
+                    "primary_attacker": "tributary",
+                    "primary_defender": "selected neighboring independent ruler",
+                },
+            },
+        }
+        (self.artifacts / "report.json").write_text(
+            json.dumps(report), encoding="utf-8"
+        )
+
+    def write_capture(self, size: tuple[int, int] = media.EXPECTED_SIZE) -> None:
+        Image.new("RGB", size, (42, 73, 91)).save(
+            self.artifacts / "cell" / media.SOURCE_NAME
+        )
+
+    def test_green_run_renders_deterministically(self) -> None:
+        self.write_report()
+        self.write_capture()
+        first = media.render(self.artifacts, self.output)
+        first_bytes = (self.output / media.OUTPUT_NAME).read_bytes()
+        second = media.render(self.artifacts, self.output)
+        self.assertEqual((self.output / media.OUTPUT_NAME).read_bytes(), first_bytes)
+        self.assertEqual(first["sha256"], second["sha256"])
+        self.assertEqual(first["dimensions"], [1360, 765])
+        self.assertLess(first["bytes"], media.MAX_BYTES)
+
+    def test_red_run_is_rejected(self) -> None:
+        self.write_report("RED")
+        self.write_capture()
+        with self.assertRaisesRegex(ValueError, "GREEN acceptance report"):
+            media.render(self.artifacts, self.output)
+
+    def test_wrong_capture_dimensions_are_rejected(self) -> None:
+        self.write_report()
+        self.write_capture((1280, 720))
+        with self.assertRaisesRegex(ValueError, "unexpected gameplay capture dimensions"):
+            media.render(self.artifacts, self.output)
+
+
+if __name__ == "__main__":
+    unittest.main()

@@ -11,6 +11,7 @@ from PIL import Image
 
 import build_tributary_expansion_directives_release as builder
 import compose_tributary_expansion_directives_key_art as art
+import compose_tributary_expansion_directives_workshop_media as workshop_media
 from translate_localization_minimax import protected_tokens
 
 
@@ -220,6 +221,35 @@ def validate() -> list[str]:
             errors.append(f"thumbnail must be 640x640 RGB, got {image.size} {image.mode}")
     if thumbnail.stat().st_size >= 1_000_000:
         errors.append("thumbnail must remain below 1,000,000 bytes")
+
+    workshop_image = workshop_media.DEFAULT_OUTPUT / workshop_media.OUTPUT_NAME
+    screenshot_ledger = ROOT / "workshop/tributary_expansion_directives_screenshots.md"
+    if not workshop_image.is_file():
+        errors.append("initial release requires the tracked gameplay Workshop JPEG")
+    else:
+        try:
+            with Image.open(workshop_image) as image:
+                image.load()
+                expected = (
+                    workshop_media.CROP[2] - workshop_media.CROP[0],
+                    workshop_media.CROP[3] - workshop_media.CROP[1],
+                )
+                if image.size != expected or image.mode != "RGB":
+                    errors.append(
+                        f"Workshop gameplay JPEG must be {expected} RGB, got "
+                        f"{image.size} {image.mode}"
+                    )
+        except OSError as error:
+            errors.append(f"cannot decode Workshop gameplay JPEG: {error}")
+        if workshop_image.stat().st_size >= workshop_media.MAX_BYTES:
+            errors.append("Workshop gameplay JPEG must remain below 2,000,000 bytes")
+        if screenshot_ledger.is_file():
+            digest = workshop_media.sha256_file(workshop_image).upper()
+            ledger = screenshot_ledger.read_text(encoding="utf-8")
+            if digest not in ledger or "R0009 GREEN" not in ledger:
+                errors.append("Workshop screenshot ledger is stale against the gameplay JPEG")
+        else:
+            errors.append("initial release requires the Workshop screenshot ledger")
     return errors
 
 

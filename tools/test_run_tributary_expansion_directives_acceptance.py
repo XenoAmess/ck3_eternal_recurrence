@@ -31,6 +31,13 @@ class TributaryExpansionAcceptanceRunnerTests(unittest.TestCase):
             "TEST GAP",
         ):
             self.assertIn(token, joined)
+        self.assertIn(
+            "add_character_flag = tea_verify_attacker_completed",
+            (
+                runner.FIXTURE_SOURCE
+                / "common/scripted_effects/tea_effects.txt"
+            ).read_text(encoding="utf-8-sig"),
+        )
 
     def test_marker_stream_reads_tea_prefix(self) -> None:
         with tempfile.TemporaryDirectory() as raw:
