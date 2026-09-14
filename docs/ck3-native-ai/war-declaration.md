@@ -450,3 +450,9 @@ flowchart TD
 - [implementation-confirmed] 失败文本没有 reader 的 `:<stage>` 后缀。严格 reader 与 mailbox adapter 对每个业务不可用分支都会填充 stage，因此该证据只把 RED 定位到排队、executor、application-main 边界或 completion 一层，不能声称是 power reader 数据失败。
 - [implementation-confirmed] 旧 dispatch 将所有上述终态压成 `application-main war-entry query failed`，且排队等待仅为 `2000 ms`；同一项目其余 production application-main 查询使用 `8000 ms` 有界排队预算与 `2000 ms` executing slice。war-entry adapter 现与该界限一致，并按 wait/completion/reader-stage 返回可区分错误。业务不可用仍是失败，未被降级或吞掉。
 - [static-confirmed] 更新后的 DLL 与 mailbox fixture 已构建；mailbox fixture及 war-entry source-contract 直接执行均 GREEN。此修复不改变 capability、请求 literal 或成功 payload schema；仍需新轮次 R672 的一次短 live replay 判断 R671 属于 queued timeout，还是暴露新的具体 executor/boundary RED。
+
+### R672 短复测结果
+
+- [production-live] 新轮次 R672 使用同一 checkpoint、EXE、injector、production tree 与三步上限，只将 DLL 从 `ED39D5FD...EB86` 更新为 `6562CD13...1994`。`query-war-entry-assessments-v1-1-38436` 在同一 `native:3 / revision 4 / native revision 3 / date 53783472` 暂停帧返回 `available`；随后策略明确选择 `NO_DECLARE`，执行一次 30 日 bounded `life-advance` 到 `53784192` 并保存 checkpoint。
+- [production-live] run 为 `turn_limit / qualified / ok=true`，三步全部成功（2 query、1 gameplay），没有 blocker；cleanup 证明 process tree 消失，当前 CK3/injector 均为 0。run log SHA-256 为 `A803C1E4A517DE45BCCB83DCE1769DA73A1A3ED0C108374036E66ED1C24DBA6D`，driver-state 为 `76AF995D45D3A6278B4BCA5CF173BA5FC4540A6514827721333ABE65FF28B654`，后继 checkpoint 为 `8D9186069061BFA645CF44F84A74FCDAA296922B34CAC5B6A040EC7E26E7CCB4`。
+- [inference] 同源 differential 证明 R671 的 operational blocker 已由有限等待/诊断补丁解除，并与旧 `2000 ms` 排队预算不足相符；旧 DLL 没有保留 exact wait enum，故不能追溯声称 R671 的唯一内部终态必然是 queued timeout。该历史 RED 保留，不再重跑旧 DLL。

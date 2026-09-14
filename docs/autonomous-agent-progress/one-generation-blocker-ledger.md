@@ -1655,3 +1655,9 @@ one recommendation, one action and the bounded postwar/cold-restore checks.
 - Current round R671 restored the verified R664 successor checkpoint and returned seven native declaration rows, then `query-war-entry-assessments-v1-1-38436` failed before gameplay mutation or time advance. The generic error lacked the mandatory reader `:<stage>` suffix, so the live fact is a mailbox/application-main failure before a typed business-data result, not a power-reader diagnosis.
 - The real implementation defect was insufficient terminal observability plus an outlier `2000 ms` queued budget. The bounded fix uses the established production budgets (`8000 ms` queued, `2000 ms` executing slice) and maps every wait/completion/reader-stage terminal state without weakening RED semantics. Focused native tests are GREEN; rebuilt DLL SHA-256 is `6562CD13...1994`.
 - Current round R671 is terminated and all old rounds are terminated. G2-M2 remains `1/3`, global G2 remains `1/8`, and one short new-round replay is required; no unchanged campaign or single-event long run is queued.
+
+## R672 war-entry operational blocker closed (2026-09-14)
+
+- New round R672 held the R671 source inputs constant and used only the rebuilt `6562CD13...1994` DLL. All three bounded turns passed: declarations available, `query-war-entry-assessments-v1-1-38436` available on the same paused revision, then `NO_DECLARE` advanced 30 days and saved checkpoint `8D918606...CCB4`.
+- The run is qualified with no blocker; report/log SHA-256 is `A803C1E4...BA6D`, final driver state is `76AF995D...B654`, and cleanup leaves CK3/injector at zero. R671 remains RED as historical evidence, while its operational retry entry is closed.
+- This restores the ordinary campaign path. It does not change G2-M2 counting (`1/3`) or global G2 (`1/8`); remaining registered events stay encounter-driven rather than receiving dedicated long runs.

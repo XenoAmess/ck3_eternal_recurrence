@@ -7,7 +7,7 @@
   "production_wiring": true,
   "advertised": true,
   "live_boundary_observation": true,
-  "live_executor_observation": false,
+  "live_executor_observation": true,
   "candidate_id": "application_main_thread_war_entry_v1",
   "typed_executor": {
     "abi": "MainThreadQueryExecutorV1",
@@ -54,6 +54,7 @@
     "first_live_target_limit": 1,
     "production_dispatch": true,
     "capability_ready": true,
-    "live_query_result_pending": true
+    "live_query_result_pending": false,
+    "live_query_evidence": "R672 query-war-entry-assessments-v1-1-38436 returned available on the frozen paused frame before a NO_DECLARE life advance"
   }
 }
