@@ -15,11 +15,9 @@ Machine-readable evidence and the portable verifier are:
 
 The verifier reads an explicitly supplied installation root and never launches or attaches to the game:
 
-```powershell
-py ck3_autonomous_player/native_bridge/research/verify_government_runtime_adapter_1_19_0_6.py `
-  --game-root "<CK3 installation root>"
-py -O ck3_autonomous_player/native_bridge/research/verify_government_runtime_adapter_1_19_0_6.py `
-  --game-root "<CK3 installation root>"
+```text
+python ck3_autonomous_player/native_bridge/research/verify_government_runtime_adapter_1_19_0_6.py --game-root "<CK3 installation root>"
+python -O ck3_autonomous_player/native_bridge/research/verify_government_runtime_adapter_1_19_0_6.py --game-root "<CK3 installation root>"
 ```
 
 ## Exact-build freeze
