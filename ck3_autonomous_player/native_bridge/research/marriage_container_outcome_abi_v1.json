@@ -1,0 +1,52 @@
+{
+  "schema_version": 1,
+  "private_key": "marriage_container_outcome_abi_v1",
+  "status": "static-ready-private-exact-build-unwired",
+  "advertised": false,
+  "exact_build": {
+    "product_version": "1.19.0.6",
+    "executable_size": 95206008,
+    "executable_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86"
+  },
+  "ranked_container": {
+    "header": {"size": 24, "data": 0, "capacity": 8, "count": 12, "owner": 16},
+    "candidate": {"storage_size": 1064, "owner_size": 1040, "inline_capacity": 128, "row_stride": 8, "row_semantics": "non-owning Character pointer"},
+    "scored": {"storage_size": 552, "owner_size": 528, "inline_capacity": 32, "row_stride": 16, "row_vptr": 0, "full_character_id": 8, "signed_score": 12},
+    "call_order": ["0x1890470 enumerate", "0x101E070 initialize scored owner", "0x1890D90 score/filter"],
+    "native_cap": "max(*(int32_t*)((*(module+0x4F56B00))+4*0x2601F90(subject)),0); never substitute observer output limit",
+    "release": "reset scored storage through 0x101E070 so each 0x10 row is destroyed, then release candidate data through owner lifecycle; caller-owned owners never use deleting destructors"
+  },
+  "outcome_classifier": {
+    "source": "0x2282DE0 exact native branch",
+    "secondary_pair_offsets": [736, 740],
+    "character_adult_measure_offset": 104,
+    "character_selector_offset": 409,
+    "threshold_slots": ["0x570E1D8", "0x570F0E4"],
+    "grand_wedding_option_id_slot_rva": "0x57EB964",
+    "rule": "both native adult comparisons true and grand-wedding option false => marriage; otherwise betrothal",
+    "religion_boundary": "opaque native-final legality, acceptance and result only"
+  },
+  "alliance": {
+    "actual_bilateral_getter": {"rva": "0x2661E00", "signature": "bool(Character* self, Character* target)"},
+    "projection_only": {
+      "scope": "current-player CMarriageInfo resulting-alliance preview; never an actual relationship postcondition",
+      "array_offsets": {"data": 80, "capacity": 88, "count": 92, "allocator": 96},
+      "row_stride": 1152,
+      "row_full_character_id": 0,
+      "row_military_info": 8
+    }
+  },
+  "proposal_resolution": {
+    "posthoc_limit": "after CPending destruction no durable field distinguishes explicit refusal from invalid cleanup or expiry",
+    "journal_hooks": ["0x2752620 dispatch", "0x2752900 immediate", "0x2751410 response", "0x27541F0 construct", "0x2751310 delete"],
+    "mapping": {"active_exact_pending": "pending", "immediate_or_reply_accept": "accepted", "immediate_decline_or_reply_enum_1": "refused", "CanSend_early_exit_or_invalid_delete_or_expiry": "invalidated", "reply_enum_2": "fail closed"},
+    "install": "exact prefixes, primary thread suspended, 14-byte absolute jumps, original-prefix trampolines, instruction-cache flush, reverse restore and active-call drain",
+    "queue_ack": "not a resolution; journal read remains unavailable until a native lifecycle edge is observed"
+  },
+  "shared_and_live_remaining": [
+    "register the private sources in shared CMake and install/configure from the suspended application-main owner",
+    "arm the resolution journal with the exact M4 submission before queued execution",
+    "wire receipt-frame capture and public bridge/MCP schema in a separately owned package",
+    "run paused exact-build matchmaking, submit and relationship/alliance/resolution receipt validation"
+  ]
+}

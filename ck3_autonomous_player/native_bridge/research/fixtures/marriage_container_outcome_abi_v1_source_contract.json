@@ -1,0 +1,60 @@
+{
+  "schema_version": 1,
+  "private_key": "marriage_container_outcome_abi_v1",
+  "base_commit": "f45d39b753fde876c2fb4bdff22d7328dcfa9b18",
+  "exact_build": {
+    "product_version": "1.19.0.6",
+    "executable_size": 95206008,
+    "executable_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86"
+  },
+  "native_spans": [
+    {"name":"ranked_debug_caller","rva_start":"0x101AA70","rva_end_exclusive":"0x101AE19","sha256":"21E3B11D93AE3559231C74D7A48A28B5260781855D000C93E7783EB885917718"},
+    {"name":"candidate_enumerator_pdata","rva_start":"0x1890470","rva_end_exclusive":"0x1890A28","sha256":"5F2B553B2C5B2190BCBC706B4EBE13A531E4F5FF71E0A151522FE768A0614E84"},
+    {"name":"candidate_score_filter","rva_start":"0x1890D90","rva_end_exclusive":"0x1890F39","sha256":"F0C09FFC68E2EC7C9080DA49576F78AD5BA7D8AA74C9F4958975AB13837BF607"},
+    {"name":"candidate_gate_score","rva_start":"0x1890F40","rva_end_exclusive":"0x189114B","sha256":"DCF9A164A25E6360B67B426248BF3F49A9A69BB340191B23904474657B94B819"},
+    {"name":"scored_row_insert","rva_start":"0x1842C50","rva_end_exclusive":"0x1842D6E","sha256":"A44C72F41099B639631380FF0C552C0D11BDB612E9432E7C5AFD2BD2C3731960"},
+    {"name":"scored_container_full_initializer","rva_start":"0x101E070","rva_end_exclusive":"0x101E11D","sha256":"7638E5C13A6FEF5AF7D1F0A090EC05665E520578CE0D07F3750E0B8847978ADA"},
+    {"name":"native_owner_reserve","rva_start":"0x7E8FF0","rva_end_exclusive":"0x7E9023","sha256":"16C83611F7E940D953DF2FB9E36763FAF3A29A02F206C05718D4D7E5AB66DDD2"},
+    {"name":"native_owner_release","rva_start":"0x7E8FB0","rva_end_exclusive":"0x7E8FEA","sha256":"713F21ED3585FDF7D226EBEF14CDD488CBE394D4A489FDC3227BEA74F126A604"},
+    {"name":"candidate_inline_initialize","rva_start":"0x947C00","rva_end_exclusive":"0x947C0F","sha256":"8EC9A09AA8EDA475DDDEA1A0AB37053B6DE681C57B6D28D4DF7E44ACDD21622D"},
+    {"name":"scored_row_destructor","rva_start":"0x81B620","rva_end_exclusive":"0x81B641","sha256":"87A6BF67AEBA54079F868D6D9E4B4E99203C6D58FE09C0BA7ECC9EEA3AF39C61"},
+    {"name":"candidate_owner_vtable","rva_start":"0x4117388","rva_end_exclusive":"0x41173C8","sha256":"09B0E7F0A6ACBF149816050F9CFB72DE02CE3C1EED6D493F324C84F24667DAAC"},
+    {"name":"scored_owner_vtable","rva_start":"0x4117340","rva_end_exclusive":"0x4117380","sha256":"B0959E2A6793FFFC19BE27979C365211401C7788B3F568EC5869D9C317DF62BD"},
+    {"name":"scored_row_vtable","rva_start":"0x4116F08","rva_end_exclusive":"0x4116F28","sha256":"790E31788F57EEFC773EA5C34C95CD5E194025AE77272DACB71AE0F05E6451CF"},
+    {"name":"boolean_option_getter","rva_start":"0x2C40770","rva_end_exclusive":"0x2C407CC","sha256":"B3B5B9BF4C2BF57693875F647B057F713C65E184F58EF57867B2A75694F64C82"},
+    {"name":"marriage_outcome_dispatch","rva_start":"0x2282DE0","rva_end_exclusive":"0x2283060","sha256":"8A5E047A6797CF0FB9DEA442F00D56A5362FCBBC761C67739841FC24F7C6479B"},
+    {"name":"actual_is_allied_to","rva_start":"0x2661E00","rva_end_exclusive":"0x2661F06","sha256":"D7EADC09CEBDCA7E85F199C813555DAE3D152D03D2A2AA5E95534A58199E23F5"},
+    {"name":"is_allied_to_trigger_evaluator","rva_start":"0x2886B90","rva_end_exclusive":"0x2886CD2","sha256":"4A9C809E28B3DBE68B9B4389B656A1595671148FCB57A1876B743ECAA7C5CCC0"},
+    {"name":"marriage_alliance_consumer","rva_start":"0x2283470","rva_end_exclusive":"0x22836C1","sha256":"1B2BDD42F0DC4539BE5CECB991297BB2C174678E10DCBC3DE277DA8640AD7C23"},
+    {"name":"alliance_items_callback","rva_start":"0x1274610","rva_end_exclusive":"0x1274663","sha256":"85754329975B2388D8B728303C248A9752FC043A6F173A178CE9A3D0AE95D907"},
+    {"name":"alliance_projection_producer","rva_start":"0x126D4E0","rva_end_exclusive":"0x126D742","sha256":"E072510D1FBF43C1717DA0662A85983D9D0FE70BA5BAB05AA93E85441384A83A"},
+    {"name":"alliance_projection_loop","rva_start":"0x126D5DD","rva_end_exclusive":"0x126D65C","sha256":"554FC5BE93A54EC97C785FF2F50A40F96191FEB401B85D8043BE3E791FD68891"},
+    {"name":"alliance_rows_clear","rva_start":"0x1273AE0","rva_end_exclusive":"0x1273B3E","sha256":"C73DEBD634B991A466FE8321BF40B9038DF184F3F864C3E62585AED0B51FD8F6"},
+    {"name":"alliance_row_append","rva_start":"0x1274F20","rva_end_exclusive":"0x1275084","sha256":"82E59C2B5BBB38C419FA301048E61BCAB4E1601F10154FA00865B27091047CCC"},
+    {"name":"alliance_row_resolver","rva_start":"0x1274CA0","rva_end_exclusive":"0x1274CE9","sha256":"6A63F4F7F9CAE51203B7F4C4382DAACDC9790A1ECB3FD515C9148EDF7F081C7A"},
+    {"name":"send_interaction_execute","rva_start":"0x26B30A0","rva_end_exclusive":"0x26B3213","sha256":"F3BF829E36AE9E0F5C10A6313EC0F590590F84499242974B4374CCDE353445B3"},
+    {"name":"pending_constructor","rva_start":"0x27541F0","rva_end_exclusive":"0x27543BE","sha256":"5F7FCA209ECE701F45E6E578C794A163E1C0E0E22C5F7F3CC19788C91D903C20"},
+    {"name":"pending_creation","rva_start":"0x2752B00","rva_end_exclusive":"0x2752D7F","sha256":"D1C608C2ACD0099060642B7ADC756A1D9639A6AEF3EB69E4F2CF94FB4531D701"},
+    {"name":"pending_response_transition","rva_start":"0x2751410","rva_end_exclusive":"0x27514F4","sha256":"E4B3EC7A721B3CE61565C027228D30B23623B7C216918905B2B65DACB3CF7F83"},
+    {"name":"pending_terminal_dispatch","rva_start":"0x2752D80","rva_end_exclusive":"0x2752F84","sha256":"3D6B85A51D3D9AD30FA811F925A7CE2CCA7D84B623F4D37A366F0E1F64C3B927"},
+    {"name":"proposal_send_dispatch","rva_start":"0x2752620","rva_end_exclusive":"0x27528F2","sha256":"2C2941F025AC7C0DF1617F5BF9A266362E5246C8CA326ACC20D9DEE38646E808"},
+    {"name":"proposal_immediate_resolver","rva_start":"0x2752900","rva_end_exclusive":"0x2752AF1","sha256":"F284B496FD9BE7E2E28C7E56C1C4C0ADC5D1C03335D9091826BB5ED61D41C134"},
+    {"name":"pending_lifecycle_cleanup","rva_start":"0x2751810","rva_end_exclusive":"0x2751C3C","sha256":"0312C79CE0CD4B55E069D9FDC5745B023E27E94A4F2543DB796EBE214BEFC7CF"},
+    {"name":"pending_delete","rva_start":"0x2751310","rva_end_exclusive":"0x2751410","sha256":"D0E2CA031ECB3329EBFFD1AC04A91771C231ACA6D5A242DB5A40556D6F546C54"}
+  ],
+  "layout_assertions": {
+    "ranked_header_size": 24,
+    "candidate_storage_size": 1064,
+    "scored_storage_size": 552,
+    "scored_row_stride": 16,
+    "alliance_row_stride": 1152,
+    "pending_object_size": 1480,
+    "pending_context_offset": 24,
+    "pending_role_offsets": [752, 756, 760, 764, 768]
+  },
+  "verification": {
+    "python_modes": ["normal", "optimized"],
+    "cpp_modes": ["MSVC /Od /W4 /WX", "MSVC /O2 /W4 /WX"],
+    "fixture_scope": "offline exact ABI, allocation, detour and semantic transition doubles; no CK3 process"
+  }
+}
