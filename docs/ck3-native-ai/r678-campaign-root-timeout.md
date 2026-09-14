@@ -1,8 +1,11 @@
 # R678 campaign-root application-main timeout 取证
 
-日期：2026-09-14（Asia/Shanghai）  
-工作包：`G2-M3-R678-DIAG1`  
-状态：**RED 保留**  
+日期：2026-09-14（Asia/Shanghai）
+
+工作包：`G2-M3-R678-DIAG1`
+
+状态：**RED 保留**
+
 范围：只读比较 R676、R677、R678 live artifact；没有启动或操作 CK3。
 
 ## 结论
