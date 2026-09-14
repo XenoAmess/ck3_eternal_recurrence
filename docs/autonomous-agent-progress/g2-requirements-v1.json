@@ -118,13 +118,14 @@
       "id": "G2-M4",
       "name": "peace governance vertical slice",
       "priority": "P1-D",
-      "status": "not_started",
+      "status": "in_progress",
       "latest_evidence": [
-        "fixed visual regression flows only"
+        "R639 standard-feudal independent/vassal production-live domain-capacity and active-council-task observations; artifact CFF681146A344AE18FDEB36C20BDAEAFC2A30344023CC7827E9A77006C3530DB",
+        "LIFE1 exact-build native lifestyle focus/perk decision tree static-confirmed at a04ee02a04a3a86bb685395270d8cd23359b8ba2; public observation and semantic action remain pending"
       ],
       "planner_consumer": "budgeted construction, council and faction response",
       "visible_outcome": "within two game years perform and verify one construction, one council reassignment and one real vassal or faction intervention",
-      "open_blocker": "domain size/limit is static-ready, but holdings/buildings/construction, council, vassal and faction query/action surfaces remain missing"
+      "open_blocker": "R639 closes domain size/limit and current council-task observation for two standard-feudal scenes, but holdings/buildings/construction, council reassignment, lifestyle focus/perk observation and action, and the vassal/faction intervention loop remain incomplete"
     },
     {
       "id": "G2-M5",

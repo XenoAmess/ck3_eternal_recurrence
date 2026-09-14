@@ -266,7 +266,7 @@ snapshot 展开 generation-bound literal，不能把 DLL template 本身当成�
 仍缺独立原生 AI 决策树的主要域：
 
 - 婚姻、联盟、教育、继承和王朝；
-- 资源预算、domain/building、council、control/development 与生活方式；
+- 跨域资源预算与 building/construction；council 任命/调任及未闭合的日常调度；生活方式的普通 AI 日常重选 cadence；
 - MAA、骑士、commanders、集结/补给/损耗/海运/raid 的长期军备树；
 - 外交关系、封臣管理、契约、派系、头衔授予/撤销；
 - schemes、hooks、secrets、prisoners/crime；
@@ -384,8 +384,9 @@ terminal 原生树与 live 边界见 [battle-terminal-and-reentry.md](battle-ter
 
 ### P4：和平期资源、domain 与军备基础
 
-- 原生 AI 树：分别建立 `economy-and-buildings.md`、`council-and-development.md`、`military-preparation.md`，覆盖预算桶、
-  建筑 ROI、control/development、council task、MAA/knight/commander、raise/maintenance 与 reserve。
+- 原生 AI 树：继续补齐 `economy-and-buildings.md`、`council-and-development.md`、`lifestyle-focus-perk-ai.md`、
+  `military-preparation.md` 中仍为 `unknown` 的预算桶、建筑 ROI、council 任命/调任与日常调度、生活方式日常重选 cadence、
+  MAA/knight/commander、raise/maintenance 与 reserve。
 - 观测：gold/prestige/piety/legitimacy/renown、income/expense breakdown、domain holdings/buildings/slots/construction、control/development、
   councilors/tasks、levy/MAA/reinforcement、knights/commanders 与 mercenary 市场。piety 只作为通用资源余额；holy-order 市场按
   宗教 owner-deferred 边界暂缓。
@@ -483,8 +484,8 @@ terminal 原生树与 live 边界见 [battle-terminal-and-reentry.md](battle-ter
 | 1 | combat / reinforcement / retreat | ongoing identity/ledger + planner hold + full-side/owner-subset retreat + normal terminal `live-loop`；reinforcement assignment query live，assigned+ETA/join、forecast、terminal 余下三分支与总 controller pending，P1 进行中 | 四类战斗策略与真实结果闭环。 |
 | 2 | active war / siege / termination | `live-loop` 部分；当前 `claim_cb` 已 white peace→WarID 消失→解散→保存/冷恢复；victory/defeat、其它 CB 与完整 outcome terms 未闭合 | 任意 checkpoint 自主打到合法终局并处理战后。 |
 | 3 | events / notifications / interactions | exact `pay_ransom` reject 为 `live-loop`；typed pending/ordinary white-peace binding 为 `live-primitive`，notification ACK/current-window 为 fixture-live；semantic decision 未闭合 | 50-key 长跑中语义选择且无漏答。 |
-| 4 | economy / domain / buildings | `visual-narrow` | 十年通用财政与建设循环。 |
-| 5 | council / lifestyle / development / control | `visual-narrow` | 多 council task 与 perk 路线按 realm 目标动态调整。 |
+| 4 | economy / domain / buildings | domain capacity 为 R639 两场景 `live-primitive`；holdings/buildings/construction 观测与动作仍 `absent` | 十年通用财政与建设循环。 |
+| 5 | council / lifestyle / development / control | active council task 观测为 R639 两场景 `live-primitive`；lifestyle 原生树为 LIFE1 `research`；council reassignment、focus/perk 观测与语义动作仍 `absent` | 多 council task 与 perk 路线按 realm 目标动态调整。 |
 | 6 | army composition / supply / mercenary；holy order 暂缓 | 常规军备 `research`/partial input；holy order `owner-deferred` | 先完成非宗教和平备战、动员、补给、战争、复员闭环。 |
 | 7 | war entry / CB / ally / multi-war / holy war | tree + native power production-live；不完整证据下 `NO_DECLARE` continuation live，智能宣战仍 blocked | 能比较普通与圣战候选并自主选择宣战或不战；宗教输入保持战争所需最小集。 |
 | 8 | marriage / alliance | ID-only `implemented` | 多候选联合评分并验证关系/联盟结果；如合法性或接受度依赖信仰，只调用原生最小判定。 |

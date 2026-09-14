@@ -2,15 +2,17 @@
 
 ## 状态与用途
 
-- **[static-ready, live pending]** `campaign-root-context-v1` 现在发布
+- **[production-live primitive; broader matrix/action pending]** `campaign-root-context-v1` 现在发布
   `player_domain_size` 与 `player_domain_limit`，`ck3_query_turn_bundle_v1`
   将它们投影为 `realm_state.domain`。
 - 两个值来自 CK3 `1.19.0.6` exact-build 的 `Character.GetDomainSize` 与
   `Character.GetDomainLimit` 原生实现；没有从 GUI 文本、存档或头衔数量猜测。
 - 这是只读观测包。它不调整 planner 策略，因此本包没有新的原生 AI
   决策树；后续建设或授地策略必须另行完成 economy/domain 原生 AI 专题。
-- 本包没有启动 CK3。production-live 状态只会在下一次本来就需要的 paused
-  G2 会话中顺带互证，不为两个整数安排独立长跑。
+- 初始实现包没有启动 CK3；后续 R639 在同一 managed PID 内完成独立 ruler `29829` 与
+  vassal ruler `36108` 两个标准封建场景的 paused production 双查询。两个场景的
+  domain 与 turn-bundle 投影均 available/ready，源存档未变且 cleanup 成立。Artifact
+  SHA-256 为 `CFF681146A344AE18FDEB36C20BDAEAFC2A30344023CC7827E9A77006C3530DB`。
 
 冻结输入仍为 `Crusader Kings III/binaries/ck3.exe`，大小 `95,206,008`
 bytes，SHA-256
@@ -109,6 +111,6 @@ grace-period 惩罚状态。
   memory operand，并支持 `--source-rva-start/--source-rva-end` 有界扫描；本次用它
   复现了上述四条 registration/name 引用。
 
-完整 M1 仍缺 council 与 partition 观测，以及共享的两场景
-paused live 验收。完整和平治理仍缺 holdings/buildings/construction 与相应动作、
-策略和后置验证。
+R639 已把 domain、council 与 partition 纳入同一独立/vassal 两场景 paused artifact，
+因此 G2-M1 已完成；非封建、非 duchy、landless 与合法 absent 的覆盖矩阵仍待补。
+完整和平治理仍缺 holdings/buildings/construction 与相应动作、策略和后置验证。

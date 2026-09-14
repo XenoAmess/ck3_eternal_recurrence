@@ -81,9 +81,11 @@
 - [static-ready; shared bounded live pending] [player-vitals-v1.md](player-vitals-v1.md) 在既有
   `ck3_query_turn_bundle_v1` 内同帧组合 health、stress 与局部 typed-unavailable legitimacy；缺正统性不会删除前两者，
   三个最低 realm-survival planner 信号按各自输入 fail closed。旧 health/stress 字段继续兼容，不新增 native RPC。
-- [static-ready, live pending] [player-domain-capacity-v1.md](player-domain-capacity-v1.md) 冻结 `GetDomainSize`
+- [production-live primitive; broader matrix/action pending] [player-domain-capacity-v1.md](player-domain-capacity-v1.md) 冻结 `GetDomainSize`
   `0x260BA50` 与 `GetDomainLimit` `0x260BA20` 的 reflection registration/core 链，把玩家直辖规模和当前上限接入
-  campaign-root 双采样与 turn bundle；holdings 明细、建筑、施工及 grace-period 惩罚仍未发布。
+  campaign-root 双采样与 turn bundle；R639 已在同一进程的独立/vassal 两个标准封建场景完成 paused production 验证，artifact
+  SHA-256 为 `CFF681146A344AE18FDEB36C20BDAEAFC2A30344023CC7827E9A77006C3530DB`。holdings 明细、建筑、施工、
+  grace-period 惩罚及相关动作仍未发布。
 - [static-ready, live pending] [player-targeting-factions-v1.md](player-targeting-factions-v1.md) 冻结原版
   `has_targeting_faction` evaluator `0x283FAE0`，从玩家 land state 发布目标派系数量，并把最小威胁布尔值接入 turn bundle；
   派系 identity/type/power/discontent/deadline 仍未发布。
@@ -91,10 +93,14 @@
   同绑定 campaign-root query 聚合为 ruler/realm/succession/pending/war/alerts 六域；最低三域警报、收入资源门与 domain capacity
   与目标派系最低警报已可用，健康分档、逐头衔 partition 和 typed council 也已有真实 native 输入；当前场景所有组件具备观测时
   bundle 才为 `available/ready=true`，可选 snapshot 面缺失或 council 超出已声明范围时仍诚实保持 `partial`。
-- [static-ready; public projection/live pending] [council-and-development.md](council-and-development.md) 已把 exact-build
+- [production-live primitive; reassignment/action pending] [council-and-development.md](council-and-development.md) 已把 exact-build
   land-state 动态 active-task 向量、任职者与 owner、稳定 position/task key、general/county/court typed target、三类 progress 和 frozen
   接入 campaign-root native 双采样。全部已物化辅助席位都会发布，五个标准 landed 非 nomadic 核心席位可补出空缺；辅助席位空缺
-  仍明确标记不完整。首个 live 只进入既定 M1 两场景验收，不安排专用长跑。
+  仍明确标记不完整。R639 已在独立/vassal 两个标准封建场景各观察到 6 个 occupied task，并与 turn bundle 同帧投影一致；这不包含
+  任命、调任、换任务、目标选择或后置验证。
+- [static-confirmed; observer/action live pending] [lifestyle-focus-perk-ai.md](lifestyle-focus-perk-ai.md) 冻结 CK3 1.19.0.6 的
+  focus 候选、原生 AI 权重、perk 父图、关键只读 getter 与 GUI/native gate/action seam。LIFE1 没有启动 CK3；public observer、
+  focus/perk semantic action 与 paused 后置验证仍未实现，不能由静态树或 GUI seam 推高 action readiness。
 - [static-ready contract/fixture; production reader/live pending] [steward-develop-county-ai.md](steward-develop-county-ai.md) 闭合
   `task_develop_county` 对默认 `task_collect_taxes` 的 authored 储备/冷却权重、AI domain 候选过滤、无
   `ai_target_score` 的随机目标边界，以及完成后五/十五年冷却。独立 `query-steward-develop-county-candidates-v1`
