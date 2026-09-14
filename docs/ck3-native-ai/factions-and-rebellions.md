@@ -547,6 +547,35 @@ The only next seam is
 controlled paused exact-build run and preserve `known-empty` if the natural
 save has no targeting faction; it must not promote the result publicly.
 
+### FACTION9-R692-PREP: hash-bound no-launch runner
+
+FACTION9 adds the launch harness for that seam without running CK3. The live
+runner is fixed to old round R691 and new round R692, accepts only a full Git
+revision, and verifies the candidate manifest, exact executable, save, DLL,
+injector, played character and canonical named pipe before launch. It retains
+the single-instance launch/state locks and writes the full private heartbeat to
+`raw-probe.json` before terminal semantics are checked. A `ready` row set and a
+real `known-empty` zero-row capture are valid outcomes. Typed `unavailable`,
+async failure flags, partial rows, binding drift, date advance, or cleanup
+failure remain RED.
+
+`prepare_faction_targeting_row_probe_candidate.py` archives the exact pushed
+work-branch commit, copies the frozen save and option-enabled private binaries,
+generates the PowerShell entrypoint from the canonical manifest pipe, and runs
+only its `-DryRun` path. The generator compares every wrapper option with the
+runner parser and emits manifest/seal SHA-256 files. Runtime Python and all
+machine paths are explicit arguments or portable environment configuration;
+the bundle does not embed credentials or a fixed user path. Normal and Python
+`-O` focused tests cover the same parameter and terminal contracts.
+
+This preparation is still `static-ready-no-launch`. It does not change the
+bridge, CMake option, public MCP/schema, planner, or `open_kaishek`, and it is
+not paused-live evidence. The only next operation remains one coordinator-owned
+R692 exact-build paused run. After admission, the operator must open or refresh
+the Factions view once so the exact targeting-row callback can publish; the
+runner then stops immediately after the first terminal heartbeat and permits no
+same-round retry.
+
 ### FACTION-OBS1：逐派系与成员观测
 
 按 [玩家目标派系告警 v1](player-targeting-factions-v1.md) 的 P0 路线，先闭合 targeting-faction span、engine-stable identity、type、war、leader/member、power/discontent 与 stock dangerous predicate。`player_targeting_faction_count` 必须与逐行枚举严格一致。此步是当前最高 blocker。
