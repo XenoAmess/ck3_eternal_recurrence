@@ -12,6 +12,7 @@ from pathlib import Path
 from typing import Any
 
 from candidate_runtime_identity import (
+    BUILD_RELEASE_GIT_BLOB_OID,
     SOURCE_COMMIT as RUNTIME_SOURCE_COMMIT,
     SOURCE_ROOT_RELATIVE,
     SOURCE_TREE_GIT_OID,
@@ -116,6 +117,15 @@ def verify_runtime_repository(repo_root: Path) -> list[Path]:
     ).stdout.strip()
     if tree != SOURCE_TREE_GIT_OID:
         raise RuntimeError("runtime source Git tree identity differs")
+    tool_blob = subprocess.run(
+        ["git", "rev-parse", f"{RUNTIME_SOURCE_COMMIT}:tools/build_release.py"],
+        cwd=repo_root,
+        capture_output=True,
+        text=True,
+        check=True,
+    ).stdout.strip()
+    if tool_blob != BUILD_RELEASE_GIT_BLOB_OID:
+        raise RuntimeError("build_release Git blob identity differs")
     changed = subprocess.run(
         [
             "git",
@@ -124,6 +134,7 @@ def verify_runtime_repository(repo_root: Path) -> list[Path]:
             RUNTIME_SOURCE_COMMIT,
             "--",
             "ck3_autonomous_player/src",
+            "tools/build_release.py",
         ],
         cwd=repo_root,
         check=False,
@@ -145,6 +156,7 @@ def verify_runtime_repository(repo_root: Path) -> list[Path]:
         check=True,
     )
     paths = [Path(row) for row in result.stdout.splitlines() if row]
+    paths.append(Path("tools/build_release.py"))
     if not paths:
         raise RuntimeError("runtime source Git tree is empty")
     return paths
@@ -173,7 +185,7 @@ def copy_runtime(repo_root: Path, output: Path, paths: list[Path]) -> dict[str, 
         target = output / "source-repo" / relative
         target.parent.mkdir(parents=True, exist_ok=True)
         shutil.copyfile(repo_root / relative, target)
-    identity = build_source_identity(output / SOURCE_ROOT_RELATIVE)
+    identity = build_source_identity(output / "source-repo")
     write_json(output / "source-repo/source-identity.json", identity)
     return identity
 
@@ -250,8 +262,10 @@ def patch_runner(output: Path) -> None:
     import xar_autoplayer.environment as environment_module
     import xar_autoplayer.native_auto_run as native_auto_run_module
     import xar_autoplayer.runtime as runtime_module
+    import build_release
 
     for module in (
+        build_release,
         native_driver_module,
         environment_module,
         native_auto_run_module,
@@ -334,8 +348,10 @@ def patch_verifier(output: Path, harness_commit: str, pipe: str) -> None:
     import xar_autoplayer.environment as environment_module
     import xar_autoplayer.native_auto_run as native_auto_run_module
     import xar_autoplayer.runtime as runtime_module
+    import build_release
 
     for module in (
+        build_release,
         native_driver_module,
         environment_module,
         native_auto_run_module,
@@ -369,7 +385,10 @@ def patch_invoke(output: Path, pipe: str) -> None:
     text = replace_required(
         text,
         "from json_input_contract import load_json_object\n",
-        "from candidate_runtime_identity import verify_candidate_source\n"
+        "from candidate_runtime_identity import (\n"
+        "    isolated_import_probe_command,\n"
+        "    verify_candidate_source,\n"
+        ")\n"
         "from json_input_contract import load_json_object\n",
         label="invoke identity import",
     )
@@ -392,6 +411,26 @@ def patch_invoke(output: Path, pipe: str) -> None:
         "    verify_candidate_source(root)\n"
         "    required = (python, game / \"binaries\" / \"ck3.exe\")\n",
         label="invoke required runtime",
+    )
+    text = replace_required(
+        text,
+        "    dependency_probe = subprocess.run(\n",
+        "    isolated_environment = os.environ.copy()\n"
+        '    isolated_environment.pop("PYTHONPATH", None)\n'
+        '    isolated_environment.pop("PYTHONHOME", None)\n'
+        "    import_probe = subprocess.run(\n"
+        "        isolated_import_probe_command(\n"
+        "            python, root, optimized=not __debug__\n"
+        "        ),\n"
+        "        cwd=root,\n"
+        "        env=isolated_environment,\n"
+        "        check=False,\n"
+        "        timeout=60,\n"
+        "    )\n"
+        "    if import_probe.returncode != 0:\n"
+        "        return import_probe.returncode\n"
+        "    dependency_probe = subprocess.run(\n",
+        label="isolated import preflight",
     )
     text = text.replace('            "--workspace-root",\n            str(workspace),\n', "")
     text = text.replace('        "--workspace-root",\n        str(workspace),\n', "")
@@ -560,6 +599,10 @@ def materialize(
         shutil.copyfile(
             Path(__file__).with_name("candidate_runtime_identity.py"),
             output / "candidate_runtime_identity.py",
+        )
+        shutil.copyfile(
+            Path(__file__).with_name("candidate_runtime_import_probe.py"),
+            output / "candidate_runtime_import_probe.py",
         )
         patch_runner(output)
         patch_verifier(output, harness_commit, pipe)

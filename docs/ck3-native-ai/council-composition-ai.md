@@ -557,12 +557,15 @@ that master into `source-repo/` inside a new immutable candidate. A
 candidate-local identity binds the Git commit, Git tree object, aggregate
 path/size/content SHA-256, and the exact hashes of `native_driver`,
 `native_auto_run`, `environment`, and `runtime`. The sealed prep manifest also
-lists every copied source file. Both preflight and the live runner verify this
-identity before importing; after import they require each module `__file__`
-and SHA-256 to match its candidate-local file. The operator runtime config no
-longer contains `workspace_root`, so another checkout cannot choose executable
-Python code. Python and CK3 installation paths remain replaceable operator
-inputs and contain no credentials.
+lists every copied source file. `environment.py` also imports the repository
+release helper, so the closed runtime set includes the exact
+`tools/build_release.py` blob from the same commit and records its Git blob OID
+and SHA-256. No other repository directory is copied. Both preflight and the
+live runner verify this identity before importing; after import they require
+each module `__file__` and SHA-256 to match its candidate-local file. The
+operator runtime config no longer contains `workspace_root`, so another
+checkout cannot choose executable Python code. Python and CK3 installation
+paths remain replaceable operator inputs and contain no credentials.
 
 The normal and optimized contract tests cover commit/tree binding, byte drift,
 module-path escape, and the internal snapshot API. The candidate verifier is
@@ -570,3 +573,12 @@ still no-launch: it checks the sealed inventory, local imports, and an empty
 CK3 inventory. R691 remains unallocated until the single CK3 owner accepts and
 runs this candidate. The earlier incompatible R691 candidates and the R690
 runtime RED stay unchanged.
+
+The first self-contained candidate `b311d31` preserved one further no-launch
+RED: its source repository omitted `tools/build_release.py`, so isolated import
+stopped at `ModuleNotFoundError` before any process-creation path. Its candidate
+and separate RED receipt remain immutable; CK3 inventory was zero and R691 was
+not allocated. The reusable closure test now builds a temporary candidate-local
+`src` plus the one required tool blob, clears `PYTHONPATH`/`PYTHONHOME`, launches
+Python with `-I`, imports all four runner modules and `build_release`, then
+checks every imported `__file__` and SHA-256 against the sealed identity.
