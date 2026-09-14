@@ -13,15 +13,17 @@
 				limit = {
 					is_title_created = yes
 					is_landless_type_title = no
-					holder ?= {
-						top_liege = this
+				holder ?= {
+					top_liege = {
 						is_landed = yes
 						is_alive = yes
+						top_liege = this
 						NOT = { this = scope:actor }
 						NOT = { this = scope:recipient }
 						NOT = { is_tributary_of = scope:actor }
 						in_diplomatic_range = scope:recipient
 					}
+				}
 				}
 				holder.top_liege = { add_to_list = characters }
 			}
@@ -86,13 +88,15 @@
 					is_title_created = yes
 					is_landless_type_title = no
 					holder ?= {
-						top_liege = this
-						is_landed = yes
-						is_alive = yes
-						NOT = { this = scope:actor }
-						NOT = { this = scope:recipient }
-						NOT = { is_tributary_of = scope:actor }
-						in_diplomatic_range = scope:recipient
+						top_liege = {
+							is_landed = yes
+							is_alive = yes
+							top_liege = this
+							NOT = { this = scope:actor }
+							NOT = { this = scope:recipient }
+							NOT = { is_tributary_of = scope:actor }
+							in_diplomatic_range = scope:recipient
+						}
 					}
 				}
 			}
