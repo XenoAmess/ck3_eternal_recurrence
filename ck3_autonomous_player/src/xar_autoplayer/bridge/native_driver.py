@@ -1369,6 +1369,7 @@ class NativeHeadlessGameplayDriver:
         )
         self._declarable_wars: list[dict[str, object]] = []
         self._declaration_query_sequence: int | None = None
+        self._declaration_query_binding: dict[str, object] | None = None
         self._army_strength_query: dict[str, object] | None = None
         self._combat_simulation_inputs_query: dict[str, object] | None = None
         self._combat_simulation_inputs_v3_query: dict[str, object] | None = None
@@ -1423,12 +1424,22 @@ class NativeHeadlessGameplayDriver:
         bridge_capabilities = set(
             _string_list(result.get("bridge_capabilities"))
         )
+        current_snapshot = (
+            self._with_one_life_episode(self.state.semantic_snapshot())
+            if result.get("snapshot") is True
+            else None
+        )
         with self._driver_state_lock:
-            declarations = copy.deepcopy(self._declarable_wars)
             marriage_choices = copy.deepcopy(self._arrange_marriage_choices)
             active_retreat_token = copy.deepcopy(
                 self._active_combat_retreat_v1_token
             )
+        declarations = (
+            copy.deepcopy(current_snapshot.get("declarable_wars"))
+            if isinstance(current_snapshot, dict)
+            and isinstance(current_snapshot.get("declarable_wars"), list)
+            else []
+        )
         if DECLARE_WAR_CAPABILITY in bridge_capabilities:
             action_steps.update(
                 declare_war_step(str(row["declaration_id"]))
@@ -1457,11 +1468,6 @@ class NativeHeadlessGameplayDriver:
         ):
             action_steps.add(_RESTORE_CHECKPOINT_STEP)
             composite_action_steps.append(_RESTORE_CHECKPOINT_STEP)
-        current_snapshot = (
-            self._with_one_life_episode(self.state.semantic_snapshot())
-            if result.get("snapshot") is True
-            else None
-        )
         sentinel_watch_army_ids = _battle_sentinel_watch_army_ids(
             current_snapshot
         )
@@ -1965,14 +1971,18 @@ class NativeHeadlessGameplayDriver:
                 identity_changed = True
             episode_character_id = self._episode_character_id
             episode_run_id = self._episode_run_id
-            declarable_wars = copy.deepcopy(self._declarable_wars)
-            declaration_query_sequence = self._declaration_query_sequence
             arrange_marriage_choices = copy.deepcopy(
                 self._arrange_marriage_choices
             )
             arrange_marriage_query_sequence = (
                 self._arrange_marriage_query_sequence
             )
+        declarable_wars, declaration_query_sequence = (
+            self._declarable_wars_cache_for_snapshot(
+                snapshot,
+                episode_run_id=episode_run_id,
+            )
+        )
         war_termination_options = self._war_termination_cache_for_snapshot(
             snapshot,
             episode_run_id=episode_run_id,
@@ -2428,6 +2438,58 @@ class NativeHeadlessGameplayDriver:
             "war_termination_terms": war_termination_terms,
             "war_termination_exit_terms": war_termination_exit_terms,
         }
+
+    def _declarable_wars_cache_for_snapshot(
+        self,
+        snapshot: dict[str, object],
+        *,
+        episode_run_id: str | None,
+    ) -> tuple[list[dict[str, object]], int | None]:
+        """Project declaration choices only on their exact paused frame."""
+        diagnostics = snapshot.get("diagnostics")
+        connection_generation = (
+            diagnostics.get("connection_generation")
+            if isinstance(diagnostics, dict)
+            else None
+        )
+        with self._driver_state_lock:
+            binding = self._declaration_query_binding
+            query_sequence = self._declaration_query_sequence
+            valid = (
+                snapshot.get("paused") is True
+                and isinstance(binding, dict)
+                and set(binding)
+                == {
+                    "native_revision",
+                    "snapshot_id",
+                    "revision",
+                    "connection_generation",
+                    "episode_run_id",
+                }
+                and binding.get("native_revision")
+                == snapshot.get("native_revision")
+                and binding.get("snapshot_id") == snapshot.get("snapshot_id")
+                and binding.get("revision") == snapshot.get("revision")
+                and binding.get("connection_generation")
+                == connection_generation
+                and binding.get("episode_run_id") == episode_run_id
+                and isinstance(query_sequence, int)
+                and not isinstance(query_sequence, bool)
+                and 1 <= query_sequence <= 2**64 - 1
+            )
+            if valid:
+                try:
+                    declarations = normalize_declarable_wars(
+                        self._declarable_wars
+                    )
+                except ValueError:
+                    valid = False
+            if not valid:
+                self._declarable_wars = []
+                self._declaration_query_sequence = None
+                self._declaration_query_binding = None
+                return [], None
+            return copy.deepcopy(declarations), query_sequence
 
     def _war_entry_assessments_cache_for_snapshot(
         self,
@@ -3271,6 +3333,7 @@ class NativeHeadlessGameplayDriver:
                 self._driver_state_restore_kind = "operator_played_character_rebind"
                 self._declarable_wars = []
                 self._declaration_query_sequence = None
+                self._declaration_query_binding = None
                 self._army_strength_query = None
                 self._combat_simulation_inputs_query = None
                 self._combat_simulation_inputs_v3_query = None
@@ -5191,6 +5254,7 @@ class NativeHeadlessGameplayDriver:
             self._pending_cold_candidate = None
             self._declarable_wars = []
             self._declaration_query_sequence = None
+            self._declaration_query_binding = None
             self._army_strength_query = None
             self._combat_simulation_inputs_query = None
             self._combat_simulation_inputs_v3_query = None
@@ -5573,6 +5637,7 @@ class NativeHeadlessGameplayDriver:
                     should_persist = True
             self._declarable_wars = []
             self._declaration_query_sequence = None
+            self._declaration_query_binding = None
             self._army_strength_query = None
             self._combat_simulation_inputs_query = None
             self._combat_simulation_inputs_v3_query = None
@@ -6431,6 +6496,7 @@ class NativeHeadlessGameplayDriver:
         self, step: str, *, expected_revision: int | None
     ) -> dict[str, object]:
         if step == QUERY_DECLARABLE_WARS_STEP:
+            starting = self.take_snapshot()
             result = self._execute_primitive_step(
                 step, expected_revision=expected_revision
             )
@@ -6446,9 +6512,37 @@ class NativeHeadlessGameplayDriver:
                 raise BridgeUnavailableError(
                     "native declarable-war result lacks query_sequence"
                 )
+            current = self.take_snapshot()
+            starting_diagnostics = starting.get("diagnostics")
+            current_diagnostics = current.get("diagnostics")
+            if not (
+                current.get("paused") is True
+                and current.get("snapshot_id") == starting.get("snapshot_id")
+                and current.get("revision") == starting.get("revision")
+                and current.get("native_revision")
+                == starting.get("native_revision")
+                and current.get("episode_run_id")
+                == starting.get("episode_run_id")
+                and isinstance(starting_diagnostics, dict)
+                and isinstance(current_diagnostics, dict)
+                and current_diagnostics.get("connection_generation")
+                == starting_diagnostics.get("connection_generation")
+            ):
+                raise BridgeUnavailableError(
+                    "native declarable-war query crossed a snapshot revision"
+                )
             with self._driver_state_lock:
                 self._declarable_wars = copy.deepcopy(declarations)
                 self._declaration_query_sequence = query_sequence
+                self._declaration_query_binding = {
+                    "native_revision": current.get("native_revision"),
+                    "snapshot_id": current.get("snapshot_id"),
+                    "revision": current.get("revision"),
+                    "connection_generation": current_diagnostics.get(
+                        "connection_generation"
+                    ),
+                    "episode_run_id": current.get("episode_run_id"),
+                }
             return {
                 **result,
                 "declarable_wars": declarations,
@@ -6484,6 +6578,7 @@ class NativeHeadlessGameplayDriver:
             with self._driver_state_lock:
                 self._declarable_wars = []
                 self._declaration_query_sequence = None
+                self._declaration_query_binding = None
         changed = self._wait_for_snapshot(
             self.take_snapshot(),
             lambda snapshot: (

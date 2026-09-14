@@ -207,11 +207,22 @@ def _native_driver(
         }
     )
     endpoint.publish(_semantic_snapshot(active_wars=active_wars))
+    snapshot = driver.take_snapshot()
     driver._declarable_wars = (
         [_declaration(808), _declaration(42)]
         if declarations is None
         else declarations
     )
+    driver._declaration_query_sequence = 1
+    diagnostics = snapshot["diagnostics"]
+    assert isinstance(diagnostics, dict)
+    driver._declaration_query_binding = {
+        "native_revision": snapshot["native_revision"],
+        "snapshot_id": snapshot["snapshot_id"],
+        "revision": snapshot["revision"],
+        "connection_generation": diagnostics["connection_generation"],
+        "episode_run_id": snapshot["episode_run_id"],
+    }
     return driver, endpoint
 
 

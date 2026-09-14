@@ -9602,6 +9602,83 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
         self.assertEqual(declared["war_action"]["target_character_id"], 808)
         self.assertEqual(driver.take_snapshot()["declarable_wars"], [])
 
+    def test_native_declaration_query_expires_on_next_snapshot(self) -> None:
+        endpoint = FakeEndpoint()
+        driver = NativeHeadlessGameplayDriver(
+            endpoint.pipe_name,
+            endpoint=endpoint,
+            command_timeout_seconds=0.1,
+        )
+        endpoint.publish(
+            _hello(
+                "game.state.snapshot",
+                "game.state.declarable-wars",
+                "game.command.query-declarable-wars",
+                "game.command.declare-war-N",
+            )
+        )
+        endpoint.publish(
+            _snapshot(
+                40,
+                played_character={"character_id": 707, "alive": True},
+            )
+        )
+        declaration = {
+            "declaration_id": "808-17-0",
+            "target_character_id": 808,
+            "casus_belli_index": 17,
+            "casus_belli_key": "county_conquest_cb",
+            "configuration_index": 0,
+            "claimant_character_id": -1,
+            "target_title_ids": [91],
+        }
+
+        def answer(frame: dict[str, object]) -> None:
+            if frame.get("type") != "execute_step":
+                return
+            endpoint.publish(
+                {
+                    "type": "command_result",
+                    "protocol_version": 1,
+                    "request_id": frame["request_id"],
+                    "ok": True,
+                    "result": {
+                        "step": frame["step"],
+                        "accepted": True,
+                        "status": "available",
+                        "query_sequence": 3,
+                        "declarable_wars": [declaration],
+                    },
+                }
+            )
+
+        endpoint.send_hook = answer
+        starting = driver.take_snapshot()
+        driver.execute_step(
+            "query-declarable-wars",
+            expected_revision=int(starting["revision"]),
+        )
+        self.assertIn(
+            "declare-war-808-17-0", driver.capabilities()["action_steps"]
+        )
+
+        endpoint.publish(
+            _snapshot(
+                41,
+                date_raw=53_172_120,
+                played_character={"character_id": 707, "alive": True},
+            )
+        )
+        refreshed = driver.take_snapshot()
+        self.assertEqual(refreshed["declarable_wars"], [])
+        self.assertIsNone(refreshed["declaration_query_sequence"])
+        self.assertNotIn(
+            "declare-war-808-17-0", driver.capabilities()["action_steps"]
+        )
+        self.assertIn(
+            "query-declarable-wars", driver.capabilities()["action_steps"]
+        )
+
     def test_army_strength_query_is_atomic_cached_and_mcp_subset_filtered(
         self,
     ) -> None:
