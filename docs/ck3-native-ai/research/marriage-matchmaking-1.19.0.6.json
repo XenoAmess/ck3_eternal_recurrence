@@ -1,0 +1,171 @@
+{
+  "artifact_version": "marriage-matchmaking-research-v1",
+  "build": {
+    "game_version": "1.19.0.6",
+    "exe_relative_path": "binaries/ck3.exe",
+    "exe_size": 95206008,
+    "exe_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86"
+  },
+  "sources": [
+    {
+      "relative_path": "game/gui/debug/window_watch_ai.gui",
+      "size": 36286,
+      "sha256": "8539831B5C6A14A690C12F668F50C45D204900C9ABDAB244929A29574D6CBC2C",
+      "anchors": [
+        {"line_start": 422, "line_end": 543, "contains": "[AIWatchWindow.CalculateSpouseCandidates]"},
+        {"line_start": 422, "line_end": 543, "contains": "[AIWatchWindow.GetTargetItems]"},
+        {"line_start": 422, "line_end": 543, "contains": "[SAIValueInfo.GetCharacter]"}
+      ]
+    },
+    {
+      "relative_path": "game/gui/interaction_marriage.gui",
+      "size": 18795,
+      "sha256": "5DD66BB90983A4841EF9BA53F3B24D65AB5108882EEA10B466A8F40C4DCCE5BF",
+      "anchors": [
+        {"line_start": 338, "line_end": 375, "contains": "[MatchmakerInteractionWindow.GetCharacterList]"},
+        {"line_start": 338, "line_end": 375, "contains": "[CharacterSelectionList.GetList]"},
+        {"line_start": 425, "line_end": 460, "contains": "[CharacterListItem.GetOtherCharacterItems]"},
+        {"line_start": 496, "line_end": 580, "contains": "[CharacterSelectionList.GetFilter('alliance_filter')]"}
+      ]
+    },
+    {
+      "relative_path": "game/common/important_actions/00_marriage_actions.txt",
+      "size": 9780,
+      "sha256": "6AEB17045C010AF5CD01388A9FC655E3C021FBDBDAE73F97832B6A4F5C4DA724",
+      "anchors": [
+        {"line_start": 1, "line_end": 79, "contains": "action_adult_player_heir_not_married"},
+        {"line_start": 43, "line_end": 79, "contains": "action_adult_ruler_not_married"},
+        {"line_start": 118, "line_end": 173, "contains": "every_potential_marriage_option"},
+        {"line_start": 175, "line_end": 230, "contains": "action_close_family_can_marry"}
+      ]
+    },
+    {
+      "relative_path": "game/common/character_interactions/_character_interactions.info",
+      "size": 27227,
+      "sha256": "F360C05B72CD2B0D87885E570FA55E70E41089DEFB4675BE5A82E390940D5D10",
+      "anchors": [
+        {"line_start": 575, "line_end": 587, "contains": "It automatically marries/betroths the secondary participants and sets up alliances and hands out prestige."},
+        {"line_start": 575, "line_end": 587, "contains": "It's also used by the ai in knowing which interaction to use when setting up marriages."}
+      ]
+    },
+    {
+      "relative_path": "game/common/character_interactions/00_marriage_interactions.txt",
+      "size": 124696,
+      "sha256": "681A9B669E5A16642A197B6FE16085193DFBB99A398D0E20E86173F5AC6DE219",
+      "anchors": [
+        {"line_start": 150, "line_end": 268, "contains": "populate_actor_list = {"},
+        {"line_start": 150, "line_end": 268, "contains": "populate_recipient_list = {"},
+        {"line_start": 550, "line_end": 630, "contains": "marriage_interaction_valid_target_trigger"},
+        {"line_start": 740, "line_end": 760, "contains": "marriage_ai_accept_modifier"}
+      ]
+    },
+    {
+      "relative_path": "game/common/scripted_modifiers/00_marriage_scripted_modifiers.txt",
+      "size": 81441,
+      "sha256": "3A16A3957822A6AB682E1594E42921048791237BA65F070E66F815A4ACAD654C",
+      "anchors": [
+        {"line_start": 1, "line_end": 2600, "contains": "marriage_ai_accept_modifier"}
+      ]
+    },
+    {
+      "relative_path": "game/common/scripted_triggers/00_marriage_triggers.txt",
+      "size": 16630,
+      "sha256": "BA0A8B51E1FECB9CC35EE94DAB5BC9B0C3B264932BAFAC33C77926423B60EB03",
+      "anchors": [
+        {"line_start": 350, "line_end": 441, "contains": "marriage_interaction_valid_target_trigger"},
+        {"line_start": 350, "line_end": 441, "contains": "can_marry_character_trigger"}
+      ]
+    },
+    {
+      "relative_path": "game/common/scripted_effects/00_marriage_interaction_effects.txt",
+      "size": 48048,
+      "sha256": "A19CF10C6E7AA4F6475017B7202EBB06D528B53D8F09B5D4E23BD8F4C6767B6C",
+      "anchors": [
+        {"line_start": 1, "line_end": 30, "contains": "marriage_interaction_on_accept_effect"},
+        {"line_start": 1630, "line_end": 1670, "contains": "yields_alliance = {"}
+      ]
+    }
+  ],
+  "ascii_strings": [
+    {"rva": "0x4114F10", "value": "CalculateSpouseCandidates"},
+    {"rva": "0x41150B8", "value": "GetTargetItems"},
+    {"rva": "0x412BE58", "value": "GetAllianceItems"},
+    {"rva": "0x40E49E8", "value": "GetOtherCharacterItems"}
+  ],
+  "native_byte_ranges": [
+    {"name": "calculate_spouse_candidates_binding", "rva": "0x136D20", "size": 160, "sha256": "A174872A19311CE2356D65BB55E9FD42BF32BBE3D5D059B844BB0E946540A555"},
+    {"name": "calculate_spouse_candidates_wrapper", "rva": "0x101EF00", "size": 28, "sha256": "019A7A0CA44B548B4954C8C407AE0E6CFAA868953D5C705F338E4B1B4F510F42"},
+    {"name": "calculate_spouse_candidates_core", "rva": "0x101AA70", "size": 937, "sha256": "21E3B11D93AE3559231C74D7A48A28B5260781855D000C93E7783EB885917718"},
+    {"name": "enumerate_initial_candidate_pool", "rva": "0x1890470", "size": 2334, "sha256": "1C5D5586CBEE822973D1D11C6907402B9F312AEEFE0B9FAA44B433B4E7BC5AEB"},
+    {"name": "score_filter_candidate_pool", "rva": "0x1890D90", "size": 425, "sha256": "F0C09FFC68E2EC7C9080DA49576F78AD5BA7D8AA74C9F4958975AB13837BF607"},
+    {"name": "candidate_gate_and_score", "rva": "0x1890F40", "size": 523, "sha256": "DCF9A164A25E6360B67B426248BF3F49A9A69BB340191B23904474657B94B819"},
+    {"name": "relationship_network_score", "rva": "0x1891150", "size": 782, "sha256": "7116159673C9D14274827F7FDD4BCB0CA24803C3A76F0B66643DF76B81CD3D98"},
+    {"name": "active_ai_candidate_enumeration_callsite", "rva": "0x18FA41D", "size": 315, "sha256": "5EC22BFFB783D387FAA65D68136A5178664ADBDE208BD2C38998BB7DC155707D"},
+    {"name": "active_ai_roles_and_acceptance_callsite", "rva": "0x18FA7E0", "size": 595, "sha256": "D0F632B2DAB440BA6B5DDCAE889D960A102BA0BE727D6A40B80E69E2BA945F08"},
+    {"name": "active_ai_ranked_result_callsite", "rva": "0x18FAEE0", "size": 372, "sha256": "7F71391A73DA24BCC44AC8CF243546A2FA3125447BE717B1C6D63F919E430DA5"},
+    {"name": "active_ai_pair_final_validation_callsite", "rva": "0x18FB170", "size": 257, "sha256": "D52C0A314AC76DA9CC812AA5C92F577FEDD3E025518BEFAAB53CB0BAFEA1728B"},
+    {"name": "native_outer_legality_acceptance_gate", "rva": "0x18F9C40", "size": 222, "sha256": "41E0D29C58497B2A43D308DD5641AAC96511AF10D7C9AF82E8F432F3094567EC"},
+    {"name": "get_alliance_items_registration", "rva": "0x1C009D", "size": 168, "sha256": "D66CEF0C0CB2FC671FB52C37C26349B24FA05E44FD8E6B0D6F54D26489D79EF7"},
+    {"name": "get_alliance_items_callback", "rva": "0x1274610", "size": 83, "sha256": "85754329975B2388D8B728303C248A9752FC043A6F173A178CE9A3D0AE95D907"},
+    {"name": "marriage_or_betrothal_outcome_dispatch", "rva": "0x2282DE0", "size": 640, "sha256": "8A5E047A6797CF0FB9DEA442F00D56A5362FCBBC761C67739841FC24F7C6479B"}
+  ],
+  "direct_call_edges": [
+    {"source": "0x136DAD", "target": "0x101EF00", "instruction": "lea", "meaning": "UI binding to CalculateSpouseCandidates wrapper"},
+    {"source": "0x101EF09", "target": "0x101AA70", "instruction": "call", "meaning": "wrapper to debug candidate calculation"},
+    {"source": "0x101AC13", "target": "0x1890470", "instruction": "call", "meaning": "debug calculation enumerates native candidate pool"},
+    {"source": "0x101AC37", "target": "0x1890D90", "instruction": "call", "meaning": "debug calculation scores and filters native candidate pool"},
+    {"source": "0x18FA4C3", "target": "0x1890470", "instruction": "call", "meaning": "production AI uses the same candidate enumerator"},
+    {"source": "0x18FAF36", "target": "0x1890D90", "instruction": "call", "meaning": "production AI uses the same score/filter helper"},
+    {"source": "0x18FA85D", "target": "0x2C3C4C0", "instruction": "call", "meaning": "production AI redirects all five character roles"},
+    {"source": "0x18FA8A1", "target": "0x2C3F000", "instruction": "call", "meaning": "production AI constructs all-role interaction context"},
+    {"source": "0x18FA932", "target": "0x2C44320", "instruction": "call", "meaning": "production AI evaluates raw recipient ai_accept"},
+    {"source": "0x18FAB4C", "target": "0x2C43F00", "instruction": "call", "meaning": "production AI applies complete Can Send before enqueue"},
+    {"source": "0x18FB223", "target": "0x2C40950", "instruction": "call", "meaning": "ranked pair context refresh"},
+    {"source": "0x18FB22D", "target": "0x2C40B20", "instruction": "call", "meaning": "ranked pair context finalize"},
+    {"source": "0x18F9C6E", "target": "0x2C43F00", "instruction": "call", "meaning": "final pair legality gate"},
+    {"source": "0x18F9C95", "target": "0x2C43B40", "instruction": "call", "meaning": "final responder answer gate"},
+    {"source": "0x1C0135", "target": "0x1274610", "instruction": "lea", "meaning": "GetAllianceItems registration binds its callback"},
+    {"source": "0x2282F1D", "target": "0x2660B20", "instruction": "call", "meaning": "adult non-grand-wedding pair becomes married"},
+    {"source": "0x2283057", "target": "0x2660F40", "instruction": "call", "meaning": "otherwise pair becomes betrothed"}
+  ],
+  "ranked_entry_layout": {
+    "stride": 16,
+    "candidate_character_id_offset": 8,
+    "native_score_offset": 12,
+    "score_type": "signed-int32",
+    "deduplication_key": "full generation-bearing CharacterID"
+  },
+  "proposed_observer_contract": {
+    "name": "marriage-matchmaking-observer-v1",
+    "execution": "paused application-main read-only query",
+    "required_output": [
+      "exact_build_identity",
+      "subject_character_id",
+      "matchmaker_character_id",
+      "readiness_status_and_reason",
+      "ranked_candidate_rows(candidate_character_id,native_candidate_score)",
+      "pair_roles(actor,recipient,secondary_actor,secondary_recipient,intermediary)",
+      "complete_can_send",
+      "recipient_ai_accept_raw",
+      "recipient_answer_status",
+      "predicted_outcome_kind(marriage_or_betrothal)",
+      "postcondition_relationship(spouse_or_betrothed)",
+      "postcondition_alliance_pairs"
+    ],
+    "religion_boundary": "Expose only the final native legality/acceptance result and opaque failure reason. Do not expose or reconstruct faith, doctrine, tenet, or fervor trees.",
+    "non_goals": [
+      "submitting a marriage command",
+      "reimplementing CK3 candidate scoring in Python",
+      "general religion observation",
+      "claiming a guaranteed alliance when the native outcome exposes none"
+    ]
+  },
+  "unknowns": [
+    "The exact cadence and owner-selection scheduler that invokes the production matchmaking routine.",
+    "Semantic names for every candidate-universe source traversed by 0x1890470.",
+    "Semantic names and units for every score term inside 0x1890F40 and 0x1891150.",
+    "Whether every human-controlled character owns the strategy object required by the production scorer in every lifecycle state.",
+    "The SAllianceItem row layout and stable pair identities behind CMarriageInfo+0x50; the GetAllianceItems callback itself is frozen at 0x1274610.",
+    "The exact option-combination search and final tie-break ordering after native candidate score ties."
+  ]
+}

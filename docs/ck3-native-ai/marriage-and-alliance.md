@@ -1,11 +1,11 @@
-# CK3 1.19.0.6 婚姻、联盟与战争召集：入站回复树
+# CK3 1.19.0.6 婚姻、联盟与战争召集：主动婚配与入站回复树
 
 ## 范围与结论
 
-本文按一代长跑中真实出现的 blocker，分别闭合 exact-build CK3 `1.19.0.6` 的 stock
-`arrange_marriage_interaction`、`negotiate_alliance_interaction` 与 `call_ally_interaction` 入站回复树。
-它不是完整 P6 婚姻/联盟/多战争策略，也不覆盖主动择偶、多候选联合评分、继承规划、遗传、离婚、通用
-faith/doctrine 或其它 `special_interaction`。下列开篇结论先对应 marriage 分支；两个 G2 分支各自在后文维护独立证据边界。
+本文先按一代长跑中真实出现的 blocker，分别闭合 exact-build CK3 `1.19.0.6` 的 stock
+`arrange_marriage_interaction`、`negotiate_alliance_interaction` 与 `call_ally_interaction` 入站回复树；末节再冻结主动择偶的
+原生候选发现、评分、合法性、接受度与主要结果树。它仍不是完整 P6 婚姻/联盟/多战争策略，也不覆盖继承规划、遗传、离婚、
+通用 faith/doctrine 或其它 `special_interaction`。下列开篇结论先对应 marriage 入站分支；各分支在后文维护独立证据边界。
 
 - [static-confirmed] `arrange_marriage_interaction` 是定义绑定的 marriage special；它的
   `special_data_present=true` 不表示 war special，也不需要按战争 payload 解码。
@@ -530,3 +530,192 @@ opaque religious-war 标志与当前 reply effect preview。accept 后必须在 
 [`events-and-interactions.md`](events-and-interactions.md)，完整战争效用输入见
 [`player-war-entry-policy.md`](player-war-entry-policy.md)；这个 decoder/query 是把本节从 blocker-removal 升级为真正
 call-ally utility policy 的替换入口。
+
+## 主动择偶：候选发现、接受度与结果树
+
+### 范围和当前结论
+
+本节补上开篇明确排除的主动择偶链。范围只到“为玩家本人寻找直接配偶候选 → 消费原生候选分与最终互动判定 →
+验证配偶/订婚及联盟结果”。为亲属安排婚姻的四角色策略、继承规划、遗传性状效用、离婚、侧室和通用宗教模型仍不在本切片。
+
+- [static-confirmed] exact build `1.19.0.6` 已找到一条由调试 UI 和生产 AI **共同调用**的候选枚举与评分链：
+  `0x1890470` 构造初始候选池，`0x1890D90` 评分/过滤；调试调用点是 `0x101AC13/0x101AC37`，生产 AI
+  调用点是 `0x18FA4C3/0x18FAF36`。这比按全场角色盲扫后只跑一次 Can Send 更接近原版主动择偶行为。
+- [static-confirmed] 每个评分结果以 16-byte 条目保存，`+0x08` 是完整 generation-bearing CharacterID，`+0x0C`
+  是 signed-int32 原生候选分。`0x1890F40` 按完整 ID 去重，并在分数达到调用方阈值后才写入结果。
+- [static-confirmed] 生产链随后构造五角色 marriage context，刷新并 finalize，走 complete Can Send 与原生 responder
+  answer/`ai_accept`；它没有只凭候选分直接发送。`0x18FAB4C` 是发送前完整 Can Send 调用点，`0x18FA932`
+  是同一生产链中的 raw `ai_accept` 调用点。
+- [static-confirmed] `CMarriageOffer` 的结果仍由 actual secondary pair 决定：双方成年且没有 grand-wedding promise 时，
+  `0x2282F1D → 0x2660B20` 建立婚姻；否则 `0x2283057 → 0x2660F40` 建立订婚。原版作者合同还明确声明，
+  该 special 会处理 alliance 与 prestige。
+- [evidence boundary] 本工作包没有启动 CK3，状态是 exact-build `static-confirmed` 与 observer `static-ready`，没有新增
+  paused live artifact。它也不把调试 UI 的可见列表冒充生产 AI 调度时机，不把尚未命名的 native score term 猜成某个具体玩法权重。
+
+当前 `game.command.query-arrange-marriage-choices` 已经能盲扫 live Character storage，为“玩家本人 ↔ 候选本人”构造
+interaction context，并返回通过 native validation 的两个 ID。它解决了无界面可发送性，却没有原生排序分、接受度、结果类型或
+联盟预览；因此不能支撑“从多个合法对象中选择更好的一个”。下一步应替换它的候选发现源并扩展只读结果，而不是在 Python
+重写原版评分器。
+
+### 冻结证据和复核入口
+
+| 证据 | SHA-256 | 本节用途 |
+|---|---|---|
+| `Crusader Kings III/binaries/ck3.exe` | `2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86` | 调试绑定、生产候选链、最终互动判定和 outcome dispatch |
+| `game/gui/debug/window_watch_ai.gui` | `8539831B5C6A14A690C12F668F50C45D204900C9ABDAB244929A29574D6CBC2C` | `CalculateSpouseCandidates`、`GetTargetItems` 与候选 Character 投影 |
+| `game/gui/interaction_marriage.gui` | `5DD66BB90983A4841EF9BA53F3B24D65AB5108882EEA10B466A8F40C4DCCE5BF` | 玩家候选列表、联盟项与筛选界面边界 |
+| `game/common/important_actions/00_marriage_actions.txt` | `6AEB17045C010AF5CD01388A9FC655E3C021FBDBDAE73F97832B6A4F5C4DA724` | 玩家、继承人、近亲与已订婚者的提醒入口 |
+| `game/common/character_interactions/_character_interactions.info` | `F360C05B72CD2B0D87885E570FA55E70E41089DEFB4675BE5A82E390940D5D10` | marriage special 的角色和结果作者合同 |
+| `game/common/character_interactions/00_marriage_interactions.txt` | `681A9B669E5A16642A197B6FE16085193DFBB99A398D0E20E86173F5AC6DE219` | 列表来源、target legality 与 `ai_accept` |
+| `game/common/scripted_modifiers/00_marriage_scripted_modifiers.txt` | `3A16A3957822A6AB682E1594E42921048791237BA65F070E66F815A4ACAD654C` | `marriage_ai_accept_modifier` 输入树 |
+| `game/common/scripted_triggers/00_marriage_triggers.txt` | `BA0A8B51E1FECB9CC35EE94DAB5BC9B0C3B264932BAFAC33C77926423B60EB03` | adult/betrothal 与必要合法性门 |
+| `game/common/scripted_effects/00_marriage_interaction_effects.txt` | `A19CF10C6E7AA4F6475017B7202EBB06D528B53D8F09B5D4E23BD8F4C6767B6C` | accept effects 与既有 betrothal/alliance 清理语义 |
+
+机器可读的 RVA、bounded byte-range hash、direct-call edge 和 source anchor 在
+[`research/marriage-matchmaking-1.19.0.6.json`](research/marriage-matchmaking-1.19.0.6.json)。任意获授权机器可用自己的安装根复核：
+
+```powershell
+py docs/ck3-native-ai/research/verify-marriage-matchmaking.py --game-root "D:\Games\Crusader Kings III"
+```
+
+该 verifier 只读 PE 与 stock source；也支持 `CK3_GAME_ROOT`，没有固化 `xenoa`、盘符、轮次或个人凭据。
+
+### 脚本和界面能证明什么
+
+- [static-confirmed] `00_marriage_actions.txt:1-230` 会为未婚的成年玩家继承人、成年统治者、十岁以上未成年统治者、
+  已可完婚的订婚者和可婚近亲创建提醒。这证明玩家侧的“何时值得处理婚姻”入口，但不证明生产 AI 的 scheduler cadence。
+- [static-confirmed] `00_marriage_interactions.txt:162-268` 的 `populate_actor_list` 从 actor、廷臣、离廷廷臣和一定范围子孙构造
+  可安排的一侧，`populate_recipient_list` 从 recipient、廷臣、离廷廷臣和子女构造另一侧。这是 marriage UI/interaction
+  的角色来源合同；主动为玩家本人择偶只需其 direct subset。
+- [static-confirmed] `interaction_marriage.gui:353-579` 把 `MatchmakerInteractionWindow.GetCharacterList →
+  CharacterSelectionList.GetList` 暴露为候选列表，并提供 age、fertility、health、religion、culture、trait、sexuality、gender、
+  alliance、prestige、ruler、dynasty 与 claim 筛选。候选 row 的 `CharacterListItem.GetOtherCharacterItems` 还投影联盟相关角色。
+  这些是玩家查看和筛选能力，不是生产 AI 对各项权重的逐项证明。
+- [static-confirmed] `_character_interactions.info:576-587` 是比界面命名更强的作者合同：marriage special 既供 UI 使用，
+  也供 AI 选择用哪项 interaction；actual pair 是 secondary participants；special 自动结婚/订婚并处理联盟与 prestige。
+
+### exact native 候选发现与评分链
+
+`AIWatchWindow.CalculateSpouseCandidates` 字符串 RVA 为 `0x4114F10`，注册点 `0x136DAD` 绑定 wrapper
+`0x101EF00`，再调用 core `0x101AA70`。core 清空结果，按完整 ID 解析被观察角色，读取
+`CCharacter+0x1A8 → +0x278` 的 strategy，并要求 strategy `+0x20` 有效；它从 strategy `+0x18` 取得 source Character，
+从 interaction database `+0xF48` 取得 `arrange_marriage_interaction` definition。
+
+core 在栈上建立候选参数：definition、两份 source Character、source 是否小于 30 岁的 bool、最低候选分 `1`。随后：
+
+1. `0x2601F90(source)` 选择一项 native tier/cap 输入；
+2. `0x1890470(strategy, 0, true, cap, pool)` 构造有界初始候选池；
+3. `0x1890D90(strategy, parameters, pool, scored)` 评分、过滤并输出 16-byte rows；
+4. `0x101FD80` 物化结果，core 把每行 `candidate_character_id/native_score` 复制到 `AIWatchWindow+0x1B8` 的
+   8-byte UI 结果数组，并更新 `+0x1C0/+0x1C4` capacity/count；
+5. `window_watch_ai.gui:500-543` 通过 `GetTargetItems` 和 `SAIValueInfo.GetCharacter` 显示这些角色。
+
+这条链之所以可以作为原生 AI 的输入，而不只是调试便利，是因为生产调用点也直接进入相同 helper：
+
+- `0x18FA4C3 → 0x1890470` 枚举候选；
+- `0x18FAF36 → 0x1890D90` 生成 scored rows；
+- `0x18FB170..0x18FB270` generation-safe 解析 row `+0x08` 的 CharacterID，构造/redirect/finalize pair context；
+- `0x18F9C40..0x18F9D1D` 按当前 native mode 重跑 complete Can Send 和 outer answer；
+- 另一路发送构造在 `0x18FA80E..0x18FA9DB` 建立五角色 context，并两次读取 raw `ai_accept`；
+- `0x18FAB04..0x18FACE8` 再建立最终 proposal context，`0x18FAB4C` 通过 complete Can Send 后才进入 command queue。
+
+`0x1890F40` 可以安全命名的候选门只有：目标性别字节、一个返回非零即拒绝的 unknown predicate、已有 relationship identity、
+native minimum age、一个来自 living data 的 unknown penalty、最低总分和完整 ID 去重。分数至少包含 `0x1891150` 的亲属/婚姻网络
+贡献、一次 `0x2283990` 结果的缩放项以及年龄差惩罚。未完成符号/行为互证的项保持 unknown；本节不把它们硬命名为健康、
+生育力、同盟强度或某个 trait utility。
+
+```mermaid
+flowchart TD
+    T["[static-confirmed] 玩家/继承人出现婚配需求"] --> S{"[static-confirmed] source strategy 可用?"}
+    S -->|否| U["[unknown] 当前 lifecycle 无原生 ranked observer"]
+    S -->|是| E["[static-confirmed] 0x1890470 枚举原生候选池"]
+    E --> F["[static-confirmed] 0x1890D90 / 0x1890F40 过滤并评分"]
+    F --> R["[static-confirmed] 16-byte rows: full CharacterID + native score"]
+    R --> C["[static-confirmed] 构造五角色 marriage context"]
+    C --> L{"[static-confirmed] complete Can Send?"}
+    L -->|否| N["[static-confirmed] 跳过候选"]
+    L -->|是| A{"[static-confirmed] outer answer / ai_accept?"}
+    A -->|拒绝| N
+    A -->|接受| Q["[static-confirmed] 发送 arrange_marriage_interaction"]
+    Q --> O{"[static-confirmed] secondary pair 均成年且无 grand wedding?"}
+    O -->|是| M["[static-confirmed] 建立 marriage"]
+    O -->|否| B["[static-confirmed] 建立 betrothal"]
+    M --> X["[static-confirmed] special 处理 alliance / prestige"]
+    B --> X
+    X -. "SAllianceItem row identity 尚未闭合" .-> Y["[unknown] typed alliance delta"]
+    classDef unknown stroke-dasharray: 6 4,fill:#fff4e5,stroke:#b36b00;
+    class U,Y unknown;
+```
+
+### 合法性、接受度和宗教边界
+
+候选分、合法性与接受度是三个不同事实，observer 不得把它们折成一个 `is_good`：
+
+1. `native_candidate_score` 表示原版候选发现器的内部排序输入；它不保证 proposal 可发送；
+2. pair context 经 redirect、refresh、finalize 后，complete Can Send 才是当前 options/roles 下的最终发送合法性；
+3. `0x2C44320(context,out_raw)` 给出 recipient responder scope 的 `ai_accept` raw，既有 ABI 已证明 scale 为 `100000`；
+4. `0x2C43B40` 的 outer answer 还会处理 special/intermediary/responder 组合，最终 answer 不能只按 raw 正负自行仿制；
+5. 对 human recipient，原版作者专例会在发送时反向把玩家当 AI 计算一次，只有正值才向玩家提出婚约；查询时必须标记
+   `evaluation_perspective`，不能把对方会接受与玩家应接受混为一谈。
+
+`marriage_interaction_valid_target_trigger` 和下游 `can_marry_character_trigger` 确实会消费必要的 faith legality，
+`marriage_ai_accept_modifier` 也有 faith 分区。本切片只发布原生 final legality、raw/final acceptance 与 opaque failure status；
+不发布 faith/doctrine/tenet/fervor，不在 Python 复刻宗教判断，也不借婚姻例外建立通用宗教树。
+
+### 结果与后置状态
+
+`0x2282DE0` 从 context `+0x2E0/+0x2E4` 取 actual secondary pair，generation-safe 解析两名 Character；它按双方 adult
+状态和 grand-wedding option 分流到 marriage 或 betrothal。随后 special 继续做 alliance/prestige follow-up。因而一次成功 ACK、
+pending 消失或 command queue 接受都不是语义成功：
+
+- direct adult path：候选完整 ID 必须出现在玩家 `spouse_ids`，并与 `primary_spouse_id`/多配偶状态一致；
+- direct minor path：玩家 `betrothed_id` 必须等于该候选完整 ID；
+- four-role path：必须查询 actual secondary pair，不能拿 matchmaker 的婚姻状态代替；
+- alliance：必须发布或查询具体双方完整 CharacterID 的 alliance relation，并把 before/after pair set 做差；作者合同只说 special
+  “sets up alliances”，不保证任意合法婚姻必然新增一条联盟；
+- prestige：只有在后续策略实际用它比较候选时再补 typed delta；当前不以它阻塞最小择偶 OODA。
+
+既有 snapshot 已有玩家 `betrothed_id`、`primary_spouse_id` 和 `spouse_ids`，所以 direct 玩家路径的关系后置可直接复用。
+它不覆盖任意 secondary pair，也没有 `is_allied_to(a,b)`；这两个缺口必须明确保留，不能用 `null` 或空数组冒充完成。
+
+### 下一最小只读 native/MCP observer 合同
+
+建议新增 `marriage-matchmaking-observer-v1`，只在 paused application-main 执行，一次最多返回前 8 个原生 ranked rows。
+MCP 参数只含 `subject_character_id`、`limit<=8` 与可选 `candidate_character_id` 精确复核；不得暴露 native pointer、低 24 位 slot
+或 runtime ordinal。每行最低字段如下：
+
+| 字段 | 来源 | readiness 作用 |
+|---|---|---|
+| `subject_character_id` / `matchmaker_character_id` | generation-safe CharacterID | 绑定实际求偶者与答复人 |
+| `native_candidate_rank/score` | `0x1890D90` 16-byte row | 取代当前无序 storage scan |
+| 五个 role IDs | redirect 后 context | 防止把 matchmaker 与 actual pair 混淆 |
+| `complete_can_send` + opaque status | `0x2C43F00` | 最终 pair/options 合法性 |
+| `recipient_ai_accept_raw` | `0x2C44320` | 保存原生接受度，不在 Python 重算 |
+| `recipient_answer_status` | `0x2C43B40` | 区分 raw 与 special-aware final answer |
+| `outcome_kind` | adult + grand-wedding native branch | 选择 spouse 或 betrothed 后置门 |
+| `relationship_postcondition` | 既有 direct relationship reader；后续扩任意 pair | 验证 actual secondary pair |
+| `alliance_pairs_before/after` | 待闭合 `MarriageInfo.GetAllianceItems` row/relation getter | 验证具体联盟 delta |
+
+第一项可直接施工的 P0 切片是：在现有 `query-arrange-marriage-choices` 旁增加只读 ranked query，按本次冻结的 strategy
+入口调用 `0x1890470 → 0x1890D90`，复制前 8 个完整 ID/score，再为每行构造 direct five-role context，发布 complete Can Send、
+raw/final acceptance 和 marriage/betrothal 预期。若 human player 在某 lifecycle 没有可用 strategy，返回明确
+`ranked_source_unavailable` 并保留现有 native-validation query 作为有序能力尚未就绪的诊断，不得伪造分数或长期写 `null`。
+
+同一工作包的紧接切片是从已定位的 `MarriageInfo.GetAllianceItems`（字符串 RVA `0x412BE58`、注册点 `0x1C0135`、
+callback `0x1274610`，后者把 `CMarriageInfo+0x50` 投影为 data model）继续闭合 `SAllianceItem` row 的双方完整 ID，或定位任意
+两角色的原生 alliance relation getter，再把具体 pair set 接入 before/after。完成这一步和一次 paused live 查询/提交/关系+联盟后置验证后，direct 玩家择偶才可从
+`static-ready` 升为 `production-live primitive`；由需求检测、候选排序、提交、pending 回复、后置验证和失败恢复组成的完整循环跑通后，
+才能称为婚姻 `production-live loop`。
+
+### 保留的 unknown 与施工顺序
+
+1. [unknown] production matchmaking scheduler 的 cadence、owner 选择与重复尝试冷却；先不阻塞显式玩家决策触发的 query。
+2. [unknown] `0x1890470` 遍历的每一类 universe/list 的业务名；P0 直接调用原生 helper，不复制其集合逻辑。
+3. [unknown] `0x1890F40/0x1891150` 每个 score term 的名称和单位；P0 发布总分与 rank，不伪造 breakdown。
+4. [unknown] human-controlled Character 在全部 lifecycle 是否始终具有可用 strategy；以 paused live 的 readiness/status 互证。
+5. [unknown] `CMarriageInfo+0x50` 后的 `SAllianceItem` row layout 与 alliance pair identity；getter callback 已闭合，row 是 ranked
+   observer 后的首个 P0 native 逆向项，闭合后立即接任意 pair `is_allied_to` 后置查询。
+6. [unknown] 并列 score 后的最终 tie-break 与 option-combination search；先保持 native 返回顺序，不在 Python 二次随机排序。
+
+施工顺序固定为：ranked ID/score → per-row final legality/acceptance/outcome → alliance pair getter → paused live query → 选择并提交一项 →
+spouse/betrothed 与 alliance before/after 后置验证。任何一步 RED 都只保留该婚姻切片的 RED；无需扩大成通用宗教研究或全仓安全审计。
