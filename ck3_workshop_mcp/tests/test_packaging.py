@@ -9,14 +9,12 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 class PackagingTests(unittest.TestCase):
-    def test_wheel_configuration_includes_uia_bridge(self) -> None:
+    def test_wheel_has_no_script_bridge_package_data(self) -> None:
         with (ROOT / "pyproject.toml").open("rb") as stream:
             configuration = tomllib.load(stream)
-        package_data = configuration["tool"]["setuptools"]["package-data"]
-        self.assertIn("uia_bridge.ps1", package_data["ck3_workshop_mcp"])
-        self.assertTrue(
-            (ROOT / "src" / "ck3_workshop_mcp" / "uia_bridge.ps1").is_file()
-        )
+        package_data = configuration["tool"]["setuptools"].get("package-data", {})
+        self.assertEqual(package_data.get("ck3_workshop_mcp", []), [])
+        self.assertFalse(list((ROOT / "src" / "ck3_workshop_mcp").glob("*.ps1")))
 
 
 if __name__ == "__main__":

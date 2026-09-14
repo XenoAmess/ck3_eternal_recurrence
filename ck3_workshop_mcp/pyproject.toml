@@ -10,7 +10,7 @@ readme = "README.md"
 requires-python = ">=3.11"
 license = { text = "MIT" }
 authors = [{ name = "XenoAmess" }]
-dependencies = []
+dependencies = ["comtypes>=1.4,<2; sys_platform == 'win32'"]
 
 [project.optional-dependencies]
 mcp = ["mcp==2.0.0"]
@@ -24,9 +24,6 @@ package-dir = { "" = "src" }
 
 [tool.setuptools.packages.find]
 where = ["src"]
-
-[tool.setuptools.package-data]
-ck3_workshop_mcp = ["uia_bridge.ps1"]
 
 [tool.unittest]
 start-directory = "tests"

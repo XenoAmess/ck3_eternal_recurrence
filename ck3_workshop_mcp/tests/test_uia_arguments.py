@@ -4,7 +4,6 @@ import argparse
 import asyncio
 import importlib.util
 import json
-import re
 import tempfile
 import unittest
 from pathlib import Path
@@ -18,14 +17,8 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 class UiaKeyContractTests(unittest.TestCase):
-    def test_power_shell_bridge_accepts_only_finite_navigation_tokens(self) -> None:
-        script = (
-            ROOT / "src" / "ck3_workshop_mcp" / "uia_bridge.ps1"
-        ).read_text(encoding="utf-8-sig")
-        match = re.search(r"\$Keys -notmatch '([^']+)'", script)
-        self.assertIsNotNone(match)
-        contract = re.compile(match.group(1))
-
+    def test_python_bridge_accepts_only_finite_navigation_tokens(self) -> None:
+        contract = launcher_uia.KEY_SEQUENCE_PATTERN
         for token in ("ENTER", "HOME", "END", "UP", "DOWN", "TAB", "ESC"):
             self.assertIsNotNone(contract.fullmatch("{" + token + "}"), token)
         self.assertIsNotNone(contract.fullmatch("{DOWN}{END}{ENTER}"))

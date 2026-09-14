@@ -68,11 +68,11 @@ table and uses `IsAPICallCompleted` plus `GetAPICallResult` for
 
 The non-loading metadata command is safe to run offline:
 
-```powershell
-$env:PYTHONPATH = 'D:\workspace\ck3_eternal_recurrence\ck3_workshop_mcp\src'
-& 'D:\workspace\ck3_eternal_recurrence\tools\.venv\Scripts\python.exe' `
-  -m ck3_workshop_mcp.steam_native symbols `
-  --dll 'C:\SteamLibrary\steamapps\common\Crusader Kings III\binaries\steam_api64.dll'
+```bat
+set PYTHONPATH=D:\workspace\ck3_eternal_recurrence\ck3_workshop_mcp\src
+D:\workspace\ck3_eternal_recurrence\tools\.venv\Scripts\python.exe ^
+  -m ck3_workshop_mcp.steam_native symbols ^
+  --dll "C:\SteamLibrary\steamapps\common\Crusader Kings III\binaries\steam_api64.dll"
 ```
 
 On the verified DLL this reported SHA-256
@@ -82,21 +82,21 @@ required flat exports were present. The read-only `probe` then initialized the
 existing Steam session and verified AppID `1158310`, logged-on state, and the
 expected user. That is a real live probe, not a publication claim.
 
-```powershell
-& 'D:\workspace\ck3_eternal_recurrence\tools\.venv\Scripts\python.exe' `
-  -m ck3_workshop_mcp.steam_native probe `
-  --dll 'C:\SteamLibrary\steamapps\common\Crusader Kings III\binaries\steam_api64.dll' `
+```bat
+D:\workspace\ck3_eternal_recurrence\tools\.venv\Scripts\python.exe ^
+  -m ck3_workshop_mcp.steam_native probe ^
+  --dll "C:\SteamLibrary\steamapps\common\Crusader Kings III\binaries\steam_api64.dll" ^
   --app-id 1158310
 ```
 
 `publish` is externally mutating and requires a reviewed JSON plan plus a
 dedicated durable receipt path:
 
-```powershell
-& 'D:\workspace\ck3_eternal_recurrence\tools\.venv\Scripts\python.exe' `
-  -m ck3_workshop_mcp.steam_native publish `
-  --dll 'C:\SteamLibrary\steamapps\common\Crusader Kings III\binaries\steam_api64.dll' `
-  --plan-file D:\release\native_publish_plan.json `
+```bat
+D:\workspace\ck3_eternal_recurrence\tools\.venv\Scripts\python.exe ^
+  -m ck3_workshop_mcp.steam_native publish ^
+  --dll "C:\SteamLibrary\steamapps\common\Crusader Kings III\binaries\steam_api64.dll" ^
+  --plan-file D:\release\native_publish_plan.json ^
   --receipt-file D:\release\native_publish_receipt.json
 ```
 
@@ -196,7 +196,9 @@ workshop_ui_keys
 The bridge matches accessible `Name`, `ControlType`, and optional
 `AutomationId`; it never falls back to pixel coordinates. `workshop_ui_set_text`
 passes large text through a temporary UTF-8 file rather than a command-line
-argument. The PowerShell bridge is included in installed wheels as package data.
+argument. The bridge now calls Windows UI Automation directly from Python;
+Windows installs receive the declared `comtypes` dependency and no script bridge
+is packaged.
 
 The current Launcher controls have these observed semantics:
 
@@ -245,19 +247,19 @@ recovery tool is available for operator-driven reconciliation as well.
 
 Python 3.11 or newer is required.
 
-```powershell
+```bat
 cd ck3_workshop_mcp
 py -m venv .venv
-& .venv\Scripts\python.exe -m pip install -e ".[mcp]"
-& .venv\Scripts\ck3-workshop-mcp.exe --provider pdx-readonly
+.venv\Scripts\python.exe -m pip install -e ".[mcp]"
+.venv\Scripts\ck3-workshop-mcp.exe --provider pdx-readonly
 ```
 
 The default `pdx-readonly` provider is inert.  For an isolated protocol demo:
 
-```powershell
-& .venv\Scripts\ck3-workshop-mcp.exe `
-  --provider fake `
-  --state-dir "$env:TEMP\ck3-workshop-mcp-demo"
+```bat
+.venv\Scripts\ck3-workshop-mcp.exe ^
+  --provider fake ^
+  --state-dir "%TEMP%\ck3-workshop-mcp-demo"
 ```
 
 Do not point the fake-provider run at production operation evidence.  It is a
@@ -281,11 +283,11 @@ inspection, `inspect-arguments.json` is:
 
 Call the tool through the official in-memory MCP client:
 
-```powershell
-& "D:\workspace\ck3_eternal_recurrence\tools\.venv\Scripts\python.exe" `
-  -m ck3_workshop_mcp.call_tool `
-  --provider pdx-uia `
-  --tool workshop_ui_inspect `
+```bat
+D:\workspace\ck3_eternal_recurrence\tools\.venv\Scripts\python.exe ^
+  -m ck3_workshop_mcp.call_tool ^
+  --provider pdx-uia ^
+  --tool workshop_ui_inspect ^
   --arguments-file inspect-arguments.json
 ```
 
@@ -307,12 +309,12 @@ Invoke and text-setting argument shapes are:
 
 For large text, keep it out of JSON and supply its UTF-8 file separately:
 
-```powershell
-& "D:\workspace\ck3_eternal_recurrence\tools\.venv\Scripts\python.exe" `
-  -m ck3_workshop_mcp.call_tool `
-  --provider pdx-uia `
-  --tool workshop_ui_set_text `
-  --arguments-file set-text-arguments.json `
+```bat
+D:\workspace\ck3_eternal_recurrence\tools\.venv\Scripts\python.exe ^
+  -m ck3_workshop_mcp.call_tool ^
+  --provider pdx-uia ^
+  --tool workshop_ui_set_text ^
+  --arguments-file set-text-arguments.json ^
   --text-file description.bbcode
 ```
 
@@ -374,12 +376,12 @@ canonical inner descriptor must still have no ID.
 
 The test suite has no third-party dependency:
 
-```powershell
-$env:PYTHONPATH = "src"
+```bat
+set PYTHONPATH=src
 py -m unittest discover -s tests -v
 ```
 
-It covers package-data inclusion of `uia_bridge.ps1`, the finite UIA navigation-key contract, exact key parameter forwarding,
+It covers the absence of a packaged script bridge, the finite UIA navigation-key contract, exact key parameter forwarding,
 `--text-file` forwarding through the official MCP client, create callback loss without duplicate Create, unknown submit without
 retry, EULA blocking, verified offline compensation, update ID mismatch,
 forbidden upstream ID, in-game account refusal, exact staging validation,
@@ -398,9 +400,9 @@ Set `SteamAppId=1158310` and `SteamGameId=1158310` only in the calling process,
 or use the game's existing `binaries/steam_appid.txt` context. Never force-restart Steam.
 With the package installed (or `PYTHONPATH` pointing to its `src`):
 
-```powershell
-& tools\.venv\Scripts\python.exe -m ck3_workshop_mcp.call_tool `
-  --provider steam-native --tool workshop_native_publish `
+```bat
+tools\.venv\Scripts\python.exe -m ck3_workshop_mcp.call_tool ^
+  --provider steam-native --tool workshop_native_publish ^
   --arguments-file native-tool-arguments.json
 ```
 
