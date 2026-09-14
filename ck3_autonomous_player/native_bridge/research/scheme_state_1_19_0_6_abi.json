@@ -1,0 +1,1109 @@
+{
+  "contract": "scheme-state-1.19.0.6-static-freeze-v1",
+  "status": "static-ready; no CK3 attach or live snapshot in this work package",
+  "scope": "nonreligious character/title-targeted schemes; murder is the complex representative and sway is the basic representative",
+  "religion_scope": {
+    "status": "owner-deferred",
+    "excluded": [
+      "faith-targeted schemes",
+      "conversion",
+      "religious reform",
+      "doctrine",
+      "tenet",
+      "fervor",
+      "holy order"
+    ],
+    "opaque_exception_input_only": false
+  },
+  "build": {
+    "version": "1.19.0.6",
+    "platform": "Windows x64",
+    "image_base": "0x140000000",
+    "exe_relative_path": "binaries/ck3.exe",
+    "exe_size": 95206008,
+    "exe_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86"
+  },
+  "sources": [
+    {
+      "relative_path": "game/common/schemes/scheme_types/_schemes.info",
+      "size": 11078,
+      "sha256": "3F93B35DC6A63B5A2635C5D11CF091AA52F34CA60CC092FB1D3D6AA8E4404F90",
+      "line_anchors": [
+        {
+          "line": 4,
+          "text": "Success Chance is in the range of 0-100"
+        },
+        {
+          "line": 5,
+          "text": "Secrecy is in the range of 0-100"
+        },
+        {
+          "line": 7,
+          "text": "Scheme Progress goes from 0-10"
+        },
+        {
+          "line": 9,
+          "text": "(Note that accessing Success Chance and Secrecy in script is done as \"scheme_success_chance\" and \"scheme_secrecy\")"
+        },
+        {
+          "line": 20,
+          "text": "\ttarget_type = character/title/culture/faith/nothing # The type of scope the scheme will target."
+        },
+        {
+          "line": 26,
+          "text": "\tallow = {} # When this scheme can be started"
+        },
+        {
+          "line": 28,
+          "text": "\tvalid = {} # What conditions have to be fulfilled for the scheme to keep going; if invalid it will end. Checked daily."
+        },
+        {
+          "line": 30,
+          "text": "\tagent_join_threshold = 5 # How much does the AI have to want to join in order to actually join"
+        },
+        {
+          "line": 35,
+          "text": "\tis_basic = no # If a scheme is defined as basic, it won't have success chance growth every phase, won't use agents, and won't use opportunities."
+        },
+        {
+          "line": 39,
+          "text": "\t# List of groups of characters to be considered for agent slots. Available lists are in the \"ai_targets\" section of character_interaction.info"
+        },
+        {
+          "line": 44,
+          "text": "\t# Number in the 0-100 range indicating how likely this is to go well."
+        },
+        {
+          "line": 57,
+          "text": "\tagent_success_chance = {} # each agent adds this to the success chance of the scheme uses the same scopes as the join chance (agent as root)"
+        },
+        {
+          "line": 62,
+          "text": "\tbase_success_chance = {}"
+        },
+        {
+          "line": 64,
+          "text": "\tbase_maximum_success_chance = 100"
+        },
+        {
+          "line": 68,
+          "text": "\tbase_progress_goal = 20"
+        },
+        {
+          "line": 69,
+          "text": "\tmaximum_breaches = 7 # The number of secrecy breaches that can occur before the scheme forcibly ends."
+        },
+        {
+          "line": 76,
+          "text": "\tcooldown = { days = 0 } # After the scheme ends, how many days minimum before the same type of scheme can be used by the owner on the target"
+        },
+        {
+          "line": 78,
+          "text": "\tis_secret = yes #If the Scheme is secret, the secrecy mechanics are used (otherwise always 100% secrecy)"
+        },
+        {
+          "line": 82,
+          "text": "\tbase_secrecy = -20 #The base chance used for the monthly scheme expose check secrecy is based on: base_secrecy + success_chance + scheme_modifiers and clamped to 0-100"
+        },
+        {
+          "line": 84,
+          "text": "\ton_phase_completed = {} # What should happen when the scheme phase completes (ie when progress has reached it's maximum)"
+        },
+        {
+          "line": 92,
+          "text": "\ton_monthly = { # What should happen once a month while the scheme exists"
+        },
+        {
+          "line": 100,
+          "text": "\ton_semiyearly = { # What should happen twice a year while the scheme exists"
+        },
+        {
+          "line": 117,
+          "text": "\t# Progress chance each month is scheme speed minus scheme resistance. E.G., 50 speed, 25 resistance, means 25% chance"
+        },
+        {
+          "line": 184,
+          "text": "== Related loc/UI functions =="
+        },
+        {
+          "line": 189,
+          "text": "[SCHEME.GetSecrecy] - Gets as a number how secret the scheme is"
+        },
+        {
+          "line": 190,
+          "text": "[SCHEME.GetOwner] - Gets who owns the scheme"
+        },
+        {
+          "line": 196,
+          "text": "[SCHEME.GetProgress] - Gets the progress of the scheme as a number"
+        }
+      ]
+    },
+    {
+      "relative_path": "game/common/schemes/scheme_types/murder_scheme.txt",
+      "size": 10128,
+      "sha256": "6FAF5FDF5E2C7A7516D3FBA42D199A2B76056EBD58A3346F472E8644A5ADDF8C",
+      "line_anchors": [
+        {
+          "line": 12,
+          "text": "\tmaximum_breaches = 5"
+        },
+        {
+          "line": 25,
+          "text": "\tallow = {"
+        },
+        {
+          "line": 32,
+          "text": "\tvalid = {"
+        },
+        {
+          "line": 85,
+          "text": "\t# Agents"
+        },
+        {
+          "line": 97,
+          "text": "\todds_prediction = {"
+        },
+        {
+          "line": 108,
+          "text": "\tbase_success_chance = {"
+        },
+        {
+          "line": 327,
+          "text": "\tbase_secrecy = {"
+        },
+        {
+          "line": 334,
+          "text": "\ton_start = {"
+        },
+        {
+          "line": 339,
+          "text": "\t\tadd_scheme_starting_opportunities_intrigue_effect = yes"
+        },
+        {
+          "line": 365,
+          "text": "\ton_phase_completed = {"
+        },
+        {
+          "line": 366,
+          "text": "\t\tsuppress_scheme_follow_up_event_till_input_given_effect = yes"
+        },
+        {
+          "line": 367,
+          "text": "\t\tmurder_scheme_prep_effect = yes"
+        },
+        {
+          "line": 368,
+          "text": "\t\tcap_schemes_and_fire_reminders_effect = yes"
+        },
+        {
+          "line": 371,
+          "text": "\ton_semiyearly = {"
+        },
+        {
+          "line": 376,
+          "text": "\t\t\tmurder_scheme_prep_effect = yes"
+        },
+        {
+          "line": 377,
+          "text": "\t\t\tpurge_ai_scheme_slots_effect = yes"
+        },
+        {
+          "line": 380,
+          "text": "\ton_monthly = {"
+        },
+        {
+          "line": 381,
+          "text": "\t\thostile_scheme_monthly_discovery_chance_effect = yes"
+        },
+        {
+          "line": 393,
+          "text": "\ton_invalidated = {"
+        }
+      ]
+    },
+    {
+      "relative_path": "game/common/character_interactions/00_scheme_interactions.txt",
+      "size": 59328,
+      "sha256": "F2B8D8D21433A28580589FAB77DA2CEFA2F9CEAA33A4EE862D86DF44C69372BB",
+      "line_anchors": [
+        {
+          "line": 3,
+          "text": "start_murder_interaction = {"
+        },
+        {
+          "line": 11,
+          "text": "\tscheme = murder"
+        },
+        {
+          "line": 47,
+          "text": "\tis_valid_showing_failures_only = {"
+        },
+        {
+          "line": 49,
+          "text": "\t\t\tcan_start_scheme = {"
+        },
+        {
+          "line": 92,
+          "text": "\tsend_options_exclusive = yes"
+        },
+        {
+          "line": 94,
+          "text": "\tsend_option = {"
+        },
+        {
+          "line": 99,
+          "text": "\tsend_option = {"
+        },
+        {
+          "line": 104,
+          "text": "\tsend_option = {"
+        },
+        {
+          "line": 109,
+          "text": "\tsend_option = {"
+        },
+        {
+          "line": 114,
+          "text": "\ton_accept = {"
+        },
+        {
+          "line": 133,
+          "text": "\t\t\t\t\tbegin_scheme_with_agents_effect = {"
+        },
+        {
+          "line": 150,
+          "text": "\t\t\t\t\tbegin_scheme_with_agents_effect = {"
+        },
+        {
+          "line": 167,
+          "text": "\t\t\t\t\tbegin_scheme_with_agents_effect = {"
+        },
+        {
+          "line": 183,
+          "text": "\t\t\t\t\tbegin_scheme_with_agents_effect = {"
+        },
+        {
+          "line": 215,
+          "text": "\tauto_accept = yes"
+        },
+        {
+          "line": 217,
+          "text": "\t# AI for murders is handled in event murder_scheme_maintenance.1, fired from the five_year_playable_pulse"
+        },
+        {
+          "line": 437,
+          "text": "\tai_targets = { ai_recipients = liege }"
+        },
+        {
+          "line": 438,
+          "text": "\tai_frequency_by_tier = {"
+        },
+        {
+          "line": 447,
+          "text": "\tai_potential = {"
+        },
+        {
+          "line": 454,
+          "text": "\tai_will_do = {"
+        },
+        {
+          "line": 2060,
+          "text": "sway_interaction = {"
+        },
+        {
+          "line": 2069,
+          "text": "\tscheme = sway"
+        },
+        {
+          "line": 2072,
+          "text": "\tai_targets = {"
+        },
+        {
+          "line": 2085,
+          "text": "\tai_frequency_by_tier = {"
+        },
+        {
+          "line": 2098,
+          "text": "\tis_valid_showing_failures_only = {"
+        },
+        {
+          "line": 2100,
+          "text": "\t\t\tcan_start_scheme = {"
+        },
+        {
+          "line": 2131,
+          "text": "\t\t\t\tbegin_scheme_basic_effect = {"
+        },
+        {
+          "line": 2140,
+          "text": "\tai_potential = {"
+        },
+        {
+          "line": 2142,
+          "text": "\t\t\tscheme_generic_ai_blocker_trigger = yes"
+        },
+        {
+          "line": 2175,
+          "text": "\tauto_accept = yes"
+        },
+        {
+          "line": 2177,
+          "text": "\tai_will_do = {"
+        }
+      ]
+    },
+    {
+      "relative_path": "game/common/scripted_triggers/00_scheme_triggers.txt",
+      "size": 26172,
+      "sha256": "7D3D941FC21A6ECBFEF7629325678A8C51EC6F9922F5F911CA74FADE1043E6B5",
+      "line_anchors": [
+        {
+          "line": 40,
+          "text": "can_start_hostile_scheme_against_trigger = {"
+        },
+        {
+          "line": 208,
+          "text": "build_murder_targets_trigger = {"
+        },
+        {
+          "line": 224,
+          "text": "\t\t\t\t\tcan_start_scheme = {"
+        },
+        {
+          "line": 302,
+          "text": "\t\t\t\t\tcan_start_scheme = {"
+        },
+        {
+          "line": 369,
+          "text": "\t\t\t\t\tcan_start_scheme = {"
+        },
+        {
+          "line": 912,
+          "text": "scheme_generic_ai_blocker_trigger = {"
+        }
+      ]
+    },
+    {
+      "relative_path": "game/common/on_action/yearly_on_actions.txt",
+      "size": 124324,
+      "sha256": "0FC85A284224A68D1CA0A4EF071D4F4A4F49896753AEC463975A12EE4E1116FA",
+      "line_anchors": [
+        {
+          "line": 2266,
+          "text": "# Called from code once every five years for \"playable\" (count+) characters."
+        },
+        {
+          "line": 2268,
+          "text": "five_year_playable_pulse = {"
+        },
+        {
+          "line": 2817,
+          "text": "\tevents = {"
+        },
+        {
+          "line": 2818,
+          "text": "\t\tmurder_scheme_maintenance.1 # Murder schemes for the AI, including unlanded characters"
+        }
+      ]
+    },
+    {
+      "relative_path": "game/events/scheme_events/murder_scheme/murder_scheme_maintenance_events.txt",
+      "size": 9869,
+      "sha256": "1EC3F3197AB086680051F0ADC661328259EBC197F960564837AFE5605484C5E4",
+      "line_anchors": [
+        {
+          "line": 6,
+          "text": "murder_scheme_maintenance.1 = {"
+        },
+        {
+          "line": 11,
+          "text": "\ttrigger = {"
+        },
+        {
+          "line": 13,
+          "text": "\t\tis_physically_able_ai_adult = yes"
+        },
+        {
+          "line": 15,
+          "text": "\t\tai_honor < high_positive_ai_value # Really honorable characters do not stoop this low, ever"
+        },
+        {
+          "line": 22,
+          "text": "\t\t\tstatic_group_filter = {"
+        },
+        {
+          "line": 27,
+          "text": "\t\tNOT = {"
+        },
+        {
+          "line": 33,
+          "text": "\t\tbuild_murder_targets_trigger = yes"
+        },
+        {
+          "line": 35,
+          "text": "\t\tany_in_list = {"
+        },
+        {
+          "line": 38,
+          "text": "\t\t\t\tcan_start_scheme = {"
+        },
+        {
+          "line": 61,
+          "text": "\timmediate = {"
+        },
+        {
+          "line": 68,
+          "text": "\t\trandom_in_list = {"
+        },
+        {
+          "line": 72,
+          "text": "\t\t\t\t\tcan_start_scheme = {"
+        },
+        {
+          "line": 90,
+          "text": "\t\t\tweight = {"
+        },
+        {
+          "line": 113,
+          "text": "\t\t\t\t\tadd = root.ai_vengefulness"
+        },
+        {
+          "line": 136,
+          "text": "\t\t\t\tmodifier = { # root is more likely to murder the target if root is in line of succession to any of target's titles or at least 3rd in line of succession to any titles the target is 1st to inherit"
+        },
+        {
+          "line": 196,
+          "text": "\t\t\t\topinion_modifier = { # Opinion Factor"
+        },
+        {
+          "line": 205,
+          "text": "\t\t\t\tmodifier = { # Don't gang up on players"
+        },
+        {
+          "line": 262,
+          "text": "\t\t\trandom = {"
+        },
+        {
+          "line": 263,
+          "text": "\t\t\t\tchance = 25"
+        },
+        {
+          "line": 315,
+          "text": "\t\t\t\tmodifier = { # Rational people understand that certain threats need to be taken care of"
+        },
+        {
+          "line": 353,
+          "text": "\t\t\t\tmodifier = {"
+        },
+        {
+          "line": 377,
+          "text": "\t\t\t\t# Halve the chance if they're Intimidating"
+        },
+        {
+          "line": 387,
+          "text": "\t\t\t\tmodifier = { # To fix a bug where lowborn characters want to murder random people..."
+        },
+        {
+          "line": 396,
+          "text": "\t\t\t\t# Agenda impact"
+        },
+        {
+          "line": 430,
+          "text": "\t\t\t\t\tstart_scheme = {"
+        }
+      ]
+    },
+    {
+      "relative_path": "game/common/scripted_effects/00_scheme_scripted_effects.txt",
+      "size": 412683,
+      "sha256": "478F4B1B9D94F28E33B83B8453F6BBCFD239830D821196D68120D5727723F6DF",
+      "line_anchors": [
+        {
+          "line": 55,
+          "text": "# What percentage chance is there that a scheme will be discovered per month?"
+        },
+        {
+          "line": 57,
+          "text": "hostile_scheme_monthly_discovery_chance_effect = {"
+        },
+        {
+          "line": 61,
+          "text": "\t\t\thas_variable = secrecy_grace_period"
+        },
+        {
+          "line": 69,
+          "text": "\t# Otherwise we want to start checking for discovery."
+        },
+        {
+          "line": 71,
+          "text": "\t\t# Without a spymaster, you can't discover schemes."
+        },
+        {
+          "line": 116,
+          "text": "\t\t\tvalue = monthly_scheme_discovery_chance_value"
+        },
+        {
+          "line": 125,
+          "text": "\t\t\trandom = {"
+        },
+        {
+          "line": 129,
+          "text": "\t\t\t\t\tlimit = { scheme_breaches >= scheme_breaches_about_to_hit_limit_value }"
+        },
+        {
+          "line": 134,
+          "text": "\t\t\t\t\tadd_scheme_breach = 1"
+        },
+        {
+          "line": 242,
+          "text": "generic_scheme_process_ending_effect = {"
+        },
+        {
+          "line": 245,
+          "text": "\tscheme_owner = { save_scope_as = owner }"
+        },
+        {
+          "line": 247,
+          "text": "\tscheme_target_character ?= { save_scope_as = target }"
+        },
+        {
+          "line": 251,
+          "text": "\t# Success roll."
+        },
+        {
+          "line": 253,
+          "text": "\t\tchance = scheme_success_chance"
+        },
+        {
+          "line": 263,
+          "text": "\t\t\tlimit = { is_savable_murder_scheme_trigger = yes }"
+        },
+        {
+          "line": 280,
+          "text": "\t# Secrecy roll."
+        },
+        {
+          "line": 283,
+          "text": "\t\tlimit = { is_type_secret = yes }"
+        },
+        {
+          "line": 289,
+          "text": "\t\t\t\tsubtract = scheme_secrecy"
+        },
+        {
+          "line": 301,
+          "text": "\t\t\t\tmin = 5"
+        },
+        {
+          "line": 304,
+          "text": "\t\trandom = {"
+        },
+        {
+          "line": 305,
+          "text": "\t\t\tchance = scope:discovery_chance"
+        },
+        {
+          "line": 338,
+          "text": "\t# Process ending on_actions."
+        },
+        {
+          "line": 340,
+          "text": "\tif = {"
+        },
+        {
+          "line": 347,
+          "text": "\telse_if = {"
+        },
+        {
+          "line": 353,
+          "text": "\t## Scheme successful."
+        },
+        {
+          "line": 355,
+          "text": "\t\tlimit = { exists = scope:scheme_successful }"
+        },
+        {
+          "line": 366,
+          "text": "\t\ttask_contract ?= { complete_task_contract = success_standard }"
+        },
+        {
+          "line": 367,
+          "text": "\t\ttrigger_event = { $SUCCESS_EVENT_TYPE$ = $SUCCESS_EVENT_ID$ }"
+        },
+        {
+          "line": 373,
+          "text": "\t## Scheme failed."
+        },
+        {
+          "line": 385,
+          "text": "\t\ttask_contract ?= { complete_task_contract = failure_standard }"
+        },
+        {
+          "line": 386,
+          "text": "\t\ttrigger_event = { $FAILURE_EVENT_TYPE$ = $FAILURE_EVENT_ID$ }"
+        }
+      ]
+    },
+    {
+      "relative_path": "game/common/scripted_modifiers/00_scheme_scripted_modifiers.txt",
+      "size": 97232,
+      "sha256": "C5494E221F8752A82FB5185CB91AD0B64779B5576EFAD390C43E4E17ABCC8CD7",
+      "line_anchors": [
+        {
+          "line": 2421,
+          "text": "scheme_prep_ai_should_execute_scheme_modifier = {"
+        },
+        {
+          "line": 2422,
+          "text": "\tfirst_valid = {"
+        },
+        {
+          "line": 2425,
+          "text": "\t\t\tadd = 100"
+        },
+        {
+          "line": 2430,
+          "text": "\t\tmodifier = {"
+        },
+        {
+          "line": 2432,
+          "text": "\t\t\tscope:scheme.scheme_success_chance >= scope:scheme.max_scheme_success_chance"
+        },
+        {
+          "line": 2436,
+          "text": "\t\t\tadd = 100"
+        },
+        {
+          "line": 2438,
+          "text": "\t\t\tscope:scheme.scheme_success_chance < scope:scheme.max_scheme_success_chance"
+        },
+        {
+          "line": 2440,
+          "text": "\t\t# Otherwise, just roll against our general chance"
+        },
+        {
+          "line": 2442,
+          "text": "\t\t\tadd = scope:scheme.scheme_success_chance"
+        }
+      ]
+    },
+    {
+      "relative_path": "game/events/scheme_events/scheme_critical_moments_events.txt",
+      "size": 229808,
+      "sha256": "A51C5D0ED3CE9B475A25B7857829B098A4D5A38B4D89044C68C4813CC32EEA26",
+      "line_anchors": [
+        {
+          "line": 214,
+          "text": "scheme_critical_moments.0001 = {"
+        },
+        {
+          "line": 216,
+          "text": "\twindow = scheme_preparations_event"
+        },
+        {
+          "line": 336,
+          "text": "\ttrigger = {"
+        },
+        {
+          "line": 347,
+          "text": "\t# Attempt to complete the scheme."
+        },
+        {
+          "line": 348,
+          "text": "\toption = {"
+        },
+        {
+          "line": 354,
+          "text": "\t\t\t\tscope:scheme = { scheme_agent_charges >= scheme_charge_to_advance_threshold_value }"
+        },
+        {
+          "line": 356,
+          "text": "\t\t\t# Tell the AI not to bother unless their chance are at least 50:50."
+        },
+        {
+          "line": 362,
+          "text": "\t\t\t\t\t\tscheme_success_chance >= 50"
+        },
+        {
+          "line": 366,
+          "text": "\t\t\t\t\t\t\tscope:scheme.scheme_success_chance >= 20"
+        },
+        {
+          "line": 370,
+          "text": "\t\t\t\t\t\t\tscheme_number_of_filled_agent_slots >= character_max_scheme_agents_value"
+        },
+        {
+          "line": 378,
+          "text": "\t\t# Scheme gon' try to conclude."
+        },
+        {
+          "line": 380,
+          "text": "\t\tscheme_critical_moments_0001_execute_scheme_default_flow_effect = { COST = scheme_charge_to_advance_threshold_value }"
+        },
+        {
+          "line": 382,
+          "text": "\t\tai_chance = { scheme_prep_ai_should_execute_scheme_modifier = yes }"
+        },
+        {
+          "line": 385,
+          "text": "\t# Choose first agent type."
+        },
+        {
+          "line": 399,
+          "text": "\t\ttrigger = { scheme_critical_moments_0001_can_add_agents_trigger = yes }"
+        },
+        {
+          "line": 406,
+          "text": "\t\tscope:scheme = { change_opportunities = -2 }"
+        },
+        {
+          "line": 451,
+          "text": "\t# Void both and take another go around."
+        },
+        {
+          "line": 455,
+          "text": "\t\ttrigger = { scheme_critical_moments_0001_can_add_agents_trigger = yes }"
+        },
+        {
+          "line": 459,
+          "text": "\t\t\tchange_opportunities = -2"
+        },
+        {
+          "line": 1133,
+          "text": "scheme_critical_moments.1001 = {"
+        },
+        {
+          "line": 1137,
+          "text": "\t\tscope:scheme = {"
+        },
+        {
+          "line": 1138,
+          "text": "\t\t\tgeneric_scheme_process_ending_effect = {"
+        },
+        {
+          "line": 1141,
+          "text": "\t\t\t\tSUCCESS_EVENT_ID = murder_success_pre_filter_on_action"
+        },
+        {
+          "line": 1143,
+          "text": "\t\t\t\tFAILURE_EVENT_ID = murder_failure_pre_filter_on_action"
+        }
+      ]
+    },
+    {
+      "relative_path": "game/gui/hud.gui",
+      "size": 215506,
+      "sha256": "1AE3F1371E0A9C43D0B62FC1C1F3A0CDBB0EAB9CF08B85545556CBF3D7386312",
+      "line_anchors": [
+        {
+          "line": 2145,
+          "text": "\t\t\t\t\t\t\tvisible = \"[Scheme.IsExposed]\""
+        },
+        {
+          "line": 2193,
+          "text": "\t\t\t\t\t\t\tvisible = \"[GreaterThan_int32( Scheme.GetAgentCharges, '(int32)0' )]\""
+        },
+        {
+          "line": 2274,
+          "text": "\t\t\t\t\t\t\tvalue = \"[Scheme.GetProgressBar]\""
+        },
+        {
+          "line": 2286,
+          "text": "\t\t\t\t\t\t\t\tdatacontext = \"[Scheme.GetTargetCharacter]\""
+        },
+        {
+          "line": 2347,
+          "text": "\t\t\t\t\t\t\t\ttexture = \"[Scheme.GetSchemeType.GetIcon]\""
+        },
+        {
+          "line": 2390,
+          "text": "\t\t\t\t\t\t\tvisible = \"[GreaterThan_int32( Scheme.GetAgentCharges, '(int32)0' )]\""
+        },
+        {
+          "line": 2416,
+          "text": "\t\t\t\t\t\t\t\t\ttext = \"[Scheme.GetAgentCharges]\""
+        }
+      ]
+    },
+    {
+      "relative_path": "game/gui/window_intrigue.gui",
+      "size": 55348,
+      "sha256": "4DF7F167ABF78CAA3FF300176F7B79CA6B569C0E14CB7A4137E7BCCE7311212B",
+      "line_anchors": [
+        {
+          "line": 1114,
+          "text": "\t\t\t\t\t\t\tdatacontext = \"[Scheme.GetTargetCharacter]\""
+        },
+        {
+          "line": 1207,
+          "text": "\t\t\t\t\t\tvisible = \"[Not(SchemeItem.GetScheme.GetSchemeType.IsBasic)]\""
+        },
+        {
+          "line": 1254,
+          "text": "\t\t\t\t\t\t\t\t\t\t\tvisible = \"[EqualTo_CFixedPoint( Scheme.GetSuccessChance, ComplexBarItem.GetValue )]\""
+        },
+        {
+          "line": 1280,
+          "text": "\t\t\t\t\t\t\t\tvisible = \"[Scheme.GetSchemeType.IsBasic]\""
+        },
+        {
+          "line": 1318,
+          "text": "\t\t\t\t\t\t\t\t\tvisible = \"[Scheme.IsUnfrozen]\""
+        },
+        {
+          "line": 1326,
+          "text": "\t\t\t\t\t\t\t\t\tvisible = \"[Scheme.IsFrozen]\""
+        },
+        {
+          "line": 1336,
+          "text": "\t\t\t\t\t\t\t\tvisible = \"[Scheme.IsSecret]\""
+        },
+        {
+          "line": 1359,
+          "text": "\t\t\t\t\t\t\t\tvisible = \"[Scheme.IsSecret]\""
+        },
+        {
+          "line": 1575,
+          "text": "\t\t\t\t\t\t\ttext = \"[Scheme.GetAgentCharges]\""
+        }
+      ]
+    },
+    {
+      "relative_path": "game/gui/event_windows/scheme_preparations_event.gui",
+      "size": 27375,
+      "sha256": "6B14FDAEC5FDEDB50442B4D141F7F2CC3E5EC724453E45C1960653163EC3E691",
+      "line_anchors": [
+        {
+          "line": 12,
+          "text": "\tdatacontext = \"[Scheme.GetSchemeType]\""
+        }
+      ]
+    }
+  ],
+  "native_spans": [
+    {
+      "name": "CActiveScheme_primary_col_and_seven_slots",
+      "start_rva": "0x433A920",
+      "end_rva": "0x433A960",
+      "sha256": "911A78E014E8F9C66F538374C1A8964C74D7F1F94E25E90F8D8FD7056D1F3670"
+    },
+    {
+      "name": "CSchemeManager_primary_col_and_seven_slots",
+      "start_rva": "0x433A838",
+      "end_rva": "0x433A878",
+      "sha256": "C8DDF165852D72B541F6E03D7F29E50C9C82EFB8720F75B4B3B394C96D5C26DF"
+    },
+    {
+      "name": "CSchemeType_primary_col_and_seven_slots",
+      "start_rva": "0x44081E0",
+      "end_rva": "0x4408220",
+      "sha256": "E0EEFA4B24471D6688338EC158B65FCFBB405606BC82F5977A86E0BDD99AE0D8"
+    },
+    {
+      "name": "CStartSchemeEffect_primary_col_and_six_slots",
+      "start_rva": "0x4450D40",
+      "end_rva": "0x4450D78",
+      "sha256": "CA4BB76967D721905BB9B410DC809EF70314558EBE7A33685B3CFB6F46F9C47D"
+    },
+    {
+      "name": "CCanStartSchemeTrigger_primary_col_and_six_slots",
+      "start_rva": "0x4380F98",
+      "end_rva": "0x4380FD0",
+      "sha256": "4508BAA5940A7BD413C992F1824CD919289DBC9879284EBB2575C48C152A333A"
+    },
+    {
+      "name": "CreateActiveScheme_runtime_function",
+      "start_rva": "0x276BC40",
+      "end_rva": "0x276C1BB",
+      "sha256": "A2750D0E1DB6E0939A51B7D4D218148EE7049ED010BC686CD379D3BBFADCC418"
+    },
+    {
+      "name": "CActiveScheme_gui_type_registry",
+      "start_rva": "0x27790E0",
+      "end_rva": "0x27792FA",
+      "sha256": "2612AE1931B47A04A8F9B07F9E697DBEADB8F3B927049AED4CEA794482D2253F"
+    },
+    {
+      "name": "CollectAgentSlotsInvites_runtime_function",
+      "start_rva": "0x27700D0",
+      "end_rva": "0x2770D49",
+      "sha256": "0C92DBCC6C6323FC9CF34071510E113CA439A94C8A1BA9029CA9002DA4DA756D"
+    },
+    {
+      "name": "CCanStartSchemeTrigger_evaluator_body",
+      "start_rva": "0x2850BD0",
+      "end_rva": "0x2850F30",
+      "sha256": "7DEE41E9F0AB24475E28480300CE56BF75D60266300F480EF88FDFCD65541FD2"
+    },
+    {
+      "name": "CStartSchemeEffect_initializer",
+      "start_rva": "0x2EB4D10",
+      "end_rva": "0x2EB4FF7",
+      "sha256": "6366D08F6A110701D3C111934F14B2D2F7E9248762F0209860804BFD3A699654"
+    }
+  ],
+  "native_strings": [
+    {
+      "name": "CActiveScheme_rtti",
+      "rva": "0x54BA5A0",
+      "ascii_nul": ".?AVCActiveScheme@@",
+      "sha256": "A4153B1C5C37F49766A11343F85E7E1354BF85A132E9E18898FAED270619239E"
+    },
+    {
+      "name": "CSchemeManager_rtti",
+      "rva": "0x54E07E8",
+      "ascii_nul": ".?AVCSchemeManager@@",
+      "sha256": "48B949F6EBD25955442AADB806C994C7CD3A0D72BF50354ECD145C3CFC88F297"
+    },
+    {
+      "name": "CSchemeType_rtti",
+      "rva": "0x50D2C10",
+      "ascii_nul": ".?AVCSchemeType@@",
+      "sha256": "771541CB85735827773DB76CBEEECF58786642C7E62783349F1967B8D808439D"
+    },
+    {
+      "name": "CStartSchemeEffect_rtti",
+      "rva": "0x55D4C50",
+      "ascii_nul": ".?AVCStartSchemeEffect@@",
+      "sha256": "D626CE15BAFA227D630E1FF6223C340EF06CCD8319849C78B57717B163FFDC33"
+    },
+    {
+      "name": "CCanStartSchemeTrigger_rtti",
+      "rva": "0x55038D0",
+      "ascii_nul": ".?AVCCanStartSchemeTrigger@@",
+      "sha256": "02627673EEB8C5FD81C127DE6F5453DA27081D914FF00E65F152BAF6AE10022C"
+    },
+    {
+      "name": "GetAgentCharges",
+      "rva": "0x4339A28",
+      "ascii_nul": "GetAgentCharges",
+      "sha256": "DFB9075AA66D8376723E73DA92323DDF876026C77DECE3D8BB7D857B35385209"
+    },
+    {
+      "name": "GetSuccessChance",
+      "rva": "0x41138E8",
+      "ascii_nul": "GetSuccessChance",
+      "sha256": "58BBBD95D69DE2C5EB4D1A3BAEC02F8BC51D9E4103E5BCB6D431A53ECE55A0BF"
+    },
+    {
+      "name": "GetSuccessChanceDescription",
+      "rva": "0x4339A50",
+      "ascii_nul": "GetSuccessChanceDescription",
+      "sha256": "E3CABDDFD9A7FB960B2CB5D779E0317DA2C9408989677E1DED11727BEF1163DE"
+    },
+    {
+      "name": "GetSecrecyDescription",
+      "rva": "0x4339A70",
+      "ascii_nul": "GetSecrecyDescription",
+      "sha256": "68CDE49B3C99EBD628710B5DAB74A5EB269C9EF007F581C5476A768B718D673F"
+    },
+    {
+      "name": "GetBreaches",
+      "rva": "0x4339B00",
+      "ascii_nul": "GetBreaches",
+      "sha256": "469E1C6DCF8E0F222FF5C48616040C748DAA2C460AB63EC59CEC6BF909145F71"
+    },
+    {
+      "name": "SchemeTarget",
+      "rva": "0x4339B10",
+      "ascii_nul": "SchemeTarget",
+      "sha256": "7DA58A644CD96E2992CA640C89FE712BCBE64F977953BFB5037F4C0DA0CC4DFB"
+    },
+    {
+      "name": "CreateActiveScheme",
+      "rva": "0x4339BB8",
+      "ascii_nul": "CreateActiveScheme",
+      "sha256": "F37A31286AC72FE88A997F41A14D3EB1EB27AF3AA51E7B8EDD1876A81DE1AA9D"
+    },
+    {
+      "name": "GetPhasesRemainingUntilOpportunity",
+      "rva": "0x4339C78",
+      "ascii_nul": "GetPhasesRemainingUntilOpportunity",
+      "sha256": "D9A392B2E47CAE9815F7D98352BA3653B96F4C9E8B71A56797A1ACA7296F8868"
+    },
+    {
+      "name": "FireSchemeOpportunityChangedOnAction",
+      "rva": "0x4339E50",
+      "ascii_nul": "FireSchemeOpportunityChangedOnAction",
+      "sha256": "0EC45C40330D443998A0BEC092A90E32804055005A8851F32982793CB5D1269F"
+    }
+  ],
+  "action_reuse_prefixes": [
+    {
+      "name": "construct_send_character_interaction_command",
+      "rva": "0x26B3220",
+      "hex": "48 89 5C 24 18 48 89 74 24 20 48 89 4C 24 08 57 48 83 EC 20 48 8B FA 48 8B F1 C6 41 08 00 33 C0 48 89 41 0C 89 41 14"
+    },
+    {
+      "name": "validate_character_interaction_context",
+      "rva": "0x2C43F00",
+      "hex": "48 89 5C 24 08 57 48 81 EC 90 00 00 00 48 8B FA 48 8B D9 4C 8B CA 41 B0 01 41 0F B6 D0"
+    }
+  ],
+  "proposed_read_only_slice": {
+    "name": "active-scheme-state-v1",
+    "priority": "P0",
+    "same_frame_fields": [
+      "played_character_id",
+      "scheme_instance_id",
+      "scheme_type_key",
+      "category",
+      "target_kind",
+      "target_id",
+      "is_basic",
+      "is_secret",
+      "is_exposed",
+      "is_frozen",
+      "progress",
+      "progress_goal",
+      "success_chance",
+      "maximum_success_chance",
+      "secrecy",
+      "opportunity_charges",
+      "breaches",
+      "maximum_breaches",
+      "phases_remaining_until_opportunity"
+    ],
+    "typed_not_applicable_for_basic": [
+      "success_chance",
+      "maximum_success_chance",
+      "secrecy",
+      "opportunity_charges",
+      "breaches",
+      "maximum_breaches",
+      "phases_remaining_until_opportunity"
+    ],
+    "readiness_gate": "true only when player-owned active-scheme enumeration, stable identities, numeric bounds, target identity, and same-frame pointer stability are all closed; no long-lived engine pointers",
+    "postconditions": {
+      "start": "a new stable scheme instance with matching owner/type/target appears",
+      "execute": "the prior instance advances or leaves and a correlated result transition is observed",
+      "cancel_or_invalidate": "the prior stable instance leaves; disappearance alone does not identify success versus failure"
+    }
+  },
+  "proposed_action_seam": {
+    "name": "start-character-scheme-v1",
+    "route": "existing native character-interaction context validator and send-command path",
+    "first_allowlist": [
+      "start_murder_interaction",
+      "sway_interaction"
+    ],
+    "preconditions": [
+      "same-frame actor and target identities",
+      "exact interaction key",
+      "is_shown",
+      "is_valid_showing_failures_only including can_start_scheme",
+      "exclusive starter-package option for murder",
+      "preview success/secrecy status explicitly available or unavailable"
+    ],
+    "forbidden": "direct writes to CSchemeManager/CActiveScheme or direct execution of CStartSchemeEffect from worker thread"
+  },
+  "unknowns": [
+    "CSchemeManager global/root and player-owned active-scheme container layout are not yet closed.",
+    "CActiveScheme field offsets and stable generation-bearing instance ID are not yet closed; GUI vocabulary is existence evidence, not an offset contract.",
+    "CInteractionSchemeInfo preview layout and exact callbacks for success/secrecy/legality reasons are not yet closed.",
+    "A generic native result enum/correlation channel is not identified; downstream success/failure/interception on_actions are script-confirmed only.",
+    "Agent invitation utility and opportunity choice utility are definition-specific; the representative murder tree does not prove every scheme uses the same policy.",
+    "No production paused snapshot has validated this ABI proposal."
+  ]
+}
