@@ -1,0 +1,305 @@
+{
+  "schema_version": 1,
+  "contract": "g2-faction-leader-character-members-v1-source-contract",
+  "status": "static-confirmed-next-private-reader",
+  "game_build": {
+    "product_version": "1.19.0.6",
+    "executable_size": 95206008,
+    "executable_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+    "image_base": "0x140000000"
+  },
+  "stock_sources": [
+    {
+      "path": "game/gui/window_factions.gui",
+      "sha256": "798F177B1DB914B34CCE177D8CD29F336E182BC6BB24294BD46ECE7B27392770",
+      "tokens": [
+        "visible = \"[FactionItem.HasCharacterMembers]\"",
+        "datamodel = \"[FactionItem.GetCharacterMembers]\"",
+        "datacontext = \"[FactionCharacterMember.GetMember]\""
+      ]
+    },
+    {
+      "path": "game/common/factions/_factions.info",
+      "sha256": "FB47457AABE7C7DF78555B4DFBA74B8932DAE468C45EBB2D1381CADDC2B7E019",
+      "tokens": [
+        "[SCOPE_FACTION.faction_leader]",
+        "[Faction.GetLeader]",
+        "[faction_member]"
+      ]
+    },
+    {
+      "path": "game/common/factions/00_factions.txt",
+      "sha256": "0A47171476811DD16EBD44A7335EAEBD17376FD87E41290F72B5C6785365B276",
+      "tokens": [
+        "faction_leader = {",
+        "every_faction_member = {",
+        "this != scope:faction.faction_leader"
+      ]
+    },
+    {
+      "path": "game/common/factions/00_populist_faction.txt",
+      "sha256": "AA2686FD66B3CDA1B98CDC2CD5BEB81B9DE936886B52E3845E41798DC00C5D80",
+      "tokens": [
+        "requires_county = yes",
+        "requires_character = no",
+        "requires_character = yes"
+      ]
+    },
+    {
+      "path": "game/common/scripted_effects/00_faction_effects.txt",
+      "sha256": "C8E0B3C57665F775973BC8559166CD1F6414471CA25017800777C3C6466DC5D3",
+      "tokens": [
+        "setup_populist_leader_effect = {",
+        "join_faction_skip_check = scope:faction",
+        "set_special_character = scope:peasant_leader"
+      ]
+    }
+  ],
+  "native_spans": [
+    {
+      "name": "faction_leader_link_resolver",
+      "rva_start": "0x19D8320",
+      "rva_end_exclusive": "0x19D837E",
+      "length": 94,
+      "sha256": "4A274D75246C402C2342A5E75CC1E08D0472869491467F79028899E07EB21F8D"
+    },
+    {
+      "name": "get_character_members_registration",
+      "rva_start": "0x1FD6A0",
+      "rva_end_exclusive": "0x1FD81F",
+      "length": 383,
+      "sha256": "E5E5A2214A958794AF3C4F866D7605B5B7058F98AFE8C56A5395306DF6A0AF17"
+    },
+    {
+      "name": "get_character_members_callback",
+      "rva_start": "0x1394C70",
+      "rva_end_exclusive": "0x1394CFB",
+      "length": 139,
+      "sha256": "2CCF32C6831B6DD90E87C487B977637EB45F51BE073659359CB7E2E619687E97"
+    },
+    {
+      "name": "has_character_members_callback",
+      "rva_start": "0x1395010",
+      "rva_end_exclusive": "0x139507D",
+      "length": 109,
+      "sha256": "BF94432DCF618C46F4974AD598E175D5A56EE4A31A0FF70987C2F82353473932"
+    },
+    {
+      "name": "character_member_scope_enumerator",
+      "rva_start": "0x1A603C0",
+      "rva_end_exclusive": "0x1A60554",
+      "length": 404,
+      "sha256": "8287763F03EDF9056FD9D544D0246DA38D3A407F1489555B93B77B3877A040E9"
+    },
+    {
+      "name": "character_member_owner_scan",
+      "rva_start": "0x23782C5",
+      "rva_end_exclusive": "0x23782F0",
+      "length": 43,
+      "sha256": "44FA7C592B61619367EBA9452C428BF50DCB807DA01DF6F33C3EAC6B90647086"
+    },
+    {
+      "name": "character_member_row_write",
+      "rva_start": "0x2378582",
+      "rva_end_exclusive": "0x23785A0",
+      "length": 30,
+      "sha256": "5A92B5ADA0D03D7DE429D24FB8BF844D1474AC1D4A2C896F759DBB98601E03DD"
+    },
+    {
+      "name": "character_member_collection_element",
+      "rva_start": "0x13A3910",
+      "rva_end_exclusive": "0x13A3A9F",
+      "length": 399,
+      "sha256": "7A812D21CFBDE69ED2ECCA3189627FF0AC562093840BD3BE702B694D870AB395"
+    },
+    {
+      "name": "character_member_collection_slice",
+      "rva_start": "0x13A3AA0",
+      "rva_end_exclusive": "0x13A3B07",
+      "length": 103,
+      "sha256": "96C542CAFAB769CC99E896C76AC2DAA3CF1DC259A0B249FA61F0DAAD8C24A98D"
+    },
+    {
+      "name": "character_member_identity_resolver",
+      "rva_start": "0xCFFCC0",
+      "rva_end_exclusive": "0xCFFCFA",
+      "length": 58,
+      "sha256": "B3E8EF14D21C590F511AC84354D8FA898CA4E57DB05C56D166CA1F7C9C08AE8C"
+    },
+    {
+      "name": "character_identity_reference_resolver",
+      "rva_start": "0x82B270",
+      "rva_end_exclusive": "0x82B2AA",
+      "length": 58,
+      "sha256": "62FEE02C707F22593AC7CA9984E3666BA2171D106714C038A37949E7FF86E04D"
+    },
+    {
+      "name": "character_member_owner_member_target_resolver",
+      "rva_start": "0x23741A0",
+      "rva_end_exclusive": "0x2374260",
+      "length": 192,
+      "sha256": "9EA0E82D25E8CA009A8E9D4CA7E01EE91149AE48D23F10FAABDC826923282A81"
+    },
+    {
+      "name": "special_character_or_leader_gui_resolver",
+      "rva_start": "0x23794A0",
+      "rva_end_exclusive": "0x23794F4",
+      "length": 84,
+      "sha256": "40E3E639962BAED00E5184A8ADD1FAAB18D6F68C636FB3D463C4973E62015150"
+    },
+    {
+      "name": "members_string_total_count",
+      "rva_start": "0x1390A50",
+      "rva_end_exclusive": "0x1390C11",
+      "length": 449,
+      "sha256": "44289B9404407FA0B6D107BC3ABA23A74D6DA1B84FCB303B4297C73DFFF30C1F"
+    }
+  ],
+  "registration_bindings": {
+    "get_leader": {
+      "method_string": "GetLeader",
+      "method_string_rva": "0x4304B58",
+      "callback_lea_rva": "0x4C46AC",
+      "callback_thunk_rva": "0x237A0E0",
+      "callback_target_rva": "0x23762B0"
+    },
+    "get_character_members": {
+      "method_string": "GetCharacterMembers",
+      "method_string_rva": "0x414EFF8",
+      "callback_lea_rva": "0x1FD79A",
+      "callback_rva": "0x1394C70"
+    },
+    "has_character_members": {
+      "method_string": "HasCharacterMembers",
+      "method_string_rva": "0x414F028",
+      "callback_lea_rva": "0x1FE02A",
+      "callback_rva": "0x1395010"
+    },
+    "get_character_member": {
+      "class_string": "FactionCharacterMember",
+      "class_string_rva": "0x4304BB0",
+      "method_string": "GetMember",
+      "method_string_rva": "0x4304BA0",
+      "callback_lea_rva": "0x4C2B3C",
+      "callback_rva": "0xCFFCC0"
+    }
+  },
+  "container_rtti_binding": {
+    "wrapper_descriptor_rva": "0x402A3F8",
+    "functions_vtable_rva": "0x414E958",
+    "complete_object_locator_rva": "0x46F7190",
+    "type_descriptor_rva": "0x5288430",
+    "name": ".?AU?$SFunctionsContainer@$$CBV?$CPdxArray@VCFactionCharacterMember@@H@@$0A@$0A@@NDataModelHelper@@",
+    "vtable_entries": {
+      "count_adapter": "0x96DB70",
+      "collection_builder": "0x13A3B10",
+      "slice_adapter": "0x13A3AA0",
+      "element_adapter": "0x13A3910"
+    },
+    "vtable_rva": "0x414E958"
+  },
+  "layout_invariants": {
+    "faction_identity_offset": "0x10",
+    "faction_target_character_id_offset": "0x40",
+    "faction_leader_character_id_offset": "0x44",
+    "character_member_container_offset": "0x48",
+    "next_county_member_container_offset": "0x60",
+    "container_extent": 24,
+    "container_data_offset": "0x00",
+    "container_unknown_word_offset": "0x08",
+    "container_count_offset": "0x0C",
+    "container_count_type": "signed int32",
+    "element_stride": 32,
+    "element_member_character_id_offset": "0x08",
+    "character_storage_slot_rva": "0x570C130",
+    "character_fallback_slot_rva": "0x570C138",
+    "character_identity_round_trip_offset": "0x18",
+    "member_scope_enumerator_rva": "0x1A603C0",
+    "element_owner_faction_id_offset": "0x0C",
+    "row_vtable_offset": "0x00",
+    "row_tail_opaque_start": "0x10"
+  },
+  "upstream_private_observer_tokens": [
+    "faction_targeting_row_observer_v1",
+    "proof_epoch",
+    "snapshot_revision",
+    "date_raw",
+    "player_character_id",
+    "player_targeting_faction_count",
+    "SameAdmission(first_admission, second_admission)"
+  ],
+  "readiness": {
+    "leader_identity_source_ready": true,
+    "member_vector_layout_source_ready": true,
+    "member_identity_source_ready": true,
+    "borrowed_ownership_source_ready": true,
+    "same_admission_reader_contract_ready": true,
+    "private_feasibility_reader_ready": false,
+    "paused_live_leader_member_artifact_ready": false,
+    "public_faction_feasibility_ready": false,
+    "canonical_leader_nullable_semantics_ready": true
+  },
+  "public_impact": {
+    "runtime_observer_changed": false,
+    "public_abi_changed": false,
+    "public_capability_changed": false,
+    "public_schema_changed": false
+  },
+  "unique_next_implementation_entry": "extend_faction_targeting_row_observer_v1_with_leader_and_character_member_vector_same_admission_double_sample",
+  "unknown_boundary": [
+    "CPdxArray header bytes +0x08..+0x0B and +0x10..+0x17",
+    "CFactionCharacterMember row bytes +0x10..+0x1F",
+    "whether the leader appears in the character-member vector for each faction type",
+    "the no-leader sentinel and exact faction types that use it",
+    "paused exact-build leader/member capture under the FACTION4 admission",
+    "faction type, war, power/discontent, stock dangerous predicate, gift preview/action and public promotion"
+  ],
+  "leader_link_rtti_binding": {
+    "name": ".?AVCFactionLeaderLink@@",
+    "type_descriptor_rva": "0x533F298",
+    "complete_object_locator_rva": "0x47C53F0",
+    "vtable_rva": "0x41D7C80",
+    "vtable_length": 48,
+    "vtable_sha256": "85CDEB1F416E8C9EDAE8AE5302B00B7340FC21BEBC7F40F88257BC050B718C9D",
+    "resolver_slot_index": 4,
+    "resolver_slot_rva": "0x41D7CA0",
+    "resolver_target_rva": "0x19D8320"
+  },
+  "character_member_row_rtti_binding": {
+    "name": ".?AVCFactionCharacterMember@@",
+    "type_descriptor_rva": "0x54A1B40",
+    "complete_object_locator_rva": "0x493AE30",
+    "vtable_rva": "0x4305168",
+    "vtable_prefix_length": 32,
+    "vtable_prefix_sha256": "97808F946F72C5A66D0941369F82E80DAA39469B74B83C5407A05E2838A731CD"
+  },
+  "same_admission_private_reader": {
+    "upstream": "faction_targeting_row_observer_v1",
+    "join_keys": [
+      "proof_epoch",
+      "snapshot_revision",
+      "date_raw",
+      "player_character_id"
+    ],
+    "campaign_root_count_field": "player_targeting_faction_count",
+    "double_sample": [
+      "CFaction+0x10 faction identity",
+      "CFaction+0x40 target CharacterID",
+      "CFaction+0x44 leader CharacterID",
+      "CFaction+0x48 data and +0x54 signed count",
+      "each 0x20 row member +0x08 and owner +0x0C"
+    ],
+    "identity_gates": [
+      "target and leader/member CharacterIDs resolve through 0x82B270 and round-trip at CCharacter+0x18",
+      "each row owner +0x0C equals enclosing CFaction+0x10",
+      "member IDs are unique within a faction"
+    ],
+    "publication": "owned IDs/count only; retain the previous complete generation on any failure; valid zero count publishes an empty member list"
+  },
+  "stock_semantic_boundaries": {
+    "canonical_leader": "faction_leader / Faction.GetLeader maps to CFaction+0x44; GUI portrait GetSpecialCharacterOrLeader may instead use special CharacterID +0x90",
+    "legal_no_leader": "requires_leader defaults to no; populist_faction allows requires_character=no before its escalated variant",
+    "leader_membership": "independence/liberty/claimant demand paths explicitly exclude faction_leader inside every_faction_member, but all-type equivalence with the GUI vector remains pending",
+    "count_separation": "outer targeting count, CFaction+0x54 character count, and GetMembersString total (+0x54 plus +0x6C) are different quantities"
+  }
+}

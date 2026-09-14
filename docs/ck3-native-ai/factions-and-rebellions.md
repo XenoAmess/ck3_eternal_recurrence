@@ -319,6 +319,98 @@ equivalence, member vectors, type, war, power/discontent, and public
 query/readiness remain open. The unique next reverse-engineering entry is
 `faction_leader_and_character_member_vector_semantics`.
 
+### FACTION5-EVIDENCE: canonical leader and character-member vector
+
+Exact-build `1.19.0.6` closes the static layout needed by the next private
+feasibility reader. The `CFactionLeaderLink` RTTI binding has type descriptor
+`0x533F298`, COL `0x47C53F0`, vtable `0x41D7C80`, and slot 4 resolver
+`0x19D8320..0x19D837E`. The resolver accepts a Faction scope (`0x19`), resolves
+the complete faction identity through storage `0x570C768`, requires
+`CFaction+0x10` to round-trip, and projects the uint32 at `CFaction+0x44` as a
+Character scope (`0x04`). The canonical leader ID is independent of the
+faction-window portrait. That portrait calls
+`Faction.GetSpecialCharacterOrLeader`, whose exact branch can use special
+CharacterID `CFaction+0x90` instead of leader `+0x44`; it cannot replace the
+canonical leader observation.
+
+The `FactionItem.GetCharacterMembers` callback `0x1394C70..0x1394CFB`
+resolves the row faction ID, checks `CFaction+0x10`, and passes the address of
+the embedded member collection at `CFaction+0x48` to the GUI data model. This
+is a borrowed view owned by the faction. Its confirmed layout is:
+
+| Location | Confirmed meaning | Evidence boundary |
+|---|---|---|
+| `CFaction+0x48` | member data pointer | borrowed; never persist this address |
+| `CFaction+0x50` | opaque header word | semantics remain unknown |
+| `CFaction+0x54` | signed `int32` character-member count | zero is a valid empty vector |
+| member row `+0x00` | `CFactionCharacterMember` vtable | process-local; never publish |
+| member row `+0x08` | full-generation member CharacterID | resolve through `0x82B270`, require `CCharacter+0x18` round-trip |
+| member row `+0x0C` | full-generation owner FactionID | must equal the enclosing targeting-row faction ID |
+| member row `+0x10..+0x1F` | opaque | no field meaning claimed |
+
+The character-member data-model RTTI binds
+`CPdxArray<CFactionCharacterMember>` to vtable `0x414E958`. Its slice and item
+adapters at `0x13A3AA0` and `0x13A3910` read count `+0x0C`, data `+0x00`, and
+multiply the row index by `0x20`. The native scope enumerator
+`0x1A603C0..0x1A60554` independently walks `[CFaction+0x48,
+data + signed_count*0x20)` and projects row `+0x08` as Character scope kind
+`0x04`. The mutation path writes enclosing `CFaction+0x10` to row `+0x0C` and
+resolved `CCharacter+0x18` to row `+0x08`; the owner/member/target consumer
+`0x23741A0..0x2374260` resolves both identities before using the enclosing
+faction target. These paths close stride, identity, and ownership while member
+row `+0x10..+0x1F` stays opaque.
+
+The three relevant counts remain distinct. FACTION4's outer targeting-row
+count equals campaign-root `player_targeting_faction_count`; the per-faction
+character count is `CFaction+0x54`; the stock `GetMembersString` display total
+adds county count `CFaction+0x6C` to character count `+0x54`. A feasibility
+reader cannot compare a nested member count or the display total with the
+outer targeting count.
+
+Stock definitions make `requires_leader` an independent opt-in whose default
+is `no`. The populist faction permits a county-only form with
+`requires_character=no`, and installs a leader later for its demand path.
+Consequently, no canonical leader is a legal nullable component rather than a
+member-vector failure. Independence, liberty, and claimant demand scripts do
+explicitly exclude `faction_leader` while iterating `every_faction_member`, so
+those script iterators include their leader. Static evidence does not prove
+that every faction type has `leader_id` inside the GUI `+0x48` vector. The
+reader must derive `leader_present_in_character_members` from captured IDs and
+must neither require nor deduplicate that relation globally.
+
+```mermaid
+flowchart LR
+    R[FactionItem row\nfaction_id +0x00] -->|FACTION4 round-trip| F[CFaction]
+    F --> T[target +0x40]
+    F --> L[canonical leader +0x44]
+    F --> V[borrowed vector +0x48\ncount +0x54]
+    V -->|stride 0x20| M[member +0x08\nowner +0x0C]
+    L -->|Character storage +0x18 round-trip| O[owned nullable leader ID]
+    M -->|member round-trip; owner == faction_id| I[owned member IDs]
+    T -->|already admitted target == player| A[same-admission private row]
+    O --> A
+    I --> A
+    A -. paused live artifact pending .-> P[public feasibility query]
+```
+
+The next implementation must reuse FACTION4's default-off, paused
+application-main admission and its `proof_epoch`, `snapshot_revision`,
+`date_raw`, `player_character_id`, and campaign-root count join. For every
+already admitted faction, it must double-sample `+0x10`, `+0x40`, `+0x44`, the
+member data/count tuple, and every row `+0x08/+0x0C`; validate stable bounds,
+member uniqueness, Character round-trips and owner equality; and publish only
+owned IDs. Any read, bounds, ownership, identity, or second-sample drift keeps
+the previous complete private generation. A valid zero character count
+publishes an empty member list. A legal no-leader state remains distinct from
+a read failure.
+
+The single next private seam is
+`extend_faction_targeting_row_observer_v1_with_leader_and_character_member_vector_same_admission_double_sample`.
+Status remains `static-confirmed-next-private-reader`: no paused live artifact,
+runtime observer, public MCP/schema, or public readiness changed. Faction type,
+war, power/discontent, the stock dangerous predicate, gift preview/action,
+all-type leader containment, and member-row tail semantics remain open.
+
 ### FACTION-OBS1：逐派系与成员观测
 
 按 [玩家目标派系告警 v1](player-targeting-factions-v1.md) 的 P0 路线，先闭合 targeting-faction span、engine-stable identity、type、war、leader/member、power/discontent 与 stock dangerous predicate。`player_targeting_faction_count` 必须与逐行枚举严格一致。此步是当前最高 blocker。
