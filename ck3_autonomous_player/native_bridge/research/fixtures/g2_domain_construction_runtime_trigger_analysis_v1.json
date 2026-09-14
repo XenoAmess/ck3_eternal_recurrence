@@ -1,0 +1,151 @@
+{
+  "contract": "g2_domain_construction_runtime_trigger_analysis_v1",
+  "schema_version": 1,
+  "status": "static-confirmed-r687-bounded-no-go-explained",
+  "exact_build": {
+    "product_version": "1.19.0.6",
+    "executable_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+    "image_base": "0x140000000"
+  },
+  "r687": {
+    "classification": "BOUNDED_NO_GO",
+    "final_artifact_manifest_sha256": "D8E543DF1B2C43EC87FAC174C16B6042FDA8B77901D14FF7BC0C7E94090F32D2",
+    "live_manifest_sha256": "4406AC5C3858F7F6F93DB7610780FDA4D16113A9F9260EE3DB06DE5782824D19",
+    "observer_installed": true,
+    "failure_flags": 0,
+    "capture_read_failures": 0,
+    "producer_calls": 0,
+    "accepted_captures": 0,
+    "readiness_date_raw": 53178264,
+    "readiness_paused": true,
+    "date_advance_requested": false,
+    "ui_inputs": 0,
+    "gameplay_actions": 0,
+    "source_and_target_save_sha256": "9104CCB8AE9D5776166FBBAEDA9B43BD08CBAA2CB5C057332EB8B7A1A212CC63",
+    "source_save_unchanged": true,
+    "target_save_unchanged": true,
+    "cleanup_proven": true,
+    "explanation": "The session reached a paused application-main readiness frame but never completed a new daily tick. The normal construction route is downstream of the CDailyTickCommand final stage, so zero producer calls in this shape is expected and does not challenge the observer anchor or admission logic."
+  },
+  "natural_scheduler_chain": {
+    "daily_final_stage": {
+      "function_rva": "0x26D3E80",
+      "function_end_rva_exclusive": "0x26D3FAA",
+      "function_sha256": "5306C7F0F30BC4CF8DA6B29DCA0B2D869C588CEDDEF819713608D4D60B293790",
+      "classification": "CDailyTickCommand final/post stage",
+      "ordering": "stage 1 has already advanced date_raw by 0x18 and stage 2 has run managers/tasks before this final stage",
+      "ai_manager_call_rva": "0x26D3EE1",
+      "ai_manager_target_rva": "0x18876D0",
+      "call_span": "0x26D3ECC..0x26D3EE6",
+      "call_span_sha256": "DB89E2EBC36C5F8454AA860C1DCEED7500CB019E1ED1E9BE5F930342CC85D0A0"
+    },
+    "ai_manager_update": {
+      "function_rva": "0x18876D0",
+      "function_end_rva_exclusive": "0x188817E",
+      "function_sha256": "3ECAAE0A02249B0F7539E66594A384A6A21918F97FB7983D8AA732303C439E67",
+      "rtti_identity": "CAIManager secondary-interface update slot",
+      "secondary_vtable_rva": "0x4193898",
+      "secondary_vtable_slot": "+0x30",
+      "construction_dispatch_loop_span": "0x1887FB2..0x1888069",
+      "construction_dispatch_loop_sha256": "5CE46C0AFE573804B7A3B80B56F56BF368ABC31B448010AC90B09279A1296D6D",
+      "construction_dispatch_call_rva": "0x1888057",
+      "construction_dispatch_target_rva": "0x183DD40"
+    },
+    "per_entry_dispatch": {
+      "function_rva": "0x183DD40",
+      "function_end_rva_exclusive": "0x183DEB7",
+      "function_sha256": "49231AF9B6F5F779663A3AEDA74FE86647EB52D357F7EE84D0CBBCA1F854850F",
+      "construction_route_span": "0x183DDF6..0x183DE12",
+      "construction_route_span_sha256": "28876F4DC9F8B48C26B8B317FD9243133DF57F62D70DC6ADC4CCB74BE178B96B",
+      "condition": "entry state [owner+0x20] is non-null and byte[state+0xC2] is nonzero",
+      "runtime_entry_call_rva": "0x183DE04",
+      "runtime_entry_target_rva": "0x18D2560"
+    },
+    "alternate_raw_routes": [
+      {
+        "call_rva": "0x1886E0D",
+        "owner_function_rva": "0x1886D30",
+        "condition": "state is null or byte[state+0xC2] is zero, and global byte 0x4F54C2F is nonzero"
+      },
+      {
+        "call_rva": "0x1886F5B",
+        "owner_function_rva": "0x1886F20",
+        "condition": "state is null or byte[state+0xC2] is zero, and global byte 0x4F54C2F is nonzero"
+      }
+    ],
+    "runtime_entry": {
+      "function_rva": "0x18D2560",
+      "function_end_rva_exclusive": "0x18D2B89",
+      "function_sha256": "4D94C8EB8EF3AC2AC0F5CB6720E89350D431150E9B12EDBF8B93236643CE3923",
+      "producer_call_rva": "0x18D294F",
+      "producer_target_rva": "0x1921810",
+      "producer_call_count_per_passing_runtime_entry": 1,
+      "raw_prerequisites": [
+        "byte[owner+0x16] & 0x0A != 0",
+        "byte[owner+0x2A] == 0",
+        "selected opaque substate counter at +0x318/+0x0C, or its global fallback, equals zero",
+        "opaque predicate 0x19017F0 returns false",
+        "when the deterministic threshold branch is entered, 0x1900640 and 0x18FE5E0 both return false",
+        "after 0x1879280 prepares mode-3 scratch, opaque predicate 0x1922BF0 returns true"
+      ]
+    }
+  },
+  "frequency_boundary": {
+    "confirmed": "The CAIManager update is invoked once from each completed CDailyTickCommand final stage. Each traversed raw owner route can call 0x18D2560 once, and each passing 0x18D2560 invocation calls producer 0x1921810 exactly once.",
+    "producer_cardinality_per_day": "zero or more across manager entries; exact actor deduplication and cross-list overlap are not closed",
+    "not_confirmed": [
+      "a guarantee that every landed AI owner reaches the construction route each day",
+      "a fixed every-N-days construction-specific cooldown",
+      "the semantic names of state+0xC2, global 0x4F54C2F, and the internal opaque predicates",
+      "the lifetime and retry cadence of a saved unaffordable construction target"
+    ]
+  },
+  "minimum_next_live_plan": {
+    "purpose": "exercise exactly one natural daily CAIManager pass without forcing the producer, effect, GUI, or construction action",
+    "precondition": [
+      "fresh userdir and immutable R687 source checkpoint",
+      "exact-build and private observer preflight GREEN",
+      "one globally unique CK3 process",
+      "paused map-ready application-main frame bound to the expected player and episode",
+      "persist the raw observer heartbeat before semantic validation"
+    ],
+    "control": {
+      "daily_sentinel": "arm the existing production-live tactical_daily_sentinel_v1 for target_date_raw = start_date_raw + 0x18 in date-only terminal mode",
+      "speed": 3,
+      "resume_submissions": 1,
+      "ui_inputs": 0,
+      "gameplay_actions": 0,
+      "date_delta_days": 1,
+      "save_mutation": false,
+      "forced_effects": 0,
+      "forced_gui": 0,
+      "forced_producer_calls": 0,
+      "construction_submissions": 0,
+      "same_round_retry": false
+    },
+    "wall_clock_bounds": {
+      "startup_readiness_seconds": 300,
+      "post_resume_one_day_transaction_seconds": 30,
+      "total_seconds": 330
+    },
+    "terminal_classification": {
+      "GREEN": "producer_calls >= 1, accepted_captures >= 1, failure_flags == 0, capture_read_failures == 0, exact +1-day sentinel stop, unchanged source and target save",
+      "RED": "producer_calls >= 1 but no accepted capture, any observer/admission/read failure, date overshoot, duplicate CK3, unexpected input/action/save mutation, or cleanup failure",
+      "BOUNDED_NO_GO": "exactly one completed daily final stage with producer_calls == 0 and otherwise clean evidence"
+    },
+    "no_go_followup": "Do not extend or retry the same round. A clean zero after one completed daily stage means the checkpoint had no passing raw owner route that day; the next static step is a private entry/gate-mask observer, not a longer passive wait."
+  },
+  "observer_decision": {
+    "existing_hook_realistic_for_ooda": true,
+    "reason": "The hook is on the only normal-runtime direct producer call and lies inside the daily CAIManager route used during ordinary running play. R687 did not exercise a daily tick, so it does not justify replacing the hook.",
+    "native_code_change_required_now": false,
+    "conditional_fallback": "Only after a one-day final-stage transaction still yields zero producer calls, add a default-OFF private observer at 0x18D2560 entry that records a bounded raw gate mask and never calls the producer or mutates game state."
+  },
+  "public_surface": {
+    "mcp_changed": false,
+    "schema_changed": false,
+    "planner_changed": false,
+    "bridge_changed": false,
+    "cmake_changed": false
+  }
+}

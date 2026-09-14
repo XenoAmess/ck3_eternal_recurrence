@@ -10,13 +10,16 @@
   `g2_domain_construction_candidate_observer_v1`，在 BUILD1 已冻结的候选 producer 返回边界采集调用上下文和原始
   `0x28` 行。R683 证明 DEV4 readiness 与 observer 安装均正常，但冻结的强制 effect callsite 在 60 秒 paused 窗口中零次经过，
   因而按预定口径收口为 `NO-GO / no_producer_return_observed`。它不新增公共 bridge/MCP/schema，也不发布候选语义。
-- **[DEV7 static-ready / live pending]** 默认关闭的私有
+- **[DEV7 static-ready + R687 bounded live NO-GO]** 默认关闭的私有
   `g2_domain_construction_native_runtime_callsite_observer_v1` 已把观察点移至正常运行时 direct callsite
-  `0x18D294F`。fixture 证明它不要求暂停、只在存活会话的 application-main 线程同步复制有界原始行；尚无生产命中，
-  因而不能声称 candidate reader live。DEV8 已把它接入默认 `OFF` 的私有 bridge 构建和 heartbeat；私有构建只发布
-  `advertised=false` 的诊断对象，不进入 hello capability、公共 MCP/schema 或 planner。DEV8 没有启动 CK3。
-- **[unknown]** 正常 AI scheduler 把建设挂在哪一种 task tick、多久重新评估一次、已选存钱目标保存于何处及何时
-  失效，当前 exact-build 证据尚未闭合。原版通用 task tick 只能作为背景，不能冒充建筑专用 cadence。
+  `0x18D294F`。fixture 证明它不要求暂停、只在存活会话的 application-main 线程同步复制有界原始行。R687 中 observer
+  安装与 admission 均无失败，但存档始终停在同一日期，没有完成原生日更，故 `producer_calls=0` 并按合同收口为
+  `BOUNDED_NO_GO`；这不是 hook 失效证据。DEV8 已把它接入默认 `OFF` 的私有 bridge 构建和 heartbeat；私有构建只发布
+  `advertised=false` 的诊断对象，不进入 hello capability、公共 MCP/schema 或 planner。
+- **[static-confirmed cadence boundary]** `CDailyTickCommand` final stage `0x26D3E80` 每次完成日更时调用一次
+  `CAIManager` update `0x18876D0`，建设 runtime entry 位于该 pass 的内部列表路由。每条通过 raw gates 的 runtime entry
+  调用 producer 恰好一次；全局每日至少/至多命中多少个 owner、存钱目标何时重试仍未闭合，不能写成“每个角色每天必建”或
+  某个建筑专用 every-N-days cooldown。
 - 范围只包括省份建筑的新建与升级。新建 holding、Great Project 和 domicile 动作不进入 v1；原版 AI 的共同候选池
   会把 domicile building 与省份建筑一起比较，这一竞争关系仍记录在原生树中。
 - 本包没有启动 CK3、没有新增 bridge/MCP/action，也没有改变现有 campaign-root。当前 campaign-root 只有玩家
@@ -303,6 +306,52 @@ source-contract、exact anchor、`/W4 /WX` unit fixture 与 suspended non-CK3 tr
 `g2_domain_construction_native_runtime_callsite_observer_v1` 私有对象中保留安装、失败计数、会话拒绝、暂停状态和原始行；
 默认构建仍为 `OFF`。生产命中前，状态保持 `candidate-ready / live pending`。
 
+### DEV12：R687 零命中的 exact 原因与自然触发
+
+R687 最终 artifact manifest 的 SHA-256 是
+`D8E543DF1B2C43EC87FAC174C16B6042FDA8B77901D14FF7BC0C7E94090F32D2`；其中 live manifest SHA-256 是
+`4406AC5C3858F7F6F93DB7610780FDA4D16113A9F9260EE3DB06DE5782824D19`。实机事实为：
+
+- `installed=true`、`failure_flags=0`、`capture_read_failures=0`；
+- `producer_calls=0`、`accepted_captures=0`；
+- readiness 为 `date_raw=53178264`、`paused=true`，没有请求日期推进；
+- UI 输入和游戏动作均为 `0`，源/目标 save SHA-256 始终为
+  `9104CCB8AE9D5776166FBBAEDA9B43BD08CBAA2CB5C057332EB8B7A1A212CC63`，cleanup proven。
+
+这组证据现在可以精确解释。正常调用链不是“载入地图后初始化一次”，而是：
+
+1. `CDailyTickCommand` final/post stage `0x26D3E80..0x26D3FAA`（SHA-256
+   `5306C7F0F30BC4CF8DA6B29DCA0B2D869C588CEDDEF819713608D4D60B293790`）在 `0x26D3EE1` 调
+   `CAIManager` update `0x18876D0`。此时 stage 1 已把 `date_raw` 增加 `0x18`，stage 2 已运行当日 managers/tasks。
+2. `0x18876D0..0x188817E`（SHA-256
+   `3ECAAE0A02249B0F7539E66594A384A6A21918F97FB7983D8AA732303C439E67`）是已由 RTTI/vtable 交叉确认的
+   `CAIManager` secondary-interface update slot；其 `0x1887FB2..0x1888069` 列表循环在 `0x1888057` 调
+   per-entry dispatcher `0x183DD40`。
+3. dispatcher 只在 `[owner+0x20]` 非空且 `byte[state+0xC2] != 0` 时从 `0x183DE04` 进入
+   `0x18D2560`；另外两条 raw route `0x1886E0D/0x1886F5B` 在 state 为空或 `+0xC2==0`、且 global
+   `0x4F54C2F != 0` 时进入同一 runtime entry。
+4. `0x18D2560` 继续执行本节“已冻结的触发前置”；全部通过后才在 `0x18D294F` 调 producer `0x1921810`
+   恰好一次。一个 completed daily pass 因此可能跨 manager entries 产生零到多次 producer call；目前不能证明跨列表 actor
+   去重或每个 landed AI 都会进入建设路由。
+
+R687 一直暂停，没有完成第 1 步，所以零 producer call 是该运行形状的预期结果。继续在同一暂停帧延长等待没有信息增益，
+也不能据此替换已经位于正常 runtime direct call 的 observer。
+
+下一次最小实机方案只跨一个原生日更：从 paused/map-ready 基线先封存 raw heartbeat，使用现有
+`tactical_daily_sentinel_v1` 以 date-only terminal mode 绑定 `target_date_raw=start+0x18`，speed `3`，只提交一次 resume。
+sentinel 在 `0x26D3E80` 中先执行 original，因此会先经过本页的 `CAIManager`/建设链，再在同一日终边界自动暂停。
+边界固定为：
+
+- 最长 readiness `300` 秒，resume 后单日事务 `30` 秒，总上限 `330` 秒；
+- UI 输入 `0`、gameplay action `0`、日期精确前进 `1` 天、无 save mutation、forced effect/GUI/producer/build submission 均为 `0`；
+- `producer_calls>=1 && accepted_captures>=1` 且所有 failure 为零才是 GREEN；有 producer call 但 capture/admission 失败、日期越界、
+  重复 CK3 或 cleanup 失败为 RED；完成恰好一个 daily final stage 仍为零 call 时收口 `BOUNDED_NO_GO`，同轮不重试、不延长。
+
+只有上述一日事务仍得到干净的零 call，才有实证需要把最小 fallback 改为 default-OFF 的 `0x18D2560` entry/gate-mask
+私有 observer；它只记录 raw gate mask，不主动调用 producer、不修改游戏状态。本包没有触发该条件，因此不改 native/CMake/bridge。
+机器可读证据与下一轮合同见
+`ck3_autonomous_player/native_bridge/research/fixtures/g2_domain_construction_runtime_trigger_analysis_v1.json`。
+
 ## 预算储备与“存钱”边界
 
 `00_ai.txt:100-168` 冻结了通用 AI 财政背景：
@@ -332,8 +381,9 @@ unknown。planner 不应复制这种可能锁死经济的行为，应使用自�
   final legality 因此必须消费当前省份施工状态；v1 要把该状态作为原生最终结果发布，不在 Python 猜槽位是否空闲。
 - `_buildings.info:394-406` 定义 `on_start/on_cancelled/on_complete`，说明施工有开始、取消、完成生命周期。Great Project
   使用自己的进度，明确不属于普通 building slot construction。
-- 没有找到建筑专用 authored cooldown。`00_ai.txt:1-50` 的 SHORT/MEDIUM/LONG/RARE/STRATEGY task tick 是全局按
-  title tier 的通用调度定义；目前没有 exact callsite 把建设归入其中某一类，因此不得写成“每 N 天建一次”。
+- 没有找到建筑专用 authored cooldown。exact native chain 已确认建设 route 位于每个 completed daily tick 的
+  `CAIManager` update 内，但 raw flags/predicates 可以令某个 owner 当日不进入 producer。`00_ai.txt:1-50` 的
+  SHORT/MEDIUM/LONG/RARE/STRATEGY task tick 仍不能直接套到建设上；不得把“manager 每日 pass”误写成“每个角色每天评估/施工”。
 - 施工中的省份形成真实队列占用；其他空闲省份是否会在同一 scheduler turn 连续开工、存钱目标是否跨省阻挡，以及完成后
   到下一次重评之间的具体延迟仍为 unknown。
 
@@ -346,7 +396,9 @@ unknown。planner 不应复制这种可能锁死经济的行为，应使用自�
 
 ```mermaid
 flowchart TD
-    S["[static] native execution-owner dispatch<br/>0x183DE04 / 0x1886E0D / 0x1886F5B"] -. "[unknown] task class / cadence" .-> T["runtime caller 0x18D2560"]
+    D["[static] completed CDailyTickCommand<br/>final stage 0x26D3E80"] --> M["CAIManager update 0x18876D0"]
+    M --> S["per-entry raw dispatch<br/>0x183DE04 / 0x1886E0D / 0x1886F5B"]
+    S --> T["runtime caller 0x18D2560"]
     T --> G{"raw entry and predicate gates pass?"}
     G -->|no| X2["return without producer"]
     G -->|yes| E["producer 0x1921810 via 0x18D294F"]
@@ -355,6 +407,8 @@ flowchart TD
     A -->|yes| E2["producer 0x1921810 via 0x2EBEE86"]
     R683["[live] R683 forced-callsite observer"] --> N0["NO-GO: zero forced-effect calls"]
     N0 -. "[unknown] says nothing about runtime callsite" .-> T
+    R687["[live] R687 runtime observer<br/>paused; zero daily ticks"] --> N1["BOUNDED NO-GO: producer_calls=0"]
+    N1 -. "explained by no completed daily stage" .-> D
     E2 --> C
     E --> C["[static] enumerate all potential buildings<br/>includes domicile; excludes holdings / Great Projects"]
     C --> C1["sub-enumerator 0x19221C0"]
@@ -503,9 +557,12 @@ construction loop 跑通后再扩展 outcome delta，不把收益解析提前做
   来自相同 EXE 的静态反汇编。
 - **[inference]** “province 已施工会阻止新施工”由 exact diagnostic、施工状态与 final legality 位置共同支持；仍要求未来只读
   queue reader 和代表性 paused snapshot 互证。
-- **[unknown]** normal scheduler cadence、建设预算桶的精确绑定、八槽资源全映射、存钱状态 owner/lifetime、子枚举器类型名、
-  多省同轮调度和完成后重评延迟。
+- **[static-confirmed cadence boundary]** completed daily final stage 每次调用一次 `CAIManager` update；建设 runtime entry
+  位于其内部 per-entry route。每个 passing runtime entry 只调用 producer 一次。每日 actor 去重/命中下界、建设预算桶的精确绑定、
+  八槽资源全映射、存钱状态 owner/lifetime、子枚举器类型名、多省同轮调度和完成后重评延迟仍 unknown。
 - **[bounded live NO-GO]** R683 已证明 DEV4 readiness、observer admission 与无状态改动边界，但只观察了 forced-effect callsite，
   没有取得候选行；不能把它写成 candidate reader live。
+- **[bounded live NO-GO]** R687 证明 runtime observer 安装、private heartbeat 和 cleanup 正常，但 paused shape 没有完成日更；
+  `producer_calls=0` 与现已闭合的 daily call chain 一致，不能据此声称 runtime hook 已 live 命中。
 - **[live pending]** 没有 `domain-construction-candidates-v1` 生产 reader 或 MCP fixture，故本专题仍是 exact-build tree +
   contract-ready，不提升为 production-live primitive。
