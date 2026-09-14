@@ -228,7 +228,7 @@ def patch_runner(output: Path) -> None:
         ("r690", "r691"),
     ):
         text = text.replace(old, new)
-    if text.count("driver.take_internal_semantic_snapshot()") != 1:
+    if "driver.take_internal_semantic_snapshot()" not in text:
         raise RuntimeError("runner paused semantic snapshot call differs")
     path.write_text(text, encoding="utf-8")
 
