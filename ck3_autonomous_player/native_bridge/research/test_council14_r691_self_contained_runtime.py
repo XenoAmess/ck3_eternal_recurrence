@@ -151,6 +151,24 @@ class CandidateRuntimeIdentityTests(unittest.TestCase):
             for path in payload["module_files"].values():
                 Path(path).resolve().relative_to(candidate_root.resolve())
 
+    def test_runtime_export_reads_the_frozen_commit(self) -> None:
+        repo_root = Path(__file__).resolve().parents[3]
+        paths = verify_runtime_repository(repo_root)
+        relative = Path(
+            "ck3_autonomous_player/src/xar_autoplayer/bridge/native_driver.py"
+        )
+        self.assertIn(relative, paths)
+        expected = subprocess.run(
+            ["git", "show", f"{SOURCE_COMMIT}:{relative.as_posix()}"],
+            cwd=repo_root,
+            capture_output=True,
+            check=True,
+        ).stdout
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            copy_runtime(repo_root, root, paths)
+            self.assertEqual((root / "source-repo" / relative).read_bytes(), expected)
+
 
 if __name__ == "__main__":
     unittest.main()

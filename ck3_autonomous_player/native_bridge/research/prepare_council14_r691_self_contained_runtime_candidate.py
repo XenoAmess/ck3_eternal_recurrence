@@ -126,21 +126,6 @@ def verify_runtime_repository(repo_root: Path) -> list[Path]:
     ).stdout.strip()
     if tool_blob != BUILD_RELEASE_GIT_BLOB_OID:
         raise RuntimeError("build_release Git blob identity differs")
-    changed = subprocess.run(
-        [
-            "git",
-            "diff",
-            "--quiet",
-            RUNTIME_SOURCE_COMMIT,
-            "--",
-            "ck3_autonomous_player/src",
-            "tools/build_release.py",
-        ],
-        cwd=repo_root,
-        check=False,
-    )
-    if changed.returncode != 0:
-        raise RuntimeError("runtime source working tree differs from frozen commit")
     result = subprocess.run(
         [
             "git",
@@ -184,7 +169,13 @@ def copy_runtime(repo_root: Path, output: Path, paths: list[Path]) -> dict[str, 
     for relative in paths:
         target = output / "source-repo" / relative
         target.parent.mkdir(parents=True, exist_ok=True)
-        shutil.copyfile(repo_root / relative, target)
+        blob = subprocess.run(
+            ["git", "show", f"{RUNTIME_SOURCE_COMMIT}:{relative.as_posix()}"],
+            cwd=repo_root,
+            capture_output=True,
+            check=True,
+        ).stdout
+        target.write_bytes(blob)
     identity = build_source_identity(output / "source-repo")
     write_json(output / "source-repo/source-identity.json", identity)
     return identity
