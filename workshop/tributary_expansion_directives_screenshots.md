@@ -1,6 +1,6 @@
 # 驱策朝贡国：Steam 玩法实机截图清单
 
-状态：上传副本已从 CK3 `1.19.0.6` 的 **R0009 GREEN 实机验收**确定性生成并完成人工视觉检查；Steam media strip 上传与公开回读尚未完成，首发在补齐下列公开证据前不得标为完成。
+状态：**已发布并公开回读**。上传副本从 CK3 `1.19.0.6` 的 **R0009 GREEN 实机验收**确定性生成；Steam media strip、匿名 CDN 下载与放大图人工复核均已完成。
 
 ## 权威来源
 
@@ -30,4 +30,9 @@
 
 ## 发布证据
 
-待首发后补写：Workshop item ID、公开页面、`highlight_strip_item` 精确数量与顺序、Steam CDN 原图 URL、匿名下载尺寸/bytes/SHA-256，以及放大图人工复核结果。
+- Workshop item：[`3801490405`](https://steamcommunity.com/sharedfiles/filedetails/?id=3801490405)。
+- 2026-09-14 匿名抓取的公开 HTML 精确包含 **1** 个 `highlight_strip_item`，且唯一条目就是表中第 1 张图；原始 HTML 永久证据为 `release-1.0.0/public_media_raw.html`，59,870 bytes，SHA-256 `280ABE21BC5B027D5EEBAE8CEDDB9C453AC518BE2C88034B8AFAB7F5E7B24307`。
+- Steam CDN 无查询参数原图：`https://images.steamusercontent.com/ugc/16514861206340431022/D6D26F2DD0AEC1A3D3AF4E3FC7A87F3E7D2B387B/`。
+- 匿名下载结果为 1360×765 RGB JPEG、303,241 bytes、SHA-256 `6B9D837A4BF34545C92EC4A13893F3E58A19C177698459C9AEF37B8DF5721200`，与仓库上传文件逐字节一致。
+- 已对匿名 CDN 副本按原始尺寸人工复核：拒绝 toast、地图、资源栏与文字清晰；不存在测试面板、调试文字、紫色缺图、拉伸、错误裁切或生成式改写。
+- 永久发布证据根：`D:\workspace\ck3_eternal_recurrence_process_assets\tributary_expansion_directives\release-1.0.0`；`31_media_uploaded.png` 证明媒体管理器收到图片，`33_public_with_media.png` 证明公开页 media strip 可见，`public_media_01.jpg` 是匿名 CDN 原图副本。

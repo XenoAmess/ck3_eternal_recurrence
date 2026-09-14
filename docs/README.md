@@ -34,7 +34,7 @@
 - [reclaim-the-motherland-phase-3-plan.md](reclaim-the-motherland-phase-3-plan.md) — 《重整河山》三期 `0.3.0` 静态计划：后朝跨代继承修复、旧存档迁移、前朝三省六部原班留任与单官署归属合同
 - [reclaim-the-motherland-phase-4-plan.md](reclaim-the-motherland-phase-4-plan.md) — 《重整河山》四期 `0.4.0` 静态计划：割据期外交附庸防秒统一、五年“新近自立”状态与 MCP-first 平衡验收合同
 - [tributary-expansion-directives-test-plan.md](tributary-expansion-directives-test-plan.md) — 《驱策朝贡国》1.0.0 的威望/军费结算、定向单县战争、L0–L3 与 fresh-cache 发布验收合同
-- [tributary-expansion-directives-acceptance-1.0.0.md](tributary-expansion-directives-acceptance-1.0.0.md) — 《驱策朝贡国》R0009 正式投影实机 GREEN、精确覆盖项、RED lineage 与诚实 live gap
+- [tributary-expansion-directives-acceptance-1.0.0.md](tributary-expansion-directives-acceptance-1.0.0.md) — 《驱策朝贡国》R0009 源正式投影与 R0010 新鲜 Workshop 缓存双 GREEN、公开回读、RED lineage 与诚实 live gap
 - [tributary-expansion-directives-release-localization-review-1.0.0.md](tributary-expansion-directives-release-localization-review-1.0.0.md) — 九语言候选生成、人工拦截与发布级 token 审阅记录
 - [workshop-publishing-mcp.md](workshop-publishing-mcp.md) — Paradox/Steam 实际发布协议、上传窗口资料故障与 `ck3_workshop_mcp` 实现入口
 - [desktop-coordinate-mapping.md](desktop-coordinate-mapping.md) — 任意屏幕/预览宽高比的显式换算、点击回执与英文输入法/文本读回合同
