@@ -1,0 +1,98 @@
+{
+  "contract": "government_runtime_adapter_observer_v1_private_semantic_core",
+  "schema_version": 1,
+  "status": "static-ready-private-semantic-core",
+  "exact_build": {
+    "game_version": "1.19.0.6",
+    "executable_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86"
+  },
+  "input_contract": {
+    "government_runtime_adapter_research_commit": "02325f497eb779edf155c6bed9b3efba2c1c66d3",
+    "government_runtime_adapter_research_sha256": "D839AF0B2A6EC8B19ABA70F69F16364895C4306DBF2C06C2E874ED3FBDD7B206",
+    "loaded_feature_manifest_source_sha256": "FE4D39C1F8C61EC3A83933D5D5AB3DB1B343FF234F42F505A084975C5D779C04",
+    "prospective_observer_contract_sha256": "C23DD7CDEC30C569BB00E0144E298D66D2B679E803FD03B24B4E02D334FD00D4"
+  },
+  "implementation": {
+    "header": "include/xar_bridge/government_runtime_adapter_observer_v1.hpp",
+    "source": "src/government_runtime_adapter_observer_v1.cpp",
+    "standalone_test": "src/government_runtime_adapter_observer_v1_test.cpp",
+    "build_test": "research/test_government_runtime_adapter_observer_v1_standalone.py",
+    "semantic_core_only": true,
+    "cmake_target_added": false,
+    "bridge_wired": false,
+    "public_capability_added": false,
+    "public_schema_changed": false,
+    "mcp_changed": false,
+    "planner_changed": false
+  },
+  "admission": {
+    "exact_build_admitted": true,
+    "application_main": true,
+    "paused": true,
+    "state_identity_stable": true
+  },
+  "typed_observation_status": [
+    "available",
+    "not_present",
+    "unavailable"
+  ],
+  "typed_unavailable_reasons": [
+    "unsupported_build",
+    "requires_application_main",
+    "requires_paused",
+    "player_not_present",
+    "government_not_present",
+    "government_flags_unavailable",
+    "feature_root_unavailable",
+    "feature_counter_mismatch",
+    "feature_registry_drift",
+    "script_dlc_set_unavailable",
+    "script_dlc_set_invalid",
+    "state_changed",
+    "store_verdict_provenance_unclosed"
+  ],
+  "government_identity": {
+    "stock_government_count": 18,
+    "stock_flag_declaration_count": 136,
+    "stable_key_can_be_available": true,
+    "observed_flags_preserved_for_nonreligious_identity": true,
+    "applicable_stock_flags_are_runtime_intersection": true,
+    "unknown_runtime_keys_preserved": true,
+    "religious_keys": [
+      "theocracy_government",
+      "holy_order_government"
+    ],
+    "religious_output": "opaque stable key only"
+  },
+  "runtime_feature_identity": {
+    "native_feature_count": 44,
+    "native_index_and_stable_key_required": true,
+    "enabled_counter_must_match": true,
+    "script_dlc_keys_sorted_unsigned_utf8": true,
+    "script_dlc_duplicates_rejected": true,
+    "runtime_product_keys": [
+      "Roads to Power",
+      "Khans of the Steppe",
+      "All Under Heaven"
+    ],
+    "entitlements": {
+      "status": "unavailable",
+      "reason": "store_verdict_provenance_unclosed"
+    }
+  },
+  "adapter_semantics": {
+    "selection_key": "exact effective government stable key",
+    "required_features_source": "same input observation effective feature vector",
+    "missing_required_feature": "unavailable_feature_mismatch",
+    "unknown_government": "unadapted_runtime_government",
+    "religious_government": "owner_deferred_religious"
+  },
+  "acceptance": {
+    "normal_msvc_w4_wx": "green",
+    "optimized_msvc_w4_wx": "green",
+    "government_identity_green_fixture": "feudal_government",
+    "dlc_adapter_green_fixture": "celestial_government",
+    "ck3_launched": false,
+    "live_status": "not_run"
+  }
+}
