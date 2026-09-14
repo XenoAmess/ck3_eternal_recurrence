@@ -13,6 +13,9 @@ from xar_autoplayer.bridge.turn_bundle_contract import (
     TURN_BUNDLE_V1_SCHEMA,
     build_turn_bundle_v1,
 )
+from xar_autoplayer.bridge.succession_transition_contract import (
+    freeze_succession_expectation_v1,
+)
 
 
 SNAPSHOT_ID = "native:17"
@@ -324,6 +327,73 @@ class TurnBundleV1Tests(unittest.TestCase):
         self.assertEqual(realm["council"]["status"], "unavailable")
         self.assertFalse(result["readiness"]["realm_council_ready"])
         self.assertEqual(result["status"], "partial")
+
+    def test_optional_root_gaps_preserve_celestial_succession(self) -> None:
+        root = _root()
+        context = root["campaign_root_context"]
+        assert isinstance(context, dict)
+        context["government"] = {
+            "key": "celestial_government",
+            "flags": ["government_is_celestial", "government_is_settled"],
+            "native_flag_count": 2,
+        }
+        context["council"] = {
+            "status": "unavailable",
+            "coverage_key": "standard_landed_non_nomadic_core_v1",
+            "owner_character_id": PLAYER_ID,
+            "positions": [],
+            "auxiliary_vacancies_complete": False,
+            "unavailable_reason": (
+                "outside_standard_landed_non_nomadic_core_scope"
+            ),
+        }
+        context["selected_game_rule_tokens"] = []
+        context["native_selected_game_rule_token_count"] = 0
+        context["readiness"] = {
+            "player_identity_ready": True,
+            "player_monthly_gold_income_ready": True,
+            "player_health_ready": True,
+            "player_domain_ready": True,
+            "player_targeting_factions_ready": True,
+            "primary_title_ready": True,
+            "primary_title_succession_ready": True,
+            "held_title_partition_ready": True,
+            "council_ready": False,
+            "capital_ready": True,
+            "lieges_ready": True,
+            "direct_landed_vassals_ready": True,
+            "adjacent_external_province_holders_ready": True,
+            "related_character_contexts_ready": True,
+            "government_ready": True,
+            "selected_game_rule_tokens_ready": False,
+            "same_frame_ready": True,
+            "ready": False,
+        }
+
+        result = build_turn_bundle_v1(_snapshot(), root)
+
+        self.assertEqual(root["status"], "available")
+        self.assertFalse(context["readiness"]["ready"])
+        self.assertEqual(result["status"], "partial")
+        self.assertIsNone(result["unavailable_reason"])
+        self.assertEqual(
+            result["realm_state"]["value"]["council"]["status"],
+            "unavailable",
+        )
+        self.assertTrue(result["readiness"]["succession_partition_ready"])
+        succession = result["succession_state"]["value"]
+        self.assertEqual(
+            succession["primary_title_heir_character_id"]["value"],
+            88,
+        )
+
+        expectation = freeze_succession_expectation_v1(
+            result,
+            episode_run_id="native-12345-optional-root-gap",
+            episode_character_id=PLAYER_ID,
+        )
+        self.assertEqual(expectation["expectation_state"], "successor_expected")
+        self.assertEqual(expectation["expected_successor_character_id"], 88)
 
     def test_available_title_without_successor_raises_minimum_alert(self) -> None:
         root = _root()
