@@ -145,6 +145,11 @@
   stable key 已由 formatter/serializer/affordability 三链闭合并接入 pending query，明确标记 actor 在 on-send 已支付。
   effect typed row/root 与 special-war dynamic outcome rows 仍是观测依赖，当前不得把 legality、已付成本或 WarID 绑定
   冒充 semantic decision readiness。
+- [static-confirmed; observer/action live pending]
+  [core-diplomatic-proposals.md](core-diplomatic-proposals.md) 把人物互动通用管线投影到礼物、招募/邀请、附庸提议、钩子换金、
+  教育、授地/转封与赎金 11 个高价值交互，并把中国玩法所需朝贡列为紧随其后的 P1。专题冻结 definition registry
+  枚举、菜单 row 静态布局、最终 Can Send/接受度/提交链和互动专属后置条件；首个已知 definition+recipient preview、动作、
+  passive menu locator 与 production paused 验收仍未实现，不能据此提高自动游玩 readiness。
 - [static-ready complete analysis + mixed production-live primitives] [vanilla-event-knowledge-registry.md](vanilla-event-knowledge-registry.md)
   本包组合默认 `182 contracts / 182 analysis / 182 observation metadata rows` 的 exact-build 原版事件表，其中
   `38` 个 key 含非 legacy 的 paused/live observation；既有迁移基线与
