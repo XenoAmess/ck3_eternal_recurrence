@@ -8,11 +8,11 @@ coat-of-arms render description，不把该入口描述成任意 CK3 脚本执�
 - 解析 `name = { ... }`、注释、紧凑/多行排版和 `rgb` / `hsv` typed block；拒绝 wrapper 外杂项及未声明、循环或重复的静态 `@变量`；
 - 通过浏览器 Clipboard API 一键读取剪贴板文本并立即进入同一解析/诊断流程；浏览器权限或安全上下文不满足时明确报错；
 - 编辑 pattern、三通道颜色、重复 `colored_emblem`、mask 和重复 instance；
-- 对唯一已由原生 MCP 检测的 `textured_emblem = { texture = "_default.dds" }` 提供明确标限的解析、编辑、原始纹理预览和导出；不生成未验证字段，也暂不把该层合成进最终家徽；
+- 对唯一已由原生 MCP 应用并 Copy 保留的 `textured_emblem = { texture = "_default.dds" }` 提供明确标限的解析、编辑、原始纹理预览和导出；不生成未验证字段，也暂不把该层合成进最终家徽；
 - 编辑 position、scale、rotation、depth，并生成稳定 CRLF CK3 文本；
 - 导入后继续对表单模型执行确定性校验：颜色语法、可打印 ASCII 资源名、有限数值和原生 128 KiB 上限不合格时，禁止复制或发送 MCP；
 - 内置 exact 1.19.0.6 的机器可读语法能力矩阵，逐项展示例子、原生 `detected/applied/not_detected` 结果、编辑器策略与证据边界；
-- 展开简单静态 `@变量`，诊断多顶层、重复标量、`parent` 与未知字段；
+- 展开简单静态 `@变量`；保留已证实可应用/Copy 的受限 `parent` 数据库引用；重复标量按 CK3 后值优先并警告，多顶层仍阻止静默丢数据；
 - 通过本机 Quarkus 伴随服务调用 typed MCP：读取基础游戏资源目录、单个 DDS、渲染支撑数据、当前 `dlc_load.json`、目录/ZIP 模组 manifest 与 DDS 候选，以及运行中 CK3 的 effective feature / script `has_dlc` truth；获取 session revision，执行原生检测/应用和 Copy/export；
 - 在浏览器解码原版 DXT1 pattern、DXT5 colored emblem、`coa_mask_texture.dds` 以及 `_default.dds` 使用的无压缩 BGRA8 顶层 mip；
 - 按 CK3 随附的 Clausewitz/Jomini shader 源码翻译三通道调色、pattern mask、flip→rotate→scale→translate、surface detail 和 alpha blend；GPU 采样/色彩空间及引擎未公开的 `FallbackColor` 绑定仍不冒充逐像素一致。
@@ -82,8 +82,12 @@ CK3 `1.19.0.6`/EXE SHA、连接代次/PID 及 probe/export capability；有 snap
 独立观察到 `coat_of_arms_designer` 以及可见、enabled 的 `coat_of_arms_page`，Steam 离线与 cleanup 均为 GREEN。
 该证据不覆盖角色设计器上层 Finish。
 
-Mask 编辑只接受整数分区索引 1、2、3。exact 原版语料实际使用 `{ 1 }`、`{ 2 }`、`{ 2 3 }`，MCP 另已检测
-`{ 1 2 3 }`，随附 shader 对应 R/G/B 三通道；其他值会形成阻止导出的诊断，不会被输入框静默丢弃。
+Mask 编辑只接受整数分区索引 1、2、3。exact 原版语料实际使用 `{ 1 }`、`{ 2 }`、`{ 2 3 }`；MCP 进一步实际应用了
+`{ 1 2 3 }`，且原生 Copy 将它作为默认全通道省略。随附 shader 对应 R/G/B 三通道。其他值会形成阻止导出的诊断，不会被输入框静默丢弃。
+
+15 例受管实机矩阵进一步证明：重复标量取最后值、多 outer 取第一个、静态变量在 Copy 时展开、
+`parent` 原样保留、注释丢弃、HSV 规范化为 RGB、空块与受限 textured emblem 均可应用。该轮全程只使用官方 MCP，
+artifact SHA-256 为 `0C5F2F88765224219F7F824DD9F1215E4D2B9EBAB024F0677B5F7506D8F5F84A`。
 
 实现依据为 [Quarkus REST Jackson](https://quarkus.io/extensions/io.quarkus/quarkus-rest-jackson/) 和
 [MCP Java SDK stdio client](https://java.sdk.modelcontextprotocol.io/latest/client/)。

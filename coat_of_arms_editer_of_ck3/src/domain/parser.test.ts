@@ -14,12 +14,14 @@ describe('CK3 coat of arms parser', () => {
     expect(result.coatOfArms.coloredEmblems[0].instances[1].scale[0]).toBe(-0.35)
   })
 
-  it('expands static variables and diagnoses engine-ambiguous input', () => {
+  it('expands static variables, preserves parent, and rejects lossy multiple roots', () => {
     const result = parseCoatOfArms('@chosen=blue first={color1=@chosen parent=c_england} second={color1=red}')
 
     expect(result.coatOfArms.colors[0]).toBe('blue')
+    expect(result.coatOfArms.parent).toBe('c_england')
     expect(result.diagnostics.map((item) => item.severity)).toContain('error')
     expect(result.diagnostics.map((item) => item.message).join(' ')).toContain('parent')
+    expect(serializeCoatOfArms(result.coatOfArms)).toContain('parent = c_england')
   })
 
   it('rejects unresolved, cyclic and duplicate static variables', () => {
@@ -69,12 +71,15 @@ describe('CK3 coat of arms parser', () => {
     expect(result.diagnostics.some((item) => item.severity === 'error')).toBe(true)
   })
 
-  it('blocks template DSL and duplicate scalar ambiguity', () => {
+  it('blocks template DSL and follows the native last-wins duplicate scalar rule', () => {
     const template = parseCoatOfArms('coa={pattern="pattern_solid.dds" color1=list "normal_colors"}')
     const duplicate = parseCoatOfArms('coa={color1=blue color1=red}')
 
     expect(template.diagnostics.some((item) => item.severity === 'error')).toBe(true)
-    expect(duplicate.diagnostics.some((item) => item.severity === 'error')).toBe(true)
+    expect(duplicate.diagnostics.some((item) => item.severity === 'error')).toBe(false)
+    expect(duplicate.diagnostics.some((item) => item.severity === 'warning')).toBe(true)
+    expect(duplicate.coatOfArms.colors[0]).toBe('red')
+    expect(serializeCoatOfArms(duplicate.coatOfArms)).toContain('color1 = red')
   })
 
   it('rejects color expressions outside the proven deterministic subset', () => {

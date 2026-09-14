@@ -226,8 +226,8 @@ function scalar(
   const matches = entries.filter((entry) => entry.key === key)
   if (!matches.length) return fallback
   if (matches.length > 1) diagnostics.push({
-    severity: 'error',
-    message: `${key} 重复 ${matches.length} 次；编辑器采用最后一个值，导出前应人工确认`,
+    severity: 'warning',
+    message: `${key} 重复 ${matches.length} 次；CK3 原生 Copy 已证明最后一个值生效，编辑器采用同一规则`,
     line: matches[1].token.line,
     column: matches[1].token.column,
   })
@@ -317,7 +317,7 @@ function parseInstance(block: AstBlock, diagnostics: Diagnostic[]): CoatOfArmsIn
   }
 }
 
-const KNOWN_ROOT = new Set(['custom', 'pattern', 'color1', 'color2', 'color3', 'colored_emblem', 'textured_emblem'])
+const KNOWN_ROOT = new Set(['custom', 'parent', 'pattern', 'color1', 'color2', 'color3', 'colored_emblem', 'textured_emblem'])
 const KNOWN_EMBLEM = new Set(['texture', 'color1', 'color2', 'color3', 'mask', 'instance'])
 const KNOWN_TEXTURED_EMBLEM = new Set(['texture'])
 
@@ -358,7 +358,7 @@ export function parseCoatOfArms(source: string): ImportResult {
     }
     const outer = topLevel.filter((entry) => !entry.key.startsWith('@') && entry.value.kind === 'block')
     if (!outer.length) throw new ParseFailure('需要 name = { ... } 外层对象', topLevel[0]?.token ?? { kind: 'eof', text: '', line: 1, column: 1 })
-    if (outer.length > 1) diagnostics.push({ severity: 'error', message: '存在多个顶层纹章对象；CK3 的采用规则不明确' })
+    if (outer.length > 1) diagnostics.push({ severity: 'error', message: '存在多个顶层纹章对象；CK3 会采用第一个，但编辑器拒绝静默丢弃后续对象' })
 
     const selected = outer[0]
     const block = selected.value as AstBlock
@@ -366,10 +366,8 @@ export function parseCoatOfArms(source: string): ImportResult {
     const entries = assignments(block)
     for (const entry of entries.filter((entry) => !KNOWN_ROOT.has(entry.key))) {
       diagnostics.push({
-        severity: entry.key === 'parent' ? 'warning' : 'error',
-        message: entry.key === 'parent'
-          ? 'parent 可被 CK3 reader 接受，但继承结果尚未验证；确定性导出会移除它'
-          : `不支持的根字段：${entry.key}`,
+        severity: 'error',
+        message: `不支持的根字段：${entry.key}`,
         line: entry.token.line,
         column: entry.token.column,
       })
@@ -412,12 +410,17 @@ export function parseCoatOfArms(source: string): ImportResult {
 
     const coatOfArms: CoatOfArms = {
       outerKey: selected.key,
+      parent: scalar(entries, 'parent', '', diagnostics, variables),
       pattern: scalar(entries, 'pattern', '', diagnostics, variables),
       colors: [1, 2, 3].map((index) => scalar(entries, `color${index}`, index === 1 ? 'blue' : 'white', diagnostics, variables)) as [string, string, string],
       coloredEmblems,
       texturedEmblems,
     }
     diagnostics.push(...validateCoatOfArms(coatOfArms))
+    if (coatOfArms.parent.trim()) diagnostics.push({
+      severity: 'warning',
+      message: 'parent 已由 CK3 实机证明可应用并由原生 Copy 保留；继承后的最终像素仍需在 CK3 中确认',
+    })
     if (variables.size) diagnostics.push({ severity: 'info', message: `已读取 ${variables.size} 个静态 @变量声明；可解析引用已展开为确定字面量` })
     return { coatOfArms, diagnostics }
   } catch (error) {

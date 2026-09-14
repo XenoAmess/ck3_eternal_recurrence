@@ -27,6 +27,7 @@ export interface TexturedEmblem {
 
 export interface CoatOfArms {
   outerKey: string
+  parent: string
   pattern: string
   colors: [string, string, string]
   coloredEmblems: ColoredEmblem[]
@@ -56,6 +57,7 @@ export const createTexturedEmblem = (): TexturedEmblem => ({
 
 export const createCoatOfArms = (): CoatOfArms => ({
   outerKey: 'coa',
+  parent: '',
   pattern: 'pattern_solid.dds',
   colors: ['blue', 'white', 'red'],
   coloredEmblems: [createColoredEmblem()],

@@ -58,6 +58,12 @@ function validateColors(
 
 export function validateCoatOfArms(coatOfArms: CoatOfArms): Diagnostic[] {
   const diagnostics: Diagnostic[] = []
+  if (coatOfArms.parent.trim() && !ATOM.test(coatOfArms.parent.trim())) {
+    diagnostics.push({
+      severity: 'error',
+      message: 'parent 只能是已实机验证形态的可打印 ASCII 数据库标识符',
+    })
+  }
   validateResourceName(coatOfArms.pattern, 'pattern', diagnostics, 'warning')
   validateColors(coatOfArms.colors, '根级', diagnostics)
 

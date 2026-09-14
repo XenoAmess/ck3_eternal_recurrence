@@ -783,6 +783,9 @@ importSource()
           </el-collapse>
           <el-form label-position="top">
             <div class="form-grid">
+              <el-form-item label="Parent 引用（可选）">
+                <el-input v-model="coatOfArms.parent" placeholder="c_england" />
+              </el-form-item>
               <el-form-item label="Pattern 资源名">
                 <el-select v-model="coatOfArms.pattern" filterable allow-create default-first-option @change="loadPatternTexture">
                   <el-option
@@ -856,7 +859,7 @@ importSource()
             </div>
             <el-alert type="warning" :closable="false" show-icon>
               <template #title>
-                当前实机只证明 `textured_emblem = { texture = "_default.dds" }` 可被 reader 接受；本区只保真解析/导出 texture，
+                当前实机已证明 `textured_emblem = { texture = "_default.dds" }` 可应用且由原生 Copy 保留；本区只保真解析/导出 texture，
                 不为未验证字段生成 UI；行内只显示 exact 原始 DDS，不冒充最终合成预览。
               </template>
             </el-alert>

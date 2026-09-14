@@ -515,10 +515,10 @@ apply 的后置条件是 `+0xEC == 1` 且 `+0xE8 == paste 前的 +0xF0`。
 | 根 | `pattern = "pattern_*.dds"` | 选择底图；reader 接受名字不等于资源一定存在 | `mcp-applied` |
 | 根 | `color1`、`color2`、`color3` | 底图通道颜色 | `mcp-applied` |
 | 根 | 重复 `colored_emblem = { ... }` | 添加一个或多个彩色图案层 | `mcp-applied` |
-| 根 | `textured_emblem = { ... }` | 受限的纹理图案层；当前仅验证 reader 接受 `_default.dds` | `mcp-detected` |
+| 根 | `textured_emblem = { ... }` | 受限的纹理图案层；`_default.dds` 已应用并由原生 Copy 保留 | `mcp-applied` |
 | emblem | `texture = "ce_*.dds"` | 选择 colored emblem 纹理；资源存在性需另验 | `mcp-applied` |
 | emblem | `color1`、`color2`、`color3` | emblem 通道颜色 | `mcp-applied` |
-| emblem | `mask = { ... }` | pattern 分区遮罩；`{ 1 }` 已应用，`{ 1 2 3 }` 已检测 | `mcp-applied` |
+| emblem | `mask = { ... }` | pattern 分区遮罩；`{ 1 }` 与 `{ 1 2 3 }` 均已应用 | `mcp-applied` |
 | emblem | 重复 `instance = { ... }` | 同一纹理的多个实例 | `mcp-applied` |
 | instance | `position = { x y }` | 归一化位置 | `mcp-applied` |
 | instance | `scale = { x y }` | X/Y 缩放；负值可镜像 | `mcp-applied` |
@@ -535,7 +535,7 @@ apply 的后置条件是 `+0xEC == 1` 且 `+0xE8 == paste 前的 +0xF0`。
 但不单独证明每个字段的最终像素值，也不代替资源存在性检查。
 
 exact 1.19.0.6 原版 `common/coat_of_arms` 语料中的 mask 载荷去重后只有 `{ 1 }`、`{ 2 }`、`{ 2 3 }`；随附
-shader 将 pattern mask 明确拆为 R/G/B 三通道，而 MCP 另已检测 `{ 1 2 3 }`。因此编辑器的确定性 mask 输入只接受整数分区
+shader 将 pattern mask 明确拆为 R/G/B 三通道，而 MCP 另已应用 `{ 1 2 3 }`。该全通道形态在原生 Copy 中被省略，表明它是默认全选的规范化冗余值，而非拒绝。因此编辑器的确定性 mask 输入只接受整数分区
 索引 1、2、3（允许组合）；小数、非数值、0 和大于 3 的值不在当前证据子集内，必须阻止导出，不能静默过滤。
 
 ### 5.2 字面量和排版
@@ -557,8 +557,8 @@ depth = 1.01
 - 重复 `colored_emblem` 与重复 `instance` 可共同应用；
 - 多行源码经 MCP 统一为 CRLF 后再写入 Windows 剪贴板。
 
-“注释在 copy-back 丢失”和“HSV 被 copy-back 规范化成 RGB”仍来自早期辅助观察；2026-09-13 的 Copy/export live
-round-trip 没有包含注释或 HSV，因此不能用该轮结果升级这两个更细结论。
+2026-09-14 的扩展矩阵已将这两条从早期辅助观察升级为原生 MCP apply/Copy 证据：输入中的注释未出现在 Copy 源码中，
+`hsv { 0.60 0.75 0.80 }` 被规范化为 `rgb { 51 112 204 }`。
 
 ### 5.3 推荐的最小输出
 
@@ -613,15 +613,15 @@ coa = {
 
 | 输入 | 已知行为 | 产品建议 |
 |---|---|---|
-| `textured_emblem` | `_default.dds` 载荷为 `mcp-detected`；早期设计器中呈占位/问号 | 独立受限面板只保真 `texture` 的解析/编辑/导出；不生成未验证字段，也不进入当前合成预览 |
+| `textured_emblem` | `_default.dds` 载荷为 `mcp-applied`，原生 Copy 保留 `texture` | 独立受限面板只保真 `texture` 的解析/编辑/导出；不生成未验证字段，也不把原始 DDS 冒充最终合成预览 |
 | 普通或数字 outer key | `custom_name={...}` 与 `79={...}` 均为 `mcp-detected` | 导出仍固定用 `coa`，减少无意义差异 |
-| 多个顶层对象 | 整段为 `mcp-detected`；本轮没有 canonical copy-back 证明究竟采用哪一个 | 拒绝歧义输入 |
-| 空块、无 pattern | `coa={}` 与 `coa={ color1=blue }` 均为 `mcp-detected` | 允许解析，产品层警告“不完整/可能依赖默认值” |
+| 多个顶层对象 | `mcp-applied`；原生 Copy 证明采用第一个 | 仍拒绝默认导出，避免静默丢弃后续对象 |
+| 空块、无 pattern | `coa={}` 为 `mcp-applied`，Copy 返回空 body | 允许解析，编辑器载入可编辑默认值并警告非字节保真 |
 | 不存在的 pattern/emblem texture 名 | 两类载荷均为 `mcp-detected` | 将“reader 接受”和“资源存在”分开校验 |
 | body-only，无 outer wrapper | 精确载荷为 `not_detected` | v1 必须要求 wrapper |
-| 重复普通标量 | 两个 `color1` 为 `mcp-detected`，但优先级未通过 copy-back 证明 | 警告并拒绝默认导出 |
-| `parent = c_england` | 与普通字段共存或单独存在均为 `mcp-detected`；继承是否解析、最终值为何尚未证明 | 只保留/警告，不进确定性 serializer |
-| 静态 `@chosen = blue` + `color1=@chosen` | 为 `mcp-applied`；说明 reader 接受这类静态替换语法，不证明游戏 scope 变量能力 | 可导入并保留，默认导出展开成确定字面量 |
+| 重复普通标量 | `mcp-applied`；两个 `color1` 的原生 Copy 只保留最后的 `red` | 与 CK3 一致取最后值，给出非阻断警告 |
+| `parent = c_england` | 与普通字段共存或单独存在均为 `mcp-applied`；Copy 保留 `parent="c_england"` | 保真解析/编辑/导出引用；警告继承后的最终像素尚未回读 |
+| 静态 `@chosen = blue` + `color1=@chosen` | 为 `mcp-applied`；原生 Copy 展开为 `color1=blue`，不证明游戏 scope 变量能力 | 可导入，默认导出展开成确定字面量 |
 | 任意未知键 | 同一载荷连续两次均为 `not_detected` | 报错 |
 | `color4` | 根级与 emblem 级组合载荷为 `not_detected` | 不进 v1 |
 
@@ -649,6 +649,29 @@ coa = {
 | `@chosen=blue ... color1=@chosen` | `applied` |
 | `parent=c_england`（与字段共存或单独存在） | `detected`，继承语义未解析 |
 | `mask={ 1 2 3 }` + 完整 instance | `detected` |
+
+### 5.7 2026-09-14 原生 apply/Copy 扩展矩阵
+
+受管 runner 在同一个 CK3 `1.19.0.6` 进程、同一 Frontend snapshot revision `4` 上通过官方 MCP 完成了冻结的 15 例矩阵。
+10 个正例全部 `detected=true` 且 `status=applied`；5 个负例全部 `not_detected`，每个负例前后的原生 Copy 源码 SHA-256 不变。
+
+| 精确载荷 | detect/apply | 原生 Copy 结果 |
+|---|---|---|
+| 核心 pattern/color/emblem/两个 instance/`mask={1}` | `applied` | 字段保留；mask 规范化为 `{ 1 0 0 }`，浮点输出固定六位 |
+| `@chosen=blue` + `color1=@chosen` | `applied` | 变量声明/引用不保留，输出 `color1=blue` |
+| `color1=blue color1=red` | `applied` | 输出 `color1=red`；后值优先 |
+| `first={color1=blue} second={color1=red}` | `applied` | 输出 `color1=blue`；第一个 outer 优先 |
+| `parent=c_england color1=blue` | `applied` | 保留 `parent="c_england"` 与 `color1=blue` |
+| `parent=c_england` | `applied` | 只保留 `parent="c_england"`，未展开继承内容 |
+| 注释 + `hsv { 0.60 0.75 0.80 }` | `applied` | 注释丢弃，颜色输出 `rgb { 51 112 204 }` |
+| `textured_emblem={texture="_default.dds"}` | `applied` | 保留 textured-emblem 与 texture |
+| `coa={}` | `applied` | 输出空 body，不自动填充 pattern/color |
+| `mask={1 2 3}` + instance 默认值 | `applied` | 省略全通道 mask，同时省略默认 position/rotation |
+| 普通文本、body-only、`effect`、template `list`、未知键 | `not_detected` | 当前 designer working state 的 Copy SHA-256 全部不变 |
+
+证据 artifact 为 `artifacts/coa-clipboard-probe-2026-09-08/mcp-frontend-route-coa-syntax-matrix-live6.json`，1,130,288 bytes，
+SHA-256 `0C5F2F88765224219F7F824DD9F1215E4D2B9EBAB024F0677B5F7506D8F5F84A`。它记录 `mcp_only=true`、OCR/键盘/鼠标全为 false、
+Steam 离线、共享锁释放、`cleanup_proven=true` 与 `tree_gone=true`。这些结论仍只绑定 exact build 与 designer working state，不等于上层 Finish/存档持久化或原生像素一致。
 
 ## 6. 哪些 CK3 语法不能在这里执行
 
@@ -697,10 +720,10 @@ template = {
 - `template = { ... }`；
 - `list "normal_colors"` 与 weighted texture list；
 - `special_selection`、template trigger；
-- `parent`、数据库 alias（reader 会接受，但继承解析和确定结果未证明）；
 - `@变量` 声明与引用（简单静态替换会接受甚至应用，但产品应先展开为确定字面量）。
 
-Web 端若要提供随机生成，应在自己的数据模型中完成选择，再导出确定的纹理、颜色与实例。
+`parent=<database id>` 已被证明是直接 render-description 字段，可应用并被 Copy 保留，因此不再归入 template DSL。
+但 Copy 不会展开它，引用的对象是否存在与继承后像素仍是独立验证层。Web 端若要提供随机生成，应在自己的数据模型中完成选择，再导出确定的纹理、颜色与实例。
 
 ## 8. 目前 MCP 能力仍缺什么
 
@@ -716,13 +739,9 @@ effective feature 与 script `has_dlc` truth 已有 production-live 原生 primi
   gameplay gate，不提供 CoA VFS/registry winner；
 - 跨 CK3 build 自动适配 RVA 与字段。
 
-下一轮扩展矩阵已完成静态准备，但尚未执行，不能提前升级任何语法结论。`coat_of_arms_syntax_matrix_v1.json` 固定 15 个
-exact source 用例（SHA-256 `ADFBB02A097A5B13452743761D693A78FBB988570DEE3A80A5EFEC764F6BA13F`），重点补查重复标量、
-多 outer object、`parent`、静态变量、注释/HSV、`textured_emblem`、空对象和三通道 mask 的 apply/Copy 行为，并复验
-body-only、effect、template list 与未知键拒绝。受管 runner 的 `--syntax-matrix` 只在上述 production-live route 到达原生页面后，
-用官方 MCP 做 detect-only；只对 detected 用例继续 apply，再对每项执行原生 Copy/export。已知拒绝项还要求前后导出 SHA-256
-不变，从而证明没有修改 designer working state。普通和优化 Python 合同测试各 `4/4`；当前用户禁用 CK3 与前台屏幕，故 live
-矩阵保持 queued，未产生新引擎结论。
+扩展矩阵已按第 5.7 节完成原生实机执行，因此重复标量、多 outer object、`parent`、静态变量、注释/HSV、
+`textured_emblem`、空对象和三通道 mask 已从“只检测/待解析”升级为精确 apply/Copy 结论。body-only、effect、template list 与未知键
+的拒绝则同时得到“未修改 designer working state”的前后 SHA 证据。
 
 按 MCP-first 原则，后续若需要运行时合并资源清单或截图无关的视觉验收，应继续补这些原生/MCP primitive，
 而不是用 OCR 猜文字、按钮状态或 copy-back 内容。
@@ -736,6 +755,7 @@ body-only、effect、template list 与未知键拒绝。受管 runner 的 `--syn
 
 ```text
 CoatOfArms
+├─ parent (optional database reference)
 ├─ pattern
 ├─ colors[1..3]
 ├─ coloredEmblems[]
@@ -753,10 +773,10 @@ CoatOfArms
 - mask 表单保留输入中的非法 token 并给出 error，只允许原版语料/shader/MCP 共同支持的整数分区索引 1、2、3；
 - `src/domain/capabilityMatrix.ts` 把本报告第 5–7 节的保守子集投影成前端可见表格：每行固定语法、最小例子、
   `mcp-applied`/`mcp-detected`/`mcp-not-detected` 证据和 accept/warn/sanitize/reject 策略；测试要求可接受例子无 error、
-  reject 例子必有 error，且 `parent`/静态变量确实从确定性输出中移除或展开；
+  reject 例子必有 error，且静态变量确实从确定性输出中展开；
 - 语法合法、资源存在、引擎检测、designer 应用是四个不同状态；
-- 多顶层、重复标量、body-only、模板 DSL 默认拒绝；
-- 简单静态 `@变量` 在导入时展开，`parent` 保留为诊断而不混进确定性导出；
+- 多顶层、body-only 和模板 DSL 默认拒绝；重复标量按已证实的后值优先规则导入并警告；
+- 简单静态 `@变量` 在导入时展开，`parent` 作为受限 ASCII 数据库引用保真解析、编辑和导出；
 - 导出固定使用 `coa` wrapper、已实机验证的字段白名单和 CRLF；
 - 提供图层/实例结构化表单与浏览器近似预览，且明确不冒充 CK3 renderer；
 - 基础游戏 pattern/emblem 目录已经接入结构化选择器，并可按名字筛选首批 200 个 emblem；
@@ -773,7 +793,7 @@ CoatOfArms
 
 - 继续补 DLC/mod playset 合并与运行时注册证据；
 - CK3 原生 PNG/像素验证 primitive，用于闭合浏览器源码模型与 native GPU 的差异；
-- 解析/验证 textured emblem 的完整字段与最终合成路径；当前只闭合已实机检测的 `texture="_default.dds"` 形态和素材原始像素。
+- 解析/验证 textured emblem 的完整字段与最终合成路径；当前只闭合已实机应用并 Copy 保留的 `texture="_default.dds"` 形态以及素材原始像素。
 
 浏览器无法直接启动本机 stdio MCP，因此已引入 Maven + Java + Quarkus 伴随服务。后端只负责 REST/MCP 会话转接与
 本机资源索引，不承担“执行 CK3 脚本”的虚构能力；当前也没有 DDS 转换或素材缓存。
@@ -819,6 +839,9 @@ Quarkus REST 测试 `14/14` 且 Maven package GREEN。后续扩展仍以本文�
 | Copy/export static build `xar_ck3_bridge.dll`（2,551,808 bytes；rebase 后 exact master） | `F28BFFA0F82A6F9C51DC0E8491DE93578B443A00957F73E6B11BCB660C395FF8` |
 | 09 月 13 日 MCP same-session round-trip artifact（26,521 bytes；cleanup GREEN） | `9EB7DC0AE1F7EBF2F7D5F8518DE948AACD929104AAFF7447B0B8375B19D0DE84` |
 | 09 月 13 日 round-trip `xar_ck3_bridge.dll`（2,636,800 bytes） | `721337A077F71BEFCE42D6F157CDE4B01C16DA174D0D6E8DBEF5CD3F151DF601` |
+| 09 月 14 日 15 例 MCP apply/Copy 矩阵（1,130,288 bytes；cleanup GREEN） | `0C5F2F88765224219F7F824DD9F1215E4D2B9EBAB024F0677B5F7506D8F5F84A` |
+| 09 月 14 日矩阵 `xar_ck3_bridge.dll`（2,813,440 bytes；source `e2a05929`） | `412A9A869A1B4E43DFE6CCF521D43806FC10EDA24F9B934B76C242BA04B3582C` |
+| 09 月 14 日矩阵 injector（39,936 bytes） | `4675729904ACC23A017998FC06583CF476FC073AD0790C43A6736FAA8437A237` |
 | `50_coa_designer_patterns.txt`（42 项/38 可见） | `3BAA46C11BD24E7D9F9F6D1DF3E51403D016AB4CAC7290A6541ED25561425B7B` |
 | `50_coa_designer_emblems.txt`（1,578 项/1,576 可见） | `3D6529702F91FA352E07B0C64E4C33A88E5F86C2AAF0EF2D0CEB69CF6D600F3C` |
 | `50_coa_designer_palettes.txt`（13 色） | `3AE2EA0F3B751D61C08A06408FA2EDA2ADC3FF6FBF204298D3D8CDC9613B87B4` |

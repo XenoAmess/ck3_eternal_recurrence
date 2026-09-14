@@ -34,14 +34,13 @@ describe('CK3 clipboard syntax capability matrix', () => {
     }
   })
 
-  it('sanitizes static variables and parent instead of exporting unresolved DSL', () => {
+  it('sanitizes static variables instead of exporting unresolved DSL', () => {
     for (const row of syntaxCapabilityRows.filter(
       (candidate) => candidate.editorPolicy === 'sanitize',
     )) {
       const parsed = parseCoatOfArms(row.example)
       const output = serializeCoatOfArms(parsed.coatOfArms)
       expect(parsed.diagnostics.some((diagnostic) => diagnostic.severity === 'error'), row.id).toBe(false)
-      expect(output, row.id).not.toContain('parent =')
       expect(output, row.id).not.toContain('@chosen')
     }
   })
