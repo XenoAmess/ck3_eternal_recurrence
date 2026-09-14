@@ -1,0 +1,28 @@
+﻿tea_initialize_gui = {
+	scope = character
+	is_shown = {
+		is_ai = no
+		has_character_flag = tea_initialize_pending
+	}
+	effect = { tea_initialize_effect = yes }
+}
+
+tea_setup_gui = {
+	scope = character
+	is_shown = {
+		is_ai = no
+		has_character_flag = tea_setup_pending
+	}
+	effect = { tea_setup_and_execute_effect = yes }
+}
+
+tea_verify_attacker_gui = {
+	scope = character
+	is_shown = {
+		is_ai = no
+		character:han_8052 ?= {
+			has_character_flag = tea_verify_attacker_pending
+		}
+	}
+	effect = { tea_verify_attacker_effect = yes }
+}

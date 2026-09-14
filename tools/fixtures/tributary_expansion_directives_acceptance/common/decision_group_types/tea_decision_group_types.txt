@@ -1,0 +1,4 @@
+﻿tea_acceptance = {
+	sort_order = 156
+	gui_tags = { big_button }
+}

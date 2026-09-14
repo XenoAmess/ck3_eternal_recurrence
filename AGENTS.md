@@ -89,6 +89,7 @@ py tools/build_reclaim_the_motherland_release.py --check    # 重整河山临时
 py tools/build_reclaim_the_motherland_release.py            # 生成 28 文件 staging、manifest 与 ZIP
 py tools/build_tributary_expansion_directives_release.py --check # 驱策朝贡国临时双构建
 py tools/build_tributary_expansion_directives_release.py    # 生成 16 文件 staging、manifest 与 ZIP
+py tools/run_tributary_expansion_directives_acceptance.py --preflight # 驱策朝贡国外置夹具与实机环境预检
 py tools/gen_auto_upgrade_buildings.py                      # 自动升级建筑 43 条建筑链
 py tools/build_auto_upgrade_buildings_release.py --check    # 自动升级建筑临时双构建
 py tools/build_auto_upgrade_buildings_release.py            # 生成 16 文件 staging、manifest 与 ZIP

@@ -1,0 +1,267 @@
+﻿# External exact-build fixture. This tree is never part of release staging.
+
+tea_finish_with_failure_effect = {
+	change_variable = { name = tea_failures add = 1 }
+	debug_log = "TEA: TEST FAIL fixture_preconditions_or_product_contract"
+	debug_log = "TEA: TEST DONE tributary_expansion_directives"
+}
+
+tea_initialize_effect = {
+	if = {
+		limit = { has_character_flag = tea_initialize_pending }
+		remove_character_flag = tea_initialize_pending
+		add_character_flag = tea_fixture_initialized
+		debug_log = "TEA: TEST BEGIN tributary_expansion_directives"
+		character:han_8052 = { save_scope_as = tea_song_emperor }
+		if = {
+			limit = {
+				exists = scope:tea_song_emperor
+				scope:tea_song_emperor = {
+					is_alive = yes
+					is_ai = yes
+					is_landed = yes
+					is_independent_ruler = yes
+					has_title = title:h_china
+				}
+			}
+			debug_log = "TEA: TEST PASS exact_build_song_emperor"
+			scope:tea_song_emperor = { add_character_flag = tea_setup_pending }
+			set_player_character = scope:tea_song_emperor
+			debug_log = "TEA: TEST PASS switched_to_supported_player"
+		}
+		else = { tea_finish_with_failure_effect = yes }
+	}
+}
+
+tea_setup_and_execute_effect = {
+	if = {
+		limit = {
+			is_ai = no
+			has_character_flag = tea_setup_pending
+			character:han_8052 = { this = root }
+		}
+		remove_character_flag = tea_setup_pending
+		set_variable = { name = tea_failures value = 0 }
+		save_scope_as = actor
+
+		ordered_independent_ruler = {
+			limit = {
+				is_ai = yes
+				is_alive = yes
+				is_adult = yes
+				is_landed = yes
+				is_playable_character = yes
+				is_at_war = no
+				is_imprisoned = no
+				this != root
+				NOT = { government_has_flag = government_is_mercenary }
+				NOT = { government_has_flag = government_is_holy_order }
+				any_neighboring_top_liege_realm_owner = {
+					is_ai = yes
+					is_alive = yes
+					is_landed = yes
+					is_at_war = no
+					this != root
+				}
+			}
+			order_by = current_military_strength
+			position = 0
+			save_scope_as = recipient
+		}
+
+		if = {
+			limit = { exists = scope:recipient }
+			scope:recipient = {
+				random_neighboring_top_liege_realm_owner = {
+					limit = {
+						is_ai = yes
+						is_alive = yes
+						is_landed = yes
+						is_at_war = no
+						this != root
+						this != scope:recipient
+						NOT = { is_tributary_of = root }
+					}
+					save_scope_as = secondary_recipient
+				}
+			}
+		}
+
+		if = {
+			limit = {
+				exists = scope:recipient
+				exists = scope:secondary_recipient
+			}
+			scope:recipient = {
+				every_character_to_title_neighboring_county = {
+					limit = {
+						is_title_created = yes
+						is_landless_type_title = no
+						tier = tier_county
+						holder ?= { top_liege = scope:secondary_recipient }
+					}
+					save_scope_as = target
+				}
+			}
+		}
+
+		if = {
+			limit = {
+				exists = scope:recipient
+				exists = scope:secondary_recipient
+				exists = scope:target
+			}
+			set_variable = { name = tea_recipient value = scope:recipient }
+			set_variable = {
+				name = tea_secondary_recipient
+				value = scope:secondary_recipient
+			}
+			set_variable = { name = tea_target value = scope:target }
+			start_tributary_interaction_effect = {
+				TRIBUTARY = scope:recipient
+				SUZERAIN = root
+			}
+			if = {
+				limit = {
+					scope:recipient = {
+						is_tributary_of = root
+						is_at_war = no
+					}
+					scope:target = {
+						holder ?= { top_liege = scope:secondary_recipient }
+					}
+				}
+				debug_log = "TEA: TEST PASS tributary_context_constructed"
+			}
+			else = { tea_finish_with_failure_effect = yes }
+		}
+		else = { tea_finish_with_failure_effect = yes }
+
+		if = {
+			limit = { var:tea_failures = 0 }
+			save_scope_as = actor
+			var:tea_recipient = { save_scope_as = recipient }
+			var:tea_secondary_recipient = {
+				save_scope_as = secondary_recipient
+			}
+			var:tea_target = { save_scope_as = target }
+			set_variable = { name = tea_decline_prestige_before value = prestige }
+			set_variable = { name = tea_decline_prestige_expected value = prestige }
+			change_variable = { name = tea_decline_prestige_expected subtract = 150 }
+			set_variable = { name = tea_decline_gold_before value = gold }
+			scope:recipient = {
+				set_variable = { name = tea_decline_gold_before value = gold }
+			}
+			add_prestige = -150
+			ted_decline_expansion_directive_effect = yes
+			if = {
+				limit = {
+					prestige = var:tea_decline_prestige_expected
+					gold = var:tea_decline_gold_before
+					scope:recipient = {
+						gold = var:tea_decline_gold_before
+					}
+					NOT = {
+						any_character_war = {
+							using_cb = ted_directed_county_expansion_cb
+							primary_attacker = scope:recipient
+							primary_defender = scope:secondary_recipient
+						}
+					}
+				}
+				debug_log = "TEA: TEST PASS decline_response_preserved_send_cost_and_gold"
+				debug_log = "TEA: TEST PASS decline_effect_created_no_war"
+			}
+			else = { tea_finish_with_failure_effect = yes }
+		}
+
+		if = {
+			limit = { var:tea_failures = 0 }
+			save_scope_as = actor
+			var:tea_recipient = { save_scope_as = recipient }
+			var:tea_secondary_recipient = {
+				save_scope_as = secondary_recipient
+			}
+			var:tea_target = { save_scope_as = target }
+			set_variable = { name = tea_accept_prestige_before value = prestige }
+			set_variable = { name = tea_accept_prestige_expected value = prestige }
+			change_variable = { name = tea_accept_prestige_expected subtract = 150 }
+			if = { limit = { gold < 1000 } add_gold = 1000 }
+			set_variable = { name = tea_accept_gold_before value = gold }
+			set_variable = { name = tea_accept_gold_expected value = gold }
+			set_variable = { name = tea_accept_subsidy value = ted_war_subsidy_value }
+			change_variable = {
+				name = tea_accept_gold_expected
+				subtract = var:tea_accept_subsidy
+			}
+			scope:recipient = {
+				set_variable = { name = tea_accept_gold_before value = gold }
+				set_variable = { name = tea_accept_gold_expected value = gold }
+				change_variable = {
+					name = tea_accept_gold_expected
+					add = scope:actor.var:tea_accept_subsidy
+				}
+			}
+			add_prestige = -150
+			ted_accept_expansion_directive_effect = { SUBSIDIZED = yes }
+			random_character_war = {
+				limit = {
+					using_cb = ted_directed_county_expansion_cb
+					primary_attacker = scope:recipient
+					primary_defender = scope:secondary_recipient
+				}
+				save_scope_as = tea_directive_war
+			}
+			if = {
+				limit = {
+					exists = scope:tea_directive_war
+					prestige = var:tea_accept_prestige_expected
+					gold = var:tea_accept_gold_expected
+					scope:recipient = {
+						is_at_war = yes
+						is_tributary_of = root
+						gold = var:tea_accept_gold_expected
+					}
+				}
+				set_variable = {
+					name = tea_directive_war
+					value = scope:tea_directive_war
+				}
+				add_character_flag = tea_verify_attacker_pending
+				debug_log = "TEA: TEST PASS subsidized_accept_spent_prestige_and_transferred_gold"
+				debug_log = "TEA: TEST PASS accept_effect_started_war"
+				set_player_character = scope:recipient
+				debug_log = "TEA: TEST PASS switched_to_tributary_attacker"
+			}
+			else = { tea_finish_with_failure_effect = yes }
+		}
+	}
+}
+
+tea_verify_attacker_effect = {
+	character:han_8052 = {
+		remove_character_flag = tea_verify_attacker_pending
+		save_scope_as = actor
+		var:tea_recipient = { save_scope_as = recipient }
+		var:tea_secondary_recipient = { save_scope_as = secondary_recipient }
+		var:tea_target = { save_scope_as = target }
+	}
+	if = {
+		limit = {
+			this = scope:recipient
+			scope:recipient = {
+				is_ai = no
+				is_tributary_of = scope:actor
+			}
+			scope:actor.var:tea_directive_war = {
+				using_cb = ted_directed_county_expansion_cb
+				primary_attacker = scope:recipient
+				primary_defender = scope:secondary_recipient
+			}
+		}
+		debug_log = "TEA: TEST PASS war_attacker_defender_binding"
+		debug_log = "TEA: TEST GAP complete_war_outcomes_save_reload_and_tribute_not_executed"
+		debug_log = "TEA: TEST DONE tributary_expansion_directives"
+	}
+	else = { tea_finish_with_failure_effect = yes }
+}

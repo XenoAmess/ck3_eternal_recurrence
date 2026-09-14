@@ -1,0 +1,6 @@
+﻿l_simp_chinese:
+ tea_acceptance:0 "朝贡扩张验收"
+ tea_initialize_decision:0 "开始朝贡扩张指令实机验收"
+ tea_initialize_decision_desc:0 "在隔离存档中构造宗主、朝贡国与相邻目标，并执行正式回复效果。"
+ tea_initialize_decision_tooltip:0 "建立朝贡关系并执行有界回复矩阵。"
+ tea_initialize_decision_confirm:0 "建立朝贡关系并执行分支"

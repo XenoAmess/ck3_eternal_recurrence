@@ -1,0 +1,6 @@
+﻿l_english:
+ tea_acceptance:0 "Tributary Expansion Acceptance"
+ tea_initialize_decision:0 "Start Tributary Expansion live acceptance"
+ tea_initialize_decision_desc:0 "Construct an isolated suzerain, tributary, neighboring target, and exercise the production response effects."
+ tea_initialize_decision_tooltip:0 "Construct the tributary relationship and execute the bounded response matrix."
+ tea_initialize_decision_confirm:0 "Construct and execute"
