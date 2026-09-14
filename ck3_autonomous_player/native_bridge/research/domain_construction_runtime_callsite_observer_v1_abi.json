@@ -1,0 +1,99 @@
+{
+  "contract": "g2-domain-construction-native-runtime-callsite-observer-v1",
+  "schema_version": 1,
+  "status": "static-ready-pending-native-runtime-live-capture",
+  "exact_build": {
+    "product_version": "1.19.0.6",
+    "executable_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+    "image_base": "0x140000000"
+  },
+  "producer": {
+    "rva": "0x1921810",
+    "known_signature_boundary": "void __fastcall(void *producer_owner, RawVector40 *output)",
+    "known_output_row_stride": 40,
+    "known_row_fields": {
+      "0x00": "signed int64 native_ai_value_raw",
+      "0x08..0x27": "opaque exact-build bytes; identity, cost and legality semantics not yet named"
+    },
+    "sub_enumerators": [
+      "0x19221C0",
+      "0x19224F0",
+      "0x19227C0"
+    ]
+  },
+  "capture_seam": {
+    "owner": "native runtime caller 0x18D2560",
+    "patch_rva": "0x18D2948",
+    "call_instruction_rva": "0x18D294F",
+    "continue_rva": "0x18D2958",
+    "patch_bytes": 16,
+    "anchor_hex": "488D5560488BCEE8BCEE0400488D45D0",
+    "anchor_sha256": "8534255F75D4595B57E2093C6F67AC196C7FF71D596C2122258DED90151F31A6",
+    "pre_call_registers": {
+      "RCX": "producer owner retained in RSI; never persisted",
+      "RDX": "caller-local output vector at RBP+0x60; never persisted"
+    },
+    "replayed_post_call_instruction": "lea rax,[rbp-0x30]",
+    "output_vector_layout": {
+      "data": "qword +0x00",
+      "capacity": "signed int32 +0x08",
+      "count": "signed int32 +0x0C"
+    }
+  },
+  "capture_admission": {
+    "install_requires": [
+      "exact executable SHA-256 admission",
+      "primary thread suspended proof"
+    ],
+    "each_post_call_requires": [
+      "capture admission callback succeeds",
+      "current thread id equals the proven application-main owner thread id",
+      "current session proof is live"
+    ],
+    "pause_semantics": "paused is recorded as evidence but is not an admission gate for the normal native runtime path",
+    "rejected_capture_behavior": "increment the typed rejection counter and do not read the vector"
+  },
+  "private_capture": {
+    "maximum_rows": 64,
+    "row_truncation_is_explicit": true,
+    "captured_fields": [
+      "native_ai_value_raw",
+      "row_bytes_hex",
+      "row_bytes_fnv1a64",
+      "proof_epoch",
+      "date_raw",
+      "paused",
+      "thread_id",
+      "timestamp_qpc"
+    ],
+    "raw_vector_addresses_persisted": false,
+    "producer_owner_pointer_persisted": false,
+    "typed_row_pointer_fields_persisted": false,
+    "row_bytes_reinterpreted_after_capture": false,
+    "capture_copy_timing": "synchronous inside the admitted post-call hook frame"
+  },
+  "detour_semantics": {
+    "exact_anchor_required": true,
+    "primary_thread_suspended_required": true,
+    "installed_by_default": false,
+    "relocated_original_producer_call_count": 1,
+    "replayed_original_post_call_lea": true,
+    "rollback_restores_original_bytes": true,
+    "autonomous_producer_request": false,
+    "forced_effect_called": false,
+    "construction_submitted": false
+  },
+  "scope": {
+    "compile_option": "XAR_CK3_ENABLE_G2_DOMAIN_CONSTRUCTION_RUNTIME_OBSERVER_V1",
+    "private_key": "g2_domain_construction_native_runtime_callsite_observer_v1",
+    "private_build_only": true,
+    "read_only_game_state": true,
+    "public_abi_changed": false,
+    "public_capability_changed": false,
+    "shared_cmake_modified": false,
+    "shared_bridge_modified": false,
+    "ck3_started": false
+  },
+  "unique_next_reverse_engineering_entry": "native_runtime_0x18D2954_candidate_row_identity_decoder",
+  "evidence_limit": "The exact normal-runtime callsite, 0x28 row stride and signed score at row offset zero are closed. Offline fixtures do not prove that a production session traverses the callsite. Candidate identity, building/slot, cost, affordability, final legality, scheduler class and cadence remain unnamed."
+}

@@ -1,0 +1,78 @@
+{
+  "contract": "g2-domain-construction-native-runtime-callsite-observer-v1-source",
+  "schema_version": 1,
+  "required_header_tokens": [
+    "kDomainConstructionRuntimeObserverPatchRvaV1 = 0x18D2948",
+    "kDomainConstructionRuntimeObserverCallRvaV1 = 0x18D294F",
+    "kDomainConstructionRuntimeObserverContinueRvaV1 = 0x18D2958",
+    "kDomainConstructionRuntimeProducerRvaV1 = 0x1921810",
+    "kDomainConstructionRuntimeRowBytesV1 = 0x28",
+    "kDomainConstructionRuntimeObserverInstalledByDefaultV1 = false",
+    "XAR_CK3_ENABLE_G2_DOMAIN_CONSTRUCTION_RUNTIME_OBSERVER_V1",
+    "g2_domain_construction_native_runtime_callsite_observer_v1",
+    "DomainConstructionRuntimeCaptureAdmissionV1",
+    "CaptureDomainConstructionRuntimePostCallV1",
+    "UninstallDomainConstructionRuntimeObserverV1"
+  ],
+  "required_implementation_tokens": [
+    "kPatchAnchor",
+    "0x48, 0x8D, 0x55, 0x60",
+    "0x48, 0x8B, 0xCE",
+    "EmitRelocatedNativeCall",
+    "state.producer_target",
+    "DomainConstructionRuntimePostThunkV1",
+    "admission.application_main_thread_id != current_thread_id",
+    "!admission.session_live",
+    "0x48, 0x8D, 0x45, 0xD0",
+    "kDomainConstructionRuntimeRowBytesV1",
+    "row.bytes",
+    "Fnv1a64",
+    "QueryPerformanceCounter",
+    "GetCurrentThreadId",
+    "TargetWriteResult::rollback_unproven"
+  ],
+  "required_serializer_tokens": [
+    "fixture-captured-private-raw",
+    "live_session_application_main_capture",
+    "private_build",
+    "advertised",
+    "read_only",
+    "row_bytes_hex",
+    "row_bytes_fnv1a64",
+    "raw_pointer_fields_persisted",
+    "row_bytes_reinterpreted_after_capture",
+    "native_runtime_0x18D2954_candidate_row_identity_decoder"
+  ],
+  "forbidden_implementation_tokens": [
+    "post_call_global_slot",
+    "!admission.paused",
+    "0x2EBEE86",
+    "ai_attempt_to_build_building_effect"
+  ],
+  "fixture_cases": [
+    "default build remains disabled and an exact uppercase CK3 SHA-256 admission is mandatory",
+    "wrong application-main thread and non-live session hits increment typed rejection counters without reading the vector",
+    "an admitted live-session application-main post-call copies every byte of each 0x28 row while unpaused",
+    "the private serializer emits score, full uppercase row hex and FNV64 without typed pointer claims",
+    "capture is bounded at 64 rows and explicit truncation is retained",
+    "the exact runtime anchor emits the producer target exactly once, replays the post-call lea and uninstall restores it",
+    "a suspended non-CK3 process rejects the production hash and permits only an explicit non-executed remote fixture transaction"
+  ],
+  "build_boundary": {
+    "compile_gate": "XAR_CK3_ENABLE_G2_DOMAIN_CONSTRUCTION_RUNTIME_OBSERVER_V1",
+    "shared_cmake_modified": false,
+    "shared_bridge_modified": false,
+    "focused_sources": [
+      "src/domain_construction_runtime_callsite_observer_v1.cpp",
+      "src/domain_construction_runtime_callsite_observer_v1_serializer.cpp"
+    ],
+    "unit_source": "src/domain_construction_runtime_callsite_observer_v1_test.cpp",
+    "suspended_injection_source": "src/domain_construction_runtime_callsite_observer_v1_suspended_injection_test.cpp"
+  },
+  "public_contract": {
+    "public_capability_changed": false,
+    "public_domain_construction_reader_ready": false,
+    "available_live_payload_claimed": false,
+    "ck3_started": false
+  }
+}

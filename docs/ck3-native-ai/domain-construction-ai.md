@@ -10,6 +10,10 @@
   `g2_domain_construction_candidate_observer_v1`，在 BUILD1 已冻结的候选 producer 返回边界采集调用上下文和原始
   `0x28` 行。R683 证明 DEV4 readiness 与 observer 安装均正常，但冻结的强制 effect callsite 在 60 秒 paused 窗口中零次经过，
   因而按预定口径收口为 `NO-GO / no_producer_return_observed`。它不新增公共 bridge/MCP/schema，也不发布候选语义。
+- **[DEV7 static-ready / live pending]** 默认关闭的私有
+  `g2_domain_construction_native_runtime_callsite_observer_v1` 已把观察点移至正常运行时 direct callsite
+  `0x18D294F`。fixture 证明它不要求暂停、只在存活会话的 application-main 线程同步复制有界原始行；尚无生产命中，
+  因而不能声称 candidate reader live。该包未接入公共 bridge/MCP/schema，也没有启动 CK3。
 - **[unknown]** 正常 AI scheduler 把建设挂在哪一种 task tick、多久重新评估一次、已选存钱目标保存于何处及何时
   失效，当前 exact-build 证据尚未闭合。原版通用 task tick 只能作为背景，不能冒充建筑专用 cadence。
 - 范围只包括省份建筑的新建与升级。新建 holding、Great Project 和 domicile 动作不进入 v1；原版 AI 的共同候选池
@@ -277,9 +281,9 @@ producer 自身为 `0x1921810..0x19219BA`，共 `426` bytes，SHA-256
 `ck3_autonomous_player/native_bridge/research/fixtures/g2_domain_construction_producer_entry_v1.json`。原始字段含义、
 正常 scheduler cadence、候选 identity、资源槽、预算 owner、final legality 和队列仍保持 `unknown`。
 
-### 唯一下一施工点
+### DEV7：native runtime callsite observer
 
-下一包只实现 default-off 私有 `g2_domain_construction_native_runtime_callsite_observer_v1`，把被动观察点移到
+DEV7 已实现 default-off 私有 `g2_domain_construction_native_runtime_callsite_observer_v1`，把被动观察点移到
 `0x18D2948..0x18D2958`。这个 `16` bytes anchor 为
 `488D5560488BCEE8BCEE0400488D45D0`，SHA-256
 `8534255F75D4595B57E2093C6F67AC196C7FF71D596C2122258DED90151F31A6`。stub 必须按原顺序重放：
@@ -290,8 +294,10 @@ producer 自身为 `0x1921810..0x19219BA`，共 `426` bytes，SHA-256
 4. 重放 `lea rax,[rbp-0x30]`，从 `0x18D2958` 继续。
 
 这条 seam 不调用 forced effect，不主动调用 producer，不碰 `0x21F6800`，也不修改公共 bridge/MCP/schema/action/planner。
-先完成 source-contract、exact anchor 和 suspended focused tests；不得重跑 R683 的 forced-effect paused wait。将来若安排 live，
-只等这个不同 native callsite 的第一次自然经过即收口，仍不强制触发 producer。
+source-contract、exact anchor、`/W4 /WX` unit fixture 与 suspended non-CK3 transaction 均已通过。capture admission 要求
+同一 application-main 线程和存活会话；暂停状态只记录，不作为正常运行时入口的过滤条件。fixture 中 `paused=false` 的命中用于
+防止把 R683 的暂停前提错误移植到 scheduler 路径。将来若安排 live，只等这个不同 native callsite 的第一次自然经过即收口，
+仍不强制触发 producer。生产命中前，状态保持 `static-ready / live pending`。
 
 ## 预算储备与“存钱”边界
 
