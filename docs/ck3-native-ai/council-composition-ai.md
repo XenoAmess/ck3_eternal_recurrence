@@ -397,3 +397,61 @@ from 11 eight-byte rows with zero observer/capture failures. The frozen evidence
 is `fixtures/council_composition_steward_r684_live_capture_v1.json`. This closes
 the private capture seam only; the production reader, public query, planner and
 action remain unimplemented.
+
+## COUNCIL8: default-off application-main reader glue
+
+The Council6 reader and Council7 exact binding are now connected to the
+existing application-main mailbox behind
+`XAR_CK3_ENABLE_G2_COUNCIL_COMPOSITION_STEWARD_CANDIDATES_PRIVATE_PROBE_V1`.
+The option is `OFF` by default. Enabling it adds one fixed mailbox executor and
+one private heartbeat object; it does not add a hello capability, public MCP
+method, public schema, planner input, or gameplay action.
+
+The candidate runs one bounded transaction after the bridge worker has
+published a paused, map-ready snapshot with a live played character:
+
+1. The worker freezes the semantic snapshot, native bridge revision, date and
+   owner, then submits the fixed council executor.
+2. The executor admits only the proven application-main thread and the exact
+   paused mailbox slot. It reads the semantic snapshot again and requires an
+   exact match with the worker copy.
+3. Council7 generation-resolves the played character and the unique active
+   `councillor_steward` task. Council6 invokes the exact producer, copies every
+   full CharacterID, generation-resolves every copied row, releases the
+   temporary vector in the same transaction, and rechecks the complete frame.
+4. The worker publishes either the complete typed result or one typed
+   unavailable reason. Native pointers and raw row bytes never cross the
+   application-main transaction.
+
+The private heartbeat key is
+`g2_council_composition_steward_candidates_private_probe_v1`. It records
+`private_build=true`, `read_only=true`, `advertised=false`, mailbox submit/wait
+receipts, the typed failure key, the copied IDs and
+`temporary_vector_released`. The probe performs at most one successful or
+terminal attempt per process lifetime. Transient `mailbox_busy` and missing
+paused-owner observations remain retryable before that terminal publication.
+
+This private probe owns only the bridge's native revision. It uses
+`native:<revision>` as its snapshot ID and repeats that bridge revision in the
+private `public_revision` and `native_revision` fields. The external host can
+advance its envelope revision independently, so live acceptance must bind the
+result to matching snapshot ID, date and owner instead of inferring that the
+host envelope revision is identical. A future public query will receive both
+caller revisions explicitly and must preserve the Council6 two-revision drift
+checks.
+
+Focused Release validation builds the reader, binding, mailbox and bridge with
+MSVC `/W4 /WX`; the one-shot producer/copy/release fixture and the generic
+suspended-injection fixture are GREEN. The self-contained candidate and its
+SHA-256 manifest are external at
+`Z:\ck3_mod_rewrite_process_assets\g2-m4-council8-glue-candidate-20260914`.
+This is **private static-ready glue**, not production-live observation.
+
+The next live step is one paused, no-date-advance, read-only query in a round no
+earlier than R688. If it uses the same frozen save as R684, the expected
+comparison is the same owner, steward task and 11 full IDs; a changed save may
+legitimately produce another complete vector. Acceptance requires typed
+`available`, a complete vector, a true release receipt, stable frame binding,
+zero gameplay writes and retained cleanup evidence. Public MCP, legality,
+skills, political inputs, planner and council actions remain later work
+packages.

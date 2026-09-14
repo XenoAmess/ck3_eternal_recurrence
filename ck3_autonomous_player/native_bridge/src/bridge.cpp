@@ -17,6 +17,9 @@
 #include "xar_bridge/domain_construction_runtime_callsite_observer_v1_serializer.hpp"
 #endif
 #include "xar_bridge/council_composition_candidate_observer_v1.hpp"
+#if defined(XAR_CK3_ENABLE_G2_COUNCIL_COMPOSITION_STEWARD_CANDIDATES_PRIVATE_PROBE_V1)
+#include "xar_bridge/council_composition_steward_candidates_private_probe_v1.hpp"
+#endif
 #include "xar_bridge/coat_of_arms_designer_probe_v1.hpp"
 #include "xar_bridge/frontend_gui_route_v1.hpp"
 #include "xar_bridge/cold_map_vfs_observer_v1.hpp"
@@ -270,6 +273,19 @@ static xar::bridge::DomainConstructionRuntimeObserverStateV1
 #endif
 static xar::bridge::CouncilCompositionCandidateObserverStateV1
     g_council_composition_candidate_observer_v1{};
+#if defined(XAR_CK3_ENABLE_G2_COUNCIL_COMPOSITION_STEWARD_CANDIDATES_PRIVATE_PROBE_V1)
+static xar::ck3_11906::CouncilCompositionStewardCandidatesBindingStateV1
+    g_council_composition_steward_candidates_binding_v1{};
+static xar::bridge::CouncilCompositionStewardCandidatesPrivateProbeV1
+    g_council_composition_steward_candidates_private_probe_v1{};
+static bool
+    g_council_composition_steward_candidates_private_probe_in_flight_v1 =
+        false;
+static std::uint32_t
+    g_council_composition_steward_candidates_private_probe_last_submit_v1 = 0;
+static std::uint32_t
+    g_council_composition_steward_candidates_private_probe_last_wait_v1 = 0;
+#endif
 #if defined(XAR_CK3_ENABLE_G2_MILITARY_PREPARATION_SUMMARY_PRIVATE_PROBE_V1)
 static xar::bridge::MilitaryPreparationSummaryBindingStateV1
     g_military_preparation_summary_binding_v1{};
@@ -385,6 +401,121 @@ void DriveMilitaryPreparationSummaryPrivateProbeV1(
       g_main_thread_query_mailbox_v1,
       g_military_preparation_summary_private_probe_ticket_v1);
   g_military_preparation_summary_private_probe_in_flight_v1 = false;
+}
+#endif
+
+#if defined(XAR_CK3_ENABLE_G2_COUNCIL_COMPOSITION_STEWARD_CANDIDATES_PRIVATE_PROBE_V1)
+bool InitializeCouncilCompositionStewardCandidatesPrivateProbeV1(
+    std::uintptr_t module_base) noexcept {
+  auto &probe =
+      g_council_composition_steward_candidates_private_probe_v1;
+  if (!xar::bridge::
+          ConfigureCouncilCompositionStewardCandidatesPrivateProbeTransportV1(
+              probe, g_main_thread_query_mailbox_v1,
+              xar::ck3_11906::BindCurrentProcess(true),
+              g_council_composition_steward_candidates_binding_v1)) {
+    return false;
+  }
+
+  xar::ck3_11906::CouncilCompositionStewardCandidatesEnvironmentV1 core{};
+  auto access =
+      xar::bridge::CouncilCompositionStewardCandidatesProbeAccessV1(probe);
+  xar::ck3_11906::CouncilCompositionStewardCandidatesBindingEnvironmentV1
+      binding{};
+  binding.binding_enabled = true;
+  binding.exact_build_admitted = true;
+  binding.admitted_executable_sha256 =
+      xar::ck3_11906::
+          kCouncilCompositionStewardCandidatesReaderExecutableSha256V1;
+  binding.module_base = module_base;
+  if (!xar::ck3_11906::BindCouncilCompositionStewardCandidatesV1(
+          binding, g_council_composition_steward_candidates_binding_v1,
+          core, access)) {
+    return false;
+  }
+  return xar::bridge::
+      InstallCouncilCompositionStewardCandidatesPrivateProbeV1(
+          probe, core, access);
+}
+
+void DriveCouncilCompositionStewardCandidatesPrivateProbeV1(
+    const std::optional<xar::game::Snapshot> &snapshot,
+    std::uint64_t revision) noexcept {
+  auto &probe =
+      g_council_composition_steward_candidates_private_probe_v1;
+  if (!probe.installed || probe.result_published) return;
+
+  if (!g_council_composition_steward_candidates_private_probe_in_flight_v1) {
+    if (!probe.request_prepared) {
+      if (!snapshot.has_value() || revision == 0 ||
+          !snapshot->map_ready || !snapshot->paused ||
+          !snapshot->has_played_character ||
+          !snapshot->played_character_alive ||
+          snapshot->played_character_id <= 0) {
+        return;
+      }
+      if (!xar::bridge::
+              PrepareCouncilCompositionStewardCandidatesPrivateProbeV1(
+                  probe, *snapshot, revision, revision)) {
+        return;
+      }
+    }
+    const auto submit = xar::ck3_11906::TrySubmitMainThreadQueryV1(
+        g_main_thread_query_mailbox_v1,
+        &xar::bridge::
+            ExecuteCouncilCompositionStewardCandidatesPrivateProbeV1,
+        &probe, probe.ticket);
+    g_council_composition_steward_candidates_private_probe_last_submit_v1 =
+        static_cast<std::uint32_t>(submit);
+    if (submit ==
+        xar::ck3_11906::MainThreadQuerySubmitResultV1::submitted) {
+      g_council_composition_steward_candidates_private_probe_in_flight_v1 =
+          true;
+    } else if (
+        submit != xar::ck3_11906::MainThreadQuerySubmitResultV1::
+                      paused_main_thread_not_observed &&
+        submit != xar::ck3_11906::MainThreadQuerySubmitResultV1::
+                      mailbox_busy &&
+        submit != xar::ck3_11906::MainThreadQuerySubmitResultV1::
+                      application_main_not_observed) {
+      (void)xar::bridge::
+          PublishCouncilCompositionStewardCandidatesPrivateProbeFailureV1(
+              probe,
+              xar::game::CouncilCompositionStewardCandidatesFailureV1::
+                  application_main_thread_required);
+    }
+  }
+  if (!g_council_composition_steward_candidates_private_probe_in_flight_v1) {
+    return;
+  }
+
+  const auto wait = xar::ck3_11906::WaitForMainThreadQueryV1(
+      g_main_thread_query_mailbox_v1, probe.ticket, 1'000);
+  g_council_composition_steward_candidates_private_probe_last_wait_v1 =
+      static_cast<std::uint32_t>(wait);
+  if (wait == xar::ck3_11906::MainThreadQueryWaitResultV1::
+                  timeout_executor_already_running) {
+    return;
+  }
+  if (wait ==
+      xar::ck3_11906::MainThreadQueryWaitResultV1::completed) {
+    (void)xar::bridge::
+        PublishCouncilCompositionStewardCandidatesPrivateProbeV1(probe);
+  } else {
+    (void)xar::bridge::
+        PublishCouncilCompositionStewardCandidatesPrivateProbeFailureV1(
+            probe,
+            wait == xar::ck3_11906::MainThreadQueryWaitResultV1::
+                        infrastructure_failed
+                ? xar::game::CouncilCompositionStewardCandidatesFailureV1::
+                      frame_capture_failed
+                : xar::game::CouncilCompositionStewardCandidatesFailureV1::
+                      application_main_thread_required);
+  }
+  (void)xar::ck3_11906::ReclaimMainThreadQueryV1(
+      g_main_thread_query_mailbox_v1, probe.ticket);
+  g_council_composition_steward_candidates_private_probe_in_flight_v1 =
+      false;
 }
 #endif
 
@@ -901,6 +1032,11 @@ std::string HeartbeatFrame(std::uint64_t sequence) {
 #endif
 #if defined(XAR_CK3_ENABLE_G2_MILITARY_PREPARATION_SUMMARY_PRIVATE_PROBE_V1)
   result += ",\"military_preparation_summary_private_probe_enabled\":true";
+#endif
+#if defined(XAR_CK3_ENABLE_G2_COUNCIL_COMPOSITION_STEWARD_CANDIDATES_PRIVATE_PROBE_V1)
+  result +=
+      ",\"council_composition_steward_candidates_private_probe_enabled\":"
+      "true";
 #endif
   result += ",\"zhongguo_scoreboard_production_candidate_enabled\":";
   result += xar::ck3_11906::kZhongguoScoreboardProductionCandidateEnabledV1
@@ -1732,6 +1868,28 @@ std::string HeartbeatFrame(std::uint64_t sequence) {
       g_military_preparation_summary_private_probe_last_submit_v1);
   result += ",\"last_wait_result\":";
   result += Number(g_military_preparation_summary_private_probe_last_wait_v1);
+#endif
+#if defined(XAR_CK3_ENABLE_G2_COUNCIL_COMPOSITION_STEWARD_CANDIDATES_PRIVATE_PROBE_V1)
+  result +=
+      "},\"g2_council_composition_steward_candidates_private_probe_v1\":";
+  auto council_probe_json = xar::bridge::
+      SerializeCouncilCompositionStewardCandidatesPrivateProbeV1(
+          g_council_composition_steward_candidates_private_probe_v1);
+  if (!council_probe_json.empty() && council_probe_json.back() == '}') {
+    council_probe_json.pop_back();
+  }
+  result += council_probe_json;
+  result += ",\"query_in_flight\":";
+  result +=
+      g_council_composition_steward_candidates_private_probe_in_flight_v1
+          ? "true"
+          : "false";
+  result += ",\"last_submit_result\":";
+  result += Number(
+      g_council_composition_steward_candidates_private_probe_last_submit_v1);
+  result += ",\"last_wait_result\":";
+  result += Number(
+      g_council_composition_steward_candidates_private_probe_last_wait_v1);
 #endif
 #if defined(XAR_CK3_ENABLE_G2_DOMAIN_CONSTRUCTION_RUNTIME_OBSERVER_V1)
   result += "},\"g2_domain_construction_native_runtime_callsite_observer_v1\":";
@@ -5684,6 +5842,11 @@ public:
     environment.permitted_executor_duotrigintary =
         &xar::bridge::ExecuteMilitaryPreparationSummaryPrivateProbeV1;
 #endif
+#if defined(XAR_CK3_ENABLE_G2_COUNCIL_COMPOSITION_STEWARD_CANDIDATES_PRIVATE_PROBE_V1)
+    environment.permitted_executor_tritrigintary =
+        &xar::bridge::
+            ExecuteCouncilCompositionStewardCandidatesPrivateProbeV1;
+#endif
     environment.permitted_frontend_executor =
         &xar::ck3_11906::ExecuteFrontendGuiRouteMailboxV1;
     installed_ = xar::ck3_11906::InstallMainThreadQueryMailboxV1(
@@ -6096,6 +6259,10 @@ void RunConnectedSession(
 #if defined(XAR_CK3_ENABLE_G2_MILITARY_PREPARATION_SUMMARY_PRIVATE_PROBE_V1)
       DriveMilitaryPreparationSummaryPrivateProbeV1(previous_snapshot,
                                                      state_revision);
+#endif
+#if defined(XAR_CK3_ENABLE_G2_COUNCIL_COMPOSITION_STEWARD_CANDIDATES_PRIVATE_PROBE_V1)
+      DriveCouncilCompositionStewardCandidatesPrivateProbeV1(
+          previous_snapshot, state_revision);
 #endif
       ++sequence;
       connected = xar::bridge::WriteFrame(pipe, HeartbeatFrame(sequence));
@@ -12271,6 +12438,13 @@ DWORD WINAPI WorkerMain(void *) noexcept {
 #if defined(XAR_CK3_ENABLE_G2_MILITARY_PREPARATION_SUMMARY_PRIVATE_PROBE_V1)
   if (exact_ck3_build &&
       !InitializeMilitaryPreparationSummaryPrivateProbeV1(
+          reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr)))) {
+    return 1;
+  }
+#endif
+#if defined(XAR_CK3_ENABLE_G2_COUNCIL_COMPOSITION_STEWARD_CANDIDATES_PRIVATE_PROBE_V1)
+  if (exact_ck3_build &&
+      !InitializeCouncilCompositionStewardCandidatesPrivateProbeV1(
           reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr)))) {
     return 1;
   }
