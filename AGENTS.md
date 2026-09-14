@@ -76,6 +76,7 @@ py tools/compose_tributary_expansion_directives_key_art.py  # 驱策朝贡国主
 py tools/compose_tributary_expansion_directives_workshop_media.py --artifacts <run> # 驱策朝贡国 GREEN 实机截图 → 一张低于 2 MB JPEG
 py tools/compose_auto_upgrade_buildings_decision_art.py     # 自动升级建筑源图 → 1100×440 DXT1 DDS
 py tools/compose_reclaim_the_motherland_workshop_media.py --artifacts <run> # 开封镜头 GREEN 实机截图 → 三张低于 2 MB JPEG
+py tools/compose_auto_upgrade_buildings_workshop_media.py --artifacts <run> # 自动升级建筑 R0033 GREEN 实机截图 → 三张低于 2 MB JPEG
 py tools/compose_trait_stars.py                             # 10 级特质星标 → 120×120 RGBA DDS
 py mod_zhongguo_style/tools/gen_361_mechanisms.py           # 361 目录、领域合同与制度卡
 py mod_zhongguo_style/tools/gen_361_b1_runtime.py           # B1 跨周期绩效季与共同上司 barrier
