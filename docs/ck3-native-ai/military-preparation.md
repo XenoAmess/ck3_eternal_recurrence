@@ -13,7 +13,7 @@
 - [unknown] AI 军事支出 pass 的真实 tick、MAA 行为冷却、同分候选顺序、新建与扩编的先后、骑士/统帅自动选择、和平时仍持有雇佣兵的处理，以及雇佣兵市场枚举/雇佣命令的核心调用点尚未闭合。
 - [counter-policy] 下一项施工是 `military-preparation-summary-v1`：在同一 paused revision 返回玩家角色的原版最终军力/骑士脚本值与 MAA gold 预算带。它必须产出真实数值后才能广告，不能以只返回 `unavailable` 的壳收口。
 
-当前状态为 **research / contract-ready**。本文没有实现 planner 策略、native bridge、MCP tool 或游戏动作，也没有 live snapshot。
+当前状态为 **research / evaluator-static-ready**。MIL2 已闭合十项输入的 loaded-playset 解析、Character receiver、signed Q100000 evaluator 与同帧生命周期；本文仍没有实现 planner 策略、native bridge、MCP tool 或游戏动作，也没有 live snapshot。
 
 ## exact-build 与证据账本
 
@@ -63,6 +63,150 @@ GUI 只证明存在可读模型和合法性/费用 seam，不证明后台 bridge
 | MAA expense registry helper | common callee `0x3368E10`（`0x1B342CA` 等调用） | 名称到内部 ID 的注册；不执行脚本值 |
 
 EXE 还保留 `GetMilitaryStrength` (`0x40E4A20`)、`GetMaxMilitaryStrength` (`0x4324B78`)、`GetMenAtArmsStrength` (`0x43BABC0`)、`GetKnights` (`0x4134458`)、`GetNumberOfKnights` (`0x4305480`) 与 `GetAllMercenaries` (`0x4134880`) 等反射名称。本轮没有闭合它们的 receiver、callback 和无 GUI 生命周期，因此它们只作为下一轮定位入口，不能写成已可调用 ABI。
+
+
+## MIL2：十项输入的 exact evaluator / receiver ABI
+
+本节只冻结后继实现要照搬的原生求值边界。完整机器可复核数据位于
+[`military_preparation_summary_v1_evaluator_abi.json`](../../ck3_autonomous_player/native_bridge/research/fixtures/military_preparation_summary_v1_evaluator_abi.json)。
+该 fixture 包含函数/调用点字节、PDATA 范围、SHA-256、固定槽位、原版脚本片段哈希和字段分组；本节的地址均为 image-relative RVA。
+
+### 合同先纠错：十一项收回十项
+
+MIL1 的示例实际写了十一项值，却在 readiness 中承诺“十项”。v1 现明确移除
+`maa_gold_band.monthly_expense_raw`：原版 MAA-vs-building 预算带直接消费的是
+`character_men_at_arms_expense_gold_relative`，绝对月维护费又与既有 gold/income 资源诊断重叠。绝对值入口仍保留在上文 exact 锚点中，供后继详细军团查询使用，不进入本查询的原子 readiness。最终十项为：
+
+- 四项 stock final：当前/最大军事力量、当前/最大骑士数；
+- 六项 gold MAA 值：相对维护费、`min / ideal / max`、低于 `min / ideal` 时的两项 MAA-vs-building 概率。
+
+### loaded-playset 名称解析
+
+[static-confirmed] `0x999AF0` 返回当前 loaded named-script-value database。固定槽位 vector 位于
+`db+0xF08`，capacity/count 位于 `+0xF10/+0xF14`，row stride 为 `8`。原版加载注册器
+`0x3368E10(name,fixed_index)` 把五个原版命名值固定为：
+
+| key | fixed index |
+|---|---:|
+| `ai_men_at_arms_expense_gold_min` | `0x34` |
+| `ai_men_at_arms_expense_gold_ideal` | `0x35` |
+| `ai_men_at_arms_expense_gold_max` | `0x36` |
+| `ai_men_at_arms_chance_expense_below_min` | `0x43` |
+| `ai_men_at_arms_chance_expense_below_ideal` | `0x44` |
+
+名称先交给 `0x3B8B000`（RDX=UTF-8 bytes、R8D=length、EAX=32-bit hash；RCX 在函数体中未消费），再用
+`0x9999B0(db,hash)` 从 loaded table 取得定义。`0x9999B0` 会获取/释放 database 的 reader lock；
+这是同步元数据写入，不是游戏状态变化。五个原版 key 还必须满足 hash lookup pointer 与上述 in-range
+fixed slot pointer 相同，并通过定义对象 vtable slot `+0x00` 的 validity 检查。pointer identity 不同、
+槽位越界、definition invalid 或名称/哈希不一致时，整次查询 unavailable。
+
+其余五项原生 final leaf 没有可直接交给 named evaluator 的 stock top-level definition。后继支持 mod
+必须增加五个稳定 wrapper key：
+
+| wire field | loaded wrapper key | wrapper body |
+|---|---|---|
+| `current_military_strength_raw` | `xar_mcp_military_current_strength_final` | `current_military_strength` |
+| `max_military_strength_raw` | `xar_mcp_military_max_strength_final` | `max_military_strength` |
+| `number_of_knights_raw` | `xar_mcp_military_number_of_knights_final` | `number_of_knights` |
+| `max_number_of_knights_raw` | `xar_mcp_military_max_number_of_knights_final` | `max_number_of_knights` |
+| `expense_relative_raw` | `xar_mcp_military_maa_gold_expense_relative_final` | `character_men_at_arms_expense_gold_relative` |
+
+wrapper 必须随本次验收 playset 正常编译和加载，并用同一 hash lookup/validity gate 解析；不得运行时伪造 AST，
+不得把 GUI model pointer 当 definition。定义 pointer 只借用到本次 application-main callback 返回，不能跨 playset
+reload 缓存。当前尚未冻结 reload epoch，因此 v1 每次查询都重新解析十个名称，以这个更小的实现避开悬空缓存。
+
+### Character receiver 与统一外层 ABI
+
+[static-confirmed] 根作用域是 `0x168`-byte event-target scope。`0x81F190` 初始化它之后：
+
+```cpp
+scope.kind = 4;                                      // +0x00, Character
+scope.payload = uint64_t(uint32_t(character_id));   // +0x08, full-generation ID
+```
+
+`character_id` 必须先经 Character store 解析并回读 `CCharacter+0x18` 完整相等。原版高层 fixed-value
+入口 `0x337B210` 证明了接下来的 context-owner 形状：它在同步栈帧构造
+`0x3354330` / `0x3354280` 两个 support container，再建立一个 internal evaluation context，
+其中 `+0x00` 与 `+0x10` 都指向上述根 scope，`+0x08=null`，`+0x18` 指向第一份栈内 container，
+`+0x20` 保存原版 evaluation flag。内部 context、两个 container、输出和 definition 全部只在同步调用期间存活，
+并在十项第二次采样完成后按 `0x337B210` 的原顺序清理。
+
+十项都使用同一外层函数：
+
+```cpp
+int64_t* EvaluateNamedFixed(              // RVA 0x3369820
+    LoadedNamedScriptValue* definition,   // RCX
+    int64_t* out_raw,                     // RDX
+    InternalEvaluationContext* context,   // R8
+    const SourceDescriptor* source);      // R9 = nullptr
+```
+
+`RAX` 回传 `out_raw`。definition 的 compiled tree 在 `+0x78`；常量 fallback 为 `+0x70`，
+存在标志为 `+0x83`。树存在时它以同一 R8/R9 调 `0x96EC00`，并把 signed `int64`
+**Q100000** 原值完整写回，不能改走返回 `int32` 的 `0x3369600`。stock callsite
+`0x3410D03..0x3410D3A` 直接证明 `R9=null`、caller-owned `int64` 输出和 numeric kind `1` 消费方式。
+`0x3369820` 在 profiling flag 开启时可能写 profiler 统计；该诊断副作用不改变角色、军事、日期、UI 或 RNG，
+但不能据此宣称整个引擎函数是字节级纯函数。
+
+十项因此**共享一条外层 ABI**，但五个 final leaf 的内部节点精确分三组：
+
+| 内部组 | 字段 | final leaf / node vtable | receiver 结果 |
+|---|---|---|---|
+| strength | current / max military strength | `0x2849550` / `0x28494C0`; `0x4378400` / `0x4378510` | kind `4` → full CharacterID generation resolve → `extension+0x2F0/+0x2F4` |
+| knight count | current / max knight count | `0x19F4F00` / `0x2868F40`; `0x43983D8` / `0x43984E8` | kind `4` → full CharacterID generation resolve → stock knight container/count helpers |
+| MAA relative expense | relative gold expense | `0x2873E20`; `0x4399888` | kind `4` → full CharacterID generation resolve → stock gold MAA expense/income ratio |
+| named AST | min/ideal/max、below-min/below-ideal | `0x3369820` → `0x96EC00` | 同一 Character-root internal context |
+
+strength、knight 与 MAA relative 三组各自的两个 node vtable 在组内前 `0x100` bytes 完全相同；fixture
+冻结的 SHA-256 分别是 `5478A82E...687AA93`、`1443AFD5...AD8A7`、
+`603103E1...8BCFC4`。每个 final leaf 首段都显式检查 kind `4`，从 `+0x08` 取 full CharacterID，
+用低 24 bit 索引 Character store，并只接受 `CCharacter+0x18` 完整回读相等的对象。这既闭合 receiver，
+也否定裸 `CCharacter*` 或只比较低 24 bit 的实现。
+
+### 同一 paused frame 的调用与副作用边界
+
+一次 query 必须在一个 application-main callback 中完成：
+
+1. 绑定 `expected_revision`、paused、date 与当前 played full CharacterID，并做 generation round-trip；
+2. 构造一份 root event-target scope、两份 support container 和一份 internal context；
+3. 从当前 loaded playset 解析五个 wrapper 与五个 stock definition；
+4. 以相同 context、互不重叠的 `int64` 输出依次调用 `0x3369820` 十次；
+5. 不离开 callback，再解析/求值第二遍，要求十项逐字段相等；
+6. 重读 revision/date/paused/played CharacterID 与已有 gameplay RNG fingerprint；任何变化都丢弃整包；
+7. 按 stock owner 顺序析构 support container 与 `0x168` scope，返回单个原子 payload。
+
+五段原版 `00_ai_values.txt` block 均不含 `random`、`effect =` 或 `save_scope`；五个 wrapper 也只能是单一
+read expression。probe 不调用 apply/update/command、不推进日期、不触发 UI。仍只在 application-main
+执行，因为 root scope、Character store、compiled tree 与 loaded definition 都是借用的引擎对象；
+registry 自带 reader lock 并不授权跨线程持有其它对象。
+
+```mermaid
+flowchart TD
+    Q["application-main / paused transaction"] --> I["played full CharacterID<br/>generation round-trip"]
+    I --> S["0x81F190<br/>kind-4 root event-target scope"]
+    S --> C["0x337B210 proven context-owner shape<br/>stack-only internal context"]
+    C --> L["same loaded playset<br/>resolve 5 wrappers + 5 stock keys"]
+    L --> E["0x3369820 × 10<br/>signed Q100000"]
+    E --> E2["same callback: resolve/evaluate × 10 again"]
+    E2 --> G{"fieldwise equal + frame identity unchanged?"}
+    G -->|yes| A["available / observation_ready=true"]
+    G -. "no" .-> U["unavailable; retain exact diagnostic"]
+    L -. "missing wrapper / invalid definition / reload" .-> U
+    A --> D["stock-order teardown"]
+    U --> D
+    D -. "live values and visible cross-check not yet frozen" .-> P["[unknown until one probe]<br/>paused production result"]
+    classDef unknown stroke-dasharray: 6 4,fill:#fff4e5,stroke:#b36b00;
+    class U,P unknown;
+```
+
+### 唯一下一 seam
+
+下一工作包只保留一个默认关闭入口：`military-preparation-summary-v1-evaluator-probe`。它同时加入上述五个
+support wrapper，并在 private application-main query 中执行完整十项双采样；一次 exact-build paused
+结果必须为 `available`、`observation_ready=true`，再与同帧可见脚本/GUI 值交叉检查。失败时保留诊断并继续
+施工，不能发布永久 `unavailable` 的 public tool。MAA candidate/action/postcondition、骑士/统帅候选与 mercenary
+市场仍是该 probe 成功后的后续产品入口，不与本轮 ABI probe 并列成多个“下一实现”。
+
 
 ## 原版最小决策树
 
@@ -200,7 +344,6 @@ flowchart TD
     "scale": 100000
   },
   "maa_gold_band": {
-    "monthly_expense_raw": 125000,
     "expense_relative_raw": 18000,
     "min_raw": 15000,
     "ideal_raw": 40000,
@@ -242,7 +385,7 @@ flowchart TD
     G -. "hash / pause / revision failure" .-> X["invalid or unavailable"]
     C -. "character missing/stale" .-> X
     A -. "any value missing" .-> X
-    X -. "must keep reversing; no shell completion" .-> R["[unknown] unresolved evaluator/receiver ABI"]
+    X -. "retain diagnostic; public shell remains absent" .-> R["default-off evaluator probe"]
     P -. "candidate/action not in v1" .-> N["v2 detailed roster and legal candidates"]
     classDef unknown stroke-dasharray: 6 4,fill:#fff4e5,stroke:#b36b00;
     class X,R,N unknown;
@@ -260,7 +403,7 @@ flowchart TD
 
 ## 明确 unknown 与非目标
 
-- [unknown] `current/max_military_strength` 最终聚合的成分、缓存生命周期和无 GUI callback/core；v1 实现必须继续逆向，不能镜像脚本数值。
+- [static-confirmed] `current/max_military_strength`、骑士 count/cap 与 MAA relative expense 已有 Character-root final leaf 和统一 named FixedPoint 外层 ABI；其最终军事力量聚合成分仍保持 opaque，不妨碍读取原版 final raw。
 - [unknown] MAA AI scheduler 的 tick、冷却、队列、候选枚举顺序、新建/扩编/替换顺序、最终 score 公式与 tie-break。
 - [unknown] title MAA 的“最低维护费且有空间”枚举器和多个 title 同分时顺序。
 - [unknown] levy/MAA 月恢复的修正项与月 tick 内顺序；本文不做时间预测器。

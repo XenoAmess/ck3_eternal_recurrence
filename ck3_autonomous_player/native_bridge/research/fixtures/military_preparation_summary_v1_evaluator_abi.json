@@ -1,0 +1,356 @@
+{
+  "schema": "xar.ck3.military_preparation_summary_v1_evaluator_abi.fixture",
+  "schema_version": 1,
+  "research_stage": "static_confirmed_no_ck3_launch",
+  "build": {
+    "game_version": "1.19.0.6",
+    "executable_path_role": "operator_supplied_exact_build",
+    "executable_size": 95206008,
+    "executable_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86"
+  },
+  "contract_correction": {
+    "value_count": 10,
+    "removed_from_v1": "maa_gold_band.monthly_expense_raw",
+    "reason": "expense_relative_raw is the stock budget-band input; absolute monthly expense duplicates resource diagnostics and made the MIL1 payload contain eleven values while its readiness text promised ten"
+  },
+  "source_script": {
+    "relative_path": "game/common/script_values/00_ai_values.txt",
+    "sha256": "8B248B0AB799ADF356AF71D69994EDCF904F16BDBC4D2B104CC9A1305C04BAA3",
+    "blocks": [
+      {
+        "key": "ai_men_at_arms_expense_gold_min",
+        "line_start_1_based": 1573,
+        "line_end_1_based": 1627,
+        "utf8_sha256": "043877876C400043720583ABDEA333AFB9C8287262A14004CC84AC589A129B37",
+        "contains_random_token": false,
+        "contains_effect_assignment": false,
+        "contains_save_scope": false
+      },
+      {
+        "key": "ai_men_at_arms_expense_gold_ideal",
+        "line_start_1_based": 1642,
+        "line_end_1_based": 1765,
+        "utf8_sha256": "E1CCE189945EFB51BC9F546C5A28521F24476ED65A8EF14B77A3333234F92AA5",
+        "contains_random_token": false,
+        "contains_effect_assignment": false,
+        "contains_save_scope": false
+      },
+      {
+        "key": "ai_men_at_arms_expense_gold_max",
+        "line_start_1_based": 1779,
+        "line_end_1_based": 1874,
+        "utf8_sha256": "C164C3F710A0C33CFD507CC112E17C2EE50C87BC62E14552D3682E6BB1A4D8D1",
+        "contains_random_token": false,
+        "contains_effect_assignment": false,
+        "contains_save_scope": false
+      },
+      {
+        "key": "ai_men_at_arms_chance_expense_below_min",
+        "line_start_1_based": 2826,
+        "line_end_1_based": 2926,
+        "utf8_sha256": "C4FF675EB9E0BCA295E96B2B2E7606192B28F4E130644A3AAF1FACC2127E297A",
+        "contains_random_token": false,
+        "contains_effect_assignment": false,
+        "contains_save_scope": false
+      },
+      {
+        "key": "ai_men_at_arms_chance_expense_below_ideal",
+        "line_start_1_based": 2939,
+        "line_end_1_based": 3059,
+        "utf8_sha256": "692BCFCFD173648C2AE05A963AA05A633E12CFFB56F3537A99D6C5BACCF2CFF1",
+        "contains_random_token": false,
+        "contains_effect_assignment": false,
+        "contains_save_scope": false
+      }
+    ],
+    "purity_boundary": "the five exact blocks contain no random token, effect assignment, or saved-scope write"
+  },
+  "loaded_playset_registry": {
+    "singleton_getter": {
+      "label": "named-script-value database singleton getter",
+      "rva": "0x999AF0",
+      "end_rva_exclusive": "0x999B47",
+      "size": 87,
+      "bytes_hex": "4883EC38488B053D2BD7044885C07542C74424281E000000488D05D9A16E034889442420488D542420C644242C0041B9640000000F284424204533C0660F7F442420418D499DE8C5E41F03488B05F62AD7044883C438C3",
+      "sha256": "4E0246E4FB97D18607FA9CBF72F6030825B4FA0BF1340DABDC3FEBCBD0CA9AED",
+      "unwind_rva": "0x4C38E28"
+    },
+    "lookup_by_hash": {
+      "label": "loaded named-script-value lookup with registry synchronization",
+      "rva": "0x9999B0",
+      "end_rva_exclusive": "0x999AEA",
+      "size": 314,
+      "bytes_hex": "48895C24084533C04863DA443881F80E0000458BC8410F94C1458D58FE4585C90F848D0000004183E901743B4183F9010F857D000000F00FBAA9B80E000000730FF390F00FBAA9B80E00000072F366908B81B80E000083F8017604F390EBF141B802000000EB4C41B802000000418BC0F00FC181B80E0000A80174310F1F4000418BC3F00FC181B80E00000F1F4400008B81B80E0000A8017404F390EBF2418BC0F00FC181B80E0000A80175D341B8010000004C6389A40100004C8B9198010000498BD14823D3488D0452B201413854C204498D04C272103B580874214883C018FEC23A500476F00FB681A8010000FFC04103C14898488D1440498D04D2807804FF7406488B4010EB07488B056F2BD7044183E80174144183F8017517F0442199B80E0000488B5C2408C3F0440FC199B80E0000488B5C2408C3",
+      "sha256": "B1BD5B25EB20D8B81D65BAE5942F3D233480910D40C2B11540BCC6E7A53D07E2",
+      "unwind_rva": "0x4C39EEC"
+    },
+    "hash_function": {
+      "label": "exact name hash; RCX is unused, RDX bytes, R8D length, EAX hash",
+      "rva": "0x3B8B000",
+      "end_rva_exclusive": "0x3B8B087",
+      "size": 135,
+      "bytes_hex": "894C2408534883EC2033C0488D4C2430418BD889442430458BC8894424404C8BC2488D542440E895FEFFFF8B542440448BC28B4C2430448BC94183E003741FB904000000412BC8C1E103D3EA69C2512D9ECCC1C00F69C89335871B4133C933CB8BC1C1E81033C169C86BCAEB858BC1C1E80D33C169C835AEB2C28BC1C1E81033C14883C4205BC3",
+      "sha256": "E42410BF40CBE818FED8B771988E102AE129BCE08CD7F975EB7A1EB2E5CD70DD",
+      "unwind_rva": "0x4C4C7D8"
+    },
+    "stock_registration_helper": {
+      "label": "register name and fixed slot",
+      "rva": "0x3368E10",
+      "end_rva_exclusive": "0x3369085",
+      "size": 629,
+      "bytes_hex": "48895C241055565741544155415641574881ECA00000004C63EA488BD9E8BE0C63FD488BF04533F6443BA8140F00000F8CD70000004C8B3DE4373A024C89BC24E0000000418D6D018BB8140F00003BEF0F8EB00000003BA8100F00007E6A488B88180F0000488B018BD548C1E203458D4608FF50084C8BE04863BE140F0000488B96080F000085FF7E1C4C8BC749C1E003488BC8E827FDAB008BBE140F0000488B96080F0000488B8E180F0000488B0141B808000000FF50104C89A6080F000089AE100F0000EB074C8BA0080F00008BD52BD74863C7498D3CC485D27E284C89B424F00000004D85FF75134C63C249C1E00333D2488BCFE87403AC00EB088BCA498BC7F348AB89AE140F00004885DB741B48C7C0FFFFFFFF0F1F84000000000048FFC04438340375F7448BF0458BC6488BD3E8B92082008BD0488BCEE85F0A63FD488BF8488B10488BC8FF1284C00F85F5000000488D05213B16014885DB480F44D848895C24500F28442450660F7F44246048C74424300C000000488D4424604889442438488D05A4381601488944244048C74424483F0000000F28442430660F7F4424704C8D442470488D542440488D8C2480000000E8C42048FD908B05197E3A02903DA08601007D3DBF010000008BCFE8D94A80004885C0742C488D8C248000000048894C2428448D4F03448D4756488D15083A1601488BC8E8702148FDF00FC13DD47D3A02488B9424980000004883FA10723E48FFC2488B8C2480000000488BC14881FA0010000072154883C227488B49F8482BC14883C0F84883F81F772DE87DD1AB00EB0B488B86080F00004A893CE8488B9C24E80000004881C4A0000000415F415E415D415C5F5E5DC3E86CBDAC00CC",
+      "sha256": "27DCC91C4F40462397D4B43EDA5A8B4BDFCE5583DC01ACDD1F53D70EFFF6D263",
+      "unwind_rva": "0x4E5F1F4"
+    },
+    "vector_layout": {
+      "data_offset": "0xF08",
+      "capacity_offset": "0xF10",
+      "count_offset": "0xF14",
+      "stride": 8
+    },
+    "stock_fixed_slots": {
+      "ai_men_at_arms_expense_gold_min": "0x34",
+      "ai_men_at_arms_expense_gold_ideal": "0x35",
+      "ai_men_at_arms_expense_gold_max": "0x36",
+      "ai_men_at_arms_chance_expense_below_min": "0x43",
+      "ai_men_at_arms_chance_expense_below_ideal": "0x44"
+    },
+    "resolution_rule": "resolve by exact hash and stable name every query; for stock fixed-slot keys require pointer identity with the in-range fixed slot and virtual is-valid=true; never retain pointers across a playset reload",
+    "stock_fixed_slot_callsites": [
+      {
+        "label": "min ideal max fixed indices 0x34 0x35 0x36",
+        "rva": "0x1B342C5",
+        "end_rva_exclusive": "0x1B342F8",
+        "size": 51,
+        "bytes_hex": "BA34000000488D0D87137002E83A4B8301BA35000000488D0D66147002E8294B8301BA36000000488D0D35147002E8184B8301",
+        "sha256": "C5C07366649A02F499CC6E1869196969C5FBDA4DF853FE91788CDE1B09B41B8F"
+      },
+      {
+        "label": "below-min below-ideal fixed indices 0x43 0x44",
+        "rva": "0x1B343C4",
+        "end_rva_exclusive": "0x1B343E6",
+        "size": 34,
+        "bytes_hex": "BA43000000488D0D10197002E83B4A8301BA44000000488D0DCF187002E82A4A8301",
+        "sha256": "CD29F3F7DB2B391B5CEF92F95C3B653232D67577FCB8D20C82786A38A1C9BD52"
+      }
+    ]
+  },
+  "receiver_scope": {
+    "event_target_scope_size": "0x168",
+    "constructor": {
+      "label": "event-target scope constructor",
+      "rva": "0x81F190",
+      "end_rva_exclusive": "0x81F24A",
+      "size": 186,
+      "bytes_hex": "48895C2408574883EC2033FFC74110FFFFFFFF8939488BD9488979084883C118E81BF6FFFF488D050C4D86034889BB0001000048898318010000488D0D07B37C04488D05604D86034889BB0801000048898320010000488D05F3B27C0448898338010000488BC348898B100100004889BB280100004889BB3001000089BB400100004889BB480100004889BB5001000048898B58010000C78360010000FFFFFFFF6689BB640100004088BB66010000488B5C24304883C4205FC3",
+      "sha256": "E119B49AA2F41C1E491435E90877DEB8F0DF42906226AAC2977F51A561443FA7",
+      "unwind_rva": "0x4C39588"
+    },
+    "root_kind_offset": "0x00",
+    "root_kind_character": 4,
+    "root_payload_offset": "0x08",
+    "root_payload": "zero-extended full-generation signed-int32 CharacterID",
+    "context_owner": {
+      "label": "stock high-level value evaluator and internal-context owner",
+      "rva": "0x337B210",
+      "end_rva_exclusive": "0x337B301",
+      "size": 241,
+      "bytes_hex": "48895C240848896C24104889742418574881EC30040000498BD8488BF2488BF9488D4C2450E8F690FDFF488D8C2478010000E83990FDFF48899C242004000048895C242033ED48896C242848895C2430488D44245048894424380FB60583113902884424404C8D442420488BD6488BCFE88B000000904839AC24780100007436488D8C2478010000E803E95EFD488B8C2488010000488B01448D4508488B942478010000FF50104889AC247801000089AC2480010000488B5424504885D27415896C245C488B4C2460488B0141B808000000FF5010488BC64C8D9C2430040000498B5B10498B6B18498B7320498BE35FC3",
+      "sha256": "CB13198F69D3B6478062F511DA9F4BC0319CFD2CEE8079E3E9E097BB29A70235",
+      "unwind_rva": "0x4E60D20"
+    },
+    "internal_context_shape_at_context_owner": {
+      "offset_0x00": "root event-target scope pointer",
+      "offset_0x08": "null",
+      "offset_0x10": "same root event-target scope pointer",
+      "offset_0x18": "pointer to stack-owned 0x3354330 container",
+      "offset_0x20": "stock evaluation flag copied at 0x337B26A"
+    },
+    "container_constructors": [
+      {
+        "label": "0x118-byte evaluation support container constructor",
+        "rva": "0x3354330",
+        "end_rva_exclusive": "0x33543B2",
+        "size": 130,
+        "bytes_hex": "48895C240848896C24104889742418574883EC20488D591833ED488929488D05BC781701896908488BF148895910488903448D4508488D051C9CCA0148898308010000488B1689690C488B4910488B01FF5010488B034C8D4608488BD648892E488BCB48896E08FF5020488B5C2430488BC6488B742440488B6C24384883C4205FC3",
+        "sha256": "8FF1EA95F300F3CA2F6FF20E267CD150DC95A72665F1A4CA8CC140B2146DA973",
+        "unwind_rva": "0x4C39898"
+      },
+      {
+        "label": "complete 0x2A8-byte evaluation scratch container constructor",
+        "rva": "0x3354280",
+        "end_rva_exclusive": "0x335432B",
+        "size": 171,
+        "bytes_hex": "48895C241048896C241856415641574883EC2033ED4C8D711848896908488D05B4791701488929488BF14C897110498906488D05C89CCA01498986880200008B590C85DB7E2148897C2440488B396690488BCFE818AD61FDFFCB4883C75085DB7FEE488B7C2440488B4E1041B808000000488B16896E0C488B01FF5010498B064C8D4608488BD648892E498BCE48896E08FF5020488B5C2448488BC6488B6C24504883C420415F415E5EC3",
+        "sha256": "CAAD6CC5E363916FE783AFDB299DFAF4FECBA51B5B649896059EE28ED371AA80"
+      }
+    ],
+    "lifetime": "root scope, both support containers, internal context, outputs and all definition pointers are valid only for one synchronous application-main callback; cleanup follows the stock owner after all ten evaluations"
+  },
+  "fixed_point_evaluator": {
+    "entry": {
+      "label": "named script-value signed FixedPoint evaluator",
+      "rva": "0x3369820",
+      "end_rva_exclusive": "0x33699B3",
+      "size": 403,
+      "bytes_hex": "488BC448895810488970185557415441564157488D68A94881ECA00000000F2970C84D8BF94D8BE0488BFA488BF10F57C033C00F1145BF0F1145CF0F1145DF0F1145EF0F1145FF4889450F33DB38057D2B3A0275094532F64488750FEB4248C745BF100500000F1041380F1145C70F1049480F114DD70F1041580F1145E748895DF70F57C9F20F114DFFC6450701C6450F01488D4DBFE8155560FD440FB6750F488B4E784885C974294883C10848895D5F488B457F48894424204D8BCF4D8BC4488D555FE8175360FD488B455F488907EB1080BE83000000007404488B5E7048891F4584F60F8484000000F20F1045FF0F28F0807D0700754FE822A7AB00488BD8E8BA7796004881FB809698007506486BC064EB1B489948F7FB4869C800CA9A3B4869C200CA9A3B489948F7FB4803C10F57C0482B45F7F2480F2AC0F20F5E05F4B22201F20F58C6F20F11442420F20F1145FFC64507014C8D4DC7448B45C38B55BF488B0DCF013E02E88268FFFF90488BC74C8D9C24A0000000498B5B38498B7340410F2873F0498BE3415F415E415C5F5DC3",
+      "sha256": "88C220FD822BE90E6E8DF71E1FC26214D62E5218493F5FCF1B64C2CD80A2DC04",
+      "unwind_rva": "0x4E5F300"
+    },
+    "msvc_x64_abi": {
+      "RCX": "valid loaded named-script-value definition",
+      "RDX": "caller-owned int64 output",
+      "R8": "stock-shaped internal evaluation context rooted at the played Character",
+      "R9": "optional source/debug descriptor; null in the selected stock callsites",
+      "RAX": "same output pointer as RDX",
+      "output": "signed Q100000 raw; no int32 truncation"
+    },
+    "inner_tree_evaluator_rva": "0x96EC00",
+    "definition_tree_offset": "0x78",
+    "constant_raw_offset": "0x70",
+    "constant_present_flag_offset": "0x83",
+    "direct_callsite": {
+      "label": "typed numeric caller with R9=null and int64 raw output",
+      "rva": "0x3410D03",
+      "end_rva_exclusive": "0x3410D3A",
+      "size": 55,
+      "bytes_hex": "488D4630C7442430010000004533C948894424204C8BC6488D542460488BCFE8F98AF5FF488B44246048894424380F104424300F110348",
+      "sha256": "4A8BB8DBB0BBF8273AF0A02449389BF0D793D89C887CF00B0A43CCA994CD689D"
+    }
+  },
+  "field_groups": {
+    "common_outer_abi": "all ten fields are loaded named definitions evaluated by RVA 0x3369820 in the same internal context",
+    "bridge_support_wrappers": [
+      {
+        "wire": "stock_final_values.current_military_strength_raw",
+        "future_loaded_key": "xar_mcp_military_current_strength_final",
+        "body": "current_military_strength",
+        "leaf": {
+          "label": "current military strength final leaf",
+          "rva": "0x2849550",
+          "end_rva_exclusive": "0x28495D1",
+          "size": 129,
+          "bytes_hex": "498B00668338047506448B4008EB0641B8FFFFFFFF488B05C42BEC024885C07425418BC881E1FFFFFF003B482C7317488B40204803C9488B44C8084885C07406443940187407488B059B2BEC02488B88B80100004885C974168B81F002000048984869C8A0860100488BC248890AC333C048984869C8A0860100488BC248890AC3",
+          "sha256": "88B396B98AA18C08795355D7C473F651D20F3DEB866C01A37C599114055484C2"
+        },
+        "node_vtable_rva": "0x4378400",
+        "node_vtable_0x100_sha256": "5478A82ECCF78042E73AB33691259DA2DB886258ABA7B15F97CCCF495687AA93"
+      },
+      {
+        "wire": "stock_final_values.max_military_strength_raw",
+        "future_loaded_key": "xar_mcp_military_max_strength_final",
+        "body": "max_military_strength",
+        "leaf": {
+          "label": "max military strength final leaf",
+          "rva": "0x28494C0",
+          "end_rva_exclusive": "0x2849541",
+          "size": 129,
+          "bytes_hex": "498B00668338047506448B4008EB0641B8FFFFFFFF488B05542CEC024885C07425418BC881E1FFFFFF003B482C7317488B40204803C9488B44C8084885C07406443940187407488B052B2CEC02488B88B80100004885C974168B81F402000048984869C8A0860100488BC248890AC333C048984869C8A0860100488BC248890AC3",
+          "sha256": "84874C3DCD57109D77E175C2B1880C5383C14C0BFB721708AA5E803D7D345D01"
+        },
+        "node_vtable_rva": "0x4378510",
+        "node_vtable_0x100_sha256": "5478A82ECCF78042E73AB33691259DA2DB886258ABA7B15F97CCCF495687AA93"
+      },
+      {
+        "wire": "stock_final_values.number_of_knights_raw",
+        "future_loaded_key": "xar_mcp_military_number_of_knights_final",
+        "body": "number_of_knights",
+        "leaf": {
+          "label": "current knight count final leaf",
+          "rva": "0x19F4F00",
+          "end_rva_exclusive": "0x19F4F5A",
+          "size": 90,
+          "bytes_hex": "4883EC28488B026683380475058B5008EB05BAFFFFFFFF488B051272D1034885C074238BCA81E1FFFFFF003B482C7316488B40204803C9488B4CC8084885C974053951187407488B0DEB71D103E86EA1C2008B400C4883C428C3",
+          "sha256": "609218A470B80A17521ACB19A767C30F2E6C393AF256BCA3898D03E5AFE9E3AD",
+          "unwind_rva": "0x4C38E54"
+        },
+        "node_vtable_rva": "0x43983D8",
+        "node_vtable_0x100_sha256": "1443AFD571E59EAC811ED7A5F750EC18004B501B453EC2B6B36F7F4FA51BCC5C"
+      },
+      {
+        "wire": "stock_final_values.max_number_of_knights_raw",
+        "future_loaded_key": "xar_mcp_military_max_number_of_knights_final",
+        "body": "max_number_of_knights",
+        "leaf": {
+          "label": "maximum knight count final leaf",
+          "rva": "0x2868F40",
+          "end_rva_exclusive": "0x2868F8E",
+          "size": 78,
+          "bytes_hex": "488B026683380475058B5008EB05BAFFFFFFFF488B05D631EA024885C074238BCA81E1FFFFFF003B482C7316488B40204803C9488B4CC8084885C974053951187407488B0DAF31EA02E902470900",
+          "sha256": "BD9F3C50F4D059647A385FE22C5CADDB3388E54BC7A2010888B5DD81E31C22E3"
+        },
+        "node_vtable_rva": "0x43984E8",
+        "node_vtable_0x100_sha256": "1443AFD571E59EAC811ED7A5F750EC18004B501B453EC2B6B36F7F4FA51BCC5C"
+      },
+      {
+        "wire": "maa_gold_band.expense_relative_raw",
+        "future_loaded_key": "xar_mcp_military_maa_gold_expense_relative_final",
+        "body": "character_men_at_arms_expense_gold_relative",
+        "leaf": {
+          "label": "relative MAA gold expense final leaf",
+          "rva": "0x2873E20",
+          "end_rva_exclusive": "0x2873FB2",
+          "size": 402,
+          "bytes_hex": "48895C240848896C24184889742420574881ECC0000000498B00488BFA6683380475058B5008EB05BAFFFFFFFF4C8B05DC82E9024D85C074258BC225FFFFFF00413B402C73188BC8498B40204803C9488B5CC8084885DB74053953187407488B1DB382E902488BD3488D8C24D8000000E8FB7A0600488BD3488D4C2420488B30E8BBAA08FF488BD3488D4C2470488B28E81BAC08FF488B084885F6750C48C707A0860100E9CD0000004C8D142948B8A38D23D6E25300004903C248B9461B47ACC5A70000483BC177144969C2A0860100489948F7FE488BC8E996000000488BC648B900E40B540200000048994833C2482BC2483BC148B809E1D1C6116BF1297C2148F7EE498BC24C8BC2489949C1F80E498BC848C1E93F4C03C149F7F8488BC8EB5149F7EA48C1FA0E488BC248C1E83F4803D04869CAA0860100488BC14C2BD1489948F7FE4C8BC84C8BC24969C2A0860100489948F7FE488BC84969C0A0860100489948F7FE4803C84969C1A08601004803C848890F4C8D9C24C0000000488BC7498B5B10498B6B20498B7328498BE35FC3",
+          "sha256": "48F87BC91325AB922B08ABE2020302944842121E0109C0029FD989540311F181",
+          "unwind_rva": "0x4DBE300"
+        },
+        "node_vtable_rva": "0x4399888",
+        "node_vtable_0x100_sha256": "603103E1199DC32F0DD4B7E642CBE50A2773F6CD9C8B0A6D49F85E99838BCFC4"
+      }
+    ],
+    "stock_named_definitions": [
+      "ai_men_at_arms_expense_gold_min",
+      "ai_men_at_arms_expense_gold_ideal",
+      "ai_men_at_arms_expense_gold_max",
+      "ai_men_at_arms_chance_expense_below_min",
+      "ai_men_at_arms_chance_expense_below_ideal"
+    ],
+    "inner_leaf_abi_groups": {
+      "strength": [
+        "current_military_strength_raw",
+        "max_military_strength_raw"
+      ],
+      "knight_count": [
+        "number_of_knights_raw",
+        "max_number_of_knights_raw"
+      ],
+      "maa_relative_expense": [
+        "expense_relative_raw"
+      ],
+      "named_ast": [
+        "min_raw",
+        "ideal_raw",
+        "max_raw",
+        "chance_below_min_raw",
+        "chance_below_ideal_raw"
+      ]
+    },
+    "receiver_proof": "every frozen final leaf begins by requiring event-target kind 4, reading full CharacterID from +0x08, indexing the Character store by low 24 bits, and accepting only a CCharacter whose +0x18 identity equals the full ID"
+  },
+  "same_frame_plan": [
+    "enter one application-main paused query transaction and bind expected revision/date/player identity",
+    "construct one 0x168 root event-target scope and one stock-shaped internal evaluation context",
+    "resolve five bridge wrapper keys and five stock named keys from the currently loaded playset",
+    "evaluate all ten with 0x3369820 and distinct int64 outputs while retaining the same context and frame",
+    "repeat the ten evaluations before leaving the callback and require fieldwise equality",
+    "re-read pause/date/revision/full CharacterID and gameplay RNG fingerprint, then destroy context storage in stock order"
+  ],
+  "side_effect_boundary": {
+    "gameplay_state": "read-only for the frozen leaf/script bodies; no effect, save_scope, RNG, UI, command, or date advance",
+    "registry": "0x9999B0 mutates only its internal reader-lock word while resolving a loaded object",
+    "profiling": "0x3369820 may write profiler/diagnostic state when the engine profiling flag is enabled; R9 remains null; this is excluded from gameplay-state postconditions",
+    "thread": "execute only on application-main because scope, character store and loaded definitions are borrowed engine objects even though the registry lookup has synchronization"
+  },
+  "one_next_default_off_seam": {
+    "id": "military-preparation-summary-v1-evaluator-probe",
+    "default": "off",
+    "required_change": "add the five support wrapper definitions to mod_bridge and add one private application-main query probe that performs the exact ten-value transaction",
+    "success": "two same-frame ten-value samples match and one paused exact-build response is available with observation_ready=true",
+    "failure": "retain capability as unadvertised/incomplete and preserve diagnostics; do not ship an always-unavailable public shell"
+  },
+  "remaining_unknown": [
+    "the public live result values and cross-check are not known until the single default-off probe runs",
+    "a playset-reload epoch field is not frozen; the v1 probe avoids this by resolving all names afresh inside each application-main transaction and retaining nothing"
+  ]
+}
