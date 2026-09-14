@@ -1,14 +1,78 @@
-# 重整河山 0.2.0 验收报告
+# 重整河山 0.4.0 验收报告
 
-状态：**COMPLETE。L0 GREEN、源码树 L1 GREEN、Workshop fresh-cache L3 GREEN，公开发布后复核通过。**
+状态：**发布执行中。L0 GREEN、源码树 MCP-first L1 GREEN；Workshop 上传、公开回读与 fresh-cache L3 待完成。**
 
-验收日期：2026-09-13
+验收日期：2026-09-14
 
 目标游戏：CK3 `1.19.0.6`
 
 产品：`mod_reclaim_the_motherland`
 
 Workshop item：`3798404599`
+
+上一公开版本：`0.2.0`（tag `reclaim-motherland-v0.2.0`）
+
+## 1. 0.4.0 当前结论
+
+三期与四期已经在同一条真实 CK3 链中完成源码树验收。CK3 `1.19.0.6` 会在旧君死亡事务中暂时销毁空法理动态霸权，即使该 title 已有 `single_heir_succession_law` 与正确 `current_heir`；最终实现因而保留同一 title object，在次日把它、原直属忠臣 realm 和九席 incumbent 交给引擎已经算出的主继承人。其他个人头衔没有被本 mod 抢救或重分配。
+
+最近失去天命的后朝继续获得唯一三省六部官署资格；群雄割据前后、旧君死亡前后九名 exact incumbents 全部一致。离朝者清退、真实空缺交回原版任免，正式中书门下权力分享、天命和 `h_china` 专属特权没有延续。
+
+后朝不再取得现任中华霸权在【提议附庸】中的三项身份优惠。本轮实际释放的直属诸侯主头衔获得五年、绑定确切后朝 title object 的【新近自立】-50；实机中两个通过完整原版 interaction validity 的独立目标均即时拒绝，定时状态随后自然到期。该项是软抗拒，不是硬禁；长期外交统一路线仍保留。
+
+二期的【人心离散】、忠臣国号与封臣树、旧天子个人伯爵领保留，以及一期的 50%/51% 门槛、【宣称天命】封锁和【宣称复辟】全链均完成联合回归。
+
+## 2. L0 与离线预验
+
+- `tools/test_reclaim_the_motherland_contract.py`：19/19 GREEN。
+- `tools/validate_reclaim_the_motherland_static.py`：GREEN；35 个运行时文件、9 种语言、每种 113 个本地化键、15 个玩法脚本。
+- `tools/test_build_reclaim_the_motherland_release.py`：10/10 GREEN。
+- `tools/build_reclaim_the_motherland_release.py --check`：双构建可复现；当前候选 manifest SHA-256 `aed036fcacd8f10facd1b0bce1bc09567782b9dcfadce7aa870d2b52f724a6e9`，ZIP SHA-256 `73d52162d28c67b5e9f144017dfaf4c52f7483fd4407718efaf870a90362c64d`。正式 master/tag 会改变内嵌 Git identity，发布哈希在 L3 收口时替换为最终值。
+- `open_kaishek` commit `890b32de49081b7b5510e40c5518dfb59d5c8a6d`、CLI contract `b306a95`、JAR SHA-256 `7262e771ad3e1f5d724d663ac259a20e2a7df0c491d4c125f56cb4c3a604e75c`。
+- product root parser：15 文件、107,678 bytes、0 diagnostics、SHA-256 `97642005f11453d1e91e819229795f4b21e74a50add6485f8857f2b484661162`，GREEN。
+- fixture root parser：9 文件、44,101 bytes、0 diagnostics、SHA-256 `0027d268eb0fa62792d631ed45dd6b055290129ad8bc473abe9ffeec1278d1d1`，GREEN。
+- 该工具尚未注册两个产品 fixture，validator/IR/runtime 对 CK3 动态头衔、council 和 interaction opcode 返回 `unknown-fixture/UNKNOWN_OPCODE`，故语义层诚实归类为 `not-applicable`；parser root scan 不替代实机结论。preflight 报告 SHA-256 `e1af7ab317bd8044e9ea70e2d534edd8ffaf9ed0a6eef7c594e2b9cd06693c9d`。
+
+## 3. 源码树 MCP-first L1
+
+Run：`D:\workspace\ck3_reclaim_phase34_20260914_process_assets\reclaim\runs\R0024-source`
+
+- wrapper/cell：GREEN / GREEN；SHA-256 `566e3588a5e531d9de421407184edd404b36d392a58ecb43ee6e82bd5db3420b` / `18dac69ef3812dae34b32c9f804570cca357920aa7cb48859dbb24fb480b0c4e`。
+- native episode：`native-29829-ab6e73e23df7`；MCP readiness GREEN，visual fallback disabled。
+- CK3 EXE SHA-256：`2d00ff3101ef70b566f2fcbae292f09263199c80e9dc8f139b82d7d96f83db86`。
+- bridge DLL/injector SHA-256：`973b9eb1a4baa926811cd06237a8b8173cc4459c7f9140221afd45242e537095` / `3200204d0c883cc6f05d5c6b7d74b562ecb281eb1efce47db6b205c877683e64`。
+- runtime product/fixture tree SHA-256：`30ecb34ae286991f4d243958efc0ec7e18db9c0fc09925875d49a665933560af` / `dce171a266a630036d6623c3a68a03a39fdf9b28db255c8cfef84c047bca517c`。
+- 36 个顺序 marker 全部出现；`project_diagnostics=[]`；总时长 788.545 秒，slot wait 0.126 秒。
+- source/runtime 未改写，保护存储 unchanged，隔离 userdir 与 CK3 原生进程树完成回收，`cleanup_proven=true`。
+
+关键机器证据：
+
+| 证据 | SHA-256 | 证明内容 |
+| --- | --- | --- |
+| `cell/07_loyalty_summary.png` | `807f2a3abbc9d71d1be5df1a8c1ff414bfd4a90c6ae581beced59fe9adf0947b` | 【人心向背】与二期忠叛回归 |
+| `cell/08_later_dynasty_character.png` | `701b550b803779d85c2364432a0f5b83285ceda485a82094d7db730e27c4e381` | 后朝角色与头衔呈现 |
+| `cell/08_song_capital_map.png` | `6642e1cdef298ce94251f56619b4fa2a0202fee5afadb2026d583c994b048ab0` | MCP 镜头位于大宋首都开封 |
+| `cell/09_succession_recovery.json` | `064067bdef7c3ee8ab97e25110bbf3aea3f40f82d0990888dd99273b27472a88` | 同一后朝、个人伯爵领、忠臣 realm、官署 entitlement 与九席继承 |
+| `cell/09_recent_independence_expiry.json` | `4671404424c86a821146b3616a3023ad2ddb593d953ef4b17790b8e8776de2fb` | 两项目标的 title-bound 定时状态自然到期 |
+| `cell/09_decision_visibility.png` | `101ffff5d9e23fabac485dcffb888e12158734e3693606b01f14e1e9ebb9f20b` | 复辟入口及天命封锁回归 |
+| `cell/11_restore_confirm.png` | `71cd043ef3879b3b8b071d144fa913b1a4eadffb5f779658f2770ef5f60fb` | 宣称复辟确认 |
+| `cell/12_acceptance_complete.png` | `ce21ebfa117e1a418c98e1b03e848a01d93dadea4f37e0154763ddcd2823b398` | 全链完成事件 |
+
+## 4. 保留的 0.4.0 RED
+
+`R0008..R0023-source` 均永久保留在 `D:\workspace\ck3_reclaim_phase34_20260914_process_assets\reclaim\runs\`，没有覆盖。它们先后暴露并修复：title law 添加时序、销毁 `h_china` 后才补官、官署 entitlement scope、landless ministry title 被弱势头衔裁剪、批量补官上收忠臣 realm、随机外交样本失去 eligibility、死亡窗口内强移交被 CK3 后续结算覆盖、空法理动态霸权被销毁、次日恢复后的 loyal realm、已留任大臣重复授职，以及强制相位 fixture 缺少原版 `movement_member` 前置条件。`R0024-source` 是取代这些 RED 的首个全绿候选。
+
+## 5. 待发布证据
+
+以下字段只有实际发布发生后才填写：exact master/tag、35 文件最终 manifest/ZIP、Steam 上传回执、公开标题/BBCode/Change Notes 精确回读、全新订阅缓存逐文件核对、fresh-cache L3、最终 Steam Offline Mode、永久 changelog 和 exact-master CI 终态。
+
+---
+
+## 附录 A：0.2.0 历史验收（原文保留）
+
+状态：**COMPLETE。L0 GREEN、源码树 L1 GREEN、Workshop fresh-cache L3 GREEN，公开发布后复核通过。**
+
+验收日期：2026-09-13
 
 ## 1. 当前结论
 

@@ -1,6 +1,6 @@
 # 重整河山 0.4.0 验收方案
 
-状态：**执行中。运行时实现、L0 与 `open_kaishek` parser 预验已完成；源码树 L1、正式发布与 fresh-cache L3 尚待最终证据。**
+状态：**执行中。运行时实现、L0、`open_kaishek` parser root scan 与源码树 MCP-first L1 已完成；正式发布与 fresh-cache L3 尚待最终证据。**
 
 目标游戏：CK3 `1.19.0.6`
 
@@ -55,7 +55,7 @@ Workshop item：`3798404599`
 
 ### 4.2 单次严格链
 
-同一条真实 CK3 链必须按顺序出现 31 个严格 marker，并完成：
+同一条真实 CK3 链必须按顺序出现 36 个严格 marker，并完成：
 
 1. 确认 1066 大宋天子、`h_china`、王朝循环和九席原班大臣 exact identity。
 2. 进入群雄割据，确认旧天子只失去 `h_china`，仍亲自持有受控伯爵领并取得唯一空法理后朝霸权。
@@ -80,7 +80,7 @@ Workshop item：`3798404599`
 4. 上传同一 Workshop item `3798404599`，整段替换入库 BBCode，并使用入库 `workshop/reclaim_the_motherland_change_notes_0.4.0.txt` 作为 Change Notes。
 5. 通过匿名公开 API/页面逐项回读 item ID、标题、可见性、描述正文和最新 Change Notes；成功上传回执本身不算完成。
 6. 把旧订阅缓存移动到可恢复发布证据目录，重新下载全新缓存并按正式 manifest 逐文件严格核对；不得把本地 staging 当 fresh cache。
-7. 从全新缓存重跑同一关键 31-marker MCP-first L3；关闭 CK3，把 Steam 恢复 Offline Mode，并再次证明资源释放。
+7. 从全新缓存重跑同一关键 36-marker MCP-first L3；关闭 CK3，把 Steam 恢复 Offline Mode，并再次证明资源释放。
 8. 实际上传成功后才写 `docs/release-changelogs/reclaim-motherland/0.4.0.md` 的最终发布事实，提交、推送 tag/changelog，并等待 exact master SHA 官方 CI 终态。
 
 ## 6. 验收报告必填字段
@@ -91,15 +91,17 @@ Workshop item：`3798404599`
 - 全部 L0 命令、结果、用例数、35 文件 manifest/ZIP/thumbnail SHA-256；
 - `open_kaishek` 与 CK3 exact provenance、适用与不支持边界；
 - 每个保留 RED attempt 的路径、报告哈希、失败标记、根因与修复；
-- 最终 source L1 与 fresh-cache L3 的绝对路径、execution ID、wrapper/cell report SHA-256、时长、slot wait、MCP readiness、31 marker 与 diagnostics；
+- 最终 source L1 与 fresh-cache L3 的绝对路径、execution ID、wrapper/cell report SHA-256、时长、slot wait、MCP readiness、36 marker 与 diagnostics；
 - 后朝 title object／law／heir、忠臣封臣树、个人伯爵领、官署 entitlement、九席 exact incumbents、两个真实拒绝、定时到期、50%/51% 与复辟断言；
 - 九语审核边界、四个 override key、旧割据存档无法追溯补标的限制；
 - 上传回执、公开 item/Change Notes 精确回读、全新缓存严格核对、Steam Offline Mode 与最终任务总线释放证据。
 
 ## 7. 当前执行记录
 
-- 已完成：运行时与 fixture 实现；18 项静态合同、九语/35 文件静态校验、10 项构建测试与 deterministic 双构建 GREEN；产品/fixture `open_kaishek` parser root scan GREEN。
+- 已完成：运行时与 fixture 实现；19 项静态合同、九语/35 文件静态校验、10 项构建测试与 deterministic 双构建 GREEN；产品/fixture `open_kaishek` parser root scan GREEN。
 - 已保留：`R0008-source` 为 RED。MCP readiness 与四期 title binding 已通过；失败暴露 title law 在无持有者时过早添加、销毁 `h_china` 后才补官导致原版 liege 无 holder，以及 ministry trigger 嵌套 scope 错误。三项根因均已作窄修复，RED 目录没有覆盖。
 - 已保留：`R0009-source` 为 RED。继承法／继承人、个人伯爵领、四期 title binding 与两次真实附庸拒绝均已通过；九席和忠臣主头衔／封臣树失败。日志证明九个 landless ministry title 被误当普通弱势帝国头衔释放、裁剪，随后原版官职继承把同一宰相连续塞入多个席位；批量补缺又把忠臣诸侯选为大臣并按原版规则上收其封臣树。当前窄修复显式保护未叛现任、只清退明确叛离者并把真实空缺交回正常任免。
 - 已保留：`R0010-source` 为 RED。九席 exact incumbents、忠臣主头衔／国号／封臣树和此前机制全部转为 PASS；唯一失败是随机预选的某个诸侯在原版群雄重组后不再满足【提议附庸】完整资格。fixture 已改为在重组完成后，从带确切五年 title reference 且当刻通过真实 interaction validity 的全部独立者中抽取两个不同样本，受控忠／叛角色仍单独承担身份断言。
-- 待完成：修复后的源码树 L1、新真实截图（若可清晰表现三/四期）、正式构建、Workshop 上传、公开回读、全新缓存 L3、changelog/tag/master push 与官方 CI。
+- 已保留：`R0011..R0023-source` 的每次失败都使用独立目录。它们依次暴露并修复了继承事务时序、空法理动态霸权在死亡结算中被销毁、继承后忠臣 realm 恢复、九席幂等复位和强制跳相位 fixture 的原版 `movement_member` 前置条件；任何 RED 均未覆盖或改写为 GREEN。
+- 已完成：`R0024-source` 为最终源码树 GREEN。36 个严格 marker 全部出现；同一后朝 title object、受控个人伯爵领、忠臣主头衔和封臣树、唯一官署 entitlement、九名 exact incumbents、两次真实附庸拒绝、五年状态到期、50%/51% 边界和复辟销毁全部通过，`project_diagnostics=[]`。
+- 待完成：正式构建、Workshop 上传、公开回读、全新缓存 L3、changelog/tag/master push 与官方 CI。

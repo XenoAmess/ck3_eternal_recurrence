@@ -1,14 +1,16 @@
 # 《重整河山》三期需求静态分析与版本计划
 
-状态：**research / plan-ready；尚未修改运行时代码，尚未启动 CK3**
+状态：**implemented / source-L1 GREEN；已并入联合 `0.4.0` 发布候选，Workshop 与 fresh-cache L3 待完成**
 
-计划版本：`0.3.0`
+计划版本：原拟 `0.3.0`，实际与四期合并为 `0.4.0`
 
 产品目录：`mod_reclaim_the_motherland/`
 
 Steam Workshop item：`3798404599`
 
 分析基线：CK3 `1.19.0.6`、《溥天之下 / All Under Heaven》、本项目 `0.2.0`
+
+> 实施结论（2026-09-14）：静态候选 `single_heir_succession_law + always_follows_primary_heir` 能生成正确主继承人，但真实死亡事务仍会销毁空法理动态霸权。最终窄修复把同一 title object 设为“销毁但不删除”，在死亡前冻结引擎已算出的主继承人、直属忠臣 realm 与九席 incumbent，并在次日恢复同一 title object；执行复辟时再恢复“销毁即删除”。源码树 R0024 已证明同一后朝、忠臣封臣树、个人伯爵领、唯一官署 entitlement 与九席全部跨死亡延续。
 
 ## 1. 三期目标与优先级
 
