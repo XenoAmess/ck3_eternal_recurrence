@@ -1,0 +1,100 @@
+{
+  "schema_version": 1,
+  "private_key": "marriage_proposal_native_binder_v1",
+  "status": "static-ready-private-binder-partially-blocked-unwired",
+  "advertised": false,
+  "base_commit": "d592b8294e6a85ba309f8c96a949b555974ecf2c",
+  "exact_build": {
+    "product_version": "1.19.0.6",
+    "executable_size": 95206008,
+    "executable_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86"
+  },
+  "native_validation_and_send": {
+    "character_storage_slot_rva": "0x570C130",
+    "interaction_database_getter_rva": "0x0831890",
+    "arrange_marriage_interaction_offset": "0xF48",
+    "redirect_five_roles_rva": "0x2C3C4C0",
+    "construct_all_roles_context_rva": "0x2C3F000",
+    "refresh_context_rva": "0x2C40950",
+    "finalize_context_rva": "0x2C40B20",
+    "complete_can_send_rva": "0x2C43F00",
+    "destroy_context_rva": "0x2C3F380",
+    "construct_send_interaction_command_rva": "0x26B3220",
+    "command_manager_rva": "0x57621F0",
+    "submit_command_rva": "0x0973E00",
+    "command_size": 872,
+    "embedded_context_offset": 32,
+    "primary_vtable_rva": "0x40829F8",
+    "secondary_vtable_rva": "0x40829C8",
+    "submit_flags": "0x0E",
+    "ownership": "the native command constructor clones the finalized source context into command+0x20; after the synchronous queue call the binder destroys the embedded context and the original context exactly once",
+    "final_legality": "complete Can Send is called on the finalized context immediately before command construction; rejection does not queue",
+    "single_submit": "one native submit_command call follows a second interaction, full-ID, context-role and copied-command-role stability check"
+  },
+  "native_relationship_readback": {
+    "character_family_data_offset": "0x1A0",
+    "betrothed_full_character_id_offset": "0x10",
+    "primary_spouse_full_character_id_offset": "0x14",
+    "spouse_id_array_offset": "0x20",
+    "array_layout": {
+      "data_offset": 0,
+      "capacity_offset": 8,
+      "count_offset": 12,
+      "element_type": "signed int32 carrying the full generation-bearing CharacterID",
+      "absent_value": -1,
+      "maximum_count": 1000000
+    },
+    "rules": [
+      "read both parties independently",
+      "resolve every non-absent spouse ID through the exact full-generation CharacterID storage",
+      "include the complete spouse array and do not reduce the result to primary spouse",
+      "repeat both family samples and reject pointer, header, identity, liveness or value drift"
+    ]
+  },
+  "signature_admission": {
+    "rule": "production binding requires the exact SHA, exact module-relative addresses and pinned 16-byte loaded-image prefixes before source configuration, action configuration, submit or readback",
+    "covered_entries": [
+      "candidate enumeration",
+      "candidate score/filter",
+      "candidate gate/score",
+      "interaction database getter",
+      "role redirect",
+      "context construct/refresh/finalize/validate/destroy",
+      "recipient ai_accept",
+      "special-aware outer answer",
+      "native outcome dispatch",
+      "send-command construct",
+      "command submit"
+    ],
+    "drift_behavior": "fail closed with no native invocation"
+  },
+  "religion_boundary": {
+    "mode": "opaque_native_final_only",
+    "allowed": [
+      "faith-dependent final complete Can Send result",
+      "faith-dependent final acceptance inherited from MARRIAGE2",
+      "native final marriage or betrothal postcondition"
+    ],
+    "forbidden": [
+      "faith/doctrine/tenet/fervor projection",
+      "general religion policy",
+      "reimplementation of religious legality"
+    ]
+  },
+  "unresolved_exact_build_blockers": {
+    "ranked_container_lifecycle": "the allocator, concrete container owner and destructor ABI needed around 0x1890470 -> 0x1890D90 are not frozen; source adapter configuration remains blocked unless a separately certified owner supplies all three callbacks",
+    "outcome_classifier": "the native marriage-versus-betrothal classification callback ABI is not frozen; source adapter configuration requires an explicitly certified callback",
+    "alliance_rows": "GetAllianceItems at 0x1274610 is frozen, but the CMarriageInfo+0x50 SAllianceItem row layout and stable bilateral identities are not; receipt readback requires a certified callback and never guesses offsets",
+    "proposal_resolution": "no exact native pending/refused/invalidated signal ABI is frozen; terminal refusal readback requires a certified callback",
+    "shared_owner": "application-main snapshot capture, common callback ownership and CMake/private bridge glue remain outside this package",
+    "live": "no CK3 process or desktop validation was performed"
+  },
+  "evidence": {
+    "source_contract": "research/fixtures/marriage_proposal_native_binder_v1_source_contract.json",
+    "upstream_source_adapter": "research/fixtures/marriage_matchmaking_source_adapter_v1_source_contract.json",
+    "upstream_action_core": "research/fixtures/marriage_proposal_action_core_v1_source_contract.json",
+    "native_tree": "../../docs/ck3-native-ai/marriage-and-alliance.md",
+    "exact_matchmaking_ledger": "../../docs/ck3-native-ai/research/marriage-matchmaking-1.19.0.6.json",
+    "existing_send_lifecycle": "src/ck3_11906.cpp"
+  }
+}

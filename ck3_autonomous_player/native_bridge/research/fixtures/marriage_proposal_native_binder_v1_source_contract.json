@@ -1,0 +1,59 @@
+{
+  "schema_version": 1,
+  "private_key": "marriage_proposal_native_binder_v1",
+  "status": "static-ready-private-binder-partially-blocked-unwired",
+  "base_commit": "d592b8294e6a85ba309f8c96a949b555974ecf2c",
+  "exact_build": {
+    "product_version": "1.19.0.6",
+    "executable_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86"
+  },
+  "files": {
+    "header": "include/xar_bridge/marriage_proposal_native_binder_v1.hpp",
+    "implementation": "src/marriage_proposal_native_binder_v1.cpp",
+    "unit_test": "src/marriage_proposal_native_binder_v1_test.cpp",
+    "abi": "research/marriage_proposal_native_binder_v1_abi.json"
+  },
+  "implemented_contract": {
+    "source_binding": "checks exact address and code-prefix admission, then transfers only separately certified ranked lifecycle and outcome-classifier callbacks into MARRIAGE3",
+    "proposal_submit": "re-resolves all non-absent five-role IDs, rebuilds and finalizes the arrange-marriage context, consumes native-final complete Can Send, validates the copied 0x368 command and queues exactly once with flags 0x0E",
+    "relationship_readback": "double-reads full-generation bilateral spouse and betrothal state including every spouse array entry",
+    "receipt_extension": "double-reads alliance and proposal resolution through explicit certified callbacks inside an unchanged paused receipt frame"
+  },
+  "failure_atomicity": {
+    "binding_drift": "no adapter or action callback is published",
+    "pre_queue_drift": "no command is submitted and every constructed context is released",
+    "queue_rejection": "returns rejected after exactly one submit attempt and releases both contexts",
+    "readback_drift": "publishes an empty unavailable observation",
+    "missing_evidence": "returns blocked for ranked lifecycle, outcome classification, alliance rows, proposal resolution or receipt frame ownership"
+  },
+  "verification": {
+    "normal": "GREEN fixture executable compiled with MSVC C++20 /Od /W4 /WX",
+    "optimized": "GREEN fixture executable compiled with MSVC C++20 /O2 /W4 /WX",
+    "covered": [
+      "exact RVA binding",
+      "ranked lifecycle certification blocker",
+      "offline action binding",
+      "five-role context construction and final native legality",
+      "single 0x0E queue submit and balanced context destruction",
+      "native validation rejection and queue rejection",
+      "bilateral full spouse-array readback",
+      "same-frame alliance and native resolution readback",
+      "SHA, command identity and production signature drift fail closed"
+    ],
+    "fixture_scope": "offline deterministic x64 ABI doubles; no CK3 process was started"
+  },
+  "remaining_blockers": [
+    "freeze and implement the ranked native container allocator/owner/destructor ABI",
+    "freeze native marriage-versus-betrothal outcome classifier ABI",
+    "freeze bilateral alliance row identity layout behind GetAllianceItems",
+    "freeze native proposal pending/refused/invalidated resolution source",
+    "add shared private application-main owner, callback multiplexing and CMake registration",
+    "run exact-build paused live proposal and later receipt validation"
+  ],
+  "forbidden_shared_edits": [
+    "CMakeLists.txt",
+    "src/bridge.cpp",
+    "schemas/protocol.schema.json",
+    "public MCP capability registration"
+  ]
+}
