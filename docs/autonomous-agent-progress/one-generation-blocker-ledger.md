@@ -1682,3 +1682,19 @@ one recommendation, one action and the bounded postwar/cold-restore checks.
 - Current round R675 completed four consecutive fresh declaration/power/advance cycles, 12/12 successful turns and date 53787072 to 53789952. The current legal target changed from 38436 to 83395 after the first advance and was refreshed before assessment.
 - Status is qualified with no blocker; log/driver/checkpoint SHA-256 are D42D7EF7...32A5A, 0AD53440...1F53 and 223E4C65...16092. Cleanup is GREEN and all CK3/injector processes are gone.
 - The R673 operational blocker remains closed and receives no more replay. No registered target event appeared; G2-M2 remains 1/3.
+
+
+## G2-M3 succession expectation and reconciliation contract (2026-09-14)
+
+- The first M3 package freezes the current production-live per-title first-heir
+  projection against the living episode ruler and exact paused frame. The pure
+  comparator accepts only a paused `played_character_changed` frame plus a
+  same-frame successor turn bundle.
+- It reconciles only predecessor-owned titles. Titles the successor already
+  held are reported separately and cannot become false inheritance mismatches;
+  absent-title holders remain unknown instead of being invented. Focused tests
+  pass `5/5` in normal and optimized Python.
+- Status is `static-ready / integration-live pending`. No native/MCP interface
+  changed. The remaining blocker is driver retention, first-successor-frame
+  query/reconciliation and a distinct real-successor continuation path; the
+  immutable-seed replay path is not evidence for that outcome.

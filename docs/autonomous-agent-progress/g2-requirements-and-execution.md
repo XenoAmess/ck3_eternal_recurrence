@@ -19,7 +19,7 @@ G2 现采用固定的 **8 个可见 OODA 里程碑**，当前为 **1/8 complete*
 | G2-M0 GEN-034 三路战争退出 | P0 | in progress | 同帧比较继续、白和、投降；只提交一次；验证战后并冷恢复 |
 | G2-M1 实体发现与 core turn bundle | P1-A | complete | 一次聚合查询提供人物、头衔、首都、领主/封臣、邻居与最低 ruler/realm/succession alerts |
 | G2-M2 自然事件语义闭环 | P1-B | in progress | 三个自然事件按目标评分并验证结果，至少两个为多选 |
-| G2-M3 继承与 realm survival | P1-C | not started | 死前预测逐头衔分配，死后对账并由真实继承人继续 |
+| G2-M3 继承与 realm survival | P1-C | in progress | 死前预测逐头衔分配，死后对账并由真实继承人继续 |
 | G2-M4 和平治理纵向切片 | P1-D | not started | 两年内完成并验证建设、内阁调整和一次封臣/派系处理 |
 | G2-M5 家庭、外交与完整战争 | P2 | not started | 比较至少五个候选，执行一条从机会选择到最终后置的完整路径 |
 | G2-M6 谋略、制度与活动 | P3 | not started | 谋略、囚犯/制度、非宗教决议/法律与活动各完成一个 OODA |
@@ -308,3 +308,22 @@ focused normal/optimized suite passes `29/29` in each mode and the enabled MSVC
 Release candidate DLL builds successfully. Status remains `static-ready /
 live=false`; GEN-034 stays `2/4` until one bounded production lifecycle closes
 C/D evidence.
+
+
+## G2-M3 succession transition contract static-ready
+
+The first M3 package freezes the existing production-live per-title first-heir
+projection against the living episode ruler and one exact paused frame. A pure
+post-transition comparator then admits only a paused `played_character_changed`
+frame with a same-frame successor turn bundle. It reports successor identity,
+matched and missing inherited predecessor titles, unexpected retention of a
+title predicted elsewhere, and the successor's unrelated pre-existing titles.
+The last category is informational and cannot create a false inheritance RED.
+
+This is `static-ready / integration-live pending`. Focused tests pass `5/5` in
+normal and optimized Python. It adds no native read, public MCP tool or action,
+and does not yet alter the one-life terminal policy. The next package must
+retain the latest valid expectation in driver state, generate the first real
+reconciliation after CK3 changes the played CharacterID, and only then expose a
+real-successor continuation path. Succession laws, claims and unseen holders
+remain outside v1 rather than being inferred.

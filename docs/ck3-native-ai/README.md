@@ -656,3 +656,5 @@ flowchart TD
   It reuses R459/R471 evidence and permits only the missing same-frame
   white-peace comparison before any single recommendation/action. No CK3 was
   launched for this package.
+
+- [static-ready, integration/live pending] [Succession transition v1](succession-transition-v1.md) freezes the current per-title first-heir projection and reconciles only the predecessor estate after a real played-character transition; driver retention and successor continuation remain pending.
