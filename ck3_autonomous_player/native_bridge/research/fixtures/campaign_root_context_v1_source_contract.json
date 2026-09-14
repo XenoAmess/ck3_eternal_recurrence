@@ -12,7 +12,29 @@
     "available",
     "unavailable"
   ],
-  "all_or_nothing_readiness": true,
+  "all_or_nothing_readiness": false,
+  "required_root_readiness_fields": [
+    "player_identity_ready",
+    "player_monthly_gold_income_ready",
+    "player_health_ready",
+    "player_domain_ready",
+    "player_targeting_factions_ready",
+    "primary_title_ready",
+    "primary_title_succession_ready",
+    "held_title_partition_ready",
+    "capital_ready",
+    "lieges_ready",
+    "direct_landed_vassals_ready",
+    "adjacent_external_province_holders_ready",
+    "related_character_contexts_ready",
+    "government_ready",
+    "same_frame_ready"
+  ],
+  "optional_component_readiness_fields": [
+    "council_ready",
+    "selected_game_rule_tokens_ready"
+  ],
+  "aggregate_ready_semantics": "selected_game_rule_tokens_ready_when_required_root_fields_are_ready",
   "root_keys": [
     "schema_version",
     "status",
@@ -65,7 +87,6 @@
     "adjacent_external_province_holders_unavailable",
     "related_character_contexts_unavailable",
     "government_flags_unavailable",
-    "selected_game_rule_tokens_unavailable",
     "state_changed",
     "internal_error"
   ],
@@ -157,6 +178,16 @@
   "council_outside_scope_is_component_unavailable": true,
   "council_outside_scope_preserves_root_ready": true,
   "council_same_frame": "complete_component_two_sample_equality",
+  "selected_game_rule_tokens_optional_component": true,
+  "selected_game_rule_tokens_failure_root_status": "available",
+  "selected_game_rule_tokens_failure_values": {
+    "selected_game_rule_tokens": [],
+    "native_selected_game_rule_token_count": 0,
+    "selected_game_rule_tokens_ready": false,
+    "ready": false,
+    "unavailable_reason": ""
+  },
+  "selected_game_rule_tokens_same_frame": "component_availability_and_complete_token_vector_count_two_sample_equality",
   "player_monthly_gold_income_scale": 100000,
   "player_health_scale": 100000,
   "player_health_rva": "0x2619AD0",

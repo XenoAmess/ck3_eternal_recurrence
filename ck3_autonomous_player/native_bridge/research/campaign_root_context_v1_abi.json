@@ -257,6 +257,25 @@
     },
     "same_frame": "the complete normalized title/heir vector participates in the existing two-sample equality gate"
   },
+  "selected_game_rule_tokens": {
+    "published_fields": [
+      "selected_game_rule_tokens",
+      "native_selected_game_rule_token_count"
+    ],
+    "readiness_field": "selected_game_rule_tokens_ready",
+    "optional_component": true,
+    "read_success": "publish the canonicalized native token vector and its native count, with selected_game_rule_tokens_ready true",
+    "read_failure": {
+      "root_status": "available",
+      "selected_game_rule_tokens": [],
+      "native_selected_game_rule_token_count": 0,
+      "selected_game_rule_tokens_ready": false,
+      "aggregate_ready": false,
+      "unavailable_reason": ""
+    },
+    "aggregate_ready_semantics": "when all required root fields are ready, readiness.ready mirrors selected_game_rule_tokens_ready; council_ready remains an independent optional component",
+    "same_frame": "the component availability bit and the complete normalized token vector/count participate in the existing two-sample equality gate"
+  },
   "council": {
     "published_field": "council",
     "readiness_field": "council_ready",
