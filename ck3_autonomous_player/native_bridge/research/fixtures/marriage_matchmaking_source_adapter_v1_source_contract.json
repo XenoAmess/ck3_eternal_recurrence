@@ -1,0 +1,105 @@
+{
+  "schema_version": 1,
+  "private_key": "marriage_matchmaking_source_adapter_v1",
+  "status": "static-ready-private-source-adapter-unwired",
+  "advertised": false,
+  "read_only": true,
+  "base_commit": "82e5ff1e8cfeb76a52b5700b5874fe1455933b87",
+  "exact_build": {
+    "product_version": "1.19.0.6",
+    "executable_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86"
+  },
+  "files": {
+    "header": "include/xar_bridge/marriage_matchmaking_source_adapter_v1.hpp",
+    "implementation": "src/marriage_matchmaking_source_adapter_v1.cpp",
+    "unit_test": "src/marriage_matchmaking_source_adapter_v1_test.cpp"
+  },
+  "inputs": {
+    "semantic_header": "include/xar_bridge/marriage_matchmaking_observer_v1.hpp",
+    "frozen_abi": "research/marriage_matchmaking_observer_v1_abi.json",
+    "native_tree": "../../docs/ck3-native-ai/marriage-and-alliance.md"
+  },
+  "frozen_native_sources": {
+    "candidate_enumerator_rva": "0x1890470",
+    "candidate_score_filter_rva": "0x1890D90",
+    "candidate_gate_rva": "0x1890F40",
+    "production_candidate_enumerator_callsite_rva": "0x18FA4C3",
+    "production_candidate_score_callsite_rva": "0x18FAF36",
+    "complete_can_send_rva": "0x2C43F00",
+    "production_complete_can_send_callsite_rva": "0x18FAB4C",
+    "recipient_ai_accept_rva": "0x2C44320",
+    "production_recipient_ai_accept_callsite_rva": "0x18FA932",
+    "outer_answer_rva": "0x2C43B40",
+    "outcome_dispatch_rva": "0x2282DE0",
+    "ranked_row": {
+      "stride": 16,
+      "character_id_offset": 8,
+      "signed_score_offset": 12
+    }
+  },
+  "semantic_output": {
+    "ranked_source": [
+      "candidate_character_id",
+      "native_candidate_score"
+    ],
+    "pair_evaluation": [
+      "actor_character_id",
+      "recipient_character_id",
+      "secondary_actor_character_id",
+      "secondary_recipient_character_id",
+      "intermediary_character_id",
+      "complete_can_send",
+      "complete_can_send_status_raw",
+      "recipient_ai_accept_raw",
+      "recipient_answer_status_raw",
+      "recipient_answer_allows_send",
+      "predicted_outcome"
+    ],
+    "consumer_contract": "marriage_matchmaking_observer_v1"
+  },
+  "stability_contract": [
+    "re-resolve the full-generation subject CharacterID, strategy owner, interaction database and interaction around every ranked source read",
+    "re-read the native ranked container view three times and the copied ID/score rows twice before publishing",
+    "re-resolve every ranked candidate CharacterID for both row copies and reject identity drift or duplicate IDs",
+    "re-resolve all five redirected context role IDs before and after native final evaluation",
+    "re-resolve subject, candidate, character storage, interaction database and interaction after evaluation",
+    "the MARRIAGE2 observer captures the owning paused frame before and after two identical adapter samples and rejects frame or native sample drift"
+  ],
+  "religion_boundary": {
+    "mode": "native_final_results_only",
+    "allowed": [
+      "faith-dependent legality consumed opaquely inside complete Can Send",
+      "faith-dependent acceptance consumed opaquely inside native final answer"
+    ],
+    "forbidden": [
+      "faith projection",
+      "doctrine projection",
+      "tenet projection",
+      "fervor projection",
+      "general religion policy"
+    ]
+  },
+  "private_glue_boundary": {
+    "ranked_container_execution": "shared glue must own the exact native allocator/container ABI for 0x1890470 followed by 0x1890D90 and release every returned container",
+    "outcome_classifier": "shared glue must bind the frozen native outcome dispatch and return only marriage or betrothal final classification",
+    "source_adapter_behavior": "the adapter validates exact-build admission, copies semantic values, rejects drift and releases every acquired ranked container token",
+    "public_registration": "absent"
+  },
+  "verification": {
+    "normal": "GREEN fixture executable compiled with MSVC C++20 /Od /W4 /WX",
+    "optimized": "GREEN fixture executable compiled with MSVC C++20 /O2 /W4 /WX",
+    "fixture_scope": "offline deterministic native ABI doubles; no CK3 process was started"
+  },
+  "remaining_acceptance": [
+    "shared private bridge glue for native ranked container allocation, invocation, view and release",
+    "shared private bridge glue for final marriage-versus-betrothal outcome classification",
+    "CMake registration and owning MARRIAGE2 observer integration",
+    "exact-build paused live query with stable ranked rows and final native pair semantics"
+  ],
+  "forbidden_shared_edits": [
+    "CMakeLists.txt",
+    "src/bridge.cpp",
+    "schemas/protocol.schema.json",
+    "public MCP capability registration"
+  ]
+}
