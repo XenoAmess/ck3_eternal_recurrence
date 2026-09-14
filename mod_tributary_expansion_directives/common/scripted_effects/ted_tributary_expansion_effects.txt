@@ -1,0 +1,82 @@
+﻿ted_invalidate_expansion_directive_effect = {
+	scope:recipient = {
+		remove_character_flag = ted_directed_expansion_authorized
+	}
+	scope:actor = {
+		add_prestige = 150
+		remove_interaction_cooldown_against = {
+			interaction = ted_issue_expansion_directive_interaction
+			target = scope:recipient
+		}
+		send_interface_toast = {
+			type = event_toast_effect_bad
+			title = ted_expansion_directive_invalidated_toast
+			left_icon = scope:recipient
+		}
+	}
+}
+
+ted_accept_expansion_directive_effect = {
+	scope:recipient = {
+		add_character_flag = ted_directed_expansion_authorized
+	}
+	if = {
+		limit = {
+			ted_expansion_directive_context_is_valid_trigger = yes
+			trigger_if = {
+				limit = { $SUBSIDIZED$ = yes }
+				scope:actor.gold >= ted_war_subsidy_value
+			}
+			scope:recipient = {
+				can_declare_war = {
+					defender = scope:secondary_recipient
+					casus_belli = ted_directed_county_expansion_cb
+					target_titles = { scope:target }
+				}
+			}
+		}
+		if = {
+			limit = { $SUBSIDIZED$ = yes }
+			scope:actor = {
+				pay_short_term_gold = {
+					gold = ted_war_subsidy_value
+					target = scope:recipient
+				}
+			}
+		}
+		scope:recipient = {
+			start_war = {
+				casus_belli = ted_directed_county_expansion_cb
+				target = scope:secondary_recipient
+				target_title = scope:target
+			}
+			remove_character_flag = ted_directed_expansion_authorized
+		}
+		scope:actor = {
+			send_interface_toast = {
+				type = event_toast_effect_good
+				title = ted_expansion_directive_accepted_toast
+				left_icon = scope:recipient
+			}
+		}
+	}
+	else = {
+		ted_invalidate_expansion_directive_effect = yes
+	}
+}
+
+ted_decline_expansion_directive_effect = {
+	if = {
+		limit = { ted_expansion_directive_context_is_valid_trigger = yes }
+		scope:actor = {
+			send_interface_toast = {
+				type = event_toast_effect_bad
+				title = ted_expansion_directive_declined_toast
+				left_icon = scope:recipient
+			}
+		}
+	}
+	else = {
+		ted_invalidate_expansion_directive_effect = yes
+	}
+}

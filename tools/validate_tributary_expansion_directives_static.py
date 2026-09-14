@@ -20,6 +20,7 @@ SCRIPT_PATHS = (
     "common/casus_belli_types/ted_tributary_expansion_casus_belli.txt",
     "common/character_interactions/ted_tributary_expansion_interactions.txt",
     "common/script_values/ted_tributary_expansion_values.txt",
+    "common/scripted_effects/ted_tributary_expansion_effects.txt",
     "common/scripted_triggers/ted_tributary_expansion_triggers.txt",
 )
 LANGUAGES = {
@@ -104,6 +105,7 @@ def validate() -> list[str]:
         errors.append("non-ted top-level key found")
 
     interaction = text(SCRIPT_PATHS[1])
+    effects = text(SCRIPT_PATHS[3])
     required_interaction = (
         "ted_issue_expansion_directive_interaction = {",
         "target_filter = secondary_recipient_realm_titles",
@@ -114,29 +116,40 @@ def validate() -> list[str]:
         "flag = offer_war_subsidy",
         "ai_instant_response = yes",
         "can_send_despite_rejection = yes",
-        "casus_belli = ted_directed_county_expansion_cb",
-        "defender = scope:secondary_recipient",
-        "target_titles = { scope:target }",
-        "target_title = scope:target",
+        "ted_accept_expansion_directive_effect = { SUBSIDIZED = yes }",
+        "ted_accept_expansion_directive_effect = { SUBSIDIZED = no }",
+        "ted_decline_expansion_directive_effect = yes",
     )
     for fragment in required_interaction:
         if fragment not in interaction:
             errors.append(f"interaction contract missing: {fragment}")
-    if interaction.count("start_war = {") != 1:
+    if effects.count("start_war = {") != 1:
         errors.append("the interaction must contain exactly one start_war path")
-    if interaction.count("pay_short_term_gold = {") != 1:
+    if effects.count("pay_short_term_gold = {") != 1:
         errors.append("the subsidy must have exactly one transfer path")
-    on_accept = interaction.index("\ton_accept = {")
-    on_decline = interaction.index("\ton_decline = {")
-    ai_potential = interaction.index("\tai_potential = {")
-    if "pay_short_term_gold" not in interaction[on_accept:on_decline]:
+    for fragment in (
+        "ted_accept_expansion_directive_effect = {",
+        "ted_decline_expansion_directive_effect = {",
+        "ted_invalidate_expansion_directive_effect = {",
+        "casus_belli = ted_directed_county_expansion_cb",
+        "defender = scope:secondary_recipient",
+        "target_titles = { scope:target }",
+        "target_title = scope:target",
+        "add_prestige = 150",
+        "remove_interaction_cooldown_against = {",
+    ):
+        if fragment not in effects:
+            errors.append(f"effect contract missing: {fragment}")
+    accept = effects.index("ted_accept_expansion_directive_effect = {")
+    decline = effects.index("ted_decline_expansion_directive_effect = {")
+    if "pay_short_term_gold" not in effects[accept:decline]:
         errors.append("the subsidy is not confined to acceptance")
-    if "pay_short_term_gold" in interaction[on_decline:ai_potential]:
+    if "pay_short_term_gold" in effects[decline:]:
         errors.append("the decline path must not transfer gold")
-    if interaction.count("add_prestige = 150") != 2:
-        errors.append("accept/decline invalidation must each refund exactly 150 prestige")
-    if interaction.count("remove_interaction_cooldown_against = {") != 2:
-        errors.append("accept/decline invalidation must each clear recipient cooldown")
+    if effects.count("add_prestige = 150") != 1:
+        errors.append("the shared invalidation effect must refund exactly 150 prestige")
+    if effects.count("remove_interaction_cooldown_against = {") != 1:
+        errors.append("the shared invalidation effect must clear recipient cooldown once")
 
     values = text(SCRIPT_PATHS[2])
     for fragment in ("multiply = 12", "min = 50", "max = 500", "ceiling = yes"):

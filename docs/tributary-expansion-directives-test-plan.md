@@ -26,7 +26,7 @@ transfers no Gold, and removes the cooldown.
 - Every language has the same key and protected-token inventory; no English
   placeholder file remains.
 - Thumbnail is a deterministic 640×640 RGB PNG below 1 MB.
-- The exact 15-file allowlist builds twice to byte-identical manifest and ZIP;
+- The exact 16-file allowlist builds twice to byte-identical manifest and ZIP;
   source-only README/research files never enter staging.
 
 Commands:
@@ -46,7 +46,7 @@ a product failure or a live-game pass.
 ## L1/L2 live gate
 
 Use a unique isolated `-userdir`, cloud saves disabled, exactly two mounted
-mods in order: the 15-file production projection and an external acceptance
+mods in order: the 16-file production projection and an external acceptance
 fixture. Preserve the exact CK3 version, executable SHA-256, runtime tree hash,
 mount order, logs, screenshot, and controlled process shutdown.
 

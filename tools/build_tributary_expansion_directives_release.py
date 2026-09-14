@@ -27,6 +27,7 @@ RUNTIME_FILES = frozenset(
         "common/casus_belli_types/ted_tributary_expansion_casus_belli.txt",
         "common/character_interactions/ted_tributary_expansion_interactions.txt",
         "common/script_values/ted_tributary_expansion_values.txt",
+        "common/scripted_effects/ted_tributary_expansion_effects.txt",
         "common/scripted_triggers/ted_tributary_expansion_triggers.txt",
         "descriptor.mod",
         "localization/english/ted_tributary_expansion_l_english.yml",

@@ -36,8 +36,4 @@
 			this = scope:target
 		}
 	}
-	trigger_if = {
-		limit = { scope:offer_war_subsidy = yes }
-		scope:actor.gold >= ted_war_subsidy_value
-	}
 }
