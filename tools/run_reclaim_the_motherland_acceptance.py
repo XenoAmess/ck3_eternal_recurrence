@@ -43,6 +43,7 @@ AUTOPLAYER_SOURCE = ROOT / "ck3_autonomous_player" / "src"
 if str(AUTOPLAYER_SOURCE) not in sys.path:
     sys.path.insert(0, str(AUTOPLAYER_SOURCE))
 
+from xar_autoplayer.bridge.driver import PreSubmissionRevisionMismatchError
 from xar_autoplayer.bridge.native_driver import NativeHeadlessGameplayDriver
 from xar_autoplayer.bridge.service import GameplayBridgeService
 from xar_autoplayer.environment import make_spec
@@ -796,6 +797,39 @@ def project_diagnostics(userdir: Path, artifacts: Path) -> list[str]:
     return list(dict.fromkeys(item for item in blocking if item.strip()))
 
 
+def pause_running_map(
+    service: GameplayBridgeService,
+    stage: str,
+    timeout_s: float = 5,
+) -> tuple[dict[str, object] | None, dict[str, object], list[str]]:
+    """Pause with a fresh revision if the running game advances during submission."""
+
+    deadline = time.monotonic() + timeout_s
+    revision_retries: list[str] = []
+    pause_ack: dict[str, object] | None = None
+    snapshot = service.snapshot()
+    while snapshot.get("paused") is not True and time.monotonic() < deadline:
+        try:
+            pause_ack = service.execute_step(
+                "pause-map", expected_revision=int(snapshot["revision"])
+            )
+        except PreSubmissionRevisionMismatchError as error:
+            revision_retries.append(str(error))
+            time.sleep(0.05)
+            snapshot = service.snapshot()
+            continue
+
+        while time.monotonic() < deadline:
+            snapshot = service.snapshot()
+            if snapshot.get("paused") is True:
+                return pause_ack, snapshot, revision_retries
+            time.sleep(0.1)
+
+    if snapshot.get("paused") is not True:
+        raise acceptance.RunnerError(f"{stage} map did not pause")
+    return pause_ack, snapshot, revision_retries
+
+
 def advance_queued_phase_transition(
     service: GameplayBridgeService,
     stream: MarkerStream,
@@ -817,20 +851,9 @@ def advance_queued_phase_transition(
         wait_error = error
 
     running = service.snapshot()
-    pause_ack: dict[str, object] | None = None
-    paused = running
-    if running.get("paused") is not True:
-        pause_ack = service.execute_step(
-            "pause-map", expected_revision=int(running["revision"])
-        )
-        deadline = time.monotonic() + 5
-        while time.monotonic() < deadline:
-            paused = service.snapshot()
-            if paused.get("paused") is True:
-                break
-            time.sleep(0.1)
-        else:
-            raise acceptance.RunnerError("phase-transition map did not pause")
+    pause_ack, paused, pause_revision_retries = pause_running_map(
+        service, "phase-transition"
+    )
 
     evidence = {
         "schema_version": 1,
@@ -840,6 +863,7 @@ def advance_queued_phase_transition(
         "resume_ack": resume_ack,
         "after_running": running,
         "pause_ack": pause_ack,
+        "pause_revision_retries": pause_revision_retries,
         "after_paused": paused,
         "marker_observed": wait_error is None,
         "error": None if wait_error is None else str(wait_error),
@@ -874,20 +898,9 @@ def advance_recent_independence_expiry(
     except BaseException as error:
         wait_error = error
     running = service.snapshot()
-    pause_ack: dict[str, object] | None = None
-    paused = running
-    if running.get("paused") is not True:
-        pause_ack = service.execute_step(
-            "pause-map", expected_revision=int(running["revision"])
-        )
-        deadline = time.monotonic() + 5
-        while time.monotonic() < deadline:
-            paused = service.snapshot()
-            if paused.get("paused") is True:
-                break
-            time.sleep(0.1)
-        else:
-            raise acceptance.RunnerError("recent-independence expiry map did not pause")
+    pause_ack, paused, pause_revision_retries = pause_running_map(
+        service, "recent-independence expiry"
+    )
     evidence = {
         "schema_version": 1,
         "result": "GREEN" if wait_error is None else "RED",
@@ -902,6 +915,7 @@ def advance_recent_independence_expiry(
         "resume_ack": resume_ack,
         "after_running": running,
         "pause_ack": pause_ack,
+        "pause_revision_retries": pause_revision_retries,
         "after_paused": paused,
         "marker_observed": wait_error is None,
         "error": None if wait_error is None else str(wait_error),

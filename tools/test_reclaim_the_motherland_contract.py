@@ -494,7 +494,7 @@ class TestReclaimTheMotherlandContract(unittest.TestCase):
         self.assertTrue(has_assignment(handoff, "has_game_rule", RECLAIM_SETTING))
         self.assertTrue(has_assignment(handoff, "has_variable", MARKER))
         self.assertTrue(has_key(handoff, "current_heir"))
-        self.assertTrue(has_assignment(handoff, "type", "inherited"))
+        self.assertTrue(has_assignment(handoff, "type", "granted"))
         self.assertTrue(has_key(handoff, "change_title_holder_include_vassals"))
         self.assertTrue(
             has_assignment(

@@ -84,6 +84,7 @@ rqa_initialize_effect = {
 				}
 				remove_trait = loyal
 				add_trait = disloyal
+				set_relation_rival = scope:rqa_song_emperor
 			}
 			random_vassal = {
 				limit = {
@@ -273,6 +274,10 @@ rqa_enter_chaos_effect = {
 				limit = { top_liege = root }
 				top_participant_group:dynastic_cycle = {
 					save_scope_as = rqa_current_movement
+				}
+				set_variable = {
+					name = movement_member
+					value = scope:rqa_current_movement
 				}
 				set_variable = {
 					name = former_movement_member

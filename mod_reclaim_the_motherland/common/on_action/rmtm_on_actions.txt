@@ -25,7 +25,7 @@ rmtm_on_game_start = {
 rmtm_on_death = {
 	trigger = {
 		has_game_rule = rmtm_reclaim_the_motherland
-		primary_title = {
+		primary_title ?= {
 			has_variable = rmtm_restoration_hegemony
 			exists = current_heir
 		}
