@@ -1,0 +1,98 @@
+{
+  "contract": "g2-faction-target-character-count-equivalence-v1",
+  "schema_version": 1,
+  "status": "static-confirmed-next-private-observer",
+  "exact_build": {
+    "product_version": "1.19.0.6",
+    "executable_size": 95206008,
+    "executable_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+    "image_base": "0x140000000"
+  },
+  "target_character_link": {
+    "rtti_name": ".?AVCFactionTargetLink@@",
+    "type_descriptor_rva": "0x533F2C8",
+    "complete_object_locator_rva": "0x47C5418",
+    "vtable_rva": "0x41D7C08",
+    "resolver_slot_index": 4,
+    "resolver_rva": "0x19D8280",
+    "resolver_end_rva_exclusive": "0x19D82DE",
+    "input_scope_kind": "0x19 (Faction)",
+    "faction_storage_slot_rva": "0x570C768",
+    "faction_fallback_slot_rva": "0x570C6F8",
+    "faction_identity_offset": "0x10",
+    "faction_target_character_id_offset": "0x40",
+    "output_scope_kind": "0x04 (Character)",
+    "semantics": "Resolve the full-generation faction identity, require CFaction+0x10 to round-trip, then return CFaction+0x40 as a Character scope identity. This is the target-character getter for the faction resolved from a FactionItem row; no public FactionItem method is claimed."
+  },
+  "target_character_identity_validation": {
+    "character_storage_slot_rva": "0x570C130",
+    "character_fallback_slot_rva": "0x570C138",
+    "character_identity_offset": "0x18",
+    "reference_resolver_rva": "0x82B270",
+    "reference_resolver_end_rva_exclusive": "0x82B2AA",
+    "required_private_observer_gate": "Resolve CFaction+0x40 through Character storage and require CCharacter+0x18 to equal the complete uint32 identity."
+  },
+  "targeting_row_producer": {
+    "refresh_function_rva": "0x1392C90",
+    "destination_container_offset": "FactionsWindow+0x138",
+    "destination_count_offset": "FactionsWindow+0x144",
+    "destination_count_reset_rva": "0x1392CBC",
+    "local_player_character_id_rva": "0x4FE7EE0",
+    "character_storage_slot_rva": "0x570C130",
+    "character_fallback_slot_rva": "0x570C138",
+    "character_identity_offset": "0x18",
+    "character_land_state_offset": "0x1B8",
+    "land_state_targeting_factions_container_offset": "0x120",
+    "land_state_targeting_factions_data_offset": "0x120",
+    "land_state_targeting_factions_count_offset": "0x12C",
+    "null_land_state_fallback_rva": "0x4F66088",
+    "source_element_type": "uint32 full-generation faction identity",
+    "source_element_stride": 4,
+    "temporary_copy_call_rva": "0x1392D4C",
+    "temporary_copy_function_rva": "0x975ED0",
+    "row_projection_loop_rva": "0x1392D80",
+    "row_projection_loop_end_rva_exclusive": "0x1392E9C",
+    "destination_row_stride": 24,
+    "destination_faction_id_offset": "0x00",
+    "destination_count_increment_rvas": [
+      "0x1392D9E/0x1392E4F (growth path)",
+      "0x1392E81 (capacity path)"
+    ],
+    "sort_call_rva": "0x1392EA3",
+    "sort_function_rva": "0x1394540",
+    "equivalence": "The refresh resets the destination count, copies exactly the land_state+0x120 uint32 span whose signed count is land_state+0x12C, appends exactly one 0x18-byte FactionItem for every copied identity without a filtering branch, and then sorts the destination rows without changing the count. After the refresh returns, FactionsWindow+0x144 equals the campaign-root land_state+0x12C count for the same full-generation local player."
+  },
+  "campaign_root_join": {
+    "published_field": "player_targeting_faction_count",
+    "reader_source": "native_bridge/src/campaign_root_context_v1.cpp::ReadTargetingFactionCount",
+    "reader_offset": "land_state+0x12C",
+    "reader_player_round_trip_required": true,
+    "same_frame_join_keys": [
+      "proof_epoch",
+      "snapshot_revision",
+      "date_raw",
+      "player_character_id"
+    ],
+    "required_count_check": "private row count == campaign-root player_targeting_faction_count",
+    "required_target_check": "every resolved target CharacterID == admitted player_character_id",
+    "zero_semantics": "A valid source count of zero must pair with an empty private row set."
+  },
+  "readiness": {
+    "target_character_getter_source_ready": true,
+    "campaign_root_count_equivalence_source_ready": true,
+    "same_frame_join_contract_ready": true,
+    "private_target_and_count_observer_ready": false,
+    "paused_live_equivalence_artifact_ready": false,
+    "member_identity_ready": false,
+    "public_targeting_rows_ready": false
+  },
+  "scope": {
+    "private_build_only": true,
+    "read_only_game_state": true,
+    "public_abi_changed": false,
+    "public_capability_changed": false,
+    "ck3_started": false
+  },
+  "unique_next_implementation_entry": "extend_faction_targeting_row_observer_v1_with_resolved_target_identity_and_campaign_root_count_same_admission_gate",
+  "evidence_limit": "This package closes the exact-build source getter and post-refresh count equivalence. It does not provide a paused live capture, does not prove member-vector semantics, and does not promote a public MCP or production readiness field."
+}

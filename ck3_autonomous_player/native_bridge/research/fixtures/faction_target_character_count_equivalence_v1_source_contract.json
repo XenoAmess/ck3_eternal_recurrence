@@ -1,0 +1,161 @@
+{
+  "schema_version": 1,
+  "contract": "g2-faction-target-character-count-equivalence-v1-source-contract",
+  "status": "static-confirmed-next-private-observer",
+  "game_build": {
+    "product_version": "1.19.0.6",
+    "executable_size": 95206008,
+    "executable_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86"
+  },
+  "native_spans": [
+    {
+      "name": "cfaction_target_link_resolver",
+      "rva_start": "0x19D8280",
+      "rva_end_exclusive": "0x19D82DE",
+      "length": 94,
+      "sha256": "CE808D31F550CF4D7578F30123D1FA1213F3DEB8D259695A43467412BF14B37A"
+    },
+    {
+      "name": "targeting_refresh_source_and_copy",
+      "rva_start": "0x1392CB6",
+      "rva_end_exclusive": "0x1392D52",
+      "length": 156,
+      "sha256": "DC99CE59894806A3E4EE6A3758FD47038339AD73E7D0C3A08467F5297B425C02"
+    },
+    {
+      "name": "targeting_refresh_row_projection",
+      "rva_start": "0x1392D52",
+      "rva_end_exclusive": "0x1392EA8",
+      "length": 342,
+      "sha256": "1FC41C1A9F3F5F5F6722F3CC1840C3CB7B0782658B5C794E32CC45F920E620CE"
+    },
+    {
+      "name": "uint32_range_copy",
+      "rva_start": "0x975ED0",
+      "rva_end_exclusive": "0x976055",
+      "length": 389,
+      "sha256": "B401EC584518E28A0D275FF468EE14EABDED4E7BD173C373AF70B58CADA6E154"
+    },
+    {
+      "name": "targeting_row_sort",
+      "rva_start": "0x1394540",
+      "rva_end_exclusive": "0x1394681",
+      "length": 321,
+      "sha256": "15A49B478CFCFCBCDAE2C61E78B96B8608AE401F4BBC82C98FA71BF8FE013D59"
+    },
+    {
+      "name": "targeting_container_leaf_getter",
+      "rva_start": "0xF6F790",
+      "rva_end_exclusive": "0xF6F799",
+      "length": 9,
+      "sha256": "636157D6E11A75C378AD1FB86022CA8C1E7D976B31F05E14F4614A2AD573731D"
+    },
+    {
+      "name": "has_targeting_count_predicate",
+      "rva_start": "0x1393C40",
+      "rva_end_exclusive": "0x1393C4C",
+      "length": 12,
+      "sha256": "E3A8D680B461CF82E002A5405111C6881A43F1934CD126E818FAA6F420894EEF"
+    },
+    {
+      "name": "faction_item_identity_resolver",
+      "rva_start": "0xE6F440",
+      "rva_end_exclusive": "0xE6F47A",
+      "length": 58,
+      "sha256": "EE1D360E0205B8EEB34886AC85CCD0EA73010AC71578888DBD1288E977D3BDB2"
+    },
+    {
+      "name": "character_identity_reference_resolver",
+      "rva_start": "0x82B270",
+      "rva_end_exclusive": "0x82B2AA",
+      "length": 58,
+      "sha256": "62FEE02C707F22593AC7CA9984E3666BA2171D106714C038A37949E7FF86E04D"
+    }
+  ],
+  "rtti_binding": {
+    "name": ".?AVCFactionTargetLink@@",
+    "type_descriptor_rva": "0x533F2C8",
+    "complete_object_locator_rva": "0x47C5418",
+    "vtable_rva": "0x41D7C08",
+    "resolver_slot_index": 4,
+    "resolver_slot_rva": "0x41D7C28",
+    "resolver_target_rva": "0x19D8280"
+  },
+  "target_getter_invariants": {
+    "input_scope_kind": "0x19",
+    "faction_storage_slot_rva": "0x570C768",
+    "faction_fallback_slot_rva": "0x570C6F8",
+    "faction_identity_offset": "0x10",
+    "target_character_id_offset": "0x40",
+    "output_scope_kind": "0x04",
+    "character_identity_reference_resolver_rva": "0x82B270",
+    "character_identity_round_trip_offset": "0x18"
+  },
+  "count_equivalence_invariants": {
+    "destination_count_reset_rva": "0x1392CBC",
+    "destination_count_offset": "FactionsWindow+0x144",
+    "local_player_character_id_rva": "0x4FE7EE0",
+    "character_storage_slot_rva": "0x570C130",
+    "character_fallback_slot_rva": "0x570C138",
+    "character_identity_round_trip_offset": "0x18",
+    "character_land_state_offset": "0x1B8",
+    "source_container_offset": "land_state+0x120",
+    "source_count_offset": "land_state+0x12C",
+    "source_element_stride": 4,
+    "destination_row_stride": 24,
+    "destination_faction_id_offset": "0x00",
+    "temporary_copy_function_rva": "0x975ED0",
+    "sort_function_rva": "0x1394540",
+    "proof": "destination count starts at zero; source end is data + signed_count*4; the copied source is traversed in 4-byte steps; both allocation paths append one destination row and increase its count exactly once; the following sort consumes data/count and does not change count"
+  },
+  "campaign_root_source_tokens": [
+    "constexpr std::size_t kCharacterLandStateOffset = 0x1B8;",
+    "constexpr std::size_t kLandStateTargetingFactionsCountOffset = 0x12C;",
+    "bool ReadTargetingFactionCount(",
+    "output >= 0",
+    "ResolveComponent(access, environment.character_storage_slot,",
+    "output.player_targeting_faction_count ="
+  ],
+  "private_observer_source_tokens": [
+    "struct FactionTargetingRowCaptureAdmissionV1",
+    "std::uint64_t proof_epoch = 0;",
+    "std::uint64_t snapshot_revision = 0;",
+    "std::int32_t date_raw = 0;",
+    "std::uint32_t player_character_id = 0;",
+    "SameAdmission(first_admission, second_admission)",
+    "last_faction_count.store(static_cast<std::uint32_t>(count)"
+  ],
+  "same_frame_private_join": {
+    "join_keys": [
+      "proof_epoch",
+      "snapshot_revision",
+      "date_raw",
+      "player_character_id"
+    ],
+    "count_gate": "captured FactionsWindow+0x144 equals campaign-root player_targeting_faction_count",
+    "target_gate": "each resolved CFaction+0x40 CharacterID equals the admitted player_character_id",
+    "status_after_this_package": "source-ready; implementation and paused live artifact remain pending"
+  },
+  "readiness": {
+    "target_character_getter_source_ready": true,
+    "campaign_root_count_equivalence_source_ready": true,
+    "same_frame_join_contract_ready": true,
+    "private_target_and_count_observer_ready": false,
+    "paused_live_equivalence_artifact_ready": false,
+    "member_identity_ready": false,
+    "public_targeting_rows_ready": false
+  },
+  "public_impact": {
+    "public_abi_changed": false,
+    "public_capability_changed": false,
+    "public_schema_changed": false
+  },
+  "unique_next_implementation_entry": "extend_faction_targeting_row_observer_v1_with_resolved_target_identity_and_campaign_root_count_same_admission_gate",
+  "unknown_boundary": [
+    "paused exact-build capture proving every targeting row resolves to the admitted player",
+    "paused exact-build capture proving private row count equals the campaign-root count under one admission",
+    "CFaction leader and character-member vector semantics",
+    "faction type, war, power, discontent and stock dangerous-predicate observation",
+    "public MCP/schema promotion"
+  ]
+}

@@ -3,7 +3,7 @@
 ## 状态与结论
 
 - **原版 AI 与命令路径：`static-confirmed`。** 本文冻结 `gift_interaction` 的原版 AI 选人、合法性、自动接受、扣款与好感效果，并闭合 exact-build 中按稳定 key 查找 `CCharacterInteraction`、构造两角色上下文、校验和提交命令的原始调用链。
-- **逐派系/候选观测：`static-ready` 私有原语。** 当前 production-live `campaign-root-context-v1` 仍只有 `player_targeting_faction_count` 和 REALM2 的 `direct_landed_vassal_character_ids`。FACTION2-CORE 已闭合 exact-build targeting collection 的 inline row span、`0x18` stride 与稳定 faction identity，并实现 default-OFF 私有事务化复制；尚无 paused live artifact，也没有 target character/member、type、war、power/discontent 或公共 query，因此不能证明某个封臣属于哪一支派系。
+- **逐派系/候选观测：`static-ready` 私有原语。** 当前 production-live `campaign-root-context-v1` 仍只有 `player_targeting_faction_count` 和 REALM2 的 `direct_landed_vassal_character_ids`。FACTION2-CORE 已闭合 targeting collection 的 inline row span、`0x18` stride 与稳定 faction identity；FACTION3-EVIDENCE 又闭合了 exact-build `CFactionTargetLink` 目标角色 getter 和窗口刷新后 row count 对 `land_state+0x12C` 的静态等价。尚无 paused live artifact，也没有 member、type、war、power/discontent 或公共 query，因此仍不能证明某个封臣属于哪一支派系。
 - **赠礼动作：`research`。** 本工作包只给出最小 typed observation/action 合同和施工入口，没有修改 bridge、公共 MCP、schema、planner 或动作实现，也没有启动 CK3。
 - **首个可见 OODA：** 从真实 targeting faction row 中选一名直属有地、AI 控制、尚无 `gift_opinion` 的成员，读取引擎最终赠礼成本与好感增量，满足预算后执行一次 `gift_interaction`；随后验证金币转移与该角色的 `gift_opinion`，并重新读取原派系状态。
 
@@ -257,7 +257,41 @@ exact `1.19.0.6` 的 `FactionsWindow.GetTargetingFactions` callback 在 `0x1395F
 
 私有 `faction_targeting_row_observer_v1` 默认关闭，只在 exact executable hash、安装时主线程 suspended、运行时 paused application-main admission 同时成立时读取。它在同一 admission 下重复读取容器 data/count 与每个 row `+0x00` identity，逐项 resolver round-trip，随后只发布排序后的自有 `faction_ids`；原始地址、地址哈希和 `0x18` row bytes 都不写入 artifact。失败保留上一代完整 snapshot。离线 fixture 与 source contract 已通过，状态为 `static-ready-pending-paused-live-capture`，不能写成 production-live，也没有改变公共 MCP/schema/readiness。
 
-下一处唯一施工入口是 `FactionItem` 的 target-character getter 与 `player_targeting_faction_count` 对 campaign-root count 的同帧等价证明。两项闭合前，`campaign_root_count_equivalence_ready=false`、`target_character_identity_ready=false` 和 `public_targeting_rows_ready=false`。
+FACTION2 在当时没有 producer 证据，所以把 target getter/count 等价保留为未闭合边界；下面的 FACTION3 exact-build 增量取代该旧施工入口，但没有改变 FACTION2 私有 observer 的实现或公共 readiness。
+
+### FACTION3-EVIDENCE：目标角色与 campaign-root count 等价
+
+这里需要先纠正一个命名：原版没有暴露名为 `FactionItem.GetTargetCharacter` 的公开 GUI 方法。可复核的目标 getter 是 RTTI `.?AVCFactionTargetLink@@` 的 vtable `0x41D7C08` slot 4，落到 `0x19D8280..0x19D82DE`。它要求输入 scope kind 为 `0x19`（Faction），经 storage slot `0x570C768` 解析 full-generation faction ID 并用 `CFaction+0x10` round-trip；随后读取 `CFaction+0x40`，返回 kind `0x04`（Character）的 identity。下一版私有 observer 应从每个 `FactionItem+0x00` faction ID 解析 `CFaction`，读取 `+0x40`，再经 Character storage `0x570C130` 和 `CCharacter+0x18` round-trip，禁止仅凭低 24 位或指针相等认定目标。
+
+`FactionsWindow` 的刷新函数从 `0x1392C90` 开始；决定计数等价的链路如下：
+
+1. `0x1392CBC` 将 `FactionsWindow+0x144` 的 targeting row count 清零；
+2. `0x1392CC2..0x1392D01` 从全局 `0x4FE7EE0` 取本地玩家 CharacterID，经 storage `0x570C130`、fallback `0x570C138` 和 `CCharacter+0x18` 完整代际回查，随后读取 `CCharacter+0x1B8` land state；
+3. 非空 land state 取 `+0x120` 容器；`0x1392D3A..0x1392D4C` 读取 data 与 signed count `+0x0C`，所以来源 count 正是 `land_state+0x12C`，并把 `[data, data+count*4)` 复制成临时 `uint32` faction ID 序列；
+4. `0x1392D80..0x1392E9C` 以 4 bytes 步长遍历每个来源 ID。扩容路径在 `0x1392D9E/0x1392E4F` 增加并写回 count，已有容量路径在 `0x1392E81` 增加 count；两条路径都只追加一个 `0x18` `FactionItem`，循环中没有过滤来源 ID 的分支；
+5. `0x1392EA3` 调用 `0x1394540`，排序函数以 destination data/count 构造 `[begin,end)` 并重排 row，不改 count。之后 leaf `0xF6F790` 返回 `FactionsWindow+0x138`，`HasTargetingFactions` `0x1393C40` 读取同一个 `FactionsWindow+0x144`。
+
+因此，在该刷新完成后，窗口 targeting row count 与 campaign root 已发布的 `player_targeting_faction_count` 都表示同一个 full-generation 本地玩家的 `land_state+0x12C`。这是 exact-build 静态等价证明，不是 paused live 证据；窗口若尚未刷新，不能仅靠地址关系声称实时相等。
+
+```mermaid
+flowchart LR
+    P[local player CharacterID\n0x4FE7EE0] -->|storage + CCharacter+0x18 round-trip| C[CCharacter]
+    C --> L[land_state = CCharacter+0x1B8]
+    L --> S[source vector\ndata +0x120, count +0x12C]
+    S -->|copy uint32 IDs| T[temporary faction IDs]
+    T -->|one ID -> one 0x18 row| W[FactionsWindow+0x138\ncount +0x144]
+    W --> G[GetTargetingFactions\n0xF6F790]
+    W -. private implementation pending .-> J[same-admission count equality]
+    L --> R[campaign-root\nplayer_targeting_faction_count]
+    R -. proof_epoch/revision/date/player .-> J
+    W -. resolve row ID -> CFaction+0x40 .-> X[target CharacterID]
+    X -. Character+0x18 round-trip and equals player .-> J
+    J -. paused live artifact pending .-> Q[public faction row query]
+```
+
+同帧 join 必须复用现有私有 observer admission 的 `proof_epoch`、`snapshot_revision`、`date_raw`、`player_character_id` 四键，并在发布前同时要求：captured row count 等于 campaign-root count；每个 row 的 `CFaction+0x40` 都解析并 round-trip 为 admitted player；合法零 count 对应空 rows。仅凭两个采样“日期相同”不够。
+
+当前 readiness 边界为：`target_character_getter_source_ready=true`、`campaign_root_count_equivalence_source_ready=true`、`same_frame_join_contract_ready=true`；`private_target_and_count_observer_ready=false`、`paused_live_equivalence_artifact_ready=false`、`member_identity_ready=false`、`public_targeting_rows_ready=false`。唯一下一实现入口是 `extend_faction_targeting_row_observer_v1_with_resolved_target_identity_and_campaign_root_count_same_admission_gate`。地址、哈希和断言由 `faction_target_character_count_equivalence_v1_source_contract.py` 与同名 ABI/fixture 固定。
 
 ### FACTION-OBS1：逐派系与成员观测
 
@@ -279,7 +313,7 @@ exact `1.19.0.6` 的 `FactionsWindow.GetTargetingFactions` callback 在 `0x1395F
 
 ## 尚未闭合的分支
 
-- targeting faction collection 的 paused live capture、target character/member vector 与 campaign-root count 等价；
+- targeting faction collection 的 paused live target/count 同 admission 验收，以及 leader/member vector；
 - faction row 的 final power/discontent getters 与同帧稳定读取；
 - `gift_value` / `send_gift_opinion` 的 exact actor/recipient receiver 和最终类型转换；
 - recipient -> actor 的 modifier-specific opinion observer；
