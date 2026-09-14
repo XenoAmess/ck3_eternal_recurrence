@@ -107,6 +107,14 @@ int main(int argc, char **argv) {
                     "Utf8BytewiseLess);",
                     "std::sort(output.selected_game_rule_tokens.begin(),",
                     "selected_rule_tokens_native_order",
+                    "selected_game_rule_tokens_available =",
+                    "ReadSelectedRuleTokens(environment, access, output)",
+                    "if (!output.selected_game_rule_tokens_available)",
+                    "output.selected_game_rule_tokens.clear()",
+                    "output.native_selected_game_rule_token_count = 0",
+                    "output.readiness.selected_game_rule_tokens_ready =",
+                    "output.readiness.ready = "
+                    "first.selected_game_rule_tokens_available",
                     "ReadDirectLandedVassals",
                     "direct_landed_vassals_unavailable",
                     "ReadAdjacentExternalProvinceHolders",
@@ -153,6 +161,10 @@ int main(int argc, char **argv) {
                     "\\\"schema_version\\\":1",
                     "\\\"selected_game_rule_tokens\\\"",
                     "\\\"native_selected_game_rule_token_count\\\"",
+                    "ValidAvailableReadiness",
+                    "value.ready == value.selected_game_rule_tokens_ready",
+                    "!context.readiness.selected_game_rule_tokens_ready",
+                    "!context.selected_game_rule_tokens.empty()",
                     "\\\"direct_landed_vassal_character_ids\\\"",
                     "\\\"adjacent_external_province_holder_character_ids\\\"",
                     "\\\"related_character_contexts\\\"",
@@ -249,7 +261,11 @@ int main(int argc, char **argv) {
                    {"\"command_result_key\": \"campaign_root_context\"",
                     "\"mailbox_executor_slot\": "
                     "\"permitted_executor_nonary\"",
-                    "\"all_or_nothing_readiness\": true",
+                    "\"all_or_nothing_readiness\": false",
+                    "\"required_root_readiness_fields\"",
+                    "\"optional_component_readiness_fields\"",
+                    "\"aggregate_ready_semantics\": "
+                    "\"selected_game_rule_tokens_ready_when_required_root_fields_are_ready\"",
                     "\"direct_landed_vassal_order\": "
                     "\"ascending_full_generation_character_id\"",
                     "\"adjacent_external_province_holder_order\": "
@@ -273,6 +289,17 @@ int main(int argc, char **argv) {
                     "\"council_auxiliary_vacancies_complete\": false",
                     "\"council_outside_scope_is_component_unavailable\": true",
                     "\"council_outside_scope_preserves_root_ready\": true",
+                    "\"selected_game_rule_tokens_optional_component\": true",
+                    "\"selected_game_rule_tokens_failure_root_status\": "
+                    "\"available\"",
+                    "\"selected_game_rule_tokens_failure_values\"",
+                    "\"selected_game_rule_tokens\": []",
+                    "\"native_selected_game_rule_token_count\": 0",
+                    "\"selected_game_rule_tokens_ready\": false",
+                    "\"ready\": false",
+                    "\"unavailable_reason\": \"\"",
+                    "\"selected_game_rule_tokens_same_frame\": "
+                    "\"component_availability_and_complete_token_vector_count_two_sample_equality\"",
                     "\"player_monthly_gold_income_scale\": 100000",
                     "\"player_health_scale\": 100000",
                     "\"player_health_rva\": \"0x2619AD0\"",
