@@ -684,6 +684,11 @@ class TestReclaimTheMotherlandContract(unittest.TestCase):
             4,
             "fixture actors must match the product's county-or-higher vassal contract",
         )
+        forced_transition = text.split("rqa_enter_chaos_effect", 1)[1].split(
+            "rqa_dispatch_chaos_event_effect", 1
+        )[0]
+        self.assertIn("NOT = { has_variable = movement_member }", forced_transition)
+        self.assertIn("value = flag:undecided", forced_transition)
         chaos_verification = text.split("rqa_verify_chaos_effect", 1)[1].split(
             "rqa_transfer_county_to_control_effect", 1
         )[0]

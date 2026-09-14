@@ -268,9 +268,18 @@ rqa_enter_chaos_effect = {
 		else = { debug_log = "RQA: TEST FAIL pre_chaos_movement_identity_prepared" }
 		# Populate the full vanilla outgoing-phase contract for every current
 		# participant in the emperor's realm, including direct vassals which are not
-		# part of the two focused assertions below.
+		# part of the two focused assertions below. A forced phase jump can leave a
+		# current movement leader without vanilla's movement_member flag; give every
+		# such participant the neutral flag before any on_vassal_change reevaluation.
 		situation:dynastic_cycle = {
 			every_situation_participant = {
+				if = {
+					limit = { NOT = { has_variable = movement_member } }
+					set_variable = {
+						name = movement_member
+						value = flag:undecided
+					}
+				}
 				limit = { top_liege = root }
 				top_participant_group:dynastic_cycle = {
 					save_scope_as = rqa_current_movement
