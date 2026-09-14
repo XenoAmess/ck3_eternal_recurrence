@@ -1,0 +1,396 @@
+{
+  "schema_version": 1,
+  "artifact_id": "g2_nonreligious_law_contract_succession_native_tree_v1",
+  "status": "static-ready",
+  "captured_at": "2026-09-14",
+  "build": {
+    "game_version": "1.19.0.6",
+    "executable_relative_path": "binaries/ck3.exe",
+    "executable_size": 95206008,
+    "executable_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+    "image_base": "0x140000000"
+  },
+  "scope": {
+    "included": [
+      "realm law groups",
+      "succession order laws that can be evaluated without exposing a general religion model",
+      "title succession law mechanics",
+      "subject contract obligation mechanics"
+    ],
+    "excluded": [
+      "faith, doctrine, tenet, fervor, conversion, and reformation strategy",
+      "religious-law groups and holy orders",
+      "a counter-policy or autonomous action implementation",
+      "shared bridge, public schema, planner, and CMake changes"
+    ]
+  },
+  "source_files": {
+    "common/laws/_laws.info": {
+      "size": 12169,
+      "sha256": "E3BBC8569BAFAC01070B4D000F3B1332A7BB6086D9172F31F8E72BFE74ADB124",
+      "required_tokens": [
+        "can_change_law_group = { }",
+        "can_keep = { }",
+        "can_have = { }",
+        "can_pass = { }",
+        "on_pass = { }",
+        "on_after_pass = { }",
+        "Law enactment is checked in the RARE_TASK_TICK",
+        "CHARACTER.GetActiveLawInGroupWithFlag('realm_law')"
+      ]
+    },
+    "common/laws/00_realm_laws.txt": {
+      "size": 74009,
+      "sha256": "EC96F526706B454A883B78429161B8C19D36B6DC8A5324C5DB95E73A6806E2DF",
+      "required_tokens": [
+        "crown_authority = {",
+        "flag = realm_law",
+        "flag = can_change_succession_laws",
+        "can_pass_law_ca3_trigger = yes",
+        "increase_crown_authority_prestige_cost"
+      ]
+    },
+    "common/laws/00_succession_laws.txt": {
+      "size": 49206,
+      "sha256": "F4140755CE89B2BC0C7B5BB80E9318EFD7A7AE7ECE2E8129119C2EBE9BB9C532",
+      "required_tokens": [
+        "succession_order_laws = {",
+        "confederate_partition_succession_law = {",
+        "partition_succession_law = {",
+        "high_partition_succession_law = {",
+        "single_heir_succession_law = {",
+        "primary_heir_minimum_share = 0.5",
+        "title_division = single_heir"
+      ]
+    },
+    "common/laws/01_title_succession_laws.txt": {
+      "size": 8891,
+      "sha256": "D398C523A190B0B05D16DAC12EE91B2AFBC68E323AA219B602CF260F90B8095F",
+      "required_tokens": [
+        "feudal_elective_succession_law = {",
+        "can_title_have = {",
+        "order_of_succession = election",
+        "change_title_succession_law_prestige_cost"
+      ]
+    },
+    "common/defines/ai/00_ai.txt": {
+      "size": 65153,
+      "sha256": "C78F9CD8DF9938CC9F38E817BCB6E32CD13720B5BD9DE077B85E3E1C6F030293",
+      "required_tokens": [
+        "RARE_TASK_TICK = {",
+        "180 # Hegemony"
+      ]
+    },
+    "common/script_values/00_law_values.txt": {
+      "size": 16741,
+      "sha256": "53667D7F09E1A0AEB8A8BF299717A60989CEEA7E19B097691638EE4408A4AF90",
+      "required_tokens": [
+        "increase_crown_authority_prestige_base = 100",
+        "change_succession_law_prestige_base = 500",
+        "@title_succession_law_mult = 3",
+        "change_title_succession_law_prestige_cost = {"
+      ]
+    },
+    "common/script_values/00_goverment_values.txt": {
+      "size": 5216,
+      "sha256": "3E702835AA09212CB7D883F74E067BB9AFEBEF4C56D6E8C6CAD460769E63D87A",
+      "required_tokens": [
+        "max_contract_changes = 4"
+      ]
+    },
+    "common/subject_contracts/contracts/_subject_contracts.info": {
+      "size": 7570,
+      "sha256": "E1D06D1DD49932BD828B785491E1709D023A93C7885B262C333C8E6EF6865794",
+      "required_tokens": [
+        "ai_liege_desire = <script value int>",
+        "ai_subject_desire = <script value int>",
+        "any ajdacent obligation level",
+        "weighted random of the desire score"
+      ]
+    },
+    "common/subject_contracts/contracts/feudal.txt": {
+      "size": 4465,
+      "sha256": "41F3CB969EDE8EAC74A7329013866486A21C2BDB9051DA89C8385254F1DC5D0F",
+      "required_tokens": [
+        "feudal_government_taxes = {",
+        "feudal_government_levies = {",
+        "ai_liege_desire",
+        "ai_subject_desire"
+      ]
+    },
+    "common/subject_contracts/groups/subject_contract_groups.txt": {
+      "size": 6870,
+      "sha256": "D4A8D1F8BBDB8915EC23735B124455D3B8B7AE691DF11B6D61CFB8DDB7522FBE",
+      "required_tokens": [
+        "feudal_vassal = {",
+        "contracts = {"
+      ]
+    },
+    "common/character_interactions/00_modifiy_vassal_contract.txt": {
+      "size": 72471,
+      "sha256": "B00006A19E97259486BC8F087650AC9C9686459CB9E729BC1D776A68B3ED9407",
+      "required_tokens": [
+        "liege_modify_vassal_contract_interaction = {",
+        "list_size:changed_obligations <= max_contract_changes",
+        "vassal_contract_set_obligation_level = {",
+        "ai_only_liege_modify_vassal_contract_interaction = {",
+        "ai_only_vassal_modify_vassal_contract_interaction = {"
+      ]
+    },
+    "events/interaction_events/character_interaction_events.txt": {
+      "size": 58791,
+      "sha256": "D238E0A3442F41C35AF35157D47A754CB200B72AB2A0184BAEFC86E63347A150",
+      "required_tokens": [
+        "char_interaction.0250 = {",
+        "apply_ai_vassal_obligation_liege_most_desired = yes",
+        "char_interaction.0251 = {",
+        "apply_ai_vassal_obligation_vassal_most_desired = yes"
+      ]
+    },
+    "common/scripted_triggers/00_scripted_triggers.txt": {
+      "size": 14623,
+      "sha256": "490C3784EE1555A49F7A4ADC9BAABB8522485F1AF6E1C837961E299A88695B5E",
+      "required_tokens": [
+        "vassal_contract_can_be_modified_trigger = {",
+        "subject_contract_has_modifiable_obligations = yes",
+        "subject_contract_is_blocked_from_modification = no",
+        "has_changed_contract_obligation_trigger = {"
+      ]
+    },
+    "gui/window_my_realm.gui": {
+      "size": 115680,
+      "sha256": "0FBC3B5E48DA3ADBE271E02DE03F264E896210BEE12AF74339773131D6656567",
+      "required_tokens": [
+        "[MyRealmWindow.GetRealmLaws]",
+        "[GuiLawGroup.GetLaws]",
+        "[GuiLaw.GetLaw]",
+        "[GuiLaw.Enact]",
+        "[OpenSuccessionLawChangeWindow( GuiLawGroup.Self )]"
+      ]
+    },
+    "gui/window_succession_change_law.gui": {
+      "size": 10745,
+      "sha256": "272E75BC71B7017F77A8D6778E580C22261555152495526A3C409B01F59094F5",
+      "required_tokens": [
+        "[SuccessionLawChangeWindow.GetPartitionLaws]",
+        "[SuccessionLawChangeWindow.GetSingleHeirLaws]",
+        "[SuccessionLawChangeWindow.GetSelectedLaw.GetCanEnactDescription]",
+        "[GuiLaw.SetSelected]"
+      ]
+    },
+    "gui/window_title_add_law.gui": {
+      "size": 5845,
+      "sha256": "7A18C1ED785BC39706612E1794B4B515B2B2D9A7D495AA597CDBC15513982732",
+      "required_tokens": [
+        "[TitleAddLawWindow.GetLawItems]",
+        "[Law.GetEnactCostForPlayer]"
+      ]
+    },
+    "gui/interaction_modify_vassal_window.gui": {
+      "size": 41690,
+      "sha256": "AE9BC96328C5803467868E85C8FED5E62F886409607ABC0B2CABE5F6284244DF",
+      "required_tokens": [
+        "[ModifySubjectContractInteractionWindow.GetContractPreview]",
+        "[ModifySubjectContractInteractionWindow.SelectObligationLevel(",
+        "[ModifySubjectContractInteractionWindow.IsObligationLevelEnabled(",
+        "[ModifySubjectContractInteractionWindow.Send]"
+      ]
+    }
+  },
+  "native_reflection": {
+    "registration_anchors": [
+      {
+        "surface": "OpenSuccessionLawChangeWindow",
+        "string_rva": "0x40D60D0",
+        "registration_reference_rva": "0xC444E6",
+        "anchor_hex": "488D15E31B4903"
+      },
+      {
+        "surface": "MyRealmWindow",
+        "string_rva": "0x4129B60",
+        "registration_reference_rva": "0x113CE60",
+        "anchor_hex": "488D15F9CCFE02"
+      },
+      {
+        "surface": "SuccessionLawChangeWindow",
+        "string_rva": "0x4158210",
+        "registration_reference_rva": "0x1424820",
+        "anchor_hex": "488D15E939D302"
+      },
+      {
+        "surface": "ModifySubjectContractInteractionWindow",
+        "string_rva": "0x41186A8",
+        "registration_reference_rva": "0x104BD30",
+        "anchor_hex": "488D1571C90C03"
+      },
+      {
+        "surface": "GuiLaw",
+        "string_rva": "0x4590CEC",
+        "registration_reference_rva": "0x3DE0DF0",
+        "anchor_hex": "488D15F5FE7A00"
+      }
+    ],
+    "method_strings": {
+      "GuiLaw.IsEnacted": "0x4590CF8",
+      "GuiLaw.GetCanEnactDescription": "0x4590D08",
+      "GuiLaw.GetShortCostString": "0x4590D20",
+      "GuiLaw.Enact": "0x4590D34",
+      "GuiLaw.ShouldBeApproved": "0x4590D40",
+      "GuiLaw.IsWidgetVisible": "0x4590D58",
+      "MyRealmWindow.GetRealmLaws": "0x412A320",
+      "SuccessionLawChangeWindow.GetAppointmentLaws": "0x41581B8",
+      "SuccessionLawChangeWindow.GetSingleHeirLaws": "0x41581D0",
+      "SuccessionLawChangeWindow.GetPartitionLaws": "0x41581F8",
+      "SuccessionLawChangeWindow.GetOtherLaws": "0x4158258",
+      "Character.GetActiveLawInGroupWithFlag": "0x40CF0B8",
+      "ModifySubjectContractInteractionWindow.ResetToCurrent": "0x4118318",
+      "ModifySubjectContractInteractionWindow.SelectObligationLevel": "0x41183A8",
+      "ModifySubjectContractInteractionWindow.IsObligationLevelEnabled": "0x4118510"
+    },
+    "rtti_strings": {
+      ".?AVCLaw@@": "0x50C22A8",
+      ".?AVCLawGroup@@": "0x50DEDE8",
+      ".?AVCLawDatabase@@": "0x5549040",
+      ".?AVCSubjectContract@@": "0x522F780"
+    },
+    "boundary": "The references above register reflection types or callable GUI names. They prove the exact-build surface exists, but they are not the underlying legality evaluator or mutation routine. No action target is claimed."
+  },
+  "native_ai_tree": {
+    "rare_task_tick_raw_days": [180, 720, 360, 180, 180, 180, 180],
+    "law_opportunity": [
+      "enumerate a visible/changeable group",
+      "identify its active law and candidate laws",
+      "evaluate candidate can_have plus realm/title applicability",
+      "evaluate temporary can_pass and final pass_cost",
+      "for stock AI only, keep able candidates with ai_will_do above zero and choose the highest score on RARE_TASK_TICK"
+    ],
+    "law_execution": [
+      "the GUI obtains a GuiLaw and requires CanEnact before Enact",
+      "schema defines on_pass immediately before the law change and on_after_pass immediately after it",
+      "postcondition must re-query the active law, resources, and any affected successor vectors"
+    ],
+    "contract_opportunity": [
+      "resolve the subject contract and require a modifiable, unblocked actual vassal relationship",
+      "use obligation score for which side the proposed trade favors, while AI selection uses the separate liege/subject desire values",
+      "only adjacent valid obligation levels compete with the current level",
+      "ignore non-positive desire and desire not greater than the current level",
+      "stock AI chooses by weighted random over valid desired levels after interaction cadence and hook/war gates"
+    ],
+    "contract_execution": [
+      "the human UI builds a contract preview, selects enabled obligation levels, and sends the interaction",
+      "on acceptance the script blocks modification and applies each changed obligation level",
+      "AI routes trigger char_interaction.0250 or .0251, then apply the engine-selected most-desired level and consume the hook",
+      "postcondition must re-query the same full-generation contract identity and active-level vector"
+    ]
+  },
+  "representative_nonreligious_findings": {
+    "crown_authority": {
+      "group_flag": "realm_law",
+      "cumulative": true,
+      "stock_ai_progression": [
+        "crown_authority_0 -> crown_authority_1 has ai_will_do 1 when legal",
+        "crown_authority_1 -> crown_authority_2 has ai_will_do 1 when legal",
+        "crown_authority_3 has no ai_will_do block in this definition and is not selected by the generic positive-score law rule"
+      ],
+      "cost": "engine-final dynamic prestige cost rooted at base 100; do not reconstruct it from selected modifiers"
+    },
+    "succession_order": {
+      "stock_ai_scores": {
+        "partition_succession_law_from_confederate": 1,
+        "high_partition_succession_law_from_confederate_or_partition": 2,
+        "single_heir_succession_law": 3
+      },
+      "shape_examples": {
+        "confederate_partition": "inheritance/children/oldest/partition plus create_primary_tier_titles",
+        "partition": "inheritance/children/oldest/partition",
+        "high_partition": "partition with primary_heir_minimum_share 0.5",
+        "single_heir": "inheritance/children/oldest/single_heir"
+      },
+      "cost": "engine-final dynamic prestige cost rooted at base 500; some routes add other currencies or opaque faith-derived modifiers"
+    },
+    "title_succession": {
+      "separate_scope": true,
+      "representative_law": "feudal_elective_succession_law",
+      "cost": "title cost uses the dynamic title succession value rooted at 3 times the realm base",
+      "stock_ai_boundary": "the representative elective definitions have no ai_will_do block; this freeze does not infer a hidden enactment policy"
+    },
+    "subject_contract": {
+      "human_max_changed_obligations": 4,
+      "comment_drift": "The interaction comment says three, while the executed script compares against max_contract_changes and the exact value is 4.",
+      "ai_liege_frequency_by_tier": [0, 12, 12, 24, 24, 36],
+      "ai_subject_frequency_by_tier": [0, 24, 24, 24, 36, 0]
+    }
+  },
+  "reusable_native_substrate": {
+    "source": "ck3_autonomous_player/native_bridge/research/prewar_scope_v1_abi.json",
+    "subject_contract": {
+      "storage_slot_rva": "0x570CCA0",
+      "fallback_object_rva": "0x570CC50",
+      "type_descriptor_rva": "0x522F770",
+      "primary_vtable_rva": "0x42F9C40",
+      "secondary_vtable_rva": "0x42F9C08",
+      "object_size": "0xD8",
+      "layout": {
+        "+0x08": "full CSubjectContractID identity",
+        "+0x20": "subject/tributary Character*",
+        "+0x28": "liege/suzerain Character*",
+        "+0x38/+0x44": "term-pointer array and signed count",
+        "+0x68": "parallel active-level index array"
+      }
+    },
+    "succession_postcondition_source": "ck3_autonomous_player/native_bridge/research/campaign_root_context_v1_abi.json",
+    "succession_postcondition": {
+      "held_title_vector": "Character land-state extension +0x1E0 data / +0x1EC count",
+      "title_successor_vector": "LandedTitle +0x278 data / +0x284 count"
+    }
+  },
+  "next_vertical_slice": {
+    "priority": "P0",
+    "observer": {
+      "working_name": "realm_law_governance_snapshot_v1",
+      "scope": "played ruler; active nonreligious realm-law groups plus succession_order_laws",
+      "minimum_fields": [
+        "frame/date and full-generation played CharacterID",
+        "group key and active law key",
+        "candidate law key",
+        "engine-final can_have, can_pass, and can_enact results with unavailable reason",
+        "engine-final currency costs",
+        "succession order, title division, traversal order, rank, and primary-heir minimum share where present",
+        "current primary-title and held-title successor vectors from the existing campaign-root reader"
+      ],
+      "acceptance": "two equal paused main-thread samples on the frozen build; non-empty active law; a currently illegal candidate remains represented with a reason; no mutation or GUI click"
+    },
+    "action": {
+      "working_name": "enact_realm_law_v1",
+      "depends_on": "production-live realm_law_governance_snapshot_v1 and exact native legality/enact call targets",
+      "request": [
+        "expected frame/date",
+        "expected full-generation played CharacterID",
+        "group key",
+        "expected current law key",
+        "target law key"
+      ],
+      "guard": "re-run the same engine-final CanEnact path on the main thread immediately before Enact",
+      "postcondition": "active target law is re-observed, resource delta is compatible with engine-final cost, and affected title-successor vectors are sampled again"
+    },
+    "next_after_law": "subject_contract_governance_snapshot_v1 can reuse the already-frozen CSubjectContract storage/layout before any contract mutation command is designed"
+  },
+  "unknowns": [
+    "CLaw/CLawGroup storage ownership and stable key extraction for a played ruler",
+    "the exact native evaluator behind GuiLaw.CanEnact and GetCanEnactDescription",
+    "the exact mutation routine or command serializer behind GuiLaw.Enact",
+    "the scheduler callsite and tie-break rule for equal positive law ai_will_do scores",
+    "whether approval surfaces change the final executable legality result outside the reflected ShouldBeApproved surface",
+    "a no-mutation native hypothetical successor distribution for each candidate law",
+    "native addresses for subject-contract candidate enumeration, final enablement, preview, and Send",
+    "the mutation receipt needed to distinguish a completed law or contract action from a later unrelated state transition"
+  ],
+  "integration_impact": {
+    "public_schema_changed": false,
+    "bridge_changed": false,
+    "planner_changed": false,
+    "cmake_changed": false,
+    "open_kaishek_impact": "none; research-only freeze",
+    "ck3_launched": false
+  }
+}
