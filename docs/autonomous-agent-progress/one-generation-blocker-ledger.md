@@ -1766,3 +1766,26 @@ remains `1/8` pending one bounded exact-build natural-death artifact.
 - Focused native fixtures and candidate DLL build are GREEN. The blocker stays
   open pending one short R677 replay; natural death remains the later M3 gate
   and receives no dedicated long run.
+
+## R677 optional selected-game-rule component RED (2026-09-14)
+
+- R677 cold-restored CharacterID `32904` at date `53789952`. The first
+  campaign-root query passed the corrected celestial council scope boundary,
+  then returned `selected_game_rule_tokens_unavailable`. The planner emitted no
+  gameplay input, the game date did not move, and managed cleanup is GREEN.
+- Run, final driver-state and error-log SHA-256 are
+  `0FC0C00D7FDE01F032C17956D086B0DF076D157A424018D4327D955B2F33028D`,
+  `74676EC7CAC08AC8A5F8EC82852A833E5A6F1BDE0A4AA3866D2AC63804D60E08`, and
+  `107628E983A0A46044B5D2626B883ACFCE22BA3819EBF49E84F505917EF131AF`.
+- Root cause is a monolithic availability boundary: optional game-rule token
+  enumeration erased otherwise valid ruler, estate and succession evidence.
+  The candidate contract keeps root `status=available`, publishes
+  `selected_game_rule_tokens=[]` and count `0`, marks that component and
+  aggregate readiness false, and retains independent fields. Celestial council
+  remains typed unavailable and the turn bundle may be `partial`.
+- Focused validation produced candidate DLL
+  `68E3746D35601C3197165A91ED85C5E5AA5C362C5EEF882123487E52B2ED2B76`.
+  The operational blocker remains open pending one three-turn R678
+  differential replay proving partial-bundle expectation capture. R678 is not
+  a natural-death run; the naturally occurring death/reconciliation artifact
+  remains the later M3 integration gate.

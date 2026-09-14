@@ -398,3 +398,34 @@ source-contract and mailbox fixtures pass, including a celestial case with an
 invalid standard task hidden behind the scope gate. The next action is one
 short corrected-DLL replay in R677; the natural-death integration gate remains
 separate and receives no dedicated long run.
+
+## R677 optional game-rule component RED and candidate contract
+
+The three-turn R677 differential replay restored CharacterID `32904` at date
+`53789952`. The celestial council correction worked far enough for the same
+campaign-root query to proceed beyond council, but the root then returned
+`selected_game_rule_tokens_unavailable`. The planner consequently stopped
+before a turn bundle, succession expectation, gameplay command or date
+advance. Managed cleanup is GREEN. Run, final driver-state and error-log
+SHA-256 are `0FC0C00D7FDE01F032C17956D086B0DF076D157A424018D4327D955B2F33028D`,
+`74676EC7CAC08AC8A5F8EC82852A833E5A6F1BDE0A4AA3866D2AC63804D60E08`, and
+`107628E983A0A46044B5D2626B883ACFCE22BA3819EBF49E84F505917EF131AF`.
+
+Selected game-rule enumeration is an optional campaign-root component and is
+not an input to M3 succession expectation capture. The candidate contract
+therefore keeps root `status=available` when this component cannot be read,
+publishes `selected_game_rule_tokens=[]` and
+`native_selected_game_rule_token_count=0`, sets
+`selected_game_rule_tokens_ready=false` and aggregate `ready=false`, and
+retains every independently observed root field. Celestial council remains a
+typed unavailable component, so the derived turn bundle may be `partial`.
+This preserves the distinction between an observed empty token set and a
+failed token read without erasing the succession fields.
+
+Focused native/Python validation produced candidate DLL
+`68E3746D35601C3197165A91ED85C5E5AA5C362C5EEF882123487E52B2ED2B76`.
+The next live gate is exactly one three-turn R678 differential replay. It must
+show the partial bundle and succession expectation are usable; it must not be
+reported as passed before that evidence exists. A later naturally occurring
+death remains the independent M3 end-to-end transition gate, and this defect
+does not authorize waiting for or manufacturing one during R678.
