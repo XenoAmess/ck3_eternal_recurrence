@@ -208,7 +208,7 @@ exact-build `GetDomainSize`/`GetDomainLimit` core；任一调用失败、值域�
 | `adjacent_external_province_holder_character_ids` | 合法没有已持有的外部相邻省份时为 `[]`；available frame 中不使用 `null` |
 | `related_character_contexts` | 两个来源 identity vector 都为空时为 `[]`；行内 `capital_province_id` 可合法为 `null`，主头衔与 top liege 不可空 |
 | `government` | resolver 返回 canonical no-government object `module+0x570CB50`；不得把 fallback 的内存内容发布成 stable key |
-| selected tokens | 合法空 vector 是 `[]`；不能回退到 preset 文件或 stock defaults |
+| selected tokens | Legal empty vector is `[]`; a failed read also publishes `[]`, but `selected_game_rule_tokens_ready=false` distinguishes it from an observed empty set. Do not fall back to preset files or stock defaults. |
 
 `held_title_partition` is an all-or-nothing, title-ID-sorted projection of the
 current engine first heir for every personally held county-or-higher title.
@@ -699,3 +699,32 @@ available while the council component truthfully reports
 invalid standard task behind the celestial scope gate and proves it is not
 dereferenced. Celestial ministry observation itself remains a later,
 separately scoped capability.
+
+## R677 selected-game-rule component RED and revised boundary
+
+R677 replayed the same cold CharacterID `32904` checkpoint with the celestial
+council scope repair. The first campaign-root read advanced past the former
+`council_unavailable` failure and stopped at
+`selected_game_rule_tokens_unavailable`. This proves that the council repair
+worked at its intended boundary and exposes the selected-rule lookup as the
+next independent failure. R677 submitted no gameplay command, did not advance
+the date, and completed process/injector cleanup GREEN. The artifact remains a
+RED because no usable turn bundle reached the planner.
+
+Selected game-rule tokens are an optional campaign-root component. A failed
+native selected-rule lookup now keeps the root `status=available` and preserves
+all successfully observed same-frame ruler, realm and succession fields. The
+published token vector is `[]`,
+`native_selected_game_rule_token_count=0`,
+`readiness.selected_game_rule_tokens_ready=false`, and
+`readiness.ready=false`. A legitimately observed empty selected-rule set uses
+the same empty vector and zero count but has
+`selected_game_rule_tokens_ready=true`; consumers must use readiness rather
+than infer availability from cardinality.
+
+This exception is deliberately narrow. Failure of a required player, title,
+succession, government, economy, health, domain, faction-count, relationship
+or same-frame identity read still makes the root typed `unavailable`. Council
+keeps its existing typed subcomponent boundary: a celestial ruler may have an
+available root with council unavailable and selected-rule tokens unavailable,
+while all other valid fields remain usable.

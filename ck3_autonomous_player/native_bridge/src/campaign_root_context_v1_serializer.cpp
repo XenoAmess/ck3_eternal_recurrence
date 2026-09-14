@@ -68,6 +68,20 @@ bool ReadinessAll(const game::CampaignRootReadinessV1 &value,
          value.same_frame_ready == expected && value.ready == expected;
 }
 
+bool ValidAvailableReadiness(
+    const game::CampaignRootReadinessV1 &value) noexcept {
+  return value.player_identity_ready &&
+         value.player_monthly_gold_income_ready && value.player_health_ready &&
+         value.player_domain_ready && value.player_targeting_factions_ready &&
+         value.primary_title_ready && value.primary_title_succession_ready &&
+         value.held_title_partition_ready && value.capital_ready &&
+         value.lieges_ready && value.direct_landed_vassals_ready &&
+         value.adjacent_external_province_holders_ready &&
+         value.related_character_contexts_ready && value.government_ready &&
+         value.same_frame_ready &&
+         value.ready == value.selected_game_rule_tokens_ready;
+}
+
 std::string_view CouncilTaskTypeKey(
     game::CampaignRootCouncilTaskTypeV1 value) noexcept {
   switch (value) {
@@ -424,13 +438,18 @@ bool ValidAvailable(const game::CampaignRootContextV1 &context) noexcept {
           *context.top_liege_character_id,
           context.direct_landed_vassal_character_ids,
           context.adjacent_external_province_holder_character_ids) ||
-      !ReadinessAll(context.readiness, true) ||
+      !ValidAvailableReadiness(context.readiness) ||
       !context.unavailable_reason.empty()) {
     return false;
   }
   if (context.readiness.council_ready !=
       (context.council->status ==
        game::CampaignRootCouncilStatusV1::available)) {
+    return false;
+  }
+  if (!context.readiness.selected_game_rule_tokens_ready &&
+      (!context.selected_game_rule_tokens.empty() ||
+       context.native_selected_game_rule_token_count != 0)) {
     return false;
   }
   if (context.primary_title.has_value()) {

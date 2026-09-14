@@ -499,6 +499,55 @@ class CampaignRootContextV1ContractTests(unittest.TestCase):
         self.assertFalse(normalized["readiness"]["council_ready"])
         self.assertTrue(normalized["readiness"]["ready"])
 
+    def test_available_preserves_root_when_rule_tokens_are_unavailable(self) -> None:
+        frame = _frame()
+        frame["selected_game_rule_tokens"] = []
+        frame["native_selected_game_rule_token_count"] = 0
+        frame["readiness"]["selected_game_rule_tokens_ready"] = False
+        frame["readiness"]["ready"] = False
+
+        normalized = normalize_campaign_root_context_v1(
+            frame,
+            expected_date_raw=DATE_RAW,
+            expected_snapshot_revision=NATIVE_REVISION,
+        )
+
+        self.assertEqual(normalized["status"], "available")
+        self.assertEqual(normalized["selected_game_rule_tokens"], [])
+        self.assertFalse(
+            normalized["readiness"]["selected_game_rule_tokens_ready"]
+        )
+        self.assertFalse(normalized["readiness"]["ready"])
+
+    def test_celestial_government_excludes_standard_council_scope(self) -> None:
+        frame = _frame()
+        frame["government"] = {
+            "key": "celestial_government",
+            "flags": ["government_is_celestial", "government_is_settled"],
+            "native_flag_count": 2,
+        }
+        frame["council"] = {
+            "status": "unavailable",
+            "coverage_key": "standard_landed_non_nomadic_core_v1",
+            "owner_character_id": PLAYER_CHARACTER_ID,
+            "positions": [],
+            "auxiliary_vacancies_complete": False,
+            "unavailable_reason": (
+                "outside_standard_landed_non_nomadic_core_scope"
+            ),
+        }
+        frame["readiness"]["council_ready"] = False
+
+        normalized = normalize_campaign_root_context_v1(
+            frame,
+            expected_date_raw=DATE_RAW,
+            expected_snapshot_revision=NATIVE_REVISION,
+        )
+
+        self.assertEqual(normalized["status"], "available")
+        self.assertEqual(normalized["council"]["status"], "unavailable")
+        self.assertFalse(normalized["readiness"]["council_ready"])
+
     def test_every_unavailable_stage_is_typed_and_carries_bindings(self) -> None:
         for reason in UNAVAILABLE_REASONS:
             with self.subTest(reason=reason):

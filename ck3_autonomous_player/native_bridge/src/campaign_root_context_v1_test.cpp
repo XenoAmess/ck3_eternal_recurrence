@@ -1283,6 +1283,32 @@ bool TestCelestialCouncilIsOutsideStandardScope() {
          AllReadiness(result.readiness, true);
 }
 
+bool TestUnavailableRuleTokensPreserveRootObservation() {
+  Fixture fixture;
+  fixture.resolved_selected_rule_set = nullptr;
+  const auto environment = Environment(fixture);
+  const auto access = Access(fixture);
+  const xar::ck3_11906::CampaignRootContextRequestV1 request{41};
+  xar::game::CampaignRootContextV1 result{};
+  if (xar::ck3_11906::ReadCampaignRootContextV1(
+          environment, access, request, result) !=
+          xar::game::ReadCampaignRootContextResultV1::available ||
+      result.status !=
+          xar::game::CampaignRootContextStatusV1::available ||
+      !result.selected_game_rule_tokens.empty() ||
+      result.native_selected_game_rule_token_count != 0 ||
+      result.readiness.selected_game_rule_tokens_ready ||
+      result.readiness.ready || !result.readiness.same_frame_ready ||
+      !result.unavailable_reason.empty()) {
+    return false;
+  }
+  auto complete_readiness = result.readiness;
+  complete_readiness.selected_game_rule_tokens_ready = true;
+  complete_readiness.ready = true;
+  return AllReadiness(complete_readiness, true) &&
+         !xar::ck3_11906::SerializeCampaignRootContextV1(result).empty();
+}
+
 bool TestTargetingFactionCountSemantics() {
   Fixture no_land_state;
   void *null_land_state = nullptr;
@@ -1378,6 +1404,10 @@ int main() {
   }
   if (!TestCelestialCouncilIsOutsideStandardScope()) {
     std::cerr << "celestial council scope fixture failed\n";
+    return 1;
+  }
+  if (!TestUnavailableRuleTokensPreserveRootObservation()) {
+    std::cerr << "optional selected-rule-token fixture failed\n";
     return 1;
   }
   if (!TestTargetingFactionCountSemantics()) {

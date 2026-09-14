@@ -508,12 +508,18 @@ def _normalize_readiness(
     if not available:
         if any(normalized.values()):
             raise ValueError("readiness fields disagree with status")
-    elif any(
-        not flag
-        for key, flag in normalized.items()
-        if key != "council_ready"
-    ):
-        raise ValueError("available root readiness fields disagree with status")
+    else:
+        required_keys = set(_READINESS_KEYS) - {
+            "council_ready",
+            "selected_game_rule_tokens_ready",
+            "ready",
+        }
+        if any(not normalized[key] for key in required_keys):
+            raise ValueError("available root readiness fields disagree with status")
+        if normalized["ready"] is not normalized[
+            "selected_game_rule_tokens_ready"
+        ]:
+            raise ValueError("root readiness disagrees with rule-token readiness")
     return normalized
 
 
@@ -729,6 +735,10 @@ def normalize_campaign_root_context_v1(
     )
     if token_count != len(tokens):
         raise ValueError("selected token count does not match the full vector")
+    if available and not readiness["selected_game_rule_tokens_ready"] and (
+        tokens or token_count != 0
+    ):
+        raise ValueError("unready selected rule tokens must be cleared")
 
     if not available:
         if reason not in _UNAVAILABLE_REASONS:
@@ -939,6 +949,7 @@ def normalize_campaign_root_context_v1(
         and government is not None
         and "government_is_landless_adventurer" not in government["flags"]
         and "government_is_nomadic" not in government["flags"]
+        and "government_is_celestial" not in government["flags"]
     )
     council = _normalize_council(
         frame.get("council"),

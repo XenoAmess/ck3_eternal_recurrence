@@ -125,5 +125,25 @@ layout on CharacterID `32904`'s celestial government and returned
 `council_unavailable`. No gameplay command was submitted and cleanup was
 GREEN. The native scope repair leaves celestial council typed unavailable but
 allows the same-frame succession and held-title data to reach the turn bundle.
-This RED remains open until the corrected DLL passes one short R677 replay;
+R677 confirmed that this scope gate moved the first-query failure past council;
 it does not justify a natural-death long run.
+
+## R677 selected-rule prerequisite RED
+
+R677 stopped on `selected_game_rule_tokens_unavailable` after the celestial
+council repair admitted the remaining root fields. It submitted no gameplay
+command, did not advance the date, and completed cleanup GREEN. Because the old
+campaign-root contract collapsed on that optional lookup, the planner still
+could not retain its first succession expectation; R677 therefore remains RED.
+
+The revised campaign-root contract treats selected game-rule tokens as an
+optional component: on lookup failure the root stays `status=available`, the
+tokens are empty with count zero, and both
+`selected_game_rule_tokens_ready` and root `ready` are false. The observed
+title, held-title partition and ordered heir fields remain available. A turn
+bundle can therefore be constructed; for this celestial ruler it is `partial`
+because the standard council component is outside scope. Succession expectation
+capture accepts an available or partial turn bundle and consumes only its
+same-frame ruler/succession fields, so neither optional selected-rule tokens nor
+the unsupported celestial ministry is allowed to hide the engine's current
+heir projection.

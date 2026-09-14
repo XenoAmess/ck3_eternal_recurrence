@@ -131,6 +131,7 @@ struct ObservationV1 {
   std::optional<game::CampaignRootGovernmentV1> government;
   std::vector<std::string> selected_game_rule_tokens;
   std::int32_t native_selected_game_rule_token_count = 0;
+  bool selected_game_rule_tokens_available = false;
 
   void *game_data = nullptr;
   void *player_character = nullptr;
@@ -1850,9 +1851,16 @@ bool ReadObservation(const CampaignRootNativeEnvironmentV1 &environment,
     failure = "council_unavailable";
     return false;
   }
-  if (!ReadSelectedRuleTokens(environment, access, output)) {
-    failure = "selected_game_rule_tokens_unavailable";
-    return false;
+  output.selected_game_rule_tokens_available =
+      ReadSelectedRuleTokens(environment, access, output);
+  if (!output.selected_game_rule_tokens_available) {
+    output.selection_service = nullptr;
+    output.selected_rule_set = nullptr;
+    output.selected_rule_data = nullptr;
+    output.selected_rule_token_pointers.clear();
+    output.selected_rule_tokens_native_order.clear();
+    output.selected_game_rule_tokens.clear();
+    output.native_selected_game_rule_token_count = 0;
   }
   return true;
 }
@@ -2039,9 +2047,10 @@ game::ReadCampaignRootContextResultV1 ReadCampaignRootContextV1(
     output.readiness.adjacent_external_province_holders_ready = true;
     output.readiness.related_character_contexts_ready = true;
     output.readiness.government_ready = true;
-    output.readiness.selected_game_rule_tokens_ready = true;
+    output.readiness.selected_game_rule_tokens_ready =
+        first.selected_game_rule_tokens_available;
     output.readiness.same_frame_ready = true;
-    output.readiness.ready = true;
+    output.readiness.ready = first.selected_game_rule_tokens_available;
     output.unavailable_reason.clear();
     return game::ReadCampaignRootContextResultV1::available;
   } catch (...) {

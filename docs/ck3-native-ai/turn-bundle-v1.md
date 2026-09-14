@@ -15,7 +15,10 @@
   projects the same-frame typed council position/task/target/progress input.
   The bundle is `available/ready=true` when every component is observed; it
   remains `partial` when optional snapshot surfaces are missing or council is
-  outside its declared coverage. The minimum targeting-faction
+  outside its declared coverage. A failed selected-game-rule token lookup also
+  leaves campaign-root available with that optional component unready, so it
+  does not prevent the bundle from retaining the observed ruler, realm and
+  succession domains. The minimum targeting-faction
   alert is observed, while faction identity, power and deadlines remain open.
 - This aggregation changes no native mailbox, DLL, game object or action path.
   Native AI decision-tree research is N/A because the package groups observed
@@ -114,6 +117,13 @@ domain becomes unavailable with the same reason and all readiness flags remain
 false. A partial available bundle never fills missing fields from OCR, save
 text, historical artifacts or another frame.
 
+`selected_game_rule_tokens_ready=false` is not a typed-unavailable root. The
+aggregator may still construct a bundle from the remaining same-frame fields;
+its overall readiness stays false. When the same root also carries a celestial
+council outside `standard_landed_non_nomadic_core_v1`, `realm_council_ready`
+is false and the bundle is `partial`. This boundary preserves succession
+observation without claiming either game-rule or celestial-ministry coverage.
+
 ## Focused verification
 
 - Contract fixtures cover successor order, high-stress, gold, exact-build
@@ -144,3 +154,20 @@ process without advancing the date. It covered independent ruler `29829`,
 vassal ruler `36108`, nonempty relationship vectors and six occupied council
 tasks in each scene. G2-M1 is complete. Deeper faction identity, power and
 deadline inputs belong to the later governance response package.
+
+## R677 short boundary replay
+
+R677 used the corrected celestial council scope and moved the first-query RED
+from `council_unavailable` to
+`selected_game_rule_tokens_unavailable`. It issued no gameplay command,
+advanced no date, and cleaned up CK3 and the injector GREEN. The result is not
+a successful bundle artifact, but it narrows the blocker: the standard council
+is now correctly typed unavailable, while the still-monolithic optional
+selected-rule failure prevents bundle construction under the old contract.
+
+Under the revised contract, that optional failure no longer collapses the
+campaign root. The turn bundle can be built from the preserved same-frame
+fields and will be `partial` for CharacterID `32904` because celestial council
+is outside the five-seat scope. This change makes the already observed title
+and heir state available to succession expectation capture. It does not claim
+that R677 itself passed, and requires a later short live replay for proof.
