@@ -19,6 +19,10 @@ R555 已证明一条短轨迹：source `date_raw=53155680`，依次经过 `sway_
 
 这只冻结可执行输入和验证方法；在新的 production-live report 出现前，不改变 `tgp_travel_events.0030` 的 live 状态。
 
+时间推进使用 R555 已实证的短脉冲：每次 `resume-map` 提交后立即 `pause-map`，再读取暂停帧。不得先轮询等待事件再暂停；R666 证明这种顺序会在
+speed 5 下跨过 `sway_outcome.1001` 所在日期，直接撞到下一事件。R666 在选择前停止，source 未变且 cleanup GREEN，因此该结果保留为
+harness RED，不是产品结果。
+
 ## 验收边界
 
 GREEN 必须同时证明：

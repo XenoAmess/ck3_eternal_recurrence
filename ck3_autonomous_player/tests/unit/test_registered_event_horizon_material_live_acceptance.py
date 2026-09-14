@@ -69,6 +69,12 @@ def test_runner_uses_registry_for_preludes_and_material_target() -> None:
     assert '"maximum_ck3_launches": 1' in source
     assert '"war_actions": 0' in source
     assert '"maximum_date_raw": args.target_date_raw' in source
+    resume = source.index('base._structured(resume, tool_name="ck3_execute_step:resume")')
+    immediate_pause = source.index(
+        '"ck3_execute_step", {"step": "pause-map"}', resume
+    )
+    paused_snapshot = source.index('label="paused-horizon"', immediate_pause)
+    assert resume < immediate_pause < paused_snapshot
 
 
 def test_exact_build_gate_requires_timeline_capabilities() -> None:

@@ -183,32 +183,6 @@ def _assert_identity(
         raise RuntimeError("event horizon exceeded its exact date bound")
 
 
-async def _pause_if_needed(
-    client: Any,
-    results: list[object],
-    commands: list[str],
-    snapshot: dict[str, object],
-    *,
-    poll_interval: float,
-) -> dict[str, object]:
-    current = snapshot
-    if current.get("paused") is not True:
-        commands.append("pause-map")
-        result = await client.call_tool(
-            "ck3_execute_step",
-            {"step": "pause-map", "expected_revision": _revision(current, label="pause")},
-        )
-        results.append(result)
-        base._structured(result, tool_name="ck3_execute_step:pause")
-    deadline = time.monotonic() + 10.0
-    while current.get("paused") is not True and time.monotonic() < deadline:
-        await asyncio.sleep(poll_interval)
-        current = await _snapshot(client, results, label="pause-postcondition")
-    if current.get("paused") is not True:
-        raise RuntimeError("pause-map postcondition was not observed")
-    return current
-
-
 def _recommend(
     *,
     snapshot: Mapping[str, object],
@@ -368,10 +342,21 @@ async def _run_mcp_sequence(
                     )
                     results.append(resume)
                     base._structured(resume, tool_name="ck3_execute_step:resume")
+                    # Preserve the proven source cadence: stop immediately after
+                    # every resume submission, then inspect that paused day.
+                    # Waiting for an event before pausing can skip an earlier
+                    # queued event at speed 5.
+                    commands.append("pause-map")
+                    pause = await client.call_tool(
+                        "ck3_execute_step", {"step": "pause-map"}
+                    )
+                    results.append(pause)
+                    base._structured(pause, tool_name="ck3_execute_step:pause")
 
                 boundary: dict[str, object] | None = None
-                while time.monotonic() < deadline:
-                    current = await _snapshot(client, results, label="horizon")
+                pause_deadline = min(deadline, time.monotonic() + 10.0)
+                while time.monotonic() < pause_deadline:
+                    current = await _snapshot(client, results, label="paused-horizon")
                     final = current
                     compact = _compact_snapshot(current)
                     if not samples or compact != samples[-1]:
@@ -381,20 +366,14 @@ async def _run_mcp_sequence(
                         expected_character_id=expected_character_id,
                         maximum_date_raw=target_date_raw,
                     )
-                    if current.get("active_event") is not None or current.get("date_raw") >= target_date_raw:
+                    if current.get("paused") is True:
                         boundary = current
                         break
                     await asyncio.sleep(poll_interval)
                 if boundary is None:
-                    raise RuntimeError("registered event horizon timed out")
+                    raise RuntimeError("pause-map postcondition was not observed")
 
-                current = await _pause_if_needed(
-                    client,
-                    results,
-                    commands,
-                    boundary,
-                    poll_interval=poll_interval,
-                )
+                current = boundary
                 final = current
                 _assert_identity(
                     current,
@@ -402,7 +381,9 @@ async def _run_mcp_sequence(
                     maximum_date_raw=target_date_raw,
                 )
                 if current.get("active_event") is None:
-                    raise RuntimeError("target event was absent at the exact date boundary")
+                    if current.get("date_raw") >= target_date_raw:
+                        raise RuntimeError("target event was absent at the exact date boundary")
+                    continue
 
                 context = await _query_event(client, results, commands, current)
                 event_key = context.get("event_definition_key")
