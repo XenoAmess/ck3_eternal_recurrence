@@ -1845,3 +1845,24 @@ remains `1/8` pending one bounded exact-build natural-death artifact.
   remaining integration gate is a bounded naturally encountered death that
   reconciles the actual successor/title distribution and continues in the same
   campaign as the real successor.
+
+## G2-M4 first faction intervention seam (2026-09-14)
+
+- Exact-build stock data confirms that `gift_interaction` explicitly considers
+  factioneering vassals, rejects repeat `gift_opinion`, auto-accepts an AI
+  recipient, transfers the engine-evaluated `gift_value` and applies
+  `send_gift_opinion`. The generic native definition lookup and
+  validate/construct/queue command path are byte-frozen in
+  `docs/ck3-native-ai/factions-and-rebellions.md` and its source-contract
+  fixture.
+- The first narrow M4 OODA is a single budgeted gift to a real targeting-faction
+  member who is also a REALM2 direct landed AI vassal. Completion requires the
+  same-date gold delta and modifier-specific `gift_opinion` evidence, followed
+  by a requery of the same faction. A submitted ACK or the count alone does not
+  qualify; a faction that remains after the gift is recorded as mitigation,
+  not resolution.
+- Status is `research / live=false`; no native, public MCP, schema, action or
+  planner interface changed. The next blocker is the targeting-faction
+  span/stable identity/member observer, followed by exact actor/recipient gift
+  value/opinion preview and the generic send action. Generic religion remains
+  outside scope.
