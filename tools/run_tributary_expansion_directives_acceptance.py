@@ -257,6 +257,7 @@ def run_scenario(stream: harness.MarkerStream, artifacts: Path) -> dict[str, obj
 def configure_harness(source: Path) -> None:
     harness.SOURCE = source
     harness.FIXTURE_SOURCE = FIXTURE_SOURCE
+    harness.BOOT_TIMEOUT_S = 30 * 60
     harness.PRODUCT_OUTER = PRODUCT_OUTER
     harness.FIXTURE_OUTER = FIXTURE_OUTER
     harness.PROJECT_TOKENS = (

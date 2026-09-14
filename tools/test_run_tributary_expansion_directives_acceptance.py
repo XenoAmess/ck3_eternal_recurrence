@@ -15,6 +15,9 @@ class TributaryExpansionAcceptanceRunnerTests(unittest.TestCase):
     def setUp(self) -> None:
         runner.configure_harness(runner.DEFAULT_SOURCE.resolve())
 
+    def test_startup_window_matches_repository_contract(self) -> None:
+        self.assertEqual(runner.harness.BOOT_TIMEOUT_S, 30 * 60)
+
     def test_product_and_fixture_contracts_are_green(self) -> None:
         self.assertEqual(runner.product_source_errors(), [])
         self.assertEqual(runner.fixture_source_errors(), [])
