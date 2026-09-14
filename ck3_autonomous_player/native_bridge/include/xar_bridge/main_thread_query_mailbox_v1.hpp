@@ -275,7 +275,11 @@ struct MainThreadQueryMailboxDiagnosticsV1 {
   std::uint64_t pump_epochs = 0;
   std::uint64_t owner_verified_pump_epochs = 0;
   std::uint64_t paused_owner_verified_pump_epochs = 0;
+  std::uint64_t published_sequence = 0;
   std::uint64_t executed_requests = 0;
+  std::uint64_t executor_started_requests = 0;
+  std::uint64_t executor_started_sequence = 0;
+  std::uint64_t executor_started_pump_epoch = 0;
   std::uint64_t completed_sequence = 0;
   std::uint32_t owner_thread_id = 0;
   std::uint32_t observed_current_thread_id = 0;
@@ -309,6 +313,9 @@ struct MainThreadQueryMailboxV1 {
   std::atomic<std::uint64_t> pump_epochs{0};
   std::atomic<std::uint64_t> owner_verified_pump_epochs{0};
   std::atomic<std::uint64_t> paused_owner_verified_pump_epochs{0};
+  std::atomic<std::uint64_t> executor_started_requests{0};
+  std::atomic<std::uint64_t> executor_started_sequence{0};
+  std::atomic<std::uint64_t> executor_started_pump_epoch{0};
   std::atomic<std::uint64_t> executed_requests{0};
   std::atomic<std::uint32_t> owner_thread_id{0};
   std::atomic<std::uint32_t> observed_current_thread_id{0};

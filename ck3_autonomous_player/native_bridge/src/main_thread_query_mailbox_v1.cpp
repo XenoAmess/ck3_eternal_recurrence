@@ -604,6 +604,9 @@ bool InstallMainThreadQueryMailboxV1(
   mailbox.owner_verified_pump_epochs.store(0, std::memory_order_release);
   mailbox.paused_owner_verified_pump_epochs.store(
       0, std::memory_order_release);
+  mailbox.executor_started_requests.store(0, std::memory_order_release);
+  mailbox.executor_started_sequence.store(0, std::memory_order_release);
+  mailbox.executor_started_pump_epoch.store(0, std::memory_order_release);
   mailbox.executed_requests.store(0, std::memory_order_release);
   mailbox.owner_thread_id.store(0, std::memory_order_release);
   mailbox.observed_current_thread_id.store(0, std::memory_order_release);
@@ -1231,6 +1234,16 @@ bool ObserveMainThreadPumpAndDrainV1(
   }
 
   bool succeeded = false;
+  // Publish callback entry before transferring control to the fixed typed
+  // executor. `executed_requests` is intentionally a completion counter, so
+  // it cannot distinguish a blocked callback from a ticket application-main
+  // never picked up.
+  mailbox.executor_started_sequence.store(sequence,
+                                           std::memory_order_release);
+  mailbox.executor_started_pump_epoch.store(pump_epoch,
+                                             std::memory_order_release);
+  mailbox.executor_started_requests.fetch_add(1,
+                                               std::memory_order_acq_rel);
 #if defined(_MSC_VER)
   __try {
 #endif
@@ -1277,6 +1290,14 @@ MainThreadQueryMailboxDiagnosticsV1 ReadMainThreadQueryMailboxDiagnosticsV1(
   output.paused_owner_verified_pump_epochs =
       mailbox.paused_owner_verified_pump_epochs.load(
           std::memory_order_acquire);
+  output.published_sequence =
+      mailbox.published_sequence.load(std::memory_order_acquire);
+  output.executor_started_requests =
+      mailbox.executor_started_requests.load(std::memory_order_acquire);
+  output.executor_started_sequence =
+      mailbox.executor_started_sequence.load(std::memory_order_acquire);
+  output.executor_started_pump_epoch =
+      mailbox.executor_started_pump_epoch.load(std::memory_order_acquire);
   output.executed_requests =
       mailbox.executed_requests.load(std::memory_order_acquire);
   output.completed_sequence =

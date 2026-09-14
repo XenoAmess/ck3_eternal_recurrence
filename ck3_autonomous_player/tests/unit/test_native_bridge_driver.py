@@ -2847,6 +2847,14 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
                 "sequence": 7,
                 "pid": 4242,
                 "monotonic_ms": 500,
+                "main_thread_query_mailbox_v1": {
+                    "published_sequence": 3,
+                    "completed_sequence": 2,
+                    "executor_started_requests": 2,
+                    "executor_started_sequence": 3,
+                    "executor_started_pump_epoch": 91,
+                    "future_additive_probe": 17,
+                },
             }
         )
         endpoint.publish(
@@ -2863,6 +2871,17 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
         self.assertTrue(diagnostics["connected"])
         self.assertEqual(diagnostics["bridge_pid"], 4242)
         self.assertEqual(diagnostics["last_heartbeat"]["sequence"], 7)
+        self.assertEqual(
+            diagnostics["last_heartbeat"]["main_thread_query_mailbox_v1"],
+            {
+                "published_sequence": 3,
+                "completed_sequence": 2,
+                "executor_started_requests": 2,
+                "executor_started_sequence": 3,
+                "executor_started_pump_epoch": 91,
+                "future_additive_probe": 17,
+            },
+        )
         self.assertEqual(
             diagnostics["last_pong"]["request_id"], ping["request_id"]
         )

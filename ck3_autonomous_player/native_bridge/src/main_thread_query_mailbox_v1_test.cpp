@@ -177,6 +177,8 @@ struct ExecutorContext {
   bool return_value = true;
   bool mutate_date = false;
   FakeRuntime *runtime = nullptr;
+  xar::ck3_11906::MainThreadQueryMailboxV1 *mailbox = nullptr;
+  xar::ck3_11906::MainThreadQueryMailboxDiagnosticsV1 callback_diagnostics{};
   xar::ck3_11906::MainThreadExecutionStampV1 observed{};
 };
 
@@ -185,6 +187,11 @@ bool Execute(void *opaque,
   auto &context = *static_cast<ExecutorContext *>(opaque);
   ++context.calls;
   context.observed = stamp;
+  if (context.mailbox != nullptr) {
+    context.callback_diagnostics =
+        xar::ck3_11906::ReadMainThreadQueryMailboxDiagnosticsV1(
+            *context.mailbox);
+  }
   if (context.mutate_date && context.runtime != nullptr) {
     context.runtime->SetDate(stamp.date_raw + 1);
   }
@@ -840,6 +847,7 @@ bool TestMailboxStateMachine() {
     return false;
   }
 
+  context.mailbox = &mailbox;
   if (TrySubmitMainThreadQueryV1(mailbox, &Execute, &context, ticket) !=
           MainThreadQuerySubmitResultV1::submitted ||
       ticket.sequence != 1 ||
@@ -858,6 +866,22 @@ bool TestMailboxStateMachine() {
           MainThreadQueryReclaimResultV1::reclaimed) {
     return false;
   }
+  const auto completed_diagnostics =
+      ReadMainThreadQueryMailboxDiagnosticsV1(mailbox);
+  if (context.callback_diagnostics.state !=
+          MainThreadQueryMailboxStateV1::executing ||
+      context.callback_diagnostics.executor_started_requests != 1 ||
+      context.callback_diagnostics.executor_started_sequence !=
+          ticket.sequence ||
+      context.callback_diagnostics.executor_started_pump_epoch == 0 ||
+      context.callback_diagnostics.executed_requests != 0 ||
+      completed_diagnostics.published_sequence != ticket.sequence ||
+      completed_diagnostics.executor_started_requests != 1 ||
+      completed_diagnostics.executor_started_sequence != ticket.sequence ||
+      completed_diagnostics.executor_started_pump_epoch == 0 ||
+      completed_diagnostics.executed_requests != 1) {
+    return false;
+  }
 
   g_failure_stage = "basic_queue_states";
 
@@ -873,6 +897,17 @@ bool TestMailboxStateMachine() {
       cancelled_context.calls != 0 ||
       ReclaimMainThreadQueryV1(mailbox, cancelled_ticket) !=
           MainThreadQueryReclaimResultV1::reclaimed) {
+    return false;
+  }
+  const auto cancelled_diagnostics =
+      ReadMainThreadQueryMailboxDiagnosticsV1(mailbox);
+  if (cancelled_diagnostics.published_sequence !=
+          cancelled_ticket.sequence ||
+      cancelled_diagnostics.completed_sequence !=
+          cancelled_ticket.sequence ||
+      cancelled_diagnostics.executor_started_requests != 1 ||
+      cancelled_diagnostics.executor_started_sequence != ticket.sequence ||
+      cancelled_diagnostics.executed_requests != 1) {
     return false;
   }
 

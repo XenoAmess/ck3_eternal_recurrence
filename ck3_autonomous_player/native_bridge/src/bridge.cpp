@@ -607,6 +607,16 @@ std::string HeartbeatFrame(std::uint64_t sequence) {
   result += Number(mailbox.owner_verified_pump_epochs);
   result += ",\"consecutive_verified\":";
   result += Number(mailbox.paused_owner_verified_pump_epochs);
+  result += ",\"published_sequence\":";
+  result += Number(mailbox.published_sequence);
+  result += ",\"completed_sequence\":";
+  result += Number(mailbox.completed_sequence);
+  result += ",\"executor_started_requests\":";
+  result += Number(mailbox.executor_started_requests);
+  result += ",\"executor_started_sequence\":";
+  result += Number(mailbox.executor_started_sequence);
+  result += ",\"executor_started_pump_epoch\":";
+  result += Number(mailbox.executor_started_pump_epoch);
   result += ",\"owner_tid\":";
   result += Number(mailbox.owner_thread_id);
   result += ",\"current_tid\":";
@@ -3676,6 +3686,89 @@ std::string StewardDevelopCountyCandidatesResultFrame(
   return result;
 }
 
+std::string_view MainThreadQueryWaitResultName(
+    xar::ck3_11906::MainThreadQueryWaitResultV1 wait) {
+  using Result = xar::ck3_11906::MainThreadQueryWaitResultV1;
+  switch (wait) {
+  case Result::completed:
+    return "completed";
+  case Result::executor_failed:
+    return "executor_failed";
+  case Result::infrastructure_failed:
+    return "infrastructure_failed";
+  case Result::cancelled:
+    return "cancelled";
+  case Result::timeout_cancelled_before_execution:
+    return "timeout_cancelled_before_execution";
+  case Result::timeout_executor_already_running:
+    return "timeout_executor_already_running";
+  case Result::ticket_mismatch:
+    return "ticket_mismatch";
+  }
+  return "unknown";
+}
+
+std::string_view MainThreadQueryMailboxStateName(
+    xar::ck3_11906::MainThreadQueryMailboxStateV1 state) {
+  using State = xar::ck3_11906::MainThreadQueryMailboxStateV1;
+  switch (state) {
+  case State::detached:
+    return "detached";
+  case State::idle:
+    return "idle";
+  case State::publishing:
+    return "publishing";
+  case State::queued:
+    return "queued";
+  case State::executing:
+    return "executing";
+  case State::completed:
+    return "completed";
+  case State::executor_failed:
+    return "executor_failed";
+  case State::cancelled:
+    return "cancelled";
+  case State::infrastructure_failed:
+    return "infrastructure_failed";
+  case State::detaching:
+    return "detaching";
+  }
+  return "unknown";
+}
+
+std::string CampaignRootContextFailureWithMailboxProbe(
+    std::string_view failure,
+    xar::ck3_11906::MainThreadQueryWaitResultV1 wait,
+    const xar::ck3_11906::MainThreadQueryMailboxDiagnosticsV1 &before,
+    const xar::ck3_11906::MainThreadQueryMailboxDiagnosticsV1 &after) {
+  std::string result{failure};
+  result += "; mailbox_probe_v1 wait=";
+  result += MainThreadQueryWaitResultName(wait);
+  result += " state=";
+  result += MainThreadQueryMailboxStateName(after.state);
+  result += " pump_epochs=";
+  result += Number(before.pump_epochs);
+  result += "->";
+  result += Number(after.pump_epochs);
+  result += " published_sequence=";
+  result += Number(after.published_sequence);
+  result += " completed_sequence=";
+  result += Number(after.completed_sequence);
+  result += " executor_started_requests=";
+  result += Number(before.executor_started_requests);
+  result += "->";
+  result += Number(after.executor_started_requests);
+  result += " executor_started_sequence=";
+  result += Number(after.executor_started_sequence);
+  result += " executor_started_pump_epoch=";
+  result += Number(after.executor_started_pump_epoch);
+  result += " executed_requests=";
+  result += Number(before.executed_requests);
+  result += "->";
+  result += Number(after.executed_requests);
+  return result;
+}
+
 std::string ZhongguoCaseSnapshotResultFrame(
     std::string_view request_id, std::uint64_t query_sequence,
     const xar::game::ZhongguoCaseSnapshotV1 &snapshot) {
@@ -6467,6 +6560,10 @@ void RunConnectedSession(
               query.request.expected_snapshot_revision = expected_revision;
               query.expected_snapshot = current_snapshot;
 
+              const auto mailbox_before = xar::ck3_11906::
+                  ReadMainThreadQueryMailboxDiagnosticsV1(
+                      g_main_thread_query_mailbox_v1);
+
               const auto submit =
                   xar::ck3_11906::TrySubmitMainThreadQueryV1(
                       g_main_thread_query_mailbox_v1,
@@ -6501,6 +6598,9 @@ void RunConnectedSession(
                       xar::ck3_11906::
                           kCampaignRootContextV1ExecutingWaitSliceMilliseconds);
                 }
+                const auto mailbox_after = xar::ck3_11906::
+                    ReadMainThreadQueryMailboxDiagnosticsV1(
+                        g_main_thread_query_mailbox_v1);
 
                 xar::game::Snapshot completion_snapshot{};
                 const bool completion_snapshot_stable =
@@ -6528,8 +6628,10 @@ void RunConnectedSession(
                       xar::ck3_11906::CampaignRootContextFailureMessageV1(
                           wait, query.completion,
                           completion_snapshot_stable);
-                  response = CommandResultFrame(request_id, step, false,
-                                                error);
+                  response = CommandResultFrame(
+                      request_id, step, false,
+                      CampaignRootContextFailureWithMailboxProbe(
+                          error, wait, mailbox_before, mailbox_after));
                 }
                 const auto reclaimed =
                     xar::ck3_11906::ReclaimMainThreadQueryV1(
