@@ -86,9 +86,10 @@ CK3 `1.19.0.6`/EXE SHA、连接代次/PID 及 probe/export capability；有 snap
 `mcp-frontend-dynasty-finish-roundtrip-live7.json` 闭合：动作前精确观察 `dynasty_finish_button`，动作后验证返回
 `ruler_designer`，重开后的原生 Copy 与提交前逐字节一致；Steam 离线与 cleanup 均为 GREEN。
 
-`coat_of_arms_page` 专用树检查与固定自定义模式动作当前为 `mcp-static-ready`：Python official-MCP/contract 回归、原生 Release、
-adapter/mailbox CTest、Quarkus 和 Vue 均已通过，但尚未取得真实 CK3 进程中的 custom-mode/grid 后置条件，因此不能据此声称运行时
-`GetAllPatterns` 已经完整枚举。
+`coat_of_arms_page` 专用树检查与固定自定义模式动作已经达到 `production-live primitive`：Python official-MCP/contract 回归、
+原生 Release、adapter/mailbox CTest、Quarkus、Vue 和一次受管真实 CK3 official-MCP 路由均已通过。live census 证明 custom mode
+背景网格容器实际存在并报告 38 个 child；不过 512 项页面级遍历在进入这些 child 前截断，尚不能把这 38 项映射为具体 pattern
+资源名，也不能据此推断同名 DDS 的最终 VFS 胜者。
 
 Mask 编辑只接受整数分区索引 1、2、3。exact 原版语料实际使用 `{ 1 }`、`{ 2 }`、`{ 2 3 }`；MCP 进一步实际应用了
 `{ 1 2 3 }`，且原生 Copy 将它作为默认全通道省略。随附 shader 对应 R/G/B 三通道。其他值会形成阻止导出的诊断，不会被输入框静默丢弃。

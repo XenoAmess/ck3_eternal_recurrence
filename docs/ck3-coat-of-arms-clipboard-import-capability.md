@@ -792,12 +792,21 @@ effective feature 与 script `has_dlc` truth 已有 production-live 原生 primi
 按 MCP-first 原则，后续若需要运行时合并资源清单或截图无关的视觉验收，应继续补这些原生/MCP primitive，
 而不是用 OCR 猜文字、按钮状态或 copy-back 内容。
 
-2026-09-15 已先补出两个 `mcp-static-ready` 原语：专用树检查只允许从实时 `ruler_designer` 中解析可见、enabled 的
+2026-09-15 已补出并实机验证两个 `production-live primitive`：专用树检查只允许从实时 `ruler_designer` 中解析可见、enabled 的
 `coat_of_arms_page`，再以该对象为根做 512 项有界只读遍历；固定自定义模式动作只允许原版
 `coa_designer.gui:351-437` 的两个互斥 `button_custom_mode` 叶节点，且 Python 后置条件要求同一路由中的
 `coa_designer_tabs`、`background_panel`、`patterns` 与 `patterns_scrollbox` 全部可见、enabled。调用方不能传入控件名、child path
-或指针。当前原生 Release、protocol/adapter/mailbox CTest、Python official-MCP、Quarkus 与 Vue 都已 GREEN；尚无 live artifact，
-所以它只建立下一轮运行时网格 census 的安全入口，不证明 `GetAllPatterns` 网格会完整物化，也不证明同名 DDS 的 VFS 最终胜者。
+或指针。受管 official-MCP 实机证据为
+`artifacts/coa-clipboard-probe-2026-09-08/mcp-frontend-coa-custom-mode-census-live8.json`：2,331,467 bytes，SHA-256
+`72542CE89CE33A76A05D35722CCF301994533D409E4AD59D4F497D58760735FD`，绑定
+`d9de68b1d41d15922852c1db398df1a8e92ab12a`，所有十项 custom-mode 检查与完整进程树清理均为 GREEN，Steam 保持离线，零 OCR、
+零键盘、零鼠标。
+
+这次 scoped census 取得了一个重要但仍有限的运行时边界：512 项遍历在 `coat_of_arms_page` 根上截断；
+`patterns_scrollbox` 下可枚举 10 个后代、3 个直接子项，其中固定网格容器
+`0/3/0/2/1/1/2/0/0/0/0` 报告 `child_count=38`，但其 38 个 pattern item 尚未进入本次返回集。因此已经证明背景 pattern
+网格在 custom mode 中实际物化，尚未取得每个 pattern item 的名称/纹理身份。下一步应继续新增一个固定根到该网格容器的零输入
+MCP inspector；不得把 `child_count=38` 外推为完整资源 registry，也仍不证明同名 DDS 的 VFS 最终胜者。
 
 ## 9. `coat_of_arms_editer_of_ck3` 的实现约束与当前状态
 
