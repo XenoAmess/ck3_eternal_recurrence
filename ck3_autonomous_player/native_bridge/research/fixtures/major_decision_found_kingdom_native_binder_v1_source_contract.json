@@ -1,0 +1,86 @@
+{
+  "schema_version": 1,
+  "artifact_id": "major_decision_found_kingdom_native_binder_v1",
+  "status": "static-ready",
+  "build": {
+    "game_version": "1.19.0.6",
+    "executable_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+    "decision_source_revision": "major-decision-found-kingdom-1.19.0.6-source-freeze-v1@a33bf13a",
+    "source_adapter_commit": "57d3f47ceebbc9cb4e25cf273bd62cdee26fc7df"
+  },
+  "database_binding": {
+    "singleton_slot_rva": "0x570C7B0",
+    "database_vtable_rva": "0x43DC020",
+    "name_hash_rva": "0x3B8B000",
+    "definition_lookup_rva": "0x0BFF6C0",
+    "definition_vtable_rva": "0x440B8E0",
+    "decision_id": "found_kingdom_decision",
+    "decision_block_sha256": "4AA72233FD9266CD36C18DF10E9DBFC21B967003201F61B575C687FAA380C7DF"
+  },
+  "eligibility_binding": {
+    "root_scope_constructor_rva": "0x081F190",
+    "root_kind": "character:4",
+    "trigger_evaluator_rva": "0x334C510",
+    "definition_offsets": {
+      "is_shown": "0x690",
+      "is_valid": "0x770",
+      "is_valid_showing_failures_only": "0x850"
+    }
+  },
+  "root_scope_cleanup": {
+    "named_rows_destructor_rva": "0x081E860",
+    "tail_destructor_rva": "0x081E900",
+    "rows48_destructor_rva": "0x081E980",
+    "native_allocators_release_nonempty_rows": true
+  },
+  "cost_binding": {
+    "cost_selector_rva": "0x1354E00",
+    "cost_evaluator_rva": "0x2CDB740",
+    "native_vector_q100000_count": 10,
+    "resource_indices": {
+      "gold": 0,
+      "treasury": 6,
+      "prestige": 1,
+      "piety": 2
+    },
+    "resource_dispatcher_rva": "0x2CDBA80",
+    "affordability_evaluator_rva": "0x2CD9C70"
+  },
+  "final_binding": {
+    "can_take_evaluator_rva": "0x2CD2260",
+    "can_take_excludes_cost_affordability": true,
+    "affordability_reported_separately": true
+  },
+  "admission_gates": {
+    "exact_executable_hash_required": true,
+    "function_prefix_signature_count": 11,
+    "vtable_slot_gate_count": 6,
+    "database_object_vtable_required": true,
+    "definition_object_vtable_required": true,
+    "played_character_identity_round_trip_required": true,
+    "production_operation_overrides_forbidden": true
+  },
+  "standalone_fixture": {
+    "full_decision3_transaction": true,
+    "database_and_definition_lookup": true,
+    "three_eligibility_groups": true,
+    "dynamic_four_resource_cost": true,
+    "affordability_and_can_take": true,
+    "false_is_known_observation": true,
+    "signature_mismatch_rejected": true,
+    "slot_mismatch_rejected": true,
+    "definition_vtable_mismatch_rejected": true
+  },
+  "boundary": {
+    "private_unregistered": true,
+    "read_only": true,
+    "effect_preview_provided": false,
+    "decision_execution_permitted": false,
+    "shared_bridge_changed": false,
+    "public_schema_changed": false,
+    "cmake_changed": false,
+    "mcp_changed": false,
+    "ck3_launched": false,
+    "live_validation_required": true
+  }
+}
