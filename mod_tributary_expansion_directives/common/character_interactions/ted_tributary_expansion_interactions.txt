@@ -138,8 +138,6 @@
 		ted_decline_expansion_directive_effect = yes
 	}
 
-	ai_potential = { always = no }
-
 	ai_accept = {
 		base = -25
 		opinion_modifier = {
@@ -161,12 +159,12 @@
 		}
 		modifier = {
 			add = 25
-			scope:recipient.military_strength >= scope:secondary_recipient.military_strength
+			scope:recipient.current_military_strength >= scope:secondary_recipient.current_military_strength
 			desc = ted_tributary_stronger_reason
 		}
 		modifier = {
 			add = -75
-			scope:recipient.military_strength < scope:secondary_recipient.military_strength
+			scope:recipient.current_military_strength < scope:secondary_recipient.current_military_strength
 			desc = ted_tributary_weaker_reason
 		}
 		modifier = {

@@ -145,7 +145,6 @@ tea_setup_and_execute_effect = {
 				save_scope_as = secondary_recipient
 			}
 			var:tea_target = { save_scope_as = target }
-			set_variable = { name = tea_decline_prestige_before value = prestige }
 			set_variable = { name = tea_decline_prestige_expected value = prestige }
 			change_variable = { name = tea_decline_prestige_expected subtract = 150 }
 			set_variable = { name = tea_decline_gold_before value = gold }
@@ -183,11 +182,9 @@ tea_setup_and_execute_effect = {
 				save_scope_as = secondary_recipient
 			}
 			var:tea_target = { save_scope_as = target }
-			set_variable = { name = tea_accept_prestige_before value = prestige }
 			set_variable = { name = tea_accept_prestige_expected value = prestige }
 			change_variable = { name = tea_accept_prestige_expected subtract = 150 }
 			if = { limit = { gold < 1000 } add_gold = 1000 }
-			set_variable = { name = tea_accept_gold_before value = gold }
 			set_variable = { name = tea_accept_gold_expected value = gold }
 			set_variable = { name = tea_accept_subsidy value = ted_war_subsidy_value }
 			change_variable = {
@@ -195,7 +192,6 @@ tea_setup_and_execute_effect = {
 				subtract = var:tea_accept_subsidy
 			}
 			scope:recipient = {
-				set_variable = { name = tea_accept_gold_before value = gold }
 				set_variable = { name = tea_accept_gold_expected value = gold }
 				change_variable = {
 					name = tea_accept_gold_expected
