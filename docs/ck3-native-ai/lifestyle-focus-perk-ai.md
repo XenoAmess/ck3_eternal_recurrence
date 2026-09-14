@@ -366,3 +366,39 @@ perk_frontier[]:
 - **planner**：当前封建玩家在 bounded scene 中完成一次“观察 → 选择合法 focus 或 perk → 提交 → 新帧验证”；不要求为单个路径进行永久长跑。
 
 在这些证据出现以前，诚实状态保持：native tree `static-confirmed`；observer/action/planner `not implemented`；固定视觉路径 `visual-narrow`。
+
+## LIFE2 P0 私有 observer core（2026-09-14）
+
+LIFE2 已把 LIFE1 的 current-state 入口实现为私有、未接线的 `g2_player_lifestyle_snapshot_v1`。当前状态是
+`static-ready-private-core-unwired`：没有注册进共享 bridge、CMake 或公共 MCP，也没有启动 CK3，因此不能写成
+`production-live primitive`。ABI 账本位于
+`ck3_autonomous_player/native_bridge/research/player_lifestyle_snapshot_v1_abi.json`。
+
+已经实现并由 normal/O 双模式 fixture 覆盖的读取语义如下：
+
+- 当前 focus 使用 `GetFocus` direct `0x26692F0`；返回值等于 `module+0x570CB90` 所存 fallback 指针时，发布
+  `presence=absent`。getter、fallback slot 或内存读取失败会令整份 snapshot `unavailable`，不会伪装成“无重心”。
+- focus 存在时，以 `GetLifestyle` direct `0x26691F0` 读取所属 lifestyle，并要求它与 `Focus+0x880` 的指针一致；
+  stable key 从对象 `+0x18` 的 bounded MSVC string 复制，只接受 `[a-z0-9_]`，native pointer 不进入输出。
+- XP、当前等级余量、每级 XP、可花点和已花点分别绑定 direct `0x2668B80`、`Lifestyle+0x138`、
+  `0x2668A00` 和 `0x2668A80`。数值零是已知值，读取或范围校验失败是 typed unavailable。
+- 已解锁 perk 从 direct `0x2669170` 的 `{data,+0xC count}` span 读取，每个 `Perk*+0x18` 解析 stable key。
+  `count=0` 发布 `owned_perk_keys=[]`；span 读取失败使整份 snapshot unavailable。
+- 事务在相同 paused frame 边界内读取两份完整 source sample；只有两份逐字段相等，且之后的
+  snapshot/revision/proof epoch/date/player identity 仍与之前一致，才排序 copied key 并原子发布。
+
+候选与最终合法性仍有一个真实、局部的边界。`GetFocuses`、`GetPerkTrees`、`CanSelectFocus` 和
+`CanSelectPerk` 都依赖经过验证的当前玩家 `CCharacterLifestyleWindow` owner；当前没有该 owner 的生命周期和身份
+证据。生产读取因此明确发布：
+
+```json
+{"legal_focus_candidates":{"status":"unavailable","reason":"lifestyle_window_unavailable","items":[]},"legal_perk_candidates":{"status":"unavailable","reason":"lifestyle_window_unavailable","items":[]}}
+```
+
+这里的空 `items` 只是 unavailable 分量不携带残留行，不能解释为“已知没有合法候选”。offline fixture 另外覆盖了
+`status=available, items=[]` 的 known-empty 语义，以保证未来接入 enumerator 后不会混淆。下一项唯一集成入口是先闭合
+current-player lifestyle window owner，再调用 exact enumerator 和 final evaluator；在此之前不得用 null/伪造 window，
+也不得把脚本门或 `CanSelectPerkIgnoreCost` 当作最终合法性。
+
+本包的静态证据不影响 open_kaishek：没有公共 capability、schema、协议、依赖或版本变更。后续接共享 bridge/MCP 时才会
+触发兼容层配对工作包；接线后仍须用一次 bounded paused snapshot 验证无重心、已有重心、已解锁 perk 与候选边界。

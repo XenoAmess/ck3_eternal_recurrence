@@ -1,0 +1,55 @@
+{
+  "schema_version": 1,
+  "private_key": "g2_player_lifestyle_snapshot_v1",
+  "files": {
+    "header": "include/xar_bridge/player_lifestyle_snapshot_v1.hpp",
+    "implementation": "src/player_lifestyle_snapshot_v1.cpp",
+    "unit_test": "src/player_lifestyle_snapshot_v1_test.cpp",
+    "abi": "research/player_lifestyle_snapshot_v1_abi.json",
+    "normal_fixture": "research/fixtures/player_lifestyle_snapshot_v1_normal.json",
+    "no_focus_fixture": "research/fixtures/player_lifestyle_snapshot_v1_no_focus.json"
+  },
+  "required_header_tokens": [
+    "kPlayerLifestyleSnapshotPrivateKeyV1",
+    "kPlayerLifestyleSnapshotExecutableSha256V1",
+    "kPlayerLifestyleCurrentFocusGetterRvaV1",
+    "kPlayerLifestyleCurrentLifestyleGetterRvaV1",
+    "kPlayerLifestyleXpGetterRvaV1",
+    "kPlayerLifestyleOwnedPerksGetterRvaV1",
+    "PlayerLifestyleFocusPresenceV1",
+    "PlayerLifestyleCandidateCollectionStatusV1",
+    "current_lifestyle_progress_present",
+    "legal_focus_candidate_unavailable_reason",
+    "ReadPlayerLifestyleMsvcStableKeyV1",
+    "ReadPlayerLifestyleSnapshotV1"
+  ],
+  "required_implementation_tokens": [
+    "application_main_thread_required",
+    "native_source_read_failed",
+    "native_sample_drift",
+    "CandidateFailure::lifestyle_window_unavailable",
+    "if (first != second)",
+    "ClassifyFrameDrift(before, after)",
+    "SortKeys(output.state.owned_perk_keys",
+    "focus_lifestyle != reinterpret_cast<std::uintptr_t>(lifestyle)",
+    "row_address < data",
+    "\\\"advertised\\\":false"
+  ],
+  "required_test_tokens": [
+    "TestNormalAndNoFocusFixtures",
+    "TestFailureDoesNotPublishEmptyState",
+    "TestSampleAndFrameDrift",
+    "TestMsvcStableKeyReader",
+    "TestNativeCurrentStateAndCandidateBoundary",
+    "lifestyle_window_unavailable"
+  ],
+  "forbidden_shared_edits": [
+    "CMakeLists.txt",
+    "src/bridge.cpp"
+  ],
+  "forbidden_public_capabilities": [
+    "game.query.player-lifestyle-state-v1",
+    "game.action.select-player-lifestyle-focus-v1",
+    "game.action.select-player-lifestyle-perk-v1"
+  ]
+}

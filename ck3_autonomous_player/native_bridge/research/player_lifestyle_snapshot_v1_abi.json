@@ -1,0 +1,123 @@
+{
+  "schema_version": 1,
+  "private_key": "g2_player_lifestyle_snapshot_v1",
+  "status": "static-ready-private-core-unwired",
+  "visibility": "private-not-advertised",
+  "exact_build": {
+    "product_version": "1.19.0.6",
+    "executable_path": "binaries/ck3.exe",
+    "executable_size": 95206008,
+    "executable_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86"
+  },
+  "native_current_state": {
+    "current_focus_getter_rva": "0x26692F0",
+    "current_lifestyle_getter_rva": "0x26691F0",
+    "unspent_perk_points_getter_rva": "0x2668A00",
+    "used_perk_points_getter_rva": "0x2668A80",
+    "lifestyle_xp_getter_rva": "0x2668B80",
+    "unlocked_perks_span_getter_rva": "0x2669170",
+    "has_perk_getter_rva": "0x2668EA0",
+    "character_perk_database_rva": "0x88EC20",
+    "focus_fallback_slot_rva": "0x570CB90",
+    "database_stable_key_offset": "0x18",
+    "focus_lifestyle_offset": "0x880",
+    "lifestyle_xp_per_level_offset": "0x138",
+    "perk_lifestyle_offset": "0x468",
+    "unlocked_perks_span_layout": {
+      "data_offset": "0x0",
+      "count_offset": "0xC",
+      "row_stride_bytes": 8,
+      "maximum_rows": 512
+    },
+    "fixed_point_scale": 100000,
+    "known_absent_focus": "GetFocus returns the pointer stored at module+0x570CB90; this is distinct from a getter/read failure",
+    "stable_key": "bounded MSVC string SSO/heap decode followed by [a-z0-9_] validation; no native pointer is published"
+  },
+  "candidate_boundary": {
+    "production_status": "unavailable",
+    "reason": "lifestyle_window_unavailable",
+    "evidence": {
+      "get_lifestyles_direct_rva": "0xB755D0",
+      "get_perk_trees_direct_rva": "0xCCC4D0",
+      "get_focuses_direct_rva": "0xCEBE10",
+      "can_select_focus_direct_rva": "0x132D4A0",
+      "can_select_perk_direct_rva": "0x132D640",
+      "can_select_perk_ignore_cost_direct_rva": "0x132D700"
+    },
+    "unresolved_owner": "validated current-player CCharacterLifestyleWindow instance",
+    "rule": "do not call a window method with a fabricated or null owner; unavailable is not an empty legal candidate list",
+    "fixture_scope": "offline source fixtures exercise available nonempty and known-empty collection serialization only; they do not claim a production enumerator"
+  },
+  "transaction": {
+    "executor": "application-main paused private observer",
+    "steps": [
+      "capture and validate snapshot/revisions/date/player identity",
+      "read the complete current-state source sample",
+      "read the complete current-state source sample again",
+      "reject sample drift before canonical sorting",
+      "recapture and compare snapshot/revisions/date/player identity",
+      "sort copied stable-key rows and publish"
+    ],
+    "failure_atomicity": "top-level unavailable publishes no state rows; known absent focus and known-empty owned perks remain available values",
+    "same_frame_definition": "both complete native samples occur between matching paused frame captures",
+    "pointer_policy": "native pointers are transient inputs and never serialized"
+  },
+  "fixtures": {
+    "normal": "research/fixtures/player_lifestyle_snapshot_v1_normal.json",
+    "no_focus": "research/fixtures/player_lifestyle_snapshot_v1_no_focus.json",
+    "modes": [
+      "MSVC /Od",
+      "MSVC /O2",
+      "Python normal",
+      "Python -O"
+    ]
+  },
+  "readiness": {
+    "private_core_implemented": true,
+    "current_focus_native_path": true,
+    "current_lifestyle_progress_native_path": true,
+    "owned_perks_native_path": true,
+    "stable_key_parser": true,
+    "same_frame_double_sample": true,
+    "candidate_fixture_semantics": true,
+    "legal_focus_candidates_native_path": false,
+    "legal_perk_candidates_native_path": false,
+    "native_binding_registered": false,
+    "public_capability_registered": false,
+    "production_query_live": false,
+    "planner_ready": false
+  },
+  "source_evidence": [
+    {
+      "path": "common/lifestyles/_lifestyles.info",
+      "size": 1091,
+      "sha256": "827D9297E067E70B7F38DE1FEC6DA5E7B1B808AB8C7B4777F2C54B81B5E4BD38"
+    },
+    {
+      "path": "common/lifestyles/00_lifestyles.txt",
+      "size": 807,
+      "sha256": "13BAEF069A7CA562AEF9673C79490F74ECE8E53E3EE734E9061B91B0ADC78B98"
+    },
+    {
+      "path": "common/focuses/_focuses.info",
+      "size": 3824,
+      "sha256": "A0EF25FBABD3A06C9215BD4CCE23D8CAE64389FEAB076FC490EEAA584D5E2750"
+    },
+    {
+      "path": "common/focuses/00_lifestyle_focuses.txt",
+      "size": 15523,
+      "sha256": "DF55AA0F96A7085817D0884A401A208786FA0C57E8BBD2BA40115F8C37CBABD2"
+    },
+    {
+      "path": "common/lifestyle_perks/_lifestyle_perks.info",
+      "size": 2023,
+      "sha256": "759CB7EC655FBAC47B0C7F7F3CCCC18FC4ED9A430FA367D0BE4D21489AD98C63"
+    },
+    {
+      "path": "gui/window_character_lifestyle.gui",
+      "size": 43297,
+      "sha256": "C506945C15D57BDDF79179E97739151334B03249544BA6FD8243B1E657669B07"
+    }
+  ],
+  "unique_next_integration_entry": "validate and bind the current-player CCharacterLifestyleWindow owner, then enumerate GetFocuses/GetPerkTrees and apply the exact final CanSelectFocus/CanSelectPerk evaluators before any public registration"
+}
