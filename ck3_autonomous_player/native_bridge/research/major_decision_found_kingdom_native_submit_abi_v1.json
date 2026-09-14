@@ -1,0 +1,210 @@
+{
+  "schema_version": 1,
+  "artifact_id": "major_decision_found_kingdom_native_submit_abi_v1",
+  "status": "static-ready; exact production submit ABI closed; no CK3 launch or live submission in this work package",
+  "build": {
+    "game_version": "1.19.0.6",
+    "platform": "Windows x64",
+    "image_base": "0x140000000",
+    "exe_relative_path": "binaries/ck3.exe",
+    "exe_size": 95206008,
+    "exe_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+    "decision_id": "found_kingdom_decision",
+    "decision_source_block_sha256": "4AA72233FD9266CD36C18DF10E9DBFC21B967003201F61B575C687FAA380C7DF",
+    "native_binder_commit": "1b44ac7dd3d606d8613a5c7340ce37efb0bcae55",
+    "action_core_commit": "a70fdfd22d61fd6b445b901581274285551c5cce"
+  },
+  "command_rtti": {
+    "name": ".?AVCExecuteDecisionCommand@@",
+    "type_descriptor_rva": "0x54C1968",
+    "primary_complete_object_locator_rva": "0x4963258",
+    "primary_complete_object_locator": [1, 0, 0, "0x54C1968", "0x4962588", "0x4963258"],
+    "secondary_complete_object_locator_rva": "0x4963230",
+    "secondary_complete_object_locator": [1, 24, 0, "0x54C1968", "0x4962588", "0x4963230"],
+    "primary_vtable_rva": "0x43237F8",
+    "secondary_vtable_rva": "0x43237C8",
+    "secondary_subobject_offset": "0x18"
+  },
+  "command_layout": {
+    "size": "0x38",
+    "primary_vptr_offset": "0x00",
+    "base_flags_offset": "0x08",
+    "queue_sequence_offset": "0x0C",
+    "secondary_vptr_offset": "0x18",
+    "played_character_full_id_offset": "0x20",
+    "decision_definition_pointer_offset": "0x28",
+    "owned_optional_decision_context_pointer_offset": "0x30"
+  },
+  "calling_conventions": {
+    "abi": "Microsoft x64: RCX, RDX, R8, R9; caller shadow space; bool in AL; pointers in RAX",
+    "constructor": "void* (command_this, int32 full_character_id, CDecisionType* definition, DecisionContext** owned_context); moves *owned_context to command+0x30 and clears the source owner",
+    "validator": "bool (command_this, optional_failure_sink); stock submit caller passes a null failure sink",
+    "clone": "command** (const command_this, command** out_owned_clone); allocates 0x38 and deep-clones a non-null context",
+    "destructor": "command* (command_this, uint32 flags); flags=0 destroys without freeing, flags=1 destroys and frees the 0x38 command",
+    "queued_executor": "void (secondary_this=command+0x18); recovers character/definition/context and calls the native decision executor",
+    "queue_receiver": "bool (receiver_context, command** owned_command, uint32 flags); exact stock flags are 7"
+  },
+  "instruction_spans": [
+    {
+      "name": "CExecuteDecisionCommand destructor",
+      "rva_start": "0x25E1FE0",
+      "rva_end_exclusive": "0x25E2037",
+      "length": 87,
+      "prefix16": "48895C2408574883EC20488D050718D4",
+      "sha256": "E6110ABFFAC9C6DE7905006134B51F42A6ED459F4E45070B0EC818B35892E9A4"
+    },
+    {
+      "name": "CExecuteDecisionCommand constructor",
+      "rva_start": "0x25E2040",
+      "rva_end_exclusive": "0x25E20D6",
+      "length": 150,
+      "prefix16": "48895C24084889742410574883EC20C6",
+      "sha256": "B5E98A4FFCBAC42097598CED08FD6398C903C7DAA6626C6930F0722713663683"
+    },
+    {
+      "name": "CExecuteDecisionCommand validator",
+      "rva_start": "0x25E2350",
+      "rva_end_exclusive": "0x25E24DD",
+      "length": 397,
+      "prefix16": "48895C240848896C2410488974241857",
+      "sha256": "8ECED6884BC86EC02FEF3DCE2067B773B8F3805C9604639D4481B81386E1B74D"
+    },
+    {
+      "name": "CExecuteDecisionCommand preliminary validator",
+      "rva_start": "0x25E24E0",
+      "rva_end_exclusive": "0x25E2598",
+      "length": 184,
+      "prefix16": "48895C24084889742410574883EC2048",
+      "sha256": "836DDA9591E676A345D885D024824C592ADA407F7167F98700FA909C955A7EE6"
+    },
+    {
+      "name": "CExecuteDecisionCommand queued executor",
+      "rva_start": "0x25E25A0",
+      "rva_end_exclusive": "0x25E263D",
+      "length": 157,
+      "prefix16": "48895C2408574883EC40488B7910488D",
+      "sha256": "52B0F5AB29A62849F8CDED0BCB2DD4162F33C59DD0F283CD327F6E381F219140"
+    },
+    {
+      "name": "CExecuteDecisionCommand clone",
+      "rva_start": "0x25EC440",
+      "rva_end_exclusive": "0x25EC534",
+      "length": 244,
+      "prefix16": "48895C240848896C2420488954241056",
+      "sha256": "8A3C80A24867AEF9FA4884214806B1837F585B1223F1FB669B380D990A44C71A"
+    },
+    {
+      "name": "optional decision context clone",
+      "rva_start": "0x1356BF0",
+      "rva_end_exclusive": "0x1356C78",
+      "length": 136,
+      "prefix16": "48895C240848896C2410488974241857",
+      "sha256": "93E0983208DCB8D37DCCC7DC3DB9EB92292A1CE15370073A41B7E2FAA5234132"
+    },
+    {
+      "name": "optional context owner destructor",
+      "rva_start": "0x0BFEAB0",
+      "rva_end_exclusive": "0x0BFEB0D",
+      "length": 93,
+      "prefix16": "40534883EC20488B194885DB7449488B",
+      "sha256": "5EA82EB86AB3C18E62129E74EA0AE06C143E6164EFC307D5B2ED7FDA055246A3"
+    },
+    {
+      "name": "command queue receiver",
+      "rva_start": "0x341D990",
+      "rva_end_exclusive": "0x341DA8A",
+      "length": 250,
+      "prefix16": "4C894C242048895424105356574883EC",
+      "sha256": "28AC1C7F76E546A569234B3B1C05ED2746F364EF2FC61450AC13A95681E5650A"
+    },
+    {
+      "name": "stock AI decision submit callsite",
+      "rva_start": "0x188264E",
+      "rva_end_exclusive": "0x188273C",
+      "length": 238,
+      "prefix16": "488B85D801000048899DD80100004889",
+      "sha256": "8B8262CFC3201872235325AF5EDA5B8FE8CB5E345566C933A7A27B375C9C5263"
+    },
+    {
+      "name": "decision controller command factory",
+      "rva_start": "0x13560A0",
+      "rva_end_exclusive": "0x13561D7",
+      "length": 311,
+      "prefix16": "48895C24204889542410555657415641",
+      "sha256": "EAA8414A4732ED4B099450483B8EE2414671AE62D4F1EF1D7BCD33866A90C41C"
+    }
+  ],
+  "vtable_slots": [
+    {"slot_rva": "0x43237F8", "role": "primary destructor", "target_rva": "0x25E1FE0"},
+    {"slot_rva": "0x4323828", "role": "validator", "target_rva": "0x25E2350"},
+    {"slot_rva": "0x4323838", "role": "clone", "target_rva": "0x25EC440"},
+    {"slot_rva": "0x43237D0", "role": "secondary queued executor", "target_rva": "0x25E25A0"}
+  ],
+  "validated_edges": [
+    {"kind": "direct_call", "instruction_rva": "0x1882676", "target_rva": "0x25E2040", "role": "stock caller constructs stack command"},
+    {"kind": "direct_call", "instruction_rva": "0x1882683", "target_rva": "0x25E2350", "role": "stock caller validates with null failure sink"},
+    {"kind": "bytes", "instruction_rva": "0x18826FD", "bytes": "FF5040", "role": "stock caller clones through primary vtable +0x40"},
+    {"kind": "rip_lea", "instruction_rva": "0x188271B", "bytes": "488D0DCEFAED03", "target_rva": "0x57621F0", "role": "queue receiver context"},
+    {"kind": "direct_call", "instruction_rva": "0x1882722", "target_rva": "0x341D990", "role": "stock caller submits with flags 7"},
+    {"kind": "direct_call", "instruction_rva": "0x25E2371", "target_rva": "0x25E24E0", "role": "full validator invokes preliminary validator"},
+    {"kind": "direct_call", "instruction_rva": "0x25E247A", "target_rva": "0x2CD2260", "role": "validator invokes decision can_take"},
+    {"kind": "direct_call", "instruction_rva": "0x25E248F", "target_rva": "0x1354E00", "role": "validator selects evaluated cost"},
+    {"kind": "direct_call", "instruction_rva": "0x25E24A2", "target_rva": "0x2CD9C70", "role": "validator invokes affordability"},
+    {"kind": "direct_call", "instruction_rva": "0x25E262D", "target_rva": "0x2CD2970", "role": "queued executor invokes the decision effect path"},
+    {"kind": "direct_call", "instruction_rva": "0x25E2008", "target_rva": "0x0BFEAB0", "role": "command destructor destroys optional context owner"},
+    {"kind": "direct_call", "instruction_rva": "0x25E2024", "target_rva": "0x3E261D4", "role": "flags=1 command destructor frees 0x38 bytes"},
+    {"kind": "direct_call", "instruction_rva": "0x25EC4CB", "target_rva": "0x1356BF0", "role": "command clone deep-clones non-null context"},
+    {"kind": "direct_call", "instruction_rva": "0x341DA4F", "target_rva": "0x08154D0", "role": "locked queue insertion"},
+    {"kind": "direct_call", "instruction_rva": "0x341DA68", "target_rva": "0x08154D0", "role": "unlocked queue insertion"},
+    {"kind": "direct_call", "instruction_rva": "0x1356127", "target_rva": "0x25E2040", "role": "controller factory invokes same constructor"}
+  ],
+  "context_contract": {
+    "ownership": "constructor consumes a caller-owned nullable DecisionContext* through pointer-to-owner; clone deep-copies a non-null context; command destructor releases it",
+    "non_null_clone_allocation_size": "0x110",
+    "found_kingdom_adapter_context": "null",
+    "basis": "the exact found_kingdom source block has no authored decision options or widget context; the exact validator and executor accept the nullable command+0x30 field",
+    "effect_preview": "not provided"
+  },
+  "queue_contract": {
+    "receiver_rva": "0x341D990",
+    "receiver_context_rva": "0x57621F0",
+    "flags": 7,
+    "sequence_write": "receiver context +0x3EC to command +0x0C",
+    "ownership": "receiver clears *owned_command before enqueue; rejection paths destroy with virtual flags=1 and clear the owner",
+    "enqueue_rva": "0x08154D0"
+  },
+  "adapter_contract": {
+    "pre_submit": [
+      "DECISION5 performs two identical paused eligibility/resource/affordability/can_take samples",
+      "adapter re-resolves the full played-character identity",
+      "adapter re-resolves and generation-matches the decision database and found_kingdom definition",
+      "adapter constructs and validates the exact CExecuteDecisionCommand with null optional context",
+      "adapter clones once, destroys the stack command with flags=0, and queues one owning heap pointer with flags=7"
+    ],
+    "cleanup": [
+      "validation failure destroys the stack command with flags=0",
+      "clone or layout failure destroys every owned heap command with flags=1 and the stack command with flags=0",
+      "queue non-consumption destroys the remaining heap owner with flags=1",
+      "queue consumption is recognized only when the receiver clears the owner pointer"
+    ],
+    "inherited_decision4_read_signature_gates": 11,
+    "inherited_decision4_read_vtable_slot_gates": 6,
+    "command_submit_signature_gates": 11,
+    "command_submit_vtable_slot_gates": 4,
+    "production_operation_overrides_forbidden": true,
+    "offline_fixture_does_not_certify_production_abi": true
+  },
+  "boundary": {
+    "private_unregistered": true,
+    "cmake_changed": false,
+    "shared_bridge_changed": false,
+    "public_schema_changed": false,
+    "mcp_changed": false,
+    "ck3_launched": false,
+    "desktop_used": false,
+    "master_updated": false,
+    "effect_preview_provided": false,
+    "exact_benefit_claimed": false,
+    "live_submission_performed": false
+  }
+}
