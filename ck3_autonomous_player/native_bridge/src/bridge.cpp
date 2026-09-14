@@ -8,6 +8,10 @@
 #include "xar_bridge/player_faction_alerts_v1_mailbox.hpp"
 #include "xar_bridge/steward_develop_county_candidates_v1_mailbox.hpp"
 #include "xar_bridge/steward_develop_county_enumerator_observer_v1.hpp"
+#if defined(XAR_CK3_ENABLE_G2_DOMAIN_CONSTRUCTION_CANDIDATE_OBSERVER_V1)
+#include "xar_bridge/domain_construction_candidate_observer_v1.hpp"
+#include "xar_bridge/domain_construction_candidate_observer_v1_serializer.hpp"
+#endif
 #include "xar_bridge/coat_of_arms_designer_probe_v1.hpp"
 #include "xar_bridge/frontend_gui_route_v1.hpp"
 #include "xar_bridge/cold_map_vfs_observer_v1.hpp"
@@ -242,8 +246,81 @@ static xar::bridge::G2TruceNativeCallsiteObserverV1State
     g_g2_truce_native_callsite_observer_v1{};
 static xar::bridge::StewardDevelopCountyEnumeratorObserverStateV1
     g_steward_develop_county_enumerator_observer_v1{};
+#if defined(XAR_CK3_ENABLE_G2_DOMAIN_CONSTRUCTION_CANDIDATE_OBSERVER_V1)
+static xar::bridge::DomainConstructionCandidateObserverStateV1
+    g_domain_construction_candidate_observer_v1{};
+#endif
 static xar::bridge::G2TrucePreviewEntryObserverV1State
     g_g2_truce_preview_entry_observer_v1{};
+
+#if defined(XAR_CK3_ENABLE_G2_DOMAIN_CONSTRUCTION_CANDIDATE_OBSERVER_V1)
+bool ReadDomainConstructionCandidateCaptureAdmissionV1(
+    void *context,
+    xar::bridge::DomainConstructionCandidateCaptureAdmissionV1
+        &admission) noexcept {
+  auto *mailbox = static_cast<xar::ck3_11906::MainThreadQueryMailboxV1 *>(
+      context);
+  if (mailbox == nullptr ||
+      !mailbox->observed_stamp_read_success.load(std::memory_order_acquire)) {
+    return false;
+  }
+  const auto owner_thread_id =
+      mailbox->owner_thread_id.load(std::memory_order_acquire);
+  const auto observed_thread_id =
+      mailbox->observed_current_thread_id.load(std::memory_order_acquire);
+  const auto proof_epoch = mailbox->pump_epochs.load(std::memory_order_acquire);
+  if (owner_thread_id == 0 || observed_thread_id != owner_thread_id ||
+      GetCurrentThreadId() != owner_thread_id ||
+      mailbox->observed_tls_initialized.load(std::memory_order_acquire) == 0 ||
+      mailbox->observed_tls_main_thread_marker.load(
+          std::memory_order_acquire) == 0 ||
+      mailbox->paused_owner_verified_pump_epochs.load(
+          std::memory_order_acquire) <
+          xar::ck3_11906::kMainThreadQueryMinimumOwnerVerifiedPumpEpochs ||
+      proof_epoch == 0 || mailbox->module_base == 0) {
+    return false;
+  }
+
+  const auto read_current = [](std::uintptr_t address, void *output,
+                               std::size_t size) noexcept {
+    SIZE_T read = 0;
+    return address != 0 && output != nullptr && size != 0 &&
+        ReadProcessMemory(GetCurrentProcess(),
+                          reinterpret_cast<const void *>(address), output,
+                          size, &read) != FALSE &&
+        read == size;
+  };
+  std::uintptr_t jomini_state = 0;
+  std::uintptr_t game_state = 0;
+  if (!read_current(mailbox->module_base +
+                        xar::ck3_11906::kJominiStateSlotRva,
+                    &jomini_state, sizeof(jomini_state)) ||
+      !read_current(mailbox->module_base +
+                        xar::ck3_11906::kGameStateSlotRva,
+                    &game_state, sizeof(game_state)) ||
+      jomini_state == 0 || game_state == 0 ||
+      jomini_state != mailbox->observed_jomini_state.load(
+                           std::memory_order_acquire) ||
+      game_state != mailbox->observed_game_state.load(
+                        std::memory_order_acquire)) {
+    return false;
+  }
+  std::uint8_t paused = 0;
+  std::int32_t date_raw = 0;
+  if (!read_current(jomini_state + xar::ck3_11906::kJominiPausedOffset,
+                    &paused, sizeof(paused)) ||
+      !read_current(game_state + xar::ck3_11906::kGameStateDateRawOffset,
+                    &date_raw, sizeof(date_raw)) ||
+      date_raw != mailbox->observed_date_raw.load(std::memory_order_acquire)) {
+    return false;
+  }
+  admission.application_main_thread_id = owner_thread_id;
+  admission.paused = paused != 0;
+  admission.proof_epoch = proof_epoch;
+  admission.date_raw = date_raw;
+  return true;
+}
+#endif
 
 bool IsPipeName(const wchar_t *value, DWORD length) noexcept {
   constexpr wchar_t prefix[] = L"\\\\.\\pipe\\";
@@ -555,6 +632,11 @@ std::string HeartbeatFrame(std::uint64_t sequence) {
       xar::bridge::ReadStewardDevelopCountyEnumeratorObserverDiagnosticsV1(
           g_steward_develop_county_enumerator_observer_v1);
 #endif
+#if defined(XAR_CK3_ENABLE_G2_DOMAIN_CONSTRUCTION_CANDIDATE_OBSERVER_V1)
+  const auto domain_construction_candidate_observer =
+      xar::bridge::ReadDomainConstructionCandidateObserverDiagnosticsV1(
+          g_domain_construction_candidate_observer_v1);
+#endif
 #if defined(XAR_CK3_ENABLE_G2_TRUCE_PREVIEW_ENTRY_OBSERVER_V1)
   const auto g2_truce_preview_entry_observer =
       xar::bridge::ReadG2TrucePreviewEntryObserverV1Diagnostics(
@@ -592,6 +674,9 @@ std::string HeartbeatFrame(std::uint64_t sequence) {
   result += kG2TrucePreviewEntryObserverEnabledV1 ? "true" : "false";
 #if defined(XAR_CK3_ENABLE_STEWARD_DEVELOP_COUNTY_ENUMERATOR_OBSERVER_V1)
   result += ",\"steward_develop_county_enumerator_observer_enabled\":true";
+#endif
+#if defined(XAR_CK3_ENABLE_G2_DOMAIN_CONSTRUCTION_CANDIDATE_OBSERVER_V1)
+  result += ",\"g2_domain_construction_candidate_observer_enabled\":true";
 #endif
   result += ",\"zhongguo_scoreboard_production_candidate_enabled\":";
   result += xar::ck3_11906::kZhongguoScoreboardProductionCandidateEnabledV1
@@ -1395,7 +1480,14 @@ std::string HeartbeatFrame(std::uint64_t sequence) {
       phase2_producer_identity_observer.selected_last_timestamp_qpc);
 #undef XAR_APPEND_PHASE2_PRODUCER_HISTOGRAM_FIELD
 #endif
+#if defined(XAR_CK3_ENABLE_G2_DOMAIN_CONSTRUCTION_CANDIDATE_OBSERVER_V1)
+  result += "},\"g2_domain_construction_candidate_observer_v1\":";
+  result += xar::bridge::SerializeDomainConstructionCandidateObserverV1(
+      domain_construction_candidate_observer);
+  result += '}';
+#else
   result += "}}";
+#endif
   return result;
 }
 
@@ -12095,6 +12187,26 @@ XarCk3BridgePrepareStartup(LPVOID) noexcept {
       return FALSE;
     }
   }
+#if defined(XAR_CK3_ENABLE_G2_DOMAIN_CONSTRUCTION_CANDIDATE_OBSERVER_V1)
+  {
+    xar::bridge::DomainConstructionCandidateObserverEnvironmentV1
+        environment{};
+    environment.exact_build_admitted = true;
+    environment.admitted_executable_sha256 = xar::bridge::
+        kDomainConstructionCandidateObserverExecutableSha256V1;
+    environment.primary_thread_suspended_proven = true;
+    environment.module_base =
+        reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr));
+    environment.capture_admission_context =
+        &g_main_thread_query_mailbox_v1;
+    environment.capture_admission_probe =
+        &ReadDomainConstructionCandidateCaptureAdmissionV1;
+    if (!xar::bridge::InstallDomainConstructionCandidateObserverV1(
+            g_domain_construction_candidate_observer_v1, environment)) {
+      return FALSE;
+    }
+  }
+#endif
   if (kG2TrucePreviewEntryObserverEnabledV1) {
     xar::bridge::G2TrucePreviewEntryObserverEnvironmentV1 environment{};
     environment.exact_build_admitted = true;

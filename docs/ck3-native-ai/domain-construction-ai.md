@@ -6,6 +6,9 @@
   `80%` 入围带、带权随机选择、预算储备背景、施工提交边以及原版对“存钱等目标”的明确说明。
 - **[research / contract-ready]** 文末定义 `domain-construction-candidates-v1` 最小只读输入合同，供和平治理
   planner 选择玩家直辖领地中的新建或单级升级目标。合同尚未实现，不能标记为 `static-ready` 或 live。
+- **[BUILD2 static-ready / live pending]** 本施工包实现了默认关闭的私有
+  `g2_domain_construction_candidate_observer_v1`，在 BUILD1 已冻结的候选 producer 返回边界采集调用上下文和原始
+  `0x28` 行。它不新增公共 bridge/MCP/schema，不发布候选语义，也不把离线 fixture 写成 live。
 - **[unknown]** 正常 AI scheduler 把建设挂在哪一种 task tick、多久重新评估一次、已选存钱目标保存于何处及何时
   失效，当前 exact-build 证据尚未闭合。原版通用 task tick 只能作为背景，不能冒充建筑专用 cadence。
 - 范围只包括省份建筑的新建与升级。新建 holding、Great Project 和 domicile 动作不进入 v1；原版 AI 的共同候选池
@@ -114,6 +117,91 @@ gold/prestige/piety 成本以及最终 affordability，任何未映射非零槽�
 只读 bridge 不得调用 `0x2EBED90`、`ai_attempt_to_build_building_effect` 或 `0x21F6800` 来“查询”：前两者要求
 AI 上下文且路径可产生施工，后者就是 mutation seam。正确入口是只读枚举、评分、成本与 legality evaluator，并在同一 paused
 application-main frame 内序列化结果。
+
+## BUILD2：默认关闭的候选 producer 私有 observer
+
+### 目的与开关
+
+BUILD2 只回答一个逆向问题：`0x1921810` 返回的 `0x28` 字节候选行在真实 exact-build 进程里如何承载身份和评分数据。
+它不尝试回答“玩家现在该建什么”，也不构造 `domain-construction-candidates-v1` 的公开结果。
+
+- CMake 开关固定为 `XAR_CK3_ENABLE_G2_DOMAIN_CONSTRUCTION_CANDIDATE_OBSERVER_V1`，默认必须为 `OFF`；
+- 私有 heartbeat/object key 固定为 `g2_domain_construction_candidate_observer_v1`；
+- 候选产物目录名固定为 `g2-domain-construction-candidate-observer-v1`；
+- 默认构建中不得出现私有 object、字段 token、安装分支或额外 capability；开关为 `ON` 的 DLL 也不得改变公共 heartbeat、
+  readiness、MCP tool、action step 或 schema；
+- 安装只允许 CK3 `1.19.0.6`、EXE SHA-256
+  `2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86`，并要求 primary thread 处于可证明的 suspended
+  安装窗口。callsite 原字节、目标 `0x1921810`、补丁长度与 continuation 必须在 BUILD2 ABI fixture 中逐字节冻结后才能写入；
+  本文不从一个 call RVA 猜 anchor 或 continuation。
+
+observer 只包围 BUILD1 已证明的 `0x2EBEE86 -> 0x1921810` producer 调用。它保留并执行原调用一次，随后记录返回边界；
+不得主动再调用 producer，不得进入 `0x2EBED90` 强制 effect，不得调用 `0x295CD60` final-legality helper，也不得触及
+`0x21F6800` 施工提交。后续排序、`80%` cutoff、带权 RNG、八槽 affordability 和 final legality 都在本 observer 范围之外。
+
+### 私有采集字段与未映射账本
+
+私有记录只保存完成字段映射所需的有界原始证据：
+
+| 私有字段 | BUILD2 可声称的含义 |
+|---|---|
+| `schema_version`, `private_key`, `artifact_stem`, `installed`, `failure_flags` | 私有 observer 生命周期与产物身份；不能投影成公共 query readiness |
+| `game_version`, `exe_sha256`, `callsite_rva`, `callee_rva` | exact-build 与 BUILD1 调用边绑定；持久化记录只使用 RVA，不输出进程绝对地址 |
+| `producer_calls`, `accepted_captures`, `rejected_application_main`, `rejected_paused`, `capture_read_failures` | 调用与 fail-closed 拒绝计数；拒绝发生在读取 producer 容器之前 |
+| `proof_epoch`, `date_raw`, `thread_id`, `timestamp_qpc` | 当前 hook 返回点重新读取 live paused/date，并与 application-main mailbox 的 owner 和同一会话指针核对后的证明 |
+| `vector_capacity`, `vector_count`, `captured_row_count`, `rows_truncated` | producer 返回容器的有界计数；任何负数、逆序、空 data 或异常容量均停止读取 |
+| `score_raw`, `row_bytes_hex`, `row_bytes_fnv1a64` | 同一 hook frame 内复制进 observer 自有存储的 `0x28` 行；只命名已证明的行首有符号 score，其余字节保持 opaque |
+| `candidate_identity_decoded`, `native_legality_decoded` | 私有 readiness，BUILD2 固定为 `false`；不得投影成公共 query readiness |
+
+BUILD1 只确认候选行步长 `0x28`，以及后续代码会按行首的有符号 score 排序。BUILD2 live 前仍把下列内容保留为
+`unknown`：
+
+- 行内 building definition、province、holding、slot、owner 和 action kind 的具体偏移与 identity 类型；
+- `0x19221C0`、`0x19224F0`、`0x19227C0` 各自生产的 building class，以及普通建筑和 domicile 行的区分位；
+- 行内非首字段是值、指针、句柄还是复合对象；不得仅凭“看起来像 ID”发布 full-generation identity；
+- 八槽资源向量的 gold/prestige/piety 对应关系、相等 affordability 边界和预算桶；
+- final legality、四层 scripted gate、施工队列、选中行和最终提交结果。它们位于 producer 返回之后，不能由 raw row
+  observer 反推为已验证字段。
+
+observer 不保存 producer owner、vector data、candidate/container 绝对地址，也不在 hook frame 结束后重新解引用任何原始地址。
+opaque 行可能包含形似地址的 qword，但它们只作为未解释字节保存，不能作为 typed pointer 使用。一次 live 只能提供映射候选；
+字段语义仍需和 exact-build 指令用法、RTTI/accessor 或独立同帧 identity 交叉验证后才允许进入公开合同。
+
+### 一次 paused capture 的准备与产物
+
+BUILD2 实现完成后只安排一次有界 capture，不为一个未命中的 observer 做长跑：
+
+1. 分别构建默认 `OFF` 与显式 `ON` 的 Release DLL。默认 DLL 必须证明不存在私有 marker；私有 DLL 的 native fixture 必须覆盖
+   exact-build gate、anchor 校验、一次 pre/post 返回、行边界拒绝、上限截断、安装失败回滚和 quiescent uninstall。
+2. 冻结只读 `ready-manifest.json`：记录源 commit、EXE、默认/私有 DLL、injector、ABI fixture、runner/verifier 的 SHA-256，
+   以及 callsite/callee、anchor、最大调用数、最大行数、最大字节数和超时。建议上限为一个完整 producer return、最多
+   `64` 行和 `2560` bytes row bytes；超过行数时只保留有界前缀并显式写 `rows_truncated=true`。
+3. 在 CK3 单实例负责人名下取得新轮次，先证明其他受管环境没有 CK3；恢复冻结 checkpoint 后建立 paused/map-ready、
+   snapshot/revision/date/player 的基线。observer 只能被动等待原生路径，禁止为了制造 hit 调用强制 effect、producer、
+   legality helper 或施工提交。
+4. runner 在第一个完整 producer return、typed terminal 或 `60` 秒观察上限中最先发生者处停止；捕获完成后立即回到暂停，
+   不推进第二次调用。若暂停现场没有自然 hit，记录 `no_producer_return_observed` 并结束本次，不用延长时间掩盖 NO-GO。
+5. 产物固定放在
+   `artifacts/live/g2-domain-construction-candidate-observer-v1/<attempt-id>/`，至少包含
+   `ready-manifest.json`、`preflight.json`、`observer.jsonl`、`report.json`、`cleanup-inventory.json` 和
+   `sha256sums.json`。报告必须绑定轮次、CK3 PID/创建时间、checkpoint、进程清单、私有开关、安装/回滚状态、snapshot identity、
+   调用计数、捕获行数、截断状态及每个文件的 SHA-256。
+6. 私有 DLL 仍遵守 bridge 的 process-lifetime 边界；本包不新增远程卸载接口。capture 收口后由 CK3 单实例负责人关闭该进程并
+   证明 CK3、injector 和 runner 进程归零。observer 自身的安装/恢复事务由 suspended non-CK3 fixture 验证，但不能冒充 live
+   进程中的远程卸载证据。
+
+### 验收分类
+
+| 实际结果 | 分类 | 可得结论 |
+|---|---|---|
+| exact build/anchor/安装/同会话均成立，且取得一个有界完整 pre/post return，容器和每个 `0x28` 行通过边界检查 | `GREEN / producer_return_captured` | 可开始行内字段映射；仍不是公共 reader 或 live planner |
+| observer 安装成功但观察窗内零 hit | `NO-GO / no_producer_return_observed` | 当前 paused 形状未暴露调用；不得重复相同长跑或调用 mutation 路径造 hit |
+| 只有 pre-call、返回缺失或采集超过行/字节上限 | `RED / incomplete_or_out_of_bounds_capture` | 原始行不可用于字段映射；保留 evidence 并停止 |
+| build/hash/anchor/session 漂移，安装、回滚或 cleanup 失败 | `RED / admission_or_lifecycle_failure` | 候选不可用；不得降级成 fixture GREEN |
+
+只有 `producer_return_captured` 才能推动下一轮静态字段映射。即便 GREEN，`domain-construction-candidates-v1` 仍保持
+`research / contract-ready`：BUILD2 不读取 final legality、成本/预算、施工队列，也没有证明任何候选属于玩家。fixture 只验证
+observer 和解析器，不得冒充生产 hit；没有真实 `observer.jsonl` 与同会话 `report.json` 时不得写 `production-live`。
 
 ## 预算储备与“存钱”边界
 

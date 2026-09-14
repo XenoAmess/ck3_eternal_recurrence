@@ -1,0 +1,65 @@
+{
+  "contract": "g2-domain-construction-candidate-observer-v1-source",
+  "schema_version": 1,
+  "required_header_tokens": [
+    "kDomainConstructionCandidateObserverPatchRvaV1 = 0x2EBEE81",
+    "kDomainConstructionCandidateObserverCallRvaV1 = 0x2EBEE86",
+    "kDomainConstructionCandidateObserverContinueRvaV1 = 0x2EBEE92",
+    "kDomainConstructionCandidateProducerRvaV1 = 0x1921810",
+    "kDomainConstructionCandidateRowBytesV1 = 0x28",
+    "kDomainConstructionCandidateObserverInstalledByDefaultV1 = false",
+    "XAR_CK3_ENABLE_G2_DOMAIN_CONSTRUCTION_CANDIDATE_OBSERVER_V1",
+    "g2_domain_construction_candidate_observer_v1",
+    "DomainConstructionCandidateCaptureAdmissionV1",
+    "CaptureDomainConstructionCandidatePostCallV1",
+    "UninstallDomainConstructionCandidateObserverV1"
+  ],
+  "required_implementation_tokens": [
+    "kPatchAnchor",
+    "0x48, 0x8D, 0x54, 0x24, 0x40",
+    "EmitRelocatedNativeCall",
+    "state.producer_target",
+    "state.post_call_global_slot_target",
+    "DomainConstructionCandidatePostThunkV1",
+    "admission.application_main_thread_id != current_thread_id",
+    "!admission.paused",
+    "kDomainConstructionCandidateRowBytesV1",
+    "row.bytes",
+    "Fnv1a64",
+    "QueryPerformanceCounter",
+    "GetCurrentThreadId",
+    "TargetWriteResult::rollback_unproven"
+  ],
+  "required_serializer_tokens": [
+    "fixture-captured-private-raw",
+    "row_bytes_hex",
+    "row_bytes_fnv1a64",
+    "raw_pointer_fields_persisted",
+    "row_bytes_reinterpreted_after_capture",
+    "ai_attempt_to_build_building_effect_0x2EBEE81_post_candidate_row_identity_decoder"
+  ],
+  "fixture_cases": [
+    "default build remains disabled and an exact uppercase CK3 SHA-256 admission is mandatory",
+    "wrong application-main thread and unpaused hits increment typed rejection counters without reading the vector",
+    "an admitted paused application-main post-call copies every byte of each 0x28 row before returning",
+    "the private serializer emits score, full uppercase row hex and FNV64 without typed pointer claims",
+    "capture is bounded at 64 rows and explicit truncation is retained",
+    "the exact anchor builds one relocated producer-call trampoline and uninstall restores it",
+    "a suspended non-CK3 process rejects the production hash and permits only an explicit non-executed remote fixture transaction"
+  ],
+  "suggested_cmake": {
+    "compile_gate": "XAR_CK3_ENABLE_G2_DOMAIN_CONSTRUCTION_CANDIDATE_OBSERVER_V1",
+    "private_sources": [
+      "src/domain_construction_candidate_observer_v1.cpp",
+      "src/domain_construction_candidate_observer_v1_serializer.cpp"
+    ],
+    "unit_target": "xar_ck3_domain_construction_candidate_observer_v1_test",
+    "suspended_injection_target": "xar_ck3_domain_construction_candidate_observer_v1_suspended_injection_test"
+  },
+  "public_contract": {
+    "public_capability_changed": false,
+    "public_domain_construction_reader_ready": false,
+    "available_live_payload_claimed": false,
+    "ck3_started": false
+  }
+}
