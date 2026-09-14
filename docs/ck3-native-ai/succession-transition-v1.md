@@ -2,7 +2,7 @@
 
 ## Status and purpose
 
-- **[static-ready, integration/live pending]** The pure contract freezes the
+- **[fixture-ready, production integration/live pending]** The pure contract freezes the
   current engine-calculated first heir of every title held by the living
   episode ruler, then reconciles that bounded predecessor-title set after CK3
   changes the played character.
@@ -58,10 +58,10 @@ hypothetical law changes, or the actual holder of a title absent from the new
 player's holdings. These require additional native observations only when they
 block a concrete survival decision.
 
-The contract does not yet change the one-life terminal policy. The next G2-M3
-package must retain the latest valid expectation in driver state, produce this
-reconciliation at the real transition, and expose a distinct continuation
-path that does not confuse inheritance with immutable-seed replay.
+The contract does not yet change the one-life terminal policy. The production
+runner must call the driver retention/reconciliation path around a real natural
+transition and then expose a distinct continuation path that does not confuse
+inheritance with immutable-seed replay.
 
 ## Focused verification
 
@@ -69,3 +69,27 @@ The unit suite covers exact expectation freezing, split inheritance, a
 successor's pre-existing title, missing/retained predecessor titles, unexpected
 successor identity, no-primary-heir risk and cross-frame rejection. No CK3
 process or desktop input is needed for this static package.
+
+
+## Driver-state integration
+
+The native driver now exposes three private runner methods: retain a same-frame
+expectation, reconcile the retained expectation, and read the transition state.
+The retained expectation is an additive optional member of the existing
+`driver-state.json` v2 envelope. Old v1/v2 files without the member remain
+valid. A same-PID hot recovery restores it only after strict schema and episode
+identity validation.
+
+A cold checkpoint restore, immutable-seed episode start, Phase 2 source staging,
+or explicit operator player rebind clears both expectation and in-memory
+reconciliation. These operations create a different physical frame or identity;
+the runner must query a fresh turn bundle instead of reusing an earlier
+projection. A natural `played_character_changed` transition keeps the old
+expectation long enough to compare the first paused successor frame.
+
+The focused contract/driver suite passes `7/7` and the three existing player
+rebind, daemon hot-restore and compact persistence regressions pass `3/3`, all
+under normal and optimized Python. The first attempted regression command used
+the repository root and therefore could not resolve sibling test helpers; the
+correct existing test working directory passed immediately. That invocation
+error changed no product state and is not a CK3 RED.

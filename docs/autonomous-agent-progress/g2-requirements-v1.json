@@ -102,11 +102,12 @@
       "latest_evidence": [
         "immutable-seed cross-episode loop",
         "per-held-title first-heir partition production-live primitive",
-        "succession expectation and predecessor-estate reconciliation contract static-ready (normal/optimized 5/5)"
+        "succession expectation and predecessor-estate reconciliation contract static-ready (normal/optimized 5/5)",
+        "driver-state expectation retention and same-PID transition reconciliation fixture-ready (normal/optimized 10/10 focused tests)"
       ],
       "planner_consumer": "survival, inheritance and post-succession goal selection",
       "visible_outcome": "predict title distribution before a natural death, reconcile actual inheritance and continue as the real successor",
-      "open_blocker": "The current per-title engine projection and pure reconciliation are static-ready. The driver still treats played_character_changed only as a one-life terminal; it must retain the latest valid expectation, query the first paused successor frame, reconcile the estate and continue as that real successor. Legitimacy and deeper faction state remain later survival-policy inputs."
+      "open_blocker": "The current per-title engine projection, persisted expectation and pure same-PID reconciliation are static/fixture-ready. The production runner must capture a current expectation before natural death, query the first paused successor frame, reconcile it and continue as that real successor. Legitimacy and deeper faction state remain later survival-policy inputs."
     },
     {
       "id": "G2-M4",
@@ -190,5 +191,5 @@
     ]
   },
   "religion_boundary": "deferred except the minimum native result needed by holy-war execution and marriage legality or acceptance",
-  "updated_at": "2026-09-14T10:36:00+08:00"
+  "updated_at": "2026-09-14T10:58:00+08:00"
 }

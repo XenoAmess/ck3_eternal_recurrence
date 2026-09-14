@@ -1,8 +1,10 @@
 from __future__ import annotations
 
 import copy
+import json
 from pathlib import Path
 import sys
+import tempfile
 import unittest
 
 
@@ -13,8 +15,72 @@ from xar_autoplayer.bridge.succession_transition_contract import (
     SUCCESSION_EXPECTATION_V1_SCHEMA,
     SUCCESSION_RECONCILIATION_V1_SCHEMA,
     freeze_succession_expectation_v1,
+    normalize_succession_expectation_v1,
     reconcile_succession_transition_v1,
 )
+from xar_autoplayer.bridge.native_driver import NativeHeadlessGameplayDriver
+
+
+class _FakeEndpoint:
+    def __init__(self, pipe_name: str = r"\\.\pipe\xar_succession_fixture") -> None:
+        self.pipe_name = pipe_name
+        self.on_frame = None
+
+    def start(self, on_frame, on_disconnect) -> None:
+        self.on_frame = on_frame
+
+    def publish(self, frame: dict[str, object]) -> None:
+        assert self.on_frame is not None
+        self.on_frame(frame)
+
+    def send(self, frame: dict[str, object]) -> None:
+        return None
+
+    def close(self) -> None:
+        return None
+
+    def transport_error(self) -> None:
+        return None
+
+
+def _hello() -> dict[str, object]:
+    return {
+        "type": "hello",
+        "protocol_version": 1,
+        "bridge_version": "0.1.0",
+        "pid": 4242,
+        "session_generation": 0,
+        "capabilities": ["game.state.snapshot", "game.state.played-character"],
+    }
+
+
+def _native_snapshot(
+    revision: int,
+    *,
+    character_id: int,
+    date_raw: int,
+) -> dict[str, object]:
+    return {
+        "type": "state_snapshot",
+        "protocol_version": 1,
+        "snapshot_id": f"native:{revision}",
+        "revision": revision,
+        "state": {
+            "phase": "map_hud",
+            "date": "1066.9.15",
+            "date_raw": date_raw,
+            "speed": 1,
+            "paused": True,
+            "map_ready": True,
+            "history": [],
+            "active_event": None,
+            "pending_character_interaction": None,
+            "played_character": {"character_id": character_id, "alive": True},
+            "one_life_settlement": None,
+            "active_wars": [],
+            "player_armies": [],
+        },
+    }
 
 
 def _component(value: object) -> dict[str, object]:
@@ -219,6 +285,103 @@ class SuccessionTransitionContractTests(unittest.TestCase):
             )
         with self.assertRaises(ValueError):
             reconcile_succession_transition_v1(expectation, active, self.post)
+
+    def test_persisted_expectation_normalizer_rejects_identity_drift(self) -> None:
+        expectation = freeze_succession_expectation_v1(
+            self.pre,
+            episode_run_id="native-100-test",
+            episode_character_id=100,
+        )
+        self.assertEqual(
+            normalize_succession_expectation_v1(expectation), expectation
+        )
+        drifted = copy.deepcopy(expectation)
+        drifted["binding"]["episode_character_id"] = 101
+        with self.assertRaises(ValueError):
+            normalize_succession_expectation_v1(drifted)
+
+    def test_native_driver_retains_restores_and_reconciles_expectation(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            state_dir = Path(temporary)
+            endpoint = _FakeEndpoint()
+            driver = NativeHeadlessGameplayDriver(
+                endpoint.pipe_name,
+                endpoint=endpoint,
+                state_dir=state_dir,
+            )
+            endpoint.publish(_hello())
+            endpoint.publish(
+                _native_snapshot(20, character_id=100, date_raw=53_180_000)
+            )
+            before = driver.take_snapshot()
+            pre_bundle = _bundle(
+                character_id=100,
+                snapshot_id=str(before["snapshot_id"]),
+                revision=int(before["revision"]),
+                native_revision=int(before["native_revision"]),
+                date_raw=int(before["date_raw"]),
+                title_rows=[
+                    _row(10, 200, primary=True),
+                    _row(11, 200, primary=False),
+                    _row(12, 300, primary=False),
+                ],
+                primary_heir=200,
+            )
+            retained = driver.retain_succession_expectation_v1(
+                pre_bundle, expected_revision=int(before["revision"])
+            )
+            state_path = state_dir / "native-session" / "driver-state.json"
+            persisted = json.loads(state_path.read_text(encoding="utf-8"))
+            self.assertEqual(persisted["succession_expectation"], retained)
+            driver.close()
+
+            restored_endpoint = _FakeEndpoint(endpoint.pipe_name)
+            restored = NativeHeadlessGameplayDriver(
+                restored_endpoint.pipe_name,
+                endpoint=restored_endpoint,
+                state_dir=state_dir,
+            )
+            restored_endpoint.publish(_hello())
+            restored_endpoint.publish(
+                _native_snapshot(21, character_id=100, date_raw=53_180_000)
+            )
+            restored_before = restored.take_snapshot()
+            self.assertEqual(
+                restored_before["succession_expectation"], retained
+            )
+
+            restored_endpoint.publish(
+                _native_snapshot(24, character_id=200, date_raw=53_180_720)
+            )
+            transition = restored.take_snapshot()
+            self.assertEqual(
+                transition["one_life_terminal_reason"],
+                "played_character_changed",
+            )
+            post_bundle = _bundle(
+                character_id=200,
+                snapshot_id=str(transition["snapshot_id"]),
+                revision=int(transition["revision"]),
+                native_revision=int(transition["native_revision"]),
+                date_raw=int(transition["date_raw"]),
+                title_rows=[
+                    _row(10, 400, primary=True),
+                    _row(11, 400, primary=False),
+                ],
+                primary_heir=400,
+            )
+            reconciliation = (
+                restored.reconcile_retained_succession_transition_v1(
+                    post_bundle,
+                    expected_revision=int(transition["revision"]),
+                )
+            )
+            self.assertEqual(reconciliation["verdict"], "matched")
+            self.assertEqual(
+                restored.succession_transition_state_v1()["reconciliation"],
+                reconciliation,
+            )
+            restored.close()
 
 
 if __name__ == "__main__":

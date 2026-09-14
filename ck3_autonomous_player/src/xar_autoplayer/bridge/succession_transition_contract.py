@@ -14,6 +14,25 @@ SUCCESSION_EXPECTATION_V1_SCHEMA: Final = (
 SUCCESSION_RECONCILIATION_V1_SCHEMA: Final = (
     "xar.ck3.succession-reconciliation/v1"
 )
+_EXPECTATION_FIELDS: Final = {
+    "schema",
+    "status",
+    "binding",
+    "expectation_state",
+    "predecessor_character_id",
+    "expected_successor_character_id",
+    "title_expectations",
+    "risk_state",
+    "unavailable_reason",
+}
+_EXPECTATION_BINDING_FIELDS: Final = {
+    "snapshot_id",
+    "revision",
+    "native_revision",
+    "date_raw",
+    "episode_run_id",
+    "episode_character_id",
+}
 
 
 def _positive_int(value: object, name: str) -> int:
@@ -178,7 +197,7 @@ def freeze_succession_expectation_v1(
     primary_rows = [row for row in rows if row["primary"]]
     if primary_rows[0]["first_heir_character_id"] != expected_successor:
         raise ValueError("primary-title row disagrees with expected successor")
-    return {
+    return normalize_succession_expectation_v1({
         "schema": SUCCESSION_EXPECTATION_V1_SCHEMA,
         "status": "available",
         "binding": {
@@ -193,6 +212,129 @@ def freeze_succession_expectation_v1(
         "risk_state": _available_value(
             succession.get("partition"), "turn_bundle succession partition"
         ).get("risk_state"),
+        "unavailable_reason": None,
+    })
+
+
+def normalize_succession_expectation_v1(value: object) -> dict[str, object]:
+    """Validate a persisted expectation without consulting live CK3 state."""
+
+    if not isinstance(value, dict) or set(value) != _EXPECTATION_FIELDS:
+        raise ValueError("succession expectation envelope is malformed")
+    if (
+        value.get("schema") != SUCCESSION_EXPECTATION_V1_SCHEMA
+        or value.get("status") != "available"
+        or value.get("unavailable_reason") is not None
+    ):
+        raise ValueError("succession expectation identity is malformed")
+    binding = value.get("binding")
+    if not isinstance(binding, dict) or set(binding) != _EXPECTATION_BINDING_FIELDS:
+        raise ValueError("succession expectation binding is malformed")
+    snapshot_id = binding.get("snapshot_id")
+    episode_run_id = binding.get("episode_run_id")
+    if (
+        not isinstance(snapshot_id, str)
+        or not snapshot_id
+        or not isinstance(episode_run_id, str)
+        or not episode_run_id
+    ):
+        raise ValueError("succession expectation string binding is malformed")
+    predecessor_id = _positive_int(
+        value.get("predecessor_character_id"), "predecessor_character_id"
+    )
+    episode_character_id = _positive_int(
+        binding.get("episode_character_id"), "binding episode_character_id"
+    )
+    if episode_character_id != predecessor_id:
+        raise ValueError("succession expectation predecessor binding disagrees")
+    normalized_binding = {
+        "snapshot_id": snapshot_id,
+        "revision": _uint64(binding.get("revision"), "binding revision"),
+        "native_revision": _uint64(
+            binding.get("native_revision"), "binding native_revision"
+        ),
+        "date_raw": _date_raw(binding.get("date_raw"), "binding date_raw"),
+        "episode_run_id": episode_run_id,
+        "episode_character_id": episode_character_id,
+    }
+    expectation_state = value.get("expectation_state")
+    expected_successor = value.get("expected_successor_character_id")
+    if expectation_state == "successor_expected":
+        expected_successor = _positive_int(
+            expected_successor, "expected_successor_character_id"
+        )
+        if expected_successor == predecessor_id:
+            raise ValueError("succession expectation points back to predecessor")
+    elif expectation_state == "no_primary_heir":
+        if expected_successor is not None:
+            raise ValueError("no-primary-heir expectation invented a successor")
+    else:
+        raise ValueError("succession expectation state is malformed")
+    risk_state = value.get("risk_state")
+    if risk_state not in {
+        "single_successor",
+        "split_successors",
+        "no_primary_heir",
+    }:
+        raise ValueError("succession expectation risk state is malformed")
+    if (expected_successor is None) is not (risk_state == "no_primary_heir"):
+        raise ValueError("succession expectation risk and successor disagree")
+    rows = value.get("title_expectations")
+    if not isinstance(rows, list) or not rows:
+        raise ValueError("succession expectation title rows are malformed")
+    normalized_rows: list[dict[str, object]] = []
+    seen: set[int] = set()
+    primary_rows = 0
+    primary_heir: int | None = None
+    prior_title_id = 0
+    for index, row in enumerate(rows):
+        if not isinstance(row, dict) or set(row) != {
+            "title",
+            "first_heir_character_id",
+            "primary",
+        }:
+            raise ValueError(f"succession expectation row {index} is malformed")
+        title = row.get("title")
+        if not isinstance(title, dict):
+            raise ValueError(f"succession expectation row {index} lacks a title")
+        title_id = _positive_int(
+            title.get("title_id"), f"succession expectation row {index} title_id"
+        )
+        if title_id in seen or title_id <= prior_title_id:
+            raise ValueError("succession expectation title order is not canonical")
+        seen.add(title_id)
+        prior_title_id = title_id
+        primary = row.get("primary")
+        if not isinstance(primary, bool):
+            raise ValueError(f"succession expectation row {index} primary is malformed")
+        heir = row.get("first_heir_character_id")
+        if heir is not None:
+            heir = _positive_int(
+                heir, f"succession expectation row {index} first heir"
+            )
+            if heir == predecessor_id:
+                raise ValueError("succession expectation title points to predecessor")
+        if primary:
+            primary_rows += 1
+            primary_heir = heir
+        normalized_rows.append(
+            {
+                "title": copy.deepcopy(title),
+                "first_heir_character_id": heir,
+                "primary": primary,
+            }
+        )
+    if primary_rows != 1 or primary_heir != expected_successor:
+        raise ValueError("succession expectation primary title disagrees")
+    return {
+        "schema": SUCCESSION_EXPECTATION_V1_SCHEMA,
+        "status": "available",
+        "binding": normalized_binding,
+        "expectation_state": expectation_state,
+        "predecessor_character_id": predecessor_id,
+        "expected_successor_character_id": expected_successor,
+        "title_expectations": normalized_rows,
+        "risk_state": risk_state,
         "unavailable_reason": None,
     }
 

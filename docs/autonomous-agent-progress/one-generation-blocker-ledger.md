@@ -1698,3 +1698,19 @@ one recommendation, one action and the bounded postwar/cold-restore checks.
   changed. The remaining blocker is driver retention, first-successor-frame
   query/reconciliation and a distinct real-successor continuation path; the
   immutable-seed replay path is not evidence for that outcome.
+
+
+## G2-M3 persisted expectation and transition fixture (2026-09-14)
+
+- The native driver now retains the latest same-frame succession expectation
+  in its existing private driver-state v2 envelope and restores it only for the
+  same PID/episode identity. Old state files remain readable because the field
+  is optional and additive.
+- Cold checkpoint/seed restore, Phase 2 source staging and explicit operator
+  player rebind clear it. A natural played-character transition retains it and
+  the fixture proves prediction -> same-PID hot recovery -> successor frame ->
+  estate reconciliation. Focused tests pass `10/10` in normal and optimized
+  Python.
+- This does not yet continue gameplay as the heir. The next active blocker is
+  the runner integration and one bounded natural transition artifact; no public
+  MCP/native surface changed.

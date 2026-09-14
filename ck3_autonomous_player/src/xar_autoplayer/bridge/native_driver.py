@@ -134,6 +134,11 @@ from .campaign_root_context_contract import (
     QUERY_CAMPAIGN_ROOT_CONTEXT_V1_STEP,
     normalize_campaign_root_context_v1,
 )
+from .succession_transition_contract import (
+    freeze_succession_expectation_v1,
+    normalize_succession_expectation_v1,
+    reconcile_succession_transition_v1,
+)
 from .zhongguo_case_snapshot_contract import (
     QUERY_ZHONGGUO_CASE_SNAPSHOT_V1_CAPABILITY,
     QUERY_ZHONGGUO_CASE_SNAPSHOT_V1_STEP,
@@ -1220,6 +1225,19 @@ def load_native_driver_state_for_resume(
         episode_character_id=character_id,
         episode_run_id=run_id,
     )
+    succession_expectation_value = payload.get("succession_expectation")
+    succession_expectation = (
+        normalize_succession_expectation_v1(succession_expectation_value)
+        if succession_expectation_value is not None
+        else None
+    )
+    if isinstance(succession_expectation, dict):
+        expectation_binding = succession_expectation["binding"]
+        if (
+            expectation_binding["episode_character_id"] != character_id
+            or expectation_binding["episode_run_id"] != run_id
+        ):
+            raise ValueError("driver succession expectation changed episode")
     return {
         "format_version": format_version,
         "bridge_pid": persisted_bridge_pid,
@@ -1235,6 +1253,7 @@ def load_native_driver_state_for_resume(
         "rollback_war_failures": copy.deepcopy(rollback_war_failures),
         "rollback_war_failures_migration_required": migration_required,
         "managed_restore_transaction": managed_restore_transaction,
+        "succession_expectation": succession_expectation,
     }
 
 
@@ -1346,6 +1365,8 @@ class NativeHeadlessGameplayDriver:
         self._rollback_war_failures: list[dict[str, object]] = []
         self._rollback_war_failures_migration_required = False
         self._managed_restore_transaction: dict[str, object] | None = None
+        self._succession_expectation: dict[str, object] | None = None
+        self._succession_reconciliation: dict[str, object] | None = None
         self._episode_identity_lock = self._driver_state_lock
         self._episode_character_id: int | None = None
         self._episode_run_id: str | None = None
@@ -1942,6 +1963,107 @@ class NativeHeadlessGameplayDriver:
             "native_rollback_war_failures": rollback_war_failures,
         }
 
+    def retain_succession_expectation_v1(
+        self,
+        turn_bundle: dict[str, object],
+        *,
+        expected_revision: int,
+    ) -> dict[str, object]:
+        """Persist one same-frame living-ruler succession expectation."""
+
+        _validate_revision(expected_revision, "expected_revision")
+        snapshot = self.take_internal_semantic_snapshot()
+        if (
+            snapshot.get("revision") != expected_revision
+            or snapshot.get("paused") is not True
+            or snapshot.get("one_life_terminal") is True
+        ):
+            raise PreSubmissionRevisionMismatchError(
+                "succession expectation requires the current paused living frame"
+            )
+        episode_character_id = snapshot.get("episode_character_id")
+        episode_run_id = snapshot.get("episode_run_id")
+        if (
+            isinstance(episode_character_id, bool)
+            or not isinstance(episode_character_id, int)
+            or not isinstance(episode_run_id, str)
+            or not episode_run_id
+        ):
+            raise BridgeUnavailableError(
+                "succession expectation requires an active episode identity"
+            )
+        expectation = freeze_succession_expectation_v1(
+            turn_bundle,
+            episode_run_id=episode_run_id,
+            episode_character_id=episode_character_id,
+        )
+        binding = expectation["binding"]
+        for key in ("snapshot_id", "revision", "native_revision", "date_raw"):
+            if binding[key] != snapshot.get(key):
+                raise PreSubmissionRevisionMismatchError(
+                    f"succession expectation crossed the current {key}"
+                )
+        with self._driver_state_lock:
+            if (
+                self._episode_character_id != episode_character_id
+                or self._episode_run_id != episode_run_id
+            ):
+                raise PreSubmissionRevisionMismatchError(
+                    "succession expectation crossed the active episode"
+                )
+            self._succession_expectation = copy.deepcopy(expectation)
+            self._succession_reconciliation = None
+            self._driver_state_dirty = True
+        self._persist_driver_state()
+        return copy.deepcopy(expectation)
+
+    def reconcile_retained_succession_transition_v1(
+        self,
+        post_turn_bundle: dict[str, object],
+        *,
+        expected_revision: int,
+    ) -> dict[str, object]:
+        """Reconcile the retained estate against one paused successor frame."""
+
+        _validate_revision(expected_revision, "expected_revision")
+        snapshot = self.take_internal_semantic_snapshot()
+        if snapshot.get("revision") != expected_revision:
+            raise PreSubmissionRevisionMismatchError(
+                "succession reconciliation crossed the current revision"
+            )
+        with self._driver_state_lock:
+            expectation = copy.deepcopy(self._succession_expectation)
+        if expectation is None:
+            raise BridgeUnavailableError(
+                "succession reconciliation requires a retained expectation"
+            )
+        try:
+            reconciliation = reconcile_succession_transition_v1(
+                expectation, snapshot, post_turn_bundle
+            )
+        except ValueError as error:
+            raise BridgeUnavailableError(
+                f"succession reconciliation inputs are malformed: {error}"
+            ) from error
+        with self._driver_state_lock:
+            if self._succession_expectation != expectation:
+                raise PreSubmissionRevisionMismatchError(
+                    "succession expectation changed during reconciliation"
+                )
+            self._succession_reconciliation = copy.deepcopy(reconciliation)
+        return reconciliation
+
+    def succession_transition_state_v1(self) -> dict[str, object]:
+        """Return the retained private M3 state for runner/report consumers."""
+
+        with self._driver_state_lock:
+            return {
+                "expectation": copy.deepcopy(self._succession_expectation),
+                "reconciliation": copy.deepcopy(
+                    self._succession_reconciliation
+                ),
+            }
+
     def _with_one_life_episode(
         self, snapshot: dict[str, object]
     ) -> dict[str, object]:
@@ -1976,6 +2098,12 @@ class NativeHeadlessGameplayDriver:
             )
             arrange_marriage_query_sequence = (
                 self._arrange_marriage_query_sequence
+            )
+            succession_expectation = copy.deepcopy(
+                self._succession_expectation
+            )
+            succession_reconciliation = copy.deepcopy(
+                self._succession_reconciliation
             )
         declarable_wars, declaration_query_sequence = (
             self._declarable_wars_cache_for_snapshot(
@@ -2079,6 +2207,8 @@ class NativeHeadlessGameplayDriver:
             "one_life_terminal_reason": terminal_reason,
             "one_life_settlement_status": settlement_status,
             "continue_as_heir_after_death": False,
+            "succession_expectation": succession_expectation,
+            "succession_reconciliation": succession_reconciliation,
             "army_routes_supported": (
                 ARMY_ROUTES_CAPABILITY in bridge_capabilities
             ),
@@ -3345,6 +3475,8 @@ class NativeHeadlessGameplayDriver:
                 self._war_termination_exit_terms = {}
                 self._arrange_marriage_choices = []
                 self._arrange_marriage_query_sequence = None
+                self._succession_expectation = None
+                self._succession_reconciliation = None
         if episode_rebind_performed:
             self._persist_driver_state()
         rebound = self.take_snapshot()
@@ -5266,6 +5398,8 @@ class NativeHeadlessGameplayDriver:
             self._war_termination_exit_terms = {}
             self._arrange_marriage_choices = []
             self._arrange_marriage_query_sequence = None
+            self._succession_expectation = None
+            self._succession_reconciliation = None
             completed = {
                 **self._episode_transition,
                 "phase": "active_new",
@@ -5434,6 +5568,9 @@ class NativeHeadlessGameplayDriver:
             "managed_restore_transaction": copy.deepcopy(
                 self._managed_restore_transaction
             ),
+            "succession_expectation": copy.deepcopy(
+                self._succession_expectation
+            ),
         }
         # Keep an old-state migration recognizable across a crash before the
         # first playable snapshot supplies the restored physical origin.
@@ -5459,6 +5596,7 @@ class NativeHeadlessGameplayDriver:
                 else None
             ),
             "managed_restore_transaction": self._managed_restore_transaction,
+            "succession_expectation": self._succession_expectation,
         }
         # Keep an old-state migration recognizable across a crash before the
         # first playable snapshot supplies the restored physical origin.
@@ -5517,6 +5655,8 @@ class NativeHeadlessGameplayDriver:
                 self._rollback_war_failures = []
                 self._rollback_war_failures_migration_required = False
                 self._managed_restore_transaction = None
+                self._succession_expectation = None
+                self._succession_reconciliation = None
                 self._driver_state_restored = False
                 self._driver_state_restore_kind = None
                 self._episode_binding_state = "unbound"
@@ -5561,6 +5701,9 @@ class NativeHeadlessGameplayDriver:
                     )
                     self._managed_restore_transaction = copy.deepcopy(
                         restored_transaction
+                    )
+                    self._succession_expectation = copy.deepcopy(
+                        restored.get("succession_expectation")
                     )
                     if (
                         isinstance(self._managed_restore_transaction, dict)
@@ -5865,6 +6008,10 @@ class NativeHeadlessGameplayDriver:
                     completed_failures,
                 )
                 self._rollback_war_failures_migration_required = False
+                # A checkpoint restore creates a new physical frame. Recapture
+                # even when the saved date matches an older expectation.
+                self._succession_expectation = None
+                self._succession_reconciliation = None
                 self._driver_state_restored = True
                 self._driver_state_restore_kind = "cold_checkpoint"
                 self._episode_binding_state = "active_resumed"
@@ -5878,6 +6025,8 @@ class NativeHeadlessGameplayDriver:
                 self._last_checkpoint = None
                 self._rollback_war_failures = []
                 self._rollback_war_failures_migration_required = False
+                self._succession_expectation = None
+                self._succession_reconciliation = None
                 self._driver_state_restored = False
                 self._driver_state_restore_kind = "new_episode"
                 self._episode_binding_state = "active_new"
@@ -13295,6 +13444,8 @@ class NativeHeadlessGameplayDriver:
                     }
                 )
                 self._episode_character_id = expected_player_character_id
+                self._succession_expectation = None
+                self._succession_reconciliation = None
                 self._last_checkpoint = checkpoint
                 self._rollback_war_failures = []
                 self._rollback_war_failures_migration_required = False

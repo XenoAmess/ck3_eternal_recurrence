@@ -327,3 +327,20 @@ retain the latest valid expectation in driver state, generate the first real
 reconciliation after CK3 changes the played CharacterID, and only then expose a
 real-successor continuation path. Succession laws, claims and unseen holders
 remain outside v1 rather than being inferred.
+
+
+## G2-M3 driver-state retention fixture-ready
+
+The native driver now persists the latest strictly validated succession
+expectation as an optional additive member of its existing v2 state envelope.
+Same-PID hot recovery preserves it; checkpoint/seed restore, source staging and
+operator player rebind clear it and force a fresh observation. On a natural
+paused `played_character_changed` frame, the driver can reconcile the retained
+predecessor estate with a same-frame successor turn bundle and retain that
+result for the runner.
+
+Focused contract/driver tests pass `7/7` and three existing persistence/rebind
+regressions pass `3/3`, in normal and optimized Python. This is fixture-ready;
+no public MCP/native contract or planner behavior changed. The next package is
+the production runner path that captures before death, performs the first
+successor query/reconciliation, and continues the same campaign as that ruler.
