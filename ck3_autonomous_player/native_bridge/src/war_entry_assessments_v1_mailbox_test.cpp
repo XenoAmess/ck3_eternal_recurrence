@@ -320,6 +320,29 @@ bool MailboxExecutionPreservesContextThroughExecutingTimeout() {
   return ok;
 }
 
+bool FailureMessagesExposeTerminalState() {
+  using namespace xar::ck3_11906;
+  static_assert(kWarEntryAssessmentsV1QueuedWaitBudgetMilliseconds == 8'000);
+  static_assert(kWarEntryAssessmentsV1ExecutingWaitSliceMilliseconds == 2'000);
+  return WarEntryAssessmentFailureMessageV1(
+             MainThreadQueryWaitResultV1::timeout_cancelled_before_execution,
+             WarEntryAssessmentMailboxCompletionV1::not_executed, {}) ==
+             "application-main war-entry query timed out before execution" &&
+         WarEntryAssessmentFailureMessageV1(
+             MainThreadQueryWaitResultV1::executor_failed,
+             WarEntryAssessmentMailboxCompletionV1::infrastructure_rejected,
+             {}) == "application-main war-entry executor failed" &&
+         WarEntryAssessmentFailureMessageV1(
+             MainThreadQueryWaitResultV1::completed,
+             WarEntryAssessmentMailboxCompletionV1::query_unavailable,
+             "target_not_declarable") ==
+             "application-main war-entry query failed:target_not_declarable" &&
+         WarEntryAssessmentFailureMessageV1(
+             MainThreadQueryWaitResultV1::completed,
+             WarEntryAssessmentMailboxCompletionV1::query_unavailable, {}) ==
+             "application-main war-entry query failed:mailbox_reader_unavailable";
+}
+
 bool SourceContract(int argc, char **argv) {
   if (argc != 5 ||
       !xar::ck3_11906::
@@ -361,8 +384,11 @@ int main(int argc, char **argv) {
   if (!MailboxExecutionPreservesContextThroughExecutingTimeout()) {
     return 2;
   }
-  if (!SourceContract(argc, argv)) {
+  if (!FailureMessagesExposeTerminalState()) {
     return 3;
+  }
+  if (!SourceContract(argc, argv)) {
+    return 4;
   }
   return 0;
 }

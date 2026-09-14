@@ -13,6 +13,10 @@ namespace xar::ck3_11906 {
 // through this adapter.
 inline constexpr bool
     kWarEntryAssessmentsV1MailboxAdapterProductionWired = true;
+inline constexpr std::uint32_t
+    kWarEntryAssessmentsV1QueuedWaitBudgetMilliseconds = 8'000;
+inline constexpr std::uint32_t
+    kWarEntryAssessmentsV1ExecutingWaitSliceMilliseconds = 2'000;
 
 enum class WarEntryAssessmentMailboxCompletionV1 : std::uint32_t {
   not_executed = 0,
@@ -60,6 +64,11 @@ struct WarEntryAssessmentMailboxContextV1 {
 bool ExecuteWarEntryAssessmentMailboxQueryV1(
     void *opaque_context,
     const MainThreadExecutionStampV1 &stamp) noexcept;
+
+std::string WarEntryAssessmentFailureMessageV1(
+    MainThreadQueryWaitResultV1 wait,
+    WarEntryAssessmentMailboxCompletionV1 completion,
+    std::string_view unavailable_stage);
 
 static_assert(
     std::is_same_v<decltype(&ExecuteWarEntryAssessmentMailboxQueryV1),

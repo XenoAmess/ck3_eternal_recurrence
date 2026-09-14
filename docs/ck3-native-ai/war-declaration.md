@@ -443,3 +443,10 @@ flowchart TD
 - [unknown] `TARGET_MAX_DEFENSIVE_WARS` 的实际读取点及其与 target discovery 的相对顺序。
 - [unknown] 所有 DLC CB 的完整脚本评分展开、硬编码 title score 全账本与逐项 rounding。
 - [unknown] `CCharacterInteractionDatabase+0x1070` 的注册 key；不得与玩家 UI `+0xF78` 混用。
+
+## R671 application-main mailbox RED（2026-09-14）
+
+- [production-live] 当前轮次 R671 从冻结的 R664 后继 checkpoint 恢复后，`query-declarable-wars` 成功返回七条声明；紧接着对目标 `38436` 的 `query-war-entry-assessments-v1-1-38436` 在任何 gameplay mutation 或日期推进前失败。run log SHA-256 为 `9257FEB3FE5560FFCDACDC29B547A009EC77B0C8672C1B0AD1A362A54F0AB1D0`，最终 driver-state SHA-256 为 `453669C9F795424A7A95659C03637DF66F16E666BDF4B2F4198D0BD8AA23E4AB`。
+- [implementation-confirmed] 失败文本没有 reader 的 `:<stage>` 后缀。严格 reader 与 mailbox adapter 对每个业务不可用分支都会填充 stage，因此该证据只把 RED 定位到排队、executor、application-main 边界或 completion 一层，不能声称是 power reader 数据失败。
+- [implementation-confirmed] 旧 dispatch 将所有上述终态压成 `application-main war-entry query failed`，且排队等待仅为 `2000 ms`；同一项目其余 production application-main 查询使用 `8000 ms` 有界排队预算与 `2000 ms` executing slice。war-entry adapter 现与该界限一致，并按 wait/completion/reader-stage 返回可区分错误。业务不可用仍是失败，未被降级或吞掉。
+- [static-confirmed] 更新后的 DLL 与 mailbox fixture 已构建；mailbox fixture及 war-entry source-contract 直接执行均 GREEN。此修复不改变 capability、请求 literal 或成功 payload schema；仍需新轮次 R672 的一次短 live replay 判断 R671 属于 queued timeout，还是暴露新的具体 executor/boundary RED。

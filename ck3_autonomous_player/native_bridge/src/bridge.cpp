@@ -9324,7 +9324,9 @@ void RunConnectedSession(
                     pipe, CommandResultFrame(request_id, step, false, error));
               } else {
                 auto wait = xar::ck3_11906::WaitForMainThreadQueryV1(
-                    g_main_thread_query_mailbox_v1, query.ticket, 2000);
+                    g_main_thread_query_mailbox_v1, query.ticket,
+                    xar::ck3_11906::
+                        kWarEntryAssessmentsV1QueuedWaitBudgetMilliseconds);
                 while (wait == xar::ck3_11906::
                                    MainThreadQueryWaitResultV1::
                                        timeout_executor_already_running) {
@@ -9332,7 +9334,9 @@ void RunConnectedSession(
                   // thread. It must remain alive until the synchronous typed
                   // reader reaches a terminal state.
                   wait = xar::ck3_11906::WaitForMainThreadQueryV1(
-                      g_main_thread_query_mailbox_v1, query.ticket, 2000);
+                      g_main_thread_query_mailbox_v1, query.ticket,
+                      xar::ck3_11906::
+                          kWarEntryAssessmentsV1ExecutingWaitSliceMilliseconds);
                 }
 
                 std::string response;
@@ -9347,14 +9351,12 @@ void RunConnectedSession(
                       war_entry_assessment_query_sequence, query.result);
                 }
                 if (response.empty()) {
-                  std::string error =
-                      "application-main war-entry query failed";
-                  if (!query.result.unavailable_stage.empty()) {
-                    error += ":";
-                    error += query.result.unavailable_stage;
-                  }
+                  const auto error = xar::ck3_11906::
+                      WarEntryAssessmentFailureMessageV1(
+                          wait, query.completion,
+                          query.result.unavailable_stage);
                   response = CommandResultFrame(request_id, step, false,
-                                                error);
+                                                 error);
                 }
                 const auto reclaimed =
                     xar::ck3_11906::ReclaimMainThreadQueryV1(

@@ -148,4 +148,42 @@ bool ExecuteWarEntryAssessmentMailboxQueryV1(
   }
 }
 
+std::string WarEntryAssessmentFailureMessageV1(
+    MainThreadQueryWaitResultV1 wait,
+    WarEntryAssessmentMailboxCompletionV1 completion,
+    std::string_view unavailable_stage) {
+  if (wait != MainThreadQueryWaitResultV1::completed) {
+    switch (wait) {
+    case MainThreadQueryWaitResultV1::executor_failed:
+      return "application-main war-entry executor failed";
+    case MainThreadQueryWaitResultV1::infrastructure_failed:
+      return "application-main war-entry boundary drifted";
+    case MainThreadQueryWaitResultV1::cancelled:
+      return "application-main war-entry query was cancelled";
+    case MainThreadQueryWaitResultV1::timeout_cancelled_before_execution:
+      return "application-main war-entry query timed out before execution";
+    case MainThreadQueryWaitResultV1::timeout_executor_already_running:
+      return "application-main war-entry executor is still running";
+    case MainThreadQueryWaitResultV1::ticket_mismatch:
+      return "application-main war-entry ticket mismatch";
+    case MainThreadQueryWaitResultV1::completed:
+      break;
+    }
+  }
+  if (completion == WarEntryAssessmentMailboxCompletionV1::query_unavailable) {
+    std::string error = "application-main war-entry query failed:";
+    error.append(unavailable_stage.empty() ? "mailbox_reader_unavailable"
+                                           : unavailable_stage);
+    return error;
+  }
+  if (completion == WarEntryAssessmentMailboxCompletionV1::available) {
+    return "application-main war-entry result is inconsistent";
+  }
+  if (completion ==
+      WarEntryAssessmentMailboxCompletionV1::infrastructure_rejected) {
+    return "application-main war-entry executor rejected request";
+  }
+  return "application-main war-entry executor produced no completion";
+}
+
 } // namespace xar::ck3_11906

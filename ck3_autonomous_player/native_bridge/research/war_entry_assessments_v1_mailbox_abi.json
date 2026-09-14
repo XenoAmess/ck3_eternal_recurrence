@@ -32,12 +32,14 @@
   "completion_semantics": {
     "available": "executor returns true and stores the complete all-or-nothing reader result",
     "query_specific_unavailable": "executor returns true, completion is query_unavailable, and result.unavailable_stage is non-empty",
-    "infrastructure_rejected": "executor returns false only for wrong slot/ticket/thread/stamp/reentry or unrecoverable adapter storage failure"
+    "infrastructure_rejected": "executor returns false only for wrong slot/ticket/thread/stamp/reentry or unrecoverable adapter storage failure",
+    "terminal_diagnostic": "the command error preserves the exact wait state before interpreting the query completion and reader stage"
   },
   "context_lifetime": {
     "owner": "bridge worker",
     "storage": "stable non-copyable non-movable caller-owned object",
-    "queued": "retain",
+    "queued": "retain for an 8000 ms bounded wait, matching the other production application-main query adapters",
+    "executing_wait_slice_milliseconds": 2000,
     "timeout_cancelled_before_execution": "terminal then reclaim before destroy",
     "timeout_executor_already_running": "retain across timeout until a later terminal wait and successful reclaim",
     "completed_or_query_unavailable": "consume only after acquire-observed terminal state; reclaim before destroy"
