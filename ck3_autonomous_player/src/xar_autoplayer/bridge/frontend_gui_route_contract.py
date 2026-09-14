@@ -14,6 +14,12 @@ INSPECT_FRONTEND_GUI_TREE_V1_CAPABILITY: Final = (
     "game.command.inspect-frontend-gui-tree-v1"
 )
 INSPECT_FRONTEND_GUI_TREE_V1_STEP: Final = "inspect-frontend-gui-tree-v1"
+INSPECT_FRONTEND_COAT_OF_ARMS_TREE_V1_CAPABILITY: Final = (
+    "game.command.inspect-frontend-coat-of-arms-tree-v1"
+)
+INSPECT_FRONTEND_COAT_OF_ARMS_TREE_V1_STEP: Final = (
+    "inspect-frontend-coat-of-arms-tree-v1"
+)
 INSPECT_FRONTEND_GUI_TREE_V1_MAXIMUM_WIDGETS: Final = 512
 ACTIVATE_FRONTEND_NEW_GAME_V1_CAPABILITY: Final = (
     "game.command.activate-frontend-new-game-v1"
@@ -50,6 +56,12 @@ COMMIT_FRONTEND_DYNASTY_COAT_OF_ARMS_V1_CAPABILITY: Final = (
 )
 COMMIT_FRONTEND_DYNASTY_COAT_OF_ARMS_V1_STEP: Final = (
     "commit-frontend-dynasty-coat-of-arms-v1"
+)
+ACTIVATE_FRONTEND_COAT_OF_ARMS_CUSTOM_MODE_V1_CAPABILITY: Final = (
+    "game.command.activate-frontend-coat-of-arms-custom-mode-v1"
+)
+ACTIVATE_FRONTEND_COAT_OF_ARMS_CUSTOM_MODE_V1_STEP: Final = (
+    "activate-frontend-coat-of-arms-custom-mode-v1"
 )
 PREPARE_FRONTEND_CUSTOM_RULER_V1_STEP: Final = (
     "prepare-frontend-custom-ruler-v1"
@@ -179,6 +191,7 @@ def normalize_frontend_gui_tree_inspection_v1(
             "frontend_bookmarks",
             "lobbyview",
             "ruler_designer",
+            "coat_of_arms_page",
         }
         or not isinstance(result.get("root_available"), bool)
         or not isinstance(result.get("truncated"), bool)
@@ -251,6 +264,25 @@ def normalize_frontend_gui_tree_inspection_v1(
         "uses_keyboard": False,
         "uses_mouse": False,
     }
+
+
+def normalize_frontend_coat_of_arms_tree_inspection_v1(
+    result: object,
+) -> dict[str, object]:
+    """Normalize only a census rooted at the active native CoA page."""
+
+    if (
+        not isinstance(result, dict)
+        or result.get("step")
+        != INSPECT_FRONTEND_COAT_OF_ARMS_TREE_V1_STEP
+        or result.get("scope_root_name") != "coat_of_arms_page"
+    ):
+        raise ValueError("frontend coat-of-arms tree inspection is malformed")
+    normalized = normalize_frontend_gui_tree_inspection_v1(
+        {**result, "step": INSPECT_FRONTEND_GUI_TREE_V1_STEP}
+    )
+    normalized["step"] = INSPECT_FRONTEND_COAT_OF_ARMS_TREE_V1_STEP
+    return normalized
 
 
 def normalize_frontend_new_game_v1(
@@ -595,6 +627,123 @@ def normalize_frontend_commit_dynasty_coat_of_arms_v1(
         "before_inspection": before_inspection,
         "acknowledgement": dict(acknowledgement),
         "after": after,
+        "postcondition_verified": True,
+        "backend_id": acknowledgement.get("backend_id"),
+    }
+
+
+def frontend_coat_of_arms_custom_mode_target_ready_v1(
+    value: object,
+) -> bool:
+    """Recognize exactly one visible source-owned custom-mode button."""
+
+    if not isinstance(value, dict):
+        return False
+    widgets = value.get("widgets")
+    if not (
+        value.get("schema") == "ck3-frontend-gui-tree-inspection-v1"
+        and value.get("schema_version") == 1
+        and value.get("step")
+        == INSPECT_FRONTEND_COAT_OF_ARMS_TREE_V1_STEP
+        and value.get("status") == "available"
+        and value.get("scope_root_name") == "coat_of_arms_page"
+        and value.get("root_available") is True
+        and isinstance(widgets, list)
+    ):
+        return False
+    exact_paths = {
+        "0/3/0/2/1/0/0/1/1/0",
+        "0/3/0/2/1/0/0/2/1/0",
+    }
+    visible_targets = [
+        row
+        for row in widgets
+        if isinstance(row, dict)
+        and row.get("child_path") in exact_paths
+        and row.get("runtime_name") == "button_custom_mode"
+        and row.get("effective_visible") is True
+        and row.get("enabled") is True
+    ]
+    return len(visible_targets) == 1
+
+
+def frontend_coat_of_arms_background_patterns_ready_v1(
+    value: object,
+) -> bool:
+    """Prove the active CoA page has materialized its background pattern UI."""
+
+    if not isinstance(value, dict):
+        return False
+    widgets = value.get("widgets")
+    expected = {
+        "0/3/0/2/0": "coa_designer_tabs",
+        "0/3/0/2/1/1": "background_panel",
+        "0/3/0/2/1/1/2": "patterns",
+        "0/3/0/2/1/1/2/0/0": "patterns_scrollbox",
+    }
+    if not (
+        value.get("schema") == "ck3-frontend-gui-tree-inspection-v1"
+        and value.get("schema_version") == 1
+        and value.get("step")
+        == INSPECT_FRONTEND_COAT_OF_ARMS_TREE_V1_STEP
+        and value.get("status") == "available"
+        and value.get("scope_root_name") == "coat_of_arms_page"
+        and value.get("root_available") is True
+        and isinstance(widgets, list)
+    ):
+        return False
+    visible_by_path = {
+        row.get("child_path"): row.get("runtime_name")
+        for row in widgets
+        if isinstance(row, dict)
+        and row.get("effective_visible") is True
+        and row.get("enabled") is True
+    }
+    return all(visible_by_path.get(path) == name for path, name in expected.items())
+
+
+def normalize_frontend_enter_coat_of_arms_custom_mode_v1(
+    acknowledgement: object,
+    *,
+    before: dict[str, object],
+    before_inspection: dict[str, object],
+    after: dict[str, object],
+    after_inspection: dict[str, object],
+) -> dict[str, object]:
+    if not isinstance(acknowledgement, dict):
+        raise ValueError("frontend coat-of-arms custom-mode acknowledgement must be an object")
+    if (
+        acknowledgement.get("step")
+        != ACTIVATE_FRONTEND_COAT_OF_ARMS_CUSTOM_MODE_V1_STEP
+        or acknowledgement.get("accepted") is not True
+        or acknowledgement.get("status")
+        != "acknowledged_verification_pending"
+        or before.get("route") != "coat_of_arms_designer"
+        or not frontend_coat_of_arms_custom_mode_target_ready_v1(
+            before_inspection
+        )
+        or after.get("route") != "coat_of_arms_designer"
+        or not frontend_coat_of_arms_background_patterns_ready_v1(
+            after_inspection
+        )
+    ):
+        raise ValueError("frontend coat-of-arms custom mode is not proven")
+    return {
+        "schema": "ck3-frontend-gui-action-v1",
+        "schema_version": 1,
+        "step": ACTIVATE_FRONTEND_COAT_OF_ARMS_CUSTOM_MODE_V1_STEP,
+        "accepted": True,
+        "status": "verified",
+        "action": "enter_coat_of_arms_custom_mode",
+        "input_backend": "native_gui_semantic_activation",
+        "uses_ocr": False,
+        "uses_keyboard": False,
+        "uses_mouse": False,
+        "before": before,
+        "before_inspection": before_inspection,
+        "acknowledgement": dict(acknowledgement),
+        "after": after,
+        "after_inspection": after_inspection,
         "postcondition_verified": True,
         "backend_id": acknowledgement.get("backend_id"),
     }

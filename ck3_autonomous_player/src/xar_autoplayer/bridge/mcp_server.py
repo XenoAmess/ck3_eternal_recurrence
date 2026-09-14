@@ -782,6 +782,13 @@ def _ck3_inspect_frontend_gui_tree_v1(
     return service.inspect_frontend_gui_tree_v1()
 
 
+def _ck3_inspect_frontend_coat_of_arms_tree_v1(
+    service: GameplayBridgeService,
+) -> dict[str, object]:
+    """Inspect the active native CoA page without OCR or input."""
+    return service.inspect_frontend_coat_of_arms_tree_v1()
+
+
 def _ck3_activate_frontend_new_game_v1(
     service: GameplayBridgeService,
 ) -> dict[str, object]:
@@ -822,6 +829,13 @@ def _ck3_commit_frontend_dynasty_coat_of_arms_v1(
 ) -> dict[str, object]:
     """Commit the current dynasty CoA and verify the dedicated page closed."""
     return service.commit_frontend_dynasty_coat_of_arms_v1()
+
+
+def _ck3_activate_frontend_coat_of_arms_custom_mode_v1(
+    service: GameplayBridgeService,
+) -> dict[str, object]:
+    """Enter native custom mode and verify the background grid is ready."""
+    return service.activate_frontend_coat_of_arms_custom_mode_v1()
 
 
 def _ck3_query_pending_character_interaction_context_v1(
@@ -1603,6 +1617,11 @@ def create_server(driver: GameplayBridgeDriver):
         return _ck3_inspect_frontend_gui_tree_v1(service)
 
     @server.tool()
+    def ck3_inspect_frontend_coat_of_arms_tree_v1() -> dict[str, object]:
+        """Inspect only the active native coat-of-arms page."""
+        return _ck3_inspect_frontend_coat_of_arms_tree_v1(service)
+
+    @server.tool()
     def ck3_activate_frontend_new_game_v1() -> dict[str, object]:
         """Semantically open New Game and independently verify Bookmarks."""
         return _ck3_activate_frontend_new_game_v1(service)
@@ -1631,6 +1650,11 @@ def create_server(driver: GameplayBridgeDriver):
     def ck3_commit_frontend_dynasty_coat_of_arms_v1() -> dict[str, object]:
         """Commit the dynasty coat of arms through the exact native Finish."""
         return _ck3_commit_frontend_dynasty_coat_of_arms_v1(service)
+
+    @server.tool()
+    def ck3_activate_frontend_coat_of_arms_custom_mode_v1() -> dict[str, object]:
+        """Enter native custom mode and prove its background grid opened."""
+        return _ck3_activate_frontend_coat_of_arms_custom_mode_v1(service)
 
     @server.tool()
     def ck3_query_coat_of_arms_resource_catalog_v1(
@@ -2084,6 +2108,9 @@ def create_server(driver: GameplayBridgeDriver):
         server, "ck3_inspect_frontend_gui_tree_v1"
     )
     _forbid_unknown_tool_arguments_v1(
+        server, "ck3_inspect_frontend_coat_of_arms_tree_v1"
+    )
+    _forbid_unknown_tool_arguments_v1(
         server, "ck3_activate_frontend_new_game_v1"
     )
     _forbid_unknown_tool_arguments_v1(
@@ -2100,6 +2127,9 @@ def create_server(driver: GameplayBridgeDriver):
     )
     _forbid_unknown_tool_arguments_v1(
         server, "ck3_commit_frontend_dynasty_coat_of_arms_v1"
+    )
+    _forbid_unknown_tool_arguments_v1(
+        server, "ck3_activate_frontend_coat_of_arms_custom_mode_v1"
     )
     _forbid_unknown_tool_arguments_v1(
         server, "ck3_query_coat_of_arms_resource_catalog_v1"

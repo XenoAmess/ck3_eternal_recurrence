@@ -118,6 +118,32 @@ bool InspectActiveRouteTree(FrontendGuiRouteMailboxContextV1 &query) noexcept {
                                query.result.tree_inspection);
 }
 
+bool InspectCoatOfArmsTree(
+    FrontendGuiRouteMailboxContextV1 &query) noexcept {
+  if (!ResolveRoute(query, query.result) ||
+      query.result.route != FrontendGuiRouteV1::coat_of_arms_designer) {
+    return false;
+  }
+  ZhongguoScoreboardAccessV1 access{};
+  void *root = nullptr;
+  void *target = nullptr;
+  if (!ResolveNamedGuiWidgetV1(query.environment, access, "ruler_designer",
+                               "coat_of_arms_page", root, target) ||
+      target == nullptr) {
+    return false;
+  }
+  std::string runtime_name;
+  void *vtable = nullptr;
+  bool visible = false;
+  bool enabled = false;
+  return ReadGuiWidgetRuntimeV1(access, target, runtime_name, vtable, visible,
+                                enabled) &&
+         runtime_name == "coat_of_arms_page" && visible && enabled &&
+         InspectNamedGuiSubtreeV1(access, query.environment.module_base,
+                                  target, "coat_of_arms_page",
+                                  query.result.tree_inspection);
+}
+
 bool DispatchFixedNamedWidget(FrontendGuiRouteMailboxContextV1 &query,
                               FrontendGuiRouteV1 expected_route,
                               std::string_view root_name,
@@ -277,6 +303,60 @@ bool DispatchCommitDynastyCoatOfArms(
       "dynasty_finish_button");
 }
 
+bool DispatchEnterCoatOfArmsCustomMode(
+    FrontendGuiRouteMailboxContextV1 &query) noexcept {
+  if (query.result.route != FrontendGuiRouteV1::coat_of_arms_designer) {
+    return false;
+  }
+  // coa_designer.gui:351-437 contains two mutually exclusive custom-mode
+  // buttons. The first continues an already-custom design; the second
+  // converts an adjusted design. Both enter the background page and call the
+  // engine's UpdatePatternPreviewColors data-model path. Resolve only these
+  // exact source-owned leaves and dispatch the one live visible target.
+  constexpr std::array<std::uint32_t, 12> kContinueCustomPath{{
+      0, 2, 0, 3, 0, 2, 1, 0, 0, 1, 1, 0,
+  }};
+  constexpr std::array<std::uint32_t, 12> kConvertToCustomPath{{
+      0, 2, 0, 3, 0, 2, 1, 0, 0, 2, 1, 0,
+  }};
+  const std::array<const std::array<std::uint32_t, 12> *, 2> kPaths{{
+      &kContinueCustomPath,
+      &kConvertToCustomPath,
+  }};
+  ZhongguoScoreboardAccessV1 access{};
+  void *selected = nullptr;
+  void *selected_vtable = nullptr;
+  for (const auto *path : kPaths) {
+    void *root = nullptr;
+    void *target = nullptr;
+    if (!ResolveFixedGuiChildPathV1(
+            query.environment, access, "ruler_designer", path->data(),
+            path->size(), root, target) ||
+        target == nullptr) {
+      return false;
+    }
+    std::string runtime_name;
+    void *vtable = nullptr;
+    bool visible = false;
+    bool enabled = false;
+    if (!ReadGuiWidgetRuntimeV1(access, target, runtime_name, vtable, visible,
+                                enabled) ||
+        runtime_name != "button_custom_mode") {
+      return false;
+    }
+    if (!visible) continue;
+    if (!enabled || selected != nullptr) return false;
+    selected = target;
+    selected_vtable = vtable;
+  }
+  if (selected == nullptr || selected_vtable == nullptr) return false;
+  query.result.target_resolved = true;
+  query.result.dispatch_invoked = DispatchFixedGuiWidgetNativeV1(
+      &query.dispatch_environment, game::ZhongguoScoreboardActionV1::open,
+      selected, selected_vtable, query.result.native_handled);
+  return query.result.dispatch_invoked;
+}
+
 } // namespace
 
 bool ExecuteFrontendGuiRouteMailboxV1(
@@ -290,6 +370,10 @@ bool ExecuteFrontendGuiRouteMailboxV1(
   query->result = {};
   if (query->operation == FrontendGuiRouteOperationV1::inspect_tree) {
     return InspectActiveRouteTree(*query);
+  }
+  if (query->operation ==
+      FrontendGuiRouteOperationV1::inspect_coat_of_arms_tree) {
+    return InspectCoatOfArmsTree(*query);
   }
   if (!ResolveRoute(*query, query->result)) return false;
   if (query->operation == FrontendGuiRouteOperationV1::query) return true;
@@ -309,6 +393,10 @@ bool ExecuteFrontendGuiRouteMailboxV1(
   if (query->operation ==
       FrontendGuiRouteOperationV1::open_coat_of_arms_designer) {
     return DispatchOpenCoatOfArmsDesigner(*query);
+  }
+  if (query->operation ==
+      FrontendGuiRouteOperationV1::enter_coat_of_arms_custom_mode) {
+    return DispatchEnterCoatOfArmsCustomMode(*query);
   }
   return query->operation ==
              FrontendGuiRouteOperationV1::commit_dynasty_coat_of_arms &&

@@ -4115,12 +4115,14 @@ std::string CommandResultFrame(std::string_view request_id,
 
 std::string FrontendGuiTreeInspectionResultFrame(
     std::string_view request_id,
+    std::string_view step,
     const xar::ck3_11906::NamedGuiTreeInspectionV1 &inspection) {
   std::string result =
       "{\"type\":\"command_result\",\"protocol_version\":1,\"request_id\":";
   AppendJsonString(result, request_id);
-  result +=
-      ",\"ok\":true,\"result\":{\"step\":\"inspect-frontend-gui-tree-v1\",";
+  result += ",\"ok\":true,\"result\":{\"step\":";
+  AppendJsonString(result, step);
+  result += ',';
   result += "\"accepted\":true,\"status\":\"";
   result += inspection.root_available ? "available" : "unavailable";
   result += "\",\"scope_root_name\":";
@@ -6734,6 +6736,8 @@ void RunConnectedSession(
           std::uint64_t tactical_sentinel_cancel_generation = 0;
           if (step == xar::ck3_11906::kFrontendGuiRouteV1Step ||
               step == xar::ck3_11906::kFrontendGuiTreeInspectionV1Step ||
+              step == xar::ck3_11906::
+                          kFrontendCoatOfArmsTreeInspectionV1Step ||
               step == xar::ck3_11906::kFrontendGuiOpenNewGameV1Step ||
               step == xar::ck3_11906::kFrontendGuiPickAnyCharacterV1Step ||
               step == xar::ck3_11906::
@@ -6742,7 +6746,9 @@ void RunConnectedSession(
               step == xar::ck3_11906::
                           kFrontendGuiOpenCoatOfArmsDesignerV1Step ||
               step == xar::ck3_11906::
-                          kFrontendGuiCommitDynastyCoatOfArmsV1Step) {
+                          kFrontendGuiCommitDynastyCoatOfArmsV1Step ||
+              step == xar::ck3_11906::
+                          kFrontendGuiEnterCoatOfArmsCustomModeV1Step) {
             std::uint64_t expected_revision = 0;
             if (!xar::bridge::JsonUnsignedField(
                     incoming.payload, "expected_revision",
@@ -6762,6 +6768,10 @@ void RunConnectedSession(
                                      kFrontendGuiTreeInspectionV1Step) {
                 query.operation = xar::ck3_11906::
                     FrontendGuiRouteOperationV1::inspect_tree;
+              } else if (step == xar::ck3_11906::
+                                     kFrontendCoatOfArmsTreeInspectionV1Step) {
+                query.operation = xar::ck3_11906::
+                    FrontendGuiRouteOperationV1::inspect_coat_of_arms_tree;
               } else if (step ==
                          xar::ck3_11906::kFrontendGuiOpenNewGameV1Step) {
                 query.operation = xar::ck3_11906::
@@ -6782,9 +6792,14 @@ void RunConnectedSession(
                                      kFrontendGuiOpenCoatOfArmsDesignerV1Step) {
                 query.operation = xar::ck3_11906::
                     FrontendGuiRouteOperationV1::open_coat_of_arms_designer;
-              } else {
+              } else if (step == xar::ck3_11906::
+                                     kFrontendGuiCommitDynastyCoatOfArmsV1Step) {
                 query.operation = xar::ck3_11906::
                     FrontendGuiRouteOperationV1::commit_dynasty_coat_of_arms;
+              } else {
+                query.operation = xar::ck3_11906::
+                    FrontendGuiRouteOperationV1::
+                        enter_coat_of_arms_custom_mode;
               }
               const auto module_base = reinterpret_cast<std::uintptr_t>(
                   GetModuleHandleW(nullptr));
@@ -6835,9 +6850,12 @@ void RunConnectedSession(
                             query.result.route));
                   } else if (query.operation == xar::ck3_11906::
                                                     FrontendGuiRouteOperationV1::
-                                                        inspect_tree) {
+                                                        inspect_tree ||
+                             query.operation == xar::ck3_11906::
+                                                    FrontendGuiRouteOperationV1::
+                                                        inspect_coat_of_arms_tree) {
                     response = FrontendGuiTreeInspectionResultFrame(
-                        request_id, query.result.tree_inspection);
+                        request_id, step, query.result.tree_inspection);
                   } else if (query.result.target_resolved &&
                              query.result.dispatch_invoked) {
                     response = CommandResultFrame(

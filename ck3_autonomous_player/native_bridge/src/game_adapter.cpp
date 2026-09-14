@@ -407,6 +407,8 @@ bool GameAdapter::supports_step(std::string_view step) const noexcept {
     capability = ck3_11906::kFrontendGuiRouteV1Capability;
   } else if (step == ck3_11906::kFrontendGuiTreeInspectionV1Step) {
     capability = ck3_11906::kFrontendGuiTreeInspectionV1Capability;
+  } else if (step == ck3_11906::kFrontendCoatOfArmsTreeInspectionV1Step) {
+    capability = ck3_11906::kFrontendCoatOfArmsTreeInspectionV1Capability;
   } else if (step == ck3_11906::kFrontendGuiOpenNewGameV1Step) {
     capability = ck3_11906::kFrontendGuiOpenNewGameV1Capability;
   } else if (step == ck3_11906::kFrontendGuiPickAnyCharacterV1Step) {
@@ -420,6 +422,10 @@ bool GameAdapter::supports_step(std::string_view step) const noexcept {
     capability = ck3_11906::kFrontendGuiOpenCoatOfArmsDesignerV1Capability;
   } else if (step == ck3_11906::kFrontendGuiCommitDynastyCoatOfArmsV1Step) {
     capability = ck3_11906::kFrontendGuiCommitDynastyCoatOfArmsV1Capability;
+  } else if (step ==
+             ck3_11906::kFrontendGuiEnterCoatOfArmsCustomModeV1Step) {
+    capability =
+        ck3_11906::kFrontendGuiEnterCoatOfArmsCustomModeV1Capability;
   } else if (step == ck3_11906::kTitleMapNavigationV1Step) {
     capability = ck3_11906::kTitleMapNavigationV1Capability;
   } else if (ck3_11906::ParseSetPlayedCharacterV1Step(step).has_value()) {

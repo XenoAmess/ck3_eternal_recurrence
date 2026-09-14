@@ -270,6 +270,30 @@ async function openNativeDesigner() {
   }
 }
 
+async function enterNativeCustomMode() {
+  mcpBusy.value = true
+  try {
+    const result = await companion.enterNativeCustomMode()
+    if (
+      result.status !== 'verified'
+      || result.action !== 'enter_coat_of_arms_custom_mode'
+      || result.postcondition_verified !== true
+      || result.after?.route !== 'coat_of_arms_designer'
+      || result.after_inspection?.scope_root_name !== 'coat_of_arms_page'
+      || result.after_inspection?.root_available !== true
+    ) {
+      throw new Error('MCP 未证明 CK3 自定义家徽背景页已经物化')
+    }
+    mcpStatus.value = `原生自定义背景已就绪 · ${result.after_inspection.widget_count} widgets`
+    ElMessage.success('CK3 已通过固定原生动作进入自定义模式')
+  } catch (error) {
+    mcpStatus.value = '进入自定义模式失败'
+    ElMessage.error(`原生自定义模式失败：${errorMessage(error)}`)
+  } finally {
+    mcpBusy.value = false
+  }
+}
+
 async function commitNativeDesign() {
   mcpBusy.value = true
   try {
@@ -605,12 +629,13 @@ importSource()
           </div>
           <div class="mcp-actions">
             <el-button :loading="mcpBusy" @click="openNativeDesigner">打开原生家徽页</el-button>
+            <el-button :loading="mcpBusy" @click="enterNativeCustomMode">进入原生自定义模式</el-button>
             <el-button :loading="mcpBusy" :disabled="errorCount > 0" @click="probeInCk3(false)">原生检测</el-button>
             <el-button type="primary" plain :loading="mcpBusy" :disabled="errorCount > 0" @click="probeInCk3(true)">应用到设计器</el-button>
             <el-button :loading="mcpBusy" @click="exportFromCk3">从 CK3 读取</el-button>
             <el-button type="success" plain :loading="mcpBusy" @click="commitNativeDesign">提交回角色设计器</el-button>
           </div>
-          <p>“打开”要求 CK3 已停在角色设计器；检测和应用要求已进入家徽页。“应用”只改变家徽页 working state；“提交”调用原生王朝 Finish 并验证返回角色设计器，但仍不等于完成整个角色创建。</p>
+          <p>“打开”要求 CK3 已停在角色设计器；“进入自定义模式”只允许原版两个固定按钮，并以背景图案网格可见作为后置条件。检测和应用要求已进入家徽页。“应用”只改变家徽页 working state；“提交”调用原生王朝 Finish 并验证返回角色设计器，但仍不等于完成整个角色创建。</p>
         </div>
 
         <div v-if="visibleDiagnostics.length" class="diagnostics">

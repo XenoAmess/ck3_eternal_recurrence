@@ -7175,6 +7175,35 @@ class GameplayBridgeService:
             )
         return result
 
+    def inspect_frontend_coat_of_arms_tree_v1(self) -> dict[str, object]:
+        """Inspect only the active native CoA page without screen input."""
+
+        inspect = getattr(
+            self.driver, "inspect_frontend_coat_of_arms_tree_v1", None
+        )
+        if not callable(inspect):
+            raise UnsupportedStepError(
+                "selected backend has no native coat-of-arms tree inspector"
+            )
+        result = inspect()
+        if (
+            not isinstance(result, dict)
+            or result.get("schema")
+            != "ck3-frontend-gui-tree-inspection-v1"
+            or result.get("schema_version") != 1
+            or result.get("step")
+            != "inspect-frontend-coat-of-arms-tree-v1"
+            or result.get("scope_root_name") != "coat_of_arms_page"
+            or result.get("read_only") is not True
+            or result.get("uses_ocr") is not False
+            or result.get("uses_keyboard") is not False
+            or result.get("uses_mouse") is not False
+        ):
+            raise BridgeUnavailableError(
+                "native coat-of-arms tree inspector returned malformed data"
+            )
+        return result
+
     def activate_frontend_new_game_v1(self) -> dict[str, object]:
         """Open New Game semantically; the driver must prove Bookmarks."""
 
@@ -7324,6 +7353,36 @@ class GameplayBridgeService:
         ):
             raise BridgeUnavailableError(
                 "native dynasty coat-of-arms commit lacks its postcondition"
+            )
+        return result
+
+    def activate_frontend_coat_of_arms_custom_mode_v1(
+        self,
+    ) -> dict[str, object]:
+        """Enter native custom mode and prove the background grid is ready."""
+
+        activate = getattr(
+            self.driver,
+            "activate_frontend_coat_of_arms_custom_mode_v1",
+            None,
+        )
+        if not callable(activate):
+            raise UnsupportedStepError(
+                "selected backend has no native coat-of-arms custom-mode action"
+            )
+        result = activate()
+        if (
+            not isinstance(result, dict)
+            or result.get("schema") != "ck3-frontend-gui-action-v1"
+            or result.get("schema_version") != 1
+            or result.get("action") != "enter_coat_of_arms_custom_mode"
+            or result.get("postcondition_verified") is not True
+            or result.get("uses_ocr") is not False
+            or result.get("uses_keyboard") is not False
+            or result.get("uses_mouse") is not False
+        ):
+            raise BridgeUnavailableError(
+                "native coat-of-arms custom-mode action lacks its postcondition"
             )
         return result
 

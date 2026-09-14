@@ -307,6 +307,11 @@ int main() {
       !Contains(known.capabilities,
                 "game.command.commit-frontend-dynasty-coat-of-arms-v1") ||
       !Contains(known.capabilities,
+                "game.command.inspect-frontend-coat-of-arms-tree-v1") ||
+      !Contains(
+          known.capabilities,
+          "game.command.activate-frontend-coat-of-arms-custom-mode-v1") ||
+      !Contains(known.capabilities,
                 "game.command.query-pending-character-interaction-context-v1") ||
       !Contains(known.capabilities,
                 "game.command.query-current-event-window-context-v1") ||
@@ -606,6 +611,10 @@ int main() {
           "activate-frontend-coat-of-arms-designer-v1") ||
       !exact_adapter->supports_step(
           "commit-frontend-dynasty-coat-of-arms-v1") ||
+      !exact_adapter->supports_step(
+          "inspect-frontend-coat-of-arms-tree-v1") ||
+      !exact_adapter->supports_step(
+          "activate-frontend-coat-of-arms-custom-mode-v1") ||
       !exact_adapter->supports_step("center-map-on-landed-title-v1") ||
       exact_adapter->supports_step(
           "center-map-on-landed-title-v1-c_bianzhou") ||

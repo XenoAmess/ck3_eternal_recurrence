@@ -134,6 +134,22 @@ public class CoatOfArmsResource {
     }
 
     @GET
+    @Path("/native-designer-tree")
+    public Object nativeDesignerTree() {
+        return mcp.callTool(
+                "ck3_inspect_frontend_coat_of_arms_tree_v1",
+                Map.of());
+    }
+
+    @POST
+    @Path("/enter-native-custom-mode")
+    public Object enterNativeCustomMode() {
+        return mcp.callTool(
+                "ck3_activate_frontend_coat_of_arms_custom_mode_v1",
+                Map.of());
+    }
+
+    @GET
     @Path("/resources")
     public Object resources(
             @QueryParam("kind") String kind,

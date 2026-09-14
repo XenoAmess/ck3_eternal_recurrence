@@ -17,6 +17,12 @@ inline constexpr std::string_view kFrontendGuiTreeInspectionV1Capability =
     "game.command.inspect-frontend-gui-tree-v1";
 inline constexpr std::string_view kFrontendGuiTreeInspectionV1Step =
     "inspect-frontend-gui-tree-v1";
+inline constexpr std::string_view
+    kFrontendCoatOfArmsTreeInspectionV1Capability =
+        "game.command.inspect-frontend-coat-of-arms-tree-v1";
+inline constexpr std::string_view
+    kFrontendCoatOfArmsTreeInspectionV1Step =
+        "inspect-frontend-coat-of-arms-tree-v1";
 inline constexpr std::string_view kFrontendGuiOpenNewGameV1Capability =
     "game.command.activate-frontend-new-game-v1";
 inline constexpr std::string_view kFrontendGuiOpenNewGameV1Step =
@@ -42,6 +48,12 @@ inline constexpr std::string_view
         "game.command.commit-frontend-dynasty-coat-of-arms-v1";
 inline constexpr std::string_view kFrontendGuiCommitDynastyCoatOfArmsV1Step =
     "commit-frontend-dynasty-coat-of-arms-v1";
+inline constexpr std::string_view
+    kFrontendGuiEnterCoatOfArmsCustomModeV1Capability =
+        "game.command.activate-frontend-coat-of-arms-custom-mode-v1";
+inline constexpr std::string_view
+    kFrontendGuiEnterCoatOfArmsCustomModeV1Step =
+        "activate-frontend-coat-of-arms-custom-mode-v1";
 inline constexpr std::string_view kFrontendGuiRouteV1BackendId =
     "ck3-1.19.0.6-native-frontend-gui-route-v1";
 
@@ -54,6 +66,8 @@ enum class FrontendGuiRouteOperationV1 : std::uint32_t {
   open_ruler_designer = 5,
   open_coat_of_arms_designer = 6,
   commit_dynasty_coat_of_arms = 7,
+  inspect_coat_of_arms_tree = 8,
+  enter_coat_of_arms_custom_mode = 9,
 };
 
 enum class FrontendGuiRouteV1 : std::uint32_t {

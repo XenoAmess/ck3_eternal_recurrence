@@ -1,6 +1,6 @@
 # CK3 纹章设计器剪贴板导入能力报告
 
-> 调研日期：2026-09-08 至 2026-09-14
+> 调研日期：2026-09-08 至 2026-09-15
 >
 > 页面：角色设计器 → 自定义纹章 → 设计你自己的纹章 → 从剪贴板粘贴
 >
@@ -77,6 +77,10 @@ ck3_activate_frontend_new_game_v1()
 ck3_activate_frontend_coat_of_arms_designer_v1()
 
 ck3_commit_frontend_dynasty_coat_of_arms_v1()
+
+ck3_inspect_frontend_coat_of_arms_tree_v1()
+
+ck3_activate_frontend_coat_of_arms_custom_mode_v1()
 
 ck3_query_coat_of_arms_resource_catalog_v1(
     game_directory: string,
@@ -788,6 +792,13 @@ effective feature 与 script `has_dlc` truth 已有 production-live 原生 primi
 按 MCP-first 原则，后续若需要运行时合并资源清单或截图无关的视觉验收，应继续补这些原生/MCP primitive，
 而不是用 OCR 猜文字、按钮状态或 copy-back 内容。
 
+2026-09-15 已先补出两个 `mcp-static-ready` 原语：专用树检查只允许从实时 `ruler_designer` 中解析可见、enabled 的
+`coat_of_arms_page`，再以该对象为根做 512 项有界只读遍历；固定自定义模式动作只允许原版
+`coa_designer.gui:351-437` 的两个互斥 `button_custom_mode` 叶节点，且 Python 后置条件要求同一路由中的
+`coa_designer_tabs`、`background_panel`、`patterns` 与 `patterns_scrollbox` 全部可见、enabled。调用方不能传入控件名、child path
+或指针。当前原生 Release、protocol/adapter/mailbox CTest、Python official-MCP、Quarkus 与 Vue 都已 GREEN；尚无 live artifact，
+所以它只建立下一轮运行时网格 census 的安全入口，不证明 `GetAllPatterns` 网格会完整物化，也不证明同名 DDS 的 VFS 最终胜者。
+
 ## 9. `coat_of_arms_editer_of_ck3` 的实现约束与当前状态
 
 应用已经按指定目录名 `coat_of_arms_editer_of_ck3` 建立，采用 Vue 3 + Element Plus + TypeScript；
@@ -825,9 +836,10 @@ CoatOfArms
 - 必要的 Quarkus 伴随服务使用官方 Java MCP SDK 连接现有 Python stdio server，前端可刷新 session revision、读取同帧
   runtime feature/script-DLC truth、通过固定动作打开王朝家徽页、执行原生 detect/apply、载入原生 Copy/export 返回源码，
   并通过另一项固定动作把王朝家徽提交回角色设计器；
+  另有一个只读、限定 `coat_of_arms_page` 的树检查和一个固定自定义模式动作，为后续从原版数据模型枚举资源建立入口；
   新 binding 端点从 `ck3_get_capabilities` 验证 exact native 连接，有 snapshot 时返回正 revision，无 snapshot 时返回 probe/export
   合同允许的 frontend `revision=0`，从而不再把 gameplay snapshot 错当作前端设计器的必需条件；
-  伴随服务只允许十四个相关工具（capabilities + snapshot + 九个 CoA MCP + 一个 runtime-feature MCP + 两个固定 frontend action）；
+  伴随服务只允许十六个相关工具（capabilities + snapshot + 十三项 CoA 专用 MCP + 一个 runtime-feature MCP）；
 - manifest-owned 单素材与 render-support 已接入浏览器：除 DXT1/DXT5 顶层 mip 解码外，还能解码 `_default.dds` 使用的
   无压缩 BGRA8 并在受限 `textured_emblem` 行内显示原始纹理；主路径按随游戏发布的 shader 源码合成三通道调色、mask、
   实例变换、surface detail 和 blend，仍明确不冒充 native GPU 像素完全一致。
@@ -841,8 +853,8 @@ CoatOfArms
 浏览器无法直接启动本机 stdio MCP，因此已引入 Maven + Java + Quarkus 伴随服务。后端只负责 REST/MCP 会话转接与
 本机资源索引，不承担“执行 CK3 脚本”的虚构能力；当前也没有 DDS 转换或素材缓存。
 
-当前前端有 Vitest `40/40` parser/serializer/validator/capability-matrix/API/DDS/renderer 回归和 Vite production build 验收；
-Quarkus REST 测试 `15/15` 且 Maven test GREEN。后续扩展仍以本文的原生 MCP 证据为协议来源，
+当前前端有 Vitest `42/42` parser/serializer/validator/capability-matrix/API/DDS/renderer 回归和 Vite production build 验收；
+Quarkus REST 测试 `17/17` 且 Maven test GREEN。后续扩展仍以本文的原生 MCP 证据为协议来源，
 不会把旧 UI 观察或第三方 parser 行为固化成 CK3 引擎事实。
 
 ## 10. 辅助参考边界

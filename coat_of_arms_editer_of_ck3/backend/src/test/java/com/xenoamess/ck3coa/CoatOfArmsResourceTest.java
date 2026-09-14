@@ -152,6 +152,48 @@ class CoatOfArmsResourceTest {
     }
 
     @Test
+    void nativeDesignerTreeIsAScopedZeroInputMcpCall() {
+        when(mcp.callTool(
+                        eq("ck3_inspect_frontend_coat_of_arms_tree_v1"),
+                        eq(Map.of())))
+                .thenReturn(Map.of(
+                        "status", "available",
+                        "scope_root_name", "coat_of_arms_page"));
+
+        given()
+                .when().get("/api/ck3/coat-of-arms/native-designer-tree")
+                .then()
+                .statusCode(200)
+                .body("status", equalTo("available"))
+                .body("scope_root_name", equalTo("coat_of_arms_page"));
+
+        verify(mcp).callTool(
+                "ck3_inspect_frontend_coat_of_arms_tree_v1", Map.of());
+    }
+
+    @Test
+    void nativeCustomModeIsAClosedZeroInputMcpCall() {
+        when(mcp.callTool(
+                        eq("ck3_activate_frontend_coat_of_arms_custom_mode_v1"),
+                        eq(Map.of())))
+                .thenReturn(Map.of(
+                        "status", "verified",
+                        "action", "enter_coat_of_arms_custom_mode"));
+
+        given()
+                .contentType("application/json")
+                .body(Map.of())
+                .when().post("/api/ck3/coat-of-arms/enter-native-custom-mode")
+                .then()
+                .statusCode(200)
+                .body("status", equalTo("verified"))
+                .body("action", equalTo("enter_coat_of_arms_custom_mode"));
+
+        verify(mcp).callTool(
+                "ck3_activate_frontend_coat_of_arms_custom_mode_v1", Map.of());
+    }
+
+    @Test
     void resourceCatalogIsForwardedToTheMcpTool() {
         Map<String, Object> response = Map.of(
                 "schema", "ck3-coat-of-arms-resource-catalog-v1",

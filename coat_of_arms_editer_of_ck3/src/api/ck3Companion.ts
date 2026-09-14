@@ -362,6 +362,43 @@ export interface FrontendDynastyCoatOfArmsCommitResult {
   [key: string]: unknown
 }
 
+export interface FrontendCoatOfArmsTreeInspection {
+  schema: 'ck3-frontend-gui-tree-inspection-v1'
+  schema_version: 1
+  step: 'inspect-frontend-coat-of-arms-tree-v1'
+  status: 'available'
+  scope_root_name: 'coat_of_arms_page'
+  root_available: true
+  truncated: boolean
+  widget_count: number
+  widgets: Array<{
+    runtime_name: string
+    child_path: string
+    depth: number
+    child_count: number
+    vtable_rva: number
+    effective_visible: boolean
+    enabled: boolean
+  }>
+  read_only: true
+  uses_ocr: false
+  uses_keyboard: false
+  uses_mouse: false
+  [key: string]: unknown
+}
+
+export interface FrontendCoatOfArmsCustomModeActionResult {
+  status: 'verified'
+  action: 'enter_coat_of_arms_custom_mode'
+  postcondition_verified: true
+  after: {
+    route: 'coat_of_arms_designer'
+    [key: string]: unknown
+  }
+  after_inspection: FrontendCoatOfArmsTreeInspection
+  [key: string]: unknown
+}
+
 export class CompanionRequestError extends Error {
   constructor(
     message: string,
@@ -418,6 +455,13 @@ export function createCk3CompanionClient(
     commitNativeDesign: () =>
       post<FrontendDynastyCoatOfArmsCommitResult>(
         '/commit-native-design',
+        {},
+      ),
+    nativeDesignerTree: () =>
+      get<FrontendCoatOfArmsTreeInspection>('/native-designer-tree'),
+    enterNativeCustomMode: () =>
+      post<FrontendCoatOfArmsCustomModeActionResult>(
+        '/enter-native-custom-mode',
         {},
       ),
     resources: (parameters: {

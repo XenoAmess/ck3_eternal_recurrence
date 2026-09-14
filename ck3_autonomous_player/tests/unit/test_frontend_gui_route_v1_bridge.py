@@ -11,6 +11,8 @@ sys.path.insert(0, str(PROJECT_ROOT / "src"))
 
 
 from xar_autoplayer.bridge.frontend_gui_route_contract import (
+    ACTIVATE_FRONTEND_COAT_OF_ARMS_CUSTOM_MODE_V1_CAPABILITY,
+    ACTIVATE_FRONTEND_COAT_OF_ARMS_CUSTOM_MODE_V1_STEP,
     ACTIVATE_FRONTEND_COAT_OF_ARMS_DESIGNER_V1_CAPABILITY,
     ACTIVATE_FRONTEND_COAT_OF_ARMS_DESIGNER_V1_STEP,
     COMMIT_FRONTEND_DYNASTY_COAT_OF_ARMS_V1_CAPABILITY,
@@ -25,14 +27,20 @@ from xar_autoplayer.bridge.frontend_gui_route_contract import (
     ACTIVATE_FRONTEND_SELECT_RANDOM_PLAYABLE_V1_STEP,
     INSPECT_FRONTEND_GUI_TREE_V1_CAPABILITY,
     INSPECT_FRONTEND_GUI_TREE_V1_STEP,
+    INSPECT_FRONTEND_COAT_OF_ARMS_TREE_V1_CAPABILITY,
+    INSPECT_FRONTEND_COAT_OF_ARMS_TREE_V1_STEP,
     QUERY_FRONTEND_GUI_ROUTE_V1_CAPABILITY,
     QUERY_FRONTEND_GUI_ROUTE_V1_STEP,
     frontend_gui_route_binding_from_capabilities,
     frontend_coat_of_arms_dynasty_finish_ready_v1,
+    frontend_coat_of_arms_background_patterns_ready_v1,
+    frontend_coat_of_arms_custom_mode_target_ready_v1,
     frontend_lobby_random_playable_actionable_v1,
     frontend_ruler_designer_dynasty_coa_target_ready_v1,
     normalize_frontend_gui_tree_inspection_v1,
+    normalize_frontend_coat_of_arms_tree_inspection_v1,
     normalize_frontend_commit_dynasty_coat_of_arms_v1,
+    normalize_frontend_enter_coat_of_arms_custom_mode_v1,
     normalize_frontend_gui_route_v1,
     normalize_frontend_new_game_v1,
     normalize_frontend_open_coat_of_arms_designer_v1,
@@ -288,6 +296,65 @@ def _commit_dynasty_coat_of_arms_action() -> dict[str, object]:
     )
 
 
+def _coat_of_arms_page_inspection(
+    *, patterns_ready: bool = False
+) -> dict[str, object]:
+    if patterns_ready:
+        rows = [
+            ("coa_designer_tabs", "0/3/0/2/0"),
+            ("background_panel", "0/3/0/2/1/1"),
+            ("patterns", "0/3/0/2/1/1/2"),
+            ("patterns_scrollbox", "0/3/0/2/1/1/2/0/0"),
+        ]
+    else:
+        rows = [
+            ("button_custom_mode", "0/3/0/2/1/0/0/1/1/0"),
+        ]
+    return {
+        "schema": "ck3-frontend-gui-tree-inspection-v1",
+        "schema_version": 1,
+        "step": INSPECT_FRONTEND_COAT_OF_ARMS_TREE_V1_STEP,
+        "accepted": True,
+        "status": "available",
+        "scope_root_name": "coat_of_arms_page",
+        "root_available": True,
+        "truncated": False,
+        "widget_count": len(rows),
+        "widgets": [
+            {
+                "runtime_name": name,
+                "child_path": path,
+                "depth": path.count("/") + 1,
+                "child_count": 1,
+                "vtable_rva": 72469912,
+                "effective_visible": True,
+                "enabled": True,
+            }
+            for name, path in rows
+        ],
+        "backend_id": "native-headless",
+        "read_only": True,
+        "uses_ocr": False,
+        "uses_keyboard": False,
+        "uses_mouse": False,
+    }
+
+
+def _enter_coat_of_arms_custom_mode_action() -> dict[str, object]:
+    return normalize_frontend_enter_coat_of_arms_custom_mode_v1(
+        {
+            "step": ACTIVATE_FRONTEND_COAT_OF_ARMS_CUSTOM_MODE_V1_STEP,
+            "accepted": True,
+            "status": "acknowledged_verification_pending",
+            "backend_id": "native-headless",
+        },
+        before=_route("coat_of_arms_designer"),
+        before_inspection=_coat_of_arms_page_inspection(),
+        after=_route("coat_of_arms_designer"),
+        after_inspection=_coat_of_arms_page_inspection(patterns_ready=True),
+    )
+
+
 class _FrontendDriver:
     def capabilities(self) -> dict[str, object]:
         return {
@@ -298,12 +365,14 @@ class _FrontendDriver:
             "bridge_capabilities": [
                 QUERY_FRONTEND_GUI_ROUTE_V1_CAPABILITY,
                 INSPECT_FRONTEND_GUI_TREE_V1_CAPABILITY,
+                INSPECT_FRONTEND_COAT_OF_ARMS_TREE_V1_CAPABILITY,
                 ACTIVATE_FRONTEND_NEW_GAME_V1_CAPABILITY,
                 ACTIVATE_FRONTEND_PICK_ANY_CHARACTER_V1_CAPABILITY,
                 ACTIVATE_FRONTEND_SELECT_RANDOM_PLAYABLE_V1_CAPABILITY,
                 ACTIVATE_FRONTEND_RULER_DESIGNER_V1_CAPABILITY,
                 ACTIVATE_FRONTEND_COAT_OF_ARMS_DESIGNER_V1_CAPABILITY,
                 COMMIT_FRONTEND_DYNASTY_COAT_OF_ARMS_V1_CAPABILITY,
+                ACTIVATE_FRONTEND_COAT_OF_ARMS_CUSTOM_MODE_V1_CAPABILITY,
             ],
         }
 
@@ -339,6 +408,9 @@ class _FrontendDriver:
             "uses_mouse": False,
         }
 
+    def inspect_frontend_coat_of_arms_tree_v1(self) -> dict[str, object]:
+        return _coat_of_arms_page_inspection()
+
     def activate_frontend_new_game_v1(self) -> dict[str, object]:
         return _action()
 
@@ -356,6 +428,11 @@ class _FrontendDriver:
 
     def commit_frontend_dynasty_coat_of_arms_v1(self) -> dict[str, object]:
         return _commit_dynasty_coat_of_arms_action()
+
+    def activate_frontend_coat_of_arms_custom_mode_v1(
+        self,
+    ) -> dict[str, object]:
+        return _enter_coat_of_arms_custom_mode_action()
 
 
 class FrontendGuiRouteV1ContractTests(unittest.TestCase):
@@ -399,6 +476,24 @@ class FrontendGuiRouteV1ContractTests(unittest.TestCase):
                     "widgets": [],
                 }
             )
+
+    def test_coa_tree_is_exactly_scoped_and_custom_mode_is_typed(self) -> None:
+        raw = _coat_of_arms_page_inspection()
+        raw.pop("schema")
+        raw.pop("schema_version")
+        raw.pop("read_only")
+        raw.pop("uses_ocr")
+        raw.pop("uses_keyboard")
+        raw.pop("uses_mouse")
+        normalized = normalize_frontend_coat_of_arms_tree_inspection_v1(raw)
+        self.assertEqual(normalized["scope_root_name"], "coat_of_arms_page")
+        self.assertTrue(
+            frontend_coat_of_arms_custom_mode_target_ready_v1(normalized)
+        )
+        ready = _coat_of_arms_page_inspection(patterns_ready=True)
+        self.assertTrue(frontend_coat_of_arms_background_patterns_ready_v1(ready))
+        ready["widgets"][-1]["effective_visible"] = False
+        self.assertFalse(frontend_coat_of_arms_background_patterns_ready_v1(ready))
 
     def test_frontend_binding_allows_snapshot_during_pregame_lobby(self) -> None:
         capabilities = {
@@ -693,10 +788,62 @@ class FrontendGuiRouteV1ContractTests(unittest.TestCase):
             ],
         )
 
+    def test_native_driver_enters_coa_custom_mode_and_proves_grid(self) -> None:
+        driver = object.__new__(NativeHeadlessGameplayDriver)
+        driver.frontend_transition_timeout_seconds = 1.0
+        routes = [
+            _route("coat_of_arms_designer"),
+            _route("coat_of_arms_designer"),
+        ]
+        inspections = [
+            _coat_of_arms_page_inspection(),
+            _coat_of_arms_page_inspection(patterns_ready=True),
+        ]
+        calls: list[dict[str, object]] = []
+        driver.query_frontend_gui_route_v1 = lambda: routes.pop(0)
+        driver.inspect_frontend_coat_of_arms_tree_v1 = (
+            lambda: inspections.pop(0)
+        )
+
+        def execute(
+            step: str,
+            *,
+            expected_revision: int,
+            required_capability: str,
+            allow_frontend_revision_zero: bool,
+        ) -> dict[str, object]:
+            calls.append(
+                {
+                    "step": step,
+                    "expected_revision": expected_revision,
+                    "required_capability": required_capability,
+                    "allow_frontend_revision_zero": allow_frontend_revision_zero,
+                }
+            )
+            return {
+                "step": step,
+                "accepted": True,
+                "status": "acknowledged_verification_pending",
+                "backend_id": "native-headless",
+            }
+
+        driver._execute_primitive_step = execute
+        result = driver.activate_frontend_coat_of_arms_custom_mode_v1()
+
+        self.assertEqual(result["action"], "enter_coat_of_arms_custom_mode")
+        self.assertTrue(result["postcondition_verified"])
+        self.assertEqual(
+            calls[0]["required_capability"],
+            ACTIVATE_FRONTEND_COAT_OF_ARMS_CUSTOM_MODE_V1_CAPABILITY,
+        )
+
     def test_service_preserves_zero_input_native_contract(self) -> None:
         service = GameplayBridgeService(_FrontendDriver())
         self.assertEqual(service.query_frontend_gui_route_v1()["route"], "main_menu")
         self.assertTrue(service.inspect_frontend_gui_tree_v1()["read_only"])
+        self.assertTrue(
+            service.inspect_frontend_coat_of_arms_tree_v1()["read_only"]
+        )
         self.assertTrue(
             service.activate_frontend_new_game_v1()["postcondition_verified"]
         )
@@ -725,6 +872,11 @@ class FrontendGuiRouteV1ContractTests(unittest.TestCase):
                 "postcondition_verified"
             ]
         )
+        self.assertTrue(
+            service.activate_frontend_coat_of_arms_custom_mode_v1()[
+                "postcondition_verified"
+            ]
+        )
 
 
 @unittest.skipIf(
@@ -741,12 +893,14 @@ class FrontendGuiRouteV1McpTests(unittest.IsolatedAsyncioTestCase):
             for name in (
                 "ck3_query_frontend_gui_route_v1",
                 "ck3_inspect_frontend_gui_tree_v1",
+                "ck3_inspect_frontend_coat_of_arms_tree_v1",
                 "ck3_activate_frontend_new_game_v1",
                 "ck3_activate_frontend_pick_any_character_v1",
                 "ck3_activate_frontend_prepare_custom_ruler_v1",
                 "ck3_activate_frontend_ruler_designer_v1",
                 "ck3_activate_frontend_coat_of_arms_designer_v1",
                 "ck3_commit_frontend_dynasty_coat_of_arms_v1",
+                "ck3_activate_frontend_coat_of_arms_custom_mode_v1",
             ):
                 self.assertEqual(tools[name].input_schema.get("required", []), [])
                 self.assertFalse(tools[name].input_schema["additionalProperties"])
@@ -760,6 +914,14 @@ class FrontendGuiRouteV1McpTests(unittest.IsolatedAsyncioTestCase):
             self.assertEqual(
                 inspection.structured_content["widgets"][0]["runtime_name"],
                 "lobbyview",
+            )
+            coa_inspection = await client.call_tool(
+                "ck3_inspect_frontend_coat_of_arms_tree_v1", {}
+            )
+            self.assertFalse(coa_inspection.is_error)
+            self.assertEqual(
+                coa_inspection.structured_content["scope_root_name"],
+                "coat_of_arms_page",
             )
             action = await client.call_tool(
                 "ck3_activate_frontend_new_game_v1", {}
@@ -803,6 +965,14 @@ class FrontendGuiRouteV1McpTests(unittest.IsolatedAsyncioTestCase):
             self.assertEqual(
                 committed.structured_content["after"]["route"],
                 "ruler_designer",
+            )
+            custom_mode = await client.call_tool(
+                "ck3_activate_frontend_coat_of_arms_custom_mode_v1", {}
+            )
+            self.assertFalse(custom_mode.is_error)
+            self.assertEqual(
+                custom_mode.structured_content["action"],
+                "enter_coat_of_arms_custom_mode",
             )
 
 

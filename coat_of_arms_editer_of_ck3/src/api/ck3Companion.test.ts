@@ -87,6 +87,47 @@ describe('CK3 companion client', () => {
     expect(JSON.parse(fetchMock.mock.calls[0][1].body)).toEqual({})
   })
 
+  it('reads only the scoped native coat-of-arms designer tree', async () => {
+    const fetchMock = vi.fn().mockResolvedValue(new Response(
+      JSON.stringify({
+        schema: 'ck3-frontend-gui-tree-inspection-v1',
+        step: 'inspect-frontend-coat-of-arms-tree-v1',
+        status: 'available',
+        scope_root_name: 'coat_of_arms_page',
+      }),
+      { status: 200, headers: { 'Content-Type': 'application/json' } },
+    ))
+    vi.stubGlobal('fetch', fetchMock)
+
+    const result = await createCk3CompanionClient().nativeDesignerTree()
+
+    expect(result.scope_root_name).toBe('coat_of_arms_page')
+    expect(new URL(fetchMock.mock.calls[0][0]).pathname)
+      .toBe('/api/ck3/coat-of-arms/native-designer-tree')
+    expect(fetchMock.mock.calls[0][1].method).toBeUndefined()
+  })
+
+  it('enters native custom mode with an empty closed request', async () => {
+    const fetchMock = vi.fn().mockResolvedValue(new Response(
+      JSON.stringify({
+        status: 'verified',
+        action: 'enter_coat_of_arms_custom_mode',
+        postcondition_verified: true,
+        after: { route: 'coat_of_arms_designer' },
+      }),
+      { status: 200, headers: { 'Content-Type': 'application/json' } },
+    ))
+    vi.stubGlobal('fetch', fetchMock)
+
+    const result = await createCk3CompanionClient().enterNativeCustomMode()
+
+    expect(result.action).toBe('enter_coat_of_arms_custom_mode')
+    expect(new URL(fetchMock.mock.calls[0][0]).pathname)
+      .toBe('/api/ck3/coat-of-arms/enter-native-custom-mode')
+    expect(fetchMock.mock.calls[0][1].method).toBe('POST')
+    expect(JSON.parse(fetchMock.mock.calls[0][1].body)).toEqual({})
+  })
+
   it('reads the exact CoA source binding independently of gameplay snapshots', async () => {
     const payload = {
       schema: 'coat-of-arms-source-binding-v1',
