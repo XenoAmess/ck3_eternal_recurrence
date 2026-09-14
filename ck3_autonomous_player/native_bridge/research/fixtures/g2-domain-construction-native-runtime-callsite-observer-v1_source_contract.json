@@ -60,19 +60,38 @@
   ],
   "build_boundary": {
     "compile_gate": "XAR_CK3_ENABLE_G2_DOMAIN_CONSTRUCTION_RUNTIME_OBSERVER_V1",
-    "shared_cmake_modified": false,
-    "shared_bridge_modified": false,
+    "shared_cmake_modified": true,
+    "shared_bridge_modified": true,
     "focused_sources": [
       "src/domain_construction_runtime_callsite_observer_v1.cpp",
       "src/domain_construction_runtime_callsite_observer_v1_serializer.cpp"
     ],
     "unit_source": "src/domain_construction_runtime_callsite_observer_v1_test.cpp",
-    "suspended_injection_source": "src/domain_construction_runtime_callsite_observer_v1_suspended_injection_test.cpp"
+    "suspended_injection_source": "src/domain_construction_runtime_callsite_observer_v1_suspended_injection_test.cpp",
+    "default_option": "OFF",
+    "heartbeat_private_only": true
   },
   "public_contract": {
     "public_capability_changed": false,
     "public_domain_construction_reader_ready": false,
     "available_live_payload_claimed": false,
     "ck3_started": false
-  }
+  },
+  "required_cmake_tokens": [
+    "XAR_CK3_ENABLE_G2_DOMAIN_CONSTRUCTION_RUNTIME_OBSERVER_V1",
+    "src/domain_construction_runtime_callsite_observer_v1.cpp",
+    "src/domain_construction_runtime_callsite_observer_v1_serializer.cpp",
+    "xar_ck3_domain_construction_runtime_callsite_observer_v1_test",
+    "xar_ck3_domain_construction_runtime_callsite_observer_v1_suspended_injection_test",
+    "/W4 /WX /permissive- /EHsc /UNDEBUG"
+  ],
+  "required_bridge_tokens": [
+    "#include \"xar_bridge/domain_construction_runtime_callsite_observer_v1.hpp\"",
+    "g_domain_construction_runtime_observer_v1",
+    "ReadDomainConstructionRuntimeCaptureAdmissionV1",
+    "admission.session_live = true",
+    "g2_domain_construction_native_runtime_callsite_observer_v1",
+    "SerializeDomainConstructionRuntimeObserverV1",
+    "InstallDomainConstructionRuntimeObserverV1"
+  ]
 }

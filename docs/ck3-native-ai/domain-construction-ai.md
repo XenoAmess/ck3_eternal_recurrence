@@ -13,7 +13,8 @@
 - **[DEV7 static-ready / live pending]** 默认关闭的私有
   `g2_domain_construction_native_runtime_callsite_observer_v1` 已把观察点移至正常运行时 direct callsite
   `0x18D294F`。fixture 证明它不要求暂停、只在存活会话的 application-main 线程同步复制有界原始行；尚无生产命中，
-  因而不能声称 candidate reader live。该包未接入公共 bridge/MCP/schema，也没有启动 CK3。
+  因而不能声称 candidate reader live。DEV8 已把它接入默认 `OFF` 的私有 bridge 构建和 heartbeat；私有构建只发布
+  `advertised=false` 的诊断对象，不进入 hello capability、公共 MCP/schema 或 planner。DEV8 没有启动 CK3。
 - **[unknown]** 正常 AI scheduler 把建设挂在哪一种 task tick、多久重新评估一次、已选存钱目标保存于何处及何时
   失效，当前 exact-build 证据尚未闭合。原版通用 task tick 只能作为背景，不能冒充建筑专用 cadence。
 - 范围只包括省份建筑的新建与升级。新建 holding、Great Project 和 domicile 动作不进入 v1；原版 AI 的共同候选池
@@ -297,7 +298,10 @@ DEV7 已实现 default-off 私有 `g2_domain_construction_native_runtime_callsit
 source-contract、exact anchor、`/W4 /WX` unit fixture 与 suspended non-CK3 transaction 均已通过。capture admission 要求
 同一 application-main 线程和存活会话；暂停状态只记录，不作为正常运行时入口的过滤条件。fixture 中 `paused=false` 的命中用于
 防止把 R683 的暂停前提错误移植到 scheduler 路径。将来若安排 live，只等这个不同 native callsite 的第一次自然经过即收口，
-仍不强制触发 producer。生产命中前，状态保持 `static-ready / live pending`。
+仍不强制触发 producer。DEV8 候选使用
+`XAR_CK3_ENABLE_G2_DOMAIN_CONSTRUCTION_RUNTIME_OBSERVER_V1=ON` 单独启用，并在 heartbeat 的
+`g2_domain_construction_native_runtime_callsite_observer_v1` 私有对象中保留安装、失败计数、会话拒绝、暂停状态和原始行；
+默认构建仍为 `OFF`。生产命中前，状态保持 `candidate-ready / live pending`。
 
 ## 预算储备与“存钱”边界
 

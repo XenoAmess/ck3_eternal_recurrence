@@ -6,6 +6,7 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import re
 import struct
 from pathlib import Path
 
@@ -67,6 +68,8 @@ def check(root: Path, *, ck3_executable: Path | None = None) -> None:
     header = (native / "include/xar_bridge/domain_construction_runtime_callsite_observer_v1.hpp").read_text(encoding="utf-8")
     source = (native / "src/domain_construction_runtime_callsite_observer_v1.cpp").read_text(encoding="utf-8")
     serializer = (native / "src/domain_construction_runtime_callsite_observer_v1_serializer.cpp").read_text(encoding="utf-8")
+    cmake = (native / "CMakeLists.txt").read_text(encoding="utf-8")
+    bridge = (native / "src/bridge.cpp").read_text(encoding="utf-8")
     contract = json.loads((native / "research/fixtures/g2-domain-construction-native-runtime-callsite-observer-v1_source_contract.json").read_text(encoding="utf-8"))
     abi = json.loads((native / "research/domain_construction_runtime_callsite_observer_v1_abi.json").read_text(encoding="utf-8"))
     capture = json.loads((native / "research/fixtures/g2-domain-construction-native-runtime-callsite-observer-v1_capture_fixture.json").read_text(encoding="utf-8"))
@@ -81,11 +84,29 @@ def check(root: Path, *, ck3_executable: Path | None = None) -> None:
         _require(token in serializer or token in header, f"missing serializer/header token: {token}")
     for token in contract["forbidden_implementation_tokens"]:
         _require(token not in source, f"forbidden forced-effect seam leaked into runtime observer: {token}")
+    for token in contract["required_cmake_tokens"]:
+        _require(token in cmake, f"missing private CMake glue token: {token}")
+    for token in contract["required_bridge_tokens"]:
+        _require(token in bridge, f"missing private bridge glue token: {token}")
+    option = re.search(
+        r"option\(\s*XAR_CK3_ENABLE_G2_DOMAIN_CONSTRUCTION_RUNTIME_OBSERVER_V1"
+        r".*?\sOFF\s*\)",
+        cmake,
+        re.DOTALL,
+    )
+    _require(option is not None, "runtime observer CMake option is not default OFF")
+    _require(
+        '"g2_domain_construction_native_runtime_callsite_observer_v1"'
+        not in bridge.split("std::string HeartbeatFrame", 1)[0],
+        "private observer key leaked before heartbeat diagnostics",
+    )
 
     _require(abi["scope"]["compile_option"] == "XAR_CK3_ENABLE_G2_DOMAIN_CONSTRUCTION_RUNTIME_OBSERVER_V1",
              "private compile gate drifted")
     _require(abi["detour_semantics"]["relocated_original_producer_call_count"] == 1,
              "producer replay count contract drifted")
+    _require(abi["private_heartbeat"]["advertised"] is False,
+             "private heartbeat became advertised")
     _require(abi["unique_next_reverse_engineering_entry"] == "native_runtime_0x18D2954_candidate_row_identity_decoder",
              "next reverse-engineering entry drifted")
     _require(capture["private_build"] is True and capture["advertised"] is False and capture["read_only"] is True,

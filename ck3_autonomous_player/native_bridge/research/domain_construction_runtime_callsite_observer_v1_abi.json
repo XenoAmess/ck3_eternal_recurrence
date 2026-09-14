@@ -1,7 +1,7 @@
 {
   "contract": "g2-domain-construction-native-runtime-callsite-observer-v1",
   "schema_version": 1,
-  "status": "static-ready-pending-native-runtime-live-capture",
+  "status": "private-candidate-ready-pending-native-runtime-live-capture",
   "exact_build": {
     "product_version": "1.19.0.6",
     "executable_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
@@ -90,10 +90,38 @@
     "read_only_game_state": true,
     "public_abi_changed": false,
     "public_capability_changed": false,
-    "shared_cmake_modified": false,
-    "shared_bridge_modified": false,
+    "shared_cmake_modified": true,
+    "shared_bridge_modified": true,
     "ck3_started": false
   },
   "unique_next_reverse_engineering_entry": "native_runtime_0x18D2954_candidate_row_identity_decoder",
-  "evidence_limit": "The exact normal-runtime callsite, 0x28 row stride and signed score at row offset zero are closed. Offline fixtures do not prove that a production session traverses the callsite. Candidate identity, building/slot, cost, affordability, final legality, scheduler class and cadence remain unnamed."
+  "evidence_limit": "The private bridge candidate compiles and serializes the exact normal-runtime observer behind a default-OFF gate. Offline fixtures do not prove that a production session traverses the callsite. Candidate identity, building/slot, cost, affordability, final legality, scheduler class and cadence remain unnamed; no public capability, MCP schema, planner or action is added.",
+  "private_heartbeat": {
+    "key": "g2_domain_construction_native_runtime_callsite_observer_v1",
+    "compile_option": "XAR_CK3_ENABLE_G2_DOMAIN_CONSTRUCTION_RUNTIME_OBSERVER_V1",
+    "compile_default": "OFF",
+    "private_build": true,
+    "read_only": true,
+    "advertised": false,
+    "hello_capability_registered": false,
+    "serialized_state": [
+      "installed",
+      "failure_flags",
+      "producer_calls",
+      "rejected_application_main",
+      "rejected_session",
+      "capture_read_failures",
+      "accepted_captures",
+      "proof_epoch",
+      "date_raw",
+      "paused",
+      "thread_id",
+      "timestamp_qpc",
+      "vector_capacity",
+      "vector_count",
+      "captured_row_count",
+      "rows_truncated",
+      "raw_rows"
+    ]
+  }
 }

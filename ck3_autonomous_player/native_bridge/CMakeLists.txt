@@ -138,6 +138,12 @@ option(
 )
 
 option(
+  XAR_CK3_ENABLE_G2_DOMAIN_CONSTRUCTION_RUNTIME_OBSERVER_V1
+  "Install the private exact-build native-runtime domain-construction observer"
+  OFF
+)
+
+option(
   XAR_CK3_ENABLE_COUNCIL_COMPOSITION_CANDIDATE_OBSERVER_V1
   "Install the private exact-build paused council-candidate observer"
   OFF
@@ -549,6 +555,23 @@ if(XAR_CK3_ENABLE_G2_DOMAIN_CONSTRUCTION_CANDIDATE_OBSERVER_V1)
   )
   target_compile_definitions(xar_ck3_bridge PRIVATE
     XAR_CK3_ENABLE_G2_DOMAIN_CONSTRUCTION_CANDIDATE_OBSERVER_V1=1
+  )
+endif()
+if(XAR_CK3_ENABLE_G2_DOMAIN_CONSTRUCTION_RUNTIME_OBSERVER_V1)
+  if(MSVC)
+    set_source_files_properties(
+      src/bridge.cpp
+      src/domain_construction_runtime_callsite_observer_v1.cpp
+      src/domain_construction_runtime_callsite_observer_v1_serializer.cpp
+      PROPERTIES COMPILE_OPTIONS "/W4;/WX;/permissive-"
+    )
+  endif()
+  target_sources(xar_ck3_bridge PRIVATE
+    src/domain_construction_runtime_callsite_observer_v1.cpp
+    src/domain_construction_runtime_callsite_observer_v1_serializer.cpp
+  )
+  target_compile_definitions(xar_ck3_bridge PRIVATE
+    XAR_CK3_ENABLE_G2_DOMAIN_CONSTRUCTION_RUNTIME_OBSERVER_V1=1
   )
 endif()
 if(XAR_CK3_ENABLE_COUNCIL_COMPOSITION_CANDIDATE_OBSERVER_V1)
@@ -1612,6 +1635,60 @@ if(BUILD_TESTING)
     NAME xar_ck3_native_bridge_domain_construction_candidate_observer_v1_source_contract
     COMMAND ${Python3_EXECUTABLE}
       ${CMAKE_CURRENT_SOURCE_DIR}/research/test_domain_construction_candidate_observer_v1_source_contract.py
+      --root ${CMAKE_CURRENT_SOURCE_DIR}/../..
+      --ck3-executable "${XAR_CK3_EXECUTABLE_PATH}"
+  )
+
+  add_executable(xar_ck3_domain_construction_runtime_callsite_observer_v1_test
+    src/domain_construction_runtime_callsite_observer_v1.cpp
+    src/domain_construction_runtime_callsite_observer_v1_serializer.cpp
+    src/domain_construction_runtime_callsite_observer_v1_test.cpp
+  )
+  target_include_directories(
+    xar_ck3_domain_construction_runtime_callsite_observer_v1_test
+    PRIVATE include)
+  target_compile_definitions(
+    xar_ck3_domain_construction_runtime_callsite_observer_v1_test PRIVATE
+    NOMINMAX WIN32_LEAN_AND_MEAN UNICODE _UNICODE)
+  if(MSVC)
+    target_compile_options(
+      xar_ck3_domain_construction_runtime_callsite_observer_v1_test PRIVATE
+      /W4 /WX /permissive- /EHsc /UNDEBUG)
+  endif()
+  add_test(
+    NAME xar_ck3_native_bridge_domain_construction_runtime_callsite_observer_v1
+    COMMAND xar_ck3_domain_construction_runtime_callsite_observer_v1_test
+      ${CMAKE_CURRENT_SOURCE_DIR}/research/fixtures/g2-domain-construction-native-runtime-callsite-observer-v1_capture_fixture.json
+  )
+
+  add_executable(
+    xar_ck3_domain_construction_runtime_callsite_observer_v1_suspended_injection_test
+    src/domain_construction_runtime_callsite_observer_v1.cpp
+    src/domain_construction_runtime_callsite_observer_v1_suspended_injection_test.cpp
+  )
+  target_include_directories(
+    xar_ck3_domain_construction_runtime_callsite_observer_v1_suspended_injection_test
+    PRIVATE include)
+  target_compile_definitions(
+    xar_ck3_domain_construction_runtime_callsite_observer_v1_suspended_injection_test
+    PRIVATE NOMINMAX WIN32_LEAN_AND_MEAN UNICODE _UNICODE)
+  if(MSVC)
+    target_compile_options(
+      xar_ck3_domain_construction_runtime_callsite_observer_v1_suspended_injection_test
+      PRIVATE /W4 /WX /permissive- /EHsc /UNDEBUG)
+  endif()
+  add_test(
+    NAME xar_ck3_native_bridge_domain_construction_runtime_callsite_observer_v1_suspended_injection
+    COMMAND xar_ck3_domain_construction_runtime_callsite_observer_v1_suspended_injection_test
+  )
+  set_tests_properties(
+    xar_ck3_native_bridge_domain_construction_runtime_callsite_observer_v1_suspended_injection
+    PROPERTIES TIMEOUT 30)
+
+  add_test(
+    NAME xar_ck3_native_bridge_domain_construction_runtime_callsite_observer_v1_source_contract
+    COMMAND ${Python3_EXECUTABLE}
+      ${CMAKE_CURRENT_SOURCE_DIR}/research/test_domain_construction_runtime_callsite_observer_v1_source_contract.py
       --root ${CMAKE_CURRENT_SOURCE_DIR}/../..
       --ck3-executable "${XAR_CK3_EXECUTABLE_PATH}"
   )
