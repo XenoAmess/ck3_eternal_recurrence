@@ -11,9 +11,9 @@
 - [static-confirmed] 普通 barony 至 hegemon 宫廷的开局/继承自动生成统帅数均为 `0`；原版不保证给普通统治者补一个统帅。`Character.GetCommanderAdvantage` 与骑士效率已有 exact-build 只读核心，可复用作后续候选质量观测。
 - [static-confirmed] 已冻结的雇佣兵 AI 参数围绕敌军缺口、战争金库和续约：最多花当前财富的 `80%`，目标兵力比 `1.25`，最多动用战争金库的 `70%`，最小雇佣目标 `500`，并在合约结束前 `3` 个月考虑续约。
 - [unknown] AI 军事支出 pass 的真实 tick、MAA 行为冷却、同分候选顺序、新建与扩编的先后、骑士/统帅自动选择、和平时仍持有雇佣兵的处理，以及雇佣兵市场枚举/雇佣命令的核心调用点尚未闭合。
-- [counter-policy] 下一项施工是 `military-preparation-summary-v1`：在同一 paused revision 返回玩家角色的原版最终军力/骑士脚本值与 MAA gold 预算带。它必须产出真实数值后才能广告，不能以只返回 `unavailable` 的壳收口。
+- [counter-policy] `military-preparation-summary-v1` 的默认关闭私有 observer core 已完成静态实现：在同一 paused revision 编排玩家角色的原版最终军力/骑士脚本值与 MAA gold 预算带。它仍须接入 exact session binding 并产出真实数值后才能广告，不能以只返回 `unavailable` 的壳收口。
 
-当前状态为 **research / evaluator-static-ready**。MIL2 已闭合十项输入的 loaded-playset 解析、Character receiver、signed Q100000 evaluator 与同帧生命周期；本文仍没有实现 planner 策略、native bridge、MCP tool 或游戏动作，也没有 live snapshot。
+当前状态为 **research / private-core-static-ready**。MIL2 已闭合十项输入的 loaded-playset 解析、Character receiver、signed Q100000 evaluator 与同帧生命周期；MIL3 已实现未接线的私有 observer core、serializer 与离线 fixture。本文仍没有 planner 策略、public native capability、MCP tool、游戏动作或 live snapshot。
 
 ## exact-build 与证据账本
 
@@ -199,10 +199,48 @@ flowchart TD
     class U,P unknown;
 ```
 
+### MIL3：默认关闭的私有 observer core
+
+[static-ready] 私有实现位于 `military_preparation_summary_v1*.hpp/.cpp`，并由
+`military_preparation_summary_v1_observer_fixture.json` 固定 serializer 形状。它把 MIL2 ABI 收敛为一笔同步事务：
+
+1. `observer_enabled=false` 是编译后默认值；未显式开启、EXE hash 不符、callback 不完整或不在 application-main
+   时，在第一次 `read_frame` 前失败，不读取游戏状态；
+2. 首帧必须 paused、revision 精确相等且 played full CharacterID 有效，才允许创建 evaluation session；
+3. 十个名称每遍重新解析、校验并求值，两遍共用同一个 session，任何中途失败立即清理且不发布局部值；
+4. 两遍逐字段相等后重读 revision/date/paused/CharacterID/RNG fingerprint，身份未变且 stock-order teardown
+   成功，才把十个 signed Q100000 值复制进无指针结果；
+5. serializer 明示 `raw_pointer_fields_persisted=false`。definition、root scope、support container 与 internal context
+   只允许由 session callback 在本次调用栈内借用，core 没有 definition cache、process-global pointer 或跨帧对象。
+
+独立测试用 MSVC `/W4 /WX` 直接编译 core、serializer 和 focused test，不需要共享 `CMakeLists.txt` 或
+`bridge.cpp`。离线 fixture 的示例值只验证字段顺序、双采样和序列化，不是 live 游戏证据。
+
+```mermaid
+flowchart TD
+    A["default-off / exact hash / callbacks / application-main"] --> B{"admitted before state read?"}
+    B -->|yes| F["paused frame + exact revision + full CharacterID"]
+    B -. "no" .-> X["disabled/unavailable<br/>zero state callbacks"]
+    F --> S["stack-only evaluation session"]
+    S --> P1["resolve + validate + evaluate ten"]
+    P1 --> P2["resolve + validate + evaluate ten again"]
+    P2 --> G{"values and frame identity stable?"}
+    G -->|yes + teardown| O["private available payload<br/>no native pointers"]
+    G -. "no / teardown failure" .-> U["unavailable<br/>no partial values"]
+    O -. "exact session binding and live capture pending" .-> L["[unknown until private live probe]"]
+    classDef unknown stroke-dasharray: 6 4,fill:#fff4e5,stroke:#b36b00;
+    class X,U,L unknown;
+```
+
+MIL2 只证明 stock owner 的构造形状和清理顺序，尚未给出可安全直调的完整 raw destructor 集合；因此本包把
+`begin_session/end_session` 留作唯一 native binding seam，没有猜析构入口或把不完整 raw ABI 假装成 production reader。
+接线必须实现 `0x168` root scope、两份 support container、internal context 与原版顺序清理，并继续满足本节的
+同步生命周期。
+
 ### 唯一下一 seam
 
-下一工作包只保留一个默认关闭入口：`military-preparation-summary-v1-evaluator-probe`。它同时加入上述五个
-support wrapper，并在 private application-main query 中执行完整十项双采样；一次 exact-build paused
+下一工作包只保留一个入口：为 MIL3 core 补齐 exact session binding 与五个 support wrapper，并从 private
+application-main query 执行完整十项双采样；一次 exact-build paused
 结果必须为 `available`、`observation_ready=true`，再与同帧可见脚本/GUI 值交叉检查。失败时保留诊断并继续
 施工，不能发布永久 `unavailable` 的 public tool。MAA candidate/action/postcondition、骑士/统帅候选与 mercenary
 市场仍是该 probe 成功后的后续产品入口，不与本轮 ABI probe 并列成多个“下一实现”。

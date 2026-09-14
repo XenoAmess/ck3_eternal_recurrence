@@ -1,0 +1,44 @@
+{
+  "schema": "xar.ck3.private.military_preparation_summary_v1.core_contract",
+  "schema_version": 1,
+  "research_stage": "static_ready_no_ck3_launch",
+  "build": {
+    "game_version": "1.19.0.6",
+    "executable_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+    "evaluator_abi_fixture": "military_preparation_summary_v1_evaluator_abi.json"
+  },
+  "source_contract": {
+    "military_preparation_summary_v1_abi.hpp": "65F6A9FB2582D6CCE2F40364E720A5ED1FB0A0D699B788EC69FFF405FF974573",
+    "military_preparation_summary_v1.hpp": "78237CBEF9958EC27C1FFFFC3D71ABE1FE65D31476B757874E35B61CF579B28C",
+    "military_preparation_summary_v1_serializer.hpp": "564D9C8F53D8A4558B3190CA40EA5E9C032BF2DBAE9F8C5D3848652969FD4CF3",
+    "military_preparation_summary_v1.cpp": "5E028E685F7A8E8E1BF97627E0F23FF1BDC173401A9EDB19A06493CF655BA4ED",
+    "military_preparation_summary_v1_serializer.cpp": "DB8FFB075DF4BE8C64047E0D114785895383521D4F96C508253FCC5C9894653D",
+    "military_preparation_summary_v1_test.cpp": "45E3DCF2B6533542304FD2A3C6D2ED89A2CB1E6A10C6230B076332FFB9791082",
+    "military_preparation_summary_v1_source_contract_test.cpp": "F6669DE7CE216103822772D4C0E4FC2C7F9D747116E8EE8AA69BC9597352DA18",
+    "military_preparation_summary_v1_observer_fixture.json": "E2A0F3EE731FD6A12063ED0CFADEE999E6FF092DECC37B536CCAEB2B5943140E"
+  },
+  "admission_order": [
+    "explicit observer enable",
+    "exact executable identity",
+    "complete callback table",
+    "application-main thread identity",
+    "first game-state frame read"
+  ],
+  "transaction": {
+    "field_count": 10,
+    "fixed_point_scale": 100000,
+    "passes": 2,
+    "definition_resolution": "fresh loaded-playset lookup for every field in every pass",
+    "success_gate": "both value passes match, frame identity is unchanged, and teardown succeeds",
+    "native_pointer_lifetime": "one synchronous call only",
+    "partial_values_published_on_failure": false
+  },
+  "binding_boundary": {
+    "status": "not_wired",
+    "reason": "MIL2 froze the stock owner shape and teardown order but not a complete directly callable raw destructor set",
+    "required_next": "bind begin_session/end_session to the exact stock-shaped stack session, add five loaded wrapper definitions, and capture one paused private live result"
+  },
+  "public_capability_registered": false,
+  "mcp_schema_changed": false,
+  "ck3_launched": false
+}
