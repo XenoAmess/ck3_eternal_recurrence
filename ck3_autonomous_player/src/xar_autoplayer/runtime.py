@@ -45,6 +45,7 @@ from .errors import AgentError, UnsafeCleanupError
 from .integrity import protected_snapshot, verify_protected_unchanged
 from .locking import exclusive_launch_lock, exclusive_state_lock
 from .rules import MOD_RULES
+from .windows_process import create_process_via_windows_management
 
 
 MAIN_MENU_REGION = (0.18, 0.28, 0.30, 0.50)
@@ -2021,39 +2022,28 @@ def _start_process_watchdog(
     if final_evidence is not None:
         arguments.append(str(final_evidence))
     command = subprocess.list2cmdline(arguments)
-    literal = "'" + command.replace("'", "''") + "'"
-    result = subprocess.run(
-        [
-            "powershell.exe",
-            "-NoProfile",
-            "-NonInteractive",
-            "-Command",
-            "$result = Invoke-CimMethod -ClassName Win32_Process "
-            f"-MethodName Create -Arguments @{{CommandLine={literal}}}; "
-            "if ($result.ReturnValue -ne 0) { exit $result.ReturnValue }; "
-            "$result.ProcessId",
-        ],
-        capture_output=True,
-        text=True,
-        errors="replace",
-        check=False,
-        timeout=15,
+    management_pid: int | None = None
+    management_error: Exception | None = None
+    try:
+        management_pid = create_process_via_windows_management(command)
+    except Exception as error:
+        management_error = error
+    detached_fallback = management_error is not None and _is_access_denied(
+        management_error
     )
-    detached_fallback = result.returncode != 0 and _is_access_denied(
-        result.stderr
-    )
-    if result.returncode != 0 and not detached_fallback:
+    if management_error is not None and not detached_fallback:
         raise AgentError(
-            f"process watchdog launch failed: rc={result.returncode}, "
-            f"stderr={result.stderr.strip()!r}"
-        )
+            f"process watchdog launch failed: {management_error}"
+        ) from management_error
     if detached_fallback:
         try:
             bootstrap_process = subprocess.Popen(
                 arguments,
                 close_fds=True,
                 creationflags=(
-                    subprocess.CREATE_NEW_PROCESS_GROUP | subprocess.DETACHED_PROCESS
+                    subprocess.CREATE_NEW_PROCESS_GROUP
+                    | subprocess.DETACHED_PROCESS
+                    | 0x01000000  # CREATE_BREAKAWAY_FROM_JOB
                 ),
             )
         except OSError as error:
@@ -2063,66 +2053,57 @@ def _start_process_watchdog(
         bootstrap_pid = int(bootstrap_process.pid)
         _FALLBACK_WATCHDOG_COMMAND_LINES[bootstrap_pid] = command
         _FALLBACK_WATCHDOG_PROCESSES[bootstrap_pid] = bootstrap_process
+    elif management_pid is not None:
+        bootstrap_pid = management_pid
+        # Worker-thread management access can fail and force
+        # _process_identity() onto Toolhelp, which has no command-line field.
+        # We created this exact process and command, so retain that nonce-bound
+        # command for the same fallback authentication used by detached launches.
+        _FALLBACK_WATCHDOG_COMMAND_LINES[bootstrap_pid] = command
     else:
-        if result.stdout.strip():
-            try:
-                bootstrap_pid = int(result.stdout.strip().splitlines()[-1])
-            except ValueError as error:
-                raise AgentError(
-                    f"process watchdog returned no PID: {result.stdout!r}"
-                ) from error
-            # Worker-thread WMI access can fail and force _process_identity()
-            # onto Toolhelp, which has no command-line field.  We created this
-            # exact process and command, so retain that nonce-bound command for
-            # the same fallback authentication used by detached launches.
-            _FALLBACK_WATCHDOG_COMMAND_LINES[bootstrap_pid] = command
-        else:
-            # In the managed sandbox Win32_Process.Create succeeds but its
-            # ProcessId projection is suppressed.  The child still proves its
-            # exact PID by atomically publishing the nonce-bound ready record.
-            no_pid_deadline = time.monotonic() + 10
-            error_file = record_file.with_suffix(".watchdog_error")
-            while time.monotonic() < no_pid_deadline:
-                if error_file.is_file():
-                    detail = error_file.read_text(
-                        encoding="utf-8", errors="replace"
-                    ).strip()
-                    raise AgentError(
-                        f"process watchdog bootstrap failed: {detail}"
-                    )
-                if ready_file.is_file():
-                    try:
-                        bootstrap_pid = int(
-                            json.loads(
-                                ready_file.read_text(encoding="ascii")
-                            )["watchdog_pid"]
-                        )
-                    except (OSError, ValueError, KeyError, json.JSONDecodeError) as error:
-                        raise AgentError(
-                            "process watchdog ready record cannot recover the "
-                            "suppressed PID"
-                        ) from error
-                    _FALLBACK_WATCHDOG_COMMAND_LINES[bootstrap_pid] = command
-                    break
-                time.sleep(0.1)
-            else:
+        # The management provider succeeded but suppressed ProcessId. The
+        # child still proves its exact PID through the nonce-bound ready file.
+        no_pid_deadline = time.monotonic() + 10
+        error_file = record_file.with_suffix(".watchdog_error")
+        while time.monotonic() < no_pid_deadline:
+            if error_file.is_file():
+                detail = error_file.read_text(
+                    encoding="utf-8", errors="replace"
+                ).strip()
+                raise AgentError(f"process watchdog bootstrap failed: {detail}")
+            if ready_file.is_file():
                 try:
-                    bootstrap_process = subprocess.Popen(
-                        arguments,
-                        close_fds=True,
-                        creationflags=(
-                            subprocess.CREATE_NEW_PROCESS_GROUP
-                            | subprocess.DETACHED_PROCESS
-                        ),
+                    bootstrap_pid = int(
+                        json.loads(ready_file.read_text(encoding="ascii"))[
+                            "watchdog_pid"
+                        ]
                     )
-                except OSError as error:
-                    raise UnsafeCleanupError(
-                        "process watchdog launch produced neither PID nor ready "
-                        f"proof, and fallback launch failed: {error}"
+                except (OSError, ValueError, KeyError, json.JSONDecodeError) as error:
+                    raise AgentError(
+                        "process watchdog ready record cannot recover the suppressed PID"
                     ) from error
-                bootstrap_pid = int(bootstrap_process.pid)
                 _FALLBACK_WATCHDOG_COMMAND_LINES[bootstrap_pid] = command
-                _FALLBACK_WATCHDOG_PROCESSES[bootstrap_pid] = bootstrap_process
+                break
+            time.sleep(0.1)
+        else:
+            try:
+                bootstrap_process = subprocess.Popen(
+                    arguments,
+                    close_fds=True,
+                    creationflags=(
+                        subprocess.CREATE_NEW_PROCESS_GROUP
+                        | subprocess.DETACHED_PROCESS
+                        | 0x01000000  # CREATE_BREAKAWAY_FROM_JOB
+                    ),
+                )
+            except OSError as error:
+                raise UnsafeCleanupError(
+                    "process watchdog launch produced neither PID nor ready "
+                    f"proof, and fallback launch failed: {error}"
+                ) from error
+            bootstrap_pid = int(bootstrap_process.pid)
+            _FALLBACK_WATCHDOG_COMMAND_LINES[bootstrap_pid] = command
+            _FALLBACK_WATCHDOG_PROCESSES[bootstrap_pid] = bootstrap_process
     error_file = record_file.with_suffix(".watchdog_error")
     actual_pid: int | None = None
     creation_date = ""

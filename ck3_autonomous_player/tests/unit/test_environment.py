@@ -748,7 +748,9 @@ class TrackedShutdownTests(unittest.TestCase):
                         nonce,
                     )
 
-    def test_watchdog_wmi_create_retains_command_for_toolhelp_authentication(self) -> None:
+    def test_watchdog_management_create_retains_command_for_toolhelp_authentication(
+        self,
+    ) -> None:
         with tempfile.TemporaryDirectory(prefix="xar-watchdog-command-") as temporary:
             root = Path(temporary)
             ready = root / "watchdog.ready.json"
@@ -776,10 +778,8 @@ class TrackedShutdownTests(unittest.TestCase):
             }
             try:
                 with mock.patch(
-                    "xar_autoplayer.runtime.subprocess.run",
-                    return_value=subprocess.CompletedProcess(
-                        args=["powershell.exe"], returncode=0, stdout="123\n", stderr=""
-                    ),
+                    "xar_autoplayer.runtime.create_process_via_windows_management",
+                    return_value=123,
                 ), mock.patch(
                     "xar_autoplayer.runtime._process_identity", return_value=identity
                 ), mock.patch(

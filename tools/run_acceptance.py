@@ -6,7 +6,7 @@
 # 不恢复缓存；下次工坊更新时 Steam 重下即复原）。
 #
 # 用法（必须用 tools/.venv 的 python，依赖 requirements.txt）：
-#   & "Z:\ck3_mod_rewrite\tools\.venv\Scripts\python.exe" tools\run_acceptance.py
+#   tools\.venv\Scripts\python.exe tools\run_acceptance.py
 #
 # 大厅导航与事件选项使用 OCR 状态识别，不再依赖固定等待和绝对坐标。判定依据：
 #   debug.log 出现 "XAR: TEST DONE"，全部 "XAR: TEST PASS"、无 "XAR: TEST FAIL"，
@@ -58,6 +58,13 @@ except Exception as e:
 pyautogui.FAILSAFE = False
 
 ROOT = Path(__file__).resolve().parent.parent
+AUTOPLAYER_SRC = ROOT / "ck3_autonomous_player" / "src"
+if str(AUTOPLAYER_SRC) not in sys.path:
+    sys.path.insert(0, str(AUTOPLAYER_SRC))
+
+from xar_autoplayer.windows_process import (  # noqa: E402
+    create_process_via_windows_management,
+)
 
 
 def configured_path(name, default):
@@ -493,34 +500,21 @@ def start_process_watchdog(ck3_pid_file):
     watchdog_python = Path(sys.executable).with_name("pythonw.exe")
     if not watchdog_python.is_file():
         watchdog_python = Path(sys.executable)
-    command = subprocess.list2cmdline(
-        [
-            str(watchdog_python),
-            str(PROCESS_WATCHDOG),
-            str(os.getpid()),
-            str(ck3_pid_file),
-        ]
-    )
-    command_literal = "'" + command.replace("'", "''") + "'"
-    launch = subprocess.run(
-        [
-            "powershell.exe",
-            "-NoProfile",
-            "-NonInteractive",
-            "-Command",
-            "$result = Invoke-CimMethod -ClassName Win32_Process "
-            f"-MethodName Create -Arguments @{{CommandLine={command_literal}}}; "
-            "if ($result.ReturnValue -ne 0) { exit $result.ReturnValue }; "
-            "$result.ProcessId",
-        ],
-        capture_output=True,
-        text=True,
-        creationflags=subprocess.CREATE_NO_WINDOW,
-    )
-    if launch.returncode != 0 or not launch.stdout.strip().isdigit():
-        detail = launch.stderr.strip() or launch.stdout.strip() or "no process id"
-        raise RunnerError(f"process watchdog launch failed: {detail}")
-    return int(launch.stdout.strip())
+    arguments = [
+        str(watchdog_python),
+        str(PROCESS_WATCHDOG),
+        str(os.getpid()),
+        str(ck3_pid_file),
+    ]
+    try:
+        pid = create_process_via_windows_management(
+            subprocess.list2cmdline(arguments)
+        )
+    except Exception as error:
+        raise RunnerError(f"process watchdog launch failed: {error}") from error
+    if pid is None:
+        raise RunnerError("process watchdog launch failed: no process id")
+    return pid
 
 
 def launch_ck3_process(debug_mode):
@@ -546,29 +540,22 @@ def start_restore_watchdog(backup, ck3_pid_file):
     watchdog_python = Path(sys.executable).with_name("pythonw.exe")
     if not watchdog_python.is_file():
         watchdog_python = Path(sys.executable)
-    command = subprocess.list2cmdline([
+    arguments = [
         str(watchdog_python), str(RESTORE_WATCHDOG), str(os.getpid()),
         str(ck3_pid_file),
         str(backup / "tutorial.txt"), str(TUTORIAL_TXT),
         str(backup / "presets.txt"), str(PRESETS_TXT),
         str(backup / "dlc_load.json"), str(DLC_LOAD_JSON),
-    ])
-    command_literal = "'" + command.replace("'", "''") + "'"
-    launch = subprocess.run(
-        [
-            "powershell.exe", "-NoProfile", "-NonInteractive", "-Command",
-            "$result = Invoke-CimMethod -ClassName Win32_Process "
-            f"-MethodName Create -Arguments @{{CommandLine={command_literal}}}; "
-            "if ($result.ReturnValue -ne 0) { exit $result.ReturnValue }; "
-            "$result.ProcessId",
-        ],
-        capture_output=True, text=True,
-        creationflags=subprocess.CREATE_NO_WINDOW,
-    )
-    if launch.returncode != 0 or not launch.stdout.strip().isdigit():
-        detail = launch.stderr.strip() or launch.stdout.strip() or "no process id"
-        raise RunnerError(f"restore watchdog launch failed: {detail}")
-    return int(launch.stdout.strip())
+    ]
+    try:
+        pid = create_process_via_windows_management(
+            subprocess.list2cmdline(arguments)
+        )
+    except Exception as error:
+        raise RunnerError(f"restore watchdog launch failed: {error}") from error
+    if pid is None:
+        raise RunnerError("restore watchdog launch failed: no process id")
+    return pid
 
 
 def isolate_autosaves(backup):
