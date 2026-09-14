@@ -1,0 +1,54 @@
+{
+  "contract": "government_runtime_adapter_source_adapter_v1",
+  "schema_version": 1,
+  "status": "static-ready-private-source-adapter",
+  "exact_build": {
+    "game_version": "1.19.0.6",
+    "executable_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86"
+  },
+  "inputs": {
+    "campaign_collector": "campaign-root-context-v1",
+    "feature_collector": "loaded-feature-manifest-v1",
+    "semantic_core": "government-runtime-adapter-observer-v1",
+    "capture_count": 2,
+    "application_main_required": true,
+    "paused_required": true
+  },
+  "identity_gate": {
+    "same_snapshot_revision": true,
+    "same_date_raw": true,
+    "stable_campaign_lifecycle_identity": true,
+    "stable_feature_lifecycle_identity": true,
+    "stable_player_identity": true,
+    "stable_government_identity": true,
+    "stable_effective_feature_identity": true,
+    "stable_script_dlc_identity": true
+  },
+  "ownership": {
+    "copies_collector_rows": true,
+    "copies_government_key_and_flags": true,
+    "copies_feature_keys": true,
+    "copies_script_dlc_keys": true,
+    "borrowed_views_escape": false
+  },
+  "implementation": {
+    "header": "include/xar_bridge/government_runtime_adapter_source_adapter_v1.hpp",
+    "source": "src/government_runtime_adapter_source_adapter_v1.cpp",
+    "standalone_test": "src/government_runtime_adapter_source_adapter_v1_test.cpp",
+    "build_test": "research/test_government_runtime_adapter_source_adapter_v1_standalone.py",
+    "cmake_target_added": false,
+    "bridge_wired": false,
+    "public_capability_added": false,
+    "public_schema_changed": false,
+    "mcp_changed": false,
+    "planner_changed": false
+  },
+  "acceptance": {
+    "normal_msvc_w4_wx": "green",
+    "optimized_msvc_w4_wx": "green",
+    "python_normal": "green",
+    "python_optimized": "green",
+    "ck3_launched": false,
+    "live_status": "not_run"
+  }
+}

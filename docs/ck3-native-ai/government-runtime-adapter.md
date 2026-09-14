@@ -3,7 +3,10 @@
 ## Status and scope
 
 - **[research / static-frozen]** This topic freezes the exact-build government identity reader, all 18 stock government definitions, their nonreligious native AI switches, and the runtime feature inputs needed to select a future G2 adapter.
-- **[contract-only]** The minimum read-only observer is specified, but this work package does not implement a bridge, mailbox command, public schema, planner policy, or action.
+- **[static-ready / private source adapter]** The semantic observer and its
+  collector-facing source adapter are implemented and pass standalone normal
+  and optimized MSVC `/W4 /WX` tests. They are not wired into the bridge,
+  mailbox, public schema, planner, or MCP.
 - **[not live]** CK3 was neither started nor attached. The evidence is executable and source-file analysis only.
 - Religion remains owner-deferred. `theocracy_government` and `holy_order_government` are retained as identity rows, while faith, doctrine, tenet, fervor, conversion, religious reformation, and holy-order mechanics are excluded.
 
@@ -19,6 +22,18 @@ The verifier reads an explicitly supplied installation root and never launches o
 python ck3_autonomous_player/native_bridge/research/verify_government_runtime_adapter_1_19_0_6.py --game-root "<CK3 installation root>"
 python -O ck3_autonomous_player/native_bridge/research/verify_government_runtime_adapter_1_19_0_6.py --game-root "<CK3 installation root>"
 ```
+
+The private source adapter has a separate portable contract and focused test:
+
+- `ck3_autonomous_player/native_bridge/research/government_runtime_adapter_source_adapter_v1_abi.json`
+- `ck3_autonomous_player/native_bridge/research/test_government_runtime_adapter_source_adapter_v1_standalone.py`
+
+It consumes already-owned `campaign-root-context-v1` and
+`loaded-feature-manifest-v1` collector rows. It performs two captures on
+application-main while paused, rejects any frame, lifecycle, player,
+government, feature, or script-DLC identity drift, then owns all strings and
+vectors passed into the semantic observer. It neither reads native memory nor
+publishes a capability by itself.
 
 ## Exact-build freeze
 
@@ -225,9 +240,10 @@ feature profile. It does not complete the visible outcome of qualifying
 multiple rulers/seeds/governments or restoring the same intent after
 checkpoints and inheritance.
 
-The next critical work is to implement the atomic read-only observer, then
-define policy matrices for supported adapter families and validate them with
-paused live snapshots. Cross-inheritance goal memory remains a separate
-consumer. Any policy derived from a government transition must re-read the
-effective identity after succession rather than carry the predecessor's
-adapter by assumption.
+The next critical work is to bind the private source adapter to both existing
+collectors inside the native bridge and expose one read-only query without
+weakening its atomic identity gate. After that, define policy matrices for
+supported adapter families and validate them with paused live snapshots.
+Cross-inheritance goal memory remains a separate consumer. Any policy derived
+from a government transition must re-read the effective identity after
+succession rather than carry the predecessor's adapter by assumption.
