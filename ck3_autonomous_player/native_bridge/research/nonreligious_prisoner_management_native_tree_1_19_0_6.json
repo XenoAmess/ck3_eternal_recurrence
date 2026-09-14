@@ -1,0 +1,608 @@
+{
+  "schema_version": 1,
+  "contract": "g2-m6-nonreligious-prisoner-management-native-tree-v1",
+  "work_package": "G2-M6-PRISONER1-NATIVE-TREE",
+  "status": "static-confirmed-research-only",
+  "exact_build": {
+    "product_version": "1.19.0.6",
+    "executable_relative_path": "binaries/ck3.exe",
+    "executable_size": 95206008,
+    "executable_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+    "architecture": "PE32+ x86-64",
+    "image_base": "0x140000000"
+  },
+  "scope": {
+    "included": [
+      "stock AI opportunity and weight trees for imprisoning a character",
+      "custody changes between dungeon and house arrest",
+      "ransom, pay-ransom and self-ransom role shapes and offer choices",
+      "unconditional and nonreligious conditional release",
+      "execution, torture, castration, blinding and systematic maiming opportunity/weight trees",
+      "engine-final imprisonment, banishment and execution reason results as opaque inputs"
+    ],
+    "excluded": [
+      "faith, doctrine, tenet, conversion, vows, piety and human-sacrifice modelling",
+      "holy orders and every general religion policy",
+      "debug_imprison_simple_interaction",
+      "prison_break_contract_interaction and scheme policy",
+      "bridge, CMake, public schema, MCP, planner and action implementation",
+      "CK3 launch, process attachment and live validation"
+    ],
+    "religion_policy": "Demand conversion, take vows, kinslaying doctrine and execution-tenet branches remain part of the exact stock source hash but are not decomposed. A future observer may expose only the engine-final validity/reason result for an allowlisted nonreligious action or option."
+  },
+  "stock_sources": [
+    {
+      "path": "game/common/character_interactions/00_prison_interactions.txt",
+      "size": 201766,
+      "sha256": "3E05C94CDCE4D42CCE8256D2D79CD78FEB1C9D5B79DAA64AA8243AA0C658F22B",
+      "required_tokens": [
+        "imprison_interaction = {",
+        "ransom_interaction = {",
+        "pay_ransom_interaction = {",
+        "ransom_me_interaction = {",
+        "release_from_prison_interaction = {",
+        "execute_prisoner_interaction = {",
+        "torture_interaction = {",
+        "castrate_interaction = {",
+        "blind_interaction = {",
+        "systematically_maim_character_interaction = {"
+      ]
+    },
+    {
+      "path": "game/common/character_interactions/_character_interactions.info",
+      "size": 27227,
+      "sha256": "F360C05B72CD2B0D87885E570FA55E70E41089DEFB4675BE5A82E390940D5D10",
+      "required_tokens": [
+        "Can Send: If an interaction can be sent is tested like this:",
+        "Trigger: is_valid_showing_failures_only",
+        "Trigger: has_valid_target_showing_failures_only",
+        "Trigger: can_send",
+        "Trigger: is_valid",
+        "Trigger: has_valid_target",
+        "ai_targets"
+      ]
+    },
+    {
+      "path": "game/common/script_values/00_interaction_values.txt",
+      "size": 18763,
+      "sha256": "47A24A4B264E2036E454E72FB9E6945AD4AA47457DC256D3151CF534A5B9E6BC",
+      "required_tokens": [
+        "ransom_cost_value",
+        "increased_ransom_cost_value",
+        "ransom_herd_value"
+      ]
+    },
+    {
+      "path": "game/common/script_values/00_basic_values.txt",
+      "size": 47113,
+      "sha256": "9268A54F0E425D409D9D0F20D884E0A3D0A89DF85A0B6644D56133C0C4CB0096",
+      "required_tokens": [
+        "intimidated_reason_value",
+        "cowed_reason_value",
+        "banishment_tyranny_gain = 5"
+      ]
+    },
+    {
+      "path": "game/common/script_values/01_dynamic_values.txt",
+      "size": 44999,
+      "sha256": "049303EFF8ABFDFCADCC31D27E2633A26A2E877E4E2980D4A42C53D6B76D7064",
+      "required_tokens": [
+        "minimum_ai_gold_value_for_tyranny_wars"
+      ]
+    },
+    {
+      "path": "game/common/defines/graphic/00_graphics.txt",
+      "size": 60198,
+      "sha256": "D276199CD8C2988E6763EB84BAE3E4D7B8221D2BCD779EE668E3E66EB1999619",
+      "required_tokens": [
+        "MAX_PRISONER_COUNT_GRID"
+      ]
+    },
+    {
+      "path": "game/common/scripted_triggers/00_crime_triggers.txt",
+      "size": 1563,
+      "sha256": "879A7E089411A5A36F84CC7E19F93B033622A92161584A248330E809D23A2ABD",
+      "required_tokens": [
+        "sexual_activity_with_partner_is_criminal_in_faith_trigger"
+      ]
+    },
+    {
+      "path": "game/common/scripted_triggers/00_scripted_triggers.txt",
+      "size": 14623,
+      "sha256": "490C3784EE1555A49F7A4ADC9BAABB8522485F1AF6E1C837961E299A88695B5E",
+      "required_tokens": [
+        "basic_allowed_to_imprison_character_trigger",
+        "advanced_allowed_to_imprison_character_trigger",
+        "has_imprisonment_reason"
+      ]
+    },
+    {
+      "path": "game/common/scripted_triggers/00_interaction_triggers.txt",
+      "size": 8713,
+      "sha256": "2C77FDED0574DAA824BAA457F5731EC2BDEC70DBF9F5DF1C2C1232357237C789",
+      "required_tokens": [
+        "is_asking_for_gold_in_ransom_trigger"
+      ]
+    },
+    {
+      "path": "game/common/scripted_effects/00_prison_effects.txt",
+      "size": 59488,
+      "sha256": "F745201EFD827EFF9F4AE8BF61060FE81D1048C47F7C7B487AB5476218D26A66",
+      "required_tokens": [
+        "ransom_interaction_effect = {",
+        "scope:prisoner = { release_from_prison = yes }",
+        "execute_prisoner_effect = {",
+        "death_reason = death_execution"
+      ]
+    },
+    {
+      "path": "game/gui/window_court.gui",
+      "size": 23731,
+      "sha256": "E730078C5F671E7E564C6E7799215D9FABDA0546D38BA615F26302B122AD5135",
+      "required_tokens": [
+        "CourtWindow.GetPrisoners",
+        "GetMassPrisonerActionTooltip('ransom')",
+        "GetMassPrisonerActionTooltip('release')",
+        "GetMassPrisonerActionTooltip('execute')"
+      ]
+    },
+    {
+      "path": "game/gui/window_ledger.gui",
+      "size": 252225,
+      "sha256": "11314E8866283FF0DB1EA352868368E06A0981F504478EF4B54B4AE660C53BD5",
+      "required_tokens": [
+        "Character.GetPrisoners"
+      ]
+    }
+  ],
+  "interaction_definitions": {
+    "imprison_interaction": {
+      "definition_lines": [1, 1503],
+      "priority": "P0 opportunity/legality",
+      "ai_recipients": ["vassals", "courtiers"],
+      "ai_frequency_by_tier": {
+        "barony": 0,
+        "county": 36,
+        "duchy": 10,
+        "kingdom": 10,
+        "empire": 10,
+        "hegemony": 10
+      },
+      "ai_accept_base": 0,
+      "ai_accept_direct_modifier_count": 25,
+      "ai_will_do_base": -100,
+      "ai_will_do_direct_modifier_count": 19,
+      "ai_will_do_factor_zero_count": 2,
+      "send_option_flags": ["hook"],
+      "summary": "Final send may proceed despite predicted rejection. Recipient answer combines intrigue, hook, legal authority, rank, dread, relative military power, rivalry and culture. Sender adds strong legal-reason value, risk and relationship suppression, struggle branches and two hard-zero states."
+    },
+    "move_to_dungeon_interaction": {
+      "definition_lines": [1504, 1632],
+      "priority": "P0 custody state",
+      "ai_recipients": ["prisoners"],
+      "ai_frequency_by_tier": {
+        "barony": 0,
+        "county": 48,
+        "duchy": 12,
+        "kingdom": 12,
+        "empire": 12,
+        "hegemony": 12
+      },
+      "ai_accept_base": null,
+      "ai_accept_direct_modifier_count": 0,
+      "ai_will_do_base": 0,
+      "ai_will_do_direct_modifier_count": 2,
+      "ai_will_do_factor_zero_count": 0,
+      "send_option_flags": []
+    },
+    "move_to_house_arrest_interaction": {
+      "definition_lines": [1633, 1710],
+      "priority": "P0 custody state",
+      "ai_recipients": [],
+      "ai_frequency_by_tier": {},
+      "ai_accept_base": null,
+      "ai_accept_direct_modifier_count": 0,
+      "ai_will_do_base": null,
+      "ai_will_do_direct_modifier_count": 0,
+      "ai_will_do_factor_zero_count": 0,
+      "send_option_flags": [],
+      "summary": "No authored AI target/frequency/weight block; this is still a visible player custody transition and must not be invented as an AI policy."
+    },
+    "ransom_interaction": {
+      "definition_lines": [1711, 2365],
+      "priority": "P0 offer from jailer",
+      "ai_recipients": ["prisoners"],
+      "ai_frequency_by_tier": {
+        "barony": 36,
+        "county": 6,
+        "duchy": 6,
+        "kingdom": 6,
+        "empire": 6,
+        "hegemony": 6
+      },
+      "ai_accept_base": 0,
+      "ai_accept_direct_modifier_count": 11,
+      "ai_will_do_base": 0,
+      "ai_will_do_direct_modifier_count": 9,
+      "ai_will_do_factor_zero_count": 3,
+      "send_option_flags": [
+        "extortionate_gold",
+        "extortionate_current_gold",
+        "gold",
+        "current_gold",
+        "favor",
+        "influence_send_option",
+        "herd_send_option",
+        "invalid"
+      ],
+      "summary": "Sender prefers valid money after long imprisonment, adds greed, suppresses rival/nemesis, may prefer a favor from a vassal, and hard-zeroes war, recent human refusal and active prison break. Recipient acceptance is a distinct payer/prisoner relationship and dread tree."
+    },
+    "pay_ransom_interaction": {
+      "definition_lines": [2366, 3464],
+      "priority": "P0 offer from interested payer",
+      "ai_recipients": [
+        "family",
+        "spouses",
+        "scripted_relations",
+        "liege",
+        "neighboring_rulers",
+        "peer_vassals",
+        "top_realm_domicile_owners"
+      ],
+      "ai_frequency_by_tier": {
+        "barony": 0,
+        "county": 6,
+        "duchy": 6,
+        "kingdom": 6,
+        "empire": 6,
+        "hegemony": 6
+      },
+      "ai_accept_base": 0,
+      "ai_accept_direct_modifier_count": 16,
+      "ai_will_do_base": 0,
+      "ai_will_do_direct_modifier_count": 17,
+      "ai_will_do_factor_zero_count": 6,
+      "send_option_flags": [
+        "extortionate_gold",
+        "extortionate_current_gold",
+        "gold",
+        "current_gold",
+        "favor",
+        "influence_send_option",
+        "herd_send_option",
+        "hook"
+      ],
+      "summary": "Role shape redirects actor, jailer and secondary prisoner. Sender interest depends on kin/relation/compassion, payment shape, heir value and ability; invalid exchange, war/human refusal and prison break hard-zero the offer. Jailer acceptance independently scores payment, hooks, hostility, POW state and dread."
+    },
+    "ransom_me_interaction": {
+      "definition_lines": [3465, 4087],
+      "priority": "P1 self-release",
+      "ai_recipients": ["self"],
+      "ai_frequency_by_tier": {
+        "barony": 72,
+        "county": 24,
+        "duchy": 24,
+        "kingdom": 12,
+        "empire": 12,
+        "hegemony": 12
+      },
+      "ai_accept_base": 0,
+      "ai_accept_direct_modifier_count": 15,
+      "ai_will_do_base": 0,
+      "ai_will_do_direct_modifier_count": 7,
+      "ai_will_do_factor_zero_count": 3,
+      "send_option_flags": [
+        "extortionate_gold",
+        "extortionate_current_gold",
+        "gold",
+        "current_gold",
+        "favor",
+        "influence_send_option",
+        "herd_send_option",
+        "hook"
+      ]
+    },
+    "release_from_prison_interaction": {
+      "definition_lines": [4088, 6227],
+      "priority": "P0 unconditional release; P1 allowlisted nonreligious conditions",
+      "ai_recipients": ["prisoners"],
+      "ai_frequency": 1,
+      "ai_frequency_by_tier": {},
+      "ai_accept_base": 0,
+      "ai_accept_direct_modifier_count": 33,
+      "ai_will_do_base": 0,
+      "ai_will_do_direct_modifier_count": 21,
+      "ai_will_do_factor_zero_count": 1,
+      "send_option_flags": [
+        "demand_conversion",
+        "renounce_claims",
+        "banish",
+        "gain_hook",
+        "take_vows",
+        "become_executioner",
+        "recruit",
+        "disfigure",
+        "blind",
+        "castrate",
+        "demand_admin"
+      ],
+      "religious_options_excluded": ["demand_conversion", "take_vows"],
+      "summary": "Unconditional release is auto-accepted only when every option is false. Nonreligious conditions have separate recipient acceptance costs and sender desirability; compassion/time-imprisoned, revenge, feud and struggle branches affect unconditional release. Active prison break hard-zeroes."
+    },
+    "execute_prisoner_interaction": {
+      "definition_lines": [6228, 7278],
+      "priority": "P0 engine-final legality; P1 action",
+      "ai_recipients": ["prisoners"],
+      "ai_frequency_by_tier": {
+        "barony": 72,
+        "county": 12,
+        "duchy": 12,
+        "kingdom": 12,
+        "empire": 12,
+        "hegemony": 12
+      },
+      "ai_accept_base": null,
+      "ai_accept_direct_modifier_count": 0,
+      "ai_will_do_base": 0,
+      "ai_will_do_direct_modifier_count": 18,
+      "ai_will_do_factor_zero_count": 2,
+      "send_option_flags": [
+        "execution_beheaded",
+        "execution_devour",
+        "execution_burned",
+        "execution_sacrifice",
+        "execution_public",
+        "execution_kennel",
+        "execution_provisions"
+      ],
+      "summary": "Legal execution reason, sadism/lunacy, inheritance, vengeance, rivals and struggle/nomad inputs raise interest; absent a reason/rival/inheritance/lunacy the tree hard-zeroes. Kinslaying and special tenet branches are retained only under the frozen source hash and excluded from policy decomposition."
+    },
+    "torture_interaction": {
+      "definition_lines": [7307, 7527],
+      "priority": "P1 punishment",
+      "ai_recipients": ["prisoners"],
+      "ai_frequency_by_tier": {
+        "barony": 0,
+        "county": 36,
+        "duchy": 24,
+        "kingdom": 24,
+        "empire": 12,
+        "hegemony": 12
+      },
+      "ai_accept_base": null,
+      "ai_accept_direct_modifier_count": 0,
+      "ai_will_do_base": -25,
+      "ai_will_do_direct_modifier_count": 3,
+      "ai_will_do_factor_zero_count": 0,
+      "send_option_flags": [],
+      "summary": "Sadistic, family feud and a recorded escape attempt are the three direct positive modifiers."
+    },
+    "castrate_interaction": {
+      "definition_lines": [7528, 7704],
+      "priority": "P1 punishment",
+      "ai_recipients": ["prisoners"],
+      "ai_frequency_by_tier": {
+        "barony": 0,
+        "county": 144,
+        "duchy": 48,
+        "kingdom": 36,
+        "empire": 12,
+        "hegemony": 12
+      },
+      "ai_accept_base": null,
+      "ai_accept_direct_modifier_count": 0,
+      "ai_will_do_base": -20,
+      "ai_will_do_direct_modifier_count": 4,
+      "ai_will_do_factor_zero_count": 0,
+      "send_option_flags": [],
+      "summary": "Sadistic, family feud, escape attempt and Byzantine-punishment emulation add interest."
+    },
+    "blind_interaction": {
+      "definition_lines": [7705, 7904],
+      "priority": "P1 punishment",
+      "ai_recipients": ["prisoners"],
+      "ai_frequency_by_tier": {
+        "barony": 0,
+        "county": 144,
+        "duchy": 48,
+        "kingdom": 36,
+        "empire": 12,
+        "hegemony": 12
+      },
+      "ai_accept_base": null,
+      "ai_accept_direct_modifier_count": 0,
+      "ai_will_do_base": -20,
+      "ai_will_do_direct_modifier_count": 4,
+      "ai_will_do_factor_zero_count": 0,
+      "send_option_flags": [],
+      "summary": "The direct AI weight shape matches castration; legality and outcome remain distinct native results."
+    },
+    "systematically_maim_character_interaction": {
+      "definition_lines": [7987, 8737],
+      "priority": "P2 DLC/co-ruler punishment",
+      "ai_recipients": ["prisoners"],
+      "ai_frequency_by_tier": {
+        "barony": 0,
+        "county": 0,
+        "duchy": 0,
+        "kingdom": 60,
+        "empire": 60,
+        "hegemony": 60
+      },
+      "ai_accept_base": null,
+      "ai_accept_direct_modifier_count": 0,
+      "ai_will_do_base": -50,
+      "ai_will_do_direct_modifier_count": 4,
+      "ai_will_do_factor_zero_count": 0,
+      "send_option_flags": [
+        "maim_castrate",
+        "maim_blind",
+        "maim_face",
+        "maim_leg",
+        "maim_arm",
+        "renounce_claims",
+        "banish",
+        "take_vows"
+      ],
+      "religious_options_excluded": ["take_vows"],
+      "summary": "Co-rulership and special legality make this a later slice. Sadistic, callous, feud and escape-attempt modifiers are frozen; vow semantics are excluded."
+    }
+  },
+  "crime_and_reason_boundary": {
+    "static_result": "Crime is consumed by stock imprisonment/banishment/execution reason checks, tyranny effects and the final interaction validator. It is not one stable external boolean derivable from a copied list of traits or secrets.",
+    "required_native_outputs": [
+      "has_imprisonment_reason",
+      "has_banish_reason",
+      "has_execute_reason",
+      "final can-send/validity result",
+      "native failure reason keys/text",
+      "native displayed tyranny or resource consequence where the interaction exposes it"
+    ],
+    "prohibition": "Do not reconstruct faith/doctrine crime classification, punishment legality, tyranny or AI acceptance in the planner."
+  },
+  "generic_interaction_native_substrate": {
+    "reference": "ck3_autonomous_player/native_bridge/research/core_diplomatic_proposals_v1_contract.json",
+    "status": "reused exact-build substrate; prisoner enumerator and ransom role/option ownership remain unimplemented",
+    "spans": {
+      "get_character_interaction_database": {
+        "rva_start": "0x831890",
+        "rva_end_exclusive": "0x8318E7",
+        "sha256": "954B26681465C4A72A0CC660025958E61ED1A367257F2167437401BF6CF532C2"
+      },
+      "construct_two_role_character_interaction_context": {
+        "rva_start": "0x2C3EE50",
+        "rva_end_exclusive": "0x2C3EFF9",
+        "sha256": "A9CDB9706153581B01B24ADAD38204703CC4AF0CBA2F381EB4E49C064E9CE83A"
+      },
+      "finalize_character_interaction_context": {
+        "rva_start": "0x2C40B20",
+        "rva_end_exclusive": "0x2C40BFE",
+        "sha256": "1A6393A2BF0D6B5AEA4BB71CA261B63147336CCFBE42F5BA9EA7A09AB5472661"
+      },
+      "validate_character_interaction_context": {
+        "rva_start": "0x2C43F00",
+        "rva_end_exclusive": "0x2C44070",
+        "sha256": "3B9A75EC79B4C93DE7C1E3F9D45ADA2518048611EFCF7C0475F243C93086ED54"
+      }
+    }
+  },
+  "exact_build_reflection_anchors": {
+    "GetExecuteReasons": "0x40CEDD0",
+    "GetBanishReasons": "0x40CEDE8",
+    "GetImprisonmentReasons": "0x40CF0E8",
+    "GetPrisoners": "0x4107BA8",
+    "boundary": "These unique exact-build strings prove reflected query surfaces exist. They do not identify a safe native method RVA, collection ownership, or lifetime."
+  },
+  "p0_observer_contract": {
+    "name": "player_prisoner_management_snapshot_v1",
+    "status": "research-only; not implemented or public",
+    "read_only": true,
+    "inputs": [
+      "none; bind actor to the current played character in one paused application-main snapshot"
+    ],
+    "collection_contract": {
+      "source": "complete engine-owned prisoner collection for the played character",
+      "identity": "full generation-bearing CharacterID only",
+      "ordering": "stable copied order or explicit native source ordinal",
+      "completeness": "publish total_count, returned_count, collection_complete and typed unavailable_reason",
+      "prohibition": "Do not approximate the collection from war participants, court membership, title successors, GUI rows or caller-supplied character IDs. A cap or failed row makes readiness false."
+    },
+    "prisoner_fields": [
+      "prisoner CharacterID and alive/resolved state",
+      "exact jailer CharacterID equality with the played actor",
+      "custody kind: house_arrest, dungeon or typed unknown",
+      "time imprisoned",
+      "hostage state where the same exact-build reader can prove it",
+      "active prison-break exclusion where the same exact-build reader can prove it"
+    ],
+    "allowlisted_preview_rows": [
+      {
+        "interaction": "ransom_interaction",
+        "priority": "P0",
+        "required": "exact actor/recipient/payer/secondary-recipient roles, visible and valid send options, selected option, exact resource terms, final Can Send and native failure/answer reasons"
+      },
+      {
+        "interaction": "release_from_prison_interaction",
+        "priority": "P0",
+        "required": "unconditional release plus allowlisted nonreligious option rows; demand_conversion and take_vows are omitted"
+      },
+      {
+        "interaction": "execute_prisoner_interaction",
+        "priority": "P0 legality only",
+        "required": "engine-final visibility/validity/Can Send, execution reason result, displayed tyranny/consequence and nonreligious visible option keys; no action"
+      },
+      {
+        "interaction": "move_to_dungeon_interaction",
+        "priority": "P0",
+        "required": "current custody, final availability and native failure reason"
+      },
+      {
+        "interaction": "move_to_house_arrest_interaction",
+        "priority": "P0",
+        "required": "current custody, final availability and native failure reason"
+      },
+      {
+        "interaction": "torture_interaction",
+        "priority": "P1 field carried when cheap",
+        "required": "engine-final availability and native failure/consequence"
+      }
+    ],
+    "reason_fields": [
+      "engine-final has_imprisonment_reason",
+      "engine-final has_banish_reason",
+      "engine-final has_execute_reason",
+      "copied stable reason keys/text/status when the engine supplies them"
+    ],
+    "interaction_result_fields": [
+      "definition stable key and selected role identities",
+      "shown, candidate-filter result, finalized validity and Can Send",
+      "auto-accept/needs-answer state",
+      "native recipient answer only where the finalized interaction requires it",
+      "visible and valid send-option stable keys",
+      "exact selected cost/resource terms",
+      "typed native failure reason keys/text/status"
+    ],
+    "coherence": [
+      "copy values on application main; no raw pointer crosses the query",
+      "sample complete identities, roles, options, costs and reasons twice at one paused revision",
+      "require identical samples and a final unchanged paused snapshot binding"
+    ],
+    "readiness_gate": "true only when the prisoner collection is complete and every P0 row has exact role binding, option/cost shape and engine-final legality/reason output; typed unavailable and truncation remain false",
+    "implementation_entry": "implement_private_exact_build_player_prisoner_management_snapshot_v1_reader",
+    "live_gate": "One natural paused save with at least one real prisoner must prove complete enumeration and two distinct final result classes before any action or public MCP design."
+  },
+  "readiness_at_research_close": {
+    "stock_tree_frozen": true,
+    "exact_build_sources_reproducible": true,
+    "generic_interaction_pipeline_reused": true,
+    "prisoner_enumerator_mapped": false,
+    "ransom_special_role_payload_mapped": false,
+    "observer_implemented": false,
+    "paused_live_validated": false,
+    "action_designed": false,
+    "public_mcp_ready": false,
+    "planner_ready": false
+  },
+  "unknowns": [
+    "safe native Character.GetPrisoners/CourtWindow.GetPrisoners method RVA, returned collection layout, ownership and lifetime",
+    "complete prison relation layout beyond the previously narrow jailer relation evidence",
+    "exact custody-kind and imprisonment-duration fields/getters",
+    "native method surfaces for imprisonment, banishment and execution reason collections",
+    "ransom actor/recipient/payer/secondary-recipient context construction and option payload ownership",
+    "exact resource-term vector for gold, current gold, extortionate gold, favor, influence, herd and hook",
+    "final punishment consequence/tyranny presentation surface for each allowlisted row",
+    "natural paused fixture with at least one prisoner and two final result classes"
+  ],
+  "boundaries": {
+    "ck3_started": false,
+    "process_attached": false,
+    "game_state_mutated": false,
+    "bridge_changed": false,
+    "cmake_changed": false,
+    "public_schema_changed": false,
+    "public_mcp_changed": false,
+    "planner_changed": false,
+    "observer_implemented": false,
+    "action_implemented": false
+  }
+}
