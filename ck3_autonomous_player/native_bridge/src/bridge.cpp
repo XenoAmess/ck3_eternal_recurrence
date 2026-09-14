@@ -5,6 +5,7 @@
 #include "xar_bridge/battle_terminal_transition_v1_mailbox.hpp"
 #include "xar_bridge/battle_transition_v1_mailbox.hpp"
 #include "xar_bridge/campaign_root_context_v1_mailbox.hpp"
+#include "xar_bridge/steward_develop_county_candidates_v1_mailbox.hpp"
 #include "xar_bridge/coat_of_arms_designer_probe_v1.hpp"
 #include "xar_bridge/frontend_gui_route_v1.hpp"
 #include "xar_bridge/cold_map_vfs_observer_v1.hpp"
@@ -3643,6 +3644,38 @@ std::string CampaignRootContextResultFrame(
   return result;
 }
 
+std::string StewardDevelopCountyCandidatesResultFrame(
+    std::string_view request_id, std::uint64_t query_sequence,
+    const xar::game::StewardDevelopCountyCandidatesV1 &candidates) {
+  const auto payload =
+      xar::ck3_11906::SerializeStewardDevelopCountyCandidatesV1(candidates);
+  if (payload.empty()) {
+    return {};
+  }
+  const std::string_view status =
+      candidates.status ==
+              xar::game::StewardDevelopCountyCandidatesStatusV1::available
+          ? "available"
+          : "unavailable";
+  std::string result =
+      "{\"type\":\"command_result\",\"protocol_version\":1,"
+      "\"request_id\":";
+  AppendJsonString(result, request_id);
+  result +=
+      ",\"ok\":true,\"result\":{\"step\":"
+      "\"query-steward-develop-county-candidates-v1\","
+      "\"accepted\":true,\"status\":";
+  AppendJsonString(result, status);
+  result += ",\"query_sequence\":";
+  result += Number(query_sequence);
+  result += ",\"snapshot_revision\":";
+  result += Number(candidates.snapshot_revision);
+  result += ",\"steward_develop_county_candidates\":";
+  result += payload;
+  result += ",\"backend_id\":\"native-headless\"}}";
+  return result;
+}
+
 std::string ZhongguoCaseSnapshotResultFrame(
     std::string_view request_id, std::uint64_t query_sequence,
     const xar::game::ZhongguoCaseSnapshotV1 &snapshot) {
@@ -5310,6 +5343,7 @@ struct WorkerState {
   std::uint64_t battle_reinforcement_assignment_query_sequence = 0;
   std::uint64_t battle_terminal_transition_query_sequence = 0;
   std::uint64_t campaign_root_context_query_sequence = 0;
+  std::uint64_t steward_develop_county_candidates_query_sequence = 0;
   std::uint64_t zhongguo_case_snapshot_query_sequence = 0;
   std::uint64_t zhongguo_b1_cycle_snapshot_query_sequence = 0;
   std::uint64_t zhongguo_result_case_snapshot_query_sequence = 0;
@@ -5411,6 +5445,8 @@ void RunConnectedSession(
       state.battle_terminal_transition_query_sequence;
   auto &campaign_root_context_query_sequence =
       state.campaign_root_context_query_sequence;
+  auto &steward_develop_county_candidates_query_sequence =
+      state.steward_develop_county_candidates_query_sequence;
   auto &zhongguo_case_snapshot_query_sequence =
       state.zhongguo_case_snapshot_query_sequence;
   auto &zhongguo_b1_cycle_snapshot_query_sequence =
@@ -6505,6 +6541,129 @@ void RunConnectedSession(
                       request_id, step, false,
                       "application-main campaign-root result was not "
                       "reclaimable");
+                }
+                connected = xar::bridge::WriteFrame(pipe, response);
+              }
+            }
+          }
+        } else if (
+            step == xar::ck3_11906::kStewardDevelopCountyCandidatesV1Step) {
+          std::uint64_t expected_revision = 0;
+          if (!xar::ck3_11906::
+                   ParseStewardDevelopCountyCandidatesExpectedRevisionV1(
+                       incoming.payload, expected_revision)) {
+            connected = xar::bridge::WriteFrame(
+                pipe, CommandResultFrame(
+                          request_id, step, false,
+                          "steward develop-county expected revision is "
+                          "malformed"));
+          } else if (expected_revision != state_revision) {
+            connected = xar::bridge::WriteFrame(
+                pipe, CommandResultFrame(
+                          request_id, step, false,
+                          "steward develop-county snapshot revision is stale"));
+          } else {
+            xar::game::Snapshot current_snapshot{};
+            if (!previous_snapshot.has_value() || state_revision == 0 ||
+                !xar::game::ReadSnapshot(game, current_snapshot) ||
+                current_snapshot != previous_snapshot.value() ||
+                !current_snapshot.paused || !current_snapshot.map_ready ||
+                !current_snapshot.has_played_character) {
+              connected = xar::bridge::WriteFrame(
+                  pipe, CommandResultFrame(
+                            request_id, step, false,
+                            "steward develop-county snapshot changed or is "
+                            "not ready"));
+            } else {
+              xar::ck3_11906::
+                  StewardDevelopCountyCandidatesMailboxContextV1 query{};
+              query.mailbox = &g_main_thread_query_mailbox_v1;
+              query.bindings = xar::ck3_11906::BindCurrentProcess(true);
+              query.environment = xar::ck3_11906::
+                  BindStewardDevelopCountyCandidatesNativeEnvironmentV1(
+                      reinterpret_cast<std::uintptr_t>(
+                          GetModuleHandleW(nullptr)),
+                      true);
+              query.request.expected_snapshot_revision = expected_revision;
+              query.expected_snapshot = current_snapshot;
+
+              const auto submit =
+                  xar::ck3_11906::TrySubmitMainThreadQueryV1(
+                      g_main_thread_query_mailbox_v1,
+                      &xar::ck3_11906::
+                          ExecuteStewardDevelopCountyCandidatesMailboxQueryV1,
+                      &query, query.ticket);
+              if (submit != xar::ck3_11906::
+                                MainThreadQuerySubmitResultV1::submitted) {
+                std::string_view error =
+                    "application-main steward develop-county executor is "
+                    "unavailable";
+                if (submit == xar::ck3_11906::
+                                  MainThreadQuerySubmitResultV1::
+                                      paused_main_thread_not_observed) {
+                  error = "paused application-main boundary is not ready";
+                } else if (submit == xar::ck3_11906::
+                                         MainThreadQuerySubmitResultV1::
+                                             mailbox_busy) {
+                  error =
+                      "application-main steward develop-county executor is "
+                      "busy";
+                }
+                connected = xar::bridge::WriteFrame(
+                    pipe, CommandResultFrame(request_id, step, false, error));
+              } else {
+                auto wait = xar::ck3_11906::WaitForMainThreadQueryV1(
+                    g_main_thread_query_mailbox_v1, query.ticket,
+                    xar::ck3_11906::
+                        kStewardDevelopCountyCandidatesV1QueuedWaitBudgetMilliseconds);
+                while (wait == xar::ck3_11906::
+                                   MainThreadQueryWaitResultV1::
+                                       timeout_executor_already_running) {
+                  wait = xar::ck3_11906::WaitForMainThreadQueryV1(
+                      g_main_thread_query_mailbox_v1, query.ticket,
+                      xar::ck3_11906::
+                          kStewardDevelopCountyCandidatesV1ExecutingWaitSliceMilliseconds);
+                }
+
+                xar::game::Snapshot completion_snapshot{};
+                const bool completion_snapshot_stable =
+                    wait == xar::ck3_11906::
+                                MainThreadQueryWaitResultV1::completed &&
+                    xar::game::ReadSnapshot(game, completion_snapshot) &&
+                    completion_snapshot == current_snapshot;
+                std::string response;
+                if (wait == xar::ck3_11906::
+                                MainThreadQueryWaitResultV1::completed &&
+                    query.completion == xar::ck3_11906::
+                                            StewardDevelopCountyCandidatesMailboxCompletionV1::
+                                                completed &&
+                    completion_snapshot_stable) {
+                  response = StewardDevelopCountyCandidatesResultFrame(
+                      request_id,
+                      steward_develop_county_candidates_query_sequence + 1,
+                      query.result);
+                  if (!response.empty()) {
+                    ++steward_develop_county_candidates_query_sequence;
+                  }
+                }
+                if (response.empty()) {
+                  const auto error = xar::ck3_11906::
+                      StewardDevelopCountyCandidatesFailureMessageV1(
+                          wait, query.completion,
+                          completion_snapshot_stable);
+                  response = CommandResultFrame(request_id, step, false,
+                                                error);
+                }
+                const auto reclaimed =
+                    xar::ck3_11906::ReclaimMainThreadQueryV1(
+                        g_main_thread_query_mailbox_v1, query.ticket);
+                if (reclaimed != xar::ck3_11906::
+                                     MainThreadQueryReclaimResultV1::
+                                         reclaimed) {
+                  response = CommandResultFrame(
+                      request_id, step, false,
+                      "application-main steward develop-county result was "
+                      "not reclaimable");
                 }
                 connected = xar::bridge::WriteFrame(pipe, response);
               }

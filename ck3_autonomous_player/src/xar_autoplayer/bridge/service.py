@@ -82,6 +82,11 @@ from .campaign_root_context_contract import (
     QUERY_CAMPAIGN_ROOT_CONTEXT_V1_STEP,
     normalize_campaign_root_context_v1,
 )
+from .steward_develop_county_contract import (
+    QUERY_STEWARD_DEVELOP_COUNTY_CANDIDATES_V1_CAPABILITY,
+    QUERY_STEWARD_DEVELOP_COUNTY_CANDIDATES_V1_STEP,
+    normalize_steward_develop_county_candidates_v1,
+)
 from .entity_directory_contract import build_entity_directory_v1
 from .turn_bundle_contract import build_turn_bundle_v1
 from .zhongguo_case_snapshot_contract import (
@@ -1951,6 +1956,170 @@ class GameplayBridgeService:
                 "ready"
             ],
             "campaign_root_context": normalized,
+        }
+
+    def query_steward_develop_county_candidates_v1(
+        self,
+        *,
+        expected_revision: int,
+    ) -> dict[str, object]:
+        """Read native Develop County legality and candidate observations."""
+        snapshot = self.snapshot()
+        if snapshot.get("paused") is not True:
+            raise BridgeUnavailableError(
+                "steward development queries require a paused CK3 snapshot"
+            )
+        revision = snapshot.get("revision")
+        if (
+            isinstance(revision, bool)
+            or not isinstance(revision, int)
+            or revision < 0
+        ):
+            raise BridgeUnavailableError(
+                "steward development query lacks a valid snapshot revision"
+            )
+        if (
+            isinstance(expected_revision, bool)
+            or not isinstance(expected_revision, int)
+            or expected_revision < 0
+        ):
+            raise ValueError("expected_revision must be a non-negative integer")
+        if expected_revision != revision:
+            raise BridgeUnavailableError(
+                "steward development revision mismatch: expected "
+                f"{expected_revision}, current {revision}"
+            )
+        native_revision = snapshot.get("native_revision")
+        if (
+            isinstance(native_revision, bool)
+            or not isinstance(native_revision, int)
+            or not 1 <= native_revision <= 2**64 - 1
+        ):
+            raise BridgeUnavailableError(
+                "steward development query lacks a positive native revision"
+            )
+        date_raw = snapshot.get("date_raw")
+        if (
+            isinstance(date_raw, bool)
+            or not isinstance(date_raw, int)
+            or not -(2**31) <= date_raw <= 2**31 - 1
+        ):
+            raise BridgeUnavailableError(
+                "steward development query lacks a signed int32 date"
+            )
+        snapshot_id = snapshot.get("snapshot_id")
+        if not isinstance(snapshot_id, str) or not snapshot_id:
+            raise BridgeUnavailableError(
+                "steward development query lacks a snapshot identity"
+            )
+        capabilities = self.capabilities()
+        bridge_capabilities = capabilities.get("bridge_capabilities")
+        if not (
+            isinstance(bridge_capabilities, list)
+            and QUERY_STEWARD_DEVELOP_COUNTY_CANDIDATES_V1_CAPABILITY
+            in bridge_capabilities
+            and QUERY_STEWARD_DEVELOP_COUNTY_CANDIDATES_V1_STEP
+            in action_step_set(capabilities)
+        ):
+            raise UnsupportedStepError(
+                "selected backend cannot query steward development candidates"
+            )
+        result = self.execute_step(
+            QUERY_STEWARD_DEVELOP_COUNTY_CANDIDATES_V1_STEP,
+            expected_revision=expected_revision,
+        )
+        required_keys = {
+            "step",
+            "accepted",
+            "status",
+            "query_sequence",
+            "snapshot_revision",
+            "steward_develop_county_candidates",
+            "backend_id",
+            "steward_develop_county_candidates_ready",
+            "queried_snapshot_id",
+            "queried_revision",
+            "queried_native_revision",
+        }
+        if (
+            not isinstance(result, dict)
+            or set(result) != required_keys
+            or result.get("step")
+            != QUERY_STEWARD_DEVELOP_COUNTY_CANDIDATES_V1_STEP
+            or result.get("accepted") is not True
+            or result.get("snapshot_revision") != native_revision
+        ):
+            raise BridgeUnavailableError(
+                "steward development backend returned a malformed result"
+            )
+        sequence = result.get("query_sequence")
+        if (
+            isinstance(sequence, bool)
+            or not isinstance(sequence, int)
+            or not 1 <= sequence <= 2**64 - 1
+        ):
+            raise BridgeUnavailableError(
+                "steward development result lacks query_sequence"
+            )
+        try:
+            normalized = normalize_steward_develop_county_candidates_v1(
+                result.get("steward_develop_county_candidates"),
+                expected_observed_date_raw=date_raw,
+                expected_snapshot_revision=native_revision,
+            )
+        except ValueError as error:
+            raise BridgeUnavailableError(
+                f"steward development result is malformed: {error}"
+            ) from error
+        if (
+            result.get("status") != normalized["status"]
+            or not isinstance(result.get("backend_id"), str)
+            or not result.get("backend_id")
+            or result.get("steward_develop_county_candidates_ready")
+            is not normalized["readiness"]
+            or result.get("queried_snapshot_id") != snapshot_id
+            or result.get("queried_revision") != revision
+            or result.get("queried_native_revision") != native_revision
+        ):
+            raise BridgeUnavailableError(
+                "steward development result mirrors disagree with its frame"
+            )
+        current = self.snapshot()
+        if not (
+            current.get("paused") is True
+            and current.get("revision") == revision
+            and current.get("snapshot_id") == snapshot_id
+            and current.get("native_revision") == native_revision
+            and current.get("date_raw") == date_raw
+            and current.get("episode_run_id") == snapshot.get("episode_run_id")
+        ):
+            raise BridgeUnavailableError(
+                "steward development query crossed a snapshot revision"
+            )
+        return {
+            **result,
+            "schema_version": 1,
+            "scope": "exact-steward-develop-county-candidates",
+            "build": {
+                "version": normalized["provenance"]["game_version"],
+                "exe_sha256": normalized["provenance"]["executable_sha256"],
+            },
+            "source": {
+                "snapshot_id": snapshot_id,
+                "revision": revision,
+                "native_revision": native_revision,
+                "date_raw": date_raw,
+                "paused": True,
+                "backend_id": snapshot.get("backend_id"),
+            },
+            "binding": {
+                "snapshot_id": snapshot_id,
+                "revision": revision,
+                "native_revision": native_revision,
+                "date_raw": date_raw,
+                "expected_revision": expected_revision,
+            },
+            "steward_develop_county_candidates": copy.deepcopy(normalized),
         }
 
     def search_entities_v1(

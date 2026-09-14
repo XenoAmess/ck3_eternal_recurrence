@@ -38,6 +38,11 @@ from .settlement_contract import (
     parse_completed_tutorial_lessons,
     settlement_ready_for_episode,
 )
+from .steward_develop_county_contract import (
+    QUERY_STEWARD_DEVELOP_COUNTY_CANDIDATES_V1_CAPABILITY,
+    QUERY_STEWARD_DEVELOP_COUNTY_CANDIDATES_V1_STEP,
+    normalize_steward_develop_county_candidates_v1,
+)
 from .raiktor_surrender_truce_contract import (
     OPEN_KAISHEK_G2_CAPABILITY_ID,
     OPEN_KAISHEK_G2_PROFILE_COMMIT,
@@ -80,6 +85,8 @@ __all__ = [
     "NativeProtocolState",
     "QUERY_DECLARABLE_WARS_STEP",
     "QUERY_ARRANGE_MARRIAGE_CHOICES_STEP",
+    "QUERY_STEWARD_DEVELOP_COUNTY_CANDIDATES_V1_CAPABILITY",
+    "QUERY_STEWARD_DEVELOP_COUNTY_CANDIDATES_V1_STEP",
     "UnsupportedStepError",
     "choose_event_option_number",
     "arrange_marriage_step",
@@ -91,6 +98,7 @@ __all__ = [
     "normalize_one_life_settlement",
     "normalize_declarable_wars",
     "normalize_arrange_marriage_choices",
+    "normalize_steward_develop_county_candidates_v1",
     "parse_declare_war_step",
     "parse_arrange_marriage_step",
     "parse_event_option_step",

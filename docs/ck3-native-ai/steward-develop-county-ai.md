@@ -6,7 +6,7 @@
   `task_collect_taxes` 的 authored task 权重、发展目标候选过滤、任务完成后的冷却，以及发展进度的原版数据来源。
 - **[unknown]** 引擎何时重新评估 `ai_will_do`、何时在多个正权重任务间抽样、无
   `ai_target_score` 时的精确随机分布和任务切换 command ABI 尚未闭合。图中均以虚线表示。
-- **[static-confirmed; live pending]** 本专题只读取 exact-build 原版文件并复用已有只读 council ABI 结论；没有启动 CK3，没有新增 bridge、MCP、动作或实机 artifact。
+- **[static-ready; live reader pending]** `query-steward-develop-county-candidates-v1` 的严格 v1 合同、native mailbox/serializer、离线 source fixture、Python service 与 MCP 查询面已经实现；生产 reader 因候选枚举和最终 legality ABI 尚未闭合，只会明确返回 `reader_not_implemented`。本包没有启动 CK3，也没有新增动作。
 - 施工范围只覆盖和平治理中最高价值的 steward 发展分支。`task_promote_culture`、
   `task_accept_culture`、`task_convince_dejure` 仍参与完整 steward 任务池，但不在本包内假装已完成比较。
   宫廷司祭及通用 faith/doctrine 系统继续遵守 owner-deferred 边界。
@@ -163,6 +163,17 @@ flowchart TD
 
 查询只枚举当前 task 的 native legal domain candidates，并用 full-generation title/province/character identity round-trip 与双采样拒绝漂移。`faith`、doctrine、tenet 和通用 culture tree 不进入 schema；这里只读取 source 已证明直接参与该 task 过滤的文化相等/接受度最终结果。
 
+#### P0 合同实现边界（G2-M4-DEV1）
+
+公共 capability 为 `game.command.query-steward-develop-county-candidates-v1`，固定 step 为
+`query-steward-develop-county-candidates-v1`；MCP 工具
+`ck3_query_steward_develop_county_candidates_v1(expected_revision)` 只在 paused snapshot 上执行，并把 public/native revision、日期与 snapshot identity 绑定到同一查询。
+
+v1 payload 固定 `contract_stage=exact_build_contract_fixture_pending_live_reader`。离线 fixture 可以验证完整 available 形状、full-generation identity 往返、重复 ID 拒绝、native-legal-only 候选、双采样与前后 frame 稳定性；这一 fixture 不进入生产模块读取。生产 exact-build 路径在尚无 ABI 时返回 `status=unavailable`、`unavailable_reason=reader_not_implemented`、`readiness=false`、空候选和空观测值，不能把现有 active task 或 Python 重写的 trigger 当成候选结果。
+
+候选顺序原样保留 native 枚举顺序，但 v1 不把顺序解释为分数或偏好；`target_selection_mode=engine_random_unscored` 继续是唯一允许的原版目标选择语义。当前唯一后续逆向入口记录为
+`task_develop_county_native_candidate_enumerator_and_final_legality_call`。只有该 exact-build 枚举器、最终 task/county legality、rate evaluator 和 identity round-trip 在真实 paused frame 共同闭合后，才可把 `reader_mode` 从 `contract_fixture_pending_live_reader` 提升并开展有界 live 验收。
+
 ### P1：只读 task-pool comparison
 
 在 P0 使“发展哪里”可决策后，再发布同一 steward 的完整 shown/valid task rows 与 final native
@@ -185,4 +196,4 @@ flowchart TD
 - **[static-confirmed]** task 定义、script value、候选过滤、authored weight 与 authored cooldown 来自上表 exact-build 文件。
 - **[inference]** “发展一次后轮换”是 completed-task fallback、cooldown 与权重组合的策略解释；scheduler cadence 未闭合，因此不能当 exact 运行时保证。
 - **[unknown]** 完整 task pool 最终抽样、无 target score 的具体 RNG 分布、任务切换 command、取消/重派成本与同帧后置 ABI。
-- **[live pending]** 本包没有 paused snapshot，不改变 `council-and-development.md` 已有 production-live observation 状态，也不提升 M4 完成度。
+- **[live pending]** G2-M4-DEV1 没有 paused snapshot；available 只由隔离 source fixture 证明，生产 reader 明确 typed-unavailable，因此不改变 `council-and-development.md` 已有 production-live 状态，也不把 P0 或 M4 标为 complete。

@@ -92,10 +92,12 @@
   land-state 动态 active-task 向量、任职者与 owner、稳定 position/task key、general/county/court typed target、三类 progress 和 frozen
   接入 campaign-root native 双采样。全部已物化辅助席位都会发布，五个标准 landed 非 nomadic 核心席位可补出空缺；辅助席位空缺
   仍明确标记不完整。首个 live 只进入既定 M1 两场景验收，不安排专用长跑。
-- [static-confirmed; observation/action pending] [steward-develop-county-ai.md](steward-develop-county-ai.md) 闭合
+- [static-ready contract/fixture; production reader/live pending] [steward-develop-county-ai.md](steward-develop-county-ai.md) 闭合
   `task_develop_county` 对默认 `task_collect_taxes` 的 authored 储备/冷却权重、AI domain 候选过滤、无
-  `ai_target_score` 的随机目标边界，以及完成后五/十五年冷却。下一最小施工是独立的 steward 发展候选只读查询：发布原生最终
-  legality、精确储备阈值、full county identity 和 development/rate/ETA 输入；当前 active task 观测不能冒充候选或动作 readiness。
+  `ai_target_score` 的随机目标边界，以及完成后五/十五年冷却。独立 `query-steward-develop-county-candidates-v1`
+  已接入 native mailbox/serializer、Python service 与 MCP：严格发布 task legality、储备阈值、full county identity 和
+  development/rate 输入；exact-build 候选枚举/最终 legality ABI 尚未闭合，生产只返回 `reader_not_implemented`，available
+  仅有离线 fixture，当前 active task 观测仍不能冒充候选或动作 readiness。
 - [static-confirmed + production-live] [loaded-feature-manifest.md](loaded-feature-manifest.md) 区分当前进程 effective gameplay feature
   bitset、script-visible `has_dlc` runtime set 与独立 store entitlement service；冻结完整 44-entry feature vocabulary、三套
   exact-build registry/service RVA与 typed wire。bridge/MCP 已在真实 paused frame 双查询完成 44 rows/29 runtime keys，artifact

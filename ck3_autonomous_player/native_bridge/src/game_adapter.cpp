@@ -9,6 +9,7 @@
 #include "xar_bridge/battle_terminal_transition_v1_mailbox.hpp"
 #include "xar_bridge/battle_transition_v1_mailbox.hpp"
 #include "xar_bridge/campaign_root_context_v1_mailbox.hpp"
+#include "xar_bridge/steward_develop_county_candidates_v1_mailbox.hpp"
 #include "xar_bridge/coat_of_arms_designer_probe_v1.hpp"
 #include "xar_bridge/event_window_context_v1.hpp"
 #include "xar_bridge/frontend_gui_route_v1.hpp"
@@ -327,6 +328,8 @@ bool GameAdapter::supports_step(std::string_view step) const noexcept {
     capability = "game.command.query-army-strengths-v1";
   } else if (ck3_11906::ParseCampaignRootContextV1Step(step)) {
     capability = ck3_11906::kCampaignRootContextV1Capability;
+  } else if (ck3_11906::ParseStewardDevelopCountyCandidatesV1Step(step)) {
+    capability = ck3_11906::kStewardDevelopCountyCandidatesV1Capability;
   } else if (ck3_11906::ParseZhongguoCaseSnapshotV1Step(step)) {
     capability = ck3_11906::kZhongguoCaseSnapshotV1Capability;
   } else if (ck3_11906::ParseZhongguoB1CycleSnapshotV1Step(step)) {

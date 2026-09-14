@@ -134,6 +134,11 @@ from .campaign_root_context_contract import (
     QUERY_CAMPAIGN_ROOT_CONTEXT_V1_STEP,
     normalize_campaign_root_context_v1,
 )
+from .steward_develop_county_contract import (
+    QUERY_STEWARD_DEVELOP_COUNTY_CANDIDATES_V1_CAPABILITY,
+    QUERY_STEWARD_DEVELOP_COUNTY_CANDIDATES_V1_STEP,
+    normalize_steward_develop_county_candidates_v1,
+)
 from .succession_transition_contract import (
     CONTINUE_AS_RECONCILED_SUCCESSOR_STEP,
     freeze_succession_expectation_v1,
@@ -1802,6 +1807,10 @@ class NativeHeadlessGameplayDriver:
                 QUERY_CAMPAIGN_ROOT_CONTEXT_V1_CAPABILITY
                 in bridge_capabilities
             ),
+            "steward_develop_county_candidates_v1_query_supported": (
+                QUERY_STEWARD_DEVELOP_COUNTY_CANDIDATES_V1_CAPABILITY
+                in bridge_capabilities
+            ),
             "zhongguo_case_snapshot_v1_query_supported": (
                 QUERY_ZHONGGUO_CASE_SNAPSHOT_V1_CAPABILITY
                 in bridge_capabilities
@@ -2274,6 +2283,10 @@ class NativeHeadlessGameplayDriver:
             ),
             "campaign_root_context_v1_query_supported": (
                 QUERY_CAMPAIGN_ROOT_CONTEXT_V1_CAPABILITY
+                in bridge_capabilities
+            ),
+            "steward_develop_county_candidates_v1_query_supported": (
+                QUERY_STEWARD_DEVELOP_COUNTY_CANDIDATES_V1_CAPABILITY
                 in bridge_capabilities
             ),
             "zhongguo_case_snapshot_v1_query_supported": (
@@ -4986,6 +4999,20 @@ class NativeHeadlessGameplayDriver:
                     "native DLL cannot query the campaign root context"
                 )
             return self._execute_campaign_root_context_v1_query(
+                expected_revision=expected_revision,
+            )
+        if step == QUERY_STEWARD_DEVELOP_COUNTY_CANDIDATES_V1_STEP:
+            bridge_capabilities = set(
+                _string_list(capabilities.get("bridge_capabilities"))
+            )
+            if (
+                QUERY_STEWARD_DEVELOP_COUNTY_CANDIDATES_V1_CAPABILITY
+                not in bridge_capabilities
+            ):
+                raise UnsupportedStepError(
+                    "native DLL cannot query steward Develop County candidates"
+                )
+            return self._execute_steward_develop_county_candidates_v1_query(
                 expected_revision=expected_revision,
             )
         if step == QUERY_LOADED_FEATURE_MANIFEST_V1_STEP:
@@ -9547,6 +9574,110 @@ class NativeHeadlessGameplayDriver:
             },
             "campaign_root_context_ready": normalized["readiness"][
                 "ready"
+            ],
+            "queried_snapshot_id": starting.get("snapshot_id"),
+            "queried_revision": starting.get("revision"),
+            "queried_native_revision": native_revision,
+        }
+
+    def _execute_steward_develop_county_candidates_v1_query(
+        self,
+        *,
+        expected_revision: int | None,
+    ) -> dict[str, object]:
+        """Read the exact-build steward development candidate contract."""
+        step = QUERY_STEWARD_DEVELOP_COUNTY_CANDIDATES_V1_STEP
+        starting = self.take_snapshot()
+        if starting.get("paused") is not True:
+            raise BridgeUnavailableError(
+                "native steward development query requires a paused snapshot"
+            )
+        date_raw = _date_raw(starting, "steward development starting snapshot")
+        native_revision = starting.get("native_revision")
+        if (
+            isinstance(native_revision, bool)
+            or not isinstance(native_revision, int)
+            or not 1 <= native_revision <= 2**64 - 1
+        ):
+            raise BridgeUnavailableError(
+                "native steward development query lacks a native revision"
+            )
+        starting_revision = int(starting["revision"])
+        selected_revision = (
+            expected_revision
+            if expected_revision is not None
+            else starting_revision
+        )
+        result = self._execute_primitive_step(
+            step,
+            expected_revision=selected_revision,
+            required_capability=(
+                QUERY_STEWARD_DEVELOP_COUNTY_CANDIDATES_V1_CAPABILITY
+            ),
+        )
+        expected_keys = {
+            "step",
+            "accepted",
+            "status",
+            "query_sequence",
+            "snapshot_revision",
+            "steward_develop_county_candidates",
+            "backend_id",
+        }
+        if (
+            not isinstance(result, dict)
+            or set(result) != expected_keys
+            or result.get("step") != step
+            or result.get("accepted") is not True
+            or result.get("snapshot_revision") != native_revision
+        ):
+            raise BridgeUnavailableError(
+                "native steward development query returned a malformed envelope"
+            )
+        query_sequence = result.get("query_sequence")
+        if (
+            isinstance(query_sequence, bool)
+            or not isinstance(query_sequence, int)
+            or not 1 <= query_sequence <= 2**64 - 1
+        ):
+            raise BridgeUnavailableError(
+                "native steward development query lacks query_sequence"
+            )
+        try:
+            normalized = normalize_steward_develop_county_candidates_v1(
+                result.get("steward_develop_county_candidates"),
+                expected_observed_date_raw=date_raw,
+                expected_snapshot_revision=native_revision,
+            )
+        except ValueError as error:
+            raise BridgeUnavailableError(
+                "native steward development query returned a malformed frame: "
+                f"{error}"
+            ) from error
+        if (
+            result.get("status") != normalized["status"]
+            or not isinstance(result.get("backend_id"), str)
+            or not result.get("backend_id")
+        ):
+            raise BridgeUnavailableError(
+                "native steward development envelope disagrees with its frame"
+            )
+        current = self.take_snapshot()
+        if not (
+            _same_paused_native_frame(starting, current)
+            and starting.get("revision") == current.get("revision")
+            and starting.get("date_raw") == current.get("date_raw")
+        ):
+            raise BridgeUnavailableError(
+                "native steward development query crossed a snapshot revision"
+            )
+        return {
+            **result,
+            "status": normalized["status"],
+            "steward_develop_county_candidates": normalized,
+            "query_sequence": query_sequence,
+            "steward_develop_county_candidates_ready": normalized[
+                "readiness"
             ],
             "queried_snapshot_id": starting.get("snapshot_id"),
             "queried_revision": starting.get("revision"),
@@ -17187,6 +17318,55 @@ class ConfiguredHybridFallbackDriver:
                 "queried_revision": starting.get("revision"),
                 "queried_native_revision": starting.get("native_revision"),
             }
+        if step == QUERY_STEWARD_DEVELOP_COUNTY_CANDIDATES_V1_STEP:
+            native_bridge_capabilities = set(
+                _string_list(
+                    self.native.capabilities().get("bridge_capabilities")
+                )
+            )
+            if (
+                QUERY_STEWARD_DEVELOP_COUNTY_CANDIDATES_V1_CAPABILITY
+                not in native_bridge_capabilities
+            ):
+                raise UnsupportedStepError(
+                    "steward development queries are pure native and will not "
+                    "use fallback"
+                )
+            starting = self.take_snapshot()
+            native_revision = None
+            if expected_revision is not None:
+                _validate_revision(expected_revision, "expected_revision")
+                if expected_revision != starting.get("revision"):
+                    raise BridgeUnavailableError(
+                        "hybrid gameplay revision mismatch: expected "
+                        f"{expected_revision}, current "
+                        f"{starting.get('revision')}"
+                    )
+            backend_revisions = starting.get("backend_revisions")
+            if isinstance(backend_revisions, dict) and isinstance(
+                backend_revisions.get("fast"), int
+            ):
+                native_revision = int(backend_revisions["fast"])
+            result = self.native.execute_step(
+                step, expected_revision=native_revision
+            )
+            ending = self.take_snapshot()
+            if (
+                ending.get("snapshot_id") != starting.get("snapshot_id")
+                or ending.get("revision") != starting.get("revision")
+                or ending.get("native_revision")
+                != starting.get("native_revision")
+                or ending.get("date_raw") != starting.get("date_raw")
+            ):
+                raise BridgeUnavailableError(
+                    "hybrid steward development query crossed a snapshot revision"
+                )
+            return {
+                **result,
+                "queried_snapshot_id": starting.get("snapshot_id"),
+                "queried_revision": starting.get("revision"),
+                "queried_native_revision": starting.get("native_revision"),
+            }
         if step == QUERY_CAMPAIGN_ROOT_CONTEXT_V1_STEP:
             native_bridge_capabilities = set(
                 _string_list(
@@ -20987,6 +21167,7 @@ def _action_steps(
     expand_battle_control_snapshots = False
     expand_battle_reinforcement_assignments = False
     advertise_campaign_root_context = False
+    advertise_steward_develop_county_candidates = False
     advertise_loaded_feature_manifest = False
     advertise_pending_interaction_context = False
     advertise_current_event_window_context = False
@@ -21052,6 +21233,11 @@ def _action_steps(
             expand_battle_reinforcement_assignments = True
         elif capability == QUERY_CAMPAIGN_ROOT_CONTEXT_V1_CAPABILITY:
             advertise_campaign_root_context = True
+        elif (
+            capability
+            == QUERY_STEWARD_DEVELOP_COUNTY_CANDIDATES_V1_CAPABILITY
+        ):
+            advertise_steward_develop_county_candidates = True
         elif capability == QUERY_ZHONGGUO_CASE_SNAPSHOT_V1_CAPABILITY:
             # The case selector and request nonce are explicit MCP inputs.
             # Never expose the fixed native command as a planner action.
@@ -21207,6 +21393,7 @@ def _action_steps(
                 QUERY_BATTLE_TERMINAL_TRANSITION_V1_STEP_PREFIX,
                 QUERY_BATTLE_REINFORCEMENT_ASSIGNMENT_V1_STEP_PREFIX,
                 QUERY_CAMPAIGN_ROOT_CONTEXT_V1_STEP,
+                QUERY_STEWARD_DEVELOP_COUNTY_CANDIDATES_V1_STEP,
                 QUERY_ZHONGGUO_CASE_SNAPSHOT_V1_STEP,
                 QUERY_LOADED_FEATURE_MANIFEST_V1_STEP,
                 QUERY_PENDING_CHARACTER_INTERACTION_CONTEXT_V1_STEP,
@@ -21312,6 +21499,8 @@ def _action_steps(
         steps.add(QUERY_ARMY_STRENGTHS_STEP)
     if advertise_campaign_root_context and paused is True:
         steps.add(QUERY_CAMPAIGN_ROOT_CONTEXT_V1_STEP)
+    if advertise_steward_develop_county_candidates and paused is True:
+        steps.add(QUERY_STEWARD_DEVELOP_COUNTY_CANDIDATES_V1_STEP)
     if advertise_loaded_feature_manifest and paused is True:
         steps.add(QUERY_LOADED_FEATURE_MANIFEST_V1_STEP)
     if (

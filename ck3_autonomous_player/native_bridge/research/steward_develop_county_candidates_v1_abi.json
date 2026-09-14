@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "capability": "game.command.query-steward-develop-county-candidates-v1",
+  "game_version": "1.19.0.6",
+  "exe_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+  "contract_stage": "exact_build_contract_fixture_pending_live_reader",
+  "production_reader_enabled": false,
+  "known_reusable_context": {
+    "campaign_root_query": "query-campaign-root-context-v1",
+    "council_position_key": "councillor_steward",
+    "stable_task_key": "task_develop_county"
+  },
+  "unproven_native_dependencies": [
+    "final task shown evaluator",
+    "final task valid evaluator and typed failure mapping",
+    "native legal county-domain enumerator",
+    "full-generation county-title to capital-province identity path",
+    "steward_increase_development_value evaluator",
+    "current gold evaluator for the same frame",
+    "no_ai_increase_development final boolean",
+    "active improve-development directive final boolean",
+    "county final legality evaluator and typed failure mapping",
+    "development level, progress, full monthly rate and maximum readers",
+    "terrain stable-key reader",
+    "same-culture and cultural-acceptance threshold final booleans"
+  ],
+  "admitted_rvas": [],
+  "reader_mode": "contract_fixture_pending_live_reader",
+  "next_reverse_engineering_entry": "task_develop_county_native_candidate_enumerator_and_final_legality_call",
+  "failure_policy": "reader_not_implemented",
+  "fixture_policy": "available payloads require an explicit offline fixture source and complete two-sample equality",
+  "write_surface": false
+}

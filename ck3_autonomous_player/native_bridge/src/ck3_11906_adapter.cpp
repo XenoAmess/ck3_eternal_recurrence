@@ -4,6 +4,7 @@
 #include "xar_bridge/coat_of_arms_designer_probe_v1.hpp"
 #include "xar_bridge/frontend_gui_route_v1.hpp"
 #include "xar_bridge/set_played_character_v1_mailbox.hpp"
+#include "xar_bridge/steward_develop_county_candidates_v1.hpp"
 #if defined(XAR_CK3_ENABLE_G2_WAR_BOUND_LOSS_CANDIDATE_V1)
 #include "xar_bridge/raiktor_war_bound_loss_candidate_v1.hpp"
 #endif
@@ -33,7 +34,7 @@
 namespace xar::game {
 namespace {
 
-constexpr std::size_t kBaseCapabilityCount = 89;
+constexpr std::size_t kBaseCapabilityCount = 90;
 constexpr std::size_t kCapabilityCount =
     kBaseCapabilityCount
 #if defined(XAR_CK3_ENABLE_G2_ACTUAL_TRUCE_EXPIRY_CANDIDATE_V1)
@@ -105,6 +106,7 @@ constexpr std::array<std::string_view, kCapabilityCount> kCapabilities{
     "game.command.enforce-demands-N",
     "game.command.query-army-strengths-v1",
     "game.command.query-campaign-root-context-v1",
+    ck3_11906::kStewardDevelopCountyCandidatesV1Capability,
     ck3_11906::kZhongguoCaseSnapshotV1Capability,
     ck3_11906::kZhongguoB1CycleSnapshotV1Capability,
     ck3_11906::kZhongguoResultCaseSnapshotV1Capability,

@@ -386,6 +386,15 @@ def _ck3_query_campaign_root_context_v1(
     )
 
 
+def _ck3_query_steward_develop_county_candidates_v1(
+    service: GameplayBridgeService,
+    expected_revision: int,
+) -> dict[str, object]:
+    return service.query_steward_develop_county_candidates_v1(
+        expected_revision=expected_revision,
+    )
+
+
 def _ck3_search_entities_v1(
     service: GameplayBridgeService,
     expected_revision: int,
@@ -1175,6 +1184,16 @@ def create_server(driver: GameplayBridgeDriver):
         )
 
     @server.tool()
+    def ck3_query_steward_develop_county_candidates_v1(
+        expected_revision: int,
+    ) -> dict[str, object]:
+        """Read exact native Develop County legality and candidate inputs."""
+        return _ck3_query_steward_develop_county_candidates_v1(
+            service,
+            expected_revision,
+        )
+
+    @server.tool()
     def ck3_search_entities_v1(
         expected_revision: int,
         relation_filter: str = "any",
@@ -1904,6 +1923,9 @@ def create_server(driver: GameplayBridgeDriver):
 
     _forbid_unknown_tool_arguments_v1(
         server, "ck3_query_zhongguo_ai_owned_case_snapshot_v1"
+    )
+    _forbid_unknown_tool_arguments_v1(
+        server, "ck3_query_steward_develop_county_candidates_v1"
     )
     _forbid_unknown_tool_arguments_v1(
         server, "ck3_query_zhongguo_b1_cycle_snapshot_v1"
