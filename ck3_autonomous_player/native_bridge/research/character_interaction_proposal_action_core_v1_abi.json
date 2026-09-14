@@ -1,0 +1,124 @@
+{
+  "schema_version": 1,
+  "private_key": "character_interaction_proposal_action_core_v1",
+  "status": "static-ready-private-semantic-action-core",
+  "visibility": "private-not-registered",
+  "upstream": {
+    "source_adapter_commit": "9de83033e8fd17767413ccb3beb8740e37a9bbae",
+    "preview_private_key": "character_interaction_preview_v1",
+    "currently_source_reachable_keys": [
+      "gift_interaction",
+      "recruit_guest_interaction",
+      "invite_to_court_interaction",
+      "offer_vassalization_interaction",
+      "demand_payment_interaction"
+    ],
+    "typed_payload_source_pending_keys": [
+      "educate_child_interaction",
+      "offer_ward_interaction",
+      "offer_guardianship_interaction",
+      "grant_titles_interaction",
+      "grant_vassal_interaction",
+      "ransom_interaction"
+    ]
+  },
+  "exact_build": {
+    "product_version": "1.19.0.6",
+    "executable_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86"
+  },
+  "first_allowlist": [
+    {
+      "interaction_key": "gift_interaction",
+      "postcondition": "gift_opinion_and_payment"
+    },
+    {
+      "interaction_key": "recruit_guest_interaction",
+      "postcondition": "recruit_to_court"
+    },
+    {
+      "interaction_key": "invite_to_court_interaction",
+      "postcondition": "invite_to_court_and_cooldown"
+    },
+    {
+      "interaction_key": "offer_vassalization_interaction",
+      "postcondition": "ordinary_vassalization"
+    },
+    {
+      "interaction_key": "demand_payment_interaction",
+      "postcondition": "demand_payment_and_hook"
+    },
+    {
+      "interaction_key": "educate_child_interaction",
+      "postcondition": "educate_child_relation"
+    },
+    {
+      "interaction_key": "offer_ward_interaction",
+      "postcondition": "offer_ward_relation"
+    },
+    {
+      "interaction_key": "offer_guardianship_interaction",
+      "postcondition": "offer_guardianship_relation"
+    },
+    {
+      "interaction_key": "grant_titles_interaction",
+      "postcondition": "grant_selected_titles"
+    },
+    {
+      "interaction_key": "grant_vassal_interaction",
+      "postcondition": "grant_vassal_transfer"
+    },
+    {
+      "interaction_key": "ransom_interaction",
+      "postcondition": "ransom_prisoner_release"
+    }
+  ],
+  "pre_submit_contract": {
+    "preview": "available, every readiness bit true, CanSend true, and actionable auto/final-AI acceptance",
+    "binding": "snapshot, public/native revision, proof epoch, date, canonical interaction key, full actor/recipient IDs and typed payload fingerprint match the request",
+    "stability": "two complete preview envelopes are equal before submit, including CanSend, signed ten-slot costs, acceptance and payload",
+    "budget": "every positive actor cost slot is less than or equal to its independently supplied nonnegative per-resource maximum; negative slots do not consume budget",
+    "religion": "any selected religious option is deferred and cannot submit; ordinary feudal/clan is required for the vassalization slice",
+    "submit": "the callback is invoked at most once; its true result creates only submitted_verification_pending and occupies the single in-flight state"
+  },
+  "receipt_contract": {
+    "authority": "a later newer paused observation with exact proposal binding and interaction-specific world state",
+    "pending": "a matching pending proposal keeps the action in response_pending and does not permit resubmission",
+    "applied": "only the mapped world-state postcondition clears the in-flight state as applied",
+    "ack_rule": "the submit callback ACK is never an applied receipt"
+  },
+  "scope": {
+    "shared_cmake_modified": false,
+    "bridge_registration_modified": false,
+    "public_schema_modified": false,
+    "mcp_modified": false,
+    "ck3_started": false,
+    "generic_religion_expanded": false
+  },
+  "tests": {
+    "native_cases": [
+      "all eleven allowlisted keys submit once and require their mapped receipt",
+      "unknown key, incomplete payload, religious option and non-ordinary vassalization reject",
+      "unready preview, CanSend false, AI refusal and over-budget cost reject",
+      "frame, cost or acceptance drift between captures rejects before submit",
+      "one in-flight submission blocks duplicate submit",
+      "ACK-only, response-pending, applied and failed postcondition states remain distinct"
+    ],
+    "modes": [
+      "MSVC /Od /W4 /WX",
+      "MSVC /O2 /DNDEBUG /W4 /WX",
+      "Python normal source contract",
+      "Python -O source contract"
+    ]
+  },
+  "readiness": {
+    "private_semantic_action_core_implemented": true,
+    "eleven_key_semantic_allowlist_implemented": true,
+    "budget_gate_implemented": true,
+    "single_submit_state_implemented": true,
+    "pending_ack_implemented": true,
+    "interaction_specific_receipts_implemented": true,
+    "native_submit_binding_registered": false,
+    "public_schema_registered": false,
+    "production_action_live": false
+  }
+}
