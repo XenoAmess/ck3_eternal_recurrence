@@ -22,13 +22,11 @@ rmtm_create_restoration_hegemony_effect = {
 		set_capital_county = scope:old_emperor_temp.capital_county
 		set_color_from_title = title:h_china
 		set_coa = title:h_china
-		# The Later realm is a landed ruler's empty titular office, not a de-jure
-		# territorial title. Vanilla noble-family and titular-office contracts use
-		# this three-flag combination so the exact title can follow a valid primary
-		# heir without being discarded merely for having no de-jure counties.
-		set_landless_title = yes
+		# Keep the dynamic object when CK3 temporarily destroys this empty title
+		# during death succession. The delayed recovery path re-grants this exact
+		# object; explicit Restoration turns deletion back on before final cleanup.
 		set_destroy_if_invalid_heir = yes
-		set_delete_on_destroy = yes
+		set_delete_on_destroy = no
 		set_no_automatic_claims = yes
 		set_definitive_form = yes
 		set_can_be_named_after_dynasty = no
@@ -72,6 +70,217 @@ rmtm_create_restoration_hegemony_effect = {
 	}
 	rmtm_freeze_restoration_hegemony_name_effect = yes
 
+}
+
+# Character scope: a Later-Dynasty ruler in vanilla's pre-death on_action.
+# Store only durable object references here. Any title/vassal transaction issued
+# inside on_death is nested inside the engine's succession transaction and does
+# not resolve synchronously in CK3 1.19.0.6.
+rmtm_prepare_restoration_succession_effect = {
+	primary_title = {
+		save_temporary_scope_as = rmtm_succession_title
+		current_heir = { save_temporary_scope_as = rmtm_succession_heir }
+		set_delete_on_destroy = no
+	}
+
+	if = {
+		limit = { exists = cp:councillor_chancellor }
+		cp:councillor_chancellor = { save_temporary_scope_as = rmtm_succession_chancellor }
+	}
+	if = {
+		limit = { exists = cp:councillor_spymaster }
+		cp:councillor_spymaster = { save_temporary_scope_as = rmtm_succession_censor }
+	}
+	if = {
+		limit = { exists = cp:minister_grand_marshal }
+		cp:minister_grand_marshal = { save_temporary_scope_as = rmtm_succession_grand_marshal }
+	}
+	if = {
+		limit = { exists = cp:minister_personnel }
+		cp:minister_personnel = { save_temporary_scope_as = rmtm_succession_personnel }
+	}
+	if = {
+		limit = { exists = cp:councillor_steward }
+		cp:councillor_steward = { save_temporary_scope_as = rmtm_succession_revenue }
+	}
+	if = {
+		limit = { exists = cp:councillor_court_chaplain }
+		cp:councillor_court_chaplain = { save_temporary_scope_as = rmtm_succession_rites }
+	}
+	if = {
+		limit = { exists = cp:councillor_marshal }
+		cp:councillor_marshal = { save_temporary_scope_as = rmtm_succession_war }
+	}
+	if = {
+		limit = { exists = cp:minister_justice }
+		cp:minister_justice = { save_temporary_scope_as = rmtm_succession_justice }
+	}
+	if = {
+		limit = { exists = cp:minister_works }
+		cp:minister_works = { save_temporary_scope_as = rmtm_succession_works }
+	}
+
+	scope:rmtm_succession_title = {
+		set_variable = { name = rmtm_succession_heir value = scope:rmtm_succession_heir }
+		if = {
+			limit = { exists = scope:rmtm_succession_chancellor }
+			set_variable = { name = rmtm_succession_chancellor value = scope:rmtm_succession_chancellor }
+		}
+		if = {
+			limit = { exists = scope:rmtm_succession_censor }
+			set_variable = { name = rmtm_succession_censor value = scope:rmtm_succession_censor }
+		}
+		if = {
+			limit = { exists = scope:rmtm_succession_grand_marshal }
+			set_variable = { name = rmtm_succession_grand_marshal value = scope:rmtm_succession_grand_marshal }
+		}
+		if = {
+			limit = { exists = scope:rmtm_succession_personnel }
+			set_variable = { name = rmtm_succession_personnel value = scope:rmtm_succession_personnel }
+		}
+		if = {
+			limit = { exists = scope:rmtm_succession_revenue }
+			set_variable = { name = rmtm_succession_revenue value = scope:rmtm_succession_revenue }
+		}
+		if = {
+			limit = { exists = scope:rmtm_succession_rites }
+			set_variable = { name = rmtm_succession_rites value = scope:rmtm_succession_rites }
+		}
+		if = {
+			limit = { exists = scope:rmtm_succession_war }
+			set_variable = { name = rmtm_succession_war value = scope:rmtm_succession_war }
+		}
+		if = {
+			limit = { exists = scope:rmtm_succession_justice }
+			set_variable = { name = rmtm_succession_justice value = scope:rmtm_succession_justice }
+		}
+		if = {
+			limit = { exists = scope:rmtm_succession_works }
+			set_variable = { name = rmtm_succession_works value = scope:rmtm_succession_works }
+		}
+	}
+
+	every_vassal = {
+		limit = { is_landed = yes }
+		set_variable = { name = rmtm_succession_title value = scope:rmtm_succession_title }
+		set_variable = { name = rmtm_succession_heir value = scope:rmtm_succession_heir }
+	}
+	scope:rmtm_succession_heir = {
+		set_variable = { name = rmtm_succession_title value = scope:rmtm_succession_title }
+		trigger_event = { id = rmtm.2001 days = 1 }
+	}
+}
+
+# Character scope: the calculated heir, one day after ordinary succession.
+rmtm_complete_restoration_succession_effect = {
+	if = {
+		limit = {
+			is_alive = yes
+			is_ruler = yes
+			exists = var:rmtm_succession_title
+			var:rmtm_succession_title = {
+				has_variable = rmtm_restoration_hegemony
+				var:rmtm_succession_heir = root
+			}
+		}
+		var:rmtm_succession_title = { save_temporary_scope_as = rmtm_succession_title }
+
+		# Grant and resolve the Hegemony first, so the heir has sufficient rank
+		# before the independent loyalist realms are queued beneath it.
+		if = {
+			limit = { scope:rmtm_succession_title = { NOT = { holder = root } } }
+			create_title_and_vassal_change = {
+				type = granted
+				save_scope_as = rmtm_succession_title_change
+				add_claim_on_loss = no
+			}
+			scope:rmtm_succession_title = {
+				change_title_holder = {
+					holder = root
+					change = scope:rmtm_succession_title_change
+				}
+			}
+			resolve_title_and_vassal_change = scope:rmtm_succession_title_change
+		}
+		set_primary_title_to = scope:rmtm_succession_title
+		set_global_variable = {
+			name = rmtm_ministry_entitlement_title
+			value = scope:rmtm_succession_title
+		}
+
+		create_title_and_vassal_change = {
+			type = returned
+			save_scope_as = rmtm_succession_realm_change
+			add_claim_on_loss = no
+		}
+		every_independent_ruler = {
+			limit = {
+				has_variable = rmtm_succession_title
+				var:rmtm_succession_title = scope:rmtm_succession_title
+				has_variable = rmtm_succession_heir
+				var:rmtm_succession_heir = root
+				this != root
+			}
+			change_liege = {
+				liege = root
+				change = scope:rmtm_succession_realm_change
+			}
+			remove_variable = rmtm_succession_title
+			remove_variable = rmtm_succession_heir
+		}
+		resolve_title_and_vassal_change = scope:rmtm_succession_realm_change
+
+		if = {
+			limit = { exists = scope:rmtm_succession_title.var:rmtm_succession_chancellor scope:rmtm_succession_title.var:rmtm_succession_chancellor = { is_alive = yes } }
+			assign_councillor_type = { type = councillor_chancellor target = scope:rmtm_succession_title.var:rmtm_succession_chancellor remove_existing_councillor = yes }
+		}
+		if = {
+			limit = { exists = scope:rmtm_succession_title.var:rmtm_succession_censor scope:rmtm_succession_title.var:rmtm_succession_censor = { is_alive = yes } }
+			assign_councillor_type = { type = councillor_spymaster target = scope:rmtm_succession_title.var:rmtm_succession_censor remove_existing_councillor = yes }
+		}
+		if = {
+			limit = { exists = scope:rmtm_succession_title.var:rmtm_succession_grand_marshal scope:rmtm_succession_title.var:rmtm_succession_grand_marshal = { is_alive = yes } }
+			assign_councillor_type = { type = minister_grand_marshal target = scope:rmtm_succession_title.var:rmtm_succession_grand_marshal remove_existing_councillor = yes }
+		}
+		if = {
+			limit = { exists = scope:rmtm_succession_title.var:rmtm_succession_personnel scope:rmtm_succession_title.var:rmtm_succession_personnel = { is_alive = yes } }
+			assign_councillor_type = { type = minister_personnel target = scope:rmtm_succession_title.var:rmtm_succession_personnel remove_existing_councillor = yes }
+		}
+		if = {
+			limit = { exists = scope:rmtm_succession_title.var:rmtm_succession_revenue scope:rmtm_succession_title.var:rmtm_succession_revenue = { is_alive = yes } }
+			assign_councillor_type = { type = councillor_steward target = scope:rmtm_succession_title.var:rmtm_succession_revenue remove_existing_councillor = yes }
+		}
+		if = {
+			limit = { exists = scope:rmtm_succession_title.var:rmtm_succession_rites scope:rmtm_succession_title.var:rmtm_succession_rites = { is_alive = yes } }
+			assign_councillor_type = { type = councillor_court_chaplain target = scope:rmtm_succession_title.var:rmtm_succession_rites remove_existing_councillor = yes }
+		}
+		if = {
+			limit = { exists = scope:rmtm_succession_title.var:rmtm_succession_war scope:rmtm_succession_title.var:rmtm_succession_war = { is_alive = yes } }
+			assign_councillor_type = { type = councillor_marshal target = scope:rmtm_succession_title.var:rmtm_succession_war remove_existing_councillor = yes }
+		}
+		if = {
+			limit = { exists = scope:rmtm_succession_title.var:rmtm_succession_justice scope:rmtm_succession_title.var:rmtm_succession_justice = { is_alive = yes } }
+			assign_councillor_type = { type = minister_justice target = scope:rmtm_succession_title.var:rmtm_succession_justice remove_existing_councillor = yes }
+		}
+		if = {
+			limit = { exists = scope:rmtm_succession_title.var:rmtm_succession_works scope:rmtm_succession_title.var:rmtm_succession_works = { is_alive = yes } }
+			assign_councillor_type = { type = minister_works target = scope:rmtm_succession_title.var:rmtm_succession_works remove_existing_councillor = yes }
+		}
+
+		scope:rmtm_succession_title = {
+			remove_variable = rmtm_succession_heir
+			remove_variable = rmtm_succession_chancellor
+			remove_variable = rmtm_succession_censor
+			remove_variable = rmtm_succession_grand_marshal
+			remove_variable = rmtm_succession_personnel
+			remove_variable = rmtm_succession_revenue
+			remove_variable = rmtm_succession_rites
+			remove_variable = rmtm_succession_war
+			remove_variable = rmtm_succession_justice
+			remove_variable = rmtm_succession_works
+		}
+		remove_variable = rmtm_succession_title
+	}
 }
 
 # Character scope: old emperor after retained and departing ministers have been
@@ -657,9 +866,9 @@ rmtm_migrate_restoration_hegemonies_effect = {
 					}
 					add_title_law = single_heir_succession_law
 				}
-				set_landless_title = yes
 				set_always_follows_primary_heir = yes
 				set_destroy_if_invalid_heir = yes
+				set_delete_on_destroy = no
 				if = {
 					limit = {
 						NOT = { exists = global_var:rmtm_ministry_entitlement_title }

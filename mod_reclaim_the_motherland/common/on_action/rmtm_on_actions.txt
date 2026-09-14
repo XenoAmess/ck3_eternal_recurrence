@@ -6,8 +6,32 @@ on_game_start_after_lobby = {
 	}
 }
 
+# The empty dynamic Hegemony is destroyed by CK3's title succession before an
+# ordinary current_heir handoff can complete. Persist its exact object and realm
+# contract on the calculated heir, then rebuild the holder relationship one day
+# after the engine's death transaction has closed.
+on_death = {
+	on_actions = {
+		rmtm_on_death
+	}
+}
+
 rmtm_on_game_start = {
 	effect = {
 		rmtm_migrate_restoration_hegemonies_effect = yes
+	}
+}
+
+rmtm_on_death = {
+	trigger = {
+		has_game_rule = rmtm_reclaim_the_motherland
+		primary_title ?= {
+			has_variable = rmtm_restoration_hegemony
+			exists = current_heir
+			current_heir = { is_alive = yes }
+		}
+	}
+	effect = {
+		rmtm_prepare_restoration_succession_effect = yes
 	}
 }

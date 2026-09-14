@@ -680,10 +680,9 @@ rqa_execute_succession_effect = {
 			}
 			set_player_character = scope:rqa_later_heir
 			scope:rqa_predecessor = { death = { death_reason = death_natural_causes } }
-			# The HUD state machine can retain its pre-switch GetPlayer scope for one
-			# frame. Verify from the exact saved heir immediately after the real death
-			# instead of waiting for a second UI-scope rebind.
-			scope:rqa_later_heir = { rqa_verify_succession_effect = yes }
+			# Product recovery runs one day after the engine closes its death/title
+			# transaction. Verify on day two so this remains a real delayed path.
+			scope:rqa_later_heir = { trigger_event = { id = rqa.3 days = 2 } }
 		}
 		else = { debug_log = "RQA: TEST FAIL later_dynasty_heir_missing_before_death" }
 	}

@@ -926,6 +926,58 @@ def advance_recent_independence_expiry(
     return evidence
 
 
+def advance_succession_recovery(
+    service: GameplayBridgeService,
+    stream: MarkerStream,
+    artifacts: Path,
+    timeout_s: float = 60,
+) -> dict[str, object]:
+    """Advance two fixture days through the product's one-day recovery event."""
+
+    before = service.snapshot()
+    if before.get("paused") is not True:
+        raise acceptance.RunnerError("succession recovery precondition is not paused")
+    speed_ack = service.execute_step(
+        "set-speed-1", expected_revision=int(before["revision"])
+    )
+    speed_snapshot = service.snapshot()
+    resume_ack = service.execute_step(
+        "resume-map", expected_revision=int(speed_snapshot["revision"])
+    )
+    wait_error: BaseException | None = None
+    try:
+        stream.wait("RQA: TEST PASS phase3_later_dynasty_realm_and_ministry_inherited", timeout_s)
+    except BaseException as error:
+        wait_error = error
+    running = service.snapshot()
+    pause_ack, paused, pause_revision_retries = pause_running_map(
+        service, "succession recovery"
+    )
+    evidence = {
+        "schema_version": 1,
+        "result": "GREEN" if wait_error is None else "RED",
+        "reason": (
+            "advance through the one-day post-death recovery transaction, then "
+            "run the fixture's day-two exact title/realm/ministry assertions"
+        ),
+        "product_delay_days": 1,
+        "fixture_verification_delay_days": 2,
+        "before": before,
+        "speed_ack": speed_ack,
+        "resume_ack": resume_ack,
+        "after_running": running,
+        "pause_ack": pause_ack,
+        "pause_revision_retries": pause_revision_retries,
+        "after_paused": paused,
+        "marker_observed": wait_error is None,
+        "error": None if wait_error is None else str(wait_error),
+    }
+    write_json(artifacts / "09_succession_recovery.json", evidence)
+    if wait_error is not None:
+        raise wait_error
+    return evidence
+
+
 def select_current_event_first_option(
     service: GameplayBridgeService,
     expected_event_key: str,
@@ -1118,7 +1170,7 @@ def run_scenario(
     click_decision(
         "验证后朝继承", "传位于嗣君", artifacts, "09_test_succession"
     )
-    stream.wait("RQA: TEST PASS phase3_later_dynasty_realm_and_ministry_inherited", 120)
+    succession_recovery = advance_succession_recovery(service, stream, artifacts)
     isolated.wait_for_gameplay_hud(artifacts)
     succession_snapshot = service.snapshot()
     write_json(artifacts / "09_mcp_after_succession.json", succession_snapshot)
@@ -1188,6 +1240,7 @@ def run_scenario(
         "later_dynasty_event_ocr": later_rows,
         "later_dynasty_event_close": later_event_close,
         "succession_snapshot": succession_snapshot,
+        "succession_recovery": succession_recovery,
         "recent_independence_expiry": recent_independence_expiry,
         "restoration_event_close": restoration_event_close,
         "initial_snapshot_id": before.get("snapshot_id"),

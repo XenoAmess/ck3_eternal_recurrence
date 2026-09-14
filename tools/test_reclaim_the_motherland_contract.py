@@ -486,32 +486,62 @@ class TestReclaimTheMotherlandContract(unittest.TestCase):
         )
         self.assertNotIn("trigger_event", on_action_text)
 
-    def test_phase_three_uses_vanilla_titular_heir_contract(self) -> None:
+    def test_phase_three_delays_exact_object_recovery_until_after_death(self) -> None:
         custom_text, custom_file = read_script(CUSTOM_EFFECTS)
         creator = direct_block(custom_file, "rmtm_create_restoration_hegemony_effect")
         created = descendant_blocks(creator, "scope:new_title")[0]
-        self.assertTrue(has_assignment(created, "set_landless_title", "yes"))
         self.assertTrue(
             has_assignment(created, "set_destroy_if_invalid_heir", "yes")
         )
+        self.assertTrue(has_assignment(created, "set_delete_on_destroy", "no"))
         self.assertTrue(
             has_assignment(created, "set_always_follows_primary_heir", "yes")
         )
 
         migration = direct_block(custom_file, "rmtm_migrate_restoration_hegemonies_effect")
-        self.assertTrue(has_assignment(migration, "set_landless_title", "yes"))
         self.assertTrue(
             has_assignment(migration, "set_destroy_if_invalid_heir", "yes")
         )
+        self.assertTrue(has_assignment(migration, "set_delete_on_destroy", "no"))
         self.assertEqual(custom_text.count("set_destroy_if_invalid_heir = yes"), 2)
-        self.assertEqual(custom_text.count("set_landless_title = yes"), 2)
+        self.assertEqual(custom_text.count("set_landless_title = yes"), 0)
 
-        # Handoff is delegated to the same engine contract used by vanilla empty
-        # titular offices. A nested title/vassal transaction inside on_death is
-        # not synchronous and was proven to leave the heir titleless in live CK3.
+        prepare = direct_block(custom_file, "rmtm_prepare_restoration_succession_effect")
+        complete = direct_block(custom_file, "rmtm_complete_restoration_succession_effect")
+        self.assertTrue(has_assignment(prepare, "id", "rmtm.2001"))
+        self.assertTrue(has_assignment(prepare, "days", "1"))
+        self.assertTrue(has_key(complete, "change_title_holder"))
+        self.assertTrue(has_key(complete, "change_liege"))
+        self.assertTrue(has_assignment(complete, "type", "granted"))
+        self.assertTrue(has_assignment(complete, "type", "returned"))
+        inherited_positions = {
+            value
+            for block in descendant_blocks(complete, "assign_councillor_type")
+            for value in scalar_values(block, "type", recursive=False)
+        }
+        self.assertEqual(
+            inherited_positions,
+            {
+                "councillor_chancellor",
+                "councillor_spymaster",
+                "minister_grand_marshal",
+                "minister_personnel",
+                "councillor_steward",
+                "councillor_court_chaplain",
+                "councillor_marshal",
+                "minister_justice",
+                "minister_works",
+            },
+        )
+
         on_action_text, on_actions = read_script(ON_ACTIONS)
-        self.assertFalse(has_key(on_actions, "on_death"))
-        self.assertNotIn("rmtm_on_death", on_action_text)
+        death = direct_block(on_actions, "on_death")
+        self.assertTrue(has_key(death, "on_actions"))
+        callback = direct_block(on_actions, "rmtm_on_death")
+        self.assertTrue(
+            has_assignment(callback, "rmtm_prepare_restoration_succession_effect", "yes")
+        )
+        self.assertNotIn("change_title_holder", on_action_text)
 
     def test_phase_three_ministry_is_unique_and_only_defectors_leave_office(self) -> None:
         trigger_text, trigger_file = read_script(MINISTRY_TRIGGER_OVERRIDE)
@@ -1004,7 +1034,7 @@ class TestReclaimTheMotherlandContract(unittest.TestCase):
         self.assertIn("rmtm_loyalty_summary_loyal_only", event_text)
         self.assertIn("rmtm_loyalty_summary_defector_only", event_text)
         self.assertIn("trigger_event = rmtm.1001", custom_text)
-        self.assertNotIn("days = 1", custom_text)
+        self.assertNotIn("id = rmtm.1001", custom_text)
 
     def test_loyalists_are_frozen_from_direct_vassals_historical_movement(self) -> None:
         _, custom_file = read_script(CUSTOM_EFFECTS)

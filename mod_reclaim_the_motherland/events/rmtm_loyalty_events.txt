@@ -32,3 +32,12 @@ rmtm.1001 = {
 		name = rmtm_loyalty_summary_acknowledge
 	}
 }
+
+# Hidden one-day continuation for the exact Later title and retained realm.
+rmtm.2001 = {
+	type = character_event
+	hidden = yes
+	immediate = {
+		rmtm_complete_restoration_succession_effect = yes
+	}
+}

@@ -15,3 +15,11 @@ rqa.2 = {
 	theme = realm
 	option = { name = rqa_complete_option }
 }
+
+rqa.3 = {
+	type = character_event
+	hidden = yes
+	immediate = {
+		rqa_verify_succession_effect = yes
+	}
+}

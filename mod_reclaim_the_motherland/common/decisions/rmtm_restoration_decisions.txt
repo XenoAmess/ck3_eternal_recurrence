@@ -75,6 +75,7 @@ rmtm_claim_restoration_decision = {
 				holder = scope:rmtm_restorer
 				has_variable = rmtm_restoration_hegemony
 			}
+			set_delete_on_destroy = yes
 			scope:rmtm_restorer = { destroy_title = prev }
 		}
 	}
