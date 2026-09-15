@@ -1,6 +1,6 @@
 {
   "schema": "ck3-coa-beta-progress-v1",
-  "updatedAt": "2026-09-15T22:44:00+08:00",
+  "updatedAt": "2026-09-15T23:34:00+08:00",
   "overallStatus": "in_progress",
   "workPackages": [
     {
@@ -281,9 +281,13 @@
     {
       "id": "WP6",
       "status": "in_progress",
-      "commit": "d5dce949",
+      "commit": "4703a0b0",
       "commands": [
         "pnpm exec playwright test e2e/safe-svg-input.spec.ts --reporter=line",
+        "pnpm exec playwright test e2e/textured-emblem-preview.spec.ts --reporter=line",
+        "pnpm exec playwright test e2e/i18n.spec.ts --reporter=line",
+        "pnpm exec playwright test e2e/fit-budget-stress.spec.ts --reporter=line",
+        "pnpm exec playwright test e2e/standalone-image-fit.spec.ts --reporter=line",
         "pnpm test",
         "pnpm build"
       ],
@@ -296,10 +300,15 @@
         "maximumSvgDepth": 64,
         "externalResourceRequests": 0,
         "nonGetRequests": 0,
-        "vitestFilesPassed": 15,
-        "vitestTestsPassed": 74,
+        "vitestFilesPassed": 16,
+        "vitestTestsPassed": 77,
         "parentComposition": "pending",
-        "texturedEmblemComposition": "pending",
+        "texturedEmblemComposition": "browser_shader_model_passed_native_pixel_pending",
+        "texturedEmblemExpectedCenterRgba": [32, 192, 95, 255],
+        "simplifiedChineseEnglishUi": "passed",
+        "localePersistence": "local_storage_passed",
+        "pagesMountPath": "/ck3_eternal_recurrence/coat_of_arms_editer_of_ck3/",
+        "pagesOfficialDeployment": "in_progress",
         "crossBrowserE2E": "pending",
         "assetPackImportAndVfsWinner": "pending"
       },

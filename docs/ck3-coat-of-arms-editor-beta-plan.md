@@ -62,8 +62,8 @@ Alpha 已能解析、编辑、渲染、序列化 CK3 家徽代码，并能在浏
 | P1 | 10,000 层缺少真实压力证据 | UI 接受大数字不等于搜索、序列化、编辑和取消路径能稳定处理。 |
 | P1 | 搜索仍偏贪心 | WebGL2 只交叉评分最终候选，尚未承担 atlas/reduction 批量搜索；没有稳定的多候选 Pareto 输出。 |
 | P1 | 大文档编辑体验不足 | 图层列表未虚拟化；缺少撤销/重做、项目保存、直接拖拽、暂停/恢复和候选对比。 |
-| P1 | 预览合同仍不完整 | `parent` 与 `textured_emblem` 尚未完整合成到浏览器预览。 |
-| P2 | 输入/资产/浏览器覆盖有限 | 安全 SVG 输入已通过浏览器门禁；仍只有 1.19.0.6 基础包，没有自动解析 DLC/mod VFS 胜者；Pages asset pack 较大；E2E 仅覆盖 Chromium；主 JS chunk 仍约 1 MiB。 |
+| P1 | 预览合同仍不完整 | exact 1.19.0.6 唯一注册 `_default.dds` 的 `textured_emblem` shader 模型合成已通过；`parent` 尚未展开到浏览器预览，原生 framebuffer 像素对照仍待补。 |
+| P2 | 输入/资产/浏览器覆盖有限 | 安全 SVG 与中英文正式界面已通过浏览器门禁；仍只有 1.19.0.6 基础包，没有自动解析 DLC/mod VFS 胜者；Pages asset pack 较大；E2E 仅覆盖 Chromium；主 JS chunk 仍约 1 MiB。 |
 
 ## 3. P0-1：红色分割线修复
 
@@ -182,6 +182,11 @@ pause/resume/checkpoint 仍未完成。
 ### WP6：预览、输入、资产与浏览器覆盖（P1/P2，2–4 工程日）
 
 交付：`parent`/`textured_emblem` 合成；安全 SVG 栅格化；asset-pack 版本选择/导入；DLC/mod VFS receipt；Firefox/WebKit E2E；主 bundle code splitting；移动端退化策略；Service Worker/asset shard 缓存。
+
+当前状态：`in_progress`。安全 SVG、唯一注册 `_default.dds` 的 `textured_emblem` 浏览器 shader 模型合成，以及简体中文/英文
+正式界面已经分别通过自动化门禁。Pages 已迁移到 `/ck3_eternal_recurrence/coat_of_arms_editer_of_ck3/` 子路径；官方 workflow
+终态与公开 URL 回读必须另行记录，不能用本地 production build 代替。`parent`、asset-pack 导入/VFS 胜者、Firefox/WebKit、
+code splitting、移动端退化和 Service Worker 缓存仍未完成。
 
 退出条件：能力矩阵明确每种语法/资源在 parser、preview、editor、serializer、native evidence 五列的状态；不能预览的结构不得静默消失。
 
