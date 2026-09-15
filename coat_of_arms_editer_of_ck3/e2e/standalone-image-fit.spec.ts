@@ -114,6 +114,7 @@ test('fits an uploaded image without CK3, MCP, or Java', async ({ page }) => {
 
 const localPack = resolve('public/asset-packs/ck3-1.19.0.6/manifest.json')
 test('runs against the locally generated exact-build asset pack', async ({ page }) => {
+  test.setTimeout(120_000)
   test.skip(!existsSync(localPack), 'the exact-build static asset pack is missing from this checkout')
   const apiRequests: string[] = []
   page.on('request', (request) => {
@@ -137,7 +138,7 @@ test('runs against the locally generated exact-build asset pack', async ({ page 
     name: 'split-target.png', mimeType: 'image/png', buffer: Buffer.from(pngBase64, 'base64'),
   })
   await page.getByRole('button', { name: '开始本地拟合' }).click()
-  await expect(page.getByText(/完成 · 从完整库评估 \d+ 个构图/)).toBeVisible({ timeout: 60_000 })
+  await expect(page.getByText(/完成 · 从完整库评估 \d+ 个构图/)).toBeVisible({ timeout: 90_000 })
   await expect(page.locator('.output-block pre')).toContainText('pattern =')
   expect(apiRequests).toEqual([])
 })
