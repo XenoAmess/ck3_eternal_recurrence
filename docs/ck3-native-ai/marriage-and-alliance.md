@@ -765,3 +765,9 @@ spouse/betrothed 与 alliance before/after 后置验证。任何一步 RED 都�
 内部 query 只接受已发布 paused snapshot 的 revision、date、player identity 与 candidate filter。application-main executor 会先用 MARRIAGE7 adapter 发布同一 `native:<revision>` receipt frame，然后二选一执行：候选模式调用原生 ranked source 与逐行 final legality/acceptance/outcome observer；后置模式调用 binder 的 actual bilateral relationship reader，并同时读取双向 spouse/betrothed、双向 alliance 与 proposal-resolution journal。action ACK 不属于 query input，也没有生成 receipt 的 callback，因此 command queue 接受仍只能表示 `receipt_pending`。
 
 本切片的 fixture 覆盖 available candidate、actual bilateral receipt、业务 unavailable 仍返回成功 executor，以及 mailbox identity drift 作为 infrastructure RED；Debug/Release focused test、DLL link 与 Python normal/`-O` 验证结果由对应工作包 commit 记录。它仍是 paused-live candidate：下一步必须在固定候选 DLL 上启动新 CK3 轮次，先等待稳定 paused snapshot，再提交内部 candidate query；选定候选并提交后必须等待新 revision，再执行 bilateral receipt query，只有 spouse/betrothed、alliance 与 terminal resolution 一致时才能升级为 `production-live primitive`。ACK、pending 消失或单侧关系都不能作为成功证据。
+
+#### G2-M5 联合候选入口的现行边界（2026-09-15）
+
+[static-ready / no new live evidence] Python 增加了私有 ranked observation 的同帧 typed consumer 和婚姻/宣战原生合法候选台账。它按真实候选 ID 去重，只有 `complete_can_send=true` 且 `recipient_answer_allows_send=true` 的婚姻 row 才计入合法候选；宣战 row 仍由公开 native declarable 列表的冻结 identity 合同校验。指定 candidate filter 可保留原生 rank（例如单行 rank 4），不能重排为 rank 1；五角色中的 intermediary 是原生 `uint32`，默认 sentinel 序列化可为 `4294967295`，不能按 signed CharacterID 下界误拒。
+
+这张台账只判定是否**实际观察到**至少五个不同的原生合法候选，绝不把五候选场景或静态 fixture 写成 M5 的联合评分通过。现有公开婚姻查询仍只有 ID，私有 ranked route 尚无 paused production 查询和公开 MCP；战争 power assessment 的 `eu_lower_raw` 仍为 `null`。联盟及长期承诺价值、战争参与者/补给、战役成本与结束语义、共用预算/多战争机会成本尚未进入同一可比较的 campaign utility 域，因此当前不能诚实提交跨域最优动作。下一可施工入口是先在固定 DLL 上完成 ranked/internal route 的 paused live 验收，再让公共只读 query/MCP 返回同版本 typed rows；取得独立联盟/关系后置状态和战争风险成本后，才接正式联合策略选择与一个 typed action。
