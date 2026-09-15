@@ -42,7 +42,8 @@ CK3，不依赖 MCP、Quarkus 或 Java；它只生成原版“从剪贴板粘贴
 
 ## 在线版本
 
-GitHub Pages 正式入口为 <https://xenoamess.github.io/ck3_eternal_recurrence/>。仓库中的
+GitHub Pages 正式入口为
+<https://xenoamess.github.io/ck3_eternal_recurrence/coat_of_arms_editer_of_ck3/>。仓库中的
 [`coat-of-arms-editor-pages.yml`](../.github/workflows/coat-of-arms-editor-pages.yml) 在 `master` 的本目录内容变化后自动执行
 素材包校验、Vitest、Playwright 独立浏览器验收和 production build，全部通过后才部署。线上页面包含已获项目授权的 exact
 CK3 1.19.0.6 DDS pack，但运行时仍不安装、启动或连接 CK3。

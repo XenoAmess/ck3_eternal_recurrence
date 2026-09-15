@@ -70,17 +70,22 @@ jobs:
       - name: Build Pages artifact
         run: pnpm build
         env:
-          VITE_BASE_PATH: "${{ steps.pages.outputs.base_path }}/"
+          VITE_BASE_PATH: "${{ steps.pages.outputs.base_path }}/coat_of_arms_editer_of_ck3/"
 
-      - name: Verify built artifact and copied asset pack
+      - name: Stage and verify nested Pages artifact
         run: |
           test -f dist/index.html
           python tools/verify_web_asset_pack.py dist/asset-packs/ck3-1.19.0.6
+          grep -F '${{ steps.pages.outputs.base_path }}/coat_of_arms_editer_of_ck3/' dist/index.html
+          mkdir -p pages-site/coat_of_arms_editer_of_ck3
+          cp -a dist/. pages-site/coat_of_arms_editer_of_ck3/
+          test -f pages-site/coat_of_arms_editer_of_ck3/index.html
+          python tools/verify_web_asset_pack.py pages-site/coat_of_arms_editer_of_ck3/asset-packs/ck3-1.19.0.6
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v5
         with:
-          path: coat_of_arms_editer_of_ck3/dist
+          path: coat_of_arms_editer_of_ck3/pages-site
 
   deploy:
     needs: build

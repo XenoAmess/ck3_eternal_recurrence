@@ -2,9 +2,9 @@
 
 ## 结论
 
-纯前端编辑器部署到本项目的 GitHub Pages 根入口：
+纯前端编辑器部署到本项目 GitHub Pages 的独立子路径：
 
-<https://xenoamess.github.io/ck3_eternal_recurrence/>
+<https://xenoamess.github.io/ck3_eternal_recurrence/coat_of_arms_editer_of_ck3/>
 
 正式发布只由 [`.github/workflows/coat-of-arms-editor-pages.yml`](../.github/workflows/coat-of-arms-editor-pages.yml)
 生成。它不会部署 `backend/`、启动 CK3、调用 MCP、访问玩家游戏目录或要求 Java/Quarkus。浏览器只下载静态 HTML、JS、CSS
@@ -24,8 +24,8 @@
 2. `pnpm install --frozen-lockfile`，禁止 CI 静默改 lockfile；
 3. 运行全部 Vitest；
 4. 安装 Actions runner 的 Playwright Chromium，运行合成 pack 与 exact-build pack 两条无 CK3 浏览器 E2E；
-5. 使用 GitHub Pages 返回的真实 `base_path` 执行 Vite production build；
-6. 对 `dist` 中复制后的 pack 再校验一次并上传单一 Pages artifact；
+5. 在 GitHub Pages 返回的真实仓库 `base_path` 后追加固定的 `/coat_of_arms_editer_of_ck3/`，以该嵌套路径执行 Vite production build；
+6. 对 `dist` 中复制后的 pack 再校验一次，将完整产物装入 Pages artifact 的 `coat_of_arms_editer_of_ck3/` 子目录并复核；
 7. 仅在上述步骤全部 GREEN 后，由 `github-pages` environment 发布。
 
 工作流权限限定为 `contents: read`、`pages: write`、`id-token: write`。并发组为 `pages`，在途正式部署不会被新的 push 强制取消。
@@ -51,8 +51,10 @@ mod 提取的资源。其他 `ck3-*` 生成目录继续由 `.gitignore` 排除�
 
 ## 子路径与运行边界
 
-Vite 本地开发默认 `base=/`。Actions 从 `actions/configure-pages` 取得实际 Pages `base_path` 并注入 `VITE_BASE_PATH`，所以脚本、
-Worker 和默认素材 manifest 都能在项目站点 `/ck3_eternal_recurrence/` 下解析，不会错误请求域名根目录。
+Vite 本地开发默认 `base=/`。Actions 从 `actions/configure-pages` 取得实际 Pages `base_path`，追加固定页面段
+`/coat_of_arms_editer_of_ck3/` 后注入 `VITE_BASE_PATH`。因此脚本、Worker 和默认素材 manifest 都从
+`/ck3_eternal_recurrence/coat_of_arms_editer_of_ck3/` 解析，不会错误请求域名根目录或仓库 Pages 根目录。Pages artifact
+本身也保持同样的子目录层级；该工作流不在 `/ck3_eternal_recurrence/` 根入口生成编辑器副本或自动跳转。
 
 Pages 是静态托管，不能也不应直接“执行 CK3”：
 
