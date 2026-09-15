@@ -6183,6 +6183,64 @@ std::string ArrangeMarriageChoicesResultFrame(
   return result;
 }
 
+#if defined(XAR_CK3_ENABLE_G2_M5_RANKED_MARRIAGE_PRIVATE_QUERY_V1)
+std::string RankedMarriagePrivateResultFrame(
+    std::string_view request_id, std::uint64_t query_sequence,
+    const xar::bridge::MarriageMatchmakingObservationV1 &observation) {
+  std::string result =
+      "{\"type\":\"command_result\",\"protocol_version\":1,"
+      "\"request_id\":\"";
+  result += request_id;
+  result += "\",\"ok\":true,\"result\":{\"step\":\"";
+  result += xar::bridge::kMarriageRankedPrivateQueryStepV1;
+  result += "\",\"accepted\":true,\"status\":\"available\","
+            "\"query_sequence\":";
+  result += Number(query_sequence);
+  result += ",\"ranked_marriage_observation\":";
+  result += xar::bridge::SerializeMarriageMatchmakingObservationV1(
+      observation);
+  result += "}}";
+  return result;
+}
+
+std::string RankedMarriagePrivateFailureMessage(
+    const xar::bridge::MarriageCandidateWorkerReadResultV1 &read,
+    bool same_frame_after) {
+  std::string result = "ranked marriage paused query did not complete; "
+                       "submit=";
+  result += Number(static_cast<std::uint32_t>(read.submit));
+  result += " wait=";
+  result += Number(static_cast<std::uint32_t>(read.wait));
+  result += " reclaim=";
+  result += Number(static_cast<std::uint32_t>(read.reclaim));
+  result += " completion=";
+  result += Number(static_cast<std::uint32_t>(read.completion));
+  result += " route_failure=";
+  result += Number(static_cast<std::uint32_t>(read.route_failure));
+  result += " executor_invocations=";
+  result += Number(read.executor_invocations);
+  result += " same_frame_after=";
+  result += same_frame_after ? "true" : "false";
+  return result;
+}
+
+std::string RankedMarriagePrivateUnavailableFrame(
+    std::string_view request_id,
+    const xar::bridge::MarriageCandidateWorkerReadResultV1 &read) {
+  std::string result =
+      "{\"type\":\"command_result\",\"protocol_version\":1,"
+      "\"request_id\":\"";
+  result += request_id;
+  result += "\",\"ok\":true,\"result\":{\"step\":\"";
+  result += xar::bridge::kMarriageRankedPrivateQueryStepV1;
+  result += "\",\"accepted\":true,\"status\":\"unavailable\","
+            "\"unavailable_reason\":\"";
+  result += RankedMarriagePrivateFailureMessage(read, true);
+  result += "\"}}";
+  return result;
+}
+#endif
+
 std::int32_t FixedSpeedStep(std::string_view step) noexcept {
   constexpr std::string_view prefix = "set-speed-";
   if (!step.starts_with(prefix) || step.size() != prefix.size() + 1U) {
@@ -6866,6 +6924,9 @@ struct WorkerState {
   bool raiktor_war_bound_loss_termination_submitted = false;
 #endif
   std::uint64_t marriage_query_sequence = 0;
+#if defined(XAR_CK3_ENABLE_G2_M5_RANKED_MARRIAGE_PRIVATE_QUERY_V1)
+  std::uint64_t ranked_marriage_private_query_sequence = 0;
+#endif
   std::vector<xar::game::ArrangeMarriageChoice> marriage_choices;
 };
 
@@ -7004,6 +7065,10 @@ void RunConnectedSession(
       state.raiktor_war_bound_loss_termination_submitted;
 #endif
   auto &marriage_query_sequence = state.marriage_query_sequence;
+#if defined(XAR_CK3_ENABLE_G2_M5_RANKED_MARRIAGE_PRIVATE_QUERY_V1)
+  auto &ranked_marriage_private_query_sequence =
+      state.ranked_marriage_private_query_sequence;
+#endif
   auto &marriage_choices = state.marriage_choices;
 
   // A new MCP server has no copy of the previous semantic snapshot.  Force
@@ -7111,6 +7176,10 @@ void RunConnectedSession(
 #endif
 #if defined(XAR_CK3_ENABLE_G2_COUNCIL_APPLICATION_MAIN_PRIVATE_ROUTE_V1)
                    && !xar::bridge::IsCouncilApplicationMainPrivateStepV1(step)
+#endif
+#if defined(XAR_CK3_ENABLE_G2_M5_RANKED_MARRIAGE_PRIVATE_QUERY_V1)
+                   && step !=
+                          xar::bridge::kMarriageRankedPrivateQueryStepV1
 #endif
         ) {
           connected = xar::bridge::WriteFrame(
@@ -7930,6 +7999,68 @@ void RunConnectedSession(
                                         state_revision, checkpoint_submission,
                                         published_checkpoint_sequence);
           }
+#if defined(XAR_CK3_ENABLE_G2_M5_RANKED_MARRIAGE_PRIVATE_QUERY_V1)
+        } else if (step == xar::bridge::kMarriageRankedPrivateQueryStepV1) {
+          std::uint64_t expected_revision = 0;
+          if (!xar::bridge::JsonUnsignedField(
+                  incoming.payload, "expected_revision", expected_revision) ||
+              expected_revision != state_revision) {
+            connected = xar::bridge::WriteFrame(
+                pipe, CommandResultFrame(
+                          request_id, step, false,
+                          "ranked marriage query requires the current native "
+                          "snapshot revision"));
+          } else {
+            xar::game::Snapshot admission_snapshot{};
+            const bool same_published_frame_before =
+                previous_snapshot.has_value() &&
+                xar::game::ReadSnapshot(game, admission_snapshot) &&
+                admission_snapshot == *previous_snapshot;
+            if (!same_published_frame_before) {
+              connected = xar::bridge::WriteFrame(
+                  pipe, CommandResultFrame(
+                            request_id, step, false,
+                            "ranked marriage admission frame changed before "
+                            "the application-main query"));
+            } else {
+              xar::bridge::MarriageCandidateInternalQueryV1 query{};
+              const auto read =
+                  xar::bridge::ReadMarriageCandidatesOnApplicationMainV1(
+                      g_marriage_candidate_internal_route_v1,
+                      admission_snapshot, state_revision,
+                      xar::bridge::kMarriageMatchmakingMaximumCandidatesV1,
+                      0, query);
+              xar::game::Snapshot completion_snapshot{};
+              const bool same_frame_after =
+                  xar::game::ReadSnapshot(game, completion_snapshot) &&
+                  completion_snapshot == admission_snapshot;
+              if (read.status == xar::bridge::
+                                   MarriageCandidateWorkerReadStatusV1::
+                                       available &&
+                  same_frame_after) {
+                ++ranked_marriage_private_query_sequence;
+                connected = xar::bridge::WriteFrame(
+                    pipe, RankedMarriagePrivateResultFrame(
+                              request_id,
+                              ranked_marriage_private_query_sequence,
+                              query.candidates));
+              } else if (read.status == xar::bridge::
+                                          MarriageCandidateWorkerReadStatusV1::
+                                              unavailable &&
+                       same_frame_after) {
+                connected = xar::bridge::WriteFrame(
+                    pipe, RankedMarriagePrivateUnavailableFrame(request_id,
+                                                                 read));
+              } else {
+                connected = xar::bridge::WriteFrame(
+                    pipe, CommandResultFrame(
+                              request_id, step, false,
+                              RankedMarriagePrivateFailureMessage(
+                                  read, same_frame_after)));
+              }
+            }
+          }
+#endif
         } else if (step == "query-arrange-marriage-choices") {
           marriage_choices.clear();
           xar::game::ArrangeMarriageQueryDiagnostics diagnostics{};

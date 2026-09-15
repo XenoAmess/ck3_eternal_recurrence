@@ -112,6 +112,8 @@ bool ExecuteMarriageCandidateInternalRouteV1(
 // gate; the protocol cannot supply or override this input.
 inline constexpr std::uint32_t kMarriageCandidateQueuedWaitBudgetMsV1 = 5000;
 inline constexpr std::uint32_t kMarriageCandidateExecutingWaitSliceMsV1 = 1000;
+inline constexpr std::string_view kMarriageRankedPrivateQueryStepV1 =
+    "query-ranked-marriage-candidates-v1-private";
 
 enum class MarriageCandidateWorkerReadStatusV1 : std::uint32_t {
   available = 0,
