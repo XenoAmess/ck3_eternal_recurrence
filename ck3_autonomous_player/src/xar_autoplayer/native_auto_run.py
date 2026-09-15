@@ -23,6 +23,9 @@ from .bridge.driver import (
     UnsupportedStepError,
 )
 from .bridge.event_contract import parse_event_option_step
+from .bridge.campaign_root_context_contract import (
+    QUERY_CAMPAIGN_ROOT_CONTEXT_V1_STEP,
+)
 from .bridge.native_driver import (
     DEFAULT_ROUTE_CONTACT_TIMELINE_SPEED,
     NativeHeadlessGameplayDriver,
@@ -372,6 +375,15 @@ def native_auto_run(
             ),
             "cleanup": None,
         }
+        retry_diagnostics = (
+            getattr(error, "read_only_query_retry", None)
+            if error is not None
+            else attempt.get("read_only_query_retry")
+        )
+        if isinstance(retry_diagnostics, dict):
+            first_failure["read_only_query_retry"] = copy.deepcopy(
+                retry_diagnostics
+            )
         failure_readiness_diagnostics = getattr(
             error, "readiness_diagnostics", None
         )
@@ -491,6 +503,7 @@ def native_auto_run(
                 "selected_step": None,
                 "result": None,
                 "after": None,
+                "read_only_query_retry": None,
             }
             if session_done.is_set():
                 raise AgentError(_premature_session_exit(session_state))
@@ -608,6 +621,29 @@ def native_auto_run(
             current_attempt["selected_step"] = step
             current_attempt["result"] = copy.deepcopy(outcome.get("result"))
             turn_class = _turn_class(step, outcome_status, plan)
+            retry = outcome.get("read_only_query_retry")
+            if retry is not None:
+                current_attempt["read_only_query_retry"] = (
+                    _compact_root_query_retry(retry)
+                )
+                retried_before = _retried_root_query_binding(
+                    driver, before=before, retry=retry,
+                    selected_step=step, status=outcome_status,
+                )
+                if retried_before is None:
+                    capture_first_failure(
+                        stage="postcondition",
+                        kind="read_only_query_retry_anchor_invalid",
+                        message=(
+                            "rejected campaign-root read did not retain a "
+                            "same-campaign paused retry anchor"
+                        ),
+                    )
+                    raise AgentError(
+                        "rejected campaign-root read lacks a valid paused retry anchor"
+                    )
+                before = retried_before
+                current_attempt["before"] = _public_binding(before)
 
             if outcome_status == "blocked":
                 current_attempt["stage"] = "planning"
@@ -3011,6 +3047,71 @@ def _same_native_frame(
     )
 
 
+def _compact_root_query_retry(retry: object) -> dict[str, object] | None:
+    if not isinstance(retry, dict):
+        return None
+    return {
+        key: copy.deepcopy(value)
+        for key, value in retry.items()
+        if key not in ("starting_snapshot", "fresh_snapshot")
+    }
+
+
+def _retried_root_query_binding(
+    driver: NativeHeadlessGameplayDriver,
+    *,
+    before: dict[str, object],
+    retry: object,
+    selected_step: str | None,
+    status: object,
+) -> dict[str, object] | None:
+    """Anchor a successful read to its second paused frame, never skip the guard."""
+    if not (
+        selected_step == QUERY_CAMPAIGN_ROOT_CONTEXT_V1_STEP
+        and status == "executed"
+        and isinstance(retry, dict)
+    ):
+        return None
+    starting = retry.get("starting_snapshot")
+    fresh = retry.get("fresh_snapshot")
+    if not isinstance(starting, dict) or not isinstance(fresh, dict):
+        return None
+    capabilities = driver.capabilities()
+    starting_binding = _compact_binding(capabilities, starting)
+    fresh_binding = _compact_binding(capabilities, fresh)
+    if not (
+        retry.get("old_snapshot_id") == starting_binding.get("snapshot_id")
+        and retry.get("old_revision") == starting_binding.get("revision")
+        and retry.get("old_native_revision") == starting_binding.get("native_revision")
+        and retry.get("fresh_snapshot_id") == fresh_binding.get("snapshot_id")
+        and retry.get("fresh_revision") == fresh_binding.get("revision")
+        and retry.get("fresh_native_revision") == fresh_binding.get("native_revision")
+        and isinstance(retry.get("rejection"), str)
+        and "campaign-root snapshot changed or is not ready" in retry["rejection"]
+        and all(
+            before.get(key) == starting_binding.get(key)
+            == fresh_binding.get(key)
+            for key in (
+                "bridge_pid", "connection_generation", "date_raw",
+                "episode_run_id", "episode_character_id",
+                "played_character_id",
+            )
+        )
+        and isinstance(before.get("revision"), int)
+        and before["revision"] <= starting_binding.get("revision", -1)
+        and isinstance(fresh_binding.get("revision"), int)
+        and fresh_binding["revision"] > starting_binding.get("revision", -1)
+        and starting_binding.get("paused") is True
+        and fresh_binding.get("paused") is True
+        and starting_binding.get("map_ready") is True
+        and fresh_binding.get("map_ready") is True
+        and _semantic_delta(before, starting, starting_binding) == []
+        and _semantic_delta(starting_binding, fresh, fresh_binding) == []
+    ):
+        return None
+    return fresh_binding
+
+
 def _turn_record(
     index: int,
     started_at: str,
@@ -3032,6 +3133,9 @@ def _turn_record(
         "status": outcome.get("status"),
         "pre_submission_revision_replans": outcome.get(
             "pre_submission_revision_replans", 0
+        ),
+        "read_only_query_retry": _compact_root_query_retry(
+            outcome.get("read_only_query_retry")
         ),
         "selected_step": outcome.get("selected_step") or (
             plan.get("selected_step") if isinstance(plan, dict) else None

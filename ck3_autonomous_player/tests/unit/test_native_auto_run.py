@@ -365,6 +365,50 @@ class _NativeAutoRunHarness:
                 "query-war-entry-assessments-v1-1-29097"
             )
             raise failure
+        if action == "root_read_retry":
+            step = "query-campaign-root-context-v1"
+            starting = self.snapshot()
+            rejection = (
+                "_NativeCommandRejectedError: native gameplay step failed: "
+                "campaign-root snapshot changed or is not ready"
+            )
+            self.history.append({
+                "index": len(self.history) + 1,
+                "command": step,
+                "ok": False,
+                "error": rejection,
+            })
+            self.native_revision += 1
+            self.public_revision += 1
+            fresh = self.snapshot()
+            result = {
+                "step": step,
+                "accepted": True,
+                "status": "available",
+                "queried_revision": self.public_revision,
+            }
+            self._append_history(step, result)
+            return {
+                "status": "executed",
+                "selected_step": step,
+                "plan": {
+                    "phase": "native_campaign_root_context",
+                    "selected_step": step,
+                },
+                "result": result,
+                "read_only_query_retry": {
+                    "rejection": rejection,
+                    "old_snapshot_id": starting["snapshot_id"],
+                    "old_revision": starting["revision"],
+                    "old_native_revision": starting["native_revision"],
+                    "fresh_snapshot_id": fresh["snapshot_id"],
+                    "fresh_revision": fresh["revision"],
+                    "fresh_native_revision": fresh["native_revision"],
+                    "failed_history_index": len(starting["native_command_history"]) + 1,
+                    "starting_snapshot": starting,
+                    "fresh_snapshot": fresh,
+                },
+            }
         if action == "opaque_postcondition_failure":
             step = "advance-route-contact-horizon-v1-101-to-3610-h-1-31"
             starting_date_raw = self.date_raw
@@ -2620,6 +2664,27 @@ class NativeAutoRunTests(unittest.TestCase):
         self.assertIn(
             "date_advanced", report["auto_run"]["turns"][0]["evidence"]
         )
+
+    def test_rejected_root_read_anchors_to_fresh_frame_and_keeps_rejection(
+        self,
+    ) -> None:
+        report, harness = self._run(
+            ["root_read_retry", "advance", "advance", "advance"]
+        )
+
+        self.assertTrue(report["ok"], report.get("error"))
+        self.assertEqual(report["auto_run"]["counts"]["query"], 1)
+        turn = report["auto_run"]["turns"][0]
+        self.assertEqual(turn["evidence"], ["same_frame_query"])
+        self.assertEqual(turn["before"]["revision"], 102)
+        self.assertEqual(turn["after"]["revision"], 102)
+        self.assertEqual(turn["read_only_query_retry"]["old_revision"], 101)
+        self.assertIn(
+            "campaign-root snapshot changed or is not ready",
+            turn["read_only_query_retry"]["rejection"],
+        )
+        self.assertEqual(harness.history[0]["ok"], False)
+        self.assertEqual(harness.history[1]["command"], "query-campaign-root-context-v1")
 
     def test_checkpoint_must_bind_current_date_and_latest_history_row(self) -> None:
         for stale_kind in ("date", "history"):

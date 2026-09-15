@@ -702,6 +702,12 @@ class GameplayBridgeService:
             else None
         )
         event_option_number = parse_event_option_step(selected_step)
+        root_query_start = (
+            self.snapshot()
+            if selected_step == QUERY_CAMPAIGN_ROOT_CONTEXT_V1_STEP
+            else None
+        )
+        root_query_retry = None
         try:
             if (
                 event_option_number is not None
@@ -753,7 +759,33 @@ class GameplayBridgeService:
             # previous durable checkpoint.
             error.selected_step = selected_step
             error.plan = copy.deepcopy(plan)
-            raise
+            if (
+                selected_step != QUERY_CAMPAIGN_ROOT_CONTEXT_V1_STEP
+                or getattr(error, "native_error", None)
+                != "campaign-root snapshot changed or is not ready"
+                or not isinstance(root_query_start, dict)
+            ):
+                raise
+            root_query_retry = self._retry_rejected_campaign_root_read(
+                root_query_start, planned, error
+            )
+            if root_query_retry is None:
+                raise
+            try:
+                result = self.execute_step(
+                    selected_step,
+                    expected_revision=root_query_retry["fresh_snapshot"]["revision"],
+                )
+            except BridgeUnavailableError as retry_error:
+                error.read_only_query_retry = {
+                    key: value
+                    for key, value in root_query_retry.items()
+                    if key not in ("fresh_snapshot", "starting_snapshot")
+                }
+                error.read_only_query_retry["second_error"] = (
+                    f"{type(retry_error).__name__}: {retry_error}"
+                )
+                raise error from retry_error
         material_expectation = (
             plan.get("event_material_postcondition")
             if isinstance(plan, dict)
@@ -769,11 +801,107 @@ class GameplayBridgeService:
                     )
                 ),
             }
-        return {
+        outcome = {
             "status": "executed",
             "selected_step": selected_step,
             "plan": plan,
             "result": result,
+        }
+        if root_query_retry is not None:
+            outcome["read_only_query_retry"] = root_query_retry
+        return outcome
+
+    def _retry_rejected_campaign_root_read(
+        self,
+        starting: dict[str, object],
+        planned: dict[str, object],
+        rejection: BridgeUnavailableError,
+    ) -> dict[str, object] | None:
+        """Retry one rejected *read* only on a new, unchanged paused root."""
+        revision = starting.get("revision")
+        native_revision = starting.get("native_revision")
+        old_history = starting.get("native_command_history")
+        old_diagnostics = starting.get("diagnostics")
+        if not (
+            isinstance(revision, int)
+            and not isinstance(revision, bool)
+            and isinstance(native_revision, int)
+            and not isinstance(native_revision, bool)
+            and planned.get("revision") == revision
+            and isinstance(old_history, list)
+            and isinstance(old_diagnostics, dict)
+            and starting.get("paused") is True
+            and starting.get("map_ready") is True
+        ):
+            return None
+        try:
+            fresh = self.driver.wait_for_change(
+                revision, timeout_seconds=1.5
+            )
+        except BridgeUnavailableError:
+            return None
+        if not isinstance(fresh, dict):
+            return None
+        played = starting.get("played_character")
+        fresh_played = fresh.get("played_character")
+        fresh_history = fresh.get("native_command_history")
+        fresh_diagnostics = fresh.get("diagnostics")
+        tail = (
+            fresh_history[len(old_history):]
+            if isinstance(fresh_history, list)
+            and fresh_history[:len(old_history)] == old_history
+            else None
+        )
+        if not (
+            isinstance(fresh.get("revision"), int)
+            and not isinstance(fresh.get("revision"), bool)
+            and fresh["revision"] > revision
+            and isinstance(fresh.get("native_revision"), int)
+            and not isinstance(fresh.get("native_revision"), bool)
+            and fresh["native_revision"] > native_revision
+            and fresh.get("paused") is True
+            and fresh.get("map_ready") is True
+            and fresh.get("date_raw") == starting.get("date_raw")
+            and fresh.get("episode_run_id") == starting.get("episode_run_id")
+            and fresh.get("episode_character_id") == starting.get("episode_character_id")
+            and isinstance(played, dict)
+            and played.get("alive") is True
+            and isinstance(fresh_played, dict)
+            and fresh_played == played
+            and fresh.get("one_life_terminal") is False
+            and fresh.get("one_life_terminal_reason") is None
+            and starting.get("active_event") is None
+            and fresh.get("active_event") is None
+            and starting.get("pending_character_interaction") is None
+            and fresh.get("pending_character_interaction") is None
+            and fresh.get("active_wars") == starting.get("active_wars")
+            and fresh.get("player_armies") == starting.get("player_armies")
+            and isinstance(fresh_diagnostics, dict)
+            and all(
+                isinstance(old_diagnostics.get(key), int)
+                and old_diagnostics.get(key) == fresh_diagnostics.get(key)
+                for key in ("bridge_pid", "connection_generation")
+            )
+            and isinstance(tail, list)
+            and len(tail) == 1
+            and isinstance(tail[0], dict)
+            and tail[0].get("command") == QUERY_CAMPAIGN_ROOT_CONTEXT_V1_STEP
+            and tail[0].get("ok") is False
+            and isinstance(tail[0].get("error"), str)
+            and str(rejection) in tail[0]["error"]
+        ):
+            return None
+        return {
+            "rejection": f"{type(rejection).__name__}: {rejection}",
+            "old_snapshot_id": starting.get("snapshot_id"),
+            "old_revision": revision,
+            "old_native_revision": native_revision,
+            "fresh_snapshot_id": fresh.get("snapshot_id"),
+            "fresh_revision": fresh["revision"],
+            "fresh_native_revision": fresh["native_revision"],
+            "failed_history_index": tail[0].get("index"),
+            "starting_snapshot": starting,
+            "fresh_snapshot": fresh,
         }
 
     def one_life_settlement(self) -> dict[str, object]:
