@@ -162,7 +162,7 @@ bridge::MarriageNativeEvaluationResultV1 Evaluate(
   output.recipient_ai_accept_raw =
       candidate_character_id == 41002 ? 350'000 : -125'000;
   output.recipient_answer_status_raw =
-      candidate_character_id == 41002 ? 2 : 1;
+      candidate_character_id == 41002 ? 0 : 2;
   output.recipient_answer_allows_send = candidate_character_id == 41002;
   output.predicted_outcome =
       candidate_character_id == 41002

@@ -64,6 +64,7 @@ struct Fixture {
   bool can_send = true;
   bool acceptance_overflow = false;
   bool outcome_available = true;
+  std::uint8_t answer_status_raw = 0;
 };
 
 struct Harness {
@@ -195,7 +196,7 @@ std::uint8_t OuterAnswer(void *context, std::uint8_t answer_mode,
     Put(g_fixture->candidate_a, bridge::kMarriageCharacterIdOffsetV1,
         static_cast<std::int32_t>(0x02000003));
   }
-  return 2;
+  return g_fixture->answer_status_raw;
 }
 
 void DestroyContext(void *) {
@@ -454,7 +455,7 @@ void TestPairEvaluationAdapter() {
   assert(output.complete_can_send &&
          output.complete_can_send_status_raw == 1 &&
          output.recipient_ai_accept_raw == 350'000 &&
-         output.recipient_answer_status_raw == 2 &&
+         output.recipient_answer_status_raw == 0 &&
          output.recipient_answer_allows_send &&
          output.predicted_outcome ==
              bridge::MarriagePredictedOutcomeV1::marriage);
@@ -467,6 +468,24 @@ void TestPairEvaluationAdapter() {
          harness.fixture.outer_answer_calls == 1 &&
          harness.fixture.outcome_calls == 1 &&
          harness.fixture.destroy_calls == 1);
+  harness.fixture.answer_status_raw = 2;
+  assert(bridge::EvaluateMarriageCandidateFromSourceAdapterV1(
+             &harness.state,
+             bridge::BindMarriageMatchmakingNativeEntryPointsV1(kModuleBase),
+             kSubjectId, kSubjectId, kCandidateAId, output) ==
+         bridge::MarriageNativeEvaluationResultV1::available);
+  assert(output.recipient_answer_status_raw == 2 &&
+         !output.recipient_answer_allows_send);
+  harness.fixture.answer_status_raw = 3;
+  assert(bridge::EvaluateMarriageCandidateFromSourceAdapterV1(
+             &harness.state,
+             bridge::BindMarriageMatchmakingNativeEntryPointsV1(kModuleBase),
+             kSubjectId, kSubjectId, kCandidateAId, output) ==
+         bridge::MarriageNativeEvaluationResultV1::failed);
+  assert(bridge::ReadMarriageMatchmakingSourceAdapterFailureV1(
+             harness.state) ==
+         bridge::MarriageMatchmakingSourceAdapterFailureV1::
+             outer_answer_unavailable);
 }
 
 void TestFeedsMarriage2SemanticObserver() {

@@ -78,6 +78,7 @@ enum class MarriageMatchmakingSourceAdapterFailureV1 : std::uint32_t {
   acceptance_score_overflow,
   outcome_classification_failed,
   post_evaluation_identity_drift,
+  outer_answer_unavailable,
 };
 
 struct MarriageNativeRankedContainerViewV1 {

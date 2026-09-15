@@ -152,6 +152,15 @@ def query_observed_heir_marriage_private_v1(
             raise BridgeUnavailableError(
                 "observed-heir marriage row lost native identity or legality"
             )
+        answer_status = row["recipient_answer_status_raw"]
+        if (
+            answer_status not in {0, 1, 2}
+            or row["recipient_answer_allows_send"] is not
+               (answer_status != 2)
+        ):
+            raise BridgeUnavailableError(
+                "observed-heir marriage native final answer mapping disagrees"
+            )
         seen.add(candidate_id)
         if row["recipient_answer_allows_send"]:
             legal_rows.append(row)

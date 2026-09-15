@@ -709,6 +709,11 @@ EvaluateMarriageCandidateFromSourceAdapterV1(
   }
   const auto answer_raw = environment.outer_answer(
       native_context, 1, 1, nullptr, nullptr);
+  if (answer_raw >= 3) {
+    SetFailure(state, MarriageMatchmakingSourceAdapterFailureV1::
+                          outer_answer_unavailable);
+    return MarriageNativeEvaluationResultV1::failed;
+  }
   MarriagePredictedOutcomeV1 outcome =
       MarriagePredictedOutcomeV1::unavailable;
   if (!environment.classify_outcome(
@@ -781,7 +786,7 @@ EvaluateMarriageCandidateFromSourceAdapterV1(
   output.recipient_ai_accept_raw = static_cast<std::int32_t>(ai_accept_raw);
   output.recipient_answer_status_raw =
       static_cast<std::int32_t>(answer_raw);
-  output.recipient_answer_allows_send = answer_raw != 0;
+  output.recipient_answer_allows_send = answer_raw != 2;
   output.predicted_outcome = outcome;
   SetFailure(state, MarriageMatchmakingSourceAdapterFailureV1::none);
   return MarriageNativeEvaluationResultV1::available;
@@ -856,6 +861,9 @@ std::string_view MarriageMatchmakingSourceAdapterFailureKeyV1(
   case MarriageMatchmakingSourceAdapterFailureV1::
       post_evaluation_identity_drift:
     return "post_evaluation_identity_drift";
+  case MarriageMatchmakingSourceAdapterFailureV1::
+      outer_answer_unavailable:
+    return "outer_answer_unavailable";
   }
   return "unknown";
 }

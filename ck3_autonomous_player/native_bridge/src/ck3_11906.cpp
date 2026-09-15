@@ -16390,6 +16390,11 @@ ReadArrangeMarriageFamilyCandidatesV1(
     const auto answer = bindings.evaluate_character_interaction_answer(
         context, 1, 1, nullptr, nullptr);
     bindings.destroy_character_interaction_context(context);
+    // 1.19.0.6 final answer status 0/1 accepts, 2 refuses and 3 is
+    // unavailable. R725 observed status 0 on every Can Send family row.
+    if (answer >= 3) {
+      return ReadArrangeMarriageFamilyCandidatesResultV1::unavailable;
+    }
     candidates.push_back({current.played_character_id,
                           subject_character_id,
                           candidate_id,
@@ -16398,7 +16403,7 @@ ReadArrangeMarriageFamilyCandidatesV1(
                           accept_raw,
                           answer,
                           true,
-                          answer != 0});
+                          answer != 2});
   }
   output = std::move(candidates);
   return ReadArrangeMarriageFamilyCandidatesResultV1::available;

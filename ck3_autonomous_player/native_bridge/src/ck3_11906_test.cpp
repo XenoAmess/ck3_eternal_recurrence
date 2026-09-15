@@ -8747,7 +8747,7 @@ int main() {
   // gates, and no action/command is submitted by the private read.
   Store(g_character_storage, 0x2C, std::int32_t{8});
   g_family_marriage_fixture_active = true;
-  g_family_marriage_answer = 1;
+  g_family_marriage_answer = 0;
   g_family_marriage_accept_raw = 1'250'000;
   std::vector<xar::ck3_11906::ArrangeMarriageFamilyCandidateV1>
       family_candidates;
@@ -8771,7 +8771,7 @@ int main() {
       family_diagnostics.native_validate_true != 1 || g_submit_called) {
     return Fail("observed-heir private query lost native family legality");
   }
-  g_family_marriage_answer = 0;
+  g_family_marriage_answer = 2;
   if (xar::ck3_11906::ReadArrangeMarriageFamilyCandidatesV1(
           bindings, kFixtureAllyCharacterId, family_candidates,
           family_diagnostics) !=
@@ -8780,7 +8780,16 @@ int main() {
       family_candidates.size() != 1 ||
       !family_candidates[0].complete_can_send ||
       family_candidates[0].recipient_answer_allows_send) {
-    return Fail("native final responder denial was counted as legal marriage");
+    return Fail("native status 2 responder denial was counted as legal marriage");
+  }
+  g_family_marriage_answer = 3;
+  if (xar::ck3_11906::ReadArrangeMarriageFamilyCandidatesV1(
+          bindings, kFixtureAllyCharacterId, family_candidates,
+          family_diagnostics) !=
+          xar::ck3_11906::
+              ReadArrangeMarriageFamilyCandidatesResultV1::unavailable ||
+      !family_candidates.empty()) {
+    return Fail("native status 3 was converted to a family rejection");
   }
   g_marriage_validate_result = false;
   if (xar::ck3_11906::ReadArrangeMarriageFamilyCandidatesV1(

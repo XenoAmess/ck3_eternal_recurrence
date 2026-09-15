@@ -186,7 +186,7 @@ class PrivateObservedHeirMarriageTransportTests(unittest.TestCase):
                 "native_rank": None,
                 "complete_can_send": True,
                 "recipient_ai_accept_raw": 250000,
-                "recipient_answer_status_raw": int(answer),
+                "recipient_answer_status_raw": 0 if answer else 2,
                 "recipient_answer_allows_send": answer,
             }],
             "arrange_marriage_diagnostics": {
@@ -218,6 +218,16 @@ class PrivateObservedHeirMarriageTransportTests(unittest.TestCase):
                          [_paused_frame(), _paused_frame(), _paused_frame()])
         with self.assertRaisesRegex(BridgeUnavailableError,
                                    "disagrees with public heir"):
+            query_observed_heir_marriage_private_v1(
+                driver, expected_native_revision=693)
+
+    def test_native_status_zero_cannot_be_silently_counted_as_denial(self) -> None:
+        reply = self._family_reply(answer=False)
+        reply["result"]["family_candidates"][0]["recipient_answer_status_raw"] = 0
+        driver = _Driver(reply,
+                         [_paused_frame(), _paused_frame(), _paused_frame()])
+        with self.assertRaisesRegex(BridgeUnavailableError,
+                                   "final answer mapping disagrees"):
             query_observed_heir_marriage_private_v1(
                 driver, expected_native_revision=693)
 
