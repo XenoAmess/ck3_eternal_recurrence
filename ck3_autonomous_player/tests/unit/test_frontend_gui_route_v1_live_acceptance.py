@@ -101,6 +101,9 @@ class FrontendGuiRouteLiveAcceptanceContractTests(unittest.TestCase):
         self.assertIn(
             '"ck3_compare_frontend_coat_of_arms_framebuffer_v1"', source
         )
+        self.assertIn(
+            '"ck3_prepare_frontend_coat_of_arms_framebuffer_v1"', source
+        )
         self.assertIn('"--native-crop-output"', source)
         self.assertIn('"--picture-corpus"', source)
         self.assertIn('"--picture-crop-dir"', source)
@@ -203,11 +206,12 @@ class FrontendGuiRouteLiveAcceptanceContractTests(unittest.TestCase):
         module = _load_runner_module()
         expected = module._semantic_projection(
             'coa={ color1=rgb { 1 0 0 } colored_emblem={ color1=rgb { 253 0 0 } '
-            'instance={ rotation=0 depth=1 } } }'
+            'instance={ rotation=0 depth=1 } instance={ rotation=17 depth=2 } } }'
         )
         native_copy = module._semantic_projection(
             'coa_rd_dynasty_1={ color1=rgb { 255 0 0 } '
-            'colored_emblem={ color1=rgb { 253 0 0 } instance={ depth=1.000000 } } }'
+            'colored_emblem={ color1=rgb { 253 0 0 } instance={ depth=1.000000 } '
+            'instance={ rotation=17.000000 depth=2.000000 } } }'
         )
 
         checks = module._semantic_projection_checks(expected, native_copy)

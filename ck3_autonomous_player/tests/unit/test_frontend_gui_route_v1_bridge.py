@@ -979,6 +979,7 @@ class FrontendGuiRouteV1McpTests(unittest.IsolatedAsyncioTestCase):
                 "ck3_activate_frontend_coat_of_arms_designer_v1",
                 "ck3_commit_frontend_dynasty_coat_of_arms_v1",
                 "ck3_activate_frontend_coat_of_arms_custom_mode_v1",
+                "ck3_prepare_frontend_coat_of_arms_framebuffer_v1",
             ):
                 self.assertEqual(tools[name].input_schema.get("required", []), [])
                 self.assertFalse(tools[name].input_schema["additionalProperties"])

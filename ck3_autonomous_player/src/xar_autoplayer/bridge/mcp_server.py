@@ -923,6 +923,13 @@ def _ck3_compare_frontend_coat_of_arms_framebuffer_v1(
     )
 
 
+def _ck3_prepare_frontend_coat_of_arms_framebuffer_v1(
+    service: GameplayBridgeService,
+) -> dict[str, object]:
+    """Bring the exact route-bound CK3 window forward without input."""
+    return service.prepare_frontend_coat_of_arms_framebuffer_v1()
+
+
 def _ck3_activate_frontend_new_game_v1(
     service: GameplayBridgeService,
 ) -> dict[str, object]:
@@ -1888,6 +1895,11 @@ def create_server(driver: GameplayBridgeDriver):
         )
 
     @server.tool()
+    def ck3_prepare_frontend_coat_of_arms_framebuffer_v1() -> dict[str, object]:
+        """Prepare the route-bound CK3 framebuffer without key or mouse input."""
+        return _ck3_prepare_frontend_coat_of_arms_framebuffer_v1(service)
+
+    @server.tool()
     def ck3_activate_frontend_new_game_v1() -> dict[str, object]:
         """Semantically open New Game and independently verify Bookmarks."""
         return _ck3_activate_frontend_new_game_v1(service)
@@ -2393,6 +2405,9 @@ def create_server(driver: GameplayBridgeDriver):
     )
     _forbid_unknown_tool_arguments_v1(
         server, "ck3_compare_frontend_coat_of_arms_framebuffer_v1"
+    )
+    _forbid_unknown_tool_arguments_v1(
+        server, "ck3_prepare_frontend_coat_of_arms_framebuffer_v1"
     )
     _forbid_unknown_tool_arguments_v1(
         server, "ck3_activate_frontend_new_game_v1"

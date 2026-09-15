@@ -133,6 +133,9 @@ ABORT_COAT_OF_ARMS_UPLOAD_TOOL = "ck3_abort_coat_of_arms_source_upload_v2"
 COMPARE_COAT_OF_ARMS_FRAMEBUFFER_TOOL = (
     "ck3_compare_frontend_coat_of_arms_framebuffer_v1"
 )
+PREPARE_COAT_OF_ARMS_FRAMEBUFFER_TOOL = (
+    "ck3_prepare_frontend_coat_of_arms_framebuffer_v1"
+)
 FRAMEBUFFER_GATE_THRESHOLDS = {
     "maximum_locator_loss": 0.45,
     "minimum_distinct_margin": 0.005,
@@ -542,13 +545,17 @@ def _semantic_projection_checks(
                 )
             )
             continue
-        if key == "rotations" and actual_value == []:
-            checks[key] = bool(
-                isinstance(expected_value, list)
-                and expected_value
-                and all(row == [0.0] for row in expected_value)
+        if key == "rotations":
+            expected_value = (
+                [row for row in expected_value if row != [0.0]]
+                if isinstance(expected_value, list)
+                else expected_value
             )
-            continue
+            actual_value = (
+                [row for row in actual_value if row != [0.0]]
+                if isinstance(actual_value, list)
+                else actual_value
+            )
         if key not in numeric_keys:
             checks[key] = actual_value == expected_value
             continue
@@ -1357,6 +1364,10 @@ async def _collect_picture_corpus(
         )
         if roundtrip.get("ok") is True:
             await asyncio.sleep(0.75)
+            preparation_call = await _call(
+                client, PREPARE_COAT_OF_ARMS_FRAMEBUFFER_TOOL
+            )
+            record(preparation_call)
             framebuffer_call = await _call(
                 client,
                 COMPARE_COAT_OF_ARMS_FRAMEBUFFER_TOOL,
@@ -1367,6 +1378,12 @@ async def _collect_picture_corpus(
             )
             record(framebuffer_call)
             framebuffer = _framebuffer_gate(framebuffer_call)
+            framebuffer["preparation"] = preparation_call
+            framebuffer["ok"] = bool(
+                framebuffer["ok"]
+                and preparation_call.get("is_error") is False
+                and _structured(preparation_call).get("routeStable") is True
+            )
         else:
             framebuffer = {
                 "ok": False,
@@ -1607,7 +1624,10 @@ async def _mcp_sequence(
             else set()
         )
         framebuffer_required = (
-            {COMPARE_COAT_OF_ARMS_FRAMEBUFFER_TOOL}
+            {
+                COMPARE_COAT_OF_ARMS_FRAMEBUFFER_TOOL,
+                PREPARE_COAT_OF_ARMS_FRAMEBUFFER_TOOL,
+            }
             if reference_preview is not None or picture_corpus is not None
             else set()
         )
@@ -1737,6 +1757,15 @@ async def _mcp_sequence(
         ):
             return red(
                 "coat-of-arms framebuffer MCP tool does not have the expected schema",
+                tool_schemas=schemas,
+            )
+        if (
+            reference_preview is not None or picture_corpus is not None
+        ) and not _schema_is_zero_input(
+            schemas.get(PREPARE_COAT_OF_ARMS_FRAMEBUFFER_TOOL)
+        ):
+            return red(
+                "coat-of-arms framebuffer preparation MCP tool is not zero-input",
                 tool_schemas=schemas,
             )
 
@@ -2102,6 +2131,10 @@ async def _mcp_sequence(
             ):
                 await asyncio.sleep(0.75)
                 preview_base64, preview_receipt = reference_preview
+                preparation_call = await _call(
+                    client, PREPARE_COAT_OF_ARMS_FRAMEBUFFER_TOOL
+                )
+                record(preparation_call)
                 framebuffer_call = await _call(
                     client,
                     COMPARE_COAT_OF_ARMS_FRAMEBUFFER_TOOL,
@@ -2114,7 +2147,13 @@ async def _mcp_sequence(
                 framebuffer_result = {
                     **_framebuffer_gate(framebuffer_call),
                     "reference": preview_receipt,
+                    "preparation": preparation_call,
                 }
+                framebuffer_result["ok"] = bool(
+                    framebuffer_result["ok"]
+                    and preparation_call.get("is_error") is False
+                    and _structured(preparation_call).get("routeStable") is True
+                )
             else:
                 framebuffer_result = {
                     "ok": False,

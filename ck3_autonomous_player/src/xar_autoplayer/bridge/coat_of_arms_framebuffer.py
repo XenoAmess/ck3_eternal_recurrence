@@ -37,6 +37,100 @@ class CoatOfArmsFramebufferError(RuntimeError):
     """The bounded framebuffer contract could not produce valid evidence."""
 
 
+def prepare_ck3_framebuffer_capture_v1(bridge_pid: int) -> dict[str, object]:
+    """Bring the exact CK3 client forward with Win32 APIs and no input."""
+
+    if os.name != "nt":
+        raise CoatOfArmsFramebufferError("CK3 framebuffer capture requires Windows")
+    if isinstance(bridge_pid, bool) or not isinstance(bridge_pid, int) or bridge_pid < 1:
+        raise CoatOfArmsFramebufferError("native bridge PID is malformed")
+    import ctypes
+    import win32api
+    import win32con
+    import win32gui
+    import win32process
+
+    from ..vision.window import _eligible_windows, _root_window
+
+    candidates = _eligible_windows(bridge_pid)
+    if len(candidates) != 1:
+        raise CoatOfArmsFramebufferError(
+            f"expected one exact CK3 client for PID {bridge_pid}, found {candidates!r}"
+        )
+    hwnd, client_rect = candidates[0]
+    raw_before = int(win32gui.GetForegroundWindow())
+    before = _root_window(raw_before) if raw_before else 0
+    mode = "already_foreground"
+    attached_thread = 0
+    detach_succeeded: bool | None = None
+    if before != hwnd:
+        mode = "direct"
+        win32gui.ShowWindow(hwnd, win32con.SW_RESTORE)
+        win32gui.BringWindowToTop(hwnd)
+        win32gui.SetForegroundWindow(hwnd)
+        raw_after_direct = int(win32gui.GetForegroundWindow())
+        after_direct = _root_window(raw_after_direct) if raw_after_direct else 0
+        if after_direct != hwnd:
+            mode = "attached_foreground_thread"
+            current_thread = int(win32api.GetCurrentThreadId())
+            foreground_thread = int(
+                win32process.GetWindowThreadProcessId(raw_after_direct)[0]
+            )
+            if foreground_thread <= 0 or foreground_thread == current_thread:
+                raise CoatOfArmsFramebufferError(
+                    "foreground thread cannot be attached for CK3 activation"
+                )
+            user32 = ctypes.WinDLL("user32", use_last_error=True)
+            attached = bool(
+                user32.AttachThreadInput(current_thread, foreground_thread, True)
+            )
+            if not attached:
+                raise CoatOfArmsFramebufferError(
+                    "AttachThreadInput failed for CK3 framebuffer preparation"
+                )
+            attached_thread = foreground_thread
+            activation_error: BaseException | None = None
+            try:
+                win32gui.SetForegroundWindow(hwnd)
+            except BaseException as error:
+                activation_error = error
+            finally:
+                detach_succeeded = bool(
+                    user32.AttachThreadInput(current_thread, foreground_thread, False)
+                )
+            if not detach_succeeded:
+                raise CoatOfArmsFramebufferError(
+                    "AttachThreadInput detach failed after CK3 activation"
+                )
+            if activation_error is not None:
+                raise CoatOfArmsFramebufferError(
+                    f"CK3 foreground activation failed: {activation_error}"
+                ) from activation_error
+    candidates_after = _eligible_windows(bridge_pid)
+    raw_after = int(win32gui.GetForegroundWindow())
+    after = _root_window(raw_after) if raw_after else 0
+    if candidates_after != candidates or after != hwnd:
+        raise CoatOfArmsFramebufferError(
+            "exact CK3 client did not obtain stable foreground"
+        )
+    return {
+        "schema": "ck3-coat-of-arms-framebuffer-preparation-v1",
+        "schemaVersion": 1,
+        "bridgePid": bridge_pid,
+        "hwnd": hwnd,
+        "clientRect": list(client_rect),
+        "foregroundRootBefore": before,
+        "foregroundRootAfter": after,
+        "mode": mode,
+        "attachedForegroundThread": attached_thread,
+        "detachSucceeded": detach_succeeded,
+        "presentationOnly": True,
+        "usesOcr": False,
+        "usesKeyboard": False,
+        "usesMouse": False,
+    }
+
+
 def _sha256(data: bytes) -> str:
     return hashlib.sha256(data).hexdigest().upper()
 

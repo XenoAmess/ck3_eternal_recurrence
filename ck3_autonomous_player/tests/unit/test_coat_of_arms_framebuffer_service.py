@@ -112,6 +112,25 @@ class CoatOfArmsFramebufferServiceTests(unittest.TestCase):
                 "reference", "A" * 64
             )
 
+    @patch("xar_autoplayer.bridge.service.prepare_ck3_framebuffer_capture_v1")
+    def test_foreground_preparation_is_route_and_pid_bound(
+        self, prepare: Mock
+    ) -> None:
+        prepare.return_value = {
+            "schema": "ck3-coat-of-arms-framebuffer-preparation-v1",
+            "bridgePid": 1234,
+            "presentationOnly": True,
+            "usesOcr": False,
+            "usesKeyboard": False,
+            "usesMouse": False,
+        }
+
+        result = self._service().prepare_frontend_coat_of_arms_framebuffer_v1()
+
+        prepare.assert_called_once_with(1234)
+        self.assertTrue(result["routeStable"])
+        self.assertEqual(result["connectionGeneration"], 7)
+
 
 if __name__ == "__main__":
     unittest.main()
