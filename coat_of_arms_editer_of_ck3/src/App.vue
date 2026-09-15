@@ -24,7 +24,7 @@ import {
   resolveColor,
   type NamedColorMap,
 } from './domain/renderer'
-import { serializeCoatOfArms } from './domain/serializer'
+import { CK3_CLIPBOARD_MAX_BYTES, serializeCoatOfArms } from './domain/serializer'
 import { validateCoatOfArms } from './domain/validation'
 import { scoreWithWebGl2, type WebGlScore } from './domain/webglScorer'
 import {
@@ -114,11 +114,20 @@ const fitLayerBudget = ref(6)
 let fitWorker: Worker | null = null
 let fitRunId = 0
 
+const fitTerminationLabels: Record<ImageFitResult['provenance']['terminationReason'], string> = {
+  layer_budget: '达到用户搜索预算',
+  exact_match: '残差已归零',
+  no_emblems: '素材包没有可用徽记',
+  no_improvement: '没有继续改善的构图',
+  minimum_improvement: '改善低于阈值',
+  clipboard_limit: '达到 CK3 128 KiB 输入边界',
+}
+
 const output = computed(() => serializeCoatOfArms(coatOfArms.value))
 const activeEmblem = computed(() => coatOfArms.value.coloredEmblems[selectedEmblem.value])
 const visibleDiagnostics = computed<Diagnostic[]>(() => {
   const items = [...diagnostics.value, ...validateCoatOfArms(coatOfArms.value)]
-  if (new TextEncoder().encode(output.value).length > 128 * 1024) {
+  if (new TextEncoder().encode(output.value).length > CK3_CLIPBOARD_MAX_BYTES) {
     items.push({ severity: 'error', message: '确定性导出超过原生 MCP 的 128 KiB 输入上限' })
   }
   return items.filter((item, index) => items.findIndex((candidate) => (
@@ -331,6 +340,12 @@ async function fitTargetImage() {
     ElMessage.warning('请先载入独立静态素材包')
     return
   }
+  const layerBudget = Math.floor(fitLayerBudget.value)
+  if (!Number.isSafeInteger(layerBudget) || layerBudget < 1) {
+    ElMessage.warning('图层搜索预算必须是至少为 1 的安全整数')
+    return
+  }
+  fitLayerBudget.value = layerBudget
   cancelImageFit(false)
   const runId = ++fitRunId
   fitBusy.value = true
@@ -368,7 +383,7 @@ async function fitTargetImage() {
       ])
     }
     if (runId !== fitRunId) return
-    fitStatus.value = `浏览器 Worker 正在对全部原生元素执行残差分解与最多 ${fitLayerBudget.value} 层堆叠…`
+    fitStatus.value = `浏览器 Worker 正在对全部原生元素执行残差分解；图层搜索预算 ${layerBudget}…`
     const worker = new Worker(new URL('./domain/imageFitter.worker.ts', import.meta.url), { type: 'module' })
     fitWorker = worker
     const target = targetImage.value.image
@@ -427,7 +442,7 @@ async function fitTargetImage() {
       } catch {
         fitWebGlScore.value = null
       }
-      fitStatus.value = `完成 · 从完整库评估 ${result.provenance.evaluatedCandidates} 个构图 · 选中 ${result.provenance.selectedLayers}/${result.provenance.layerBudget} 层 · CPU reference${fitWebGlScore.value ? ' + WebGL2 RGBA8 交叉评分' : ' · WebGL2 不可用'}`
+      fitStatus.value = `完成 · 从完整库评估 ${result.provenance.evaluatedCandidates} 个构图 · 选中 ${result.provenance.selectedLayers}/${result.provenance.layerBudget} 层 · 停止：${fitTerminationLabels[result.provenance.terminationReason]} · CPU reference${fitWebGlScore.value ? ' + WebGL2 RGBA8 交叉评分' : ' · WebGL2 不可用'}`
       ElMessage.success('多层原生元素构图已载入结构化编辑器，可继续调整并复制代码')
     }
     worker.onerror = (event) => {
@@ -457,7 +472,7 @@ async function fitTargetImage() {
       resolution: 40,
       maxPatterns: patterns.length,
       maxEmblemCandidates: emblemCandidates.length,
-      maxLayers: fitLayerBudget.value,
+      maxLayers: layerBudget,
     }])
   } catch (error) {
     if (runId !== fitRunId) return
@@ -888,9 +903,10 @@ importSource()
           <p>{{ assetPackStatus }}</p>
           <el-button :loading="assetPackBusy" @click="loadStandaloneAssetPack()">重新载入静态素材包</el-button>
           <div class="fit-budget">
-            <span>最大堆叠图层</span>
-            <el-input-number v-model="fitLayerBudget" :min="1" :max="12" :step="1" />
+            <span>图层搜索预算</span>
+            <el-input-number v-model="fitLayerBudget" :min="1" :step="1" />
           </div>
+          <small class="fit-budget-note">不设产品层数上限，可输入 10000；无继续改善或接近 CK3 128 KiB 输入边界时会提前停止。</small>
           <div class="fit-actions">
             <el-button type="primary" :loading="fitBusy" :disabled="!targetImage || !loadedAssetPack" @click="fitTargetImage">
               开始本地拟合

@@ -11,6 +11,8 @@ CK3，不依赖 MCP、Quarkus 或 Java；它只生成原版“从剪贴板粘贴
 - 在浏览器内解码用户选择的 PNG/JPEG/WebP，以可取消 Web Worker 对完整的 42 pattern / 1,577 个可粘贴 registered emblem 索引执行
   多轮残差分解；每轮选择一个原生 DDS，拟合颜色、位置、缩放、旋转和翻转后追加图层，默认最多堆叠 6 层；图片不上传，
   CPU reference 决定候选，WebGL2 RGBA8 对最终多层候选做真实交叉评分；
+- 图层搜索预算默认 6，UI 不设固定产品上限并回归验证可输入 10000；预算不是承诺产出层数，残差不再改善或下一层将越过
+  CK3 原生 128 KiB 输入边界时会提前停止；
 - 使用 `ck3-coa-web-asset-pack-v1` 静态素材包：manifest 与每个 DDS 都经 SHA-256、字节数、尺寸和格式绑定，正式运行时不读取
   用户的游戏目录；当前 1.19.0.6 pack 覆盖原版 CoA 目录 1,630/1,630 个 DDS，并将 8 个未注册辅助文件明确排除在自动拟合外；
 - 编辑 pattern、三通道颜色、重复 `colored_emblem`、mask 和重复 instance；

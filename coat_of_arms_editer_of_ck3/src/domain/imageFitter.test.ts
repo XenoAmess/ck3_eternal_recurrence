@@ -66,6 +66,26 @@ describe('browser image fitter', () => {
     expect(result.provenance.searchBackend).toBe('cpu-reference')
   })
 
+  it('accepts a 10000-layer search budget without applying a product cap', () => {
+    const size = 16
+    const solid = texture('solid')
+    const target = renderCoatOfArms({
+      outerKey: 'coa', parent: '', pattern: 'solid.dds',
+      colors: ['rgb { 80 80 80 }', 'rgb { 80 80 80 }', 'rgb { 80 80 80 }'],
+      coloredEmblems: [], texturedEmblems: [],
+    }, { pattern: solid, coloredEmblems: {} }, {}, size)
+    expect(target).not.toBeNull()
+    const result = fitImageToCoatOfArms(
+      asImage(target!.pixels, size),
+      [candidate('solid.dds', solid)],
+      [candidate('square.dds', texture('square'))],
+      { resolution: size, maxLayers: 10_000 },
+    )
+    expect(result.provenance.layerBudget).toBe(10_000)
+    expect(result.provenance.selectedLayers).toBe(0)
+    expect(result.provenance.terminationReason).toBe('exact_match')
+  })
+
   it('reconstructs separated details by stacking repeated native DDS layers', () => {
     const size = 32
     const solid = texture('solid')

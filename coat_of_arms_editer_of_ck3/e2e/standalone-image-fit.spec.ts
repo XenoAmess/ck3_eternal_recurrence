@@ -82,6 +82,10 @@ test('fits an uploaded image without CK3, MCP, or Java', async ({ page }) => {
   await page.goto('/')
   await expect(page.getByText(/synthetic-browser-e2e/)).toBeVisible()
   await expect(page.getByText('CK3 原生 MCP')).toHaveCount(0)
+  const layerBudget = page.locator('.fit-budget input')
+  await layerBudget.fill('10000')
+  await expect(layerBudget).toHaveValue('10000')
+  await layerBudget.fill('6')
 
   const pngBase64 = await page.evaluate(() => {
     const canvas = document.createElement('canvas')

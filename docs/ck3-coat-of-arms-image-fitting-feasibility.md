@@ -130,7 +130,8 @@ WebGPU 暂不作为 Alpha 必需项。它适合以后把 reduction 和大规模�
 - 粗网格搜索 position、等比 scale、rotation 与水平 flip；
 - 对入选候选再局部细化 position、X/Y scale 和 rotation；
 - 根据 emblem RGB channel mask 对目标残差求三个代表色；
-- Alpha 默认最多堆叠 6 个 colored-emblem 图层，用户可在 1..12 调整；同一个原生 DDS 可以在不同位置、颜色和变换下重复使用；
+- Alpha 默认搜索预算为 6 个 colored-emblem 图层；UI 不设固定产品上限，并回归验证可输入和传递 10000。同一个原生 DDS 可以在不同位置、颜色和变换下重复使用；
+- 搜索预算不是承诺产出相同数量的层。残差无继续改善、单层改善低于阈值、用户取消，或下一层会使确定性代码越过 CK3 原生 128 KiB 输入边界时都会提前停止；
 - depth 按加入顺序确定，导出有限数值，不依赖浮点比较的偶然顺序。
 
 ### 5. 分层 beam search

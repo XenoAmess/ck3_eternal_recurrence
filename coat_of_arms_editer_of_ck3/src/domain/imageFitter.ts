@@ -1,5 +1,6 @@
 import type { DecodedDds } from './dds'
 import { renderCoatOfArms, type RenderedCoatOfArms } from './renderer'
+import { CK3_CLIPBOARD_MAX_BYTES, serializeCoatOfArms } from './serializer'
 import type { CoatOfArms } from './types'
 
 export interface FitImage {
@@ -42,6 +43,7 @@ export interface ImageFitResult {
     emblemAssets: number
     layerBudget: number
     selectedLayers: number
+    terminationReason: 'layer_budget' | 'exact_match' | 'no_emblems' | 'no_improvement' | 'minimum_improvement' | 'clipboard_limit'
     selectedAssetSha256: string[]
   }
 }
@@ -61,6 +63,14 @@ const DEFAULT_RESOLUTION = 40
 
 function clamp(value: number, minimum: number, maximum: number): number {
   return Math.min(maximum, Math.max(minimum, value))
+}
+
+function normalizeLayerBudget(value: number | undefined): number {
+  const normalized = Math.floor(value ?? 6)
+  if (!Number.isSafeInteger(normalized) || normalized < 0) {
+    throw new Error('图层搜索预算必须是非负安全整数')
+  }
+  return normalized
 }
 
 function validateImage(image: FitImage): void {
@@ -312,7 +322,7 @@ export function fitImageToCoatOfArms(
   const emblems = [...emblemCandidates]
     .sort((left, right) => left.name.localeCompare(right.name))
     .slice(0, options.maxEmblemCandidates ?? emblemCandidates.length)
-  const maxLayers = clamp(Math.floor(options.maxLayers ?? 6), 0, 24)
+  const maxLayers = normalizeLayerBudget(options.maxLayers)
   const refinementCandidates = clamp(Math.floor(options.refinementCandidates ?? 8), 1, 64)
   const minRelativeLayerImprovement = clamp(options.minRelativeLayerImprovement ?? 0.005, 0, 1)
   if (!patterns.length) throw new Error('素材包没有可用于拟合的 pattern')
@@ -341,6 +351,7 @@ export function fitImageToCoatOfArms(
   let best = bestBackground
   const selectedEmblemAssets: FitTextureCandidate[] = []
   const emblemTextures = Object.fromEntries(emblems.map((item) => [item.name, item.texture]))
+  let terminationReason: ImageFitResult['provenance']['terminationReason'] = 'layer_budget'
   for (let layer = 0; layer < maxLayers && emblems.length && best.totalLoss > 1e-12; layer += 1) {
     const geometry = residualGeometry(target, best.rendered)
     const layerPalettes = permutations(residualColors(target, best.rendered))
@@ -403,12 +414,28 @@ export function fitImageToCoatOfArms(
         }
       }
     }
-    if (!layerBest || layerBest.candidate.totalLoss >= best.totalLoss) break
+    if (!layerBest || layerBest.candidate.totalLoss >= best.totalLoss) {
+      terminationReason = 'no_improvement'
+      break
+    }
     const relativeGain = (best.totalLoss - layerBest.candidate.totalLoss) / best.totalLoss
-    if (relativeGain < minRelativeLayerImprovement) break
+    if (relativeGain < minRelativeLayerImprovement) {
+      terminationReason = 'minimum_improvement'
+      break
+    }
+    if (
+      new TextEncoder().encode(serializeCoatOfArms(layerBest.candidate.coatOfArms)).length
+      > CK3_CLIPBOARD_MAX_BYTES
+    ) {
+      terminationReason = 'clipboard_limit'
+      break
+    }
     best = layerBest.candidate
     selectedEmblemAssets.push(layerBest.asset)
   }
+  if (!emblems.length) terminationReason = 'no_emblems'
+  else if (best.totalLoss <= 1e-12) terminationReason = 'exact_match'
+  else if (selectedEmblemAssets.length >= maxLayers) terminationReason = 'layer_budget'
   const improvement = initialLoss <= 1e-12 ? 0 : Math.max(0, (initialLoss - best.totalLoss) / initialLoss)
   return {
     coatOfArms: best.coatOfArms,
@@ -427,6 +454,7 @@ export function fitImageToCoatOfArms(
       emblemAssets: emblems.length,
       layerBudget: maxLayers,
       selectedLayers: selectedEmblemAssets.length,
+      terminationReason,
       selectedAssetSha256: [
         bestPatternAsset.assetSha256,
         ...selectedEmblemAssets.map((item) => item.assetSha256),

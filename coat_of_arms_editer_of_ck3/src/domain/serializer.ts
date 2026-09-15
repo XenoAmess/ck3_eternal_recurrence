@@ -1,5 +1,7 @@
 import type { CoatOfArms } from './types'
 
+export const CK3_CLIPBOARD_MAX_BYTES = 128 * 1024
+
 const indent = (level: number) => '    '.repeat(level)
 
 const quoted = (value: string) => {
