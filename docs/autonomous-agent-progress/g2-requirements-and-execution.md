@@ -1,6 +1,6 @@
 # G2 全游戏自治需求与现行施工队列
 
-状态日期：2026-09-13（Asia/Shanghai）。机器可读权威状态为
+状态日期：2026-09-15（Asia/Shanghai）。机器可读权威状态为
 [`g2-requirements-v1.json`](g2-requirements-v1.json)；玩法覆盖、Native/MCP 缺口与资料依据见
 [`g2-ck3-gameplay-coverage-gap-research-2026-09-12.md`](g2-ck3-gameplay-coverage-gap-research-2026-09-12.md)。
 
@@ -20,7 +20,7 @@ G2 现采用固定的 **8 个可见 OODA 里程碑**，当前为 **1/8 complete*
 | G2-M1 实体发现与 core turn bundle | P1-A | complete | 一次聚合查询提供人物、头衔、首都、领主/封臣、邻居与最低 ruler/realm/succession alerts |
 | G2-M2 自然事件语义闭环 | P1-B | in progress | 三个自然事件按目标评分并验证结果，至少两个为多选 |
 | G2-M3 继承与 realm survival | P1-C | in progress | 死前预测逐头衔分配，死后对账并由真实继承人继续 |
-| G2-M4 和平治理纵向切片 | P1-D | not started | 两年内完成并验证建设、内阁调整和一次封臣/派系处理 |
+| G2-M4 和平治理纵向切片 | P1-D | in progress | 两年内完成并验证建设、内阁调整和一次封臣/派系处理 |
 | G2-M5 家庭、外交与完整战争 | P2 | not started | 比较至少五个候选，执行一条从机会选择到最终后置的完整路径 |
 | G2-M6 谋略、制度与活动 | P3 | not started | 谋略、囚犯/制度、非宗教决议/法律与活动各完成一个 OODA |
 | G2-M7 身份适配与长期整局 | P4-P5 | not started | 跨 ruler/seed/government 资格矩阵及 checkpoint/继承后的高层目标恢复 |
@@ -507,3 +507,36 @@ bounded naturally encountered exact-build death that reconciles actual
 successor/title distribution against the captured expectation and continues
 in the same campaign as the real successor; no dedicated death long run is
 authorized.
+
+## R692 council candidate capability RED
+
+Current round R692 executed the sealed `g2-m4-council16-r692-9cdb430`
+candidate once against exact CK3 `1.19.0.6`. The private council probe prepared
+and published one result, but it was typed `unavailable` with
+`application_main_thread_required`: `last_submit_result=0`,
+`last_wait_result=4`, and `executor_started_requests=0`. The expected steward
+candidate vector was therefore never collected, no candidate-completeness or
+temporary-vector-release assertion passed, and the result is a **capability
+RED** rather than evidence of a usable council observation.
+
+The attempt remained paused and read-only: it submitted no gameplay command,
+performed no UI input or date advance, and left both source and target save
+SHA-256 unchanged at
+`9104CCB8AE9D5776166FBBAEDA9B43BD08CBAA2CB5C057332EB8B7A1A212CC63`.
+Cleanup proved the CK3 process tree and watchdog gone with final inventory
+zero. Current round R692 is terminated. The immutable evidence manifest is
+`Z:\ck3_mod_rewrite_process_assets\g2-m4-council16-r692-9cdb430\live-r692\postrun-evidence-manifest.json`,
+SHA-256
+`589FFE1526F3C98DFC5C04E5F0C8A48EC41D6DB893CC5497AE459781D4F2FFCB`.
+
+`seal_r692_red.py` was a one-time helper with `reason=现场封存`; its only effect
+was writing the post-run manifest and checksum. Its impact is limited to the
+immutable evidence inventory, its reuse plan is no productization, and its
+migration deadline is this work-package close, when the manifest replaces the
+script as the durable record.
+
+No formal planner/strategy path consumed this private result. G2-M4 therefore
+remains `in_progress`, its council adjustment/action/postcondition loop remains
+open, and global G2 remains `1/8`. This corrects the prose-table drift from
+`not started` to the machine-readable `g2-requirements-v1` state without
+changing the fixed denominator or claiming a new completed milestone.
