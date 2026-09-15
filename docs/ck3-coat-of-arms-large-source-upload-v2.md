@@ -3,7 +3,7 @@
 > 状态：`mcp-static-ready / native-live-pending`（2026-09-15）
 > 适用版本：CK3 `1.19.0.6`，`ck3.exe` SHA-256
 > `2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86`
-> 实现提交：`bbcf68df`
+> 实现提交：`87d2b954`
 
 ## 1. 结论边界
 

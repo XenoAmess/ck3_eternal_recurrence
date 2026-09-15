@@ -35,7 +35,7 @@
     {
       "id": "WP1",
       "status": "in_progress",
-      "commit": "bbcf68df",
+      "commit": "87d2b954",
       "commands": [
         "tools/.venv/Scripts/python.exe -m unittest tests.unit.test_coat_of_arms_source_upload_v2 tests.unit.test_coat_of_arms_source_upload_v2_bridge tests.unit.test_coat_of_arms_source_probe_v1_bridge tests.unit.test_coat_of_arms_source_export_v1_bridge -v",
         "py ck3_autonomous_player/native_bridge/tools/build_fresh.py --build-dir C:/xb/coa-wp1-v2-final --ck3-executable-path C:/SteamLibrary/steamapps/common/CRUSAD~1/binaries/ck3.exe"
