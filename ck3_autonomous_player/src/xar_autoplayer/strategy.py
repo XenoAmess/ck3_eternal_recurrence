@@ -2243,6 +2243,8 @@ def _same_frame_council_composition_candidates_v1(
             and result.get("queried_snapshot_id") == snapshot_id
             and result.get("queried_revision") == public_revision
             and result.get("queried_native_revision") == native_revision
+            and isinstance(result.get("backend_id"), str)
+            and bool(result.get("backend_id"))
         ):
             continue
         try:
@@ -2273,13 +2275,13 @@ def _plan_steward_composition_v1(
         observation["candidates"],
         key=lambda row: (
             -int(row["main_skill"]["value"]),
-            int(row["native_collection_ordinal"]),
             int(row["character_id"]),
         ),
     )
     evidence = {
         "position_key": STEWARD_POSITION_KEY,
         "incumbent_character_id": position["incumbent_character_id"],
+        "incumbent_main_skill": position["incumbent_main_skill"],
         "vacant": position["vacant"],
         "candidate_count": len(candidates),
         "ordered_candidates": [dict(row) for row in candidates],
@@ -2293,14 +2295,21 @@ def _plan_steward_composition_v1(
         }
     selected = candidates[0]
     if position["vacant"] is not True:
-        # Council19 does not publish the incumbent's stewardship.  Its
-        # `incumbent_ready` bit proves identity/vacancy readiness only, so a
-        # replacement skill delta cannot be fabricated from candidate rows.
+        incumbent_skill = int(position["incumbent_main_skill"]["value"])
+        if int(selected["main_skill"]["value"]) <= incumbent_skill:
+            return {
+                "policy": "council-composition-steward-v1",
+                "outcome": "NO_CHANGE",
+                "reason_code": "incumbent_not_outperformed",
+                "selected_candidate": dict(selected),
+                **evidence,
+            }
         return {
             "policy": "council-composition-steward-v1",
-            "outcome": "NO_CHANGE",
-            "reason_code": "incumbent_main_skill_unavailable",
-            "required_observation": "incumbent_stewardship",
+            "outcome": "REPLACE_REQUIRED",
+            "reason_code": "replacement_action_not_routable",
+            "required_capability": ASSIGN_COUNCILLOR_V1_CAPABILITY,
+            "action_routable": False,
             "selected_candidate": dict(selected),
             **evidence,
         }
@@ -9244,11 +9253,14 @@ def choose_one_life_turn(
             "postwar_disband_history_index": latest_postwar_disband_index,
         }
 
-    council_query_supported = (
-        QUERY_COUNCIL_COMPOSITION_CANDIDATES_V1_CAPABILITY
-        in available_capabilities
+    council_management_supported = (
+        {
+            QUERY_COUNCIL_COMPOSITION_CANDIDATES_V1_CAPABILITY,
+            ASSIGN_COUNCILLOR_V1_CAPABILITY,
+        }
+        <= available_capabilities
     )
-    if council_query_supported:
+    if council_management_supported:
         if not isinstance(snapshot, dict) or snapshot.get("paused") is not True:
             return {
                 "policy": "one-life-turn-v1",
@@ -9296,15 +9308,18 @@ def choose_one_life_turn(
                 council_observation,
                 available_capabilities=available_capabilities,
             )
-            if council_decision["outcome"] == "ASSIGN_REQUIRED":
+            if council_decision["outcome"] in {
+                "ASSIGN_REQUIRED",
+                "REPLACE_REQUIRED",
+            }:
                 return {
                     "policy": "one-life-turn-v1",
                     "phase": "council_composition_action_unavailable",
                     "selected_step": None,
                     "required_capability": ASSIGN_COUNCILLOR_V1_CAPABILITY,
                     "reason": (
-                        "a steward vacancy has a deterministic native-legal "
-                        "candidate, but no semantic assignment action exists"
+                        "Council policy found a deterministic native-legal "
+                        "composition change, but no routed semantic action exists"
                     ),
                     "council_decision": council_decision,
                 }

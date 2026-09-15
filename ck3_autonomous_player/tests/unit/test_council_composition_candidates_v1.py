@@ -21,6 +21,7 @@ from xar_autoplayer.bridge.council_composition_candidates_contract import (
 from xar_autoplayer.bridge.mcp_server import (
     _ck3_query_council_composition_candidates_v1,
 )
+from xar_autoplayer.bridge.driver import UnsupportedStepError
 from xar_autoplayer.bridge.native_driver import (
     NativeHeadlessGameplayDriver,
     _action_steps,
@@ -29,7 +30,13 @@ from xar_autoplayer.bridge.service import GameplayBridgeService
 from xar_autoplayer.strategy import choose_one_life_turn
 
 
-def _snapshot(*, revision: int = 7, native_revision: int = 9, date_raw: int = 1000):
+def _snapshot(
+    *,
+    revision: int = 7,
+    native_revision: int = 9,
+    date_raw: int = 1000,
+    paused: bool = True,
+):
     return {
         "format_version": 1,
         "snapshot_id": f"native:{revision}",
@@ -40,7 +47,7 @@ def _snapshot(*, revision: int = 7, native_revision: int = 9, date_raw: int = 10
         "backend_id": "native-headless",
         "diagnostics": {"connection_generation": 1},
         "episode_run_id": "episode:1",
-        "paused": True,
+        "paused": paused,
         "map_ready": True,
         "active_event": None,
         "pending_character_interaction": None,
@@ -62,6 +69,7 @@ def _payload(
     native_revision: int = 9,
     date_raw: int = 1000,
     incumbent_character_id: int | None = None,
+    incumbent_main_skill: int = 12,
     candidates: list[tuple[int, int, int]] | None = None,
 ):
     vacant = incumbent_character_id is None
@@ -80,6 +88,11 @@ def _payload(
         "position": {
             "position_key": "councillor_steward",
             "incumbent_character_id": incumbent_character_id,
+            "incumbent_main_skill": (
+                None
+                if vacant
+                else {"key": "stewardship", "value": incumbent_main_skill}
+            ),
             "vacant": vacant,
             "action_route": route,
         },
@@ -99,6 +112,7 @@ def _payload(
             "identity_ready": True,
             "candidate_collection_ready": True,
             "incumbent_ready": True,
+            "incumbent_main_skill_ready": True,
             "candidate_legality_ready": True,
             "main_skill_ready": True,
             "action_route_ready": True,
@@ -127,9 +141,10 @@ def _result(payload: dict[str, object]):
 
 
 class _Driver:
-    def __init__(self, snapshot, result):
+    def __init__(self, snapshot, result, *, council_management=False):
         self._snapshot = snapshot
         self._result = result
+        self._council_management = council_management
         self.calls: list[tuple[str, int | None]] = []
 
     def capabilities(self):
@@ -140,7 +155,11 @@ class _Driver:
             "wait_for_change": True,
             "bridge_capabilities": [
                 QUERY_COUNCIL_COMPOSITION_CANDIDATES_V1_CAPABILITY
-            ],
+            ] + (
+                [ASSIGN_COUNCILLOR_V1_CAPABILITY]
+                if self._council_management
+                else []
+            ),
             "action_steps": [
                 QUERY_COUNCIL_COMPOSITION_CANDIDATES_V1_STEP
             ],
@@ -219,6 +238,32 @@ class CouncilCompositionContractTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "complete readiness"):
             normalize_council_composition_candidates_v1(
                 partial,
+                expected_snapshot_id="native:7",
+                expected_public_revision=7,
+                expected_native_revision=9,
+                expected_date_raw=1000,
+                expected_owner_character_id=707,
+            )
+
+        incumbent_unready = _payload(incumbent_character_id=800)
+        incumbent_unready["position"]["incumbent_main_skill"] = None
+        with self.assertRaisesRegex(ValueError, "ready together"):
+            normalize_council_composition_candidates_v1(
+                incumbent_unready,
+                expected_snapshot_id="native:7",
+                expected_public_revision=7,
+                expected_native_revision=9,
+                expected_date_raw=1000,
+                expected_owner_character_id=707,
+            )
+
+        invalid_skill = _payload(
+            incumbent_character_id=800,
+            incumbent_main_skill=-1,
+        )
+        with self.assertRaisesRegex(ValueError, "integer in"):
+            normalize_council_composition_candidates_v1(
+                invalid_skill,
                 expected_snapshot_id="native:7",
                 expected_public_revision=7,
                 expected_native_revision=9,
@@ -309,17 +354,135 @@ class CouncilCompositionContractTests(unittest.TestCase):
 
 
 class CouncilCompositionFormalConsumerTests(unittest.TestCase):
-    def _plan(self, rows, *, payload=None, date_raw=1000):
+    def _plan(
+        self,
+        rows,
+        *,
+        date_raw=1000,
+        paused=True,
+        bridge_capabilities=(
+            QUERY_COUNCIL_COMPOSITION_CANDIDATES_V1_CAPABILITY,
+            ASSIGN_COUNCILLOR_V1_CAPABILITY,
+        ),
+    ):
         return choose_one_life_turn(
             rows,
-            snapshot=_snapshot(date_raw=date_raw),
+            snapshot=_snapshot(date_raw=date_raw, paused=paused),
             action_steps=(
                 QUERY_COUNCIL_COMPOSITION_CANDIDATES_V1_STEP,
                 "life-advance",
             ),
+            bridge_capabilities=bridge_capabilities,
+        )
+
+    def test_query_only_capability_does_not_change_existing_turn(self):
+        rows = [{"command": "save-checkpoint", "ok": True}]
+        for paused in (True, False):
+            with self.subTest(paused=paused):
+                baseline = self._plan(
+                    rows,
+                    paused=paused,
+                    bridge_capabilities=(),
+                )
+                query_only = self._plan(
+                    rows,
+                    paused=paused,
+                    bridge_capabilities=(
+                        QUERY_COUNCIL_COMPOSITION_CANDIDATES_V1_CAPABILITY,
+                    ),
+                )
+                self.assertEqual(query_only, baseline)
+
+    def test_query_only_vacancy_history_does_not_block_existing_turn(self):
+        query = {
+            "command": QUERY_COUNCIL_COMPOSITION_CANDIDATES_V1_STEP,
+            "ok": True,
+            "result": _result(_payload()),
+        }
+        rows = [{"command": "save-checkpoint", "ok": True}, query]
+        baseline = self._plan(rows, bridge_capabilities=())
+        query_only = self._plan(
+            rows,
             bridge_capabilities=(
                 QUERY_COUNCIL_COMPOSITION_CANDIDATES_V1_CAPABILITY,
             ),
+        )
+        self.assertEqual(query_only, baseline)
+        self.assertNotEqual(
+            query_only.get("phase"),
+            "council_composition_action_unavailable",
+        )
+
+    def test_two_history_queries_are_consumed_only_with_both_capabilities(self):
+        stale = _result(
+            _payload(
+                revision=6,
+                native_revision=8,
+                date_raw=976,
+                incumbent_character_id=800,
+                incumbent_main_skill=21,
+            )
+        )
+        current = _result(
+            _payload(
+                incumbent_character_id=800,
+                incumbent_main_skill=21,
+            )
+        )
+        rows = [
+            {"command": "save-checkpoint", "ok": True},
+            {
+                "command": QUERY_COUNCIL_COMPOSITION_CANDIDATES_V1_STEP,
+                "ok": True,
+                "result": stale,
+            },
+            {
+                "command": QUERY_COUNCIL_COMPOSITION_CANDIDATES_V1_STEP,
+                "ok": True,
+                "result": current,
+            },
+        ]
+        query_only = self._plan(
+            rows,
+            bridge_capabilities=(
+                QUERY_COUNCIL_COMPOSITION_CANDIDATES_V1_CAPABILITY,
+            ),
+        )
+        self.assertNotIn("council_observation_consumed", query_only)
+
+        managed = self._plan(rows)
+        self.assertTrue(managed["council_observation_consumed"])
+        self.assertEqual(
+            managed["council_decision"]["reason_code"],
+            "incumbent_not_outperformed",
+        )
+
+    def test_formal_auto_turn_rejects_empty_backend_id_history(self):
+        malformed = _result(_payload())
+        malformed["backend_id"] = ""
+        observed_snapshot = _snapshot()
+        observed_snapshot["native_command_history"] = [
+            {"command": "save-checkpoint", "ok": True},
+            {
+                "command": QUERY_COUNCIL_COMPOSITION_CANDIDATES_V1_STEP,
+                "ok": True,
+                "result": malformed,
+            },
+        ]
+        driver = _Driver(
+            observed_snapshot,
+            _result(_payload()),
+            council_management=True,
+        )
+        result = GameplayBridgeService(driver).auto_turn()
+        self.assertEqual(result["status"], "executed")
+        self.assertEqual(
+            result["selected_step"],
+            QUERY_COUNCIL_COMPOSITION_CANDIDATES_V1_STEP,
+        )
+        self.assertEqual(
+            driver.calls,
+            [(QUERY_COUNCIL_COMPOSITION_CANDIDATES_V1_STEP, 7)],
         )
 
     def test_formal_planner_queries_before_any_council_decision(self):
@@ -352,9 +515,9 @@ class CouncilCompositionFormalConsumerTests(unittest.TestCase):
             903,
         )
 
-    def test_vacancy_tie_breaks_by_ordinal_then_full_character_id(self):
+    def test_vacancy_tie_break_ignores_diagnostic_ordinal(self):
         result = _result(
-            _payload(candidates=[(902, 0, 16), (901, 0, 16), (903, 1, 16)])
+            _payload(candidates=[(902, 0, 16), (901, 5, 16), (903, 1, 16)])
         )
         plan = self._plan(
             [
@@ -371,8 +534,10 @@ class CouncilCompositionFormalConsumerTests(unittest.TestCase):
             901,
         )
 
-    def test_occupied_position_cannot_invent_incumbent_skill_delta(self):
-        result = _result(_payload(incumbent_character_id=800))
+    def test_occupied_position_keeps_better_or_equal_incumbent(self):
+        result = _result(
+            _payload(incumbent_character_id=800, incumbent_main_skill=21)
+        )
         plan = self._plan(
             [
                 {"command": "save-checkpoint", "ok": True},
@@ -388,7 +553,28 @@ class CouncilCompositionFormalConsumerTests(unittest.TestCase):
         self.assertTrue(plan["council_observation_consumed"])
         self.assertEqual(
             plan["council_decision"]["reason_code"],
-            "incumbent_main_skill_unavailable",
+            "incumbent_not_outperformed",
+        )
+
+    def test_occupied_position_replaces_only_for_explicit_positive_delta(self):
+        result = _result(
+            _payload(incumbent_character_id=800, incumbent_main_skill=20)
+        )
+        plan = self._plan(
+            [
+                {"command": "save-checkpoint", "ok": True},
+                {
+                    "command": QUERY_COUNCIL_COMPOSITION_CANDIDATES_V1_STEP,
+                    "ok": True,
+                    "result": result,
+                },
+            ]
+        )
+        self.assertEqual(plan["phase"], "council_composition_action_unavailable")
+        self.assertEqual(plan["council_decision"]["outcome"], "REPLACE_REQUIRED")
+        self.assertEqual(
+            plan["council_decision"]["selected_candidate"]["character_id"],
+            903,
         )
 
     def test_stale_no_change_observation_is_never_reused(self):
@@ -448,6 +634,28 @@ class CouncilCompositionFormalConsumerTests(unittest.TestCase):
             position_key="councillor_steward",
         )
 
+    def test_explicit_service_query_without_capability_is_unsupported(self):
+        driver = _Driver(_snapshot(), _result(_payload()))
+        driver.capabilities = lambda: {
+            "format_version": 1,
+            "backend_id": "native-headless",
+            "snapshot": True,
+            "wait_for_change": True,
+            "bridge_capabilities": [],
+            "action_steps": [],
+        }
+        with self.assertRaises(UnsupportedStepError):
+            GameplayBridgeService(
+                driver
+            ).query_council_composition_candidates_v1(
+                expected_snapshot_id="native:7",
+                public_revision=7,
+                native_revision=9,
+                date_raw=1000,
+                owner_character_id=707,
+            )
+        self.assertEqual(driver.calls, [])
+
     def test_formal_auto_turn_executes_query_then_blocks_before_fake_action(self):
         payload = _payload()
         query_result = _result(payload)
@@ -455,7 +663,11 @@ class CouncilCompositionFormalConsumerTests(unittest.TestCase):
         query_snapshot["native_command_history"] = [
             {"command": "save-checkpoint", "ok": True}
         ]
-        query_driver = _Driver(query_snapshot, query_result)
+        query_driver = _Driver(
+            query_snapshot,
+            query_result,
+            council_management=True,
+        )
         queried = GameplayBridgeService(query_driver).auto_turn()
         self.assertEqual(queried["status"], "executed")
         self.assertEqual(
@@ -475,7 +687,11 @@ class CouncilCompositionFormalConsumerTests(unittest.TestCase):
                 "result": query_result,
             },
         ]
-        blocked_driver = _Driver(observed_snapshot, query_result)
+        blocked_driver = _Driver(
+            observed_snapshot,
+            query_result,
+            council_management=True,
+        )
         blocked = GameplayBridgeService(blocked_driver).auto_turn()
         self.assertEqual(blocked["status"], "blocked")
         self.assertEqual(

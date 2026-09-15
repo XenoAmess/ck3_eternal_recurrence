@@ -42,6 +42,7 @@ _SNAPSHOT_FIELDS: Final = {
 _POSITION_FIELDS: Final = {
     "position_key",
     "incumbent_character_id",
+    "incumbent_main_skill",
     "vacant",
     "action_route",
 }
@@ -58,6 +59,7 @@ _READINESS_FIELDS: Final = {
     "identity_ready",
     "candidate_collection_ready",
     "incumbent_ready",
+    "incumbent_main_skill_ready",
     "candidate_legality_ready",
     "main_skill_ready",
     "action_route_ready",
@@ -190,11 +192,34 @@ def normalize_council_composition_candidates_v1(
             incumbent_raw, "position.incumbent_character_id"
         )
     )
+    incumbent_skill_raw = position.get("incumbent_main_skill")
+    if incumbent_skill_raw is None:
+        incumbent_main_skill = None
+    elif (
+        isinstance(incumbent_skill_raw, dict)
+        and set(incumbent_skill_raw) == _MAIN_SKILL_FIELDS
+        and incumbent_skill_raw.get("key") == STEWARD_MAIN_SKILL_KEY
+    ):
+        incumbent_main_skill = {
+            "key": STEWARD_MAIN_SKILL_KEY,
+            "value": _integer(
+                incumbent_skill_raw.get("value"),
+                "position.incumbent_main_skill.value",
+                minimum=0,
+                maximum=2**31 - 1,
+            ),
+        }
+    else:
+        raise ValueError("position.incumbent_main_skill is invalid")
     vacant = position.get("vacant")
     if not isinstance(vacant, bool) or vacant is not (
         incumbent_character_id is None
     ):
         raise ValueError("position.vacant disagrees with incumbent identity")
+    if vacant is not (incumbent_main_skill is None):
+        raise ValueError(
+            "position incumbent identity and main skill must be ready together"
+        )
     action_route = position.get("action_route")
     expected_route = "assign" if vacant else "replace"
     if action_route != expected_route:
@@ -269,6 +294,7 @@ def normalize_council_composition_candidates_v1(
         "position": {
             **position,
             "incumbent_character_id": incumbent_character_id,
+            "incumbent_main_skill": incumbent_main_skill,
         },
         "candidate_collection_complete": True,
         "candidates": candidates,
