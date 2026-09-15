@@ -14,6 +14,7 @@ interface PictureCase {
   width: number
   height: number
   sha256: string
+  v5Budget1024Baseline: { totalLoss: number, edgeLoss: number, relativeImprovement: number }
 }
 
 const fixtureRoot = resolve('e2e/fixtures/pictures')
@@ -64,8 +65,16 @@ test.describe.serial(`user picture quality corpus at budget ${budget}`, () => {
       if (!rawEvidence) throw new Error('missing machine-readable fit evidence')
       const evidence = JSON.parse(rawEvidence)
       expect(evidence.provenance.layerBudget).toBe(budget)
+      expect(evidence.provenance.algorithm).toBe('ck3-coa-browser-fit-v6-budget-exhaustive-edge')
       expect(evidence.provenance.surfaceMaskApplied).toBe(true)
       expect(evidence.provenance.drawnInstances).toBeLessThanOrEqual(budget)
+      if (budget === 1_024) {
+        expect(evidence.metrics.totalLoss).toBeLessThanOrEqual(picture.v5Budget1024Baseline.totalLoss + 1e-12)
+        expect(evidence.metrics.edgeLoss).toBeLessThanOrEqual(picture.v5Budget1024Baseline.edgeLoss + 1e-12)
+        expect(evidence.metrics.relativeImprovement).toBeGreaterThanOrEqual(
+          picture.v5Budget1024Baseline.relativeImprovement - 1e-12,
+        )
+      }
 
       const fitPreviewUrl = await page.getByTestId('fit-preview').getAttribute('src')
       const editorPreviewUrl = await page.getByTestId('editor-preview').getAttribute('src')
@@ -119,6 +128,7 @@ test.describe.serial(`user picture quality corpus at budget ${budget}`, () => {
           surfaceMaskApplied: evidence.provenance.surfaceMaskApplied,
         },
         metrics: evidence.metrics,
+        v5Budget1024Baseline: picture.v5Budget1024Baseline,
         provenance: evidence.provenance,
         counts: {
           userBudget: budget,

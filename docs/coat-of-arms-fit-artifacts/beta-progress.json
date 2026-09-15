@@ -375,10 +375,12 @@
       "commands": [
         "pnpm exec playwright test e2e/user-picture-preview-consistency.spec.ts --reporter=line",
         "set COA_CORPUS_BUDGET=1024&& pnpm exec playwright test e2e/user-picture-quality-corpus.spec.ts --reporter=line",
+        "pnpm exec playwright test e2e/fit-budget-stress.spec.ts",
+        "pnpm exec playwright test e2e/reference-hunter-fit.spec.ts",
         "pnpm test",
         "pnpm build"
       ],
-      "resultPath": "docs/coat-of-arms-user-picture-regression.md",
+      "resultPath": "docs/coat-of-arms-fit-artifacts/user-picture-corpus-v6-budget-1024/",
       "keyMetrics": {
         "sourceArchiveBytes": 6240071,
         "sourceArchiveSha256": "0D6C529035333E22E34758D1128A713218D877831206FF60E11990CD362C575F",
@@ -387,17 +389,28 @@
         "previewConsistencyCasesFailed": 0,
         "qualityBudget": 1024,
         "qualityCasesMeasured": 7,
-        "minimumRelativeImprovement": 0.41627829922164217,
-        "maximumRelativeImprovement": 0.8227859602795541,
+        "qualityCasesStrictlyImprovedFromV5": 4,
+        "qualityCasesEqualToV5AtNaturalConvergence": 3,
+        "minimumRelativeImprovement": 0.41671898563220156,
+        "maximumRelativeImprovement": 0.9215421526397415,
         "maximumTotalLoss": 0.05742273424553694,
-        "maximumEdgeLoss": 0.10627171230677081,
+        "maximumEdgeLoss": 0.10036699114610147,
         "browserCopyParseCasesPassed": 7,
         "fitPreviewEditorPreviewContract": "same_canonical_data_url_and_display_geometry",
         "fitSurfaceMaskApplied": true,
+        "defaultFitBudget": 1024,
+        "maximumStressInputBudget": 10000,
+        "stressActualInstances": 2320,
+        "stressCopiedUtf8Bytes": 905361,
+        "stressCopiedLines": 32487,
+        "stressPauseLatencyMs": 36.2,
+        "stressPersistentRestoreDurationMs": 3385,
+        "stressResumeDurationMs": 4470,
+        "stressCancellationLatencyMs": 61,
         "nativeMcpCasesPassed": 0
       },
       "blockers": [
-        "Input-to-browser fit quality remains poor for multiple complex portrait cases.",
+        "picture-02, picture-05 and picture-07 still converge with high residual/edge loss and need higher-resolution local replacement plus broader native-brush search.",
         "Existing managed MCP has no bounded CoA framebuffer or spatial pixel-summary capability; native pixel comparison remains pending until MCP is extended."
       ]
     }

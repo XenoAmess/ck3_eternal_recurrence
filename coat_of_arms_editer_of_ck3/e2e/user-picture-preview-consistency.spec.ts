@@ -29,6 +29,7 @@ test.describe.serial('user picture preview consistency corpus', () => {
 
       await page.goto('/')
       await expect(page.getByText(/ck3-1\.19\.0\.6-base-complete/)).toBeVisible({ timeout: 30_000 })
+      if (picture.id === 'picture-01') await expect(page.locator('.fit-budget input')).toHaveValue('1024')
       await page.locator('.fit-budget input').fill('1')
       await page.locator('.image-drop input').setInputFiles({
         name: picture.file,

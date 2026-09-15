@@ -178,7 +178,10 @@ const fitBusy = ref(false)
 const fitStatus = ref('请选择一张图片')
 const fitResult = ref<ImageFitResult>()
 const fitWebGlScore = ref<WebGlScore | null>(null)
-const fitLayerBudget = ref(6)
+// Six layers was an early smoke-test default and produces visibly unrelated
+// portraits. Start at the already supported 1024-instance quality point; the
+// field remains freely editable and is never clamped to this value.
+const fitLayerBudget = ref(1_024)
 const fitProgressPercent = ref(0)
 const fitProgressLabel = ref('等待开始')
 const fitTaskState = ref<FitTaskState>('idle')

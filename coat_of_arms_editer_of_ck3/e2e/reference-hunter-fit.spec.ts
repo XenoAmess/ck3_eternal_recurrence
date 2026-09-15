@@ -9,7 +9,7 @@ import { serializeCoatOfArms } from '../src/domain/serializer'
 const layerBudget = '1024'
 const fixture = resolve('test-fixtures/xenoamess_hunter_1024_no_shade.png')
 const originalFixture = resolve('test-fixtures/xenoamess_hunter_4096_no_shade.svg')
-const artifactDirectory = resolve('test-results/reference-hunter-v6-edge-refined')
+const artifactDirectory = resolve('test-results/reference-hunter-v7-budget-exhaustive-edge')
 const assetPackDirectory = resolve('public/asset-packs/ck3-1.19.0.6')
 const historicalArtifact = resolve('../docs/coat-of-arms-fit-artifacts/xenoamess-hunter-v4-pruned/coat_of_arms.txt')
 const sha256 = (bytes: Uint8Array | string) => createHash('sha256').update(bytes).digest('hex').toUpperCase()
@@ -68,7 +68,7 @@ test('improves hunter edges with bounded local refinement under a 1024-layer cei
   expect(reparsedInstances).toBe(instanceCount)
   expect(serializeCoatOfArms(parsed.coatOfArms)).toBe(source)
   expect(evidence.provenance.layerBudget).toBe(1024)
-  expect(evidence.provenance.algorithm).toBe('ck3-coa-browser-fit-v5-hybrid-multiscale')
+  expect(evidence.provenance.algorithm).toBe('ck3-coa-browser-fit-v6-budget-exhaustive-edge')
   expect(evidence.provenance.sourceWidth).toBe(1024)
   expect(evidence.provenance.sourceHeight).toBe(1024)
   expect(evidence.provenance.pyramidResolutions).toEqual([96, 192, 256])
@@ -139,10 +139,11 @@ test('improves hunter edges with bounded local refinement under a 1024-layer cei
     const coloredEmblems = Object.fromEntries(await Promise.all(emblemNames.map(async (name) => (
       [name, await loadTexture('colored_emblem', name)]
     ))))
+    const surfaceMask = await loadTexture('surface_mask', 'coa_mask_texture.dds')
     const rendered = rendererModule.renderCoatOfArms(
       parsedV3,
-      { pattern, coloredEmblems },
-      {},
+      { pattern, coloredEmblems, surfaceMask },
+      manifest.named_colors ?? {},
       96,
     )
     if (!rendered) throw new Error('historical v3 render failed')
@@ -150,14 +151,12 @@ test('improves hunter edges with bounded local refinement under a 1024-layer cei
   }, { source: historicalSource })
   expect(evidence.metrics.totalLoss).toBeLessThanOrEqual(historicalMetrics.totalLoss + 1e-12)
   expect(evidence.metrics.edgeLoss).toBeLessThan(historicalMetrics.edgeLoss - 1e-12)
-  expect(Number(evidence.metrics.totalLoss.toFixed(5))).toBeLessThanOrEqual(0.02590)
-  expect(Number(evidence.metrics.edgeLoss.toFixed(5))).toBeLessThanOrEqual(0.04304)
   expect(evidence.metrics.relativeImprovement).toBeGreaterThan(0.80)
   await writeFile(resolve(artifactDirectory, 'coat_of_arms.txt'), source, 'utf8')
   const preview = await page.getByAltText('图片拟合结果预览').getAttribute('src')
-  if (!preview?.startsWith('data:image/png;base64,')) throw new Error('missing flat fitted PNG preview')
+  if (!preview?.startsWith('data:image/png;base64,')) throw new Error('missing canonical fitted PNG preview')
   await writeFile(
-    resolve(artifactDirectory, 'fitted-flat-96.png'),
+    resolve(artifactDirectory, 'fitted-canonical-230.png'),
     Buffer.from(preview.slice('data:image/png;base64,'.length), 'base64'),
   )
   const shaderPreview = await page.locator('img.shader-preview').getAttribute('src')
@@ -181,8 +180,8 @@ test('improves hunter edges with bounded local refinement under a 1024-layer cei
   )
   const report = {
     schema: 'ck3-coa-hunter-fit-evidence-v1',
-    artifactVersion: 'xenoamess-hunter-v6-edge-refined',
-    predecessor: '../xenoamess-hunter-v5-candidate/',
+    artifactVersion: 'xenoamess-hunter-v7-budget-exhaustive-edge',
+    predecessor: '../xenoamess-hunter-v6-edge-refined/',
     status: 'browser-quality-improvement-passed-native-roundtrip-pending',
     generatedAt: new Date().toISOString(),
     sourceRevision: {
@@ -215,6 +214,7 @@ test('improves hunter edges with bounded local refinement under a 1024-layer cei
       historicalReportedPrecisionDecimals: 5,
       historicalReportedMaximumTotalLoss: 0.02590,
       historicalReportedMaximumEdgeLoss: 0.04304,
+      historicalFixedThresholdStatus: 'not-directly-comparable-after-surface-mask-contract-correction',
       seamGate: {
         resolutions: [96, 230, 512],
         backgroundLeakPixels: 0,

@@ -72,7 +72,7 @@ export interface ImageFitProgress {
 
 export interface ImageFitCheckpoint {
   contract: 'ck3-coa-fit-checkpoint-v1'
-  algorithm: 'ck3-coa-browser-fit-v5-hybrid-multiscale'
+  algorithm: 'ck3-coa-browser-fit-v6-budget-exhaustive-edge'
   lane: 'baseline' | 'hybrid'
   inputSha256: string
   assetPackManifestSha256: string
@@ -134,7 +134,7 @@ export interface ImageFitResult {
   coatOfArms: CoatOfArms
   metrics: ImageFitMetrics
   provenance: {
-    algorithm: 'ck3-coa-browser-fit-v5-hybrid-multiscale'
+    algorithm: 'ck3-coa-browser-fit-v6-budget-exhaustive-edge'
     searchBackend: 'cpu-reference' | 'webgl2-batch+cpu-reference'
     batchSearch: ImageFitBatchSearchReceipt
     scoringContract: 'alpha-weighted-srgb8-mse62-luma-gradient-l1-38-v1'
@@ -165,6 +165,12 @@ export interface ImageFitResult {
       passesPrimaryNonRegression: boolean
     }[]
     selectedMultiscaleMetrics: MultiscaleFitMetric[]
+    baselineEdgeRepair: {
+      availableSlots: number
+      acceptedLayers: number
+      evaluatedCandidates: number
+      terminationReason: 'not_applicable' | 'layer_budget' | 'no_improvement'
+    }
     terminationReason: 'layer_budget' | 'exact_match' | 'no_emblems' | 'no_improvement' | 'minimum_improvement'
     selectedAssetSha256: string[]
     nativeTileSeamValidation: NativeTileSeamValidation
@@ -1228,7 +1234,7 @@ function checkpointFromPaintState(
 ): ImageFitCheckpoint {
   return {
     contract: 'ck3-coa-fit-checkpoint-v1',
-    algorithm: 'ck3-coa-browser-fit-v5-hybrid-multiscale',
+    algorithm: 'ck3-coa-browser-fit-v6-budget-exhaustive-edge',
     lane: context.lane,
     inputSha256: context.inputSha256,
     assetPackManifestSha256: context.assetPackManifestSha256,
@@ -1489,7 +1495,11 @@ function refinePaintedStateAtEdgeHotspots(
   onProgress?: (progress: ImageFitProgress) => void,
 ): SearchState {
   let state = initial
-  const maximumLayers = Math.min(8, maxLayers - initial.selectedAssets.length)
+  // Continue until the user's remaining instance budget is exhausted or an
+  // entire pass has no independently total-safe, edge-improving candidate.
+  // The previous constant eight-pass ceiling silently left hundreds of
+  // strictly improving slots unused in portrait fits.
+  const maximumLayers = maxLayers - initial.selectedAssets.length
   if (maximumLayers <= 0) return state
   const shape = textureShapeDescriptor(brush.texture)
   const patchSizes = [[1, 1], [2, 1], [1, 2], [2, 2], [3, 1], [1, 3]] as const
@@ -1811,7 +1821,7 @@ export function fitImageToCoatOfArms(
   if (resumeCheckpoint) {
     if (
       resumeCheckpoint.contract !== 'ck3-coa-fit-checkpoint-v1'
-      || resumeCheckpoint.algorithm !== 'ck3-coa-browser-fit-v5-hybrid-multiscale'
+      || resumeCheckpoint.algorithm !== 'ck3-coa-browser-fit-v6-budget-exhaustive-edge'
     ) throw new Error('拟合 checkpoint 版本不兼容')
     if (
       resumeCheckpoint.inputSha256 !== inputSha256
@@ -2109,6 +2119,12 @@ export function fitImageToCoatOfArms(
   }
   const finalists = [...beam]
   let nativePaintBaseline: SearchState | undefined
+  let baselineEdgeRepair: ImageFitResult['provenance']['baselineEdgeRepair'] = {
+    availableSlots: 0,
+    acceptedLayers: 0,
+    evaluatedCandidates: 0,
+    terminationReason: 'not_applicable',
+  }
   if (paintBrush && bestSolidBackground) {
     const solidState: SearchState = {
       candidate: bestSolidBackground.candidate,
@@ -2146,6 +2162,8 @@ export function fitImageToCoatOfArms(
     }
     nativePaintBaseline = paintState
     finalists.push(paintState)
+    const availableEdgeSlots = maxLayers - paintState.selectedAssets.length
+    const evaluatedBeforeEdgeRepair = evaluated.value
     const edgeRefinedPaintState = refinePaintedStateAtEdgeHotspots(
       paintState,
       paintBrush,
@@ -2156,6 +2174,15 @@ export function fitImageToCoatOfArms(
       evaluated,
       options.onProgress,
     )
+    const acceptedEdgeLayers = edgeRefinedPaintState.selectedAssets.length - paintState.selectedAssets.length
+    baselineEdgeRepair = {
+      availableSlots: availableEdgeSlots,
+      acceptedLayers: acceptedEdgeLayers,
+      evaluatedCandidates: evaluated.value - evaluatedBeforeEdgeRepair,
+      terminationReason: availableEdgeSlots === 0 || acceptedEdgeLayers === availableEdgeSlots
+        ? 'layer_budget'
+        : 'no_improvement',
+    }
     if (edgeRefinedPaintState !== paintState) finalists.push(edgeRefinedPaintState)
     const refinedPaintState = refinePaintedStateWithNativeShape(
       edgeRefinedPaintState,
@@ -2265,7 +2292,7 @@ export function fitImageToCoatOfArms(
       relativeImprovement: improvement,
     },
     provenance: {
-      algorithm: 'ck3-coa-browser-fit-v5-hybrid-multiscale',
+      algorithm: 'ck3-coa-browser-fit-v6-budget-exhaustive-edge',
       searchBackend: batchSearch.status === 'active'
         ? 'webgl2-batch+cpu-reference'
         : 'cpu-reference',
@@ -2301,6 +2328,7 @@ export function fitImageToCoatOfArms(
         ),
       })),
       selectedMultiscaleMetrics: candidateMultiscaleMetrics.get(winner) ?? [],
+      baselineEdgeRepair,
       terminationReason,
       selectedAssetSha256: [
         winner.patternAsset.assetSha256,

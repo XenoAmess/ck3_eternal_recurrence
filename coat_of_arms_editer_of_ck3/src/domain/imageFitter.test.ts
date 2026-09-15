@@ -371,7 +371,7 @@ describe('browser image fitter', () => {
       [candidate('square.dds', square)],
       { resolution: size, maxLayers: 3, minRelativeLayerImprovement: 0.0001 },
     )
-    expect(result.provenance.algorithm).toBe('ck3-coa-browser-fit-v5-hybrid-multiscale')
+    expect(result.provenance.algorithm).toBe('ck3-coa-browser-fit-v6-budget-exhaustive-edge')
     expect(result.provenance.selectedLayers).toBeGreaterThanOrEqual(2)
     expect(result.coatOfArms.coloredEmblems).toHaveLength(result.provenance.selectedLayers)
     expect(result.provenance.drawnInstances).toBe(result.provenance.selectedLayers)
@@ -408,8 +408,10 @@ describe('browser image fitter', () => {
       { resolution: size, maxLayers: 128 },
     )
     expect(result.provenance.candidateLosses.map((item) => item.mode)).toEqual(
-      expect.arrayContaining(['native-tile-paint', 'hybrid-native-paint']),
+      expect.arrayContaining(['native-tile-paint', 'native-edge-refined']),
     )
+    expect(result.provenance.baselineEdgeRepair.acceptedLayers).toBeGreaterThan(8)
+    expect(result.provenance.baselineEdgeRepair.terminationReason).toBe('layer_budget')
     expect(result.provenance.selectedLayers).toBeGreaterThan(1)
     expect(result.provenance.selectedLayers).toBeLessThanOrEqual(128)
     expect(result.provenance.layerLosses).toHaveLength(result.provenance.selectedLayers + 1)
@@ -444,7 +446,7 @@ describe('browser image fitter', () => {
     expect(checkpoint).toBeDefined()
     expect(checkpoint).toMatchObject({
       contract: 'ck3-coa-fit-checkpoint-v1',
-      algorithm: 'ck3-coa-browser-fit-v5-hybrid-multiscale',
+      algorithm: 'ck3-coa-browser-fit-v6-budget-exhaustive-edge',
       inputSha256: options.inputSha256,
       assetPackManifestSha256: options.assetPackManifestSha256,
       resolution: size,

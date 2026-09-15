@@ -199,12 +199,28 @@ test('runs real 128/1024/10000 browser fits without clamping and cancels a paint
   // and require the completed model and metrics to match an uninterrupted
   // 128-budget run. This is distinct from cancellation/restart below.
   await page.locator('.fit-budget input').fill('128')
+  const pauseArmed = page.evaluate(() => new Promise<number>((resolve) => {
+    const findPauseButton = () => Array.from(document.querySelectorAll('button'))
+      .find((button) => button.textContent?.trim() === '暂停') as HTMLButtonElement | undefined
+    const clickAtFirstSafeCheckpoint = () => {
+      const button = findPauseButton()
+      if (!button || button.disabled) return false
+      const clickedAt = performance.now()
+      button.click()
+      resolve(clickedAt)
+      return true
+    }
+    if (clickAtFirstSafeCheckpoint()) return
+    const observer = new MutationObserver(() => {
+      if (!clickAtFirstSafeCheckpoint()) return
+      observer.disconnect()
+    })
+    observer.observe(document.body, { attributes: true, childList: true, subtree: true })
+  }))
   await page.getByRole('button', { name: '开始本地拟合' }).click()
-  await expect(page.locator('.fit-progress small').filter({ hasText: '安全 checkpoint' })).toBeVisible({ timeout: 15_000 })
-  const pauseStarted = Date.now()
-  await page.getByRole('button', { name: '暂停', exact: true }).click()
+  const pauseClickedAt = await pauseArmed
   await expect(report).toHaveAttribute('data-fit-task-state', 'paused')
-  const pauseLatencyMs = Date.now() - pauseStarted
+  const pauseLatencyMs = await page.evaluate((clickedAt) => performance.now() - clickedAt, pauseClickedAt)
   expect(pauseLatencyMs).toBeLessThan(contract.maximumPauseLatencyMs)
   await expect(report).toHaveAttribute('data-fit-checkpoint-persistence', 'saved')
   const reloadStarted = Date.now()

@@ -83,7 +83,7 @@ export function validatePersistedFitCheckpoint(value: unknown): PersistedFitChec
   ) throw new Error('持久拟合 checkpoint 的素材包或预算元数据无效')
   if (
     checkpoint.contract !== 'ck3-coa-fit-checkpoint-v1'
-    || checkpoint.algorithm !== 'ck3-coa-browser-fit-v5-hybrid-multiscale'
+    || checkpoint.algorithm !== 'ck3-coa-browser-fit-v6-budget-exhaustive-edge'
   ) throw new Error('持久拟合 checkpoint 内的搜索状态版本不兼容')
   if (
     checkpoint.inputSha256 !== input.sha256

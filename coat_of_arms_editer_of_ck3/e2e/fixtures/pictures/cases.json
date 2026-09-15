@@ -14,7 +14,8 @@
       "bytes": 304708,
       "width": 511,
       "height": 512,
-      "sha256": "B52B0624A3C2B2114F66A6C7BA839880D1DC89ADAA91DE0F5CA6BFC302160CA6"
+      "sha256": "B52B0624A3C2B2114F66A6C7BA839880D1DC89ADAA91DE0F5CA6BFC302160CA6",
+      "v5Budget1024Baseline": { "totalLoss": 0.026529027291631296, "edgeLoss": 0.05295056248924947, "relativeImprovement": 0.41627829922164217 }
     },
     {
       "id": "picture-02",
@@ -23,7 +24,8 @@
       "bytes": 75756,
       "width": 300,
       "height": 300,
-      "sha256": "57C8CCF223D6B8FC9F27A69D17B676AAB0FABBE3D656D633FAC013296F88BE36"
+      "sha256": "57C8CCF223D6B8FC9F27A69D17B676AAB0FABBE3D656D633FAC013296F88BE36",
+      "v5Budget1024Baseline": { "totalLoss": 0.035329387447636564, "edgeLoss": 0.0649763149160432, "relativeImprovement": 0.41671898563220156 }
     },
     {
       "id": "picture-03",
@@ -32,7 +34,8 @@
       "bytes": 314444,
       "width": 527,
       "height": 527,
-      "sha256": "4317C811A530993BE863D2C19CEAA66D547712FE26D6011EF1BC4CDEF000533F"
+      "sha256": "4317C811A530993BE863D2C19CEAA66D547712FE26D6011EF1BC4CDEF000533F",
+      "v5Budget1024Baseline": { "totalLoss": 0.027418215519516054, "edgeLoss": 0.055755648407937425, "relativeImprovement": 0.5384212154655551 }
     },
     {
       "id": "picture-04",
@@ -41,7 +44,8 @@
       "bytes": 991529,
       "width": 1080,
       "height": 1080,
-      "sha256": "9E7B345F3857DB1B2F9EC5AE2550DCD16499B67D678CB3E07931931B2FE44F8C"
+      "sha256": "9E7B345F3857DB1B2F9EC5AE2550DCD16499B67D678CB3E07931931B2FE44F8C",
+      "v5Budget1024Baseline": { "totalLoss": 0.05555435165758835, "edgeLoss": 0.10627171230677081, "relativeImprovement": 0.5762956515223989 }
     },
     {
       "id": "picture-05",
@@ -50,7 +54,8 @@
       "bytes": 269075,
       "width": 522,
       "height": 522,
-      "sha256": "E9205ADE88047B7F920A90761C25302F133920503CC854E63446443401FCA7EB"
+      "sha256": "E9205ADE88047B7F920A90761C25302F133920503CC854E63446443401FCA7EB",
+      "v5Budget1024Baseline": { "totalLoss": 0.05742273424553694, "edgeLoss": 0.10036699114610147, "relativeImprovement": 0.7456499008320083 }
     },
     {
       "id": "picture-06",
@@ -59,7 +64,8 @@
       "bytes": 199390,
       "width": 960,
       "height": 905,
-      "sha256": "647BE9E8D39548480DA87E59A1487F94DF3D0A8316E48F4B746E36AED8A5B790"
+      "sha256": "647BE9E8D39548480DA87E59A1487F94DF3D0A8316E48F4B746E36AED8A5B790",
+      "v5Budget1024Baseline": { "totalLoss": 0.018526241431126276, "edgeLoss": 0.03550622606229022, "relativeImprovement": 0.8227859602795541 }
     },
     {
       "id": "picture-07",
@@ -68,7 +74,8 @@
       "bytes": 4091081,
       "width": 2048,
       "height": 2048,
-      "sha256": "31218C41C1756CC4641A70828B2C381E744C988B13FA1F376B73066E6564DF8A"
+      "sha256": "31218C41C1756CC4641A70828B2C381E744C988B13FA1F376B73066E6564DF8A",
+      "v5Budget1024Baseline": { "totalLoss": 0.053917745614779626, "edgeLoss": 0.0909435300298849, "relativeImprovement": 0.6430402889665416 }
     }
   ]
 }
