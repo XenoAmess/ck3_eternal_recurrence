@@ -6622,6 +6622,10 @@ public:
 #endif
     environment.permitted_executor_unquadragintary =
         &xar::bridge::ExecuteCouncilApplicationMainV1;
+#if defined(XAR_CK3_ENABLE_G2_PLAYER_CONSTRUCTION_VIEW_PROBE_PRIVATE_V1)
+    environment.permitted_executor_duoquadragintary =
+        &xar::ck3_11906::ExecutePlayerConstructionViewProbeMailboxV1;
+#endif
     environment.permitted_frontend_executor =
         &xar::ck3_11906::ExecuteFrontendGuiRouteMailboxV1;
     installed_ = xar::ck3_11906::InstallMainThreadQueryMailboxV1(

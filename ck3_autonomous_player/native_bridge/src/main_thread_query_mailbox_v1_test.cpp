@@ -378,6 +378,12 @@ bool ExecuteUnquadragintary(
   return Execute(opaque, stamp);
 }
 
+bool ExecuteDuoquadragintary(
+    void *opaque,
+    const xar::ck3_11906::MainThreadExecutionStampV1 &stamp) noexcept {
+  return Execute(opaque, stamp);
+}
+
 bool ExecuteFrontend(
     void *opaque,
     const xar::ck3_11906::MainThreadExecutionStampV1 &stamp) noexcept {
@@ -1324,6 +1330,8 @@ bool TestMailboxStateMachine() {
       &ExecuteQuadragintary;
   typed_environment.permitted_executor_unquadragintary =
       &ExecuteUnquadragintary;
+  typed_environment.permitted_executor_duoquadragintary =
+      &ExecuteDuoquadragintary;
   g_failure_stage = "typed_executor_registry";
   if (!InstallMainThreadQueryMailboxV1(mailbox, typed_environment) ||
       ObserveMainThreadPumpAndDrainV1(
@@ -1341,7 +1349,7 @@ bool TestMailboxStateMachine() {
           MainThreadQuerySubmitResultV1::invalid_request) {
     return false;
   }
-  constexpr std::array<MainThreadQueryExecutorV1, 31> typed_executors{
+  constexpr std::array<MainThreadQueryExecutorV1, 32> typed_executors{
       &Execute, &ExecuteSecondary, &ExecuteTertiary, &ExecuteQuaternary,
       &ExecuteQuinary, &ExecuteSenary, &ExecuteSeptenary, &ExecuteOctonary,
       &ExecuteNonary, &ExecuteDenary, &ExecuteUndenary,
@@ -1352,7 +1360,8 @@ bool TestMailboxStateMachine() {
       &ExecuteQuattuorvigintary, &ExecuteQuinquevigintary,
       &ExecuteSexvigintary, &ExecuteSeptemvigintary,
       &ExecuteOctovigintary, &ExecuteNovemvigintary,
-      &ExecuteQuadragintary, &ExecuteUnquadragintary};
+      &ExecuteQuadragintary, &ExecuteUnquadragintary,
+      &ExecuteDuoquadragintary};
   for (const auto executor : typed_executors) {
     MainThreadQueryTicketV1 typed_ticket{};
     if (TrySubmitMainThreadQueryV1(mailbox, executor, &typed_context,
@@ -1563,7 +1572,7 @@ bool TestSourceContract(int argc, char **argv) {
     std::fprintf(stderr, "mailbox compile-time identity contract failed\n");
     return false;
   }
-  constexpr std::array<std::string_view, 80> source_tokens{
+  constexpr std::array<std::string_view, 81> source_tokens{
       "InterlockedCompareExchangePointer",
       "kPeekMessageWIatSlotRva",
       "kSdlWindowsPumpFirstPeekReturnRva",
@@ -1640,6 +1649,7 @@ bool TestSourceContract(int argc, char **argv) {
       "mailbox.permitted_executor_octotrigintary",
       "mailbox.permitted_executor_quadragintary",
       "mailbox.permitted_executor_unquadragintary",
+      "mailbox.permitted_executor_duoquadragintary",
       "Process-lifetime pin",
       "mailbox.failure_flags.load(std::memory_order_acquire) != 0",
       "PostThreadMessageW(",
@@ -1712,7 +1722,7 @@ bool TestSourceContract(int argc, char **argv) {
     return false;
   }
 
-  constexpr std::array<std::string_view, 118> bridge_tokens{
+  constexpr std::array<std::string_view, 120> bridge_tokens{
       "HeartbeatFrame",
       "main_thread_query_mailbox_v1",
       "installed",
@@ -1823,6 +1833,8 @@ bool TestSourceContract(int argc, char **argv) {
       "permitted_executor_quattuortrigintary",
       "permitted_executor_quintrigintary",
       "permitted_executor_octotrigintary",
+      "permitted_executor_duoquadragintary",
+      "ExecutePlayerConstructionViewProbeMailboxV1",
       "ExecuteMarriageCandidateInternalRouteV1",
       "permitted_frontend_executor",
       "kWarEntryAssessmentsV1FirstLiveMaximumTargets",
