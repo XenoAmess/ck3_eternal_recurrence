@@ -1,0 +1,82 @@
+#pragma once
+
+#include "xar_bridge/ck3_11906.hpp"
+#include "xar_bridge/main_thread_query_mailbox_v1.hpp"
+#include "xar_bridge/player_lifestyle_formal_precondition_v1.hpp"
+#include "xar_bridge/player_lifestyle_selection_native_adapter_v1.hpp"
+
+#include <memory>
+#include <string>
+
+namespace xar::ck3_11906 {
+
+enum class PlayerLifestyleFormalWireModeV1 {
+  query,
+  submit_perk,
+  verify_receipt,
+};
+
+inline constexpr std::string_view kPlayerLifestyleFormalPrivateQueryStepV1 =
+    "private-query-player-lifestyle-formal-v1";
+inline constexpr std::string_view kPlayerLifestyleFormalPrivateSubmitStepV1 =
+    "private-select-player-lifestyle-perk-v1";
+inline constexpr std::string_view kPlayerLifestyleFormalPrivateReceiptStepV1 =
+    "private-query-player-lifestyle-receipt-v1";
+
+// Proof belongs to the published native frame, not the pump that happens to
+// execute a read/query/action. This is the bridge's observed state revision.
+inline std::uint64_t PlayerLifestyleFormalFrameProofEpochV1(
+    std::uint64_t published_revision,
+    std::uint64_t verified_main_pump_epoch) noexcept {
+  return published_revision != 0 && verified_main_pump_epoch != 0
+             ? published_revision
+             : 0;
+}
+
+// One controlled candidate transaction. The bridge worker owns this object
+// until the fixed application-main mailbox ticket is terminal and reclaimed.
+// No public GameAdapter step or capability advertisement is installed.
+struct PlayerLifestyleFormalWireContextV1 {
+  Bindings bindings{};
+  game::Snapshot expected_snapshot{};
+  std::uint64_t expected_revision = 0;
+  std::uintptr_t module_base = 0;
+  std::string episode_run_id;
+  std::string snapshot_id;
+  std::string action_request_id;
+  std::string action_target_key;
+  PlayerLifestyleFormalWireModeV1 mode =
+      PlayerLifestyleFormalWireModeV1::query;
+  MainThreadExecutionStampV1 stamp{};
+  PlayerLifestyleWindowSourceAdapterStateV1 source_state{};
+  PlayerLifestyleWindowSourceAdapterEnvironmentV1 source_environment{};
+  PlayerLifestyleWindowSourceAdapterAccessV1 source_access{};
+  PlayerLifestyleSelectionNativeAdapterContextV1 native_submit{};
+  game::PlayerLifestyleSelectionActionRequestV1 action_request{};
+  game::PlayerLifestyleSelectionActionAckV1 pending_ack{};
+  game::PlayerLifestyleSelectionActionReceiptV1 receipt{};
+  std::unique_ptr<game::PlayerLifestyleSnapshotV1> snapshot;
+  std::unique_ptr<game::PlayerLifestyleWindowCandidatesV1> candidates;
+  std::unique_ptr<game::PlayerLifestyleSelectionPreconditionV1> precondition;
+  PlayerLifestyleFormalPreconditionResultV1 precondition_result =
+      PlayerLifestyleFormalPreconditionResultV1::source_unavailable;
+  std::string failure;
+  bool completed = false;
+};
+
+bool InitializePlayerLifestyleFormalWireContextV1(
+    PlayerLifestyleFormalWireContextV1 &context,
+    const Bindings &bindings,
+    const game::Snapshot &expected_snapshot,
+    std::uint64_t expected_revision,
+    std::string_view episode_run_id,
+    PlayerLifestyleFormalWireModeV1 mode) noexcept;
+
+// Narrow fixed slot43 executor. It reads LIFE2/LIFE4 and, for a separately
+// admitted perk request, invokes LIFE6/LIFE7 exactly once. Its ACK remains
+// pending until a later independently captured paused receipt.
+bool ExecutePlayerLifestyleFormalWireMailboxV1(
+    void *opaque,
+    const MainThreadExecutionStampV1 &stamp) noexcept;
+
+} // namespace xar::ck3_11906

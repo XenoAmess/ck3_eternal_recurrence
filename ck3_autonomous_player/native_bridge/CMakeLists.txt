@@ -197,6 +197,12 @@ option(
 )
 
 option(
+  XAR_CK3_ENABLE_G2_PLAYER_LIFESTYLE_FORMAL_WIRE_PRIVATE_V1
+  "Admit unadvertised exact-build LIFE2/LIFE4 query and LIFE6/LIFE7 perk candidate on application-main"
+  OFF
+)
+
+option(
   XAR_CK3_ENABLE_FEUDAL_1066_SELECTED_BOOKMARK_START_PRIVATE_V1
   "Admit one controlled exact-build selected-bookmark StartGame candidate"
   OFF
@@ -838,6 +844,20 @@ endif()
 if(XAR_CK3_ENABLE_G2_COUNCIL_APPLICATION_MAIN_PRIVATE_ROUTE_V1)
   target_compile_definitions(xar_ck3_bridge PRIVATE
     XAR_CK3_ENABLE_G2_COUNCIL_APPLICATION_MAIN_PRIVATE_ROUTE_V1=1
+  )
+endif()
+if(XAR_CK3_ENABLE_G2_PLAYER_LIFESTYLE_FORMAL_WIRE_PRIVATE_V1)
+  target_sources(xar_ck3_bridge PRIVATE
+    src/player_lifestyle_snapshot_v1.cpp
+    src/player_lifestyle_window_candidates_v1.cpp
+    src/player_lifestyle_window_source_adapter_v1.cpp
+    src/player_lifestyle_selection_action_v1.cpp
+    src/player_lifestyle_selection_native_adapter_v1.cpp
+    src/player_lifestyle_formal_precondition_v1.cpp
+    src/player_lifestyle_formal_wire_v1.cpp
+  )
+  target_compile_definitions(xar_ck3_bridge PRIVATE
+    XAR_CK3_ENABLE_G2_PLAYER_LIFESTYLE_FORMAL_WIRE_PRIVATE_V1=1
   )
 endif()
 if(XAR_CK3_ENABLE_FEUDAL_1066_SELECTED_BOOKMARK_START_PRIVATE_V1)

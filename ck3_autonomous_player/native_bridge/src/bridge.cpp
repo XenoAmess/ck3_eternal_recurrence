@@ -5,6 +5,9 @@
 #include "xar_bridge/battle_terminal_transition_v1_mailbox.hpp"
 #include "xar_bridge/battle_transition_v1_mailbox.hpp"
 #include "xar_bridge/campaign_root_context_v1_mailbox.hpp"
+#if defined(XAR_CK3_ENABLE_G2_PLAYER_LIFESTYLE_FORMAL_WIRE_PRIVATE_V1)
+#include "xar_bridge/player_lifestyle_formal_wire_v1.hpp"
+#endif
 #include "xar_bridge/player_faction_alerts_v1_mailbox.hpp"
 #if defined(XAR_CK3_ENABLE_G2_PLAYER_CONSTRUCTION_VIEW_PROBE_PRIVATE_V1)
 #include "player_construction_view_probe_v1_mailbox.hpp"
@@ -310,6 +313,15 @@ static xar::bridge::DomainConstructionRuntimeObserverStateV1
 #endif
 static xar::bridge::CouncilCompositionCandidateObserverStateV1
     g_council_composition_candidate_observer_v1{};
+#if defined(XAR_CK3_ENABLE_G2_PLAYER_LIFESTYLE_FORMAL_WIRE_PRIVATE_V1)
+// Worker-owned controlled candidate state; pending ACK is never an effect.
+static std::optional<xar::game::PlayerLifestyleSelectionActionAckV1>
+    g_player_lifestyle_pending_ack_v1{};
+static std::string g_player_lifestyle_last_query_episode_v1{};
+static std::uint64_t g_player_lifestyle_last_query_revision_v1 = 0;
+static std::int32_t g_player_lifestyle_last_query_player_v1 = -1;
+static bool g_player_lifestyle_action_may_have_submitted_v1 = false;
+#endif
 #if defined(XAR_CK3_ENABLE_G2_COUNCIL_APPLICATION_MAIN_PRIVATE_ROUTE_V1)
 static xar::bridge::CouncilApplicationMainPrivateTransportV1
     g_council_application_main_private_transport_v1{};
@@ -4353,6 +4365,294 @@ std::string CommandResultFrame(std::string_view request_id,
   return result;
 }
 
+#if defined(XAR_CK3_ENABLE_G2_PLAYER_LIFESTYLE_FORMAL_WIRE_PRIVATE_V1)
+template <std::size_t N>
+std::string_view LifestyleFixed(const std::array<char, N> &value) noexcept {
+  const auto end = std::find(value.begin(), value.end(), '\0');
+  return end == value.end()
+             ? std::string_view{}
+             : std::string_view(value.data(),
+                                static_cast<std::size_t>(end - value.begin()));
+}
+
+std::string PlayerLifestyleFormalPrivateResultFrame(
+    std::string_view request_id, std::string_view step,
+    const xar::ck3_11906::PlayerLifestyleFormalWireContextV1 &context) {
+  if (!context.completed) {
+    return CommandResultFrame(
+        request_id, step, false,
+        context.failure.empty() ? "private_lifestyle_executor_unavailable"
+                                : context.failure);
+  }
+  std::string result =
+      "{\"type\":\"command_result\",\"protocol_version\":1,";
+  result += "\"request_id\":";
+  AppendJsonString(result, request_id);
+  result += ",\"ok\":true,\"result\":{\"step\":";
+  AppendJsonString(result, step);
+  result += ",\"private_build\":true,\"advertised\":false,";
+  if (context.mode == xar::ck3_11906::
+                          PlayerLifestyleFormalWireModeV1::query) {
+    result += "\"status\":\"available\",\"episode_run_id\":";
+    AppendJsonString(result, context.episode_run_id);
+    result += ",\"formal_precondition_status\":";
+    AppendJsonString(
+        result, xar::ck3_11906::PlayerLifestyleFormalPreconditionResultKeyV1(
+                    context.precondition_result));
+    result += ",\"snapshot\":";
+    result += xar::ck3_11906::SerializePlayerLifestyleSnapshotV1(
+        *context.snapshot);
+  } else if (context.mode == xar::ck3_11906::
+                                 PlayerLifestyleFormalWireModeV1::submit_perk) {
+    const auto &ack = context.pending_ack;
+    result += "\"status\":";
+    AppendJsonString(
+        result, ack.status == xar::game::
+                                 PlayerLifestyleSelectionActionAckStatusV1::
+                                     submitted_verification_pending
+                    ? "submitted_verification_pending"
+                    : "rejected_before_submit");
+    result += ",\"verification_pending\":";
+    result += ack.verification_pending ? "true" : "false";
+    result += ",\"action_request_id\":";
+    AppendJsonString(result, ack.request_id);
+    result += ",\"target_key\":";
+    AppendJsonString(result,
+                     xar::ck3_11906::PlayerLifestyleWindowStableKeyViewV1(
+                         ack.target_key));
+    result += ",\"pre_snapshot_id\":";
+    AppendJsonString(result, LifestyleFixed(ack.snapshot_id));
+    result += ",\"episode_run_id\":";
+    AppendJsonString(result, LifestyleFixed(ack.episode_run_id));
+    result += ",\"pre_public_revision\":" +
+        std::to_string(ack.pre_public_revision);
+    result += ",\"failure_class\":";
+    AppendJsonString(
+        result,
+        xar::ck3_11906::PlayerLifestyleSelectionActionFailureClassKeyV1(
+            ack.failure_class));
+    result += ",\"rejection_reason\":";
+    AppendJsonString(result, ack.rejection_reason);
+  } else {
+    const auto &receipt = context.receipt;
+    result += "\"status\":";
+    AppendJsonString(
+        result, receipt.status == xar::game::
+                                     PlayerLifestyleSelectionActionReceiptStatusV1::
+                                         applied
+                    ? "applied"
+                    : receipt.status == xar::game::
+                                          PlayerLifestyleSelectionActionReceiptStatusV1::
+                                              rejected
+                          ? "rejected"
+                          : "postcondition_failed");
+    result += ",\"action_request_id\":";
+    AppendJsonString(result, receipt.request_id);
+    result += ",\"post_snapshot_id\":";
+    AppendJsonString(result, LifestyleFixed(receipt.post_snapshot_id));
+    result += ",\"episode_run_id\":";
+    AppendJsonString(result, LifestyleFixed(receipt.episode_run_id));
+    result += ",\"post_public_revision\":" +
+        std::to_string(receipt.post_public_revision);
+    result += ",\"post_target_perk_owned\":";
+    result += receipt.post_target_perk_owned ? "true" : "false";
+    result += ",\"postcondition_verified\":";
+    result += receipt.postcondition_verified ? "true" : "false";
+    result += ",\"reason\":";
+    AppendJsonString(result, receipt.reason);
+  }
+  result += "}}";
+  return result;
+}
+
+std::string ExecutePlayerLifestyleFormalPrivateStepV1(
+    std::string_view request_id, std::string_view step,
+    std::string_view payload, const xar::game::GameAdapter &game,
+    const xar::game::Snapshot &published, std::uint64_t revision) {
+  using namespace xar::ck3_11906;
+  std::string expected_snapshot_id;
+  std::string episode_run_id;
+  std::uint64_t expected_revision = 0;
+  std::uint64_t expected_date = 0;
+  std::uint64_t expected_player = 0;
+  if (!xar::bridge::JsonStringField(
+          payload, "expected_snapshot_id", expected_snapshot_id, 48) ||
+      !xar::bridge::JsonStringField(
+          payload,
+          step == kPlayerLifestyleFormalPrivateQueryStepV1
+              ? "episode_run_id"
+              : "expected_episode_run_id",
+          episode_run_id, 64) ||
+      !xar::bridge::JsonUnsignedField(
+          payload, "expected_revision", expected_revision) ||
+      !xar::bridge::JsonUnsignedField(
+          payload, "expected_date_raw", expected_date) ||
+      !xar::bridge::JsonUnsignedField(
+          payload, "expected_player_character_id", expected_player) ||
+      expected_revision == 0 || expected_revision != revision ||
+      expected_date > static_cast<std::uint64_t>(
+                          std::numeric_limits<std::int32_t>::max()) ||
+      expected_player == 0 ||
+      expected_player > static_cast<std::uint64_t>(
+                            std::numeric_limits<std::uint32_t>::max()) ||
+      expected_snapshot_id != "native:" + std::to_string(revision) ||
+      published.date_raw < 0 ||
+      expected_date != static_cast<std::uint64_t>(published.date_raw) ||
+      expected_player !=
+          static_cast<std::uint64_t>(published.played_character_id) ||
+      episode_run_id.rfind(
+          "native-" + std::to_string(expected_player) + "-", 0) != 0) {
+    return CommandResultFrame(request_id, step, false,
+                              "private_lifestyle_frame_or_episode_invalid");
+  }
+  xar::game::Snapshot current{};
+  if (!published.paused || !published.map_ready ||
+      !published.has_played_character ||
+      !published.played_character_alive ||
+      !xar::game::ReadSnapshot(game, current) || current != published) {
+    return CommandResultFrame(request_id, step, false,
+                              "private_lifestyle_published_frame_stale");
+  }
+  if (step == kPlayerLifestyleFormalPrivateSubmitStepV1) {
+    std::string kind;
+    std::string target;
+    std::uint64_t expected_native = 0;
+    std::uint64_t expected_proof = 0;
+    if (!xar::bridge::JsonStringField(payload, "kind", kind, 16) ||
+        !xar::bridge::JsonStringField(payload, "target_key", target, 128) ||
+        !xar::bridge::JsonUnsignedField(
+            payload, "expected_native_revision", expected_native) ||
+        !xar::bridge::JsonUnsignedField(
+            payload, "expected_proof_epoch", expected_proof) ||
+        kind != "perk" || expected_native != revision ||
+        expected_proof != revision ||
+        g_player_lifestyle_action_may_have_submitted_v1 ||
+        g_player_lifestyle_pending_ack_v1.has_value() ||
+        g_player_lifestyle_last_query_revision_v1 != revision ||
+        g_player_lifestyle_last_query_episode_v1 != episode_run_id ||
+        g_player_lifestyle_last_query_player_v1 !=
+            published.played_character_id) {
+      return CommandResultFrame(
+          request_id, step, false,
+          "private_lifestyle_action_binding_or_pending_state_invalid");
+    }
+    xar::game::PlayerLifestyleWindowStableKeyV1 key{};
+    if (!AssignPlayerLifestyleWindowStableKeyV1(target, key)) {
+      return CommandResultFrame(request_id, step, false,
+                                "private_lifestyle_target_key_invalid");
+    }
+  } else if (step == kPlayerLifestyleFormalPrivateReceiptStepV1) {
+    std::string action_id;
+    if (!xar::bridge::JsonStringField(
+            payload, "action_request_id", action_id, 128) ||
+        !g_player_lifestyle_pending_ack_v1.has_value() ||
+        !g_player_lifestyle_action_may_have_submitted_v1 ||
+        action_id != g_player_lifestyle_pending_ack_v1->request_id ||
+        episode_run_id != LifestyleFixed(
+                              g_player_lifestyle_pending_ack_v1->
+                                  episode_run_id) ||
+        revision <=
+            g_player_lifestyle_pending_ack_v1->pre_public_revision) {
+      return CommandResultFrame(request_id, step, false,
+                                "private_lifestyle_pending_receipt_invalid");
+    }
+  }
+
+  auto context =
+      std::make_unique<PlayerLifestyleFormalWireContextV1>();
+  const auto mode =
+      step == kPlayerLifestyleFormalPrivateQueryStepV1
+          ? PlayerLifestyleFormalWireModeV1::query
+          : step == kPlayerLifestyleFormalPrivateSubmitStepV1
+                ? PlayerLifestyleFormalWireModeV1::submit_perk
+                : PlayerLifestyleFormalWireModeV1::verify_receipt;
+  if (!InitializePlayerLifestyleFormalWireContextV1(
+          *context, BindCurrentProcess(true), current, revision,
+          episode_run_id, mode)) {
+    return CommandResultFrame(request_id, step, false,
+                              "private_lifestyle_source_bind_unavailable");
+  }
+  if (mode == PlayerLifestyleFormalWireModeV1::submit_perk) {
+    context->action_request_id.assign(request_id);
+    xar::bridge::JsonStringField(payload, "target_key",
+                                 context->action_target_key, 128);
+    context->action_request.request_id =
+        context->action_request_id;
+    context->action_request.kind =
+        xar::game::PlayerLifestyleSelectionKindV1::perk;
+    context->action_request.target_key =
+        context->action_target_key;
+    context->action_request.expected_snapshot_id = context->snapshot_id;
+    context->action_request.expected_episode_run_id =
+        context->episode_run_id;
+    context->action_request.expected_public_revision = revision;
+    context->action_request.expected_native_revision = revision;
+    context->action_request.expected_proof_epoch = revision;
+    context->action_request.expected_date_raw = current.date_raw;
+    context->action_request.expected_player_character_id =
+        static_cast<std::uint32_t>(current.played_character_id);
+  } else if (mode == PlayerLifestyleFormalWireModeV1::verify_receipt) {
+    context->pending_ack = *g_player_lifestyle_pending_ack_v1;
+  }
+  MainThreadQueryTicketV1 ticket{};
+  const auto submit = TrySubmitMainThreadQueryV1(
+      g_main_thread_query_mailbox_v1,
+      &ExecutePlayerLifestyleFormalWireMailboxV1, context.get(), ticket);
+  if (submit != MainThreadQuerySubmitResultV1::submitted) {
+    return CommandResultFrame(request_id, step, false,
+                              "private_lifestyle_application_main_unavailable");
+  }
+  if (mode == PlayerLifestyleFormalWireModeV1::submit_perk)
+    g_player_lifestyle_action_may_have_submitted_v1 = true;
+  auto wait = WaitForMainThreadQueryV1(g_main_thread_query_mailbox_v1,
+                                      ticket, 8'000);
+  while (wait == MainThreadQueryWaitResultV1::
+                     timeout_executor_already_running) {
+    wait = WaitForMainThreadQueryV1(g_main_thread_query_mailbox_v1,
+                                   ticket, 2'000);
+  }
+  xar::game::Snapshot completion{};
+  const bool stable =
+      wait == MainThreadQueryWaitResultV1::completed &&
+      xar::game::ReadSnapshot(game, completion) && completion == current;
+  if (mode == PlayerLifestyleFormalWireModeV1::submit_perk &&
+      context->pending_ack.status ==
+          xar::game::PlayerLifestyleSelectionActionAckStatusV1::
+              submitted_verification_pending) {
+    g_player_lifestyle_pending_ack_v1 = context->pending_ack;
+    g_player_lifestyle_last_query_revision_v1 = 0;
+  }
+  std::string response =
+      stable ? PlayerLifestyleFormalPrivateResultFrame(
+                   request_id, step, *context)
+             : CommandResultFrame(
+                   request_id, step, false,
+                   "private_lifestyle_executor_or_completion_state_red");
+  if (stable && context->completed) {
+    if (mode == PlayerLifestyleFormalWireModeV1::query) {
+      g_player_lifestyle_last_query_episode_v1 = episode_run_id;
+      g_player_lifestyle_last_query_revision_v1 = revision;
+      g_player_lifestyle_last_query_player_v1 =
+          published.played_character_id;
+    } else if (mode == PlayerLifestyleFormalWireModeV1::verify_receipt &&
+               context->receipt.status ==
+                   xar::game::PlayerLifestyleSelectionActionReceiptStatusV1::
+                       applied) {
+      g_player_lifestyle_pending_ack_v1.reset();
+      g_player_lifestyle_action_may_have_submitted_v1 = false;
+    }
+  }
+  if (ReclaimMainThreadQueryV1(g_main_thread_query_mailbox_v1,
+                               ticket) !=
+      MainThreadQueryReclaimResultV1::reclaimed) {
+    response = CommandResultFrame(
+        request_id, step, false,
+        "private_lifestyle_mailbox_result_not_reclaimed");
+  }
+  return response;
+}
+#endif
+
 std::string FrontendGuiTreeInspectionResultFrame(
     std::string_view request_id,
     std::string_view step,
@@ -6839,6 +7139,10 @@ public:
 #endif
     environment.permitted_executor_unquadragintary =
         &xar::bridge::ExecuteCouncilApplicationMainV1;
+#if defined(XAR_CK3_ENABLE_G2_PLAYER_LIFESTYLE_FORMAL_WIRE_PRIVATE_V1)
+    environment.permitted_executor_trioquadragintary =
+        &xar::ck3_11906::ExecutePlayerLifestyleFormalWireMailboxV1;
+#endif
 #if defined(XAR_CK3_ENABLE_G2_PLAYER_CONSTRUCTION_VIEW_PROBE_PRIVATE_V1)
     environment.permitted_executor_duoquadragintary =
         &xar::ck3_11906::ExecutePlayerConstructionViewProbeMailboxV1;
@@ -7404,6 +7708,14 @@ void RunConnectedSession(
 #if defined(XAR_CK3_ENABLE_G2_COUNCIL_APPLICATION_MAIN_PRIVATE_ROUTE_V1)
                    && !xar::bridge::IsCouncilApplicationMainPrivateStepV1(step)
 #endif
+#if defined(XAR_CK3_ENABLE_G2_PLAYER_LIFESTYLE_FORMAL_WIRE_PRIVATE_V1)
+                   && step != xar::ck3_11906::
+                                  kPlayerLifestyleFormalPrivateQueryStepV1
+                   && step != xar::ck3_11906::
+                                  kPlayerLifestyleFormalPrivateSubmitStepV1
+                   && step != xar::ck3_11906::
+                                  kPlayerLifestyleFormalPrivateReceiptStepV1
+#endif
 #if defined(XAR_CK3_ENABLE_G2_M5_RANKED_MARRIAGE_PRIVATE_QUERY_V1)
                    && step !=
                           xar::bridge::kMarriageRankedPrivateQueryStepV1
@@ -7434,6 +7746,26 @@ void RunConnectedSession(
                       step, incoming.payload, request_id,
                       *previous_snapshot, state_revision);
               connected = xar::bridge::WriteFrame(pipe, response);
+            }
+          } else
+#endif
+#if defined(XAR_CK3_ENABLE_G2_PLAYER_LIFESTYLE_FORMAL_WIRE_PRIVATE_V1)
+          if (step == xar::ck3_11906::
+                          kPlayerLifestyleFormalPrivateQueryStepV1 ||
+              step == xar::ck3_11906::
+                          kPlayerLifestyleFormalPrivateSubmitStepV1 ||
+              step == xar::ck3_11906::
+                          kPlayerLifestyleFormalPrivateReceiptStepV1) {
+            if (!previous_snapshot.has_value()) {
+              connected = xar::bridge::WriteFrame(
+                  pipe, CommandResultFrame(
+                            request_id, step, false,
+                            "private lifestyle published snapshot unavailable"));
+            } else {
+              connected = xar::bridge::WriteFrame(
+                  pipe, ExecutePlayerLifestyleFormalPrivateStepV1(
+                            request_id, step, incoming.payload, game,
+                            *previous_snapshot, state_revision));
             }
           } else
 #endif

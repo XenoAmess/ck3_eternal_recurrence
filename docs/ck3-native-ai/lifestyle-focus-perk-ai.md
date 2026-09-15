@@ -637,3 +637,41 @@ command 或 MCP schema。open_kaishek 当前 main64cd 没有 LIFE
 precondition 各 4/4 与 Python 普通/`-O` 各 6/6 只证明
 源合同和私有策略；正式入口、实机 material result、下一 turn 与
 cold restore 仍待唯一 CK3 负责人在用户释放实例后验收。
+
+#### 受控 application-main 候选，仍未形成 production 能力
+
+新增默认 OFF 的
+`XAR_CK3_ENABLE_G2_PLAYER_LIFESTYLE_FORMAL_WIRE_PRIVATE_V1` 只为
+同版本受控验收接入三个不广告的 typed 步骤：
+`private-query-player-lifestyle-formal-v1`、
+`private-select-player-lifestyle-perk-v1`、
+`private-query-player-lifestyle-receipt-v1`。固定 mailbox slot43
+仅接受 `ExecutePlayerLifestyleFormalWireMailboxV1`，不暴露一般
+native-call 入口。每次 query/action 在 application-main 重新读
+CK3 paused snapshot、完整角色 storage 回链与 LIFE2/LIFE4 source；
+同一 published revision 的 query/action 即使落在不同主线程 pump，
+`proof_epoch` 仍绑定真实 published revision，source 本身保持两次
+fresh root/sample。action 只接受上一次相同 episode/frame/player
+query 中的最终合法 perk；任何未确认提交阻塞下一次提交。
+receipt 从后续真实 `native:<n+1>` paused frame 重新读 LIFE2
+focus、owned-perk、XP 与点数，material `HasPerk` 才可确认 applied。
+
+这条私有 route 是下一场实机的合法入口准备，**没有**注册公共
+query/action，也没有接进 `native_auto_run` 正式策略循环。
+LIFE4 的最终判定目前仍需 `window+0xF8` 已绑定玩家；普通
+production 起点若未打开该原生窗口，query 会如实返回
+`lifestyle_window_unbound_or_stale`，不能靠文案把它称为可用。
+另一个同版本事实是 bridge generic Snapshot 尚不包含 focus/perk，
+同日同帧没有新 checkpoint 时发布器会去重；receipt 必须等待
+正式自动运行自然推进产生新的 paused published frame，不能改日期
+或自造 post frame。窗口独立最终判定/自动绑定的 exact-build
+只读源、正式 Python 消费、实机 action/result/next turn 与
+cold restore 仍分别待核验。受控运行后须把 ACK、receipt、
+checkpoint 的版本及 pending action 关联落盘；当前内存 pending ACK
+不满足 cold restore 门。
+
+接口兼容：此开关 OFF 时现有 public API 不变；ON 时只添加
+私有 slot43、三个私有步骤及 LIFE6 私有 episode/frame receipt
+字段。open_kaishek main64cd 没有现成 LIFE 私有 consumer，
+本候选不要求下游立即改 schema；若未来公开能力，需先冻结
+typed 查询/动作/回执格式并派发被动 profile/资产适配。

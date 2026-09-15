@@ -123,6 +123,138 @@ Result BuildPlayerLifestyleFormalPreconditionV1(
   return Result::ready;
 }
 
+Result BuildPlayerLifestyleFormalReceiptObservationV1(
+    const game::PlayerLifestyleSnapshotV1 &state,
+    std::string_view episode_run_id,
+    game::PlayerLifestyleSelectionStateObservationV1 &output) noexcept {
+  output = {};
+  if (state.status != game::PlayerLifestyleSnapshotStatusV1::available ||
+      !state.readiness.current_focus_ready ||
+      !state.readiness.owned_perks_ready ||
+      !state.readiness.lifestyle_progress_ready ||
+      !state.readiness.same_frame_ready ||
+      Fixed(state.snapshot_id).empty() || state.public_revision == 0 ||
+      state.native_revision == 0 || state.proof_epoch == 0 ||
+      state.player_character_id < 0) {
+    return Result::source_unavailable;
+  }
+  if (episode_run_id.empty() ||
+      episode_run_id.size() >=
+          game::kPlayerLifestyleSelectionEpisodeRunIdCapacityV1) {
+    return Result::episode_unavailable;
+  }
+  for (char ch : episode_run_id) {
+    if (!((ch >= 'a' && ch <= 'z') || (ch >= 'A' && ch <= 'Z') ||
+          (ch >= '0' && ch <= '9') || ch == '-')) {
+      return Result::episode_unavailable;
+    }
+  }
+  const auto &source = state.state;
+  if (source.current_focus_presence !=
+          game::PlayerLifestyleFocusPresenceV1::present ||
+      !source.current_lifestyle_progress_present) {
+    return Result::target_progress_unavailable;
+  }
+  if (source.owned_perk_count >
+          game::kPlayerLifestyleWindowMaximumPerksV1 ||
+      source.current_lifestyle_progress.xp_total_raw < 0 ||
+      source.current_lifestyle_progress.unspent_perk_points < 0 ||
+      !ConvertKey(source.current_focus_key, output.current_focus_key) ||
+      !ConvertKey(source.current_lifestyle_progress.lifestyle_key,
+                  output.lifestyle_progress[0].lifestyle_key)) {
+    output = {};
+    return Result::invalid_source;
+  }
+  for (std::uint32_t i = 0; i < source.owned_perk_count; ++i) {
+    if (!ConvertKey(source.owned_perk_keys[i], output.owned_perk_keys[i])) {
+      output = {};
+      return Result::invalid_source;
+    }
+  }
+  output.available = true;
+  output.paused = true;
+  output.snapshot_id = state.snapshot_id;
+  std::copy(episode_run_id.begin(), episode_run_id.end(),
+            output.episode_run_id.begin());
+  output.public_revision = state.public_revision;
+  output.native_revision = state.native_revision;
+  output.proof_epoch = state.proof_epoch;
+  output.date_raw = state.date_raw;
+  output.player_character_id =
+      static_cast<std::uint32_t>(state.player_character_id);
+  output.current_focus_known = true;
+  output.has_current_focus = true;
+  output.owned_perks_fully_materialized = true;
+  output.owned_perk_count = source.owned_perk_count;
+  output.lifestyle_progress_fully_materialized = true;
+  output.lifestyle_progress_count = 1;
+  output.lifestyle_progress[0].experience_raw =
+      source.current_lifestyle_progress.xp_total_raw;
+  output.lifestyle_progress[0].perk_points =
+      source.current_lifestyle_progress.unspent_perk_points;
+  return Result::ready;
+}
+
+Result AttachPlayerLifestyleFinalCandidatesV1(
+    const game::PlayerLifestyleWindowCandidatesV1 &candidates,
+    game::PlayerLifestyleSnapshotV1 &state) noexcept {
+  if (state.status != game::PlayerLifestyleSnapshotStatusV1::available ||
+      candidates.status !=
+          game::PlayerLifestyleWindowCandidatesStatusV1::available ||
+      !SameFrame(state, candidates) ||
+      !candidates.readiness.final_legality_ready ||
+      !candidates.readiness.same_frame_ready ||
+      candidates.focus_status ==
+          game::PlayerLifestyleWindowCollectionStatusV1::unavailable ||
+      candidates.perk_status ==
+          game::PlayerLifestyleWindowCollectionStatusV1::unavailable ||
+      candidates.focus_count >
+          game::kPlayerLifestyleMaximumLegalFocusCandidatesV1 ||
+      candidates.perk_count >
+          game::kPlayerLifestyleMaximumLegalPerkCandidatesV1) {
+    return Result::source_unavailable;
+  }
+  auto &target = state.state;
+  for (std::uint32_t i = 0; i < candidates.focus_count; ++i) {
+    const auto &row = candidates.focuses[i];
+    if (!row.can_select) continue;
+    auto &out =
+        target.legal_focus_candidates[target.legal_focus_candidate_count];
+    if (!AssignPlayerLifestyleStableKeyV1(
+            PlayerLifestyleWindowStableKeyViewV1(row.key), out.key) ||
+        !AssignPlayerLifestyleStableKeyV1(
+            PlayerLifestyleWindowStableKeyViewV1(row.lifestyle_key),
+            out.lifestyle_key)) {
+      return Result::invalid_source;
+    }
+    ++target.legal_focus_candidate_count;
+  }
+  for (std::uint32_t i = 0; i < candidates.perk_count; ++i) {
+    const auto &row = candidates.perks[i];
+    if (!row.can_select) continue;
+    auto &out = target.legal_perk_candidates[target.legal_perk_candidate_count];
+    if (!AssignPlayerLifestyleStableKeyV1(
+            PlayerLifestyleWindowStableKeyViewV1(row.key), out.key) ||
+        !AssignPlayerLifestyleStableKeyV1(
+            PlayerLifestyleWindowStableKeyViewV1(row.lifestyle_key),
+            out.lifestyle_key)) {
+      return Result::invalid_source;
+    }
+    ++target.legal_perk_candidate_count;
+  }
+  target.legal_focus_candidate_status =
+      game::PlayerLifestyleCandidateCollectionStatusV1::available;
+  target.legal_perk_candidate_status =
+      game::PlayerLifestyleCandidateCollectionStatusV1::available;
+  target.legal_focus_candidate_unavailable_reason =
+      game::PlayerLifestyleCandidateCollectionFailureV1::none;
+  target.legal_perk_candidate_unavailable_reason =
+      game::PlayerLifestyleCandidateCollectionFailureV1::none;
+  state.readiness.legal_focus_candidates_ready = true;
+  state.readiness.legal_perk_candidates_ready = true;
+  return Result::ready;
+}
+
 std::string_view PlayerLifestyleFormalPreconditionResultKeyV1(
     Result result) noexcept {
   switch (result) {

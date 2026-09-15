@@ -1,4 +1,5 @@
 #include "xar_bridge/player_lifestyle_formal_precondition_v1.hpp"
+#include "xar_bridge/player_lifestyle_formal_wire_v1.hpp"
 
 #include <algorithm>
 #include <array>
@@ -28,7 +29,7 @@ void FillState(game::PlayerLifestyleSnapshotV1 &value) {
   Fixed(value.snapshot_id, "native:711");
   value.public_revision = 711;
   value.native_revision = 711;
-  value.proof_epoch = 31;
+  value.proof_epoch = 711;
   value.date_raw = 53178312;
   value.player_character_id = 29829;
   value.readiness.current_focus_ready = true;
@@ -53,7 +54,7 @@ void FillCandidates(game::PlayerLifestyleWindowCandidatesV1 &value) {
   Fixed(value.snapshot_id, "native:711");
   value.public_revision = 711;
   value.native_revision = 711;
-  value.proof_epoch = 31;
+  value.proof_epoch = 711;
   value.date_raw = 53178312;
   value.player_character_id = 29829;
   value.readiness.final_legality_ready = true;
@@ -82,6 +83,13 @@ int main() {
     FillState(*state);
     FillCandidates(*candidates);
     const auto episode = "native-29829-ee172aa720db";
+    const std::uint64_t query_pump = 31;
+    const std::uint64_t action_pump = 32;
+    Require(action_pump > query_pump);
+    Require(ck3::PlayerLifestyleFormalFrameProofEpochV1(711, query_pump) ==
+            ck3::PlayerLifestyleFormalFrameProofEpochV1(711, action_pump));
+    Require(ck3::PlayerLifestyleFormalFrameProofEpochV1(711, action_pump) ==
+            711);
     Require(ck3::BuildPlayerLifestyleFormalPreconditionV1(
                 *state, *candidates, episode, *out) ==
             ck3::PlayerLifestyleFormalPreconditionResultV1::ready);
@@ -89,11 +97,33 @@ int main() {
             out->state.lifestyle_progress_count == 1 &&
             out->state.lifestyle_progress[0].perk_points == 1 &&
             out->candidates.perks[0].can_select);
+    Require(ck3::AttachPlayerLifestyleFinalCandidatesV1(
+                *candidates, *state) ==
+            ck3::PlayerLifestyleFormalPreconditionResultV1::ready);
+    Require(state->state.legal_perk_candidate_count == 1 &&
+            state->readiness.legal_perk_candidates_ready);
     ++candidates->public_revision;
+    Require(ck3::PlayerLifestyleFormalFrameProofEpochV1(
+                candidates->public_revision, action_pump) !=
+            state->proof_epoch);
     Require(ck3::BuildPlayerLifestyleFormalPreconditionV1(
                 *state, *candidates, episode, *out) ==
             ck3::PlayerLifestyleFormalPreconditionResultV1::frame_mismatch);
     candidates->public_revision = 711;
+    Fixed(state->snapshot_id, "native:712");
+    state->public_revision = 712;
+    state->native_revision = 712;
+    state->proof_epoch = 712;
+    game::PlayerLifestyleSelectionStateObservationV1 later{};
+    Require(ck3::BuildPlayerLifestyleFormalReceiptObservationV1(
+                *state, episode, later) ==
+            ck3::PlayerLifestyleFormalPreconditionResultV1::ready);
+    Require(later.public_revision == 712 &&
+            later.episode_run_id[0] == 'n');
+    Fixed(state->snapshot_id, "native:711");
+    state->public_revision = 711;
+    state->native_revision = 711;
+    state->proof_epoch = 711;
     state->state.current_focus_presence =
         game::PlayerLifestyleFocusPresenceV1::absent;
     state->state.current_lifestyle_progress_present = false;
@@ -105,7 +135,7 @@ int main() {
                 *state, *candidates, "", *out) ==
             ck3::PlayerLifestyleFormalPreconditionResultV1::
                 episode_unavailable);
-    std::cout << "player_lifestyle_formal_precondition_v1_test: 4/4 GREEN\n";
+    std::cout << "player_lifestyle_formal_precondition_v1_test: 6/6 GREEN\n";
     return 0;
   } catch (const std::exception &error) {
     std::cerr << error.what() << '\n';

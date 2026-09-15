@@ -29,6 +29,22 @@ BuildPlayerLifestyleFormalPreconditionV1(
     std::string_view episode_run_id,
     game::PlayerLifestyleSelectionPreconditionV1 &output) noexcept;
 
+// Independent later paused LIFE2 state, with no dependency on a still-bound
+// GUI window. The verifier itself checks a distinct native frame and material
+// focus/perk change against the pending ACK.
+PlayerLifestyleFormalPreconditionResultV1
+BuildPlayerLifestyleFormalReceiptObservationV1(
+    const game::PlayerLifestyleSnapshotV1 &state,
+    std::string_view episode_run_id,
+    game::PlayerLifestyleSelectionStateObservationV1 &output) noexcept;
+
+// Add only LIFE4 rows that passed the final native evaluator to the public
+// shape of the private LIFE2 JSON. This does not register a capability.
+PlayerLifestyleFormalPreconditionResultV1
+AttachPlayerLifestyleFinalCandidatesV1(
+    const game::PlayerLifestyleWindowCandidatesV1 &candidates,
+    game::PlayerLifestyleSnapshotV1 &state) noexcept;
+
 std::string_view PlayerLifestyleFormalPreconditionResultKeyV1(
     PlayerLifestyleFormalPreconditionResultV1 result) noexcept;
 

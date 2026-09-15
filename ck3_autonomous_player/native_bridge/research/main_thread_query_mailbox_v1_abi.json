@@ -233,6 +233,17 @@
     "production_target_count": 1,
     "maximum_requests_per_pump": 1
   },
+  "g2_m4_lifestyle_private_slot43": {
+    "status": "static-ready / controlled candidate / live pending",
+    "opt_in_cmake": "XAR_CK3_ENABLE_G2_PLAYER_LIFESTYLE_FORMAL_WIRE_PRIVATE_V1",
+    "executor": "ExecutePlayerLifestyleFormalWireMailboxV1",
+    "scope": "LIFE2 current-focus state + LIFE4 currently bound player window final legality + LIFE6/LIFE7 one perk + independent later LIFE2 receipt",
+    "public_registration": false,
+    "advertised": false,
+    "frame_binding": "real native:<published_revision> frame, observed revision/date/player, official episode_run_id from driver, proof_epoch=published_revision stable across different verified main pumps",
+    "cold_restore": "not verified; private in-process pending ACK must not be called production checkpoint continuity",
+    "remaining_live_gate": "ordinary unopened-window source, paused material perk result, next formal turn, cold restore"
+  },
   "readiness": {
     "static_exact_build_chain": true,
     "offline_state_machine_fixture": true,
