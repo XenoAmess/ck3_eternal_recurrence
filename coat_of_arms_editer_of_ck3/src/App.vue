@@ -8,6 +8,12 @@ import {
 } from './api/ck3Companion'
 import { decodeDdsBase64, decodedDdsToDataUrl, type DecodedDds } from './domain/dds'
 import {
+  candidateDominance,
+  MAX_COMPARISON_CANDIDATES,
+  type CoatOfArmsComparisonCandidate,
+} from './domain/comparisonCandidates'
+import { coatOfArmsDocumentStats } from './domain/documentStats'
+import {
   loadWebAssetPack,
   readWebAsset,
   readWebFitIndex,
@@ -29,6 +35,7 @@ import {
   resizeFitImage,
   type FitImage,
   type FitTextureCandidate,
+  type ImageFitMetrics,
   type ImageFitProgress,
   type ImageFitResult,
 } from './domain/imageFitter'
@@ -103,6 +110,8 @@ const historyPending = ref(false)
 const historyNotice = ref('尚无可撤销修改')
 const autosaveStatus = ref('正在检查自动保存')
 const recoverableAutosave = ref<CoatOfArmsProjectDocument>()
+const comparisonCandidates = ref<CoatOfArmsComparisonCandidate[]>([])
+let comparisonCandidateSequence = 0
 const mcpStatus = ref('未连接')
 const patternResources = ref<CoatOfArmsResourceItem[]>([])
 const emblemResources = ref<CoatOfArmsResourceItem[]>([])
@@ -239,6 +248,11 @@ const visualTransformStyle = computed(() => {
     transform: `translate(-50%, -50%) rotate(${instance.rotation}deg)`,
   }
 })
+const comparisonRows = computed(() => comparisonCandidates.value.map((candidate) => ({
+  ...candidate,
+  current: candidate.source === output.value,
+  dominance: candidateDominance(candidate, comparisonCandidates.value),
+})))
 const boundedInstanceWindowStart = computed(() => {
   const length = activeEmblem.value?.instances.length ?? 0
   const maximum = Math.max(0, length - INSTANCE_EDITOR_WINDOW_SIZE)
@@ -306,6 +320,86 @@ function cssColor(value: string): string {
   const rgb = normalized.match(/^rgb\s*\{\s*(\d+)\s+(\d+)\s+(\d+)\s*}$/)
   if (rgb) return `rgb(${rgb[1]} ${rgb[2]} ${rgb[3]})`
   return '#6f6254'
+}
+
+function fitMetricContract(result: ImageFitResult): string | undefined {
+  if (!targetImage.value) return undefined
+  return [
+    targetImage.value.sha256,
+    result.provenance.scoringContract,
+    result.provenance.rendererContract,
+    result.provenance.resolution,
+    result.provenance.surfaceMaskApplied ? 'surface-mask:on' : 'surface-mask:off',
+  ].join(':')
+}
+
+function currentFitMetrics(): { metrics: ImageFitMetrics, metricContract: string } | undefined {
+  const result = fitResult.value
+  if (
+    !result
+    || activeFitCompression.value
+    || activeFitPrune.value
+    || serializeCoatOfArms(result.coatOfArms) !== output.value
+  ) return undefined
+  const metricContract = fitMetricContract(result)
+  return metricContract ? { metrics: { ...result.metrics }, metricContract } : undefined
+}
+
+function captureComparisonCandidate(
+  name?: string,
+  fitEvidence = currentFitMetrics(),
+  notify = true,
+) {
+  const existingIndex = comparisonCandidates.value.findIndex((candidate) => candidate.source === output.value)
+  const candidate: CoatOfArmsComparisonCandidate = {
+    id: existingIndex >= 0
+      ? comparisonCandidates.value[existingIndex].id
+      : `candidate-${++comparisonCandidateSequence}`,
+    name: name ?? (existingIndex >= 0
+      ? comparisonCandidates.value[existingIndex].name
+      : `候选 ${comparisonCandidates.value.length + 1}`),
+    source: output.value,
+    stats: coatOfArmsDocumentStats(coatOfArms.value, output.value),
+    metrics: fitEvidence ? { ...fitEvidence.metrics } : undefined,
+    metricContract: fitEvidence?.metricContract,
+    previewUrl: largeDocumentPreviewDeferred.value ? undefined : renderedPreviewUrl.value,
+  }
+  if (existingIndex >= 0) {
+    comparisonCandidates.value.splice(existingIndex, 1, candidate)
+    if (notify) ElMessage.info('当前构图已在候选区，已刷新快照和可比指标')
+    return
+  }
+  if (comparisonCandidates.value.length >= MAX_COMPARISON_CANDIDATES) {
+    if (notify) ElMessage.warning('候选对比区按 Beta 合同保留 1–3 项；请先删除一个候选')
+    return
+  }
+  comparisonCandidates.value.push(candidate)
+  if (notify) ElMessage.success(`已保存${candidate.name}；候选源码与当前完整模型一致`)
+}
+
+async function activateComparisonCandidate(candidate: CoatOfArmsComparisonCandidate) {
+  const parsed = parseCoatOfArms(candidate.source)
+  if (parsed.diagnostics.some((item) => item.severity === 'error')) {
+    ElMessage.error('候选源码重新解析失败，未改动当前构图')
+    return
+  }
+  coatOfArms.value = parsed.coatOfArms
+  source.value = candidate.source
+  diagnostics.value = parsed.diagnostics
+  selectedEmblem.value = 0
+  selectedInstanceIndex.value = 0
+  instanceWindowStart.value = 0
+  fitResult.value = undefined
+  fitCompressionEvidence.value = undefined
+  fitCompressionSource.value = ''
+  fitPruneEvidence.value = undefined
+  fitPruneSource.value = ''
+  await loadCurrentTexturePreviews()
+  ElMessage.success(`已载入${candidate.name}；完整源码进入当前编辑模型`)
+}
+
+function removeComparisonCandidate(candidateId: string) {
+  comparisonCandidates.value = comparisonCandidates.value.filter((candidate) => candidate.id !== candidateId)
 }
 
 function importSource() {
@@ -1216,6 +1310,14 @@ async function fitTargetImage() {
           ? '语义元素 + 原生块混合重建'
           : '语义元素搜索'
       fitStatus.value = `完成 · ${reconstructionMode} · 从完整库评估 ${result.provenance.evaluatedCandidates} 个构图 · 选中 ${result.provenance.selectedLayers}/${result.provenance.layerBudget} 层 · 停止：${fitTerminationLabels[result.provenance.terminationReason]} · CPU reference${fitWebGlScore.value ? ' + WebGL2 RGBA8 交叉评分' : ' · WebGL2 不可用'}`
+      const metricContract = fitMetricContract(result)
+      if (metricContract) {
+        captureComparisonCandidate(
+          `拟合 ${result.provenance.drawnInstances.toLocaleString()} 实例`,
+          { metrics: result.metrics, metricContract },
+          false,
+        )
+      }
       ElMessage.success('多层原生元素构图已载入结构化编辑器，可继续调整并复制代码')
     }
     worker.onerror = (event) => {
@@ -1976,6 +2078,36 @@ watch(() => activeEmblem.value?.instances.length ?? 0, (length) => {
         <p v-if="selectedInstance" class="visual-editor-help">
           正在编辑图层 {{ selectedEmblem + 1 }} · 实例 {{ selectedInstanceIndex + 1 }}：中心拖动位置，右下角缩放，顶部圆点旋转。
         </p>
+        <section class="candidate-comparison" data-testid="candidate-comparison">
+          <div class="section-heading">
+            <h3>候选对比（{{ comparisonCandidates.length }}/{{ MAX_COMPARISON_CANDIDATES }}）</h3>
+            <el-button size="small" :disabled="comparisonCandidates.length >= MAX_COMPARISON_CANDIDATES && !comparisonCandidates.some((item) => item.source === output)" @click="captureComparisonCandidate()">
+              保存当前候选
+            </el-button>
+          </div>
+          <p>最多并排保留 3 个 Beta 候选。只有输入 SHA、评分器、renderer、分辨率与 surface mask 全部相同时才比较损失；手工编辑项不冒充 Pareto 结论。</p>
+          <div v-if="comparisonRows.length" class="candidate-grid">
+            <article v-for="candidate in comparisonRows" :key="candidate.id" class="candidate-card" :data-candidate-id="candidate.id">
+              <img v-if="candidate.previewUrl" :src="candidate.previewUrl" :alt="`${candidate.name} 预览`" />
+              <div v-else class="candidate-preview-placeholder">预览延后</div>
+              <strong>{{ candidate.name }}</strong>
+              <span>{{ candidate.stats.drawnInstances.toLocaleString() }} 实例 · {{ candidate.stats.coloredEmblemBlocks.toLocaleString() }} 块 · {{ candidate.stats.utf8Bytes.toLocaleString() }} bytes</span>
+              <template v-if="candidate.metrics">
+                <span>总损失 {{ candidate.metrics.totalLoss.toFixed(5) }} · 边缘 {{ candidate.metrics.edgeLoss.toFixed(5) }}</span>
+                <el-tag size="small" :type="candidate.dominance === 'dominated' ? 'warning' : 'success'">
+                  {{ candidate.dominance === 'dominated' ? '同合同下被支配' : '同合同下非支配' }}
+                </el-tag>
+              </template>
+              <el-tag v-else size="small" type="info">未绑定可比拟合指标</el-tag>
+              <el-tag v-if="candidate.current" size="small" type="primary">当前构图</el-tag>
+              <div class="candidate-actions">
+                <el-button size="small" @click="activateComparisonCandidate(candidate)">载入</el-button>
+                <el-button size="small" type="danger" plain @click="removeComparisonCandidate(candidate.id)">删除</el-button>
+              </div>
+            </article>
+          </div>
+          <el-empty v-else :image-size="54" description="尚未保存候选；拟合完成时也会自动加入" />
+        </section>
         <div class="preview-caption">
           <strong>{{ coatOfArms.pattern || '未指定 pattern' }}</strong>
           <span>{{ coatOfArms.coloredEmblems.length }} 个彩色图层 · {{ drawnInstanceCount }} 个实例 · {{ coatOfArms.texturedEmblems.length }} 个受限纹理层</span>

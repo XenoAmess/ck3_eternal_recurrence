@@ -13,6 +13,7 @@ export interface DecodedFitImage {
   workingResolution: number
   mimeType: string
   bytes: number
+  sha256: string
   previewUrl: string
 }
 
@@ -20,6 +21,10 @@ export async function decodeFitImageFile(file: File, size = 96): Promise<Decoded
   if (!SUPPORTED_IMAGE_TYPES.has(file.type)) throw new Error('只接受 PNG、JPEG 或 WebP 图片')
   if (file.size < 1 || file.size > MAX_IMAGE_FILE_BYTES) throw new Error('图片必须在 1 B..16 MiB')
   if (!Number.isSafeInteger(size) || size < 32 || size > 256) throw new Error('目标预览尺寸必须在 32..256')
+  const sha256 = Array.from(new Uint8Array(await crypto.subtle.digest('SHA-256', await file.arrayBuffer())))
+    .map((byte) => byte.toString(16).padStart(2, '0'))
+    .join('')
+    .toUpperCase()
   const bitmap = await createImageBitmap(file)
   try {
     if (
@@ -59,6 +64,7 @@ export async function decodeFitImageFile(file: File, size = 96): Promise<Decoded
       workingResolution: preview.image.width,
       mimeType: file.type,
       bytes: file.size,
+      sha256,
       previewUrl: preview.previewUrl,
     }
   } finally {
