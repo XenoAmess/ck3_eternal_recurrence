@@ -64,6 +64,39 @@ describe('CK3 coat of arms parser', () => {
     expect(output).not.toContain('custom =')
     expect(output).toContain('color1 = red')
     expect(output).toContain('texture = "ce_fleur.dds"')
+    expect(result.coatOfArms.coloredEmblems[0].mask).toEqual([])
+    expect(output).not.toContain('mask =')
+  })
+
+  it('round-trips an explicitly unmasked generated emblem without inventing a mask', () => {
+    const source = [
+      'coa = {',
+      '    pattern = "pattern_solid.dds"',
+      '    color1 = black',
+      '    color2 = white',
+      '    color3 = red',
+      '',
+      '    colored_emblem = {',
+      '        texture = "ce_block_02.dds"',
+      '        color1 = black',
+      '        color2 = black',
+      '        color3 = black',
+      '',
+      '        instance = {',
+      '            position = { 0.5 0.5 }',
+      '            scale = { 1 1 }',
+      '            rotation = 0',
+      '            depth = 1',
+      '        }',
+      '    }',
+      '}',
+      '',
+    ].join('\r\n')
+    const result = parseCoatOfArms(source)
+
+    expect(result.diagnostics.filter((item) => item.severity === 'error')).toEqual([])
+    expect(result.coatOfArms.coloredEmblems[0].mask).toEqual([])
+    expect(serializeCoatOfArms(result.coatOfArms)).toBe(source)
   })
 
   it('rejects body-only syntax', () => {

@@ -1,12 +1,17 @@
 # CK3 家徽编辑器 Beta 工作计划
 
-> 状态：执行计划（2026-09-15）
+> 状态：执行中（2026-09-15）；WP0 浏览器门禁已通过，WP1 待启动
 >
 > 产品目录：`coat_of_arms_editer_of_ck3/`
 >
 > 目标：从 Alpha 的“可用近似器”推进到可验证、可压缩、可在大预算下稳定工作的纯浏览器 Beta。
 >
-> 当前第一阻断项：修复大预算拟合预览中的红色网格/分割线，并重新生成 1024 层 hunter 基准。
+> 当前第一工作项：以版本化分块 MCP 完成 hunter v4 大载荷原生 Apply/Copy 闭环；128 KiB 仍只是旧桥合同，不是引擎上限。
+
+机器可读状态见 [`coat-of-arms-fit-artifacts/beta-progress.json`](coat-of-arms-fit-artifacts/beta-progress.json)，WP0 完整证据见
+[`xenoamess-hunter-v4/README.md`](coat-of-arms-fit-artifacts/xenoamess-hunter-v4/README.md)。旧 0.96 夹具在 96/230/512 分别稳定
+泄漏 186/1,806/5,112 像素；修复后 mask 开关共六个观测点均为零。hunter v4 在共同合同下与 v3 的总损失、边缘损失完全
+相同，1,000 个实例的精确 CRLF 复制与重新解析闭环通过；原生状态仍明确为待验。
 
 ## 1. 不变约束
 

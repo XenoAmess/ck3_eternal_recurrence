@@ -1,0 +1,172 @@
+{
+  "schema": "ck3-coa-hunter-fit-evidence-v1",
+  "artifactVersion": "xenoamess-hunter-v4",
+  "predecessor": "../xenoamess-hunter-v3/",
+  "status": "browser-seam-fix-passed-native-pending",
+  "generatedAt": "2026-09-15T10:38:48.639Z",
+  "sourceRevision": {
+    "headCommit": "c31886f0571932546a4445faef61c08606830288",
+    "workingTreePatchSha256": "AB23329270991FDF76BC4573096760B9A0BCD17700DFE43A9076265B8E2E4C89"
+  },
+  "input": {
+    "originalFile": "xenoamess_hunter_4096_no_shade.svg",
+    "originalSha256": "FA93CF19A687C0681E6D35AEFD6837B6279722B27470E63D6B0F3E99F4A5E8DC",
+    "rasterFile": "target.png",
+    "rasterSha256": "53BBDB2FB3B8252475A12098BAC4E1B0A5BBC4765CB6896B4397923EE54D8AC8",
+    "originalResolution": [
+      4096,
+      4096
+    ],
+    "rasterResolution": [
+      1024,
+      1024
+    ]
+  },
+  "assetPack": {
+    "packId": "ck3-1.19.0.6-base-complete-42p-1578e-8aux",
+    "manifestSha256": "AD7F0A911A2B4F002E923FEAB13716566D9A7B61447E9092504826FE6498FE91",
+    "expectedManifestSha256": "AD7F0A911A2B4F002E923FEAB13716566D9A7B61447E9092504826FE6498FE91",
+    "manifestHashMatchesReceipt": true,
+    "sourceManifestSha256": "92D9FBDCBE931DCB3694B0840558A8096EE090B9C0ACD4A6AB5F2DB7D6DA5F35"
+  },
+  "configuration": {
+    "userDrawInstanceBudget": 1024,
+    "searchResolution": 96,
+    "randomSeed": null,
+    "scoringContract": "alpha-weighted-srgb8-mse62-luma-gradient-l1-38-v1",
+    "rendererContract": "cpu-rgba8-bilinear-clamp-pixel-center-v1",
+    "surfaceMaskApplied": false,
+    "numericNoiseTolerance": 1e-12,
+    "historicalReportedPrecisionDecimals": 5,
+    "historicalReportedMaximumTotalLoss": 0.0259,
+    "historicalReportedMaximumEdgeLoss": 0.04304,
+    "seamGate": {
+      "resolutions": [
+        96,
+        230,
+        512
+      ],
+      "backgroundLeakPixels": 0,
+      "maximumPeriodicPeakPixels": 0
+    }
+  },
+  "metrics": {
+    "colorLoss": 0.015389746153544555,
+    "edgeLoss": 0.043043678580258954,
+    "totalLoss": 0.025898240475696027,
+    "relativeImprovement": 0.86771978337903
+  },
+  "commonContractComparison": {
+    "baselineArtifact": "../xenoamess-hunter-v3/coat_of_arms.txt",
+    "baselineMetrics": {
+      "colorLoss": 0.015389746153544555,
+      "edgeLoss": 0.043043678580258954,
+      "totalLoss": 0.025898240475696027
+    },
+    "candidateMetrics": {
+      "colorLoss": 0.015389746153544555,
+      "edgeLoss": 0.043043678580258954,
+      "totalLoss": 0.025898240475696027,
+      "relativeImprovement": 0.86771978337903
+    },
+    "tolerance": 1e-12,
+    "totalLossNonRegression": true,
+    "edgeLossNonRegression": true
+  },
+  "counts": {
+    "userBudget": 1024,
+    "drawnInstances": 1000,
+    "logicalLayers": 1000,
+    "coloredEmblemBlocks": 1000,
+    "instances": 1000,
+    "utf8Bytes": 380862,
+    "lines": 14006
+  },
+  "provenance": {
+    "algorithm": "ck3-coa-browser-fit-v4-coverage-safe",
+    "searchBackend": "cpu-reference",
+    "scoringContract": "alpha-weighted-srgb8-mse62-luma-gradient-l1-38-v1",
+    "rendererContract": "cpu-rgba8-bilinear-clamp-pixel-center-v1",
+    "randomSeed": null,
+    "surfaceMaskApplied": false,
+    "resolution": 96,
+    "evaluatedCandidates": 2300,
+    "patternAssets": 42,
+    "emblemAssets": 1577,
+    "layerBudget": 1024,
+    "logicalLayers": 1000,
+    "coloredEmblemBlocks": 1000,
+    "drawnInstances": 1000,
+    "selectedLayers": 1000,
+    "reconstructionMode": "native-tile-paint",
+    "candidateLosses": [
+      {
+        "mode": "native-tile-paint",
+        "layers": 1000,
+        "totalLoss": 0.025898240475696027
+      },
+      {
+        "mode": "semantic-search",
+        "layers": 0,
+        "totalLoss": 0.1957831725503121
+      },
+      {
+        "mode": "semantic-search",
+        "layers": 0,
+        "totalLoss": 0.26549150858415754
+      }
+    ],
+    "terminationReason": "no_improvement",
+    "nativeTileSeamValidation": {
+      "status": "passed",
+      "samplingContract": "pixel-center-hard-geometry-v1",
+      "metrics": [
+        {
+          "resolution": 96,
+          "backgroundLeakPixels": 0,
+          "maximumLeakAmount": 0,
+          "peakRowLeakPixels": 0,
+          "peakColumnLeakPixels": 0
+        },
+        {
+          "resolution": 230,
+          "backgroundLeakPixels": 0,
+          "maximumLeakAmount": 0,
+          "peakRowLeakPixels": 0,
+          "peakColumnLeakPixels": 0
+        },
+        {
+          "resolution": 512,
+          "backgroundLeakPixels": 0,
+          "maximumLeakAmount": 0,
+          "peakRowLeakPixels": 0,
+          "peakColumnLeakPixels": 0
+        }
+      ]
+    }
+  },
+  "layerLossSummary": {
+    "count": 1001,
+    "first": 0.26549150858415754,
+    "last": 0.025898240475696027,
+    "strictlyDecreasing": true
+  },
+  "selectedAssetSha256": [
+    "0EE08A10EE4C71278C0ACE98506DD2A520261B20E040B353B7DA4D13C0616C4A",
+    "AA0ADFE41446C623940D23F48F355A68E8B46C299D957849B0C64D6C69652F3F"
+  ],
+  "roundTrip": {
+    "parseErrors": 0,
+    "serializeParseExact": true,
+    "sourceSha256": "C4648E2C98D3503252D9A9A298B4A39E27A8F4C7269944E607F34F86B3C60571",
+    "parsedColoredEmblemBlocks": 1000,
+    "parsedInstances": 1000
+  },
+  "browserReportText": "运行状态\n\n完成 · 原生块多层重建 · 从完整库评估 2300 个构图 · 选中 1000/1024 层 · 停止：没有继续改善的构图 · CPU reference + WebGL2 RGBA8 交叉评分\n\n完成 · 选中 1000 层（进度表示当前搜索阶段）\n拟合平面（不叠加盾面材质）\n总损失\n0.02590\n颜色\n0.01539\n边缘\n0.04304\n候选数\n2300\n用户预算\n1024 个绘制实例\n实际绘制实例\n1000\n逻辑图层\n1000\ncolored_emblem 块\n1000\ninstance 数\n1000\n代码体积\n380862 UTF-8 bytes / 14006 行\n高分辨率接缝门禁\n96 / 230 / 512 全部通过\n接缝指标\n96px leak=0 peak=0；230px leak=0 peak=0；512px leak=0 peak=0\n算法合同\nck3-coa-browser-fit-v4-coverage-safe\n相对改善\n86.77%\nGPU 交叉分\n0.01536\n候选路径\n原生块 1000层=0.0259；语义 0层=0.1958；语义 0层=0.2655\n分数只用于同一算法和目标之间比较，不代表 CK3 像素一致率。结果已进入下方结构化编辑器。",
+  "evidenceLevel": {
+    "browserRegression": "passed",
+    "transferIntegrity": "passed-for-browser-copy-interception-and-parse",
+    "ck3ApplyCopyRoundTrip": "pending-wp1",
+    "nativePixelComparison": "pending-wp1"
+  }
+}

@@ -1,0 +1,99 @@
+{
+  "schema": "ck3-coa-beta-progress-v1",
+  "updatedAt": "2026-09-15T18:41:00+08:00",
+  "overallStatus": "in_progress",
+  "workPackages": [
+    {
+      "id": "WP0",
+      "status": "passed",
+      "commit": null,
+      "commands": [
+        "pnpm exec vitest run src/domain/parser.test.ts src/domain/imageFitter.test.ts",
+        "pnpm build",
+        "pnpm exec playwright test e2e/reference-hunter-fit.spec.ts",
+        "pnpm test"
+      ],
+      "resultPath": "docs/coat-of-arms-fit-artifacts/xenoamess-hunter-v4/",
+      "keyMetrics": {
+        "legacyLeakPixels96": 186,
+        "legacyLeakPixels230": 1806,
+        "legacyLeakPixels512": 5112,
+        "fixedLeakPixels96": 0,
+        "fixedLeakPixels230": 0,
+        "fixedLeakPixels512": 0,
+        "userBudget": 1024,
+        "drawnInstances": 1000,
+        "coloredEmblemBlocks": 1000,
+        "instances": 1000,
+        "utf8Bytes": 380862,
+        "lines": 14006,
+        "totalLoss": 0.025898240475696027,
+        "edgeLoss": 0.043043678580258954
+      },
+      "blockers": []
+    },
+    {
+      "id": "WP1",
+      "status": "pending",
+      "commit": null,
+      "commands": [],
+      "resultPath": null,
+      "keyMetrics": {},
+      "blockers": []
+    },
+    {
+      "id": "WP2",
+      "status": "pending",
+      "commit": null,
+      "commands": [],
+      "resultPath": null,
+      "keyMetrics": {},
+      "blockers": []
+    },
+    {
+      "id": "WP3",
+      "status": "pending",
+      "commit": null,
+      "commands": [],
+      "resultPath": null,
+      "keyMetrics": {},
+      "blockers": []
+    },
+    {
+      "id": "WP4",
+      "status": "pending",
+      "commit": null,
+      "commands": [],
+      "resultPath": null,
+      "keyMetrics": {},
+      "blockers": []
+    },
+    {
+      "id": "WP5",
+      "status": "pending",
+      "commit": null,
+      "commands": [],
+      "resultPath": null,
+      "keyMetrics": {},
+      "blockers": []
+    },
+    {
+      "id": "WP6",
+      "status": "pending",
+      "commit": null,
+      "commands": [],
+      "resultPath": null,
+      "keyMetrics": {},
+      "blockers": []
+    },
+    {
+      "id": "WP7",
+      "status": "pending",
+      "commit": null,
+      "commands": [],
+      "resultPath": null,
+      "keyMetrics": {},
+      "blockers": []
+    }
+  ]
+}

@@ -9,6 +9,7 @@ import {
   type ImageFitProgress,
 } from './imageFitter'
 import { renderCoatOfArms } from './renderer'
+import type { CoatOfArms } from './types'
 
 const texture = (name: 'solid' | 'split' | 'square' | 'neutralBlock'): DecodedDds => {
   const size = 16
@@ -31,6 +32,127 @@ const candidate = (name: string, value: DecodedDds): FitTextureCandidate => ({
 })
 
 const asImage = (pixels: Uint8ClampedArray, size: number): FitImage => ({ width: size, height: size, pixels })
+
+type MosaicCell = {
+  minimumX: number
+  minimumY: number
+  maximumX: number
+  maximumY: number
+  color: [number, number, number]
+}
+
+const seamMosaicCells: MosaicCell[] = [
+  { minimumX: 0, minimumY: 0, maximumX: 0.25, maximumY: 0.25, color: [240, 20, 20] },
+  { minimumX: 0.25, minimumY: 0, maximumX: 0.5, maximumY: 0.25, color: [20, 220, 40] },
+  { minimumX: 0, minimumY: 0.25, maximumX: 0.25, maximumY: 0.5, color: [20, 40, 230] },
+  { minimumX: 0.25, minimumY: 0.25, maximumX: 0.5, maximumY: 0.5, color: [235, 210, 20] },
+  { minimumX: 0.5, minimumY: 0, maximumX: 1, maximumY: 0.5, color: [10, 10, 10] },
+  { minimumX: 0, minimumY: 0.5, maximumX: 0.5, maximumY: 1, color: [245, 245, 245] },
+  { minimumX: 0.5, minimumY: 0.5, maximumX: 1, maximumY: 1, color: [20, 220, 220] },
+]
+
+const mosaicCellAt = (u: number, v: number) => seamMosaicCells.find((cell) => (
+  u >= cell.minimumX && u < cell.maximumX && v >= cell.minimumY && v < cell.maximumY
+))!
+
+const seamMosaic = (size: number): FitImage => {
+  const pixels = new Uint8ClampedArray(size * size * 4)
+  for (let y = 0; y < size; y += 1) {
+    for (let x = 0; x < size; x += 1) {
+      const offset = (y * size + x) * 4
+      pixels.set([...mosaicCellAt((x + 0.5) / size, (y + 0.5) / size).color, 255], offset)
+    }
+  }
+  return asImage(pixels, size)
+}
+
+const seamSurfaceMask = (): DecodedDds => {
+  const size = 8
+  const pixels = new Uint8ClampedArray(size * size * 4)
+  for (let y = 0; y < size; y += 1) {
+    for (let x = 0; x < size; x += 1) {
+      const offset = (y * size + x) * 4
+      pixels.set([0, 128, 96 + ((x + y) % 5) * 16, 255], offset)
+    }
+  }
+  return { width: size, height: size, fourCC: 'DXT1', pixels }
+}
+
+const nominalTileReference = (coatOfArms: CoatOfArms): CoatOfArms => ({
+  ...coatOfArms,
+  colors: [...coatOfArms.colors],
+  coloredEmblems: coatOfArms.coloredEmblems.map((emblem) => ({
+    ...emblem,
+    colors: [...emblem.colors],
+    mask: [...emblem.mask],
+    instances: emblem.instances.map((instance) => {
+      const cell = seamMosaicCells.find((candidate) => (
+        Math.abs(instance.position[0] - (candidate.minimumX + candidate.maximumX) / 2) <= 1e-12
+        && Math.abs(instance.position[1] - (candidate.minimumY + candidate.maximumY) / 2) <= 1e-12
+      ))
+      if (!cell) throw new Error(`找不到实例 ${instance.position.join(',')} 的 nominal tile`)
+      return {
+        ...instance,
+        position: [...instance.position],
+        scale: [cell.maximumX - cell.minimumX, cell.maximumY - cell.minimumY],
+      }
+    }),
+  })),
+  texturedEmblems: coatOfArms.texturedEmblems.map((emblem) => ({ ...emblem })),
+})
+
+const renderedPixel = (pixels: Uint8ClampedArray, offset: number) => (
+  [pixels[offset], pixels[offset + 1], pixels[offset + 2]] as [number, number, number]
+)
+
+const squaredDistance = (left: number[], right: number[]) => left.reduce(
+  (sum, value, index) => sum + (value - right[index]) ** 2,
+  0,
+)
+
+const seamLeakMetrics = (
+  actual: Uint8ClampedArray,
+  reference: Uint8ClampedArray,
+  background: Uint8ClampedArray,
+  size: number,
+) => {
+  const boundaryBand = 2 / size
+  const verticalBoundaries = [0.25, 0.5]
+  const horizontalBoundaries = [0.25, 0.5]
+  let backgroundLeakPixels = 0
+  let maximumLeakAmount = 0
+  const rowLeaks = new Uint32Array(size)
+  const columnLeaks = new Uint32Array(size)
+  for (let y = 1; y < size - 1; y += 1) {
+    const v = (y + 0.5) / size
+    for (let x = 1; x < size - 1; x += 1) {
+      const u = (x + 0.5) / size
+      const onInternalBoundary = verticalBoundaries.some((boundary) => Math.abs(u - boundary) <= boundaryBand)
+        || horizontalBoundaries.some((boundary) => Math.abs(v - boundary) <= boundaryBand)
+      if (!onInternalBoundary) continue
+      const offset = (y * size + x) * 4
+      const actualColor = renderedPixel(actual, offset)
+      const referenceColor = renderedPixel(reference, offset)
+      const backgroundColor = renderedPixel(background, offset)
+      const actualDistance = squaredDistance(actualColor, backgroundColor)
+      const referenceDistance = squaredDistance(referenceColor, backgroundColor)
+      const maximumChannelDelta = Math.max(...actualColor.map(
+        (value, channel) => Math.abs(value - referenceColor[channel]),
+      ))
+      if (maximumChannelDelta <= 2 || actualDistance + 4 >= referenceDistance) continue
+      backgroundLeakPixels += 1
+      maximumLeakAmount = Math.max(maximumLeakAmount, maximumChannelDelta)
+      rowLeaks[y] += 1
+      columnLeaks[x] += 1
+    }
+  }
+  return {
+    backgroundLeakPixels,
+    maximumLeakAmount,
+    peakRowLeakPixels: Math.max(...rowLeaks),
+    peakColumnLeakPixels: Math.max(...columnLeaks),
+  }
+}
 
 describe('browser image fitter', () => {
   it('recovers a known two-color pattern deterministically', () => {
@@ -184,9 +306,12 @@ describe('browser image fitter', () => {
       [candidate('square.dds', square)],
       { resolution: size, maxLayers: 3, minRelativeLayerImprovement: 0.0001 },
     )
-    expect(result.provenance.algorithm).toBe('ck3-coa-browser-fit-v3-shape-beam')
+    expect(result.provenance.algorithm).toBe('ck3-coa-browser-fit-v4-coverage-safe')
     expect(result.provenance.selectedLayers).toBeGreaterThanOrEqual(2)
     expect(result.coatOfArms.coloredEmblems).toHaveLength(result.provenance.selectedLayers)
+    expect(result.provenance.drawnInstances).toBe(result.provenance.selectedLayers)
+    expect(result.provenance.logicalLayers).toBe(result.coatOfArms.coloredEmblems.length)
+    expect(result.provenance.coloredEmblemBlocks).toBe(result.coatOfArms.coloredEmblems.length)
     expect(result.provenance.layerLosses).toHaveLength(result.provenance.selectedLayers + 1)
     for (let index = 1; index < result.provenance.layerLosses.length; index += 1) {
       expect(result.provenance.layerLosses[index]).toBeLessThan(result.provenance.layerLosses[index - 1])
@@ -225,5 +350,62 @@ describe('browser image fitter', () => {
       expect(result.provenance.layerLosses[index]).toBeLessThan(result.provenance.layerLosses[index - 1])
     }
     expect(result.metrics.relativeImprovement).toBeGreaterThan(0.5)
+  })
+
+  it('keeps mixed-size native paint tiles seamless above the 96px search plane', () => {
+    const solid = texture('solid')
+    const block = texture('neutralBlock')
+    const result = fitImageToCoatOfArms(
+      seamMosaic(32),
+      [candidate('pattern_solid.dds', solid)],
+      [candidate('ce_block_02.dds', block)],
+      { resolution: 32, maxLayers: 128 },
+    )
+    expect(result.provenance.reconstructionMode).toBe('native-tile-paint')
+    expect(result.provenance.selectedLayers).toBeGreaterThanOrEqual(5)
+    expect(result.provenance.nativeTileSeamValidation).toEqual({
+      status: 'passed',
+      samplingContract: 'pixel-center-hard-geometry-v1',
+      metrics: [96, 230, 512].map((resolution) => ({
+        resolution,
+        backgroundLeakPixels: 0,
+        maximumLeakAmount: 0,
+        peakRowLeakPixels: 0,
+        peakColumnLeakPixels: 0,
+      })),
+    })
+    const reference = nominalTileReference(result.coatOfArms)
+
+    const observations = []
+    for (const surfaceMask of [undefined, seamSurfaceMask()]) {
+      for (const size of [96, 230, 512]) {
+        const assets = {
+          pattern: solid,
+          coloredEmblems: { 'ce_block_02.dds': block },
+          surfaceMask,
+        }
+        const actual = renderCoatOfArms(result.coatOfArms, assets, {}, size)!
+        const expected = renderCoatOfArms(reference, assets, {}, size)!
+        const background = renderCoatOfArms(
+          { ...result.coatOfArms, coloredEmblems: [] },
+          assets,
+          {},
+          size,
+        )!
+        observations.push({
+          surfaceMask: surfaceMask ? 'on' : 'off',
+          size,
+          ...seamLeakMetrics(actual.pixels, expected.pixels, background.pixels, size),
+        })
+      }
+    }
+    expect(observations).toEqual(['off', 'on'].flatMap((surfaceMask) => [96, 230, 512].map((size) => ({
+      surfaceMask,
+      size,
+      backgroundLeakPixels: 0,
+      maximumLeakAmount: 0,
+      peakRowLeakPixels: 0,
+      peakColumnLeakPixels: 0,
+    }))))
   })
 })

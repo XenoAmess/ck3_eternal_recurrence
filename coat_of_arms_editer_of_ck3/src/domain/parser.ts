@@ -387,7 +387,7 @@ export function parseCoatOfArms(source: string): ImportResult {
           colors: [1, 2, 3].map((index) => scalar(emblemEntries, `color${index}`, index === 1 ? 'yellow' : 'white', diagnostics, variables)) as [string, string, string],
           mask: numberList(
             findLastAssignment(emblemEntries, 'mask')?.value,
-            [1],
+            [],
             diagnostics,
             'colored_emblem mask',
           ),

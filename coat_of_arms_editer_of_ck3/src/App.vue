@@ -133,6 +133,22 @@ const fitTerminationLabels: Record<ImageFitResult['provenance']['terminationReas
 
 const output = computed(() => serializeCoatOfArms(coatOfArms.value))
 const outputBytes = computed(() => new TextEncoder().encode(output.value).length)
+const outputLines = computed(() => output.value.match(/\n/g)?.length ?? 0)
+const fitEvidenceJson = computed(() => {
+  if (!fitResult.value) return ''
+  const { layerLosses, selectedAssetSha256, ...provenance } = fitResult.value.provenance
+  return JSON.stringify({
+    metrics: fitResult.value.metrics,
+    provenance,
+    layerLossSummary: {
+      count: layerLosses.length,
+      first: layerLosses[0],
+      last: layerLosses.at(-1),
+      strictlyDecreasing: layerLosses.every((loss, index) => index === 0 || loss < layerLosses[index - 1]),
+    },
+    selectedAssetSha256: [...new Set(selectedAssetSha256)],
+  })
+})
 const activeEmblem = computed(() => coatOfArms.value.coloredEmblems[selectedEmblem.value])
 const visibleDiagnostics = computed<Diagnostic[]>(() => {
   const items = [...diagnostics.value, ...validateCoatOfArms(coatOfArms.value)]
@@ -972,7 +988,7 @@ importSource()
             <el-button :disabled="!fitBusy" @click="cancelImageFit()">取消</el-button>
           </div>
         </div>
-        <div class="fit-report">
+        <div class="fit-report" :data-fit-evidence="fitEvidenceJson">
           <strong>运行状态</strong>
           <p>{{ fitStatus }}</p>
           <div class="fit-progress">
@@ -993,7 +1009,15 @@ importSource()
               <div><dt>颜色</dt><dd>{{ fitResult.metrics.colorLoss.toFixed(5) }}</dd></div>
               <div><dt>边缘</dt><dd>{{ fitResult.metrics.edgeLoss.toFixed(5) }}</dd></div>
               <div><dt>候选数</dt><dd>{{ fitResult.provenance.evaluatedCandidates }}</dd></div>
-              <div><dt>实际图层</dt><dd>{{ fitResult.provenance.selectedLayers }} / {{ fitResult.provenance.layerBudget }}</dd></div>
+              <div><dt>用户预算</dt><dd>{{ fitResult.provenance.layerBudget }} 个绘制实例</dd></div>
+              <div><dt>实际绘制实例</dt><dd>{{ fitResult.provenance.drawnInstances }}</dd></div>
+              <div><dt>逻辑图层</dt><dd>{{ fitResult.provenance.logicalLayers }}</dd></div>
+              <div><dt>colored_emblem 块</dt><dd>{{ fitResult.provenance.coloredEmblemBlocks }}</dd></div>
+              <div><dt>instance 数</dt><dd>{{ fitResult.provenance.drawnInstances }}</dd></div>
+              <div><dt>代码体积</dt><dd>{{ outputBytes }} UTF-8 bytes / {{ outputLines }} 行</dd></div>
+              <div><dt>高分辨率接缝门禁</dt><dd>{{ fitResult.provenance.nativeTileSeamValidation.status === 'passed' ? '96 / 230 / 512 全部通过' : '不适用' }}</dd></div>
+              <div><dt>接缝指标</dt><dd>{{ fitResult.provenance.nativeTileSeamValidation.metrics.map((metric) => `${metric.resolution}px leak=${metric.backgroundLeakPixels} peak=${Math.max(metric.peakRowLeakPixels, metric.peakColumnLeakPixels)}`).join('；') || '不适用' }}</dd></div>
+              <div><dt>算法合同</dt><dd>{{ fitResult.provenance.algorithm }}</dd></div>
               <div><dt>相对改善</dt><dd>{{ (fitResult.metrics.relativeImprovement * 100).toFixed(2) }}%</dd></div>
               <div><dt>GPU 交叉分</dt><dd>{{ fitWebGlScore ? fitWebGlScore.meanSquaredRgbError.toFixed(5) : '不可用' }}</dd></div>
               <div><dt>候选路径</dt><dd>{{ fitResult.provenance.candidateLosses.map((item) => `${item.mode === 'native-tile-paint' ? '原生块' : '语义'} ${item.layers}层=${item.totalLoss.toFixed(4)}`).join('；') }}</dd></div>
