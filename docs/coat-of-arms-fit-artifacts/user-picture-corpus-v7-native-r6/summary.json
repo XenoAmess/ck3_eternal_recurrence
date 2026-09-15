@@ -1,0 +1,1602 @@
+{
+  "schema": "ck3-coat-of-arms-picture-corpus-native-summary-v1",
+  "source_report": {
+    "path": "docs/coat-of-arms-fit-artifacts/user-picture-corpus-v7-native-r6/raw-report.json",
+    "bytes": 12365275,
+    "sha256": "FA8631B21321CC4D3136BC4C033CB1999F312D556FAC37EB6123953E991AAE67"
+  },
+  "repository_head": "0244475825d108760cb3fa612762cbbfb16c3ed9",
+  "created_at": "2026-09-15T22:11:11.911480+00:00",
+  "elapsed_seconds": 234.84,
+  "steam": {
+    "path": "D:\\Program Files (x86)\\Steam\\config\\loginusers.vdf",
+    "wants_offline_mode_values": [
+      "1"
+    ],
+    "offline": true
+  },
+  "interaction_policy": {
+    "mcp_only": true,
+    "mcp_baseline_private_native_read_only": false,
+    "uses_ocr": false,
+    "uses_keyboard": false,
+    "uses_mouse": false
+  },
+  "shared_ck3_slot": {
+    "mechanism": "exclusive_launch_lock + exclusive_state_lock",
+    "launch_lock_acquired": true,
+    "state_lock_acquired": true,
+    "released": true
+  },
+  "overall": {
+    "report_ok": false,
+    "report_error": "RuntimeError: frontend MCP route sequence failed its checks",
+    "sequence_ok": false,
+    "corpus_ok": false,
+    "case_count": 7,
+    "passed": 4,
+    "failed": 3
+  },
+  "framebuffer_calibration": {
+    "ok": true,
+    "calibration_id": "picture-corpus",
+    "checks": {
+      "red_applied": true,
+      "red_preparation": true,
+      "begin_captured": true,
+      "green_applied": true,
+      "green_preparation": true,
+      "complete_captured": true
+    },
+    "failed_checks": [],
+    "receipt": {
+      "calibrationId": "picture-corpus",
+      "framebufferSize": [
+        2560,
+        1440
+      ],
+      "rect": [
+        809,
+        312,
+        975,
+        478
+      ],
+      "differenceThreshold": 48,
+      "candidateComponentCount": 7,
+      "changedPixels": 79336,
+      "selectedPixels": 21523,
+      "beginPixelSha256": "779B9082A82DD83EEAA5ADC8E191EBE7DDDE5F17DCD878073494DD67286EAFD6",
+      "completePixelSha256": "F9E02046BC0BCDC92D5F830DA8C3A2041E32A74830ADB6C067195FF764CF9277",
+      "maskPngSha256": "3C6327454DF8D33B80B8A01E918E6EB213CB72BC9247C207B799B7056FFE333A",
+      "referenceIndependent": true,
+      "fixedScreenCoordinatesUsed": false,
+      "usesOcr": false,
+      "usesKeyboard": false,
+      "usesMouse": false,
+      "route": "coat_of_arms_designer",
+      "routeStable": true,
+      "schema": "ck3-coat-of-arms-framebuffer-calibration-v2"
+    }
+  },
+  "cases": [
+    {
+      "id": "picture-01",
+      "ok": true,
+      "source": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\docs\\coat-of-arms-fit-artifacts\\user-picture-corpus-v7-budget-1024\\picture-01\\coat_of_arms.txt",
+        "raw_bytes": 403155,
+        "raw_sha256": "da5113ebc2bd87fe15a2b374b70d526f9f17e7edbd7ace2445c7f9e8cc7c9375",
+        "wire_bytes": 403155,
+        "wire_sha256": "da5113ebc2bd87fe15a2b374b70d526f9f17e7edbd7ace2445c7f9e8cc7c9375",
+        "line_endings_normalized": false,
+        "structure": {
+          "logical_layers": 1024,
+          "colored_emblem_blocks": 1024,
+          "textured_emblem_blocks": 0,
+          "instances": 1024,
+          "utf8_bytes": 403155,
+          "lines": 14342
+        },
+        "semantic_projection": {
+          "sha256": "e0c4abbd24b76ef874f5d56a30def7b55d9a8bafb1743e73075a629edefad695",
+          "field_counts": {
+            "patterns": 1,
+            "textures": 1024,
+            "colors": 3075,
+            "masks": 0,
+            "positions": 1024,
+            "scales": 1024,
+            "rotations": 1024,
+            "depths": 1024,
+            "parents": 0
+          }
+        }
+      },
+      "reference": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\docs\\coat-of-arms-fit-artifacts\\user-picture-corpus-v7-budget-1024\\picture-01\\canonical-preview-230.png",
+        "png_bytes": 70560,
+        "png_sha256": "94600BDD4F9E59A6816CB05A241CCCD403558684176FB7130EF9661B83FC195B"
+      },
+      "roundtrip": {
+        "ok": true,
+        "binding_mode": "snapshot",
+        "chunk_count": 9,
+        "checks": {
+          "input_exceeds_v1_bound": true,
+          "begin_not_error": true,
+          "begin_receiving": true,
+          "all_chunks_sent": true,
+          "last_chunk_ready": true,
+          "commit_not_error": true,
+          "commit_applied": true,
+          "commit_source_identity": true,
+          "native_copy_exported": true,
+          "native_copy_exceeds_v1_bound": true,
+          "drawn_instance_count_preserved": true,
+          "logical_layer_count_preserved": true,
+          "colored_emblem_block_count_preserved": true,
+          "semantic_field_sequences_preserved": true
+        },
+        "failed_checks": [],
+        "semantic_checks": {
+          "patterns": true,
+          "textures": true,
+          "colors": true,
+          "masks": true,
+          "positions": true,
+          "scales": true,
+          "rotations": true,
+          "depths": true,
+          "parents": true
+        },
+        "failed_semantic_checks": [],
+        "output_structure": {
+          "logical_layers": 1024,
+          "colored_emblem_blocks": 1024,
+          "textured_emblem_blocks": 0,
+          "instances": 1024,
+          "utf8_bytes": 256276,
+          "lines": 13318
+        },
+        "native_copy": {
+          "source_bytes": 256276,
+          "source_sha256": "e1b2550d2a9cfd88613e89873b6075a87b4a499f944207d5f15c371f55070306"
+        }
+      },
+      "framebuffer_ready_after_native_apply": true,
+      "framebuffer": {
+        "ok": true,
+        "checks": {
+          "call_not_error": true,
+          "schema": true,
+          "route_stable": true,
+          "read_only_no_ocr_or_input": true,
+          "reference_independent_localization": true,
+          "locator_loss": true,
+          "distinct_margin": true,
+          "mean_absolute_error": true,
+          "color_mse": true,
+          "edge_loss": true,
+          "worst_spatial_mean_absolute_error": true
+        },
+        "failed_checks": [],
+        "thresholds": {
+          "maximum_locator_loss": 0.45,
+          "minimum_distinct_margin": 0.005,
+          "maximum_mean_absolute_error": 0.18,
+          "maximum_color_mse": 0.06,
+          "maximum_edge_loss": 0.18,
+          "maximum_spatial_mean_absolute_error": 0.35
+        },
+        "worst_spatial_mean_absolute_error": 0.07271292805671692,
+        "metrics": {
+          "contract": "masked-srgb8-mae-mse-gradient-l1-spatial-8x8-v1",
+          "maskPixels": 37001,
+          "meanAbsoluteError": 0.0195689108222723,
+          "colorMse": 0.0029437928460538387,
+          "edgeLoss": 0.07841324806213379,
+          "spatialMeanAbsoluteError8x8": [
+            [
+              null,
+              0.006100217346101999,
+              0.0046552810817956924,
+              0.004045099951326847,
+              0.007983841933310032,
+              0.00860969815403223,
+              0.0022222220432013273,
+              null
+            ],
+            [
+              0.00784313678741455,
+              0.007519273553043604,
+              0.004283726681023836,
+              0.0013911230489611626,
+              0.0023310473188757896,
+              0.0025615317281335592,
+              0.012808259576559067,
+              0.010924369096755981
+            ],
+            [
+              0.011623610742390156,
+              0.021853847429156303,
+              0.015473331324756145,
+              0.0034521615598350763,
+              0.0016822820762172341,
+              0.004064566921442747,
+              0.0077731916680932045,
+              0.061174239963293076
+            ],
+            [
+              0.05378657579421997,
+              0.02615777775645256,
+              0.03452317416667938,
+              0.0014595134416595101,
+              0.004349785856902599,
+              0.0024760437663644552,
+              0.013957861810922623,
+              0.07271292805671692
+            ],
+            [
+              0.05580564960837364,
+              0.02804018184542656,
+              0.02201938070356846,
+              0.028645480051636696,
+              0.02696411870419979,
+              0.024926751852035522,
+              0.028003152459859848,
+              0.06107955425977707
+            ],
+            [
+              0.034229956567287445,
+              0.041202113032341,
+              0.016287798061966896,
+              0.016269145533442497,
+              0.011545767076313496,
+              0.010867858305573463,
+              0.010474612936377525,
+              0.020151132717728615
+            ],
+            [
+              0.008453158661723137,
+              0.011280483566224575,
+              0.03225540742278099,
+              0.009137892164289951,
+              0.019421100616455078,
+              0.024116946384310722,
+              0.012951044365763664,
+              0.021496005356311798
+            ],
+            [
+              null,
+              0.038842201232910156,
+              0.04862677678465843,
+              0.01855248026549816,
+              0.026112573221325874,
+              0.05449122563004494,
+              0.045925918966531754,
+              null
+            ]
+          ]
+        },
+        "best_match": {
+          "alignedContentPngSha256": "20B51A331DE4EAA8F0BF8857A5B75124ED15706F5B1A51D39B490B299B87DC32",
+          "cropPngSha256": "6B6B27F42D637EC85E369054FCF3723E91CEFB2AD4A626E4CDC8423728966CCE"
+        }
+      },
+      "native_crop": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\docs\\coat-of-arms-fit-artifacts\\user-picture-corpus-v7-native-r6\\picture-01\\native-crop.png",
+        "bytes": 69972,
+        "sha256": "20B51A331DE4EAA8F0BF8857A5B75124ED15706F5B1A51D39B490B299B87DC32",
+        "payload_kind": "aligned-content"
+      }
+    },
+    {
+      "id": "picture-02",
+      "ok": false,
+      "source": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\docs\\coat-of-arms-fit-artifacts\\user-picture-corpus-v7-budget-1024\\picture-02\\coat_of_arms.txt",
+        "raw_bytes": 232336,
+        "raw_sha256": "90d0c7ef8a0d37044b53d453fb075f45545aac46fdc4f892267991d58fe0f78a",
+        "wire_bytes": 232336,
+        "wire_sha256": "90d0c7ef8a0d37044b53d453fb075f45545aac46fdc4f892267991d58fe0f78a",
+        "line_endings_normalized": false,
+        "structure": {
+          "logical_layers": 580,
+          "colored_emblem_blocks": 580,
+          "textured_emblem_blocks": 0,
+          "instances": 580,
+          "utf8_bytes": 232336,
+          "lines": 8126
+        },
+        "semantic_projection": {
+          "sha256": "7f68c80fd6e6d5cb79dc7e6416c2788f8c36ac8722191c4589f35d3cfdaeb836",
+          "field_counts": {
+            "patterns": 1,
+            "textures": 580,
+            "colors": 1743,
+            "masks": 0,
+            "positions": 580,
+            "scales": 580,
+            "rotations": 580,
+            "depths": 580,
+            "parents": 0
+          }
+        }
+      },
+      "reference": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\docs\\coat-of-arms-fit-artifacts\\user-picture-corpus-v7-budget-1024\\picture-02\\canonical-preview-230.png",
+        "png_bytes": 77418,
+        "png_sha256": "ACB8DC6D3D2E0BEE194D24679ED6FCB1C35DC43078047FA4AC454D00143DC42A"
+      },
+      "roundtrip": {
+        "ok": false,
+        "binding_mode": "snapshot",
+        "chunk_count": 5,
+        "checks": {
+          "input_exceeds_v1_bound": true,
+          "begin_not_error": true,
+          "begin_receiving": true,
+          "all_chunks_sent": true,
+          "last_chunk_ready": true,
+          "commit_not_error": true,
+          "commit_applied": true,
+          "commit_source_identity": true,
+          "native_copy_exported": true,
+          "native_copy_exceeds_v1_bound": true,
+          "drawn_instance_count_preserved": true,
+          "logical_layer_count_preserved": true,
+          "colored_emblem_block_count_preserved": true,
+          "semantic_field_sequences_preserved": false
+        },
+        "failed_checks": [
+          "semantic_field_sequences_preserved"
+        ],
+        "semantic_checks": {
+          "patterns": true,
+          "textures": true,
+          "colors": true,
+          "masks": true,
+          "positions": true,
+          "scales": true,
+          "rotations": false,
+          "depths": true,
+          "parents": true
+        },
+        "failed_semantic_checks": [
+          "rotations"
+        ],
+        "output_structure": {
+          "logical_layers": 580,
+          "colored_emblem_blocks": 580,
+          "textured_emblem_blocks": 0,
+          "instances": 580,
+          "utf8_bytes": 145629,
+          "lines": 7547
+        },
+        "native_copy": {
+          "source_bytes": 145629,
+          "source_sha256": "a5dec4e7956a4b4d2a561793ad5caf0ba2608a5a2b27a1c0c108fa73807858e3"
+        }
+      },
+      "framebuffer_ready_after_native_apply": true,
+      "framebuffer": {
+        "ok": true,
+        "checks": {
+          "call_not_error": true,
+          "schema": true,
+          "route_stable": true,
+          "read_only_no_ocr_or_input": true,
+          "reference_independent_localization": true,
+          "locator_loss": true,
+          "distinct_margin": true,
+          "mean_absolute_error": true,
+          "color_mse": true,
+          "edge_loss": true,
+          "worst_spatial_mean_absolute_error": true
+        },
+        "failed_checks": [],
+        "thresholds": {
+          "maximum_locator_loss": 0.45,
+          "minimum_distinct_margin": 0.005,
+          "maximum_mean_absolute_error": 0.18,
+          "maximum_color_mse": 0.06,
+          "maximum_edge_loss": 0.18,
+          "maximum_spatial_mean_absolute_error": 0.35
+        },
+        "worst_spatial_mean_absolute_error": 0.05117623507976532,
+        "metrics": {
+          "contract": "masked-srgb8-mae-mse-gradient-l1-spatial-8x8-v1",
+          "maskPixels": 37001,
+          "meanAbsoluteError": 0.018348876386880875,
+          "colorMse": 0.0023827245458960533,
+          "edgeLoss": 0.0753941461443901,
+          "spatialMeanAbsoluteError8x8": [
+            [
+              null,
+              0.0021786491852253675,
+              0.02180054783821106,
+              0.02312287874519825,
+              0.04828657954931259,
+              0.005672557279467583,
+              0.0020915032364428043,
+              null
+            ],
+            [
+              0.0008714596624486148,
+              0.03638539835810661,
+              0.022932549938559532,
+              0.007958156988024712,
+              0.011680994182825089,
+              0.029390782117843628,
+              0.03343769162893295,
+              0.010737627744674683
+            ],
+            [
+              0.02157900109887123,
+              0.026313209906220436,
+              0.0035329863894730806,
+              0.001596294343471527,
+              0.002408319618552923,
+              0.02822347916662693,
+              0.04537859559059143,
+              0.004660576116293669
+            ],
+            [
+              0.026018699631094933,
+              0.020545102655887604,
+              0.00206570141017437,
+              0.003677539061754942,
+              0.001780482241883874,
+              0.004324139095842838,
+              0.05117623507976532,
+              0.04317823424935341
+            ],
+            [
+              0.043177179992198944,
+              0.020768536254763603,
+              0.011544156819581985,
+              0.007421359419822693,
+              0.02656562440097332,
+              0.015118001960217953,
+              0.00781898945569992,
+              0.03860892355442047
+            ],
+            [
+              0.020362697541713715,
+              0.017411578446626663,
+              0.025537602603435516,
+              0.011896824464201927,
+              0.005199780687689781,
+              0.00890318863093853,
+              0.003414857666939497,
+              0.027358783408999443
+            ],
+            [
+              0.007233114913105965,
+              0.01997152902185917,
+              0.007568020839244127,
+              0.008478856645524502,
+              0.020461058244109154,
+              0.015524623915553093,
+              0.015980340540409088,
+              0.006148632150143385
+            ],
+            [
+              null,
+              0.0039838156662881374,
+              0.006105861626565456,
+              0.03175124526023865,
+              0.026122329756617546,
+              0.01110296044498682,
+              0.0394335500895977,
+              null
+            ]
+          ]
+        },
+        "best_match": {
+          "alignedContentPngSha256": "8627AAF44600813E77DF1DB61102E0F1A85A72EBB3A0DC0CC453123A8A219A26",
+          "cropPngSha256": "15EF42DCE6F683A8D4B2DD802BEEB5E7A8BC131C2F605F698C4AAFDA362B5E48"
+        }
+      },
+      "native_crop": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\docs\\coat-of-arms-fit-artifacts\\user-picture-corpus-v7-native-r6\\picture-02\\native-crop.png",
+        "bytes": 68008,
+        "sha256": "8627AAF44600813E77DF1DB61102E0F1A85A72EBB3A0DC0CC453123A8A219A26",
+        "payload_kind": "aligned-content"
+      }
+    },
+    {
+      "id": "picture-03",
+      "ok": true,
+      "source": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\docs\\coat-of-arms-fit-artifacts\\user-picture-corpus-v7-budget-1024\\picture-03\\coat_of_arms.txt",
+        "raw_bytes": 403604,
+        "raw_sha256": "a5a2e6af9b2a921c2d30f7ca32e270e41b42c1a577993bff4fd24ce01b711bc7",
+        "wire_bytes": 403604,
+        "wire_sha256": "a5a2e6af9b2a921c2d30f7ca32e270e41b42c1a577993bff4fd24ce01b711bc7",
+        "line_endings_normalized": false,
+        "structure": {
+          "logical_layers": 1024,
+          "colored_emblem_blocks": 1024,
+          "textured_emblem_blocks": 0,
+          "instances": 1024,
+          "utf8_bytes": 403604,
+          "lines": 14342
+        },
+        "semantic_projection": {
+          "sha256": "8bda080e3916e3246686a92bb2f60be627d2d1d41283279aa7c157d29c603e0c",
+          "field_counts": {
+            "patterns": 1,
+            "textures": 1024,
+            "colors": 3075,
+            "masks": 0,
+            "positions": 1024,
+            "scales": 1024,
+            "rotations": 1024,
+            "depths": 1024,
+            "parents": 0
+          }
+        }
+      },
+      "reference": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\docs\\coat-of-arms-fit-artifacts\\user-picture-corpus-v7-budget-1024\\picture-03\\canonical-preview-230.png",
+        "png_bytes": 68913,
+        "png_sha256": "6396668A850B4F852EB664980EAECCB34BE2ACD3478E338DE4B23B225720A9A0"
+      },
+      "roundtrip": {
+        "ok": true,
+        "binding_mode": "snapshot",
+        "chunk_count": 9,
+        "checks": {
+          "input_exceeds_v1_bound": true,
+          "begin_not_error": true,
+          "begin_receiving": true,
+          "all_chunks_sent": true,
+          "last_chunk_ready": true,
+          "commit_not_error": true,
+          "commit_applied": true,
+          "commit_source_identity": true,
+          "native_copy_exported": true,
+          "native_copy_exceeds_v1_bound": true,
+          "drawn_instance_count_preserved": true,
+          "logical_layer_count_preserved": true,
+          "colored_emblem_block_count_preserved": true,
+          "semantic_field_sequences_preserved": true
+        },
+        "failed_checks": [],
+        "semantic_checks": {
+          "patterns": true,
+          "textures": true,
+          "colors": true,
+          "masks": true,
+          "positions": true,
+          "scales": true,
+          "rotations": true,
+          "depths": true,
+          "parents": true
+        },
+        "failed_semantic_checks": [],
+        "output_structure": {
+          "logical_layers": 1024,
+          "colored_emblem_blocks": 1024,
+          "textured_emblem_blocks": 0,
+          "instances": 1024,
+          "utf8_bytes": 255373,
+          "lines": 13318
+        },
+        "native_copy": {
+          "source_bytes": 255373,
+          "source_sha256": "b0da8e8aad6ce919bcbcceae169b76047a6506588e93403f25582a8cb93838f4"
+        }
+      },
+      "framebuffer_ready_after_native_apply": true,
+      "framebuffer": {
+        "ok": true,
+        "checks": {
+          "call_not_error": true,
+          "schema": true,
+          "route_stable": true,
+          "read_only_no_ocr_or_input": true,
+          "reference_independent_localization": true,
+          "locator_loss": true,
+          "distinct_margin": true,
+          "mean_absolute_error": true,
+          "color_mse": true,
+          "edge_loss": true,
+          "worst_spatial_mean_absolute_error": true
+        },
+        "failed_checks": [],
+        "thresholds": {
+          "maximum_locator_loss": 0.45,
+          "minimum_distinct_margin": 0.005,
+          "maximum_mean_absolute_error": 0.18,
+          "maximum_color_mse": 0.06,
+          "maximum_edge_loss": 0.18,
+          "maximum_spatial_mean_absolute_error": 0.35
+        },
+        "worst_spatial_mean_absolute_error": 0.08098817616701126,
+        "metrics": {
+          "contract": "masked-srgb8-mae-mse-gradient-l1-spatial-8x8-v1",
+          "maskPixels": 37001,
+          "meanAbsoluteError": 0.022920455783605576,
+          "colorMse": 0.003613431239500642,
+          "edgeLoss": 0.09170107543468475,
+          "spatialMeanAbsoluteError8x8": [
+            [
+              null,
+              0.003921568393707275,
+              0.0042926413007080555,
+              0.007263661362230778,
+              0.007411946076899767,
+              0.006689260248094797,
+              0.0027450979687273502,
+              null
+            ],
+            [
+              0.0,
+              0.0060055614449083805,
+              0.01246881578117609,
+              0.008839461021125317,
+              0.006814449094235897,
+              0.009714547544717789,
+              0.005044213496148586,
+              0.0008403360843658447
+            ],
+            [
+              0.013283535838127136,
+              0.020639918744564056,
+              0.006609001196920872,
+              0.002141863340511918,
+              0.0023085095454007387,
+              0.004750024992972612,
+              0.011871954426169395,
+              0.010312684811651707
+            ],
+            [
+              0.04219282418489456,
+              0.016029780730605125,
+              0.008200631476938725,
+              0.006164462771266699,
+              0.008865384384989738,
+              0.005590916145592928,
+              0.013211783953011036,
+              0.02912696823477745
+            ],
+            [
+              0.03968644142150879,
+              0.025726841762661934,
+              0.05886860564351082,
+              0.030673878267407417,
+              0.03521908447146416,
+              0.03092179261147976,
+              0.02291284315288067,
+              0.03931748867034912
+            ],
+            [
+              0.03959495574235916,
+              0.030741488561034203,
+              0.028619831427931786,
+              0.019163306802511215,
+              0.01634952612221241,
+              0.030727501958608627,
+              0.03364652767777443,
+              0.04645626246929169
+            ],
+            [
+              0.0057516335509717464,
+              0.03211238980293274,
+              0.02067410945892334,
+              0.0464370958507061,
+              0.04146302118897438,
+              0.03313049301505089,
+              0.029946522787213326,
+              0.014233840629458427
+            ],
+            [
+              null,
+              0.045378148555755615,
+              0.08098817616701126,
+              0.04097846895456314,
+              0.04532825946807861,
+              0.06466187536716461,
+              0.026535946875810623,
+              null
+            ]
+          ]
+        },
+        "best_match": {
+          "alignedContentPngSha256": "8CCF0A2D5E085E9809CFBE453370B5614F2D8D29CDE0290BD826C5497EDE2EE8",
+          "cropPngSha256": "32BEC631A91A0F4C9C9B5ADC7FAA21202A376958C3BF441C835924A9A9128F9A"
+        }
+      },
+      "native_crop": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\docs\\coat-of-arms-fit-artifacts\\user-picture-corpus-v7-native-r6\\picture-03\\native-crop.png",
+        "bytes": 72369,
+        "sha256": "8CCF0A2D5E085E9809CFBE453370B5614F2D8D29CDE0290BD826C5497EDE2EE8",
+        "payload_kind": "aligned-content"
+      }
+    },
+    {
+      "id": "picture-04",
+      "ok": true,
+      "source": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\docs\\coat-of-arms-fit-artifacts\\user-picture-corpus-v7-budget-1024\\picture-04\\coat_of_arms.txt",
+        "raw_bytes": 401598,
+        "raw_sha256": "bf66fa6fd712bcf80d005467fb8293e782a66319497ce2d4a82b2ddbccebf593",
+        "wire_bytes": 401598,
+        "wire_sha256": "bf66fa6fd712bcf80d005467fb8293e782a66319497ce2d4a82b2ddbccebf593",
+        "line_endings_normalized": false,
+        "structure": {
+          "logical_layers": 1024,
+          "colored_emblem_blocks": 1024,
+          "textured_emblem_blocks": 0,
+          "instances": 1024,
+          "utf8_bytes": 401598,
+          "lines": 14342
+        },
+        "semantic_projection": {
+          "sha256": "4f6cfbdb098be069f70d545cafe207838cbc951519f114c9ee32615c53cdd0f8",
+          "field_counts": {
+            "patterns": 1,
+            "textures": 1024,
+            "colors": 3075,
+            "masks": 0,
+            "positions": 1024,
+            "scales": 1024,
+            "rotations": 1024,
+            "depths": 1024,
+            "parents": 0
+          }
+        }
+      },
+      "reference": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\docs\\coat-of-arms-fit-artifacts\\user-picture-corpus-v7-budget-1024\\picture-04\\canonical-preview-230.png",
+        "png_bytes": 81025,
+        "png_sha256": "70B7AF885768D77F42BCAF7879D5638EDF7301215F16671AAEAFC2A43282CCA2"
+      },
+      "roundtrip": {
+        "ok": true,
+        "binding_mode": "snapshot",
+        "chunk_count": 9,
+        "checks": {
+          "input_exceeds_v1_bound": true,
+          "begin_not_error": true,
+          "begin_receiving": true,
+          "all_chunks_sent": true,
+          "last_chunk_ready": true,
+          "commit_not_error": true,
+          "commit_applied": true,
+          "commit_source_identity": true,
+          "native_copy_exported": true,
+          "native_copy_exceeds_v1_bound": true,
+          "drawn_instance_count_preserved": true,
+          "logical_layer_count_preserved": true,
+          "colored_emblem_block_count_preserved": true,
+          "semantic_field_sequences_preserved": true
+        },
+        "failed_checks": [],
+        "semantic_checks": {
+          "patterns": true,
+          "textures": true,
+          "colors": true,
+          "masks": true,
+          "positions": true,
+          "scales": true,
+          "rotations": true,
+          "depths": true,
+          "parents": true
+        },
+        "failed_semantic_checks": [],
+        "output_structure": {
+          "logical_layers": 1024,
+          "colored_emblem_blocks": 1024,
+          "textured_emblem_blocks": 0,
+          "instances": 1024,
+          "utf8_bytes": 253369,
+          "lines": 13318
+        },
+        "native_copy": {
+          "source_bytes": 253369,
+          "source_sha256": "c652788e0b6cf74b944ae72e942b690712e5f2d13ab35a4ae2ea8ed15c1e4bdb"
+        }
+      },
+      "framebuffer_ready_after_native_apply": true,
+      "framebuffer": {
+        "ok": true,
+        "checks": {
+          "call_not_error": true,
+          "schema": true,
+          "route_stable": true,
+          "read_only_no_ocr_or_input": true,
+          "reference_independent_localization": true,
+          "locator_loss": true,
+          "distinct_margin": true,
+          "mean_absolute_error": true,
+          "color_mse": true,
+          "edge_loss": true,
+          "worst_spatial_mean_absolute_error": true
+        },
+        "failed_checks": [],
+        "thresholds": {
+          "maximum_locator_loss": 0.45,
+          "minimum_distinct_margin": 0.005,
+          "maximum_mean_absolute_error": 0.18,
+          "maximum_color_mse": 0.06,
+          "maximum_edge_loss": 0.18,
+          "maximum_spatial_mean_absolute_error": 0.35
+        },
+        "worst_spatial_mean_absolute_error": 0.1044008731842041,
+        "metrics": {
+          "contract": "masked-srgb8-mae-mse-gradient-l1-spatial-8x8-v1",
+          "maskPixels": 37001,
+          "meanAbsoluteError": 0.033498864620923996,
+          "colorMse": 0.006406079046428204,
+          "edgeLoss": 0.10645733028650284,
+          "spatialMeanAbsoluteError8x8": [
+            [
+              null,
+              0.0030501086730509996,
+              0.023605313152074814,
+              0.0427284762263298,
+              0.036528684198856354,
+              0.028915517032146454,
+              0.018692810088396072,
+              null
+            ],
+            [
+              0.003921568393707275,
+              0.04386712238192558,
+              0.015334995463490486,
+              0.02164401113986969,
+              0.019118452444672585,
+              0.01762763038277626,
+              0.012166748754680157,
+              0.042390286922454834
+            ],
+            [
+              0.029803920537233353,
+              0.034549593925476074,
+              0.019250348210334778,
+              0.018665920943021774,
+              0.024907434359192848,
+              0.020226463675498962,
+              0.015664514154195786,
+              0.06115938350558281
+            ],
+            [
+              0.06288269907236099,
+              0.021042484790086746,
+              0.03836702182888985,
+              0.029563309624791145,
+              0.020129429176449776,
+              0.03151865676045418,
+              0.029358141124248505,
+              0.04141823574900627
+            ],
+            [
+              0.05962003394961357,
+              0.038552433252334595,
+              0.05844360589981079,
+              0.023038407787680626,
+              0.035229090601205826,
+              0.03971956670284271,
+              0.03202292323112488,
+              0.037651948630809784
+            ],
+            [
+              0.08043450117111206,
+              0.03797222301363945,
+              0.018512040376663208,
+              0.006397611927241087,
+              0.015029458329081535,
+              0.04425637051463127,
+              0.04232744500041008,
+              0.01524505577981472
+            ],
+            [
+              0.098562091588974,
+              0.06519529968500137,
+              0.05120266228914261,
+              0.026925615966320038,
+              0.020271094515919685,
+              0.03974415734410286,
+              0.05357261374592781,
+              0.030888402834534645
+            ],
+            [
+              null,
+              0.04948646202683449,
+              0.02703782543540001,
+              0.060655515640974045,
+              0.0413149930536747,
+              0.09510862827301025,
+              0.1044008731842041,
+              null
+            ]
+          ]
+        },
+        "best_match": {
+          "alignedContentPngSha256": "DED2FBD42992C1FE43BD999E305038326CF1FB237B9B513591EB3D04EE8F0447",
+          "cropPngSha256": "D36D0E66155B63E56EC770542EA098FF6228711DDF20803A08C4C91F87135E00"
+        }
+      },
+      "native_crop": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\docs\\coat-of-arms-fit-artifacts\\user-picture-corpus-v7-native-r6\\picture-04\\native-crop.png",
+        "bytes": 77527,
+        "sha256": "DED2FBD42992C1FE43BD999E305038326CF1FB237B9B513591EB3D04EE8F0447",
+        "payload_kind": "aligned-content"
+      }
+    },
+    {
+      "id": "picture-05",
+      "ok": false,
+      "source": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\docs\\coat-of-arms-fit-artifacts\\user-picture-corpus-v7-budget-1024\\picture-05\\coat_of_arms.txt",
+        "raw_bytes": 347410,
+        "raw_sha256": "37f7aaa7e77cfeebd83a0489984f244c033a0ea4298170745c09ad4b7dc3ddd7",
+        "wire_bytes": 347410,
+        "wire_sha256": "37f7aaa7e77cfeebd83a0489984f244c033a0ea4298170745c09ad4b7dc3ddd7",
+        "line_endings_normalized": false,
+        "structure": {
+          "logical_layers": 881,
+          "colored_emblem_blocks": 881,
+          "textured_emblem_blocks": 0,
+          "instances": 881,
+          "utf8_bytes": 347410,
+          "lines": 12340
+        },
+        "semantic_projection": {
+          "sha256": "52e95d5bfc505ac274963078ceed5f5cb5f89f09a112f3ba87584fc115ad499b",
+          "field_counts": {
+            "patterns": 1,
+            "textures": 881,
+            "colors": 2646,
+            "masks": 0,
+            "positions": 881,
+            "scales": 881,
+            "rotations": 881,
+            "depths": 881,
+            "parents": 0
+          }
+        }
+      },
+      "reference": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\docs\\coat-of-arms-fit-artifacts\\user-picture-corpus-v7-budget-1024\\picture-05\\canonical-preview-230.png",
+        "png_bytes": 69713,
+        "png_sha256": "F11BE3D71CA827C66C5E1B6F1C6CAC6874D2B2E6DB9A3EFA9F95C24C6B22579D"
+      },
+      "roundtrip": {
+        "ok": false,
+        "binding_mode": "snapshot",
+        "chunk_count": 8,
+        "checks": {
+          "input_exceeds_v1_bound": true,
+          "begin_not_error": true,
+          "begin_receiving": true,
+          "all_chunks_sent": true,
+          "last_chunk_ready": true,
+          "commit_not_error": true,
+          "commit_applied": true,
+          "commit_source_identity": true,
+          "native_copy_exported": true,
+          "native_copy_exceeds_v1_bound": true,
+          "drawn_instance_count_preserved": true,
+          "logical_layer_count_preserved": true,
+          "colored_emblem_block_count_preserved": true,
+          "semantic_field_sequences_preserved": false
+        },
+        "failed_checks": [
+          "semantic_field_sequences_preserved"
+        ],
+        "semantic_checks": {
+          "patterns": true,
+          "textures": true,
+          "colors": true,
+          "masks": true,
+          "positions": true,
+          "scales": true,
+          "rotations": false,
+          "depths": true,
+          "parents": true
+        },
+        "failed_semantic_checks": [
+          "rotations"
+        ],
+        "output_structure": {
+          "logical_layers": 881,
+          "colored_emblem_blocks": 881,
+          "textured_emblem_blocks": 0,
+          "instances": 881,
+          "utf8_bytes": 218681,
+          "lines": 11460
+        },
+        "native_copy": {
+          "source_bytes": 218681,
+          "source_sha256": "5b706132aa16c80655074d037e614ebdc4d0e52bab0b9eef23e92b799f956b3c"
+        }
+      },
+      "framebuffer_ready_after_native_apply": true,
+      "framebuffer": {
+        "ok": true,
+        "checks": {
+          "call_not_error": true,
+          "schema": true,
+          "route_stable": true,
+          "read_only_no_ocr_or_input": true,
+          "reference_independent_localization": true,
+          "locator_loss": true,
+          "distinct_margin": true,
+          "mean_absolute_error": true,
+          "color_mse": true,
+          "edge_loss": true,
+          "worst_spatial_mean_absolute_error": true
+        },
+        "failed_checks": [],
+        "thresholds": {
+          "maximum_locator_loss": 0.45,
+          "minimum_distinct_margin": 0.005,
+          "maximum_mean_absolute_error": 0.18,
+          "maximum_color_mse": 0.06,
+          "maximum_edge_loss": 0.18,
+          "maximum_spatial_mean_absolute_error": 0.35
+        },
+        "worst_spatial_mean_absolute_error": 0.1351289004087448,
+        "metrics": {
+          "contract": "masked-srgb8-mae-mse-gradient-l1-spatial-8x8-v1",
+          "maskPixels": 37001,
+          "meanAbsoluteError": 0.036298930644989014,
+          "colorMse": 0.008091440424323082,
+          "edgeLoss": 0.10287798196077347,
+          "spatialMeanAbsoluteError8x8": [
+            [
+              null,
+              0.05468409135937691,
+              0.020982500165700912,
+              0.020425396040081978,
+              0.019839324057102203,
+              0.015302993357181549,
+              0.009803920984268188,
+              null
+            ],
+            [
+              0.0032679736614227295,
+              0.04282747209072113,
+              0.020392777398228645,
+              0.0037505924701690674,
+              0.008858945220708847,
+              0.011945007368922234,
+              0.004580655600875616,
+              0.006162464618682861
+            ],
+            [
+              0.06748003512620926,
+              0.025742774829268456,
+              0.03625468909740448,
+              0.004041251726448536,
+              0.025343697518110275,
+              0.0109688900411129,
+              0.01500236988067627,
+              0.004047831054776907
+            ],
+            [
+              0.09084238111972809,
+              0.03260046988725662,
+              0.04111351817846298,
+              0.026422014459967613,
+              0.03355709835886955,
+              0.017438001930713654,
+              0.020498471334576607,
+              0.012348638847470284
+            ],
+            [
+              0.07264149188995361,
+              0.030999066308140755,
+              0.046168580651283264,
+              0.035727161914110184,
+              0.03267139941453934,
+              0.02874690108001232,
+              0.023772498592734337,
+              0.03847861289978027
+            ],
+            [
+              0.027609316632151604,
+              0.037476394325494766,
+              0.034796733409166336,
+              0.0317486971616745,
+              0.046265169978141785,
+              0.021570956334471703,
+              0.026872768998146057,
+              0.06347277760505676
+            ],
+            [
+              0.0,
+              0.1351289004087448,
+              0.061969488859176636,
+              0.06477038562297821,
+              0.055091917514801025,
+              0.08319228142499924,
+              0.07942838221788406,
+              0.0488501600921154
+            ],
+            [
+              null,
+              0.07513228058815002,
+              0.08683328330516815,
+              0.05801422521471977,
+              0.0416310615837574,
+              0.05093149468302727,
+              0.07324619591236115,
+              null
+            ]
+          ]
+        },
+        "best_match": {
+          "alignedContentPngSha256": "0FF83711BB300FE5A243412999C725C86FBB314CFC645907C850ECB9C174C5DA",
+          "cropPngSha256": "B5C5B4A9A6C43AD87D636140E9BDF0E45BDB4946ACCAC743C443F57A340AE653"
+        }
+      },
+      "native_crop": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\docs\\coat-of-arms-fit-artifacts\\user-picture-corpus-v7-native-r6\\picture-05\\native-crop.png",
+        "bytes": 72857,
+        "sha256": "0FF83711BB300FE5A243412999C725C86FBB314CFC645907C850ECB9C174C5DA",
+        "payload_kind": "aligned-content"
+      }
+    },
+    {
+      "id": "picture-06",
+      "ok": true,
+      "source": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\docs\\coat-of-arms-fit-artifacts\\user-picture-corpus-v7-budget-1024\\picture-06\\coat_of_arms.txt",
+        "raw_bytes": 399357,
+        "raw_sha256": "4f8c7bdca6339568f9aa6b9a40fe3aaa5439a402d135871ea500359639a31f51",
+        "wire_bytes": 399357,
+        "wire_sha256": "4f8c7bdca6339568f9aa6b9a40fe3aaa5439a402d135871ea500359639a31f51",
+        "line_endings_normalized": false,
+        "structure": {
+          "logical_layers": 1024,
+          "colored_emblem_blocks": 1024,
+          "textured_emblem_blocks": 0,
+          "instances": 1024,
+          "utf8_bytes": 399357,
+          "lines": 14342
+        },
+        "semantic_projection": {
+          "sha256": "ebf8b18daa53b4202ff5acc49f03ef736c352b3f3b45deb5a09c928d59834312",
+          "field_counts": {
+            "patterns": 1,
+            "textures": 1024,
+            "colors": 3075,
+            "masks": 0,
+            "positions": 1024,
+            "scales": 1024,
+            "rotations": 1024,
+            "depths": 1024,
+            "parents": 0
+          }
+        }
+      },
+      "reference": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\docs\\coat-of-arms-fit-artifacts\\user-picture-corpus-v7-budget-1024\\picture-06\\canonical-preview-230.png",
+        "png_bytes": 45647,
+        "png_sha256": "D3E1A7D0C46211DBA956C8AB78773A2106DBDD4269FF0C3478D18E447F0CB234"
+      },
+      "roundtrip": {
+        "ok": true,
+        "binding_mode": "snapshot",
+        "chunk_count": 9,
+        "checks": {
+          "input_exceeds_v1_bound": true,
+          "begin_not_error": true,
+          "begin_receiving": true,
+          "all_chunks_sent": true,
+          "last_chunk_ready": true,
+          "commit_not_error": true,
+          "commit_applied": true,
+          "commit_source_identity": true,
+          "native_copy_exported": true,
+          "native_copy_exceeds_v1_bound": true,
+          "drawn_instance_count_preserved": true,
+          "logical_layer_count_preserved": true,
+          "colored_emblem_block_count_preserved": true,
+          "semantic_field_sequences_preserved": true
+        },
+        "failed_checks": [],
+        "semantic_checks": {
+          "patterns": true,
+          "textures": true,
+          "colors": true,
+          "masks": true,
+          "positions": true,
+          "scales": true,
+          "rotations": true,
+          "depths": true,
+          "parents": true
+        },
+        "failed_semantic_checks": [],
+        "output_structure": {
+          "logical_layers": 1024,
+          "colored_emblem_blocks": 1024,
+          "textured_emblem_blocks": 0,
+          "instances": 1024,
+          "utf8_bytes": 255838,
+          "lines": 13318
+        },
+        "native_copy": {
+          "source_bytes": 255838,
+          "source_sha256": "06fb228ff073d2720263272beb038fe02bafa1f5e91e0328ed79da6172d18a4f"
+        }
+      },
+      "framebuffer_ready_after_native_apply": true,
+      "framebuffer": {
+        "ok": true,
+        "checks": {
+          "call_not_error": true,
+          "schema": true,
+          "route_stable": true,
+          "read_only_no_ocr_or_input": true,
+          "reference_independent_localization": true,
+          "locator_loss": true,
+          "distinct_margin": true,
+          "mean_absolute_error": true,
+          "color_mse": true,
+          "edge_loss": true,
+          "worst_spatial_mean_absolute_error": true
+        },
+        "failed_checks": [],
+        "thresholds": {
+          "maximum_locator_loss": 0.45,
+          "minimum_distinct_margin": 0.005,
+          "maximum_mean_absolute_error": 0.18,
+          "maximum_color_mse": 0.06,
+          "maximum_edge_loss": 0.18,
+          "maximum_spatial_mean_absolute_error": 0.35
+        },
+        "worst_spatial_mean_absolute_error": 0.08343381434679031,
+        "metrics": {
+          "contract": "masked-srgb8-mae-mse-gradient-l1-spatial-8x8-v1",
+          "maskPixels": 37001,
+          "meanAbsoluteError": 0.02935652807354927,
+          "colorMse": 0.0070328302681446075,
+          "edgeLoss": 0.0793372318148613,
+          "spatialMeanAbsoluteError8x8": [
+            [
+              null,
+              0.0,
+              0.003504111198708415,
+              0.017948027700185776,
+              0.01963280886411667,
+              0.003655289066955447,
+              0.00039215682772919536,
+              null
+            ],
+            [
+              0.0019607841968536377,
+              0.003022728953510523,
+              0.011999409645795822,
+              0.011585959233343601,
+              0.03715670108795166,
+              0.006843704264611006,
+              0.0018740053055807948,
+              0.006535947322845459
+            ],
+            [
+              0.00309575698338449,
+              0.07609521597623825,
+              0.05686352029442787,
+              0.04036744311451912,
+              0.049153219908475876,
+              0.08109704405069351,
+              0.03128551319241524,
+              0.0018419501138851047
+            ],
+            [
+              0.0060522668063640594,
+              0.06177986040711403,
+              0.030575180426239967,
+              0.0016833366826176643,
+              0.011726069264113903,
+              0.03421230614185333,
+              0.04666091501712799,
+              0.0046345810405910015
+            ],
+            [
+              0.0055734203197062016,
+              0.04442351683974266,
+              0.030215075239539146,
+              0.0021346467547118664,
+              0.0008353340672329068,
+              0.04203934594988823,
+              0.0360604003071785,
+              0.00400504982098937
+            ],
+            [
+              0.001380834961310029,
+              0.03030472621321678,
+              0.0034552698489278555,
+              0.009885523468255997,
+              0.01582149975001812,
+              0.0024263053201138973,
+              0.05111561715602875,
+              0.002423404948785901
+            ],
+            [
+              0.00392156932502985,
+              0.02262539602816105,
+              0.04753755405545235,
+              0.05217411741614342,
+              0.05498567223548889,
+              0.04143060743808746,
+              0.010773741640150547,
+              0.0024691384751349688
+            ],
+            [
+              null,
+              0.0071584186516702175,
+              0.06365268677473068,
+              0.07473088055849075,
+              0.08343381434679031,
+              0.033827196806669235,
+              0.0050980388186872005,
+              null
+            ]
+          ]
+        },
+        "best_match": {
+          "alignedContentPngSha256": "A535D520C4A6D6577D5C3537818101C660BE934D3D93A89277385E01E714226C",
+          "cropPngSha256": "DA4FC576596D3A8724A029481795D2272898F23F93C48C808D92E940214CFA43"
+        }
+      },
+      "native_crop": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\docs\\coat-of-arms-fit-artifacts\\user-picture-corpus-v7-native-r6\\picture-06\\native-crop.png",
+        "bytes": 54163,
+        "sha256": "A535D520C4A6D6577D5C3537818101C660BE934D3D93A89277385E01E714226C",
+        "payload_kind": "aligned-content"
+      }
+    },
+    {
+      "id": "picture-07",
+      "ok": false,
+      "source": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\docs\\coat-of-arms-fit-artifacts\\user-picture-corpus-v7-budget-1024\\picture-07\\coat_of_arms.txt",
+        "raw_bytes": 378300,
+        "raw_sha256": "5b80e686cf95cabfd8f4a8d64e10635ca1ffb93edab66d162db68c7d88f9a105",
+        "wire_bytes": 378300,
+        "wire_sha256": "5b80e686cf95cabfd8f4a8d64e10635ca1ffb93edab66d162db68c7d88f9a105",
+        "line_endings_normalized": false,
+        "structure": {
+          "logical_layers": 956,
+          "colored_emblem_blocks": 956,
+          "textured_emblem_blocks": 0,
+          "instances": 956,
+          "utf8_bytes": 378300,
+          "lines": 13390
+        },
+        "semantic_projection": {
+          "sha256": "2c9182383b1916211c467b7ed5c788c57239ccdabaaa99128216ab30183faf1a",
+          "field_counts": {
+            "patterns": 1,
+            "textures": 956,
+            "colors": 2871,
+            "masks": 0,
+            "positions": 956,
+            "scales": 956,
+            "rotations": 956,
+            "depths": 956,
+            "parents": 0
+          }
+        }
+      },
+      "reference": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\docs\\coat-of-arms-fit-artifacts\\user-picture-corpus-v7-budget-1024\\picture-07\\canonical-preview-230.png",
+        "png_bytes": 83046,
+        "png_sha256": "D660A2935A20547662F24422CF3ADA4E401B3DF873138DE48E9926F516795913"
+      },
+      "roundtrip": {
+        "ok": false,
+        "binding_mode": "snapshot",
+        "chunk_count": 8,
+        "checks": {
+          "input_exceeds_v1_bound": true,
+          "begin_not_error": true,
+          "begin_receiving": true,
+          "all_chunks_sent": true,
+          "last_chunk_ready": true,
+          "commit_not_error": true,
+          "commit_applied": true,
+          "commit_source_identity": true,
+          "native_copy_exported": true,
+          "native_copy_exceeds_v1_bound": true,
+          "drawn_instance_count_preserved": true,
+          "logical_layer_count_preserved": true,
+          "colored_emblem_block_count_preserved": true,
+          "semantic_field_sequences_preserved": false
+        },
+        "failed_checks": [
+          "semantic_field_sequences_preserved"
+        ],
+        "semantic_checks": {
+          "patterns": true,
+          "textures": true,
+          "colors": true,
+          "masks": true,
+          "positions": true,
+          "scales": true,
+          "rotations": false,
+          "depths": true,
+          "parents": true
+        },
+        "failed_semantic_checks": [
+          "rotations"
+        ],
+        "output_structure": {
+          "logical_layers": 956,
+          "colored_emblem_blocks": 956,
+          "textured_emblem_blocks": 0,
+          "instances": 956,
+          "utf8_bytes": 237681,
+          "lines": 12435
+        },
+        "native_copy": {
+          "source_bytes": 237681,
+          "source_sha256": "6a93713d46c6d8b88412473c84b60abfaba05de6bc51c446bad981a0a46adaf8"
+        }
+      },
+      "framebuffer_ready_after_native_apply": true,
+      "framebuffer": {
+        "ok": true,
+        "checks": {
+          "call_not_error": true,
+          "schema": true,
+          "route_stable": true,
+          "read_only_no_ocr_or_input": true,
+          "reference_independent_localization": true,
+          "locator_loss": true,
+          "distinct_margin": true,
+          "mean_absolute_error": true,
+          "color_mse": true,
+          "edge_loss": true,
+          "worst_spatial_mean_absolute_error": true
+        },
+        "failed_checks": [],
+        "thresholds": {
+          "maximum_locator_loss": 0.45,
+          "minimum_distinct_margin": 0.005,
+          "maximum_mean_absolute_error": 0.18,
+          "maximum_color_mse": 0.06,
+          "maximum_edge_loss": 0.18,
+          "maximum_spatial_mean_absolute_error": 0.35
+        },
+        "worst_spatial_mean_absolute_error": 0.3313422203063965,
+        "metrics": {
+          "contract": "masked-srgb8-mae-mse-gradient-l1-spatial-8x8-v1",
+          "maskPixels": 37001,
+          "meanAbsoluteError": 0.06219298020005226,
+          "colorMse": 0.028911996632814407,
+          "edgeLoss": 0.12387985736131668,
+          "spatialMeanAbsoluteError8x8": [
+            [
+              null,
+              0.03529411554336548,
+              0.02132827416062355,
+              0.02463895082473755,
+              0.036190539598464966,
+              0.03743645176291466,
+              0.03189542144536972,
+              null
+            ],
+            [
+              0.008932462893426418,
+              0.025552386417984962,
+              0.031052356585860252,
+              0.04053841903805733,
+              0.031964968889951706,
+              0.004639667924493551,
+              0.005044213496148586,
+              0.005508869886398315
+            ],
+            [
+              0.009594355709850788,
+              0.050130173563957214,
+              0.10898478329181671,
+              0.002704530255869031,
+              0.1832142174243927,
+              0.0692981407046318,
+              0.05644695833325386,
+              0.09504976868629456
+            ],
+            [
+              0.016699504107236862,
+              0.05861680209636688,
+              0.3018224537372589,
+              0.008416683413088322,
+              0.15390385687351227,
+              0.09120173007249832,
+              0.054589543491601944,
+              0.007480483967810869
+            ],
+            [
+              0.03709518164396286,
+              0.14713771641254425,
+              0.24360574781894684,
+              0.013413180597126484,
+              0.03418200463056564,
+              0.03550661355257034,
+              0.039363790303468704,
+              0.035422392189502716
+            ],
+            [
+              0.04913191497325897,
+              0.05315334349870682,
+              0.3313422203063965,
+              0.18893630802631378,
+              0.0068707941100001335,
+              0.0030558083672076464,
+              0.0016911083366721869,
+              0.04491529241204262
+            ],
+            [
+              0.023180825635790825,
+              0.039623014628887177,
+              0.04948512837290764,
+              0.005841163452714682,
+              0.01634952984750271,
+              0.006688271649181843,
+              0.005162290297448635,
+              0.0009682885138317943
+            ],
+            [
+              null,
+              0.06498599797487259,
+              0.0050391145050525665,
+              0.004984621424227953,
+              0.05300361290574074,
+              0.03516046330332756,
+              0.004008714575320482,
+              null
+            ]
+          ]
+        },
+        "best_match": {
+          "alignedContentPngSha256": "AE81AE19E174A9F18DAC62D37A37A4E4D3F0BE22782CE0F264F98AD9F06151DC",
+          "cropPngSha256": "FCDC2194CB8AB56C74F1E15F174454937DE0DBD0F3C4A9F1A3379656A69B3A6E"
+        }
+      },
+      "native_crop": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\docs\\coat-of-arms-fit-artifacts\\user-picture-corpus-v7-native-r6\\picture-07\\native-crop.png",
+        "bytes": 70851,
+        "sha256": "AE81AE19E174A9F18DAC62D37A37A4E4D3F0BE22782CE0F264F98AD9F06151DC",
+        "payload_kind": "aligned-content"
+      }
+    }
+  ],
+  "cleanup": {
+    "nonce": "7e7aeeab7beb42e5a12f7d9ce8765fe9",
+    "ck3_pid": 21724,
+    "ck3_creation_date": "20260915221124.202182+000",
+    "ck3_exit_code": 1,
+    "job_active_processes_before_termination": 1,
+    "job_active_processes_final": 0,
+    "tree_gone": true,
+    "cleanup_proven": true,
+    "final_ck3_inventory": {
+      "tasklist_returncode": 0,
+      "tasklist_pids": [],
+      "wmi_pids": [],
+      "native_pids": [],
+      "inventory_backend": "tasklist+toolhelp32",
+      "processes": []
+    },
+    "watchdog_pid": 14052,
+    "watchdog_creation_date": "20260915221121.653344+000",
+    "watchdog_state_before": "running",
+    "watchdog_state_after": "absent",
+    "control_files_absent": {
+      "D:\\ck3_coa_picture_corpus_native_r6\\control\\ck3.json": true,
+      "D:\\ck3_coa_picture_corpus_native_r6\\control\\watchdog-7e7aeeab7beb42e5a12f7d9ce8765fe9.ready.json": true,
+      "D:\\ck3_coa_picture_corpus_native_r6\\control\\ck3.watchdog_error": true,
+      "D:\\ck3_coa_picture_corpus_native_r6\\control\\unsafe-cleanup.json": true
+    },
+    "contract_errors": [],
+    "ok": true
+  }
+}
