@@ -1,0 +1,68 @@
+# CK3 家徽编辑器 GitHub Pages 发布合同
+
+## 结论
+
+纯前端编辑器部署到本项目的 GitHub Pages 根入口：
+
+<https://xenoamess.github.io/ck3_eternal_recurrence/>
+
+正式发布只由 [`.github/workflows/coat-of-arms-editor-pages.yml`](../.github/workflows/coat-of-arms-editor-pages.yml)
+生成。它不会部署 `backend/`、启动 CK3、调用 MCP、访问玩家游戏目录或要求 Java/Quarkus。浏览器只下载静态 HTML、JS、CSS
+和仓库内已冻结的 DDS pack；用户图片仅在浏览器内解码、拟合。
+
+## 自动触发与发布门禁
+
+工作流在以下情况运行：
+
+- `master` 中 `coat_of_arms_editer_of_ck3/**` 发生变化；
+- 工作流本身发生变化；
+- 维护者从 Actions 手动触发 `workflow_dispatch`。
+
+构建必须按顺序通过：
+
+1. `verify_web_asset_pack.py` 对 manifest 和全部 DDS 的路径、字节数、SHA-256 与容器头重新校验；
+2. `pnpm install --frozen-lockfile`，禁止 CI 静默改 lockfile；
+3. 运行全部 Vitest；
+4. 安装 Actions runner 的 Playwright Chromium，运行合成 pack 与 exact-build pack 两条无 CK3 浏览器 E2E；
+5. 使用 GitHub Pages 返回的真实 `base_path` 执行 Vite production build；
+6. 对 `dist` 中复制后的 pack 再校验一次并上传单一 Pages artifact；
+7. 仅在上述步骤全部 GREEN 后，由 `github-pages` environment 发布。
+
+工作流权限限定为 `contents: read`、`pages: write`、`id-token: write`。并发组为 `pages`，在途正式部署不会被新的 push 强制取消。
+
+## 已授权静态素材包
+
+项目所有者于 2026-09-15 明确要求将原版 DDS 素材包视为本项目已授权内容。因此当前 Pages artifact 包含：
+
+| 字段 | 值 |
+|---|---:|
+| 路径 | `asset-packs/ck3-1.19.0.6/` |
+| pack id | `ck3-1.19.0.6-base-alpha-38p-128e` |
+| manifest SHA-256 | `41BB03C58BCA6782F45E581188127B4186050D1FFDA777BD9027DA682C08FC03` |
+| pattern / emblem / surface mask | 38 / 128 / 1 |
+| DDS bytes | 13,634,992 |
+
+该授权记录只适用于本仓库当前 pack 的版本管理与 Pages 发布，不冒充所有权转移，也不自动放行以后从其他 CK3 build、DLC 或
+mod 提取的资源。其他 `ck3-*` 生成目录继续由 `.gitignore` 排除，只有显式审阅并添加精确 unignore 后才能进入发布树。
+
+## 子路径与运行边界
+
+Vite 本地开发默认 `base=/`。Actions 从 `actions/configure-pages` 取得实际 Pages `base_path` 并注入 `VITE_BASE_PATH`，所以脚本、
+Worker 和默认素材 manifest 都能在项目站点 `/ck3_eternal_recurrence/` 下解析，不会错误请求域名根目录。
+
+Pages 是静态托管，不能也不应直接“执行 CK3”：
+
+- 线上产物不包含 Maven/Quarkus backend；
+- 正式构建不设置 `VITE_ENABLE_CK3_COMPANION`，MCP/CK3 开发控件不会显示；
+- E2E 记录完整图片拟合流程并断言没有 `/api/` 请求；
+- 输出是 CK3 原生设计器可从剪贴板读取的 render-description 文本，用户自行复制进游戏；
+- HTTPS 安全上下文允许浏览器剪贴板 API，但浏览器仍可能要求一次明确的用户权限或交互。
+
+## 仓库设置与维护
+
+仓库 Pages 的 build type 必须为 `workflow`。首次启用后，后续编辑器提交不需要人工复制 `dist`、维护 `gh-pages` 分支或提交构建
+产物。`dist/` 继续忽略，Actions artifact 是唯一线上构建结果。
+
+若发布失败，先按失败阶段定位：pack verifier RED 表示素材 bytes/manifest 不一致；Vitest/Playwright RED 表示产品行为退化；
+build RED 表示类型或 bundling 问题；deploy RED 才检查 Pages 设置、environment 和 GitHub 服务状态。禁止通过跳过前四个门禁来
+“修复”部署。

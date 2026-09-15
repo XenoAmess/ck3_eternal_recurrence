@@ -1,0 +1,94 @@
+name: Publish CK3 CoA editor to GitHub Pages
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - "coat_of_arms_editer_of_ck3/**"
+      - ".github/workflows/coat-of-arms-editor-pages.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
+        working-directory: coat_of_arms_editer_of_ck3
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+
+      - name: Configure Pages
+        id: pages
+        uses: actions/configure-pages@v5
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.13"
+
+      - name: Set up pnpm
+        uses: pnpm/action-setup@v5
+        with:
+          version: 10.12.1
+          run_install: false
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: "22"
+          cache: pnpm
+          cache-dependency-path: coat_of_arms_editer_of_ck3/pnpm-lock.yaml
+
+      - name: Verify authorized exact-build asset pack
+        run: python tools/verify_web_asset_pack.py public/asset-packs/ck3-1.19.0.6
+
+      - name: Install frontend dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Run unit tests
+        run: pnpm test
+
+      - name: Install headless Chromium
+        run: pnpm exec playwright install --with-deps chromium
+
+      - name: Run standalone browser acceptance
+        run: pnpm test:e2e
+
+      - name: Build Pages artifact
+        run: pnpm build
+        env:
+          VITE_BASE_PATH: "${{ steps.pages.outputs.base_path }}/"
+
+      - name: Verify built artifact and copied asset pack
+        run: |
+          test -f dist/index.html
+          python tools/verify_web_asset_pack.py dist/asset-packs/ck3-1.19.0.6
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v4
+        with:
+          path: coat_of_arms_editer_of_ck3/dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v5

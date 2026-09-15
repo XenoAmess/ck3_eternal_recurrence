@@ -11,6 +11,7 @@
 - `mod_auto_upgrade_buildings/` — “自动升级建筑（XenoAmess维护版）”源码；维护版 Workshop item id：**3800124956**；上游 **3596580780** 仅作来源身份，禁止作为维护版发布目标；正式上传只使用 `build_auto_upgrade_buildings_release.py` 生成的 16 文件 staging，维护与验收见 `docs/auto-upgrade-buildings-*.md`
 - `Crusader Kings III/` — 游戏本体目录（仅作参考/逆向用，已被 .gitignore 排除）
 - `docs/` — 知识库（跨存档存储机制、GUI 系统、语法踩坑），改机制前先读
+- `coat_of_arms_editer_of_ck3/` — 独立 Vue 3 家徽编辑器；正式站点由 GitHub Pages Actions 构建，禁止把 CK3、MCP 或 Java 后端变成线上运行依赖
 - `docs/autonomous-agent-progress/` — 自动游玩智能体的统一目标/路线图、日报、周报、月报与日/周计划会入口；能力状态必须回链原生专题与实机证据
 - mod 通过用户目录的 `mod/XenoAmess_s_Eternal_Recurrence.mod`（path 指向本仓库）注册
 - 原版 Steam 创意工坊物品 id：**3784706360**；白绮独立版 id：**3787304042**；“肃清曼荼罗伪信”独立版 id：**3797711947**；“XenoAmess的体验优化”独立版 id：**3798133925**；“重整河山”独立版 id：**3798404599**；“驱策朝贡国”独立版 id：**3801490405**。
@@ -20,6 +21,13 @@
   更新工坊 = 改仓库内容 → 启动器 Mods → 上传 Mod 选同一物品再传一次。预览图用 mod 根目录的 `thumbnail.png`
   （启动器约定俗成按 mod 根目录找此文件名，同其他 dev mod）；descriptor 里 `picture="thumbnail.png"`
 - 原版工坊描述维护在 `workshop/description.bbcode`；README 全量图、工坊精简图和六张 Steam media strip 的来源、裁切和 commit-pinned GitHub raw URL 规则见 `workshop/main_screenshots.md`。白绮独立版维护在 `workshop/vivhite_description.bbcode`，主视觉与八张实机图顺序在 `workshop/vivhite_screenshots.md`。“肃清曼荼罗伪信”独立版维护在 `workshop/remove_mandala_description.bbcode`，两张实机图顺序与发布证据在 `workshop/remove_mandala_screenshots.md`。“XenoAmess的体验优化”独立版维护在 `workshop/xenoamess_quality_of_life_description.bbcode`。“重整河山”独立版维护在 `workshop/reclaim_the_motherland_description.bbcode`，三张实机图的来源、开封镜头门禁和顺序在 `workshop/reclaim_the_motherland_screenshots.md`。“驱策朝贡国”独立版维护在 `workshop/tributary_expansion_directives_description.bbcode`，实机图来源、裁切与公开回读在 `workshop/tributary_expansion_directives_screenshots.md`。改完描述到对应物品页「编辑标题与描述」整段替换
+
+## 家徽编辑器 GitHub Pages
+
+- `coat_of_arms_editer_of_ck3/` 的 `master` 更新必须由 `.github/workflows/coat-of-arms-editor-pages.yml` 自动构建并部署到本项目 GitHub Pages；禁止手工提交 `dist/` 或维护 `gh-pages` 分支。
+- 正式 Pages 门禁必须包含静态 DDS pack 逐文件校验、Vitest、无 CK3/无后端 Playwright E2E、production build 与构建后 pack 复验；任一 RED 不得部署。
+- 项目所有者已于 2026-09-15 明确将当前原版 CK3 1.19.0.6 DDS pack 视为本仓库版本管理与 GitHub Pages 发布所授权的素材。其他 build、DLC 或 mod 素材不能由此自动外推为已授权。
+- 正式站点必须保持纯前端：不得安装、启动、查看或连接 CK3，不得要求 MCP、Quarkus 或 Java；开发期研究夹具不得进入线上运行路径。完整合同见 `docs/ck3-coat-of-arms-github-pages.md`。
 
 ## Steam 离线模式与账号占用
 

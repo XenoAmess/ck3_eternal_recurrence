@@ -30,6 +30,16 @@ CK3，不依赖 MCP、Quarkus 或 Java；它只生成原版“从剪贴板粘贴
 当前 Alpha 的逐项交付状态、exact-build 本地素材包 receipt、验收命令与已知限制见
 [`../docs/ck3-coat-of-arms-editor-alpha.md`](../docs/ck3-coat-of-arms-editor-alpha.md)。
 
+## 在线版本
+
+GitHub Pages 正式入口为 <https://xenoamess.github.io/ck3_eternal_recurrence/>。仓库中的
+[`coat-of-arms-editor-pages.yml`](../.github/workflows/coat-of-arms-editor-pages.yml) 在 `master` 的本目录内容变化后自动执行
+素材包校验、Vitest、Playwright 独立浏览器验收和 production build，全部通过后才部署。线上页面包含已获项目授权的 exact
+CK3 1.19.0.6 DDS pack，但运行时仍不安装、启动或连接 CK3。
+
+部署合同、GitHub Pages 设置和故障边界见
+[`../docs/ck3-coat-of-arms-github-pages.md`](../docs/ck3-coat-of-arms-github-pages.md)。
+
 ## 开发
 
 ```text
@@ -40,8 +50,8 @@ pnpm build
 pnpm dev
 ```
 
-本地开发者可以从明确给出的 exact-build 安装目录冻结一份部署用静态 pack。生成物可能包含 Paradox 素材，已由 Git 忽略；
-公开托管前必须另行确认分发许可：
+本地开发者可以从明确给出的 exact-build 安装目录冻结一份部署用静态 pack。项目所有者已于 2026-09-15 明确将当前
+CK3 1.19.0.6 pack 视为本仓库版本管理与 GitHub Pages 发布所授权的素材；其他 build 的生成目录仍默认忽略，需逐项审阅后再纳入：
 
 ```text
 python tools/build_web_asset_pack.py --game-root "<CK3 installation root>" --output public/asset-packs/ck3-1.19.0.6
@@ -109,7 +119,7 @@ java -jar backend/target/quarkus-app/quarkus-run.jar
 
 当前 Alpha 基线：Vitest `50/50`、Playwright 独立浏览器 E2E `2/2`、Vite production build、静态 pack verifier、
 Quarkus REST `18/18` 与 Maven test 均 GREEN。E2E 同时覆盖合成 pack 和本机生成的 exact 1.19.0.6 pack；
-前者可进 CI，后者因素材不进 Git而在没有本地 pack 时明确 skip。
+两者都进入 Pages Actions 门禁；缺少已跟踪的 exact-build pack 会直接使部署失败。
 “打开原生家徽页”和“提交回角色设计器”都只调用固定、零参数的王朝家徽 MCP，并要求独立 route 后置条件；它们不会接受浏览器传入的控件名、路径、指针或桌面输入。提交动作已在 exact CK3 `1.19.0.6` 完成受管实机往返：Finish 前后重开家徽页的原生 Copy 均为 330 bytes，SHA-256 均为 `4769FD42836E68FA35DC07FBA23BEABCC589E5A33087314F1D6287E5C53C305A`；该结论仍不覆盖完成整个角色创建或战役/存档持久化。
 
 probe/export 不再错误地假设家徽页必有 gameplay snapshot。binding 端点先验证 native-headless、named-pipe、exact

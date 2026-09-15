@@ -3,6 +3,8 @@ dist/
 coverage/
 backend/target/
 public/asset-packs/ck3-*/
+!public/asset-packs/ck3-1.19.0.6/
+!public/asset-packs/ck3-1.19.0.6/**
 public/asset-packs/.ck3-*.building-*/
 playwright-report/
 test-results/

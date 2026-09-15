@@ -2,14 +2,14 @@
 
 ## 状态
 
-**Alpha GREEN（source + 本机 exact-build 静态 pack）**。
+**Alpha GREEN（source + 已跟踪 exact-build 静态 pack + GitHub Pages）**。
 
 这里的 Alpha 是一个独立静态 Web 应用：没有安装或运行 CK3、没有 MCP、没有 Quarkus/Java 时，用户仍可上传图片、使用
 静态素材包拟合、预览、继续结构化编辑并复制可粘贴的 CK3 家徽代码。CK3 原生桥只保留为仓库开发研究夹具，不属于产品运行时。
 
-原版 DDS 的公开再分发许可尚未确认，因此仓库不提交本机生成的素材 bytes。这是部署内容授权门禁，不是浏览器实现门禁；
-代码、pack schema、builder、verifier 和合成 E2E fixture 均已提交。公开部署前必须提供已获授权的
-`ck3-coa-web-asset-pack-v1`，不能因为技术上能提取就假定可以公开分发。
+项目所有者已于 2026-09-15 明确要求把原版 DDS 素材包视为本仓库版本管理与 GitHub Pages 发布所授权的素材。当前 exact
+1.19.0.6 `ck3-coa-web-asset-pack-v1` 因此与源码一同跟踪，并由 Pages Actions 在部署前逐文件校验；该项目政策记录不转移
+Paradox 素材的所有权，也不自动授权其他 build 或仓库。
 
 ## Alpha 交付面
 
@@ -28,6 +28,7 @@
 | 拟合结果回填编辑器并输出代码 | GREEN | 合成 pack E2E 与 exact-build 本地 pack E2E |
 | 默认正式界面不显示 CK3/MCP 控件 | GREEN | Playwright 断言；只有显式开发开关可展示研究夹具 |
 | 无 Java 的 production build | GREEN | `pnpm build`；worker 独立 chunk |
+| GitHub Pages 自动发布 | GREEN | `master` 路径触发；pack → unit → browser E2E → build → deploy |
 
 ## 本机 exact-build pack 冻结结果
 
@@ -73,7 +74,8 @@ pnpm build
 python tools/verify_web_asset_pack.py public/asset-packs/ck3-1.19.0.6
 ```
 
-无本地原版 pack 的 checkout 仍会执行合成 pack E2E；exact-build E2E 会带原因 skip，而不是下载、提取或伪造原版素材。
+Pages 正式 checkout 必须含已跟踪的 exact-build pack；verifier 或 exact-build E2E 失败都会阻断部署。开发者若有意移除 pack，
+合成 fixture 仍可独立验证纯浏览器链，但这种 checkout 不满足正式 Pages 门禁。
 
 ## Alpha 已知限制
 
@@ -83,7 +85,7 @@ python tools/verify_web_asset_pack.py public/asset-packs/ck3-1.19.0.6
 - 照片、文字、渐变和高频细节通常低质量；产品明确称为“原生元素近似”。
 - 浏览器 renderer 根据随附 shader 合同实现，但 FallbackColor、GPU 采样和色彩空间尚无原生 framebuffer 逐像素闭环。
 - 正式平台不能知道玩家本机模组覆盖；它只声明自己绑定的 pack build 与 SHA。
-- 仓库不含原版 DDS；公开部署所用素材包必须另行解决授权。
+- 当前线上 pack 固定于 CK3 1.19.0.6 的 38 个 pattern、128 个 source-ordered emblem 与一个 surface mask；它不是全量元素库。
 - 前端主 chunk 仍约 1.03 MB（gzip 约 332 KiB），构建仅给出非阻断 code-splitting warning；Beta 应拆分 Element Plus 和编辑器面板。
 
 ## Beta 优先级
@@ -92,7 +94,7 @@ python tools/verify_web_asset_pack.py public/asset-packs/ck3-1.19.0.6
 2. 多图层 beam search、连续 transform 局部细化、多个 Pareto 候选；
 3. 基于 asset SHA 的可复用特征索引，减少首次加载和粗筛成本；
 4. 输入前景/背景、对称、指定元素、颜色锁和复杂度上限控制；
-5. 经过授权的正式素材包构建、托管和缓存策略；
+5. 全量原版元素 pack 的体积、首次加载与缓存策略；
 6. 前端按路由/面板拆包与移动端布局。
 
 详细可行性和纯浏览器/WebGL2 方案见
@@ -100,3 +102,5 @@ python tools/verify_web_asset_pack.py public/asset-packs/ck3-1.19.0.6
 引擎语法边界见
 [`ck3-coat-of-arms-clipboard-import-capability.md`](ck3-coat-of-arms-clipboard-import-capability.md)。
 
+GitHub Pages 的触发、权限、部署路径与不依赖 CK3 的运行合同见
+[`ck3-coat-of-arms-github-pages.md`](ck3-coat-of-arms-github-pages.md)。

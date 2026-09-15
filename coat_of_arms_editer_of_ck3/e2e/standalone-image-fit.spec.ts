@@ -110,7 +110,7 @@ test('fits an uploaded image without CK3, MCP, or Java', async ({ page }) => {
 
 const localPack = resolve('public/asset-packs/ck3-1.19.0.6/manifest.json')
 test('runs against the locally generated exact-build asset pack', async ({ page }) => {
-  test.skip(!existsSync(localPack), 'copyrighted local asset pack is intentionally absent from Git/CI')
+  test.skip(!existsSync(localPack), 'the exact-build static asset pack is missing from this checkout')
   const apiRequests: string[] = []
   page.on('request', (request) => {
     if (new URL(request.url()).pathname.startsWith('/api/')) apiRequests.push(request.url())

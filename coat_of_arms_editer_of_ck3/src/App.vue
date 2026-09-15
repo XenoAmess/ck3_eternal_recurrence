@@ -99,7 +99,7 @@ const configuredPatternResources = ref<CoatOfArmsConfiguredResourceItem[]>([])
 const configuredEmblemResources = ref<CoatOfArmsConfiguredResourceItem[]>([])
 const developmentCompanionEnabled = import.meta.env.VITE_ENABLE_CK3_COMPANION === 'true'
 const defaultAssetPackUrl = import.meta.env.VITE_COA_ASSET_PACK_URL
-  || '/asset-packs/ck3-1.19.0.6/manifest.json'
+  || `${import.meta.env.BASE_URL}asset-packs/ck3-1.19.0.6/manifest.json`
 const loadedAssetPack = ref<LoadedWebAssetPack>()
 const assetPackBusy = ref(false)
 const assetPackStatus = ref('尚未载入独立素材包')

@@ -1,0 +1,2591 @@
+{
+  "assets": [
+    {
+      "asset_bytes": 11064,
+      "asset_sha256": "0EE08A10EE4C71278C0ACE98506DD2A520261B20E040B353B7DA4D13C0616C4A",
+      "category": null,
+      "colors": 1,
+      "dds": {
+        "format": "DXT1",
+        "height": 128,
+        "width": 128
+      },
+      "kind": "pattern",
+      "name": "pattern__solid_designer.dds",
+      "url": "assets/0ee08a10ee4c71278c0ace98506dd2a520261b20e040b353b7da4d13c0616c4a.dds",
+      "visible": true
+    },
+    {
+      "asset_bytes": 43832,
+      "asset_sha256": "26503EACF93C3ABD4822023E99A1C2F1BC91460838A7196C55E4CF6224715848",
+      "category": null,
+      "colors": 2,
+      "dds": {
+        "format": "DXT1",
+        "height": 256,
+        "width": 256
+      },
+      "kind": "pattern",
+      "name": "pattern_horizontal_split_01.dds",
+      "url": "assets/26503eacf93c3abd4822023e99a1c2f1bc91460838a7196c55e4cf6224715848.dds",
+      "visible": true
+    },
+    {
+      "asset_bytes": 11064,
+      "asset_sha256": "A5CF7B4B0AEEDD563CBC3C75ED34349331A784A98B1651A8F75E56145D5D65B4",
+      "category": null,
+      "colors": 2,
+      "dds": {
+        "format": "DXT1",
+        "height": 128,
+        "width": 128
+      },
+      "kind": "pattern",
+      "name": "pattern_horizontal_split_02.dds",
+      "url": "assets/a5cf7b4b0aeedd563cbc3c75ed34349331a784a98b1651a8f75e56145d5d65b4.dds",
+      "visible": true
+    },
+    {
+      "asset_bytes": 11064,
+      "asset_sha256": "9A06A90F113043E7F42C5F077BA33E62A98776ECCFA3F3C39A2C9E75D383C701",
+      "category": null,
+      "colors": 2,
+      "dds": {
+        "format": "DXT1",
+        "height": 128,
+        "width": 128
+      },
+      "kind": "pattern",
+      "name": "pattern_horizontal_stripes_01.dds",
+      "url": "assets/9a06a90f113043e7f42c5f077ba33e62a98776eccfa3f3c39a2c9e75d383c701.dds",
+      "visible": true
+    },
+    {
+      "asset_bytes": 43832,
+      "asset_sha256": "29453AB2314E46A067B65A890AD843073DC6A14BE0C400F8B085CAB08554E575",
+      "category": null,
+      "colors": 3,
+      "dds": {
+        "format": "DXT1",
+        "height": 256,
+        "width": 256
+      },
+      "kind": "pattern",
+      "name": "pattern_tricolor_horizontal_01.dds",
+      "url": "assets/29453ab2314e46a067b65a890ad843073dc6a14be0c400f8b085cab08554e575.dds",
+      "visible": true
+    },
+    {
+      "asset_bytes": 43832,
+      "asset_sha256": "365830F46D531EADE8214B2B5086A22E0A03F4E5D81224BC7A999D158B9D2D0D",
+      "category": null,
+      "colors": 2,
+      "dds": {
+        "format": "DXT1",
+        "height": 256,
+        "width": 256
+      },
+      "kind": "pattern",
+      "name": "pattern_barry_04.dds",
+      "url": "assets/365830f46d531eade8214b2b5086a22e0a03f4e5d81224bc7a999d158b9d2d0d.dds",
+      "visible": true
+    },
+    {
+      "asset_bytes": 43832,
+      "asset_sha256": "8C116FE4B2AC1C9744B88F29BBC9528ED45B44E4984BF38279D9C04E893E077C",
+      "category": null,
+      "colors": 2,
+      "dds": {
+        "format": "DXT1",
+        "height": 256,
+        "width": 256
+      },
+      "kind": "pattern",
+      "name": "pattern_barry_06.dds",
+      "url": "assets/8c116fe4b2ac1c9744b88f29bbc9528ed45b44e4984bf38279d9c04e893e077c.dds",
+      "visible": true
+    },
+    {
+      "asset_bytes": 43832,
+      "asset_sha256": "FB9FE9BCC66785819A9C63E5DE1E921B6EB4F024F74F7893A5F06EBBD31A8E09",
+      "category": null,
+      "colors": 2,
+      "dds": {
+        "format": "DXT1",
+        "height": 256,
+        "width": 256
+      },
+      "kind": "pattern",
+      "name": "pattern_barruly_special.dds",
+      "url": "assets/fb9fe9bcc66785819a9c63e5de1e921b6eb4f024f74f7893a5f06ebbd31a8e09.dds",
+      "visible": true
+    },
+    {
+      "asset_bytes": 43832,
+      "asset_sha256": "3808834EBEF3F7A1E783CF58E6D61F943284AF2C282BC4B2A076519FB5ACCE40",
+      "category": null,
+      "colors": 2,
+      "dds": {
+        "format": "DXT1",
+        "height": 256,
+        "width": 256
+      },
+      "kind": "pattern",
+      "name": "pattern_barruly_08.dds",
+      "url": "assets/3808834ebef3f7a1e783cf58e6d61f943284af2c282bc4b2a076519fb5acce40.dds",
+      "visible": true
+    },
+    {
+      "asset_bytes": 43832,
+      "asset_sha256": "95FFF97609C285303AF280139968678F32C238C32F32164B3113DC337D37A062",
+      "category": null,
+      "colors": 2,
+      "dds": {
+        "format": "DXT1",
+        "height": 256,
+        "width": 256
+      },
+      "kind": "pattern",
+      "name": "pattern_barruly_10.dds",
+      "url": "assets/95fff97609c285303af280139968678f32c238c32f32164b3113dc337d37a062.dds",
+      "visible": true
+    },
+    {
+      "asset_bytes": 43832,
+      "asset_sha256": "E714B23CAAB2A20CC22B08D56F2C7F363E988B53C23955F26370A70A66B1A820",
+      "category": null,
+      "colors": 2,
+      "dds": {
+        "format": "DXT1",
+        "height": 256,
+        "width": 256
+      },
+      "kind": "pattern",
+      "name": "pattern_barruly_12.dds",
+      "url": "assets/e714b23caab2a20cc22b08d56f2c7f363e988b53c23955f26370a70a66b1a820.dds",
+      "visible": true
+    },
+    {
+      "asset_bytes": 87536,
+      "asset_sha256": "ED859E29211712AC51E2BFF108CBAB58A72B48F62C1D875494CB036979B71A0C",
+      "category": null,
+      "colors": 2,
+      "dds": {
+        "format": "DXT5",
+        "height": 256,
+        "width": 256
+      },
+      "kind": "pattern",
+      "name": "pattern_waves_01.dds",
+      "url": "assets/ed859e29211712ac51e2bff108cbab58a72b48f62c1d875494cb036979b71a0c.dds",
+      "visible": true
+    },
+    {
+      "asset_bytes": 11064,
+      "asset_sha256": "B6195983157CBA83F6DC7D3A3ADAAB491EA35F67085E70931EED1A75BE91F7F3",
+      "category": null,
+      "colors": 2,
+      "dds": {
+        "format": "DXT1",
+        "height": 128,
+        "width": 128
+      },
+      "kind": "pattern",
+      "name": "pattern_vertical_split_01.dds",
+      "url": "assets/b6195983157cba83f6dc7d3a3adaab491ea35f67085e70931eed1a75be91f7f3.dds",
+      "visible": true
+    },
+    {
+      "asset_bytes": 11064,
+      "asset_sha256": "8F93C2F1BF644D9B3CF14B8602DD453A22D8C39F758FCED1CEC07627BCF3A30C",
+      "category": null,
+      "colors": 2,
+      "dds": {
+        "format": "DXT1",
+        "height": 128,
+        "width": 128
+      },
+      "kind": "pattern",
+      "name": "pattern_vertical_stripes_02.dds",
+      "url": "assets/8f93c2f1bf644d9b3cf14b8602dd453a22d8c39f758fced1cec07627bcf3a30c.dds",
+      "visible": true
+    },
+    {
+      "asset_bytes": 11064,
+      "asset_sha256": "85EEC41169D68CF5BA465E3D8A271852720A50C879CB8077A41EFFD98D2E5494",
+      "category": null,
+      "colors": 2,
+      "dds": {
+        "format": "DXT1",
+        "height": 128,
+        "width": 128
+      },
+      "kind": "pattern",
+      "name": "pattern_vertical_stripes_01.dds",
+      "url": "assets/85eec41169d68cf5ba465e3d8a271852720a50c879cb8077a41effd98d2e5494.dds",
+      "visible": true
+    },
+    {
+      "asset_bytes": 87536,
+      "asset_sha256": "6A7E773F89C8B547A933119C5EC993E603F39DE8F63BFCD976C71692F933FC16",
+      "category": null,
+      "colors": 2,
+      "dds": {
+        "format": "DXT5",
+        "height": 256,
+        "width": 256
+      },
+      "kind": "pattern",
+      "name": "pattern_diagonal_split_01.dds",
+      "url": "assets/6a7e773f89c8b547a933119c5ec993e603f39de8f63bfcd976c71692f933fc16.dds",
+      "visible": true
+    },
+    {
+      "asset_bytes": 87536,
+      "asset_sha256": "286652A22DE71D75E892D177D5819F5200B196AE56AFC0BF9CB2DB4727FD9988",
+      "category": null,
+      "colors": 2,
+      "dds": {
+        "format": "DXT5",
+        "height": 256,
+        "width": 256
+      },
+      "kind": "pattern",
+      "name": "pattern_diagonal_split_02.dds",
+      "url": "assets/286652a22de71d75e892d177d5819f5200b196ae56afc0bf9cb2db4727fd9988.dds",
+      "visible": true
+    },
+    {
+      "asset_bytes": 43832,
+      "asset_sha256": "BB0C62AB1BCACA4011D5369A58CC3A9E4B0E3550987627D78D73AB3ED0E41A14",
+      "category": null,
+      "colors": 2,
+      "dds": {
+        "format": "DXT1",
+        "height": 256,
+        "width": 256
+      },
+      "kind": "pattern",
+      "name": "pattern_bend_01.dds",
+      "url": "assets/bb0c62ab1bcaca4011d5369a58cc3a9e4b0e3550987627d78d73ab3ed0e41a14.dds",
+      "visible": true
+    },
+    {
+      "asset_bytes": 43832,
+      "asset_sha256": "01144F914B4C0619AE2CBEF6C8091C30CCDC81ED4BADF9C7D72899AAC2E6D32A",
+      "category": null,
+      "colors": 2,
+      "dds": {
+        "format": "DXT1",
+        "height": 256,
+        "width": 256
+      },
+      "kind": "pattern",
+      "name": "pattern_bend_02.dds",
+      "url": "assets/01144f914b4c0619ae2cbef6c8091c30ccdc81ed4badf9c7d72899aac2e6d32a.dds",
+      "visible": true
+    },
+    {
+      "asset_bytes": 65664,
+      "asset_sha256": "70648B4D90285D3751ABD8444259E7363A8132DEC9C55EE8841CDA336F21084A",
+      "category": null,
+      "colors": 2,
+      "dds": {
+        "format": "DXT5",
+        "height": 256,
+        "width": 256
+      },
+      "kind": "pattern",
+      "name": "temp_pattern_bendy_special.dds",
+      "url": "assets/70648b4d90285d3751abd8444259e7363a8132dec9c55ee8841cda336f21084a.dds",
+      "visible": true
+    },
+    {
+      "asset_bytes": 43832,
+      "asset_sha256": "C273D8FD81D44637D0339B1BCFB62A673753DAD4D4BCA938485106C0855D3F14",
+      "category": null,
+      "colors": 3,
+      "dds": {
+        "format": "DXT1",
+        "height": 256,
+        "width": 256
+      },
+      "kind": "pattern",
+      "name": "pattern_tricolor_bend_01.dds",
+      "url": "assets/c273d8fd81d44637d0339b1bcfb62a673753dad4d4bca938485106c0855d3f14.dds",
+      "visible": true
+    },
+    {
+      "asset_bytes": 43832,
+      "asset_sha256": "A0244357AE01F6FEC65036141E90DCB200D6584491CF9EEFFA9A8F00849372A7",
+      "category": null,
+      "colors": 3,
+      "dds": {
+        "format": "DXT1",
+        "height": 256,
+        "width": 256
+      },
+      "kind": "pattern",
+      "name": "pattern_tricolor_bend_02.dds",
+      "url": "assets/a0244357ae01f6fec65036141e90dcb200d6584491cf9eeffa9a8f00849372a7.dds",
+      "visible": true
+    },
+    {
+      "asset_bytes": 11064,
+      "asset_sha256": "48810C37A28579F05AF190216A75753BE5266CD1C14B72C308261E09A0E2CE88",
+      "category": null,
+      "colors": 2,
+      "dds": {
+        "format": "DXT1",
+        "height": 128,
+        "width": 128
+      },
+      "kind": "pattern",
+      "name": "pattern_checkers_diagonal_01.dds",
+      "url": "assets/48810c37a28579f05af190216a75753be5266cd1c14b72c308261e09a0e2ce88.dds",
+      "visible": true
+    },
+    {
+      "asset_bytes": 43832,
+      "asset_sha256": "973C8FFD8C76DCCF207794D0F8C1D1BDB7003438780CB218A258ED52C62B8EEF",
+      "category": null,
+      "colors": 2,
+      "dds": {
+        "format": "DXT1",
+        "height": 256,
+        "width": 256
+      },
+      "kind": "pattern",
+      "name": "pattern_chevron_01.dds",
+      "url": "assets/973c8ffd8c76dccf207794d0f8c1d1bdb7003438780cb218a258ed52c62b8eef.dds",
+      "visible": true
+    },
+    {
+      "asset_bytes": 11064,
+      "asset_sha256": "E33C0CF321FE40DCC7B2FA943EC5127BCE2ACED2ADAA7F1351E2EDBB0226EC8F",
+      "category": null,
+      "colors": 2,
+      "dds": {
+        "format": "DXT1",
+        "height": 128,
+        "width": 128
+      },
+      "kind": "pattern",
+      "name": "pattern_vertical_split_jagged_01.dds",
+      "url": "assets/e33c0cf321fe40dcc7b2fa943ec5127bce2aced2adaa7f1351e2edbb0226ec8f.dds",
+      "visible": true
+    },
+    {
+      "asset_bytes": 11064,
+      "asset_sha256": "3591DD430395275A2CDFA1550A1DE3F22A41445FAFDF12FEF0627C7FA1C17858",
+      "category": null,
+      "colors": 2,
+      "dds": {
+        "format": "DXT1",
+        "height": 128,
+        "width": 128
+      },
+      "kind": "pattern",
+      "name": "pattern_cross_01.dds",
+      "url": "assets/3591dd430395275a2cdfa1550a1de3f22a41445fafdf12fef0627c7fa1c17858.dds",
+      "visible": true
+    },
+    {
+      "asset_bytes": 11064,
+      "asset_sha256": "FB4F2081FD3B008B64486C0DD99401A96CBDB21E9C837C54FB84D0E347FE0FA5",
+      "category": null,
+      "colors": 3,
+      "dds": {
+        "format": "DXT1",
+        "height": 128,
+        "width": 128
+      },
+      "kind": "pattern",
+      "name": "pattern_cross_02.dds",
+      "url": "assets/fb4f2081fd3b008b64486c0dd99401a96cbdb21e9c837c54fb84d0e347fe0fa5.dds",
+      "visible": true
+    },
+    {
+      "asset_bytes": 87536,
+      "asset_sha256": "B85E39DCC8E2FF31D4CCF44781D29D0FB5FAB75261C9FBC920AA063BBEDCBE14",
+      "category": null,
+      "colors": 2,
+      "dds": {
+        "format": "DXT5",
+        "height": 256,
+        "width": 256
+      },
+      "kind": "pattern",
+      "name": "pattern_shield_03_small.dds",
+      "url": "assets/b85e39dcc8e2ff31d4ccf44781d29d0fb5fab75261c9fbc920aa063bbedcbe14.dds",
+      "visible": true
+    },
+    {
+      "asset_bytes": 43832,
+      "asset_sha256": "1D35B0DBCB846798EC27EF41F55DD988C2821C68EE3761926CFC204E20D6EBBA",
+      "category": null,
+      "colors": 2,
+      "dds": {
+        "format": "DXT1",
+        "height": 256,
+        "width": 256
+      },
+      "kind": "pattern",
+      "name": "pattern_shield_01.dds",
+      "url": "assets/1d35b0dbcb846798ec27ef41f55dd988c2821c68ee3761926cfc204e20d6ebba.dds",
+      "visible": true
+    },
+    {
+      "asset_bytes": 43832,
+      "asset_sha256": "50C21BDE81832148B99F3F1564003C34AE76EFC3C67139A4357A20FDB6D2E77F",
+      "category": null,
+      "colors": 2,
+      "dds": {
+        "format": "DXT1",
+        "height": 256,
+        "width": 256
+      },
+      "kind": "pattern",
+      "name": "pattern_shield_02.dds",
+      "url": "assets/50c21bde81832148b99f3f1564003c34ae76efc3c67139a4357a20fdb6d2e77f.dds",
+      "visible": true
+    },
+    {
+      "asset_bytes": 11064,
+      "asset_sha256": "A028AE80DC3D3822BB85005B8397B0E3DDB55B5C7694FC0E891C28BAFB7E55DE",
+      "category": null,
+      "colors": 2,
+      "dds": {
+        "format": "DXT1",
+        "height": 128,
+        "width": 128
+      },
+      "kind": "pattern",
+      "name": "pattern_checkers_02.dds",
+      "url": "assets/a028ae80dc3d3822bb85005b8397b0e3ddb55b5c7694fc0e891c28bafb7e55de.dds",
+      "visible": true
+    },
+    {
+      "asset_bytes": 43832,
+      "asset_sha256": "58B4322BBE5046AFEDC4E350F283A1AAEF48A6E86A5A40BF5FDB20321C519849",
+      "category": null,
+      "colors": 2,
+      "dds": {
+        "format": "DXT1",
+        "height": 256,
+        "width": 256
+      },
+      "kind": "pattern",
+      "name": "pattern_checkers_06.dds",
+      "url": "assets/58b4322bbe5046afedc4e350f283a1aaef48a6e86a5a40bf5fdb20321c519849.dds",
+      "visible": true
+    },
+    {
+      "asset_bytes": 43832,
+      "asset_sha256": "74E59ED686112942A973069F570E4A6E6E5E0CC42AC770F077DF8F46C2173730",
+      "category": null,
+      "colors": 2,
+      "dds": {
+        "format": "DXT1",
+        "height": 256,
+        "width": 256
+      },
+      "kind": "pattern",
+      "name": "pattern_checkers_08.dds",
+      "url": "assets/74e59ed686112942a973069f570e4a6e6e5e0cc42ac770f077df8f46c2173730.dds",
+      "visible": true
+    },
+    {
+      "asset_bytes": 43832,
+      "asset_sha256": "EAC4B06F4A6DBE9F46F5CF3806A699A0C64F255318154A2445BECEC894084DBB",
+      "category": null,
+      "colors": 2,
+      "dds": {
+        "format": "DXT1",
+        "height": 256,
+        "width": 256
+      },
+      "kind": "pattern",
+      "name": "pattern_checkers_12.dds",
+      "url": "assets/eac4b06f4a6dbe9f46f5cf3806a699a0c64f255318154a2445becec894084dbb.dds",
+      "visible": true
+    },
+    {
+      "asset_bytes": 11064,
+      "asset_sha256": "69301F1A95D25FA5B31F4AC8ED5049F7F35C14BEE7CFA8E20978717A64B1D048",
+      "category": null,
+      "colors": 2,
+      "dds": {
+        "format": "DXT1",
+        "height": 128,
+        "width": 128
+      },
+      "kind": "pattern",
+      "name": "pattern_quarter.dds",
+      "url": "assets/69301f1a95d25fa5b31f4ac8ed5049f7f35c14bee7cfa8e20978717a64b1d048.dds",
+      "visible": true
+    },
+    {
+      "asset_bytes": 87536,
+      "asset_sha256": "A0A0CC065F6D11607B9E9C29CBADE32D78575D5430440422B7BA7ED7F48F6448",
+      "category": null,
+      "colors": 2,
+      "dds": {
+        "format": "DXT5",
+        "height": 256,
+        "width": 256
+      },
+      "kind": "pattern",
+      "name": "pattern_ttt.dds",
+      "url": "assets/a0a0cc065f6d11607b9e9c29cbade32d78575d5430440422b7ba7ed7f48f6448.dds",
+      "visible": true
+    },
+    {
+      "asset_bytes": 11064,
+      "asset_sha256": "F6CA5B830F267EF613B55F6F7DB631B2AC3FE3C4B3590BD8022A88BA69E06C99",
+      "category": null,
+      "colors": 2,
+      "dds": {
+        "format": "DXT1",
+        "height": 128,
+        "width": 128
+      },
+      "kind": "pattern",
+      "name": "pattern_stepped_pyramid.dds",
+      "url": "assets/f6ca5b830f267ef613b55f6f7db631b2ac3fe3c4b3590bd8022a88ba69e06c99.dds",
+      "visible": true
+    },
+    {
+      "asset_bytes": 32896,
+      "asset_sha256": "11182FB94003811D4101D0B635326DD56F5F0D29C85763504AEF4EF9194B2E99",
+      "category": null,
+      "colors": 2,
+      "dds": {
+        "format": "DXT1",
+        "height": 256,
+        "width": 256
+      },
+      "kind": "pattern",
+      "name": "pattern_triangle_01.dds",
+      "url": "assets/11182fb94003811d4101d0b635326dd56f5f0d29c85763504aef4ef9194b2e99.dds",
+      "visible": true
+    },
+    {
+      "asset_bytes": 87536,
+      "asset_sha256": "EF9FDB5513BE78C674ACDD34FD28DFF9CF8A9CB6D6A5233ABE11C3EADE5A13A7",
+      "category": "abstract",
+      "colors": 0,
+      "dds": {
+        "format": "DXT5",
+        "height": 256,
+        "width": 256
+      },
+      "kind": "colored_emblem",
+      "name": "ce__empty_designer.dds",
+      "url": "assets/ef9fdb5513be78c674acdd34fd28dff9cf8a9cb6d6a5233abe11c3eade5a13a7.dds",
+      "visible": true
+    },
+    {
+      "asset_bytes": 22000,
+      "asset_sha256": "A0578CE34B3CEA223BA8B1E25C7D4409E6823DB925971FAC6F7040ACFB825315",
+      "category": "abstract",
+      "colors": 1,
+      "dds": {
+        "format": "DXT5",
+        "height": 128,
+        "width": 128
+      },
+      "kind": "colored_emblem",
+      "name": "ce_african_asetena.dds",
+      "url": "assets/a0578ce34b3cea223ba8b1e25c7d4409e6823db925971fac6f7040acfb825315.dds",
+      "visible": true
+    },
+    {
+      "asset_bytes": 22000,
+      "asset_sha256": "F832D2E9FD108BC444B649B0F0CD353AEDB7D6FEF054C956E1538D7866EE150F",
+      "category": "abstract",
+      "colors": 1,
+      "dds": {
+        "format": "DXT5",
+        "height": 128,
+        "width": 128
+      },
+      "kind": "colored_emblem",
+      "name": "ce_african_builder_god.dds",
+      "url": "assets/f832d2e9fd108bc444b649b0f0cd353aedb7d6fef054c956e1538d7866ee150f.dds",
+      "visible": true
+    },
+    {
+      "asset_bytes": 87536,
+      "asset_sha256": "D9D017E1013A99F65F915EEE58873237D667288938222CB583D63A97F3BCB565",
+      "category": "abstract",
+      "colors": 1,
+      "dds": {
+        "format": "DXT5",
+        "height": 256,
+        "width": 256
+      },
+      "kind": "colored_emblem",
+      "name": "ce_african_duguwa.dds",
+      "url": "assets/d9d017e1013a99f65f915eee58873237d667288938222cb583d63a97f3bcb565.dds",
+      "visible": true
+    },
+    {
+      "asset_bytes": 22000,
+      "asset_sha256": "4A2EDE3BFE7B4DCC466DC42A746A893BAC8A29F51461EAF5B1BAC2BCB8CCA393",
+      "category": "abstract",
+      "colors": 1,
+      "dds": {
+        "format": "DXT5",
+        "height": 128,
+        "width": 128
+      },
+      "kind": "colored_emblem",
+      "name": "ce_african_dwennimmen.dds",
+      "url": "assets/4a2ede3bfe7b4dcc466dc42a746a893bac8a29f51461eaf5b1bac2bcb8cca393.dds",
+      "visible": true
+    },
+    {
+      "asset_bytes": 22000,
+      "asset_sha256": "97CB8A512C40E313D20907584EB642E91C766C409BE5D51381DF128C1FF2F0E8",
+      "category": "abstract",
+      "colors": 1,
+      "dds": {
+        "format": "DXT5",
+        "height": 128,
+        "width": 128
+      },
+      "kind": "colored_emblem",
+      "name": "ce_african_fu_ti.dds",
+      "url": "assets/97cb8a512c40e313d20907584eb642e91c766c409be5d51381df128c1ff2f0e8.dds",
+      "visible": true
+    },
+    {
+      "asset_bytes": 87536,
+      "asset_sha256": "71711D898B890E8A1D52112590F48ED8CF1B95E1CC4DBFC3BFAD47FD6410D363",
+      "category": "abstract",
+      "colors": 1,
+      "dds": {
+        "format": "DXT5",
+        "height": 256,
+        "width": 256
+      },
+      "kind": "colored_emblem",
+      "name": "ce_african_habe.dds",
+      "url": "assets/71711d898b890e8a1d52112590f48ed8cf1b95e1cc4dbfc3bfad47fd6410d363.dds",
+      "visible": true
+    },
+    {
+      "asset_bytes": 22000,
+      "asset_sha256": "F046DDF3DE555562C696EBBAF1C25FEDD9F9BC600A6E4BC46A32C061CA00F197",
+      "category": "abstract",
+      "colors": 1,
+      "dds": {
+        "format": "DXT5",
+        "height": 128,
+        "width": 128
+      },
+      "kind": "colored_emblem",
+      "name": "ce_african_hidoox.dds",
+      "url": "assets/f046ddf3de555562c696ebbaf1c25fedd9f9bc600a6e4bc46a32c061ca00f197.dds",
+      "visible": true
+    },
+    {
+      "asset_bytes": 22000,
+      "asset_sha256": "3BE701FE2CDE940B4C54CE684C35AAA3B6FB1D4975460289EFA1781186902439",
+      "category": "abstract",
+      "colors": 1,
+      "dds": {
+        "format": "DXT5",
+        "height": 128,
+        "width": 128
+      },
+      "kind": "colored_emblem",
+      "name": "ce_african_jaaniw.dds",
+      "url": "assets/3be701fe2cde940b4c54ce684c35aaa3b6fb1d4975460289efa1781186902439.dds",
+      "visible": true
+    },
+    {
+      "asset_bytes": 22000,
+      "asset_sha256": "D327F2D76FC8D70AC1196BF3954FB070D4EA1147A71767CF53DCAEFDDCF5BC93",
+      "category": "abstract",
+      "colors": 1,
+      "dds": {
+        "format": "DXT5",
+        "height": 128,
+        "width": 128
+      },
+      "kind": "colored_emblem",
+      "name": "ce_african_ja_ir.dds",
+      "url": "assets/d327f2d76fc8d70ac1196bf3954fb070d4ea1147a71767cf53dcaefddcf5bc93.dds",
+      "visible": true
+    },
+    {
+      "asset_bytes": 22000,
+      "asset_sha256": "2A5978BBCB4BFE023EED2D0304A5921C0BF8617AC18C4AA7F99E21BD3CE8B2DD",
+      "category": "abstract",
+      "colors": 1,
+      "dds": {
+        "format": "DXT5",
+        "height": 128,
+        "width": 128
+      },
+      "kind": "colored_emblem",
+      "name": "ce_african_karaka.dds",
+      "url": "assets/2a5978bbcb4bfe023eed2d0304a5921c0bf8617ac18c4aa7f99e21bd3ce8b2dd.dds",
+      "visible": true
+    },
+    {
+      "asset_bytes": 22000,
+      "asset_sha256": "919DECCA96E23A17EF7450DAC8BDC74F178721139D741F7B344BDCB362B78B94",
+      "category": "abstract",
+      "colors": 1,
+      "dds": {
+        "format": "DXT5",
+        "height": 128,
+        "width": 128
+      },
+      "kind": "colored_emblem",
+      "name": "ce_african_koh.dds",
+      "url": "assets/919decca96e23a17ef7450dac8bdc74f178721139d741f7b344bdcb362b78b94.dds",
+      "visible": true
+    },
+    {
+      "asset_bytes": 22000,
+      "asset_sha256": "EA6987DA6B34E32A61FDA80C677ADCF463CA78AEE03ED5971E3C61EA66A41BF4",
+      "category": "abstract",
+      "colors": 1,
+      "dds": {
+        "format": "DXT5",
+        "height": 128,
+        "width": 128
+      },
+      "kind": "colored_emblem",
+      "name": "ce_african_mende.dds",
+      "url": "assets/ea6987da6b34e32a61fda80c677adcf463ca78aee03ed5971e3c61ea66a41bf4.dds",
+      "visible": true
+    },
+    {
+      "asset_bytes": 22000,
+      "asset_sha256": "A9A3642C8071497B4BF61F762598E24122DE9A087133A73D178254AA9D36DA6F",
+      "category": "abstract",
+      "colors": 1,
+      "dds": {
+        "format": "DXT5",
+        "height": 128,
+        "width": 128
+      },
+      "kind": "colored_emblem",
+      "name": "ce_african_mrammuo.dds",
+      "url": "assets/a9a3642c8071497b4bf61f762598e24122de9a087133a73d178254aa9d36da6f.dds",
+      "visible": true
+    },
+    {
+      "asset_bytes": 22000,
+      "asset_sha256": "CA971C25C6302321532C60F7631E95987A734738367192423E2E9E07265730ED",
+      "category": "abstract",
+      "colors": 1,
+      "dds": {
+        "format": "DXT5",
+        "height": 128,
+        "width": 128
+      },
+      "kind": "colored_emblem",
+      "name": "ce_african_omnipotence.dds",
+      "url": "assets/ca971c25c6302321532c60f7631e95987a734738367192423e2e9e07265730ed.dds",
+      "visible": true
+    },
+    {
+      "asset_bytes": 22000,
+      "asset_sha256": "5A96725856EC044A4BDF1F126F05CDE52CE1641D98D721F79A76027193195038",
+      "category": "abstract",
+      "colors": 1,
+      "dds": {
+        "format": "DXT5",
+        "height": 128,
+        "width": 128
+      },
+      "kind": "colored_emblem",
+      "name": "ce_african_otumfuo.dds",
+      "url": "assets/5a96725856ec044a4bdf1f126f05cde52ce1641d98d721f79a76027193195038.dds",
+      "visible": true
+    },
+    {
+      "asset_bytes": 87536,
+      "asset_sha256": "D67367199B5118D6F3B513B11BDA6E47A79B64362EC2DA75DE0F18A8946E8837",
+      "category": "abstract",
+      "colors": 1,
+      "dds": {
+        "format": "DXT5",
+        "height": 256,
+        "width": 256
+      },
+      "kind": "colored_emblem",
+      "name": "ce_african_snake.dds",
+      "url": "assets/d67367199b5118d6f3b513b11bda6e47a79b64362ec2da75de0f18a8946e8837.dds",
+      "visible": true
+    },
+    {
+      "asset_bytes": 22000,
+      "asset_sha256": "087C501E6E14AAEB4A6C652744445C60D0D23E55A0D92DF90AB84E567A548024",
+      "category": "abstract",
+      "colors": 1,
+      "dds": {
+        "format": "DXT5",
+        "height": 128,
+        "width": 128
+      },
+      "kind": "colored_emblem",
+      "name": "ce_african_tamfo.dds",
+      "url": "assets/087c501e6e14aaeb4a6c652744445c60d0d23e55a0d92df90ab84e567a548024.dds",
+      "visible": true
+    },
+    {
+      "asset_bytes": 22000,
+      "asset_sha256": "463FAA80441A43F9E7AD421CA57DEAC159816AF27B400B818749F3A93EBFF84F",
+      "category": "abstract",
+      "colors": 1,
+      "dds": {
+        "format": "DXT5",
+        "height": 128,
+        "width": 128
+      },
+      "kind": "colored_emblem",
+      "name": "ce_african_valor.dds",
+      "url": "assets/463faa80441a43f9e7ad421ca57deac159816af27b400b818749f3a93ebff84f.dds",
+      "visible": true
+    },
+    {
+      "asset_bytes": 22000,
+      "asset_sha256": "6DE3EFADA5C3BF06D4537D8684456C281494ADFDFF2CC4AD72D1C863CAE939FD",
+      "category": "abstract",
+      "colors": 1,
+      "dds": {
+        "format": "DXT5",
+        "height": 128,
+        "width": 128
+      },
+      "kind": "colored_emblem",
+      "name": "ce_african_wawa_aba.dds",
+      "url": "assets/6de3efada5c3bf06d4537d8684456c281494adfdff2cc4ad72d1c863cae939fd.dds",
+      "visible": true
+    },
+    {
+      "asset_bytes": 22000,
+      "asset_sha256": "88319C73050DE910D9DD6E8235FD56BFE831EB88B22B3113318C99B2A014D628",
+      "category": "abstract",
+      "colors": 1,
+      "dds": {
+        "format": "DXT5",
+        "height": 128,
+        "width": 128
+      },
+      "kind": "colored_emblem",
+      "name": "ce_austras_koks.dds",
+      "url": "assets/88319c73050de910d9dd6e8235fd56bfe831eb88b22b3113318c99b2a014d628.dds",
+      "visible": true
+    },
+    {
+      "asset_bytes": 87536,
+      "asset_sha256": "0CCF1BFE9C6EFABE8ADF3C48DD25DD9EB680E63287E0F145E517BB6D4CB9C0B8",
+      "category": "abstract",
+      "colors": 1,
+      "dds": {
+        "format": "DXT5",
+        "height": 256,
+        "width": 256
+      },
+      "kind": "colored_emblem",
+      "name": "ce_caltrop.dds",
+      "url": "assets/0ccf1bfe9c6efabe8adf3c48dd25dd9eb680e63287e0f145e517bb6d4cb9c0b8.dds",
+      "visible": true
+    },
+    {
+      "asset_bytes": 87536,
+      "asset_sha256": "014809717E47110E9F63936046A70217E1876764C50EE07DC50C4A720D144FC0",
+      "category": "abstract",
+      "colors": 1,
+      "dds": {
+        "format": "DXT5",
+        "height": 256,
+        "width": 256
+      },
+      "kind": "colored_emblem",
+      "name": "ce_chakratrisula.dds",
+      "url": "assets/014809717e47110e9f63936046a70217e1876764c50ee07dc50c4a720d144fc0.dds",
+      "visible": true
+    },
+    {
+      "asset_bytes": 87536,
+      "asset_sha256": "C90170B89DB4A7F3994D4FFA19A9640AF48E9A6809A62C3737D761FD894683BB",
+      "category": "abstract",
+      "colors": 3,
+      "dds": {
+        "format": "DXT5",
+        "height": 256,
+        "width": 256
+      },
+      "kind": "colored_emblem",
+      "name": "ce_derafsh_kaviani.dds",
+      "url": "assets/c90170b89db4a7f3994d4ffa19a9640af48e9a6809a62c3737d761fd894683bb.dds",
+      "visible": true
+    },
+    {
+      "asset_bytes": 87536,
+      "asset_sha256": "78585BC85C9115276D596604748EBF323A0323E5DE50C9764306998CF3751526",
+      "category": "abstract",
+      "colors": 1,
+      "dds": {
+        "format": "DXT5",
+        "height": 256,
+        "width": 256
+      },
+      "kind": "colored_emblem",
+      "name": "ce_diamond_01.dds",
+      "url": "assets/78585bc85c9115276d596604748ebf323a0323e5de50c9764306998cf3751526.dds",
+      "visible": true
+    },
+    {
+      "asset_bytes": 87536,
+      "asset_sha256": "AB6C2B5C5790C93984926D002A4CC07E569B09C347696277EBA9C8EEDB39529D",
+      "category": "abstract",
+      "colors": 1,
+      "dds": {
+        "format": "DXT5",
+        "height": 256,
+        "width": 256
+      },
+      "kind": "colored_emblem",
+      "name": "ce_ermine_spot.dds",
+      "url": "assets/ab6c2b5c5790c93984926d002a4cc07e569b09c347696277eba9c8eedb39529d.dds",
+      "visible": true
+    },
+    {
+      "asset_bytes": 22000,
+      "asset_sha256": "3A6C023ACC35C5C3454E08A91659D230CB77F9C19EBB42866FB8FD3812E0AEBE",
+      "category": "abstract",
+      "colors": 1,
+      "dds": {
+        "format": "DXT5",
+        "height": 128,
+        "width": 128
+      },
+      "kind": "colored_emblem",
+      "name": "ce_horsebrays.dds",
+      "url": "assets/3a6c023acc35c5c3454e08a91659d230cb77f9c19ebb42866fb8fd3812e0aebe.dds",
+      "visible": true
+    },
+    {
+      "asset_bytes": 22000,
+      "asset_sha256": "66707992EB2F1E14FB1D7805F5B4FA8DCBF8516EC4FFD63401E8603E1A5A1293",
+      "category": "abstract",
+      "colors": 1,
+      "dds": {
+        "format": "DXT5",
+        "height": 128,
+        "width": 128
+      },
+      "kind": "colored_emblem",
+      "name": "ce_india_small_arched_hill.dds",
+      "url": "assets/66707992eb2f1e14fb1d7805f5b4fa8dcbf8516ec4ffd63401e8603e1a5a1293.dds",
+      "visible": true
+    },
+    {
+      "asset_bytes": 22000,
+      "asset_sha256": "7C52857D1FFD5F5DFD5FF00ACF02AE96CDAEDED25ECE53CE5804DF6A42E86153",
+      "category": "abstract",
+      "colors": 1,
+      "dds": {
+        "format": "DXT5",
+        "height": 128,
+        "width": 128
+      },
+      "kind": "colored_emblem",
+      "name": "ce_india_small_trisula.dds",
+      "url": "assets/7c52857d1ffd5f5dfd5ff00acf02ae96cdaeded25ece53ce5804df6a42e86153.dds",
+      "visible": true
+    },
+    {
+      "asset_bytes": 87536,
+      "asset_sha256": "11D7451DF9F18C888601E174BF536B700A6AAC00F66C2ED1A959BE5825DADA42",
+      "category": "abstract",
+      "colors": 1,
+      "dds": {
+        "format": "DXT5",
+        "height": 256,
+        "width": 256
+      },
+      "kind": "colored_emblem",
+      "name": "ce_kanaga.dds",
+      "url": "assets/11d7451df9f18c888601e174bf536b700a6aac00f66c2ed1a959be5825dada42.dds",
+      "visible": true
+    },
+    {
+      "asset_bytes": 87536,
+      "asset_sha256": "F5263F93087E9D42AE7D742E7F1D52DD526AE9B9D3FCE98D1A31C70D0A65B3B5",
+      "category": "abstract",
+      "colors": 1,
+      "dds": {
+        "format": "DXT5",
+        "height": 256,
+        "width": 256
+      },
+      "kind": "colored_emblem",
+      "name": "ce_kaupaloki.dds",
+      "url": "assets/f5263f93087e9d42ae7d742e7f1d52dd526ae9b9d3fce98d1a31c70d0a65b3b5.dds",
+      "visible": true
+    },
+    {
+      "asset_bytes": 87536,
+      "asset_sha256": "3652BE4A216F6BD438648F0CAA46C7C0EBEFE2654FE268AAAEDCAB8C781DCBFC",
+      "category": "abstract",
+      "colors": 1,
+      "dds": {
+        "format": "DXT5",
+        "height": 256,
+        "width": 256
+      },
+      "kind": "colored_emblem",
+      "name": "ce_lis.dds",
+      "url": "assets/3652be4a216f6bd438648f0caa46c7c0ebefe2654fe268aaaedcab8c781dcbfc.dds",
+      "visible": true
+    },
+    {
+      "asset_bytes": 87536,
+      "asset_sha256": "642AA05F87E9A50A82A68FA1E92086757DA438CD709ED84225CE06DE7034A9D0",
+      "category": "abstract",
+      "colors": 1,
+      "dds": {
+        "format": "DXT5",
+        "height": 256,
+        "width": 256
+      },
+      "kind": "colored_emblem",
+      "name": "ce_lozenge.dds",
+      "url": "assets/642aa05f87e9a50a82a68fa1e92086757da438cd709ed84225ce06de7034a9d0.dds",
+      "visible": true
+    },
+    {
+      "asset_bytes": 22000,
+      "asset_sha256": "0A6688BBEDE10829B4735562872BA5022FB554AFD5D80CA3391EA4E85DAFBBC2",
+      "category": "abstract",
+      "colors": 1,
+      "dds": {
+        "format": "DXT5",
+        "height": 128,
+        "width": 128
+      },
+      "kind": "colored_emblem",
+      "name": "ce_mascle.dds",
+      "url": "assets/0a6688bbede10829b4735562872ba5022fb554afd5d80ca3391ea4e85dafbbc2.dds",
+      "visible": true
+    },
+    {
+      "asset_bytes": 87536,
+      "asset_sha256": "BE7DAAF1C183154849DDD53E753D7A9C1F3FF526A30E1E732198D1CC2B7A3D56",
+      "category": "abstract",
+      "colors": 1,
+      "dds": {
+        "format": "DXT5",
+        "height": 256,
+        "width": 256
+      },
+      "kind": "colored_emblem",
+      "name": "ce_mascle_01.dds",
+      "url": "assets/be7daaf1c183154849ddd53e753d7a9c1f3ff526a30e1e732198d1cc2b7a3d56.dds",
+      "visible": true
+    },
+    {
+      "asset_bytes": 22000,
+      "asset_sha256": "4617019D16EE59FBB3A2EB454A95BA0B0CC786CCBD84B93CD26119D59BC20668",
+      "category": "abstract",
+      "colors": 1,
+      "dds": {
+        "format": "DXT5",
+        "height": 128,
+        "width": 128
+      },
+      "kind": "colored_emblem",
+      "name": "ce_mena_diamond_napkin.dds",
+      "url": "assets/4617019d16ee59fbb3a2eb454a95ba0b0cc786ccbd84b93cd26119d59bc20668.dds",
+      "visible": true
+    },
+    {
+      "asset_bytes": 22000,
+      "asset_sha256": "4706D0FCBF9EC659B32A546134639195F93DC55430D91A7E31C6ED7CEDF0E39A",
+      "category": "abstract",
+      "colors": 1,
+      "dds": {
+        "format": "DXT5",
+        "height": 128,
+        "width": 128
+      },
+      "kind": "colored_emblem",
+      "name": "ce_mena_khanja.dds",
+      "url": "assets/4706d0fcbf9ec659b32a546134639195f93dc55430d91a7e31c6ed7cedf0e39a.dds",
+      "visible": true
+    },
+    {
+      "asset_bytes": 22000,
+      "asset_sha256": "EEDCA476853064DA87DCA482C164E98BA37E62799B74C6C252D18B75B21B96DC",
+      "category": "abstract",
+      "colors": 1,
+      "dds": {
+        "format": "DXT5",
+        "height": 128,
+        "width": 128
+      },
+      "kind": "colored_emblem",
+      "name": "ce_mena_rosette.dds",
+      "url": "assets/eedca476853064da87dca482c164e98ba37e62799b74c6c252d18b75b21b96dc.dds",
+      "visible": true
+    },
+    {
+      "asset_bytes": 22000,
+      "asset_sha256": "6DC4AF69DEDBA48A9DA06DE6D0837BF702615C9F8D2664472F382A7DEBEE45B4",
+      "category": "abstract",
+      "colors": 1,
+      "dds": {
+        "format": "DXT5",
+        "height": 128,
+        "width": 128
+      },
+      "kind": "colored_emblem",
+      "name": "ce_octogon_frame.dds",
+      "url": "assets/6dc4af69dedba48a9da06de6d0837bf702615c9f8d2664472f382a7debee45b4.dds",
+      "visible": true
+    },
+    {
+      "asset_bytes": 22000,
+      "asset_sha256": "449BF676EA9596EA81F327474A8B37A9E27D9C54A995250B87DA388E55E07DA4",
+      "category": "abstract",
+      "colors": 2,
+      "dds": {
+        "format": "DXT5",
+        "height": 128,
+        "width": 128
+      },
+      "kind": "colored_emblem",
+      "name": "ce_octogon_plain_frame.dds",
+      "url": "assets/449bf676ea9596ea81f327474a8b37a9e27d9c54a995250b87da388e55e07da4.dds",
+      "visible": true
+    },
+    {
+      "asset_bytes": 87536,
+      "asset_sha256": "A71BAD8C4C09E83A4143AAAEF697B0740DF0E9FF7F14C9AEF979E4E169382D3B",
+      "category": "abstract",
+      "colors": 1,
+      "dds": {
+        "format": "DXT5",
+        "height": 256,
+        "width": 256
+      },
+      "kind": "colored_emblem",
+      "name": "ce_oghuz_ram_horn_tamgha.dds",
+      "url": "assets/a71bad8c4c09e83a4143aaaef697b0740df0e9ff7f14c9aef979e4e169382d3b.dds",
+      "visible": true
+    },
+    {
+      "asset_bytes": 22000,
+      "asset_sha256": "EC0FA0651F5D9B1B98F6FDBE8349A4D0FB31F2F06B627FFFC2941B4E0CF833D3",
+      "category": "abstract",
+      "colors": 1,
+      "dds": {
+        "format": "DXT5",
+        "height": 128,
+        "width": 128
+      },
+      "kind": "colored_emblem",
+      "name": "ce_pagan_dodola.dds",
+      "url": "assets/ec0fa0651f5d9b1b98f6fdbe8349a4d0fb31f2f06b627fffc2941b4e0cf833d3.dds",
+      "visible": true
+    },
+    {
+      "asset_bytes": 22000,
+      "asset_sha256": "878D3DFE1B7DE47B5A3A3193AC8F409C67A9C79CC9C3B765C4B648422E544AFB",
+      "category": "abstract",
+      "colors": 1,
+      "dds": {
+        "format": "DXT5",
+        "height": 128,
+        "width": 128
+      },
+      "kind": "colored_emblem",
+      "name": "ce_pagan_jumis.dds",
+      "url": "assets/878d3dfe1b7de47b5a3a3193ac8f409c67a9c79cc9c3b765c4b648422e544afb.dds",
+      "visible": true
+    },
+    {
+      "asset_bytes": 22000,
+      "asset_sha256": "DE622896BABF5D1E930885BEF83BA783C734662D0BE1BF21E017484ACE7178D2",
+      "category": "abstract",
+      "colors": 1,
+      "dds": {
+        "format": "DXT5",
+        "height": 128,
+        "width": 128
+      },
+      "kind": "colored_emblem",
+      "name": "ce_pagan_laima.dds",
+      "url": "assets/de622896babf5d1e930885bef83ba783c734662d0be1bf21e017484ace7178d2.dds",
+      "visible": true
+    },
+    {
+      "asset_bytes": 22000,
+      "asset_sha256": "054B4F674419CEC2181FED51F35642B2C84C91C06425D3BD70302EB5773DBDC9",
+      "category": "abstract",
+      "colors": 1,
+      "dds": {
+        "format": "DXT5",
+        "height": 128,
+        "width": 128
+      },
+      "kind": "colored_emblem",
+      "name": "ce_pagan_nemiza.dds",
+      "url": "assets/054b4f674419cec2181fed51f35642b2c84c91c06425d3bd70302eb5773dbdc9.dds",
+      "visible": true
+    },
+    {
+      "asset_bytes": 22000,
+      "asset_sha256": "5FA1A8A02B846881070104122F05CB09ABA75EBFDCF446A6EFB7AE77C2BAC84E",
+      "category": "abstract",
+      "colors": 1,
+      "dds": {
+        "format": "DXT5",
+        "height": 128,
+        "width": 128
+      },
+      "kind": "colored_emblem",
+      "name": "ce_pagan_usins.dds",
+      "url": "assets/5fa1a8a02b846881070104122f05cb09aba75ebfdcf446a6efb7ae77c2bac84e.dds",
+      "visible": true
+    },
+    {
+      "asset_bytes": 22000,
+      "asset_sha256": "89228A264171AF547BC6DA606B8F2C5781762E66B6EA97B8B57324C347E8D45B",
+      "category": "abstract",
+      "colors": 1,
+      "dds": {
+        "format": "DXT5",
+        "height": 128,
+        "width": 128
+      },
+      "kind": "colored_emblem",
+      "name": "ce_pagan_usins_02.dds",
+      "url": "assets/89228a264171af547bc6da606b8f2c5781762e66b6ea97b8b57324c347e8d45b.dds",
+      "visible": true
+    },
+    {
+      "asset_bytes": 87536,
+      "asset_sha256": "69F2353675FD3AEDF4152CF7E7C5F15370439367F978E7492936AD33176209BF",
+      "category": "abstract",
+      "colors": 1,
+      "dds": {
+        "format": "DXT5",
+        "height": 256,
+        "width": 256
+      },
+      "kind": "colored_emblem",
+      "name": "ce_penbox.dds",
+      "url": "assets/69f2353675fd3aedf4152cf7e7c5f15370439367f978e7492936ad33176209bf.dds",
+      "visible": true
+    },
+    {
+      "asset_bytes": 22000,
+      "asset_sha256": "914C04A6E6D6799C3E97D3251CE21CF8BFFE277C06C241B7078BB848DF005EBA",
+      "category": "abstract",
+      "colors": 1,
+      "dds": {
+        "format": "DXT5",
+        "height": 128,
+        "width": 128
+      },
+      "kind": "colored_emblem",
+      "name": "ce_polish_ajsicz.dds",
+      "url": "assets/914c04a6e6d6799c3e97d3251ce21cf8bffe277c06c241b7078bb848df005eba.dds",
+      "visible": true
+    },
+    {
+      "asset_bytes": 22000,
+      "asset_sha256": "3FA6E5D9B7104C3FAD3D4A2FA2B15EE90117CD8BFBB13BD348CC0504507645C2",
+      "category": "abstract",
+      "colors": 1,
+      "dds": {
+        "format": "DXT5",
+        "height": 128,
+        "width": 128
+      },
+      "kind": "colored_emblem",
+      "name": "ce_polish_andrzejewski.dds",
+      "url": "assets/3fa6e5d9b7104c3fad3d4a2fa2b15ee90117cd8bfbb13bd348cc0504507645c2.dds",
+      "visible": true
+    },
+    {
+      "asset_bytes": 22000,
+      "asset_sha256": "E8B1F77782C5F8889738193BBDD63F493DD3E4E3DC34619D70E953B474D7C03F",
+      "category": "abstract",
+      "colors": 1,
+      "dds": {
+        "format": "DXT5",
+        "height": 128,
+        "width": 128
+      },
+      "kind": "colored_emblem",
+      "name": "ce_polish_bialozor.dds",
+      "url": "assets/e8b1f77782c5f8889738193bbdd63f493dd3e4e3dc34619d70e953b474d7c03f.dds",
+      "visible": true
+    },
+    {
+      "asset_bytes": 22000,
+      "asset_sha256": "967764B9C059BE2C39D3981E708999D02186F2024ADFA0C558FF4A4CE156231B",
+      "category": "abstract",
+      "colors": 1,
+      "dds": {
+        "format": "DXT5",
+        "height": 128,
+        "width": 128
+      },
+      "kind": "colored_emblem",
+      "name": "ce_polish_bogoria.dds",
+      "url": "assets/967764b9c059be2c39d3981e708999d02186f2024adfa0c558ff4a4ce156231b.dds",
+      "visible": true
+    },
+    {
+      "asset_bytes": 22000,
+      "asset_sha256": "9E0E03B90262F75E499DD414B9EB8593D287B3F04840229F1EC5A941A3CD96C8",
+      "category": "abstract",
+      "colors": 1,
+      "dds": {
+        "format": "DXT5",
+        "height": 128,
+        "width": 128
+      },
+      "kind": "colored_emblem",
+      "name": "ce_polish_czyz.dds",
+      "url": "assets/9e0e03b90262f75e499dd414b9eb8593d287b3f04840229f1ec5a941a3cd96c8.dds",
+      "visible": true
+    },
+    {
+      "asset_bytes": 22000,
+      "asset_sha256": "939C42FA3945F6DCFC3DF81C235AE62E98FB1D2EA2F6C8EEA253819FC32A53CA",
+      "category": "abstract",
+      "colors": 1,
+      "dds": {
+        "format": "DXT5",
+        "height": 128,
+        "width": 128
+      },
+      "kind": "colored_emblem",
+      "name": "ce_polish_glinskyi.dds",
+      "url": "assets/939c42fa3945f6dcfc3df81c235ae62e98fb1d2ea2f6c8eea253819fc32a53ca.dds",
+      "visible": true
+    },
+    {
+      "asset_bytes": 22000,
+      "asset_sha256": "510BAA988B64375F358BC7BE44671149BD171E7E3C1133F8AA1C73CBE8A77D4A",
+      "category": "abstract",
+      "colors": 1,
+      "dds": {
+        "format": "DXT5",
+        "height": 128,
+        "width": 128
+      },
+      "kind": "colored_emblem",
+      "name": "ce_polish_korczak.dds",
+      "url": "assets/510baa988b64375f358bc7be44671149bd171e7e3c1133f8aa1c73cbe8a77d4a.dds",
+      "visible": true
+    },
+    {
+      "asset_bytes": 22000,
+      "asset_sha256": "8753855EF308B7A9E5DDF7C30F4B189546FF13EF0FF5F6A066685F6D5667AD75",
+      "category": "abstract",
+      "colors": 1,
+      "dds": {
+        "format": "DXT5",
+        "height": 128,
+        "width": 128
+      },
+      "kind": "colored_emblem",
+      "name": "ce_polish_kosciesza.dds",
+      "url": "assets/8753855ef308b7a9e5ddf7c30f4b189546ff13ef0ff5f6a066685f6d5667ad75.dds",
+      "visible": true
+    },
+    {
+      "asset_bytes": 22000,
+      "asset_sha256": "12341696C491739E1F8FDC1EBCEC9A7A2F98BBA0DB822655BB542D191DA75514",
+      "category": "abstract",
+      "colors": 1,
+      "dds": {
+        "format": "DXT5",
+        "height": 128,
+        "width": 128
+      },
+      "kind": "colored_emblem",
+      "name": "ce_polish_odrovons.dds",
+      "url": "assets/12341696c491739e1f8fdc1ebcec9a7a2f98bba0db822655bb542d191da75514.dds",
+      "visible": true
+    },
+    {
+      "asset_bytes": 22000,
+      "asset_sha256": "441E0CF373AFE0AD3DA80533F56076305797C1FDBD25707705692F9DB5B91A4C",
+      "category": "abstract",
+      "colors": 1,
+      "dds": {
+        "format": "DXT5",
+        "height": 128,
+        "width": 128
+      },
+      "kind": "colored_emblem",
+      "name": "ce_polish_ogonczyk.dds",
+      "url": "assets/441e0cf373afe0ad3da80533f56076305797c1fdbd25707705692f9db5b91a4c.dds",
+      "visible": true
+    },
+    {
+      "asset_bytes": 22000,
+      "asset_sha256": "C705738CD5BA376CAC783330CB14EF99EFF718E885B16E26392208FC6D31003F",
+      "category": "abstract",
+      "colors": 1,
+      "dds": {
+        "format": "DXT5",
+        "height": 128,
+        "width": 128
+      },
+      "kind": "colored_emblem",
+      "name": "ce_polish_pilsudski.dds",
+      "url": "assets/c705738cd5ba376cac783330cb14ef99eff718e885b16e26392208fc6d31003f.dds",
+      "visible": true
+    },
+    {
+      "asset_bytes": 22000,
+      "asset_sha256": "87F87347B3A40BB88C7088C3594E7F8C3C4E9D69E1C0DD6AF44CC8A6FB46823A",
+      "category": "abstract",
+      "colors": 1,
+      "dds": {
+        "format": "DXT5",
+        "height": 128,
+        "width": 128
+      },
+      "kind": "colored_emblem",
+      "name": "ce_polish_siekierz.dds",
+      "url": "assets/87f87347b3a40bb88c7088c3594e7f8c3c4e9d69e1c0dd6af44cc8a6fb46823a.dds",
+      "visible": true
+    },
+    {
+      "asset_bytes": 87536,
+      "asset_sha256": "3B497C61D105247EFF501FB46C94C30DC8DAF142AF293B045E630800068B9C87",
+      "category": "abstract",
+      "colors": 2,
+      "dds": {
+        "format": "DXT5",
+        "height": 256,
+        "width": 256
+      },
+      "kind": "colored_emblem",
+      "name": "ce_polylobe_angles.dds",
+      "url": "assets/3b497c61d105247eff501fb46c94c30dc8daf142af293b045e630800068b9c87.dds",
+      "visible": true
+    },
+    {
+      "asset_bytes": 22000,
+      "asset_sha256": "184150D2EB4546FFB0A9698400E4C4FB3381F08B31328D95441E28A53182A1F1",
+      "category": "abstract",
+      "colors": 1,
+      "dds": {
+        "format": "DXT5",
+        "height": 128,
+        "width": 128
+      },
+      "kind": "colored_emblem",
+      "name": "ce_polylobe_frame.dds",
+      "url": "assets/184150d2eb4546ffb0a9698400e4c4fb3381f08b31328d95441e28a53182a1f1.dds",
+      "visible": true
+    },
+    {
+      "asset_bytes": 22000,
+      "asset_sha256": "13A9DD83CCB4FFDCD8DA3FDFC3833C783BD06F93F2359A05D4320F9D8F35EDCC",
+      "category": "abstract",
+      "colors": 2,
+      "dds": {
+        "format": "DXT5",
+        "height": 128,
+        "width": 128
+      },
+      "kind": "colored_emblem",
+      "name": "ce_polylobe_plain_frame.dds",
+      "url": "assets/13a9dd83ccb4ffdcd8da3fdfc3833c783bd06f93f2359a05d4320f9d8f35edcc.dds",
+      "visible": true
+    },
+    {
+      "asset_bytes": 87536,
+      "asset_sha256": "079D2B1062411455E92A28C47C8C7B2EF7CAB9F5F4D0320E37DE962ECBD66CC6",
+      "category": "abstract",
+      "colors": 2,
+      "dds": {
+        "format": "DXT5",
+        "height": 256,
+        "width": 256
+      },
+      "kind": "colored_emblem",
+      "name": "ce_quadrilobe.dds",
+      "url": "assets/079d2b1062411455e92a28c47c8c7b2ef7cab9f5f4d0320e37de962ecbd66cc6.dds",
+      "visible": true
+    },
+    {
+      "asset_bytes": 87536,
+      "asset_sha256": "A18CA5F51245784B8DBA7B93CAE482A09E114B27AD9E4864EA9A235821DCB31A",
+      "category": "abstract",
+      "colors": 1,
+      "dds": {
+        "format": "DXT5",
+        "height": 256,
+        "width": 256
+      },
+      "kind": "colored_emblem",
+      "name": "ce_rubh_el_hizb_arch.dds",
+      "url": "assets/a18ca5f51245784b8dba7b93cae482a09e114b27ad9e4864ea9a235821dcb31a.dds",
+      "visible": true
+    },
+    {
+      "asset_bytes": 87536,
+      "asset_sha256": "33ACFA3195516CD92B447857F9675EA8F0C01D3392CF5CA77F53FC24A64EB331",
+      "category": "abstract",
+      "colors": 1,
+      "dds": {
+        "format": "DXT5",
+        "height": 256,
+        "width": 256
+      },
+      "kind": "colored_emblem",
+      "name": "ce_rubh_el_hizb_flower.dds",
+      "url": "assets/33acfa3195516cd92b447857f9675ea8f0c01d3392cf5ca77f53fc24a64eb331.dds",
+      "visible": true
+    },
+    {
+      "asset_bytes": 87536,
+      "asset_sha256": "832ABF0C9641216601B14D4572EF41F2445FD1F6B5570A0C3A7BC3EE18C0F609",
+      "category": "abstract",
+      "colors": 1,
+      "dds": {
+        "format": "DXT5",
+        "height": 256,
+        "width": 256
+      },
+      "kind": "colored_emblem",
+      "name": "ce_rubh_el_hizb_knot.dds",
+      "url": "assets/832abf0c9641216601b14d4572ef41f2445fd1f6b5570a0c3a7bc3ee18c0f609.dds",
+      "visible": true
+    },
+    {
+      "asset_bytes": 87536,
+      "asset_sha256": "8881705A471E3407EE2D6C4DCBBA00CDF9801CC2E01E6F59669A742E39088016",
+      "category": "abstract",
+      "colors": 1,
+      "dds": {
+        "format": "DXT5",
+        "height": 256,
+        "width": 256
+      },
+      "kind": "colored_emblem",
+      "name": "ce_rubh_el_hizb_iranian.dds",
+      "url": "assets/8881705a471e3407ee2d6c4dcbba00cdf9801cc2e01e6f59669a742e39088016.dds",
+      "visible": true
+    },
+    {
+      "asset_bytes": 87536,
+      "asset_sha256": "C96328B0634905693E4FB8DAEB39F3D0C8DBBE8A1ED5D7BF95CF516436116EEE",
+      "category": "abstract",
+      "colors": 1,
+      "dds": {
+        "format": "DXT5",
+        "height": 256,
+        "width": 256
+      },
+      "kind": "colored_emblem",
+      "name": "ce_rubh_el_hizb_iranian_frame.dds",
+      "url": "assets/c96328b0634905693e4fb8daeb39f3d0c8dbbe8a1ed5d7bf95cf516436116eee.dds",
+      "visible": true
+    },
+    {
+      "asset_bytes": 22000,
+      "asset_sha256": "5A533D6DA703A0D3D2FA3B9E9BE43B4E6217F5C4791CBFDDE7591242449EC572",
+      "category": "abstract",
+      "colors": 1,
+      "dds": {
+        "format": "DXT5",
+        "height": 128,
+        "width": 128
+      },
+      "kind": "colored_emblem",
+      "name": "ce_rurikid_izyaslav.dds",
+      "url": "assets/5a533d6da703a0d3d2fa3b9e9be43b4e6217f5c4791cbfdde7591242449ec572.dds",
+      "visible": true
+    },
+    {
+      "asset_bytes": 22000,
+      "asset_sha256": "06E2E25BF766E56344CEAE72B831454A347B468A8FE8A89318BE5E6A1B1C02A1",
+      "category": "abstract",
+      "colors": 1,
+      "dds": {
+        "format": "DXT5",
+        "height": 128,
+        "width": 128
+      },
+      "kind": "colored_emblem",
+      "name": "ce_rurikid_vzevolod_01.dds",
+      "url": "assets/06e2e25bf766e56344ceae72b831454a347b468a8fe8a89318be5e6a1b1c02a1.dds",
+      "visible": true
+    },
+    {
+      "asset_bytes": 22000,
+      "asset_sha256": "6491A1B778078DA8443D40C480113281E5AA7F9DB2E225C76AC83CE0BAF8B3A3",
+      "category": "abstract",
+      "colors": 1,
+      "dds": {
+        "format": "DXT5",
+        "height": 128,
+        "width": 128
+      },
+      "kind": "colored_emblem",
+      "name": "ce_rurikid_vzevolod_02.dds",
+      "url": "assets/6491a1b778078da8443d40c480113281e5aa7f9db2e225c76ac83ce0baf8b3a3.dds",
+      "visible": true
+    },
+    {
+      "asset_bytes": 87536,
+      "asset_sha256": "B47C5EA17F07363D39AB50EEA085A8C267163EE82A4ECF9734EBBA59974BD97C",
+      "category": "abstract",
+      "colors": 1,
+      "dds": {
+        "format": "DXT5",
+        "height": 256,
+        "width": 256
+      },
+      "kind": "colored_emblem",
+      "name": "ce_shrivatsa.dds",
+      "url": "assets/b47c5ea17f07363d39ab50eea085a8c267163ee82a4ecf9734ebba59974bd97c.dds",
+      "visible": true
+    },
+    {
+      "asset_bytes": 22000,
+      "asset_sha256": "142F97822083095704047E0561A739F1E730846198F04E765D2D058217A2BC82",
+      "category": "abstract",
+      "colors": 1,
+      "dds": {
+        "format": "DXT5",
+        "height": 128,
+        "width": 128
+      },
+      "kind": "colored_emblem",
+      "name": "ce_square_kaaba.dds",
+      "url": "assets/142f97822083095704047e0561a739f1e730846198f04e765d2d058217a2bc82.dds",
+      "visible": true
+    },
+    {
+      "asset_bytes": 87536,
+      "asset_sha256": "E92325C9B8C1642C823A2E9A1C57A52638FAA7834161727DDF09E05A380FBF65",
+      "category": "abstract",
+      "colors": 1,
+      "dds": {
+        "format": "DXT5",
+        "height": 256,
+        "width": 256
+      },
+      "kind": "colored_emblem",
+      "name": "ce_sun_frame.dds",
+      "url": "assets/e92325c9b8c1642c823a2e9a1c57a52638faa7834161727ddf09e05a380fbf65.dds",
+      "visible": true
+    },
+    {
+      "asset_bytes": 87536,
+      "asset_sha256": "7E298A723CE89D57AEB3A41CF951FC4BD377748366B727A9C4620CD0F39250C7",
+      "category": "abstract",
+      "colors": 1,
+      "dds": {
+        "format": "DXT5",
+        "height": 256,
+        "width": 256
+      },
+      "kind": "colored_emblem",
+      "name": "ce_suomenusko_kazym.dds",
+      "url": "assets/7e298a723ce89d57aeb3a41cf951fc4bd377748366b727a9c4620cd0f39250c7.dds",
+      "visible": true
+    },
+    {
+      "asset_bytes": 87536,
+      "asset_sha256": "23BDB0D8537FF9B490C089EF4888656E934BF44CFB736CDB6E2A051FC70E3353",
+      "category": "abstract",
+      "colors": 1,
+      "dds": {
+        "format": "DXT5",
+        "height": 256,
+        "width": 256
+      },
+      "kind": "colored_emblem",
+      "name": "ce_vair_single.dds",
+      "url": "assets/23bdb0d8537ff9b490c089ef4888656e934bf44cfb736cdb6e2a051fc70e3353.dds",
+      "visible": true
+    },
+    {
+      "asset_bytes": 87536,
+      "asset_sha256": "F358646A0C8C5C7257C1DA4FB7A462E21DE4B8A179A3E9F2BBC6F0F857E8D2B9",
+      "category": "animals",
+      "colors": 1,
+      "dds": {
+        "format": "DXT5",
+        "height": 256,
+        "width": 256
+      },
+      "kind": "colored_emblem",
+      "name": "ce_african_bird.dds",
+      "url": "assets/f358646a0c8c5c7257c1da4fb7a462e21de4b8a179a3e9f2bbc6f0f857e8d2b9.dds",
+      "visible": true
+    },
+    {
+      "asset_bytes": 22000,
+      "asset_sha256": "AC9CFD010665BB4A6D995210C01D1908B62DCC05E96CED68C38741C8D9D058EF",
+      "category": "animals",
+      "colors": 1,
+      "dds": {
+        "format": "DXT5",
+        "height": 128,
+        "width": 128
+      },
+      "kind": "colored_emblem",
+      "name": "ce_african_gecko.dds",
+      "url": "assets/ac9cfd010665bb4a6d995210c01d1908b62dcc05e96ced68c38741c8d9d058ef.dds",
+      "visible": true
+    },
+    {
+      "asset_bytes": 22000,
+      "asset_sha256": "6D272D0EBE4C92F5AD256F1DA1043A164F0108A5DCA74B3662A4EB7096B7C127",
+      "category": "animals",
+      "colors": 1,
+      "dds": {
+        "format": "DXT5",
+        "height": 128,
+        "width": 128
+      },
+      "kind": "colored_emblem",
+      "name": "ce_african_ram_horns_02.dds",
+      "url": "assets/6d272d0ebe4c92f5ad256f1da1043a164f0108a5dca74b3662a4eb7096b7c127.dds",
+      "visible": true
+    },
+    {
+      "asset_bytes": 87536,
+      "asset_sha256": "BB0B71439F8496BDF46E82B3E1BB56F4D76F8B1F99D5B77CD46CFDEDBE7BAA1A",
+      "category": "animals",
+      "colors": 1,
+      "dds": {
+        "format": "DXT5",
+        "height": 256,
+        "width": 256
+      },
+      "kind": "colored_emblem",
+      "name": "ce_african_turtle.dds",
+      "url": "assets/bb0b71439f8496bdf46e82b3e1bb56f4d76f8b1f99d5b77cd46cfdedbe7baa1a.dds",
+      "visible": true
+    },
+    {
+      "asset_bytes": 22000,
+      "asset_sha256": "789A5CAF7A4A436235DC3743747D8A2C17B216ACA3E51138FD90C1AA94937E71",
+      "category": "animals",
+      "colors": 1,
+      "dds": {
+        "format": "DXT5",
+        "height": 128,
+        "width": 128
+      },
+      "kind": "colored_emblem",
+      "name": "ce_african_yoruba_snake.dds",
+      "url": "assets/789a5caf7a4a436235dc3743747d8a2c17b216aca3e51138fd90c1aa94937e71.dds",
+      "visible": true
+    },
+    {
+      "asset_bytes": 349680,
+      "asset_sha256": "F28F6B91C480CDFC99DB2BDB039F3D2C972E92894A0E1FB599D16CC09D800299",
+      "category": "figures",
+      "colors": 2,
+      "dds": {
+        "format": "DXT5",
+        "height": 512,
+        "width": 512
+      },
+      "kind": "colored_emblem",
+      "name": "ce_angel.dds",
+      "url": "assets/f28f6b91c480cdfc99db2bdb039f3d2c972e92894a0e1fb599d16cc09d800299.dds",
+      "visible": true
+    },
+    {
+      "asset_bytes": 87536,
+      "asset_sha256": "7FB6EC6816B8694A0C4AA49CA15E3E8D2575C5FF8F05D02F8F8DFF175DCB0B93",
+      "category": "animals",
+      "colors": 1,
+      "dds": {
+        "format": "DXT5",
+        "height": 256,
+        "width": 256
+      },
+      "kind": "colored_emblem",
+      "name": "ce_ant.dds",
+      "url": "assets/7fb6ec6816b8694a0c4aa49ca15e3e8d2575c5ff8f05d02f8f8dff175dcb0b93.dds",
+      "visible": true
+    },
+    {
+      "asset_bytes": 349680,
+      "asset_sha256": "5A92D490A4AB6E124F9EE17B8C4973C552E2EA72833E2D23D5546A0AE244C44E",
+      "category": "animals",
+      "colors": 3,
+      "dds": {
+        "format": "DXT5",
+        "height": 512,
+        "width": 512
+      },
+      "kind": "colored_emblem",
+      "name": "ce_antelope.dds",
+      "url": "assets/5a92d490a4ab6e124f9ee17b8c4973c552e2ea72833e2d23d5546a0ae244c44e.dds",
+      "visible": true
+    },
+    {
+      "asset_bytes": 87536,
+      "asset_sha256": "D3ACF5D6AF543F8BBD3D66BE32F119CD619EBCB8739655E4DD159D1C5F8CFDA2",
+      "category": "animals",
+      "colors": 1,
+      "dds": {
+        "format": "DXT5",
+        "height": 256,
+        "width": 256
+      },
+      "kind": "colored_emblem",
+      "name": "ce_antler.dds",
+      "url": "assets/d3acf5d6af543f8bbd3d66be32f119cd619ebcb8739655e4dd159d1c5f8cfda2.dds",
+      "visible": true
+    },
+    {
+      "asset_bytes": 87536,
+      "asset_sha256": "A1734F1D2819FFEEDDD76A3809A8125D18491FB0BAF4A5F3905E40607E7D8F24",
+      "category": "animals",
+      "colors": 1,
+      "dds": {
+        "format": "DXT5",
+        "height": 256,
+        "width": 256
+      },
+      "kind": "colored_emblem",
+      "name": "ce_antlers_attire.dds",
+      "url": "assets/a1734f1d2819ffeeddd76a3809a8125d18491fb0baf4a5f3905e40607e7d8f24.dds",
+      "visible": true
+    },
+    {
+      "asset_bytes": 349680,
+      "asset_sha256": "CF10CF725D1F21449F91B5186BAFEC349035A221731832CF4A2B99604B914638",
+      "category": "animals",
+      "colors": 1,
+      "dds": {
+        "format": "DXT5",
+        "height": 512,
+        "width": 512
+      },
+      "kind": "colored_emblem",
+      "name": "ce_antler_pale.dds",
+      "url": "assets/cf10cf725d1f21449f91b5186bafec349035a221731832cf4a2b99604b914638.dds",
+      "visible": true
+    },
+    {
+      "asset_bytes": 87536,
+      "asset_sha256": "B1F3F8AA1E0BC12D02B3CF281E258E44EC62C4DC56B63C2041A9A052CDF8C292",
+      "category": "animals",
+      "colors": 1,
+      "dds": {
+        "format": "DXT5",
+        "height": 256,
+        "width": 256
+      },
+      "kind": "colored_emblem",
+      "name": "ce_attire.dds",
+      "url": "assets/b1f3f8aa1e0bc12d02b3cf281e258e44ec62c4dc56b63c2041a9a052cdf8c292.dds",
+      "visible": true
+    },
+    {
+      "asset_bytes": 349680,
+      "asset_sha256": "AC5C43510F8577DC1BB3FB5E34957BE99B4A53F66822962DC9B9B2D023A7D04C",
+      "category": "animals",
+      "colors": 2,
+      "dds": {
+        "format": "DXT5",
+        "height": 512,
+        "width": 512
+      },
+      "kind": "colored_emblem",
+      "name": "ce_barbels_addorsed.dds",
+      "url": "assets/ac5c43510f8577dc1bb3fb5e34957be99b4a53f66822962dc9b9b2d023a7d04c.dds",
+      "visible": true
+    },
+    {
+      "asset_bytes": 87536,
+      "asset_sha256": "95DE7116B2EDB86EAD40955215ACC7C3B6EECCEB2302C65693D470F833AE3B06",
+      "category": "animals",
+      "colors": 2,
+      "dds": {
+        "format": "DXT5",
+        "height": 256,
+        "width": 256
+      },
+      "kind": "colored_emblem",
+      "name": "ce_bat.dds",
+      "url": "assets/95de7116b2edb86ead40955215acc7c3b6eecceb2302c65693d470f833ae3b06.dds",
+      "visible": true
+    },
+    {
+      "asset_bytes": 87536,
+      "asset_sha256": "C67204515A05C40DB01283F31915E622FC25C7810B646B9652980A0DD373BF4C",
+      "category": "animals",
+      "colors": 2,
+      "dds": {
+        "format": "DXT5",
+        "height": 256,
+        "width": 256
+      },
+      "kind": "colored_emblem",
+      "name": "ce_bear_claw.dds",
+      "url": "assets/c67204515a05c40db01283f31915e622fc25c7810b646b9652980a0dd373bf4c.dds",
+      "visible": true
+    },
+    {
+      "asset_bytes": 87536,
+      "asset_sha256": "BCFE7CC4BD17E473F1BA2C8BAB2BA9DBB1201DECA98E369EBBCEC3592CCAA93B",
+      "category": "animals",
+      "colors": 3,
+      "dds": {
+        "format": "DXT5",
+        "height": 256,
+        "width": 256
+      },
+      "kind": "colored_emblem",
+      "name": "ce_bear_head.dds",
+      "url": "assets/bcfe7cc4bd17e473f1ba2c8bab2ba9dbb1201deca98e369ebbcec3592ccaa93b.dds",
+      "visible": true
+    },
+    {
+      "asset_bytes": 349680,
+      "asset_sha256": "20433006B81647CFCAF430DDD561B314B6FC136E0B751C06A520FE7565A00496",
+      "category": "animals",
+      "colors": 3,
+      "dds": {
+        "format": "DXT5",
+        "height": 512,
+        "width": 512
+      },
+      "kind": "colored_emblem",
+      "name": "ce_bear_passant.dds",
+      "url": "assets/20433006b81647cfcaf430ddd561b314b6fc136e0b751c06a520fe7565a00496.dds",
+      "visible": true
+    },
+    {
+      "asset_bytes": 349680,
+      "asset_sha256": "B12D8AF3EB02F6855EF894A787479A0F43DA64F4807786146FF9850BE47540A3",
+      "category": "animals",
+      "colors": 3,
+      "dds": {
+        "format": "DXT5",
+        "height": 512,
+        "width": 512
+      },
+      "kind": "colored_emblem",
+      "name": "ce_bear_rampant.dds",
+      "url": "assets/b12d8af3eb02f6855ef894a787479a0f43da64f4807786146ff9850be47540a3.dds",
+      "visible": true
+    },
+    {
+      "asset_bytes": 87536,
+      "asset_sha256": "F5390D1EF00C9D08A8D340AD5A7CA0AAFA75FB60D143D2894ADE1B2F3D8F0C12",
+      "category": "animals",
+      "colors": 3,
+      "dds": {
+        "format": "DXT5",
+        "height": 256,
+        "width": 256
+      },
+      "kind": "colored_emblem",
+      "name": "ce_bee.dds",
+      "url": "assets/f5390d1ef00c9d08a8d340ad5a7ca0aafa75fb60d143d2894ade1b2f3d8f0c12.dds",
+      "visible": true
+    },
+    {
+      "asset_bytes": 349680,
+      "asset_sha256": "A770429C194E456FA7E23C1F2F6BB171294CED827A7809F9FD3275B6D0F1EDF9",
+      "category": "animals",
+      "colors": 3,
+      "dds": {
+        "format": "DXT5",
+        "height": 512,
+        "width": 512
+      },
+      "kind": "colored_emblem",
+      "name": "ce_boar_head.dds",
+      "url": "assets/a770429c194e456fa7e23c1f2f6bb171294ced827a7809f9fd3275b6d0f1edf9.dds",
+      "visible": true
+    },
+    {
+      "asset_bytes": 349680,
+      "asset_sha256": "12670640BEF97C62CE6B9D5162A2C8BFA012BDE0333907A4497CA1C20A0BB162",
+      "category": "animals",
+      "colors": 3,
+      "dds": {
+        "format": "DXT5",
+        "height": 512,
+        "width": 512
+      },
+      "kind": "colored_emblem",
+      "name": "ce_boar_passant.dds",
+      "url": "assets/12670640bef97c62ce6b9d5162a2c8bfa012bde0333907a4497ca1c20a0bb162.dds",
+      "visible": true
+    },
+    {
+      "asset_bytes": 22000,
+      "asset_sha256": "4D5F35FCB4C46A4334E7949BAE435A6F16DF1AFF46A335D0CB4468178FB36AB8",
+      "category": "animals",
+      "colors": 3,
+      "dds": {
+        "format": "DXT5",
+        "height": 128,
+        "width": 128
+      },
+      "kind": "colored_emblem",
+      "name": "ce_boar_passant_02.dds",
+      "url": "assets/4d5f35fcb4c46a4334e7949bae435a6f16df1aff46a335d0cb4468178fb36ab8.dds",
+      "visible": true
+    },
+    {
+      "asset_bytes": 87536,
+      "asset_sha256": "1DC44A1657659A25C567162E2A72AA6599E23DAA8A3DAC95DEAF44107446A117",
+      "category": "animals",
+      "colors": 1,
+      "dds": {
+        "format": "DXT5",
+        "height": 256,
+        "width": 256
+      },
+      "kind": "colored_emblem",
+      "name": "ce_buddhist_fishes.dds",
+      "url": "assets/1dc44a1657659a25c567162e2a72aa6599e23daa8a3dac95deaf44107446a117.dds",
+      "visible": true
+    },
+    {
+      "asset_bytes": 22000,
+      "asset_sha256": "D800D6ED8D6109E1872AF73F4EB4D5C67AF4FB9B65B894F0F41174EA4A08B38C",
+      "category": "animals",
+      "colors": 1,
+      "dds": {
+        "format": "DXT5",
+        "height": 128,
+        "width": 128
+      },
+      "kind": "colored_emblem",
+      "name": "ce_bulls_massacre.dds",
+      "url": "assets/d800d6ed8d6109e1872af73f4eb4d5c67af4fb9b65b894f0f41174ea4a08b38c.dds",
+      "visible": true
+    },
+    {
+      "asset_bytes": 87536,
+      "asset_sha256": "E88D0DDF4C3925B1F1E43F20ADC834A9A1EBE26239E66E4705157CE9A70C2A3C",
+      "category": "animals",
+      "colors": 3,
+      "dds": {
+        "format": "DXT5",
+        "height": 256,
+        "width": 256
+      },
+      "kind": "colored_emblem",
+      "name": "ce_bull_head.dds",
+      "url": "assets/e88d0ddf4c3925b1f1e43f20adc834a9a1ebe26239e66e4705157ce9a70c2a3c.dds",
+      "visible": true
+    },
+    {
+      "asset_bytes": 87536,
+      "asset_sha256": "5D0501F0D954AC35C65B86E739BE428E38E240917B1703CDA57A7929671FAC99",
+      "category": "animals",
+      "colors": 1,
+      "dds": {
+        "format": "DXT5",
+        "height": 256,
+        "width": 256
+      },
+      "kind": "colored_emblem",
+      "name": "ce_bull_horn.dds",
+      "url": "assets/5d0501f0d954ac35c65b86e739be428e38e240917b1703cda57a7929671fac99.dds",
+      "visible": true
+    },
+    {
+      "asset_bytes": 349680,
+      "asset_sha256": "4C0885EED81F5DA6DCD12F5D3B57DC627D6036BBB971DD221B0A59D3F9503A03",
+      "category": "animals",
+      "colors": 3,
+      "dds": {
+        "format": "DXT5",
+        "height": 512,
+        "width": 512
+      },
+      "kind": "colored_emblem",
+      "name": "ce_bull_passant.dds",
+      "url": "assets/4c0885eed81f5da6dcd12f5d3b57dc627d6036bbb971dd221b0a59d3f9503a03.dds",
+      "visible": true
+    },
+    {
+      "asset_bytes": 22000,
+      "asset_sha256": "83595CECC648AAD847DF6029993F9EAAC4A7C8E651DC5DA4F20AEBB391C90D7C",
+      "category": "animals",
+      "colors": 3,
+      "dds": {
+        "format": "DXT5",
+        "height": 128,
+        "width": 128
+      },
+      "kind": "colored_emblem",
+      "name": "ce_bull_passant_humped.dds",
+      "url": "assets/83595cecc648aad847df6029993f9eaac4a7c8e651dc5da4f20aebb391c90d7c.dds",
+      "visible": true
+    },
+    {
+      "asset_bytes": 349680,
+      "asset_sha256": "05DAF5034C8D22B2BA6B73CEC535A9805B9FA6FF899BA8E97065200E98F635D4",
+      "category": "animals",
+      "colors": 3,
+      "dds": {
+        "format": "DXT5",
+        "height": 512,
+        "width": 512
+      },
+      "kind": "colored_emblem",
+      "name": "ce_bull_rampant.dds",
+      "url": "assets/05daf5034c8d22b2ba6b73cec535a9805b9fa6ff899ba8e97065200e98f635d4.dds",
+      "visible": true
+    },
+    {
+      "asset_bytes": 349680,
+      "asset_sha256": "0AE1F9C71979E2624BAA58C46F3FBDC44E4FE93A16840D851942B88140AE5BB0",
+      "category": "animals",
+      "colors": 2,
+      "dds": {
+        "format": "DXT5",
+        "height": 512,
+        "width": 512
+      },
+      "kind": "colored_emblem",
+      "name": "ce_camel.dds",
+      "url": "assets/0ae1f9c71979e2624baa58c46f3fbdc44e4fe93a16840d851942b88140ae5bb0.dds",
+      "visible": true
+    },
+    {
+      "asset_bytes": 349680,
+      "asset_sha256": "C340E37FF15560F6FE311C486C289E4A9E75590F4C5476A1D24484CC2CC383FA",
+      "category": "animals",
+      "colors": 1,
+      "dds": {
+        "format": "DXT5",
+        "height": 512,
+        "width": 512
+      },
+      "kind": "colored_emblem",
+      "name": "ce_clam.dds",
+      "url": "assets/c340e37ff15560f6fe311c486c289e4a9e75590f4c5476a1d24484cc2cc383fa.dds",
+      "visible": true
+    },
+    {
+      "asset_bytes": 87536,
+      "asset_sha256": "A4189C1FF1E23DB251C962824053AE6F1D5DAA02F5FFF61B961EBF396F4019D0",
+      "category": "animals",
+      "colors": 3,
+      "dds": {
+        "format": "DXT5",
+        "height": 256,
+        "width": 256
+      },
+      "kind": "colored_emblem",
+      "name": "ce_cockerel.dds",
+      "url": "assets/a4189c1ff1e23db251c962824053ae6f1d5daa02f5fff61b961ebf396f4019d0.dds",
+      "visible": true
+    },
+    {
+      "asset_bytes": 87536,
+      "asset_sha256": "312190DA8487F8FE056641C84B1C0F246950D59A91A0655934CDF62876C46D89",
+      "category": "animals",
+      "colors": 1,
+      "dds": {
+        "format": "DXT5",
+        "height": 256,
+        "width": 256
+      },
+      "kind": "colored_emblem",
+      "name": "ce_conch_shell.dds",
+      "url": "assets/312190da8487f8fe056641c84b1c0f246950d59a91a0655934cdf62876c46d89.dds",
+      "visible": true
+    },
+    {
+      "asset_bytes": 22000,
+      "asset_sha256": "360CE5B8FA99792B9BBE45101C64227FD35C5AC59FC8F751E327DC2C8291C67B",
+      "category": "animals",
+      "colors": 1,
+      "dds": {
+        "format": "DXT5",
+        "height": 128,
+        "width": 128
+      },
+      "kind": "colored_emblem",
+      "name": "ce_demi_vol.dds",
+      "url": "assets/360ce5b8fa99792b9bbe45101c64227fd35c5ac59fc8f751e327dc2c8291c67b.dds",
+      "visible": true
+    },
+    {
+      "asset_bytes": 349680,
+      "asset_sha256": "F0FB65B64F91FEEC653C55C202BB71DB15AC45E2BFDF1885B13A08E7FE78A619",
+      "category": "animals",
+      "colors": 3,
+      "dds": {
+        "format": "DXT5",
+        "height": 512,
+        "width": 512
+      },
+      "kind": "colored_emblem",
+      "name": "ce_dolphin.dds",
+      "url": "assets/f0fb65b64f91feec653c55c202bb71db15ac45e2bfdf1885b13a08e7fe78a619.dds",
+      "visible": true
+    },
+    {
+      "asset_bytes": 87536,
+      "asset_sha256": "300262D26DB00FA0A61BDA7B976016847D78C341B22C8CD92C2C383B0D4D1C6A",
+      "category": "animals",
+      "colors": 3,
+      "dds": {
+        "format": "DXT5",
+        "height": 256,
+        "width": 256
+      },
+      "kind": "colored_emblem",
+      "name": "ce_dragon.dds",
+      "url": "assets/300262d26db00fa0a61bda7b976016847d78c341b22c8cd92c2c383b0d4d1c6a.dds",
+      "visible": true
+    },
+    {
+      "asset_bytes": 87536,
+      "asset_sha256": "E64BD4C9C354EE8A8C9D286D0DBF1E098D3B01931F49E86596A9B93FE6081779",
+      "category": "animals",
+      "colors": 3,
+      "dds": {
+        "format": "DXT5",
+        "height": 256,
+        "width": 256
+      },
+      "kind": "colored_emblem",
+      "name": "ce_dragon_bundle.dds",
+      "url": "assets/e64bd4c9c354ee8a8c9d286d0dbf1e098d3b01931f49e86596a9b93fe6081779.dds",
+      "visible": true
+    },
+    {
+      "asset_bytes": 22000,
+      "asset_sha256": "51E68DF02F977C9A99D9EB2E6FFC001CDF487623DC50B861D42ED3BB39D342A3",
+      "category": "animals",
+      "colors": 1,
+      "dds": {
+        "format": "DXT5",
+        "height": 128,
+        "width": 128
+      },
+      "kind": "colored_emblem",
+      "name": "ce_dragon_fylfot.dds",
+      "url": "assets/51e68df02f977c9a99d9eb2e6ffc001cdf487623dc50b861d42ed3bb39d342a3.dds",
+      "visible": true
+    },
+    {
+      "asset_bytes": 87536,
+      "asset_sha256": "13ABC85F5C1C9E649FE26FAA1550792E9F57C495F0652962D7976933FEC3EEAF",
+      "category": "animals",
+      "colors": 2,
+      "dds": {
+        "format": "DXT5",
+        "height": 256,
+        "width": 256
+      },
+      "kind": "colored_emblem",
+      "name": "ce_dragon_urnes.dds",
+      "url": "assets/13abc85f5c1c9e649fe26faa1550792e9f57c495f0652962d7976933fec3eeaf.dds",
+      "visible": true
+    },
+    {
+      "asset_bytes": 87536,
+      "asset_sha256": "5F98751CAD550FB9C48479CACC731627BADD3FF1EDE87C6E24BF21CAF2CD3E19",
+      "category": "animals",
+      "colors": 3,
+      "dds": {
+        "format": "DXT5",
+        "height": 256,
+        "width": 256
+      },
+      "kind": "colored_emblem",
+      "name": "ce_dragon_urnes_bejsebakken.dds",
+      "url": "assets/5f98751cad550fb9c48479cacc731627badd3ff1ede87c6e24bf21caf2cd3e19.dds",
+      "visible": true
+    },
+    {
+      "asset_bytes": 87536,
+      "asset_sha256": "20FBB7E6C689A25F413B0D83C6160DDFB464160E4C671C025397453AA2D22271",
+      "category": "animals",
+      "colors": 2,
+      "dds": {
+        "format": "DXT5",
+        "height": 256,
+        "width": 256
+      },
+      "kind": "colored_emblem",
+      "name": "ce_dragon_urnes_porsgrunn.dds",
+      "url": "assets/20fbb7e6c689a25f413b0d83c6160ddfb464160e4c671c025397453aa2d22271.dds",
+      "visible": true
+    },
+    {
+      "asset_bytes": 87536,
+      "asset_sha256": "95578A08391F421A83BA8023B575AC2CB3B7965071A98BFF9E0092FB949ADD77",
+      "category": "animals",
+      "colors": 2,
+      "dds": {
+        "format": "DXT5",
+        "height": 256,
+        "width": 256
+      },
+      "kind": "colored_emblem",
+      "name": "ce_dragon_urnes_trollaskogur.dds",
+      "url": "assets/95578a08391f421a83ba8023b575ac2cb3b7965071a98bff9e0092fb949add77.dds",
+      "visible": true
+    },
+    {
+      "asset_bytes": 87536,
+      "asset_sha256": "A933D22F196E88437A863BFAFF334E8469957D99F14CE7EAAF4D3FE645B12253",
+      "category": "animals",
+      "colors": 3,
+      "dds": {
+        "format": "DXT5",
+        "height": 256,
+        "width": 256
+      },
+      "kind": "colored_emblem",
+      "name": "ce_duck.dds",
+      "url": "assets/a933d22f196e88437a863bfaff334e8469957d99f14ce7eaaf4d3fe645b12253.dds",
+      "visible": true
+    },
+    {
+      "asset_bytes": 87536,
+      "asset_sha256": "B56963F56E7B839AAC45831F2BA031B7060C9AAA5DD02A7E4079C7C967B8AF0C",
+      "category": "animals",
+      "colors": 3,
+      "dds": {
+        "format": "DXT5",
+        "height": 256,
+        "width": 256
+      },
+      "kind": "colored_emblem",
+      "name": "ce_eagle.dds",
+      "url": "assets/b56963f56e7b839aac45831f2ba031b7060c9aaa5dd02a7e4079c7c967b8af0c.dds",
+      "visible": true
+    },
+    {
+      "asset_bytes": 87536,
+      "asset_sha256": "6276C96507E9600558FBFC21B475972D06038C2EB22BA7181D964F825C12F2C3",
+      "category": "animals",
+      "colors": 2,
+      "dds": {
+        "format": "DXT5",
+        "height": 256,
+        "width": 256
+      },
+      "kind": "colored_emblem",
+      "name": "ce_eagle_claw.dds",
+      "url": "assets/6276c96507e9600558fbfc21b475972d06038c2eb22ba7181d964f825c12f2c3.dds",
+      "visible": true
+    },
+    {
+      "asset_bytes": 349680,
+      "asset_sha256": "42B4E6BB8886AB9ADCEC440CD25A80F36C622654FC162AC8627B0F2A178655FF",
+      "category": "animals",
+      "colors": 3,
+      "dds": {
+        "format": "DXT5",
+        "height": 512,
+        "width": 512
+      },
+      "kind": "colored_emblem",
+      "name": "ce_eagle_crown.dds",
+      "url": "assets/42b4e6bb8886ab9adcec440cd25a80f36c622654fc162ac8627b0f2a178655ff.dds",
+      "visible": true
+    },
+    {
+      "asset_bytes": 349680,
+      "asset_sha256": "9A5BCE1E75A0E0E8BE9FC76C34163B9D4A44BD44CB8071E7641E2636E7A2F2EC",
+      "category": "animals",
+      "colors": 3,
+      "dds": {
+        "format": "DXT5",
+        "height": 512,
+        "width": 512
+      },
+      "kind": "colored_emblem",
+      "name": "ce_eagle_crown_boned.dds",
+      "url": "assets/9a5bce1e75a0e0e8be9fc76c34163b9d4a44bd44cb8071e7641e2636e7a2f2ec.dds",
+      "visible": true
+    },
+    {
+      "asset_bytes": 349680,
+      "asset_sha256": "3F36E73479DED5517675CB0B015844E26C28B27EC84B0C60BAB4477E422AA68E",
+      "category": "animals",
+      "colors": 3,
+      "dds": {
+        "format": "DXT5",
+        "height": 512,
+        "width": 512
+      },
+      "kind": "colored_emblem",
+      "name": "ce_eagle_double.dds",
+      "url": "assets/3f36e73479ded5517675cb0b015844e26c28b27ec84b0c60bab4477e422aa68e.dds",
+      "visible": true
+    },
+    {
+      "asset_bytes": 349680,
+      "asset_sha256": "D75D70723D9E2020E3BAC9074CA6283047E589670CDC162742801CBE616BEF11",
+      "category": "animals",
+      "colors": 3,
+      "dds": {
+        "format": "DXT5",
+        "height": 512,
+        "width": 512
+      },
+      "kind": "colored_emblem",
+      "name": "ce_eagle_head.dds",
+      "url": "assets/d75d70723d9e2020e3bac9074ca6283047e589670cdc162742801cbe616bef11.dds",
+      "visible": true
+    },
+    {
+      "asset_bytes": 87536,
+      "asset_sha256": "27F567F7DEA64E84E7D74EB56B70477006BD4BF9F4D9C62953FAC94887982109",
+      "category": "animals",
+      "colors": 3,
+      "dds": {
+        "format": "DXT5",
+        "height": 256,
+        "width": 256
+      },
+      "kind": "colored_emblem",
+      "name": "ce_eagle_iberia.dds",
+      "url": "assets/27f567f7dea64e84e7d74eb56b70477006bd4bf9f4d9c62953fac94887982109.dds",
+      "visible": true
+    },
+    {
+      "asset_bytes": 349680,
+      "asset_sha256": "9EBB9875BEC5E932ED0E72A02CD14E38906E92CF6BE4C4A047D2E6487742F5EB",
+      "category": "animals",
+      "colors": 3,
+      "dds": {
+        "format": "DXT5",
+        "height": 512,
+        "width": 512
+      },
+      "kind": "colored_emblem",
+      "name": "ce_eagle_islamic.dds",
+      "url": "assets/9ebb9875bec5e932ed0e72a02cd14e38906e92cf6be4c4a047d2e6487742f5eb.dds",
+      "visible": true
+    },
+    {
+      "asset_bytes": 43832,
+      "asset_sha256": "5FA2A49DC59AEEBA19709B6BB3F9D0B017ACDE7DC576793705EAF85C7F33691E",
+      "category": "render-support",
+      "colors": 0,
+      "dds": {
+        "format": "DXT1",
+        "height": 256,
+        "width": 256
+      },
+      "kind": "surface_mask",
+      "name": "coa_mask_texture.dds",
+      "url": "assets/5fa2a49dc59aeeba19709b6bb3f9d0b017acde7dc576793705eaf85c7f33691e.dds",
+      "visible": false
+    }
+  ],
+  "ck3_build": "1.19.0.6",
+  "named_colors": {
+    "black": [
+      0.1,
+      0.09,
+      0.075
+    ],
+    "blue": [
+      0.08,
+      0.2464,
+      0.4
+    ],
+    "blue_dark": [
+      0.03,
+      0.1704,
+      0.3
+    ],
+    "blue_light": [
+      0.165,
+      0.3652,
+      0.55
+    ],
+    "brown": [
+      0.45,
+      0.23355,
+      0.117
+    ],
+    "green": [
+      0.12,
+      0.3,
+      0.138
+    ],
+    "green_light": [
+      0.2,
+      0.4,
+      0.22
+    ],
+    "grey": [
+      0.5,
+      0.5,
+      0.5
+    ],
+    "orange": [
+      0.6,
+      0.2304,
+      0.0
+    ],
+    "purple": [
+      0.35,
+      0.105,
+      0.252
+    ],
+    "red": [
+      0.45,
+      0.1332,
+      0.09
+    ],
+    "red_dark": [
+      0.3,
+      0.03,
+      0.03
+    ],
+    "white": [
+      0.8,
+      0.79168,
+      0.784
+    ],
+    "yellow": [
+      0.75,
+      0.525,
+      0.1875
+    ],
+    "yellow_light": [
+      1.0,
+      0.68,
+      0.2
+    ]
+  },
+  "pack_id": "ck3-1.19.0.6-base-alpha-38p-128e",
+  "schema": "ck3-coa-web-asset-pack-v1",
+  "schema_version": 1,
+  "source_manifest_sha256": "92D9FBDCBE931DCB3694B0840558A8096EE090B9C0ACD4A6AB5F2DB7D6DA5F35"
+}
