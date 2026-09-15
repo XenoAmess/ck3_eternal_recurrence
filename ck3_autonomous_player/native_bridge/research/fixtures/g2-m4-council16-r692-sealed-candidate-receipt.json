@@ -1,0 +1,92 @@
+{
+  "schema": "xar.ck3.g2_m4_council16_r692_sealed_candidate_receipt_v1",
+  "status": "static-ready-no-launch",
+  "work_package": "G2-M4-COUNCIL16-R692-SEALED-CANDIDATE",
+  "baseline_commit": "b9b1228524e5f3922500b41dfecfb23b739d7993",
+  "harness_commit": "5110fa1467edb5f4a6098eda7ae4cc3a586cd588",
+  "source_bridge_commit": "a04ee02a04a3a86bb685395270d8cd23359b8ba2",
+  "preserved_r691_red": {
+    "path": "Z:\\ck3_mod_rewrite_process_assets\\g2-m4-council14-r691-self-contained-runtime-e5c6b4d\\live-r691",
+    "classification": "pythoncom_watchdog_bootstrap_harness_red",
+    "report_sha256": "5E6CB7FD3C632EF17877E0165E0B8012345AF77B10B303D0E988416633D6D62F",
+    "wer_sha256": "78FBF1762EA54990639F25C38D7D7A444A806A3D7B9BB1DE571E7D84039CEAE4",
+    "artifact_manifest_sha256": "67CBFD8EAF69177E7615F9B10682B56DF7F4F09E04D8FF6E5FC44CCE0CE5EA57",
+    "ck3_pid": null,
+    "launch_started": false,
+    "attempted_round_consumed": true,
+    "modified": false
+  },
+  "candidate": {
+    "path": "Z:\\ck3_mod_rewrite_process_assets\\g2-m4-council16-r692-5110fa1",
+    "candidate_manifest_sha256": "A5A15BBDBFCFD8A0554FB8F39ABB0EB4C698E80B2B83CE227741153AF1A243E6",
+    "sealed_prep_manifest_sha256": "27D0ACE3E5414C2C1C60E5B8C6F22467A385F93ED5C727CD0CCD835A4A52251A",
+    "sealed_file_count": 596,
+    "actual_file_count_including_seal_and_pointer": 598,
+    "unique_pipe": "\\\\.\\pipe\\xar_ck3_bridge_g2_m4_council16_r692_5110fa1",
+    "expected_old_round": "R691",
+    "suggested_round": "R692",
+    "round_allocated": false,
+    "candidate_executed": false,
+    "ck3_launched": false,
+    "live_r692_exists": false,
+    "control_process_record_absent": true
+  },
+  "runtime_source": {
+    "candidate_relative": "source-repo/ck3_autonomous_player/src",
+    "source_commit": "b9b1228524e5f3922500b41dfecfb23b739d7993",
+    "source_tree_git_oid": "bcff5fae3647f57554a0456b236f0f791e1c3d27",
+    "source_tree_sha256": "E3C828189C6994DE2EA4BF4F164001E9343A63C9B54F54A6EE0670A68E7DAA82",
+    "file_count": 475,
+    "candidate_tools_relative": "source-repo/tools",
+    "build_release_git_blob_oid": "d7f050fc668e5cc16445b6db4efe9f5493a61ee6",
+    "tools_tree_sha256": "79D7B12E481B29D67059E7B9308FB1912CD5A22AFC9523FFF87FED2E1FD3B576",
+    "external_workspace_root_allowed": false,
+    "module_file_and_sha_asserted": true,
+    "pythoncom_launch_fix_included": true
+  },
+  "fresh_state_contract": {
+    "source_r691_sealed_manifest_rows_only": true,
+    "r691_live_copied": false,
+    "r691_control_copied": false,
+    "fresh_profile_created": true,
+    "fresh_round_state": "R692",
+    "fresh_pipe": true
+  },
+  "commands": {
+    "execute": "Z:\\ck3_mod_rewrite\\tools\\.venv\\Scripts\\python.exe Z:\\ck3_mod_rewrite_process_assets\\g2-m4-council16-r692-5110fa1\\invoke_r692.py --runtime-config Z:\\ck3_mod_rewrite_process_assets\\g2-m4-council16-r692-5110fa1\\operator-runtime.json",
+    "preflight": "Z:\\ck3_mod_rewrite\\tools\\.venv\\Scripts\\python.exe Z:\\ck3_mod_rewrite_process_assets\\g2-m4-council16-r692-5110fa1\\invoke_r692.py --runtime-config Z:\\ck3_mod_rewrite_process_assets\\g2-m4-council16-r692-5110fa1\\operator-runtime.json --preflight-only"
+  },
+  "verification": {
+    "focused_normal": "8 tests passed",
+    "focused_optimized": "8 tests passed",
+    "formal_candidate_no_launch_preflight": "green",
+    "formal_candidate_preflight_runs": 1,
+    "formal_candidate_preflight_exit_code": 0,
+    "formal_candidate_preflight_mode": "normal",
+    "formal_candidate_isolated_import": "green",
+    "formal_candidate_module_origins": "candidate-local",
+    "formal_candidate_sealed_inventory": "green",
+    "formal_candidate_readiness_contract": "green",
+    "formal_candidate_ck3_launched": false,
+    "formal_candidate_sealed_file_count": 596,
+    "ck3_inventory_before": 0,
+    "ck3_inventory_after": 0,
+    "candidate_hashes_unchanged_after_preflight": true,
+    "r691_red_hashes_unchanged_after_preflight": true
+  },
+  "next_live": {
+    "round": "R692",
+    "requires_unique_ck3_owner": true,
+    "candidate_execute_pending": true,
+    "council_capability_status": "not_observed"
+  },
+  "scope": {
+    "dll_changed": false,
+    "game_files_changed": false,
+    "public_schema_changed": false,
+    "shared_bridge_changed": false,
+    "planner_changed": false,
+    "mcp_changed": false,
+    "open_kaishek_impact": "none"
+  }
+}

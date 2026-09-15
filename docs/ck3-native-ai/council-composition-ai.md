@@ -633,3 +633,42 @@ final master commit into a new sealed candidate root, use a new R692 state/live
 directory and pipe, and bind `R691 -> R692`. It must not clear or reuse the R691
 candidate's control state. R692 remains a future live candidate; this repair
 does not itself provide CK3 or Council capability evidence.
+
+## COUNCIL16: sealed R692 candidate
+
+The replacement candidate is
+`g2-m4-council16-r692-5110fa1`. It advances only `R691 -> R692`, uses the new
+pipe `\\.\pipe\xar_ck3_bridge_g2_m4_council16_r692_5110fa1`, and contains a
+fresh profile with no process-control record. The prep copied only the 596
+rows sealed by the prior candidate, then replaced its executable Python source
+with the exact `ck3_autonomous_player/src` tree from integrated master
+`b9b1228524e5f3922500b41dfecfb23b739d7993`. It did not copy `live-r691` or
+the R691 control state. The preserved R691 report, WER record, and artifact
+manifest still hash to
+`5E6CB7FD3C632EF17877E0165E0B8012345AF77B10B303D0E988416633D6D62F`,
+`78FBF1762EA54990639F25C38D7D7A444A806A3D7B9BB1DE571E7D84039CEAE4`,
+and `67CBFD8EAF69177E7615F9B10682B56DF7F4F09E04D8FF6E5FC44CCE0CE5EA57`
+respectively.
+
+The candidate-manifest SHA-256 is
+`A5A15BBDBFCFD8A0554FB8F39ABB0EB4C698E80B2B83CE227741153AF1A243E6`;
+the sealed-prep manifest SHA-256 is
+`27D0ACE3E5414C2C1C60E5B8C6F22467A385F93ED5C727CD0CCD835A4A52251A`.
+The embedded runtime tree has Git OID
+`bcff5fae3647f57554a0456b236f0f791e1c3d27` and aggregate SHA-256
+`E3C828189C6994DE2EA4BF4F164001E9343A63C9B54F54A6EE0670A68E7DAA82`.
+This binds the COUNCIL15 pythoncom lifetime fix into the candidate without
+changing the bridge DLL, game files, public schema, planner, or MCP surface.
+
+All eight focused contract tests pass in normal and optimized Python modes.
+The only formal no-launch preflight passed in normal mode with candidate-local
+origins for all five imported modules, a matching 596-file sealed inventory,
+the private readiness contract GREEN, and zero CK3 processes before and after.
+It did not allocate R692 or create `live-r692`. The exact future execution is:
+
+```text
+Z:\ck3_mod_rewrite\tools\.venv\Scripts\python.exe Z:\ck3_mod_rewrite_process_assets\g2-m4-council16-r692-5110fa1\invoke_r692.py --runtime-config Z:\ck3_mod_rewrite_process_assets\g2-m4-council16-r692-5110fa1\operator-runtime.json
+```
+
+The candidate has not been executed. Council steward-candidate capability
+remains `not_observed` until the unique CK3 owner allocates and runs R692.
