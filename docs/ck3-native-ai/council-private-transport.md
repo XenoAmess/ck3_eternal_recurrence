@@ -62,6 +62,50 @@ requires four separate paused-live final gates (already-councillor, guest,
 pending interaction and replacement fireability), helper-only ACK, an
 independent later paused frame and formal next-turn consumption.
 
+### Naturally occurring final-gate scene queue (2026-09-15)
+
+The frozen R695 and R700 gate-only readers are lawful controlled read-only
+entries, but their runners pin the old R639/R696 owner, date, incumbent and
+11-row scene. Do not reuse those sealed candidates as a newly encountered
+campaign frame. R695's frozen terminal SHA-256
+F053530B6164A32B2425E54B953531F631AC2A608754D968FF2E050482D03330
+has 11/11 complete standard-feudal steward rows at paused native:3: three
+already-councillor positive candidates, zero guest positives, zero candidate
+pending positives, and all 11 incumbent-fireability results true. R700's
+frozen terminal SHA-256
+C0C31AC426ED82E7CCBF49572044DC69E5EAB8CCAB4DA81733ECB231DC0340E5
+independently sees the new incumbent 33433 after a real new-process reload,
+with the same three missing positive gate scenes. The read-only
+inspect_council_final_gate_scene.py checks a SHA-pinned private terminal,
+exact build, same paused native/public revision, complete typed gate rows,
+zero helper invocations and unadvertised status; it reports positive native
+IDs and candidates with just one blocking gate as scene classification only,
+not action or final-gate acceptance. A row with both guest and pending
+interaction does not isolate either rejection class.
+
+The sole CK3 operator should wait for a real ordinary feudal paused frame,
+freeze its exact checkpoint and runtime pair, then reseal a gate-only
+candidate with the private route and final-gate query ON and private
+assignment OFF. A guest-positive or candidate-pending-positive row must
+come from the native gate result; a fireability denial additionally requires
+an occupied steward seat with native incumbent_can_be_fired=false. For a
+genuine positive row, a separate controlled private-action candidate may
+check the matching typed rejection without helper invocation and unchanged
+independent game state. The exact vanilla
+is_blocked_from_being_fired_from_council_trigger reads
+council_task.can_fire_position=no or a matching owner's
+block_fire_councillor variable
+(00_councillor_triggers.txt SHA-256
+D7A10D08D2F73D770B56A375ECEBCBE02486038B4E9648B492BEE786A482C9C2);
+the vanilla liege-petition effect can set that timed variable
+(00_petition_liege_effects.txt SHA-256
+9440F91322C32690BCC3091736EA888EA07F73A2AF69C4B7AF3963BEC6F6C9CC).
+These are source-proven natural-scene leads, not permission to force a
+petition, set the variable, edit the save, or infer a false gate from a
+visible GUI. The public query/action stay unregistered and unadvertised until
+all four distinct native gates, a real assignment result, independent later
+paused incumbent and formal next-turn consumption are accepted.
+
 The query-only Release candidate was built with Visual Studio 18 and the
 exact-build source path. It passed the Council23 source verifier, the Council26
 normal/optimized source contract and a Release `xar_ck3_bridge` build. The
