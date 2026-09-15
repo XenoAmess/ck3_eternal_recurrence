@@ -1,0 +1,148 @@
+{
+  "schema_version": 1,
+  "private_key": "character_interaction_proposal_native_binder_v1",
+  "status": "static-ready-private-native-binder",
+  "visibility": "private-not-registered",
+  "upstream": {
+    "action_core_private_key": "character_interaction_proposal_action_core_v1",
+    "payload_source_private_key": "character_interaction_proposal_payload_source_extension_v1",
+    "baseline_commit": "25f444782348f063baa0c092d0209ffa02e0faf6",
+    "allowlisted_interaction_count": 11,
+    "typed_special_count": 6
+  },
+  "exact_build": {
+    "product_version": "1.19.0.6",
+    "executable_size": 95206008,
+    "executable_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+    "code_anchors": [
+      {
+        "name": "get_character_interaction_database",
+        "rva": "0x831890",
+        "size": 64,
+        "sha256": "2C3DFF74E48E694A92A126BD7F49A9FFD41A393229AF7185D81E5EF51C9CD29E"
+      },
+      {
+        "name": "stable_key_hash",
+        "rva": "0x3B8B000",
+        "size": 64,
+        "sha256": "A874EDC4AB831C94C1438B1A4DCDD8E3C26CD04D39FDF2794ABC7180CEB58648"
+      },
+      {
+        "name": "lookup_loaded_interaction_definition",
+        "rva": "0x997930",
+        "size": 64,
+        "sha256": "CD5C60DE80C5794290639403108901A7888E40EB749F73A493DE047D25FF3FB1"
+      },
+      {
+        "name": "construct_two_role_context",
+        "rva": "0x2C3EE50",
+        "size": 64,
+        "sha256": "92B16FFE3C8BB9921E5AAC815B9200247D5CFF76D023F6991727A77D92D41D02"
+      },
+      {
+        "name": "refresh_context",
+        "rva": "0x2C40950",
+        "size": 64,
+        "sha256": "502259FE4D82D5DAE8137DA6C916ECDB98DCCA6ED8C89E6E5E08589998897F19"
+      },
+      {
+        "name": "finalize_context",
+        "rva": "0x2C40B20",
+        "size": 64,
+        "sha256": "4D50BFBEBB8EAC526B109D8E2A8733C4E6B0DDF3F8ED8761EC79D26893879386"
+      },
+      {
+        "name": "complete_can_send",
+        "rva": "0x2C43F00",
+        "size": 64,
+        "sha256": "AA9DC1814F6579891AAB02C514F0830215E0D258D922C9498101340D066F4382"
+      },
+      {
+        "name": "destroy_context",
+        "rva": "0x2C3F380",
+        "size": 64,
+        "sha256": "D93526EC3CFCC6F9C680D3B69DCEEA3CE7D8771BEEB9EA7C3642523FE1656238"
+      },
+      {
+        "name": "construct_send_character_interaction_command",
+        "rva": "0x26B3220",
+        "size": 64,
+        "sha256": "074F87133EF3F5165688990C0F93B37FEDC54EEC05827F65B29852AF18E8C4B1"
+      },
+      {
+        "name": "submit_gameplay_command",
+        "rva": "0x973E00",
+        "size": 64,
+        "sha256": "67348413F288748A33CF72835DE5B73A6EF04F4FDC28292B678B6D6FFCC27DA8"
+      }
+    ]
+  },
+  "native_layout": {
+    "character_storage_slot_rva": "0x570C130",
+    "landed_title_storage_slot_rva": "0x570C410",
+    "command_manager_rva": "0x57621F0",
+    "context_size": "0x338",
+    "command_size": "0x368",
+    "command_primary_vtable_rva": "0x40829F8",
+    "command_secondary_vtable_rva": "0x40829C8",
+    "command_secondary_vtable_offset": "0x18",
+    "command_embedded_context_offset": "0x20",
+    "submit_flags": "0x0E"
+  },
+  "transaction": {
+    "capture": "DIPLO4 captures two equal complete envelopes; six special rows additionally require equal DIPLO5 typed sources",
+    "identity": "actor and recipient are resolved by low-24-bit slot and complete signed generation-bearing CharacterID before reconstruction",
+    "reconstruction": "five ordinary rows use the exact two-role constructor; six typed rows use a definition-specific materializer supplied by the later private glue owner",
+    "fresh_validation": "the rebuilt context is refreshed, finalized, identity-checked and passed through complete Can Send immediately before command construction",
+    "typed_recheck": "each rebuilt special context and the command's embedded context are re-read through DIPLO5 and must reproduce the captured typed source exactly",
+    "command": "the exact constructor must return caller storage with both frozen vtables and an identity-equivalent embedded 0x338 context",
+    "ownership": "the original context and command-embedded context are destroyed exactly once; partially constructed contexts are also cleaned when their definition pointer proves ownership",
+    "ack": "SubmitCommand true is only a synchronous queue ACK and remains submitted_verification_pending until DIPLO4's later interaction-specific receipt"
+  },
+  "failure_policy": {
+    "red": [
+      "wrong executable identity or native address",
+      "capture or typed-source drift",
+      "stale generation-bearing character identity",
+      "special reconstruction mismatch",
+      "fresh complete Can Send rejection",
+      "command vtable or embedded-context mismatch",
+      "queue rejection"
+    ],
+    "religion": "DIPLO5 continues to reject the deferred education faith option before this binder can submit"
+  },
+  "scope": {
+    "shared_cmake_modified": false,
+    "bridge_registration_modified": false,
+    "public_schema_modified": false,
+    "mcp_modified": false,
+    "ck3_started": false,
+    "master_modified": false
+  },
+  "tests": {
+    "native_cases": [
+      "exact address binding and configuration gates",
+      "ordinary two-role submit-once and exact owned-context cleanup",
+      "typed education reconstruction and DIPLO5 reread",
+      "typed capture drift and materialization drift",
+      "generation mismatch, complete Can Send false, command vtable mismatch and queue rejection"
+    ],
+    "modes": [
+      "MSVC /Od /W4 /WX",
+      "MSVC /O2 /DNDEBUG /W4 /WX",
+      "Python normal exact-build contract",
+      "Python -O exact-build contract"
+    ]
+  },
+  "readiness": {
+    "private_native_binder_implemented": true,
+    "eleven_key_command_spine_ready": true,
+    "typed_special_reconstruction_seam_ready": true,
+    "diplo5_recheck_ready": true,
+    "exact_command_lifecycle_ready": true,
+    "shared_glue_registered": false,
+    "public_schema_registered": false,
+    "production_action_live": false
+  },
+  "live_pending": "wire the private capture and six definition-specific materializers on application-main, register no public claim until a fixed-candidate paused CK3 submit plus interaction-specific later receipt is GREEN"
+}
