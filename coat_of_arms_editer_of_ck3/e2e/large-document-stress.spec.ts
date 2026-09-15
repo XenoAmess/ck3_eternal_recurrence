@@ -128,6 +128,13 @@ test('edits and exports an exact 10,000-instance project through a bounded DOM w
   const editMs = Date.now() - editStart
   expect(editMs).toBeLessThan(contract.maximumBrowserWindowJumpAndEditMs)
 
+  const autosaveStart = Date.now()
+  await expect(page.getByText(/已自动保存 10,000 实例 · 单槽覆盖/)).toBeVisible({
+    timeout: contract.maximumBrowserAutosaveMs,
+  })
+  const autosaveMs = Date.now() - autosaveStart
+  expect(autosaveMs).toBeLessThan(contract.maximumBrowserAutosaveMs)
+
   const copyStart = Date.now()
   await page.getByRole('button', { name: '复制 CK3 代码' }).click()
   await expect(page.getByText(/CK3 纹章代码已复制/)).toBeVisible()
@@ -164,12 +171,31 @@ test('edits and exports an exact 10,000-instance project through a bounded DOM w
   if (measuredJsHeapDeltaBytes !== null) {
     expect(measuredJsHeapDeltaBytes).toBeLessThan(contract.maximumMeasuredJsHeapDeltaBytes)
   }
+
+  const recoveryStart = Date.now()
+  await page.reload()
+  const recovery = page.locator('.autosave-recovery')
+  await expect(recovery).toContainText('10,000 个实例 · SHA-256 已验证', {
+    timeout: contract.maximumBrowserAutosaveRecoveryMs,
+  })
+  await recovery.getByRole('button', { name: '恢复' }).click()
+  await expect(page.getByText(/已恢复自动保存：10,000 个实例/)).toBeVisible()
+  await page.locator('.instance-window-toolbar input').fill('10000')
+  await expect(page.locator('[data-instance-index="9999"] .el-input-number input').nth(4)).toHaveValue('123.4')
+  const recoveryMs = Date.now() - recoveryStart
+  expect(recoveryMs).toBeLessThan(contract.maximumBrowserAutosaveRecoveryMs)
+  // A post-reload heap sample is observational only: Chromium may retain the old
+  // document until a later GC, so it cannot be subtracted from heapBefore.
+  const heapAfterRecoveryNavigation = await page.evaluate(() => (
+    (performance as Performance & { memory?: { usedJSHeapSize: number } }).memory?.usedJSHeapSize ?? null
+  ))
   expect(nonGetRequests).toEqual([])
   console.info(JSON.stringify({
     contract: contract.contract,
     drawnInstances: contract.drawnInstances,
-    timingsMs: { importMs, editMs, copyMs, downloadMs },
+    timingsMs: { importMs, editMs, copyMs, downloadMs, autosaveMs, recoveryMs },
     measuredJsHeapDeltaBytes,
+    heapAfterRecoveryNavigation,
     memoryEvidenceScope: contract.memoryEvidenceScope,
     renderedInstanceCards: 32,
     copiedInstanceCount: (copied.match(/instance\s*=\s*\{/g) ?? []).length,

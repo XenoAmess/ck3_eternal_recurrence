@@ -18,6 +18,8 @@ export const LARGE_DOCUMENT_CONTRACT = {
   maximumBrowserWindowJumpAndEditMs: 1_000,
   maximumBrowserClipboardCopyMs: 5_000,
   maximumBrowserProjectDownloadMs: 10_000,
+  maximumBrowserAutosaveMs: 15_000,
+  maximumBrowserAutosaveRecoveryMs: 15_000,
   maximumMeasuredJsHeapDeltaBytes: 256 * 1024 * 1024,
   memoryEvidenceScope: 'JavaScript heap delta only; excludes GPU and browser-process memory',
 } as const

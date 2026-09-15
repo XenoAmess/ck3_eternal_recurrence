@@ -37,7 +37,9 @@ import {
   createCoatOfArmsProject,
   parseCoatOfArmsProject,
   serializeCoatOfArmsProject,
+  type CoatOfArmsProjectDocument,
 } from './domain/projectDocument'
+import { clearAutosaveProject, loadAutosaveProject, saveAutosaveProject } from './domain/projectStore'
 import {
   renderCoatOfArms,
   renderedCoatOfArmsToDataUrl,
@@ -95,6 +97,12 @@ const textureBusy = ref(false)
 const clipboardBusy = ref(false)
 const projectFileBusy = ref(false)
 const projectFileInput = ref<HTMLInputElement>()
+const undoHistory = ref<{ source: string, utf8Bytes: number }[]>([])
+const redoHistory = ref<{ source: string, utf8Bytes: number }[]>([])
+const historyPending = ref(false)
+const historyNotice = ref('尚无可撤销修改')
+const autosaveStatus = ref('正在检查自动保存')
+const recoverableAutosave = ref<CoatOfArmsProjectDocument>()
 const mcpStatus = ref('未连接')
 const patternResources = ref<CoatOfArmsResourceItem[]>([])
 const emblemResources = ref<CoatOfArmsResourceItem[]>([])
@@ -151,7 +159,19 @@ let fitPruneWorker: Worker | null = null
 let fitPruneRunId = 0
 const INSTANCE_EDITOR_WINDOW_SIZE = 32
 const OUTPUT_PREVIEW_CHARACTER_LIMIT = 64 * 1024
+const HISTORY_MAX_BYTES = 16 * 1024 * 1024
+const HISTORY_MAX_ENTRIES = 32
+const HISTORY_DEBOUNCE_MS = 450
+const AUTOSAVE_DEBOUNCE_MS = 1_000
 const instanceWindowStart = ref(0)
+let historyApplying = false
+let pendingHistorySource = ''
+let historyTimer: number | undefined
+let autosaveTimer: number | undefined
+let autosaveReady = false
+let autosaveGeneration = 0
+let autosaveRevision = 0
+let autosaveQueue = Promise.resolve()
 
 const fitTerminationLabels: Record<ImageFitResult['provenance']['terminationReason'], string> = {
   layer_budget: '达到用户搜索预算',
@@ -168,6 +188,8 @@ const outputPreviewTruncated = computed(() => output.value.length > OUTPUT_PREVI
 const outputPreview = computed(() => outputPreviewTruncated.value
   ? `${output.value.slice(0, OUTPUT_PREVIEW_CHARACTER_LIMIT)}\r\n… UI 仅显示前 ${OUTPUT_PREVIEW_CHARACTER_LIMIT.toLocaleString()} 字符；复制和项目保存仍读取完整模型 …`
   : output.value)
+const undoHistoryBytes = computed(() => undoHistory.value.reduce((sum, item) => sum + item.utf8Bytes, 0))
+const redoHistoryBytes = computed(() => redoHistory.value.reduce((sum, item) => sum + item.utf8Bytes, 0))
 const activeFitCompression = computed(() => (
   fitCompressionSource.value === output.value ? fitCompressionEvidence.value : undefined
 ))
@@ -313,17 +335,168 @@ function downloadTextFile(name: string, text: string, type: string) {
   URL.revokeObjectURL(url)
 }
 
+function sourceEntry(value: string) {
+  return { source: value, utf8Bytes: new TextEncoder().encode(value).length }
+}
+
+function pushBoundedHistory(stack: { source: string, utf8Bytes: number }[], sourceValue: string) {
+  const entry = sourceEntry(sourceValue)
+  if (entry.utf8Bytes > HISTORY_MAX_BYTES) {
+    historyNotice.value = `单个历史快照超过 ${(HISTORY_MAX_BYTES / 1024 / 1024).toFixed(0)} MiB，未加入撤销栈；当前文档仍保留`
+    return
+  }
+  if (stack.at(-1)?.source === entry.source) return
+  stack.push(entry)
+  let bytes = stack.reduce((sum, item) => sum + item.utf8Bytes, 0)
+  while (stack.length > HISTORY_MAX_ENTRIES || bytes > HISTORY_MAX_BYTES) {
+    bytes -= stack.shift()!.utf8Bytes
+  }
+}
+
+function flushPendingHistory() {
+  if (!pendingHistorySource) return
+  pushBoundedHistory(undoHistory.value, pendingHistorySource)
+  pendingHistorySource = ''
+  historyPending.value = false
+  if (historyTimer !== undefined) window.clearTimeout(historyTimer)
+  historyTimer = undefined
+  historyNotice.value = `${undoHistory.value.length} 个撤销点 · ${(undoHistoryBytes.value / 1024 / 1024).toFixed(1)} MiB / 16 MiB`
+}
+
+function applyHistorySource(value: string) {
+  const parsed = parseCoatOfArms(value)
+  if (parsed.diagnostics.some((item) => item.severity === 'error')) {
+    throw new Error('历史快照无法重新解析')
+  }
+  historyApplying = true
+  try {
+    coatOfArms.value = parsed.coatOfArms
+    source.value = value
+    diagnostics.value = parsed.diagnostics
+    selectedEmblem.value = Math.min(selectedEmblem.value, Math.max(0, parsed.coatOfArms.coloredEmblems.length - 1))
+    instanceWindowStart.value = 0
+  } finally {
+    historyApplying = false
+  }
+  scheduleAutosave()
+}
+
+function undoEdit() {
+  flushPendingHistory()
+  const previous = undoHistory.value.pop()
+  if (!previous) return
+  pushBoundedHistory(redoHistory.value, output.value)
+  try {
+    applyHistorySource(previous.source)
+    historyNotice.value = `已撤销 · ${undoHistory.value.length} 个撤销点 / ${redoHistory.value.length} 个重做点`
+  } catch (error) {
+    pushBoundedHistory(undoHistory.value, previous.source)
+    ElMessage.error(`撤销失败：${errorMessage(error)}`)
+  }
+}
+
+function redoEdit() {
+  const next = redoHistory.value.pop()
+  if (!next) return
+  pushBoundedHistory(undoHistory.value, output.value)
+  try {
+    applyHistorySource(next.source)
+    historyNotice.value = `已重做 · ${undoHistory.value.length} 个撤销点 / ${redoHistory.value.length} 个重做点`
+  } catch (error) {
+    pushBoundedHistory(redoHistory.value, next.source)
+    ElMessage.error(`重做失败：${errorMessage(error)}`)
+  }
+}
+
+function currentAssetPackReceipt() {
+  const loaded = loadedAssetPack.value
+  return loaded ? {
+    packId: loaded.pack.pack_id,
+    manifestSha256: loaded.manifestSha256,
+    ck3Build: loaded.pack.ck3_build,
+  } : undefined
+}
+
+function scheduleAutosave() {
+  if (!autosaveReady) return
+  const generation = ++autosaveGeneration
+  autosaveStatus.value = '等待自动保存'
+  if (autosaveTimer !== undefined) window.clearTimeout(autosaveTimer)
+  autosaveTimer = window.setTimeout(() => {
+    autosaveTimer = undefined
+    autosaveQueue = autosaveQueue.then(async () => {
+      if (generation !== autosaveGeneration) return
+      const project = await createCoatOfArmsProject(coatOfArms.value, {
+        revision: ++autosaveRevision,
+        selectedEmblem: selectedEmblem.value,
+        assetPack: currentAssetPackReceipt(),
+      })
+      if (generation !== autosaveGeneration) return
+      const text = serializeCoatOfArmsProject(project)
+      await saveAutosaveProject(text)
+      if (generation === autosaveGeneration) {
+        autosaveStatus.value = `已自动保存 ${project.ck3Source.stats.drawnInstances.toLocaleString()} 实例 · 单槽覆盖`
+      }
+    }).catch((error) => {
+      if (generation === autosaveGeneration) autosaveStatus.value = `自动保存失败：${errorMessage(error)}`
+    })
+  }, AUTOSAVE_DEBOUNCE_MS)
+}
+
+async function discoverAutosave() {
+  try {
+    const text = await loadAutosaveProject()
+    if (!text) {
+      autosaveStatus.value = '没有可恢复的自动保存'
+      return
+    }
+    recoverableAutosave.value = await parseCoatOfArmsProject(text)
+    autosaveRevision = recoverableAutosave.value.revision
+    autosaveStatus.value = `发现 ${recoverableAutosave.value.ck3Source.stats.drawnInstances.toLocaleString()} 实例的自动保存`
+  } catch (error) {
+    autosaveStatus.value = `自动保存不可读：${errorMessage(error)}`
+  } finally {
+    autosaveReady = true
+  }
+}
+
+async function restoreAutosave() {
+  const project = recoverableAutosave.value
+  if (!project) return
+  historyApplying = true
+  try {
+    coatOfArms.value = project.coatOfArms
+    source.value = serializeCoatOfArms(project.coatOfArms)
+    diagnostics.value = []
+    selectedEmblem.value = project.selectedEmblem
+    instanceWindowStart.value = 0
+  } finally {
+    historyApplying = false
+  }
+  recoverableAutosave.value = undefined
+  await loadCurrentTexturePreviews()
+  scheduleAutosave()
+  ElMessage.success(`已恢复自动保存：${project.ck3Source.stats.drawnInstances.toLocaleString()} 个实例`)
+}
+
+async function discardAutosave() {
+  try {
+    await clearAutosaveProject()
+    recoverableAutosave.value = undefined
+    autosaveGeneration += 1
+    autosaveStatus.value = '已丢弃自动保存'
+  } catch (error) {
+    ElMessage.error(`无法丢弃自动保存：${errorMessage(error)}`)
+  }
+}
+
 async function exportProject() {
   projectFileBusy.value = true
   try {
     const loaded = loadedAssetPack.value
     const project = await createCoatOfArmsProject(coatOfArms.value, {
       selectedEmblem: selectedEmblem.value,
-      assetPack: loaded ? {
-        packId: loaded.pack.pack_id,
-        manifestSha256: loaded.manifestSha256,
-        ck3Build: loaded.pack.ck3_build,
-      } : undefined,
+      assetPack: loaded ? currentAssetPackReceipt() : undefined,
     })
     downloadTextFile(
       `ck3-coat-of-arms-${new Date().toISOString().replaceAll(':', '-')}.coa-project.json`,
@@ -962,6 +1135,7 @@ async function fitTargetImage() {
 
 onMounted(() => {
   void loadStandaloneAssetPack(false)
+  void discoverAutosave()
 })
 
 watch(selectedEmblem, () => {
@@ -1354,6 +1528,15 @@ async function loadCurrentTexturePreviews() {
 }
 
 importSource()
+watch(output, (next, previous) => {
+  if (historyApplying || next === previous) return
+  if (!pendingHistorySource) pendingHistorySource = previous
+  historyPending.value = true
+  redoHistory.value = []
+  if (historyTimer !== undefined) window.clearTimeout(historyTimer)
+  historyTimer = window.setTimeout(flushPendingHistory, HISTORY_DEBOUNCE_MS)
+  scheduleAutosave()
+}, { flush: 'sync' })
 </script>
 
 <template>
@@ -1371,10 +1554,24 @@ importSource()
         <input ref="projectFileInput" class="hidden-file-input" type="file" accept="application/json,.json" @change="importProject">
         <el-button :loading="projectFileBusy" @click="openProjectFilePicker">打开项目</el-button>
         <el-button :loading="projectFileBusy" @click="exportProject">保存项目</el-button>
+        <el-button :disabled="!historyPending && !undoHistory.length" @click="undoEdit">撤销</el-button>
+        <el-button :disabled="!redoHistory.length" @click="redoEdit">重做</el-button>
+        <el-tag effect="plain">{{ autosaveStatus }}</el-tag>
         <el-button @click="reset">重置</el-button>
         <el-button type="primary" :disabled="errorCount > 0" @click="copyOutput">复制 CK3 代码</el-button>
       </div>
     </header>
+
+    <section v-if="recoverableAutosave" class="autosave-recovery panel">
+      <div>
+        <strong>发现可恢复项目</strong>
+        <span>{{ recoverableAutosave.savedAt }} · {{ recoverableAutosave.ck3Source.stats.drawnInstances.toLocaleString() }} 个实例 · SHA-256 已验证</span>
+      </div>
+      <el-space>
+        <el-button type="primary" @click="restoreAutosave">恢复</el-button>
+        <el-button @click="discardAutosave">丢弃</el-button>
+      </el-space>
+    </section>
 
     <section class="image-fit-panel panel">
       <div class="panel-title">
@@ -1614,6 +1811,7 @@ importSource()
             <el-button v-else size="small" :loading="assetPackBusy" @click="loadStandaloneAssetPack()">刷新静态资源</el-button>
           </el-space>
         </div>
+        <p class="history-status">{{ historyNotice }} · 重做 {{ redoHistory.length }} 项 · 历史占用 {{ ((undoHistoryBytes + redoHistoryBytes) / 1024 / 1024).toFixed(1) }} MiB / 16 MiB</p>
         <el-scrollbar height="690px">
           <div v-if="developmentCompanionEnabled" class="resource-search">
             <el-input v-model="emblemSearch" clearable placeholder="筛选 emblem 名；留空取前 200 项" @keyup.enter="loadResourceCatalog" />
