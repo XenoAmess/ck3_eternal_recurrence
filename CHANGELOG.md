@@ -1,5 +1,20 @@
 # Changelog
 
+## [1.0.1] - 2026-09-15
+
+### Changed
+
+- Moved all 701 cross-save import states behind one request-visible GUI gate. The expensive 700-tier tutorial lookup now runs only during an explicit game-start import instead of remaining active while the map advances.
+- Added an early player/active-contract filter to the global birthday hook while preserving the original birthday timing and low-stress contract rule.
+- Made death settlement publication synchronous and idempotent before the tutorial-backed record writer, so terminal consumers receive one complete snapshot even when persistence is slow.
+- Added dedicated artwork to the final recurrence settlement event.
+
+### Compatibility
+
+- Existing saves and all 700 persisted Ember Tier lessons remain compatible; no migration is required.
+- Tutorials must still be set to Full or Warnings for new Ember Tiers, contract PBs, and collection progress to persist.
+- No scoring values, blessing/curse pools, shop inventory, contract objectives, or inheritance rules changed.
+
 ## [Vivhite 1.0.1] - 2026-08-21
 
 ### Changed

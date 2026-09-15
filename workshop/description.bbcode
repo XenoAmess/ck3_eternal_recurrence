@@ -5,9 +5,13 @@
 [b]一位统治者，一条命，一次结算。死亡称量真实分数；余烬位阶跨存档保存；下一世花费其副本换取强化。[/b]
 [b]One ruler, one life, one settlement. Death yields an exact score; the Ember Tier persists across saves; the next life spends its copy on upgrades.[/b]
 
-Version 1.0.0 · CK3 1.19.0.6 · Workshop 3784706360
+Version 1.0.1 · CK3 1.19.0.6 · Workshop 3784706360
 
 [b]⚠ 必须开启教程 / TUTORIAL REQUIRED：设置 → 教程选择「完整」或「警告」，切勿禁用。旧纪录仍可读取，但禁用后新余烬位阶、契约 PB 与图鉴不会落盘。[/b]
+
+[h1]1.0.1 性能与终局改进 / Performance & Finale[/h1]
+跨存档纪录只在开局明确请求时扫描，不再于地图运行期间持续轮询 700 档教程位；生日契约也会在进入效果链前过滤无关角色。死亡结算现在先同步发布完整快照，再写入同一套教程纪录，并加入专属终幕画面。玩法数值、奖池、商店、契约目标与教程持久化功能均未删减。
+Cross-save records are now scanned only when game start explicitly requests an import, rather than continuously while the map advances; the birthday contract also rejects irrelevant characters before entering its effect chain. Death now publishes one complete settlement snapshot before writing the same tutorial-backed record, with dedicated finale artwork. Scoring, pools, shop content, contracts, and tutorial persistence are unchanged.
 
 [img]https://raw.githubusercontent.com/XenoAmess/ck3_eternal_recurrence/bdc87ac77a3207945343ccdf277d6c4259bce65c/screenshots/gallery/01_pact.jpg[/img]
 

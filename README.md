@@ -2,11 +2,13 @@
 
 ## ……我将永不停歇地，一次次回到那个你还在的冬日
 
-一位统治者、一条命、一次结算：死亡时称量真实分数，把跨过的**量化余烬位阶跨存档保存**，下一世再花费其副本换取强化。版本 **1.0.0**，实测基线 **CK3 1.19.0.6**。
+一位统治者、一条命、一次结算：死亡时称量真实分数，把跨过的**量化余烬位阶跨存档保存**，下一世再花费其副本换取强化。版本 **1.0.1**，实测基线 **CK3 1.19.0.6**。
 
 订阅地址： https://steamcommunity.com/sharedfiles/filedetails/?id=3784706360
 
-GitHub Release： https://github.com/XenoAmess/ck3_eternal_recurrence/releases/tag/v1.0.0
+GitHub Release： https://github.com/XenoAmess/ck3_eternal_recurrence/releases/tag/v1.0.1
+
+> **1.0.1（2026-09-15）：** 消除地图运行期间的跨存档纪录逐帧扫描，并把生日契约的全局钩子前置过滤到真正相关的玩家；死亡结算改为同步、幂等发布后再写教程纪录，终幕事件加入专属画面。全部 700 档教程位、商店、祝福/诅咒、契约、计分与跨存档协议保持不变。
 
 > **1.0.0 已发布（2026-08-21）：** 付费自定义廷臣 v2 提供七页生成目录、0–120 岁与六项 0–100 基础能力、动态文化/信仰及可选同家族。最终 85 文件候选的完整 release-gating CK3 套件、非 debug 普通/铁人终局、L0 与确定性构建均为 GREEN；九语言、干净截图、UI 裁切和缩略图已完成人工签核。Steam 强制重下载缓存与正式 manifest 已完成逐文件验证，完整证据见 [docs/release-qa-v1.0.0.md](docs/release-qa-v1.0.0.md)。
 

@@ -1,0 +1,19 @@
+琉焰卿的永恒轮回 1.0.1 / Eternal Recurrence 1.0.1
+
+性能 / Performance
+- 跨存档纪录只在开局明确请求时扫描，不再于地图运行期间持续轮询最多 700 档教程位。
+- 生日契约会在进入效果链前过滤 AI、未签约角色和不相关契约，原生日时点与低压力条件不变。
+- Cross-save records are scanned only when game start explicitly requests an import, rather than continuously while the map advances.
+- The birthday contract rejects AI and irrelevant characters before entering its effect chain while preserving its original timing and low-stress rule.
+
+终局 / Finale
+- 死亡结算现在同步且幂等地发布完整快照，再写入教程纪录，避免较慢的持久化阻塞终局读取。
+- 轮回终幕事件加入专属画面。
+- Death now publishes one complete, idempotent settlement snapshot before the tutorial-backed record writer runs.
+- The final recurrence settlement now has dedicated artwork.
+
+兼容 / Compatibility
+- 全部 700 档余烬位、商店、祝福与诅咒、契约、计分及继承规则保持不变；现有存档无需迁移。
+- CK3 1.19.0.6；教程仍须设为“完整”或“警告”，新纪录、契约 PB 与图鉴才会落盘。
+- All 700 Ember Tier lessons and existing saves remain compatible. No gameplay values or progression systems were removed.
+- CK3 1.19.0.6. Tutorials must remain set to Full or Warnings for new persistent progress.
