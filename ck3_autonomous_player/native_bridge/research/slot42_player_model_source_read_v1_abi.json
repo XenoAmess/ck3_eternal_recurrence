@@ -36,6 +36,12 @@
     "owner-process protocol fake driver validates available, unavailable RED, and empty-source evidence_insufficient"
   ],
   "next_live_gate": "freeze a new exact feature-ON Release DLL/manifest independent of R717; sole CK3 owner runs bounded run_owned_paused_player_model_source_read against the supported paired standard-feudal checkpoint, proves active view model binding, direct barony/Province source and definition count at unchanged paused revision/date/no action; then separate player final legality/cost query",
+  "candidate_entry": {
+    "freezer": "seal_g2m4_player_view_live_candidate.py now requires --source-commit as a full exact SHA and accepts --read-kind player-model-sources; the old c318 fixed source is not reused",
+    "owned_live_entry": "run_g2m4_player_view_live_candidate.py selects the new owner-process paused model read only when sealed manifest read_kind=player-model-sources",
+    "exit_semantics": "0 only for model_sources_observed plus CK3 reclaimed, 2 for explicit evidence_insufficient/open scene plus reclaimed, 1 for RED, wrong read kind or failed process recycle",
+    "bounded_scene": "existing R697 paired standard-feudal scene remains an explicit private read-only acceptance fixture; its actor/title IDs are not production policy parameters"
+  },
   "known_not_proven": [
     "new slot42 model receipt in real CK3 paused frame",
     "any currently legal construction pair or cost",

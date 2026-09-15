@@ -42,12 +42,25 @@ def require(condition: bool, reason: str) -> None:
         raise RuntimeError(reason)
 
 
+def private_read_exit_code(status: str, reclaimed: bool, read_kind: str) -> int:
+    required = ("model_sources_observed" if read_kind == "player-model-sources"
+                else "cache_branch_observed")
+    if reclaimed and status == required:
+        return 0
+    if reclaimed and status in {"closed_view_evidence_insufficient", "open_view_scene",
+                               "model_sources_evidence_insufficient"}:
+        return 2
+    return 1
+
+
 def preflight(root: Path) -> tuple[object, dict[str, object], dict[str, object]]:
     manifest_path = root / "candidate-manifest.json"
     manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
     require(manifest.get("schema") == "xar.ck3.g2_m4_player_view_private_live_candidate_v1"
             and manifest.get("status") == "READY_NO_LAUNCH" and manifest.get("advertised") is False,
             "private candidate manifest is absent or not sealed")
+    require(manifest.get("read_kind", "cache-view") in {"cache-view", "player-model-sources"},
+            "private candidate read kind is unsupported")
     require(Path(str(manifest.get("candidate_root"))).resolve() == root,
             "candidate belongs to a different artifact root")
     source = Path(str(manifest["source_repo"]))
@@ -144,6 +157,7 @@ def run(root: Path, round_id: str, evidence: Path) -> int:
         from xar_autoplayer.native_auto_run import _wait_for_readiness
         from xar_autoplayer.runtime import NativeBridgeLaunchConfig, launch, stop_tracked
         from run_g2m4_paused_player_view_read import run_owned_paused_player_view_read
+        from run_g2m4_paused_player_model_source_read import run_owned_paused_player_model_source_read
         from PIL import ImageGrab  # noqa: F401; needed only for an optional same-frame receipt
         require(not ck3_process_inventory().get("processes"), "old CK3 instance still alive")
         locks.enter_context(exclusive_launch_lock(spec.game_exe))
@@ -203,12 +217,19 @@ def run(root: Path, round_id: str, evidence: Path) -> int:
             "dlc_mod_load_order": [manifest["dlc_mod_load_order"]],
             "configuration": manifest["configuration"] if isinstance(manifest["configuration"], dict) else {},
         }
-        read = run_owned_paused_player_view_read(
-            driver, frozen, evidence / "paused-player-view-read.json",
-            timeout_seconds=12.0,
-        )
+        if manifest.get("read_kind", "cache-view") == "player-model-sources":
+            read = run_owned_paused_player_model_source_read(
+                driver, frozen, evidence / "paused-player-model-source-read.json",
+                timeout_seconds=12.0,
+            )
+        else:
+            read = run_owned_paused_player_view_read(
+                driver, frozen, evidence / "paused-player-view-read.json",
+                timeout_seconds=12.0,
+            )
         report["read"] = read
         report["cache_branch"] = read.get("cache_branch")
+        report["player_model_sources"] = read.get("player_model_sources")
         report["next_read"] = read.get("next_read")
         report["status"] = read.get("status", "red")
     except BaseException as error:
@@ -255,10 +276,10 @@ def run(root: Path, round_id: str, evidence: Path) -> int:
         write(evidence / "report.json", report)
     print(json.dumps({"status": report["status"], "cache_branch": report.get("cache_branch"),
                       "ck3_reclaimed": report["ck3_reclaimed"], "evidence": str(evidence)}, ensure_ascii=False))
-    return 0 if report["status"] == "cache_branch_observed" and report["ck3_reclaimed"] else 2 if (
-        report["status"] in {"closed_view_evidence_insufficient", "open_view_scene"}
-        and report["ck3_reclaimed"]
-    ) else 1
+    return private_read_exit_code(
+        report["status"], report["ck3_reclaimed"],
+        manifest.get("read_kind", "cache-view"),
+    )
 
 
 def main() -> int:

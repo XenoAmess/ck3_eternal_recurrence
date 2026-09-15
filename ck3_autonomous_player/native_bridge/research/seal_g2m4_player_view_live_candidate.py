@@ -18,7 +18,6 @@ import sys
 from pathlib import Path
 
 
-SOURCE_COMMIT = "c31886f0571932546a4445faef61c08606830288"
 EXE_SHA = "2d00ff3101ef70b566f2fcbae292f09263199c80e9dc8f139b82d7d96f83db86"
 SEED_SHA = "d8bdc3c44d21a6f94dc7e4c050db464f6c5036d5ba7e66233354b171f3401474"
 PAIRED_SHA = "163850711947eacb8dfb3dec82e39bad332bd00bc119dbb36642ed701de4fb1a"
@@ -90,11 +89,14 @@ def seal(args: argparse.Namespace) -> dict[str, object]:
     root = args.candidate_root.resolve()
     source = root / "sealed-source"
     profile_state = root / "fresh-profile-state"
+    source_commit = args.source_commit.lower()
+    need(len(source_commit) == 40 and all(ch in "0123456789abcdef" for ch in source_commit),
+         "source commit must be a full Git SHA")
     need(root.is_dir() and source.is_dir() and profile_state.is_dir(),
          "candidate source/profile must exist before sealing")
     need(not (root / "candidate-manifest.json").exists(),
          "candidate is already sealed; make a new version for changes")
-    need(git(source, "rev-parse", "HEAD") == SOURCE_COMMIT
+    need(git(source, "rev-parse", "HEAD") == source_commit
          and not git(source, "status", "--porcelain")
          and git(source, "branch", "--list", "work/*") == "",
          "sealed source is not clean master at frozen commit")
@@ -109,7 +111,7 @@ def seal(args: argparse.Namespace) -> dict[str, object]:
     need(f"CMAKE_HOME_DIRECTORY:INTERNAL={(args.build_source / 'ck3_autonomous_player' / 'native_bridge').resolve().as_posix()}".lower() in cache.lower(),
          "candidate DLL was built from a different source checkout")
     build_head = git(args.build_source, "rev-parse", "HEAD")
-    need(build_head == SOURCE_COMMIT and not git(args.build_source, "diff", "--name-only", SOURCE_COMMIT,
+    need(build_head == source_commit and not git(args.build_source, "diff", "--name-only", source_commit,
          "--", "ck3_autonomous_player/src", "ck3_autonomous_player/native_bridge/src",
          "ck3_autonomous_player/native_bridge/include", "ck3_autonomous_player/native_bridge/CMakeLists.txt"),
          "candidate native/Python runtime differs from frozen source")
@@ -146,7 +148,8 @@ def seal(args: argparse.Namespace) -> dict[str, object]:
     result: dict[str, object] = {
         "schema": "xar.ck3.g2_m4_player_view_private_live_candidate_v1",
         "status": "READY_NO_LAUNCH", "advertised": False,
-        "source_commit": SOURCE_COMMIT, "source_repo": str(source),
+        "source_commit": source_commit, "source_repo": str(source),
+        "read_kind": args.read_kind,
         "candidate_root": str(root), "state_dir": str(profile_state),
         "game_dir": str(args.game_dir.resolve()), "game_exe_sha256": EXE_SHA,
         "source_save": str(seed_dir / "xar_checkpoint.ck3"), "source_save_sha256": SEED_SHA,
@@ -176,7 +179,10 @@ def seal(args: argparse.Namespace) -> dict[str, object]:
         "live_entry": str(root / runner.name), "live_entry_sha256": sha(root / runner.name),
         "assertions": ["same paused actor/date/feudal/held county", "no war/army/event/pending",
                        "root native_revision same frame", "private cache status/count consistent",
-                       "unchanged paused frame before/after", "CK3 process reclaimed"],
+                       "unchanged paused frame before/after", "CK3 process reclaimed"] + (
+                           ["slot42 player-model source TitleID/ProvinceID and definition count same paused frame",
+                            "active CHoldingView model binding true; legality not inferred or action submitted"]
+                           if args.read_kind == "player-model-sources" else []),
         "bounds": {"readiness_timeout_seconds": 300, "query_timeout_seconds_each": 12,
                    "overall_window_seconds": 480},
         "ck3_inventory_before_launch": ck3_process_inventory(),
@@ -193,6 +199,9 @@ def main() -> int:
                  "paired-driver-state", "game-dir", "r697-report", "operator-python"):
         parser.add_argument(f"--{name}", required=True, type=Path)
     parser.add_argument("--pipe", required=True)
+    parser.add_argument("--source-commit", required=True)
+    parser.add_argument("--read-kind", choices=("cache-view", "player-model-sources"),
+                        default="cache-view")
     args = parser.parse_args()
     result = seal(args)
     print(json.dumps({key: result[key] for key in (
