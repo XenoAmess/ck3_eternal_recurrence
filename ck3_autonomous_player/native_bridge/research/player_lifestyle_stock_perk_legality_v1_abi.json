@@ -1,0 +1,46 @@
+{
+  "schema": "xar.player_lifestyle_stock_perk_legality_v1_abi",
+  "status": "static-ready-private-unwired",
+  "visibility": "private-not-advertised",
+  "exact_build": {
+    "ck3_version": "1.19.0.6",
+    "executable_size_bytes": 95206008,
+    "executable_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86"
+  },
+  "trigger": "Ordinary standard-feudal production may not bind CharacterLifestyleWindow+0xF8 before the lifestyle UI is opened. An unbound window leaves LIFE4 candidate legality unavailable even when current player lifestyle state is readable.",
+  "target": {
+    "stable_key": "cutting_corners_perk",
+    "lifestyle_key": "stewardship_lifestyle",
+    "source": "exact CharacterPerk definition database getter RVA 0x88EC20, bounded pointer span at database+0x68; key at perk+0x18, lifestyle pointer at perk+0x468",
+    "max_database_rows": 512,
+    "rule": "scan every pointer and stable key; require one exact target member, observed same-lifestyle current state, observed non-owned status and integer unspent points"
+  },
+  "stock_final_legality": {
+    "window_wrapper_rva": "0x132D640",
+    "window_wrapper_region_length": "0xBA",
+    "window_wrapper_region_sha256": "F73EF1DF57A910CB3D287D2A1FB640D3A8D47A6FE494E7369713CC492C23D8EF",
+    "command_constructor_rva": "0x132BB00",
+    "command_constructor_region_length": "0xC2",
+    "command_constructor_region_sha256": "27CFA5E7DC59C0B0F6C03A1613D48E49FBE409EFA8FF71CBD423CAEBC3BB9A50",
+    "command_bytes": "0x30",
+    "primary_vtable_rva": "0x4323A50",
+    "secondary_vtable_rva": "0x4323A20",
+    "command_played_full_character_id_offset": "0x20",
+    "command_exact_perk_pointer_offset": "0x28",
+    "validator_pointer_slot_rva": "0x4323A80",
+    "validator_target_rva": "0x25DFAF0",
+    "validator_region_length": "0x3AA",
+    "validator_region_sha256": "4B5B3320DA09419FF20AD93F6A865974470DC004CB749F296A1165F1119E89EC",
+    "independent_character_read": "validator reads command+0x20 and resolves exact CCharacter storage; it reads command+0x28/Perk+0x468, unspent getter 0x2668A00 and final check 0x25DFEA0; optional reason context is null",
+    "window_boundary": "The window wrapper checks +0xF8 before constructing this command. The stock command validator takes no lifestyle-window owner argument. This source never opens/binds/refreshes the window or submits a command."
+  },
+  "sampling": "application-main, one paused episode/player/snapshot/revision/date; verify played ID global and CCharacter+0x18, exact validator slot, complete bounded database; construct and evaluate the stock command twice from fresh source samples and reject drift before publishing an observed boolean",
+  "unknown_policy": "unadmitted build, missing/duplicate definition, unreadable DB/member/key, unknown player points or owned state, missing storage identity, validator ABI mismatch/exception and frame drift remain unavailable. An observed validator false is a native rejection, never a successful action.",
+  "runtime_contract": "This is a private perk-only legality producer. The formal LIFE2/LIFE4/LIFE6/LIFE7 owner must explicitly bind it and still revalidate before one typed action, then require a fresh material postcondition and next production turn. No public query/action/capability is registered or advertised by this patch.",
+  "focused_static_tests": "manual MSVC /Od and /O2 standalone fixture compilation; tests cover legal without any window, known point/native rejection, unknown points/ownership, duplicate target, validator-slot mismatch, frame drift, wrong thread and unadmitted exact build",
+  "unverified_live": [
+    "No ordinary production paused snapshot was collected under the user's manual CK3/screen reservation.",
+    "No natural spendable perk point, native true, typed submit, acquired perk material result or next production turn consumption is proved here.",
+    "Focus fallback with zero perk points still needs an exact FocusType source or an independently verified automatic stock bind."
+  ]
+}
