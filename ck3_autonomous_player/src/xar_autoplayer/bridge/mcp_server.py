@@ -911,6 +911,18 @@ def _ck3_inspect_frontend_coat_of_arms_pattern_grid_v1(
     return service.inspect_frontend_coat_of_arms_pattern_grid_v1()
 
 
+def _ck3_compare_frontend_coat_of_arms_framebuffer_v1(
+    service: GameplayBridgeService,
+    reference_png_base64: str,
+    reference_png_sha256: str,
+) -> dict[str, object]:
+    """Compare a hash-bound browser preview to the route-bound CK3 framebuffer."""
+    return service.compare_frontend_coat_of_arms_framebuffer_v1(
+        reference_png_base64,
+        reference_png_sha256,
+    )
+
+
 def _ck3_activate_frontend_new_game_v1(
     service: GameplayBridgeService,
 ) -> dict[str, object]:
@@ -1864,6 +1876,18 @@ def create_server(driver: GameplayBridgeDriver):
         return _ck3_inspect_frontend_coat_of_arms_pattern_grid_v1(service)
 
     @server.tool()
+    def ck3_compare_frontend_coat_of_arms_framebuffer_v1(
+        reference_png_base64: str,
+        reference_png_sha256: str,
+    ) -> dict[str, object]:
+        """Compare a canonical PNG to the native CoA framebuffer without input."""
+        return _ck3_compare_frontend_coat_of_arms_framebuffer_v1(
+            service,
+            reference_png_base64,
+            reference_png_sha256,
+        )
+
+    @server.tool()
     def ck3_activate_frontend_new_game_v1() -> dict[str, object]:
         """Semantically open New Game and independently verify Bookmarks."""
         return _ck3_activate_frontend_new_game_v1(service)
@@ -2366,6 +2390,9 @@ def create_server(driver: GameplayBridgeDriver):
     )
     _forbid_unknown_tool_arguments_v1(
         server, "ck3_inspect_frontend_coat_of_arms_pattern_grid_v1"
+    )
+    _forbid_unknown_tool_arguments_v1(
+        server, "ck3_compare_frontend_coat_of_arms_framebuffer_v1"
     )
     _forbid_unknown_tool_arguments_v1(
         server, "ck3_activate_frontend_new_game_v1"

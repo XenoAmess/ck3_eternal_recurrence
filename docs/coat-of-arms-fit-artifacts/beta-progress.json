@@ -371,7 +371,7 @@
     {
       "id": "USER-PICTURE-PREVIEW-AND-NATIVE-CONSISTENCY",
       "status": "in_progress",
-      "commit": "pending-current-work-package",
+      "commit": "03179fe5",
       "commands": [
         "pnpm exec playwright test e2e/user-picture-preview-consistency.spec.ts --reporter=line",
         "set COA_CORPUS_BUDGET=1024&& pnpm exec playwright test e2e/user-picture-quality-corpus.spec.ts --reporter=line",
@@ -407,11 +407,13 @@
         "stressPersistentRestoreDurationMs": 3385,
         "stressResumeDurationMs": 4470,
         "stressCancellationLatencyMs": 61,
+        "nativeFramebufferMcpContract": "implemented_static_tests_passed_live_pending",
+        "nativeFramebufferMcpTestsPassed": 20,
         "nativeMcpCasesPassed": 0
       },
       "blockers": [
         "picture-02, picture-05 and picture-07 still converge with high residual/edge loss and need higher-resolution local replacement plus broader native-brush search.",
-        "Existing managed MCP has no bounded CoA framebuffer or spatial pixel-summary capability; native pixel comparison remains pending until MCP is extended."
+        "The bounded CoA framebuffer MCP is implemented and offline-tested; the 7-case native live comparison has not run yet."
       ]
     }
   ]

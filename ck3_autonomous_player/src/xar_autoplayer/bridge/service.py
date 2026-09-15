@@ -288,6 +288,13 @@ from .coat_of_arms_source_export_contract import (
     EXPORT_COAT_OF_ARMS_SOURCE_V1_CAPABILITY,
     normalize_coat_of_arms_source_export_v1_result,
 )
+from .coat_of_arms_framebuffer import (
+    CoatOfArmsFramebufferError,
+    capture_and_compare_coat_of_arms_framebuffer_v1,
+)
+from .frontend_gui_route_contract import (
+    frontend_gui_route_binding_from_capabilities,
+)
 from .loaded_feature_manifest_contract import (
     QUERY_LOADED_FEATURE_MANIFEST_V1_CAPABILITY,
     QUERY_LOADED_FEATURE_MANIFEST_V1_STEP,
@@ -7788,6 +7795,66 @@ class GameplayBridgeService:
                 "native coat-of-arms pattern-grid inspector returned malformed data"
             )
         return result
+
+    def compare_frontend_coat_of_arms_framebuffer_v1(
+        self,
+        reference_png_base64: str,
+        reference_png_sha256: str,
+    ) -> dict[str, object]:
+        """Compare one canonical preview to the route-bound CK3 framebuffer."""
+
+        before_route = self.query_frontend_gui_route_v1()
+        if before_route.get("route") != "coat_of_arms_designer":
+            raise BridgeUnavailableError(
+                "coat-of-arms framebuffer comparison requires the native designer route"
+            )
+        before_tree = self.inspect_frontend_coat_of_arms_tree_v1()
+        if not (
+            before_tree.get("status") == "available"
+            and before_tree.get("root_available") is True
+            and before_tree.get("scope_root_name") == "coat_of_arms_page"
+        ):
+            raise BridgeUnavailableError(
+                "coat-of-arms framebuffer comparison requires a visible native page root"
+            )
+        try:
+            before_binding = frontend_gui_route_binding_from_capabilities(
+                self.capabilities()
+            )
+            comparison = capture_and_compare_coat_of_arms_framebuffer_v1(
+                before_binding["bridge_pid"],
+                reference_png_base64,
+                reference_png_sha256,
+            )
+            after_binding = frontend_gui_route_binding_from_capabilities(
+                self.capabilities()
+            )
+        except (ValueError, CoatOfArmsFramebufferError) as error:
+            raise BridgeUnavailableError(
+                f"coat-of-arms framebuffer comparison failed closed: {error}"
+            ) from error
+        after_route = self.query_frontend_gui_route_v1()
+        after_tree = self.inspect_frontend_coat_of_arms_tree_v1()
+        if not (
+            before_binding == after_binding
+            and before_route == after_route
+            and after_route.get("route") == "coat_of_arms_designer"
+            and after_tree.get("status") == "available"
+            and after_tree.get("root_available") is True
+            and after_tree.get("scope_root_name") == "coat_of_arms_page"
+            and comparison.get("bridgePid") == before_binding["bridge_pid"]
+        ):
+            raise BridgeUnavailableError(
+                "coat-of-arms route or native bridge binding changed during capture"
+            )
+        return {
+            **comparison,
+            "route": "coat_of_arms_designer",
+            "routeStable": True,
+            "nativePageRootAvailableBefore": True,
+            "nativePageRootAvailableAfter": True,
+            "connectionGeneration": before_binding["connection_generation"],
+        }
 
     def activate_frontend_new_game_v1(self) -> dict[str, object]:
         """Open New Game semantically; the driver must prove Bookmarks."""
