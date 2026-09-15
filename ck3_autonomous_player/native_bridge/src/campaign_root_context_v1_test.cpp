@@ -1251,6 +1251,68 @@ bool TestCouncilDynamicPositionAndFailureBoundaries() {
          ClearedUnavailable(result, "state_changed");
 }
 
+bool TestStoredVacantCouncilTasksPreserveRoot() {
+  Fixture fixture;
+  const std::int32_t absent_incumbent = -1;
+  const std::int32_t zero_incumbent = 0;
+  Put(fixture.steward_active_task, 0x38, absent_incumbent);
+  Put(fixture.spymaster_active_task, 0x38, zero_incumbent);
+  fixture.native_strings[Address(fixture.spymaster_position_type, 0x18)] =
+      "councillor_spouse";
+  const auto environment = Environment(fixture);
+  const auto access = Access(fixture);
+  const xar::ck3_11906::CampaignRootContextRequestV1 request{41};
+  xar::game::CampaignRootContextV1 result{};
+  if (xar::ck3_11906::ReadCampaignRootContextV1(
+          environment, access, request, result) !=
+          xar::game::ReadCampaignRootContextResultV1::available ||
+      !result.council || result.council->positions.size() != 6 ||
+      !AllReadiness(result.readiness, true)) {
+    return false;
+  }
+  const auto vacant = [&result](std::string_view key) {
+    return std::any_of(
+        result.council->positions.begin(), result.council->positions.end(),
+        [key](const auto &position) {
+          return position.position_key == key &&
+                 !position.incumbent_character_id.has_value() &&
+                 !position.task_key.has_value() &&
+                 !position.task_type.has_value() &&
+                 !position.target.has_value() &&
+                 !position.frozen.has_value() &&
+                 !position.progress.has_value();
+        });
+  };
+  if (!vacant("councillor_steward") || !vacant("councillor_spouse") ||
+      xar::ck3_11906::SerializeCampaignRootContextV1(result).empty()) {
+    return false;
+  }
+  Fixture malformed;
+  const std::int32_t malformed_incumbent = -2;
+  Put(malformed.steward_active_task, 0x38, malformed_incumbent);
+  const auto malformed_environment = Environment(malformed);
+  const auto malformed_access = Access(malformed);
+  xar::game::CampaignRootContextV1 malformed_result{};
+  if (xar::ck3_11906::ReadCampaignRootContextV1(
+          malformed_environment, malformed_access, request,
+          malformed_result) !=
+          xar::game::ReadCampaignRootContextResultV1::unavailable ||
+      !ClearedUnavailable(malformed_result, "council_unavailable")) {
+    return false;
+  }
+  Fixture wrong_owner;
+  Put(wrong_owner.steward_active_task, 0x38, absent_incumbent);
+  Put(wrong_owner.steward_active_task, 0x3C, Fixture::kTopLiegeId);
+  const auto wrong_owner_environment = Environment(wrong_owner);
+  const auto wrong_owner_access = Access(wrong_owner);
+  xar::game::CampaignRootContextV1 wrong_owner_result{};
+  return xar::ck3_11906::ReadCampaignRootContextV1(
+             wrong_owner_environment, wrong_owner_access, request,
+             wrong_owner_result) ==
+             xar::game::ReadCampaignRootContextResultV1::unavailable &&
+         ClearedUnavailable(wrong_owner_result, "council_unavailable");
+}
+
 bool TestCelestialCouncilIsOutsideStandardScope() {
   Fixture fixture;
   const auto identifier = fixture.identifier_names.find(20);
@@ -1420,6 +1482,10 @@ int main() {
   }
   if (!TestCouncilDynamicPositionAndFailureBoundaries()) {
     std::cerr << "council dynamic/failure fixture failed\n";
+    return 1;
+  }
+  if (!TestStoredVacantCouncilTasksPreserveRoot()) {
+    std::cerr << "stored vacant council task fixture failed\n";
     return 1;
   }
   if (!TestCelestialCouncilIsOutsideStandardScope()) {

@@ -1473,10 +1473,6 @@ bool ReadCouncilPosition(
       !CheckedAddress(position_type, kCouncilPositionTypeKeyOffset,
                       position_key_address) ||
       !ReadNativeString(access, position_key_address, output.position_key) ||
-      !CheckedAddress(task_type, kCouncilTaskTypeKeyOffset,
-                      task_key_address) ||
-      !ReadNativeString(access, task_key_address,
-                        output.task_key.emplace()) ||
       !ReadValue(access, active_task,
                  kActiveCouncilTaskScopesOffset +
                      kCouncilScopesIncumbentIdOffset,
@@ -1485,13 +1481,26 @@ bool ReadCouncilPosition(
                  kActiveCouncilTaskScopesOffset +
                      kCouncilScopesOwnerIdOffset,
                  owner_id) ||
-      incumbent_id <= 0 || owner_id != root.player_character_id ||
+      incumbent_id < -1 || owner_id != root.player_character_id ||
+      ResolveComponent(access, environment.character_storage_slot,
+                       environment.character_fallback_slot, owner_id,
+                       kCharacterIdentityOffset) != root.player_character) {
+    output = {};
+    return false;
+  }
+  // A stored council task may have no incumbent while its owner remains the
+  // played ruler. The existing public contract represents that seat as vacant:
+  // its active task fields are absent until a councillor actually occupies it.
+  if (incumbent_id <= 0) {
+    return true;
+  }
+  if (!CheckedAddress(task_type, kCouncilTaskTypeKeyOffset,
+                      task_key_address) ||
+      !ReadNativeString(access, task_key_address,
+                        output.task_key.emplace()) ||
       ResolveComponent(access, environment.character_storage_slot,
                        environment.character_fallback_slot, incumbent_id,
                        kCharacterIdentityOffset) == nullptr ||
-      ResolveComponent(access, environment.character_storage_slot,
-                       environment.character_fallback_slot, owner_id,
-                       kCharacterIdentityOffset) != root.player_character ||
       !ReadValue(access, task_type, kCouncilTaskTypeKindOffset,
                  task_type_raw) ||
       task_type_raw < 0 || task_type_raw > 2 ||

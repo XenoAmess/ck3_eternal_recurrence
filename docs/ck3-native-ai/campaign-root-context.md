@@ -728,3 +728,44 @@ or same-frame identity read still makes the root typed `unavailable`. Council
 keeps its existing typed subcomponent boundary: a celestial ruler may have an
 available root with council unavailable and selected-rule tokens unavailable,
 while all other valid fields remain usable.
+
+## R705 standard-feudal vacant-task RED (live repair pending)
+
+The formal `native-auto-run` attempt R705 used CK3 1.19.0.6, EXE SHA-256
+`2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86`,
+the frozen master `54f7291` candidate and the R456 checkpoint SHA-256
+`0759E25C2612E127A63C676CC73A9DB95B336319DAC16CF0C632CDE7ED817530`.
+At `date_raw=53187096`, CharacterID `29829`, WarID `33554473`, its first
+read-only campaign-root query returned typed `council_unavailable`. The derived
+turn bundle was unavailable, so the formal loop stopped at turn 1 before any
+gameplay action, date advance or new save. The physical checkpoint retained its
+source SHA; driver history added only that root query (driver SHA-256
+`CD9915B1CFDB6CD5E0FD70FDD76E059FBFC6D927DCB01BB71FC3116BE57DF67D`).
+The generic opaque-turn failure report conservatively invalidated checkpoint
+recovery because it could not identify a selected step; the physical save and
+command history show no gameplay submission in this attempt. This does not
+close the RED or establish a successful cold recovery.
+
+An offline Rakaly melt of that exact source save (melted SHA-256
+`52EAB35E174176F590471F856360C6646794059CDCA8AEB2E7025798F850F93C`)
+locates the played character at line `1770440`: `landed_data` at `1770627`
+contains `government="feudal_government"` at `1770659`, the same WarID at
+`1770637–1770639`, and six council task IDs `7158–7163` at `1770662–1770664`.
+The task records at `5487620–5487649` bind all six `court_owner` values to
+`29829`. Four have a councillor `owner`; task `7159` (`task_collect_taxes`)
+and task `7163` (`task_spouse_default`) omit `owner` and are `frozen=yes`.
+The save is a scene input; only a fresh paused native query can prove the
+collector's corrected output after loading.
+
+The exact-build collector previously rejected every stored task whose
+incumbent scope ID was non-positive, even when the task's council owner was
+the live played ruler. The focused repair accepts only native absent IDs
+`-1` or `0` with the same full-generation owner binding. Such a task publishes
+its verified position key and the existing vacant-position shape:
+`incumbent_character_id=null` and all active-task fields null. A malformed
+negative ID, wrong council owner, unreadable position type or invalid occupied
+task still returns typed `council_unavailable`. The public schema and planner
+contract remain unchanged. Focused Release and Debug fixtures cover both absent encodings,
+one core vacancy, one spouse vacancy, serialization and malformed negative
+rejection. R705 remains RED until the repaired DLL yields a usable same-frame
+root and formal turn bundle in live standard-feudal play.
