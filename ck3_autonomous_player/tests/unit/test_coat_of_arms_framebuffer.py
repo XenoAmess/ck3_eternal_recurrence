@@ -5,13 +5,16 @@ import hashlib
 from io import BytesIO
 
 from PIL import Image, ImageDraw
+import numpy as np
 import pytest
 
 from xar_autoplayer.bridge.coat_of_arms_framebuffer import (
     CoatOfArmsFramebufferError,
     compare_reference_to_calibrated_framebuffer_v2,
+    compare_reference_to_calibrated_framebuffer_v3,
     compare_reference_to_framebuffer_v1,
     decode_reference_png_v1,
+    derive_anchor_calibration_v3,
     derive_two_state_calibration_v2,
 )
 
@@ -150,3 +153,58 @@ def test_calibrated_comparison_never_relocalizes_from_reference() -> None:
     )
     assert aligned.mode == "RGBA"
     assert aligned.getpixel((0, aligned.height - 1))[3] == 0
+
+
+def test_anchor_calibration_removes_native_frame_geometry_from_uv_comparison() -> None:
+    reference = _reference()
+    size = (420, 300)
+    background = (31, 29, 27)
+    surface = ((60, 30), (260, 30), (260, 190), (160, 250), (60, 190))
+    begin = Image.new("RGB", size, background)
+    complete = begin.copy()
+    ImageDraw.Draw(begin).polygon(surface, fill=(240, 20, 20))
+    ImageDraw.Draw(complete).polygon(surface, fill=(20, 240, 20))
+    surface_calibration = derive_two_state_calibration_v2(
+        "fixture-uv", 1234, begin, complete
+    )
+
+    anchor_base = Image.new("RGB", size, background)
+    ImageDraw.Draw(anchor_base).polygon(surface, fill=(8, 8, 8))
+    anchors_complete = anchor_base.copy()
+    anchor_draw = ImageDraw.Draw(anchors_complete)
+    for normalized_y in (0.30, 0.50, 0.70):
+        for normalized_x in (0.30, 0.50, 0.70):
+            center_x = round(60 + normalized_x * 200)
+            center_y = round(30 + normalized_y * 220)
+            anchor_draw.rectangle(
+                (center_x - 4, center_y - 4, center_x + 4, center_y + 4),
+                fill=(245, 245, 245),
+            )
+    calibration = derive_anchor_calibration_v3(
+        surface_calibration, anchor_base, anchors_complete
+    )
+
+    np.testing.assert_allclose(
+        calibration.canonical_to_framebuffer,
+        np.asarray(((200.0, 0.0, 60.0), (0.0, 220.0, 30.0))),
+        atol=0.75,
+    )
+    assert max(calibration.reprojection_errors) < 0.75
+
+    observed = Image.new("RGB", size, background)
+    resized = reference.resize((201, 221), Image.Resampling.BILINEAR)
+    surface_mask = Image.new("L", size, 0)
+    ImageDraw.Draw(surface_mask).polygon(surface, fill=255)
+    layer = Image.new("RGB", size, background)
+    layer.paste(resized, (60, 30))
+    observed.paste(layer, mask=surface_mask)
+
+    result = compare_reference_to_calibrated_framebuffer_v3(
+        reference, observed, calibration
+    )
+
+    assert result["referenceUsedForLocalization"] is False
+    assert result["referenceUsedForRegistration"] is False
+    assert result["bestMatch"]["rect"] == [60, 30, 261, 250]
+    assert result["metrics"]["meanAbsoluteError"] < 0.025
+    assert result["metrics"]["colorMse"] < 0.003

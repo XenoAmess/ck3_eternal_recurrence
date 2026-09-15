@@ -133,11 +133,11 @@ ABORT_COAT_OF_ARMS_UPLOAD_TOOL = "ck3_abort_coat_of_arms_source_upload_v2"
 COMPARE_COAT_OF_ARMS_FRAMEBUFFER_TOOL = (
     "ck3_compare_frontend_coat_of_arms_framebuffer_v1"
 )
-CALIBRATE_COAT_OF_ARMS_FRAMEBUFFER_V2_TOOL = (
-    "ck3_calibrate_frontend_coat_of_arms_framebuffer_v2"
+CALIBRATE_COAT_OF_ARMS_FRAMEBUFFER_V3_TOOL = (
+    "ck3_calibrate_frontend_coat_of_arms_framebuffer_v3"
 )
-COMPARE_COAT_OF_ARMS_FRAMEBUFFER_V2_TOOL = (
-    "ck3_compare_frontend_coat_of_arms_framebuffer_v2"
+COMPARE_COAT_OF_ARMS_FRAMEBUFFER_V3_TOOL = (
+    "ck3_compare_frontend_coat_of_arms_framebuffer_v3"
 )
 PREPARE_COAT_OF_ARMS_FRAMEBUFFER_TOOL = (
     "ck3_prepare_frontend_coat_of_arms_framebuffer_v1"
@@ -145,10 +145,10 @@ PREPARE_COAT_OF_ARMS_FRAMEBUFFER_TOOL = (
 FRAMEBUFFER_GATE_THRESHOLDS = {
     "maximum_locator_loss": 0.45,
     "minimum_distinct_margin": 0.005,
-    "maximum_mean_absolute_error": 0.18,
-    "maximum_color_mse": 0.06,
-    "maximum_edge_loss": 0.18,
-    "maximum_spatial_mean_absolute_error": 0.35,
+    "maximum_mean_absolute_error": 0.10,
+    "maximum_color_mse": 0.03,
+    "maximum_edge_loss": 0.16,
+    "maximum_spatial_mean_absolute_error": 0.25,
 }
 SYNTAX_MATRIX = Path(__file__).with_name("coat_of_arms_syntax_matrix_v1.json")
 _PROFILE_EXCLUDES = frozenset(
@@ -699,13 +699,18 @@ def _framebuffer_gate(call: dict[str, object]) -> dict[str, object]:
     ] if isinstance(spatial, list) else []
     worst_spatial = max(spatial_values) if spatial_values else None
     thresholds = FRAMEBUFFER_GATE_THRESHOLDS
-    is_v2 = body.get("schema") == "ck3-coat-of-arms-framebuffer-comparison-v2"
-    calibration = body.get("calibration") if is_v2 else None
+    calibrated_schema = body.get("schema") in {
+        "ck3-coat-of-arms-framebuffer-comparison-v2",
+        "ck3-coat-of-arms-framebuffer-comparison-v3",
+    }
+    is_v3 = body.get("schema") == "ck3-coat-of-arms-framebuffer-comparison-v3"
+    calibration = body.get("calibration") if calibrated_schema else None
     checks = {
         "call_not_error": call.get("is_error") is False,
         "schema": body.get("schema") in {
             "ck3-coat-of-arms-framebuffer-comparison-v1",
             "ck3-coat-of-arms-framebuffer-comparison-v2",
+            "ck3-coat-of-arms-framebuffer-comparison-v3",
         },
         "route_stable": body.get("routeStable") is True,
         "read_only_no_ocr_or_input": (
@@ -718,13 +723,15 @@ def _framebuffer_gate(call: dict[str, object]) -> dict[str, object]:
             isinstance(calibration, dict)
             and calibration.get("referenceIndependent") is True
             and comparison.get("referenceUsedForLocalization") is False
-        ) if is_v2 else True,
-        "locator_loss": True if is_v2 else (
+            and (not is_v3 or comparison.get("referenceUsedForRegistration") is False)
+            and (not is_v3 or calibration.get("uvRegistered") is True)
+        ) if calibrated_schema else True,
+        "locator_loss": True if calibrated_schema else (
             isinstance(best.get("locatorLoss"), (int, float))
             and not isinstance(best.get("locatorLoss"), bool)
             and best["locatorLoss"] <= thresholds["maximum_locator_loss"]
         ),
-        "distinct_margin": True if is_v2 else (
+        "distinct_margin": True if calibrated_schema else (
             isinstance(best.get("distinctMargin"), (int, float))
             and not isinstance(best.get("distinctMargin"), bool)
             and best["distinctMargin"] >= thresholds["minimum_distinct_margin"]
@@ -1417,6 +1424,34 @@ async def _calibrate_picture_corpus_surface(
         'coa={pattern="pattern_solid.dds" color1=rgb { 0 255 0 } '
         'color2=rgb { 0 255 0 } color3=rgb { 0 255 0 }}'
     )
+    black_source = (
+        'coa={pattern="pattern_solid.dds" color1=rgb { 0 0 0 } '
+        'color2=rgb { 0 0 0 } color3=rgb { 0 0 0 }}'
+    )
+    marker_blocks = []
+    for depth, (x, y) in enumerate(
+        (
+            (0.30, 0.30),
+            (0.50, 0.30),
+            (0.70, 0.30),
+            (0.30, 0.50),
+            (0.50, 0.50),
+            (0.70, 0.50),
+            (0.30, 0.70),
+            (0.50, 0.70),
+            (0.70, 0.70),
+        ),
+        start=1,
+    ):
+        marker_blocks.append(
+            'colored_emblem={texture="ce_block_02.dds" '
+            'color1=rgb { 255 255 255 } color2=rgb { 255 255 255 } '
+            'color3=rgb { 255 255 255 } instance={'
+            f'position={{ {x:.2f} {y:.2f} }} scale={{ 0.05 0.05 }} '
+            f'rotation=0 depth={depth}'
+            '}}'
+        )
+    anchors_source = black_source[:-1] + " " + " ".join(marker_blocks) + "}"
     red = await _apply_calibration_source(client, red_source, record)
     if red.get("ok") is not True:
         return {"ok": False, "stage": "apply-red", "red": red}
@@ -1425,7 +1460,7 @@ async def _calibrate_picture_corpus_surface(
     record(prepare_red)
     begin = await _call(
         client,
-        CALIBRATE_COAT_OF_ARMS_FRAMEBUFFER_V2_TOOL,
+        CALIBRATE_COAT_OF_ARMS_FRAMEBUFFER_V3_TOOL,
         {"calibration_id": calibration_id, "phase": "begin"},
     )
     record(begin)
@@ -1442,13 +1477,58 @@ async def _calibrate_picture_corpus_surface(
     await asyncio.sleep(0.75)
     prepare_green = await _call(client, PREPARE_COAT_OF_ARMS_FRAMEBUFFER_TOOL)
     record(prepare_green)
-    complete = await _call(
+    surface_complete = await _call(
         client,
-        CALIBRATE_COAT_OF_ARMS_FRAMEBUFFER_V2_TOOL,
-        {"calibration_id": calibration_id, "phase": "complete"},
+        CALIBRATE_COAT_OF_ARMS_FRAMEBUFFER_V3_TOOL,
+        {"calibration_id": calibration_id, "phase": "surface_complete"},
     )
-    record(complete)
-    completed = _structured(complete)
+    record(surface_complete)
+    surface_completed = _structured(surface_complete)
+    black = await _apply_calibration_source(client, black_source, record)
+    if black.get("ok") is not True:
+        return {
+            "ok": False,
+            "stage": "apply-anchor-base",
+            "red": red,
+            "prepare_red": prepare_red,
+            "begin": begin,
+            "green": green,
+            "prepare_green": prepare_green,
+            "surface_complete": surface_complete,
+            "black": black,
+        }
+    await asyncio.sleep(0.75)
+    prepare_black = await _call(client, PREPARE_COAT_OF_ARMS_FRAMEBUFFER_TOOL)
+    record(prepare_black)
+    anchor_base = await _call(
+        client,
+        CALIBRATE_COAT_OF_ARMS_FRAMEBUFFER_V3_TOOL,
+        {"calibration_id": calibration_id, "phase": "anchor_base"},
+    )
+    record(anchor_base)
+    anchors = await _apply_calibration_source(client, anchors_source, record)
+    if anchors.get("ok") is not True:
+        return {
+            "ok": False,
+            "stage": "apply-anchors",
+            "red": red,
+            "begin": begin,
+            "green": green,
+            "surface_complete": surface_complete,
+            "black": black,
+            "anchor_base": anchor_base,
+            "anchors": anchors,
+        }
+    await asyncio.sleep(0.75)
+    prepare_anchors = await _call(client, PREPARE_COAT_OF_ARMS_FRAMEBUFFER_TOOL)
+    record(prepare_anchors)
+    anchors_complete = await _call(
+        client,
+        CALIBRATE_COAT_OF_ARMS_FRAMEBUFFER_V3_TOOL,
+        {"calibration_id": calibration_id, "phase": "anchors_complete"},
+    )
+    record(anchors_complete)
+    completed = _structured(anchors_complete)
     checks = {
         "red_applied": red.get("ok") is True,
         "red_preparation": bool(
@@ -1464,10 +1544,29 @@ async def _calibrate_picture_corpus_surface(
             prepare_green.get("is_error") is False
             and _structured(prepare_green).get("routeStable") is True
         ),
-        "complete_captured": bool(
-            complete.get("is_error") is False
+        "surface_complete_captured": bool(
+            surface_complete.get("is_error") is False
+            and surface_completed.get("readyForAnchorBase") is True
+        ),
+        "black_applied": black.get("ok") is True,
+        "black_preparation": bool(
+            prepare_black.get("is_error") is False
+            and _structured(prepare_black).get("routeStable") is True
+        ),
+        "anchor_base_captured": bool(
+            anchor_base.get("is_error") is False
+            and _structured(anchor_base).get("nextPhase") == "anchors_complete"
+        ),
+        "anchors_applied": anchors.get("ok") is True,
+        "anchors_preparation": bool(
+            prepare_anchors.get("is_error") is False
+            and _structured(prepare_anchors).get("routeStable") is True
+        ),
+        "anchors_complete_captured": bool(
+            anchors_complete.get("is_error") is False
             and completed.get("readyForComparison") is True
             and completed.get("referenceIndependent") is True
+            and completed.get("uvRegistered") is True
             and completed.get("calibrationId") == calibration_id
         ),
     }
@@ -1479,7 +1578,13 @@ async def _calibrate_picture_corpus_surface(
         "begin": begin,
         "green": green,
         "prepare_green": prepare_green,
-        "complete": complete,
+        "surface_complete": surface_complete,
+        "black": black,
+        "prepare_black": prepare_black,
+        "anchor_base": anchor_base,
+        "anchors": anchors,
+        "prepare_anchors": prepare_anchors,
+        "anchors_complete": anchors_complete,
         "checks": checks,
     }
 
@@ -1528,7 +1633,7 @@ async def _collect_picture_corpus(
             record(preparation_call)
             framebuffer_call = await _call(
                 client,
-                COMPARE_COAT_OF_ARMS_FRAMEBUFFER_V2_TOOL,
+                COMPARE_COAT_OF_ARMS_FRAMEBUFFER_V3_TOOL,
                 {
                     "calibration_id": calibration["calibration_id"],
                     "reference_png_base64": preview_base64,
@@ -1792,8 +1897,8 @@ async def _mcp_sequence(
                 PREPARE_COAT_OF_ARMS_FRAMEBUFFER_TOOL,
                 *(
                     {
-                        CALIBRATE_COAT_OF_ARMS_FRAMEBUFFER_V2_TOOL,
-                        COMPARE_COAT_OF_ARMS_FRAMEBUFFER_V2_TOOL,
+                        CALIBRATE_COAT_OF_ARMS_FRAMEBUFFER_V3_TOOL,
+                        COMPARE_COAT_OF_ARMS_FRAMEBUFFER_V3_TOOL,
                     }
                     if picture_corpus is not None
                     else {COMPARE_COAT_OF_ARMS_FRAMEBUFFER_TOOL}
@@ -1930,11 +2035,11 @@ async def _mcp_sequence(
             )
         if picture_corpus is not None and not (
             _schema_has_required_fields(
-                schemas.get(CALIBRATE_COAT_OF_ARMS_FRAMEBUFFER_V2_TOOL),
+                schemas.get(CALIBRATE_COAT_OF_ARMS_FRAMEBUFFER_V3_TOOL),
                 {"calibration_id", "phase"},
             )
             and _schema_has_required_fields(
-                schemas.get(COMPARE_COAT_OF_ARMS_FRAMEBUFFER_V2_TOOL),
+                schemas.get(COMPARE_COAT_OF_ARMS_FRAMEBUFFER_V3_TOOL),
                 {
                     "calibration_id",
                     "reference_png_base64",

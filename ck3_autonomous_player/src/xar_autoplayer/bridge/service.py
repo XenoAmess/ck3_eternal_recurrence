@@ -291,6 +291,7 @@ from .coat_of_arms_source_export_contract import (
 from .coat_of_arms_framebuffer import (
     CoatOfArmsFramebufferError,
     CoatOfArmsFramebufferCalibrationStoreV2,
+    CoatOfArmsFramebufferCalibrationStoreV3,
     capture_and_compare_coat_of_arms_framebuffer_v1,
     prepare_ck3_framebuffer_capture_v1,
 )
@@ -368,6 +369,9 @@ class GameplayBridgeService:
         )
         self._coat_of_arms_framebuffer_calibrations_v2 = (
             CoatOfArmsFramebufferCalibrationStoreV2()
+        )
+        self._coat_of_arms_framebuffer_calibrations_v3 = (
+            CoatOfArmsFramebufferCalibrationStoreV3()
         )
 
     def bind_zhongguo_scoreboard_surface_preparer_v1(self, preparer: object) -> None:
@@ -7954,6 +7958,142 @@ class GameplayBridgeService:
                 self.capabilities()
             )
             comparison = self._coat_of_arms_framebuffer_calibrations_v2.compare(
+                before_binding["bridge_pid"],
+                calibration_id,
+                reference_png_base64,
+                reference_png_sha256,
+            )
+            after_binding = frontend_gui_route_binding_from_capabilities(
+                self.capabilities()
+            )
+        except (ValueError, CoatOfArmsFramebufferError) as error:
+            raise BridgeUnavailableError(
+                f"coat-of-arms framebuffer comparison failed closed: {error}"
+            ) from error
+        after_route = self.query_frontend_gui_route_v1()
+        after_tree = self.inspect_frontend_coat_of_arms_tree_v1()
+        if not (
+            before_binding == after_binding
+            and before_route == after_route
+            and after_route.get("route") == "coat_of_arms_designer"
+            and after_tree.get("status") == "available"
+            and after_tree.get("root_available") is True
+            and after_tree.get("scope_root_name") == "coat_of_arms_page"
+            and comparison.get("bridgePid") == before_binding["bridge_pid"]
+        ):
+            raise BridgeUnavailableError(
+                "coat-of-arms route or native bridge binding changed during capture"
+            )
+        return {
+            **comparison,
+            "route": "coat_of_arms_designer",
+            "routeStable": True,
+            "nativePageRootAvailableBefore": True,
+            "nativePageRootAvailableAfter": True,
+            "connectionGeneration": before_binding["connection_generation"],
+        }
+
+    def calibrate_frontend_coat_of_arms_framebuffer_v3(
+        self,
+        calibration_id: str,
+        phase: str,
+    ) -> dict[str, object]:
+        """Capture bounded surface and marker frames for native UV registration."""
+
+        if phase not in {
+            "begin",
+            "surface_complete",
+            "anchor_base",
+            "anchors_complete",
+        }:
+            raise ValueError(
+                "calibration phase must be begin, surface_complete, "
+                "anchor_base, or anchors_complete"
+            )
+        before_route = self.query_frontend_gui_route_v1()
+        if before_route.get("route") != "coat_of_arms_designer":
+            raise BridgeUnavailableError(
+                "coat-of-arms framebuffer calibration requires the native designer route"
+            )
+        before_tree = self.inspect_frontend_coat_of_arms_tree_v1()
+        if not (
+            before_tree.get("status") == "available"
+            and before_tree.get("root_available") is True
+            and before_tree.get("scope_root_name") == "coat_of_arms_page"
+        ):
+            raise BridgeUnavailableError(
+                "coat-of-arms framebuffer calibration requires a visible native page root"
+            )
+        try:
+            before_binding = frontend_gui_route_binding_from_capabilities(
+                self.capabilities()
+            )
+            operation = getattr(
+                self._coat_of_arms_framebuffer_calibrations_v3, phase
+            )
+            calibration = operation(
+                before_binding["bridge_pid"], calibration_id
+            )
+            after_binding = frontend_gui_route_binding_from_capabilities(
+                self.capabilities()
+            )
+        except (ValueError, CoatOfArmsFramebufferError) as error:
+            raise BridgeUnavailableError(
+                f"coat-of-arms framebuffer calibration failed closed: {error}"
+            ) from error
+        after_route = self.query_frontend_gui_route_v1()
+        after_tree = self.inspect_frontend_coat_of_arms_tree_v1()
+        if not (
+            before_binding == after_binding
+            and before_route == after_route
+            and after_route.get("route") == "coat_of_arms_designer"
+            and after_tree.get("status") == "available"
+            and after_tree.get("root_available") is True
+            and after_tree.get("scope_root_name") == "coat_of_arms_page"
+            and calibration.get("bridgePid") == before_binding["bridge_pid"]
+            and calibration.get("usesOcr") is False
+            and calibration.get("usesKeyboard") is False
+            and calibration.get("usesMouse") is False
+        ):
+            raise BridgeUnavailableError(
+                "coat-of-arms route or native bridge binding changed during calibration"
+            )
+        return {
+            **calibration,
+            "route": "coat_of_arms_designer",
+            "routeStable": True,
+            "nativePageRootAvailableBefore": True,
+            "nativePageRootAvailableAfter": True,
+            "connectionGeneration": before_binding["connection_generation"],
+        }
+
+    def compare_frontend_coat_of_arms_framebuffer_v3(
+        self,
+        calibration_id: str,
+        reference_png_base64: str,
+        reference_png_sha256: str,
+    ) -> dict[str, object]:
+        """Compare against a reference-independent, native-UV-registered surface."""
+
+        before_route = self.query_frontend_gui_route_v1()
+        if before_route.get("route") != "coat_of_arms_designer":
+            raise BridgeUnavailableError(
+                "coat-of-arms framebuffer comparison requires the native designer route"
+            )
+        before_tree = self.inspect_frontend_coat_of_arms_tree_v1()
+        if not (
+            before_tree.get("status") == "available"
+            and before_tree.get("root_available") is True
+            and before_tree.get("scope_root_name") == "coat_of_arms_page"
+        ):
+            raise BridgeUnavailableError(
+                "coat-of-arms framebuffer comparison requires a visible native page root"
+            )
+        try:
+            before_binding = frontend_gui_route_binding_from_capabilities(
+                self.capabilities()
+            )
+            comparison = self._coat_of_arms_framebuffer_calibrations_v3.compare(
                 before_binding["bridge_pid"],
                 calibration_id,
                 reference_png_base64,

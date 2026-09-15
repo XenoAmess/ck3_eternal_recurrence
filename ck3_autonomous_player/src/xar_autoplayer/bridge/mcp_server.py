@@ -949,6 +949,32 @@ def _ck3_compare_frontend_coat_of_arms_framebuffer_v2(
     )
 
 
+def _ck3_calibrate_frontend_coat_of_arms_framebuffer_v3(
+    service: GameplayBridgeService,
+    calibration_id: str,
+    phase: str,
+) -> dict[str, object]:
+    """Capture a bounded native surface/anchor stage for UV registration."""
+    return service.calibrate_frontend_coat_of_arms_framebuffer_v3(
+        calibration_id,
+        phase,
+    )
+
+
+def _ck3_compare_frontend_coat_of_arms_framebuffer_v3(
+    service: GameplayBridgeService,
+    calibration_id: str,
+    reference_png_base64: str,
+    reference_png_sha256: str,
+) -> dict[str, object]:
+    """Compare a canonical PNG through a reference-independent native UV map."""
+    return service.compare_frontend_coat_of_arms_framebuffer_v3(
+        calibration_id,
+        reference_png_base64,
+        reference_png_sha256,
+    )
+
+
 def _ck3_prepare_frontend_coat_of_arms_framebuffer_v1(
     service: GameplayBridgeService,
 ) -> dict[str, object]:
@@ -1947,6 +1973,32 @@ def create_server(driver: GameplayBridgeDriver):
         )
 
     @server.tool()
+    def ck3_calibrate_frontend_coat_of_arms_framebuffer_v3(
+        calibration_id: str,
+        phase: str,
+    ) -> dict[str, object]:
+        """Capture surface/anchor states for reference-independent UV registration."""
+        return _ck3_calibrate_frontend_coat_of_arms_framebuffer_v3(
+            service,
+            calibration_id,
+            phase,
+        )
+
+    @server.tool()
+    def ck3_compare_frontend_coat_of_arms_framebuffer_v3(
+        calibration_id: str,
+        reference_png_base64: str,
+        reference_png_sha256: str,
+    ) -> dict[str, object]:
+        """Compare a canonical PNG against the native-UV-registered CoA surface."""
+        return _ck3_compare_frontend_coat_of_arms_framebuffer_v3(
+            service,
+            calibration_id,
+            reference_png_base64,
+            reference_png_sha256,
+        )
+
+    @server.tool()
     def ck3_prepare_frontend_coat_of_arms_framebuffer_v1() -> dict[str, object]:
         """Prepare the route-bound CK3 framebuffer without key or mouse input."""
         return _ck3_prepare_frontend_coat_of_arms_framebuffer_v1(service)
@@ -2463,6 +2515,12 @@ def create_server(driver: GameplayBridgeDriver):
     )
     _forbid_unknown_tool_arguments_v1(
         server, "ck3_compare_frontend_coat_of_arms_framebuffer_v2"
+    )
+    _forbid_unknown_tool_arguments_v1(
+        server, "ck3_calibrate_frontend_coat_of_arms_framebuffer_v3"
+    )
+    _forbid_unknown_tool_arguments_v1(
+        server, "ck3_compare_frontend_coat_of_arms_framebuffer_v3"
     )
     _forbid_unknown_tool_arguments_v1(
         server, "ck3_prepare_frontend_coat_of_arms_framebuffer_v1"

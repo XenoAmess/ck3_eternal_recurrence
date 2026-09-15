@@ -105,10 +105,10 @@ class FrontendGuiRouteLiveAcceptanceContractTests(unittest.TestCase):
             '"ck3_prepare_frontend_coat_of_arms_framebuffer_v1"', source
         )
         self.assertIn(
-            '"ck3_calibrate_frontend_coat_of_arms_framebuffer_v2"', source
+            '"ck3_calibrate_frontend_coat_of_arms_framebuffer_v3"', source
         )
         self.assertIn(
-            '"ck3_compare_frontend_coat_of_arms_framebuffer_v2"', source
+            '"ck3_compare_frontend_coat_of_arms_framebuffer_v3"', source
         )
         self.assertIn('"--native-crop-output"', source)
         self.assertIn('"--picture-corpus"', source)

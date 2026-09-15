@@ -35,6 +35,19 @@ COAT_OF_ARMS_FRAMEBUFFER_V1_SEARCH_SIDES: Final = (
 COAT_OF_ARMS_FRAMEBUFFER_V1_SPATIAL_GRID: Final = 8
 COAT_OF_ARMS_FRAMEBUFFER_V2_CALIBRATION_DIFFERENCE_THRESHOLD: Final = 48
 COAT_OF_ARMS_FRAMEBUFFER_V2_MAXIMUM_CALIBRATIONS: Final = 4
+COAT_OF_ARMS_FRAMEBUFFER_V3_ANCHOR_POSITIONS: Final = (
+    (0.30, 0.30),
+    (0.50, 0.30),
+    (0.70, 0.30),
+    (0.30, 0.50),
+    (0.50, 0.50),
+    (0.70, 0.50),
+    (0.30, 0.70),
+    (0.50, 0.70),
+    (0.70, 0.70),
+)
+COAT_OF_ARMS_FRAMEBUFFER_V3_ANCHOR_DIFFERENCE_THRESHOLD: Final = 48
+COAT_OF_ARMS_FRAMEBUFFER_V3_MAXIMUM_REPROJECTION_ERROR: Final = 2.5
 
 
 class CoatOfArmsFramebufferError(RuntimeError):
@@ -53,6 +66,22 @@ class CoatOfArmsFramebufferCalibrationV2:
     component_count: int
     changed_pixels: int
     selected_pixels: int
+
+
+@dataclass(frozen=True)
+class CoatOfArmsFramebufferCalibrationV3:
+    calibration_id: str
+    bridge_pid: int
+    framebuffer_size: tuple[int, int]
+    rect: tuple[int, int, int, int]
+    mask: np.ndarray
+    canonical_to_framebuffer: np.ndarray
+    anchor_positions: tuple[tuple[float, float], ...]
+    observed_anchor_centers: tuple[tuple[float, float], ...]
+    reprojection_errors: tuple[float, ...]
+    surface_receipt: dict[str, object]
+    anchor_base_pixel_sha256: str
+    anchors_complete_pixel_sha256: str
 
 
 def _calibration_id(value: str) -> str:
@@ -465,6 +494,237 @@ def compare_reference_to_calibrated_framebuffer_v2(
     }
 
 
+def derive_anchor_calibration_v3(
+    surface: CoatOfArmsFramebufferCalibrationV2,
+    anchor_base: Image.Image,
+    anchors_complete: Image.Image,
+    *,
+    anchor_positions: tuple[tuple[float, float], ...] = (
+        COAT_OF_ARMS_FRAMEBUFFER_V3_ANCHOR_POSITIONS
+    ),
+) -> CoatOfArmsFramebufferCalibrationV3:
+    """Recover canonical CoA UV coordinates from nine native marker centers."""
+
+    if (
+        anchor_base.size != surface.framebuffer_size
+        or anchors_complete.size != surface.framebuffer_size
+    ):
+        raise CoatOfArmsFramebufferError(
+            "anchor calibration frame size differs from the surface calibration"
+        )
+    if len(anchor_positions) != 9:
+        raise CoatOfArmsFramebufferError("anchor calibration requires nine positions")
+    left, top, right, bottom = surface.rect
+    base_rgb = np.asarray(anchor_base.convert("RGB"), dtype=np.uint8)[
+        top:bottom, left:right
+    ]
+    complete_rgb = np.asarray(anchors_complete.convert("RGB"), dtype=np.uint8)[
+        top:bottom, left:right
+    ]
+    difference = np.max(
+        np.abs(base_rgb.astype(np.int16) - complete_rgb.astype(np.int16)), axis=2
+    )
+    marker_pixels = np.where(
+        (difference >= COAT_OF_ARMS_FRAMEBUFFER_V3_ANCHOR_DIFFERENCE_THRESHOLD)
+        & (surface.mask > 0),
+        255,
+        0,
+    ).astype(np.uint8)
+    marker_pixels = cv2.morphologyEx(
+        marker_pixels,
+        cv2.MORPH_OPEN,
+        np.ones((3, 3), dtype=np.uint8),
+    )
+    count, _labels, statistics, centroids = cv2.connectedComponentsWithStats(
+        marker_pixels, connectivity=8
+    )
+    maximum_area = max(16, round(surface.selected_pixels * 0.04))
+    candidates: list[tuple[int, float, float]] = []
+    for label in range(1, count):
+        width = int(statistics[label, cv2.CC_STAT_WIDTH])
+        height = int(statistics[label, cv2.CC_STAT_HEIGHT])
+        area = int(statistics[label, cv2.CC_STAT_AREA])
+        aspect = width / height if height else 0.0
+        if (
+            width >= 3
+            and height >= 3
+            and 9 <= area <= maximum_area
+            and 0.45 <= aspect <= 2.20
+        ):
+            candidates.append(
+                (area, float(centroids[label, 0]), float(centroids[label, 1]))
+            )
+    if len(candidates) != len(anchor_positions):
+        raise CoatOfArmsFramebufferError(
+            "anchor calibration did not isolate exactly nine native markers: "
+            f"found {len(candidates)}"
+        )
+    ordered_by_y = sorted(candidates, key=lambda value: (value[2], value[1]))
+    ordered: list[tuple[int, float, float]] = []
+    for row_start in range(0, len(ordered_by_y), 3):
+        ordered.extend(
+            sorted(
+                ordered_by_y[row_start : row_start + 3],
+                key=lambda value: value[1],
+            )
+        )
+    observed = np.asarray(
+        [(x + left, y + top) for _area, x, y in ordered], dtype=np.float32
+    )
+    canonical = np.asarray(anchor_positions, dtype=np.float32)
+    affine, inliers = cv2.estimateAffine2D(
+        canonical,
+        observed,
+        method=cv2.RANSAC,
+        ransacReprojThreshold=1.5,
+        maxIters=2000,
+        confidence=0.999,
+        refineIters=10,
+    )
+    if affine is None or inliers is None or int(np.count_nonzero(inliers)) != 9:
+        raise CoatOfArmsFramebufferError(
+            "anchor calibration could not fit all markers to one affine UV map"
+        )
+    projected = cv2.transform(canonical.reshape(1, -1, 2), affine)[0]
+    errors = np.linalg.norm(projected - observed, axis=1)
+    if float(np.max(errors)) > COAT_OF_ARMS_FRAMEBUFFER_V3_MAXIMUM_REPROJECTION_ERROR:
+        raise CoatOfArmsFramebufferError(
+            "anchor calibration reprojection error exceeds the bounded contract"
+        )
+    return CoatOfArmsFramebufferCalibrationV3(
+        calibration_id=surface.calibration_id,
+        bridge_pid=surface.bridge_pid,
+        framebuffer_size=surface.framebuffer_size,
+        rect=surface.rect,
+        mask=surface.mask.copy(),
+        canonical_to_framebuffer=affine.astype(np.float64),
+        anchor_positions=tuple(anchor_positions),
+        observed_anchor_centers=tuple(
+            (float(value[0]), float(value[1])) for value in observed
+        ),
+        reprojection_errors=tuple(float(value) for value in errors),
+        surface_receipt=_calibration_receipt_v2(surface),
+        anchor_base_pixel_sha256=_sha256(
+            np.asarray(anchor_base.convert("RGB"), dtype=np.uint8).tobytes()
+        ),
+        anchors_complete_pixel_sha256=_sha256(
+            np.asarray(anchors_complete.convert("RGB"), dtype=np.uint8).tobytes()
+        ),
+    )
+
+
+def _calibration_receipt_v3(
+    calibration: CoatOfArmsFramebufferCalibrationV3,
+) -> dict[str, object]:
+    return {
+        "schema": "ck3-coat-of-arms-framebuffer-calibration-v3",
+        "schemaVersion": 3,
+        "calibrationId": calibration.calibration_id,
+        "bridgePid": calibration.bridge_pid,
+        "framebufferSize": list(calibration.framebuffer_size),
+        "rect": list(calibration.rect),
+        "surface": calibration.surface_receipt,
+        "anchorPositions": [list(value) for value in calibration.anchor_positions],
+        "observedAnchorCenters": [
+            list(value) for value in calibration.observed_anchor_centers
+        ],
+        "canonicalToFramebufferAffine": calibration.canonical_to_framebuffer.tolist(),
+        "reprojectionErrors": list(calibration.reprojection_errors),
+        "maximumReprojectionError": max(calibration.reprojection_errors),
+        "maximumAllowedReprojectionError": (
+            COAT_OF_ARMS_FRAMEBUFFER_V3_MAXIMUM_REPROJECTION_ERROR
+        ),
+        "anchorDifferenceThreshold": (
+            COAT_OF_ARMS_FRAMEBUFFER_V3_ANCHOR_DIFFERENCE_THRESHOLD
+        ),
+        "anchorBasePixelSha256": calibration.anchor_base_pixel_sha256,
+        "anchorsCompletePixelSha256": calibration.anchors_complete_pixel_sha256,
+        "referenceIndependent": True,
+        "uvRegistered": True,
+        "fixedScreenCoordinatesUsed": False,
+        "usesOcr": False,
+        "usesKeyboard": False,
+        "usesMouse": False,
+    }
+
+
+def compare_reference_to_calibrated_framebuffer_v3(
+    reference: Image.Image,
+    framebuffer: Image.Image,
+    calibration: CoatOfArmsFramebufferCalibrationV3,
+) -> dict[str, object]:
+    """Compare in canonical UV space, excluding the native frame geometry."""
+
+    if framebuffer.size != calibration.framebuffer_size:
+        raise CoatOfArmsFramebufferError("framebuffer size changed after calibration")
+    side = reference.width
+    reference_rgba = np.asarray(reference.convert("RGBA"), dtype=np.uint8)
+    reference_rgb = reference_rgba[:, :, :3]
+    frame_rgb = np.asarray(framebuffer.convert("RGB"), dtype=np.uint8)
+    pixel_to_framebuffer = calibration.canonical_to_framebuffer.copy()
+    denominator = max(1, side - 1)
+    pixel_to_framebuffer[:, :2] /= denominator
+    aligned_rgb = cv2.warpAffine(
+        frame_rgb,
+        pixel_to_framebuffer,
+        (side, side),
+        flags=cv2.INTER_LINEAR | cv2.WARP_INVERSE_MAP,
+        borderMode=cv2.BORDER_CONSTANT,
+        borderValue=(0, 0, 0),
+    )
+    full_mask = np.zeros((framebuffer.height, framebuffer.width), dtype=np.uint8)
+    left, top, right, bottom = calibration.rect
+    full_mask[top:bottom, left:right] = calibration.mask
+    aligned_mask = cv2.warpAffine(
+        full_mask,
+        pixel_to_framebuffer,
+        (side, side),
+        flags=cv2.INTER_NEAREST | cv2.WARP_INVERSE_MAP,
+        borderMode=cv2.BORDER_CONSTANT,
+        borderValue=0,
+    )
+    erosion_radius = max(1, round(side * 0.02))
+    comparison_mask = cv2.erode(
+        aligned_mask,
+        np.ones((erosion_radius * 2 + 1, erosion_radius * 2 + 1), dtype=np.uint8),
+    )
+    comparison_mask = cv2.bitwise_and(comparison_mask, reference_rgba[:, :, 3])
+    metrics = _masked_metrics(reference_rgb, aligned_rgb, comparison_mask)
+    crop = framebuffer.convert("RGB").crop(calibration.rect)
+    crop_output = BytesIO()
+    crop.save(crop_output, format="PNG", optimize=True)
+    crop_png = crop_output.getvalue()
+    visible_surface = np.dstack((aligned_rgb, aligned_mask)).astype(np.uint8)
+    aligned_output = BytesIO()
+    Image.fromarray(visible_surface, mode="RGBA").save(
+        aligned_output, format="PNG", optimize=True
+    )
+    aligned_png = aligned_output.getvalue()
+    return {
+        "locatorContract": "two-solid-state-surface-nine-marker-affine-uv-v3",
+        "calibrationId": calibration.calibration_id,
+        "searchedWholeFramebuffer": False,
+        "referenceUsedForLocalization": False,
+        "referenceUsedForRegistration": False,
+        "fixedScreenCoordinatesUsed": False,
+        "bestMatch": {
+            "rect": list(calibration.rect),
+            "cropPngSha256": _sha256(crop_png),
+            "cropPngBase64": base64.b64encode(crop_png).decode("ascii"),
+            "alignedContentPngSha256": _sha256(aligned_png),
+            "alignedContentPngBase64": base64.b64encode(aligned_png).decode(
+                "ascii"
+            ),
+        },
+        "comparisonMask": {
+            "contract": "native-surface-affine-uv-eroded-v3",
+            "erosionRadiusPixels": erosion_radius,
+            "maskPixels": int(np.count_nonzero(comparison_mask)),
+        },
+        "metrics": metrics,
+    }
+
+
 def _aligned_content(
     reference_rgb: np.ndarray,
     framebuffer: Image.Image,
@@ -822,6 +1082,173 @@ class CoatOfArmsFramebufferCalibrationStoreV2:
                 "pngSha256": reference_png_sha256,
             },
             "calibration": _calibration_receipt_v2(calibration),
+            "comparison": comparison,
+            "readOnly": True,
+            "usesOcr": False,
+            "usesKeyboard": False,
+            "usesMouse": False,
+        }
+
+
+class CoatOfArmsFramebufferCalibrationStoreV3:
+    """Bounded four-frame surface and UV calibration for the developer MCP."""
+
+    def __init__(self) -> None:
+        self._surface_begins: dict[str, tuple[int, Image.Image]] = {}
+        self._surfaces: dict[str, CoatOfArmsFramebufferCalibrationV2] = {}
+        self._anchor_bases: dict[str, tuple[int, Image.Image]] = {}
+        self._calibrations: dict[str, CoatOfArmsFramebufferCalibrationV3] = {}
+
+    def _active_identifiers(self) -> set[str]:
+        return (
+            set(self._surface_begins)
+            | set(self._surfaces)
+            | set(self._anchor_bases)
+            | set(self._calibrations)
+        )
+
+    @staticmethod
+    def _stage_receipt(
+        identifier: str,
+        bridge_pid: int,
+        phase: str,
+        framebuffer: Image.Image,
+        next_phase: str,
+    ) -> dict[str, object]:
+        return {
+            "schema": "ck3-coat-of-arms-framebuffer-calibration-stage-v3",
+            "schemaVersion": 3,
+            "calibrationId": identifier,
+            "phase": phase,
+            "bridgePid": bridge_pid,
+            "framebufferSize": list(framebuffer.size),
+            "pixelSha256": _sha256(framebuffer.tobytes()),
+            "nextPhase": next_phase,
+            "readOnlyCapture": True,
+            "usesOcr": False,
+            "usesKeyboard": False,
+            "usesMouse": False,
+        }
+
+    def begin(self, bridge_pid: int, calibration_id: str) -> dict[str, object]:
+        identifier = _calibration_id(calibration_id)
+        if identifier in self._active_identifiers():
+            raise CoatOfArmsFramebufferError("calibration ID is already in use")
+        if len(self._active_identifiers()) >= (
+            COAT_OF_ARMS_FRAMEBUFFER_V2_MAXIMUM_CALIBRATIONS
+        ):
+            raise CoatOfArmsFramebufferError("calibration store is full")
+        framebuffer = capture_ck3_client_framebuffer_v1(bridge_pid)
+        self._surface_begins[identifier] = (bridge_pid, framebuffer.copy())
+        return self._stage_receipt(
+            identifier, bridge_pid, "begin", framebuffer, "surface_complete"
+        )
+
+    def surface_complete(
+        self, bridge_pid: int, calibration_id: str
+    ) -> dict[str, object]:
+        identifier = _calibration_id(calibration_id)
+        begin = self._surface_begins.pop(identifier, None)
+        if begin is None:
+            raise CoatOfArmsFramebufferError("surface calibration begin is missing")
+        begin_pid, begin_framebuffer = begin
+        if begin_pid != bridge_pid:
+            raise CoatOfArmsFramebufferError("native bridge PID changed during calibration")
+        complete_framebuffer = capture_ck3_client_framebuffer_v1(bridge_pid)
+        surface = derive_two_state_calibration_v2(
+            identifier, bridge_pid, begin_framebuffer, complete_framebuffer
+        )
+        self._surfaces[identifier] = surface
+        return {
+            **_calibration_receipt_v2(surface),
+            "schema": "ck3-coat-of-arms-framebuffer-calibration-stage-v3",
+            "schemaVersion": 3,
+            "phase": "surface_complete",
+            "nextPhase": "anchor_base",
+            "readyForAnchorBase": True,
+        }
+
+    def anchor_base(
+        self, bridge_pid: int, calibration_id: str
+    ) -> dict[str, object]:
+        identifier = _calibration_id(calibration_id)
+        surface = self._surfaces.get(identifier)
+        if surface is None:
+            raise CoatOfArmsFramebufferError("surface calibration is missing")
+        if surface.bridge_pid != bridge_pid:
+            raise CoatOfArmsFramebufferError("native bridge PID changed during calibration")
+        if identifier in self._anchor_bases:
+            raise CoatOfArmsFramebufferError("anchor base is already captured")
+        framebuffer = capture_ck3_client_framebuffer_v1(bridge_pid)
+        self._anchor_bases[identifier] = (bridge_pid, framebuffer.copy())
+        return self._stage_receipt(
+            identifier,
+            bridge_pid,
+            "anchor_base",
+            framebuffer,
+            "anchors_complete",
+        )
+
+    def anchors_complete(
+        self, bridge_pid: int, calibration_id: str
+    ) -> dict[str, object]:
+        identifier = _calibration_id(calibration_id)
+        surface = self._surfaces.pop(identifier, None)
+        anchor_base = self._anchor_bases.pop(identifier, None)
+        if surface is None or anchor_base is None:
+            raise CoatOfArmsFramebufferError("anchor calibration state is incomplete")
+        base_pid, base_framebuffer = anchor_base
+        if surface.bridge_pid != bridge_pid or base_pid != bridge_pid:
+            raise CoatOfArmsFramebufferError("native bridge PID changed during calibration")
+        complete_framebuffer = capture_ck3_client_framebuffer_v1(bridge_pid)
+        calibration = derive_anchor_calibration_v3(
+            surface, base_framebuffer, complete_framebuffer
+        )
+        self._calibrations[identifier] = calibration
+        return {
+            **_calibration_receipt_v3(calibration),
+            "phase": "anchors_complete",
+            "readyForComparison": True,
+        }
+
+    def compare(
+        self,
+        bridge_pid: int,
+        calibration_id: str,
+        reference_png_base64: str,
+        reference_png_sha256: str,
+    ) -> dict[str, object]:
+        identifier = _calibration_id(calibration_id)
+        calibration = self._calibrations.get(identifier)
+        if calibration is None:
+            raise CoatOfArmsFramebufferError("completed calibration is missing")
+        if calibration.bridge_pid != bridge_pid:
+            raise CoatOfArmsFramebufferError("native bridge PID differs from calibration")
+        reference = decode_reference_png_v1(
+            reference_png_base64, reference_png_sha256
+        )
+        framebuffer = capture_ck3_client_framebuffer_v1(bridge_pid)
+        comparison = compare_reference_to_calibrated_framebuffer_v3(
+            reference, framebuffer, calibration
+        )
+        return {
+            "schema": "ck3-coat-of-arms-framebuffer-comparison-v3",
+            "schemaVersion": 3,
+            "capturedAt": datetime.now(timezone.utc).isoformat(),
+            "captureBackend": "windows-imagegrab-authenticated-client-framebuffer",
+            "bridgePid": bridge_pid,
+            "framebuffer": {
+                "width": framebuffer.width,
+                "height": framebuffer.height,
+                "pixelFormat": "RGB8",
+                "pixelSha256": _sha256(framebuffer.tobytes()),
+            },
+            "reference": {
+                "width": reference.width,
+                "height": reference.height,
+                "pngSha256": reference_png_sha256,
+            },
+            "calibration": _calibration_receipt_v3(calibration),
             "comparison": comparison,
             "readOnly": True,
             "usesOcr": False,
