@@ -23,6 +23,7 @@ import {
 } from 'element-plus'
 import 'element-plus/dist/index.css'
 import App from './App.vue'
+import { registerCoatOfArmsServiceWorker } from './serviceWorkerRegistration'
 import './styles.css'
 
 const app = createApp(App)
@@ -49,3 +50,10 @@ for (const component of [
   ElTag,
 ]) app.component(component.name!, component)
 app.mount('#app')
+
+if (import.meta.env.PROD) {
+  void registerCoatOfArmsServiceWorker().catch(() => {
+    // Offline support is an enhancement; a registration failure must not
+    // prevent the editor's fully local online flow from starting.
+  })
+}
