@@ -43,3 +43,14 @@ framebuffer 捕获入口还会在“准备完成到实际捕获”之间焦点�
 完整证据见
 `docs/coat-of-arms-fit-artifacts/user-picture-corpus-v8-native-r11/`。v1/v2 文档和 r5-r10 收据继续作为
 定位历史保留，不原地覆盖。
+
+## Copy 再导入像素闭环
+
+r12 在 r11 之后新增 7/7 的 Copy 回读文本再次 Apply，并把首次 CK3 UV 对齐截图作为哈希绑定
+reference。第二阶段使用更严格的 MAE 0.01、MSE 0.001、edge 0.02、最坏空间块 0.03 门禁。
+7/7 全部通过；最大实测值分别为 0.0000771、0.000000303、0.000345 和 0.000523。
+
+因此 picture-02/05/07 的 fractional rotation 文本取整是 CK3 Copy 的原生规范化事实，但在当前
+家徽表面实际输出中像素等价。原始输入到首次 Copy 的字段序列仍诚实报告为 4/7；r12 证明的是
+规范化文本自身可稳定二次往返且重绘等价，不是把字段变化忽略掉。完整证据在
+`docs/coat-of-arms-fit-artifacts/user-picture-corpus-v8-native-r12/`。

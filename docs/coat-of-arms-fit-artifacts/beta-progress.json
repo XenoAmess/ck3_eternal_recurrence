@@ -1,6 +1,6 @@
 {
   "schema": "ck3-coa-beta-progress-v1",
-  "updatedAt": "2026-09-16T07:30:00+08:00",
+  "updatedAt": "2026-09-16T07:47:00+08:00",
   "overallStatus": "in_progress",
   "workPackages": [
     {
@@ -371,7 +371,7 @@
     {
       "id": "USER-PICTURE-PREVIEW-AND-NATIVE-CONSISTENCY",
       "status": "in_progress",
-      "commit": "e4a3caa7",
+      "commit": "40113074",
       "commands": [
         "pnpm exec playwright test e2e/user-picture-preview-consistency.spec.ts --reporter=line",
         "set COA_CORPUS_BUDGET=1024&& pnpm exec playwright test e2e/user-picture-quality-corpus.spec.ts --reporter=line",
@@ -380,7 +380,7 @@
         "pnpm test",
         "pnpm build"
       ],
-      "resultPath": "docs/coat-of-arms-fit-artifacts/user-picture-corpus-v8-native-r11/",
+      "resultPath": "docs/coat-of-arms-fit-artifacts/user-picture-corpus-v8-native-r12/",
       "keyMetrics": {
         "sourceArchiveBytes": 6240071,
         "sourceArchiveSha256": "0D6C529035333E22E34758D1128A713218D877831206FF60E11990CD362C575F",
@@ -414,16 +414,26 @@
         "nativePixelCasesFailed": 0,
         "nativeStrictSemanticRoundTripPassed": 4,
         "nativeCopyRotationNormalizationCases": 3,
-        "nativeMaximumMeanAbsoluteError": 0.04377448558807373,
-        "nativeMaximumColorMse": 0.010389324277639389,
-        "nativeMaximumEdgeLoss": 0.13285724818706512,
-        "nativeMaximumSpatialMeanAbsoluteError": 0.1405782699584961,
-        "nativeCalibrationMaximumReprojectionErrorPixels": 0.0,
-        "nativeRawReportSha256": "5D197C08A57CA4F2AEF3977FB58D9741038EFC6EBE9C872DFF73AB84876E98B2"
+        "nativeMaximumMeanAbsoluteError": 0.04403514415025711,
+        "nativeMaximumColorMse": 0.010730518028140068,
+        "nativeMaximumEdgeLoss": 0.1404598504304886,
+        "nativeMaximumSpatialMeanAbsoluteError": 0.22522105276584625,
+        "nativeCalibrationMaximumReprojectionErrorPixels": 0.46354249119758606,
+        "nativeRawReportSha256": "FEC97D8F317C608D91F55106F19BA2B05A37A4863DF1133A464CB0FE05F0ABD2",
+        "nativeCopyReapplyCasesPassed": 7,
+        "nativeCopyReapplyMaximumMeanAbsoluteError": 0.00007714406092418358,
+        "nativeCopyReapplyMaximumColorMse": 3.025257626632083e-7,
+        "nativeCopyReapplyMaximumEdgeLoss": 0.0003448894713073969,
+        "nativeCopyReapplyMaximumSpatialMeanAbsoluteError": 0.0005228758091107011,
+        "nativeCopyReapplyThresholds": {
+          "meanAbsoluteError": 0.01,
+          "colorMse": 0.001,
+          "edgeLoss": 0.02,
+          "spatialMeanAbsoluteError": 0.03
+        }
       },
       "blockers": [
-        "picture-02, picture-05 and picture-07 still converge with high residual/edge loss and need higher-resolution local replacement plus broader native-brush search.",
-        "CK3 Copy canonicalizes fractional rotation in picture-02, picture-05 and picture-07; reapplying that returned text still needs an independent pixel-equivalence run."
+        "picture-02, picture-05 and picture-07 still converge with high residual/edge loss and need higher-resolution local replacement plus broader native-brush search."
       ]
     }
   ]
