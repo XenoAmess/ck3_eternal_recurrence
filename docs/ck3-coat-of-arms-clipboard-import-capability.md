@@ -232,7 +232,7 @@ source_bytes
 binding
 ```
 
-当前 MCP 合同先把输入限制为非空 ASCII、无 NUL、最多 128 KiB，并以 base64 通过 named pipe；API 在编码前把 LF、CRLF、旧式 CR
+public v1 单请求合同把输入限制为非空 ASCII、无 NUL、最多 128 KiB，并以 base64 通过 named pipe；API 在编码前把 LF、CRLF、旧式 CR
 统一为 Windows 剪贴板实际回读的 CRLF，SHA-256 与字节数绑定这份规范文本。原生侧写系统剪贴板后立刻 read-back 比较。
 该 ASCII 限制来自当前 CK3 reader 的真实行为：高位 UTF-8 字节会令外层函数提前退出，
 而且可能留下旧的 `CanPaste` 状态；首版若允许任意 Unicode 会制造假阳性。
@@ -250,8 +250,9 @@ binding
 export 的公开结果为闭合 schema，包含 `status`、`designer_observed`、`copy_invoked`、`clipboard_read`、
 `source`、`source_sha256`、`source_bytes`、`reason` 与同一 exact binding。成功状态只有 `exported`；已进入 designer callback
 但未能调用 Copy 或未能读取剪贴板时返回 `unavailable`，不会泄露上一次成功结果；超时未观察到 designer 则整次命令失败。
-当前 MCP export 实现限制输出为非空 ASCII、无 NUL、最多 128 KiB。2026-09-13 已在真实 CK3 进程中取得 `mcp-exported`，并与
-`mcp-applied` 组成同会话 `mcp-roundtrip`；具体载荷与边界见 3.4。
+当前 MCP export 实现限制输出为非空 ASCII、无 NUL、最多 512 KiB，以覆盖 v2 大载荷 Apply 后的 Copy 回读；这仍是开发传输资源
+上限。2026-09-13 已用小载荷在真实 CK3 进程中取得 `mcp-exported`，并与 `mcp-applied` 组成同会话 `mcp-roundtrip`；
+大载荷实机状态见 3.2.1，既有小载荷细节见 3.4。
 
 ### 3.2.1 128 KiB 的证据等级与更正
 
@@ -265,12 +266,18 @@ export 的公开结果为闭合 schema，包含 `status`、`designer_observed`�
 - named-pipe 接收层在 `native_bridge/src/bridge.cpp:10770-10784` 限制 base64 与解码结果，原生请求分派又在
   `native_bridge/src/coat_of_arms_designer_probe_v1.cpp:280-284` 检查长度。两处都发生在调用 CK3 的 clipboard reader 之前。
 
-因此，现有测试只能证明“当前 MCP 合同接受 131,072 bytes、拒绝 131,073 bytes”，不能证明 CK3 自身也在这里拒绝。
-现有最大实机输入是第 3.5 节的 599-byte 浏览器载荷；15 例矩阵和 Copy 往返也都是数百字节。仓库没有把 131,072 与
-131,073 bytes 分别送进原生 reader 的边界实验。当前正确结论是：**大于 128 KiB 的代码不能经现有开发期 MCP probe/apply/export
-验收；CK3 原生粘贴究竟能接受多大仍为 unknown。** Web 平台据此只对超限代码显示警告并保留浏览器复制，不再终止拟合或声称
-“CK3 原生上限”。若以后要测精确边界，必须先版本化扩展 MCP 合同，再以同 build、同会话、相邻载荷通过原生 reader/Copy 回读闭环，
-不能从 Windows 剪贴板容量或桥接常量反推。
+因此，旧测试只能证明“public v1 合同接受 131,072 bytes、拒绝 131,073 bytes”，不能证明 CK3 自身也在这里拒绝。
+这一结论只适用于单请求 v1，不能外推到剪贴板、UI 或引擎。
+
+2026-09-15 新增的版本化 v2 采用 begin/append/commit/abort 四工具分块合同：每块最多 48 KiB，完整源码最多 512 KiB，
+并绑定完整 bytes/SHA-256、chunk index/count、session generation、60 秒 TTL、revision、apply 意图、game version 和 exe SHA。
+重复、越序、坏 hash、非 canonical base64、过期或 binding 漂移都会销毁会话；只有完整组装和复核成功后才发出一次原生调用。
+512 KiB 同样只是本轮开发传输资源上限，**不是 CK3 引擎上限，也不是网页产品图层上限**。
+
+官方 MCP SDK 已离线穿透超过 128 KiB 的 4-chunk 请求且无截断，聚焦 Python/MCP 35/35、native fresh build CTest
+155/155 GREEN。hunter v4 的 380,862-byte 实机 Apply/Copy 尚待执行，所以截至本段记录时只能称
+`mcp-static-ready / native-live-pending`。完整合同和可复现证据见
+[CK3 家徽大源码 MCP v2 传输合同](ck3-coat-of-arms-large-source-upload-v2.md)。
 
 ### 3.3 验证状态
 

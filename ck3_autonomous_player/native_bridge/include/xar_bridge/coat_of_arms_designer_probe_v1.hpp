@@ -32,6 +32,11 @@ inline constexpr std::uintptr_t kClipboardFreeFunctionSlotRvaV1 = 0x4FE1260;
 inline constexpr std::size_t kCoatOfArmsUpdatePastePatchBytesV1 = 19;
 inline constexpr std::size_t kCoatOfArmsProbeMaximumSourceBytesV1 =
     128U * 1024U;
+// The public single-request v1 contract remains 128 KiB. The v2 MCP upload
+// assembles bounded chunks in Python, then makes one internal native call whose
+// complete request still fits the bridge's strict 1 MiB frame ceiling.
+inline constexpr std::size_t kCoatOfArmsNativeTransportMaximumSourceBytesV2 =
+    512U * 1024U;
 inline constexpr std::uint32_t
     kCoatOfArmsDesignerProbeQueuedWaitBudgetMillisecondsV1 = 8'000;
 inline constexpr std::uint32_t

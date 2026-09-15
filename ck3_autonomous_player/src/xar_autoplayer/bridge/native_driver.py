@@ -330,10 +330,12 @@ from .set_played_character_contract import (
     validate_character_id,
 )
 from .coat_of_arms_source_probe_contract import (
+    EncodedCoatOfArmsSourceV1,
     PROBE_COAT_OF_ARMS_SOURCE_V1_CAPABILITY,
     PROBE_COAT_OF_ARMS_SOURCE_V1_STEP,
     coat_of_arms_source_frontend_binding_from_capabilities,
     encode_coat_of_arms_source_v1,
+    encode_coat_of_arms_source_transport_v2,
     normalize_coat_of_arms_source_v1_binding,
     normalize_coat_of_arms_source_v1_result,
     normalize_native_coat_of_arms_source_v1_result,
@@ -3633,7 +3635,40 @@ class NativeHeadlessGameplayDriver:
     ) -> dict[str, object]:
         """Pass exact UTF-8 source to the native engine probe as base64."""
 
-        encoded = encode_coat_of_arms_source_v1(source)
+        return self._probe_coat_of_arms_source(
+            source,
+            expected_revision=expected_revision,
+            apply=apply,
+            encoder=encode_coat_of_arms_source_v1,
+        )
+
+    def probe_coat_of_arms_source_transport_v2(
+        self,
+        source: str,
+        *,
+        expected_revision: int,
+        apply: bool,
+    ) -> dict[str, object]:
+        """Submit one fully assembled bounded v2 source to native code."""
+
+        return self._probe_coat_of_arms_source(
+            source,
+            expected_revision=expected_revision,
+            apply=apply,
+            encoder=encode_coat_of_arms_source_transport_v2,
+        )
+
+    def _probe_coat_of_arms_source(
+        self,
+        source: str,
+        *,
+        expected_revision: int,
+        apply: bool,
+        encoder: Callable[[object], EncodedCoatOfArmsSourceV1],
+    ) -> dict[str, object]:
+        """Shared exact probe; public v1 and assembled v2 differ by bound."""
+
+        encoded = encoder(source)
         apply = validate_coat_of_arms_source_probe_apply(apply)
         _validate_revision(expected_revision, "expected_revision")
         frontend = expected_revision == 0
@@ -17199,9 +17234,51 @@ class ConfiguredHybridFallbackDriver:
     ) -> dict[str, object]:
         """Keep the byte-bounded source probe on the native backend only."""
 
-        encoded = encode_coat_of_arms_source_v1(source)
+        return self._probe_coat_of_arms_source(
+            source,
+            expected_revision=expected_revision,
+            apply=apply,
+            encoder=encode_coat_of_arms_source_v1,
+            native_method_name="probe_coat_of_arms_source_v1",
+        )
+
+    def probe_coat_of_arms_source_transport_v2(
+        self,
+        source: str,
+        *,
+        expected_revision: int,
+        apply: bool,
+    ) -> dict[str, object]:
+        """Keep an assembled v2 source on the native backend only."""
+
+        return self._probe_coat_of_arms_source(
+            source,
+            expected_revision=expected_revision,
+            apply=apply,
+            encoder=encode_coat_of_arms_source_transport_v2,
+            native_method_name="probe_coat_of_arms_source_transport_v2",
+        )
+
+    def _probe_coat_of_arms_source(
+        self,
+        source: str,
+        *,
+        expected_revision: int,
+        apply: bool,
+        encoder: Callable[[object], EncodedCoatOfArmsSourceV1],
+        native_method_name: str,
+    ) -> dict[str, object]:
+        """Shared native-only projection for v1 and assembled v2."""
+
+        encoded = encoder(source)
         apply = validate_coat_of_arms_source_probe_apply(apply)
         _validate_revision(expected_revision, "expected_revision")
+        native_probe = getattr(self.native, native_method_name, None)
+        if not callable(native_probe):
+            raise UnsupportedStepError(
+                "capability_not_available: native coat-of-arms transport "
+                "method is missing"
+            )
         native_bridge_capabilities = set(
             _string_list(
                 self.native.capabilities().get("bridge_capabilities")
@@ -17227,7 +17304,7 @@ class ConfiguredHybridFallbackDriver:
                     "hybrid frontend coat-of-arms probe lacks a native "
                     f"binding: {error}"
                 ) from error
-            result = self.native.probe_coat_of_arms_source_v1(
+            result = native_probe(
                 encoded.source,
                 expected_revision=0,
                 apply=apply,
@@ -17288,7 +17365,7 @@ class ConfiguredHybridFallbackDriver:
             raise BridgeUnavailableError(
                 "hybrid coat-of-arms probe lacks the native public revision"
             )
-        result = self.native.probe_coat_of_arms_source_v1(
+        result = native_probe(
             encoded.source,
             expected_revision=native_revision,
             apply=apply,

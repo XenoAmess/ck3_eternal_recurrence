@@ -16,6 +16,7 @@ PROBE_COAT_OF_ARMS_SOURCE_V1_STEP: Final = (
     "probe-coat-of-arms-source-v1"
 )
 COAT_OF_ARMS_SOURCE_V1_MAX_BYTES: Final = 128 * 1024
+COAT_OF_ARMS_SOURCE_V2_MAX_BYTES: Final = 512 * 1024
 COAT_OF_ARMS_SOURCE_V1_BACKEND_ID: Final = (
     "ck3-1.19.0.6-native-coat-of-arms-designer-probe-v1"
 )
@@ -118,6 +119,30 @@ def encode_coat_of_arms_source_v1(
     source: object,
 ) -> EncodedCoatOfArmsSourceV1:
     """Validate and canonicalize source for the Windows clipboard reader."""
+    return _encode_coat_of_arms_source(
+        source,
+        maximum_bytes=COAT_OF_ARMS_SOURCE_V1_MAX_BYTES,
+        limit_label="128 KiB v1 request",
+    )
+
+
+def encode_coat_of_arms_source_transport_v2(
+    source: object,
+) -> EncodedCoatOfArmsSourceV1:
+    """Encode an assembled v2 upload for the bounded native transport."""
+    return _encode_coat_of_arms_source(
+        source,
+        maximum_bytes=COAT_OF_ARMS_SOURCE_V2_MAX_BYTES,
+        limit_label="512 KiB v2 transport",
+    )
+
+
+def _encode_coat_of_arms_source(
+    source: object,
+    *,
+    maximum_bytes: int,
+    limit_label: str,
+) -> EncodedCoatOfArmsSourceV1:
     if not isinstance(source, str):
         raise ValueError("source must be a UTF-8 string")
     if not source:
@@ -138,8 +163,8 @@ def encode_coat_of_arms_source_v1(
             "source must be ASCII because the vanilla reader rejects "
             "high-bit bytes"
         ) from error
-    if len(encoded) > COAT_OF_ARMS_SOURCE_V1_MAX_BYTES:
-        raise ValueError("source exceeds the 128 KiB limit")
+    if len(encoded) > maximum_bytes:
+        raise ValueError(f"source exceeds the {limit_label} limit")
     return EncodedCoatOfArmsSourceV1(
         source=source,
         source_base64=base64.b64encode(encoded).decode("ascii"),

@@ -7,7 +7,7 @@ import re
 from typing import Final
 
 from .coat_of_arms_source_probe_contract import (
-    COAT_OF_ARMS_SOURCE_V1_MAX_BYTES,
+    COAT_OF_ARMS_SOURCE_V2_MAX_BYTES,
     normalize_coat_of_arms_source_v1_binding,
 )
 
@@ -84,8 +84,8 @@ def _source_identity(source: object) -> tuple[str, str, int]:
         encoded = source.encode("ascii")
     except UnicodeEncodeError as error:
         raise ValueError("exported source must be ASCII") from error
-    if len(encoded) > COAT_OF_ARMS_SOURCE_V1_MAX_BYTES:
-        raise ValueError("exported source exceeds the 128 KiB limit")
+    if len(encoded) > COAT_OF_ARMS_SOURCE_V2_MAX_BYTES:
+        raise ValueError("exported source exceeds the 512 KiB transport limit")
     return source, hashlib.sha256(encoded).hexdigest(), len(encoded)
 
 

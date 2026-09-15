@@ -11092,7 +11092,7 @@ void RunConnectedSession(
           std::string source_base64;
           std::string source;
           constexpr std::size_t kMaximumEncodedSourceBytes =
-              ((xar::ck3_11906::kCoatOfArmsProbeMaximumSourceBytesV1 + 2U) /
+              ((xar::ck3_11906::kCoatOfArmsNativeTransportMaximumSourceBytesV2 + 2U) /
                3U) *
               4U;
           const bool request_valid =
@@ -11105,7 +11105,7 @@ void RunConnectedSession(
                   kMaximumEncodedSourceBytes) &&
               DecodeBase64(
                   source_base64, source,
-                  xar::ck3_11906::kCoatOfArmsProbeMaximumSourceBytesV1) &&
+                  xar::ck3_11906::kCoatOfArmsNativeTransportMaximumSourceBytesV2) &&
               !source.empty() &&
               std::none_of(source.begin(), source.end(), [](char byte) {
                 return static_cast<unsigned char>(byte) >= 0x80U;

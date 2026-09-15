@@ -271,12 +271,18 @@ from .set_played_character_contract import (
     validate_character_id,
 )
 from .coat_of_arms_source_probe_contract import (
+    COAT_OF_ARMS_SOURCE_V1_EXECUTABLE_SHA256,
+    COAT_OF_ARMS_SOURCE_V1_GAME_VERSION,
     PROBE_COAT_OF_ARMS_SOURCE_V1_CAPABILITY,
     coat_of_arms_source_frontend_binding_from_capabilities,
     encode_coat_of_arms_source_v1,
+    encode_coat_of_arms_source_transport_v2,
     normalize_coat_of_arms_source_v1_binding,
     normalize_coat_of_arms_source_v1_result,
     validate_coat_of_arms_source_probe_apply,
+)
+from .coat_of_arms_source_upload_v2 import (
+    CoatOfArmsSourceUploadManagerV2,
 )
 from .coat_of_arms_source_export_contract import (
     EXPORT_COAT_OF_ARMS_SOURCE_V1_CAPABILITY,
@@ -348,6 +354,9 @@ class GameplayBridgeService:
     def __init__(self, driver: GameplayBridgeDriver) -> None:
         self.driver = driver
         self._zhongguo_scoreboard_surface_preparer_v1 = None
+        self._coat_of_arms_source_uploads_v2 = (
+            CoatOfArmsSourceUploadManagerV2()
+        )
 
     def bind_zhongguo_scoreboard_surface_preparer_v1(self, preparer: object) -> None:
         """Bind the runner-owned real product-checkpoint provider once."""
@@ -6899,6 +6908,220 @@ class GameplayBridgeService:
                 "played-character rebind returned a malformed postcondition"
             )
         return copy.deepcopy(result)
+
+    def _coat_of_arms_source_binding_for_revision(
+        self,
+        expected_revision: int,
+        *,
+        capabilities: dict[str, object] | None = None,
+    ) -> dict[str, object]:
+        if (
+            isinstance(expected_revision, bool)
+            or not isinstance(expected_revision, int)
+            or not 0 <= expected_revision <= 2**64 - 1
+        ):
+            raise ValueError("expected_revision must be a non-negative uint64")
+        if expected_revision == 0:
+            try:
+                return coat_of_arms_source_frontend_binding_from_capabilities(
+                    capabilities or self.capabilities()
+                )
+            except ValueError as error:
+                raise BridgeUnavailableError(
+                    "frontend coat-of-arms operation lacks an exact native "
+                    f"binding: {error}"
+                ) from error
+        snapshot = self.snapshot()
+        try:
+            binding = _coat_of_arms_source_probe_binding(snapshot)
+        except ValueError as error:
+            raise BridgeUnavailableError(
+                "coat-of-arms operation lacks a complete binding: "
+                f"{error}"
+            ) from error
+        if binding["revision"] != expected_revision:
+            raise PreSubmissionRevisionMismatchError(
+                "coat-of-arms operation revision mismatch: expected "
+                f"{expected_revision}, current {binding['revision']}"
+            )
+        return binding
+
+    def begin_coat_of_arms_source_upload_v2(
+        self,
+        *,
+        total_bytes: int,
+        source_sha256: str,
+        chunk_count: int,
+        chunk_encoding: str,
+        expected_revision: int,
+        apply: bool,
+        expected_game_version: str,
+        expected_executable_sha256: str,
+    ) -> dict[str, object]:
+        """Reserve one bounded, exact-build large-source upload session."""
+
+        if expected_game_version != COAT_OF_ARMS_SOURCE_V1_GAME_VERSION:
+            raise ValueError("expected_game_version is not the supported build")
+        if (
+            not isinstance(expected_executable_sha256, str)
+            or expected_executable_sha256.upper()
+            != COAT_OF_ARMS_SOURCE_V1_EXECUTABLE_SHA256
+        ):
+            raise ValueError(
+                "expected_executable_sha256 is not the supported build"
+            )
+        capabilities = self.capabilities()
+        bridge_capabilities = capabilities.get("bridge_capabilities")
+        typed_probe = getattr(
+            self.driver, "probe_coat_of_arms_source_transport_v2", None
+        )
+        if not (
+            isinstance(bridge_capabilities, list)
+            and PROBE_COAT_OF_ARMS_SOURCE_V1_CAPABILITY
+            in bridge_capabilities
+            and callable(typed_probe)
+        ):
+            raise UnsupportedStepError(
+                "capability_not_available: selected backend cannot accept "
+                "assembled coat-of-arms source uploads"
+            )
+        binding = self._coat_of_arms_source_binding_for_revision(
+            expected_revision,
+            capabilities=capabilities,
+        )
+        return self._coat_of_arms_source_uploads_v2.begin(
+            total_bytes=total_bytes,
+            source_sha256=source_sha256,
+            chunk_count=chunk_count,
+            chunk_encoding=chunk_encoding,
+            expected_revision=expected_revision,
+            apply=apply,
+            expected_game_version=expected_game_version,
+            expected_executable_sha256=expected_executable_sha256,
+            binding=binding,
+        )
+
+    def append_coat_of_arms_source_chunk_v2(
+        self,
+        *,
+        upload_id: str,
+        generation: int,
+        chunk_index: int,
+        chunk_count: int,
+        chunk_encoding: str,
+        chunk_bytes: int,
+        chunk_sha256: str,
+        chunk_base64: str,
+        source_sha256: str,
+        expected_revision: int,
+        apply: bool,
+        expected_game_version: str,
+        expected_executable_sha256: str,
+    ) -> dict[str, object]:
+        """Append one strictly ordered and independently hashed source chunk."""
+
+        return self._coat_of_arms_source_uploads_v2.append(
+            upload_id=upload_id,
+            generation=generation,
+            chunk_index=chunk_index,
+            chunk_count=chunk_count,
+            chunk_encoding=chunk_encoding,
+            chunk_bytes=chunk_bytes,
+            chunk_sha256=chunk_sha256,
+            chunk_base64=chunk_base64,
+            source_sha256=source_sha256,
+            expected_revision=expected_revision,
+            apply=apply,
+            expected_game_version=expected_game_version,
+            expected_executable_sha256=expected_executable_sha256,
+        )
+
+    def commit_coat_of_arms_source_upload_v2(
+        self,
+        *,
+        upload_id: str,
+        generation: int,
+        chunk_count: int,
+        source_sha256: str,
+        expected_revision: int,
+        apply: bool,
+        expected_game_version: str,
+        expected_executable_sha256: str,
+    ) -> dict[str, object]:
+        """Validate the complete upload, then perform exactly one native call."""
+
+        source, upload, binding = (
+            self._coat_of_arms_source_uploads_v2.finalize(
+                upload_id=upload_id,
+                generation=generation,
+                chunk_count=chunk_count,
+                source_sha256=source_sha256,
+                expected_revision=expected_revision,
+                apply=apply,
+                expected_game_version=expected_game_version,
+                expected_executable_sha256=expected_executable_sha256,
+            )
+        )
+        current_binding = self._coat_of_arms_source_binding_for_revision(
+            expected_revision
+        )
+        if current_binding != binding:
+            raise BridgeUnavailableError(
+                "coat-of-arms upload crossed its revision binding"
+            )
+        typed_probe = getattr(
+            self.driver, "probe_coat_of_arms_source_transport_v2", None
+        )
+        if not callable(typed_probe):
+            raise UnsupportedStepError(
+                "capability_not_available: assembled coat-of-arms source "
+                "transport disappeared"
+            )
+        encoded = encode_coat_of_arms_source_transport_v2(source)
+        result = typed_probe(
+            encoded.source,
+            expected_revision=expected_revision,
+            apply=apply,
+        )
+        try:
+            normalized = normalize_coat_of_arms_source_v1_result(
+                result,
+                expected_source=encoded,
+                expected_binding=binding,
+                expected_apply=apply,
+            )
+        except ValueError as error:
+            raise BridgeUnavailableError(
+                "assembled coat-of-arms source result is malformed: "
+                f"{error}"
+            ) from error
+        if (
+            self._coat_of_arms_source_binding_for_revision(expected_revision)
+            != binding
+        ):
+            raise BridgeUnavailableError(
+                "coat-of-arms upload crossed its revision binding during apply"
+            )
+        return {
+            "schema": "coat-of-arms-source-upload-commit-v2",
+            "schema_version": 2,
+            "status": "committed",
+            "upload": upload,
+            "result": normalized,
+        }
+
+    def abort_coat_of_arms_source_upload_v2(
+        self,
+        *,
+        upload_id: str,
+        generation: int,
+    ) -> dict[str, object]:
+        """Destroy one upload without invoking CK3."""
+
+        return self._coat_of_arms_source_uploads_v2.abort(
+            upload_id=upload_id,
+            generation=generation,
+        )
 
     def probe_coat_of_arms_source_v1(
         self,

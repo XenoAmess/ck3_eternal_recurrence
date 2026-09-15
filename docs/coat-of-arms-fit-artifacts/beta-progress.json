@@ -1,6 +1,6 @@
 {
   "schema": "ck3-coa-beta-progress-v1",
-  "updatedAt": "2026-09-15T18:41:00+08:00",
+  "updatedAt": "2026-09-15T19:20:00+08:00",
   "overallStatus": "in_progress",
   "workPackages": [
     {
@@ -34,12 +34,27 @@
     },
     {
       "id": "WP1",
-      "status": "pending",
+      "status": "in_progress",
       "commit": null,
-      "commands": [],
-      "resultPath": null,
-      "keyMetrics": {},
-      "blockers": []
+      "commands": [
+        "tools/.venv/Scripts/python.exe -m unittest tests.unit.test_coat_of_arms_source_upload_v2 tests.unit.test_coat_of_arms_source_upload_v2_bridge tests.unit.test_coat_of_arms_source_probe_v1_bridge tests.unit.test_coat_of_arms_source_export_v1_bridge -v",
+        "py ck3_autonomous_player/native_bridge/tools/build_fresh.py --build-dir C:/xb/coa-wp1-v2-final --ck3-executable-path C:/SteamLibrary/steamapps/common/CRUSAD~1/binaries/ck3.exe"
+      ],
+      "resultPath": "docs/ck3-coat-of-arms-large-source-upload-v2.md",
+      "keyMetrics": {
+        "legacySingleRequestMaxBytes": 131072,
+        "v2TransportMaxBytes": 524288,
+        "maxChunkBytes": 49152,
+        "maxChunks": 32,
+        "timeoutSeconds": 60,
+        "focusedTestsPassed": 35,
+        "nativeTestsPassed": 155,
+        "nativeDllBytes": 3095552,
+        "nativeDllSha256": "9DDC30CAF4373F4370E597DE42A3FADE5DC70AE597511D6654BBC13D4D14C987"
+      },
+      "blockers": [
+        "hunter v4 native Apply/Copy round-trip has not run yet"
+      ]
     },
     {
       "id": "WP2",

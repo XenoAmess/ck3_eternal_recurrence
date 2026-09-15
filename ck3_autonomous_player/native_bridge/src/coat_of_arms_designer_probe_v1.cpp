@@ -121,7 +121,7 @@ bool ClipboardReadText(const CoatOfArmsDesignerProbeHookStateV1 &hook,
   output.clear();
   if (IsReadableRange(text, 1)) {
     for (std::size_t index = 0;
-         index <= kCoatOfArmsProbeMaximumSourceBytesV1; ++index) {
+         index <= kCoatOfArmsNativeTransportMaximumSourceBytesV2; ++index) {
       if (!IsReadableRange(text + index, 1))
         break;
       const auto byte = static_cast<unsigned char>(text[index]);
@@ -280,7 +280,7 @@ CoatOfArmsDesignerProbeSubmitResultV1 TrySubmitCoatOfArmsDesignerProbeV1(
   const bool valid_probe =
       request.operation == CoatOfArmsDesignerOperationV1::probe_source &&
       !request.source.empty() &&
-      request.source.size() <= kCoatOfArmsProbeMaximumSourceBytesV1 &&
+      request.source.size() <= kCoatOfArmsNativeTransportMaximumSourceBytesV2 &&
       request.source.find('\0') == std::string::npos;
   const bool valid_export =
       request.operation == CoatOfArmsDesignerOperationV1::export_current &&

@@ -1,12 +1,12 @@
 # CK3 家徽编辑器 Beta 工作计划
 
-> 状态：执行中（2026-09-15）；WP0 浏览器门禁已通过，WP1 待启动
+> 状态：执行中（2026-09-15）；WP0 浏览器门禁已通过，WP1 分块传输离线门禁已通过、hunter v4 实机待验
 >
 > 产品目录：`coat_of_arms_editer_of_ck3/`
 >
 > 目标：从 Alpha 的“可用近似器”推进到可验证、可压缩、可在大预算下稳定工作的纯浏览器 Beta。
 >
-> 当前第一工作项：以版本化分块 MCP 完成 hunter v4 大载荷原生 Apply/Copy 闭环；128 KiB 仍只是旧桥合同，不是引擎上限。
+> 当前第一工作项：用已完成静态验收的版本化分块 MCP 完成 hunter v4 大载荷原生 Apply/Copy 闭环；128 KiB 仍只是旧桥合同，不是引擎上限。
 
 机器可读状态见 [`coat-of-arms-fit-artifacts/beta-progress.json`](coat-of-arms-fit-artifacts/beta-progress.json)，WP0 完整证据见
 [`xenoamess-hunter-v4/README.md`](coat-of-arms-fit-artifacts/xenoamess-hunter-v4/README.md)。旧 0.96 夹具在 96/230/512 分别稳定
@@ -79,6 +79,10 @@ Alpha 已能解析、编辑、渲染、序列化 CK3 家徽代码，并能在浏
 退出条件：3.3 全部浏览器门禁通过。
 
 ### WP1：MCP v2 大载荷原生验收（P0，1–3 工程日 + 可用 CK3 槽位）
+
+当前状态：`in_progress`。有界 v2 合同、官方 MCP SDK 超过 128 KiB 传输测试和 native fresh build 155/155 已通过；
+合同与离线证据见 [家徽大源码 MCP v2 传输合同](ck3-coat-of-arms-large-source-upload-v2.md)。尚未运行 hunter v4 实机 Apply/Copy，
+因此 B1 仍未通过。
 
 交付：
 
@@ -178,4 +182,5 @@ Beta 只有同时满足下列条件才收口：
 - [家徽编辑器 Alpha 收口](ck3-coat-of-arms-editor-alpha.md)
 - [图片拟合可行性与架构](ck3-coat-of-arms-image-fitting-feasibility.md)
 - [剪贴板导入能力报告](ck3-coat-of-arms-clipboard-import-capability.md)
+- [大源码 MCP v2 传输合同](ck3-coat-of-arms-large-source-upload-v2.md)
 - [hunter v3 历史拟合证据](coat-of-arms-fit-artifacts/xenoamess-hunter-v3/README.md)

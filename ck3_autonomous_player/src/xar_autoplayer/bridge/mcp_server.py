@@ -755,6 +755,100 @@ def _ck3_set_played_character_v1(
     )
 
 
+def _ck3_begin_coat_of_arms_source_upload_v2(
+    service: GameplayBridgeService,
+    total_bytes: int,
+    source_sha256: str,
+    chunk_count: int,
+    chunk_encoding: str,
+    expected_revision: int,
+    apply: bool,
+    expected_game_version: str,
+    expected_executable_sha256: str,
+) -> dict[str, object]:
+    """Reserve one bounded exact-build source upload session."""
+    return service.begin_coat_of_arms_source_upload_v2(
+        total_bytes=total_bytes,
+        source_sha256=source_sha256,
+        chunk_count=chunk_count,
+        chunk_encoding=chunk_encoding,
+        expected_revision=expected_revision,
+        apply=apply,
+        expected_game_version=expected_game_version,
+        expected_executable_sha256=expected_executable_sha256,
+    )
+
+
+def _ck3_append_coat_of_arms_source_chunk_v2(
+    service: GameplayBridgeService,
+    upload_id: str,
+    generation: int,
+    chunk_index: int,
+    chunk_count: int,
+    chunk_encoding: str,
+    chunk_bytes: int,
+    chunk_sha256: str,
+    chunk_base64: str,
+    source_sha256: str,
+    expected_revision: int,
+    apply: bool,
+    expected_game_version: str,
+    expected_executable_sha256: str,
+) -> dict[str, object]:
+    """Append one strict-order independently hashed upload chunk."""
+    return service.append_coat_of_arms_source_chunk_v2(
+        upload_id=upload_id,
+        generation=generation,
+        chunk_index=chunk_index,
+        chunk_count=chunk_count,
+        chunk_encoding=chunk_encoding,
+        chunk_bytes=chunk_bytes,
+        chunk_sha256=chunk_sha256,
+        chunk_base64=chunk_base64,
+        source_sha256=source_sha256,
+        expected_revision=expected_revision,
+        apply=apply,
+        expected_game_version=expected_game_version,
+        expected_executable_sha256=expected_executable_sha256,
+    )
+
+
+def _ck3_commit_coat_of_arms_source_upload_v2(
+    service: GameplayBridgeService,
+    upload_id: str,
+    generation: int,
+    chunk_count: int,
+    source_sha256: str,
+    expected_revision: int,
+    apply: bool,
+    expected_game_version: str,
+    expected_executable_sha256: str,
+) -> dict[str, object]:
+    """Commit one complete upload through exactly one native apply call."""
+    return service.commit_coat_of_arms_source_upload_v2(
+        upload_id=upload_id,
+        generation=generation,
+        chunk_count=chunk_count,
+        source_sha256=source_sha256,
+        expected_revision=expected_revision,
+        apply=apply,
+        expected_game_version=expected_game_version,
+        expected_executable_sha256=expected_executable_sha256,
+    )
+
+
+def _ck3_abort_coat_of_arms_source_upload_v2(
+    service: GameplayBridgeService,
+    upload_id: str,
+    generation: int,
+) -> dict[str, object]:
+    """Discard one upload without invoking the native bridge."""
+    return service.abort_coat_of_arms_source_upload_v2(
+        upload_id=upload_id,
+        generation=generation,
+    )
+
+
 def _ck3_probe_coat_of_arms_source_v1(
     service: GameplayBridgeService,
     source: str,
@@ -1632,6 +1726,100 @@ def create_server(driver: GameplayBridgeDriver):
         )
 
     @server.tool()
+    def ck3_begin_coat_of_arms_source_upload_v2(
+        total_bytes: int,
+        source_sha256: str,
+        chunk_count: int,
+        chunk_encoding: str,
+        expected_revision: int,
+        apply: bool,
+        expected_game_version: str,
+        expected_executable_sha256: str,
+    ) -> dict[str, object]:
+        """Begin bounded chunked transfer of a large CK3 coat-of-arms source."""
+        return _ck3_begin_coat_of_arms_source_upload_v2(
+            service,
+            total_bytes,
+            source_sha256,
+            chunk_count,
+            chunk_encoding,
+            expected_revision,
+            apply,
+            expected_game_version,
+            expected_executable_sha256,
+        )
+
+    @server.tool()
+    def ck3_append_coat_of_arms_source_chunk_v2(
+        upload_id: str,
+        generation: int,
+        chunk_index: int,
+        chunk_count: int,
+        chunk_encoding: str,
+        chunk_bytes: int,
+        chunk_sha256: str,
+        chunk_base64: str,
+        source_sha256: str,
+        expected_revision: int,
+        apply: bool,
+        expected_game_version: str,
+        expected_executable_sha256: str,
+    ) -> dict[str, object]:
+        """Append a strictly ordered and independently hashed source chunk."""
+        return _ck3_append_coat_of_arms_source_chunk_v2(
+            service,
+            upload_id,
+            generation,
+            chunk_index,
+            chunk_count,
+            chunk_encoding,
+            chunk_bytes,
+            chunk_sha256,
+            chunk_base64,
+            source_sha256,
+            expected_revision,
+            apply,
+            expected_game_version,
+            expected_executable_sha256,
+        )
+
+    @server.tool()
+    def ck3_commit_coat_of_arms_source_upload_v2(
+        upload_id: str,
+        generation: int,
+        chunk_count: int,
+        source_sha256: str,
+        expected_revision: int,
+        apply: bool,
+        expected_game_version: str,
+        expected_executable_sha256: str,
+    ) -> dict[str, object]:
+        """Verify a complete upload and apply it through one native call."""
+        return _ck3_commit_coat_of_arms_source_upload_v2(
+            service,
+            upload_id,
+            generation,
+            chunk_count,
+            source_sha256,
+            expected_revision,
+            apply,
+            expected_game_version,
+            expected_executable_sha256,
+        )
+
+    @server.tool()
+    def ck3_abort_coat_of_arms_source_upload_v2(
+        upload_id: str,
+        generation: int,
+    ) -> dict[str, object]:
+        """Abort an upload without changing the CK3 designer."""
+        return _ck3_abort_coat_of_arms_source_upload_v2(
+            service,
+            upload_id,
+            generation,
+        )
+
+    @server.tool()
     def ck3_probe_coat_of_arms_source_v1(
         source: str,
         expected_revision: int,
@@ -2148,6 +2336,18 @@ def create_server(driver: GameplayBridgeDriver):
     )
     _forbid_unknown_tool_arguments_v1(
         server, "ck3_query_vanilla_event_source_provenance_v1"
+    )
+    _forbid_unknown_tool_arguments_v1(
+        server, "ck3_begin_coat_of_arms_source_upload_v2"
+    )
+    _forbid_unknown_tool_arguments_v1(
+        server, "ck3_append_coat_of_arms_source_chunk_v2"
+    )
+    _forbid_unknown_tool_arguments_v1(
+        server, "ck3_commit_coat_of_arms_source_upload_v2"
+    )
+    _forbid_unknown_tool_arguments_v1(
+        server, "ck3_abort_coat_of_arms_source_upload_v2"
     )
     _forbid_unknown_tool_arguments_v1(
         server, "ck3_probe_coat_of_arms_source_v1"
