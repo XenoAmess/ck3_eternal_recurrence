@@ -17,6 +17,7 @@ import {
 import { coatOfArmsDocumentStats } from './domain/documentStats'
 import {
   loadWebAssetPack,
+  loadWebAssetPackFiles,
   readWebAsset,
   readWebFitIndex,
   type LoadedWebAssetPack,
@@ -125,6 +126,7 @@ const textureBusy = ref(false)
 const clipboardBusy = ref(false)
 const projectFileBusy = ref(false)
 const projectFileInput = ref<HTMLInputElement>()
+const assetPackDirectoryInput = ref<HTMLInputElement>()
 const undoHistory = ref<{ source: string, utf8Bytes: number }[]>([])
 const redoHistory = ref<{ source: string, utf8Bytes: number }[]>([])
 const historyPending = ref(false)
@@ -922,10 +924,11 @@ async function readPackTexture(item: WebAssetPackEntry): Promise<DecodedDds> {
   return decoded
 }
 
-async function loadStandaloneAssetPack(notify = true) {
-  assetPackBusy.value = true
-  try {
-    const loaded = await loadWebAssetPack(defaultAssetPackUrl)
+async function activateStandaloneAssetPack(
+  loaded: LoadedWebAssetPack,
+  notify = true,
+  local = false,
+) {
     const patterns = loaded.pack.assets.filter(
       (item) => item.kind === 'pattern' && item.registration === 'designer_manifest',
     )
@@ -956,13 +959,40 @@ async function loadStandaloneAssetPack(notify = true) {
     shaderSourceCount.value = 5
     const inventory = loaded.pack.inventory
     assetPackStatus.value = `${loaded.pack.pack_id} · ${patterns.length} 注册 pattern · ${emblems.length} 注册 emblem${inventory ? ` · ${inventory.source_dds_total} DDS 全盘清单` : ''} · ${loaded.manifestSha256.slice(0, 12)}`
-    if (notify) ElMessage.success('独立静态素材包已载入；运行时不需要 CK3、MCP 或 Java')
+    if (notify) ElMessage.success(local ? t('localPackLoaded') : t('staticPackLoaded'))
     await loadCurrentTexturePreviews()
+}
+
+async function loadStandaloneAssetPack(notify = true) {
+  assetPackBusy.value = true
+  try {
+    await activateStandaloneAssetPack(await loadWebAssetPack(defaultAssetPackUrl), notify)
   } catch (error) {
     loadedAssetPack.value = undefined
     webFitIndexCache = undefined
     assetPackStatus.value = `素材包不可用：${errorMessage(error)}`
     if (notify) ElMessage.error(assetPackStatus.value)
+  } finally {
+    assetPackBusy.value = false
+  }
+}
+
+function openAssetPackDirectoryPicker() {
+  assetPackDirectoryInput.value?.click()
+}
+
+async function importAssetPackDirectory(event: Event) {
+  const input = event.target as HTMLInputElement
+  const files = [...(input.files ?? [])]
+  input.value = ''
+  if (!files.length) return
+  assetPackBusy.value = true
+  try {
+    const loaded = await loadWebAssetPackFiles(files)
+    await activateStandaloneAssetPack(loaded, true, true)
+  } catch (error) {
+    assetPackStatus.value = `素材包不可用：${errorMessage(error)}`
+    ElMessage.error(assetPackStatus.value)
   } finally {
     assetPackBusy.value = false
   }
@@ -1913,7 +1943,19 @@ watch(() => activeEmblem.value?.instances.length ?? 0, (length) => {
         <div class="fit-controls">
           <strong>{{ t('standalonePack') }}</strong>
           <p>{{ uiText(assetPackStatus) }}</p>
-          <el-button :loading="assetPackBusy" @click="loadStandaloneAssetPack()">{{ t('reloadPack') }}</el-button>
+          <input
+            ref="assetPackDirectoryInput"
+            class="hidden-file-input"
+            type="file"
+            webkitdirectory
+            multiple
+            @change="importAssetPackDirectory"
+          >
+          <div class="fit-actions">
+            <el-button :loading="assetPackBusy" @click="loadStandaloneAssetPack()">{{ t('reloadPack') }}</el-button>
+            <el-button :loading="assetPackBusy" @click="openAssetPackDirectoryPicker">{{ t('importPackDirectory') }}</el-button>
+          </div>
+          <small class="fit-budget-note">{{ t('importPackBoundary') }}</small>
           <div class="fit-budget">
             <span>{{ t('maxImprovingLayers') }}</span>
             <el-input-number v-model="fitLayerBudget" :min="1" :step="1" />

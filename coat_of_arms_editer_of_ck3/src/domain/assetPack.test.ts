@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { parseWebAssetPack } from './assetPack'
+import { loadWebAssetPackFiles, parseWebAssetPack } from './assetPack'
 
 const entry = {
   kind: 'pattern',
@@ -84,5 +84,35 @@ describe('web asset pack contract', () => {
       asset_bytes: 16 * 16 * 4, asset_sha256: 'D'.repeat(64),
     }
     expect(() => parseWebAssetPack(indexed)).toThrow(/不可拟合资源/)
+  })
+
+  it('loads a browser-selected directory without network access', async () => {
+    const localPack = pack()
+    const withPath = (file: File, path: string) => {
+      Object.defineProperty(file, 'webkitRelativePath', { value: path })
+      return file
+    }
+    const files = [
+      withPath(new File([JSON.stringify(localPack)], 'manifest.json'), 'custom/manifest.json'),
+      withPath(new File([new Uint8Array(128)], entry.url), `custom/${entry.url}`),
+      withPath(
+        new File([new Uint8Array(128)], localPack.assets[1].url),
+        `custom/${localPack.assets[1].url}`,
+      ),
+    ]
+
+    const loaded = await loadWebAssetPackFiles(files)
+
+    expect(loaded.pack.pack_id).toBe('ck3-1.19.0.6-alpha')
+    expect(loaded.localFiles?.get(entry.url)?.size).toBe(128)
+    expect(loaded.manifestUrl).toMatch(/^https:\/\/local-pack\.invalid\/[0-9A-F]{64}\/manifest\.json$/)
+  })
+
+  it('rejects an incomplete browser-selected directory', async () => {
+    const manifest = new File([JSON.stringify(pack())], 'manifest.json')
+    await expect(loadWebAssetPackFiles([
+      manifest,
+      new File([new Uint8Array(128)], entry.url),
+    ])).rejects.toThrow(/缺少/)
   })
 })

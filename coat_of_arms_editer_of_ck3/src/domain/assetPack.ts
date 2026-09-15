@@ -66,6 +66,8 @@ export interface LoadedWebAssetPack {
   pack: WebAssetPack
   manifestUrl: string
   manifestSha256: string
+  /** Browser-selected pack files, keyed relative to manifest.json. */
+  localFiles?: ReadonlyMap<string, File>
 }
 
 const SHA256 = /^[0-9A-F]{64}$/
@@ -77,6 +79,7 @@ const SAFE_INDEX_URL = /^assets\/[0-9a-f]{64}\.rgba$/
 const SAFE_SOURCE_PATH = /^(?!\/)(?!.*(?:^|\/)\.\.(?:\/|$))[^\0]{1,512}$/
 const MAX_ASSETS = 4096
 const MAX_ASSET_BYTES = 16 * 1024 * 1024
+const MAX_SELECTED_PACK_FILES = MAX_ASSETS + 8
 
 function record(value: unknown, label: string): Record<string, unknown> {
   if (!value || typeof value !== 'object' || Array.isArray(value)) {
@@ -277,9 +280,14 @@ export async function readWebFitIndex(
   const assetUrl = new URL(index.url, loaded.manifestUrl)
   const manifestDirectory = new URL('.', loaded.manifestUrl)
   if (!assetUrl.href.startsWith(manifestDirectory.href)) throw new Error('fit index URL 逃逸 manifest 目录')
-  const response = await fetcher(assetUrl.href, { cache: 'force-cache' })
-  if (!response.ok) throw new Error(`asset pack fit index HTTP ${response.status}`)
-  const bytes = new Uint8Array(await response.arrayBuffer())
+  const localFile = loaded.localFiles?.get(index.url)
+  const bytes = localFile
+    ? new Uint8Array(await localFile.arrayBuffer())
+    : await (async () => {
+        const response = await fetcher(assetUrl.href, { cache: 'force-cache' })
+        if (!response.ok) throw new Error(`asset pack fit index HTTP ${response.status}`)
+        return new Uint8Array(await response.arrayBuffer())
+      })()
   if (bytes.byteLength !== index.asset_bytes) throw new Error('fit index 字节数不匹配')
   if (await sha256Hex(bytes) !== index.asset_sha256) throw new Error('fit index SHA-256 不匹配')
   const recordBytes = index.resolution * index.resolution * 4
@@ -324,6 +332,64 @@ export async function loadWebAssetPack(
   }
 }
 
+/**
+ * Loads a generated asset-pack directory selected by the user. Files stay local:
+ * only an individual DDS (or the fit index) is read when the editor needs it.
+ */
+export async function loadWebAssetPackFiles(files: readonly File[]): Promise<LoadedWebAssetPack> {
+  if (files.length < 2 || files.length > MAX_SELECTED_PACK_FILES) {
+    throw new Error(`本地素材包文件数量必须在 2..${MAX_SELECTED_PACK_FILES}`)
+  }
+  const pathOf = (file: File) => {
+    const relative = file.webkitRelativePath || file.name
+    return relative.replaceAll('\\', '/').replace(/^\/+/, '')
+  }
+  const manifests = files.filter((file) => pathOf(file).split('/').at(-1) === 'manifest.json')
+  if (manifests.length !== 1) throw new Error('本地素材包必须包含且只包含一个 manifest.json')
+  const manifest = manifests[0]
+  if (manifest.size < 2 || manifest.size > 4 * 1024 * 1024) {
+    throw new Error('asset pack manifest 大小超出 2 B..4 MiB')
+  }
+  const manifestPath = pathOf(manifest)
+  const slash = manifestPath.lastIndexOf('/')
+  const root = slash < 0 ? '' : manifestPath.slice(0, slash + 1)
+  const localFiles = new Map<string, File>()
+  for (const file of files) {
+    const path = pathOf(file)
+    if (!path.startsWith(root)) throw new Error('本地素材包文件不在 manifest 目录内')
+    const relative = path.slice(root.length)
+    if (!relative || relative.startsWith('/') || relative.split('/').includes('..')) {
+      throw new Error('本地素材包包含不安全相对路径')
+    }
+    if (localFiles.has(relative)) throw new Error(`本地素材包包含重复路径：${relative}`)
+    localFiles.set(relative, file)
+  }
+  const manifestBytes = new Uint8Array(await manifest.arrayBuffer())
+  let parsed: unknown
+  try {
+    parsed = JSON.parse(new TextDecoder('utf-8', { fatal: true }).decode(manifestBytes))
+  } catch (error) {
+    throw new Error(`asset pack manifest 不是合法 UTF-8 JSON：${String(error)}`)
+  }
+  const pack = parseWebAssetPack(parsed)
+  const required = [
+    ...pack.assets.map((entry) => ({ path: entry.url, bytes: entry.asset_bytes })),
+    ...(pack.fit_index ? [{ path: pack.fit_index.url, bytes: pack.fit_index.asset_bytes }] : []),
+  ]
+  for (const item of required) {
+    const file = localFiles.get(item.path)
+    if (!file) throw new Error(`本地素材包缺少 ${item.path}`)
+    if (file.size !== item.bytes) throw new Error(`本地素材包 ${item.path} 字节数不匹配`)
+  }
+  const manifestSha256 = await sha256Hex(manifestBytes)
+  return {
+    pack,
+    manifestUrl: `https://local-pack.invalid/${manifestSha256}/manifest.json`,
+    manifestSha256,
+    localFiles,
+  }
+}
+
 export async function readWebAsset(
   loaded: LoadedWebAssetPack,
   entry: WebAssetPackEntry,
@@ -333,9 +399,14 @@ export async function readWebAsset(
   const assetUrl = new URL(entry.url, loaded.manifestUrl)
   const manifestDirectory = new URL('.', loaded.manifestUrl)
   if (!assetUrl.href.startsWith(manifestDirectory.href)) throw new Error('asset URL 逃逸 manifest 目录')
-  const response = await fetcher(assetUrl.href, { cache: 'force-cache' })
-  if (!response.ok) throw new Error(`asset pack DDS HTTP ${response.status}`)
-  const bytes = new Uint8Array(await response.arrayBuffer())
+  const localFile = loaded.localFiles?.get(entry.url)
+  const bytes = localFile
+    ? new Uint8Array(await localFile.arrayBuffer())
+    : await (async () => {
+        const response = await fetcher(assetUrl.href, { cache: 'force-cache' })
+        if (!response.ok) throw new Error(`asset pack DDS HTTP ${response.status}`)
+        return new Uint8Array(await response.arrayBuffer())
+      })()
   if (bytes.byteLength !== entry.asset_bytes) throw new Error(`${entry.name} DDS 字节数不匹配`)
   if (await sha256Hex(bytes) !== entry.asset_sha256) throw new Error(`${entry.name} DDS SHA-256 不匹配`)
   const decoded = decodeDds(bytes)
