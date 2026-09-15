@@ -1,0 +1,29 @@
+{
+  "contract": "g2-domain-construction-cost-gate-collector-v1",
+  "schema_version": 1,
+  "status": "static-ready-read-only-collector-unwired",
+  "exact_build": {
+    "product_version": "1.19.0.6",
+    "executable_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+    "cost_helper_span_rva": ["0x18D17E0", "0x18D1924"],
+    "cost_helper_span_sha256": "7C4229DE54EF99ACA832156CBEA5F1D504DCE37812A86F7309590A499F693885",
+    "cost_gate_capture_rva": "0x18D18F3",
+    "cost_gate_bytes_to_next_instruction": "32C06666660F1F840000000000"
+  },
+  "borrowed_sources": {
+    "selected_candidate_row": "rdi, 0x28 bytes",
+    "projected_cost_raw": "rbp-0x41, eight signed qwords",
+    "resource_balance_raw": "rbx, eight signed qwords",
+    "lifetime": "only during the synchronous 0x18D17E0 helper call"
+  },
+  "owned_result": {
+    "candidate_identity": true,
+    "cost_and_balance": true,
+    "insufficient_resource_rejection": true,
+    "affordable_candidate_actionable_before_final_gate": false,
+    "engine_pointer_persisted": false
+  },
+  "next_wiring": "install exact cost-gate capture and call ReadDomainConstructionCostGateOwnedV1 synchronously from the application-main callback; keep construction public action unadvertised until final-legality and postcondition gates close",
+  "public_mcp_changed": false,
+  "production_live": false
+}

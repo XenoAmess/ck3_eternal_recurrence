@@ -2,6 +2,8 @@
 
 ## 状态与范围
 
+- **COST-GATE1（2026-09-15，static-ready/read-only，未实机）**：在已冻结的 native selected-row 成本 helper `0x18D17E0` 中，`0x18D18F3` 前的 `rdi`、`rbp-0x41`、`rbx` 分别是同步借用的 `0x28` 目标行、八槽成本、八槽资源余额。exact EXE 和 helper span 的 SHA-256，以及对应寄存器来源指令，保存在 `native_bridge/research/domain_construction_cost_gate_collector_v1_abi.json`；独立 C++ collector 在该调用尚未返回时复制身份/成本/余额。`cost == balance` 在原生严格 `<` 判定下成为可观测的 `insufficient_resource` 拒绝；余额足够却尚未观察最终 native validator 时只记录 `final_observation`，不能进入 construction action。normal/optimized 聚焦 fixture 与 exact-build source verifier 已验证静态来源，**没有 paused live capture**。唯一下一入口是由 application-main 的 exact cost-gate callback 同步调用此 collector，并再闭合 final-legality、真实候选和资源/建设后置状态；此阶段仍不注册/广告公共建设动作。
+
 - **[static-confirmed]** 本专题冻结 CK3 `1.19.0.6` 的原版建筑候选门、`ai_value` 评分、头部
   `80%` 入围带、带权随机选择、预算储备背景、施工提交边以及原版对“存钱等目标”的明确说明。
 - **[research / contract-ready]** 文末定义 `domain-construction-candidates-v1` 最小只读输入合同，供和平治理
