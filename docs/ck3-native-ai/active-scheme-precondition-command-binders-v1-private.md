@@ -67,7 +67,7 @@ spans, command vtable entries, context/command sizes and option layouts. The
 verifier takes an explicit game root, so it does not depend on one user's
 installation path:
 
-```powershell
+```console
 py ck3_autonomous_player/native_bridge/research/verify_active_scheme_precondition_command_binders_1_19_0_6_abi.py --game-root <authorized-game-root>
 py -O ck3_autonomous_player/native_bridge/research/verify_active_scheme_precondition_command_binders_1_19_0_6_abi.py --game-root <authorized-game-root>
 py ck3_autonomous_player/native_bridge/research/test_active_scheme_precondition_command_binders_v1_private.py

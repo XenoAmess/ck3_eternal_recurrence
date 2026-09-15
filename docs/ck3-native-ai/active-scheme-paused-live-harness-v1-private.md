@@ -88,7 +88,7 @@ and a GREEN fresh receipt report.
 
 Run the standalone fixtures from the repository root:
 
-```powershell
+```console
 py ck3_autonomous_player/native_bridge/research/test_active_scheme_paused_live_harness_v1_private.py
 py -O ck3_autonomous_player/native_bridge/research/test_active_scheme_paused_live_harness_v1_private.py
 ```

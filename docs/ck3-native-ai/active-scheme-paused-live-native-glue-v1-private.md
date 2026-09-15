@@ -81,7 +81,7 @@ The portable Python driver discovers MSVC from the developer environment or
 installed Visual Studio directories. Normal Python builds `/Od`; `python -O`
 builds `/O2 /DNDEBUG`. Both use `/W4 /WX` and temporary isolated output:
 
-```powershell
+```console
 py ck3_autonomous_player/native_bridge/research/test_active_scheme_paused_live_native_glue_v1_private.py
 py -O ck3_autonomous_player/native_bridge/research/test_active_scheme_paused_live_native_glue_v1_private.py
 ```
