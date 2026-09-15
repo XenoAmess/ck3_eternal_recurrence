@@ -826,3 +826,28 @@ run the already bound private read, enrichment read and projection
 consecutively in its application-main executor, then publish a paused artifact.
 Until that registration and live run occur, COUNCIL21 is not a production
 observation surface.
+
+## COUNCIL23: shared application-main transaction (static-ready)
+
+COUNCIL23 adds the shared native transaction in
+`council_application_main_v1.{hpp,cpp}`. Its fixed mailbox executor runs the
+Council7 private read, including temporary-vector release, immediately binds
+the Council21 enrichment access, reads incumbent and stewardship values, and
+projects the complete public v1 value before returning to the worker. The
+result envelope preserves the existing public serializer under
+`council_composition_candidates`; it also carries `query_sequence`,
+`snapshot_revision` and `backend_id=native-headless`, which are required by the
+Python normalizer.
+
+The fixed mailbox slot `permitted_executor_unquadragintary` admits only this typed
+executor. Linking the executor does not register a worker command. Both the
+query and action remain unadvertised by default, so this package is
+`static-ready`, not production-live. A public paused artifact and the real
+worker registration are still required before the query can be promoted.
+
+The source contract is
+`research/fixtures/council_application_main_v1_source_contract.json`; its
+verifier fixes the call order, mailbox identity, wire fields, Council22 helper
+ABI and the absence of premature bridge registration. Focused offline tests
+also cover private read/release/enrichment/projection in one executor. They add
+no CK3 evidence and do not change the whole-game `1/8` milestone result.

@@ -1,0 +1,33 @@
+{
+  "contract": "council_application_main_v1_source_contract",
+  "game_version": "1.19.0.6",
+  "executable_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+  "envelope_schema": "xar.ck3.council-application-main/v1",
+  "query_step": "query-council-composition-candidates-v1",
+  "action_step": "assign-councillor-v1",
+  "receipt_step": "query-assign-councillor-receipt-v1",
+  "mailbox_slot": "permitted_executor_unquadragintary",
+  "advertised_by_default": false,
+  "application_main_sequence": [
+    "ReadCouncilCompositionStewardCandidatesV1",
+    "BindCouncilCompositionCandidatesEnrichmentAccessV1",
+    "ReadCouncilCompositionCandidatesEnrichmentV1",
+    "ProjectCouncilCompositionCandidatesPublicV1"
+  ],
+  "action_recheck_gates": [
+    "candidate_already_councillor",
+    "candidate_is_guest",
+    "pending_character_interaction",
+    "incumbent_fireability_evaluated",
+    "incumbent_can_be_fired"
+  ],
+  "wire_payload_keys": [
+    "council_composition_candidates",
+    "council_assign_councillor_ack",
+    "council_assign_councillor_receipt",
+    "action_request_id",
+    "query_sequence",
+    "snapshot_revision",
+    "backend_id"
+  ]
+}

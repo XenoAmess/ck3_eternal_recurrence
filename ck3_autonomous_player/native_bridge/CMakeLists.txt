@@ -358,11 +358,14 @@ add_library(xar_ck3_bridge SHARED
   src/domain_construction_application_main_runtime_v1.cpp
   src/council_composition_candidate_observer_v1.cpp
   src/council_composition_candidate_observer_v1_serializer.cpp
+  src/council_composition_steward_candidates_reader_v1.cpp
+  src/council_composition_steward_candidates_binding_v1.cpp
   src/council_composition_candidates_enrichment_v1.cpp
   src/council_composition_candidates_public_v1.cpp
   src/council_composition_candidates_public_v1_serializer.cpp
   src/council_assign_councillor_action_v1.cpp
   src/council_assign_councillor_native_submit_adapter_v1.cpp
+  src/council_application_main_v1.cpp
   src/ck3_11906.cpp
   src/ck3_11906_adapter.cpp
   src/coat_of_arms_designer_probe_v1.cpp
@@ -764,8 +767,6 @@ if(XAR_CK3_ENABLE_G2_COUNCIL_COMPOSITION_STEWARD_CANDIDATES_PRIVATE_PROBE_V1)
     )
   endif()
   target_sources(xar_ck3_bridge PRIVATE
-    src/council_composition_steward_candidates_reader_v1.cpp
-    src/council_composition_steward_candidates_binding_v1.cpp
     src/council_composition_steward_candidates_private_probe_v1.cpp
   )
   target_compile_definitions(xar_ck3_bridge PRIVATE
@@ -2455,6 +2456,56 @@ if(BUILD_TESTING)
   add_test(
     NAME xar_ck3_native_bridge_council_composition_steward_candidates_binding_v1
     COMMAND xar_ck3_council_composition_steward_candidates_binding_v1_test
+  )
+
+  add_executable(xar_ck3_council_application_main_v1_test
+    src/main_thread_query_mailbox_v1.cpp
+    src/council_composition_steward_candidates_reader_v1.cpp
+    src/council_composition_steward_candidates_binding_v1.cpp
+    src/council_composition_candidates_enrichment_v1.cpp
+    src/council_composition_candidates_public_v1.cpp
+    src/council_composition_candidates_public_v1_serializer.cpp
+    src/council_assign_councillor_action_v1.cpp
+    src/council_assign_councillor_native_submit_adapter_v1.cpp
+    src/council_application_main_v1.cpp
+    src/council_application_main_v1_test.cpp
+  )
+  target_include_directories(
+    xar_ck3_council_application_main_v1_test PRIVATE include)
+  target_compile_definitions(
+    xar_ck3_council_application_main_v1_test PRIVATE
+    NOMINMAX WIN32_LEAN_AND_MEAN UNICODE _UNICODE)
+  target_link_libraries(
+    xar_ck3_council_application_main_v1_test PRIVATE bcrypt)
+  if(MSVC)
+    target_compile_options(
+      xar_ck3_council_application_main_v1_test
+      PRIVATE /W4 /WX /permissive- /EHsc /UNDEBUG)
+  endif()
+  add_test(
+    NAME xar_ck3_native_bridge_council_application_main_v1
+    COMMAND xar_ck3_council_application_main_v1_test
+  )
+  add_test(
+    NAME xar_ck3_native_bridge_council_application_main_v1_source_contract
+    COMMAND ${Python3_EXECUTABLE}
+      ${CMAKE_CURRENT_SOURCE_DIR}/research/verify_council_application_main_v1_source.py
+      --manifest
+      ${CMAKE_CURRENT_SOURCE_DIR}/research/fixtures/council_application_main_v1_source_contract.json
+      --header
+      ${CMAKE_CURRENT_SOURCE_DIR}/include/xar_bridge/council_application_main_v1.hpp
+      --implementation
+      ${CMAKE_CURRENT_SOURCE_DIR}/src/council_application_main_v1.cpp
+      --bridge
+      ${CMAKE_CURRENT_SOURCE_DIR}/src/bridge.cpp
+      --mailbox-header
+      ${CMAKE_CURRENT_SOURCE_DIR}/include/xar_bridge/main_thread_query_mailbox_v1.hpp
+      --mailbox-source
+      ${CMAKE_CURRENT_SOURCE_DIR}/src/main_thread_query_mailbox_v1.cpp
+      --action-header
+      ${CMAKE_CURRENT_SOURCE_DIR}/include/xar_bridge/council_assign_councillor_action_v1.hpp
+      --action-source
+      ${CMAKE_CURRENT_SOURCE_DIR}/src/council_assign_councillor_action_v1.cpp
   )
 
   add_executable(xar_ck3_council_composition_candidates_enrichment_v1_test

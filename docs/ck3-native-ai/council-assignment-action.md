@@ -142,3 +142,36 @@ incumbent 观测。
 这次观测 GREEN 后才能增加私有 bridge/MCP 路由并进行正式策略消费验证；在此之前保持
 `kCouncilAssignCouncillorAdvertisedByDefaultV1=false`。失败时保留 RED，并从 command-time
 validator 或后置 incumbent 差异继续定位，不进行无修改重复提交。
+
+## COUNCIL23 shared runtime 与 wire 冻结
+
+COUNCIL23 已把 Council7 private read、Council21 enrichment/public projection 与
+Council22 semantic submit/receipt 接入同一个 application-main executor。submit 会在同一执行事务内
+捕获前置帧、重新运行 exact candidate producer、校验 candidate 唯一命中及 identity round-trip，
+再执行 final-legality 回调；只有全部门通过才调用 `0x1056C00`。ACK 仍只表示
+`native_helper_invoked_verification_pending`，绝不表示 command manager 已接受。receipt 使用独立、
+更晚的 paused mailbox ticket，并仅在 candidate 已成为同一 active task 的 incumbent 时返回
+`applied`。
+
+worker wire 的 step 固定为：
+
+- 查询：`query-council-composition-candidates-v1`；payload 为
+  `council_composition_candidates`。
+- 提交：`assign-councillor-v1`；payload 为 `council_assign_councillor_ack`。
+- 收据：`query-assign-councillor-receipt-v1`；payload 为
+  `council_assign_councillor_receipt`。
+
+顶层 `request_id` 始终是当前 pipe 请求 ID。Council22 semantic request ID 在嵌套 ACK/receipt
+中固定投影为 `action_request_id`；submit 的 semantic ID 等于该次 submit pipe ID。receipt v1
+只允许一个 pending assignment，因此新 receipt 请求不再携带 action ID，嵌套 receipt 返回原 submit
+的 `action_request_id`。`query_sequence` 是每次 mailbox ticket，submit 与 receipt 必须不同，不能拿它
+做动作相关 ID。
+
+当前真实未闭合点没有被隐藏：production 尚未提供同时覆盖
+`candidate_already_councillor`、`candidate_is_guest`、
+`pending_character_interaction` 及替换路径
+`CFireFromCouncilConfirmation::CanConfirm` fireability 的 final-gate binding。因此
+`CouncilApplicationMainActionRuntimeReadyV1` 在 production 配置下仍为 false，bridge 不注册、
+不广告 action。offline fixture 的 GREEN 只证明事务顺序、拒绝路径、helper-only ACK 和独立后帧 receipt
+合同；它不是 live action。下一步应只绑定这些现存 gate、注册 worker 路由并执行一次 bounded paused
+候选，不扩张新能力。

@@ -18,6 +18,7 @@
 #include "xar_bridge/domain_construction_runtime_callsite_observer_v1_serializer.hpp"
 #endif
 #include "xar_bridge/council_composition_candidate_observer_v1.hpp"
+#include "xar_bridge/council_application_main_v1.hpp"
 #if defined(XAR_CK3_ENABLE_G2_COUNCIL_COMPOSITION_STEWARD_CANDIDATES_PRIVATE_PROBE_V1)
 #include "xar_bridge/council_composition_steward_candidates_private_probe_v1.hpp"
 #endif
@@ -6544,6 +6545,8 @@ public:
     environment.permitted_executor_quadragintary =
         &xar::ck3_11906::ExecuteCultureInnovationMailboxQueryV1;
 #endif
+    environment.permitted_executor_unquadragintary =
+        &xar::bridge::ExecuteCouncilApplicationMainV1;
     environment.permitted_frontend_executor =
         &xar::ck3_11906::ExecuteFrontendGuiRouteMailboxV1;
     installed_ = xar::ck3_11906::InstallMainThreadQueryMailboxV1(
