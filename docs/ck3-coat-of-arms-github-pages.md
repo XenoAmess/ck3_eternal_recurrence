@@ -23,7 +23,8 @@
 1. `verify_web_asset_pack.py` 对 manifest、完整 inventory、fit index 和全部 DDS 的路径、角色、字节数、SHA-256 与容器头重新校验；
 2. `pnpm install --frozen-lockfile`，禁止 CI 静默改 lockfile；
 3. 运行全部 Vitest；
-4. 安装 Actions runner 的 Playwright Chromium，运行合成 pack 与 exact-build pack 两条无 CK3 浏览器 E2E；
+4. 安装 Actions runner 的 Playwright Chromium，先让大预算拟合与完整图片拟合各自在独立 Playwright 进程执行，再运行其余无 CK3
+   浏览器 E2E；进程隔离释放重型用例的浏览器/Worker 状态，但不跳过任何 spec；
 5. 在 GitHub Pages 返回的真实仓库 `base_path` 后追加固定的 `/coat_of_arms_editer_of_ck3/`，以该嵌套路径执行 Vite production build；
 6. 对 `dist` 中复制后的 pack 再校验一次，将完整产物装入 Pages artifact 的 `coat_of_arms_editer_of_ck3/` 子目录并复核；
 7. 仅在上述步骤全部 GREEN 后，由 `github-pages` environment 发布。

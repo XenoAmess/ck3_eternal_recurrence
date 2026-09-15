@@ -20,6 +20,8 @@ CK3，不依赖 MCP、Quarkus 或 Java；它只生成原版“从剪贴板粘贴
 - 使用 `ck3-coa-web-asset-pack-v1` 静态素材包：manifest 与每个 DDS 都经 SHA-256、字节数、尺寸和格式绑定，正式运行时不读取
   用户的游戏目录；当前 1.19.0.6 pack 覆盖原版 CoA 目录 1,630/1,630 个 DDS，并将 8 个未注册辅助文件明确排除在自动拟合外；
 - 编辑 pattern、三通道颜色、重复 `colored_emblem`、mask 和重复 instance；
+- 正式网页提供完整的简体中文/英文界面切换，首次访问跟随浏览器语言，用户选择保存在浏览器本地；Element Plus 组件、页面标题、
+  主要状态、能力矩阵和生产界面同时切换，不向服务器发送语言偏好；
 - 对唯一已由原生 MCP 应用并 Copy 保留的 `textured_emblem = { texture = "_default.dds" }` 提供明确标限的解析、编辑、原始纹理预览和导出；不生成未验证字段，也暂不把该层合成进最终家徽；
 - 编辑 position、scale、rotation、depth，并生成稳定 CRLF CK3 文本；
 - 导入后继续对表单模型执行确定性校验：颜色语法、可打印 ASCII 资源名和有限数值不合格时禁止复制；超过 128 KiB 只产生警告并

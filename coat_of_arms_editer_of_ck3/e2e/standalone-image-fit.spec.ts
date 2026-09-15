@@ -66,6 +66,7 @@ test('fits an uploaded image without CK3, MCP, or Java', async ({ page }) => {
     assets: [
       entry('pattern', 'pattern_solid.dds', 1, pattern),
       entry('colored_emblem', 'ce_square.dds', 1, emblem),
+      entry('textured_emblem', '_default.dds', 0, emblem),
       entry('surface_mask', 'coa_mask_texture.dds', 0, surface, false),
     ],
   }

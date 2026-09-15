@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { computed, onMounted, ref, watch } from 'vue'
-import { ElMessage } from 'element-plus'
+import { ElMessage as ElementMessage } from 'element-plus'
+import elementEn from 'element-plus/es/locale/lang/en'
+import elementZhCn from 'element-plus/es/locale/lang/zh-cn'
 import {
   createCk3CompanionClient,
   type CoatOfArmsConfiguredResourceItem,
@@ -64,6 +66,25 @@ import {
   type CoatOfArms,
   type Diagnostic,
 } from './domain/types'
+import { translateRuntimeText, useUiI18n, type UiLocale } from './i18n'
+
+const { locale, setLocale, t } = useUiI18n()
+const elementPlusLocale = computed(() => locale.value === 'en' ? elementEn : elementZhCn)
+
+function chooseLocale(value: string | number | boolean | undefined) {
+  if (value === 'zh-CN' || value === 'en') setLocale(value as UiLocale)
+}
+
+function uiText(value: string): string {
+  return translateRuntimeText(value, locale.value)
+}
+
+const ElMessage = {
+  success: (message: string) => ElementMessage.success(uiText(message)),
+  info: (message: string) => ElementMessage.info(uiText(message)),
+  warning: (message: string) => ElementMessage.warning(uiText(message)),
+  error: (message: string) => ElementMessage.error(uiText(message)),
+}
 
 const sample = `coa = {
     pattern = "pattern_solid.dds"
@@ -145,6 +166,10 @@ const loadedAssetPack = ref<LoadedWebAssetPack>()
 const assetPackBusy = ref(false)
 const assetPackStatus = ref('尚未载入独立素材包')
 const webAssetCache = new Map<string, DecodedDds>()
+let webFitIndexCache: {
+  pack: LoadedWebAssetPack
+  promise: ReturnType<typeof readWebFitIndex>
+} | undefined
 const targetImage = ref<DecodedFitImage>()
 const fitBusy = ref(false)
 const fitStatus = ref('请选择一张图片')
@@ -254,6 +279,9 @@ const comparisonRows = computed(() => comparisonCandidates.value.map((candidate)
   current: candidate.source === output.value,
   dominance: candidateDominance(candidate, comparisonCandidates.value),
 })))
+const localizedSyntaxCapabilityRows = computed(() => syntaxCapabilityRows.map((row) => (
+  locale.value === 'en' ? { ...row, ...row.english } : row
+)))
 const boundedInstanceWindowStart = computed(() => {
   const length = activeEmblem.value?.instances.length ?? 0
   const maximum = Math.max(0, length - INSTANCE_EDITOR_WINDOW_SIZE)
@@ -851,7 +879,20 @@ function parseMask(value: string) {
 }
 
 function errorMessage(error: unknown): string {
-  return error instanceof Error ? error.message : String(error)
+  return uiText(error instanceof Error ? error.message : String(error))
+}
+
+function readCachedWebFitIndex(loaded: LoadedWebAssetPack) {
+  if (webFitIndexCache?.pack === loaded) return webFitIndexCache.promise
+  const cache = {
+    pack: loaded,
+    promise: readWebFitIndex(loaded),
+  }
+  webFitIndexCache = cache
+  cache.promise.catch(() => {
+    if (webFitIndexCache === cache) webFitIndexCache = undefined
+  })
+  return cache.promise
 }
 
 function packEntry(kind: 'pattern' | 'colored_emblem' | 'textured_emblem', name: string): WebAssetPackEntry | undefined {
@@ -899,6 +940,7 @@ async function loadStandaloneAssetPack(notify = true) {
       throw new Error('素材包缺少已注册 pattern、emblem、textured emblem 或 surface mask')
     }
     loadedAssetPack.value = loaded
+    webFitIndexCache = undefined
     webAssetCache.clear()
     patternResources.value = patterns.map(asResourceItem)
     emblemResources.value = emblems.map(asResourceItem)
@@ -910,6 +952,7 @@ async function loadStandaloneAssetPack(notify = true) {
     surfaceMask.value = decodedSurfaceMask
     texturedEmblemTextures.value = { '_default.dds': decodedTexturedDefault }
     texturedDefaultPreviewUrl.value = decodedDdsToDataUrl(decodedTexturedDefault)
+    if (loaded.pack.fit_index) await readCachedWebFitIndex(loaded)
     shaderSourceCount.value = 5
     const inventory = loaded.pack.inventory
     assetPackStatus.value = `${loaded.pack.pack_id} · ${patterns.length} 注册 pattern · ${emblems.length} 注册 emblem${inventory ? ` · ${inventory.source_dds_total} DDS 全盘清单` : ''} · ${loaded.manifestSha256.slice(0, 12)}`
@@ -917,6 +960,7 @@ async function loadStandaloneAssetPack(notify = true) {
     await loadCurrentTexturePreviews()
   } catch (error) {
     loadedAssetPack.value = undefined
+    webFitIndexCache = undefined
     assetPackStatus.value = `素材包不可用：${errorMessage(error)}`
     if (notify) ElMessage.error(assetPackStatus.value)
   } finally {
@@ -1220,7 +1264,7 @@ async function fitTargetImage() {
     let patternCandidates: FitTextureCandidate[]
     let emblemCandidates: FitTextureCandidate[]
     if (loadedAssetPack.value.pack.fit_index) {
-      const indexed = await readWebFitIndex(loadedAssetPack.value)
+      const indexed = await readCachedWebFitIndex(loadedAssetPack.value)
       patternCandidates = indexed
         .filter((item) => item.entry.kind === 'pattern')
         .map((item) => ({ name: item.entry.name, assetSha256: item.entry.asset_sha256, texture: item.texture }))
@@ -1385,6 +1429,7 @@ async function fitTargetImage() {
 }
 
 onMounted(() => {
+  setLocale(locale.value)
   void loadStandaloneAssetPack(false)
   void discoverAutosave()
 })
@@ -1816,122 +1861,127 @@ watch(() => activeEmblem.value?.instances.length ?? 0, (length) => {
 </script>
 
 <template>
+  <el-config-provider :locale="elementPlusLocale">
   <div class="app-shell">
     <header class="topbar">
       <div>
-        <p class="eyebrow">Crusader Kings III code · standalone browser Alpha</p>
-        <h1>家徽工坊</h1>
-        <p class="subtitle">独立生成与编辑可粘贴的静态纹章代码；正式平台不连接或启动游戏。</p>
+        <p class="eyebrow">{{ t('appEyebrow') }}</p>
+        <h1>{{ t('appTitle') }}</h1>
+        <p class="subtitle">{{ t('appSubtitle') }}</p>
       </div>
       <div class="top-actions">
         <el-tag :type="loadedAssetPack ? 'success' : 'warning'" effect="plain">
-          {{ loadedAssetPack ? '独立素材包已绑定' : '等待独立素材包' }}
+          {{ loadedAssetPack ? t('standaloneBound') : t('standaloneWaiting') }}
         </el-tag>
+        <el-select class="locale-select" :model-value="locale" :aria-label="t('language')" data-testid="locale-select" @update:model-value="chooseLocale">
+          <el-option value="zh-CN" :label="t('chinese')" />
+          <el-option value="en" :label="t('english')" />
+        </el-select>
         <input ref="projectFileInput" class="hidden-file-input" type="file" accept="application/json,.json" @change="importProject">
-        <el-button :loading="projectFileBusy" @click="openProjectFilePicker">打开项目</el-button>
-        <el-button :loading="projectFileBusy" @click="exportProject">保存项目</el-button>
-        <el-button :disabled="!historyPending && !undoHistory.length" @click="undoEdit">撤销</el-button>
-        <el-button :disabled="!redoHistory.length" @click="redoEdit">重做</el-button>
-        <el-tag effect="plain">{{ autosaveStatus }}</el-tag>
-        <el-button @click="reset">重置</el-button>
-        <el-button type="primary" :disabled="errorCount > 0" @click="copyOutput">复制 CK3 代码</el-button>
+        <el-button :loading="projectFileBusy" @click="openProjectFilePicker">{{ t('openProject') }}</el-button>
+        <el-button :loading="projectFileBusy" @click="exportProject">{{ t('saveProject') }}</el-button>
+        <el-button :disabled="!historyPending && !undoHistory.length" @click="undoEdit">{{ t('undo') }}</el-button>
+        <el-button :disabled="!redoHistory.length" @click="redoEdit">{{ t('redo') }}</el-button>
+        <el-tag effect="plain">{{ uiText(autosaveStatus) }}</el-tag>
+        <el-button @click="reset">{{ t('reset') }}</el-button>
+        <el-button type="primary" :disabled="errorCount > 0" @click="copyOutput">{{ t('copyCk3Code') }}</el-button>
       </div>
     </header>
 
     <section v-if="recoverableAutosave" class="autosave-recovery panel">
       <div>
-        <strong>发现可恢复项目</strong>
-        <span>{{ recoverableAutosave.savedAt }} · {{ recoverableAutosave.ck3Source.stats.drawnInstances.toLocaleString() }} 个实例 · SHA-256 已验证</span>
+        <strong>{{ t('recoverableProject') }}</strong>
+        <span>{{ t('recoverableSummary', { savedAt: recoverableAutosave.savedAt, instances: recoverableAutosave.ck3Source.stats.drawnInstances.toLocaleString() }) }}</span>
       </div>
       <el-space>
-        <el-button type="primary" @click="restoreAutosave">恢复</el-button>
-        <el-button @click="discardAutosave">丢弃</el-button>
+        <el-button type="primary" @click="restoreAutosave">{{ t('restore') }}</el-button>
+        <el-button @click="discardAutosave">{{ t('discard') }}</el-button>
       </el-space>
     </section>
 
     <section class="image-fit-panel panel">
       <div class="panel-title">
-        <div><span class="step">00</span><h2>图片拟合原生元素</h2></div>
-        <el-tag effect="plain" type="success">纯浏览器 · 图片不上传</el-tag>
+        <div><span class="step">00</span><h2>{{ t('imageFitTitle') }}</h2></div>
+        <el-tag effect="plain" type="success">{{ t('localOnly') }}</el-tag>
       </div>
       <div class="image-fit-grid">
         <label class="image-drop">
           <input type="file" accept="image/png,image/jpeg,image/webp,image/svg+xml" @change="selectTargetImage">
-          <img v-if="targetImage" :src="targetImage.previewUrl" alt="待拟合目标图片">
-          <span v-else>选择 PNG / JPEG / WebP / SVG<br><small>位图 16 MiB；安全 SVG 2 MiB；最大 4096×4096</small></span>
+          <img v-if="targetImage" :src="targetImage.previewUrl" :alt="t('imageAlt')">
+          <span v-else>{{ t('chooseImage') }}<br><small>{{ t('imageLimits') }}</small></span>
         </label>
         <div class="fit-controls">
-          <strong>独立素材包</strong>
-          <p>{{ assetPackStatus }}</p>
-          <el-button :loading="assetPackBusy" @click="loadStandaloneAssetPack()">重新载入静态素材包</el-button>
+          <strong>{{ t('standalonePack') }}</strong>
+          <p>{{ uiText(assetPackStatus) }}</p>
+          <el-button :loading="assetPackBusy" @click="loadStandaloneAssetPack()">{{ t('reloadPack') }}</el-button>
           <div class="fit-budget">
-            <span>最大改善图层数</span>
+            <span>{{ t('maxImprovingLayers') }}</span>
             <el-input-number v-model="fitLayerBudget" :min="1" :step="1" />
           </div>
-          <small class="fit-budget-note">例如 1024 表示最多搜索并保留 1024 层，不保证输出恰好 1024 层。每一层必须严格降低实际渲染损失；无改善或用户取消时提前停止。输入支持 10000 及更大安全整数。</small>
-          <small class="fit-budget-note">当前原生块细化平面为 96×96；它按分辨率和预算扩展四叉树深度，预算不会被改写，但像素粒度、无改善或精确匹配可能令实际实例提前收敛。</small>
+          <small class="fit-budget-note">{{ t('budgetHelp') }}</small>
+          <small class="fit-budget-note">{{ t('budgetPlaneHelp') }}</small>
           <div class="fit-actions">
-            <el-button type="primary" :loading="fitBusy" :disabled="fitPruneBusy || !targetImage || !loadedAssetPack" @click="fitTargetImage">
-              开始本地拟合
+            <el-button type="primary" :loading="fitBusy" :disabled="assetPackBusy || fitPruneBusy || !targetImage || !loadedAssetPack" @click="fitTargetImage">
+              {{ t('startLocalFit') }}
             </el-button>
-            <el-button :disabled="!fitBusy" @click="cancelImageFit()">取消</el-button>
-            <el-button :disabled="fitBusy || fitPruneBusy || !fitResult" @click="compressFitDocument">安全压缩相邻同样式块</el-button>
-            <el-button :loading="fitPruneBusy" :disabled="fitBusy || fitPruneBusy || !fitResult" @click="pruneFitDocument">精确固定点剪枝</el-button>
-            <el-button v-if="fitPruneBusy" @click="cancelInstancePrune()">取消剪枝</el-button>
+            <el-button :disabled="!fitBusy" @click="cancelImageFit()">{{ t('cancel') }}</el-button>
+            <el-button :disabled="fitBusy || fitPruneBusy || !fitResult" @click="compressFitDocument">{{ t('compressBlocks') }}</el-button>
+            <el-button :loading="fitPruneBusy" :disabled="fitBusy || fitPruneBusy || !fitResult" @click="pruneFitDocument">{{ t('exactPrune') }}</el-button>
+            <el-button v-if="fitPruneBusy" @click="cancelInstancePrune()">{{ t('cancelPrune') }}</el-button>
           </div>
         </div>
         <div class="fit-report" :data-fit-evidence="fitEvidenceJson">
-          <strong>运行状态</strong>
-          <p>{{ fitStatus }}</p>
+          <strong>{{ t('runStatus') }}</strong>
+          <p>{{ uiText(fitStatus) }}</p>
           <div class="fit-progress">
             <el-progress
               :percentage="fitProgressPercent"
               :status="fitResult && !fitBusy ? 'success' : undefined"
               :stroke-width="10"
             />
-            <small>{{ fitProgressLabel }}（进度表示当前搜索阶段）</small>
+            <small>{{ uiText(fitProgressLabel) }}{{ t('progressStageNote') }}</small>
           </div>
           <template v-if="fitResult">
             <div v-if="fitPruneProgress" class="fit-progress">
               <el-progress :percentage="fitPruneProgress.percent" :status="activeFitPrune ? 'success' : undefined" :stroke-width="8" />
-              <small>剪枝第 {{ fitPruneProgress.pass }} 轮 · {{ fitPruneProgress.completedInPass }}/{{ fitPruneProgress.totalInPass }} · 累计 {{ fitPruneProgress.evaluatedCandidates }} 候选</small>
+              <small>{{ t('pruneProgress', { pass: fitPruneProgress.pass, completed: fitPruneProgress.completedInPass, total: fitPruneProgress.totalInPass, candidates: fitPruneProgress.evaluatedCandidates }) }}</small>
             </div>
             <div v-if="fitPreviewUrl" class="fit-result-image">
-              <span>拟合平面（不叠加盾面材质）</span>
-              <img :src="fitPreviewUrl" alt="图片拟合结果预览">
+              <span>{{ t('fitPlane') }}</span>
+              <img :src="fitPreviewUrl" :alt="t('fitResultAlt')">
             </div>
             <dl>
-              <div><dt>总损失</dt><dd>{{ fitResult.metrics.totalLoss.toFixed(5) }}</dd></div>
-              <div><dt>颜色</dt><dd>{{ fitResult.metrics.colorLoss.toFixed(5) }}</dd></div>
-              <div><dt>边缘</dt><dd>{{ fitResult.metrics.edgeLoss.toFixed(5) }}</dd></div>
-              <div><dt>候选数</dt><dd>{{ fitResult.provenance.evaluatedCandidates }}</dd></div>
-              <div><dt>用户预算</dt><dd>{{ fitResult.provenance.layerBudget }} 个绘制实例</dd></div>
-              <div><dt>实际绘制实例</dt><dd>{{ fitResult.provenance.drawnInstances }}</dd></div>
-              <div><dt>逻辑图层</dt><dd>{{ fitResult.provenance.logicalLayers }}</dd></div>
-              <div><dt>colored_emblem 块</dt><dd>{{ fitResult.provenance.coloredEmblemBlocks }}</dd></div>
-              <div><dt>instance 数</dt><dd>{{ fitResult.provenance.drawnInstances }}</dd></div>
-              <div><dt>代码体积</dt><dd>{{ outputBytes }} UTF-8 bytes / {{ outputLines }} 行</dd></div>
+              <div><dt>{{ t('totalLoss') }}</dt><dd>{{ fitResult.metrics.totalLoss.toFixed(5) }}</dd></div>
+              <div><dt>{{ t('colorLoss') }}</dt><dd>{{ fitResult.metrics.colorLoss.toFixed(5) }}</dd></div>
+              <div><dt>{{ t('edgeLoss') }}</dt><dd>{{ fitResult.metrics.edgeLoss.toFixed(5) }}</dd></div>
+              <div><dt>{{ t('candidates') }}</dt><dd>{{ fitResult.provenance.evaluatedCandidates }}</dd></div>
+              <div><dt>{{ t('userBudget') }}</dt><dd>{{ t('drawingInstances', { count: fitResult.provenance.layerBudget }) }}</dd></div>
+              <div><dt>{{ t('actualInstances') }}</dt><dd>{{ fitResult.provenance.drawnInstances }}</dd></div>
+              <div><dt>{{ t('logicalLayers') }}</dt><dd>{{ fitResult.provenance.logicalLayers }}</dd></div>
+              <div><dt>{{ t('emblemBlocks') }}</dt><dd>{{ fitResult.provenance.coloredEmblemBlocks }}</dd></div>
+              <div><dt>{{ t('instanceCount') }}</dt><dd>{{ fitResult.provenance.drawnInstances }}</dd></div>
+              <div><dt>{{ t('codeSize') }}</dt><dd>{{ outputBytes }} UTF-8 bytes / {{ outputLines }} {{ t('lines') }}</dd></div>
               <template v-if="activeFitCompression">
-                <div><dt>安全压缩块</dt><dd>{{ activeFitCompression.receipt.coloredEmblemBlocksBefore }} → {{ activeFitCompression.receipt.coloredEmblemBlocksAfter }}</dd></div>
-                <div><dt>安全压缩实例</dt><dd>{{ activeFitCompression.receipt.drawnInstancesBefore }} → {{ activeFitCompression.receipt.drawnInstancesAfter }}</dd></div>
-                <div><dt>安全压缩体积</dt><dd>{{ activeFitCompression.receipt.utf8BytesBefore }} → {{ activeFitCompression.receipt.utf8BytesAfter }} bytes</dd></div>
-                <div><dt>压缩像素门禁</dt><dd>{{ activeFitCompression.pixelExactResolutions.join(' / ') }} 全部逐字节一致</dd></div>
+                <div><dt>{{ t('safeCompressedBlocks') }}</dt><dd>{{ activeFitCompression.receipt.coloredEmblemBlocksBefore }} → {{ activeFitCompression.receipt.coloredEmblemBlocksAfter }}</dd></div>
+                <div><dt>{{ t('safeCompressedInstances') }}</dt><dd>{{ activeFitCompression.receipt.drawnInstancesBefore }} → {{ activeFitCompression.receipt.drawnInstancesAfter }}</dd></div>
+                <div><dt>{{ t('safeCompressedSize') }}</dt><dd>{{ activeFitCompression.receipt.utf8BytesBefore }} → {{ activeFitCompression.receipt.utf8BytesAfter }} bytes</dd></div>
+                <div><dt>{{ t('compressionPixelGate') }}</dt><dd>{{ t('allByteExact', { resolutions: activeFitCompression.pixelExactResolutions.join(' / ') }) }}</dd></div>
               </template>
               <template v-if="activeFitPrune">
-                <div><dt>固定点剪枝</dt><dd>{{ activeFitPrune.drawnInstancesBefore }} → {{ activeFitPrune.drawnInstancesAfter }} 实例</dd></div>
-                <div><dt>必要性证据</dt><dd>{{ activeFitPrune.finalNecessityEvidence.length }} / {{ activeFitPrune.drawnInstancesAfter }} 完整</dd></div>
-                <div><dt>剪枝合同</dt><dd>96 / 230 / 512 零像素差；损失容差 1e-12</dd></div>
+                <div><dt>{{ t('fixedPointPrune') }}</dt><dd>{{ activeFitPrune.drawnInstancesBefore }} → {{ activeFitPrune.drawnInstancesAfter }} {{ t('actualInstances') }}</dd></div>
+                <div><dt>{{ t('necessityEvidence') }}</dt><dd>{{ activeFitPrune.finalNecessityEvidence.length }} / {{ activeFitPrune.drawnInstancesAfter }} {{ t('complete') }}</dd></div>
+                <div><dt>{{ t('pruneContract') }}</dt><dd>{{ t('pruneContractValue') }}</dd></div>
               </template>
-              <div><dt>高分辨率接缝门禁</dt><dd>{{ fitResult.provenance.nativeTileSeamValidation.status === 'passed' ? '96 / 230 / 512 全部通过' : '不适用' }}</dd></div>
-              <div><dt>接缝指标</dt><dd>{{ fitResult.provenance.nativeTileSeamValidation.metrics.map((metric) => `${metric.resolution}px leak=${metric.backgroundLeakPixels} peak=${Math.max(metric.peakRowLeakPixels, metric.peakColumnLeakPixels)}`).join('；') || '不适用' }}</dd></div>
-              <div><dt>块搜索空间</dt><dd>{{ fitResult.provenance.nativeTileSearch.searchWidth }}×{{ fitResult.provenance.nativeTileSearch.searchHeight }} · depth {{ fitResult.provenance.nativeTileSearch.maximumDepth }} · 像素叶容量 {{ fitResult.provenance.nativeTileSearch.pixelLeafCapacity }} · 预算原值 {{ fitResult.provenance.nativeTileSearch.userBudgetAppliedWithoutClamp }}</dd></div>
-              <div><dt>算法合同</dt><dd>{{ fitResult.provenance.algorithm }}</dd></div>
-              <div><dt>相对改善</dt><dd>{{ (fitResult.metrics.relativeImprovement * 100).toFixed(2) }}%</dd></div>
-              <div><dt>GPU 交叉分</dt><dd>{{ fitWebGlScore ? fitWebGlScore.meanSquaredRgbError.toFixed(5) : '不可用' }}</dd></div>
-              <div><dt>输入/金字塔</dt><dd>{{ fitResult.provenance.sourceWidth }}×{{ fitResult.provenance.sourceHeight }} → {{ fitResult.provenance.pyramidResolutions.join(' / ') }}px</dd></div>
-              <div><dt>候选路径</dt><dd>{{ fitResult.provenance.candidateLosses.map((item) => `${item.mode === 'native-tile-paint' ? '原生块' : item.mode === 'native-edge-refined' ? '边缘细化' : item.mode === 'hybrid-native-paint' ? '混合' : '语义'} ${item.layers}层=${item.totalLoss.toFixed(4)} [${item.textureNames.join(', ') || '无纹章'}]`).join('；') }}</dd></div>
+              <div><dt>{{ t('seamGate') }}</dt><dd>{{ fitResult.provenance.nativeTileSeamValidation.status === 'passed' ? t('allPassed') : t('notApplicable') }}</dd></div>
+              <div><dt>{{ t('seamMetrics') }}</dt><dd>{{ fitResult.provenance.nativeTileSeamValidation.metrics.map((metric) => `${metric.resolution}px leak=${metric.backgroundLeakPixels} peak=${Math.max(metric.peakRowLeakPixels, metric.peakColumnLeakPixels)}`).join(' · ') || t('notApplicable') }}</dd></div>
+              <div><dt>{{ t('tileSearchSpace') }}</dt><dd>{{ fitResult.provenance.nativeTileSearch.searchWidth }}×{{ fitResult.provenance.nativeTileSearch.searchHeight }} · depth {{ fitResult.provenance.nativeTileSearch.maximumDepth }} · {{ t('pixelLeafCapacity') }} {{ fitResult.provenance.nativeTileSearch.pixelLeafCapacity }} · {{ t('originalBudget') }} {{ fitResult.provenance.nativeTileSearch.userBudgetAppliedWithoutClamp }}</dd></div>
+              <div><dt>{{ t('algorithmContract') }}</dt><dd>{{ fitResult.provenance.algorithm }}</dd></div>
+              <div><dt>{{ t('relativeImprovement') }}</dt><dd>{{ (fitResult.metrics.relativeImprovement * 100).toFixed(2) }}%</dd></div>
+              <div><dt>{{ t('gpuCrossScore') }}</dt><dd>{{ fitWebGlScore ? fitWebGlScore.meanSquaredRgbError.toFixed(5) : t('unavailable') }}</dd></div>
+              <div><dt>{{ t('inputPyramid') }}</dt><dd>{{ fitResult.provenance.sourceWidth }}×{{ fitResult.provenance.sourceHeight }} → {{ fitResult.provenance.pyramidResolutions.join(' / ') }}px</dd></div>
+              <div><dt>{{ t('candidatePaths') }}</dt><dd>{{ fitResult.provenance.candidateLosses.map((item) => `${item.mode === 'native-tile-paint' ? t('nativeBlock') : item.mode === 'native-edge-refined' ? t('edgeRefined') : item.mode === 'hybrid-native-paint' ? t('hybrid') : t('semantic')} ${item.layers} ${t('layersShort')}=${item.totalLoss.toFixed(4)} [${item.textureNames.join(', ') || t('noEmblem')}]`).join(' · ') }}</dd></div>
             </dl>
-            <small>分数只用于同一算法和目标之间比较，不代表 CK3 像素一致率。结果已进入下方结构化编辑器。</small>
+            <small>{{ t('scoreBoundary') }}</small>
           </template>
         </div>
       </div>
@@ -1940,8 +1990,8 @@ watch(() => activeEmblem.value?.instances.length ?? 0, (length) => {
         type="warning"
         :closable="false"
         show-icon
-        title="128 KiB 只是旧版单请求 MCP v1 合同，不是 CK3 上限"
-        description="380,862-byte、1000-instance hunter 已通过分块 MCP v2 的真实 CK3 Apply → Copy。网页复制不设此上限；当前页面内置的旧开发 companion 按钮仍使用 v1，正式 Pages 不包含该开发入口。512 KiB 也只是当前 v2 传输资源上限，不代表引擎上限。"
+        :title="t('mcpLimitTitle')"
+        :description="t('mcpLimitDescription')"
       />
     </section>
 
@@ -1950,15 +2000,15 @@ watch(() => activeEmblem.value?.instances.length ?? 0, (length) => {
         <div class="panel-title">
           <div>
             <span class="step">01</span>
-            <h2>导入代码</h2>
+            <h2>{{ t('importCode') }}</h2>
           </div>
           <div class="source-actions">
-            <el-button :loading="clipboardBusy" @click="pasteSource">从剪贴板粘贴</el-button>
-            <el-button text link type="primary" @click="loadSample">载入实机样例</el-button>
+            <el-button :loading="clipboardBusy" @click="pasteSource">{{ t('pasteClipboard') }}</el-button>
+            <el-button text link type="primary" @click="loadSample">{{ t('loadNativeSample') }}</el-button>
           </div>
         </div>
         <el-input v-model="source" type="textarea" :rows="21" resize="none" spellcheck="false" class="code-input" />
-        <el-button class="import-button" type="primary" @click="importSource">解析并载入</el-button>
+        <el-button class="import-button" type="primary" @click="importSource">{{ t('parseAndLoad') }}</el-button>
 
         <div v-if="developmentCompanionEnabled" class="mcp-panel">
           <div class="section-heading">
@@ -1982,35 +2032,35 @@ watch(() => activeEmblem.value?.instances.length ?? 0, (length) => {
         <div v-if="visibleDiagnostics.length" class="diagnostics">
           <div v-for="(item, index) in visibleDiagnostics" :key="index" :class="['diagnostic', item.severity]">
             <span>{{ item.severity.toUpperCase() }}</span>
-            <p>{{ item.message }}<small v-if="item.line">（{{ item.line }}:{{ item.column }}）</small></p>
+            <p>{{ uiText(item.message) }}<small v-if="item.line"> ({{ item.line }}:{{ item.column }})</small></p>
           </div>
         </div>
-        <el-empty v-else description="没有解析诊断" :image-size="46" />
+        <el-empty v-else :description="t('noDiagnostics')" :image-size="46" />
 
         <el-collapse class="syntax-capabilities">
-          <el-collapse-item title="CK3 1.19.0.6 剪贴板语法能力矩阵" name="syntax-capabilities">
+          <el-collapse-item :title="t('syntaxMatrix')" name="syntax-capabilities">
             <p class="capability-note">
-              这里只列 MCP 实机矩阵已有证据的语法；“detected”仅表示 reader 产生预览，不等于脚本执行或资源存在。
+              {{ t('syntaxMatrixBoundary') }}
             </p>
-            <el-table :data="syntaxCapabilityRows" size="small" max-height="420">
-              <el-table-column label="分类" width="112">
+            <el-table :data="localizedSyntaxCapabilityRows" size="small" max-height="420">
+              <el-table-column :label="t('classification')" width="112">
                 <template #default="{ row }">
                   <el-tag
                     size="small"
                     effect="plain"
                     :type="row.classification === 'supported' ? 'success' : row.classification === 'ambiguous' ? 'warning' : 'danger'"
                   >
-                    {{ row.classification === 'supported' ? '可导入' : row.classification === 'ambiguous' ? '有歧义' : '不可执行' }}
+                    {{ row.classification === 'supported' ? t('supported') : row.classification === 'ambiguous' ? t('ambiguous') : t('notExecutable') }}
                   </el-tag>
                 </template>
               </el-table-column>
-              <el-table-column prop="syntax" label="语法" min-width="190" show-overflow-tooltip />
-              <el-table-column label="例子" min-width="250">
+              <el-table-column prop="syntax" :label="t('syntax')" min-width="190" show-overflow-tooltip />
+              <el-table-column :label="t('example')" min-width="250">
                 <template #default="{ row }"><code>{{ row.example }}</code></template>
               </el-table-column>
-              <el-table-column prop="engineOutcome" label="原生结果" min-width="170" show-overflow-tooltip />
-              <el-table-column prop="editorPolicy" label="编辑器策略" width="105" />
-              <el-table-column prop="note" label="边界" min-width="250" show-overflow-tooltip />
+              <el-table-column prop="engineOutcome" :label="t('nativeResult')" min-width="170" show-overflow-tooltip />
+              <el-table-column prop="editorPolicy" :label="t('editorPolicy')" width="105" />
+              <el-table-column prop="note" :label="t('boundary')" min-width="250" show-overflow-tooltip />
             </el-table>
           </el-collapse-item>
         </el-collapse>
@@ -2018,16 +2068,16 @@ watch(() => activeEmblem.value?.instances.length ?? 0, (length) => {
 
       <section class="preview-pane panel">
         <div class="panel-title">
-          <div><span class="step">02</span><h2>构图预览</h2></div>
+          <div><span class="step">02</span><h2>{{ t('previewTitle') }}</h2></div>
           <el-tag effect="plain" :type="renderedPreviewUrl ? 'success' : 'warning'">
-            {{ renderedPreviewUrl ? `原版 shader 源码模型 · ${shaderSourceCount} 源文件` : '浏览器几何近似' }}
+            {{ renderedPreviewUrl ? t('shaderModel', { count: shaderSourceCount }) : t('browserApproximation') }}
           </el-tag>
         </div>
         <div class="preview-stage">
           <div ref="shieldElement" :class="['shield', { 'shader-bound': renderedPreviewUrl }]" :style="{ '--shield-color': cssColor(coatOfArms.colors[0]) }">
-            <img v-if="renderedPreviewUrl" class="shader-preview" :src="renderedPreviewUrl" alt="原版 shader 源码模型预览" />
+            <img v-if="renderedPreviewUrl" class="shader-preview" :src="renderedPreviewUrl" :alt="t('shaderPreviewAlt')" />
             <template v-else>
-              <img v-if="patternPreviewUrl" class="pattern-texture" :src="patternPreviewUrl" alt="原版 pattern DDS 通道图" />
+              <img v-if="patternPreviewUrl" class="pattern-texture" :src="patternPreviewUrl" :alt="t('patternPreviewAlt')" />
               <div class="shield-light" :style="{ background: cssColor(coatOfArms.colors[1]) }" />
               <div
                 v-for="item in fallbackPreviewEmblems"
@@ -2073,7 +2123,7 @@ watch(() => activeEmblem.value?.instances.length ?? 0, (length) => {
                 <button
                   type="button"
                   class="visual-handle move-handle"
-                  aria-label="拖拽实例位置"
+                  :aria-label="t('dragPosition')"
                   data-testid="visual-move-handle"
                   @pointerdown.stop="beginVisualTransform('move', $event)"
                   @pointermove.stop="updateVisualTransform"
@@ -2083,7 +2133,7 @@ watch(() => activeEmblem.value?.instances.length ?? 0, (length) => {
                 <button
                   type="button"
                   class="visual-handle scale-handle"
-                  aria-label="等比缩放实例"
+                  :aria-label="t('uniformScale')"
                   data-testid="visual-scale-handle"
                   @pointerdown.stop="beginVisualTransform('scale', $event)"
                   @pointermove.stop="updateVisualTransform"
@@ -2093,7 +2143,7 @@ watch(() => activeEmblem.value?.instances.length ?? 0, (length) => {
                 <button
                   type="button"
                   class="visual-handle rotate-handle"
-                  aria-label="旋转实例"
+                  :aria-label="t('rotateInstance')"
                   data-testid="visual-rotate-handle"
                   @pointerdown.stop="beginVisualTransform('rotate', $event)"
                   @pointermove.stop="updateVisualTransform"
@@ -2105,68 +2155,68 @@ watch(() => activeEmblem.value?.instances.length ?? 0, (length) => {
           </div>
         </div>
         <p v-if="selectedInstance" class="visual-editor-help">
-          正在编辑图层 {{ selectedEmblem + 1 }} · 实例 {{ selectedInstanceIndex + 1 }}：中心拖动位置，右下角缩放，顶部圆点旋转。
+          {{ t('visualEditorHelp', { layer: selectedEmblem + 1, instance: selectedInstanceIndex + 1 }) }}
         </p>
         <section class="candidate-comparison" data-testid="candidate-comparison">
           <div class="section-heading">
-            <h3>候选对比（{{ comparisonCandidates.length }}/{{ MAX_COMPARISON_CANDIDATES }}）</h3>
+            <h3>{{ t('candidateComparison', { count: comparisonCandidates.length, maximum: MAX_COMPARISON_CANDIDATES }) }}</h3>
             <el-button size="small" :disabled="comparisonCandidates.length >= MAX_COMPARISON_CANDIDATES && !comparisonCandidates.some((item) => item.source === output)" @click="captureComparisonCandidate()">
-              保存当前候选
+              {{ t('saveCurrentCandidate') }}
             </el-button>
           </div>
-          <p>最多并排保留 3 个 Beta 候选。只有输入 SHA、评分器、renderer、分辨率与 surface mask 全部相同时才比较损失；手工编辑项不冒充 Pareto 结论。</p>
+          <p>{{ t('candidateBoundary') }}</p>
           <div v-if="comparisonRows.length" class="candidate-grid">
             <article v-for="candidate in comparisonRows" :key="candidate.id" class="candidate-card" :data-candidate-id="candidate.id">
-              <img v-if="candidate.previewUrl" :src="candidate.previewUrl" :alt="`${candidate.name} 预览`" />
-              <div v-else class="candidate-preview-placeholder">预览延后</div>
+              <img v-if="candidate.previewUrl" :src="candidate.previewUrl" :alt="candidate.name" />
+              <div v-else class="candidate-preview-placeholder">{{ t('previewDeferred') }}</div>
               <strong>{{ candidate.name }}</strong>
-              <span>{{ candidate.stats.drawnInstances.toLocaleString() }} 实例 · {{ candidate.stats.coloredEmblemBlocks.toLocaleString() }} 块 · {{ candidate.stats.utf8Bytes.toLocaleString() }} bytes</span>
+              <span>{{ t('candidateStats', { instances: candidate.stats.drawnInstances.toLocaleString(), blocks: candidate.stats.coloredEmblemBlocks.toLocaleString(), bytes: candidate.stats.utf8Bytes.toLocaleString() }) }}</span>
               <template v-if="candidate.metrics">
-                <span>总损失 {{ candidate.metrics.totalLoss.toFixed(5) }} · 边缘 {{ candidate.metrics.edgeLoss.toFixed(5) }}</span>
+                <span>{{ t('candidateLosses', { total: candidate.metrics.totalLoss.toFixed(5), edge: candidate.metrics.edgeLoss.toFixed(5) }) }}</span>
                 <el-tag size="small" :type="candidate.dominance === 'dominated' ? 'warning' : 'success'">
-                  {{ candidate.dominance === 'dominated' ? '同合同下被支配' : '同合同下非支配' }}
+                  {{ candidate.dominance === 'dominated' ? t('dominated') : t('nonDominated') }}
                 </el-tag>
               </template>
-              <el-tag v-else size="small" type="info">未绑定可比拟合指标</el-tag>
-              <el-tag v-if="candidate.current" size="small" type="primary">当前构图</el-tag>
+              <el-tag v-else size="small" type="info">{{ t('metricsUnbound') }}</el-tag>
+              <el-tag v-if="candidate.current" size="small" type="primary">{{ t('currentComposition') }}</el-tag>
               <div class="candidate-actions">
-                <el-button size="small" @click="activateComparisonCandidate(candidate)">载入</el-button>
-                <el-button size="small" type="danger" plain @click="removeComparisonCandidate(candidate.id)">删除</el-button>
+                <el-button size="small" @click="activateComparisonCandidate(candidate)">{{ t('load') }}</el-button>
+                <el-button size="small" type="danger" plain @click="removeComparisonCandidate(candidate.id)">{{ t('delete') }}</el-button>
               </div>
             </article>
           </div>
-          <el-empty v-else :image-size="54" description="尚未保存候选；拟合完成时也会自动加入" />
+          <el-empty v-else :image-size="54" :description="t('noCandidates')" />
         </section>
         <div class="preview-caption">
-          <strong>{{ coatOfArms.pattern || '未指定 pattern' }}</strong>
-          <span>{{ coatOfArms.coloredEmblems.length }} 个彩色图层 · {{ drawnInstanceCount }} 个实例 · {{ coatOfArms.texturedEmblems.length }} 个受限纹理层</span>
+          <strong>{{ coatOfArms.pattern || t('unspecifiedPattern') }}</strong>
+          <span>{{ t('previewStats', { layers: coatOfArms.coloredEmblems.length, instances: drawnInstanceCount, textured: coatOfArms.texturedEmblems.length }) }}</span>
         </div>
         <el-alert v-if="largeDocumentPreviewDeferred" type="warning" :closable="false" show-icon>
-          <template #title>当前文档超过 2,048 个实例；为保证编辑响应，实时整幅预览已延后。完整模型、复制和项目保存不受影响。</template>
+          <template #title>{{ t('largePreviewDeferred') }}</template>
         </el-alert>
-        <el-button class="preview-load" :loading="textureBusy" @click="loadCurrentTexturePreviews">从独立素材包加载当前 DDS</el-button>
+        <el-button class="preview-load" :loading="textureBusy" @click="loadCurrentTexturePreviews">{{ t('loadCurrentDds') }}</el-button>
         <el-alert type="info" :closable="false" show-icon>
-          <template #title>预览翻译 exact 1.19.0.6 随附 shader 的通道、mask、transform、surface detail 与 blend；FallbackColor 绑定、GPU 采样/色彩空间仍待以后原生像素对照。</template>
+          <template #title>{{ t('previewEvidenceBoundary') }}</template>
         </el-alert>
       </section>
 
       <section class="editor-pane panel">
         <div class="panel-title">
-          <div><span class="step">03</span><h2>结构化编辑</h2></div>
+          <div><span class="step">03</span><h2>{{ t('structuredEditor') }}</h2></div>
           <el-space>
             <el-button v-if="developmentCompanionEnabled" size="small" :loading="runtimeFeatureBusy" @click="loadRuntimeFeatures">开发期运行态</el-button>
             <el-button v-if="developmentCompanionEnabled" size="small" :loading="catalogBusy" @click="loadResourceCatalog">开发期 MCP 资源</el-button>
-            <el-button v-else size="small" :loading="assetPackBusy" @click="loadStandaloneAssetPack()">刷新静态资源</el-button>
+            <el-button v-else size="small" :loading="assetPackBusy" @click="loadStandaloneAssetPack()">{{ t('refreshStaticAssets') }}</el-button>
           </el-space>
         </div>
-        <p class="history-status">{{ historyNotice }} · 重做 {{ redoHistory.length }} 项 · 历史占用 {{ ((undoHistoryBytes + redoHistoryBytes) / 1024 / 1024).toFixed(1) }} MiB / 16 MiB</p>
+        <p class="history-status">{{ t('historyStatus', { notice: uiText(historyNotice), redo: redoHistory.length, memory: ((undoHistoryBytes + redoHistoryBytes) / 1024 / 1024).toFixed(1) }) }}</p>
         <el-scrollbar height="690px">
           <div v-if="developmentCompanionEnabled" class="resource-search">
             <el-input v-model="emblemSearch" clearable placeholder="筛选 emblem 名；留空取前 200 项" @keyup.enter="loadResourceCatalog" />
             <el-button :loading="catalogBusy" @click="loadResourceCatalog">刷新目录</el-button>
           </div>
           <p class="resource-note">
-            正式平台只读取部署时冻结、逐项 SHA-256 绑定的静态 asset pack，不访问本机游戏。
+            {{ t('staticAssetBoundary') }}
             <template v-if="developmentCompanionEnabled && installedDlcDescriptorCount !== null && dlcCoaSourceCount !== null">
               安装树含 {{ installedDlcDescriptorCount }} 份 DLC 描述符，其中 {{ dlcCoaSourceCount }} 份有直接 CoA 候选；
               该数字不证明商店授权或引擎 mount。
@@ -2180,7 +2230,7 @@ watch(() => activeEmblem.value?.instances.length ?? 0, (length) => {
               仍未应用资源 precedence/merge，也不冒充引擎 mount 状态。
             </template>
             <template v-else>
-              启动配置未读取，暂不包含 DLC/mod 覆盖，也不冒充运行时注册状态。
+              {{ t('noLoadConfiguration') }}
             </template>
             <br>
             <template v-if="developmentCompanionEnabled">开发期 CK3 运行态：{{ runtimeFeatureStatus }}。</template>
@@ -2249,34 +2299,34 @@ watch(() => activeEmblem.value?.instances.length ?? 0, (length) => {
           </el-collapse>
           <el-form label-position="top">
             <div class="form-grid">
-              <el-form-item label="Parent 引用（可选）">
+              <el-form-item :label="t('parentReference')">
                 <el-input v-model="coatOfArms.parent" placeholder="c_england" />
               </el-form-item>
-              <el-form-item label="Pattern 资源名">
+              <el-form-item :label="t('patternResource')">
                 <el-select v-model="coatOfArms.pattern" filterable allow-create default-first-option @change="loadPatternTexture">
                   <el-option
                     v-for="item in patternResources"
                     :key="item.name"
-                    :label="`${item.name} · ${item.colors ?? '?'} 色`"
+                    :label="t('resourceColors', { name: item.name, colors: item.colors ?? '?' })"
                     :value="item.name"
                   />
                 </el-select>
               </el-form-item>
-              <el-form-item v-for="index in 3" :key="index" :label="`底色 ${index}`">
+              <el-form-item v-for="index in 3" :key="index" :label="t('baseColor', { index })">
                 <el-input v-model="coatOfArms.colors[index - 1]" />
               </el-form-item>
             </div>
 
             <div class="section-heading">
-              <h3>Colored emblems</h3>
-              <el-button size="small" type="primary" plain @click="addEmblem">添加图层</el-button>
+              <h3>{{ t('coloredEmblems') }}</h3>
+              <el-button size="small" type="primary" plain @click="addEmblem">{{ t('addLayer') }}</el-button>
             </div>
             <el-tabs v-if="coatOfArms.coloredEmblems.length && coatOfArms.coloredEmblems.length <= 128" v-model="selectedEmblem" type="card">
-              <el-tab-pane v-for="(emblem, index) in coatOfArms.coloredEmblems" :key="index" :label="`图层 ${index + 1}`" :name="index" />
+              <el-tab-pane v-for="(emblem, index) in coatOfArms.coloredEmblems" :key="index" :label="t('layer', { index: index + 1 })" :name="index" />
             </el-tabs>
             <div v-else-if="coatOfArms.coloredEmblems.length" class="emblem-window-toolbar">
-              <span>图层 {{ selectedEmblem + 1 }} / {{ coatOfArms.coloredEmblems.length }}（大文档按索引编辑）</span>
-              <el-button size="small" :disabled="selectedEmblem === 0" @click="selectEmblemIndex(selectedEmblem - 1)">上一层</el-button>
+              <span>{{ t('layerWindow', { current: selectedEmblem + 1, total: coatOfArms.coloredEmblems.length }) }}</span>
+              <el-button size="small" :disabled="selectedEmblem === 0" @click="selectEmblemIndex(selectedEmblem - 1)">{{ t('previousLayer') }}</el-button>
               <el-input-number
                 :model-value="selectedEmblem + 1"
                 :min="1"
@@ -2284,32 +2334,32 @@ watch(() => activeEmblem.value?.instances.length ?? 0, (length) => {
                 controls-position="right"
                 @update:model-value="selectEmblemIndex(Number($event) - 1)"
               />
-              <el-button size="small" :disabled="selectedEmblem + 1 >= coatOfArms.coloredEmblems.length" @click="selectEmblemIndex(selectedEmblem + 1)">下一层</el-button>
+              <el-button size="small" :disabled="selectedEmblem + 1 >= coatOfArms.coloredEmblems.length" @click="selectEmblemIndex(selectedEmblem + 1)">{{ t('nextLayer') }}</el-button>
             </div>
 
             <template v-if="activeEmblem">
               <div class="form-grid">
-                <el-form-item label="Texture 资源名" class="wide">
+                <el-form-item :label="t('textureResource')" class="wide">
                   <el-select v-model="activeEmblem.texture" filterable allow-create default-first-option @change="loadEmblemTexture">
                     <el-option
                       v-for="item in emblemResources"
                       :key="item.name"
-                      :label="`${item.name} · ${item.colors ?? '?'} 色`"
+                      :label="t('resourceColors', { name: item.name, colors: item.colors ?? '?' })"
                       :value="item.name"
                     />
                   </el-select>
                 </el-form-item>
-                <el-form-item v-for="index in 3" :key="index" :label="`图案颜色 ${index}`">
+                <el-form-item v-for="index in 3" :key="index" :label="t('emblemColor', { index })">
                   <el-input v-model="activeEmblem.colors[index - 1]" />
                 </el-form-item>
-                <el-form-item label="Mask（空格分隔）">
+                <el-form-item :label="t('maskSeparated')">
                   <el-input :model-value="activeEmblem.mask.join(' ')" @update:model-value="parseMask" />
                 </el-form-item>
               </div>
 
               <div v-if="activeEmblem.instances.length > INSTANCE_EDITOR_WINDOW_SIZE" class="instance-window-toolbar">
-                <span>实例窗口 {{ boundedInstanceWindowStart + 1 }}–{{ instanceWindowEnd }} / {{ activeEmblem.instances.length }}</span>
-                <el-button size="small" :disabled="boundedInstanceWindowStart === 0" @click="moveInstanceWindow(boundedInstanceWindowStart - INSTANCE_EDITOR_WINDOW_SIZE)">上一页</el-button>
+                <span>{{ t('instanceWindow', { start: boundedInstanceWindowStart + 1, end: instanceWindowEnd, total: activeEmblem.instances.length }) }}</span>
+                <el-button size="small" :disabled="boundedInstanceWindowStart === 0" @click="moveInstanceWindow(boundedInstanceWindowStart - INSTANCE_EDITOR_WINDOW_SIZE)">{{ t('previousPage') }}</el-button>
                 <el-input-number
                   :model-value="boundedInstanceWindowStart + 1"
                   :min="1"
@@ -2318,7 +2368,7 @@ watch(() => activeEmblem.value?.instances.length ?? 0, (length) => {
                   controls-position="right"
                   @update:model-value="moveInstanceWindow(Number($event) - 1)"
                 />
-                <el-button size="small" :disabled="instanceWindowEnd >= activeEmblem.instances.length" @click="moveInstanceWindow(instanceWindowEnd)">下一页</el-button>
+                <el-button size="small" :disabled="instanceWindowEnd >= activeEmblem.instances.length" @click="moveInstanceWindow(instanceWindowEnd)">{{ t('nextPage') }}</el-button>
               </div>
               <div class="instance-list" data-testid="instance-editor-window">
                 <div
@@ -2328,12 +2378,12 @@ watch(() => activeEmblem.value?.instances.length ?? 0, (length) => {
                   :data-instance-index="item.index"
                 >
                   <div class="instance-title">
-                    <strong>实例 {{ item.index + 1 }}</strong>
+                    <strong>{{ t('instance', { index: item.index + 1 }) }}</strong>
                     <el-space>
                       <el-button link type="primary" @click="selectInstanceForVisualEdit(item.index)">
-                        {{ item.index === selectedInstanceIndex ? '预览编辑中' : '在预览中编辑' }}
+                        {{ item.index === selectedInstanceIndex ? t('previewEditing') : t('editInPreview') }}
                       </el-button>
-                      <el-button link type="danger" @click="removeActiveInstance(item.index)">删除</el-button>
+                      <el-button link type="danger" @click="removeActiveInstance(item.index)">{{ t('delete') }}</el-button>
                     </el-space>
                   </div>
                   <div class="number-grid">
@@ -2341,28 +2391,26 @@ watch(() => activeEmblem.value?.instances.length ?? 0, (length) => {
                     <el-form-item label="Y"><el-input-number v-model="item.instance.position[1]" :step="0.05" /></el-form-item>
                     <el-form-item label="Scale X"><el-input-number v-model="item.instance.scale[0]" :step="0.05" /></el-form-item>
                     <el-form-item label="Scale Y"><el-input-number v-model="item.instance.scale[1]" :step="0.05" /></el-form-item>
-                    <el-form-item label="Rotation"><el-input-number v-model="item.instance.rotation" :step="5" /></el-form-item>
-                    <el-form-item label="Depth"><el-input-number v-model="item.instance.depth" :step="0.01" /></el-form-item>
+                    <el-form-item :label="t('rotation')"><el-input-number v-model="item.instance.rotation" :step="5" /></el-form-item>
+                    <el-form-item :label="t('depth')"><el-input-number v-model="item.instance.depth" :step="0.01" /></el-form-item>
                   </div>
                 </div>
               </div>
               <div class="row-actions">
-                <el-button @click="addInstanceToActiveEmblem">添加实例</el-button>
-                <el-button type="danger" plain @click="removeEmblem(selectedEmblem)">删除当前图层</el-button>
+                <el-button @click="addInstanceToActiveEmblem">{{ t('addInstance') }}</el-button>
+                <el-button type="danger" plain @click="removeEmblem(selectedEmblem)">{{ t('deleteCurrentLayer') }}</el-button>
               </div>
             </template>
 
             <div class="section-heading textured-heading">
-              <h3>Textured emblems（受限）</h3>
+              <h3>{{ t('texturedEmblems') }}</h3>
               <el-button size="small" plain @click="coatOfArms.texturedEmblems.push(createTexturedEmblem())">
-                添加受限层
+                {{ t('addRestrictedLayer') }}
               </el-button>
             </div>
             <el-alert type="warning" :closable="false" show-icon>
               <template #title>
-                当前实机已证明 `textured_emblem = { texture = "_default.dds" }` 可应用且由原生 Copy 保留；本区只保真解析/导出 texture，
-                浏览器按随附 `coat_of_arms_textured_emblem` shader 的原始 RGBA、surface detail 和 alpha blend 合成 `_default.dds`；
-                未注册 texture 仍保留代码并明确缺图，不冒充原生 GPU 像素完全一致。
+                {{ t('texturedBoundary') }}
               </template>
             </el-alert>
             <div v-if="coatOfArms.texturedEmblems.length" class="textured-list">
@@ -2374,7 +2422,7 @@ watch(() => activeEmblem.value?.instances.length ?? 0, (length) => {
                 <img
                   v-if="emblem.texture === '_default.dds' && texturedDefaultPreviewUrl"
                   :src="texturedDefaultPreviewUrl"
-                  alt="_default.dds 原始纹理"
+                  :alt="t('rawTexturedAlt')"
                   class="textured-raw-preview"
                 />
                 <div v-else class="textured-preview-placeholder">?</div>
@@ -2383,17 +2431,17 @@ watch(() => activeEmblem.value?.instances.length ?? 0, (length) => {
                   type="danger"
                   plain
                   @click="coatOfArms.texturedEmblems.splice(index, 1)"
-                >删除</el-button>
+                >{{ t('delete') }}</el-button>
               </div>
             </div>
           </el-form>
 
           <div class="output-block">
             <div class="section-heading">
-              <h3>确定性导出</h3>
+              <h3>{{ t('deterministicExport') }}</h3>
               <el-space>
-                <el-tag>{{ outputBytes.toLocaleString() }} bytes · {{ outputLines.toLocaleString() }} 行</el-tag>
-                <el-tag v-if="outputPreviewTruncated" type="warning">UI 摘要；复制仍为完整文档</el-tag>
+                <el-tag>{{ t('outputSummary', { bytes: outputBytes.toLocaleString(), lines: outputLines.toLocaleString() }) }}</el-tag>
+                <el-tag v-if="outputPreviewTruncated" type="warning">{{ t('uiSummaryOnly') }}</el-tag>
                 <el-tag>CRLF</el-tag>
               </el-space>
             </div>
@@ -2403,4 +2451,5 @@ watch(() => activeEmblem.value?.instances.length ?? 0, (length) => {
       </section>
     </main>
   </div>
+  </el-config-provider>
 </template>

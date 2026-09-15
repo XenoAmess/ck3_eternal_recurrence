@@ -65,7 +65,11 @@ jobs:
         run: pnpm exec playwright install --with-deps chromium
 
       - name: Run standalone browser acceptance
-        run: pnpm test:e2e
+        run: |
+          pnpm exec playwright test e2e/fit-budget-stress.spec.ts
+          pnpm exec playwright test e2e/standalone-image-fit.spec.ts
+          mapfile -t remaining_specs < <(find e2e -maxdepth 1 -name '*.spec.ts' ! -name 'fit-budget-stress.spec.ts' ! -name 'standalone-image-fit.spec.ts' -print | sort)
+          pnpm exec playwright test "${remaining_specs[@]}"
 
       - name: Build Pages artifact
         run: pnpm build

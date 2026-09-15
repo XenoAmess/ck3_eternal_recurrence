@@ -1,0 +1,347 @@
+import { ref } from 'vue'
+
+export type UiLocale = 'zh-CN' | 'en'
+export type MessageParams = Record<string, string | number>
+
+const zhCN = {
+  language: '语言',
+  chinese: '简体中文',
+  english: 'English',
+  appEyebrow: 'Crusader Kings III 代码 · 独立浏览器 Beta 开发版',
+  appTitle: '家徽工坊',
+  appSubtitle: '独立生成与编辑可粘贴的静态纹章代码；正式平台不连接或启动游戏。',
+  standaloneBound: '独立素材包已绑定',
+  standaloneWaiting: '等待独立素材包',
+  openProject: '打开项目',
+  saveProject: '保存项目',
+  undo: '撤销',
+  redo: '重做',
+  reset: '重置',
+  copyCk3Code: '复制 CK3 代码',
+  recoverableProject: '发现可恢复项目',
+  recoverableSummary: '{savedAt} · {instances} 个实例 · SHA-256 已验证',
+  restore: '恢复',
+  discard: '丢弃',
+  imageFitTitle: '图片拟合原生元素',
+  localOnly: '纯浏览器 · 图片不上传',
+  imageAlt: '待拟合目标图片',
+  chooseImage: '选择 PNG / JPEG / WebP / SVG',
+  imageLimits: '位图 16 MiB；安全 SVG 2 MiB；最大 4096×4096',
+  standalonePack: '独立素材包',
+  reloadPack: '重新载入静态素材包',
+  maxImprovingLayers: '最大改善图层数',
+  budgetHelp: '例如 1024 表示最多搜索并保留 1024 层，不保证输出恰好 1024 层。每一层必须严格降低实际渲染损失；无改善或用户取消时提前停止。输入支持 10000 及更大安全整数。',
+  budgetPlaneHelp: '当前原生块细化平面为 96×96；它按分辨率和预算扩展四叉树深度，预算不会被改写，但像素粒度、无改善或精确匹配可能令实际实例提前收敛。',
+  startLocalFit: '开始本地拟合',
+  cancel: '取消',
+  compressBlocks: '安全压缩相邻同样式块',
+  exactPrune: '精确固定点剪枝',
+  cancelPrune: '取消剪枝',
+  runStatus: '运行状态',
+  progressStageNote: '（进度表示当前搜索阶段）',
+  pruneProgress: '剪枝第 {pass} 轮 · {completed}/{total} · 累计 {candidates} 候选',
+  fitPlane: '拟合平面（不叠加盾面材质）',
+  fitResultAlt: '图片拟合结果预览',
+  totalLoss: '总损失',
+  colorLoss: '颜色',
+  edgeLoss: '边缘',
+  candidates: '候选数',
+  userBudget: '用户预算',
+  drawingInstances: '{count} 个绘制实例',
+  actualInstances: '实际绘制实例',
+  logicalLayers: '逻辑图层',
+  emblemBlocks: 'colored_emblem 块',
+  instanceCount: 'instance 数',
+  codeSize: '代码体积',
+  lines: '行',
+  safeCompressedBlocks: '安全压缩块',
+  safeCompressedInstances: '安全压缩实例',
+  safeCompressedSize: '安全压缩体积',
+  compressionPixelGate: '压缩像素门禁',
+  allByteExact: '{resolutions} 全部逐字节一致',
+  fixedPointPrune: '固定点剪枝',
+  necessityEvidence: '必要性证据',
+  complete: '完整',
+  pruneContract: '剪枝合同',
+  pruneContractValue: '96 / 230 / 512 零像素差；损失容差 1e-12',
+  seamGate: '高分辨率接缝门禁',
+  allPassed: '96 / 230 / 512 全部通过',
+  notApplicable: '不适用',
+  seamMetrics: '接缝指标',
+  tileSearchSpace: '块搜索空间',
+  pixelLeafCapacity: '像素叶容量',
+  originalBudget: '预算原值',
+  algorithmContract: '算法合同',
+  relativeImprovement: '相对改善',
+  gpuCrossScore: 'GPU 交叉分',
+  unavailable: '不可用',
+  inputPyramid: '输入/金字塔',
+  candidatePaths: '候选路径',
+  nativeBlock: '原生块',
+  edgeRefined: '边缘细化',
+  hybrid: '混合',
+  semantic: '语义',
+  layersShort: '层',
+  noEmblem: '无纹章',
+  scoreBoundary: '分数只用于同一算法和目标之间比较，不代表 CK3 像素一致率。结果已进入下方结构化编辑器。',
+  mcpLimitTitle: '128 KiB 只是旧版单请求 MCP v1 合同，不是 CK3 上限',
+  mcpLimitDescription: '380,862-byte、1000-instance hunter 已通过分块 MCP v2 的真实 CK3 Apply → Copy。网页复制不设此上限；当前页面内置的旧开发 companion 按钮仍使用 v1，正式 Pages 不包含该开发入口。512 KiB 也只是当前 v2 传输资源上限，不代表引擎上限。',
+  importCode: '导入代码',
+  pasteClipboard: '从剪贴板粘贴',
+  loadNativeSample: '载入实机样例',
+  parseAndLoad: '解析并载入',
+  noDiagnostics: '没有解析诊断',
+  syntaxMatrix: 'CK3 1.19.0.6 剪贴板语法能力矩阵',
+  syntaxMatrixBoundary: '这里只列 MCP 实机矩阵已有证据的语法；“detected”仅表示 reader 产生预览，不等于脚本执行或资源存在。',
+  classification: '分类',
+  supported: '可导入',
+  ambiguous: '有歧义',
+  notExecutable: '不可执行',
+  syntax: '语法',
+  example: '例子',
+  nativeResult: '原生结果',
+  editorPolicy: '编辑器策略',
+  boundary: '边界',
+  previewTitle: '构图预览',
+  shaderModel: '原版 shader 源码模型 · {count} 源文件',
+  browserApproximation: '浏览器几何近似',
+  shaderPreviewAlt: '原版 shader 源码模型预览',
+  patternPreviewAlt: '原版 pattern DDS 通道图',
+  dragPosition: '拖拽实例位置',
+  uniformScale: '等比缩放实例',
+  rotateInstance: '旋转实例',
+  visualEditorHelp: '正在编辑图层 {layer} · 实例 {instance}：中心拖动位置，右下角缩放，顶部圆点旋转。',
+  candidateComparison: '候选对比（{count}/{maximum}）',
+  saveCurrentCandidate: '保存当前候选',
+  candidateBoundary: '最多并排保留 3 个 Beta 候选。只有输入 SHA、评分器、renderer、分辨率与 surface mask 全部相同时才比较损失；手工编辑项不冒充 Pareto 结论。',
+  previewDeferred: '预览延后',
+  candidateStats: '{instances} 实例 · {blocks} 块 · {bytes} bytes',
+  candidateLosses: '总损失 {total} · 边缘 {edge}',
+  dominated: '同合同下被支配',
+  nonDominated: '同合同下非支配',
+  metricsUnbound: '未绑定可比拟合指标',
+  currentComposition: '当前构图',
+  load: '载入',
+  delete: '删除',
+  noCandidates: '尚未保存候选；拟合完成时也会自动加入',
+  unspecifiedPattern: '未指定 pattern',
+  previewStats: '{layers} 个彩色图层 · {instances} 个实例 · {textured} 个受限纹理层',
+  largePreviewDeferred: '当前文档超过 2,048 个实例；为保证编辑响应，实时整幅预览已延后。完整模型、复制和项目保存不受影响。',
+  loadCurrentDds: '从独立素材包加载当前 DDS',
+  previewEvidenceBoundary: '预览翻译 exact 1.19.0.6 随附 shader 的通道、mask、transform、surface detail 与 blend；FallbackColor 绑定、GPU 采样/色彩空间仍待以后原生像素对照。',
+  structuredEditor: '结构化编辑',
+  refreshStaticAssets: '刷新静态资源',
+  historyStatus: '{notice} · 重做 {redo} 项 · 历史占用 {memory} MiB / 16 MiB',
+  staticAssetBoundary: '正式平台只读取部署时冻结、逐项 SHA-256 绑定的静态 asset pack，不访问本机游戏。',
+  noLoadConfiguration: '启动配置未读取，暂不包含 DLC/mod 覆盖，也不冒充运行时注册状态。',
+  parentReference: 'Parent 引用（可选）',
+  patternResource: 'Pattern 资源名',
+  resourceColors: '{name} · {colors} 色',
+  baseColor: '底色 {index}',
+  coloredEmblems: 'Colored emblems',
+  addLayer: '添加图层',
+  layer: '图层 {index}',
+  layerWindow: '图层 {current} / {total}（大文档按索引编辑）',
+  previousLayer: '上一层',
+  nextLayer: '下一层',
+  textureResource: 'Texture 资源名',
+  emblemColor: '图案颜色 {index}',
+  maskSeparated: 'Mask（空格分隔）',
+  instanceWindow: '实例窗口 {start}–{end} / {total}',
+  previousPage: '上一页',
+  nextPage: '下一页',
+  instance: '实例 {index}',
+  previewEditing: '预览编辑中',
+  editInPreview: '在预览中编辑',
+  rotation: 'Rotation',
+  depth: 'Depth',
+  addInstance: '添加实例',
+  deleteCurrentLayer: '删除当前图层',
+  texturedEmblems: 'Textured emblems（受限）',
+  addRestrictedLayer: '添加受限层',
+  texturedBoundary: '当前实机已证明 textured_emblem = { texture = "_default.dds" } 可应用且由原生 Copy 保留；本区只保真解析/导出 texture，浏览器按随附 coat_of_arms_textured_emblem shader 的原始 RGBA、surface detail 和 alpha blend 合成 _default.dds；未注册 texture 仍保留代码并明确缺图，不冒充原生 GPU 像素完全一致。',
+  rawTexturedAlt: '_default.dds 原始纹理',
+  deterministicExport: '确定性导出',
+  outputSummary: '{bytes} bytes · {lines} 行',
+  uiSummaryOnly: 'UI 摘要；复制仍为完整文档',
+} as const
+
+type MessageKey = keyof typeof zhCN
+
+const en: Record<MessageKey, string> = {
+  language: 'Language', chinese: '简体中文', english: 'English',
+  appEyebrow: 'Crusader Kings III code · standalone browser Beta', appTitle: 'Coat of Arms Workshop',
+  appSubtitle: 'Generate and edit paste-ready static coat-of-arms code without connecting to or launching the game.',
+  standaloneBound: 'Standalone asset pack bound', standaloneWaiting: 'Waiting for standalone asset pack',
+  openProject: 'Open project', saveProject: 'Save project', undo: 'Undo', redo: 'Redo', reset: 'Reset', copyCk3Code: 'Copy CK3 code',
+  recoverableProject: 'Recoverable project found', recoverableSummary: '{savedAt} · {instances} instances · SHA-256 verified', restore: 'Restore', discard: 'Discard',
+  imageFitTitle: 'Fit image with native elements', localOnly: 'Browser only · image never uploaded', imageAlt: 'Image to fit',
+  chooseImage: 'Choose PNG / JPEG / WebP / SVG', imageLimits: 'Raster 16 MiB; safe SVG 2 MiB; up to 4096×4096',
+  standalonePack: 'Standalone asset pack', reloadPack: 'Reload static asset pack', maxImprovingLayers: 'Maximum improving layers',
+  budgetHelp: 'For example, 1024 searches for and keeps at most 1024 layers; it does not promise exactly 1024. Every layer must strictly reduce rendered loss. The run stops when improvement ends or the user cancels. Inputs of 10,000 and larger safe integers are accepted.',
+  budgetPlaneHelp: 'Native-tile refinement currently uses a 96×96 plane and expands quadtree depth with resolution and budget. The budget is never rewritten, but pixel granularity, no further improvement, or an exact match may stop at fewer instances.',
+  startLocalFit: 'Start local fit', cancel: 'Cancel', compressBlocks: 'Safely merge adjacent equal-style blocks', exactPrune: 'Exact fixed-point prune', cancelPrune: 'Cancel pruning',
+  runStatus: 'Run status', progressStageNote: ' (progress is for the current search stage)', pruneProgress: 'Prune pass {pass} · {completed}/{total} · {candidates} candidates evaluated',
+  fitPlane: 'Fit plane (without shield-surface material)', fitResultAlt: 'Image-fit result', totalLoss: 'Total loss', colorLoss: 'Color', edgeLoss: 'Edges', candidates: 'Candidates',
+  userBudget: 'User budget', drawingInstances: '{count} drawing instances', actualInstances: 'Actual drawing instances', logicalLayers: 'Logical layers', emblemBlocks: 'colored_emblem blocks', instanceCount: 'instance count',
+  codeSize: 'Code size', lines: 'lines', safeCompressedBlocks: 'Safely compressed blocks', safeCompressedInstances: 'Safely compressed instances', safeCompressedSize: 'Safely compressed size',
+  compressionPixelGate: 'Compression pixel gate', allByteExact: '{resolutions} all byte-exact', fixedPointPrune: 'Fixed-point prune', necessityEvidence: 'Necessity evidence', complete: 'complete',
+  pruneContract: 'Prune contract', pruneContractValue: '96 / 230 / 512 zero pixel difference; loss tolerance 1e-12', seamGate: 'High-resolution seam gate', allPassed: '96 / 230 / 512 all passed',
+  notApplicable: 'Not applicable', seamMetrics: 'Seam metrics', tileSearchSpace: 'Tile search space', pixelLeafCapacity: 'pixel leaf capacity', originalBudget: 'original budget',
+  algorithmContract: 'Algorithm contract', relativeImprovement: 'Relative improvement', gpuCrossScore: 'GPU cross-score', unavailable: 'Unavailable', inputPyramid: 'Input / pyramid', candidatePaths: 'Candidate paths',
+  nativeBlock: 'native tiles', edgeRefined: 'edge refined', hybrid: 'hybrid', semantic: 'semantic', layersShort: 'layers', noEmblem: 'no emblem',
+  scoreBoundary: 'Scores are comparable only for the same algorithm and target; they are not CK3 pixel-agreement percentages. The result is loaded into the structured editor below.',
+  mcpLimitTitle: '128 KiB is the legacy single-request MCP v1 contract, not a CK3 limit',
+  mcpLimitDescription: 'A real 380,862-byte, 1,000-instance hunter document passed CK3 Apply → Copy through chunked MCP v2. Browser copy has no such limit. The legacy development companion buttons on this page still use v1 and are absent from production Pages. The current 512 KiB v2 transport budget is also not an engine limit.',
+  importCode: 'Import code', pasteClipboard: 'Paste from clipboard', loadNativeSample: 'Load native-tested sample', parseAndLoad: 'Parse and load', noDiagnostics: 'No parser diagnostics',
+  syntaxMatrix: 'CK3 1.19.0.6 clipboard syntax capability matrix', syntaxMatrixBoundary: 'Only syntax backed by the MCP native matrix is listed. “detected” means the reader produced a preview; it does not mean script execution or resource resolution.',
+  classification: 'Class', supported: 'Importable', ambiguous: 'Ambiguous', notExecutable: 'Not executable', syntax: 'Syntax', example: 'Example', nativeResult: 'Native result', editorPolicy: 'Editor policy', boundary: 'Boundary',
+  previewTitle: 'Composition preview', shaderModel: 'Shipped shader source model · {count} source files', browserApproximation: 'Browser geometry approximation',
+  shaderPreviewAlt: 'Shipped shader source model preview', patternPreviewAlt: 'Shipped pattern DDS channels', dragPosition: 'Drag instance position', uniformScale: 'Uniformly scale instance', rotateInstance: 'Rotate instance',
+  visualEditorHelp: 'Editing layer {layer} · instance {instance}: drag the center to move, the lower-right handle to scale, and the top handle to rotate.',
+  candidateComparison: 'Candidate comparison ({count}/{maximum})', saveCurrentCandidate: 'Save current candidate',
+  candidateBoundary: 'Keep up to three Beta candidates side by side. Losses are compared only when input SHA, scorer, renderer, resolution, and surface mask all match. Manual edits do not claim Pareto status.',
+  previewDeferred: 'Preview deferred', candidateStats: '{instances} instances · {blocks} blocks · {bytes} bytes', candidateLosses: 'Total loss {total} · edges {edge}',
+  dominated: 'Dominated under the same contract', nonDominated: 'Non-dominated under the same contract', metricsUnbound: 'No comparable fit metrics', currentComposition: 'Current composition',
+  load: 'Load', delete: 'Delete', noCandidates: 'No saved candidates; completed fits are also added automatically', unspecifiedPattern: 'No pattern specified',
+  previewStats: '{layers} colored layers · {instances} instances · {textured} restricted textured layers',
+  largePreviewDeferred: 'This document exceeds 2,048 instances. Full live preview is deferred to keep editing responsive; the complete model, copy, and project save remain available.',
+  loadCurrentDds: 'Load current DDS from standalone pack',
+  previewEvidenceBoundary: 'The preview translates channel, mask, transform, surface-detail, and blend behavior from the exact 1.19.0.6 shipped shaders. FallbackColor binding, GPU sampling, and color space still await native pixel comparison.',
+  structuredEditor: 'Structured editor', refreshStaticAssets: 'Refresh static assets', historyStatus: '{notice} · {redo} redo entries · {memory} MiB / 16 MiB history',
+  staticAssetBoundary: 'Production reads only the deployment-frozen, per-file SHA-256-bound static asset pack and never accesses a local game installation.',
+  noLoadConfiguration: 'No launch configuration was read. DLC/mod overrides are not included, and runtime registration state is not claimed.',
+  parentReference: 'Parent reference (optional)', patternResource: 'Pattern resource', resourceColors: '{name} · {colors} colors', baseColor: 'Base color {index}', coloredEmblems: 'Colored emblems',
+  addLayer: 'Add layer', layer: 'Layer {index}', layerWindow: 'Layer {current} / {total} (large documents use indexed editing)', previousLayer: 'Previous layer', nextLayer: 'Next layer',
+  textureResource: 'Texture resource', emblemColor: 'Emblem color {index}', maskSeparated: 'Mask (space-separated)', instanceWindow: 'Instance window {start}–{end} / {total}',
+  previousPage: 'Previous page', nextPage: 'Next page', instance: 'Instance {index}', previewEditing: 'Editing in preview', editInPreview: 'Edit in preview', rotation: 'Rotation', depth: 'Depth',
+  addInstance: 'Add instance', deleteCurrentLayer: 'Delete current layer', texturedEmblems: 'Textured emblems (restricted)', addRestrictedLayer: 'Add restricted layer',
+  texturedBoundary: 'Native evidence shows that textured_emblem = { texture = "_default.dds" } applies and survives native Copy. This section preserves and exports texture exactly. The browser composites _default.dds using the shipped coat_of_arms_textured_emblem shader model: raw RGBA, surface detail, and alpha blend. Unregistered textures stay in code with an explicit missing-preview state; native GPU pixel identity is not claimed.',
+  rawTexturedAlt: '_default.dds raw texture', deterministicExport: 'Deterministic export', outputSummary: '{bytes} bytes · {lines} lines', uiSummaryOnly: 'UI summary; copy still uses the complete document',
+}
+
+const STORAGE_KEY = 'ck3-coa-ui-locale-v1'
+
+export function resolveUiLocale(languages: readonly string[], stored?: string | null): UiLocale {
+  if (stored === 'zh-CN' || stored === 'en') return stored
+  return languages.some((language) => language.toLowerCase().startsWith('zh')) ? 'zh-CN' : 'en'
+}
+
+function initialLocale(): UiLocale {
+  if (typeof window === 'undefined') return 'zh-CN'
+  let stored: string | null = null
+  try {
+    stored = window.localStorage.getItem(STORAGE_KEY)
+  } catch {
+    // Storage can be unavailable in hardened/private contexts; locale still works for this tab.
+  }
+  return resolveUiLocale(navigator.languages?.length ? navigator.languages : [navigator.language], stored)
+}
+
+export function interpolate(message: string, params: MessageParams = {}): string {
+  return message.replace(/\{([A-Za-z][A-Za-z0-9_]*)\}/g, (token, key: string) => (
+    Object.prototype.hasOwnProperty.call(params, key) ? String(params[key]) : token
+  ))
+}
+
+const runtimeEnglish: Record<string, string> = {
+  '尚无可撤销修改': 'No undoable changes',
+  '正在检查自动保存': 'Checking autosave',
+  '等待自动保存': 'Waiting to autosave',
+  '没有可恢复的自动保存': 'No recoverable autosave',
+  '已丢弃自动保存': 'Autosave discarded',
+  '未连接': 'Not connected',
+  '未读取': 'Not read',
+  '尚未载入独立素材包': 'Standalone asset pack not loaded',
+  '请选择一张图片': 'Choose an image',
+  '等待开始': 'Ready',
+  '已取消': 'Cancelled',
+  '正在准备完整素材索引': 'Preparing the complete asset index',
+  '背景匹配': 'Background matching',
+  '拟合失败': 'Fit failed',
+  '结果素材校验失败': 'Result asset verification failed',
+  'Worker 失败': 'Worker failed',
+  '不可用': 'Unavailable',
+  '请求失败': 'Request failed',
+  '家徽设计页已打开': 'Coat-of-arms designer opened',
+  '打开家徽页失败': 'Failed to open the coat-of-arms designer',
+  '进入自定义模式失败': 'Failed to enter custom mode',
+  '家徽已提交回角色设计器': 'Coat of arms committed back to the ruler designer',
+  '提交失败': 'Commit failed',
+  '达到用户搜索预算': 'user search budget reached',
+  '残差已归零': 'residual reached zero',
+  '素材包没有可用徽记': 'asset pack has no usable emblems',
+  '没有继续改善的构图': 'no composition improves the result',
+  '改善低于阈值': 'improvement fell below the threshold',
+  '已解析，但存在阻止确定性导出的诊断': 'Parsed, but diagnostics block deterministic export',
+  '已导入为结构化纹章': 'Imported as a structured coat of arms',
+  '请先修复确定性导出诊断': 'Resolve deterministic-export diagnostics first',
+  'CK3 纹章代码已复制；多行换行使用 CRLF': 'CK3 coat-of-arms code copied with CRLF line endings',
+  '当前构图已在候选区，已刷新快照和可比指标': 'The current composition is already a candidate; its snapshot and comparable metrics were refreshed',
+  '候选对比区按 Beta 合同保留 1–3 项；请先删除一个候选': 'The Beta contract keeps one to three comparison candidates; remove one first',
+  '候选源码重新解析失败，未改动当前构图': 'Candidate source could not be reparsed; the current composition was not changed',
+  '独立静态素材包已载入；运行时不需要 CK3、MCP 或 Java': 'Standalone static asset pack loaded; CK3, MCP, and Java are not required at runtime',
+  '已取消图片拟合': 'Image fitting cancelled',
+  '已取消精确剪枝；当前编辑结果保持不变': 'Exact pruning cancelled; the current edit remains unchanged',
+  '请先完成一次图片拟合并载入结果素材': 'Complete an image fit and load its result assets first',
+  '请先选择目标图片': 'Choose a target image first',
+  '请先载入独立静态素材包': 'Load the standalone static asset pack first',
+  '图层搜索预算必须是至少为 1 的安全整数': 'Layer search budget must be a safe integer of at least 1',
+  '多层原生元素构图已载入结构化编辑器，可继续调整并复制代码': 'The layered native-element composition is loaded into the structured editor and can now be adjusted or copied',
+  '请先添加或选择一个 colored emblem 图层': 'Add or select a colored-emblem layer first',
+}
+
+const runtimeEnglishPatterns: readonly [RegExp, (match: RegExpMatchArray) => string][] = [
+  [/^(\d+) 个撤销点 · ([\d.]+) MiB \/ 16 MiB$/, (m) => `${m[1]} undo points · ${m[2]} MiB / 16 MiB`],
+  [/^已撤销 · (\d+) 个撤销点 \/ (\d+) 个重做点$/, (m) => `Undone · ${m[1]} undo points / ${m[2]} redo points`],
+  [/^已重做 · (\d+) 个撤销点 \/ (\d+) 个重做点$/, (m) => `Redone · ${m[1]} undo points / ${m[2]} redo points`],
+  [/^已自动保存 (.+) 实例 · 单槽覆盖$/, (m) => `Autosaved ${m[1]} instances · single bounded slot`],
+  [/^发现 (.+) 实例的自动保存$/, (m) => `Found an autosave with ${m[1]} instances`],
+  [/^(.+) · (\d+)×(\d+) · ([\d.]+) KiB · 只在浏览器内处理$/, (m) => `${m[1]} · ${m[2]}×${m[3]} · ${m[4]} KiB · processed only in this browser`],
+  [/^(.+) · (\d+) 注册 pattern · (\d+) 注册 emblem(?: · (\d+) DDS 全盘清单)? · ([A-Fa-f0-9]+)$/, (m) => `${m[1]} · ${m[2]} registered patterns · ${m[3]} registered emblems${m[4] ? ` · ${m[4]} DDS inventory` : ''} · ${m[5]}`],
+  [/^正在校验并读取完整 (\d+) 项可粘贴 RGBA 搜索索引…$/, (m) => `Verifying and reading the complete ${m[1]}-entry pasteable RGBA search index…`],
+  [/^旧素材包没有搜索索引，正在读取 (\d+) 个 DDS…$/, (m) => `Legacy asset pack has no search index; reading ${m[1]} DDS files…`],
+  [/^浏览器 Worker 正在执行透明度加权、轮廓粗筛和双路径残差重建；最多 (\d+) 层，只保留严格改善层…$/, (m) => `Browser Worker is running alpha-weighted contour screening and dual-path residual reconstruction; at most ${m[1]} strictly improving layers…`],
+  [/^第 (\d+)\/(\d+) 层 · 全库轮廓粗筛$/, (m) => `Layer ${m[1]}/${m[2]} · full-library contour screening`],
+  [/^第 (\d+)\/(\d+) 层 · 全角度与 0\.1° 级精筛$/, (m) => `Layer ${m[1]}/${m[2]} · all-angle and 0.1° refinement`],
+  [/^原生矩形块残差细化 · 最多 (\d+) 层$/, (m) => `Native rectangular-tile residual refinement · at most ${m[1]} layers`],
+  [/^(.+) · (\d+)\/(\d+) · 已评估 (\d+)$/, (m) => `${translateRuntimeText(m[1], 'en')} · ${m[2]}/${m[3]} · ${m[4]} evaluated`],
+  [/^完成 · 选中 (\d+) 层$/, (m) => `Complete · ${m[1]} layers selected`],
+  [/^拟合 (.+) 实例$/, (m) => `Fit with ${m[1]} instances`],
+  [/^候选 (\d+)$/, (m) => `Candidate ${m[1]}`],
+  [/^代码超过旧版单请求 MCP v1 的 128 KiB 合同；/, () => 'Code exceeds the legacy 128 KiB single-request MCP v1 contract. Browser copy remains complete, and a real 380,862-byte hunter document passed chunked MCP v2 CK3 Apply/Copy.'],
+  [/^(剪贴板写入失败|撤销失败|重做失败|自动保存失败|自动保存不可读|无法丢弃自动保存|项目保存失败|项目导入失败|剪贴板读取失败|素材包不可用|图片拒绝|拟合失败|Worker 失败)：(.+)$/, (m) => `${runtimeEnglish[m[1]] ?? m[1]}: ${m[2]}`],
+]
+
+export function translateRuntimeText(value: string, locale: UiLocale = activeLocale.value): string {
+  if (locale === 'zh-CN' || !value) return value
+  const exact = runtimeEnglish[value]
+  if (exact) return exact
+  for (const [pattern, render] of runtimeEnglishPatterns) {
+    const match = value.match(pattern)
+    if (match) return render(match)
+  }
+  return value
+}
+
+const activeLocale = ref<UiLocale>(initialLocale())
+
+export function useUiI18n() {
+  const t = (key: MessageKey, params?: MessageParams) => interpolate(
+    (activeLocale.value === 'en' ? en : zhCN)[key],
+    params,
+  )
+  const setLocale = (next: UiLocale) => {
+    activeLocale.value = next
+    if (typeof document !== 'undefined') {
+      document.documentElement.lang = next
+      document.title = (next === 'en' ? en : zhCN).appTitle
+    }
+    try {
+      window.localStorage.setItem(STORAGE_KEY, next)
+    } catch {
+      // Keep the in-memory preference when storage is unavailable.
+    }
+  }
+  return { locale: activeLocale, setLocale, t }
+}

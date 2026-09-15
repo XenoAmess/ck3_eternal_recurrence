@@ -76,6 +76,7 @@ test('runs real 128/1024/10000 browser fits without clamping and cancels a paint
     assets: [
       entry('pattern', 'pattern_solid.dds', pattern),
       entry('colored_emblem', 'ce_block_02.dds', emblem),
+      entry('textured_emblem', '_default.dds', emblem),
       entry('surface_mask', 'coa_mask_texture.dds', surface, false),
     ],
   }

@@ -10,6 +10,11 @@ export interface SyntaxCapabilityRow {
   evidence: 'mcp-applied' | 'mcp-detected' | 'mcp-not-detected'
   editorPolicy: EditorPolicy
   note: string
+  english: {
+    syntax: string
+    engineOutcome: string
+    note: string
+  }
 }
 
 /**
@@ -27,6 +32,10 @@ export const syntaxCapabilityRows: readonly SyntaxCapabilityRow[] = [
     evidence: 'mcp-detected',
     editorPolicy: 'accept',
     note: '普通标识符、coa 与数字 outer key 都被 reader 接受；导出统一写 coa。',
+    english: {
+      syntax: 'name = { ... }', engineOutcome: 'detected',
+      note: 'Plain identifiers, coa, and numeric outer keys are accepted; export consistently writes coa.',
+    },
   },
   {
     id: 'core-render-description',
@@ -37,6 +46,10 @@ export const syntaxCapabilityRows: readonly SyntaxCapabilityRow[] = [
     evidence: 'mcp-applied',
     editorPolicy: 'accept',
     note: 'position、scale、rotation、depth、多实例、mask 与负 scale 已在组合载荷中应用。',
+    english: {
+      syntax: 'pattern / color1..3 / colored_emblem / instance', engineOutcome: 'applied to designer working state',
+      note: 'Position, scale, rotation, depth, repeated instances, masks, and negative scale were applied in a combined payload.',
+    },
   },
   {
     id: 'hsv-and-comments',
@@ -47,6 +60,10 @@ export const syntaxCapabilityRows: readonly SyntaxCapabilityRow[] = [
     evidence: 'mcp-applied',
     editorPolicy: 'accept',
     note: 'hsv { 0.60 0.75 0.80 } 的原生 Copy 结果为 rgb { 51 112 204 }，注释不保留。',
+    english: {
+      syntax: '# comment / hsv { h s v }', engineOutcome: 'applied; Copy drops comments and emits RGB',
+      note: 'Native Copy converts hsv { 0.60 0.75 0.80 } to rgb { 51 112 204 }; comments are not preserved.',
+    },
   },
   {
     id: 'static-variable',
@@ -57,6 +74,10 @@ export const syntaxCapabilityRows: readonly SyntaxCapabilityRow[] = [
     evidence: 'mcp-applied',
     editorPolicy: 'sanitize',
     note: '只支持可静态展开的引用；编辑器导出字面量，不保留变量语法。',
+    english: {
+      syntax: '@name = literal / field = @name', engineOutcome: 'applied',
+      note: 'Only statically resolvable references are supported. The editor exports literals rather than variable syntax.',
+    },
   },
   {
     id: 'textured-default',
@@ -67,6 +88,10 @@ export const syntaxCapabilityRows: readonly SyntaxCapabilityRow[] = [
     evidence: 'mcp-applied',
     editorPolicy: 'warn',
     note: '已证明 _default.dds 进入 designer working state；未证明最终像素或完整字段集。',
+    english: {
+      syntax: 'textured_emblem = { texture = "_default.dds" }', engineOutcome: 'applied; texture preserved by Copy',
+      note: '_default.dds is proven to enter designer working state; final pixels and a broader field set are not proven.',
+    },
   },
   {
     id: 'missing-resource',
@@ -77,6 +102,10 @@ export const syntaxCapabilityRows: readonly SyntaxCapabilityRow[] = [
     evidence: 'mcp-detected',
     editorPolicy: 'warn',
     note: '语法接受与资源存在是两层；应另查 exact manifest/配置候选。',
+    english: {
+      syntax: 'missing pattern/emblem resource name', engineOutcome: 'detected, resource unresolved',
+      note: 'Syntax acceptance and resource existence are separate; inspect the exact manifest or configured candidates.',
+    },
   },
   {
     id: 'empty-or-defaulted',
@@ -87,6 +116,10 @@ export const syntaxCapabilityRows: readonly SyntaxCapabilityRow[] = [
     evidence: 'mcp-applied',
     editorPolicy: 'warn',
     note: '引擎允许空 working state；编辑器会载入可编辑默认值并警告，不声称字节保真。',
+    english: {
+      syntax: 'empty body or missing pattern', engineOutcome: 'applied; Copy emits an empty body',
+      note: 'The engine allows an empty working state. The editor loads editable defaults with a warning and does not claim byte preservation.',
+    },
   },
   {
     id: 'parent',
@@ -97,6 +130,10 @@ export const syntaxCapabilityRows: readonly SyntaxCapabilityRow[] = [
     evidence: 'mcp-applied',
     editorPolicy: 'warn',
     note: '与 color1 共存和 parent-only 都可应用；编辑器保留引用，但继承后最终像素仍需 CK3 确认。',
+    english: {
+      syntax: 'parent = c_england', engineOutcome: 'applied; parent reference preserved by Copy',
+      note: 'Both parent-only and parent with color1 apply. The editor preserves the reference; inherited final pixels still need CK3 confirmation.',
+    },
   },
   {
     id: 'duplicate-scalar',
@@ -107,6 +144,10 @@ export const syntaxCapabilityRows: readonly SyntaxCapabilityRow[] = [
     evidence: 'mcp-applied',
     editorPolicy: 'warn',
     note: '原生 Copy 输出 color1=red；编辑器采用同样规则并显示非阻断警告。',
+    english: {
+      syntax: 'repeated scalar in one block', engineOutcome: 'applied; last scalar wins',
+      note: 'Native Copy emits color1=red. The editor follows the same rule and shows a non-blocking warning.',
+    },
   },
   {
     id: 'multiple-root',
@@ -117,6 +158,10 @@ export const syntaxCapabilityRows: readonly SyntaxCapabilityRow[] = [
     evidence: 'mcp-applied',
     editorPolicy: 'reject',
     note: '原生 Copy 输出第一个对象的 blue；编辑器仍拒绝默认丢弃后续对象。',
+    english: {
+      syntax: 'multiple top-level coat-of-arms objects', engineOutcome: 'applied; first outer object wins',
+      note: 'Native Copy emits blue from the first object. The editor refuses to silently discard later objects.',
+    },
   },
   {
     id: 'body-only',
@@ -127,6 +172,10 @@ export const syntaxCapabilityRows: readonly SyntaxCapabilityRow[] = [
     evidence: 'mcp-not-detected',
     editorPolicy: 'reject',
     note: '剪贴板 reader 要求一个顶层 name = { ... } 对象。',
+    english: {
+      syntax: 'fields without an outer wrapper', engineOutcome: 'not_detected',
+      note: 'The clipboard reader requires one top-level name = { ... } object.',
+    },
   },
   {
     id: 'script-vm-families',
@@ -137,6 +186,10 @@ export const syntaxCapabilityRows: readonly SyntaxCapabilityRow[] = [
     evidence: 'mcp-not-detected',
     editorPolicy: 'reject',
     note: '此入口没有 scope、effect VM、trigger evaluator、event queue 或控制台 dispatcher。',
+    english: {
+      syntax: 'effect / trigger / event / decision / GUI expression', engineOutcome: 'not_detected; no evaluator call path',
+      note: 'This entry point has no scope, effect VM, trigger evaluator, event queue, or console dispatcher.',
+    },
   },
   {
     id: 'template-dsl',
@@ -147,6 +200,10 @@ export const syntaxCapabilityRows: readonly SyntaxCapabilityRow[] = [
     evidence: 'mcp-not-detected',
     editorPolicy: 'reject',
     note: '这是随机模板阶段 DSL，不是已经物化的 render description。',
+    english: {
+      syntax: 'list / weighted list / template trigger', engineOutcome: 'not_detected',
+      note: 'This is random-template-stage DSL, not a materialized render description.',
+    },
   },
   {
     id: 'unknown-field',
@@ -157,5 +214,9 @@ export const syntaxCapabilityRows: readonly SyntaxCapabilityRow[] = [
     evidence: 'mcp-not-detected',
     editorPolicy: 'reject',
     note: '编辑器白名单之外的字段不会被当作可执行扩展。',
+    english: {
+      syntax: 'unknown key or color4', engineOutcome: 'not_detected',
+      note: 'Fields outside the editor allowlist are not treated as executable extensions.',
+    },
   },
 ]

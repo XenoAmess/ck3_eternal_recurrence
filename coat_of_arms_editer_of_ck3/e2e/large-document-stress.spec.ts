@@ -75,6 +75,7 @@ test('edits and exports an exact 10,000-instance project through a bounded DOM w
     assets: [
       entry('pattern', 'pattern_solid.dds', pattern),
       entry('colored_emblem', 'ce_block_02.dds', emblem),
+      entry('textured_emblem', '_default.dds', emblem),
       entry('surface_mask', 'coa_mask_texture.dds', surface, false),
     ],
   }

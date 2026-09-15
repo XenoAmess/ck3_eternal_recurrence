@@ -10,6 +10,7 @@ export default defineConfig({
   reporter: 'line',
   use: {
     baseURL: 'http://127.0.0.1:4173',
+    locale: 'zh-CN',
     browserName: 'chromium',
     channel: runningInCi ? undefined : 'msedge',
     headless: true,
