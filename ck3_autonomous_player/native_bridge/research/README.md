@@ -36,7 +36,7 @@ played-character-only, paused, read-only observer boundary is
 `fixtures/major_decision_found_kingdom_observer_v1_source_contract.json`.
 Run both normal and optimized modes with an operator-selected installation:
 
-```powershell
+```console
 py ck3_autonomous_player/native_bridge/research/verify_major_decision_found_kingdom_source.py --game-root <CK3-root>
 py -O ck3_autonomous_player/native_bridge/research/verify_major_decision_found_kingdom_source.py --game-root <CK3-root>
 ```

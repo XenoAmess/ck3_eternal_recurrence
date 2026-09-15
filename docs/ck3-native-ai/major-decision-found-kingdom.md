@@ -141,7 +141,7 @@ effect 仅发布 source fingerprint，preview 保持 `unavailable`；查询禁�
 
 从仓库根运行；`<CK3-root>` 必须含 `binaries/ck3.exe` 与 `game/`：
 
-```powershell
+```console
 py ck3_autonomous_player/native_bridge/research/verify_major_decision_found_kingdom_source.py --game-root <CK3-root>
 py -O ck3_autonomous_player/native_bridge/research/verify_major_decision_found_kingdom_source.py --game-root <CK3-root>
 ```

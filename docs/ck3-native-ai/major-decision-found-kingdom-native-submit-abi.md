@@ -107,7 +107,7 @@ edges provide the static production ABI evidence.
 
 From the repository root, with an authorized exact-build CK3 installation:
 
-```powershell
+```console
 py ck3_autonomous_player/native_bridge/research/verify_major_decision_found_kingdom_native_submit_abi_v1.py --game-root <CK3-root>
 py -O ck3_autonomous_player/native_bridge/research/verify_major_decision_found_kingdom_native_submit_abi_v1.py --game-root <CK3-root>
 ```
