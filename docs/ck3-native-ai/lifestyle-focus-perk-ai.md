@@ -551,3 +551,59 @@ provenance、final gate、stable-key 去重、owner/gate/frame drift 和 typed s
 失败。它证明的是核心合同与静态候选物化，production adapter、公共 snapshot glue
 和唯一 CK3 轮次中的 paused 对照仍是后续工作；在 live artifact 出现前状态不得写成
 `production-live primitive`。
+
+## G2-M4-LIFESTYLE-MIN：标准封建和平治理的一个正式动作候选（2026-09-16）
+
+> 状态：`static-ready / private policy / live pending`。本节只新增独立的
+> `ck3_autonomous_player/src/xar_autoplayer/lifestyle_min_policy.py` 和聚焦测试；
+> 未注册公共 query/action，未接入 `ck3_auto_turn`，也未启动 CK3。
+
+原生树、候选门和最终判定已经由本文 LIFE1–LIFE4 与版本绑定的
+LIFE6/LIFE7 ABI 冻结。
+本包只使用其中两个经过 exact-build 原版脚本确认、对标准封建治理直接有用的叶子：
+
+| 叶子 | exact-build 定义 | 当前最小收益 | 正式动作后置门 |
+|---|---|---|---|
+| `cutting_corners_perk` | `common/lifestyle_perks/00_stewardship_2_domain_tree_perks.txt:163-228`，SHA `ADB3EF30EBE3DA37FC02F8F132815173987527B6E82C19FB738A8EB8D3635C21` | 非无地政府的 holding/build 金币、威望、虔诚费用修正各 `-0.05`；使两年窗口的真实建设更省预算 | 引擎 `CanSelectPerk` 真、同帧有未花管理点、typed 提交一次、独立后续 paused frame `HasPerk=true`，下一正式 turn 消费；后续真实建设单独验收 |
+| `stewardship_wealth_focus` | `common/focuses/00_lifestyle_focuses.txt:550-595`，SHA `DF55AA0F96A7085817D0884A401A208786FA0C57E8BBD2BA40115F8C37CBABD2` | 当前无重心时持续 `monthly_income_mult=0.1`，有利于建设预算 | 引擎 `CanSelectFocus` 真、typed 提交一次、独立后续 paused frame 当前 focus 等于目标，下一正式 turn 消费；不能从 ACK 推断收入变化 |
+
+纯策略输入是 LIFE2 `SerializePlayerLifestyleSnapshotV1` 的 exact 私有 JSON
+字段：`status`、完整 revision/date/player binding、当前 focus、当前生活方式未花
+点、owned perk、两类已完成最终判定的合法候选和六个 readiness bit。
+另由独立 campaign-root/war 状态提供已确认的标准封建范围和和平状态。
+`null`、unavailable 候选、未知和平状态不进入 typed 动作；合法空候选才返回
+`no_legal_minimum`。已有提交待确认时返回 `verify_pending_receipt`，回执
+不明时返回 `action_state_unknown`，已生效回执先由下一 turn 消费，不重投。
+
+当管理生活方式有未花点且 `cutting_corners_perk` 出现在原生最终合法候选，
+策略只推荐该 perk；当前没有重心且 `stewardship_wealth_focus` 合法，
+只推荐该 focus。目标 key 和 action request 所需的 snapshot/revision/date/
+player binding 原样输出，request ID 必须由正式消费者按现有机制生成。
+这是优先把建设预算链解锁的窄规则。人格、教育加权、已有其他管理树的
+前沿、健康优先级以及五年重心切换净收益仍是本文原生树中的质量差距，
+首个有界治理动作后按 production outcome 校准，不借此包扩展优化框架。
+
+```mermaid
+flowchart TD
+  A["标准封建 + 和平的独立观测"] --> B{"LIFE2 状态和 LIFE4 最终合法候选\n同一 paused frame 完整?"}
+  B -- no --> U["typed unavailable；补只读 source / paused snapshot"]
+  B -- yes --> P{"已有提交待确认?"}
+  P -- yes --> R["先读 receipt；不重投"]
+  P -- no --> C{"有管理未花点且 cutting_corners 最终合法?"}
+  C -- yes --> D["推荐一个 typed perk"]
+  C -- no --> F{"无重心且 wealth focus 最终合法?"}
+  F -- yes --> G["推荐一个 typed focus"]
+  F -- no --> N["合法空/窄规则未覆盖；记录场景"]
+  D --> H["独立新 paused frame + 下一正式 turn"]
+  G --> H
+  X["普通原生 AI 后续 perk cadence"] -. unknown .-> C
+  Y["五年重心切换的动态净收益"] -. unknown .-> F
+```
+
+缺少的直接接线是 LIFE2 状态、LIFE4 当前窗口最终合法候选和 LIFE7
+提交适配进入 application-main shared glue/typed wire，然后由正式
+`choose_one_life_turn` 在强制事件、pending interaction 与战争优先分支后调用
+本纯策略。接线前不能把 private fixture 当作 production 消费；接线后也必须
+由唯一 CK3 负责人取得同版本普通存档的真实 paused 观测、一次 native typed
+动作、独立结果、下一 turn 消费及 checkpoint/cold restore。当前用户保留了
+Windows CK3 和屏幕作人工使用，因此本包离线阶段不消耗实机轮次。
