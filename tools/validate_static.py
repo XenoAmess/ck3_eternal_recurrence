@@ -2123,13 +2123,18 @@ def package_checks(errors):
             "instrumented engineering samples")):
         errors.append("serial balance matrix aggregator is incomplete")
     restore_watchdog = read(ROOT / "tools/restore_watchdog.py")
+    windows_process = read(
+        ROOT / "ck3_autonomous_player/src/xar_autoplayer/windows_process.py")
     autosave_protection = (
         "SAVE_GAMES_DIR", 'glob("autosave*.ck3")', "autosaves.ready",
         "autosave backup verification failed", "restore_autosaves(backup)",
         "DLC_LOAD_JSON", "set_enabled_mod_profile", "ugc_3784706360.mod",
-        "Invoke-CimMethod", "Win32_Process", "outside process tree",
+        "create_process_via_windows_management", "outside process tree",
     )
     if (any(token not in acceptance_runner for token in autosave_protection)
+            or any(token not in windows_process for token in (
+                "def create_process_via_windows_management", "Win32_Process",
+                '"Create"'))
             or any(token not in restore_watchdog for token in (
                 'glob("autosave*.ck3")', "autosaves.ready",
                 "autosave restore verification failed"))):
