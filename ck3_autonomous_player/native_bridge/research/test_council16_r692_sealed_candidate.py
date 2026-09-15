@@ -28,12 +28,18 @@ from prepare_council16_r692_sealed_candidate import (
     copy_sealed_inputs,
     patch_python_entrypoints,
     patch_text_bindings,
+    verify_harness_commit,
     verify_runtime_repository,
 )
 from validate_private_probe_readiness_contract import driver_snapshot_api_contract
 
 
 class Council16CandidateTests(unittest.TestCase):
+    def test_harness_commit_must_be_a_repository_commit(self) -> None:
+        repo_root = Path(__file__).resolve().parents[3]
+        with self.assertRaisesRegex(RuntimeError, "not a Git commit"):
+            verify_harness_commit(repo_root, "f" * 40)
+
     def make_candidate(self, root: Path) -> tuple[Path, dict[str, object]]:
         source_root = root / SOURCE_ROOT_RELATIVE
         for index, (name, relative) in enumerate(MODULE_PATHS.items()):

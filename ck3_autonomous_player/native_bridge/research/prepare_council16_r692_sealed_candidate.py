@@ -44,6 +44,12 @@ R691_WER_SHA256 = (
 R691_ARTIFACT_MANIFEST_SHA256 = (
     "67CBFD8EAF69177E7615F9B10682B56DF7F4F09E04D8FF6E5FC44CCE0CE5EA57"
 )
+HARNESS_PATHS = (
+    "ck3_autonomous_player/native_bridge/research/council16_candidate_runtime_identity.py",
+    "ck3_autonomous_player/native_bridge/research/council16_candidate_runtime_import_probe.py",
+    "ck3_autonomous_player/native_bridge/research/prepare_council16_r692_sealed_candidate.py",
+    "ck3_autonomous_player/native_bridge/research/test_council16_r692_sealed_candidate.py",
+)
 
 
 def sha256(path: Path) -> str:
@@ -204,6 +210,33 @@ def verify_runtime_repository(repo_root: Path) -> list[Path]:
     if not paths:
         raise RuntimeError("runtime source Git tree is empty")
     return paths
+
+
+def verify_harness_commit(repo_root: Path, harness_commit: str) -> None:
+    commit = subprocess.run(
+        ["git", "cat-file", "-e", f"{harness_commit}^{{commit}}"],
+        cwd=repo_root,
+        capture_output=True,
+        check=False,
+    )
+    if commit.returncode != 0:
+        raise RuntimeError("harness commit is not a Git commit in the repository")
+    for relative in HARNESS_PATHS:
+        blob = subprocess.run(
+            ["git", "cat-file", "-e", f"{harness_commit}:{relative}"],
+            cwd=repo_root,
+            capture_output=True,
+            check=False,
+        )
+        if blob.returncode != 0:
+            raise RuntimeError(f"harness commit does not contain {relative}")
+    clean = subprocess.run(
+        ["git", "diff", "--quiet", harness_commit, "--", *HARNESS_PATHS],
+        cwd=repo_root,
+        check=False,
+    )
+    if clean.returncode != 0:
+        raise RuntimeError("harness files differ from the requested harness commit")
 
 
 def copy_sealed_inputs(
@@ -500,6 +533,7 @@ def materialize(
         raise FileExistsError(f"output already exists: {output}")
     if not re.fullmatch(r"[0-9a-f]{40}", harness_commit):
         raise ValueError("harness commit must be a lowercase full Git hash")
+    verify_harness_commit(repo_root, harness_commit)
     if harness_commit[:7] not in output.name:
         raise ValueError("output directory must include the harness short hash")
     if not output.name.startswith("g2-m4-council16-r692-"):
