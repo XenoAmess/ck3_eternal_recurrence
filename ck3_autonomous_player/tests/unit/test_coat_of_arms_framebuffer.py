@@ -1,12 +1,17 @@
 from __future__ import annotations
 
 import base64
+import ctypes
 import hashlib
 from io import BytesIO
+from unittest.mock import Mock
 
 from PIL import Image, ImageDraw
 import numpy as np
 import pytest
+import win32api
+import win32gui
+import win32process
 
 from xar_autoplayer.bridge.coat_of_arms_framebuffer import (
     CoatOfArmsFramebufferError,
@@ -16,6 +21,7 @@ from xar_autoplayer.bridge.coat_of_arms_framebuffer import (
     decode_reference_png_v1,
     derive_anchor_calibration_v3,
     derive_two_state_calibration_v2,
+    prepare_ck3_framebuffer_capture_v1,
 )
 
 
@@ -47,6 +53,41 @@ def test_decodes_only_hash_bound_bounded_square_png() -> None:
             base64.b64encode(oversized).decode("ascii"),
             hashlib.sha256(oversized).hexdigest().upper(),
         )
+
+
+def test_foreground_preparation_falls_back_after_direct_win32_error(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    from xar_autoplayer.vision import window
+
+    client_rect = (0, 0, 2560, 1440)
+    monkeypatch.setattr(window, "_eligible_windows", lambda _pid: [(100, client_rect)])
+    monkeypatch.setattr(window, "_root_window", lambda hwnd: hwnd)
+    foreground = iter((200, 200, 100))
+    monkeypatch.setattr(win32gui, "GetForegroundWindow", lambda: next(foreground))
+    monkeypatch.setattr(win32gui, "ShowWindow", Mock())
+    monkeypatch.setattr(win32gui, "BringWindowToTop", Mock())
+    set_foreground = Mock(side_effect=(RuntimeError("access denied"), None))
+    monkeypatch.setattr(win32gui, "SetForegroundWindow", set_foreground)
+    monkeypatch.setattr(win32api, "GetCurrentThreadId", lambda: 10)
+    monkeypatch.setattr(
+        win32process,
+        "GetWindowThreadProcessId",
+        lambda _hwnd: (20, 999),
+    )
+    user32 = Mock()
+    user32.AttachThreadInput.side_effect = (True, True)
+    monkeypatch.setattr(ctypes, "WinDLL", lambda *_args, **_kwargs: user32)
+
+    result = prepare_ck3_framebuffer_capture_v1(1234)
+
+    assert result["foregroundRootBefore"] == 200
+    assert result["foregroundRootAfter"] == 100
+    assert result["mode"] == "attached_foreground_thread"
+    assert result["detachSucceeded"] is True
+    assert result["directActivationError"].startswith("RuntimeError:")
+    assert result["attachedActivationError"] is None
+    assert set_foreground.call_count == 2
 
 
 def test_locates_reference_over_the_whole_frame_without_fixed_coordinates() -> None:

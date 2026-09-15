@@ -119,11 +119,16 @@ def prepare_ck3_framebuffer_capture_v1(bridge_pid: int) -> dict[str, object]:
     mode = "already_foreground"
     attached_thread = 0
     detach_succeeded: bool | None = None
+    direct_activation_error: str | None = None
+    attached_activation_error: str | None = None
     if before != hwnd:
         mode = "direct"
         win32gui.ShowWindow(hwnd, win32con.SW_RESTORE)
         win32gui.BringWindowToTop(hwnd)
-        win32gui.SetForegroundWindow(hwnd)
+        try:
+            win32gui.SetForegroundWindow(hwnd)
+        except BaseException as error:
+            direct_activation_error = f"{type(error).__name__}: {error}"
         raw_after_direct = int(win32gui.GetForegroundWindow())
         after_direct = _root_window(raw_after_direct) if raw_after_direct else 0
         if after_direct != hwnd:
@@ -150,6 +155,7 @@ def prepare_ck3_framebuffer_capture_v1(bridge_pid: int) -> dict[str, object]:
                 win32gui.SetForegroundWindow(hwnd)
             except BaseException as error:
                 activation_error = error
+                attached_activation_error = f"{type(error).__name__}: {error}"
             finally:
                 detach_succeeded = bool(
                     user32.AttachThreadInput(current_thread, foreground_thread, False)
@@ -158,10 +164,6 @@ def prepare_ck3_framebuffer_capture_v1(bridge_pid: int) -> dict[str, object]:
                 raise CoatOfArmsFramebufferError(
                     "AttachThreadInput detach failed after CK3 activation"
                 )
-            if activation_error is not None:
-                raise CoatOfArmsFramebufferError(
-                    f"CK3 foreground activation failed: {activation_error}"
-                ) from activation_error
     candidates_after = _eligible_windows(bridge_pid)
     raw_after = int(win32gui.GetForegroundWindow())
     after = _root_window(raw_after) if raw_after else 0
@@ -180,6 +182,8 @@ def prepare_ck3_framebuffer_capture_v1(bridge_pid: int) -> dict[str, object]:
         "mode": mode,
         "attachedForegroundThread": attached_thread,
         "detachSucceeded": detach_succeeded,
+        "directActivationError": direct_activation_error,
+        "attachedActivationError": attached_activation_error,
         "presentationOnly": True,
         "usesOcr": False,
         "usesKeyboard": False,
