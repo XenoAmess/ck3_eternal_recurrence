@@ -182,7 +182,11 @@ def seal(args: argparse.Namespace) -> dict[str, object]:
                        "unchanged paused frame before/after", "CK3 process reclaimed"] + (
                            ["slot42 player-model source TitleID/ProvinceID and definition count same paused frame",
                             "active CHoldingView model binding true; legality not inferred or action submitted"]
-                           if args.read_kind == "player-model-sources" else []),
+                       if args.read_kind == "player-model-sources" else (
+                           ["slot42 independent world CBuildingType registry count and six directly held TitleID/ProvinceID rows in same paused revision",
+                            "bounded stock player final-legality checks with nonempty pointer-free true sample or evidence_insufficient",
+                            "cost/action false, no CK3 action/date and private/public ad false"]
+                           if args.read_kind == "player-world-definitions" else [])),
         "bounds": {"readiness_timeout_seconds": 300, "query_timeout_seconds_each": 12,
                    "overall_window_seconds": 480},
         "ck3_inventory_before_launch": ck3_process_inventory(),
@@ -200,7 +204,8 @@ def main() -> int:
         parser.add_argument(f"--{name}", required=True, type=Path)
     parser.add_argument("--pipe", required=True)
     parser.add_argument("--source-commit", required=True)
-    parser.add_argument("--read-kind", choices=("cache-view", "player-model-sources"),
+    parser.add_argument("--read-kind", choices=("cache-view", "player-model-sources",
+                                                "player-world-definitions"),
                         default="cache-view")
     args = parser.parse_args()
     result = seal(args)

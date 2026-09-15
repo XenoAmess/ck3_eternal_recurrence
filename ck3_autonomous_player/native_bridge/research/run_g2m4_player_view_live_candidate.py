@@ -43,12 +43,16 @@ def require(condition: bool, reason: str) -> None:
 
 
 def private_read_exit_code(status: str, reclaimed: bool, read_kind: str) -> int:
-    required = ("model_sources_observed" if read_kind == "player-model-sources"
-                else "cache_branch_observed")
+    required = (
+        "world_player_legality_observed" if read_kind == "player-world-definitions"
+        else "model_sources_observed" if read_kind == "player-model-sources"
+        else "cache_branch_observed"
+    )
     if reclaimed and status == required:
         return 0
     if reclaimed and status in {"closed_view_evidence_insufficient", "open_view_scene",
-                               "model_sources_evidence_insufficient"}:
+                               "model_sources_evidence_insufficient",
+                               "world_source_evidence_insufficient"}:
         return 2
     return 1
 
@@ -59,7 +63,9 @@ def preflight(root: Path) -> tuple[object, dict[str, object], dict[str, object]]
     require(manifest.get("schema") == "xar.ck3.g2_m4_player_view_private_live_candidate_v1"
             and manifest.get("status") == "READY_NO_LAUNCH" and manifest.get("advertised") is False,
             "private candidate manifest is absent or not sealed")
-    require(manifest.get("read_kind", "cache-view") in {"cache-view", "player-model-sources"},
+    require(manifest.get("read_kind", "cache-view") in {
+                "cache-view", "player-model-sources", "player-world-definitions"
+            },
             "private candidate read kind is unsupported")
     require(Path(str(manifest.get("candidate_root"))).resolve() == root,
             "candidate belongs to a different artifact root")
@@ -158,6 +164,7 @@ def run(root: Path, round_id: str, evidence: Path) -> int:
         from xar_autoplayer.runtime import NativeBridgeLaunchConfig, launch, stop_tracked
         from run_g2m4_paused_player_view_read import run_owned_paused_player_view_read
         from run_g2m4_paused_player_model_source_read import run_owned_paused_player_model_source_read
+        from run_g2m4_paused_player_world_building_source_read import run_owned_paused_player_world_building_source_read
         from PIL import ImageGrab  # noqa: F401; needed only for an optional same-frame receipt
         require(not ck3_process_inventory().get("processes"), "old CK3 instance still alive")
         locks.enter_context(exclusive_launch_lock(spec.game_exe))
@@ -217,7 +224,13 @@ def run(root: Path, round_id: str, evidence: Path) -> int:
             "dlc_mod_load_order": [manifest["dlc_mod_load_order"]],
             "configuration": manifest["configuration"] if isinstance(manifest["configuration"], dict) else {},
         }
-        if manifest.get("read_kind", "cache-view") == "player-model-sources":
+        if manifest.get("read_kind", "cache-view") == "player-world-definitions":
+            read = run_owned_paused_player_world_building_source_read(
+                driver, frozen,
+                evidence / "paused-player-world-building-source-read.json",
+                timeout_seconds=12.0,
+            )
+        elif manifest.get("read_kind", "cache-view") == "player-model-sources":
             read = run_owned_paused_player_model_source_read(
                 driver, frozen, evidence / "paused-player-model-source-read.json",
                 timeout_seconds=12.0,
@@ -230,6 +243,9 @@ def run(root: Path, round_id: str, evidence: Path) -> int:
         report["read"] = read
         report["cache_branch"] = read.get("cache_branch")
         report["player_model_sources"] = read.get("player_model_sources")
+        report["player_world_building_sources"] = read.get(
+            "player_world_building_sources"
+        )
         report["next_read"] = read.get("next_read")
         report["status"] = read.get("status", "red")
     except BaseException as error:
