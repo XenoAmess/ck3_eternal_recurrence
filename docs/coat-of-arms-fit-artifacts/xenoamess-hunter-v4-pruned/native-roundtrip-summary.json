@@ -1,0 +1,89 @@
+{
+  "schema": "ck3-coa-native-roundtrip-summary-v1",
+  "status": "passed",
+  "createdAt": "2026-09-15T12:26:59.708290+00:00",
+  "repositoryCommit": "99fbe6a8ff7e6fd9b2d2dcb20d10d7c261c420ad",
+  "artifactVersion": "xenoamess-hunter-v4-pruned",
+  "interactionPolicy": {
+    "mcpOnly": true,
+    "usesOcr": false,
+    "usesKeyboard": false,
+    "usesMouse": false
+  },
+  "steam": {
+    "offline": true
+  },
+  "nativeBuild": {
+    "gameVersion": "1.19.0.6",
+    "ck3ExecutableSha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+    "bridgeDllSha256": "9DDC30CAF4373F4370E597DE42A3FADE5DC70AE597511D6654BBC13D4D14C987",
+    "bridgeInjectorSha256": "880885ABBF26C0D4147CFB55B70C5608B581F40C4229099D44A610B5CD589137"
+  },
+  "input": {
+    "utf8Bytes": 260932,
+    "lines": 9057,
+    "sha256": "40B935A32A8A5EEDBC6262BB3A74CEA07935801B104FFD5768A7C7D4C2E32D14",
+    "logicalLayers": 293,
+    "coloredEmblemBlocks": 293,
+    "instances": 1000,
+    "semanticProjectionSha256": "B1A31BDD9BAB4A95A35753AB4932C447642140044DE4BF10607975786D6D8440"
+  },
+  "upload": {
+    "transport": "coat-of-arms-source-upload-v2",
+    "maxChunkBytes": 49152,
+    "chunkEncoding": "base64",
+    "chunkCount": 6,
+    "chunks": [
+      { "index": 0, "bytes": 49152, "sha256": "E93AD1BDB69972A12BD04564FB55A344DF119416383E2FD3AF4F101570A6CB55" },
+      { "index": 1, "bytes": 49152, "sha256": "76F9535DC125B4FDFA79708C1B5EEFEBAF6C5B820CA3BBB90CBE3CB780E67D85" },
+      { "index": 2, "bytes": 49152, "sha256": "A311FC3DCE237D87DFA3CF1D8056A15415BA058291092ECDF41424D6B9EF64CC" },
+      { "index": 3, "bytes": 49152, "sha256": "760314473917B64EBFE4835E76321222239FBC27DA5223C91A2D8E49F030B912" },
+      { "index": 4, "bytes": 49152, "sha256": "0EA76928F0568C4B3506902B9ABC5B7C88FCEE8E0FA8DC4D000EDAD58052D487" },
+      { "index": 5, "bytes": 15172, "sha256": "F25695E0ED801F06564C5DE16CFF1954F4FAC4709677753E8766F173C7A4F593" }
+    ],
+    "beginSeconds": 0.005,
+    "commitSeconds": 0.073,
+    "appliedOnceAfterCompleteValidation": true,
+    "sourceIdentityMatched": true
+  },
+  "nativeCopy": {
+    "utf8Bytes": 148785,
+    "lines": 8057,
+    "sha256": "B12B9152444EE601B698BED1DC0CFE3712D5A2482D0F7757FCA93D744D2F93CA",
+    "logicalLayers": 293,
+    "coloredEmblemBlocks": 293,
+    "instances": 1000,
+    "semanticProjectionSha256": "00B4B6374D35D5F300EB4A66A74F8F71C929CBA88F7F7FEC31B711DE0EF457E6",
+    "exportSeconds": 0.686,
+    "normalization": [
+      "CK3 rewrites whitespace and numeric formatting",
+      "CK3 omits all explicit zero-valued rotation fields"
+    ]
+  },
+  "semanticChecks": {
+    "patterns": true,
+    "textures": true,
+    "colors": true,
+    "masks": true,
+    "positions": true,
+    "scales": true,
+    "rotations": true,
+    "depths": true,
+    "parents": true
+  },
+  "cleanup": {
+    "sharedLaunchAndStateLocksReleased": true,
+    "jobActiveProcessesBeforeTermination": 1,
+    "jobActiveProcessesFinal": 0,
+    "finalCk3InventoryEmpty": true,
+    "cleanupProven": true
+  },
+  "elapsedSeconds": 192.818,
+  "rawEvidence": {
+    "localPath": "artifacts/coa-clipboard-probe-2026-09-08/mcp-hunter-v4-pruned-large-source-live13.json",
+    "bytes": 2103136,
+    "sha256": "FFB98BD7DB2FB0FAD821142063C8212EDD7A3B8C381AA4582929E3DB09648C39",
+    "tracked": false,
+    "reason": "The append-only local runner report embeds duplicate full input/output payloads; this compact checked-in receipt preserves the auditable hashes, counts, bindings and checks without duplicating those megabytes."
+  }
+}
