@@ -39,6 +39,11 @@ function expectString(value: unknown, path: string): string {
   return value
 }
 
+function expectBoolean(value: unknown, path: string): boolean {
+  if (typeof value !== 'boolean') throw new Error(`${path} 必须是 boolean`)
+  return value
+}
+
 function expectFiniteNumber(value: unknown, path: string): number {
   if (typeof value !== 'number' || !Number.isFinite(value)) throw new Error(`${path} 必须是有限数值`)
   return value
@@ -94,6 +99,19 @@ function parseCoatOfArmsModel(value: unknown): CoatOfArms {
   const source = expectRecord(value, 'coatOfArms')
   if (!Array.isArray(source.coloredEmblems)) throw new Error('coatOfArms.coloredEmblems 必须是数组')
   if (!Array.isArray(source.texturedEmblems)) throw new Error('coatOfArms.texturedEmblems 必须是数组')
+  let rootPresence: CoatOfArms['rootPresence']
+  if (source.rootPresence !== undefined) {
+    const presence = expectRecord(source.rootPresence, 'coatOfArms.rootPresence')
+    if (!Array.isArray(presence.colors) || presence.colors.length !== 3) {
+      throw new Error('coatOfArms.rootPresence.colors 必须恰有三个 boolean')
+    }
+    rootPresence = {
+      pattern: expectBoolean(presence.pattern, 'coatOfArms.rootPresence.pattern'),
+      colors: presence.colors.map((item, index) => expectBoolean(
+        item, `coatOfArms.rootPresence.colors[${index}]`,
+      )) as [boolean, boolean, boolean],
+    }
+  }
   return {
     outerKey: expectString(source.outerKey, 'coatOfArms.outerKey'),
     parent: expectString(source.parent, 'coatOfArms.parent'),
@@ -105,6 +123,7 @@ function parseCoatOfArmsModel(value: unknown): CoatOfArms {
     texturedEmblems: source.texturedEmblems.map((item, index) => (
       parseTexturedEmblem(item, `coatOfArms.texturedEmblems[${index}]`)
     )),
+    ...(rootPresence ? { rootPresence } : {}),
   }
 }
 

@@ -24,6 +24,22 @@ describe('CK3 coat of arms parser', () => {
     expect(serializeCoatOfArms(result.coatOfArms)).toContain('parent = c_england')
   })
 
+  it('does not invent inheritable root fields around a parent reference', () => {
+    const parentOnly = parseCoatOfArms('coa={parent=c_england}')
+    const oneOverride = parseCoatOfArms('coa={parent=c_england color1=blue}')
+
+    expect(serializeCoatOfArms(parentOnly.coatOfArms)).toBe([
+      'coa = {',
+      '    parent = c_england',
+      '}',
+      '',
+    ].join('\r\n'))
+    const overrideOutput = serializeCoatOfArms(oneOverride.coatOfArms)
+    expect(overrideOutput).toContain('color1 = blue')
+    expect(overrideOutput).not.toContain('color2 =')
+    expect(overrideOutput).not.toContain('color3 =')
+  })
+
   it('rejects unresolved, cyclic and duplicate static variables', () => {
     const unresolved = parseCoatOfArms('coa={color1=@missing}')
     const cyclic = parseCoatOfArms('@a=@b @b=@a coa={color1=@a}')

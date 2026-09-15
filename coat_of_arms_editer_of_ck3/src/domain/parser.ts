@@ -408,6 +408,12 @@ export function parseCoatOfArms(source: string): ImportResult {
       }
     }
 
+    const rootPresence: NonNullable<CoatOfArms['rootPresence']> = {
+      pattern: Boolean(findLastAssignment(entries, 'pattern')),
+      colors: [1, 2, 3].map((index) => Boolean(
+        findLastAssignment(entries, `color${index}`),
+      )) as [boolean, boolean, boolean],
+    }
     const coatOfArms: CoatOfArms = {
       outerKey: selected.key,
       parent: scalar(entries, 'parent', '', diagnostics, variables),
@@ -415,6 +421,7 @@ export function parseCoatOfArms(source: string): ImportResult {
       colors: [1, 2, 3].map((index) => scalar(entries, `color${index}`, index === 1 ? 'blue' : 'white', diagnostics, variables)) as [string, string, string],
       coloredEmblems,
       texturedEmblems,
+      ...(rootPresence.pattern && rootPresence.colors.every(Boolean) ? {} : { rootPresence }),
     }
     diagnostics.push(...validateCoatOfArms(coatOfArms))
     if (coatOfArms.parent.trim()) diagnostics.push({

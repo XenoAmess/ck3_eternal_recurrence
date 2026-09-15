@@ -32,6 +32,11 @@ export interface CoatOfArms {
   colors: [string, string, string]
   coloredEmblems: ColoredEmblem[]
   texturedEmblems: TexturedEmblem[]
+  /** Presence of inheritable scalar fields in imported source. Undefined means editor-authored fields are explicit. */
+  rootPresence?: {
+    pattern: boolean
+    colors: [boolean, boolean, boolean]
+  }
 }
 
 export interface ImportResult {

@@ -14,9 +14,13 @@ const texture = (value: string) => `"${value.replaceAll('\\', '\\\\').replaceAll
 export function serializeCoatOfArms(coatOfArms: CoatOfArms): string {
   const lines = ['coa = {']
   if (coatOfArms.parent.trim()) lines.push(`${indent(1)}parent = ${quoted(coatOfArms.parent.trim())}`)
-  if (coatOfArms.pattern.trim()) lines.push(`${indent(1)}pattern = ${texture(coatOfArms.pattern.trim())}`)
+  if (coatOfArms.pattern.trim() && coatOfArms.rootPresence?.pattern !== false) {
+    lines.push(`${indent(1)}pattern = ${texture(coatOfArms.pattern.trim())}`)
+  }
   coatOfArms.colors.forEach((color, index) => {
-    if (color.trim()) lines.push(`${indent(1)}color${index + 1} = ${quoted(color.trim())}`)
+    if (color.trim() && coatOfArms.rootPresence?.colors[index] !== false) {
+      lines.push(`${indent(1)}color${index + 1} = ${quoted(color.trim())}`)
+    }
   })
 
   coatOfArms.coloredEmblems.forEach((emblem) => {

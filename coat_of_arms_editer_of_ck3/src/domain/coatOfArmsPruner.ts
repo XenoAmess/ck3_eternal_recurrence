@@ -135,6 +135,10 @@ function modelFromItems(source: CoatOfArms, items: FlatInstance[]): CoatOfArms {
       instances: [cloneInstance(item.instance)],
     })),
     texturedEmblems: source.texturedEmblems.map((emblem) => ({ ...emblem })),
+    rootPresence: source.rootPresence ? {
+      pattern: source.rootPresence.pattern,
+      colors: [...source.rootPresence.colors],
+    } : undefined,
   }
 }
 

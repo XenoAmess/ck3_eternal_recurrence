@@ -81,6 +81,10 @@ export function structurallyCompressCoatOfArms(
     colors: [...coatOfArms.colors],
     coloredEmblems: compressedBlocks,
     texturedEmblems: coatOfArms.texturedEmblems.map((emblem) => ({ ...emblem })),
+    rootPresence: coatOfArms.rootPresence ? {
+      pattern: coatOfArms.rootPresence.pattern,
+      colors: [...coatOfArms.rootPresence.colors],
+    } : undefined,
   }
   const afterInstances = drawnInstances(compressed)
   if (afterInstances !== beforeInstances) {

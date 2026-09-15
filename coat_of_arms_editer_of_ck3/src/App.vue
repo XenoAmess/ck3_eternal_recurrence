@@ -889,6 +889,10 @@ function parseMask(value: string) {
     : []
 }
 
+function markRootColorExplicit(index: number) {
+  if (coatOfArms.value.rootPresence) coatOfArms.value.rootPresence.colors[index] = true
+}
+
 function errorMessage(error: unknown): string {
   return uiText(error instanceof Error ? error.message : String(error))
 }
@@ -1082,6 +1086,10 @@ function cloneCoatOfArmsForWorker(value: CoatOfArms): CoatOfArms {
       })),
     })),
     texturedEmblems: value.texturedEmblems.map((emblem) => ({ ...emblem })),
+    rootPresence: value.rootPresence ? {
+      pattern: value.rootPresence.pattern,
+      colors: [...value.rootPresence.colors],
+    } : undefined,
   }
 }
 
@@ -1812,6 +1820,7 @@ async function useConfiguredEmblem(item: CoatOfArmsConfiguredResourceItem) {
 
 async function loadPatternTexture(name: string) {
   if (!name) return
+  if (coatOfArms.value.rootPresence) coatOfArms.value.rootPresence.pattern = true
   textureBusy.value = true
   try {
     const { decoded, preview } = await readTexturePreview('pattern', name)
@@ -2376,7 +2385,7 @@ watch(() => activeEmblem.value?.instances.length ?? 0, (length) => {
                 </el-select>
               </el-form-item>
               <el-form-item v-for="index in 3" :key="index" :label="t('baseColor', { index })">
-                <el-input v-model="coatOfArms.colors[index - 1]" />
+                <el-input v-model="coatOfArms.colors[index - 1]" @input="markRootColorExplicit(index - 1)" />
               </el-form-item>
             </div>
 
