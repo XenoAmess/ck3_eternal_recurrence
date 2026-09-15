@@ -722,3 +722,51 @@ typed terminal failures. This repair keeps the private v1 result, public MCP,
 schema, planner, and gameplay surfaces unchanged. A rebuilt candidate on the
 next valid round still needs one paused live result before this primitive can
 advance beyond `not_observed`.
+
+## COUNCIL19: additive public steward projection contract
+
+While the next private live candidate is evaluated, COUNCIL19 freezes the
+smallest public result that a formal policy can consume. The additive
+capability is `game.query.council-composition-candidates-v1`; its result schema
+is `xar.ck3.council-composition-candidates/v1`. This package defines and tests
+the public typed projection, wire serializer and same-frame join. It does not
+register a bridge command, advertise the capability, add an MCP method or claim
+live evidence. Those steps remain gated on a GREEN private reader result and a
+real native enrichment binding.
+
+The v1 coverage remains exactly `councillor_steward`. It joins one successful
+private `gui_eligibility_mode=true` candidate vector with incumbent and
+stewardship facts sampled in the same application-main transaction. The join
+requires exact equality of snapshot ID, public/native revisions, date, owner,
+position and every `(full CharacterID, native ordinal)` row. A late
+campaign-root read is not accepted as an equivalent frame. Missing incumbent,
+skill, legality, row identity or frame evidence makes the whole public result
+unavailable; it never publishes a partially enriched list.
+
+An available position publishes `incumbent_character_id` or `null`, an explicit
+`vacant` flag, and one action route: `assign` for a vacancy or `replace` for an
+occupied steward seat. Every row publishes its full CharacterID, diagnostic
+native collection ordinal, final `eligible=true`, reason
+`native_candidate_provider_accepted`, `main_skill={key:"stewardship",value}`
+and the same action route. The exact GUI-mode producer already excludes failed
+candidates, so v1 does not fabricate rejected rows or reverse-engineer machine
+reasons that the provider did not return. Reassign, swap, guest recruitment and
+standalone fire remain outside this narrow contract.
+
+The readiness block separates identity, candidate collection, incumbent,
+final legality, main skill, route and same-frame evidence. `ready=true` requires
+all seven. Stable public failure keys are `private_reader_unavailable`,
+`enrichment_unavailable`, `same_frame_binding_mismatch`, `incumbent_invalid`,
+`candidate_set_mismatch`, `candidate_eligibility_unready`,
+`candidate_main_skill_unready` and `schema_invariant_failed`. When the private
+reader fails, the public result retains its typed source failure separately.
+Native pointers, raw producer rows and a native AI score never enter the wire.
+
+The machine-readable contract is
+`research/council_composition_candidates_public_v1_abi.json`. Promotion from
+static-ready projection to production observation still requires: a GREEN
+private reader on this exact build; a native same-frame incumbent and
+stewardship enrichment producer; runtime command/capability registration; one
+paused public-query artifact; and formal policy consumption through action and
+postcondition verification. Until then the overall council primitive remains
+pending live evidence.

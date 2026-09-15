@@ -1,0 +1,98 @@
+{
+  "schema": "xar.ck3.council-composition-candidates/v1",
+  "schema_version": 1,
+  "capability": "game.query.council-composition-candidates-v1",
+  "stage": "static_ready_public_projection_pending_private_live_and_runtime_registration",
+  "exact_build": {
+    "game_version": "1.19.0.6",
+    "executable_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86"
+  },
+  "coverage": {
+    "position_key": "councillor_steward",
+    "main_skill_key": "stewardship",
+    "candidate_source": "council_composition_steward_candidates_reader_v1 with gui_eligibility_mode=true",
+    "candidate_rows": "only final native-provider accepted rows; rejected rows are not reconstructed",
+    "action_routes": [
+      "assign",
+      "replace"
+    ],
+    "excluded_routes": [
+      "reassign",
+      "swap",
+      "recruit_then_assign",
+      "fire"
+    ]
+  },
+  "request_binding": [
+    "expected_snapshot_id",
+    "expected_public_revision",
+    "expected_native_revision",
+    "expected_date_raw",
+    "expected_owner_character_id",
+    "position_key=councillor_steward"
+  ],
+  "available_result": {
+    "snapshot": [
+      "snapshot_id",
+      "public_revision",
+      "native_revision",
+      "date_raw",
+      "paused"
+    ],
+    "owner_character_id": "full signed int32 CharacterID; -1 is invalid",
+    "position": {
+      "position_key": "councillor_steward",
+      "incumbent_character_id": "full signed int32 CharacterID or null",
+      "vacant": "bool",
+      "action_route": "assign when vacant; replace when occupied"
+    },
+    "candidate_collection_complete": true,
+    "candidate": {
+      "character_id": "full signed int32 CharacterID; -1 is invalid",
+      "native_collection_ordinal": "diagnostic producer ordinal; not a score or order promise",
+      "eligible": true,
+      "eligibility_reason": "native_candidate_provider_accepted",
+      "main_skill": {
+        "key": "stewardship",
+        "value": "non-negative int32"
+      },
+      "action_route": "same assign/replace route as the target position"
+    },
+    "readiness": [
+      "identity_ready",
+      "candidate_collection_ready",
+      "incumbent_ready",
+      "candidate_legality_ready",
+      "main_skill_ready",
+      "action_route_ready",
+      "same_frame_ready",
+      "ready"
+    ]
+  },
+  "unavailable_reasons": [
+    "private_reader_unavailable",
+    "enrichment_unavailable",
+    "same_frame_binding_mismatch",
+    "incumbent_invalid",
+    "candidate_set_mismatch",
+    "candidate_eligibility_unready",
+    "candidate_main_skill_unready",
+    "schema_invariant_failed"
+  ],
+  "same_frame_rule": "private candidate vector, incumbent and each main skill value must be sampled in one application-main transaction with exact snapshot/revision/date/owner/position equality",
+  "public_boundary": {
+    "native_pointers_published": false,
+    "raw_rows_published": false,
+    "native_ai_score_claimed": false,
+    "runtime_advertised": false,
+    "mcp_registered": false,
+    "formal_strategy_live": false
+  },
+  "promotion_gate": [
+    "R693-or-later private steward reader live GREEN on the same exact build",
+    "native same-frame incumbent and stewardship enrichment binding",
+    "runtime command/capability registration",
+    "paused public query artifact",
+    "formal strategy consumption and postcondition loop"
+  ]
+}
