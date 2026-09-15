@@ -31,12 +31,31 @@ from .runtime import (
 )
 
 
+NATIVE_AUTO_RUN_STOP_REQUEST_FILENAME = "native-auto-run.stop"
+NATIVE_AUTO_RUN_STOP_POLL_SECONDS = 0.05
+
+
 @contextmanager
-def _deferred_native_auto_run_sigint(stop_event: threading.Event):
-    """Let one Ctrl+C finish the current typed turn before stopping."""
+def _deferred_native_auto_run_sigint(
+    stop_event: threading.Event,
+    *,
+    stop_request_file: Path | None = None,
+):
+    """Let a console signal or operator file stop at the next paused boundary."""
     if threading.current_thread() is not threading.main_thread():
         raise AgentError("native-auto-run CLI must run on the main thread")
+    if stop_request_file is not None:
+        ensure_state_path_safe(stop_request_file.parent)
+        stop_request_file.parent.mkdir(parents=True, exist_ok=True)
+    if stop_request_file is not None and stop_request_file.exists():
+        raise AgentError(
+            f"stale native-auto-run stop request file: {stop_request_file}; "
+            "remove it before starting a new run"
+        )
     previous = signal.getsignal(signal.SIGINT)
+    watcher_done = threading.Event()
+    file_request_seen = threading.Event()
+    watcher: threading.Thread | None = None
 
     def request_stop(_signum: int, _frame: object) -> None:
         if stop_event.is_set():
@@ -49,9 +68,46 @@ def _deferred_native_auto_run_sigint(stop_event: threading.Event):
         )
 
     signal.signal(signal.SIGINT, request_stop)
+    if stop_request_file is not None:
+        def watch_stop_request() -> None:
+            while not watcher_done.is_set():
+                if stop_request_file.is_file():
+                    file_request_seen.set()
+                    stop_event.set()
+                    print(
+                        "Stop file detected; finishing the current turn and checkpoint.",
+                        file=sys.stderr,
+                        flush=True,
+                    )
+                    return
+                watcher_done.wait(NATIVE_AUTO_RUN_STOP_POLL_SECONDS)
+
+        watcher = threading.Thread(
+            target=watch_stop_request,
+            name="xar-native-auto-run-operator-stop-file",
+            daemon=True,
+        )
+        watcher.start()
+        print(
+            f"Operator stop request file: {stop_request_file}",
+            file=sys.stderr,
+            flush=True,
+        )
     try:
         yield
     finally:
+        watcher_done.set()
+        if watcher is not None:
+            watcher.join()
+        if file_request_seen.is_set() and stop_request_file is not None:
+            try:
+                stop_request_file.unlink()
+            except OSError as error:
+                print(
+                    f"Could not clear stop request file {stop_request_file}: {error}",
+                    file=sys.stderr,
+                    flush=True,
+                )
         signal.signal(signal.SIGINT, previous)
 
 
@@ -540,7 +596,13 @@ def main(argv: list[str] | None = None) -> int:
             from .native_auto_run import native_auto_run
 
             operator_stop_event = threading.Event()
-            with _deferred_native_auto_run_sigint(operator_stop_event):
+            stop_request_file = (
+                spec.state_dir / NATIVE_AUTO_RUN_STOP_REQUEST_FILENAME
+            )
+            with _deferred_native_auto_run_sigint(
+                operator_stop_event,
+                stop_request_file=stop_request_file,
+            ):
                 result = native_auto_run(
                     spec,
                     turn_count=args.turns,

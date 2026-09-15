@@ -5,6 +5,7 @@ import copy
 import hashlib
 import io
 from pathlib import Path
+import subprocess
 import sys
 import tempfile
 import threading
@@ -3011,6 +3012,43 @@ class NativeAutoRunTests(unittest.TestCase):
                 with self.assertRaises(KeyboardInterrupt):
                     handler(cli.signal.SIGINT, None)
         self.assertEqual(cli.signal.getsignal(cli.signal.SIGINT), previous)
+
+    def test_cli_operator_stop_file_accepts_external_request(self) -> None:
+        with tempfile.TemporaryDirectory(prefix="xar-operator-stop-file-") as temporary:
+            request = Path(temporary) / cli.NATIVE_AUTO_RUN_STOP_REQUEST_FILENAME
+            stop_event = threading.Event()
+            stderr = io.StringIO()
+            with contextlib.redirect_stderr(stderr):
+                with cli._deferred_native_auto_run_sigint(
+                    stop_event,
+                    stop_request_file=request,
+                ):
+                    subprocess.run(
+                        [
+                            sys.executable,
+                            "-c",
+                            "from pathlib import Path; import sys; "
+                            "Path(sys.argv[1]).write_text('stop', encoding='utf-8')",
+                            str(request),
+                        ],
+                        check=True,
+                    )
+                    self.assertTrue(stop_event.wait(timeout=2.0))
+            self.assertFalse(request.exists())
+            self.assertIn(str(request), stderr.getvalue())
+            self.assertIn("Stop file detected", stderr.getvalue())
+
+    def test_cli_refuses_stale_operator_stop_file_before_run(self) -> None:
+        with tempfile.TemporaryDirectory(prefix="xar-operator-stop-file-") as temporary:
+            request = Path(temporary) / cli.NATIVE_AUTO_RUN_STOP_REQUEST_FILENAME
+            request.write_text("stop", encoding="utf-8")
+            with self.assertRaisesRegex(AgentError, "stale native-auto-run stop"):
+                with cli._deferred_native_auto_run_sigint(
+                    threading.Event(),
+                    stop_request_file=request,
+                ):
+                    self.fail("stale stop request reached production run")
+            self.assertTrue(request.is_file())
 
 
 if __name__ == "__main__":

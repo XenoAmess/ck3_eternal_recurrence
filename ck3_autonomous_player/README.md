@@ -428,13 +428,16 @@ pipe/DLL 和 `-loadsave=xar_checkpoint` 重启。若旧进程的 CK3 窗口已�
 才重新执行完整 cold-start 与 ordinary/crash/opening 链。development step/session 明确不构成 release qualification 或有效得分局。
 `native-auto-run` 与 development-only 的 `opening-step --step auto-run` 不是别名：前者全程只使用 native-headless bridge，
 不导入 OCR、视觉或桌面输入，并且只有真实语义推进才能让一次运行得到 `outcome=qualified`。
-运行中的 `native-auto-run` 首次收到 Ctrl+C 时会完成当前 typed turn 及独立后置校验，在安全的 paused 边界写入
+运行中的 `native-auto-run` 会在 stderr 打印本次状态目录里的 `Operator stop request file` 绝对路径。
+在另一个 PowerShell 窗口执行 `Set-Content -LiteralPath '<打印的绝对路径>' -Value stop` 即可请求可控停止。
+首次 Ctrl+C 也保留为能送达 SIGINT 的本地控制台操作。当前 typed turn 与独立后置校验完成后，它在安全的 paused 边界写入
 `xar_checkpoint.ck3`，然后回收受管 CK3。报告将这次操作记为
 `status=operator_stop_checkpointed / outcome=operator_stopped / ok=false`；正常落盘且清理 GREEN 时 CLI 退出码为 0，
 它不是有界游玩验收通过。此时用相同 state、pipe、DLL 和 injector，附加 `--cold-start-checkpoint` 再启动正式
 `native-auto-run` 即可从该存档恢复。若当前回合进入未解决的强制事件或 terminal 状态，停止报告会明确写
 `operator_stop_checkpoint_deferred`，不会把未保存的进度称为可恢复。第二次 Ctrl+C 是紧急中断，保留 RED 与动作状态
-不明的现场；恢复前先查实际游戏结果。
+不明的现场；恢复前先查实际游戏结果。停止请求文件在被正式入口消费后清除；如果异常退出留下旧文件，
+新运行会在启动 CK3 前拒绝并打印路径，操作者应先核对上次报告和游戏进程，再清除旧请求。
 
 ### 当前可玩能力（2026-08-23）
 
