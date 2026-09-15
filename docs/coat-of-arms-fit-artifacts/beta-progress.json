@@ -1,6 +1,6 @@
 {
   "schema": "ck3-coa-beta-progress-v1",
-  "updatedAt": "2026-09-15T19:55:00+08:00",
+  "updatedAt": "2026-09-15T20:05:00+08:00",
   "overallStatus": "in_progress",
   "workPackages": [
     {
@@ -68,12 +68,30 @@
     },
     {
       "id": "WP2",
-      "status": "pending",
-      "commit": null,
-      "commands": [],
-      "resultPath": null,
-      "keyMetrics": {},
-      "blockers": []
+      "status": "in_progress",
+      "commit": "2d9a05c8",
+      "commands": [
+        "pnpm exec vitest run src/domain/coatOfArmsOptimizer.test.ts src/domain/parser.test.ts src/domain/imageFitter.test.ts",
+        "pnpm build",
+        "pnpm exec playwright test e2e/reference-hunter-compression.spec.ts"
+      ],
+      "resultPath": "docs/coat-of-arms-fit-artifacts/xenoamess-hunter-v4-compressed/",
+      "keyMetrics": {
+        "structuralCompressionStatus": "passed",
+        "coloredEmblemBlocksBefore": 1000,
+        "coloredEmblemBlocksAfter": 293,
+        "drawnInstancesBefore": 1000,
+        "drawnInstancesAfter": 1000,
+        "utf8BytesBefore": 380862,
+        "utf8BytesAfter": 260932,
+        "byteReductionFraction": 0.31489095787975696,
+        "pixelDifferenceBytes96": 0,
+        "pixelDifferenceBytes230": 0,
+        "pixelDifferenceBytes512": 0
+      },
+      "blockers": [
+        "backward prune / leave-one-out fixed-point evidence remains pending"
+      ]
     },
     {
       "id": "WP3",
