@@ -110,7 +110,10 @@ bool ExecuteMarriageCandidateInternalRouteV1(
 // The controlled worker-facing read-only transport uses the already-published
 // gameplay snapshot. Public capability registration remains a separate live
 // gate; the protocol cannot supply or override this input.
-inline constexpr std::uint32_t kMarriageCandidateQueuedWaitBudgetMsV1 = 5000;
+// R714 cancelled a queued private query after 5 seconds before the paused
+// owner invoked its executor. R695 needed 12.56 seconds for a same-save paused
+// application-main Council query. Stay inside the private 30-second request.
+inline constexpr std::uint32_t kMarriageCandidateQueuedWaitBudgetMsV1 = 20'000;
 inline constexpr std::uint32_t kMarriageCandidateExecutingWaitSliceMsV1 = 1000;
 inline constexpr std::string_view kMarriageRankedPrivateQueryStepV1 =
     "query-ranked-marriage-candidates-v1-private";
@@ -135,6 +138,10 @@ struct MarriageCandidateWorkerReadResultV1 {
   MarriageCandidateInternalRouteFailureV1 route_failure =
       MarriageCandidateInternalRouteFailureV1::none;
   std::uint32_t executor_invocations = 0;
+  std::uint64_t pump_epochs_before = 0;
+  std::uint64_t pump_epochs_after = 0;
+  std::uint64_t paused_owner_pump_epochs_before = 0;
+  std::uint64_t paused_owner_pump_epochs_after = 0;
 };
 
 MarriageCandidateWorkerReadResultV1 ReadMarriageCandidatesOnApplicationMainV1(

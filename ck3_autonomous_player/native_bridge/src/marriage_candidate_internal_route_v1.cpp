@@ -370,11 +370,21 @@ MarriageCandidateWorkerReadResultV1 ReadMarriageCandidatesOnApplicationMainV1(
     result.route_failure = ReadMarriageCandidateInternalRouteFailureV1(route);
     return result;
   }
+  result.pump_epochs_before =
+      route.mailbox->pump_epochs.load(std::memory_order_acquire);
+  result.paused_owner_pump_epochs_before =
+      route.mailbox->paused_owner_verified_pump_epochs.load(
+          std::memory_order_acquire);
   result.submit = xar::ck3_11906::TrySubmitMainThreadQueryV1(
       *route.mailbox, &ExecuteMarriageCandidateInternalRouteV1, &query,
       query.ticket);
   if (result.submit !=
       xar::ck3_11906::MainThreadQuerySubmitResultV1::submitted) {
+    result.pump_epochs_after =
+        route.mailbox->pump_epochs.load(std::memory_order_acquire);
+    result.paused_owner_pump_epochs_after =
+        route.mailbox->paused_owner_verified_pump_epochs.load(
+            std::memory_order_acquire);
     result.status = result.submit ==
                             xar::ck3_11906::MainThreadQuerySubmitResultV1::
                                 paused_main_thread_not_observed
@@ -391,6 +401,11 @@ MarriageCandidateWorkerReadResultV1 ReadMarriageCandidatesOnApplicationMainV1(
         *route.mailbox, query.ticket,
         kMarriageCandidateExecutingWaitSliceMsV1);
   }
+  result.pump_epochs_after =
+      route.mailbox->pump_epochs.load(std::memory_order_acquire);
+  result.paused_owner_pump_epochs_after =
+      route.mailbox->paused_owner_verified_pump_epochs.load(
+          std::memory_order_acquire);
   result.completion = query.completion;
   result.executor_invocations = query.executor_invocations;
   result.route_failure = ReadMarriageCandidateInternalRouteFailureV1(route);

@@ -6219,6 +6219,14 @@ std::string RankedMarriagePrivateFailureMessage(
   result += Number(static_cast<std::uint32_t>(read.route_failure));
   result += " executor_invocations=";
   result += Number(read.executor_invocations);
+  result += " pump_epochs_before=";
+  result += Number(read.pump_epochs_before);
+  result += " pump_epochs_after=";
+  result += Number(read.pump_epochs_after);
+  result += " paused_owner_pump_epochs_before=";
+  result += Number(read.paused_owner_pump_epochs_before);
+  result += " paused_owner_pump_epochs_after=";
+  result += Number(read.paused_owner_pump_epochs_after);
   result += " same_frame_after=";
   result += same_frame_after ? "true" : "false";
   return result;
