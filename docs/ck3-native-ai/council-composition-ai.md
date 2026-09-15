@@ -2,7 +2,7 @@
 
 ## 状态与范围
 
-- **[private-live capture GREEN / private reader core static-ready / binding pending]** 本专题冻结常规内阁席位的人选集合入口、职位与候选合法性、解职/调任/交换门、主要能力，以及强力封臣席位压力。R684 已在 exact-build、paused、同线程条件下捕获 `councillor_steward` 的 11 行候选向量；COUNCIL6 已实现 fail-closed private reader core，生产绑定、公开 MCP、planner 与任命动作仍未实现。
+- **[R693 private probe production-live primitive GREEN / COUNCIL21 enrichment static-ready / public runtime registration pending]** 本专题冻结常规内阁席位的人选集合入口、职位与候选合法性、解职/调任/交换门、主要能力，以及强力封臣席位压力。R693 已在 exact-build、paused、application-main 条件下通过生产私有 reader/binding 读取 `councillor_steward` 的 11 行候选向量；COUNCIL21 已静态闭合同帧现任与候选 stewardship enrichment。公开 bridge query/capability/MCP、正式策略实机消费与任命动作仍待闭合。
 - **[unknown]** exact-build EXE 明确保留 `ai_council.cpp` 子系统及 council AI 开关，但没有在脚本、define 或当前已闭合的 reflection/GUI 表面暴露“候选综合分数”、各输入权重、重排 cadence 或最终选择理由。本文不把职位主能力排序、`COUNCIL_TASK_SWITCH_SCORE` 或 GUI 顺序冒充原版人选 AI 公式。
 - 本专题以现有 [内阁观测与发展任务](council-and-development.md) 的 active position/incumbent 结果为输入，增加人选与动作预检，不改变 `campaign-root-context-v1`。
 - 宫廷司祭仅发布 position identity、最终候选合法性与不透明拒绝原因。信仰、教义、教义条目、宗教热情、改宗和宗教改革不进入合同或我方策略。
@@ -42,7 +42,7 @@ COUNCIL6 实现 `g2_council_composition_steward_candidates_reader_v1` 的 **stat
 
 R684 的 11 个 CharacterID 已作为聚焦 fixture 输入；成功输出包含同样 11 个 ID。producer 调用之后发生的 span、row、generation、duplicate 或 frame failure 都会先 release，再返回零行 unavailable；release 自身失败返回 `temporary_vector_release_failed`，不发布部分结果。离线空向量是 fixture-only 行为覆盖，不冒充 live empty-list 证据。
 
-生产绑定尚未注册：`producer_address`、exact temporary-vector release、campaign-root active steward task resolution 与 mailbox glue 仍由下一工作包完成。因此公开 capability 不存在，production query 未通过，planner-ready 仍为 false。
+R693 已把 `producer_address`、exact temporary-vector release、campaign-root active steward task resolution 与 mailbox glue 接入私有 probe，并取得一次 paused production-live primitive GREEN。COUNCIL21 复用这套生产私有绑定提供的 main-thread/frame/memory/CharacterID 解析回调，静态闭合现任与候选 stewardship enrichment；公开 application-main query executor、capability/MCP 注册和 paused public artifact 仍未完成，因此公开 query 与 planner-ready 仍为 false。
 
 ## 已闭合的原版规则
 

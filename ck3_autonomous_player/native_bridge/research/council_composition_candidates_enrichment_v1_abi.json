@@ -38,7 +38,8 @@
     "before": "capture the private steward frame and require exact snapshot/public revision/native revision/date/owner/position equality",
     "reads": "resolve incumbent and every private candidate, then read stewardship using the frozen Character layout",
     "after": "capture the complete steward frame again and require byte-semantic equality with the before frame",
-    "caller_rule": "invoke immediately after the private reader inside the same application-main query execution",
+    "caller_rule": "future public runtime glue must invoke this immediately after the private reader inside one application-main executor and live-verify that adjacency; the current core does not prove registration or executor adjacency",
+    "core_enforcement": "the current core enforces exact before/private identity/after frame equality and fails closed on any mismatch",
     "failure_policy": "any invalid identity, unreadable or negative skill, thread loss, frame mismatch or drift returns no enrichment rows"
   },
   "output": {
