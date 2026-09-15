@@ -375,6 +375,8 @@ MarriageCandidateWorkerReadResultV1 ReadMarriageCandidatesOnApplicationMainV1(
   result.paused_owner_pump_epochs_before =
       route.mailbox->paused_owner_verified_pump_epochs.load(
           std::memory_order_acquire);
+  result.source_adapter_failure_before =
+      ReadMarriageMatchmakingSourceAdapterFailureV1(route.source_adapter);
   result.submit = xar::ck3_11906::TrySubmitMainThreadQueryV1(
       *route.mailbox, &ExecuteMarriageCandidateInternalRouteV1, &query,
       query.ticket);
@@ -407,6 +409,9 @@ MarriageCandidateWorkerReadResultV1 ReadMarriageCandidatesOnApplicationMainV1(
       route.mailbox->paused_owner_verified_pump_epochs.load(
           std::memory_order_acquire);
   result.completion = query.completion;
+  result.observer_failure = query.candidates.unavailable_reason;
+  result.source_adapter_failure_after =
+      ReadMarriageMatchmakingSourceAdapterFailureV1(route.source_adapter);
   result.executor_invocations = query.executor_invocations;
   result.route_failure = ReadMarriageCandidateInternalRouteFailureV1(route);
   result.reclaim =

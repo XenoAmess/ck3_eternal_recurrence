@@ -137,6 +137,12 @@ struct MarriageCandidateWorkerReadResultV1 {
       MarriageCandidateInternalCompletionV1::not_executed;
   MarriageCandidateInternalRouteFailureV1 route_failure =
       MarriageCandidateInternalRouteFailureV1::none;
+  MarriageMatchmakingObserverFailureV1 observer_failure =
+      MarriageMatchmakingObserverFailureV1::none;
+  MarriageMatchmakingSourceAdapterFailureV1 source_adapter_failure_before =
+      MarriageMatchmakingSourceAdapterFailureV1::none;
+  MarriageMatchmakingSourceAdapterFailureV1 source_adapter_failure_after =
+      MarriageMatchmakingSourceAdapterFailureV1::none;
   std::uint32_t executor_invocations = 0;
   std::uint64_t pump_epochs_before = 0;
   std::uint64_t pump_epochs_after = 0;

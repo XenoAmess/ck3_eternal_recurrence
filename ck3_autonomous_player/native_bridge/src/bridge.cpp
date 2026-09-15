@@ -6217,6 +6217,15 @@ std::string RankedMarriagePrivateFailureMessage(
   result += Number(static_cast<std::uint32_t>(read.completion));
   result += " route_failure=";
   result += Number(static_cast<std::uint32_t>(read.route_failure));
+  result += " observer_failure=";
+  result += xar::bridge::MarriageMatchmakingObserverFailureKeyV1(
+      read.observer_failure);
+  result += " source_adapter_failure_before=";
+  result += xar::bridge::MarriageMatchmakingSourceAdapterFailureKeyV1(
+      read.source_adapter_failure_before);
+  result += " source_adapter_failure_after=";
+  result += xar::bridge::MarriageMatchmakingSourceAdapterFailureKeyV1(
+      read.source_adapter_failure_after);
   result += " executor_invocations=";
   result += Number(read.executor_invocations);
   result += " pump_epochs_before=";
