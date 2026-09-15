@@ -2,7 +2,8 @@
 
 ## 状态与范围
 
-- **COST-GATE1（2026-09-15，static-ready/read-only，未实机）**：在已冻结的 native selected-row 成本 helper `0x18D17E0` 中，`0x18D18F3` 前的 `rdi`、`rbp-0x41`、`rbx` 分别是同步借用的 `0x28` 目标行、八槽成本、八槽资源余额；同一 native command 以后从 `[r14+0x18]` 写入 actor ID，因此 collector 要求它等于当帧玩家，排除 AI 的建设候选。exact EXE 和 helper span 的 SHA-256，以及对应寄存器来源指令，保存在 `native_bridge/research/domain_construction_cost_gate_collector_v1_abi.json`；独立 C++ collector 在该调用尚未返回时复制身份/成本/余额。`cost == balance` 在原生严格 `<` 判定下成为可观测的 `insufficient_resource` 拒绝；余额足够却尚未观察最终 native validator 时只记录 `final_observation`，不能进入 construction action。normal/optimized 聚焦 fixture 与 exact-build source verifier 已验证静态来源，**没有 paused live capture**。唯一下一入口是由 application-main 的 exact cost-gate callback 同步调用此 collector，并再闭合 final-legality、真实候选和资源/建设后置状态；此阶段仍不注册/广告公共建设动作。
+- **COST-GATE1（2026-09-15，static-ready/read-only，未实机）**：在已冻结的 native selected-row 成本 helper `0x18D17E0` 中，`0x18D18F3` 前的 `rdi`、`rbp-0x41`、`rbx` 分别是同步借用的 `0x28` 目标行、八槽成本、八槽资源余额；同一 native command 以后从 `[r14+0x18]` 写入 actor ID，因此 collector 要求它等于当帧玩家，排除 AI 的建设候选。exact EXE 和 helper span 的 SHA-256，以及对应寄存器来源指令，保存在 `native_bridge/research/domain_construction_cost_gate_collector_v1_abi.json`；独立 C++ collector 在该调用尚未返回时复制身份/成本/余额。`cost == balance` 在原生严格 `<` 判定下成为可观测的 `insufficient_resource` 拒绝；余额足够却尚未观察最终 native validator 时只记录 `final_observation`，不能进入 construction action。normal/optimized 聚焦 fixture 与 exact-build source verifier 已验证静态来源，**没有 paused live capture**。自然调用属于 AI scheduler；该 collector 没有可证的玩家调用，当前不接 AI hook 或广告公共建设动作。玩家建设的下一输入转向下文原版县视图与底层定义枚举。
+- **VIEW-PROBE1（2026-09-15，static-ready-private，未接 bridge/未实机）**：`player_construction_view_probe_v1.hpp/.cpp/_process.cpp/_mailbox.cpp` 复用 exact root/idler/handler 路径，借用 `handler+0xD0` 的 `CHoldingView`，在 paused application-main 中同步读取 `+0x118/+0x120/+0x124` 候选缓存。返回 `view_candidate_cache_empty` 与 `view_candidate_cache_present`，其中 cache empty **不是**“玩家没有可建建筑”。源码 ABI `native_bridge/research/player_construction_view_probe_v1_abi.json` 与 exact source verifier GREEN，normal/optimized MSVC `/W4 /WX` 聚焦 fixture GREEN。私有 mailbox executor 已静态编译但尚未加入 bridge/CMake，没有真实 paused query、候选成本/合法性、策略动作或后置结果；不提升 M4/预览能力。
 
 - **[static-confirmed]** 本专题冻结 CK3 `1.19.0.6` 的原版建筑候选门、`ai_value` 评分、头部
   `80%` 入围带、带权随机选择、预算储备背景、施工提交边以及原版对“存钱等目标”的明确说明。
@@ -59,8 +60,44 @@
 | `game/common/buildings/00_standard_economy_buildings.txt` | `355445C46F70B9015A5E2BE68EE9DDC1F4E3EEB8BE368D34A37FD8A8CC0F7153` |
 | `game/common/script_values/00_building_values.txt` | `F436F7D9D5AC5506B38D715F0CE02C4F4257EEF3ADDF56597C18A526A6F66825` |
 | `game/common/holdings/_holdings.info` | `763082E08CF8BB87945B40E9D3CD8C414EF972027A5801C4EED54BAD4249417E` |
+| `game/gui/window_county_view.gui` | `E4121041153486379D813BC0154718F48446EA5F2143BFF4ADF06D7E9B8C4E8E` |
 
 以下文件行号和 RVA 均绑定这组字节。任一 hash 或 EXE 变化后，结论先降回未验证，再重新冻结脚本与调用链。
+
+### 玩家建设的只读查询入口（静态脚本证据，native ABI 未闭合）
+
+原版县视图在 `window_county_view.gui:2305` 以
+`HoldingView.GetPotentialBuildings` 提供 `GUIPotentialBuildingItem` 的玩家可见候选。
+每项通过 `GetBuilding.GetTypeName` 显示建筑，`GetCost`、`GetPrestigeCost`、
+`GetPietyCost` 与 `GetConstructionTime` 显示当前费用/工期；`CanAffordCost(GetPlayer.Self)`
+判断资金，`CanConstruct` 控制施工按钮，`Construct` 才是变更动作
+（同文件 `:2343-2459`）。这是玩家路径的来源，不能用 AI scheduler 的
+`0x18D294F -> 0x1921810` 被动调用替代。
+
+exact EXE 的 `CIngameInterfaceHandler` 在 `0xA74DD7..0xA74E14` 创建/替换
+`handler+0xD0` 的 `CHoldingView`（RTTI、vtable 与单一 constructor xref 已静态核对）。
+GUI binding `GetPotentialBuildings` 的一条 core `0xCCC4D0` 仅返回
+`view+0x118`，不产生候选；该字段在 view 构造时初始化为空。GUI
+registry 中 `0x412E670` 的字符串是完整方法名
+`CanConstructBuilding`，它不是 `:2456` 的 `CanConstruct`。真正的
+`GUIPotentialBuildingItem.CanConstruct` 注册使用字符串 RVA
+`0x4101200`、callback `0x11A62F0`；后者从 row 取
+`view/building/mode`，在 `0x11A632E` 调原生最终判定
+`0x295CD60`。`GetCost` 注册使用字符串 `0x412E560`、callback
+`0x11A6530`，其 core `0x119B930` 会从当前省份/建筑重新计算费用，
+不是从 AI scheduler 的八槽栈值读取。
+
+`view+0x118` 的 `data/capacity/count` 分别在 `+0x118/+0x120/+0x124`。
+`0x11A32B0` 先清除旧 row，随后在 `0x11A364F..0x11A3732`
+按筛选结果生成新 row。row 的生命周期由 view 管理，只能在同一
+application-main callback 同步读取。
+
+尚未闭合县视图关闭时是否存在可用候选、row 的完整 identity/成本、
+玩家直辖地枚举来源。因此当前不能仅凭 `handler+0xD0`
+返回非空 pointer 或仅凭 GUI registry 字符串发布正式查询。下一施工入口是
+exact-build 的玩家 read-only query/ABI 和受控 closed-view paused 互证，
+先取得真实候选与最终 `CanConstruct`，再考虑正式策略与 typed action；
+本节只是静态输入账本，**不提升公共建设 readiness，也没有 paused live 证据**。
 
 ## 原版公开定义
 

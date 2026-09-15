@@ -1,0 +1,61 @@
+{
+  "schema_version": 1,
+  "status": "static-ready-private-player-view-cache-probe-bridge-unwired-live-pending",
+  "game_version": "1.19.0.6",
+  "exe_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+  "stock_gui_sha256": "E4121041153486379D813BC0154718F48446EA5F2143BFF4ADF06D7E9B8C4E8E",
+  "owner_path": "reuse LIFE3 root *(module+0x570F7B8) -> exact idler cast -> CIngameInterfaceHandler; fresh handler+0xD0 -> CHoldingView; view+0xD0 == handler",
+  "handler_vtable_rva": "0x40AF630",
+  "holding_view_vtable_rva": "0x4131618",
+  "handler_holding_view_offset": "0xD0",
+  "holding_view_owner_offset": "0xD0",
+  "potential_buildings_model": {
+    "data_offset": "0x118",
+    "capacity_i32_offset": "0x120",
+    "count_i32_offset": "0x124",
+    "getter_core_rva": "0xCCC4D0",
+    "note": "getter only returns the field; cache empty is not an empty domain"
+  },
+  "exact_regions": [
+    {
+      "name": "handler_view_publish",
+      "start_rva": "0xA74DD7",
+      "end_rva": "0xA74E14",
+      "sha256": "FA119C8A88EE972EB80DB238DD906482455EADB1C026E4053496EBBBE8A8A940"
+    },
+    {
+      "name": "get_potential_buildings_field",
+      "start_rva": "0xCCC4D0",
+      "end_rva": "0xCCC4D8",
+      "sha256": "FA4B4348FC6F5BE93312D900C6D06F45743568B10D7D81FEA980150DF0603B14"
+    },
+    {
+      "name": "holding_view_model_init",
+      "start_rva": "0x119DF00",
+      "end_rva": "0x119DF70",
+      "sha256": "5087FECAAE2FD86F06B53EF32FEB8C1381DD833F2DBBAA062798A240FBEC7E7D"
+    },
+    {
+      "name": "potential_model_clear",
+      "start_rva": "0x11A32B0",
+      "end_rva": "0x11A3388",
+      "sha256": "11A1A03BDF3DD6587A12B8A1EAA124976A08AA071596497B33B83B90F559E1B5"
+    },
+    {
+      "name": "potential_item_materialize",
+      "start_rva": "0x11A364F",
+      "end_rva": "0x11A3732",
+      "sha256": "27F77400E1E04437A9233AC9B13642A23067B2927319ADF973CF11C4B6CA344F"
+    }
+  ],
+  "stock_gui_bindings": [
+    "datamodel = \"[HoldingView.GetPotentialBuildings]\"",
+    "enabled = \"[GUIPotentialBuildingItem.CanConstruct]\""
+  ],
+  "not_proven": [
+    "closed-view cache population",
+    "full candidate identity and cost in normal production frame",
+    "independent post-construction game state"
+  ],
+  "advertised": false
+}
