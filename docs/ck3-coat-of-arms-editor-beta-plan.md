@@ -1,12 +1,12 @@
 # CK3 家徽编辑器 Beta 工作计划
 
-> 状态：执行中（2026-09-15）；WP0、WP1 已通过，WP2 浏览器剪枝/压缩已通过、压缩候选原生复验待执行
+> 状态：执行中（2026-09-15）；WP0–WP2 已通过，当前推进 WP3 高分辨率与混合原生元素
 >
 > 产品目录：`coat_of_arms_editer_of_ck3/`
 >
 > 目标：从 Alpha 的“可用近似器”推进到可验证、可压缩、可在大预算下稳定工作的纯浏览器 Beta。
 >
-> WP0 浏览器接缝修复和 WP1 hunter v4 大载荷原生 Apply/Copy 文本闭环均已通过；当前第一工作项为 WP2 最终剪枝与安全压缩。
+> WP0 浏览器接缝修复、WP1 大载荷文本闭环、WP2 精确剪枝/压缩及压缩文本原生闭环均已通过；当前工作项为 WP3。
 > 128 KiB 已由真实 380,862-byte CK3 round-trip 明确证明只是旧桥合同，不是当前实测引擎上限。
 
 机器可读状态见 [`coat-of-arms-fit-artifacts/beta-progress.json`](coat-of-arms-fit-artifacts/beta-progress.json)，WP0 完整证据见
@@ -98,11 +98,11 @@ framebuffer 空间像素对照仍是独立待办，不影响 WP1 文本闭环的
 
 ### WP2：最终剪枝与代码压缩（P0/P1，1–2 工程日）
 
-当前状态：`in_progress`。`adjacent-equal-style-v1` 无损结构压缩已通过：hunter v4 从 1,000 块压到 293 块、实例仍为 1,000，
+当前状态：`passed`。`adjacent-equal-style-v1` 无损结构压缩已通过：hunter v4 从 1,000 块压到 293 块、实例仍为 1,000，
 380,862 → 260,932 bytes，96/230/512 完整渲染逐字节零差异。`exact-leave-one-out-fixed-point-v1` 又按最终结果反向
 评估全部 1,000 个实例；0 个可零像素差删除，每个单项移除都改变 96px 渲染并使总损失严格上升。完整证据见
 [`xenoamess-hunter-v4-pruned`](coat-of-arms-fit-artifacts/xenoamess-hunter-v4-pruned/)。浏览器剪枝、解析和接缝门禁已经通过；
-压缩后的 293-block 文本还要重新通过 CK3 Apply/Copy，完成前 WP2 保持 `in_progress`。
+压缩后的 260,932-byte / 293-block / 1,000-instance 文本也已在 CK3 中通过 MCP v2 Apply/Copy，九类语义字段序列全部保持。
 
 交付：
 

@@ -1,6 +1,6 @@
 # xenoamess hunter v4-pruned：精确固定点剪枝证据
 
-状态：**浏览器精确剪枝与无损结构压缩通过；压缩文本的 CK3 原生 Apply/Copy 复验待执行。**
+状态：**浏览器精确剪枝、无损结构压缩和压缩文本的 CK3 原生 Apply/Copy 均通过。**
 
 本目录是 [`xenoamess-hunter-v4-compressed`](../xenoamess-hunter-v4-compressed/) 的独立后继，原始 v4 和 v4-compressed
 均保留不变。输入是已经无损合并为 293 个 `colored_emblem` 块、仍含 1,000 个绘制实例的 260,932-byte 文本。
@@ -33,10 +33,22 @@
 因此这份证据只证明在上述合同下无法继续逐项删除，不声称全局最少实例或全局最优。近似几何合并和颜色量化不属于本候选，
 未消耗任何视觉损失预算。
 
+## CK3 原生闭环
+
+在 exact CK3 1.19.0.6 上使用有界 MCP v2 分块传输复验本候选。260,932-byte 输入被拆为 6 块（前五块各 49,152 bytes，
+末块 15,172 bytes）；全部块完成长度、单块/总 SHA-256、generation、revision、build 和页面绑定后才执行一次 Apply。
+CK3 Copy 回读为 148,785 bytes / 8,057 行，仍含 293 个 `colored_emblem` 块和 1,000 个绘制实例。
+
+原文与 CK3 Copy 的字节哈希按预期不同：CK3 改写空白和数字格式，并省略全部显式 `rotation = 0`。语义比较没有用宽松文本
+归一化掩盖字段丢失；pattern、texture、三色、mask、position、scale、rotation、depth、parent 九类序列均分别通过。运行全程
+`mcp_only=true`、OCR/键盘/鼠标均为 false，Steam 保持离线；结束时 CK3 进程树为空且共享锁已释放。完整摘要见
+[`native-roundtrip-summary.json`](native-roundtrip-summary.json)。这仍是文本/结构闭环，不等于 framebuffer 像素一致性证据。
+
 ## 完整性与哈希
 
 - [剪枝后 CK3 代码](coat_of_arms.txt)：`40B935A32A8A5EEDBC6262BB3A74CEA07935801B104FFD5768A7C7D4C2E32D14`
 - [机器可读逐实例报告](report.json)：`6001C4CF23DC69E01EAC1E7DF18B32CE3BEF19E1C86E4D9122405BE4907FCFA5`
+- [原生 MCP 闭环摘要](native-roundtrip-summary.json)：`8EB0C7ED90D222CEC1E8BBECEFFF0134790A744FD1C1F089BC17489F18605B34`
 - hunter 目标图 SHA-256：`53BBDB2FB3B8252475A12098BAC4E1B0A5BBC4765CB6896B4397923EE54D8AC8`
 - 输入和输出源码哈希相同；parse errors 为 0，serialize → parse → serialize 精确相同。
 
@@ -44,6 +56,8 @@
 `28B9876C1E20A6236FD59AD4BB419DCEB8752AA3116306FF310B8C868831CBF4`。报告中保留全部 1,000 条必要性证据，README
 中的范围只是便于审阅的摘要。剪枝实现和冻结证据提交为 `ce31795d`；`.gitattributes` 与 CRLF blob 修正提交为
 `efc823ef`、`6323bd71`，因此远端 Git blob 也保持 260,932-byte 剪贴板载荷。
+原生摘要冻结提交为 `745a1ed5`；2,103,136-byte append-only 本地原始报告的 SHA-256 为
+`FFB98BD7DB2FB0FAD821142063C8212EDD7A3B8C381AA4582929E3DB09648C39`，摘要已经逐字段与该报告核对。
 
 ## 复现命令
 
@@ -58,3 +72,9 @@ pnpm exec playwright test e2e/standalone-image-fit.spec.ts
 
 Playwright 默认会清空 `test-results/`；冻结报告前应最后运行 hunter prune 用例，并把
 `test-results/reference-hunter-prune/{coat_of_arms.txt,report.json}` 复制到本目录。生产页面本身不运行 CK3、MCP、Steam 或后端。
+
+原生复验在仓库根目录执行：
+
+```text
+tools/.venv/Scripts/python.exe ck3_autonomous_player/native_bridge/research/run_frontend_gui_route_v1_live_acceptance.py --source-profile C:/Users/1/DOCUME~1/PARADO~1/CRUSAD~1 --state-dir D:/ck3_coa_hunter_v4_pruned_mcp_live_20260915_r01 --game-dir C:/SteamLibrary/steamapps/common/CRUSAD~1 --bridge-pipe \\.\pipe\xar-coa-hunter-v4-pruned-live13 --bridge-dll C:/xb/coa-wp1-v2-final/xar_ck3_bridge.dll --bridge-injector C:/xb/coa-wp1-v2-final/xar_ck3_bridge_injector.exe --timeout 600 --large-source docs/coat-of-arms-fit-artifacts/xenoamess-hunter-v4-pruned/coat_of_arms.txt --output artifacts/coa-clipboard-probe-2026-09-08/mcp-hunter-v4-pruned-large-source-live13.json
+```

@@ -1,6 +1,6 @@
 {
   "schema": "ck3-coa-beta-progress-v1",
-  "updatedAt": "2026-09-15T20:27:00+08:00",
+  "updatedAt": "2026-09-15T20:34:00+08:00",
   "overallStatus": "in_progress",
   "workPackages": [
     {
@@ -68,8 +68,8 @@
     },
     {
       "id": "WP2",
-      "status": "in_progress",
-      "commit": "ce31795d",
+      "status": "passed",
+      "commit": "745a1ed5",
       "commands": [
         "pnpm exec vitest run src/domain/coatOfArmsOptimizer.test.ts src/domain/parser.test.ts src/domain/imageFitter.test.ts",
         "pnpm build",
@@ -77,7 +77,8 @@
         "pnpm exec vitest run src/domain/coatOfArmsPruner.test.ts src/domain/coatOfArmsOptimizer.test.ts src/domain/imageFitter.seams.test.ts",
         "pnpm exec playwright test e2e/reference-hunter-prune.spec.ts",
         "pnpm exec playwright test e2e/standalone-image-fit.spec.ts",
-        "pnpm test"
+        "pnpm test",
+        "tools/.venv/Scripts/python.exe ck3_autonomous_player/native_bridge/research/run_frontend_gui_route_v1_live_acceptance.py --source-profile C:/Users/1/DOCUME~1/PARADO~1/CRUSAD~1 --state-dir D:/ck3_coa_hunter_v4_pruned_mcp_live_20260915_r01 --game-dir C:/SteamLibrary/steamapps/common/CRUSAD~1 --bridge-pipe \\\\.\\pipe\\xar-coa-hunter-v4-pruned-live13 --bridge-dll C:/xb/coa-wp1-v2-final/xar_ck3_bridge.dll --bridge-injector C:/xb/coa-wp1-v2-final/xar_ck3_bridge_injector.exe --timeout 600 --large-source docs/coat-of-arms-fit-artifacts/xenoamess-hunter-v4-pruned/coat_of_arms.txt --output artifacts/coa-clipboard-probe-2026-09-08/mcp-hunter-v4-pruned-large-source-live13.json"
       ],
       "resultPath": "docs/coat-of-arms-fit-artifacts/xenoamess-hunter-v4-pruned/",
       "keyMetrics": {
@@ -101,15 +102,25 @@
         "maximumRemovalTotalLossDelta": 0.0029218749999999905,
         "finalCodeSha256": "40B935A32A8A5EEDBC6262BB3A74CEA07935801B104FFD5768A7C7D4C2E32D14",
         "pruneReportSha256": "6001C4CF23DC69E01EAC1E7DF18B32CE3BEF19E1C86E4D9122405BE4907FCFA5",
-        "crlfBlobCommit": "6323bd71"
+        "crlfBlobCommit": "6323bd71",
+        "nativeRoundTripStatus": "passed",
+        "nativeInputBytes": 260932,
+        "nativeChunkCount": 6,
+        "nativeCopyBytes": 148785,
+        "nativeCopyLines": 8057,
+        "nativeCopyLogicalLayers": 293,
+        "nativeCopyColoredEmblemBlocks": 293,
+        "nativeCopyInstances": 1000,
+        "nativeSemanticChecksPassed": 9,
+        "nativeElapsedSeconds": 192.818,
+        "nativeSummarySha256": "8EB0C7ED90D222CEC1E8BBECEFFF0134790A744FD1C1F089BC17489F18605B34",
+        "nativeRawReportSha256": "FFB98BD7DB2FB0FAD821142063C8212EDD7A3B8C381AA4582929E3DB09648C39"
       },
-      "blockers": [
-        "compressed 293-block candidate native CK3 Apply/Copy revalidation remains pending"
-      ]
+      "blockers": []
     },
     {
       "id": "WP3",
-      "status": "pending",
+      "status": "in_progress",
       "commit": null,
       "commands": [],
       "resultPath": null,
