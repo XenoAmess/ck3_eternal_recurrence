@@ -24,6 +24,7 @@ production 长跑中自然触发 one-life terminal，完成匹配结算，再经
 - [T0/T1/T2 唯一现行状态投影](../project-state/current-state.json)
 - [状态投影 schema、生成与单写者规则](../project-state/README.md)
 - [G2 全游戏自治需求与现行施工队列](g2-requirements-and-execution.md)
+- [G2 整局自动游玩关键路径与交付计划（2026-09-15）](g2-whole-campaign-critical-path-delivery-plan-2026-09-15.md)
 - [G2 玩法覆盖缺口研究（2026-09-12）](g2-ck3-gameplay-coverage-gap-research-2026-09-12.md)
 - [终极目标、当前能力与完整路线图](goal-and-roadmap.md)
 - [2026-W35 一代人自治 blocker / 能力债账本](one-generation-blocker-ledger.md)
