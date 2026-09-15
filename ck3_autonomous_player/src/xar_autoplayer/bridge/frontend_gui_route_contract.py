@@ -39,6 +39,18 @@ ACTIVATE_FRONTEND_PICK_ANY_CHARACTER_V1_CAPABILITY: Final = (
 ACTIVATE_FRONTEND_PICK_ANY_CHARACTER_V1_STEP: Final = (
     "activate-frontend-pick-any-character-v1"
 )
+ACTIVATE_FRONTEND_START_SELECTED_BOOKMARK_V1_CAPABILITY: Final = (
+    "game.command.activate-frontend-start-selected-bookmark-v1"
+)
+ACTIVATE_FRONTEND_START_SELECTED_BOOKMARK_V1_STEP: Final = (
+    "activate-frontend-start-selected-bookmark-v1"
+)
+QUERY_FRONTEND_SELECTED_1066_FEUDAL_CANDIDATE_V1_CAPABILITY: Final = (
+    "game.command.query-frontend-selected-1066-feudal-candidate-v1"
+)
+QUERY_FRONTEND_SELECTED_1066_FEUDAL_CANDIDATE_V1_STEP: Final = (
+    "query-frontend-selected-1066-feudal-candidate-v1"
+)
 ACTIVATE_FRONTEND_SELECT_RANDOM_PLAYABLE_V1_CAPABILITY: Final = (
     "game.command.activate-frontend-select-random-playable-v1"
 )
@@ -421,6 +433,129 @@ def normalize_frontend_pick_any_character_v1(
         "before": before,
         "acknowledgement": dict(acknowledgement),
         "after": after,
+        "postcondition_verified": True,
+        "backend_id": acknowledgement.get("backend_id"),
+    }
+
+
+def normalize_frontend_selected_1066_feudal_candidate_v1(
+    result: object,
+) -> dict[str, object]:
+    """Accept only native model identity, never a repeated GUI widget name."""
+    if not isinstance(result, dict):
+        raise ValueError("frontend selected-candidate query must be an object")
+    if (
+        result.get("step")
+        != QUERY_FRONTEND_SELECTED_1066_FEUDAL_CANDIDATE_V1_STEP
+        or result.get("accepted") is not True
+        or result.get("status") != "ready"
+        or result.get("route") != "bookmarks"
+        or result.get("selected_bookmark_group_key") != "bm_group_1066"
+        or result.get("selected_bookmark_key") != "bm_1066_rags_to_riches"
+        or result.get("selected_character_name_key")
+        != "bookmark_rags_to_riches_petty_king_murchad"
+        or result.get("selected_character_government_key")
+        != "feudal_government"
+        or not isinstance(result.get("selected_bookmark_start_date_raw"), int)
+        or isinstance(result.get("selected_bookmark_start_date_raw"), bool)
+        or result["selected_bookmark_start_date_raw"] < 1
+        or not isinstance(result.get("query_sequence"), int)
+        or isinstance(result.get("query_sequence"), bool)
+        or result["query_sequence"] < 1
+    ):
+        raise ValueError(
+            "native frontend candidate does not prove selected 1066 feudal Murchad"
+        )
+    return {
+        "schema": "ck3-frontend-selected-1066-feudal-candidate-v1",
+        "schema_version": 1,
+        "step": QUERY_FRONTEND_SELECTED_1066_FEUDAL_CANDIDATE_V1_STEP,
+        "accepted": True,
+        "status": "ready",
+        "route": "bookmarks",
+        "selected_bookmark_group_key": result["selected_bookmark_group_key"],
+        "selected_bookmark_key": result["selected_bookmark_key"],
+        "selected_character_name_key": result["selected_character_name_key"],
+        "selected_character_government_key": result[
+            "selected_character_government_key"
+        ],
+        "selected_bookmark_start_date_raw": result[
+            "selected_bookmark_start_date_raw"
+        ],
+        "query_sequence": result["query_sequence"],
+        "backend_id": result.get("backend_id"),
+        "read_only": True,
+    }
+
+
+def normalize_frontend_start_selected_bookmark_v1(
+    acknowledgement: object,
+    *,
+    before: dict[str, object],
+    selected_candidate: dict[str, object],
+    after_snapshot: dict[str, object],
+    campaign_root: dict[str, object],
+) -> dict[str, object]:
+    """Require a new paused map and independent feudal campaign-root result."""
+    if not isinstance(acknowledgement, dict):
+        raise ValueError("frontend StartGame acknowledgement must be an object")
+    government = campaign_root.get("government")
+    played = after_snapshot.get("played_character")
+    played_id = played.get("character_id") if isinstance(played, dict) else None
+    if (
+        acknowledgement.get("step")
+        != ACTIVATE_FRONTEND_START_SELECTED_BOOKMARK_V1_STEP
+        or acknowledgement.get("accepted") is not True
+        or acknowledgement.get("status")
+        != "acknowledged_verification_pending"
+        or before.get("route") != "bookmarks"
+        or selected_candidate.get("schema")
+        != "ck3-frontend-selected-1066-feudal-candidate-v1"
+        or selected_candidate.get("status") != "ready"
+        or selected_candidate.get("read_only") is not True
+        or selected_candidate.get("selected_bookmark_group_key")
+        != "bm_group_1066"
+        or selected_candidate.get("selected_bookmark_key")
+        != "bm_1066_rags_to_riches"
+        or selected_candidate.get("selected_character_name_key")
+        != "bookmark_rags_to_riches_petty_king_murchad"
+        or selected_candidate.get("selected_character_government_key")
+        != "feudal_government"
+        or selected_candidate.get("selected_bookmark_start_date_raw")
+        != after_snapshot.get("date_raw")
+        or after_snapshot.get("paused") is not True
+        or not isinstance(after_snapshot.get("native_revision"), int)
+        or isinstance(after_snapshot.get("native_revision"), bool)
+        or after_snapshot["native_revision"] < 1
+        or campaign_root.get("campaign_root_context_ready") is not True
+        or campaign_root.get("queried_native_revision")
+        != after_snapshot.get("native_revision")
+        or not isinstance(government, dict)
+        or government.get("key") != "feudal_government"
+        or not isinstance(campaign_root.get("player_character_id"), int)
+        or isinstance(campaign_root.get("player_character_id"), bool)
+        or campaign_root["player_character_id"] < 1
+        or campaign_root["player_character_id"] != played_id
+        or campaign_root.get("date_raw") != after_snapshot.get("date_raw")
+    ):
+        raise ValueError(
+            "frontend StartGame lacks an independent paused feudal map result"
+        )
+    return {
+        "schema": "ck3-frontend-selected-bookmark-start-v1",
+        "schema_version": 1,
+        "step": ACTIVATE_FRONTEND_START_SELECTED_BOOKMARK_V1_STEP,
+        "accepted": True,
+        "status": "verified",
+        "input_backend": "native_gui_semantic_activation",
+        "uses_ocr": False,
+        "uses_keyboard": False,
+        "uses_mouse": False,
+        "before": before,
+        "selected_candidate": selected_candidate,
+        "acknowledgement": dict(acknowledgement),
+        "after_snapshot": after_snapshot,
+        "campaign_root": campaign_root,
         "postcondition_verified": True,
         "backend_id": acknowledgement.get("backend_id"),
     }

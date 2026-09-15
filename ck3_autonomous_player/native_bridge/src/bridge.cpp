@@ -7225,6 +7225,10 @@ void RunConnectedSession(
                           kFrontendCoatOfArmsPatternGridInspectionV1Step ||
               step == xar::ck3_11906::kFrontendGuiOpenNewGameV1Step ||
               step == xar::ck3_11906::kFrontendGuiPickAnyCharacterV1Step ||
+#if defined(XAR_CK3_ENABLE_FEUDAL_1066_SELECTED_BOOKMARK_START_PRIVATE_V1)
+              step == xar::ck3_11906::
+                          kFrontendGuiStartSelectedBookmarkV1Step ||
+#endif
               step == xar::ck3_11906::
                           kFrontendGuiSelectRandomPlayableV1Step ||
               step == xar::ck3_11906::kFrontendGuiOpenRulerDesignerV1Step ||
@@ -7269,6 +7273,12 @@ void RunConnectedSession(
                                      kFrontendGuiPickAnyCharacterV1Step) {
                 query.operation = xar::ck3_11906::
                     FrontendGuiRouteOperationV1::pick_any_character;
+#if defined(XAR_CK3_ENABLE_FEUDAL_1066_SELECTED_BOOKMARK_START_PRIVATE_V1)
+              } else if (step == xar::ck3_11906::
+                                     kFrontendGuiStartSelectedBookmarkV1Step) {
+                query.operation = xar::ck3_11906::
+                    FrontendGuiRouteOperationV1::start_selected_bookmark;
+#endif
               } else if (step == xar::ck3_11906::
                                      kFrontendGuiSelectRandomPlayableV1Step) {
                 query.operation = xar::ck3_11906::FrontendGuiRouteOperationV1::

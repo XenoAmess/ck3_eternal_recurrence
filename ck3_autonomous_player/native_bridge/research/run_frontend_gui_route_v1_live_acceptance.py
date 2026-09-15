@@ -150,6 +150,11 @@ def _parser() -> argparse.ArgumentParser:
     )
     parser.add_argument("--timeout", type=float, default=360.0)
     parser.add_argument(
+        "--bookmarks-read-only",
+        action="store_true",
+        help="stop at the native Bookmarks route and save its bounded GUI tree",
+    )
+    parser.add_argument(
         "--syntax-matrix",
         action="store_true",
         help="collect the checked-in CoA detect/apply/Copy matrix after routing",
@@ -1229,6 +1234,7 @@ async def _mcp_sequence(
     custom_mode_census: bool = False,
     commit_roundtrip: bool = False,
     large_source: tuple[str, dict[str, object]] | None = None,
+    bookmarks_read_only: bool = False,
 ) -> dict[str, object]:
     deadline = time.monotonic() + timeout
     calls: list[dict[str, object]] = []
@@ -1260,16 +1266,20 @@ async def _mcp_sequence(
     async with Client(create_server(driver)) as client:
         listed = await client.list_tools()
         tools = {tool.name: tool for tool in listed.tools}
-        route_required = {
-            QUERY_TOOL,
-            INSPECT_TOOL,
-            ACTIVATE_NEW_GAME_TOOL,
-            ACTIVATE_PICK_ANY_TOOL,
-            ACTIVATE_PREPARE_CUSTOM_RULER_TOOL,
-            ACTIVATE_RULER_DESIGNER_TOOL,
-            ACTIVATE_COAT_OF_ARMS_DESIGNER_TOOL,
-            COMMIT_DYNASTY_COAT_OF_ARMS_TOOL,
-        }
+        route_required = (
+            {QUERY_TOOL, INSPECT_TOOL, ACTIVATE_NEW_GAME_TOOL}
+            if bookmarks_read_only
+            else {
+                QUERY_TOOL,
+                INSPECT_TOOL,
+                ACTIVATE_NEW_GAME_TOOL,
+                ACTIVATE_PICK_ANY_TOOL,
+                ACTIVATE_PREPARE_CUSTOM_RULER_TOOL,
+                ACTIVATE_RULER_DESIGNER_TOOL,
+                ACTIVATE_COAT_OF_ARMS_DESIGNER_TOOL,
+                COMMIT_DYNASTY_COAT_OF_ARMS_TOOL,
+            }
+        )
         matrix_required = (
             {SNAPSHOT_TOOL, PROBE_COAT_OF_ARMS_TOOL, EXPORT_COAT_OF_ARMS_TOOL}
             if syntax_matrix is not None
@@ -1415,16 +1425,20 @@ async def _mcp_sequence(
                 tool_schemas=schemas,
             )
 
-        required_capabilities = {
-            QUERY_CAPABILITY,
-            INSPECT_CAPABILITY,
-            ACTIVATE_NEW_GAME_CAPABILITY,
-            ACTIVATE_PICK_ANY_CAPABILITY,
-            ACTIVATE_SELECT_RANDOM_PLAYABLE_CAPABILITY,
-            ACTIVATE_RULER_DESIGNER_CAPABILITY,
-            ACTIVATE_COAT_OF_ARMS_DESIGNER_CAPABILITY,
-            COMMIT_DYNASTY_COAT_OF_ARMS_CAPABILITY,
-        }
+        required_capabilities = (
+            {QUERY_CAPABILITY, INSPECT_CAPABILITY, ACTIVATE_NEW_GAME_CAPABILITY}
+            if bookmarks_read_only
+            else {
+                QUERY_CAPABILITY,
+                INSPECT_CAPABILITY,
+                ACTIVATE_NEW_GAME_CAPABILITY,
+                ACTIVATE_PICK_ANY_CAPABILITY,
+                ACTIVATE_SELECT_RANDOM_PLAYABLE_CAPABILITY,
+                ACTIVATE_RULER_DESIGNER_CAPABILITY,
+                ACTIVATE_COAT_OF_ARMS_DESIGNER_CAPABILITY,
+                COMMIT_DYNASTY_COAT_OF_ARMS_CAPABILITY,
+            }
+        )
         if syntax_matrix is not None:
             required_capabilities |= {
                 PROBE_COAT_OF_ARMS_CAPABILITY,
@@ -1509,6 +1523,35 @@ async def _mcp_sequence(
                 before=before,
                 new_game=new_game,
             )
+
+        if bookmarks_read_only:
+            inspection_call = await _call(client, INSPECT_TOOL)
+            record(inspection_call)
+            inspection = _structured(inspection_call)
+            checks = {
+                "new_game_to_bookmarks": after_new_game.get("route")
+                == "bookmarks",
+                "native_bookmarks_tree": (
+                    inspection_call.get("is_error") is False
+                    and inspection.get("status") == "available"
+                    and inspection.get("scope_root_name")
+                    == "frontend_bookmarks"
+                    and inspection.get("root_available") is True
+                    and isinstance(inspection.get("widgets"), list)
+                ),
+            }
+            return {
+                "mcp_sdk": "official-python-client",
+                "calls": calls,
+                "call_summary": call_summary,
+                "checks": checks,
+                "before": before,
+                "new_game": new_game,
+                "bookmarks_tree": inspection,
+                "tree_truncated": inspection.get("truncated"),
+                "read_only_after_new_game": True,
+                "ok": all(checks.values()),
+            }
 
         prepare_call = await _call(client, ACTIVATE_PREPARE_CUSTOM_RULER_TOOL)
         record(prepare_call)
@@ -1740,6 +1783,14 @@ def _run(args: argparse.Namespace) -> tuple[dict[str, object], int]:
     )
     commit_roundtrip = bool(getattr(args, "commit_roundtrip", False))
     custom_mode_census = bool(getattr(args, "custom_mode_census", False))
+    bookmarks_read_only = bool(getattr(args, "bookmarks_read_only", False))
+    if bookmarks_read_only and (
+        syntax_matrix is not None
+        or custom_mode_census
+        or commit_roundtrip
+        or getattr(args, "large_source", None) is not None
+    ):
+        raise ValueError("--bookmarks-read-only cannot run CoA actions")
     large_source = (
         _load_large_source(args.large_source)
         if getattr(args, "large_source", None) is not None
@@ -1772,6 +1823,7 @@ def _run(args: argparse.Namespace) -> tuple[dict[str, object], int]:
         "syntax_matrix_requested": syntax_matrix is not None,
         "syntax_matrix_plan": syntax_matrix,
         "custom_mode_census_requested": custom_mode_census,
+        "bookmarks_read_only_requested": bookmarks_read_only,
         "commit_roundtrip_requested": commit_roundtrip,
         "large_source_requested": large_source is not None,
         "large_source_plan": large_source[1] if large_source else None,
@@ -1841,6 +1893,7 @@ def _run(args: argparse.Namespace) -> tuple[dict[str, object], int]:
                 custom_mode_census=custom_mode_census,
                 commit_roundtrip=commit_roundtrip,
                 large_source=large_source,
+                bookmarks_read_only=bookmarks_read_only,
             )
         )
         report["sequence"] = sequence

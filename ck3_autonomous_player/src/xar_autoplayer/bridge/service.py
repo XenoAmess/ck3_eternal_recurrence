@@ -7572,6 +7572,33 @@ class GameplayBridgeService:
             )
         return result
 
+    def query_frontend_selected_1066_feudal_candidate_v1(
+        self,
+    ) -> dict[str, object]:
+        """Require exact native bookmark model identity before StartGame."""
+        query = getattr(
+            self.driver,
+            "query_frontend_selected_1066_feudal_candidate_v1",
+            None,
+        )
+        if not callable(query):
+            raise UnsupportedStepError(
+                "selected backend has no native 1066 feudal candidate observer"
+            )
+        result = query()
+        if (
+            not isinstance(result, dict)
+            or result.get("schema")
+            != "ck3-frontend-selected-1066-feudal-candidate-v1"
+            or result.get("schema_version") != 1
+            or result.get("status") != "ready"
+            or result.get("read_only") is not True
+        ):
+            raise BridgeUnavailableError(
+                "native 1066 feudal candidate observer returned malformed data"
+            )
+        return result
+
     def inspect_frontend_coat_of_arms_tree_v1(self) -> dict[str, object]:
         """Inspect only the active native CoA page without screen input."""
 
@@ -7681,6 +7708,35 @@ class GameplayBridgeService:
         ):
             raise BridgeUnavailableError(
                 "native frontend pick-any-character action lacks its postcondition"
+            )
+        return result
+
+    def activate_frontend_start_selected_bookmark_v1(
+        self,
+    ) -> dict[str, object]:
+        """Require a new paused feudal map after native StartGame."""
+        activate = getattr(
+            self.driver, "activate_frontend_start_selected_bookmark_v1",
+            None,
+        )
+        if not callable(activate):
+            raise UnsupportedStepError(
+                "selected backend has no native selected-bookmark StartGame"
+            )
+        result = activate()
+        if (
+            not isinstance(result, dict)
+            or result.get("schema")
+            != "ck3-frontend-selected-bookmark-start-v1"
+            or result.get("schema_version") != 1
+            or result.get("postcondition_verified") is not True
+            or result.get("uses_ocr") is not False
+            or result.get("uses_keyboard") is not False
+            or result.get("uses_mouse") is not False
+        ):
+            raise BridgeUnavailableError(
+                "native selected-bookmark StartGame lacks an independent "
+                "paused feudal map postcondition"
             )
         return result
 

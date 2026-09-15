@@ -40,6 +40,19 @@ def _parser() -> argparse.ArgumentParser:
         "--configuration", choices=CONFIGURATIONS, default="Release"
     )
     parser.add_argument("--skip-tests", action="store_true")
+    parser.add_argument(
+        "--build-jobs", type=int,
+        help="Bound native compiler jobs when CK3 or another build owns resources",
+    )
+    parser.add_argument(
+        "--feudal-1066-selected-bookmark-private",
+        action="store_true",
+        help="Build the private controlled selected-bookmark StartGame candidate",
+    )
+    parser.add_argument(
+        "--focused-feudal-start", action="store_true",
+        help="Build only bridge, injector, and exact adapter registry test",
+    )
     parser.add_argument("--plan-only", action="store_true")
     return parser
 
@@ -167,6 +180,15 @@ def _resolve_build_dir(source_dir: Path, value: Path | None) -> Path:
 
 
 def run(args: argparse.Namespace) -> dict[str, object]:
+    if args.build_jobs is not None and args.build_jobs < 1:
+        raise FreshBuildError("--build-jobs must be positive")
+    if (
+        args.focused_feudal_start
+        and not args.feudal_1066_selected_bookmark_private
+    ):
+        raise FreshBuildError(
+            "--focused-feudal-start requires the private candidate build"
+        )
     source_dir = Path(__file__).resolve().parents[1]
     build_dir = _resolve_build_dir(source_dir, args.build_dir)
     ck3_executable = (
@@ -195,6 +217,10 @@ def run(args: argparse.Namespace) -> dict[str, object]:
         "dependency_header": "ck3_11906.hpp",
         "dependency_objects": list(DEPENDENCY_OBJECTS),
         "tests_enabled": not args.skip_tests,
+        "feudal_1066_selected_bookmark_private":
+            args.feudal_1066_selected_bookmark_private,
+        "build_jobs": args.build_jobs,
+        "focused_feudal_start": args.focused_feudal_start,
         "ck3_executable_path": (
             str(ck3_executable) if ck3_executable is not None else None
         ),
@@ -224,9 +250,23 @@ def run(args: argparse.Namespace) -> dict[str, object]:
         ]
         if ck3_executable is not None:
             configure.append(f"-DXAR_CK3_EXECUTABLE_PATH={ck3_executable}")
+        if args.feudal_1066_selected_bookmark_private:
+            configure.append(
+                "-DXAR_CK3_ENABLE_FEUDAL_1066_SELECTED_BOOKMARK_START_PRIVATE_V1=ON"
+            )
         _run_checked(configure)
         prefix_mode = repair_ninja_msvc_dependency_prefix(build_dir, compiler)
-        _run_checked([cmake, "--build", str(build_dir), "--parallel"])
+        build = [cmake, "--build", str(build_dir), "--parallel"]
+        if args.build_jobs is not None:
+            build.append(str(args.build_jobs))
+        if args.focused_feudal_start:
+            build.extend([
+                "--target",
+                "xar_ck3_bridge",
+                "xar_ck3_bridge_injector",
+                "xar_ck3_adapter_registry_test",
+            ])
+        _run_checked(build)
         for dependency_object in DEPENDENCY_OBJECTS:
             dependency_text = _run_checked(
                 [ninja, "-C", str(build_dir), "-t", "deps", dependency_object],
@@ -240,9 +280,13 @@ def run(args: argparse.Namespace) -> dict[str, object]:
                     f"{dependency_object}; refusing this native bridge build"
                 )
         if not args.skip_tests:
-            _run_checked(
-                [ctest, "--test-dir", str(build_dir), "--output-on-failure"]
-            )
+            test = [ctest, "--test-dir", str(build_dir),
+                    "--output-on-failure"]
+            if args.focused_feudal_start:
+                test.extend([
+                    "-R", "^xar_ck3_native_bridge_adapter_registry$"
+                ])
+            _run_checked(test)
     finally:
         if prior_vslang is None:
             os.environ.pop("VSLANG", None)
@@ -268,6 +312,11 @@ def run(args: argparse.Namespace) -> dict[str, object]:
         "injector_path": str(injector),
         "injector_sha256": _sha256(injector),
         "tests_ran": not args.skip_tests,
+        "test_scope": (
+            "feudal-start-adapter-registry"
+            if args.focused_feudal_start
+            else "all-native-offline"
+        ),
         "dependency_gate": "ck3_11906.hpp-recorded",
         "msvc_dependency_prefix_mode": prefix_mode,
     }

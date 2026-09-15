@@ -37,6 +37,10 @@ inline constexpr std::string_view kFrontendGuiPickAnyCharacterV1Capability =
     "game.command.activate-frontend-pick-any-character-v1";
 inline constexpr std::string_view kFrontendGuiPickAnyCharacterV1Step =
     "activate-frontend-pick-any-character-v1";
+inline constexpr std::string_view kFrontendGuiStartSelectedBookmarkV1Capability =
+    "game.command.activate-frontend-start-selected-bookmark-v1";
+inline constexpr std::string_view kFrontendGuiStartSelectedBookmarkV1Step =
+    "activate-frontend-start-selected-bookmark-v1";
 inline constexpr std::string_view kFrontendGuiSelectRandomPlayableV1Capability =
     "game.command.activate-frontend-select-random-playable-v1";
 inline constexpr std::string_view kFrontendGuiSelectRandomPlayableV1Step =
@@ -75,6 +79,7 @@ enum class FrontendGuiRouteOperationV1 : std::uint32_t {
   inspect_coat_of_arms_tree = 8,
   enter_coat_of_arms_custom_mode = 9,
   inspect_coat_of_arms_pattern_grid = 10,
+  start_selected_bookmark = 11,
 };
 
 enum class FrontendGuiRouteV1 : std::uint32_t {

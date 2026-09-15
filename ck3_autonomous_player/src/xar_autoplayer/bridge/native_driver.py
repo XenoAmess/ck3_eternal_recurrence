@@ -358,6 +358,10 @@ from .frontend_gui_route_contract import (
     ACTIVATE_FRONTEND_NEW_GAME_V1_STEP,
     ACTIVATE_FRONTEND_PICK_ANY_CHARACTER_V1_CAPABILITY,
     ACTIVATE_FRONTEND_PICK_ANY_CHARACTER_V1_STEP,
+    ACTIVATE_FRONTEND_START_SELECTED_BOOKMARK_V1_CAPABILITY,
+    ACTIVATE_FRONTEND_START_SELECTED_BOOKMARK_V1_STEP,
+    QUERY_FRONTEND_SELECTED_1066_FEUDAL_CANDIDATE_V1_CAPABILITY,
+    QUERY_FRONTEND_SELECTED_1066_FEUDAL_CANDIDATE_V1_STEP,
     ACTIVATE_FRONTEND_RULER_DESIGNER_V1_CAPABILITY,
     ACTIVATE_FRONTEND_RULER_DESIGNER_V1_STEP,
     ACTIVATE_FRONTEND_SELECT_RANDOM_PLAYABLE_V1_CAPABILITY,
@@ -387,6 +391,8 @@ from .frontend_gui_route_contract import (
     normalize_frontend_open_coat_of_arms_designer_v1,
     normalize_frontend_open_ruler_designer_v1,
     normalize_frontend_pick_any_character_v1,
+    normalize_frontend_start_selected_bookmark_v1,
+    normalize_frontend_selected_1066_feudal_candidate_v1,
     normalize_frontend_prepare_custom_ruler_v1,
 )
 from .loaded_feature_manifest_contract import (
@@ -3884,6 +3890,25 @@ class NativeHeadlessGameplayDriver:
                 f"native frontend GUI route is malformed: {error}"
             ) from error
 
+    def query_frontend_selected_1066_feudal_candidate_v1(
+        self,
+    ) -> dict[str, object]:
+        """Read native bookmark group, bookmark, and selected model identity."""
+        raw = self._execute_primitive_step(
+            QUERY_FRONTEND_SELECTED_1066_FEUDAL_CANDIDATE_V1_STEP,
+            expected_revision=0,
+            required_capability=(
+                QUERY_FRONTEND_SELECTED_1066_FEUDAL_CANDIDATE_V1_CAPABILITY
+            ),
+            allow_frontend_revision_zero=True,
+        )
+        try:
+            return normalize_frontend_selected_1066_feudal_candidate_v1(raw)
+        except ValueError as error:
+            raise BridgeUnavailableError(
+                f"native 1066 feudal selected-candidate query is malformed: {error}"
+            ) from error
+
     def inspect_frontend_gui_tree_v1(self) -> dict[str, object]:
         """Read a bounded native GUI-name census on the main thread."""
 
@@ -4085,6 +4110,81 @@ class NativeHeadlessGameplayDriver:
             raise BridgeUnavailableError(
                 "native frontend pick-any-character action is unverified: "
                 f"{error}"
+            ) from error
+
+    def activate_frontend_start_selected_bookmark_v1(
+        self,
+    ) -> dict[str, object]:
+        """Start only the selected bookmark ruler; prove a new paused map."""
+        before = self.query_frontend_gui_route_v1()
+        if before["route"] != "bookmarks":
+            raise BridgeUnavailableError(
+                "frontend StartGame requires the bookmarks route"
+            )
+        selected_candidate = (
+            self.query_frontend_selected_1066_feudal_candidate_v1()
+        )
+        acknowledgement = self._execute_primitive_step(
+            ACTIVATE_FRONTEND_START_SELECTED_BOOKMARK_V1_STEP,
+            expected_revision=0,
+            required_capability=(
+                ACTIVATE_FRONTEND_START_SELECTED_BOOKMARK_V1_CAPABILITY
+            ),
+            allow_frontend_revision_zero=True,
+        )
+        # The GUI callback's ACK can precede a 1.45-second animation and
+        # map materialization. Never retry StartGame on a lost observation.
+        deadline = (
+            time.monotonic() + self.frontend_transition_timeout_seconds
+        )
+        last_error: BridgeUnavailableError | None = None
+        after_snapshot: dict[str, object] | None = None
+        while time.monotonic() < deadline:
+            try:
+                observed = self.take_snapshot()
+            except BridgeUnavailableError as error:
+                last_error = error
+            else:
+                played = observed.get("played_character")
+                played_id = (
+                    played.get("character_id")
+                    if isinstance(played, dict)
+                    else None
+                )
+                if (
+                    observed.get("paused") is True
+                    and isinstance(observed.get("native_revision"), int)
+                    and not isinstance(observed.get("native_revision"), bool)
+                    and observed["native_revision"] >= 1
+                    and isinstance(played_id, int)
+                    and not isinstance(played_id, bool)
+                    and played_id >= 1
+                ):
+                    after_snapshot = observed
+                    break
+            remaining = deadline - time.monotonic()
+            if remaining > 0:
+                time.sleep(min(0.25, remaining))
+        if after_snapshot is None:
+            raise BridgeUnavailableError(
+                "frontend StartGame was submitted but no paused player map "
+                f"was independently observed; last snapshot error: {last_error}"
+            )
+        campaign_root = self._execute_campaign_root_context_v1_query(
+            expected_revision=None
+        )
+        try:
+            return normalize_frontend_start_selected_bookmark_v1(
+                acknowledgement,
+                before=before,
+                selected_candidate=selected_candidate,
+                after_snapshot=after_snapshot,
+                campaign_root=campaign_root,
+            )
+        except ValueError as error:
+            raise BridgeUnavailableError(
+                f"frontend StartGame submitted; paused-map feudal "
+                f"postcondition failed: {error}"
             ) from error
 
     def activate_frontend_prepare_custom_ruler_v1(self) -> dict[str, object]:

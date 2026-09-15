@@ -718,6 +718,21 @@ int main() {
       exact_adapter->supports_step("offer-white-peace-016777290")) {
     return Fail("exact adapter did not map the strict combat query step");
   }
+#if defined(XAR_CK3_ENABLE_FEUDAL_1066_SELECTED_BOOKMARK_START_PRIVATE_V1)
+  if (!exact_adapter->supports_step(
+          "activate-frontend-start-selected-bookmark-v1") ||
+      !exact_adapter->supports(
+          "game.command.activate-frontend-start-selected-bookmark-v1")) {
+    return Fail("private selected-bookmark StartGame was not bound");
+  }
+#else
+  if (exact_adapter->supports_step(
+          "activate-frontend-start-selected-bookmark-v1") ||
+      exact_adapter->supports(
+          "game.command.activate-frontend-start-selected-bookmark-v1")) {
+    return Fail("unverified selected-bookmark StartGame was advertised");
+  }
+#endif
   for (const auto invalid : invalid_combat_steps) {
     if (exact_adapter->supports_step(invalid)) {
       return Fail("exact adapter advertised a malformed combat query step");

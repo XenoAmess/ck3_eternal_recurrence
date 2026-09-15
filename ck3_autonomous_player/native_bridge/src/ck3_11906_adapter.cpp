@@ -53,6 +53,9 @@ constexpr std::size_t kCapabilityCount =
 #if defined(XAR_CK3_ENABLE_ZHONGGUO_CAREER_HC_WORKFORCE_CANDIDATE_V1)
     + 2
 #endif
+#if defined(XAR_CK3_ENABLE_FEUDAL_1066_SELECTED_BOOKMARK_START_PRIVATE_V1)
+    + 1
+#endif
     ;
 
 constexpr std::array<std::string_view, kCapabilityCount> kCapabilities{
@@ -145,6 +148,9 @@ constexpr std::array<std::string_view, kCapabilityCount> kCapabilities{
     ck3_11906::kFrontendCoatOfArmsPatternGridInspectionV1Capability,
     ck3_11906::kFrontendGuiOpenNewGameV1Capability,
     ck3_11906::kFrontendGuiPickAnyCharacterV1Capability,
+#if defined(XAR_CK3_ENABLE_FEUDAL_1066_SELECTED_BOOKMARK_START_PRIVATE_V1)
+    ck3_11906::kFrontendGuiStartSelectedBookmarkV1Capability,
+#endif
     ck3_11906::kFrontendGuiSelectRandomPlayableV1Capability,
     ck3_11906::kFrontendGuiOpenRulerDesignerV1Capability,
     ck3_11906::kFrontendGuiOpenCoatOfArmsDesignerV1Capability,

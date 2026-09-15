@@ -275,6 +275,34 @@ bool DispatchPickAnyCharacter(
                                   "pick_any_character_button");
 }
 
+bool DispatchStartSelectedBookmark(
+    FrontendGuiRouteMailboxContextV1 &query) noexcept {
+  if (query.result.route != FrontendGuiRouteV1::bookmarks) return false;
+  // frontend_bookmarks.gui:144 and 2023-2029. The selected-character
+  // projection must be visible before the exact StartGame button is used.
+  // CanStart alone is not a selected-character identity proof.
+  ZhongguoScoreboardAccessV1 access{};
+  void *root = nullptr;
+  void *selected = nullptr;
+  if (!ResolveNamedGuiWidgetV1(query.environment, access,
+                               "frontend_bookmarks", "character_selection",
+                               root, selected) ||
+      selected == nullptr) {
+    return false;
+  }
+  std::string runtime_name;
+  void *vtable = nullptr;
+  bool visible = false;
+  bool enabled = false;
+  if (!ReadGuiWidgetRuntimeV1(access, selected, runtime_name, vtable,
+                              visible, enabled) ||
+      runtime_name != "character_selection" || !visible) {
+    return false;
+  }
+  return DispatchFixedNamedWidget(query, FrontendGuiRouteV1::bookmarks,
+                                  "frontend_bookmarks", "start_button");
+}
+
 bool DispatchSelectRandomPlayable(
     FrontendGuiRouteMailboxContextV1 &query) noexcept {
   if (query.result.route != FrontendGuiRouteV1::lobby) return false;
@@ -470,6 +498,10 @@ bool ExecuteFrontendGuiRouteMailboxV1(
   }
   if (query->operation == FrontendGuiRouteOperationV1::pick_any_character) {
     return DispatchPickAnyCharacter(*query);
+  }
+  if (query->operation ==
+      FrontendGuiRouteOperationV1::start_selected_bookmark) {
+    return DispatchStartSelectedBookmark(*query);
   }
   if (query->operation ==
       FrontendGuiRouteOperationV1::select_random_playable) {
