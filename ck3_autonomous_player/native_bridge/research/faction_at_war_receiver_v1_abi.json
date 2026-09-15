@@ -1,0 +1,130 @@
+{
+  "contract": "g2-faction-at-war-receiver-v1",
+  "schema_version": 1,
+  "status": "static-ready-private-receiver-pending-paused-live",
+  "exact_build": {
+    "product_version": "1.19.0.6",
+    "executable_size": 95206008,
+    "executable_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+    "image_base": "0x140000000"
+  },
+  "stock_source": {
+    "path": "game/gui/window_factions.gui",
+    "sha256": "798F177B1DB914B34CCE177D8CD29F336E182BC6BB24294BD46ECE7B27392770",
+    "tokens": [
+      "name = \"faction_in_war\"",
+      "visible = \"[Faction.IsAtWar]\""
+    ]
+  },
+  "native_spans": [
+    {
+      "name": "Faction.IsAtWar registration",
+      "rva_start": "0x4C41B0",
+      "rva_end_exclusive": "0x4C431A",
+      "length": 362,
+      "sha256": "02B568003AE3F8BB2B3CFD8C0F5857F114B5BAE2B0149B1C6997F8EC26D96BCB"
+    },
+    {
+      "name": "full-generation CFaction resolver",
+      "rva_start": "0xE6F440",
+      "rva_end_exclusive": "0xE6F479",
+      "length": 57,
+      "sha256": "093AB3215B63F34B2A33181701DFDF95EDD9BA69A478D06FB0C00A433D6F2BB5"
+    },
+    {
+      "name": "GUI bool wrapper",
+      "rva_start": "0x237A060",
+      "rva_end_exclusive": "0x237A098",
+      "length": 56,
+      "sha256": "B991A03B69F08374B67BA6DE79E06CAE447F15629E15AF102AEB1FCF530518A0"
+    },
+    {
+      "name": "CFaction active-war receiver",
+      "rva_start": "0x2378200",
+      "rva_end_exclusive": "0x2378243",
+      "length": 67,
+      "sha256": "3DAC54C5A7BE6E667E3AC666BF57C1DFD9C437908EBA6D5877915D22004BE8A4"
+    },
+    {
+      "name": "TPdxReferenceObject IsAlive leaf",
+      "rva_start": "0x10495A0",
+      "rva_end_exclusive": "0x10495A8",
+      "length": 8,
+      "sha256": "2A46CBB1F0CD5C518DE9FA8C1D5C018B1CAFD4FC42C409DB611CE1B762B51C06"
+    }
+  ],
+  "registration": {
+    "method_string": "IsAtWar",
+    "method_string_rva": "0x4304B68",
+    "callback_lea_rva": "0x4C428F",
+    "callback_wrapper_rva": "0x237A060",
+    "callback_target_rva": "0x2378200"
+  },
+  "layout": {
+    "faction_storage_slot_rva": "0x570C768",
+    "faction_fallback_slot_rva": "0x570C6F8",
+    "faction_identity_offset": "0x10",
+    "faction_war_identity_offset": "0x8C",
+    "war_storage_slot_rva": "0x570C740",
+    "war_fallback_slot_rva": "0x570C718",
+    "war_identity_offset": "0x08",
+    "component_slot_stride": 16,
+    "component_slot_object_offset": "0x08",
+    "component_storage_data_offset": "0x20",
+    "component_storage_capacity_offset": "0x2C",
+    "identity_index_mask": "0x00FFFFFF"
+  },
+  "rtti": {
+    "faction": {
+      "name": ".?AVCFaction@@",
+      "type_descriptor_rva": "0x54A1B70",
+      "complete_object_locator_rva": "0x493AE80",
+      "vtable_rva": "0x4305228",
+      "vtable_prefix_length": 16,
+      "vtable_prefix_sha256": "6C79E8FAABB8310D80F2C8A838079E49E2CEB752287471A16263B07C92E4066C"
+    },
+    "war": {
+      "name": ".?AVCWar@@",
+      "type_descriptor_rva": "0x5494450",
+      "complete_object_locator_rva": "0x492B0E8",
+      "vtable_rva": "0x42F77C8",
+      "vtable_prefix_length": 16,
+      "vtable_prefix_sha256": "22E8CAB3BBA55AC54B00503F4F3030D6FE6EC187A4CFCDCB0E8CF2C765FB8C2F",
+      "alive_slot_index": 1,
+      "alive_target_rva": "0x10495A0"
+    },
+    "null_war": {
+      "name": ".?AV?$TPdxNullObject@VCWar@@@@",
+      "type_descriptor_rva": "0x54BA348",
+      "complete_object_locator_rva": "0x49590E0",
+      "vtable_rva": "0x431C298",
+      "vtable_prefix_length": 16,
+      "vtable_prefix_sha256": "3582BAEA1897E34DD1CD81EE46637D749030E8276A8988C6F716A4CD1C96A0F5",
+      "alive_slot_index": 1,
+      "alive_target_rva": "0x7E6590",
+      "identity_sentinel": "0xFFFFFFFF"
+    }
+  },
+  "receiver_contract": {
+    "read": "resolve the admitted full-generation faction identity, require exact CFaction vtable and +0x10 round trip, copy +0x8C WarID, resolve it through the exact CWar storage, require exact CWar vtable and +0x08 round trip, and reproduce the frozen IsAlive leaf",
+    "stability": "two complete samples including object identity, vtable, WarID, resolved War identity and boolean must compare equal before publication",
+    "legal_zero": "an unresolved WarID selects the exact TPdxNullObject<CWar>; exact null vtable, slot and -1 identity publish at_war=false",
+    "typed_failure": "any store, bounds, memory, full-generation, vtable, slot, or second-sample mismatch returns unavailable and is never converted to false"
+  },
+  "scope": {
+    "private_build_only": true,
+    "read_only_game_state": true,
+    "public_abi_changed": false,
+    "public_schema_changed": false,
+    "public_mcp_changed": false,
+    "ck3_started": false
+  },
+  "readiness": {
+    "exact_span_ready": true,
+    "full_generation_identity_ready": true,
+    "exact_vtable_gate_ready": true,
+    "legal_no_war_distinct_from_failure": true,
+    "private_receiver_ready": true,
+    "paused_live_artifact_ready": false
+  }
+}

@@ -2,6 +2,7 @@
 
 #include "xar_bridge/ck3_11906.hpp"
 #include "xar_bridge/faction_gift_mitigation_native_binder_v1.hpp"
+#include "xar_bridge/faction_gift_receivers_v1.hpp"
 #include "xar_bridge/main_thread_query_mailbox_v1.hpp"
 
 #include <cstdint>
@@ -25,9 +26,7 @@ enum FactionGiftMitigationAsyncFailureV1 : std::uint32_t {
   faction_gift_async_failure_frame = 1U << 0,
   faction_gift_async_failure_recipient = 1U << 1,
   faction_gift_async_failure_preview = 1U << 2,
-  // Exact 1.19.0.6 receivers are not yet closed for these fields. They are
-  // explicit REDs and prevent command submission; real preview fields remain
-  // independently useful to targeting and budget policy.
+  // Typed receiver REDs remain explicit and prevent command submission.
   faction_gift_async_failure_faction_war_receiver = 1U << 3,
   faction_gift_async_failure_opinion_receiver = 1U << 4,
 };
@@ -37,6 +36,11 @@ struct FactionGiftMitigationAsyncContextV1 {
   MainThreadQueryTicketV1 ticket{};
   Bindings bindings{};
   std::uintptr_t module_base = 0;
+  // Data-only store view used by deterministic fixtures. Production leaves
+  // this false and reads the exact module-relative stores directly.
+  bool offline_receivers_fixture = false;
+  FactionAtWarExactStoresV1 faction_at_war_exact_stores{};
+  GiftOpinionReceiverFixtureV1 gift_opinion_exact_fixture{};
   game::Snapshot expected_snapshot{};
   bridge::FactionTargetingRowProbeResultV1 targeting_rows{};
   std::vector<std::int32_t> direct_landed_vassal_character_ids;
@@ -59,7 +63,9 @@ struct FactionGiftMitigationAsyncContextV1 {
 // Exact-build production helpers. They reuse CK3's loaded definition lookup,
 // two-role context, validator, compiled-cost evaluator and send command.
 bool ReadFactionGiftPreviewThroughGenericInteractionV1(
-    const Bindings &bindings, std::uint32_t player_character_id,
+    const Bindings &bindings, std::uintptr_t module_base,
+    const GiftOpinionReceiverFixtureV1 *offline_fixture,
+    std::uint32_t player_character_id,
     std::uint32_t recipient_character_id,
     game::FactionGiftPreviewV1 &output) noexcept;
 bool ValidateFactionGiftThroughGenericInteractionDirectV1(

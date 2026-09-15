@@ -648,6 +648,7 @@ if(XAR_CK3_ENABLE_G2_FACTION_GIFT_MITIGATION_ASYNC_PRIVATE_GLUE_V1)
       src/faction_gift_mitigation_action_v1.cpp
       src/faction_gift_mitigation_source_action_adapter_v1.cpp
       src/faction_gift_mitigation_native_binder_v1.cpp
+      src/faction_gift_receivers_v1.cpp
       src/faction_gift_mitigation_async_glue_v1.cpp
       PROPERTIES COMPILE_OPTIONS "/W4;/WX;/permissive-"
     )
@@ -656,6 +657,7 @@ if(XAR_CK3_ENABLE_G2_FACTION_GIFT_MITIGATION_ASYNC_PRIVATE_GLUE_V1)
     src/faction_gift_mitigation_action_v1.cpp
     src/faction_gift_mitigation_source_action_adapter_v1.cpp
     src/faction_gift_mitigation_native_binder_v1.cpp
+    src/faction_gift_receivers_v1.cpp
     src/faction_gift_mitigation_async_glue_v1.cpp
   )
   target_compile_definitions(xar_ck3_bridge PRIVATE
@@ -1858,6 +1860,7 @@ if(BUILD_TESTING)
     src/faction_gift_mitigation_action_v1.cpp
     src/faction_gift_mitigation_source_action_adapter_v1.cpp
     src/faction_gift_mitigation_native_binder_v1.cpp
+    src/faction_gift_receivers_v1.cpp
     src/faction_gift_mitigation_async_glue_v1.cpp
     src/faction_gift_mitigation_async_glue_v1_test.cpp
   )

@@ -1,0 +1,78 @@
+{
+  "contract": "g2-gift-opinion-receivers-v1",
+  "schema_version": 1,
+  "status": "static-ready-private-receivers-pending-paused-live",
+  "exact_build": {
+    "product_version": "1.19.0.6",
+    "executable_size": 95206008,
+    "executable_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+    "image_base": "0x140000000"
+  },
+  "stock_sources": [
+    {
+      "path": "game/common/character_interactions/00_gift.txt",
+      "sha256": "119226E06725B6C7199785F2A5C49BB6BDEDB095F0DFBAD829371FA771DCB118",
+      "tokens": ["gift_interaction = {", "modifier = gift_opinion", "opinion = send_gift_opinion"]
+    },
+    {
+      "path": "game/common/script_values/00_basic_values.txt",
+      "sha256": "9268A54F0E425D409D9D0F20D884E0A3D0A89DF85A0B6644D56133C0C4CB0096",
+      "tokens": ["send_gift_opinion = {", "scope:actor.diplomacy", "scope:recipient.ai_greed"]
+    }
+  ],
+  "keys": {
+    "gift_opinion": {"stable_hash": "0xCA82155B"},
+    "send_gift_opinion": {"stable_hash": "0xF8A1F946"}
+  },
+  "native_spans": [
+    {"name":"stable key hash","rva_start":"0x3B8B000","rva_end_exclusive":"0x3B8B087","length":135,"sha256":"E42410BF40CBE818FED8B771988E102AE129BCE08CD7F975EB7A1EB2E5CD70DD"},
+    {"name":"named definition canonical identity constructor","rva_start":"0x345E690","rva_end_exclusive":"0x345E726","length":150,"sha256":"F9AFF9921EE4029F1E3B369DD73D232EF20E9B35719210A4A6850F993D891D71"},
+    {"name":"opinion modifier definition constructor","rva_start":"0x2B518B0","rva_end_exclusive":"0x2B51950","length":160,"sha256":"146530DC596F2661130A8D6EC8BA0084317B16C702A02EF77B54B868DAC52A70"},
+    {"name":"named value definition constructor","rva_start":"0x333A220","rva_end_exclusive":"0x333A295","length":117,"sha256":"8D4703ABCEAFC359CA89810C116BA787FBE9D9EA802BC8C6E4CA1E87D2956DF5"},
+    {"name":"recipient current opinion","rva_start":"0x2610A50","rva_end_exclusive":"0x2610AB9","length":105,"sha256":"7E67D546F4F2F0E82E10D956FA9B3E3370A95A721EFDEEBF1CE2427E9FE51436"},
+    {"name":"active opinion group lookup","rva_start":"0x2696D90","rva_end_exclusive":"0x2696E1A","length":138,"sha256":"A61D4F9A10F1362F865155F8F7FF8E09416CDBD754FBB0226373EA7AD13FC586"},
+    {"name":"modifier value sum","rva_start":"0x23101A0","rva_end_exclusive":"0x2310205","length":101,"sha256":"CBCD22394F7EF7C298F99F1E9C715067BCCFBDD5661CBB2AC5BB3631E66AED9A"},
+    {"name":"decay aware active value","rva_start":"0x230F280","rva_end_exclusive":"0x230F532","length":690,"sha256":"0732D4D0E18E4FF584E83210D9291BB53CB2064CEAC50913449D1DA2725EFE47"},
+    {"name":"opinion modifier fresh lookup","rva_start":"0x231D3E0","rva_end_exclusive":"0x231D51A","length":314,"sha256":"52DEC3240018EDDBA5DA50025D848E54315FFDA6059B6B4784ED4752D43373D7"},
+    {"name":"named value database getter","rva_start":"0x999AF0","rva_end_exclusive":"0x999B47","length":87,"sha256":"4E0246E4FB97D18607FA9CBF72F6030825B4FA0BF1340DABDC3FEBCBD0CA9AED"},
+    {"name":"named value fresh lookup","rva_start":"0x9999B0","rva_end_exclusive":"0x999AEA","length":314,"sha256":"B1BD5B25EB20D8B81D65BAE5942F3D233480910D40C2B11540BCC6E7A53D07E2"},
+    {"name":"clone interaction target scope","rva_start":"0x3358E00","rva_end_exclusive":"0x3358EE9","length":233,"sha256":"99A378FCDFA266541F77B5FEEEEC753BC02CBCA73F2D20FE486D7D03BEB1AFE0"},
+    {"name":"support 118 constructor","rva_start":"0x3354330","rva_end_exclusive":"0x33543B2","length":130,"sha256":"8FF1EA95F300F3CA2F6FF20E267CD150DC95A72665F1A4CA8CC140B2146DA973"},
+    {"name":"support 2A8 constructor","rva_start":"0x3354280","rva_end_exclusive":"0x335432B","length":171,"sha256":"CAAD6CC5E363916FE783AFDB299DFAF4FECBA51B5B649896059EE28ED371AA80"},
+    {"name":"named fixed evaluator","rva_start":"0x3369820","rva_end_exclusive":"0x33699B3","length":403,"sha256":"88C220FD822BE90E6E8DF71E1FC26214D62E5218493F5FCF1B64C2CD80A2DC04"},
+    {"name":"fixed tree integer receiver","rva_start":"0x9A3740","rva_end_exclusive":"0x9A3828","length":232,"sha256":"918D1284664D5D9676641689DC7C90CFBF5491A8D4AF3A6B4400338F4A5F59FB"},
+    {"name":"stock named fixed owner and source descriptor","rva_start":"0x2309580","rva_end_exclusive":"0x23097A4","length":548,"sha256":"1CB93475D75173A811BCFA6D7031910D4387A0CC0C4B01236A64708881053D55"},
+    {"name":"add opinion integer receiver","rva_start":"0x2EDC1B0","rva_end_exclusive":"0x2EDC209","length":89,"sha256":"6288A803B5144B21311282A48D5C2FB2D22C230A0C7D871D6A60234AF6D980F4"},
+    {"name":"dynamic integer evaluator owner","rva_start":"0x3373000","rva_end_exclusive":"0x337312F","length":303,"sha256":"82D70BEF987F60478D1AC4102C2ABF60E0723AAE93E06F72BD4DDEAED3893DF4"},
+    {"name":"named integer evaluator","rva_start":"0x3369600","rva_end_exclusive":"0x3369814","length":532,"sha256":"FBD31B0B587BCAC30E2B0A68D9A48CC1C396B38D6A59FE1A05045DE2307CE16E"}
+  ],
+  "definitions": {
+    "gift_opinion": {
+      "database_slot_rva":"0x57C0970","null_fallback_slot_rva":"0x57C7840","lookup_rva":"0x231D3E0","hash_offset":"0x14","key_offset":"0x18",
+      "primary":{"type_descriptor_rva":"0x50EC0B0","complete_object_locator_rva":"0x4A5E848","object_offset":0,"vtable_rva":"0x43F67E0","prefix_length":24,"prefix_sha256":"0F243723209B477B6EAC98316E11D710BDF2E06BA9CFFB2680F249D48DA38867"},
+      "secondary":{"complete_object_locator_rva":"0x4A5E870","object_offset":128,"cd_offset":4,"vtable_rva":"0x43F6800","prefix_length":40,"prefix_sha256":"C98263A42A72D09B6A5998F1B5C15377AEAE60A12F33AE0B456211A16C95F877"}
+    },
+    "send_gift_opinion": {
+      "getter_rva":"0x999AF0","lookup_rva":"0x9999B0","hash_offset":"0x14","key_offset":"0x18",
+      "primary":{"type_descriptor_rva":"0x51122A0","complete_object_locator_rva":"0x4B48758","object_offset":0,"vtable_rva":"0x44C9EA0","prefix_length":24,"prefix_sha256":"3FE91CC938BB402A393739E2386031FE29567FBE9E286F47300061501E2EADCF"},
+      "secondary":{"complete_object_locator_rva":"0x4B48848","object_offset":136,"cd_offset":0,"vtable_rva":"0x44C9F10","prefix_length":40,"prefix_sha256":"E12596469593C9DB88CFCF156F4BB447FDB55D776FF703818B43F0200F3D4ADC"},
+      "null_primary_vtable_rva":"0x44C9DB0","null_secondary_vtable_rva":"0x44C9D78"
+    }
+  },
+  "layout": {
+    "character_storage_slot_rva":"0x570C130","character_fallback_slot_rva":"0x570C138","character_identity_offset":"0x18","character_extension_offset":"0x1A8",
+    "extension_group_rows_offset":"0x08","extension_group_count_offset":"0x14","group_active_rows_offset":"0x08","group_active_count_offset":"0x14","active_modifier_offset":"0x08",
+    "active_opinion_vtable_rva":"0x4300DF8","temporary_opinion_vtable_rva":"0x4300DC0",
+    "root_scope_size":"0x168","root_kind":4,"root_kind_offset":"0x00","root_character_id_offset":"0x08","internal_context_size":"0x28","evaluation_flag_rva":"0x570C3F4","fixed_scale":100000
+  },
+  "receiver_contract": {
+    "current_opinion":"recipient is owner and player is toward; both full-generation identities are resolved and repeated before publication",
+    "modifier_presence":"presence is an exact active-row modifier pointer match and is separate from its decay-aware integer value, including legal present zero",
+    "preview":"clone the already prepared gift interaction scope, change only root kind/id to recipient, preserve actor/recipient aliases, fresh-resolve send_gift_opinion and evaluate twice with explicit stock source descriptor",
+    "rounding":"signed nearest integer with ties away from zero, exactly (raw<0 ? raw-50000 : raw+50000)/100000 after range gate",
+    "stability":"two complete samples plus fresh definition/database and full-generation character pointer round trips",
+    "typed_failure":"any span, storage, generation, canonical key/hash, vtable, active-row, evaluation, teardown or resample mismatch is unavailable; legal numeric zero remains available"
+  },
+  "scope":{"private_build_only":true,"read_only_game_state":true,"public_abi_changed":false,"public_schema_changed":false,"public_mcp_changed":false,"ck3_started":false},
+  "readiness":{"exact_span_ready":true,"full_generation_identity_ready":true,"exact_vtable_gate_ready":true,"legal_zero_distinct_from_failure":true,"private_receiver_ready":true,"paused_live_artifact_ready":false}
+}

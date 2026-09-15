@@ -1,4 +1,5 @@
 #include "xar_bridge/faction_gift_mitigation_async_glue_v1.hpp"
+#include "xar_bridge/faction_gift_receivers_v1.hpp"
 
 #include <algorithm>
 #include <array>
@@ -237,12 +238,20 @@ bool ReadFaction(void *context,
   if (!FindFactionRow(query.targeting_rows, faction_id, row)) return false;
   output.available = true;
   output.frame = required;
-  output.query_complete = false;
   output.queried_source_faction_id = faction_id;
   output.source_faction_present = true;
-  // No exact CFaction-at-war receiver is certified. Leaving query_complete
-  // false prevents this placeholder value from passing the action gate.
-  output.source_faction_at_war = false;
+  const bool read = query.offline_receivers_fixture
+                        ? ReadFactionAtWarFromExactStoresV1(
+                              query.faction_at_war_exact_stores, faction_id,
+                              output.source_faction_at_war)
+                        : ReadFactionAtWarExact11906V1(
+                              query.module_base, faction_id,
+                              output.source_faction_at_war);
+  // Keep the source/details envelope readable so the async owner can publish
+  // the dedicated receiver RED.  query_complete remains the only authority
+  // for this field; the default false value is never accepted as an observed
+  // no-war result when the exact receiver fails.
+  output.query_complete = read;
   return true;
 }
 
@@ -269,7 +278,22 @@ bool ReadRecipient(void *context,
       query.direct_landed_vassal_character_ids.begin(),
       query.direct_landed_vassal_character_ids.end(),
       static_cast<std::int32_t>(recipient_id));
-  output.opinion_query_complete = false;
+  GiftOpinionReceiverResultV1 opinion{};
+  const bool opinion_read =
+      query.offline_receivers_fixture
+          ? ReadGiftOpinionFromExactFixtureV1(
+                query.gift_opinion_exact_fixture, recipient_id,
+                required.player_character_id, opinion)
+          : ReadGiftOpinionExact11906V1(
+                query.module_base, query.bindings, recipient_id,
+                required.player_character_id, opinion);
+  if (opinion_read) {
+    output.opinion_query_complete = opinion.query_complete;
+    output.opinion_of_player = opinion.recipient_opinion_of_player;
+    output.gift_opinion_present = opinion.gift_opinion_present;
+    output.gift_opinion_modifier_value =
+        opinion.gift_opinion_modifier_value;
+  }
   return true;
 }
 
@@ -281,7 +305,11 @@ bool ReadPreview(void *context,
   auto &query = *static_cast<FactionGiftMitigationAsyncContextV1 *>(context);
   output = {};
   if (!ReadFactionGiftPreviewThroughGenericInteractionV1(
-          query.bindings, player_id, recipient_id, output.preview)) {
+          query.bindings, query.module_base,
+          query.offline_receivers_fixture
+              ? &query.gift_opinion_exact_fixture
+              : nullptr,
+          player_id, recipient_id, output.preview)) {
     return false;
   }
   output.available = true;
@@ -328,7 +356,9 @@ std::string Quote(std::string_view value) {
 } // namespace
 
 bool ReadFactionGiftPreviewThroughGenericInteractionV1(
-    const Bindings &bindings, std::uint32_t player_character_id,
+    const Bindings &bindings, std::uintptr_t module_base,
+    const GiftOpinionReceiverFixtureV1 *offline_fixture,
+    std::uint32_t player_character_id,
     std::uint32_t recipient_character_id,
     game::FactionGiftPreviewV1 &output) noexcept {
   output = {};
@@ -357,7 +387,18 @@ bool ReadFactionGiftPreviewThroughGenericInteractionV1(
   bindings.evaluate_character_interaction_cost(
       static_cast<const std::byte *>(definition) + kDefinitionCostOffset,
       storage.data() + kContextScopeOffset, costs.data());
+  std::int32_t opinion_delta = 0;
+  const bool opinion_delta_read =
+      offline_fixture != nullptr
+          ? ReadGiftOpinionDeltaFromExactFixtureV1(
+                *offline_fixture, recipient_character_id,
+                player_character_id, opinion_delta)
+          : ReadGiftOpinionDeltaExact11906V1(
+                module_base, storage.data() + kContextScopeOffset,
+                recipient_character_id, player_character_id,
+                opinion_delta);
   bindings.destroy_character_interaction_context(storage.data());
+  if (!opinion_delta_read) return false;
   output.available = true;
   output.definition_key.assign(
       kFactionGiftMitigationActionV1DefinitionKey);
@@ -366,9 +407,7 @@ bool ReadFactionGiftPreviewThroughGenericInteractionV1(
   output.auto_accept = auto_accept;
   output.gold_cost_raw = costs[0];
   output.gold_scale = kFactionGiftMitigationActionV1GoldScale;
-  // This field is deliberately a typed gap until send_gift_opinion's exact
-  // receiver and the existing modifier collector are closed.
-  output.opinion_delta = 0;
+  output.opinion_delta = opinion_delta;
   return true;
 }
 
@@ -516,8 +555,13 @@ bool ExecuteFactionGiftMitigationAsyncMailboxV1(
   if (!query.observation.gift_preview.available) {
     query.failure_flags |= faction_gift_async_failure_preview;
   }
-  query.failure_flags |= faction_gift_async_failure_faction_war_receiver |
-                         faction_gift_async_failure_opinion_receiver;
+  if (!query.observation.source_faction_requery_complete) {
+    query.failure_flags |= faction_gift_async_failure_faction_war_receiver;
+  }
+  if (!query.observation.recipient_opinion_query_complete ||
+      !query.observation.gift_preview.available) {
+    query.failure_flags |= faction_gift_async_failure_opinion_receiver;
+  }
   query.completion =
       query.observation.gift_preview.available
           ? FactionGiftMitigationAsyncCompletionV1::preview_ready
@@ -545,12 +589,28 @@ std::string SerializeFactionGiftMitigationAsyncContextV1(
                 : "not_executed";
   const auto &observation = context.observation;
   const auto &preview = observation.gift_preview;
+  std::string typed_reds{"["};
+  bool first_red = true;
+  const auto append_red = [&](std::string_view red) {
+    if (!first_red) typed_reds += ',';
+    typed_reds += Quote(red);
+    first_red = false;
+  };
+  if ((context.failure_flags &
+       faction_gift_async_failure_faction_war_receiver) != 0) {
+    append_red("faction_at_war_receiver_unavailable");
+  }
+  if ((context.failure_flags &
+       faction_gift_async_failure_opinion_receiver) != 0) {
+    append_red("gift_opinion_receiver_unavailable");
+  }
+  typed_reds += ']';
   std::string output =
       "{\"schema_version\":1,\"private\":true,\"completion\":" +
       Quote(completion) + ",\"failure_flags\":" +
       std::to_string(context.failure_flags) +
-      ",\"typed_reds\":[\"faction_at_war_receiver_unclosed\","
-      "\"gift_opinion_receiver_unclosed\"],\"source_faction_id\":" +
+      ",\"typed_reds\":" + typed_reds +
+      ",\"source_faction_id\":" +
       std::to_string(context.source_faction_id) +
       ",\"recipient_character_id\":" +
       std::to_string(context.recipient_character_id) +
@@ -574,6 +634,16 @@ std::string SerializeFactionGiftMitigationAsyncContextV1(
       (observation.recipient_is_ai ? "true" : "false") +
       ",\"recipient_is_direct_landed_vassal\":" +
       (observation.recipient_is_direct_landed_vassal ? "true" : "false") +
+      ",\"recipient_opinion_query_complete\":" +
+      (observation.recipient_opinion_query_complete ? "true" : "false") +
+      ",\"recipient_opinion_of_player\":" +
+      std::to_string(observation.recipient_opinion_of_player) +
+      ",\"gift_opinion_present\":" +
+      (observation.gift_opinion_present ? "true" : "false") +
+      ",\"gift_opinion_modifier_value\":" +
+      (observation.gift_opinion_modifier_value.has_value()
+           ? std::to_string(*observation.gift_opinion_modifier_value)
+           : "null") +
       ",\"preview\":{\"available\":" +
       (preview.available ? "true" : "false") +
       ",\"definition_key\":" + Quote(preview.definition_key) +
@@ -585,7 +655,8 @@ std::string SerializeFactionGiftMitigationAsyncContextV1(
       (preview.auto_accept ? "true" : "false") +
       ",\"gold_cost_raw\":" + std::to_string(preview.gold_cost_raw) +
       ",\"gold_scale\":" + std::to_string(preview.gold_scale) +
-      ",\"opinion_delta\":null}},\"receipt_pending\":" +
+      ",\"opinion_delta\":" + std::to_string(preview.opinion_delta) +
+      "}},\"receipt_pending\":" +
       (context.receipt_pending ? "true" : "false");
   if (context.execute_request) {
     output += ",\"ack\":" + SerializeFactionGiftMitigationAckV1(context.ack);

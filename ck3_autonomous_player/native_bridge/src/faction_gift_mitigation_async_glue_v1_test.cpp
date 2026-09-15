@@ -31,6 +31,24 @@ std::array<std::byte, 0x300> g_game_data{};
 std::array<std::byte, 0xE0> g_player_entry{};
 std::array<void *, 1> g_player_entries{g_player_entry.data()};
 void *g_game_state_pointer = g_game_state.data();
+std::array<std::byte, 0x40> g_faction_storage{};
+std::array<std::byte, 304 * 0x10> g_faction_slots{};
+std::array<std::byte, 0xA0> g_faction{};
+std::array<std::byte, 0x20> g_faction_fallback{};
+std::array<std::byte, 0x40> g_war_storage{};
+std::array<std::byte, 405 * 0x10> g_war_slots{};
+std::array<std::byte, 0x20> g_war{};
+std::array<std::byte, 0x20> g_war_fallback{};
+std::array<std::uintptr_t, 2> g_faction_vtable{};
+std::array<std::uintptr_t, 2> g_war_vtable{};
+std::array<std::uintptr_t, 2> g_null_war_vtable{};
+constexpr std::uintptr_t kAliveLeaf = 0x33333333;
+constexpr std::uintptr_t kNullAliveLeaf = 0x77777777;
+constexpr std::uintptr_t kModifierDefinition = 0x88888888;
+constexpr std::uintptr_t kModifierVtable = 0x99999999;
+constexpr std::uintptr_t kNamedDefinition = 0xAAAAAAAA;
+constexpr std::uintptr_t kNamedVtable = 0xBBBBBBBB;
+constexpr std::uintptr_t kNamedSecondaryVtable = 0xCCCCCCCC;
 
 template <typename T>
 void Store(void *base, std::size_t offset, T value) {
@@ -143,12 +161,121 @@ int main() {
         static_cast<void *>(g_player_entries.data()));
   Store(g_game_data.data() + 0x100, 0x64, std::int32_t{1});
   Store(g_player_entry.data(), 0xB0, std::uint32_t{101});
+  g_faction_vtable[0] = 0x44444444;
+  g_war_vtable[0] = 0x55555555;
+  g_war_vtable[1] = kAliveLeaf;
+  g_null_war_vtable[0] = 0x66666666;
+  g_null_war_vtable[1] = kNullAliveLeaf;
+  Store(g_faction.data(), 0x00, g_faction_vtable.data());
+  Store(g_faction.data(), 0x10, std::uint32_t{303});
+  Store(g_faction.data(), 0x8C, std::uint32_t{404});
+  Store(g_faction_slots.data(), 303 * 0x10 + 0x08,
+        static_cast<void *>(g_faction.data()));
+  Store(g_faction_storage.data(), 0x20,
+        static_cast<void *>(g_faction_slots.data()));
+  Store(g_faction_storage.data(), 0x2C, std::int32_t{304});
+  Store(g_war.data(), 0x00, g_war_vtable.data());
+  Store(g_war.data(), 0x08, std::uint32_t{404});
+  Store(g_war_slots.data(), 404 * 0x10 + 0x08,
+        static_cast<void *>(g_war.data()));
+  Store(g_war_storage.data(), 0x20,
+        static_cast<void *>(g_war_slots.data()));
+  Store(g_war_storage.data(), 0x2C, std::int32_t{405});
+  Store(g_war_fallback.data(), 0x00, g_null_war_vtable.data());
+  Store(g_war_fallback.data(), 0x08, std::uint32_t{0xFFFFFFFFU});
 
   const auto bindings = MakeBindings();
+  xar::ck3_11906::GiftOpinionReceiverFixtureV1 gift_fixture{};
+  gift_fixture.available = true;
+  gift_fixture.recipient_identity_before = 202;
+  gift_fixture.recipient_identity_after = 202;
+  gift_fixture.player_identity_before = 101;
+  gift_fixture.player_identity_after = 101;
+  gift_fixture.modifier_definition = kModifierDefinition;
+  gift_fixture.modifier_definition_after = kModifierDefinition;
+  gift_fixture.modifier_vtable = kModifierVtable;
+  gift_fixture.expected_modifier_vtable = kModifierVtable;
+  gift_fixture.modifier_hash =
+      xar::ck3_11906::kFactionGiftOpinionModifierStableHashV1;
+  gift_fixture.modifier_key =
+      xar::ck3_11906::kFactionGiftOpinionModifierKeyV1;
+  gift_fixture.opinion_first = 0;
+  gift_fixture.opinion_second = 0;
+  gift_fixture.modifier_present_first = false;
+  gift_fixture.modifier_present_second = false;
+  gift_fixture.named_definition = kNamedDefinition;
+  gift_fixture.named_definition_after = kNamedDefinition;
+  gift_fixture.named_vtable = kNamedVtable;
+  gift_fixture.named_secondary_vtable = kNamedSecondaryVtable;
+  gift_fixture.expected_named_vtable = kNamedVtable;
+  gift_fixture.expected_named_secondary_vtable = kNamedSecondaryVtable;
+  gift_fixture.named_hash =
+      xar::ck3_11906::kFactionGiftSendOpinionStableHashV1;
+  gift_fixture.named_key =
+      xar::ck3_11906::kFactionGiftSendOpinionKeyV1;
+  gift_fixture.opinion_delta_first = 40;
+  gift_fixture.opinion_delta_second = 40;
+  xar::ck3_11906::GiftOpinionReceiverResultV1 gift_result{};
+  if (!Check(xar::ck3_11906::ReadGiftOpinionFromExactFixtureV1(
+                 gift_fixture, 202, 101, gift_result) &&
+                 gift_result.query_complete &&
+                 gift_result.recipient_opinion_of_player == 0 &&
+                 !gift_result.gift_opinion_present &&
+                 !gift_result.gift_opinion_modifier_value.has_value(),
+             "legal zero opinion/absent modifier fixture failed")) {
+    return 1;
+  }
+  auto present_zero = gift_fixture;
+  present_zero.modifier_present_first = true;
+  present_zero.modifier_present_second = true;
+  present_zero.modifier_value_first = 0;
+  present_zero.modifier_value_second = 0;
+  if (!Check(xar::ck3_11906::ReadGiftOpinionFromExactFixtureV1(
+                 present_zero, 202, 101, gift_result) &&
+                 gift_result.gift_opinion_present &&
+                 gift_result.gift_opinion_modifier_value == 0,
+             "present zero modifier must differ from unavailable")) {
+    return 1;
+  }
+  auto generation_drift = gift_fixture;
+  generation_drift.recipient_identity_after = 0x010000CA;
+  if (!Check(!xar::ck3_11906::ReadGiftOpinionFromExactFixtureV1(
+                 generation_drift, 202, 101, gift_result),
+             "generation drift fixture was accepted")) {
+    return 1;
+  }
+  const xar::ck3_11906::FactionAtWarExactStoresV1 faction_stores{
+      g_faction_storage.data(), g_faction_fallback.data(),
+      g_war_storage.data(), g_war_fallback.data(),
+      reinterpret_cast<std::uintptr_t>(g_faction_vtable.data()),
+      reinterpret_cast<std::uintptr_t>(g_war_vtable.data()),
+      reinterpret_cast<std::uintptr_t>(g_null_war_vtable.data()), kAliveLeaf,
+      kNullAliveLeaf};
+  bool faction_at_war = false;
+  if (!Check(xar::ck3_11906::ReadFactionAtWarFromExactStoresV1(
+                 faction_stores, 303, faction_at_war) && faction_at_war,
+             "at-war exact receiver failed")) {
+    return 1;
+  }
+  Store(g_faction.data(), 0x8C, std::uint32_t{0xFFFFFFFFU});
+  if (!Check(xar::ck3_11906::ReadFactionAtWarFromExactStoresV1(
+                 faction_stores, 303, faction_at_war) && !faction_at_war,
+             "legal no-war exact receiver failed")) {
+    return 1;
+  }
+  Store(g_faction.data(), 0x8C, std::uint32_t{404});
+  const auto saved_war_vtable = g_war_vtable[1];
+  g_war_vtable[1] = 0;
+  if (!Check(!xar::ck3_11906::ReadFactionAtWarFromExactStoresV1(
+                 faction_stores, 303, faction_at_war),
+             "war vtable gate accepted mismatch")) {
+    return 1;
+  }
+  g_war_vtable[1] = saved_war_vtable;
   xar::game::FactionGiftPreviewV1 preview{};
   if (!Check(xar::ck3_11906::
                  ReadFactionGiftPreviewThroughGenericInteractionV1(
-                     bindings, 101, 202, preview),
+                     bindings, 0, &gift_fixture, 101, 202, preview),
              "preview failed")) {
     std::cerr << "hash=" << g_hash_count << " lookup=" << g_lookup_count
               << " construct=" << g_construct_count << '\n';
@@ -161,7 +288,7 @@ int main() {
                  preview.interaction_legal && preview.auto_accept &&
                  preview.gold_cost_raw == 2'500'000 &&
                  preview.gold_scale == 100000 &&
-                 preview.opinion_delta == 0,
+                 preview.opinion_delta == 40,
              "preview mismatch")) {
     return 1;
   }
@@ -197,6 +324,15 @@ int main() {
   query.mailbox = &mailbox;
   query.bindings = bindings;
   query.module_base = 0x10000000;
+  query.offline_receivers_fixture = true;
+  query.faction_at_war_exact_stores = {
+      g_faction_storage.data(), g_faction_fallback.data(),
+      g_war_storage.data(), g_war_fallback.data(),
+      reinterpret_cast<std::uintptr_t>(g_faction_vtable.data()),
+      reinterpret_cast<std::uintptr_t>(g_war_vtable.data()),
+      reinterpret_cast<std::uintptr_t>(g_null_war_vtable.data()),
+      kAliveLeaf, kNullAliveLeaf};
+  query.gift_opinion_exact_fixture = gift_fixture;
   query.expected_snapshot = g_snapshot;
   query.targeting_rows.terminal =
       xar::bridge::FactionTargetingRowProbeTerminalV1::ready;
@@ -232,16 +368,105 @@ int main() {
                  query.observation.recipient_alive &&
                  query.observation.recipient_is_ai &&
                  query.observation.recipient_is_direct_landed_vassal &&
-                 !query.observation.source_faction_requery_complete &&
-                 !query.observation.recipient_opinion_query_complete &&
+                 query.observation.source_faction_requery_complete &&
+                 query.observation.source_faction_at_war &&
+                 query.observation.recipient_opinion_query_complete &&
+                 query.observation.recipient_opinion_of_player == 0 &&
+                 !query.observation.gift_opinion_present &&
                  query.observation.gift_preview.gold_cost_raw == 2'500'000 &&
+                 query.observation.gift_preview.opinion_delta == 40 &&
                  query.failure_flags ==
-                     (xar::ck3_11906::
-                          faction_gift_async_failure_faction_war_receiver |
-                      xar::ck3_11906::
-                          faction_gift_async_failure_opinion_receiver) &&
+                     xar::ck3_11906::faction_gift_async_failure_none &&
                  !query.receipt_pending,
              "async stack mismatch")) {
+    return 1;
+  }
+
+  // Receiver failures remain typed REDs.  A war receiver identity drift must
+  // not be hidden by the independently successful opinion and preview reads.
+  auto war_receiver_red = query;
+  war_receiver_red.faction_at_war_exact_stores.expected_war_alive_leaf =
+      kAliveLeaf + 1;
+  stamp.pump_epoch = 13;
+  if (!Check(xar::ck3_11906::ExecuteFactionGiftMitigationAsyncMailboxV1(
+                 &war_receiver_red, stamp),
+             "war receiver RED executor failed") ||
+      !Check(war_receiver_red.failure_flags ==
+                 xar::ck3_11906::
+                     faction_gift_async_failure_faction_war_receiver &&
+                 !war_receiver_red.observation.
+                     source_faction_requery_complete &&
+                 war_receiver_red.observation.
+                     recipient_opinion_query_complete &&
+                 war_receiver_red.observation.gift_preview.available,
+             "war receiver drift did not remain a local typed RED")) {
+    return 1;
+  }
+
+  // Opinion observation is independently fail-closed.  The legal gift
+  // preview may still be published for diagnosis, but the action gate keeps
+  // the receiver RED and cannot treat the default zero as an observed value.
+  auto opinion_receiver_red = query;
+  opinion_receiver_red.gift_opinion_exact_fixture.
+      modifier_definition_after = kModifierDefinition + 1;
+  stamp.pump_epoch = 14;
+  if (!Check(xar::ck3_11906::ExecuteFactionGiftMitigationAsyncMailboxV1(
+                 &opinion_receiver_red, stamp),
+             "opinion receiver RED executor failed") ||
+      !Check(opinion_receiver_red.failure_flags ==
+                 xar::ck3_11906::
+                     faction_gift_async_failure_opinion_receiver &&
+                 opinion_receiver_red.observation.
+                     source_faction_requery_complete &&
+                 !opinion_receiver_red.observation.
+                     recipient_opinion_query_complete &&
+                 opinion_receiver_red.observation.gift_preview.available,
+             "opinion receiver drift did not remain a local typed RED")) {
+    return 1;
+  }
+
+  // The closed receivers must unlock the real action preconditions rather
+  // than merely replacing the old RED string. A legal no-war sample with no
+  // existing modifier reaches the generic validate/send chain and publishes
+  // a pending receipt.
+  Store(g_faction.data(), 0x8C, std::uint32_t{0xFFFFFFFFU});
+  auto action_query = query;
+  action_query.execute_request = true;
+  action_query.request.request_id = "faction16-gift";
+  action_query.request.idempotency_key = "faction16-gift-once";
+  action_query.request.expected_revision = 11;
+  action_query.request.expected_native_revision = 15;
+  action_query.request.expected_date_raw = 100;
+  action_query.request.player_character_id = 101;
+  action_query.request.source_faction_id = 303;
+  action_query.request.recipient_character_id = 202;
+  action_query.request.membership_role =
+      xar::game::FactionGiftMembershipRoleV1::leader;
+  action_query.request.expected_definition_key = "gift_interaction";
+  action_query.request.expected_definition_stable_hash =
+      static_cast<std::uint32_t>(kGiftHash);
+  action_query.request.expected_gold_cost_raw = 2'500'000;
+  action_query.request.expected_gold_scale = 100'000;
+  action_query.request.expected_opinion_delta = 40;
+  action_query.request.minimum_gold_reserve_raw = 1'000'000;
+  action_query.request.minimum_gold_reserve_scale = 100'000;
+  stamp.pump_epoch = 15;
+  if (!Check(xar::ck3_11906::ExecuteFactionGiftMitigationAsyncMailboxV1(
+                 &action_query, stamp),
+             "action-ready async executor failed") ||
+      !Check(action_query.failure_flags ==
+                 xar::ck3_11906::faction_gift_async_failure_none &&
+                 action_query.observation.source_faction_requery_complete &&
+                 !action_query.observation.source_faction_at_war &&
+                 action_query.observation.recipient_opinion_query_complete &&
+                 action_query.observation.gift_preview.opinion_delta == 40 &&
+                 action_query.ack.status == xar::game::
+                     FactionGiftMitigationAckStatusV1::
+                         submitted_verification_pending &&
+                 action_query.ack.verification_pending &&
+                 action_query.receipt_pending &&
+                 action_query.idempotency_claimed && g_submit_count == 2,
+             "closed receivers did not unlock action readiness")) {
     return 1;
   }
 
@@ -262,7 +487,9 @@ int main() {
                  std::string::npos &&
                  json.find("\"gold_cost_raw\":2500000") !=
                      std::string::npos &&
-                 json.find("gift_opinion_receiver_unclosed") !=
+                 json.find("\"opinion_delta\":40") !=
+                     std::string::npos &&
+                 json.find("gift_opinion_receiver_unavailable") !=
                      std::string::npos &&
                  json.find("\"receipt_pending\":false") !=
                      std::string::npos,

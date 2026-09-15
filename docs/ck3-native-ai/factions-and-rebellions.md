@@ -4,7 +4,7 @@
 
 - **原版 AI 与命令路径：`static-confirmed`。** 本文冻结 `gift_interaction` 的原版 AI 选人、合法性、自动接受、扣款与好感效果，并闭合 exact-build 中按稳定 key 查找 `CCharacterInteraction`、构造两角色上下文、校验和提交命令的原始调用链。
 - **逐派系/候选观测：`static-ready` 私有原语。** 当前 production-live `campaign-root-context-v1` 仍只有 `player_targeting_faction_count` 和 REALM2 的 `direct_landed_vassal_character_ids`。FACTION2-CORE 已闭合 targeting collection 的 inline row span、`0x18` stride 与稳定 faction identity；FACTION3-EVIDENCE 闭合了 exact-build 目标角色 getter和 campaign-root count 等价；FACTION6-CORE 又把 canonical nullable leader 与 `0x20` character-member rows 接进同一 private、default-off capture。它仍没有 paused live/heartbeat artifact，也没有 type、war、power/discontent 或公共 query，因此公共能力仍不能证明某个封臣属于哪一支派系。
-- **赠礼动作：`research`。** 本工作包只给出最小 typed observation/action 合同和施工入口，没有修改 bridge、公共 MCP、schema、planner 或动作实现，也没有启动 CK3。
+- **赠礼动作：`static-ready` 私有链。** FACTION10-14 已把有界动作、source adapter、exact native binder 与异步 preview mailbox 串起；FACTION16 又闭合 `CFaction.IsAtWar`、recipient→player 总好感、modifier-specific `gift_opinion` 与 `send_gift_opinion` preview receiver。整条私有链仍没有 paused live artifact、公共 MCP/schema 或 planner 接入，也没有启动 CK3。
 - **首个可见 OODA：** 从真实 targeting faction row 中选一名直属有地、AI 控制、尚无 `gift_opinion` 的成员，读取引擎最终赠礼成本与好感增量，满足预算后执行一次 `gift_interaction`；随后验证金币转移与该角色的 `gift_opinion`，并重新读取原派系状态。
 
 这条路径适合作为 G2-M4 的第一个“真实封臣/派系干预”：原版 AI 自己就把 factioneering vassal 纳入赠礼候选；AI 收礼人自动接受；动作有确定的资源与关系后置条件；失败时不会像撤销头衔、囚禁或修改封臣契约那样引入暴政、战争和多阶段回复。它不会保证一次赠礼立即解散派系，因此产物必须区分 `mitigation_applied` 与 `threat_resolved`。
@@ -51,7 +51,7 @@
 
 ### 原版 AI 树
 
-实线表示已经由冻结 stock script 闭合的分支；虚线表示本项目尚未闭合的 native 观测入口。
+实线表示已经由冻结 stock script 或 exact-build 私有 receiver 闭合的分支；虚线表示仍待 paused live 或公共接入的边界。
 
 ```mermaid
 flowchart TD
@@ -74,8 +74,9 @@ flowchart TD
     AI -->|no| REPLY[normal reply lifecycle]
 
     F[played ruler targeting-faction collection]
-    F -. "unknown: exact span, stable faction identity and member vector" .-> FM
-    V -. "unknown: exact actor/recipient receiver for final gift_value and opinion preview" .-> PAY
+    F -->|private exact row/member receiver| FM
+    V -->|private exact gift value/opinion preview receiver| PAY
+    F -. "paused live/public projection pending" .-> V
 ```
 
 这里只证明“原版 AI 把派系封臣作为赠礼候选”，不证明赠礼会令成员退出派系。原版脚本没有在 `gift_interaction` 的 `on_accept` 中直接执行 faction leave/remove。
@@ -164,22 +165,24 @@ flowchart LR
 ```json
 {
   "readiness": {
-    "targeting_rows_ready": false,
-    "stable_faction_identity_ready": false,
-    "member_identity_ready": false,
-    "realm2_join_ready": true,
-    "interaction_definition_ready": true,
-    "interaction_context_ready": false,
-    "gift_value_ready": false,
-    "gift_opinion_preview_ready": false,
-    "opinion_modifier_observer_ready": false,
-    "same_frame_ready": false,
-    "action_ready": false
+    "private_static_targeting_rows_ready": true,
+    "private_static_stable_faction_identity_ready": true,
+    "private_static_member_identity_ready": true,
+    "private_static_realm2_join_ready": true,
+    "private_static_interaction_definition_ready": true,
+    "private_static_interaction_context_ready": true,
+    "private_static_gift_value_ready": true,
+    "private_static_gift_opinion_preview_ready": true,
+    "private_static_opinion_modifier_observer_ready": true,
+    "private_static_same_frame_chain_ready": true,
+    "private_static_action_chain_ready": true,
+    "paused_live_artifact_ready": false,
+    "public_mcp_schema_ready": false
   }
 }
 ```
 
-上例表达本工作包结束时的真实边界。`realm2_join_ready` 与 generic definition lookup 已有闭合输入；其余不能用 `null` 冒充完成。
+上例只表达 default-off 私有静态链的 readiness。它不代表 paused live、公共 native/MCP/schema、planner 或一次真实赠礼后置验收已完成；这些边界不能用 fixture、ACK 或 `null` 冒充。
 
 ## 最小动作合同
 
@@ -584,7 +587,21 @@ same-round retry.
 
 复用本文已闭合的 database getter -> stable key hash -> loaded lookup，并严格 hash/string round-trip。随后在原始 actor/recipient interaction context 中闭合：validator、auto-accept、`gift_value`、`send_gift_opinion` 与 `gift_opinion` 观测。
 
-现有 named-script-value evaluator 只证明了以 played Character 为 root 的若干只读值；它没有证明可以安全地为同时读取 actor/recipient scope 的 `gift_value` 和 `send_gift_opinion` 构造 receiver。不得离开原始 interaction context 盲调 evaluator。优先逆向原版赠礼界面/interaction preview 的原始调用点；在 receiver ABI 闭合前保持 `gift_value_ready=false`。
+FACTION16 已闭合这条私有静态入口。它不从任意 Character root 盲调 evaluator：`gift_value` 仍由已经准备完成的原始 gift interaction context 读取；`send_gift_opinion` 则克隆该 context 的完整 scope，只把 root 重写为 recipient，保留 actor/recipient aliases，并使用冻结的五参数 fixed receiver 和原版 source descriptor。任何 definition、Character generation、两次求值、范围或 teardown 漂移都会保留 typed unavailable。
+
+### FACTION16-RECEIVERS：战争与赠礼 receiver 闭合
+
+`CFaction.IsAtWar` 的原版 GUI registration 把 `IsAtWar` 绑定到 wrapper `0x237A060` 和 target `0x2378200`。receiver 从 faction storage `0x570C768` 以 full-generation ID 解析 `CFaction`，核对 `CFaction+0x10`，读取 `CFaction+0x8C` 的 WarID，再从 war storage `0x570C740` 解析并核对 `CWar+0x08`。真实 `CWar` vtable `0x42F77C8` slot 1 指向 `0x10495A0`；合法无战争状态使用 null-war vtable `0x431C298`，identity `0xFFFFFFFF`，slot 1 指向 false leaf `0x7E6590`。实现完整采样两次，明确区分 `at_war=false` 与读取失败。
+
+赠礼侧冻结并实现三项 receiver：
+
+- recipient 对 player 的总好感调用原版 `0x2610A50`，两端都经 Character storage `0x570C130` 与 `CCharacter+0x18` 做 full-generation round-trip；
+- `gift_opinion` 先以 canonical key/hash `gift_opinion / 0xCA82155B` 查 exact definition，再只接受 active-opinion row `+0x08` 与该 definition 指针完全相等的记录；presence 与 value 分开发布，因此 present-zero、absent 与 unavailable 不会混淆；
+- `send_gift_opinion / 0xF8A1F946` 使用已准备的 gift interaction scope、scope clone `0x3358E00`、support constructors `0x3354330/0x3354280` 和五参数 fixed evaluator `0x3369820`。Q100000 原始值按冻结的 signed nearest/ties-away 规则转为 `int32`，越界即 unavailable。
+
+机器可读 ABI 权威证据为 `faction_gift_opinion_receivers_v1_abi.json` 与 `faction_at_war_receiver_v1_abi.json`；较短的 `gift_opinion_receivers_v1_abi.json` 是实现侧 source-contract 投影，用于逐项约束当前 C++ 常量、receiver 和 async wiring，不替代前者。对应 verifier 固定 CK3 `1.19.0.6` executable、stock source、RTTI/vtable、callsite 和 native-span hashes。`faction_gift_receivers_v1.cpp` 把这些 receiver 接入既有 async glue：成功时移除旧的永久 unclosed RED 并填充真实 opinion/preview 值；任一 receiver 失败仍分别保留 `faction_at_war_receiver_unavailable` 或 `gift_opinion_receiver_unavailable`，不会降低动作门槛。
+
+本包只达到 `static-ready-private-receivers-pending-paused-live`。fixture 证明 at-war、合法 no-war、absent modifier、present-zero、代际漂移、局部 typed RED 以及 receiver 完整时 generic validate/send chain 可达；它不是 paused live 结果，未改变公共 schema/MCP，也未完成金币与 modifier 后置条件。
 
 ### FACTION-ACT1：赠礼命令
 
@@ -598,8 +615,7 @@ same-round retry.
 
 - targeting faction collection 的 paused live target/count 同 admission 验收，以及 leader/member vector；
 - faction row 的 final power/discontent getters 与同帧稳定读取；
-- `gift_value` / `send_gift_opinion` 的 exact actor/recipient receiver 和最终类型转换；
-- recipient -> actor 的 modifier-specific opinion observer；
+- 已闭合 receiver 的 paused application-main 实机取值，以及 private chain 后续公共 native/MCP/planner 接入；
 - gift auto-accept 的完成时序与 live postcondition 等待边界；
 - 一次赠礼对具体 faction membership/power/discontent 的因果影响。首版只重查，不预设变化。
 
