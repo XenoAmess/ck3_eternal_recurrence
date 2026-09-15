@@ -72,6 +72,15 @@ test('improves hunter edges with bounded local refinement under a 1024-layer cei
   expect(evidence.provenance.sourceWidth).toBe(1024)
   expect(evidence.provenance.sourceHeight).toBe(1024)
   expect(evidence.provenance.pyramidResolutions).toEqual([96, 192, 256])
+  expect(evidence.provenance.searchBackend).toBe('webgl2-batch+cpu-reference')
+  expect(evidence.provenance.batchSearch).toMatchObject({
+    backend: 'webgl2-texture-array-reduction-float-v1',
+    status: 'active',
+    cpuReferenceAgreement: true,
+  })
+  expect(evidence.provenance.batchSearch.batches).toBeGreaterThanOrEqual(3)
+  expect(evidence.provenance.batchSearch.candidates).toBeGreaterThan(300)
+  expect(evidence.provenance.batchSearch.maximumMetricDelta).toBeLessThanOrEqual(2e-6)
   expect(evidence.provenance.candidateLosses.map((item: { mode: string }) => item.mode)).toEqual(
     expect.arrayContaining(['semantic-search', 'native-tile-paint', 'native-edge-refined', 'hybrid-native-paint']),
   )

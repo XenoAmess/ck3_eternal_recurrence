@@ -233,13 +233,16 @@
         "memoryEvidenceScope": "JavaScript heap delta only; excludes GPU and browser-process memory",
         "nonGetRequests": 0,
         "pauseResumeCheckpoint": "indexeddb_reload_persistence_passed",
-        "gpuBatchSearch": "background_candidate_selection_passed",
+        "gpuBatchSearch": "background_semantic_promotion_and_local_selection_passed",
         "gpuBatchBackend": "webgl2-texture-array-reduction-float-v1",
         "gpuBatchCandidates": 6,
         "gpuBatchMaximumMetricDelta": 2.5092759509126594e-8,
+        "gpuHunterBatches": 6,
+        "gpuHunterCandidates": 354,
+        "gpuHunterMaximumMetricDelta": 6.102908300942289e-8,
         "gpuCpuStableOrderAgreement": "passed",
         "gpuContextLossFallback": "passed",
-        "gpuSearchRemainingScope": "semantic_local_and_native_tile_candidates"
+        "gpuSearchRemainingScope": "full_semantic_transform_population_and_native_tile_candidates"
       },
       "blockers": []
     },

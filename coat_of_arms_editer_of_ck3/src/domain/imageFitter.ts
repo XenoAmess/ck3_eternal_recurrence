@@ -1844,6 +1844,66 @@ export function fitImageToCoatOfArms(
     maximumMetricDelta: 0,
     cpuReferenceAgreement: false,
   }
+  let batchSearchDisabled = false
+  const rankWithBatchScorer = <T>(
+    items: readonly T[],
+    candidateOf: (item: T) => ScoredCandidate,
+  ): T[] => {
+    const cpuRanked = [...items].sort((left, right) => (
+      candidateOf(left).totalLoss - candidateOf(right).totalLoss
+      || candidateOf(left).key.localeCompare(candidateOf(right).key)
+    ))
+    if (!batchScorer || batchSearchDisabled || items.length < 2) return cpuRanked
+    const gpuMetrics: ImageFitMetrics[] = []
+    for (let first = 0; first < items.length; first += batchScorer.maximumBatchSize) {
+      const batch = items.slice(first, first + batchScorer.maximumBatchSize)
+      const metrics = batchScorer.score(batch.map((item) => candidateOf(item).rendered))
+      if (!metrics || metrics.length !== batch.length) break
+      batchSearch.batches += 1
+      batchSearch.candidates += batch.length
+      gpuMetrics.push(...metrics)
+    }
+    if (gpuMetrics.length !== items.length) {
+      const scorerStatus = batchScorer.status()
+      batchSearch.status = scorerStatus === 'context_lost'
+        ? 'context_lost_fallback'
+        : scorerStatus === 'runtime_error'
+          ? 'runtime_error_fallback'
+          : 'unavailable_fallback'
+      batchSearch.cpuReferenceAgreement = false
+      batchSearchDisabled = true
+      return cpuRanked
+    }
+    let maximumMetricDelta = 0
+    for (let index = 0; index < gpuMetrics.length; index += 1) {
+      const reference = candidateOf(items[index])
+      const metric = gpuMetrics[index]
+      maximumMetricDelta = Math.max(
+        maximumMetricDelta,
+        Math.abs(metric.colorLoss - reference.colorLoss),
+        Math.abs(metric.edgeLoss - reference.edgeLoss),
+        Math.abs(metric.totalLoss - reference.totalLoss),
+      )
+    }
+    batchSearch.maximumMetricDelta = Math.max(batchSearch.maximumMetricDelta, maximumMetricDelta)
+    const gpuRanked = items
+      .map((item, index) => ({ item, metric: gpuMetrics[index] }))
+      .sort((left, right) => (
+        left.metric.totalLoss - right.metric.totalLoss
+        || candidateOf(left.item).key.localeCompare(candidateOf(right.item).key)
+      ))
+      .map(({ item }) => item)
+    const referenceAgreement = maximumMetricDelta <= batchReferenceTolerance
+      && gpuRanked.every((item, index) => candidateOf(item).key === candidateOf(cpuRanked[index]).key)
+    batchSearch.cpuReferenceAgreement = referenceAgreement
+    if (!referenceAgreement) {
+      batchSearch.status = 'reference_mismatch_fallback'
+      batchSearchDisabled = true
+      return cpuRanked
+    }
+    batchSearch.status = 'active'
+    return gpuRanked
+  }
   let bestBackground: ScoredCandidate | null = null
   const backgroundCandidates: { candidate: ScoredCandidate, patternAsset: FitTextureCandidate }[] = []
   const backgroundTotal = patterns.length * backgroundPalettes.length
@@ -1882,59 +1942,7 @@ export function fitImageToCoatOfArms(
   if (!bestBackground) throw new Error('无法生成背景候选')
 
   const initialLoss = bestBackground.totalLoss
-  const cpuRankedBackgrounds = [...backgroundCandidates].sort((left, right) => (
-    left.candidate.totalLoss - right.candidate.totalLoss
-    || left.candidate.key.localeCompare(right.candidate.key)
-  ))
-  let rankedBackgrounds = cpuRankedBackgrounds
-  if (batchScorer) {
-    const gpuMetrics: ImageFitMetrics[] = []
-    for (let first = 0; first < backgroundCandidates.length; first += batchScorer.maximumBatchSize) {
-      const items = backgroundCandidates.slice(first, first + batchScorer.maximumBatchSize)
-      const metrics = batchScorer.score(items.map((item) => item.candidate.rendered))
-      if (!metrics || metrics.length !== items.length) break
-      batchSearch.batches += 1
-      batchSearch.candidates += items.length
-      gpuMetrics.push(...metrics)
-    }
-    if (gpuMetrics.length === backgroundCandidates.length) {
-      let maximumMetricDelta = 0
-      for (let index = 0; index < gpuMetrics.length; index += 1) {
-        const reference = backgroundCandidates[index].candidate
-        const metric = gpuMetrics[index]
-        maximumMetricDelta = Math.max(
-          maximumMetricDelta,
-          Math.abs(metric.colorLoss - reference.colorLoss),
-          Math.abs(metric.edgeLoss - reference.edgeLoss),
-          Math.abs(metric.totalLoss - reference.totalLoss),
-        )
-      }
-      batchSearch.maximumMetricDelta = maximumMetricDelta
-      const gpuRanked = backgroundCandidates
-        .map((item, index) => ({ item, metric: gpuMetrics[index] }))
-        .sort((left, right) => (
-          left.metric.totalLoss - right.metric.totalLoss
-          || left.item.candidate.key.localeCompare(right.item.candidate.key)
-        ))
-        .map(({ item }) => item)
-      const referenceAgreement = maximumMetricDelta <= batchReferenceTolerance
-        && gpuRanked.every((item, index) => item.candidate.key === cpuRankedBackgrounds[index].candidate.key)
-      batchSearch.cpuReferenceAgreement = referenceAgreement
-      if (referenceAgreement) {
-        batchSearch.status = 'active'
-        rankedBackgrounds = gpuRanked
-      } else {
-        batchSearch.status = 'reference_mismatch_fallback'
-      }
-    } else {
-      const scorerStatus = batchScorer.status()
-      batchSearch.status = scorerStatus === 'context_lost'
-        ? 'context_lost_fallback'
-        : scorerStatus === 'runtime_error'
-          ? 'runtime_error_fallback'
-          : 'unavailable_fallback'
-    }
-  }
+  const rankedBackgrounds = rankWithBatchScorer(backgroundCandidates, (item) => item.candidate)
   const backgroundSeeds = rankedBackgrounds.slice(0, beamWidth)
   const bestSolidBackground = rankedBackgrounds.find((item) => item.patternAsset.name === 'pattern_solid.dds')
   if (
@@ -2043,9 +2051,7 @@ export function fitImageToCoatOfArms(
         }
         if (assetBest) coarseChoices.push({ choice: assetBest, match })
       }
-      const localChoices = coarseChoices
-        .sort((left, right) => left.choice.candidate.totalLoss - right.choice.candidate.totalLoss
-          || left.choice.candidate.key.localeCompare(right.choice.candidate.key))
+      const localChoices = rankWithBatchScorer(coarseChoices, (item) => item.choice.candidate)
         .slice(0, localCandidateCount)
         .map(({ choice, match }) => optimizeLayerChoice(
           choice, match, focus,
@@ -2059,10 +2065,9 @@ export function fitImageToCoatOfArms(
           evaluated,
           reportRefinement,
         ))
-        .sort((left, right) => left.candidate.totalLoss - right.candidate.totalLoss
-          || left.candidate.key.localeCompare(right.candidate.key))
+      const rankedLocalChoices = rankWithBatchScorer(localChoices, (item) => item.candidate)
 
-      for (const choice of localChoices.slice(0, activeBeamWidth)) {
+      for (const choice of rankedLocalChoices.slice(0, activeBeamWidth)) {
         if (choice.candidate.totalLoss >= state.candidate.totalLoss - 1e-12) continue
         foundStrictImprovement = true
         const relativeGain = (state.candidate.totalLoss - choice.candidate.totalLoss)

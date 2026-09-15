@@ -60,7 +60,7 @@ Alpha 已能解析、编辑、渲染、序列化 CK3 家徽代码，并能在浏
 | P0 | 只保证前向追加时严格改善 | 没有最终 backward prune / leave-one-out；较早图层可能在后来覆盖后变成冗余。 |
 | P1 | 代码膨胀 | v4/v6 已完成保持顺序的安全相邻合并和最终剪枝，但进一步近似压缩仍需受累计视觉损失预算约束。 |
 | P1 | 大预算控制尚未完整 | 128/1024/10,000 真实拟合、跨刷新持久 checkpoint 精确暂停/恢复、取消后重启与恰好 10,000 实例文档已通过；GPU 搜索覆盖扩大与同 run WebGL2 context 重建仍待完成。 |
-| P1 | 搜索仍偏贪心 | WebGL2 texture-array/atlas/reduction 已承担背景候选排序并由 CPU reference 门禁；语义/local 与逐块残差候选仍为 CPU，尚无稳定的多候选 Pareto 自动输出。 |
+| P1 | 搜索仍偏贪心 | WebGL2 texture-array/atlas/reduction 已承担背景、语义晋级及 local 胜者排序并由 CPU reference 门禁；完整 transform population 与逐块残差候选仍为 CPU，尚无稳定的多候选 Pareto 自动输出。 |
 | P1 | 编辑体验尚未完整 | 32 卡片虚拟窗口、撤销/重做、项目保存恢复、直接变换、三候选对比及跨刷新持久 checkpoint 恢复已通过；更多拟合阶段的恢复与配额失败恢复仍待完成。 |
 | P1 | 预览合同仍不完整 | exact 1.19.0.6 唯一注册 `_default.dds` 的 `textured_emblem` shader 模型合成已通过；`parent` 尚未展开到浏览器预览，原生 framebuffer 像素对照仍待补。 |
 | P2 | 输入/资产覆盖有限 | 安全 SVG、素材包目录导入、中英文、移动端、Service Worker 以及 Chromium/Firefox/WebKit 已通过；仍只有 1.19.0.6 基础包，没有 DLC/mod VFS 胜者 receipt，Pages asset pack 仍较大。 |
@@ -155,8 +155,9 @@ framebuffer 空间像素对照仍是独立待办，不影响 WP1 文本闭环的
 82 ms 内暂停并写入 IndexedDB，刷新、素材重载与状态恢复共 3,318 ms，继续搜索 3,239 ms；恢复结果与不中断的 128 预算结果逐字段一致，
 并以 run ID/revision 拒绝旧 Worker 消息。详见[真实拟合预算压力证据](coat-of-arms-fit-budget-stress.md)。
 
-WP4 仍因 GPU 搜索尚未扩展到语义/local 与逐块残差候选、同 run context 重建及总进程/GPU 内存证据缺失而保持 `in_progress`。背景候选的
-`webgl2-texture-array-reduction-float-v1` 已在 Worker 内实测启用，GPU/CPU 最大指标差 `2.5092759509126594e-8`，完整排序一致；真实
+WP4 仍因 GPU 尚未直接处理完整语义 transform population 与逐块残差候选、同 run context 重建及总进程/GPU 内存证据缺失而保持
+`in_progress`。`webgl2-texture-array-reduction-float-v1` 已在 Worker 内实测处理背景、语义晋级与 local 胜者排序；hunter 1024 为
+6 batch / 354 candidates，GPU/CPU 最大指标差 `6.102908300942289e-8`，完整排序一致；真实
 context loss 会 fail closed 到 CPU，详见[WebGL2 批量搜索证据](coat-of-arms-webgl-batch-search.md)。
 
 退出条件：
