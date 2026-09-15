@@ -63,7 +63,7 @@ Alpha 已能解析、编辑、渲染、序列化 CK3 家徽代码，并能在浏
 | P1 | 搜索仍偏贪心 | WebGL2 只交叉评分最终候选，尚未承担 atlas/reduction 批量搜索；没有稳定的多候选 Pareto 输出。 |
 | P1 | 大文档编辑体验不足 | 图层列表未虚拟化；缺少撤销/重做、项目保存、直接拖拽、暂停/恢复和候选对比。 |
 | P1 | 预览合同仍不完整 | `parent` 与 `textured_emblem` 尚未完整合成到浏览器预览。 |
-| P2 | 输入/资产/浏览器覆盖有限 | 没有直接 SVG 输入；只有 1.19.0.6 基础包；没有自动解析 DLC/mod VFS 胜者；Pages asset pack 较大；E2E 仅覆盖 Chromium；主 JS chunk 仍约 1 MiB。 |
+| P2 | 输入/资产/浏览器覆盖有限 | 安全 SVG 输入已通过浏览器门禁；仍只有 1.19.0.6 基础包，没有自动解析 DLC/mod VFS 胜者；Pages asset pack 较大；E2E 仅覆盖 Chromium；主 JS chunk 仍约 1 MiB。 |
 
 ## 3. P0-1：红色分割线修复
 

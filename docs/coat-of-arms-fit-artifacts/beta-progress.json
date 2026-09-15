@@ -1,6 +1,6 @@
 {
   "schema": "ck3-coa-beta-progress-v1",
-  "updatedAt": "2026-09-15T22:36:00+08:00",
+  "updatedAt": "2026-09-15T22:44:00+08:00",
   "overallStatus": "in_progress",
   "workPackages": [
     {
@@ -280,11 +280,29 @@
     },
     {
       "id": "WP6",
-      "status": "pending",
-      "commit": null,
-      "commands": [],
-      "resultPath": null,
-      "keyMetrics": {},
+      "status": "in_progress",
+      "commit": "d5dce949",
+      "commands": [
+        "pnpm exec playwright test e2e/safe-svg-input.spec.ts --reporter=line",
+        "pnpm test",
+        "pnpm build"
+      ],
+      "resultPath": "docs/coat-of-arms-safe-svg-input.md",
+      "keyMetrics": {
+        "safeSvgRasterization": "passed",
+        "maximumSvgBytes": 2097152,
+        "maximumSvgDimension": 4096,
+        "maximumSvgElements": 5000,
+        "maximumSvgDepth": 64,
+        "externalResourceRequests": 0,
+        "nonGetRequests": 0,
+        "vitestFilesPassed": 15,
+        "vitestTestsPassed": 74,
+        "parentComposition": "pending",
+        "texturedEmblemComposition": "pending",
+        "crossBrowserE2E": "pending",
+        "assetPackImportAndVfsWinner": "pending"
+      },
       "blockers": []
     },
     {
