@@ -26,6 +26,8 @@ def main() -> int:
         for mode, flags in (("normal", ["/Od"]), ("optimized", ["/O2"])):
             for unit in (
                 "player_held_construction_model_enumerator_v1.cpp",
+                "player_world_building_definition_source_v1.cpp",
+                "player_world_building_definition_source_v1_process.cpp",
                 "player_construction_view_probe_v1_mailbox.cpp",
             ):
                 output = build / f"{Path(unit).stem}-{mode}.obj"

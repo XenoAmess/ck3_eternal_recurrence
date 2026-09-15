@@ -144,6 +144,44 @@ paused live 证据、合法性、费用或物质建设结果。来源向量为�
 取得合法候选和费用后才接正式策略/typed 动作。`query/action` 维持
 未注册、未广告。
 
+### R722 关闭县视图后的真实来源分叉（未闭合建设候选）
+
+在 CK3 `1.19.0.6`、EXE SHA-256 `2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86`
+的同一 paused `native_revision=3`、`date_raw=53178312`、玩家 CharacterID `29829` 中，私有 slot42
+查询确证六个真实直辖男爵领 TitleID→ProvinceID：`2103→2635`、`2106→2644`、`2143→2619`、
+`2146→2617`、`2174→2629`、`2175→2625`。`holding_view` 有效可见性为 false、GUI cache 为零、
+`CHoldingView` mode-0 definition source count 为零，且未评价合法建设；R722 报告 SHA-256 为
+`11892CBE9B6F70EC65F90BAF4360A9E286C82139741815DEFC22B1F30208DF1F`。没有动作或日期变化。
+这里的零是关闭县视图的 GUI 来源读数，**不是**全局建筑定义计数，更不是无合法建设。
+
+exact 原版另有独立世界建筑定义注册表：`0x1922305` 的建设候选枚举器及独立世界迭代器
+`0x15ABC4B` 均调用 accessor `0xC8CEE0`，从 `module+0x57BFFD0` 取对象，读 `+0x68` 的
+`CBuildingType*` 向量及 `+0x74` 计数。原版建筑 command 读取定义对象 `+0x10` 的整数
+BuildingTypeID；RTTI、primary vtable 与 constructor 写入已按同一 EXE 锚定。玩家 GUI 的
+`GUIPotentialBuildingItem.CanConstruct` 在 `0x11A632E` 调最终判定 `0x295CD60`，输入是当前玩家
+CharacterID、当前 ProvinceID、同步借用的定义对象、施工 slot index；原版自身核对省份 slot 数。
+`player_world_building_definition_source_v1.cpp` 已接在默认关闭的私有 slot42 只读候选源中：同一 paused
+application-main 帧把世界定义表与上面玩家直辖 Province 配对，只复制 pointer-free
+`TitleID/ProvinceID/BuildingTypeID/slot_index` 的**有界**最终合法性结果，明确记录截断。
+原版 `GetCost` 经 view/row 范围的 `0x119B930→0x2918AF0` 计算，世界向量和最终合法性
+结果均不给出实际费用；在获得玩家原生费用与资源后，建设策略和 typed 动作才有输入。
+ABI、exact span 哈希与未闭合费用分支见
+`native_bridge/research/player_world_building_definition_source_v1_abi.json`。接线已过 normal/optimized
+聚焦测试，但该源尚无 paused live
+回执，公共 query/action 与 MCP 广告继续关闭；新增私有 receipt 不改变 `open_kaishek` 公开
+协议，未来公共只读 MCP 需独立版本合同和兼容适配。
+
+```mermaid
+flowchart LR
+    H["R722: six held barony/Province rows"] --> W["[static] world CBuildingType registry"]
+    Z["R722: closed holding_view mode-0 count 0"] -. "GUI scoped; no legality conclusion" .-> W
+    W --> L{"[static source] same-frame player final legality"}
+    L -->|true| P["pointer-free legal sample; bounded coverage"]
+    L -->|false| N["native rejection for this tuple"]
+    P -. "[unknown: stock player row cost]" .-> C["exact cost + resources"]
+    C -. "[unknown: paused live + next turn]" .-> A["formal policy and typed construction"]
+```
+
 本包没有改变现有公开 ABI、协议或 `open_kaishek` 输入，因此当前跨仓
 组合无需适配 push。接通私有 typed receipt 后应同步给 `open_kaishek`
 最小版本合同；公开查询前还须提供同版本只读 MCP 查询口，供下游与

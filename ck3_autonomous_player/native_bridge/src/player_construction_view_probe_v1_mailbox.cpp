@@ -1,6 +1,7 @@
 #include "player_construction_view_probe_v1_mailbox.hpp"
 
 #include "player_construction_view_probe_v1_process.hpp"
+#include "player_world_building_definition_source_v1_process.hpp"
 
 #include <windows.h>
 
@@ -17,6 +18,7 @@ using ProbeResult = xar::ck3::shared::PlayerConstructionViewProbeResultV1;
 using ProbeStatus = xar::ck3::shared::PlayerConstructionViewProbeStatusV1;
 using ModelFailure = PlayerHeldConstructionModelFailureV1;
 using ModelStatus = PlayerHeldConstructionModelStatusV1;
+using WorldFailure = PlayerWorldBuildingFailureV1;
 
 struct ModelAccessProxyV1 final {
   const PlayerConstructionViewProbeMailboxContextV1* query = nullptr;
@@ -153,6 +155,25 @@ std::string_view ModelFailureKey(ModelFailure failure) noexcept {
   return "definition_source";
 }
 
+std::string_view WorldFailureKey(WorldFailure failure) noexcept {
+  switch (failure) {
+    case WorldFailure::none: return "none";
+    case WorldFailure::exact_build: return "exact_build";
+    case WorldFailure::application_main: return "application_main";
+    case WorldFailure::paused_frame: return "paused_frame";
+    case WorldFailure::held_source: return "held_source";
+    case WorldFailure::player_actor_binding: return "player_actor_binding";
+    case WorldFailure::registry_source: return "registry_source";
+    case WorldFailure::definition_identity: return "definition_identity";
+    case WorldFailure::province_slot_source:
+      return "province_slot_source";
+    case WorldFailure::native_final_legality:
+      return "native_final_legality";
+    case WorldFailure::frame_changed: return "frame_changed";
+  }
+  return "registry_source";
+}
+
 ProbeResult FrameChanged() noexcept {
   ProbeResult result{};
   result.failure = ProbeFailure::frame_changed;
@@ -262,6 +283,20 @@ bool ExecutePlayerConstructionViewProbeMailboxV1(
           // callback; the private pipe receipt carries only its source count.
           std::vector<std::uintptr_t>{}.swap(
               query->player_model_sources.borrowed_definition_addresses);
+          PlayerWorldBuildingNativeCallAccessV1 native_call{};
+          native_call.module_base = query->module_base;
+          native_call.exact_build_admitted = true;
+          PlayerWorldBuildingSourceAccessV1 world_access{};
+          world_access.campaign = model_access;
+          world_access.final_legality =
+              BindCurrentProcessPlayerWorldBuildingFinalLegalityV1(
+                  native_call);
+          world_access.final_legality_context = &native_call;
+          query->player_world_building_source_executed = true;
+          query->player_world_building_sources =
+              ReadPlayerWorldBuildingDefinitionSourcesV1(
+                  query->module_base, true, world_access,
+                  {query->expected_revision, -1, 512, 8});
         }
       }
       if (!CaptureSameSnapshot(*query, stamp)) {
@@ -270,6 +305,10 @@ bool ExecutePlayerConstructionViewProbeMailboxV1(
         query->player_model_sources.failure = ModelFailure::frame_changed;
         query->player_model_view_binding_verified.reset();
         query->player_model_definition_source_count = 0;
+        query->player_world_building_sources = {};
+        query->player_world_building_sources.failure =
+            WorldFailure::frame_changed;
+        query->player_world_building_source_executed = true;
       }
     }
   }
@@ -352,6 +391,66 @@ std::string SerializePlayerConstructionViewProbePrivateV1(
               ? std::to_string(query.player_model_definition_source_count)
               : "null";
   json += ",\"legal_construction_evaluated\":false}";
+  const auto& world = query.player_world_building_sources;
+  const bool world_available =
+      query.player_world_building_source_executed &&
+      world.source_available && world.failure == WorldFailure::none;
+  json += ",\"player_world_building_sources\":{\"schema_version\":1,\"advertised\":false,\"read_only\":true,\"status\":\"";
+  json += !query.player_world_building_source_executed
+              ? "not_executed"
+              : world_available ? "source_available" : "unavailable";
+  json += "\",\"failure\":\"";
+  json += query.player_world_building_source_executed
+              ? WorldFailureKey(world.failure)
+              : "not_executed";
+  json += "\",\"snapshot_revision\":";
+  json += world_available ? std::to_string(world.snapshot_revision) : "null";
+  json += ",\"date_raw\":";
+  json += world_available ? std::to_string(world.date_raw) : "null";
+  json += ",\"player_character_id\":";
+  json += world_available ? std::to_string(world.player_character_id) : "null";
+  json += ",\"definition_source_count\":";
+  json += world_available
+              ? std::to_string(world.definition_source_count) : "null";
+  json += ",\"final_legality_checks\":";
+  json += world_available
+              ? std::to_string(world.final_legality_checks) : "null";
+  json += ",\"native_final_legality_evaluated\":";
+  json += world_available && world.native_final_legality_evaluated
+              ? "true" : "false";
+  json += ",\"checks_truncated\":";
+  json += world_available && world.checks_truncated ? "true" : "false";
+  json += ",\"cost_ready\":false,\"construction_action_ready\":false";
+  json += ",\"directly_held_barony_provinces\":[";
+  if (world_available) {
+    for (std::size_t index = 0;
+         index < world.directly_held_barony_provinces.size(); ++index) {
+      if (index != 0) json += ',';
+      const auto& holding = world.directly_held_barony_provinces[index];
+      json += "{\"barony_title_id\":";
+      json += std::to_string(holding.barony_title_id);
+      json += ",\"province_id\":";
+      json += std::to_string(holding.province_id);
+      json += '}';
+    }
+  }
+  json += "],\"legal_samples\":[";
+  if (world_available) {
+    for (std::size_t index = 0; index < world.legal_samples.size(); ++index) {
+      if (index != 0) json += ',';
+      const auto& sample = world.legal_samples[index];
+      json += "{\"barony_title_id\":";
+      json += std::to_string(sample.barony_title_id);
+      json += ",\"province_id\":";
+      json += std::to_string(sample.province_id);
+      json += ",\"building_type_id\":";
+      json += std::to_string(sample.building_type_id);
+      json += ",\"slot_index\":";
+      json += std::to_string(sample.slot_index);
+      json += '}';
+    }
+  }
+  json += "]}";
   json += ",\"executor_invocations\":";
   json += std::to_string(query.executor_invocations);
   json += '}';

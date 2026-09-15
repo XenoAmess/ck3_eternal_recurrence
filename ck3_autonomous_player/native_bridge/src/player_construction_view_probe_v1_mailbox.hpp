@@ -2,6 +2,7 @@
 
 #include "player_construction_view_probe_v1.hpp"
 #include "player_held_construction_model_enumerator_v1.hpp"
+#include "player_world_building_definition_source_v1.hpp"
 #include "xar_bridge/ck3_11906.hpp"
 #include "xar_bridge/main_thread_query_mailbox_v1.hpp"
 
@@ -31,6 +32,10 @@ struct PlayerConstructionViewProbeMailboxContextV1 final {
   std::uintptr_t module_base = 0U;
   xar::ck3::shared::PlayerConstructionViewProbeResultV1 result{};
   PlayerHeldConstructionModelResultV1 player_model_sources{};
+  // Additive private same-frame world source and sampled stock player final
+  // eligibility. It carries only copied scalar IDs, never borrowed addresses.
+  PlayerWorldBuildingSourceResultV1 player_world_building_sources{};
+  bool player_world_building_source_executed = false;
   std::size_t player_model_definition_source_count = 0;
   // Null before an active view/model comparison, false on a failed binding,
   // true only when the already identity-checked view+0x108 equals the exact
