@@ -27,6 +27,7 @@ The manifest used by these tools has this interface. Fields shown in angle brack
   "injector_sha256": "<injector SHA-256>",
   "environment_sha256": "<prepared profile environment SHA-256>",
   "production_tree_sha256": "<production mod projection SHA-256>",
+  "formal_report": "<new evidence directory/formal-report.txt>",
   "supported_government": "feudal_government",
   "timeout_seconds": 390,
   "session_ceiling_seconds": 480,
@@ -61,10 +62,11 @@ After eligibility is GREEN, confirm the prior process is dead, allocate a new ac
 ```powershell
 $preview = Get-Content -LiteralPath $previewManifestPath -Raw | ConvertFrom-Json
 $agentEntry = Join-Path $preview.source_repo 'ck3_autonomous_player/agent.py'
-& $preview.python -B $agentEntry --state-dir $preview.state_dir --game-dir $preview.game_dir --bridge-mode native-headless --bridge-pipe $preview.pipe --bridge-dll $preview.dll --bridge-injector $preview.injector native-auto-run --turns $preview.formal_turns --timeout $preview.timeout_seconds --readiness-timeout $preview.readiness_timeout_seconds --cold-start-checkpoint
+& $preview.python -B $agentEntry --state-dir $preview.state_dir --game-dir $preview.game_dir --bridge-mode native-headless --bridge-pipe $preview.pipe --bridge-dll $preview.dll --bridge-injector $preview.injector native-auto-run --turns $preview.formal_turns --timeout $preview.timeout_seconds --readiness-timeout $preview.readiness_timeout_seconds --cold-start-checkpoint | Tee-Object -FilePath $preview.formal_report
+$nativeAutoRunExitCode = $LASTEXITCODE
 ```
 
-Capture the complete JSON CLI result and stderr in the run's independent evidence directory. PowerShell 5.1 redirects external stdout as UTF-16; `tools/verify_g2_preview_action.py` can read either UTF-16 or UTF-8. The formal bounded run only passes the preview action slice when it makes a real nonempty policy decision from the exact natural request, submits one typed action, sees an independent later paused frame where the old full pending ID has disappeared, has a later successful strategy turn that does not repeat the action, saves a checkpoint **after** the action, and proves single-instance cleanup. `no_semantic_action`, timeout, RED and unexecuted are recorded separately. Existing historical same-seed behavior can guide scene selection but cannot substitute for this frozen combination's live result.
+The CLI prints `Operator stop request file: <absolute path>` to stderr; record that line along with the complete JSON stdout and `$nativeAutoRunExitCode` in the independent attempt. `Tee-Object` preserves the complete stdout report; PowerShell 5.1 writes it as UTF-16, which `tools/verify_g2_preview_action.py` can read. The formal bounded run only passes the preview action slice when it makes a real nonempty policy decision from the exact natural request, submits one typed action, sees an independent later paused frame where the old full pending ID has disappeared, has a later successful strategy turn that does not repeat the action, saves a checkpoint **after** the action, and proves single-instance cleanup. `no_semantic_action`, timeout, RED and unexecuted are recorded separately. Existing historical same-seed behavior can guide scene selection but cannot substitute for this frozen combination's live result.
 
 The evidence checker is read-only and extracts the signed pending ID from the new report; it never takes a CharacterID or request ID as an operator action parameter:
 
@@ -74,6 +76,34 @@ The evidence checker is read-only and extracts the signed pending ID from the ne
 
 At a safe post-action checkpoint, preserve the game save, paired `native-session/driver-state.json`, agent episode/high-level objective state, pending-action/receipt mapping, binary/agent/profile versions, reports and SHA-256 values together. A read-only qualification run may update driver-state command history or last bridge PID while leaving the save unchanged; compare before/after and use the **current** driver-state SHA in the next exact preflight. Do not silently restore an older driver-state or claim that all artifacts remained one version if a later Python/native fix changes them.
 
-To check controllable stop, use Ctrl+C while the direct `native-auto-run` command is active. The integrated deferred operator-stop path should return `operator_stop_checkpointed` with a compatible checkpoint and `cleanup.ok=true`; `operator_stop_checkpoint_deferred`, a surviving CK3 process or missing action-status resolution is a failed stop gate. A true cold restore begins only after the old CK3 tree is dead and a newly allocated round launches the same formal command with `--cold-start-checkpoint` from that paired save/driver state. Verify the old action's material result first, retain the same episode/high-level goal, continue visible gameplay without repeating the consumed full ID, and save another checkpoint. Same-process reload or mere Python deserialization does not meet cold restore.
+To check controllable stop on Windows, keep the formal `native-auto-run` process active. In a **second** PowerShell process, derive the request path from the pinned manifest, confirm it equals the absolute path printed by this CLI, and request stop after a verified gameplay turn has reached a safe paused frame:
+
+```powershell
+$preview = Get-Content -LiteralPath $previewManifestPath -Raw | ConvertFrom-Json
+$stopRequest = Join-Path $preview.state_dir 'native-auto-run.stop'
+Set-Content -LiteralPath $stopRequest -Value stop
+```
+
+The tested d112 CLI watches this request and routes it to the existing operator-stop checkpoint boundary; it consumes and clears the file. A stale request already present at launch is rejected before CK3 starts. Confirm the formal report says `operator_stop_checkpointed` and `outcome=operator_stopped`, a compatible paired checkpoint was saved, `cleanup.ok=true`, and the CK3 process tree is dead. `operator_stop_checkpoint_deferred`, a surviving process or an unresolved action is a failed stop gate. Windows PowerShell Ctrl+C did not reliably reach Python's stop handler in the controlled console attempts; it is not the documented operator method.
+
+Preserve the post-stop `state/profile/save games/xar_checkpoint.ck3` together with `state/native-session/driver-state.json` and their fresh SHA-256 values. After the old process is confirmed dead, the owner allocates a new actual round. With the same prepared state, derive the current paired hashes, run the existing **no-launch** preflight, then the formal cold restore; create an independent report directory for this attempt:
+
+```powershell
+$preview = Get-Content -LiteralPath $previewManifestPath -Raw | ConvertFrom-Json
+$agentEntry = Join-Path $preview.source_repo 'ck3_autonomous_player/agent.py'
+$checkpointPath = Join-Path $preview.state_dir 'profile/save games/xar_checkpoint.ck3'
+$driverStatePath = Join-Path $preview.state_dir 'native-session/driver-state.json'
+$preview.checkpoint_sha256 = (Get-FileHash -Algorithm SHA256 -LiteralPath $checkpointPath).Hash.ToLowerInvariant()
+$preview.driver_state_sha256 = (Get-FileHash -Algorithm SHA256 -LiteralPath $driverStatePath).Hash.ToLowerInvariant()
+$coldRestoreEvidenceDir = Join-Path (Split-Path -Parent $preview.state_dir) ('cold-restore-' + (Get-Date -Format 'yyyyMMddTHHmmss'))
+New-Item -ItemType Directory -Path $coldRestoreEvidenceDir -ErrorAction Stop | Out-Null
+$coldRestoreReport = Join-Path $coldRestoreEvidenceDir 'formal-report.txt'
+& $preview.python -B $agentEntry --state-dir $preview.state_dir --game-dir $preview.game_dir --bridge-mode native-headless --bridge-pipe $preview.pipe --bridge-dll $preview.dll --bridge-injector $preview.injector native-one-generation-preflight --expected-character-id $preview.episode_character_id --expected-episode-run-id $preview.episode_run_id --expected-checkpoint-sha256 $preview.checkpoint_sha256 --expected-driver-state-sha256 $preview.driver_state_sha256
+if ($LASTEXITCODE -ne 0) { throw 'cold-restore preflight blocked; CK3 was not launched' }
+& $preview.python -B $agentEntry --state-dir $preview.state_dir --game-dir $preview.game_dir --bridge-mode native-headless --bridge-pipe $preview.pipe --bridge-dll $preview.dll --bridge-injector $preview.injector native-auto-run --turns 5 --timeout $preview.timeout_seconds --readiness-timeout $preview.readiness_timeout_seconds --cold-start-checkpoint | Tee-Object -FilePath $coldRestoreReport
+$coldRestoreExitCode = $LASTEXITCODE
+```
+
+The preflight must return `ready/ok=true` before launching. Verify the old action's material result first, retain the same episode/high-level goal, continue visible gameplay without repeating the consumed full ID, and save another checkpoint. Same-process reload or mere Python deserialization does not meet cold restore.
 
 The checker and operator path are reusable versioned assets for any authorized machine that can read the repository. Their use still depends on a legally installed, exact CK3 build and a host capable of running it; a read-only MCP query available on another machine does not certify that host can execute CK3. This tool set adds no native ABI, MCP schema or `open_kaishek` runtime protocol change. The frozen package must cite the actual live round/report and clearly limit supported gameplay; it is only ready for delivery after the semantic action, stop/checkpoint and new-round cold restore gates pass.
