@@ -84,9 +84,10 @@ Fixture MakeFixture() {
   fixture.Put(kGuiSlot, static_cast<std::uintptr_t>(0x1000));
   fixture.Put(0x1000, kModuleBase + 0x4093158);
   fixture.Put(0x1000 + 0x1B8, static_cast<std::uintptr_t>(0x3000));
-  fixture.Put(0x3000, kModuleBase + 0x43FB390);
+  // R731's GUI host nodes have readable memory but no image vtable.
+  fixture.Put(0x3000, std::uintptr_t{0});
   fixture.Put(0x3000 + 0x58, static_cast<std::uintptr_t>(0x4000));
-  fixture.Put(0x4000, kModuleBase + 0x43FB3B0);
+  fixture.Put(0x4000, std::uintptr_t{0});
   fixture.Put(0x1000 + 0x78, static_cast<std::uintptr_t>(0x5000));
   fixture.Put(0x5000 + 0x10, static_cast<std::uintptr_t>(0x6000));
   fixture.Put(0x6000 + 0x08, static_cast<std::uintptr_t>(0x7000));
@@ -157,8 +158,11 @@ int main() {
   auto fixture = MakeFixture();
   FrontendBookmarkModelProbeV1 result{};
   if (!Probe(fixture, result) || !result.model_indices_available ||
-      !result.setup_view_matches_bookmarks_root ||
-      result.interface_application_chain_level != 0 ||
+       !result.setup_view_matches_bookmarks_root ||
+       result.interface_application_chain_level != 0 ||
+       result.gui_chain_vtable_rvas[0] != 0x4093158 ||
+       result.gui_chain_vtable_rvas[1] != 0 ||
+       result.gui_chain_vtable_rvas[2] != 0 ||
       result.selected_character_index != -1 ||
       result.hovered_character_index != -1 ||
       !result.selected_bookmark_group_key_available ||
@@ -226,12 +230,26 @@ int main() {
   // its intermediate/base vtable is never accepted as CInterfaceApplication.
   fixture.Put(0x1000, kModuleBase + 0x44F4650);
   if (!Probe(fixture, result) || result.model_indices_available ||
-      result.unavailable_reason !=
-          "interface_application_not_in_gui_chain") {
+       result.unavailable_reason !=
+           "interface_application_unverified") {
     std::fprintf(stderr, "unverified application must fail closed\n");
     return 1;
   }
   fixture.Put(0x1000, kModuleBase + 0x4093158);
+  fixture.Put(0x8000, kModuleBase + 0x44F4650);
+  if (!Probe(fixture, result) || result.model_indices_available ||
+      result.unavailable_reason != "frontend_setup_view_unverified") {
+    std::fprintf(stderr, "unverified SetupView must fail closed\n");
+    return 1;
+  }
+  fixture.Put(0x8000, kModuleBase + 0x410B070);
+  fixture.Put(0x3000 + 0x58, std::uintptr_t{0x1234});
+  if (!Probe(fixture, result) || result.model_indices_available ||
+      result.unavailable_reason != "gui_owner_chain_unreadable") {
+    std::fprintf(stderr, "unreadable GUI context must fail closed\n");
+    return 1;
+  }
+  fixture.Put(0x3000 + 0x58, std::uintptr_t{0x4000});
   fixture.Put(0x9000 + 0x17C, std::uint32_t{6});
   if (!Probe(fixture, result) || result.bookmark_character_keys_available ||
       result.unavailable_reason !=

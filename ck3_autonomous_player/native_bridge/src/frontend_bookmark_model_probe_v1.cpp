@@ -127,32 +127,38 @@ bool ProbeFrontendBookmarkModelV1(
   }
 
   std::array<void *, 3> chain{};
-  if (!ReadAt(access, environment.gui_global_slot, 0, chain[0]) ||
-      !ReadAt(access, chain[0], kZhongguoGuiChainFirstOffset, chain[1]) ||
-      !ReadAt(access, chain[1], kZhongguoGuiChainSecondOffset,
-              chain[2])) {
+  if (!ReadAt(access, environment.gui_global_slot, 0, chain[0])) {
     output.unavailable_reason = "gui_owner_chain_unreadable";
     return true;
   }
-  for (std::size_t i = 0; i < chain.size(); ++i) {
-    if (!ReadVtableRva(access, environment.module_base, chain[i],
-                       output.gui_chain_vtable_rvas[i])) {
-      output.unavailable_reason = "gui_owner_type_unreadable";
-      return true;
-    }
-    if (output.gui_chain_vtable_rvas[i] ==
-        kInterfaceApplicationVtableRva) {
-      output.interface_application_chain_level =
-          static_cast<std::int32_t>(i);
-    }
-  }
-  if (output.interface_application_chain_level < 0) {
-    output.unavailable_reason = "interface_application_not_in_gui_chain";
+  if (!ReadVtableRva(access, environment.module_base, chain[0],
+                     output.gui_chain_vtable_rvas[0])) {
+    output.unavailable_reason = "gui_owner_type_unreadable";
     return true;
   }
+  if (output.gui_chain_vtable_rvas[0] != kInterfaceApplicationVtableRva) {
+    output.unavailable_reason = "interface_application_unverified";
+    return true;
+  }
+  output.interface_application_chain_level = 0;
+  // E317C8 follows app+1B8 and host+58 as untyped GUI-context pointers.
+  // Their first qwords may not be vtables; keep the RVAs as diagnostics only.
+  if (!ReadAt(access, chain[0], kZhongguoGuiChainFirstOffset, chain[1]) ||
+      !ReadAt(access, chain[1], kZhongguoGuiChainSecondOffset, chain[2])) {
+    output.unavailable_reason = "gui_owner_chain_unreadable";
+    return true;
+  }
+  std::uintptr_t gui_context_head = 0;
+  if (!ReadAt(access, chain[2], 0, gui_context_head)) {
+    output.unavailable_reason = "gui_owner_chain_unreadable";
+    return true;
+  }
+  for (std::size_t i = 1; i < chain.size(); ++i) {
+    (void)ReadVtableRva(access, environment.module_base, chain[i],
+                        output.gui_chain_vtable_rvas[i]);
+  }
 
-  const auto *application = chain[static_cast<std::size_t>(
-      output.interface_application_chain_level)];
+  const auto *application = chain[0];
   void *frontend_orchestrator = nullptr;
   void *wrapper = nullptr;
   void *owner = nullptr;
