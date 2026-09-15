@@ -274,9 +274,11 @@ export 的公开结果为闭合 schema，包含 `status`、`designer_observed`�
 重复、越序、坏 hash、非 canonical base64、过期或 binding 漂移都会销毁会话；只有完整组装和复核成功后才发出一次原生调用。
 512 KiB 同样只是本轮开发传输资源上限，**不是 CK3 引擎上限，也不是网页产品图层上限**。
 
-官方 MCP SDK 已离线穿透超过 128 KiB 的 4-chunk 请求且无截断，聚焦 Python/MCP 35/35、native fresh build CTest
-155/155 GREEN。hunter v4 的 380,862-byte 实机 Apply/Copy 尚待执行，所以截至本段记录时只能称
-`mcp-static-ready / native-live-pending`。完整合同和可复现证据见
+官方 MCP SDK 已离线穿透超过 128 KiB 的请求且无截断，聚焦 Python/MCP 35/35、native fresh build CTest 155/155 GREEN。
+2026-09-15 又用真实 CK3 1.19.0.6 完成 hunter v4 的 380,862-byte / 8-chunk Apply → Copy：Apply 原文 bytes/SHA 身份一致，
+Copy 为 240,453 bytes，1,000 逻辑层、1,000 `colored_emblem` 和 1,000 `instance` 均保留，九类语义字段检查全通过。
+因此状态已提升为 `native-live-text-roundtrip-passed`，且已有直接证据证明 128 KiB 不是当前 CK3 路径的上限。该单点通过不能
+外推为统一引擎最大值；原生 framebuffer 空间像素一致性仍待验证。完整合同和可复现证据见
 [CK3 家徽大源码 MCP v2 传输合同](ck3-coat-of-arms-large-source-upload-v2.md)。
 
 ### 3.3 验证状态

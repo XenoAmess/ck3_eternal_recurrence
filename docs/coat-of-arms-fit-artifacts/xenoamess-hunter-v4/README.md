@@ -1,6 +1,6 @@
 # xenoamess hunter v4：1024 预算无缝浏览器基准
 
-状态：**浏览器接缝修复通过；CK3 Apply/Copy 与原生像素对照待 WP1。**
+状态：**浏览器接缝修复通过；CK3 Apply/Copy 文本闭环通过；原生 framebuffer 像素对照待后续。**
 
 实现与冻结 artifact 的提交：`d01f3d4e`。`report.json` 同时保留生成时基线 commit 和完整工作区补丁 SHA-256，便于逐字节追溯。
 
@@ -92,6 +92,7 @@ pnpm exec playwright test e2e/reference-hunter-fit.spec.ts
 pnpm test
 ```
 
-本版本已证明：浏览器回归通过；完整浏览器复制边界、parse/serialize 和计数传输通过。它尚未证明 380,862-byte 载荷能被 CK3
-原生 UI 接受，也尚未完成 CK3 Copy 回读或 framebuffer 空间像素对照。那些状态明确保留为 `pending-wp1`，不得把本结果称作
-“游戏内已验证无缝”。
+本版本已证明：浏览器回归通过；完整浏览器复制边界、parse/serialize 和计数传输通过。WP1 又以结构化 MCP 在 exact CK3
+1.19.0.6 中完成 380,862-byte、8 分块 Apply → 原生 Copy：回读 240,453 bytes，1,000 层/块/实例及九类语义字段全部保留。
+完整 live 证据和哈希见 [大源码 MCP v2 合同](../../ck3-coat-of-arms-large-source-upload-v2.md)。这仍未取得原生 framebuffer
+空间像素对照，因此只能声明“浏览器无缝 + 原生文本闭环通过”，不能称作“游戏内像素无缝已验证”。

@@ -6,7 +6,8 @@
 >
 > 目标：从 Alpha 的“可用近似器”推进到可验证、可压缩、可在大预算下稳定工作的纯浏览器 Beta。
 >
-> 当前第一工作项：用已完成静态验收的版本化分块 MCP 完成 hunter v4 大载荷原生 Apply/Copy 闭环；128 KiB 仍只是旧桥合同，不是引擎上限。
+> WP0 浏览器接缝修复和 WP1 hunter v4 大载荷原生 Apply/Copy 文本闭环均已通过；当前第一工作项为 WP2 最终剪枝与安全压缩。
+> 128 KiB 已由真实 380,862-byte CK3 round-trip 明确证明只是旧桥合同，不是当前实测引擎上限。
 
 机器可读状态见 [`coat-of-arms-fit-artifacts/beta-progress.json`](coat-of-arms-fit-artifacts/beta-progress.json)，WP0 完整证据见
 [`xenoamess-hunter-v4/README.md`](coat-of-arms-fit-artifacts/xenoamess-hunter-v4/README.md)。旧 0.96 夹具在 96/230/512 分别稳定
@@ -31,7 +32,7 @@ Alpha 已能解析、编辑、渲染、序列化 CK3 家徽代码，并能在浏
 | 优先级 | 缺陷 | 当前证据/影响 |
 | --- | --- | --- |
 | P0 | 预览出现红色规则网格/分割线 | 大预算四叉树块在 96×96 搜索平面选择 `0.96` 缩放；相邻中心仍按完整单元间距排列，于高分辨率预览暴露底层红色 `pattern_solid`。这是几何空隙，不是 `ce_block_02.dds` 的透明边：该 DDS 顶层 mip 的 65,536 个 alpha 均为 255。 |
-| P0 | 大代码尚未在 CK3 中完成原生粘贴闭环 | 当前开发期 MCP 单请求合同为 128 KiB，hunter 代码约 371 KiB。128 KiB 是桥接合同，不是已证实的 CK3 引擎上限。 |
+| P0 | 原生 framebuffer 像素对照尚未完成 | 380,862-byte hunter 已完成 CK3 Apply/Copy 文本闭环；网页无缝结论仍需空间像素摘要才能提升为原生像素结论。 |
 | P0 | 浏览器与原生 renderer 尚无逐像素闭环 | 浏览器 CPU reference 主要采样顶层 mip；原生 shader 使用线性 mag/min/mip、wrap 和 surface mask。接缝几何很可能也会进入游戏，但严重程度仍须 MCP 原生证据确认。 |
 | P0 | 大预算路径过度依赖单一矩形画笔 | 当前大量使用 `ce_block_02.dds`；不能代表 1,577 个可粘贴 registered emblem 的混合构图能力。 |
 | P0 | 输入过早缩为 96×96 | 上传图片在拟合入口即栅格为 96×96，高分辨率轮廓和细线在候选生成前已经丢失。 |
@@ -80,9 +81,10 @@ Alpha 已能解析、编辑、渲染、序列化 CK3 家徽代码，并能在浏
 
 ### WP1：MCP v2 大载荷原生验收（P0，1–3 工程日 + 可用 CK3 槽位）
 
-当前状态：`in_progress`。有界 v2 合同、官方 MCP SDK 超过 128 KiB 传输测试和 native fresh build 155/155 已通过；
-合同与离线证据见 [家徽大源码 MCP v2 传输合同](ck3-coat-of-arms-large-source-upload-v2.md)。尚未运行 hunter v4 实机 Apply/Copy，
-因此 B1 仍未通过。
+当前状态：`passed`。有界 v2 合同、官方 MCP SDK 超过 128 KiB 传输测试、native fresh build 155/155 以及真实 CK3 hunter v4
+Apply/Copy 均已通过。实机输入为 380,862 bytes / 1,000 instances，8 分块；Copy 回读 240,453 bytes，九类语义字段和
+1,000 层/块/实例计数完整。合同与证据见 [家徽大源码 MCP v2 传输合同](ck3-coat-of-arms-large-source-upload-v2.md)。
+framebuffer 空间像素对照仍是独立待办，不影响 WP1 文本闭环的通过状态。
 
 交付：
 

@@ -1,6 +1,6 @@
 {
   "schema": "ck3-coa-beta-progress-v1",
-  "updatedAt": "2026-09-15T19:20:00+08:00",
+  "updatedAt": "2026-09-15T19:55:00+08:00",
   "overallStatus": "in_progress",
   "workPackages": [
     {
@@ -34,11 +34,13 @@
     },
     {
       "id": "WP1",
-      "status": "in_progress",
-      "commit": "87d2b954",
+      "status": "passed",
+      "commit": "547daebb",
       "commands": [
         "tools/.venv/Scripts/python.exe -m unittest tests.unit.test_coat_of_arms_source_upload_v2 tests.unit.test_coat_of_arms_source_upload_v2_bridge tests.unit.test_coat_of_arms_source_probe_v1_bridge tests.unit.test_coat_of_arms_source_export_v1_bridge -v",
-        "py ck3_autonomous_player/native_bridge/tools/build_fresh.py --build-dir C:/xb/coa-wp1-v2-final --ck3-executable-path C:/SteamLibrary/steamapps/common/CRUSAD~1/binaries/ck3.exe"
+        "py ck3_autonomous_player/native_bridge/tools/build_fresh.py --build-dir C:/xb/coa-wp1-v2-final --ck3-executable-path C:/SteamLibrary/steamapps/common/CRUSAD~1/binaries/ck3.exe",
+        "tools/.venv/Scripts/python.exe -m pytest ck3_autonomous_player/tests/unit/test_frontend_gui_route_v1_live_acceptance.py -q",
+        "tools/.venv/Scripts/python.exe ck3_autonomous_player/native_bridge/research/run_frontend_gui_route_v1_live_acceptance.py --source-profile C:/Users/1/DOCUME~1/PARADO~1/CRUSAD~1 --state-dir D:/ck3_coa_hunter_v4_mcp_live_20260915_r03 --game-dir C:/SteamLibrary/steamapps/common/CRUSAD~1 --bridge-pipe \\\\.\\pipe\\xar-coa-hunter-v4-live12 --bridge-dll C:/xb/coa-wp1-v2-final/xar_ck3_bridge.dll --bridge-injector C:/xb/coa-wp1-v2-final/xar_ck3_bridge_injector.exe --timeout 600 --large-source docs/coat-of-arms-fit-artifacts/xenoamess-hunter-v4/coat_of_arms.txt --output artifacts/coa-clipboard-probe-2026-09-08/mcp-hunter-v4-large-source-live12.json"
       ],
       "resultPath": "docs/ck3-coat-of-arms-large-source-upload-v2.md",
       "keyMetrics": {
@@ -50,11 +52,19 @@
         "focusedTestsPassed": 35,
         "nativeTestsPassed": 155,
         "nativeDllBytes": 3095552,
-        "nativeDllSha256": "9DDC30CAF4373F4370E597DE42A3FADE5DC70AE597511D6654BBC13D4D14C987"
+        "nativeDllSha256": "9DDC30CAF4373F4370E597DE42A3FADE5DC70AE597511D6654BBC13D4D14C987",
+        "liveInputBytes": 380862,
+        "liveInputSha256": "C4648E2C98D3503252D9A9A298B4A39E27A8F4C7269944E607F34F86B3C60571",
+        "liveChunkCount": 8,
+        "liveCopyBytes": 240453,
+        "liveCopySha256": "C4BF2090BCACA0CCEC683829141ECCD48E7A4DF31E889B58A5C9DA3F9AC99040",
+        "liveLogicalLayers": 1000,
+        "liveColoredEmblemBlocks": 1000,
+        "liveInstances": 1000,
+        "liveElapsedSeconds": 176.632,
+        "liveReportSha256": "81DBDEBF23088C77CC0189DCB486751E0F6085ADBEC6015F03B57E6E434DD150"
       },
-      "blockers": [
-        "hunter v4 native Apply/Copy round-trip has not run yet"
-      ]
+      "blockers": []
     },
     {
       "id": "WP2",

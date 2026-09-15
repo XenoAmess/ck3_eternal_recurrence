@@ -1,9 +1,9 @@
 # CK3 家徽大源码 MCP v2 传输合同
 
-> 状态：`mcp-static-ready / native-live-pending`（2026-09-15）
+> 状态：`native-live-text-roundtrip-passed / native-framebuffer-pending`（2026-09-15）
 > 适用版本：CK3 `1.19.0.6`，`ck3.exe` SHA-256
 > `2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86`
-> 实现提交：`87d2b954`
+> 传输实现提交：`87d2b954`；live runner：`05b54e26`；原生规范化比较器：`547daebb`
 
 ## 1. 结论边界
 
@@ -57,10 +57,37 @@ public v1 仍保留 128 KiB 上限，避免未经版本协商的客户端得到�
 
 source fingerprint 为 `548B280BCDC29290E1B7439FDEB8F15A2CAE75AD6FF1C341E291B4076F57E2CF`。
 
-这些结果只证明分块合同、MCP SDK、Python service/driver 和 native 构建链可用。尚未把 hunter v4 送入真实 CK3，
-因此当前不能声明“大于 128 KiB 已被 CK3 reader 接受”，也不能声明原生 Copy 无规范化或原生像素一致。
+这些结果证明分块合同、MCP SDK、Python service/driver 和 native 构建链可用；下一节另外记录真实 CK3 的文本闭环。
+文本闭环不证明原生 framebuffer 像素一致。
 
-## 4. 实机验收门禁
+## 4. hunter v4 实机文本闭环（GREEN）
+
+2026-09-15 运行 `mcp-hunter-v4-large-source-live12.json`，使用 exact CK3 1.19.0.6、上述 fresh-build DLL、Steam 离线模式和
+独占共享槽位。runner 只调用官方 Python MCP client 与注入桥；报告固定记录 `uses_ocr/uses_keyboard/uses_mouse=false`。
+
+| 项目 | 结果 |
+| --- | --- |
+| 输入 | 380,862 ASCII/UTF-8 bytes；14,006 行；SHA-256 `C4648E2C98D3503252D9A9A298B4A39E27A8F4C7269944E607F34F86B3C60571` |
+| 分块 | 8 块；前 7 块各 49,152 bytes，末块 36,798 bytes；每块及整体 bytes/SHA 全通过 |
+| Apply | `detected=true`、`applied=true`、源码 bytes/SHA 身份一致；唯一 commit 调用 0.101 秒 |
+| 原生 Copy | 240,453 bytes；13,006 行；SHA-256 `C4BF2090BCACA0CCEC683829141ECCD48E7A4DF31E889B58A5C9DA3F9AC99040`；1.319 秒 |
+| 计数 | 输入/回读均为 1,000 逻辑层、1,000 `colored_emblem` 块、1,000 `instance`；`textured_emblem=0` |
+| 语义 | pattern、texture、color、mask、position、scale、rotation、depth、parent 九类顺序/数值检查全通过 |
+| 生命周期 | 总耗时 176.632 秒；共享锁释放；job active process 1→0；最终 CK3 inventory 为空 |
+| 报告 | 本机 process artifact `artifacts/coa-clipboard-probe-2026-09-08/mcp-hunter-v4-large-source-live12.json`；SHA-256 `81DBDEBF23088C77CC0189DCB486751E0F6085ADBEC6015F03B57E6E434DD150` |
+
+输入与 Copy 的原始文本哈希不同是 CK3 的规范化，不是截断：CK3 改写空白与外层 key，把所有显式零旋转省略，并将归一化
+`rgb { 1 0 0 }` 写成 byte-domain `rgb { 255 0 0 }`。比较器没有忽略这些字段：RGB 两种合法域先投影到同一个 `[0,1]`
+语义值，数值容差仍为 `5.1e-7`；rotation 仅在输入全部显式为零且 Copy 全部省略时按引擎默认零判等。18 个颜色字段发生
+上述等价写法变更，非零旋转丢失、颜色顺序变化或超容差变化仍会令门禁失败。
+
+这是真实的 **380,862-byte** CK3 Apply → Copy 证据，因此已经推翻“超过 128 KiB 就不能导入”的猜测。它只证明当前 exact
+build、当前页面路径和 380,862-byte / 1,000-instance 构造可接受；512 KiB 仍只是 v2 开发传输上限，不应冒充 CK3 引擎上限。
+
+前驱 `live11` 完成了同一次大载荷 Apply/Copy，但旧比较器把上述两种规范化误报为颜色/旋转丢失，故保持 RED 且未覆盖；
+`live12` 是修复比较器后的独立重跑和当前晋级证据。
+
+## 5. 实机验收门禁与剩余边界
 
 hunter v4 实机晋级必须同时保存：
 
@@ -71,10 +98,10 @@ hunter v4 实机晋级必须同时保存：
 - `colored_emblem` 块数、`instance` 数、完整代码 bytes/行数与浏览器模型元数据一致；
 - 运行过程明确记录 MCP-only、OCR/keyboard/mouse=false、Steam 离线、共享锁释放及进程清理状态。
 
-只有实机 Apply → Copy 完成后，本合同才可从 `native-live-pending` 提升。framebuffer 或稳定空间像素摘要仍是单独证据级别，
-不能由文本 round-trip 替代。
+上述 Apply → Copy 门禁已经通过。framebuffer 或稳定空间像素摘要仍是单独证据级别，不能由文本 round-trip 替代，当前继续
+标记 `native-framebuffer-pending`。
 
-## 5. 复现命令
+## 6. 复现命令
 
 ```text
 cd ck3_autonomous_player
@@ -83,6 +110,8 @@ cd ck3_autonomous_player
 cd ..
 call C:\PROGRA~1\MICROS~1\18\COMMUN~1\Common7\Tools\VsDevCmd.bat -arch=x64
 py ck3_autonomous_player\native_bridge\tools\build_fresh.py --build-dir C:\xb\coa-wp1-v2-final --ck3-executable-path C:\SteamLibrary\steamapps\common\CRUSAD~1\binaries\ck3.exe
+
+tools\.venv\Scripts\python.exe ck3_autonomous_player\native_bridge\research\run_frontend_gui_route_v1_live_acceptance.py --source-profile C:\Users\1\DOCUME~1\PARADO~1\CRUSAD~1 --state-dir D:\ck3_coa_hunter_v4_mcp_live_20260915_r03 --game-dir C:\SteamLibrary\steamapps\common\CRUSAD~1 --bridge-pipe \\.\pipe\xar-coa-hunter-v4-live12 --bridge-dll C:\xb\coa-wp1-v2-final\xar_ck3_bridge.dll --bridge-injector C:\xb\coa-wp1-v2-final\xar_ck3_bridge_injector.exe --timeout 600 --large-source docs\coat-of-arms-fit-artifacts\xenoamess-hunter-v4\coat_of_arms.txt --output artifacts\coa-clipboard-probe-2026-09-08\mcp-hunter-v4-large-source-live12.json
 ```
 
 以上是 `cmd.exe` 命令，不依赖或调用 PowerShell。
