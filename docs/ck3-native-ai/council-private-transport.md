@@ -106,6 +106,52 @@ visible GUI. The public query/action stay unregistered and unadvertised until
 all four distinct native gates, a real assignment result, independent later
 paused incumbent and formal next-turn consumption are accepted.
 
+The SHA-pinned machine scene contract is
+ck3_autonomous_player/native_bridge/research/council_final_gate_natural_scenes_1_19_0_6.json.
+Its no-launch verifier checks the exact EXE, eleven original source files,
+Council25 ABI, historical private terminals and, when a real new candidate
+exists, the paired save/driver, DLL/injector, gate-only CMake flags and
+DLC/mod declaration. It reports missing scene evidence as pending, exact
+source/version conflict as RED and absent frozen input as evidence
+insufficient. A GREEN source/prelaunch result is not a positive live scene,
+game action or permission to advertise.
+
+Three exact-source leads keep the live queue bounded:
+
+1. Guest: the original potential-councillor GUI offers
+   recruit_guest_interaction rather than set_position for a visitor; that
+   interaction is shown only for is_pool_guest_of the actor. The yearly
+   on_action can naturally choose yearly.1090, which reads or creates a
+   capital-pool foreign traveler; its welcoming options add a courtier.
+   Neither the event nor an unfilled GUI cache proves a guest councillor
+   candidate. Require an actual native provider row with IsGuest=true and
+   no other blocking gate, then a separate typed candidate_is_guest
+   rejection with zero helper invocations.
+2. Candidate pending: Council25's exact pending leaf scans the current
+   player's manager and compares the pending object's recipient full ID
+   at +0x2F4 with the candidate. Incoming AI-to-player interactions,
+   including the R701 ransom case, have recipient=player and cannot close
+   this gate. A formal player-to-candidate proposal may supply a scene only
+   if redirect leaves that exact provider candidate as recipient and the
+   reply is still pending. Arrange-marriage has a conditional auto-accept
+   rule and a redirect, so its authored definition is a lead, not a
+   guarantee. Require native pending_character_interaction=true on an
+   otherwise legal row, then typed rejection with no helper call.
+3. Replacement fireability: standard feudal force_onto_council permits
+   an adult AI vassal with a usable hook or can_demand_council_seat
+   contract flag to target its liege's seat. It can auto-accept and
+   notify, assign the vassal and set block_fire_councillor against that
+   liege for council_position_locked_value=25 years; on_leave_council
+   removes the lock. Only an occupied native steward frame with
+   incumbent_can_be_fired=false and a separate ordinary replacement
+   candidate isolates the gate. Its private action must reject
+   incumbent_cannot_be_replaced before the helper.
+
+The exact source hashes and paths for these three leads are in the machine
+contract. Its scene classifier returns the isolated candidate IDs without
+promoting source leads, receipt ACKs or negative/no-op branches into live
+capability claims.
+
 The query-only Release candidate was built with Visual Studio 18 and the
 exact-build source path. It passed the Council23 source verifier, the Council26
 normal/optimized source contract and a Release `xar_ck3_bridge` build. The

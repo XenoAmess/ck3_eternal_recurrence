@@ -1,0 +1,130 @@
+{
+  "schema": "xar.ck3.private.council-final-gate-natural-scenes/1.19.0.6-v1",
+  "status": "source-pinned-no-live-positive-scenes",
+  "scope": "standard feudal steward seat; private controlled acceptance only",
+  "game": {
+    "version": "1.19.0.6",
+    "exe_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86"
+  },
+  "interface": {
+    "private_query": "private-query-council-final-gates-v1",
+    "private_query_build_flags": {
+      "XAR_CK3_ENABLE_G2_COUNCIL_APPLICATION_MAIN_PRIVATE_ROUTE_V1": "ON",
+      "XAR_CK3_ENABLE_G2_COUNCIL_FINAL_GATE_PRIVATE_QUERY_V1": "ON",
+      "XAR_CK3_ENABLE_G2_COUNCIL_ASSIGN_PRIVATE_ACTION_GATE_V1": "OFF"
+    },
+    "public_registered_or_advertised": false
+  },
+  "exact_source": [
+    {
+      "path": "gui/window_council_potential_councillor.gui",
+      "sha256": "1D5F5B7422BADB13595D458F28D6A86BDF6162BA54350CF9EF32115BF556A956",
+      "anchors": [
+        "PotentialCouncillorWindow.HasPendingInteraction",
+        "Character.IsGuest",
+        "recruit_guest_interaction"
+      ]
+    },
+    {
+      "path": "common/character_interactions/00_courtier_and_guest_interactions.txt",
+      "sha256": "43FF1139F42F1AC8928B3C0035EB04308B2E7AC438927CAB9B91AE93C3C87BAF",
+      "anchors": ["recruit_guest_interaction = {", "is_pool_guest_of = scope:actor"]
+    },
+    {
+      "path": "common/on_action/yearly_on_actions.txt",
+      "sha256": "0FC85A284224A68D1CA0A4EF071D4F4A4F49896753AEC463975A12EE4E1116FA",
+      "anchors": ["100 = yearly.1090"]
+    },
+    {
+      "path": "events/yearly_events/yearly_events_2.txt",
+      "sha256": "64B778B7B3DFE1056EB0151A7ED3AA7CFB3E6E738E68144006BAF97E93E0A3E8",
+      "anchors": ["yearly.1090 = {", "any_pool_character = {", "yearly_1090_add_courtier_effect"]
+    },
+    {
+      "path": "common/character_interactions/00_marriage_interactions.txt",
+      "sha256": "681A9B669E5A16642A197B6FE16085193DFBB99A398D0E20E86173F5AC6DE219",
+      "anchors": ["arrange_marriage_interaction = {", "marriage_interaction_auto_accept_trigger = yes"]
+    },
+    {
+      "path": "common/character_interactions/00_vassal_interactions.txt",
+      "sha256": "1249CAC40138D48210A07245746C4A6683C5F58F3141C04A20DB2C00B6375BF8",
+      "anchors": [
+        "force_onto_council = {",
+        "block_firing_councillor_effect = { COURT_OWNER = scope:recipient }",
+        "ai_recipients = liege"
+      ]
+    },
+    {
+      "path": "common/subject_contracts/contracts/special_contracts.txt",
+      "sha256": "E34BF96F4E7932A121919CE1EC690DBD918F901586DF38944C0677A25E0533F4",
+      "anchors": ["council_rights_guaranteed = {", "flag = can_demand_council_seat"]
+    },
+    {
+      "path": "common/scripted_triggers/00_councillor_triggers.txt",
+      "sha256": "D7A10D08D2F73D770B56A375ECEBCBE02486038B4E9648B492BEE786A482C9C2",
+      "anchors": [
+        "is_blocked_from_being_fired_from_council_trigger = {",
+        "can_fire_position = no",
+        "var:block_fire_councillor"
+      ]
+    },
+    {
+      "path": "common/scripted_effects/00_councillor_effects.txt",
+      "sha256": "7CD27A8F1061E7881A5D629487005BB1784E58311E12F708F8E59F89A69D5D4E",
+      "anchors": ["block_firing_councillor_effect = {", "name = block_fire_councillor"]
+    },
+    {
+      "path": "common/script_values/00_interaction_values.txt",
+      "sha256": "47A24A4B264E2036E454E72FB9E6945AD4AA47457DC256D3151CF534A5B9E6BC",
+      "anchors": ["council_position_locked_value = {"]
+    },
+    {
+      "path": "common/on_action/councillor_on_actions.txt",
+      "sha256": "5629D03928014BAFDAB3E42576D20BBE13F2A76F0BECC0219B729515010EA95E",
+      "anchors": ["on_leave_council = {", "unblock_firing_councillor_effect = yes"]
+    }
+  ],
+  "native_abi": {
+    "repo_path": "ck3_autonomous_player/native_bridge/research/council_final_gates_1_19_0_6_abi.json",
+    "sha256": "62F4DA1EE07157A857C4683923940DC21BC030E9AEAED0A19608C30EA9540C69",
+    "guest_leaf_rva": "0x18E2A10",
+    "candidate_pending_leaf_rva": "0x2752220",
+    "pending_object_recipient_full_character_id_offset": "0x2F4",
+    "fireability_leaf_rva": "0x105C770"
+  },
+  "scene_requirements": {
+    "guest": {
+      "native_classification_field": "isolated_guest_rejection_ids",
+      "expected_private_action_failure": "candidate_is_guest",
+      "natural_lead": "unrecruited pool guest among actual steward provider rows; yearly.1090 may create a capital traveler, but options a/b make a courtier and no option alone proves a later guest row",
+      "positive_live_scene_observed": false
+    },
+    "candidate_pending": {
+      "native_classification_field": "isolated_candidate_pending_rejection_ids",
+      "expected_private_action_failure": "pending_character_interaction",
+      "natural_lead": "formal player-to-candidate proposal still pending after any redirect; recipient full CharacterID must equal the provider candidate; incoming AI-to-player sender does not qualify",
+      "positive_live_scene_observed": false
+    },
+    "replacement_fireability_denial": {
+      "native_classification_field": "isolated_replacement_fireability_denial_ids",
+      "expected_private_action_failure": "incumbent_cannot_be_replaced",
+      "natural_lead": "feudal AI vassal force_onto_council may assign itself and set block_fire_councillor for the liege for council_position_locked_value=25 years; no script lead alone proves native CanConfirm=false",
+      "positive_live_scene_observed": false
+    }
+  },
+  "historical_evidence": {
+    "r695_private_terminal_sha256": "F053530B6164A32B2425E54B953531F631AC2A608754D968FF2E050482D03330",
+    "r700_private_terminal_sha256": "C0C31AC426ED82E7CCBF49572044DC69E5EAB8CCAB4DA81733ECB231DC0340E5",
+    "r695_r700_guest_pending_fire_denial": "zero isolated positive rows",
+    "r696_already_councillor_rejection": "typed candidate_already_councillor for full ID 33435",
+    "r700_replacement_incumbent": 33433,
+    "formal_next_turn_and_goal_restore": "unverified"
+  },
+  "prelaunch_boundary": {
+    "requires_fresh_paired_standard_feudal_checkpoint_and_driver": true,
+    "requires_one_owned_ck3_instance_or_no_ck3_before_new_launch": true,
+    "requires_exact_runtime_dll_mod_dlc_and_parameters_frozen": true,
+    "requires_private_gate_only_build_before_scene_query": true,
+    "public_advertisement_permitted": false
+  }
+}
