@@ -111,11 +111,11 @@ customizable_localization 的 text 块按序取第一个 trigger 成立的。GUI
 ### 显式导入协议
 
 1. `xar_on_game_start` 对玩家初始化 `xa_import_requested=1`、`xa_import_ready=0`、`xa_import_consumed=0`，不直接打开契约或商店。
-2. GUI state 同时要求「最高 lesson 位匹配」和 request 信号；无论窗口先实例化还是 on_action 先执行，只有 request 从 0 变 1 后才会运行 importer。
+2. 常驻根窗口只保留退出/铁人终态；701 个导入 state 全部位于 request 控制的可见子窗口中。request=0 时引擎只求值一次廉价门禁，不会求值 700 项 `xar_record_level` 扫描；request 从 0 变 1 后才激活完整 importer。这是结构门禁，不依赖 GUI `And()` 的求值顺序。
 3. importer 在 request guard 内幂等写入 `xa_global_record_imported`，随后执行 `requested=0 -> ready=1`。
 4. `xar_consume_import_effect` 仅接受 `ready=1 && consumed=0`，先准确复制 `xa_local_points`，再执行 `ready=0 -> consumed=1` 并启动契约或 selftest。
 
-因此 GUI 与 on_action 的先后顺序不会造成零值抢跑，重复 Execute 也不会重复打开流程；契约和商店只能在导入 ready 且点数已复制后出现。
+因此 GUI 与 on_action 的先后顺序不会造成零值抢跑，重复 Execute 也不会重复打开流程；契约和商店只能在导入 ready 且点数已复制后出现。完整的 700 位扫描只发生在一次显式导入窗口内，不再成为地图运行期间的逐帧负载。
 
 ### 两进程实证
 

@@ -83,6 +83,15 @@ xar_contract_building_completed = {
 	}
 }
 xar_contract_birthday = {
+	# on_birthday fires for every character. Reject all roots that cannot make
+	# progress before constructing the effect chain; keep the stress sample in
+	# its original effect position so birthday ordering semantics do not change.
+	trigger = {
+		is_ai = no
+		has_character_flag = xa_enabled
+		global_var:xa_contract_id = 6
+		global_var:xa_contract_progress < 10
+	}
 	effect = {
 		if = {
 			limit = { root = { stress < 100 } }

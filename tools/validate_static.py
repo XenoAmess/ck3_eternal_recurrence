@@ -186,6 +186,31 @@ def extract_named_option(text, name):
     return None
 
 
+def extract_named_block(text, block_key, name):
+    """Return a balanced block with an exact quoted name field."""
+    for match in re.finditer(
+            rf"(?m)^\s*{re.escape(block_key)}\s*=\s*{{", text):
+        start = text.index("{", match.start())
+        next_open = text.find("{", start + 1)
+        close = text.find("}", start + 1)
+        header_end = min(
+            index for index in (next_open, close) if index >= 0)
+        if not re.search(
+                rf'(?m)^\s*name\s*=\s*"{re.escape(name)}"\s*$',
+                text[start + 1:header_end]):
+            continue
+        depth = 0
+        for index in range(start, len(text)):
+            if text[index] == "{":
+                depth += 1
+            elif text[index] == "}":
+                depth -= 1
+                if depth == 0:
+                    block = text[match.start():index + 1]
+                    return block
+    return None
+
+
 def top_level_keys(text, pattern):
     """Return top-level block keys matching pattern, ignoring nested blocks."""
     keys = []
@@ -1278,6 +1303,9 @@ def mechanic_checks(errors):
     ) or ""
     start = extract_block(on_actions, "xar_on_game_start") or ""
     death = extract_block(on_actions, "xar_on_death") or ""
+    birthday = extract_block(on_actions, "xar_contract_birthday") or ""
+    birthday_trigger = extract_block(birthday, "trigger") or ""
+    birthday_effect = extract_block(birthday, "effect") or ""
     compact_death = compact_script(death)
     compact_score_compute_event = compact_script(score_compute_event)
     if "every_player" not in start:
@@ -1292,6 +1320,16 @@ def mechanic_checks(errors):
         errors.append("death entry must apply is_ai=no to both pact-authentication branches")
     if "trigger = { is_ai = no OR = {" not in compact_score_compute_event:
         errors.append("no-heir score event must apply is_ai=no to both pact gates")
+    if ("on_birthday = { on_actions = { xar_contract_birthday } }" not in on_actions
+            or not all(token in birthday_trigger for token in (
+                "is_ai = no", "has_character_flag = xa_enabled",
+                "global_var:xa_contract_id = 6",
+                "global_var:xa_contract_progress < 10"))
+            or "stress" in birthday_trigger
+            or "stress < 100" not in birthday_effect
+            or "xar_add_contract_progress_effect = { ID = 6 }" not in birthday_effect):
+        errors.append(
+            "birthday contract must keep its exact hook/stress timing and early player gate")
     pact_enable = extract_block(production_effects, "xar_enable_player_pact_effect") or ""
     if not all(token in pact_enable for token in (
             "limit = { is_ai = no }",
@@ -1971,8 +2009,20 @@ def mechanic_checks(errors):
     for flag in ("xa_import_requested", "xa_import_ready", "xa_import_consumed"):
         if flag not in on_actions + import_gui + consume:
             errors.append(f"import protocol flag '{flag}' is not wired end-to-end")
-    if "xar_import_request_check" not in import_meta or "[And(" not in import_meta:
-        errors.append("GUI import states are not gated by the explicit request signal")
+    import_gate = extract_named_block(
+        import_meta, "window", "xar_import_gate") or ""
+    if not all(token in import_gate for token in (
+            'visible = "[EqualTo_string( GetPlayer.Custom(\'xar_import_request_check\')',
+            "GetPlayer.Custom('xar_record_level')",
+            'name = "xar_import_0"',
+            f'name = "xar_import_{highscore.THRESHOLDS[-1]}"')):
+        errors.append("GUI import states lack the request-visible structural gate")
+    if import_meta.count("xar_import_request_check") != 1:
+        errors.append("GUI import request gate must be evaluated exactly once")
+    if "[And(" in import_gate:
+        errors.append("GUI import gate relies on eager And evaluation")
+    if import_gate.count("GetPlayer.Custom('xar_record_level')") != len(highscore.THRESHOLDS) + 1:
+        errors.append("GUI import gate does not preserve every record state")
     if "global_var:xa_import_requested = 1" not in import_gui:
         errors.append("generated importer lacks its idempotent request guard")
     if "global_var:xa_import_ready = 1" not in consume or "global_var:xa_import_consumed = 0" not in consume:

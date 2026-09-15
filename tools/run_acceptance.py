@@ -72,8 +72,19 @@ def configured_path(name, default):
     return Path(os.path.expandvars(raw)).expanduser().resolve() if raw else default.resolve()
 
 
+def configured_seconds(name, default):
+    raw = os.environ.get(name)
+    if raw is None:
+        return default
+    value = float(raw)
+    if value <= 0:
+        raise ValueError(f"{name} must be positive")
+    return value
+
+
 CK3_EXE = configured_path(
     "XAR_CK3_EXE", ROOT / "Crusader Kings III" / "binaries" / "ck3.exe")
+CK3_GAME_DIR = configured_path("XAR_CK3_GAME_DIR", CK3_EXE.parent.parent)
 USER_DIR = configured_path(
     "XAR_CK3_USER_DIR",
     Path.home() / "Documents" / "Paradox Interactive" / "Crusader Kings III")
@@ -81,7 +92,7 @@ ORIGINAL_USER_DIR = USER_DIR
 UGC_DIR_OVERRIDE = os.environ.get("XAR_CK3_UGC_DIR")
 MOD_ROOT = ROOT / "XenoAmess_s_Eternal_Recurrence"
 VANILLA_GAME_RULES = (
-    ROOT / "Crusader Kings III" / "game" / "common" / "game_rules"
+    CK3_GAME_DIR / "game" / "common" / "game_rules"
     / "00_game_rules.txt")
 UGC_MOD_FILE = USER_DIR / "mod" / "ugc_3784706360.mod"
 TUTORIAL_TXT = USER_DIR / "tutorial.txt"
@@ -131,7 +142,8 @@ FULL_SCREEN_REGION = (0.00, 0.00, 1.00, 1.00)
 COURTIER_MODAL_REGION = (0.20, 0.12, 0.80, 0.89)
 IRONMAN_TERMINAL_REGION = (0.30, 0.18, 0.70, 0.72)
 
-BOOT_TIMEOUT_S = 120             # OCR 一发现主菜单即继续，不固定睡 100 秒
+BOOT_TIMEOUT_S = configured_seconds("XAR_CK3_BOOT_TIMEOUT_S", 120)
+# OCR 一发现主菜单即继续；慢盘/冷缓存可显式增大上限，不固定睡满。
 LOBBY_TIMEOUT_S = 30
 TEST_TIMEOUT_S = 300             # 开局后等待 TEST DONE 的超时
 OFF_OBSERVE_TIMEOUT_S = 30

@@ -16,9 +16,11 @@ is_tutorial_lesson_completed is an INTERFACE trigger (forbidden in game-state
 script), so reading the record goes through a GUI bridge:
   customizable_localization (interface triggers OK) -> GUI state trigger_when
   -> GetScriptedGui().Execute -> scripted_gui effect -> set_global_variable.
-The record is detected via the highest completed threshold. Import states are
-gated by an explicit game-state request, so GUI creation and on_action order do
-not matter.
+The record is detected via the highest completed threshold. Import states live
+inside a child window whose visibility is gated by an explicit game-state
+request. This structural gate prevents the expensive record lookup from being
+evaluated while idle, without relying on And() operand short-circuiting. GUI
+creation and on_action order therefore do not matter.
 
 Writing: xar_quantize_record_candidate_effect first maps the real run score to
 the highest existing threshold <= score (capped at the last threshold). The
@@ -299,8 +301,10 @@ def gen_gui() -> str:
         "# GENERATED FILE - do not edit. Regenerate with tools/gen_highscore.py",
         "#",
         "# Import side of the global high-score storage: exactly one highest-threshold",
-        "# custom localization returns the sentinel. A separate request signal gates",
-        "# every state, so states cannot consume the record before game start asks.",
+        "# custom localization returns the sentinel. A request-visible child window",
+        "# structurally gates every import state, so the expensive record lookup is",
+        "# never evaluated while idle and cannot consume before game start asks.",
+        "# This intentionally does not depend on And() operand short-circuiting.",
         "# The write-side lesson completes itself through trigger_transition.",
         "window = {",
         '\tname = "xar_meta_window"',
@@ -339,17 +343,27 @@ def gen_gui() -> str:
         '\t\ttrigger_when = "[And( EqualTo_string( GetPlayer.Custom(\'xar_quit_check\'), Localize(\'xar_quit_sentinel\') ), IsIronmanEnabled )]"',
         '\t\ton_start = "[GetVariableSystem.Set(\'xar_ironman_terminal\', \'open\')]"',
         "\t}",
+        "",
+        "\t# Keep import states outside the always-visible root's active state set.",
+        "\t# CK3 only evaluates animation states in a visible window; request=0",
+        "\t# therefore evaluates this cheap gate but never xar_record_level.",
+        "\twindow = {",
+        '\t\tname = "xar_import_gate"',
+        "\t\tsize = { 1 1 }",
+        "\t\tposition = { 0 0 }",
+        '\t\tvisible = "[EqualTo_string( GetPlayer.Custom(\'xar_import_request_check\'), Localize(\'xar_import_request_on\') )]"',
+        "\t\talwaystransparent = yes",
     ]
     for t in [0] + THRESHOLDS:
         lines.append("")
-        lines.append("\tstate = {")
-        lines.append(f'\t\tname = "xar_import_{t}"')
+        lines.append("\t\tstate = {")
+        lines.append(f'\t\t\tname = "xar_import_{t}"')
         lines.append(
-            f'\t\ttrigger_when = "[And( EqualTo_string( GetPlayer.Custom(\'xar_record_level\'), '
-            f'Localize(\'{LEVEL_KEY_PREFIX}{t}\') ), EqualTo_string( GetPlayer.Custom(\'xar_import_request_check\'), '
-            f'Localize(\'{IMPORT_REQUEST_KEY}\') ) )]"')
-        lines.append(f'\t\ton_start = "[GetScriptedGui(\'xar_import_{t}_gui\').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"')
-        lines.append("\t}")
+            f'\t\t\ttrigger_when = "[EqualTo_string( GetPlayer.Custom(\'xar_record_level\'), '
+            f'Localize(\'{LEVEL_KEY_PREFIX}{t}\') )]"')
+        lines.append(f'\t\t\ton_start = "[GetScriptedGui(\'xar_import_{t}_gui\').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"')
+        lines.append("\t\t}")
+    lines.append("\t}")
     lines.append("}")
     lines.append("")
     return "\n".join(lines)
