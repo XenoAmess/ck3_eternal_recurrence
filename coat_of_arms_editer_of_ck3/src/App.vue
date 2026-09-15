@@ -164,6 +164,9 @@ const HISTORY_MAX_ENTRIES = 32
 const HISTORY_DEBOUNCE_MS = 450
 const AUTOSAVE_DEBOUNCE_MS = 1_000
 const instanceWindowStart = ref(0)
+const selectedInstanceIndex = ref(0)
+const visualTransformMode = ref<'move' | 'scale' | 'rotate' | null>(null)
+const shieldElement = ref<HTMLElement>()
 let historyApplying = false
 let pendingHistorySource = ''
 let historyTimer: number | undefined
@@ -224,6 +227,18 @@ const fitEvidenceJson = computed(() => {
   })
 })
 const activeEmblem = computed(() => coatOfArms.value.coloredEmblems[selectedEmblem.value])
+const selectedInstance = computed(() => activeEmblem.value?.instances[selectedInstanceIndex.value])
+const visualTransformStyle = computed(() => {
+  const instance = selectedInstance.value
+  if (!instance) return {}
+  return {
+    left: `${instance.position[0] * 100}%`,
+    top: `${instance.position[1] * 100}%`,
+    width: `${Math.max(18, Math.abs(instance.scale[0]) * 260)}px`,
+    height: `${Math.max(18, Math.abs(instance.scale[1]) * 260)}px`,
+    transform: `translate(-50%, -50%) rotate(${instance.rotation}deg)`,
+  }
+})
 const boundedInstanceWindowStart = computed(() => {
   const length = activeEmblem.value?.instances.length ?? 0
   const maximum = Math.max(0, length - INSTANCE_EDITOR_WINDOW_SIZE)
@@ -582,6 +597,7 @@ function addEmblem() {
 function removeEmblem(index: number) {
   coatOfArms.value.coloredEmblems.splice(index, 1)
   selectedEmblem.value = Math.max(0, Math.min(selectedEmblem.value, coatOfArms.value.coloredEmblems.length - 1))
+  selectedInstanceIndex.value = 0
 }
 
 function selectEmblemIndex(index: number) {
@@ -589,6 +605,7 @@ function selectEmblemIndex(index: number) {
     Math.max(0, Math.floor(index)),
     Math.max(0, coatOfArms.value.coloredEmblems.length - 1),
   )
+  selectedInstanceIndex.value = 0
 }
 
 function moveInstanceWindow(start: number) {
@@ -602,13 +619,131 @@ function moveInstanceWindow(start: number) {
 function addInstanceToActiveEmblem() {
   if (!activeEmblem.value) return
   activeEmblem.value.instances.push(createInstance())
+  selectedInstanceIndex.value = activeEmblem.value.instances.length - 1
   moveInstanceWindow(activeEmblem.value.instances.length - INSTANCE_EDITOR_WINDOW_SIZE)
 }
 
 function removeActiveInstance(index: number) {
   if (!activeEmblem.value) return
   activeEmblem.value.instances.splice(index, 1)
+  selectedInstanceIndex.value = Math.min(
+    selectedInstanceIndex.value,
+    Math.max(0, activeEmblem.value.instances.length - 1),
+  )
   moveInstanceWindow(boundedInstanceWindowStart.value)
+}
+
+function selectInstanceForVisualEdit(index: number) {
+  selectedInstanceIndex.value = Math.min(
+    Math.max(0, Math.floor(index)),
+    Math.max(0, (activeEmblem.value?.instances.length ?? 1) - 1),
+  )
+}
+
+interface VisualTransformGesture {
+  mode: 'move' | 'scale' | 'rotate'
+  pointerId: number
+  element: HTMLElement
+  width: number
+  height: number
+  centerX: number
+  centerY: number
+  startClientX: number
+  startClientY: number
+  startPosition: [number, number]
+  startScale: [number, number]
+  startRotation: number
+  startDistance: number
+  startAngle: number
+  historySource: string
+}
+
+let visualTransformGesture: VisualTransformGesture | undefined
+
+function roundedTransformValue(value: number, precision = 6) {
+  return Number(value.toFixed(precision))
+}
+
+function beginVisualTransform(mode: VisualTransformGesture['mode'], event: PointerEvent) {
+  const instance = selectedInstance.value
+  const shield = shieldElement.value
+  if (!instance || !shield) return
+  event.preventDefault()
+  const rect = shield.getBoundingClientRect()
+  const width = shield.clientWidth
+  const height = shield.clientHeight
+  if (width <= 0 || height <= 0) return
+  flushPendingHistory()
+  const contentLeft = rect.left + shield.clientLeft
+  const contentTop = rect.top + shield.clientTop
+  const centerX = contentLeft + instance.position[0] * width
+  const centerY = contentTop + instance.position[1] * height
+  const dx = event.clientX - centerX
+  const dy = event.clientY - centerY
+  const element = event.currentTarget as HTMLElement
+  element.setPointerCapture?.(event.pointerId)
+  visualTransformGesture = {
+    mode,
+    pointerId: event.pointerId,
+    element,
+    width,
+    height,
+    centerX,
+    centerY,
+    startClientX: event.clientX,
+    startClientY: event.clientY,
+    startPosition: [...instance.position],
+    startScale: [...instance.scale],
+    startRotation: instance.rotation,
+    startDistance: Math.max(1, Math.hypot(dx, dy)),
+    startAngle: Math.atan2(dy, dx),
+    historySource: output.value,
+  }
+  visualTransformMode.value = mode
+}
+
+function updateVisualTransform(event: PointerEvent) {
+  const gesture = visualTransformGesture
+  const instance = selectedInstance.value
+  if (!gesture || !instance || gesture.pointerId !== event.pointerId) return
+  event.preventDefault()
+  if (gesture.mode === 'move') {
+    instance.position = [
+      roundedTransformValue(Math.min(1, Math.max(0,
+        gesture.startPosition[0] + (event.clientX - gesture.startClientX) / gesture.width,
+      ))),
+      roundedTransformValue(Math.min(1, Math.max(0,
+        gesture.startPosition[1] + (event.clientY - gesture.startClientY) / gesture.height,
+      ))),
+    ]
+    return
+  }
+  const dx = event.clientX - gesture.centerX
+  const dy = event.clientY - gesture.centerY
+  if (gesture.mode === 'scale') {
+    const factor = Math.max(0.001, Math.hypot(dx, dy) / gesture.startDistance)
+    instance.scale = [
+      roundedTransformValue((gesture.startScale[0] || 0.001) * factor),
+      roundedTransformValue((gesture.startScale[1] || 0.001) * factor),
+    ]
+    return
+  }
+  let delta = (Math.atan2(dy, dx) - gesture.startAngle) * 180 / Math.PI
+  if (delta > 180) delta -= 360
+  if (delta < -180) delta += 360
+  instance.rotation = roundedTransformValue(gesture.startRotation + delta, 3)
+}
+
+function finishVisualTransform(event: PointerEvent) {
+  const gesture = visualTransformGesture
+  if (!gesture || gesture.pointerId !== event.pointerId) return
+  updateVisualTransform(event)
+  if (gesture.element.hasPointerCapture?.(event.pointerId)) {
+    gesture.element.releasePointerCapture(event.pointerId)
+  }
+  visualTransformGesture = undefined
+  visualTransformMode.value = null
+  flushPendingHistory()
 }
 
 function parseMask(value: string) {
@@ -1530,13 +1665,23 @@ async function loadCurrentTexturePreviews() {
 importSource()
 watch(output, (next, previous) => {
   if (historyApplying || next === previous) return
-  if (!pendingHistorySource) pendingHistorySource = previous
+  if (!pendingHistorySource) pendingHistorySource = visualTransformGesture?.historySource ?? previous
   historyPending.value = true
   redoHistory.value = []
   if (historyTimer !== undefined) window.clearTimeout(historyTimer)
-  historyTimer = window.setTimeout(flushPendingHistory, HISTORY_DEBOUNCE_MS)
+  historyTimer = visualTransformGesture
+    ? undefined
+    : window.setTimeout(flushPendingHistory, HISTORY_DEBOUNCE_MS)
   scheduleAutosave()
 }, { flush: 'sync' })
+
+watch(selectedEmblem, () => {
+  selectedInstanceIndex.value = 0
+})
+
+watch(() => activeEmblem.value?.instances.length ?? 0, (length) => {
+  selectedInstanceIndex.value = Math.min(selectedInstanceIndex.value, Math.max(0, length - 1))
+})
 </script>
 
 <template>
@@ -1748,7 +1893,7 @@ watch(output, (next, previous) => {
           </el-tag>
         </div>
         <div class="preview-stage">
-          <div :class="['shield', { 'shader-bound': renderedPreviewUrl }]" :style="{ '--shield-color': cssColor(coatOfArms.colors[0]) }">
+          <div ref="shieldElement" :class="['shield', { 'shader-bound': renderedPreviewUrl }]" :style="{ '--shield-color': cssColor(coatOfArms.colors[0]) }">
             <img v-if="renderedPreviewUrl" class="shader-preview" :src="renderedPreviewUrl" alt="原版 shader 源码模型预览" />
             <template v-else>
               <img v-if="patternPreviewUrl" class="pattern-texture" :src="patternPreviewUrl" alt="原版 pattern DDS 通道图" />
@@ -1787,8 +1932,50 @@ watch(output, (next, previous) => {
                 </template>
               </div>
             </template>
+            <div v-if="selectedInstance" class="visual-transform-layer">
+              <div
+                class="visual-transform-box"
+                :class="{ active: visualTransformMode !== null }"
+                :style="visualTransformStyle"
+                data-testid="visual-transform-box"
+              >
+                <button
+                  type="button"
+                  class="visual-handle move-handle"
+                  aria-label="拖拽实例位置"
+                  data-testid="visual-move-handle"
+                  @pointerdown.stop="beginVisualTransform('move', $event)"
+                  @pointermove.stop="updateVisualTransform"
+                  @pointerup.stop="finishVisualTransform"
+                  @pointercancel.stop="finishVisualTransform"
+                />
+                <button
+                  type="button"
+                  class="visual-handle scale-handle"
+                  aria-label="等比缩放实例"
+                  data-testid="visual-scale-handle"
+                  @pointerdown.stop="beginVisualTransform('scale', $event)"
+                  @pointermove.stop="updateVisualTransform"
+                  @pointerup.stop="finishVisualTransform"
+                  @pointercancel.stop="finishVisualTransform"
+                />
+                <button
+                  type="button"
+                  class="visual-handle rotate-handle"
+                  aria-label="旋转实例"
+                  data-testid="visual-rotate-handle"
+                  @pointerdown.stop="beginVisualTransform('rotate', $event)"
+                  @pointermove.stop="updateVisualTransform"
+                  @pointerup.stop="finishVisualTransform"
+                  @pointercancel.stop="finishVisualTransform"
+                />
+              </div>
+            </div>
           </div>
         </div>
+        <p v-if="selectedInstance" class="visual-editor-help">
+          正在编辑图层 {{ selectedEmblem + 1 }} · 实例 {{ selectedInstanceIndex + 1 }}：中心拖动位置，右下角缩放，顶部圆点旋转。
+        </p>
         <div class="preview-caption">
           <strong>{{ coatOfArms.pattern || '未指定 pattern' }}</strong>
           <span>{{ coatOfArms.coloredEmblems.length }} 个彩色图层 · {{ drawnInstanceCount }} 个实例 · {{ coatOfArms.texturedEmblems.length }} 个受限纹理层</span>
@@ -1973,10 +2160,20 @@ watch(output, (next, previous) => {
                 <el-button size="small" :disabled="instanceWindowEnd >= activeEmblem.instances.length" @click="moveInstanceWindow(instanceWindowEnd)">下一页</el-button>
               </div>
               <div class="instance-list" data-testid="instance-editor-window">
-                <div v-for="item in visibleInstanceItems" :key="item.index" class="instance-card" :data-instance-index="item.index">
+                <div
+                  v-for="item in visibleInstanceItems"
+                  :key="item.index"
+                  :class="['instance-card', { selected: item.index === selectedInstanceIndex }]"
+                  :data-instance-index="item.index"
+                >
                   <div class="instance-title">
                     <strong>实例 {{ item.index + 1 }}</strong>
-                    <el-button link type="danger" @click="removeActiveInstance(item.index)">删除</el-button>
+                    <el-space>
+                      <el-button link type="primary" @click="selectInstanceForVisualEdit(item.index)">
+                        {{ item.index === selectedInstanceIndex ? '预览编辑中' : '在预览中编辑' }}
+                      </el-button>
+                      <el-button link type="danger" @click="removeActiveInstance(item.index)">删除</el-button>
+                    </el-space>
                   </div>
                   <div class="number-grid">
                     <el-form-item label="X"><el-input-number v-model="item.instance.position[0]" :step="0.05" /></el-form-item>
