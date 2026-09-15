@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "private_key": "marriage_matchmaking_observer_v1",
-  "status": "static-ready-private-core-unwired",
+  "status": "static-ready-private-application-main-route",
   "visibility": "private-not-advertised",
   "exact_build": {
     "product_version": "1.19.0.6",
@@ -104,17 +104,21 @@
     "recipient_answer_contract": true,
     "predicted_outcome_contract": true,
     "same_frame_double_sample": true,
-    "native_strategy_adapter_bound": false,
-    "native_pair_context_adapter_bound": false,
+    "native_strategy_adapter_bound": true,
+    "native_pair_context_adapter_bound": true,
+    "private_application_main_route_wired": true,
+    "application_main_receipt_adapter_bound": true,
+    "resolution_journal_bound": true,
+    "actual_bilateral_receipt_route_bound": true,
     "public_capability_registered": false,
     "production_query_live": false,
-    "relationship_postcondition_ready": false,
-    "alliance_pair_postcondition_ready": false,
+    "relationship_postcondition_ready": true,
+    "alliance_pair_postcondition_ready": true,
     "planner_ready": false
   },
   "evidence": {
     "native_tree": "docs/ck3-native-ai/marriage-and-alliance.md",
     "exact_build_registry": "docs/ck3-native-ai/research/marriage-matchmaking-1.19.0.6.json"
   },
-  "unique_next_integration_entry": "bind a validated played-character strategy owner to read_ranked_candidates, then build the direct five-role context in evaluate_candidate and run a paused live query before public MCP registration"
+  "unique_next_integration_entry": "run the fixed candidate DLL in a new CK3 round, submit the private route against a stable paused snapshot, then after a real proposal and a new revision require bilateral spouse-or-betrothed, alliance and terminal resolution agreement before public MCP registration"
 }

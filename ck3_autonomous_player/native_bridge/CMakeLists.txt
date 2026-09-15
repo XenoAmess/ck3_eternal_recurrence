@@ -385,6 +385,7 @@ add_library(xar_ck3_bridge SHARED
   src/major_decision_found_kingdom_shared_glue_v1.cpp
   src/major_decision_found_kingdom_internal_route_v1.cpp
   src/marriage_application_main_receipt_v1.cpp
+  src/marriage_candidate_internal_route_v1.cpp
   src/marriage_alliance_projection_adapter_v1.cpp
   src/marriage_alliance_readback_adapter_v1.cpp
   src/marriage_matchmaking_observer_v1.cpp
@@ -1002,6 +1003,40 @@ if(BUILD_TESTING)
   add_test(
     NAME xar_ck3_native_bridge_marriage_application_main_receipt_v1
     COMMAND xar_ck3_marriage_application_main_receipt_v1_test
+  )
+
+  add_executable(xar_ck3_marriage_candidate_internal_route_v1_test
+    src/marriage_alliance_projection_adapter_v1.cpp
+    src/marriage_alliance_readback_adapter_v1.cpp
+    src/marriage_application_main_receipt_v1.cpp
+    src/marriage_candidate_internal_route_v1.cpp
+    src/marriage_matchmaking_observer_v1.cpp
+    src/marriage_matchmaking_source_adapter_v1.cpp
+    src/marriage_native_outcome_classifier_v1.cpp
+    src/marriage_proposal_action_core_v1.cpp
+    src/marriage_proposal_native_binder_v1.cpp
+    src/marriage_proposal_resolution_journal_v1.cpp
+    src/marriage_ranked_container_adapter_v1.cpp
+    src/marriage_shared_glue_v1.cpp
+    src/marriage_candidate_internal_route_v1_test.cpp
+  )
+  target_include_directories(
+    xar_ck3_marriage_candidate_internal_route_v1_test PRIVATE include)
+  target_compile_definitions(
+    xar_ck3_marriage_candidate_internal_route_v1_test PRIVATE
+    NOMINMAX
+    WIN32_LEAN_AND_MEAN
+    UNICODE
+    _UNICODE
+  )
+  if(MSVC)
+    target_compile_options(
+      xar_ck3_marriage_candidate_internal_route_v1_test PRIVATE
+      /W4 /permissive- /EHsc /UNDEBUG)
+  endif()
+  add_test(
+    NAME xar_ck3_native_bridge_marriage_candidate_internal_route_v1
+    COMMAND xar_ck3_marriage_candidate_internal_route_v1_test
   )
 
   if(XAR_CK3_ENABLE_G2_WAR_BOUND_PRIVATE_CAPTURE_V1)

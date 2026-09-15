@@ -54,8 +54,8 @@ def _verify_abi(abi: dict[str, Any]) -> None:
         "wrong private key",
     )
     _require(
-        abi.get("status") == "static-ready-private-core-unwired",
-        "wrong private-core status",
+        abi.get("status") == "static-ready-private-application-main-route",
+        "wrong private-route status",
     )
     _require(abi.get("visibility") == "private-not-advertised", "observer is public")
     exact = abi.get("exact_build", {})
@@ -80,15 +80,19 @@ def _verify_abi(abi: dict[str, Any]) -> None:
         "recipient_answer_contract",
         "predicted_outcome_contract",
         "same_frame_double_sample",
+        "native_strategy_adapter_bound",
+        "native_pair_context_adapter_bound",
+        "private_application_main_route_wired",
+        "application_main_receipt_adapter_bound",
+        "resolution_journal_bound",
+        "actual_bilateral_receipt_route_bound",
+        "relationship_postcondition_ready",
+        "alliance_pair_postcondition_ready",
     ):
         _require(readiness.get(key) is True, f"expected ready field is false: {key}")
     for key in (
-        "native_strategy_adapter_bound",
-        "native_pair_context_adapter_bound",
         "public_capability_registered",
         "production_query_live",
-        "relationship_postcondition_ready",
-        "alliance_pair_postcondition_ready",
         "planner_ready",
     ):
         _require(readiness.get(key) is False, f"unearned readiness is true: {key}")

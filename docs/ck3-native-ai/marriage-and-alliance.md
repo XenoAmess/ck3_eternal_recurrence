@@ -757,3 +757,11 @@ translation units 链入 `xar_ck3_bridge.dll`。exact-build source/ABI verifier 
 
 施工顺序固定为：ranked ID/score → per-row final legality/acceptance/outcome → alliance pair getter → paused live query → 选择并提交一项 →
 spouse/betrothed 与 alliance before/after 后置验证。任何一步 RED 都只保留该婚姻切片的 RED；无需扩大成通用宗教研究或全仓安全审计。
+
+#### G2-M5-MARRIAGE8 internal application-main route
+
+[static-ready candidate] `bridge.cpp` 现已在 injector 保持 primary thread suspended 的启动窗口安装 marriage shared glue 与 proposal-resolution journal，并在 WorkerMain 安装固定 application-main mailbox 后配置内部 candidate route。该 executor 是 mailbox 的固定函数身份，不来自协议输入；当前没有新增公共 schema、命令或 MCP capability。
+
+内部 query 只接受已发布 paused snapshot 的 revision、date、player identity 与 candidate filter。application-main executor 会先用 MARRIAGE7 adapter 发布同一 `native:<revision>` receipt frame，然后二选一执行：候选模式调用原生 ranked source 与逐行 final legality/acceptance/outcome observer；后置模式调用 binder 的 actual bilateral relationship reader，并同时读取双向 spouse/betrothed、双向 alliance 与 proposal-resolution journal。action ACK 不属于 query input，也没有生成 receipt 的 callback，因此 command queue 接受仍只能表示 `receipt_pending`。
+
+本切片的 fixture 覆盖 available candidate、actual bilateral receipt、业务 unavailable 仍返回成功 executor，以及 mailbox identity drift 作为 infrastructure RED；Debug/Release focused test、DLL link 与 Python normal/`-O` 验证结果由对应工作包 commit 记录。它仍是 paused-live candidate：下一步必须在固定候选 DLL 上启动新 CK3 轮次，先等待稳定 paused snapshot，再提交内部 candidate query；选定候选并提交后必须等待新 revision，再执行 bilateral receipt query，只有 spouse/betrothed、alliance 与 terminal resolution 一致时才能升级为 `production-live primitive`。ACK、pending 消失或单侧关系都不能作为成功证据。

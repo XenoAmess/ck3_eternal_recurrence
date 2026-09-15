@@ -1547,7 +1547,7 @@ bool TestSourceContract(int argc, char **argv) {
     std::fprintf(stderr, "mailbox compile-time identity contract failed\n");
     return false;
   }
-  constexpr std::array<std::string_view, 73> source_tokens{
+  constexpr std::array<std::string_view, 78> source_tokens{
       "InterlockedCompareExchangePointer",
       "kPeekMessageWIatSlotRva",
       "kSdlWindowsPumpFirstPeekReturnRva",
@@ -1617,6 +1617,11 @@ bool TestSourceContract(int argc, char **argv) {
       "mailbox.permitted_executor_quinquevigintary",
       "mailbox.permitted_executor_sexvigintary",
       "mailbox.permitted_executor_novemvigintary",
+      "mailbox.permitted_executor_quattuortrigintary",
+      "mailbox.permitted_executor_quintrigintary",
+      "mailbox.permitted_executor_sextrigintary",
+      "mailbox.permitted_executor_septentrigintary",
+      "mailbox.permitted_executor_octotrigintary",
       "Process-lifetime pin",
       "mailbox.failure_flags.load(std::memory_order_acquire) != 0",
       "PostThreadMessageW(",
@@ -1689,7 +1694,7 @@ bool TestSourceContract(int argc, char **argv) {
     return false;
   }
 
-  constexpr std::array<std::string_view, 114> bridge_tokens{
+  constexpr std::array<std::string_view, 118> bridge_tokens{
       "HeartbeatFrame",
       "main_thread_query_mailbox_v1",
       "installed",
@@ -1797,6 +1802,10 @@ bool TestSourceContract(int argc, char **argv) {
       "permitted_executor_septemvigintary",
       "permitted_executor_octovigintary",
       "permitted_executor_novemvigintary",
+      "permitted_executor_quattuortrigintary",
+      "permitted_executor_quintrigintary",
+      "permitted_executor_octotrigintary",
+      "ExecuteMarriageCandidateInternalRouteV1",
       "permitted_frontend_executor",
       "kWarEntryAssessmentsV1FirstLiveMaximumTargets",
       "CaptureWarEntryBridgeFrame",

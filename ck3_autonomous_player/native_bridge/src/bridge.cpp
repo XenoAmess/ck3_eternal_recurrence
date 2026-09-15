@@ -34,6 +34,8 @@
 #include "xar_bridge/loaded_feature_manifest_v1_mailbox.hpp"
 #include "xar_bridge/main_thread_query_mailbox_v1.hpp"
 #include "xar_bridge/major_decision_found_kingdom_shared_glue_v1.hpp"
+#include "xar_bridge/marriage_candidate_internal_route_v1.hpp"
+#include "xar_bridge/marriage_shared_glue_v1.hpp"
 #if defined(XAR_CK3_ENABLE_G2_MILITARY_PREPARATION_SUMMARY_PRIVATE_PROBE_V1)
 #include "xar_bridge/military_preparation_summary_v1_binding.hpp"
 #include "xar_bridge/military_preparation_summary_v1_private_probe.hpp"
@@ -231,6 +233,9 @@ std::atomic<long> g_lifecycle{0}; // 0 stopped, 1 starting/running, 2 stopping
 // original IAT entry but never permits unloading this DLL before process exit.
 static xar::ck3_11906::MainThreadQueryMailboxV1
     g_main_thread_query_mailbox_v1{};
+static xar::bridge::MarriageSharedGlueStateV1 g_marriage_shared_glue_v1{};
+static xar::bridge::MarriageCandidateInternalRouteStateV1
+    g_marriage_candidate_internal_route_v1{};
 static xar::ck3_11906::CoatOfArmsDesignerProbeHookStateV1
     g_coat_of_arms_designer_probe_hook_v1{};
 static xar::ck3_11906::BattleTerminalJournalDetourStateV1
@@ -6338,6 +6343,47 @@ std::optional<std::int32_t> OfferWhitePeaceStep(
   return PositiveNativeId(step.substr(prefix.size()));
 }
 
+bool ReadMarriageCurrentProcessMemory(void *, std::uintptr_t address,
+                                      void *output,
+                                      std::size_t size) noexcept {
+  if (address == 0 || output == nullptr || size == 0) return false;
+  SIZE_T transferred = 0;
+  return ReadProcessMemory(GetCurrentProcess(),
+                           reinterpret_cast<const void *>(address), output,
+                           size, &transferred) != FALSE &&
+      transferred == size;
+}
+
+bool InstallMarriageSharedGlueForCurrentProcessV1(
+    std::uintptr_t module_base) noexcept {
+  xar::bridge::MarriageSharedGlueInstallEnvironmentV1 environment{};
+  constexpr auto sha =
+      xar::bridge::kMarriageProposalNativeBinderExecutableSha256V1;
+  environment.binder = xar::bridge::BindMarriageProposalNativeBinderEnvironmentV1(
+      module_base, true, sha);
+  environment.ranked = xar::bridge::BindMarriageRankedContainerAdapterEnvironmentV1(
+      module_base, true, sha);
+  environment.outcome =
+      xar::bridge::BindMarriageNativeOutcomeClassifierEnvironmentV1(
+          module_base, true, sha);
+  environment.alliance =
+      xar::bridge::BindMarriageAllianceReadbackEnvironmentV1(
+          module_base, true, sha);
+  environment.resolution.exact_build_admitted = true;
+  environment.resolution.primary_thread_suspended_proven = true;
+  environment.resolution.offline_fixture = false;
+  environment.resolution.admitted_executable_sha256 = sha;
+  environment.resolution.module_base = module_base;
+
+  environment.binder.source_adapter.read_memory =
+      &ReadMarriageCurrentProcessMemory;
+  environment.ranked.read_memory = &ReadMarriageCurrentProcessMemory;
+  environment.outcome.read_memory = &ReadMarriageCurrentProcessMemory;
+  environment.alliance.read_memory = &ReadMarriageCurrentProcessMemory;
+  return xar::bridge::InstallMarriageSharedGlueV1(
+      g_marriage_shared_glue_v1, environment);
+}
+
 class WarEntryApplicationMainMailboxWorkerLifetime final {
 public:
   explicit WarEntryApplicationMainMailboxWorkerLifetime(
@@ -6350,7 +6396,11 @@ public:
       const WarEntryApplicationMainMailboxWorkerLifetime &) = delete;
 
   void MaybeInstallFrontend() noexcept {
-    if (installed_ || attempted_ || game_ == nullptr) {
+    if (installed_) {
+      MaybeConfigureMarriageRoute();
+      return;
+    }
+    if (attempted_ || game_ == nullptr) {
       return;
     }
     attempted_ = true;
@@ -6452,10 +6502,14 @@ public:
             ExecuteDomainConstructionApplicationMainRuntimeV1;
     environment.permitted_executor_sextrigintary =
         &xar::bridge::ExecuteMajorDecisionFoundKingdomSharedMailboxV1;
+    // Shared slot 37 remains reserved for Law. Marriage owns fixed slot 38.
+    environment.permitted_executor_octotrigintary =
+        &xar::bridge::ExecuteMarriageCandidateInternalRouteV1;
     environment.permitted_frontend_executor =
         &xar::ck3_11906::ExecuteFrontendGuiRouteMailboxV1;
     installed_ = xar::ck3_11906::InstallMainThreadQueryMailboxV1(
         g_main_thread_query_mailbox_v1, environment);
+    MaybeConfigureMarriageRoute();
   }
 
   void MaybeInstall(const xar::game::Snapshot &) noexcept {
@@ -6483,9 +6537,25 @@ public:
   }
 
 private:
+  void MaybeConfigureMarriageRoute() noexcept {
+    // DllMain may start WorkerMain before the injector's suspended-process
+    // PrepareStartup remote call has installed the resolution journal. Every
+    // later snapshot retry closes that real ordering window without touching
+    // the running game's files or exposing a protocol route.
+    if (!marriage_route_configured_ && installed_ &&
+        g_marriage_shared_glue_v1.installed.load(std::memory_order_acquire) !=
+            0) {
+      marriage_route_configured_ =
+          xar::bridge::ConfigureMarriageCandidateInternalRouteV1(
+              g_marriage_candidate_internal_route_v1,
+              g_marriage_shared_glue_v1, g_main_thread_query_mailbox_v1);
+    }
+  }
+
   const xar::game::GameAdapter *game_ = nullptr;
   bool attempted_ = false;
   bool installed_ = false;
+  bool marriage_route_configured_ = false;
 };
 
 bool RouteHostileScopeMatchesSnapshot(
@@ -13194,6 +13264,13 @@ XarCk3BridgePrepareStartup(LPVOID) noexcept {
   if (!xar::ck3_11906::InstallBattleTerminalJournalV1(
           g_battle_terminal_journal_v1,
           battle_terminal_environment)) {
+    return FALSE;
+  }
+  // PrepareStartup owns the only admissible quiescent window for the marriage
+  // resolution journal. Candidate and bilateral receipt reads attach later,
+  // after WorkerMain has installed the fixed application-main mailbox.
+  if (!InstallMarriageSharedGlueForCurrentProcessV1(
+          tactical_sentinel_environment.module_base)) {
     return FALSE;
   }
 #if defined(XAR_CK3_ENABLE_G2_FACTION_TARGETING_ROW_ASYNC_PRIVATE_PROBE_V1)

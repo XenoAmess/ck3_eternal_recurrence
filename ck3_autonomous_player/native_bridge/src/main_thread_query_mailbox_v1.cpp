@@ -511,6 +511,8 @@ bool InstallMainThreadQueryMailboxV1(
       environment.permitted_executor_quattuortrigintary == nullptr &&
       environment.permitted_executor_quintrigintary == nullptr &&
       environment.permitted_executor_sextrigintary == nullptr &&
+      environment.permitted_executor_septentrigintary == nullptr &&
+      environment.permitted_executor_octotrigintary == nullptr &&
       environment.permitted_frontend_executor == nullptr) {
     AddFailure(mailbox, main_thread_query_failure_request_identity);
     return false;
@@ -714,6 +716,10 @@ bool InstallMainThreadQueryMailboxV1(
       environment.permitted_executor_quintrigintary;
   mailbox.permitted_executor_sextrigintary =
       environment.permitted_executor_sextrigintary;
+  mailbox.permitted_executor_septentrigintary =
+      environment.permitted_executor_septentrigintary;
+  mailbox.permitted_executor_octotrigintary =
+      environment.permitted_executor_octotrigintary;
   mailbox.permitted_frontend_executor =
       environment.permitted_frontend_executor;
   mailbox.executor = nullptr;
@@ -957,6 +963,8 @@ MainThreadQuerySubmitResultV1 TrySubmitMainThreadQueryV1(
        mailbox.permitted_executor_quattuortrigintary != nullptr ||
        mailbox.permitted_executor_quintrigintary != nullptr ||
        mailbox.permitted_executor_sextrigintary != nullptr ||
+       mailbox.permitted_executor_septentrigintary != nullptr ||
+       mailbox.permitted_executor_octotrigintary != nullptr ||
        mailbox.permitted_frontend_executor != nullptr) &&
       executor != mailbox.permitted_executor &&
       executor != mailbox.permitted_executor_secondary &&
@@ -994,6 +1002,8 @@ MainThreadQuerySubmitResultV1 TrySubmitMainThreadQueryV1(
       executor != mailbox.permitted_executor_quattuortrigintary &&
       executor != mailbox.permitted_executor_quintrigintary &&
       executor != mailbox.permitted_executor_sextrigintary &&
+      executor != mailbox.permitted_executor_septentrigintary &&
+      executor != mailbox.permitted_executor_octotrigintary &&
       executor != mailbox.permitted_frontend_executor) {
     return MainThreadQuerySubmitResultV1::invalid_request;
   }
