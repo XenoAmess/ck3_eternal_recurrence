@@ -1623,7 +1623,10 @@ async function runImageFit(resumeCheckpoint?: ImageFitCheckpoint) {
         : result.provenance.reconstructionMode === 'hybrid-native-paint'
           ? '语义元素 + 原生块混合重建'
           : '语义元素搜索'
-      fitStatus.value = `完成 · ${reconstructionMode} · 从完整库评估 ${result.provenance.evaluatedCandidates} 个构图 · 选中 ${result.provenance.selectedLayers}/${result.provenance.layerBudget} 层 · 停止：${fitTerminationLabels[result.provenance.terminationReason]} · CPU reference${fitWebGlScore.value ? ' + WebGL2 RGBA8 交叉评分' : ' · WebGL2 不可用'}`
+      const batchStatus = result.provenance.batchSearch.status === 'active'
+        ? `WebGL2 批量搜索 ${result.provenance.batchSearch.candidates} 候选 + CPU reference`
+        : `CPU reference · WebGL2 批量搜索 ${result.provenance.batchSearch.status}`
+      fitStatus.value = `完成 · ${reconstructionMode} · 从完整库评估 ${result.provenance.evaluatedCandidates} 个构图 · 选中 ${result.provenance.selectedLayers}/${result.provenance.layerBudget} 层 · 停止：${fitTerminationLabels[result.provenance.terminationReason]} · ${batchStatus}${fitWebGlScore.value ? ' · 最终 RGBA8 交叉评分' : ''}`
       const metricContract = fitMetricContract(result)
       if (metricContract) {
         captureComparisonCandidate(
@@ -2289,6 +2292,7 @@ watch(() => activeEmblem.value?.instances.length ?? 0, (length) => {
               <div><dt>{{ t('tileSearchSpace') }}</dt><dd>{{ fitResult.provenance.nativeTileSearch.searchWidth }}×{{ fitResult.provenance.nativeTileSearch.searchHeight }} · depth {{ fitResult.provenance.nativeTileSearch.maximumDepth }} · {{ t('pixelLeafCapacity') }} {{ fitResult.provenance.nativeTileSearch.pixelLeafCapacity }} · {{ t('originalBudget') }} {{ fitResult.provenance.nativeTileSearch.userBudgetAppliedWithoutClamp }}</dd></div>
               <div><dt>{{ t('algorithmContract') }}</dt><dd>{{ fitResult.provenance.algorithm }}</dd></div>
               <div><dt>{{ t('relativeImprovement') }}</dt><dd>{{ (fitResult.metrics.relativeImprovement * 100).toFixed(2) }}%</dd></div>
+              <div><dt>{{ t('gpuBatchSearch') }}</dt><dd>{{ fitResult.provenance.batchSearch.backend ?? 'CPU' }} · {{ fitResult.provenance.batchSearch.status }} · {{ fitResult.provenance.batchSearch.batches }} batch / {{ fitResult.provenance.batchSearch.candidates }} candidates · Δ {{ fitResult.provenance.batchSearch.maximumMetricDelta.toExponential(2) }}</dd></div>
               <div><dt>{{ t('gpuCrossScore') }}</dt><dd>{{ fitWebGlScore ? fitWebGlScore.meanSquaredRgbError.toFixed(5) : t('unavailable') }}</dd></div>
               <div><dt>{{ t('inputPyramid') }}</dt><dd>{{ fitResult.provenance.sourceWidth }}×{{ fitResult.provenance.sourceHeight }} → {{ fitResult.provenance.pyramidResolutions.join(' / ') }}px</dd></div>
               <div><dt>{{ t('candidatePaths') }}</dt><dd>{{ fitResult.provenance.candidateLosses.map((item) => `${item.mode === 'native-tile-paint' ? t('nativeBlock') : item.mode === 'native-edge-refined' ? t('edgeRefined') : item.mode === 'hybrid-native-paint' ? t('hybrid') : t('semantic')} ${item.layers} ${t('layersShort')}=${item.totalLoss.toFixed(4)} [${item.textureNames.join(', ') || t('noEmblem')}]`).join(' · ') }}</dd></div>

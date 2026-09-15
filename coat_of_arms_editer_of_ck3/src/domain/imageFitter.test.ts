@@ -3,6 +3,7 @@ import type { DecodedDds } from './dds'
 import {
   dominantColors,
   fitImageToCoatOfArms,
+  measureImageFitLosses,
   resizeFitImage,
   type FitImage,
   type FitTextureCandidate,
@@ -171,6 +172,69 @@ describe('browser image fitter', () => {
     expect(first.coatOfArms.pattern).toBe('split.dds')
     expect(second.coatOfArms).toEqual(first.coatOfArms)
     expect(second.metrics).toEqual(first.metrics)
+  })
+
+  it('uses a batch scorer for background selection only after CPU-reference agreement', () => {
+    const size = 32
+    const split = texture('split')
+    const target = renderCoatOfArms({
+      outerKey: 'coa', parent: '', pattern: 'split.dds',
+      colors: ['rgb { 220 30 30 }', 'rgb { 30 50 220 }', 'rgb { 220 30 30 }'],
+      coloredEmblems: [], texturedEmblems: [],
+    }, { pattern: split, coloredEmblems: {} }, {}, size)!
+    const image = asImage(target.pixels, size)
+    const patterns = [candidate('solid.dds', texture('solid')), candidate('split.dds', split)]
+    const exactScorer = {
+      backend: 'test-exact-batch',
+      maximumBatchSize: 128,
+      status: () => 'available' as const,
+      score: (candidates: readonly FitImage[]) => candidates.map((item) => ({
+        ...measureImageFitLosses(image, item),
+        relativeImprovement: 0,
+      })),
+    }
+    const accelerated = fitImageToCoatOfArms(image, patterns, [], {
+      resolution: size,
+      batchSearchRequested: true,
+      batchScorer: exactScorer,
+    })
+    expect(accelerated.coatOfArms.pattern).toBe('split.dds')
+    expect(accelerated.provenance.searchBackend).toBe('webgl2-batch+cpu-reference')
+    expect(accelerated.provenance.batchSearch).toMatchObject({
+      backend: 'test-exact-batch',
+      status: 'active',
+      candidates: 12,
+      cpuReferenceAgreement: true,
+    })
+
+    const rejected = fitImageToCoatOfArms(image, patterns, [], {
+      resolution: size,
+      batchSearchRequested: true,
+      batchScorer: {
+        ...exactScorer,
+        backend: 'test-invalid-batch',
+        score: (candidates) => candidates.map(() => ({
+          colorLoss: 0, edgeLoss: 0, totalLoss: 0, relativeImprovement: 0,
+        })),
+      },
+    })
+    expect(rejected.coatOfArms.pattern).toBe('split.dds')
+    expect(rejected.provenance.searchBackend).toBe('cpu-reference')
+    expect(rejected.provenance.batchSearch.status).toBe('reference_mismatch_fallback')
+
+    const contextLost = fitImageToCoatOfArms(image, patterns, [], {
+      resolution: size,
+      batchSearchRequested: true,
+      batchScorer: {
+        ...exactScorer,
+        backend: 'test-context-lost-batch',
+        status: () => 'context_lost' as const,
+        score: () => null,
+      },
+    })
+    expect(contextLost.coatOfArms.pattern).toBe('split.dds')
+    expect(contextLost.provenance.searchBackend).toBe('cpu-reference')
+    expect(contextLost.provenance.batchSearch.status).toBe('context_lost_fallback')
   })
 
   it('adds a fitting emblem only when it materially improves the target', () => {

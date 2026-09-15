@@ -59,8 +59,8 @@ Alpha 已能解析、编辑、渲染、序列化 CK3 家徽代码，并能在浏
 | P0 | 输入过早缩为 96×96 | 上传图片在拟合入口即栅格为 96×96，高分辨率轮廓和细线在候选生成前已经丢失。 |
 | P0 | 只保证前向追加时严格改善 | 没有最终 backward prune / leave-one-out；较早图层可能在后来覆盖后变成冗余。 |
 | P1 | 代码膨胀 | v4/v6 已完成保持顺序的安全相邻合并和最终剪枝，但进一步近似压缩仍需受累计视觉损失预算约束。 |
-| P1 | 大预算控制尚未完整 | 128/1024/10,000 真实拟合、跨刷新持久 checkpoint 精确暂停/恢复、取消后重启与恰好 10,000 实例文档已通过；GPU 批量搜索与 WebGL2 上下文恢复仍待完成。 |
-| P1 | 搜索仍偏贪心 | WebGL2 只交叉评分最终候选，尚未承担 atlas/reduction 批量搜索；没有稳定的多候选 Pareto 输出。 |
+| P1 | 大预算控制尚未完整 | 128/1024/10,000 真实拟合、跨刷新持久 checkpoint 精确暂停/恢复、取消后重启与恰好 10,000 实例文档已通过；GPU 搜索覆盖扩大与同 run WebGL2 context 重建仍待完成。 |
+| P1 | 搜索仍偏贪心 | WebGL2 texture-array/atlas/reduction 已承担背景候选排序并由 CPU reference 门禁；语义/local 与逐块残差候选仍为 CPU，尚无稳定的多候选 Pareto 自动输出。 |
 | P1 | 编辑体验尚未完整 | 32 卡片虚拟窗口、撤销/重做、项目保存恢复、直接变换、三候选对比及跨刷新持久 checkpoint 恢复已通过；更多拟合阶段的恢复与配额失败恢复仍待完成。 |
 | P1 | 预览合同仍不完整 | exact 1.19.0.6 唯一注册 `_default.dds` 的 `textured_emblem` shader 模型合成已通过；`parent` 尚未展开到浏览器预览，原生 framebuffer 像素对照仍待补。 |
 | P2 | 输入/资产覆盖有限 | 安全 SVG、素材包目录导入、中英文、移动端、Service Worker 以及 Chromium/Firefox/WebKit 已通过；仍只有 1.19.0.6 基础包，没有 DLC/mod VFS 胜者 receipt，Pages asset pack 仍较大。 |
@@ -149,15 +149,15 @@ framebuffer 空间像素对照仍是独立待办，不影响 WP1 文本闭环的
 
 交付：texture-array/atlas、批量渲染和 reduction；Worker checkpoint；暂停、恢复、取消；128/1024/10,000 预算 benchmark；资产分片与按需加载。
 
-当前状态：`in_progress`。页面输入已确认不截断 10,000，但这不构成真实拟合压力通过；下一门禁会实际运行预算 10,000 的拟合，
-记录候选评估数、实际实例、停止原因、耗时与可取得的内存证据。完整文档压力已在 WP5 单独通过，不能拿来代替本项。
-
-该子门禁现已通过：同一 96×96 高频压力图的 128 / 1,024 / 10,000 预算在浏览器 Worker 中实际执行；10,000 原值未 clamp，
-自然收敛到 1,824 个改善实例，评估 15,640 个候选，耗时 14,644 ms。绘制阶段取消延迟 52 ms，随后重启新 run 成功；完整复制
+当前状态：`in_progress`。同一 96×96 高频压力图的 128 / 1,024 / 10,000 预算已在浏览器 Worker 中实际执行；10,000 原值未 clamp，
+自然收敛到 1,824 个改善实例，评估 14,908 个候选，耗时 13,409 ms。绘制阶段取消延迟 57 ms，随后重启新 run 成功；完整复制
 711,661 bytes / 25,543 行并回读 1,824 实例。`ck3-coa-fit-checkpoint-v1` 与 `ck3-coa-persisted-fit-checkpoint-v1` 已通过跨刷新暂停/恢复：
-75 ms 内暂停并写入 IndexedDB，刷新、素材重载与状态恢复共 3,418 ms，继续搜索 3,281 ms；恢复结果与不中断的 128 预算结果逐字段一致，
-并以 run ID/revision 拒绝旧 Worker 消息。详见[真实拟合预算压力证据](coat-of-arms-fit-budget-stress.md)。WP4 仍因 WebGL2 批量搜索与上下文
-丢失恢复缺失而保持 `in_progress`。
+82 ms 内暂停并写入 IndexedDB，刷新、素材重载与状态恢复共 3,318 ms，继续搜索 3,239 ms；恢复结果与不中断的 128 预算结果逐字段一致，
+并以 run ID/revision 拒绝旧 Worker 消息。详见[真实拟合预算压力证据](coat-of-arms-fit-budget-stress.md)。
+
+WP4 仍因 GPU 搜索尚未扩展到语义/local 与逐块残差候选、同 run context 重建及总进程/GPU 内存证据缺失而保持 `in_progress`。背景候选的
+`webgl2-texture-array-reduction-float-v1` 已在 Worker 内实测启用，GPU/CPU 最大指标差 `2.5092759509126594e-8`，完整排序一致；真实
+context loss 会 fail closed 到 CPU，详见[WebGL2 批量搜索证据](coat-of-arms-webgl-batch-search.md)。
 
 退出条件：
 
@@ -238,4 +238,6 @@ Beta 只有同时满足下列条件才收口：
 - [图片拟合可行性与架构](ck3-coat-of-arms-image-fitting-feasibility.md)
 - [剪贴板导入能力报告](ck3-coat-of-arms-clipboard-import-capability.md)
 - [大源码 MCP v2 传输合同](ck3-coat-of-arms-large-source-upload-v2.md)
+- [真实 10,000 拟合预算与持久恢复证据](coat-of-arms-fit-budget-stress.md)
+- [WebGL2 texture-array/reduction 批量搜索证据](coat-of-arms-webgl-batch-search.md)
 - [hunter v3 历史拟合证据](coat-of-arms-fit-artifacts/xenoamess-hunter-v3/README.md)

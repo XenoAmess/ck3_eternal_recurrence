@@ -1,6 +1,6 @@
 {
   "schema": "ck3-coa-beta-progress-v1",
-  "updatedAt": "2026-09-16T02:30:00+08:00",
+  "updatedAt": "2026-09-16T02:42:00+08:00",
   "overallStatus": "in_progress",
   "workPackages": [
     {
@@ -191,7 +191,10 @@
       "commands": [
         "pnpm exec vitest run src/domain/fitBudgetContract.test.ts src/domain/fitCheckpointStore.test.ts --reporter=verbose",
         "pnpm exec playwright test e2e/fit-budget-stress.spec.ts --reporter=line",
-        "pnpm exec playwright test e2e/reference-hunter-fit.spec.ts --reporter=line"
+        "pnpm exec playwright test e2e/webgl-batch-scorer.spec.ts --reporter=line",
+        "pnpm exec playwright test e2e/reference-hunter-fit.spec.ts --reporter=line",
+        "pnpm test",
+        "pnpm build"
       ],
       "resultPath": "docs/coat-of-arms-fit-budget-stress.md",
       "keyMetrics": {
@@ -199,13 +202,13 @@
         "completeDocumentStress": "passed_under_WP5",
         "budget128ActualInstances": 8,
         "budget128EvaluatedCandidates": 412,
-        "budget128DurationMs": 3530,
+        "budget128DurationMs": 3636,
         "budget1024ActualInstances": 250,
         "budget1024EvaluatedCandidates": 3260,
-        "budget1024DurationMs": 5304,
+        "budget1024DurationMs": 5405,
         "budget10000ActualInstances": 1824,
         "budget10000EvaluatedCandidates": 14908,
-        "budget10000DurationMs": 13275,
+        "budget10000DurationMs": 13409,
         "budget10000TerminationReason": "no_improvement",
         "budget10000AppliedWithoutClamp": 10000,
         "searchResolution": 96,
@@ -218,19 +221,25 @@
         "checkpointContract": "ck3-coa-fit-checkpoint-v1",
         "persistedCheckpointContract": "ck3-coa-persisted-fit-checkpoint-v1",
         "checkpointScope": "indexeddb_reload_exact_resume",
-        "checkpointPauseLatencyMs": 75,
-        "checkpointReloadRestoreDurationMs": 3418,
-        "checkpointResumeDurationMs": 3281,
+        "checkpointPauseLatencyMs": 82,
+        "checkpointReloadRestoreDurationMs": 3318,
+        "checkpointResumeDurationMs": 3239,
         "checkpointResultEquality": "model_metrics_layer_losses_seam_receipt_passed",
         "checkpointCompatibilityFailure": "input_or_asset_identity_mismatch_fail_closed",
-        "cancellationLatencyMs": 72,
+        "cancellationLatencyMs": 57,
         "restartBudget": 1,
-        "restartProgressLatencyMs": 154,
-        "measuredJsHeapDeltaBytes": 64817246,
+        "restartProgressLatencyMs": 146,
+        "measuredJsHeapDeltaBytes": 49825310,
         "memoryEvidenceScope": "JavaScript heap delta only; excludes GPU and browser-process memory",
         "nonGetRequests": 0,
         "pauseResumeCheckpoint": "indexeddb_reload_persistence_passed",
-        "gpuBatchSearch": "pending"
+        "gpuBatchSearch": "background_candidate_selection_passed",
+        "gpuBatchBackend": "webgl2-texture-array-reduction-float-v1",
+        "gpuBatchCandidates": 6,
+        "gpuBatchMaximumMetricDelta": 2.5092759509126594e-8,
+        "gpuCpuStableOrderAgreement": "passed",
+        "gpuContextLossFallback": "passed",
+        "gpuSearchRemainingScope": "semantic_local_and_native_tile_candidates"
       },
       "blockers": []
     },

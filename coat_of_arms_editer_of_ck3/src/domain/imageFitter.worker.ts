@@ -1,6 +1,7 @@
 /// <reference lib="webworker" />
 
-import { fitImageToCoatOfArms, type ImageFitProgress } from './imageFitter'
+import { fitImageToCoatOfArms, resizeFitImage, type ImageFitProgress } from './imageFitter'
+import { createWebGl2BatchScorer } from './webglBatchScorer'
 import {
   FIT_WORKER_PROTOCOL,
   type FitWorkerPayload,
@@ -26,12 +27,19 @@ self.onmessage = (event: MessageEvent<FitWorkerStartRequest>) => {
   }
   try {
     const [image, patterns, emblems, options] = request.args
-    const result = fitImageToCoatOfArms(image, patterns, emblems, {
-      ...options,
-      onProgress: (progress: ImageFitProgress) => reply({ kind: 'progress', progress }),
-      onCheckpoint: (checkpoint) => reply({ kind: 'checkpoint', checkpoint }),
-    })
-    reply({ kind: 'result', ok: true, result })
+    const batchScorer = createWebGl2BatchScorer(resizeFitImage(image, options.resolution ?? 40))
+    try {
+      const result = fitImageToCoatOfArms(image, patterns, emblems, {
+        ...options,
+        batchSearchRequested: true,
+        batchScorer: batchScorer ?? undefined,
+        onProgress: (progress: ImageFitProgress) => reply({ kind: 'progress', progress }),
+        onCheckpoint: (checkpoint) => reply({ kind: 'checkpoint', checkpoint }),
+      })
+      reply({ kind: 'result', ok: true, result })
+    } finally {
+      batchScorer?.dispose()
+    }
   } catch (error) {
     reply({
       kind: 'result',

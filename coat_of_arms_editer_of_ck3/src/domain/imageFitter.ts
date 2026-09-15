@@ -37,6 +37,27 @@ export interface ImageFitOptions {
   assetPackManifestSha256?: string
   resumeCheckpoint?: ImageFitCheckpoint
   onCheckpoint?: (checkpoint: ImageFitCheckpoint) => void
+  batchSearchRequested?: boolean
+  batchScorer?: ImageFitBatchScorer
+}
+
+export interface ImageFitBatchScorer {
+  readonly backend: string
+  readonly maximumBatchSize: number
+  score(candidates: readonly FitImage[]): ImageFitMetrics[] | null
+  status(): 'available' | 'unavailable' | 'context_lost' | 'runtime_error'
+}
+
+export interface ImageFitBatchSearchReceipt {
+  requested: boolean
+  backend: string | null
+  status: 'active' | 'unavailable_fallback' | 'context_lost_fallback' | 'runtime_error_fallback' | 'reference_mismatch_fallback'
+  batches: number
+  candidates: number
+  maximumBatchSize: number
+  cpuReferenceTolerance: number
+  maximumMetricDelta: number
+  cpuReferenceAgreement: boolean
 }
 
 export interface ImageFitProgress {
@@ -114,7 +135,8 @@ export interface ImageFitResult {
   metrics: ImageFitMetrics
   provenance: {
     algorithm: 'ck3-coa-browser-fit-v5-hybrid-multiscale'
-    searchBackend: 'cpu-reference'
+    searchBackend: 'cpu-reference' | 'webgl2-batch+cpu-reference'
+    batchSearch: ImageFitBatchSearchReceipt
     scoringContract: 'alpha-weighted-srgb8-mse62-luma-gradient-l1-38-v1'
     rendererContract: 'cpu-rgba8-bilinear-clamp-pixel-center-v1'
     randomSeed: null
@@ -1809,6 +1831,19 @@ export function fitImageToCoatOfArms(
   const palette = dominantColors(target)
   const backgroundPalettes = permutations(palette)
   const evaluated: EvaluationCounter = { value: 0 }
+  const batchScorer = options.batchScorer
+  const batchReferenceTolerance = 2e-6
+  const batchSearch: ImageFitBatchSearchReceipt = {
+    requested: options.batchSearchRequested === true,
+    backend: batchScorer?.backend ?? null,
+    status: 'unavailable_fallback',
+    batches: 0,
+    candidates: 0,
+    maximumBatchSize: batchScorer?.maximumBatchSize ?? 0,
+    cpuReferenceTolerance: batchReferenceTolerance,
+    maximumMetricDelta: 0,
+    cpuReferenceAgreement: false,
+  }
   let bestBackground: ScoredCandidate | null = null
   const backgroundCandidates: { candidate: ScoredCandidate, patternAsset: FitTextureCandidate }[] = []
   const backgroundTotal = patterns.length * backgroundPalettes.length
@@ -1847,10 +1882,59 @@ export function fitImageToCoatOfArms(
   if (!bestBackground) throw new Error('无法生成背景候选')
 
   const initialLoss = bestBackground.totalLoss
-  const rankedBackgrounds = backgroundCandidates.sort((left, right) => (
+  const cpuRankedBackgrounds = [...backgroundCandidates].sort((left, right) => (
     left.candidate.totalLoss - right.candidate.totalLoss
     || left.candidate.key.localeCompare(right.candidate.key)
   ))
+  let rankedBackgrounds = cpuRankedBackgrounds
+  if (batchScorer) {
+    const gpuMetrics: ImageFitMetrics[] = []
+    for (let first = 0; first < backgroundCandidates.length; first += batchScorer.maximumBatchSize) {
+      const items = backgroundCandidates.slice(first, first + batchScorer.maximumBatchSize)
+      const metrics = batchScorer.score(items.map((item) => item.candidate.rendered))
+      if (!metrics || metrics.length !== items.length) break
+      batchSearch.batches += 1
+      batchSearch.candidates += items.length
+      gpuMetrics.push(...metrics)
+    }
+    if (gpuMetrics.length === backgroundCandidates.length) {
+      let maximumMetricDelta = 0
+      for (let index = 0; index < gpuMetrics.length; index += 1) {
+        const reference = backgroundCandidates[index].candidate
+        const metric = gpuMetrics[index]
+        maximumMetricDelta = Math.max(
+          maximumMetricDelta,
+          Math.abs(metric.colorLoss - reference.colorLoss),
+          Math.abs(metric.edgeLoss - reference.edgeLoss),
+          Math.abs(metric.totalLoss - reference.totalLoss),
+        )
+      }
+      batchSearch.maximumMetricDelta = maximumMetricDelta
+      const gpuRanked = backgroundCandidates
+        .map((item, index) => ({ item, metric: gpuMetrics[index] }))
+        .sort((left, right) => (
+          left.metric.totalLoss - right.metric.totalLoss
+          || left.item.candidate.key.localeCompare(right.item.candidate.key)
+        ))
+        .map(({ item }) => item)
+      const referenceAgreement = maximumMetricDelta <= batchReferenceTolerance
+        && gpuRanked.every((item, index) => item.candidate.key === cpuRankedBackgrounds[index].candidate.key)
+      batchSearch.cpuReferenceAgreement = referenceAgreement
+      if (referenceAgreement) {
+        batchSearch.status = 'active'
+        rankedBackgrounds = gpuRanked
+      } else {
+        batchSearch.status = 'reference_mismatch_fallback'
+      }
+    } else {
+      const scorerStatus = batchScorer.status()
+      batchSearch.status = scorerStatus === 'context_lost'
+        ? 'context_lost_fallback'
+        : scorerStatus === 'runtime_error'
+          ? 'runtime_error_fallback'
+          : 'unavailable_fallback'
+    }
+  }
   const backgroundSeeds = rankedBackgrounds.slice(0, beamWidth)
   const bestSolidBackground = rankedBackgrounds.find((item) => item.patternAsset.name === 'pattern_solid.dds')
   if (
@@ -2177,7 +2261,10 @@ export function fitImageToCoatOfArms(
     },
     provenance: {
       algorithm: 'ck3-coa-browser-fit-v5-hybrid-multiscale',
-      searchBackend: 'cpu-reference',
+      searchBackend: batchSearch.status === 'active'
+        ? 'webgl2-batch+cpu-reference'
+        : 'cpu-reference',
+      batchSearch,
       scoringContract: 'alpha-weighted-srgb8-mse62-luma-gradient-l1-38-v1',
       rendererContract: 'cpu-rgba8-bilinear-clamp-pixel-center-v1',
       randomSeed: null,

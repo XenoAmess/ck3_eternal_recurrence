@@ -135,6 +135,13 @@ test('runs real 128/1024/10000 browser fits without clamping and cancels a paint
     const evidence = JSON.parse(rawEvidence!) as {
       metrics: Record<string, unknown>
       provenance: {
+        searchBackend: string
+        batchSearch: {
+          status: string
+          batches: number
+          candidates: number
+          cpuReferenceAgreement: boolean
+        }
         layerBudget: number
         drawnInstances: number
         coloredEmblemBlocks: number
@@ -149,6 +156,13 @@ test('runs real 128/1024/10000 browser fits without clamping and cancels a paint
     }
     if (budget === 128) baseline128Evidence = evidence
     expect(evidence.provenance.layerBudget).toBe(budget)
+    expect(evidence.provenance.searchBackend).toBe('webgl2-batch+cpu-reference')
+    expect(evidence.provenance.batchSearch).toMatchObject({
+      status: 'active',
+      batches: 1,
+      candidates: 6,
+      cpuReferenceAgreement: true,
+    })
     expect(evidence.provenance.nativeTileSearch.userBudgetAppliedWithoutClamp).toBe(budget)
     expect(evidence.provenance.drawnInstances).toBeLessThanOrEqual(budget)
     expect(evidence.provenance.evaluatedCandidates).toBeGreaterThan(evidence.provenance.drawnInstances)
