@@ -12,6 +12,7 @@ struct DomainConstructionCostGateRegistersV1 final {
   std::uintptr_t rbp = 0U;
   std::uintptr_t rbx = 0U;
   std::uintptr_t rdi = 0U;
+  std::uintptr_t r14 = 0U;
 };
 
 struct DomainConstructionCostGateAdmissionV1 final {
@@ -19,6 +20,7 @@ struct DomainConstructionCostGateAdmissionV1 final {
   bool session_live = false;
   std::uint32_t application_main_thread_id = 0U;
   std::uint32_t current_thread_id = 0U;
+  std::int32_t expected_player_character_id = -1;
   research::DomainConstructionCandidateSnapshotBindingV1 binding;
 };
 
@@ -29,6 +31,7 @@ enum class DomainConstructionCostGateFailureV1 : std::uint8_t {
   session,
   binding,
   source_address,
+  actor_identity,
   candidate_identity,
   source_sample,
 };
@@ -37,11 +40,13 @@ struct DomainConstructionCostGateOwnedResultV1 final {
   DomainConstructionCostGateFailureV1 failure =
       DomainConstructionCostGateFailureV1::none;
   research::DomainConstructionOwnedCollectorSampleV1 sample;
+  std::int32_t actor_character_id = -1;
 };
 
 // Address derivation is version-bound: rdi is the selected 0x28 row,
-// [rbp-0x41] is its projected eight-qword cost, and rbx is the corresponding
-// eight-qword resource balance. The returned frame is borrowed, not owned.
+// [rbp-0x41] is its projected eight-qword cost, rbx is the corresponding
+// eight-qword resource balance, and [r14+0x18] is the actor ID later written
+// to the native construction command. The returned frame is borrowed.
 [[nodiscard]] DomainConstructionCostGateFailureV1
 BorrowDomainConstructionCostGateFrameV1(
     const DomainConstructionCostGateAdmissionV1& admission,

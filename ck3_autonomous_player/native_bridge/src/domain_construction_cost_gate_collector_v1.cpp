@@ -39,6 +39,7 @@ DomainConstructionCostGateFailureV1 BorrowDomainConstructionCostGateFrameV1(
     return DomainConstructionCostGateFailureV1::binding;
   }
   if (registers.rbp < 0x41U ||
+      !Readable(registers.r14, 0x1CU) ||
       !Readable(registers.rdi, research::kDomainConstructionCandidateRowBytesV1) ||
       !Readable(registers.rbp - 0x41U,
                 research::kDomainConstructionResourceVectorBytesV1) ||
@@ -67,6 +68,14 @@ DomainConstructionCostGateOwnedResultV1 ReadDomainConstructionCostGateOwnedV1(
   }
   if (read_memory == nullptr) {
     result.failure = DomainConstructionCostGateFailureV1::source_sample;
+    return result;
+  }
+  if (admission.expected_player_character_id <= 0 ||
+      !read_memory(read_context, registers.r14 + 0x18U,
+                   &result.actor_character_id,
+                   sizeof(result.actor_character_id)) ||
+      result.actor_character_id != admission.expected_player_character_id) {
+    result.failure = DomainConstructionCostGateFailureV1::actor_identity;
     return result;
   }
   std::array<std::uint8_t,

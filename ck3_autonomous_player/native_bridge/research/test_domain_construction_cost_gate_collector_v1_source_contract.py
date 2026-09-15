@@ -38,6 +38,8 @@ def verify(executable: Path) -> None:
         0x18D180F: bytes.fromhex("488B7D7F"),  # rdi <- selected row
         0x18D185A: bytes.fromhex("0F1145BF"),  # cost at rbp-0x41
         0x18D18F3: bytes.fromhex(exact["cost_gate_bytes_to_next_instruction"]),
+        int(exact["native_command_actor_source_rva"], 16):
+            bytes.fromhex("418B4618"),  # command actor <- [r14+0x18]
     }
     for rva, expected in source_bytes.items():
         if at(rva, len(expected)) != expected:

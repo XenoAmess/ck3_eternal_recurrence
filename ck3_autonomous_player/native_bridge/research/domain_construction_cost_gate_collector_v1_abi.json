@@ -8,16 +8,19 @@
     "cost_helper_span_rva": ["0x18D17E0", "0x18D1924"],
     "cost_helper_span_sha256": "7C4229DE54EF99ACA832156CBEA5F1D504DCE37812A86F7309590A499F693885",
     "cost_gate_capture_rva": "0x18D18F3",
+    "native_command_actor_source_rva": "0x18D29A3",
     "cost_gate_bytes_to_next_instruction": "32C06666660F1F840000000000"
   },
   "borrowed_sources": {
     "selected_candidate_row": "rdi, 0x28 bytes",
     "projected_cost_raw": "rbp-0x41, eight signed qwords",
     "resource_balance_raw": "rbx, eight signed qwords",
+    "native_command_actor_id": "[r14+0x18], 32-bit CharacterID; must equal played character",
     "lifetime": "only during the synchronous 0x18D17E0 helper call"
   },
   "owned_result": {
     "candidate_identity": true,
+    "played_actor_binding": true,
     "cost_and_balance": true,
     "insufficient_resource_rejection": true,
     "affordable_candidate_actionable_before_final_gate": false,

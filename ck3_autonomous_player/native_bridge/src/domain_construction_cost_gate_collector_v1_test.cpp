@@ -17,6 +17,7 @@ constexpr std::uintptr_t kBalance = 0x5000U;
 constexpr std::uintptr_t kHolding = 0x10000U;
 constexpr std::uintptr_t kBuilding = 0x11000U;
 constexpr std::uintptr_t kCandidate = 0x12000U;
+constexpr std::uintptr_t kActor = 0x13000U;
 
 struct Segment final {
   std::uintptr_t address = 0U;
@@ -76,15 +77,16 @@ Memory Fixture(const std::int64_t first_cost = 100,
   Add(memory, kHolding + 0x10U, std::int32_t{17});
   Add(memory, kBuilding + 0x10U, std::int32_t{16777258});
   Add(memory, kCandidate + 0x10U, std::int32_t{-1});
+  Add(memory, kActor + 0x18U, std::int32_t{71});
   return memory;
 }
 
 DomainConstructionCostGateAdmissionV1 Admission() {
-  return {true, true, 7U, 7U, {42U, 91U, 777}};
+  return {true, true, 7U, 7U, 71, {42U, 91U, 777}};
 }
 
 DomainConstructionCostGateRegistersV1 Registers() {
-  return {kCost + 0x41U, kBalance, kRow};
+  return {kCost + 0x41U, kBalance, kRow, kActor};
 }
 
 void TestBorrowedAddressesAndTypedAdmission() {
@@ -122,6 +124,7 @@ void TestAffordableDoesNotBecomeActionableBeforeFinalGate() {
   const auto result = ReadDomainConstructionCostGateOwnedV1(
       Admission(), Registers(), Read, &memory);
   assert(result.failure == DomainConstructionCostGateFailureV1::none);
+  assert(result.actor_character_id == 71);
   assert(!result.sample.ready);
   assert(result.sample.failure ==
          DomainConstructionCollectorSourceFailureV1::final_observation);
@@ -148,11 +151,22 @@ void TestExactNativeResourceRejectionIsObservable() {
   assert(result.sample.candidate.first_blocking_resource_slot == 0U);
 }
 
+void TestAiConstructionIsNotAPlayerCandidate() {
+  auto memory = Fixture();
+  auto admission = Admission();
+  admission.expected_player_character_id = 72;
+  const auto result = ReadDomainConstructionCostGateOwnedV1(
+      admission, Registers(), Read, &memory);
+  assert(result.failure == DomainConstructionCostGateFailureV1::actor_identity);
+  assert(!result.sample.ready);
+}
+
 }  // namespace
 
 int main() {
   TestBorrowedAddressesAndTypedAdmission();
   TestAffordableDoesNotBecomeActionableBeforeFinalGate();
   TestExactNativeResourceRejectionIsObservable();
+  TestAiConstructionIsNotAPlayerCandidate();
   return 0;
 }
