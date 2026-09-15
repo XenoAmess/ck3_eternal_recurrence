@@ -178,6 +178,12 @@ class FrontendGuiRouteLiveAcceptanceContractTests(unittest.TestCase):
         gate = module._framebuffer_gate(call)
 
         self.assertTrue(gate["ok"])
+        self.assertFalse(
+            module._framebuffer_gate(
+                call,
+                thresholds=module.COPY_REAPPLY_EQUIVALENCE_THRESHOLDS,
+            )["ok"]
+        )
         with tempfile.TemporaryDirectory() as directory:
             output = Path(directory) / "native.png"
             receipt = module._write_native_crop(
@@ -224,6 +230,30 @@ class FrontendGuiRouteLiveAcceptanceContractTests(unittest.TestCase):
         gate = module._framebuffer_gate(call)
 
         self.assertTrue(gate["ok"])
+        encoded, receipt = module._native_aligned_reference(call)
+        self.assertEqual(encoded, base64.b64encode(crop).decode("ascii"))
+        self.assertEqual(receipt["png_sha256"], crop_sha256)
+        with tempfile.TemporaryDirectory() as directory:
+            receipts = module._write_picture_corpus_crops(
+                Path(directory),
+                {
+                    "picture_corpus": {
+                        "cases": [
+                            {
+                                "id": "picture-01",
+                                "framebuffer": {"call": call},
+                                "copy_reapply": {
+                                    "framebuffer": {"call": call}
+                                },
+                            }
+                        ]
+                    }
+                },
+            )
+            self.assertEqual(
+                {value["kind"] for value in receipts},
+                {"original-apply", "copy-reapplied"},
+            )
         call["structured_content"]["calibration"]["referenceIndependent"] = False
         self.assertFalse(module._framebuffer_gate(call)["ok"])
 

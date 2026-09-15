@@ -150,6 +150,14 @@ FRAMEBUFFER_GATE_THRESHOLDS = {
     "maximum_edge_loss": 0.16,
     "maximum_spatial_mean_absolute_error": 0.25,
 }
+COPY_REAPPLY_EQUIVALENCE_THRESHOLDS = {
+    "maximum_locator_loss": 0.45,
+    "minimum_distinct_margin": 0.005,
+    "maximum_mean_absolute_error": 0.01,
+    "maximum_color_mse": 0.001,
+    "maximum_edge_loss": 0.02,
+    "maximum_spatial_mean_absolute_error": 0.03,
+}
 SYNTAX_MATRIX = Path(__file__).with_name("coat_of_arms_syntax_matrix_v1.json")
 _PROFILE_EXCLUDES = frozenset(
     {"crashes", "dumps", "exceptions", "logs", "save games", "last_save.ck3"}
@@ -672,7 +680,11 @@ def _load_picture_corpus(path: Path) -> list[dict[str, object]]:
     return cases
 
 
-def _framebuffer_gate(call: dict[str, object]) -> dict[str, object]:
+def _framebuffer_gate(
+    call: dict[str, object],
+    *,
+    thresholds: dict[str, float] | None = None,
+) -> dict[str, object]:
     body = _structured(call)
     comparison = (
         body.get("comparison")
@@ -698,7 +710,7 @@ def _framebuffer_gate(call: dict[str, object]) -> dict[str, object]:
         if isinstance(value, (int, float)) and not isinstance(value, bool)
     ] if isinstance(spatial, list) else []
     worst_spatial = max(spatial_values) if spatial_values else None
-    thresholds = FRAMEBUFFER_GATE_THRESHOLDS
+    active_thresholds = thresholds or FRAMEBUFFER_GATE_THRESHOLDS
     calibrated_schema = body.get("schema") in {
         "ck3-coat-of-arms-framebuffer-comparison-v2",
         "ck3-coat-of-arms-framebuffer-comparison-v3",
@@ -729,41 +741,93 @@ def _framebuffer_gate(call: dict[str, object]) -> dict[str, object]:
         "locator_loss": True if calibrated_schema else (
             isinstance(best.get("locatorLoss"), (int, float))
             and not isinstance(best.get("locatorLoss"), bool)
-            and best["locatorLoss"] <= thresholds["maximum_locator_loss"]
+            and best["locatorLoss"]
+            <= active_thresholds["maximum_locator_loss"]
         ),
         "distinct_margin": True if calibrated_schema else (
             isinstance(best.get("distinctMargin"), (int, float))
             and not isinstance(best.get("distinctMargin"), bool)
-            and best["distinctMargin"] >= thresholds["minimum_distinct_margin"]
+            and best["distinctMargin"]
+            >= active_thresholds["minimum_distinct_margin"]
         ),
         "mean_absolute_error": (
             isinstance(metrics.get("meanAbsoluteError"), (int, float))
             and not isinstance(metrics.get("meanAbsoluteError"), bool)
             and metrics["meanAbsoluteError"]
-            <= thresholds["maximum_mean_absolute_error"]
+            <= active_thresholds["maximum_mean_absolute_error"]
         ),
         "color_mse": (
             isinstance(metrics.get("colorMse"), (int, float))
             and not isinstance(metrics.get("colorMse"), bool)
-            and metrics["colorMse"] <= thresholds["maximum_color_mse"]
+            and metrics["colorMse"]
+            <= active_thresholds["maximum_color_mse"]
         ),
         "edge_loss": (
             isinstance(metrics.get("edgeLoss"), (int, float))
             and not isinstance(metrics.get("edgeLoss"), bool)
-            and metrics["edgeLoss"] <= thresholds["maximum_edge_loss"]
+            and metrics["edgeLoss"]
+            <= active_thresholds["maximum_edge_loss"]
         ),
         "worst_spatial_mean_absolute_error": (
             worst_spatial is not None
             and worst_spatial
-            <= thresholds["maximum_spatial_mean_absolute_error"]
+            <= active_thresholds["maximum_spatial_mean_absolute_error"]
         ),
     }
     return {
         "ok": all(checks.values()),
-        "thresholds": dict(thresholds),
+        "thresholds": dict(active_thresholds),
         "worst_spatial_mean_absolute_error": worst_spatial,
         "checks": checks,
         "call": call,
+    }
+
+
+def _native_aligned_reference(
+    call: dict[str, object],
+) -> tuple[str, dict[str, object]]:
+    body = _structured(call)
+    comparison = body.get("comparison")
+    best = (
+        comparison.get("bestMatch")
+        if isinstance(comparison, dict)
+        and isinstance(comparison.get("bestMatch"), dict)
+        else {}
+    )
+    encoded = best.get("alignedContentPngBase64")
+    expected_sha256 = best.get("alignedContentPngSha256")
+    if not isinstance(encoded, str) or not isinstance(expected_sha256, str):
+        raise RuntimeError("native comparison lacks an aligned reference PNG")
+    try:
+        raw = base64.b64decode(encoded.encode("ascii"), validate=True)
+    except (UnicodeEncodeError, ValueError) as error:
+        raise RuntimeError("native aligned reference PNG is malformed") from error
+    actual_sha256 = hashlib.sha256(raw).hexdigest().upper()
+    if actual_sha256 != expected_sha256.upper():
+        raise RuntimeError("native aligned reference PNG SHA-256 mismatch")
+    return encoded, {
+        "png_bytes": len(raw),
+        "png_sha256": actual_sha256,
+        "source": "original-native-apply",
+    }
+
+
+def _source_receipt_from_text(
+    source: str, *, source_label: str
+) -> dict[str, object]:
+    payload = source.encode("ascii")
+    digest = hashlib.sha256(payload).hexdigest()
+    return {
+        "path": source_label,
+        "raw_bytes": len(payload),
+        "raw_sha256": digest,
+        "wire_bytes": len(payload),
+        "wire_sha256": digest,
+        "line_endings_normalized": False,
+        "structure": _source_structure(source),
+        "semantic_projection": _projection_summary(
+            _semantic_projection(source)
+        ),
     }
 
 
@@ -1635,6 +1699,99 @@ async def _collect_picture_corpus(
                     "failed before framebuffer comparison"
                 ),
             }
+        exported = _structured(roundtrip.get("native_copy"))
+        exported_source = exported.get("source")
+        if (
+            framebuffer.get("ok") is True
+            and isinstance(exported_source, str)
+            and exported_source
+        ):
+            try:
+                native_reference, native_reference_receipt = (
+                    _native_aligned_reference(framebuffer["call"])
+                )
+            except RuntimeError as error:
+                copy_reapply = {
+                    "ok": False,
+                    "error": str(error),
+                }
+            else:
+                reapply_roundtrip = await _collect_large_source_roundtrip(
+                    client,
+                    exported_source,
+                    _source_receipt_from_text(
+                        exported_source,
+                        source_label=f"{identifier}:native-copy",
+                    ),
+                    record,
+                )
+                reapply_checks = reapply_roundtrip.get("checks")
+                reapply_ready = bool(
+                    isinstance(reapply_checks, dict)
+                    and all(
+                        reapply_checks.get(name) is True
+                        for name in (
+                            "commit_applied",
+                            "commit_source_identity",
+                            "native_copy_exported",
+                            "drawn_instance_count_preserved",
+                            "logical_layer_count_preserved",
+                            "colored_emblem_block_count_preserved",
+                            "semantic_field_sequences_preserved",
+                        )
+                    )
+                )
+                if reapply_ready:
+                    await asyncio.sleep(0.75)
+                    reapply_preparation = await _call(
+                        client, PREPARE_COAT_OF_ARMS_FRAMEBUFFER_TOOL
+                    )
+                    record(reapply_preparation)
+                    reapply_framebuffer_call = await _call(
+                        client,
+                        COMPARE_COAT_OF_ARMS_FRAMEBUFFER_V3_TOOL,
+                        {
+                            "calibration_id": calibration["calibration_id"],
+                            "reference_png_base64": native_reference,
+                            "reference_png_sha256": native_reference_receipt[
+                                "png_sha256"
+                            ],
+                        },
+                    )
+                    record(reapply_framebuffer_call)
+                    reapply_framebuffer = _framebuffer_gate(
+                        reapply_framebuffer_call,
+                        thresholds=COPY_REAPPLY_EQUIVALENCE_THRESHOLDS,
+                    )
+                    reapply_framebuffer["preparation"] = reapply_preparation
+                else:
+                    reapply_framebuffer = {
+                        "ok": False,
+                        "error": (
+                            "native Copy text did not complete a strict second "
+                            "round-trip"
+                        ),
+                    }
+                copy_reapply = {
+                    "ok": bool(
+                        reapply_roundtrip.get("ok") is True
+                        and reapply_framebuffer.get("ok") is True
+                    ),
+                    "reference": native_reference_receipt,
+                    "roundtrip": reapply_roundtrip,
+                    "framebuffer": reapply_framebuffer,
+                }
+        else:
+            copy_reapply = {
+                "ok": False,
+                "error": (
+                    "original native framebuffer or Copy export was unavailable"
+                ),
+            }
+        visual_ok = bool(
+            framebuffer.get("ok") is True
+            and copy_reapply.get("ok") is True
+        )
         results.append(
             {
                 "id": identifier,
@@ -1643,18 +1800,32 @@ async def _collect_picture_corpus(
                 "roundtrip": roundtrip,
                 "framebuffer_ready_after_native_apply": framebuffer_ready,
                 "framebuffer": framebuffer,
+                "copy_reapply": copy_reapply,
+                "visual_ok": visual_ok,
                 "ok": bool(
                     roundtrip.get("ok") is True
-                    and framebuffer.get("ok") is True
+                    and visual_ok
                 ),
             }
         )
     return {
-        "schema": "ck3-coat-of-arms-picture-corpus-live-v1",
+        "schema": "ck3-coat-of-arms-picture-corpus-live-v2",
         "framebuffer_calibration": calibration,
         "case_count": len(results),
         "passed": sum(result["ok"] is True for result in results),
         "failed": sum(result["ok"] is not True for result in results),
+        "strict_roundtrip_passed": sum(
+            result["roundtrip"].get("ok") is True for result in results
+        ),
+        "native_pixel_passed": sum(
+            result["framebuffer"].get("ok") is True for result in results
+        ),
+        "copy_reapply_passed": sum(
+            result["copy_reapply"].get("ok") is True for result in results
+        ),
+        "visual_passed": sum(
+            result["visual_ok"] is True for result in results
+        ),
         "cases": results,
         "ok": bool(results) and all(result["ok"] is True for result in results),
     }
@@ -2550,13 +2721,37 @@ def _write_picture_corpus_crops(
         if not isinstance(value, dict) or not isinstance(value.get("id"), str):
             raise RuntimeError("picture corpus result has a malformed case")
         framebuffer = value.get("framebuffer")
-        call = framebuffer.get("call") if isinstance(framebuffer, dict) else None
-        if not isinstance(call, dict):
-            continue
-        receipt = _write_native_crop_call(
-            root / value["id"] / "native-crop.png", call
+        copy_reapply = value.get("copy_reapply")
+        copy_framebuffer = (
+            copy_reapply.get("framebuffer")
+            if isinstance(copy_reapply, dict)
+            else None
         )
-        receipts.append({"id": value["id"], **receipt})
+        candidates = (
+            (
+                "original-apply",
+                "native-crop.png",
+                framebuffer.get("call")
+                if isinstance(framebuffer, dict)
+                else None,
+            ),
+            (
+                "copy-reapplied",
+                "native-copy-reapplied-crop.png",
+                copy_framebuffer.get("call")
+                if isinstance(copy_framebuffer, dict)
+                else None,
+            ),
+        )
+        for kind, filename, call in candidates:
+            if not isinstance(call, dict):
+                continue
+            receipt = _write_native_crop_call(
+                root / value["id"] / filename, call
+            )
+            receipts.append(
+                {"id": value["id"], "kind": kind, **receipt}
+            )
     if not receipts:
         raise RuntimeError("picture corpus produced no native crops")
     return receipts

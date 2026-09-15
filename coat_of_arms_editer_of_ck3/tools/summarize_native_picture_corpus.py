@@ -57,6 +57,7 @@ def _receipt(value: object) -> dict[str, Any]:
         "wire_bytes",
         "wire_sha256",
         "line_endings_normalized",
+        "kind",
         "structure",
         "semantic_projection",
     )
@@ -119,7 +120,10 @@ def _compact_calibration(value: object) -> dict[str, Any]:
     }
 
 
-def _compact_case(value: object, crop_by_id: dict[str, dict[str, Any]]) -> dict[str, Any]:
+def _compact_case(
+    value: object,
+    crop_by_key: dict[tuple[str, str], dict[str, Any]],
+) -> dict[str, Any]:
     if not isinstance(value, dict):
         raise ValueError("picture-corpus case must be an object")
     identifier = value.get("id")
@@ -162,6 +166,25 @@ def _compact_case(value: object, crop_by_id: dict[str, dict[str, Any]]) -> dict[
         "colorMse",
         "edgeLoss",
     )
+    copy_reapply = value.get("copy_reapply")
+    if not isinstance(copy_reapply, dict):
+        copy_reapply = {}
+    copy_roundtrip = copy_reapply.get("roundtrip")
+    if not isinstance(copy_roundtrip, dict):
+        copy_roundtrip = {}
+    copy_roundtrip_checks = copy_roundtrip.get("checks")
+    copy_semantic_checks = copy_roundtrip.get("semantic_checks")
+    copy_framebuffer = copy_reapply.get("framebuffer")
+    if not isinstance(copy_framebuffer, dict):
+        copy_framebuffer = {}
+    copy_framebuffer_checks = copy_framebuffer.get("checks")
+    copy_framebuffer_body = _structured(copy_framebuffer.get("call"))
+    copy_comparison = copy_framebuffer_body.get("comparison")
+    if not isinstance(copy_comparison, dict):
+        copy_comparison = {}
+    copy_metrics = copy_comparison.get("metrics")
+    if not isinstance(copy_metrics, dict):
+        copy_metrics = {}
     return {
         "id": identifier,
         "ok": value.get("ok"),
@@ -197,7 +220,50 @@ def _compact_case(value: object, crop_by_id: dict[str, dict[str, Any]]) -> dict[
                 key: best_match[key] for key in best_kept if key in best_match
             },
         },
-        "native_crop": _receipt(crop_by_id.get(identifier)),
+        **({"copy_reapply": {
+            "ok": copy_reapply.get("ok"),
+            "error": copy_reapply.get("error"),
+            "reference": _receipt(copy_reapply.get("reference")),
+            "roundtrip": {
+                "ok": copy_roundtrip.get("ok"),
+                "binding_mode": copy_roundtrip.get("binding_mode"),
+                "chunk_count": copy_roundtrip.get("chunk_count"),
+                "checks": copy_roundtrip_checks,
+                "failed_checks": _false_keys(copy_roundtrip_checks),
+                "semantic_checks": copy_semantic_checks,
+                "failed_semantic_checks": _false_keys(copy_semantic_checks),
+                "output_structure": copy_roundtrip.get("output_structure"),
+                "native_copy": _receipt(
+                    _structured(copy_roundtrip.get("native_copy"))
+                ),
+            },
+            "framebuffer": {
+                "ok": copy_framebuffer.get("ok"),
+                "checks": copy_framebuffer_checks,
+                "failed_checks": _false_keys(copy_framebuffer_checks),
+                "thresholds": copy_framebuffer.get("thresholds"),
+                "worst_spatial_mean_absolute_error": copy_framebuffer.get(
+                    "worst_spatial_mean_absolute_error"
+                ),
+                "metrics": {
+                    key: copy_metrics[key]
+                    for key in metric_kept
+                    if key in copy_metrics
+                },
+            },
+        }} if isinstance(value.get("copy_reapply"), dict) else {}),
+        "native_crop": _receipt(
+            crop_by_key.get((identifier, "original-apply"))
+        ),
+        **(
+            {
+                "native_copy_reapplied_crop": _receipt(
+                    crop_by_key[(identifier, "copy-reapplied")]
+                )
+            }
+            if (identifier, "copy-reapplied") in crop_by_key
+            else {}
+        ),
     }
 
 
@@ -212,13 +278,16 @@ def summarize(report: dict[str, Any], raw: bytes, source_path: Path) -> dict[str
     if not isinstance(cases, list):
         raise ValueError("native report picture_corpus has no cases array")
     crop_rows = report.get("picture_corpus_native_crops")
-    crop_by_id = {
-        row["id"]: row
+    crop_by_key = {
+        (
+            row["id"],
+            row.get("kind", "original-apply"),
+        ): row
         for row in crop_rows
         if isinstance(row, dict) and isinstance(row.get("id"), str)
     } if isinstance(crop_rows, list) else {}
 
-    compact_cases = [_compact_case(value, crop_by_id) for value in cases]
+    compact_cases = [_compact_case(value, crop_by_key) for value in cases]
     return {
         "schema": "ck3-coat-of-arms-picture-corpus-native-summary-v1",
         "source_report": {
@@ -240,6 +309,22 @@ def summarize(report: dict[str, Any], raw: bytes, source_path: Path) -> dict[str
             "case_count": corpus.get("case_count"),
             "passed": corpus.get("passed"),
             "failed": corpus.get("failed"),
+            **(
+                {
+                    "strict_roundtrip_passed": corpus.get(
+                        "strict_roundtrip_passed"
+                    ),
+                    "native_pixel_passed": corpus.get(
+                        "native_pixel_passed"
+                    ),
+                    "copy_reapply_passed": corpus.get(
+                        "copy_reapply_passed"
+                    ),
+                    "visual_passed": corpus.get("visual_passed"),
+                }
+                if "copy_reapply_passed" in corpus
+                else {}
+            ),
         },
         "framebuffer_calibration": _compact_calibration(
             corpus.get("framebuffer_calibration")
