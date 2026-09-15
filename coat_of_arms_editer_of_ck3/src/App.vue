@@ -50,6 +50,14 @@ import {
   type FitWorkerResponse,
   type FitWorkerStartRequest,
 } from './domain/fitWorkerProtocol'
+import {
+  clearPersistedFitCheckpoint,
+  createPersistedFitCheckpoint,
+  loadPersistedFitCheckpoint,
+  restorePersistedFitInput,
+  savePersistedFitCheckpoint,
+  type PersistedFitCheckpoint,
+} from './domain/fitCheckpointStore'
 import { parseCoatOfArms } from './domain/parser'
 import {
   createCoatOfArmsProject,
@@ -202,6 +210,8 @@ const fitTaskState = ref<FitTaskState>('idle')
 // Worker checkpoints contain large typed arrays and must remain structured-
 // cloneable; deep Vue proxies cannot be sent back through postMessage.
 const fitCheckpoint = shallowRef<ImageFitCheckpoint>()
+const recoverableFitCheckpoint = shallowRef<PersistedFitCheckpoint>()
+const fitCheckpointPersistenceStatus = ref<'empty' | 'pending' | 'saved' | 'failed'>('empty')
 const fitCompressionEvidence = ref<{
   receipt: StructuralCompressionReceipt
   pixelExactResolutions: number[]
@@ -214,6 +224,9 @@ const fitPruneSource = ref('')
 let fitWorker: Worker | null = null
 let fitRunId = 0
 let fitRevision = 0
+let fitCheckpointSaveTimer: number | undefined
+let pendingFitCheckpoint: ImageFitCheckpoint | undefined
+let fitCheckpointStorageQueue = Promise.resolve()
 let fitPruneWorker: Worker | null = null
 let fitPruneRunId = 0
 const INSTANCE_EDITOR_WINDOW_SIZE = 32
@@ -1054,6 +1067,119 @@ async function selectTargetImage(event: Event) {
   }
 }
 
+function enqueueFitCheckpointStorage(operation: () => Promise<void>): Promise<void> {
+  fitCheckpointStorageQueue = fitCheckpointStorageQueue
+    .catch(() => undefined)
+    .then(operation)
+  return fitCheckpointStorageQueue
+}
+
+function checkpointRecord(checkpoint: ImageFitCheckpoint): PersistedFitCheckpoint {
+  const input = targetImage.value
+  const pack = loadedAssetPack.value
+  if (!input || !pack) throw new Error('拟合 checkpoint 缺少当前输入或素材包')
+  return createPersistedFitCheckpoint(checkpoint, input, {
+    packId: pack.pack.pack_id,
+    manifestSha256: pack.manifestSha256,
+  })
+}
+
+function scheduleStoredFitCheckpoint(checkpoint: ImageFitCheckpoint) {
+  pendingFitCheckpoint = checkpoint
+  fitCheckpointPersistenceStatus.value = 'pending'
+  if (fitCheckpointSaveTimer !== undefined) window.clearTimeout(fitCheckpointSaveTimer)
+  fitCheckpointSaveTimer = window.setTimeout(() => {
+    fitCheckpointSaveTimer = undefined
+    const pending = pendingFitCheckpoint
+    if (!pending) return
+    let record: PersistedFitCheckpoint
+    try {
+      record = checkpointRecord(pending)
+    } catch {
+      fitCheckpointPersistenceStatus.value = 'failed'
+      return
+    }
+    void enqueueFitCheckpointStorage(async () => {
+      await savePersistedFitCheckpoint(record)
+      if (pendingFitCheckpoint === pending) fitCheckpointPersistenceStatus.value = 'saved'
+    }).catch(() => {
+      if (pendingFitCheckpoint === pending) fitCheckpointPersistenceStatus.value = 'failed'
+    })
+  }, 500)
+}
+
+async function persistStoredFitCheckpointNow(): Promise<void> {
+  if (fitCheckpointSaveTimer !== undefined) window.clearTimeout(fitCheckpointSaveTimer)
+  fitCheckpointSaveTimer = undefined
+  const checkpoint = pendingFitCheckpoint ?? fitCheckpoint.value
+  if (!checkpoint) return
+  fitCheckpointPersistenceStatus.value = 'pending'
+  const record = checkpointRecord(checkpoint)
+  await enqueueFitCheckpointStorage(() => savePersistedFitCheckpoint(record))
+  if (pendingFitCheckpoint === checkpoint || fitCheckpoint.value === checkpoint) {
+    fitCheckpointPersistenceStatus.value = 'saved'
+  }
+}
+
+function clearStoredFitCheckpoint() {
+  if (fitCheckpointSaveTimer !== undefined) window.clearTimeout(fitCheckpointSaveTimer)
+  fitCheckpointSaveTimer = undefined
+  pendingFitCheckpoint = undefined
+  fitCheckpointPersistenceStatus.value = 'empty'
+  recoverableFitCheckpoint.value = undefined
+  void enqueueFitCheckpointStorage(clearPersistedFitCheckpoint).catch(() => undefined)
+}
+
+async function discoverFitCheckpoint() {
+  try {
+    const record = await loadPersistedFitCheckpoint()
+    if (record) {
+      recoverableFitCheckpoint.value = record
+      fitCheckpointPersistenceStatus.value = 'saved'
+    }
+  } catch (error) {
+    fitCheckpointPersistenceStatus.value = 'failed'
+    fitStatus.value = `持久拟合 checkpoint 不可读：${errorMessage(error)}`
+  }
+}
+
+async function restoreFitCheckpoint() {
+  const record = recoverableFitCheckpoint.value
+  const pack = loadedAssetPack.value
+  if (!record || !pack) return
+  if (
+    record.assetPack.packId !== pack.pack.pack_id
+    || record.assetPack.manifestSha256 !== pack.manifestSha256
+  ) {
+    ElMessage.error('持久拟合 checkpoint 所需的素材包版本未载入')
+    return
+  }
+  fitRunId += 1
+  fitRevision = 0
+  targetImage.value = restorePersistedFitInput(record)
+  fitLayerBudget.value = record.layerBudget
+  fitCheckpoint.value = record.checkpoint
+  pendingFitCheckpoint = record.checkpoint
+  fitTaskState.value = 'paused'
+  fitBusy.value = false
+  coatOfArms.value = cloneCoatOfArmsForWorker(record.checkpoint.state.coatOfArms)
+  source.value = serializeCoatOfArms(coatOfArms.value)
+  diagnostics.value = []
+  fitProgressPercent.value = Math.round(
+    record.checkpoint.nextTileIndex / Math.max(1, record.checkpoint.tileCount) * 100,
+  )
+  fitProgressLabel.value = `已恢复持久 checkpoint · ${record.checkpoint.lane} ${record.checkpoint.nextTileIndex}/${record.checkpoint.tileCount}`
+  fitStatus.value = '持久拟合 checkpoint 已恢复；继续前已校验输入、素材包、预算和搜索游标'
+  recoverableFitCheckpoint.value = undefined
+  await loadCurrentTexturePreviews()
+}
+
+async function discardFitCheckpoint() {
+  clearStoredFitCheckpoint()
+  await fitCheckpointStorageQueue
+  ElMessage.info('已丢弃持久拟合 checkpoint')
+}
+
 function cancelImageFit(notify = true) {
   fitRunId += 1
   fitRevision += 1
@@ -1067,10 +1193,11 @@ function cancelImageFit(notify = true) {
   }
   fitBusy.value = false
   fitCheckpoint.value = undefined
+  clearStoredFitCheckpoint()
   fitTaskState.value = notify && wasActive ? 'cancelled' : 'idle'
 }
 
-function pauseImageFit() {
+async function pauseImageFit() {
   if (!fitBusy.value || !fitWorker || !fitCheckpoint.value) {
     ElMessage.warning('当前阶段还没有可恢复的安全 checkpoint')
     return
@@ -1085,7 +1212,14 @@ function pauseImageFit() {
   )
   fitProgressLabel.value = `已暂停 · ${fitCheckpoint.value.lane} ${fitCheckpoint.value.nextTileIndex}/${fitCheckpoint.value.tileCount}`
   fitStatus.value = '拟合已暂停；输入、素材包、配置、模型与原生块游标已保留在当前浏览器标签页'
-  ElMessage.info('图片拟合已在安全 checkpoint 暂停')
+  try {
+    await persistStoredFitCheckpointNow()
+    fitStatus.value = '拟合已暂停；checkpoint 已写入浏览器 IndexedDB，可在刷新后恢复'
+    ElMessage.info('图片拟合已在安全 checkpoint 暂停并持久保存')
+  } catch (error) {
+    fitCheckpointPersistenceStatus.value = 'failed'
+    ElMessage.warning(`图片拟合已暂停，但 checkpoint 持久保存失败：${errorMessage(error)}`)
+  }
 }
 
 function resumeImageFit() {
@@ -1414,6 +1548,7 @@ async function runImageFit(resumeCheckpoint?: ImageFitCheckpoint) {
       }
       if (event.data.kind === 'checkpoint') {
         fitCheckpoint.value = event.data.checkpoint
+        scheduleStoredFitCheckpoint(event.data.checkpoint)
         return
       }
       worker.terminate()
@@ -1457,6 +1592,7 @@ async function runImageFit(resumeCheckpoint?: ImageFitCheckpoint) {
       fitBusy.value = false
       fitTaskState.value = 'completed'
       fitCheckpoint.value = undefined
+      clearStoredFitCheckpoint()
       fitProgressPercent.value = 100
       fitProgressLabel.value = `完成 · 选中 ${result.provenance.selectedLayers} 层`
       patternTexture.value = selectedPatternTexture
@@ -1564,6 +1700,7 @@ onMounted(() => {
   setLocale(locale.value)
   void loadStandaloneAssetPack(false)
   void discoverAutosave()
+  void discoverFitCheckpoint()
 })
 
 watch(selectedEmblem, () => {
@@ -2044,6 +2181,22 @@ watch(() => activeEmblem.value?.instances.length ?? 0, (length) => {
         <div><span class="step">00</span><h2>{{ t('imageFitTitle') }}</h2></div>
         <el-tag effect="plain" type="success">{{ t('localOnly') }}</el-tag>
       </div>
+      <section v-if="recoverableFitCheckpoint" class="autosave-recovery" data-testid="fit-checkpoint-recovery">
+        <div>
+          <strong>{{ t('recoverableFitCheckpoint') }}</strong>
+          <span>{{ t('recoverableFitCheckpointSummary', {
+            savedAt: recoverableFitCheckpoint.savedAt,
+            name: recoverableFitCheckpoint.input.name,
+            budget: recoverableFitCheckpoint.layerBudget,
+            completed: recoverableFitCheckpoint.checkpoint.nextTileIndex,
+            total: recoverableFitCheckpoint.checkpoint.tileCount,
+          }) }}</span>
+        </div>
+        <el-space>
+          <el-button type="primary" :disabled="!loadedAssetPack" @click="restoreFitCheckpoint">{{ t('restoreFitCheckpoint') }}</el-button>
+          <el-button @click="discardFitCheckpoint">{{ t('discardFitCheckpoint') }}</el-button>
+        </el-space>
+      </section>
       <div class="image-fit-grid">
         <label class="image-drop">
           <input type="file" accept="image/png,image/jpeg,image/webp,image/svg+xml" @change="selectTargetImage">
@@ -2085,7 +2238,7 @@ watch(() => activeEmblem.value?.instances.length ?? 0, (length) => {
             <el-button v-if="fitPruneBusy" @click="cancelInstancePrune()">{{ t('cancelPrune') }}</el-button>
           </div>
         </div>
-        <div class="fit-report" :data-fit-evidence="fitEvidenceJson" :data-fit-task-state="fitTaskState">
+        <div class="fit-report" :data-fit-evidence="fitEvidenceJson" :data-fit-task-state="fitTaskState" :data-fit-checkpoint-persistence="fitCheckpointPersistenceStatus">
           <strong>{{ t('runStatus') }}</strong>
           <p>{{ uiText(fitStatus) }}</p>
           <div class="fit-progress">
@@ -2095,7 +2248,10 @@ watch(() => activeEmblem.value?.instances.length ?? 0, (length) => {
               :stroke-width="10"
             />
             <small>{{ uiText(fitProgressLabel) }}{{ t('progressStageNote') }}</small>
-            <small v-if="fitCheckpoint">{{ t('checkpointReady', { lane: fitCheckpoint.lane, completed: fitCheckpoint.nextTileIndex, total: fitCheckpoint.tileCount }) }}</small>
+            <small v-if="fitCheckpoint">
+              {{ t('checkpointReady', { lane: fitCheckpoint.lane, completed: fitCheckpoint.nextTileIndex, total: fitCheckpoint.tileCount }) }} ·
+              {{ fitCheckpointPersistenceStatus === 'saved' ? t('checkpointSaved') : fitCheckpointPersistenceStatus === 'failed' ? t('checkpointFailed') : t('checkpointPending') }}
+            </small>
           </div>
           <template v-if="fitResult">
             <div v-if="fitPruneProgress" class="fit-progress">

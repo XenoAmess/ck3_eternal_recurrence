@@ -59,9 +59,9 @@ Alpha 已能解析、编辑、渲染、序列化 CK3 家徽代码，并能在浏
 | P0 | 输入过早缩为 96×96 | 上传图片在拟合入口即栅格为 96×96，高分辨率轮廓和细线在候选生成前已经丢失。 |
 | P0 | 只保证前向追加时严格改善 | 没有最终 backward prune / leave-one-out；较早图层可能在后来覆盖后变成冗余。 |
 | P1 | 代码膨胀 | v4/v6 已完成保持顺序的安全相邻合并和最终剪枝，但进一步近似压缩仍需受累计视觉损失预算约束。 |
-| P1 | 大预算控制尚未完整 | 128/1024/10,000 真实拟合、同标签页精确 checkpoint 暂停/恢复、取消后重启与恰好 10,000 实例文档已通过；持久 checkpoint 与 GPU 批量搜索仍待完成。 |
+| P1 | 大预算控制尚未完整 | 128/1024/10,000 真实拟合、跨刷新持久 checkpoint 精确暂停/恢复、取消后重启与恰好 10,000 实例文档已通过；GPU 批量搜索与 WebGL2 上下文恢复仍待完成。 |
 | P1 | 搜索仍偏贪心 | WebGL2 只交叉评分最终候选，尚未承担 atlas/reduction 批量搜索；没有稳定的多候选 Pareto 输出。 |
-| P1 | 编辑体验尚未完整 | 32 卡片虚拟窗口、撤销/重做、项目保存恢复、直接变换、三候选对比及同标签页暂停/恢复已通过；刷新/崩溃后的 checkpoint 恢复仍待完成。 |
+| P1 | 编辑体验尚未完整 | 32 卡片虚拟窗口、撤销/重做、项目保存恢复、直接变换、三候选对比及跨刷新持久 checkpoint 恢复已通过；更多拟合阶段的恢复与配额失败恢复仍待完成。 |
 | P1 | 预览合同仍不完整 | exact 1.19.0.6 唯一注册 `_default.dds` 的 `textured_emblem` shader 模型合成已通过；`parent` 尚未展开到浏览器预览，原生 framebuffer 像素对照仍待补。 |
 | P2 | 输入/资产覆盖有限 | 安全 SVG、素材包目录导入、中英文、移动端、Service Worker 以及 Chromium/Firefox/WebKit 已通过；仍只有 1.19.0.6 基础包，没有 DLC/mod VFS 胜者 receipt，Pages asset pack 仍较大。 |
 
@@ -154,9 +154,10 @@ framebuffer 空间像素对照仍是独立待办，不影响 WP1 文本闭环的
 
 该子门禁现已通过：同一 96×96 高频压力图的 128 / 1,024 / 10,000 预算在浏览器 Worker 中实际执行；10,000 原值未 clamp，
 自然收敛到 1,824 个改善实例，评估 15,640 个候选，耗时 14,644 ms。绘制阶段取消延迟 52 ms，随后重启新 run 成功；完整复制
-711,661 bytes / 25,543 行并回读 1,824 实例。`ck3-coa-fit-checkpoint-v1` 已通过同标签页暂停/恢复：80 ms 暂停、3,164 ms 恢复，
-恢复结果与不中断的 128 预算结果一致，并以 run ID/revision 拒绝旧 Worker 消息。详见[真实拟合预算压力证据](coat-of-arms-fit-budget-stress.md)。
-WP4 仍因持久 checkpoint、WebGL2 批量搜索与上下文丢失恢复缺失而保持 `in_progress`。
+711,661 bytes / 25,543 行并回读 1,824 实例。`ck3-coa-fit-checkpoint-v1` 与 `ck3-coa-persisted-fit-checkpoint-v1` 已通过跨刷新暂停/恢复：
+75 ms 内暂停并写入 IndexedDB，刷新、素材重载与状态恢复共 3,418 ms，继续搜索 3,281 ms；恢复结果与不中断的 128 预算结果逐字段一致，
+并以 run ID/revision 拒绝旧 Worker 消息。详见[真实拟合预算压力证据](coat-of-arms-fit-budget-stress.md)。WP4 仍因 WebGL2 批量搜索与上下文
+丢失恢复缺失而保持 `in_progress`。
 
 退出条件：
 
@@ -173,8 +174,8 @@ WP4 仍因持久 checkpoint、WebGL2 批量搜索与上下文丢失恢复缺失�
 刷新后 SHA-256/计数校验恢复；10,000 实例自动保存 1,096 ms、恢复 5,899 ms，非 GET 请求为 0。`39e18a9d` 已加入直接画布位置拖拽、
 等比缩放和连续旋转，并通过每手势单步撤销回归；证据见[可视化实例编辑证据](coat-of-arms-visual-instance-editor.md)。`cb59fa06`
 又完成 1–3 项完整源码候选对比；仅在输入 SHA、评分器、renderer、分辨率和 mask 合同相同的情况下计算三维支配，证据见
-[候选对比证据](coat-of-arms-candidate-comparison.md)。同标签页拟合 pause/resume/checkpoint 已通过，刷新或崩溃后的持久 fit checkpoint
-仍未完成。
+[候选对比证据](coat-of-arms-candidate-comparison.md)。拟合 checkpoint 已通过 IndexedDB 跨刷新精确恢复；未知版本与输入、素材、预算或
+游标不一致会 fail closed。浏览器清站点数据、配额拒绝或设备丢失不在持久保证范围内。
 
 交付：图层/实例虚拟列表、撤销/重做、直接拖拽/缩放/旋转、项目导入导出、自动保存恢复、候选对比、长拟合暂停/恢复，以及更清楚的近似/原生未验提示。
 

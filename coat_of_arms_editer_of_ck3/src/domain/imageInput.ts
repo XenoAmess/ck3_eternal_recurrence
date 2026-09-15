@@ -8,7 +8,7 @@ export const SUPPORTED_IMAGE_TYPES = new Set(['image/png', 'image/jpeg', 'image/
 export interface DecodedFitImage {
   image: FitImage
   pyramid: FitImage[]
-  originalFile: File
+  originalFile?: File
   originalWidth: number
   originalHeight: number
   workingResolution: number

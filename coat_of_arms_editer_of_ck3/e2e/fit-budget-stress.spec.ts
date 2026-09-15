@@ -192,6 +192,17 @@ test('runs real 128/1024/10000 browser fits without clamping and cancels a paint
   await expect(report).toHaveAttribute('data-fit-task-state', 'paused')
   const pauseLatencyMs = Date.now() - pauseStarted
   expect(pauseLatencyMs).toBeLessThan(contract.maximumPauseLatencyMs)
+  await expect(report).toHaveAttribute('data-fit-checkpoint-persistence', 'saved')
+  const reloadStarted = Date.now()
+  await page.reload()
+  await expect(page.getByText(/fit-budget-e2e/)).toBeVisible({ timeout: 30_000 })
+  const recovery = page.getByTestId('fit-checkpoint-recovery')
+  await expect(recovery).toBeVisible()
+  await expect(recovery).toContainText('fit-budget-stress.png')
+  await recovery.getByRole('button', { name: '恢复拟合' }).click()
+  await expect(report).toHaveAttribute('data-fit-task-state', 'paused')
+  const persistentRestoreDurationMs = Date.now() - reloadStarted
+  expect(persistentRestoreDurationMs).toBeLessThan(contract.maximumResumeDurationMs)
   const resumeStarted = Date.now()
   await page.getByRole('button', { name: '继续', exact: true }).click()
   await expect(report).toHaveAttribute('data-fit-task-state', 'running')
@@ -253,6 +264,7 @@ test('runs real 128/1024/10000 browser fits without clamping and cancels a paint
     performanceGateEnforced,
     observations,
     pauseLatencyMs,
+    persistentRestoreDurationMs,
     resumeDurationMs,
     pauseResumeContract: 'ck3-coa-fit-checkpoint-v1',
     cancellationLatencyMs,
