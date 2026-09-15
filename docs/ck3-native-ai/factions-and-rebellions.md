@@ -620,3 +620,18 @@ FACTION16 已闭合这条私有静态入口。它不从任意 Character root 盲
 - 一次赠礼对具体 faction membership/power/discontent 的因果影响。首版只重查，不预设变化。
 
 这些虚线分支都有明确施工入口，不允许长期以 `unknown` 作为策略停滞理由；也不能在未闭合前把 schema 中的 `null` 当作可用输入。
+
+### G2-M4-FACTION-MIN：正式候选选择的最小静态消费者
+
+`ck3_autonomous_player/src/xar_autoplayer/faction_gift_policy_v1.py` 只消费上文已经冻结的 `FactionGiftMitigationObservationV1` 与 `FactionGiftPreviewV1` 字段。它要求原生枚举完整、各候选同一个 paused frame、派系与角色的完整 identity、可重查的 power/discontent、最终 `gift_interaction` 合法且自动接受、真实 `gift_value`/`send_gift_opinion` 及调用者提供的统一金币 reserve。只选择一名直属有地、AI 控制、尚无 `gift_opinion` 的目标派系成员；leader 身份来自原生 leader ID，不从列表顺序推断。多名合法目标以 `cost / opinion_delta`、leader、当前好感和稳定 ID 作确定排序。无合法候选、预算拒绝与观测不可用分开返回；任意关键 `null` 不会变成合法 `false` 或零候选。
+
+这个纯选择器没有 CK3 查询或 gameplay submit。它输出的 revision/identity/cost 只能作为现有 native gift action 的请求输入；动作仍须独立重新验证，ACK 后仍须取得金币、`gift_opinion` 和同一派系下一 paused frame 的 receipt。当前没有 source-row paused live、公共 row/details query、正式策略注册或赠礼后置证据，因此能力仍为 `static-ready`、未注册、未广告。下一次实机等待的具体解除条件是 controlled paused capture 得到 leader/member、type、power/discontent 与 receiver 值同帧可用；不能从原有 targeting count 推断这些行。
+
+```mermaid
+flowchart TD
+    S["[static-confirmed] stock gift AI\n派系封臣是候选"] --> N["[static-ready] 私有 member/receiver/action 原语"]
+    N -. "[unknown] paused row + metric/preview 真值" .-> O["[live-pending] 完整同帧观测"]
+    O --> C["[counter-policy] 最小预算选择器\n唯一候选或 typed 拒绝"]
+    C -. "[unknown] 公共注册与正式策略消费" .-> A["[live-pending] typed gift submit"]
+    A -. "[unknown] 独立 paused receipt/下一 turn" .-> R["[live-pending] 金币、gift_opinion、派系重查"]
+```
