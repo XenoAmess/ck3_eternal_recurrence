@@ -1531,37 +1531,21 @@ async def _calibrate_picture_corpus_surface(
     completed = _structured(anchors_complete)
     checks = {
         "red_applied": red.get("ok") is True,
-        "red_preparation": bool(
-            prepare_red.get("is_error") is False
-            and _structured(prepare_red).get("routeStable") is True
-        ),
         "begin_captured": bool(
             begin.get("is_error") is False
             and _structured(begin).get("nextPhase") == "surface_complete"
         ),
         "green_applied": green.get("ok") is True,
-        "green_preparation": bool(
-            prepare_green.get("is_error") is False
-            and _structured(prepare_green).get("routeStable") is True
-        ),
         "surface_complete_captured": bool(
             surface_complete.get("is_error") is False
             and surface_completed.get("readyForAnchorBase") is True
         ),
         "black_applied": black.get("ok") is True,
-        "black_preparation": bool(
-            prepare_black.get("is_error") is False
-            and _structured(prepare_black).get("routeStable") is True
-        ),
         "anchor_base_captured": bool(
             anchor_base.get("is_error") is False
             and _structured(anchor_base).get("nextPhase") == "anchors_complete"
         ),
         "anchors_applied": anchors.get("ok") is True,
-        "anchors_preparation": bool(
-            prepare_anchors.get("is_error") is False
-            and _structured(prepare_anchors).get("routeStable") is True
-        ),
         "anchors_complete_captured": bool(
             anchors_complete.get("is_error") is False
             and completed.get("readyForComparison") is True
@@ -1643,11 +1627,6 @@ async def _collect_picture_corpus(
             record(framebuffer_call)
             framebuffer = _framebuffer_gate(framebuffer_call)
             framebuffer["preparation"] = preparation_call
-            framebuffer["ok"] = bool(
-                framebuffer["ok"]
-                and preparation_call.get("is_error") is False
-                and _structured(preparation_call).get("routeStable") is True
-            )
         else:
             framebuffer = {
                 "ok": False,

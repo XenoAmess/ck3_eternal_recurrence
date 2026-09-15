@@ -118,6 +118,7 @@ def prepare_ck3_framebuffer_capture_v1(bridge_pid: int) -> dict[str, object]:
     before = _root_window(raw_before) if raw_before else 0
     mode = "already_foreground"
     attached_thread = 0
+    attached_target_thread = 0
     detach_succeeded: bool | None = None
     direct_activation_error: str | None = None
     attached_activation_error: str | None = None
@@ -137,9 +138,14 @@ def prepare_ck3_framebuffer_capture_v1(bridge_pid: int) -> dict[str, object]:
             foreground_thread = int(
                 win32process.GetWindowThreadProcessId(raw_after_direct)[0]
             )
+            target_thread = int(win32process.GetWindowThreadProcessId(hwnd)[0])
             if foreground_thread <= 0 or foreground_thread == current_thread:
                 raise CoatOfArmsFramebufferError(
                     "foreground thread cannot be attached for CK3 activation"
+                )
+            if target_thread <= 0:
+                raise CoatOfArmsFramebufferError(
+                    "CK3 window thread cannot be attached for activation"
                 )
             user32 = ctypes.WinDLL("user32", use_last_error=True)
             attached = bool(
@@ -150,16 +156,37 @@ def prepare_ck3_framebuffer_capture_v1(bridge_pid: int) -> dict[str, object]:
                     "AttachThreadInput failed for CK3 framebuffer preparation"
                 )
             attached_thread = foreground_thread
+            target_attached = False
+            if target_thread not in {current_thread, foreground_thread}:
+                target_attached = bool(
+                    user32.AttachThreadInput(current_thread, target_thread, True)
+                )
+                if not target_attached:
+                    user32.AttachThreadInput(
+                        current_thread, foreground_thread, False
+                    )
+                    raise CoatOfArmsFramebufferError(
+                        "AttachThreadInput failed for the CK3 window thread"
+                    )
+                attached_target_thread = target_thread
             activation_error: BaseException | None = None
             try:
+                win32gui.ShowWindow(hwnd, win32con.SW_RESTORE)
+                win32gui.BringWindowToTop(hwnd)
+                win32gui.SetActiveWindow(hwnd)
                 win32gui.SetForegroundWindow(hwnd)
             except BaseException as error:
                 activation_error = error
                 attached_activation_error = f"{type(error).__name__}: {error}"
             finally:
-                detach_succeeded = bool(
+                target_detached = bool(
+                    not target_attached
+                    or user32.AttachThreadInput(current_thread, target_thread, False)
+                )
+                foreground_detached = bool(
                     user32.AttachThreadInput(current_thread, foreground_thread, False)
                 )
+                detach_succeeded = target_detached and foreground_detached
             if not detach_succeeded:
                 raise CoatOfArmsFramebufferError(
                     "AttachThreadInput detach failed after CK3 activation"
@@ -181,6 +208,7 @@ def prepare_ck3_framebuffer_capture_v1(bridge_pid: int) -> dict[str, object]:
         "foregroundRootAfter": after,
         "mode": mode,
         "attachedForegroundThread": attached_thread,
+        "attachedTargetThread": attached_target_thread,
         "detachSucceeded": detach_succeeded,
         "directActivationError": direct_activation_error,
         "attachedActivationError": attached_activation_error,
@@ -977,6 +1005,14 @@ def capture_ck3_client_framebuffer_v1(bridge_pid: int) -> Image.Image:
             f"expected one exact CK3 client for PID {bridge_pid}, found {candidates!r}"
         )
     hwnd, client_rect = candidates[0]
+    if _root_window(int(win32gui.GetForegroundWindow())) != hwnd:
+        prepare_ck3_framebuffer_capture_v1(bridge_pid)
+        candidates = _eligible_windows(bridge_pid)
+        if len(candidates) != 1:
+            raise CoatOfArmsFramebufferError(
+                "bound CK3 client changed during atomic capture preparation"
+            )
+        hwnd, client_rect = candidates[0]
     if _root_window(int(win32gui.GetForegroundWindow())) != hwnd:
         raise CoatOfArmsFramebufferError("bound CK3 client is not foreground")
     _require_unobscured_client(hwnd, client_rect)

@@ -67,16 +67,17 @@ def test_foreground_preparation_falls_back_after_direct_win32_error(
     monkeypatch.setattr(win32gui, "GetForegroundWindow", lambda: next(foreground))
     monkeypatch.setattr(win32gui, "ShowWindow", Mock())
     monkeypatch.setattr(win32gui, "BringWindowToTop", Mock())
+    monkeypatch.setattr(win32gui, "SetActiveWindow", Mock())
     set_foreground = Mock(side_effect=(RuntimeError("access denied"), None))
     monkeypatch.setattr(win32gui, "SetForegroundWindow", set_foreground)
     monkeypatch.setattr(win32api, "GetCurrentThreadId", lambda: 10)
     monkeypatch.setattr(
         win32process,
         "GetWindowThreadProcessId",
-        lambda _hwnd: (20, 999),
+        lambda hwnd: ((20, 999) if hwnd == 200 else (30, 1234)),
     )
     user32 = Mock()
-    user32.AttachThreadInput.side_effect = (True, True)
+    user32.AttachThreadInput.side_effect = (True, True, True, True)
     monkeypatch.setattr(ctypes, "WinDLL", lambda *_args, **_kwargs: user32)
 
     result = prepare_ck3_framebuffer_capture_v1(1234)
@@ -85,6 +86,8 @@ def test_foreground_preparation_falls_back_after_direct_win32_error(
     assert result["foregroundRootAfter"] == 100
     assert result["mode"] == "attached_foreground_thread"
     assert result["detachSucceeded"] is True
+    assert result["attachedForegroundThread"] == 20
+    assert result["attachedTargetThread"] == 30
     assert result["directActivationError"].startswith("RuntimeError:")
     assert result["attachedActivationError"] is None
     assert set_foreground.call_count == 2
