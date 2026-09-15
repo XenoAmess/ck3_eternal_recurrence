@@ -112,8 +112,10 @@ under MSVC `/std:c++20 /W4 /WX`, then repeat with `/O2`. The test covers the
 exact image GREEN path and typed failures for instruction drift, relocation
 base drift, registry number drift, invalid readers, and failed reads.
 
-Shared CMake, bridge, schema, and MCP wiring remain outside this private package.
-The next integration step must connect LAW5 to this verifier and exact command
-boundary, then obtain one paused native submission and a later receipt. The
-submit return from `0x973E00` proves only that the locked queue retained the
-clone; it cannot be reported as enactment success.
+LAW7 now connects LAW5 to this verifier and exact command boundary through the
+private operation-table glue documented in
+`realm-law-native-shared-glue-v1.md`. Shared CMake, bridge, schema, MCP and
+application-main scheduling remain outside that private package. The next
+integration step must register the glue and obtain one paused native submission
+plus a later receipt. The submit return from `0x973E00` proves only that the
+locked queue retained the clone; it cannot be reported as enactment success.
