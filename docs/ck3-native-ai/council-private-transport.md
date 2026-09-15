@@ -67,3 +67,16 @@ exact-build source path. It passed the Council23 source verifier, the Council26
 normal/optimized source contract and a Release `xar_ck3_bridge` build. The
 bounded live query and four action gates remain to be run by the single CK3
 instance owner.
+
+Compatibility assessment for root master `c3af806c` and `open_kaishek`
+main `c88206e5`: the new `private-query-council-final-gates-v1` step and
+`xar.ck3.private.council-final-gates/v1` nested schema are default `OFF`,
+private, and absent from hello/MCP registration. The passive `open_kaishek`
+council profiles pin only the unchanged public
+`query-council-composition-candidates-v1` /
+`xar.ck3.council-composition-candidates/v1` contract and
+`game.action.assign-councillor-v1` request/ACK/receipt; there is no private
+step consumer in that profile. This version pair has no demonstrated public
+interface break and needs no Java adapter change. This comparison is static;
+paused-live gate evidence and public registration remain pending. Reassess if
+the private step is promoted or a pinned public field changes.
