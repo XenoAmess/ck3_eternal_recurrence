@@ -1537,7 +1537,7 @@ async def _calibrate_picture_corpus_surface(
         ),
         "begin_captured": bool(
             begin.get("is_error") is False
-            and _structured(begin).get("readyForComplete") is True
+            and _structured(begin).get("nextPhase") == "surface_complete"
         ),
         "green_applied": green.get("ok") is True,
         "green_preparation": bool(
