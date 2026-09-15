@@ -174,6 +174,12 @@ option(
 )
 
 option(
+  XAR_CK3_ENABLE_G2_ACTIVITY_PLANNING_SNAPSHOT_PRIVATE_GLUE_V1
+  "Link the activity-owned paused application-main snapshot glue"
+  OFF
+)
+
+option(
   XAR_CK3_ENABLE_G2_TRUCE_PREVIEW_ENTRY_OBSERVER_V1
   "Emit private diagnostics for the exact-vtable G2 truce preview observer"
   OFF
@@ -685,6 +691,26 @@ if(XAR_CK3_ENABLE_G2_COUNCIL_COMPOSITION_STEWARD_CANDIDATES_PRIVATE_PROBE_V1)
     XAR_CK3_ENABLE_G2_COUNCIL_COMPOSITION_STEWARD_CANDIDATES_PRIVATE_PROBE_V1=1
   )
 endif()
+if(XAR_CK3_ENABLE_G2_ACTIVITY_PLANNING_SNAPSHOT_PRIVATE_GLUE_V1)
+  if(MSVC)
+    set_source_files_properties(
+      src/activity_planning_snapshot_v1_private_observer.cpp
+      src/activity_planning_snapshot_v1_source_adapter.cpp
+      src/activity_planning_snapshot_v1_native_binder.cpp
+      src/activity_planning_snapshot_v1_application_glue.cpp
+      PROPERTIES COMPILE_OPTIONS "/W4;/WX;/permissive-"
+    )
+  endif()
+  target_sources(xar_ck3_bridge PRIVATE
+    src/activity_planning_snapshot_v1_private_observer.cpp
+    src/activity_planning_snapshot_v1_source_adapter.cpp
+    src/activity_planning_snapshot_v1_native_binder.cpp
+    src/activity_planning_snapshot_v1_application_glue.cpp
+  )
+  target_compile_definitions(xar_ck3_bridge PRIVATE
+    XAR_CK3_ENABLE_G2_ACTIVITY_PLANNING_SNAPSHOT_PRIVATE_GLUE_V1=1
+  )
+endif()
 if(XAR_CK3_ENABLE_G2_TRUCE_PREVIEW_ENTRY_OBSERVER_V1 OR
    XAR_CK3_ENABLE_G2_TRUCE_LEAF_CONTEXT_CAPTURE_V2)
   target_compile_definitions(xar_ck3_bridge PRIVATE
@@ -801,6 +827,28 @@ endif()
 include(CTest)
 if(BUILD_TESTING)
   find_package(Python3 COMPONENTS Interpreter REQUIRED)
+
+  add_executable(xar_ck3_activity_planning_snapshot_v1_application_glue_test
+    src/activity_planning_snapshot_v1_private_observer.cpp
+    src/activity_planning_snapshot_v1_source_adapter.cpp
+    src/activity_planning_snapshot_v1_native_binder.cpp
+    src/activity_planning_snapshot_v1_application_glue.cpp
+    src/activity_planning_snapshot_v1_application_glue_test.cpp
+  )
+  target_include_directories(
+    xar_ck3_activity_planning_snapshot_v1_application_glue_test PRIVATE include)
+  target_compile_definitions(
+    xar_ck3_activity_planning_snapshot_v1_application_glue_test PRIVATE
+    NOMINMAX WIN32_LEAN_AND_MEAN UNICODE _UNICODE)
+  if(MSVC)
+    target_compile_options(
+      xar_ck3_activity_planning_snapshot_v1_application_glue_test PRIVATE
+      /W4 /WX /permissive- /EHsc)
+  endif()
+  add_test(
+    NAME xar_ck3_native_bridge_activity_planning_snapshot_v1_application_glue
+    COMMAND xar_ck3_activity_planning_snapshot_v1_application_glue_test)
+
   if(XAR_CK3_ENABLE_G2_WAR_BOUND_PRIVATE_CAPTURE_V1)
     add_test(
       NAME xar_ck3_native_bridge_raiktor_war_bound_private_capture_v1

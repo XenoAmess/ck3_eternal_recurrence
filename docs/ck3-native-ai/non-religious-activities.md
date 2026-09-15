@@ -219,9 +219,15 @@ native pointer；private JSON 也固定声明 `raw_pointer_fields_persisted=fals
 
 独立 normal/optimized 测试覆盖 exact-build/default-off、完整宴会输入深拷贝、known-false
 与 typed-unknown 区分、final evaluator 来源门、`ui_predicted_cost` 拒绝、候选完整性、
-帧漂移及 capture session 释放。当前状态仍是 `static-ready private core`：ACTIVITY1 冻结的
-HostView 最终 evaluator RVA、stable-key/native collection binder 和 paused live artifact
-仍未闭合，所以不能宣称 public query、production-live 或 action-ready。
+帧漂移及 capture session 释放。ACTIVITY4 已冻结 exact-build binder；ACTIVITY5 又增加了
+默认关闭的 activity-owned application-main glue，负责单次 `activity_feast` 请求的 stable-key
+所有权、application-main/paused gate、scoped final-evaluator/semantic operation wrapper 和
+typed terminal result。详见 `activity-planning-application-glue-1.19.0.6.md`。
+
+当前状态是 `static-ready private application-main glue`。caller-supplied exact final-evaluator /
+semantic operations 与下一候选的 private application-main 调用入口仍是 live 前置；本轮没有扩展
+shared mailbox ABI，也没有接入 public schema/MCP 或启动 CK3。因此不能宣称
+production-wired、production-live 或 action-ready。
 
 ### Action：`start_activity_v1`
 

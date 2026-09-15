@@ -94,7 +94,9 @@ failure data, replacement native identities, semantic and frame drift,
 container token lifecycle, buffer erasure, deep-copy stability, and retained
 RED failures.
 
-Status: `static-ready private native binder`. A production native semantic
-operation must still be installed by private bridge wiring, and a single-owner
-paused CK3 run must capture an `activity_feast` artifact before this capability
-can be called `production-live`. No CK3 instance was started for this work.
+Status: `static-ready private native binder`. ACTIVITY5 now composes this binder
+through an activity-owned application-main glue, documented in
+`activity-planning-application-glue-1.19.0.6.md`. Caller-supplied exact final
+evaluator/semantic operations and a private application-main invocation entry
+still precede the single-owner paused capture. No production wiring or live
+claim follows from the static glue.
