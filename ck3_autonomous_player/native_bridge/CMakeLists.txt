@@ -387,6 +387,7 @@ add_library(xar_ck3_bridge SHARED
   src/player_construction_view_probe_v1.cpp
   src/player_construction_view_probe_v1_process.cpp
   src/player_construction_view_probe_v1_mailbox.cpp
+  src/player_held_construction_model_enumerator_v1.cpp
   src/steward_develop_county_candidates_v1.cpp
   src/steward_develop_county_candidates_v1_mailbox.cpp
   src/steward_develop_county_candidates_v1_serializer.cpp

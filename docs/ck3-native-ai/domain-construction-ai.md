@@ -150,6 +150,19 @@ paused live 证据、合法性、费用或物质建设结果。来源向量为�
 其他机器复用，且区分可查询接口和宿主能否运行 CK3。此处只沉淀 exact
 来源/失败语义，不借 MCP 义务扩展通用宗教或非必要框架。
 
+来源 producer 已以最终 master `56bad93` 集成。后续私有接通包在既有
+slot 42 executor 中以相同 `expected_revision` 读取这些来源；原来
+`private_probe` 的 cache/可见性字段继续保留，只加
+`player_model_sources` typed 子回执。它在返回 pipe 前销毁借用的建筑
+定义原生指针，只给出 definition_source_count；并在 identity 已验证的
+`CHoldingView+0x108` 与 `module+0x57BFBA8` 当前模型单例相等时才把
+来源标为 available。来源失败会由受控 owner runner 记 RED，来源向量
+空则记证据不足，均不伪作成功 no-op。这个 adapter 已通过聚焦静态双
+模式和协议 fake-driver 验证；**未有它自身的 paused 实机回执**，因此
+公开能力与建设决策门仍保持关闭。私有子回执是增量格式变化，现有
+`open_kaishek` 公开 schema 未变；正式公开前必须给最小兼容适配及
+只读 MCP 版本合同，详见 `slot42_player_model_source_read_v1_abi.json`。
+
 ## 原版公开定义
 
 ### 候选与合法性

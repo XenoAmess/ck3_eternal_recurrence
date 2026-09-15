@@ -1,0 +1,46 @@
+{
+  "schema_version": 1,
+  "status": "static-ready-private-slot42-model-source-receipt-live-pending",
+  "game_version": "1.19.0.6",
+  "exe_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+  "source_contract": "player_held_construction_model_enumerator_v1_abi.json",
+  "current_master_source_commit": "56bad93ccb704e4d01c4891a128059bb6d9e3eea",
+  "private_transport": {
+    "cmake_option": "XAR_CK3_ENABLE_G2_PLAYER_CONSTRUCTION_VIEW_PROBE_PRIVATE_V1",
+    "default": "OFF",
+    "step": "g2_player_construction_view_probe_v1",
+    "executor": "existing permitted_executor_duoquadragintary slot42 ExecutePlayerConstructionViewProbeMailboxV1",
+    "public_registration": false,
+    "advertised": false,
+    "schema_extension": "add private_probe.player_model_sources under the existing private probe schema_version=1; existing cache and holding_view_visibility fields remain"
+  },
+  "model_source_receipt": {
+    "schema_version": 1,
+    "status": ["sources_available", "unavailable"],
+    "failure": "typed non-success reason; Python owner runner records unavailable source as RED rather than cache success",
+    "same_frame_fields": ["snapshot_revision", "date_raw", "player_character_id"],
+    "directly_held_barony_provinces": "sorted complete TitleID plus ProvinceID after exact holder/identity roundtrips",
+    "definition_source_count": "mode-0 active view model source pointer-vector count only; native borrowed pointer vector destroyed before application-main callback returns",
+    "view_model_binding_verified": "true only if the already identity-checked CHoldingView+0x108 equals module+0x57BFBA8 in the same paused callback; null before comparison, false on mismatch/unreadable",
+    "legal_construction_evaluated": false,
+    "no_construction_action": true
+  },
+  "r717_predecessor": {
+    "scope": "same supported feudal/held-county scene, private slot42 executor and closed holding_view cache/visibility only",
+    "read_sha256": "49594AC50BDA8C15B33353513196355B9A50A2C662D4CA6D957174C828A5373A",
+    "report_sha256": "C3A113550DA9834C4F5BB83C28ED722F38D93B79F46424B9837FA0C44631F2DE"
+  },
+  "focused_static_checks": [
+    "normal /Od MSVC W4WX producer and slot42 mailbox object compile",
+    "optimized /O2 MSVC W4WX producer and slot42 mailbox object compile",
+    "owner-process protocol fake driver validates available, unavailable RED, and empty-source evidence_insufficient"
+  ],
+  "next_live_gate": "freeze a new exact feature-ON Release DLL/manifest independent of R717; sole CK3 owner runs bounded run_owned_paused_player_model_source_read against the supported paired standard-feudal checkpoint, proves active view model binding, direct barony/Province source and definition count at unchanged paused revision/date/no action; then separate player final legality/cost query",
+  "known_not_proven": [
+    "new slot42 model receipt in real CK3 paused frame",
+    "any currently legal construction pair or cost",
+    "typed construction action/game result/next production turn consumption",
+    "public MCP query and open_kaishek consumption"
+  ],
+  "open_kaishek_and_mcp_impact": "private result adds an optional nested field; public capability/protocol registration unchanged, so current open_kaishek published adapter need not move. Before public query, version a pointer-free read-only MCP asset and minimum open_kaishek adapter; do not claim other hosts can run CK3 merely because they can query the asset."
+}

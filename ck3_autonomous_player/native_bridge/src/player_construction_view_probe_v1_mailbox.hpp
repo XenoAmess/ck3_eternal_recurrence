@@ -1,10 +1,13 @@
 #pragma once
 
 #include "player_construction_view_probe_v1.hpp"
+#include "player_held_construction_model_enumerator_v1.hpp"
 #include "xar_bridge/ck3_11906.hpp"
 #include "xar_bridge/main_thread_query_mailbox_v1.hpp"
 
 #include <cstdint>
+#include <cstddef>
+#include <optional>
 #include <string>
 #include <type_traits>
 
@@ -27,6 +30,12 @@ struct PlayerConstructionViewProbeMailboxContextV1 final {
   std::uint64_t expected_revision = 0U;
   std::uintptr_t module_base = 0U;
   xar::ck3::shared::PlayerConstructionViewProbeResultV1 result{};
+  PlayerHeldConstructionModelResultV1 player_model_sources{};
+  std::size_t player_model_definition_source_count = 0;
+  // Null before an active view/model comparison, false on a failed binding,
+  // true only when the already identity-checked view+0x108 equals the exact
+  // global model source in this executing paused frame.
+  std::optional<bool> player_model_view_binding_verified;
   PlayerConstructionViewProbeMailboxCompletionV1 completion =
       PlayerConstructionViewProbeMailboxCompletionV1::not_executed;
   MainThreadExecutionStampV1 execution_stamp{};
