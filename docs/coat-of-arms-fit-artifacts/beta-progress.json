@@ -1,6 +1,6 @@
 {
   "schema": "ck3-coa-beta-progress-v1",
-  "updatedAt": "2026-09-15T22:26:00+08:00",
+  "updatedAt": "2026-09-15T22:36:00+08:00",
   "overallStatus": "in_progress",
   "workPackages": [
     {
@@ -228,11 +228,13 @@
     {
       "id": "WP5",
       "status": "in_progress",
-      "commit": "39e18a9d",
+      "commit": "cb59fa06",
       "commands": [
         "pnpm exec vitest run src/domain/largeDocumentContract.test.ts --reporter=verbose",
         "pnpm exec playwright test e2e/editor-recovery.spec.ts --reporter=line",
         "pnpm exec playwright test e2e/visual-transform-editor.spec.ts --reporter=line",
+        "pnpm exec vitest run src/domain/comparisonCandidates.test.ts --reporter=verbose",
+        "pnpm exec playwright test e2e/candidate-comparison.spec.ts --reporter=line",
         "pnpm exec playwright test e2e/large-document-stress.spec.ts --reporter=line",
         "pnpm build"
       ],
@@ -259,6 +261,10 @@
         "directContinuousRotation": "passed",
         "pointerGestureSingleUndo": "passed",
         "visualTransformEvidencePath": "docs/coat-of-arms-visual-instance-editor.md",
+        "candidateComparison": "passed",
+        "candidateSlots": 3,
+        "candidateMetricContractBinding": "input_sha256+scorer+renderer+resolution+surface_mask",
+        "candidateComparisonEvidencePath": "docs/coat-of-arms-candidate-comparison.md",
         "historyMaximumEntries": 32,
         "historyMaximumUtf8Bytes": 16777216,
         "measuredJsHeapDeltaBytes": 188860210,

@@ -170,8 +170,10 @@ checkpoint 与 GPU 批量搜索未完成而保持 `in_progress`。
 预先冻结的 1,000 ms 门禁；延后超大文档实时预览后降至 724 ms。证据见
 [10,000 实例完整文档压力证据](coat-of-arms-large-document-stress.md)。`d265503e` 又通过有界撤销/重做、IndexedDB 单槽自动保存及
 刷新后 SHA-256/计数校验恢复；10,000 实例自动保存 1,096 ms、恢复 5,899 ms，非 GET 请求为 0。拟合 pause/resume/checkpoint、
-候选对比仍未完成。`39e18a9d` 已加入直接画布位置拖拽、等比缩放和连续旋转，并通过每手势单步撤销回归；证据见
-[可视化实例编辑证据](coat-of-arms-visual-instance-editor.md)。
+`39e18a9d` 已加入直接画布位置拖拽、等比缩放和连续旋转，并通过每手势单步撤销回归；证据见
+[可视化实例编辑证据](coat-of-arms-visual-instance-editor.md)。`cb59fa06` 又完成 1–3 项完整源码候选对比；仅在输入 SHA、评分器、renderer、
+分辨率和 mask 合同相同的情况下计算三维支配，证据见[候选对比证据](coat-of-arms-candidate-comparison.md)。拟合
+pause/resume/checkpoint 仍未完成。
 
 交付：图层/实例虚拟列表、撤销/重做、直接拖拽/缩放/旋转、项目导入导出、自动保存恢复、候选对比、长拟合暂停/恢复，以及更清楚的近似/原生未验提示。
 
