@@ -3,11 +3,13 @@ import type { CoatOfArms } from './types'
 
 /**
  * Reference-machine gates fixed before running the first 10,000-instance test.
- * These are deliberately generous enough for GitHub's Windows runner while
- * still detecting an accidental quadratic parser/serializer regression.
+ * They are enforced on the maintainer workstation's Chromium production build.
+ * Variable shared CI runners execute the same operations and report their
+ * timings, but are not treated as the performance reference device.
  */
 export const LARGE_DOCUMENT_CONTRACT = {
   contract: 'ck3-coa-large-document-v1',
+  performanceReference: 'maintainer-workstation-chromium-production-build',
   drawnInstances: 10_000,
   maximumSerializeMs: 5_000,
   maximumParseMs: 5_000,
@@ -20,6 +22,8 @@ export const LARGE_DOCUMENT_CONTRACT = {
   maximumBrowserProjectDownloadMs: 10_000,
   maximumBrowserAutosaveMs: 15_000,
   maximumBrowserAutosaveRecoveryMs: 15_000,
+  reportOnlyMaximumOperationMs: 60_000,
+  reportOnlyMaximumTestMs: 240_000,
   maximumMeasuredJsHeapDeltaBytes: 256 * 1024 * 1024,
   memoryEvidenceScope: 'JavaScript heap delta only; excludes GPU and browser-process memory',
 } as const

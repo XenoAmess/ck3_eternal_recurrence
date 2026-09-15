@@ -37,8 +37,12 @@ function solidBgraDds(red: number, green: number, blue: number): Buffer {
 }
 
 test('edits and exports an exact 10,000-instance project through a bounded DOM window', async ({ page }) => {
-  test.setTimeout(120_000)
   const contract = LARGE_DOCUMENT_CONTRACT
+  const performanceGateEnforced = process.env.COA_E2E_PERFORMANCE_GATE !== 'report-only'
+  const operationTimeout = performanceGateEnforced
+    ? contract.maximumBrowserAutosaveRecoveryMs
+    : contract.reportOnlyMaximumOperationMs
+  test.setTimeout(performanceGateEnforced ? 120_000 : contract.reportOnlyMaximumTestMs)
   const nonGetRequests: { method: string, url: string }[] = []
   page.on('request', (request) => {
     if (request.method() !== 'GET') nonGetRequests.push({ method: request.method(), url: request.url() })
@@ -110,10 +114,10 @@ test('edits and exports an exact 10,000-instance project through a bounded DOM w
     buffer: Buffer.from(projectText, 'utf8'),
   })
   await expect(page.getByText(/项目已恢复：10000 个实例/)).toBeVisible({
-    timeout: contract.maximumBrowserProjectImportMs,
+    timeout: performanceGateEnforced ? contract.maximumBrowserProjectImportMs : operationTimeout,
   })
   const importMs = Date.now() - importStart
-  expect(importMs).toBeLessThan(contract.maximumBrowserProjectImportMs)
+  if (performanceGateEnforced) expect(importMs).toBeLessThan(contract.maximumBrowserProjectImportMs)
   await expect(page.locator('[data-testid="instance-editor-window"] .instance-card')).toHaveCount(32)
   await expect(page.getByText(/实例窗口 1–32 \/ 10000/)).toBeVisible()
   await expect(page.locator('.output-block')).toContainText('1,653,890 bytes · 70,014 行')
@@ -127,30 +131,30 @@ test('edits and exports an exact 10,000-instance project through a bounded DOM w
   await tail.locator('.el-input-number input').nth(4).fill('123.4')
   await tail.locator('.el-input-number input').nth(4).press('Enter')
   const editMs = Date.now() - editStart
-  expect(editMs).toBeLessThan(contract.maximumBrowserWindowJumpAndEditMs)
+  if (performanceGateEnforced) expect(editMs).toBeLessThan(contract.maximumBrowserWindowJumpAndEditMs)
 
   const autosaveStart = Date.now()
   await expect(page.getByText(/已自动保存 10,000 实例 · 单槽覆盖/)).toBeVisible({
-    timeout: contract.maximumBrowserAutosaveMs,
+    timeout: performanceGateEnforced ? contract.maximumBrowserAutosaveMs : operationTimeout,
   })
   const autosaveMs = Date.now() - autosaveStart
-  expect(autosaveMs).toBeLessThan(contract.maximumBrowserAutosaveMs)
+  if (performanceGateEnforced) expect(autosaveMs).toBeLessThan(contract.maximumBrowserAutosaveMs)
 
   const copyStart = Date.now()
   await page.getByRole('button', { name: '复制 CK3 代码' }).click()
-  await expect(page.getByText(/CK3 纹章代码已复制/)).toBeVisible()
+  await expect(page.getByText(/CK3 纹章代码已复制/)).toBeVisible({ timeout: operationTimeout })
   const copied = await page.evaluate(() => (
     (window as unknown as { __copiedCoa: string }).__copiedCoa
   ))
   const copyMs = Date.now() - copyStart
-  expect(copyMs).toBeLessThan(contract.maximumBrowserClipboardCopyMs)
+  if (performanceGateEnforced) expect(copyMs).toBeLessThan(contract.maximumBrowserClipboardCopyMs)
   expect((copied.match(/instance\s*=\s*\{/g) ?? [])).toHaveLength(contract.drawnInstances)
   const copiedModel = parseCoatOfArms(copied)
   expect(copiedModel.diagnostics.filter((item) => item.severity === 'error')).toEqual([])
   expect(copiedModel.coatOfArms.coloredEmblems[0].instances.at(-1)?.rotation).toBe(123.4)
 
   const downloadStart = Date.now()
-  const downloadPromise = page.waitForEvent('download')
+  const downloadPromise = page.waitForEvent('download', { timeout: operationTimeout })
   await page.getByRole('button', { name: '保存项目' }).click()
   const download = await downloadPromise
   const downloadStream = await download.createReadStream()
@@ -158,7 +162,7 @@ test('edits and exports an exact 10,000-instance project through a bounded DOM w
   for await (const chunk of downloadStream) chunks.push(Buffer.from(chunk))
   const downloadedText = Buffer.concat(chunks).toString('utf8')
   const downloadMs = Date.now() - downloadStart
-  expect(downloadMs).toBeLessThan(contract.maximumBrowserProjectDownloadMs)
+  if (performanceGateEnforced) expect(downloadMs).toBeLessThan(contract.maximumBrowserProjectDownloadMs)
   const downloadedProject = await parseCoatOfArmsProject(downloadedText)
   expect(downloadedProject.ck3Source.stats.drawnInstances).toBe(contract.drawnInstances)
   expect(downloadedProject.coatOfArms.coloredEmblems[0].instances.at(-1)?.rotation).toBe(123.4)
@@ -177,14 +181,14 @@ test('edits and exports an exact 10,000-instance project through a bounded DOM w
   await page.reload()
   const recovery = page.locator('.autosave-recovery')
   await expect(recovery).toContainText('10,000 个实例 · SHA-256 已验证', {
-    timeout: contract.maximumBrowserAutosaveRecoveryMs,
+    timeout: performanceGateEnforced ? contract.maximumBrowserAutosaveRecoveryMs : operationTimeout,
   })
   await recovery.getByRole('button', { name: '恢复' }).click()
   await expect(page.getByText(/已恢复自动保存：10,000 个实例/)).toBeVisible()
   await page.locator('.instance-window-toolbar input').fill('10000')
   await expect(page.locator('[data-instance-index="9999"] .el-input-number input').nth(4)).toHaveValue('123.4')
   const recoveryMs = Date.now() - recoveryStart
-  expect(recoveryMs).toBeLessThan(contract.maximumBrowserAutosaveRecoveryMs)
+  if (performanceGateEnforced) expect(recoveryMs).toBeLessThan(contract.maximumBrowserAutosaveRecoveryMs)
   // A post-reload heap sample is observational only: Chromium may retain the old
   // document until a later GC, so it cannot be subtracted from heapBefore.
   const heapAfterRecoveryNavigation = await page.evaluate(() => (
@@ -193,6 +197,8 @@ test('edits and exports an exact 10,000-instance project through a bounded DOM w
   expect(nonGetRequests).toEqual([])
   console.info(JSON.stringify({
     contract: contract.contract,
+    performanceReference: contract.performanceReference,
+    performanceGateEnforced,
     drawnInstances: contract.drawnInstances,
     timingsMs: { importMs, editMs, copyMs, downloadMs, autosaveMs, recoveryMs },
     measuredJsHeapDeltaBytes,
