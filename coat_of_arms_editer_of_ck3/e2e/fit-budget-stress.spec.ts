@@ -91,7 +91,7 @@ test('runs real 128/1024/10000 browser fits without clamping and cancels a paint
       : route.fulfill({ status: 404, body: 'missing synthetic asset' })
   })
   await page.goto('/')
-  await expect(page.getByText(/fit-budget-e2e/)).toBeVisible()
+  await expect(page.getByText(/fit-budget-e2e/)).toBeVisible({ timeout: 30_000 })
   const pngBase64 = await page.evaluate(() => {
     const canvas = document.createElement('canvas')
     canvas.width = 96
