@@ -282,6 +282,42 @@ bool PublishCouncilCompositionStewardCandidatesPrivateProbeFailureV1(
   return true;
 }
 
+bool TryPublishCouncilCompositionStewardCandidatesPrivateProbeMailboxV1(
+    CouncilCompositionStewardCandidatesPrivateProbeV1 &probe,
+    const xar::ck3_11906::MainThreadQueryMailboxV1 &mailbox,
+    const xar::ck3_11906::MainThreadQueryTicketV1 &ticket) noexcept {
+  if (!probe.installed || !probe.request_prepared ||
+      probe.result_published) {
+    return false;
+  }
+  if (ticket.sequence == 0 ||
+      mailbox.published_sequence.load(std::memory_order_acquire) !=
+          ticket.sequence) {
+    return PublishCouncilCompositionStewardCandidatesPrivateProbeFailureV1(
+        probe, Failure::application_main_thread_required);
+  }
+
+  const auto state = mailbox.state.load(std::memory_order_acquire);
+  if (state == xar::ck3_11906::MainThreadQueryMailboxStateV1::publishing ||
+      state == xar::ck3_11906::MainThreadQueryMailboxStateV1::queued ||
+      state == xar::ck3_11906::MainThreadQueryMailboxStateV1::executing) {
+    return false;
+  }
+  if (state == xar::ck3_11906::MainThreadQueryMailboxStateV1::completed &&
+      mailbox.completed_sequence.load(std::memory_order_acquire) ==
+          ticket.sequence &&
+      probe.execution_result_ready) {
+    return PublishCouncilCompositionStewardCandidatesPrivateProbeV1(probe);
+  }
+
+  return PublishCouncilCompositionStewardCandidatesPrivateProbeFailureV1(
+      probe,
+      state == xar::ck3_11906::MainThreadQueryMailboxStateV1::
+                   infrastructure_failed
+          ? Failure::frame_capture_failed
+          : Failure::application_main_thread_required);
+}
+
 std::string SerializeCouncilCompositionStewardCandidatesPrivateProbeV1(
     const CouncilCompositionStewardCandidatesPrivateProbeV1 &probe) {
   const auto &result = probe.published_result;

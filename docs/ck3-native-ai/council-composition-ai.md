@@ -684,3 +684,41 @@ Z:\ck3_mod_rewrite\tools\.venv\Scripts\python.exe Z:\ck3_mod_rewrite_process_ass
 
 The candidate has not been executed. Council steward-candidate capability
 remains `not_observed` until the unique CK3 owner allocates and runs R692.
+
+## COUNCIL17: R692 queued-query RED and non-cancelling heartbeat repair
+
+R692 was executed once from the sealed COUNCIL16 candidate. CK3 reached the
+frozen paused frame and the mailbox was healthy (`failure=0`, paused owner
+observed), but the Council query never entered its executor. The private receipt
+records `last_submit_result=0` (`submitted`), `last_wait_result=4`
+(`timeout_cancelled_before_execution`), `executor_started_requests=0`, and
+`executed_requests=0`. The worker therefore published
+`application_main_thread_required` before semantic validation. This is a
+capability RED in the Council private glue, not evidence against the reader or
+the exact native producer.
+
+The cause is the Council heartbeat calling `WaitForMainThreadQueryV1(...,
+1000)` immediately after submission. That API deliberately cancels a request
+that remains queued at timeout. A paused game can take more than one worker
+heartbeat to reach the next proven application-main pump, so the driver removed
+the only request before the main thread could own it. The raw probe and report
+are frozen under `g2-m4-council16-r692-9cdb430/live-r692`; their SHA-256 values
+are respectively
+`0155181C5E4556907D478E57B2324578267DD12208C3FE7E9D6FD8F928320496`
+and
+`3C436C1429CAA1529309C26A1B74B1CB0C60D4A02893FBE3F06A59BE81BCD5BA`.
+Cleanup proved the process tree absent and both source and target save hashes
+unchanged. R692 is consumed and must not be retried without a new candidate.
+
+The Council private probe now follows the existing military-preparation
+mailbox pattern. Its worker only observes the ticket: `publishing`, `queued`,
+and `executing` remain in flight across heartbeats; only `completed`,
+`executor_failed`, `infrastructure_failed`, `cancelled`, or a mismatched ticket
+publish a terminal typed result. Reclaim occurs only after publication. The
+Council Drive source contract explicitly forbids `WaitForMainThreadQueryV1`
+and requires the non-cancelling helper plus terminal reclaim. Focused tests
+cover queued retention, executing retention, completed GREEN publication, and
+typed terminal failures. This repair keeps the private v1 result, public MCP,
+schema, planner, and gameplay surfaces unchanged. A rebuilt candidate on the
+next valid round still needs one paused live result before this primitive can
+advance beyond `not_observed`.

@@ -1028,29 +1028,42 @@ void DriveCouncilCompositionStewardCandidatesPrivateProbeV1(
     return;
   }
 
-  const auto wait = xar::ck3_11906::WaitForMainThreadQueryV1(
-      g_main_thread_query_mailbox_v1, probe.ticket, 1'000);
-  g_council_composition_steward_candidates_private_probe_last_wait_v1 =
-      static_cast<std::uint32_t>(wait);
-  if (wait == xar::ck3_11906::MainThreadQueryWaitResultV1::
-                  timeout_executor_already_running) {
+  if (!xar::bridge::
+          TryPublishCouncilCompositionStewardCandidatesPrivateProbeMailboxV1(
+              probe, g_main_thread_query_mailbox_v1, probe.ticket)) {
     return;
   }
-  if (wait ==
-      xar::ck3_11906::MainThreadQueryWaitResultV1::completed) {
-    (void)xar::bridge::
-        PublishCouncilCompositionStewardCandidatesPrivateProbeV1(probe);
-  } else {
-    (void)xar::bridge::
-        PublishCouncilCompositionStewardCandidatesPrivateProbeFailureV1(
-            probe,
-            wait == xar::ck3_11906::MainThreadQueryWaitResultV1::
-                        infrastructure_failed
-                ? xar::game::CouncilCompositionStewardCandidatesFailureV1::
-                      frame_capture_failed
-                : xar::game::CouncilCompositionStewardCandidatesFailureV1::
-                      application_main_thread_required);
+
+  const auto state =
+      g_main_thread_query_mailbox_v1.state.load(std::memory_order_acquire);
+  auto terminal_result =
+      xar::ck3_11906::MainThreadQueryWaitResultV1::ticket_mismatch;
+  if (g_main_thread_query_mailbox_v1.published_sequence.load(
+          std::memory_order_acquire) == probe.ticket.sequence) {
+    switch (state) {
+    case xar::ck3_11906::MainThreadQueryMailboxStateV1::completed:
+      terminal_result =
+          xar::ck3_11906::MainThreadQueryWaitResultV1::completed;
+      break;
+    case xar::ck3_11906::MainThreadQueryMailboxStateV1::executor_failed:
+      terminal_result =
+          xar::ck3_11906::MainThreadQueryWaitResultV1::executor_failed;
+      break;
+    case xar::ck3_11906::MainThreadQueryMailboxStateV1::
+        infrastructure_failed:
+      terminal_result =
+          xar::ck3_11906::MainThreadQueryWaitResultV1::infrastructure_failed;
+      break;
+    case xar::ck3_11906::MainThreadQueryMailboxStateV1::cancelled:
+      terminal_result =
+          xar::ck3_11906::MainThreadQueryWaitResultV1::cancelled;
+      break;
+    default:
+      break;
+    }
   }
+  g_council_composition_steward_candidates_private_probe_last_wait_v1 =
+      static_cast<std::uint32_t>(terminal_result);
   (void)xar::ck3_11906::ReclaimMainThreadQueryV1(
       g_main_thread_query_mailbox_v1, probe.ticket);
   g_council_composition_steward_candidates_private_probe_in_flight_v1 =

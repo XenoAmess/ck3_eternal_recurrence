@@ -81,6 +81,15 @@ bool PublishCouncilCompositionStewardCandidatesPrivateProbeFailureV1(
     CouncilCompositionStewardCandidatesPrivateProbeV1 &probe,
     xar::game::CouncilCompositionStewardCandidatesFailureV1 reason) noexcept;
 
+// Observes an already submitted mailbox ticket without waiting or cancelling
+// it. A queued/executing request remains pending across worker heartbeats so
+// the next proven application-main pump can own it. Terminal states publish
+// exactly one private result; the caller may then reclaim the ticket.
+bool TryPublishCouncilCompositionStewardCandidatesPrivateProbeMailboxV1(
+    CouncilCompositionStewardCandidatesPrivateProbeV1 &probe,
+    const xar::ck3_11906::MainThreadQueryMailboxV1 &mailbox,
+    const xar::ck3_11906::MainThreadQueryTicketV1 &ticket) noexcept;
+
 std::string SerializeCouncilCompositionStewardCandidatesPrivateProbeV1(
     const CouncilCompositionStewardCandidatesPrivateProbeV1 &probe);
 

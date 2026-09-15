@@ -157,6 +157,43 @@ void ResetPointers(Fixture &fixture) {
   }
 }
 
+void InstallAndPrepare(
+    Fixture &fixture,
+    xar::ck3_11906::MainThreadQueryMailboxV1 &mailbox,
+    xar::ck3_11906::CouncilCompositionStewardCandidatesBindingStateV1 &binding,
+    xar::bridge::CouncilCompositionStewardCandidatesPrivateProbeV1 &probe) {
+  using namespace xar;
+  ResetPointers(fixture);
+  binding.attached = true;
+  assert(
+      bridge::
+          ConfigureCouncilCompositionStewardCandidatesPrivateProbeTransportV1(
+              probe, mailbox, {}, binding));
+
+  ck3_11906::CouncilCompositionStewardCandidatesEnvironmentV1 environment{};
+  environment.exact_build_admitted = true;
+  environment.admitted_executable_sha256 =
+      ck3_11906::kCouncilCompositionStewardCandidatesReaderExecutableSha256V1;
+  environment.module_base = 0x10000000;
+  environment.producer_address =
+      environment.module_base +
+      ck3_11906::kCouncilCompositionStewardCandidatesProducerRvaV1;
+  ck3_11906::CouncilCompositionStewardCandidatesAccessV1 access{};
+  access.context = &fixture;
+  access.capture_frame = &Capture;
+  access.is_main_thread = &MainThread;
+  access.produce = &Produce;
+  access.release = &Release;
+  access.is_readable_span = &Readable;
+  access.read_candidate_pointer = &ReadPointer;
+  access.read_candidate_id = &ReadId;
+  access.resolve_candidate = &Resolve;
+  assert(bridge::InstallCouncilCompositionStewardCandidatesPrivateProbeV1(
+      probe, environment, access));
+  assert(bridge::PrepareCouncilCompositionStewardCandidatesPrivateProbeV1(
+      probe, g_snapshot, 4, 3));
+}
+
 void TestOnePausedSameFrameQuery() {
   using namespace xar;
   auto fixture = MakeFixture();
@@ -274,6 +311,107 @@ void TestDirectInvocationAndDriftFailClosed() {
   assert(fixture.producer_calls == 0 && fixture.release_calls == 0);
 }
 
+void TestMailboxPublicationPreservesPendingAndPublishesCompleted() {
+  using namespace xar;
+  auto fixture = MakeFixture();
+  ck3_11906::MainThreadQueryMailboxV1 mailbox{};
+  ck3_11906::CouncilCompositionStewardCandidatesBindingStateV1 binding{};
+  bridge::CouncilCompositionStewardCandidatesPrivateProbeV1 probe{};
+  InstallAndPrepare(fixture, mailbox, binding, probe);
+
+  const ck3_11906::MainThreadQueryTicketV1 ticket{17};
+  probe.ticket = ticket;
+  mailbox.published_sequence.store(ticket.sequence,
+                                   std::memory_order_release);
+  mailbox.state.store(ck3_11906::MainThreadQueryMailboxStateV1::queued,
+                      std::memory_order_release);
+  assert(!bridge::
+              TryPublishCouncilCompositionStewardCandidatesPrivateProbeMailboxV1(
+                  probe, mailbox, ticket));
+  assert(mailbox.state.load(std::memory_order_acquire) ==
+         ck3_11906::MainThreadQueryMailboxStateV1::queued);
+  assert(!probe.result_published);
+
+  mailbox.state.store(ck3_11906::MainThreadQueryMailboxStateV1::executing,
+                      std::memory_order_release);
+  assert(!bridge::
+              TryPublishCouncilCompositionStewardCandidatesPrivateProbeMailboxV1(
+                  probe, mailbox, ticket));
+  assert(mailbox.state.load(std::memory_order_acquire) ==
+         ck3_11906::MainThreadQueryMailboxStateV1::executing);
+  assert(!probe.result_published);
+
+  Prime(probe, mailbox, ticket.sequence);
+  assert(bridge::ExecuteCouncilCompositionStewardCandidatesPrivateProbeV1(
+      &probe, Stamp()));
+  mailbox.completed_sequence.store(ticket.sequence,
+                                   std::memory_order_release);
+  mailbox.state.store(ck3_11906::MainThreadQueryMailboxStateV1::completed,
+                      std::memory_order_release);
+  assert(bridge::
+             TryPublishCouncilCompositionStewardCandidatesPrivateProbeMailboxV1(
+                 probe, mailbox, ticket));
+  assert(probe.result_published);
+  assert(probe.published_execution_count == 1);
+  assert(probe.published_result.status ==
+         game::CouncilCompositionStewardCandidatesStatusV1::available);
+}
+
+void TestMailboxTerminalFailuresPublishUnavailable() {
+  using namespace xar;
+  auto executor_fixture = MakeFixture();
+  ck3_11906::MainThreadQueryMailboxV1 executor_mailbox{};
+  ck3_11906::CouncilCompositionStewardCandidatesBindingStateV1
+      executor_binding{};
+  bridge::CouncilCompositionStewardCandidatesPrivateProbeV1 executor_probe{};
+  InstallAndPrepare(executor_fixture, executor_mailbox, executor_binding,
+                    executor_probe);
+  const ck3_11906::MainThreadQueryTicketV1 executor_ticket{23};
+  executor_probe.ticket = executor_ticket;
+  executor_mailbox.published_sequence.store(executor_ticket.sequence,
+                                            std::memory_order_release);
+  executor_mailbox.completed_sequence.store(executor_ticket.sequence,
+                                            std::memory_order_release);
+  executor_mailbox.state.store(
+      ck3_11906::MainThreadQueryMailboxStateV1::executor_failed,
+      std::memory_order_release);
+  assert(bridge::
+             TryPublishCouncilCompositionStewardCandidatesPrivateProbeMailboxV1(
+                 executor_probe, executor_mailbox, executor_ticket));
+  assert(executor_probe.published_result.status ==
+         game::CouncilCompositionStewardCandidatesStatusV1::unavailable);
+  assert(executor_probe.published_result.unavailable_reason ==
+         game::CouncilCompositionStewardCandidatesFailureV1::
+             application_main_thread_required);
+
+  auto infrastructure_fixture = MakeFixture();
+  ck3_11906::MainThreadQueryMailboxV1 infrastructure_mailbox{};
+  ck3_11906::CouncilCompositionStewardCandidatesBindingStateV1
+      infrastructure_binding{};
+  bridge::CouncilCompositionStewardCandidatesPrivateProbeV1
+      infrastructure_probe{};
+  InstallAndPrepare(infrastructure_fixture, infrastructure_mailbox,
+                    infrastructure_binding, infrastructure_probe);
+  const ck3_11906::MainThreadQueryTicketV1 infrastructure_ticket{29};
+  infrastructure_probe.ticket = infrastructure_ticket;
+  infrastructure_mailbox.published_sequence.store(
+      infrastructure_ticket.sequence, std::memory_order_release);
+  infrastructure_mailbox.completed_sequence.store(
+      infrastructure_ticket.sequence, std::memory_order_release);
+  infrastructure_mailbox.state.store(
+      ck3_11906::MainThreadQueryMailboxStateV1::infrastructure_failed,
+      std::memory_order_release);
+  assert(bridge::
+             TryPublishCouncilCompositionStewardCandidatesPrivateProbeMailboxV1(
+                 infrastructure_probe, infrastructure_mailbox,
+                 infrastructure_ticket));
+  assert(infrastructure_probe.published_result.status ==
+         game::CouncilCompositionStewardCandidatesStatusV1::unavailable);
+  assert(infrastructure_probe.published_result.unavailable_reason ==
+         game::CouncilCompositionStewardCandidatesFailureV1::
+             frame_capture_failed);
+}
+
 std::string ReadFile(const char *path) {
   std::ifstream input(path, std::ios::binary);
   assert(input);
@@ -299,6 +437,17 @@ void TestPrivateBridgeSourceContract(int argc, char **argv) {
   assert(
       bridge.find("ExecuteCouncilCompositionStewardCandidatesPrivateProbeV1") !=
       std::string::npos);
+  const auto drive_begin = bridge.find(
+      "void DriveCouncilCompositionStewardCandidatesPrivateProbeV1(");
+  assert(drive_begin != std::string::npos);
+  const auto drive_end = bridge.find("\n#endif", drive_begin);
+  assert(drive_end != std::string::npos);
+  const auto drive = bridge.substr(drive_begin, drive_end - drive_begin);
+  assert(drive.find(
+             "TryPublishCouncilCompositionStewardCandidatesPrivateProbeMailboxV1") !=
+         std::string::npos);
+  assert(drive.find("ReclaimMainThreadQueryV1") != std::string::npos);
+  assert(drive.find("WaitForMainThreadQueryV1") == std::string::npos);
   assert(mailbox_header.find("permitted_executor_tritrigintary") !=
          std::string::npos);
   assert(mailbox_source.find("permitted_executor_tritrigintary") !=
@@ -332,6 +481,8 @@ int main(int argc, char **argv) {
   g_snapshot.played_character_id = 29'829;
   TestOnePausedSameFrameQuery();
   TestDirectInvocationAndDriftFailClosed();
+  TestMailboxPublicationPreservesPendingAndPublishesCompleted();
+  TestMailboxTerminalFailuresPublishUnavailable();
   TestPrivateBridgeSourceContract(argc, argv);
   return 0;
 }
