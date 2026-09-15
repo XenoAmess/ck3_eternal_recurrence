@@ -968,7 +968,10 @@ async function activateStandaloneAssetPack(
     surfaceMask.value = decodedSurfaceMask
     texturedEmblemTextures.value = { '_default.dds': decodedTexturedDefault }
     texturedDefaultPreviewUrl.value = decodedDdsToDataUrl(decodedTexturedDefault)
-    if (loaded.pack.fit_index) await readCachedWebFitIndex(loaded)
+    // The complete 1,577-entry RGBA fit index is intentionally lazy. Loading it
+    // during application startup competes with editing, autosave and safe image
+    // decode on constrained devices. fitTargetImage() reads and verifies the
+    // same index before starting a fit, where its cost belongs.
     shaderSourceCount.value = 5
     const inventory = loaded.pack.inventory
     assetPackStatus.value = `${loaded.pack.pack_id} · ${patterns.length} 注册 pattern · ${emblems.length} 注册 emblem${inventory ? ` · ${inventory.source_dds_total} DDS 全盘清单` : ''} · ${loaded.manifestSha256.slice(0, 12)}`

@@ -9,6 +9,15 @@ const upload = (page: import('@playwright/test').Page, name: string, source: str
 )
 
 test('rasterizes bounded local SVG geometry and rejects executable or external content before decode', async ({ page }) => {
+  // SVG sanitization and local rasterization must not depend on the optional
+  // static asset pack. Exact-pack activation and fitting have their own
+  // acceptance specs, while this route keeps constrained CI focused on the
+  // user-content security boundary.
+  await page.route('**/asset-packs/ck3-1.19.0.6/manifest.json', (route) => route.fulfill({
+    status: 503,
+    contentType: 'text/plain',
+    body: 'asset pack intentionally unavailable for SVG safety isolation',
+  }))
   const externalRequests: string[] = []
   const nonGetRequests: string[] = []
   page.on('request', (request) => {
@@ -29,7 +38,6 @@ test('rasterizes bounded local SVG geometry and rejects executable or external c
   `)
   await expect(page.getByText(/safe-vector\.svg · 320×240/)).toBeVisible()
   await expect(page.locator('.image-drop img')).toBeVisible()
-  await expect(page.getByRole('button', { name: '开始本地拟合' })).toBeEnabled({ timeout: 30_000 })
 
   await upload(page, 'external.svg', `
     <svg xmlns="http://www.w3.org/2000/svg" width="200" height="200">
