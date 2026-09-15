@@ -22,6 +22,8 @@ export interface CoatOfArmsRenderOptions {
   emblemTransformConvention?: EmblemTransformConvention
   /** Diagnostic rotation polarity. CK3's native screen-space contract uses -1. */
   emblemRotationSign?: 1 | -1
+  /** Diagnostic depth direction. CK3 draws larger depth first, leaving smaller depth on top. */
+  emblemDepthOrder?: 'ascending' | 'descending'
 }
 
 interface RenderAssets {
@@ -370,7 +372,11 @@ export function renderCoatOfArms(
       instance,
       order: sourceOrder++,
     })))
-    .sort((left, right) => left.instance.depth - right.instance.depth || left.order - right.order)
+    .sort((left, right) => (
+      (options.emblemDepthOrder ?? 'descending') === 'ascending'
+        ? left.instance.depth - right.instance.depth
+        : right.instance.depth - left.instance.depth
+    ) || left.order - right.order)
   for (const { emblem, instance } of instances) {
     const texture = assets.coloredEmblems[emblem.texture]
     if (texture) drawInstance(

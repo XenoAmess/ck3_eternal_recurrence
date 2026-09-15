@@ -138,4 +138,52 @@ describe('shader-grounded coat-of-arms renderer', () => {
     expect(nativeDefault?.pixels).toEqual(explicitNative?.pixels)
     expect(nativeDefault?.pixels).not.toEqual(opposite?.pixels)
   })
+
+  it('uses CK3 native descending depth order with smaller depth on top', () => {
+    const pattern: DecodedDds = {
+      width: 1, height: 1, fourCC: 'DXT1',
+      pixels: new Uint8ClampedArray([255, 0, 0, 255]),
+    }
+    const opaque: DecodedDds = {
+      width: 1, height: 1, fourCC: 'BGRA8',
+      pixels: new Uint8ClampedArray([0, 255, 128, 255]),
+    }
+    const coatOfArms = createCoatOfArms()
+    coatOfArms.colors = ['black', 'black', 'black']
+    coatOfArms.coloredEmblems = [
+      {
+        texture: 'opaque.dds',
+        colors: ['rgb { 255 0 0 }', 'rgb { 255 0 0 }', 'rgb { 255 0 0 }'],
+        mask: [],
+        instances: [{ position: [0.5, 0.5], scale: [1, 1], rotation: 0, depth: 1 }],
+      },
+      {
+        texture: 'opaque.dds',
+        colors: ['rgb { 0 255 0 }', 'rgb { 0 255 0 }', 'rgb { 0 255 0 }'],
+        mask: [],
+        instances: [{ position: [0.5, 0.5], scale: [1, 1], rotation: 0, depth: 2 }],
+      },
+    ]
+    const assets = { pattern, coloredEmblems: { 'opaque.dds': opaque } }
+    const nativeDefault = renderCoatOfArms(coatOfArms, assets, {}, 1)
+    const explicitNative = renderCoatOfArms(
+      coatOfArms,
+      assets,
+      {},
+      1,
+      { emblemDepthOrder: 'descending' },
+    )
+    const opposite = renderCoatOfArms(
+      coatOfArms,
+      assets,
+      {},
+      1,
+      { emblemDepthOrder: 'ascending' },
+    )
+    expect(nativeDefault?.pixels).toEqual(explicitNative?.pixels)
+    expect(nativeDefault?.pixels[0]).toBeGreaterThan(250)
+    expect(nativeDefault?.pixels[1]).toBeLessThan(2)
+    expect(opposite?.pixels[0]).toBeLessThan(2)
+    expect(opposite?.pixels[1]).toBeGreaterThan(250)
+  })
 })

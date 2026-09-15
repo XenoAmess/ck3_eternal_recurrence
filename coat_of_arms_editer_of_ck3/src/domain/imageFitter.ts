@@ -138,7 +138,7 @@ export interface ImageFitResult {
     searchBackend: 'cpu-reference' | 'webgl2-batch+cpu-reference'
     batchSearch: ImageFitBatchSearchReceipt
     scoringContract: 'alpha-weighted-srgb8-mse62-luma-gradient-l1-38-v1'
-    rendererContract: 'cpu-rgba8-bilinear-clamp-pixel-center-native-clockwise-v2'
+    rendererContract: 'cpu-rgba8-bilinear-clamp-pixel-center-native-clockwise-depth-descending-v3'
     randomSeed: null
     surfaceMaskApplied: boolean
     sourceWidth: number
@@ -400,6 +400,10 @@ function score(
     { pattern, coloredEmblems: emblems, surfaceMask },
     namedColors,
     target.width,
+    // Search states append a new foreground layer incrementally. Keep that
+    // insertion-order optimization internally, then reverse the numeric depth
+    // domain once for CK3's smaller-depth-on-top contract at export.
+    { emblemDepthOrder: 'ascending' },
   )
   if (!rendered) throw new Error('候选渲染失败')
   return { coatOfArms, rendered, ...measureImageFitLosses(target, rendered), key }
@@ -1224,6 +1228,22 @@ function cloneCheckpointCoatOfArms(coatOfArms: CoatOfArms): CoatOfArms {
       colors: [...coatOfArms.rootPresence.colors],
     } : undefined,
   }
+}
+
+function encodeNativeDepthOrder(coatOfArms: CoatOfArms): CoatOfArms {
+  const depths = coatOfArms.coloredEmblems.flatMap((emblem) => (
+    emblem.instances.map((instance) => instance.depth)
+  ))
+  if (!depths.length) return cloneCheckpointCoatOfArms(coatOfArms)
+  const minimumDepth = Math.min(...depths)
+  const maximumDepth = Math.max(...depths)
+  const result = cloneCheckpointCoatOfArms(coatOfArms)
+  for (const emblem of result.coloredEmblems) {
+    for (const instance of emblem.instances) {
+      instance.depth = minimumDepth + maximumDepth - instance.depth
+    }
+  }
+  return result
 }
 
 function checkpointFromPaintState(
@@ -2271,6 +2291,22 @@ export function fitImageToCoatOfArms(
       - (candidateMultiscaleMetrics.get(right)?.at(-1)?.edgeLoss ?? Number.POSITIVE_INFINITY)
     || left.candidate.key.localeCompare(right.candidate.key))[0]
   const best = winner.candidate
+  const nativeCoatOfArms = encodeNativeDepthOrder(best.coatOfArms)
+  const nativeRendered = renderCoatOfArms(
+    nativeCoatOfArms,
+    {
+      pattern: winner.patternAsset.texture,
+      coloredEmblems: emblemTextureMap,
+      surfaceMask,
+    },
+    namedColors,
+    target.width,
+  )
+  if (
+    !nativeRendered
+    || nativeRendered.pixels.length !== best.rendered.pixels.length
+    || nativeRendered.pixels.some((value, index) => value !== best.rendered.pixels[index])
+  ) throw new Error('CK3 原生 depth 编码没有保持拟合器的最终构图')
   const selectedEmblemAssets = winner.selectedAssets
   const logicalLayers = best.coatOfArms.coloredEmblems.length + best.coatOfArms.texturedEmblems.length
   const drawnInstances = best.coatOfArms.coloredEmblems.reduce(
@@ -2285,7 +2321,7 @@ export function fitImageToCoatOfArms(
   }
   const improvement = initialLoss <= 1e-12 ? 0 : Math.max(0, (initialLoss - best.totalLoss) / initialLoss)
   return {
-    coatOfArms: best.coatOfArms,
+    coatOfArms: nativeCoatOfArms,
     metrics: {
       colorLoss: best.colorLoss,
       edgeLoss: best.edgeLoss,
@@ -2299,7 +2335,7 @@ export function fitImageToCoatOfArms(
         : 'cpu-reference',
       batchSearch,
       scoringContract: 'alpha-weighted-srgb8-mse62-luma-gradient-l1-38-v1',
-      rendererContract: 'cpu-rgba8-bilinear-clamp-pixel-center-native-clockwise-v2',
+      rendererContract: 'cpu-rgba8-bilinear-clamp-pixel-center-native-clockwise-depth-descending-v3',
       randomSeed: null,
       surfaceMaskApplied: Boolean(surfaceMask),
       sourceWidth,

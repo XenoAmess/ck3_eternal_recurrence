@@ -13,7 +13,8 @@ const enabled = process.env.COA_NATIVE_TRANSFORM_DIAGNOSTIC === 'true'
 const repositoryRoot = resolve('..')
 const corpusRoot = resolve(
   repositoryRoot,
-  'docs/coat-of-arms-fit-artifacts/user-picture-corpus-v6-budget-1024',
+  process.env.COA_NATIVE_TRANSFORM_CORPUS
+    ?? 'docs/coat-of-arms-fit-artifacts/user-picture-corpus-v6-budget-1024',
 )
 const outputRoot = resolve(
   repositoryRoot,
@@ -52,6 +53,22 @@ const candidates: Array<{
     id: 'scale-after-rotation-negative-round',
     options: { emblemTransformConvention: 'scale-after-rotation', emblemRotationSign: -1 },
     rotationQuantization: 'round',
+  },
+  {
+    id: 'scale-after-rotation-negative-depth-ascending',
+    options: {
+      emblemTransformConvention: 'scale-after-rotation',
+      emblemRotationSign: -1,
+      emblemDepthOrder: 'ascending',
+    },
+  },
+  {
+    id: 'scale-after-rotation-negative-depth-descending',
+    options: {
+      emblemTransformConvention: 'scale-after-rotation',
+      emblemRotationSign: -1,
+      emblemDepthOrder: 'descending',
+    },
   },
 ]
 

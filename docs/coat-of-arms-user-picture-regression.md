@@ -84,6 +84,20 @@ reference-independent framebuffer MCP 的 r5 实机运行完成了 7/7 Apply、C
 保持一致，但语义元素输出角度改为 CK3 的方向；例如 picture-02 从 `223.375°` 改为 `136.625°`。
 v7 原生 Apply/Copy/framebuffer 重跑完成前，状态仍是“浏览器修复通过、CK3 新候选待验”。
 
+## v8 原生 depth 顺序修复（2026-09-16）
+
+v7 r6 的 7 例首次粘贴均完成；旋转修复使 framebuffer MAE 全面下降，但 `picture-07` 暴露了更严重的
+视觉假阳性：网页仍显示双眼和胸前徽记，CK3 却被后续大块覆盖。保持同一个 r6 crop、同一个 mask 和
+同一个评分合同，只切换 depth 排序方向后，降序候选的 MAE 从 `0.062193` 降到 `0.022078`，edge 从
+`0.123880` 降到 `0.065893`，综合 score 从 `0.065000` 降到 `0.027558`。这证明 CK3 是较大 depth
+先画、较小 depth 后画，而网页旧实现相反。
+
+生产 renderer 已改为 CK3 的 depth 降序。拟合搜索仍在内部追加前景层；交付前把有限 depth 区间反转，
+并逐像素断言新原生表示与内部候选完全一致。v8 的七张 canonical preview 与 v7 字节相同，1024 预算
+指标也完全相同，只有导出 depth 序列改变；七例上下预览、完整复制、解析计数和序列化闭环均通过。
+浏览器产物在 `docs/coat-of-arms-fit-artifacts/user-picture-corpus-v8-budget-1024/`，受控消融在
+`docs/coat-of-arms-fit-artifacts/user-picture-corpus-v7-depth-diagnostic/`。
+
 | 检查 | 当前状态 | 当前证据能支持的结论 |
 |---|---|---|
 | 原图→浏览器拟合 | 已逐图量化 | 7 图均完成 1024 预算，但其中多图质量仍不可接受 |
