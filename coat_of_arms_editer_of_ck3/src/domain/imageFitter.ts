@@ -1663,7 +1663,14 @@ export function fitImageToCoatOfArms(
   // algorithm unconditionally collapse to a single rectangular texture.
   // Keep a bounded semantic seed stage, then spend the remaining user budget
   // painting the residual. The pure tile candidate remains as an ablation.
-  const semanticLayerBudget = Math.min(maxLayers, maxLayers >= 128 && paintBrush ? 1 : 6)
+  const hasSemanticAlternative = !paintBrush
+    || emblems.some((item) => item.name !== paintBrush.name)
+  const semanticLayerBudget = Math.min(
+    maxLayers,
+    maxLayers >= 128 && paintBrush
+      ? (hasSemanticAlternative ? 1 : 0)
+      : 6,
+  )
   for (let layer = 0; layer < semanticLayerBudget && emblems.length; layer += 1) {
     if (beam[0].candidate.totalLoss <= 1e-12) {
       terminationReason = 'exact_match'
