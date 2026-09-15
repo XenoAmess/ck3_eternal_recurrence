@@ -187,7 +187,7 @@
     {
       "id": "WP4",
       "status": "in_progress",
-      "commit": "20f8f93a",
+      "commit": "7396d503",
       "commands": [
         "pnpm exec vitest run src/domain/fitBudgetContract.test.ts src/domain/fitCheckpointStore.test.ts --reporter=verbose",
         "pnpm exec playwright test e2e/fit-budget-stress.spec.ts --reporter=line",
