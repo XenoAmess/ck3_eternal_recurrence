@@ -16,7 +16,7 @@ constexpr std::uintptr_t kGuiSlot = kModuleBase + 0x576CC68;
 
 struct Region {
   std::uintptr_t base = 0;
-  std::array<std::byte, 512> bytes{};
+  std::array<std::byte, 1024> bytes{};
   std::size_t size = 0;
 };
 
@@ -50,6 +50,12 @@ struct Fixture {
   }
 };
 
+struct RttiFixture {
+  std::uintptr_t vtable_rva;
+  std::uintptr_t locator_rva;
+  std::uint32_t type_rva;
+};
+
 bool ReadFixture(void *opaque, const void *address, void *output,
                  std::size_t size) noexcept {
   auto &fixture = *static_cast<Fixture *>(opaque);
@@ -69,7 +75,7 @@ Fixture MakeFixture() {
   for (const auto [base, size] :
        std::array<std::pair<std::uintptr_t, std::size_t>, 8>{{
            {kGuiSlot, 8}, {0x1000, 512}, {0x2000, 512},
-           {0x3000, 512}, {0x4000, 512}, {0x5000, 512},
+            {0x3000, 512}, {0x4000, 1024}, {0x5000, 512},
            {0x6000, 512}, {0x7000, 512}}}) {
     fixture.Add(base, size);
   }
@@ -81,6 +87,22 @@ Fixture MakeFixture() {
   fixture.Add(0xD000, 512);
   fixture.Add(0xE000, 512);
   fixture.Add(0xF000, 512);
+  fixture.Add(0x11000, 512);
+  fixture.Add(0x12000, 512);
+  fixture.Add(0x13000, 512);
+  for (const auto item : std::array<RttiFixture, 4>{{
+           {0x40C9BD0, 0x461D5F8, 0x51B4A80},
+           {0x40F3A10, 0x46647E8, 0x5024290},
+           {0x40F3CF0, 0x4664E10, 0x51FCE10},
+           {0x410B070, 0x467D328, 0x5212C48}}}) {
+    fixture.Add(kModuleBase + item.vtable_rva - 8, 8);
+    fixture.Put(kModuleBase + item.vtable_rva - 8,
+                kModuleBase + item.locator_rva);
+    fixture.Add(kModuleBase + item.locator_rva, 24);
+    fixture.Put(kModuleBase + item.locator_rva, std::uint32_t{1});
+    fixture.Put(kModuleBase + item.locator_rva + 4, std::uint32_t{0});
+    fixture.Put(kModuleBase + item.locator_rva + 0xC, item.type_rva);
+  }
   fixture.Put(kGuiSlot, static_cast<std::uintptr_t>(0x1000));
   fixture.Put(0x1000, kModuleBase + 0x4093158);
   fixture.Put(0x1000 + 0x1B8, static_cast<std::uintptr_t>(0x3000));
@@ -89,8 +111,11 @@ Fixture MakeFixture() {
   fixture.Put(0x3000 + 0x58, static_cast<std::uintptr_t>(0x4000));
   fixture.Put(0x4000, std::uintptr_t{0});
   fixture.Put(0x1000 + 0x78, static_cast<std::uintptr_t>(0x5000));
+  fixture.Put(0x5000, kModuleBase + 0x40C9BD0);
   fixture.Put(0x5000 + 0x10, static_cast<std::uintptr_t>(0x6000));
+  fixture.Put(0x6000, kModuleBase + 0x40F3A10);
   fixture.Put(0x6000 + 0x08, static_cast<std::uintptr_t>(0x7000));
+  fixture.Put(0x7000, kModuleBase + 0x40F3CF0);
   fixture.Put(0x7000 + 0x30, static_cast<std::uintptr_t>(0x8000));
   fixture.Put(0x8000, kModuleBase + 0x410B070);
   fixture.Put(0x8000 + 0x78, static_cast<std::uintptr_t>(0x2000));
@@ -159,10 +184,18 @@ int main() {
   FrontendBookmarkModelProbeV1 result{};
   if (!Probe(fixture, result) || !result.model_indices_available ||
        !result.setup_view_matches_bookmarks_root ||
+       result.verified_owner_route != "app_idler_chain" ||
+       result.registry_owner_match_count != -1 ||
        result.interface_application_chain_level != 0 ||
        result.gui_chain_vtable_rvas[0] != 0x4093158 ||
        result.gui_chain_vtable_rvas[1] != 0 ||
        result.gui_chain_vtable_rvas[2] != 0 ||
+       result.owner_chain_vtable_rvas !=
+           std::array<std::uint64_t, 4>{0x40C9BD0, 0x40F3A10,
+                                        0x40F3CF0, 0x410B070} ||
+       result.owner_chain_rtti_type_rvas !=
+           std::array<std::uint64_t, 4>{0x51B4A80, 0x5024290,
+                                        0x51FCE10, 0x5212C48} ||
       result.selected_character_index != -1 ||
       result.hovered_character_index != -1 ||
       !result.selected_bookmark_group_key_available ||
@@ -236,9 +269,73 @@ int main() {
     return 1;
   }
   fixture.Put(0x1000, kModuleBase + 0x4093158);
+  fixture.Put(0x1000 + 0x78, std::uintptr_t{0});
+  if (!Probe(fixture, result) || result.model_indices_available ||
+      result.direct_owner_unavailable_reason !=
+          "frontend_idler_pointer_null" ||
+      result.registry_owner_match_count != 0 ||
+      result.unavailable_reason !=
+          "frontend_owner_registry_no_matching_bookmarks_view") {
+    std::fprintf(stderr, "R734 owner null must be diagnosed separately\n");
+    return 1;
+  }
+  // A current GUI-context registry can recover the one exact Bookmarks view
+  // when app+0x78 has been replaced, without choosing by registry entry order.
+  fixture.Put(0x4000 + 0x230, std::uintptr_t{0x11000});
+  fixture.Put(0x4000 + 0x238, std::uint32_t{2});
+  fixture.Put(0x4000 + 0x23C, std::uint32_t{1});
+  fixture.Put(0x11000, std::uintptr_t{0x7000});
+  if (!Probe(fixture, result) || !result.candidate_identity_ready ||
+      result.verified_owner_route != "gui_context_registry" ||
+      result.direct_owner_unavailable_reason !=
+          "frontend_idler_pointer_null" ||
+      result.registry_owner_match_count != 1 ||
+      !result.registry_owner_unavailable_reason.empty()) {
+    std::fprintf(stderr, "unique RTTI/root-matched registry view must recover\n");
+    return 1;
+  }
+  fixture.Put(0x9000 + 0x38, std::uint64_t{0xFFFFFFFF032AEB09});
+  if (!Probe(fixture, result) || result.candidate_identity_ready ||
+      result.verified_owner_route != "gui_context_registry" ||
+      result.unavailable_reason !=
+          "selected_bookmark_date_not_1066_09_15") {
+    std::fprintf(stderr, "registry fallback cannot bypass native date gate\n");
+    return 1;
+  }
+  fixture.Put(0x9000 + 0x38, std::uint64_t{0xFFFFFFFF032AEB08});
+  fixture.Put(0x12000, kModuleBase + 0x40F3CF0);
+  fixture.Put(0x12000 + 0x30, std::uintptr_t{0x13000});
+  fixture.Put(0x13000, kModuleBase + 0x410B070);
+  fixture.Put(0x13000 + 0x78, std::uintptr_t{0x2000});
+  fixture.Put(0x11000 + 0x50, std::uintptr_t{0x12000});
+  fixture.Put(0x4000 + 0x23C, std::uint32_t{2});
+  if (!Probe(fixture, result) || result.candidate_identity_ready ||
+      result.registry_owner_match_count != 2 ||
+      result.unavailable_reason !=
+          "frontend_owner_registry_ambiguous_bookmarks_view") {
+    std::fprintf(stderr, "two RTTI/root-matched views must remain ambiguous\n");
+    return 1;
+  }
+  fixture.Put(0x4000 + 0x230, std::uintptr_t{0});
+  fixture.Put(0x4000 + 0x238, std::uint32_t{0});
+  fixture.Put(0x4000 + 0x23C, std::uint32_t{0});
+  fixture.Put(0x1000 + 0x78, std::uintptr_t{0x5000});
+  fixture.Put(0x5000, kModuleBase + 0x40C9BE0);
+  if (!Probe(fixture, result) || result.model_indices_available ||
+      result.owner_chain_vtable_rvas[0] != 0x40C9BE0 ||
+      result.direct_owner_unavailable_reason != "frontend_idler_replaced" ||
+      result.unavailable_reason !=
+          "frontend_owner_registry_no_matching_bookmarks_view") {
+    std::fprintf(stderr, "replaced idler must report its native vtable\n");
+    return 1;
+  }
+  fixture.Put(0x5000, kModuleBase + 0x40C9BD0);
   fixture.Put(0x8000, kModuleBase + 0x44F4650);
   if (!Probe(fixture, result) || result.model_indices_available ||
-      result.unavailable_reason != "frontend_setup_view_unverified") {
+      result.direct_owner_unavailable_reason !=
+          "frontend_setup_view_type_mismatch" ||
+      result.unavailable_reason !=
+          "frontend_owner_registry_no_matching_bookmarks_view") {
     std::fprintf(stderr, "unverified SetupView must fail closed\n");
     return 1;
   }
@@ -260,8 +357,10 @@ int main() {
   fixture.Put(0x9000 + 0x17C, std::uint32_t{1});
   if (!Probe(fixture, result, reinterpret_cast<void *>(0x2001)) ||
       result.model_indices_available ||
+      result.direct_owner_unavailable_reason !=
+          "frontend_setup_view_root_mismatch" ||
       result.unavailable_reason !=
-          "frontend_setup_view_root_mismatch") {
+          "frontend_owner_registry_no_matching_bookmarks_view") {
     std::fprintf(stderr, "unmatched bookmark root must fail closed\n");
     return 1;
   }

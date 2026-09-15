@@ -14,6 +14,15 @@ namespace xar::ck3_11906 {
 struct FrontendBookmarkModelProbeV1 {
   std::array<std::uint64_t, 3> gui_chain_vtable_rvas{};
   std::int32_t interface_application_chain_level = -1;
+  // app+0x78 -> idler+0x10 -> gfx+0x08 -> handler+0x30 -> SetupView.
+  // All four live RTTI/vtable values are private diagnostics; replacement of
+  // an intermediate frontend owner never proves a selected Bookmark.
+  std::array<std::uint64_t, 4> owner_chain_vtable_rvas{};
+  std::array<std::uint64_t, 4> owner_chain_rtti_type_rvas{};
+  std::string direct_owner_unavailable_reason;
+  std::string registry_owner_unavailable_reason;
+  std::int32_t registry_owner_match_count = -1;
+  std::string verified_owner_route;
   std::uint64_t setup_view_vtable_rva = 0;
   std::uint64_t selected_bookmark_vtable_rva = 0;
   bool setup_view_matches_bookmarks_root = false;

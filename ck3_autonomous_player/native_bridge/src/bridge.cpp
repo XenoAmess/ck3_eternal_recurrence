@@ -4417,6 +4417,41 @@ std::string FrontendBookmarkModelPrivateResultFrame(
   }
   result += "],\"interface_application_chain_level\":";
   result += SignedNumber(probe.interface_application_chain_level);
+  result += ",\"owner_chain_vtable_rvas\":[";
+  for (std::size_t i = 0; i < probe.owner_chain_vtable_rvas.size(); ++i) {
+    if (i != 0) result += ',';
+    result += Number(probe.owner_chain_vtable_rvas[i]);
+  }
+  result += "],\"owner_chain_rtti_type_rvas\":[";
+  for (std::size_t i = 0; i < probe.owner_chain_rtti_type_rvas.size(); ++i) {
+    if (i != 0) result += ',';
+    result += Number(probe.owner_chain_rtti_type_rvas[i]);
+  }
+  result += ']';
+  result += ",\"direct_owner_unavailable_reason\":";
+  if (probe.direct_owner_unavailable_reason.empty()) {
+    result += "null";
+  } else {
+    AppendJsonString(result, probe.direct_owner_unavailable_reason);
+  }
+  result += ",\"registry_owner_unavailable_reason\":";
+  if (probe.registry_owner_unavailable_reason.empty()) {
+    result += "null";
+  } else {
+    AppendJsonString(result, probe.registry_owner_unavailable_reason);
+  }
+  result += ",\"registry_owner_match_count\":";
+  if (probe.registry_owner_match_count < 0) {
+    result += "null";
+  } else {
+    result += SignedNumber(probe.registry_owner_match_count);
+  }
+  result += ",\"verified_owner_route\":";
+  if (probe.verified_owner_route.empty()) {
+    result += "null";
+  } else {
+    AppendJsonString(result, probe.verified_owner_route);
+  }
   result += ",\"setup_view_vtable_rva\":";
   result += Number(probe.setup_view_vtable_rva);
   result += ",\"setup_view_matches_bookmarks_root\":";

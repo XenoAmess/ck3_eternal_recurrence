@@ -13,7 +13,14 @@ namespace xar::ck3_11906 {
 namespace {
 
 constexpr std::uintptr_t kInterfaceApplicationVtableRva = 0x4093158;
+constexpr std::array<std::uintptr_t, 3> kFrontendOwnerVtableRvas{
+    0x40C9BD0, 0x40F3A10, 0x40F3CF0};
 constexpr std::uintptr_t kFrontendSetupViewVtableRva = 0x410B070;
+constexpr std::uintptr_t kFrontendHandlerRttiTypeRva = 0x51FCE10;
+constexpr std::uintptr_t kFrontendSetupViewRttiTypeRva = 0x5212C48;
+constexpr std::uintptr_t kGuiContextOwnerRegistryOffset = 0x230;
+constexpr std::uintptr_t kGuiContextOwnerRegistryEntryStride = 0x50;
+constexpr std::uint32_t kMaxBoundedGuiContextOwners = 1024;
 constexpr std::uintptr_t kMaxExactImageRva = 0x6000000;
 constexpr std::uintptr_t kBookmarkCharacterStride = 0x1A0;
 constexpr std::string_view kSupportedBookmarkKey =
@@ -74,6 +81,42 @@ bool ReadVtableRva(const ZhongguoScoreboardAccessV1 &access,
   return true;
 }
 
+bool ReadRttiTypeRva(const ZhongguoScoreboardAccessV1 &access,
+                     std::uintptr_t module_base, const void *object,
+                     std::uint64_t &output) noexcept {
+  output = 0;
+  void *vtable = nullptr;
+  if (!ReadAt(access, object, 0, vtable)) return false;
+  const auto vtable_address = reinterpret_cast<std::uintptr_t>(vtable);
+  if (vtable_address < module_base + sizeof(void *) ||
+      vtable_address - module_base >= kMaxExactImageRva) {
+    return false;
+  }
+  void *complete_object_locator = nullptr;
+  if (!ReadBytes(access,
+                 reinterpret_cast<const void *>(vtable_address - sizeof(void *)),
+                 &complete_object_locator, sizeof(complete_object_locator))) {
+    return false;
+  }
+  const auto locator_address =
+      reinterpret_cast<std::uintptr_t>(complete_object_locator);
+  if (locator_address < module_base ||
+      locator_address - module_base >= kMaxExactImageRva) {
+    return false;
+  }
+  std::uint32_t signature = 0;
+  std::uint32_t offset = 0;
+  std::uint32_t type_rva = 0;
+  if (!ReadAt(access, complete_object_locator, 0, signature) ||
+      !ReadAt(access, complete_object_locator, 4, offset) ||
+      !ReadAt(access, complete_object_locator, 0xC, type_rva) ||
+      signature != 1 || offset != 0 || type_rva >= kMaxExactImageRva) {
+    return false;
+  }
+  output = type_rva;
+  return true;
+}
+
 bool ReadScriptKeySso(const ZhongguoScoreboardAccessV1 &access,
                       const void *owner, std::size_t offset,
                       std::string &output) noexcept {
@@ -105,6 +148,99 @@ bool ReadScriptKeySso(const ZhongguoScoreboardAccessV1 &access,
   try {
     output.assign(bytes.data(), static_cast<std::size_t>(length));
   } catch (...) {
+    return false;
+  }
+  return true;
+}
+
+bool ResolveRegisteredSetupView(
+    const ZhongguoScoreboardAccessV1 &access, std::uintptr_t module_base,
+    const void *gui_context, const void *bookmarks_root,
+    FrontendBookmarkModelProbeV1 &output, void *&setup_view) noexcept {
+  setup_view = nullptr;
+  void *entries = nullptr;
+  std::uint32_t capacity = 0;
+  std::uint32_t count = 0;
+  if (!ReadAt(access, gui_context, kGuiContextOwnerRegistryOffset, entries) ||
+      !ReadAt(access, gui_context, kGuiContextOwnerRegistryOffset + 8,
+              capacity) ||
+      !ReadAt(access, gui_context, kGuiContextOwnerRegistryOffset + 0xC,
+              count) ||
+      count > capacity || count > kMaxBoundedGuiContextOwners ||
+      (count != 0 && entries == nullptr)) {
+    output.registry_owner_unavailable_reason =
+        "frontend_owner_registry_collection_unverified";
+    return false;
+  }
+  output.registry_owner_match_count = 0;
+  const auto base = reinterpret_cast<std::uintptr_t>(entries);
+  for (std::uint32_t i = 0; i < count; ++i) {
+    const auto stride = static_cast<std::uintptr_t>(i) *
+                        kGuiContextOwnerRegistryEntryStride;
+    if (stride > std::numeric_limits<std::uintptr_t>::max() - base) {
+      output.registry_owner_unavailable_reason =
+          "frontend_owner_registry_entry_unreadable";
+      return false;
+    }
+    void *handler = nullptr;
+    if (!ReadAt(access, reinterpret_cast<const void *>(base + stride), 0,
+                handler)) {
+      output.registry_owner_unavailable_reason =
+          "frontend_owner_registry_entry_unreadable";
+      return false;
+    }
+    if (handler == nullptr) continue;
+    std::uint64_t handler_vtable_rva = 0;
+    if (!ReadVtableRva(access, module_base, handler, handler_vtable_rva)) {
+      output.registry_owner_unavailable_reason =
+          "frontend_owner_registry_entry_type_unreadable";
+      return false;
+    }
+    if (handler_vtable_rva != kFrontendOwnerVtableRvas[2]) continue;
+    std::uint64_t handler_type_rva = 0;
+    if (!ReadRttiTypeRva(access, module_base, handler, handler_type_rva) ||
+        handler_type_rva != kFrontendHandlerRttiTypeRva) {
+      output.registry_owner_unavailable_reason =
+          "frontend_owner_registry_handler_rtti_unverified";
+      return false;
+    }
+    void *view = nullptr;
+    if (!ReadAt(access, handler, 0x30, view)) {
+      output.registry_owner_unavailable_reason =
+          "frontend_owner_registry_view_pointer_unreadable";
+      return false;
+    }
+    if (view == nullptr) continue;
+    std::uint64_t view_vtable_rva = 0;
+    if (!ReadVtableRva(access, module_base, view, view_vtable_rva)) {
+      output.registry_owner_unavailable_reason =
+          "frontend_owner_registry_view_type_unreadable";
+      return false;
+    }
+    if (view_vtable_rva != kFrontendSetupViewVtableRva) continue;
+    std::uint64_t view_type_rva = 0;
+    if (!ReadRttiTypeRva(access, module_base, view, view_type_rva) ||
+        view_type_rva != kFrontendSetupViewRttiTypeRva) {
+      output.registry_owner_unavailable_reason =
+          "frontend_owner_registry_view_rtti_unverified";
+      return false;
+    }
+    void *view_root = nullptr;
+    if (!ReadAt(access, view, 0x78, view_root)) {
+      output.registry_owner_unavailable_reason =
+          "frontend_owner_registry_view_root_unreadable";
+      return false;
+    }
+    if (view_root != bookmarks_root) continue;
+    ++output.registry_owner_match_count;
+    setup_view = view;
+  }
+  if (output.registry_owner_match_count != 1) {
+    setup_view = nullptr;
+    output.registry_owner_unavailable_reason =
+        output.registry_owner_match_count == 0
+            ? "frontend_owner_registry_no_matching_bookmarks_view"
+            : "frontend_owner_registry_ambiguous_bookmarks_view";
     return false;
   }
   return true;
@@ -159,25 +295,77 @@ bool ProbeFrontendBookmarkModelV1(
   }
 
   const auto *application = chain[0];
-  void *frontend_orchestrator = nullptr;
-  void *wrapper = nullptr;
-  void *owner = nullptr;
-  void *setup_view = nullptr;
-  if (!ReadAt(access, application, 0x78, frontend_orchestrator) ||
-      !ReadAt(access, frontend_orchestrator, 0x10, wrapper) ||
-      !ReadAt(access, wrapper, 0x08, owner) ||
-      !ReadAt(access, owner, 0x30, setup_view) ||
-      !ReadVtableRva(access, environment.module_base, setup_view,
-                     output.setup_view_vtable_rva) ||
-      output.setup_view_vtable_rva != kFrontendSetupViewVtableRva) {
-    output.unavailable_reason = "frontend_setup_view_unverified";
-    return true;
+  constexpr std::array<std::size_t, 4> owner_offsets{0x78, 0x10, 0x08,
+                                                      0x30};
+  constexpr std::array<const char *, 4> unreadable_reasons{
+      "frontend_idler_pointer_unreadable",
+      "frontend_gfx_pointer_unreadable",
+      "frontend_handler_pointer_unreadable",
+      "frontend_setup_view_pointer_unreadable"};
+  constexpr std::array<const char *, 4> null_reasons{
+      "frontend_idler_pointer_null", "frontend_gfx_pointer_null",
+      "frontend_handler_pointer_null", "frontend_setup_view_pointer_null"};
+  constexpr std::array<const char *, 4> type_unreadable_reasons{
+      "frontend_idler_type_unreadable", "frontend_gfx_type_unreadable",
+      "frontend_handler_type_unreadable",
+      "frontend_setup_view_type_unreadable"};
+  constexpr std::array<const char *, 4> type_mismatch_reasons{
+      "frontend_idler_replaced", "frontend_gfx_replaced",
+      "frontend_handler_replaced", "frontend_setup_view_type_mismatch"};
+  std::array<void *, 4> owner_chain{};
+  const void *previous = application;
+  for (std::size_t i = 0; i < owner_chain.size(); ++i) {
+    if (!ReadAt(access, previous, owner_offsets[i], owner_chain[i])) {
+      output.direct_owner_unavailable_reason = unreadable_reasons[i];
+      break;
+    }
+    if (owner_chain[i] == nullptr) {
+      output.direct_owner_unavailable_reason = null_reasons[i];
+      break;
+    }
+    if (!ReadVtableRva(access, environment.module_base, owner_chain[i],
+                       output.owner_chain_vtable_rvas[i])) {
+      output.direct_owner_unavailable_reason = type_unreadable_reasons[i];
+      break;
+    }
+    (void)ReadRttiTypeRva(access, environment.module_base, owner_chain[i],
+                          output.owner_chain_rtti_type_rvas[i]);
+    if (i == owner_chain.size() - 1) {
+      output.setup_view_vtable_rva = output.owner_chain_vtable_rvas[i];
+    }
+    const auto expected_vtable =
+        i < kFrontendOwnerVtableRvas.size()
+            ? kFrontendOwnerVtableRvas[i]
+            : kFrontendSetupViewVtableRva;
+    if (output.owner_chain_vtable_rvas[i] != expected_vtable) {
+      output.direct_owner_unavailable_reason = type_mismatch_reasons[i];
+      break;
+    }
+    previous = owner_chain[i];
   }
-  void *view_root = nullptr;
-  if (!ReadAt(access, setup_view, 0x78, view_root) ||
-      view_root != bookmarks_root) {
-    output.unavailable_reason = "frontend_setup_view_root_mismatch";
-    return true;
+  void *setup_view = nullptr;
+  if (output.direct_owner_unavailable_reason.empty()) {
+    setup_view = owner_chain.back();
+    void *view_root = nullptr;
+    if (!ReadAt(access, setup_view, 0x78, view_root)) {
+      output.direct_owner_unavailable_reason =
+          "frontend_setup_view_root_unreadable";
+    } else if (view_root != bookmarks_root) {
+      output.direct_owner_unavailable_reason =
+          "frontend_setup_view_root_mismatch";
+    }
+  }
+  if (output.direct_owner_unavailable_reason.empty()) {
+    output.verified_owner_route = "app_idler_chain";
+  } else {
+    if (!ResolveRegisteredSetupView(access, environment.module_base,
+                                    chain[2], bookmarks_root, output,
+                                    setup_view)) {
+      output.unavailable_reason = output.registry_owner_unavailable_reason;
+      return true;
+    }
+    output.setup_view_vtable_rva = kFrontendSetupViewVtableRva;
+    output.verified_owner_route = "gui_context_registry";
   }
   output.setup_view_matches_bookmarks_root = true;
 
