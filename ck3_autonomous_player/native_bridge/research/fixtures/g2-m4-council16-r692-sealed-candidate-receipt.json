@@ -97,6 +97,15 @@
     "harness_commit_is_git_object": true,
     "harness_files_match_commit": true
   },
+  "integration_rebase": {
+    "work_harness_commit": "9cdb430849b98d9d807f10a23eca8c149b316630",
+    "rebased_harness_commit": "9dcd539f3fb6eca18df101e7ff82a598d704c031",
+    "work_tip": "9b219e47a364936ae526468726d9ebd24afd038c",
+    "rebased_work_tip": "46ea75004f131afdb17dcb443178aa67d87cac17",
+    "harness_path_count": 4,
+    "harness_path_blobs_equal": true,
+    "candidate_runtime_depends_on_external_git": false
+  },
   "next_live": {
     "round": "R692",
     "requires_unique_ck3_owner": true,
