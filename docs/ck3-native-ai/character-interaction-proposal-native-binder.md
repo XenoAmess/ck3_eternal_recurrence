@@ -32,19 +32,11 @@ Wrong build identity, address drift, capture drift, stale character generation, 
 
 The native fixture covers exact environment/configuration gates, a successful ordinary submit with both owned contexts cleaned, typed education reconstruction and DIPLO5 reread, typed capture/materialization drift, full-ID generation rejection, fresh Can Send false, command vtable mismatch, and queue rejection. It is compiled independently because this package deliberately does not modify shared CMake.
 
-```powershell
+```console
 # Run from a VS x64 developer shell, with separate output directories.
-cl /std:c++20 /Od /W4 /WX /permissive- /EHsc /I ck3_autonomous_player/native_bridge/include `
-  ck3_autonomous_player/native_bridge/src/character_interaction_proposal_action_core_v1.cpp `
-  ck3_autonomous_player/native_bridge/src/character_interaction_proposal_payload_source_extension_v1.cpp `
-  ck3_autonomous_player/native_bridge/src/character_interaction_proposal_native_binder_v1.cpp `
-  ck3_autonomous_player/native_bridge/src/character_interaction_proposal_native_binder_v1_test.cpp
+cl /std:c++20 /Od /W4 /WX /permissive- /EHsc /I ck3_autonomous_player/native_bridge/include ck3_autonomous_player/native_bridge/src/character_interaction_proposal_action_core_v1.cpp ck3_autonomous_player/native_bridge/src/character_interaction_proposal_payload_source_extension_v1.cpp ck3_autonomous_player/native_bridge/src/character_interaction_proposal_native_binder_v1.cpp ck3_autonomous_player/native_bridge/src/character_interaction_proposal_native_binder_v1_test.cpp
 
-cl /std:c++20 /O2 /DNDEBUG /W4 /WX /permissive- /EHsc /I ck3_autonomous_player/native_bridge/include `
-  ck3_autonomous_player/native_bridge/src/character_interaction_proposal_action_core_v1.cpp `
-  ck3_autonomous_player/native_bridge/src/character_interaction_proposal_payload_source_extension_v1.cpp `
-  ck3_autonomous_player/native_bridge/src/character_interaction_proposal_native_binder_v1.cpp `
-  ck3_autonomous_player/native_bridge/src/character_interaction_proposal_native_binder_v1_test.cpp
+cl /std:c++20 /O2 /DNDEBUG /W4 /WX /permissive- /EHsc /I ck3_autonomous_player/native_bridge/include ck3_autonomous_player/native_bridge/src/character_interaction_proposal_action_core_v1.cpp ck3_autonomous_player/native_bridge/src/character_interaction_proposal_payload_source_extension_v1.cpp ck3_autonomous_player/native_bridge/src/character_interaction_proposal_native_binder_v1.cpp ck3_autonomous_player/native_bridge/src/character_interaction_proposal_native_binder_v1_test.cpp
 
 py -B ck3_autonomous_player/native_bridge/research/verify_character_interaction_proposal_native_binder_v1.py --exe "<CK3>/binaries/ck3.exe"
 py -B -O ck3_autonomous_player/native_bridge/research/verify_character_interaction_proposal_native_binder_v1.py --exe "<CK3>/binaries/ck3.exe"

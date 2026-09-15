@@ -62,7 +62,7 @@ and non-owner execution fail as transport errors.
 
 Focused static acceptance, which never starts or attaches to CK3:
 
-```powershell
+```console
 py ck3_autonomous_player/native_bridge/research/test_government_runtime_adapter_bridge_binder_v1_standalone.py
 py -O ck3_autonomous_player/native_bridge/research/test_government_runtime_adapter_bridge_binder_v1_standalone.py
 ```
