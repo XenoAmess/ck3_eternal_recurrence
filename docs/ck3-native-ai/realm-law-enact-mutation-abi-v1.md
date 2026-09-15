@@ -102,7 +102,7 @@ registry entry `0x2FF3` names the command `add_law`.
 
 Run the read-only executable verifier in both Python modes:
 
-```powershell
+```console
 py ck3_autonomous_player/native_bridge/research/verify_realm_law_enact_mutation_v1.py --exe "Crusader Kings III/binaries/ck3.exe"
 py -O ck3_autonomous_player/native_bridge/research/verify_realm_law_enact_mutation_v1.py --exe "Crusader Kings III/binaries/ck3.exe"
 ```
