@@ -104,6 +104,7 @@ Fixture Scene() {
   f.Put(kModule + 0x570C410, std::uintptr_t{0x500000});
   f.Put(kModule + 0x570C3F8, std::uintptr_t{0x510000});
   f.Put(kModule + 0x57BFBA8, std::uintptr_t{0x900000});
+  f.Put(kModule + 0x570C108, std::uintptr_t{0xD00000});
   f.Put(kModule + 0x57BFFF8, std::uintptr_t{0xA00000});
   f.Put(kModule + 0x57BFFD0, std::uintptr_t{0xC00000});
   f.Put(kModule + 0x4FE7EE0, kActor);
@@ -145,22 +146,28 @@ Fixture Scene() {
   f.Put(0x720000 + kProvince * 8, std::uintptr_t{0x700000});
   f.Put(0x700000 + 0x10, kProvince);
   f.Put(0x700000 + 0x620 + 0x24, std::int32_t{2});
-  // The R722-style CHoldingView mode-0 list is empty although the exact
-  // county CBuildingType registry contains two stock definitions.
+  // The R722-style CHoldingView mode-0 list is empty although the stock
+  // CBuildingType manager vector contains two definitions.
   f.Put(0x900000 + 0x628, std::uintptr_t{0x910000});
   f.Put(0x910000 + 0x60, std::uintptr_t{0});
   f.Put(0x910000 + 0x6C, std::int32_t{0});
-  f.Put(0xA00000 + 0x68, std::uintptr_t{0xA10000});
-  f.Put(0xA00000 + 0x70, std::int32_t{2});
-  f.Put(0xA00000 + 0x74, std::int32_t{2});
-  f.Put(0xA10000, std::uintptr_t{0xB00000});
-  f.Put(0xA10008, std::uintptr_t{0xB10000});
+  f.Put(0xD00000 + 0x68, std::uintptr_t{0xD10000});
+  f.Put(0xD00000 + 0x70, std::int32_t{2});
+  f.Put(0xD00000 + 0x74, std::int32_t{2});
+  f.Put(0xD10000, std::uintptr_t{0xB00000});
+  f.Put(0xD10008, std::uintptr_t{0xB10000});
   f.Put(0xB00000, kModule + 0x44046C0);
   f.Put(0xB00000 + 0x10, std::int32_t{11});
   f.Put(0xB10000, kModule + 0x44046C0);
   f.Put(0xB10000 + 0x10, std::int32_t{22});
-  // R730's adjacent wrong registry contains a CDomicileBuildingType peer.
-  // A correct county read cannot select, cast, or skip through this source.
+  // R735's wrong registry is a CCourtTypeSetting peer. Its first type
+  // cannot replace the manager's typed CBuildingType definitions.
+  f.Put(0xA00000 + 0x68, std::uintptr_t{0xA10000});
+  f.Put(0xA00000 + 0x70, std::int32_t{7});
+  f.Put(0xA00000 + 0x74, std::int32_t{7});
+  f.Put(0xA10000, std::uintptr_t{0xA20000});
+  f.Put(0xA20000, kModule + 0x441EF38);
+  // R730's other wrong registry contains a CDomicileBuildingType peer.
   f.Put(0xC00000 + 0x68, std::uintptr_t{0xC10000});
   f.Put(0xC00000 + 0x70, std::int32_t{1});
   f.Put(0xC00000 + 0x74, std::int32_t{1});
@@ -203,14 +210,29 @@ int main() {
   }
   {
     auto f = Scene();
-    f.Put(kModule + 0x57BFFF8, std::uintptr_t{0});
+    f.Put(kModule + 0x570C108, std::uintptr_t{0});
     auto r = ReadPlayerWorldBuildingDefinitionSourcesV1(
         kModule, true, f.Access(), {3, kProvince, 512, 8});
     Require(!r.source_available && r.failure ==
                 PlayerWorldBuildingFailureV1::registry_source &&
                 r.definition_identity_diagnostic.registry_count == -1 &&
                 f.native_checks == 0,
-            "domicile_peer_registry_cannot_substitute_county_source");
+            "court_and_domicile_peers_cannot_substitute_manager_source");
+  }
+  {
+    auto f = Scene();
+    f.Put(0xD10000, std::uintptr_t{0xA20000});
+    auto r = ReadPlayerWorldBuildingDefinitionSourcesV1(
+        kModule, true, f.Access(), {3, kProvince, 512, 8});
+    Require(!r.source_available && r.failure ==
+                PlayerWorldBuildingFailureV1::definition_identity &&
+                r.definition_identity_diagnostic.registry_count == 2 &&
+                r.definition_identity_diagnostic.failed_index == 0 &&
+                r.definition_identity_diagnostic.stage ==
+                    PlayerWorldDefinitionIdentityStageV1::vtable_mismatch &&
+                r.definition_identity_diagnostic.observed_vtable_rva ==
+                    0x441EF38 && f.native_checks == 0,
+            "court_type_peer_in_manager_is_red_not_building_legality");
   }
   {
     auto f = Scene();
@@ -248,7 +270,7 @@ int main() {
   }
   {
     auto f = Scene();
-    f.Put(0xA10008, std::uintptr_t{0});
+    f.Put(0xD10008, std::uintptr_t{0});
     auto r = ReadPlayerWorldBuildingDefinitionSourcesV1(
         kModule, true, f.Access(), {3, kProvince, 512, 8});
     Require(!r.source_available && r.failure ==

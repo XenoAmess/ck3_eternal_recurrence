@@ -91,11 +91,11 @@ struct PlayerWorldBuildingSourceRequestV1 final {
   std::int32_t max_legal_samples = 8;
 };
 
-// Source: stock GUI county CBuildingType refresh 0x176EFD5 calls accessor
-// 0xC8CE80 -> module+0x57BFFF8; +0x68/+0x74 is its pointer vector.
-// The adjacent 0xC8CEE0/module+0x57BFFD0 is a peer
-// CDomicileBuildingType registry, as R730 exact RTTI and paused vtable
-// showed. The callback must bind only exact 0x295CD60,
+// Source: stock county construction iterator 0x1922C52 calls manager getter
+// 0x864750 -> module+0x570C108, then reads manager+0x68/+0x74 vector.
+// R730 0xC8CEE0/module+0x57BFFD0 is peer CDomicileBuildingType;
+// R735 0xC8CE80/module+0x57BFFF8 is peer CCourtTypeSetting.
+// The callback must bind only exact 0x295CD60,
 // called by stock player GUIPotentialBuildingItem at 0x11A632E with
 // actor/Province/definition/slot and true,null stack arguments.
 [[nodiscard]] PlayerWorldBuildingSourceResultV1

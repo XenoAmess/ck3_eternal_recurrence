@@ -11,9 +11,10 @@
 namespace xar::ck3_11906 {
 namespace {
 
-// Stock GUI CBuildingType source refresh 0x176EFD5 calls 0xC8CE80.
-// Adjacent 0x57BFFD0/0xC8CEE0 is the peer CDomicileBuildingType registry.
-constexpr std::uintptr_t kWorldBuildingRegistrySlotRva = 0x57BFFF8;
+// Stock county construction iterator 0x1922C52 calls the CBuildingType
+// manager getter 0x864750, then reads its +0x68/+0x74 definition vector.
+// 0xC8CE80/0x57BFFF8 is the peer CCourtTypeSetting registry (R735).
+constexpr std::uintptr_t kWorldBuildingManagerSlotRva = 0x570C108;
 constexpr std::uintptr_t kBuildingTypePrimaryVtableRva = 0x44046C0;
 constexpr std::uintptr_t kExactExeImageSize = 0x5C2D000;
 constexpr std::uintptr_t kGameStateSlotRva = 0x570E068;
@@ -60,14 +61,14 @@ bool ReadWorldDefinitions(const CampaignRootAccessV1 &access,
                           PlayerWorldBuildingFailureV1 &failure,
                           PlayerWorldDefinitionIdentityDiagnosticV1 &diagnostic) {
   failure = PlayerWorldBuildingFailureV1::registry_source;
-  std::uintptr_t registry = 0;
+  std::uintptr_t manager = 0;
   std::uintptr_t data = 0;
   std::int32_t capacity = 0;
   count = 0;
-  if (!Read(access, module, kWorldBuildingRegistrySlotRva, registry) ||
-      registry == 0 || !Read(access, registry, kRegistryDataOffset, data) ||
-      !Read(access, registry, kRegistryCapacityOffset, capacity) ||
-      !Read(access, registry, kRegistryCountOffset, count) ||
+  if (!Read(access, module, kWorldBuildingManagerSlotRva, manager) ||
+      manager == 0 || !Read(access, manager, kRegistryDataOffset, data) ||
+      !Read(access, manager, kRegistryCapacityOffset, capacity) ||
+      !Read(access, manager, kRegistryCountOffset, count) ||
       capacity < 0 || count < 0 || count > capacity ||
       count > kMaxWorldDefinitions || (count > 0 && data == 0)) {
     return false;

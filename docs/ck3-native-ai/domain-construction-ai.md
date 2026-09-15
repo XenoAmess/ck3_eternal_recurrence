@@ -163,30 +163,40 @@ R730 report SHA-256 `FDBBC6512A6C422CDA3CEDD12DBB5DDC75C2D9C7B89CC58AE3E792C34A5
 private read SHA-256 `AB0022FBFFD3D5F8C081C39E7C3FBE02842A55A1F2C6D67813A39BA6D93741B6`；
 `definition_identity` RED、零动作和日期不变均保留。
 
-真正的原版县 `CBuildingType` 来源是相邻 accessor `0xC8CE80` → `module+0x57BFFF8`。
-stock GUI source refresh 在 `0x176EFD5` 调该 accessor，读取 `+0x68` 指针向量、`+0x74`
-计数，并在 `0x176F0A6` 起逐项把 definition 指针复制到 GUI source row；直接调用者为
-`0x14D0B94` 和 `0x14D1BB0`。原版建筑 command 读取定义对象 `+0x10` 的整数
-BuildingTypeID；`CBuildingType` RTTI、primary vtable `0x44046C0` 与 constructor 写入已按
-同一 EXE 锚定。玩家 GUI 的
+R735 同版 paused 复验再次使 `definition_identity` RED：此前选作“县表”的
+`0xC8CE80 → module+0x57BFFF8` 实际有 7 条；首条 vtable `0x441EF38` 的 exact RTTI 是
+`CCourtTypeSetting → CGameDatabaseObject → CPersistent`。`0x176EFD5` 的 GUI source refresh
+迭代的是 court type settings，不能当建筑来源。R735 report SHA-256
+`B58DFA61975BF8FC155113FE7F50716C18CC1944BD7427A85836C2A9D7E05A58`、private read
+SHA-256 `90CF5A4C1A1AC6D4EBC81C1887B57F18CF0BD51146D54F7BA53BF74D86059DF0`；
+同一玩家 `29829`、日期 `53178312`、native revision `3`，零动作，CK3 回收。
+
+真正的原版 `CBuildingType` 来源由构建调用链而非相邻注册表证明：县建筑迭代
+`0x1922C52` 调 manager getter `0x864750`，该 getter 读取
+`module+0x570C108`，迭代器随即读 manager `+0x68` 指针向量和 `+0x74` 计数，
+在 `0x1922C70` 起逐项消费定义对象。原版定义 parser 在 `0x2C605CE` 将
+`CBuildingType` 构造结果压入同一 manager `+0x68` 向量；typed ID 索引随后使用
+manager `+0x190`。`CBuildingType` RTTI、primary vtable `0x44046C0` 和
+constructor `0x2C543F0` 写入均按同一 EXE 锚定。玩家 GUI 的
 `GUIPotentialBuildingItem.CanConstruct` 在 `0x11A632E` 调最终判定 `0x295CD60`，输入是当前玩家
 CharacterID、当前 ProvinceID、同步借用的定义对象、施工 slot index；原版自身核对省份 slot 数。
-`player_world_building_definition_source_v1.cpp` 的私有修复改从正确县表取定义，继续逐条要求
+`player_world_building_definition_source_v1.cpp` 的私有修复改从 manager 向量取定义，继续逐条要求
 `CBuildingType` primary vtable 与非负、唯一 BuildingTypeID；未知类型仍 RED。同一 paused
-application-main 帧把县定义表与上面玩家直辖 Province 配对，只复制 pointer-free
+application-main 帧把 manager 定义向量与上面玩家直辖 Province 配对，只复制 pointer-free
 `TitleID/ProvinceID/BuildingTypeID/slot_index` 的**有界**最终合法性结果，明确记录截断。
 原版 `GetCost` 经 view/row 范围的 `0x119B930→0x2918AF0` 计算，世界向量和最终合法性
 结果均不给出实际费用；在获得玩家原生费用与资源后，建设策略和 typed 动作才有输入。
 ABI、exact span 哈希与未闭合费用分支见
 `native_bridge/research/player_world_building_definition_source_v1_abi.json`。接线已过 normal/optimized
-聚焦测试；R730 是旧错误来源的 live RED，正确来源仍待同版 paused 短复验。
+聚焦测试；R730 与 R735 都是错误来源的 live RED，manager 来源仍待同版 paused 短复验。
 公共 query/action 与 MCP 广告继续关闭；新增私有 receipt 不改变 `open_kaishek` 公开
 协议，未来公共只读 MCP 需独立版本合同和兼容适配。
 
 ```mermaid
 flowchart LR
-    H["R722/R730: six held barony/Province rows"] --> W["[static] county CBuildingType registry 0xC8CE80"]
+    H["R722/R730/R735: six held barony/Province rows"] --> W["[static] CBuildingType manager 0x864750"]
     D["R730: wrong domicile registry 0xC8CEE0"] -. "peer RTTI; RED, never county input" .-> W
+    T["R735: wrong court registry 0xC8CE80"] -. "peer RTTI; RED, never building input" .-> W
     Z["closed holding_view mode-0 count 0"] -. "GUI scoped; no legality conclusion" .-> W
     W -. "[unknown: corrected paused live identity]" .-> L{"stock player final legality"}
     L -->|true| P["pointer-free legal sample; bounded coverage"]

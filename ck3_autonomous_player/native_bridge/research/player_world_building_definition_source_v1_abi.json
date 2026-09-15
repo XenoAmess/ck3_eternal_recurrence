@@ -1,7 +1,7 @@
 {
   "contract": "g2-m4-player-world-building-definition-source-v1",
   "schema_version": 1,
-  "status": "r730-live-red-domicile-registry-misbinding-county-source-repair-static-pending",
+  "status": "r735-live-red-court-registry-misbinding-building-manager-source-repair-static-pending",
   "game_version": "1.19.0.6",
   "exe_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
   "read_only": true,
@@ -14,6 +14,9 @@
   "r730_world_report_sha256": "FDBBC6512A6C422CDA3CEDD12DBB5DDC75C2D9C7B89CC58AE3E792C34A594334",
   "r730_private_read_sha256": "AB0022FBFFD3D5F8C081C39E7C3FBE02842A55A1F2C6D67813A39BA6D93741B6",
   "r730_world_result": "same paused revision 3/date 53178312/player 29829 and immutable source pair; private registry count 1620, first index 0 vtable_mismatch observed 0x4172FA8, no final legality/action/date, CK3 reclaimed; definition_identity RED remains until corrected source paused live proof",
+  "r735_world_report_sha256": "B58DFA61975BF8FC155113FE7F50716C18CC1944BD7427A85836C2A9D7E05A58",
+  "r735_private_read_sha256": "90CF5A4C1A1AC6D4EBC81C1887B57F18CF0BD51146D54F7BA53BF74D86059DF0",
+  "r735_world_result": "same paused revision 3/date 53178312/player 29829 and immutable source pair; private registry count 7, first index 0 vtable_mismatch observed 0x441EF38, exact RTTI CCourtTypeSetting; no final legality/action/date, CK3 reclaimed. R730 and R735 definition_identity RED remain until true manager source paused live proof",
   "definition_identity_diagnostic": {
     "scope": "additive private read-only slot42 receipt only; a failure retains status unavailable and RED",
     "registry_count": "copied bounded count if registry header was valid; null otherwise",
@@ -34,20 +37,31 @@
     "interpretation": "the zero is a county-view mode-0 source reading; it is not a world building-definition count or no-legal-construction proof"
   },
   "world_source": {
-    "accessor_rva": "0xC8CE80",
-    "global_slot_rva": "0x57BFFF8",
+    "accessor_rva": "0x864750",
+    "global_slot_rva": "0x570C108",
     "vector_data_offset": "0x68",
     "vector_capacity_offset": "0x70",
     "vector_count_offset": "0x74",
-    "stock_gui_county_source_refresh_call_rva": "0x176EFD5",
-    "stock_gui_county_source_vector_rva": "0x176F06B",
-    "stock_gui_source_refresh_callers": ["0x14D0B94", "0x14D1BB0"],
+    "stock_county_iterator_getter_call_rva": "0x1922C52",
+    "stock_county_iterator_vector_read_rva": "0x1922C57",
+    "stock_constructor_manager_vector_insert_rva": "0x2C605CE",
     "element": "CBuildingType primary object; full scalar BuildingTypeID at +0x10",
     "type_descriptor_rva": "0x5089D20",
     "primary_col_rva": "0x4A7D890",
     "secondary_col_rva": "0x4A7D868",
     "primary_vtable_rva": "0x44046C0",
     "constructor_primary_vtable_write_rva": "0x2C543F0"
+  },
+  "r735_wrong_court_source": {
+    "accessor_rva": "0xC8CE80",
+    "global_slot_rva": "0x57BFFF8",
+    "stock_court_source_refresh_call_rva": "0x176EFD5",
+    "observed_first_vtable_rva": "0x441EF38",
+    "first_vtable_col_rva": "0x4A96730",
+    "type_descriptor_rva": "0x50CE260",
+    "type_name": "CCourtTypeSetting",
+    "hierarchy": ["CCourtTypeSetting", "CGameDatabaseObject", "CPersistent"],
+    "relation": "peer, not a subclass of CBuildingType; never pass these pointers to player county final legality"
   },
   "r730_wrong_domicile_source": {
     "accessor_rva": "0xC8CEE0",
@@ -66,7 +80,7 @@
     "arguments": [
       "same-frame played CharacterID",
       "directly held ProvinceID",
-      "borrowed CBuildingType pointer from exact stock county GUI registry",
+      "borrowed CBuildingType pointer from exact stock building manager vector",
       "bounded Province construction slot index",
       "stock true flag",
       "stock null context"
@@ -77,16 +91,18 @@
     "action": "none"
   },
   "exact_regions": [
-    {"name": "county_registry_accessor", "start_rva": "0xC8CE80", "end_rva_exclusive": "0xC8CED7", "sha256": "6FE5218B5B72E0DAF921DB3FDC8E06DF431C596D3AA1AE26E0A8F675EA48937E"},
-    {"name": "county_gui_source_refresh_call", "start_rva": "0x176EFCB", "end_rva_exclusive": "0x176EFE6", "sha256": "4A84D3B9CA6DB84C580DC97234B7FFB57202D67729B25593EF3C4D643AEF0B05"},
-    {"name": "county_gui_source_vector", "start_rva": "0x176F06B", "end_rva_exclusive": "0x176F07F", "sha256": "32697474C3D83B405D799661070C044DAA9B093AEEF5740135E2734A6CBDE318"},
+    {"name": "building_manager_getter", "start_rva": "0x864750", "end_rva_exclusive": "0x8647A7", "sha256": "233C8008BA53A622B5AE65522A3D34DCF23760EF7187BF24448C1CADC62301DF"},
+    {"name": "county_building_iterator", "start_rva": "0x1922C52", "end_rva_exclusive": "0x1922C7C", "sha256": "A4461F501C1CD862E052550C17FF5BA2E90EEAE36E635BF6F20CB3097FCBA020"},
+    {"name": "building_parser_vector_insert", "start_rva": "0x2C605C7", "end_rva_exclusive": "0x2C605E0", "sha256": "8D9099E6D4B13FA0727D42A08D58E8EC1F69F180F0BCB43A914487CAADFD5718"},
+    {"name": "r735_court_registry_accessor", "start_rva": "0xC8CE80", "end_rva_exclusive": "0xC8CED7", "sha256": "6FE5218B5B72E0DAF921DB3FDC8E06DF431C596D3AA1AE26E0A8F675EA48937E"},
+    {"name": "r735_court_vtable_col", "start_rva": "0x441EF30", "end_rva_exclusive": "0x441EF40", "sha256": "D16D5FDC1271CDB0F1B8AA78CF53A75EF64E854DA0F1D5F878EC8C10828CED69"},
     {"name": "domicile_registry_accessor_for_r730", "start_rva": "0xC8CEE0", "end_rva_exclusive": "0xC8CF37", "sha256": "731705B71FCCF14FA80510E052D6CC46676EC7AF3EC81B12DFBE351D221B1E69"},
     {"name": "domicile_vtable_col_for_r730", "start_rva": "0x4172FA0", "end_rva_exclusive": "0x4172FB0", "sha256": "E2E80CDE768FAA2CABB34EAF7A75560496B781FCCAA9C5B44A09615AAE323C40"},
     {"name": "building_type_ctor", "start_rva": "0x2C543F0", "end_rva_exclusive": "0x2C5440E", "sha256": "FACE83F62F26D90027F9AA8B0D34868B08D9D8695C3B946EA07911579B9AA0CE"},
     {"name": "gui_final_predicate_call", "start_rva": "0x11A6308", "end_rva_exclusive": "0x11A6333", "sha256": "B3B8CD7E8E28C60A0D88EA7B431207E6C067A152D17260C93FA8E1D4C4D2E27E"},
     {"name": "gui_cost_callback", "start_rva": "0x11A6530", "end_rva_exclusive": "0x11A6559", "sha256": "60EA4BD2C73866AC4BBBB45DD76EB4FFAB1FECC207D423935D16B027984257BD"}
   ],
-  "next_live_gate": "from a distinct final-master private-ON DLL and owner-controlled same R697 standard-feudal paired source, read exact 0xC8CE80/module+0x57BFFF8 county CBuildingType registry on one paused revision, verify bounded count and copied BuildingTypeID/TitleID/ProvinceID rows plus at least one true stock player final-legality sample or explicitly retain evidence_insufficient; any definition identity mismatch stays RED. Zero game action/date/UI, tree reclaimed, cost/action/ad false. R730 wrong-domicile RED closes only after corrected source independently succeeds on paused live",
+  "next_live_gate": "from a distinct final-master private-ON DLL and owner-controlled same R697 standard-feudal paired source, read exact 0x864750/module+0x570C108 CBuildingType manager+0x68/+0x74 vector on one paused revision, verify bounded count and copied BuildingTypeID/TitleID/ProvinceID rows plus at least one true stock player final-legality sample or explicitly retain evidence_insufficient; any definition identity mismatch stays RED. Zero game action/date/UI, tree reclaimed, cost/action/ad false. R730 domicile and R735 court RED close only after true manager source independently succeeds on paused live",
   "next_cost_gate": "obtain stock exact player row/view GetCost or independent cost evaluator after a typed holding_view open path; verify native costs before any construction policy/action",
   "open_kaishek_mcp": "private additive receipt only; no current public consumer or adapter change. A public versioned read-only MCP query plus compatibility mapping is required before public registration"
 }
