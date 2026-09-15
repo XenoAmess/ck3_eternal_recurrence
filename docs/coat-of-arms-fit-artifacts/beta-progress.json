@@ -1,6 +1,6 @@
 {
   "schema": "ck3-coa-beta-progress-v1",
-  "updatedAt": "2026-09-15T21:27:00+08:00",
+  "updatedAt": "2026-09-15T21:36:00+08:00",
   "overallStatus": "in_progress",
   "workPackages": [
     {
@@ -134,7 +134,7 @@
             ],
             "resultPath": "docs/coat-of-arms-fit-artifacts/xenoamess-hunter-v6-pareto-pruned/",
             "keyMetrics": {
-                "candidateStatus": "browser_quality_passed_native_roundtrip_pending",
+                "candidateStatus": "browser_quality_and_native_text_roundtrip_passed",
                 "sourceWidth": 1024,
                 "sourceHeight": 1024,
                 "pyramidResolutions": [
@@ -168,7 +168,18 @@
                 "syntheticMixedBrushBenefitTest": "passed",
                 "primaryNonRegressionSelectionTest": "passed",
                 "wp3EdgeImprovementGate": "passed",
-                "nativeRoundTrip": "pending",
+                "nativeRoundTrip": "passed",
+                "nativeInputBytes": 262138,
+                "nativeInputBlocks": 297,
+                "nativeInputInstances": 1003,
+                "nativeChunkCount": 6,
+                "nativeCopyBytes": 149612,
+                "nativeCopyBlocks": 297,
+                "nativeCopyInstances": 1003,
+                "nativeSemanticChecksPassed": 9,
+                "nativeElapsedSeconds": 232.966,
+                "nativeRawReportSha256": "27EA4F9A7CDD80A8B9BDB182DF96EB4C37B9DA56DF123EF518464254EB42611D",
+                "nativeSummarySha256": "324761027BEAC32168C47ABB2526BEA109BF7A422A206494DDA1AB5BEB41D052",
                 "paretoPrune": "passed"
             },
             "blockers": []

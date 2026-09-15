@@ -1,0 +1,75 @@
+{
+  "schema": "ck3-coa-native-roundtrip-summary-v1",
+  "status": "passed",
+  "run": "mcp-hunter-v6-pareto-large-source-live14",
+  "repositoryHead": "15a8aa76447e982fe0cdcd9ff75ae58220845071",
+  "game": {
+    "version": "1.19.0.6",
+    "executableSha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86"
+  },
+  "bridge": {
+    "dllSha256": "9DDC30CAF4373F4370E597DE42A3FADE5DC70AE597511D6654BBC13D4D14C987",
+    "injectorSha256": "880885ABBF26C0D4147CFB55B70C5608B581F40C4229099D44A610B5CD589137"
+  },
+  "transport": {
+    "protocol": "coat-of-arms-source-upload-v2",
+    "chunkEncoding": "base64",
+    "chunkCount": 6,
+    "chunkBytes": [49152, 49152, 49152, 49152, 49152, 16378]
+  },
+  "input": {
+    "utf8Bytes": 262138,
+    "lines": 9106,
+    "sha256": "CEFFC1E116BDD335ACECF28789A05BE3B0E1A8CA8680399A9C1E1D8734BF9EF7",
+    "logicalLayers": 297,
+    "coloredEmblemBlocks": 297,
+    "instances": 1003,
+    "semanticProjectionSha256": "1F26C1D8EA82A6AFFCDC83D4A851A0590AC58813D595548F9023E49948DDE950"
+  },
+  "nativeCopy": {
+    "utf8Bytes": 149612,
+    "lines": 8103,
+    "sha256": "5DB3DB6F3CDA32450D3D0ACCCFC63ACA471E4DA598777DB57327915B3C27E249",
+    "logicalLayers": 297,
+    "coloredEmblemBlocks": 297,
+    "instances": 1003,
+    "semanticProjectionSha256": "04482FB8ECB0C510C8432B324F90F3D8821A637EA8EE0ADAB91830CFDD1B2724"
+  },
+  "semanticChecks": {
+    "patterns": true,
+    "textures": true,
+    "colors": true,
+    "masks": true,
+    "positions": true,
+    "scales": true,
+    "rotations": true,
+    "depths": true,
+    "parents": true
+  },
+  "normalization": {
+    "description": "CK3 Copy omits all explicit zero rotations; semantic comparison restores the default-zero meaning.",
+    "inputRotationFields": 1003,
+    "nativeCopyRotationFields": 0,
+    "rawTextHashEqualityRequired": false
+  },
+  "interactionPolicy": {
+    "mcpOnly": true,
+    "usesOcr": false,
+    "usesKeyboard": false,
+    "usesMouse": false
+  },
+  "steamOffline": true,
+  "elapsedSeconds": 232.966,
+  "cleanup": {
+    "sharedSlotReleased": true,
+    "processTreeGone": true,
+    "finalCk3Processes": 0,
+    "ok": true
+  },
+  "rawReport": {
+    "repositoryIgnoredPath": "artifacts/coa-clipboard-probe-2026-09-08/mcp-hunter-v6-pareto-large-source-live14.json",
+    "bytes": 2109537,
+    "sha256": "27EA4F9A7CDD80A8B9BDB182DF96EB4C37B9DA56DF123EF518464254EB42611D"
+  },
+  "nativeFramebufferComparison": "pending-mcp-capability"
+}

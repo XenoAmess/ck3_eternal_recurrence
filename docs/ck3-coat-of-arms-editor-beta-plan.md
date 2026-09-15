@@ -31,6 +31,10 @@ Pareto 质量剪枝现已通过：在 exact 固定点上继续删除 3 个可见
 [`xenoamess-hunter-v6-pareto-pruned`](coat-of-arms-fit-artifacts/xenoamess-hunter-v6-pareto-pruned/README.md)。
 下一道晋级门禁为这份 262,138-byte 最终文本的 MCP v2 CK3 Apply/Copy；原生 framebuffer 仍是独立的像素证据缺口。
 
+该原生文本门禁现已通过：262,138-byte / 297 blocks / 1,003 instances 输入经 6 个分块 Apply，CK3 Copy 回读
+149,612 bytes / 297 blocks / 1,003 instances，九组语义字段全部一致。原生 Copy 省略显式零旋转，因此保留前后原文哈希并按
+默认零语义比较，不要求格式化后的原始字节相同。CK3 已退出且 Steam 保持离线；原生 framebuffer 仍单列为待补能力。
+
 ## 1. 不变约束
 
 - 正式 GitHub Pages 平台必须纯前端运行，不安装、启动或连接 CK3，也不依赖 Java、Quarkus、Python、Steam 或本机 MCP。

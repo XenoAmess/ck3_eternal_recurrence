@@ -24,4 +24,13 @@
 报告 [report.json](report.json) SHA-256 为
 `1158B3DA500B2CD8122AADD87DEEACA38B69F8C1D09742E62BE5A1F9A585A07F`。
 
+## CK3 原生文本闭环
+
+exact CK3 1.19.0.6 上的结构化 MCP v2 Apply → Copy 已通过。262,138-byte 输入分成 6 块；原生 Copy 为
+149,612 bytes。输入与回读均为 297 个 `colored_emblem` 块、1,003 个实例，九组语义序列全部一致。CK3 会省略显式
+`rotation = 0`，所以原始文本哈希按合同允许不同；默认零语义由专用比较器验证。完整紧凑 receipt 见
+[native-roundtrip-summary.json](native-roundtrip-summary.json)（SHA-256
+`324761027BEAC32168C47ABB2526BEA109BF7A422A206494DDA1AB5BEB41D052`）。原生 framebuffer/空间像素对照仍待 MCP 能力补齐，
+不能由文本闭环替代。
+
 复现：`pnpm exec playwright test e2e/reference-hunter-v6-pareto-prune.spec.ts`。
