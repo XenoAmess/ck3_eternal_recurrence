@@ -1,5 +1,7 @@
 #include "xar_bridge/council_composition_steward_candidates_binding_v1.hpp"
 
+#include "xar_bridge/council_composition_candidates_enrichment_v1.hpp"
+
 #include <array>
 #include <cassert>
 #include <cstddef>
@@ -13,6 +15,10 @@ namespace {
 using namespace xar::ck3_11906;
 using Failure = xar::game::CouncilCompositionStewardCandidatesFailureV1;
 using Result = xar::game::ReadCouncilCompositionStewardCandidatesResultV1;
+using EnrichmentFailure =
+    xar::game::CouncilCompositionCandidatesEnrichmentFailureV1;
+using EnrichmentResult =
+    xar::game::ReadCouncilCompositionCandidatesEnrichmentResultV1;
 
 constexpr std::uintptr_t kModuleBase = 0x0000000140000000ULL;
 constexpr std::int32_t kOwnerId = 29829;
@@ -49,8 +55,11 @@ struct TestContext {
   std::vector<std::byte> task_slots;
   std::array<std::int32_t, 1> active_task_ids{kTaskId};
 
-  std::array<std::array<std::byte, 0x30>, 3> candidates{};
+  std::array<std::byte, 0x100> incumbent{};
+  std::int32_t incumbent_id = 33433;
+  std::array<std::array<std::byte, 0x100>, 3> candidates{};
   std::array<std::int32_t, 3> candidate_ids{33888, 30784, 33437};
+  std::array<std::int32_t, 3> candidate_stewardship{14, 27, 19};
   std::array<std::uintptr_t, 3> candidate_pointers{};
 
   TestContext() : task_slots((static_cast<std::size_t>(kTaskId) + 1U) * 0x10) {
@@ -77,6 +86,8 @@ struct TestContext {
     Put(task, 0x10, kTaskId);
     void *type = task_type.data();
     Put(task, 0x18, type);
+    Put(task, kCouncilCompositionActiveTaskIncumbentIdOffsetV1,
+        incumbent_id);
     Put(task, 0x3C, kOwnerId);
     void *position = position_type.data();
     Put(task_type, 0x38, position);
@@ -90,8 +101,15 @@ struct TestContext {
                     0x08,
                 &task_pointer, sizeof(task_pointer));
 
+    Put(incumbent, kCouncilCompositionCharacterIdentityOffsetV1,
+        incumbent_id);
+    Put(incumbent, kCouncilCompositionCharacterStewardshipOffsetV1,
+        std::int32_t{12});
     for (std::size_t index = 0; index < candidates.size(); ++index) {
       Put(candidates[index], 0x18, candidate_ids[index]);
+      Put(candidates[index],
+          kCouncilCompositionCharacterStewardshipOffsetV1,
+          candidate_stewardship[index]);
       candidate_pointers[index] =
           reinterpret_cast<std::uintptr_t>(candidates[index].data());
     }
@@ -156,6 +174,10 @@ bool ResolveCharacter(void *context, std::uintptr_t module_base,
     return false;
   if (full_id == kOwnerId) {
     character = reinterpret_cast<std::uintptr_t>(test.owner.data());
+    return true;
+  }
+  if (full_id == test.incumbent_id) {
+    character = reinterpret_cast<std::uintptr_t>(test.incumbent.data());
     return true;
   }
   for (std::size_t index = 0; index < test.candidate_ids.size(); ++index) {
@@ -273,9 +295,9 @@ int main() {
     TestContext test;
     BoundFixture bound(test);
     xar::game::CouncilCompositionStewardCandidatesV1 output{};
-    assert(ReadCouncilCompositionStewardCandidatesV1(
-               bound.environment, bound.access, Request(), output) ==
-           Result::available);
+    const auto result = ReadCouncilCompositionStewardCandidatesV1(
+        bound.environment, bound.access, Request(), output);
+    assert(result == Result::available);
     assert(output.candidate_count == 3);
     assert(output.candidates[0].character_id == 30784);
     assert(output.candidates[0].native_collection_ordinal == 1);
@@ -289,6 +311,45 @@ int main() {
     assert(test.producer_count == 1);
     assert(test.release_count == 1);
     assert(!bound.state.transaction_active);
+    CouncilCompositionCandidatesEnrichmentAccessV1 enrichment_access{};
+    assert(BindCouncilCompositionCandidatesEnrichmentAccessV1(
+        bound.state, enrichment_access));
+    CouncilCompositionStewardCandidatesFrameV1 rebound{};
+    assert(enrichment_access.capture_frame(enrichment_access.context,
+                                           rebound));
+    assert(rebound.active_task ==
+           reinterpret_cast<std::uintptr_t>(test.task.data()));
+    std::int32_t observed_owner = -1;
+    assert(enrichment_access.read_memory(
+        enrichment_access.context, test.task.data() + 0x3C, &observed_owner,
+        sizeof(observed_owner)));
+    assert(observed_owner == kOwnerId);
+    std::uintptr_t resolved = 0;
+    assert(enrichment_access.resolve_character(
+        enrichment_access.context, test.candidate_ids[1], resolved));
+    assert(resolved == test.candidate_pointers[1]);
+    CouncilCompositionCandidatesEnrichmentEnvironmentV1
+        enrichment_environment{
+            true,
+            kCouncilCompositionCandidatesEnrichmentExecutableSha256V1};
+    CouncilCompositionCandidatesPublicEnrichmentV1 enrichment{};
+    EnrichmentFailure enrichment_failure = EnrichmentFailure::none;
+    assert(ReadCouncilCompositionCandidatesEnrichmentV1(
+               enrichment_environment, enrichment_access, output, enrichment,
+               enrichment_failure) == EnrichmentResult::available);
+    assert(enrichment_failure == EnrichmentFailure::none);
+    assert(enrichment.incumbent_character_id == test.incumbent_id);
+    assert(enrichment.incumbent_main_skill == 12);
+    assert(enrichment.candidate_count == output.candidate_count);
+    assert(enrichment.candidates[0].main_skill == 27);
+    assert(enrichment.candidates[1].main_skill == 19);
+    assert(enrichment.candidates[2].main_skill == 14);
+    xar::game::CouncilCompositionCandidatesPublicV1 public_output{};
+    assert(ProjectCouncilCompositionCandidatesPublicV1(
+               output, enrichment, public_output) ==
+           ProjectCouncilCompositionCandidatesPublicResultV1::available);
+    assert(public_output.incumbent_main_skill.value == 12);
+    assert(public_output.readiness.ready);
   }
 
   {

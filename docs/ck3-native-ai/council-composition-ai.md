@@ -731,8 +731,8 @@ capability is `game.query.council-composition-candidates-v1`; its result schema
 is `xar.ck3.council-composition-candidates/v1`. This package defines and tests
 the public typed projection, wire serializer and same-frame join. It does not
 register a bridge command, advertise the capability, add an MCP method or claim
-live evidence. Those steps remain gated on a GREEN private reader result and a
-real native enrichment binding.
+live evidence. R693 has since closed the private reader gate; runtime registration and public
+live evidence remain gated on the real native enrichment binding.
 
 The v1 coverage remains exactly `councillor_steward`. It joins one successful
 private `gui_eligibility_mode=true` candidate vector with incumbent and
@@ -764,9 +764,65 @@ Native pointers, raw producer rows and a native AI score never enter the wire.
 
 The machine-readable contract is
 `research/council_composition_candidates_public_v1_abi.json`. Promotion from
-static-ready projection to production observation still requires: a GREEN
-private reader on this exact build; a native same-frame incumbent and
-stewardship enrichment producer; runtime command/capability registration; one
-paused public-query artifact; and formal policy consumption through action and
-postcondition verification. Until then the overall council primitive remains
+static-ready projection to production observation now requires runtime
+command/capability registration, one paused public-query artifact, and formal
+policy consumption through action and postcondition verification. R693 supplied
+the private reader prerequisite, and COUNCIL21 supplies the static native
+enrichment producer. Until then the overall council primitive remains
 pending live evidence.
+
+## COUNCIL21: exact-build same-frame incumbent and stewardship enrichment
+
+R693 closes the private candidate reader only: it proves that the exact
+GUI-mode provider returns 11 full CharacterIDs. A formal replacement policy
+also needs the occupied steward's skill and every candidate's stewardship in
+the same paused observation. The private provider excludes the incumbent, so
+the policy cannot infer the incumbent's skill from its candidate rows.
+
+COUNCIL21 reuses two already frozen exact-build readers. The active task stores
+the incumbent full CharacterID at `ActiveCouncilTask+0x38`; `-1` is vacancy.
+The Character skill registration and consumers establish the six signed
+`int32` skill points at `CCharacter+0xD4`, with `stewardship=2`, hence
+`CCharacter+0xDC`. Both occupied incumbent and candidate pointers must
+roundtrip through their full CharacterID before this field is read. No new RVA,
+script reconstruction or native AI score is introduced.
+
+`ReadCouncilCompositionCandidatesEnrichmentV1` is application-main and paused
+only. It accepts one available private result, captures the exact steward frame,
+checks snapshot/revisions/date/owner/position, reads incumbent and candidate
+skills, then captures the complete frame again. Thread loss, identity failure,
+unreadable or negative skill, frame mismatch or drift returns no enrichment.
+The runtime caller must invoke it immediately after the private reader within
+the same application-main query execution; a later campaign-root snapshot is
+not an acceptable substitute.
+
+The existing exact-build steward binding now exposes
+`BindCouncilCompositionCandidatesEnrichmentAccessV1`. It is admitted only
+after the private vector has been released and the steward frame remains
+bound. It supplies the enrichment core with the same `CaptureFrameThunk` and
+`IsMainThreadThunk`, plus the binding's exact memory reader and Character
+resolver; those callbacks fail if the frame is unbound, the vector transaction
+is still active, or application-main ownership is lost. The focused binding
+fixture executes the complete static chain: private read and release → bind
+enrichment access → read occupied incumbent and all candidate stewardship
+values → project public v1.
+
+Before first registration, public v1 was corrected to expose
+`position.incumbent_main_skill={key:"stewardship",value}|null` and readiness
+`incumbent_main_skill_ready`. Vacancy requires null; an occupied seat requires
+a real non-negative same-frame value, otherwise the whole result is
+`incumbent_main_skill_unready`. This is a pre-release contract correction:
+the capability has never been registered, advertised or observed live, so the
+schema remains v1.
+
+The native enrichment and projection are now static-ready with focused fixture
+coverage. Runtime command/capability registration, one paused public-query
+artifact, semantic assignment, postcondition verification and formal strategy
+consumption remain outstanding. This package adds no CK3 live evidence and
+does not change the whole-game `1/8` milestone result.
+
+The unique next observation blocker is narrow: one public bridge query must
+run the already bound private read, enrichment read and projection
+consecutively in its application-main executor, then publish a paused artifact.
+Until that registration and live run occur, COUNCIL21 is not a production
+observation surface.

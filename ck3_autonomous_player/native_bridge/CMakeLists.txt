@@ -358,6 +358,7 @@ add_library(xar_ck3_bridge SHARED
   src/domain_construction_application_main_runtime_v1.cpp
   src/council_composition_candidate_observer_v1.cpp
   src/council_composition_candidate_observer_v1_serializer.cpp
+  src/council_composition_candidates_enrichment_v1.cpp
   src/council_composition_candidates_public_v1.cpp
   src/council_composition_candidates_public_v1_serializer.cpp
   src/ck3_11906.cpp
@@ -2383,6 +2384,50 @@ if(BUILD_TESTING)
   add_test(
     NAME xar_ck3_native_bridge_council_composition_candidates_public_v1
     COMMAND xar_ck3_council_composition_candidates_public_v1_test
+  )
+
+  add_executable(
+    xar_ck3_council_composition_steward_candidates_binding_v1_test
+    src/council_composition_steward_candidates_reader_v1.cpp
+    src/council_composition_steward_candidates_binding_v1.cpp
+    src/council_composition_candidates_enrichment_v1.cpp
+    src/council_composition_candidates_public_v1.cpp
+    src/council_composition_steward_candidates_binding_v1_test.cpp
+  )
+  target_include_directories(
+    xar_ck3_council_composition_steward_candidates_binding_v1_test
+    PRIVATE include)
+  target_compile_definitions(
+    xar_ck3_council_composition_steward_candidates_binding_v1_test PRIVATE
+    NOMINMAX WIN32_LEAN_AND_MEAN UNICODE _UNICODE)
+  if(MSVC)
+    target_compile_options(
+      xar_ck3_council_composition_steward_candidates_binding_v1_test
+      PRIVATE /W4 /WX /permissive- /EHsc /UNDEBUG)
+  endif()
+  add_test(
+    NAME xar_ck3_native_bridge_council_composition_steward_candidates_binding_v1
+    COMMAND xar_ck3_council_composition_steward_candidates_binding_v1_test
+  )
+
+  add_executable(xar_ck3_council_composition_candidates_enrichment_v1_test
+    src/council_composition_candidates_enrichment_v1.cpp
+    src/council_composition_candidates_public_v1.cpp
+    src/council_composition_candidates_enrichment_v1_test.cpp
+  )
+  target_include_directories(
+    xar_ck3_council_composition_candidates_enrichment_v1_test PRIVATE include)
+  target_compile_definitions(
+    xar_ck3_council_composition_candidates_enrichment_v1_test PRIVATE
+    NOMINMAX WIN32_LEAN_AND_MEAN UNICODE _UNICODE)
+  if(MSVC)
+    target_compile_options(
+      xar_ck3_council_composition_candidates_enrichment_v1_test
+      PRIVATE /W4 /WX /permissive- /EHsc /UNDEBUG)
+  endif()
+  add_test(
+    NAME xar_ck3_native_bridge_council_composition_candidates_enrichment_v1
+    COMMAND xar_ck3_council_composition_candidates_enrichment_v1_test
   )
 
   add_executable(xar_ck3_zhongguo_case_snapshot_v1_test

@@ -70,7 +70,8 @@
     "bridge_mailbox_glue_registered": false,
     "public_capability_registered": false,
     "production_query_live": false,
-    "planner_ready": false
+    "planner_ready": false,
+    "native_enrichment_access_adapter_bound": true
   },
   "unknown_or_excluded": [
     "other council positions",
@@ -79,5 +80,11 @@
     "public serialization and MCP schema",
     "semantic fire, reassign or swap actions"
   ],
-  "unique_next_integration_entry": "a separate glue work package may register these private sources and adapt the existing application-main campaign snapshot callback; it must not change this exact native object contract"
+  "unique_next_integration_entry": "a separate glue work package may register these private sources and adapt the existing application-main campaign snapshot callback; it must not change this exact native object contract",
+  "enrichment_access_adapter": {
+    "entry": "BindCouncilCompositionCandidatesEnrichmentAccessV1",
+    "precondition": "attached steward binding with released private vector and a bound steward frame",
+    "callbacks": "existing CaptureFrameThunk and IsMainThreadThunk plus exact binding read_memory and resolve_character operations",
+    "restriction": "callbacks fail outside application-main, without frame binding, or while the private vector transaction is active"
+  }
 }

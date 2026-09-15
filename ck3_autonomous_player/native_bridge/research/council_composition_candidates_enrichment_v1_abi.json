@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "private_key": "g2_council_composition_candidates_enrichment_v1",
+  "status": "static-ready-exact-build-read-only-runtime-registration-pending",
+  "visibility": "private-native-producer-for-public-v1",
+  "exact_build": {
+    "product_version": "1.19.0.6",
+    "executable_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86"
+  },
+  "input": {
+    "private_result": "one available g2_council_composition_steward_candidates_reader_v1 result",
+    "required_position_key": "councillor_steward",
+    "application_main_only": true,
+    "paused_only": true
+  },
+  "reused_exact_build_evidence": {
+    "incumbent": {
+      "source": "ActiveCouncilTask+0x38 signed full-generation CharacterID",
+      "vacancy_sentinel": -1,
+      "source_contract": "campaign_root_context_v1 council.active_task_layout",
+      "incumbent_leaf_rva": "0xA711F0",
+      "incumbent_leaf_sha256": "1AF11F60D6173AAC65266C116B11C7F6E82FEC74F8AAC6974ADEBD657ABB0FD0"
+    },
+    "stewardship": {
+      "source": "CCharacter+0xD4+4*2",
+      "offset": "0xDC",
+      "type": "signed int32 points",
+      "scale": 1,
+      "skill_enum": "diplomacy=0,martial=1,stewardship=2,intrigue=3,learning=4,prowess=5",
+      "source_contract": "combat-phase-events Character skill exact-build reader ABI"
+    },
+    "identity": {
+      "character_full_id_offset": "0x18",
+      "requirement": "every occupied incumbent and candidate pointer roundtrips through its full-generation CharacterID"
+    }
+  },
+  "transaction": {
+    "before": "capture the private steward frame and require exact snapshot/public revision/native revision/date/owner/position equality",
+    "reads": "resolve incumbent and every private candidate, then read stewardship using the frozen Character layout",
+    "after": "capture the complete steward frame again and require byte-semantic equality with the before frame",
+    "caller_rule": "invoke immediately after the private reader inside the same application-main query execution",
+    "failure_policy": "any invalid identity, unreadable or negative skill, thread loss, frame mismatch or drift returns no enrichment rows"
+  },
+  "output": {
+    "incumbent_character_id": "full signed CharacterID or -1 vacancy",
+    "incumbent_main_skill": "non-negative stewardship when occupied; -1 sentinel when vacant",
+    "candidate_rows": "exact private row order and ordinals, final_eligible=true from GUI-mode native provider, non-negative stewardship",
+    "same_frame_stable": true
+  },
+  "runtime_boundary": {
+    "bridge_query_registered": false,
+    "capability_advertised": false,
+    "mcp_registered": false,
+    "paused_public_query_live": false,
+    "formal_strategy_live": false
+  },
+  "binding_glue": {
+    "entry": "BindCouncilCompositionCandidatesEnrichmentAccessV1",
+    "source": "the attached exact-build steward binding used by the private R693 reader",
+    "provided_callbacks": [
+      "capture_frame",
+      "is_main_thread",
+      "read_memory",
+      "resolve_character"
+    ],
+    "fixture_chain": "private steward read -> release -> enrichment access bind -> incumbent/candidate stewardship read -> public v1 projection"
+  },
+  "unique_next_blocker": "register one public bridge query whose application-main executor runs the existing private read, enrichment binding/read, and public projection consecutively; then capture a paused public artifact"
+}

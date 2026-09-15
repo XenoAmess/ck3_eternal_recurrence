@@ -60,6 +60,10 @@ bool ValidAvailable(
       FixedString(value.position_key) !=
           kCouncilCompositionCandidatesPublicPositionKeyV1 ||
       value.vacant != (value.incumbent_character_id == -1) ||
+      (!value.vacant &&
+       (FixedString(value.incumbent_main_skill.key) !=
+            kCouncilCompositionCandidatesPublicMainSkillKeyV1 ||
+        value.incumbent_main_skill.value < 0)) ||
       value.action_route !=
           (value.vacant
                ? game::CouncilCompositionCandidateActionRouteV1::assign
@@ -70,6 +74,7 @@ bool ValidAvailable(
       !value.readiness.identity_ready ||
       !value.readiness.candidate_collection_ready ||
       !value.readiness.incumbent_ready ||
+      !value.readiness.incumbent_main_skill_ready ||
       !value.readiness.candidate_legality_ready ||
       !value.readiness.main_skill_ready ||
       !value.readiness.action_route_ready ||
@@ -133,6 +138,8 @@ void AppendReadiness(
   AppendBool(output, readiness.candidate_collection_ready);
   output += ",\"incumbent_ready\":";
   AppendBool(output, readiness.incumbent_ready);
+  output += ",\"incumbent_main_skill_ready\":";
+  AppendBool(output, readiness.incumbent_main_skill_ready);
   output += ",\"candidate_legality_ready\":";
   AppendBool(output, readiness.candidate_legality_ready);
   output += ",\"main_skill_ready\":";
@@ -209,6 +216,16 @@ std::string SerializeCouncilCompositionCandidatesPublicV1(
     output += "null";
   } else {
     AppendNumber(output, value.incumbent_character_id);
+  }
+  output += ",\"incumbent_main_skill\":";
+  if (value.vacant) {
+    output += "null";
+  } else {
+    output += "{\"key\":";
+    AppendString(output, FixedString(value.incumbent_main_skill.key));
+    output += ",\"value\":";
+    AppendNumber(output, value.incumbent_main_skill.value);
+    output.push_back('}');
   }
   output += ",\"vacant\":";
   AppendBool(output, value.vacant);

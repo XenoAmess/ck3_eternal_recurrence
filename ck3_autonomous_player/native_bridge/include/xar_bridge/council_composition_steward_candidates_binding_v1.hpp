@@ -9,6 +9,8 @@
 
 namespace xar::ck3_11906 {
 
+struct CouncilCompositionCandidatesEnrichmentAccessV1;
+
 inline constexpr std::string_view
     kCouncilCompositionStewardCandidatesBindingPrivateKeyV1 =
         "g2_council_composition_steward_candidates_binding_v1";
@@ -108,5 +110,12 @@ bool BindCouncilCompositionStewardCandidatesV1(
     CouncilCompositionStewardCandidatesBindingStateV1 &state,
     CouncilCompositionStewardCandidatesEnvironmentV1 &core_environment,
     CouncilCompositionStewardCandidatesAccessV1 &core_access) noexcept;
+
+// Reuses the exact native memory and Character resolver operations from an
+// attached steward binding after its private read has released the temporary
+// candidate vector. The returned access remains application-main/frame-bound.
+bool BindCouncilCompositionCandidatesEnrichmentAccessV1(
+    CouncilCompositionStewardCandidatesBindingStateV1 &state,
+    CouncilCompositionCandidatesEnrichmentAccessV1 &access) noexcept;
 
 } // namespace xar::ck3_11906

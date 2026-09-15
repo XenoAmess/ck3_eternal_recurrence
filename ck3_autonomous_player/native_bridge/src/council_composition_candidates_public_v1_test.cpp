@@ -53,6 +53,8 @@ ck3_11906::CouncilCompositionCandidatesPublicEnrichmentV1 Enrichment() {
   SetFixed(output.position_key, "councillor_steward");
   output.incumbent_character_id = -1;
   output.incumbent_ready = true;
+  output.incumbent_main_skill = -1;
+  output.incumbent_main_skill_ready = true;
   output.same_frame_stable = true;
   output.candidate_count = 2;
   output.candidates[0] = {30'784, 4, true,
@@ -94,6 +96,7 @@ void TestVacancyProjectionAndWire() {
          game::CouncilCompositionCandidatesPublicStatusV1::available);
   assert(output.vacant);
   assert(output.incumbent_character_id == -1);
+  assert(output.readiness.incumbent_main_skill_ready);
   assert(output.action_route ==
          game::CouncilCompositionCandidateActionRouteV1::assign);
   assert(output.candidate_count == 2);
@@ -114,7 +117,7 @@ void TestVacancyProjectionAndWire() {
   assert(wire.find(
              "\"capability\":\"game.query.council-composition-candidates-v1\"") !=
          std::string::npos);
-  assert(wire.find("\"incumbent_character_id\":null,\"vacant\":true,") !=
+  assert(wire.find("\"incumbent_character_id\":null,\"incumbent_main_skill\":null,\"vacant\":true,") !=
          std::string::npos);
   assert(wire.find("\"action_route\":\"assign\"") != std::string::npos);
   assert(wire.find(
@@ -129,17 +132,19 @@ void TestVacancyProjectionAndWire() {
 void TestReplacementProjection() {
   auto enrichment = Enrichment();
   enrichment.incumbent_character_id = 33'433;
+  enrichment.incumbent_main_skill = 12;
   const auto output =
       Project(PrivateResult(), enrichment, Result::available);
   assert(!output.vacant);
   assert(output.incumbent_character_id == 33'433);
+  assert(output.incumbent_main_skill.value == 12);
   assert(output.action_route ==
          game::CouncilCompositionCandidateActionRouteV1::replace);
   assert(output.candidates[0].action_route == output.action_route);
   const auto wire =
       ck3_11906::SerializeCouncilCompositionCandidatesPublicV1(output);
   assert(wire.find(
-             "\"incumbent_character_id\":33433,\"vacant\":false,\"action_route\":\"replace\"") !=
+             "\"incumbent_character_id\":33433,\"incumbent_main_skill\":{\"key\":\"stewardship\",\"value\":12},\"vacant\":false,\"action_route\":\"replace\"") !=
          std::string::npos);
 }
 
@@ -180,6 +185,19 @@ void TestEnrichmentAndBindingFailures() {
     enrichment.incumbent_character_id = 0;
     ExpectUnavailable(Project(PrivateResult(), enrichment, Result::unavailable),
                       Failure::incumbent_invalid);
+  }
+  {
+    auto enrichment = Enrichment();
+    enrichment.incumbent_main_skill_ready = false;
+    ExpectUnavailable(Project(PrivateResult(), enrichment, Result::unavailable),
+                      Failure::incumbent_main_skill_unready);
+  }
+  {
+    auto enrichment = Enrichment();
+    enrichment.incumbent_character_id = 33'433;
+    enrichment.incumbent_main_skill = -1;
+    ExpectUnavailable(Project(PrivateResult(), enrichment, Result::unavailable),
+                      Failure::incumbent_main_skill_unready);
   }
   {
     auto enrichment = Enrichment();

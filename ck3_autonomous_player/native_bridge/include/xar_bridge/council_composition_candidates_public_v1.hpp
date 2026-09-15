@@ -20,6 +20,7 @@ enum class CouncilCompositionCandidatesPublicFailureV1 : std::uint32_t {
   enrichment_unavailable,
   same_frame_binding_mismatch,
   incumbent_invalid,
+  incumbent_main_skill_unready,
   candidate_set_mismatch,
   candidate_eligibility_unready,
   candidate_main_skill_unready,
@@ -64,6 +65,7 @@ struct CouncilCompositionCandidatesPublicReadinessV1 {
   bool identity_ready = false;
   bool candidate_collection_ready = false;
   bool incumbent_ready = false;
+  bool incumbent_main_skill_ready = false;
   bool candidate_legality_ready = false;
   bool main_skill_ready = false;
   bool action_route_ready = false;
@@ -92,6 +94,7 @@ struct CouncilCompositionCandidatesPublicV1 {
   std::array<char, kCouncilCompositionStewardPositionKeyCapacityV1>
       position_key{};
   std::int32_t incumbent_character_id = -1;
+  CouncilCompositionCandidateMainSkillV1 incumbent_main_skill{};
   bool vacant = false;
   CouncilCompositionCandidateActionRouteV1 action_route =
       CouncilCompositionCandidateActionRouteV1::assign;
@@ -146,6 +149,8 @@ struct CouncilCompositionCandidatesPublicEnrichmentV1 {
       position_key{};
   std::int32_t incumbent_character_id = -1;
   bool incumbent_ready = false;
+  std::int32_t incumbent_main_skill = -1;
+  bool incumbent_main_skill_ready = false;
   bool same_frame_stable = false;
   std::uint32_t candidate_count = 0;
   std::array<CouncilCompositionCandidatePublicEnrichmentRowV1,

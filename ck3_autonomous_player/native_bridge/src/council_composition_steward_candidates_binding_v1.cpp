@@ -1,5 +1,7 @@
 #include "xar_bridge/council_composition_steward_candidates_binding_v1.hpp"
 
+#include "xar_bridge/council_composition_candidates_enrichment_v1.hpp"
+
 #include <algorithm>
 #include <array>
 #include <cstring>
@@ -593,6 +595,32 @@ bool ResolveCandidateThunk(void *context, std::int32_t character_id,
                                             candidate);
 }
 
+bool ReadEnrichmentMemoryThunk(void *context, const void *address,
+                               void *output, std::size_t size) noexcept {
+  auto &state =
+      *static_cast<CouncilCompositionStewardCandidatesBindingStateV1 *>(
+          context);
+  return state.attached && state.frame_bound && !state.transaction_active &&
+         address != nullptr && output != nullptr && size != 0 &&
+         IsMainThreadThunk(&state) &&
+         state.operations.read_memory(state.operation_context, address, output,
+                                      size);
+}
+
+bool ResolveEnrichmentCharacterThunk(void *context, std::int32_t character_id,
+                                     std::uintptr_t &character) noexcept {
+  auto &state =
+      *static_cast<CouncilCompositionStewardCandidatesBindingStateV1 *>(
+          context);
+  character = 0;
+  return state.attached && state.frame_bound && !state.transaction_active &&
+         character_id != -1 && character_id != 0 &&
+         IsMainThreadThunk(&state) &&
+         state.operations.resolve_character(state.operation_context,
+                                            state.module_base, character_id,
+                                            character);
+}
+
 } // namespace
 
 bool BindCouncilCompositionStewardCandidatesV1(
@@ -648,6 +676,25 @@ bool BindCouncilCompositionStewardCandidatesV1(
   core_access.read_candidate_pointer = &ReadCandidatePointerThunk;
   core_access.read_candidate_id = &ReadCandidateIdThunk;
   core_access.resolve_candidate = &ResolveCandidateThunk;
+  return true;
+}
+
+bool BindCouncilCompositionCandidatesEnrichmentAccessV1(
+    CouncilCompositionStewardCandidatesBindingStateV1 &state,
+    CouncilCompositionCandidatesEnrichmentAccessV1 &access) noexcept {
+  if (!state.attached || !state.frame_bound || state.transaction_active ||
+      state.upstream_capture_frame == nullptr ||
+      state.upstream_is_main_thread == nullptr ||
+      state.operations.read_memory == nullptr ||
+      state.operations.resolve_character == nullptr) {
+    return false;
+  }
+  access = {};
+  access.context = &state;
+  access.capture_frame = &CaptureFrameThunk;
+  access.is_main_thread = &IsMainThreadThunk;
+  access.read_memory = &ReadEnrichmentMemoryThunk;
+  access.resolve_character = &ResolveEnrichmentCharacterThunk;
   return true;
 }
 

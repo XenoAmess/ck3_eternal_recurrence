@@ -95,6 +95,13 @@ ProjectCouncilCompositionCandidatesPublicV1(
     Unavailable(output, Failure::incumbent_invalid);
     return Result::unavailable;
   }
+  const bool vacant = enrichment.incumbent_character_id == -1;
+  if (!enrichment.incumbent_main_skill_ready ||
+      (vacant && enrichment.incumbent_main_skill != -1) ||
+      (!vacant && enrichment.incumbent_main_skill < 0)) {
+    Unavailable(output, Failure::incumbent_main_skill_unready);
+    return Result::unavailable;
+  }
   if (enrichment.candidate_count != private_result.candidate_count ||
       enrichment.candidate_count >
           game::kCouncilCompositionStewardCandidatesMaximumRowsV1) {
@@ -123,7 +130,6 @@ ProjectCouncilCompositionCandidatesPublicV1(
     }
   }
 
-  const bool vacant = enrichment.incumbent_character_id == -1;
   const auto action_route =
       vacant ? game::CouncilCompositionCandidateActionRouteV1::assign
              : game::CouncilCompositionCandidateActionRouteV1::replace;
@@ -140,6 +146,14 @@ ProjectCouncilCompositionCandidatesPublicV1(
   output.owner_character_id = private_result.owner_character_id;
   output.position_key = private_result.position_key;
   output.incumbent_character_id = enrichment.incumbent_character_id;
+  if (!vacant) {
+    if (!SetFixed(output.incumbent_main_skill.key,
+                  kCouncilCompositionCandidatesPublicMainSkillKeyV1)) {
+      Unavailable(output, Failure::schema_invariant_failed);
+      return Result::unavailable;
+    }
+    output.incumbent_main_skill.value = enrichment.incumbent_main_skill;
+  }
   output.vacant = vacant;
   output.action_route = action_route;
   output.candidate_collection_complete = true;
@@ -163,6 +177,7 @@ ProjectCouncilCompositionCandidatesPublicV1(
   output.readiness.identity_ready = true;
   output.readiness.candidate_collection_ready = true;
   output.readiness.incumbent_ready = true;
+  output.readiness.incumbent_main_skill_ready = true;
   output.readiness.candidate_legality_ready = true;
   output.readiness.main_skill_ready = true;
   output.readiness.action_route_ready = true;
@@ -180,6 +195,8 @@ std::string_view CouncilCompositionCandidatesPublicFailureKeyV1(
   case enrichment_unavailable: return "enrichment_unavailable";
   case same_frame_binding_mismatch: return "same_frame_binding_mismatch";
   case incumbent_invalid: return "incumbent_invalid";
+  case incumbent_main_skill_unready:
+    return "incumbent_main_skill_unready";
   case candidate_set_mismatch: return "candidate_set_mismatch";
   case candidate_eligibility_unready: return "candidate_eligibility_unready";
   case candidate_main_skill_unready: return "candidate_main_skill_unready";

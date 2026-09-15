@@ -2,7 +2,7 @@
   "schema": "xar.ck3.council-composition-candidates/v1",
   "schema_version": 1,
   "capability": "game.query.council-composition-candidates-v1",
-  "stage": "static_ready_public_projection_pending_private_live_and_runtime_registration",
+  "stage": "static_ready_public_projection_and_native_enrichment_pending_runtime_registration_and_public_live",
   "exact_build": {
     "game_version": "1.19.0.6",
     "executable_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86"
@@ -43,6 +43,7 @@
     "position": {
       "position_key": "councillor_steward",
       "incumbent_character_id": "full signed int32 CharacterID or null",
+      "incumbent_main_skill": "{key: stewardship, value: non-negative int32} when occupied; null when vacant",
       "vacant": "bool",
       "action_route": "assign when vacant; replace when occupied"
     },
@@ -62,6 +63,7 @@
       "identity_ready",
       "candidate_collection_ready",
       "incumbent_ready",
+      "incumbent_main_skill_ready",
       "candidate_legality_ready",
       "main_skill_ready",
       "action_route_ready",
@@ -74,12 +76,13 @@
     "enrichment_unavailable",
     "same_frame_binding_mismatch",
     "incumbent_invalid",
+    "incumbent_main_skill_unready",
     "candidate_set_mismatch",
     "candidate_eligibility_unready",
     "candidate_main_skill_unready",
     "schema_invariant_failed"
   ],
-  "same_frame_rule": "private candidate vector, incumbent and each main skill value must be sampled in one application-main transaction with exact snapshot/revision/date/owner/position equality",
+  "same_frame_rule": "private candidate vector, incumbent, incumbent stewardship when occupied, and each candidate stewardship value must be sampled in one application-main query transaction with exact snapshot/revision/date/owner/position equality",
   "public_boundary": {
     "native_pointers_published": false,
     "raw_rows_published": false,
@@ -89,10 +92,20 @@
     "formal_strategy_live": false
   },
   "promotion_gate": [
-    "R693-or-later private steward reader live GREEN on the same exact build",
-    "native same-frame incumbent and stewardship enrichment binding",
     "runtime command/capability registration",
     "paused public query artifact",
     "formal strategy consumption and postcondition loop"
+  ],
+  "native_enrichment": {
+    "status": "static-ready exact-build read-only producer; runtime query registration pending",
+    "incumbent_source": "ActiveCouncilTask+0x38 full-generation CharacterID; -1 is a proven vacancy sentinel within an admitted private steward frame",
+    "skill_source": "CCharacter+0xDC signed int32 stewardship (CCharacter+0xD4 skill array, enum stewardship=2)",
+    "identity": "incumbent and candidate Character pointers must roundtrip through full-generation CharacterID storage",
+    "transaction": "application-main only; private snapshot identity checked before reads and the complete steward frame checked unchanged after reads",
+    "failure_policy": "any unreadable identity/skill, negative skill, frame mismatch or drift leaves the whole enrichment/public result unavailable"
+  },
+  "achieved_prerequisites": [
+    "R693 exact-build private steward reader production-live primitive GREEN; evidence manifest FC59D8D8F001B6B6F6A5ACD041EFBA78596F7D837A54819A8B3F3A2E3EAFABC4",
+    "exact-build same-frame incumbent and stewardship enrichment producer static-ready"
   ]
 }
