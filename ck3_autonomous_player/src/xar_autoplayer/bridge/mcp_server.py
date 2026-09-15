@@ -395,6 +395,27 @@ def _ck3_query_steward_develop_county_candidates_v1(
     )
 
 
+def _ck3_query_council_composition_candidates_v1(
+    service: GameplayBridgeService,
+    expected_snapshot_id: str,
+    public_revision: int,
+    native_revision: int,
+    date_raw: int,
+    owner_character_id: int,
+    position_key: str = "councillor_steward",
+) -> dict[str, object]:
+    """Read one exact paused steward-candidate frame without mutation."""
+
+    return service.query_council_composition_candidates_v1(
+        expected_snapshot_id=expected_snapshot_id,
+        public_revision=public_revision,
+        native_revision=native_revision,
+        date_raw=date_raw,
+        owner_character_id=owner_character_id,
+        position_key=position_key,
+    )
+
+
 def _ck3_change_steward_develop_county_task_v1(
     service: GameplayBridgeService,
     councillor_character_id: int,
@@ -1238,6 +1259,27 @@ def create_server(driver: GameplayBridgeDriver):
         return _ck3_query_campaign_root_context_v1(
             service,
             expected_revision,
+        )
+
+    @server.tool()
+    def ck3_query_council_composition_candidates_v1(
+        expected_snapshot_id: str,
+        public_revision: int,
+        native_revision: int,
+        date_raw: int,
+        owner_character_id: int,
+        position_key: str = "councillor_steward",
+    ) -> dict[str, object]:
+        """Read native steward candidates bound to one exact paused frame."""
+
+        return _ck3_query_council_composition_candidates_v1(
+            service,
+            expected_snapshot_id,
+            public_revision,
+            native_revision,
+            date_raw,
+            owner_character_id,
+            position_key,
         )
 
     @server.tool()

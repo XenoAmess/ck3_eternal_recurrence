@@ -56,6 +56,13 @@ from .bridge.event_window_context_contract import (
     QUERY_CURRENT_EVENT_WINDOW_CONTEXT_V1_STEP,
     normalize_current_event_window_context_v1,
 )
+from .bridge.council_composition_candidates_contract import (
+    ASSIGN_COUNCILLOR_V1_CAPABILITY,
+    QUERY_COUNCIL_COMPOSITION_CANDIDATES_V1_CAPABILITY,
+    QUERY_COUNCIL_COMPOSITION_CANDIDATES_V1_STEP,
+    STEWARD_POSITION_KEY,
+    normalize_council_composition_candidates_v1,
+)
 from .bridge.settlement_contract import ONE_LIFE_SETTLEMENT_CAPABILITY
 from .bridge.succession_transition_contract import (
     CONTINUE_AS_RECONCILED_SUCCESSOR_STEP,
@@ -2194,6 +2201,123 @@ def _same_frame_event_window_context(
         except ValueError:
             continue
     return None
+
+
+def _same_frame_council_composition_candidates_v1(
+    rows: list[dict[str, object]],
+    snapshot: dict[str, object] | None,
+) -> dict[str, object] | None:
+    """Recover only a complete Council19 observation for this paused frame."""
+
+    if not isinstance(snapshot, dict) or snapshot.get("paused") is not True:
+        return None
+    snapshot_id = snapshot.get("snapshot_id")
+    public_revision = snapshot.get("revision")
+    native_revision = snapshot.get("native_revision")
+    date_raw = snapshot.get("date_raw")
+    played_character = snapshot.get("played_character")
+    owner_character_id = (
+        played_character.get("character_id")
+        if isinstance(played_character, dict)
+        else None
+    )
+    for row in reversed(rows):
+        if (
+            _effective_command(row)
+            != QUERY_COUNCIL_COMPOSITION_CANDIDATES_V1_STEP
+            or row.get("ok") is not True
+        ):
+            continue
+        result = _effective_command_result(row)
+        payload = (
+            result.get("council_composition_candidates")
+            if isinstance(result, dict)
+            else None
+        )
+        if not (
+            isinstance(result, dict)
+            and result.get("step")
+            == QUERY_COUNCIL_COMPOSITION_CANDIDATES_V1_STEP
+            and result.get("accepted") is True
+            and result.get("status") == "available"
+            and result.get("queried_snapshot_id") == snapshot_id
+            and result.get("queried_revision") == public_revision
+            and result.get("queried_native_revision") == native_revision
+        ):
+            continue
+        try:
+            return normalize_council_composition_candidates_v1(
+                payload,
+                expected_snapshot_id=snapshot_id,
+                expected_public_revision=public_revision,
+                expected_native_revision=native_revision,
+                expected_date_raw=date_raw,
+                expected_owner_character_id=owner_character_id,
+            )
+        except ValueError:
+            continue
+    return None
+
+
+def _plan_steward_composition_v1(
+    observation: dict[str, object],
+    *,
+    available_capabilities: set[str],
+) -> dict[str, object]:
+    """Plan the narrow steward decision without inventing an assignment ACK."""
+
+    position = observation.get("position")
+    if not isinstance(position, dict):
+        raise ValueError("normalized council observation lacks position")
+    candidates = sorted(
+        observation["candidates"],
+        key=lambda row: (
+            -int(row["main_skill"]["value"]),
+            int(row["native_collection_ordinal"]),
+            int(row["character_id"]),
+        ),
+    )
+    evidence = {
+        "position_key": STEWARD_POSITION_KEY,
+        "incumbent_character_id": position["incumbent_character_id"],
+        "vacant": position["vacant"],
+        "candidate_count": len(candidates),
+        "ordered_candidates": [dict(row) for row in candidates],
+    }
+    if not candidates:
+        return {
+            "policy": "council-composition-steward-v1",
+            "outcome": "NO_CHANGE",
+            "reason_code": "no_eligible_candidates",
+            **evidence,
+        }
+    selected = candidates[0]
+    if position["vacant"] is not True:
+        # Council19 does not publish the incumbent's stewardship.  Its
+        # `incumbent_ready` bit proves identity/vacancy readiness only, so a
+        # replacement skill delta cannot be fabricated from candidate rows.
+        return {
+            "policy": "council-composition-steward-v1",
+            "outcome": "NO_CHANGE",
+            "reason_code": "incumbent_main_skill_unavailable",
+            "required_observation": "incumbent_stewardship",
+            "selected_candidate": dict(selected),
+            **evidence,
+        }
+    return {
+        "policy": "council-composition-steward-v1",
+        "outcome": "ASSIGN_REQUIRED",
+        "reason_code": (
+            "assignment_action_not_routable"
+            if ASSIGN_COUNCILLOR_V1_CAPABILITY
+            in available_capabilities
+            else "assignment_action_capability_unavailable"
+        ),
+        "required_capability": ASSIGN_COUNCILLOR_V1_CAPABILITY,
+        "action_routable": False,
+        "selected_candidate": dict(selected),
+        **evidence,
+    }
 
 
 def _has_explicit_played_character_death_indicator(
@@ -9119,6 +9243,89 @@ def choose_one_life_turn(
             ),
             "postwar_disband_history_index": latest_postwar_disband_index,
         }
+
+    council_query_supported = (
+        QUERY_COUNCIL_COMPOSITION_CANDIDATES_V1_CAPABILITY
+        in available_capabilities
+    )
+    if council_query_supported:
+        if not isinstance(snapshot, dict) or snapshot.get("paused") is not True:
+            return {
+                "policy": "one-life-turn-v1",
+                "phase": "council_composition_pause_required",
+                "selected_step": (
+                    "pause-map" if "pause-map" in available_steps else None
+                ),
+                "required_step": "pause-map",
+                "reason": (
+                    "pause CK3 before reading the exact steward candidate frame"
+                ),
+            }
+        if QUERY_COUNCIL_COMPOSITION_CANDIDATES_V1_STEP not in available_steps:
+            return {
+                "policy": "one-life-turn-v1",
+                "phase": "council_composition_query_unavailable",
+                "selected_step": None,
+                "required_step": QUERY_COUNCIL_COMPOSITION_CANDIDATES_V1_STEP,
+                "required_capability": (
+                    QUERY_COUNCIL_COMPOSITION_CANDIDATES_V1_CAPABILITY
+                ),
+                "reason": (
+                    "the backend advertises Council19 but cannot route its "
+                    "paused query"
+                ),
+            }
+        council_observation = _same_frame_council_composition_candidates_v1(
+            rows, snapshot
+        )
+        if council_observation is None:
+            return {
+                "policy": "one-life-turn-v1",
+                "phase": "council_composition_query",
+                "selected_step": (
+                    QUERY_COUNCIL_COMPOSITION_CANDIDATES_V1_STEP
+                ),
+                "reason": (
+                    "read native steward candidates, final eligibility and "
+                    "same-frame skill inputs before considering an assignment"
+                ),
+                "position_key": STEWARD_POSITION_KEY,
+            }
+        if council_observation is not None:
+            council_decision = _plan_steward_composition_v1(
+                council_observation,
+                available_capabilities=available_capabilities,
+            )
+            if council_decision["outcome"] == "ASSIGN_REQUIRED":
+                return {
+                    "policy": "one-life-turn-v1",
+                    "phase": "council_composition_action_unavailable",
+                    "selected_step": None,
+                    "required_capability": ASSIGN_COUNCILLOR_V1_CAPABILITY,
+                    "reason": (
+                        "a steward vacancy has a deterministic native-legal "
+                        "candidate, but no semantic assignment action exists"
+                    ),
+                    "council_decision": council_decision,
+                }
+            continued = choose_one_life_turn(
+                rows,
+                snapshot=snapshot,
+                action_steps=available_steps,
+                bridge_capabilities=(
+                    capability
+                    for capability in available_capabilities
+                    if capability
+                    != QUERY_COUNCIL_COMPOSITION_CANDIDATES_V1_CAPABILITY
+                ),
+                next_run_plan=next_run_plan,
+                battle_speed_readiness=battle_speed_readiness,
+            )
+            return {
+                **continued,
+                "council_observation_consumed": True,
+                "council_decision": council_decision,
+            }
 
     if (
         cross_run_focus == "succession"

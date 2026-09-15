@@ -83,6 +83,14 @@ from .campaign_root_context_contract import (
     QUERY_CAMPAIGN_ROOT_CONTEXT_V1_STEP,
     normalize_campaign_root_context_v1,
 )
+from .council_composition_candidates_contract import (
+    COUNCIL_COMPOSITION_CANDIDATES_V1_SCHEMA,
+    QUERY_COUNCIL_COMPOSITION_CANDIDATES_V1_CAPABILITY,
+    QUERY_COUNCIL_COMPOSITION_CANDIDATES_V1_STEP,
+    STEWARD_POSITION_KEY,
+    build_council_composition_candidates_request_v1,
+    normalize_council_composition_candidates_v1,
+)
 from .steward_develop_county_contract import (
     QUERY_STEWARD_DEVELOP_COUNTY_CANDIDATES_V1_CAPABILITY,
     QUERY_STEWARD_DEVELOP_COUNTY_CANDIDATES_V1_STEP,
@@ -1969,6 +1977,143 @@ class GameplayBridgeService:
                 "ready"
             ],
             "campaign_root_context": normalized,
+        }
+
+    def query_council_composition_candidates_v1(
+        self,
+        *,
+        expected_snapshot_id: str,
+        public_revision: int,
+        native_revision: int,
+        date_raw: int,
+        owner_character_id: int,
+        position_key: str = STEWARD_POSITION_KEY,
+    ) -> dict[str, object]:
+        """Read the frozen Council19 steward candidates for one paused frame."""
+
+        request = build_council_composition_candidates_request_v1(
+            expected_snapshot_id=expected_snapshot_id,
+            public_revision=public_revision,
+            native_revision=native_revision,
+            date_raw=date_raw,
+            owner_character_id=owner_character_id,
+            position_key=position_key,
+        )
+        snapshot = self.snapshot()
+        played = snapshot.get("played_character")
+        actual_owner = (
+            played.get("character_id") if isinstance(played, dict) else None
+        )
+        expected_frame = {
+            "snapshot_id": request["expected_snapshot_id"],
+            "revision": request["public_revision"],
+            "native_revision": request["native_revision"],
+            "date_raw": request["date_raw"],
+            "paused": True,
+            "owner_character_id": request["owner_character_id"],
+        }
+        actual_frame = {
+            "snapshot_id": snapshot.get("snapshot_id"),
+            "revision": snapshot.get("revision"),
+            "native_revision": snapshot.get("native_revision"),
+            "date_raw": snapshot.get("date_raw"),
+            "paused": snapshot.get("paused"),
+            "owner_character_id": actual_owner,
+        }
+        if actual_frame != expected_frame:
+            raise BridgeUnavailableError(
+                "council composition request does not match the current "
+                "paused frame"
+            )
+        capabilities = self.capabilities()
+        bridge_capabilities = capabilities.get("bridge_capabilities")
+        if not (
+            isinstance(bridge_capabilities, list)
+            and QUERY_COUNCIL_COMPOSITION_CANDIDATES_V1_CAPABILITY
+            in bridge_capabilities
+            and QUERY_COUNCIL_COMPOSITION_CANDIDATES_V1_STEP
+            in action_step_set(capabilities)
+        ):
+            raise UnsupportedStepError(
+                "selected backend cannot query council composition candidates"
+            )
+        result = self.execute_step(
+            QUERY_COUNCIL_COMPOSITION_CANDIDATES_V1_STEP,
+            expected_revision=int(request["public_revision"]),
+        )
+        expected_keys = {
+            "step",
+            "accepted",
+            "status",
+            "query_sequence",
+            "snapshot_revision",
+            "council_composition_candidates",
+            "council_composition_candidates_ready",
+            "backend_id",
+            "queried_snapshot_id",
+            "queried_revision",
+            "queried_native_revision",
+        }
+        if (
+            not isinstance(result, dict)
+            or set(result) != expected_keys
+            or result.get("step")
+            != QUERY_COUNCIL_COMPOSITION_CANDIDATES_V1_STEP
+            or result.get("accepted") is not True
+            or result.get("status") != "available"
+            or result.get("snapshot_revision")
+            != request["native_revision"]
+            or result.get("queried_snapshot_id")
+            != request["expected_snapshot_id"]
+            or result.get("queried_revision")
+            != request["public_revision"]
+            or result.get("queried_native_revision")
+            != request["native_revision"]
+            or result.get("council_composition_candidates_ready") is not True
+            or not isinstance(result.get("backend_id"), str)
+            or not result.get("backend_id")
+        ):
+            raise BridgeUnavailableError(
+                "council composition backend returned a malformed result"
+            )
+        try:
+            normalized = normalize_council_composition_candidates_v1(
+                result.get("council_composition_candidates"),
+                expected_snapshot_id=request["expected_snapshot_id"],
+                expected_public_revision=request["public_revision"],
+                expected_native_revision=request["native_revision"],
+                expected_date_raw=request["date_raw"],
+                expected_owner_character_id=request["owner_character_id"],
+            )
+        except ValueError as error:
+            raise BridgeUnavailableError(
+                f"council composition result is malformed: {error}"
+            ) from error
+        current = self.snapshot()
+        current_played = current.get("played_character")
+        current_owner = (
+            current_played.get("character_id")
+            if isinstance(current_played, dict)
+            else None
+        )
+        if {
+            "snapshot_id": current.get("snapshot_id"),
+            "revision": current.get("revision"),
+            "native_revision": current.get("native_revision"),
+            "date_raw": current.get("date_raw"),
+            "paused": current.get("paused"),
+            "owner_character_id": current_owner,
+        } != expected_frame:
+            raise BridgeUnavailableError(
+                "council composition query crossed the requested frame"
+            )
+        return {
+            **result,
+            "schema_version": 1,
+            "schema": COUNCIL_COMPOSITION_CANDIDATES_V1_SCHEMA,
+            "scope": "exact-council-composition-candidates",
+            "request": request,
+            "council_composition_candidates": copy.deepcopy(normalized),
         }
 
     def query_steward_develop_county_candidates_v1(

@@ -134,6 +134,13 @@ from .campaign_root_context_contract import (
     QUERY_CAMPAIGN_ROOT_CONTEXT_V1_STEP,
     normalize_campaign_root_context_v1,
 )
+from .council_composition_candidates_contract import (
+    QUERY_COUNCIL_COMPOSITION_CANDIDATES_V1_CAPABILITY,
+    QUERY_COUNCIL_COMPOSITION_CANDIDATES_V1_STEP,
+    STEWARD_POSITION_KEY,
+    build_council_composition_candidates_request_v1,
+    normalize_council_composition_candidates_v1,
+)
 from .steward_develop_county_contract import (
     QUERY_STEWARD_DEVELOP_COUNTY_CANDIDATES_V1_CAPABILITY,
     QUERY_STEWARD_DEVELOP_COUNTY_CANDIDATES_V1_STEP,
@@ -1828,6 +1835,10 @@ class NativeHeadlessGameplayDriver:
                 QUERY_CAMPAIGN_ROOT_CONTEXT_V1_CAPABILITY
                 in bridge_capabilities
             ),
+            "council_composition_candidates_v1_query_supported": (
+                QUERY_COUNCIL_COMPOSITION_CANDIDATES_V1_CAPABILITY
+                in bridge_capabilities
+            ),
             "steward_develop_county_candidates_v1_query_supported": (
                 QUERY_STEWARD_DEVELOP_COUNTY_CANDIDATES_V1_CAPABILITY
                 in bridge_capabilities
@@ -2308,6 +2319,10 @@ class NativeHeadlessGameplayDriver:
             ),
             "campaign_root_context_v1_query_supported": (
                 QUERY_CAMPAIGN_ROOT_CONTEXT_V1_CAPABILITY
+                in bridge_capabilities
+            ),
+            "council_composition_candidates_v1_query_supported": (
+                QUERY_COUNCIL_COMPOSITION_CANDIDATES_V1_CAPABILITY
                 in bridge_capabilities
             ),
             "steward_develop_county_candidates_v1_query_supported": (
@@ -5177,6 +5192,20 @@ class NativeHeadlessGameplayDriver:
                     "native DLL cannot query the campaign root context"
                 )
             return self._execute_campaign_root_context_v1_query(
+                expected_revision=expected_revision,
+            )
+        if step == QUERY_COUNCIL_COMPOSITION_CANDIDATES_V1_STEP:
+            bridge_capabilities = set(
+                _string_list(capabilities.get("bridge_capabilities"))
+            )
+            if (
+                QUERY_COUNCIL_COMPOSITION_CANDIDATES_V1_CAPABILITY
+                not in bridge_capabilities
+            ):
+                raise UnsupportedStepError(
+                    "native DLL cannot query council composition candidates"
+                )
+            return self._execute_council_composition_candidates_v1_query(
                 expected_revision=expected_revision,
             )
         if step == QUERY_STEWARD_DEVELOP_COUNTY_CANDIDATES_V1_STEP:
@@ -9093,6 +9122,8 @@ class NativeHeadlessGameplayDriver:
             or result.get("accepted") is not True
             or result.get("status") != "available"
             or result.get("snapshot_revision") != native_revision
+            or not isinstance(result.get("backend_id"), str)
+            or not result.get("backend_id")
         ):
             raise BridgeUnavailableError(
                 "native battle-control query returned a malformed status"
@@ -9870,6 +9901,117 @@ class NativeHeadlessGameplayDriver:
             ],
             "queried_snapshot_id": starting.get("snapshot_id"),
             "queried_revision": starting.get("revision"),
+            "queried_native_revision": native_revision,
+        }
+
+    def _execute_council_composition_candidates_v1_query(
+        self,
+        *,
+        expected_revision: int | None,
+    ) -> dict[str, object]:
+        """Read one complete, same-frame steward candidate observation."""
+
+        step = QUERY_COUNCIL_COMPOSITION_CANDIDATES_V1_STEP
+        starting = self.take_snapshot()
+        if starting.get("paused") is not True:
+            raise BridgeUnavailableError(
+                "native council composition query requires a paused snapshot"
+            )
+        snapshot_id = starting.get("snapshot_id")
+        public_revision = starting.get("revision")
+        native_revision = starting.get("native_revision")
+        date_raw = _date_raw(starting, "council composition starting snapshot")
+        played = starting.get("played_character")
+        owner_character_id = (
+            played.get("character_id") if isinstance(played, dict) else None
+        )
+        try:
+            request = build_council_composition_candidates_request_v1(
+                expected_snapshot_id=snapshot_id,
+                public_revision=public_revision,
+                native_revision=native_revision,
+                date_raw=date_raw,
+                owner_character_id=owner_character_id,
+                position_key=STEWARD_POSITION_KEY,
+            )
+        except ValueError as error:
+            raise BridgeUnavailableError(
+                f"native council composition query lacks frame bindings: {error}"
+            ) from error
+        selected_revision = (
+            expected_revision
+            if expected_revision is not None
+            else int(public_revision)
+        )
+        result = self._execute_primitive_step(
+            step,
+            expected_revision=selected_revision,
+            required_capability=(
+                QUERY_COUNCIL_COMPOSITION_CANDIDATES_V1_CAPABILITY
+            ),
+            request_fields=request,
+        )
+        expected_keys = {
+            "step",
+            "accepted",
+            "status",
+            "query_sequence",
+            "snapshot_revision",
+            "council_composition_candidates",
+            "backend_id",
+        }
+        if (
+            not isinstance(result, dict)
+            or set(result) != expected_keys
+            or result.get("step") != step
+            or result.get("accepted") is not True
+            or result.get("status") != "available"
+            or result.get("snapshot_revision") != native_revision
+        ):
+            raise BridgeUnavailableError(
+                "native council composition query returned a malformed or "
+                "unavailable envelope"
+            )
+        query_sequence = result.get("query_sequence")
+        if (
+            isinstance(query_sequence, bool)
+            or not isinstance(query_sequence, int)
+            or not 1 <= query_sequence <= 2**64 - 1
+        ):
+            raise BridgeUnavailableError(
+                "native council composition query lacks query_sequence"
+            )
+        try:
+            normalized = normalize_council_composition_candidates_v1(
+                result.get("council_composition_candidates"),
+                expected_snapshot_id=snapshot_id,
+                expected_public_revision=public_revision,
+                expected_native_revision=native_revision,
+                expected_date_raw=date_raw,
+                expected_owner_character_id=owner_character_id,
+            )
+        except ValueError as error:
+            raise BridgeUnavailableError(
+                "native council composition query returned a malformed frame: "
+                f"{error}"
+            ) from error
+        current = self.take_snapshot()
+        if not (
+            _same_paused_native_frame(starting, current)
+            and starting.get("revision") == current.get("revision")
+            and starting.get("date_raw") == current.get("date_raw")
+        ):
+            raise BridgeUnavailableError(
+                "native council composition query crossed a snapshot revision"
+            )
+        return {
+            **result,
+            "status": "available",
+            "query_sequence": query_sequence,
+            "council_composition_candidates": normalized,
+            "council_composition_candidates_ready": True,
+            "queried_snapshot_id": snapshot_id,
+            "queried_revision": public_revision,
             "queried_native_revision": native_revision,
         }
 
@@ -17613,6 +17755,56 @@ class ConfiguredHybridFallbackDriver:
                 "queried_revision": starting.get("revision"),
                 "queried_native_revision": starting.get("native_revision"),
             }
+        if step == QUERY_COUNCIL_COMPOSITION_CANDIDATES_V1_STEP:
+            native_bridge_capabilities = set(
+                _string_list(
+                    self.native.capabilities().get("bridge_capabilities")
+                )
+            )
+            if (
+                QUERY_COUNCIL_COMPOSITION_CANDIDATES_V1_CAPABILITY
+                not in native_bridge_capabilities
+            ):
+                raise UnsupportedStepError(
+                    "council composition queries are pure native and will not "
+                    "use fallback"
+                )
+            starting = self.take_snapshot()
+            native_revision = None
+            if expected_revision is not None:
+                _validate_revision(expected_revision, "expected_revision")
+                if expected_revision != starting.get("revision"):
+                    raise BridgeUnavailableError(
+                        "hybrid gameplay revision mismatch: expected "
+                        f"{expected_revision}, current "
+                        f"{starting.get('revision')}"
+                    )
+            backend_revisions = starting.get("backend_revisions")
+            if isinstance(backend_revisions, dict) and isinstance(
+                backend_revisions.get("fast"), int
+            ):
+                native_revision = int(backend_revisions["fast"])
+            result = self.native.execute_step(
+                step, expected_revision=native_revision
+            )
+            ending = self.take_snapshot()
+            if (
+                ending.get("snapshot_id") != starting.get("snapshot_id")
+                or ending.get("revision") != starting.get("revision")
+                or ending.get("native_revision")
+                != starting.get("native_revision")
+                or ending.get("date_raw") != starting.get("date_raw")
+            ):
+                raise BridgeUnavailableError(
+                    "hybrid council composition query crossed a snapshot "
+                    "revision"
+                )
+            return {
+                **result,
+                "queried_snapshot_id": starting.get("snapshot_id"),
+                "queried_revision": starting.get("revision"),
+                "queried_native_revision": starting.get("native_revision"),
+            }
         if step == QUERY_STEWARD_DEVELOP_COUNTY_CANDIDATES_V1_STEP:
             native_bridge_capabilities = set(
                 _string_list(
@@ -21513,6 +21705,7 @@ def _action_steps(
     expand_battle_control_snapshots = False
     expand_battle_reinforcement_assignments = False
     advertise_campaign_root_context = False
+    advertise_council_composition_candidates = False
     advertise_steward_develop_county_candidates = False
     advertise_player_faction_alerts = False
     advertise_loaded_feature_manifest = False
@@ -21532,6 +21725,9 @@ def _action_steps(
     expand_arrange_marriage = False
     advertise_raise_troops = False
     for capability in capabilities:
+        if capability == QUERY_COUNCIL_COMPOSITION_CANDIDATES_V1_CAPABILITY:
+            advertise_council_composition_candidates = True
+            continue
         if not capability.startswith(_ACTION_CAPABILITY_PREFIX):
             continue
         step = capability.removeprefix(_ACTION_CAPABILITY_PREFIX)
@@ -21742,6 +21938,7 @@ def _action_steps(
                 QUERY_BATTLE_TERMINAL_TRANSITION_V1_STEP_PREFIX,
                 QUERY_BATTLE_REINFORCEMENT_ASSIGNMENT_V1_STEP_PREFIX,
                 QUERY_CAMPAIGN_ROOT_CONTEXT_V1_STEP,
+                QUERY_COUNCIL_COMPOSITION_CANDIDATES_V1_STEP,
                 QUERY_STEWARD_DEVELOP_COUNTY_CANDIDATES_V1_STEP,
                 QUERY_ZHONGGUO_CASE_SNAPSHOT_V1_STEP,
                 QUERY_LOADED_FEATURE_MANIFEST_V1_STEP,
@@ -21848,6 +22045,8 @@ def _action_steps(
         steps.add(QUERY_ARMY_STRENGTHS_STEP)
     if advertise_campaign_root_context and paused is True:
         steps.add(QUERY_CAMPAIGN_ROOT_CONTEXT_V1_STEP)
+    if advertise_council_composition_candidates and paused is True:
+        steps.add(QUERY_COUNCIL_COMPOSITION_CANDIDATES_V1_STEP)
     if advertise_steward_develop_county_candidates and paused is True:
         steps.add(QUERY_STEWARD_DEVELOP_COUNTY_CANDIDATES_V1_STEP)
     if advertise_player_faction_alerts and paused is True:
