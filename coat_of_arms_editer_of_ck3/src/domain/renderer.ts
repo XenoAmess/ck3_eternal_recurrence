@@ -289,11 +289,12 @@ export function renderCoatOfArms(
     }
   }
 
-  const instances = coatOfArms.coloredEmblems.flatMap((emblem, emblemIndex) =>
-    emblem.instances.map((instance, instanceIndex) => ({
+  let sourceOrder = 0
+  const instances = coatOfArms.coloredEmblems.flatMap((emblem) =>
+    emblem.instances.map((instance) => ({
       emblem,
       instance,
-      order: emblemIndex * 100000 + instanceIndex,
+      order: sourceOrder++,
     })))
     .sort((left, right) => left.instance.depth - right.instance.depth || left.order - right.order)
   for (const { emblem, instance } of instances) {

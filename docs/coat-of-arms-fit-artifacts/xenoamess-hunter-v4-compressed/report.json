@@ -1,0 +1,60 @@
+{
+  "schema": "ck3-coa-structural-compression-evidence-v1",
+  "artifactVersion": "xenoamess-hunter-v4-compressed",
+  "predecessor": "../xenoamess-hunter-v4/",
+  "generatedAt": "2026-09-15T12:01:34.185Z",
+  "sourceRevision": {
+    "headCommit": "9e9b7711677334750407e88b03291b08d944427b",
+    "workingTreePatchSha256": "F4F829E6CB512D03D5A6D56BF37BF18592571E9021BEFB31D0CB82FE14A2E4E7"
+  },
+  "fixedGates": {
+    "minimumByteReductionFraction": 0.1,
+    "minimumBlockReductionFraction": 0.1,
+    "allowedPixelDifferenceBytes": 0,
+    "allowedMaximumPixelDifference": 0
+  },
+  "input": {
+    "path": "../xenoamess-hunter-v4/coat_of_arms.txt",
+    "utf8Bytes": 380862,
+    "sha256": "C4648E2C98D3503252D9A9A298B4A39E27A8F4C7269944E607F34F86B3C60571"
+  },
+  "output": {
+    "utf8Bytes": 260932,
+    "sha256": "40B935A32A8A5EEDBC6262BB3A74CEA07935801B104FFD5768A7C7D4C2E32D14"
+  },
+  "receipt": {
+    "strategy": "adjacent-equal-style-v1",
+    "exactStructureOnly": true,
+    "coloredEmblemBlocksBefore": 1000,
+    "coloredEmblemBlocksAfter": 293,
+    "mergedBlocks": 707,
+    "drawnInstancesBefore": 1000,
+    "drawnInstancesAfter": 1000,
+    "utf8BytesBefore": 380862,
+    "utf8BytesAfter": 260932,
+    "linesBefore": 14006,
+    "linesAfter": 9057
+  },
+  "byteReductionFraction": 0.31489095787975696,
+  "blockReductionFraction": 0.7070000000000001,
+  "parseErrors": 0,
+  "serializeParseExact": true,
+  "flattenedSequenceExact": true,
+  "pixelChecks": [
+    {
+      "resolution": 96,
+      "differingBytes": 0,
+      "maximumDifference": 0
+    },
+    {
+      "resolution": 230,
+      "differingBytes": 0,
+      "maximumDifference": 0
+    },
+    {
+      "resolution": 512,
+      "differingBytes": 0,
+      "maximumDifference": 0
+    }
+  ]
+}

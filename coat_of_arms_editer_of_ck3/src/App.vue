@@ -15,6 +15,10 @@ import {
   type WebAssetPackEntry,
 } from './domain/assetPack'
 import { syntaxCapabilityRows } from './domain/capabilityMatrix'
+import {
+  structurallyCompressCoatOfArms,
+  type StructuralCompressionReceipt,
+} from './domain/coatOfArmsOptimizer'
 import { decodeFitImageFile, type DecodedFitImage } from './domain/imageInput'
 import {
   resizeFitImage,
@@ -120,6 +124,11 @@ const fitPreviewUrl = ref('')
 const fitLayerBudget = ref(6)
 const fitProgressPercent = ref(0)
 const fitProgressLabel = ref('等待开始')
+const fitCompressionEvidence = ref<{
+  receipt: StructuralCompressionReceipt
+  pixelExactResolutions: number[]
+}>()
+const fitCompressionSource = ref('')
 let fitWorker: Worker | null = null
 let fitRunId = 0
 
@@ -134,6 +143,9 @@ const fitTerminationLabels: Record<ImageFitResult['provenance']['terminationReas
 const output = computed(() => serializeCoatOfArms(coatOfArms.value))
 const outputBytes = computed(() => new TextEncoder().encode(output.value).length)
 const outputLines = computed(() => output.value.match(/\n/g)?.length ?? 0)
+const activeFitCompression = computed(() => (
+  fitCompressionSource.value === output.value ? fitCompressionEvidence.value : undefined
+))
 const fitEvidenceJson = computed(() => {
   if (!fitResult.value) return ''
   const { layerLosses, selectedAssetSha256, ...provenance } = fitResult.value.provenance
@@ -147,6 +159,7 @@ const fitEvidenceJson = computed(() => {
       strictlyDecreasing: layerLosses.every((loss, index) => index === 0 || loss < layerLosses[index - 1]),
     },
     selectedAssetSha256: [...new Set(selectedAssetSha256)],
+    structuralCompression: activeFitCompression.value ?? null,
   })
 })
 const activeEmblem = computed(() => coatOfArms.value.coloredEmblems[selectedEmblem.value])
@@ -155,7 +168,7 @@ const visibleDiagnostics = computed<Diagnostic[]>(() => {
   if (outputBytes.value > COAT_OF_ARMS_MCP_MAX_BYTES) {
     items.push({
       severity: 'warning',
-      message: '代码超过当前开发期 MCP 的 128 KiB 安全合同；网页仍允许复制，但 CK3 原生粘贴边界尚未实测',
+      message: '代码超过旧版单请求 MCP v1 的 128 KiB 合同；网页仍允许完整复制，且 380,862-byte hunter 已通过分块 MCP v2 的 CK3 Apply/Copy 实测',
     })
   }
   return items.filter((item, index) => items.findIndex((candidate) => (
@@ -342,6 +355,8 @@ async function selectTargetImage(event: Event) {
   try {
     targetImage.value = await decodeFitImageFile(file)
     fitResult.value = undefined
+    fitCompressionEvidence.value = undefined
+    fitCompressionSource.value = ''
     fitWebGlScore.value = null
     fitPreviewUrl.value = ''
     fitStatus.value = `${file.name} · ${targetImage.value.originalWidth}×${targetImage.value.originalHeight} · ${(file.size / 1024).toFixed(1)} KiB · 只在浏览器内处理`
@@ -366,6 +381,59 @@ function cancelImageFit(notify = true) {
   fitBusy.value = false
 }
 
+function compressFitDocument() {
+  if (!fitResult.value || !patternTexture.value) {
+    ElMessage.warning('请先完成一次图片拟合并载入结果素材')
+    return
+  }
+  const original = coatOfArms.value
+  const missing = [...new Set(original.coloredEmblems.map((item) => item.texture))]
+    .filter((name) => !emblemTextures.value[name])
+  if (missing.length) {
+    ElMessage.error(`无法验证安全压缩，缺少 ${missing.length} 个结果 DDS`)
+    return
+  }
+  const compressed = structurallyCompressCoatOfArms(original)
+  const pixelExactResolutions = [96, 230, 512]
+  for (const size of pixelExactResolutions) {
+    const assets = {
+      pattern: patternTexture.value,
+      coloredEmblems: emblemTextures.value,
+      surfaceMask: surfaceMask.value,
+    }
+    const before = renderCoatOfArms(original, assets, shaderNamedColors.value, size)
+    const after = renderCoatOfArms(compressed.coatOfArms, assets, shaderNamedColors.value, size)
+    if (!before || !after || before.pixels.length !== after.pixels.length) {
+      ElMessage.error(`安全压缩 ${size}px 渲染验证不可用`)
+      return
+    }
+    for (let index = 0; index < before.pixels.length; index += 1) {
+      if (before.pixels[index] !== after.pixels[index]) {
+        ElMessage.error(`安全压缩在 ${size}px 改变了像素，已拒绝应用`)
+        return
+      }
+    }
+  }
+  coatOfArms.value = compressed.coatOfArms
+  source.value = serializeCoatOfArms(compressed.coatOfArms)
+  fitResult.value = {
+    ...fitResult.value,
+    coatOfArms: compressed.coatOfArms,
+    provenance: {
+      ...fitResult.value.provenance,
+      logicalLayers: compressed.coatOfArms.coloredEmblems.length
+        + compressed.coatOfArms.texturedEmblems.length,
+      coloredEmblemBlocks: compressed.coatOfArms.coloredEmblems.length,
+      drawnInstances: compressed.receipt.drawnInstancesAfter,
+      selectedLayers: compressed.receipt.drawnInstancesAfter,
+    },
+  }
+  fitCompressionEvidence.value = { receipt: compressed.receipt, pixelExactResolutions }
+  fitCompressionSource.value = source.value
+  const saved = compressed.receipt.utf8BytesBefore - compressed.receipt.utf8BytesAfter
+  ElMessage.success(`安全压缩完成：合并 ${compressed.receipt.mergedBlocks} 个块，减少 ${saved} bytes`)
+}
+
 async function fitTargetImage() {
   if (!targetImage.value) {
     ElMessage.warning('请先选择目标图片')
@@ -385,6 +453,8 @@ async function fitTargetImage() {
   const runId = ++fitRunId
   fitBusy.value = true
   fitResult.value = undefined
+  fitCompressionEvidence.value = undefined
+  fitCompressionSource.value = ''
   fitWebGlScore.value = null
   fitPreviewUrl.value = ''
   fitProgressPercent.value = 0
@@ -986,6 +1056,7 @@ importSource()
               开始本地拟合
             </el-button>
             <el-button :disabled="!fitBusy" @click="cancelImageFit()">取消</el-button>
+            <el-button :disabled="fitBusy || !fitResult" @click="compressFitDocument">安全压缩相邻同样式块</el-button>
           </div>
         </div>
         <div class="fit-report" :data-fit-evidence="fitEvidenceJson">
@@ -1015,6 +1086,12 @@ importSource()
               <div><dt>colored_emblem 块</dt><dd>{{ fitResult.provenance.coloredEmblemBlocks }}</dd></div>
               <div><dt>instance 数</dt><dd>{{ fitResult.provenance.drawnInstances }}</dd></div>
               <div><dt>代码体积</dt><dd>{{ outputBytes }} UTF-8 bytes / {{ outputLines }} 行</dd></div>
+              <template v-if="activeFitCompression">
+                <div><dt>安全压缩块</dt><dd>{{ activeFitCompression.receipt.coloredEmblemBlocksBefore }} → {{ activeFitCompression.receipt.coloredEmblemBlocksAfter }}</dd></div>
+                <div><dt>安全压缩实例</dt><dd>{{ activeFitCompression.receipt.drawnInstancesBefore }} → {{ activeFitCompression.receipt.drawnInstancesAfter }}</dd></div>
+                <div><dt>安全压缩体积</dt><dd>{{ activeFitCompression.receipt.utf8BytesBefore }} → {{ activeFitCompression.receipt.utf8BytesAfter }} bytes</dd></div>
+                <div><dt>压缩像素门禁</dt><dd>{{ activeFitCompression.pixelExactResolutions.join(' / ') }} 全部逐字节一致</dd></div>
+              </template>
               <div><dt>高分辨率接缝门禁</dt><dd>{{ fitResult.provenance.nativeTileSeamValidation.status === 'passed' ? '96 / 230 / 512 全部通过' : '不适用' }}</dd></div>
               <div><dt>接缝指标</dt><dd>{{ fitResult.provenance.nativeTileSeamValidation.metrics.map((metric) => `${metric.resolution}px leak=${metric.backgroundLeakPixels} peak=${Math.max(metric.peakRowLeakPixels, metric.peakColumnLeakPixels)}`).join('；') || '不适用' }}</dd></div>
               <div><dt>算法合同</dt><dd>{{ fitResult.provenance.algorithm }}</dd></div>
@@ -1031,8 +1108,8 @@ importSource()
         type="warning"
         :closable="false"
         show-icon
-        title="128 KiB 不是已证明的 CK3 原生粘贴上限"
-        description="它只是当前开发期 MCP probe/export 的防御性传输合同，且会在送入游戏前拦截。网页仍允许复制更大的代码；超过此值时仅不能使用开发期 MCP 实机验证。"
+        title="128 KiB 只是旧版单请求 MCP v1 合同，不是 CK3 上限"
+        description="380,862-byte、1000-instance hunter 已通过分块 MCP v2 的真实 CK3 Apply → Copy。网页复制不设此上限；当前页面内置的旧开发 companion 按钮仍使用 v1，正式 Pages 不包含该开发入口。512 KiB 也只是当前 v2 传输资源上限，不代表引擎上限。"
       />
     </section>
 

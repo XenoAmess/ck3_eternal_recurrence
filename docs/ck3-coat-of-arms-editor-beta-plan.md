@@ -98,6 +98,11 @@ framebuffer 空间像素对照仍是独立待办，不影响 WP1 文本闭环的
 
 ### WP2：最终剪枝与代码压缩（P0/P1，1–2 工程日）
 
+当前状态：`in_progress`。`adjacent-equal-style-v1` 无损结构压缩已通过：hunter v4 从 1,000 块压到 293 块、实例仍为 1,000，
+380,862 → 260,932 bytes，96/230/512 完整渲染逐字节零差异。冻结候选见
+[`xenoamess-hunter-v4-compressed`](coat-of-arms-fit-artifacts/xenoamess-hunter-v4-compressed/)。最终 backward prune / leave-one-out
+固定点和逐实例必要性证据仍在执行，故 WP2 尚未通过。
+
 交付：
 
 - 完整结果执行 backward prune / leave-one-out；只有移除后确会越过视觉损失容差的层才能保留。
