@@ -1,0 +1,79 @@
+{
+  "schema": "ck3-coa-fit-candidate-report-v1",
+  "artifactVersion": "xenoamess-hunter-v5-candidate",
+  "predecessor": "xenoamess-hunter-v4-pruned",
+  "status": "non_advancing_edge_improvement_pending",
+  "source": {
+    "commit": "faa48c69",
+    "inputFile": "../xenoamess-hunter-v4/target.png",
+    "inputSha256": "53BBDB2FB3B8252475A12098BAC4E1B0A5BBC4765CB6896B4397923EE54D8AC8",
+    "sourceWidth": 1024,
+    "sourceHeight": 1024,
+    "assetPackId": "ck3-1.19.0.6-base-complete-42p-1578e-8aux",
+    "assetPackManifestSha256": "AD7F0A911A2B4F002E923FEAB13716566D9A7B61447E9092504826FE6498FE91"
+  },
+  "configuration": {
+    "userDrawInstanceBudget": 1024,
+    "primaryResolution": 96,
+    "pyramidResolutions": [96, 192, 256],
+    "scoringContract": "alpha-weighted-srgb8-mse62-luma-gradient-l1-38-v1",
+    "rendererContract": "cpu-rgba8-bilinear-clamp-pixel-center-v1",
+    "surfaceMaskApplied": false,
+    "numericNoiseTolerance": 1e-12,
+    "randomSeed": null
+  },
+  "candidates": [
+    {
+      "mode": "semantic-search",
+      "textures": ["ce_norse_odins_raven.dds"],
+      "drawnInstances": 1,
+      "totalLoss": 0.1565486858283504,
+      "edgeLoss": 0.08131079244333957,
+      "passesPrimaryNonRegression": false
+    },
+    {
+      "mode": "semantic-search",
+      "textures": ["ce_religion_bon.dds"],
+      "drawnInstances": 1,
+      "totalLoss": 0.17315917880725443,
+      "edgeLoss": 0.05847038633847118,
+      "passesPrimaryNonRegression": false
+    },
+    {
+      "mode": "native-tile-paint",
+      "textures": ["ce_block_02.dds"],
+      "drawnInstances": 1000,
+      "totalLoss": 0.025898240475696027,
+      "edgeLoss": 0.043043678580258954,
+      "multiscale": [
+        {"resolution": 96, "totalLoss": 0.025898240475696027, "edgeLoss": 0.043043678580258954},
+        {"resolution": 192, "totalLoss": 0.02906832496408973, "edgeLoss": 0.03723507697008837},
+        {"resolution": 256, "totalLoss": 0.02587151755753766, "edgeLoss": 0.030160015594588474}
+      ],
+      "passesPrimaryNonRegression": true
+    },
+    {
+      "mode": "hybrid-native-paint",
+      "textures": ["ce_norse_odins_raven.dds", "ce_block_02.dds"],
+      "drawnInstances": 960,
+      "totalLoss": 0.04201755718425561,
+      "edgeLoss": 0.06822335331473522,
+      "passesPrimaryNonRegression": false
+    }
+  ],
+  "selected": {
+    "mode": "native-tile-paint",
+    "reason": "Only this candidate passes independent total-loss and edge-loss non-regression gates.",
+    "totalLoss": 0.025898240475696027,
+    "edgeLoss": 0.043043678580258954
+  },
+  "gates": {
+    "mixedSearchPathExercised": "passed",
+    "syntheticMixedBrushBenefit": "passed",
+    "hunterTotalLossNonRegression": "passed",
+    "hunterEdgeLossStrictImprovement": "failed",
+    "nativeRoundTrip": "not_run_non_advancing_candidate",
+    "nativeFramebufferComparison": "pending_mcp_capability"
+  },
+  "transientFullReportSha256": "77979F0E4BC720C720C80BD8A5EA7F000A2A68CCD2A69760E39D30BE0FE56705"
+}

@@ -14,6 +14,12 @@
 泄漏 186/1,806/5,112 像素；修复后 mask 开关共六个观测点均为零。hunter v4 在共同合同下与 v3 的总损失、边缘损失完全
 相同，1,000 个实例的精确 CRLF 复制与重新解析闭环通过；v4 原始文本的原生 Apply/Copy 也已通过。
 
+WP3 第一候选现已保留原始 `File` 与 96/192/256 px 金字塔，并把语义 emblem、纯 tile 和混合残差路径放入同一候选集合。
+合成夹具证明混合画笔可被搜索且能带来严格收益；hunter 实测中混合候选反而更差，选择器按预先固定的总损失/边缘损失独立门禁
+拒绝晋级，保留 v4 数值基线。因此该阶段只是“搜索能力已接通”，不是“hunter 质量已提升”；机器证据见
+[`xenoamess-hunter-v5-candidate`](coat-of-arms-fit-artifacts/xenoamess-hunter-v5-candidate/README.md)。下一候选继续做局部 replacement
+和轮廓细化，只有边缘损失严格优于 `0.043043678580258954` 且总损失不劣化时才晋级。
+
 ## 1. 不变约束
 
 - 正式 GitHub Pages 平台必须纯前端运行，不安装、启动或连接 CK3，也不依赖 Java、Quarkus、Python、Steam 或本机 MCP。
