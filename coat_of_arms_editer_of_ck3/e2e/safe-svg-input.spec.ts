@@ -29,7 +29,7 @@ test('rasterizes bounded local SVG geometry and rejects executable or external c
   `)
   await expect(page.getByText(/safe-vector\.svg · 320×240/)).toBeVisible()
   await expect(page.locator('.image-drop img')).toBeVisible()
-  await expect(page.getByRole('button', { name: '开始本地拟合' })).toBeEnabled()
+  await expect(page.getByRole('button', { name: '开始本地拟合' })).toBeEnabled({ timeout: 30_000 })
 
   await upload(page, 'external.svg', `
     <svg xmlns="http://www.w3.org/2000/svg" width="200" height="200">

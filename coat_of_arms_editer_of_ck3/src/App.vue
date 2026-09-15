@@ -1925,7 +1925,14 @@ watch(() => activeEmblem.value?.instances.length ?? 0, (length) => {
           <el-option value="zh-CN" :label="t('chinese')" />
           <el-option value="en" :label="t('english')" />
         </el-select>
-        <input ref="projectFileInput" class="hidden-file-input" type="file" accept="application/json,.json" @change="importProject">
+        <input
+          ref="projectFileInput"
+          class="hidden-file-input"
+          data-testid="project-file-input"
+          type="file"
+          accept="application/json,.json"
+          @change="importProject"
+        >
         <el-button :loading="projectFileBusy" @click="openProjectFilePicker">{{ t('openProject') }}</el-button>
         <el-button :loading="projectFileBusy" @click="exportProject">{{ t('saveProject') }}</el-button>
         <el-button :disabled="!historyPending && !undoHistory.length" @click="undoEdit">{{ t('undo') }}</el-button>
@@ -1964,6 +1971,7 @@ watch(() => activeEmblem.value?.instances.length ?? 0, (length) => {
           <input
             ref="assetPackDirectoryInput"
             class="hidden-file-input"
+            data-testid="asset-pack-directory-input"
             type="file"
             webkitdirectory
             multiple

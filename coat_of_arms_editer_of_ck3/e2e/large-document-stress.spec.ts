@@ -104,7 +104,7 @@ test('edits and exports an exact 10,000-instance project through a bounded DOM w
   ))
 
   const importStart = Date.now()
-  await page.locator('input.hidden-file-input').setInputFiles({
+  await page.getByTestId('project-file-input').setInputFiles({
     name: 'large-10000.coa-project.json',
     mimeType: 'application/json',
     buffer: Buffer.from(projectText, 'utf8'),
