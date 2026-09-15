@@ -16,6 +16,16 @@ sys.dont_write_bytecode = True
 
 from verify_council_r694_query_prep import sha256, verify
 
+
+class HeldLaunchLocks(ExitStack):
+    """Keep both launch locks until tracked CK3 shutdown in outer finally."""
+
+    def __exit__(self, *arguments: object) -> bool:
+        return False
+
+    def close(self) -> None:
+        ExitStack.__exit__(self, None, None, None)
+
 QUERY = "private-query-council-composition-candidates-v1"
 STATUS = "private-council-application-main-status-v1"
 PUBLIC_SCHEMA = "xar.ck3.council-composition-candidates/v1"
@@ -160,6 +170,7 @@ def main() -> int:
     }
     handle = None
     driver = None
+    locks = HeldLaunchLocks()
     started = time.monotonic()
     deadline = started + 480
     state_dir = root / "fresh-profile-state"
@@ -170,7 +181,7 @@ def main() -> int:
         inventory = ck3_process_inventory()
         require(not inventory.get("processes"), "CK3 inventory nonzero before R694 launch")
         write_json(evidence / "preflight.json", {**preflight, "ck3_inventory": inventory})
-        with ExitStack() as locks:
+        with locks:
             locks.enter_context(exclusive_launch_lock(spec.game_exe))
             locks.enter_context(exclusive_state_lock(state_dir, "council-r694-private-query"))
             driver = NativeHeadlessGameplayDriver(
@@ -277,6 +288,10 @@ def main() -> int:
             except BaseException as error:
                 report["driver_close_red"] = f"{type(error).__name__}: {error}"
         try:
+            locks.close()
+        except BaseException as error:
+            report["lock_cleanup_red"] = f"{type(error).__name__}: {error}"
+        try:
             report["postflight"] = {
                 "ck3_inventory": ck3_process_inventory(),
                 "source_save_sha256": sha256(source_save),
@@ -293,6 +308,7 @@ def main() -> int:
               post["source_save_sha256"] == SAVE_SHA and
               post["target_save_sha256"] == SAVE_SHA and
               not report.get("driver_close_red") and
+              not report.get("lock_cleanup_red") and
               post["wall_seconds"] <= 480)
         report["ok"] = ok
         report["status"] = "green" if ok else "red"
