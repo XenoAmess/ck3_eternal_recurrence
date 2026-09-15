@@ -77,8 +77,11 @@ jobs:
         run: |
           pnpm exec playwright test e2e/fit-budget-stress.spec.ts
           pnpm exec playwright test e2e/standalone-image-fit.spec.ts
-          mapfile -t remaining_specs < <(find e2e -maxdepth 1 -name '*.spec.ts' ! -name 'fit-budget-stress.spec.ts' ! -name 'standalone-image-fit.spec.ts' ! -name 'service-worker-offline.spec.ts' -print | sort)
+          mapfile -t remaining_specs < <(find e2e -maxdepth 1 -name '*.spec.ts' ! -name 'fit-budget-stress.spec.ts' ! -name 'standalone-image-fit.spec.ts' ! -name 'service-worker-offline.spec.ts' ! -name 'reference-hunter*.spec.ts' -print | sort)
           pnpm exec playwright test "${remaining_specs[@]}"
+
+      - name: Run source-module research acceptance
+        run: pnpm exec playwright test e2e/reference-hunter*.spec.ts
 
       - name: Run cross-browser core acceptance
         run: pnpm exec playwright test --config=playwright.cross-browser.config.ts
