@@ -1,6 +1,6 @@
 {
   "schema": "ck3-coa-beta-progress-v1",
-  "updatedAt": "2026-09-15T22:12:35+08:00",
+  "updatedAt": "2026-09-15T22:26:00+08:00",
   "overallStatus": "in_progress",
   "workPackages": [
     {
@@ -228,10 +228,11 @@
     {
       "id": "WP5",
       "status": "in_progress",
-      "commit": "d265503e",
+      "commit": "39e18a9d",
       "commands": [
         "pnpm exec vitest run src/domain/largeDocumentContract.test.ts --reporter=verbose",
         "pnpm exec playwright test e2e/editor-recovery.spec.ts --reporter=line",
+        "pnpm exec playwright test e2e/visual-transform-editor.spec.ts --reporter=line",
         "pnpm exec playwright test e2e/large-document-stress.spec.ts --reporter=line",
         "pnpm build"
       ],
@@ -253,6 +254,11 @@
         "browserAutosaveRecoveryMs": 5899,
         "boundedUndoRedo": "passed",
         "autosaveRecovery": "passed",
+        "directPositionDrag": "passed",
+        "directUniformScale": "passed",
+        "directContinuousRotation": "passed",
+        "pointerGestureSingleUndo": "passed",
+        "visualTransformEvidencePath": "docs/coat-of-arms-visual-instance-editor.md",
         "historyMaximumEntries": 32,
         "historyMaximumUtf8Bytes": 16777216,
         "measuredJsHeapDeltaBytes": 188860210,
