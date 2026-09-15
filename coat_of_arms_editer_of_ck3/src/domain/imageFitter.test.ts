@@ -6,6 +6,7 @@ import {
   resizeFitImage,
   type FitImage,
   type FitTextureCandidate,
+  type ImageFitCheckpoint,
   type ImageFitProgress,
 } from './imageFitter'
 import { renderCoatOfArms } from './renderer'
@@ -352,6 +353,59 @@ describe('browser image fitter', () => {
       expect(result.provenance.layerLosses[index]).toBeLessThan(result.provenance.layerLosses[index - 1])
     }
     expect(result.metrics.relativeImprovement).toBeGreaterThan(0.5)
+  })
+
+  it('resumes native paint from a versioned checkpoint without changing the result', () => {
+    const size = 32
+    const solid = texture('solid')
+    const block = texture('neutralBlock')
+    const checkpoints: ImageFitCheckpoint[] = []
+    const options = {
+      resolution: size,
+      maxLayers: 128,
+      inputSha256: 'A'.repeat(64),
+      assetPackManifestSha256: 'B'.repeat(64),
+    }
+    const uninterrupted = fitImageToCoatOfArms(
+      seamMosaic(size),
+      [candidate('pattern_solid.dds', solid)],
+      [candidate('ce_block_02.dds', block)],
+      { ...options, onCheckpoint: (checkpoint) => checkpoints.push(checkpoint) },
+    )
+    const checkpoint = checkpoints.find((item) => (
+      item.lane === 'baseline'
+      && item.nextTileIndex > 0
+      && item.nextTileIndex < item.tileCount
+    ))
+    expect(checkpoint).toBeDefined()
+    expect(checkpoint).toMatchObject({
+      contract: 'ck3-coa-fit-checkpoint-v1',
+      algorithm: 'ck3-coa-browser-fit-v5-hybrid-multiscale',
+      inputSha256: options.inputSha256,
+      assetPackManifestSha256: options.assetPackManifestSha256,
+      resolution: size,
+      layerBudget: 128,
+      randomSeed: null,
+    })
+    const resumed = fitImageToCoatOfArms(
+      seamMosaic(size),
+      [candidate('pattern_solid.dds', solid)],
+      [candidate('ce_block_02.dds', block)],
+      { ...options, resumeCheckpoint: checkpoint },
+    )
+    expect(resumed.coatOfArms).toEqual(uninterrupted.coatOfArms)
+    expect(resumed.metrics).toEqual(uninterrupted.metrics)
+    expect(resumed.provenance.layerLosses).toEqual(uninterrupted.provenance.layerLosses)
+    expect(resumed.provenance.nativeTileSeamValidation).toEqual(
+      uninterrupted.provenance.nativeTileSeamValidation,
+    )
+
+    expect(() => fitImageToCoatOfArms(
+      seamMosaic(size),
+      [candidate('pattern_solid.dds', solid)],
+      [candidate('ce_block_02.dds', block)],
+      { ...options, inputSha256: 'C'.repeat(64), resumeCheckpoint: checkpoint },
+    )).toThrow('输入图片或素材包标识不匹配')
   })
 
   it('enters a mixed semantic plus native paint path for a large budget', () => {

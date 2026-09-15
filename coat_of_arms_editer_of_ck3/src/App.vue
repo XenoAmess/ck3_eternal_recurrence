@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, onMounted, ref, watch } from 'vue'
+import { computed, onMounted, ref, shallowRef, watch } from 'vue'
 import { ElMessage as ElementMessage } from 'element-plus'
 import elementEn from 'element-plus/es/locale/lang/en'
 import elementZhCn from 'element-plus/es/locale/lang/zh-cn'
@@ -38,10 +38,18 @@ import {
   resizeFitImage,
   type FitImage,
   type FitTextureCandidate,
+  type ImageFitCheckpoint,
   type ImageFitMetrics,
   type ImageFitProgress,
   type ImageFitResult,
 } from './domain/imageFitter'
+import {
+  FIT_WORKER_PROTOCOL,
+  isCurrentFitWorkerMessage,
+  type FitTaskState,
+  type FitWorkerResponse,
+  type FitWorkerStartRequest,
+} from './domain/fitWorkerProtocol'
 import { parseCoatOfArms } from './domain/parser'
 import {
   createCoatOfArmsProject,
@@ -190,6 +198,10 @@ const fitPreviewUrl = ref('')
 const fitLayerBudget = ref(6)
 const fitProgressPercent = ref(0)
 const fitProgressLabel = ref('等待开始')
+const fitTaskState = ref<FitTaskState>('idle')
+// Worker checkpoints contain large typed arrays and must remain structured-
+// cloneable; deep Vue proxies cannot be sent back through postMessage.
+const fitCheckpoint = shallowRef<ImageFitCheckpoint>()
 const fitCompressionEvidence = ref<{
   receipt: StructuralCompressionReceipt
   pixelExactResolutions: number[]
@@ -201,6 +213,7 @@ const fitPruneEvidence = ref<InstancePruneReceipt>()
 const fitPruneSource = ref('')
 let fitWorker: Worker | null = null
 let fitRunId = 0
+let fitRevision = 0
 let fitPruneWorker: Worker | null = null
 let fitPruneRunId = 0
 const INSTANCE_EDITOR_WINDOW_SIZE = 32
@@ -1043,14 +1056,44 @@ async function selectTargetImage(event: Event) {
 
 function cancelImageFit(notify = true) {
   fitRunId += 1
+  fitRevision += 1
   fitWorker?.terminate()
   fitWorker = null
-  if (fitBusy.value && notify) ElMessage.info('已取消图片拟合')
-  if (fitBusy.value) {
+  const wasActive = fitBusy.value || fitTaskState.value === 'paused'
+  if (wasActive && notify) ElMessage.info('已取消图片拟合')
+  if (wasActive) {
     fitProgressPercent.value = 0
     fitProgressLabel.value = notify ? '已取消' : '等待开始'
   }
   fitBusy.value = false
+  fitCheckpoint.value = undefined
+  fitTaskState.value = notify && wasActive ? 'cancelled' : 'idle'
+}
+
+function pauseImageFit() {
+  if (!fitBusy.value || !fitWorker || !fitCheckpoint.value) {
+    ElMessage.warning('当前阶段还没有可恢复的安全 checkpoint')
+    return
+  }
+  fitRevision += 1
+  fitWorker.terminate()
+  fitWorker = null
+  fitBusy.value = false
+  fitTaskState.value = 'paused'
+  fitProgressPercent.value = Math.round(
+    fitCheckpoint.value.nextTileIndex / Math.max(1, fitCheckpoint.value.tileCount) * 100,
+  )
+  fitProgressLabel.value = `已暂停 · ${fitCheckpoint.value.lane} ${fitCheckpoint.value.nextTileIndex}/${fitCheckpoint.value.tileCount}`
+  fitStatus.value = '拟合已暂停；输入、素材包、配置、模型与原生块游标已保留在当前浏览器标签页'
+  ElMessage.info('图片拟合已在安全 checkpoint 暂停')
+}
+
+function resumeImageFit() {
+  if (fitTaskState.value !== 'paused' || !fitCheckpoint.value) {
+    ElMessage.warning('没有可恢复的拟合 checkpoint')
+    return
+  }
+  void runImageFit(fitCheckpoint.value)
 }
 
 function cancelInstancePrune(notify = true) {
@@ -1268,7 +1311,11 @@ function compressFitDocument() {
   ElMessage.success(`安全压缩完成：合并 ${compressed.receipt.mergedBlocks} 个块，减少 ${saved} bytes`)
 }
 
-async function fitTargetImage() {
+function fitTargetImage() {
+  void runImageFit()
+}
+
+async function runImageFit(resumeCheckpoint?: ImageFitCheckpoint) {
   if (!targetImage.value) {
     ElMessage.warning('请先选择目标图片')
     return
@@ -1284,18 +1331,31 @@ async function fitTargetImage() {
   }
   fitLayerBudget.value = layerBudget
   cancelInstancePrune(false)
-  cancelImageFit(false)
-  const runId = ++fitRunId
+  let runId: number
+  let revision: number
+  if (resumeCheckpoint) {
+    runId = fitRunId
+    revision = fitRevision + 1
+  } else {
+    cancelImageFit(false)
+    runId = ++fitRunId
+    revision = 1
+    fitCheckpoint.value = undefined
+  }
+  fitRevision = revision
   fitBusy.value = true
-  fitResult.value = undefined
-  fitCompressionEvidence.value = undefined
-  fitCompressionSource.value = ''
-  fitPruneEvidence.value = undefined
-  fitPruneSource.value = ''
-  fitWebGlScore.value = null
-  fitPreviewUrl.value = ''
-  fitProgressPercent.value = 0
-  fitProgressLabel.value = '正在准备完整素材索引'
+  fitTaskState.value = 'preparing'
+  if (!resumeCheckpoint) {
+    fitResult.value = undefined
+    fitCompressionEvidence.value = undefined
+    fitCompressionSource.value = ''
+    fitPruneEvidence.value = undefined
+    fitPruneSource.value = ''
+    fitWebGlScore.value = null
+    fitPreviewUrl.value = ''
+    fitProgressPercent.value = 0
+  }
+  fitProgressLabel.value = resumeCheckpoint ? '正在恢复安全 checkpoint' : '正在准备完整素材索引'
   try {
     const patterns = loadedAssetPack.value.pack.assets
       .filter((item) => item.kind === 'pattern' && item.registration === 'designer_manifest')
@@ -1327,16 +1387,18 @@ async function fitTargetImage() {
         Promise.all(emblems.map(toCandidate)),
       ])
     }
-    if (runId !== fitRunId) return
+    if (runId !== fitRunId || revision !== fitRevision) return
     fitStatus.value = `浏览器 Worker 正在执行透明度加权、轮廓粗筛和双路径残差重建；最多 ${layerBudget} 层，只保留严格改善层…`
+    fitTaskState.value = 'running'
     const worker = new Worker(new URL('./domain/imageFitter.worker.ts', import.meta.url), { type: 'module' })
     fitWorker = worker
     const target = targetImage.value.image
-    worker.onmessage = async (event: MessageEvent<
-      | { kind: 'progress', progress: ImageFitProgress }
-      | { kind: 'result', ok: boolean, result?: ImageFitResult, error?: string }
-    >) => {
-      if (runId !== fitRunId) return
+    worker.onmessage = async (event: MessageEvent<FitWorkerResponse>) => {
+      if (
+        runId !== fitRunId
+        || revision !== fitRevision
+        || !isCurrentFitWorkerMessage(event.data, runId, revision)
+      ) return
       if (event.data.kind === 'progress') {
         const progress = event.data.progress
         fitProgressPercent.value = progress.percent
@@ -1350,13 +1412,18 @@ async function fitTargetImage() {
         fitProgressLabel.value = `${phase} · ${progress.completed}/${progress.total} · 已评估 ${progress.evaluatedCandidates}`
         return
       }
+      if (event.data.kind === 'checkpoint') {
+        fitCheckpoint.value = event.data.checkpoint
+        return
+      }
       worker.terminate()
       fitWorker = null
-      if (!event.data.ok || !event.data.result) {
+      if (!event.data.ok) {
         fitBusy.value = false
+        fitTaskState.value = 'failed'
         fitProgressPercent.value = 0
         fitProgressLabel.value = '拟合失败'
-        fitStatus.value = `拟合失败：${event.data.error ?? 'unknown'}`
+        fitStatus.value = `拟合失败：${event.data.error}`
         ElMessage.error(fitStatus.value)
         return
       }
@@ -1377,16 +1444,19 @@ async function fitTargetImage() {
           Promise.all(selectedEmblemEntries.map(async (item) => [item.name, await readPackTexture(item)] as const)),
         ])
       } catch (error) {
-        if (runId !== fitRunId) return
+        if (runId !== fitRunId || revision !== fitRevision) return
         fitBusy.value = false
+        fitTaskState.value = 'failed'
         fitProgressPercent.value = 0
         fitProgressLabel.value = '结果素材校验失败'
         fitStatus.value = `拟合已完成，但完整 DDS 校验失败：${errorMessage(error)}`
         ElMessage.error(fitStatus.value)
         return
       }
-      if (runId !== fitRunId) return
+      if (runId !== fitRunId || revision !== fitRevision) return
       fitBusy.value = false
+      fitTaskState.value = 'completed'
+      fitCheckpoint.value = undefined
       fitProgressPercent.value = 100
       fitProgressLabel.value = `完成 · 选中 ${result.provenance.selectedLayers} 层`
       patternTexture.value = selectedPatternTexture
@@ -1429,10 +1499,11 @@ async function fitTargetImage() {
       ElMessage.success('多层原生元素构图已载入结构化编辑器，可继续调整并复制代码')
     }
     worker.onerror = (event) => {
-      if (runId !== fitRunId) return
+      if (runId !== fitRunId || revision !== fitRevision) return
       worker.terminate()
       fitWorker = null
       fitBusy.value = false
+      fitTaskState.value = 'failed'
       fitProgressPercent.value = 0
       fitProgressLabel.value = 'Worker 失败'
       fitStatus.value = `Worker 失败：${event.message}`
@@ -1453,24 +1524,35 @@ async function fitTargetImage() {
         pixels: new Uint8ClampedArray(item.texture.pixels),
       },
     }))
-    worker.postMessage([workerImage, workerCandidates(patternCandidates), workerCandidates(emblemCandidates), {
-      resolution: layerBudget >= 128 ? 96 : 56,
-      maxPatterns: patterns.length,
-      maxEmblemCandidates: emblemCandidates.length,
-      maxLayers: layerBudget,
-      sourceWidth: targetImage.value.originalWidth,
-      sourceHeight: targetImage.value.originalHeight,
-      pyramidImages: targetImage.value.pyramid.map((image) => ({
-        width: image.width,
-        height: image.height,
-        pixels: new Uint8ClampedArray(image.pixels),
-      })),
-      refinementCandidates: 48,
-      beamWidth: 2,
-    }])
+    const request: FitWorkerStartRequest = {
+      protocol: FIT_WORKER_PROTOCOL,
+      kind: 'start',
+      runId,
+      revision,
+      args: [workerImage, workerCandidates(patternCandidates), workerCandidates(emblemCandidates), {
+        resolution: layerBudget >= 128 ? 96 : 56,
+        maxPatterns: patterns.length,
+        maxEmblemCandidates: emblemCandidates.length,
+        maxLayers: layerBudget,
+        sourceWidth: targetImage.value.originalWidth,
+        sourceHeight: targetImage.value.originalHeight,
+        pyramidImages: targetImage.value.pyramid.map((image) => ({
+          width: image.width,
+          height: image.height,
+          pixels: new Uint8ClampedArray(image.pixels),
+        })),
+        refinementCandidates: 48,
+        beamWidth: 2,
+        inputSha256: targetImage.value.sha256,
+        assetPackManifestSha256: loadedAssetPack.value.manifestSha256,
+        resumeCheckpoint,
+      }],
+    }
+    worker.postMessage(request)
   } catch (error) {
-    if (runId !== fitRunId) return
+    if (runId !== fitRunId || revision !== fitRevision) return
     fitBusy.value = false
+    fitTaskState.value = 'failed'
     fitProgressPercent.value = 0
     fitProgressLabel.value = '拟合失败'
     fitStatus.value = `拟合失败：${errorMessage(error)}`
@@ -1995,13 +2077,15 @@ watch(() => activeEmblem.value?.instances.length ?? 0, (length) => {
             <el-button type="primary" :loading="fitBusy" :disabled="assetPackBusy || fitPruneBusy || !targetImage || !loadedAssetPack" @click="fitTargetImage">
               {{ t('startLocalFit') }}
             </el-button>
-            <el-button :disabled="!fitBusy" @click="cancelImageFit()">{{ t('cancel') }}</el-button>
+            <el-button :disabled="!fitBusy || !fitCheckpoint" @click="pauseImageFit">{{ t('pauseFit') }}</el-button>
+            <el-button v-if="fitTaskState === 'paused'" type="primary" plain @click="resumeImageFit">{{ t('resumeFit') }}</el-button>
+            <el-button :disabled="!fitBusy && fitTaskState !== 'paused'" @click="cancelImageFit()">{{ t('cancel') }}</el-button>
             <el-button :disabled="fitBusy || fitPruneBusy || !fitResult" @click="compressFitDocument">{{ t('compressBlocks') }}</el-button>
             <el-button :loading="fitPruneBusy" :disabled="fitBusy || fitPruneBusy || !fitResult" @click="pruneFitDocument">{{ t('exactPrune') }}</el-button>
             <el-button v-if="fitPruneBusy" @click="cancelInstancePrune()">{{ t('cancelPrune') }}</el-button>
           </div>
         </div>
-        <div class="fit-report" :data-fit-evidence="fitEvidenceJson">
+        <div class="fit-report" :data-fit-evidence="fitEvidenceJson" :data-fit-task-state="fitTaskState">
           <strong>{{ t('runStatus') }}</strong>
           <p>{{ uiText(fitStatus) }}</p>
           <div class="fit-progress">
@@ -2011,6 +2095,7 @@ watch(() => activeEmblem.value?.instances.length ?? 0, (length) => {
               :stroke-width="10"
             />
             <small>{{ uiText(fitProgressLabel) }}{{ t('progressStageNote') }}</small>
+            <small v-if="fitCheckpoint">{{ t('checkpointReady', { lane: fitCheckpoint.lane, completed: fitCheckpoint.nextTileIndex, total: fitCheckpoint.tileCount }) }}</small>
           </div>
           <template v-if="fitResult">
             <div v-if="fitPruneProgress" class="fit-progress">

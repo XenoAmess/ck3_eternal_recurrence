@@ -9,6 +9,8 @@ export const FIT_BUDGET_STRESS_CONTRACT = {
     10000: 180_000,
   },
   maximumCancellationLatencyMs: 1_000,
+  maximumPauseLatencyMs: 1_000,
+  maximumResumeDurationMs: 45_000,
   restartProbeBudget: 1,
   maximumRestartProgressLatencyMs: 5_000,
   reportOnlyMaximumDurationMs: 180_000,

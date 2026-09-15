@@ -33,6 +33,10 @@ export interface ImageFitOptions {
   namedColors?: NamedColorMap
   beamWidth?: number
   onProgress?: (progress: ImageFitProgress) => void
+  inputSha256?: string
+  assetPackManifestSha256?: string
+  resumeCheckpoint?: ImageFitCheckpoint
+  onCheckpoint?: (checkpoint: ImageFitCheckpoint) => void
 }
 
 export interface ImageFitProgress {
@@ -43,6 +47,32 @@ export interface ImageFitProgress {
   layer: number
   layerBudget: number
   evaluatedCandidates: number
+}
+
+export interface ImageFitCheckpoint {
+  contract: 'ck3-coa-fit-checkpoint-v1'
+  algorithm: 'ck3-coa-browser-fit-v5-hybrid-multiscale'
+  lane: 'baseline' | 'hybrid'
+  inputSha256: string
+  assetPackManifestSha256: string
+  resolution: number
+  sourceWidth: number
+  sourceHeight: number
+  layerBudget: number
+  randomSeed: null
+  nextTileIndex: number
+  tileCount: number
+  evaluatedCandidates: number
+  tiles: PaintTile[]
+  state: {
+    coatOfArms: CoatOfArms
+    candidateKey: string
+    patternName: string
+    selectedAssetNames: string[]
+    layerLosses: number[]
+    reconstructionMode: ImageFitReconstructionMode
+    paintPlacements: NativePaintPlacement[]
+  }
 }
 
 export interface ImageFitMetrics {
@@ -935,7 +965,7 @@ function optimizeLayerChoice(
   return best
 }
 
-interface PaintTile {
+export interface PaintTile {
   minimumX: number
   minimumY: number
   maximumX: number
@@ -945,7 +975,7 @@ interface PaintTile {
   residual: number
 }
 
-interface NativePaintPlacement {
+export interface NativePaintPlacement {
   tile: PaintTile
   instance: CoatOfArmsInstance
 }
@@ -1125,6 +1155,124 @@ function nativeTileMaximumDepth(target: Pick<FitImage, 'width' | 'height'>, laye
   return Math.max(2, Math.min(resolutionDepth, budgetDepth))
 }
 
+interface NativePaintCheckpointContext {
+  lane: ImageFitCheckpoint['lane']
+  inputSha256: string
+  assetPackManifestSha256: string
+  resolution: number
+  sourceWidth: number
+  sourceHeight: number
+  layerBudget: number
+  resumeCheckpoint?: ImageFitCheckpoint
+  onCheckpoint?: (checkpoint: ImageFitCheckpoint) => void
+  emblemAssets: Map<string, FitTextureCandidate>
+}
+
+function cloneInstance(instance: CoatOfArmsInstance): CoatOfArmsInstance {
+  return {
+    position: [...instance.position],
+    scale: [...instance.scale],
+    rotation: instance.rotation,
+    depth: instance.depth,
+  }
+}
+
+function cloneCheckpointCoatOfArms(coatOfArms: CoatOfArms): CoatOfArms {
+  return {
+    outerKey: coatOfArms.outerKey,
+    parent: coatOfArms.parent,
+    pattern: coatOfArms.pattern,
+    colors: [...coatOfArms.colors],
+    coloredEmblems: coatOfArms.coloredEmblems.map((emblem) => ({
+      texture: emblem.texture,
+      colors: [...emblem.colors],
+      mask: [...emblem.mask],
+      instances: emblem.instances.map(cloneInstance),
+    })),
+    texturedEmblems: coatOfArms.texturedEmblems.map((emblem) => ({ ...emblem })),
+    rootPresence: coatOfArms.rootPresence ? {
+      pattern: coatOfArms.rootPresence.pattern,
+      colors: [...coatOfArms.rootPresence.colors],
+    } : undefined,
+  }
+}
+
+function checkpointFromPaintState(
+  context: NativePaintCheckpointContext,
+  state: SearchState,
+  tiles: PaintTile[],
+  nextTileIndex: number,
+  evaluatedCandidates: number,
+): ImageFitCheckpoint {
+  return {
+    contract: 'ck3-coa-fit-checkpoint-v1',
+    algorithm: 'ck3-coa-browser-fit-v5-hybrid-multiscale',
+    lane: context.lane,
+    inputSha256: context.inputSha256,
+    assetPackManifestSha256: context.assetPackManifestSha256,
+    resolution: context.resolution,
+    sourceWidth: context.sourceWidth,
+    sourceHeight: context.sourceHeight,
+    layerBudget: context.layerBudget,
+    randomSeed: null,
+    nextTileIndex,
+    tileCount: tiles.length,
+    evaluatedCandidates,
+    tiles: tiles.map((tile) => ({ ...tile, color: [...tile.color] as ByteRgb })),
+    state: {
+      coatOfArms: cloneCheckpointCoatOfArms(state.candidate.coatOfArms),
+      candidateKey: state.candidate.key,
+      patternName: state.patternAsset.name,
+      selectedAssetNames: state.selectedAssets.map((asset) => asset.name),
+      layerLosses: [...state.layerLosses],
+      reconstructionMode: state.reconstructionMode,
+      paintPlacements: state.paintPlacements.map((placement) => ({
+        tile: { ...placement.tile, color: [...placement.tile.color] as ByteRgb },
+        instance: cloneInstance(placement.instance),
+      })),
+    },
+  }
+}
+
+function restorePaintState(
+  checkpoint: ImageFitCheckpoint,
+  initial: SearchState,
+  target: FitImage,
+  surfaceMask: DecodedDds | undefined,
+  namedColors: NamedColorMap,
+  emblemAssets: Map<string, FitTextureCandidate>,
+): SearchState {
+  if (checkpoint.state.patternName !== initial.patternAsset.name) {
+    throw new Error('拟合 checkpoint 的 pattern 与当前搜索路径不一致')
+  }
+  const selectedAssets = checkpoint.state.selectedAssetNames.map((name) => {
+    const asset = emblemAssets.get(name)
+    if (!asset) throw new Error(`拟合 checkpoint 引用当前素材包中不存在的 emblem：${name}`)
+    return asset
+  })
+  const coatOfArms = cloneCheckpointCoatOfArms(checkpoint.state.coatOfArms)
+  const candidate = score(
+    coatOfArms,
+    initial.patternAsset.texture,
+    Object.fromEntries([...emblemAssets].map(([name, asset]) => [name, asset.texture])),
+    target,
+    checkpoint.state.candidateKey,
+    surfaceMask,
+    namedColors,
+  )
+  return {
+    candidate,
+    patternAsset: initial.patternAsset,
+    selectedAssets,
+    layerLosses: [...checkpoint.state.layerLosses],
+    reconstructionMode: checkpoint.state.reconstructionMode,
+    paintPlacements: checkpoint.state.paintPlacements.map((placement) => ({
+      tile: { ...placement.tile, color: [...placement.tile.color] as ByteRgb },
+      instance: cloneInstance(placement.instance),
+    })),
+  }
+}
+
 function paintWithNativeTiles(
   initial: SearchState,
   brush: FitTextureCandidate,
@@ -1134,10 +1282,27 @@ function paintWithNativeTiles(
   namedColors: NamedColorMap,
   evaluated: EvaluationCounter,
   onProgress?: (progress: ImageFitProgress) => void,
+  checkpointContext?: NativePaintCheckpointContext,
 ): SearchState {
   const remaining = Math.max(0, maxLayers - initial.selectedAssets.length)
   if (remaining === 0) return initial
-  const tiles = nativePaintTiles(target, initial.candidate.rendered, remaining).slice(0, remaining)
+  const resumeCheckpoint = checkpointContext
+    && checkpointContext.resumeCheckpoint?.lane === checkpointContext.lane
+    ? checkpointContext.resumeCheckpoint
+    : undefined
+  if (
+    resumeCheckpoint
+    && (
+      resumeCheckpoint.tileCount !== resumeCheckpoint.tiles.length
+      || resumeCheckpoint.tileCount > remaining
+      || !Number.isSafeInteger(resumeCheckpoint.nextTileIndex)
+      || resumeCheckpoint.nextTileIndex < 0
+      || resumeCheckpoint.nextTileIndex > resumeCheckpoint.tileCount
+    )
+  ) throw new Error('拟合 checkpoint 的原生块游标或规模不合法')
+  const tiles = resumeCheckpoint
+    ? resumeCheckpoint.tiles.map((tile) => ({ ...tile, color: [...tile.color] as ByteRgb }))
+    : nativePaintTiles(target, initial.candidate.rendered, remaining).slice(0, remaining)
   const shape = textureShapeDescriptor(brush.texture)
   // The CPU reference renderer clips geometry at normalized instance bounds
   // and samples output pixel centers. Exact nominal coverage (factor 1) is
@@ -1145,18 +1310,40 @@ function paintWithNativeTiles(
   // 1.04 remains only as a scored overlap candidate for a genuine loss gain.
   const coverageFactors = [1, 1.04] as const
   const total = Math.max(1, tiles.length * coverageFactors.length)
-  let completed = 0
-  const selectedAssets = [...initial.selectedAssets]
-  const layerLosses = [...initial.layerLosses]
-  const paintPlacements = [...initial.paintPlacements]
-  const coloredEmblems = [...initial.candidate.coatOfArms.coloredEmblems]
-  const coatOfArms: CoatOfArms = { ...initial.candidate.coatOfArms, coloredEmblems }
-  let candidate: ScoredCandidate = { ...initial.candidate, coatOfArms }
+  const resumeIndex = resumeCheckpoint?.nextTileIndex ?? 0
+  const resumedState = resumeCheckpoint && checkpointContext
+    ? restorePaintState(
+        resumeCheckpoint, initial, target, surfaceMask, namedColors, checkpointContext.emblemAssets,
+      )
+    : initial
+  if (resumeCheckpoint) evaluated.value = Math.max(evaluated.value, resumeCheckpoint.evaluatedCandidates)
+  let completed = resumeIndex * coverageFactors.length
+  const selectedAssets = [...resumedState.selectedAssets]
+  const layerLosses = [...resumedState.layerLosses]
+  const paintPlacements = [...resumedState.paintPlacements]
+  const coloredEmblems = [...resumedState.candidate.coatOfArms.coloredEmblems]
+  const coatOfArms: CoatOfArms = { ...resumedState.candidate.coatOfArms, coloredEmblems }
+  let candidate: ScoredCandidate = { ...resumedState.candidate, coatOfArms }
+  const state = (): SearchState => ({
+    candidate,
+    patternAsset: initial.patternAsset,
+    selectedAssets,
+    layerLosses,
+    reconstructionMode: initial.selectedAssets.length > 0
+      ? 'hybrid-native-paint'
+      : 'native-tile-paint',
+    paintPlacements,
+  })
   reportProgress(
     onProgress, 'paint', completed, total,
     selectedAssets.length + 1, maxLayers, evaluated.value,
   )
-  for (const tile of tiles) {
+  checkpointContext?.onCheckpoint?.(checkpointFromPaintState(
+    checkpointContext, state(), tiles, resumeIndex, evaluated.value,
+  ))
+  const checkpointInterval = Math.max(1, Math.ceil(tiles.length / 100))
+  for (let tileIndex = resumeIndex; tileIndex < tiles.length; tileIndex += 1) {
+    const tile = tiles[tileIndex]
     const focus: ResidualFocus = {
       position: [
         (tile.minimumX + tile.maximumX) / 2 / target.width,
@@ -1208,28 +1395,29 @@ function paintWithNativeTiles(
         )
       }
     }
-    if (!best || best.choice.candidate.totalLoss >= candidate.totalLoss - 1e-12) continue
-    coloredEmblems.push(best.choice.emblem)
-    candidate = best.choice.candidate
-    selectedAssets.push(brush)
-    layerLosses.push(candidate.totalLoss)
-    paintPlacements.push({ tile, instance: best.choice.emblem.instances[0] })
+    if (best && best.choice.candidate.totalLoss < candidate.totalLoss - 1e-12) {
+      coloredEmblems.push(best.choice.emblem)
+      candidate = best.choice.candidate
+      selectedAssets.push(brush)
+      layerLosses.push(candidate.totalLoss)
+      paintPlacements.push({ tile, instance: best.choice.emblem.instances[0] })
+    }
+    const nextTileIndex = tileIndex + 1
+    if (
+      checkpointContext
+      && (nextTileIndex === tiles.length || nextTileIndex % checkpointInterval === 0)
+    ) {
+      checkpointContext.onCheckpoint?.(checkpointFromPaintState(
+        checkpointContext, state(), tiles, nextTileIndex, evaluated.value,
+      ))
+    }
   }
   reportProgress(
     onProgress, 'paint', total, total,
     selectedAssets.length, maxLayers, evaluated.value,
   )
   if (selectedAssets.length === initial.selectedAssets.length) return initial
-  return {
-    candidate,
-    patternAsset: initial.patternAsset,
-    selectedAssets,
-    layerLosses,
-    reconstructionMode: initial.selectedAssets.length > 0
-      ? 'hybrid-native-paint'
-      : 'native-tile-paint',
-    paintPlacements,
-  }
+  return state()
 }
 
 function edgeResidualHotspots(
@@ -1595,6 +1783,25 @@ export function fitImageToCoatOfArms(
     .sort((left, right) => left.name.localeCompare(right.name))
     .slice(0, options.maxEmblemCandidates ?? emblemCandidates.length)
   const maxLayers = normalizeLayerBudget(options.maxLayers)
+  const inputSha256 = options.inputSha256 ?? ''
+  const assetPackManifestSha256 = options.assetPackManifestSha256 ?? ''
+  const resumeCheckpoint = options.resumeCheckpoint
+  if (resumeCheckpoint) {
+    if (
+      resumeCheckpoint.contract !== 'ck3-coa-fit-checkpoint-v1'
+      || resumeCheckpoint.algorithm !== 'ck3-coa-browser-fit-v5-hybrid-multiscale'
+    ) throw new Error('拟合 checkpoint 版本不兼容')
+    if (
+      resumeCheckpoint.inputSha256 !== inputSha256
+      || resumeCheckpoint.assetPackManifestSha256 !== assetPackManifestSha256
+    ) throw new Error('拟合 checkpoint 的输入图片或素材包标识不匹配')
+    if (
+      resumeCheckpoint.resolution !== resolution
+      || resumeCheckpoint.sourceWidth !== sourceWidth
+      || resumeCheckpoint.sourceHeight !== sourceHeight
+      || resumeCheckpoint.layerBudget !== maxLayers
+    ) throw new Error('拟合 checkpoint 的搜索配置不匹配')
+  }
   const shapeCandidateCount = clamp(Math.floor(options.refinementCandidates ?? 48), 8, 128)
   const beamWidth = clamp(Math.floor(options.beamWidth ?? 2), 1, 4)
   const minRelativeLayerImprovement = clamp(options.minRelativeLayerImprovement ?? 0, 0, 1)
@@ -1663,6 +1870,7 @@ export function fitImageToCoatOfArms(
   const paintBrush = emblems.find((item) => item.name === 'ce_block_02.dds')
     ?? emblems.find((item) => item.name === 'ce_billet.dds')
     ?? emblems.find((item) => item.name === 'ce_circle.dds')
+  const emblemAssetMap = new Map(emblems.map((item) => [item.name, item]))
   let terminationReason: ImageFitResult['provenance']['terminationReason'] = 'layer_budget'
   // Large-budget runs used to force this value to zero, which made the
   // algorithm unconditionally collapse to a single rectangular texture.
@@ -1831,6 +2039,13 @@ export function fitImageToCoatOfArms(
       namedColors,
       evaluated,
       options.onProgress,
+      {
+        lane: 'baseline', inputSha256, assetPackManifestSha256,
+        resolution, sourceWidth, sourceHeight, layerBudget: maxLayers,
+        resumeCheckpoint,
+        onCheckpoint: resumeCheckpoint?.lane === 'hybrid' ? undefined : options.onCheckpoint,
+        emblemAssets: emblemAssetMap,
+      },
     )
     const seamValidation = validateNativeTileSeams(
       paintState.paintPlacements,
@@ -1880,6 +2095,12 @@ export function fitImageToCoatOfArms(
         namedColors,
         evaluated,
         options.onProgress,
+        {
+          lane: 'hybrid', inputSha256, assetPackManifestSha256,
+          resolution, sourceWidth, sourceHeight, layerBudget: maxLayers,
+          resumeCheckpoint, onCheckpoint: options.onCheckpoint,
+          emblemAssets: emblemAssetMap,
+        },
       )
       const hybridSeamValidation = validateNativeTileSeams(
         hybridState.paintPlacements,

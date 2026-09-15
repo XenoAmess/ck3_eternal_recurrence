@@ -115,6 +115,7 @@ test('runs real 128/1024/10000 browser fits without clamping and cancels a paint
   ))
   const report = page.locator('.fit-report')
   const observations: Record<string, unknown>[] = []
+  let baseline128Evidence: Record<string, unknown> | undefined
 
   for (const budget of contract.budgets) {
     await page.locator('.fit-budget input').fill(String(budget))
@@ -132,6 +133,7 @@ test('runs real 128/1024/10000 browser fits without clamping and cancels a paint
     const rawEvidence = await report.getAttribute('data-fit-evidence')
     expect(rawEvidence).toBeTruthy()
     const evidence = JSON.parse(rawEvidence!) as {
+      metrics: Record<string, unknown>
       provenance: {
         layerBudget: number
         drawnInstances: number
@@ -145,6 +147,7 @@ test('runs real 128/1024/10000 browser fits without clamping and cancels a paint
         }
       }
     }
+    if (budget === 128) baseline128Evidence = evidence
     expect(evidence.provenance.layerBudget).toBe(budget)
     expect(evidence.provenance.nativeTileSearch.userBudgetAppliedWithoutClamp).toBe(budget)
     expect(evidence.provenance.drawnInstances).toBeLessThanOrEqual(budget)
@@ -178,27 +181,59 @@ test('runs real 128/1024/10000 browser fits without clamping and cancels a paint
   expect(parsed.coatOfArms.coloredEmblems.reduce((sum, item) => sum + item.instances.length, 0))
     .toBe(finalEvidence.drawnInstances)
 
+  // Pause at a real native-paint checkpoint, resume the same run revision,
+  // and require the completed model and metrics to match an uninterrupted
+  // 128-budget run. This is distinct from cancellation/restart below.
+  await page.locator('.fit-budget input').fill('128')
+  await page.getByRole('button', { name: '开始本地拟合' }).click()
+  await expect(page.locator('.fit-progress small').filter({ hasText: '安全 checkpoint' })).toBeVisible({ timeout: 15_000 })
+  const pauseStarted = Date.now()
+  await page.getByRole('button', { name: '暂停', exact: true }).click()
+  await expect(report).toHaveAttribute('data-fit-task-state', 'paused')
+  const pauseLatencyMs = Date.now() - pauseStarted
+  expect(pauseLatencyMs).toBeLessThan(contract.maximumPauseLatencyMs)
+  const resumeStarted = Date.now()
+  await page.getByRole('button', { name: '继续', exact: true }).click()
+  await expect(report).toHaveAttribute('data-fit-task-state', 'running')
+  await expect(report.locator('p')).toContainText('/128 层', { timeout: contract.maximumResumeDurationMs })
+  await expect(report).toHaveAttribute('data-fit-task-state', 'completed')
+  const resumeDurationMs = Date.now() - resumeStarted
+  expect(resumeDurationMs).toBeLessThan(contract.maximumResumeDurationMs)
+  const resumedRawEvidence = await report.getAttribute('data-fit-evidence')
+  expect(resumedRawEvidence).toBeTruthy()
+  const resumedEvidence = JSON.parse(resumedRawEvidence!) as {
+    metrics: Record<string, unknown>
+    provenance: Record<string, unknown>
+  }
+  expect(resumedEvidence.metrics).toEqual(baseline128Evidence!.metrics)
+  expect(resumedEvidence.provenance).toMatchObject({
+    layerBudget: 128,
+    drawnInstances: (baseline128Evidence!.provenance as Record<string, unknown>).drawnInstances,
+    coloredEmblemBlocks: (baseline128Evidence!.provenance as Record<string, unknown>).coloredEmblemBlocks,
+    terminationReason: (baseline128Evidence!.provenance as Record<string, unknown>).terminationReason,
+  })
+
   // Cancel during the expensive paint phase, then use the contract's minimal
   // recovery probe to isolate worker-slot reuse from the already-measured
   // 128-layer performance gate and prove there is no stale-result pollution.
   await page.locator('.fit-budget input').fill('10000')
   await page.getByRole('button', { name: '开始本地拟合' }).click()
-  await expect(page.locator('.fit-progress small')).toContainText('原生矩形块残差细化', { timeout: 15_000 })
+  await expect(page.locator('.fit-progress small').first()).toContainText('原生矩形块残差细化', { timeout: 15_000 })
   const cancelStarted = Date.now()
   await page.getByRole('button', { name: '取消', exact: true }).click()
-  await expect(page.locator('.fit-progress small')).toContainText('已取消')
+  await expect(page.locator('.fit-progress small').first()).toContainText('已取消')
   const cancellationLatencyMs = Date.now() - cancelStarted
   expect(cancellationLatencyMs).toBeLessThan(contract.maximumCancellationLatencyMs)
   await page.locator('.fit-budget input').fill(String(contract.restartProbeBudget))
   const restartStarted = Date.now()
   await page.getByRole('button', { name: '开始本地拟合' }).click()
-  await expect(page.locator('.fit-progress small')).toContainText(/背景匹配|全库轮廓粗筛|全角度与|残差细化/, {
+  await expect(page.locator('.fit-progress small').first()).toContainText(/背景匹配|全库轮廓粗筛|全角度与|残差细化/, {
     timeout: contract.maximumRestartProgressLatencyMs,
   })
   const restartProgressLatencyMs = Date.now() - restartStarted
   expect(restartProgressLatencyMs).toBeLessThan(contract.maximumRestartProgressLatencyMs)
   await page.getByRole('button', { name: '取消', exact: true }).click()
-  await expect(page.locator('.fit-progress small')).toContainText('已取消')
+  await expect(page.locator('.fit-progress small').first()).toContainText('已取消')
   await page.waitForTimeout(250)
   await expect(report).toHaveAttribute('data-fit-evidence', '')
 
@@ -217,6 +252,9 @@ test('runs real 128/1024/10000 browser fits without clamping and cancels a paint
     performanceReference: contract.performanceReference,
     performanceGateEnforced,
     observations,
+    pauseLatencyMs,
+    resumeDurationMs,
+    pauseResumeContract: 'ck3-coa-fit-checkpoint-v1',
     cancellationLatencyMs,
     restartProgressLatencyMs,
     restartBudget: contract.restartProbeBudget,
