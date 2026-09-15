@@ -327,6 +327,97 @@ bool ExecuteMarriageCandidateInternalRouteV1(
   return true;
 }
 
+MarriageCandidateWorkerReadResultV1 ReadMarriageCandidatesOnApplicationMainV1(
+    MarriageCandidateInternalRouteStateV1 &route,
+    const xar::game::Snapshot &published_snapshot,
+    std::uint64_t published_native_revision,
+    std::uint32_t limit,
+    std::uint32_t candidate_filter,
+    MarriageCandidateInternalQueryV1 &query) noexcept {
+  MarriageCandidateWorkerReadResultV1 result{};
+  query = {};
+  if (published_native_revision == 0 || published_snapshot.date_raw <= 0 ||
+      !published_snapshot.paused || !published_snapshot.map_ready ||
+      !published_snapshot.has_played_character ||
+      !published_snapshot.played_character_alive ||
+      published_snapshot.played_character_id <= 0 || limit == 0 ||
+      limit > kMarriageMatchmakingMaximumCandidatesV1 ||
+      candidate_filter ==
+          static_cast<std::uint32_t>(published_snapshot.played_character_id)) {
+    result.status = MarriageCandidateWorkerReadStatusV1::unavailable;
+    result.route_failure = MarriageCandidateInternalRouteFailureV1::invalid_request;
+    return result;
+  }
+  MarriageCandidateInternalFrameInputV1 input{};
+  input.snapshot_revision = published_native_revision;
+  input.date_raw = published_snapshot.date_raw;
+  input.paused = published_snapshot.paused;
+  input.map_ready = published_snapshot.map_ready;
+  input.has_played_character = published_snapshot.has_played_character;
+  input.played_character_alive = published_snapshot.played_character_alive;
+  // ReadSnapshot's ReadPlayedCharacter resolves the full generation-bearing
+  // CharacterID through the native storage before publishing these fields.
+  input.played_character_identity_round_trip = true;
+  input.subject_character_id =
+      static_cast<std::uint32_t>(published_snapshot.played_character_id);
+  input.matchmaker_character_id = input.subject_character_id;
+  input.limit = limit;
+  input.candidate_character_id = candidate_filter;
+  if (!PrepareMarriageCandidateInternalQueryV1(
+          route, MarriageCandidateInternalOperationV1::candidates, input,
+          query) || route.mailbox == nullptr) {
+    result.status = MarriageCandidateWorkerReadStatusV1::unavailable;
+    result.route_failure = ReadMarriageCandidateInternalRouteFailureV1(route);
+    return result;
+  }
+  result.submit = xar::ck3_11906::TrySubmitMainThreadQueryV1(
+      *route.mailbox, &ExecuteMarriageCandidateInternalRouteV1, &query,
+      query.ticket);
+  if (result.submit !=
+      xar::ck3_11906::MainThreadQuerySubmitResultV1::submitted) {
+    result.status = result.submit ==
+                            xar::ck3_11906::MainThreadQuerySubmitResultV1::
+                                paused_main_thread_not_observed
+                        ? MarriageCandidateWorkerReadStatusV1::unavailable
+                        : MarriageCandidateWorkerReadStatusV1::infrastructure_red;
+    result.route_failure = ReadMarriageCandidateInternalRouteFailureV1(route);
+    return result;
+  }
+  result.wait = xar::ck3_11906::WaitForMainThreadQueryV1(
+      *route.mailbox, query.ticket, kMarriageCandidateQueuedWaitBudgetMsV1);
+  while (result.wait == xar::ck3_11906::MainThreadQueryWaitResultV1::
+                            timeout_executor_already_running) {
+    result.wait = xar::ck3_11906::WaitForMainThreadQueryV1(
+        *route.mailbox, query.ticket,
+        kMarriageCandidateExecutingWaitSliceMsV1);
+  }
+  result.completion = query.completion;
+  result.executor_invocations = query.executor_invocations;
+  result.route_failure = ReadMarriageCandidateInternalRouteFailureV1(route);
+  result.reclaim =
+      xar::ck3_11906::ReclaimMainThreadQueryV1(*route.mailbox, query.ticket);
+  if (result.reclaim !=
+          xar::ck3_11906::MainThreadQueryReclaimResultV1::reclaimed ||
+      result.wait != xar::ck3_11906::MainThreadQueryWaitResultV1::completed ||
+      result.executor_invocations != 1) {
+    result.status = MarriageCandidateWorkerReadStatusV1::infrastructure_red;
+    return result;
+  }
+  if (result.completion ==
+          MarriageCandidateInternalCompletionV1::candidates_available &&
+      query.candidates.status == MarriageMatchmakingObserverStatusV1::available) {
+    result.status = MarriageCandidateWorkerReadStatusV1::available;
+  } else if (result.completion ==
+                 MarriageCandidateInternalCompletionV1::query_unavailable ||
+             query.candidates.status ==
+                 MarriageMatchmakingObserverStatusV1::unavailable) {
+    result.status = MarriageCandidateWorkerReadStatusV1::unavailable;
+  } else {
+    result.status = MarriageCandidateWorkerReadStatusV1::infrastructure_red;
+  }
+  return result;
+}
+
 MarriageCandidateInternalRouteFailureV1
 ReadMarriageCandidateInternalRouteFailureV1(
     const MarriageCandidateInternalRouteStateV1 &state) noexcept {

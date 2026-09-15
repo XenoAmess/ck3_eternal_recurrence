@@ -259,11 +259,47 @@ void TestUnavailableIsBusinessResultAndIdentityDriftIsInfrastructure() {
                                  infrastructure_rejected);
 }
 
+void TestWorkerTransportDoesNotPromoteUnreadyOrUninstalledFrames() {
+  bridge::MarriageSharedGlueStateV1 glue{};
+  PrepareGlue(glue);
+  native::MainThreadQueryMailboxV1 mailbox{};
+  mailbox.module_base = 1;
+  mailbox.executor_submission_enabled = true;
+  mailbox.permitted_executor_octotrigintary =
+      &bridge::ExecuteMarriageCandidateInternalRouteV1;
+  bridge::MarriageCandidateInternalRouteStateV1 route{};
+  assert(bridge::ConfigureMarriageCandidateInternalRouteV1(
+      route, glue, mailbox));
+  xar::game::Snapshot snapshot{};
+  snapshot.date_raw = 12345;
+  snapshot.paused = true;
+  snapshot.map_ready = true;
+  snapshot.has_played_character = true;
+  snapshot.played_character_alive = true;
+  snapshot.played_character_id = static_cast<std::int32_t>(kSubject);
+  bridge::MarriageCandidateInternalQueryV1 query{};
+  snapshot.paused = false;
+  const auto unready = bridge::ReadMarriageCandidatesOnApplicationMainV1(
+      route, snapshot, 81, 8, 0, query);
+  assert(unready.status ==
+         bridge::MarriageCandidateWorkerReadStatusV1::unavailable);
+  assert(query.ticket.sequence == 0);
+  snapshot.paused = true;
+  const auto uninstalled = bridge::ReadMarriageCandidatesOnApplicationMainV1(
+      route, snapshot, 81, 8, 0, query);
+  assert(uninstalled.status ==
+         bridge::MarriageCandidateWorkerReadStatusV1::infrastructure_red);
+  assert(uninstalled.submit ==
+         native::MainThreadQuerySubmitResultV1::mailbox_not_installed);
+  assert(query.ticket.sequence == 0);
+}
+
 } // namespace
 
 int main() {
   TestCandidateAndActualReceiptRoutes();
   TestUnavailableIsBusinessResultAndIdentityDriftIsInfrastructure();
+  TestWorkerTransportDoesNotPromoteUnreadyOrUninstalledFrames();
   std::cout << "marriage_candidate_internal_route_v1 tests passed\n";
   return 0;
 }

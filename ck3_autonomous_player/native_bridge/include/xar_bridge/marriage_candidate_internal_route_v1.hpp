@@ -2,6 +2,7 @@
 
 #include "xar_bridge/marriage_application_main_receipt_v1.hpp"
 #include "xar_bridge/marriage_matchmaking_observer_v1.hpp"
+#include "xar_bridge/game_contract.hpp"
 
 #include <atomic>
 #include <cstdint>
@@ -105,6 +106,42 @@ bool PrepareMarriageCandidateInternalQueryV1(
 bool ExecuteMarriageCandidateInternalRouteV1(
     void *context,
     const xar::ck3_11906::MainThreadExecutionStampV1 &stamp) noexcept;
+
+// The controlled worker-facing read-only transport uses the already-published
+// gameplay snapshot. Public capability registration remains a separate live
+// gate; the protocol cannot supply or override this input.
+inline constexpr std::uint32_t kMarriageCandidateQueuedWaitBudgetMsV1 = 5000;
+inline constexpr std::uint32_t kMarriageCandidateExecutingWaitSliceMsV1 = 1000;
+
+enum class MarriageCandidateWorkerReadStatusV1 : std::uint32_t {
+  available = 0,
+  unavailable = 1,
+  infrastructure_red = 2,
+};
+
+struct MarriageCandidateWorkerReadResultV1 {
+  MarriageCandidateWorkerReadStatusV1 status =
+      MarriageCandidateWorkerReadStatusV1::infrastructure_red;
+  xar::ck3_11906::MainThreadQuerySubmitResultV1 submit =
+      xar::ck3_11906::MainThreadQuerySubmitResultV1::invalid_request;
+  xar::ck3_11906::MainThreadQueryWaitResultV1 wait =
+      xar::ck3_11906::MainThreadQueryWaitResultV1::ticket_mismatch;
+  xar::ck3_11906::MainThreadQueryReclaimResultV1 reclaim =
+      xar::ck3_11906::MainThreadQueryReclaimResultV1::ticket_mismatch;
+  MarriageCandidateInternalCompletionV1 completion =
+      MarriageCandidateInternalCompletionV1::not_executed;
+  MarriageCandidateInternalRouteFailureV1 route_failure =
+      MarriageCandidateInternalRouteFailureV1::none;
+  std::uint32_t executor_invocations = 0;
+};
+
+MarriageCandidateWorkerReadResultV1 ReadMarriageCandidatesOnApplicationMainV1(
+    MarriageCandidateInternalRouteStateV1 &route,
+    const xar::game::Snapshot &published_snapshot,
+    std::uint64_t published_native_revision,
+    std::uint32_t limit,
+    std::uint32_t candidate_filter,
+    MarriageCandidateInternalQueryV1 &query) noexcept;
 
 MarriageCandidateInternalRouteFailureV1
 ReadMarriageCandidateInternalRouteFailureV1(

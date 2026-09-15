@@ -1101,6 +1101,7 @@ if(BUILD_TESTING)
   )
 
   add_executable(xar_ck3_marriage_candidate_internal_route_v1_test
+    src/main_thread_query_mailbox_v1.cpp
     src/marriage_alliance_projection_adapter_v1.cpp
     src/marriage_alliance_readback_adapter_v1.cpp
     src/marriage_application_main_receipt_v1.cpp
