@@ -5,7 +5,8 @@
   "generatedAt": "2026-09-15T13:25:01.979Z",
   "sourceRevision": {
     "headCommit": "7b6d8272b4fb72da20a5a2710751408a0ce0815b",
-    "workingTreePatchSha256": "1ADD602658F94FFFEB8EECFDD881864ADF067833BC90AF3CEBDA9A4C4A12699B"
+    "workingTreePatchSha256": "1ADD602658F94FFFEB8EECFDD881864ADF067833BC90AF3CEBDA9A4C4A12699B",
+    "committedRevision": "51295b03"
   },
   "fixedGates": {
     "searchResolution": 96,

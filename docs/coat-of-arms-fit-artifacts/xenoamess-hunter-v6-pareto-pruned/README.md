@@ -22,6 +22,6 @@
   而由上述三档零累计损失预算约束。
 
 报告 [report.json](report.json) SHA-256 为
-`1A912DB6AEC7B7F57EE9CA1D77AA07D724DCDDA06A9789D47214C43A615CA14B`。
+`1158B3DA500B2CD8122AADD87DEEACA38B69F8C1D09742E62BE5A1F9A585A07F`。
 
 复现：`pnpm exec playwright test e2e/reference-hunter-v6-pareto-prune.spec.ts`。
