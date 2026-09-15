@@ -33,6 +33,7 @@
 #include "xar_bridge/g2_truce_preview_entry_observer_v1.hpp"
 #include "xar_bridge/loaded_feature_manifest_v1_mailbox.hpp"
 #include "xar_bridge/main_thread_query_mailbox_v1.hpp"
+#include "xar_bridge/major_decision_found_kingdom_shared_glue_v1.hpp"
 #if defined(XAR_CK3_ENABLE_G2_MILITARY_PREPARATION_SUMMARY_PRIVATE_PROBE_V1)
 #include "xar_bridge/military_preparation_summary_v1_binding.hpp"
 #include "xar_bridge/military_preparation_summary_v1_private_probe.hpp"
@@ -6449,6 +6450,8 @@ public:
     environment.permitted_executor_quintrigintary =
         &xar::ck3::shared::
             ExecuteDomainConstructionApplicationMainRuntimeV1;
+    environment.permitted_executor_sextrigintary =
+        &xar::bridge::ExecuteMajorDecisionFoundKingdomSharedMailboxV1;
     environment.permitted_frontend_executor =
         &xar::ck3_11906::ExecuteFrontendGuiRouteMailboxV1;
     installed_ = xar::ck3_11906::InstallMainThreadQueryMailboxV1(

@@ -3,8 +3,10 @@
 Status: `static-ready`, private and unregistered. This contract is bound to
 CK3 `1.19.0.6`, executable SHA-256
 `2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86`,
-and `found_kingdom_decision`. It does not provide a native submit binder,
-shared bridge route, schema, MCP command, or live CK3 evidence.
+and `found_kingdom_decision`. This DECISION5 contract itself did not provide a
+native submit binder or shared bridge route; DECISION6 and DECISION7 now add
+those private layers. No public schema, MCP command, or live CK3 evidence is
+claimed.
 
 The core turns the read-only observation delivered by DECISION2 through
 DECISION4 into a narrow submit lifecycle. Its request freezes the played
@@ -42,9 +44,10 @@ submit callback is called once, and its ACK says only that verification is
 pending. It never says that the decision ran.
 
 Production submission requires a nonzero module base and a separately
-certified submit ABI. This work package supplies neither. The standalone test
-uses the explicit zero-module offline fixture switch; that switch cannot admit
-a production configuration.
+certified submit ABI. DECISION6 now supplies that private exact-build adapter,
+and DECISION7 binds it into the shared backend. The DECISION5 standalone test
+still uses the explicit zero-module offline fixture switch; that switch cannot
+admit a production configuration.
 
 ## Fresh receipt
 

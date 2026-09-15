@@ -365,6 +365,12 @@ add_library(xar_ck3_bridge SHARED
   src/loaded_feature_manifest_v1_mailbox.cpp
   src/loaded_feature_manifest_v1_serializer.cpp
   src/main_thread_query_mailbox_v1.cpp
+  src/major_decision_found_kingdom_observer_v1.cpp
+  src/major_decision_found_kingdom_source_adapter_v1.cpp
+  src/major_decision_found_kingdom_native_binder_v1.cpp
+  src/major_decision_found_kingdom_action_core_v1.cpp
+  src/major_decision_found_kingdom_native_submit_v1.cpp
+  src/major_decision_found_kingdom_shared_glue_v1.cpp
   src/pending_character_interaction_context_v1.cpp
   src/pending_character_interaction_context_v1_mailbox.cpp
   src/pending_character_interaction_context_v1_serializer.cpp
@@ -1620,6 +1626,33 @@ if(BUILD_TESTING)
   add_test(
     NAME xar_ck3_native_bridge_steward_develop_county_action_v1
     COMMAND xar_ck3_steward_develop_county_action_v1_test
+  )
+
+  add_executable(xar_ck3_major_decision_found_kingdom_shared_glue_v1_test
+    src/main_thread_query_mailbox_v1.cpp
+    src/major_decision_found_kingdom_observer_v1.cpp
+    src/major_decision_found_kingdom_source_adapter_v1.cpp
+    src/major_decision_found_kingdom_native_binder_v1.cpp
+    src/major_decision_found_kingdom_action_core_v1.cpp
+    src/major_decision_found_kingdom_native_submit_v1.cpp
+    src/major_decision_found_kingdom_shared_glue_v1.cpp
+    src/major_decision_found_kingdom_shared_glue_v1_test.cpp
+  )
+  target_include_directories(
+    xar_ck3_major_decision_found_kingdom_shared_glue_v1_test PRIVATE include)
+  target_compile_definitions(
+    xar_ck3_major_decision_found_kingdom_shared_glue_v1_test PRIVATE
+    NOMINMAX WIN32_LEAN_AND_MEAN UNICODE _UNICODE)
+  target_link_libraries(
+    xar_ck3_major_decision_found_kingdom_shared_glue_v1_test PRIVATE bcrypt)
+  if(MSVC)
+    target_compile_options(
+      xar_ck3_major_decision_found_kingdom_shared_glue_v1_test PRIVATE
+      /W4 /WX /permissive- /EHsc)
+  endif()
+  add_test(
+    NAME xar_ck3_native_bridge_major_decision_found_kingdom_shared_glue_v1
+    COMMAND xar_ck3_major_decision_found_kingdom_shared_glue_v1_test
   )
 
   add_executable(

@@ -120,7 +120,9 @@ and destructor allocation size.
 
 The standalone adapter test compiles and runs in normal, `/O2`, and
 `/permissive- /W4 /WX` configurations. Passing these checks means the private
-production submit ABI and lifecycle wrapper are static-ready. Effect preview
-remains unavailable, exact benefit is not claimed, and production-live status
-still requires later shared registration and one fixed-candidate paused CK3
-submission plus DECISION5's independent fresh receipt.
+production submit ABI and lifecycle wrapper are static-ready. DECISION7 now
+compiles and registers the private executor in the shared backend. Effect
+preview remains unavailable, exact benefit is not claimed, and production-live
+status still requires a narrowly scoped caller or public route plus one
+fixed-candidate paused CK3 submission and DECISION5's independent fresh
+receipt.
