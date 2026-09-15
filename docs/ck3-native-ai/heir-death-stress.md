@@ -14,28 +14,33 @@ R374 的 pre-selection report、hot park 和 driver snapshot 仍存在，但 dri
 
 ## 原版调用与效果树
 
-`on_death` 为 close family 创建 `relative_died` memory；death-management dispatcher 保存死者、计算收件人的
-`deceased_character_stress`，并在死者属于当前继承序列时把 `.1007` 发给玩家。当前严格合同只接受无 killer 的 R374 shape：
+`on_death` 把死亡送入隐藏的 `.0001`；它只为仍在世、且 `player_heir` 恰为死者的头衔持有者建立继承人死亡收件人。`.0002` 先分派配偶、囚禁、软禁和战死等更高优先级通知；普通 `.1007` 还要求收件人是死者的近亲或扩展亲属，并在事件打开时仍有替代 `player_heir`。普通标准封建 campaign 可以自然遇到它，但任何继承人死亡都不保证打开此事件。当前严格合同只接受无 killer 的 R374 shape：
 
 ```mermaid
 flowchart TD
-    A[close-family death dispatch] --> B{死者位于玩家继承序列且玩家仍有 player_heir?}
-    B -->|否| Z[不生成 .1007]
-    B -->|是| C[打开 .1007]
-    C --> D[ROOT=玩家]
-    D --> E[new_memory: character_memory]
-    D --> F[dead_character: distinct character]
-    D --> G[deceased_character_stress: value]
-    E --> H[唯一 authored1/native0]
-    F --> H
-    G --> H
-    H --> I[stress_impact base=minor_stress_impact_gain]
-    I --> J[after 仅显示 known-killer 或 ordinary tooltip]
-    J --> K[event instance advance]
+    A[on_death] --> B[隐藏 .0001 收件人采集]
+    B --> C{在世头衔持有者的 player_heir 等于死者?}
+    C -->|否| Z[普通 .1007 无继承人收件人]
+    C -->|是| D[隐藏 .0002 优先级分派]
+    D --> E{配偶、囚禁、软禁或战死优先?}
+    E -->|是| V[其他通知或事件]
+    E -->|否| F{收件人与死者为近亲或扩展亲属?}
+    F -->|否| N[普通继承人界面消息]
+    F -->|是| G{打开时仍有替代 player_heir?}
+    G -->|否| X[.1007 trigger 不成立]
+    G -->|是| H[.1007 玩家 ROOT 与继承 scope 投影]
+    H --> I{与已验无 killer 三 scope shape 同帧严格匹配?}
+    I -->|是| J[正式策略选唯一 authored1/native0]
+    I -.->|killer/known_killer 或新 scope shape: unknown| R[保留 RED 与真实 paused frame]
+    J --> K[stress_impact base=minor_stress_impact_gain]
+    K --> L[after 仅显示 tooltip]
+    L --> M[独立后帧核验旧事件消失与玩家压力]
+    M --> O[下一正式 turn 消费关闭结果]
 ```
 
 `deceased_character_stress` 虽由上游传入，但 `.1007` 本身不读取它。唯一物质效果是对 ROOT 施加
 `minor_stress_impact_gain`；`00_stress_values.txt` 的 authored base 为 `+20`。after block 只展示 tooltip，不写游戏状态。
+精确 killer、known_killer 或缺失 new_memory 的投影尚无同版本自然 paused 证据；出现时正式策略保持 blocked，不用唯一选项绕过 scope 合同。
 
 ## 直接消费边界
 
@@ -61,6 +66,8 @@ stress-impact adjustments 与压力上限尚未作为同帧输入发布，因此
 
 planner 绑定选择前 snapshot ID、revision、玩家 full CharacterID 与压力点。native action 已经会记录前后玩家压力，service 复用
 现有 material-postcondition envelope，无新 mailbox、native reader、等待或桌面操作。
+正式 `strategy.py` 的 `active_event_registry_choice` 仅在 registry 同帧匹配且 typed step 已广告时返回动作；
+`native_auto_run.py` 对旧事件实例 advance 和注册物质后置失败保留 RED。下一次自然 `.1007` 的有界门须在普通 production campaign 中取得真实前后压力、独立后帧和下一 turn；R374 的 ACK/advance 不能补成这项证据。玩家自身自然死亡后的同 campaign 继承是另一个 G2-M3 门，不由本事件证明。
 
 ## 聚焦验证
 
