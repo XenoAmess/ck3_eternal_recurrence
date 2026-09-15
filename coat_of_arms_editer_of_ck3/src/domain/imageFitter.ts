@@ -1284,8 +1284,12 @@ function refinePaintedStateAtEdgeHotspots(
   const shape = textureShapeDescriptor(brush.texture)
   const patchSizes = [[1, 1], [2, 1], [1, 2], [2, 2], [3, 1], [1, 3]] as const
   const coverageFactors = [1, 1.04] as const
+  // Edge-search breadth is computational work, not a hidden layer clamp.
+  // Scale it with the user's budget so the 128-instance reference point does
+  // not pay the same 32-hotspot exhaustive pass as 512+ instance runs.
+  const hotspotLimit = Math.min(32, Math.max(8, Math.floor(maxLayers / 16)))
   for (let layer = 0; layer < maximumLayers; layer += 1) {
-    const hotspots = edgeResidualHotspots(target, state.candidate.rendered, 32)
+    const hotspots = edgeResidualHotspots(target, state.candidate.rendered, hotspotLimit)
     const rectangles = new Map<string, [number, number, number, number]>()
     for (const hotspot of hotspots) {
       for (const [width, height] of patchSizes) {
