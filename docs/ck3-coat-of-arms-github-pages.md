@@ -10,6 +10,18 @@
 生成。它不会部署 `backend/`、启动 CK3、调用 MCP、访问玩家游戏目录或要求 Java/Quarkus。浏览器只下载静态 HTML、JS、CSS
 和仓库内已冻结的 DDS pack；用户图片仅在浏览器内解码、拟合。
 
+## 2026-09-16 首次嵌套路径部署证据
+
+- 官方 workflow run：[`35000503958`](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/35000503958)，
+  head `a35b0edde036ebfe636f0f71b051008e1f27e41a`；build `14m10s`、deploy `50s`，两项均为 `success`。
+- 该 run 从干净 checkout 通过 80 项 Vitest、独立浏览器验收、hunter/剪枝源码研究验收、Chromium/Firefox/WebKit
+  核心验收、Service Worker 离线验收、嵌套目录 staging 校验及 artifact 上传后才部署。
+- 公网回读：无尾斜杠 URL 返回 `301` 并跳转到本文开头的 canonical URL；canonical URL 返回 `200 OK`、
+  `Content-Type: text/html; charset=utf-8`；HTML 引用的嵌套入口 JS 返回 `200 OK` 和
+  `Content-Type: application/javascript; charset=utf-8`。
+- 发布产物的资源 URL 均以 `/ck3_eternal_recurrence/coat_of_arms_editer_of_ck3/` 开头，没有覆盖仓库 Pages 根入口。
+- 正式简体中文/英文切换与持久化在同一 run 中通过；该结论不代表七种其他语言已翻译。
+
 ## 自动触发与发布门禁
 
 工作流在以下情况运行：

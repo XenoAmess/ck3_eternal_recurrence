@@ -1,6 +1,6 @@
 {
   "schema": "ck3-coa-beta-progress-v1",
-  "updatedAt": "2026-09-15T23:34:00+08:00",
+  "updatedAt": "2026-09-16T01:35:00+08:00",
   "overallStatus": "in_progress",
   "workPackages": [
     {
@@ -308,9 +308,16 @@
         "simplifiedChineseEnglishUi": "passed",
         "localePersistence": "local_storage_passed",
         "pagesMountPath": "/ck3_eternal_recurrence/coat_of_arms_editer_of_ck3/",
-        "pagesOfficialDeployment": "in_progress",
-        "crossBrowserE2E": "pending",
-        "assetPackImportAndVfsWinner": "pending"
+        "pagesOfficialDeployment": "passed_run_35000503958_head_a35b0edd",
+        "pagesCanonicalHttpStatus": 200,
+        "pagesNoTrailingSlashHttpStatus": 301,
+        "pagesEntryJavascriptHttpStatus": 200,
+        "crossBrowserE2E": "chromium_firefox_webkit_passed",
+        "serviceWorkerOfflineRecovery": "passed",
+        "mobileLayout": "passed",
+        "mainBundleCodeSplitting": "passed",
+        "assetPackDirectoryImport": "passed",
+        "assetPackVfsWinner": "pending"
       },
       "blockers": []
     },

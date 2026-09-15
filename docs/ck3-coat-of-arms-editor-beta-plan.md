@@ -58,12 +58,12 @@ Alpha 已能解析、编辑、渲染、序列化 CK3 家徽代码，并能在浏
 | P0 | 大预算路径过度依赖单一矩形画笔 | 当前大量使用 `ce_block_02.dds`；不能代表 1,577 个可粘贴 registered emblem 的混合构图能力。 |
 | P0 | 输入过早缩为 96×96 | 上传图片在拟合入口即栅格为 96×96，高分辨率轮廓和细线在候选生成前已经丢失。 |
 | P0 | 只保证前向追加时严格改善 | 没有最终 backward prune / leave-one-out；较早图层可能在后来覆盖后变成冗余。 |
-| P1 | 代码膨胀 | 当前每个自动图层输出一个 `colored_emblem` 块，尚未把同 texture/colors/mask 的多实例合并。 |
-| P1 | 10,000 层缺少真实压力证据 | UI 接受大数字不等于搜索、序列化、编辑和取消路径能稳定处理。 |
+| P1 | 代码膨胀 | v4/v6 已完成保持顺序的安全相邻合并和最终剪枝，但进一步近似压缩仍需受累计视觉损失预算约束。 |
+| P1 | 大预算控制尚未完整 | 128/1024/10,000 真实拟合、取消后重启与恰好 10,000 实例文档已通过；暂停/恢复 checkpoint 与 GPU 批量搜索仍待完成。 |
 | P1 | 搜索仍偏贪心 | WebGL2 只交叉评分最终候选，尚未承担 atlas/reduction 批量搜索；没有稳定的多候选 Pareto 输出。 |
-| P1 | 大文档编辑体验不足 | 图层列表未虚拟化；缺少撤销/重做、项目保存、直接拖拽、暂停/恢复和候选对比。 |
+| P1 | 编辑体验尚未完整 | 32 卡片虚拟窗口、撤销/重做、项目保存恢复、直接变换和三候选对比已通过；暂停/恢复及版本化 checkpoint 仍待完成。 |
 | P1 | 预览合同仍不完整 | exact 1.19.0.6 唯一注册 `_default.dds` 的 `textured_emblem` shader 模型合成已通过；`parent` 尚未展开到浏览器预览，原生 framebuffer 像素对照仍待补。 |
-| P2 | 输入/资产/浏览器覆盖有限 | 安全 SVG 与中英文正式界面已通过浏览器门禁；仍只有 1.19.0.6 基础包，没有自动解析 DLC/mod VFS 胜者；Pages asset pack 较大；E2E 仅覆盖 Chromium；主 JS chunk 仍约 1 MiB。 |
+| P2 | 输入/资产覆盖有限 | 安全 SVG、素材包目录导入、中英文、移动端、Service Worker 以及 Chromium/Firefox/WebKit 已通过；仍只有 1.19.0.6 基础包，没有 DLC/mod VFS 胜者 receipt，Pages asset pack 仍较大。 |
 
 ## 3. P0-1：红色分割线修复
 
@@ -183,10 +183,11 @@ pause/resume/checkpoint 仍未完成。
 
 交付：`parent`/`textured_emblem` 合成；安全 SVG 栅格化；asset-pack 版本选择/导入；DLC/mod VFS receipt；Firefox/WebKit E2E；主 bundle code splitting；移动端退化策略；Service Worker/asset shard 缓存。
 
-当前状态：`in_progress`。安全 SVG、唯一注册 `_default.dds` 的 `textured_emblem` 浏览器 shader 模型合成，以及简体中文/英文
-正式界面已经分别通过自动化门禁。Pages 已迁移到 `/ck3_eternal_recurrence/coat_of_arms_editer_of_ck3/` 子路径；官方 workflow
-终态与公开 URL 回读必须另行记录，不能用本地 production build 代替。`parent`、asset-pack 导入/VFS 胜者、Firefox/WebKit、
-code splitting、移动端退化和 Service Worker 缓存仍未完成。
+当前状态：`in_progress`。安全 SVG、唯一注册 `_default.dds` 的 `textured_emblem` 浏览器 shader 模型、简体中文/英文、素材包目录
+导入、移动端退化、Service Worker 离线恢复、主 bundle code splitting 以及 Chromium/Firefox/WebKit 核心流程已经通过自动化门禁。
+Pages 已由 workflow `35000503958` 部署到 `/ck3_eternal_recurrence/coat_of_arms_editer_of_ck3/`，公网 canonical URL 与入口资源均
+回读 `200`；无尾斜杠地址为预期 `301`。部署证据见 `ck3-coat-of-arms-github-pages.md`。`parent` 展开、DLC/mod VFS 胜者 receipt
+和更细的 asset shard 按需策略仍未完成。
 
 退出条件：能力矩阵明确每种语法/资源在 parser、preview、editor、serializer、native evidence 五列的状态；不能预览的结构不得静默消失。
 
