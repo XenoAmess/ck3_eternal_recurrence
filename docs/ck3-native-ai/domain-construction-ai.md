@@ -116,12 +116,39 @@ registry 中 `0x412E670` 的字符串是完整方法名
 省份/holding 枚举，不得把空 cache 解释为合法 no-op，也不得延长同一
 paused 等待或为这个探针另开永久运行。
 
-尚未闭合县视图关闭时是否存在可用候选、row 的完整 identity/成本、
-玩家直辖地枚举来源。因此当前不能仅凭 `handler+0xD0`
-返回非空 pointer 或仅凭 GUI registry 字符串发布正式查询。下一施工入口是
-exact-build 的玩家 read-only query/ABI 和受控 closed-view paused 互证，
-先取得真实候选与最终 `CanConstruct`，再考虑正式策略与 typed action；
-本节只是静态输入账本，**不提升公共建设 readiness，也没有 paused live 证据**。
+R717 的同一暂停帧私有实机读数（详见
+`player_held_construction_model_enumerator_v1_abi.json` 的哈希锚点）已经证明
+`holding_view` 有效可见性为 false、GUI cache count 为零；该轮没有建设动作、
+游戏日期或 revision 变化。这关闭了私有 executor 故障，但没有回答玩家是否
+能建造。现在已按 exact EXE 新增独立的只读来源实现
+`player_held_construction_model_enumerator_v1.cpp`：沿既有 campaign-root
+原生路径从玩家 `CCharacter+0x1B8` land state 的 `+0x1E0` 完整 TitleID
+向量枚举 personally held tier-1 barony；每条称号校验完整 ID 和 holder，
+由 `CLandedTitle+0x460` 的 Province pointer 回读 Province 数组身份。原版
+`0x2606812..0x260681E` 对非 county tier 直接读取这个指针。同一查询另外
+从 `module+0x57BFBA8` 的模型单例，依 `CHoldingView` 构造时 `0x119DEE8`
+复制到 `view+0x108` 的来源关系，读取 `+0x628/+0x60` 的 mode-0
+建筑定义指针向量；原版 materializer `0x11A35B8..0x11A35D5` 按这个
+向量迭代。测试以关闭 GUI、两个 fixture 持有 barony、省份数组和定义
+向量验证：缓存数据完全不存在时仍能读到来源；holder 不符、省份指针不
+回读或暂停帧改变时返回 unavailable。这里的定义指针只允许在同一
+application-main callback 内借用，输出可迁移账本只记录来源顺序/数量、
+完整 TitleID、ProvinceID、revision、日期，不跨帧保存原生地址。
+
+这个施工包状态仍是 **static-ready private source**，没有新来源的 CK3
+paused live 证据、合法性、费用或物质建设结果。来源向量为空只能记录为
+当前来源读数为空，不能当作「没有合法建设」或自动治理 no-op。下一有界
+实机门是在同一普通标准封建存档中经私有 default-OFF application-main
+适配读取玩家持有 barony/Province 与 mode-0 定义，再对有来源的
+`province + definition + mode` 调 exact 玩家最终判定 `0x295CD60`，
+取得合法候选和费用后才接正式策略/typed 动作。`query/action` 维持
+未注册、未广告。
+
+本包没有改变现有公开 ABI、协议或 `open_kaishek` 输入，因此当前跨仓
+组合无需适配 push。接通私有 typed receipt 后应同步给 `open_kaishek`
+最小版本合同；公开查询前还须提供同版本只读 MCP 查询口，供下游与
+其他机器复用，且区分可查询接口和宿主能否运行 CK3。此处只沉淀 exact
+来源/失败语义，不借 MCP 义务扩展通用宗教或非必要框架。
 
 ## 原版公开定义
 

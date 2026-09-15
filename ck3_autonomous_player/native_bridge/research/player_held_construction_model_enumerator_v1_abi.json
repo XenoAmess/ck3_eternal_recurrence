@@ -1,0 +1,61 @@
+{
+  "schema_version": 1,
+  "status": "static-ready-private-source-producer-live-and-final-legality-pending",
+  "game_version": "1.19.0.6",
+  "exe_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+  "read_only": true,
+  "application_main_only": true,
+  "public_registration": false,
+  "source_paths": {
+    "played_character": "module+0x570E068 game state, module+0x570F7B8 Jomini players, exact local PlayerID to PlayerEntry CharacterID, full-generation Character storage module+0x570C130; frame played_character_id must match",
+    "direct_holding": "Character+0x1B8 land state, +0x1E0/+0x1E8/+0x1EC personally held full-generation LandedTitleIDs; title store module+0x570C410, title+0x10 identity, +0x258 holder equality, template+0x5C tier 1; barony title+0x460 Province pointer, Province+0x10 ID, game_data+0x140/+0x14C array roundtrip",
+    "mode_0_definition_source": "CHoldingView ctor RVA 0x119DEE8 reads module+0x57BFBA8 into view+0x108; materializer RVA 0x11A35B8 reads [view+0x108]+0x628 pointer and vector at +0x60/+0x6C, iterating 8-byte definition pointers"
+  },
+  "exact_regions": [
+    {
+      "name": "model_singleton_ctor_assignment",
+      "start_rva": "0x119DEE8",
+      "end_rva_exclusive": "0x119DEF6",
+      "sha256": "110063669AEFC60E9F8087422A72FF18A9903AC62D509AB98A9269960E0FABBC"
+    },
+    {
+      "name": "mode0_definition_vector_source",
+      "start_rva": "0x11A35B8",
+      "end_rva_exclusive": "0x11A35D5",
+      "sha256": "65B2B41D112D1E99EE8D53A08956572D0A64443744B74D2D800F75FD095374FB"
+    },
+    {
+      "name": "barony_province_accessor",
+      "start_rva": "0x2606812",
+      "end_rva_exclusive": "0x260681E",
+      "sha256": "21B36DA462BBFA5BF4C73999AB2D832A1430A27F1EE2BF70C200B6739A944A59"
+    }
+  ],
+  "same_frame": "capture paused/map-ready/live played Character frame before and after all reads; require exact expected snapshot revision and complete frame equality",
+  "typed_source_result": {
+    "pointer_free_portable_fields": [
+      "snapshot_revision",
+      "date_raw",
+      "player_character_id",
+      "directly_held_barony_provinces.barony_title_id",
+      "directly_held_barony_provinces.province_id",
+      "definition_source_count"
+    ],
+    "borrowed_only_inside_application_main_callback": "definition pointer vector in source order; must never serialize, checkpoint, or reuse in another frame",
+    "legal_construction_evaluated": false,
+    "empty_gui_cache_semantics": "not consulted; R717 closed holding_view cache count 0 did not prove no legal construction"
+  },
+  "r717_private_live_predecessor": {
+    "read_sha256": "49594AC50BDA8C15B33353513196355B9A50A2C662D4CA6D957174C828A5373A",
+    "report_sha256": "C3A113550DA9834C4F5BB83C28ED722F38D93B79F46424B9837FA0C44631F2DE",
+    "scope": "private cache/holding_view visibility and executor only; not this new source producer"
+  },
+  "next_live_gate": "integrate a distinct private default-OFF application-main adapter after FEUDAL StartGame bridge.cpp writer exits; at R717 paired feudal checkpoint read held barony/province sources and definition count at same paused revision, then call exact player final legality 0x295CD60 for a bounded target/definition pair; retain no-action evidence if no valid source, do not infer no-op from zero cache",
+  "not_proven": [
+    "new source producer in real paused CK3 frame",
+    "any legal construction pair",
+    "cost, typed construction action, independent game result, next-turn consumption",
+    "public MCP query and open_kaishek adapter compatibility"
+  ],
+  "advertised": false
+}
