@@ -10,10 +10,11 @@
     "culture4_async_glue_branch": "wp-g2-m6-culture4-async-glue-20260915"
   },
   "integration": {
-    "baseline": "f70e210d7688c91a987e1a1497ecf214d592511b",
-    "branch": "int-g2-culture2-4-20260915",
-    "culture2_rebased": "a0011628ad65e51cd2855c8e2b5f3d8282fb927e",
-    "culture3_rebased": "5d61346cfd17ad48c82742808d501bc7c667c80b"
+    "baseline": "f28c7b26effd5134c63d34942b28537870944ec1",
+    "branch": "master",
+    "culture2_rebased": "ea9038e7502421ee7675a0fecbb7cdfb7825a780",
+    "culture3_rebased": "95842ca09b1ef55e253c724fc7dcebb6bd328678",
+    "culture4_rebased": "26fe0f5d7d927647b44051a5b4c68634f118ff17"
   },
   "build_option": "XAR_CK3_ENABLE_G2_CULTURE_INNOVATION_ASYNC_PRIVATE_PROBE_V1",
   "main_thread_mailbox": {
@@ -41,24 +42,24 @@
     "optimized_msbuild_w4_wx": "GREEN",
     "default_off_release_link": "GREEN",
     "normal_candidate_dll": {
-      "bytes": 8244224,
-      "sha256": "15C61D8243E312A424739E363C6BDE42BC92D3A6B10EDD0D89DDDA618A55485B"
+      "bytes": 8670208,
+      "sha256": "5B6BEB5442C8AFE59A7CE2EB6836D6D8C92FEF1D7F433F770DE1C362DB00AC8B"
     },
     "normal_focused_test": {
-      "bytes": 1115136,
-      "sha256": "B893EDED8C881B4A1FBA9F6129A3A7C88EEC428E2FF7F6DB88FA4F7D4A694DA2"
+      "bytes": 1112576,
+      "sha256": "7AFBF7D7736CB7F6913BC5EBB0A905D479051E4E9330E5B97E9F99E7F0151A66"
     },
     "optimized_candidate_dll": {
-      "bytes": 3090432,
-      "sha256": "B2A8A906EF57EEC0F16E49C58C9E7C2CE1ECA37AB11DD479C71CF79EB4222171"
+      "bytes": 3258880,
+      "sha256": "37E2BD9C5FA07D1DDA45309A8CF610BD6F9D0FD3FCB9DD46DD401D1927E4458E"
     },
     "optimized_focused_test": {
-      "bytes": 128512,
-      "sha256": "3E42C923E556C6AC3CD53C14E4744501B9D88C40C0BB18C4B2C0AAB3B406485A"
+      "bytes": 129024,
+      "sha256": "518A83113C2D92C136879A4169CBCA7000F2B8ACA7E081FECC6FFEE67295601E"
     },
     "default_off_release_dll": {
-      "bytes": 2875904,
-      "sha256": "273BF70EB489DD5A2329C2AE08673D4E0BE460C43EF9402D903D71AD2AFBCD96"
+      "bytes": 3044352,
+      "sha256": "F0C0C7635F36688C6CD443AA5564B47BF258251D7C71F8E80C67BA24DB53E0D7"
     },
     "paused_live_snapshot": "pending-separate-ck3-owner"
   }
