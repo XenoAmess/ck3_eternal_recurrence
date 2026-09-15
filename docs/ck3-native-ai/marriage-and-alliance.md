@@ -710,10 +710,9 @@ native adapter seam；两次完整读取必须相同，且前后 paused frame �
 其原生 rank。
 
 宗教边界没有扩大：序列化只说明 `native_final_results_only`，只消费原生 final legality/acceptance 的 bool、raw 或
-opaque status，不发布或重算 faith、doctrine、tenet、fervor。私有核心、ABI 与独立 fixture test 位于
-`ck3_autonomous_player/native_bridge/{include,src,research}`；没有接入共享 CMake、`bridge.cpp` 或公开 schema，也没有新增
-MCP capability 或 live artifact。当前诚实状态是 `static-ready-private-core-unwired`；下一项唯一入口仍是给两个 adapter seam
-绑定已验证的 played-character strategy owner 和 direct five-role context，再做 paused live query。
+opaque status，不发布或重算 faith、doctrine、tenet、fervor。此处记录的是 MARRIAGE2 当时的边界：私有核心、ABI 与独立 fixture
+test 位于 `ck3_autonomous_player/native_bridge/{include,src,research}`，当时尚未接入共享 CMake、`bridge.cpp` 或公开 schema，也没有
+新增 MCP capability 或 live artifact。后续 MARRIAGE3–MARRIAGE7 的现行集成状态见下节。
 
 第一项可直接施工的 P0 切片是：在现有 `query-arrange-marriage-choices` 旁增加只读 ranked query，按本次冻结的 strategy
 入口调用 `0x1890470 → 0x1890D90`，复制前 8 个完整 ID/score，再为每行构造 direct five-role context，发布 complete Can Send、
@@ -725,6 +724,26 @@ callback `0x1274610`，后者把 `CMarriageInfo+0x50` 投影为 data model）继
 两角色的原生 alliance relation getter，再把具体 pair set 接入 before/after。完成这一步和一次 paused live 查询/提交/关系+联盟后置验证后，direct 玩家择偶才可从
 `static-ready` 升为 `production-live primitive`；由需求检测、候选排序、提交、pending 回复、后置验证和失败恢复组成的完整循环跑通后，
 才能称为婚姻 `production-live loop`。
+
+#### G2-M5-MARRIAGE7 shared application-main glue
+
+[shared-build-ready / application-main adapter static-ready] MARRIAGE3–MARRIAGE6 的 source adapter、proposal action core、exact native
+binder、ranked-container lifecycle、native outcome、任意 pair alliance readback 与 proposal-resolution journal 已登记进共享 native bridge
+CMake；`marriage_shared_glue_v1` 以同一 module base、exact EXE SHA 和 fixture/production mode 为一个安装单元，向 binder 提供这些经过认证的
+callback。resolution detour 的安装和卸载仍要求主线程暂停证明，失败保持 typed failure；proposal arm 会先清空上一帧 receipt，避免把提交
+ACK 或旧 observation 当作本次结果。
+
+`marriage_application_main_receipt_v1` 只接受与该 binder 相同 module base 的既有 main-thread mailbox。发布点必须正处于
+`executing`，并逐项匹配当前 Win32 thread ID、mailbox owner、TLS initialized/main marker/context、pump epoch、Jomini/game-state
+identity、paused flag、date 和至少两个 paused-owner verified epochs。调用者还必须提供非零、已经发布的 native snapshot revision；adapter
+据此构造 `native:<revision>`，并把相同 public/native revision、pump proof epoch 与 date 写入 receipt frame。公共 worker ACK、command queue
+ACK 和非 application-main 线程均没有创建 receipt 的入口。
+
+这一层已经通过 MSVC x64 C++20 Debug (`/Od`) 与 Release (`/O2`) 的 `/W4 /WX` focused CTest；Release CMake 也成功把全部 marriage
+translation units 链入 `xar_ck3_bridge.dll`。exact-build source/ABI verifier 在 Python normal/`-O` 均为 GREEN。本包没有在
+`bridge.cpp` 实例化 glue，没有注册公共 schema/MCP，也没有启动 CK3 或生成 paused live artifact；因此当前状态仍不是
+`production-live primitive`。下一工作包应在既有 application-main mailbox 的婚姻专用 executor 中持有该 state，完成安装/卸载生命周期、
+只读 ranked query 与一次 bounded paused live 验收，再单独接公开 serializer/MCP 和 semantic submit/postcondition。
 
 ### 保留的 unknown 与施工顺序
 
