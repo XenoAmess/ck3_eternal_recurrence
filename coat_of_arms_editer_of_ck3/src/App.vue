@@ -3,12 +3,7 @@ import { computed, onMounted, ref, shallowRef, watch } from 'vue'
 import { ElMessage as ElementMessage } from 'element-plus'
 import elementEn from 'element-plus/es/locale/lang/en'
 import elementZhCn from 'element-plus/es/locale/lang/zh-cn'
-import {
-  createCk3CompanionClient,
-  type CoatOfArmsConfiguredResourceItem,
-  type CoatOfArmsResourceItem,
-} from './api/ck3Companion'
-import { decodeDdsBase64, decodedDdsToDataUrl, type DecodedDds } from './domain/dds'
+import { decodedDdsToDataUrl, type DecodedDds } from './domain/dds'
 import {
   candidateDominance,
   MAX_COMPARISON_CANDIDATES,
@@ -144,9 +139,6 @@ const source = ref(sample)
 const coatOfArms = ref<CoatOfArms>(createCoatOfArms())
 const diagnostics = ref<Diagnostic[]>([])
 const selectedEmblem = ref(0)
-const companion = createCk3CompanionClient()
-const mcpBusy = ref(false)
-const catalogBusy = ref(false)
 const textureBusy = ref(false)
 const clipboardBusy = ref(false)
 const projectFileBusy = ref(false)
@@ -160,10 +152,8 @@ const autosaveStatus = ref('正在检查自动保存')
 const recoverableAutosave = ref<CoatOfArmsProjectDocument>()
 const comparisonCandidates = ref<CoatOfArmsComparisonCandidate[]>([])
 let comparisonCandidateSequence = 0
-const mcpStatus = ref('未连接')
-const patternResources = ref<CoatOfArmsResourceItem[]>([])
-const emblemResources = ref<CoatOfArmsResourceItem[]>([])
-const emblemSearch = ref('')
+const patternResources = ref<WebAssetPackEntry[]>([])
+const emblemResources = ref<WebAssetPackEntry[]>([])
 const patternPreviewUrl = ref('')
 const emblemPreviewUrls = ref<Record<string, string>>({})
 const patternTexture = ref<DecodedDds>()
@@ -173,20 +163,6 @@ const surfaceMask = ref<DecodedDds>()
 const texturedDefaultPreviewUrl = ref('')
 const shaderNamedColors = ref<NamedColorMap>({})
 const shaderSourceCount = ref(0)
-const configuredModCount = ref<number | null>(null)
-const installedDlcDescriptorCount = ref<number | null>(null)
-const dlcCoaSourceCount = ref<number | null>(null)
-const runtimeFeatureBusy = ref(false)
-const runtimeFeatureStatus = ref('未读取')
-const runtimeEnabledFeatureCount = ref<number | null>(null)
-const runtimeFeatureCount = ref<number | null>(null)
-const runtimeDlcKeys = ref<string[] | null>(null)
-const configuredPatternCount = ref<number | null>(null)
-const configuredEmblemCount = ref<number | null>(null)
-const configuredArchiveCount = ref(0)
-const configuredPatternResources = ref<CoatOfArmsConfiguredResourceItem[]>([])
-const configuredEmblemResources = ref<CoatOfArmsConfiguredResourceItem[]>([])
-const developmentCompanionEnabled = import.meta.env.VITE_ENABLE_CK3_COMPANION === 'true'
 const defaultAssetPackUrl = import.meta.env.VITE_COA_ASSET_PACK_URL
   || `${import.meta.env.BASE_URL}asset-packs/ck3-1.19.0.6/manifest.json`
 const loadedAssetPack = ref<LoadedWebAssetPack>()
@@ -482,7 +458,7 @@ function importSource() {
     ElMessage.error('已解析，但存在阻止确定性导出的诊断')
   } else {
     ElMessage.success('已导入为结构化纹章')
-    if (loadedAssetPack.value || developmentCompanionEnabled) void loadCurrentTexturePreviews()
+    if (loadedAssetPack.value) void loadCurrentTexturePreviews()
   }
 }
 
@@ -940,20 +916,6 @@ function packEntry(kind: 'pattern' | 'colored_emblem' | 'textured_emblem', name:
   return loadedAssetPack.value?.pack.assets.find((item) => item.kind === kind && item.name === name)
 }
 
-function asResourceItem(item: WebAssetPackEntry, index: number): CoatOfArmsResourceItem {
-  return {
-    index,
-    name: item.name,
-    colors: item.colors,
-    visible: item.visible,
-    category: item.category,
-    relative_path: item.url,
-    asset_exists: true,
-    asset_bytes: item.asset_bytes,
-    asset_sha256: item.asset_sha256,
-  }
-}
-
 async function readPackTexture(item: WebAssetPackEntry): Promise<DecodedDds> {
   const cached = webAssetCache.get(item.asset_sha256)
   if (cached) return cached
@@ -984,8 +946,8 @@ async function activateStandaloneAssetPack(
     loadedAssetPack.value = loaded
     webFitIndexCache = undefined
     webAssetCache.clear()
-    patternResources.value = patterns.map(asResourceItem)
-    emblemResources.value = emblems.map(asResourceItem)
+    patternResources.value = patterns
+    emblemResources.value = emblems
     shaderNamedColors.value = loaded.pack.named_colors
     const [decodedSurfaceMask, decodedTexturedDefault] = await Promise.all([
       readPackTexture(mask),
@@ -1710,337 +1672,14 @@ watch(selectedEmblem, () => {
   instanceWindowStart.value = 0
 })
 
-async function getCurrentCoaRevision(): Promise<number> {
-  const binding = await companion.sourceBinding()
-  if (
-    binding.schema !== 'coat-of-arms-source-binding-v1'
-    || binding.status !== 'bound'
-    || !Number.isSafeInteger(binding.revision)
-    || binding.revision < 0
-    || (binding.revision_source === 'frontend' && binding.revision !== 0)
-    || (binding.revision_source === 'snapshot' && binding.revision < 1)
-  ) {
-    throw new Error('MCP 没有返回有效的家徽源码绑定')
-  }
-  mcpStatus.value = `已连接 · ${binding.revision_source} revision ${binding.revision}`
-  return binding.revision
-}
-
-async function getCurrentGameplayRevision(): Promise<number> {
-  const snapshot = await companion.session()
-  if (!Number.isSafeInteger(snapshot.revision) || snapshot.revision < 1) {
-    throw new Error('MCP snapshot 没有有效的正 revision')
-  }
-  return snapshot.revision
-}
-
-async function refreshSession() {
-  mcpBusy.value = true
-  try {
-    await getCurrentCoaRevision()
-    ElMessage.success('已连接本机 CK3 MCP')
-  } catch (error) {
-    mcpStatus.value = '不可用'
-    ElMessage.error(`MCP 连接失败：${errorMessage(error)}`)
-  } finally {
-    mcpBusy.value = false
-  }
-}
-
-async function openNativeDesigner() {
-  mcpBusy.value = true
-  try {
-    const result = await companion.openNativeDesigner()
-    if (
-      result.status !== 'verified'
-      || result.action !== 'open_coat_of_arms_designer'
-      || result.postcondition_verified !== true
-      || result.after?.route !== 'coat_of_arms_designer'
-    ) {
-      throw new Error('MCP 未证明 CK3 已进入家徽设计页')
-    }
-    mcpStatus.value = '家徽设计页已打开'
-    ElMessage.success('CK3 已通过原生语义 MCP 打开王朝家徽设计页')
-  } catch (error) {
-    mcpStatus.value = '打开家徽页失败'
-    ElMessage.error(`原生家徽页打开失败：${errorMessage(error)}`)
-  } finally {
-    mcpBusy.value = false
-  }
-}
-
-async function enterNativeCustomMode() {
-  mcpBusy.value = true
-  try {
-    const result = await companion.enterNativeCustomMode()
-    if (
-      result.status !== 'verified'
-      || result.action !== 'enter_coat_of_arms_custom_mode'
-      || result.postcondition_verified !== true
-      || result.after?.route !== 'coat_of_arms_designer'
-      || result.after_inspection?.scope_root_name !== 'coat_of_arms_page'
-      || result.after_inspection?.root_available !== true
-    ) {
-      throw new Error('MCP 未证明 CK3 自定义家徽背景页已经物化')
-    }
-    mcpStatus.value = `原生自定义背景已就绪 · ${result.after_inspection.widget_count} widgets`
-    ElMessage.success('CK3 已通过固定原生动作进入自定义模式')
-  } catch (error) {
-    mcpStatus.value = '进入自定义模式失败'
-    ElMessage.error(`原生自定义模式失败：${errorMessage(error)}`)
-  } finally {
-    mcpBusy.value = false
-  }
-}
-
-async function commitNativeDesign() {
-  mcpBusy.value = true
-  try {
-    const result = await companion.commitNativeDesign()
-    if (
-      result.status !== 'verified'
-      || result.action !== 'commit_dynasty_coat_of_arms'
-      || result.postcondition_verified !== true
-      || result.after?.route !== 'ruler_designer'
-    ) {
-      throw new Error('MCP 未证明家徽已提交回角色设计器')
-    }
-    mcpStatus.value = '家徽已提交回角色设计器'
-    ElMessage.success('CK3 已通过原生 Finish 提交王朝家徽')
-  } catch (error) {
-    mcpStatus.value = '提交失败'
-    ElMessage.error(`MCP 提交失败：${errorMessage(error)}`)
-  } finally {
-    mcpBusy.value = false
-  }
-}
-
-async function loadRuntimeFeatures() {
-  runtimeFeatureBusy.value = true
-  runtimeEnabledFeatureCount.value = null
-  runtimeFeatureCount.value = null
-  runtimeDlcKeys.value = null
-  try {
-    const revision = await getCurrentGameplayRevision()
-    const result = await companion.runtimeFeatures(revision)
-    if (result.status !== 'available') {
-      runtimeFeatureStatus.value = `不可用 · ${result.unavailable_reason ?? 'unknown'}`
-      ElMessage.warning(`CK3 运行态 feature 不可用：${result.unavailable_reason ?? 'unknown'}`)
-      return
-    }
-    const features = result.effective_feature_flags.items ?? []
-    runtimeEnabledFeatureCount.value = features.filter((item) => item.enabled).length
-    runtimeFeatureCount.value = result.effective_feature_flags.native_count
-    runtimeDlcKeys.value = result.script_dlc_keys.keys
-    runtimeFeatureStatus.value = `可用 · revision ${revision}`
-    ElMessage.success('已读取 CK3 当前进程的 feature 与 script DLC truth')
-  } catch (error) {
-    runtimeFeatureStatus.value = '请求失败'
-    ElMessage.error(`运行态 feature 读取失败：${errorMessage(error)}`)
-  } finally {
-    runtimeFeatureBusy.value = false
-  }
-}
-
-async function probeInCk3(apply: boolean) {
-  if (errorCount.value > 0) {
-    ElMessage.error('请先修复解析错误，再发送确定性导出')
-    return
-  }
-  if (outputBytes.value > COAT_OF_ARMS_MCP_MAX_BYTES) {
-    ElMessage.error('代码超过当前开发期 MCP 的 128 KiB 安全合同；这不是已证明的 CK3 原生上限')
-    return
-  }
-  mcpBusy.value = true
-  try {
-    const revision = await getCurrentCoaRevision()
-    const result = await companion.probe(output.value, revision, apply)
-    mcpStatus.value = `${result.status} · revision ${revision}`
-    if (result.status === 'detected' || result.status === 'applied') {
-      ElMessage.success(apply ? 'CK3 原生设计器已应用候选纹章' : 'CK3 原生 reader 已识别此纹章')
-    } else {
-      ElMessage.warning(`CK3 返回 ${result.status}${result.reason ? `：${result.reason}` : ''}`)
-    }
-  } catch (error) {
-    mcpStatus.value = '请求失败'
-    ElMessage.error(`MCP 请求失败：${errorMessage(error)}`)
-  } finally {
-    mcpBusy.value = false
-  }
-}
-
-async function exportFromCk3() {
-  mcpBusy.value = true
-  try {
-    const revision = await getCurrentCoaRevision()
-    const result = await companion.exportSource(revision)
-    mcpStatus.value = `${result.status} · revision ${revision}`
-    if (result.status !== 'exported' || !result.source) {
-      ElMessage.warning(`CK3 导出不可用${result.reason ? `：${result.reason}` : ''}`)
-      return
-    }
-    source.value = result.source
-    importSource()
-    ElMessage.success('已从 CK3 原生 Copy 结果载入编辑器')
-  } catch (error) {
-    mcpStatus.value = '请求失败'
-    ElMessage.error(`CK3 导出失败：${errorMessage(error)}`)
-  } finally {
-    mcpBusy.value = false
-  }
-}
-
-async function loadResourceCatalog() {
-  catalogBusy.value = true
-  try {
-    const [
-      patterns,
-      emblems,
-      renderSupport,
-      loadConfiguration,
-      installedDlcSources,
-      configuredPatterns,
-      configuredEmblems,
-    ] = await Promise.all([
-      companion.resources({ kind: 'pattern', limit: 200 }),
-      companion.resources({
-        kind: 'colored_emblem',
-        query: emblemSearch.value.trim() || undefined,
-        limit: 200,
-      }),
-      companion.renderSupport(),
-      companion.loadConfiguration().catch(() => null),
-      companion.installedDlcSources().catch(() => null),
-      companion.configuredResources({ kind: 'pattern', limit: 200 }).catch(() => null),
-      companion.configuredResources({
-        kind: 'colored_emblem',
-        query: emblemSearch.value.trim() || undefined,
-        limit: 200,
-      }).catch(() => null),
-    ])
-    patternResources.value = patterns.items
-    emblemResources.value = emblems.items
-    configuredModCount.value = loadConfiguration?.enabled_mod_count ?? null
-    installedDlcDescriptorCount.value = installedDlcSources?.installed_descriptor_count ?? null
-    dlcCoaSourceCount.value = installedDlcSources?.dlc_with_coa_candidates ?? null
-    configuredPatternCount.value = configuredPatterns?.total ?? null
-    configuredEmblemCount.value = configuredEmblems?.total ?? null
-    configuredPatternResources.value = configuredPatterns?.items ?? []
-    configuredEmblemResources.value = configuredEmblems?.items ?? []
-    configuredArchiveCount.value = Math.max(
-      configuredPatterns?.provenance.archive_mods_enumerated ?? 0,
-      configuredEmblems?.provenance.archive_mods_enumerated ?? 0,
-    )
-    const decodedSurfaceMask = decodeDdsBase64(renderSupport.surface_mask.asset_base64)
-    if (
-      decodedSurfaceMask.width !== renderSupport.surface_mask.dds.width
-      || decodedSurfaceMask.height !== renderSupport.surface_mask.dds.height
-      || decodedSurfaceMask.fourCC !== renderSupport.surface_mask.dds.format
-    ) throw new Error('CoA surface mask 元数据与解码结果不一致')
-    surfaceMask.value = decodedSurfaceMask
-    const decodedTexturedDefault = decodeDdsBase64(
-      renderSupport.textured_emblem_default.asset_base64,
-    )
-    if (
-      decodedTexturedDefault.width !== renderSupport.textured_emblem_default.dds.width
-      || decodedTexturedDefault.height !== renderSupport.textured_emblem_default.dds.height
-      || decodedTexturedDefault.fourCC !== renderSupport.textured_emblem_default.dds.format
-    ) throw new Error('Textured emblem 默认 DDS 元数据与解码结果不一致')
-    texturedDefaultPreviewUrl.value = decodedDdsToDataUrl(decodedTexturedDefault)
-    texturedEmblemTextures.value = { '_default.dds': decodedTexturedDefault }
-    shaderNamedColors.value = Object.fromEntries(
-      renderSupport.named_colors.map((item) => [item.name, item.rgb]),
-    )
-    const sources = renderSupport.provenance.shader_sources
-    shaderSourceCount.value = Array.isArray(sources) ? sources.length : 0
-    ElMessage.success(`已索引 ${patterns.returned} 个 pattern、${emblems.returned} 个 emblem，并绑定原版 shader`)
-    await loadCurrentTexturePreviews()
-  } catch (error) {
-    ElMessage.error(`资源目录读取失败：${errorMessage(error)}`)
-  } finally {
-    catalogBusy.value = false
-  }
-}
-
 async function readTexturePreview(
   kind: 'pattern' | 'colored_emblem' | 'textured_emblem',
   name: string,
 ): Promise<{ decoded: DecodedDds, preview: string }> {
   const staticEntry = packEntry(kind, name)
-  if (staticEntry) {
-    const decoded = await readPackTexture(staticEntry)
-    return { decoded, preview: decodedDdsToDataUrl(decoded) }
-  }
-  if (!developmentCompanionEnabled) {
-    throw new Error(`独立素材包中没有 ${kind}/${name}`)
-  }
-  if (kind === 'textured_emblem') {
-    const decoded = texturedEmblemTextures.value[name]
-    if (decoded) return { decoded, preview: decodedDdsToDataUrl(decoded) }
-    throw new Error(`开发期 MCP 未提供 textured_emblem/${name}`)
-  }
-  const asset = await companion.asset(kind, name)
-  const decoded = decodeDdsBase64(asset.asset_base64)
-  if (
-    decoded.width !== asset.dds.width
-    || decoded.height !== asset.dds.height
-    || decoded.fourCC !== asset.dds.format
-  ) {
-    throw new Error(`DDS 元数据与解码结果不一致：${name}`)
-  }
+  if (!staticEntry) throw new Error(`独立素材包中没有 ${kind}/${name}`)
+  const decoded = await readPackTexture(staticEntry)
   return { decoded, preview: decodedDdsToDataUrl(decoded) }
-}
-
-async function readConfiguredTexturePreview(
-  item: CoatOfArmsConfiguredResourceItem,
-): Promise<{ decoded: DecodedDds, preview: string }> {
-  if (item.kind !== 'pattern' && item.kind !== 'colored_emblem') {
-    throw new Error(`不支持的 configured DDS 类型：${item.kind}`)
-  }
-  const asset = await companion.configuredAsset(item.kind, item.candidate_id)
-  const decoded = decodeDdsBase64(asset.asset_base64)
-  if (
-    decoded.width !== asset.dds.width
-    || decoded.height !== asset.dds.height
-    || decoded.fourCC !== asset.dds.format
-  ) {
-    throw new Error(`Configured DDS 元数据与解码结果不一致：${item.name}`)
-  }
-  return { decoded, preview: decodedDdsToDataUrl(decoded) }
-}
-
-async function useConfiguredPattern(item: CoatOfArmsConfiguredResourceItem) {
-  textureBusy.value = true
-  try {
-    const { decoded, preview } = await readConfiguredTexturePreview(item)
-    coatOfArms.value.pattern = item.name
-    patternTexture.value = decoded
-    patternPreviewUrl.value = preview
-    ElMessage.success(`已使用 ${item.mod_name ?? item.registry_path} 的 pattern 候选`)
-  } catch (error) {
-    ElMessage.error(`Configured pattern 读取失败：${errorMessage(error)}`)
-  } finally {
-    textureBusy.value = false
-  }
-}
-
-async function useConfiguredEmblem(item: CoatOfArmsConfiguredResourceItem) {
-  if (!activeEmblem.value) {
-    ElMessage.warning('请先添加或选择一个 colored emblem 图层')
-    return
-  }
-  textureBusy.value = true
-  try {
-    const { decoded, preview } = await readConfiguredTexturePreview(item)
-    activeEmblem.value.texture = item.name
-    emblemTextures.value = { ...emblemTextures.value, [item.name]: decoded }
-    emblemPreviewUrls.value = { ...emblemPreviewUrls.value, [item.name]: preview }
-    ElMessage.success(`已使用 ${item.mod_name ?? item.registry_path} 的 emblem 候选`)
-  } catch (error) {
-    ElMessage.error(`Configured emblem 读取失败：${errorMessage(error)}`)
-  } finally {
-    textureBusy.value = false
-  }
 }
 
 async function loadPatternTexture(name: string) {
@@ -2326,25 +1965,6 @@ watch(() => activeEmblem.value?.instances.length ?? 0, (length) => {
         <el-input v-model="source" type="textarea" :rows="21" resize="none" spellcheck="false" class="code-input" />
         <el-button class="import-button" type="primary" @click="importSource">{{ t('parseAndLoad') }}</el-button>
 
-        <div v-if="developmentCompanionEnabled" class="mcp-panel">
-          <div class="section-heading">
-            <div>
-              <h3>CK3 原生 MCP</h3>
-              <small>只调用 typed MCP，不使用 OCR 或屏幕自动化</small>
-            </div>
-            <el-button size="small" :loading="mcpBusy" @click="refreshSession">连接</el-button>
-          </div>
-          <div class="mcp-actions">
-            <el-button :loading="mcpBusy" @click="openNativeDesigner">打开原生家徽页</el-button>
-            <el-button :loading="mcpBusy" @click="enterNativeCustomMode">进入原生自定义模式</el-button>
-            <el-button :loading="mcpBusy" :disabled="errorCount > 0 || outputBytes > COAT_OF_ARMS_MCP_MAX_BYTES" @click="probeInCk3(false)">原生检测</el-button>
-            <el-button type="primary" plain :loading="mcpBusy" :disabled="errorCount > 0 || outputBytes > COAT_OF_ARMS_MCP_MAX_BYTES" @click="probeInCk3(true)">应用到设计器</el-button>
-            <el-button :loading="mcpBusy" @click="exportFromCk3">从 CK3 读取</el-button>
-            <el-button type="success" plain :loading="mcpBusy" @click="commitNativeDesign">提交回角色设计器</el-button>
-          </div>
-          <p>“打开”要求 CK3 已停在角色设计器；“进入自定义模式”只允许原版两个固定按钮，并以背景图案网格可见作为后置条件。检测和应用要求已进入家徽页。“应用”只改变家徽页 working state；“提交”调用原生王朝 Finish 并验证返回角色设计器，但仍不等于完成整个角色创建。</p>
-        </div>
-
         <div v-if="visibleDiagnostics.length" class="diagnostics">
           <div v-for="(item, index) in visibleDiagnostics" :key="index" :class="['diagnostic', item.severity]">
             <span>{{ item.severity.toUpperCase() }}</span>
@@ -2532,99 +2152,15 @@ watch(() => activeEmblem.value?.instances.length ?? 0, (length) => {
         <div class="panel-title">
           <div><span class="step">03</span><h2>{{ t('structuredEditor') }}</h2></div>
           <el-space>
-            <el-button v-if="developmentCompanionEnabled" size="small" :loading="runtimeFeatureBusy" @click="loadRuntimeFeatures">开发期运行态</el-button>
-            <el-button v-if="developmentCompanionEnabled" size="small" :loading="catalogBusy" @click="loadResourceCatalog">开发期 MCP 资源</el-button>
-            <el-button v-else size="small" :loading="assetPackBusy" @click="loadStandaloneAssetPack()">{{ t('refreshStaticAssets') }}</el-button>
+            <el-button size="small" :loading="assetPackBusy" @click="loadStandaloneAssetPack()">{{ t('refreshStaticAssets') }}</el-button>
           </el-space>
         </div>
         <p class="history-status">{{ t('historyStatus', { notice: uiText(historyNotice), redo: redoHistory.length, memory: ((undoHistoryBytes + redoHistoryBytes) / 1024 / 1024).toFixed(1) }) }}</p>
         <el-scrollbar height="690px">
-          <div v-if="developmentCompanionEnabled" class="resource-search">
-            <el-input v-model="emblemSearch" clearable placeholder="筛选 emblem 名；留空取前 200 项" @keyup.enter="loadResourceCatalog" />
-            <el-button :loading="catalogBusy" @click="loadResourceCatalog">刷新目录</el-button>
-          </div>
           <p class="resource-note">
             {{ t('staticAssetBoundary') }}
-            <template v-if="developmentCompanionEnabled && installedDlcDescriptorCount !== null && dlcCoaSourceCount !== null">
-              安装树含 {{ installedDlcDescriptorCount }} 份 DLC 描述符，其中 {{ dlcCoaSourceCount }} 份有直接 CoA 候选；
-              该数字不证明商店授权或引擎 mount。
-            </template>
-            <template v-if="developmentCompanionEnabled && configuredModCount !== null">
-              `dlc_load.json` 当前配置 {{ configuredModCount }} 个 mod；
-              <template v-if="configuredPatternCount !== null && configuredEmblemCount !== null">
-                已枚举 {{ configuredPatternCount }} 个 pattern、{{ configuredEmblemCount }} 个 emblem 资源候选，
-                其中读取 {{ configuredArchiveCount }} 个 archive mod。
-              </template>
-              仍未应用资源 precedence/merge，也不冒充引擎 mount 状态。
-            </template>
-            <template v-else>
-              {{ t('noLoadConfiguration') }}
-            </template>
-            <br>
-            <template v-if="developmentCompanionEnabled">开发期 CK3 运行态：{{ runtimeFeatureStatus }}。</template>
-            <template v-if="developmentCompanionEnabled && runtimeEnabledFeatureCount !== null && runtimeFeatureCount !== null && runtimeDlcKeys !== null">
-              原生同帧读到 {{ runtimeEnabledFeatureCount }}/{{ runtimeFeatureCount }} 个 effective feature 为真，
-              `has_dlc` 可见 {{ runtimeDlcKeys.length }} 个 key。
-              这证明当前进程的 gameplay gate，不证明商店授权，也不决定同名家徽资源的最终胜者。
-            </template>
+            {{ t('noLoadConfiguration') }}
           </p>
-          <el-collapse
-            v-if="developmentCompanionEnabled && (configuredPatternResources.length || configuredEmblemResources.length)"
-            class="configured-candidates"
-          >
-            <el-collapse-item
-              v-if="configuredPatternResources.length"
-              :title="`Configured pattern 候选（当前页 ${configuredPatternResources.length}）`"
-              name="configured-patterns"
-            >
-              <p class="candidate-warning">
-                显式选择只决定本编辑器使用哪份 DDS 做预览；导出的 CK3 代码仍只包含资源名，不声明引擎最终胜者。
-              </p>
-              <el-table :data="configuredPatternResources" size="small" max-height="220">
-                <el-table-column prop="name" label="资源名" min-width="180" show-overflow-tooltip />
-                <el-table-column prop="mod_name" label="来源 mod" min-width="150" show-overflow-tooltip />
-                <el-table-column label="冲突" width="82">
-                  <template #default="{ row }">
-                    <el-tag v-if="row.potential_configured_name_conflict" type="warning" size="small">
-                      {{ row.same_name_configured_candidate_count }} 项
-                    </el-tag>
-                    <span v-else>—</span>
-                  </template>
-                </el-table-column>
-                <el-table-column label="" width="82" fixed="right">
-                  <template #default="{ row }">
-                    <el-button size="small" text type="primary" @click="useConfiguredPattern(row)">使用</el-button>
-                  </template>
-                </el-table-column>
-              </el-table>
-            </el-collapse-item>
-            <el-collapse-item
-              v-if="configuredEmblemResources.length"
-              :title="`Configured emblem 候选（当前页 ${configuredEmblemResources.length}）`"
-              name="configured-emblems"
-            >
-              <p class="candidate-warning">
-                选择后写入当前 emblem 图层，并按该 opaque candidate ID 读取目录/ZIP 内的精确 DDS。
-              </p>
-              <el-table :data="configuredEmblemResources" size="small" max-height="260">
-                <el-table-column prop="name" label="资源名" min-width="180" show-overflow-tooltip />
-                <el-table-column prop="mod_name" label="来源 mod" min-width="150" show-overflow-tooltip />
-                <el-table-column label="冲突" width="82">
-                  <template #default="{ row }">
-                    <el-tag v-if="row.potential_configured_name_conflict" type="warning" size="small">
-                      {{ row.same_name_configured_candidate_count }} 项
-                    </el-tag>
-                    <span v-else>—</span>
-                  </template>
-                </el-table-column>
-                <el-table-column label="" width="82" fixed="right">
-                  <template #default="{ row }">
-                    <el-button size="small" text type="primary" @click="useConfiguredEmblem(row)">使用</el-button>
-                  </template>
-                </el-table-column>
-              </el-table>
-            </el-collapse-item>
-          </el-collapse>
           <el-form label-position="top">
             <div class="form-grid">
               <el-form-item :label="t('parentReference')">

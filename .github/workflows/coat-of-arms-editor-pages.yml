@@ -68,6 +68,9 @@ jobs:
           VITE_COA_CACHE_VERSION: "${{ github.sha }}"
           VITE_DISABLE_SERVICE_WORKER: "true"
 
+      - name: Verify zero-backend production bundle
+        run: pnpm verify:production-boundary
+
       - name: Install headless browsers
         run: pnpm exec playwright install --with-deps chromium firefox webkit
 
