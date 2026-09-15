@@ -52,7 +52,11 @@ export interface ImageFitMetrics {
   relativeImprovement: number
 }
 
-export type ImageFitReconstructionMode = 'semantic-search' | 'native-tile-paint' | 'hybrid-native-paint'
+export type ImageFitReconstructionMode =
+  | 'semantic-search'
+  | 'native-tile-paint'
+  | 'native-edge-refined'
+  | 'hybrid-native-paint'
 
 export interface MultiscaleFitMetric {
   resolution: number
@@ -1146,6 +1150,329 @@ function paintWithNativeTiles(
   return state
 }
 
+function edgeResidualHotspots(
+  target: FitImage,
+  rendered: RenderedCoatOfArms,
+  limit: number,
+): { x: number, y: number, error: number }[] {
+  const hotspots: { x: number, y: number, error: number }[] = []
+  for (let y = 0; y < target.height; y += 1) {
+    for (let x = 0; x < target.width; x += 1) {
+      const offset = (y * target.width + x) * 4
+      const alpha = target.pixels[offset + 3] / 255
+      if (alpha <= 0) continue
+      let colorError = 0
+      for (let channel = 0; channel < 3; channel += 1) {
+        const delta = (target.pixels[offset + channel] - rendered.pixels[offset + channel]) / 255
+        colorError += delta * delta
+      }
+      let edgeError = 0
+      for (const previous of [
+        x > 0 ? offset - 4 : -1,
+        y > 0 ? offset - target.width * 4 : -1,
+      ]) {
+        if (previous < 0) continue
+        edgeError += Math.abs(
+          (luminance(target.pixels, offset) - luminance(target.pixels, previous))
+          - (luminance(rendered.pixels, offset) - luminance(rendered.pixels, previous)),
+        ) / 255
+      }
+      const error = alpha * (colorError * 0.62 / 3 + edgeError * 0.38)
+      if (error > 1e-12) hotspots.push({ x, y, error })
+    }
+  }
+  return hotspots
+    .sort((left, right) => right.error - left.error || left.y - right.y || left.x - right.x)
+    .slice(0, limit)
+}
+
+function refinePaintedStateAtEdgeHotspots(
+  initial: SearchState,
+  brush: FitTextureCandidate,
+  target: FitImage,
+  maxLayers: number,
+  surfaceMask: DecodedDds | undefined,
+  namedColors: NamedColorMap,
+  evaluated: EvaluationCounter,
+  onProgress?: (progress: ImageFitProgress) => void,
+): SearchState {
+  let state = initial
+  const maximumLayers = Math.min(8, maxLayers - initial.selectedAssets.length)
+  if (maximumLayers <= 0) return state
+  const shape = textureShapeDescriptor(brush.texture)
+  const patchSizes = [[1, 1], [2, 1], [1, 2], [2, 2], [3, 1], [1, 3]] as const
+  const coverageFactors = [1, 1.04] as const
+  for (let layer = 0; layer < maximumLayers; layer += 1) {
+    const hotspots = edgeResidualHotspots(target, state.candidate.rendered, 32)
+    const rectangles = new Map<string, [number, number, number, number]>()
+    for (const hotspot of hotspots) {
+      for (const [width, height] of patchSizes) {
+        const minimumX = clamp(hotspot.x - Math.floor((width - 1) / 2), 0, target.width - width)
+        const minimumY = clamp(hotspot.y - Math.floor((height - 1) / 2), 0, target.height - height)
+        const rectangle: [number, number, number, number] = [
+          minimumX, minimumY, minimumX + width, minimumY + height,
+        ]
+        rectangles.set(rectangle.join(','), rectangle)
+      }
+    }
+    const total = Math.max(1, rectangles.size * coverageFactors.length)
+    let completed = 0
+    let best: { choice: LayerChoice, tile: PaintTile, scaleFactor: number } | null = null
+    reportProgress(
+      onProgress, 'refine', 0, total,
+      state.selectedAssets.length + 1, maxLayers, evaluated.value,
+    )
+    for (const [minimumX, minimumY, maximumX, maximumY] of rectangles.values()) {
+      const tile = paintTileStats(
+        target, state.candidate.rendered,
+        minimumX, minimumY, maximumX, maximumY,
+      )
+      const focus: ResidualFocus = {
+        position: [
+          (minimumX + maximumX) / 2 / target.width,
+          (minimumY + maximumY) / 2 / target.height,
+        ],
+        scale: [
+          (maximumX - minimumX) / target.width,
+          (maximumY - minimumY) / target.height,
+        ],
+        descriptor: new Float32Array(SHAPE_DESCRIPTOR_SIZE * SHAPE_DESCRIPTOR_SIZE),
+      }
+      const geometry = initialLayerGeometry(
+        focus,
+        { asset: brush, shape, rotation: 0, flip: 1, loss: 0 },
+        0.001,
+      )
+      for (const scaleFactor of coverageFactors) {
+        const choice = layerChoice(
+          state.candidate,
+          state.patternAsset.texture,
+          surfaceMask,
+          namedColors,
+          target,
+          brush,
+          {
+            colors: [tile.color, tile.color, tile.color],
+            position: geometry.position,
+            scale: [geometry.scale[0] * scaleFactor, geometry.scale[1] * scaleFactor],
+            rotation: 0,
+            flip: 1,
+          },
+          state.selectedAssets.length + 1,
+          evaluated,
+        )
+        completed += 1
+        const passesGate = choice.candidate.totalLoss <= state.candidate.totalLoss + 1e-12
+          && choice.candidate.edgeLoss < state.candidate.edgeLoss - 1e-12
+        if (
+          passesGate
+          && (
+            !best
+            || choice.candidate.totalLoss < best.choice.candidate.totalLoss - 1e-12
+            || (
+              Math.abs(choice.candidate.totalLoss - best.choice.candidate.totalLoss) <= 1e-12
+              && (
+                choice.candidate.edgeLoss < best.choice.candidate.edgeLoss - 1e-12
+                || (
+                  Math.abs(choice.candidate.edgeLoss - best.choice.candidate.edgeLoss) <= 1e-12
+                  && (
+                    scaleFactor < best.scaleFactor
+                    || (scaleFactor === best.scaleFactor && choice.candidate.key < best.choice.candidate.key)
+                  )
+                )
+              )
+            )
+          )
+        ) best = { choice, tile, scaleFactor }
+        if (shouldReportProgress(completed, total)) {
+          reportProgress(
+            onProgress, 'refine', completed, total,
+            state.selectedAssets.length + 1, maxLayers, evaluated.value,
+          )
+        }
+      }
+    }
+    if (!best) break
+    const acceptedEmblems = best.choice.candidate.coatOfArms.coloredEmblems
+    const acceptedInstance = acceptedEmblems[acceptedEmblems.length - 1].instances[0]
+    state = {
+      candidate: best.choice.candidate,
+      patternAsset: state.patternAsset,
+      selectedAssets: [...state.selectedAssets, brush],
+      layerLosses: [...state.layerLosses, best.choice.candidate.totalLoss],
+      reconstructionMode: 'native-edge-refined',
+      paintPlacements: [...state.paintPlacements, { tile: best.tile, instance: acceptedInstance }],
+    }
+  }
+  return state
+}
+
+function refinePaintedStateWithNativeShape(
+  initial: SearchState,
+  emblems: FitTextureCandidate[],
+  shapeDescriptors: Map<string, TextureShape>,
+  target: FitImage,
+  maxLayers: number,
+  surfaceMask: DecodedDds | undefined,
+  namedColors: NamedColorMap,
+  evaluated: EvaluationCounter,
+  shapeCandidateCount: number,
+  onProgress?: (progress: ImageFitProgress) => void,
+): SearchState {
+  if (initial.selectedAssets.length >= maxLayers) return initial
+  // The coverage brush is also a useful rotated local primitive. Keeping it
+  // eligible here lets the refinement improve a curved boundary even when no
+  // semantic emblem survives the independent total/edge gate. Mixed-texture
+  // candidates are still measured separately through textureNames.
+  const refiners = emblems
+  if (!refiners.length) return initial
+  const focus = residualGeometry(target, initial.candidate.rendered)
+  const shortlist = rankShapes(focus, refiners, shapeDescriptors)
+    .slice(0, Math.min(12, shapeCandidateCount, refiners.length))
+  const palettes = permutations(residualColors(target, initial.candidate.rendered))
+  const coarseEvaluations = shortlist.length * palettes.length * 3 * 3
+  const localPasses = [
+    { position: 0.05, scale: 0.08, rotation: 5 },
+    { position: 0.018, scale: 0.025, rotation: 1 },
+    { position: 0.006, scale: 0.008, rotation: 0.25 },
+  ]
+  const localEvaluations = localPasses.length * (9 + 9 + 5 + 2 + palettes.length)
+  const total = Math.max(1, coarseEvaluations + localEvaluations)
+  let completed = 0
+  let best: LayerChoice | null = null
+  const accept = (choice: LayerChoice) => {
+    completed += 1
+    const passesGate = choice.candidate.totalLoss <= initial.candidate.totalLoss + 1e-12
+      && choice.candidate.edgeLoss < initial.candidate.edgeLoss - 1e-12
+    if (
+      passesGate
+      && (
+        !best
+        || choice.candidate.totalLoss < best.candidate.totalLoss - 1e-12
+        || (
+          Math.abs(choice.candidate.totalLoss - best.candidate.totalLoss) <= 1e-12
+          && (
+            choice.candidate.edgeLoss < best.candidate.edgeLoss - 1e-12
+            || (
+              Math.abs(choice.candidate.edgeLoss - best.candidate.edgeLoss) <= 1e-12
+              && choice.candidate.key < best.candidate.key
+            )
+          )
+        )
+      )
+    ) best = choice
+    if (shouldReportProgress(completed, total)) {
+      reportProgress(
+        onProgress, 'refine', completed, total,
+        initial.selectedAssets.length + 1, maxLayers, evaluated.value,
+      )
+    }
+  }
+  reportProgress(
+    onProgress, 'refine', 0, total,
+    initial.selectedAssets.length + 1, maxLayers, evaluated.value,
+  )
+  for (const match of shortlist) {
+    const geometry = initialLayerGeometry(focus, match, 0.012)
+    for (const colors of palettes) {
+      for (const scaleFactor of [0.82, 1, 1.18]) {
+        for (const rotationOffset of [-20, 0, 20]) {
+          accept(layerChoice(
+            initial.candidate,
+            initial.patternAsset.texture,
+            surfaceMask,
+            namedColors,
+            target,
+            match.asset,
+            {
+              colors,
+              position: [...geometry.position],
+              scale: [
+                clamp(geometry.scale[0] * scaleFactor, 0.012, 2.5),
+                clamp(geometry.scale[1] * scaleFactor, 0.012, 2.5),
+              ],
+              rotation: match.rotation + rotationOffset,
+              flip: match.flip,
+            },
+            initial.selectedAssets.length + 1,
+            evaluated,
+          ))
+        }
+      }
+    }
+  }
+  if (best as LayerChoice | null) {
+    for (const tuning of localPasses) {
+      const currentBest = best as LayerChoice | null
+      if (!currentBest) break
+      const anchor = currentBest.parameters
+      const positionDelta = Math.max(0.001, Math.min(...anchor.scale) * tuning.position)
+      for (const deltaY of [-positionDelta, 0, positionDelta]) {
+        for (const deltaX of [-positionDelta, 0, positionDelta]) {
+          accept(layerChoice(
+            initial.candidate, initial.patternAsset.texture, surfaceMask, namedColors, target,
+            currentBest.asset,
+            { ...anchor, position: [
+              clamp(anchor.position[0] + deltaX, 0, 1),
+              clamp(anchor.position[1] + deltaY, 0, 1),
+            ] },
+            initial.selectedAssets.length + 1, evaluated,
+          ))
+        }
+      }
+      for (const scaleY of [1 - tuning.scale, 1, 1 + tuning.scale]) {
+        for (const scaleX of [1 - tuning.scale, 1, 1 + tuning.scale]) {
+          accept(layerChoice(
+            initial.candidate, initial.patternAsset.texture, surfaceMask, namedColors, target,
+            currentBest.asset,
+            { ...anchor, scale: [
+              clamp(anchor.scale[0] * scaleX, 0.012, 2.5),
+              clamp(anchor.scale[1] * scaleY, 0.012, 2.5),
+            ] },
+            initial.selectedAssets.length + 1, evaluated,
+          ))
+        }
+      }
+      for (const offset of [-tuning.rotation, -tuning.rotation / 2, 0, tuning.rotation / 2, tuning.rotation]) {
+        accept(layerChoice(
+          initial.candidate, initial.patternAsset.texture, surfaceMask, namedColors, target,
+          currentBest.asset, { ...anchor, rotation: anchor.rotation + offset },
+          initial.selectedAssets.length + 1, evaluated,
+        ))
+      }
+      for (const flip of [1, -1]) {
+        accept(layerChoice(
+          initial.candidate, initial.patternAsset.texture, surfaceMask, namedColors, target,
+          currentBest.asset, { ...anchor, flip },
+          initial.selectedAssets.length + 1, evaluated,
+        ))
+      }
+      for (const colors of palettes) {
+        accept(layerChoice(
+          initial.candidate, initial.patternAsset.texture, surfaceMask, namedColors, target,
+          currentBest.asset, { ...anchor, colors },
+          initial.selectedAssets.length + 1, evaluated,
+        ))
+      }
+    }
+  }
+  reportProgress(
+    onProgress, 'refine', total, total,
+    best ? initial.selectedAssets.length + 1 : initial.selectedAssets.length,
+    maxLayers, evaluated.value,
+  )
+  const selected = best as LayerChoice | null
+  if (!selected) return initial
+  return {
+    candidate: selected.candidate,
+    patternAsset: initial.patternAsset,
+    selectedAssets: [...initial.selectedAssets, selected.asset],
+    layerLosses: [...initial.layerLosses, selected.candidate.totalLoss],
+    reconstructionMode: 'hybrid-native-paint',
+    paintPlacements: initial.paintPlacements,
+  }
+}
+
 export function fitImageToCoatOfArms(
   image: FitImage,
   patternCandidates: FitTextureCandidate[],
@@ -1421,6 +1748,30 @@ export function fitImageToCoatOfArms(
     }
     nativePaintBaseline = paintState
     finalists.push(paintState)
+    const edgeRefinedPaintState = refinePaintedStateAtEdgeHotspots(
+      paintState,
+      paintBrush,
+      target,
+      maxLayers,
+      surfaceMask,
+      namedColors,
+      evaluated,
+      options.onProgress,
+    )
+    if (edgeRefinedPaintState !== paintState) finalists.push(edgeRefinedPaintState)
+    const refinedPaintState = refinePaintedStateWithNativeShape(
+      edgeRefinedPaintState,
+      emblems,
+      shapeDescriptors,
+      target,
+      maxLayers,
+      surfaceMask,
+      namedColors,
+      evaluated,
+      shapeCandidateCount,
+      options.onProgress,
+    )
+    if (refinedPaintState !== edgeRefinedPaintState) finalists.push(refinedPaintState)
     const semanticSeed = beam
       .filter((state) => state.selectedAssets.length > 0)
       .sort((left, right) => left.candidate.totalLoss - right.candidate.totalLoss

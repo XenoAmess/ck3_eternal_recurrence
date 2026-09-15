@@ -9,12 +9,12 @@ import { serializeCoatOfArms } from '../src/domain/serializer'
 const layerBudget = '1024'
 const fixture = resolve('test-fixtures/xenoamess_hunter_1024_no_shade.png')
 const originalFixture = resolve('test-fixtures/xenoamess_hunter_4096_no_shade.svg')
-const artifactDirectory = resolve('test-results/reference-hunter-v5-candidate')
+const artifactDirectory = resolve('test-results/reference-hunter-v6-edge-refined')
 const assetPackDirectory = resolve('public/asset-packs/ck3-1.19.0.6')
 const historicalArtifact = resolve('../docs/coat-of-arms-fit-artifacts/xenoamess-hunter-v4-pruned/coat_of_arms.txt')
 const sha256 = (bytes: Uint8Array | string) => createHash('sha256').update(bytes).digest('hex').toUpperCase()
 
-test('evaluates hybrid and multiscale hunter candidates with a 1024-layer ceiling', async ({ page }) => {
+test('improves hunter edges with bounded local refinement under a 1024-layer ceiling', async ({ page }) => {
   test.setTimeout(5 * 60 * 1000)
   await page.addInitScript(() => {
     Object.defineProperty(navigator, 'clipboard', {
@@ -73,8 +73,17 @@ test('evaluates hybrid and multiscale hunter candidates with a 1024-layer ceilin
   expect(evidence.provenance.sourceHeight).toBe(1024)
   expect(evidence.provenance.pyramidResolutions).toEqual([96, 192, 256])
   expect(evidence.provenance.candidateLosses.map((item: { mode: string }) => item.mode)).toEqual(
-    expect.arrayContaining(['semantic-search', 'native-tile-paint', 'hybrid-native-paint']),
+    expect.arrayContaining(['semantic-search', 'native-tile-paint', 'native-edge-refined', 'hybrid-native-paint']),
   )
+  const pureTileCandidate = evidence.provenance.candidateLosses.find(
+    (item: { mode: string }) => item.mode === 'native-tile-paint',
+  )
+  const edgeRefinedCandidate = evidence.provenance.candidateLosses.find(
+    (item: { mode: string }) => item.mode === 'native-edge-refined',
+  )
+  expect(evidence.provenance.reconstructionMode).toBe('native-edge-refined')
+  expect(edgeRefinedCandidate.totalLoss).toBeLessThan(pureTileCandidate.totalLoss)
+  expect(edgeRefinedCandidate.edgeLoss).toBeLessThan(pureTileCandidate.edgeLoss)
   expect(evidence.provenance.drawnInstances).toBe(drawnInstances)
   expect(evidence.provenance.nativeTileSeamValidation.status).toBe('passed')
   expect(evidence.provenance.nativeTileSeamValidation.metrics).toEqual(
@@ -131,7 +140,7 @@ test('evaluates hybrid and multiscale hunter candidates with a 1024-layer ceilin
     return fitterModule.measureImageFitLosses(target, rendered)
   }, { source: historicalSource })
   expect(evidence.metrics.totalLoss).toBeLessThanOrEqual(historicalMetrics.totalLoss + 1e-12)
-  expect(evidence.metrics.edgeLoss).toBeLessThanOrEqual(historicalMetrics.edgeLoss + 1e-12)
+  expect(evidence.metrics.edgeLoss).toBeLessThan(historicalMetrics.edgeLoss - 1e-12)
   expect(Number(evidence.metrics.totalLoss.toFixed(5))).toBeLessThanOrEqual(0.02590)
   expect(Number(evidence.metrics.edgeLoss.toFixed(5))).toBeLessThanOrEqual(0.04304)
   expect(evidence.metrics.relativeImprovement).toBeGreaterThan(0.80)
@@ -163,9 +172,9 @@ test('evaluates hybrid and multiscale hunter candidates with a 1024-layer ceilin
   )
   const report = {
     schema: 'ck3-coa-hunter-fit-evidence-v1',
-    artifactVersion: 'xenoamess-hunter-v5-candidate',
-    predecessor: '../xenoamess-hunter-v4-pruned/',
-    status: 'browser-quality-nonregression-passed-edge-improvement-pending',
+    artifactVersion: 'xenoamess-hunter-v6-edge-refined',
+    predecessor: '../xenoamess-hunter-v5-candidate/',
+    status: 'browser-quality-improvement-passed-native-roundtrip-pending',
     generatedAt: new Date().toISOString(),
     sourceRevision: {
       headCommit,
@@ -210,7 +219,7 @@ test('evaluates hybrid and multiscale hunter candidates with a 1024-layer ceilin
       candidateMetrics: evidence.metrics,
       tolerance: 1e-12,
       totalLossNonRegression: evidence.metrics.totalLoss <= historicalMetrics.totalLoss + 1e-12,
-      edgeLossNonRegression: evidence.metrics.edgeLoss <= historicalMetrics.edgeLoss + 1e-12,
+      edgeLossStrictImprovement: evidence.metrics.edgeLoss < historicalMetrics.edgeLoss - 1e-12,
     },
     counts: {
       userBudget: 1024,
@@ -235,7 +244,7 @@ test('evaluates hybrid and multiscale hunter candidates with a 1024-layer ceilin
     evidenceLevel: {
       browserRegression: 'passed',
       transferIntegrity: 'passed-for-browser-copy-interception-and-parse',
-      ck3ApplyCopyRoundTrip: 'not-run-for-non-advancing-v5-candidate',
+      ck3ApplyCopyRoundTrip: 'pending-for-v6-candidate',
       nativePixelComparison: 'pending-mcp-framebuffer-capability',
     },
   }

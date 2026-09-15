@@ -20,6 +20,12 @@ WP3 第一候选现已保留原始 `File` 与 96/192/256 px 金字塔，并把�
 [`xenoamess-hunter-v5-candidate`](coat-of-arms-fit-artifacts/xenoamess-hunter-v5-candidate/README.md)。下一候选继续做局部 replacement
 和轮廓细化，只有边缘损失严格优于 `0.043043678580258954` 且总损失不劣化时才晋级。
 
+WP3 第二候选 [`xenoamess-hunter-v6-edge-refined`](coat-of-arms-fit-artifacts/xenoamess-hunter-v6-edge-refined/README.md)
+已越过该浏览器质量门禁：1,008 个实例的总损失为 `0.024123983862988356`、边缘损失为
+`0.040769084120764576`，并且 192/256 px 两项指标也同时优于 v4。其结构压缩把块数从 1,008 降至 299，exact 固定点剪枝
+又删除 2 个完全被覆盖的实例且 96/230/512 px 零像素变化。当前继续执行 Pareto 质量剪枝和 v6 原生文本闭环；在这些门禁完成前
+WP3 仍保持 `in_progress`。
+
 ## 1. 不变约束
 
 - 正式 GitHub Pages 平台必须纯前端运行，不安装、启动或连接 CK3，也不依赖 Java、Quarkus、Python、Steam 或本机 MCP。

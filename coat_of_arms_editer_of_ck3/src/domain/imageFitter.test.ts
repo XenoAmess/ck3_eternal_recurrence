@@ -385,7 +385,10 @@ describe('browser image fitter', () => {
       { resolution: size, maxLayers: 128 },
     )
     const purePaint = result.provenance.candidateLosses.find((item) => item.mode === 'native-tile-paint')
-    const hybrid = result.provenance.candidateLosses.find((item) => item.mode === 'hybrid-native-paint')
+    const hybrid = result.provenance.candidateLosses.find((item) => (
+      item.mode === 'hybrid-native-paint'
+      && item.textureNames.includes('semantic-square.dds')
+    ))
     expect(purePaint).toBeDefined()
     expect(hybrid).toBeDefined()
     expect(hybrid!.textureNames).toEqual(expect.arrayContaining(['semantic-square.dds', 'ce_block_02.dds']))

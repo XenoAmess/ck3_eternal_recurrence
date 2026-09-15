@@ -764,6 +764,8 @@ async function fitTargetImage() {
       }
       const reconstructionMode = result.provenance.reconstructionMode === 'native-tile-paint'
         ? '原生块多层重建'
+        : result.provenance.reconstructionMode === 'native-edge-refined'
+          ? '原生块局部边缘细化'
         : result.provenance.reconstructionMode === 'hybrid-native-paint'
           ? '语义元素 + 原生块混合重建'
           : '语义元素搜索'
@@ -1307,7 +1309,7 @@ importSource()
               <div><dt>相对改善</dt><dd>{{ (fitResult.metrics.relativeImprovement * 100).toFixed(2) }}%</dd></div>
               <div><dt>GPU 交叉分</dt><dd>{{ fitWebGlScore ? fitWebGlScore.meanSquaredRgbError.toFixed(5) : '不可用' }}</dd></div>
               <div><dt>输入/金字塔</dt><dd>{{ fitResult.provenance.sourceWidth }}×{{ fitResult.provenance.sourceHeight }} → {{ fitResult.provenance.pyramidResolutions.join(' / ') }}px</dd></div>
-              <div><dt>候选路径</dt><dd>{{ fitResult.provenance.candidateLosses.map((item) => `${item.mode === 'native-tile-paint' ? '原生块' : item.mode === 'hybrid-native-paint' ? '混合' : '语义'} ${item.layers}层=${item.totalLoss.toFixed(4)} [${item.textureNames.join(', ') || '无纹章'}]`).join('；') }}</dd></div>
+              <div><dt>候选路径</dt><dd>{{ fitResult.provenance.candidateLosses.map((item) => `${item.mode === 'native-tile-paint' ? '原生块' : item.mode === 'native-edge-refined' ? '边缘细化' : item.mode === 'hybrid-native-paint' ? '混合' : '语义'} ${item.layers}层=${item.totalLoss.toFixed(4)} [${item.textureNames.join(', ') || '无纹章'}]`).join('；') }}</dd></div>
             </dl>
             <small>分数只用于同一算法和目标之间比较，不代表 CK3 像素一致率。结果已进入下方结构化编辑器。</small>
           </template>
