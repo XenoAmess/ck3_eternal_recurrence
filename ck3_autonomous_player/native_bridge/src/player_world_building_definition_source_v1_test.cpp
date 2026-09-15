@@ -210,12 +210,71 @@ int main() {
   }
   {
     auto f = Scene();
-    f.Put(0xB10000, std::uintptr_t{0xDEAD});
+    f.Put(0xB10000, kModule + std::uintptr_t{0x44046D0});
     auto r = ReadPlayerWorldBuildingDefinitionSourcesV1(
         kModule, true, f.Access(), {3, kProvince, 512, 8});
     Require(!r.source_available && r.failure ==
-                PlayerWorldBuildingFailureV1::definition_identity,
-            "definition_rtti_identity_mismatch");
+                PlayerWorldBuildingFailureV1::definition_identity &&
+                r.definition_source_count == 0 &&
+                r.definition_identity_diagnostic.registry_count == 2 &&
+                r.definition_identity_diagnostic.failed_index == 1 &&
+                r.definition_identity_diagnostic.stage ==
+                    PlayerWorldDefinitionIdentityStageV1::vtable_mismatch &&
+                r.definition_identity_diagnostic.has_observed_vtable_rva &&
+                r.definition_identity_diagnostic.observed_vtable_rva ==
+                    0x44046D0 &&
+                !r.definition_identity_diagnostic.has_observed_building_type_id,
+            "definition_vtable_mismatch_keeps_red_with_pointer_free_rva");
+  }
+  {
+    auto f = Scene();
+    f.Put(0xA10008, std::uintptr_t{0});
+    auto r = ReadPlayerWorldBuildingDefinitionSourcesV1(
+        kModule, true, f.Access(), {3, kProvince, 512, 8});
+    Require(!r.source_available && r.failure ==
+                PlayerWorldBuildingFailureV1::definition_identity &&
+                r.definition_identity_diagnostic.failed_index == 1 &&
+                r.definition_identity_diagnostic.stage ==
+                    PlayerWorldDefinitionIdentityStageV1::element_null &&
+                !r.definition_identity_diagnostic.has_observed_vtable_rva,
+            "null_world_element_is_not_zero_legal_buildings");
+  }
+  {
+    auto f = Scene();
+    f.Put(0xB10000, kModule + std::uintptr_t{0x6000000});
+    auto r = ReadPlayerWorldBuildingDefinitionSourcesV1(
+        kModule, true, f.Access(), {3, kProvince, 512, 8});
+    Require(!r.source_available && r.failure ==
+                PlayerWorldBuildingFailureV1::definition_identity &&
+                r.definition_identity_diagnostic.stage ==
+                    PlayerWorldDefinitionIdentityStageV1::vtable_mismatch &&
+                !r.definition_identity_diagnostic.has_observed_vtable_rva,
+            "out_of_image_pointer_has_no_receipt_address");
+  }
+  {
+    auto f = Scene();
+    f.Put(0xB10000 + 0x10, std::int32_t{-3});
+    auto r = ReadPlayerWorldBuildingDefinitionSourcesV1(
+        kModule, true, f.Access(), {3, kProvince, 512, 8});
+    Require(!r.source_available && r.failure ==
+                PlayerWorldBuildingFailureV1::definition_identity &&
+                r.definition_identity_diagnostic.stage ==
+                    PlayerWorldDefinitionIdentityStageV1::building_type_id_negative &&
+                r.definition_identity_diagnostic.has_observed_building_type_id &&
+                r.definition_identity_diagnostic.observed_building_type_id == -3,
+            "negative_building_type_id_has_distinct_read_only_diagnostic");
+  }
+  {
+    auto f = Scene();
+    f.Put(0xB10000 + 0x10, std::int32_t{11});
+    auto r = ReadPlayerWorldBuildingDefinitionSourcesV1(
+        kModule, true, f.Access(), {3, kProvince, 512, 8});
+    Require(!r.source_available && r.failure ==
+                PlayerWorldBuildingFailureV1::definition_identity &&
+                r.definition_identity_diagnostic.stage ==
+                    PlayerWorldDefinitionIdentityStageV1::building_type_id_duplicate &&
+                r.definition_identity_diagnostic.observed_building_type_id == 11,
+            "duplicate_building_type_id_not_inferred_as_legality");
   }
   {
     auto f = Scene();

@@ -13,6 +13,7 @@ namespace {
 
 constexpr std::uintptr_t kWorldBuildingRegistrySlotRva = 0x57BFFD0;
 constexpr std::uintptr_t kBuildingTypePrimaryVtableRva = 0x44046C0;
+constexpr std::uintptr_t kExactExeImageSize = 0x5C2D000;
 constexpr std::uintptr_t kGameStateSlotRva = 0x570E068;
 constexpr std::uintptr_t kGuiPlayerCharacterIdRva = 0x4FE7EE0;
 constexpr std::size_t kGameDataOffset = 0xA0;
@@ -54,7 +55,8 @@ bool ReadWorldDefinitions(const CampaignRootAccessV1 &access,
                           std::vector<std::pair<std::int32_t,
                                                 std::uintptr_t>> &out,
                           std::int32_t &count,
-                          PlayerWorldBuildingFailureV1 &failure) {
+                          PlayerWorldBuildingFailureV1 &failure,
+                          PlayerWorldDefinitionIdentityDiagnosticV1 &diagnostic) {
   failure = PlayerWorldBuildingFailureV1::registry_source;
   std::uintptr_t registry = 0;
   std::uintptr_t data = 0;
@@ -68,6 +70,7 @@ bool ReadWorldDefinitions(const CampaignRootAccessV1 &access,
       count > kMaxWorldDefinitions || (count > 0 && data == 0)) {
     return false;
   }
+  diagnostic.registry_count = count;
   out.reserve(static_cast<std::size_t>(count));
   std::unordered_set<std::int32_t> seen_ids;
   seen_ids.reserve(static_cast<std::size_t>(count));
@@ -76,17 +79,52 @@ bool ReadWorldDefinitions(const CampaignRootAccessV1 &access,
     std::uintptr_t definition = 0;
     std::uintptr_t vtable = 0;
     std::int32_t building_type_id = -1;
+    diagnostic.failed_index = index;
     if (!Read(access, data,
               static_cast<std::size_t>(index) * sizeof(definition),
-              definition) || definition == 0 ||
-        !Read(access, definition, 0, vtable) ||
-        vtable != module + kBuildingTypePrimaryVtableRva ||
-        !Read(access, definition, kBuildingTypeIdentityOffset,
-              building_type_id) || building_type_id < 0 ||
-        !seen_ids.insert(building_type_id).second) {
+              definition)) {
+      diagnostic.stage = PlayerWorldDefinitionIdentityStageV1::element_read;
+      return false;
+    }
+    if (definition == 0) {
+      diagnostic.stage = PlayerWorldDefinitionIdentityStageV1::element_null;
+      return false;
+    }
+    if (!Read(access, definition, 0, vtable)) {
+      diagnostic.stage = PlayerWorldDefinitionIdentityStageV1::vtable_read;
+      return false;
+    }
+    if (vtable >= module && vtable - module < kExactExeImageSize) {
+      diagnostic.has_observed_vtable_rva = true;
+      diagnostic.observed_vtable_rva =
+          static_cast<std::uint64_t>(vtable - module);
+    }
+    if (vtable != module + kBuildingTypePrimaryVtableRva) {
+      diagnostic.stage = PlayerWorldDefinitionIdentityStageV1::vtable_mismatch;
+      return false;
+    }
+    if (!Read(access, definition, kBuildingTypeIdentityOffset,
+              building_type_id)) {
+      diagnostic.stage =
+          PlayerWorldDefinitionIdentityStageV1::building_type_id_read;
+      return false;
+    }
+    diagnostic.has_observed_building_type_id = true;
+    diagnostic.observed_building_type_id = building_type_id;
+    if (building_type_id < 0) {
+      diagnostic.stage =
+          PlayerWorldDefinitionIdentityStageV1::building_type_id_negative;
+      return false;
+    }
+    if (!seen_ids.insert(building_type_id).second) {
+      diagnostic.stage =
+          PlayerWorldDefinitionIdentityStageV1::building_type_id_duplicate;
       return false;
     }
     out.emplace_back(building_type_id, definition);
+    diagnostic.failed_index = -1;
+    diagnostic.has_observed_vtable_rva = false;
+    diagnostic.has_observed_building_type_id = false;
   }
   failure = PlayerWorldBuildingFailureV1::none;
   return true;
@@ -123,9 +161,11 @@ bool ReadProvinceSlots(const CampaignRootAccessV1 &access,
 }
 
 PlayerWorldBuildingSourceResultV1 Failed(
-    PlayerWorldBuildingFailureV1 failure) noexcept {
+    PlayerWorldBuildingFailureV1 failure,
+    PlayerWorldDefinitionIdentityDiagnosticV1 diagnostic = {}) noexcept {
   PlayerWorldBuildingSourceResultV1 result{};
   result.failure = failure;
+  result.definition_identity_diagnostic = diagnostic;
   return result;
 }
 
@@ -197,8 +237,10 @@ ReadPlayerWorldBuildingDefinitionSourcesV1(
         PlayerWorldBuildingFailureV1::registry_source;
     if (!ReadWorldDefinitions(campaign, module_base, definitions,
                               result.definition_source_count,
-                              registry_failure)) {
-      return Failed(registry_failure);
+                              registry_failure,
+                              result.definition_identity_diagnostic)) {
+      return Failed(registry_failure,
+                    result.definition_identity_diagnostic);
     }
     if (access.final_legality != nullptr &&
         request.max_native_checks > 0 &&

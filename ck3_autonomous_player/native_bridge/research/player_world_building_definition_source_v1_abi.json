@@ -1,7 +1,7 @@
 {
   "contract": "g2-m4-player-world-building-definition-source-v1",
   "schema_version": 1,
-  "status": "static-ready-private-slot42-paused-live-pending",
+  "status": "r726-live-red-definition-identity-diagnostic-pending",
   "game_version": "1.19.0.6",
   "exe_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
   "read_only": true,
@@ -9,6 +9,17 @@
   "public_registration": false,
   "public_advertisement": false,
   "r722_source_report_sha256": "11892CBE9B6F70EC65F90BAF4360A9E286C82139741815DEFC22B1F30208DF1F",
+  "r726_world_report_sha256": "0A5C5545D1185692674715A2D5234620ACF4BD3CCDCC5109E0663D944D1735D7",
+  "r726_world_result": "same paused native revision 3, actor 29829, six personally held barony/Province rows; private executor ran once, but definition_identity failed before registry count or final legality could be reported; no game action/date change, CK3 reclaimed. Closed GUI count 0 does not imply zero legal buildings",
+  "definition_identity_diagnostic": {
+    "scope": "additive private read-only slot42 receipt only; a failure retains status unavailable and RED",
+    "registry_count": "copied bounded count if registry header was valid; null otherwise",
+    "failed_index": "first world-vector element whose identity validation failed; null outside definition_identity",
+    "stage": ["element_read", "element_null", "vtable_read", "vtable_mismatch", "building_type_id_read", "building_type_id_negative", "building_type_id_duplicate"],
+    "observed_vtable_rva": "module-relative integer only when readable inside exact EXE PE SizeOfImage 0x5C2D000; native pointer never serialized",
+    "observed_building_type_id": "copied signed scalar only if readable; may be negative on failure",
+    "interpretation": "diagnostic scalars identify the next exact-build repair; they are not legal candidates, cost, action receipt, or public capability"
+  },
   "r722_observed": {
     "actor_character_id": 29829,
     "native_revision": 3,
@@ -58,7 +69,7 @@
     {"name": "gui_final_predicate_call", "start_rva": "0x11A6308", "end_rva_exclusive": "0x11A6333", "sha256": "B3B8CD7E8E28C60A0D88EA7B431207E6C067A152D17260C93FA8E1D4C4D2E27E"},
     {"name": "gui_cost_callback", "start_rva": "0x11A6530", "end_rva_exclusive": "0x11A6559", "sha256": "60EA4BD2C73866AC4BBBB45DD76EB4FFAB1FECC207D423935D16B027984257BD"}
   ],
-  "next_live_gate": "in a distinct version-matched private-ON DLL and existing owner-controlled paused standard-feudal R722 source pair, run root query then existing slot42 step on one revision; prove world registry count, directly held barony/Province rows and bounded true stock player final-legality sample with 0 action/date change; report checks_truncated, cost false, public action/ad off",
+  "next_live_gate": "in a distinct version-matched private-ON DLL and existing owner-controlled paused standard-feudal paired source, run root query then existing slot42 step on one revision; first retain R726 definition_identity RED or obtain the diagnostic registry count/index/stage/module-relative vtable RVA/BuildingTypeID needed for one smallest exact repair; only after identity repair may a separate gate prove world registry count and bounded stock player final-legality samples, with 0 action/date change and cost/action/ad false",
   "next_cost_gate": "obtain stock exact player row/view GetCost or independent cost evaluator after a typed holding_view open path; verify native costs before any construction policy/action",
   "open_kaishek_mcp": "private additive receipt only; no current public consumer or adapter change. A public versioned read-only MCP query plus compatibility mapping is required before public registration"
 }

@@ -23,6 +23,30 @@ enum class PlayerWorldBuildingFailureV1 : std::uint8_t {
   frame_changed,
 };
 
+// Diagnostic scalars for an unavailable private source. Native object pointers
+// stay borrowed inside the paused callback and never enter a receipt.
+enum class PlayerWorldDefinitionIdentityStageV1 : std::uint8_t {
+  none = 0,
+  element_read,
+  element_null,
+  vtable_read,
+  vtable_mismatch,
+  building_type_id_read,
+  building_type_id_negative,
+  building_type_id_duplicate,
+};
+
+struct PlayerWorldDefinitionIdentityDiagnosticV1 final {
+  std::int32_t registry_count = -1;
+  std::int32_t failed_index = -1;
+  PlayerWorldDefinitionIdentityStageV1 stage =
+      PlayerWorldDefinitionIdentityStageV1::none;
+  bool has_observed_vtable_rva = false;
+  std::uint64_t observed_vtable_rva = 0;
+  bool has_observed_building_type_id = false;
+  std::int32_t observed_building_type_id = -1;
+};
+
 struct PlayerWorldBuildingLegalSampleV1 final {
   std::int32_t barony_title_id = -1;
   std::int32_t province_id = -1;
@@ -34,6 +58,7 @@ struct PlayerWorldBuildingLegalSampleV1 final {
 
 struct PlayerWorldBuildingSourceResultV1 final {
   PlayerWorldBuildingFailureV1 failure = PlayerWorldBuildingFailureV1::none;
+  PlayerWorldDefinitionIdentityDiagnosticV1 definition_identity_diagnostic{};
   bool source_available = false;
   bool native_final_legality_evaluated = false;
   bool checks_truncated = false;

@@ -174,6 +174,28 @@ std::string_view WorldFailureKey(WorldFailure failure) noexcept {
   return "registry_source";
 }
 
+std::string_view WorldDefinitionIdentityStageKey(
+    PlayerWorldDefinitionIdentityStageV1 stage) noexcept {
+  switch (stage) {
+    case PlayerWorldDefinitionIdentityStageV1::none: return "none";
+    case PlayerWorldDefinitionIdentityStageV1::element_read:
+      return "element_read";
+    case PlayerWorldDefinitionIdentityStageV1::element_null:
+      return "element_null";
+    case PlayerWorldDefinitionIdentityStageV1::vtable_read:
+      return "vtable_read";
+    case PlayerWorldDefinitionIdentityStageV1::vtable_mismatch:
+      return "vtable_mismatch";
+    case PlayerWorldDefinitionIdentityStageV1::building_type_id_read:
+      return "building_type_id_read";
+    case PlayerWorldDefinitionIdentityStageV1::building_type_id_negative:
+      return "building_type_id_negative";
+    case PlayerWorldDefinitionIdentityStageV1::building_type_id_duplicate:
+      return "building_type_id_duplicate";
+  }
+  return "none";
+}
+
 ProbeResult FrameChanged() noexcept {
   ProbeResult result{};
   result.failure = ProbeFailure::frame_changed;
@@ -403,7 +425,27 @@ std::string SerializePlayerConstructionViewProbePrivateV1(
   json += query.player_world_building_source_executed
               ? WorldFailureKey(world.failure)
               : "not_executed";
-  json += "\",\"snapshot_revision\":";
+  const auto& diagnostic = world.definition_identity_diagnostic;
+  const bool identity_failure =
+      query.player_world_building_source_executed &&
+      world.failure == WorldFailure::definition_identity;
+  json += "\",\"definition_identity_diagnostic\":{\"registry_count\":";
+  json += identity_failure && diagnostic.registry_count >= 0
+              ? std::to_string(diagnostic.registry_count) : "null";
+  json += ",\"failed_index\":";
+  json += identity_failure && diagnostic.failed_index >= 0
+              ? std::to_string(diagnostic.failed_index) : "null";
+  json += ",\"stage\":\"";
+  json += identity_failure
+              ? WorldDefinitionIdentityStageKey(diagnostic.stage) : "none";
+  json += "\",\"observed_vtable_rva\":";
+  json += identity_failure && diagnostic.has_observed_vtable_rva
+              ? std::to_string(diagnostic.observed_vtable_rva) : "null";
+  json += ",\"observed_building_type_id\":";
+  json += identity_failure && diagnostic.has_observed_building_type_id
+              ? std::to_string(diagnostic.observed_building_type_id) : "null";
+  json += "}";
+  json += ",\"snapshot_revision\":";
   json += world_available ? std::to_string(world.snapshot_revision) : "null";
   json += ",\"date_raw\":";
   json += world_available ? std::to_string(world.date_raw) : "null";
