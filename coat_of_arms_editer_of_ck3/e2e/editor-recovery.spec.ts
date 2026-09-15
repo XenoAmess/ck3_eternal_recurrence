@@ -5,6 +5,15 @@ const parentInput = (page: import('@playwright/test').Page) => (
 )
 
 test('groups edits into bounded undo/redo and restores one SHA-bound IndexedDB autosave', async ({ page }) => {
+  // Autosave is a standalone project-model contract. Keep this test independent
+  // from the exact-pack fit-index load so a constrained CI runner cannot starve
+  // the IndexedDB observation behind unrelated asset hashing. Exact-pack loading
+  // is covered by standalone-image-fit.spec.ts and service-worker-offline.spec.ts.
+  await page.route('**/asset-packs/ck3-1.19.0.6/manifest.json', (route) => route.fulfill({
+    status: 503,
+    contentType: 'text/plain',
+    body: 'asset pack intentionally unavailable for autosave isolation',
+  }))
   const nonGetRequests: { method: string, url: string }[] = []
   page.on('request', (request) => {
     if (request.method() !== 'GET') nonGetRequests.push({ method: request.method(), url: request.url() })
