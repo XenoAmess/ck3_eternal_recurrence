@@ -106,7 +106,7 @@ test('fits an uploaded image without CK3, MCP, or Java', async ({ page }) => {
   await expect(page.getByText(/target\.png/)).toBeVisible()
   await expect(page.getByRole('progressbar')).toHaveAttribute('aria-valuenow', '0')
   await page.getByRole('button', { name: '开始本地拟合' }).click()
-  await expect(page.getByText(/完成 · 从完整库评估 \d+ 个构图 · 选中 [2-6]\/6 层/)).toBeVisible({ timeout: 30_000 })
+  await expect(page.getByText(/完成 · .*从完整库评估 \d+ 个构图 · 选中 [2-6]\/6 层/)).toBeVisible({ timeout: 30_000 })
   await expect(page.getByRole('progressbar')).toHaveAttribute('aria-valuenow', '100')
   await expect(page.getByText(/完成 · 选中 [2-6] 层（进度表示当前搜索阶段）/)).toBeVisible()
   await expect(page.locator('.output-block pre')).toContainText('pattern_solid.dds')
@@ -145,7 +145,7 @@ test('runs against the locally generated exact-build asset pack', async ({ page 
     name: 'split-target.png', mimeType: 'image/png', buffer: Buffer.from(pngBase64, 'base64'),
   })
   await page.getByRole('button', { name: '开始本地拟合' }).click()
-  await expect(page.getByText(/完成 · 从完整库评估 \d+ 个构图/)).toBeVisible({ timeout: 90_000 })
+  await expect(page.getByText(/完成 · .*从完整库评估 \d+ 个构图/)).toBeVisible({ timeout: 90_000 })
   await expect(page.locator('.output-block pre')).toContainText('pattern =')
   expect(apiRequests).toEqual([])
 })

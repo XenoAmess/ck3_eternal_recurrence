@@ -116,6 +116,7 @@ const fitBusy = ref(false)
 const fitStatus = ref('请选择一张图片')
 const fitResult = ref<ImageFitResult>()
 const fitWebGlScore = ref<WebGlScore | null>(null)
+const fitPreviewUrl = ref('')
 const fitLayerBudget = ref(6)
 const fitProgressPercent = ref(0)
 const fitProgressLabel = ref('等待开始')
@@ -326,6 +327,7 @@ async function selectTargetImage(event: Event) {
     targetImage.value = await decodeFitImageFile(file)
     fitResult.value = undefined
     fitWebGlScore.value = null
+    fitPreviewUrl.value = ''
     fitStatus.value = `${file.name} · ${targetImage.value.originalWidth}×${targetImage.value.originalHeight} · ${(file.size / 1024).toFixed(1)} KiB · 只在浏览器内处理`
   } catch (error) {
     targetImage.value = undefined
@@ -368,6 +370,7 @@ async function fitTargetImage() {
   fitBusy.value = true
   fitResult.value = undefined
   fitWebGlScore.value = null
+  fitPreviewUrl.value = ''
   fitProgressPercent.value = 0
   fitProgressLabel.value = '正在准备完整素材索引'
   try {
@@ -402,7 +405,7 @@ async function fitTargetImage() {
       ])
     }
     if (runId !== fitRunId) return
-    fitStatus.value = `浏览器 Worker 正在对全部原生元素执行残差分解；图层搜索预算 ${layerBudget}…`
+    fitStatus.value = `浏览器 Worker 正在执行透明度加权、轮廓粗筛和双路径残差重建；最多 ${layerBudget} 层，只保留严格改善层…`
     const worker = new Worker(new URL('./domain/imageFitter.worker.ts', import.meta.url), { type: 'module' })
     fitWorker = worker
     const target = targetImage.value.image
@@ -417,8 +420,10 @@ async function fitTargetImage() {
         const phase = progress.phase === 'background'
           ? '背景匹配'
           : progress.phase === 'coarse'
-            ? `第 ${progress.layer}/${progress.layerBudget} 层 · 全库粗筛`
-            : `第 ${progress.layer}/${progress.layerBudget} 层 · 候选精筛`
+            ? `第 ${progress.layer}/${progress.layerBudget} 层 · 全库轮廓粗筛`
+            : progress.phase === 'refine'
+              ? `第 ${progress.layer}/${progress.layerBudget} 层 · 全角度与 0.1° 级精筛`
+              : `原生矩形块残差细化 · 最多 ${progress.layerBudget} 层`
         fitProgressLabel.value = `${phase} · ${progress.completed}/${progress.total} · 已评估 ${progress.evaluatedCandidates}`
         return
       }
@@ -474,6 +479,7 @@ async function fitTargetImage() {
         {},
         result.provenance.resolution,
       )
+      fitPreviewUrl.value = rendered ? renderedCoatOfArmsToDataUrl(rendered) : ''
       try {
         fitWebGlScore.value = rendered
           ? scoreWithWebGl2(normalizedTarget, { width: rendered.width, height: rendered.height, pixels: rendered.pixels })
@@ -481,7 +487,10 @@ async function fitTargetImage() {
       } catch {
         fitWebGlScore.value = null
       }
-      fitStatus.value = `完成 · 从完整库评估 ${result.provenance.evaluatedCandidates} 个构图 · 选中 ${result.provenance.selectedLayers}/${result.provenance.layerBudget} 层 · 停止：${fitTerminationLabels[result.provenance.terminationReason]} · CPU reference${fitWebGlScore.value ? ' + WebGL2 RGBA8 交叉评分' : ' · WebGL2 不可用'}`
+      const reconstructionMode = result.provenance.reconstructionMode === 'native-tile-paint'
+        ? '原生块多层重建'
+        : '语义元素搜索'
+      fitStatus.value = `完成 · ${reconstructionMode} · 从完整库评估 ${result.provenance.evaluatedCandidates} 个构图 · 选中 ${result.provenance.selectedLayers}/${result.provenance.layerBudget} 层 · 停止：${fitTerminationLabels[result.provenance.terminationReason]} · CPU reference${fitWebGlScore.value ? ' + WebGL2 RGBA8 交叉评分' : ' · WebGL2 不可用'}`
       ElMessage.success('多层原生元素构图已载入结构化编辑器，可继续调整并复制代码')
     }
     worker.onerror = (event) => {
@@ -510,10 +519,12 @@ async function fitTargetImage() {
       },
     }))
     worker.postMessage([workerImage, workerCandidates(patternCandidates), workerCandidates(emblemCandidates), {
-      resolution: 40,
+      resolution: layerBudget >= 128 ? 96 : 56,
       maxPatterns: patterns.length,
       maxEmblemCandidates: emblemCandidates.length,
       maxLayers: layerBudget,
+      refinementCandidates: 48,
+      beamWidth: 2,
     }])
   } catch (error) {
     if (runId !== fitRunId) return
@@ -950,10 +961,10 @@ importSource()
           <p>{{ assetPackStatus }}</p>
           <el-button :loading="assetPackBusy" @click="loadStandaloneAssetPack()">重新载入静态素材包</el-button>
           <div class="fit-budget">
-            <span>图层搜索预算</span>
+            <span>最大改善图层数</span>
             <el-input-number v-model="fitLayerBudget" :min="1" :step="1" />
           </div>
-          <small class="fit-budget-note">不设产品层数上限，可输入 10000；残差无继续改善、改善低于阈值或用户取消时会提前停止。</small>
+          <small class="fit-budget-note">例如 1024 表示最多搜索并保留 1024 层，不保证输出恰好 1024 层。每一层必须严格降低实际渲染损失；无改善或用户取消时提前停止。输入支持 10000 及更大安全整数。</small>
           <div class="fit-actions">
             <el-button type="primary" :loading="fitBusy" :disabled="!targetImage || !loadedAssetPack" @click="fitTargetImage">
               开始本地拟合
@@ -973,6 +984,10 @@ importSource()
             <small>{{ fitProgressLabel }}（进度表示当前搜索阶段）</small>
           </div>
           <template v-if="fitResult">
+            <div v-if="fitPreviewUrl" class="fit-result-image">
+              <span>拟合平面（不叠加盾面材质）</span>
+              <img :src="fitPreviewUrl" alt="图片拟合结果预览">
+            </div>
             <dl>
               <div><dt>总损失</dt><dd>{{ fitResult.metrics.totalLoss.toFixed(5) }}</dd></div>
               <div><dt>颜色</dt><dd>{{ fitResult.metrics.colorLoss.toFixed(5) }}</dd></div>
@@ -981,6 +996,7 @@ importSource()
               <div><dt>实际图层</dt><dd>{{ fitResult.provenance.selectedLayers }} / {{ fitResult.provenance.layerBudget }}</dd></div>
               <div><dt>相对改善</dt><dd>{{ (fitResult.metrics.relativeImprovement * 100).toFixed(2) }}%</dd></div>
               <div><dt>GPU 交叉分</dt><dd>{{ fitWebGlScore ? fitWebGlScore.meanSquaredRgbError.toFixed(5) : '不可用' }}</dd></div>
+              <div><dt>候选路径</dt><dd>{{ fitResult.provenance.candidateLosses.map((item) => `${item.mode === 'native-tile-paint' ? '原生块' : '语义'} ${item.layers}层=${item.totalLoss.toFixed(4)}`).join('；') }}</dd></div>
             </dl>
             <small>分数只用于同一算法和目标之间比较，不代表 CK3 像素一致率。结果已进入下方结构化编辑器。</small>
           </template>

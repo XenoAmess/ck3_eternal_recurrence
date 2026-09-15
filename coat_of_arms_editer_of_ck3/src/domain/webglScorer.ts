@@ -41,8 +41,9 @@ export function scoreWithWebGl2(target: FitImage, candidate: FitImage): WebGlSco
     in vec2 uv;
     out vec4 color;
     void main() {
-      vec3 delta = texture(targetTexture, uv).rgb - texture(candidateTexture, uv).rgb;
-      color = vec4(delta * delta, 1.);
+      vec4 target = texture(targetTexture, uv);
+      vec3 delta = target.rgb - texture(candidateTexture, uv).rgb;
+      color = vec4(delta * delta * target.a, target.a);
     }
   `)
   const program = gl.createProgram()
@@ -76,12 +77,13 @@ export function scoreWithWebGl2(target: FitImage, candidate: FitImage): WebGlSco
   const result = new Uint8Array(target.width * target.height * 4)
   gl.readPixels(0, 0, target.width, target.height, gl.RGBA, gl.UNSIGNED_BYTE, result)
   let sum = 0
+  let weight = 0
   for (let offset = 0; offset < result.length; offset += 4) {
     sum += result[offset] + result[offset + 1] + result[offset + 2]
+    weight += result[offset + 3]
   }
   gl.deleteProgram(program)
   gl.deleteShader(vertex)
   gl.deleteShader(fragment)
-  return { backend: 'webgl2-rgba8', meanSquaredRgbError: sum / (target.width * target.height * 3 * 255) }
+  return { backend: 'webgl2-rgba8', meanSquaredRgbError: weight > 0 ? sum / (weight * 3) : 0 }
 }
-

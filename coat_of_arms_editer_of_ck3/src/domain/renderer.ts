@@ -185,9 +185,17 @@ function drawInstance(
   namedColors: NamedColorMap,
 ) {
   const colors = resolvedColors(emblem.colors, namedColors)
-  for (let y = 0; y < height; y += 1) {
+  const radians = instance.rotation * Math.PI / 180
+  const rotatedSpan = Math.abs(Math.cos(radians)) + Math.abs(Math.sin(radians))
+  const halfWidth = Math.abs(instance.scale[0]) * rotatedSpan / 2
+  const halfHeight = Math.abs(instance.scale[1]) * rotatedSpan / 2
+  const minimumX = Math.max(0, Math.floor((instance.position[0] - halfWidth) * width - 1))
+  const maximumX = Math.min(width, Math.ceil((instance.position[0] + halfWidth) * width + 1))
+  const minimumY = Math.max(0, Math.floor((instance.position[1] - halfHeight) * height - 1))
+  const maximumY = Math.min(height, Math.ceil((instance.position[1] + halfHeight) * height + 1))
+  for (let y = minimumY; y < maximumY; y += 1) {
     const v = (y + 0.5) / height
-    for (let x = 0; x < width; x += 1) {
+    for (let x = minimumX; x < maximumX; x += 1) {
       const u = (x + 0.5) / width
       const local = instanceUv(u, v, instance)
       if (!local) continue
@@ -220,6 +228,35 @@ function drawInstance(
       }
     }
   }
+}
+
+export function renderColoredEmblemLayer(
+  base: RenderedCoatOfArms,
+  pattern: DecodedDds,
+  surfaceMask: DecodedDds | undefined,
+  emblemTexture: DecodedDds,
+  emblem: ColoredEmblem,
+  instance: CoatOfArmsInstance,
+  namedColors: NamedColorMap,
+): RenderedCoatOfArms {
+  if (
+    base.width < 1
+    || base.height < 1
+    || base.pixels.length !== base.width * base.height * 4
+  ) throw new Error('增量纹章渲染的基础画布不合法')
+  const pixels = new Uint8ClampedArray(base.pixels)
+  drawInstance(
+    pixels,
+    base.width,
+    base.height,
+    pattern,
+    surfaceMask,
+    emblemTexture,
+    emblem,
+    instance,
+    namedColors,
+  )
+  return { width: base.width, height: base.height, pixels }
 }
 
 export function renderCoatOfArms(

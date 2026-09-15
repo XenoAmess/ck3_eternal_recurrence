@@ -9,11 +9,14 @@ CK3，不依赖 MCP、Quarkus 或 Java；它只生成原版“从剪贴板粘贴
 - 解析 `name = { ... }`、注释、紧凑/多行排版和 `rgb` / `hsv` typed block；拒绝 wrapper 外杂项及未声明、循环或重复的静态 `@变量`；
 - 通过浏览器 Clipboard API 一键读取剪贴板文本并立即进入同一解析/诊断流程；浏览器权限或安全上下文不满足时明确报错；
 - 在浏览器内解码用户选择的 PNG/JPEG/WebP，以可取消 Web Worker 对完整的 42 pattern / 1,577 个可粘贴 registered emblem 索引执行
-  多轮残差分解；每轮选择一个原生 DDS，拟合颜色、位置、缩放、旋转和翻转后追加图层，默认最多堆叠 6 层；图片不上传，
-  CPU reference 决定候选，WebGL2 RGBA8 对最终多层候选做真实交叉评分；Worker 按背景匹配、全库粗筛和候选精筛回传真实计数，
-  页面用当前阶段进度条显示完成量与累计候选数；
-- 图层搜索预算默认 6，UI 不设固定产品上限并回归验证可输入 10000；预算不是承诺产出层数，残差不再改善、单层改善低于阈值
-  或用户取消时会提前停止；
+  双路径重建：小预算做透明轮廓粗筛、background/layer beam 与连续 transform 精化；大预算从纯色背景重复堆叠原生
+  `ce_block_02.dds`，以自适应四叉树叶片拼出目标。图片不上传；
+- DDS 透明留白、内容重心和旋转后包围盒进入 position/X/Y scale 求解；旋转由整圆种子细化到 1°，再按
+  `0.5° → 0.25° → 0.125°` 二分到 0.1° 量级，不再锁死 45°；
+- 图层搜索预算默认 6，UI 不设固定产品上限并回归验证 1024 与 10000；预算是最大值而非承诺产出层数。每层必须严格降低
+  实际渲染损失，`layerLosses` 保存递减证据；没有改善或用户取消时提前停止，serializer 完整输出全部接受层；
+- CPU reference 决定候选，WebGL2 RGBA8 对最终候选做 alpha-weighted 交叉评分；Worker 按背景、轮廓粗筛、连续精筛和原生块重建
+  回传真实计数，页面显示阶段进度、无盾面材质拟合平面和 shader/surface-mask 预览；
 - 使用 `ck3-coa-web-asset-pack-v1` 静态素材包：manifest 与每个 DDS 都经 SHA-256、字节数、尺寸和格式绑定，正式运行时不读取
   用户的游戏目录；当前 1.19.0.6 pack 覆盖原版 CoA 目录 1,630/1,630 个 DDS，并将 8 个未注册辅助文件明确排除在自动拟合外；
 - 编辑 pattern、三通道颜色、重复 `colored_emblem`、mask 和重复 instance；
@@ -123,7 +126,8 @@ mvn -f backend/pom.xml package
 java -jar backend/target/quarkus-app/quarkus-run.jar
 ```
 
-当前 Alpha v2 基线：Vitest 覆盖多层残差重建与完整 fit-index 合同、Playwright 独立浏览器 E2E `2/2`、Vite production build、静态 pack verifier、
+当前 Alpha v3 基线：Vitest 覆盖多层残差重建、透明输入、透明 DDS 留白、非等比/0.1° 旋转、严格递减原生块路径与完整 fit-index
+合同；Playwright 除合成/exact-pack E2E 外固定运行用户 hunter 图的 1024 上限质量门禁；Vite production build、静态 pack verifier、
 Quarkus REST `18/18` 与 Maven test 均 GREEN。E2E 同时覆盖合成 pack 和本机生成的 exact 1.19.0.6 pack；
 两者都进入 Pages Actions 门禁；缺少已跟踪的 exact-build pack 会直接使部署失败。
 “打开原生家徽页”和“提交回角色设计器”都只调用固定、零参数的王朝家徽 MCP，并要求独立 route 后置条件；它们不会接受浏览器传入的控件名、路径、指针或桌面输入。提交动作已在 exact CK3 `1.19.0.6` 完成受管实机往返：Finish 前后重开家徽页的原生 Copy 均为 330 bytes，SHA-256 均为 `4769FD42836E68FA35DC07FBA23BEABCC589E5A33087314F1D6287E5C53C305A`；该结论仍不覆盖完成整个角色创建或战役/存档持久化。

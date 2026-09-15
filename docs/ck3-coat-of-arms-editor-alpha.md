@@ -2,7 +2,7 @@
 
 ## 状态
 
-**Alpha v2 GREEN（source + 完整 exact-build 静态 pack + GitHub Pages workflow）**。
+**Alpha v3 GREEN（source + 完整 exact-build 静态 pack + GitHub Pages workflow）**。
 
 这里的 Alpha 是独立静态 Web 应用：没有安装或运行 CK3、没有 MCP、没有 Quarkus/Java 时，用户仍可上传图片、使用原生
 DDS 多层拟合、预览、继续结构化编辑并复制可粘贴的 CK3 家徽代码。CK3 原生桥只保留为仓库开发研究夹具，不属于产品运行时。
@@ -24,7 +24,7 @@ Paradox 素材的所有权，也不自动授权其他 build 或仓库。
 | 原版 CoA DDS 树完整收录 | GREEN | 1,630/1,630 物理源文件集合闭合 |
 | 静态包 schema、hash、路径、注册角色和 fit-index 门禁 | GREEN | asset-pack unit tests；Python standalone verifier |
 | 可取消浏览器搜索 | GREEN | 独立 Worker；读取阶段 run invalidation；搜索阶段 terminate |
-| 确定性多层图片拟合 | GREEN | 双分离目标 fixture 证明同一 DDS 可重复选择并堆叠两层以上 |
+| 确定性多层图片拟合 | GREEN | 双分离目标、透明留白/非等比旋转和原生块严格递减 fixture；真实 hunter 图 1024 上限回归 |
 | WebGL2 评估 | GREEN | Chromium headless E2E 得到数值 RGBA8 MSE；无 WebGL2 时明确 CPU fallback |
 | 拟合结果回填编辑器并输出代码 | GREEN | 合成 pack E2E 与 exact-build 完整 pack E2E |
 | 默认正式界面不显示 CK3/MCP 控件 | GREEN | Playwright 断言；只有显式开发开关可展示研究夹具 |
@@ -55,22 +55,34 @@ Paradox 素材的所有权，也不自动授权其他 build 或仓库。
 只收录、不冒充可执行资源。完整盘点见
 [`ck3-coat-of-arms-asset-inventory.md`](ck3-coat-of-arms-asset-inventory.md)。
 
-## 图片拟合 v2 合同
+## 图片拟合 v3 合同
 
-Alpha 搜索不是“从库里选一张最像图片的徽记”，而是受 CK3 原生构图模型约束的多层 matching pursuit：
+Alpha 搜索不是“从库里选一张最像图片的徽记”，而是受 CK3 原生构图模型约束的两条确定性候选路径：
 
-1. 将目标图在浏览器内 contain 到 96×96，再复合透明像素并缩至 40×40 搜索图；
-2. 从目标得到确定性的三色量化 palette；
-3. 遍历全部 42 个注册 pattern 与 palette 排列，使用正向 renderer 选择初始背景；
-4. 计算目标相对当前构图的逐像素残差，以最大连通残差区域求下一层的重心和尺度；
-5. 对 1,577 个可粘贴注册 emblem 全库粗评分，再对低损失 shortlist 搜索残差颜色排列、残差/画布中心、三个尺度、八个
-   45° 旋转和水平 flip；
-6. 将本轮最佳 DDS 作为新的 `colored_emblem` 块追加，然后重新计算残差；同一 DDS 可在不同位置、颜色和变换下重复入选；
-7. 每层相对改善低于 0.5%、达到用户图层预算或没有改善候选时停止；默认预算为 6，UI 不设固定产品上限，并回归验证可输入和传递 10000；
-8. 以 78% RGB MSE + 22% luminance edge loss 排序，并用稳定字符串 key 打破平局；
-9. CPU reference 是选择权威；WebGL2 对最终多层候选执行 RGBA8 squared-error shader 交叉评分；
-10. fit index 只承担全库搜索；结果确定后重新校验并下载入选元素的完整 DDS，供编辑和预览；
-11. Worker 按背景匹配、当前层全库粗筛和候选精筛回传真实完成量；页面进度条显示当前阶段百分比、完成数和累计评估候选数。
+1. 目标 RGBA 使用 alpha-aware 双线性缩放；透明像素不再被复合成白色，也不参与颜色/边缘损失。小预算使用 56×56，大于等于
+   128 层的重建预算使用 96×96；
+2. 从不透明目标得到确定性的三色 palette，遍历全部 42 个注册 pattern 与排列。背景 beam 除当前最低损失候选外，强制保留
+   最佳 `pattern_solid.dds`，防止复杂 pattern 的短期优势堵死后续重建；
+3. 语义路径从当前残差的最大连通区域计算轮廓、重心和非等比尺度。1,577 个可生成 emblem 先按 18×18 透明内容轮廓、30°
+   旋转和 flip 粗筛，再用真实渲染选出 shortlist；
+4. DDS 自带透明留白不再算作图案尺寸：每项记录实际内容边界和重心，求解旋转后的内容包围盒，补偿 position 与 X/Y scale；
+5. 精筛覆盖整圆旋转种子，并对 position、X/Y scale、颜色、flip 做多轮 coordinate descent；角度先精扫到 1°，再按
+   `0.5° → 0.25° → 0.125°` 二分，最终残余角误差尺度小于 0.1°。导出角度不是 45° 离散值；
+6. 前六层保持背景路径多样性的 beam；每个追加层都必须令同一正向 renderer 的总损失严格下降，`provenance.layerLosses` 保存
+   背景及每次接受后的完整递减序列；
+7. 大预算另走原生块重建：从纯色背景开始重复使用原生 `ce_block_02.dds`，将目标自适应四叉树分区，每个叶片分别拟合颜色、
+   position 和非等比 scale。它通过堆叠原生 DDS 逐块拼图，不从库中只选一张“最像的图”；
+8. 用户值是最大改善图层数，不是目标层数。默认 6；UI 可输入 1024、10000 或更大安全整数。默认最小相对改善阈值为零，但候选
+   仍须满足严格绝对损失下降；没有改善便停止，serializer 对所有已接受层完整输出；
+9. 损失为 62% alpha-weighted RGB MSE + 38% alpha-weighted luminance edge loss，稳定 key 打破平局；WebGL2 最终评分同样忽略
+   透明目标像素；
+10. CPU reference 是选择权威；WebGL2 对最终多层候选执行 RGBA8 交叉评分。页面分别展示无盾面材质的拟合平面和带
+    surface-mask 的 shader 预览；
+11. fit index 承担全库搜索；结果确定后重新校验并下载入选完整 DDS。Worker 对背景、轮廓粗筛、连续精筛和原生块阶段回传真实
+    完成量，页面进度条显示当前阶段百分比和累计候选数。
+
+真实用户图门禁见 [`coat-of-arms-fit-artifacts/xenoamess-hunter-v3/README.md`](coat-of-arms-fit-artifacts/xenoamess-hunter-v3/README.md)：
+1024 上限实际保留 1,000 个严格改善层，输出 1,000 个 `colored_emblem` 块，总损失 0.02590，相对背景改善 86.77%。
 
 输出只使用实机语法矩阵允许的字段，并继续经过 validator 与 serializer。128 KiB 只作为当前开发期 MCP probe/export 的传输合同：
 网页对更大代码显示证据说明和警告但仍允许复制；开发期 MCP 检测/应用按钮会禁用。它不是已证明的 CK3 原生粘贴上限。
@@ -91,10 +103,10 @@ Pages checkout 必须含已跟踪的 exact-build 完整包；verifier 或 exact-
 
 ## Alpha 已知限制
 
-- v2 是逐层贪心残差分解，不是全局最优 beam search；早期错误图层可能影响后续选择。
+- v3 仍不是组合全局最优；小预算语义路径只保留宽度有限的 background/layer beam，大预算原生块路径是确定性四叉树近似。
 - 每个自动图层当前生成一个 instance；同一 DDS 的重复使用表现为多个可独立编辑的 `colored_emblem` 块。
 - CPU 仍承担全库搜索，WebGL2 当前只交叉评分最终候选；WebGL2 atlas/reduction 批处理属于 Beta。
-- 照片、文字、渐变和高频细节通常质量较差；产品明确称为“原生元素近似重建”。
+- 照片、文字、渐变和高频细节通常质量较差；原生块重建在曲线边缘会出现与 96×96 搜索平面相应的台阶，产品明确称为“原生元素近似重建”。
 - 浏览器 renderer 根据随附 shader 合同实现，但 FallbackColor、GPU 采样和色彩空间尚无原生 framebuffer 逐像素闭环。
 - “完整”只指 CK3 1.19.0.6 基础游戏 `game/gfx/coat_of_arms/**/*.dds`；不包含玩家模组或其他 build。
 - 1 个含高位文件名的注册资源和 8 个未注册辅助 DDS 不参与拟合；磁盘存在或 UI 可选不能替代剪贴板 reader 证据。
@@ -103,8 +115,8 @@ Pages checkout 必须含已跟踪的 exact-build 完整包；verifier 或 exact-
 ## Beta 优先级
 
 1. WebGL2 texture-array/atlas 批量 pattern/emblem 渲染和 reduction；
-2. beam search、连续 transform 局部细化、同块多 instance 合并与多个 Pareto 候选；
-3. 为当前 RGBA fit index 增加轮廓、方向和通道能量特征，进一步减少精渲染 shortlist；
+2. 更宽的 beam、原生圆/矩形混合画笔、曲线感知分区、同块多 instance 合并与多个 Pareto 候选；
+3. 将当前运行时轮廓、透明边界和通道能量特征预计算进 fit index，进一步减少精渲染 shortlist；
 4. 输入前景/背景、对称、指定元素、颜色锁和复杂度上限控制；
 5. 完整原版包的分片、Service Worker 缓存和增量 build 更新策略；
 6. 前端按路由/面板拆包与移动端布局。
