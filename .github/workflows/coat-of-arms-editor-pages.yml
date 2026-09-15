@@ -74,6 +74,9 @@ jobs:
       - name: Run standalone browser acceptance
         env:
           COA_E2E_USE_PREVIEW: "true"
+          # GitHub-hosted CPU performance is recorded but is not the frozen
+          # maintainer-workstation performance reference.
+          COA_E2E_PERFORMANCE_GATE: "report-only"
         run: |
           pnpm exec playwright test e2e/fit-budget-stress.spec.ts
           pnpm exec playwright test e2e/standalone-image-fit.spec.ts

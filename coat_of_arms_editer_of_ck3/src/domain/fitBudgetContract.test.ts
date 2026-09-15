@@ -71,6 +71,7 @@ describe('real 10,000 fit-budget contract', () => {
     expect(contract.restartProbeBudget).toBeGreaterThanOrEqual(1)
     expect(contract.restartProbeBudget).toBeLessThan(contract.budgets[0])
     expect(contract.maximumRestartProgressLatencyMs).toBeLessThan(contract.maximumDurationMs[128])
+    expect(contract.reportOnlyMaximumDurationMs).toBeGreaterThanOrEqual(contract.maximumDurationMs[10000])
     expect(durationMs).toBeLessThan(contract.maximumDurationMs[10000])
     console.info(JSON.stringify({
       contract: contract.contract,

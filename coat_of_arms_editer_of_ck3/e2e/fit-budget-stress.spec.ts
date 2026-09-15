@@ -42,6 +42,7 @@ function surfaceDds(): Buffer {
 test('runs real 128/1024/10000 browser fits without clamping and cancels a paint phase', async ({ page }) => {
   test.setTimeout(300_000)
   const contract = FIT_BUDGET_STRESS_CONTRACT
+  const performanceGateEnforced = process.env.COA_E2E_PERFORMANCE_GATE !== 'report-only'
   const nonGetRequests: { method: string, url: string }[] = []
   page.on('request', (request) => {
     if (request.method() !== 'GET') nonGetRequests.push({ method: request.method(), url: request.url() })
@@ -120,10 +121,14 @@ test('runs real 128/1024/10000 browser fits without clamping and cancels a paint
     const started = Date.now()
     await page.getByRole('button', { name: '开始本地拟合' }).click()
     await expect(report.locator('p')).toContainText(`/${budget} 层`, {
-      timeout: contract.maximumDurationMs[budget],
+      timeout: performanceGateEnforced
+        ? contract.maximumDurationMs[budget]
+        : contract.reportOnlyMaximumDurationMs,
     })
     const durationMs = Date.now() - started
-    expect(durationMs).toBeLessThan(contract.maximumDurationMs[budget])
+    if (performanceGateEnforced) {
+      expect(durationMs).toBeLessThan(contract.maximumDurationMs[budget])
+    }
     const rawEvidence = await report.getAttribute('data-fit-evidence')
     expect(rawEvidence).toBeTruthy()
     const evidence = JSON.parse(rawEvidence!) as {
@@ -146,7 +151,12 @@ test('runs real 128/1024/10000 browser fits without clamping and cancels a paint
     expect(evidence.provenance.evaluatedCandidates).toBeGreaterThan(evidence.provenance.drawnInstances)
     const observation = { budget, durationMs, ...evidence.provenance }
     observations.push(observation)
-    console.info(JSON.stringify({ contract: contract.contract, observation }))
+    console.info(JSON.stringify({
+      contract: contract.contract,
+      performanceReference: contract.performanceReference,
+      performanceGateEnforced,
+      observation,
+    }))
   }
 
   const finalEvidence = observations.at(-1)! as {
@@ -204,6 +214,8 @@ test('runs real 128/1024/10000 browser fits without clamping and cancels a paint
   expect(nonGetRequests).toEqual([])
   console.info(JSON.stringify({
     contract: contract.contract,
+    performanceReference: contract.performanceReference,
+    performanceGateEnforced,
     observations,
     cancellationLatencyMs,
     restartProgressLatencyMs,
