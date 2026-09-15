@@ -840,3 +840,46 @@ worker 重放 evaluator。只有 locator 无法稳定闭合时，才考虑在 ma
   原因；`.0030` 与 `.8001` 都选择 native1，`.1007` 明确标为 sole route。planner 输出 `event_campaign_utility`，但
   `cross_event_numeric_score=null`、`semantic_optimal=false`，不伪造跨压力/金币/trait 的统一标尺。详见
   [event-campaign-utility.md](event-campaign-utility.md)。
+
+### R708 自然出现的 `chancellor_task.1104`（狭义续行）
+
+- [exact-build source-reviewed] CK3 `1.19.0.6`、EXE SHA-256
+  `2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86`：
+  `common/council_tasks/00_chancellor_tasks.txt:150`（SHA-256
+  `503E04F591067DE14E8EC50D435717100BFC0BD678A032E7BF4052CB4FBF9A84`）的
+  `task_foreign_affairs.monthly_on_action` 调用
+  `common/on_action/councillor_on_actions.txt:245-263`（SHA-256
+  `5629D03928014BAFDAB3E42576D20BBE13F2A76F0BECC0219B729515010EA95E`）。
+  该月度随机副作用选择隐藏的 `chancellor_task.1103`；其邻国资格/差异判定与 immediate 保存的
+  `neighbor` 作用域，在 `events/councillor_task_events/chancellor_task_events.txt:614-727`
+  （SHA-256 `EAF95612E4AEC6BF0CEDBC1ACA1C66C8087DD280BC42A60296F824437A5A46EB`）
+  满足信件分支时实际调用 `.1104`。这是对 exact 源码的人工调用边复核，不是单靠 token 命中的推断。
+- [exact-build source-reviewed] 同文件 `:765-782` 的 `.1104` 只有一个 authored option；
+  native index `0` / 命令 option `1` 在 `scope:neighbor` 上添加面向 root 的
+  `chancellor_task_neighbor_increased_opinion`，持续 `chancellor_task_modifier_duration=1825` 日。
+  修正定义于 `common/opinion_modifiers/00_council_task_opinions.txt:21-24`
+  （SHA-256 `E69C240C57D35ED5B87E7AE4DC7176FBB105D5E84863E7BCC4C473C49E5561EA`），
+  authored 值 `opinion=30`、修正自身按十年衰减；持续时间值来自
+  `common/script_values/00_council_values.txt:8`（SHA-256
+  `78B9AD6567B28800E1DA2A3DE020AD43F27434FB5C7BF5E09ABFB211267E10C4`）。
+- [production-live loop, bounded claim] R708 正式 `native-auto-run` 在标准封建、单 mod、
+  禁用 DLC 的战争 campaign 日期 `53187648` 自然遇到 instance `7`。同一 paused frame 的
+  `current-event-window-context-v1` 完整匹配 root/五个已保存角色作用域、唯一窗口和唯一
+  `shown=true && enabled=true` 的 option；共享原版 registry 的推荐 `recommended`，
+  所有投影检查为 true。正式策略提交一次 typed `select-event-option-1`；
+  独立 native paused frame 验证 `native:31` 旧 instance `7` → `native:32` 无 active event，
+  游戏存档/driver-state 成对 checkpoint。R708 报告 SHA-256
+  `4A64EF4FE980DB1F681FC059F4DF0F7F78FA9C87338F608058E6F7B3E5C8B011`。
+  此选择仅证明强制信件合法续行，`semantic_optimal=false`；同帧玩家压力 `0→0`、
+  金币 raw `49716545→49716545` 不能代表邻国好感效果。
+- [evidence pending] 现有 material comparator 对 `.1104` 没有 opinion metric，
+  registry 的 `choice_effect_profile=null`，因此邻国好感的实际增量/修正仍未被实机读到。
+  后续新进程 cold restore 与下一正式 turn 若消费“无 active event”并继续同一目标，
+  只能关闭事件生命周期、续行与不重复选择，不能代替好感物质结果，也不满足
+  G2-M2 指定的自然 `tgp_travel_events.0030`、`death_management.1007`。
+- [reusable query boundary] 已有只读 MCP
+  `ck3_query_vanilla_event_source_provenance_v1(key, build="1.19.0.6")`
+  返回 version/EXE、定义位置及同文件 caller **词法候选**；其中
+  `caller_candidates_are_lexical_only=true`，不能由接口自动宣称调用边已证实。
+  此处人工复核的月度 on_action → `.1103` → `.1104` 调用链与上述哈希，作为该接口可复用的
+  exact-build 分析账本；不改变 MCP schema、注册或能力广告。
