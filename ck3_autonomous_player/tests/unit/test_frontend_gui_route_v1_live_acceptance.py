@@ -102,6 +102,35 @@ class FrontendGuiRouteLiveAcceptanceContractTests(unittest.TestCase):
             '"ck3_compare_frontend_coat_of_arms_framebuffer_v1"', source
         )
         self.assertIn('"--native-crop-output"', source)
+        self.assertIn('"--picture-corpus"', source)
+        self.assertIn('"--picture-crop-dir"', source)
+
+    def test_picture_corpus_loader_requires_all_seven_ordered_cases(self) -> None:
+        module = _load_runner_module()
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            for number in range(1, 8):
+                case = root / f"picture-{number:02d}"
+                case.mkdir()
+                (case / "coat_of_arms.txt").write_text(
+                    "coa = {}\n", encoding="ascii"
+                )
+                (case / "canonical-preview-230.png").write_bytes(
+                    f"png-{number}".encode("ascii")
+                )
+
+            cases = module._load_picture_corpus(root)
+
+        self.assertEqual(
+            [case["id"] for case in cases],
+            [f"picture-{number:02d}" for number in range(1, 8)],
+        )
+        self.assertTrue(
+            all(
+                case["source_receipt"]["structure"]["instances"] == 0
+                for case in cases
+            )
+        )
 
     def test_framebuffer_gate_and_crop_receipt_are_hash_bound(self) -> None:
         module = _load_runner_module()

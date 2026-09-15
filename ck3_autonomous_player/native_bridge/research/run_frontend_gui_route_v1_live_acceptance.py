@@ -216,6 +216,19 @@ def _parser() -> argparse.ArgumentParser:
         type=Path,
         help="write the verified native framebuffer crop as an append-only PNG",
     )
+    parser.add_argument(
+        "--picture-corpus",
+        type=Path,
+        help=(
+            "apply every picture-* case in one browser-evidence directory and "
+            "compare each canonical preview in the same managed CK3 session"
+        ),
+    )
+    parser.add_argument(
+        "--picture-crop-dir",
+        type=Path,
+        help="write one verified native crop per --picture-corpus case",
+    )
     parser.add_argument("--output", type=Path, required=True)
     return parser
 
@@ -611,6 +624,39 @@ def _load_reference_preview(path: Path) -> tuple[str, dict[str, object]]:
         "png_bytes": len(raw),
         "png_sha256": digest,
     }
+
+
+def _load_picture_corpus(path: Path) -> list[dict[str, object]]:
+    resolved = path.resolve()
+    if not resolved.is_dir():
+        raise RuntimeError(f"picture corpus directory is missing: {resolved}")
+    case_directories = sorted(
+        child
+        for child in resolved.iterdir()
+        if child.is_dir() and re.fullmatch(r"picture-[0-9]{2}", child.name)
+    )
+    if len(case_directories) != 7:
+        raise RuntimeError(
+            f"picture corpus must contain exactly seven cases, found {len(case_directories)}"
+        )
+    cases: list[dict[str, object]] = []
+    for directory in case_directories:
+        source, source_receipt = _load_large_source(
+            directory / "coat_of_arms.txt"
+        )
+        preview, preview_receipt = _load_reference_preview(
+            directory / "canonical-preview-230.png"
+        )
+        cases.append(
+            {
+                "id": directory.name,
+                "source": source,
+                "source_receipt": source_receipt,
+                "preview_base64": preview,
+                "preview_receipt": preview_receipt,
+            }
+        )
+    return cases
 
 
 def _framebuffer_gate(call: dict[str, object]) -> dict[str, object]:
@@ -1289,6 +1335,66 @@ async def _collect_large_source_roundtrip(
     }
 
 
+async def _collect_picture_corpus(
+    client: Client,
+    corpus: list[dict[str, object]],
+    record: Any,
+) -> dict[str, object]:
+    results: list[dict[str, object]] = []
+    for value in corpus:
+        identifier = value["id"]
+        source = value["source"]
+        source_receipt = value["source_receipt"]
+        preview_base64 = value["preview_base64"]
+        preview_receipt = value["preview_receipt"]
+        assert isinstance(identifier, str)
+        assert isinstance(source, str)
+        assert isinstance(source_receipt, dict)
+        assert isinstance(preview_base64, str)
+        assert isinstance(preview_receipt, dict)
+        roundtrip = await _collect_large_source_roundtrip(
+            client, source, source_receipt, record
+        )
+        if roundtrip.get("ok") is True:
+            await asyncio.sleep(0.75)
+            framebuffer_call = await _call(
+                client,
+                COMPARE_COAT_OF_ARMS_FRAMEBUFFER_TOOL,
+                {
+                    "reference_png_base64": preview_base64,
+                    "reference_png_sha256": preview_receipt["png_sha256"],
+                },
+            )
+            record(framebuffer_call)
+            framebuffer = _framebuffer_gate(framebuffer_call)
+        else:
+            framebuffer = {
+                "ok": False,
+                "error": "large-source round-trip failed before framebuffer comparison",
+            }
+        results.append(
+            {
+                "id": identifier,
+                "source": source_receipt,
+                "reference": preview_receipt,
+                "roundtrip": roundtrip,
+                "framebuffer": framebuffer,
+                "ok": bool(
+                    roundtrip.get("ok") is True
+                    and framebuffer.get("ok") is True
+                ),
+            }
+        )
+    return {
+        "schema": "ck3-coat-of-arms-picture-corpus-live-v1",
+        "case_count": len(results),
+        "passed": sum(result["ok"] is True for result in results),
+        "failed": sum(result["ok"] is not True for result in results),
+        "cases": results,
+        "ok": bool(results) and all(result["ok"] is True for result in results),
+    }
+
+
 def _summarize_pattern_grid(inspection: object) -> dict[str, object]:
     """Summarize only the bounded subtree below vanilla patterns_scrollbox."""
 
@@ -1425,6 +1531,7 @@ async def _mcp_sequence(
     commit_roundtrip: bool = False,
     large_source: tuple[str, dict[str, object]] | None = None,
     reference_preview: tuple[str, dict[str, object]] | None = None,
+    picture_corpus: list[dict[str, object]] | None = None,
     bookmarks_read_only: bool = False,
     bookmarks_model_private: bool = False,
 ) -> dict[str, object]:
@@ -1496,12 +1603,12 @@ async def _mcp_sequence(
                 ABORT_COAT_OF_ARMS_UPLOAD_TOOL,
                 EXPORT_COAT_OF_ARMS_TOOL,
             }
-            if large_source is not None
+            if large_source is not None or picture_corpus is not None
             else set()
         )
         framebuffer_required = (
             {COMPARE_COAT_OF_ARMS_FRAMEBUFFER_TOOL}
-            if reference_preview is not None
+            if reference_preview is not None or picture_corpus is not None
             else set()
         )
         custom_mode_required = (
@@ -1563,7 +1670,7 @@ async def _mcp_sequence(
                 "coat-of-arms matrix MCP tools do not have the expected v1 schemas",
                 tool_schemas=schemas,
             )
-        if large_source is not None and not (
+        if (large_source is not None or picture_corpus is not None) and not (
             _schema_is_zero_input(schemas.get(SNAPSHOT_TOOL))
             and _schema_has_required_fields(
                 schemas.get(BEGIN_COAT_OF_ARMS_UPLOAD_TOOL),
@@ -1622,7 +1729,9 @@ async def _mcp_sequence(
                 "large-source MCP tools do not have the expected closed schemas",
                 tool_schemas=schemas,
             )
-        if reference_preview is not None and not _schema_has_required_fields(
+        if (
+            reference_preview is not None or picture_corpus is not None
+        ) and not _schema_has_required_fields(
             schemas.get(COMPARE_COAT_OF_ARMS_FRAMEBUFFER_TOOL),
             {"reference_png_base64", "reference_png_sha256"},
         ):
@@ -1656,7 +1765,7 @@ async def _mcp_sequence(
                 EXPORT_COAT_OF_ARMS_CAPABILITY,
                 COMMIT_DYNASTY_COAT_OF_ARMS_CAPABILITY,
             }
-        if large_source is not None:
+        if large_source is not None or picture_corpus is not None:
             required_capabilities |= {
                 PROBE_COAT_OF_ARMS_CAPABILITY,
                 EXPORT_COAT_OF_ARMS_CAPABILITY,
@@ -2015,6 +2124,22 @@ async def _mcp_sequence(
             checks["reference_framebuffer_evidence_complete"] = (
                 framebuffer_result.get("ok") is True
             )
+        corpus_result: dict[str, object] | None = None
+        if picture_corpus is not None:
+            if all(checks.values()):
+                corpus_result = await _collect_picture_corpus(
+                    client, picture_corpus, record
+                )
+            else:
+                corpus_result = {
+                    "ok": False,
+                    "error": "route checks failed before picture-corpus comparison",
+                    "case_count": len(picture_corpus),
+                    "cases": [],
+                }
+            checks["picture_corpus_evidence_complete"] = (
+                corpus_result.get("ok") is True
+            )
         return {
             "mcp_sdk": "official-python-client",
             "tool_schemas": schemas,
@@ -2033,6 +2158,7 @@ async def _mcp_sequence(
             "commit_roundtrip": commit_result,
             "large_source_roundtrip": large_source_result,
             "reference_framebuffer": framebuffer_result,
+            "picture_corpus": corpus_result,
             "calls": calls,
             "call_summary": call_summary,
             "checks": checks,
@@ -2054,6 +2180,14 @@ def _write_native_crop(
 ) -> dict[str, object]:
     framebuffer = sequence.get("reference_framebuffer")
     call = framebuffer.get("call") if isinstance(framebuffer, dict) else None
+    if not isinstance(call, dict):
+        raise RuntimeError("framebuffer result has no native crop call")
+    return _write_native_crop_call(path, call)
+
+
+def _write_native_crop_call(
+    path: Path, call: dict[str, object]
+) -> dict[str, object]:
     body = _structured(call) if isinstance(call, dict) else {}
     comparison = body.get("comparison")
     best = (
@@ -2087,6 +2221,31 @@ def _write_native_crop(
     }
 
 
+def _write_picture_corpus_crops(
+    path: Path, sequence: dict[str, object]
+) -> list[dict[str, object]]:
+    corpus = sequence.get("picture_corpus")
+    cases = corpus.get("cases") if isinstance(corpus, dict) else None
+    if not isinstance(cases, list) or not cases:
+        raise RuntimeError("picture corpus result has no cases")
+    root = path.resolve()
+    receipts: list[dict[str, object]] = []
+    for value in cases:
+        if not isinstance(value, dict) or not isinstance(value.get("id"), str):
+            raise RuntimeError("picture corpus result has a malformed case")
+        framebuffer = value.get("framebuffer")
+        call = framebuffer.get("call") if isinstance(framebuffer, dict) else None
+        if not isinstance(call, dict):
+            continue
+        receipt = _write_native_crop_call(
+            root / value["id"] / "native-crop.png", call
+        )
+        receipts.append({"id": value["id"], **receipt})
+    if not receipts:
+        raise RuntimeError("picture corpus produced no native crops")
+    return receipts
+
+
 def _run(args: argparse.Namespace) -> tuple[dict[str, object], int]:
     started = time.monotonic()
     repository = Path(__file__).resolve().parents[3]
@@ -2106,6 +2265,19 @@ def _run(args: argparse.Namespace) -> tuple[dict[str, object], int]:
         else None
     )
     native_crop_output = getattr(args, "native_crop_output", None)
+    picture_corpus = (
+        _load_picture_corpus(args.picture_corpus)
+        if getattr(args, "picture_corpus", None) is not None
+        else None
+    )
+    picture_crop_dir = getattr(args, "picture_crop_dir", None)
+    if picture_corpus is not None and (
+        getattr(args, "large_source", None) is not None
+        or reference_preview is not None
+    ):
+        raise ValueError(
+            "--picture-corpus cannot be combined with --large-source or --reference-preview"
+        )
     if (
         reference_preview is not None
         and getattr(args, "large_source", None) is None
@@ -2113,6 +2285,8 @@ def _run(args: argparse.Namespace) -> tuple[dict[str, object], int]:
         raise ValueError("--reference-preview requires --large-source")
     if native_crop_output is not None and reference_preview is None:
         raise ValueError("--native-crop-output requires --reference-preview")
+    if picture_crop_dir is not None and picture_corpus is None:
+        raise ValueError("--picture-crop-dir requires --picture-corpus")
     if bookmarks_model_private and not bookmarks_read_only:
         raise ValueError("--bookmarks-model-private requires --bookmarks-read-only")
     if bookmarks_read_only and (
@@ -2121,6 +2295,7 @@ def _run(args: argparse.Namespace) -> tuple[dict[str, object], int]:
         or commit_roundtrip
         or getattr(args, "large_source", None) is not None
         or reference_preview is not None
+        or picture_corpus is not None
     ):
         raise ValueError("--bookmarks-read-only cannot run CoA actions")
     large_source = (
@@ -2165,6 +2340,15 @@ def _run(args: argparse.Namespace) -> tuple[dict[str, object], int]:
         "reference_preview_plan": (
             reference_preview[1] if reference_preview else None
         ),
+        "picture_corpus_requested": picture_corpus is not None,
+        "picture_corpus_plan": [
+            {
+                "id": value["id"],
+                "source": value["source_receipt"],
+                "reference": value["preview_receipt"],
+            }
+            for value in picture_corpus or []
+        ],
     }
     handle = None
     driver: NativeHeadlessGameplayDriver | None = None
@@ -2232,15 +2416,40 @@ def _run(args: argparse.Namespace) -> tuple[dict[str, object], int]:
                 commit_roundtrip=commit_roundtrip,
                 large_source=large_source,
                 reference_preview=reference_preview,
+                picture_corpus=picture_corpus,
                 bookmarks_read_only=bookmarks_read_only,
                 bookmarks_model_private=bookmarks_model_private,
             )
         )
         report["sequence"] = sequence
         if native_crop_output is not None:
-            report["native_crop"] = _write_native_crop(
-                native_crop_output, sequence
-            )
+            try:
+                report["native_crop"] = _write_native_crop(
+                    native_crop_output, sequence
+                )
+            except RuntimeError as error:
+                report["native_crop"] = {
+                    "status": "unavailable",
+                    "error": str(error),
+                }
+                if sequence.get("ok") is True:
+                    raise
+        if picture_crop_dir is not None:
+            try:
+                report["picture_corpus_native_crops"] = (
+                    _write_picture_corpus_crops(picture_crop_dir, sequence)
+                )
+            except RuntimeError as error:
+                report["picture_corpus_native_crops"] = {
+                    "status": "unavailable",
+                    "error": str(error),
+                }
+                corpus_result = sequence.get("picture_corpus")
+                if (
+                    isinstance(corpus_result, dict)
+                    and corpus_result.get("cases")
+                ):
+                    raise
         if sequence.get("ok") is not True:
             raise RuntimeError("frontend MCP route sequence failed its checks")
     except BaseException as error:
