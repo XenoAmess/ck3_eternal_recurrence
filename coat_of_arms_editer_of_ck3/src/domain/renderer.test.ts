@@ -76,4 +76,27 @@ describe('shader-grounded coat-of-arms renderer', () => {
       64, 128, 192, 255, 64, 128, 192, 255,
     ]))
   })
+
+  it('alpha-blends a raw textured emblem before colored emblems', () => {
+    const pattern: DecodedDds = {
+      width: 1, height: 1, fourCC: 'DXT1',
+      pixels: new Uint8ClampedArray([255, 0, 0, 255]),
+    }
+    const textured: DecodedDds = {
+      width: 1, height: 1, fourCC: 'BGRA8',
+      pixels: new Uint8ClampedArray([0, 255, 0, 128]),
+    }
+    const coatOfArms = createCoatOfArms()
+    coatOfArms.colors = ['rgb { 64 128 192 }', 'white', 'black']
+    coatOfArms.coloredEmblems = []
+    coatOfArms.texturedEmblems = [{ texture: '_default.dds' }]
+
+    const result = renderCoatOfArms(
+      coatOfArms,
+      { pattern, coloredEmblems: {}, texturedEmblems: { '_default.dds': textured } },
+      {},
+      1,
+    )
+    expect(result?.pixels).toEqual(new Uint8ClampedArray([32, 192, 96, 255]))
+  })
 })

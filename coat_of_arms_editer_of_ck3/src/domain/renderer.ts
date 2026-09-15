@@ -13,6 +13,7 @@ export interface RenderedCoatOfArms {
 interface RenderAssets {
   pattern?: DecodedDds
   coloredEmblems: Record<string, DecodedDds>
+  texturedEmblems?: Record<string, DecodedDds>
   surfaceMask?: DecodedDds
 }
 
@@ -230,6 +231,38 @@ function drawInstance(
   }
 }
 
+function drawTexturedEmblem(
+  target: Uint8ClampedArray,
+  width: number,
+  height: number,
+  surfaceMask: DecodedDds | undefined,
+  texture: DecodedDds,
+) {
+  for (let y = 0; y < height; y += 1) {
+    const v = (y + 0.5) / height
+    for (let x = 0; x < width; x += 1) {
+      const u = (x + 0.5) / width
+      const textureSample = sample(texture, u, v)
+      let color: Rgb = [textureSample[0], textureSample[1], textureSample[2]]
+      let alpha = textureSample[3]
+      if (surfaceMask) {
+        const detail = sample(surfaceMask, u, v)
+        color = getOverlay(color, [detail[2], detail[2], detail[2]], 0.2)
+        alpha *= detail[1] * 2
+      }
+      alpha = clamp(alpha)
+      if (alpha <= 0) continue
+      const offset = (y * width + x) * 4
+      for (let channel = 0; channel < 3; channel += 1) {
+        const destination = target[offset + channel] / 255
+        target[offset + channel] = Math.round(clamp(
+          color[channel] * alpha + destination * (1 - alpha),
+        ) * 255)
+      }
+    }
+  }
+}
+
 export function renderColoredEmblemLayer(
   base: RenderedCoatOfArms,
   pattern: DecodedDds,
@@ -287,6 +320,11 @@ export function renderCoatOfArms(
       result[offset + 2] = Math.round(clamp(color[2]) * 255)
       result[offset + 3] = 255
     }
+  }
+
+  for (const emblem of coatOfArms.texturedEmblems) {
+    const texture = assets.texturedEmblems?.[emblem.texture]
+    if (texture) drawTexturedEmblem(result, size, size, assets.surfaceMask, texture)
   }
 
   let sourceOrder = 0

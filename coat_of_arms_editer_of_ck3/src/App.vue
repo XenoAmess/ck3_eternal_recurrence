@@ -120,6 +120,7 @@ const patternPreviewUrl = ref('')
 const emblemPreviewUrls = ref<Record<string, string>>({})
 const patternTexture = ref<DecodedDds>()
 const emblemTextures = ref<Record<string, DecodedDds>>({})
+const texturedEmblemTextures = ref<Record<string, DecodedDds>>({})
 const surfaceMask = ref<DecodedDds>()
 const texturedDefaultPreviewUrl = ref('')
 const shaderNamedColors = ref<NamedColorMap>({})
@@ -300,6 +301,7 @@ const renderedPreviewUrl = computed(() => {
     {
       pattern: patternTexture.value,
       coloredEmblems: emblemTextures.value,
+      texturedEmblems: texturedEmblemTextures.value,
       surfaceMask: surfaceMask.value,
     },
     shaderNamedColors.value,
@@ -415,6 +417,7 @@ function importSource() {
     ElMessage.error('已解析，但存在阻止确定性导出的诊断')
   } else {
     ElMessage.success('已导入为结构化纹章')
+    if (loadedAssetPack.value || developmentCompanionEnabled) void loadCurrentTexturePreviews()
   }
 }
 
@@ -851,7 +854,7 @@ function errorMessage(error: unknown): string {
   return error instanceof Error ? error.message : String(error)
 }
 
-function packEntry(kind: 'pattern' | 'colored_emblem', name: string): WebAssetPackEntry | undefined {
+function packEntry(kind: 'pattern' | 'colored_emblem' | 'textured_emblem', name: string): WebAssetPackEntry | undefined {
   return loadedAssetPack.value?.pack.assets.find((item) => item.kind === kind && item.name === name)
 }
 
@@ -888,14 +891,25 @@ async function loadStandaloneAssetPack(notify = true) {
     const emblems = loaded.pack.assets.filter(
       (item) => item.kind === 'colored_emblem' && item.registration === 'designer_manifest',
     )
+    const texturedDefault = loaded.pack.assets.find(
+      (item) => item.kind === 'textured_emblem' && item.name === '_default.dds',
+    )
     const mask = loaded.pack.assets.find((item) => item.kind === 'surface_mask')
-    if (!patterns.length || !emblems.length || !mask) throw new Error('素材包缺少已注册 pattern、emblem 或 surface mask')
+    if (!patterns.length || !emblems.length || !texturedDefault || !mask) {
+      throw new Error('素材包缺少已注册 pattern、emblem、textured emblem 或 surface mask')
+    }
     loadedAssetPack.value = loaded
     webAssetCache.clear()
     patternResources.value = patterns.map(asResourceItem)
     emblemResources.value = emblems.map(asResourceItem)
     shaderNamedColors.value = loaded.pack.named_colors
-    surfaceMask.value = await readPackTexture(mask)
+    const [decodedSurfaceMask, decodedTexturedDefault] = await Promise.all([
+      readPackTexture(mask),
+      readPackTexture(texturedDefault),
+    ])
+    surfaceMask.value = decodedSurfaceMask
+    texturedEmblemTextures.value = { '_default.dds': decodedTexturedDefault }
+    texturedDefaultPreviewUrl.value = decodedDdsToDataUrl(decodedTexturedDefault)
     shaderSourceCount.value = 5
     const inventory = loaded.pack.inventory
     assetPackStatus.value = `${loaded.pack.pack_id} · ${patterns.length} 注册 pattern · ${emblems.length} 注册 emblem${inventory ? ` · ${inventory.source_dds_total} DDS 全盘清单` : ''} · ${loaded.manifestSha256.slice(0, 12)}`
@@ -1616,6 +1630,7 @@ async function loadResourceCatalog() {
       || decodedTexturedDefault.fourCC !== renderSupport.textured_emblem_default.dds.format
     ) throw new Error('Textured emblem 默认 DDS 元数据与解码结果不一致')
     texturedDefaultPreviewUrl.value = decodedDdsToDataUrl(decodedTexturedDefault)
+    texturedEmblemTextures.value = { '_default.dds': decodedTexturedDefault }
     shaderNamedColors.value = Object.fromEntries(
       renderSupport.named_colors.map((item) => [item.name, item.rgb]),
     )
@@ -1631,7 +1646,7 @@ async function loadResourceCatalog() {
 }
 
 async function readTexturePreview(
-  kind: 'pattern' | 'colored_emblem',
+  kind: 'pattern' | 'colored_emblem' | 'textured_emblem',
   name: string,
 ): Promise<{ decoded: DecodedDds, preview: string }> {
   const staticEntry = packEntry(kind, name)
@@ -1641,6 +1656,11 @@ async function readTexturePreview(
   }
   if (!developmentCompanionEnabled) {
     throw new Error(`独立素材包中没有 ${kind}/${name}`)
+  }
+  if (kind === 'textured_emblem') {
+    const decoded = texturedEmblemTextures.value[name]
+    if (decoded) return { decoded, preview: decodedDdsToDataUrl(decoded) }
+    throw new Error(`开发期 MCP 未提供 textured_emblem/${name}`)
   }
   const asset = await companion.asset(kind, name)
   const decoded = decodeDdsBase64(asset.asset_base64)
@@ -1742,6 +1762,9 @@ async function loadCurrentTexturePreviews() {
   const names = [...new Set(coatOfArms.value.coloredEmblems
     .map((emblem) => emblem.texture)
     .filter(Boolean))]
+  const texturedNames = [...new Set(coatOfArms.value.texturedEmblems
+    .map((emblem) => emblem.texture)
+    .filter(Boolean))]
   try {
     const requests: Promise<void>[] = []
     if (coatOfArms.value.pattern) {
@@ -1754,6 +1777,12 @@ async function loadCurrentTexturePreviews() {
       requests.push(readTexturePreview('colored_emblem', name).then(({ decoded, preview }) => {
         emblemTextures.value = { ...emblemTextures.value, [name]: decoded }
         emblemPreviewUrls.value = { ...emblemPreviewUrls.value, [name]: preview }
+      }))
+    }
+    for (const name of texturedNames) {
+      requests.push(readTexturePreview('textured_emblem', name).then(({ decoded, preview }) => {
+        texturedEmblemTextures.value = { ...texturedEmblemTextures.value, [name]: decoded }
+        if (name === '_default.dds') texturedDefaultPreviewUrl.value = preview
       }))
     }
     const results = await Promise.allSettled(requests)
@@ -2332,7 +2361,8 @@ watch(() => activeEmblem.value?.instances.length ?? 0, (length) => {
             <el-alert type="warning" :closable="false" show-icon>
               <template #title>
                 当前实机已证明 `textured_emblem = { texture = "_default.dds" }` 可应用且由原生 Copy 保留；本区只保真解析/导出 texture，
-                不为未验证字段生成 UI；行内只显示 exact 原始 DDS，不冒充最终合成预览。
+                浏览器按随附 `coat_of_arms_textured_emblem` shader 的原始 RGBA、surface detail 和 alpha blend 合成 `_default.dds`；
+                未注册 texture 仍保留代码并明确缺图，不冒充原生 GPU 像素完全一致。
               </template>
             </el-alert>
             <div v-if="coatOfArms.texturedEmblems.length" class="textured-list">
