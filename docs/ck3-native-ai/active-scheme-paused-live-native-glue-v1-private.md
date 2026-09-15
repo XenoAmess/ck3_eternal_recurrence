@@ -59,24 +59,15 @@ component can run.
 
 ## Concrete candidate readiness
 
-A useful unique candidate **cannot yet be produced from this commit alone**.
-The standard build can now compile the complete candidate core, but these
-production bindings remain absent:
-
-- the exact native precondition reader for shown, validity,
-  `can_start_scheme`, previews, and the four murder starter options;
-- SCHEME6's production low-level callbacks for full character identity,
-  submit-route/manager generation, context construction/validation, command
-  construction, one submit, and both release paths;
-- the private main-thread mailbox executor and raw JSON backend used by the
-  SCHEME8 harness;
-- one fixed checkpoint and resulting DLL/injector/manifest hashes.
-
-These are real construction dependencies, not warnings. Setting the CMake
-option without them only compiles unadvertised code and must not be described
-as a runnable or production-live candidate. The next minimum package is the
-exact-build precondition/command callback binder; after that, a thin private
-mailbox/backend wrapper can produce the single hash-bound candidate.
+A useful unique candidate **cannot yet be produced from this file alone**.
+SCHEME10 now supplies the exact native precondition reader and all SCHEME6/7
+production callbacks described above. See
+[`active-scheme-precondition-command-binders-v1-private.md`](active-scheme-precondition-command-binders-v1-private.md).
+The remaining implementation step is the thin private main-thread mailbox/raw
+JSON backend used by the SCHEME8 harness. That backend must then freeze one
+checkpoint and record the resulting DLL/injector/manifest hashes before any
+paused production-live claim. A pending command ACK still cannot substitute
+for the fresh active-instance receipt.
 
 ## Focused verification
 

@@ -472,6 +472,7 @@ if(XAR_CK3_ENABLE_G2_ACTIVE_SCHEME_PRIVATE_CANDIDATE_V1)
     src/active_scheme_semantic_action_v1_private_native_command_adapter.cpp
     src/active_scheme_interaction_definition_resolver_v1_private.cpp
     src/active_scheme_paused_live_native_glue_v1_private.cpp
+    src/active_scheme_precondition_command_binders_v1_private.cpp
   )
   target_compile_definitions(xar_ck3_bridge PRIVATE
     XAR_CK3_ENABLE_G2_ACTIVE_SCHEME_PRIVATE_CANDIDATE_V1=1
