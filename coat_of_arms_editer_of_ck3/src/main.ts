@@ -51,7 +51,7 @@ for (const component of [
 ]) app.component(component.name!, component)
 app.mount('#app')
 
-if (import.meta.env.PROD) {
+if (import.meta.env.PROD && import.meta.env.VITE_DISABLE_SERVICE_WORKER !== 'true') {
   void registerCoatOfArmsServiceWorker().catch(() => {
     // Offline support is an enhancement; a registration failure must not
     // prevent the editor's fully local online flow from starting.
