@@ -1,6 +1,6 @@
 {
   "schema": "ck3-coa-beta-progress-v1",
-  "updatedAt": "2026-09-15T20:05:00+08:00",
+  "updatedAt": "2026-09-15T20:27:00+08:00",
   "overallStatus": "in_progress",
   "workPackages": [
     {
@@ -69,15 +69,20 @@
     {
       "id": "WP2",
       "status": "in_progress",
-      "commit": "2d9a05c8",
+      "commit": "ce31795d",
       "commands": [
         "pnpm exec vitest run src/domain/coatOfArmsOptimizer.test.ts src/domain/parser.test.ts src/domain/imageFitter.test.ts",
         "pnpm build",
-        "pnpm exec playwright test e2e/reference-hunter-compression.spec.ts"
+        "pnpm exec playwright test e2e/reference-hunter-compression.spec.ts",
+        "pnpm exec vitest run src/domain/coatOfArmsPruner.test.ts src/domain/coatOfArmsOptimizer.test.ts src/domain/imageFitter.seams.test.ts",
+        "pnpm exec playwright test e2e/reference-hunter-prune.spec.ts",
+        "pnpm exec playwright test e2e/standalone-image-fit.spec.ts",
+        "pnpm test"
       ],
-      "resultPath": "docs/coat-of-arms-fit-artifacts/xenoamess-hunter-v4-compressed/",
+      "resultPath": "docs/coat-of-arms-fit-artifacts/xenoamess-hunter-v4-pruned/",
       "keyMetrics": {
         "structuralCompressionStatus": "passed",
+        "exactFixedPointPruneStatus": "passed",
         "coloredEmblemBlocksBefore": 1000,
         "coloredEmblemBlocksAfter": 293,
         "drawnInstancesBefore": 1000,
@@ -87,10 +92,19 @@
         "byteReductionFraction": 0.31489095787975696,
         "pixelDifferenceBytes96": 0,
         "pixelDifferenceBytes230": 0,
-        "pixelDifferenceBytes512": 0
+        "pixelDifferenceBytes512": 0,
+        "fixedPointPasses": 1,
+        "pruneCandidatesEvaluated": 1000,
+        "prunedInstances": 0,
+        "finalNecessityEvidenceCount": 1000,
+        "minimumRemovalTotalLossDelta": 0.0000014700486903121424,
+        "maximumRemovalTotalLossDelta": 0.0029218749999999905,
+        "finalCodeSha256": "40B935A32A8A5EEDBC6262BB3A74CEA07935801B104FFD5768A7C7D4C2E32D14",
+        "pruneReportSha256": "6001C4CF23DC69E01EAC1E7DF18B32CE3BEF19E1C86E4D9122405BE4907FCFA5",
+        "crlfBlobCommit": "6323bd71"
       },
       "blockers": [
-        "backward prune / leave-one-out fixed-point evidence remains pending"
+        "compressed 293-block candidate native CK3 Apply/Copy revalidation remains pending"
       ]
     },
     {
