@@ -5,7 +5,7 @@ import {
   type NamedColorMap,
   type RenderedCoatOfArms,
 } from './renderer'
-import type { CoatOfArms, CoatOfArmsInstance } from './types'
+import type { CoatOfArms, CoatOfArmsInstance, ColoredEmblem } from './types'
 
 export interface FitImage {
   width: number
@@ -116,6 +116,14 @@ export interface ImageFitResult {
     terminationReason: 'layer_budget' | 'exact_match' | 'no_emblems' | 'no_improvement' | 'minimum_improvement'
     selectedAssetSha256: string[]
     nativeTileSeamValidation: NativeTileSeamValidation
+    nativeTileSearch: {
+      contract: 'resolution-bounded-quadtree-v2'
+      searchWidth: number
+      searchHeight: number
+      maximumDepth: number
+      pixelLeafCapacity: number
+      userBudgetAppliedWithoutClamp: number
+    }
   }
 }
 
@@ -761,6 +769,69 @@ function layerChoice(
   }
 }
 
+interface PaintLayerChoice extends LayerChoice {
+  emblem: ColoredEmblem
+}
+
+/**
+ * Tile painting has a single forward state, so trial choices do not need to
+ * copy every previously accepted block. The accepted block is appended only
+ * after both coverage-safe scale choices have been compared. This preserves
+ * exact rendering while avoiding quadratic array and tie-key growth.
+ */
+function paintLayerChoice(
+  base: ScoredCandidate,
+  pattern: DecodedDds,
+  surfaceMask: DecodedDds | undefined,
+  namedColors: NamedColorMap,
+  target: FitImage,
+  asset: FitTextureCandidate,
+  parameters: LayerParameters,
+  depth: number,
+  evaluated: EvaluationCounter,
+): PaintLayerChoice {
+  const instance = {
+    position: [...parameters.position] as [number, number],
+    scale: [parameters.scale[0] * parameters.flip, parameters.scale[1]] as [number, number],
+    rotation: ((parameters.rotation % 360) + 360) % 360,
+    depth,
+  }
+  const emblem: ColoredEmblem = {
+    texture: asset.name,
+    colors: parameters.colors.map(expression) as [string, string, string],
+    mask: [],
+    instances: [instance],
+  }
+  const rendered = renderColoredEmblemLayer(
+    base.rendered,
+    pattern,
+    surfaceMask,
+    asset.texture,
+    emblem,
+    instance,
+    namedColors,
+  )
+  evaluated.value += 1
+  const localKey = `${asset.name}\0${parameters.colors.flat().join(',')}\0${parameters.position.join(',')}\0${parameters.scale.join(',')}\0${instance.rotation}\0${parameters.flip}`
+  return {
+    asset,
+    emblem,
+    candidate: {
+      coatOfArms: base.coatOfArms,
+      rendered,
+      ...measureImageFitLosses(target, rendered),
+      key: `${base.key.slice(0, 256)}\0paint:${depth}\0${localKey}`,
+    },
+    parameters: {
+      colors: parameters.colors.map((color) => [...color] as ByteRgb),
+      position: [...parameters.position],
+      scale: [...parameters.scale],
+      rotation: instance.rotation,
+      flip: parameters.flip,
+    },
+  }
+}
+
 function optimizeLayerChoice(
   initial: LayerChoice,
   shapeMatch: ShapeMatch,
@@ -1013,10 +1084,7 @@ function nativePaintTiles(
   rendered: RenderedCoatOfArms,
   layerBudget: number,
 ): PaintTile[] {
-  const maximumDepth = Math.min(6, Math.max(
-    2,
-    Math.ceil(Math.log(Math.max(4, layerBudget * 2)) / Math.log(4)),
-  ))
+  const maximumDepth = nativeTileMaximumDepth(target, layerBudget)
   const leaves: PaintTile[] = []
   const visit = (
     minimumX: number,
@@ -1051,6 +1119,12 @@ function nativePaintTiles(
       || left.minimumX - right.minimumX)
 }
 
+function nativeTileMaximumDepth(target: Pick<FitImage, 'width' | 'height'>, layerBudget: number): number {
+  const resolutionDepth = Math.ceil(Math.log2(Math.max(target.width, target.height)))
+  const budgetDepth = Math.ceil(Math.log(Math.max(4, layerBudget * 2)) / Math.log(4))
+  return Math.max(2, Math.min(resolutionDepth, budgetDepth))
+}
+
 function paintWithNativeTiles(
   initial: SearchState,
   brush: FitTextureCandidate,
@@ -1061,10 +1135,9 @@ function paintWithNativeTiles(
   evaluated: EvaluationCounter,
   onProgress?: (progress: ImageFitProgress) => void,
 ): SearchState {
-  let state = initial
-  const remaining = Math.max(0, maxLayers - state.selectedAssets.length)
-  if (remaining === 0) return state
-  const tiles = nativePaintTiles(target, state.candidate.rendered, remaining).slice(0, remaining)
+  const remaining = Math.max(0, maxLayers - initial.selectedAssets.length)
+  if (remaining === 0) return initial
+  const tiles = nativePaintTiles(target, initial.candidate.rendered, remaining).slice(0, remaining)
   const shape = textureShapeDescriptor(brush.texture)
   // The CPU reference renderer clips geometry at normalized instance bounds
   // and samples output pixel centers. Exact nominal coverage (factor 1) is
@@ -1073,9 +1146,15 @@ function paintWithNativeTiles(
   const coverageFactors = [1, 1.04] as const
   const total = Math.max(1, tiles.length * coverageFactors.length)
   let completed = 0
+  const selectedAssets = [...initial.selectedAssets]
+  const layerLosses = [...initial.layerLosses]
+  const paintPlacements = [...initial.paintPlacements]
+  const coloredEmblems = [...initial.candidate.coatOfArms.coloredEmblems]
+  const coatOfArms: CoatOfArms = { ...initial.candidate.coatOfArms, coloredEmblems }
+  let candidate: ScoredCandidate = { ...initial.candidate, coatOfArms }
   reportProgress(
     onProgress, 'paint', completed, total,
-    state.selectedAssets.length + 1, maxLayers, evaluated.value,
+    selectedAssets.length + 1, maxLayers, evaluated.value,
   )
   for (const tile of tiles) {
     const focus: ResidualFocus = {
@@ -1091,11 +1170,11 @@ function paintWithNativeTiles(
     }
     const match: ShapeMatch = { asset: brush, shape, rotation: 0, flip: 1, loss: 0 }
     const geometry = initialLayerGeometry(focus, match, 0.005)
-    let best: { choice: LayerChoice, scaleFactor: number } | null = null
+    let best: { choice: PaintLayerChoice, scaleFactor: number } | null = null
     for (const scaleFactor of coverageFactors) {
-      const choice = layerChoice(
-        state.candidate,
-        state.patternAsset.texture,
+      const choice = paintLayerChoice(
+        candidate,
+        initial.patternAsset.texture,
         surfaceMask,
         namedColors,
         target,
@@ -1107,7 +1186,7 @@ function paintWithNativeTiles(
           rotation: 0,
           flip: 1,
         },
-        state.selectedAssets.length + 1,
+        selectedAssets.length + 1,
         evaluated,
       )
       completed += 1
@@ -1125,29 +1204,32 @@ function paintWithNativeTiles(
       if (shouldReportProgress(completed, total)) {
         reportProgress(
           onProgress, 'paint', completed, total,
-          state.selectedAssets.length + 1, maxLayers, evaluated.value,
+          selectedAssets.length + 1, maxLayers, evaluated.value,
         )
       }
     }
-    if (!best || best.choice.candidate.totalLoss >= state.candidate.totalLoss - 1e-12) continue
-    const acceptedEmblems = best.choice.candidate.coatOfArms.coloredEmblems
-    const acceptedInstance = acceptedEmblems[acceptedEmblems.length - 1].instances[0]
-    state = {
-      candidate: best.choice.candidate,
-      patternAsset: state.patternAsset,
-      selectedAssets: [...state.selectedAssets, brush],
-      layerLosses: [...state.layerLosses, best.choice.candidate.totalLoss],
-      reconstructionMode: initial.selectedAssets.length > 0
-        ? 'hybrid-native-paint'
-        : 'native-tile-paint',
-      paintPlacements: [...state.paintPlacements, { tile, instance: acceptedInstance }],
-    }
+    if (!best || best.choice.candidate.totalLoss >= candidate.totalLoss - 1e-12) continue
+    coloredEmblems.push(best.choice.emblem)
+    candidate = best.choice.candidate
+    selectedAssets.push(brush)
+    layerLosses.push(candidate.totalLoss)
+    paintPlacements.push({ tile, instance: best.choice.emblem.instances[0] })
   }
   reportProgress(
     onProgress, 'paint', total, total,
-    state.selectedAssets.length, maxLayers, evaluated.value,
+    selectedAssets.length, maxLayers, evaluated.value,
   )
-  return state
+  if (selectedAssets.length === initial.selectedAssets.length) return initial
+  return {
+    candidate,
+    patternAsset: initial.patternAsset,
+    selectedAssets,
+    layerLosses,
+    reconstructionMode: initial.selectedAssets.length > 0
+      ? 'hybrid-native-paint'
+      : 'native-tile-paint',
+    paintPlacements,
+  }
 }
 
 function edgeResidualHotspots(
@@ -1904,6 +1986,14 @@ export function fitImageToCoatOfArms(
         target.width,
         target.height,
       ),
+      nativeTileSearch: {
+        contract: 'resolution-bounded-quadtree-v2',
+        searchWidth: target.width,
+        searchHeight: target.height,
+        maximumDepth: nativeTileMaximumDepth(target, maxLayers),
+        pixelLeafCapacity: target.width * target.height,
+        userBudgetAppliedWithoutClamp: maxLayers,
+      },
     },
   }
 }

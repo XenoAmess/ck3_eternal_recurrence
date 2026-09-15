@@ -411,6 +411,13 @@ function removeEmblem(index: number) {
   selectedEmblem.value = Math.max(0, Math.min(selectedEmblem.value, coatOfArms.value.coloredEmblems.length - 1))
 }
 
+function selectEmblemIndex(index: number) {
+  selectedEmblem.value = Math.min(
+    Math.max(0, Math.floor(index)),
+    Math.max(0, coatOfArms.value.coloredEmblems.length - 1),
+  )
+}
+
 function moveInstanceWindow(start: number) {
   const length = activeEmblem.value?.instances.length ?? 0
   instanceWindowStart.value = Math.min(
@@ -1389,6 +1396,7 @@ importSource()
             <el-input-number v-model="fitLayerBudget" :min="1" :step="1" />
           </div>
           <small class="fit-budget-note">例如 1024 表示最多搜索并保留 1024 层，不保证输出恰好 1024 层。每一层必须严格降低实际渲染损失；无改善或用户取消时提前停止。输入支持 10000 及更大安全整数。</small>
+          <small class="fit-budget-note">当前原生块细化平面为 96×96；它按分辨率和预算扩展四叉树深度，预算不会被改写，但像素粒度、无改善或精确匹配可能令实际实例提前收敛。</small>
           <div class="fit-actions">
             <el-button type="primary" :loading="fitBusy" :disabled="fitPruneBusy || !targetImage || !loadedAssetPack" @click="fitTargetImage">
               开始本地拟合
@@ -1443,6 +1451,7 @@ importSource()
               </template>
               <div><dt>高分辨率接缝门禁</dt><dd>{{ fitResult.provenance.nativeTileSeamValidation.status === 'passed' ? '96 / 230 / 512 全部通过' : '不适用' }}</dd></div>
               <div><dt>接缝指标</dt><dd>{{ fitResult.provenance.nativeTileSeamValidation.metrics.map((metric) => `${metric.resolution}px leak=${metric.backgroundLeakPixels} peak=${Math.max(metric.peakRowLeakPixels, metric.peakColumnLeakPixels)}`).join('；') || '不适用' }}</dd></div>
+              <div><dt>块搜索空间</dt><dd>{{ fitResult.provenance.nativeTileSearch.searchWidth }}×{{ fitResult.provenance.nativeTileSearch.searchHeight }} · depth {{ fitResult.provenance.nativeTileSearch.maximumDepth }} · 像素叶容量 {{ fitResult.provenance.nativeTileSearch.pixelLeafCapacity }} · 预算原值 {{ fitResult.provenance.nativeTileSearch.userBudgetAppliedWithoutClamp }}</dd></div>
               <div><dt>算法合同</dt><dd>{{ fitResult.provenance.algorithm }}</dd></div>
               <div><dt>相对改善</dt><dd>{{ (fitResult.metrics.relativeImprovement * 100).toFixed(2) }}%</dd></div>
               <div><dt>GPU 交叉分</dt><dd>{{ fitWebGlScore ? fitWebGlScore.meanSquaredRgbError.toFixed(5) : '不可用' }}</dd></div>
@@ -1716,9 +1725,21 @@ importSource()
               <h3>Colored emblems</h3>
               <el-button size="small" type="primary" plain @click="addEmblem">添加图层</el-button>
             </div>
-            <el-tabs v-if="coatOfArms.coloredEmblems.length" v-model="selectedEmblem" type="card">
+            <el-tabs v-if="coatOfArms.coloredEmblems.length && coatOfArms.coloredEmblems.length <= 128" v-model="selectedEmblem" type="card">
               <el-tab-pane v-for="(emblem, index) in coatOfArms.coloredEmblems" :key="index" :label="`图层 ${index + 1}`" :name="index" />
             </el-tabs>
+            <div v-else-if="coatOfArms.coloredEmblems.length" class="emblem-window-toolbar">
+              <span>图层 {{ selectedEmblem + 1 }} / {{ coatOfArms.coloredEmblems.length }}（大文档按索引编辑）</span>
+              <el-button size="small" :disabled="selectedEmblem === 0" @click="selectEmblemIndex(selectedEmblem - 1)">上一层</el-button>
+              <el-input-number
+                :model-value="selectedEmblem + 1"
+                :min="1"
+                :max="coatOfArms.coloredEmblems.length"
+                controls-position="right"
+                @update:model-value="selectEmblemIndex(Number($event) - 1)"
+              />
+              <el-button size="small" :disabled="selectedEmblem + 1 >= coatOfArms.coloredEmblems.length" @click="selectEmblemIndex(selectedEmblem + 1)">下一层</el-button>
+            </div>
 
             <template v-if="activeEmblem">
               <div class="form-grid">

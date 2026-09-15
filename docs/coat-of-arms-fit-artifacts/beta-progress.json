@@ -1,6 +1,6 @@
 {
   "schema": "ck3-coa-beta-progress-v1",
-  "updatedAt": "2026-09-15T21:48:00+08:00",
+  "updatedAt": "2026-09-15T22:01:00+08:00",
   "overallStatus": "in_progress",
   "workPackages": [
     {
@@ -188,18 +188,47 @@
       "id": "WP4",
       "status": "in_progress",
       "commit": null,
-      "commands": [],
-      "resultPath": null,
+      "commands": [
+        "pnpm exec vitest run src/domain/fitBudgetContract.test.ts --reporter=verbose",
+        "pnpm exec playwright test e2e/fit-budget-stress.spec.ts --reporter=line",
+        "pnpm exec playwright test e2e/reference-hunter-fit.spec.ts --reporter=line"
+      ],
+      "resultPath": "docs/coat-of-arms-fit-budget-stress.md",
       "keyMetrics": {
-        "realFitBudget10000": "pending",
-        "completeDocumentStress": "passed_under_WP5"
+        "realFitBudget10000": "passed",
+        "completeDocumentStress": "passed_under_WP5",
+        "budget128ActualInstances": 8,
+        "budget128EvaluatedCandidates": 4120,
+        "budget128DurationMs": 7340,
+        "budget1024ActualInstances": 250,
+        "budget1024EvaluatedCandidates": 3992,
+        "budget1024DurationMs": 7519,
+        "budget10000ActualInstances": 1824,
+        "budget10000EvaluatedCandidates": 15640,
+        "budget10000DurationMs": 14644,
+        "budget10000TerminationReason": "no_improvement",
+        "budget10000AppliedWithoutClamp": 10000,
+        "searchResolution": 96,
+        "searchMaximumDepth": 7,
+        "searchPixelLeafCapacity": 9216,
+        "copiedUtf8Bytes": 711661,
+        "copiedLines": 25543,
+        "copiedBlocks": 1824,
+        "copiedInstances": 1824,
+        "cancellationLatencyMs": 52,
+        "restartBudget": 128,
+        "measuredJsHeapDeltaBytes": 33108085,
+        "memoryEvidenceScope": "JavaScript heap delta only; excludes GPU and browser-process memory",
+        "nonGetRequests": 0,
+        "pauseResumeCheckpoint": "pending",
+        "gpuBatchSearch": "pending"
       },
       "blockers": []
     },
     {
       "id": "WP5",
       "status": "in_progress",
-      "commit": null,
+      "commit": "8cc793fa",
       "commands": [
         "pnpm exec vitest run src/domain/largeDocumentContract.test.ts --reporter=verbose",
         "pnpm exec playwright test e2e/large-document-stress.spec.ts --reporter=line",

@@ -121,6 +121,8 @@ h1 { margin: 0; font-family: Georgia, "Noto Serif SC", serif; font-weight: 500; 
 .instance-list { display: grid; gap: 10px; }
 .instance-window-toolbar { display: grid; grid-template-columns: minmax(0, 1fr) auto 126px auto; gap: 8px; align-items: center; margin: 8px 0 10px; padding: 8px 10px; border: 1px solid var(--line); background: rgba(26,23,20,.7); color: #a99d8e; font-size: 12px; }
 .instance-window-toolbar .el-input-number { width: 126px; }
+.emblem-window-toolbar { display: grid; grid-template-columns: minmax(0, 1fr) auto 126px auto; gap: 8px; align-items: center; margin: 8px 0 14px; padding: 8px 10px; border: 1px solid var(--line); background: rgba(26,23,20,.7); color: #a99d8e; font-size: 12px; }
+.emblem-window-toolbar .el-input-number { width: 126px; }
 .instance-card { padding: 12px; border: 1px solid var(--line); background: rgba(15,13,11,.42); }
 .instance-title { display: flex; justify-content: space-between; align-items: center; margin-bottom: 9px; color: #cdb985; font-size: 12px; }
 .number-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0 8px; }
