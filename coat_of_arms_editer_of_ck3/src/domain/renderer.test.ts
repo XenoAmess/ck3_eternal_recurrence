@@ -99,4 +99,43 @@ describe('shader-grounded coat-of-arms renderer', () => {
     )
     expect(result?.pixels).toEqual(new Uint8ClampedArray([32, 192, 96, 255]))
   })
+
+  it('uses CK3 native clockwise screen-space rotation by default', () => {
+    const pattern: DecodedDds = {
+      width: 1, height: 1, fourCC: 'DXT1',
+      pixels: new Uint8ClampedArray([255, 0, 0, 255]),
+    }
+    const emblemPixels = new Uint8ClampedArray(5 * 5 * 4)
+    const marker = (0 * 5 + 2) * 4
+    emblemPixels.set([0, 255, 128, 255], marker)
+    const emblem: DecodedDds = {
+      width: 5, height: 5, fourCC: 'BGRA8', pixels: emblemPixels,
+    }
+    const coatOfArms = createCoatOfArms()
+    coatOfArms.colors = ['black', 'black', 'black']
+    coatOfArms.coloredEmblems = [{
+      texture: 'marker.dds',
+      colors: ['white', 'white', 'white'],
+      mask: [],
+      instances: [{ position: [0.5, 0.5], scale: [0.8, 0.5], rotation: 90, depth: 1 }],
+    }]
+    const assets = { pattern, coloredEmblems: { 'marker.dds': emblem } }
+    const nativeDefault = renderCoatOfArms(coatOfArms, assets, {}, 21)
+    const explicitNative = renderCoatOfArms(
+      coatOfArms,
+      assets,
+      {},
+      21,
+      { emblemRotationSign: -1 },
+    )
+    const opposite = renderCoatOfArms(
+      coatOfArms,
+      assets,
+      {},
+      21,
+      { emblemRotationSign: 1 },
+    )
+    expect(nativeDefault?.pixels).toEqual(explicitNative?.pixels)
+    expect(nativeDefault?.pixels).not.toEqual(opposite?.pixels)
+  })
 })

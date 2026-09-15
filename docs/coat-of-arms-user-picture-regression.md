@@ -66,24 +66,42 @@ JS heap 增量为 30,873,829 bytes（不包含 GPU/浏览器进程内存）。
 这仍不是“所有复杂头像已达到高保真”的声明。picture-02/05/07 的边缘损失仍高，后续需要高分辨率
 局部替换和更丰富原生画笔搜索；CK3 原生像素差异仍必须由 MCP framebuffer 能力逐图验证。
 
+## v7 原生旋转方向修复（2026-09-16）
+
+reference-independent framebuffer MCP 的 r5 实机运行完成了 7/7 Apply、Copy 和固定 surface crop，随后
+暴露出浏览器 renderer 的独立错误：CK3 的正 `rotation` 在屏幕空间按顺时针解释，浏览器此前按相反方向
+渲染。纯 `ce_block_02.dds` 案例不受影响；带有旋转、非等比缩放语义元素的 picture-02/07 因而明显错位。
+
+受控消融保持 r5 CK3 crop 不变，只比较两种仿射顺序和两种旋转方向。picture-02 的综合 score 从
+`0.102483` 降到 `0.072964`、MAE 从 `0.143826` 降到 `0.050917`；picture-07 的 score 从
+`0.183888` 降到 `0.109572`、MAE 从 `0.236327` 降到 `0.101815`。两例共同选择“保持现有变换顺序、
+反转屏幕旋转方向”；完整候选和指标在
+`docs/coat-of-arms-fit-artifacts/user-picture-corpus-v6-transform-diagnostic/`。
+
+修复已同时进入完整 renderer、增量拟合 renderer、轮廓 descriptor 和内容重心补偿。七例已在新合同
+`cpu-rgba8-bilinear-clamp-pixel-center-native-clockwise-v2` 下重新以 1,024 预算生成，7/7 浏览器闭环通过，
+结果冻结在 `docs/coat-of-arms-fit-artifacts/user-picture-corpus-v7-budget-1024/`。新 v7 的损失数值与 v6
+保持一致，但语义元素输出角度改为 CK3 的方向；例如 picture-02 从 `223.375°` 改为 `136.625°`。
+v7 原生 Apply/Copy/framebuffer 重跑完成前，状态仍是“浏览器修复通过、CK3 新候选待验”。
+
 | 检查 | 当前状态 | 当前证据能支持的结论 |
 |---|---|---|
 | 原图→浏览器拟合 | 已逐图量化 | 7 图均完成 1024 预算，但其中多图质量仍不可接受 |
 | 下方预览→右侧预览 | 通过 | 7/7 字节源和展示几何一致 |
 | 完整复制→重新解析 | 通过 | 7/7 代码完整，实例计数一致，serialize/parse 精确闭环 |
-| CK3 Apply/Copy | 待 MCP 逐图验收 | 尚不能宣称 7 图均被原生 parser 接收 |
-| CK3 空间像素→右侧预览 | MCP 已补、实机待验 | 已实现路由/PID/连接代次绑定的只读全帧搜索、原生 crop、空间矩阵和哈希；离线夹具通过，7 图 CK3 live 尚未执行 |
+| CK3 Apply/Copy | v6 r5 已逐图执行；v7 待重跑 | v6 的 7/7 大载荷核心计数闭环通过；picture-02/05/07 的 Copy 将一个小数 rotation 规范化为整数 |
+| CK3 空间像素→右侧预览 | v6 r5 已定位缺陷；v7 待重跑 | fixed-calibration v2 已取得 7 个原生 crop；消融证明浏览器旋转方向错误并已修复，尚不能用旧 crop 冒充 v7 通过 |
 
-MCP 的输入、定位、指标、隐私边界与首次实机验收前冻结的阈值见
-`docs/ck3-coat-of-arms-framebuffer-comparison-v1.md`。下一个可执行工作包是用这一合同逐图完成
-Apply/Copy 和原生像素对照；同时继续高分辨率局部替换/边缘细化，用这 7 图逐图做改动前后消融。
+MCP 的当前定位、指标和隐私边界见
+`docs/ck3-coat-of-arms-framebuffer-comparison-v2.md`。下一个原生工作包是对 v7 新代码逐图完成
+Apply/Copy 和 fixed-calibration framebuffer 对照；同时继续高分辨率局部替换/边缘细化，用这 7 图逐图做改动前后消融。
 
 ## 复现命令
 
 ```bat
 cd coat_of_arms_editer_of_ck3
 pnpm exec playwright test e2e/user-picture-preview-consistency.spec.ts --reporter=line
-set COA_CORPUS_BUDGET=1024&& pnpm exec playwright test e2e/user-picture-quality-corpus.spec.ts --reporter=line
+set COA_CORPUS_BUDGET=1024&& set COA_CORPUS_ARTIFACT_ROOT=docs/coat-of-arms-fit-artifacts/user-picture-corpus-v7-budget-1024&& pnpm exec playwright test e2e/user-picture-quality-corpus.spec.ts --reporter=line
 pnpm test
 pnpm build
 ```

@@ -138,7 +138,7 @@ export interface ImageFitResult {
     searchBackend: 'cpu-reference' | 'webgl2-batch+cpu-reference'
     batchSearch: ImageFitBatchSearchReceipt
     scoringContract: 'alpha-weighted-srgb8-mse62-luma-gradient-l1-38-v1'
-    rendererContract: 'cpu-rgba8-bilinear-clamp-pixel-center-v1'
+    rendererContract: 'cpu-rgba8-bilinear-clamp-pixel-center-native-clockwise-v2'
     randomSeed: null
     surfaceMaskApplied: boolean
     sourceWidth: number
@@ -638,7 +638,8 @@ function descriptorDistance(
   rotation: number,
   flip: number,
 ): number {
-  const radians = rotation * Math.PI / 180
+  // CK3 applies positive serialized rotation clockwise in screen space.
+  const radians = -rotation * Math.PI / 180
   const cosine = Math.cos(radians)
   const sine = Math.sin(radians)
   const rotatedSpan = Math.abs(cosine) + Math.abs(sine)
@@ -706,7 +707,7 @@ function initialLayerGeometry(
   match: ShapeMatch,
   minimumScale = 0.035,
 ): Pick<LayerParameters, 'position' | 'scale'> {
-  const radians = match.rotation * Math.PI / 180
+  const radians = -match.rotation * Math.PI / 180
   const cosine = Math.cos(radians)
   const sine = Math.sin(radians)
   const [contentWidth, contentHeight] = match.shape.contentSpan
@@ -2298,7 +2299,7 @@ export function fitImageToCoatOfArms(
         : 'cpu-reference',
       batchSearch,
       scoringContract: 'alpha-weighted-srgb8-mse62-luma-gradient-l1-38-v1',
-      rendererContract: 'cpu-rgba8-bilinear-clamp-pixel-center-v1',
+      rendererContract: 'cpu-rgba8-bilinear-clamp-pixel-center-native-clockwise-v2',
       randomSeed: null,
       surfaceMaskApplied: Boolean(surfaceMask),
       sourceWidth,

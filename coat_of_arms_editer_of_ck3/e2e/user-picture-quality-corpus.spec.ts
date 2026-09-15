@@ -25,7 +25,9 @@ const corpus = JSON.parse(await readFile(resolve(fixtureRoot, 'cases.json'), 'ut
 }
 const budget = Number.parseInt(process.env.COA_CORPUS_BUDGET ?? '128', 10)
 if (!Number.isSafeInteger(budget) || budget < 1) throw new Error('COA_CORPUS_BUDGET must be a positive safe integer')
-const artifactRoot = resolve('test-results/user-picture-quality-corpus', `budget-${budget}`)
+const artifactRoot = process.env.COA_CORPUS_ARTIFACT_ROOT
+  ? resolve('..', process.env.COA_CORPUS_ARTIFACT_ROOT)
+  : resolve('test-results/user-picture-quality-corpus', `budget-${budget}`)
 const sha256 = (bytes: Uint8Array | string) => createHash('sha256').update(bytes).digest('hex').toUpperCase()
 
 test.describe.serial(`user picture quality corpus at budget ${budget}`, () => {

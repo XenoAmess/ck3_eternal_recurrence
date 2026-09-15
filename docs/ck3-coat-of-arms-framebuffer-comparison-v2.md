@@ -43,11 +43,21 @@ v2 改成 reference-independent 两阶段校准：
 ## 状态与证据边界
 
 截至 2026-09-16，v2 的合成夹具、service 绑定和官方 MCP 闭合 schema 已通过 26 项相关测试；
-真实 CK3 v2 corpus 仍待下一轮共享槽位运行。在该 live run 完成前：
+随后完成的 r5 在同一 CK3 会话内使用一次固定校准运行了 `pictures.zip` 全部 7 例：校准矩形为
+`[813,312,970,477]`，选中 21,776 个 surface 像素，7/7 均取得 Apply、Copy 和空间 crop。
 
-- `r4` 的 7/7 Apply/Copy 和小数 rotation 被原生 Copy 整数化是有效原生证据；
-- `r4` 的像素门禁与 crop 仅为 v1 失效诊断，不是产品 renderer 的失败清单；
-- 不得把 v2 static-ready 写成网页/CK3 像素一致性已经通过。
+r5 的像素结果中 picture-01/06 通过现有门禁，其余失败；但失败不是一个单一原因。picture-03/04
+主要是边缘阈值，picture-02/07 则有明显的大块空间错位。后两例与浏览器变换候选消融共同定位出正
+`rotation` 的屏幕方向错误：保持既有 `mirror → rotation → scale → position` 顺序，仅改用 CK3
+顺时针方向，picture-02 的 MAE 从 `0.143826` 降至 `0.050917`，picture-07 从 `0.236327`
+降至 `0.101815`。该对照使用同一个 r5 原生 crop，没有按候选重新定位或重新裁剪。
+
+r5 还证明 7 例的大载荷核心 Apply/Copy 计数闭环均成功；picture-02/05/07 的严格语义序列门禁仅因
+CK3 Copy 把各自一个小数 rotation 规范化成整数而失败。候选消融显示预先整数化没有提升像素一致性，
+所以网页继续保留 0.125° 级拟合值，同时在原生 round-trip 报告中单列规范化差异。
+
+产品 renderer 已升级为 `cpu-rgba8-bilinear-clamp-pixel-center-native-clockwise-v2`，并生成 v7
+七图新代码。r5 只能证明根因和旧输入行为；在 v7 原生重跑完成前，不得声明七图网页/CK3 像素门禁已通过。
 
 复现静态合同：
 

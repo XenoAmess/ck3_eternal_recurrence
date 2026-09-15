@@ -10,6 +10,20 @@ export interface RenderedCoatOfArms {
   pixels: Uint8ClampedArray
 }
 
+export type EmblemTransformConvention =
+  | 'scale-after-rotation'
+  | 'rotation-after-scale'
+
+export interface CoatOfArmsRenderOptions {
+  /**
+   * Kept explicit so native framebuffer diagnostics can compare the two
+   * plausible affine orders without changing the production default.
+   */
+  emblemTransformConvention?: EmblemTransformConvention
+  /** Diagnostic rotation polarity. CK3's native screen-space contract uses -1. */
+  emblemRotationSign?: 1 | -1
+}
+
 interface RenderAssets {
   pattern?: DecodedDds
   coloredEmblems: Record<string, DecodedDds>
@@ -155,17 +169,29 @@ function instanceUv(
   u: number,
   v: number,
   instance: CoatOfArmsInstance,
+  options: CoatOfArmsRenderOptions,
 ): [number, number] | null {
   const width = Math.abs(instance.scale[0])
   const height = Math.abs(instance.scale[1])
   if (width < 1e-8 || height < 1e-8) return null
-  const rotatedX = (u - instance.position[0]) * 2 / width
-  const rotatedY = -(v - instance.position[1]) * 2 / height
-  const radians = instance.rotation * Math.PI / 180
+  const deltaX = (u - instance.position[0]) * 2
+  const deltaY = -(v - instance.position[1]) * 2
+  const radians = instance.rotation * (options.emblemRotationSign ?? -1) * Math.PI / 180
   const cosine = Math.cos(radians)
   const sine = Math.sin(radians)
-  const sourceX = cosine * rotatedX + sine * rotatedY
-  const sourceY = -sine * rotatedX + cosine * rotatedY
+  let sourceX: number
+  let sourceY: number
+  if ((options.emblemTransformConvention ?? 'scale-after-rotation') === 'rotation-after-scale') {
+    const unrotatedX = cosine * deltaX + sine * deltaY
+    const unrotatedY = -sine * deltaX + cosine * deltaY
+    sourceX = unrotatedX / width
+    sourceY = unrotatedY / height
+  } else {
+    const scaledX = deltaX / width
+    const scaledY = deltaY / height
+    sourceX = cosine * scaledX + sine * scaledY
+    sourceY = -sine * scaledX + cosine * scaledY
+  }
   if (Math.abs(sourceX) > 1 || Math.abs(sourceY) > 1) return null
   let localU = (sourceX + 1) / 2
   let localV = (1 - sourceY) / 2
@@ -184,12 +210,21 @@ function drawInstance(
   emblem: ColoredEmblem,
   instance: CoatOfArmsInstance,
   namedColors: NamedColorMap,
+  options: CoatOfArmsRenderOptions = {},
 ) {
   const colors = resolvedColors(emblem.colors, namedColors)
   const radians = instance.rotation * Math.PI / 180
-  const rotatedSpan = Math.abs(Math.cos(radians)) + Math.abs(Math.sin(radians))
-  const halfWidth = Math.abs(instance.scale[0]) * rotatedSpan / 2
-  const halfHeight = Math.abs(instance.scale[1]) * rotatedSpan / 2
+  const absoluteCosine = Math.abs(Math.cos(radians))
+  const absoluteSine = Math.abs(Math.sin(radians))
+  const scaleX = Math.abs(instance.scale[0])
+  const scaleY = Math.abs(instance.scale[1])
+  const rotationAfterScale = options.emblemTransformConvention === 'rotation-after-scale'
+  const halfWidth = rotationAfterScale
+    ? (scaleX * absoluteCosine + scaleY * absoluteSine) / 2
+    : scaleX * (absoluteCosine + absoluteSine) / 2
+  const halfHeight = rotationAfterScale
+    ? (scaleX * absoluteSine + scaleY * absoluteCosine) / 2
+    : scaleY * (absoluteCosine + absoluteSine) / 2
   const minimumX = Math.max(0, Math.floor((instance.position[0] - halfWidth) * width - 1))
   const maximumX = Math.min(width, Math.ceil((instance.position[0] + halfWidth) * width + 1))
   const minimumY = Math.max(0, Math.floor((instance.position[1] - halfHeight) * height - 1))
@@ -198,7 +233,7 @@ function drawInstance(
     const v = (y + 0.5) / height
     for (let x = minimumX; x < maximumX; x += 1) {
       const u = (x + 0.5) / width
-      const local = instanceUv(u, v, instance)
+      const local = instanceUv(u, v, instance, options)
       if (!local) continue
       const emblemSample = sample(emblemTexture, local[0], local[1])
       let alpha = emblemSample[3]
@@ -297,6 +332,7 @@ export function renderCoatOfArms(
   assets: RenderAssets,
   namedColors: NamedColorMap,
   size = 230,
+  options: CoatOfArmsRenderOptions = {},
 ): RenderedCoatOfArms | null {
   if (!assets.pattern || size < 1 || !Number.isSafeInteger(size)) return null
   const result = new Uint8ClampedArray(size * size * 4)
@@ -347,6 +383,7 @@ export function renderCoatOfArms(
       emblem,
       instance,
       namedColors,
+      options,
     )
   }
   return { width: size, height: size, pixels: result }
