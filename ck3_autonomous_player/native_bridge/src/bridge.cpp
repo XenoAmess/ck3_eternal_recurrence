@@ -19,6 +19,9 @@
 #endif
 #include "xar_bridge/council_composition_candidate_observer_v1.hpp"
 #include "xar_bridge/council_application_main_v1.hpp"
+#if defined(XAR_CK3_ENABLE_G2_COUNCIL_APPLICATION_MAIN_PRIVATE_ROUTE_V1)
+#include "xar_bridge/council_application_main_private_transport_v1.hpp"
+#endif
 #if defined(XAR_CK3_ENABLE_G2_COUNCIL_COMPOSITION_STEWARD_CANDIDATES_PRIVATE_PROBE_V1)
 #include "xar_bridge/council_composition_steward_candidates_private_probe_v1.hpp"
 #endif
@@ -300,6 +303,10 @@ static xar::bridge::DomainConstructionRuntimeObserverStateV1
 #endif
 static xar::bridge::CouncilCompositionCandidateObserverStateV1
     g_council_composition_candidate_observer_v1{};
+#if defined(XAR_CK3_ENABLE_G2_COUNCIL_APPLICATION_MAIN_PRIVATE_ROUTE_V1)
+static xar::bridge::CouncilApplicationMainPrivateTransportV1
+    g_council_application_main_private_transport_v1{};
+#endif
 #if defined(XAR_CK3_ENABLE_G2_COUNCIL_COMPOSITION_STEWARD_CANDIDATES_PRIVATE_PROBE_V1)
 static xar::ck3_11906::CouncilCompositionStewardCandidatesBindingStateV1
     g_council_composition_steward_candidates_binding_v1{};
@@ -6432,6 +6439,9 @@ public:
   void MaybeInstallFrontend() noexcept {
     if (installed_) {
       MaybeConfigureMarriageRoute();
+#if defined(XAR_CK3_ENABLE_G2_COUNCIL_APPLICATION_MAIN_PRIVATE_ROUTE_V1)
+      MaybeConfigureCouncilPrivateRoute();
+#endif
       return;
     }
     if (attempted_ || game_ == nullptr) {
@@ -6552,6 +6562,9 @@ public:
     installed_ = xar::ck3_11906::InstallMainThreadQueryMailboxV1(
         g_main_thread_query_mailbox_v1, environment);
     MaybeConfigureMarriageRoute();
+#if defined(XAR_CK3_ENABLE_G2_COUNCIL_APPLICATION_MAIN_PRIVATE_ROUTE_V1)
+    MaybeConfigureCouncilPrivateRoute();
+#endif
   }
 
   void MaybeInstall(const xar::game::Snapshot &) noexcept {
@@ -6578,7 +6591,20 @@ public:
     }
   }
 
-private:
+ private:
+#if defined(XAR_CK3_ENABLE_G2_COUNCIL_APPLICATION_MAIN_PRIVATE_ROUTE_V1)
+  void MaybeConfigureCouncilPrivateRoute() noexcept {
+    if (!installed_ || council_private_route_configured_) return;
+    // Linking Council23 is insufficient to admit an action. The private
+    // candidate routes only the exact paused query until all final gates bind.
+    council_private_route_configured_ =
+        xar::bridge::ConfigureCouncilApplicationMainPrivateTransportV1(
+            g_council_application_main_private_transport_v1,
+            g_main_thread_query_mailbox_v1,
+            xar::ck3_11906::BindCurrentProcess(true),
+            reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr)));
+  }
+#endif
   void MaybeConfigureMarriageRoute() noexcept {
     // DllMain may start WorkerMain before the injector's suspended-process
     // PrepareStartup remote call has installed the resolution journal. Every
@@ -6598,6 +6624,9 @@ private:
   bool attempted_ = false;
   bool installed_ = false;
   bool marriage_route_configured_ = false;
+#if defined(XAR_CK3_ENABLE_G2_COUNCIL_APPLICATION_MAIN_PRIVATE_ROUTE_V1)
+  bool council_private_route_configured_ = false;
+#endif
 };
 
 bool RouteHostileScopeMatchesSnapshot(
@@ -6969,6 +6998,10 @@ void RunConnectedSession(
   while (connected && WaitForSingleObject(g_stop_event, 0) == WAIT_TIMEOUT) {
     const ULONGLONG now = GetTickCount64();
     if (now >= next_heartbeat) {
+#if defined(XAR_CK3_ENABLE_G2_COUNCIL_APPLICATION_MAIN_PRIVATE_ROUTE_V1)
+      xar::bridge::PollCouncilApplicationMainPrivateTransportV1(
+          g_council_application_main_private_transport_v1);
+#endif
       xar::ck3_11906::RetryDeferredCoatOfArmsDesignerProbeHookV1(
           g_coat_of_arms_designer_probe_hook_v1);
       xar::ck3_11906::TryInstallMainThreadFrontendBoundaryHookV1(
@@ -7047,7 +7080,11 @@ void RunConnectedSession(
           connected = xar::bridge::WriteFrame(
               pipe, CommandResultFrame(request_id, "", false,
                                        "native gameplay step is missing"));
-        } else if (!game.supports_step(step)) {
+        } else if (!game.supports_step(step)
+#if defined(XAR_CK3_ENABLE_G2_COUNCIL_APPLICATION_MAIN_PRIVATE_ROUTE_V1)
+                   && !xar::bridge::IsCouncilApplicationMainPrivateStepV1(step)
+#endif
+        ) {
           connected = xar::bridge::WriteFrame(
               pipe, CommandResultFrame(request_id, step, false,
                                        "unsupported native gameplay step"));
@@ -7055,6 +7092,22 @@ void RunConnectedSession(
           xar::ck3_11906::TacticalDailySentinelArmRequestV1
               tactical_sentinel_request{};
           std::uint64_t tactical_sentinel_cancel_generation = 0;
+#if defined(XAR_CK3_ENABLE_G2_COUNCIL_APPLICATION_MAIN_PRIVATE_ROUTE_V1)
+          if (xar::bridge::IsCouncilApplicationMainPrivateStepV1(step)) {
+            if (!previous_snapshot.has_value()) {
+              connected = xar::bridge::WriteFrame(
+                  pipe, CommandResultFrame(request_id, step, false,
+                                           "private Council snapshot unavailable"));
+            } else {
+              const auto response =
+                  xar::bridge::ExecuteCouncilApplicationMainPrivateStepV1(
+                      g_council_application_main_private_transport_v1,
+                      step, incoming.payload, request_id,
+                      *previous_snapshot, state_revision);
+              connected = xar::bridge::WriteFrame(pipe, response);
+            }
+          } else
+#endif
           if (step == xar::ck3_11906::kFrontendGuiRouteV1Step ||
               step == xar::ck3_11906::kFrontendGuiTreeInspectionV1Step ||
               step == xar::ck3_11906::

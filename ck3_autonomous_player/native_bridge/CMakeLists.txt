@@ -186,6 +186,12 @@ option(
 )
 
 option(
+  XAR_CK3_ENABLE_G2_COUNCIL_APPLICATION_MAIN_PRIVATE_ROUTE_V1
+  "Enable the unadvertised Council application-main controlled acceptance transport"
+  OFF
+)
+
+option(
   XAR_CK3_ENABLE_G2_ACTIVITY_PLANNING_SNAPSHOT_PRIVATE_GLUE_V1
   "Link the activity-owned paused application-main snapshot glue"
   OFF
@@ -366,6 +372,7 @@ add_library(xar_ck3_bridge SHARED
   src/council_assign_councillor_action_v1.cpp
   src/council_assign_councillor_native_submit_adapter_v1.cpp
   src/council_application_main_v1.cpp
+  src/council_application_main_private_transport_v1.cpp
   src/ck3_11906.cpp
   src/ck3_11906_adapter.cpp
   src/coat_of_arms_designer_probe_v1.cpp
@@ -771,6 +778,11 @@ if(XAR_CK3_ENABLE_G2_COUNCIL_COMPOSITION_STEWARD_CANDIDATES_PRIVATE_PROBE_V1)
   )
   target_compile_definitions(xar_ck3_bridge PRIVATE
     XAR_CK3_ENABLE_G2_COUNCIL_COMPOSITION_STEWARD_CANDIDATES_PRIVATE_PROBE_V1=1
+  )
+endif()
+if(XAR_CK3_ENABLE_G2_COUNCIL_APPLICATION_MAIN_PRIVATE_ROUTE_V1)
+  target_compile_definitions(xar_ck3_bridge PRIVATE
+    XAR_CK3_ENABLE_G2_COUNCIL_APPLICATION_MAIN_PRIVATE_ROUTE_V1=1
   )
 endif()
 if(XAR_CK3_ENABLE_G2_CULTURE_INNOVATION_ASYNC_PRIVATE_PROBE_V1)
@@ -2506,6 +2518,11 @@ if(BUILD_TESTING)
       ${CMAKE_CURRENT_SOURCE_DIR}/include/xar_bridge/council_assign_councillor_action_v1.hpp
       --action-source
       ${CMAKE_CURRENT_SOURCE_DIR}/src/council_assign_councillor_action_v1.cpp
+  )
+  add_test(
+    NAME xar_ck3_native_bridge_council_application_main_private_transport_source
+    COMMAND ${Python3_EXECUTABLE}
+      ${CMAKE_CURRENT_SOURCE_DIR}/research/test_council_application_main_private_transport_source.py
   )
 
   add_executable(xar_ck3_council_composition_candidates_enrichment_v1_test

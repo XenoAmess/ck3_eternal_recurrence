@@ -1,0 +1,47 @@
+# Council application-main controlled transport (1.19.0.6)
+
+Status: **static-ready only**. This is the private Council26 acceptance route, not
+an advertised gameplay capability or evidence that a councillor was appointed.
+The exact CK3 EXE SHA-256 remains
+`2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86`.
+
+Council23 already installed `ExecuteCouncilApplicationMainV1` in fixed mailbox
+slot 41. Its worker never configured a source binding or submitted a request.
+Council26 adds a build-time `XAR_CK3_ENABLE_G2_COUNCIL_APPLICATION_MAIN_PRIVATE_ROUTE_V1`
+switch, default `OFF`. With it `ON`, the worker binds the exact candidate
+reader/enrichment/projection to the currently published paused snapshot. The
+private query is not placed in the adapter capability list or hello frame.
+The action path still requires a separately admitted exact final-gate callback;
+the query-only configuration returns `complete_native_action_gates_not_bound`
+for assignment and receipt requests.
+
+The controlled native pipe request is a protocol v1 `execute_step` frame. After
+the host reports a paused native snapshot at revision `N`, submit:
+
+```json
+{"type":"execute_step","protocol_version":1,"request_id":"council-query-1","step":"private-query-council-composition-candidates-v1","expected_revision":N}
+```
+
+This returns typed `pending` once the mailbox accepts the request. The worker
+does **not** synchronously wait or cancel; the CK3 application-main pump must
+run before the result can appear. Poll with a fresh request ID:
+
+```json
+{"type":"execute_step","protocol_version":1,"request_id":"council-status-1","step":"private-council-application-main-status-v1","expected_revision":N}
+```
+
+An `idle` status means no request is in flight. A completed status returns the
+Council23 typed envelope, including exact source revision, incumbent and
+candidate rows. Treat `query_unavailable`, infrastructure failure, timeout and
+unexecuted as separate outcomes. The bounded read-only acceptance window is
+60 wall-clock seconds from query acceptance to a typed terminal status; it
+must not modify the source save or advance the game date. A real action still
+requires four separate paused-live final gates (already-councillor, guest,
+pending interaction and replacement fireability), helper-only ACK, an
+independent later paused frame and formal next-turn consumption.
+
+The query-only Release candidate was built with Visual Studio 18 and the
+exact-build source path. It passed the Council23 source verifier, the Council26
+normal/optimized source contract and a Release `xar_ck3_bridge` build. The
+bounded live query and four action gates remain to be run by the single CK3
+instance owner.
