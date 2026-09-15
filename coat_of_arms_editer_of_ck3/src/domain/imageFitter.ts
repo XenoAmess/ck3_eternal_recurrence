@@ -1287,7 +1287,8 @@ function refinePaintedStateAtEdgeHotspots(
   // Edge-search breadth is computational work, not a hidden layer clamp.
   // Scale it with the user's budget so the 128-instance reference point does
   // not pay the same 32-hotspot exhaustive pass as 512+ instance runs.
-  const hotspotLimit = Math.min(32, Math.max(8, Math.floor(maxLayers / 16)))
+  const normalizedHotspotBudget = Math.min(maxLayers, 1_024) / 1_024
+  const hotspotLimit = Math.max(1, Math.floor(32 * normalizedHotspotBudget * normalizedHotspotBudget))
   for (let layer = 0; layer < maximumLayers; layer += 1) {
     const hotspots = edgeResidualHotspots(target, state.candidate.rendered, hotspotLimit)
     const rectangles = new Map<string, [number, number, number, number]>()
