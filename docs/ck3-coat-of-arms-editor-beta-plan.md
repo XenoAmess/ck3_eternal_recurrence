@@ -26,6 +26,11 @@ WP3 第二候选 [`xenoamess-hunter-v6-edge-refined`](coat-of-arms-fit-artifacts
 又删除 2 个完全被覆盖的实例且 96/230/512 px 零像素变化。当前继续执行 Pareto 质量剪枝和 v6 原生文本闭环；在这些门禁完成前
 WP3 仍保持 `in_progress`。
 
+Pareto 质量剪枝现已通过：在 exact 固定点上继续删除 3 个可见但有害的实例，最终 1,003 个实例；96/230/512 px 的总损失与
+边缘损失全部下降。完整测量见
+[`xenoamess-hunter-v6-pareto-pruned`](coat-of-arms-fit-artifacts/xenoamess-hunter-v6-pareto-pruned/README.md)。
+下一道晋级门禁为这份 262,138-byte 最终文本的 MCP v2 CK3 Apply/Copy；原生 framebuffer 仍是独立的像素证据缺口。
+
 ## 1. 不变约束
 
 - 正式 GitHub Pages 平台必须纯前端运行，不安装、启动或连接 CK3，也不依赖 Java、Quarkus、Python、Steam 或本机 MCP。

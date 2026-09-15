@@ -10,10 +10,13 @@ import { renderCoatOfArms, type NamedColorMap, type RenderedCoatOfArms } from '.
 import type { CoatOfArms, CoatOfArmsInstance, ColoredEmblem } from './types'
 
 export interface InstancePruneOptions {
+  mode?: 'pixel-exact' | 'metric-pareto'
   searchResolution?: number
   validationResolutions?: number[]
   numericLossTolerance?: number
   allowedVisualDifferenceBytes?: number
+  allowedCumulativeTotalLossIncrease?: number
+  allowedCumulativeEdgeLossIncrease?: number
   onProgress?: (progress: InstancePruneProgress) => void
 }
 
@@ -41,14 +44,23 @@ export interface InstanceNecessityEvidence {
   depth: number
   pass: number
   removed: boolean
-  reason: 'pixel-exact-redundant' | 'changes-search-pixels' | 'changes-validation-pixels'
+  reason:
+    | 'pixel-exact-redundant'
+    | 'metric-pareto-redundant'
+    | 'changes-search-pixels'
+    | 'changes-validation-pixels'
+    | 'would-worsen-search-metric'
+    | 'would-worsen-validation-metric'
   measurements: InstanceRemovalMeasurement[]
 }
 
 export interface InstancePruneReceipt {
-  contract: 'exact-leave-one-out-fixed-point-v1'
+  contract: 'exact-leave-one-out-fixed-point-v1' | 'metric-pareto-leave-one-out-fixed-point-v1'
+  mode: 'pixel-exact' | 'metric-pareto'
   numericLossTolerance: number
   allowedVisualDifferenceBytes: number
+  allowedCumulativeTotalLossIncrease: number
+  allowedCumulativeEdgeLossIncrease: number
   searchResolution: number
   validationResolutions: number[]
   drawnInstancesBefore: number
@@ -58,6 +70,11 @@ export interface InstancePruneReceipt {
   evaluatedCandidates: number
   initialMetrics: ImageFitMetrics
   finalMetrics: ImageFitMetrics
+  resolutionMetrics: Array<{
+    resolution: number
+    initial: Pick<ImageFitMetrics, 'colorLoss' | 'edgeLoss' | 'totalLoss'>
+    final: Pick<ImageFitMetrics, 'colorLoss' | 'edgeLoss' | 'totalLoss'>
+  }>
   removedEvidence: InstanceNecessityEvidence[]
   finalNecessityEvidence: InstanceNecessityEvidence[]
 }
@@ -174,18 +191,24 @@ export function pruneRedundantInstances(
   namedColors: NamedColorMap = {},
   options: InstancePruneOptions = {},
 ): InstancePruneResult {
+  const mode = options.mode ?? 'pixel-exact'
   const searchResolution = options.searchResolution ?? 96
   const validationResolutions = [...new Set(options.validationResolutions ?? [230, 512])]
     .filter((resolution) => resolution !== searchResolution)
   const numericLossTolerance = options.numericLossTolerance ?? 1e-12
   const allowedVisualDifferenceBytes = options.allowedVisualDifferenceBytes ?? 0
+  const allowedCumulativeTotalLossIncrease = options.allowedCumulativeTotalLossIncrease ?? 0
+  const allowedCumulativeEdgeLossIncrease = options.allowedCumulativeEdgeLossIncrease ?? 0
   if (
-    !Number.isSafeInteger(searchResolution)
+    !['pixel-exact', 'metric-pareto'].includes(mode)
+    || !Number.isSafeInteger(searchResolution)
     || searchResolution < 1
     || validationResolutions.some((value) => !Number.isSafeInteger(value) || value < 1)
     || numericLossTolerance < 0
     || allowedVisualDifferenceBytes !== 0
-  ) throw new Error('剪枝门禁参数不合法；v1 只允许零像素差')
+    || allowedCumulativeTotalLossIncrease < 0
+    || allowedCumulativeEdgeLossIncrease < 0
+  ) throw new Error('剪枝门禁参数不合法；v1 只允许零像素差且损失预算不能为负')
 
   const items = flatten(coatOfArms)
   const drawnInstancesBefore = items.length
@@ -209,6 +232,7 @@ export function pruneRedundantInstances(
       namedColors,
     )]
   )))
+  const initialStates = new Map(states)
   const initialMetrics = { ...states.get(searchResolution)!.metrics, relativeImprovement: 0 }
   const removedEvidence: InstanceNecessityEvidence[] = []
   let finalNecessityEvidence: InstanceNecessityEvidence[] = []
@@ -227,7 +251,10 @@ export function pruneRedundantInstances(
       const candidateModel = modelFromItems(coatOfArms, candidateItems)
       const measurements: InstanceRemovalMeasurement[] = []
       const candidateStates = new Map<number, ResolutionState>()
-      let reason: InstanceNecessityEvidence['reason'] = 'pixel-exact-redundant'
+      let removable = true
+      let reason: InstanceNecessityEvidence['reason'] = mode === 'pixel-exact'
+        ? 'pixel-exact-redundant'
+        : 'metric-pareto-redundant'
       for (const resolution of resolutions) {
         const current = states.get(resolution)!
         const candidate = renderState(
@@ -247,11 +274,29 @@ export function pruneRedundantInstances(
           edgeLossDelta: candidate.metrics.edgeLoss - current.metrics.edgeLoss,
           totalLossDelta: candidate.metrics.totalLoss - current.metrics.totalLoss,
         })
-        if (difference.differingBytes > allowedVisualDifferenceBytes) {
-          reason = resolution === searchResolution
-            ? 'changes-search-pixels'
-            : 'changes-validation-pixels'
+        if (mode === 'pixel-exact' && difference.differingBytes > allowedVisualDifferenceBytes) {
+          removable = false
+          reason = resolution === searchResolution ? 'changes-search-pixels' : 'changes-validation-pixels'
           break
+        }
+        if (mode === 'metric-pareto') {
+          const initial = initialStates.get(resolution)!
+          const exceedsCurrent = candidate.metrics.totalLoss > current.metrics.totalLoss + numericLossTolerance
+            || candidate.metrics.edgeLoss > current.metrics.edgeLoss + numericLossTolerance
+          const exceedsCumulative = candidate.metrics.totalLoss
+              > initial.metrics.totalLoss + allowedCumulativeTotalLossIncrease + numericLossTolerance
+            || candidate.metrics.edgeLoss
+              > initial.metrics.edgeLoss + allowedCumulativeEdgeLossIncrease + numericLossTolerance
+          if (removable && (exceedsCurrent || exceedsCumulative)) {
+            removable = false
+            reason = resolution === searchResolution
+              ? 'would-worsen-search-metric'
+              : 'would-worsen-validation-metric'
+            // One failed member of the fixed resolution gate is sufficient to
+            // prove this instance must stay. Avoid rendering the remaining
+            // high-resolution members merely to collect redundant failures.
+            break
+          }
         }
       }
       evaluatedCandidates += 1
@@ -269,7 +314,7 @@ export function pruneRedundantInstances(
         sourceInstanceIndex: item.sourceInstanceIndex,
         depth: item.instance.depth,
         pass: fixedPointPasses,
-        removed: reason === 'pixel-exact-redundant',
+        removed: removable,
         reason,
         measurements,
       }
@@ -296,17 +341,35 @@ export function pruneRedundantInstances(
     ...states.get(searchResolution)!.metrics,
     relativeImprovement: 0,
   }
-  for (const key of ['colorLoss', 'edgeLoss', 'totalLoss'] as const) {
-    if (Math.abs(finalMetrics[key] - initialMetrics[key]) > numericLossTolerance) {
-      throw new Error(`剪枝固定点改变了 ${key}`)
+  for (const resolution of resolutions) {
+    const initial = initialStates.get(resolution)!
+    const final = states.get(resolution)!
+    if (mode === 'pixel-exact') {
+      for (const key of ['colorLoss', 'edgeLoss', 'totalLoss'] as const) {
+        if (Math.abs(final.metrics[key] - initial.metrics[key]) > numericLossTolerance) {
+          throw new Error(`精确剪枝固定点改变了 ${resolution}px ${key}`)
+        }
+      }
+    } else if (
+      final.metrics.totalLoss
+        > initial.metrics.totalLoss + allowedCumulativeTotalLossIncrease + numericLossTolerance
+      || final.metrics.edgeLoss
+        > initial.metrics.edgeLoss + allowedCumulativeEdgeLossIncrease + numericLossTolerance
+    ) {
+      throw new Error(`Pareto 剪枝超过 ${resolution}px 累计损失预算`)
     }
   }
   return {
     coatOfArms: compressed,
     receipt: {
-      contract: 'exact-leave-one-out-fixed-point-v1',
+      contract: mode === 'pixel-exact'
+        ? 'exact-leave-one-out-fixed-point-v1'
+        : 'metric-pareto-leave-one-out-fixed-point-v1',
+      mode,
       numericLossTolerance,
       allowedVisualDifferenceBytes,
+      allowedCumulativeTotalLossIncrease,
+      allowedCumulativeEdgeLossIncrease,
       searchResolution,
       validationResolutions,
       drawnInstancesBefore,
@@ -316,6 +379,11 @@ export function pruneRedundantInstances(
       evaluatedCandidates,
       initialMetrics,
       finalMetrics,
+      resolutionMetrics: resolutions.map((resolution) => ({
+        resolution,
+        initial: { ...initialStates.get(resolution)!.metrics },
+        final: { ...states.get(resolution)!.metrics },
+      })),
       removedEvidence,
       finalNecessityEvidence,
     },

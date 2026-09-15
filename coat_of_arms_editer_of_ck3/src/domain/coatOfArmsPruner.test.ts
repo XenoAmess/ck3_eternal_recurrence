@@ -88,4 +88,62 @@ describe('coat of arms instance pruner', () => {
       { allowedVisualDifferenceBytes: 1 },
     )).toThrow(/只允许零像素差/)
   })
+
+  it('removes visible instances only when total and edge losses do not regress at any resolution', () => {
+    const colors: NamedColorMap = { white: [1, 1, 1], red: [1, 0, 0] }
+    const pattern = texture()
+    const block = texture()
+    const background: CoatOfArms = {
+      outerKey: 'coa', parent: '', pattern: 'pattern.dds', colors: ['white', 'white', 'white'],
+      coloredEmblems: [], texturedEmblems: [],
+    }
+    const targetRender = renderCoatOfArms(background, { pattern, coloredEmblems: {} }, colors, 32)!
+    const withHarmfulLayer: CoatOfArms = {
+      ...background,
+      coloredEmblems: [{
+        texture: 'block.dds', colors: ['red', 'red', 'red'], mask: [],
+        instances: [{ position: [0.5, 0.5], scale: [0.5, 0.5], rotation: 0, depth: 1 }],
+      }],
+    }
+    const exact = pruneRedundantInstances(
+      withHarmfulLayer,
+      { width: 32, height: 32, pixels: targetRender.pixels },
+      pattern,
+      { 'block.dds': block },
+      undefined,
+      colors,
+      { searchResolution: 32, validationResolutions: [48, 64] },
+    )
+    expect(exact.receipt.drawnInstancesAfter).toBe(1)
+
+    const pareto = pruneRedundantInstances(
+      withHarmfulLayer,
+      { width: 32, height: 32, pixels: targetRender.pixels },
+      pattern,
+      { 'block.dds': block },
+      undefined,
+      colors,
+      {
+        mode: 'metric-pareto',
+        searchResolution: 32,
+        validationResolutions: [48, 64],
+        numericLossTolerance: 1e-12,
+        allowedCumulativeTotalLossIncrease: 0,
+        allowedCumulativeEdgeLossIncrease: 0,
+      },
+    )
+    expect(pareto.receipt).toMatchObject({
+      contract: 'metric-pareto-leave-one-out-fixed-point-v1',
+      mode: 'metric-pareto',
+      drawnInstancesBefore: 1,
+      drawnInstancesAfter: 0,
+      removedInstances: 1,
+    })
+    expect(pareto.receipt.removedEvidence[0].reason).toBe('metric-pareto-redundant')
+    expect(pareto.receipt.resolutionMetrics).toHaveLength(3)
+    expect(pareto.receipt.resolutionMetrics.every((item) => (
+      item.final.totalLoss <= item.initial.totalLoss + 1e-12
+      && item.final.edgeLoss <= item.initial.edgeLoss + 1e-12
+    ))).toBe(true)
+  })
 })

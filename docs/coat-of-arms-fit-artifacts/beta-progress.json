@@ -1,6 +1,6 @@
 {
   "schema": "ck3-coa-beta-progress-v1",
-  "updatedAt": "2026-09-15T21:15:00+08:00",
+  "updatedAt": "2026-09-15T21:27:00+08:00",
   "overallStatus": "in_progress",
   "workPackages": [
     {
@@ -126,10 +126,13 @@
                 "pnpm exec vitest run src/domain/imageFitter.test.ts src/domain/imageFitter.seams.test.ts",
                 "pnpm exec playwright test e2e/reference-hunter-fit.spec.ts",
                 "pnpm exec playwright test e2e/standalone-image-fit.spec.ts",
+                "pnpm exec playwright test e2e/reference-hunter-v6-compression.spec.ts",
+                "pnpm exec playwright test e2e/reference-hunter-v6-prune.spec.ts",
+                "pnpm exec playwright test e2e/reference-hunter-v6-pareto-prune.spec.ts",
                 "pnpm test",
                 "pnpm run build"
             ],
-            "resultPath": "docs/coat-of-arms-fit-artifacts/xenoamess-hunter-v6-edge-refined/",
+            "resultPath": "docs/coat-of-arms-fit-artifacts/xenoamess-hunter-v6-pareto-pruned/",
             "keyMetrics": {
                 "candidateStatus": "browser_quality_passed_native_roundtrip_pending",
                 "sourceWidth": 1024,
@@ -149,6 +152,14 @@
                 "compressedBytes": 263603,
                 "exactPrunedInstances": 1006,
                 "exactPrunedBytes": 263165,
+                "paretoPrunedInstances": 1003,
+                "paretoPrunedBytes": 262138,
+                "paretoPrunedTotalLoss96": 0.024011474732441213,
+                "paretoPrunedEdgeLoss96": 0.040573889197948965,
+                "paretoPrunedTotalLoss230": 0.019813096544771237,
+                "paretoPrunedEdgeLoss230": 0.03008042410290529,
+                "paretoPrunedTotalLoss512": 0.014713388869018178,
+                "paretoPrunedEdgeLoss512": 0.016140431250088766,
                 "hybridTotalLoss": 0.04201755718425561,
                 "hybridEdgeLoss": 0.06822335331473522,
                 "hybridLayers": 960,
@@ -157,7 +168,7 @@
                 "primaryNonRegressionSelectionTest": "passed",
                 "wp3EdgeImprovementGate": "passed",
                 "nativeRoundTrip": "pending",
-                "paretoPrune": "pending"
+                "paretoPrune": "passed"
             },
             "blockers": []
         },
