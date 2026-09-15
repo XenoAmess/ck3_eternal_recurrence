@@ -1,0 +1,142 @@
+{
+  "contract": "council_assignment_action_1_19_0_6_abi",
+  "schema_version": 1,
+  "status": "static-private-unadvertised",
+  "target_capability": "game.action.assign-councillor-v1",
+  "coverage": {
+    "position_key": "councillor_steward",
+    "routes": ["assign_vacant", "replace_incumbent"],
+    "excluded": [
+      "swap_position",
+      "guest_recruitment",
+      "current_councillor_reassignment",
+      "public_bridge_or_mcp_registration"
+    ]
+  },
+  "build": {
+    "game_version": "1.19.0.6",
+    "sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+    "file_size": 95206008,
+    "machine": "0x8664",
+    "preferred_image_base": "0x140000000",
+    "image_size": "0x5C2D000"
+  },
+  "source_files": [
+    {
+      "name": "potential_councillor_gui",
+      "path_from_game_root": "gui/window_council_potential_councillor.gui",
+      "size": 7657,
+      "sha256": "1D5F5B7422BADB13595D458F28D6A86BDF6162BA54350CF9EF32115BF556A956",
+      "evidence": "lines 191-216 route both occupied and vacant non-guest rows through set_position; replacement opens the confirmation object"
+    },
+    {
+      "name": "council_position_definitions",
+      "path_from_game_root": "common/council_positions/00_council_positions.txt",
+      "size": 85905,
+      "sha256": "8D667AFE296D987F2E849A5C55B17EF9A98E73B9E73E925898EA2986B3155909",
+      "evidence": "freezes councillor_steward as a native council position; no script effect substitutes for the command path"
+    }
+  ],
+  "instruction_spans": [
+    {
+      "name": "potential_councillor_set_position_handler",
+      "rva": "0x10573C0",
+      "end_rva": "0x1057673",
+      "size": "0x2B3",
+      "sha256": "45D8C6440DF1F063F2788844596FD33A974B315497084FF808DC6578C888C128",
+      "runtime_functions": [["0x10573C0", "0x1057673", "0x4CA0420"]]
+    },
+    {
+      "name": "fire_confirmation_can_confirm_chain",
+      "rva": "0x105C770",
+      "end_rva": "0x105C93C",
+      "size": "0x1CC",
+      "sha256": "4FDE6075164871FAEE7C3B7D4FF7136BFB9A8C968F141769A96C7D04AE57B2CC",
+      "runtime_functions": [
+        ["0x105C770", "0x105C885", "0x4CA09B4"],
+        ["0x105C885", "0x105C91D", "0x4CA09C0"],
+        ["0x105C91D", "0x105C92F", "0x4CA09D4"],
+        ["0x105C92F", "0x105C93C", "0x4CA09E8"]
+      ]
+    },
+    {
+      "name": "fire_confirmation_confirm_and_dispatch",
+      "rva": "0x105C940",
+      "end_rva": "0x105CB15",
+      "size": "0x1D5",
+      "sha256": "9F5ED44BAEE3DC22A0AD86B093945889F9E4E1BBE157AD6F1BF7047691DD2580",
+      "runtime_functions": [["0x105C940", "0x105CB15", "0x4CA09F8"]]
+    },
+    {
+      "name": "send_character_interaction_helper",
+      "rva": "0x1056C00",
+      "end_rva": "0x1056DA3",
+      "size": "0x1A3",
+      "sha256": "60434B921531B94AFFBCC3B1D33E5BA316AEB9F3DEC51791B35993F7A039029A",
+      "runtime_functions": [["0x1056C00", "0x1056DA3", "0x4CA0304"]]
+    },
+    {
+      "name": "send_command_validator_adapter",
+      "rva": "0x26B3350",
+      "end_rva": "0x26B3359",
+      "size": "0x9",
+      "sha256": "69F73B8EE5C7AB841C42C84E61F4B60860D3CB29BBF6E2BF74F7D293AAD1AACD",
+      "runtime_functions": []
+    },
+    {
+      "name": "send_command_final_validator",
+      "rva": "0x2C43F00",
+      "end_rva": "0x2C44070",
+      "size": "0x170",
+      "sha256": "3B9A75EC79B4C93DE7C1E3F9D45ADA2518048611EFCF7C0475F243C93086ED54",
+      "runtime_functions": [["0x2C43F00", "0x2C44070", "0x4DDF6F8"]]
+    },
+    {
+      "name": "send_command_executor_adapter",
+      "rva": "0x26B32D0",
+      "end_rva": "0x26B3344",
+      "size": "0x74",
+      "sha256": "F871CC1FAA8411D93368EA5BB146BBD5B301D5373760CBC3F46F1E732A163743",
+      "runtime_functions": [["0x26B32D0", "0x26B3344", "0x4C39588"]]
+    },
+    {
+      "name": "send_command_execution_core",
+      "rva": "0x26B30A0",
+      "end_rva": "0x26B3213",
+      "size": "0x173",
+      "sha256": "F3BF829E36AE9E0F5C10A6313EC0F590590F84499242974B4374CCDE353445B3",
+      "runtime_functions": [["0x26B30A0", "0x26B3213", "0x4C6552C"]]
+    }
+  ],
+  "relative_edges": [
+    {"name": "vacant_set_position_to_send_helper", "instruction_rva": "0x105752B", "instruction_size": 5, "displacement_offset": 1, "target_rva": "0x1056C00"},
+    {"name": "replace_confirm_to_send_helper", "instruction_rva": "0x105C9F8", "instruction_size": 5, "displacement_offset": 1, "target_rva": "0x1056C00"},
+    {"name": "replace_fallback_to_send_helper", "instruction_rva": "0x105CA0F", "instruction_size": 5, "displacement_offset": 1, "target_rva": "0x1056C00"},
+    {"name": "helper_to_generic_command_manager", "instruction_rva": "0x1056D19", "instruction_size": 5, "displacement_offset": 1, "target_rva": "0x973E00"},
+    {"name": "validator_adapter_to_final_validator", "instruction_rva": "0x26B3354", "instruction_size": 5, "displacement_offset": 1, "target_rva": "0x2C43F00"},
+    {"name": "final_validator_to_interaction_gate", "instruction_rva": "0x2C43F1D", "instruction_size": 5, "displacement_offset": 1, "target_rva": "0x2C42A30"},
+    {"name": "executor_adapter_to_execution_core", "instruction_rva": "0x26B32EF", "instruction_size": 5, "displacement_offset": 1, "target_rva": "0x26B30A0"},
+    {"name": "execution_core_to_interaction_dispatch", "instruction_rva": "0x26B320E", "instruction_size": 5, "displacement_offset": 1, "target_rva": "0x2752620"}
+  ],
+  "absolute_pointer_edges": [
+    {"name": "fire_confirmation_can_confirm_vtable_slot", "pointer_rva": "0x411B9B8", "target_rva": "0x105C770"},
+    {"name": "fire_confirmation_confirm_vtable_slot", "pointer_rva": "0x411B9C8", "target_rva": "0x105C940"},
+    {"name": "send_command_validator_vtable_slot", "pointer_rva": "0x4082A28", "target_rva": "0x26B3350"},
+    {"name": "send_command_executor_vtable_slot", "pointer_rva": "0x40829D0", "target_rva": "0x26B32D0"}
+  ],
+  "ascii_evidence": [
+    {"name": "set_position_gui_symbol", "rva": "0x411A608", "value": "set_position"},
+    {"name": "swap_position_excluded_symbol", "rva": "0x411A618", "value": "swap_position"},
+    {"name": "fire_confirmation_rtti", "rva": "0x5232970", "value": ".?AVCFireFromCouncilConfirmation@@"},
+    {"name": "send_command_rtti", "rva": "0x513C118", "value": ".?AVCSendCharacterInteractionCommand@@"}
+  ],
+  "uint64_evidence": [],
+  "semantic_findings": [
+    "Vacant assignment and confirmed replacement both call 0x1056C00 with candidate full CharacterID and the active council task full ID.",
+    "Replacement remains gated by the exact CFireFromCouncilConfirmation CanConfirm chain before the shared helper is invoked.",
+    "CSendCharacterInteractionCommand vtable dispatch reaches 0x2C43F00, which re-runs native interaction validation at command time.",
+    "0x1056C00 returns void and does not propagate the generic command manager result; an immediate action acknowledgement proves helper invocation only.",
+    "Success requires a distinct later paused frame where councillor_steward incumbent is the requested candidate full ID."
+  ],
+  "next_live_admission": "Bind the private action core to the R693 reader frame and exact helper on one frozen paused candidate; require helper-invoked acknowledgement plus a later paused incumbent postcondition before any public registration."
+}
