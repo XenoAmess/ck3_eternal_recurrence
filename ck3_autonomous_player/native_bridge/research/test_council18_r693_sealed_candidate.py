@@ -23,6 +23,7 @@ from council18_candidate_runtime_identity import (
 from prepare_council18_r693_sealed_candidate import (
     RUNTIME_SOURCE_COMMIT,
     SOURCE_BRIDGE_COMMIT,
+    SOURCE_BRIDGE_DLL_SHA256,
     SOURCE_HARNESS_COMMIT,
     SOURCE_PIPE,
     advance_rounds,
@@ -30,6 +31,7 @@ from prepare_council18_r693_sealed_candidate import (
     copy_sealed_inputs,
     patch_python_entrypoints,
     patch_text_bindings,
+    verify_cmake_private_options,
     verify_harness_commit,
     verify_runtime_repository,
 )
@@ -110,6 +112,17 @@ class Council18CandidateTests(unittest.TestCase):
             "R692 -> R693; run_r693.py; live-r693",
         )
 
+    def test_cmake_allows_only_the_council_private_option(self) -> None:
+        cache = "\n".join(
+            (
+                "XAR_CK3_ENABLE_G2_COUNCIL_COMPOSITION_STEWARD_CANDIDATES_PRIVATE_PROBE_V1:BOOL=ON",
+                "XAR_CK3_ENABLE_G2_FACTION_TARGETING_ROW_ASYNC_PRIVATE_PROBE_V1:BOOL=OFF",
+            )
+        )
+        self.assertEqual(len(verify_cmake_private_options(cache)), 2)
+        with self.assertRaisesRegex(RuntimeError, "unrelated XAR private probe"):
+            verify_cmake_private_options(cache.replace("ROW_ASYNC_PRIVATE_PROBE_V1:BOOL=OFF", "ROW_ASYNC_PRIVATE_PROBE_V1:BOOL=ON"))
+
     def test_copy_uses_sealed_rows_without_live_or_control_extras(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
             root = Path(temporary)
@@ -154,7 +167,14 @@ class Council18CandidateTests(unittest.TestCase):
                 f"{SOURCE_HARNESS_COMMIT} {SOURCE_PIPE}\n"
             )
             for name in ("run_r692.py", "invoke_r692.py", "verify_prep.py"):
-                (output / name).write_text(python_template, encoding="utf-8")
+                content = python_template
+                if name == "verify_prep.py":
+                    content += (
+                        '    require(ownership.get("pipe") == PIPE, '
+                        '"ownership pipe differs")\n'
+                        "    profile = load_json_object(\n"
+                    )
+                (output / name).write_text(content, encoding="utf-8")
             text_template = (
                 f"{source} R691 R692 r692 {SOURCE_BRIDGE_COMMIT} "
                 f"{SOURCE_HARNESS_COMMIT} {SOURCE_PIPE}\n"
@@ -164,10 +184,16 @@ class Council18CandidateTests(unittest.TestCase):
                 "preflight-command.txt",
                 "R692-start-checklist.md",
             ):
-                (output / name).write_text(text_template, encoding="utf-8")
+                content = text_template
+                if name == "R692-start-checklist.md":
+                    content += SOURCE_BRIDGE_DLL_SHA256 + "\n"
+                (output / name).write_text(content, encoding="utf-8")
 
             patch_python_entrypoints(output, target_commit, target_pipe)
-            patch_text_bindings(source, output, target_commit, target_pipe)
+            target_dll_sha256 = "D" * 64
+            patch_text_bindings(
+                source, output, target_commit, target_pipe, target_dll_sha256
+            )
 
             for name in (
                 "run_r693.py",
@@ -186,6 +212,17 @@ class Council18CandidateTests(unittest.TestCase):
             execute = (output / "execute-command.txt").read_text(encoding="utf-8")
             self.assertIn(str(output), execute)
             self.assertNotIn(str(source), execute)
+            verify = (output / "verify_prep.py").read_text(encoding="utf-8")
+            self.assertIn('ownership.get("bridge_revision") == SOURCE_COMMIT', verify)
+            self.assertIn("candidate bridge DLL hash differs", verify)
+            self.assertIn("preflight bridge DLL hash differs", verify)
+            self.assertIn("validation bridge DLL hash differs", verify)
+            self.assertIn("checklist bridge DLL hash differs", verify)
+            checklist = (output / "R693-start-checklist.md").read_text(
+                encoding="utf-8"
+            )
+            self.assertIn(target_dll_sha256, checklist)
+            self.assertNotIn(SOURCE_BRIDGE_DLL_SHA256, checklist)
 
     @staticmethod
     def file_sha256(path: Path) -> str:

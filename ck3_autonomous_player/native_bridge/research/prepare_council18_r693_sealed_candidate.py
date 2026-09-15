@@ -32,6 +32,9 @@ SOURCE_PIPE = r"\\.\pipe\xar_ck3_bridge_g2_m4_council16_r692_9cdb430"
 EXPECTED_INPUT_SHA256 = (
     "B3D477590BCC46C6E7B6DCB90967278C13EA385A081AFC0C7612D817E9EEA800"
 )
+SOURCE_BRIDGE_DLL_SHA256 = (
+    "6CA0DA042254189ACC8110E7684580F69F9661F35C50A95D999CDD089796EC7D"
+)
 SAVE_SHA256 = (
     "9104CCB8AE9D5776166FBBAEDA9B43BD08CBAA2CB5C057332EB8B7A1A212CC63"
 )
@@ -59,6 +62,9 @@ CANDIDATE_BINARIES = (
     "xar_ck3_bridge_host.exe",
     "xar_ck3_bridge_target.exe",
     "xar_ck3_council_composition_steward_candidates_private_probe_v1_test.exe",
+)
+COUNCIL_PRIVATE_OPTION = (
+    "XAR_CK3_ENABLE_G2_COUNCIL_COMPOSITION_STEWARD_CANDIDATES_PRIVATE_PROBE_V1"
 )
 
 
@@ -288,6 +294,18 @@ def copy_sealed_inputs(
         raise
 
 
+def verify_cmake_private_options(cache: str) -> dict[str, str]:
+    options = dict(
+        re.findall(r"^(XAR_CK3_ENABLE_[^:]+):BOOL=(ON|OFF)$", cache, re.MULTILINE)
+    )
+    if options.get(COUNCIL_PRIVATE_OPTION) != "ON":
+        raise RuntimeError("Council private probe build option is not ON")
+    enabled = sorted(name for name, value in options.items() if value == "ON")
+    if enabled != [COUNCIL_PRIVATE_OPTION]:
+        raise RuntimeError(f"unrelated XAR private probe is enabled: {enabled}")
+    return options
+
+
 def copy_built_candidate_bin(
     candidate_bin: Path, cmake_cache: Path, output: Path, repo_root: Path
 ) -> str:
@@ -295,22 +313,15 @@ def copy_built_candidate_bin(
 
     candidate_bin = candidate_bin.resolve()
     cmake_cache = cmake_cache.resolve()
+    if cmake_cache.parent != candidate_bin:
+        raise RuntimeError(
+            "candidate binaries and CMake cache are not from one build directory"
+        )
     native_source = (repo_root / "ck3_autonomous_player/native_bridge").resolve()
     cache = cmake_cache.read_text(encoding="utf-8-sig", errors="strict")
-    required = (
-        "XAR_CK3_ENABLE_G2_COUNCIL_COMPOSITION_STEWARD_CANDIDATES_PRIVATE_PROBE_V1:BOOL=ON"
-    )
-    if required not in cache:
-        raise RuntimeError("Council private probe build option is not ON")
-    for option in (
-        "XAR_CK3_ENABLE_G2_MILITARY_PREPARATION_SUMMARY_PRIVATE_PROBE_V1",
-        "XAR_CK3_ENABLE_G2_FACTION_TARGETING_ROW_ASYNC_PRIVATE_PROBE_V1",
-        "XAR_CK3_ENABLE_G2_CULTURE_INNOVATION_ASYNC_PRIVATE_PROBE_V1",
-        "XAR_CK3_ENABLE_G2_ACTIVITY_PLANNING_SNAPSHOT_PRIVATE_GLUE_V1",
-        "XAR_CK3_ENABLE_G2_MAJOR_DECISION_FOUND_KINGDOM_INTERNAL_ROUTE_V1",
-    ):
-        if f"{option}:BOOL=ON" in cache:
-            raise RuntimeError(f"unrelated private probe is enabled: {option}")
+    if "CMAKE_BUILD_TYPE:STRING=Release" not in cache:
+        raise RuntimeError("candidate build type is not Release")
+    verify_cmake_private_options(cache)
     source_row = f"CMAKE_HOME_DIRECTORY:INTERNAL={native_source}"
     if source_row.replace("\\", "/") not in cache.replace("\\", "/"):
         raise RuntimeError("CMake source root differs from the candidate repository")
@@ -391,6 +402,53 @@ def patch_python_entrypoints(output: Path, harness_commit: str, pipe: str) -> No
         text = advance_rounds(text)
         text = text.replace("COUNCIL16", "COUNCIL18")
         text = text.replace("council16", "council18")
+        if old_name == "verify_prep.py":
+            marker = 'require(ownership.get("pipe") == PIPE, "ownership pipe differs")'
+            if text.count(marker) != 1:
+                raise RuntimeError("ownership pipe assertion marker differs")
+            text = text.replace(
+                marker,
+                marker
+                + '\n    require(ownership.get("bridge_revision") == SOURCE_COMMIT, '
+                + '"ownership bridge revision differs")',
+            )
+            candidate_marker = "    profile = load_json_object("
+            if text.count(candidate_marker) != 1:
+                raise RuntimeError("candidate binary assertion marker differs")
+            binary_assertions = """    bridge_dll_sha256 = sha256(ROOT / "candidate-bin/xar_ck3_bridge.dll")
+    bridge_rows = [
+        row for row in candidate.get("files", [])
+        if row.get("path") == "candidate-bin/xar_ck3_bridge.dll"
+    ]
+    require(
+        len(bridge_rows) == 1 and bridge_rows[0].get("sha256") == bridge_dll_sha256,
+        "candidate bridge DLL hash differs",
+    )
+    preflight = load_json_object(
+        ROOT / "preflight.json",
+        expected_schema="xar.ck3.g2_m4_council18_r693_preflight_v1",
+    )
+    require(
+        preflight.get("bridge_dll_sha256") == bridge_dll_sha256,
+        "preflight bridge DLL hash differs",
+    )
+    validation = load_json_object(
+        ROOT / "validation-results.json",
+        expected_schema="xar.ck3.g2_m4_council18_r693_validation_v1",
+    )
+    require(
+        validation.get("candidate_binary", {}).get("dll_sha256")
+        == bridge_dll_sha256,
+        "validation bridge DLL hash differs",
+    )
+    require(
+        bridge_dll_sha256
+        in (ROOT / "R693-start-checklist.md").read_text(encoding="utf-8-sig"),
+        "checklist bridge DLL hash differs",
+    )
+
+"""
+            text = text.replace(candidate_marker, binary_assertions + candidate_marker)
         target = output / new_name
         target.write_text(text, encoding="utf-8")
         if target != path:
@@ -404,6 +462,7 @@ def patch_metadata(
     pipe: str,
     source_identity: dict[str, Any],
     cmake_cache_sha256: str,
+    bridge_dll_sha256: str,
 ) -> None:
     candidate_path = output / "candidate-manifest.json"
     candidate = load_json_object(candidate_path)
@@ -472,6 +531,8 @@ def patch_metadata(
         payload["environment_sha256"] = environment_sha
         if name == "profile-preflight.json":
             payload["environment_manifest_sha256"] = environment_manifest_sha
+        else:
+            payload["bridge_dll_sha256"] = bridge_dll_sha256
         write_json(path, payload)
 
     ownership_path = output / "round-ownership-proposal.json"
@@ -486,6 +547,7 @@ def patch_metadata(
             "pid": None,
             "watchdog_pid": None,
             "candidate_revision": harness_commit,
+            "bridge_revision": RUNTIME_SOURCE_COMMIT,
             "pipe": pipe,
         }
     )
@@ -506,6 +568,7 @@ def patch_metadata(
         "release_private_probe_test": "passed",
         "release_suspended_injection_test": "passed",
     }
+    validation["candidate_binary"]["dll_sha256"] = bridge_dll_sha256
     validation["self_contained_runtime_contract"] = {
         "normal": "passed",
         "optimized": "passed",
@@ -532,7 +595,11 @@ def patch_metadata(
 
 
 def patch_text_bindings(
-    source: Path, output: Path, harness_commit: str, pipe: str
+    source: Path,
+    output: Path,
+    harness_commit: str,
+    pipe: str,
+    bridge_dll_sha256: str,
 ) -> None:
     for old_name, new_name in (
         ("execute-command.txt", "execute-command.txt"),
@@ -546,6 +613,7 @@ def patch_text_bindings(
         text = text.replace(SOURCE_PIPE, pipe)
         text = text.replace(SOURCE_HARNESS_COMMIT, harness_commit)
         text = text.replace(SOURCE_BRIDGE_COMMIT, RUNTIME_SOURCE_COMMIT)
+        text = text.replace(SOURCE_BRIDGE_DLL_SHA256, bridge_dll_sha256)
         text = advance_rounds(text)
         text = text.replace("COUNCIL16", "COUNCIL18")
         text = text.replace("council16", "council18")
@@ -641,6 +709,7 @@ def materialize(
         cache_hash = copy_built_candidate_bin(
             candidate_bin, cmake_cache, output, repo_root
         )
+        bridge_dll_sha256 = sha256(output / "candidate-bin/xar_ck3_bridge.dll")
         source_identity = copy_runtime(repo_root, output, tracked_paths)
         shutil.copyfile(
             Path(__file__).with_name("council18_candidate_runtime_identity.py"),
@@ -658,8 +727,11 @@ def materialize(
             pipe,
             source_identity,
             cache_hash,
+            bridge_dll_sha256,
         )
-        patch_text_bindings(source, output, harness_commit, pipe)
+        patch_text_bindings(
+            source, output, harness_commit, pipe, bridge_dll_sha256
+        )
         if (output / "live-r692").exists() or (output / "live-r693").exists():
             raise RuntimeError("fresh candidate contains a live directory")
         control = output / "fresh-profile-state/control"
