@@ -5,6 +5,7 @@
   "status": "browser-seam-fix-passed-native-pending",
   "generatedAt": "2026-09-15T10:38:48.639Z",
   "sourceRevision": {
+    "implementationCommit": "d01f3d4e",
     "headCommit": "c31886f0571932546a4445faef61c08606830288",
     "workingTreePatchSha256": "AB23329270991FDF76BC4573096760B9A0BCD17700DFE43A9076265B8E2E4C89"
   },

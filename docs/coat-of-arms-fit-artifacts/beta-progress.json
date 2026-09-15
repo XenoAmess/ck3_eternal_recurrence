@@ -6,7 +6,7 @@
     {
       "id": "WP0",
       "status": "passed",
-      "commit": null,
+      "commit": "d01f3d4e",
       "commands": [
         "pnpm exec vitest run src/domain/parser.test.ts src/domain/imageFitter.test.ts",
         "pnpm build",

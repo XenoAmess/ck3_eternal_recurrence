@@ -2,6 +2,8 @@
 
 状态：**浏览器接缝修复通过；CK3 Apply/Copy 与原生像素对照待 WP1。**
 
+实现与冻结 artifact 的提交：`d01f3d4e`。`report.json` 同时保留生成时基线 commit 和完整工作区补丁 SHA-256，便于逐字节追溯。
+
 这是 `xenoamess-hunter-v3` 的不可覆盖后继。输入仍是用户提供 ZIP 中唯一的
 `xenoamess_hunter_4096_no_shade.svg`，浏览器栅格输入、exact CK3 1.19.0.6 静态素材包和 96×96
 评分合同均未改变。v4 只修复四叉树 paint tile 的输出覆盖几何、稳定 tie-break、导出门禁和证据完整性；没有启动或连接 CK3，
@@ -74,7 +76,7 @@ parse → serialize 精确字节比较。解析错误为 0，模型、元数据�
 - [完整拟合报告截图](fit-report.png)：`638A42E9DD552ADE90A105F4AE339AF996DCBBD657170BC19718B0DADBDA6B75`
 - [独立预览面板截图](preview-panel.png)：`4572E89A43A2B50639E0CA3FAD06E9ADF1E2D23619549FB04836005B071C8514`
 - [精确 CRLF CK3 代码](coat_of_arms.txt)：`C4648E2C98D3503252D9A9A298B4A39E27A8F4C7269944E607F34F86B3C60571`
-- [机器可读报告](report.json)：`88160F6FDE997A5C1316620BFE72356186E56969ACF8ECA0DE253C83347E3C7E`
+- [机器可读报告](report.json)：`ECC88D47E5D12CE866DA6E06174ED24073B30F29C8D699324CA45B5773449FE2`
 
 `report.json` 记录输入、源码工作区补丁、asset pack receipt、配置、原始浮点指标、共同合同 v3/v4 对照、计数、严格下降摘要、
 接缝指标和证据分级。报告自身哈希仅列在本文中，避免自引用。
