@@ -12,6 +12,7 @@ import re
 
 SHA256 = re.compile(r"^[0-9A-F]{64}$")
 SAFE_URL = re.compile(r"^assets/[0-9a-f]{64}\.dds$")
+SAFE_INDEX_URL = re.compile(r"^assets/[0-9a-f]{64}\.rgba$")
 
 
 def digest(data: bytes) -> str:
@@ -32,8 +33,15 @@ def verify(pack_directory: Path) -> dict[str, object]:
         raise ValueError("assets count is outside 1..4096")
     seen: set[tuple[str, str]] = set()
     surface_masks = 0
-    totals = {"pattern": 0, "colored_emblem": 0, "surface_mask": 0}
+    totals = {
+        "pattern": 0,
+        "colored_emblem": 0,
+        "auxiliary_colored_emblem": 0,
+        "textured_emblem": 0,
+        "surface_mask": 0,
+    }
     total_bytes = 0
+    source_paths: set[str] = set()
     for index, item in enumerate(assets):
         if not isinstance(item, dict):
             raise ValueError(f"assets[{index}] is not an object")
@@ -47,6 +55,21 @@ def verify(pack_directory: Path) -> dict[str, object]:
         seen.add(key)
         if kind == "surface_mask":
             surface_masks += 1
+        source_relative_path = item.get("source_relative_path")
+        if not isinstance(source_relative_path, str) or not source_relative_path or "\\" in source_relative_path:
+            raise ValueError(f"assets[{index}] source_relative_path is invalid")
+        source_relative = PurePosixPath(source_relative_path)
+        if source_relative.is_absolute() or ".." in source_relative.parts:
+            raise ValueError(f"assets[{index}] source_relative_path escapes the source root")
+        source_key = source_relative_path.casefold()
+        if source_key in source_paths:
+            raise ValueError(f"duplicate physical source path: {source_relative_path}")
+        source_paths.add(source_key)
+        registration = item.get("registration")
+        if registration not in {"designer_manifest", "unregistered_file", "render_support"}:
+            raise ValueError(f"assets[{index}] registration is invalid")
+        if not isinstance(item.get("fit_eligible"), bool):
+            raise ValueError(f"assets[{index}] fit_eligible is invalid")
         url = item.get("url")
         expected_sha = item.get("asset_sha256")
         expected_bytes = item.get("asset_bytes")
@@ -69,6 +92,60 @@ def verify(pack_directory: Path) -> dict[str, object]:
         total_bytes += len(data)
     if surface_masks != 1:
         raise ValueError("pack must contain exactly one surface_mask")
+    fit_index = manifest.get("fit_index")
+    if not isinstance(fit_index, dict):
+        raise ValueError("pack must contain a fit_index")
+    if fit_index.get("schema") != "ck3-coa-fit-index-v1" or fit_index.get("format") != "RGBA8":
+        raise ValueError("unsupported fit_index schema/format")
+    resolution = fit_index.get("resolution")
+    indices = fit_index.get("asset_indices")
+    if not isinstance(resolution, int) or not 8 <= resolution <= 128:
+        raise ValueError("fit_index resolution is invalid")
+    if not isinstance(indices, list) or not indices or len(set(indices)) != len(indices):
+        raise ValueError("fit_index asset_indices are invalid")
+    for index in indices:
+        if not isinstance(index, int) or not 0 <= index < len(assets):
+            raise ValueError("fit_index references an out-of-range asset")
+        item = assets[index]
+        if item.get("fit_eligible") is not True or item.get("kind") not in {"pattern", "colored_emblem"}:
+            raise ValueError("fit_index references a non-fit asset")
+    expected_fit_indices = {
+        index for index, item in enumerate(assets)
+        if item.get("registration") == "designer_manifest" and item.get("fit_eligible") is True
+    }
+    if set(indices) != expected_fit_indices:
+        raise ValueError("fit_index does not exactly cover all fit-eligible registered assets")
+    index_url = fit_index.get("url")
+    index_sha = fit_index.get("asset_sha256")
+    expected_index_bytes = len(indices) * resolution * resolution * 4
+    if not isinstance(index_url, str) or not SAFE_INDEX_URL.fullmatch(index_url):
+        raise ValueError("fit_index URL is not content addressed")
+    if not isinstance(index_sha, str) or not SHA256.fullmatch(index_sha):
+        raise ValueError("fit_index SHA-256 is invalid")
+    index_relative = PurePosixPath(index_url)
+    index_path = pack_directory.joinpath(*index_relative.parts).resolve()
+    index_data = index_path.read_bytes()
+    if fit_index.get("asset_bytes") != expected_index_bytes:
+        raise ValueError("fit_index declared byte count is invalid")
+    if len(index_data) != expected_index_bytes or digest(index_data) != index_sha:
+        raise ValueError("fit_index bytes/hash mismatch")
+
+    inventory = manifest.get("inventory")
+    if not isinstance(inventory, dict):
+        raise ValueError("pack must contain an inventory")
+    expected_inventory = {
+        "registered_patterns": totals["pattern"],
+        "registered_colored_emblems": totals["colored_emblem"],
+        "auxiliary_colored_emblems": totals["auxiliary_colored_emblem"],
+        "textured_emblems": totals["textured_emblem"],
+        "surface_masks": totals["surface_mask"],
+        "fit_eligible_registered": len(expected_fit_indices),
+    }
+    for name, expected in expected_inventory.items():
+        if inventory.get(name) != expected:
+            raise ValueError(f"inventory {name} does not match assets")
+    if inventory.get("complete_raw_tree") is True and inventory.get("source_dds_total") != len(assets):
+        raise ValueError("complete inventory source_dds_total does not match assets")
     return {
         "schema": "ck3-coa-web-asset-pack-verification-v1",
         "status": "green",
@@ -79,6 +156,10 @@ def verify(pack_directory: Path) -> dict[str, object]:
         "manifest_sha256": digest(manifest_bytes),
         "assets": len(assets),
         "asset_bytes": total_bytes,
+        "fit_index_entries": len(indices),
+        "fit_index_bytes": len(index_data),
+        "complete_raw_tree": inventory.get("complete_raw_tree"),
+        "source_dds_total": inventory.get("source_dds_total"),
         **totals,
     }
 
@@ -93,4 +174,3 @@ def main() -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
-

@@ -91,7 +91,9 @@ test('fits an uploaded image without CK3, MCP, or Java', async ({ page }) => {
     context.fillStyle = 'white'
     context.fillRect(0, 0, 64, 64)
     context.fillStyle = 'black'
-    context.fillRect(18, 18, 28, 28)
+    context.fillRect(7, 20, 18, 24)
+    context.fillStyle = '#b41924'
+    context.fillRect(39, 20, 18, 24)
     return canvas.toDataURL('image/png').split(',')[1]
   })
   await page.locator('.image-drop input').setInputFiles({
@@ -99,9 +101,11 @@ test('fits an uploaded image without CK3, MCP, or Java', async ({ page }) => {
   })
   await expect(page.getByText(/target\.png/)).toBeVisible()
   await page.getByRole('button', { name: '开始本地拟合' }).click()
-  await expect(page.getByText(/完成 · \d+ 候选/)).toBeVisible({ timeout: 30_000 })
+  await expect(page.getByText(/完成 · 从完整库评估 \d+ 个构图 · 选中 [2-6]\/6 层/)).toBeVisible({ timeout: 30_000 })
   await expect(page.locator('.output-block pre')).toContainText('pattern_solid.dds')
   await expect(page.locator('.output-block pre')).toContainText('colored_emblem')
+  const output = await page.locator('.output-block pre').textContent()
+  expect(output?.match(/colored_emblem\s*=/g)?.length).toBeGreaterThanOrEqual(2)
   await expect(page.getByText(/结果已进入下方结构化编辑器/)).toBeVisible()
   await expect(page.locator('.fit-report dl div').filter({ hasText: 'GPU 交叉分' }).locator('dd'))
     .toHaveText(/^\d+\.\d+$/)
@@ -116,7 +120,7 @@ test('runs against the locally generated exact-build asset pack', async ({ page 
     if (new URL(request.url()).pathname.startsWith('/api/')) apiRequests.push(request.url())
   })
   await page.goto('/')
-  await expect(page.getByText(/ck3-1\.19\.0\.6-base-alpha/)).toBeVisible()
+  await expect(page.getByText(/ck3-1\.19\.0\.6-base-complete/)).toBeVisible({ timeout: 30_000 })
   const pngBase64 = await page.evaluate(() => {
     const canvas = document.createElement('canvas')
     canvas.width = 64
@@ -128,12 +132,12 @@ test('runs against the locally generated exact-build asset pack', async ({ page 
     context.fillRect(32, 0, 32, 64)
     return canvas.toDataURL('image/png').split(',')[1]
   })
-  await page.locator('.fit-budget input').fill('8')
+  await page.locator('.fit-budget input').fill('1')
   await page.locator('.image-drop input').setInputFiles({
     name: 'split-target.png', mimeType: 'image/png', buffer: Buffer.from(pngBase64, 'base64'),
   })
   await page.getByRole('button', { name: '开始本地拟合' }).click()
-  await expect(page.getByText(/完成 · \d+ 候选/)).toBeVisible({ timeout: 45_000 })
+  await expect(page.getByText(/完成 · 从完整库评估 \d+ 个构图/)).toBeVisible({ timeout: 60_000 })
   await expect(page.locator('.output-block pre')).toContainText('pattern =')
   expect(apiRequests).toEqual([])
 })

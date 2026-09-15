@@ -20,7 +20,7 @@
 
 构建必须按顺序通过：
 
-1. `verify_web_asset_pack.py` 对 manifest 和全部 DDS 的路径、字节数、SHA-256 与容器头重新校验；
+1. `verify_web_asset_pack.py` 对 manifest、完整 inventory、fit index 和全部 DDS 的路径、角色、字节数、SHA-256 与容器头重新校验；
 2. `pnpm install --frozen-lockfile`，禁止 CI 静默改 lockfile；
 3. 运行全部 Vitest；
 4. 安装 Actions runner 的 Playwright Chromium，运行合成 pack 与 exact-build pack 两条无 CK3 浏览器 E2E；
@@ -37,13 +37,17 @@
 | 字段 | 值 |
 |---|---:|
 | 路径 | `asset-packs/ck3-1.19.0.6/` |
-| pack id | `ck3-1.19.0.6-base-alpha-38p-128e` |
-| manifest SHA-256 | `41BB03C58BCA6782F45E581188127B4186050D1FFDA777BD9027DA682C08FC03` |
-| pattern / emblem / surface mask | 38 / 128 / 1 |
-| DDS bytes | 13,634,992 |
+| pack id | `ck3-1.19.0.6-base-complete-42p-1578e-8aux` |
+| manifest SHA-256 | `AD7F0A911A2B4F002E923FEAB13716566D9A7B61447E9092504826FE6498FE91` |
+| registered pattern / emblem | 42 / 1,578 |
+| auxiliary / textured / surface mask | 8 / 1 / 1 |
+| 原版物理 DDS 覆盖 | 1,630 / 1,630；138,389,380 bytes |
+| 32×32 RGBA fit index | 1,619 个可粘贴注册项；6,631,424 bytes |
 
 该授权记录只适用于本仓库当前 pack 的版本管理与 Pages 发布，不冒充所有权转移，也不自动放行以后从其他 CK3 build、DLC 或
 mod 提取的资源。其他 `ck3-*` 生成目录继续由 `.gitignore` 排除，只有显式审阅并添加精确 unignore 后才能进入发布树。
+完整性定义、隐藏项及 8 个未注册辅助文件清单见
+[`ck3-coat-of-arms-asset-inventory.md`](ck3-coat-of-arms-asset-inventory.md)。
 
 ## 子路径与运行边界
 

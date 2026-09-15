@@ -17,7 +17,10 @@ export interface FitTextureCandidate {
 export interface ImageFitOptions {
   resolution?: number
   maxPatterns?: number
-  maxEmblems?: number
+  maxEmblemCandidates?: number
+  maxLayers?: number
+  refinementCandidates?: number
+  minRelativeLayerImprovement?: number
 }
 
 export interface ImageFitMetrics {
@@ -31,12 +34,14 @@ export interface ImageFitResult {
   coatOfArms: CoatOfArms
   metrics: ImageFitMetrics
   provenance: {
-    algorithm: 'ck3-coa-browser-fit-v1'
+    algorithm: 'ck3-coa-browser-fit-v2-multilayer'
     searchBackend: 'cpu-reference'
     resolution: number
     evaluatedCandidates: number
     patternAssets: number
     emblemAssets: number
+    layerBudget: number
+    selectedLayers: number
     selectedAssetSha256: string[]
   }
 }
@@ -68,16 +73,6 @@ function validateImage(image: FitImage): void {
     || image.height > 4096
     || image.pixels.length !== image.width * image.height * 4
   ) throw new Error('目标图片尺寸或 RGBA 数据不合法')
-}
-
-function sample(image: FitImage, x: number, y: number): ByteRgb {
-  const sourceX = clamp(Math.floor((x + 0.5) * image.width / DEFAULT_RESOLUTION), 0, image.width - 1)
-  const sourceY = clamp(Math.floor((y + 0.5) * image.height / DEFAULT_RESOLUTION), 0, image.height - 1)
-  const offset = (sourceY * image.width + sourceX) * 4
-  const alpha = image.pixels[offset + 3] / 255
-  return [0, 1, 2].map((channel) => Math.round(
-    image.pixels[offset + channel] * alpha + 255 * (1 - alpha),
-  )) as ByteRgb
 }
 
 export function resizeFitImage(image: FitImage, size: number): FitImage {
@@ -191,7 +186,60 @@ function better(candidate: ScoredCandidate, current: ScoredCandidate | null): bo
     || (Math.abs(candidate.totalLoss - current.totalLoss) <= 1e-12 && candidate.key < current.key)
 }
 
-function foregroundGeometry(target: FitImage, background: ByteRgb): { position: [number, number], scale: number } {
+function residualWeights(target: FitImage, rendered: RenderedCoatOfArms): Float64Array {
+  const result = new Float64Array(target.width * target.height)
+  for (let index = 0; index < result.length; index += 1) {
+    const offset = index * 4
+    result[index] = Math.sqrt([0, 1, 2].reduce((sum, channel) => {
+      const delta = target.pixels[offset + channel] - rendered.pixels[offset + channel]
+      return sum + delta * delta
+    }, 0))
+  }
+  return result
+}
+
+function residualGeometry(
+  target: FitImage,
+  rendered: RenderedCoatOfArms,
+): { position: [number, number], scale: number } {
+  const weights = residualWeights(target, rendered)
+  const maximumWeight = Math.max(...weights)
+  if (maximumWeight < 1) return { position: [0.5, 0.5], scale: 0.5 }
+  const threshold = Math.max(18, maximumWeight * 0.22)
+  const visited = new Uint8Array(weights.length)
+  let selected: number[] = []
+  let selectedWeight = -1
+  for (let seed = 0; seed < weights.length; seed += 1) {
+    if (visited[seed] || weights[seed] < threshold) continue
+    const component: number[] = []
+    const queue = [seed]
+    visited[seed] = 1
+    let componentWeight = 0
+    for (let cursor = 0; cursor < queue.length; cursor += 1) {
+      const index = queue[cursor]
+      component.push(index)
+      componentWeight += weights[index]
+      const x = index % target.width
+      const y = Math.floor(index / target.width)
+      const neighbors = [
+        x > 0 ? index - 1 : -1,
+        x + 1 < target.width ? index + 1 : -1,
+        y > 0 ? index - target.width : -1,
+        y + 1 < target.height ? index + target.width : -1,
+      ]
+      for (const neighbor of neighbors) {
+        if (neighbor >= 0 && !visited[neighbor] && weights[neighbor] >= threshold) {
+          visited[neighbor] = 1
+          queue.push(neighbor)
+        }
+      }
+    }
+    if (componentWeight > selectedWeight) {
+      selected = component
+      selectedWeight = componentWeight
+    }
+  }
+  if (!selected.length) selected = [...weights.keys()]
   let minimumX = target.width
   let minimumY = target.height
   let maximumX = -1
@@ -199,29 +247,54 @@ function foregroundGeometry(target: FitImage, background: ByteRgb): { position: 
   let weightedX = 0
   let weightedY = 0
   let totalWeight = 0
+  for (const index of selected) {
+    const x = index % target.width
+    const y = Math.floor(index / target.width)
+    const weight = weights[index]
+    minimumX = Math.min(minimumX, x)
+    maximumX = Math.max(maximumX, x)
+    minimumY = Math.min(minimumY, y)
+    maximumY = Math.max(maximumY, y)
+    weightedX += (x + 0.5) * weight
+    weightedY += (y + 0.5) * weight
+    totalWeight += weight
+  }
+  if (totalWeight === 0) return { position: [0.5, 0.5], scale: 0.5 }
+  const extent = Math.max(
+    (maximumX - minimumX + 1) / target.width,
+    (maximumY - minimumY + 1) / target.height,
+  )
+  return {
+    position: [weightedX / totalWeight / target.width, weightedY / totalWeight / target.height],
+    scale: clamp(extent * 1.18, 0.1, 1.5),
+  }
+}
+
+function residualColors(target: FitImage, rendered: RenderedCoatOfArms, count = 3): ByteRgb[] {
+  const buckets = new Map<number, { weight: number, sums: [number, number, number] }>()
   for (let y = 0; y < target.height; y += 1) {
     for (let x = 0; x < target.width; x += 1) {
       const offset = (y * target.width + x) * 4
-      const distance = Math.sqrt([0, 1, 2].reduce((sum, channel) => {
-        const delta = target.pixels[offset + channel] - background[channel]
+      const weight = [0, 1, 2].reduce((sum, channel) => {
+        const delta = target.pixels[offset + channel] - rendered.pixels[offset + channel]
         return sum + delta * delta
-      }, 0))
-      if (distance < 42) continue
-      minimumX = Math.min(minimumX, x)
-      maximumX = Math.max(maximumX, x)
-      minimumY = Math.min(minimumY, y)
-      maximumY = Math.max(maximumY, y)
-      weightedX += (x + 0.5) * distance
-      weightedY += (y + 0.5) * distance
-      totalWeight += distance
+      }, 0)
+      if (weight < 64) continue
+      const values = [0, 1, 2].map((channel) => target.pixels[offset + channel]) as ByteRgb
+      const key = ((values[0] >> 4) << 8) | ((values[1] >> 4) << 4) | (values[2] >> 4)
+      const bucket = buckets.get(key) ?? { weight: 0, sums: [0, 0, 0] }
+      bucket.weight += weight
+      for (let channel = 0; channel < 3; channel += 1) bucket.sums[channel] += values[channel] * weight
+      buckets.set(key, bucket)
     }
   }
-  if (totalWeight === 0) return { position: [0.5, 0.5], scale: 0.7 }
-  const extent = Math.max(maximumX - minimumX + 1, maximumY - minimumY + 1) / target.width
-  return {
-    position: [weightedX / totalWeight / target.width, weightedY / totalWeight / target.height],
-    scale: clamp(extent * 1.12, 0.2, 1.4),
-  }
+  const fallback = dominantColors(target, count)
+  const result = [...buckets.entries()]
+    .sort((left, right) => right[1].weight - left[1].weight || left[0] - right[0])
+    .slice(0, count)
+    .map(([, bucket]) => bucket.sums.map((sum) => Math.round(sum / bucket.weight)) as ByteRgb)
+  while (result.length < count) result.push(fallback[result.length])
+  return result
 }
 
 export function fitImageToCoatOfArms(
@@ -238,7 +311,10 @@ export function fitImageToCoatOfArms(
     .slice(0, options.maxPatterns ?? 64)
   const emblems = [...emblemCandidates]
     .sort((left, right) => left.name.localeCompare(right.name))
-    .slice(0, options.maxEmblems ?? 24)
+    .slice(0, options.maxEmblemCandidates ?? emblemCandidates.length)
+  const maxLayers = clamp(Math.floor(options.maxLayers ?? 6), 0, 24)
+  const refinementCandidates = clamp(Math.floor(options.refinementCandidates ?? 8), 1, 64)
+  const minRelativeLayerImprovement = clamp(options.minRelativeLayerImprovement ?? 0.005, 0, 1)
   if (!patterns.length) throw new Error('素材包没有可用于拟合的 pattern')
   const palette = dominantColors(target)
   let evaluated = 0
@@ -263,55 +339,77 @@ export function fitImageToCoatOfArms(
 
   const initialLoss = bestBackground.totalLoss
   let best = bestBackground
-  let bestEmblemAsset: FitTextureCandidate | null = null
-  const geometry = foregroundGeometry(target, palette[0])
-  const positions: [number, number][] = [geometry.position, [0.5, 0.5]]
-  const scales = [geometry.scale * 0.82, geometry.scale, geometry.scale * 1.18]
-    .map((value) => clamp(value, 0.15, 1.5))
-  const emblemPalettes = [
-    [palette[1], palette[2], palette[0]],
-    [palette[2], palette[0], palette[1]],
-  ]
-  for (const emblem of emblems) {
-    for (const colors of emblemPalettes) {
-      for (const position of positions) {
-        for (const scaleValue of scales) {
-          for (const rotation of [0, 90, 180, 270]) {
-            for (const flip of [1, -1]) {
-              const coatOfArms: CoatOfArms = {
-                ...bestBackground.coatOfArms,
-                coloredEmblems: [{
-                  texture: emblem.name,
-                  colors: colors.map(expression) as [string, string, string],
-                  mask: [],
-                  instances: [{
-                    position: [...position],
-                    scale: [scaleValue * flip, scaleValue],
-                    rotation,
-                    depth: 1,
+  const selectedEmblemAssets: FitTextureCandidate[] = []
+  const emblemTextures = Object.fromEntries(emblems.map((item) => [item.name, item.texture]))
+  for (let layer = 0; layer < maxLayers && emblems.length && best.totalLoss > 1e-12; layer += 1) {
+    const geometry = residualGeometry(target, best.rendered)
+    const layerPalettes = permutations(residualColors(target, best.rendered))
+    const coarse: { asset: FitTextureCandidate, candidate: ScoredCandidate }[] = []
+    for (const emblem of emblems) {
+      const colors = layerPalettes[0]
+      const coatOfArms: CoatOfArms = {
+        ...best.coatOfArms,
+        coloredEmblems: [...best.coatOfArms.coloredEmblems, {
+          texture: emblem.name,
+          colors: colors.map(expression) as [string, string, string],
+          mask: [],
+          instances: [{
+            position: [...geometry.position], scale: [geometry.scale, geometry.scale],
+            rotation: 0, depth: layer + 1,
+          }],
+        }],
+      }
+      const key = `${best.key}\0L${layer}\0${emblem.name}\0coarse`
+      const candidate = score(coatOfArms, bestPatternAsset.texture, emblemTextures, target, key)
+      evaluated += 1
+      coarse.push({ asset: emblem, candidate })
+    }
+    const shortlist = coarse
+      .sort((left, right) => left.candidate.totalLoss - right.candidate.totalLoss
+        || left.candidate.key.localeCompare(right.candidate.key))
+      .slice(0, refinementCandidates)
+    let layerBest: { asset: FitTextureCandidate, candidate: ScoredCandidate } | null = null
+    const positions: [number, number][] = [geometry.position]
+    if (Math.abs(geometry.position[0] - 0.5) > 0.04 || Math.abs(geometry.position[1] - 0.5) > 0.04) {
+      positions.push([0.5, 0.5])
+    }
+    const scales = [geometry.scale * 0.78, geometry.scale, geometry.scale * 1.22]
+      .map((value) => clamp(value, 0.08, 1.8))
+    for (const { asset } of shortlist) {
+      for (const colors of layerPalettes) {
+        for (const position of positions) {
+          for (const scaleValue of scales) {
+            for (const rotation of [0, 45, 90, 135, 180, 225, 270, 315]) {
+              for (const flip of [1, -1]) {
+                const coatOfArms: CoatOfArms = {
+                  ...best.coatOfArms,
+                  coloredEmblems: [...best.coatOfArms.coloredEmblems, {
+                    texture: asset.name,
+                    colors: colors.map(expression) as [string, string, string],
+                    mask: [],
+                    instances: [{
+                      position: [...position], scale: [scaleValue * flip, scaleValue],
+                      rotation, depth: layer + 1,
+                    }],
                   }],
-                }],
-              }
-              const key = `${bestBackground.key}\0${emblem.name}\0${colors.flat().join(',')}\0${position.join(',')}\0${scaleValue}\0${rotation}\0${flip}`
-              const candidate = score(
-                coatOfArms, bestPatternAsset.texture, { [emblem.name]: emblem.texture }, target, key,
-              )
-              evaluated += 1
-              if (better(candidate, best)) {
-                best = candidate
-                bestEmblemAsset = emblem
+                }
+                const key = `${best.key}\0L${layer}\0${asset.name}\0${colors.flat().join(',')}\0${position.join(',')}\0${scaleValue}\0${rotation}\0${flip}`
+                const candidate = score(coatOfArms, bestPatternAsset.texture, emblemTextures, target, key)
+                evaluated += 1
+                if (!layerBest || better(candidate, layerBest.candidate)) layerBest = { asset, candidate }
               }
             }
           }
         }
       }
     }
+    if (!layerBest || layerBest.candidate.totalLoss >= best.totalLoss) break
+    const relativeGain = (best.totalLoss - layerBest.candidate.totalLoss) / best.totalLoss
+    if (relativeGain < minRelativeLayerImprovement) break
+    best = layerBest.candidate
+    selectedEmblemAssets.push(layerBest.asset)
   }
   const improvement = initialLoss <= 1e-12 ? 0 : Math.max(0, (initialLoss - best.totalLoss) / initialLoss)
-  if (improvement < 0.01) {
-    best = bestBackground
-    bestEmblemAsset = null
-  }
   return {
     coatOfArms: best.coatOfArms,
     metrics: {
@@ -321,15 +419,18 @@ export function fitImageToCoatOfArms(
       relativeImprovement: improvement,
     },
     provenance: {
-      algorithm: 'ck3-coa-browser-fit-v1',
+      algorithm: 'ck3-coa-browser-fit-v2-multilayer',
       searchBackend: 'cpu-reference',
       resolution,
       evaluatedCandidates: evaluated,
       patternAssets: patterns.length,
       emblemAssets: emblems.length,
-      selectedAssetSha256: [bestPatternAsset.assetSha256, bestEmblemAsset?.assetSha256]
-        .filter((value): value is string => Boolean(value)),
+      layerBudget: maxLayers,
+      selectedLayers: selectedEmblemAssets.length,
+      selectedAssetSha256: [
+        bestPatternAsset.assetSha256,
+        ...selectedEmblemAssets.map((item) => item.assetSha256),
+      ],
     },
   }
 }
-

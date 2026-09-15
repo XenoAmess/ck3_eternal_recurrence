@@ -1,9 +1,11 @@
 #!/usr/bin/env python3
-"""Build a static, content-addressed CoA web asset pack from an explicit CK3 root.
+"""Build a complete, content-addressed CoA web pack from an explicit CK3 root.
 
-The generated directory is a deployment artifact and may contain copyrighted game
-assets. It is intentionally ignored by Git. Publishing it requires a separate
-license decision.
+The repository owner explicitly authorized versioning and GitHub Pages distribution
+of the original DDS material for this project on 2026-09-15.  The generated pack
+keeps designer-registered resources distinct from unregistered auxiliary files and
+adds a compact RGBA fit index so a browser can search the full registered library
+without downloading and decoding every full-resolution DDS first.
 """
 
 from __future__ import annotations
@@ -11,10 +13,13 @@ from __future__ import annotations
 import argparse
 import base64
 import hashlib
+from io import BytesIO
 import json
 import os
 from pathlib import Path
 import sys
+
+from PIL import Image
 
 
 REPOSITORY_ROOT = Path(__file__).resolve().parents[2]
@@ -25,6 +30,9 @@ from xar_autoplayer.coat_of_arms_resources import (  # noqa: E402
     query_coat_of_arms_resource_catalog_v1,
     read_coat_of_arms_render_support_v1,
 )
+
+
+FIT_INDEX_RESOLUTION = 32
 
 
 def _sha256(data: bytes) -> str:
@@ -51,9 +59,11 @@ def _catalog_items(game_root: Path, kind: str, include_hidden: bool) -> tuple[li
     return items, provenance
 
 
-def _write_content_addressed(asset_directory: Path, data: bytes) -> tuple[str, str]:
+def _write_content_addressed(
+    asset_directory: Path, data: bytes, extension: str = ".dds"
+) -> tuple[str, str]:
     digest = _sha256(data)
-    name = f"{digest.lower()}.dds"
+    name = f"{digest.lower()}{extension}"
     destination = asset_directory / name
     if destination.exists():
         if destination.read_bytes() != data:
@@ -98,9 +108,10 @@ def _entry_from_catalog(
     relative_url, digest = _write_content_addressed(asset_directory, data)
     if len(data) != int(item["asset_bytes"]) or digest != str(item["asset_sha256"]):
         raise RuntimeError(f"asset identity mismatch for {item['name']}")
+    name = str(item["name"])
     return {
         "kind": kind,
-        "name": item["name"],
+        "name": name,
         "colors": int(item["colors"]),
         "visible": bool(item["visible"]),
         "category": item["category"],
@@ -108,7 +119,60 @@ def _entry_from_catalog(
         "asset_bytes": len(data),
         "asset_sha256": digest,
         "dds": _dds_metadata(data),
+        "source_relative_path": Path(str(item["relative_path"])).as_posix(),
+        "registration": "designer_manifest",
+        # The exact native clipboard reader rejects high UTF-8 bytes. Keep every
+        # registered asset in inventory/UI, but never auto-generate unpasteable code.
+        "fit_eligible": name.isascii() and name.isprintable(),
     }
+
+
+def _entry_from_path(
+    game_root: Path,
+    asset_directory: Path,
+    kind: str,
+    source: Path,
+    *,
+    colors: int,
+    category: str,
+    registration: str,
+) -> dict[str, object]:
+    data = source.read_bytes()
+    relative_url, digest = _write_content_addressed(asset_directory, data)
+    return {
+        "kind": kind,
+        "name": source.name,
+        "colors": colors,
+        "visible": False,
+        "category": category,
+        "url": relative_url,
+        "asset_bytes": len(data),
+        "asset_sha256": digest,
+        "dds": _dds_metadata(data),
+        "source_relative_path": source.relative_to(game_root).as_posix(),
+        "registration": registration,
+        "fit_eligible": False,
+    }
+
+
+def _fit_index_bytes(game_root: Path, assets: list[dict[str, object]]) -> tuple[bytes, list[int]]:
+    output = bytearray()
+    asset_indices: list[int] = []
+    for index, item in enumerate(assets):
+        if item.get("fit_eligible") is not True:
+            continue
+        source = game_root / str(item["source_relative_path"])
+        with Image.open(BytesIO(source.read_bytes())) as image:
+            rgba = image.convert("RGBA").resize(
+                (FIT_INDEX_RESOLUTION, FIT_INDEX_RESOLUTION), Image.Resampling.LANCZOS
+            )
+            encoded = rgba.tobytes("raw", "RGBA")
+        expected = FIT_INDEX_RESOLUTION * FIT_INDEX_RESOLUTION * 4
+        if len(encoded) != expected:
+            raise RuntimeError(f"fit index record size mismatch for {item['name']}")
+        output.extend(encoded)
+        asset_indices.append(index)
+    return bytes(output), asset_indices
 
 
 def build_pack(game_root: Path, output: Path, emblem_limit: int, include_hidden: bool) -> dict[str, object]:
@@ -132,6 +196,34 @@ def build_pack(game_root: Path, output: Path, emblem_limit: int, include_hidden:
                     raise RuntimeError(f"manifest asset is missing: {item['name']}")
                 assets.append(_entry_from_catalog(game_root, asset_directory, kind, item))
 
+        registered_colored_paths = {
+            Path(str(item["relative_path"])).as_posix().casefold() for item in emblems
+        }
+        colored_root = game_root / "game" / "gfx" / "coat_of_arms" / "colored_emblems"
+        auxiliary_colored_paths = sorted(
+            (
+                path for path in colored_root.rglob("*.dds")
+                if path.relative_to(game_root).as_posix().casefold() not in registered_colored_paths
+            ),
+            key=lambda path: path.relative_to(game_root).as_posix().casefold(),
+        )
+        for path in auxiliary_colored_paths:
+            assets.append(_entry_from_path(
+                game_root, asset_directory, "auxiliary_colored_emblem", path,
+                colors=3, category="unregistered-auxiliary", registration="unregistered_file",
+            ))
+
+        textured_root = game_root / "game" / "gfx" / "coat_of_arms" / "textured_emblems"
+        textured_paths = sorted(
+            textured_root.rglob("*.dds"),
+            key=lambda path: path.relative_to(game_root).as_posix().casefold(),
+        )
+        for path in textured_paths:
+            assets.append(_entry_from_path(
+                game_root, asset_directory, "textured_emblem", path,
+                colors=0, category="render-support", registration="render_support",
+            ))
+
         render_support = read_coat_of_arms_render_support_v1(str(game_root))
         mask = dict(render_support["surface_mask"])
         mask_data = base64.b64decode(str(mask["asset_base64"]), validate=True)
@@ -152,8 +244,26 @@ def build_pack(game_root: Path, output: Path, emblem_limit: int, include_hidden:
                     "height": int(mask_dds["height"]),
                     "format": str(mask_dds["format"]),
                 },
+                "source_relative_path": Path(str(mask["relative_path"])).as_posix(),
+                "registration": "render_support",
+                "fit_eligible": False,
             }
         )
+        fit_bytes, fit_asset_indices = _fit_index_bytes(game_root, assets)
+        fit_url, fit_sha = _write_content_addressed(asset_directory, fit_bytes, ".rgba")
+
+        coa_root = game_root / "game" / "gfx" / "coat_of_arms"
+        source_dds_paths = {
+            path.relative_to(game_root).as_posix().casefold() for path in coa_root.rglob("*.dds")
+        }
+        included_dds_paths = {
+            str(item["source_relative_path"]).casefold() for item in assets
+        }
+        complete_raw_tree = emblem_limit == 0 and include_hidden
+        if complete_raw_tree and source_dds_paths != included_dds_paths:
+            missing = sorted(source_dds_paths - included_dds_paths)
+            extra = sorted(included_dds_paths - source_dds_paths)
+            raise RuntimeError(f"raw CoA DDS coverage mismatch: missing={missing}, extra={extra}")
         source_identity = {
             "pattern_manifest_sha256": pattern_provenance["manifest_sha256"],
             "emblem_manifest_sha256": emblem_provenance["manifest_sha256"],
@@ -170,11 +280,35 @@ def build_pack(game_root: Path, output: Path, emblem_limit: int, include_hidden:
         manifest = {
             "schema": "ck3-coa-web-asset-pack-v1",
             "schema_version": 1,
-            "pack_id": f"ck3-{build}-base-alpha-{len(patterns)}p-{len(selected_emblems)}e",
+            "pack_id": (
+                f"ck3-{build}-base-complete-{len(patterns)}p-{len(selected_emblems)}e-"
+                f"{len(auxiliary_colored_paths)}aux"
+                if complete_raw_tree else
+                f"ck3-{build}-base-partial-{len(patterns)}p-{len(selected_emblems)}e"
+            ),
             "ck3_build": build,
             "source_manifest_sha256": _sha256(source_bytes),
             "named_colors": named_colors,
             "assets": assets,
+            "fit_index": {
+                "schema": "ck3-coa-fit-index-v1",
+                "format": "RGBA8",
+                "resolution": FIT_INDEX_RESOLUTION,
+                "asset_indices": fit_asset_indices,
+                "url": fit_url,
+                "asset_bytes": len(fit_bytes),
+                "asset_sha256": fit_sha,
+            },
+            "inventory": {
+                "complete_raw_tree": complete_raw_tree,
+                "source_dds_total": len(source_dds_paths),
+                "registered_patterns": len(patterns),
+                "registered_colored_emblems": len(selected_emblems),
+                "auxiliary_colored_emblems": len(auxiliary_colored_paths),
+                "textured_emblems": len(textured_paths),
+                "surface_masks": 1,
+                "fit_eligible_registered": len(fit_asset_indices),
+            },
         }
         manifest_bytes = (
             json.dumps(manifest, ensure_ascii=False, sort_keys=True, indent=2) + "\n"
@@ -184,9 +318,10 @@ def build_pack(game_root: Path, output: Path, emblem_limit: int, include_hidden:
             f"{_sha256(manifest_bytes)}  manifest.json\n", encoding="ascii"
         )
         (temporary / "NOTICE.txt").write_text(
-            "Generated from an explicit CK3 installation. This directory may contain "
-            "copyrighted Paradox assets. Do not publish it without confirming distribution "
-            "rights. The web application code does not require CK3 at runtime.\n",
+            "Generated from an explicit CK3 installation. The project owner confirmed this "
+            "original DDS material as authorized for versioning and this repository's GitHub "
+            "Pages deployment on 2026-09-15. This project-policy record does not transfer "
+            "ownership of Paradox assets. The web application does not require CK3 at runtime.\n",
             encoding="utf-8",
         )
         temporary.rename(output)
@@ -195,6 +330,12 @@ def build_pack(game_root: Path, output: Path, emblem_limit: int, include_hidden:
             "manifest_sha256": _sha256(manifest_bytes),
             "patterns": len(patterns),
             "colored_emblems": len(selected_emblems),
+            "auxiliary_colored_emblems": len(auxiliary_colored_paths),
+            "textured_emblems": len(textured_paths),
+            "source_dds_total": len(source_dds_paths),
+            "complete_raw_tree": complete_raw_tree,
+            "fit_index_entries": len(fit_asset_indices),
+            "fit_index_bytes": len(fit_bytes),
             "unique_dds": len(list((output / "assets").glob("*.dds"))),
             "asset_bytes": sum(path.stat().st_size for path in (output / "assets").glob("*.dds")),
         }
@@ -207,10 +348,13 @@ def main() -> int:
     parser.add_argument("--game-root", required=True, type=Path)
     parser.add_argument("--output", required=True, type=Path)
     parser.add_argument(
-        "--emblem-limit", type=int, default=128,
-        help="number of source-ordered emblems; 0 includes all (default: 128)",
+        "--emblem-limit", type=int, default=0,
+        help="number of source-ordered emblems; 0 includes all (default: 0)",
     )
-    parser.add_argument("--include-hidden", action="store_true")
+    parser.add_argument(
+        "--include-hidden", action=argparse.BooleanOptionalAction, default=True,
+        help="include hidden designer-manifest entries (default: true)",
+    )
     arguments = parser.parse_args()
     if arguments.emblem_limit < 0 or arguments.emblem_limit > 4096:
         parser.error("--emblem-limit must be 0..4096")

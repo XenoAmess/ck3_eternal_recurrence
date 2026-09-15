@@ -57,4 +57,32 @@ describe('web asset pack contract', () => {
     missing.assets = [entry]
     expect(() => parseWebAssetPack(missing)).toThrow(/一个 surface_mask/)
   })
+
+  it('binds a compact fit index to eligible registered resources', () => {
+    const indexed = pack() as ReturnType<typeof pack> & { fit_index: object, inventory: object }
+    indexed.fit_index = {
+      schema: 'ck3-coa-fit-index-v1', format: 'RGBA8', resolution: 16,
+      asset_indices: [0], url: `assets/${'d'.repeat(64)}.rgba`,
+      asset_bytes: 16 * 16 * 4, asset_sha256: 'D'.repeat(64),
+    }
+    indexed.inventory = {
+      complete_raw_tree: true, source_dds_total: 2,
+      registered_patterns: 1, registered_colored_emblems: 0,
+      auxiliary_colored_emblems: 0, textured_emblems: 0, surface_masks: 1,
+      fit_eligible_registered: 1,
+    }
+    const parsed = parseWebAssetPack(indexed)
+    expect(parsed.fit_index?.asset_indices).toEqual([0])
+    expect(parsed.inventory?.complete_raw_tree).toBe(true)
+  })
+
+  it('rejects fit-index references to render-only resources', () => {
+    const indexed = pack() as ReturnType<typeof pack> & { fit_index: object }
+    indexed.fit_index = {
+      schema: 'ck3-coa-fit-index-v1', format: 'RGBA8', resolution: 16,
+      asset_indices: [1], url: `assets/${'d'.repeat(64)}.rgba`,
+      asset_bytes: 16 * 16 * 4, asset_sha256: 'D'.repeat(64),
+    }
+    expect(() => parseWebAssetPack(indexed)).toThrow(/不可拟合资源/)
+  })
 })

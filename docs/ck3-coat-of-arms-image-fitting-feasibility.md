@@ -4,7 +4,10 @@
 
 **可行，但交付物应定义为“受 CK3 原生 pattern / colored emblem / 三色通道 / affine instance 约束的近似重建”，不能定义为任意图片的像素级转换。**
 
-最适合的第一版实现是纯浏览器：用户选择的图片只在本机页面内解码；前端从随 Web 部署提供的版本化静态 asset pack 按需取得 DDS，使用浏览器已有的 DDS decoder 和 shader 近似渲染器，以 Web Worker 组织搜索，以 WebGL2 批量渲染候选；无法建立 WebGL2 context 时回退到确定性的 CPU 小图搜索。Quarkus 不接收图片、不执行视觉算法，也不维护第二套家徽语义；正式平台不需要 Quarkus。
+第一版实现为纯浏览器：用户选择的图片只在本机页面内解码；前端先读取完整原生注册库的 32×32 RGBA 搜索索引，以 Web
+Worker 对当前残差反复选择 DDS、颜色和 affine transform 并追加图层，最后只按需取得入选元素的完整 DDS。CPU reference 是
+Alpha 的确定性选择权威，WebGL2 对最终候选做独立 RGBA8 交叉评分；WebGL2 atlas 批量搜索仍是后续优化。Quarkus 不接收
+图片、不执行视觉算法，也不维护第二套家徽语义；正式平台不需要 Quarkus。
 
 扁平图标、旗帜、徽标、剪影和少色插画是高适配输入。照片、细小文字、渐变、复杂纹理和要求精确字体的输入只能得到低置信近似。用户自己的像素不能通过这个剪贴板入口嵌入游戏；最终代码只引用资源目录中已经存在的原生或用户明确选定的模组 DDS。
 
@@ -77,10 +80,11 @@ flowchart LR
 SHA-256、素材类型、逻辑名、颜色通道数、可见性、相对 URL、字节数和内容 SHA-256。浏览器拒绝 build/schema 不匹配、越界 URL、
 重复逻辑键或 hash 不符的文件。
 
-开发期 Python pack builder 可以从明确给出的合法游戏安装目录生成 pack，但它不属于 Web 运行时，也不会由页面启动。仓库默认只
-提交 schema、builder、synthetic test fixture 和 manifest hash，不直接提交 Paradox DDS。若平台要公开托管原版 DDS，发布者必须先
-确认素材分发许可；技术可行性不能替代版权授权。没有分发授权时，仍可部署开源/获授权素材包，或让用户显式导入其合法取得的
-pack，但后一模式不应被描述为开箱即用的原版素材平台。
+开发期 Python pack builder 可以从明确给出的 exact-build 游戏安装目录生成 pack，但它不属于 Web 运行时，也不会由页面启动。
+项目所有者已于 2026-09-15 明确将原版 DDS 素材包视为本项目版本管理和 Pages 发布所授权的内容；因此当前仓库跟踪完整
+1.19.0.6 基础游戏 CoA DDS 树。精确盘点、注册/未注册边界与 hash 回执见
+[`ck3-coat-of-arms-asset-inventory.md`](ck3-coat-of-arms-asset-inventory.md)。该项目政策记录不转移 Paradox 素材所有权，也不
+自动涵盖其他 build 或模组资源。
 
 ### WebGL2 的职责
 
@@ -126,7 +130,7 @@ WebGPU 暂不作为 Alpha 必需项。它适合以后把 reduction 和大规模�
 - 粗网格搜索 position、等比 scale、rotation 与水平 flip；
 - 对入选候选再局部细化 position、X/Y scale 和 rotation；
 - 根据 emblem RGB channel mask 对目标残差求三个代表色；
-- Alpha 先限制为最多一个 colored-emblem、一个 instance；Beta 再用同一 beam 合同扩展到默认最多 4 个图层；
+- Alpha 默认最多堆叠 6 个 colored-emblem 图层，用户可在 1..12 调整；同一个原生 DDS 可以在不同位置、颜色和变换下重复使用；
 - depth 按加入顺序确定，导出有限数值，不依赖浮点比较的偶然顺序。
 
 ### 5. 分层 beam search
@@ -165,7 +169,7 @@ Java 后端目前没有必要，正式平台应直接静态部署：
 | 素材组合空间巨大 | 搜索慢、局部最优 | 特征粗筛、分层 beam、明确时间/图层预算 |
 | 浏览器 renderer 与 CK3 非逐像素一致 | 最佳候选在游戏中略有偏差 | 使用随附 shader 合同；结果标注近似；可选 MCP apply/export；后续补原生 framebuffer MCP |
 | 同名模组 DDS 胜者未知 | asset pack 可能与玩家游戏配置不同 | pack 内逻辑名必须唯一并绑定 SHA；正式平台声明目标 build/pack，不声称匹配玩家的模组 VFS |
-| 原版 DDS 的公开分发许可未确认 | 技术成品不能合法公开带素材部署 | 代码与素材包分离；默认只提交 schema/builder/synthetic fixture；公开托管前单独取得授权 |
+| 素材授权范围被误外推 | 把当前项目授权误当成所有权或其他 build/mod 的授权 | manifest 固定 build/source/hash；授权记录只适用于本仓库当前原版包 |
 | 照片、文字、高频细节 | 结果质量差 | 输入适配度预警、边缘/复杂度指标、展示多个候选并允许手调 |
 | GPU/浏览器差异 | 分数漂移 | 固定 UNORM 小图、显式 shader 精度、CPU reference tests、稳定 tie-break |
 | 大图或恶意文件 | 内存/显存耗尽 | MIME 解码、字节/像素上限、超时、取消、分批纹理 atlas |
@@ -177,10 +181,10 @@ Java 后端目前没有必要，正式平台应直接静态部署：
 
 1. 用户可以选择 PNG/JPEG/WebP；图片不经网络或 Quarkus 上传。
 2. 显示标准化目标预览、尺寸、类型和适配度提示；非法/超限输入 fail closed。
-3. 基于 `ck3-coa-web-asset-pack-v1` 中经 SHA-256 绑定的 pattern / colored-emblem 运行有限预算搜索。
+3. 基于 `ck3-coa-web-asset-pack-v1` 中经 SHA-256 绑定的 42 pattern / 1,577 个可粘贴 registered colored-emblem 完整搜索索引运行有限预算搜索；另一个含高位文件名的注册项只收录，不生成已知会被 reader 拒绝的输入。
 4. 完成 WebGL2 capability 与小批量评分验证；CPU reference fitter 是 Alpha 的确定性权威降级。WebGL2 全量 atlas 批处理可以在 Beta 收口，但不得因此调用服务器做图像搜索。
 5. 搜索可取消，不让页面长时间无响应。
-6. 结果至少包含一个合法 CoatOfArms 候选、分数分解、资源清单和搜索 provenance。
+6. 从当前背景残差开始逐轮选择、调色、变换和追加原生 DDS；结果包含合法的多层 CoatOfArms 候选、分数分解、资源清单和搜索 provenance。
 7. 应用候选后进入现有结构化编辑器；导出必须通过同一诊断与 128 KiB 门禁。
 8. 对由已知原生元素正向合成的 fixture，搜索应能稳定恢复同类背景/主要轮廓并在固定预算下重复得到相同结果。
 9. 没有安装 CK3、MCP 或 Java 也能完成上传、拟合、预览和复制；正式构建不显示 CK3 连接控件。
@@ -189,8 +193,8 @@ Alpha 不承诺照片写实重建、OCR/文字识别、全局最优、逐像素 
 
 ## 后续阶段
 
-- **Alpha**：独立静态 asset pack、纯浏览器输入、确定性 CPU reference fitter、WebGL2 capability/小批评分 provenance、有限素材粗筛与可编辑代码；正式构建不包含 CK3 连接界面。
-- **Beta**：WebGL2 atlas 批处理、更多实例和多候选、可暂停/恢复、基础资源离线索引包。
+- **Alpha**：完整独立静态 asset pack、纯浏览器输入、确定性多层残差 fitter、WebGL2 最终候选交叉评分、可编辑代码；正式构建不包含 CK3 连接界面。
+- **Beta**：WebGL2 atlas/reduction 批量搜索、更强的 beam/连续优化、多候选与可暂停/恢复。
 - **Native fidelity（仅开发夹具）**：继续优先补原生 MCP，从 CK3 renderer 取得不依赖屏幕/OCR的 framebuffer 或稳定像素摘要，用于校准浏览器评分；该夹具不进入正式平台，在此之前保持“近似”标签。
 - **Advanced**：可选 WebGPU compute、感知 embedding 粗筛、用户约束（指定元素/对称/颜色/最大图层）和多目标 Pareto 结果。
 

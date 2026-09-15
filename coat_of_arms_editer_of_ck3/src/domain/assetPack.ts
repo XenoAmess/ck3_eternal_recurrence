@@ -1,7 +1,14 @@
 import { decodeDds, type DecodedDds } from './dds'
 import type { NamedColorMap } from './renderer'
 
-export type WebAssetKind = 'pattern' | 'colored_emblem' | 'surface_mask'
+export type WebAssetKind =
+  | 'pattern'
+  | 'colored_emblem'
+  | 'auxiliary_colored_emblem'
+  | 'textured_emblem'
+  | 'surface_mask'
+
+export type WebAssetRegistration = 'designer_manifest' | 'unregistered_file' | 'render_support'
 
 export interface WebAssetPackEntry {
   kind: WebAssetKind
@@ -12,11 +19,35 @@ export interface WebAssetPackEntry {
   url: string
   asset_bytes: number
   asset_sha256: string
+  source_relative_path: string
+  registration: WebAssetRegistration
+  fit_eligible: boolean
   dds: {
     width: number
     height: number
     format: 'DXT1' | 'DXT5' | 'BGRA8'
   }
+}
+
+export interface WebFitIndex {
+  schema: 'ck3-coa-fit-index-v1'
+  format: 'RGBA8'
+  resolution: number
+  asset_indices: number[]
+  url: string
+  asset_bytes: number
+  asset_sha256: string
+}
+
+export interface WebAssetInventory {
+  complete_raw_tree: boolean
+  source_dds_total: number
+  registered_patterns: number
+  registered_colored_emblems: number
+  auxiliary_colored_emblems: number
+  textured_emblems: number
+  surface_masks: number
+  fit_eligible_registered: number
 }
 
 export interface WebAssetPack {
@@ -27,6 +58,8 @@ export interface WebAssetPack {
   source_manifest_sha256: string
   named_colors: NamedColorMap
   assets: WebAssetPackEntry[]
+  fit_index?: WebFitIndex
+  inventory?: WebAssetInventory
 }
 
 export interface LoadedWebAssetPack {
@@ -36,8 +69,12 @@ export interface LoadedWebAssetPack {
 }
 
 const SHA256 = /^[0-9A-F]{64}$/
-const SAFE_NAME = /^[\x20-\x7e]{1,128}$/
+// The exact manifest contains long names and one U+FFFD name inherited from the
+// source bytes; reject path/control characters without rewriting engine identity.
+const SAFE_NAME = /^[^\u0000-\u001f\u007f/\\]{1,512}$/u
 const SAFE_ASSET_URL = /^assets\/[0-9a-f]{64}\.dds$/
+const SAFE_INDEX_URL = /^assets\/[0-9a-f]{64}\.rgba$/
+const SAFE_SOURCE_PATH = /^(?!\/)(?!.*(?:^|\/)\.\.(?:\/|$))[^\0]{1,512}$/
 const MAX_ASSETS = 4096
 const MAX_ASSET_BYTES = 16 * 1024 * 1024
 
@@ -62,7 +99,9 @@ function text(value: unknown, label: string, pattern = SAFE_NAME): string {
 
 function parseEntry(value: unknown, index: number): WebAssetPackEntry {
   const item = record(value, `assets[${index}]`)
-  if (!['pattern', 'colored_emblem', 'surface_mask'].includes(String(item.kind))) {
+  if (![
+    'pattern', 'colored_emblem', 'auxiliary_colored_emblem', 'textured_emblem', 'surface_mask',
+  ].includes(String(item.kind))) {
     throw new Error(`assets[${index}].kind 不支持`)
   }
   const dds = record(item.dds, `assets[${index}].dds`)
@@ -73,8 +112,20 @@ function parseEntry(value: unknown, index: number): WebAssetPackEntry {
   if (item.category !== null && typeof item.category !== 'string') {
     throw new Error(`assets[${index}].category 必须是 string 或 null`)
   }
+  const kind = item.kind as WebAssetKind
+  const defaultRegistration: WebAssetRegistration = ['pattern', 'colored_emblem'].includes(kind)
+    ? 'designer_manifest'
+    : 'render_support'
+  const registration = item.registration === undefined ? defaultRegistration : String(item.registration)
+  if (!['designer_manifest', 'unregistered_file', 'render_support'].includes(registration)) {
+    throw new Error(`assets[${index}].registration 不支持`)
+  }
+  const fitEligible = item.fit_eligible === undefined
+    ? ['pattern', 'colored_emblem'].includes(kind)
+    : item.fit_eligible
+  if (typeof fitEligible !== 'boolean') throw new Error(`assets[${index}].fit_eligible 必须是 boolean`)
   return {
-    kind: item.kind as WebAssetKind,
+    kind,
     name: text(item.name, `assets[${index}].name`),
     colors: integer(item.colors, `assets[${index}].colors`, 0, 3),
     visible: item.visible,
@@ -82,11 +133,65 @@ function parseEntry(value: unknown, index: number): WebAssetPackEntry {
     url: text(item.url, `assets[${index}].url`, SAFE_ASSET_URL),
     asset_bytes: integer(item.asset_bytes, `assets[${index}].asset_bytes`, 128, MAX_ASSET_BYTES),
     asset_sha256: text(item.asset_sha256, `assets[${index}].asset_sha256`, SHA256),
+    source_relative_path: text(
+      item.source_relative_path ?? `legacy/${String(item.name)}`,
+      `assets[${index}].source_relative_path`,
+      SAFE_SOURCE_PATH,
+    ),
+    registration: registration as WebAssetRegistration,
+    fit_eligible: fitEligible,
     dds: {
       width: integer(dds.width, `assets[${index}].dds.width`, 1, 4096),
       height: integer(dds.height, `assets[${index}].dds.height`, 1, 4096),
       format: dds.format as 'DXT1' | 'DXT5' | 'BGRA8',
     },
+  }
+}
+
+function parseFitIndex(value: unknown, assets: WebAssetPackEntry[]): WebFitIndex {
+  const item = record(value, 'fit_index')
+  if (item.schema !== 'ck3-coa-fit-index-v1' || item.format !== 'RGBA8') {
+    throw new Error('fit_index schema/format 不支持')
+  }
+  if (!Array.isArray(item.asset_indices) || item.asset_indices.length < 1 || item.asset_indices.length > MAX_ASSETS) {
+    throw new Error('fit_index.asset_indices 数量不合法')
+  }
+  const indices = item.asset_indices.map((value, index) => integer(
+    value, `fit_index.asset_indices[${index}]`, 0, assets.length - 1,
+  ))
+  if (new Set(indices).size !== indices.length) throw new Error('fit_index.asset_indices 不得重复')
+  for (const index of indices) {
+    if (!assets[index].fit_eligible || !['pattern', 'colored_emblem'].includes(assets[index].kind)) {
+      throw new Error(`fit_index 引用了不可拟合资源 assets[${index}]`)
+    }
+  }
+  const resolution = integer(item.resolution, 'fit_index.resolution', 8, 128)
+  const expectedBytes = indices.length * resolution * resolution * 4
+  return {
+    schema: 'ck3-coa-fit-index-v1',
+    format: 'RGBA8',
+    resolution,
+    asset_indices: indices,
+    url: text(item.url, 'fit_index.url', SAFE_INDEX_URL),
+    asset_bytes: integer(item.asset_bytes, 'fit_index.asset_bytes', expectedBytes, expectedBytes),
+    asset_sha256: text(item.asset_sha256, 'fit_index.asset_sha256', SHA256),
+  }
+}
+
+function parseInventory(value: unknown): WebAssetInventory {
+  const item = record(value, 'inventory')
+  if (typeof item.complete_raw_tree !== 'boolean') throw new Error('inventory.complete_raw_tree 必须是 boolean')
+  const count = (name: keyof Omit<WebAssetInventory, 'complete_raw_tree'>) =>
+    integer(item[name], `inventory.${name}`, 0, MAX_ASSETS)
+  return {
+    complete_raw_tree: item.complete_raw_tree,
+    source_dds_total: count('source_dds_total'),
+    registered_patterns: count('registered_patterns'),
+    registered_colored_emblems: count('registered_colored_emblems'),
+    auxiliary_colored_emblems: count('auxiliary_colored_emblems'),
+    textured_emblems: count('textured_emblems'),
+    surface_masks: count('surface_masks'),
+    fit_eligible_registered: count('fit_eligible_registered'),
   }
 }
 
@@ -122,6 +227,29 @@ export function parseWebAssetPack(value: unknown): WebAssetPack {
     if (entry.kind === 'surface_mask') surfaceMasks += 1
   }
   if (surfaceMasks !== 1) throw new Error('asset pack 必须包含且只包含一个 surface_mask')
+  const fitIndex = source.fit_index === undefined ? undefined : parseFitIndex(source.fit_index, assets)
+  const inventory = source.inventory === undefined ? undefined : parseInventory(source.inventory)
+  if (inventory) {
+    const observed = {
+      registered_patterns: assets.filter((item) => item.kind === 'pattern' && item.registration === 'designer_manifest').length,
+      registered_colored_emblems: assets.filter((item) => item.kind === 'colored_emblem' && item.registration === 'designer_manifest').length,
+      auxiliary_colored_emblems: assets.filter((item) => item.kind === 'auxiliary_colored_emblem').length,
+      textured_emblems: assets.filter((item) => item.kind === 'textured_emblem').length,
+      surface_masks: surfaceMasks,
+    }
+    for (const [name, count] of Object.entries(observed)) {
+      if (inventory[name as keyof typeof observed] !== count) throw new Error(`inventory.${name} 与 assets 不一致`)
+    }
+    const fitEligibleRegistered = assets.filter(
+      (item) => item.registration === 'designer_manifest' && item.fit_eligible,
+    ).length
+    if (inventory.fit_eligible_registered !== fitEligibleRegistered) {
+      throw new Error('inventory.fit_eligible_registered 与 assets 不一致')
+    }
+    if (inventory.complete_raw_tree && inventory.source_dds_total !== assets.length) {
+      throw new Error('完整素材包的 source_dds_total 与 assets 数量不一致')
+    }
+  }
   return {
     schema: 'ck3-coa-web-asset-pack-v1',
     schema_version: 1,
@@ -130,7 +258,40 @@ export function parseWebAssetPack(value: unknown): WebAssetPack {
     source_manifest_sha256: text(source.source_manifest_sha256, 'source_manifest_sha256', SHA256),
     named_colors: namedColors,
     assets,
+    fit_index: fitIndex,
+    inventory,
   }
+}
+
+export interface WebFitTexture {
+  entry: WebAssetPackEntry
+  texture: DecodedDds
+}
+
+export async function readWebFitIndex(
+  loaded: LoadedWebAssetPack,
+  fetcher: typeof fetch = fetch,
+): Promise<WebFitTexture[]> {
+  const index = loaded.pack.fit_index
+  if (!index) throw new Error('asset pack 没有完整搜索索引')
+  const assetUrl = new URL(index.url, loaded.manifestUrl)
+  const manifestDirectory = new URL('.', loaded.manifestUrl)
+  if (!assetUrl.href.startsWith(manifestDirectory.href)) throw new Error('fit index URL 逃逸 manifest 目录')
+  const response = await fetcher(assetUrl.href, { cache: 'force-cache' })
+  if (!response.ok) throw new Error(`asset pack fit index HTTP ${response.status}`)
+  const bytes = new Uint8Array(await response.arrayBuffer())
+  if (bytes.byteLength !== index.asset_bytes) throw new Error('fit index 字节数不匹配')
+  if (await sha256Hex(bytes) !== index.asset_sha256) throw new Error('fit index SHA-256 不匹配')
+  const recordBytes = index.resolution * index.resolution * 4
+  return index.asset_indices.map((assetIndex, recordIndex) => ({
+    entry: loaded.pack.assets[assetIndex],
+    texture: {
+      width: index.resolution,
+      height: index.resolution,
+      fourCC: 'BGRA8',
+      pixels: new Uint8ClampedArray(bytes.slice(recordIndex * recordBytes, (recordIndex + 1) * recordBytes)),
+    },
+  }))
 }
 
 async function sha256Hex(data: ArrayBuffer | Uint8Array): Promise<string> {

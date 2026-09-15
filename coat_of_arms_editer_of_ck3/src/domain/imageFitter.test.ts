@@ -65,5 +65,38 @@ describe('browser image fitter', () => {
     expect(result.metrics.relativeImprovement).toBeGreaterThan(0.01)
     expect(result.provenance.searchBackend).toBe('cpu-reference')
   })
-})
 
+  it('reconstructs separated details by stacking repeated native DDS layers', () => {
+    const size = 32
+    const solid = texture('solid')
+    const square = texture('square')
+    const target = renderCoatOfArms({
+      outerKey: 'coa', parent: '', pattern: 'solid.dds',
+      colors: ['rgb { 245 245 245 }', 'rgb { 245 245 245 }', 'rgb { 245 245 245 }'],
+      coloredEmblems: [
+        {
+          texture: 'square.dds', colors: ['black', 'black', 'rgb { 20 20 20 }'], mask: [],
+          instances: [{ position: [0.28, 0.5], scale: [0.34, 0.34], rotation: 0, depth: 1 }],
+        },
+        {
+          texture: 'square.dds', colors: ['rgb { 180 25 30 }', 'black', 'black'], mask: [],
+          instances: [{ position: [0.72, 0.5], scale: [0.34, 0.34], rotation: 0, depth: 2 }],
+        },
+      ],
+      texturedEmblems: [],
+    }, { pattern: solid, coloredEmblems: { 'square.dds': square } }, { black: [0, 0, 0] }, size)
+    expect(target).not.toBeNull()
+    const result = fitImageToCoatOfArms(
+      asImage(target!.pixels, size),
+      [candidate('solid.dds', solid)],
+      [candidate('square.dds', square)],
+      { resolution: size, maxLayers: 3, minRelativeLayerImprovement: 0.0001 },
+    )
+    expect(result.provenance.algorithm).toBe('ck3-coa-browser-fit-v2-multilayer')
+    expect(result.provenance.selectedLayers).toBeGreaterThanOrEqual(2)
+    expect(result.coatOfArms.coloredEmblems).toHaveLength(result.provenance.selectedLayers)
+    expect(new Set(result.coatOfArms.coloredEmblems.map((item) => item.texture))).toEqual(new Set(['square.dds']))
+    expect(result.coatOfArms.coloredEmblems.map((item) => item.instances[0].position[0]).sort())
+      .toEqual(expect.arrayContaining([expect.closeTo(0.28, 1), expect.closeTo(0.72, 1)]))
+  })
+})

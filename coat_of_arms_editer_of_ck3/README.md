@@ -8,10 +8,11 @@ CK3，不依赖 MCP、Quarkus 或 Java；它只生成原版“从剪贴板粘贴
 
 - 解析 `name = { ... }`、注释、紧凑/多行排版和 `rgb` / `hsv` typed block；拒绝 wrapper 外杂项及未声明、循环或重复的静态 `@变量`；
 - 通过浏览器 Clipboard API 一键读取剪贴板文本并立即进入同一解析/诊断流程；浏览器权限或安全上下文不满足时明确报错；
-- 在浏览器内解码用户选择的 PNG/JPEG/WebP，以可取消 Web Worker 搜索静态 asset pack 中的 pattern 与 colored emblem，
-  输出可继续手调和复制的 CK3 代码；图片不上传，CPU reference 决定候选，WebGL2 RGBA8 对最终候选做真实交叉评分；
+- 在浏览器内解码用户选择的 PNG/JPEG/WebP，以可取消 Web Worker 对完整的 42 pattern / 1,577 个可粘贴 registered emblem 索引执行
+  多轮残差分解；每轮选择一个原生 DDS，拟合颜色、位置、缩放、旋转和翻转后追加图层，默认最多堆叠 6 层；图片不上传，
+  CPU reference 决定候选，WebGL2 RGBA8 对最终多层候选做真实交叉评分；
 - 使用 `ck3-coa-web-asset-pack-v1` 静态素材包：manifest 与每个 DDS 都经 SHA-256、字节数、尺寸和格式绑定，正式运行时不读取
-  用户的游戏目录；
+  用户的游戏目录；当前 1.19.0.6 pack 覆盖原版 CoA 目录 1,630/1,630 个 DDS，并将 8 个未注册辅助文件明确排除在自动拟合外；
 - 编辑 pattern、三通道颜色、重复 `colored_emblem`、mask 和重复 instance；
 - 对唯一已由原生 MCP 应用并 Copy 保留的 `textured_emblem = { texture = "_default.dds" }` 提供明确标限的解析、编辑、原始纹理预览和导出；不生成未验证字段，也暂不把该层合成进最终家徽；
 - 编辑 position、scale、rotation、depth，并生成稳定 CRLF CK3 文本；
@@ -54,6 +55,7 @@ pnpm dev
 CK3 1.19.0.6 pack 视为本仓库版本管理与 GitHub Pages 发布所授权的素材；其他 build 的生成目录仍默认忽略，需逐项审阅后再纳入：
 
 ```text
+python -m pip install -r tools/requirements-pack.txt
 python tools/build_web_asset_pack.py --game-root "<CK3 installation root>" --output public/asset-packs/ck3-1.19.0.6
 python tools/verify_web_asset_pack.py public/asset-packs/ck3-1.19.0.6
 ```
@@ -117,7 +119,7 @@ mvn -f backend/pom.xml package
 java -jar backend/target/quarkus-app/quarkus-run.jar
 ```
 
-当前 Alpha 基线：Vitest `50/50`、Playwright 独立浏览器 E2E `2/2`、Vite production build、静态 pack verifier、
+当前 Alpha v2 基线：Vitest 覆盖多层残差重建与完整 fit-index 合同、Playwright 独立浏览器 E2E `2/2`、Vite production build、静态 pack verifier、
 Quarkus REST `18/18` 与 Maven test 均 GREEN。E2E 同时覆盖合成 pack 和本机生成的 exact 1.19.0.6 pack；
 两者都进入 Pages Actions 门禁；缺少已跟踪的 exact-build pack 会直接使部署失败。
 “打开原生家徽页”和“提交回角色设计器”都只调用固定、零参数的王朝家徽 MCP，并要求独立 route 后置条件；它们不会接受浏览器传入的控件名、路径、指针或桌面输入。提交动作已在 exact CK3 `1.19.0.6` 完成受管实机往返：Finish 前后重开家徽页的原生 Copy 均为 330 bytes，SHA-256 均为 `4769FD42836E68FA35DC07FBA23BEABCC589E5A33087314F1D6287E5C53C305A`；该结论仍不覆盖完成整个角色创建或战役/存档持久化。

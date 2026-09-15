@@ -10,6 +10,7 @@ import { decodeDdsBase64, decodedDdsToDataUrl, type DecodedDds } from './domain/
 import {
   loadWebAssetPack,
   readWebAsset,
+  readWebFitIndex,
   type LoadedWebAssetPack,
   type WebAssetPackEntry,
 } from './domain/assetPack'
@@ -109,7 +110,7 @@ const fitBusy = ref(false)
 const fitStatus = ref('请选择一张图片')
 const fitResult = ref<ImageFitResult>()
 const fitWebGlScore = ref<WebGlScore | null>(null)
-const fitEmblemBudget = ref(24)
+const fitLayerBudget = ref(6)
 let fitWorker: Worker | null = null
 let fitRunId = 0
 
@@ -266,10 +267,14 @@ async function loadStandaloneAssetPack(notify = true) {
   assetPackBusy.value = true
   try {
     const loaded = await loadWebAssetPack(defaultAssetPackUrl)
-    const patterns = loaded.pack.assets.filter((item) => item.kind === 'pattern' && item.visible)
-    const emblems = loaded.pack.assets.filter((item) => item.kind === 'colored_emblem' && item.visible)
+    const patterns = loaded.pack.assets.filter(
+      (item) => item.kind === 'pattern' && item.registration === 'designer_manifest',
+    )
+    const emblems = loaded.pack.assets.filter(
+      (item) => item.kind === 'colored_emblem' && item.registration === 'designer_manifest',
+    )
     const mask = loaded.pack.assets.find((item) => item.kind === 'surface_mask')
-    if (!patterns.length || !emblems.length || !mask) throw new Error('素材包缺少可见 pattern、emblem 或 surface mask')
+    if (!patterns.length || !emblems.length || !mask) throw new Error('素材包缺少已注册 pattern、emblem 或 surface mask')
     loadedAssetPack.value = loaded
     webAssetCache.clear()
     patternResources.value = patterns.map(asResourceItem)
@@ -277,7 +282,8 @@ async function loadStandaloneAssetPack(notify = true) {
     shaderNamedColors.value = loaded.pack.named_colors
     surfaceMask.value = await readPackTexture(mask)
     shaderSourceCount.value = 5
-    assetPackStatus.value = `${loaded.pack.pack_id} · ${patterns.length} pattern · ${emblems.length} emblem · ${loaded.manifestSha256.slice(0, 12)}`
+    const inventory = loaded.pack.inventory
+    assetPackStatus.value = `${loaded.pack.pack_id} · ${patterns.length} 注册 pattern · ${emblems.length} 注册 emblem${inventory ? ` · ${inventory.source_dds_total} DDS 全盘清单` : ''} · ${loaded.manifestSha256.slice(0, 12)}`
     if (notify) ElMessage.success('独立静态素材包已载入；运行时不需要 CK3、MCP 或 Java')
     await loadCurrentTexturePreviews()
   } catch (error) {
@@ -332,34 +338,46 @@ async function fitTargetImage() {
   fitWebGlScore.value = null
   try {
     const patterns = loadedAssetPack.value.pack.assets
-      .filter((item) => item.kind === 'pattern' && item.visible)
+      .filter((item) => item.kind === 'pattern' && item.registration === 'designer_manifest')
       .sort((left, right) => left.name.localeCompare(right.name))
-      .slice(0, 64)
     const emblems = loadedAssetPack.value.pack.assets
-      .filter((item) => item.kind === 'colored_emblem' && item.visible)
+      .filter((item) => item.kind === 'colored_emblem' && item.registration === 'designer_manifest')
       .sort((left, right) => left.name.localeCompare(right.name))
-      .slice(0, fitEmblemBudget.value)
-    fitStatus.value = `正在从静态 pack 读取 ${patterns.length + emblems.length} 个 content-addressed DDS…`
+    fitStatus.value = loadedAssetPack.value.pack.fit_index
+      ? `正在校验并读取完整 ${loadedAssetPack.value.pack.fit_index.asset_indices.length} 项可粘贴 RGBA 搜索索引…`
+      : `旧素材包没有搜索索引，正在读取 ${patterns.length + emblems.length} 个 DDS…`
     const toCandidate = async (item: WebAssetPackEntry): Promise<FitTextureCandidate> => ({
       name: item.name,
       assetSha256: item.asset_sha256,
       texture: await readPackTexture(item),
     })
-    const [patternCandidates, emblemCandidates] = await Promise.all([
-      Promise.all(patterns.map(toCandidate)),
-      Promise.all(emblems.map(toCandidate)),
-    ])
+    let patternCandidates: FitTextureCandidate[]
+    let emblemCandidates: FitTextureCandidate[]
+    if (loadedAssetPack.value.pack.fit_index) {
+      const indexed = await readWebFitIndex(loadedAssetPack.value)
+      patternCandidates = indexed
+        .filter((item) => item.entry.kind === 'pattern')
+        .map((item) => ({ name: item.entry.name, assetSha256: item.entry.asset_sha256, texture: item.texture }))
+      emblemCandidates = indexed
+        .filter((item) => item.entry.kind === 'colored_emblem')
+        .map((item) => ({ name: item.entry.name, assetSha256: item.entry.asset_sha256, texture: item.texture }))
+    } else {
+      [patternCandidates, emblemCandidates] = await Promise.all([
+        Promise.all(patterns.map(toCandidate)),
+        Promise.all(emblems.map(toCandidate)),
+      ])
+    }
     if (runId !== fitRunId) return
-    fitStatus.value = '浏览器 Worker 正在执行确定性 CPU reference 搜索…'
+    fitStatus.value = `浏览器 Worker 正在对全部原生元素执行残差分解与最多 ${fitLayerBudget.value} 层堆叠…`
     const worker = new Worker(new URL('./domain/imageFitter.worker.ts', import.meta.url), { type: 'module' })
     fitWorker = worker
     const target = targetImage.value.image
-    worker.onmessage = (event: MessageEvent<{ ok: boolean, result?: ImageFitResult, error?: string }>) => {
+    worker.onmessage = async (event: MessageEvent<{ ok: boolean, result?: ImageFitResult, error?: string }>) => {
       if (runId !== fitRunId) return
       worker.terminate()
       fitWorker = null
-      fitBusy.value = false
       if (!event.data.ok || !event.data.result) {
+        fitBusy.value = false
         fitStatus.value = `拟合失败：${event.data.error ?? 'unknown'}`
         ElMessage.error(fitStatus.value)
         return
@@ -370,21 +388,35 @@ async function fitTargetImage() {
       source.value = serializeCoatOfArms(result.coatOfArms)
       diagnostics.value = []
       selectedEmblem.value = 0
-      const selectedPattern = patternCandidates.find((item) => item.name === result.coatOfArms.pattern)
-      patternTexture.value = selectedPattern?.texture
-      patternPreviewUrl.value = selectedPattern ? decodedDdsToDataUrl(selectedPattern.texture) : ''
-      emblemTextures.value = Object.fromEntries(
-        emblemCandidates
-          .filter((item) => result.coatOfArms.coloredEmblems.some((emblem) => emblem.texture === item.name))
-          .map((item) => [item.name, item.texture]),
-      )
+      const selectedPatternEntry = patterns.find((item) => item.name === result.coatOfArms.pattern)
+      const selectedEmblemNames = new Set(result.coatOfArms.coloredEmblems.map((item) => item.texture))
+      const selectedEmblemEntries = emblems.filter((item) => selectedEmblemNames.has(item.name))
+      let selectedPatternTexture: DecodedDds | undefined
+      let selectedFullEmblems: (readonly [string, DecodedDds])[]
+      try {
+        [selectedPatternTexture, selectedFullEmblems] = await Promise.all([
+          selectedPatternEntry ? readPackTexture(selectedPatternEntry) : Promise.resolve(undefined),
+          Promise.all(selectedEmblemEntries.map(async (item) => [item.name, await readPackTexture(item)] as const)),
+        ])
+      } catch (error) {
+        if (runId !== fitRunId) return
+        fitBusy.value = false
+        fitStatus.value = `拟合已完成，但完整 DDS 校验失败：${errorMessage(error)}`
+        ElMessage.error(fitStatus.value)
+        return
+      }
+      if (runId !== fitRunId) return
+      fitBusy.value = false
+      patternTexture.value = selectedPatternTexture
+      patternPreviewUrl.value = selectedPatternTexture ? decodedDdsToDataUrl(selectedPatternTexture) : ''
+      emblemTextures.value = Object.fromEntries(selectedFullEmblems)
       emblemPreviewUrls.value = Object.fromEntries(
         Object.entries(emblemTextures.value).map(([name, decoded]) => [name, decodedDdsToDataUrl(decoded)]),
       )
       const normalizedTarget = resizeFitImage(target, result.provenance.resolution)
       const rendered = renderCoatOfArms(
         result.coatOfArms,
-        { pattern: selectedPattern?.texture, coloredEmblems: emblemTextures.value },
+        { pattern: selectedPatternTexture, coloredEmblems: emblemTextures.value },
         {},
         result.provenance.resolution,
       )
@@ -395,8 +427,8 @@ async function fitTargetImage() {
       } catch {
         fitWebGlScore.value = null
       }
-      fitStatus.value = `完成 · ${result.provenance.evaluatedCandidates} 候选 · CPU reference${fitWebGlScore.value ? ' + WebGL2 RGBA8 交叉评分' : ' · WebGL2 不可用'}`
-      ElMessage.success('拟合候选已载入结构化编辑器，可继续调整并复制代码')
+      fitStatus.value = `完成 · 从完整库评估 ${result.provenance.evaluatedCandidates} 个构图 · 选中 ${result.provenance.selectedLayers}/${result.provenance.layerBudget} 层 · CPU reference${fitWebGlScore.value ? ' + WebGL2 RGBA8 交叉评分' : ' · WebGL2 不可用'}`
+      ElMessage.success('多层原生元素构图已载入结构化编辑器，可继续调整并复制代码')
     }
     worker.onerror = (event) => {
       if (runId !== fitRunId) return
@@ -424,7 +456,8 @@ async function fitTargetImage() {
     worker.postMessage([workerImage, workerCandidates(patternCandidates), workerCandidates(emblemCandidates), {
       resolution: 40,
       maxPatterns: patterns.length,
-      maxEmblems: emblems.length,
+      maxEmblemCandidates: emblemCandidates.length,
+      maxLayers: fitLayerBudget.value,
     }])
   } catch (error) {
     if (runId !== fitRunId) return
@@ -855,8 +888,8 @@ importSource()
           <p>{{ assetPackStatus }}</p>
           <el-button :loading="assetPackBusy" @click="loadStandaloneAssetPack()">重新载入静态素材包</el-button>
           <div class="fit-budget">
-            <span>Emblem 搜索预算</span>
-            <el-input-number v-model="fitEmblemBudget" :min="0" :max="64" :step="8" />
+            <span>最大堆叠图层</span>
+            <el-input-number v-model="fitLayerBudget" :min="1" :max="12" :step="1" />
           </div>
           <div class="fit-actions">
             <el-button type="primary" :loading="fitBusy" :disabled="!targetImage || !loadedAssetPack" @click="fitTargetImage">
@@ -874,6 +907,8 @@ importSource()
               <div><dt>颜色</dt><dd>{{ fitResult.metrics.colorLoss.toFixed(5) }}</dd></div>
               <div><dt>边缘</dt><dd>{{ fitResult.metrics.edgeLoss.toFixed(5) }}</dd></div>
               <div><dt>候选数</dt><dd>{{ fitResult.provenance.evaluatedCandidates }}</dd></div>
+              <div><dt>实际图层</dt><dd>{{ fitResult.provenance.selectedLayers }} / {{ fitResult.provenance.layerBudget }}</dd></div>
+              <div><dt>相对改善</dt><dd>{{ (fitResult.metrics.relativeImprovement * 100).toFixed(2) }}%</dd></div>
               <div><dt>GPU 交叉分</dt><dd>{{ fitWebGlScore ? fitWebGlScore.meanSquaredRgbError.toFixed(5) : '不可用' }}</dd></div>
             </dl>
             <small>分数只用于同一算法和目标之间比较，不代表 CK3 像素一致率。结果已进入下方结构化编辑器。</small>
